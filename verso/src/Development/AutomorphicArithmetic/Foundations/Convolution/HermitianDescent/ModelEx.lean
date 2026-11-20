@@ -7,6 +7,17 @@ open scoped TensorProduct
 
 namespace UpperTheory.ConvolutionTheory.D
 
+/- English proof (translation)
+Set `A : Subalgebra k L` to `AlgHom.equalizer s (AlgHom.id k L)`. Set `f : R ⊗[k] A →ₐ[R] L` to `Algebra.TensorProduct.lift (Algebra.ofId R L) A.val fun _ _ => Commute.all _ _`. Establish `hf : ∀ (r : R) (a : A), f (r ⊗ₜ a) = algebraMap R L r * a` using `fun r a => rfl`. Establish `hb` using `descent k R c 2 hG L s.toLinearMap (fun r m => by simp [Algebra.smul_def, hs]) (LinearMap.ext fun z => by simp [pow_two, hss])`. Set `j : A ≃ₗ[k] LinearMap.eqLocus s.toLinearMap LinearMap.id` to `{ toFun := fun a => ⟨a.1, a.2⟩ invFun := fun a => ⟨a.1, a.2⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl left_inv := fun _ => rfl right_inv := fun _ => rfl }`.
+
+Establish `hbij : Function.Bijective f`. Establish `h2` using `hb.comp (j.lTensor R).bijective`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`. Proceed by induction on `z with`.
+
+Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [Function.comp_apply, map_add] at ha hb ⊢`. Rewrite using `[ha, hb]`. Consider the case `tmul r a => rw [hf, ← Algebra.smul_def]`. Both sides reduce to the same expression.
+
+Use `⟨A, inferInstance, inferInstance, AlgEquiv.ofBijective f hbij, fun z => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f _ = s (f z)`. Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+
+Consider the case `tmul r a`. Establish `h1 : io c A (r ⊗ₜ a) = c r ⊗ₜ a` using `by simp [io]`. Establish `h2 : s a = a` using `a.2`. Rewrite using `[h1, hf, hf, map_mul, hs, h2]`.
+-/
 private theorem desc_alg {k R : Type} [CommRing k] [CommRing R] [Algebra k R] (c : R ≃ₐ[k] R) (hG : IsGal c 2)
     (L : Type) [CommRing L] [Algebra k L] [Algebra R L] [IsScalarTower k R L] (s : L →ₐ[k] L)
     (hs : ∀ r, s (algebraMap R L r) = algebraMap R L (c r)) (hss : ∀ z, s (s z) = z) :
@@ -41,6 +52,21 @@ private theorem desc_alg {k R : Type} [CommRing k] [CommRing R] [Algebra k R] (c
     have h2 : s a = a := a.2
     rw [h1, hf, hf, map_mul, hs, h2]
 
+/- English proof (translation)
+Take `⟨hm, hn, hu, hr⟩` from `hP`. Establish `hcc : ∀ r, c (c r) = r` using `fun r => by`. Rewrite using `[← AlgEquiv.mul_apply, ← pow_two, hc]`. Both sides reduce to the same expression. Establish `hx : IsUnit (AdjoinRoot.root P)`.
+
+Establish `h1 : AdjoinRoot.mk P (X * P.divX + C (P.coeff 0)) = 0`. Rewrite using `[X_mul_divX_add, AdjoinRoot.mk_self]`. Rewrite `h1` using `[map_add, map_mul, AdjoinRoot.mk_X, AdjoinRoot.mk_C]`. Establish `h2` using `(hu.map (AdjoinRoot.of P)).neg`. Rewrite `h2` using `[← eq_neg_of_add_eq_zero_left h1]`.
+
+Conclude with `isUnit_of_mul_isUnit_left h2`. Take `⟨y, hy⟩` from `hx.exists_right_inv`. Use `letI : Invertible y := ⟨AdjoinRoot.root P, hy, by rw [mul_comm, hy]⟩`. Establish `h0 : P.eval₂ ((AdjoinRoot.of P).comp (c : R →+* R)) y = 0`. Rewrite using `[← eval₂_map, ← eval₂_reflect_eq_zero_iff _ y n _ (natDegree_map_le.trans hn.le), hr, eval₂_mul]`.
+
+Conclude with `mul_eq_zero_of_right _ (AdjoinRoot.eval₂_root P)`. Set `s0 : AdjoinRoot P →+* AdjoinRoot P` to `AdjoinRoot.lift _ y h0`. Establish `h1 : ∀ r, s0 (AdjoinRoot.of P r) = AdjoinRoot.of P (c r)` using `fun r => AdjoinRoot.lift_of h0`. Establish `h2 : s0 (AdjoinRoot.root P) = y` using `AdjoinRoot.lift_root h0`. Establish `h3 : s0 y = AdjoinRoot.root P`.
+
+Use `congrArg s0 hy` as an intermediate fact. Rewrite `this` using `[map_mul, map_one, h2]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨⟨s0, fun a => ?_⟩, h1, fun z => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[IsScalarTower.algebraMap_apply k R (AdjoinRoot P)]`.
+
+Conclude with `(h1 _).trans (by rw [c.commutes]; rfl)`. Express the relevant statement in the definitionally equal form `s0 (s0 z) = z`. Take `⟨p, rfl⟩` from `AdjoinRoot.mk_surjective z`. Proceed by induction on `p using Polynomial.induction_on with`. Consider the case `C a => rw [AdjoinRoot.mk_C, h1, h1, hcc]`.
+
+Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `monomial m a ih`. Rewrite using `[pow_succ, ← mul_assoc, map_mul, map_mul, map_mul, ih, AdjoinRoot.mk_X, h2, h3]`. Express the relevant statement in the definitionally equal form `_ * s0 _ = 1`. Rewrite using `[h2, hy]`.
+-/
 private theorem inv_ex {k R : Type} [CommRing k] [CommRing R] [Algebra k R] (c : R ≃ₐ[k] R) (hc : c ^ 2 = 1)
     {n : ℕ} {P : R[X]} (hP : IsCsr c n P) :
     ∃ s : AdjoinRoot P →ₐ[k] AdjoinRoot P, (∀ r, s (algebraMap R _ r) = algebraMap R _ (c r)) ∧ (∀ z, s (s z) = z) ∧
@@ -83,6 +109,19 @@ private theorem inv_ex {k R : Type} [CommRing k] [CommRing R] [Algebra k R] (c :
 
 end UpperTheory.ConvolutionTheory.D
 
+/- English proof (translation)
+Introduce `k R _ _ _ _ c hG n P hP hsep`. Take `⟨s, hs, hss, hx⟩` from `inv_ex c hG.pow hP`. Take `⟨A, _, _, e, he⟩` from `desc_alg c hG (AdjoinRoot P) s hs hss`. Take `⟨-, -, hff, -⟩` from `galBase k R k c 2 hG`. Take `⟨hm, hn, -, -⟩` from `hP`.
+
+Use `haveI : Nontrivial R := hG.inj.nontrivial`. Set `B` to `(AdjoinRoot.powerBasis' hm).basis.map e.symm.toLinearEquiv`. Use `haveI : Module.Finite R (R ⊗[k] A) := Module.Finite.of_basis B`. Use `haveI : Module.Free R (R ⊗[k] A) := Module.Free.of_basis B`. Use `haveI : Module.Finite k A := Module.Finite.of_finite_tensorProduct_of_faithfullyFlat R`.
+
+Use `haveI : Module.Flat k A := Module.Flat.of_flat_tensorProduct k A R`. Use `haveI : Module.Free k A := Module.free_of_flat_of_isLocalRing`. Establish `hr : Module.finrank k A = n`. Rewrite using `[← Module.finrank_baseChange (R := R), Module.finrank_eq_card_basis B, Fintype.card_fin, ← hn]`. Both sides reduce to the same expression.
+
+Set `b` to `Module.finBasisOfFinrankEq k A hr`. Establish `h1 : e.symm (AdjoinRoot.root P) * io c A (e.symm (AdjoinRoot.root P)) = 1`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_mul, he, e.apply_symm_apply, hx, map_one]`. Set `g : (R ⊗[k] A)ˣ` to `Units.mkOfMulEqOne _ _ h1`.
+
+Establish `h2 : cp (matU b g) = P` using `by set M := Algebra.leftMulMatrix (Algebra.TensorProduct.basis R b) (e.symm (AdjoinRoot.root P)) with hM`. Express the relevant statement in the definitionally equal form `M.charpoly = P`. Establish `h3 : aeval (AdjoinRoot.root P) M.charpoly = 0`. Establish `h4` using `Matrix.aeval_self_charpoly M`. Rewrite `h4` using `[hM, aeval_algHom_apply, ← hM, map_eq_zero_iff _ (Algebra.leftMulMatrix_injective _), aeval_algHom_apply]`.
+
+Conclude with `(map_eq_zero_iff _ e.symm.injective).1 h4`. Rewrite `h3` using `[AdjoinRoot.aeval_eq, AdjoinRoot.mk_eq_zero]`. Conclude with `eq_of_monic_of_dvd_of_natDegree_le hm M.charpoly_monic h3 (by rw [Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin, hn])`. Conclude with `⟨A, _, _, b, g, ⟨h1, h2 ▸ hsep⟩, h2⟩`.
+-/
 theorem UpperTheory.ConvolutionTheory.D.modelEx :
     UpperTheory.ConvolutionTheory.D.ModelEx := by
   intro k R _ _ _ _ c hG n P hP hsep

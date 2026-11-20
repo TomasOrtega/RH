@@ -10,16 +10,29 @@ open Filter Topology
 
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {x : E}
 
+/- English proof (translation)
+The claim follows from `((ContinuousLinearMap.apply ℂ ℂ w).analyticAt _).comp hf.fderiv`.
+-/
 theorem analyticAt_fderiv_apply {f : E → ℂ} (hf : AnalyticAt ℂ f x) (w : E) :
     AnalyticAt ℂ (fun y => fderiv ℂ f y w) x :=
   ((ContinuousLinearMap.apply ℂ ℂ w).analyticAt _).comp hf.fderiv
 
+/- English proof (translation)
+Introduce `k hk`. Take `rfl : k = 0` from `by omega`. Use extensionality with `m`. Simplify using `[iteratedFDeriv_zero_apply, h]`.
+-/
 theorem vanish_one {f : E → ℂ} (h : f x = 0) : ∀ k < 1, iteratedFDeriv ℂ k f x = 0 := by
   intro k hk
   obtain rfl : k = 0 := by omega
   ext m
   simp [iteratedFDeriv_zero_apply, h]
 
+/- English proof (translation)
+Introduce `k hk`. Take `⟨s, hs, hso, hxs⟩` from `eventually_nhds_iff.1 (hf.eventually_analyticAt.and hg.eventually_analyticAt)`. Establish `hfs : ContDiffOn ℂ ⊤ f s` using `fun y hy => (hs y hy).1.contDiffAt.contDiffWithinAt`. Establish `hgs : ContDiffOn ℂ ⊤ g s` using `fun y hy => (hs y hy).2.contDiffAt.contDiffWithinAt`. Establish `key` using `norm_iteratedFDerivWithin_mul_le hfs hgs hso.uniqueDiffOn hxs (n := k) le_top`.
+
+Rewrite `key` using `[iteratedFDerivWithin_of_isOpen k hso hxs]`. Establish `hsum : ∑ i ∈ Finset.range (k + 1), (k.choose i : ℝ) * ‖iteratedFDerivWithin ℂ i f s x‖ * ‖iteratedFDerivWithin ℂ (k - i) g s x‖ = 0`. Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations. Establish `hik` using `Finset.mem_range.1 hi`. Rewrite using `[iteratedFDerivWithin_of_isOpen i hso hxs, iteratedFDerivWithin_of_isOpen (k - i) hso hxs]`.
+
+Break down `lt_or_ge i a with h | h` into its components or cases. Simplify using `[hfa i h]`. Simplify using `[hgb (k - i) (by omega)]`. Rewrite `key` using `[hsum]`. Conclude with `norm_le_zero_iff.1 key`.
+-/
 theorem vanish_mul {f g : E → ℂ} (hf : AnalyticAt ℂ f x) (hg : AnalyticAt ℂ g x) {a b : ℕ}
     (hfa : ∀ k < a, iteratedFDeriv ℂ k f x = 0) (hgb : ∀ k < b, iteratedFDeriv ℂ k g x = 0) :
     ∀ k < a + b, iteratedFDeriv ℂ k (fun y => f y * g y) x = 0 := by
@@ -41,6 +54,11 @@ theorem vanish_mul {f g : E → ℂ} (hf : AnalyticAt ℂ f x) (hg : AnalyticAt 
   rw [hsum] at key
   exact norm_le_zero_iff.1 key
 
+/- English proof (translation)
+Establish `hg' : AnalyticAt ℂ (fun y => g y - g x) x` using `hg.sub analyticAt_const`. Establish `e : (fun y => f y * g y) = (fun y => f y * (g y - g x)) + (fun y => g x • f y)`. Use function extensionality and compare the values at `y`. Simplify using `only [Pi.add_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e, iteratedFDeriv_add_apply (hf.fun_mul hg').contDiffAt (analyticAt_const.fun_smul hf).contDiffAt, vanish_mul hf hg' hfa (vanish_one (by simp)) a (by omega), zero_add]`. Conclude with `iteratedFDeriv_const_smul_apply' hf.contDiffAt`.
+-/
 theorem top_mul {f g : E → ℂ} (hf : AnalyticAt ℂ f x) (hg : AnalyticAt ℂ g x) {a : ℕ}
     (hfa : ∀ k < a, iteratedFDeriv ℂ k f x = 0) :
     iteratedFDeriv ℂ a (fun y => f y * g y) x = g x • iteratedFDeriv ℂ a f x := by
@@ -54,6 +72,9 @@ theorem top_mul {f g : E → ℂ} (hf : AnalyticAt ℂ f x) (hg : AnalyticAt ℂ
     vanish_mul hf hg' hfa (vanish_one (by simp)) a (by omega), zero_add]
   exact iteratedFDeriv_const_smul_apply' hf.contDiffAt
 
+/- English proof (translation)
+Rewrite using `[iteratedFDeriv_succ_apply_right, Fin.init_snoc, Fin.snoc_last]`. Use `(ContinuousLinearMap.apply ℂ ℂ w).iteratedFDeriv_comp_left (hf.fderiv.contDiffAt (n := ⊤)) (i := k) le_top` as an intermediate fact. Conclude with `congrArg (fun L => L m) this`.
+-/
 theorem iteratedFDeriv_fderiv_apply {f : E → ℂ} (hf : AnalyticAt ℂ f x) (w : E) (k : ℕ)
     (m : Fin k → E) :
     iteratedFDeriv ℂ k (fun y => fderiv ℂ f y w) x m =
@@ -63,16 +84,27 @@ theorem iteratedFDeriv_fderiv_apply {f : E → ℂ} (hf : AnalyticAt ℂ f x) (w
     (hf.fderiv.contDiffAt (n := ⊤)) (i := k) le_top
   exact congrArg (fun L => L m) this
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun j => ?_) i <;> simp`.
+-/
 theorem snoc_const {F : Type*} (k : ℕ) (w : F) :
     (Fin.snoc (fun _ : Fin k => w) w : Fin (k + 1) → F) = fun _ => w := by
   funext i
   refine Fin.lastCases ?_ (fun j => ?_) i <;> simp
 
+/- English proof (translation)
+Rewrite using `[iteratedFDeriv_fderiv_apply hf, snoc_const]`.
+-/
 theorem iteratedFDeriv_fderiv_diag {f : E → ℂ} (hf : AnalyticAt ℂ f x) (w : E) (k : ℕ) :
     iteratedFDeriv ℂ k (fun y => fderiv ℂ f y w) x (fun _ => w) =
       iteratedFDeriv ℂ (k + 1) f x (fun _ => w) := by
   rw [iteratedFDeriv_fderiv_apply hf, snoc_const]
 
+/- English proof (translation)
+Establish `hgv : AnalyticAt ℂ (fun y => g y * v y) x` using `hg.fun_mul hv`. Rewrite using `[← iteratedFDeriv_fderiv_diag hgv]`. Establish `heq : (fun y => fderiv ℂ (fun y => g y * v y) y w) =ᶠ[𝓝 x] fun y => g y * fderiv ℂ v y w + v y * fderiv ℂ g y w` using `by filter_upwards [hg.eventually_analyticAt, hv.eventually_analyticAt] with y hgy hvy`. Rewrite using `[fderiv_fun_mul hgy.differentiableAt hvy.differentiableAt]`. Simplify using `[smul_eq_mul]`.
+
+Establish `h1` using `analyticAt_fderiv_apply hv w`. Establish `h2` using `analyticAt_fderiv_apply hg w`. Rewrite using `[(heq.iteratedFDeriv ℂ a).eq_of_nhds, fun_iteratedFDeriv_add_apply (hg.fun_mul h1).contDiffAt (hv.fun_mul h2).contDiffAt, top_mul hg h1 hga]`. Simplify using `[smul_eq_mul]`.
+-/
 theorem step {g v : E → ℂ} (hg : AnalyticAt ℂ g x) (hv : AnalyticAt ℂ v x) {a : ℕ}
     (hga : ∀ k < a, iteratedFDeriv ℂ k g x = 0) (w : E) :
     iteratedFDeriv ℂ (a + 1) (fun y => g y * v y) x (fun _ => w) =
@@ -92,6 +124,17 @@ theorem step {g v : E → ℂ} (hg : AnalyticAt ℂ g x) (hv : AnalyticAt ℂ v 
     top_mul hg h1 hga]
   simp [smul_eq_mul]
 
+/- English proof (translation)
+Introduce `a`. Proceed by induction on `a with`. Consider the case `zero`. Introduce `g hg _`. Rewrite using `[step hg hv (fun k hk => absurd hk (Nat.not_lt_zero k)) w]`.
+
+Simplify using `[iteratedFDeriv_zero_apply, hv0]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `succ a ih`. Introduce `g hg hga`. Establish `hdg` using `analyticAt_fderiv_apply hg w`.
+
+Establish `hdga : ∀ k < a, iteratedFDeriv ℂ k (fun y => fderiv ℂ g y w) x = 0`. Introduce `k hk`. Use extensionality with `m`. Rewrite using `[iteratedFDeriv_fderiv_apply hg, hga (k + 1) (by omega)]`. Simplify using the standard rewrite rules.
+
+Establish `e : (fun y => v y * fderiv ℂ g y w) = fun y => fderiv ℂ g y w * v y`. Use function extensionality and compare the values at `y`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[step hg hv hga w, e, ih _ hdg hdga, iteratedFDeriv_fderiv_diag hg]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem order_one {v : E → ℂ} (hv : AnalyticAt ℂ v x) (hv0 : v x = 0) (w : E) :
     ∀ (a : ℕ) (g : E → ℂ), AnalyticAt ℂ g x → (∀ k < a, iteratedFDeriv ℂ k g x = 0) →
       iteratedFDeriv ℂ (a + 1) (fun y => g y * v y) x (fun _ => w) =
@@ -118,6 +161,13 @@ theorem order_one {v : E → ℂ} (hv : AnalyticAt ℂ v x) (hv0 : v x = 0) (w :
     push_cast
     ring
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simpa using ⟨hgc, hG⟩`. Consider the case `succ m ih`. Establish `hgm : AnalyticAt ℂ (fun y => g y * v y ^ m) x` using `hg.fun_mul (hv.fun_pow m)`. Establish `e : (fun y => g y * v y ^ (m + 1)) = fun y => (g y * v y ^ m) * v y`.
+
+Use function extensionality and compare the values at `y`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, ← add_assoc]`. Use `⟨vanish_mul hgm hv ih.1 (vanish_one hv0), ?_⟩` and prove the remaining obligations. Rewrite using `[order_one hv hv0 w (c + m) _ hgm ih.1, ih.2, Nat.factorial_succ]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mul_pow_jet {v : E → ℂ} (hv : AnalyticAt ℂ v x) (hv0 : v x = 0) (w : E)
     {g : E → ℂ} (hg : AnalyticAt ℂ g x) {c : ℕ} (hgc : ∀ k < c, iteratedFDeriv ℂ k g x = 0)
     {G : ℂ} (hG : iteratedFDeriv ℂ c g x (fun _ => w) = c.factorial * G) (m : ℕ) :
@@ -137,6 +187,15 @@ theorem mul_pow_jet {v : E → ℂ} (hv : AnalyticAt ℂ v x) (hv0 : v x = 0) (w
     push_cast
     ring
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `⟨?_, fun k hk => by simp at hk, ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.prod_empty]`. Conclude with `analyticAt_const`.
+
+Simplify using `only [Finset.sum_empty, Finset.prod_empty, Nat.factorial_zero, Nat.cast_one, mul_one]`. Conclude with `iteratedFDeriv_zero_apply _`. Consider the case `insert j s hj ih`. Take `⟨ha, hv, hd⟩` from `ih`. Establish `e : (fun y => ∏ i ∈ insert j s, u i y ^ α i) = fun y => (∏ i ∈ s, u i y ^ α i) * u j y ^ α j`.
+
+Use function extensionality and compare the values at `y`. Rewrite using `[Finset.prod_insert hj, mul_comm]`. Use `mul_pow_jet (hu j) (hu0 j) w ha hv (G := ∏ i ∈ s, fderiv ℂ (u i) x w ^ α i) hd (α j)` as an intermediate fact. Rewrite using `[e, Finset.sum_insert hj, Finset.prod_insert hj, add_comm (α j)]`. Use `⟨ha.fun_mul ((hu j).fun_pow _), this.1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[this.2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem prod_pow_jet {p : ℕ} (u : Fin p → E → ℂ) (hu : ∀ i, AnalyticAt ℂ (u i) x)
     (hu0 : ∀ i, u i x = 0) (α : Fin p → ℕ) (w : E) (s : Finset (Fin p)) :
     AnalyticAt ℂ (fun y => ∏ i ∈ s, u i y ^ α i) x ∧
@@ -163,6 +222,15 @@ theorem prod_pow_jet {p : ℕ} (u : Fin p → E → ℂ) (hu : ∀ i, AnalyticAt
     rw [this.2]
     ring
 
+/- English proof (translation)
+Introduce `n p u h z₀ a hu hu0 hh`. Establish `hP : ∀ α ∈ Finset.Nat.antidiagonalTuple p a, AnalyticAt ℂ (fun z => ∏ i, u i z ^ α i) z₀ ∧ (∀ k < a, iteratedFDeriv ℂ k (fun z => ∏ i, u i z ^ α i) z₀ = 0) ∧ ∀ w, iteratedFDeriv ℂ a (fun z => ∏ i, u i z ^ α i) z₀ (fun _ => w) = a.factorial * ∏ i, fderiv ℂ (u i) z₀ w ^ α i`. Introduce `α hα`. Rewrite `hα` using `[Finset.Nat.mem_antidiagonalTuple]`. Take `⟨h1, h2, -⟩` from `prod_pow_jet u hu hu0 α 0 Finset.univ`.
+
+Use `⟨h1, hα ▸ h2, fun w => ?_⟩` and prove the remaining obligations. Use `(prod_pow_jet u hu hu0 α w Finset.univ).2.2` as an intermediate fact. Rewrite `this` using `[hα]`. Then use the resulting hypothesis. Establish `h2 : iteratedFDeriv ℂ a (fun z => ∑ α ∈ Finset.Nat.antidiagonalTuple p a, (∏ i, u i z ^ α i) * h α z) z₀ = ∑ α ∈ Finset.Nat.antidiagonalTuple p a, h α z₀ • iteratedFDeriv ℂ a (fun z => ∏ i, u i z ^ α i) z₀`. Rewrite using `[iteratedFDeriv_fun_sum_apply (fun α hα => ((hP α hα).1.fun_mul (hh α)).contDiffAt)]`.
+
+Conclude with `Finset.sum_congr rfl fun α hα => top_mul (hP α hα).1 (hh α) (hP α hα).2.1`. Use `⟨fun k hk => ?_, h2, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[iteratedFDeriv_fun_sum_apply (fun α hα => ((hP α hα).1.fun_mul (hh α)).contDiffAt)]`. Conclude with `Finset.sum_eq_zero fun α hα => vanish_mul (hP α hα).1 (hh α) (hP α hα).2.1 (b := 0) (fun k hk => absurd hk (Nat.not_lt_zero k)) k (by omega)`. Rewrite using `[h2, sum_apply, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun α hα => ?_` and prove the remaining obligations. Rewrite using `[smul_apply, (hP α hα).2.2 w, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem proof : Statement := by
   intro n p u h z₀ a hu hu0 hh
   have hP : ∀ α ∈ Finset.Nat.antidiagonalTuple p a,

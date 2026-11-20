@@ -47,6 +47,11 @@ local instance algRing : Ring (alg O N lam) := Subalgebra.toRing _
 
 set_option synthInstance.maxHeartbeats 200000 in
 
+/- English proof (translation)
+Use `⟨⊤, (redKer O N lam ϖ).mkQ ∘ₗ (⊤ : Submodule (alg O N lam) (NablaT O N lam)).subtype, fun z => ?_, fun x y h => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `(redKer O N lam ϖ).mkQ_surjective z`. Conclude with `⟨⟨x, trivial⟩, rfl⟩`. Use `(Submodule.Quotient.mk_eq_zero _).2 ?_ show (x : NablaT O N lam) ∈ (Ideal.span {ϖ} • ⊤ : Submodule O (NablaT O N lam))` and prove the remaining obligations. Rewrite using `[h]`.
+
+Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self ϖ) trivial`.
+-/
 theorem subQ_red : SubQ O N lam ϖ (NablaT O N lam ⧸ redKer O N lam ϖ) := by
   refine ⟨⊤, (redKer O N lam ϖ).mkQ ∘ₗ (⊤ : Submodule (alg O N lam) (NablaT O N lam)).subtype, fun z => ?_, fun x y h => ?_⟩
   · obtain ⟨x, rfl⟩ := (redKer O N lam ϖ).mkQ_surjective z
@@ -58,6 +63,13 @@ theorem subQ_red : SubQ O N lam ϖ (NablaT O N lam ⧸ redKer O N lam ϖ) := by
 
 set_option synthInstance.maxHeartbeats 200000 in
 
+/- English proof (translation)
+Set `ψ : (NablaT O N lam ⧸ redKer O N lam ϖ) →+ (NablaT O N lam ⧸ (Ideal.span {ϖ} • ⊤ : Submodule O (NablaT O N lam)))` to `QuotientAddGroup.map (redKer O N lam ϖ).toAddSubgroup (Ideal.span {ϖ} • ⊤ : Submodule O (NablaT O N lam)).toAddSubgroup (AddMonoidHom.id _) fun _ h => h`. Establish `hψ : ∀ x, ψ (Submodule.Quotient.mk x) = Submodule.Quotient.mk x` using `fun _ => rfl`. Establish `hinj : Function.Injective ψ`. Use `(injective_iff_map_eq_zero ψ).2 fun z hz => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`.
+
+Conclude with `(Submodule.Quotient.mk_eq_zero _).2 ((Submodule.Quotient.mk_eq_zero _).1 ((hψ x).symm.trans hz))`. Establish `hact : ∀ (a : alg O N lam) z y, ψ z = Submodule.Quotient.mk y → ψ (a • z) = Submodule.Quotient.mk ((a : Module.End O (NablaT O N lam)) y)` using `fun a z y h => by`. Rewrite using `[hinj (h.trans (hψ y).symm)]`. Both sides reduce to the same expression. Use `⟨ψ, hinj, fun c z => ?_, fun g z y h => hact _ z y h, fun τ w a a' ha ha' z y h => ?_⟩` and prove the remaining obligations.
+
+Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Rewrite using `[hact _ _ x (hψ x), hψ, ← Submodule.Quotient.mk_smul]`. Both sides reduce to the same expression. Take `⟨b, -, hb⟩` from `exists_unique_isProj O N ι lam τ w`. Rewrite using `[hact a z y h, hb _ ha, hb _ ha']`.
+-/
 theorem embeds_red [Fintype ι] : Embeds O N lam lam ϖ (NablaT O N lam ⧸ redKer O N lam ϖ) := by
   let ψ : (NablaT O N lam ⧸ redKer O N lam ϖ) →+ (NablaT O N lam ⧸ (Ideal.span {ϖ} • ⊤ : Submodule O (NablaT O N lam))) :=
     QuotientAddGroup.map (redKer O N lam ϖ).toAddSubgroup (Ideal.span {ϖ} • ⊤ : Submodule O (NablaT O N lam)).toAddSubgroup
@@ -80,6 +92,13 @@ theorem embeds_red [Fintype ι] : Embeds O N lam lam ϖ (NablaT O N lam ⧸ redK
 
 set_option synthInstance.maxHeartbeats 200000 in
 
+/- English proof (translation)
+Establish `h1 : (1 : MvPolynomial (Fin N × Fin N) O) ∈ Formalism.GradedWeylDivisibility.dualWeyl O N N (Formalism.CohomologicalDescent.LD.res N fun _ : ℕ => 0)`. Use `Submodule.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `MvPolynomial.isWeightedHomogeneous_one (R := O) (Formalism.GradedWeylDivisibility.colW N N)`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker]`. Introduce `a b _`.
+
+Simplify using the standard rewrite rules. Set `f : NablaT O N (fun (_ : Unit) _ => 0) →ₗ[O] O` to `(MvPolynomial.lcoeff O 0) ∘ₗ (Submodule.subtype _) ∘ₗ (PiTensorProduct.subsingletonEquiv (R := O) (s := fun _ : Unit => Formalism.GradedWeylDivisibility.dualWeyl O N N (Formalism.CohomologicalDescent.LD.res N fun _ : ℕ => 0)) ()).toLinearMap`. Use `Submodule.Quotient.nontrivial_iff.2 fun ht => h ?_` and prove the remaining obligations. Establish `h2 : (PiTensorProduct.tprod O fun _ : Unit => ⟨1, h1⟩ : NablaT O N (fun (_ : Unit) _ => 0)) ∈ redKer O N (fun (_ : Unit) _ => 0) ϖ` using `ht ▸ Submodule.mem_top`. Establish `h3 : ∀ x ∈ (Ideal.span {ϖ} • ⊤ : Submodule O (NablaT O N (fun (_ : Unit) _ => 0))), f x ∈ Ideal.span {ϖ}` using `fun x hx => Submodule.smul_induction_on (p := fun x => f x ∈ Ideal.span {ϖ}) hx (fun r hr y _ => by rw [map_smul]; exact Ideal.mul_mem_right _ _ hr) fun x y hx hy => by rw [map_add]; exact add_mem hx hy`.
+
+Establish `h4` using `h3 _ h2`. Simplify using `only [f, LinearMap.comp_apply, LinearEquiv.coe_coe, PiTensorProduct.subsingletonEquiv_apply_tprod] at h4`. Conclude with `isUnit_of_dvd_one (by simpa [Ideal.mem_span_singleton] using h4)`.
+-/
 theorem nontrivial_red (h : ¬ IsUnit ϖ) :
     Nontrivial (NablaT O N (fun (_ : Unit) _ => 0) ⧸ redKer O N (fun (_ : Unit) _ => 0) ϖ) := by
   have h1 : (1 : MvPolynomial (Fin N × Fin N) O) ∈ Formalism.GradedWeylDivisibility.dualWeyl O N N (Formalism.CohomologicalDescent.LD.res N fun _ : ℕ => 0) := by
@@ -103,6 +122,17 @@ theorem nontrivial_red (h : ¬ IsUnit ϖ) :
 
 end Tests
 
+/- English proof (translation)
+Establish `hmem : ∀ {x : PadicAlgCl l}, x ∈ K → ‖x‖ ≤ 1 → x ∈ (GlobalTheory.AdeleEv.embInt K).range` using `fun h1 h2 => by`. Rewrite using `[← SetLike.mem_coe, RingHom.coe_range, GlobalTheory.AdeleEv.range_embInt]`. Conclude with `⟨h1, h2⟩`. Set `eR : integralClosure ℤ_[l] K ≃+* (GlobalTheory.AdeleEv.embInt K).range` to `RingEquiv.ofBijective (GlobalTheory.AdeleEv.embInt K).rangeRestrict ⟨fun _ _ h => GlobalTheory.AdeleEv.embInt_injective K (congrArg (fun w : (GlobalTheory.AdeleEv.embInt K).range => (w : PadicAlgCl l)) h), (GlobalTheory.AdeleEv.embInt K).rangeRestrict_surjective⟩`. Establish `heR : ∀ y, GlobalTheory.AdeleEv.embInt K (eR.symm y) = y` using `fun y => congrArg Subtype.val (eR.apply_symm_apply y)`.
+
+Set `φ : ι → (S →+* integralClosure ℤ_[l] K)` to `fun τ => eR.symm.toRingHom.comp (((ev τ).comp S.subtype).codRestrict _ fun z => hmem (h2 τ _) (h3 τ _ z.2))`. Set `kap : J →* (ι → GL (Fin n) (integralClosure ℤ_[l] K))` to `MonoidHom.pi fun τ => (Formalism.UG.bc (φ τ)).comp y`. Establish `hz : ∀ κ, io.symm ((χ κ : ℂˣ) : ℂ) ^ M = 1` using `fun κ => by`. Rewrite using `[← map_pow, ← Units.val_pow_eq_pow_val, hχ, Units.val_one, map_one]`. Set `z : J →* integralClosure ℤ_[l] K` to `eR.symm.toMonoidHom.comp ((io.symm.toMonoidHom.comp ((Units.coeHom ℂ).comp χ)).codRestrict (GlobalTheory.AdeleEv.embInt K).range.toSubmonoid fun κ => hmem (hK _ (hz κ)) (by`.
+
+Use `congrArg norm (hz κ)` as an intermediate fact. Rewrite `this` using `[norm_pow, norm_one]`. Conclude with `((pow_eq_one_iff_of_nonneg (norm_nonneg _) hM.ne').1 this).le))`. Establish `hzv : ∀ κ, GlobalTheory.AdeleEv.embInt K (z κ) = io.symm ((χ κ : ℂˣ) : ℂ)` using `fun κ => heR _`. Use `⟨kap, z.toHomUnits⁻¹ * ∏ τ, ((Matrix.GeneralLinearGroup.det.comp ((Pi.evalMonoidHom _ τ).comp kap)) ^ sh τ)⁻¹, fun κ τ a b => heR _, fun κ => ?_⟩` and prove the remaining obligations.
+
+Set `u : (integralClosure ℤ_[l] K)ˣ →* (PadicAlgCl l)ˣ` to `Units.map (GlobalTheory.AdeleEv.embInt K).toMonoidHom`. Establish `h1 : u ((z.toHomUnits⁻¹ * ∏ τ, ((Matrix.GeneralLinearGroup.det.comp ((Pi.evalMonoidHom _ τ).comp kap)) ^ sh τ)⁻¹) κ) * ∏ τ, u (Matrix.GeneralLinearGroup.det (kap κ τ)) ^ sh τ = (u (z.toHomUnits κ))⁻¹`. Simplify using `only [MonoidHom.mul_apply, MonoidHom.inv_apply, MonoidHom.finset_prod_apply, MonoidHom.zpow_apply, map_mul, map_inv, map_prod, map_zpow, MonoidHom.comp_apply, Pi.evalMonoidHom_apply, Finset.prod_inv_distrib, inv_mul_cancel_right]`. Establish `h4` using `congrArg Units.val h1`. Rewrite `h4` using `[Units.val_mul, Units.coe_prod, Units.val_inv_eq_inv_val]`.
+
+Simplify using `only [Units.val_zpow_eq_zpow_val] at h4`. Rewrite `h4` using `[show ((u (z.toHomUnits κ) : (PadicAlgCl l)ˣ) : PadicAlgCl l) = io.symm ((χ κ : ℂˣ) : ℂ) from hzv κ]`. Use `(congrArg (fun x => io x * ((χ κ : ℂˣ) : ℂ)) h4).trans ?_` and prove the remaining obligations. Use `show io (io.symm _)⁻¹ * _ = 1`. Rewrite using `[map_inv₀, io.apply_symm_apply, inv_mul_cancel₀ (Units.ne_zero _)]`.
+-/
 theorem exists_levelAction {l : ℕ} [Fact l.Prime] {J : Type} [Group J] {ι : Type} [Fintype ι] {n : ℕ} {A : Type} [CommRing A] (S : Subring A)
     (K : IntermediateField ℚ_[l] (PadicAlgCl l)) (ev : ι → (A →+* PadicAlgCl l)) (h2 : ∀ τ z, ev τ z ∈ K)
     (h3 : ∀ τ, ∀ z ∈ S, ‖ev τ z‖ ≤ 1) (y : J →* GL (Fin n) S) (χ : J →* ℂˣ) {M : ℕ} (hM : 0 < M) (hχ : ∀ κ, χ κ ^ M = 1)
@@ -143,6 +173,9 @@ theorem exists_levelAction {l : ℕ} [Fact l.Prime] {J : Type} [Group J] {ι : T
   show io (io.symm _)⁻¹ * _ = 1
   rw [map_inv₀, io.apply_symm_apply, inv_mul_cancel₀ (Units.ne_zero _)]
 
+/- English proof (translation)
+Substitute `hβ` using the available equality. Use `choose y hy using h`. Establish `h2 : ∀ κ, Formalism.L2.DIV.intGL F E n (y κ) = x κ` using `fun κ => by simpa [Formalism.L2.DIV.frGL] using hy κ`. Use `⟨MonoidHom.mk' y fun κ κ' => Formalism.L2.DIV.intGL_injective (by rw [map_mul, h2, h2, h2, map_mul]), fun κ a b => ?_⟩` and prove the remaining obligations. Conclude with `congrArg (fun g : GL (Fin n) (TensorProduct F E (Formalism.L2.Herm.Af F)) => g.val a b) (h2 κ)`.
+-/
 theorem exists_intHom {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ} {J : Type} [Group J]
     (x : J →* GL (Fin n) (TensorProduct F E (Formalism.L2.Herm.Af F))) {β : GL (Fin n) (TensorProduct F E (Formalism.L2.Herm.Af F))} (hβ : β = 1)
     (h : ∀ κ, x κ ∈ Formalism.L2.DIV.St β) :
@@ -239,9 +272,27 @@ structure Tied (j : Fin D.R.m) (t : p.P.T) {l : ℕ} [Fact l.Prime] {N : ℕ} (F
 
   cst : ∀ i, F.cst i = 1
 
+/- English proof (translation)
+The claim follows from `(p.charW.base.fam.degL j t P).1`.
+-/
 theorem blk_op_zero (j : Fin D.R.m) (t : p.P.T) (P : (blk p j t).Pl) : (blk p j t).op (P, 0) = 1 :=
   (p.charW.base.fam.degL j t P).1
 
+/- English proof (translation)
+Set `s : D.R.GG → (D.host.E →+* PadicAlgCl l)` to `fun g => (e0.comp D.embE).comp (D.host.sigmaOf g : D.host.E →+* D.host.E)`. Establish `hinj : Function.Injective s` using `fun g g' h => (D.host.gal).symm.injective (AlgEquiv.ext fun x => (e0.comp D.embE).injective (RingHom.congr_fun h x))`. Establish `hsurj : Function.Surjective s` using `by haveI := D.host.hostE_isGalois haveI : Finite (D.R.GG) := Finite.of_equiv _ (D.host.gal).toEquiv`. Use `((Nat.bijective_iff_injective_and_card s).2 ⟨hinj, ?_⟩).2` and prove the remaining obligations. Rewrite using `[← Nat.card_congr (D.host.gal).toEquiv, IsGalois.card_aut_eq_finrank, Nat.card_eq_fintype_card, NumberField.Embeddings.card]`.
+
+Establish `hcj : ∀ g, GlobalTheory.ExpFrame.cj (s g) = s (g * D.R.cc)` using `fun g => by`. Use extensionality with `x`. Establish `h1 : IsCMField.complexConj D.host.E x = D.host.sigmaOf (D.R.cc) x`. Apply `D.host.φ₀.injective` to reduce the goal to its premises. Rewrite using `[IsCMField.complexEmbedding_complexConj]`.
+
+Conclude with `(D.host.conjE_apply D.host.φ₀ x).symm`. Use `show (e0.comp D.embE) (D.host.sigmaOf g (IsCMField.complexConj D.host.E x)) = (e0.comp D.embE) (D.host.sigmaOf (g * _) x)`. Rewrite using `[h1, Formalism.BasicNotions.Host.sigmaOf, Formalism.BasicNotions.Host.sigmaOf, Formalism.BasicNotions.Host.sigmaOf, map_mul]`. Both sides reduce to the same expression. Use `⟨fun τ τ' h => D.eTau.injective (Subtype.ext (hinj h)), fun τ τ' h => ?_, fun i => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `hinj ((hcj (D.eTau τ).1).symm.trans h)`. Establish `hi` using `(Formalism.HC.Frame.mem_Psi_iff _).1 (D.eTau τ).2`. Establish `hj` using `(Formalism.HC.Frame.mem_Psi_iff _).1 (D.eTau τ').2`. Establish `h2 : (D.eTau τ').1.1.2 = (D.eTau τ).1.1.2 * (-1)` using `by rw [← h1]; rfl`. Rewrite `h2` using `[hi, hj]`.
+
+Conclude with `absurd h2 (by decide)`. Take `⟨g, rfl⟩` from `hsurj i`. Break down `Int.units_eq_one_or g.1.2 with hg | hg` into its components or cases. Use `⟨D.eTau.symm ⟨g, (Formalism.HC.Frame.mem_Psi_iff _).2 hg⟩, Or.inl ?_⟩ show s g = s (D.eTau (D.eTau.symm _)).1` and prove the remaining obligations. Rewrite using `[Equiv.apply_symm_apply]`.
+
+Establish `hm : g * (D.R.cc)⁻¹ ∈ D.R.Psi`. Use `(Formalism.HC.Frame.mem_Psi_iff _).2 ?_` and prove the remaining obligations. Use `show g.1.2 * (-1)⁻¹ = 1`. Rewrite using `[hg]`. Evaluate the decidable proposition.
+
+Use `⟨D.eTau.symm ⟨_, hm⟩, Or.inr ?_⟩` and prove the remaining obligations. Use `show s g = GlobalTheory.ExpFrame.cj (s (D.eTau (D.eTau.symm _)).1)`. Rewrite using `[Equiv.apply_symm_apply, hcj, inv_mul_cancel_right]`.
+-/
 theorem isHalf_lab {l : ℕ} [Fact l.Prime] (e0 : D.what₂.LL →+* PadicAlgCl l) : IsHalf fun τ => e0.comp (Links.labLL D τ) := by
   let s : D.R.GG → (D.host.E →+* PadicAlgCl l) := fun g =>
     (e0.comp D.embE).comp (D.host.sigmaOf g : D.host.E →+* D.host.E)
@@ -283,8 +334,14 @@ theorem isHalf_lab {l : ℕ} [Fact l.Prime] (e0 : D.what₂.LL →+* PadicAlgCl 
       show s g = GlobalTheory.ExpFrame.cj (s (D.eTau (D.eTau.symm _)).1)
       rw [Equiv.apply_symm_apply, hcj, inv_mul_cancel_right]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem levJ_eq (j : Fin D.R.m) (t : p.P.T) : levJ p j t = (levEnv (Vc D j) (p.R.βV j) (p.R.datVt j t)).J := rfl
 
+/- English proof (translation)
+Unfold `levChi`. Both sides reduce to the same expression.
+-/
 theorem levChi_apply (j : Fin D.R.m) (t : p.P.T) (κ : levJ p j t) :
     levChi p j t κ = levFn (p.R.βV j) (Formalism.IndefR.Lev.flag1L (p.R.datVt j t)) (Formalism.UG.bc (Formalism.IndefR.Lev.swapAE D) κ.1.1) := by
   unfold levChi
@@ -292,26 +349,41 @@ theorem levChi_apply (j : Fin D.R.m) (t : p.P.T) (κ : levJ p j t) :
 
 omit p in
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.AdeleEv.exists_levFn_pow β (Formalism.IndefR.Lev.flag1L Lv)).imp fun _ h => ⟨h.1, fun κ => h.2 (Formalism.UG.bc (Formalism.IndefR.Lev.swapAE D) κ.1.1)⟩`.
+-/
 theorem exists_levEnv_pow (V : Formalism.BasicNotions.TH.HSp D) (β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)) (Lv : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank) :
     ∃ M : ℕ, 0 < M ∧ ∀ κ, (levEnv V β Lv).χ κ ^ M = 1 :=
   (GlobalTheory.AdeleEv.exists_levFn_pow β (Formalism.IndefR.Lev.flag1L Lv)).imp fun _ h => ⟨h.1, fun κ => h.2 (Formalism.UG.bc (Formalism.IndefR.Lev.swapAE D) κ.1.1)⟩
 
+/- English proof (translation)
+The claim follows from `exists_levEnv_pow (Vc D j) (p.R.βV j) (p.R.datVt j t)`.
+-/
 theorem exists_levChi_pow (j : Fin D.R.m) (t : p.P.T) : ∃ M : ℕ, 0 < M ∧ ∀ κ, levChi p j t κ ^ M = 1 :=
   exists_levEnv_pow (Vc D j) (p.R.βV j) (p.R.datVt j t)
 
 omit p in
 
+/- English proof (translation)
+The claim follows from `parLev_St h.1`.
+-/
 theorem mem_St_of_levEnv {V : Formalism.BasicNotions.TH.HSp D} {β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)} {Lv : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank}
     {g : Bridge.Gf V} (h : g ∈ (levEnv V β Lv).J) : Formalism.UG.bc (Formalism.IndefR.Lev.swapAE D) g.1 ∈ St β := parLev_St h.1
 
 omit p in
 
+/- English proof (translation)
+The claim follows from `exists_intHom ((Formalism.UG.bc (Formalism.IndefR.Lev.swapAE D)).comp ((Bridge.Gf V).subtype.comp J.subtype)) hβ fun κ => h κ.1 κ.2`.
+-/
 theorem exists_intHom_of {V : Formalism.BasicNotions.TH.HSp D} {β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)} (hβ : β = 1) (J : Subgroup (Bridge.Gf V))
     (h : ∀ g ∈ J, Formalism.UG.bc (Formalism.IndefR.Lev.swapAE D) g.1 ∈ St β) :
     ∃ y : J →* GL (Fin V.rank) (Formalism.L2.Herm.intAf D.host.F D.host.E),
       ∀ κ a b, ((y κ).val a b : Formalism.IndefR.Lev.EAf D) = Formalism.IndefR.Lev.swapAE D (κ.1.1.val a b) :=
   exists_intHom ((Formalism.UG.bc (Formalism.IndefR.Lev.swapAE D)).comp ((Bridge.Gf V).subtype.comp J.subtype)) hβ fun κ => h κ.1 κ.2
 
+/- English proof (translation)
+The claim follows from `exists_intHom_of (p.betaStd.1 j) (levJ p j t) fun _ h => mem_St_of_levEnv ((levJ_eq p j t).le h)`.
+-/
 theorem exists_levInt (j : Fin D.R.m) (t : p.P.T) :
     ∃ y : levJ p j t →* GL (Fin (Vc D j).rank) (Formalism.L2.Herm.intAf D.host.F D.host.E),
       ∀ κ a b, ((y κ).val a b : Formalism.IndefR.Lev.EAf D) = Formalism.IndefR.Lev.swapAE D (matOf j κ.1 a b) :=
@@ -319,6 +391,17 @@ theorem exists_levInt (j : Fin D.R.m) (t : p.P.T) :
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Substitute `hN` using the available equality. Take `⟨io, hio⟩` from `GlobalTheory.exists_padicAlgCl_ringEquiv_complex_comp_eq l D.what₂.LL e0 D.what₂.embLL`. Take `⟨M, hM, hpow⟩` from `exists_levChi_pow p j t`. Take `⟨y, hy⟩` from `exists_levInt p j t`. Take `⟨K, hK, hKe, hKM⟩` from `GlobalTheory.AdeleEv.exists_field D.what₂.LL e0 hM`.
+
+Use `choose ev hev1 hev2 hev3 using fun τ => GlobalTheory.AdeleEv.exists_ev D.host.F D.host.E (inc τ) K fun x => by`. Apply the tactic sequence `rcases lab τ with h | h <;> rw [h] <;> exact hKe _`. Take `⟨kap, chi, hkap, hchi⟩` from `exists_levelAction _ K ev hev2 hev3 y (levChi p j t) hM hpow hKM io sh`. Set `F : Frame l D.what₂.Tau (Vc D j).rank` to `{ O := integralClosure ℤ_[l] K, emb := GlobalTheory.AdeleEv.embInt K, G := Bridge.Gf (Vc D j), Γ := (Bridge.ratF (Vc D j)).range, K := levJ p j t, kap := kap, chi := chi, I := {i : (blk p j t).Pl × ℕ // 1 ≤ i.2 ∧ i.2 ≤ (Vc D j).rank ∧ ((l : ℕ) : 𝓞 D.host.E) ∉ (plOf p j t i.1).asI …`. Set `e : F.G ≃* Bridge.Gf (Vc D j)` to `MulEquiv.refl (Bridge.Gf (Vc D j))`.
+
+Establish `he : ∀ g, e g = g` using `fun _ => rfl`. Use `⟨F, Subtype.val, { rk := OrderIso.refl _, e := e, io := io, ev := fun τ => (ev τ).comp (Formalism.IndefR.Lev.swapAE D), bs := fun _ => 1, sh := sh, liftFrame_embedding_base := fun x => RingHom.congr_fun hio x, half := half, lab := lab, ev_rat := fun τ x => hev1 τ x, ev_int := fun …` and prove the remaining obligations. Rewrite using `[he]`. Rewrite using `[he]`. Rewrite using `[he, inv_one, Units.val_one, Matrix.one_mul, Matrix.mul_one]`.
+
+Use extensionality with `a b`. Conclude with `(hkap κ τ a b).trans (congrArg (ev τ) (hy κ a b))`. Conclude with `hchi κ`. Introduce and unpack `⟨k, rfl⟩`. Conclude with `k.2`.
+
+Rewrite using `[he]`. Use `show e0 x ∈ Set.range (GlobalTheory.AdeleEv.embInt K)`. Rewrite using `[GlobalTheory.AdeleEv.range_embInt]`. Conclude with `⟨hKe _, GlobalTheory.AdeleEv.norm_int_le e0 x⟩`.
+-/
 theorem exists_tied (j : Fin D.R.m) (t : p.P.T) {l : ℕ} [Fact l.Prime] {N : ℕ} (hN : N = (Vc D j).rank)
     (e0 : D.what₂.LL →+* PadicAlgCl l) (inc : D.what₂.Tau → (D.host.E →+* PadicAlgCl l)) (half : IsHalf inc)
     (lab : ∀ τ, inc τ = e0.comp (Links.labLL D τ) ∨ inc τ = GlobalTheory.ExpFrame.cj (e0.comp (Links.labLL D τ))) (sh : D.what₂.Tau → ℤ) :
@@ -362,6 +445,9 @@ theorem exists_tied (j : Fin D.R.m) (t : p.P.T) {l : ℕ} [Fact l.Prime] {N : �
     rw [GlobalTheory.AdeleEv.range_embInt]
     exact ⟨hKe _, GlobalTheory.AdeleEv.norm_int_le e0 x⟩
 
+/- English proof (translation)
+Take `⟨F, ix, T, -⟩` from `exists_tied p j t rfl e0 _ (isHalf_lab e0) (fun _ => Or.inl rfl) 0`. Conclude with `⟨F, ix, ⟨T⟩⟩`.
+-/
 theorem nonempty_tied (j : Fin D.R.m) (t : p.P.T) {l : ℕ} [Fact l.Prime] (e0 : D.what₂.LL →+* PadicAlgCl l) :
     ∃ (F : Frame l D.what₂.Tau (Vc D j).rank) (ix : F.I → (blk p j t).Pl × ℕ),
       Nonempty (Tied p j t F e0 ix fun τ => e0.comp (Links.labLL D τ)) := by

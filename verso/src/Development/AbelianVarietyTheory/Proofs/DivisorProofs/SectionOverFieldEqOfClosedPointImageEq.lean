@@ -13,6 +13,17 @@ open GlobalTheory.Discrepancy GlobalTheory.QCoh
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `K _ X q z z' hz hz' hpt`. Take `⟨⟨p, φ⟩, rfl⟩` from `(Scheme.SpecToEquivOfField K X).symm.surjective z`. Take `⟨⟨p', ψ⟩, rfl⟩` from `(Scheme.SpecToEquivOfField K X).symm.surjective z'`. Simplify using `only [Scheme.SpecToEquivOfField_symm_apply] at hz hz' hpt ⊢`. Establish `e : p = p'`.
+
+Establish `h1` using `(Scheme.Hom.comp_apply _ _ _).symm.trans (hpt.trans (Scheme.Hom.comp_apply _ _ _))`. Rewrite `h1` using `[Scheme.fromSpecResidueField_apply, Scheme.fromSpecResidueField_apply]`. Then use the resulting hypothesis. Substitute `e` using the available equality. Take `⟨χ, hχ⟩` from `Spec.map_surjective (X.fromSpecResidueField p ≫ q)`. Rewrite `hz`, `hz'` using `[Category.assoc, ← hχ, ← Spec.map_comp, ← Spec.map_id, Spec.map_inj]`.
+
+Establish `hφ : ∀ c, φ.hom (χ.hom c) = c` using `fun c => congrArg (fun g => g.hom c) hz`. Establish `hψ : ∀ c, ψ.hom (χ.hom c) = c` using `fun c => congrArg (fun g => g.hom c) hz'`. Establish `hsurj : Function.Surjective χ.hom`. Introduce `y`. Use `⟨φ.hom y, φ.hom.injective ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hφ]`. Establish `: φ = ψ`. Use extensionality with `y`. Take `⟨c, rfl⟩` from `hsurj y`. Rewrite using `[hφ, hψ]`.
+
+Rewrite using `[this]`.
+-/
 theorem section_eq_of_point_eq : ∀ (K : Type) [Field K] (X : Scheme.{0}) (q : X ⟶ Sp K) (z z' : Sp K ⟶ X), z ≫ q = 𝟙 _ → z' ≫ q = 𝟙 _ → z (IsLocalRing.closedPoint K) = z' (IsLocalRing.closedPoint K) → z = z' := by
   intro K _ X q z z' hz hz' hpt
   obtain ⟨⟨p, φ⟩, rfl⟩ := (Scheme.SpecToEquivOfField K X).symm.surjective z

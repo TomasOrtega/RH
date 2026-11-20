@@ -12,6 +12,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CompanionTheory.FJE
 
+/- English proof (translation)
+Introduce `D a b`. Establish `hE : Countable D.host.E` using `(Module.finBasis ℚ D.host.E).equivFun.injective.countable`. Use `⟨inferInstanceAs (Countable (Fin a → Fin b → D.host.E)), ?_⟩` and prove the remaining obligations. Establish `hM : Countable (Matrix (Fin (b + b)) (Fin (b + b)) D.host.E)` using `inferInstanceAs (Countable (Fin (b + b) → Fin (b + b) → D.host.E))`. Establish `hGL : Countable (GL (Fin (b + b)) D.host.E)` using `(Units.val_injective (α := Matrix (Fin (b + b)) (Fin (b + b)) D.host.E)).countable`.
+
+Establish `hG : Countable (GF D b)`. Establish `hR : Countable (GRat D.sp.cm.sig (Jst D b))`. Unfold `GRat`. Conclude with `Subtype.val_injective.countable`. Use `show Countable (ratPts D.sp.cm.sig (Jst D b))`.
+
+Rewrite using `[← range_ratEmb]`. Conclude with `(Set.countable_range (ratEmb D.sp.cm.sig (Jst D b))).to_subtype`. Conclude with `Quotient.countable`.
+-/
 theorem countable_mat_cosets : ∀ (D : D7) (a b : ℕ), Countable (Matrix (Fin a) (Fin b) D.host.E) ∧ Countable (GlobalTheory.Eis.Cosets (P D b) (GF D b)) := by
   intro D a b
   have hE : Countable D.host.E := (Module.finBasis ℚ D.host.E).equivFun.injective.countable

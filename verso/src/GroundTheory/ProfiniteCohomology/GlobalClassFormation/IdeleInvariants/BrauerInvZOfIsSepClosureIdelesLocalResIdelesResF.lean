@@ -19,6 +19,11 @@ variable {K F Ω : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNona
   [Field F] [ValuativeRel F] [Algebra K F] [ValuativeExtension K F] [Algebra.IsAlgebraic K F]
   [Field Ω] [Algebra K Ω] [Algebra.IsAlgebraic K Ω]
 
+/- English proof (translation)
+Set `` to `algebraicValuativeRel K Ω`. Use `algebraicValuativeRel_valuativeExtension K Ω` as an intermediate fact. Rewrite using `[vle_iff_spectralNorm_le (K := K) (c x) (c y), vle_iff_spectralNorm_le (K := K) x y]`. Set `` to `normedField K`. Express the relevant statement in the definitionally equal form `spectralNorm K Ω (c x) ≤ spectralNorm K Ω (c y) ↔ spectralNorm K F x ≤ spectralNorm K F y`.
+
+Rewrite using `[spectralNorm, spectralNorm, spectralNorm, spectralNorm, minpoly.algHom_eq c c.injective, minpoly.algHom_eq c c.injective]`.
+-/
 theorem algebraicValuativeRel_vle_algHom_iff (c : F →ₐ[K] Ω) (x y : F) :
     (letI := algebraicValuativeRel K Ω; c x ≤ᵥ c y) ↔ x ≤ᵥ y := by
   let := algebraicValuativeRel K Ω
@@ -37,6 +42,23 @@ section Finite
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Use `finiteDimensional_adicCompletion_placesOver (E := E) (placeOfEmbedding ι E)` as an intermediate fact. Set `c` to `completionEmbedding ι E`. Set `L` to `c.fieldRange`. Set `: Algebra ((placeOfEmbedding ι E).1.adicCompletion E.1) (AlgebraicClosure (v.adicCompletion K.1))` to `c.toRingHom.toAlgebra`. Establish `: IsScalarTower (v.adicCompletion K.1) ((placeOfEmbedding ι E).1.adicCompletion E.1) (AlgebraicClosure (v.adicCompletion K.1))` using `IsScalarTower.of_algebraMap_eq fun a => (c.commutes a).symm`.
+
+Establish `: Algebra.IsAlgebraic ((placeOfEmbedding ι E).1.adicCompletion E.1) (AlgebraicClosure (v.adicCompletion K.1))` using `Algebra.IsAlgebraic.tower_top (K := v.adicCompletion K.1) _`. Establish `: IsAlgClosure ((placeOfEmbedding ι E).1.adicCompletion E.1) (AlgebraicClosure (v.adicCompletion K.1))` using `⟨inferInstance, inferInstance⟩`. Set `θ : AlgebraicClosure ((placeOfEmbedding ι E).1.adicCompletion E.1) ≃ₐ[(placeOfEmbedding ι E).1.adicCompletion E.1] AlgebraicClosure (v.adicCompletion K.1)` to `IsAlgClosure.equiv _ _ _`. Set `: Algebra E.1 (AlgebraicClosure (v.adicCompletion K.1))` to `((algebraMap ((placeOfEmbedding ι E).1.adicCompletion E.1) (AlgebraicClosure (v.adicCompletion K.1))).comp (algebraMap E.1 ((placeOfEmbedding ι E).1.adicCompletion E.1))).toAlgebra`. Establish `: IsScalarTower E.1 ((placeOfEmbedding ι E).1.adicCompletion E.1) (AlgebraicClosure (v.adicCompletion K.1))` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+
+Set `ιE' : ℚ̄ →ₐ[E.1] AlgebraicClosure (v.adicCompletion K.1)` to `{ ι.toRingHom with commutes' := fun t => (completionEmbedding_algebraMap ι E t).symm }`. Set `ιE0 : ℚ̄ →ₐ[E.1] AlgebraicClosure ((placeOfEmbedding ι E).1.adicCompletion E.1)` to `(θ.symm.toAlgHom.restrictScalars E.1).comp ιE'`. Establish `hι : ∀ t, θ.toRingEquiv (ιE0 t) = ι t` using `fun t => θ.apply_symm_apply (ι t)`. Establish `hL : ∀ l ∈ L, ∃ t : (placeOfEmbedding ι E).1.adicCompletion E.1, θ.toRingEquiv (algebraMap _ (AlgebraicClosure ((placeOfEmbedding ι E).1.adicCompletion E.1)) t) = l`. Introduce `l hl`.
+
+Take `⟨t, rfl⟩` from `(AlgHom.mem_fieldRange).1 hl`. Conclude with `⟨t, θ.commutes t⟩`. Establish `: FiniteDimensional (v.adicCompletion K.1) L` using `LinearEquiv.finiteDimensional c.equivFieldRange.toLinearEquiv`. Establish `: Algebra.IsIntegral L (AlgebraicClosure (v.adicCompletion K.1))` using `Algebra.IsIntegral.tower_top (v.adicCompletion K.1)`. Establish `hfin : Module.finrank (v.adicCompletion K.1) L = Module.finrank (v.adicCompletion K.1) ((placeOfEmbedding ι E).1.adicCompletion E.1)` using `c.equivFieldRange.toLinearEquiv.finrank_eq.symm`.
+
+Establish `hproj : ∀ z : IdeleLimit, θ.toRingEquiv (idelesProj ιE0 z : AlgebraicClosure _) = (idelesProj ι z : AlgebraicClosure (v.adicCompletion K.1))` using `idelesProj_eq_of_algebraMap (placeOfEmbedding ι E) ι ιE0 θ.toRingEquiv hι fun a => by`. Express the relevant statement in the definitionally equal form `θ (algebraMap _ (AlgebraicClosure ((placeOfEmbedding ι E).1.adicCompletion E.1)) (algebraMap (v.adicCompletion K.1) _ a)) = _`. Rewrite using `[θ.commutes]`. Conclude with `c.commutes a`. Establish `key` using `cohomologyMapAlong_globalDecomp_idelesResField (v.adicCompletion K.1) ((placeOfEmbedding ι E).1.adicCompletion E.1) L θ.toRingEquiv hL ι ιE0 hι (idelesLocalMor ι) (idelesLocalMor ιE0) hproj 2 y`.
+
+Establish `key' : (idelesLocalRes ιE0 2).hom ((idelesResField K E 2).hom y) = (cohomologyMapAlong (fieldConjHom (v.adicCompletion K.1) L θ.toRingEquiv hL) (continuous_fieldConjHom (v.adicCompletion K.1) L θ.toRingEquiv hL) (fieldConjUnitsMor (v.adicCompletion K.1) L θ.toRingEquiv hL) 2).hom …` using `key`. Rewrite using `[idelesLocalRes_eq_of_algHom ιE0 ιE, key']`. Set `` to `algebraicValuativeRel (v.adicCompletion K.1) (AlgebraicClosure (v.adicCompletion K.1))`. Set `` to `algebraicTopology (v.adicCompletion K.1) (AlgebraicClosure (v.adicCompletion K.1))`. Use `algebraicTopology_isValuativeTopology (v.adicCompletion K.1) (AlgebraicClosure (v.adicCompletion K.1))` as an intermediate fact.
+
+Use `algebraicValuativeRel_valuativeExtension (v.adicCompletion K.1) (AlgebraicClosure (v.adicCompletion K.1))` as an intermediate fact. Set `e : (placeOfEmbedding ι E).1.adicCompletion E.1 ≃+* L` to `c.equivFieldRange.toRingEquiv`. Establish `hε : ∀ x, θ.toRingEquiv (algebraMap ((placeOfEmbedding ι E).1.adicCompletion E.1) (AlgebraicClosure ((placeOfEmbedding ι E).1.adicCompletion E.1)) x) = algebraMap L (AlgebraicClosure (v.adicCompletion K.1)) (e x)` using `fun x => θ.commutes x`. Establish `he : ∀ x y : (placeOfEmbedding ι E).1.adicCompletion E.1, e x ≤ᵥ e y ↔ x ≤ᵥ y` using `fun x y => by`. Rewrite using `[← IntermediateField.coe_vle_coe_iff]`.
+
+Conclude with `algebraicValuativeRel_vle_algHom_iff c x y`. Establish `hρ : ∀ (σ : Gal(AlgebraicClosure ((placeOfEmbedding ι E).1.adicCompletion E.1) / (placeOfEmbedding ι E).1.adicCompletion E.1)) (x : AlgebraicClosure ((placeOfEmbedding ι E).1.adicCompletion E.1)), fieldConjHom (v.adicCompletion K.1) L θ.toRingEquiv hL σ (θ.toRingEquiv x) = θ.toRi …` using `fun σ x => by rw [fieldConjHom_apply, RingEquiv.symm_apply_apply]`. Rewrite using `[brauerInvZOfIsSepClosure_cohomologyMapAlong_transport e θ.toRingEquiv hε _ (continuous_fieldConjHom (v.adicCompletion K.1) L θ.toRingEquiv hL) hρ _ (fun _ => rfl) he, brauerInvZOfIsSepClosure_unitsScalarsRes, hfin]`.
+-/
 theorem brauerInvZOfIsSepClosure_idelesLocalRes_idelesResField (v : HeightOneSpectrum (𝓞 K.1))
     (ι : ℚ̄ →ₐ[K.1] AlgebraicClosure (v.adicCompletion K.1))
     (ιE : ℚ̄ →ₐ[E.1] AlgebraicClosure ((placeOfEmbedding ι E).1.adicCompletion E.1))

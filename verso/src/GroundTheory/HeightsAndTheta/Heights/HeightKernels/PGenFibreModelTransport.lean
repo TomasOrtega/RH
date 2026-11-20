@@ -7,6 +7,25 @@ namespace GroundTheory.Heights₂.Heights
 
 open ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I4 MvPolynomial GenericFibreModelTransport
 
+/- English proof (translation)
+Introduce `K _ ι _ K' _ ι' _ v P' G Ω _ z hz Φ₀ _ _ hΦ₀ τ w q`. Set `φ : MRing ι' →+* G.Φ'` to `(aeval G.x').toRingHom`. Set `ψ : MRing ι' →+* Ω` to `eval₂Hom (Int.castRingHom Ω) z`. Establish `: P'.IsPrime` using `hz ▸ RingHom.ker_isPrime ψ`. Establish `hφ : ∀ a ∈ P', φ a = 0` using `fun a ha => RingHom.mem_ker.1 (G.genericFibre_ker_target.symm ▸ ha)`.
+
+Establish `hψ : ∀ a ∈ P', ψ a = 0` using `fun a ha => RingHom.mem_ker.1 (hz.symm ▸ ha)`. Set `α : FractionRing (MRing ι' ⧸ P') →+* G.Φ'` to `IsFractionRing.lift (quotient_lift_injective φ P' G.genericFibre_ker_target hφ)`. Set `β : FractionRing (MRing ι' ⧸ P') →+* Ω` to `IsFractionRing.lift (quotient_lift_injective ψ P' hz hψ)`. Set `ξ : (Σ k', ι' k') → FractionRing (MRing ι' ⧸ P')` to `fun p => algebraMap _ _ (Ideal.Quotient.mk P' (X p))`. Establish `hα : α ∘ ξ = G.x'` using `funext fun p => by simp [α, ξ, φ]`.
+
+Establish `hβ : β ∘ ξ = z` using `funext fun p => by simp [β, ξ, ψ]`. Set `k` to `Subfield.closure (Set.range (ξ ∘ v))`. Establish `h₁ : (algebraMap G.Φ G.Φ').fieldRange = k.map α`. Rewrite using `[RingHom.map_field_closure, ← Set.range_comp, ← Function.comp_assoc, hα]`. Use `le_antisymm ?_ (Subfield.closure_le.2 ?_)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨c, rfl⟩`. Take `⟨f, g, -, rfl⟩` from `G.gen c`. Establish `key : ∀ f : MRing ι, algebraMap G.Φ G.Φ' (aeval G.x f) ∈ Subfield.closure (Set.range (G.x' ∘ v))`. Introduce `f`. Rewrite using `[aeval_def, eval₂_comp_left]`.
+
+Use `eval₂_mem_closure _ (G.x' ∘ v) f using 2` and compare the differences between its conclusion and the goal. Conclude with `funext fun p => (G.compat p).symm`. Rewrite using `[map_div₀]`. Conclude with `div_mem (key f) (key g)`. Introduce and unpack `_ ⟨p, rfl⟩`.
+
+Conclude with `⟨G.x p, (G.compat p).symm⟩`. Establish `h₂ : (algebraMap Φ₀ Ω).fieldRange = k.map β`. Rewrite using `[hΦ₀, RingHom.map_field_closure, ← Set.range_comp, ← Function.comp_assoc, hβ]`. Take `⟨e₁, he₁⟩` from `subfield_equiv k α (algebraMap G.Φ G.Φ') h₁`. Take `⟨e₂, he₂⟩` from `subfield_equiv k β (algebraMap Φ₀ Ω) h₂`.
+
+Set `s : Set (FractionRing (MRing ι' ⧸ P'))` to `Set.range fun t => ξ (w t) / ξ q`. Establish `hs : ∀ (F : Type) [Field F] (γ : FractionRing (MRing ι' ⧸ P') →+* F) (y : (Σ k', ι' k') → F), γ ∘ ξ = y → γ '' s = Set.range fun t => y (w t) / y q`. Introduce and unpack `F _ γ y rfl`. Rewrite using `[← Set.range_comp]`. Conclude with `congrArg Set.range (funext fun t => map_div₀ γ _ _)`.
+
+Take `⟨f₁, t₁⟩` from `adjoin_transport e₁ α (RingHom.ext he₁) s (ξ q)`. Take `⟨f₂, t₂⟩` from `adjoin_transport e₂ β (RingHom.ext he₂) s (ξ q)`. Rewrite `f₁`, `t₁` using `[hs _ α _ hα]`. Rewrite `t₁` using `[show α (ξ q) = G.x' q from congrFun hα q]`. Rewrite `f₂`, `t₂` using `[hs _ β _ hβ]`.
+
+Rewrite `t₂` using `[show β (ξ q) = z q from congrFun hβ q]`. Use `⟨?_, f₁.symm.trans f₂, t₁.symm.trans t₂⟩` and prove the remaining obligations. Rewrite using `[← congrFun hα q, ← congrFun hβ q]`. Conclude with `(map_eq_zero α).trans (map_eq_zero β).symm`.
+-/
 theorem GenFibreModelTransport.proof : GenFibreModelTransport.Statement := by
   intro K _ ι _ K' _ ι' _ v P' G Ω _ z hz Φ₀ _ _ hΦ₀ τ w q
   let φ : MRing ι' →+* G.Φ' := (aeval G.x').toRingHom

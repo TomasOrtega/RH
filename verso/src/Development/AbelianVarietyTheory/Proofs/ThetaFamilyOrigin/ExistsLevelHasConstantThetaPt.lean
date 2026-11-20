@@ -20,6 +20,15 @@ namespace ConstThetaLevel
 
 open ThetaPtMove
 
+/- English proof (translation)
+Substitute `hg` using the available equality. Use `P.isAb.comm` as an intermediate fact. Establish `: IsDomain Γ(Sp K, ⊤)` using `(Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv.toMulEquiv.isDomain K`. Take `⟨w₁, w₂, w₃, -⟩` from `hLaw.weil _ P M (baseOver (Sp K))`. Set `H : Subgroup (baseOver (Sp K) ⟶ P.A)` to `(powMonoidHom M).ker`.
+
+Establish `hH : ∀ x : H, x.1 ^ M = 1` using `fun x => x.2`. Use `choose c hc hu using fun x y : H => w₁ x.1 y.1 (hH x) (hH y)`. Establish `l : ∀ x x' y, c (x * x') y = c x y * c x' y` using `fun x x' y => (hu _ _ _ (w₂ _ _ _ _ _ (hc x y) (hc x' y))).symm`. Establish `s : ∀ x y, c y x = (c x y)⁻¹` using `fun x y => (hu _ _ _ (CommPairing.weilIs_symm P.isLB (hc x y))).symm`. Set `e : H →* H →* Γ(Sp K, ⊤)ˣ` to `MonoidHom.mk' (fun x => MonoidHom.mk' (c x) fun y y' => by`.
+
+Rewrite using `[s (y * y'), l, mul_inv, ← s, ← s]) fun x x' => MonoidHom.ext fun y => l x x' y`. Take `⟨x, hx⟩` from `T.exists_standard_symplectic_basis_of_pairing M P.g H _ ze (Nat.pos_of_ne_zero fun h => hM (by rw [h, Nat.cast_zero])) hz (fun x => Subtype.ext (hH x)) (fun d hd => by`. Take `⟨b, rfl⟩` from `hd`. Establish `hd : (d : K) ≠ 0` using `left_ne_zero_of_mul (by rwa [Nat.cast_mul] at hM)`. Use `Eq.trans (Nat.card_congr ?_) ((hLaw.mulN _ P d (Nat.pos_of_ne_zero fun h => hd (by` and prove the remaining obligations.
+
+Rewrite using `[h, Nat.cast_zero]))).2.2.2.2 K (𝟙 _) hd)`. Conclude with `⟨fun x => ⟨x.1.1, congrArg Subtype.val x.2⟩, fun x => ⟨⟨x.1, show x.1 ^ (d * b) = 1 by`. Rewrite using `[pow_mul, x.2, one_pow]⟩, Subtype.ext x.2⟩, fun _ => rfl, fun _ => rfl⟩)`. Use `e (fun x => (hu _ _ _ (w₃ _ (hH x))).symm) (fun x h => Subtype.ext (hLaw.weilNondeg K P M hM x.1 (hH x) fun y hy => (show c x ⟨y, hy⟩ = 1 from h ⟨y, hy⟩) ▸ hc x ⟨y, hy⟩))`. Conclude with `⟨fun i => (x i).1, fun i => hH _, fun i j => (show c (x i) (x j) = _ from hx i j) ▸ hc (x i) (x j)⟩`.
+-/
 theorem exists_symplectic_points (hLaw : Laws) (K : Type) [Field K] [IsAlgClosed K] (P : PolAV (Sp K)) {g : ℕ}
     (hg : g = P.g) (M : ℕ) (hM : (M : K) ≠ 0) (ze : Γ(Sp K, ⊤)ˣ) (hz : IsPrimitiveRoot ze M) :
     ∃ x : Fin (2 * g) → (baseOver (Sp K) ⟶ P.A), (∀ i, x i ^ M = 1) ∧
@@ -47,6 +56,9 @@ theorem exists_symplectic_points (hLaw : Laws) (K : Type) [Field K] [IsAlgClosed
       (hLaw.weilNondeg K P M hM x.1 (hH x) fun y hy => (show c x ⟨y, hy⟩ = 1 from h ⟨y, hy⟩) ▸ hc x ⟨y, hy⟩))
   exact ⟨fun i => (x i).1, fun i => hH _, fun i j => (show c (x i) (x j) = _ from hx i j) ▸ hc (x i) (x j)⟩
 
+/- English proof (translation)
+Establish `h` using `map_list_prod F (List.ofFn fun i => y i ^ a i)`. Rewrite `h` using `[List.map_ofFn]`. Conclude with `h.trans (congrArg List.prod (congrArg List.ofFn (funext fun i => map_pow F (y i) (a i))))`.
+-/
 theorem map_linComb {S S' : Scheme.{0}} {A T : Over S} {A' T' : Over S'} [GrpObj A] [GrpObj A']
     (F : (T ⟶ A) →* (T' ⟶ A')) {r : ℕ} (y : Fin r → (T ⟶ A)) (a : Fin r → ℕ) :
     F (linComb y a) = linComb (fun i => F (y i)) a := by
@@ -54,6 +66,9 @@ theorem map_linComb {S S' : Scheme.{0}} {A T : Over S} {A' T' : Over S'} [GrpObj
   rw [List.map_ofFn] at h
   exact h.trans (congrArg List.prod (congrArg List.ofFn (funext fun i => map_pow F (y i) (a i))))
 
+/- English proof (translation)
+Use `List.prod_induction (fun y => y ^ M = 1) (fun x y hx hy => ?_) (one_pow _) fun y hy => ?_` and prove the remaining obligations. Rewrite using `[mul_pow, hx, hy, _root_.mul_one]`. Take `⟨i, rfl⟩` from `(List.mem_ofFn' _ _).1 hy`. Rewrite using `[← pow_mul, Nat.mul_comm, pow_mul, h, one_pow]`.
+-/
 theorem linComb_pow {S : Scheme.{0}} {A T : Over S} [GrpObj A] [IsCommMonObj A] {r M : ℕ} {y : Fin r → (T ⟶ A)}
     (h : ∀ i, y i ^ M = 1) (a : Fin r → ℕ) : linComb y a ^ M = 1 := by
   refine List.prod_induction (fun y => y ^ M = 1) (fun x y hx hy => ?_) (one_pow _) fun y hy => ?_
@@ -61,6 +76,13 @@ theorem linComb_pow {S : Scheme.{0}} {A T : Over S} [GrpObj A] [IsCommMonObj A] 
   · obtain ⟨i, rfl⟩ := (List.mem_ofFn' _ _).1 hy
     rw [← pow_mul, Nat.mul_comm, pow_mul, h, one_pow]
 
+/- English proof (translation)
+Take `⟨ho, hu, H⟩` from `H`. Establish `: Subsingleton (Sp K)` using `inferInstanceAs (Subsingleton (PrimeSpectrum K))`. Take `⟨p₀⟩ : Nonempty (Sp K)` from `inferInstanceAs (Nonempty (PrimeSpectrum K))`. Take `⟨V, hV, H⟩` from `H p₀`. Take `rfl : V = ⊤` from `eq_top_iff.2 fun q _ => by rwa [Subsingleton.elim (α := Sp K) q p₀]`.
+
+Use `⟨ho, (map_natCast (spMap fK).appTop.hom k) ▸ hu.map (spMap fK).appTop.hom, fun _ => ⟨⊤, trivial, ?_⟩⟩` and prove the remaining obligations. Set `t : Sp R ⟶ (overRes (T` to `baseOver (Sp K)) ⊤).left := spMap fK ≫ (Sp K).topIso.inv`. Establish `ht : t ≫ (⊤ : (Sp K).Opens).ι = spMap fK` using `by show (spMap fK ≫ (Sp K).topIso.inv) ≫ _ = _`. Rewrite using `[Category.assoc, Scheme.toIso_inv_ι, Category.comp_id]`. Set `σ : (overRes (T` to `baseOver (Sp R)) ⊤).left ⟶ (baseAt t).left := (⊤ : (Sp R).Opens).ι`.
+
+Establish `: IsIso σ` using `inferInstanceAs (IsIso (Sp R).topIso.hom)`. Establish `ht' : (σ ≫ (homAt t).left) ≫ (⊤ : (Sp K).Opens).ι = (⊤ : (Sp R).Opens).ι ≫ spMap fK` using `(Category.assoc _ _ _).trans (congrArg (σ ≫ ·) ht)`. Establish `Q` using `isThetaPtOver_move (σ ≫ (homAt t).left) h.2.1 h.2.2.symm σ (homAt t) rfl ((congrArg (_ ≫ ·) (Category.comp_id _)).trans (ht'.trans (congrArg (· ≫ _) (Category.comp_id _).symm))) (isGenSec_pullS hS p₀ P₀ t) (x := fun i => overResι ⊤ ≫ x i) (fun i => (Category.assoc _ _ _).symm.tra …`. Use `Q using 2 with i` and compare the differences between its conclusion and the goal. Conclude with `(congrArg (fun q => q.appTop.hom (v₀ i)) ht').symm`.
+-/
 theorem isThetaPt_fibre (hS : SecBaseChangeSt) {K R : Type} [Field K] [CommRing R] {fK : K →+* R} {P₀ : PolAV (Sp K)}
     {P : PolAV (Sp R)} {φ : P.A.left ⟶ P₀.A.left} (h : IsPolFibre fK P₀ P φ) {k : ℕ} {I : Type}
     {x : I → (baseOver (Sp R) ⟶ P.A)} {x₀ : I → (baseOver (Sp K) ⟶ P₀.A)}

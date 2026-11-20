@@ -8,12 +8,24 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Substitute `hb` using the available equality. Rewrite using `[eq_of_heq h]`. Conclude with `hg`.
+-/
 theorem forall_val_of_heq_hom {E : Type} [Field E] {a b b' : ℕ} (hb : b = b') (P : ℂ → Prop)
     {f : HomE E a b → ℂ} {g : HomE E a b' → ℂ} (h : HEq f g) (hg : ∀ x, P (g x)) : ∀ x, P (f x) := by
   subst hb
   rw [eq_of_heq h]
   exact hg
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl K Y cX ex t h1 h2 hQ`. Take `⟨hFG, hsd⟩` from `GlobalTheory.T.kernelDatum_periodIdeal_fg_and_selfDual D L hT Gi Gl K Y cX ex t`. Use `⟨hFG, fun u μ i hi c c' hpin => ⟨hsd u μ i c, hsd u μ (i + 1) c', ?_⟩⟩` and prove the remaining obligations. Establish `hm : D.R.m = t.m2 + 2` using `(t.idx_ok μ).hm`. Take `⟨-, -, pt, ix, yb, row, -, hyb, hE, hC1, -, hC2, -, hp⟩` from `t.rd_chain u μ`.
+
+Break down `lt_trichotomy i t.m2 with hlt | heq | hgt` into its components or cases. Introduce `x`. Rewrite using `[hE i hlt c c' x]`. Conclude with `GlobalTheory.T.isIntegralOffPrimes_matrixStepEntryData D L hT Gi Gl K Y cX ex t h1 h2 u μ (hQ μ) i hlt _ _ _ _ x`. Substitute `heq` using the available equality.
+
+Introduce `x`. Rewrite using `[hC1 c c' x]`. Conclude with `GlobalTheory.T.precedingStepDatum_integral_away_from_levels D L hT Gi Gl K Y cX ex t h1 h2 u μ (hQ μ) _ _ _ _ x`. Establish `hi' : i = t.m2 + 1` using `by omega`. Substitute `hi'` using the available equality.
+
+Take `⟨d, hd⟩` from `(hp c').1 hpin`. Use `forall_val_of_heq_hom (congrArg D.R.N (by omega : t.m2 + 1 + 1 = D.R.m)) (IntOff (t.O u μ).S) (hC2 c c' d hd) fun x => ?_` and prove the remaining obligations. Conclude with `GlobalTheory.T.lastStep_data_integralAwayFrom_levels D L hT Gi Gl K Y cX ex t u μ _ _ d x (hyb c)`.
+-/
 theorem kernel_datum_of_hecke_character_values : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : G.Inst D L) (Gl : G.LatInst D) (K : G.Consts) (Y : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl K Y cX) (t : KerEntTied ex), (∀ j, ∃ e, Formalism.L2.Col.IsMu0 t.Ch t.seam.σ₀ e j (t.glob.mu0 j)) → (∀ (j : Fin D.R.m) (v : IsDedekindDomain.HeightOneSpectrum (𝓞 t.X.E)), (∀ i, ((t.Pr.g i : ℕ) : 𝓞 t.X.E) ∉ v.asIdeal) → t.seam.σ₀ (t.Ch.muVal j v : t.X.K) = (((t.glob.mu0 j).val v : ℂˣ) : ℂ)) → (∀ μ k, D.host.g k ∉ Y.Qp μ) → t.Hyp0 := by
   intro D L hT Gi Gl K Y cX ex t h1 h2 hQ
   obtain ⟨hFG, hsd⟩ := GlobalTheory.T.kernelDatum_periodIdeal_fg_and_selfDual D L hT Gi Gl K Y cX ex t

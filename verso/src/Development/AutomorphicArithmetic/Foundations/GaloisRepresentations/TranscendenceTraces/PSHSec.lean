@@ -3,6 +3,11 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Trans
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StrictlyHenselianIff
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
+/- English proof (translation)
+Introduce `T C _ _ _ _ _ hSH`. Take `⟨hH, hS⟩` from `hSH`. Take `⟨q, hq⟩` from `PrimeSpectrum.comap_surjective_of_faithfullyFlat (B := C) (⟨IsLocalRing.maximalIdeal T, inferInstance⟩ : PrimeSpectrum T)`. Establish `hq' : (PrimeSpectrum.asIdeal q).comap (algebraMap T C) = IsLocalRing.maximalIdeal T` using `congrArg PrimeSpectrum.asIdeal hq`. Use `haveI : (PrimeSpectrum.asIdeal q).IsPrime := PrimeSpectrum.isPrime q`.
+
+Take `⟨s, -⟩` from `(GlobalTheory.StrictHensel.strictlyHenselian_iff T).2 ⟨inferInstance, inferInstance⟩ C (PrimeSpectrum.asIdeal q) hq'`. Conclude with `⟨s⟩`.
+-/
 theorem UpperTheory.Gal.TranscendenceTraces.sHSec_of :
     SHSec := by
   intro T C _ _ _ _ _ hSH

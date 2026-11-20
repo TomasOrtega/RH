@@ -17,6 +17,9 @@ abbrev NC : Type := ↥(normInteger ℂ_[l])
 
 abbrev e : OC l ≃+* NC l := Formalism.Per6.intEquiv l
 
+/- English proof (translation)
+Use `symm`. Rewrite using `[ACris.dpow_eq_iff]`. Conclude with `Reformulated.AutPerF.AinfInv.factorial_mul_gamma n _`.
+-/
 theorem gamma_eq_dpow (n : ℕ) (x : Reformulated.AutPerF.Ainf l (NC l)) :
     Reformulated.AutPerF.AinfInv.gamma n (algebraMap (Reformulated.AutPerF.Ainf l (NC l)) (Reformulated.AutPerF.AinfInv l (NC l)) x) =
       ACris.dpow n x := by
@@ -24,6 +27,11 @@ theorem gamma_eq_dpow (n : ℕ) (x : Reformulated.AutPerF.Ainf l (NC l)) :
   rw [ACris.dpow_eq_iff]
   exact Reformulated.AutPerF.AinfInv.factorial_mul_gamma n _
 
+/- English proof (translation)
+Unfold `Reformulated.AutPerF.acrisZero ACris.ACrisZero`. Use `congr 1`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, x, hx, rfl⟩`.
+
+Conclude with `⟨n, x, RingHom.mem_ker.2 hx, (gamma_eq_dpow l n x).symm⟩`. Introduce and unpack `⟨n, x, hx, rfl⟩`. Conclude with `⟨n, x, RingHom.mem_ker.1 hx, (gamma_eq_dpow l n x).symm⟩`.
+-/
 theorem acrisZero_eq : Reformulated.AutPerF.acrisZero l (NC l) = ACris.ACrisZero ℂ_[l] l := by
   unfold Reformulated.AutPerF.acrisZero ACris.ACrisZero
   congr 1
@@ -70,6 +78,9 @@ def acrisO : Reformulated.AutPerF.Acris l (OC l) ≃+* Reformulated.AutPerF.Acri
 
 def cA : Reformulated.AutPerF.Acris l (OC l) ≃+* ACris.ACris ℂ_[l] l := (acrisO l).trans (acrisN l)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cA_apply (x : Reformulated.AutPerF.Acris l (OC l)) :
     cA l x = acrisNHom l (Reformulated.AutPerF.Acris.map l (e l).toRingHom x) := rfl
 

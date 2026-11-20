@@ -17,12 +17,18 @@ namespace GlobalTheory.SplitConj
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+The claim follows from `Prod.ext (by show (0 : Ainf F) = 0 * 0; simp) (by show GlobalTheory.AdelicU.singleFin v (x * y) = GlobalTheory.AdelicU.singleFin v x * GlobalTheory.AdelicU.singleFin v y exact GlobalTheory.AdelicU.singleFin_mul v x y)`.
+-/
 theorem liftV_mul (v : Pl F) (x y : Fv F v) :
     GlobalTheory.LatVac.liftV v (x * y) = GlobalTheory.LatVac.liftV v x * GlobalTheory.LatVac.liftV v y :=
   Prod.ext (by show (0 : Ainf F) = 0 * 0; simp)
     (by show GlobalTheory.AdelicU.singleFin v (x * y) = GlobalTheory.AdelicU.singleFin v x * GlobalTheory.AdelicU.singleFin v y
         exact GlobalTheory.AdelicU.singleFin_mul v x y)
 
+/- English proof (translation)
+Rewrite using `[← Algebra.smul_def, map_smul, Algebra.smul_def]`.
+-/
 theorem liftV_algebraMap_mul (v : Pl F) (c : F) (x : Fv F v) :
     GlobalTheory.LatVac.liftV v (algebraMap F (Fv F v) c * x) = algebraMap F (AF F) c * GlobalTheory.LatVac.liftV v x := by
   rw [← Algebra.smul_def, map_smul, Algebra.smul_def]
@@ -30,6 +36,15 @@ theorem liftV_algebraMap_mul (v : Pl F) (c : F) (x : Fv F v) :
 def Mult {d : ℕ} (W : Spc F E d) (v : Pl F) (c : AE F E) : Prop :=
   ∀ z ∈ GlobalTheory.InertSph.latAt W v, (fun i => c * z i) ∈ GlobalTheory.InertSph.latAt W v
 
+/- English proof (translation)
+Introduce `z hz`. Unfold `GlobalTheory.InertSph.latAt at hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, hai, y, hy, rfl⟩` from `hx`.
+
+Conclude with `h a ha hai y hy`. Consider the case `zero`. Establish `: (fun i => c * (0 : Fin d → AE F E) i) = 0` using `by ext i; simp`. Rewrite using `[this]`. Conclude with `zero_mem _`.
+
+Consider the case `add x y _ _ hx hy`. Establish `: (fun i => c * (x + y) i) = (fun i => c * x i) + (fun i => c * y i)` using `by ext i; simp [mul_add]`. Rewrite using `[this]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx`.
+
+Establish `: (fun i => c * (-x) i) = -(fun i => c * x i)` using `by ext i; simp`. Rewrite using `[this]`. Conclude with `neg_mem hx`.
+-/
 theorem mult_of_gen {d : ℕ} (W : Spc F E d) (v : Pl F) (c : AE F E)
     (h : ∀ a : AF F, At (evFin F v) a → evFin F v a ∈ v.adicCompletionIntegers F → ∀ y ∈ W.L,
       (fun i => c * (a • fun j => inclR (F := F) (AF F) (y j)) i) ∈ GlobalTheory.InertSph.latAt W v) : Mult W v c := by
@@ -49,6 +64,13 @@ theorem mult_of_gen {d : ℕ} (W : Spc F E d) (v : Pl F) (c : AE F E)
     have : (fun i => c * (-x) i) = -(fun i => c * x i) := by ext i; simp
     rw [this]; exact neg_mem hx
 
+/- English proof (translation)
+Use `mult_of_gen W v _ fun a ha hai y hy => ?_` and prove the remaining obligations. Establish `e : (fun i => algebraMap (AF F) (AE F E) f * (a • fun j => inclR (F` using `F) (AF F) (y j)) i) = (f * a) • fun j => inclR (F := F) (AF F) (y j) := by`. Use extensionality with `i`. Simplify using `only [Pi.smul_apply, Algebra.smul_def, map_mul, mul_assoc]`. Rewrite using `[e]`.
+
+Use `AddSubgroup.subset_closure ⟨f * a, ?_, ?_, y, hy, rfl⟩` and prove the remaining obligations. Introduce `u hu`. Use `ha u hu` as an intermediate fact. Rewrite `this`, the goal using `[smul_eq_mul]`. Rewrite using `[mul_left_comm, this, mul_zero]`.
+
+Rewrite using `[map_mul]`. Conclude with `mul_mem hf hai`.
+-/
 theorem mult_algebraMap {d : ℕ} (W : Spc F E d) (v : Pl F) (f : AF F)
     (hf : evFin F v f ∈ v.adicCompletionIntegers F) : Mult W v (algebraMap (AF F) (AE F E) f) := by
   refine mult_of_gen W v _ fun a ha hai y hy => ?_
@@ -63,6 +85,11 @@ theorem mult_algebraMap {d : ℕ} (W : Spc F E d) (v : Pl F) (f : AF F)
     rw [mul_left_comm, this, mul_zero]
   · rw [map_mul]; exact mul_mem hf hai
 
+/- English proof (translation)
+Use `mult_of_gen W v _ fun a ha hai y hy => ?_` and prove the remaining obligations. Establish `e : (fun i => inclR (F` using `F) (AF F) (o : E) * (a • fun j => inclR (F := F) (AF F) (y j)) i) = a • fun j => inclR (F := F) (AF F) ((o • y) j) := by`. Use extensionality with `i`. Simplify using `only [Pi.smul_apply, Algebra.smul_def, map_mul]`. Rewrite using `[show (algebraMap (𝓞 E) E o) = (o : E) from rfl]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `AddSubgroup.subset_closure ⟨a, ha, hai, o • y, W.L.smul_mem o hy, rfl⟩`.
+-/
 theorem mult_inclR {d : ℕ} (W : Spc F E d) (v : Pl F) (o : 𝓞 E) :
     Mult W v (inclR (F := F) (AF F) (o : E)) := by
   refine mult_of_gen W v _ fun a ha hai y hy => ?_
@@ -75,11 +102,17 @@ theorem mult_inclR {d : ℕ} (W : Spc F E d) (v : Pl F) (o : 𝓞 E) :
   rw [e]
   exact AddSubgroup.subset_closure ⟨a, ha, hai, o • y, W.L.smul_mem o hy, rfl⟩
 
+/- English proof (translation)
+Introduce `z hz` and use `by have : (fun i => (c + c') * z i) = (fun i => c * z i) + (fun i => c' * z i) := by ext i; simp [add_mul] rw [this]; exact add_mem (h z hz) (h' z hz)`.
+-/
 theorem mult_add {d : ℕ} {W : Spc F E d} {v : Pl F} {c c' : AE F E} (h : Mult W v c) (h' : Mult W v c') :
     Mult W v (c + c') := fun z hz => by
   have : (fun i => (c + c') * z i) = (fun i => c * z i) + (fun i => c' * z i) := by ext i; simp [add_mul]
   rw [this]; exact add_mem (h z hz) (h' z hz)
 
+/- English proof (translation)
+Introduce `z hz` and use `by have := h _ (h' z hz) simpa [mul_assoc] using this`.
+-/
 theorem mult_mul {d : ℕ} {W : Spc F E d} {v : Pl F} {c c' : AE F E} (h : Mult W v c) (h' : Mult W v c') :
     Mult W v (c * c') := fun z hz => by
   have := h _ (h' z hz)
@@ -96,6 +129,15 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 open IsDedekindDomain.HeightOneSpectrum in
 
+/- English proof (translation)
+Use `set ι := algebraMap (𝓞 F) (v.adicCompletionIntegers F) with hι`. Establish `hunit : ∀ e : 𝓞 F, e ∉ v.asIdeal → IsUnit (ι e)` using `fun e he => by`. Assume the negation of the conclusion as `h`. Conclude with `he ((GlobalTheory.InertUnitNorm.algebraMap_mem_maximalIdeal_iff v e).1 ((IsLocalRing.mem_maximalIdeal _).2 h))`. Take `⟨r, hr⟩` from `GlobalTheory.InertUnitNorm.exists_root_quadratic_of_approx v (ι b) (ι c) 0 ((GlobalTheory.InertUnitNorm.mem_maximalIdeal_iff_valued_lt_one v _).1 (by simpa using (GlobalTheory.InertUnitNorm.algebraMap_mem_maximalIdeal_iff v c).2 hc)) (by simpa using hunit b hb)`.
+
+Establish `hD : b ^ 2 - 4 * c ∉ v.asIdeal`. Introduce `h`. Establish `h4 : 4 * c ∈ v.asIdeal` using `Ideal.mul_mem_left _ _ hc`. Establish `: b ^ 2 ∈ v.asIdeal` using `by simpa using Ideal.add_mem _ h h4`. Conclude with `hb (v.isPrime.mem_of_pow_mem 2 this)`.
+
+Establish `hsq : (2 * r + ι b) ^ 2 = ι (b ^ 2 - 4 * c)`. Simplify using `only [map_sub, map_pow, map_mul, map_ofNat]`. Take the linear combination `4 * hr`. Establish `hd : IsUnit (2 * r + ι b)` using `(isUnit_pow_iff two_ne_zero).1 (hsq ▸ hunit _ hD)`. Take `⟨dinv, hdinv⟩` from `hd.exists_right_inv`.
+
+Use `⟨(ι b + r) * dinv, dinv, ?_, ?_, ?_⟩` and prove the remaining obligations. Take the linear combination `(ι b + r) * dinv * hdinv - dinv ^ 2 * hr`. Take the linear combination `dinv * hdinv`. Take the linear combination `hdinv`.
+-/
 theorem exists_idem_coeffs (v : Pl F) (b c : 𝓞 F) (hc : c ∈ v.asIdeal) (hb : b ∉ v.asIdeal) :
     ∃ m k : v.adicCompletionIntegers F,
       m * m - algebraMap (𝓞 F) _ c * (k * k) = m ∧ m * k + m * k - algebraMap (𝓞 F) _ b * (k * k) = k ∧
@@ -123,15 +165,46 @@ theorem exists_idem_coeffs (v : Pl F) (b c : 𝓞 F) (hc : c ∈ v.asIdeal) (hb 
   · linear_combination dinv * hdinv
   · linear_combination hdinv
 
+/- English proof (translation)
+Rewrite using `[← IsScalarTower.algebraMap_apply]`. Conclude with `Algebra.TensorProduct.includeRight.commutes x`.
+-/
 theorem inclR_algebraMap (x : F) :
     inclR (F := F) (AF F) (algebraMap F E x) = algebraMap (AF F) (AE F E) (algebraMap F (AF F) x) := by
   rw [← IsScalarTower.algebraMap_apply]
   exact Algebra.TensorProduct.includeRight.commutes x
 
+/- English proof (translation)
+Use `show Algebra.TensorProduct.map (AlgHom.id (AF F) (AF F)) σ ((1 : AF F) ⊗ₜ[F] y) = (1 : AF F) ⊗ₜ[F] σ y`. Simplify using the standard rewrite rules.
+-/
 theorem cA_inclR (σ : E →ₐ[F] E) (y : E) : cA σ (inclR (F := F) (AF F) y) = inclR (F := F) (AF F) (σ y) := by
   show Algebra.TensorProduct.map (AlgHom.id (AF F) (AF F)) σ ((1 : AF F) ⊗ₜ[F] y) = (1 : AF F) ⊗ₜ[F] σ y
   simp
 
+/- English proof (translation)
+Take `⟨m, k, h1, h2, h3⟩` from `exists_idem_coeffs v b c hc hb`. Establish `co : ∀ e : 𝓞 F, ((algebraMap (𝓞 F) (v.adicCompletionIntegers F) e : v.adicCompletionIntegers F) : Fv F v) = algebraMap F (Fv F v) (e : F)` using `GlobalTheory.InertUnitNorm.coe_algebraMap_adicCompletionIntegers v`. Establish `c1` using `congrArg (fun t : v.adicCompletionIntegers F => (t : Fv F v)) h1`. Establish `c2` using `congrArg (fun t : v.adicCompletionIntegers F => (t : Fv F v)) h2`. Establish `c3` using `congrArg (fun t : v.adicCompletionIntegers F => (t : Fv F v)) h3`.
+
+Simplify using `only [AddSubgroupClass.coe_sub, AddMemClass.coe_add, MulMemClass.coe_mul, co, OneMemClass.coe_one] at c1 c2 c3`. Use `set L := GlobalTheory.LatVac.liftV (F := F) v`. Use `set ιA := algebraMap (AF F) (AE F E)`. Use `set M : AF F := L (m : Fv F v)`. Use `set K : AF F := L (k : Fv F v)`.
+
+Use `set e1 : AF F := L 1`. Use `set b' : AF F := algebraMap F (AF F) (b : F)`. Use `set c' : AF F := algebraMap F (AF F) (c : F)`. Establish `r1 : M * M - c' * (K * K) = M`. Use `congrArg L c1` as an intermediate fact.
+
+Rewrite `this` using `[map_sub, liftV_mul, liftV_algebraMap_mul, liftV_mul]`. Then use the resulting hypothesis. Establish `r2 : M * K + M * K - b' * (K * K) = K`. Use `congrArg L c2` as an intermediate fact. Rewrite `this` using `[map_sub, map_add, liftV_mul, liftV_algebraMap_mul, liftV_mul]`. Then use the resulting hypothesis. Establish `r3 : M + M - b' * K = e1`.
+
+Use `congrArg L c3` as an intermediate fact. Rewrite `this` using `[map_sub, map_add, liftV_algebraMap_mul]`. Then use the resulting hypothesis. Establish `r4 : e1 * M = M` using `by rw [← liftV_mul, one_mul]`. Establish `r5 : e1 * K = K` using `by rw [← liftV_mul, one_mul]`. Use `set j : AE F E := inclR (F := F) (AF F) (a : E)`.
+
+Establish `hj : j * j + ιA b' * j + ιA c' = 0`. Use `congrArg (inclR (F := F) (AF F)) hq` as an intermediate fact. Simplify using `only [map_add, map_mul, map_pow, inclR_algebraMap, map_zero, pow_two] at this`. Conclude with `this`. Establish `hσj : cA σ j = -ιA b' - j`.
+
+Rewrite using `[cA_inclR, hσa, map_sub, map_neg, inclR_algebraMap]`. Establish `hσι : ∀ x : AF F, cA σ (ιA x) = ιA x` using `fun x => (cA σ).commutes x`. Use `set Eid := ιA M + ιA K * j`. Establish `hσE : cA σ Eid = ιA M + ιA K * (-ιA b' - j)`. Simplify using `only [Eid, map_add, map_mul, hσι, hσj]`.
+
+Establish `s1` using `congrArg ιA r1`. Establish `s2` using `congrArg ιA r2`. Establish `s3` using `congrArg ιA r3`. Establish `s4` using `congrArg ιA r4`. Establish `s5` using `congrArg ιA r5`.
+
+Simplify using `only [map_sub, map_add, map_mul] at s1 s2 s3 s4 s5`. Establish `E1 : Eid * Eid = Eid`. Take the linear combination `s1 + s2 * j + ιA K * ιA K * hj`. Establish `E2 : Eid + cA σ Eid = ιA e1`. Rewrite using `[hσE]`.
+
+Take the linear combination `s3`. Use `⟨Eid, E1, E2, ?_, ?_⟩` and prove the remaining obligations. Establish `: cA σ Eid = ιA e1 - Eid` using `by rw [← E2]; ring`. Rewrite using `[this]`. Take the linear combination `s4 + j * s5 - E1`.
+
+Establish `hM : Mult W v (ιA M)` using `mult_algebraMap W v M (by`. Rewrite using `[show M = L (m : Fv F v) from rfl, GlobalTheory.LatVac.evFin_liftV]`. Conclude with `m.2)`. Establish `hK : Mult W v (ιA K)` using `mult_algebraMap W v K (by`. Rewrite using `[show K = L (k : Fv F v) from rfl, GlobalTheory.LatVac.evFin_liftV]`.
+
+Conclude with `k.2)`. Conclude with `mult_add hM (mult_mul hK (mult_inclR W v a))`.
+-/
 theorem exists_adelic_idem (σ : E →ₐ[F] E) {d : ℕ} (W : Spc F E d) (v : Pl F) (a : 𝓞 E) (b c : 𝓞 F)
     (hq : (a : E) ^ 2 + algebraMap F E (b : F) * a + algebraMap F E (c : F) = 0)
     (hσa : σ (a : E) = -algebraMap F E (b : F) - a) (hc : c ∈ v.asIdeal) (hb : b ∉ v.asIdeal) :
@@ -202,6 +275,9 @@ namespace GlobalTheory.SplitConj
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Establish `h1 : ∀ (P Q R S : Matrix (Fin d) (Fin d) (AE F E)), (Matrix.fromRows P Q : Matrix (Fin d ⊕ Fin d) (Fin d) (AE F E)) * ((Matrix.fromRows R S : Matrix (Fin d ⊕ Fin d) (Fin d) (AE F E))ᵀ : Matrix (Fin d) (Fin d ⊕ Fin d) (AE F E)) = Matrix.fromBlocks (P * Rᵀ) (P * Sᵀ) (Q * Rᵀ) (Q * S …`. Introduce `P Q R S`. Apply the tactic sequence `ext (i | i) (j | j) <;> simp [Matrix.mul_apply, Matrix.transpose_apply]`. Rewrite using `[diagCols, GlobalTheory.InertDbl.antiCols, h1, h1, Matrix.fromBlocks_add, ← Matrix.fromBlocks_one, Matrix.fromBlocks_smul]`. Simplify using `[two_smul]`.
+-/
 theorem diag_antiT_sum (d : ℕ) :
     (2 : AF F) • (1 : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (AE F E)) =
       (diagCols (Fin d) : Matrix (Fin d ⊕ Fin d) (Fin d) (AE F E)) *
@@ -217,6 +293,25 @@ theorem diag_antiT_sum (d : ℕ) :
   rw [diagCols, GlobalTheory.InertDbl.antiCols, h1, h1, Matrix.fromBlocks_add, ← Matrix.fromBlocks_one, Matrix.fromBlocks_smul]
   simp [two_smul]
 
+/- English proof (translation)
+Take `⟨⟨hAt, -⟩, hna, b, hnb⟩` from `hn`. Set `D : Matrix (Fin d ⊕ Fin d) (Fin d) (AE F E)` to `diagCols (Fin d)`. Set `A : Matrix (Fin d ⊕ Fin d) (Fin d) (AE F E)` to `GlobalTheory.InertDbl.antiCols d`. Set `Mn : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (AE F E)` to `GlobalTheory.InertDbl.matD n`. Set `Ms : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (AE F E)` to `GlobalTheory.InertDbl.matD s`.
+
+Establish `hnb' : Mn * D = D + A * b` using `hnb`. Establish `hna' : Mn * A = A` using `hna`. Establish `hd' : Ms * D = x • D`. Establish `: Ms * D = D * (x • (1 : Matrix (Fin d) (Fin d) (AE F E)))` using `hd`. Rewrite using `[this, Matrix.mul_smul, Matrix.mul_one]`.
+
+Establish `ha' : Ms * A = y • A`. Establish `: Ms * A = A * (y • (1 : Matrix (Fin d) (Fin d) (AE F E)))` using `ha`. Rewrite using `[this, Matrix.mul_smul, Matrix.mul_one]`. Establish `hAt' : w • (Mn - 1) = 0` using `hAt w hw`. Establish `hb : w • b = 0`.
+
+Establish `h3 : (Mn - 1) * D = A * b` using `by rw [Matrix.sub_mul, hnb', Matrix.one_mul, add_sub_cancel_left]`. Establish `h4 : A * (w • b) = 0` using `by rw [Matrix.mul_smul, ← h3, ← Matrix.smul_mul, hAt', Matrix.zero_mul]`. Use extensionality with `i j`. Establish `h5` using `congrFun (congrFun h4 (Sum.inl i)) j`. Simplify using `only [A, GlobalTheory.InertDbl.antiCols, Matrix.fromRows_mul, Matrix.one_mul] at h5`.
+
+Simplify using `using h5`. Establish `hyb : y • b = (2 * x) • b`. Establish `: y = 2 * x + algebraMap (AF F) (AE F E) w` using `by rw [← hyx]; ring`. Rewrite using `[this, add_smul, algebraMap_smul, hb, add_zero]`. Establish `hyAb : y • (A * b) = (2 * x) • (A * b)` using `by rw [← Matrix.mul_smul, hyb, Matrix.mul_smul]`.
+
+Establish `e1 : Ms * Mn * D = x • D + (2 * x) • (A * b)`. Rewrite using `[Matrix.mul_assoc, hnb', Matrix.mul_add, hd', ← Matrix.mul_assoc, ha', Matrix.smul_mul, hyAb]`. Establish `e2 : Mn * Mn * Ms * D = x • D + (2 * x) • (A * b)`. Rewrite using `[Matrix.mul_assoc, hd', Matrix.mul_smul, Matrix.mul_assoc, hnb', Matrix.mul_add, hnb', ← Matrix.mul_assoc Mn A b, hna', smul_add, smul_add, two_mul, add_smul]`. Normalize the expressions using the abelian group laws.
+
+Establish `e3 : Ms * Mn * A = Mn * Mn * Ms * A`. Rewrite using `[Matrix.mul_assoc, hna', ha', Matrix.mul_assoc, ha', Matrix.mul_smul, Matrix.mul_assoc, hna', hna']`. Establish `key : ∀ Z : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (AE F E), (2 : AF F) • Z = Z * D * Dᵀ + Z * A * Aᵀ`. Introduce `Z`. Establish `hsum : (2 : AF F) • (1 : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (AE F E)) = D * Dᵀ + A * Aᵀ` using `diag_antiT_sum d`.
+
+Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_add, ← hsum, Matrix.mul_smul, Matrix.mul_one]`. Establish `h2 : (2 : AF F) • (Ms * Mn) = (2 : AF F) • (Mn * Mn * Ms)`. Rewrite using `[key, key, e1, e2, e3]`. Establish `hXY : Ms * Mn = Mn * Mn * Ms`. Use `congrArg (fun Z => (⅟2 : AF F) • Z) h2` as an intermediate fact.
+
+Simplify using `only [smul_smul, invOf_mul_self, one_smul] at this`. Conclude with `this`. Establish `hsn : s * n = n * n * s` using `Subtype.ext (Units.ext hXY)`. Rewrite using `[hsn, mul_inv_cancel_right]`.
+-/
 theorem conj_eq_sq {σ : E →ₐ[F] E} {d : ℕ} {W : Spc F E d} {v : Pl F} (n : GlobalTheory.InertDbl.UD σ W)
     (hn : n ∈ GlobalTheory.InertDbl.NabD σ W v) (s : GlobalTheory.InertDbl.UD σ W) (x y : AE F E) (w : AF F) (hw : evFin F v w = 0)
     (hyx : y - 2 * x = algebraMap (AF F) (AE F E) w)

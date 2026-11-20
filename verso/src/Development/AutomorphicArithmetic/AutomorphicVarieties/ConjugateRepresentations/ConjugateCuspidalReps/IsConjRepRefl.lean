@@ -11,11 +11,17 @@ namespace UpperTheory.V.Cj.R
 def IsRegInt (a : ℕ) (m : Multiset ℂ) : Prop :=
   Multiset.card m = a ∧ m.Nodup ∧ ∀ z ∈ m, ∃ n : ℤ, z = (n : ℂ) + ((a : ℂ) - 1) / 2
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, Multiset.nodup_zero, fun _ h => absurd h (Multiset.notMem_zero _)⟩`.
+-/
 theorem isRegInt_zero : IsRegInt 0 0 := ⟨rfl, Multiset.nodup_zero, fun _ h => absurd h (Multiset.notMem_zero _)⟩
 
 def IsConjRep {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} (σ : ℂ ≃+* ℂ) (Ξ Ξ' : AlgRep E a) : Prop :=
   ∃ h : Ξ.d = Ξ'.d, ∀ γ i j, ratC Ξ' γ (Fin.cast h i) (Fin.cast h j) = σ (ratC Ξ γ i j)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, fun _ _ _ => rfl⟩`.
+-/
 theorem isConjRep_refl {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} (Ξ : AlgRep E a) :
     IsConjRep (RingEquiv.refl ℂ) Ξ Ξ := ⟨rfl, fun _ _ _ => rfl⟩
 
@@ -38,6 +44,9 @@ def ConjAlgRep : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (Ξ : AlgRep E a) (σ : ℂ ≃+* ℂ),
     ∃ Ξ' : AlgRep E a, IsConjRep σ Ξ Ξ' ∧ ∀ τ m, AlgInfChar Ξ τ m → AlgInfChar Ξ' (σ.toRingHom.comp τ) m
 
+/- English proof (translation)
+Introduce `E _ _ _ a Ξ σ`. Take `⟨M, hr, hi, h1, h2⟩` from `h E a Ξ σ`. Conclude with `⟨⟨Ξ.d, M, hr, Ξ.pos, hi⟩, ⟨rfl, fun γ i j => congrFun (congrFun (h1 γ) i) j⟩, h2⟩`.
+-/
 theorem conjAlgRep_of (h : ConjAlgMat) : ConjAlgRep := by
   intro E _ _ _ a Ξ σ
   obtain ⟨M, hr, hi, h1, h2⟩ := h E a Ξ σ

@@ -12,11 +12,23 @@ section Supp
 
 variable {σ τ R : Type*} [CommRing R]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Conclude with `(MvPolynomial.mem_support_iff.mp hm) (by rw [MvPolynomial.coeff_one, if_neg (fun h' => h h'.symm)])`.
+-/
 theorem supp_one {m : σ →₀ ℕ} (hm : m ∈ (1 : MvPolynomial σ R).support) : m = 0 := by
   classical
   by_contra h
   exact (MvPolynomial.mem_support_iff.mp hm) (by rw [MvPolynomial.coeff_one, if_neg (fun h' => h h'.symm)])
 
+/- English proof (translation)
+Use `revert h`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `_ m hm`. Rewrite `hm` using `[Finset.prod_empty]`. Rewrite using `[supp_one hm]`.
+
+Simplify using the standard rewrite rules. Introduce `a s ha ih h m hm`. Rewrite `hm` using `[Finset.prod_insert ha]`. Establish `hm'` using `MvPolynomial.mem_support_iff.mp hm`. Rewrite `hm'` using `[MvPolynomial.coeff_mul]`.
+
+Take `⟨⟨m1, m2⟩, hmem, hne⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hm'`. Establish `hmem' : m1 + m2 = m` using `Finset.HasAntidiagonal.mem_antidiagonal.mp hmem`. Establish `h1 : m1 ∈ (f a).support` using `MvPolynomial.mem_support_iff.mpr (left_ne_zero_of_mul hne)`. Establish `h2 : m2 ∈ (∏ j ∈ s, f j).support` using `MvPolynomial.mem_support_iff.mpr (right_ne_zero_of_mul hne)`. Rewrite using `[Finset.sum_insert ha, ← hmem', map_add, Nat.cast_add]`.
+
+Conclude with `add_le_add (h a (Finset.mem_insert_self a s) m1 h1) (ih (fun j hj => h j (Finset.mem_insert_of_mem hj)) m2 h2)`.
+-/
 theorem supp_prod_bound {ι : Type*} (w : (σ →₀ ℕ) →+ ℕ) (s : Finset ι) (f : ι → MvPolynomial σ R) (b : ι → ℝ)
     (h : ∀ j ∈ s, ∀ m ∈ (f j).support, (w m : ℝ) ≤ b j) :
     ∀ m ∈ (∏ j ∈ s, f j).support, (w m : ℝ) ≤ ∑ j ∈ s, b j := by
@@ -41,6 +53,11 @@ theorem supp_prod_bound {ι : Type*} (w : (σ →₀ ℕ) →+ ℕ) (s : Finset 
 
 def imgMon (g : σ → τ) (e : σ → ℕ) (m : σ →₀ ℕ) : τ →₀ ℕ := m.sum fun v n => Finsupp.single (g v) (e v * n)
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.aeval_monomial, imgMon, MvPolynomial.monomial_finsupp_sum_index, MvPolynomial.algebraMap_eq]`. Use `congr 1`. Apply `Finsupp.prod_congr` to reduce the goal to its premises. Introduce `v _`. Use `show (X (g v) ^ e v) ^ m v = _`.
+
+Rewrite using `[← pow_mul, MvPolynomial.X_pow_eq_monomial]`.
+-/
 theorem aeval_pow_monomial (g : σ → τ) (e : σ → ℕ) (m : σ →₀ ℕ) (c : R) :
     aeval (fun v => (X (g v) : MvPolynomial τ R) ^ e v) (monomial m c) = monomial (imgMon g e m) c := by
   rw [MvPolynomial.aeval_monomial, imgMon, MvPolynomial.monomial_finsupp_sum_index, MvPolynomial.algebraMap_eq]
@@ -50,6 +67,11 @@ theorem aeval_pow_monomial (g : σ → τ) (e : σ → ℕ) (m : σ →₀ ℕ) 
   show (X (g v) ^ e v) ^ m v = _
   rw [← pow_mul, MvPolynomial.X_pow_eq_monomial]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Apply `MvPolynomial.mem_support_iff.mp hm'` to reduce the goal to its premises. Rewrite using `[x.as_sum, map_sum, MvPolynomial.coeff_sum]`. Use `Finset.sum_eq_zero fun m hm => ?_` and prove the remaining obligations.
+
+Rewrite using `[aeval_pow_monomial, MvPolynomial.coeff_monomial, if_neg (fun h => hne m hm h.symm)]`.
+-/
 theorem supp_aeval_pow (g : σ → τ) (e : σ → ℕ) (x : MvPolynomial σ R) {m' : τ →₀ ℕ}
     (hm' : m' ∈ (aeval (fun v => (X (g v) : MvPolynomial τ R) ^ e v) x).support) :
     ∃ m ∈ x.support, m' = imgMon g e m := by
@@ -63,6 +85,11 @@ theorem supp_aeval_pow (g : σ → τ) (e : σ → ℕ) (x : MvPolynomial σ R) 
 
 end Supp
 
+/- English proof (translation)
+Establish `h0 : 0 ≤ x % (n' : ℤ)` using `Int.emod_nonneg _ (by exact_mod_cast (NeZero.ne n'))`. Establish `h1 : x % (n' : ℤ) < n'` using `Int.emod_lt_of_pos _ (by exact_mod_cast NeZero.pos n')`. Use `show (((x % (n' : ℤ)).toNat % n' : ℕ) : ℤ) = _`. Generalize the expression as in `x % (n' : ℤ) = y at *`. Establish `h2` using `Int.toNat_of_nonneg h0`.
+
+Establish `h3 : y.toNat < n'` using `by omega`. Rewrite using `[Nat.mod_eq_of_lt h3, h2]`.
+-/
 theorem posOf_val (n' : ℕ) [NeZero n'] (x : ℤ) : ((posOf n' x).val : ℤ) = x % (n' : ℤ) := by
   have h0 : 0 ≤ x % (n' : ℤ) := Int.emod_nonneg _ (by exact_mod_cast (NeZero.ne n'))
   have h1 : x % (n' : ℤ) < n' := Int.emod_lt_of_pos _ (by exact_mod_cast NeZero.pos n')
@@ -72,6 +99,11 @@ theorem posOf_val (n' : ℕ) [NeZero n'] (x : ℤ) : ((posOf n' x).val : ℤ) = 
   have h3 : y.toNat < n' := by omega
   rw [Nat.mod_eq_of_lt h3, h2]
 
+/- English proof (translation)
+Establish `hv` using `posOf_val n' x`. Take `⟨k, hk⟩` from `he`. Establish `hn : (n' : ℤ) = k + k` using `by exact_mod_cast hk`. Rewrite `hv` using `[hn]`. Establish `h2 : x % ((k : ℤ) + k) % 2 = x % 2` using `Int.emod_emod_of_dvd x ⟨(k : ℤ), by ring⟩`.
+
+Rewrite using `[Nat.even_iff, Int.even_iff]`. Generalize the expression as in `x % ((k : ℤ) + k) = y at *`. Generalize the expression as in `(posOf n' x).val = v at *`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem posOf_even {n' : ℕ} [NeZero n'] (he : Even n') (x : ℤ) : Even (posOf n' x).val ↔ Even x := by
   have hv := posOf_val n' x
   obtain ⟨k, hk⟩ := he
@@ -83,12 +115,26 @@ theorem posOf_even {n' : ℕ} [NeZero n'] (he : Even n') (x : ℤ) : Even (posOf
   generalize (posOf n' x).val = v at *
   omega
 
+/- English proof (translation)
+Apply `Fin.ext` to reduce the goal to its premises. Establish `h` using `posOf_val n' (t.val : ℤ)`. Rewrite `h` using `[Int.emod_eq_of_lt (by omega) (by exact_mod_cast t.isLt)]`. Conclude with `h` after adjusting the coercions.
+-/
 theorem posOf_natCast {n' : ℕ} [NeZero n'] (t : Fin n') : posOf n' (t.val : ℤ) = t := by
   apply Fin.ext
   have h := posOf_val n' (t.val : ℤ)
   rw [Int.emod_eq_of_lt (by omega) (by exact_mod_cast t.isLt)] at h
   exact_mod_cast h
 
+/- English proof (translation)
+Introduce `x hx y hy hxy`. Establish `h1` using `posOf_val n' x`. Establish `h2` using `posOf_val n' y`. Rewrite `h1` using `[hxy]`. Rewrite `hx`, `hy` using `[Set.mem_Ioc]`.
+
+Establish `hmod : Int.ModEq n' y x` using `(h1.symm.trans h2).symm`. Take `⟨c, hc⟩` from `Int.ModEq.dvd hmod`. Establish `hn : (0 : ℤ) < n'` using `by exact_mod_cast NeZero.pos n'`. Establish `hc1 : c < 1`. Assume the negation of the conclusion as `h`.
+
+Use `push_neg at h`. Establish `: (n' : ℤ) * 1 ≤ n' * c` using `mul_le_mul_of_nonneg_left h hn.le`. Use linear arithmetic over natural numbers and integers. Establish `hc2 : -1 < c`. Assume the negation of the conclusion as `h`.
+
+Use `push_neg at h`. Establish `: (n' : ℤ) * c ≤ n' * (-1)` using `mul_le_mul_of_nonneg_left h hn.le`. Use linear arithmetic over natural numbers and integers. Establish `: c = 0` using `by omega`. Substitute `this` using the available equality.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem posOf_injOn {n' : ℕ} [NeZero n'] (a : ℤ) :
     Set.InjOn (posOf n') (Set.Ioc a (a + n')) := by
   intro x hx y hy hxy
@@ -120,6 +166,9 @@ variable {n' r K : ℕ}
 def wtVS (v : Fin n' × Fin (r + K)) : ℕ :=
   if Even v.1.val then (if r ≤ v.2.val then 1 else 0) else (if v.2.val < r then 1 else 0)
 
+/- English proof (translation)
+Establish `hi : ∀ i : Fin r, ¬ r ≤ (i : ℕ)` using `fun i => not_le.mpr i.isLt`. Rewrite using `[Fin.sum_univ_add]`. Use `split_ifs with h`. Simplify using `[wtVS, h, hi]`. Simplify using `[wtVS, h, hi]`.
+-/
 theorem sum_wtVS (f : Fin (r + K) → ℕ) (t : Fin n') :
     ∑ c : Fin (r + K), f c * wtVS (t, c) =
       if Even t.val then ∑ c : Fin K, f (Fin.natAdd r c) else ∑ c : Fin r, f (Fin.castAdd K c) := by
@@ -129,6 +178,11 @@ theorem sum_wtVS (f : Fin (r + K) → ℕ) (t : Fin n') :
   · simp [wtVS, h, hi]
   · simp [wtVS, h, hi]
 
+/- English proof (translation)
+Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum_fintype _ _ (by simp), Fintype.sum_prod_type]`. Unfold `vsDeg`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Use `sum_wtVS (fun c => m (t, c)) t` as an intermediate fact. Use `beta_reduce at this`.
+
+Simplify using `only [smul_eq_mul]`. Rewrite using `[this]`.
+-/
 theorem vsDeg_eq (m : Fin n' × Fin (r + K) →₀ ℕ) : vsDeg m = Finsupp.linearCombination ℕ wtVS m := by
   rw [Finsupp.linearCombination_apply, Finsupp.sum_fintype _ _ (by simp), Fintype.sum_prod_type]
   unfold vsDeg
@@ -148,18 +202,44 @@ def eFr (j : ℤ) : ℤ := F.fr j (r - 1)
 
 variable {F} {L₁ N₁ : ℕ}
 
+/- English proof (translation)
+Introduce `i hi`. Proceed by induction on `i with`. Consider the case `zero => exact le_refl _`. Consider the case `succ k ih => exact le_trans (ih (by omega)) (le_of_lt (hV.2.2.1 j k (by omega)))`.
+-/
 theorem fr_zero_le (hV : F.Valid L₁ N₁) (j : ℤ) : ∀ i, i < r → F.fr j 0 ≤ F.fr j i := by
   intro i hi
   induction i with
   | zero => exact le_refl _
   | succ k ih => exact le_trans (ih (by omega)) (le_of_lt (hV.2.2.1 j k (by omega)))
 
+/- English proof (translation)
+Conclude with `fr_zero_le hV j (r - 1) (by have := NeZero.pos r; omega)`.
+-/
 theorem fr_zero_le_eFr [NeZero r] (hV : F.Valid L₁ N₁) (j : ℤ) : F.fr j 0 ≤ eFr F j := by
   exact fr_zero_le hV j (r - 1) (by have := NeZero.pos r; omega)
 
+/- English proof (translation)
+Conclude with `strictMono_int_of_lt_succ fun j => lt_of_lt_of_le (hV.2.2.2.1 j) (fr_zero_le_eFr hV (j + 1))`.
+-/
 theorem eFr_strictMono [NeZero r] (hV : F.Valid L₁ N₁) : StrictMono (eFr F) := by
   exact strictMono_int_of_lt_succ fun j => lt_of_lt_of_le (hV.2.2.2.1 j) (fr_zero_le_eFr hV (j + 1))
 
+/- English proof (translation)
+Establish `hup : ∀ n : ℕ, e 0 + n ≤ e n`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ k ih`.
+
+Use `he (show (k : ℤ) < ((k + 1 : ℕ) : ℤ) by push_cast; omega)` as an intermediate fact. Move the coercions through the operations in `at this ⊢`. Use linear arithmetic over natural numbers and integers. Establish `hdn : ∀ n : ℕ, e (-(n : ℤ)) ≤ e 0 - n`. Introduce `n`.
+
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Use `he (show (-((k + 1 : ℕ) : ℤ)) < -(k : ℤ) by push_cast; omega)` as an intermediate fact. Move the coercions through the operations in `at this ⊢`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hbdd : ∃ b : ℤ, ∀ z, x ≤ e z → b ≤ z`. Use `⟨min 0 (x - e 0), fun z hz => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : 0 ≤ z`. Conclude with `le_trans (min_le_left _ _) h`.
+
+Establish `h3 : (((-z).toNat : ℕ) : ℤ) = -z` using `Int.toNat_of_nonneg (by omega)`. Establish `h4` using `hdn (-z).toNat`. Rewrite `h4` using `[h3, neg_neg]`. Establish `h5 : x - e 0 ≤ z` using `by omega`. Conclude with `le_trans (min_le_right _ _) h5`.
+
+Establish `hinh : ∃ z, x ≤ e z`. Use `⟨((max 0 (x - e 0)).toNat : ℤ), ?_⟩` and prove the remaining obligations. Establish `h1` using `hup (max 0 (x - e 0)).toNat`. Establish `h2 : (((max 0 (x - e 0)).toNat : ℕ) : ℤ) = max 0 (x - e 0)` using `Int.toNat_of_nonneg (le_max_left _ _)`. Rewrite `h1`, the goal using `[h2]`.
+
+Use `le_max_right 0 (x - e 0)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨j, hj, hmin⟩` from `Int.exists_least_of_bdd hbdd hinh`. Use `⟨j, ?_, hj⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+
+Use `push_neg at h`. Use `hmin (j - 1) h` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem strictMono_int_exists (e : ℤ → ℤ) (he : StrictMono e) (x : ℤ) : ∃ j, e (j - 1) < x ∧ x ≤ e j := by
   classical
   have hup : ∀ n : ℕ, e 0 + n ≤ e n := by
@@ -206,6 +286,11 @@ open Classical in
 def nonW (F : Frames n' r) (j : ℤ) : Finset ℤ := (F.letters j).filter fun x => ¬ F.IsW j x
 
 open Classical in
+/- English proof (translation)
+Use extensionality with `x`. Establish `h0` using `fr_zero_le_eFr hV (j - 1)`. Unfold `eFr at h0 ⊢`. Unfold `nonW Frames.letters Frames.IsW`. Simplify using `only [Finset.mem_filter, Finset.mem_Icc, Finset.mem_Ioc]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨⟨h1, h2⟩, h3⟩, h4⟩`. Conclude with `⟨⟨by omega, h2⟩, h3⟩`. Introduce and unpack `⟨⟨h1, h2⟩, h3⟩`. Conclude with `⟨⟨⟨by omega, h2⟩, h3⟩, by omega⟩`.
+-/
 theorem nonW_eq [NeZero r] (hV : F.Valid L₁ N₁) (j : ℤ) :
     nonW F j = (Finset.Ioc (eFr F (j - 1)) (eFr F j)).filter fun x => posOf n' x ∈ F.TT := by
   ext x
@@ -219,6 +304,11 @@ theorem nonW_eq [NeZero r] (hV : F.Valid L₁ N₁) (j : ℤ) :
   · rintro ⟨⟨h1, h2⟩, h3⟩
     exact ⟨⟨⟨by omega, h2⟩, h3⟩, by omega⟩
 
+/- English proof (translation)
+Take `⟨j, hj1, hj2⟩` from `strictMono_int_exists (eFr F) (eFr_strictMono hV) (t.val : ℤ)`. Establish `hx : (t.val : ℤ) ∈ nonW F j`. Rewrite using `[nonW_eq hV j, Finset.mem_filter, Finset.mem_Ioc, posOf_natCast]`. Conclude with `⟨⟨hj1, hj2⟩, ht⟩`. Unfold `nonW at hx`.
+
+Rewrite `hx` using `[Finset.mem_filter]`. Conclude with `⟨j, (t.val : ℤ), hx.1, hx.2, posOf_natCast t⟩`.
+-/
 theorem exists_nonW [NeZero r] (hV : F.Valid L₁ N₁) (t : Fin n') (ht : t ∈ F.TT) :
     ∃ j : ℤ, ∃ x ∈ F.letters j, ¬ F.IsW j x ∧ posOf n' x = t := by
   classical
@@ -230,6 +320,11 @@ theorem exists_nonW [NeZero r] (hV : F.Valid L₁ N₁) (t : Fin n') (ht : t ∈
   rw [Finset.mem_filter] at hx
   exact ⟨j, (t.val : ℤ), hx.1, hx.2, posOf_natCast t⟩
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[Finset.sum_range_succ, ih]`. Establish `h1 : g 0 ≤ g k` using `hg (Nat.zero_le k)`.
+
+Establish `h2 : g k ≤ g (k + 1)` using `hg (Nat.le_succ k)`. Rewrite using `[← Finset.Ioc_union_Ioc_eq_Ioc h1 h2, Finset.filter_union, Finset.card_union_of_disjoint]`. Conclude with `Finset.disjoint_left.mpr fun x hx1 hx2 => by`. Simplify using `only [Finset.mem_filter, Finset.mem_Ioc] at hx1 hx2`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem sum_card_Ioc (g : ℕ → ℤ) (hg : Monotone g) (P : ℤ → Prop) [DecidablePred P] (m : ℕ) :
     ∑ j ∈ Finset.range m, ((Finset.Ioc (g j) (g (j + 1))).filter P).card = ((Finset.Ioc (g 0) (g m)).filter P).card := by
   induction m with
@@ -243,6 +338,15 @@ theorem sum_card_Ioc (g : ℕ → ℤ) (hg : Monotone g) (P : ℤ → Prop) [Dec
       simp only [Finset.mem_filter, Finset.mem_Ioc] at hx1 hx2
       omega
 
+/- English proof (translation)
+Establish `hmono : Monotone (fun i : ℕ => eFr F ((i : ℤ) - 1))` using `fun a b hab => (eFr_strictMono hV).monotone (by have : (a : ℤ) ≤ b := by exact_mod_cast hab omega)`. Establish `h1 : ∀ j ∈ Finset.range F.J, (nonW F (j : ℤ)).card = ((Finset.Ioc ((fun i : ℕ => eFr F ((i : ℤ) - 1)) j) ((fun i : ℕ => eFr F ((i : ℤ) - 1)) (j + 1))).filter (fun x => posOf n' x ∈ F.TT)).card`. Introduce `j _`. Rewrite using `[nonW_eq hV]`. Simplify using `only [Nat.cast_add, Nat.cast_one, add_sub_cancel_right]`.
+
+Rewrite using `[Finset.sum_congr rfl h1, sum_card_Ioc _ hmono]`. Simplify using `only [Nat.cast_zero, zero_sub]`. Establish `hlen : eFr F ((F.J : ℤ) - 1) = eFr F (-1) + n'`. Use `hV.2.1 (-1) (r - 1)` as an intermediate fact. Unfold `eFr`.
+
+Rewrite using `[← this, show (F.J : ℤ) - 1 = -1 + F.J by ring]`. Use `Finset.card_le_card_of_injOn (posOf n') ?_ ?_` and prove the remaining obligations. Introduce `x hx`. Simplify using `only [Finset.mem_coe, Finset.mem_filter] at hx`. Simplify `hx.2` using `[Finset.mem_coe]`.
+
+Introduce `x hx y hy hxy`. Simplify using `only [Finset.mem_coe, Finset.mem_filter, Finset.mem_Ioc] at hx hy`. Use `posOf_injOn (eFr F (-1)) ?_ ?_ hxy` and prove the remaining obligations. Apply the tactic sequence `rw [Set.mem_Ioc]; constructor <;> omega`. Apply the tactic sequence `rw [Set.mem_Ioc]; constructor <;> omega`.
+-/
 theorem sum_card_nonW [NeZero r] (hV : F.Valid L₁ N₁) :
     ∑ j ∈ Finset.range F.J, (nonW F (j : ℤ)).card ≤ F.TT.card := by
   classical
@@ -280,6 +384,19 @@ variable {n' r K : ℕ} [NeZero n'] [NeZero r] [NeZero K]
 def okVars (F : Frames n' r) (K : ℕ) (j : ℤ) : Set (ℤ × Fin (r + K)) :=
   {v | v.1 ∈ F.letters j ∧ (r ≤ v.2.val → ¬ F.IsW j v.1)}
 
+/- English proof (translation)
+Unfold `XX' at hx`. Establish `hx1` using `(Submodule.mem_inf.mp hx).1`. Use `(Submodule.span_le (p := Subalgebra.toSubmodule (supported O (okVars F K j)))).mpr ?_ hx1` and prove the remaining obligations. Introduce and unpack `P ⟨A, G, M, hA, hG, -, rfl⟩`. Rewrite using `[SetLike.mem_coe, Subalgebra.mem_toSubmodule]`.
+
+Use `Subalgebra.mul_mem _ ?_ ?_` and prove the remaining obligations. Rewrite `hA`, the goal using `[MvPolynomial.mem_supported]`. Unfold `plEmb`. Use `(Finset.coe_subset.mpr (MvPolynomial.vars_rename (fun v : ℤ × Fin r => (v.1, Fin.castAdd K v.2)) A)).trans ?_` and prove the remaining obligations. Introduce `v hv`.
+
+Simplify using `only [Finset.coe_image, Set.mem_image, Finset.mem_coe, Finset.mem_image] at hv`. Take `⟨w, hw, rfl⟩` from `hv`. Establish `h1 : w.1 ∈ F.letters j` using `hA (Finset.mem_coe.mpr hw)`. Simplify using `only [okVars, Set.mem_setOf_eq]`. Use `⟨h1, fun h => ?_⟩` and prove the remaining obligations.
+
+It suffices to derive a contradiction. Use `w.2.isLt` as an intermediate fact. Simplify using `only [Fin.coe_castAdd] at h`. Use linear arithmetic over natural numbers and integers. Rewrite `hG`, the goal using `[MvPolynomial.mem_supported]`.
+
+Unfold `nmEmb`. Use `(Finset.coe_subset.mpr (MvPolynomial.vars_rename (fun v : ℤ × Fin K => (v.1, Fin.natAdd r v.2)) G)).trans ?_` and prove the remaining obligations. Introduce `v hv`. Simplify using `only [Finset.coe_image, Set.mem_image, Finset.mem_coe, Finset.mem_image] at hv`. Take `⟨w, hw, rfl⟩` from `hv`.
+
+Establish `h1 : w.1 ∈ F.letters j ∧ ¬ F.IsW j w.1` using `hG (Finset.mem_coe.mpr hw)`. Simplify using `only [okVars, Set.mem_setOf_eq]`. Conclude with `⟨h1.1, fun _ => h1.2⟩`.
+-/
 theorem XX'_supported (O : Type) [CommRing O] (F : Frames n' r) (j : ℤ) (m : ℤ → ℤ) (th o : ℤ → ℝ)
     {x : SegRing O r K} (hx : x ∈ XX' O r K F j m th o) : x ∈ supported O (okVars F K j) := by
   classical
@@ -312,6 +429,9 @@ theorem XX'_supported (O : Type) [CommRing O] (F : Frames n' r) (j : ℤ) (m : �
     simp only [okVars, Set.mem_setOf_eq]
     exact ⟨h1.1, fun _ => h1.2⟩
 
+/- English proof (translation)
+Use `sum_wtVS (fun c => m (x, c)) (posOf n' x)` as an intermediate fact. Use `beta_reduce at this`. Rewrite using `[this]`. Unfold `ordDeg`. Simplify using `only [posOf_even he]`.
+-/
 theorem ordDeg_eq (he : Even n') (m : ℤ × Fin (r + K) →₀ ℕ) (x : ℤ) :
     ordDeg m x = ∑ c : Fin (r + K), m (x, c) * wtVS (posOf n' x, c) := by
   have := sum_wtVS (fun c => m (x, c)) (posOf n' x)
@@ -320,6 +440,15 @@ theorem ordDeg_eq (he : Even n') (m : ℤ × Fin (r + K) →₀ ℕ) (x : ℤ) :
   unfold ordDeg
   simp only [posOf_even he]
 
+/- English proof (translation)
+Unfold `Frames.letters at hx`. Unfold `Frames.IsW at hw`. Simplify using `only [Finset.mem_filter, Finset.mem_Icc] at hx`. Take `⟨⟨hx0, -⟩, hT⟩` from `hx`. Establish `key : ∀ i, i < r → x ≤ F.fr (j - 1) i → ∃ i', i' < r ∧ x = F.fr (j - 1) i'`.
+
+Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => intro hi h`. Conclude with `⟨0, hi, le_antisymm h hx0⟩`. Consider the case `succ k ih`.
+
+Introduce `hi h`. Distinguish the cases in `hk : x ≤ F.fr (j - 1) k`. Conclude with `ih (by omega) hk`. Distinguish the cases in `he : x = F.fr (j - 1) (k + 1)`. Conclude with `⟨k + 1, hi, he⟩`.
+
+Conclude with `absurd hT (hV.2.2.2.2.2.1 (j - 1) k x hi (by omega) (by omega))`. Take `⟨i', hi', rfl⟩` from `key (r - 1) (by have := NeZero.pos r; omega) hw`. Conclude with `(hV.2.2.2.2.1 (j - 1) i' hi').2`.
+-/
 private theorem even_of_isW {F : Frames n' r} {L₁ N₁ : ℕ} (hV : F.Valid L₁ N₁) {j x : ℤ}
     (hx : x ∈ F.letters j) (hw : F.IsW j x) : Even x := by
   unfold Frames.letters at hx
@@ -340,6 +469,17 @@ private theorem even_of_isW {F : Frames n' r} {L₁ N₁ : ℕ} (hV : F.Valid L�
   obtain ⟨i', hi', rfl⟩ := key (r - 1) (by have := NeZero.pos r; omega) hw
   exact (hV.2.2.2.2.1 (j - 1) i' hi').2
 
+/- English proof (translation)
+Rewrite using `[vsDeg_eq, imgMon, Finsupp.sum, map_sum]`. Simplify using `only [Finsupp.linearCombination_single, smul_eq_mul]`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum_of_ne_zero` to reduce the goal to its premises. Introduce `v hv hne`.
+
+Establish `hok` using `hm v hv`. Simplify using `only [okVars, Set.mem_setOf_eq] at hok`. Rewrite using `[Finset.mem_product]`. Use `⟨?_, Finset.mem_univ _⟩` and prove the remaining obligations. Simplify using `only [nonW, Finset.mem_filter]`.
+
+Use `⟨hok.1, fun hw => hne ?_⟩` and prove the remaining obligations. Establish `hev : Even v.1` using `even_of_isW hV hok.1 hw`. Establish `hlt : ¬ r ≤ (v.2 : ℕ)` using `fun h => hok.2 h hw`. Establish `hpe : Even (posOf n' v.1).val` using `(posOf_even he v.1).mpr hev`. Simplify using `[wtVS, hpe, hlt]`.
+
+Use `_ = ∑ x ∈ nonW F j, p ^ F.dist j x * ordDeg m x := by`. Rewrite using `[Finset.sum_product]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[ordDeg_eq he, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vs_img_le (he : Even n') {F : Frames n' r} {L₁ N₁ : ℕ} (hV : F.Valid L₁ N₁) (p : ℕ) (j : ℤ)
     (m : ℤ × Fin (r + K) →₀ ℕ) (hm : ∀ v ∈ m.support, v ∈ okVars F K j) :
     vsDeg (imgMon (fun v : ℤ × Fin (r + K) => (posOf n' v.1, v.2)) (fun v => p ^ F.dist j v.1) m) ≤
@@ -377,10 +517,22 @@ variable {n' r : ℕ} [NeZero n'] (X : Dat n' r) (p K : ℕ)
 def B1 : ℝ := X.La * X.a / ((p : ℝ) * Dat.k (r := r) K) + 10 * X.a * (p : ℝ) ^ (-(X.L₁ : ℤ))
 
 omit [NeZero n'] in
+/- English proof (translation)
+Unfold `Dat.k`. Conclude with `(show 0 < r + K by omega)` after adjusting the coercions.
+-/
 theorem k_pos (hr : 0 < r) : (0 : ℝ) < Dat.k (r := r) K := by
   unfold Dat.k
   exact_mod_cast (show 0 < r + K by omega)
 
+/- English proof (translation)
+Unfold `Dat.o B1`. Establish `hp' : (0:ℝ) < p` using `by exact_mod_cast hp`. Establish `hpd : (0:ℝ) < (p:ℝ) ^ X.F.dist j x` using `pow_pos hp' _`. Establish `hk` using `(k_pos K hr).ne'`. Establish `hz : (p:ℝ) ^ X.F.dist j x * (p:ℝ) ^ (-((X.L₁:ℤ) + (X.F.dist j x : ℤ))) = (p:ℝ) ^ (-(X.L₁:ℤ))`.
+
+Rewrite using `[← zpow_natCast, ← zpow_add₀ hp'.ne']`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : (p:ℝ) ^ X.F.dist j x * (X.La * X.a / (↑p * Dat.k (r` using `r) K * ↑p ^ X.F.dist j x)) = X.La * X.a / (↑p * Dat.k (r := r) K) := by`. Clear the denominators using the available nonvanishing facts.
+
+Apply the tactic sequence `have hc : (if Even x then (10:ℝ) else 1) ≤ 10 := by split_ifs <;> norm_num`. Establish `hpL : (0:ℝ) ≤ (p:ℝ) ^ (-(X.L₁:ℤ))` using `by positivity`. Rewrite using `[mul_add, h1]`. Establish `h2 : (p:ℝ) ^ X.F.dist j x * ((if Even x then (10:ℝ) else 1) * X.a * (p:ℝ) ^ (-((X.L₁:ℤ) + (X.F.dist j x : ℤ)))) = (if Even x then (10:ℝ) else 1) * X.a * (p:ℝ) ^ (-(X.L₁:ℤ))`. Rewrite using `[← hz]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2]`. Use `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hc ha) hpL` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem pow_mul_o_le (hp : 0 < p) (hr : 0 < r) (ha : 0 ≤ X.a) (j x : ℤ) :
     (p : ℝ) ^ X.F.dist j x * X.o p K j x ≤ B1 X p K := by
   unfold Dat.o B1
@@ -405,6 +557,11 @@ theorem pow_mul_o_le (hp : 0 < p) (hr : 0 < r) (ha : 0 ≤ X.a) (j x : ℤ) :
 
 variable {X p K}
 
+/- English proof (translation)
+Establish `hV` using `hX.valid`. Establish `hr : 0 < r` using `NeZero.pos r`. Establish `h1` using `fr_zero_le_eFr hV (j - 1)`. Establish `h2` using `eFr_strictMono hV (show j - 1 < j by omega)`. Establish `h3` using `(hV.2.2.2.2.1 j (r - 1) (by omega)).1`.
+
+Unfold `eFr at h1 h2 ⊢`. Unfold `Frames.letters`. Simplify using `only [Finset.mem_filter, Finset.mem_Icc]`. Conclude with `⟨⟨by omega, le_refl _⟩, h3⟩`.
+-/
 theorem eFr_mem_letters [NeZero r] (hX : X.Hyp p K) (j : ℤ) : eFr X.F j ∈ X.F.letters j := by
   have hV := hX.valid
   have hr : 0 < r := NeZero.pos r
@@ -416,16 +573,27 @@ theorem eFr_mem_letters [NeZero r] (hX : X.Hyp p K) (j : ℤ) : eFr X.F j ∈ X.
   simp only [Finset.mem_filter, Finset.mem_Icc]
   exact ⟨⟨by omega, le_refl _⟩, h3⟩
 
+/- English proof (translation)
+Establish `h` using `hX.twist 0 (eFr X.F 0) (eFr_mem_letters hX 0)`. Establish `hp : (1 : ℝ) ≤ p` using `by exact_mod_cast hX.prime.one_lt.le`. Conclude with `le_trans (one_le_pow₀ hp) h`.
+-/
 theorem Q_one_le [NeZero r] (hX : X.Hyp p K) : 1 ≤ X.Q := by
   have h := hX.twist 0 (eFr X.F 0) (eFr_mem_letters hX 0)
   have hp : (1 : ℝ) ≤ p := by exact_mod_cast hX.prime.one_lt.le
   exact le_trans (one_le_pow₀ hp) h
 
+/- English proof (translation)
+Establish `h1` using `Finset.card_pos.mpr ⟨_, eFr_mem_letters hX 0⟩`. Establish `h2` using `hX.card 0`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem Ns_one_le [NeZero r] (hX : X.Hyp p K) : 1 ≤ X.Ns := by
   have h1 := Finset.card_pos.mpr ⟨_, eFr_mem_letters hX 0⟩
   have h2 := hX.card 0
   omega
 
+/- English proof (translation)
+Use `le_trans ?_ hX.P3` and prove the remaining obligations. Use `one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (by norm_num) ?_) ?_) ?_) ?_) ?_) ?_` and prove the remaining obligations. Conclude with `hX.prime.one_lt.le` after adjusting the coercions. Conclude with `hX.Y1`. Conclude with `one_le_pow₀ (by exact_mod_cast (show 1 ≤ r + K by have := NeZero.pos r; omega))`.
+
+Conclude with `Ns_one_le hX` after adjusting the coercions. Conclude with `one_le_pow₀ (Q_one_le hX)`. Use `norm_cast`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem a_one_le [NeZero r] (hX : X.Hyp p K) : 1 ≤ X.a := by
   refine le_trans ?_ hX.P3
   refine one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (by norm_num) ?_) ?_) ?_) ?_) ?_) ?_
@@ -443,6 +611,19 @@ section Main
 
 variable {n' r K : ℕ} [NeZero n'] [NeZero r] [NeZero K] {X : Dat n' r} {p : ℕ}
 
+/- English proof (translation)
+Unfold `Dat.XXs at hx`. Establish `hV` using `hX.valid`. Establish `hsupp` using `XX'_supported O X.F j (X.mg p K j) (X.th p j) (X.o p K j) hx`. Unfold `XX' at hx`. Establish `hres0` using `(Submodule.mem_inf.mp hx).2`.
+
+Rewrite `hres0` using `[MvPolynomial.mem_restrictSupport_iff]`. Unfold `phSeg at hm'`. Take `⟨mm, hmm, rfl⟩` from `supp_aeval_pow (fun v : ℤ × Fin (r + K) => (posOf n' v.1, v.2)) (fun v => p ^ X.F.dist j v.1) x hm'`. Establish `hres : ∀ y ∈ X.F.letters j, ¬ X.F.IsW j y → (ordDeg mm y : ℝ) ≤ X.o p K j y` using `hres0 (Finset.mem_coe.mpr hmm)`. Establish `hsupp'` using `MvPolynomial.mem_supported.mp hsupp`.
+
+Establish `hm : ∀ v ∈ mm.support, v ∈ okVars X.F K j` using `fun v hv => hsupp' (Finset.mem_coe.mpr ((MvPolynomial.mem_vars v).mpr ⟨mm, hmm, hv⟩))`. Establish `hmain` using `vs_img_le hX.even hV p j mm hm`. Establish `hmain'` using `(Nat.cast_le (α := ℝ)).mpr hmain`. Establish `hp : 0 < p` using `hX.prime.pos`. Establish `hr : 0 < r` using `NeZero.pos r`.
+
+Establish `ha : 0 ≤ X.a` using `le_trans zero_le_one (a_one_le hX)`. Establish `hsum : ((∑ y ∈ nonW X.F j, p ^ X.F.dist j y * ordDeg mm y : ℕ) : ℝ) ≤ ∑ y ∈ nonW X.F j, B1 X p K`. Use `push_cast`. Use `Finset.sum_le_sum fun y hy => ?_` and prove the remaining obligations. Establish `hy' : y ∈ X.F.letters j ∧ ¬ X.F.IsW j y` using `by simpa [nonW] using hy`.
+
+Establish `h1 : (ordDeg mm y : ℝ) ≤ X.o p K j y` using `hres y hy'.1 hy'.2`. Establish `h2` using `pow_mul_o_le X p K hp hr ha j y`. Establish `h3 : (0:ℝ) ≤ (p:ℝ) ^ X.F.dist j y` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hsum` using `[Finset.sum_const, nsmul_eq_mul]`.
+
+Conclude with `le_trans hmain' hsum`.
+-/
 theorem seg_bound (O : Type) [CommRing O] (hX : X.Hyp p K) (j : ℤ) {x : SegRing O r K} (hx : x ∈ X.XXs p K O j)
     {m' : Fin n' × Fin (r + K) →₀ ℕ} (hm' : m' ∈ (phSeg O K p X.F j x).support) :
     (vsDeg m' : ℝ) ≤ ((nonW X.F j).card : ℝ) * B1 X p K := by
@@ -478,6 +659,9 @@ theorem seg_bound (O : Type) [CommRing O] (hX : X.Hyp p K) (j : ℤ) {x : SegRin
   rw [Finset.sum_const, nsmul_eq_mul] at hsum
   exact le_trans hmain' hsum
 
+/- English proof (translation)
+Unfold `vsDeg`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Use `sum_wtVS (fun c => m (t, c)) t` as an intermediate fact. Use `beta_reduce at this`. Conclude with `this.symm`.
+-/
 theorem vsDeg_sum (m : Fin n' × Fin (r + K) →₀ ℕ) :
     vsDeg m = ∑ t : Fin n', ∑ c : Fin (r + K), m (t, c) * wtVS (t, c) := by
   unfold vsDeg
@@ -486,6 +670,19 @@ theorem vsDeg_sum (m : Fin n' × Fin (r + K) →₀ ℕ) :
   beta_reduce at this
   exact this.symm
 
+/- English proof (translation)
+Establish `hV` using `hX.valid`. Establish `hc : ∀ t ∈ X.F.TT, ∀ c, (l (t, c) : ℝ) ≤ X.Q`. Introduce `t ht c`. Take `⟨j, x, hx, hw, rfl⟩` from `exists_nonW hV t ht`. Establish `h1` using `hl j x hx hw c`.
+
+Establish `h2` using `hX.twist j x hx`. Establish `h3 : ((l (posOf n' x, c) : ℕ) : ℝ) < (p : ℝ) ^ X.F.dist j x` using `by exact_mod_cast h1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hterm : ∀ t : Fin n', (∑ c : Fin (r + K), (l (t, c) : ℝ) * (wtVS (t, c) : ℝ)) ≤ if t ∈ X.F.TT then Dat.k (r` using `r) K * X.Q else 0 := by`. Introduce `t`.
+
+Use `split_ifs with ht`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun c _ => ?_` and prove the remaining obligations. Establish `hw : (wtVS (t, c) : ℝ) ≤ 1`. Unfold `wtVS`.
+
+Apply the tactic sequence `split_ifs <;> norm_num`. Establish `hw0 : (0:ℝ) ≤ (wtVS (t, c) : ℝ)` using `Nat.cast_nonneg _`. Establish `hl0 : (0:ℝ) ≤ (l (t, c) : ℝ)` using `Nat.cast_nonneg _`. Use polynomial arithmetic with `[hc t ht c]`. Use `_ = Dat.k (r := r) K * X.Q := by`.
+
+Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Both sides reduce to the same expression. Establish `: ∀ c, l (t, c) = 0` using `h0 t ht`. Simplify using `[this]`. Rewrite using `[vsDeg_sum]`.
+
+Use `push_cast`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_ite_mem, Finset.univ_inter, Finset.sum_const, nsmul_eq_mul]`.
+-/
 theorem label_bound (hX : X.Hyp p K) (l : Fin n' × Fin (r + K) →₀ ℕ) (hl : IsLabel p X.F l)
     (h0 : ∀ t, t ∉ X.F.TT → ∀ c, l (t, c) = 0) :
     (vsDeg l : ℝ) ≤ (X.F.TT.card : ℝ) * (Dat.k (r := r) K * X.Q) := by
@@ -521,6 +718,29 @@ theorem label_bound (hX : X.Hyp p K) (l : Fin n' × Fin (r + K) →₀ ℕ) (hl 
     _ = (X.F.TT.card : ℝ) * (Dat.k (r := r) K * X.Q) := by
         rw [Finset.sum_ite_mem, Finset.univ_inter, Finset.sum_const, nsmul_eq_mul]
 
+/- English proof (translation)
+Take `⟨x, hx, l, hl, rfl, hdeg⟩` from `hP`. Distinguish the cases in `hle : l ≤ mm`. Use `swap`. It suffices to derive a contradiction. Apply `MvPolynomial.mem_support_iff.mp hmm` to reduce the goal to its premises.
+
+Rewrite using `[MvPolynomial.coeff_mul_monomial', if_neg hle]`. Establish `hm'' : mm - l ∈ (∏ j ∈ Finset.range X.F.J, (phSeg O K p X.F (j : ℤ)) (x j)).support`. Establish `hcoef` using `MvPolynomial.mem_support_iff.mp hmm`. Rewrite `hcoef` using `[MvPolynomial.coeff_mul_monomial', if_pos hle, mul_one]`. Conclude with `MvPolynomial.mem_support_iff.mpr hcoef`.
+
+Establish `hadd : vsDeg mm = vsDeg (mm - l) + vsDeg l` using `by conv_lhs => rw [← tsub_add_cancel_of_le hle]`. Rewrite using `[vsDeg_eq, vsDeg_eq, vsDeg_eq, map_add]`. Unfold `RRdeg Dat.d at hdeg`. Rewrite `hdeg` using `[MvPolynomial.mem_restrictSupport_iff]`. Establish `hrow` using `hdeg (Finset.mem_coe.mpr hmm)`.
+
+Simplify using `only [Set.mem_setOf_eq] at hrow`. Establish `h0 : ∀ t, t ∉ X.F.TT → ∀ c, l (t, c) = 0`. Introduce `t ht c`. Establish `h1 : ∑ c, mm (t, c) = 0`. Use `hrow t` as an intermediate fact.
+
+Simplify `this` using `[ht]`. Establish `h2 : mm (t, c) = 0` using `(Finset.sum_eq_zero_iff.mp h1) c (Finset.mem_univ _)`. Establish `h3 : l (t, c) ≤ mm (t, c)` using `(Finsupp.le_def.mp hle) (t, c)`. Use linear arithmetic over natural numbers and integers. Establish `hL` using `label_bound hX l hl h0`.
+
+Establish `hT : (0:ℝ) ≤ X.F.TT.card` using `Nat.cast_nonneg _`. Establish `ha` using `a_one_le hX`. Establish `hp' : (0:ℝ) < p` using `by exact_mod_cast hX.prime.pos`. Establish `hk` using `k_pos K (NeZero.pos r)`. Establish `hLa : 0 ≤ X.La`.
+
+Unfold `Dat.La`. Establish `: 0 ≤ Real.log X.a` using `Real.log_nonneg ha`. Conclude with `mul_nonneg (mul_nonneg hC (by positivity)) this`. Establish `hA : 0 ≤ X.La * X.a / (↑p * Dat.k (r` using `r) K) := div_nonneg (mul_nonneg hLa (by linarith)) (mul_pos hp' hk).le`. Establish `hPq : 0 ≤ X.a * (p:ℝ) ^ (-(X.L₁ : ℤ))` using `mul_nonneg (by linarith) (by positivity)`.
+
+Establish `hC' : 0 ≤ Dat.k (r` using `r) K * X.Q := mul_nonneg hk.le (le_trans zero_le_one (Q_one_le hX))`. Establish `hB1 : 0 ≤ B1 X p K`. Unfold `B1`. Conclude with `add_nonneg hA (mul_nonneg (mul_nonneg (by norm_num) (by linarith)) (by positivity))`. Establish `hprod` using `supp_prod_bound (Finsupp.linearCombination ℕ (wtVS (n' := n') (r := r) (K := K))).toAddMonoidHom (Finset.range X.F.J) (fun j : ℕ => (phSeg O K p X.F (j : ℤ)) (x j)) (fun j : ℕ => ((nonW X.F (j : ℤ)).card : ℝ) * B1 X p K) (fun j _ m hm => by`.
+
+Use `seg_bound O hX (j : ℤ) (hx j) hm` as an intermediate fact. Rewrite `this` using `[vsDeg_eq]`. Conclude with `this) (mm - l) hm''`. Establish `hsumc` using `sum_card_nonW hX.valid`. Establish `hsumc' : (∑ j ∈ Finset.range X.F.J, ((nonW X.F (j : ℤ)).card : ℝ)) ≤ X.F.TT.card`.
+
+Conclude with `hsumc` after adjusting the coercions. Establish `hQ' : (vsDeg (mm - l) : ℝ) ≤ X.F.TT.card * B1 X p K`. Rewrite using `[vsDeg_eq]`. Use `le_trans hprod ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul]`.
+
+Conclude with `mul_le_mul_of_nonneg_right hsumc' hB1`. Establish `hB1' : B1 X p K = X.La * X.a / (↑p * Dat.k (r` using `r) K) + 10 * X.a * (p:ℝ) ^ (-(X.L₁ : ℤ)) := rfl`. Rewrite `hQ'` using `[hB1']`. Rewrite using `[hadd, Nat.cast_add]`. Use polynomial arithmetic with `[mul_nonneg hT hA, mul_nonneg hT hC', mul_nonneg hT hPq, hQ', hL]`.
+-/
 theorem gen_bound (O : Type) [CommRing O] (hX : X.Hyp p K) (hC : 0 ≤ X.CLa) {P : RRing O n' (r + K)}
     (hP : P ∈ X.gen p K O) {mm : Fin n' × Fin (r + K) →₀ ℕ} (hmm : mm ∈ P.support) :
     (vsDeg mm : ℝ) ≤ 10 * (X.F.TT.card : ℝ) *
@@ -586,6 +806,13 @@ theorem gen_bound (O : Type) [CommRing O] (hX : X.Hyp p K) (hC : 0 ≤ X.CLa) {P
   rw [hadd, Nat.cast_add]
   nlinarith [mul_nonneg hT hA, mul_nonneg hT hC', mul_nonneg hT hPq, hQ', hL]
 
+/- English proof (translation)
+Unfold `RestDeg`. Introduce `p n' r K _ _ _ X O _ _ hX hC P hP mm hmm`. Unfold `Dat.NN at hP`. Use `revert hmm`. Proceed by induction on `hP using Submodule.span_induction with`.
+
+Consider the case `mem Q hQ => exact fun h => gen_bound O hX hC hQ h`. Consider the case `zero => intro h`. Simplify using `at h`. Consider the case `add Q1 Q2 _ _ ih1 ih2`. Introduce `h`.
+
+Break down `Finset.mem_union.mp (MvPolynomial.support_add h) with h' | h'` into its components or cases. Conclude with `ih1 h'`. Conclude with `ih2 h'`. Consider the case `smul a Q _ ih => exact fun h => ih (MvPolynomial.support_smul h)`.
+-/
 theorem restDeg : RestDeg := by
   unfold RestDeg
   intro p n' r K _ _ _ X O _ _ hX hC P hP mm hmm

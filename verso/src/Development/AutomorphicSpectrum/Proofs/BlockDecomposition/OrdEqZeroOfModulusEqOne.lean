@@ -15,6 +15,11 @@ section Gen
 
 variable {K : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
 
+/- English proof (translation)
+Establish `hxy : x ∈ 𝒪[K] ↔ y ∈ 𝒪[K]`. Rewrite using `[← modulus_le_one_iff, ← modulus_le_one_iff, h]`. Distinguish the cases in `hx : x ∈ 𝒪[K]`. Simplify using `[intInd, hx, hxy.1 hx]`. Establish `hy : y ∉ 𝒪[K]` using `fun hy => hx (hxy.2 hy)`.
+
+Simplify using `[intInd, hx, hy]`.
+-/
 theorem intInd_congr {x y : K} (h : modulus x = modulus y) : (intInd x : ℂ) = intInd y := by
   have hxy : x ∈ 𝒪[K] ↔ y ∈ 𝒪[K] := by
     rw [← modulus_le_one_iff, ← modulus_le_one_iff, h]
@@ -23,6 +28,9 @@ theorem intInd_congr {x y : K} (h : modulus x = modulus y) : (intInd x : ℂ) = 
   · have hy : y ∉ 𝒪[K] := fun hy => hx (hxy.2 hy)
     simp [intInd, hx, hy]
 
+/- English proof (translation)
+Rewrite `h` using `[modulus_of_ne_zero hx]`. Establish `hq` using `one_lt_residueCard_nnreal (K := K)`. Establish `h1 : -ord x = 0` using `zpow_right_injective₀ (zero_lt_one.trans hq) hq.ne' (by simpa using h)`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem ord_eq_zero_of_modulus_eq_one {x : K} (hx : x ≠ 0) (h : modulus x = 1) : ord x = 0 := by
   rw [modulus_of_ne_zero hx] at h
   have hq := one_lt_residueCard_nnreal (K := K)
@@ -30,6 +38,11 @@ theorem ord_eq_zero_of_modulus_eq_one {x : K} (hx : x ≠ 0) (h : modulus x = 1)
     zpow_right_injective₀ (zero_lt_one.trans hq) hq.ne' (by simpa using h)
   omega
 
+/- English proof (translation)
+Establish `hm : modulus ((u * v⁻¹ : Kˣ) : K) = 1`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, modulus_mul, modulus_inv, h]`. Conclude with `mul_inv_cancel₀ (modulus_ne_zero v.ne_zero)`. Establish `h0` using `isUnramifiedChar_iff.1 hc _ (ord_eq_zero_of_modulus_eq_one (Units.ne_zero _) hm)`. Rewrite `h0` using `[map_mul, map_inv]`.
+
+Conclude with `mul_inv_eq_one.1 h0`.
+-/
 theorem char_congr (c : Kˣ →* ℂˣ) (hc : IsUnramifiedChar c) {u v : Kˣ}
     (h : modulus (u : K) = modulus (v : K)) : c u = c v := by
   have hm : modulus ((u * v⁻¹ : Kˣ) : K) = 1 := by
@@ -39,6 +52,11 @@ theorem char_congr (c : Kˣ →* ℂˣ) (hc : IsUnramifiedChar c) {u v : Kˣ}
   rw [map_mul, map_inv] at h0
   exact mul_inv_eq_one.1 h0
 
+/- English proof (translation)
+Establish `ho : IsOpen (𝒪[K] : Set K)` using `Valuation.isOpen_integer`. Establish `hcl : IsClosed (𝒪[K] : Set K)` using `Valuation.isClosed_integer (v := ValuativeRel.valuation K)`. Use `(IsLocallyConstant.iff_eventually_eq _).mpr fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ 𝒪[K]`. Use `filter_upwards [ho.mem_nhds hx] with y hy`.
+
+Establish `hy' : y ∈ 𝒪[K]` using `hy`. Simplify using `[intInd, hx, hy']`. Use `filter_upwards [hcl.isOpen_compl.mem_nhds hx] with y hy`. Establish `hy' : y ∉ 𝒪[K]` using `hy`. Simplify using `[intInd, hx, hy']`.
+-/
 theorem intInd_isLocallyConstant : IsLocallyConstant (intInd : K → ℂ) := by
   have ho : IsOpen (𝒪[K] : Set K) := Valuation.isOpen_integer
   have hcl : IsClosed (𝒪[K] : Set K) := Valuation.isClosed_integer (v := ValuativeRel.valuation K)
@@ -51,6 +69,9 @@ theorem intInd_isLocallyConstant : IsLocallyConstant (intInd : K → ℂ) := by
     have hy' : y ∉ 𝒪[K] := hy
     simp [intInd, hx, hy']
 
+/- English proof (translation)
+Establish `hc : IsCompact (𝒪[K] : Set K)` using `IsNonarchimedeanLocalField.isCompact_closedBall K 1`. Use `HasCompactSupport.intro hc fun x hx => ?_` and prove the remaining obligations. Establish `hx' : x ∉ 𝒪[K]` using `hx`. Simplify using `[intInd, hx']`.
+-/
 theorem intInd_hasCompactSupport : HasCompactSupport (intInd : K → ℂ) := by
   have hc : IsCompact (𝒪[K] : Set K) := IsNonarchimedeanLocalField.isCompact_closedBall K 1
   refine HasCompactSupport.intro hc fun x hx => ?_
@@ -69,6 +90,11 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
 
 open GroundTheory.LocalField.FiltrationCocycleLiftCriterion.WeilRep (modulus_norm modulus_algebraMap)
 
+/- English proof (translation)
+Use `⟨intInd_isLocallyConstant, intInd_hasCompactSupport, fun u hu x => ?_⟩` and prove the remaining obligations. Establish `hm : modulus (u : E) = 1`. Rewrite using `[← modulus_norm (K := F), hu, modulus_one]`. Establish `h1 : c u = 1`. Use `char_congr c hc (u := u) (v := 1) (by simpa using hm)` as an intermediate fact.
+
+Simplify using `using this`. Rewrite using `[h1, inv_one, Units.val_one, one_mul]`. Conclude with `intInd_congr (by rw [modulus_mul, hm, mul_one])`.
+-/
 theorem intInd_mem_SBc (c : Eˣ →* ℂˣ) (hc : IsUnramifiedChar c) :
     (intInd : E → ℂ) ∈ GL2LocalData.SBc F E c := by
   refine ⟨intInd_isLocallyConstant, intInd_hasCompactSupport, fun u hu x => ?_⟩
@@ -85,6 +111,9 @@ def val (χ : AddChar F Circle) (c : Eˣ →* ℂˣ) (g : GL (Fin 2) F) (t : Eˣ
     ((((modulus (mRow g) : ℝ)⁻¹ : ℝ) : ℂ) * GL2LocalData.nsg E (mRow g) * (χ (xRow g) : ℂ) *
       intInd ((t : E) * algebraMap F E (mRow g)⁻¹))
 
+/- English proof (translation)
+Establish `h : ∃ t : Eˣ, Algebra.norm F (t : E) = (g.val).det` using `⟨t, ht⟩`. Establish `hm : modulus (h.choose : E) = modulus (t : E)`. Rewrite using `[← modulus_norm (K := F), ← modulus_norm (K := F) (t : E), h.choose_spec, ht]`. Rewrite using `[GL2LocalData.Wc, dif_pos h, hform g _ h.choose_spec, val, char_congr c hc hm, intInd_congr (x := (h.choose : E) * algebraMap F E (mRow g)⁻¹) (y := (t : E) * algebraMap F E (mRow g)⁻¹) (by rw [modulus_mul, modulus_mul, hm])]`.
+-/
 theorem Wc_eq {χ : AddChar F Circle} {σ : E ≃ₐ[F] E} {μ : Measure E} {c : Eˣ →* ℂˣ}
     (hc : IsUnramifiedChar c)
     (hform : ∀ (g : GL (Fin 2) F) (t : Eˣ), Algebra.norm F (t : E) = (g.val).det →
@@ -101,6 +130,19 @@ theorem Wc_eq {χ : AddChar F Circle} {σ : E ≃ₐ[F] E} {μ : Measure E} {c :
     intInd_congr (x := (h.choose : E) * algebraMap F E (mRow g)⁻¹)
       (y := (t : E) * algebraMap F E (mRow g)⁻¹) (by rw [modulus_mul, modulus_mul, hm])]
 
+/- English proof (translation)
+Establish `htt : modulus (t' : E) = modulus (t : E)`. Rewrite using `[← modulus_norm (K := F), ← modulus_norm (K := F) (t : E), ht, ht', hdet]`. Establish `hns : GL2LocalData.nsg E (mRow g') = GL2LocalData.nsg E (mRow g)`. Establish `h1` using `hη (Units.mk0 _ hm0')`. Establish `h2` using `hη (Units.mk0 _ hm0)`.
+
+Rewrite `h1`, `h2` using `[Units.val_mk0]`. Rewrite using `[← h1, ← h2, char_congr η hηu (u := Units.mk0 _ hm0') (v := Units.mk0 _ hm0) (by simpa using hmm)]`. Establish `hI : (intInd ((t' : E) * algebraMap F E (mRow g')⁻¹) : ℂ) = intInd ((t : E) * algebraMap F E (mRow g)⁻¹)` using `intInd_congr (by`. Rewrite using `[modulus_mul, modulus_mul, modulus_algebraMap (K := F), modulus_algebraMap (K := F), modulus_inv, modulus_inv, hmm, htt])`. Unfold `val`.
+
+Rewrite using `[char_congr c hc htt, hdet, hmm, hns, hI]`. Distinguish the cases in `hz : (intInd ((t : E) * algebraMap F E (mRow g)⁻¹) : ℂ) = 0`. Simplify using `only [hz, mul_zero]`. Establish `hO : (t : E) * algebraMap F E (mRow g)⁻¹ ∈ 𝒪[E]`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hz (by rw [intInd, if_neg h])`. Establish `hle : modulus (g.val).det ≤ modulus (mRow g) ^ 2`. Establish `h1` using `modulus_le_one_iff.2 hO`. Rewrite `h1` using `[modulus_mul, modulus_algebraMap (K := F), modulus_inv, ← modulus_norm (K := F) (t : E), ht]`. Establish `hb : 0 < modulus (mRow g) ^ 2` using `pow_pos (modulus_pos hm0) 2`.
+
+Rewrite `h1` using `[inv_pow, ← div_eq_mul_inv, div_le_one₀ hb]`. Then use the resulting hypothesis. Establish `hχx : χ (xRow g') = χ (xRow g)`. Establish `h1` using `isTrivialOn_addCharConductor hχ.1 hχ.2.1 (xRow g' - xRow g) (by rw [hχ.2.2]; exact mem_valBall_zero_iff.2 (hx hle))`. Rewrite `h1` using `[sub_eq_add_neg, AddChar.map_add_eq_mul, AddChar.map_neg_eq_inv]`. Conclude with `mul_inv_eq_one.1 h1`.
+
+Rewrite using `[hχx]`.
+-/
 theorem val_eq {χ : AddChar F Circle} {η : Fˣ →* ℂˣ} {c : Eˣ →* ℂˣ} (hχ : Ad3.IsStd χ)
     (hη : ∀ a, ((η a : ℂˣ) : ℂ) = GL2LocalData.nsg E (a : F)) (hηu : IsUnramifiedChar η)
     (hc : IsUnramifiedChar c) {g g' : GL (Fin 2) F} {t t' : Eˣ}
@@ -143,10 +185,16 @@ theorem val_eq {χ : AddChar F Circle} {η : Fˣ →* ℂˣ} {c : Eˣ →* ℂˣ
     rw [hχx]
 
 omit [MeasurableSpace F] [BorelSpace F] in
+/- English proof (translation)
+Simplify using `[mRow]`.
+-/
 theorem mRow_one : mRow (1 : GL (Fin 2) F) = 1 := by
   simp [mRow]
 
 omit [MeasurableSpace F] [BorelSpace F] in
+/- English proof (translation)
+Simplify using `[xRow]`.
+-/
 theorem xRow_one : xRow (1 : GL (Fin 2) F) = 0 := by
   simp [xRow]
 

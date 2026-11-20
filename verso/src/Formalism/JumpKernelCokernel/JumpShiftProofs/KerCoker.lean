@@ -2,6 +2,17 @@ import Formalism.JumpKernelCokernel.Statement
 
 namespace Formalism.KernelCokernelLengths.KernelCokernelLemmas
 
+/- English proof (translation)
+Establish `hNf : ∀ x ∈ N, f x ∈ N` using `fun x hx => hN (Submodule.mem_map_of_mem hx)`. Set `g : N →ₗ[O] ↥((N.map f).comap N.subtype)` to `LinearMap.codRestrict ((N.map f).comap N.subtype) (f.restrict hNf) (fun x => Submodule.mem_comap.2 (Submodule.mem_map_of_mem x.2))`. Establish `hgs : Function.Surjective g`. Introduce and unpack `⟨y, hy⟩`. Take `⟨x, hx, hxy⟩` from `Submodule.mem_comap.1 hy`.
+
+Conclude with `⟨⟨x, hx⟩, Subtype.ext (Subtype.ext hxy)⟩`. Establish `hNfin : Module.length O N ≠ ⊤` using `ne_top_of_le_ne_top hM (Module.length_le_of_injective N.subtype N.injective_subtype)`. Establish `hQfin : Module.length O ((N.map f).comap N.subtype) ≠ ⊤` using `ne_top_of_le_ne_top hNfin (Module.length_le_of_injective _ (Submodule.injective_subtype _))`. Establish `e1` using `Module.length_eq_add_of_exact _ _ (Submodule.injective_subtype ((N.map f).comap N.subtype)) (Submodule.mkQ_surjective _) (LinearMap.exact_subtype_mkQ ((N.map f).comap N.subtype))`. Establish `e2` using `Module.length_eq_add_of_exact _ _ (Submodule.injective_subtype (LinearMap.ker g)) hgs (LinearMap.exact_subtype_ker_map g)`.
+
+Establish `e3 : Module.length O (↥N ⧸ (N.map f).comap N.subtype) = Module.length O (LinearMap.ker g)`. Rewrite `e2` using `[e1, add_comm]`. Conclude with `WithTop.add_right_cancel hQfin e2`. Rewrite using `[e3]`. Use `Module.length_le_of_injective (LinearMap.codRestrict (LinearMap.ker f) (N.subtype.comp (LinearMap.ker g).subtype) ?_) ?_` and prove the remaining obligations.
+
+Introduce `x`. Conclude with `LinearMap.mem_ker.2 (congrArg (fun z : ↥((N.map f).comap N.subtype) => ((z : N) : M)) (LinearMap.mem_ker.1 x.2))`. Introduce `x y hxy`. Establish `h` using `congrArg Subtype.val hxy`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `h`.
+-/
 theorem main (O : Type) [CommRing O] (M : Type) [AddCommGroup M] [Module O M]
     (hM : Module.length O M ≠ ⊤) (f : Module.End O M) (N : Submodule O M) (hN : N.map f ≤ N) :
     Module.length O (↥N ⧸ (N.map f).comap N.subtype) ≤ Module.length O (LinearMap.ker f) := by
@@ -38,6 +49,9 @@ theorem main (O : Type) [CommRing O] (M : Type) [AddCommGroup M] [Module O M]
 
 end Formalism.KernelCokernelLengths.KernelCokernelLemmas
 
+/- English proof (translation)
+Introduce `O _ M _ _ hM f N hN`. Conclude with `Formalism.KernelCokernelLengths.KernelCokernelLemmas.main O M hM f N hN`.
+-/
 theorem Formalism.KernelCokernelLengths.kernel_cokernel_lengths : Formalism.KernelCokernelLengths.KerCoker := by
   intro O _ M _ _ hM f N hN
   exact Formalism.KernelCokernelLengths.KernelCokernelLemmas.main O M hM f N hN

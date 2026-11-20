@@ -20,6 +20,37 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' hT v hv t`. Establish `hP : GlobalTheory.FunPr.Hypotheses₂` using `hKP.base`. Establish `hvT : v ∉ X.T` using `hv.1`. Use `haveI := hT.geo.hV.lat`. Use `haveI := hT.geo.hW.lat`.
+
+Take `⟨b, hb⟩` from `exists_isSplitBasis t G.V.L hT.base.cm`. Take `⟨c, hc⟩` from `exists_isSplitBasis t G.W.L hT.base.cm`. Take `⟨ι, hι, -⟩` from `GlobalTheory.T.split_basis_witt_model_local hP F E σ B _ _ _ _ _ _ _ om _ _ _ _ (GlobalTheory.KSplit.isPair_big hT) v t b c hb hc`. Take `⟨hα, -, hrα⟩` from `GlobalTheory.T.splitPlaceCharacterComponent_smooth_unitary_conductor F E X.α hT.chars.heckeα v t`. Take `⟨hβ, -, hrβ⟩` from `GlobalTheory.T.splitPlaceCharacterComponent_smooth_unitary_conductor F E X.β hT.chars.heckeβ v t`.
+
+Establish `hw : splitPrime t ∉ above E (X.T : Set (Pl F))` using `by show ¬ (splitPrime t).under (𝓞 F) ∈ (X.T : Set (Pl F))`. Rewrite using `[splitPrime_under]`. Conclude with `hvT`. Establish `uα` using `hrα.2 (hT.chars.unrα _ hw)`. Establish `uβ` using `hrβ.2 (hT.chars.unrβ _ hw)`.
+
+Establish `uν : GlobalTheory.SplitWeil.IsUnram (chrW X.α t / chrW X.β t)` using `fun x hx => by`. Rewrite using `[MonoidHom.div_apply, uα x hx, uβ x hx, div_one]`. Take `⟨l, hl, hl1⟩` from `GlobalTheory.T.unramified_character_normalized_equivariant_functional (Fv F v) a _ (((a + a' : ℕ) : ℂ) / 2) (hα.div hβ) uν`. Use `set α := chrW X.α t with hαd`. Use `set β := chrW X.β t with hβd`.
+
+Establish `hbij` using `Model.IsLin.bij hι`. Establish `m : ∀ φ ∈ SB (Fin a × Fin (a + a') → Fv F v), ι φ ∈ GlobalTheory.SplitWeil.SB _` using `fun φ h => hbij.mapsTo h`. Establish `hI` using `GlobalTheory.T.induced_representation_irreducible hP.bernsteinUnitaryProductIrreducible (Fv F v) a a' α β hα hβ`. Take `⟨p, hp⟩` from `GlobalTheory.KSplit.exists_linear_ext (SB _) (GlobalTheory.KSplit.indSp a a' α β) (fun φ => GlobalTheory.KSplit.mapA a' l (α / β) β (ι φ)) (fun φ h => GlobalTheory.T.intertwining_map_into_induced_left _ a a' α β l hβ hl _ (m φ h)) (fun φ h φ' h' => by simp only [map_add]; exact G …`. Establish `act` using `fun g hg h hh φ hφ φ₁ hφ₁ H => GlobalTheory.T.linear_witt_model_unitary_action hP F E σ B _ _ _ _ _ _ _ om _ _ _ _ (GlobalTheory.KSplit.isPair_big hT) v t b c ι hι g hg h hh φ hφ φ₁ hφ₁ H`.
+
+Rewrite `act` using `[GlobalTheory.KSplit.chrW_div, inv_div, ← hαd, ← hβd]`. Establish `tr : ∀ h ∈ UAt σ G.W (evFin F v), ∀ φ ∈ SB (Fin a × Fin (a + a') → Fv F v), ∀ φ₁ ∈ SB (Fin a × Fin (a + a') → Fv F v), Acts (evFin F v) (om (1, h)) φ φ₁ → (p φ₁ : GL (Fin (a + a')) (Fv F v) → ℂ) = fun y => (p φ : GL (Fin (a + a')) (Fv F v) → ℂ) (y * GlobalTheory.KSplit.locMat t c …` using `fun h hh φ hφ φ₁ hφ₁ H => by`. Use function extensionality and compare the values at `y`. Rewrite using `[hp _ hφ₁, hp _ hφ, act 1 (GlobalTheory.KSplit.one_mem_UAt _ v) h hh φ hφ φ₁ hφ₁ H, map_one, GlobalTheory.KSplit.mapA_omA_right]`. Establish `ne : ∃ φ ∈ SB (Fin a × Fin (a + a') → Fv F v), p φ ≠ 0`.
+
+Take `⟨Φ, hΦ, h0⟩` from `GlobalTheory.KSplit.mapA_ne_zero (a' := a') (ν := α / β) (β := β) (l := l) ⟨_, GlobalTheory.KSplit.indicator_intM_mem_SB, hl1 ▸ one_ne_zero⟩`. Take `⟨φ, hφ, rfl⟩` from `hbij.surjOn hΦ`. Conclude with `⟨φ, hφ, fun h => h0 (by rw [← hp φ hφ, h]; rfl)⟩`. Establish `onto : (SB (Fin a × Fin (a + a') → Fv F v)).map p = ⊤` using `GlobalTheory.KSplit.map_eq_top _ _ hI p (fun φ hφ x => by`. Take `⟨φ₁, h1, h2⟩` from `hbij.surjOn (GlobalTheory.SplitFlip.omA_mem_SB (α / β) β 1 x (m φ hφ))`.
+
+Conclude with `⟨φ₁, h1, funext fun y => by rw [hp _ h1, hp _ hφ, h2, GlobalTheory.KSplit.mapA_omA_right]⟩) ne`. Establish `inv : augAt om v ≤ LinearMap.ker p`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, φ, hφ, φ₁, hφ₁, H, rfl⟩`. Use `LinearMap.mem_ker.2 ?_` and prove the remaining obligations.
+
+Rewrite using `[map_sub, sub_eq_zero]`. Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[hp _ hφ₁, hp _ hφ, act g hg 1 (GlobalTheory.KSplit.one_mem_UAt _ v) φ hφ φ₁ hφ₁ H, map_one, GlobalTheory.KSplit.mapA_omA_left hl _ (m φ hφ)]`. Establish `augSB : augAt om v ≤ SB (Fin a × Fin (a + a') → Fv F v)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨g, -, φ, hφ, φ₁, hφ₁, -, rfl⟩`. Conclude with `sub_mem hφ₁ hφ`. Take `⟨e, he⟩` from `GlobalTheory.T.induced_two_block_equiv (Fv F v) a a' α β`. Use `⟨e.toLinearMap ∘ₗ p, c, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `f`.
+
+Take `⟨φ, hφ, hpφ⟩ : e.symm f ∈ (SB (Fin a × Fin (a + a') → Fv F v)).map p` from `onto ▸ Submodule.mem_top`. Conclude with `⟨φ, hφ, by simp [hpφ]⟩`. Introduce `φ hφ h0`. Establish `h0' : p φ = 0` using `e.injective (by simpa using h0)`. Establish `hgood` using `GlobalTheory.T.character_at_uniformizer_not_root_of_unity F E σ B a a' G X om om' hT v hv`.
+
+Break down `GlobalTheory.T.augmentation_submodule_first_factor hP F E σ B a a' G X om om' hT v hv hgood (LinearMap.ker p ⊓ SB _) (le_inf inv augSB) inf_le_right (fun h hh ψ hψ ψ₁ hψ₁ H => ⟨LinearMap.mem_ker.2 (Subtype.ext (by` into its components or cases. Rewrite using `[tr h hh ψ hψ.2 ψ₁ hψ₁ H, LinearMap.mem_ker.1 hψ.1]`. Use the proof step `rfl)), hψ₁⟩) with hN | hN`. Conclude with `hN.le ⟨h0', hφ⟩`. It suffices to derive a contradiction.
+
+Take `⟨ψ, hψ, hne⟩` from `ne`. Establish `: ψ ∈ LinearMap.ker p ⊓ SB _` using `hN.ge hψ`. Conclude with `hne this.1`. Introduce `h hh φ hφ`. Take `⟨φ₁, ⟨h1, H⟩, -⟩` from `(GlobalTheory.T.theta_action_exists hP F E σ B _ _ _ _ _ _ _ om _ _ _ _ (GlobalTheory.KSplit.isPair_big hT) v).1 1 (GlobalTheory.KSplit.one_mem_UAt _ v) h hh φ hφ`.
+
+Conclude with `⟨φ₁, h1, H⟩`. Introduce `h hh g hg φ hφ φ₁ hφ₁ H`. Establish `hlm : GlobalTheory.KSplit.locMat t c h = g` using `by ext1`. Rewrite using `[GlobalTheory.KSplit.locMat_val, hg]`. Simplify using `[Matrix.mul_assoc]`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `y`. Use `show (e (p φ₁)).1.1 y = (e (p φ)).1.1 (y * g)`. Rewrite using `[he, he, tr h hh φ hφ φ₁ hφ₁ H, hlm]`.
+-/
 theorem zeta_coinv : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),
     IsTriple B G X om om' → ∀ v, X.Good v → ∀ t : E →ₐ[F] Fv F v,

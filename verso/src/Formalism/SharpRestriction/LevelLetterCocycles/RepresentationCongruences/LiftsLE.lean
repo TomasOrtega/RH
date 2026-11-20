@@ -15,6 +15,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
     {PD : PeriodData G Qp K₀ K B BdR}
 
+/- English proof (translation)
+Unfold `LiftsAt at h ⊢`. Take `⟨w₁, z, h1, h2, h3, h4, h5⟩` from `h`. Use `⟨w₁, z, h1, h2, h3, h4, ?_⟩` and prove the remaining obligations. Establish `hl : lE W e * (lE W k * f) = lE W (k + e) * f`. Unfold `lE`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `h5` using `[hl]`. Conclude with `h5`.
+-/
 theorem lifts_lE (W : LocWach PD LL O v n) (A : ArcP n) {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L)
     (c : ZMod n) {d : ℕ} (b : Fin d → W.DD T₂) (sol : Fin d → ℕ → Fin d → LL) (k₀ : Fin d)
     {f : W.EE} {k e : ℕ} (h : LiftsAt W A F c b sol k₀ (lE W k * f) e) :

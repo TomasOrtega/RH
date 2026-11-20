@@ -8,6 +8,9 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Comple
   [IsUnitBall O K] {l e a : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] [Fact l.Prime]
   [NormedAlgebra ℚ_[l] K] [NeZero e] [NeZero a] [TameDescentExponentData K l e a] {η H : ℕ}
 
+/- English proof (translation)
+Establish `h` using `(Commute.all ((l : K⟦X⟧)) (E K l e)).geom_sum₂_mul n`. Establish `hE : (l : K⟦X⟧) - E K l e = -((X : K⟦X⟧) ^ e)` using `by simp [E]`. Rewrite `h` using `[hE]`. Take the linear combination `-h`.
+-/
 theorem l_pow_eq (n : ℕ) : ((l : K⟦X⟧)) ^ n =
     E K l e ^ n - (X : K⟦X⟧) ^ e * ∑ i ∈ Finset.range n, (l : K⟦X⟧) ^ i * E K l e ^ (n - 1 - i) := by
   have h := (Commute.all ((l : K⟦X⟧)) (E K l e)).geom_sum₂_mul n
@@ -15,6 +18,11 @@ theorem l_pow_eq (n : ℕ) : ((l : K⟦X⟧)) ^ n =
   rw [hE] at h
   linear_combination -h
 
+/- English proof (translation)
+Establish `h1 : (l : K) ^ n • y = ((l : K⟦X⟧)) ^ n • y`. Rewrite using `[← Nat.cast_pow, ← Nat.cast_pow, Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]`. Rewrite using `[h1, l_pow_eq (e := e), sub_smul, mul_smul, Finset.sum_smul]`. Use `congr 2`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_smul, ← Nat.cast_pow, Nat.cast_smul_eq_nsmul]`.
+-/
 theorem l_pow_smul (n : ℕ) (y : Vec K a ι) : (l : K) ^ n • y =
     E K l e ^ n • y - (X : K⟦X⟧) ^ e • ∑ i ∈ Finset.range n, ((l ^ i : ℕ)) • (E K l e ^ (n - 1 - i) • y : Vec K a ι) := by
   have h1 : (l : K) ^ n • y = ((l : K⟦X⟧)) ^ n • y := by
@@ -26,19 +34,33 @@ theorem l_pow_smul (n : ℕ) (y : Vec K a ι) : (l : K) ^ n • y =
 
 variable (D : BKDat O K l e a ι η H)
 
+/- English proof (translation)
+Use `D.M.smul_mem (EIn l e (A O K) ^ j) hm` as an intermediate fact. Simplify `this` using `[Subalgebra.smul_def]`.
+-/
 theorem E_pow_smul_mem_M (j : ℕ) {m : Vec K a ι} (hm : m ∈ D.M) : E K l e ^ j • m ∈ D.M := by
   have := D.M.smul_mem (EIn l e (A O K) ^ j) hm
   simpa [Subalgebra.smul_def] using this
 
+/- English proof (translation)
+Rewrite `hy`, the goal using `[mem_divE]`. Rewrite using `[smul_comm]`. Conclude with `E_pow_smul_mem_M D j hy`.
+-/
 theorem E_pow_smul_mem_EM (j : ℕ) {y : Vec K a ι} (hy : y ∈ D.EM η) : E K l e ^ j • y ∈ D.EM η := by
   rw [mem_divE] at hy ⊢
   rw [smul_comm]
   exact E_pow_smul_mem_M D j hy
 
+/- English proof (translation)
+Rewrite `hy`, the goal using `[BKDat.Y, Descent.mem_invOf]`. Conclude with `⟨E_pow_smul_mem_EM D j hy.1, fun g => by rw [Descent.act_E_pow_smul, hy.2 g]⟩`.
+-/
 theorem E_pow_smul_mem_Y (j : ℕ) {y : Vec K a ι} (hy : y ∈ D.Y) : E K l e ^ j • y ∈ D.Y := by
   rw [BKDat.Y, Descent.mem_invOf] at hy ⊢
   exact ⟨E_pow_smul_mem_EM D j hy.1, fun g => by rw [Descent.act_E_pow_smul, hy.2 g]⟩
 
+/- English proof (translation)
+Use `⟨⟨_, E_pow_smul_mem_EM D j hy, rfl⟩, fun g => ?_⟩` and prove the remaining obligations. Establish `h'` using `congrArg (D.mulPol ⟨_, pow_mem (E_mem l e (Rpi O K l e)) j⟩) (h g)`. Rewrite `h'` using `[Descent.actPol_cls]`. Express the relevant statement in the definitionally equal form `D.desc.actPol g (D.cls (E K l e ^ j • y)) = D.cls (E K l e ^ j • y)`. Rewrite using `[Descent.actPol_cls, Descent.act_E_pow_smul]`.
+
+Conclude with `h'`.
+-/
 theorem cls_E_pow_smul_mem_Z (j : ℕ) {y : Vec K a ι} (hy : y ∈ D.EM η)
     (h : ∀ g, D.desc.actPol g (D.cls y) = D.cls y) : D.cls (E K l e ^ j • y) ∈ D.Z := by
   refine ⟨⟨_, E_pow_smul_mem_EM D j hy, rfl⟩, fun g => ?_⟩
@@ -57,6 +79,11 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Comple
   [NormedAlgebra ℚ_[l] K] [NeZero e] [NeZero a] [TameDescentExponentData K l e a] {η H : ℕ}
   (D : BKDat O K l e a ι η H)
 
+/- English proof (translation)
+Take `⟨⟨y, hy, rfl⟩, h⟩` from `D.desc.mem_Z.1 hw`. Use `set s : Vec K a ι := ∑ i ∈ Finset.range η, (l ^ i : ℕ) • (E K l e ^ (η - 1 - i) • y : Vec K a ι) with hs`. Establish `hsZ : D.cls s ∈ D.Z`. Rewrite using `[hs, map_sum]`. Conclude with `Submodule.sum_mem _ fun i _ => by`.
+
+Rewrite using `[map_nsmul]`. Conclude with `Submodule.smul_of_tower_mem _ _ (cls_E_pow_smul_mem_Z D _ hy h)`. Use `⟨-D.cls s, neg_mem hsZ, ?_⟩` and prove the remaining obligations. Establish `h0 : D.cls (E K l e ^ η • y) = 0` using `D.cls_eq_zero_iff.2 (D.M_le_Man hy)`. Rewrite using `[← map_smul, l_pow_smul (e := e) η y, ← hs, map_sub, h0, zero_sub, map_neg, PhiMod.vPol_cls]`.
+-/
 theorem l_pow_smul_Z {w : D.Pol} (hw : w ∈ D.Z) : ∃ z ∈ D.Z, (l : K) ^ η • w = D.vPol z := by
   obtain ⟨⟨y, hy, rfl⟩, h⟩ := D.desc.mem_Z.1 hw
   set s : Vec K a ι := ∑ i ∈ Finset.range η, (l ^ i : ℕ) • (E K l e ^ (η - 1 - i) • y : Vec K a ι) with hs
@@ -69,6 +96,11 @@ theorem l_pow_smul_Z {w : D.Pol} (hw : w ∈ D.Z) : ∃ z ∈ D.Z, (l : K) ^ η 
   have h0 : D.cls (E K l e ^ η • y) = 0 := D.cls_eq_zero_iff.2 (D.M_le_Man hy)
   rw [← map_smul, l_pow_smul (e := e) η y, ← hs, map_sub, h0, zero_sub, map_neg, PhiMod.vPol_cls]
 
+/- English proof (translation)
+Establish `hy'` using `hy`. Rewrite `hy'` using `[BKDat.Y, Descent.mem_invOf]`. Use `set s : Vec K a ι := ∑ i ∈ Finset.range η, (l ^ i : ℕ) • (E K l e ^ (η - 1 - i) • y : Vec K a ι) with hs`. Establish `hsY : s ∈ D.Y` using `Submodule.sum_mem _ fun i _ => Submodule.smul_of_tower_mem _ _ (E_pow_smul_mem_Y D _ hy)`. Establish `h1 : -((X : K⟦X⟧) ^ e • s) ∈ D.Y'` using `D.desc.mem_Y'.2 ⟨-s, neg_mem hsY, smul_neg _ _⟩`.
+
+Establish `h2 : E K l e ^ η • y ∈ D.Minv`. Rewrite using `[BKDat.Minv, Descent.mem_invOf]`. Conclude with `⟨hy'.1, fun g => by rw [Descent.act_E_pow_smul, hy'.2 g]⟩`. Rewrite using `[l_pow_smul (e := e) η y, ← hs, sub_eq_neg_add]`. Conclude with `Submodule.add_mem_sup h1 h2`.
+-/
 theorem l_pow_smul_Y {y : Vec K a ι} (hy : y ∈ D.Y) : (l : K) ^ η • y ∈ D.Y' ⊔ D.Minv := by
   have hy' := hy
   rw [BKDat.Y, Descent.mem_invOf] at hy'
@@ -85,6 +117,9 @@ theorem l_pow_smul_Y {y : Vec K a ι} (hy : y ∈ D.Y) : (l : K) ^ η • y ∈ 
 
 end GlobalTheory.NgalDivisible
 
+/- English proof (translation)
+Introduce `O K _ _ _ _ _ _ l e a ι _ _ _ _ _ _ _ η H D`. Conclude with `⟨fun _ hw => NgalDivisible.l_pow_smul_Z D hw, fun _ hy => NgalDivisible.l_pow_smul_Y D hy⟩`.
+-/
 theorem GlobalTheory.divisible_of_BKDat : ∀ (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K]
     [CompleteSpace K] [Algebra O K] [IsUnitBall O K] (l e a : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι]
     [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] [NeZero a] [TameDescentExponentData K l e a] (η H : ℕ)

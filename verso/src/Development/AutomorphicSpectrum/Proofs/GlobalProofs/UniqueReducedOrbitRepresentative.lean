@@ -2,6 +2,17 @@ import Mathlib
 
 namespace GlobalTheory.CompanionTheory.SiegelKlingen
 
+/- English proof (translation)
+Introduce `G M _ _ φ f hpos hinj D hfin x ⟨g0, hg0⟩`. Establish `key : ∀ a b : G, φ (a * b⁻¹) * (φ b * x) = φ a * x`. Introduce `a b`. Rewrite using `[← mul_assoc, ← map_mul, inv_mul_cancel_right]`. Establish `hS : {g : G | φ g * x ∈ D}.Finite`.
+
+Use `(hfin.image (fun h => h * g0)).subset ?_` and prove the remaining obligations. Introduce `g hg`. Conclude with `⟨g * g0⁻¹, ⟨φ g0 * x, hg0, by rw [key]; exact hg⟩, inv_mul_cancel_right g g0⟩`. Take `⟨g, hgS, hmin⟩` from `Set.exists_min_image _ f hS ⟨g0, hg0⟩`. Use `⟨g, ⟨hgS, fun g' hg' hD => ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `hmem : φ (g' * g) * x ∈ D` using `by rwa [map_mul, mul_assoc]`. Establish `h1` using `hmin _ hmem`. Rewrite `h1` using `[map_mul]`. Establish `hp` using `hpos g`. Use the polynomial consequences of the given equalities and inequalities.
+
+Introduce and unpack `g2 ⟨hg2, hmin2⟩`. Establish `h1 : 1 ≤ f (g * g2⁻¹)` using `not_lt.1 fun hlt => hmin2 _ hlt (by rw [key]; exact hgS)`. Rewrite `h1` using `[map_mul, map_inv]`. Establish `hp2` using `hpos g2`. Establish `h3` using `mul_le_mul_of_nonneg_right h1 hp2.le`.
+
+Rewrite `h3` using `[one_mul, inv_mul_cancel_right₀ hp2.ne']`. Conclude with `hinj (le_antisymm h3 (hmin g2 hg2))`.
+-/
 theorem exists_unique_minimal_translate :
     ∀ {G M : Type} [Group G] [Monoid M] (φ : G →* M) (f : G →* ℝ), (∀ g, 0 < f g) →
     Function.Injective f → ∀ (D : Set M),

@@ -5,6 +5,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.SatEigArith
 
+/- English proof (translation)
+Simplify using `only [Multiset.esymm, Multiset.powersetCard_map, Multiset.map_map, Function.comp_def]`. Rewrite using `[← Multiset.sum_map_mul_left]`. Use `congrArg Multiset.sum (Multiset.map_congr rfl fun t ht => ?_)` and prove the remaining obligations. Rewrite using `[Multiset.prod_map_mul, Multiset.map_const', Multiset.prod_replicate, (Multiset.mem_powersetCard.1 ht).2, Multiset.map_id', mul_comm]`.
+-/
 theorem esymm_map_mul_const' (c : ℂ) (s : Multiset ℂ) (k : ℕ) :
     (s.map (· * c)).esymm k = c ^ k * s.esymm k := by
   simp only [Multiset.esymm, Multiset.powersetCard_map, Multiset.map_map, Function.comp_def]
@@ -13,6 +16,15 @@ theorem esymm_map_mul_const' (c : ℂ) (s : Multiset ℂ) (k : ℕ) :
   rw [Multiset.prod_map_mul, Multiset.map_const', Multiset.prod_replicate,
     (Multiset.mem_powersetCard.1 ht).2, Multiset.map_id', mul_comm]
 
+/- English proof (translation)
+Establish `hQ : (q : ℂ) ≠ 0` using `by exact_mod_cast hq.ne'`. Break down `Nat.eq_zero_or_pos k with rfl | hk1` into its components or cases. Simplify using the standard rewrite rules. Establish `h2 : ((k * (k - 1) / 2 : ℕ) : ℂ) = (k : ℂ) * ((k : ℂ) - 1) / 2`. Establish `h0` using `Nat.div_mul_cancel (even_iff_two_dvd.mp (Nat.even_mul_pred_self k))`.
+
+Establish `e : ((k * (k - 1) / 2 * 2 : ℕ) : ℂ) = ((k * (k - 1) : ℕ) : ℂ)` using `by rw [h0]`. Simplify using `only [Nat.cast_mul, Nat.cast_ofNat] at e`. Rewrite using `[eq_div_iff two_ne_zero, e, Nat.cast_sub (show 1 ≤ k from hk1)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h3 : ((k * (n - 1) : ℕ) : ℂ) = (k : ℂ) * ((n : ℂ) - 1)`. Rewrite using `[Nat.cast_mul, Nat.cast_sub (show 1 ≤ n by omega)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← Complex.cpow_natCast, ← Complex.cpow_natCast, ← Complex.cpow_neg, ← Complex.cpow_add _ _ hQ, ← Complex.cpow_add _ _ hQ, ← Complex.cpow_mul_nat, h2, h3]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exponent_eq (q n k : ℕ) (hq : 0 < q) (hk : k ≤ n) :
     (q : ℂ) ^ (k * (k - 1) / 2) * ((q : ℂ) ^ (k * (n - 1)))⁻¹ * (q : ℂ) ^ (((k : ℂ) * ((n : ℂ) - k)) / 2) =
       ((q : ℂ) ^ (((1 - (n : ℝ)) / 2 : ℝ) : ℂ)) ^ k := by
@@ -36,6 +48,9 @@ theorem exponent_eq (q n k : ℕ) (hq : 0 < q) (hk : k ≤ n) :
   push_cast
   ring
 
+/- English proof (translation)
+Introduce `q n k hq hk α`. Rewrite using `[esymm_map_mul_const', GlobalTheory.LFun.satEig, ← mul_assoc, ← mul_assoc, exponent_eq q n k hq hk]`. Use `congr 2`. Simplify using `[Multiset.map_map, Function.comp_def, Units.val_inv_eq_inv_val]`.
+-/
 theorem satEig_inv_normalised : ∀ (q n k : ℕ), 0 < q → k ≤ n → ∀ (α : Fin n → ℂˣ),
     (q : ℂ) ^ (k * (k - 1) / 2) * (((q : ℂ) ^ (k * (n - 1)))⁻¹ *
         GlobalTheory.LFun.satEig q n ((Finset.univ.val.map α).map (·⁻¹)) k) =

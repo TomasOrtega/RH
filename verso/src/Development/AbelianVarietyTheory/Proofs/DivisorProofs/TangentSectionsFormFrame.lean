@@ -19,6 +19,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.TanSec.Frame
 
+/- English proof (translation)
+Use `OmegaGlobal.isQuasicoherent_of_frames h` as an intermediate fact. Establish `: (VB.dual F).IsQuasicoherent` using `OmegaGlobal.isQuasicoherent_of_frames fun x =>`. Establish `⟨U, n, _, hx, he⟩` using `h x`. Use the proof step `⟨U, n, _, hx, he.dual⟩`. Use `choose U n e hx he using h`.
+
+Use `Twist.isIso_of_cover _ (U := fun y => g ⁻¹ᵁ U (g y)) (top_le_iff.1 fun y _ => Opens.mem_iSup.2 ⟨y, hx (g y)⟩) fun y W hW => ?_` and prove the remaining obligations. Establish `H (i : Fin (n (g y))) : (theta g F).app _ (QCoh.pullbackSections g (VB.dual F) (le_refl (g ⁻¹ᵁ U (g y))) ((he (g y)).coord i)) = ((he (g y)).pullback g).coord i` using `dual_pull_ext g le_rfl fun W hW S hS e' s => by`. Rewrite using `[dualApp_theta g _ hW, VB.IsFrame.dualApp_coord, VB.IsFrame.dualApp_coord]`. Conclude with `((he (g y)).pullback_basis_repr g hW e' s i).symm`. Establish `: QCoh.appLinear (theta g F) W = (((he (g y)).dual.pullback g).equiv ((he (g y)).pullback g).dual hW).toLinearMap` using `(((he (g y)).dual.pullback g).basis hW).ext fun i => by`.
+
+Rewrite using `[VB.IsFrame.basis_apply, LinearEquiv.coe_coe, VB.IsFrame.equiv_resM_frame, ← H]`. Conclude with `Twist.app_resM (theta g F) hW _`. Rewrite using `[← QCoh.coe_appLinear, this]`. Conclude with `LinearEquiv.bijective _`.
+-/
 theorem isIso_theta {X C : Scheme.{0}} {F : X.Modules} (g : C ⟶ X)
     (h : ∀ x : X, ∃ (U : X.Opens) (n : ℕ) (e : Fin n → Γ(F, U)), x ∈ U ∧ VB.IsFrame e) : IsIso (theta g F) := by
   have := OmegaGlobal.isQuasicoherent_of_frames h
@@ -41,6 +48,9 @@ theorem isIso_theta {X C : Scheme.{0}} {F : X.Modules} (g : C ⟶ X)
   rw [← QCoh.coe_appLinear, this]
   exact LinearEquiv.bijective _
 
+/- English proof (translation)
+The claim follows from `have := OmegaGlobal.isQuasicoherent_of_frames h have ⟨U, n, _, hx, he⟩ := h (g y) ⟨g ⁻¹ᵁ U, n, _, hx, he.pullback g⟩`.
+-/
 theorem frames_pullback {X C : Scheme.{0}} {F : X.Modules} (g : C ⟶ X)
     (h : ∀ x : X, ∃ (U : X.Opens) (n : ℕ) (e : Fin n → Γ(F, U)), x ∈ U ∧ VB.IsFrame e) (y : C) :
     ∃ (U : C.Opens) (n : ℕ) (e : Fin n → Γ((Scheme.Modules.pullback g).obj F, U)), y ∈ U ∧ VB.IsFrame e :=
@@ -48,6 +58,9 @@ theorem frames_pullback {X C : Scheme.{0}} {F : X.Modules} (g : C ⟶ X)
   have ⟨U, n, _, hx, he⟩ := h (g y)
   ⟨g ⁻¹ᵁ U, n, _, hx, he.pullback g⟩
 
+/- English proof (translation)
+Establish `key` using `(isFrame_restrict_iff j _).1 ((hφ.map_iso (inv (theta j M))).map_iso ((Scheme.Modules.restrictFunctorIsoPullback j).inv.app (dual M)))`. Establish `e (i : κ) : secOf j M (φ i) = _` using `dif_pos h`. Rewrite using `[funext e]`. Conclude with `key`.
+-/
 theorem isFrame_secOf {X Y : Scheme.{0}} (j : Y ⟶ X) [IsOpenImmersion j] (M : X.Modules) (h : IsIso (theta j M))
     {κ : Type} [Fintype κ] (φ : κ → ((Scheme.Modules.pullback j).obj M ⟶ structureModule Y))
     (hφ : VB.IsFrame (F := dual ((Scheme.Modules.pullback j).obj M)) (U := ⊤)
@@ -61,6 +74,17 @@ theorem isFrame_secOf {X Y : Scheme.{0}} (j : Y ⟶ X) [IsOpenImmersion j] (M : 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {X : Scheme.{0}}
   {t : SAB H X} {R : Type} [CommRing R] {x : Sp R ⟶ X}
 
+/- English proof (translation)
+Set `_ : Algebra c.F R` to `f.toAlgebra`. Establish `: CharZero c.F` using `RingHom.charZero c.F.val.toRingHom`. Take `⟨α, hinj, ⟨g, hg, hgs⟩, hN⟩` from `exists_sepElt (E := E) (F := c.F) c.F.val.toRingHom (embK c) (fun τ a => embK_coe c τ a)`. Set `ρ` to `actR (x0 := x) (S := R) t.act`. Establish `hE : ∀ τ (v : TanM x t.G), PullbackSections.IsEigV ρ (embK c τ) v ↔ ∀ a : 𝓞 E, (tv v).left ≫ (t.act.act a).left = spMap (epsMul (f (embK c τ a))) ≫ (tv v).left` using `fun τ v => forall_congr' fun a => ⟨fun h => congrArg (fun z => (tv z).left) h, fun h => tan_ext h⟩`.
+
+Establish `hS : ∀ τ (a : Fin (Dw.mult τ) → R), PullbackSections.IsEigV ρ (embK c τ) (∑ i, a i • tanOf (hu.1 τ i).1)` using `fun τ a s => by`. Rewrite using `[map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, (hE τ (tanOf (hu.1 τ i).1)).2 (hu.1 τ i).2 s, smul_comm]`. Establish `hsum : ∑ τ, proj ρ (embK c) α τ m = m`.
+
+Use `congrArg (fun e : Module.End R (TanM x t.G) => e m) (sum_proj ρ (embK c) α hinj)` as an intermediate fact. Simplify `this` using `[LinearMap.sum_apply]`. Establish `hco : ∀ τ, ∃! a : Fin (Dw.mult τ) → R, proj ρ (embK c) α τ m = ∑ i, a i • tanOf (hu.1 τ i).1` using `fun τ => (existsUnique_congr fun a => isComb_iff (fun i => tanOf (hu.1 τ i).1) a _).1 (hu.2 τ _ (isTan_tv _) ((hE τ _).1 (eig_of_alpha ρ (embK c) α hN τ (proj_eig_alpha ρ (embK c) α hinj g hg hgs τ m))))`. Use `choose a ha hun using hco`. Use `⟨fun k => a k.1 k.2, ?_, fun b hb => ?_⟩` and prove the remaining obligations.
+
+Use `beta_reduce`. Rewrite using `[Fintype.sum_sigma]`. Use `conv_lhs => rw [← hsum]`. Conclude with `Finset.sum_congr rfl fun τ _ => ha τ`. Use `beta_reduce at hb`.
+
+Rewrite `hb` using `[Fintype.sum_sigma]`. Use function extensionality and compare the values at `⟨τ, i⟩`. Establish `hn` using `proj_sum_eig ρ (embK c) α hinj _ (fun τ => hS τ fun i => b ⟨τ, i⟩) τ`. Rewrite `hn` using `[← hb]`. Conclude with `congrFun (hun τ (fun i => b ⟨τ, i⟩) hn) i`.
+-/
 theorem exists_unique_coords {Dw : Datum H} {l : Level H} {c : Coeff l} {f : c.F →+* R} {u : Vecs Dw t R}
     (hu : LocM.IsFrame t f x u) (m : TanM x t.G) :
     ∃! a : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) → R, m = ∑ k, a k • tanOf (hu.1 k.1 k.2).1 := by
@@ -103,6 +127,9 @@ section Pull
 
 variable {G' : Over (Sp R)} [GrpObj G'] {φ : G'.left ⟶ t.G.left} (h' : IsGrpPullback G' t.G x φ)
 
+/- English proof (translation)
+Rewrite using `[form, tanForm_eq h' p _ hp]`. Both sides reduce to the same expression.
+-/
 theorem form_eq (p : LieG G') (v : TanM x t.G) (hp : p.1.left ≫ φ = (tv v).left) :
     form v = (VB.dualMap (omegaBase h')).app ⊤ (tangent p) := by
   rw [form, tanForm_eq h' p _ hp]
@@ -110,6 +137,17 @@ theorem form_eq (p : LieG G') (v : TanM x t.G) (hp : p.1.left ≫ φ = (tv v).le
 
 include h'
 
+/- English proof (translation)
+Use `t.semi` as an intermediate fact. Establish `: QuasiSeparated G'.hom` using `MorphismProperty.of_isPullback h'.1 inferInstance`. Establish `hb : Function.Bijective ((VB.dualMap (omegaBase h')).app ⊤)` using `ConcreteCategory.bijective_of_isIso ((dualIso (asIso (omegaBase h'))).hom.app ⊤)`. Use `⟨fun v w => ?_, fun a v => ?_, fun v w hvw => ?_, fun s => ?_⟩` and prove the remaining obligations. Take `⟨p, hp⟩` from `exists_lieG h' (isTan_tv v)`.
+
+Take `⟨q, hq⟩` from `exists_lieG h' (isTan_tv w)`. Establish `hpq : (p.1 * q.1).left ≫ φ = (tv (v + w)).left` using `(h'.2 _ p.1 q.1 (tv v) (tv w) hp.symm hq.symm).symm`. Rewrite using `[form_eq h' p _ hp, form_eq h' q _ hq, form_eq h' ⟨_, OmegaGlobal.fst_mul p q⟩ _ hpq, tangent_mul, map_add]`. Take `⟨p, hp⟩` from `exists_lieG h' (isTan_tv v)`. Establish `ha : (dualScale a).toRingHom = epsScaleR a`.
+
+Apply the tactic sequence `ext y <;> simp [dualScale, epsScaleR]`. Establish `hpq : (ptMap (dualScale a) ≫ p.1).left ≫ φ = (tv (a • v)).left`. Rewrite using `[Over.comp_left, Category.assoc, hp]`. Conclude with `congrArg (fun r => spMap r ≫ (tv v).left) ha`. Rewrite using `[form_eq h' p _ hp, form_eq h' ⟨_, OmegaGlobal.fst_scale a p⟩ _ hpq, tangent_scale, Scheme.Modules.Hom.app_smul]`.
+
+Take `⟨p, hp⟩` from `exists_lieG h' (isTan_tv v)`. Take `⟨q, hq⟩` from `exists_lieG h' (isTan_tv w)`. Rewrite `hvw` using `[form_eq h' p _ hp, form_eq h' q _ hq]`. Take `rfl : p = q` from `tangent_injective R G' (hb.1 hvw)`. Conclude with `tan_ext (hp.symm.trans hq)`.
+
+Take `⟨s, rfl⟩` from `hb.2 s`. Take `⟨p, rfl⟩` from `TangentSurj.tangent_surjective R G' s`. Conclude with `⟨tanOf (isTanAtG_lieG h' p), form_eq h' p _ rfl⟩`.
+-/
 theorem form_spec : (∀ v w : TanM x t.G, form (v + w) = form v + form w) ∧
     (∀ (a : R) (v : TanM x t.G), form (a • v) = cst R a • form v) ∧ Function.Bijective (form (t := t) (x := x)) := by
   have := t.semi
@@ -141,6 +179,17 @@ theorem form_spec : (∀ v w : TanM x t.G, form (v + w) = form v + form w) ∧
 
 end Pull
 
+/- English proof (translation)
+Use `t.semi` as an intermediate fact. Use `t.semi.smooth` as an intermediate fact. Establish `: (dual ((Scheme.Modules.pullback x).obj (omega t.G))).IsQuasicoherent` using `OmegaGlobal.isQuasicoherent_of_frames fun y =>`. Establish `⟨U, n, _, hx, he⟩` using `frames_pullback x (exists_isFrame_omega t.G) y`. Use the proof step `⟨U, n, _, hx, he.dual⟩`.
+
+Take `⟨h₁, h₂, h₃⟩` from `form_spec (t := t) (isGrpPullback_pullback t.G x)`. Set `Φ : TanM x t.G →+ _` to `AddMonoidHom.mk' form h₁`. Establish `hΦ (a : κ → R) : form (∑ k, a k • u k) = ∑ k, cst R (a k) • form (u k)` using `(map_sum Φ _ _).trans (Finset.sum_congr rfl fun k _ => h₂ _ _)`. Establish `hc : Function.Bijective (cst R)` using `ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (.of R)).inv`. Establish `li : LinearIndependent Γ(Sp R, ⊤) fun i => form (u i)`.
+
+Use `Fintype.linearIndependent_iff.2 fun a ha i => ?_` and prove the remaining obligations. Use `choose b hb using fun k => hc.2 (a k)`. Take `rfl : a = fun k => cst R (b k)` from `funext fun k => (hb k).symm`. Establish `h0 : ∑ k, b k • u k = 0` using `h₃.1 ((hΦ b).trans (ha.trans (map_zero Φ).symm))`. Use `(hu 0).unique h0.symm (by simp : (0 : TanM x t.G) = ∑ k, (0 : κ → R) k • u k)` as an intermediate fact.
+
+Simplify using `[this]`. Establish `sp : ⊤ ≤ Submodule.span Γ(Sp R, ⊤) (Set.range fun i => form (u i))` using `fun s _ => by`. Take `⟨m, rfl⟩` from `h₃.2 s`. Take `⟨a, rfl, -⟩` from `hu m`. Rewrite using `[hΦ]`.
+
+Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Use `Summand.isFrame_of_affine_basis (isAffineOpen_top (Sp R)) (Module.Basis.mk li sp)` as an intermediate fact. Rewrite `this` using `[Module.Basis.coe_mk]`. Then use the resulting hypothesis.
+-/
 theorem isFrame_form {κ : Type} [Fintype κ] (u : κ → TanM x t.G)
     (hu : ∀ m : TanM x t.G, ∃! a : κ → R, m = ∑ k, a k • u k) : VB.IsFrame fun i => form (u i) := by
   have := t.semi
@@ -169,9 +218,17 @@ theorem isFrame_form {κ : Type} [Fintype κ] (u : κ → TanM x t.G)
   have := Summand.isFrame_of_affine_basis (isAffineOpen_top (Sp R)) (Module.Basis.mk li sp)
   rwa [Module.Basis.coe_mk] at this
 
+/- English proof (translation)
+The claim follows from `dif_pos ⟨hv.1, epsZero_comp_of_isTanAtG t hv⟩`.
+-/
 theorem tanMor_eq {v : Sp (DualNumber R) ⟶ t.G.left} (hv : IsTanAtG t x v) : tanMor t.G x v = tanForm t hv :=
   dif_pos ⟨hv.1, epsZero_comp_of_isTanAtG t hv⟩
 
+/- English proof (translation)
+Use `t.semi` as an intermediate fact. Use `t.semi.smooth` as an intermediate fact. Establish `h₁` using `(isFrame_form _ (exists_unique_coords hu)).comp_equiv (Equiv.ofBijective y hy)`. Establish `h₂` using `h₁.map_iso (dualIso ((Scheme.Modules.pullbackComp j π).app (omega t.G))).hom`. Use `isFrame_secOf j _ (isIso_theta _ (frames_pullback π (exists_isFrame_omega t.G))) _ ?_` and prove the remaining obligations.
+
+Use `(congrArg VB.IsFrame (funext fun i => ?_)).mpr h₂` and prove the remaining obligations. Rewrite using `[tanMor_eq (hu.1 (y i).1 (y i).2).1]`. Both sides reduce to the same expression.
+-/
 theorem isFrame_secOf_tanMor {Z : Scheme.{0}} (j : Sp R ⟶ Z) [IsOpenImmersion j] (π : Z ⟶ X) {Dw : Datum H}
     {l : Level H} {c : Coeff l} {f : c.F →+* R} {u : Vecs Dw t R} (hu : LocM.IsFrame t f (j ≫ π) u) {r : ℕ}
     (y : Fin r → Σ τ : E →+* ℂ, Fin (Dw.mult τ)) (hy : Function.Bijective y) :
@@ -192,6 +249,9 @@ namespace GlobalTheory.TanSec.Frame
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.DV Formalism.L2.Geo GlobalTheory.ShFam GlobalTheory.ShFam.Pad
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw Xo p W Y i₀ Z r x hx a`. Conclude with `(isFrame_secOf_tanMor (Z.chart a) Z.π (Z.frame a) x hx).res (chart_image_top Z a).ge`.
+-/
 theorem isFrame_sec : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (Dw : Datum H) (Xo : ∀ l : Level H, Moduli Dw l) (p : ℕ) (W : ValuationSubring ℂ) (Y : LocalSystem Xo p W)
     (i₀ : Idx H p) (Z : GlobalTheory.LocM.Mdl Y i₀) (r : ℕ) (x : Fin r → GlobalTheory.ShFam.Pad.Letter Dw), Function.Bijective x →

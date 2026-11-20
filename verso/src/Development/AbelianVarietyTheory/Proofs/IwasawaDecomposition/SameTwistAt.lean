@@ -13,6 +13,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeR
 
 namespace GlobalTheory.HeightCounting.SameTw
 
+/- English proof (translation)
+Introduce `_ D _ C _ a h` and use `sameTwist_of_oneField D C a.all.nct h`.
+-/
 theorem sameTwist_at : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, ∀ (D : D7) (cf : CharFrame D) (C : NChoice D) (tp : TupTied D cf C), NAt hL D cf C tp → GlobalTheory.HeightCounting.SameTw.OneField D C → GlobalTheory.PtCore.SameTwist D C :=
   fun _ D _ C _ a h => sameTwist_of_oneField D C a.all.nct h
 

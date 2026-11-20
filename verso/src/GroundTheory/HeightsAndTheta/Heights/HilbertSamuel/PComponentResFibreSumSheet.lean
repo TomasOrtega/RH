@@ -20,22 +20,37 @@ set_option linter.unusedSectionVars false
 def resW (x : R.R.M) : ((k : K) → ι k) → ℂ :=
   (Ψ (segre (R.pt x)) 0)⁻¹ • segre (R.pt x)
 
+/- English proof (translation)
+The claim follows from `R.liftAt_mem (R.mem_src_idx x)`.
+-/
 theorem pt_mem (x : R.R.M) : R.pt x ∈ ReciprocityTheory.AnForm.R.conePts W :=
   R.liftAt_mem (R.mem_src_idx x)
 
+/- English proof (translation)
+Use `⟨⟨hz.1, fun f hf => hz.2 _ (hW.1.2 (Ideal.mem_map_of_mem _ hf))⟩, fun f hf => ?_⟩` and prove the remaining obligations. Simplify `hz.2 f hf` using `[MvPolynomial.coe_aeval_eq_eval]`.
+-/
 theorem mem_mcPts_of_conePts {P : Ideal (MRing ι)}
     (hW : W ∈ (P.map (MvPolynomial.map (Int.castRingHom ℂ))).minimalPrimes) {z : (Σ k, ι k) → ℂ}
     (hz : z ∈ ReciprocityTheory.AnForm.R.conePts W) : z ∈ mcPts P ∧ z ∈ zeroLocus ℂ W := by
   refine ⟨⟨hz.1, fun f hf => hz.2 _ (hW.1.2 (Ideal.mem_map_of_mem _ hf))⟩, fun f hf => ?_⟩
   simpa [MvPolynomial.coe_aeval_eq_eval] using hz.2 f hf
 
+/- English proof (translation)
+Introduce `h` and use `hx (Or.inl (Or.inr h))`.
+-/
 theorem projection_ne_zero_of_not_mem_badLocus {x : R.R.M} (hx : x ∉ resBad R Ψ) : Ψ (segre (R.pt x)) 0 ≠ 0 :=
   fun h => hx (Or.inl (Or.inr h))
 
+/- English proof (translation)
+Introduce `h` and use `hx (Or.inl (Or.inl h))`.
+-/
 theorem notMem_cone_of_notMem_resBad {x : R.R.M} (hx : x ∉ resBad R Ψ) :
     R.pt x ∉ ReciprocityTheory.AnForm.R.conePts R.D :=
   fun h => hx (Or.inl (Or.inl h))
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Conclude with `hx (Or.inr ⟨j, hj, h⟩)`.
+-/
 theorem resGood {x : R.R.M} (hx : x ∉ resBad R Ψ) (j : Fin R.atlas.n) (hj : x ∈ (R.atlas.chart j).source) :
     AnalyticAt ℂ (resProj R Ψ ∘ (R.atlas.chart j).symm) (R.atlas.chart j x) ∧
       LinearMap.det (fderiv ℂ (resProj R Ψ ∘ (R.atlas.chart j).symm) (R.atlas.chart j x) :
@@ -43,6 +58,11 @@ theorem resGood {x : R.R.M} (hx : x ∉ resBad R Ψ) (j : Fin R.atlas.n) (hj : x
   by_contra h
   exact hx (Or.inr ⟨j, hj, h⟩)
 
+/- English proof (translation)
+Take `⟨c, hc, hzc⟩` from `R.sameOrbit_liftAt (R.mem_src_idx z) hz`. Establish `hpc : ∏ k, c k ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => hc k`. Establish `hzc' : R.liftAt z z = fun q => c q.1 * R.liftAt x z q` using `hzc`. Use function extensionality and compare the values at `i`. Simplify using `only [resProj, GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter.Res.pt, hzc', segre_smul, map_smul, Pi.smul_apply, smul_eq_mul]`.
+
+Conclude with `mul_div_mul_left _ _ hpc`.
+-/
 theorem resProj_eq_local {x z : R.R.M} (hz : z ∈ R.R.src (R.idx x)) :
     resProj R Ψ z = fun i => Ψ (segre (R.liftAt x z)) i.succ / Ψ (segre (R.liftAt x z)) 0 := by
   obtain ⟨c, hc, hzc⟩ := R.sameOrbit_liftAt (R.mem_src_idx z) hz
@@ -53,6 +73,11 @@ theorem resProj_eq_local {x z : R.R.M} (hz : z ∈ R.R.src (R.idx x)) :
     smul_eq_mul]
   exact mul_div_mul_left _ _ hpc
 
+/- English proof (translation)
+Establish `hl` using `R.analyticAt_liftAt_pi x j hu`. Establish `hs : AnalyticAt ℂ (fun v => segre (R.liftAt x ((R.atlas.chart j).symm v))) u`. Use `analyticAt_pi_iff.mpr fun i => ?_` and prove the remaining obligations. Simplify using `only [segre]`. Conclude with `Finset.analyticAt_fun_prod _ fun k _ => analyticAt_pi_iff.mp hl _`.
+
+Conclude with `(LinearMap.toContinuousLinearMap Ψ).analyticAt _ |>.comp hs`.
+-/
 theorem analyticAt_segre_liftAt (x : R.R.M) (j : Fin R.atlas.n) {u : Fin e → ℂ}
     (hu : u ∈ (R.atlas.chart j).target ∩ (R.atlas.chart j).symm ⁻¹' R.R.src (R.idx x)) :
     AnalyticAt ℂ (fun v => Ψ (segre (R.liftAt x ((R.atlas.chart j).symm v)))) u := by
@@ -63,6 +88,11 @@ theorem analyticAt_segre_liftAt (x : R.R.M) (j : Fin R.atlas.n) {u : Fin e → �
     exact Finset.analyticAt_fun_prod _ fun k _ => analyticAt_pi_iff.mp hl _
   exact (LinearMap.toContinuousLinearMap Ψ).analyticAt _ |>.comp hs
 
+/- English proof (translation)
+Use `set u := R.atlas.chart j x`. Establish `hsu : (R.atlas.chart j).symm u = x` using `(R.atlas.chart j).left_inv hj`. Establish `hu : u ∈ (R.atlas.chart j).target ∩ (R.atlas.chart j).symm ⁻¹' R.R.src (R.idx x)` using `⟨(R.atlas.chart j).map_source hj, by rw [Set.mem_preimage, hsu]; exact R.mem_src_idx x⟩`. Establish `hH` using `analyticAt_segre_liftAt R Ψ x j hu`. Establish `hH0 : AnalyticAt ℂ (fun v => Ψ (segre (R.liftAt x ((R.atlas.chart j).symm v))) 0) u` using `analyticAt_pi_iff.mp hH 0`.
+
+Establish `hne : Ψ (segre (R.liftAt x ((R.atlas.chart j).symm u))) 0 ≠ 0` using `by rw [hsu]; exact h0`. Establish `hF : AnalyticAt ℂ (fun v => fun i : Fin e => Ψ (segre (R.liftAt x ((R.atlas.chart j).symm v))) i.succ / Ψ (segre (R.liftAt x ((R.atlas.chart j).symm v))) 0) u` using `analyticAt_pi_iff.mpr fun i => (analyticAt_pi_iff.mp hH i.succ).div hH0 hne`. Use `hF.congr ?_` and prove the remaining obligations. Use `filter_upwards [((R.atlas.chart j).isOpen_inter_preimage_symm (R.R.isOpen_alt_bis (R.idx x))).mem_nhds hu, hH0.continuousAt.eventually_ne hne] with v hv hv0`. Conclude with `(resProj_eq_local R Ψ hv.2).symm`.
+-/
 theorem analyticAt_resProj (x : R.R.M) (j : Fin R.atlas.n) (hj : x ∈ (R.atlas.chart j).source)
     (h0 : Ψ (segre (R.pt x)) 0 ≠ 0) :
     AnalyticAt ℂ (resProj R Ψ ∘ (R.atlas.chart j).symm) (R.atlas.chart j x) := by
@@ -83,6 +113,15 @@ theorem analyticAt_resProj (x : R.R.M) (j : Fin R.atlas.n) (hj : x ∈ (R.atlas.
     hH0.continuousAt.eventually_ne hne] with v hv hv0
   exact (resProj_eq_local R Ψ hv.2).symm
 
+/- English proof (translation)
+Use `set T := resBad R Ψ ∩ {x | Ψ (segre (R.pt x)) 0 ≠ 0}`. Establish `hsub : resProj R Ψ '' T ⊆ ⋃ j, (resProj R Ψ ∘ (R.atlas.chart j).symm) '' ((R.atlas.chart j).target ∩ (R.atlas.chart j).symm ⁻¹' T)`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨j, hj⟩` from `R.atlas.cover x`. Use `Set.mem_iUnion.mpr ⟨j, R.atlas.chart j x, ⟨(R.atlas.chart j).map_source hj, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Set.mem_preimage, (R.atlas.chart j).left_inv hj]`. Conclude with `hx`. Simplify using `[(R.atlas.chart j).left_inv hj]`. Use `measure_mono_null hsub (measure_iUnion_null fun j => ?_)` and prove the remaining obligations. Use `addHaar_image_eq_zero_of_differentiableOn_of_addHaar_eq_zero volume ?_ (measure_mono_null (Set.inter_subset_inter_right _ (Set.preimage_mono Set.inter_subset_left)) (hS j))` and prove the remaining obligations.
+
+Introduce `u hu`. Establish `hx` using `(R.atlas.chart j).map_target hu.1`. Establish `hcu : R.atlas.chart j ((R.atlas.chart j).symm u) = u` using `(R.atlas.chart j).right_inv hu.1`. Use `analyticAt_resProj R Ψ _ j hx hu.2.2` as an intermediate fact. Rewrite `this` using `[hcu]`.
+
+Conclude with `(this.differentiableAt.restrictScalars ℝ).differentiableWithinAt`.
+-/
 theorem resProj_image_null_of
     (hS : ∀ j, volume ((R.atlas.chart j).target ∩ (R.atlas.chart j).symm ⁻¹' resBad R Ψ) = 0) :
     volume (resProj R Ψ '' (resBad R Ψ ∩ {x | Ψ (segre (R.pt x)) 0 ≠ 0})) = 0 := by
@@ -105,6 +144,57 @@ theorem resProj_image_null_of
   rw [hcu] at this
   exact (this.differentiableAt.restrictScalars ℝ).differentiableWithinAt
 
+/- English proof (translation)
+Take `⟨k0⟩` from `hP.1`. Establish `hPh : IsMultiHomogIdeal P` using `hP.2.1.2.1`. Use `set j := chartIdx R.atlas x with hjdef`. Establish `hj : x ∈ (R.atlas.chart j).source` using `Classical.choose_spec (R.atlas.cover x)`. Use `set u := R.atlas.chart j x with hudef`.
+
+Establish `hsu : (R.atlas.chart j).symm u = x` using `(R.atlas.chart j).left_inv hj`. Establish `huU : u ∈ (R.atlas.chart j).target ∩ (R.atlas.chart j).symm ⁻¹' R.R.src (R.idx x)` using `⟨(R.atlas.chart j).map_source hj, by rw [Set.mem_preimage, hsu]; exact R.mem_src_idx x⟩`. Take `⟨hQa, hQd⟩` from `resGood R Ψ hx j hj`. Use `set Q := resProj R Ψ ∘ (R.atlas.chart j).symm with hQdef`. Use `set Df := fderiv ℂ Q u with hDf`.
+
+Establish `hdet : Df.det ≠ 0` using `hQd`. Use `set Ce := Df.toContinuousLinearEquivOfDetNeZero hdet with hCe`. Establish `hCe' : (Ce : (Fin e → ℂ) →L[ℂ] (Fin e → ℂ)) = Df` using `ContinuousLinearMap.coe_toContinuousLinearEquivOfDetNeZero Df hdet`. Establish `hstrict : HasStrictFDerivAt Q (Ce : (Fin e → ℂ) →L[ℂ] (Fin e → ℂ)) u`. Rewrite using `[hCe']`.
+
+Conclude with `hQa.hasStrictFDerivAt`. Use `set F := hstrict.toOpenPartialHomeomorph Q with hF`. Establish `hFc : (F : (Fin e → ℂ) → (Fin e → ℂ)) = Q` using `hstrict.toOpenPartialHomeomorph_coe`. Establish `hus : u ∈ F.source` using `hstrict.mem_toOpenPartialHomeomorph_source`. Establish `hyt : Q u ∈ F.target` using `hstrict.image_mem_toOpenPartialHomeomorph_target`.
+
+Establish `hσu : F.symm (Q u) = u`. Use `F.left_inv hus` as an intermediate fact. Rewrite `this` using `[hFc]`. Then use the resulting hypothesis. Establish `hy0 : Q u = resProj R Ψ x` using `by simp only [hQdef, Function.comp_apply, hsu]`. Establish `hσa : AnalyticAt ℂ F.symm (Q u)`.
+
+Use `F.analyticAt_symm (i := Ce) hyt ?_ ?_` and prove the remaining obligations. Rewrite using `[hσu, hFc]`. Conclude with `hQa`. Rewrite using `[hσu, hFc, hCe']`. Establish `hσd : HasFDerivAt F.symm (Ce.symm : (Fin e → ℂ) →L[ℂ] (Fin e → ℂ)) (Q u)`.
+
+Use `F.hasFDerivAt_symm hyt ?_` and prove the remaining obligations. Rewrite using `[hσu, hFc, hCe']`. Conclude with `hQa.differentiableAt.hasFDerivAt`. Use `set γ₀ : (Fin e → ℂ) → (Σ k, ι k) → ℂ := fun y' => R.liftAt x ((R.atlas.chart j).symm (F.symm y')) with hγ₀`. Establish `hγ₀a : AnalyticAt ℂ γ₀ (Q u)` using `(R.analyticAt_liftAt_pi x j huU).comp_of_eq hσa hσu`.
+
+Establish `hγ₀u : γ₀ (Q u) = R.pt x` using `by simp only [hγ₀, hσu, hsu]; rfl`. Use `set ψ0 : (Fin e → ℂ) → ℂ := fun y' => Ψ (segre (γ₀ y')) 0 with hψ0`. Establish `hψ0a : AnalyticAt ℂ ψ0 (Q u)` using `analyticAt_pi_iff.mp ((analyticAt_segre_liftAt R Ψ x j huU).comp_of_eq hσa hσu) 0`. Establish `hψ0u : ψ0 (Q u) ≠ 0`. Simplify using `only [hψ0, hγ₀u]`.
+
+Conclude with `projection_ne_zero_of_not_mem_badLocus R Ψ hx`. Use `set c : (Fin e → ℂ) → K → ℂ := fun y' => Function.update (fun _ => (1 : ℂ)) k0 (ψ0 y')⁻¹ with hcdef`. Establish `hc_ne : ∀ y', ψ0 y' ≠ 0 → ∀ k, c y' k ≠ 0`. Introduce `y' h k`. Distinguish the cases in `hk : k = k0`.
+
+Substitute `hk` using the available equality. Simplify using `[hcdef, h]`. Simplify using `[hcdef, Function.update_of_ne hk]`. Establish `hca : ∀ k, AnalyticAt ℂ (fun y' => c y' k) (Q u)`. Introduce `k`.
+
+Distinguish the cases in `hk : k = k0`. Substitute `hk` using the available equality. Simplify using `only [hcdef, Function.update_self]`. Conclude with `hψ0a.inv hψ0u`. Simplify using `only [hcdef, Function.update_of_ne hk]`.
+
+Conclude with `analyticAt_const`. Use `set γ : (Fin e → ℂ) → (Σ k, ι k) → ℂ := fun y' => bsmul (c y') (γ₀ y') with hγdef`. Establish `hγa : AnalyticAt ℂ γ (Q u)` using `analyticAt_pi_iff.mpr fun p => (hca p.1).mul (analyticAt_pi_iff.mp hγ₀a p)`. Establish `hprod : ∀ y', ∏ k, c y' k = (ψ0 y')⁻¹` using `fun y' => by`. Simplify using `[hcdef, Finset.prod_update_of_mem (Finset.mem_univ k0)]`.
+
+Establish `hseg : ∀ y', segre (γ y') = (ψ0 y')⁻¹ • segre (γ₀ y')` using `fun y' => by`. Rewrite using `[← hprod y']`. Conclude with `segre_smul (c y') (γ₀ y')`. Use `⟨γ, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy0, hseg]`.
+
+Simplify using `only [hψ0, hγ₀u]`. Both sides reduce to the same expression. Rewrite using `[← hy0]`. Establish `hU : ∀ᶠ y' in 𝓝 (Q u), F.symm y' ∈ (R.atlas.chart j).target ∩ (R.atlas.chart j).symm ⁻¹' R.R.src (R.idx x)` using `hσa.continuousAt.preimage_mem_nhds (by`. Rewrite using `[hσu]`.
+
+Conclude with `((R.atlas.chart j).isOpen_inter_preimage_symm (R.R.isOpen_alt_bis (R.idx x))).mem_nhds huU)`. Use `filter_upwards [hγa.eventually_analyticAt, hU, F.open_target.mem_nhds hyt, hψ0a.continuousAt.eventually_ne hψ0u] with y' ha hUy ht h0`. Use `⟨ha.differentiableAt, mcPts_smul hPh (c y') (hc_ne y' h0) (mem_mcPts_of_conePts hW (R.liftAt_mem hUy.2)).1, ?_⟩` and prove the remaining obligations. Establish `hq : Q (F.symm y') = y'`. Use `F.right_inv ht` as an intermediate fact.
+
+Rewrite `this` using `[hFc]`. Then use the resulting hypothesis. Rewrite `hq` using `[hQdef, Function.comp_apply, resProj_eq_local R Ψ hUy.2]`. Rewrite using `[hseg, map_smul]`. Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, Fin.cons_zero]`. Conclude with `inv_mul_cancel₀ h0`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Fin.cons_succ]`. Rewrite using `[← congrFun hq i, div_eq_inv_mul]`. Rewrite using `[← hy0]`.
+
+Establish `hblk : ∀ k, ∃ i, γ₀ (Q u) ⟨k, i⟩ ≠ 0`. Rewrite using `[hγ₀u]`. Conclude with `(pt_mem R x).1`. Establish `hH : ∀ i, cxHessian (fun y' => pot L i (γ y')) (Q u) = cxHessian (fun y' => pot L i (γ₀ y')) (Q u)`. Introduce `i`.
+
+Use `set G : (Fin e → ℂ) → ℂ := fun y' => ((-((L i).a k0 : ℝ) : ℝ) : ℂ) * Complex.log (ψ0 y' / ψ0 (Q u)) with hG`. Use `set C : ℝ := -(((L i).a k0 : ℝ) * Real.log ‖ψ0 (Q u)‖) with hC`. Establish `hGa : AnalyticAt ℂ G (Q u)`. Use `analyticAt_const.mul ((hψ0a.div analyticAt_const hψ0u).clog ?_)` and prove the remaining obligations. Use `show ψ0 (Q u) / ψ0 (Q u) ∈ Complex.slitPlane`.
+
+Rewrite using `[div_self hψ0u]`. Conclude with `Complex.one_mem_slitPlane`. Establish `heq : (fun y' => pot L i (γ y')) =ᶠ[𝓝 (Q u)] fun y' => pot L i (γ₀ y') + (G y').re + C` using `by filter_upwards [hψ0a.continuousAt.eventually_ne hψ0u, hγ₀a.continuousAt.eventually (isOpen_blockNonzero.mem_nhds hblk)] with y' h0 hb`. Establish `hpos : 0 < (L i).h (γ₀ y')` using `(L i).pos _ hb`. Establish `hn0 : ‖(ψ0 y')⁻¹‖ ^ (L i).a k0 ≠ 0` using `zpow_ne_zero _ (norm_ne_zero_iff.mpr (inv_ne_zero h0))`.
+
+Simplify using `only [pot, hγdef]`. Rewrite using `[show bsmul (c y') (γ₀ y') = fun p => c y' p.1 * γ₀ y' p from rfl, (L i).smul _ _ (hc_ne y' h0), prod_norm_update_zpow, Real.log_mul hn0 hpos.ne', hG, hC, Complex.re_ofReal_mul, Complex.log_re, norm_div, Real.log_div (norm_ne_zero_iff.mpr h0) (norm_ne_zero_iff.mpr hψ0u), Real.log …`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[cxHessian_congr heq, cxHessian_add_re (φ := fun y' => pot L i (γ₀ y')) C (pot_contDiffAt (hL i) hγ₀a hblk) hGa]`. Establish `hmd : maDensity (fun i y' => pot L i (γ y')) (Q u) = maDensity (fun i y' => pot L i (γ₀ y')) (Q u)`.
+
+Simplify using `only [maDensity, hH]`. Rewrite using `[hmd, maDensity_eq_maDens]`. Establish `hcd : ∀ i, ContDiffAt ℝ 2 (fun v => pot L i (R.liftAt x ((R.atlas.chart j).symm v))) (F.symm (Q u))`. Introduce `i`. Rewrite using `[hσu]`.
+
+Conclude with `pot_contDiffAt (hL i) (R.analyticAt_liftAt_pi x j huU) (by rw [hsu]; exact (pt_mem R x).1)`. Establish `hcomp : ReciprocityTheory.AnForm.maDens (fun i y' => pot L i (γ₀ y')) (Q u) = ReciprocityTheory.AnForm.maDens (fun i v => pot L i (R.liftAt x ((R.atlas.chart j).symm v))) (F.symm (Q u)) * Complex.normSq (ReciprocityTheory.AnForm.A.jacC F.symm (Q u)).det` using `ReciprocityTheory.AnForm.A.maDens_comp (fun i v => pot L i (R.liftAt x ((R.atlas.chart j).symm v))) F.symm (Q u) hσa hcd`. Establish `hdetinv : LinearMap.det ((Ce.symm : (Fin e → ℂ) →L[ℂ] (Fin e → ℂ)) : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ)) = (LinearMap.det (Df : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ)))⁻¹`. Use `ContinuousLinearEquiv.det_coe_symm Ce` as an intermediate fact. Rewrite `this` using `[hCe']`.
+
+Conclude with `this`. Establish `hloc : ReciprocityTheory.AnForm.maDens (fun i v => pot L i (R.liftAt x ((R.atlas.chart j).symm v))) u = locDens R.atlas (fun i => R.pot (logH (L i))) j u`. Unfold `locDens`. Rewrite using `[hsu]`. Both sides reduce to the same expression.
+
+Rewrite using `[hcomp, hσu, ReciprocityTheory.AnForm.A.det_jacC, hσd.fderiv, hdetinv, hloc, Complex.normSq_inv, Complex.normSq_eq_norm_sq]`. Unfold `pushDens`. Rewrite using `[div_eq_mul_inv]`.
+-/
 theorem exists_sheet_resW {P : Ideal (MRing ι)} (L : Fin e → HermLine ι) (hP : IsArithVar P (e + 1))
     (hW : W ∈ (P.map (MvPolynomial.map (Int.castRingHom ℂ))).minimalPrimes) (hL : ∀ j, IsSmoothHerm (L j))
     (x : R.R.M) (hx : x ∉ resBad R Ψ) :

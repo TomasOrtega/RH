@@ -9,6 +9,15 @@ open IsDedekindDomain NumberField
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `key : (∀ i, d i ≤ e i) ∨ (∀ i, e i ≤ d i)`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Take `⟨⟨i, hi⟩, ⟨j, hj⟩⟩` from `h`. Use `hd0 j` as an intermediate fact.
+
+Use `hd1 i` as an intermediate fact. Use `he0 i` as an intermediate fact. Use `he1 j` as an intermediate fact. Break down `le_total i j with hij | hij` into its components or cases. Use `he hij` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Use `hd hij` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Break down `key with h | h` into its components or cases. Use function extensionality and compare the values at `i`.
+
+Conclude with `(Finset.sum_eq_sum_iff_of_le (fun i _ => h i)).1 hs i (Finset.mem_univ i)`. Use function extensionality and compare the values at `i`. Conclude with `((Finset.sum_eq_sum_iff_of_le (fun i _ => h i)).1 hs.symm i (Finset.mem_univ i)).symm`.
+-/
 theorem antitone_zero_one_eq_of_sum_eq {n : ℕ} (d e : Fin n → ℤ) (hd : Antitone d) (he : Antitone e)
     (hd0 : ∀ i, 0 ≤ d i) (hd1 : ∀ i, d i ≤ 1) (he0 : ∀ i, 0 ≤ e i) (he1 : ∀ i, e i ≤ 1)
     (hs : ∑ i, d i = ∑ i, e i) : d = e := by
@@ -30,6 +39,9 @@ section
 
 variable {F : Type} [Field F] [NumberField F] {v : HeightOneSpectrum (𝓞 F)} {n : ℕ}
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `hk`. Establish `: ((Formalism.UG.bc (n` using `Fin n) (Formalism.UG.Ov F v).subtype g : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) i j = (((g : Matrix (Fin n) (Fin n) (Formalism.UG.Ov F v)) i j : Formalism.UG.Ov F v) : v.adicCompletion F) := by`. Simplify using `[Formalism.UG.bc, Units.coe_map]`. Rewrite using `[this]`. Conclude with `Subtype.property _`.
+-/
 theorem glint_entry_mem_Ov {k : GL (Fin n) (v.adicCompletion F)}
     (hk : k ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.Ov F v)) (i j : Fin n) :
     (k : Matrix (Fin n) (Fin n) (v.adicCompletion F)) i j ∈ Formalism.UG.Ov F v := by
@@ -41,6 +53,9 @@ theorem glint_entry_mem_Ov {k : GL (Fin n) (v.adicCompletion F)}
   rw [this]
   exact Subtype.property _
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_apply]`. Conclude with `Subring.sum_mem _ fun l _ => Subring.mul_mem _ (Subring.sum_mem _ fun m _ => Subring.mul_mem _ (hA _ _) (hB _ _)) (hC _ _)`.
+-/
 theorem mul_mul_entry_mem_Ov {A B C : Matrix (Fin n) (Fin n) (v.adicCompletion F)}
     (hA : ∀ i j, A i j ∈ Formalism.UG.Ov F v) (hB : ∀ i j, B i j ∈ Formalism.UG.Ov F v)
     (hC : ∀ i j, C i j ∈ Formalism.UG.Ov F v) (i j : Fin n) : (A * B * C) i j ∈ Formalism.UG.Ov F v := by
@@ -48,6 +63,9 @@ theorem mul_mul_entry_mem_Ov {A B C : Matrix (Fin n) (Fin n) (v.adicCompletion F
   exact Subring.sum_mem _ fun l _ => Subring.mul_mem _
     (Subring.sum_mem _ fun m _ => Subring.mul_mem _ (hA _ _) (hB _ _)) (hC _ _)
 
+/- English proof (translation)
+Establish `: A.det ∈ Formalism.UG.Ov F v`. Rewrite using `[Matrix.det_apply']`. Conclude with `Subring.sum_mem _ fun σ _ => Subring.mul_mem _ (intCast_mem _ _) (Subring.prod_mem _ fun i _ => hA _ _)`. Conclude with `this`.
+-/
 theorem valued_det_le_one_of_entries {A : Matrix (Fin n) (Fin n) (v.adicCompletion F)}
     (hA : ∀ i j, A i j ∈ Formalism.UG.Ov F v) : Valued.v A.det ≤ 1 := by
   have : A.det ∈ Formalism.UG.Ov F v := by
@@ -56,6 +74,11 @@ theorem valued_det_le_one_of_entries {A : Matrix (Fin n) (Fin n) (v.adicCompleti
       (Subring.prod_mem _ fun i _ => hA _ _)
   exact this
 
+/- English proof (translation)
+Establish `h1` using `valued_det_le_one_of_entries (glint_entry_mem_Ov hk)`. Establish `h2` using `valued_det_le_one_of_entries (glint_entry_mem_Ov (Subgroup.inv_mem _ hk))`. Establish `h3 : Valued.v (k : Matrix (Fin n) (Fin n) (v.adicCompletion F)).det * Valued.v ((k⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)).det = 1`. Rewrite using `[← map_mul, ← Matrix.det_mul, Units.mul_inv, Matrix.det_one, map_one]`. Use `le_antisymm h1 ?_` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem valued_det_eq_one_of_glint {k : GL (Fin n) (v.adicCompletion F)}
     (hk : k ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.Ov F v)) :
     Valued.v (k : Matrix (Fin n) (Fin n) (v.adicCompletion F)).det = 1 := by
@@ -70,6 +93,27 @@ theorem valued_det_eq_one_of_glint {k : GL (Fin n) (v.adicCompletion F)}
     _ ≤ _ * 1 := mul_le_mul_right h2 _
     _ = _ := mul_one _
 
+/- English proof (translation)
+Establish `hv : Valued.v ϖ = WithZero.exp (-1 : ℤ)` using `hϖ`. Establish `hv' : Valued.v ϖ' = WithZero.exp (-1 : ℤ)` using `hϖ'`. Establish `hϖO : ϖ ∈ Formalism.UG.Ov F v` using `by show Valued.v ϖ ≤ 1`. Rewrite using `[hv]`. Conclude with `(WithZero.exp_le_exp.mpr (by norm_num : (-1:ℤ) ≤ 0)).trans (le_of_eq WithZero.exp_zero)`.
+
+Establish `hϖ0 : ϖ ≠ 0`. Introduce and unpack `rfl`. Rewrite `hv` using `[map_zero]`. Conclude with `WithZero.exp_ne_zero hv.symm`. Establish `hpow : ∀ m : ℤ, Valued.v (ϖ ^ m) = WithZero.exp (-m)`.
+
+Introduce `m`. Rewrite using `[map_zpow₀, hv, ← WithZero.exp_zsmul]`. Simplify using the standard rewrite rules. Establish `hsum : ∀ d : Fin n → ℤ, ∏ i, ϖ ^ d i = ϖ ^ ∑ i, d i`. Introduce `d`.
+
+Proceed by induction on `(Finset.univ : Finset (Fin n)) using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert x s hx ih => rw [Finset.prod_insert hx, Finset.sum_insert hx, ih, zpow_add₀ hϖ0]`. Take `⟨d, hd, k₁, hk₁, k₂, hk₂, e⟩` from `Formalism.UG.Final.CartanDecomp F v n ϖ hϖO hϖ a`. Establish `hD : ((k₁⁻¹ * a * k₂⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) = Formalism.UG.diagPow F v ϖ d`.
+
+Simplify using `only [Units.val_mul, e, mul_assoc, Units.inv_mul_cancel_left, Units.mul_inv, mul_one]`. Establish `hDinv : ((k₂ * a⁻¹ * k₁ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) = Formalism.UG.diagPow F v ϖ (-d)`. Establish `e1 : (k₂ * a⁻¹ * k₁ : GL (Fin n) (v.adicCompletion F)) = (k₁⁻¹ * a * k₂⁻¹)⁻¹` using `by group`. Rewrite using `[e1, Matrix.coe_units_inv, hD]`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises.
+
+Unfold `Formalism.UG.diagPow`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[← zpow_add₀ hϖ0]`.
+
+Simplify using the standard rewrite rules. Use `⟨d, hd, fun i => ?_, fun i => ?_, ?_, k₁, hk₁, k₂, hk₂, hD⟩` and prove the remaining obligations. Use `mul_mul_entry_mem_Ov (glint_entry_mem_Ov (Subgroup.inv_mem _ hk₁)) h1 (glint_entry_mem_Ov (Subgroup.inv_mem _ hk₂)) i i` as an intermediate fact. Rewrite `this` using `[← Units.val_mul, ← Units.val_mul, hD]`. Establish `h : Valued.v (Formalism.UG.diagPow F v ϖ d i i) ≤ 1` using `this`.
+
+Rewrite `h` using `[Formalism.UG.diagPow, Matrix.diagonal_apply_eq, hpow, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Use `mul_mul_entry_mem_Ov (B := ϖ' • ((a⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F))) (glint_entry_mem_Ov hk₂) h2 (glint_entry_mem_Ov hk₁) i i` as an intermediate fact. Rewrite `this` using `[Matrix.mul_smul, Matrix.smul_mul, ← Units.val_mul, ← Units.val_mul, hDinv]`. Establish `h : Valued.v (ϖ' * Formalism.UG.diagPow F v ϖ (-d) i i) ≤ 1` using `this`.
+
+Rewrite `h` using `[Formalism.UG.diagPow, Matrix.diagonal_apply_eq, map_mul, hpow, hv', ← WithZero.exp_add, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Simplify using `only [Pi.neg_apply] at h`. Use linear arithmetic over natural numbers and integers. Rewrite `h3` using `[e, Matrix.det_mul, Matrix.det_mul, map_mul, map_mul, valued_det_eq_one_of_glint hk₁, valued_det_eq_one_of_glint hk₂, one_mul, mul_one, Formalism.UG.diagPow, Matrix.det_diagonal, hsum, hpow, hv', ← WithZero.exp_nsmul, WithZero.exp_inj]`. Simplify using `only [nsmul_eq_mul] at h3`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem cartan_minuscule (k : ℕ) (ϖ ϖ' : v.adicCompletion F)
     (hϖ : Formalism.UG.IsUnifV F v ϖ) (hϖ' : Formalism.UG.IsUnifV F v ϖ') (a : GL (Fin n) (v.adicCompletion F))
     (h1 : ∀ i j, (a : Matrix (Fin n) (Fin n) (v.adicCompletion F)) i j ∈ Formalism.UG.Ov F v)
@@ -139,6 +183,11 @@ theorem cartan_minuscule (k : ℕ) (ϖ ϖ' : v.adicCompletion F)
 
 end
 
+/- English proof (translation)
+Introduce `F _ _ v n k ϖ ϖ' hϖ hϖ' a a' h1 h2 h3 h1' h2' h3'`. Take `⟨d, hd, hd0, hd1, hs, k₁, hk₁, k₂, hk₂, hD⟩` from `cartan_minuscule k ϖ ϖ hϖ hϖ a h1 h2 h3`. Take `⟨e, he, he0, he1, ht, l₁, hl₁, l₂, hl₂, hE⟩` from `cartan_minuscule k ϖ ϖ' hϖ hϖ' a' h1' h2' h3'`. Take `rfl : d = e` from `antitone_zero_one_eq_of_sum_eq d e hd he hd0 hd1 he0 he1 (hs.trans ht.symm)`. Establish `h : k₁⁻¹ * a * k₂⁻¹ = l₁⁻¹ * a' * l₂⁻¹` using `Units.ext (hD.trans hE.symm)`.
+
+Use `⟨l₁ * k₁⁻¹, Subgroup.mul_mem _ hl₁ (Subgroup.inv_mem _ hk₁), k₂⁻¹ * l₂, Subgroup.mul_mem _ (Subgroup.inv_mem _ hk₂) hl₂, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem glint_doubleCoset_of_minuscule : ∀ (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (n k : ℕ) (ϖ ϖ' : v.adicCompletion F), Formalism.UG.IsUnifV F v ϖ → Formalism.UG.IsUnifV F v ϖ' → ∀ a a' : GL (Fin n) (v.adicCompletion F), (∀ i j, (a : Matrix (Fin n) (Fin n) (v.adicCompletion F)) i j ∈ Formalism.UG.Ov F v) → (∀ i j, ϖ * ((a⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) i j ∈ Formalism.UG.Ov F v) → Valued.v (a : Matrix (Fin n) (Fin n) (v.adicCompletion F)).det = Valued.v ϖ ^ k → (∀ i j, (a' : Matrix (Fin n) (Fin n) (v.adicCompletion F)) i j ∈ Formalism.UG.Ov F v) → (∀ i j, ϖ' * ((a'⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) i j ∈ Formalism.UG.Ov F v) → Valued.v (a' : Matrix (Fin n) (Fin n) (v.adicCompletion F)).det = Valued.v ϖ' ^ k → ∃ x ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.Ov F v), ∃ y ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.Ov F v), a' = x * a * y := by
   intro F _ _ v n k ϖ ϖ' hϖ hϖ' a a' h1 h2 h3 h1' h2' h3'
   obtain ⟨d, hd, hd0, hd1, hs, k₁, hk₁, k₂, hk₂, hD⟩ := cartan_minuscule k ϖ ϖ hϖ hϖ a h1 h2 h3

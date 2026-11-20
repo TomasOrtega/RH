@@ -18,6 +18,15 @@ namespace GlobalTheory.CechTr
 
 open GlobalTheory.CechFin
 
+/- English proof (translation)
+Introduce and unpack `⟨N, e', he', hc'⟩`. Use `choose g hg using fun (k : Fin N) (i i' : J) => (h2 i i').2 (e' k i i')`. Use `⟨N, g, ?_, ?_⟩` and prove the remaining obligations. Introduce `k i i' i''`. Apply `h3 i i' i''` to reduce the goal to its premises.
+
+Use `he' k i i' i''` as an intermediate fact. Rewrite using `[map_add, ha, hb, hc, hg, hg, hg]`. Conclude with `this`. Introduce `c hcoc`. Take `⟨r, h', hh⟩` from `hc' (fun i i' => φ2 i i' (c i i')) (by`.
+
+Introduce `i i' i''`. Use `congrArg (φ3 i i' i'') (hcoc i i' i'')` as an intermediate fact. Rewrite `this` using `[map_add, ha, hb, hc]`. Conclude with `this)`. Use `choose h hh1 using fun i => h1 i (h' i)`.
+
+Use `⟨r, h, fun i i' => (h2 i i').1 ?_⟩` and prove the remaining obligations. Establish `e1` using `hh i i'`. Rewrite using `[map_add, map_sub, map_sum, hl, hr, hh1, hh1]`. Simplify using `only [map_mul, hact, hg]`. Conclude with `e1`.
+-/
 theorem cechFG_of_transfer {Z Z' : Scheme.{0}} {J : Type} (W : J → Z.Opens) (W' : J → Z'.Opens)
     (R : Type) [CommRing R]
     (act : ∀ i i' : J, R →+* Γ(Z, W i ⊓ W i')) (act' : ∀ i i' : J, R →+* Γ(Z', W' i ⊓ W' i'))
@@ -62,12 +71,18 @@ theorem cechFG_of_transfer {Z Z' : Scheme.{0}} {J : Type} (W : J → Z.Opens) (W
     simp only [map_mul, hact, hg]
     exact e1
 
+/- English proof (translation)
+Simplify using `only [resG]`. Rewrite using `[← CommRingCat.comp_apply, ← CommRingCat.comp_apply, Scheme.Hom.map_appLE, Scheme.Hom.appLE_map]`.
+-/
 theorem appLE_resG {X Y : Scheme.{0}} (f : X ⟶ Y) {O₁ O₂ : Y.Opens} {V₁ V₂ : X.Opens} (hO : O₂ ≤ O₁)
     (hV : V₂ ≤ V₁) (e₁ : V₁ ≤ f ⁻¹ᵁ O₁) (e₂ : V₂ ≤ f ⁻¹ᵁ O₂) (x : Γ(Y, O₁)) :
     (f.appLE O₂ V₂ e₂).hom (resG Y hO x) = resG X hV ((f.appLE O₁ V₁ e₁).hom x) := by
   simp only [resG]
   rw [← CommRingCat.comp_apply, ← CommRingCat.comp_apply, Scheme.Hom.map_appLE, Scheme.Hom.appLE_map]
 
+/- English proof (translation)
+Substitute `hV` using the available equality. Rewrite using `[Scheme.Hom.appLE_eq_app]`. Use `haveI := f.isIso_app O hO`. Conclude with `(asIso (f.app O)).commRingCatIsoToRingEquiv.bijective`.
+-/
 theorem appLE_bijective {X Y : Scheme.{0}} (f : X ⟶ Y) [IsOpenImmersion f] {O : Y.Opens}
     (hO : O ≤ f.opensRange) {V : X.Opens} (hV : V = f ⁻¹ᵁ O) (e : V ≤ f ⁻¹ᵁ O) :
     Function.Bijective (f.appLE O V e).hom := by
@@ -82,14 +97,25 @@ namespace GlobalTheory.CechTr
 
 open GlobalTheory.CechFin
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem appLE_eq_of_eq {X Y : Scheme.{0}} {f g : X ⟶ Y} (h : f = g) (U : Y.Opens) (V : X.Opens)
     (e : V ≤ f ⁻¹ᵁ U) (e' : V ≤ g ⁻¹ᵁ U) : f.appLE U V e = g.appLE U V e' := by
   subst h; rfl
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using the standard rewrite rules.
+-/
 theorem preimage_inf' {X Y : Scheme.{0}} (f : X ⟶ Y) (A B : Y.Opens) :
     f ⁻¹ᵁ (A ⊓ B) = f ⁻¹ᵁ A ⊓ f ⁻¹ᵁ B := by
   ext x; simp
 
+/- English proof (translation)
+Establish `e' : V ≤ (pullback.snd p hU.fromSpec ≫ hU.fromSpec) ⁻¹ᵁ U`. Rewrite using `[← pullback.condition]`. Conclude with `e.trans (Scheme.Hom.preimage_mono _ hO)`. Establish `key : (pullback.snd p hU.fromSpec ≫ hU.fromSpec).appLE U V e' = (Scheme.ΓSpecIso Γ(X, U)).inv ≫ (pullback.snd p hU.fromSpec).appLE ⊤ V le_top`. Rewrite using `[Scheme.Hom.comp_appLE, hU.fromSpec_app_self, Category.assoc]`.
+
+Conclude with `congrArg ((Scheme.ΓSpecIso Γ(X, U)).inv ≫ ·) (Scheme.Hom.map_appLE _ _ _)`. Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.appLE_comp_appLE, appLE_eq_of_eq pullback.condition _ _ _ e', key]`. Both sides reduce to the same expression.
+-/
 theorem appLE_act {G X : Scheme.{0}} (p : G ⟶ X) (U : X.Opens) (hU : IsAffineOpen U) (O : G.Opens)
     (V : (pullback p hU.fromSpec).Opens) (hO : O ≤ p ⁻¹ᵁ U)
     (e : V ≤ pullback.fst p hU.fromSpec ⁻¹ᵁ O) (r : Γ(X, U)) :
@@ -110,6 +136,11 @@ namespace GlobalTheory.CechTr
 
 open GlobalTheory.CechFin
 
+/- English proof (translation)
+Establish `hR : ∀ O : G.Opens, O ≤ p ⁻¹ᵁ U → O ≤ (pullback.fst p hU.fromSpec).opensRange`. Introduce `O hO`. Rewrite using `[Scheme.Hom.opensRange_pullbackFst, IsAffineOpen.opensRange_fromSpec]`. Conclude with `hO`. Establish `h2e : ∀ A B : G.Opens, pullback.fst p hU.fromSpec ⁻¹ᵁ A ⊓ pullback.fst p hU.fromSpec ⁻¹ᵁ B = pullback.fst p hU.fromSpec ⁻¹ᵁ (A ⊓ B)` using `fun A B => (preimage_inf' _ A B).symm`.
+
+Use `cechFG_of_transfer W _ _ _ _ (fun i => ((pullback.fst p hU.fromSpec).appLE (W i) _ le_rfl).hom) (fun i i' => ((pullback.fst p hU.fromSpec).appLE (W i ⊓ W i') _ (h2e _ _).le).hom) (fun i i' i'' => ((pullback.fst p hU.fromSpec).appLE (W i ⊓ W i' ⊓ W i'') _ (by rw [h2e, h2e])).hom) …` and prove the remaining obligations.
+-/
 theorem cechFG_of_baseChange_affineOpen (G X : Scheme.{0}) (p : G ⟶ X) (U : X.Opens) (hU : IsAffineOpen U)
     (J : Type) (W : J → G.Opens) (hWU : ∀ i, W i ≤ p ⁻¹ᵁ U) :
     CechFG (fun i => pullback.fst p hU.fromSpec ⁻¹ᵁ W i) Γ(X, U)
@@ -137,6 +168,9 @@ theorem cechFG_of_baseChange_affineOpen (G X : Scheme.{0}) (p : G ⟶ X) (U : X.
     (fun i i' i'' x => appLE_resG _ _ _ _ _ x)
     (fun i i' r => appLE_act p U hU _ _ _ _ r)
 
+/- English proof (translation)
+The claim follows from `cechFG_of_baseChange_affineOpen G X p U.1 U.2 J W hWU`.
+-/
 theorem cechFG_of_baseChange_affine (G X : Scheme.{0}) (p : G ⟶ X) (U : X.affineOpens) (J : Type)
     (W : J → G.Opens) (hWU : ∀ i, W i ≤ p ⁻¹ᵁ U.1) :
     CechFG (fun i => pullback.fst p U.2.fromSpec ⁻¹ᵁ W i) Γ(X, U.1)

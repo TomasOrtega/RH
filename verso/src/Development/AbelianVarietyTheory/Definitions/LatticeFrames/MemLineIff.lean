@@ -26,6 +26,9 @@ def TopPrim (v : VCom c) (o : TDat c k ι) : Prop :=
 
 variable {v : VCom c} {o : TDat c k ι}
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.GoodPos.orth_line _ ho _ a).trans (H n h x hx a ha)`.
+-/
 theorem TopPrim.line (H : TopPrim v o) {n : ℕ} (h : n = D.R.m) {x : GlobalTheory.FinPl.Pl D} (hx : x ∉ v.tP) {LT : Lat c.T} {LZ : Lat c.Lz}
     (ho : OrthAt (c.oT n h) (c.x n).L LT LZ x) {a : AE D} (ha : a ∈ idAt D (· = x)) :
     a • ratV o.ζ₀ ∈ latV c.Lz LZ (· = x) ↔ a ∈ intAt D (· = x) :=
@@ -46,10 +49,16 @@ def InPosition : Prop := PlacedPrim f B ∧ Framed B
 
 variable {f B}
 
+/- English proof (translation)
+Take `⟨k, i1, i2, i3, i4, ι, v, o, n, G, pl, h1, h2, h3, h4, h5, h6, h7, -⟩` from `h`. Conclude with `⟨k, i1, i2, i3, i4, ι, v, o, n, G, pl, h1, h2, h3, h4, h5, h6, h7⟩`.
+-/
 theorem PlacedPrim.placed (h : PlacedPrim f B) : Placed f B := by
   obtain ⟨k, i1, i2, i3, i4, ι, v, o, n, G, pl, h1, h2, h3, h4, h5, h6, h7, -⟩ := h
   exact ⟨k, i1, i2, i3, i4, ι, v, o, n, G, pl, h1, h2, h3, h4, h5, h6, h7⟩
 
+/- English proof (translation)
+The claim follows from `h.1.placed`.
+-/
 theorem InPosition.placed (h : InPosition f B) : Placed f B := h.1.placed
 
 end GlobalTheory.MiTop

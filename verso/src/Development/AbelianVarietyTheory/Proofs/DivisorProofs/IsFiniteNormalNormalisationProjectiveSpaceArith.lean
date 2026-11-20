@@ -16,6 +16,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.ThetaFin
 
+/- English proof (translation)
+Introduce `o F _ _ _ _ _ _ b n X s f _ _ hinj hfrac hX _ _ _ hw _`. Use `letI : Algebra o F := b.toAlgebra`. Use `haveI : IsFractionRing o F := by`. Use `⟨fun d => ?_, fun x => ?_, fun {x y} h => ?_⟩` and prove the remaining obligations. Use `IsUnit.mk0 _ ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `b d ≠ 0`. Conclude with `(map_ne_zero_iff b hinj).mpr (nonZeroDivisors.ne_zero d.2)`. Take `⟨a, d, hd, e⟩` from `hfrac x`. Use `⟨⟨a, ⟨d, mem_nonZeroDivisors_of_ne_zero fun h0 => hd (by rw [h0, map_zero])⟩⟩, e⟩` and prove the remaining obligations. Conclude with `⟨1, by simpa using hinj h⟩`.
+
+Use `haveI : CharZero o := ⟨fun m k h => by`. Use `congrArg b h` as an intermediate fact. Simplify using `only [map_natCast] at this`. Conclude with `Nat.cast_injective this⟩`. Use `haveI : IsDedekindDomain (CommRingCat.of o) := ‹IsDedekindDomain o›`.
+
+Use `haveI : CharZero (CommRingCat.of o) := ‹CharZero o›`. Use `haveI hN : GlobalTheory.IsNormalScheme X := GlobalTheory.IsNormalScheme.of_pred hX`. Use `haveI : IsReduced X := isReduced_of_isReduced_stalk X`. Use `haveI : IsProper (PSpace.str o n) := isProper_str o n`. Use `haveI : IsLocallyNoetherian X := LocallyOfFiniteType.isLocallyNoetherian s`.
+
+Use `⟨GlobalTheory.isFinite_fromNormalization_of_over_fractionRing (o := CommRingCat.of o) f (PSpace.str o n) F s hw, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.IsNormalScheme.pred _`.
+-/
 theorem isFinite_fromNormalization_and_normal : ∀ (o F : Type) [CommRing o] [IsDomain o] [IsDedekindDomain o] [Algebra.FiniteType ℤ o] [Field F] [CharZero F] (b : o →+* F) (n : ℕ) (X : Scheme.{0}) (s : X ⟶ Sp F) (f : X ⟶ PSpace o n) [QuasiCompact f] [QuasiSeparated f], Function.Injective b → (∀ x : F, ∃ a d : o, b d ≠ 0 ∧ x * b d = b a) → Geo.Tor.IsNormalScheme X → IsSeparated s → LocallyOfFiniteType s → QuasiCompact s → f ≫ PSpace.str o n = s ≫ spMap b → (∀ (K : Type) [Field K] [IsAlgClosed K] (x : Sp K ⟶ X), Set.Finite {y : Sp K ⟶ X | y ≫ s = x ≫ s ∧ y ≫ f = x ≫ f}) → IsFinite f.fromNormalization ∧ Geo.Tor.IsNormalScheme f.normalization := by
   intro o F _ _ _ _ _ _ b n X s f _ _ hinj hfrac hX _ _ _ hw _
   letI : Algebra o F := b.toAlgebra

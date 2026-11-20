@@ -10,22 +10,36 @@ open ReciprocityTheory.PGsh.L2
 
 variable {C : Type} [Field C] {v : Valuation C NNReal}
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_single_one]`. Both sides reduce to the same expression.
+-/
 private theorem mulVec_single_one_apply {ι : Type} [Fintype ι] [DecidableEq ι] (M : Matrix ι ι C)
     (i k : ι) : (M *ᵥ Pi.single k 1) i = M i k := by
   rw [Matrix.mulVec_single_one]
   rfl
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `hx`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ L.isUnit_det, Matrix.one_mulVec]`. Conclude with `hc i`.
+-/
 private theorem valuation_inv_mulVec_le_one_of_mem_pts {ι : Type} [Fintype ι] [DecidableEq ι] (L : Lat v ι) {x : ι → C}
     (hx : x ∈ L.pts) (i : ι) : v ((L.B⁻¹ *ᵥ x) i) ≤ 1 := by
   obtain ⟨c, hc, rfl⟩ := hx
   rw [Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ L.isUnit_det, Matrix.one_mulVec]
   exact hc i
 
+/- English proof (translation)
+The claim follows from `v_mulVec_le X (fun j => Z j k) hX (fun j => hZ j k) i`.
+-/
 private theorem valuation_mul_apply_le_one {ι κ μ : Type} [Fintype κ] (X : Matrix ι κ C) (Z : Matrix κ μ C)
     (hX : ∀ i j, v (X i j) ≤ 1) (hZ : ∀ i j, v (Z i j) ≤ 1) (i : ι) (k : μ) :
     v ((X * Z) i k) ≤ 1 :=
   v_mulVec_le X (fun j => Z j k) hX (fun j => hZ j k) i
 
+/- English proof (translation)
+Use extensionality with `y x`. Rewrite using `[Matrix.mul_apply, Fintype.sum_prod_type, Fintype.sum_eq_single y.1]`. Distinguish the cases in `h : y.1 = x.1`. Simplify using `[h, Matrix.mul_apply]`. Simplify using `[h]`.
+
+Introduce `τ hτ`. Simplify using `[Ne.symm hτ]`.
+-/
 private theorem blockDiag_mul_blockDiag {n p q r : ℕ} (X : Fin n → Matrix (Fin p) (Fin q) C)
     (Z : Fin n → Matrix (Fin q) (Fin r) C) :
     (Matrix.of fun (y : Fin n × Fin p) (x : Fin n × Fin q) =>
@@ -42,6 +56,11 @@ private theorem blockDiag_mul_blockDiag {n p q r : ℕ} (X : Fin n → Matrix (F
   · intro τ hτ
     simp [Ne.symm hτ]
 
+/- English proof (translation)
+Use extensionality with `y x`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Simplify using `only [Matrix.of_apply]`. Distinguish the cases in `h : y.1 = x.1`. Rewrite using `[if_pos h, h]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem blockDiag_mul_diagonal_eq_diagonal_mul {n p q : ℕ} (X : Fin n → Matrix (Fin p) (Fin q) C) (g : Fin n → C) :
     (Matrix.of fun (y : Fin n × Fin p) (x : Fin n × Fin q) =>
         if y.1 = x.1 then X y.1 y.2 x.2 else 0) *
@@ -58,11 +77,103 @@ private theorem blockDiag_mul_diagonal_eq_diagonal_mul {n p q : ℕ} (X : Fin n 
   · rw [if_neg h]
     ring
 
+/- English proof (translation)
+Rewrite using `[Fintype.prod_prod_type, ← prod_fder a, ← Finset.prod_pow]`. Simplify using the standard rewrite rules.
+-/
 private theorem prod_fder_fst_eq_discr_pow {n m : ℕ} (a : Fin n → C) :
     ∏ x : Fin n × Fin m, fder a x.1 = discr a ^ m := by
   rw [Fintype.prod_prod_type, ← prod_fder a, ← Finset.prod_pow]
   simp
 
+/- English proof (translation)
+Establish `hf : ∀ τ, fder a τ ≠ 0`. Introduce `τ`. Unfold `fder`. Conclude with `Finset.prod_ne_zero_iff.mpr fun τ' hτ' => sub_ne_zero.mpr fun e => Finset.ne_of_mem_erase hτ' (hinj e).symm`. Establish `hd0 : discr a ≠ 0`.
+
+Rewrite using `[← prod_fder a]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun τ _ => hf τ`. Establish `hd : v (discr a) ≠ 0` using `(map_ne_zero v).mpr hd0`. Establish `hYex : ∀ (τ : Fin n) (j : Fin s), ∃ w ∈ F.pts, (fun i => phiMap A w (τ, i)) = (Mτ τ).B *ᵥ Pi.single j 1`. Introduce `τ j`.
+
+Establish `hm : (Mτ τ).B *ᵥ Pi.single j 1 ∈ (Mτ τ).pts` using `⟨_, isIntegralVec_single j, rfl⟩`. Rewrite `hm` using `[hMτ τ]`. Take `⟨m, hm', hmj⟩` from `hm`. Rewrite `hm'` using `[hM']`. Take `⟨w, hw, rfl⟩` from `hm'`.
+
+Conclude with `⟨w, hw, hmj⟩`. Use `choose wY hwYF hwY using hYex`. Establish `hWex : ∀ k : Fin n × Fin s, ∃ w ∈ F.pts, phiMap A w = M'.B *ᵥ Pi.single k 1`. Introduce `k`. Establish `hm : M'.B *ᵥ Pi.single k 1 ∈ M'.pts` using `⟨_, isIntegralVec_single k, rfl⟩`.
+
+Rewrite `hm` using `[hM']`. Take `⟨w, hw, e⟩` from `hm`. Conclude with `⟨w, hw, e⟩`. Use `choose wW hwWF hwW using hWex`. Establish `hGint : ∀ τ i l, v (((Mτ τ).B⁻¹ * A τ) i l) ≤ 1`.
+
+Introduce `τ i l`. Take `⟨w, hwd⟩ : ∃ w : Fin n × Fin h → C, w = fun y => (1 : Polynomial C).eval (a y.1) * (Pi.single l (1 : C) : Fin h → C) y.2` from `⟨_, rfl⟩`. Establish `hw : w ∈ F.pts`. Rewrite using `[hwd]`. Apply the tactic sequence `exact polyVec_mem F hF 1 (fun k => by rw [Polynomial.coeff_one]; split_ifs <;> simp) (by rw [Polynomial.natDegree_one]; exact τ.pos) (Pi.single l 1) (fun l' => by rw [Pi.single_apply]; split_ifs <;> simp)`.
+
+Establish `hm : (fun i => phiMap A w (τ, i)) ∈ (Mτ τ).pts`. Rewrite using `[hMτ τ]`. Conclude with `⟨phiMap A w, by rw [hM']; exact ⟨w, hw, rfl⟩, rfl⟩`. Establish `key` using `valuation_inv_mulVec_le_one_of_mem_pts (Mτ τ) hm i`. Establish `hp : (fun i => phiMap A w (τ, i)) = fun i => A τ i l`.
+
+Use function extensionality and compare the values at `i'`. Rewrite using `[hwd]`. Simplify using `[phiMap, Pi.single_apply]`. Rewrite `key` using `[hp]`. Conclude with `key`.
+
+Take `⟨Gτ, hGτ⟩ : ∃ Gτ : Fin n → Matrix (Fin s) (Fin h) C, Gτ = fun τ => (Mτ τ).B⁻¹ * A τ` from `⟨_, rfl⟩`. Take `⟨Yτ, hYτ⟩ : ∃ Yτ : Fin n → Matrix (Fin h) (Fin s) C, Yτ = fun τ => Matrix.of fun l j => wY τ j (τ, l)` from `⟨_, rfl⟩`. Take `⟨G, hG⟩ : ∃ G : Matrix (Fin n × Fin s) (Fin n × Fin h) C, G = Matrix.of fun y x => if y.1 = x.1 then Gτ y.1 y.2 x.2 else 0` from `⟨_, rfl⟩`. Take `⟨Y, hYd⟩ : ∃ Y : Matrix (Fin n × Fin h) (Fin n × Fin s) C, Y = Matrix.of fun y x => if y.1 = x.1 then Yτ y.1 y.2 x.2 else 0` from `⟨_, rfl⟩`. Take `⟨Φ, hΦ⟩ : ∃ Φ : Matrix (Fin n × Fin s) (Fin n × Fin h) C, Φ = Matrix.of fun y x => if y.1 = x.1 then A y.1 y.2 x.2 else 0` from `⟨_, rfl⟩`.
+
+Take `⟨W, hW⟩ : ∃ W : Matrix (Fin n × Fin h) (Fin n × Fin s) C, W = Matrix.of fun x k => wW k x` from `⟨_, rfl⟩`. Take `⟨Dh, hDh⟩ : ∃ D : Matrix (Fin n × Fin h) (Fin n × Fin h) C, D = Matrix.diagonal fun x => fder a x.1` from `⟨_, rfl⟩`. Take `⟨Ds, hDs⟩ : ∃ D : Matrix (Fin n × Fin s) (Fin n × Fin s) C, D = Matrix.diagonal fun y => fder a y.1` from `⟨_, rfl⟩`. Take `⟨Eh, hEh⟩ : ∃ E : Matrix (Fin n × Fin h) (Fin n × Fin h) C, E = Matrix.diagonal fun x => (fder a x.1)⁻¹ * (1 - fder a x.1)` from `⟨_, rfl⟩`. Take `⟨Es, hEs⟩ : ∃ E : Matrix (Fin n × Fin s) (Fin n × Fin s) C, E = Matrix.diagonal fun y => (fder a y.1)⁻¹ * (1 - fder a y.1)` from `⟨_, rfl⟩`.
+
+Establish `hAY : ∀ τ, A τ * (Matrix.of fun (l : Fin h) (j : Fin s) => wY τ j (τ, l)) = (Mτ τ).B`. Introduce `τ`. Use extensionality with `i j`. Establish `e` using `congrFun (hwY τ j) i`. Rewrite `e` using `[mulVec_single_one_apply]`.
+
+Rewrite using `[← e, Matrix.mul_apply]`. Simplify using `only [Matrix.of_apply, phiMap]`. Establish `hGYτ : ∀ τ, Gτ τ * Yτ τ = 1`. Introduce `τ`. Rewrite using `[hGτ, hYτ]`.
+
+Use `show (Mτ τ).B⁻¹ * A τ * (Matrix.of fun (l : Fin h) (j : Fin s) => wY τ j (τ, l)) = 1`. Rewrite using `[Matrix.mul_assoc, hAY τ, Matrix.nonsing_inv_mul _ (Mτ τ).isUnit_det]`. Establish `hGint' : ∀ y x, v (G y x) ≤ 1`. Introduce `y x`. Rewrite using `[hG]`.
+
+Simplify using `only [Matrix.of_apply]`. Use `split_ifs`. Rewrite using `[hGτ]`. Conclude with `hGint y.1 y.2 x.2`. Simplify using the standard rewrite rules.
+
+Establish `hYint : ∀ x y, v (Y x y) ≤ 1`. Introduce `x y`. Rewrite using `[hYd]`. Simplify using `only [Matrix.of_apply]`. Use `split_ifs`.
+
+Rewrite using `[hYτ]`. Conclude with `freePts_integral ha F hF (hwYF x.1 y.2) (x.1, x.2)`. Simplify using the standard rewrite rules. Establish `hGYbig : G * Y = 1`. Rewrite using `[hG, hYd, blockDiag_mul_blockDiag Gτ Yτ]`.
+
+Simplify using `only [hGYτ]`. Use extensionality with `⟨τ, i⟩ ⟨τ', j⟩`. Distinguish the cases in `hτ : τ = τ'`. Substitute `hτ` using the available equality. Simplify using `[Matrix.one_apply]`.
+
+Simplify using `[hτ, Matrix.one_apply]`. Establish `hΦW : Φ * W = M'.B`. Use extensionality with `y k`. Establish `e` using `congrFun (hwW k) y`. Rewrite `e` using `[mulVec_single_one_apply]`.
+
+Rewrite using `[← e, hΦ, hW, Matrix.mul_apply, Fintype.sum_prod_type, Fintype.sum_eq_single y.1]`. Simplify using `[phiMap]`. Introduce `τ hτ`. Simplify using `[Ne.symm hτ]`. Establish `hSG : (sumLat Mτ).B⁻¹ * Φ = G`.
+
+Use extensionality with `⟨τ, i⟩ x`. Establish `e` using `sumLat_inv_mulVec Mτ (fun z => Φ z x) τ i`. Use `e.trans ?_` and prove the remaining obligations. Rewrite using `[hΦ, hG, hGτ]`. Simplify using `only [Matrix.of_apply]`.
+
+Distinguish the cases in `hτ : τ = x.1`. Establish `hv : (fun j : Fin s => if τ = x.1 then A τ j x.2 else 0) = fun j => A τ j x.2`. Use function extensionality and compare the values at `j`. Rewrite using `[if_pos hτ]`. Rewrite using `[hv, if_pos hτ]`.
+
+Both sides reduce to the same expression. Establish `hv : (fun j : Fin s => if τ = x.1 then A τ j x.2 else 0) = 0`. Use function extensionality and compare the values at `j`. Rewrite using `[if_neg hτ]`. Both sides reduce to the same expression.
+
+Rewrite using `[hv, if_neg hτ, Matrix.mulVec_zero]`. Both sides reduce to the same expression. Establish `hSS : S.pts = (sumLat Mτ).pts` using `by rw [hS, sumLat_pts]`. Establish `hcol : colen M' S = v (G * W).det`. Rewrite using `[colen_congr (rfl : M'.pts = M'.pts) hSS, colen_eq_v_det, ← hΦW, ← Matrix.mul_assoc, hSG]`.
+
+Establish `hGDcomm : G * Dh = Ds * G`. Rewrite using `[hG, hDh, hDs]`. Conclude with `blockDiag_mul_diagonal_eq_diagonal_mul Gτ (fder a)`. Establish `hGEcomm : G * Eh = Es * G`. Rewrite using `[hG, hEh, hEs]`.
+
+Conclude with `blockDiag_mul_diagonal_eq_diagonal_mul Gτ (fun τ => (fder a τ)⁻¹ * (1 - fder a τ))`. Establish `hGD0 : G * (Dh * (1 - Y * G)) = 0`. Rewrite using `[← Matrix.mul_assoc, hGDcomm, Matrix.mul_assoc, Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc G Y G, hGYbig, Matrix.one_mul, sub_self, Matrix.mul_zero]`. Establish `hfac : (W * G + (1 - Y * G)) * (Y * G + Dh * (1 - Y * G)) = W * G + Dh * (1 - Y * G)`. Establish `p1 : W * G * (Y * G) = W * G`.
+
+Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc G Y G, hGYbig, Matrix.one_mul]`. Establish `p2 : W * G * (Dh * (1 - Y * G)) = 0`. Rewrite using `[Matrix.mul_assoc, hGD0, Matrix.mul_zero]`. Establish `p3 : (1 - Y * G) * (Y * G) = 0`. Rewrite using `[Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc, ← Matrix.mul_assoc G Y G, hGYbig, Matrix.one_mul, sub_self]`.
+
+Establish `p4 : (1 - Y * G) * (Dh * (1 - Y * G)) = Dh * (1 - Y * G)`. Rewrite using `[Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc Y G, hGD0, Matrix.mul_zero, sub_zero]`. Rewrite using `[Matrix.add_mul, Matrix.mul_add, Matrix.mul_add, p1, p2, p3, p4, add_zero, zero_add]`. Establish `hdetA1 : (W * G + (1 - Y * G)).det = (G * W).det`. Establish `e : W * G + (1 - Y * G) = 1 + (W - Y) * G`.
+
+Rewrite using `[Matrix.sub_mul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, Matrix.det_one_add_mul_comm, Matrix.mul_sub, hGYbig]`. Use `congr 1`. Normalize the expressions using the abelian group laws.
+
+Establish `hDE : Dh * Eh = 1 - Dh`. Rewrite using `[hDh, hEh, Matrix.diagonal_mul_diagonal]`. Use extensionality with `x x'`. Simplify using `only [Matrix.sub_apply, Matrix.one_apply, Matrix.diagonal_apply]`. Use `split_ifs`.
+
+Rewrite using `[← mul_assoc, mul_inv_cancel₀ (hf _), one_mul]`. Simplify using the standard rewrite rules. Establish `h1Es : (1 : Matrix (Fin n × Fin s) (Fin n × Fin s) C) + Es = Matrix.diagonal fun y => (fder a y.1)⁻¹`. Rewrite using `[hEs]`. Use extensionality with `y y'`.
+
+Simplify using `only [Matrix.add_apply, Matrix.one_apply, Matrix.diagonal_apply]`. Use `split_ifs`. Rewrite using `[mul_sub, mul_one, inv_mul_cancel₀ (hf _)]`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+
+Establish `hA2eq : Y * G + Dh * (1 - Y * G) = Dh * (1 + Eh * Y * G)`. Rewrite using `[Matrix.mul_add, Matrix.mul_one, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hDE, Matrix.mul_sub, Matrix.mul_one, Matrix.sub_mul, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc Dh Y G]`. Normalize the expressions using the abelian group laws. Establish `hdetA2 : (Y * G + Dh * (1 - Y * G)).det = discr a ^ h * (discr a ^ s)⁻¹`. Rewrite using `[hA2eq, Matrix.det_mul, Matrix.det_one_add_mul_comm, ← Matrix.mul_assoc G Eh Y, hGEcomm, Matrix.mul_assoc Es G Y, hGYbig, Matrix.mul_one, h1Es, Matrix.det_diagonal, hDh, Matrix.det_diagonal, prod_fder_fst_eq_discr_pow, Finset.prod_inv_distrib, prod_fder_fst_eq_discr_pow]`.
+
+Establish `hFW : ∀ i k, v ((F.B⁻¹ * W) i k) ≤ 1`. Introduce `i k`. Rewrite using `[hW]`. Conclude with `valuation_inv_mulVec_le_one_of_mem_pts F (hwWF k) i`. Establish `hFD : ∀ i x, v ((F.B⁻¹ * Dh) i x) ≤ 1`.
+
+Introduce `i x`. Establish `hc` using `conductor_mem ha F hF x.1 (Pi.single x.2 1) (fun l => by`. Rewrite using `[Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp)`. Establish `key` using `valuation_inv_mulVec_le_one_of_mem_pts F hc i`.
+
+Establish `hcv : (fun y : Fin n × Fin h => if y.1 = x.1 then fder a x.1 * (Pi.single x.2 (1 : C) : Fin h → C) y.2 else 0) = fder a x.1 • (Pi.single x (1 : C) : Fin n × Fin h → C)`. Use function extensionality and compare the values at `y`. Rewrite using `[Pi.smul_apply, smul_eq_mul, Pi.single_apply, Pi.single_apply]`. Distinguish the cases in `h1 : y.1 = x.1`. Distinguish the cases in `h2 : y.2 = x.2`.
+
+Establish `hyx : y = x` using `Prod.ext h1 h2`. Simplify using `[hyx]`. Establish `hyx : y ≠ x` using `fun e => h2 (by rw [e])`. Simplify using `[h1, h2, hyx]`. Establish `hyx : y ≠ x` using `fun e => h1 (by rw [e])`.
+
+Simplify using `[h1, hyx]`. Rewrite `key` using `[hcv, Matrix.mulVec_smul, Pi.smul_apply, mulVec_single_one_apply, smul_eq_mul]`. Rewrite using `[hDh, Matrix.mul_diagonal, mul_comm]`. Conclude with `key`. Establish `hQint : ∀ y x, v (((1 : Matrix (Fin n × Fin h) (Fin n × Fin h) C) - Y * G) y x) ≤ 1`.
+
+Introduce `y x`. Rewrite using `[Matrix.sub_apply]`. Use `le_trans (Valuation.map_sub v _ _) (max_le ?_ (valuation_mul_apply_le_one _ _ hYint hGint' y x))` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Establish `hUint : IsIntegralMat v (F.B⁻¹ * (W * G + Dh * (1 - Y * G)))`. Introduce `i x`. Rewrite using `[Matrix.mul_add, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.add_apply]`. Use `le_trans (Valuation.map_add v _ _) (max_le ?_ ?_)` and prove the remaining obligations. Conclude with `valuation_mul_apply_le_one _ _ hFW hGint' i x`.
+
+Conclude with `valuation_mul_apply_le_one _ _ hFD hQint i x`. Establish `hU : v (W * G + Dh * (1 - Y * G)).det ≤ v F.B.det`. Establish `e : W * G + Dh * (1 - Y * G) = F.B * (F.B⁻¹ * (W * G + Dh * (1 - Y * G)))`. Rewrite using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ F.isUnit_det, Matrix.one_mul]`. Rewrite using `[e, Matrix.det_mul, map_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hvF : v F.B.det ^ 2 = v (discr a) ^ h`. Rewrite using `[hF]`. Conclude with `v_det_freeMat_sq a h`. Establish `hdetT : (W * G + Dh * (1 - Y * G)).det = (G * W).det * (discr a ^ h * (discr a ^ s)⁻¹)`.
+
+Rewrite using `[← hfac, Matrix.det_mul, hdetA1, hdetA2]`. Establish `h1 : v (G * W).det * (v (discr a) ^ h * (v (discr a) ^ s)⁻¹) ≤ v F.B.det`. Establish `hU'` using `hU`. Rewrite `hU'` using `[hdetT, map_mul, map_mul, map_inv₀, map_pow, map_pow]`. Then use the resulting hypothesis. Establish `h2 : v (G * W).det * v (discr a) ^ h ≤ v F.B.det * v (discr a) ^ s`.
+
+Establish `h3` using `mul_le_mul' h1 (le_refl (v (discr a) ^ s))`. Rewrite `h3` using `[mul_assoc, mul_assoc, inv_mul_cancel₀ (pow_ne_zero _ hd), mul_one]`. Then use the resulting hypothesis. Rewrite using `[hcol]`. Establish `hpos : 0 < v (discr a) ^ h` using `pow_pos (pos_iff_ne_zero.mpr hd) h`. Use `le_of_mul_le_mul_right ?_ hpos` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem colength_sq_mul_le {n : ℕ} (a : Fin n → C) (hinj : Function.Injective a) (ha : ∀ τ, v (a τ) ≤ 1)
     (s h : ℕ) (A : Fin n → Matrix (Fin s) (Fin h) C) (F : Lat v (Fin n × Fin h))
     (M' S : Lat v (Fin n × Fin s)) (Mτ : Fin n → Lat v (Fin s)) (hF : F.B = freeMat a h)

@@ -113,53 +113,97 @@ def Sizes {D : D7} (L : SizeData₂ D) (C : ℝ) : Prop :=
 def Hyp {D : D7} {L : SizeData₂ D} {P : ParameterChoice' D L} (T : ParamsT D L P) (X : Prov D) (CP C : ℝ) : Prop :=
   Dom T CP ∧ RingBound L X ∧ Sizes L C
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Z_eq {D : D7} (L : SizeData₂ D) : Z L = zBase L := rfl
 
+/- English proof (translation)
+Unfold `PP grade PPv`. Rewrite using `[Z_eq, show (12 : ℝ) = ((12 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`.
+-/
 theorem PP_eq_PPv {D : D7} (L : SizeData₂ D) (CP : ℝ) : PP L CP = PPv D L CP 12 := by
   unfold PP grade PPv
   rw [Z_eq, show (12 : ℝ) = ((12 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]
 
+/- English proof (translation)
+Rewrite using `[PP_eq_PPv, ← h, PPv_rec]`.
+-/
 theorem PP_eq_of_eP_eq_twelve {D : D7} {L : SizeData₂ D} {P : ParameterChoice' D L} (T : ParamsT D L P) (h : T.eP = 12) :
     PP L T.CP = T.PP := by
   rw [PP_eq_PPv, ← h, PPv_rec]
 
+/- English proof (translation)
+Unfold `RR RRv`. Rewrite using `[show (7 : ℝ) = ((7 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`.
+-/
 theorem RR_eq (D : D7) : RR D = RRv D 7 := by
   unfold RR RRv
   rw [show (7 : ℝ) = ((7 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]
 
+/- English proof (translation)
+Unfold `Ranks.f Ranks.n`. Use `D.R.ord_pos` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem f_pos (D : D7) : 0 < D.R.f := by
   unfold Ranks.f Ranks.n; have := D.R.ord_pos; omega
 
+/- English proof (translation)
+Establish `hf : (0 : ℝ) < D.R.f` using `by exact_mod_cast f_pos D`. Rewrite using `[logdE_eq_rd]`. Unfold `lrd`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem lrd_eq (D : D7) : lrd D = logdE D / (2 * (D.R.f : ℝ)) := by
   have hf : (0 : ℝ) < D.R.f := by exact_mod_cast f_pos D
   rw [logdE_eq_rd]; unfold lrd; field_simp
 
+/- English proof (translation)
+The claim follows from `lt_min (D.host.g_prime 0).pos (D.host.g_prime 1).pos`.
+-/
 theorem q_pos (D : D7) : 0 < q D :=
   lt_min (D.host.g_prime 0).pos (D.host.g_prime 1).pos
 
+/- English proof (translation)
+Establish `h1` using `D.R.two_le_m`. Establish `h2` using `D.R.m_add_three_le_k`. Establish `hr : 2 ≤ D.R.r` using `by unfold Ranks.r; omega`. Conclude with `Nat.mul_pos (f_pos D) (Nat.choose_pos hr)`.
+-/
 theorem dimFlag_pos (D : D7) : 0 < dimFlag D := by
   have h1 := D.R.two_le_m
   have h2 := D.R.m_add_three_le_k
   have hr : 2 ≤ D.R.r := by unfold Ranks.r; omega
   exact Nat.mul_pos (f_pos D) (Nat.choose_pos hr)
 
+/- English proof (translation)
+The claim follows from `T.Dp_eq`.
+-/
 theorem Dp_eq {D : D7} {L : SizeData₂ D} {P : ParameterChoice' D L} (T : ParamsT D L P) : T.Dp = dimFlag D := T.Dp_eq
 
+/- English proof (translation)
+Unfold `Ranks.f`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem half_f (D : D7) : (D.R.f : ℝ) / 2 = D.R.n := by
   unfold Ranks.f; push_cast; ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fieldSize_O {D : D7} (X : Prov D) :
     fieldSize X.KO = Real.log (degO X) + Real.log (rdO X) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fieldSize_E (D : D7) :
     fieldSize D.host.E = Real.log (Module.finrank ℚ D.host.E : ℝ) + lrd D := rfl
 
+/- English proof (translation)
+Unfold `logdE`. Apply `Real.log_nonneg` to reduce the goal to its premises. Establish `h : (1 : ℤ) ≤ |discr D.host.E|` using `Int.one_le_abs (discr_ne_zero D.host.E)`. Conclude with `h` after adjusting the coercions.
+-/
 theorem logdE_nonneg (D : D7) : 0 ≤ logdE D := by
   unfold logdE
   apply Real.log_nonneg
   have h : (1 : ℤ) ≤ |discr D.host.E| := Int.one_le_abs (discr_ne_zero D.host.E)
   exact_mod_cast h
 
+/- English proof (translation)
+Establish `hf : (0 : ℝ) < D.R.f` using `by exact_mod_cast f_pos D`. Establish `h1` using `h.2.1`. Establish `h2 : 0 ≤ logdE D / (2 * (D.R.f : ℝ))` using `div_nonneg (logdE_nonneg D) (by positivity)`. Establish `h3` using `abs_nonneg L.logDerivativeAtOne`. Use `⟨?_, by linarith⟩` and prove the remaining obligations.
+
+Establish `h4 : logdE D / (2 * (D.R.f : ℝ)) ≤ 2 * L.sc.L` using `by linarith`. Rewrite `h4` using `[div_le_iff₀ (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem Sizes.halves {D : D7} {L : SizeData₂ D} {C : ℝ} (h : Sizes L C) :
     logdE D ≤ 4 * (D.R.f : ℝ) * L.sc.L ∧ |L.logDerivativeAtOne| ≤ 2 * L.sc.L := by
   have hf : (0 : ℝ) < D.R.f := by exact_mod_cast f_pos D
@@ -171,6 +215,9 @@ theorem Sizes.halves {D : D7} {L : SizeData₂ D} {C : ℝ} (h : Sizes L C) :
   rw [div_le_iff₀ (by positivity)] at h4
   linarith
 
+/- English proof (translation)
+Unfold `n0 dimBoundMax`. Establish `: dimX D j ≤ (Finset.Icc 1 D.R.m).sup (dimX D)` using `Finset.le_sup (Finset.mem_Icc.2 ⟨h1, h2⟩)`. Use `gcongr`.
+-/
 theorem dimBound_le_dimBoundMax (D : D7) {j : ℕ} (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) : n0 D j ≤ dimBoundMax D := by
   unfold n0 dimBoundMax
   have : dimX D j ≤ (Finset.Icc 1 D.R.m).sup (dimX D) := Finset.le_sup (Finset.mem_Icc.2 ⟨h1, h2⟩)

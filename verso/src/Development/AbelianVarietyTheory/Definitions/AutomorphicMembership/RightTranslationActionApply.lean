@@ -15,8 +15,14 @@ variable {X : Fields} {n : ℕ} {ST SG Q : Finset (HeightOneSpectrum (𝓞 X.E))
 
 def rhoC : UF X.E n →* Module.End ℂ (Pol ℂ X.Tau n) := (rhoP lam).comp ((embGL (embAt σ X.emb)).comp (ufGL X.E n))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rhoC_apply (γ : UF X.E n) : rhoC σ lam γ = rhoP lam (embGL (embAt σ X.emb) (ufGL X.E n γ)) := rfl
 
+/- English proof (translation)
+Use `Eq.trans ?_ (GlobalTheory.ValCmp.use₂ σ lam (embGL X.emb (ufGL X.E n γ)) v.1).symm` and prove the remaining obligations. Establish `e : embGL (embAt σ X.emb) (ufGL X.E n γ) = fun τ => Formalism.UG.bc σ (embGL X.emb (ufGL X.E n γ) τ)`. Use function extensionality and compare the values at `fun τ => Units.ext rfl`. Rewrite using `[rhoC_apply, e]`. Both sides reduce to the same expression.
+-/
 theorem rhoC_map (γ : UF X.E n) (v : VV X.K lam) :
     rhoC σ lam γ (MvPolynomial.map σ v.1) = MvPolynomial.map σ (rhoV X.emb lam (ufGL X.E n γ) v).1 := by
   refine Eq.trans ?_ (GlobalTheory.ValCmp.use₂ σ lam (embGL X.emb (ufGL X.E n γ)) v.1).symm
@@ -41,6 +47,9 @@ def cForms (Λ : LevFam X.E X.K n SG) : Submodule ℂ (DecoSet X.E n ST SG → P
     simp only [Pi.smul_apply]
     rw [(hF d).2 g, map_smul, smul_comm]
 
+/- English proof (translation)
+The claim follows from `forall_congr' fun _ => and_congr_right fun _ => ⟨fun h γ k => h (γ, k), fun h g => h g.1 g.2⟩`.
+-/
 theorem mem_cForms (Λ : LevFam X.E X.K n SG) (F : DecoSet X.E n ST SG → Pol ℂ X.Tau n) : F ∈ cForms ST σ lam Λ ↔
     ∀ d, F d ∈ VV ℂ lam ∧ ∀ (γ : UF X.E n) (h : Λ.grp),
       F ((γ, (h.1 : GLG X.E n SG)) • d) = σ (Λ.chr h : X.Kˣ) • rhoC σ lam γ (F d) :=
@@ -56,10 +65,18 @@ def toCForm (L : DecoSet X.E n ST SG → Submodule (𝓞 X.E) (Sp X.E n)) (Λ : 
   map_add' φ ψ := Subtype.ext (funext fun d => map_add (MvPolynomial.map σ) (φ.1 d).1 (ψ.1 d).1)
   map_smul' c φ := Subtype.ext (funext fun d => (mapS σ).map_smulₛₗ c (φ.1 d).1)
 
+/- English proof (translation)
+Introduce `_ _ h` and use `Subtype.ext (funext fun d => Subtype.ext (MvPolynomial.map_injective σ σ.injective (congrFun (congrArg Subtype.val h) d)))`.
+-/
 theorem toCForm_injective (L : DecoSet X.E n ST SG → Submodule (𝓞 X.E) (Sp X.E n)) (Λ : LevFam X.E X.K n SG) :
     Function.Injective (toCForm σ lam L Λ) := fun _ _ h =>
   Subtype.ext (funext fun d => Subtype.ext (MvPolynomial.map_injective σ σ.injective (congrFun (congrArg Subtype.val h) d)))
 
+/- English proof (translation)
+Rewrite `hF`, the goal using `[mem_cForms]`. Use `fun d => ⟨(hF _).1, fun γ h => ?_⟩` and prove the remaining obligations. Take `⟨h', e1, e2⟩` from `Λ.normBy a ha h`. Establish `h1` using `(hF (((1 : UF X.E n), a⁻¹) • d)).2 γ h'`. Rewrite `h1` using `[smul_smul, Prod.mk_mul_mk, mul_one]`.
+
+Rewrite using `[smul_smul, Prod.mk_mul_mk, one_mul, e1, h1, e2]`.
+-/
 theorem tr_mem_cForms (Λ : LevFam X.E X.K n SG) (a : GLG X.E n SG) (ha : ∀ w, (Λ w).NormBy (a w))
     {F : DecoSet X.E n ST SG → Pol ℂ X.Tau n} (hF : F ∈ cForms ST σ lam Λ) :
     (fun d => F (((1 : UF X.E n), a⁻¹) • d)) ∈ cForms ST σ lam Λ := by
@@ -87,6 +104,17 @@ def cTr (Λ : LevFam X.E X.K n SG) {A : Type} [Group A] (ι : A →* GLG X.E n S
     show F.1 (((1 : UF X.E n), (ι (a * b))⁻¹) • d) = F.1 (((1 : UF X.E n), (ι b)⁻¹) • ((1 : UF X.E n), (ι a)⁻¹) • d)
     rw [smul_smul, Prod.mk_mul_mk, one_mul, map_mul, mul_inv_rev]
 
+/- English proof (translation)
+Rewrite using `[mem_cForms, mem_cForms]`. Prove the components needed by the constructor for the conclusion. Introduce `hφ`. Use `⟨fun d => ⟨(hφ d).1, fun γ k => ?_⟩, fun a d => ?_⟩` and prove the remaining obligations. Take `⟨hm, e⟩` from `H.sub k`.
+
+Rewrite using `[← e]`. Conclude with `(hφ d).2 γ ⟨k.1, hm⟩`. Take `⟨hm, e⟩` from `H.emb a⁻¹`. Establish `h1` using `(hφ d).2 1 ⟨_, hm⟩`. Rewrite `h1` using `[e, map_one, map_inv]`.
+
+Rewrite using `[← map_inv]`. Conclude with `h1`. Introduce and unpack `⟨h1, h2⟩ d`. Use `⟨(h1 d).1, fun γ h => ?_⟩` and prove the remaining obligations. Take `⟨a, k, e1, e2⟩` from `H.fac h`.
+
+Establish `h3` using `h2 a⁻¹ ((γ, (k.1 : GLG X.E n SG)) • d)`. Rewrite `h3` using `[(h1 d).2 γ k, smul_smul, Prod.mk_mul_mk, one_mul, map_inv Λ0.chr, inv_inv]`. Establish `e3 : (ι ((a⁻¹ : ↥Λ0.grp) : GLG X.E r SG0))⁻¹ = ι a.1`. Rewrite using `[Subgroup.coe_inv, map_inv, inv_inv]`. Rewrite `h3` using `[e3]`.
+
+Rewrite using `[e1, h3, e2, smul_smul, Units.val_mul, map_mul]`.
+-/
 theorem mem_cForms_split {r : ℕ} {SG0 : Finset (HeightOneSpectrum (𝓞 X.E))} {ι : GLG X.E r SG0 →* GLG X.E n SG}
     {ΛP ΛK : LevFam X.E X.K n SG} {Λ0 : LevFam X.E X.K r SG0} (H : LevFam.Split ι ΛP ΛK Λ0)
     (F : DecoSet X.E n ST SG → Pol ℂ X.Tau n) :
@@ -124,9 +152,15 @@ structure IsSubLev (Λ Λ' : LevFam X.E X.K n SG) (Θ : LevQFam X.E X.K n Q) (H 
 
   sub : ∀ k : Λ'.grp, ∃ hm : k.1 ∈ Λ.grp, Λ.chr ⟨_, hm⟩ = Λ'.chr k
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun g => iff_of_true trivial g.2.1.2, fun k => ⟨k.2, rfl⟩⟩`.
+-/
 theorem isSubLev_top (Λ : LevFam X.E X.K n SG) (Θ : LevQFam X.E X.K n Q) : IsSubLev Λ Λ Θ ⊤ :=
   ⟨fun g => iff_of_true trivial g.2.1.2, fun k => ⟨k.2, rfl⟩⟩
 
+/- English proof (translation)
+The claim follows from `(h.mem _).2 (one_mem _)`.
+-/
 theorem IsSubLev.rat {Λ Λ' : LevFam X.E X.K n SG} {Θ : LevQFam X.E X.K n Q} {H : Subgroup (FrmG Λ Θ)} (h : IsSubLev Λ Λ' Θ H)
     (γ : UF X.E n) : ((γ, 1) : FrmG Λ Θ) ∈ H := (h.mem _).2 (one_mem _)
 
@@ -134,6 +168,15 @@ variable {Λ Λ' : LevFam X.E X.K n SG} {Θ : LevFam X.E X.K n Q} {H : Subgroup 
   (hH : IsSubLev Λ Λ' (levRedFam Θ) H) (hd : Disjoint SG Q)
 include hH hd
 
+/- English proof (translation)
+Establish `key : ∀ (g : FrmG Λ (levRedFam Θ)) (hg : g.2.1.1 ∈ Λ'.grp), (σ (Λ.chr g.2.1 * (levRedFam Θ).chr g.2.2 : X.Kˣ))⁻¹ = σ ((Λ'.glue Θ).inv.chr (redFG Λ' Θ (g.1, ⟨_, hg⟩, g.2.2)).2 : X.Kˣ)` using `fun g hg => by`. Take `⟨hm, e⟩` from `hH.sub ⟨_, hg⟩`. Establish `e' : Λ.chr g.2.1 = Λ'.chr ⟨_, hg⟩` using `e`. Rewrite using `[e', chr_redFG Λ' Θ hd (g.1, ⟨_, hg⟩, g.2.2), Units.val_inv_eq_inv_val, map_inv₀, inv_inv]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h d`. Take `⟨p, rfl⟩` from `forgetFr_surjective d`. Use `⟨(h p).1, fun a => ?_⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `redFG_surjective Λ' Θ a`. Take `⟨hm, -⟩` from `hH.sub g.2.1`.
+
+Establish `h1` using `(h p).2 (g.1, ⟨_, hm⟩, g.2.2) ((hH.mem _).2 g.2.1.2)`. Rewrite `h1` using `[key _ g.2.1.2]`. Rewrite using `[← forgetFr_frm_smul]`. Conclude with `h1`. Introduce `h p`.
+
+Use `⟨(h _).1, fun g hg => ?_⟩` and prove the remaining obligations. Establish `h1` using `(h (forgetFr p)).2 (redFG Λ' Θ (g.1, ⟨_, (hH.mem g).1 hg⟩, g.2.2))`. Rewrite `h1` using `[← forgetFr_frm_smul]`. Rewrite using `[key g ((hH.mem g).1 hg)]`. Conclude with `h1`.
+-/
 theorem frLaw_comp_iff (F : DecoSet X.E n ST (uSG SG Q) → Pol ℂ X.Tau n) :
     FrLaw σ lam Λ (levRedFam Θ) H (fun p => F (forgetFr p)) ↔ F ∈ cForms ST σ lam (Λ'.glue Θ).inv := by
   have key : ∀ (g : FrmG Λ (levRedFam Θ)) (hg : g.2.1.1 ∈ Λ'.grp), (σ (Λ.chr g.2.1 * (levRedFam Θ).chr g.2.2 : X.Kˣ))⁻¹ =
@@ -158,6 +201,11 @@ theorem frLaw_comp_iff (F : DecoSet X.E n ST (uSG SG Q) → Pol ℂ X.Tau n) :
     rw [key g ((hH.mem g).1 hg)]
     exact h1
 
+/- English proof (translation)
+Take `⟨g, h1, h2⟩` from `exists_redFG_smul Λ Θ hd 1 p q ((one_smul _ _).trans e)`. Establish `h3 : g.2.1.1 = 1` using `funext fun w => (redGQ_of_mem (g.2.1.1, g.2.2.1) (inLeft Q w) w.2).symm.trans (congrFun (congrArg (fun x => x.2.1) h1) (inLeft Q w))`. Establish `h4 : g.1 = 1` using `congrArg (fun x : FormG (Λ.glue Θ).inv => x.1) h1`. Establish `h5` using `(h p).2 g ((hH.mem g).2 (h3 ▸ one_mem _))`. Rewrite `h5` using `[h2, chr_redFG Λ Θ hd g, h1, h4]`.
+
+Simplify using `using h5.symm`.
+-/
 theorem FrLaw.eq_of_forgetFr_eq {F : DecoF X.E n ST SG Q → Pol ℂ X.Tau n} (h : FrLaw σ lam Λ (levRedFam Θ) H F)
     {p q : DecoF X.E n ST SG Q} (e : forgetFr p = forgetFr q) : F p = F q := by
   obtain ⟨g, h1, h2⟩ := exists_redFG_smul Λ Θ hd 1 p q ((one_smul _ _).trans e)
@@ -168,6 +216,9 @@ theorem FrLaw.eq_of_forgetFr_eq {F : DecoF X.E n ST SG Q → Pol ℂ X.Tau n} (h
   rw [h2, chr_redFG Λ Θ hd g, h1, h4] at h5
   simpa using h5.symm
 
+/- English proof (translation)
+Establish `e : ∀ p, F (Function.surjInv forgetFr_surjective (forgetFr p)) = F p` using `fun p => h.eq_of_forgetFr_eq σ lam hH hd (Function.surjInv_eq _ _)`. Use `⟨fun d => F (Function.surjInv forgetFr_surjective d), (frLaw_comp_iff σ lam hH hd _).1 ?_, e⟩` and prove the remaining obligations. Rewrite using `[funext e]` and apply the resulting hypothesis.
+-/
 theorem FrLaw.exists_form {F : DecoF X.E n ST SG Q → Pol ℂ X.Tau n} (h : FrLaw σ lam Λ (levRedFam Θ) H F) :
     ∃ G ∈ cForms ST σ lam (Λ'.glue Θ).inv, ∀ p, G (forgetFr p) = F p := by
   have e : ∀ p, F (Function.surjInv forgetFr_surjective (forgetFr p)) = F p := fun p =>
@@ -183,6 +234,9 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
   (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S)
   (P : LevFam X.E X.K R.r Pr.vGs) (σ : X.K →+* ℂ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lamT_eq (u : Pr.Word) (j : ℕ) : lamT (W.hc u) j = W.lamTrue u j := rfl
 
 def MtC : Submodule ℂ (RowPt Pr R sel mu → Pol ℂ X.Tau (R.N R.m - 1)) := cForms ∅ σ W.sgTrue (rowTyKK Ch sel mu).inv
@@ -192,6 +246,13 @@ def MtP : Submodule ℂ (RowPt Pr R sel mu → Pol ℂ X.Tau (R.N R.m - 1)) := c
 def rightTranslationAction : Representation ℂ (G0 X.E Pr.vGs R.r) (MtC W Ch sel mu σ) :=
   cTr ∅ σ W.sgTrue _ (unipotentGroupBlockEmbedding Pr sel mu (r_le_X' R)) (rowTyKK_inv_normBy_g0Hat Ch sel mu)
 
+/- English proof (translation)
+Use `(mem_cForms_split σ W.sgTrue (rowTy_split Ch sel mu P).inv F).trans ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨h1, h2⟩`. Use `⟨h1, fun a => Subtype.ext (funext fun d => ?_)⟩` and prove the remaining obligations. Use `h2 ⟨a.1, a.2⟩ d` as an intermediate fact. Rewrite `this` using `[P.inv_chr a, inv_inv]`.
+
+Conclude with `this`. Introduce and unpack `⟨h1, h2⟩`. Use `⟨h1, fun a d => ?_⟩` and prove the remaining obligations. Use `congrFun (congrArg Subtype.val (h2 ⟨a.1, a.2⟩)) d` as an intermediate fact. Rewrite using `[P.inv_chr ⟨a.1, a.2⟩, inv_inv]`.
+
+Conclude with `this`.
+-/
 theorem mem_MtP_iff (F : RowPt Pr R sel mu → Pol ℂ X.Tau (R.N R.m - 1)) : F ∈ MtP W Ch sel mu P σ ↔
     ∃ h : F ∈ MtC W Ch sel mu σ, ∀ a : P.grp,
       rightTranslationAction W Ch sel mu σ a.1 ⟨F, h⟩ = σ (P.chr a : X.Kˣ) • (⟨F, h⟩ : MtC W Ch sel mu σ) := by
@@ -207,20 +268,32 @@ theorem mem_MtP_iff (F : RowPt Pr R sel mu → Pol ℂ X.Tau (R.N R.m - 1)) : F 
     rw [P.inv_chr ⟨a.1, a.2⟩, inv_inv]
     exact this
 
+/- English proof (translation)
+Introduce `F h` and use `((mem_MtP_iff W Ch sel mu P σ F).1 h).1`.
+-/
 theorem MtP_le_MtC : MtP W Ch sel mu P σ ≤ MtC W Ch sel mu σ := fun F h => ((mem_MtP_iff W Ch sel mu P σ F).1 h).1
 
 def toMtC : (mtildeKGSD W Ch sel mu).EqFun →ₛₗ[σ] MtC W Ch sel mu σ := toCForm σ W.sgTrue _ _
 
 def toMtP : MtildeV W Ch sel mu P →ₛₗ[σ] MtP W Ch sel mu P σ := toCForm σ W.sgTrue _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toMtilde_apply (φ : MtildeV W Ch sel mu P) (d : RowPt Pr R sel mu) :
     (toMtP W Ch sel mu P σ φ).1 d = MvPolynomial.map σ (φ.1 d).1 := rfl
 
+/- English proof (translation)
+The claim follows from `toCForm_injective σ W.sgTrue _ _`.
+-/
 theorem toMtilde_injective : Function.Injective (toMtP W Ch sel mu P σ) := toCForm_injective σ W.sgTrue _ _
 
 def rowKH : Subgroup (FrmG (rowTyG Ch P) (levQX R sel mu)) :=
   (rowTyK Ch).grp.comap ((rowTyG Ch P).grp.subtype.comp ((MonoidHom.fst _ _).comp (MonoidHom.snd _ _)))
 
+/- English proof (translation)
+Use `⟨fun _ => Iff.rfl, fun k => ?_⟩` and prove the remaining obligations. Establish `h` using `fun w => (HPar_split (r_le_X' R) (List.replicate R.m R.t) (P w).H (P w).lam (chiAt Ch w)).sub (k.1 w) ((rowTyK Ch).mem_at k w)`. Use `⟨fun w _ => (h w).1, ?_⟩` and prove the remaining obligations. Rewrite using `[LevFam.chr_ev, LevFam.chr_ev]`. Conclude with `Finset.prod_congr rfl fun w _ => (h w).2`.
+-/
 theorem isSubLev_rowKH : IsSubLev (rowTyG Ch P) (rowTyK Ch) (levQX R sel mu) (rowKH Ch sel mu P) := by
   refine ⟨fun _ => Iff.rfl, fun k => ?_⟩
   have h := fun w => (HPar_split (r_le_X' R) (List.replicate R.m R.t) (P w).H (P w).lam (chiAt Ch w)).sub (k.1 w)
@@ -241,12 +314,18 @@ def idxTop : Idx sel mu L R.m := ⟨none, by simp⟩
 
 variable (R) in
 
+/- English proof (translation)
+The claim follows from `if_neg (Nat.succ_ne_self _)`.
+-/
 theorem ysAt_m : ysAt R sel mu cst R.m = Ys.triv X _ := if_neg (Nat.succ_ne_self _)
 
 def topPt (u : Pr.Word) (p : ChPt (R := R) sel mu u R.m) :
     PtY (Pr.vT u) Pr.vGs (QE sel (mu : Chr X.F X.E X.K)) (ysAt R sel mu cst R.m) :=
   ⟨(p, ∅), by rw [ysAt_m]; rfl⟩
 
+/- English proof (translation)
+Establish `h` using `p.2`. Rewrite `h` using `[congrArg (fun y => y.ys p.1.1.deco.1.N) (ysAt_m R sel mu cst)]`. Conclude with `Subtype.ext (Prod.ext rfl (Eq.symm h))`.
+-/
 theorem topPt_val (u : Pr.Word) (p : PtY (Pr.vT u) Pr.vGs (QE sel (mu : Chr X.F X.E X.K)) (ysAt R sel mu cst R.m)) :
     topPt sel mu cst u p.1.1 = p := by
   have h := p.2
@@ -279,6 +358,11 @@ section Gen
 
 variable (H : Subgroup (FrmG (rowTyG Ch P) (levQX R sel mu))) (σ : X.K →+* ℂ)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h p`. Use `⟨(h () _).1, fun g hg => ?_⟩` and prove the remaining obligations. Use `show F () (trivPt X _ _ _ _ (g • p)) = _`. Rewrite using `[← stepX_smul_trivPt]`.
+
+Conclude with `(h () (trivPt X _ _ _ _ p)).2 g hg`. Introduce and unpack `h ⟨⟩ d`. Take `⟨p, rfl⟩` from `(trivPt X _ ∅ Pr.vGs (QE sel (mu : Chr X.F X.E X.K))).surjective d`. Use `⟨(h p).1, fun g hg => ?_⟩` and prove the remaining obligations. Conclude with `(congrArg (F ()) (stepX_smul_trivPt Ch sel mu P g p)).trans ((h p).2 g hg)`.
+-/
 theorem mem_perAtH_Mt (F : ∀ b, (stepX Ch sel mu P).D b → Pol ℂ X.Tau (R.N R.m - 1)) :
     F ∈ (perAtH W Ch sel mu cst L P u rho rho' cD Th H).Mt X.emb σ ↔
       FrLaw σ W.sgTrue (rowTyG Ch P) (levQX R sel mu) H fun p : XPt Pr R sel mu => F () (trivPt X _ _ _ _ p) := by
@@ -323,24 +407,39 @@ def mtEquiv : MtP W Ch sel mu P σ ≃ₗ[ℂ] (perAt W Ch sel mu cst L P u rho 
 def mtEquivK : MtC W Ch sel mu σ ≃ₗ[ℂ] (perAtK W Ch sel mu cst L P u rho rho' cD Th).Mt X.emb σ :=
   mtEquivH W Ch sel mu cst L P u rho rho' cD Th σ (isSubLev_rowKH Ch sel mu P) hd
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mtEquiv_apply (F : MtP W Ch sel mu P σ) (p : (stepX Ch sel mu P).D ()) :
     (mtEquiv W Ch sel mu cst L P u rho rho' cD Th σ hd F).1 () p = F.1 (toRow sel mu p.1.1) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (g : FrmG (rowTyG Ch P) (levQX R sel mu)) :
     FrmG.incl _ _ (show TopG Ch sel mu cst P from (perAt W Ch sel mu cst L P u rho rho' cD Th).ext () g) =
       (extUH (N_m_succ R) g.1, extGH (N_m_succ R) g.2.1.1, extQ X.E (N_m_succ R) _ g.2.2.1) := rfl
 
+/- English proof (translation)
+Establish `e` using `((mem_cForms σ _ _ _).1 F.2 d).2 1 ⟨h.1, h.2⟩`. Rewrite using `[e, LevFam.inv_chr, map_one, smul_smul, ← map_mul, ← Units.val_mul, mul_inv_cancel]`. Simplify using the standard rewrite rules.
+-/
 example (F : MtP W Ch sel mu P σ) (h : (rowTy Ch sel mu P).grp) (d : RowPt Pr R sel mu) :
     σ ((rowTy Ch sel mu P).chr h : X.Kˣ) • F.1 (((1 : UF X.E (R.N R.m - 1)), h.1) • d) = F.1 d := by
   have e := ((mem_cForms σ _ _ _).1 F.2 d).2 1 ⟨h.1, h.2⟩
   rw [e, LevFam.inv_chr, map_one, smul_smul, ← map_mul, ← Units.val_mul, mul_inv_cancel]
   simp
 
+/- English proof (translation)
+Use `le_antisymm (MtP_le_MtC W Ch sel mu _ σ) fun F h => (mem_MtP_iff W Ch sel mu _ σ F).2 ⟨h, fun a => ?_⟩` and prove the remaining obligations. Take `rfl : a = 1` from `Subtype.ext (funext fun w => a.2 w (Set.mem_univ w))`. Simplify using the standard rewrite rules.
+-/
 example : MtP W Ch sel mu (rKg X Pr R) σ = MtC W Ch sel mu σ := by
   refine le_antisymm (MtP_le_MtC W Ch sel mu _ σ) fun F h => (mem_MtP_iff W Ch sel mu _ σ F).2 ⟨h, fun a => ?_⟩
   obtain rfl : a = 1 := Subtype.ext (funext fun w => a.2 w (Set.mem_univ w))
   simp
 
+/- English proof (translation)
+The claim follows from `(topLev_pref_m Ch sel mu cst P u _).2 ⟨p.1.1, rfl⟩`.
+-/
 example (p : (stepX Ch sel mu P).D ()) :
     (topLev Ch sel mu cst P).pref u R.m ((perAt W Ch sel mu cst L P u rho rho' cD Th).til () p).1.1 :=
   (topLev_pref_m Ch sel mu cst P u _).2 ⟨p.1.1, rfl⟩

@@ -12,6 +12,15 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions G
 
 namespace GlobalTheory.BigOn.Exp.TwAdmProof
 
+/- English proof (translation)
+Take `⟨P, hP, hP0⟩` from `w`. Establish `he' : P.ramificationIdx ℤ = 1` using `he`. Establish `hmax : (Ideal.span {(p : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hp).irreducible`. Establish `hmap : Ideal.map (algebraMap ℤ (𝓞 E)) (Ideal.span {(p : ℤ)}) = Ideal.span {(p : 𝓞 E)}`. Rewrite using `[Ideal.map_span]`.
+
+Simplify using the standard rewrite rules. Establish `hle : Ideal.map (algebraMap ℤ (𝓞 E)) (Ideal.span {(p : ℤ)}) ≤ P`. Rewrite using `[hmap, Ideal.span_le]`. Simplify using `using hv`. Establish `: P.LiesOver (Ideal.span {(p : ℤ)})` using `⟨hmax.eq_of_le (Ideal.comap_ne_top _ hP.ne_top) (Ideal.map_le_iff_le_comap.mp hle)⟩`.
+
+Establish `hb : Ideal.span {(p : ℤ)} ≠ ⊥` using `by simpa using hp.ne_zero`. Rewrite `he'` using `[← Ideal.ramificationIdx'_eq_ramificationIdx (Ideal.span {(p : ℤ)}) P hb]`. Introduce `h2`. Use `(Ideal.ramificationIdx'_ne_one_iff hle).2 ?_ he'` and prove the remaining obligations. Rewrite using `[hmap, Ideal.span_le]`.
+
+Simplify using `using h2`.
+-/
 theorem not_mem_sq_of_eWL {E : Type} [Field E] [NumberField E] {p : ℕ} (hp : p.Prime) (w : HeightOneSpectrum (𝓞 E))
     (hv : (p : 𝓞 E) ∈ w.asIdeal) (he : eWL E w = 1) : (p : 𝓞 E) ∉ w.asIdeal ^ 2 := by
   obtain ⟨P, hP, hP0⟩ := w
@@ -37,16 +46,28 @@ namespace GlobalTheory.BigOn.Exp.TwAdmProof
 
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `hv` and use `not_mem_sq_of_eWL hp P hv he (UpperTheory.Ram.mem_sq_of_dvd_condN D.host hp h _ P.isPrime hv)`.
+-/
 theorem not_mem_of_dvd (P : PlE D.host) (he : eWL D.host.E P = 1) {p : ℕ} (hp : p.Prime)
     (h : p ∣ D.host.QS * D.host.q * D.host.d) : (p : 𝓞 D.host.E) ∉ P.asIdeal := fun hv =>
   not_mem_sq_of_eWL hp P hv he (UpperTheory.Ram.mem_sq_of_dvd_condN D.host hp h _ P.isPrime hv)
 
+/- English proof (translation)
+The claim follows from `not_mem_of_dvd P he Nat.prime_two ((((dvd_pow_self 2 (by omega)).trans D.host.tower_dvd).mul_right _).mul_right _)`.
+-/
 theorem two_not_mem (P : PlE D.host) (he : eWL D.host.E P = 1) : ((2 : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal :=
   not_mem_of_dvd P he Nat.prime_two ((((dvd_pow_self 2 (by omega)).trans D.host.tower_dvd).mul_right _).mul_right _)
 
+/- English proof (translation)
+The claim follows from `not_mem_of_dvd P he D.host.hyp.2.1 (dvd_mul_left _ _)`.
+-/
 theorem d_not_mem (P : PlE D.host) (he : eWL D.host.E P = 1) : ((D.host.d : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal :=
   not_mem_of_dvd P he D.host.hyp.2.1 (dvd_mul_left _ _)
 
+/- English proof (translation)
+The claim follows from `not_mem_of_dvd P he D.host.hyp.1 ((dvd_mul_left _ _).mul_right _)`.
+-/
 theorem q_not_mem (P : PlE D.host) (he : eWL D.host.E P = 1) : ((D.host.q : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal :=
   not_mem_of_dvd P he D.host.hyp.1 ((dvd_mul_left _ _).mul_right _)
 
@@ -56,6 +77,13 @@ namespace GlobalTheory.BigOn.Exp.TwAdmProof
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hp` using `GlobalTheory.TwistDet.prime_normV h1`. Establish `hmem : ((Formalism.ConjugateSelfDual.normV P : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal`. Establish `h2 : Ideal.absNorm P.asIdeal = Formalism.ConjugateSelfDual.normV P`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Both sides reduce to the same expression.
+
+Conclude with `h2 ▸ Ideal.absNorm_mem P.asIdeal`. Establish `hodd : Odd (Formalism.ConjugateSelfDual.normV P)`. Use `hp.eq_two_or_odd'.resolve_left fun e => two_not_mem P he ?_` and prove the remaining obligations. Rewrite `hmem` using `[e]`. Conclude with `hmem`.
+
+Use `GlobalTheory.TwistDet.exists_splitK h1 he hodd (fun h => q_not_mem P he h) (fun h => d_not_mem P he h)` and prove the remaining obligations.
+-/
 theorem exists_splitK_of (P : PlE D.host) (h1 : P.asIdeal.inertiaDeg ℤ = 1) (he : eWL D.host.E P = 1) :
     ∃ p : ℕ, p.Prime ∧ Odd p ∧ D.host.cls p = .splitK ∧ ((p : 𝓞 D.host.E) ∈ P.asIdeal) := by
   have hp := GlobalTheory.TwistDet.prime_normV h1
@@ -68,6 +96,9 @@ theorem exists_splitK_of (P : PlE D.host) (h1 : P.asIdeal.inertiaDeg ℤ = 1) (h
     rw [e] at hmem; exact hmem
   refine GlobalTheory.TwistDet.exists_splitK h1 he hodd (fun h => q_not_mem P he h) (fun h => d_not_mem P he h)
 
+/- English proof (translation)
+Apply the tactic sequence `cases b <;> simp [Formalism.MainNotions.BlochKatoReduction.Gen.psiAt, MonoidHom.inv_comp]`.
+-/
 theorem psiAt_comp {Γ Γ' A : Type} [Group Γ] [Group Γ'] [CommGroup A] (b : Bool) (ψ : Γ →* A) (f : Γ' →* Γ) :
     (Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b ψ).comp f = Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (ψ.comp f) := by
   cases b <;> simp [Formalism.MainNotions.BlochKatoReduction.Gen.psiAt, MonoidHom.inv_comp]
@@ -76,6 +107,13 @@ end GlobalTheory.BigOn.Exp.TwAdmProof
 
 open GlobalTheory.BigOn.Exp.TwAdmProof in
 
+/- English proof (translation)
+Unfold `TwAdm AtTw AtPts`. Use `⟨1, one_pos, fun eps _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH _ _ => EvPt.of_forall fun x hx i p hR _ w hw _ => ?_⟩⟩` and prove the remaining obligations. Establish `hmu` using `(p.tw_iff w).1 hw`. Take `⟨-, N0, S, hG⟩` from `hR.ties.twist`. Take `⟨-, hall⟩` from `hG w hmu`.
+
+Establish `h1` using `hall 1 (by simp)`. Rewrite `h1` using `[zpow_one]`. Establish `hpsi` using `h1.1`. Use `⟨?_, ?_, GlobalTheory.Mem.Top.twistedPlaceIndex_mem_firstPair_of_compatibleChoice _ _ (Fm.ex x hx i).nch_tie (Fm.ties x i).baseField_isGalois w hmu⟩` and prove the remaining obligations. Establish `h2` using `Formalism.MainNotions.IntegralHeckeForms.TwOK_psiAt ((Fm.ex x hx i).nch.sd w) (Formalism.MainNotions.IntegralHeckeForms.TwOK_of_PsiOk hpsi)`.
+
+Rewrite `h2` using `[psiAt_comp, Formalism.MainNotions.psiAt_psiAt]`. Conclude with `h2`. Introduce `P hP`. Take `⟨-, hin, he⟩` from `hpsi.1 P hP`. Conclude with `exists_splitK_of P hin he`.
+-/
 theorem GlobalTheory.BigOn.Exp.twAdm : TwAdm := by
   unfold TwAdm AtTw AtPts
   refine ⟨1, one_pos, fun eps _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH _ _ =>

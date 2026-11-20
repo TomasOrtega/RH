@@ -24,6 +24,9 @@ def PolZero (B : Base F E) (G : Geo σ a a') (X : Chars F E) (R : RealMaps F a a
     Φ = ∑ i, pure (f i) (φ i) ∧
     ∑ i, R.p (f i) ⊗ₜ[ℂ] (PiTensorProduct.tprod ℂ fun v : T => Rf.p v (φ i v)) = 0
 
+/- English proof (translation)
+Use `Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨f i, φ i, (h i).1, (h i).2.1, ?_, rfl⟩` and prove the remaining obligations. Use `filter_upwards [T.finite_toSet.compl_mem_cofinite] with v hv`. Conclude with `(h i).2.2 v hv`.
+-/
 theorem sum_pure_mem_algD {n d : ℕ} {Y : Spc F E n} {W : Spc F E d} (M : Model σ Y W) (ψ : AddChar (AF F) ℂ)
     (emb : ∀ w : InfinitePlace F, EmbOver E w) (T : Finset (Pl F)) {m : ℕ} (f : Fin m → SInf F (Fin n × Fin d))
     (φ : Fin m → ∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ)
@@ -33,6 +36,9 @@ theorem sum_pure_mem_algD {n d : ℕ} {Y : Spc F E n} {W : Spc F E d} (M : Model
   filter_upwards [T.finite_toSet.compl_mem_cofinite] with v hv
   exact (h i).2.2 v hv
 
+/- English proof (translation)
+Take `⟨T, -, m, f, φ, hf, rfl, -⟩` from `h`. Conclude with `sum_pure_mem_algD G.M B.ψ B.emb T f φ hf`.
+-/
 theorem algD_of_polZero (B : Base F E) (G : Geo σ a a') (X : Chars F E) (R : RealMaps F a a') (Rf : FinMaps F a a')
     (Φ : (Fin a × Fin (a + a') → AF F) → ℂ) (h : PolZero B G X R Rf Φ) : Φ ∈ GlobalTheory.SquareAgree.algD G.M B.ψ B.emb := by
   obtain ⟨T, -, m, f, φ, hf, rfl, -⟩ := h

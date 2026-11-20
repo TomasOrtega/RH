@@ -5,6 +5,15 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions G
 
 namespace GlobalTheory.PlaceBd
 
+/- English proof (translation)
+Introduce `D T hT`. Establish `hn : (0 : ℝ) < (Module.finrank ℚ D.host.E : ℝ)` using `by exact_mod_cast Module.finrank_pos`. Establish `hd : (0 : ℝ) < |(discr D.host.E : ℝ)|`. Rewrite using `[abs_pos]`. Conclude with `discr_ne_zero D.host.E` after adjusting the coercions.
+
+Establish `hc : (((discr D.host.E).natAbs : ℕ) : ℝ) = |(discr D.host.E : ℝ)|`. Rewrite using `[Nat.cast_natAbs, Int.cast_abs]`. Establish `hr : Real.log D.host.rdE = Real.log ((discr D.host.E).natAbs : ℕ) / (Module.finrank ℚ D.host.E : ℝ)`. Rewrite using `[hc]`. Unfold `Host.rdE`.
+
+Rewrite using `[Real.log_rpow hd]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hr]`. Use `le_trans (le_of_eq ?_) (div_le_div_of_nonneg_right (GlobalTheory.MeanTop.sum_padicValNat_mul_log_le_log (discr D.host.E).natAbs T hT) hn.le)` and prove the remaining obligations. Rewrite using `[Finset.sum_div]`.
+
+Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[vDiff]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_vDiff_mul_log_le_log_rdE :
     ∀ (D : D7) (T : Finset ℕ), (∀ p ∈ T, p.Prime) →
     ∑ p ∈ T, vDiff D.host.E p * Real.log p ≤ Real.log D.host.rdE := by

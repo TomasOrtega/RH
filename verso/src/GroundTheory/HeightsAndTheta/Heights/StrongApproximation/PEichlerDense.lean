@@ -21,17 +21,26 @@ def param (σ : R →+* R) (J : Matrix (Fin N) (Fin N) R) (e f : Fin N → R) (�
   eich σ J e (perpProj σ J e f p.1)
     (p.2 - σ p.2 - κ * hf σ J (perpProj σ J e f p.1) (perpProj σ J e f p.1))
 
+/- English proof (translation)
+Simplify using `[hf, map_sum, map_mul, hφ]`.
+-/
 theorem hf_map {S : Type*} [CommRing S] (σ : R →+* R) (σ' : S →+* S) (φ : R →+* S)
     (hφ : ∀ x, φ (σ x) = σ' (φ x)) (J : Matrix (Fin N) (Fin N) R) (x y : Fin N → R) :
     hf σ' (J.map φ) (φ ∘ x) (φ ∘ y) = φ (hf σ J x y) := by
   simp [hf, map_sum, map_mul, hφ]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[eich, vecMulVec_apply, mulVec, dotProduct, map_sum, hφ, Matrix.one_apply, apply_ite φ]`.
+-/
 theorem eich_map {S : Type*} [CommRing S] (σ : R →+* R) (σ' : S →+* S) (φ : R →+* S)
     (hφ : ∀ x, φ (σ x) = σ' (φ x)) (J : Matrix (Fin N) (Fin N) R) (e u : Fin N → R) (c : R) :
     (eich σ J e u c).map φ = eich σ' (J.map φ) (φ ∘ e) (φ ∘ u) (φ c) := by
   ext i j
   simp [eich, vecMulVec_apply, mulVec, dotProduct, map_sum, hφ, Matrix.one_apply, apply_ite φ]
 
+/- English proof (translation)
+Establish `hP : φ ∘ perpProj σ J e f p.1 = perpProj σ' (J.map φ) (φ ∘ e) (φ ∘ f) (φ ∘ p.1)`. Use function extensionality and compare the values at `i`. Simplify using `only [perpProj, Function.comp_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, map_sub, map_mul, hf_map σ σ' φ hφ]`. Rewrite using `[param, param, eich_map σ σ' φ hφ, ← hP, map_sub, map_sub, map_mul, hφ, hf_map σ σ' φ hφ]`.
+-/
 theorem param_map {S : Type*} [CommRing S] (σ : R →+* R) (σ' : S →+* S) (φ : R →+* S)
     (hφ : ∀ x, φ (σ x) = σ' (φ x)) (J : Matrix (Fin N) (Fin N) R) (e f : Fin N → R) (κ : R)
     (p : (Fin N → R) × R) :
@@ -46,6 +55,9 @@ variable {σ : R →+* R} (hσ : ∀ x, σ (σ x) = x) {J : Matrix (Fin N) (Fin 
   {e f : Fin N → R} {κ : R} (hκ : κ + κ = 1) (hσκ : σ κ = κ)
 include hσ hJ hκ hσκ
 
+/- English proof (translation)
+Use `⟨perpProj σ J e f p.1, _, (hP p.1).1, (hP p.1).2, ?_, rfl⟩` and prove the remaining obligations. Establish `hh` using `hf_symm hσ hJ (perpProj σ J e f p.1) (perpProj σ J e f p.1)`. Rewrite using `[map_sub, map_sub, map_mul, hσ, hσκ, hh]`. Take the linear combination `(-(hf σ J (perpProj σ J e f p.1) (perpProj σ J e f p.1))) * hκ`.
+-/
 theorem param_mem
     (hP : ∀ u, hf σ J (perpProj σ J e f u) e = 0 ∧ hf σ J (perpProj σ J e f u) f = 0)
     (p : (Fin N → R) × R) : param σ J e f κ p ∈ eichAlong σ J e f := by
@@ -56,6 +68,11 @@ theorem param_mem
 
 omit hσ hJ in
 
+/- English proof (translation)
+Take `⟨u, c, hue, huf, hc, rfl⟩` from `hM`. Use `⟨(u, κ * c), ?_⟩` and prove the remaining obligations. Simplify using `only [param, hfix u hue huf]`. Use `congr 1`. Rewrite using `[map_mul, hσκ]`.
+
+Take the linear combination `κ * hc - c * hκ`.
+-/
 theorem eq_param
     (hfix : ∀ u, hf σ J u e = 0 → hf σ J u f = 0 → perpProj σ J e f u = u)
     {M : Matrix (Fin N) (Fin N) R} (hM : M ∈ eichAlong σ J e f) : ∃ p, M = param σ J e f κ p := by
@@ -73,6 +90,9 @@ section Top
 variable {X : Type*} [TopologicalSpace X] {S : Type*} [CommRing S] [TopologicalSpace S]
   [IsTopologicalRing S] {N : ℕ} {σ : S →+* S}
 
+/- English proof (translation)
+Unfold `hf`. Use `continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ => ?_` and prove the remaining obligations. Conclude with `(((continuous_apply i).comp hx).mul continuous_const).mul (hσ.comp ((continuous_apply j).comp hy))`.
+-/
 theorem continuous_hf (hσ : Continuous σ) (J : Matrix (Fin N) (Fin N) S) {x y : X → Fin N → S}
     (hx : Continuous x) (hy : Continuous y) : Continuous fun t => hf σ J (x t) (y t) := by
   unfold hf
@@ -80,6 +100,9 @@ theorem continuous_hf (hσ : Continuous σ) (J : Matrix (Fin N) (Fin N) S) {x y 
   exact (((continuous_apply i).comp hx).mul continuous_const).mul
     (hσ.comp ((continuous_apply j).comp hy))
 
+/- English proof (translation)
+Establish `hσg : Continuous fun t => σ ∘ g t` using `continuous_pi fun i => hσ.comp ((continuous_apply i).comp hg)`. Unfold `eich`. Use `fun_prop`.
+-/
 theorem continuous_eich (hσ : Continuous σ) (J : Matrix (Fin N) (Fin N) S) (e : Fin N → S)
     {g : X → Fin N → S} {k : X → S} (hg : Continuous g) (hk : Continuous k) :
     Continuous fun t => eich σ J e (g t) (k t) := by
@@ -94,6 +117,11 @@ section Field
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by omega)`. Establish `hle : Fintype.card (E ≃ₐ[F] E) ≤ 2` using `h2 ▸ AlgEquiv.card_le`. Establish `hge : 2 ≤ Fintype.card (E ≃ₐ[F] E)`. Rewrite using `[← Finset.card_pair (Ne.symm hc)]`. Conclude with `Finset.card_le_univ _`.
+
+Establish `hsq : c ^ 2 = 1`. Rewrite using `[← le_antisymm hle hge]`. Conclude with `pow_card_eq_one`. Use `congrArg (fun g : E ≃ₐ[F] E => g x) hsq` as an intermediate fact. Simplify `this` using `[pow_two]`.
+-/
 theorem c_invol (c : E ≃ₐ[F] E) (h2 : Module.finrank F E = 2) (hc : c ≠ 1) (x : E) :
     c (c x) = x := by
   classical
@@ -109,10 +137,16 @@ theorem c_invol (c : E ≃ₐ[F] E) (h2 : Module.finrank F E = 2) (hc : c ≠ 1)
   simpa [pow_two] using this
 
 omit [NumberField E] in
+/- English proof (translation)
+Simplify using `[sigA, inclA, Algebra.TensorProduct.map_tmul]`.
+-/
 theorem sigA_inclA' (c : E ≃ₐ[F] E) (x : E) : sigA c (inclA F E x) = inclA F E (c x) := by
   simp [sigA, inclA, Algebra.TensorProduct.map_tmul]
 
 omit [NumberField E] in
+/- English proof (translation)
+Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [sigA, Algebra.TensorProduct.map_tmul, hc2]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 theorem sigA_invol' (c : E ≃ₐ[F] E) (hc2 : ∀ x, c (c x) = x) (a : AE F E) :
     sigA c (sigA c a) = a := by
   induction a using TensorProduct.induction_on with
@@ -120,6 +154,21 @@ theorem sigA_invol' (c : E ≃ₐ[F] E) (hc2 : ∀ x, c (c x) = x) (a : AE F E) 
   | tmul a b => simp [sigA, Algebra.TensorProduct.map_tmul, hc2]
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
+/- English proof (translation)
+Take `⟨hring, hσc, -, -⟩` from `hT F E c h2 hc`. Establish `hc2 : ∀ x, c.toRingHom (c.toRingHom x) = x` using `c_invol c h2 hc`. Establish `hσA : ∀ x, sigA c (sigA c x) = x` using `sigA_invol' c (c_invol c h2 hc)`. Establish `hφ : ∀ x, inclA F E (c.toRingHom x) = sigA c (inclA F E x)` using `fun x => (sigA_inclA' c x).symm`. Establish `hJA : (J.map (inclA F E))ᵀ = (J.map (inclA F E)).map (sigA c)`.
+
+Use extensionality with `i j`. Use `congrFun (congrFun hJ i) j` as an intermediate fact. Simplify using `only [transpose_apply, map_apply] at this ⊢`. Rewrite using `[this, sigA_inclA']`. Establish `hκ : (2 : E)⁻¹ + (2 : E)⁻¹ = 1`.
+
+Rewrite using `[← two_mul, mul_inv_cancel₀ two_ne_zero]`. Establish `hcκ : c.toRingHom (2 : E)⁻¹ = (2 : E)⁻¹` using `by rw [map_inv₀, map_ofNat]`. Establish `hκA : inclA F E (2 : E)⁻¹ + inclA F E (2 : E)⁻¹ = 1` using `by rw [← map_add, hκ, map_one]`. Establish `hσκA : sigA c (inclA F E (2 : E)⁻¹) = inclA F E (2 : E)⁻¹` using `by rw [← hφ, hcκ]`. Establish `heA : hf (sigA c) (J.map (inclA F E)) (inclA F E ∘ e) (inclA F E ∘ e) = 0`.
+
+Rewrite using `[hf_map c.toRingHom (sigA c) (inclA F E) hφ, he, map_zero]`. Establish `hffA : hf (sigA c) (J.map (inclA F E)) (inclA F E ∘ f) (inclA F E ∘ f) = 0`. Rewrite using `[hf_map c.toRingHom (sigA c) (inclA F E) hφ, hff, map_zero]`. Establish `hefA : hf (sigA c) (J.map (inclA F E)) (inclA F E ∘ e) (inclA F E ∘ f) = 1`. Rewrite using `[hf_map c.toRingHom (sigA c) (inclA F E) hφ, hef, map_one]`.
+
+Take `⟨hP1, hP2⟩` from `hO`. Take `⟨-, -, hPE, -⟩` from `hP1 E c.toRingHom hc2 N J hJ e f he hff hef`. Take `⟨-, -, -, hfixA⟩` from `hP1 (AE F E) (sigA c) hσA N (J.map (inclA F E)) hJA _ _ heA hffA hefA`. Take `⟨hPcont, -⟩` from `hP2 F E c h2 hc N J e f`. Establish `hcont : Continuous (param (sigA c) (J.map (inclA F E)) (inclA F E ∘ e) (inclA F E ∘ f) (inclA F E (2 : E)⁻¹))`.
+
+Establish `hu : Continuous fun p : (Fin N → AE F E) × AE F E => perpProj (sigA c) (J.map (inclA F E)) (inclA F E ∘ e) (inclA F E ∘ f) p.1` using `hPcont.comp continuous_fst`. Conclude with `continuous_eich hσc _ _ hu ((continuous_snd.sub (hσc.comp continuous_snd)).sub (continuous_const.mul (continuous_hf hσc _ hu hu)))`. Establish `hdense : DenseRange (Prod.map (Pi.map fun _ : Fin N => inclA F E) (inclA F E))` using `(DenseRange.piMap fun _ => hD F E c h2 hc).prodMap (hD F E c h2 hc)`. Introduce `M hM`. Take `⟨p, rfl⟩` from `eq_param hκA hσκA hfixA hM`.
+
+Use `map_mem_closure hcont (hdense p) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨w, t⟩, rfl⟩`. Conclude with `⟨param c.toRingHom J e f (2 : E)⁻¹ (w, t), param_mem hc2 hJ hκ hcκ hPE (w, t), param_map c.toRingHom (sigA c) (inclA F E) hφ J e f (2 : E)⁻¹ (w, t)⟩`.
+-/
 theorem along (hT : AETopologicalRing.Statement) (hD : EDenseInAE.Statement)
     (hO : OrthProjection.Statement) (c : E ≃ₐ[F] E) (h2 : Module.finrank F E = 2) (hc : c ≠ 1)
     (N : ℕ) (J : Matrix (Fin N) (Fin N) E) (hJ : Jᵀ = J.map c) (e f : Fin N → E)
@@ -172,6 +221,9 @@ end Field
 
 end EichlerDense
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ c h2 hc N J hJ e f he hff hef _ _`. Establish `hfe : hf c.toRingHom J f e = 1` using `hf_fe (fun x => EichlerDense.c_invol c h2 hc x) hJ he hff hef`. Conclude with `⟨EichlerDense.along h₁ h₂ h₃ c h2 hc N J hJ e f he hff hef, EichlerDense.along h₁ h₂ h₃ c h2 hc N J hJ f e hff he hfe⟩`.
+-/
 theorem EichlerDense.proof (h₁ : AETopologicalRing.Statement) (h₂ : EDenseInAE.Statement)
     (h₃ : OrthProjection.Statement) : EichlerDense.Statement := by
   intro F E _ _ _ _ _ c h2 hc N J hJ e f he hff hef _ _

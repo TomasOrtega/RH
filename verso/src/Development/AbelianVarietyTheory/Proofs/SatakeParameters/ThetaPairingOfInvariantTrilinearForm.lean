@@ -9,6 +9,31 @@ attribute [local instance] GlobalTheory.NPin.ThetaMod.acg GlobalTheory.NPin.Thet
 
 namespace GlobalTheory.ThetaRiesz
 
+/- English proof (translation)
+Introduce `k _ _ _ _ r n V W _ _ _ _ μ σ π hadm hunit hμ b hb hb_inv`. Take `⟨Bf, hsym, hpos, hinv⟩` from `hunit`. Take `⟨hone, hmul, -, -, hop⟩` from `om_isSmoothRepresentation k (Fin r) (Fin n) μ hμ`. Establish `huniq : ∀ u u' : V, (∀ w, Bf u w = Bf u' w) → u = u'`. Introduce `u u' h`.
+
+Assume the negation of the conclusion as `hne`. Establish `hne' : u - u' ≠ 0` using `sub_ne_zero.2 hne`. Establish `hfun : Bf (u - u') = 0` using `by rw [map_sub, LinearMap.ext h, sub_self]`. Establish `h0 : Bf (u - u') (u - u') = 0` using `by rw [hfun, LinearMap.zero_apply]`. Use `hpos _ hne'` as an intermediate fact.
+
+Rewrite `this` using `[h0]`. Simplify using `at this`. Set `S : SB (Matrix (Fin n) (Fin r) k) → Subgroup (GL (Fin r) k)` to `fun Φ => { carrier := {g | om μ g 1 (Φ : Matrix (Fin n) (Fin r) k → ℂ) = Φ} one_mem' := hone _ mul_mem' := by`. Introduce `x y hx hy`. Use `show om μ (x * y) 1 _ = _`.
+
+Use `hmul x y 1 1 (Φ : Matrix (Fin n) (Fin r) k → ℂ)` as an intermediate fact. Rewrite `this` using `[mul_one]`. Rewrite using `[this]`. Establish `hy' : om μ y 1 (Φ : Matrix (Fin n) (Fin r) k → ℂ) = Φ` using `hy`. Establish `hx' : om μ x 1 (Φ : Matrix (Fin n) (Fin r) k → ℂ) = Φ` using `hx`.
+
+Rewrite using `[hy', hx']`. Use the proof step `inv_mem' := by`. Introduce `x hx`. Establish `hx' : om μ x 1 (Φ : Matrix (Fin n) (Fin r) k → ℂ) = Φ` using `hx`. Use `show om μ x⁻¹ 1 _ = _`.
+
+Use `hmul x⁻¹ x 1 1 (Φ : Matrix (Fin n) (Fin r) k → ℂ)` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel, mul_one, hx', hone]`. Conclude with `this.symm }`. Establish `hSo : ∀ Φ, IsOpen ((S Φ : Subgroup _) : Set (GL (Fin r) k))`. Introduce `Φ`.
+
+Establish `h1` using `hop _ Φ.2`. Establish `hc : Continuous (fun g : GL (Fin r) k => (g, (1 : GL (Fin n) k)))` using `continuous_id.prodMk continuous_const`. Conclude with `h1.preimage hc`. Establish `hL : ∀ Φ a, ∀ s ∈ S Φ, ∀ w, b Φ a (σ s w) = b Φ a w`. Introduce `Φ a s hs w`.
+
+Establish `hs' : om μ s 1 (Φ : Matrix (Fin n) (Fin r) k → ℂ) = Φ` using `hs`. Use `hb_inv s 1 Φ Φ hs'.symm a w` as an intermediate fact. Simplify using `using this`. Establish `hex : ∀ Φ a, ∃ u : V, ∀ w, b Φ a w = Bf u w` using `fun Φ a => exists_vector_of_smooth_antilinear k r V σ Bf hadm hsym hpos hinv (b Φ a) (S Φ) (hSo Φ) (hL Φ a)`. Use `choose f hf using hex`.
+
+Establish `hadd1 : ∀ Φ Ψ a, f (Φ + Ψ) a = f Φ a + f Ψ a` using `fun Φ Ψ a => huniq _ _ fun w => by rw [← hf, map_add, LinearMap.add_apply, LinearMap.add_apply, hf, hf, map_add, LinearMap.add_apply]`. Establish `hsmul1 : ∀ (z : ℂ) Φ a, f (z • Φ) a = z • f Φ a` using `fun z Φ a => huniq _ _ fun w => by rw [← hf, map_smul, LinearMap.smul_apply, LinearMap.smul_apply, hf, map_smul, LinearMap.smul_apply]`. Establish `hadd2 : ∀ Φ a a', f Φ (a + a') = f Φ a + f Φ a'` using `fun Φ a a' => huniq _ _ fun w => by rw [← hf, map_add, LinearMap.add_apply, hf, hf, map_add, LinearMap.add_apply]`. Establish `hsmul2 : ∀ (z : ℂ) Φ a, f Φ (z • a) = z • f Φ a` using `fun z Φ a => huniq _ _ fun w => by rw [← hf, map_smul, LinearMap.smul_apply, hf, map_smul, LinearMap.smul_apply]`. Set `B : SB (Matrix (Fin n) (Fin r) k) →ₗ[ℂ] W →ₗ[ℂ] V` to `LinearMap.mk₂ ℂ f hadd1 hsmul1 hadd2 hsmul2`.
+
+Establish `hB : ∀ Φ a, B Φ a = f Φ a` using `fun _ _ => rfl`. Use `⟨B, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `hb` to reduce the goal to its premises. Use extensionality with `Φ a w`.
+
+Rewrite using `[hf, ← hB, h0]`. Simplify using the standard rewrite rules. Introduce `g h Φ Φ' hΦ F`. Rewrite using `[hB, hB]`. Apply `huniq` to reduce the goal to its premises.
+
+Introduce `c`. Establish `hc : σ g (σ g⁻¹ c) = c`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one]`. Both sides reduce to the same expression. Rewrite using `[← hf, ← hc, hb_inv g h Φ Φ' hΦ F, hf, ← hinv g (f Φ F) (σ g⁻¹ c)]`.
+-/
 theorem thetaPair_of_invariant_form : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (r n : ℕ) (V W : Type) [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] (μ : kˣ →* ℂˣ) (σ : Representation ℂ (GL (Fin r) k) V) (π : Representation ℂ (GL (Fin n) k) W), IsAdmissible σ → IsUnitarisable σ → IsOpen (μ.ker : Set kˣ) → ∀ (b : SB (Matrix (Fin n) (Fin r) k) →ₗ[ℂ] W →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ), b ≠ 0 → (∀ (g : GL (Fin r) k) (h : GL (Fin n) k) (Φ Φ' : SB (Matrix (Fin n) (Fin r) k)), (Φ' : Matrix (Fin n) (Fin r) k → ℂ) = om μ g h Φ → ∀ a c, b Φ' (π h a) (σ g c) = b Φ a c) → ThetaPair μ σ π := by
   intro k _ _ _ _ r n V W _ _ _ _ μ σ π hadm hunit hμ b hb hb_inv
   obtain ⟨Bf, hsym, hpos, hinv⟩ := hunit

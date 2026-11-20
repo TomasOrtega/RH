@@ -18,12 +18,21 @@ section Gen
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T : E}
   {Λ : Submodule (𝓞 E) S.V} {F : LFlag S r T}
 
+/- English proof (translation)
+Simplify using `[frame, FlagG.fvec]`.
+-/
 theorem frame_cast (F : LFlag S r T) (a : Fin r) : frame F a.castSucc = F.fl.e a := by
   simp [frame, FlagG.fvec]
 
+/- English proof (translation)
+Simplify using `[frame, FlagG.fvec]`.
+-/
 theorem frame_last (F : LFlag S r T) : frame F (Fin.last r) = F.fl.z := by
   simp [frame, FlagG.fvec]
 
+/- English proof (translation)
+Introduce `x hx`. Use `LinearMap.eqOn_span (s := F.fl.e '' {i | i.1 < j}) ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Use `h a.castSucc ha` as an intermediate fact. Rewrite `this` using `[frame_cast]`. Then use the resulting hypothesis.
+-/
 theorem ext_Xflag {W : Type} [AddCommGroup W] [Module E W] (f g : S.V →ₗ[E] W) (j : ℕ)
     (h : ∀ a : Fin (r + 1), a.val < j → f (frame F a) = g (frame F a)) :
     ∀ x ∈ Xflag F j, f x = g x := by
@@ -33,11 +42,24 @@ theorem ext_Xflag {W : Type} [AddCommGroup W] [Module E W] (f g : S.V →ₗ[E] 
   have := h a.castSucc ha
   rwa [frame_cast] at this
 
+/- English proof (translation)
+The claim follows from `Submodule.span_mono (Set.image_subset_range _ _)`.
+-/
 theorem Xflag_le_X (j : ℕ) : Xflag F j ≤ Xsp F := Submodule.span_mono (Set.image_subset_range _ _)
 
+/- English proof (translation)
+The claim follows from `Submodule.span_mono (Set.image_mono fun _ hi => lt_of_lt_of_le hi h)`.
+-/
 theorem Xflag_mono' {i j : ℕ} (h : i ≤ j) : Xflag F i ≤ Xflag F j :=
   Submodule.span_mono (Set.image_mono fun _ hi => lt_of_lt_of_le hi h)
 
+/- English proof (translation)
+Proceed by induction on `j using Fin.lastCases with`. Consider the case `last`. Rewrite using `[frame_last]`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨a, rfl⟩ := hx`.
+
+Conclude with `F.fl.z_orth a`. Consider the case `zero => simp`. Consider the case `add x y _ _ h1 h2 => simp [h1, h2]`. Consider the case `smul c x _ h => simp [h]`. Consider the case `cast a`.
+
+Rewrite using `[frame_cast]`. Conclude with `iso_X S F hw (Submodule.subset_span ⟨a, rfl⟩)`.
+-/
 theorem X_orth_frame {w : S.V} (hw : w ∈ Xsp F) (j : Fin (r + 1)) : S.hT w (frame F j) = 0 := by
   induction j using Fin.lastCases with
   | last =>
@@ -51,6 +73,13 @@ theorem X_orth_frame {w : S.V} (hw : w ∈ Xsp F) (j : Fin (r + 1)) : S.hT w (fr
     rw [frame_cast]
     exact iso_X S F hw (Submodule.subset_span ⟨a, rfl⟩)
 
+/- English proof (translation)
+Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc`. Establish `h1 : c (Fin.last r) = 0`. Use `congrArg (S.hT F.fl.z) hc` as an intermediate fact. Establish `h0 : ∀ a, S.hT F.fl.z (F.fl.e a) = 0` using `fun a => by`.
+
+Rewrite using `[herm S, F.fl.z_orth, star_zero]`. Rewrite `this` using `[Fin.sum_univ_castSucc]`. Simplify `this` using `[frame_cast, frame_last, map_sum, h0, F.fl.z_norm, hT]`. Rewrite `hc` using `[Fin.sum_univ_castSucc, h1, zero_smul, add_zero]`. Simplify using `only [frame_cast] at hc`.
+
+Establish `h2` using `Fintype.linearIndependent_iff.1 F.fl.e_indep _ hc`. Introduce `i`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => exact h1`. Consider the case `cast a => exact h2 a`.
+-/
 theorem frame_indep (hT : T ≠ 0) : LinearIndependent E (frame F) := by
   rw [Fintype.linearIndependent_iff]
   intro c hc
@@ -68,6 +97,29 @@ theorem frame_indep (hT : T ≠ 0) : LinearIndependent E (frame F) := by
   | last => exact h1
   | cast a => exact h2 a
 
+/- English proof (translation)
+Establish `hli : LinearIndependent E (frame F)` using `frame_indep hT`. Use `set U := Submodule.span E (Set.range (frame F))`. Take `⟨φ, hφ⟩` from `LinearMap.exists_extend (p := U) ((Basis.span hli).constr E fun j => if j = b then s else 0)`. Establish `hφ' : ∀ j, φ (frame F j) = if j = b then s else 0`. Introduce `j`.
+
+Use `LinearMap.congr_fun hφ (Basis.span hli j)` as an intermediate fact. Rewrite `this` using `[Basis.constr_basis]`. Rewrite using `[← this]`. Simplify using `[Basis.span_apply]`. Use `set M0 : Submodule (𝓞 E) S.V := Λ ⊓ toO S U`.
+
+Establish `hprim : IsPrimitiveSub M0 Λ`. Use `⟨inf_le_left, le_antisymm (le_inf inf_le_left fun x hx => Submodule.subset_span hx) ?_⟩` and prove the remaining obligations. Use `inf_le_inf_left _ ?_` and prove the remaining obligations. Introduce `x hx`. Conclude with `(Submodule.span_le (p := U)).2 (fun y hy => hy.2) hx`.
+
+Establish `hint : ∀ x : M0, ∃ o : 𝓞 E, (o : E) = φ x`. Introduce and unpack `⟨x, hx, hxU⟩`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun E).1 hxU`. Establish `h1` using `FractionalIdeal.mul_mem_mul ((hc c).1 hx b) hs`. Rewrite `h1` using `[mul_inv_cancel₀ (h0 b), FractionalIdeal.mem_one_iff]`.
+
+Take `⟨o, ho⟩` from `h1`. Use `⟨o, ?_⟩` and prove the remaining obligations. Simplify using `[map_sum, hφ', ← ho]`. Use `choose ψ hψ using hint`. Set `ψ' : M0 →ₗ[𝓞 E] 𝓞 E` to `{ toFun := ψ map_add' := fun x y => by`.
+
+Apply `RingOfIntegers.ext` to reduce the goal to its premises. Simplify using `[hψ]`. Use the proof step `map_smul' := fun c x => by`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Simplify using `only [hψ, RingHom.id_apply, smul_eq_mul, map_mul, Submodule.coe_smul]`.
+
+Rewrite using `[← algebraMap_smul E c (x : S.V), map_smul]`. Simplify using `[hψ] }`. Take `⟨w, hw⟩` from `FunIdx.exists_dual_vec S M0 Λ hlat hprim ψ'`. Use `⟨w, ?_, fun j => ?_⟩` and prove the remaining obligations. Use `w.2.1` as an intermediate fact.
+
+Rewrite `this` using `[hΛ]`. Then use the resulting hypothesis. Choose the witnesses or unpack the hypotheses as in `⟨c, hcm, hc0⟩ : ∃ c ∈ aa j, c ≠ 0 := by`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Conclude with `h0 j (FractionalIdeal.eq_zero_iff.2 hne)`.
+
+Establish `hm : c • frame F j ∈ M0`. Use `⟨?_, U.smul_mem c (Submodule.subset_span ⟨j, rfl⟩)⟩` and prove the remaining obligations. Use `(hc (Pi.single j c)).2 fun i => by` as an intermediate fact. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+
+Simplify using `using hcm`. Simplify using `[h, FractionalIdeal.zero_mem]`. Simplify `this` using `[Pi.single_apply]`. Establish `h1` using `hw ⟨_, hm⟩`. Establish `h2 : (ψ' ⟨_, hm⟩ : E) = φ (c • frame F j)` using `hψ ⟨_, hm⟩`.
+
+Rewrite `h1` using `[h2, map_smul, map_smul, smul_eq_mul, smul_eq_mul]`. Rewrite using `[← hφ']`. Conclude with `(mul_left_cancel₀ hc0 h1).symm`.
+-/
 theorem exists_partner (hlat : Submodule.IsLattice E Λ) (hΛ : Formalism.HermitianLatticesTheory.IsUnimodular S.hT Λ) (hT : T ≠ 0)
     (aa : Fin (r + 1) → FractionalIdeal (nonZeroDivisors (𝓞 E)) E) (h0 : ∀ j, aa j ≠ 0)
     (hc : ∀ c : Fin (r + 1) → E, ∑ j, c j • frame F j ∈ Λ ↔ ∀ j, c j ∈ aa j)
@@ -128,6 +180,23 @@ theorem exists_partner (hlat : Submodule.IsLattice E Λ) (hΛ : Formalism.Hermit
     rw [← hφ']
     exact (mul_left_cancel₀ hc0 h1).symm
 
+/- English proof (translation)
+Establish `hwX : w ∈ Xsp F` using `Xflag_le_X _ hw`. Establish `hσb : ∀ x ∈ Xflag F b, S.hT σ x = 0`. Use `ext_Xflag (S.hT σ) 0 b fun a ha => ?_` and prove the remaining obligations. Rewrite using `[hσ, if_neg (fun h => by rw [h] at ha; exact lt_irrefl _ ha)]`. Both sides reduce to the same expression.
+
+Establish `hww : S.hT w w = 0` using `iso_X S F hwX hwX`. Establish `hwσ : S.hT w σ = 0` using `by rw [herm S, hσb w hw, star_zero]`. Establish `ht : (θ : E) * S.hT σ σ + star ((θ : E) * S.hT σ σ) = S.hT σ σ`. Rewrite using `[star_mul', ← herm S σ σ, ← add_mul, hθ, one_mul]`. Establish `htO : ∃ o : 𝓞 E, (o : E) = (θ : E) * S.hT σ σ`.
+
+Take `⟨p, hp⟩` from `integral_of_unimodular S hΛ hσΛ hσΛ`. Conclude with `⟨θ * p, by rw [← hp]; simp⟩`. Use `set t := (θ : E) * S.hT σ σ`. Establish `hap : ∀ x, S.hT w x = 0 → eichE S σ w t hww hwσ ht x = x - S.hT σ x • w`. Introduce `x hx`.
+
+Express the relevant statement in the definitionally equal form `eich S σ w t x = _`. Rewrite using `[eich_apply, hx]`. Simplify using the standard rewrite rules. Use `⟨eichE S σ w t hww hwσ ht, ⟨⟨fun x y => eich_isom S σ w t hww hwσ ht x y, ?_⟩, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `eich_mem S hΛ hσΛ hwΛ htO hx`. Introduce `x hx`. Conclude with `⟨eich S (-σ) w (star t) x, eich_mem S hΛ (Λ.neg_mem hσΛ) hwΛ (star_int htO) hx, (eichE S σ w t hww hwσ ht).apply_symm_apply x⟩`. Introduce `j x hx`.
+
+Rewrite using `[hap x (iso_X S F hwX (Xflag_le_X _ hx)), sub_sub_cancel_left]`. Distinguish the cases in `hj : j + 1 ≤ b.val`. Rewrite using `[hσb x (Xflag_mono' hj hx)]`. Simplify using the standard rewrite rules. Conclude with `Submodule.neg_mem _ (Submodule.smul_mem _ _ (Xflag_mono' (by omega) hw))`.
+
+Introduce `x hx`. Rewrite using `[hap x ((mem_orth S).1 hx w hwX), sub_sub_cancel_left]`. Conclude with `Submodule.neg_mem _ (Submodule.smul_mem _ _ hwX)`. Rewrite using `[hap _ (X_orth_frame hwX b), hσ, if_pos rfl]`. Introduce `j hj`.
+
+Rewrite using `[hap _ (X_orth_frame hwX j), hσ, if_neg hj]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_elem (θ : 𝓞 E) (hθ : (θ : E) + star (θ : E) = 1) (hΛ : Formalism.HermitianLatticesTheory.IsUnimodular S.hT Λ)
     (b : Fin (r + 1)) (s : E) (σ : S.V) (hσΛ : σ ∈ Λ)
     (hσ : ∀ j, S.hT σ (frame F j) = if j = b then s else 0) (w : S.V) (hwΛ : w ∈ Λ) (hw : w ∈ Xflag F b) :
@@ -168,6 +237,15 @@ theorem exists_elem (θ : 𝓞 E) (hθ : (θ : E) + star (θ : E) = 1) (hΛ : Fo
   · intro j hj
     rw [hap _ (X_orth_frame hwX j), hσ, if_neg hj]; simp
 
+/- English proof (translation)
+Establish `key : ∀ x ∈ aa b * (aa b)⁻¹, ∃ n ∈ NLam Λ F, n (frame F b) = frame F b + x • w ∧ ∀ j, j ≠ b → n (frame F j) = frame F j`. Introduce `x hx`. Use `FractionalIdeal.mul_induction_on hx ?_ ?_` and prove the remaining obligations. Introduce `c hcm s hs`. Take `⟨σ, hσΛ, hσ⟩` from `exists_partner hlat hΛ hT aa h0 hc b s hs`.
+
+Take `⟨n, hn, h1, h2⟩` from `exists_elem θ hθ hΛ b s σ hσΛ hσ (-(c • w)) (Λ.neg_mem (hwΛ c hcm)) (Submodule.neg_mem _ (Submodule.smul_mem _ _ hw))`. Use `⟨n, hn, ?_, h2⟩` and prove the remaining obligations. Rewrite using `[h1]`. Use `module`. Introduce and unpack `x y ⟨n, hn, h1, h2⟩ ⟨m, hm, e1, e2⟩`.
+
+Use `⟨m * n, mul_mem_NLam hn hm, ?_, fun j hj => ?_⟩` and prove the remaining obligations. Establish `: m w = w` using `ext_Xflag (m : S.V →ₗ[E] S.V) LinearMap.id b (fun a ha => e2 a fun h => by rw [h] at ha; exact lt_irrefl _ ha) w hw`. Express the relevant statement in the definitionally equal form `m (n _) = _`. Rewrite using `[h1, map_add, map_smul, e1, this]`. Use `module`.
+
+Express the relevant statement in the definitionally equal form `m (n _) = _`. Rewrite using `[h2 j hj, e2 j hj]`. Use `key 1 (by rw [mul_inv_cancel₀ (h0 b)]; exact FractionalIdeal.one_mem_one _)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem exists_col (θ : 𝓞 E) (hθ : (θ : E) + star (θ : E) = 1) (hlat : Submodule.IsLattice E Λ)
     (hΛ : Formalism.HermitianLatticesTheory.IsUnimodular S.hT Λ) (hT : T ≠ 0)
     (aa : Fin (r + 1) → FractionalIdeal (nonZeroDivisors (𝓞 E)) E) (h0 : ∀ j, aa j ≠ 0)
@@ -195,6 +273,17 @@ theorem exists_col (θ : 𝓞 E) (hθ : (θ : E) + star (θ : E) = 1) (hlat : Su
   have := key 1 (by rw [mul_inv_cancel₀ (h0 b)]; exact FractionalIdeal.one_mem_one _)
   simpa using this
 
+/- English proof (translation)
+Establish `key : ∀ k : ℕ, ∃ n ∈ NLam Λ F, ∀ b : Fin (r + 1), n (frame F b) = frame F b + if b.val < k then w b else 0`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact ⟨1, one_mem_NLam, fun b => by simp⟩`. Consider the case `succ k ih`.
+
+Take `⟨n, hn, h1⟩` from `ih`. Distinguish the cases in `hk : k < r + 1`. Take `⟨m, hm, e1, e2⟩` from `h ⟨k, hk⟩`. Use `⟨m * n, mul_mem_NLam hn hm, fun b => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `m (n _) = _`.
+
+Rewrite using `[h1]`. Break down `lt_trichotomy b.val k with hb | hb | hb` into its components or cases. Establish `: m (w b) = w b` using `ext_Xflag (m : S.V →ₗ[E] S.V) LinearMap.id b (fun a ha => e2 a fun h => by rw [h] at ha; exact lt_asymm ha hb) _ (hw b)`. Rewrite using `[if_pos hb, if_pos (by omega), map_add, this, e2 b fun h => by rw [h] at hb; exact lt_irrefl _ hb]`. Establish `: b = ⟨k, hk⟩` using `Fin.ext hb`.
+
+Rewrite using `[if_neg (by omega), if_pos (by omega), add_zero, this, e1]`. Rewrite using `[if_neg (by omega), if_neg (by omega), add_zero, e2 b fun h => by rw [h] at hb; exact lt_irrefl _ hb]`. Use `⟨n, hn, fun b => ?_⟩` and prove the remaining obligations. Use `b.2` as an intermediate fact. Rewrite using `[h1, if_pos (by omega), if_pos (by omega)]`.
+
+Take `⟨n, hn, h1⟩` from `key (r + 1)`. Conclude with `⟨n, hn, fun b => by rw [h1, if_pos b.2]⟩`.
+-/
 theorem exists_cols (w : Fin (r + 1) → S.V) (hw : ∀ b : Fin (r + 1), w b ∈ Xflag F b)
     (h : ∀ b, ∃ n ∈ NLam Λ F, n (frame F b) = frame F b + w b ∧ ∀ j, j ≠ b → n (frame F j) = frame F j) :
     ∃ n ∈ NLam Λ F, ∀ b, n (frame F b) = frame F b + w b := by
@@ -224,6 +313,19 @@ theorem exists_cols (w : Fin (r + 1) → S.V) (hw : ∀ b : Fin (r + 1), w b ∈
   obtain ⟨n, hn, h1⟩ := key (r + 1)
   exact ⟨n, hn, fun b => by rw [h1, if_pos b.2]⟩
 
+/- English proof (translation)
+Set `w : Fin (r + 1) → S.V` to `fun b => ∑ a, (if a < b then (ξ a b : E) else 0) • frame F a`. Establish `hw : ∀ b : Fin (r + 1), w b ∈ Xflag F b`. Introduce `b`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Use `split_ifs with hab`.
+
+Establish `ha : a.val < r` using `by have := b.2; have : a.val < b.val := hab; omega`. Establish `: a = Fin.castSucc ⟨a.val, ha⟩` using `rfl`. Rewrite using `[this, frame_cast]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, hab, rfl⟩)`. Simplify using the standard rewrite rules.
+
+Take `⟨n, hn, h⟩` from `exists_cols w hw fun b => exists_col θ hθ hlat hΛ hT aa h0 hc b (w b) (hw b) (by`. Introduce `c hcm`. Simplify using `only [w, Finset.smul_sum, smul_smul]`. Use `(hc _).2 fun a => ?_` and prove the remaining obligations. Use `split_ifs with hab`.
+
+Use `(aa a : Submodule (𝓞 E) E).smul_mem (ξ a b) (hanti a b hab.le hcm)` as an intermediate fact. Rewrite using `[mul_comm]`. Conclude with `this`. Simplify using `[FractionalIdeal.zero_mem])`. Use `⟨n, hn, fun b => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h]`. Establish `: frame F b = ∑ a, (if a = b then (1 : E) else 0) • frame F a` using `by simp`. Rewrite using `[this]`. Simplify using `only [w, frameAct, ← Finset.sum_add_distrib, ← add_smul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Use `congr 1`. Break down `lt_trichotomy a b with hab | rfl | hab` into its components or cases. Simplify using `[hab, hab.ne]`. Simplify using `[h2]`. Simplify using `[hab.ne', hab.not_gt, h1 a b hab]`.
+-/
 theorem exists_frame_op (θ : 𝓞 E) (hθ : (θ : E) + star (θ : E) = 1) (hlat : Submodule.IsLattice E Λ)
     (hΛ : Formalism.HermitianLatticesTheory.IsUnimodular S.hT Λ) (hT : T ≠ 0)
     (aa : Fin (r + 1) → FractionalIdeal (nonZeroDivisors (𝓞 E)) E) (h0 : ∀ j, aa j ≠ 0)
@@ -262,6 +364,29 @@ theorem exists_frame_op (θ : 𝓞 E) (hθ : (θ : E) + star (θ : E) = 1) (hlat
   · simp [h2]
   · simp [hab.ne', hab.not_gt, h1 a b hab]
 
+/- English proof (translation)
+Establish `hsum : ∑ j, c j • frame F j = ∑ a : Fin r, c a.castSucc • F.fl.e a + c (Fin.last r) • F.fl.z`. Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `only [frame_cast, frame_last]`. Establish `hx : ∑ a : Fin r, c a.castSucc • F.fl.e a ∈ Xsp F` using `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`. Establish `hzo : ∀ t : E, t • F.fl.z ∈ orth S (Xsp F)` using `fun t => Submodule.smul_mem _ _ ((mem_orth S).2 fun x hx => by rw [← frame_last]; exact X_orth_frame hx _)`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite `h` using `[hsum]`. Take `⟨o, ho⟩` from `hp (c (Fin.last r)) ⟨by`. Establish `e : c (Fin.last r) • F.fl.z = (∑ a : Fin r, c a.castSucc • F.fl.e a + c (Fin.last r) • F.fl.z) + -(∑ a : Fin r, c a.castSucc • F.fl.e a)` using `by abel`.
+
+Rewrite using `[e]`. Conclude with `Submodule.add_mem_sup ⟨h, (orth S (Xsp F)).add_mem (X_le_orth hx) (hzo _)⟩ ((Xsp F).neg_mem hx), hzo _⟩`. Establish `h3 : ∑ a : Fin r, c a.castSucc • F.fl.e a ∈ XLam Λ F`. Use `⟨?_, hx⟩` and prove the remaining obligations. Use `Λ.sub_mem h (smul_mem_of S ⟨o, ho⟩ hz)` as an intermediate fact.
+
+Simplify using `using this`. Establish `h4 : ∀ y ∈ XLam Λ F, ∃ d : Fin r → E, (∀ a, d a ∈ aa a.castSucc) ∧ y = ∑ a, d a • F.fl.e a`. Introduce `y hy`. Rewrite `hy` using `[hX]`. Proceed by induction on `hy using Submodule.span_induction with`.
+
+Consider the case `mem y hy`. Take `⟨a, x, hx, rfl⟩` from `hy`. Use `⟨Pi.single a x, fun i => ?_, by simp [Pi.single_apply]⟩` and prove the remaining obligations. Distinguish the cases in `h : i = a`. Substitute `h` using the available equality.
+
+Simplify using `using hx`. Simplify using `[h, FractionalIdeal.zero_mem]`. Consider the case `zero => exact ⟨0, fun a => FractionalIdeal.zero_mem _, by simp⟩`. Consider the case `add x y _ _ h1 h2`. Take `⟨d, hd, rfl⟩` from `h1`.
+
+Take `⟨d', hd', rfl⟩` from `h2`. Conclude with `⟨d + d', fun a => (aa a.castSucc : Submodule (𝓞 E) E).add_mem (hd a) (hd' a), by simp [add_smul, Finset.sum_add_distrib]⟩`. Consider the case `smul t x _ h1`. Take `⟨d, hd, rfl⟩` from `h1`. Use `⟨t • d, fun a => (aa a.castSucc : Submodule (𝓞 E) E).smul_mem t (hd a), ?_⟩` and prove the remaining obligations.
+
+Simplify using `[Finset.smul_sum]`. Take `⟨d, hd, e⟩` from `h4 _ h3`. Establish `h5` using `Fintype.linearIndependent_iff.1 F.fl.e_indep (fun a => c a.castSucc - d a) (by simp [sub_smul, Finset.sum_sub_distrib, e])`. Introduce `j`. Proceed by induction on `j using Fin.lastCases with`.
+
+Consider the case `last => rw [hl, FractionalIdeal.mem_one_iff]`. Conclude with `⟨o, ho⟩`. Consider the case `cast a => rw [sub_eq_zero.1 (h5 a)]`. Conclude with `hd a`. Introduce `h`.
+
+Rewrite using `[hsum]`. Use `Λ.add_mem (Submodule.sum_mem _ fun a _ => ?_) (smul_mem_of S ?_ hz)` and prove the remaining obligations. Establish `: c a.castSucc • F.fl.e a ∈ XLam Λ F`. Rewrite using `[hX]`. Conclude with `Submodule.subset_span ⟨a, _, h _, rfl⟩`.
+
+Conclude with `this.1`. Use `h (Fin.last r)` as an intermediate fact. Rewrite `this` using `[hl, FractionalIdeal.mem_one_iff]`. Then use the resulting hypothesis.
+-/
 theorem coord_iff (aa : Fin (r + 1) → FractionalIdeal (nonZeroDivisors (𝓞 E)) E) (hl : aa (Fin.last r) = 1)
     (hz : F.fl.z ∈ Λ) (hp : ∀ c : E, c • F.fl.z ∈ Lsub Λ F → ∃ o : 𝓞 E, (o : E) = c)
     (hX : XLam Λ F = Submodule.span (𝓞 E) {y | ∃ (a : Fin r) (x : E), x ∈ aa a.castSucc ∧ y = x • F.fl.e a})
@@ -321,6 +446,27 @@ theorem coord_iff (aa : Fin (r + 1) → FractionalIdeal (nonZeroDivisors (𝓞 E
     · have := h (Fin.last r)
       rwa [hl, FractionalIdeal.mem_one_iff] at this
 
+/- English proof (translation)
+Use `set g := frameAct (frame F) B with hg`. Establish `hX : ∀ b, ∃ x ∈ Xsp F, g b = x + (B (Fin.last r) b : E) • F.fl.z`. Introduce `b`. Use `⟨∑ a : Fin r, (B a.castSucc b : E) • F.fl.e a, Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩), ?_⟩` and prove the remaining obligations. Simplify using `only [hg, frameAct]`.
+
+Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `only [frame_cast, frame_last]`. Establish `he : ∀ a : Fin r, g a.castSucc ∈ Xsp F`. Introduce `a`. Take `⟨x, hx, e⟩` from `hX a.castSucc`.
+
+Rewrite using `[e, h1 _ _ (Fin.castSucc_lt_last a)]`. Simplify using `using hx`. Establish `ho : ∀ x ∈ Xsp F, ∀ b, S.hT x (g b) = 0`. Introduce `x hx b`. Simplify using `[hg, frameAct, map_sum, X_orth_frame hx]`.
+
+Establish `hli : LinearIndependent E g`. Take `⟨η, -, -, e⟩` from `uni_inv h1 h2`. Establish `e' : η * B = 1` using `mul_eq_one_comm.1 e`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc`.
+
+Establish `h3` using `Fintype.linearIndependent_iff.1 (frame_indep (F := F) hT) ((B.map (algebraMap (𝓞 E) E)).mulVec c) (by`. Rewrite using `[← hc]`. Simplify using `only [hg, frameAct, Finset.smul_sum, smul_smul, Matrix.mulVec, dotProduct, Finset.sum_smul, Matrix.map_apply]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by rw [mul_comm])`.
+
+Establish `h4 : (B.map (algebraMap (𝓞 E) E)).mulVec c = 0` using `funext h3`. Establish `h5` using `congrArg ((η.map (algebraMap (𝓞 E) E)).mulVec) h4`. Rewrite `h5` using `[Matrix.mulVec_mulVec, ← Matrix.map_mul, e', Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mulVec, Matrix.mulVec_zero]`. Conclude with `fun i => congrFun h5 i`. Use `⟨⟨⟨fun a => n (g a.castSucc), n (g (Fin.last r)), ?_, fun a b => ?_, fun a => ?_, ?_⟩, n (g (Fin.last r))⟩, rfl, ?_⟩` and prove the remaining obligations.
+
+Conclude with `(hli.comp _ (Fin.castSucc_injective r)).map' (n : S.V →ₗ[E] S.V) n.ker`. Rewrite using `[hn]`. Conclude with `ho _ (he a) _`. Rewrite using `[hn]`. Conclude with `ho _ (he a) _`.
+
+Rewrite using `[hn]`. Take `⟨x, hx, e⟩` from `hX (Fin.last r)`. Establish `e1` using `ho x hx (Fin.last r)`. Establish `e2 : S.hT x F.fl.z = 0` using `by rw [← frame_last]; exact X_orth_frame hx _`. Establish `e3 : S.hT F.fl.z x = 0` using `by rw [herm S, e2, star_zero]`.
+
+Rewrite `e` using `[h2]`. Establish `e' : g (Fin.last r) = x + F.fl.z` using `by simpa using e`. Rewrite using `[e']`. Simplify using `[iso_X S F hx hx, e2, e3, F.fl.z_norm]`. Rewrite using `[← map_frameAct]`.
+
+Use function extensionality and compare the values at `b`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last => rw [frame_last]`. Consider the case `cast a => rw [frame_cast]`.
+-/
 theorem exists_moved (hT : T ≠ 0) (n : S.V ≃ₗ[E] S.V) (hn : n ∈ Formalism.HermitianLatticesTheory.isom S.hT)
     (B : Matrix (Fin (r + 1)) (Fin (r + 1)) (𝓞 E)) (h1 : ∀ a b, b < a → B a b = 0) (h2 : ∀ a, B a a = 1) :
     ∃ G : LFlag S r T, G.zt = G.fl.z ∧ frame G = frameAct (fun a => n (frame F a)) B := by
@@ -376,6 +522,11 @@ theorem exists_moved (hT : T ≠ 0) (n : S.V ≃ₗ[E] S.V) (hn : n ∈ Formalis
     | last => rw [frame_last]
     | cast a => rw [frame_cast]
 
+/- English proof (translation)
+Use `(mem_orth S).2 fun y hy => ?_` and prove the remaining obligations. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => obtain ⟨a, rfl⟩ := hy`. Rewrite using `[← frame_cast]`. Conclude with `h _`.
+
+Consider the case `zero => simp`. Consider the case `add y z _ _ h1 h2 => simp [h1, h2]`. Consider the case `smul c y _ h => simp [h]`.
+-/
 theorem orth_X_of_frame {x : S.V} (h : ∀ b, S.hT (frame F b) x = 0) : x ∈ orth S (Xsp F) := by
   refine (mem_orth S).2 fun y hy => ?_
   induction hy using Submodule.span_induction with
@@ -384,6 +535,21 @@ theorem orth_X_of_frame {x : S.V} (h : ∀ b, S.hT (frame F b) x = 0) : x ∈ or
   | add y z _ _ h1 h2 => simp [h1, h2]
   | smul c y _ h => simp [h]
 
+/- English proof (translation)
+Unfold `Hp UUE spanE`. Rewrite using `[mem_orth]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h' : ∀ y ∈ UU Λ F G, S.hT y x = 0` using `fun y hy => h y (Submodule.subset_span hy)`.
+
+Unfold `UU at h'`. Prove the components needed by the constructor for the conclusion. Introduce `b`. Apply `h'` to reduce the goal to its premises. Use `Submodule.mem_sup_left (Submodule.mem_sup_left ?_)` and prove the remaining obligations.
+
+Proceed by induction on `b using Fin.lastCases with`. Consider the case `last => rw [frame_last, hF]`. Conclude with `Submodule.mem_sup_right (Submodule.subset_span rfl)`. Consider the case `cast a`. Rewrite using `[frame_cast]`.
+
+Conclude with `Submodule.mem_sup_left ⟨hFe a, Submodule.subset_span ⟨a, rfl⟩⟩`. Introduce `b`. Apply `h'` to reduce the goal to its premises. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last => rw [frame_last, hG]`.
+
+Conclude with `Submodule.mem_sup_right (Submodule.subset_span rfl)`. Consider the case `cast a`. Rewrite using `[frame_cast]`. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_right ⟨hGe a, Submodule.subset_span ⟨a, rfl⟩⟩)`. Introduce and unpack `⟨h1, h2⟩`.
+
+Set `K : Submodule E S.V` to `{ carrier := {y | S.hT y x = 0} add_mem' := fun {a b} ha hb => by simp_all zero_mem' := by simp smul_mem' := fun c a ha => by simp_all }`. Establish `: UU Λ F G ≤ toO S K`. Use `sup_le (sup_le (sup_le ?_ ?_) ?_) ?_` and prove the remaining obligations. Conclude with `fun y hy => (mem_orth S).1 (orth_X_of_frame h1) y hy.2`. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff, hF, ← frame_last]`.
+
+Conclude with `h1 _`. Conclude with `fun y hy => (mem_orth S).1 (orth_X_of_frame h2) y hy.2`. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff, hG, ← frame_last]`. Conclude with `h2 _`. Conclude with `fun y hy => (Submodule.span_le (p := K)).2 this hy`.
+-/
 theorem mem_Hp_iff {T' : E} {G : LFlag S r T'} (hF : F.zt = F.fl.z) (hG : G.zt = G.fl.z)
     (hFe : ∀ a, F.fl.e a ∈ Λ) (hGe : ∀ a, G.fl.e a ∈ Λ) (x : S.V) :
     x ∈ Hp Λ F G ↔ (∀ b, S.hT (frame F b) x = 0) ∧ ∀ b, S.hT (frame G b) x = 0 := by
@@ -426,11 +592,19 @@ end Gen
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Unfold `ddS`. Rewrite using `[FractionalIdeal.coeIdeal_ne_zero, Ne, Ideal.map_eq_bot_iff_of_injective (FaithfulSMul.algebraMap_injective _ _)]`. Conclude with `differentIdeal_ne_bot`.
+-/
 theorem ddS_ne_zero (D : D7) : ddS D ≠ 0 := by
   unfold ddS
   rw [FractionalIdeal.coeIdeal_ne_zero, Ne, Ideal.map_eq_bot_iff_of_injective (FaithfulSMul.algebraMap_injective _ _)]
   exact differentIdeal_ne_bot
 
+/- English proof (translation)
+Take `⟨k, rfl⟩` from `Int.le.dest h`. Rewrite using `[zpow_add₀ (ddS_ne_zero D), zpow_natCast]`. Establish `: ddS D ^ k ≤ 1`. Unfold `ddS`. Rewrite using `[← FractionalIdeal.coeIdeal_pow]`.
+
+Conclude with `FractionalIdeal.coeIdeal_le_one`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ddS_anti (D : D7) {m n : ℤ} (h : m ≤ n) : ddS D ^ n ≤ ddS D ^ m := by
   obtain ⟨k, rfl⟩ := Int.le.dest h
   rw [zpow_add₀ (ddS_ne_zero D), zpow_natCast]
@@ -441,12 +615,40 @@ theorem ddS_anti (D : D7) {m n : ℤ} (h : m ≤ n) : ddS D ^ n ≤ ddS D ^ m :=
   calc _ ≤ ddS D ^ m * 1 := by gcongr
     _ = _ := mul_one _
 
+/- English proof (translation)
+Use `Submodule.subset_span ⟨a, 1, ?_, (one_smul _ _).symm⟩` and prove the remaining obligations. Use `ddS_anti D (m := -((D.R.rS : ℤ) - (a : ℕ))) (n := 0) (by have := a.2; omega)` as an intermediate fact. Rewrite `this` using `[zpow_zero]`. Conclude with `this (FractionalIdeal.one_mem_one _)`.
+-/
 theorem e_mem_XS (D : D7) {T : D.host.E} (F : FlagG (VS D) D.R.rS T) (a : Fin D.R.rS) : F.e a ∈ XS D F := by
   refine Submodule.subset_span ⟨a, 1, ?_, (one_smul _ _).symm⟩
   have := ddS_anti D (m := -((D.R.rS : ℤ) - (a : ℕ))) (n := 0) (by have := a.2; omega)
   rw [zpow_zero] at this
   exact this (FractionalIdeal.one_mem_one _)
 
+/- English proof (translation)
+Introduce `D u u' F0 Λ hSt _ hR P Z F' hF'`. Take `⟨⟨⟨hlift', -, -⟩, -, hX'⟩, ⟨A, B, hA1, hA2, hB1, hB2, hZ⟩, hP⟩` from `hF'`. Take `⟨-, ⟨hlat, hΛ, hlift, -, hprim⟩, hX⟩` from `hR`. Establish `hT : ((Tu D u : ℕ) : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 hSt.2.1.ne_zero`. Establish `hT' : ((Tu D u' : ℕ) : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 hSt.2.2.1.ne_zero`.
+
+Take `⟨θ, hθ, -⟩` from `GlobalTheory.TraceOne.exists_trace_one D 2 Nat.prime_two`. Establish `hθ' : (θ : D.host.E) + star (θ : D.host.E) = 1`. Use `congrArg (algebraMap (𝓞 D.host.E) D.host.E) hθ` as an intermediate fact. Rewrite `this` using `[map_add, map_one]`. Rewrite using `[GlobalTheory.NormSum.AdLattice.star_eq_conj]`.
+
+Conclude with `this`. Use `choose st hst using fun o : 𝓞 D.host.E => star_int (E := D.host.E) ⟨o, rfl⟩`. Establish `hst0 : st 0 = 0` using `RingOfIntegers.ext (by rw [hst]; simp)`. Establish `hst1 : st 1 = 1` using `RingOfIntegers.ext (by rw [hst]; simp)`. Take `⟨m, hm, hmf⟩` from `exists_frame_op (F := lf D F0) θ hθ' hlat hΛ hT (fun j => ddS D ^ (-((D.R.rS : ℤ) - (j : ℕ)))) (fun j => zpow_ne_zero _ (ddS_ne_zero D)) (fun a b hab => ddS_anti D (by have : a.val ≤ b.val := hab; omega)) (coord_iff _ (by simp) hlift.1 hprim hX) (fun a b => st (A b a)) (fun a b h …`.
+
+Establish `hn` using `symm_mem_NLam hm`. Take `⟨G, hGz, hG⟩` from `exists_moved (F := F') hT' m.symm hn.1.1 B hB1 hB2`. Establish `he : ∀ a, F0.e a ∈ Λ` using `fun a => (hX.symm ▸ e_mem_XS D F0 a : F0.e a ∈ XLam Λ (lf D F0)).1`. Establish `he' : ∀ a, F'.fl.e a ∈ Λ` using `fun a => (hX'.symm ▸ e_mem_XS D F'.fl a : F'.fl.e a ∈ XLam Λ F').1`. Establish `hf' : ∀ b, frame F' b ∈ Λ` using `fun b => by`.
+
+Proceed by induction on `b using Fin.lastCases with`. Consider the case `last => rw [frame_last]`. Conclude with `hlift'.1`. Consider the case `cast a => rw [frame_cast]`. Conclude with `he' a`.
+
+Establish `hGΛ : ∀ b, frame G b ∈ Λ` using `fun b => by`. Rewrite using `[hG]`. Conclude with `Submodule.sum_mem _ fun a _ => smul_mem_of _ ⟨_, rfl⟩ ((aut_mem_iff hn.1 _).2 (hf' a))`. Establish `hGe : ∀ a, G.fl.e a ∈ Λ` using `fun a => by rw [← frame_cast]; exact hGΛ _`. Establish `hadj : ∀ x y, (hS D).hT x (m.symm y) = (hS D).hT (m x) y` using `fun x y => by`.
+
+Rewrite using `[← hm.1.1 x, LinearEquiv.apply_symm_apply]`. Use `⟨G, ⟨⟨by rw [← frame_last]; exact hGΛ _, hGz⟩, hGe, ?_, hP.trans ?_⟩, m.symm, hn, B, hB1, hB2, hG⟩` and prove the remaining obligations. Rewrite using `[hZ]`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(hS D).hT (frame (lf D F0) a) (frame G b) = _`.
+
+Rewrite using `[hG]`. Simplify using `only [frameAct, map_sum, map_smul, hadj, hmf, Matrix.mul_apply, Matrix.map_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Use `congr 1`.
+
+Rewrite using `[LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ, hst, LinearMap.smul_apply, starRingEnd_apply, star_star]`. Both sides reduce to the same expression. Use `Submodule.comap_mono (sup_le ?_ le_sup_right)` and prove the remaining obligations.
+
+Introduce and unpack `x ⟨hx, hxH⟩`. Take `⟨h1, h2⟩` from `(mem_Hp_iff rfl hlift'.2 he he' x).1 hxH`. Establish `e : x = m.symm x + -(m.symm x - x)` using `by abel`. Rewrite using `[e]`. Use `Submodule.add_mem_sup ⟨(aut_mem_iff hn.1 _).2 hx, (mem_Hp_iff rfl hGz he hGe _).2 ⟨fun b => ?_, fun b => ?_⟩⟩ (Submodule.neg_mem _ (hn.2.2 x (orth_X_of_frame h1)))` and prove the remaining obligations.
+
+Rewrite using `[hadj, hmf]`. Simplify using `only [frameAct, map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Rewrite using `[h1, smul_zero]`. Rewrite using `[hG]`.
+
+Simplify using `only [frameAct, map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Rewrite using `[hn.1.1, h2, smul_zero]`.
+-/
 theorem exists_exact_frame : ∀ (D : D7) (u u' : D.what₂.Word) (F0 : Fb D u) (Λ : LatV D), Stand D u u' → IsBase D u F0 → IsRowLat D F0 Λ → ∀ (P : LatW D) (Z : GramM D), ∀ F' ∈ FrSet D Λ (lf D F0) ((Tu D u' : ℕ) : D.host.E) Z P, ∃ F'' ∈ ExSet D Λ (lf D F0) ((Tu D u' : ℕ) : D.host.E) Z P, TEqv D Λ (lf D F0) F' F'' := by
   intro D u u' F0 Λ hSt _ hR P Z F' hF'
   obtain ⟨⟨⟨hlift', -, -⟩, -, hX'⟩, ⟨A, B, hA1, hA2, hB1, hB2, hZ⟩, hP⟩ := hF'

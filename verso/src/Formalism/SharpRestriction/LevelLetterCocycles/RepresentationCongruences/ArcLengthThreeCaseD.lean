@@ -24,6 +24,31 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 
 variable [FiniteDimensional Qp LL]
 
+/- English proof (translation)
+Take `⟨t₂, X₂, f₂, ⟨r₂, hr₂, hr₂b⟩, hsplit, hf₂, hf₂0⟩` from `arc_length_three_descent W hcase F hB CR hWR hW₁ hW₂ hH hTr hRelay hArc hArcL hNN hSat hSatP hKill hR2 hO hOv hinj hP2 hP9 hpi0 hSec hGL hHF hFL rr hrr hkill c hc bb sol hbb k₀ hk₀ f hf Pt hP3 hP4 hPtEx hC4 hP5 Cb hCb halt hsm hlen hD hOK hσ hy`. Take `⟨e, t₃, he, ⟨r₃, hr₃, hr₃b⟩, hl⟩` from `arc_length_three_exists_liftsAt_scalar_mul W hcase F hB CR hWR hW₁ hW₂ hH hTr hRelay hArc hArcL hNN hSat hSatP hKill hR2 hO hOv hinj hP2 hP9 hpi0 hSec hGL hHF hFL rr hrr hkill c hc bb sol hbb k₀ hk₀ f hf Pt hP3 hP4 hPtEx hC4 hP5 Cb hCb halt hsm hlen hD hOK hσ hy f₂ hf₂ hf₂0`. Establish `hc` using `arc_length_three_constant_term W hcase F hB CR hWR hW₁ hW₂ hH hTr hRelay hArc hArcL hNN hSat hSatP hKill hR2 hO hOv hinj hP2 hP9 hpi0 hSec hGL hHF hFL rr hrr hkill c hc bb sol hbb k₀ hk₀ f hf Pt hP3 hP4 hPtEx hC4 hP5 Cb hCb halt hsm hlen hD hOK hσ hy (t₃ * X₂)`. Establish `hadd` using `LiftsAt.add_proof W (arcOf b w S η up size) F c bb sol k₀ (LiftsAt.liftsAt_mono W (arcOf b w S η up size) F c bb sol k₀ (le_max_right e (rr + (arcOf b w S η up size).σ PD.p)) hc) (LiftsAt.liftsAt_mono W (arcOf b w S η up size) F c bb sol k₀ (le_max_left e (rr + (arcOf b w S η up …`. Establish `heq : algebraMap (LetA O n) W.EE (letE c) * algebraMap O W.EE (t₃ * X₂) + algebraMap O W.EE t₃ * f₂ = algebraMap O W.EE t₃ * (algebraMap O W.EE t₂ * f)`.
+
+Rewrite using `[hsplit, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hadd` using `[heq]`. Establish `hr₂0 : (0 : ℚ) ≤ r₂`. Establish `h0` using `hO t₂`.
+
+Rewrite `h0` using `[hr₂]`. Conclude with `h0` after adjusting the coercions. Establish `hr₃0 : (0 : ℚ) ≤ r₃`. Establish `h0` using `hO t₃`. Rewrite `h0` using `[hr₃]`.
+
+Conclude with `h0` after adjusting the coercions. Take `⟨N, hNge, hNlt⟩ : ∃ N : ℕ, r₃ + r₂ ≤ (N : ℚ) ∧ (N : ℚ) < r₃ + r₂ + 1` from `⟨⌈r₃ + r₂⌉₊, Nat.le_ceil _, Nat.ceil_lt_add_one (by linarith)⟩`. Establish `hv : v (algebraMap O LL t₃ * algebraMap O LL t₂) = ((r₃ + r₂ : ℚ) : WithTop ℚ)`. Rewrite using `[AddValuation.map_mul, hr₃, hr₂, WithTop.coe_add]`. Establish `ht0 : algebraMap O LL t₃ * algebraMap O LL t₂ ≠ 0`.
+
+Introduce `h0`. Rewrite `hv` using `[h0, AddValuation.map_zero]`. Conclude with `WithTop.top_ne_coe hv`. Establish `hvx : 0 ≤ v ((PD.p : LL) ^ N * (algebraMap O LL t₃ * algebraMap O LL t₂)⁻¹)`. Rewrite using `[AddValuation.map_mul, AddValuation.map_pow, AddValuation.map_inv, hv, W.v_l]`.
+
+Establish `hc' : (N • (1 : WithTop ℚ)) + -(((r₃ + r₂ : ℚ)) : WithTop ℚ) = (((N : ℚ) - (r₃ + r₂) : ℚ) : WithTop ℚ)`. Rewrite using `[← WithTop.coe_one, ← WithTop.coe_nsmul, ← WithTop.LinearOrderedAddCommGroup.coe_neg, ← WithTop.coe_add, nsmul_one, sub_eq_add_neg]`. Rewrite using `[hc']`. Conclude with `(by linarith : (0 : ℚ) ≤ (N : ℚ) - (r₃ + r₂))` after adjusting the coercions. Take `⟨t', ht'⟩` from `hOv _ hvx`.
+
+Establish `ht'O : t' * (t₃ * t₂) = ((PD.p : ℕ) : O) ^ N`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, ht', map_pow, map_natCast, inv_mul_cancel_right₀ ht0]`. Establish `h2` using `liftsAt_algebraMap_mul W (arcOf b w S η up size) F c bb sol k₀ t' hadd`. Establish `heq2 : algebraMap O W.EE t' * (algebraMap O W.EE t₃ * (algebraMap O W.EE t₂ * f)) = lE W N * f`.
+
+Rewrite using `[← mul_assoc, ← mul_assoc, ← map_mul, ← map_mul, mul_assoc t' t₃ t₂, ht'O, map_pow, map_natCast]`. Both sides reduce to the same expression. Rewrite `h2` using `[heq2]`. Use `⟨max e (rr + (arcOf b w S η up size).σ PD.p) + N, ?_, liftsAt_of_scaled_power W (arcOf b w S η up size) F c bb sol k₀ h2⟩` and prove the remaining obligations. Establish `hp : (11 : ℝ) ≤ (PD.p : ℝ)` using `by exact_mod_cast hB.1`.
+
+Establish `hh : (1 : ℝ) ≤ (((arcOf b w S η up size).h : ℕ) : ℝ)` using `by exact_mod_cast hOK.2.2.2.2.2.2.1`. Establish `hlog : 0 ≤ Real.logb PD.p (2 * (((arcOf b w S η up size).h : ℕ) : ℝ))` using `Real.logb_nonneg (by linarith) (by linarith)`. Establish `key : ∀ x y z : ℝ, 0 ≤ x → 0 ≤ y → z + 1 ≤ x + y + z + 1`. Introduce `x y z hx hy`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hSg : Real.logb PD.p (2 * (((arcOf b w S η up size).h : ℕ) : ℝ)) + 1 ≤ Formalism.MainNotions.N.Ln17.Sg PD.p b w S η size`. Unfold `Formalism.MainNotions.N.Ln17.Sg`. Conclude with `key _ _ _ (by positivity) (by positivity)`. Establish `hband : 0 ≤ bandI PD.p b w S η size Cb ∧ bandI PD.p b w S η size Cb ≤ 1`. Apply the tactic sequence `unfold bandI; split_ifs <;> norm_num`.
+
+Establish `h2b : (2 + Real.logb PD.p (2 * (((arcOf b w S η up size).h : ℕ) : ℝ))) * bandI PD.p b w S η size Cb ≤ 2 + Real.logb PD.p (2 * (((arcOf b w S η up size).h : ℕ) : ℝ))`. Use polynomial arithmetic with `[hband.1, hband.2]`. Establish `hmax : (max (e : ℝ) ((rr : ℝ) + ((arcOf b w S η up size).σ PD.p : ℝ))) ≤ 6 * Formalism.MainNotions.N.Ln17.Sg PD.p b w S η size` using `max_le he (by linarith)`. Establish `hN : (N : ℝ) < (r₃ : ℝ) + r₂ + 1` using `by exact_mod_cast hNlt`. Establish `hη : (0 : ℝ) ≤ η` using `Nat.cast_nonneg _`.
+
+Use `push_cast`. Use polynomial arithmetic with `[hband.1, hband.2, hr₂b, hr₃b, hmax, h2b, hSg, hlog, hN]`.
+-/
 theorem arc_length_three_case_d [NeZero n] [Fintype (K →ₐ[Qp] LL)] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O] (W : LocWach PD LL O v n) (hcase : Formalism.MainNotions.LiftingTheory.CaseA W)
     {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) {b w S η m : ℕ} {up : ZMod n → Bool}
     {size Mi hi : ZMod n → ℕ} (hB : HypB PD W T₁ T₂ F b w S η m up size Mi hi)

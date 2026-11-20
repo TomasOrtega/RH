@@ -14,6 +14,11 @@ section Gen
 
 variable {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K]
 
+/- English proof (translation)
+Unfold `phiT`. Use `@if_congr _ _ _ (_) (_) _ _ _ _ (forall_congr' fun Q => ?_) rfl rfl` and prove the remaining obligations. Establish `key : ∀ y, (y ∈ (d.act γ h).at Q.1 → (γ'.toLinearMap ∘ₗ x ∘ₗ γ.symm.toLinearMap) y ∈ (d'.act γ' h').at Q.1 ∧ (d'.act γ' h').f Q ((γ'.toLinearMap ∘ₗ x ∘ₗ γ.symm.toLinearMap) y) = (d.act γ h).f Q y) ↔ (γ.symm y ∈ d.at Q.1 → x (γ.symm y) ∈ d'.at Q.1 ∧ d'.f Q (x (γ.symm y)) = d.f Q ( …` using `fun y => by show (y ∈ localization₂ _ (gmap γ d.N) → γ' (x (γ.symm y)) ∈ localization₂ _ (gmap γ' d'.N) ∧ d'.f Q (γ'.symm (γ' (x (γ.symm y)))) = d.f Q (γ.symm y)) ↔ _`. Rewrite using `[mem_localization_gmap, mem_localization_gmap, LinearEquiv.symm_apply_apply]`. Use `⟨fun H y => ?_, fun H y => (key y).2 (H _)⟩` and prove the remaining obligations.
+
+Use `(key (γ y)).1 (H _)` as an intermediate fact. Rewrite `this` using `[LinearEquiv.symm_apply_apply]`. Then use the resulting hypothesis.
+-/
 theorem phiT_move {a b : ℕ} {ST SG SG' : Finset (HeightOneSpectrum (𝓞 E))} (d : Deco E a ST SG) (d' : Deco E b ST SG')
     (γ : Sp E a ≃ₗ[E] Sp E a) (γ' : Sp E b ≃ₗ[E] Sp E b) (h : GLG E a SG) (h' : GLG E b SG') (x : HomE E a b) :
     phiT K (d.act γ h) (d'.act γ' h') (γ'.toLinearMap ∘ₗ x ∘ₗ γ.symm.toLinearMap) = phiT K d d' x := by
@@ -29,6 +34,19 @@ theorem phiT_move {a b : ℕ} {ST SG SG' : Finset (HeightOneSpectrum (𝓞 E))} 
   have := (key (γ y)).1 (H _)
   rwa [LinearEquiv.symm_apply_apply] at this
 
+/- English proof (translation)
+Establish `hm : ∀ (g : UF E a), rho g ∘ₗ rho g⁻¹ = LinearMap.id` using `fun g => by`. Rewrite using `[← Module.End.mul_eq_comp, ← map_mul, mul_inv_cancel, map_one]`. Both sides reduce to the same expression. Establish `hm' : ∀ (g : UF E b), rho' g ∘ₗ rho' g⁻¹ = LinearMap.id` using `fun g => by`. Rewrite using `[← Module.End.mul_eq_comp, ← map_mul, mul_inv_cancel, map_one]`.
+
+Both sides reduce to the same expression. Set `φ : (V →ₗ[K] V') ≃+ (V →ₗ[K] V')` to `{ toFun := fun L => rho' γ' ∘ₗ L ∘ₗ rho γ⁻¹ invFun := fun L => rho' γ'⁻¹ ∘ₗ L ∘ₗ rho γ left_inv := fun L => by`. Establish `h1` using `hm γ⁻¹`. Establish `h2` using `hm' γ'⁻¹`. Rewrite `h1`, `h2` using `[inv_inv]`.
+
+Use `show rho' γ'⁻¹ ∘ₗ (rho' γ' ∘ₗ L ∘ₗ rho γ⁻¹) ∘ₗ rho γ = L`. Rewrite using `[LinearMap.comp_assoc, LinearMap.comp_assoc, h1, ← LinearMap.comp_assoc, h2]`. Simplify using the standard rewrite rules. Use `right_inv := fun L => by show rho' γ' ∘ₗ (rho' γ'⁻¹ ∘ₗ L ∘ₗ rho γ) ∘ₗ rho γ⁻¹ = L`. Rewrite using `[LinearMap.comp_assoc, LinearMap.comp_assoc, hm, ← LinearMap.comp_assoc, hm']`.
+
+Simplify using the standard rewrite rules. Use the proof step `map_add' := fun L L' => by simp [LinearMap.comp_add, LinearMap.add_comp] }`. Establish `hH` using `homConjEquiv_mem_homAt Sa γ.1 γ'.1 N N'`. Unfold `kerOf`. Rewrite using `[latSum_transport_equiv (homConjEquiv γ.1 γ'.1) (divLat cA (homAt Sa N N')) (mulLat cB (homAt Sa N N')) _ _ (mem_divLat_equiv_iff _ _ _ hH cA) (mem_mulLat_equiv_iff _ _ _ hH cB) (fun x => φ (Ξ x • th N fr N' fr' cB x))]`.
+
+Use `show _ = φ _`. Unfold `latSum`. Rewrite using `[φ.map_finsum]`. Introduce `x x' hx`. Establish `h1 : Ξ x = Ξ x'`.
+
+Use `hΞ x' (x - x') hx` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis. Rewrite using `[h1, hcong x x' hx]`. Introduce `x show Ξ₂ (γ'.1.toLinearMap ∘ₗ x ∘ₗ γ.1.symm.toLinearMap) • th _ _ _ _ cB (γ'.1.toLinearMap ∘ₗ x ∘ₗ γ.1.symm.toLinearMap) = rho' γ' ∘ₗ (Ξ x • th N fr N' fr' cB x) ∘ₗ rho γ⁻¹`. Rewrite using `[heq, hΞ₂, LinearMap.smul_comp, LinearMap.comp_smul]`.
+-/
 theorem kerOf_move {a b : ℕ} {SB : Finset (HeightOneSpectrum (𝓞 E))} {V V' : Type} [AddCommGroup V] [Module K V]
     [AddCommGroup V'] [Module K V'] (th : ThDist E K a b SB V V') (Sa : Finset (HeightOneSpectrum (𝓞 E))) (cA cB : ℕ)
     (rho : UF E a →* Module.End K V) (rho' : UF E b →* Module.End K V') (γ : UF E a) (γ' : UF E b)
@@ -77,6 +95,9 @@ theorem kerOf_move {a b : ℕ} {SB : Finset (HeightOneSpectrum (𝓞 E))} {V V' 
     rw [heq, hΞ₂, LinearMap.smul_comp, LinearMap.comp_smul]
 
 omit [NumberField E] [StarRing E] in
+/- English proof (translation)
+Introduce and unpack `_ ⟨y, hy, rfl⟩`. Use `show (D : 𝓞 E) • ((c : 𝓞 E) • y) ∈ M`. Conclude with `M.smul_mem _ (M.smul_mem _ hy)`.
+-/
 theorem mulLat_le_divLat {H : Type} [AddCommGroup H] [Module (𝓞 E) H] (c D : ℕ) (M : Submodule (𝓞 E) H) :
     mulLat c M ≤ divLat D M := by
   rintro _ ⟨y, hy, rfl⟩
@@ -85,6 +106,15 @@ theorem mulLat_le_divLat {H : Type} [AddCommGroup H] [Module (𝓞 E) H] (c D : 
 
 end Gen
 
+/- English proof (translation)
+Establish `hL : A.IsLift Sa N N' c x = A.IsLift Sa N N' c x'`. Use function extensionality and compare the values at `s`. Unfold `Amb.IsLift`. Establish `: s - x ∈ mulLat c (homAt Sa N N') ↔ s - x' ∈ mulLat c (homAt Sa N N')`. Rewrite using `[show s - x' = (s - x) + (x - x') by abel]`.
+
+Conclude with `(Submodule.add_mem_iff_left _ h).symm`. Rewrite using `[this]`. Establish `hW : A.liftW Sa N N' c x = A.liftW Sa N N' c x'` using `by unfold Amb.liftW; rw [hL]`. Establish `hT : A.thInd Sa N N' c x = A.thInd Sa N N' c x'` using `by unfold Amb.thInd; rw [hW]`. Establish `hJ : A.jetK Sa N N' c x = A.jetK Sa N N' c x'` using `by funext m; unfold Amb.jetK; rw [hT]`.
+
+Establish `hD : x ∈ divLat D (homAt Sa N N') ↔ x' ∈ divLat D (homAt Sa N N')`. Rewrite using `[show x = x' + (x - x') by abel]`. Conclude with `Submodule.add_mem_iff_left _ (mulLat_le_divLat c D _ h)`. Unfold `thDistC`. Rewrite using `[hJ]`.
+
+Conclude with `@if_congr _ _ _ (_) (_) _ _ _ _ (and_congr_right fun _ => hD) rfl rfl`.
+-/
 theorem thDistC_class {X : Fields} (A : Amb X) {a b : ℕ} (Sa SB : Finset (HeightOneSpectrum (𝓞 X.E))) (D : ℕ)
     (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (mU : HeightOneSpectrum (𝓞 X.E) → X.Kˣ) (mI : SB → X.E → X.K)
     (lam : X.Tau → DomWeight a) (lam' : X.Tau → DomWeight b) (n : X.Tau → ℕ)
@@ -108,6 +138,21 @@ theorem thDistC_class {X : Fields} (A : Amb X) {a b : ℕ} (Sa SB : Finset (Heig
   rw [hJ]
   exact @if_congr _ _ _ (_) (_) _ _ _ _ (and_congr_right fun _ => hD) rfl rfl
 
+/- English proof (translation)
+Introduce `X Pr R W Ch sel S mu cst A u i _ hPr _ _ hR SG SG' d fr d' fr' Ξ₀ γ γ' hbox`. Establish `hB : 0 < cBof sel mu cst u`. Unfold `cBof`. Use `Nat.mul_pos (hPr.T_prime u).pos (pow_pos (Finset.prod_pos fun P _ => ?_) _)` and prove the remaining obligations. Conclude with `Nat.pos_of_ne_zero (by unfold Formalism.L2.Col.qOf; rw [Ne, Ideal.absNorm_eq_zero_iff]; exact P.1.ne_bot)`.
+
+Unfold `term ker`. Use `kerOf_move (stepT W Ch sel mu cst A u i (W.lamTrue u (i + 1))) (Sall sel mu u) (cAof sel mu cst) (cBof sel mu cst u) ((rhoVr X.emb (W.lamTrue u i)).comp (ufGL X.E (R.N i))) ((rhoVr X.emb (W.lamTrue u (i + 1))).comp (ufGL X.E (R.N (i + 1)))) γ γ' d.1.N fr (fun P => γ.1 * fr P) d'. …` and prove the remaining obligations. Introduce `x x' h`. Conclude with `thDistC_class A _ _ _ _ _ _ _ _ _ _ _ _ _ _ x x' h`. Introduce `x`.
+
+Distinguish the cases in `hx : x ∈ divLat (cAof sel mu cst * cBof sel mu cst u) (homAt (Sall sel mu u) d.1.N d'.1.N)`. Conclude with `hR γ γ' d.1.N fr d'.1.N fr' _ x ⟨⟨d.2.lat, d.2.uni⟩, ⟨d'.2.lat, d'.2.uni⟩, hB, Dvd.intro_left _ rfl, hx⟩`. Establish `hx2` using `mt (mem_divLat_equiv_iff _ _ _ (homConjEquiv_mem_homAt (Sall sel mu u) γ.1 γ'.1 d.1.N d'.1.N) (cAof sel mu cst * cBof sel mu cst u) x).1 hx`. Unfold `stepT thDistC`. Rewrite using `[if_neg fun h => hx2 h.2, if_neg fun h => hx h.2, LinearMap.zero_comp, LinearMap.comp_zero]`.
+
+Introduce and unpack `x _ ⟨y₀, hy₀, rfl⟩`. Use `congrArg₂ (· * ·) ?_ ?_` and prove the remaining obligations. Use `GlobalTheory.TopInv.phiT_add _ _ d'.2 x y₀ _ (fun P => ?_) fun P v hv => hy₀ P.1 (Finset.mem_union_left _ P.2) v hv` and prove the remaining obligations. Establish `h1 : Pr.piT u ∈ P.1.asIdeal`. Establish `h` using `P.2`.
+
+Unfold `Primes.vT divs at h`. Use `split_ifs at h with hf`. Simplify using `using h`. Simplify using `at h`. Rewrite using `[cBof, Nat.cast_mul, ← hPr.piT_norm]`.
+
+Conclude with `Ideal.mul_mem_right _ _ (Ideal.mul_mem_right _ _ h1)`. Conclude with `hbox.2 x _ ⟨y₀, fun P hP => hy₀ P (Finset.mem_union_right _ hP), rfl⟩`. Introduce `x`. Use `congrArg₂ (· * ·) (phiT_move d.1 d'.1 γ.1 γ'.1 1 1 x) (congrArg Ξ₀ ?_)` and prove the remaining obligations. Use extensionality with `y l`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem ratTerm_of_ratStep : ∀ (X : Fields) (Pr : Primes X) (R : Ranks) (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (S : Set ℕ) (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) (A : Amb X) (u : Pr.Word) (i : ℕ), X.Ok → Pr.Ok → IsSel X sel → Pr.T u ∈ S → RatStep W Ch sel mu cst A u i (i + 1) → RatTerm W Ch sel mu cst A u i (i + 1) := by
   classical
   intro X Pr R W Ch sel S mu cst A u i _ hPr _ _ hR SG SG' d fr d' fr' Ξ₀ γ γ' hbox

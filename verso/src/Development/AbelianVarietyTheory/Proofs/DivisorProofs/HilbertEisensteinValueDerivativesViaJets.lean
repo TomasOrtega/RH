@@ -13,6 +13,11 @@ open GlobalTheory.LatJet (EisExp IsEis FR)
 open GlobalTheory.CMVal (OF Af lattice IsCMType)
 open GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates (IsDefSum IsEisValue polydisc)
 
+/- English proof (translation)
+Introduce `hE E _ _ _ I _ _ φ e θ τ Λ L n s N g κ u Ch hf hs hN hL hφ hθ hn hLΛ hD hu`. Establish `h1` using `GlobalTheory.T.deformed_lattice_sum_derivatives_eq_eisenstein_jets hE E I φ e θ τ Λ L n s N g κ u hf hs hN hL hφ hθ hn hLΛ hD hu`. Establish `h2` using `GlobalTheory.T.eisenstein_jet_conj_direction_diagonal_expansion hE (FR E) hf s N L hs hN hL τ (fun j ↦ κ (e.symm j)) Ch`. Establish `hsum : ∑ j, κ (e.symm j) = ∑ i, κ i` using `Equiv.sum_comp e.symm κ`. Rewrite `h2` using `[hsum]`.
+
+Unfold `wt at h2`. Rewrite `h2` using `[hsum]`. Rewrite using `[h1, ← h2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GlobalTheory.HilbFam.eValue_derivs : EisExp → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] [DecidableEq I] (φ : I → E →+* ℂ) (e : I ≃ Emb (FR E)) (θ : E) (τ : ℍ) (Λ : Set E) (L : Lat (FR E)) (n : ℕ) (s N : ℕ) (g : (I → ℂ) → ℂ) (κ : I → ℕ) (u : List I) (Ch : ℍ → ℂ), 2 ≤ Module.finrank ℚ (FR E) → 1 ≤ s → 0 < N → HasLevel N L → (∀ i (x : FR E), φ i (x : E) = ((e i x : ℝ) : ℂ)) → (∀ i, φ i θ = (τ : ℂ)) → 0 < n → (∀ x : Fin 2 → FR E, x ∈ L ↔ ∃ y ∈ Λ, (n : E) * y = (x 0 : E) * θ + (x 1 : E)) → IsDefSum φ (2 * s) Λ g → (∀ i, u.count i = κ i) → iterD u g 0 * ((Real.pi / τ.im : ℝ) : ℂ) ^ (∑ i, κ i) / (2 * Real.pi * Complex.I) ^ (2 * s * Module.finrank ℚ (FR E) + 2 * ∑ i, κ i) = (n : ℂ) ^ (2 * s * Module.finrank ℚ (FR E)) * ∑ μ ∈ Finset.Iic (fun j ↦ κ (e.symm j)), ((∏ j, rco (2 * s) (κ (e.symm j)) (μ j) : ℤ) : ℂ) * (((Real.pi / τ.im : ℝ) : ℂ) / (2 * Real.pi * Complex.I) ^ 2 - Ch τ) ^ (∑ j, (κ (e.symm j) - μ j)) * hfun (2 * s) L μ Ch τ := by
   intro hE E _ _ _ I _ _ φ e θ τ Λ L n s N g κ u Ch hf hs hN hL hφ hθ hn hLΛ hD hu
   have h1 := GlobalTheory.T.deformed_lattice_sum_derivatives_eq_eisenstein_jets hE E I φ e θ τ Λ L n s N g κ u hf hs hN hL hφ hθ hn hLΛ hD hu

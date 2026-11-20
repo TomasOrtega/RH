@@ -19,10 +19,18 @@ variable {G H : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Gr
   [TopologicalSpace H] [IsTopologicalGroup H] (e : G ≃ₜ* H)
   {V : Type*} [AddCommGroup V] [Module ℂ V] (σ : Representation ℂ H V)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem stabilizerOf_comp (v : V) :
     (stabilizerOf (σ.comp e.toMulEquiv.toMonoidHom) v : Set G) = e ⁻¹' (stabilizerOf σ v : Set H) :=
   rfl
 
+/- English proof (translation)
+Use extensionality with `v`. Simplify using `only [mem_fixedVectors, Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `hv _ ⟨k, hk, rfl⟩`. Conclude with `hv k hk`.
+
+Introduce `hv k hk`. Conclude with `hv _ ⟨k, hk, rfl⟩`.
+-/
 theorem fixedVectors_comp (K : Subgroup G) :
     fixedVectors (σ.comp e.toMulEquiv.toMonoidHom) K =
       fixedVectors σ (K.map e.toMulEquiv.toMonoidHom) := by
@@ -34,19 +42,37 @@ theorem fixedVectors_comp (K : Subgroup G) :
   · intro hv k hk
     exact hv _ ⟨k, hk, rfl⟩
 
+/- English proof (translation)
+Use `forall_congr' fun v => ?_` and prove the remaining obligations. Rewrite using `[stabilizerOf_comp]`. Conclude with `e.toHomeomorph.isOpen_preimage`.
+-/
 theorem isSmooth_comp_iff : IsSmooth (σ.comp e.toMulEquiv.toMonoidHom) ↔ IsSmooth σ := by
   refine forall_congr' fun v => ?_
   rw [stabilizerOf_comp]
   exact e.toHomeomorph.isOpen_preimage
 
+/- English proof (translation)
+The claim follows from `Subgroup.coe_map _ _`.
+-/
 theorem coe_map_eq_image (K : Subgroup G) :
     ((K.map e.toMulEquiv.toMonoidHom : Subgroup H) : Set H) = e '' (K : Set G) :=
   Subgroup.coe_map _ _
 
+/- English proof (translation)
+The claim follows from `Subgroup.map_comap_eq_self_of_surjective e.toMulEquiv.surjective K`.
+-/
 theorem map_comap_eq (K : Subgroup H) :
     (K.comap e.toMulEquiv.toMonoidHom).map e.toMulEquiv.toMonoidHom = K :=
   Subgroup.map_comap_eq_self_of_surjective e.toMulEquiv.surjective K
 
+/- English proof (translation)
+Use `and_congr (isSmooth_comp_iff e σ) ⟨fun h K hKc hKo => ?_, fun h K hKc hKo => ?_⟩` and prove the remaining obligations. Establish `hc : IsCompact ((K.comap e.toMulEquiv.toMonoidHom : Subgroup G) : Set G)`. Rewrite using `[Subgroup.coe_comap]`. Conclude with `e.toHomeomorph.isCompact_preimage.2 hKc`. Establish `ho : IsOpen ((K.comap e.toMulEquiv.toMonoidHom : Subgroup G) : Set G)`.
+
+Rewrite using `[Subgroup.coe_comap]`. Conclude with `hKo.preimage e.continuous`. Use `h _ hc ho` as an intermediate fact. Rewrite `this` using `[fixedVectors_comp, map_comap_eq]`. Conclude with `this`.
+
+Rewrite using `[fixedVectors_comp]`. Use `h _ ?_ ?_` and prove the remaining obligations. Rewrite using `[coe_map_eq_image]`. Conclude with `hKc.image e.continuous`. Rewrite using `[coe_map_eq_image]`.
+
+Conclude with `e.toHomeomorph.isOpenMap _ hKo`.
+-/
 theorem isAdmissible_comp_iff :
     IsAdmissible (σ.comp e.toMulEquiv.toMonoidHom) ↔ IsAdmissible σ := by
   refine and_congr (isSmooth_comp_iff e σ) ⟨fun h K hKc hKo => ?_, fun h K hKc hKo => ?_⟩
@@ -77,6 +103,9 @@ def subrepresentationCompOrderIso {G H : Type*} [Group G] [Group H] (f : G →* 
   right_inv S := rfl
   map_rel_iff' := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `OrderIso.isSimpleOrder_iff (subrepresentationCompOrderIso _ e.toMulEquiv.surjective σ)`.
+-/
 theorem isIrreducible_comp_iff :
     Representation.IsIrreducible (σ.comp e.toMulEquiv.toMonoidHom) ↔ σ.IsIrreducible :=
   OrderIso.isSimpleOrder_iff (subrepresentationCompOrderIso _ e.toMulEquiv.surjective σ)
@@ -88,6 +117,11 @@ section Blocks
 variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
   {n : ℕ} {α : Type*} [LinearOrder α] {β : Fin n → α}
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [blocks, Matrix.one_apply]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Rewrite using `[if_neg (fun e => h (Subtype.ext e)), if_neg h]`.
+-/
 theorem blocks_one (a : Set.range β) : blocks β F (1 : Matrix (Fin n) (Fin n) F) a = 1 := by
   ext i j
   simp only [blocks, Matrix.one_apply]
@@ -96,12 +130,18 @@ theorem blocks_one (a : Set.range β) : blocks β F (1 : Matrix (Fin n) (Fin n) 
     simp
   · rw [if_neg (fun e => h (Subtype.ext e)), if_neg h]
 
+/- English proof (translation)
+Rewrite using `[blocks_mul hX hY]`. Both sides reduce to the same expression.
+-/
 theorem blocks_mul_apply {X Y : Matrix (Fin n) (Fin n) F} (hX : ∀ i j, β i ≠ β j → X i j = 0)
     (hY : ∀ i j, β i ≠ β j → Y i j = 0) (a : Set.range β) :
     blocks β F (X * Y) a = blocks β F X a * blocks β F Y a := by
   rw [blocks_mul hX hY]
   rfl
 
+/- English proof (translation)
+The claim follows from `mem_levi.1 hm`.
+-/
 theorem levi_blockDiag {m : GL (Fin n) F} (hm : m ∈ levi F n β) :
     ∀ i j, β i ≠ β j → (m : Matrix (Fin n) (Fin n) F) i j = 0 :=
   mem_levi.1 hm
@@ -118,6 +158,9 @@ def leviBlock (m : levi F n β) (a : Set.range β) : GL (Fiber β a) F where
     rw [← blocks_mul_apply (levi_blockDiag (m⁻¹).2) (levi_blockDiag m.2), ← Units.val_mul,
       ← Subgroup.coe_mul, inv_mul_cancel, Subgroup.coe_one, Units.val_one, blocks_one]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_leviBlock (m : levi F n β) (a : Set.range β) :
     ((leviBlock F m a : GL (Fiber β a) F) : Matrix (Fiber β a) (Fiber β a) F) =
       blocks β F ((m : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) a := rfl
@@ -139,10 +182,20 @@ def leviAssemble (x : ∀ a : Set.range β, GL (Fiber β a) F) : levi F n β :=
         exact Units.inv_mul (x a)⟩,
     mem_levi.2 fun _ _ h => blockAssemble_apply_of_ne _ h⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_leviAssemble (x : ∀ a : Set.range β, GL (Fiber β a) F) :
     (((leviAssemble F x : levi F n β) : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) =
       blockAssemble β F fun a => (x a : Matrix (Fiber β a) (Fiber β a) F) := rfl
 
+/- English proof (translation)
+Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Distinguish the cases in `h : β i = β j`. Establish `hj : blockOf β j = blockOf β i` using `Subtype.ext h.symm`. Establish `e : (fun x => blockAssemble β F (f x) i j) = fun x => f x (blockOf β i) ⟨i, rfl⟩ ⟨j, hj⟩`. Use function extensionality and compare the values at `fun x => blockAssemble_apply_of_eq _ rfl hj`.
+
+Rewrite using `[e]`. Conclude with `hf _ _ _`. Establish `e : (fun x => blockAssemble β F (f x) i j) = fun _ => 0`. Use function extensionality and compare the values at `fun x => blockAssemble_apply_of_ne _ h`. Rewrite using `[e]`.
+
+Conclude with `continuous_const`.
+-/
 theorem continuous_blockAssemble_apply {X : Type*} [TopologicalSpace X]
     {f : X → ∀ a : Set.range β, Matrix (Fiber β a) (Fiber β a) F}
     (hf : ∀ a i j, Continuous fun x => f x a i j) :
@@ -183,6 +236,9 @@ def leviEquivBlocks : levi F n β ≃ₜ* (∀ a : Set.range β, GL (Fiber β a)
       continuous_blockAssemble_apply fun a i j =>
         (Units.continuous_coe_inv.matrix_elem i j).comp (continuous_apply a)⟩) _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem leviEquivBlocks_apply (m : levi F n β) (a : Set.range β) :
     ((leviEquivBlocks F β m a : GL (Fiber β a) F) : Matrix (Fiber β a) (Fiber β a) F) =
       fun i j => (m : GL (Fin n) F) i.1 j.1 := rfl
@@ -207,15 +263,26 @@ variable {n : ℕ} {α : Type*} [LinearOrder α] (β : Fin n → α)
 
 def blockSize (a : Set.range β) : ℕ := Fintype.card (Fiber β a)
 
+/- English proof (translation)
+Rewrite using `[show ∑ a : Set.range β, blockSize β a = Fintype.card (Σ a : Set.range β, Fiber β a) from (Fintype.card_sigma).symm]`. Rewrite using `[Fintype.card_congr (Equiv.sigmaFiberEquiv (blockOf β)), Fintype.card_fin]`.
+-/
 theorem sum_blockSize : ∑ a : Set.range β, blockSize β a = n := by
   rw [show ∑ a : Set.range β, blockSize β a = Fintype.card (Σ a : Set.range β, Fiber β a) from
     (Fintype.card_sigma).symm]
   rw [Fintype.card_congr (Equiv.sigmaFiberEquiv (blockOf β)), Fintype.card_fin]
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `a.2`. Conclude with `Fintype.card_pos_iff.2 ⟨⟨i, Subtype.ext hi⟩⟩`.
+-/
 theorem blockSize_pos (a : Set.range β) : 0 < blockSize β a := by
   obtain ⟨i, hi⟩ := a.2
   exact Fintype.card_pos_iff.2 ⟨⟨i, Subtype.ext hi⟩⟩
 
+/- English proof (translation)
+Take `⟨i, j, hij⟩` from `hβ`. Establish `hout : ∃ k, blockOf β k ≠ a`. Assume the negation of the conclusion as `hall`. Use `push Not at hall`. Conclude with `hij ((congrArg Subtype.val (hall i)).trans (congrArg Subtype.val (hall j)).symm)`.
+
+Take `⟨k, hk⟩` from `hout`. Use `Fintype.card_subtype_lt (p := fun i => blockOf β i = a) hk` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin]`. Then use the resulting hypothesis.
+-/
 theorem blockSize_lt (hβ : ∃ i j, β i ≠ β j) (a : Set.range β) : blockSize β a < n := by
   obtain ⟨i, j, hij⟩ := hβ
   have hout : ∃ k, blockOf β k ≠ a := by
@@ -254,14 +321,29 @@ def restrictFun {α' : Type*} (γ : Fin n → α') (a : Set.range β) : Fin (blo
 
 variable {β}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem leviEquivPi_apply (m : levi F n β) (a : Set.range β) (k l : Fin (blockSize β a)) :
     ((leviEquivPi F β m a : GL (Fin (blockSize β a)) F) : Matrix _ _ F) k l =
       (m : GL (Fin n) F) (fiberFin β a k).1 (fiberFin β a l).1 := rfl
 
+/- English proof (translation)
+Rewrite using `[Equiv.apply_symm_apply]`.
+-/
 theorem fiberFin_symm_apply_blockOf (i : Fin n) :
     (fiberFin β (blockOf β i) ((fiberFin β (blockOf β i)).symm ⟨i, rfl⟩)).1 = i := by
   rw [Equiv.apply_symm_apply]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hm a k l hkl`. Rewrite using `[leviEquivPi_apply]`. Conclude with `hm hkl`. Introduce `h i j hij`.
+
+Distinguish the cases in `hb : β i = β j`. Establish `hj : blockOf β j = blockOf β i` using `Subtype.ext hb.symm set a := blockOf β i set k := (fiberFin β a).symm ⟨i, rfl⟩ set l := (fiberFin β a).symm ⟨j, hj⟩`. Establish `hk : (fiberFin β a k).1 = i` using `by simp [k]`. Establish `hl : (fiberFin β a l).1 = j` using `by simp [l]`. Establish `hkl : restrictFun β γ a l < restrictFun β γ a k`.
+
+Simplify using `only [restrictFun, hk, hl]`. Conclude with `hij`. Use `h a hkl` as an intermediate fact. Rewrite `this` using `[leviEquivPi_apply, hk, hl]`. Conclude with `this`.
+
+Conclude with `mem_levi.1 m.2 i j hb`.
+-/
 theorem mem_blockUpper_iff_leviEquivPi {α' : Type*} [LinearOrder α'] (γ : Fin n → α')
     (m : levi F n β) :
     (m : GL (Fin n) F) ∈ blockUpper F n γ ↔
@@ -286,6 +368,9 @@ theorem mem_blockUpper_iff_leviEquivPi {α' : Type*} [LinearOrder α'] (γ : Fin
       exact this
     · exact mem_levi.1 m.2 i j hb
 
+/- English proof (translation)
+Use `show (m : GL (Fin n) F) ∈ blockUpper F n γ ⊓ blockUpper F n (OrderDual.toDual ∘ γ) ↔ _`. Rewrite using `[Subgroup.mem_inf, mem_blockUpper_iff_leviEquivPi, mem_blockUpper_iff_leviEquivPi]`. Conclude with `⟨fun h a => ⟨h.1 a, h.2 a⟩, fun h => ⟨fun a => (h a).1, fun a => (h a).2⟩⟩`.
+-/
 theorem mem_levi_iff_leviEquivPi {α' : Type*} [LinearOrder α'] (γ : Fin n → α')
     (m : levi F n β) :
     (m : GL (Fin n) F) ∈ levi F n γ ↔
@@ -294,6 +379,21 @@ theorem mem_levi_iff_leviEquivPi {α' : Type*} [LinearOrder α'] (γ : Fin n →
   rw [Subgroup.mem_inf, mem_blockUpper_iff_leviEquivPi, mem_blockUpper_iff_leviEquivPi]
   exact ⟨fun h a => ⟨h.1 a, h.2 a⟩, fun h => ⟨fun a => (h a).1, fun a => (h a).2⟩⟩
 
+/- English proof (translation)
+Rewrite using `[mem_unipotentRadical, mem_blockUpper_iff_leviEquivPi]`. Simplify using `only [mem_unipotentRadical]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hP, h1⟩`. Use `fun a => ⟨hP a, fun k l hkl => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[leviEquivPi_apply, h1 _ _ hkl]`. Distinguish the cases in `hkl' : k = l`. Substitute `hkl'` using the available equality. Simplify using the standard rewrite rules. Establish `hne : (fiberFin β a k).1 ≠ (fiberFin β a l).1` using `fun e => hkl' ((fiberFin β a).injective (Subtype.ext e))`.
+
+Rewrite using `[one_apply_ne hne, one_apply_ne hkl']`. Introduce `h`. Use `⟨fun a => (h a).1, fun i j hij => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hb : β i = β j`. Establish `hj : blockOf β j = blockOf β i` using `Subtype.ext hb.symm set a := blockOf β i set k := (fiberFin β a).symm ⟨i, rfl⟩ set l := (fiberFin β a).symm ⟨j, hj⟩`.
+
+Establish `hk : (fiberFin β a k).1 = i` using `by simp [k]`. Establish `hl : (fiberFin β a l).1 = j` using `by simp [l]`. Establish `hkl : restrictFun β γ a k = restrictFun β γ a l`. Simplify using `only [restrictFun, hk, hl]`. Conclude with `hij`.
+
+Use `(h a).2 k l hkl` as an intermediate fact. Rewrite `this` using `[leviEquivPi_apply, hk, hl]`. Rewrite using `[this]`. Distinguish the cases in `hij' : i = j`. Substitute `hij'` using the available equality.
+
+Establish `hkl' : k = l` using `by simp [k, l]`. Rewrite using `[hkl', one_apply_eq, one_apply_eq]`. Establish `hkl' : k ≠ l` using `fun e => hij' (by rw [← hk, ← hl, e])`. Rewrite using `[one_apply_ne hkl', one_apply_ne hij']`. Establish `hne : i ≠ j` using `fun e => hb (by rw [e])`.
+
+Rewrite using `[mem_levi.1 m.2 i j hb, one_apply_ne hne]`.
+-/
 theorem mem_unipotentRadical_iff_leviEquivPi {α' : Type*} [LinearOrder α'] (γ : Fin n → α')
     (m : levi F n β) :
     (m : GL (Fin n) F) ∈ unipotentRadical F n γ ↔

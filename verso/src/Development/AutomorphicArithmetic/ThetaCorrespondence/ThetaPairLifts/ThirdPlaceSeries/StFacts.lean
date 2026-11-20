@@ -13,6 +13,9 @@ set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 2000000
 namespace GlobalTheory.HeightCounting.SerCarry
 open GlobalTheory.HeightCounting.SerMove GlobalTheory.Mem.R3.Tr
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(l.rat.rat.hecke), x.r.Y.hF, l.mt.ad.id⟩`.
+-/
 theorem st_facts_alt {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {K : Ctx} {B : Base} {f : Top.Fr B.toPre} {T : TwDat B} {w : ColW B f T}
     {P : Pre2 K w} {x : St P} (l : _root_.GlobalTheory.HeightCounting.Up.IntermediateLevel hL x) (g : Geo x) (hg : GlobalTheory.RealGeo.InGeo g) (a : BigHost (Dof x)) :
     HkAd (sideAt x g hg a) l.rat.In.Sb ((l.rat.In.hL)) ∧ KeepsMat (D := Dof x) fun i => (l.mt.ad.PV i).ψ :=

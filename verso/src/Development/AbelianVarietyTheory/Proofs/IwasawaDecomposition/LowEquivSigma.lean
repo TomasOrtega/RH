@@ -14,6 +14,9 @@ def lowEquivSigma (m : ℕ) : Low m ≃ Σ j : Fin m, Fin (j : ℕ) where
   left_inv q := by rcases q with ⟨⟨i, j⟩, h⟩; rfl
   right_inv s := by rcases s with ⟨j, i⟩; rfl
 
+/- English proof (translation)
+Rewrite using `[Fintype.card_congr (lowEquivSigma m), Fintype.card_sigma]`. Simplify using `only [Fintype.card_fin]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun j => j) m, Finset.sum_range_id, Nat.choose_two_right]`.
+-/
 theorem card_low (m : ℕ) : Fintype.card (Low m) = m.choose 2 := by
   rw [Fintype.card_congr (lowEquivSigma m), Fintype.card_sigma]
   simp only [Fintype.card_fin]

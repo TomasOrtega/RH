@@ -32,6 +32,13 @@ def adj (J : ι → Matrix (Fin d) (Fin d) ℂ) : (ι → Matrix (Fin d) (Fin d)
       Matrix.smul_apply, star_smul, RingHom.id_apply, star_trivial]
 
 omit [Fintype ι] in
+/- English proof (translation)
+Rewrite using `[funext_iff]`. Use `forall_congr' fun w => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((J w)⁻¹ * (Y w)ᵀ * J w).map star = -Y w ↔ _`. Establish `e : ((J w)⁻¹ * (Y w)ᵀ * J w).map star = -Y w ↔ (J w)⁻¹ * (Y w)ᵀ * J w = -(Y w).map star`. Simplify using `only [← Matrix.ext_iff, Matrix.map_apply, Matrix.neg_apply]`.
+
+Use `forall_congr' fun i => forall_congr' fun j => ?_` and prove the remaining obligations. Rewrite using `[star_eq_iff_star_eq, star_neg, eq_comm]`. Rewrite using `[e, add_eq_zero_iff_eq_neg, ← Matrix.mul_neg]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Rewrite using `[← h, Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ (hJ w)]`. Introduce `h`. Rewrite using `[Matrix.mul_assoc, h, Matrix.nonsing_inv_mul_cancel_left _ _ (hJ w)]`.
+-/
 theorem adj_iff {J : ι → Matrix (Fin d) (Fin d) ℂ} (hJ : ∀ w, IsUnit (J w).det) (Y : ι → Matrix (Fin d) (Fin d) ℂ) :
     adj J Y = -Y ↔ ∀ w, (Y w)ᵀ * J w + J w * (Y w).map star = 0 := by
   rw [funext_iff]
@@ -50,6 +57,19 @@ theorem adj_iff {J : ι → Matrix (Fin d) (Fin d) ℂ} (hJ : ∀ w, IsUnit (J w
 
 set_option backward.isDefEq.respectTransparency false in
 open scoped Matrix.Norms.Operator in
+/- English proof (translation)
+Set `a : (ι → Matrix (Fin d) (Fin d) ℂ) →L[ℝ] (ι → Matrix (Fin d) (Fin d) ℂ)` to `LinearMap.toContinuousLinearMap (adj J)`. Establish `ha : ∀ x y, a (x * y) = a y * a x` using `fun x y => by`. Use function extensionality and compare the values at `w`. Express the relevant statement in the definitionally equal form `((J w)⁻¹ * (x w * y w)ᵀ * J w).map (starRingEnd ℂ) = ((J w)⁻¹ * (y w)ᵀ * J w).map (starRingEnd ℂ) * ((J w)⁻¹ * (x w)ᵀ * J w).map (starRingEnd ℂ)`. Rewrite using `[← Matrix.map_mul, Matrix.transpose_mul]`.
+
+Use `congr 1`. Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ (hJ w)]`. Establish `h1 : a 1 = 1`. Use function extensionality and compare the values at `w`. Express the relevant statement in the definitionally equal form `((J w)⁻¹ * (1 : Matrix (Fin d) (Fin d) ℂ)ᵀ * J w).map (starRingEnd ℂ) = 1`.
+
+Rewrite using `[Matrix.transpose_one, Matrix.mul_one, Matrix.nonsing_inv_mul _ (hJ w), Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hx : ∀ (t : ℝ) (x : ι → Matrix (Fin d) (Fin d) ℂ) w, NormedSpace.exp (t • x) w = NormedSpace.exp ((t : ℂ) • x w)` using `fun t x w => by`. Rewrite using `[Pi.coe_exp, Pi.smul_apply, Complex.coe_smul]`. Take `⟨m, Y, c, hY, h⟩` from `main (a := a) ha h1`. Use `⟨m, Y, c, fun i => (adj_iff hJ _).1 (hY i), fun Z Z' hZ e => ?_⟩` and prove the remaining obligations.
+
+Take `⟨s, s0, sd, se⟩` from `h Z fun t => by`. Establish `e' : NormedSpace.exp (t • Z) = NormedSpace.exp (t • Z')` using `funext fun w => by rw [hx, hx, e]`. Rewrite using `[e']`. Use `gr_exp ha h1 ?_` and prove the remaining obligations. Rewrite using `[map_smul, ← smul_neg]`.
+
+Conclude with `congrArg _ ((adj_iff hJ _).2 hZ)`. Use `⟨s, s0, sd, se.mono fun t ht w => ?_⟩` and prove the remaining obligations. Rewrite using `[← hx, ht, Pi.list_prod_apply, List.map_ofFn]`. Use `congr 2`. Use function extensionality and compare the values at `i`.
+
+Conclude with `hx _ _ _`.
+-/
 theorem mainM {J : ι → Matrix (Fin d) (Fin d) ℂ} (hJ : ∀ w, IsUnit (J w).det) :
     ∃ (m : ℕ) (Y : Fin m → ι → Matrix (Fin d) (Fin d) ℂ) (c : Fin m → (ι → Matrix (Fin d) (Fin d) ℂ) →ₗ[ℝ] ℝ),
       (∀ i w, (Y i w)ᵀ * J w + J w * (Y i w).map star = 0) ∧ ∀ Z Z' : ι → Matrix (Fin d) (Fin d) ℂ,
@@ -92,6 +112,13 @@ end Cx
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {d : ℕ}
 
 omit [NumberField E] in
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil`. Introduce `c _`. Express the relevant statement in the definitionally equal form `c • ((1 : Matrix (Fin d) (Fin d) (AE F E)) - 1) = 0`. Rewrite using `[sub_self, smul_zero]`.
+
+Consider the case `cons x l ih`. Introduce `c hc`. Establish `h1` using `hl x (by simp) c hc`. Establish `h2` using `ih (fun g hg => hl g (by simp [hg])) c hc`. Rewrite using `[List.prod_cons]`.
+
+Express the relevant statement in the definitionally equal form `c • (mat x * mat l.prod - 1) = 0`. Establish `e : mat x * mat l.prod - 1 = mat x * (mat l.prod - 1) + (mat x - 1)`. Rewrite using `[Matrix.mul_sub, Matrix.mul_one, sub_add_sub_cancel]`. Rewrite using `[e, smul_add, ← Matrix.mul_smul, h1, h2, Matrix.mul_zero, add_zero]`.
+-/
 theorem uat_prod {W : Spc F E d} (l : List (UA σ W.J)) (hl : ∀ g ∈ l, g ∈ UAt σ W (evI F)) :
     l.prod ∈ UAt σ W (evI F) := by
   induction l with
@@ -110,6 +137,9 @@ theorem uat_prod {W : Spc F E d} (l : List (UA σ W.J)) (hl : ∀ g ∈ l, g ∈
     rw [e, smul_add, ← Matrix.mul_smul, h1, h2, Matrix.mul_zero, add_zero]
 
 omit [NumberField E] in
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact Matrix.map_one _ (map_zero _) (map_one _)`. Consider the case `cons x l ih`. Rewrite using `[List.prod_cons, List.map_cons, List.prod_cons, ← ih, ← Matrix.map_mul]`. Both sides reduce to the same expression.
+-/
 theorem mat_prod {J : Matrix (Fin d) (Fin d) E} (p : AE F E →+* ℂ) (l : List (UA σ J)) :
     (mat l.prod).map p = (l.map fun g => (mat g).map p).prod := by
   induction l with
@@ -118,6 +148,11 @@ theorem mat_prod {J : Matrix (Fin d) (Fin d) E} (p : AE F E →+* ℂ) (l : List
     rw [List.prod_cons, List.map_cons, List.prod_cons, ← ih, ← Matrix.map_mul]
     rfl
 
+/- English proof (translation)
+Use `Subtype.ext (Units.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `mat u = mat v`. Use extensionality with `i j`. Use `sub_eq_zero.1 (GlobalTheory.CompanionTheory.CMAdele.eq_zero_of_piInf σ h τ _ (fun c hc => ?_) fun w => ?_)` and prove the remaining obligations. Establish `e1 : c • (mat u - mat v) = 0`.
+
+Rewrite using `[← sub_sub_sub_cancel_right _ _ 1, smul_sub, hu c hc, hv c hc, sub_zero]`. Conclude with `congrFun (congrFun e1 i) j`. Rewrite using `[map_sub]`. Conclude with `sub_eq_zero.2 (congrFun (congrFun (e w) i) j)`.
+-/
 theorem uat_ext (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) {W : Spc F E d} {u v : UA σ W.J}
     (hu : u ∈ UAt σ W (evI F)) (hv : v ∈ UAt σ W (evI F))
     (e : ∀ w, (mat u).map (piInf (τ w)) = (mat v).map (piInf (τ w))) : u = v := by
@@ -134,6 +169,19 @@ theorem uat_ext (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w)
 end LinDerPf
 
 open LinDerPf in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ h τ d W hW`. Establish `hJ : ∀ w, IsUnit (W.J.map (τ w).1).det` using `fun w => by`. Establish `e : (W.J.map (τ w).1).det = (τ w).1 W.J.det` using `(RingHom.map_det (τ w).1 W.J).symm`. Rewrite using `[e]`. Conclude with `((map_ne_zero (τ w).1).2 hW.2).isUnit`.
+
+Establish `: Module.Finite F E` using `Module.Finite.of_restrictScalars_finite ℚ F E`. Establish `: IsTopologicalRing (AE F E)` using `IsModuleTopology.isTopologicalRing (AF F) _`. Establish `: IsTopologicalGroup (GL (Fin d) (AE F E))` using `inferInstance`. Establish `: IsTopologicalGroup (UA σ W.J)` using `inferInstance`. Take `⟨m, Y, c, hY, hm⟩` from `mainM hJ`.
+
+Use `choose β hβ hβY _ using fun i => hX F E σ h τ d W hW (Y i) (hY i)`. Use `⟨m, β, c, hβ, fun f f' hf γ hγ Z hZ g => ?_⟩` and prove the remaining obligations. Take `⟨Z', hZ', hZZ⟩` from `hG F E σ h τ d W hW γ hγ`. Take `⟨s, s0, sd, se⟩` from `hm Z Z' hZ' fun w t => (hZ w t).symm.trans (hZZ w t)`. Establish `h1` using `chain f m β (fun i => (hβ i).1) f' (fun i => (hf i).1) (fun i => (hf i).2) (fun _ => g) continuousAt_const s (fun i => c i Z) sd s0 0 (hasDerivAt_const _ _)`.
+
+Rewrite `h1` using `[zero_add]`. Use `h1.congr_of_eventuallyEq (se.mono fun t ht => ?_)` and prove the remaining obligations. Establish `e : γ (Multiplicative.ofAdd t) = (List.ofFn fun i => β i (Multiplicative.ofAdd (s i t))).prod`. Use `uat_ext h τ (hγ.2 _) (uat_prod _ fun x hx => ?_) fun w => ?_` and prove the remaining obligations. Take `⟨i, rfl⟩` from `(List.mem_ofFn' _ _).1 hx`.
+
+Conclude with `(hβ i).2 _`. Rewrite using `[hZ w t, ht w, mat_prod, List.map_ofFn]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Conclude with `(hβY i w _).symm`.
+
+Simplify using `only [e]`.
+-/
 theorem linDer_of (hG : LineGen) (hX : LineEx) : LinDer := by
   intro F E _ _ _ _ _ σ h τ d W hW
   have hJ : ∀ w, IsUnit (W.J.map (τ w).1).det := fun w => by

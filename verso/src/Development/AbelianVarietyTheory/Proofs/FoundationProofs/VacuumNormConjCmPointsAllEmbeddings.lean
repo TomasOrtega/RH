@@ -25,9 +25,31 @@ namespace GlobalTheory.ConjNorm
 noncomputable def torTw (D : D7) (σ : D.host.E ≃ₐ[ℚ] D.host.E) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) : Tor D :=
   ⟨fun τ x => embT D τ (σ x), lamOf D cc δ⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `[U, Hf]`.
+-/
 theorem U_zero (D : D7) (T : Tor D) {N N' : ℕ} (G : VC D N N' → ℂ) : U D T 0 G = G := by
   funext z; simp [U, Hf]
 
+/- English proof (translation)
+Establish `g1` using `(GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1`. Take `⟨b, κ, hb, ⟨hκQ, hκ⟩, rfl⟩` from `hG`. Establish `hκ1 : ‖κ‖ = 1` using `hκ (algebraMap Qbar ℂ)`. Take `⟨L₁, L₁', h₁, h₁', hY⟩` from `GlobalTheory.T.exists_selfDual_pair_galoisConjugate_homLattice D σ hσ N N' L L' hL hL'`. Establish `hb'` using `GlobalTheory.T.orthonormalBasis_galois_map D σ hσ N N' _ b hb`.
+
+Establish `eLa : La D (torTw D σ cc δ) L L' = La D (tor0 D cc δ) L₁ L₁'`. Unfold `La`. Use `congr 1`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨w, hw, A, hA, rfl⟩`. Conclude with `⟨w, hw, A.map σ, (hY A).1 hA, rfl⟩`. Introduce and unpack `⟨w, hw, A, hA, rfl⟩`. Establish `e : (A.map σ.symm).map σ = A` using `by ext i j; simp`. Use `⟨w, hw, A.map σ.symm, (hY _).2 (by rw [e]; exact hA), ?_⟩` and prove the remaining obligations.
+
+Use `congr 1`. Use function extensionality and compare the values at `τ i j`. Simplify using `[embV, tor0, torTw]`. Take `⟨hd, hinv⟩` from `GlobalTheory.T.halfPeriodTheta_differentiable_and_signedTranslate_invariant D g1 cc δ hc t0 ht`. Take `⟨o1, o2⟩` from `GlobalTheory.T.orthonormal_realBasis_complex_coordinates D g1 cc δ N N' _ _ hb'`.
+
+Establish `hth` using `GlobalTheory.T.orthonormalProductTheta_mem_thetaSpace D (tor0 D cc δ) N N' _ _ o1 _ hd hinv`. Establish `hn` using `GlobalTheory.T.meanSquare_orthoProductTheta_eq_prod D (tor0 D cc δ) N N' _ _ (GlobalTheory.T.idealPeriodLattice_of_curveDatum D g1 cc δ hc).1 o1 o2 _ hd.continuous (by`. Introduce `ω hω z`. Take `⟨m, -, hm⟩` from `hinv ω hω`. Use `congrArg norm (hm z)` as an intermediate fact.
+
+Rewrite using `[norm_mul, norm_zpow, norm_neg, norm_one, one_zpow, one_mul] at this)` and apply the resulting hypothesis. Establish `kB : KLat D (tor0 D cc δ) (LaB D (tor0 D cc δ) (fun j => (b j).map σ))` using `Or.inl ⟨_, _, hb', rfl⟩`. Establish `kL : KLat D (tor0 D cc δ) (La D (tor0 D cc δ) L₁ L₁')` using `Or.inr ⟨_, _, h₁, h₁', rfl⟩`. Take `⟨-, u2, u3, -⟩` from `GlobalTheory.ConjNorm.unitary_all D cc δ hc N N' _ _ kB kL _ hth`. Establish `u4` using `(GlobalTheory.ConjNorm.unitary_all D cc δ hc N N' _ _ kL kL _ u2).1`.
+
+Unfold `Th`. Rewrite using `[eLa]`. Use `set F := Iop D (tor0 D cc δ) (LaB D (tor0 D cc δ) (fun j => (b j).map σ)) (La D (tor0 D cc δ) L₁ L₁') (pullB D (tor0 D cc δ) (fun j => (b j).map σ) (GL3Theta.th0 (lamOf D cc δ) t0)) with hF`. Express the relevant statement in the definitionally equal form `(fun z => κ * F z) ∈ ThSp D (tor0 D cc δ) (La D (tor0 D cc δ) L₁ L₁') ∧ ∀ x, normSq D (tor0 D cc δ) (La D (tor0 D cc δ) L₁ L₁') (U D (tor0 D cc δ) x (fun z => κ * F z)) = _`. Use `⟨⟨u2.1.const_mul κ, fun x hx z => ?_⟩, fun x => ?_⟩` and prove the remaining obligations.
+
+Use `u2.2 x hx z` as an intermediate fact. Simplify using `only [U] at this ⊢`. Take the linear combination `κ * this`. Use `Eq.trans ?_ hn` and prove the remaining obligations. Rewrite using `[← u3, ← u4 x]`.
+
+Unfold `normSq`. Simplify using `only [U, norm_mul, hκ1, one_mul]`.
+-/
 theorem norm_core (D : D7) (σ : D.host.E ≃ₐ[ℚ] D.host.E)
     (hσ : ∀ a : D.host.K, σ (a : D.host.E) = (a : D.host.E))
     (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (hc : Crv D cc δ) (t0 : ℂ) (ht : GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D cc δ) t0)
@@ -81,6 +103,17 @@ theorem norm_core (D : D7) (σ : D.host.E ≃ₐ[ℚ] D.host.E)
     unfold normSq
     simp only [U, norm_mul, hκ1, one_mul]
 
+/- English proof (translation)
+Take `⟨⟨hPsi, -⟩, hperm⟩` from `GlobalTheory.T.inducedType_thetaGenusOne_permutes D`. Take `⟨π, hπ⟩` from `hperm M ρ hK hM`. Break down `isEmpty_or_nonempty D.what₂.Tau with h | ⟨⟨τ₀⟩⟩` into its components or cases. Conclude with `⟨AlgEquiv.refl, fun _ => rfl, fun τ => h.elim τ⟩`. Establish `hmul : ∀ g h : D.R.GG, D.host.sigmaOf (g * h) = D.host.sigmaOf g * D.host.sigmaOf h` using `fun g h => map_mul _ g h`.
+
+Establish `hone : D.host.sigmaOf 1 = 1` using `map_one _`. Establish `key : ∀ (τ : D.what₂.Tau) (g : D.R.GG) (x : D.host.E), embT D τ (D.host.sigmaOf g x) = D.host.φ₀ (D.host.sigmaOf ((D.eTau τ : D.R.GG) * g) x)`. Introduce `τ g x`. Rewrite using `[hmul]`. Both sides reduce to the same expression.
+
+Establish `key1 : ∀ (τ : D.what₂.Tau) (x : D.host.E), embT D τ x = D.host.φ₀ (D.host.sigmaOf (D.eTau τ : D.R.GG) x)` using `fun _ _ => rfl`. Establish `main : ∀ τ x, cj M ρ (embT D τ x) = embT D τ (D.host.sigmaOf ((D.eTau τ₀ : D.R.GG)⁻¹ * (D.eTau (π τ₀) : D.R.GG)) x)`. Introduce `τ x`. Establish `e1 : embT D τ x = embT D τ₀ (D.host.sigmaOf ((D.eTau τ₀ : D.R.GG)⁻¹ * (D.eTau τ : D.R.GG)) x)`. Rewrite using `[key, mul_inv_cancel_left, key1]`.
+
+Rewrite using `[e1, hπ, key, key]`. Use `congr 3`. Rewrite using `[mul_left_comm, mul_comm (D.eTau (π τ₀) : D.R.GG), mul_left_comm]`. Use `⟨_, fun a => ?_, main⟩` and prove the remaining obligations. Apply `(embT D τ₀).injective` to reduce the goal to its premises.
+
+Rewrite using `[← main, hPsi, (hK a).2]`.
+-/
 theorem exists_aut (D : D7) (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] ℂ) (hK : FixK D M ρ)
     (hM : ∀ τ x, embT D τ x ∈ M) :
     ∃ σ : D.host.E ≃ₐ[ℚ] D.host.E, (∀ a : D.host.K, σ (a : D.host.E) = (a : D.host.E)) ∧
@@ -111,6 +144,11 @@ theorem exists_aut (D : D7) (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] 
   apply (embT D τ₀).injective
   rw [← main, hPsi, (hK a).2]
 
+/- English proof (translation)
+Take `⟨φ, hφ⟩` from `IsAlgClosed.surjective_restrictDomain_of_isAlgebraic (K := ℚ) (L := M) (M := ℂ) (E := algebraicClosure M ℂ) ρ`. Establish `hle : M ≤ (algebraicClosure M ℂ).restrictScalars ℚ` using `fun x hx => (algebraicClosure M ℂ).algebraMap_mem ⟨x, hx⟩`. Use `⟨(algebraicClosure M ℂ).restrictScalars ℚ, φ, hle, fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[IntermediateField.mem_restrictScalars, mem_algebraicClosure_iff]`. Conclude with `(mem_algebraicClosure_iff.1 hx).extendScalars (algebraMap ℚ M).injective`.
+
+Rewrite using `[← hφ]`. Simplify using `only [TaylorLogMetric.liftM, dif_pos hx, dif_pos (hle hx)]`. Both sides reduce to the same expression.
+-/
 theorem exists_ext (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] ℂ) :
     ∃ (M' : IntermediateField ℚ ℂ) (ρ' : M' →ₐ[ℚ] ℂ), M ≤ M' ∧ Qbar ≤ M' ∧
       ∀ x ∈ M, ρ' (TaylorLogMetric.liftM M' x) = ρ (TaylorLogMetric.liftM M x) := by
@@ -125,6 +163,17 @@ theorem exists_ext (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] ℂ) :
     simp only [TaylorLogMetric.liftM, dif_pos hx, dif_pos (hle hx)]
     rfl
 
+/- English proof (translation)
+Establish `g1` using `(GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1`. Take `⟨cc', δ', hc', -, hlam⟩` from `GlobalTheory.T.conjugate_curveDatum_lattice_isCurveLattice D cc δ hc M ρ hK hD.2.1 hD.2.2 1 one_pos`. Take `⟨σ, hσ, hσ'⟩` from `exists_aut D M ρ hK hD.1`. Establish `hT : torConj D (tor0 D cc δ) M ρ = torTw D σ cc' δ'`. Unfold `torConj torTw`.
+
+Use `congr 1`. Use function extensionality and compare the values at `τ y`. Conclude with `hσ' τ y`. Establish `hGTh : G ∈ Th D (tor0 D cc δ) L L'` using `(norm_core D AlgEquiv.refl (fun _ => rfl) cc δ hc t0 ht L L' hL hL' G hG).1`. Establish `hE` using `(GlobalTheory.T.thetaVacua_conjugates_cmPoints D cc δ hc t0 ht N N' L L' hL hL' hN G hG M ρ hD hC).2.1 t0' ht'`.
+
+Take `⟨m, hm, hmx⟩` from `hx`. Establish `htors` using `((GlobalTheory.T.admJ_and_torsion_data_algebraic D g1).2 cc δ hc).2`. Take `⟨x', hx', -⟩` from `GlobalTheory.T.galois_data_exists D cc δ hc M ρ hK hD (fun t h1 h2 => ⟨hQ (htors t h1 h2).1, hQ (htors t h1 h2).2⟩) N N' L L' hL hL' x (2 * m) ⟨m, hm, hmx⟩ (by omega)`. Establish `hcomb : comb D (tor0 D cc δ) (fun _ : Fin 1 => (1 : ℂ)) (fun _ => 0) G = G`. Use function extensionality and compare the values at `z`.
+
+Simplify using `[comb, U_zero]`. Establish `hg` using `GlobalTheory.T.thetaTranslate_galoisRationality_cmPoints D cc δ hc M ρ hK hD N N' L L' hL hL' 1 (fun _ => 1) (fun _ => 0) G x x' m hGTh hm hmx (fun _ => by rw [smul_zero]; exact zero_mem _) hx'`. Rewrite `hg` using `[hcomb]`. Use `⟨hlam ▸ (GlobalTheory.T.idealPeriodLattice_of_curveDatum D g1 cc' δ' hc').1, x', (hg hC hCx).1, ?_⟩` and prove the remaining obligations. Rewrite `hE`, the goal using `[hT]`.
+
+Rewrite `ht'`, the goal using `[hlam]`. Conclude with `(norm_core D σ hσ cc' δ' hc' t0' ht' L L' hL hL' _ hE).2 x'`.
+-/
 theorem norm_fix (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (hc : Crv D cc δ) (t0 : ℂ)
     (ht : GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D cc δ) t0)
     {N N' : ℕ} (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E))
@@ -164,6 +213,19 @@ theorem norm_fix (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (hc : Crv D cc
   rw [hlam] at ht' ⊢
   exact (norm_core D σ hσ cc' δ' hc' t0' ht' L L' hL hL' _ hE).2 x'
 
+/- English proof (translation)
+Break down `(GlobalTheory.T.cmTheta_complexConjugation_compatible D cc δ hc M ρ hD).1 with hK | hK` into its components or cases. Take `⟨-, x', e1, e2⟩` from `norm_fix D cc δ hc t0 ht L L' hL hL' hN G hG M ρ hK hQ hD hC t0' ht' x hx hCx`. Rewrite using `[e1, e2]`. Take `⟨-, hT, hb⟩` from `GlobalTheory.T.cmTheta_complexConjugation_compatible D cc δ hc M (rhoBar M ρ) hD`. Establish `hbb : rhoBar M (rhoBar M ρ) = ρ`.
+
+Use extensionality with `y`. Simplify using `[rhoBar]`. Rewrite `hT`, `hb` using `[hbb]`. Establish `hl : lamConj M ρ (lamOf D cc δ) = (lamConj M (rhoBar M ρ) (lamOf D cc δ)).map (starRingEnd ℂ).toAddMonoidHom` using `congrArg Tor.abelian₂ hT`. Establish `hmem : ∀ z, z ∈ lamConj M ρ (lamOf D cc δ) ↔ (starRingEnd ℂ) z ∈ lamConj M (rhoBar M ρ) (lamOf D cc δ)`.
+
+Introduce `z`. Rewrite using `[hl, AddSubgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify using `using hy`.
+
+Introduce `h`. Conclude with `⟨_, h, by simp⟩`. Establish `ht'' : GL3Theta.IsTwoTorsionPointUnkilled D (lamConj M (rhoBar M ρ) (lamOf D cc δ)) ((starRingEnd ℂ) t0')`. Take `⟨a1, a2, a3⟩` from `ht'`. Rewrite `a1`, `a2`, `a3` using `[hmem]`.
+
+Use `⟨by simpa [map_ofNat] using a1, ?_, ?_⟩` and prove the remaining obligations. Simplify `a3` using `[map_ofNat]`. Simplify `a2` using `[map_ofNat, sub_eq_add_neg]`. Take `⟨hlat, x', e1, e2⟩` from `norm_fix D cc δ hc t0 ht L L' hL hL' hN G hG M (rhoBar M ρ) hK hQ hD hC _ ht'' x hx hCx`. Establish `hTh` using `(GlobalTheory.T.thetaVacua_conjugates_cmPoints D cc δ hc t0 ht N N' L L' hL hL' hN G hG M (rhoBar M ρ) hD hC).1`.
+
+Establish `e3` using `((hb N N' L L' (fnConj D M (rhoBar M ρ) G)).2.2 hTh).2 hL hL' x'`. Establish `e4` using `GlobalTheory.T.meanSquare_evenTheta_conjugateLattice _ hlat ((starRingEnd ℂ) t0')`. Rewrite `e4` using `[Complex.conj_conj, ← hl]`. Rewrite using `[(hb N N' L L' (U D (tor0 D cc δ) x G)).1, e1, hT, e3, e2, e4]`.
+-/
 theorem norm_big (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (hc : Crv D cc δ) (t0 : ℂ)
     (ht : GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D cc δ) t0)
     {N N' : ℕ} (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E))
@@ -208,6 +270,17 @@ theorem norm_big (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (hc : Crv D cc
     rw [Complex.conj_conj, ← hl] at e4
     rw [(hb N N' L L' (U D (tor0 D cc δ) x G)).1, e1, hT, e3, e2, e4]
 
+/- English proof (translation)
+Introduce `D cc δ hc t0 ht N N' L L' hL hL' hN G hG M ρ hD hC t0' ht'`. Take `⟨M', ρ', hle, hQ, he⟩` from `exists_ext M ρ`. Establish `hl : lamConj M ρ (lamOf D cc δ) = lamConj M' ρ' (lamOf D cc δ)`. Unfold `lamConj`. Rewrite using `[he (g2 (lamOf D cc δ)) hD.2.1, he (g3 (lamOf D cc δ)) hD.2.2]`.
+
+Establish `hT : torConj D (tor0 D cc δ) M ρ = torConj D (tor0 D cc δ) M' ρ'`. Unfold `torConj`. Use `congr 1`. Use function extensionality and compare the values at `τ y`. Conclude with `(he _ (hD.1 τ y)).symm`.
+
+Establish `hf : ∀ F : VC D N N' → ℂ, CoefIn D F M → fnConj D M ρ F = fnConj D M' ρ' F`. Introduce `F hF`. Use function extensionality and compare the values at `z`. Unfold `fnConj`. Conclude with `tsum_congr fun α => by rw [he _ (hF α)]`.
+
+Establish `hD' : DataIn D (tor0 D cc δ) M'` using `⟨fun τ y => hle (hD.1 τ y), hle hD.2.1, hle hD.2.2⟩`. Establish `main : ∀ x, LaQ D (tor0 D cc δ) L L' x → CoefIn D (U D (tor0 D cc δ) x G) M → normSq D (torConj D (tor0 D cc δ) M ρ) (La D (torConj D (tor0 D cc δ) M ρ) L L') (fnConj D M ρ (U D (tor0 D cc δ) x G)) = nrm1Sq (lamConj M ρ (lamOf D cc δ)) (GL3Theta.th0 (lamConj M ρ (lamOf D cc δ)) t …`. Introduce `x hx hCx`. Rewrite using `[hf _ hCx, hT, hl]`. Conclude with `norm_big D cc δ hc t0 ht L L' hL hL' hN G hG M' ρ' hQ hD' (fun α => hle (hC α)) t0' (hl ▸ ht') x hx (fun α => hle (hCx α))`.
+
+Use `⟨?_, main⟩` and prove the remaining obligations. Use `main 0 ⟨1, one_pos, by rw [smul_zero]; exact zero_mem _⟩ (by rw [U_zero]; exact hC)` as an intermediate fact. Rewrite `this` using `[U_zero]`. Then use the resulting hypothesis.
+-/
 theorem useNorm_all : ∀ D : D7, useNorm D := by
   intro D cc δ hc t0 ht N N' L L' hL hL' hN G hG M ρ hD hC t0' ht'
   obtain ⟨M', ρ', hle, hQ, he⟩ := exists_ext M ρ

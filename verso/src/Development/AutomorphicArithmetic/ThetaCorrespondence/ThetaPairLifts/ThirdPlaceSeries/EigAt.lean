@@ -14,6 +14,21 @@ namespace GlobalTheory.PtLocalPin
 section Gen
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {W : Type} [AddCommGroup W] [Module ℂ W]
 end Gen
+/- English proof (translation)
+Establish `HT` using `P.H.hecke`. Establish `hsB : s.v ∉ badPl D i` using `GlobalTheory.HeckeScalarAll.not_bad HT i hw s hcw`. Establish `hex : ∀ k, ∃ c : ℂ, ∀ f ∈ P.H.av.S i Q, (∀ κ ∈ Umax D.host.E D.R.nV, TrivOutside {s.v} κ → NG.rt D.host.E D.R.nV κ f = f) → NG.tN (Umax D.host.E D.R.nV) s ϖ k f = c • f` using `fun k => GlobalTheory.T.splitPlace_heckeOperator_scalar_on_spherical D.host.E D.R.nV (P.M.loc i).wt (P.H.av.S i Q) (P.H.av.irr i Q) s ϖ k hu`. Use `choose c hc using hex`. Establish `hfT : ∀ y, (P.M.loc i).real y ∈ NG.TypeSp (P.M.loc i).wt.ρ (P.M.loc i).J (P.M.loc i).χ`.
+
+Introduce `y`. Rewrite using `[← (P.M.loc i).real_range]`. Conclude with `⟨y, rfl⟩`. Establish `hfI : ∀ y ∈ D.naut.typeV i Q, (P.M.loc i).real y ∈ NG.isoTyp (P.M.loc i).wt.ρ (P.H.av.S i Q)`. Introduce `y hy`.
+
+Rewrite `hy` using `[P.H.av.typeV]`. Conclude with `hy`. Establish `hfix : ∀ y, ∀ κ ∈ Umax D.host.E D.R.nV, TrivOutside {s.v} κ → NG.rt D.host.E D.R.nV κ ((P.M.loc i).real y) = (P.M.loc i).real y`. Introduce `y κ hκ ht`. Establish `ht' : TrivOutside (badPl D i)ᶜ κ` using `GlobalTheory.HeckeScalarAll.trivOutside_mono (Set.singleton_subset_iff.2 hsB) ht`.
+
+Take `⟨h1, h2⟩` from `HT.J_hyp i κ ht'`. Establish `hJ : κ ∈ (P.M.loc i).J` using `h1.2 hκ`. Establish `e` using `(hfT y).2 ⟨κ, hJ⟩`. Rewrite `e` using `[h2 hJ]`. Simplify using `using e`.
+
+Use `⟨c, ?_, ?_⟩` and prove the remaining obligations. Take `⟨y0, hy0, hy00⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot (D.naut.typeV_ne i Q)`. Establish `hf0 : (P.M.loc i).real y0 ≠ 0` using `fun h => hy00 ((P.M.loc i).real_inj (h.trans (map_zero (P.M.loc i).real).symm))`. Take `⟨g, hg, hg0, hgfix⟩` from `exists_fixed_of_isoTyp (P.H.av.irr i Q) s.v _ (hfI y0 hy0) hf0 (hfix y0)`. Establish `hpol` using `P.H.au.locPol (D.nd.j i) (D.nd.j_range i).1 (D.nd.j_range i).2 (P.H.av.rep i Q) s w ϖ hcw hu (Umax D.host.E D.R.nV) (fun κ _ => Iff.rfl) g hg hg0 hgfix c (fun k _ _ => hc k g hg hgfix)`.
+
+Rewrite using `[hpol, D.nbc.embAV_loc, P.H.emb]`. Introduce `k _ _ y hy`. Establish `hfinU` using `GlobalTheory.T.finite_cosets_heckeSet_at_splitPlace_outside_level D.host.E D.R.nV (Umax D.host.E D.R.nV) 1 ∅ (fun κ _ => ⟨Iff.rfl, fun _ => rfl⟩) s ϖ k (by simp) hu`. Establish `e1 : NG.tN (P.M.loc i).J s ϖ k ((P.M.loc i).real y) = NG.tN (Umax D.host.E D.R.nV) s ϖ k ((P.M.loc i).real y)`. Simplify using `only [NG.tN]`.
+
+Rewrite using `[GlobalTheory.HeckeScalarAll.heckeD_eq_of_fixed (P.M.loc i).J (P.M.loc i).χ (badPl D i) (HT.J_hyp i) s hsB ϖ k _ (hfix y)]`. Rewrite using `[e1]`. Conclude with `GlobalTheory.HeckeScalarAll.tN_isoTyp (P.H.av.irr i Q) s ϖ k hfinU (c k) (hc k) _ (hfI y hy) (hfix y)`.
+-/
 theorem eig_at_alt {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {D : D7} (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D) (i : D.nd.Loc) (Q : D.naut.AV i)
     (w : PlE D.host) (hw : SplitOut D.nd i w) (s : SplitPlace D.host.E)
     (ϖ : s.v.adicCompletion (maximalRealSubfield D.host.E)) (hcw : IsConjPl D.host w s.w)
@@ -65,6 +80,11 @@ theorem eig_at_alt {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {D : D7} (P : _
         (hfix y)]
     rw [e1]
     exact GlobalTheory.HeckeScalarAll.tN_isoTyp (P.H.av.irr i Q) s ϖ k hfinU (c k) (hc k) _ (hfI y hy) (hfix y)
+/- English proof (translation)
+Introduce `hL D P i`. Use `GlobalTheory.T.pointLocalEigen_galoisPolynomial_split D P.M P.H.hecke P.H.rational P.H.av P.H.cover i ?_` and prove the remaining obligations. Introduce `Q w hw`. Take `⟨s0, ϖ0, hc0, hu0⟩` from `GlobalTheory.SplitConjPlace.splitEx_all D w hw.1`. Take `⟨c0, hp0, -⟩` from `_root_.GlobalTheory.PtLocalPin.eig_at_alt P i Q w hw s0 ϖ0 hc0 hu0`.
+
+Establish `hN : normV w ≠ 0` using `(lt_trans zero_lt_one (GlobalTheory.WeilDeligne.one_lt_normV w)).ne'`. Use `⟨c0, hp0.symm, fun k s ϖ hc hu h1 h2 y hy => ?_⟩` and prove the remaining obligations. Take `⟨c, hp, hy'⟩` from `_root_.GlobalTheory.PtLocalPin.eig_at_alt P i Q w hw s ϖ hc hu`. Rewrite using `[hy' k h1 h2 y hy, coeff_eq hN (hp.trans hp0.symm) h1 h2]`.
+-/
 theorem main_alt_alt : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D), ∀ i,
     GlobalTheory.ThetaExh.PtLocal D.nd D.naut i := by
   intro hL D P i

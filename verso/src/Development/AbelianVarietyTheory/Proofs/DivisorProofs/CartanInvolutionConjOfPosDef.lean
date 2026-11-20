@@ -7,6 +7,21 @@ namespace GlobalTheory
 
 open scoped MatrixOrder in
 
+/- English proof (translation)
+Use `set M := s * s' with hMdef`. Establish `hMpsd : M.PosSemidef` using `hM.posSemidef`. Establish `hM0 : 0 ≤ M` using `Matrix.nonneg_iff_posSemidef.mpr hMpsd`. Use `set R := CFC.sqrt M with hRdef`. Establish `hR0 : 0 ≤ R` using `CFC.sqrt_nonneg M`.
+
+Establish `hRpsd : R.PosSemidef` using `Matrix.nonneg_iff_posSemidef.mp hR0`. Establish `hRR : R * R = M` using `CFC.sqrt_mul_sqrt_self M hM0`. Establish `hRh : Rᴴ = R` using `hRpsd.isHermitian`. Establish `hsM : s * M = s'` using `by rw [hMdef, ← Matrix.mul_assoc, hss, Matrix.one_mul]`. Establish `hMinv : M⁻¹ = s * M * s`.
+
+Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `hsRs : CFC.sqrt M⁻¹ = s * R * s`. Use `CFC.sqrt_unique ?_ ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc s s, hss, Matrix.one_mul]`. Use `_ = M⁻¹ := by rw [hRR, hMinv]`. Establish `h` using `hRpsd.conjTranspose_mul_mul_same s`. Rewrite `h` using `[hs]`.
+
+Conclude with `Matrix.nonneg_iff_posSemidef.mpr h`. Establish `hRinv : R⁻¹ = s * R * s`. Rewrite using `[← hsRs]`. Conclude with `hMpsd.inv_sqrt`. Establish `hMu : IsUnit M.det` using `isUnit_iff_ne_zero.mpr hM.det_pos.ne'`.
+
+Establish `hRu : IsUnit R.det`. Rewrite `hMu` using `[← hRR, Matrix.det_mul]`. Conclude with `isUnit_of_mul_isUnit_left hMu`. Establish `hsRinv : s * R⁻¹ = R * s`. Rewrite using `[hRinv, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hss, Matrix.one_mul]`.
+
+Use `⟨R⁻¹, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_nonsing_inv, hRh, Matrix.mul_assoc, hsRinv, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hRu, Matrix.one_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hRR, Matrix.mul_assoc s, Matrix.mul_assoc R, Matrix.mul_nonsing_inv _ hRu, Matrix.mul_one]`. Use `_ = s' * R⁻¹ := by rw [hsM]`.
+-/
 theorem cartanInvolution_conj_of_posDef (ι : Type) [Fintype ι] [DecidableEq ι]
     (s s' : Matrix ι ι ℂ) (hs : sᴴ = s) (hss : s * s = 1) (hs's' : s' * s' = 1)
     (hM : (s * s').PosDef) :

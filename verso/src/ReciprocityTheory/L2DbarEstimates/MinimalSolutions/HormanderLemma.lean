@@ -10,20 +10,32 @@ variable {E H₁ H₂ : Type*} [AddCommGroup E] [Module ℂ E]
     [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁]
     [NormedAddCommGroup H₂] [InnerProductSpace ℂ H₂]
 
+/- English proof (translation)
+Introduce `g`. Simplify using the standard rewrite rules.
+-/
 theorem weakAdj_zero (ι : E →ₗ[ℂ] H₁) (t : E →ₗ[ℂ] H₂) : WeakAdj ι t 0 0 := by
   intro g
   simp
 
+/- English proof (translation)
+Introduce `g`. Rewrite using `[inner_add_right, inner_add_right, h g, h' g]`.
+-/
 theorem WeakAdj.add {ι : E →ₗ[ℂ] H₁} {t : E →ₗ[ℂ] H₂} {f f' : H₂} {w w' : H₁}
     (h : WeakAdj ι t f w) (h' : WeakAdj ι t f' w') : WeakAdj ι t (f + f') (w + w') := by
   intro g
   rw [inner_add_right, inner_add_right, h g, h' g]
 
+/- English proof (translation)
+Introduce `g`. Rewrite using `[inner_smul_right, inner_smul_right, h g]`.
+-/
 theorem WeakAdj.smul {ι : E →ₗ[ℂ] H₁} {t : E →ₗ[ℂ] H₂} {f : H₂} {w : H₁}
     (h : WeakAdj ι t f w) (a : ℂ) : WeakAdj ι t (a • f) (a • w) := by
   intro g
   rw [inner_smul_right, inner_smul_right, h g]
 
+/- English proof (translation)
+Introduce `g`. Rewrite using `[inner_sub_right, inner_sub_right, h g, h' g]`.
+-/
 theorem WeakAdj.sub {ι : E →ₗ[ℂ] H₁} {t : E →ₗ[ℂ] H₂} {f f' : H₂} {w w' : H₁}
     (h : WeakAdj ι t f w) (h' : WeakAdj ι t f' w') : WeakAdj ι t (f - f') (w - w') := by
   intro g
@@ -37,6 +49,11 @@ def weakAdjGraph (ι : E →ₗ[ℂ] H₁) (t : E →ₗ[ℂ] H₂) : Submodule 
 
 end WeakAdjLemmas
 
+/- English proof (translation)
+Introduce `ι t K hK hrange f w hfw`. Use `haveI : CompleteSpace K := hK.completeSpace_coe`. Take `⟨f₁, hf₁, f₂, hf₂, rfl⟩` from `K.exists_add_mem_mem_orthogonal f`. Establish `h2 : WeakAdj ι t f₂ 0`. Introduce `g`.
+
+Rewrite using `[inner_zero_right]`. Conclude with `Submodule.inner_right_of_mem_orthogonal (hrange (LinearMap.mem_range_self t g)) hf₂`. Use `⟨f₁, f₂, rfl, hf₁, hf₂, ?_, h2⟩` and prove the remaining obligations. Establish `h1` using `hfw.sub h2`. Simplify using `using h1`.
+-/
 theorem split (E H₁ H₂ : Type*) [AddCommGroup E] [Module ℂ E]
     [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁]
     [NormedAddCommGroup H₂] [InnerProductSpace ℂ H₂] [CompleteSpace H₂] :
@@ -52,6 +69,13 @@ theorem split (E H₁ H₂ : Type*) [AddCommGroup E] [Module ℂ E]
   have h1 := hfw.sub h2
   simpa using h1
 
+/- English proof (translation)
+Introduce `ι t K hK hrange v A hA hv hbound`. Set `G : Submodule ℂ (H₂ × H₁)` to `weakAdjGraph ι t ⊓ K.comap (LinearMap.fst ℂ H₂ H₁)`. Establish `hG : ∀ p : G, WeakAdj ι t (p : H₂ × H₁).1 (p : H₂ × H₁).2 ∧ (p : H₂ × H₁).1 ∈ K` using `fun p => ⟨(Submodule.mem_inf.mp p.2).1, (Submodule.mem_inf.mp p.2).2⟩`. Take `⟨u, -, hu, huv⟩` from `rieszOnRange G H₁ ((LinearMap.snd ℂ H₂ H₁).comp G.subtype) ((innerₛₗ ℂ v).comp ((LinearMap.fst ℂ H₂ H₁).comp G.subtype)) A hA (by`. Introduce `p`.
+
+Take `⟨h1, h2⟩` from `hG p`. Simplify using `using hbound _ h2 _ h1)`. Use `⟨u, hu, fun f w hfw => ?_⟩` and prove the remaining obligations. Take `⟨f₁, f₂, rfl, hf₁, hf₂, hw1, -⟩` from `split E H₁ H₂ ι t K hK hrange f w hfw`. Establish `hmem : ((f₁, w) : H₂ × H₁) ∈ G` using `Submodule.mem_inf.mpr ⟨hw1, hf₁⟩`.
+
+Establish `h3` using `huv ⟨(f₁, w), hmem⟩`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, Submodule.coe_subtype, LinearMap.snd_apply, LinearMap.fst_apply] at h3`. Rewrite using `[inner_add_right, Submodule.inner_right_of_mem_orthogonal hv hf₂, add_zero]`. Conclude with `h3`.
+-/
 theorem hormanderLemma (E H₁ H₂ : Type*) [AddCommGroup E] [Module ℂ E]
     [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁] [CompleteSpace H₁]
     [NormedAddCommGroup H₂] [InnerProductSpace ℂ H₂] [CompleteSpace H₂] :

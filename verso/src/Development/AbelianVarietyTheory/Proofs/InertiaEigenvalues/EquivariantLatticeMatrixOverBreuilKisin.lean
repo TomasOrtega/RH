@@ -10,6 +10,11 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 open scoped Formalism.Per NNReal
 open Matrix
 
+/- English proof (translation)
+Introduce `l _ K bk d d' S S' ρ ρ' T T' hT hT' f hf`. Take `⟨X, hX, hfix, hphi⟩` from `GlobalTheory.T.stratPeriodMatrix_exists_fixed_frobenius_solution l K bk d d' S S' ρ ρ' T T' hT hT' f hf`. Establish `hOE` using `GlobalTheory.T.equivariant_phiModule_matrix_mem_OE l K bk d d' S S' X hfix hphi`. Take `⟨τ, hτ⟩` from `GlobalTheory.T.exists_breuilKisin_frobenius_period l K bk`. Take `⟨M, x, hx⟩` from `GlobalTheory.T.exists_ainf_lift_period_pow_smul_intertwiner l K bk τ hτ d d' S S' ρ ρ' T T' hT hT' f X hX`.
+
+Take `⟨Y, hY⟩` from `GlobalTheory.T.exists_powerSeries_lift_of_period_pow_smul_integral_matrix l K bk τ hτ d d' M X x hOE hx`. Conclude with `⟨Y, by rw [hY]; exact hX⟩`.
+-/
 theorem GlobalTheory.BSP.equivariant_matrix_over_bk : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d d' : ℕ) (S : Strat bk d) (S' : Strat bk d') (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l]) (ρ' : ↥(GK K) → Matrix (Fin d') (Fin d') ℤ_[l]) (T : Matrix (Fin d) (Fin d) (WCb l)) (T' : Matrix (Fin d') (Fin d') (WCb l)), MReal S ρ T → MReal S' ρ' T' → ∀ f : Matrix (Fin d') (Fin d) ℤ_[l], (∀ g, f * ρ g = ρ' g * f) → ∃ Y : Matrix (Fin d') (Fin d) bk.S, T' * Y.map bk.evW = zW f * T := by
   intro l _ K bk d d' S S' ρ ρ' T T' hT hT' f hf
   obtain ⟨X, hX, hfix, hphi⟩ := GlobalTheory.T.stratPeriodMatrix_exists_fixed_frobenius_solution l K bk d d' S S' ρ ρ' T T' hT hT' f hf

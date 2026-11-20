@@ -9,5 +9,8 @@ open GlobalTheory.VB
 open GlobalTheory.IndefiniteRowSideFullHecke.GenericFiniteMaps
 open GlobalTheory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FlagCover.flagCoverExists | exact GlobalTheory.FlagCover.flagCoverExists | (intros; apply GlobalTheory.FlagCover.flagCoverExists <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.projective_surface_flag_cover_exists : ∀ (k : Type) [Field k] (T : Scheme.{0}) [Algebra k Γ(T, ⊤)] [IsIntegral T], IsProjSurface k T → FlagCoverExists k T := by
   first | exact @GlobalTheory.FlagCover.flagCoverExists | exact GlobalTheory.FlagCover.flagCoverExists | (intros; apply GlobalTheory.FlagCover.flagCoverExists <;> assumption)

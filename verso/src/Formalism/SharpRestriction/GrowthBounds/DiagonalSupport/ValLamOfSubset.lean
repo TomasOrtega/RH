@@ -21,6 +21,13 @@ section S
 
 variable {R : Type*} [CommRing R] {ι : Type*} {n : ℕ}
 
+/- English proof (translation)
+Unfold `sDegs FinalFormK`. Rewrite using `[Finset.mem_biUnion]`. Prove the components needed by the constructor for the conclusion. Introduce `h m`. Assume the negation of the conclusion as `hm`.
+
+Apply `h` to reduce the goal to its premises. Use `⟨m, ?_, Finsupp.mem_support_iff.2 hm⟩` and prove the remaining obligations. Rewrite using `[mem_support_iff]`. Introduce `h0`. Rewrite `hm` using `[h0]`.
+
+Simplify using `at hm`. Introduce and unpack `h ⟨m, _, hm⟩`. Conclude with `(Finsupp.mem_support_iff.1 hm) (h m)`.
+-/
 theorem notMem_sDegs_iff (LL : Letters ι) (S : Set ι) (j : Fin n) (G : MvPolynomial (ι × Fin n) R) (k : ℤ) :
     k ∉ sDegs LL S j G ↔ FinalFormK k (twistSub LL S j G) := by
   unfold sDegs FinalFormK
@@ -37,6 +44,9 @@ theorem notMem_sDegs_iff (LL : Letters ι) (S : Set ι) (j : Fin n) (G : MvPolyn
   · rintro h ⟨m, _, hm⟩
     exact (Finsupp.mem_support_iff.1 hm) (h m)
 
+/- English proof (translation)
+Introduce `k hk`. Assume the negation of the conclusion as `hk'`. Conclude with `((notMem_sDegs_iff LL S j G k).2 (h k ((notMem_sDegs_iff LL' S' j F k).1 hk'))) hk`.
+-/
 theorem sDegs_subset_of {ι' : Type*} (LL : Letters ι) (S : Set ι) (LL' : Letters ι') (S' : Set ι') (j : Fin n)
     (G : MvPolynomial (ι × Fin n) R) (F : MvPolynomial (ι' × Fin n) R)
     (h : ∀ k, FinalFormK k (twistSub LL' S' j F) → FinalFormK k (twistSub LL S j G)) : sDegs LL S j G ⊆ sDegs LL' S' j F := by
@@ -44,6 +54,9 @@ theorem sDegs_subset_of {ι' : Type*} (LL : Letters ι) (S : Set ι) (LL' : Lett
   by_contra hk'
   exact ((notMem_sDegs_iff LL S j G k).2 (h k ((notMem_sDegs_iff LL' S' j F k).1 hk'))) hk
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Finset.inf_mono (h _), Finset.sup_mono (h _)⟩`.
+-/
 theorem val_lam_of_subset [NeZero n] {ι' : Type*} (LL : Letters ι) (S : Set ι) (LL' : Letters ι') (S' : Set ι')
     (G : MvPolynomial (ι × Fin n) R) (F : MvPolynomial (ι' × Fin n) R)
     (h : ∀ j, sDegs LL S j G ⊆ sDegs LL' S' j F) :

@@ -2,6 +2,19 @@ import Mathlib
 
 namespace GlobalTheory.TraceMulVanishing
 
+/- English proof (translation)
+Use `haveI : IsArtinianRing A := IsArtinianRing.of_finite F A`. Take `⟨n, y, hy⟩` from `IsArtinian.exists_pow_succ_smul_dvd x (1 : A)`. Simplify using `only [smul_eq_mul, mul_one] at hy`. Establish `h1 : x ^ (n + 1) = x ^ (n + 1) * (x * y)`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h2 : ∀ j : ℕ, x ^ (n + 1) = x ^ (n + 1) * (x * y) ^ j`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih => rw [pow_succ (x * y) j, ← mul_assoc, ← ih]`.
+
+Conclude with `h1`. Establish `h3 : x ^ (n + 1) = x ^ (n + 1) * x ^ (n + 1) * y ^ (n + 1)`. Combine the equalities or inequalities in the displayed calculation. Establish `he : IsIdempotentElem (x ^ (n + 1) * y ^ (n + 1))`. Unfold `IsIdempotentElem`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `htr : Algebra.trace F A (x ^ (n + 1) * y ^ (n + 1)) = 0`. Use `h (x ^ n * y ^ (n + 1))` as an intermediate fact. Rewrite `this` using `[show x * (x ^ n * y ^ (n + 1)) = x ^ (n + 1) * y ^ (n + 1) by ring]`. Then use the resulting hypothesis. Establish `hl : IsIdempotentElem (Algebra.lmul F A (x ^ (n + 1) * y ^ (n + 1)))` using `he.map _`.
+
+Establish `hz : Algebra.lmul F A (x ^ (n + 1) * y ^ (n + 1)) = 0` using `(LinearMap.IsIdempotentElem.trace_eq_zero_iff hl).1 (by rw [← Algebra.trace_apply]; exact htr)`. Establish `he0 : x ^ (n + 1) * y ^ (n + 1) = 0`. Use `congrArg (fun f : Module.End F A => f 1) hz` as an intermediate fact. Simplify using `using this`. Establish `hxn : x ^ (n + 1) = 0`.
+
+Rewrite using `[h3, mul_assoc, he0, mul_zero]`. Conclude with `IsReduced.eq_zero x ⟨n + 1, hxn⟩`.
+-/
 theorem trace_mul_eq_zero_imp {F A : Type} [Field F] [CharZero F] [CommRing A] [Algebra F A]
     [Module.Finite F A] [IsReduced A] (x : A)
     (h : ∀ z : A, (Algebra.trace F A : A → F) (x * z) = (0 : F)) : x = 0 := by
@@ -39,6 +52,9 @@ theorem trace_mul_eq_zero_imp {F A : Type} [Field F] [CharZero F] [CommRing A] [
     rw [h3, mul_assoc, he0, mul_zero]
   exact IsReduced.eq_zero x ⟨n + 1, hxn⟩
 
+/- English proof (translation)
+The claim follows from `@trace_mul_eq_zero_imp`.
+-/
 example : ∀ {F A : Type} [inst : Field F] [CharZero F] [inst_2 : CommRing A] [inst_3 : Algebra F A] [Module.Finite F A] [IsReduced A] (x : A), (∀ (z : A), (Algebra.trace F A : A → F) (x * z) = (0 : F)) → x = (0 : A) :=
   @trace_mul_eq_zero_imp
 

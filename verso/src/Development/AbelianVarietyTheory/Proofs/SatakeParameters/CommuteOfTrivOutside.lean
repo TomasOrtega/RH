@@ -25,14 +25,25 @@ def Kv (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ)
 
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_Gv {v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))} {x : GAf L n} :
     x ∈ Gv L n v ↔ TrivOutside {v} x := Iff.rfl
 
+/- English proof (translation)
+Introduce `u _`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem trivOutside_one (T : Set (HeightOneSpectrum (𝓞 (maximalRealSubfield L)))) :
     TrivOutside T (1 : GAf L n) := by
   intro u _
   exact Matrix.map_one _ (map_zero _) (map_one _)
 
+/- English proof (translation)
+Use `show x * y = y * x`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(((x * y : GAf L n) : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) = (((y * x : GAf L n) : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L))`. Apply `GlobalTheory.SplitAdelic.mat_ext` to reduce the goal to its premises.
+
+Introduce `u`. Rewrite using `[GlobalTheory.SplitAdelic.mul_coe, GlobalTheory.SplitAdelic.mul_coe, Matrix.map_mul, Matrix.map_mul]`. Take `rfl | hu` from `eq_or_ne u v`. Rewrite using `[hy _ (by simp), mul_one, one_mul]`. Rewrite using `[hx u hu, mul_one, one_mul]`.
+-/
 theorem commute_of_trivOutside (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (x y : GAf L n)
     (hx : TrivOutside {v} x) (hy : TrivOutside {v}ᶜ y) : Commute x y := by
   show x * y = y * x
@@ -46,6 +57,11 @@ theorem commute_of_trivOutside (v : HeightOneSpectrum (𝓞 (maximalRealSubfield
   · rw [hy _ (by simp), mul_one, one_mul]
   · rw [hx u hu, mul_one, one_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Use `show heckeFunI L n U Dv h (NG.rt L n b φ) g = heckeFunI L n U Dv h φ (g * b)`. Unfold `heckeFunI`. Use `finsum_congr fun c => ?_` and prove the remaining obligations. Use `split_ifs with hc`.
+
+Use `show _ • φ (g * hc.choose * b) = _ • φ (g * b * hc.choose)`. Rewrite using `[mul_assoc, mul_assoc, (commute_of_trivOutside v _ _ hc.choose_spec.2 hb).eq]`. Both sides reduce to the same expression.
+-/
 theorem heckeFunI_rt {W : Type} [AddCommGroup W] [Module ℂ W] (U : Subgroup (GAf L n))
     {v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))} {w : HeightOneSpectrum (𝓞 L)}
     (Dv : InertDatum L n v w) (h : Formalism.UG.GU Dv.σw n → ℂ) (φ : GAf L n → W) (b : GAf L n)

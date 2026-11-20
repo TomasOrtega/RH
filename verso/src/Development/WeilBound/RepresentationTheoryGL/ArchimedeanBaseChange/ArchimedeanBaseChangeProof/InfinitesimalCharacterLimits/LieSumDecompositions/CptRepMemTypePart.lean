@@ -15,11 +15,17 @@ section Hilb
 
 variable {W : Submodule ℂ (Sm E N)} (h : ∀ φ ∈ W, MemL2Quotient (latticeGL E N) (Measure.haar : Measure (GA E N)) φ.1)
 
+/- English proof (translation)
+Rewrite using `[cls_mk h hx, cls_mk h hy]`. Conclude with `MemL2Quotient.inner_toL2_eq_theta_pairing (h y hy) (h x hx)`.
+-/
 theorem inner_cls_eq_pr {x y : Sm E N} (hx : x ∈ W) (hy : y ∈ W) :
     inner ℂ (cls h x) (cls h y) = pr y.1 x.1 := by
   rw [cls_mk h hx, cls_mk h hy]
   exact MemL2Quotient.inner_toL2_eq_theta_pairing (h y hy) (h x hx)
 
+/- English proof (translation)
+Establish `hm : a - b ∈ S` using `S.sub_mem ha hb`. Establish `h0 : inner ℂ (cls h (a - b)) (cls h (a - b)) = 0`. Rewrite using `[cls_sub h (hS ha) (hS hb), inner_sub_right, ← cls_sub h (hS ha) (hS hb), e _ hm, sub_self]`. Conclude with `sub_eq_zero.1 (hinj _ (hS hm) (inner_self_eq_zero.1 h0))`.
+-/
 theorem rep_unique (hinj : ∀ x ∈ W, cls h x = 0 → x = 0) {S : Submodule ℂ (Sm E N)} (hS : S ≤ W) {a b : Sm E N}
     (ha : a ∈ S) (hb : b ∈ S) (e : ∀ u ∈ S, inner ℂ (cls h u) (cls h a) = inner ℂ (cls h u) (cls h b)) : a = b := by
   have hm : a - b ∈ S := S.sub_mem ha hb
@@ -27,6 +33,19 @@ theorem rep_unique (hinj : ∀ x ∈ W, cls h x = 0 → x = 0) {S : Submodule �
     rw [cls_sub h (hS ha) (hS hb), inner_sub_right, ← cls_sub h (hS ha) (hS hb), e _ hm, sub_self]
   exact sub_eq_zero.1 (hinj _ (hS hm) (inner_self_eq_zero.1 h0))
 
+/- English proof (translation)
+Set `T : S →ₗ[ℂ] L2 (latticeGL E N) (Measure.haar : Measure (GA E N))` to `(toL2ₗ _ W h).comp (Submodule.inclusion hS)`. Establish `hT : Function.Injective T` using `(injective_iff_map_eq_zero _).2 fun x e => by`. Establish `e' : cls h x.1 = 0` using `by rw [cls_mk h (hS x.2)]; exact e`. Conclude with `Subtype.ext (hinj _ (hS x.2) e')`. Establish `hTc : ∀ x : S, T x = cls h x.1` using `fun x => (cls_mk h (hS x.2)).symm`.
+
+Set `e` to `LinearEquiv.ofInjective T hT`. Establish `: FiniteDimensional ℂ (LinearMap.range T)` using `LinearEquiv.finiteDimensional e`. Establish `: CompleteSpace (LinearMap.range T)` using `FiniteDimensional.complete ℂ _`. Set `g : LinearMap.range T →ₗ[ℂ] ℂ` to `{ toFun := fun m => conj (f (e.symm m).1) map_add' := fun m m' => by`. Rewrite using `[map_add, Submodule.coe_add, hadd _ (e.symm m).2 _ (e.symm m').2, map_add]`.
+
+Use the proof step `map_smul' := fun c m => by`. Rewrite using `[map_smul, Submodule.coe_smul, hsmul c _ (e.symm m).2, map_mul, Complex.conj_conj]`. Use `rfl }`. Use `set t := (InnerProductSpace.toDual ℂ (LinearMap.range T)).symm (LinearMap.toContinuousLinearMap g) with ht`. Use `⟨(e.symm t).1, (e.symm t).2, fun u hu => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : cls h (e.symm t).1 = (t : L2 (latticeGL E N) (Measure.haar : Measure (GA E N)))`. Rewrite using `[← hTc]`. Conclude with `congrArg Subtype.val (e.apply_symm_apply t)`. Establish `h2 : e.symm ⟨cls h u, ⟨u, hu⟩, hTc ⟨u, hu⟩⟩ = ⟨u, hu⟩`. Rewrite using `[LinearEquiv.symm_apply_eq]`.
+
+Conclude with `Subtype.ext (hTc ⟨u, hu⟩).symm`. Establish `h3` using `InnerProductSpace.toDual_symm_apply (𝕜 := ℂ) (E := LinearMap.range T) (x := (⟨cls h u, ⟨u, hu⟩, hTc ⟨u, hu⟩⟩ : LinearMap.range T)) (y := LinearMap.toContinuousLinearMap g)`. Rewrite `h3` using `[← ht]`. Express the relevant statement in the definitionally equal form `inner ℂ (t : L2 (latticeGL E N) (Measure.haar : Measure (GA E N))) (cls h u) = conj (f (e.symm _).1) at h3`. Rewrite `h3` using `[h2]`.
+
+Rewrite using `[h1, ← inner_conj_symm, h3, Complex.conj_conj]`.
+-/
 theorem exists_rep (hinj : ∀ x ∈ W, cls h x = 0 → x = 0) (S : Submodule ℂ (Sm E N)) [FiniteDimensional ℂ S]
     (hS : S ≤ W) (f : Sm E N → ℂ) (hadd : ∀ x ∈ S, ∀ y ∈ S, f (x + y) = f x + f y)
     (hsmul : ∀ (c : ℂ), ∀ x ∈ S, f (c • x) = conj c * f x) :
@@ -64,6 +83,11 @@ theorem exists_rep (hinj : ∀ x ∈ W, cls h x = 0 → x = 0) (S : Submodule �
 
 end Hilb
 
+/- English proof (translation)
+Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f hf`. Take `⟨ℓ, w, rfl⟩` from `hf`. Use `Submodule.subset_span ⟨ℓ, ρ k₀ w, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`.
+
+Use `show ℓ (ρ (k * k₀) w) = _`. Rewrite using `[map_mul, Module.End.mul_apply]`. Consider the case `zero => exact zero_mem _`. Consider the case `add f g _ _ hf hg => exact add_mem hf hg`. Consider the case `smul c f _ hf => exact Submodule.smul_mem _ c hf`.
+-/
 theorem coeffSpan_rt {K Y : Type} [Group K] [AddCommGroup Y] [Module ℂ Y] (ρ : Representation ℂ K Y)
     {f : K → ℂ} (hf : f ∈ GlobalTheory.Published.AutFin.coeffSpan ρ) (k₀ : K) :
     (fun k => f (k * k₀)) ∈ GlobalTheory.Published.AutFin.coeffSpan ρ := by
@@ -78,6 +102,11 @@ theorem coeffSpan_rt {K Y : Type} [Group K] [AddCommGroup Y] [Module ℂ Y] (ρ 
   | add f g _ _ hf hg => exact add_mem hf hg
   | smul c f _ hf => exact Submodule.smul_mem _ c hf
 
+/- English proof (translation)
+Use `⟨fun l hl => by rw [finRep_cptRep, hf.1 l hl], fun g => ?_⟩` and prove the remaining obligations. Establish `e : (fun k' : Kinf E N => (cptRep E N k' (cptRep E N k f)).1 g) = fun k' => (fun k'' : Kinf E N => (cptRep E N k'' f).1 g) (k' * k)`. Use function extensionality and compare the values at `k'`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Rewrite using `[e]`.
+
+Conclude with `coeffSpan_rt ρ (hf.2 g) k`.
+-/
 theorem cptRep_mem_typePart {L : Subgroup (GL (Fin N) (Af E))} {Y : Type} [AddCommGroup Y] [Module ℂ Y]
     {ρ : Representation ℂ (Kinf E N) Y} {f : Sm E N} (hf : f ∈ typePart L ρ) (k : Kinf E N) :
     cptRep E N k f ∈ typePart L ρ := by
@@ -94,6 +123,9 @@ section Rep
 variable [(Measure.haar : Measure (GA E N)).IsMulRightInvariant] {W : Submodule ℂ (Sm E N)}
   (h : ∀ φ ∈ W, MemL2Quotient (latticeGL E N) (Measure.haar : Measure (GA E N)) φ.1)
 
+/- English proof (translation)
+Introduce `s hs`. Establish `e1 : pr (rt E N g χ).1 s.1 = pr χ.1 (rt E N g⁻¹ s).1` using `h2 E N g χ.1 s.1 hχ (hSl s hs)`. Rewrite using `[e1, hrep _ (hS' s hs)]`. Establish `e2` using `PrSt.inner_rt h hg hg' hp (hSW hs)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem rep_rt (h2 : PairRt) {g : GA E N} (hg : ∀ φ ∈ W, rt E N g φ ∈ W) (hg' : ∀ φ ∈ W, rt E N g⁻¹ φ ∈ W)
     {S : Submodule ℂ (Sm E N)} (hSW : S ≤ W) (hS' : ∀ s ∈ S, rt E N g⁻¹ s ∈ S) {χ : Sm E N}
     (hχ : ∀ γ ∈ latticeGL E N, ∀ y, χ.1 (γ * y) = χ.1 y)
@@ -109,6 +141,29 @@ theorem rep_rt (h2 : PairRt) {g : GA E N} (hg : ∀ φ ∈ W, rt E N g φ ∈ W)
     _ = conj (inner ℂ (cls h (rt E N g p)) (cls h s)) := by rw [e2]
     _ = inner ℂ (cls h s) (cls h (rt E N g p)) := inner_conj_symm _ _
 
+/- English proof (translation)
+Establish `hSl : ∀ s ∈ S, ∀ γ ∈ latticeGL E N, ∀ y, s.1 (γ * y) = s.1 y` using `fun s hs => (hWQ s (hSW hs)).2.1`. Establish `hex : ∀ χ' ∈ U, ∃ a ∈ S, ∀ s ∈ S, pr χ'.1 s.1 = inner ℂ (cls h s) (cls h a)` using `fun χ' hχ' => exists_rep h hinj S hSW (fun s => pr χ'.1 s.1) (fun x hx y hy => ((h1 E N).2 χ'.1 x.1 y.1 1 (hUP χ' hχ') (hWQ x (hSW hx)) (hWQ y (hSW hy))).1) (fun c x hx => ((h1 E N).2 χ'.1 x.1 x.1 c (hUP χ' hχ') (hWQ x (hSW hx)) (hWQ x (hSW hx))).2)`. Use `⟨fun l hl => ?_, fun x => ?_⟩` and prove the remaining obligations. Establish `hg : ∀ φ ∈ W, rt E N (finGL E N l) φ ∈ W` using `fun φ hφ => hW (.fin l) φ hφ`. Establish `hg' : ∀ φ ∈ W, rt E N (finGL E N l)⁻¹ φ ∈ W` using `fun φ hφ => by`.
+
+Rewrite using `[← map_inv]`. Conclude with `hW (.fin l⁻¹) φ hφ`. Establish `hS' : ∀ s ∈ S, rt E N (finGL E N l)⁻¹ s ∈ S` using `fun s hs => by`. Rewrite using `[← map_inv]`. Conclude with `hSL l⁻¹ (L.inv_mem hl) s hs`.
+
+Establish `ht` using `rep_rt h h2 hg hg' hSW hS' (hUP χ hχ).2.1 hSl (hSW hp) hrep`. Use `rep_unique h hinj hSW (hSL l hl p hp) hp fun s hs => ?_` and prove the remaining obligations. Establish `e : rt E N (finGL E N l) χ = χ` using `hχT.1 l hl`. Establish `e2` using `ht s hs`. Rewrite `e2` using `[e]`.
+
+Rewrite using `[← hrep s hs, e2]`. Both sides reduce to the same expression. Set `O` to `orbSpan χ`. Establish `hOU : O ≤ U` using `Submodule.span_le.2 (by rintro _ ⟨k, rfl⟩; exact hU (.cpt k) χ hχ)`. Use `choose! Q hQS hQ using hex`.
+
+Set `Φ : O →ₗ[ℂ] Sm E N` to `{ toFun := fun χ' => Q χ'.1 map_add' := fun a b => by`. Use `rep_unique h hinj hSW (hQS _ (hOU (a + b).2)) (S.add_mem (hQS _ (hOU a.2)) (hQS _ (hOU b.2))) fun s hs => ?_` and prove the remaining obligations. Rewrite using `[← hQ (a + b : O).1 (hOU (a + b).2) s hs, cls_add h (hSW (hQS _ (hOU a.2))) (hSW (hQS _ (hOU b.2))), inner_add_right, ← hQ _ (hOU a.2) s hs, ← hQ _ (hOU b.2) s hs]`. Conclude with `((h1 E N).1 a.1.1 b.1.1 s.1 1 (hUP _ (hOU a.2)) (hUP _ (hOU b.2)) (hWQ s (hSW hs))).1`. Use the proof step `map_smul' := fun c a => by`.
+
+Use `rep_unique h hinj hSW (hQS _ (hOU (c • a).2)) (S.smul_mem c (hQS _ (hOU a.2))) fun s hs => ?_` and prove the remaining obligations. Rewrite using `[← hQ (c • a : O).1 (hOU (c • a).2) s hs, RingHom.id_apply, cls_smul h c (hSW (hQS _ (hOU a.2))), inner_smul_right, ← hQ _ (hOU a.2) s hs]`. Conclude with `((h1 E N).1 a.1.1 a.1.1 s.1 c (hUP _ (hOU a.2)) (hUP _ (hOU a.2)) (hWQ s (hSW hs))).2 }`. Establish `hΦ : ∀ k, cptRep E N k p = Φ ⟨cptRep E N k χ, Submodule.subset_span ⟨k, rfl⟩⟩` using `fun k => by`. Establish `hg : ∀ φ ∈ W, rt E N (infGL E N (Unitary.toUnits k)) φ ∈ W` using `fun φ hφ => hW (.cpt k) φ hφ`.
+
+Establish `hg' : ∀ φ ∈ W, rt E N (infGL E N (Unitary.toUnits k))⁻¹ φ ∈ W` using `fun φ hφ => by`. Rewrite using `[← map_inv, ← map_inv]`. Conclude with `hW (.cpt k⁻¹) φ hφ`. Establish `hS' : ∀ s ∈ S, rt E N (infGL E N (Unitary.toUnits k))⁻¹ s ∈ S` using `fun s hs => by`. Rewrite using `[← map_inv, ← map_inv]`.
+
+Conclude with `hSK k⁻¹ s hs`. Establish `ht` using `rep_rt h h2 hg hg' hSW hS' (hUP χ hχ).2.1 hSl (hSW hp) hrep`. Establish `hkU : cptRep E N k χ ∈ U` using `hU (.cpt k) χ hχ`. Use `rep_unique h hinj hSW (hSK k p hp) (hQS _ hkU) fun s hs => ?_` and prove the remaining obligations. Use `show _ = inner ℂ (cls h s) (cls h (Q (cptRep E N k χ)))`.
+
+Rewrite using `[← hQ _ hkU s hs]`. Conclude with `(ht s hs).symm`. Set `Λ : Module.Dual ℂ O →ₗ[ℂ] (Kinf E N → ℂ)` to `{ toFun := fun ℓ k => ℓ ⟨cptRep E N k χ, Submodule.subset_span ⟨k, rfl⟩⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Set `ev : GA E N → Module.Dual ℂ O` to `fun y => (LinearMap.proj y).comp ((Sm E N).subtype.comp O.subtype)`. Establish `htop` using `span_eval_eq_top ev fun w hw => Subtype.ext (Subtype.ext (funext hw))`.
+
+Establish `hle : Submodule.span ℂ (Set.range ev) ≤ (GlobalTheory.Published.AutFin.coeffSpan ρ).comap Λ` using `Submodule.span_le.2 (by rintro _ ⟨y, rfl⟩; exact hχT.2 y)`. Set `ℓ : Module.Dual ℂ O` to `(LinearMap.proj x).comp ((Sm E N).subtype.comp Φ)`. Establish `hℓ : Λ ℓ ∈ GlobalTheory.Published.AutFin.coeffSpan ρ` using `hle (htop ▸ Submodule.mem_top)`. Use `hℓ using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`.
+
+Rewrite using `[hΦ k]`. Both sides reduce to the same expression.
+-/
 theorem rep_mem_typePart (h1 : PairLin) (h2 : PairRt) (hinj : ∀ x ∈ W, cls h x = 0 → x = 0) (hW : IsStable W)
     (hWQ : ∀ s ∈ W, GrowQ s.1) {U : Submodule ℂ (Sm E N)} (hU : IsStable U) (hUP : ∀ χ ∈ U, GrowP χ.1)
     {χ : Sm E N} (hχ : χ ∈ U) [FiniteDimensional ℂ (orbSpan χ)] {L : Subgroup (GL (Fin N) (Af E))} {Y : Type}
@@ -178,6 +233,21 @@ theorem rep_mem_typePart (h1 : PairLin) (h2 : PairRt) (hinj : ∀ x ∈ W, cls h
     rw [hΦ k]
     rfl
 
+/- English proof (translation)
+Take `⟨L, hLo, hLc, hχT⟩` from `exists_type (hUA χ hχ)`. Establish `: FiniteDimensional ℂ (orbSpan χ)` using `(hUA χ hχ).kfin`. Establish `hρ` using `isContRep_sub (orbSpan χ) (orbSpan_stable χ)`. Use `set ρ := sub (cptRep E N) (orbSpan χ) (orbSpan_stable χ)`. Use `set F : Submodule ℂ (Sm E N) := V ⊓ typePart L ρ with hFdef`.
+
+Establish `: FiniteDimensional ℂ F` using `hVfd L hLo _ ρ hρ`. Establish `hFW : F ≤ W` using `inf_le_left.trans hVW`. Establish `hadd : ∀ (S : Submodule ℂ (Sm E N)), S ≤ W → ∀ x ∈ S, ∀ y ∈ S, pr χ.1 (x + y).1 = pr χ.1 x.1 + pr χ.1 y.1` using `fun S hS x hx y hy => ((h1 E N).2 χ.1 x.1 y.1 1 (hUP χ hχ) (hWQ x (hS hx)) (hWQ y (hS hy))).1`. Establish `hsm : ∀ (S : Submodule ℂ (Sm E N)), S ≤ W → ∀ (c : ℂ), ∀ x ∈ S, pr χ.1 (c • x).1 = conj c * pr χ.1 x.1` using `fun S hS c x hx => ((h1 E N).2 χ.1 x.1 x.1 c (hUP χ hχ) (hWQ x (hS hx)) (hWQ x (hS hx))).2`. Take `⟨a, haF, ha⟩` from `exists_rep h hinj F hFW (fun s => pr χ.1 s.1) (hadd F hFW) (hsm F hFW)`.
+
+Use `⟨a, haF.1, fun u hu => ?_⟩` and prove the remaining obligations. Establish `: FiniteDimensional ℂ (orbitSpan L u)` using `orbitSpan_finiteDimensional L hLc u (hWA u (hVW hu))`. Use `set S' : Submodule ℂ (Sm E N) := orbitSpan L u ⊔ F with hS'def`. Establish `hS'V : S' ≤ V` using `sup_le (orbitSpan_le hV L hu) inf_le_left`. Establish `hS'W : S' ≤ W` using `hS'V.trans hVW`.
+
+Establish `hSL : ∀ l ∈ L, ∀ s ∈ S', finRep E N l s ∈ S'` using `fun l hl s hs => by`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hs`. Rewrite using `[map_add]`. Use `add_mem (Submodule.mem_sup_left (finRep_mem_orbitSpan hl hy)) (Submodule.mem_sup_right ?_)` and prove the remaining obligations. Rewrite using `[hz.2.1 l hl]`.
+
+Conclude with `hz`. Establish `hSK : ∀ k, ∀ s ∈ S', cptRep E N k s ∈ S'` using `fun k s hs => by`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hs`. Rewrite using `[map_add]`. Conclude with `add_mem (Submodule.mem_sup_left (cptRep_mem_orbitSpan k hy)) (Submodule.mem_sup_right ⟨hV (.cpt k) z hz.1, cptRep_mem_typePart hz.2 k⟩)`.
+
+Take `⟨p, hpS, hp⟩` from `exists_rep h hinj S' hS'W (fun s => pr χ.1 s.1) (hadd S' hS'W) (hsm S' hS'W)`. Establish `hpT` using `rep_mem_typePart h h1 h2 hinj hW hWQ hU hUP hχ hχT S' hS'W hSL hSK hpS hp`. Establish `hpF : p ∈ F` using `⟨hS'V hpS, hpT⟩`. Establish `hpa : p = a` using `rep_unique h hinj hFW hpF haF fun s hs => by`. Rewrite using `[← hp s (Submodule.mem_sup_right hs), ← ha s hs]`.
+
+Rewrite using `[hp u (Submodule.mem_sup_left (mem_orbitSpan_self L u)), hpa]`.
+-/
 theorem exists_repV (h1 : PairLin) (h2 : PairRt) (hinj : ∀ x ∈ W, cls h x = 0 → x = 0) (hW : IsStable W)
     (hWA : ∀ x ∈ W, IsAutForm x) (hWQ : ∀ s ∈ W, GrowQ s.1) {V : Submodule ℂ (Sm E N)} (hV : IsStable V)
     (hVW : V ≤ W)
@@ -230,6 +300,35 @@ namespace PositivityTheory.Rg.BcB.SpectralAccumulation.Cz.Leaf2Aux
 
 open Alg in
 
+/- English proof (translation)
+Introduce `E _ _ _ N U hU hUA hUP φ hφU hφA hφ0`. Establish `: (Measure.haar : Measure (GA E N)).IsMulRightInvariant` using `GlobalTheory.CovolGL.isMulRightInvariant E N _`. Establish `hF` using `PositivityTheory.Rg.HF.GL.automorphicFormsFiniteGL`. Establish `hW : IsStable (A2 E N)` using `PrSt.isStable_square_integrable_forms hF`. Establish `hA : ∀ x ∈ A2 E N, IsAutForm x` using `fun x hx => (PrSt.mem_square_integrable_forms hx).1`.
+
+Establish `h : ∀ x ∈ A2 E N, MemL2Quotient (latticeGL E N) (Measure.haar : Measure (GA E N)) x.1` using `fun x hx => memL2_of_isAutForm (PrSt.mem_square_integrable_forms hx).1 (PrSt.mem_square_integrable_forms hx).2`. Establish `hF2` using `toL2ₗ_injective h fun x hx => ContAut.continuous_of_isOpen_stab E N x (hA x hx).level`. Establish `hinj : ∀ x ∈ A2 E N, cls h x = 0 → x = 0` using `fun x hx e => by`. Rewrite `e` using `[cls_mk h hx]`. Conclude with `congrArg Subtype.val (hF2 (e.trans (map_zero _).symm))`.
+
+Establish `hadj` using `fun o => PrSt.exists_adj h hW hA o`. Take `⟨V, hVst, hVA, hV0, hirr, v, hvV, hvφ⟩` from `PrIrr.exists_irr h hW hA hinj hadj hφA hφ0`. Establish `hVW : V ≤ A2 E N` using `hVA.trans (admissible_span_le _ φ)`. Establish `hWQ : ∀ s ∈ A2 E N, GrowQ s.1` using `fun s hs => h4 E N s (PrSt.mem_square_integrable_forms hs).1 (PrSt.mem_square_integrable_forms hs).2`. Establish `hVfd : ∀ (L : Subgroup (GL (Fin N) (Af E))), IsOpen (L : Set (GL (Fin N) (Af E))) → ∀ (Y : Type) [AddCommGroup Y] [Module ℂ Y] [FiniteDimensional ℂ Y] (ρ : Representation ℂ (Kinf E N) Y), GlobalTheory.Published.AutFin.IsContRep ρ → FiniteDimensional ℂ (V ⊓ typePart L ρ : Submodul …`.
+
+Introduce `L hLo Y _ _ _ ρ hρ`. Use `finiteDimensional_admissible_isotypic hA (hA φ hφA) hLo ρ hρ` as an intermediate fact. Conclude with `Submodule.finiteDimensional_of_le (inf_le_inf_right _ hVA)`. Establish `hrep : ∀ χ ∈ U, ∃ a ∈ V, ∀ u ∈ V, pr χ.1 u.1 = inner ℂ (cls h u) (cls h a)` using `fun χ hχ => exists_repV h h1 h2 hinj hW hA hWQ hVst hVW hVfd hU hUA hUP hχ`. Use `choose! P hPV hP using hrep`.
+
+Set `pU : U →ₗ[ℂ] Sm E N` to `{ toFun := fun χ => P χ.1 map_add' := fun x y => by`. Use `rep_unique h hinj hVW (hPV _ (x + y).2) (V.add_mem (hPV _ x.2) (hPV _ y.2)) fun u hu => ?_` and prove the remaining obligations. Rewrite using `[← hP (x + y : U).1 (x + y).2 u hu, cls_add h (hVW (hPV _ x.2)) (hVW (hPV _ y.2)), inner_add_right, ← hP _ x.2 u hu, ← hP _ y.2 u hu]`. Conclude with `((h1 E N).1 x.1.1 y.1.1 u.1 1 (hUP _ x.2) (hUP _ y.2) (hWQ u (hVW hu))).1`. Use the proof step `map_smul' := fun c x => by`.
+
+Use `rep_unique h hinj hVW (hPV _ (c • x).2) (V.smul_mem c (hPV _ x.2)) fun u hu => ?_` and prove the remaining obligations. Rewrite using `[← hP (c • x : U).1 (c • x).2 u hu, RingHom.id_apply, cls_smul h c (hVW (hPV _ x.2)), inner_smul_right, ← hP _ x.2 u hu]`. Conclude with `((h1 E N).1 x.1.1 x.1.1 u.1 c (hUP _ x.2) (hUP _ x.2) (hWQ u (hVW hu))).2 }`. Take `⟨p, hp⟩` from `LinearMap.exists_extend pU`. Establish `hpU : ∀ χ ∈ U, p χ = P χ` using `fun χ hχ => LinearMap.congr_fun hp ⟨χ, hχ⟩`.
+
+Use `⟨V, p, ⟨fun x hx => hA x (hVW hx), fun x hx => (PrSt.mem_square_integrable_forms (hVW hx)).2, hVst, hV0, hirr⟩, fun χ hχ => by rw [hpU χ hχ]; exact hPV χ hχ, fun o χ hχ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hpU _ (hU o χ hχ), hpU χ hχ]`. Use `rep_unique h hinj hVW (hPV _ (hU o χ hχ)) (hVst o _ (hPV χ hχ)) fun u hu => ?_` and prove the remaining obligations. Rewrite using `[← hP _ (hU o χ hχ) u hu]`. Establish `hχl` using `(hUP χ hχ).2.1`.
+
+Establish `hVl : ∀ s ∈ V, ∀ γ ∈ latticeGL E N, ∀ y, s.1 (γ * y) = s.1 y` using `fun s hs => (hWQ s (hVW hs)).2.1`. Consider the cases of `o with`. Consider the case `fin k`. Establish `hg : ∀ x ∈ A2 E N, rt E N (finGL E N k) x ∈ A2 E N` using `fun x hx => hW (.fin k) x hx`. Establish `hg' : ∀ x ∈ A2 E N, rt E N (finGL E N k)⁻¹ x ∈ A2 E N` using `fun x hx => by`.
+
+Rewrite using `[← map_inv]`. Conclude with `hW (.fin k⁻¹) x hx`. Establish `hS' : ∀ s ∈ V, rt E N (finGL E N k)⁻¹ s ∈ V` using `fun s hs => by`. Rewrite using `[← map_inv]`. Conclude with `hVst (.fin k⁻¹) s hs`.
+
+Conclude with `rep_rt h h2 hg hg' hVW hS' hχl hVl (hVW (hPV χ hχ)) (hP χ hχ) u hu`. Consider the case `cpt k`. Establish `hg : ∀ x ∈ A2 E N, rt E N (infGL E N (Unitary.toUnits k)) x ∈ A2 E N` using `fun x hx => hW (.cpt k) x hx`. Establish `hg' : ∀ x ∈ A2 E N, rt E N (infGL E N (Unitary.toUnits k))⁻¹ x ∈ A2 E N` using `fun x hx => by`. Rewrite using `[← map_inv, ← map_inv]`.
+
+Conclude with `hW (.cpt k⁻¹) x hx`. Establish `hS' : ∀ s ∈ V, rt E N (infGL E N (Unitary.toUnits k))⁻¹ s ∈ V` using `fun s hs => by`. Rewrite using `[← map_inv, ← map_inv]`. Conclude with `hVst (.cpt k⁻¹) s hs`. Conclude with `rep_rt h h2 hg hg' hVW hS' hχl hVl (hVW (hPV χ hχ)) (hP χ hχ) u hu`.
+
+Consider the case `lie X`. Establish `e1` using `h3 E N X χ u (hUP χ hχ) (hUP _ (hU (.lie X) χ hχ)) (hWQ u (hVW hu)) (hWQ _ (hW (.lie X) u (hVW hu)))`. Rewrite using `[e1, hP χ hχ _ (hVst (.lie X) u hu)]`. Establish `e2` using `GlobalTheory.LieSkew.lie_skew E N (Measure.haar : Measure (GA E N)) (A2 E N) h hW hA X ⟨u, hVW hu⟩ ⟨P χ, hVW (hPV χ hχ)⟩`. Rewrite using `[cls_mk h (hW (.lie X) u (hVW hu)), cls_mk h (hVW (hPV χ hχ)), cls_mk h (hVW hu), cls_mk h (hW (.lie X) (P χ) (hVW (hPV χ hχ)))]`.
+
+Rewrite using `[e2, neg_neg]`. Rewrite using `[hpU φ hφU]`. Introduce `e`. Establish `h0` using `hP φ hφU v hvV`. Rewrite `h0` using `[e, show (0 : Sm E N) = (0 : ℂ) • (0 : Sm E N) by simp, cls_smul h 0 (A2 E N).zero_mem, zero_smul, inner_zero_right]`.
+
+Establish `h5` using `inner_cls_eq_pr h (hVW hvV) hφA`. Apply `hvφ` to reduce the goal to its premises. Rewrite using `[← inner_conj_symm, h5, h0, map_zero]`.
+-/
 theorem core_of (h1 : PairLin) (h2 : PairRt) (h3 : PairLie) (h4 : GrowQHolds) : Core := by
   intro E _ _ _ N U hU hUA hUP φ hφU hφA hφ0
   have : (Measure.haar : Measure (GA E N)).IsMulRightInvariant := GlobalTheory.CovolGL.isMulRightInvariant E N _

@@ -6,6 +6,17 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.MemLoc
 
+/- English proof (translation)
+Introduce `l _ n a h`. Take `⟨e, he⟩ : ∃ e : Per.Fl l, IsEps e` from `Model.exists_isEps l`. Take `⟨-, -, -, -, -, hinj, hk⟩` from `thetaP_facts l`. Take `⟨h1, h2⟩` from `GlobalTheory.T.ainf_quot_fontaineXi_pow_torsionFree_separated l e he n`. Establish `h3 : ∀ (j : ℕ) (c : Per.Ainf l), xi e ^ n ∣ ((l : ℕ) : Per.Ainf l) ^ j * c → xi e ^ n ∣ c`.
+
+Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro c hc`. Simplify using `using hc`. Consider the case `succ j ih`.
+
+Introduce `c hc`. Use `h1 c (ih _ ?_)` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← pow_succ]` and apply the resulting hypothesis. Establish `key : ∀ c : Per.Ainf l, algebraMap (Per.Ainf l) (Per.AinfP l) c ∈ Per.kerP l ^ n ↔ xi e ^ n ∣ c`. Introduce `c`.
+
+Rewrite using `[hk e he, Ideal.span_singleton_pow, Ideal.mem_span_singleton, ← map_pow]`. Use `⟨fun ⟨y, hy⟩ => ?_, fun hc => map_dvd _ hc⟩` and prove the remaining obligations. Take `⟨j, d, hd⟩` from `IsLocalization.Away.surj ((l : ℕ) : Per.Ainf l) y`. Use `h3 j c ⟨d, hinj ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, ← hd, hy, map_pow, map_pow]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `(key a).2 (h2 a fun k => ?_)` and prove the remaining obligations. Take `⟨b, hb⟩` from `h k`. Conclude with `⟨b, (key _).1 hb⟩`.
+-/
 theorem image_kerP_pow_separated : ∀ (l : ℕ) [Fact l.Prime] (n : ℕ) (a : Per.Ainf l), (∀ k : ℕ, ∃ b : Per.Ainf l, algebraMap (Per.Ainf l) (Per.AinfP l) (a - ((l : ℕ) : Per.Ainf l) ^ k * b) ∈ Per.kerP l ^ n) → algebraMap (Per.Ainf l) (Per.AinfP l) a ∈ Per.kerP l ^ n := by
   intro l _ n a h
   obtain ⟨e, he⟩ : ∃ e : Per.Fl l, IsEps e := Model.exists_isEps l

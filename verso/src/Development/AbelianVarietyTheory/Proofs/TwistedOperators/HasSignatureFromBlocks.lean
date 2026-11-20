@@ -10,28 +10,47 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.FrameComplement
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, Matrix.conjTranspose_apply]`.
+-/
 private theorem cT_sig_eq_conjTranspose {m k : Type} (M : Matrix m k ℂ) :
     Formalism.UG.cT (starRingEnd ℂ) M = Mᴴ := by
   ext i j
   simp [Formalism.UG.cT, Matrix.conjTranspose_apply]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Matrix.conjTranspose_apply]`.
+-/
 private theorem conjTranspose_submatrix_mul_mul_submatrix {R k l m : Type} [CommRing R] [StarRing R] [Fintype k]
     (B : Matrix k l R) (M : Matrix k k R) (f : m → l) :
     (B.submatrix id f)ᴴ * M * B.submatrix id f = (Bᴴ * M * B).submatrix f f := by
   ext i j
   simp [Matrix.mul_apply, Matrix.conjTranspose_apply]
 
+/- English proof (translation)
+Unfold `Formalism.UG.Jpq`. Rewrite using `[Matrix.det_fromBlocks_zero₂₁]`. Simplify using `[Matrix.det_neg]`.
+-/
 private theorem Jpq_det_ne_zero (p q : ℕ) : (Formalism.UG.Jpq p q).det ≠ 0 := by
   unfold Formalism.UG.Jpq
   rw [Matrix.det_fromBlocks_zero₂₁]
   simp [Matrix.det_neg]
 
+/- English proof (translation)
+Rewrite using `[Matrix.reindex_apply, Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, Matrix.submatrix_id_id]`.
+-/
 private theorem conjTranspose_submatrix_mul_reindex_mul_submatrix {n k : Type} [Fintype n] [Fintype k] (e : n ≃ k)
     (Q : Matrix n k ℂ) (J : Matrix n n ℂ) :
     (Q.submatrix e.symm id)ᴴ * J.reindex e e * Q.submatrix e.symm id = Qᴴ * J * Q := by
   rw [Matrix.reindex_apply, Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv,
     Matrix.submatrix_mul_equiv, Matrix.submatrix_id_id]
 
+/- English proof (translation)
+Establish `hc : Fintype.card n = Fintype.card (Fin p ⊕ Fin q)` using `by simp [hn]`. Take `⟨e⟩ : Nonempty (n ≃ Fin p ⊕ Fin q)` from `⟨Fintype.equivOfCardEq hc⟩`. Establish `hP` using `conjTranspose_submatrix_mul_reindex_mul_submatrix e Q J`. Rewrite `hP` using `[hQ]`. Establish `hdet : (Q.submatrix e.symm id).det ≠ 0`.
+
+Introduce `h0`. Apply `Jpq_det_ne_zero p q` to reduce the goal to its premises. Rewrite using `[← hP, Matrix.det_mul, Matrix.det_mul, h0, mul_zero]`. Establish `hu : IsUnit (Q.submatrix e.symm id)` using `(Matrix.isUnit_iff_isUnit_det _).mpr (isUnit_iff_ne_zero.mpr hdet)`. Use `⟨e, hu.unit, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[IsUnit.unit_spec, cT_sig_eq_conjTranspose]`. Conclude with `hP`.
+-/
 theorem hasSignature_of_frame {n : Type} [Fintype n] [DecidableEq n] {J : Matrix n n ℂ} {p q : ℕ}
     (hn : Fintype.card n = p + q) (Q : Matrix n (Fin p ⊕ Fin q) ℂ) (hQ : Qᴴ * J * Q = Formalism.UG.Jpq p q) :
     Formalism.UG.HasSignature J p q := by
@@ -50,6 +69,9 @@ theorem hasSignature_of_frame {n : Type} [Fintype n] [DecidableEq n] {J : Matrix
   rw [IsUnit.unit_spec, cT_sig_eq_conjTranspose]
   exact hP
 
+/- English proof (translation)
+Take `⟨e, P, hP⟩` from `h`. Use `⟨by simpa using Fintype.card_congr e, (P : Matrix _ _ ℂ).submatrix e id, ?_⟩` and prove the remaining obligations. Rewrite `hP` using `[cT_sig_eq_conjTranspose]`. Rewrite using `[← hP, ← conjTranspose_submatrix_mul_reindex_mul_submatrix e ((P : Matrix _ _ ℂ).submatrix e id) J]`. Simplify using the standard rewrite rules.
+-/
 private theorem card_eq_add_and_exists_conj_eq_Jpq_of_hasSignature {n : Type} [Fintype n] [DecidableEq n] {J : Matrix n n ℂ} {p q : ℕ}
     (h : Formalism.UG.HasSignature J p q) :
     Fintype.card n = p + q ∧ ∃ Q : Matrix n (Fin p ⊕ Fin q) ℂ, Qᴴ * J * Q = Formalism.UG.Jpq p q := by
@@ -59,6 +81,9 @@ private theorem card_eq_add_and_exists_conj_eq_Jpq_of_hasSignature {n : Type} [F
   rw [← hP, ← conjTranspose_submatrix_mul_reindex_mul_submatrix e ((P : Matrix _ _ ℂ).submatrix e id) J]
   simp
 
+/- English proof (translation)
+Use extensionality with `(i|i) (j|j)`. Apply the tactic sequence `by_cases h : i = j <;> simp [Formalism.UG.Jpq, Matrix.diagonal_apply, Matrix.one_apply, h]`. Simplify using `[Formalism.UG.Jpq]`. Simplify using `[Formalism.UG.Jpq]`. Apply the tactic sequence `by_cases h : i = j <;> simp [Formalism.UG.Jpq, Matrix.diagonal_apply, Matrix.one_apply, h]`.
+-/
 private theorem Jpq_eq_diagonal_elim_one_neg_one (p q : ℕ) :
     Formalism.UG.Jpq p q = Matrix.diagonal (Sum.elim (fun _ => (1 : ℂ)) (fun _ => -1)) := by
   ext (i|i) (j|j)
@@ -67,6 +92,13 @@ private theorem Jpq_eq_diagonal_elim_one_neg_one (p q : ℕ) :
   · simp [Formalism.UG.Jpq]
   · by_cases h : i = j <;> simp [Formalism.UG.Jpq, Matrix.diagonal_apply, Matrix.one_apply, h]
 
+/- English proof (translation)
+Take `⟨hn, Q1, hQ1⟩` from `card_eq_add_and_exists_conj_eq_Jpq_of_hasSignature hG`. Take `⟨hm, Q2, hQ2⟩` from `card_eq_add_and_exists_conj_eq_Jpq_of_hasSignature hH`. Take `⟨σ, hσ⟩ : ∃ σ : (Fin p ⊕ Fin q) ⊕ (Fin p' ⊕ Fin q') ≃ Fin (p + p') ⊕ Fin (q + q'), σ = (Equiv.sumSumSumComm _ _ _ _).trans (Equiv.sumCongr finSumFinEquiv finSumFinEquiv)` from `⟨_, rfl⟩`. Apply `hasSignature_of_frame (by rw [Fintype.card_sum, hn, hm]; omega) ((Matrix.fromBlocks Q1 0 0 Q2).submatrix id σ.symm)` to reduce the goal to its premises. Rewrite using `[conjTranspose_submatrix_mul_mul_submatrix, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`.
+
+Simplify using `only [Matrix.conjTranspose_zero, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add, hQ1, hQ2]`. Rewrite using `[Jpq_eq_diagonal_elim_one_neg_one, Jpq_eq_diagonal_elim_one_neg_one, Jpq_eq_diagonal_elim_one_neg_one, Matrix.fromBlocks_diagonal, Matrix.submatrix_diagonal_equiv]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Take `⟨y, rfl⟩` from `σ.surjective x`.
+
+Apply the tactic sequence `rcases y with (a|a)|(a|a) <;> simp [hσ]`.
+-/
 theorem hasSignature_fromBlocks {n m : Type} [Fintype n] [DecidableEq n] [Fintype m] [DecidableEq m]
     {G : Matrix n n ℂ} {H : Matrix m m ℂ} {p q p' q' : ℕ}
     (hG : Formalism.UG.HasSignature G p q) (hH : Formalism.UG.HasSignature H p' q') :
@@ -93,6 +125,15 @@ section
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
+/- English proof (translation)
+Introduce `h0`. Take `⟨c, hc0, hc⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr h0`. Establish `h1 : ∀ i, S.hT (S.frame i) (∑ j, c j • S.frame j) = 0`. Introduce `i`. Establish `h2` using `congrFun hc i`.
+
+Simplify using `only [Matrix.mulVec, dotProduct, Pi.zero_apply, Formalism.BasicNotions.HSpace.gram] at h2`. Rewrite using `[← h2, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, mul_comm]`. Establish `hy : ∀ x, S.hT x (∑ j, c j • S.frame j) = 0`.
+
+Introduce `x`. Rewrite using `[← S.frame.sum_repr x, map_sum S.hT, LinearMap.sum_apply]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ, LinearMap.smul_apply, h1, smul_zero]`. Establish `hy0` using `S.nondeg.2 _ hy`.
+
+Conclude with `hc0 (funext (Fintype.linearIndependent_iff.mp S.frame.linearIndependent c hy0))`.
+-/
 theorem gram_det_ne (S : Formalism.BasicNotions.HSpace E) : S.gram.det ≠ 0 := by
   classical
   intro h0
@@ -112,6 +153,19 @@ theorem gram_det_ne (S : Formalism.BasicNotions.HSpace E) : S.gram.det ≠ 0 := 
   have hy0 := S.nondeg.2 _ hy
   exact hc0 (funext (Fintype.linearIndependent_iff.mp S.frame.linearIndependent c hy0))
 
+/- English proof (translation)
+Set `φ : Y.V →ₗ[E] (Fin X.rank → E)` to `LinearMap.pi fun i => Y.hT (ι (X.frame i))`. Establish `hker : ∀ y ∈ LinearMap.ker φ, ∀ x, Y.hT (ι x) y = 0`. Introduce `y hy x`. Establish `h1 : ∀ i, Y.hT (ι (X.frame i)) y = 0` using `fun i => by`. Use `congrFun (LinearMap.mem_ker.mp hy) i` as an intermediate fact.
+
+Simplify `this` using `[φ]`. Rewrite using `[← X.frame.sum_repr x, map_sum ι, map_sum Y.hT, LinearMap.sum_apply]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_smulₛₗ, LinearMap.smul_apply, h1, smul_zero]`. Establish `hinj : ∀ x, (∀ x', Y.hT (ι x') (ι x) = 0) → x = 0` using `fun x h => X.nondeg.2 x fun x' => by rw [← hι x' x]; exact h x'`.
+
+Establish `hk : c ≤ Module.finrank E (LinearMap.ker φ)`. Establish `h1` using `LinearMap.finrank_range_add_finrank_ker φ`. Establish `h2 : Module.finrank E (LinearMap.range φ) ≤ X.rank`. Simplify using `using Submodule.finrank_le (LinearMap.range φ)`. Rewrite `h1` using `[Y.rank_eq]`.
+
+Use linear arithmetic over natural numbers and integers. Set `bk` to `Module.finBasis E (LinearMap.ker φ)`. Take `⟨b, hbk, hbli⟩ : ∃ b : Fin c → Y.V, (∀ i, b i ∈ LinearMap.ker φ) ∧ LinearIndependent E b` from `⟨fun i => (bk (Fin.castLE hk i) : Y.V), fun i => (bk _).2, (bk.linearIndependent.comp _ (Fin.castLE_injective hk)).map' _ (Submodule.ker_subtype _)⟩`. Establish `hιker : LinearMap.ker ι = ⊥` using `LinearMap.ker_eq_bot'.mpr fun x hx => hinj x fun x' => by rw [hx, map_zero]`. Establish `hv1 : LinearIndependent E (fun a => ι (X.frame a))` using `X.frame.linearIndependent.map' ι hιker`.
+
+Use `⟨b, fun i x => hker _ (hbk i) x, LinearIndependent.sum_type hv1 hbli ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.disjoint_def]`. Introduce `v hv hv'`. Establish `hr : v ∈ LinearMap.range ι` using `(Submodule.span_le.mpr (by rintro _ ⟨a, rfl⟩; exact LinearMap.mem_range_self ι _)) hv`. Establish `hk' : v ∈ LinearMap.ker φ` using `(Submodule.span_le.mpr (by rintro _ ⟨i, rfl⟩; exact hbk i)) hv'`.
+
+Take `⟨x0, rfl⟩` from `hr`. Rewrite using `[hinj x0 fun x' => hker _ hk' x', map_zero]`.
+-/
 theorem exists_basis (X Y : Formalism.BasicNotions.HSpace E) (ι : X.V →ₗ[E] Y.V) (hι : X.IsIsomEmb Y ι) {c : ℕ}
     (hc : Y.rank = X.rank + c) :
     ∃ b : Fin c → Y.V, (∀ i x, Y.hT (ι x) (b i) = 0) ∧
@@ -150,6 +204,13 @@ theorem exists_basis (X Y : Formalism.BasicNotions.HSpace E) (ι : X.V →ₗ[E]
   obtain ⟨x0, rfl⟩ := hr
   rw [hinj x0 fun x' => hker _ hk' x', map_zero]
 
+/- English proof (translation)
+Use `⟨(S.frame.toMatrix w).submatrix id e, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : (S.frame.toMatrix w).submatrix id e * (w.toMatrix S.frame).submatrix e id = 1`. Rewrite using `[Matrix.submatrix_mul_equiv, S.frame.toMatrix_mul_toMatrix_flip w, Matrix.submatrix_id_id]`. Introduce `h0`. Establish `h2` using `congrArg Matrix.det h1`.
+
+Rewrite `h2` using `[Matrix.det_mul, h0, zero_mul, Matrix.det_one]`. Conclude with `zero_ne_one h2`. Establish `hN : (Matrix.of fun a i => S.frame.repr (w i) a) = S.frame.toMatrix w`. Use extensionality with `a i`. Simplify using `[Module.Basis.toMatrix_apply]`.
+
+Rewrite using `[Formalism.BasicNotions.gram_family S w, hN, conjTranspose_submatrix_mul_mul_submatrix]`.
+-/
 private theorem exists_det_ne_zero_gram_basis_eq_conj_gram (S : Formalism.BasicNotions.HSpace E) {κ : Type} [Fintype κ] [DecidableEq κ]
     (w : Module.Basis κ E S.V) (e : Fin S.rank ≃ κ) :
     ∃ P : Matrix (Fin S.rank) (Fin S.rank) E, P.det ≠ 0 ∧
@@ -167,6 +228,13 @@ private theorem exists_det_ne_zero_gram_basis_eq_conj_gram (S : Formalism.BasicN
       simp [Module.Basis.toMatrix_apply]
     rw [Formalism.BasicNotions.gram_family S w, hN, conjTranspose_submatrix_mul_mul_submatrix]
 
+/- English proof (translation)
+Establish `hcard : Fintype.card κ = Y.rank` using `by rw [← Module.finrank_eq_card_basis w, Y.rank_eq]`. Take `⟨P, hP0, hP⟩` from `exists_det_ne_zero_gram_basis_eq_conj_gram Y w (Fintype.equivFinOfCardEq hcard).symm`. Use `⟨(P.det)⁻¹, inv_ne_zero hP0, ?_⟩` and prove the remaining obligations. Establish `hd : (Matrix.of fun i l => Y.hT (w i) (w l)).det = star P.det * Y.gram.det * P.det`. Rewrite using `[← Matrix.det_submatrix_equiv_self (Fintype.equivFinOfCardEq hcard).symm, hP, Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose]`.
+
+Rewrite using `[hd, star_inv₀]`. Establish `hs : star P.det ≠ 0` using `star_ne_zero.mpr hP0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[inv_mul_cancel₀ hs, inv_mul_cancel₀ hP0]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ = (star P.det)⁻¹ * (P.det)⁻¹ * (star P.det * Y.gram.det * P.det) := by ring`.
+-/
 theorem det_gram_basis (Y : Formalism.BasicNotions.HSpace E) {κ : Type} [Fintype κ] [DecidableEq κ] (w : Module.Basis κ E Y.V) :
     ∃ a : E, a ≠ 0 ∧ Y.gram.det = star a * a * (Matrix.of fun i l => Y.hT (w i) (w l)).det := by
   classical
@@ -182,6 +250,15 @@ theorem det_gram_basis (Y : Formalism.BasicNotions.HSpace E) {κ : Type} [Fintyp
         rw [inv_mul_cancel₀ hs, inv_mul_cancel₀ hP0]; ring
     _ = (star P.det)⁻¹ * (P.det)⁻¹ * (star P.det * Y.gram.det * P.det) := by ring
 
+/- English proof (translation)
+Establish `h1 : (1 : Matrix (Fin p) (Fin p) ℂ).IsHermitian` using `Matrix.isHermitian_one`. Establish `h2 : (-1 : Matrix (Fin q) (Fin q) ℂ).IsHermitian` using `Matrix.isHermitian_one.neg`. Establish `hp1 : GlobalTheory.Inertia.posIndex (1 : Matrix (Fin p) (Fin p) ℂ) = p`. Rewrite using `[← Matrix.diagonal_one, GlobalTheory.Inertia.posIndex_diagonal]`. Simplify using the standard rewrite rules.
+
+Establish `hn1 : GlobalTheory.Inertia.negIndex (1 : Matrix (Fin q) (Fin q) ℂ) = 0`. Rewrite using `[← Matrix.diagonal_one, GlobalTheory.Inertia.negIndex_diagonal]`. Simplify using the standard rewrite rules. Establish `hp1' : GlobalTheory.Inertia.posIndex (1 : Matrix (Fin q) (Fin q) ℂ) = q`. Rewrite using `[← Matrix.diagonal_one, GlobalTheory.Inertia.posIndex_diagonal]`.
+
+Simplify using the standard rewrite rules. Establish `hn1' : GlobalTheory.Inertia.negIndex (1 : Matrix (Fin p) (Fin p) ℂ) = 0`. Rewrite using `[← Matrix.diagonal_one, GlobalTheory.Inertia.negIndex_diagonal]`. Simplify using the standard rewrite rules. Unfold `Formalism.UG.Jpq`.
+
+Rewrite using `[GlobalTheory.Inertia.posIndex_fromBlocks h1 h2, GlobalTheory.Inertia.negIndex_fromBlocks h1 h2, GlobalTheory.Inertia.posIndex_neg, GlobalTheory.Inertia.negIndex_neg, hp1, hn1', hn1, hp1']`. Simplify using the standard rewrite rules.
+-/
 private theorem posIndex_Jpq_and_negIndex_Jpq (p q : ℕ) :
     GlobalTheory.Inertia.posIndex (Formalism.UG.Jpq p q) = p ∧ GlobalTheory.Inertia.negIndex (Formalism.UG.Jpq p q) = q := by
   have h1 : (1 : Matrix (Fin p) (Fin p) ℂ).IsHermitian := Matrix.isHermitian_one
@@ -199,6 +276,17 @@ private theorem posIndex_Jpq_and_negIndex_Jpq (p q : ℕ) :
     GlobalTheory.Inertia.posIndex_neg, GlobalTheory.Inertia.negIndex_neg, hp1, hn1', hn1, hp1']
   simp
 
+/- English proof (translation)
+Take `⟨e, P, hP⟩` from `h`. Rewrite `hP` using `[cT_sig_eq_conjTranspose]`. Establish `hR : ((P : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ).map (starRingEnd ℂ)).det ≠ 0`. Establish `h1 : ((P : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ).map (starRingEnd ℂ)).det = starRingEnd ℂ (P : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ).det`. Rewrite using `[RingHom.map_det]`.
+
+Both sides reduce to the same expression. Rewrite using `[h1, map_ne_zero]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).mp P.isUnit).ne_zero`. Establish `hA : ((P : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ).map (starRingEnd ℂ))ᵀ = (P : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)ᴴ`. Use extensionality with `i j`.
+
+Simplify using `[Matrix.conjTranspose_apply]`. Establish `hC : ((P : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ).map (starRingEnd ℂ)).map (starRingEnd ℂ) = (P : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `hK` using `GlobalTheory.Inertia.posIndex_congr (J.reindex e e) hR`.
+
+Establish `hK'` using `GlobalTheory.Inertia.negIndex_congr (J.reindex e e) hR`. Rewrite `hK`, `hK'` using `[hA, hC, hP]`. Establish `hJ : J.reindex e e = J.submatrix e.symm e.symm` using `rfl`. Rewrite `hK` using `[hJ, GlobalTheory.Inertia.posIndex_submatrix_equiv]`. Rewrite `hK'` using `[hJ, GlobalTheory.Inertia.negIndex_submatrix_equiv]`.
+
+Conclude with `⟨hK.symm.trans (posIndex_Jpq_and_negIndex_Jpq p q).1, hK'.symm.trans (posIndex_Jpq_and_negIndex_Jpq p q).2⟩`.
+-/
 private theorem posIndex_negIndex_of_hasSignature {n : Type} [Fintype n] [DecidableEq n] {J : Matrix n n ℂ} {p q : ℕ}
     (h : Formalism.UG.HasSignature J p q) :
     GlobalTheory.Inertia.posIndex J = p ∧ GlobalTheory.Inertia.negIndex J = q := by
@@ -224,6 +312,15 @@ private theorem posIndex_negIndex_of_hasSignature {n : Type} [Fintype n] [Decida
   rw [hJ, GlobalTheory.Inertia.negIndex_submatrix_equiv] at hK'
   exact ⟨hK.symm.trans (posIndex_Jpq_and_negIndex_Jpq p q).1, hK'.symm.trans (posIndex_Jpq_and_negIndex_Jpq p q).2⟩
 
+/- English proof (translation)
+Establish `hpq : p + q = c`. Use `GlobalTheory.Inertia.posIndex_add_negIndex hG hG0` as an intermediate fact. Simplify `this` using `[hp, hq]`. Take `⟨e⟩ : Nonempty (Fin c ≃ Fin p ⊕ Fin q)` from `⟨(finCongr hpq.symm).trans finSumFinEquiv.symm⟩`. Establish `hJh : (Formalism.UG.Jpq p q).IsHermitian`.
+
+Unfold `Formalism.UG.Jpq`. Conclude with `Matrix.IsHermitian.fromBlocks Matrix.isHermitian_one (by simp) Matrix.isHermitian_one.neg`. Establish `hH : ((Formalism.UG.Jpq p q).submatrix e e).IsHermitian` using `hJh.submatrix e`. Establish `hH0 : ((Formalism.UG.Jpq p q).submatrix e e).det ≠ 0`. Rewrite using `[Matrix.det_submatrix_equiv_self]`.
+
+Conclude with `Jpq_det_ne_zero p q`. Establish `hHp : GlobalTheory.Inertia.posIndex G = GlobalTheory.Inertia.posIndex ((Formalism.UG.Jpq p q).submatrix e e)`. Rewrite using `[GlobalTheory.Inertia.posIndex_submatrix_equiv, (posIndex_Jpq_and_negIndex_Jpq p q).1, hp]`. Take `⟨P, hP0, hP⟩` from `(GlobalTheory.Inertia.exists_congr_iff_posIndex_eq hG hG0 hH hH0).mpr hHp`. Apply `hasSignature_of_frame (by simp [hpq]) ((P.map (starRingEnd ℂ)).submatrix id e.symm)` to reduce the goal to its premises.
+
+Rewrite using `[conjTranspose_submatrix_mul_mul_submatrix]`. Establish `hA : (P.map (starRingEnd ℂ))ᴴ = Pᵀ` using `by ext i j; simp [Matrix.conjTranspose_apply]`. Rewrite using `[hA, hP]`. Simplify using the standard rewrite rules.
+-/
 private theorem hasSignature_of_posIndex_of_negIndex {c p q : ℕ} {G : Matrix (Fin c) (Fin c) ℂ} (hG : G.IsHermitian)
     (hG0 : G.det ≠ 0) (hp : GlobalTheory.Inertia.posIndex G = p) (hq : GlobalTheory.Inertia.negIndex G = q) :
     Formalism.UG.HasSignature G p q := by
@@ -246,6 +343,11 @@ private theorem hasSignature_of_posIndex_of_negIndex {c p q : ℕ} {G : Matrix (
   rw [hA, hP]
   simp
 
+/- English proof (translation)
+Use `Matrix.IsHermitian.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.map_apply, Matrix.of_apply]`. Rewrite using `[← starRingEnd_apply, ← hτ]`. Use `congr 1`. Establish `h` using `S.herm.eq (v j) (v i)`.
+
+Rewrite `h` using `[starRingEnd_apply]`. Then use the resulting hypothesis.
+-/
 private theorem isHermitian_map_gram_of_star_compatible (S : Formalism.BasicNotions.HSpace E) (τ : E →+* ℂ)
     (hτ : ∀ a, τ (star a) = starRingEnd ℂ (τ a)) {ι : Type} (v : ι → S.V) :
     ((Matrix.of fun i j => S.hT (v i) (v j)).map τ).IsHermitian := by
@@ -256,6 +358,29 @@ private theorem isHermitian_map_gram_of_star_compatible (S : Formalism.BasicNoti
   have h := S.herm.eq (v j) (v i)
   rwa [starRingEnd_apply] at h
 
+/- English proof (translation)
+Take `⟨b, hbo, hbli⟩` from `exists_basis X Y ι hι hc`. Establish `hbo' : ∀ i x, Y.hT (b i) (ι x) = 0`. Introduce `i x`. Rewrite using `[← Y.herm.eq (ι x) (b i), hbo i x, map_zero]`. Establish `hι' : ∀ x y, Y.hT (ι x) (ι y) = X.hT x y` using `hι`.
+
+Establish `hcard : Fintype.card (Fin X.rank ⊕ Fin c) = Module.finrank E Y.V`. Rewrite using `[Y.rank_eq, hc]`. Simplify using the standard rewrite rules. Take `⟨w, hw⟩ : ∃ w : Module.Basis (Fin X.rank ⊕ Fin c) E Y.V, ⇑w = Sum.elim (fun a => ι (X.frame a)) b` from `⟨_, coe_basisOfLinearIndependentOfCardEqFinrank' _ hbli hcard⟩`. Establish `hGw : (Matrix.of fun i l => Y.hT (w i) (w l)) = Matrix.fromBlocks X.gram 0 0 (Matrix.of fun i l => Y.hT (b i) (b l))`.
+
+Apply the tactic sequence `ext (i|i) (l|l) <;> simp [hw, hι', hbo, hbo', Formalism.BasicNotions.HSpace.gram]`. Establish `hdetY : Y.gram.det ≠ 0` using `gram_det_ne Y`. Take `⟨a, ha, hYa⟩` from `det_gram_basis Y w`. Rewrite `hYa` using `[hGw, Matrix.det_fromBlocks_zero₂₁]`. Establish `hGb : (Matrix.of fun i l => Y.hT (b i) (b l)).det ≠ 0`.
+
+Introduce `h0`. Apply `hdetY` to reduce the goal to its premises. Rewrite using `[hYa, h0, mul_zero, mul_zero]`. Use `⟨b, hbo, hGb, ?_, a, ha, by rw [hYa]; ring⟩` and prove the remaining obligations. Introduce `τ`.
+
+Establish `hXs` using `posIndex_negIndex_of_hasSignature (hX τ)`. Establish `hYs` using `posIndex_negIndex_of_hasSignature (hY τ)`. Establish `hcard' : Fintype.card (Fin Y.rank) = Fintype.card (Fin X.rank ⊕ Fin c)` using `by simp [hc]`. Take `⟨eY⟩ : Nonempty (Fin Y.rank ≃ Fin X.rank ⊕ Fin c)` from `⟨Fintype.equivOfCardEq hcard'⟩`. Take `⟨P, hP0, hP⟩` from `exists_det_ne_zero_gram_basis_eq_conj_gram Y w eY`.
+
+Establish `hA : (Pᴴ).map τ = ((P.map τ).map (starRingEnd ℂ))ᵀ`. Use extensionality with `i j`. Simplify using `[Matrix.conjTranspose_apply, hτ]`. Establish `hC : P.map τ = ((P.map τ).map (starRingEnd ℂ)).map (starRingEnd ℂ)`. Use extensionality with `i j`.
+
+Simplify using the standard rewrite rules. Establish `hR : ((P.map τ).map (starRingEnd ℂ)).det ≠ 0`. Establish `h1 : ((P.map τ).map (starRingEnd ℂ)).det = starRingEnd ℂ (τ P.det)`. Rewrite using `[RingHom.map_det, RingHom.map_det]`. Both sides reduce to the same expression.
+
+Rewrite using `[h1, map_ne_zero, map_ne_zero]`. Conclude with `hP0`. Establish `hK : ((Matrix.of fun i l => Y.hT (w i) (w l)).map τ).submatrix eY eY = ((P.map τ).map (starRingEnd ℂ))ᵀ * Y.gram.map τ * ((P.map τ).map (starRingEnd ℂ)).map (starRingEnd ℂ)`. Rewrite using `[Matrix.submatrix_map, hP, Matrix.map_mul, Matrix.map_mul, hA, ← hC]`. Establish `hpos` using `GlobalTheory.Inertia.posIndex_submatrix_equiv ((Matrix.of fun i l => Y.hT (w i) (w l)).map τ) eY`.
+
+Establish `hneg` using `GlobalTheory.Inertia.negIndex_submatrix_equiv ((Matrix.of fun i l => Y.hT (w i) (w l)).map τ) eY`. Rewrite `hpos` using `[hK, GlobalTheory.Inertia.posIndex_congr _ hR]`. Rewrite `hneg` using `[hK, GlobalTheory.Inertia.negIndex_congr _ hR]`. Establish `hXh : (X.gram.map τ).IsHermitian` using `isHermitian_map_gram_of_star_compatible X τ (hτ τ) X.frame`. Establish `hbh` using `isHermitian_map_gram_of_star_compatible Y τ (hτ τ) b`.
+
+Rewrite `hpos` using `[hGw, Matrix.fromBlocks_map, Matrix.map_zero _ (map_zero τ), Matrix.map_zero _ (map_zero τ), GlobalTheory.Inertia.posIndex_fromBlocks hXh hbh]`. Rewrite `hneg` using `[hGw, Matrix.fromBlocks_map, Matrix.map_zero _ (map_zero τ), Matrix.map_zero _ (map_zero τ), GlobalTheory.Inertia.negIndex_fromBlocks hXh hbh]`. Establish `hb0 : ((Matrix.of fun i l => Y.hT (b i) (b l)).map τ).det ≠ 0`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det, map_ne_zero]`. Conclude with `hGb`.
+
+Use `hasSignature_of_posIndex_of_negIndex hbh hb0 ?_ ?_` and prove the remaining obligations. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_complement (hτ : ∀ (τ : E →+* ℂ) a, τ (star a) = starRingEnd ℂ (τ a))
     (X Y : Formalism.BasicNotions.HSpace E) (ι : X.V →ₗ[E] Y.V) (hι : X.IsIsomEmb Y ι) {c p q : ℕ}
     (hc : Y.rank = X.rank + c) (hX : ∀ τ : E →+* ℂ, Formalism.UG.HasSignature (X.gram.map τ) X.rank 0)
@@ -321,6 +446,21 @@ theorem exists_complement (hτ : ∀ (τ : E →+* ℂ) a, τ (star a) = starRin
 
 end
 
+/- English proof (translation)
+Introduce `D j hj`. Establish `hτ : ∀ (τ : D.host.E →+* ℂ) (a : D.host.E), τ (star a) = starRingEnd ℂ (τ a)`. Use `D.host.isCMField_hostE` as an intermediate fact. Introduce `τ a`. Conclude with `NumberField.IsCMField.complexEmbedding_complexConj D.host.E τ a`.
+
+Establish `hc : (D.sp.Y j).rank = (D.sp.X j).rank + (D.R.m - 1 - j)`. Rewrite using `[D.sp.Y_rank j hj.le, D.sp.X_rank j hj.le]`. Simplify using `only [Formalism.BasicNotions.Ranks.rankY, Formalism.BasicNotions.Ranks.N, Formalism.BasicNotions.Ranks.r]`. Establish `h1 : j * (D.R.t + 1) = j * D.R.t + j` using `by ring`. Establish `h2` using `D.R.two_le_m`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hX : ∀ τ : D.host.E →+* ℂ, Formalism.UG.HasSignature ((D.sp.X j).gram.map τ) (D.sp.X j).rank 0`. Introduce `τ`. Establish `h` using `D.sp.X_sig j τ`. Rewrite `h` using `[GlobalTheory.Mem.Th.X_posDef D j hj.le τ]`.
+
+Conclude with `h`. Establish `hY : ∀ τ : D.host.E →+* ℂ, Formalism.UG.HasSignature ((D.sp.Y j).gram.map τ) ((D.sp.X j).rank + (D.R.m - 1 - j) / 2) ((D.R.m - 1 - j) - (D.R.m - 1 - j) / 2)`. Introduce `τ`. Establish `h` using `D.sp.Y_sig j τ`. Rewrite `h` using `[D.Y_sigval j hj.le τ]`.
+
+Establish `hcY : D.R.rankY j = (D.sp.X j).rank + (D.R.m - 1 - j)`. Rewrite using `[← D.sp.Y_rank j hj.le]`. Conclude with `hc`. Establish `e1 : (Formalism.BasicNotions.sigYD D.R j).1 = (D.sp.X j).rank + (D.R.m - 1 - j) / 2` using `by show D.R.rankY j - (D.R.m - j) / 2 = _`. Rewrite using `[hcY]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `e2 : (Formalism.BasicNotions.sigYD D.R j).2 = (D.R.m - 1 - j) - (D.R.m - 1 - j) / 2` using `by show (D.R.m - j) / 2 = _`. Use linear arithmetic over natural numbers and integers. Rewrite `h` using `[e1, e2]`. Conclude with `h`.
+
+Conclude with `exists_complement hτ (D.sp.X j) (D.sp.Y j) (D.sp.iXY j) (D.sp.iXY_isom j hj) hc hX hY`.
+-/
 theorem exists_complement_XY : ∀ (D : D7) (j : ℕ), j < D.R.m → ∃ b : Fin (D.R.m - 1 - j) → (D.sp.Y j).V, (∀ i x, (D.sp.Y j).hT (D.sp.iXY j x) (b i) = 0) ∧ (Matrix.of fun i l => (D.sp.Y j).hT (b i) (b l)).det ≠ 0 ∧ (∀ τ : D.host.E →+* ℂ, Formalism.UG.HasSignature ((Matrix.of fun i l => (D.sp.Y j).hT (b i) (b l)).map τ) ((D.R.m - 1 - j) / 2) ((D.R.m - 1 - j) - (D.R.m - 1 - j) / 2)) ∧ ∃ a : D.host.E, a ≠ 0 ∧ (D.sp.Y j).gram.det = star a * a * (D.sp.X j).gram.det * (Matrix.of fun i l => (D.sp.Y j).hT (b i) (b l)).det := by
   intro D j hj
   have hτ : ∀ (τ : D.host.E →+* ℂ) (a : D.host.E), τ (star a) = starRingEnd ℂ (τ a) := by

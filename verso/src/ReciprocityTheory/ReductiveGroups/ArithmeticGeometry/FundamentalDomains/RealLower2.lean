@@ -7,6 +7,9 @@ open scoped ComplexConjugate
 
 noncomputable section
 
+/- English proof (translation)
+Establish `h1 : 0 < 1 - ρ` using `by linarith`. Establish `h2 : 0 < 1 + ρ` using `by linarith`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ h1]`. Use polynomial arithmetic with `[mul_nonneg hρ0 (sq_nonneg (α - β)), mul_le_mul_of_nonneg_left hQ h2.le]`.
+-/
 lemma real_upper {ρ α β Q : ℝ} (hρ1 : ρ < 1) (hρ0 : 0 ≤ ρ)
     (hQ : Q * (1 - ρ ^ 2) ≤ (α + ρ * β) ^ 2) :
     2 * Q - (α ^ 2 - β ^ 2) ≤ (1 + ρ) / (1 - ρ) * (α ^ 2 + β ^ 2) := by
@@ -17,6 +20,11 @@ lemma real_upper {ρ α β Q : ℝ} (hρ1 : ρ < 1) (hρ0 : 0 ≤ ρ)
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Establish `h1 : X.lowBlock 0 τ = 1`. Use extensionality with `a b`. Simplify using `[Data.lowBlock, Matrix.one_apply]`. Use `show (mat x τ * X.lowBlock 0 τ : Matrix (Fin r) (Fin r) ℂ) = x τ`.
+
+Rewrite using `[h1, Matrix.mul_one]`. Both sides reduce to the same expression.
+-/
 lemma mj_xZ_zero (x : Frame X.Ψ r) : X.xZ x 0 = x := by
   funext τ
   have h1 : X.lowBlock 0 τ = 1 := by
@@ -26,29 +34,47 @@ lemma mj_xZ_zero (x : Frame X.Ψ r) : X.xZ x 0 = x := by
   rw [h1, Matrix.mul_one]
   rfl
 
+/- English proof (translation)
+Rewrite using `[show p + q = p - ((-1 : ℝ) : ℂ) • q by simp, mjnsq_sub_smul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma nsq_add_fundamental_domains {n : ℕ} (p q : Fin n → ℂ) :
     nsq (p + q) = nsq p + 2 * (mjip p q).re + nsq q := by
   rw [show p + q = p - ((-1 : ℝ) : ℂ) • q by simp, mjnsq_sub_smul]
   ring
 
+/- English proof (translation)
+Simplify using `only [mjip, Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[Complex.mul_re]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma re_mjip_comm {n : ℕ} (p q : Fin n → ℂ) : (mjip q p).re = (mjip p q).re := by
   simp only [mjip, Complex.re_sum]
   refine Finset.sum_congr rfl fun i _ => ?_
   simp [Complex.mul_re]
   ring
 
+/- English proof (translation)
+Simplify using `[mjip, sub_mul, Finset.sum_sub_distrib]`.
+-/
 private lemma mjip_sub_left {n : ℕ} (p q δ : Fin n → ℂ) :
     mjip (p - q) δ = mjip p δ - mjip q δ := by
   simp [mjip, sub_mul, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+The claim follows from `(Complex.re_le_norm _).trans (mjip_norm_le p q)`.
+-/
 private lemma re_mjip_le_sqrt_nsq_mul {n : ℕ} (p q : Fin n → ℂ) :
     (mjip p q).re ≤ Real.sqrt (nsq p) * Real.sqrt (nsq q) :=
   (Complex.re_le_norm _).trans (mjip_norm_le p q)
 
+/- English proof (translation)
+The claim follows from `(neg_le_abs _).trans ((Complex.abs_re_le_norm _).trans (mjip_norm_le p q))`.
+-/
 private lemma neg_re_mjip_le_sqrt_nsq_mul {n : ℕ} (p q : Fin n → ℂ) :
     -(mjip p q).re ≤ Real.sqrt (nsq p) * Real.sqrt (nsq q) :=
   (neg_le_abs _).trans ((Complex.abs_re_le_norm _).trans (mjip_norm_le p q))
 
+/- English proof (translation)
+Rewrite using `[← Real.sqrt_sq (opN_nonneg A), ← Real.sqrt_mul (sq_nonneg _)]`. Conclude with `Real.sqrt_le_sqrt (nsq_mulVec_le_opN A v)`.
+-/
 private lemma sqrt_nsq_mulVec_le_opN_mul {m n : ℕ} (A : Matrix (Fin m) (Fin n) ℂ) (v : Fin n → ℂ) :
     Real.sqrt (nsq (A *ᵥ v)) ≤ Data.opN A * Real.sqrt (nsq v) := by
   rw [← Real.sqrt_sq (opN_nonneg A), ← Real.sqrt_mul (sq_nonneg _)]
@@ -56,6 +82,49 @@ private lemma sqrt_nsq_mulVec_le_opN_mul {m n : ℕ} (A : Matrix (Fin m) (Fin n)
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Take `⟨w, rfl⟩ : ∃ w, v = mat x τ *ᵥ w` from `⟨(mat x τ)⁻¹ *ᵥ v, by`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr ((X.mem_dom_iff x).1 hx τ).1), Matrix.one_mulVec]⟩`. Establish `hx0 : X.xZ x 0 ∈ X.dom` using `by rw [mj_xZ_zero]; exact hx`. Take `⟨γ0, h0maj, h0id⟩` from `mj_coord X ho 0 hx0 τ w`. Rewrite `h0maj` using `[mj_xZ_zero]`.
+
+Establish `hZ0 : Matrix.of ((0 : X.Coord) τ) = 0` using `by ext; rfl`. Establish `hγ0 : γ0 = mjpa X w`. Use function extensionality and compare the values at `d`. Use `h0id (Pi.single d 1)` as an intermediate fact. Simplify using `only [hZ0, Matrix.zero_mulVec, mjip_zero_right, sub_zero, mjip_single] at this`.
+
+Conclude with `this.symm`. Establish `hmx : X.maj x τ (mat x τ *ᵥ w) = nsq (mjpa X w) + nsq (mjpb X w)`. Rewrite using `[h0maj, hZ0, Matrix.zero_mulVec, nsq_zero', hγ0]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨γ, hmaj, hid⟩` from `mj_coord X ho Z hy τ w`.
+
+Rewrite using `[hmx, hmaj]`. Establish `hk0 : 0 ≤ Data.opN (Matrix.of (Z τ))` using `opN_nonneg _`. Establish `hkρ : Data.opN (Matrix.of (Z τ)) ≤ ρ` using `(opN_le_zN X Z τ).trans hZ`. Establish `hs2 : nsq (Matrix.of (Z τ) *ᵥ γ) ≤ Data.opN (Matrix.of (Z τ)) ^ 2 * nsq γ` using `nsq_mulVec_le_opN _ _`. Establish `hS : Real.sqrt (nsq (Matrix.of (Z τ) *ᵥ γ)) ≤ Data.opN (Matrix.of (Z τ)) * Real.sqrt (nsq γ)` using `sqrt_nsq_mulVec_le_opN_mul _ _`.
+
+Establish `hdid : ∀ δ, mjip (mjpa X w - γ) δ = mjip (mjpb X w - Matrix.of (Z τ) *ᵥ γ) (Matrix.of (Z τ) *ᵥ δ)`. Introduce `δ`. Rewrite using `[mjip_sub_left, mjip_sub_left]`. Take the linear combination `hid δ`. Use `set Zm := Matrix.of (Z τ) with hZm`.
+
+Use `set k := Data.opN Zm with hkdef`. Use `set d := mjpa X w - γ with hd`. Use `set t := mjpb X w - Zm *ᵥ γ with ht`. Establish `hG0` using `Real.sqrt_nonneg (nsq γ)`. Establish `hT0` using `Real.sqrt_nonneg (nsq t)`.
+
+Establish `hD0` using `Real.sqrt_nonneg (nsq d)`. Establish `hG2` using `Real.sq_sqrt (nsq_nonneg γ)`. Establish `hT2` using `Real.sq_sqrt (nsq_nonneg t)`. Establish `hD2` using `Real.sq_sqrt (nsq_nonneg d)`. Establish `hDs : Real.sqrt (nsq d) ≤ k * Real.sqrt (nsq t)`.
+
+Establish `h1 : nsq d = (mjip t (Zm *ᵥ d)).re` using `by rw [← hdid, mjip_self, Complex.ofReal_re]`. Establish `h2` using `re_mjip_le_sqrt_nsq_mul t (Zm *ᵥ d)`. Establish `h4 : Real.sqrt (nsq (Zm *ᵥ d)) ≤ k * Real.sqrt (nsq d)` using `sqrt_nsq_mulVec_le_opN_mul Zm d`. Establish `h5 : Real.sqrt (nsq d) ^ 2 ≤ Real.sqrt (nsq t) * (k * Real.sqrt (nsq d))`. Combine the equalities or inequalities in the displayed calculation.
+
+Break down `eq_or_lt_of_le hD0 with h | h` into its components or cases. Rewrite using `[← h]`. Check the signs of the components of the expression. Use the polynomial consequences of the given equalities and inequalities. Establish `hdd : nsq d ≤ k ^ 2 * nsq t`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hAe : nsq (mjpa X w) = nsq γ + 2 * (mjip γ d).re + nsq d`. Rewrite using `[show mjpa X w = γ + d by rw [hd]; abel, nsq_add_fundamental_domains]`. Establish `hBe : nsq (mjpb X w) = nsq (Zm *ᵥ γ) + 2 * (mjip (Zm *ᵥ γ) t).re + nsq t`. Rewrite using `[show mjpb X w = Zm *ᵥ γ + t by rw [ht]; abel, nsq_add_fundamental_domains]`.
+
+Establish `hcross : (mjip γ d).re = (mjip (Zm *ᵥ γ) t).re`. Rewrite using `[re_mjip_comm d γ, hdid γ, re_mjip_comm (Zm *ᵥ γ) t]`. Establish `hs2' : nsq (Zm *ᵥ γ) ≤ k ^ 2 * nsq γ` using `hs2`. Establish `hS' : Real.sqrt (nsq (Zm *ᵥ γ)) ≤ k * Real.sqrt (nsq γ)` using `hS`. Establish `hk1 : k < 1` using `by linarith`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hlow : (1 - k ^ 2) * (nsq γ + nsq t) ≤ 2 * (nsq γ - nsq (Zm *ᵥ γ)) - (nsq (mjpa X w) - nsq (mjpb X w))`. Rewrite using `[hAe, hBe, hcross]`. Use polynomial arithmetic with `[hs2', hdd]`. Establish `r1 : (mjip γ d).re ≤ Real.sqrt (nsq γ) * (k * Real.sqrt (nsq t))` using `(re_mjip_le_sqrt_nsq_mul γ d).trans (mul_le_mul_of_nonneg_left hDs hG0)`.
+
+Establish `r2 : (mjip (Zm *ᵥ γ) t).re ≤ (k * Real.sqrt (nsq γ)) * Real.sqrt (nsq t)` using `(re_mjip_le_sqrt_nsq_mul (Zm *ᵥ γ) t).trans (mul_le_mul_of_nonneg_right hS' hT0)`. Establish `hAB : nsq (mjpa X w) + nsq (mjpb X w) ≤ (1 + k) ^ 2 * (nsq γ + nsq t)`. Rewrite using `[hAe, hBe]`. Use polynomial arithmetic with `[mul_nonneg hk0 (sq_nonneg (Real.sqrt (nsq γ) - Real.sqrt (nsq t)))]`. Establish `hc : (1 - ρ) / (1 + ρ) ≤ (1 - k) / (1 + k)`.
+
+Rewrite using `[div_le_div_iff₀ (by linarith) (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hAB0 : 0 ≤ nsq (mjpa X w) + nsq (mjpb X w)` using `add_nonneg (nsq_nonneg _) (nsq_nonneg _)`. Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := hlow`. Establish `hQid : nsq γ - nsq (Zm *ᵥ γ) = (mjip (mjpa X w) γ).re - (mjip (mjpb X w) (Zm *ᵥ γ)).re`. Use `congrArg Complex.re (hid γ)` as an intermediate fact. Simplify using `only [Complex.sub_re, mjip_self, Complex.ofReal_re] at this`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `r3` using `re_mjip_le_sqrt_nsq_mul (mjpa X w) γ`. Establish `r4` using `neg_re_mjip_le_sqrt_nsq_mul (mjpb X w) (Zm *ᵥ γ)`. Establish `hβ0` using `Real.sqrt_nonneg (nsq (mjpb X w))`. Establish `hα0` using `Real.sqrt_nonneg (nsq (mjpa X w))`.
+
+Establish `r5 : Real.sqrt (nsq (mjpb X w)) * Real.sqrt (nsq (Zm *ᵥ γ)) ≤ Real.sqrt (nsq (mjpb X w)) * (ρ * Real.sqrt (nsq γ))` using `mul_le_mul_of_nonneg_left (hS'.trans (mul_le_mul_of_nonneg_right hkρ hG0)) hβ0`. Establish `hQle : nsq γ - nsq (Zm *ᵥ γ) ≤ (Real.sqrt (nsq (mjpa X w)) + ρ * Real.sqrt (nsq (mjpb X w))) * Real.sqrt (nsq γ)`. Rewrite using `[hQid]`. Combine the linear relations using `[r3, r4, r5]`. Establish `hkk : k ^ 2 ≤ ρ ^ 2` using `pow_le_pow_left₀ hk0 hkρ 2`.
+
+Establish `hQge : (1 - ρ ^ 2) * nsq γ ≤ nsq γ - nsq (Zm *ᵥ γ)`. Combine the linear relations using `[hs2', mul_le_mul_of_nonneg_right hkk (nsq_nonneg γ)]`. Establish `hρ2 : 0 ≤ 1 - ρ ^ 2`. Establish `: ρ ^ 2 ≤ ρ`. Rewrite using `[sq]`.
+
+Conclude with `mul_le_of_le_one_left hρ0.le (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hQ0 : 0 ≤ nsq γ - nsq (Zm *ᵥ γ)` using `le_trans (mul_nonneg hρ2 (nsq_nonneg γ)) hQge`. Establish `hup : (nsq γ - nsq (Zm *ᵥ γ)) * (1 - ρ ^ 2) ≤ (Real.sqrt (nsq (mjpa X w)) + ρ * Real.sqrt (nsq (mjpb X w))) ^ 2` using `by set s := Real.sqrt (nsq (mjpa X w)) + ρ * Real.sqrt (nsq (mjpb X w)) with hs set Q := nsq γ - nsq (Zm *ᵥ γ) with hQ`. Break down `eq_or_lt_of_le hQ0 with hq | hq` into its components or cases.
+
+Rewrite using `[← hq, zero_mul]`. Check the signs of the components of the expression. Establish `hsq : Q ^ 2 ≤ (s * Real.sqrt (nsq γ)) ^ 2` using `pow_le_pow_left₀ hQ0 hQle 2`. Rewrite `hsq` using `[mul_pow, hG2]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hQge (sq_nonneg s), mul_le_mul_of_nonneg_right hsq hρ2]`.
+
+Use `real_upper (ρ := ρ) (α := Real.sqrt (nsq (mjpa X w))) (β := Real.sqrt (nsq (mjpb X w))) (Q := nsq γ - nsq (Zm *ᵥ γ)) (by linarith) hρ0.le hup` as an intermediate fact. Rewrite `this` using `[Real.sq_sqrt (nsq_nonneg _), Real.sq_sqrt (nsq_nonneg _)]`. Then use the resulting hypothesis.
+-/
 theorem mj_bounds {x : Frame X.Ψ r} (hx : x ∈ X.dom) (ho : X.IsOrtho x) {ρ : ℝ} (hρ0 : 0 < ρ)
     (hρ : ρ ≤ 1 / 10) {Z : X.Coord} (hZ : X.zN Z ≤ ρ) (hy : X.xZ x Z ∈ X.dom) (τ : X.Ψ)
     (v : Fin r → ℂ) :

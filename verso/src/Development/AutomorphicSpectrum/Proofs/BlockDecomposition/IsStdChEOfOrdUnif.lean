@@ -14,6 +14,13 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.SphTheta
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ _ E _ _ _ _ _ _ _ _ hfin _ hord χ hχ`. Take `⟨hc, h1, h0⟩` from `hχ`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by omega)`. Use `haveI : Algebra.IsSeparable F E := Algebra.IsAlgebraic.isSeparable_of_perfectField`. Establish `he : ramificationIndex F E = 1`.
+
+Establish `h` using `ord_algebraMap (K := F) (L := E) (unifUnit F : F)`. Rewrite `h` using `[hord, ord_unifUnit]`. Use linear arithmetic over natural numbers and integers. Use `haveI : IsUnramified F E := ⟨he⟩`. Establish `hd : differentExponent F E = 0` using `(differentExponent_eq_zero_iff F E).2 inferInstance`.
+
+Use `⟨continuous_traceChar hc h1, traceChar_ne_one hc h1, ?_⟩` and prove the remaining obligations. Use `addCharConductor_traceChar_of_eq_zero (L := E) hc h1 h0` as an intermediate fact. Rewrite `this` using `[hd]`. Establish `h2 : addCharConductor (traceChar E χ) = 0` using `by simpa using this`. Conclude with `h2`.
+-/
 theorem isStd_chE_of_ord_unif : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] [CharZero F] (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] [MeasurableSpace E] [BorelSpace E] [Algebra F E] [ValuativeExtension F E], Module.finrank F E = 2 → Continuous (algebraMap F E) → GroundTheory.LocalField.ord (algebraMap F E (unifUnit F : F)) = 1 → ∀ χ : AddChar F Circle, Ad3.IsStd χ → Ad3.IsStd (Ad3.K.GL2LocalData.chE E χ) := by
   intro F _ _ _ _ _ _ _ E _ _ _ _ _ _ _ _ hfin _ hord χ hχ
   obtain ⟨hc, h1, h0⟩ := hχ

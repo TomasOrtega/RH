@@ -6,6 +6,29 @@ open scoped TensorProduct ENNReal NNReal Topology
 
 namespace GlobalTheory.CompanionTheory.HaarScale
 
+/- English proof (translation)
+Introduce `F _ _ e he lam hlam t ht`. Use `haveI : BorelSpace (Ainf F) := ⟨rfl⟩`. Establish `hc : Continuous e` using `he.continuous`. Set `h : Ainf F ≃ₜ (InfinitePlace F → ℝ)` to `he.homeomorph e`. Establish `hcs : Continuous e.symm`.
+
+Establish `: (e.symm : (InfinitePlace F → ℝ) → Ainf F) = h.symm`. Use function extensionality and compare the values at `y`. Establish `h1 : e (h.symm y) = y` using `h.apply_symm_apply y`. Conclude with `e.symm_apply_eq.2 h1.symm`. Rewrite using `[this]`.
+
+Conclude with `h.symm.continuous`. Establish `hm : Measurable e` using `hc.measurable`. Establish `hms : Measurable e.symm` using `hcs.measurable`. Establish `hmul : Measurable (fun y : Ainf F => t * y)`. Establish `: (fun y : Ainf F => t * y) = fun y => e.symm (e t * e y)`.
+
+Use function extensionality and compare the values at `y`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `hcs.measurable.comp (hm.const_mul _)`. Take `⟨D, hD⟩ : ∃ D : InfinitePlace F → ℝ, D = e t` from `⟨_, rfl⟩`.
+
+Establish `hDu : IsUnit D` using `hD ▸ ht.map e`. Establish `hD0 : ∀ w, D w ≠ 0` using `fun w => by`. Take `⟨u, hu⟩` from `hDu`. Establish `h1 : D w * (u⁻¹ : (InfinitePlace F → ℝ)ˣ).1 w = 1`. Use `congrFun (u.mul_inv) w` as an intermediate fact.
+
+Rewrite `this` using `[hu]`. Simplify using `using this`. Conclude with `left_ne_zero_of_mul_eq_one h1`. Use `haveI hμ : (lam.map e).IsAddHaarMeasure := AddEquiv.isAddHaarMeasure_map lam e.toAddEquiv hc hcs`. Set `L : (InfinitePlace F → ℝ) →ₗ[ℝ] (InfinitePlace F → ℝ)` to `Matrix.toLin' (Matrix.diagonal D)`.
+
+Establish `hL : ∀ x, L x = D * x` using `fun x => by`. Use function extensionality and compare the values at `w`. Simplify using `[L, Matrix.toLin'_apply, Matrix.mulVec_diagonal]`. Establish `hdet : LinearMap.det L = ∏ w, D w`. Simplify using `[L, LinearMap.det_toLin', Matrix.det_diagonal]`.
+
+Establish `hdet0 : LinearMap.det L ≠ 0`. Rewrite using `[hdet]`. Conclude with `Finset.prod_ne_zero_iff.2 fun w _ => hD0 w`. Establish `hscale` using `Measure.map_linearMap_addHaar_eq_smul_addHaar (μ := lam.map e) hdet0`. Establish `hconst : ENNReal.ofReal |(LinearMap.det L)⁻¹| = (((∏ w, ‖e t w‖₊)⁻¹ : ℝ≥0) : ℝ≥0∞)`.
+
+Establish `: |(LinearMap.det L)⁻¹| = (((∏ w, ‖e t w‖₊)⁻¹ : ℝ≥0) : ℝ)`. Rewrite using `[hdet, abs_inv, Finset.abs_prod]`. Use `push_cast`. Simplify using `[hD]`. Rewrite using `[this, ENNReal.ofReal_coe_nnreal]`.
+
+Establish `key : (lam.map (fun y => t * y)).map e = (∏ w, ‖e t w‖₊)⁻¹ • lam.map e`. Rewrite using `[Measure.map_map hm hmul, ENNReal.smul_def, ← hconst, ← hscale, Measure.map_map L.continuous_of_finiteDimensional.measurable hm]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Simplify using `[hL, hD]`.
+
+Establish `back : ∀ ν : Measure (Ainf F), (ν.map e).map e.symm = ν` using `fun ν => by`. Rewrite using `[Measure.map_map hms hm]`. Establish `: (e.symm ∘ e : Ainf F → Ainf F) = id` using `by funext y; simp`. Rewrite using `[this, Measure.map_id]`. Rewrite using `[← back (lam.map fun y => t * y), key, Measure.map_smul, back]`.
+-/
 theorem unit_mul_map_haar : ∀ (F : Type) [Field F] [NumberField F] (e : Ainf F ≃+* (InfinitePlace F → ℝ)), IsHomeomorph e → ∀ (lam : Measure (Ainf F)), lam.IsAddHaarMeasure → ∀ t : Ainf F, IsUnit t → lam.map (fun y => t * y) = (∏ w, ‖e t w‖₊)⁻¹ • lam := by
   intro F _ _ e he lam hlam t ht
   classical

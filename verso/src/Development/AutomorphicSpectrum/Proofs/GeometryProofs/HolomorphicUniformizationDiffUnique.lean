@@ -13,6 +13,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ggeo.DualFibre
 
+/- English proof (translation)
+Take `⟨r, hr, hz⟩` from `GlobalTheory.ZH.SecProp.exists_point A.hom V.isOpen.isLocallyClosed hV`. Conclude with `⟨Over.homMk r hr, fun z _ => hz z⟩`.
+-/
 theorem exists_complex_point (A : Over (Sp ℂ)) [LocallyOfFiniteType A.hom] (V : A.left.Opens)
     (hV : (V : Set A.left).Nonempty) : ∃ x : 𝟙_ (Over (Sp ℂ)) ⟶ A, ⊤ ≤ x.left ⁻¹ᵁ V := by
   obtain ⟨r, hr, hz⟩ := GlobalTheory.ZH.SecProp.exists_point A.hom V.isOpen.isLocallyClosed hV
@@ -24,16 +27,25 @@ variable {A : Over (Sp ℂ)} [GrpObj A]
 
 def tr (c : 𝟙_ (Over (Sp ℂ)) ⟶ A) : A ⟶ A := (toUnit A ≫ c) * 𝟙 A
 
+/- English proof (translation)
+Rewrite using `[tr, MonObj.comp_mul, Category.comp_id, ← Category.assoc, toUnit_unique (x ≫ toUnit A) (𝟙 _), Category.id_comp]`.
+-/
 theorem comp_tr (x c : 𝟙_ (Over (Sp ℂ)) ⟶ A) : x ≫ tr c = c * x := by
   rw [tr, MonObj.comp_mul, Category.comp_id, ← Category.assoc, toUnit_unique (x ≫ toUnit A) (𝟙 _),
     Category.id_comp]
 
+/- English proof (translation)
+Establish `h : tr c ≫ toUnit A = toUnit A` using `toUnit_unique _ _`. Express the relevant statement in the definitionally equal form `tr c ≫ ((toUnit A ≫ d) * 𝟙 A) = (toUnit A ≫ (d * c)) * 𝟙 A`. Rewrite using `[MonObj.comp_mul, Category.comp_id, ← Category.assoc, h, MonObj.comp_mul, _root_.mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem tr_comp_tr (c d : 𝟙_ (Over (Sp ℂ)) ⟶ A) : tr c ≫ tr d = tr (d * c) := by
   have h : tr c ≫ toUnit A = toUnit A := toUnit_unique _ _
   change tr c ≫ ((toUnit A ≫ d) * 𝟙 A) = (toUnit A ≫ (d * c)) * 𝟙 A
   rw [MonObj.comp_mul, Category.comp_id, ← Category.assoc, h, MonObj.comp_mul, _root_.mul_assoc]
   rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(toUnit A ≫ 1) * 𝟙 A = 𝟙 A`. Simplify using the standard rewrite rules.
+-/
 theorem tr_one : tr (1 : 𝟙_ (Over (Sp ℂ)) ⟶ A) = 𝟙 A := by
   change (toUnit A ≫ 1) * 𝟙 A = 𝟙 A
   simp
@@ -42,6 +54,13 @@ instance isIso_tr_left (c : 𝟙_ (Over (Sp ℂ)) ⟶ A) : IsIso (tr c).left :=
   ⟨(tr c⁻¹).left, by rw [← Over.comp_left, tr_comp_tr, inv_mul_cancel, tr_one]; rfl,
     by rw [← Over.comp_left, tr_comp_tr, mul_inv_cancel, tr_one]; rfl⟩
 
+/- English proof (translation)
+Take `⟨_, ⟨W, hW, rfl⟩, h0, -⟩` from `A.left.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ ((1 : 𝟙_ (Over (Sp ℂ)) ⟶ A).left (default : PrimeSpectrum ℂ))) isOpen_univ`. Establish `h1 : ⊤ ≤ (1 : 𝟙_ (Over (Sp ℂ)) ⟶ A).left ⁻¹ᵁ W` using `(GlobalTheory.top_le_preimage_iff_mem _ _).2 h0`. Establish `h2 : ⊤ ≤ (a⁻¹).left ⁻¹ᵁ ((tr a).left ⁻¹ᵁ W)`. Rewrite using `[← GlobalTheory.top_le_preimage_comp, ← Over.comp_left, comp_tr, mul_inv_cancel]`. Conclude with `h1`.
+
+Take `⟨b, hb⟩` from `exists_complex_point A (W ⊓ (tr a).left ⁻¹ᵁ W) (nonempty_preirreducible_inter W.isOpen ((tr a).left ⁻¹ᵁ W).isOpen ⟨_, h0⟩ ⟨_, h2 (Set.mem_univ (default : PrimeSpectrum ℂ))⟩)`. Take `⟨hb1, hb2⟩` from `(GlobalTheory.top_le_preimage_inf _ _ _).1 hb`. Use `⟨(tr b).left ⁻¹ᵁ W, hW.preimage_of_isIso _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← GlobalTheory.top_le_preimage_comp, ← Over.comp_left, comp_tr, _root_.mul_one]`. Conclude with `hb1`.
+
+Rewrite using `[← GlobalTheory.top_le_preimage_comp, ← Over.comp_left, comp_tr, hcomm, ← comp_tr, Over.comp_left, GlobalTheory.top_le_preimage_comp]`. Conclude with `hb2`.
+-/
 theorem exists_affine_mem [PreirreducibleSpace A.left] [LocallyOfFiniteType A.hom]
     (hcomm : ∀ x y : 𝟙_ (Over (Sp ℂ)) ⟶ A, x * y = y * x) (a : 𝟙_ (Over (Sp ℂ)) ⟶ A) :
     ∃ U : A.left.Opens, IsAffineOpen U ∧ ⊤ ≤ (1 : 𝟙_ (Over (Sp ℂ)) ⟶ A).left ⁻¹ᵁ U ∧ ⊤ ≤ a.left ⁻¹ᵁ U := by
@@ -68,6 +87,11 @@ section Dual
 
 variable {A : Over (Sp ℂ)}
 
+/- English proof (translation)
+Establish `h` using `range_comap_of_surjective ℂ (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom (fun a => ⟨TrivSqZeroExt.inl a, rfl⟩)`. Establish `hp : (p : PrimeSpectrum (DualNumber ℂ)) ∈ PrimeSpectrum.zeroLocus (RingHom.ker (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom : Set (DualNumber ℂ))`. Introduce `a ha`. Establish `h0 : a.fst = 0` using `ha`. Establish `h1 : a * a = 0`.
+
+Apply the tactic sequence `ext <;> simp [h0]`. Conclude with `(PrimeSpectrum.isPrime p).mul_mem_iff_mem_or_mem.1 (h1 ▸ Ideal.zero_mem _) |>.elim id id`. Rewrite `hp` using `[← h]`. Conclude with `hp`.
+-/
 theorem red_surjective (p : Sp (DualNumber ℂ)) :
     p ∈ Set.range (spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom) := by
   have h := range_comap_of_surjective ℂ (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom
@@ -90,6 +114,9 @@ def basePt (v : epsR ℂ ⟶ A) : 𝟙_ (Over (Sp ℂ)) ⟶ A :=
     rw [Category.assoc, Over.w v]
     exact h)
 
+/- English proof (translation)
+Introduce `p _`. Take `⟨q, rfl⟩` from `red_surjective p`. Use `h (Set.mem_univ q)` as an intermediate fact. Simplify `this` using `[basePt]`.
+-/
 theorem top_le_of_basePt (v : epsR ℂ ⟶ A) (U : A.left.Opens) (h : ⊤ ≤ (basePt v).left ⁻¹ᵁ U) :
     ⊤ ≤ v.left ⁻¹ᵁ U := by
   intro p _
@@ -103,6 +130,17 @@ section Germ
 
 variable {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolUnif A L g)
 
+/- English proof (translation)
+Establish `m0` using `(GlobalTheory.top_le_preimage_iff_mem _ _).1 h0`. Establish `m1` using `(GlobalTheory.top_le_preimage_iff_mem _ _).1 h1`. Take `⟨q, hq1, hq0⟩` from `hU.exists_basicOpen_le (V := U₁) ⟨_, m1⟩ m0`. Establish `hBU : A.left.basicOpen q ≤ U` using `A.left.basicOpen_le q`. Establish `hB0 : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ A.left.basicOpen q` using `(GlobalTheory.top_le_preimage_iff_mem _ _).2 hq0`.
+
+Establish `hloc` using `hU.isLocalization_basicOpen q`. Take `⟨n, p, e⟩` from `IsLocalization.Away.surj (S := Γ(A.left, A.left.basicOpen q)) q (resG _ hq1 f)`. Establish `e' : resG _ hq1 f * resG _ hBU (q ^ n) = resG _ hBU p`. Rewrite using `[map_pow]`. Conclude with `e`.
+
+Establish `hval : ∀ z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ A.left.basicOpen q → valAt' (u.ex z).left U₁ f * valAt' (u.ex z).left U (q ^ n) = valAt' (u.ex z).left U p`. Introduce `z hz`. Use `congrArg (valAt' (u.ex z).left (A.left.basicOpen q)) e'` as an intermediate fact. Rewrite `this` using `[GlobalTheory.valAt'_mul, GlobalTheory.valAt'_res _ _ _ hz, GlobalTheory.valAt'_res _ _ _ hz, GlobalTheory.valAt'_res _ _ _ hz]`. Then use the resulting hypothesis. Establish `hev : ∀ᶠ z in 𝓝 (0 : Fin g → ℂ), ⊤ ≤ (u.ex z).left ⁻¹ᵁ A.left.basicOpen q` using `(u.hol _ 0).1.mem_nhds hB0`.
+
+Establish `df : DifferentiableAt ℂ (fun z => valAt' (u.ex z).left U₁ f) 0` using `(u.hol U₁ f).2.differentiableAt ((u.hol U₁ f).1.mem_nhds h1)`. Establish `dqn : DifferentiableAt ℂ (fun z => valAt' (u.ex z).left U (q ^ n)) 0` using `(u.hol U (q ^ n)).2.differentiableAt ((u.hol U (q ^ n)).1.mem_nhds h0)`. Establish `H` using `(df.hasFDerivAt.mul dqn.hasFDerivAt).congr_of_eventuallyEq (f₁ := fun z => valAt' (u.ex z).left U p) (hev.mono fun z hz => (hval z hz).symm)`. Establish `H2` using `congrArg (fun T => T D) H.fderiv`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, hD, smul_eq_mul, mul_zero, zero_add] at H2`.
+
+Establish `hne : valAt' (u.ex 0).left U (q ^ n) ≠ 0`. Rewrite using `[GlobalTheory.valAt'_pow _ h0]`. Conclude with `pow_ne_zero _ ((GlobalTheory.top_le_preimage_basicOpen_iff _ U q).1 hB0)`. Conclude with `(mul_eq_zero.1 H2.symm).resolve_left hne`.
+-/
 theorem fderiv_eq_zero_of_affine (D : Fin g → ℂ) (U : A.left.Opens) (hU : IsAffineOpen U)
     (h0 : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ U)
     (hD : ∀ f : Γ(A.left, U), fderiv ℂ (fun z => valAt' (u.ex z).left U f) 0 D = 0)
@@ -141,6 +179,15 @@ theorem fderiv_eq_zero_of_affine (D : Fin g → ℂ) (U : A.left.Opens) (hU : Is
 
 end Germ
 
+/- English proof (translation)
+Introduce `A _ L g u hs hc v _ w w' h h'`. Use `haveI : Smooth A.hom := SmoothOfRelativeDimension.smooth g A.hom`. Use `haveI : PreirreducibleSpace A.left := ⟨by`. Use `GlobalTheory.KeyFam.isPreirreducible_connectedComponent_of_smooth A.hom (Classical.arbitrary A.left)` as an intermediate fact. Rewrite using `[PreconnectedSpace.connectedComponent_eq_univ] at this⟩` and apply the resulting hypothesis.
+
+Establish `hcomm : ∀ x y : 𝟙_ (Over (Sp ℂ)) ⟶ A, x * y = y * x` using `fun x y => by`. Take `⟨z, rfl⟩` from `u.ex_onto x`. Take `⟨z', rfl⟩` from `u.ex_onto y`. Rewrite using `[← u.ex_add, ← u.ex_add, add_comm]`. Take `⟨U, hU, h0, ha⟩` from `exists_affine_mem hcomm (basePt v)`.
+
+Establish `e1 : u.ex 0 = 1` using `GlobalTheory.TangentOrigin.ex_zero u`. Rewrite `h0` using `[← e1]`. Establish `hv` using `top_le_of_basePt v U ha`. Establish `hDU : ∀ f : Γ(A.left, U), fderiv ℂ (fun z => valAt' (u.ex z).left U f) 0 (w - w') = 0` using `fun f => by`. Rewrite using `[map_sub, ← h U hv f, ← h' U hv f, sub_self]`.
+
+Conclude with `sub_eq_zero.1 (GlobalTheory.TorusTransfer.eq_zero_of_fderiv_eq_zero u (w - w') fun U₁ f h1 => fderiv_eq_zero_of_affine u _ U hU h0 hDU U₁ f h1)`.
+-/
 theorem eq_of_isDiff_of_not_isTangent : ∀ (A : Over (Sp ℂ)) [GrpObj A] (L : LB A.left) (g : ℕ) (u : HolUnif A L g), SmoothOfRelativeDimension g A.hom → ConnectedSpace A.left → ∀ (v : epsR ℂ ⟶ A), ¬ IsTangent v → ∀ (w w' : Fin g → ℂ), u.IsDiff w v → u.IsDiff w' v → w = w' := by
   intro A _ L g u hs hc v _ w w' h h'
   haveI : Smooth A.hom := SmoothOfRelativeDimension.smooth g A.hom

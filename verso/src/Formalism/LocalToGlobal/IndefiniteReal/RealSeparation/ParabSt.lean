@@ -123,10 +123,16 @@ def TransvRed (D : D7) : Prop :=
           Red ψ S T C μ 𝓕 (om (1, E) f) (embI S T C' b + embI S T B0 x0) =
             Red ψ S T C μ 𝓕 f (embI S T C' b + embI S T B0 x0)
 
+/- English proof (translation)
+Apply the tactic sequence `refine ⟨?_, ?_, ?_⟩ <;> simp [Formalism.L2.Theta.mt, map_one]`.
+-/
 example (T : HSp D) {r : ℕ} (C C' : Matrix (Fin T.rank) (Fin r) D.host.E) (T0 : HSp D)
     (B0 : Matrix (Fin T.rank) (Fin T0.rank) D.host.E) : IsLeviEmb T C C' T0 B0 1 1 := by
   refine ⟨?_, ?_, ?_⟩ <;> simp [Formalism.L2.Theta.mt, map_one]
 
+/- English proof (translation)
+Introduce `g h0 h _ f _`. Simplify using the standard rewrite rules.
+-/
 example (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) {r : ℕ} (C C' : Matrix (Fin T.rank) (Fin r) D.host.E)
     (T0 : HSp D) (B0 : Matrix (Fin T.rank) (Fin T0.rank) D.host.E) (μ : Measure (Mx D r S.rank))
     (𝓕 : Set (Mx D r S.rank)) : IsDescOf ψ S T C C' T0 B0 μ 𝓕 1 1 := by

@@ -24,6 +24,11 @@ open Polynomial
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
+/- English proof (translation)
+Take `⟨hu, -⟩` from `GlobalTheory.RecLaws.rec_hasSatGL H σ B hB`. Take `⟨α, hα⟩` from `ParLaws.exists_hasSatake_of_unr H hu`. Use `⟨α, hB.unique (GlobalTheory.T.hasSatakeGL_of_hasSatakeParameters_principalSeries E w n _ σ.ρ α hα), ?_⟩` and prove the remaining obligations. Establish `e : rc (IrrGL.of σ.ρ σ.smooth σ.irred) = WD.mk (WDRep.diag h fun i => (α i)⁻¹)` using `ParLaws.rec_eq_diag H hα`. Rewrite using `[rec_algNorm H, e, WD.lpTw_mk]`.
+
+Use `WD.sound ⟨.refl _ _, fun g v => funext fun i => ?_, fun v => rfl⟩` and prove the remaining obligations. Simplify using `[mul_zpow, mul_comm, mul_left_comm, mul_assoc]`.
+-/
 theorem rec_algNorm_diag {rc : IrrGL (w.adicCompletion E) → WD h} (H : IsRec h rc) {n : ℕ}
     (σ : SmIrr (GL (Fin n) (w.adicCompletion E))) (B : Multiset ℂˣ) (hB : GlobalTheory.LFun.HasSatGL w σ.ρ B) :
     ∃ α : Fin n → ℂˣ, B = Finset.univ.val.map α ∧
@@ -37,6 +42,9 @@ theorem rec_algNorm_diag {rc : IrrGL (w.adicCompletion E) → WD h} (H : IsRec h
   refine WD.sound ⟨.refl _ _, fun g v => funext fun i => ?_, fun v => rfl⟩
   simp [mul_zpow, mul_comm, mul_left_comm, mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[Complex.ofReal_cpow (Nat.cast_nonneg _), zpow_neg_one, Units.val_mul, mul_inv, Units.val_inv_eq_inv_val, inv_inv, coe_qPow, ← Complex.cpow_neg, mul_comm]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem val_inv_eq (n : ℕ) (a : ℂˣ) :
     (((a⁻¹ * qPow w ((1 - (n : ℝ)) / 2) : ℂˣ) : ℂ)) ^ (-1 : ℤ) =
       ((((normV w : ℕ) : ℝ) ^ (((n : ℝ) - 1) / 2) : ℝ) : ℂ) * (a : ℂ) := by
@@ -50,6 +58,13 @@ end GlobalTheory.FrobRec
 
 open GlobalTheory.FrobRec Polynomial in
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ A w h rc H n σ B hB φ hd z hz`. Take `⟨α, rfl, e⟩` from `rec_algNorm_diag H σ B hB`. Rewrite `hz` using `[e, WD.charPol_mk, WDRep.diag_ρ, charpoly_diagEnd, hd]`. Rewrite `hz` using `[Polynomial.IsRoot, Polynomial.eval_prod, Finset.prod_eq_zero_iff]`. Take `⟨i, -, hi⟩` from `hz`.
+
+Rewrite `hi` using `[Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C, sub_eq_zero, zpow_one]`. Use `⟨((((α i)⁻¹ * qPow w ((1 - (n : ℝ)) / 2) : ℂˣ) : ℂ)) ^ (-1 : ℤ), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[val_inv_eq, algSat, Multiset.mem_map]`. Use `⟨(α i : ℂ), ?_, rfl⟩` and prove the remaining obligations. Simplify using `only [Multiset.pure_def, Multiset.bind_def, Multiset.bind_singleton, Multiset.map_map]`.
+
+Conclude with `Multiset.mem_map_of_mem (fun j => ((α j : ℂˣ) : ℂ)) (Finset.mem_univ i)`. Rewrite using `[hi, zpow_neg_one, mul_inv_cancel₀ (Units.ne_zero _)]`.
+-/
 theorem GlobalTheory.recFrob_root_inv_algSat : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω)
     (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (rc : IrrGL (w.adicCompletion E) → WD h), IsRec h rc →
     ∀ (n : ℕ) (σ : SmIrr (GL (Fin n) (w.adicCompletion E))) (B : Multiset ℂˣ), GlobalTheory.LFun.HasSatGL w σ.ρ B →
@@ -79,6 +94,9 @@ open scoped Matrix
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.recFrob_root_inv_algSat | exact GlobalTheory.recFrob_root_inv_algSat | (intros; apply GlobalTheory.recFrob_root_inv_algSat <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.satake_roots_local_correspondence : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω)
     (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (rc : IrrGL (w.adicCompletion E) → WD h), IsRec h rc →
     ∀ (n : ℕ) (σ : SmIrr (GL (Fin n) (w.adicCompletion E))) (B : Multiset ℂˣ), GlobalTheory.LFun.HasSatGL w σ.ρ B →

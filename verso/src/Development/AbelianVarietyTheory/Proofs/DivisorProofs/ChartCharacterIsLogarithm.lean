@@ -17,11 +17,19 @@ open MvPowerSeries ReciprocityTheory.PGsh GlobalTheory.FGDepth GlobalTheory.Form
 
 variable {C : Type} [Field C]
 
+/- English proof (translation)
+Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_pderiv]`. Simplify using the standard rewrite rules.
+-/
 theorem cc_pderiv {σ : Type} (i : σ) (f : MvPowerSeries σ C) :
     constantCoeff (pderiv C i f) = coeff (Finsupp.single i 1) f := by
   rw [← coeff_zero_eq_constantCoeff_apply, coeff_pderiv]
   simp
 
+/- English proof (translation)
+Establish `hs : HasSubst (fun _ : σ => (0 : MvPowerSeries τ C))` using `hasSubst_of_constantCoeff_zero fun _ => map_zero _`. Use extensionality with `e`. Rewrite using `[coeff_subst hs, finsum_eq_single _ 0]`. Simplify using `[coeff_C, coeff_one]`. Introduce `D hD`.
+
+Take `⟨s, hs'⟩` from `Finsupp.support_nonempty_iff.mpr hD`. Rewrite using `[Finsupp.prod, Finset.prod_eq_zero hs' (zero_pow (Finsupp.mem_support_iff.mp hs'))]`. Simplify using the standard rewrite rules.
+-/
 theorem subst_zero_fun {σ τ : Type} [Finite σ] (f : MvPowerSeries σ C) :
     subst (fun _ : σ => (0 : MvPowerSeries τ C)) f = MvPowerSeries.C (constantCoeff f) := by
   classical
@@ -35,6 +43,9 @@ theorem subst_zero_fun {σ τ : Type} [Finite σ] (f : MvPowerSeries σ C) :
     rw [Finsupp.prod, Finset.prod_eq_zero hs' (zero_pow (Finsupp.mem_support_iff.mp hs'))]
     simp
 
+/- English proof (translation)
+Establish `hs : HasSubst a` using `hasSubst_of_constantCoeff_zero ha`. Rewrite using `[← cc_pderiv, pderiv_subst hs, map_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, constantCoeff_subst_of_zero hs ha, cc_pderiv, cc_pderiv]`. Both sides reduce to the same expression.
+-/
 theorem coeff_single_subst {σ τ : Type} [Fintype σ] {a : σ → MvPowerSeries τ C}
     (ha : ∀ s, constantCoeff (a s) = 0) (f : MvPowerSeries σ C) (i : τ) :
     coeff (Finsupp.single i 1) (subst a f) =
@@ -47,6 +58,13 @@ theorem coeff_single_subst {σ τ : Type} [Fintype σ] {a : σ → MvPowerSeries
 
 variable {d : ℕ}
 
+/- English proof (translation)
+Establish `hS : HasSubst (fun a : Fin d => (X (Sum.inl a) + X (Sum.inr a) : MvPowerSeries (Fin d ⊕ Fin d) C))` using `hasSubst_of_constantCoeff_zero fun _ => by simp`. Establish `hL : HasSubst (fun a : Fin d => (X (Sum.inl a) : MvPowerSeries (Fin d ⊕ Fin d) C))` using `hasSubst_of_constantCoeff_zero fun _ => by simp`. Establish `hR : HasSubst (fun a : Fin d => (X (Sum.inr a) : MvPowerSeries (Fin d ⊕ Fin d) C))` using `hasSubst_of_constantCoeff_zero fun _ => by simp`. Set `Z : Fin d ⊕ Fin d → MvPowerSeries (Fin d) C` to `Sum.elim X fun _ => 0`. Apply the tactic sequence `have hZ : HasSubst Z := hasSubst_of_constantCoeff_zero fun s => by cases s <;> simp [Z]`.
+
+Establish `hd` using `congrArg (fun f => subst Z (pderiv C (Sum.inr i) f)) h`. Simplify using `only [Derivation.leibniz, pderiv_subst hS, pderiv_subst hL, pderiv_subst hR, map_add, pderiv_X, Pi.single_apply, reduceCtorEq, if_false, Sum.inr.injEq, zero_add, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, Finset.sum_const_zero, smul_zero, add_zero, …`. Rewrite `hd` using `[subst_mul hZ, subst_comp_subst_apply hS hZ, subst_comp_subst_apply hL hZ, subst_comp_subst_apply hR hZ]`. Simplify using `only [subst_add hZ, subst_X hZ, Z, Sum.elim_inl, Sum.elim_inr, add_zero] at hd`. Rewrite `hd` using `[subst_zero_fun, cc_pderiv]`.
+
+Establish `e : (fun s : Fin d => (X s : MvPowerSeries (Fin d) C)) = X` using `rfl`. Rewrite `hd` using `[e, subst_self]`. Rewrite using `[show pderiv C i g = id (pderiv C i g) from rfl, hd, id, mul_comm, smul_eq_C_mul]`.
+-/
 theorem pderiv_of_mul (g : MvPowerSeries (Fin d) C)
     (h : subst (fun a : Fin d => (X (Sum.inl a) + X (Sum.inr a) : MvPowerSeries (Fin d ⊕ Fin d) C)) g =
       subst (fun a : Fin d => (X (Sum.inl a) : MvPowerSeries (Fin d ⊕ Fin d) C)) g *
@@ -78,6 +96,13 @@ variable [CharZero C]
 
 open Formalism.L2.Th1.C in
 
+/- English proof (translation)
+Rewrite using `[← CharBound.coeff_mvExp_lin]`. Use `set L : MvPowerSeries (Fin d) C := ∑ s, c s • (X s : MvPowerSeries (Fin d) C) with hLdef`. Establish `hL : constantCoeff L = 0` using `by simp [hLdef]`. Establish `hnL : constantCoeff (-L) = 0` using `by rw [map_neg, hL, neg_zero]`. Establish `hpL : ∀ i, pderiv C i L = c i • (1 : MvPowerSeries (Fin d) C)` using `fun i => by`.
+
+Simplify using `[hLdef, pderiv_X, Pi.single_apply]`. Establish `key : g * mvExp (-L) = 1`. Use `pderiv.ext (fun i => ?_) ?_` and prove the remaining obligations. Rewrite using `[Derivation.leibniz, pderiv_mvExp hnL, map_neg, hpL, h, pderiv_one]`. Simplify using `only [smul_eq_mul, Algebra.smul_def]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_mul, h0, constantCoeff_mvExp hnL, map_one, mul_one]`. Establish `hE : mvExp L = g`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hE]`.
+-/
 theorem coeff_of_pderiv (g : MvPowerSeries (Fin d) C) (c : Fin d → C) (h0 : constantCoeff g = 1)
     (h : ∀ i, pderiv C i g = c i • g) (α : Fin d →₀ ℕ) :
     coeff α g = α.prod fun e n => c e ^ n / (n.factorial : C) := by
@@ -101,6 +126,9 @@ theorem coeff_of_pderiv (g : MvPowerSeries (Fin d) C) (c : Fin d → C) (h0 : co
 
 variable {v : AddValuation C (WithTop ℝ)}
 
+/- English proof (translation)
+Establish `h` using `congrArg (coeff (Finsupp.single i 1)) ((expOf_twoSided_unique C v d G).2.1 a)`. Rewrite `h` using `[coeff_single_subst G.lg_const]`. Simplify using `only [G.lg_lin, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h`. Rewrite using `[h, ← cc_pderiv, pderiv_X, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem coeff_single_expOf (G : LogFGL v d) (a i : Fin d) :
     coeff (Finsupp.single i 1) (expOf G a) = if a = i then 1 else 0 := by
   classical
@@ -110,6 +138,21 @@ theorem coeff_single_expOf (G : LogFGL v d) (a i : Fin d) :
   rw [h, ← cc_pderiv, pderiv_X, Pi.single_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Take `⟨⟨hE0, hE1⟩, hE2, -⟩` from `expOf_twoSided_unique C v d G`. Establish `hE : HasSubst (expOf G)` using `hasSubst_of_constantCoeff_zero hE0`. Establish `hS : HasSubst (fun a : Fin d => (X (Sum.inl a) + X (Sum.inr a) : MvPowerSeries (Fin d ⊕ Fin d) C))` using `hasSubst_of_constantCoeff_zero fun _ => by simp`. Establish `hL : HasSubst (fun a : Fin d => (X (Sum.inl a) : MvPowerSeries (Fin d ⊕ Fin d) C))` using `hasSubst_of_constantCoeff_zero fun _ => by simp`. Establish `hR : HasSubst (fun a : Fin d => (X (Sum.inr a) : MvPowerSeries (Fin d ⊕ Fin d) C))` using `hasSubst_of_constantCoeff_zero fun _ => by simp`.
+
+Establish `hF : HasSubst G.F` using `hasSubst_of_constantCoeff_zero G.F_const`. Establish `hlg : HasSubst G.lg` using `hasSubst_of_constantCoeff_zero G.lg_const`. Set `P : Fin d ⊕ Fin d → MvPowerSeries (Fin d ⊕ Fin d) C` to `Sum.elim (fun b => subst (fun a : Fin d => (X (Sum.inl a) : MvPowerSeries (Fin d ⊕ Fin d) C)) (expOf G b)) (fun b => subst (fun a : Fin d => (X (Sum.inr a) : MvPowerSeries (Fin d ⊕ Fin d) C)) (expOf G b))`. Establish `hP0 : ∀ s, constantCoeff (P s) = 0` using `fun s => by`. Consider the cases of `s with`.
+
+Consider the case `inl b => exact constantCoeff_subst_eq_zero hL (fun _ => by simp) (hE0 b)`. Consider the case `inr b => exact constantCoeff_subst_eq_zero hR (fun _ => by simp) (hE0 b)`. Establish `hP : HasSubst P` using `hasSubst_of_constantCoeff_zero hP0`. Establish `eL : ∀ f : MvPowerSeries (Fin d) C,`. Substitute `P (subst (fun a : Fin d => (X (Sum.inl a) : MvPowerSeries (Fin d ⊕ Fin d) C)) f) =` using the available equality.
+
+Substitute `(fun a : Fin d => (X (Sum.inl a) : MvPowerSeries (Fin d ⊕ Fin d) C)) (subst (expOf G) f) := by` using the available equality. Introduce `f`. Rewrite using `[subst_comp_subst_apply hL hP, subst_comp_subst_apply hE hL]`. Simplify using `only [subst_X hP, P, Sum.elim_inl]`. Establish `eR : ∀ f : MvPowerSeries (Fin d) C,`.
+
+Substitute `P (subst (fun a : Fin d => (X (Sum.inr a) : MvPowerSeries (Fin d ⊕ Fin d) C)) f) =` using the available equality. Substitute `(fun a : Fin d => (X (Sum.inr a) : MvPowerSeries (Fin d ⊕ Fin d) C)) (subst (expOf G) f) := by` using the available equality. Introduce `f`. Rewrite using `[subst_comp_subst_apply hR hP, subst_comp_subst_apply hE hR]`. Simplify using `only [subst_X hP, P, Sum.elim_inr]`.
+
+Establish `hQ : HasSubst (fun a => (subst P (G.F a) : MvPowerSeries (Fin d ⊕ Fin d) C))` using `hasSubst_of_constantCoeff_zero fun a => constantCoeff_subst_eq_zero hP hP0 (G.F_const a)`. Establish `e1 : (fun a : Fin d => (X (Sum.inl a) + X (Sum.inr a) : MvPowerSeries (Fin d ⊕ Fin d) C)) = fun a => subst (fun b => (subst P (G.F b) : MvPowerSeries (Fin d ⊕ Fin d) C)) (G.lg a)`. Use function extensionality and compare the values at `a`. Rewrite using `[← subst_comp_subst_apply hF hP, G.lg_F, subst_add hP, eL, eR, hE1, subst_X hL, subst_X hR]`. Establish `e2 : (fun b => (subst (fun a : Fin d => (X (Sum.inl a) + X (Sum.inr a) : MvPowerSeries (Fin d ⊕ Fin d) C)) (expOf G b) : MvPowerSeries (Fin d ⊕ Fin d) C)) = fun b => subst P (G.F b)`.
+
+Use function extensionality and compare the values at `b`. Rewrite using `[e1, ← subst_comp_subst_apply hlg hQ, hE2, subst_X hQ]`. Rewrite using `[subst_comp_subst_apply hE hS, e2, ← subst_comp_subst_apply hF hP, h, subst_mul hP, eL, eR]`.
+-/
 theorem mul_of_char (G : LogFGL v d) (χ : MvPowerSeries (Fin d) C)
     (h : subst G.F χ = subst (fun a : Fin d => (X (Sum.inl a) : MvPowerSeries (Fin d ⊕ Fin d) C)) χ *
         subst (fun a : Fin d => (X (Sum.inr a) : MvPowerSeries (Fin d ⊕ Fin d) C)) χ) :
@@ -160,6 +203,11 @@ theorem mul_of_char (G : LogFGL v d) (χ : MvPowerSeries (Fin d) C)
     rw [e1, ← subst_comp_subst_apply hlg hQ, hE2, subst_X hQ]
   rw [subst_comp_subst_apply hE hS, e2, ← subst_comp_subst_apply hF hP, h, subst_mul hP, eL, eR]
 
+/- English proof (translation)
+Establish `hE0` using `(expOf_twoSided_unique C v d G).1.1`. Establish `hE : HasSubst (expOf G)` using `hasSubst_of_constantCoeff_zero hE0`. Use `⟨χ, hi, coeff_of_pderiv _ _ ?_ fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[constantCoeff_subst_of_zero hE hE0, h0, map_one]`. Rewrite using `[pderiv_of_mul _ (mul_of_char G χ h), coeff_single_subst hE0]`.
+
+Simplify using `[coeff_single_expOf]`.
+-/
 theorem isCharLog_of_char (G : LogFGL v d) (χ : MvPowerSeries (Fin d) C) (hi : MvIsInt v χ)
     (h0 : constantCoeff χ = 1)
     (h : subst G.F χ = subst (fun a : Fin d => (X (Sum.inl a) : MvPowerSeries (Fin d ⊕ Fin d) C)) χ *
@@ -180,6 +228,31 @@ open GlobalTheory.IndefiniteRowSideFullHecke.TypedPartSplitPrimes (IsIntHom IsOr
 open GlobalTheory.IndefiniteRowSideFullHecke.BigBlockCharacters (HasChars)
 open GlobalTheory.IndefiniteRowSideFullHecke.FactorDepthInertBounds (boundAll boundInert boundFine)
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c`. Use `letI := H.starRing`. Introduce `p _ T io y Ch X χ hχ`. Take `⟨h0, hm⟩` from `hχ`. Use `set φ := algebraMap X.O X.C with hφ`.
+
+Establish `hj : φ.comp X.ι = jX X` using `RingHom.ext fun r => (X.comp r).symm`. Establish `hFe : ∀ i, MvPowerSeries.map φ (MvPowerSeries.map X.ι (Ch.FT i)) = (lawX Ch X).F i` using `fun i => by`. Rewrite using `[lawX_F, ← hj, MvPowerSeries.map_comp]`. Both sides reduce to the same expression. Establish `hinj : Function.Injective φ` using `X.ints.hom_inj`.
+
+Establish `hF0 : ∀ i, MvPowerSeries.constantCoeff (MvPowerSeries.map X.ι (Ch.FT i)) = 0` using `fun i => hinj (by`. Establish `h` using `(lawX Ch X).const i`. Rewrite `h` using `[← hFe, MvPowerSeries.constantCoeff_map]`. Rewrite using `[h, map_zero])`. Establish `hadd : addOf (fun i => MvPowerSeries.map X.ι (Ch.FT i)) (pt X.O (n` using `2) _ 0) (pt X.O (n := 2) _ 1) = fun i => MvPowerSeries.map X.ι (Ch.FT i) := by`.
+
+Use function extensionality and compare the values at `i`. Establish `e : (fun q : Fin 2 × Fin (chD Ch.ch) => (![pt X.O (n` using `2) _ 0, pt X.O _ 1] : Fin 2 → Pt X.O 2 _) q.1 q.2) = MvPowerSeries.X := by`. Use function extensionality and compare the values at `q`. Take `⟨j, i⟩` from `q`. Apply the tactic sequence `fin_cases j <;> rfl`.
+
+Unfold `addOf ev`. Rewrite using `[e, MvPowerSeries.subst_self]`. Both sides reduce to the same expression. Establish `hmap : ∀ a : Pt X.O 2 (chD Ch.ch), (∀ i, MvPowerSeries.constantCoeff (a i) = 0) → MvPowerSeries.map φ (ev ![a] χ) = ev ![fun i => MvPowerSeries.map φ (a i)] (MvPowerSeries.map φ χ)`. Introduce `a ha`.
+
+Unfold `ev`. Rewrite using `[MvPowerSeries.map_subst (MvPowerSeries.hasSubst_of_constantCoeff_zero fun q => by`. Take `⟨j, i⟩` from `q`. Use `fin_cases j`. Conclude with `ha i)]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `q`. Take `⟨j, i⟩` from `q`. Use `fin_cases j`. Both sides reduce to the same expression.
+
+Establish `hp : ∀ (k : Type) [CommRing k] (j : Fin 2) i, MvPowerSeries.constantCoeff (pt k (n` using `2) (chD Ch.ch) j i) = 0 := fun k _ j i => by simp [pt]`. Establish `hpm : ∀ j : Fin 2, (fun i => MvPowerSeries.map φ (pt X.O (n` using `2) (chD Ch.ch) j i)) = pt X.C _ j := fun j => funext fun i => by simp [pt]`. Establish `hm'` using `congrArg (MvPowerSeries.map φ) hm`. Rewrite `hm'` using `[hadd, map_mul, hmap _ hF0, hmap _ (hp _ 0), hmap _ (hp _ 1), hpm, hpm, funext hFe]`. Establish `key` using `isCharLog_of_char (fgl Ch X) (MvPowerSeries.subst (GlobalTheory.LawLog.oneVar X.C _) (MvPowerSeries.map φ χ)) ?_ ?_ ?_`.
+
+Simplify using `only [GlobalTheory.LawLog.coeff_single_oneVar, MvPowerSeries.coeff_map] at key`. Conclude with `key`. Use `CharBound.mvIsInt_subst' GlobalTheory.LawLog.hs_oneVar (fun q => CharBound.mvIsInt_X' _) fun α => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coeff_map, isIntV_iff]`. Conclude with `X.ints.map_le_one _`.
+
+Rewrite using `[GlobalTheory.FormalCalc.constantCoeff_subst_of_zero GlobalTheory.LawLog.hs_oneVar GlobalTheory.LawLog.cc_oneVar]`. Simplify using `[h0]`. Establish `e0 : (fun b => (MvPowerSeries.X (Sum.inl b) : MvPowerSeries (Fin (chD Ch.ch) ⊕ Fin (chD Ch.ch)) X.C)) = fun i => MvPowerSeries.subst (GlobalTheory.LawLog.twoVars X.C _) (pt X.C (n` using `2) _ 0 i) := by`. Use function extensionality and compare the values at `i`. Rewrite using `[pt, MvPowerSeries.subst_X GlobalTheory.LawLog.hs_twoVars]`.
+
+Simplify using `[GlobalTheory.LawLog.twoVars]`. Establish `e1 : (fun b => (MvPowerSeries.X (Sum.inr b) : MvPowerSeries (Fin (chD Ch.ch) ⊕ Fin (chD Ch.ch)) X.C)) = fun i => MvPowerSeries.subst (GlobalTheory.LawLog.twoVars X.C _) (pt X.C (n` using `2) _ 1 i) := by`. Use function extensionality and compare the values at `i`. Rewrite using `[pt, MvPowerSeries.subst_X GlobalTheory.LawLog.hs_twoVars]`. Simplify using `[GlobalTheory.LawLog.twoVars]`.
+
+Establish `eF : (fgl Ch X).F = fun i => MvPowerSeries.subst (GlobalTheory.LawLog.twoVars X.C _) ((lawX Ch X).F i)` using `rfl`. Rewrite using `[e0, e1, eF, GlobalTheory.LawLog.subst_oneVar _ GlobalTheory.LawLog.cc_twoVars _ (lawX Ch X).const, GlobalTheory.LawLog.subst_oneVar _ GlobalTheory.LawLog.cc_twoVars _ (hp _ 0), GlobalTheory.LawLog.subst_oneVar _ GlobalTheory.LawLog.cc_twoVars _ (hp _ 1), ← MvPowerSeries.subst_mu …`.
+-/
 theorem isCharLog_dl : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), letI := H.starRing; ∀ (p : ℕ) [Fact p.Prime] (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (Ch : IntegralChartA3 Xo c T io y) (X : ValExt T p), ∀ χ : PS X.O 1 (chD Ch.ch), ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF.IsCh (fun i => MvPowerSeries.map X.ι (Ch.FT i)) χ → IsCharLog (fgl Ch X) (fun j => algebraMap X.O X.C (ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF.dl χ j)) := by
   intro E _ _ _ H Dw l Xo c
   letI := H.starRing

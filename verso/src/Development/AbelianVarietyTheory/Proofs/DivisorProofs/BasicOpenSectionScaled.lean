@@ -7,6 +7,11 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.Vert GlobalTheory.MixedLocalCha
 
 namespace GlobalTheory.BplusDescent
 
+/- English proof (translation)
+Introduce `X _ U V a hV x`. Establish `h : V.1 ≤ U.1` using `hV ▸ X.basicOpen_le a`. Use `letI : Algebra Γ(X, U.1) Γ(X, V.1) := (X.presheaf.map (homOfLE h).op).hom.toAlgebra`. Use `haveI : IsLocalization.Away a Γ(X, V.1) := U.2.1.isLocalization_of_eq_basicOpen a (homOfLE h) hV`. Use `haveI : IsScalarTower Γ(X, U.1) Γ(X, V.1) (Kbar X) := IsScalarTower.of_algebraMap_eq fun b => (congrArg (algebraMap X.functionField (Kbar X)) (X.presheaf.germ_res_apply (homOfLE h) _ _ b)).symm`.
+
+Take `⟨⟨_, N, rfl⟩, hm⟩` from `IsIntegral.exists_multiple_integral_of_isLocalization (Submonoid.powers a) (Rₘ := Γ(X, V.1)) (x : Kbar X) x.2`. Use `⟨N, ⟨_, hm⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `a ^ N • (x : Kbar X) = _`. Rewrite using `[Algebra.smul_def, map_pow]`.
+-/
 theorem exists_pow_mul_mem_of_eq_basicOpen : ∀ (X : Scheme.{0}) [IsIntegral X] (U V : AffOp X) (a : Γ(X, U.1)), V.1 = X.basicOpen a → ∀ x : V.Bp, ∃ (N : ℕ) (r : U.Bp), (r : Kbar X) = algebraMap Γ(X, U.1) (Kbar X) a ^ N * x := by
   intro X _ U V a hV x
   have h : V.1 ≤ U.1 := hV ▸ X.basicOpen_le a

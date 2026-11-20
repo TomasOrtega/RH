@@ -16,6 +16,21 @@ namespace PositivityTheory.Rg.Rsw.L.LWMaj
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨U, hUo, hU⟩` from `hf.level`. Set `a : GA D S → WO S T →+ WO S T` to `fun g => { toFun := fun u => actO S T g⁻¹ 1 u map_zero' := by simp [actO] map_add' := fun u v => by simp [actO, Matrix.mul_add, Matrix.add_mul] }`. Set `U' : AddSubgroup (WO S T)` to `⨅ g ∈ C, U.comap (a g)`. Establish `hcont : Continuous fun p : GA D S × WO S T => actO S T p.1⁻¹ 1 p.2`. Simplify using `only [actO, inv_inv]`.
+
+Conclude with `(continuous_const.matrix_mul continuous_snd).matrix_mul ((GlobalTheory.MixModel.continuous_mt S).comp continuous_fst)`. Establish `hmem : ∀ u, u ∈ U' ↔ ∀ g ∈ C, actO S T g⁻¹ 1 u ∈ U` using `fun u => by`. Rewrite using `[AddSubgroup.mem_iInf]`. Conclude with `forall_congr' fun g => by rw [AddSubgroup.mem_iInf]; rfl`. Establish `hopen : IsOpen (U' : Set (WO S T))`.
+
+Establish `hn : C ×ˢ ({0} : Set (WO S T)) ⊆ (fun p : GA D S × WO S T => actO S T p.1⁻¹ 1 p.2) ⁻¹' U`. Introduce and unpack `⟨g, u⟩ ⟨-, hu⟩`. Simplify using `only [Set.mem_singleton_iff] at hu`. Substitute `hu` using the available equality. Simplify using `[actO, U.zero_mem]`.
+
+Take `⟨s, v, -, hv, hCs, h0v, hsv⟩` from `generalized_tube_lemma hC isCompact_singleton (hUo.preimage hcont) hn`. Use `AddSubgroup.isOpen_of_mem_nhds U' (g := 0) ?_` and prove the remaining obligations. Use `Filter.mem_of_superset (hv.mem_nhds (h0v rfl)) fun u hu => ?_` and prove the remaining obligations. Use `(hmem u).2 fun g hg => ?_` and prove the remaining obligations. Establish `h` using `hsv (Set.mk_mem_prod (hCs hg) hu)`.
+
+Rewrite `h` using `[Set.mem_preimage]`. Conclude with `h`. Use `⟨U', hopen, fun g hg => ⟨hom.om_pres _ _ hf, fun u hu h0 => ?_⟩⟩` and prove the remaining obligations. Establish `hu' : actO S T g⁻¹ 1 u ∈ U`. Conclude with `(hmem u).1 hu g hg`.
+
+Establish `h0' : (actO S T g⁻¹ 1 u).map (infPart D) = 0`. Simplify using `only [actO, Matrix.map_mul, h0, Matrix.zero_mul, Matrix.mul_zero]`. Establish `h1` using `hom.om_heis g 1 (actO S T g⁻¹ 1 u) f hf`. Rewrite `h1` using `[hU _ hu' h0']`. Establish `h2 : actO S T g 1 (actO S T g⁻¹ 1 u) = u`.
+
+Simplify using `only [actO, inv_inv, GlobalTheory.MixModel.mt_one, Matrix.one_mul, Matrix.mul_assoc, GlobalTheory.MixModel.mt_mul_inv, Matrix.mul_one]`. Rewrite `h1` using `[h2]`. Conclude with `h1.symm`.
+-/
 theorem unifLevel {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle}
     {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (hom : IsWeilDatumO ψ S T χS χT om)
     {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (C : Set (GA D S)) (hC : IsCompact C) :

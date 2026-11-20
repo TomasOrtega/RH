@@ -12,6 +12,9 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.SiegField
 
+/- English proof (translation)
+Introduce `g n hg hn hodd F K _ β c hc`. Use `haveI : Module.FaithfullyFlat K (AlgebraicClosure K) := inferInstance`. Use `GlobalTheory.T.siegelFamily_classified_of_faithfullyFlat g n hg hn hodd F K (AlgebraicClosure K) β c hc fun c' hpb => ?_` and prove the remaining obligations. Establish `hc' : c'.Principal` using `GlobalTheory.SiegLevCalc.sRel_principal ((sRel_one_one_iff _ _ _).2 hpb) hc`. Conclude with `GlobalTheory.T.siegel_family_classifies_principal_algClosed g n hg hn hodd F (AlgebraicClosure K) ((algebraMap K (AlgebraicClosure K)).comp β) c' hc'`.
+-/
 theorem classify : ∀ (g n : ℕ), 1 ≤ g → 3 ≤ n → Odd n → ∀ F : SFam g n (zetaAway n), ∀ (K : Type) [Field K]
     (β : cycAway n →+* K) (c : SiegPre g n (zetaAway n) (spMap β)), c.Principal →
     ∃ f : Sp K ⟶ F.X, f ≫ F.s = spMap β ∧ SiegPB c F.univ f := by

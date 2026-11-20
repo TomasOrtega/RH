@@ -2,6 +2,11 @@ import Mathlib
 
 namespace ReciprocityTheory.ChartRestriction.G.I2
 
+/- English proof (translation)
+Establish `hn' : (0 : ℝ) < Fintype.card ι` using `by exact_mod_cast hn`. Establish `h` using `Real.geom_mean_le_arith_mean Finset.univ (fun _ => (1 : ℝ)) a (fun _ _ => zero_le_one) (by simpa using hn') (fun i _ => ha i)`. Simplify using `only [Real.rpow_one, one_mul, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one] at h`. Rewrite `h` using `[le_div_iff₀ hn']`. Establish `h2 : P ^ ((Fintype.card ι : ℝ)⁻¹) ≤ (∏ i, a i) ^ ((Fintype.card ι : ℝ)⁻¹)` using `Real.rpow_le_rpow hP hprod (by positivity)`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem amgm_sum_ge {ι : Type*} [Fintype ι] (a : ι → ℝ) (ha : ∀ i, 0 ≤ a i)
     (P : ℝ) (hP : 0 ≤ P) (hprod : P ≤ ∏ i, a i) (hn : 0 < Fintype.card ι) :
     (Fintype.card ι : ℝ) * P ^ ((Fintype.card ι : ℝ)⁻¹) ≤ ∑ i, a i := by
@@ -18,6 +23,9 @@ theorem amgm_sum_ge {ι : Type*} [Fintype ι] (a : ι → ℝ) (ha : ∀ i, 0 �
     _ = (∏ i, a i) ^ ((Fintype.card ι : ℝ)⁻¹) * Fintype.card ι := mul_comm _ _
     _ ≤ ∑ i, a i := h
 
+/- English proof (translation)
+Rewrite using `[Real.inv_rpow (by positivity)]`. Use `congr 1`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_natCast (D ^ n⁻¹), ← Real.rpow_mul hD.le, ← Real.rpow_mul hD.le, mul_comm]`.
+-/
 theorem inv_sq_rpow_inv (D : ℝ) (hD : 0 < D) (n : ℝ) :
     ((D ^ 2)⁻¹) ^ n⁻¹ = ((D ^ n⁻¹) ^ 2)⁻¹ := by
   rw [Real.inv_rpow (by positivity)]
@@ -25,6 +33,9 @@ theorem inv_sq_rpow_inv (D : ℝ) (hD : 0 < D) (n : ℝ) :
   rw [← Real.rpow_natCast, ← Real.rpow_natCast (D ^ n⁻¹), ← Real.rpow_mul hD.le,
     ← Real.rpow_mul hD.le, mul_comm]
 
+/- English proof (translation)
+Establish `h` using `amgm_sum_ge a ha _ (by positivity) hprod hn`. Rewrite `h` using `[inv_sq_rpow_inv D hD, ← div_eq_mul_inv]`. Then use the resulting hypothesis.
+-/
 theorem sum_ge_of_prod_ge {ι : Type*} [Fintype ι] (a : ι → ℝ) (ha : ∀ i, 0 ≤ a i)
     (D : ℝ) (hD : 0 < D) (hprod : (D ^ 2)⁻¹ ≤ ∏ i, a i) (hn : 0 < Fintype.card ι) :
     (Fintype.card ι : ℝ) / (D ^ ((Fintype.card ι : ℝ)⁻¹)) ^ 2 ≤ ∑ i, a i := by

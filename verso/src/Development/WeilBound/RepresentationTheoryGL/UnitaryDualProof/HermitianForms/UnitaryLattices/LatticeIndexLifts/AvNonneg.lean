@@ -11,9 +11,15 @@ namespace PositivityTheory.RgUd.Form.U.Lift2
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 variable {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `AvA.lat_gmap' g A hA`.
+-/
 theorem lat_gmap (g : GL (Fin n) k) (A : AddSubgroup (Fin n → k)) (hA : Lat A) : Lat (gmap g A) :=
   AvA.lat_gmap' g A hA
 
+/- English proof (translation)
+The claim follows from `AvA.av_conj' φ hφ col hc0 hca hsm gl hconj g A hA ξ v`.
+-/
 theorem av_conj (φ : AddChar k Circle) (hφ : Continuous φ) (col : (Fin n → k) → V →ₗ[ℂ] V)
     (hc0 : ∀ v, col 0 v = v) (hca : ∀ x y v, col (x + y) v = col x (col y v)) (hsm : ∀ v, IsOpen {x | col x v = v})
     (gl : GL (Fin n) k →* (V →ₗ[ℂ] V))
@@ -22,6 +28,9 @@ theorem av_conj (φ : AddChar k Circle) (hφ : Continuous φ) (col : (Fin n → 
     gl g (av φ col ξ A v) = av φ col (ξ ᵥ* ((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)) (gmap g A) (gl g v) :=
   AvA.av_conj' φ hφ col hc0 hca hsm gl hconj g A hA ξ v
 
+/- English proof (translation)
+The claim follows from `AvA.av_bessel' φ hφ col hc0 hca hsm B hB hBc A hA s hs v`.
+-/
 theorem av_bessel (φ : AddChar k Circle) (hφ : Continuous φ) (col : (Fin n → k) → V →ₗ[ℂ] V)
     (hc0 : ∀ v, col 0 v = v) (hca : ∀ x y v, col (x + y) v = col x (col y v)) (hsm : ∀ v, IsOpen {x | col x v = v})
     (B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ) (hB : Psd B) (hBc : ∀ x v w, B (col x v) (col x w) = B v w)

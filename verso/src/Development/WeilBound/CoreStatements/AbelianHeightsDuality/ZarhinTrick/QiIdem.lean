@@ -9,6 +9,17 @@ open TensorProduct
 
 namespace PositivityTheory.PrwZar.Qi
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `hne1 : Ideal.span {1 - f} ≠ ⊤`. Introduce `htop`. Rewrite `htop` using `[Ideal.span_singleton_eq_top]`. Apply `hne` to reduce the goal to its premises.
+
+Establish `h0 : f * (1 - f) = 0` using `by rw [mul_sub, mul_one, hf.eq, sub_self]`. Conclude with `htop.mul_left_eq_zero.1 h0`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ hne1`. Use `letI := Ideal.Quotient.field M`. Use `haveI : Module.Finite K (H ⧸ M) := Module.Finite.of_surjective (Ideal.Quotient.mkₐ K M).toLinearMap (Ideal.Quotient.mkₐ_surjective K M)`.
+
+Use `haveI : Algebra.IsIntegral K (H ⧸ M) := Algebra.IsIntegral.of_finite K (H ⧸ M)`. Establish `hb` using `IsAlgClosed.algebraMap_bijective_of_isIntegral (k := K) (K := H ⧸ M)`. Set `e : K ≃ₐ[K] H ⧸ M` to `AlgEquiv.ofBijective (Algebra.ofId K (H ⧸ M)) hb`. Set `x : H →ₐ[K] K` to `e.symm.toAlgHom.comp (Ideal.Quotient.mkₐ K M)`. Establish `h1 : Ideal.Quotient.mk M f = 1`.
+
+Establish `hmem : 1 - f ∈ M` using `hle (Ideal.mem_span_singleton_self _)`. Establish `h2 : Ideal.Quotient.mk M (1 - f) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 hmem`. Rewrite `h2` using `[map_sub, map_one, sub_eq_zero]`. Conclude with `h2.symm`. Establish `hx1 : x f = 1`.
+
+Express the relevant statement in the definitionally equal form `e.symm (Ideal.Quotient.mkₐ K M f) = 1`. Rewrite using `[Ideal.Quotient.mkₐ_eq_mk, h1, map_one]`. Establish `hx` using `h x`. Rewrite `hx` using `[hx1]`. Conclude with `one_ne_zero hx`.
+-/
 theorem idem_eq_zero {K H : Type} [Field K] [IsAlgClosed K] [CommRing H] [Algebra K H] [FiniteDimensional K H]
     {f : H} (hf : IsIdempotentElem f) (h : ∀ x : H →ₐ[K] K, x f = 0) : f = 0 := by
   by_contra hne

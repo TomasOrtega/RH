@@ -8,6 +8,9 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor (PSpace Sp spMap)
 
 namespace GlobalTheory.CompanionTheory.GE
 
+/- English proof (translation)
+Rewrite using `[Scheme.Hom.comp_app]`. Establish `hi : Function.Injective (b.app (g ⁻¹ᵁ U)).hom` using `(ConcreteCategory.bijective_of_isIso (b.app (g ⁻¹ᵁ U))).1`. Express the relevant statement in the definitionally equal form `(b.app (g ⁻¹ᵁ U)).hom ((g.app U).hom s) = 0 ↔ _`. Conclude with `map_eq_zero_iff _ hi`.
+-/
 theorem comp_app_eq_zero_iff {X Y Z : Scheme.{0}} (b : X ⟶ Y) [IsIso b] (g : Y ⟶ Z) (U : Z.Opens)
     (s : Γ(Z, U)) : ((b ≫ g).app U).hom s = 0 ↔ (g.app U).hom s = 0 := by
   rw [Scheme.Hom.comp_app]
@@ -16,6 +19,9 @@ theorem comp_app_eq_zero_iff {X Y Z : Scheme.{0}} (b : X ⟶ Y) [IsIso b] (g : Y
   change (b.app (g ⁻¹ᵁ U)).hom ((g.app U).hom s) = 0 ↔ _
   exact map_eq_zero_iff _ hi
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.ProjSpace.isPullback_baseChange N (Ideal.Quotient.mk (I ^ (e + 1)))`. Establish `hb : h.isoPullback.hom ≫ thickι R I N e = GlobalTheory.ProjSpace.baseChange N (Ideal.Quotient.mk (I ^ (e + 1)))` using `h.isoPullback_hom_fst`. Rewrite using `[Scheme.Hom.ker_apply, RingHom.mem_ker, ← hb]`. Conclude with `(comp_app_eq_zero_iff h.isoPullback.hom (thickι R I N e) _ s).symm`.
+-/
 theorem mem_ker_thickι_iff {R : Type} [CommRing R] (I : Ideal R) (N e : ℕ) (k : Fin (N + 1))
     (s : Γ(PSpace R N, GlobalTheory.ProjSpace.chart R N k)) :
     s ∈ (Scheme.Hom.ker (thickι R I N e)).ideal
@@ -28,6 +34,9 @@ theorem mem_ker_thickι_iff {R : Type} [CommRing R] (I : Ideal R) (N e : ℕ) (k
   rw [Scheme.Hom.ker_apply, RingHom.mem_ker, ← hb]
   exact (comp_app_eq_zero_iff h.isoPullback.hom (thickι R I N e) _ s).symm
 
+/- English proof (translation)
+Substitute `hV` using the available equality. Rewrite using `[← GlobalTheory.ProjSpace.formOn_zero (U := GlobalTheory.ProjSpace.chart R N k) (i := k) (hi := le_rfl) (n := n)]`. Conclude with `GlobalTheory.ProjSpace.formOn_chart_inj R N k hf _`.
+-/
 theorem formOn_eq_zero_iff {R : Type} [CommRing R] {N : ℕ} (k : Fin (N + 1))
     {V : (PSpace R N).Opens} (hV : V = GlobalTheory.ProjSpace.chart R N k) (hle : V ≤ GlobalTheory.ProjSpace.chart R N k)
     {n : ℕ} {f : MvPolynomial (Fin (N + 1)) R} (hf : f.IsHomogeneous n) :
@@ -39,6 +48,11 @@ theorem formOn_eq_zero_iff {R : Type} [CommRing R] {N : ℕ} (k : Fin (N + 1))
 open scoped GlobalTheory.ProjSpace in
 attribute [local instance] MvPolynomial.gradedAlgebra in
 
+/- English proof (translation)
+Take `⟨p, rfl⟩` from `(GlobalTheory.ProjSpace.chartAlgEquiv R N k).surjective s`. Take `⟨n, f, hf, h⟩` from `HomogeneousLocalization.Away.mk_surjective _ (GlobalTheory.ProjSpace.X_mem R N k) (GlobalTheory.ProjSpace.polyEquivAway R N k p)`. Establish `hf' : f.IsHomogeneous n` using `by simpa using hf`. Use `⟨n, f, hf', ?_⟩` and prove the remaining obligations. Rewrite using `[← GlobalTheory.ProjSpace.chartAlgEquiv_dehom R N k hf']`.
+
+Use `congr 1`. Establish `h1` using `GlobalTheory.ProjSpace.awayToPoly_mk R N k n f hf`. Rewrite `h1` using `[h]`. Conclude with `((GlobalTheory.ProjSpace.polyEquivAway R N k).left_inv p).symm.trans h1`.
+-/
 theorem exists_formOn_eq {R : Type} [CommRing R] {N : ℕ} (k : Fin (N + 1))
     (s : Γ(PSpace R N, GlobalTheory.ProjSpace.chart R N k)) :
     ∃ (n : ℕ) (f : MvPolynomial (Fin (N + 1)) R) (hf : f.IsHomogeneous n),
@@ -54,6 +68,11 @@ theorem exists_formOn_eq {R : Type} [CommRing R] {N : ℕ} (k : Fin (N + 1))
   rw [h] at h1
   exact ((GlobalTheory.ProjSpace.polyEquivAway R N k).left_inv p).symm.trans h1
 
+/- English proof (translation)
+Introduce `R _ I N e k`. Establish `hmem : ∀ (n : ℕ) (t : MvPolynomial (Fin (N + 1)) R) (ht : t.IsHomogeneous n), GlobalTheory.ProjSpace.formOn (GlobalTheory.ProjSpace.chart R N k) k le_rfl n t ht ∈ (Scheme.Hom.ker (thickι R I N e)).ideal ⟨GlobalTheory.ProjSpace.chart R N k, GlobalTheory.ProjSpace.isAffineOpen_char …`. Introduce `n t ht`. Rewrite using `[mem_ker_thickι_iff, GlobalTheory.ProjSpace.baseChange_app_formOn, formOn_eq_zero_iff k (GlobalTheory.ProjSpace.baseChange_preimage_chart N _ k), ← RingHom.mem_ker, MvPolynomial.ker_map, Ideal.mk_ker]`. Use `⟨fun s hs => ?_, fun n t ht h => (hmem n t ht).2 h⟩` and prove the remaining obligations.
+
+Take `⟨n, t, ht, rfl⟩` from `exists_formOn_eq k s`. Conclude with `⟨n, t, ht, (hmem n t ht).1 hs, rfl⟩`.
+-/
 theorem ker_thickι_chart : ∀ {R : Type} [CommRing R] (I : Ideal R) (N e : ℕ) (k : Fin (N + 1)),
     (∀ s ∈ (Scheme.Hom.ker (thickι R I N e)).ideal ⟨GlobalTheory.ProjSpace.chart R N k, GlobalTheory.ProjSpace.isAffineOpen_chart R N k⟩,
       ∃ (n : ℕ) (t : MvPolynomial (Fin (N + 1)) R) (ht : t.IsHomogeneous n),

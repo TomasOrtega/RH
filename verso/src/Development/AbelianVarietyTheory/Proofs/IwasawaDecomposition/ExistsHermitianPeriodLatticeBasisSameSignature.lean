@@ -10,6 +10,11 @@ open scoped Matrix CategoryTheory.Obj Topology
 
 namespace GlobalTheory.ShFam.Hor.PerBasis
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.ConjugateMultiplicity.target`. Consider the case `exact _root_.GlobalTheory.ConjugateMultiplicity.target`. Consider the case `(apply _root_.GlobalTheory.ConjugateMultiplicity.target <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.ConjugateMultiplicity.target <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.ConjugateMultiplicity.target <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.ConjugateMultiplicity.target ..)`.
+-/
 theorem mult_conj_add_mult {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     (D : Datum H) (τ : E →+* ℂ) : D.mult (conjEmb τ) + D.mult τ = D.p + D.q := by
   first
@@ -20,6 +25,17 @@ theorem mult_conj_add_mult {E : Type} [Field E] [NumberField E] [IsCMField E] {H
   | (intros; apply @_root_.GlobalTheory.ConjugateMultiplicity.target <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.ConjugateMultiplicity.target ..)
 
+/- English proof (translation)
+Take `⟨f, hf⟩` from `exists_linearIndependent_of_le_finrank (R := 𝓞 E) (M := M) (n := Fintype.card J) hJ.le`. Set `e` to `Fintype.equivFin J`. Use `⟨f ∘ e, hf.comp _ e.injective, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[e.surjective.range_comp]`. Establish `hc : ∃ c : 𝓞 E, c ≠ 0 ∧ c • v ∈ Submodule.span (𝓞 E) (Set.range f)`.
+
+Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `hli : LinearIndependent (𝓞 E) (Fin.cons v f : Fin (Fintype.card J + 1) → M)`. Use `LinearIndependent.finCons' v f hf fun c y hy h => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hc`.
+
+Use `hcon c hc ?_` and prove the remaining obligations. Rewrite using `[eq_neg_of_add_eq_zero_left h]`. Conclude with `neg_mem hy`. Use `hli.fintype_card_le_finrank` as an intermediate fact. Simplify using `at this`.
+
+Use linear arithmetic over natural numbers and integers. Take `⟨c, hc0, hc⟩` from `hc`. Use `⟨Ideal.absNorm (Ideal.span {c}), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `hc0`.
+
+Take `⟨d, hd⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {c}))`. Rewrite using `[← Nat.cast_smul_eq_nsmul (𝓞 E), ← hd, mul_smul]`. Conclude with `Submodule.smul_mem _ _ hc`.
+-/
 theorem exists_indep {E : Type} [Field E] [NumberField E] (M : Type) [AddCommGroup M] [Module (𝓞 E) M]
     [Module.Finite (𝓞 E) M] (J : Type) [Fintype J] (hJ : Fintype.card J = Module.finrank (𝓞 E) M) :
     ∃ x : J → M, LinearIndependent (𝓞 E) x ∧
@@ -48,6 +64,13 @@ theorem exists_indep {E : Type} [Field E] [NumberField E] (M : Type) [AddCommGro
     rw [← Nat.cast_smul_eq_nsmul (𝓞 E), ← hd, mul_smul]
     exact Submodule.smul_mem _ _ hc
 
+/- English proof (translation)
+Set `ψ : E →ₗ[ℚ] ℚ` to `(integralBasis E).constr ℚ fun i => (φ (RingOfIntegers.basis E i) : ℚ)`. Establish `hψ : ∀ a : 𝓞 E, ((φ a : ℤ) : ℚ) = ψ (a : E)`. Introduce `a`. Establish `: (Int.castAddHom ℚ).toIntLinearMap ∘ₗ φ = (ψ.restrictScalars ℤ) ∘ₗ ((algebraMap (𝓞 E) E).toAddMonoidHom.toIntLinearMap)`. Use `(RingOfIntegers.basis E).ext fun i => ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `((φ (RingOfIntegers.basis E i) : ℤ) : ℚ) = ψ (algebraMap (𝓞 E) E (RingOfIntegers.basis E i))`. Rewrite using `[← integralBasis_apply, Module.Basis.constr_basis]`. Conclude with `LinearMap.congr_fun this a`. Use `⟨((Algebra.traceForm ℚ E).toDual (traceForm_nondegenerate ℚ E)).symm ψ, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[hψ, mul_comm, ← Algebra.traceForm_apply]`.
+
+Conclude with `(LinearMap.BilinForm.apply_toDual_symm_apply _ _).symm`.
+-/
 theorem exists_trace_rep {E : Type} [Field E] [NumberField E] (φ : 𝓞 E →ₗ[ℤ] ℤ) :
     ∃ h : E, ∀ a : 𝓞 E, ((φ a : ℤ) : ℚ) = Algebra.trace ℚ E ((a : E) * h) := by
   let ψ : E →ₗ[ℚ] ℚ := (integralBasis E).constr ℚ fun i => (φ (RingOfIntegers.basis E i) : ℚ)
@@ -63,6 +86,31 @@ theorem exists_trace_rep {E : Type} [Field E] [NumberField E] (φ : 𝓞 E →�
   rw [hψ, mul_comm, ← Algebra.traceForm_apply]
   exact (LinearMap.BilinForm.apply_toDual_symm_apply _ _).symm
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw Di τ ⟨hp, hq⟩`. Use `Di.fin` as an intermediate fact. Take `⟨x, hx, hsp⟩` from `exists_indep (E := E) Di.La (Idx Dw τ) (by`. Rewrite using `[Fintype.card_sum, Fintype.card_fin, Fintype.card_fin, mult_conj_add_mult, Di.rank, hp, hq])`. Establish `hrep : ∀ k k', ∃ h : E, ∀ a : 𝓞 E, ((Di.EF (a • x k) (x k') : ℤ) : ℚ) = Algebra.trace ℚ E ((a : E) * h)` using `fun k k' => exists_trace_rep (AddMonoidHom.toIntLinearMap { toFun := fun a : 𝓞 E => Di.EF (a • x k) (x k') map_zero' := by simp map_add' := fun a b => by simp [add_smul] })`.
+
+Use `choose hm hhm using hrep`. Use `⟨x, Matrix.of hm, hx, hsp, fun a k k' => hhm k k' a, fun hdet => ?_⟩` and prove the remaining obligations. Take `⟨c₀, hc₀, hker⟩` from `Matrix.exists_vecMul_eq_zero_iff.2 hdet`. Take `⟨d, hd⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors (𝓞 E)) c₀`. Use `choose c hc using hd`.
+
+Use `set v := ∑ k, c k • x k with hv`. Establish `h1 : ∀ (a : 𝓞 E) k', Di.EF (a • v) (x k') = 0`. Introduce `a k'`. Establish `hk` using `congrFun hker k'`. Simplify using `only [Matrix.vecMul, dotProduct, Matrix.of_apply, Pi.zero_apply] at hk`.
+
+Establish `: ((Di.EF (a • v) (x k') : ℤ) : ℚ) = 0`. Rewrite using `[hv, Finset.smul_sum, map_sum, LinearMap.sum_apply]`. Use `push_cast`. Repeatedly rewrite using `[← mul_smul, hhm]`. Rewrite using `[← map_sum]`.
+
+Establish `: ∑ k, ((a * c k : 𝓞 E) : E) * hm k k' = (a : E) * ((d : 𝓞 E) : E) * ∑ k, c₀ k * hm k k'`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `h2 : ((c k : 𝓞 E) : E) = ((d : 𝓞 E) : E) * c₀ k`. Conclude with `(hc k).trans (Algebra.smul_def _ _)`.
+
+Establish `h3 : ((a * c k : 𝓞 E) : E) = (a : E) * ((c k : 𝓞 E) : E)` using `map_mul (algebraMap (𝓞 E) E) _ _`. Rewrite using `[h3, h2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, hk]`. Simplify using the standard rewrite rules.
+
+Conclude with `this` after adjusting the coercions. Establish `h2 : ∀ w ∈ Submodule.span (𝓞 E) (Set.range x), ∀ a : 𝓞 E, Di.EF v (a • w) = 0`. Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw`.
+
+Take `⟨k, rfl⟩` from `hw`. Introduce `a`. Use `h1 (H.bar.symm a) k` as an intermediate fact. Rewrite `this` using `[Di.adj, RingEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Consider the case `zero => simp`.
+
+Consider the case `add y z _ _ hy hz => intro a`. Rewrite using `[smul_add, map_add, hy, hz, add_zero]`. Consider the case `smul b y _ hy => intro a`. Rewrite using `[← mul_smul, hy]`. Establish `h3 : v = 0`.
+
+Apply `Di.unimod.1` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use extensionality with `w`. Take `⟨n, hn, hw⟩` from `hsp w`. Use `h2 _ hw 1` as an intermediate fact.
+
+Rewrite `this` using `[one_smul, map_nsmul]`. Simplify `this` using `[hn]`. Apply `hc₀` to reduce the goal to its premises. Use function extensionality and compare the values at `k`. Establish `h4` using `Fintype.linearIndependent_iff.1 hx c h3 k`.
+
+Establish `h5` using `hc k`. Rewrite `h5` using `[h4, map_zero, Algebra.smul_def]`. Use `(mul_eq_zero.1 h5.symm).resolve_left ?_` and prove the remaining obligations. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 E) E)).2 (nonZeroDivisors.coe_ne_zero d)`.
+-/
 theorem exists_isPerBasis : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
     (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw Di : Datum H) (τ : E →+* ℂ), Di.p = Dw.p ∧ Di.q = Dw.q →
     ∃ (x : Idx Dw τ → Di.La) (hm : Matrix (Idx Dw τ) (Idx Dw τ) E), IsPerBasis Di x hm := by

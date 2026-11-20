@@ -18,6 +18,9 @@ variable {D : D7} {v : FinPl D}
 def conjProj (φ : SplitProj D v) : SplitProj D v :=
   φ.comp (Algebra.TensorProduct.map (AlgHom.id (Fv D.host.F v) (Fv D.host.F v)) D.sp.cm.sig)
 
+/- English proof (translation)
+Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp only [_root_.map_zero]`. Consider the case `tmul x y`. Simplify using `only [rdA, conjProj, RingHom.comp_apply, cA, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR, GlobalTheory.AdelicU.compFin, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, AlgHom.comp_apply, Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`. Consider the case `add x y hx hy => simp only [_root_.map_add, hx, hy]`.
+-/
 theorem rdA_conjProj (φ : SplitProj D v) (a : AE D) : rdA (conjProj φ) a = rdA φ (cA D a) := by
   induction a using TensorProduct.induction_on with
   | zero => simp only [_root_.map_zero]
@@ -26,6 +29,13 @@ theorem rdA_conjProj (φ : SplitProj D v) (a : AE D) : rdA (conjProj φ) a = rdA
       AlgHom.toRingHom_eq_coe, RingHom.coe_coe, AlgHom.comp_apply, Algebra.TensorProduct.map_tmul, AlgHom.id_apply]
   | add x y hx hy => simp only [_root_.map_add, hx, hy]
 
+/- English proof (translation)
+Establish `hcc : ∀ x : AE D, cA D (cA D x) = x`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [_root_.map_zero]`. Consider the case `tmul a y`.
+
+Simplify using `only [cA, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`. Use `congr 1`. Conclude with `star_star y`. Consider the case `add x y hx hy => simp only [_root_.map_add, hx, hy]`. Use `⟨GlobalTheory.SplitScalar.isSplitIdem_conj he.1, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hcc, add_comm]`. Conclude with `he.2.1`. Rewrite using `[rdA_conjProj, hcc]`. Conclude with `he.2.2`.
+-/
 theorem isIdemOf_conjProj {φ : SplitProj D v} {e : AE D} (he : IsIdemOf φ e) : IsIdemOf (conjProj φ) (cA D e) := by
   have hcc : ∀ x : AE D, cA D (cA D x) = x := by
     intro x
@@ -56,6 +66,11 @@ def trHomeo {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K] {
   continuous_toFun := (continuous_const.matrix_mul continuous_id.matrix_transpose).matrix_mul continuous_const
   continuous_invFun := ((continuous_const.matrix_mul continuous_id).matrix_mul continuous_const).matrix_transpose
 
+/- English proof (translation)
+Establish `e : (fun t => A * (κ t)ᵀ * B) = ⇑(trHomeo A A' B B' hA hB) ∘ κ` using `rfl`. Use `⟨fun x y => ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [h.1 x y, Matrix.transpose_add, Matrix.mul_add, Matrix.add_mul]`. Rewrite using `[e]`. Conclude with `(Set.bijOn_univ.2 (trHomeo A A' B B' hA hB).bijective).comp h.2.1`.
+
+Rewrite using `[e, Set.image_comp]`. Conclude with `(trHomeo A A' B B' hA hB).isOpenMap _ h.2.2.1`. Rewrite using `[e, Set.image_comp]`. Conclude with `h.2.2.2.image (trHomeo A A' B B' hA hB).continuous`.
+-/
 theorem isCoord_comp {S T : HSp D} {m n : ℕ} {a : AE D} {Λ : AddSubgroup (WO S T)}
     {κ : WO S T → Matrix (Fin m) (Fin n) (Fv D.host.F v)} (h : IsCoord a Λ κ)
     (A A' : Matrix (Fin n) (Fin n) (Fv D.host.F v)) (B B' : Matrix (Fin m) (Fin m) (Fv D.host.F v))
@@ -67,10 +82,18 @@ theorem isCoord_comp {S T : HSp D} {m n : ℕ} {a : AE D} {Λ : AddSubgroup (WO 
   · rw [e, Set.image_comp]; exact (trHomeo A A' B B' hA hB).isOpenMap _ h.2.2.1
   · rw [e, Set.image_comp]; exact h.2.2.2.image (trHomeo A A' B B' hA hB).continuous
 
+/- English proof (translation)
+Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ (GlobalTheory.LatVac.gram_det_isUnit V)]`. Conclude with `Matrix.map_one _ (_root_.map_zero _) (_root_.map_one _)`.
+-/
 theorem gram_inv_mul (V : HSp D) : (V.gram⁻¹).map (incA D) * V.gram.map (incA D) = 1 := by
   rw [← Matrix.map_mul, Matrix.nonsing_inv_mul _ (GlobalTheory.LatVac.gram_det_isUnit V)]
   exact Matrix.map_one _ (_root_.map_zero _) (_root_.map_one _)
 
+/- English proof (translation)
+Establish `hG : G * G' = 1` using `mul_eq_one_comm.1 h1`. Establish `s1 : Formalism.UG.cT σ k * G = G * k'` using `calc Formalism.UG.cT σ k * G = Formalism.UG.cT σ k * G * (k * k') := by rw [hk', Matrix.mul_one] _ = (Formalism.UG.cT σ k * G * k) * k' := by simp only [Matrix.mul_assoc] _ = G * k' := by rw [hk]`. Establish `e1 : G' * Formalism.UG.cT σ k = k' * G'` using `calc G' * Formalism.UG.cT σ k = G' * (Formalism.UG.cT σ k * (G * G')) := by rw [hG, Matrix.mul_one] _ = G' * ((Formalism.UG.cT σ k * G) * G') := by simp only [Matrix.mul_assoc] _ = (G' * G) * k' * G' := by rw [s1]; simp only [Matrix.mul_assoc] _ = k' * G' := by rw [h1, Matrix.one …`. Establish `e2 : Formalism.UG.cT σ m * H = H * m'` using `calc Formalism.UG.cT σ m * H = Formalism.UG.cT σ m * H * (m * m') := by rw [hm', Matrix.mul_one] _ = (Formalism.UG.cT σ m * H * m) * m' := by simp only [Matrix.mul_assoc] _ = H * m' := by rw [hm]`. Unfold `Formalism.UG.cT at *`.
+
+Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.transpose_mul, Matrix.transpose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem adj_mul {A : Type} [CommRing A] (σ : A →+* A) {a b : ℕ} (G G' k k' : Matrix (Fin a) (Fin a) A)
     (H m m' : Matrix (Fin b) (Fin b) A) (x : Matrix (Fin b) (Fin a) A) (h1 : G' * G = 1)
     (hk : Formalism.UG.cT σ k * G * k = G) (hm : Formalism.UG.cT σ m * H * m = H) (hk' : k * k' = 1) (hm' : m * m' = 1) :
@@ -95,6 +118,9 @@ theorem adj_mul {A : Type} [CommRing A] (σ : A →+* A) {a b : ℕ} (G G' k k' 
       = (G' * (k.map σ)ᵀ) * (x.map σ)ᵀ * ((m.map σ)ᵀ * H) := by simp only [Matrix.mul_assoc]
     _ = k' * (G' * (x.map σ)ᵀ * H) * m' := by rw [e1, e2]; simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Simplify using `only [Matrix.map_mul, Matrix.mul_assoc, Units.mul_inv_cancel_left]`. Use `first`. Consider the case `rw [Units.mul_inv_cancel_left]`. Consider the case `rw [← Matrix.mul_assoc (P : Matrix (Fin a) (Fin a) K), Units.mul_inv, Matrix.one_mul]`.
+-/
 theorem map_mul_conj {A K : Type} [CommRing A] [CommRing K] (π : A →+* K) {a b : ℕ} (P : GL (Fin a) K) (Q : GL (Fin b) K)
     (k : Matrix (Fin a) (Fin a) A) (m : Matrix (Fin b) (Fin b) A) (X Y : Matrix (Fin a) (Fin b) A) (h : Y = k * X * m) :
     (P⁻¹).val * Y.map π * Q.val =
@@ -105,17 +131,31 @@ theorem map_mul_conj {A K : Type} [CommRing A] [CommRing K] (π : A →+* K) {a 
   | rw [Units.mul_inv_cancel_left]
   | rw [← Matrix.mul_assoc (P : Matrix (Fin a) (Fin a) K), Units.mul_inv, Matrix.one_mul]
 
+/- English proof (translation)
+Unfold `Formalism.L2.Theta.mt`. Rewrite using `[← Units.val_mul, ← _root_.map_mul, _root_.mul_inv_cancel, _root_.map_one, Units.val_one]`.
+-/
 theorem mt_mul_mt_inv (V : HSp D) (g : GA D V) : Formalism.L2.Theta.mt V g * Formalism.L2.Theta.mt V g⁻¹ = 1 := by
   unfold Formalism.L2.Theta.mt
   rw [← Units.val_mul, ← _root_.map_mul, _root_.mul_inv_cancel, _root_.map_one, Units.val_one]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem grpCo_val (φ : SplitProj D v) (V : HSp D) (B : GL (Fin V.rank) (Fv D.host.F v)) (g : GA D V) :
     (grpCo φ V B g).val = (B⁻¹).val * (Formalism.L2.Theta.mt V g).map (rdA φ) * B.val := rfl
 
+/- English proof (translation)
+Simplify using `only [grpCo, _root_.mul_inv_rev, _root_.inv_inv, _root_.map_inv, _root_.mul_assoc]`.
+-/
 theorem grpCo_inv (φ : SplitProj D v) (V : HSp D) (B : GL (Fin V.rank) (Fv D.host.F v)) (g : GA D V) :
     (grpCo φ V B g)⁻¹ = grpCo φ V B g⁻¹ := by
   simp only [grpCo, _root_.mul_inv_rev, _root_.inv_inv, _root_.map_inv, _root_.mul_assoc]
 
+/- English proof (translation)
+Establish `hm' : Formalism.L2.Theta.mt T h⁻¹ * Formalism.L2.Theta.mt T h = 1`. Simplify `mt_mul_mt_inv T h⁻¹` using `only [_root_.inv_inv]`. Establish `key` using `adj_mul (cA D) (S.gram.map (incA D)) ((S.gram⁻¹).map (incA D)) (Formalism.L2.Theta.mt S g) (Formalism.L2.Theta.mt S g⁻¹) (T.gram.map (incA D)) (Formalism.L2.Theta.mt T h⁻¹) (Formalism.L2.Theta.mt T h) (t : Matrix (Fin T.rank) (Fin S.rank) (AE D)) (gram_inv_mul S) (by exact g.2) ( …`. Unfold `Formalism.UG.cT at key`. Establish `hact : (actO S T g⁻¹ h⁻¹ t : Matrix (Fin T.rank) (Fin S.rank) (AE D)) = Formalism.L2.Theta.mt T h⁻¹ * t * Formalism.L2.Theta.mt S g` using `by first`.
+
+Consider the case `rfl`. Consider the case `(simp only [actO, _root_.inv_inv]; done)`. Consider the case `simp [actO]`. Unfold `adjCo`. Rewrite using `[hact, key, map_mul_conj (rdA φ) BS BT (Formalism.L2.Theta.mt S g⁻¹) (Formalism.L2.Theta.mt T h) _ _ rfl, grpCo_inv, grpCo_val, grpCo_val]`.
+-/
 theorem adjCo_actO (φ : SplitProj D v) (S T : HSp D) (BS : GL (Fin S.rank) (Fv D.host.F v))
     (BT : GL (Fin T.rank) (Fv D.host.F v)) (g : GA D S) (h : GA D T) (t : WO S T) :
     adjCo φ S T BS BT (actO S T g⁻¹ h⁻¹ t) = ((grpCo φ S BS g)⁻¹).val * adjCo φ S T BS BT t * (grpCo φ T BT h).val := by
@@ -142,6 +182,15 @@ namespace GlobalTheory.PlaceTensor
 
 open AdjCoord
 
+/- English proof (translation)
+Introduce `D S T ΛS ΛT hS hT v φ e he BS BT`. Use `⟨?_, fun g h t => adjCo_actO φ S T BS BT g h t⟩` and prove the remaining obligations. Establish `hc` using `(GlobalTheory.T.splitPlace_matrix_coordinate_on_half D S T ΛS ΛT hS hT v (conjProj φ) (cA D e) (isIdemOf_conjProj he) 1 1).1`. Establish `h1 : ((S.gram⁻¹).map (incA D)).map (rdA φ) * (S.gram.map (incA D)).map (rdA φ) = 1`. Rewrite using `[← Matrix.map_mul, gram_inv_mul, Matrix.map_one _ (_root_.map_zero _) (_root_.map_one _)]`.
+
+Establish `h2 : ((T.gram⁻¹).map (incA D)).map (rdA φ) * (T.gram.map (incA D)).map (rdA φ) = 1`. Rewrite using `[← Matrix.map_mul, gram_inv_mul, Matrix.map_one _ (_root_.map_zero _) (_root_.map_one _)]`. Establish `hA : ((S.gram.map (incA D)).map (rdA φ) * BS.val) * ((BS⁻¹).val * ((S.gram⁻¹).map (incA D)).map (rdA φ)) = 1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc BS.val, Units.mul_inv, Matrix.one_mul]`. Conclude with `mul_eq_one_comm.1 h1`.
+
+Establish `hB : ((T.gram.map (incA D)).map (rdA φ) * BT.val) * ((BT⁻¹).val * ((T.gram⁻¹).map (incA D)).map (rdA φ)) = 1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc BT.val, Units.mul_inv, Matrix.one_mul]`. Conclude with `mul_eq_one_comm.1 h2`. Use `isCoord_comp hc _ _ _ _ hA hB using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `t`.
+
+Establish `ht : (((t : Matrix (Fin T.rank) (Fin S.rank) (AE D)).map (cA D))ᵀ).map (rdA φ) = ((t : Matrix (Fin T.rank) (Fin S.rank) (AE D)).map (rdA (conjProj φ)))ᵀ`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.transpose_apply, rdA_conjProj]`. Simplify using `only [adjCo, mapCo, Matrix.map_mul, ht, _root_.inv_one, Units.val_one, Matrix.one_mul, Matrix.mul_one, Matrix.mul_assoc]`.
+-/
 theorem adjCo_isCoord : ∀ (D : D7) (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)), IsSelfDualC S ΛS → IsSelfDualC T ΛT → ∀ (v : FinPl D) (φ : SplitProj D v) (e : AE D), IsIdemOf φ e → ∀ (BS : GL (Fin S.rank) (Fv D.host.F v)) (BT : GL (Fin T.rank) (Fv D.host.F v)), IsCoord (cA D e) (latO S T ΛS ΛT fun _ => True) (adjCo φ S T BS BT) ∧ ∀ (g : GA D S) (h : GA D T) (t : WO S T), adjCo φ S T BS BT (actO S T g⁻¹ h⁻¹ t) = ((grpCo φ S BS g)⁻¹).val * adjCo φ S T BS BT t * (grpCo φ T BT h).val := by
   intro D S T ΛS ΛT hS hT v φ e he BS BT
   refine ⟨?_, fun g h t => adjCo_actO φ S T BS BT g h t⟩

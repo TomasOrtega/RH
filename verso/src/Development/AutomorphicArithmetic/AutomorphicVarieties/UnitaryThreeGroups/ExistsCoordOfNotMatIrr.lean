@@ -5,12 +5,26 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.SingleM
 
 open Matrix UpperTheory.V.U3
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.SingleMemOfDiagonal.single_mem_of_diag d hd W hW v hv i hi`.
+-/
 private theorem single_mem_of_diag {κ : Type} [Field κ] {m : ℕ} (d : Fin m → κ)
     (hd : Function.Injective d) (W : Submodule κ (Fin m → κ))
     (hW : ∀ v ∈ W, Matrix.diagonal d *ᵥ v ∈ W) (v : Fin m → κ) (hv : v ∈ W) (i : Fin m)
     (hi : v i ≠ 0) : (Pi.single i 1 : Fin m → κ) ∈ W :=
   _root_.UpperTheory.Reformulated.B.SingleMemOfDiagonal.single_mem_of_diag d hd W hW v hv i hi
 
+/- English proof (translation)
+Unfold `MatIrr at h`. Use `push Not at h`. Take `⟨W, hW, hb, ht⟩` from `h`. Establish `hWd : ∀ v ∈ W, Matrix.diagonal d *ᵥ v ∈ W` using `fun v hv => by`. Rewrite using `[← hD, Matrix.sub_mulVec]`.
+
+Conclude with `W.sub_mem (hW _ h₁ _ hv) (hW _ h₂ _ hv)`. Establish `hs` using `single_mem_of_diag d hd W hWd`. Use `⟨fun j => (Pi.single j 1 : Fin m → κ) ∈ W, ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨v, hv, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hb`. Take `⟨j, hj⟩` from `Function.ne_iff.1 hv0`.
+
+Conclude with `⟨j, hs v hv j hj⟩`. Assume the negation of the conclusion as `hc push Not at hc`. Apply `ht` to reduce the goal to its premises. Rewrite using `[eq_top_iff]`. Introduce `v _`.
+
+Rewrite using `[pi_eq_sum_univ' v]`. Conclude with `W.sum_mem fun i _ => W.smul_mem _ (hc i)`. Introduce `i j hj hi g hg`. Assume the negation of the conclusion as `hc`. Apply `hi` to reduce the goal to its premises.
+
+Use `hs _ (hW g hg _ hj) i ?_` and prove the remaining obligations. Simplify using `using hc`.
+-/
 private theorem exists_coord_of_not_matIrr {G κ : Type} [Group G] [Field κ] {m : ℕ}
     (H : Subgroup G) (a : G → Matrix (Fin m) (Fin m) κ) (d : Fin m → κ)
     (hd : Function.Injective d) (g₁ g₂ : G) (h₁ : g₁ ∈ H) (h₂ : g₂ ∈ H)
@@ -42,6 +56,37 @@ private theorem exists_coord_of_not_matIrr {G κ : Type} [Group G] [Field κ] {m
     refine hs _ (hW g hg _ hj) i ?_
     simpa using hc
 
+/- English proof (translation)
+Introduce `G κ _ _ η r c g₁ h2 hm hc hg hn hz`. Establish `hc' : (r c).right = -1` using `(hm c).trans hc`. Establish `hD` using `zmat_diag r c g₁ h2.isUnit hc' ((hm g₁).trans hg) hn`. Establish `hst : ∀ g ∈ η.ker, gstar c g ∈ η.ker` using `fun g hg => (hm _).symm.trans (mat_gstar r c g hn.atc hc' ((hm g).trans hg)).2`. Use `set ζ := zeta c g₁ r with hζ`.
+
+Establish `hne : ζ ≠ -ζ` using `fun h => hz (by`. Establish `: (2 : κ) * ζ = 0` using `by linear_combination h`. Conclude with `(mul_eq_zero.1 this).resolve_left h2)`. Set `Z : Fin 3 → Fin 3 → Prop` to `fun i j => ∀ g ∈ η.ker, (r g).mat i j = 0`. Establish `hsym : ∀ i j : Fin 3, Z i j → Z j.rev i.rev`.
+
+Introduce `i j h g hg`. Establish `h1` using `h _ (hst g hg)`. Rewrite `h1` using `[(mat_gstar r c g hn.atc hc' ((hm g).trans hg)).1]`. Use `revert h1`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`.
+
+Simplify using `[Matrix.mul_apply, Fin.sum_univ_three, Jmat, Fin.rev]`. Establish `s10 : Z 1 0 → Z 2 1` using `hsym 1 0`. Establish `s21 : Z 2 1 → Z 1 0` using `hsym 2 1`. Establish `s01 : Z 0 1 → Z 1 2` using `hsym 0 1`. Establish `s12 : Z 1 2 → Z 0 1` using `hsym 1 2`.
+
+Establish `hU : Z 1 0 → Z 2 0 → Upper η r`. Introduce `h1 h2 g hg a b hab`. Use `h1 g hg` as an intermediate fact. Use `h2 g hg` as an intermediate fact. Use `s10 h1 g hg` as an intermediate fact.
+
+Apply the tactic sequence `fin_cases a <;> fin_cases b <;> first | assumption | (exfalso; revert hab; decide)`. Establish `hL : Z 0 1 → Z 0 2 → Lower η r`. Introduce `h1 h2 g hg a b hab`. Use `h1 g hg` as an intermediate fact. Use `h2 g hg` as an intermediate fact.
+
+Use `s01 h1 g hg` as an intermediate fact. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> first | assumption | (exfalso; revert hab; decide)`. Establish `hB : Z 0 1 → Z 1 0 → Upper η r ∨ Lower η r ∨ TypeII η r`. Introduce `h1 h2`. Distinguish the cases in `hI : MatIrr η.ker fun g => corner (r g).mat`.
+
+Use `Or.inr (Or.inr ⟨?_, hI⟩)` and prove the remaining obligations. Introduce `g hg a b hab`. Use `h1 g hg` as an intermediate fact. Use `h2 g hg` as an intermediate fact. Use `s01 h1 g hg` as an intermediate fact.
+
+Use `s10 h2 g hg` as an intermediate fact. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> first | assumption | (exfalso; revert hab; decide)`. Establish `hinj : Function.Injective ![ζ, -ζ]`. Introduce `i j h`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all [hne.symm]`.
+
+Take `⟨S, ⟨j, hj⟩, ⟨i, hi⟩, hS⟩` from `exists_coord_of_not_matIrr η.ker _ ![ζ, -ζ] hinj g₁ (gstar c g₁) hg (hst g₁ hg) (by`. Use extensionality with `i j`. Use `congrFun (congrFun hD (![0, 2] i)) (![0, 2] j)` as an intermediate fact. Use `Eq.trans this ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp) hI`.
+
+Establish `h3` using `hS i j hj hi`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Conclude with `absurd hj hi`. Conclude with `Or.inr (Or.inl (hL h1 h3))`. Conclude with `Or.inl (hU h2 h3)`.
+
+Conclude with `absurd hj hi`. Distinguish the cases in `hI : TypeI η r`. Conclude with `Or.inl hI`. Use `right`. Establish `hinj : Function.Injective ![ζ, 0, -ζ]`.
+
+Introduce `i j h`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all [hne.symm]`. Take `⟨S, ⟨j, hj⟩, ⟨i, hi⟩, hS⟩` from `exists_coord_of_not_matIrr η.ker (mats r) _ hinj g₁ (gstar c g₁) hg (hst g₁ hg) hD hI`. Establish `hS' : ∀ i j, S j → ¬ S i → Z i j` using `hS`. Apply the tactic sequence `by_cases a0 : S 0 <;> by_cases a1 : S 1 <;> by_cases a2 : S 2`.
+
+Apply the tactic sequence `fin_cases i <;> contradiction`. Conclude with `Or.inl (hU (s21 (hS' _ _ a1 a2)) (hS' _ _ a0 a2))`. Conclude with `hB (s12 (hS' _ _ a2 a1)) (hS' _ _ a0 a1)`. Conclude with `Or.inl (hU (hS' _ _ a0 a1) (hS' _ _ a0 a2))`. Conclude with `Or.inr (Or.inl (hL (hS' _ _ a1 a0) (hS' _ _ a2 a0)))`.
+
+Conclude with `hB (hS' _ _ a1 a0) (s21 (hS' _ _ a1 a2))`. Conclude with `Or.inr (Or.inl (hL (s12 (hS' _ _ a2 a1)) (hS' _ _ a2 a0)))`. Apply the tactic sequence `fin_cases j <;> contradiction`.
+-/
 theorem UpperTheory.V.U3.shape_cases :
     ∀ {G κ : Type} [Group G] [Field κ] (η : G →* ℤˣ) (r : G →* GG 3 κ) (c g₁ : G), (2 : κ) ≠ 0 → HasMult η r → η c = -1 → η g₁ = 1 →
       Normalised c g₁ r → zeta c g₁ r ≠ 0 → TypeI η r ∨ Upper η r ∨ Lower η r ∨ TypeII η r := by

@@ -19,6 +19,21 @@ namespace GlobalTheory.CompanionTheory.Ar.Cmp.FdPiece
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Use `FundSetPf.countable_GL (E := E) (r := r)` as an intermediate fact. Use `set Sat : Set (Frame X.Ψ r) := ⋃ γ : X.Γ, lact (γ : GL (Fin r) E)⁻¹ ⁻¹' KU.Sset X x0 FF with hSat`. Establish `hSm : MeasurableSet Sat` using `MeasurableSet.iUnion fun γ => (KU.cont_lact X _).measurable (KU.meas_S X h0 hF.1)`. Establish `hB : ∀ y, ∀ b ∈ Bor X.Ψ r, rmul y b ∈ Sat ↔ y ∈ Sat` using `fun y b hb => by`. Simplify using `only [hSat, Set.mem_iUnion, Set.mem_preimage]`.
+
+Use `exists_congr fun γ => ?_` and prove the remaining obligations. Rewrite using `[KU.lact_rmul' X, KU.rmul_mem_S X hb]`. Establish `hin : ∀ γ ∈ X.Γ, ∀ z' ∈ FF, ∀ b ∈ Bor X.Ψ r, lact γ (rmul (cpt X x0 z') b) ∈ Sat` using `fun γ hγ z' hz' b hb => Set.mem_iUnion.2 ⟨⟨γ, hγ⟩, ⟨(z', b), ⟨hz', hb⟩, by show rmul (cpt X x0 z') b = lact γ⁻¹ (lact γ _)`. Rewrite using `[← FundSetPf.lact_mul, inv_mul_cancel, FundSetPf.lact_one]⟩⟩`. Establish `hout : ∀ y ∈ Sat, ∃ γ ∈ X.Γ, ∃ z' ∈ FF, ∃ b ∈ Bor X.Ψ r, y = lact γ (rmul (cpt X x0 z') b)`.
+
+Introduce `y hy`. Take `⟨γ, ⟨z', b⟩, ⟨hz', hb⟩, e⟩` from `Set.mem_iUnion.1 hy`. Use `⟨γ, γ.2, z', hz', b, hb, ?_⟩` and prove the remaining obligations. Establish `e' : rmul (cpt X x0 z') b = lact (γ : GL (Fin r) E)⁻¹ y` using `e`. Rewrite using `[e', ← FundSetPf.lact_mul, mul_inv_cancel, FundSetPf.lact_one]`.
+
+Establish `hφ : Measurable ((Satᶜ).indicator (1 : Frame X.Ψ r → ENNReal))` using `measurable_one.indicator hSm.compl`. Establish `hinv` using `measInv_holds r X x0 x h0 hx _ hφ (fun y _ b hb => by`. Distinguish the cases in `hy : y ∈ Sat`. Rewrite using `[Set.indicator_of_notMem (by simpa using (hB y b hb).2 hy), Set.indicator_of_notMem (by simpa using hy)]`. Rewrite using `[Set.indicator_of_mem (by simpa using fun h => hy ((hB y b hb).1 h)), Set.indicator_of_mem (by simpa using hy)] rfl)`.
+
+Establish `e : ∀ x' : Frame X.Ψ r, ∫⁻ z, (Satᶜ).indicator (1 : Frame X.Ψ r → ENNReal) (cpt X x' z) ∂muF X x' = muF X x' (cpt X x' ⁻¹' Satᶜ)` using `fun x' => by`. Rewrite using `[← lintegral_indicator_one ((KU.cont_cpt X x').measurable hSm.compl)]`. Both sides reduce to the same expression. Rewrite `hinv` using `[e, e]`. Establish `hl : muF X x0 (cpt X x0 ⁻¹' Satᶜ) = 0`.
+
+Use `measure_mono_null (fun z hz => ?_) (ae_iff.1 hF.2.2.2)` and prove the remaining obligations. Conclude with `fun ⟨z', hz', γ, hγ, b, hb, h⟩ => hz (h ▸ hin γ hγ z' hz' b hb)`. Rewrite `hinv` using `[hl]`. Establish `hr` using `(withDensity_apply_eq_zero (OntoC.measurable_densF X x)).1 hinv.symm`. Establish `hr2` using `nonpos_iff_eq_zero.1 ((Measure.le_restrict_apply _ _).trans hr.le)`.
+
+Use `measure_mono_null (fun w hw => ?_) hr2` and prove the remaining obligations. Use `⟨⟨?_, fun hs => ?_⟩, hw.1⟩` and prove the remaining obligations. Simplify using `using OntoB.densF_pos hw.1`. Take `⟨γ, hγ, z', hz', b, hb, h⟩` from `hout _ hs`. Conclude with `hw.2 z' hz' γ hγ b hb h`.
+-/
 theorem bad_null (X : Data E r) {x0 x : Frame X.Ψ r} (h0 : IsOrth X x0) (hx : IsOrth X x)
     {FF : Set (ReciprocityTheory.L2DbarEstimates.V (nd X))} (hF : IsFundSet X x0 FF) :
     volume {w | w ∈ OmF X x ∧ ∀ z' ∈ FF, ∀ γ ∈ X.Γ, ∀ b ∈ Bor X.Ψ r,
@@ -67,6 +82,15 @@ theorem bad_null (X : Data E r) {x0 x : Frame X.Ψ r} (h0 : IsOrth X x0) (hx : I
   · obtain ⟨γ, hγ, z', hz', b, hb, h⟩ := hout _ hs
     exact hw.2 z' hz' γ hγ b hb h
 
+/- English proof (translation)
+Establish `hlu` using `fun x : {x : Frame X.Ψ r // IsOrth X x} => lu_holds r X x.1 x.2`. Use `choose Δ zOf bOf hD _ _ _ hsplit hinv using hlu`. Take `⟨T, hTc, hT⟩` from `TopologicalSpace.isOpen_iUnion_countable (fun x => {y | Δ x y ≠ 0}) (fun x => isOpen_ne_fun (hD x).continuous continuous_const)`. Use `⟨Subtype.val '' T, hTc.image _, ?_, fun y hy => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, _, rfl⟩`.
+
+Conclude with `x.2`. Take `⟨x1, h1, b, hb, e⟩` from `ortho_holds r X y hy`. Establish `hz : (0 : ReciprocityTheory.L2DbarEstimates.V (nd X)) ∈ OmF X x1` using `by show cpt X x1 0 ∈ X.dom`. Rewrite using `[PoinPf.cpt_zero]`. Conclude with `PoinPf.orth_mem_dom X h1`.
+
+Establish `hy' : y ∈ ⋃ x, {y | Δ x y ≠ 0}` using `Set.mem_iUnion.2 ⟨⟨x1, h1⟩, by`. Use `(hinv ⟨x1, h1⟩ 0 hz b hb).1` as an intermediate fact. Rewrite using `[PoinPf.cpt_zero, ← e] at this⟩` and apply the resulting hypothesis. Rewrite `hy'` using `[← hT]`. Take `⟨x, hxT, hne⟩` from `Set.mem_iUnion₂.1 hy'`.
+
+Take `⟨h2, h3, h4⟩` from `hsplit x y hy hne`. Conclude with `⟨x.1, ⟨x, hxT, rfl⟩, _, h2, _, h3, h4⟩`.
+-/
 theorem exists_cells (X : Data E r) : ∃ C : Set (Frame X.Ψ r), C.Countable ∧ (∀ x ∈ C, IsOrth X x) ∧
     ∀ y ∈ X.dom, ∃ x ∈ C, ∃ w ∈ OmF X x, ∃ b ∈ Bor X.Ψ r, y = rmul (cpt X x w) b := by
   have hlu := fun x : {x : Frame X.Ψ r // IsOrth X x} => lu_holds r X x.1 x.2
@@ -89,6 +113,15 @@ theorem exists_cells (X : Data E r) : ∃ C : Set (Frame X.Ψ r), C.Countable �
   obtain ⟨h2, h3, h4⟩ := hsplit x y hy hne
   exact ⟨x.1, ⟨x, hxT, rfl⟩, _, h2, _, h3, h4⟩
 
+/- English proof (translation)
+Use `choose! W hzW _ hWp using hP`. Take `⟨T, hTc, hT⟩` from `TopologicalSpace.isOpen_iUnion_countable (fun z : D => W z) (fun z => (hWp z z.2).1)`. Introduce `j`. Establish `hsub : (A.chart j).target ∩ (A.chart j).symm ⁻¹' (Φ '' Z) ⊆ ⋃ t ∈ T, (A.chart j ∘ Φ) '' (Z ∩ (W t ∩ Φ ⁻¹' (A.chart j).source))`. Introduce and unpack `u ⟨hu, z, hz, e⟩`.
+
+Establish `hz' : z ∈ ⋃ t : D, W t` using `Set.mem_iUnion.2 ⟨⟨z, hZ hz⟩, hzW z (hZ hz)⟩`. Rewrite `hz'` using `[← hT]`. Take `⟨t, ht, hzt⟩` from `Set.mem_iUnion₂.1 hz'`. Use `Set.mem_iUnion₂.2 ⟨t, ht, z, ⟨hz, hzt, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show Φ z ∈ (A.chart j).source`.
+
+Rewrite using `[e]`. Conclude with `(A.chart j).map_target hu`. Use `show A.chart j (Φ z) = u`. Rewrite using `[e]`. Conclude with `(A.chart j).right_inv hu`.
+
+Use `measure_mono_null hsub ((measure_biUnion_null_iff hTc).2 fun t _ => ?_)` and prove the remaining obligations. Use `addHaar_image_eq_zero_of_differentiableOn_of_addHaar_eq_zero volume (fun z hz => ?_) (measure_mono_null Set.inter_subset_left h0)` and prove the remaining obligations. Conclude with `(((hWp t t.2).2.2.2 j z hz.2).differentiableAt.restrictScalars ℝ).differentiableWithinAt`.
+-/
 theorem isNull_image {e : ℕ} {Y : Type} [TopologicalSpace Y] (A : FinHolAtlas e Y)
     {D Z : Set (Fin e → ℂ)} {Φ : (Fin e → ℂ) → Y}
     (hP : ∀ z ∈ D, ∃ W, z ∈ W ∧ W ⊆ D ∧ IsParam A W Φ) (hZ : Z ⊆ D) (h0 : volume Z = 0) :
@@ -123,6 +156,11 @@ def cc (X : Data E r) {Ψ : Type} [Fintype Ψ] {e : ℕ} (lab : Ψ ≃ X.Ψ) (q 
     (z : Fin e → ℂ) : ReciprocityTheory.L2DbarEstimates.V (nd X) :=
   WithLp.toLp 2 fun i => z (q ((Equiv.prodCongr lab (Equiv.refl _)).symm ((Fintype.equivFin (Ent X)).symm i)))
 
+/- English proof (translation)
+Establish `h : MeasurePreserving (⇑(MeasurableEquiv.piCongrLeft (fun _ : Fin (nd X) => ℂ) (sg X lab q).symm) : (Fin e → ℂ) → (Fin (nd X) → ℂ)) volume volume` using `volume_measurePreserving_piCongrLeft (fun _ : Fin (nd X) => ℂ) (sg X lab q).symm`. Establish `ht : MeasurePreserving (WithLp.toLp 2 : (Fin (nd X) → ℂ) → ReciprocityTheory.L2DbarEstimates.V (nd X)) volume volume` using `MeasurePreserving.symm (MeasurableEquiv.toLp 2 (Fin (nd X) → ℂ)).symm (GlobalTheory.volume_preserving_ofLp_complex (Fin (nd X)))`. Establish `e : (cc X lab q) = WithLp.toLp 2 ∘ (MeasurableEquiv.piCongrLeft (fun _ : Fin (nd X) => ℂ) (sg X lab q).symm)`. Use function extensionality and compare the values at `z`. Use `congrArg (WithLp.toLp 2) (funext fun i => ?_)` and prove the remaining obligations.
+
+Simplify using `[MeasurableEquiv.coe_piCongrLeft, Equiv.piCongrLeft_apply, sg]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `ht.comp h`.
+-/
 theorem cc_preserving (X : Data E r) {Ψ : Type} [Fintype Ψ] {e : ℕ} (lab : Ψ ≃ X.Ψ)
     (q : LowEnt Ψ r ≃ Fin e) : MeasurePreserving (cc X lab q) volume volume := by
   have h : MeasurePreserving (⇑(MeasurableEquiv.piCongrLeft (fun _ : Fin (nd X) => ℂ) (sg X lab q).symm) :
@@ -139,6 +177,9 @@ theorem cc_preserving (X : Data E r) {Ψ : Type} [Fintype Ψ] {e : ℕ} (lab : �
   rw [e]
   exact ht.comp h
 
+/- English proof (translation)
+Introduce `z z' h`. Establish `h1 : ∀ i, z (sg X lab q i) = z' (sg X lab q i)` using `fun i => congrFun (WithLp.toLp_injective 2 h) i`. Use function extensionality and compare the values at `a`. Simplify using `using h1 ((sg X lab q).symm a)`.
+-/
 theorem cc_injective (X : Data E r) {Ψ : Type} [Fintype Ψ] {e : ℕ} (lab : Ψ ≃ X.Ψ)
     (q : LowEnt Ψ r ≃ Fin e) : Function.Injective (cc X lab q) := by
   intro z z' h
@@ -146,6 +187,9 @@ theorem cc_injective (X : Data E r) {Ψ : Type} [Fintype Ψ] {e : ℕ} (lab : Ψ
   funext a
   simpa using h1 ((sg X lab q).symm a)
 
+/- English proof (translation)
+Introduce `w`. Use `⟨fun a => w.ofLp ((sg X lab q).symm a), ?_⟩` and prove the remaining obligations. Establish `: (fun i => w.ofLp ((sg X lab q).symm (sg X lab q i))) = w.ofLp` using `funext fun i => by simp`. Conclude with `(congrArg (WithLp.toLp 2) this).trans rfl`.
+-/
 theorem cc_surjective (X : Data E r) {Ψ : Type} [Fintype Ψ] {e : ℕ} (lab : Ψ ≃ X.Ψ)
     (q : LowEnt Ψ r ≃ Fin e) : Function.Surjective (cc X lab q) := by
   intro w
@@ -153,6 +197,29 @@ theorem cc_surjective (X : Data E r) {Ψ : Type} [Fintype Ψ] {e : ℕ} (lab : �
   have : (fun i => w.ofLp ((sg X lab q).symm (sg X lab q i))) = w.ofLp := funext fun i => by simp
   exact (congrArg (WithLp.toLp 2) this).trans rfl
 
+/- English proof (translation)
+Introduce `E _ _ _ N j e n Ψ _ S X x0 FF lab q pr hj hX hcov hdisj hrel hloc`. Establish `hbr : ∀ k (x : Frame (X k).Ψ N), IsOrth (X k) x → (∀ z : Fin e → ℂ, z ∈ cellDom j q ↔ cc (X k) (lab k) q z ∈ OmF (X k) x) ∧ ∀ F : Set (ReciprocityTheory.L2DbarEstimates.V (nd (X k))), MeasurableSet F → F ⊆ OmF (X k) x → muF (X k) x F = cellVol j q (cc (X k) (lab k) q ⁻¹' F)` using `fun k x hx => GlobalTheory.T.flag_domain_cell_coordinates E N j e (X k) x Ψ (lab k) q hx hj (hX k).1`. Establish `hrelcpt : ∀ k {y y' : Frame (X k).Ψ N}, y ∈ (X k).dom → y' ∈ (X k).dom → ∀ γ ∈ (X k).Γ, ∀ b ∈ Bor (X k).Ψ N, y' = lact γ (rmul y b) → pr k y = pr k y'` using `fun k y y' hy hy' γ hγ b hb h => (hrel k ⟨y, hy⟩ ⟨y', hy'⟩).2 ⟨γ, hγ, b, hb, h⟩`. Establish `hopen` using `(GlobalTheory.T.analytic_system_regularity_properties e (Ψ × Fin N) S).2.1`. Establish `hcells` using `fun k => exists_cells (X k)`.
+
+Use `choose C hCc hCo hCcov using hcells`. Establish `hnull : ∀ k, ∀ x ∈ C k, IsNull S.A ((fun z => pr k (cpt (X k) x (cc (X k) (lab k) q z))) '' (cc (X k) (lab k) q ⁻¹' {w | w ∈ OmF (X k) x ∧ ∀ z' ∈ FF k, ∀ γ ∈ (X k).Γ, ∀ b ∈ Bor (X k).Ψ N, cpt (X k) x w ≠ lact γ (rmul (cpt (X k) (x0 k) z') b)}))`. Introduce `k x hx`. Establish `ho` using `hCo k x hx`. Use `isNull_image S.A (D := cellDom j q) (fun z hz => (hloc k x ho z hz).1) (fun z hz => ((hbr k x ho).1 z).2 hz.1) ?_` and prove the remaining obligations.
+
+Conclude with `(cc_preserving (X k) (lab k) q).quasiMeasurePreserving.preimage_null (bad_null (X k) (hX k).2.1 ho (hX k).2.2)`. Use `⟨{ q := fun _ => q π := fun k z => pr k (cpt (X k) (x0 k) (cc (X k) (lab k) q z)) FF := fun k => cc (X k) (lab k) q ⁻¹' FF k mem_open := ?_, param := ?_, pot := ?_, meas := ?_, sub := ?_, inj := ?_, disj := ?_, cover := ?_ }, ?_⟩` and prove the remaining obligations. Introduce `k z hz`. Conclude with `(hcov _).2 ⟨k, _, ((hbr k _ (hX k).2.1).1 z).1 hz, rfl⟩`. Introduce `k z hz`.
+
+Conclude with `(hloc k _ (hX k).2.1 z hz).1`. Introduce `k z hz p`. Conclude with `(hloc k _ (hX k).2.1 z hz).2 p`. Introduce `k`. Conclude with `(cc_preserving (X k) (lab k) q).measurable (hX k).2.2.1`.
+
+Introduce `k z hz`. Conclude with `((hbr k _ (hX k).2.1).1 z).2 ((hX k).2.2.2.1 hz)`. Introduce `k z hz z' hz' h`. Establish `hO` using `(hX k).2.2.2.1`. Take `⟨γ, hγ, b, hb, e'⟩` from `(hrel k ⟨_, hO hz⟩ ⟨_, hO hz'⟩).1 h`.
+
+Conclude with `cc_injective (X k) (lab k) q ((hX k).2.2.2.2.1 _ hz _ hz' γ hγ b hb e')`. Introduce `k k' hk`. Use `Set.disjoint_left.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩ ⟨z', hz', e'⟩`. Conclude with `hk (hdisj k' k _ ((hX k').2.2.2.1 hz') _ ((hX k).2.2.2.1 hz) e').symm`.
+
+Establish `hsub : (⋃ k, (fun z => pr k (cpt (X k) (x0 k) (cc (X k) (lab k) q z))) '' (cc (X k) (lab k) q ⁻¹' FF k))ᶜ ⊆ S.open'ᶜ ∪ ⋃ k, ⋃ x ∈ C k, (fun z => pr k (cpt (X k) x (cc (X k) (lab k) q z))) '' (cc (X k) (lab k) q ⁻¹' {w | w ∈ OmF (X k) x ∧ ∀ z' ∈ FF k, ∀ γ ∈ (X k).Γ, ∀ b ∈ Bor (X k …`. Introduce `y hy`. Distinguish the cases in `hyo : y ∈ S.open'`. Use `swap`. Conclude with `Or.inl hyo`.
+
+Use `Or.inr ?_` and prove the remaining obligations. Take `⟨k, x', hx', rfl⟩` from `(hcov y).1 hyo`. Take `⟨x, hxC, w, hw, b, hb, e'⟩` from `hCcov k x' hx'`. Establish `h1 : pr k (cpt (X k) x w) = pr k x'` using `hrelcpt k hw hx' 1 (X k).Γ.one_mem b hb (by rw [FundSetPf.lact_one]; exact e')`. Take `⟨u, rfl⟩` from `cc_surjective (X k) (lab k) q w`.
+
+Use `Set.mem_iUnion.2 ⟨k, Set.mem_iUnion₂.2 ⟨x, hxC, u, ⟨hw, ?_⟩, h1⟩⟩` and prove the remaining obligations. Introduce `z' hz' γ hγ b' hb' e2`. Take `⟨u', rfl⟩` from `cc_surjective (X k) (lab k) q z'`. Use `hy (Set.mem_iUnion.2 ⟨k, u', hz', ?_⟩)` and prove the remaining obligations. Conclude with `(hrelcpt k ((hX k).2.2.2.1 hz') hw γ hγ b' hb' e2).trans h1`.
+
+Introduce `a`. Use `measure_mono_null (Set.inter_subset_inter_right _ (Set.preimage_mono hsub)) ?_` and prove the remaining obligations. Rewrite using `[Set.preimage_union, Set.inter_union_distrib_left]`. Use `measure_union_null (hopen a) ?_` and prove the remaining obligations. Simplify using `only [Set.preimage_iUnion, Set.inter_iUnion]`.
+
+Conclude with `measure_iUnion_null fun k => (measure_biUnion_null_iff (hCc k)).2 fun x hx => hnull k x hx a`. Introduce `k`. Conclude with `((hbr k _ (hX k).2.1).2 _ (hX k).2.2.1 (hX k).2.2.2.1).symm`.
+-/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (N j e n : ℕ) (Ψ : Type) [Fintype Ψ] (S : AnSys e (Ψ × Fin N)) (X : Fin n → Data E N) (x0 : ∀ k, Frame (X k).Ψ N) (FF : ∀ k, Set (ReciprocityTheory.L2DbarEstimates.V (nd (X k)))) (lab : ∀ k, Ψ ≃ (X k).Ψ) (q : LowEnt Ψ N ≃ Fin e) (pr : ∀ k, Frame (X k).Ψ N → S.X), j ≤ N → (∀ k, (X k).p0 = N - j ∧ IsOrth (X k) (x0 k) ∧ IsFundSet (X k) (x0 k) (FF k)) → (∀ y : S.X, y ∈ S.open' ↔ ∃ k, ∃ x ∈ (X k).dom, pr k x = y) → (∀ k k', ∀ x ∈ (X k).dom, ∀ x' ∈ (X k').dom, pr k x = pr k' x' → k = k') → (∀ k (x x' : (X k).dom), pr k x.1 = pr k x'.1 ↔ ReciprocityTheory.ChartRestriction.G.AR.Inst.Rel (X k) x x') → (∀ k (x : Frame (X k).Ψ N), IsOrth (X k) x → ∀ z ∈ cellDom j q, (∃ W, z ∈ W ∧ W ⊆ cellDom j q ∧ IsParam S.A W fun z' => pr k (cpt (X k) x (WithLp.toLp 2 fun i => z' (q ((Equiv.prodCongr (lab k) (Equiv.refl _)).symm ((Fintype.equivFin (Ent (X k))).symm i))) : ReciprocityTheory.L2DbarEstimates.V (nd (X k))))) ∧ ∀ p : Ψ × Fin N, ∃ G : (Fin e → ℂ) → ℂ, AnalyticAt ℂ G z ∧ ∀ᶠ z' in 𝓝 z, (S.potH p).φ (pr k (cpt (X k) x (WithLp.toLp 2 fun i => z (q ((Equiv.prodCongr (lab k) (Equiv.refl _)).symm ((Fintype.equivFin (Ent (X k))).symm i))) : ReciprocityTheory.L2DbarEstimates.V (nd (X k))))) (pr k (cpt (X k) x (WithLp.toLp 2 fun i => z' (q ((Equiv.prodCongr (lab k) (Equiv.refl _)).symm ((Fintype.equivFin (Ent (X k))).symm i))) : ReciprocityTheory.L2DbarEstimates.V (nd (X k))))) = stepPot N j p.2 (lowMat q z' p.1) + (G z').re) → ∃ U : PieceUnif S j n, ∀ k, U.vol k = muF (X k) (x0 k) (FF k) := by
   intro E _ _ _ N j e n Ψ _ S X x0 FF lab q pr hj hX hcov hdisj hrel hloc
   have hbr : ∀ k (x : Frame (X k).Ψ N), IsOrth (X k) x →

@@ -10,6 +10,11 @@ open GlobalTheory.Unf
 
 namespace GlobalTheory.Unf
 
+/- English proof (translation)
+Introduce `D ψ S T χ χ' om H f hf γ hγ γ' hγ' g h w`. Establish `h1` using `GlobalTheory.WeilRat.om_rat_actO D ψ H.std S T χ χ' om H γ hγ γ' hγ' _ (H.om_pres (g, h) f hf) (mt T γ'⁻¹ ⬝ w ⬝ mt S γ)`. Establish `h2 : actO S T γ γ' (mt T γ'⁻¹ ⬝ w ⬝ mt S γ) = w`. Rewrite using `[actO_eq, Matrix.mul_assoc, Matrix.mul_assoc, mt_mul_inv, Matrix.mul_one, ← Matrix.mul_assoc, mt_mul_inv, Matrix.one_mul]`. Rewrite `h1` using `[h2]`.
+
+Rewrite using `[← h1, ← Prod.mk_mul_mk, map_mul, Module.End.mul_apply]`.
+-/
 theorem om_rat_mul : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χ χ' : ((AE D)ˣ →* Circle)) (om : Om S T), IsWeilDatumO ψ S T χ χ' om → ∀ f, IsThetaFunO ψ S T f → ∀ γ ∈ GQ S, ∀ γ' ∈ GQ T, ∀ g h w, om (γ * g, γ' * h) f w = om (g, h) f (mt T γ'⁻¹ ⬝ w ⬝ mt S γ) := by
   intro D ψ S T χ χ' om H f hf γ hγ γ' hγ' g h w
   have h1 := GlobalTheory.WeilRat.om_rat_actO D ψ H.std S T χ χ' om H γ hγ γ' hγ' _ (H.om_pres (g, h) f hf)

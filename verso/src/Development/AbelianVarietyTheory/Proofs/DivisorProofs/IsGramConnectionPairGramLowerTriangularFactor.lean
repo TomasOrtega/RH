@@ -17,12 +17,28 @@ noncomputable section
 
 namespace GlobalTheory.ChernCalc
 
+/- English proof (translation)
+Establish `e` using `ratVal_fnOf (y := y) mem_ptsIn_top trivial (0 : Γ(X.X, ⊤))`. Rewrite `e` using `[map_zero, ev_eq mem_ptsIn_top, map_zero]`. Conclude with `e`.
+-/
 theorem ratVal_zero_var {F : Type} [Field F] {σ : F →+* ℂ} {X : Var F} (y : CxPts X.str σ) :
     ratVal (0 : X.Fn) y = 0 := by
   have e := ratVal_fnOf (y := y) mem_ptsIn_top trivial (0 : Γ(X.X, ⊤))
   rw [map_zero, ev_eq mem_ptsIn_top, map_zero] at e
   exact e
 
+/- English proof (translation)
+Establish `hA : ∀ y : CxPts X.str σ, (E.nonempty (under y)).choose ∈ E.S (under y)` using `fun y => (E.nonempty (under y)).choose_spec`. Establish `hsm` using `fun y => GlobalTheory.T.flaggedBundleMetric_smoothUnit_etaleChart F σ X ι m m E H hH y _ (hA y) τ`. Establish `hT : ∀ (A B : Mat m X.Fn) (w : CxPts X.str σ), A ∈ E.S (under w) → B ∈ E.S (under w) → HolUnitAt (atlas X σ) (fun z => ((B * A⁻¹) τ).map (ratVal · z)) w ∧ ∀ i j : Fin (m τ), i < j → ((B * A⁻¹) τ).map (ratVal · w) i j = 0`. Introduce `A B w hAw hBw`. Establish `hp` using `((Fr.mem_iff hAw).1 hBw) τ`.
+
+Use `⟨GlobalTheory.T.isHolomorphicUnitMatrixAt_rational_matrix_values F σ X (m τ) ((B * A⁻¹) τ) w (fun i j => mem_O_ratOf.1 (hp.1 i j)) hp.2.1 (mem_O_ratOf.1 hp.2.2.1), fun i j hij => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.map_apply, hp.2.2.2 i j i.2 hij]`. Conclude with `ratVal_zero_var w`. Use `⟨fun y => ⟨(hsm y).1, ?_⟩, fun y => ?_⟩` and prove the remaining obligations. Use `⟨(GlobalTheory.T.gramLowerTriangularFactor_posDef_properties _ _ (hH.posDef y _ (hA y) τ)).2.2.2, fun c hc => ?_⟩ filter_upwards [(hsm y).2 c hc] with v hv` and prove the remaining obligations.
+
+Conclude with `(GlobalTheory.T.gramLowerTriangularFactor_gradedLength_smooth _ _ _ v hv.1 hv.2).1`. Establish `h1` using `GlobalTheory.T.adaptedFrame_eventually_frame_near_complex_point F σ X ι m m E y _ (hA y) filter_upwards [h1, h1.eventually_nhds] with z hz hz'`. Establish `h2` using `GlobalTheory.T.adaptedFrame_eventually_frame_near_complex_point F σ X ι m m E z _ (hA z)`. Take `⟨hol, tri⟩` from `hT _ _ z hz (hA z)`. Use `⟨_, _, fun w => Matrix.diagonal fun i => (((E.nonempty (under z)).choose * (E.nonempty (under y)).choose⁻¹) τ).map (ratVal · w) i i, hol, hol, ⟨?_, fun c hc a b => ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.det_diagonal, ← Matrix.det_of_lowerTriangular _ (fun i j hij => tri i j hij)]`. Conclude with `hol.1`. Distinguish the cases in `hab : a = b`. Substitute `hab filter_upwards [hol.2 c hc a a] with v hv` using the available equality. Simplify `hv` using `only [Matrix.diagonal_apply_eq]`.
+
+Conclude with `Eventually.of_forall fun v => by`. Simplify using `only [Matrix.diagonal_apply_ne _ hab]`. Conclude with `differentiableAt_const _`. Use `filter_upwards [hz', h2] with w hwA hwB`. Take `⟨holw, triw⟩` from `hT _ _ w hwA hwB`.
+
+Establish `e` using `hH.trans w _ hwA _ hwB τ`. Express the relevant statement in the definitionally equal form `gramAt E H τ z w = _ * gramAt E H τ y w * _ at e`. Use `⟨e, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `(GlobalTheory.T.gramLowerTriangularFactor_lowerTriangular_conj _ _ _ (hH.posDef w _ hwA τ) triw holw.1).1`.
+-/
 theorem isGramPair_ldPart (F : Type) [Field F] (σ : F →+* ℂ) (X : Var F) (ι : Type) [Finite ι] (m : ι → ℕ)
     (E : Fr (ratOf X) m m) (H : Mat m X.Fn → CxPts X.str σ → Mat m ℂ) (hH : IsMetricFr E H) (τ : ι) :
     IsGramPair (atlas X σ) (gramAt E H τ) (fun y z => ldPart (gramAt E H τ y z)) := by

@@ -13,17 +13,29 @@ namespace GlobalTheory.HTPair.QuotIsog
 
 variable {p : ℕ} {O : Type} [CommRing O] {G H : PDivGroup p O} (τ : QuotTower G)
 
+/- English proof (translation)
+Introduce `a b h` and use `by rw [← τ.ρ_j m a, ← τ.ρ_j m b, h]`.
+-/
 theorem j_injective (m : ℕ) : Function.Injective (τ.j m) := fun a b h => by
   rw [← τ.ρ_j m a, ← τ.ρ_j m b, h]
 
+/- English proof (translation)
+Apply `j_injective τ m` to reduce the goal to its premises. Rewrite using `[τ.j_r, τ.j_s, τ.j_s, G.res_mulP, G.mulP_res]`.
+-/
 theorem pDivSubgroupQuotientTower_r_s_eq_s_res (m : ℕ) (a : G.A (m + 1)) : τ.r m (τ.s (m + 1) a) = τ.s m (G.res m a) := by
   apply j_injective τ m
   rw [τ.j_r, τ.j_s, τ.j_s, G.res_mulP, G.mulP_res]
 
+/- English proof (translation)
+Apply `j_injective τ m` to reduce the goal to its premises. Rewrite using `[τ.j_s, G.mulP_res, map_mulBy]`.
+-/
 theorem s_res_j (m : ℕ) (b : τ.B m) : τ.s m (G.res m (τ.j m b)) = mulBy O _ p b := by
   apply j_injective τ m
   rw [τ.j_s, G.mulP_res, map_mulBy]
 
+/- English proof (translation)
+Use `(kerIdeal_le_ker_iff _ _).2 fun c => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((G.res m).comp (τ.j m)) (mulBy O _ (p ^ m) c) = _`. Rewrite using `[map_mulBy, G.mulBy_pow_self, CoalgHomClass.counit_comp_apply]`.
+-/
 theorem ker_le (m : ℕ) : torsionIdeal O (τ.B m) (p ^ m) ≤
     RingHom.ker (((G.res m).comp (τ.j m) : τ.B m →ₐc[O] G.A m) : τ.B m →ₐ[O] G.A m) := by
   refine (kerIdeal_le_ker_iff _ _).2 fun c => ?_
@@ -41,6 +53,9 @@ def toQuot (q : ∀ m, τ.B m →ₐc[O] H.A m) (hs : ∀ m, Function.Surjective
     rw [BialgHom.comp_apply, BialgHom.comp_apply, hc, liftSurj_apply, liftSurj_apply,
       BialgHom.comp_apply, BialgHom.comp_apply, ← τ.j_r]
 
+/- English proof (translation)
+The claim follows from `liftSurj_apply ..`.
+-/
 theorem toQuot_app_q (q : ∀ m, τ.B m →ₐc[O] H.A m) (hs : ∀ m, Function.Surjective (q m))
     (hk : ∀ m, RingHom.ker (q m) = torsionIdeal O (τ.B m) (p ^ m))
     (hc : ∀ m b, H.res m (q (m + 1) b) = q m (τ.r m b)) (m : ℕ) (b : τ.B m) :

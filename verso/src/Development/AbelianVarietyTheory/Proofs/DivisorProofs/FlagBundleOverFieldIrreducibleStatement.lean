@@ -11,5 +11,8 @@ open scoped Classical
 open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalTheory.FlagAr GlobalTheory.ShFam.Pad GlobalTheory.VB
 open CategoryTheory.Limits
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FlagIrrFld.irreducibleSpace_of_isFlagBundle | exact GlobalTheory.FlagIrrFld.irreducibleSpace_of_isFlagBundle | (intros; apply GlobalTheory.FlagIrrFld.irreducibleSpace_of_isFlagBundle <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.flag_bundle_over_field_irreducible : ∀ (K : Type) [Field K] (Y : Scheme.{0}) (π : Y ⟶ Spec (CommRingCat.of K)) (ι : Type) [Fintype ι] (E : ι → (Spec (CommRingCat.of K)).Modules) (r : ι → ℕ) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)), (∀ a, GlobalTheory.VB.IsVB (E a) (r a)) → IsFlagBundle π E r fl → IrreducibleSpace Y := by
   first | exact @GlobalTheory.FlagIrrFld.irreducibleSpace_of_isFlagBundle | exact GlobalTheory.FlagIrrFld.irreducibleSpace_of_isFlagBundle | (intros; apply GlobalTheory.FlagIrrFld.irreducibleSpace_of_isFlagBundle <;> assumption)

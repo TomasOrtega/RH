@@ -22,6 +22,29 @@ namespace GlobalTheory.BaseClassSum
 
 variable {D : D7} {S T : HSp D}
 
+/- English proof (translation)
+Take `⟨hsplit, hcomm, htriv, -, -⟩` from `GlobalTheory.UnitarySplit.real_finite_split D S`. Take `⟨x, hx⟩` from `(k : Bridge.Gf S).2`. Take `⟨kk, hkk, -, -, -, hfk⟩` from `GlobalTheory.LiftUnfold.exists_fin_mul_real S x`. Establish `hkk' : finPt S kk = (k : Bridge.Gf S)` using `hfk.trans (Subtype.ext hx)`. Take `⟨ga, hga, gf, hgf, hγ⟩` from `hsplit (γ : GA D S)`.
+
+Establish `hfγ : Bridge.ratF S γ = finPt S gf`. Express the relevant statement in the definitionally equal form `finPt S (γ : GA D S) = _`. Rewrite using `[hγ]`. Simplify using `only [finPt]`. Rewrite using `[map_mul]`.
+
+Establish `: (finHom S).rangeRestrict ga = 1` using `Subtype.ext (MonoidHom.mem_ker.1 hga)`. Rewrite using `[this, one_mul]`. Establish `eh : h = (γ : GA D S) * h' * ga⁻¹ * kk`. Establish `eg : gf = (γ : GA D S) * ga⁻¹`. Rewrite using `[hγ, hcomm ga hga gf hgf, mul_inv_cancel_right]`.
+
+Establish `e1 : h = gf * h' * kk` using `by set y := (gf * h' * kk)⁻¹ * h with hy`. Establish `hyf : y ∈ GfC S` using `mul_mem (inv_mem (mul_mem (mul_mem hgf hh') hkk)) hh`. Establish `hyi : y ∈ GinfC S`. Establish `: finPt S y = 1`. Rewrite using `[hy]`.
+
+Simplify using `only [finPt] at hkk' hfγ e ⊢`. Rewrite using `[map_mul, map_inv, map_mul, map_mul, hkk', ← hfγ]`. Express the relevant statement in the definitionally equal form `_ * ((finHom S).rangeRestrict h) = 1`. Rewrite using `[e]`. Conclude with `inv_mul_cancel _`.
+
+Conclude with `MonoidHom.mem_ker.2 (congrArg Subtype.val this)`. Use `htriv y hyi hyf` as an intermediate fact. Rewrite `this` using `[hy, inv_mul_eq_one]`. Conclude with `this.symm`. Rewrite using `[e1, eg, mul_assoc (γ : GA D S) ga⁻¹ h', hcomm ga⁻¹ (inv_mem hga) h' hh', ← mul_assoc]`.
+
+Establish `hact : B.act ((γ⁻¹ : GQ S) : GA D S) = B.act ga⁻¹`. Establish `hr : GlobalTheory.ExportSeries.realGL B.F.θ S gf = 1`. Use function extensionality and compare the values at `τ`. Use `show Formalism.UG.bc (B.F.θ τ) (infHom S gf) = 1`. Rewrite using `[MonoidHom.mem_ker.1 hgf, map_one]`.
+
+Rewrite using `[Base.act, MonoidHom.comp_apply, MonoidHom.comp_apply, Subgroup.coe_inv, hγ, _root_.mul_inv_rev, map_mul, map_inv _ gf, hr, inv_one, one_mul]`. Establish `hJ : finPt S kk ∈ B.levJ t` using `hkk' ▸ k.2`. Establish `hθf : ∀ P, IsThetaFunO B.F.ψ S T (B.F.fock (B.vecFlat t) P)` using `Base.isThetaFunO_fock_vecAt hB hQ _`. Establish `hk : ω (kk, 1) (B.F.fock (B.vecFlat t) P) = ((B.levLam t k : ℂˣ) : ℂ)⁻¹ • B.F.fock (B.vecFlat t) P`. Establish `h1` using `GlobalTheory.ExportSeries.DualType.dual_type_fock hB hS ht hQ hω hkk hJ P`.
+
+Establish `e2 : ((B.levLam t ⟨_, hJ⟩ : ℂˣ) : ℂ) = ((B.levLam t k : ℂˣ) : ℂ)` using `congrArg (fun z : B.levJ t => ((B.levLam t z : ℂˣ) : ℂ)) (Subtype.ext hkk')`. Rewrite using `[← e2]`. Conclude with `h1`. Establish `ha : ω (ga⁻¹, 1) (B.F.fock (B.vecFlat t) P) = B.F.fock (B.vecFlat t) (B.act ga⁻¹ P)` using `GlobalTheory.RealFockAction.om_fock_vecAt D S T B t ω t.Q _ hB ht hQ hω ga⁻¹ (inv_mem hga) P`. Establish `ep : ∀ g : GA D T, (((γ : GA D S) * h' * ga⁻¹ * kk, g) : GA D S × GA D T) = ((γ : GA D S), 1) * ((h', g) * ((ga⁻¹, 1) * (kk, 1)))` using `fun g => by`.
+
+Apply the tactic sequence `ext <;> simp [mul_assoc]`. Establish `key : ∀ g : GA D T, ω (h, g) (B.F.fock (B.vecFlat t) P) 0 = ((B.levLam t k : ℂˣ) : ℂ)⁻¹ * ω (h', g) (B.F.fock (B.vecFlat t) (B.act ga⁻¹ P)) 0` using `fun g => by`. Rewrite using `[eh, ep g, map_mul, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, Module.End.mul_apply, hk, map_smul, ha, map_smul, map_smul, Pi.smul_apply, hω.om_aut _ γ.2 1 (one_mem _) _ (hω.om_pres _ _ (hθf _)), smul_eq_mul]`. Use `funext fun g => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, hact]`.
+
+Conclude with `key g`.
+-/
 theorem series_move {B : Base S T} (hB : B.Good) (hS : S.SigOK) {t : Twist D Circle} (ht : t.Good) (hQ : B.admitted t.Q)
     {ω : PairRep S T} (hω : B.IsWeil t.chi ω) {h h' : GA D S} (hh : h ∈ GfC S) (hh' : h' ∈ GfC S) (γ : GQ S) (k : B.levJ t)
     (e : finPt S h = Bridge.ratF S γ * finPt S h' * (k : Bridge.Gf S)) (P : PolF D T.rank S.rank) :
@@ -86,6 +109,9 @@ theorem series_move {B : Base S T} (hB : B.Good) (hS : S.SigOK) {t : Twist D Cir
   rw [Pi.smul_apply, smul_eq_mul, hact]
   exact key g
 
+/- English proof (translation)
+Establish `key : ∀ t : Twist D Circle, t.Q = ∅ → t.chi = 1 → series (ρ.B i j b).F (ρ.om i j b t.chi) ((ρ.B i j b).vecFlat t) h P = ρ.theta i j b h P`. Introduce and unpack `⟨_, _, r⟩ rfl rfl`. Use `show series _ _ ((ρ.B i j b).vecAt ∅ _) h P = series _ _ (ρ.B i j b).vecBase h P`. Rewrite using `[Base.vecAt_empty]`. Conclude with `key _ (half_empty _) (charOf_one _ _)`.
+-/
 theorem series_triv (ρ : Setup D.ntw) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool) (h : GA D (Vc D j))
     (P : PolF D (Wc D j).rank (Vc D j).rank) :
     series (ρ.B i j b).F (ρ.om i j b (ρ.tw i b 0 ∅ 1).chi) ((ρ.B i j b).vecFlat (ρ.tw i b 0 ∅ 1)) h P = ρ.theta i j b h P := by
@@ -96,6 +122,17 @@ theorem series_triv (ρ : Setup D.ntw) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool)
     rw [Base.vecAt_empty]
   exact key _ (half_empty _) (charOf_one _ _)
 
+/- English proof (translation)
+Take `⟨hg, ha, -⟩` from `GlobalTheory.T.twistingCharacter_admissibleGaloisTwist_good D _ D.ntw ρ hρ i j b 0 ∅ 1 (twOK_one i 0)`. Establish `hB` using `hρ.base i j b`. Establish `hω` using `hρ.weil i j b _ hg`. Take `⟨γ, s, h', k, hs, hoff, hh', hsupp, e⟩` from `GlobalTheory.T.exists_split_supported_rep_finite_unitary_class D ρ hρ i j b h hh`. Establish `hlaw` using `((ρ.B i j b).mem_formsC.1 hF).2 γ (finPt _ h') k`.
+
+Establish `hval : F (finPt _ h') ∈ (ρ.B i j b).valSpace` using `((ρ.B i j b).mem_formsC.1 hF).1 _`. Establish `hinv : ((ρ.B i j b).act ((γ⁻¹ : GQ (Vc D j)) : GA D (Vc D j))) ((ρ.B i j b).act (γ : GA D (Vc D j)) (F (finPt _ h'))) = F (finPt _ h')`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Subgroup.coe_inv, inv_mul_cancel, map_one, Module.End.one_apply]`. Rewrite using `[e, hlaw, LinearMap.map_smul, series_move hB (D.sp.V_sig _) hg ha hω hh hh' γ k e, hinv, smul_smul, mul_inv_cancel₀ (Units.ne_zero _), one_smul, series_triv]`. Establish `hspan : F (finPt _ h') ∈ Submodule.span ℂ (ρ.lat i j b (ρ.eO i b).range h' : Set (PolF D (Wc D j).rank (Vc D j).rank))`.
+
+Establish `hm : ∀ τ, (ρ.B i j b).w.p τ + (ρ.B i j b).w.q τ ≤ (Wc D j).rank` using `fun τ => by`. Establish `h1` using `hB.sig τ`. Establish `h2` using `Formalism.BasicNotions.sig_sum _ hB.sigOK (tauE D τ)`. Rewrite `h2` using `[← h1]`. Conclude with `h2.le`.
+
+Establish `hlat : Submodule.IsLattice D.host.E ((ρ.B i j b).latAt (finPt _ h'))` using `Formalism.UG.P.csGlob_lattice _ (Module.Finite.iff_fg.2 hB.frame.sdS.1.fg) hB.frame.sdS.1.span_eq_top _`. Establish `h2` using `(GlobalTheory.T.fockHarmonicLattice_fg_and_spans_value_space D (Wc D j).rank (Vc D j).rank (ρ.B i j b).w (ρ.B i j b).F.BS _ (Formalism.L2.Host.embLL0 D) (labLL0 D) (ρ.eO i b).range ((ρ.B i j b).latAt (finPt _ h')) hB.wt hm (hρ.isCoefRing i b) hlat).2`. Establish `h3 : (ρ.lat i j b (ρ.eO i b).range h' : Set (PolF D (Wc D j).rank (Vc D j).rank)) = (harmLat (Formalism.L2.Host.embLL0 D) (labLL0 D) (ρ.eO i b).range (Wc D j).rank (ρ.B i j b).w (ρ.B i j b).F.BS ((ρ.B i j b).latAt (finPt _ h')) : Set (PolF D (Wc D j).rank (Vc D j).rank))` using `rfl`. Rewrite using `[h3, h2]`. Conclude with `hval`.
+
+Establish `hmap` using `Submodule.mem_map_of_mem (f := (ρ.B i j b).theta (ρ.om i j b 1) h') hspan`. Rewrite `hmap` using `[Submodule.map_span]`. Use `Submodule.span_mono ?_ hmap` and prove the remaining obligations. Introduce and unpack `_ ⟨P, hP, rfl⟩`. Conclude with `⟨s, h', P, ⟨hs, hoff, hh', hsupp, hP⟩, rfl⟩`.
+-/
 theorem term_mem_span {ρ : Setup D.ntw} (hρ : ρ.Good) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool)
     {F : Bridge.Gf (Vc D j) → PolF D (Wc D j).rank (Vc D j).rank} (hF : F ∈ (ρ.B i j b).formsC (ρ.tw i b 0 ∅ 1))
     {h : GA D (Vc D j)} (hh : h ∈ GfC (Vc D j)) :
@@ -134,6 +171,13 @@ theorem term_mem_span {ρ : Setup D.ntw} (hρ : ρ.Good) (i : D.ntw.Tw) (j : Fin
   rintro _ ⟨P, hP, rfl⟩
   exact ⟨s, h', P, ⟨hs, hoff, hh', hsupp, hP⟩, rfl⟩
 
+/- English proof (translation)
+Take `⟨hg, ha, -⟩` from `GlobalTheory.T.twistingCharacter_admissibleGaloisTwist_good D _ D.ntw ρ hρ i j b 0 ∅ 1 (twOK_one i 0)`. Establish `hc` using `hρ.classes i j b _ hg ha`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F hF`. Establish `hF'` using `((ρ.B i j b).mem_mtLat _ _ _).1 hF`.
+
+Rewrite using `[Setup.sum, Base.classSum_apply]`. Conclude with `Submodule.sum_mem _ fun c _ => Submodule.smul_mem _ _ (term_mem_span hρ i j b hF'.1 (hc.fin c))`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+
+Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ a hx`.
+-/
 theorem sum_mem_span {ρ : Setup D.ntw} (hρ : ρ.Good) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool)
     {F : Bridge.Gf (Vc D j) → PolF D (Wc D j).rank (Vc D j).rank}
     (hF : F ∈ Submodule.span ℂ (ρ.mt i j b 0 ∅ 1 : Set (Bridge.Gf (Vc D j) → PolF D (Wc D j).rank (Vc D j).rank))) :
@@ -153,6 +197,9 @@ end GlobalTheory.BaseClassSum
 
 namespace GlobalTheory.TwInputs
 
+/- English proof (translation)
+Introduce `D ρ hρ rd i hS j b x hx`. Take `⟨F, hF, e⟩` from `hS j b x hx`. Rewrite using `[e]`. Conclude with `GlobalTheory.BaseClassSum.sum_mem_span hρ i j b hF`.
+-/
 theorem spanGood_of_sumOnto : ∀ (D : D7) (ρ : Setup D.ntw) (hρ : ρ.Good) (rd : Rds D.nexp ρ), ∀ i, SumOnto rd i → SpanGood rd i := by
   intro D ρ hρ rd i hS j b x hx
   obtain ⟨F, hF, e⟩ := hS j b x hx

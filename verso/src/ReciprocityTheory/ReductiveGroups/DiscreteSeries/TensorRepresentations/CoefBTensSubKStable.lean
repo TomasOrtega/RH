@@ -19,6 +19,13 @@ section admitted
 variable {M : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M] {ε : Fin n → Bool}
   {E : Fin n → Fin n → Module.End ℂ M} {lam : Fin n → ℝ} {V : Submodule ℂ M}
 
+/- English proof (translation)
+Take `⟨hmono, h, hh, hbig⟩` from `hgap`. Use `⟨⌈(C - casValK ε (lowK ε lam)) / (2 * (h - n + 1))⌉₊, fun w hw μ hμ hμC => ?_⟩` and prove the remaining obligations. Take `⟨w₀, hw₀, -, m, ws, hsum, hws⟩` from `k_highest_weight_layer_decomp hE hU hV hc hmono hh hbig hw hμ`. Rewrite using `[hsum]`. Use `Submodule.add_mem _ (layer_mono (Nat.zero_le _) (show w₀ ∈ layer ε E V 0 from hw₀)) (Submodule.sum_mem _ fun j _ => ?_)` and prove the remaining obligations.
+
+Distinguish the cases in `h0 : ws j = 0`. Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`. Take `⟨-, hpos, hle⟩` from `(hws j).2 h0`. Use `layer_mono ?_ (hws j).1` and prove the remaining obligations.
+
+Establish `hj : ((j : ℕ) : ℝ) + 1 ≤ (C - casValK ε (lowK ε lam)) / (2 * (h - n + 1))`. Rewrite using `[le_div_iff₀ (mul_pos two_pos hpos)]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `hj.trans (Nat.le_ceil _)` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+-/
 theorem coefB_khw_le (hE : IsGlRep E) (hU : IsInfUnitary ε E)
     (hV : IsKIrrHW ε E (lowK ε lam) V) (hc : ∀ v ∈ V, casimir E v = (casVal lam : ℂ) • v)
     (hgap : StdGap ε lam) (C : ℝ) :
@@ -41,6 +48,27 @@ theorem coefB_khw_le (hE : IsGlRep E) (hU : IsInfUnitary ε E)
   have := hj.trans (Nat.le_ceil _)
   exact_mod_cast this
 
+/- English proof (translation)
+Take `⟨K, hK⟩` from `coefB_khw_le hE hU hV hc hgap C`. Use `⟨K, fun y hy θ hθ hyθ => ?_⟩` and prove the remaining obligations. Establish `hUk` using `isKUnitary_of_isInfUnitary hU`. Take `⟨m, hm⟩` from `exists_layer_of_mem_genSub hE hV.2.1 hy`. Establish `hfm : FiniteDimensional ℂ (layer ε E V m)` using `finiteDimensional_layer hV.1 m`.
+
+Use `set T : Submodule ℂ M := layer ε E V m ⊓ LinearMap.ker (casimirK ε E - (θ : ℂ) • 1) with hTdef`. Establish `memT : ∀ x, x ∈ T ↔ x ∈ layer ε E V m ∧ casimirK ε E x = (θ : ℂ) • x`. Introduce `x`. Simplify using `only [T, Submodule.mem_inf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`. Establish `hTd : FiniteDimensional ℂ T` using `Submodule.finiteDimensional_of_le inf_le_left`.
+
+Establish `hTs : IsKStableSub ε E T`. Introduce `a b hab x hx`. Rewrite `hx`, the goal using `[memT]`. Use `⟨layer_kStable hE hV.2.1 m a b hab x hx.1, ?_⟩` and prove the remaining obligations. Use `congrArg (fun F : Module.End ℂ M => F x) (casimirK_comm ε hE a b hab)` as an intermediate fact.
+
+Simplify using `only [Module.End.mul_apply] at this`. Rewrite using `[this, hx.2, map_smul]`. Use `set T₀ : Submodule ℂ M := T ⊓ layer ε E V K`. Establish `hT0d : FiniteDimensional ℂ T₀` using `Submodule.finiteDimensional_of_le inf_le_left`. Establish `hT0s : IsKStableSub ε E T₀` using `fun a b hab x hx => ⟨hTs a b hab x hx.1, layer_kStable hE hV.2.1 K a b hab x hx.2⟩`.
+
+Establish `hyT : y ∈ T` using `(memT y).2 ⟨hm, hyθ⟩`. Use `set r := y - T₀.starProjection y`. Distinguish the cases in `hr : r = 0`. Establish `: y = T₀.starProjection y` using `sub_eq_zero.1 hr`. Rewrite using `[this]`.
+
+Conclude with `(Submodule.starProjection_apply_mem T₀ y).2`. It suffices to derive a contradiction. Use `set S : Submodule ℂ M := T ⊓ T₀ᗮ`. Establish `hrS : r ∈ S` using `⟨T.sub_mem hyT (Submodule.starProjection_apply_mem T₀ y).1, Submodule.sub_starProjection_mem_orthogonal y⟩`. Establish `hSd : FiniteDimensional ℂ S` using `Submodule.finiteDimensional_of_le inf_le_left`.
+
+Establish `hSs : IsKStableSub ε E S` using `fun a b hab x hx => ⟨hTs a b hab x hx.1, orthogonal_kStable hUk hT0s a b hab x hx.2⟩`. Establish `hne : S ≠ ⊥`. Introduce `h`. Use `hrS` as an intermediate fact. Rewrite `this` using `[h, Submodule.mem_bot]`.
+
+Conclude with `hr this`. Take `⟨w, hwS, hw0, μ, hμ⟩` from `exists_khw hE hUk hSd hSs hne`. Establish `hwT` using `(memT w).1 hwS.1`. Establish `h1` using `casimirK_khwVec ε hE hμ`. Rewrite `h1` using `[hwT.2]`.
+
+Establish `h2 : (θ : ℂ) = ((nsq (μ + rhoC ε) - nsq (rhoC ε) : ℝ) : ℂ)` using `smul_left_injective ℂ hw0 h1`. Establish `h3 : casValK ε μ = θ`. Use `Complex.ofReal_injective h2` as an intermediate fact. Rewrite using `[this]`. Both sides reduce to the same expression.
+
+Establish `hwK` using `hK w (layer_le_genSub m hwT.1) μ hμ (h3 ▸ hθ)`. Establish `hwT0 : w ∈ T₀` using `⟨hwS.1, hwK⟩`. Use `Submodule.inner_right_of_mem_orthogonal hwT0 hwS.2` as an intermediate fact. Conclude with `hw0 (inner_self_eq_zero.1 this)`.
+-/
 theorem coefB_adm (hE : IsGlRep E) (hU : IsInfUnitary ε E)
     (hV : IsKIrrHW ε E (lowK ε lam) V) (hc : ∀ v ∈ V, casimir E v = (casVal lam : ℂ) • v)
     (hgap : StdGap ε lam) (C : ℝ) :
@@ -109,15 +137,24 @@ def coefTr (A : Module.End ℂ (Fin n → D)) : Module.End ℂ (WithLp 2 (Fin n 
   (WithLp.linearEquiv 2 ℂ (Fin n → D)).symm.toLinearMap ∘ₗ A ∘ₗ
     (WithLp.linearEquiv 2 ℂ (Fin n → D)).toLinearMap
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coefTr_apply (A : Module.End ℂ (Fin n → D)) (u : WithLp 2 (Fin n → D)) :
     coefTr A u = WithLp.toLp 2 (A (WithLp.ofLp u)) := rfl
 
+/- English proof (translation)
+Use `LinearMap.ext fun u => ?_` and prove the remaining obligations. Simplify using `only [casimirK, coefTr, LinearMap.sum_apply, Module.End.mul_apply, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply, map_sum]`.
+-/
 theorem coefTr_casimirK (ε : Fin n → Bool) (A : Fin n → Fin n → Module.End ℂ (Fin n → D)) :
     casimirK ε (fun a b => coefTr (A a b)) = coefTr (casimirK ε A) := by
   refine LinearMap.ext fun u => ?_
   simp only [casimirK, coefTr, LinearMap.sum_apply, Module.End.mul_apply,
     LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply, map_sum]
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_eq_single a]`. Simplify using the standard rewrite rules. Introduce `c _ hc`. Simplify using `[hc]`. Simplify using the standard rewrite rules.
+-/
 theorem coefB_sum_ite_left (a : Fin n) (x : D) (v : Fin n → D) :
     ∑ c, inner ℂ (if c = a then x else 0) (v c) = inner ℂ x (v a) := by
   rw [Finset.sum_eq_single a]
@@ -126,6 +163,9 @@ theorem coefB_sum_ite_left (a : Fin n) (x : D) (v : Fin n → D) :
     simp [hc]
   · simp
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_eq_single a]`. Simplify using the standard rewrite rules. Introduce `c _ hc`. Simplify using `[hc]`. Simplify using the standard rewrite rules.
+-/
 theorem coefB_sum_ite_right (a : Fin n) (x : D) (v : Fin n → D) :
     ∑ c, inner ℂ (v c) (if c = a then x else 0) = inner ℂ (v a) x := by
   rw [Finset.sum_eq_single a]
@@ -134,6 +174,9 @@ theorem coefB_sum_ite_right (a : Fin n) (x : D) (v : Fin n → D) :
     simp [hc]
   · simp
 
+/- English proof (translation)
+Consider the cases of `dual`. Apply the tactic sequence `by_cases h : c = a <;> simp [tensF, tensV, coordV, h]`. Apply the tactic sequence `by_cases h : c = b <;> simp [tensF, tensVd, coordV, h, sub_eq_add_neg]`.
+-/
 private lemma tensF_apply {M : Type*} [AddCommGroup M] [Module ℂ M] (dual : Bool)
     (E : Fin n → Fin n → Module.End ℂ M) (a b c : Fin n) (u : Fin n → M) :
     tensF dual E a b u c =
@@ -142,6 +185,9 @@ private lemma tensF_apply {M : Type*} [AddCommGroup M] [Module ℂ M] (dual : Bo
   · by_cases h : c = a <;> simp [tensF, tensV, coordV, h]
   · by_cases h : c = b <;> simp [tensF, tensVd, coordV, h, sub_eq_add_neg]
 
+/- English proof (translation)
+Introduce `a b hab x y`. Apply the tactic sequence `cases dual <;>`. Simplify using `only [PiLp.inner_apply, coefTr_apply, PiLp.toLp_apply, tensF_apply, cond_false, cond_true, inner_add_left, inner_add_right, inner_neg_left, inner_neg_right, Finset.sum_add_distrib, Finset.sum_neg_distrib, hU a b hab, coefB_sum_ite_left, coefB_sum_ite_right]`.
+-/
 theorem coefB_isKUnitary (dual : Bool) {ε : Fin n → Bool} {E : Fin n → Fin n → Module.End ℂ D}
     (hU : IsKUnitary ε E) : IsKUnitary ε (fun a b => coefTr (tensF dual E a b)) := by
   intro a b hab x y
@@ -159,6 +205,11 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {ε : Fin 
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H}
   {E : Fin n → Fin n → Module.End ℂ D}
 
+/- English proof (translation)
+Introduce `a b hab v hv`. Establish `hv' : ∀ d, v d ∈ S` using `fun d => (Submodule.mem_pi.mp hv) d (Set.mem_univ d)`. Use `Submodule.mem_pi.mpr fun c _ => ?_` and prove the remaining obligations. Rewrite using `[tensF_apply]`. Use `Submodule.add_mem _ (hS a b hab _ (hv' c)) ?_` and prove the remaining obligations.
+
+Consider the cases of `dual`. Apply the tactic sequence `by_cases h : c = a <;> simp [h, hv']`. Apply the tactic sequence `by_cases h : c = b <;> simp [h, hv']`.
+-/
 theorem coefB_tensSub_kStable (dual : Bool) {S : Submodule ℂ D} (hS : IsKStableSub ε E S) :
     IsKStableSub ε (tensF dual E) (tensSub S) := by
   intro a b hab v hv
@@ -170,6 +221,9 @@ theorem coefB_tensSub_kStable (dual : Bool) {S : Submodule ℂ D} (hS : IsKStabl
   · by_cases h : c = a <;> simp [h, hv']
   · by_cases h : c = b <;> simp [h, hv']
 
+/- English proof (translation)
+Simplify using `only [casimirK, LinearMap.sum_apply]`. Use `Submodule.sum_mem _ fun a _ => Submodule.sum_mem _ fun b hb => ?_` and prove the remaining obligations. Establish `hb' : ε b = ε a` using `(Finset.mem_filter.mp hb).2`. Conclude with `hS a b hb'.symm _ (hS b a hb' _ hx)`.
+-/
 theorem coefB_casimirK_mem {X : Type*} [AddCommGroup X] [Module ℂ X]
     {A : Fin n → Fin n → Module.End ℂ X} {S : Submodule ℂ X} (hS : IsKStableSub ε A S) {x : X}
     (hx : x ∈ S) : casimirK ε A x ∈ S := by
@@ -178,6 +232,9 @@ theorem coefB_casimirK_mem {X : Type*} [AddCommGroup X] [Module ℂ X]
   have hb' : ε b = ε a := (Finset.mem_filter.mp hb).2
   exact hS a b hb'.symm _ (hS b a hb' _ hx)
 
+/- English proof (translation)
+Introduce `y hy`. Take `⟨m, hm⟩` from `exists_layer_of_mem_genSub hE hVk hy`. Conclude with `⟨layer ε E V m, finiteDimensional_layer hVf m, layer_le_genSub m, fun x hx => casimirK_mem_of_kStable (layer_kStable hE hVk m) hx, hm⟩`.
+-/
 theorem coefB_locFin (hE : IsGlRep E) {V : Submodule ℂ D} (hVf : FiniteDimensional ℂ V)
     (hVk : IsKStableSub ε E V) : CoefLocFin (casimirK ε E) (genSub E V) := by
   intro y hy
@@ -185,6 +242,9 @@ theorem coefB_locFin (hE : IsGlRep E) {V : Submodule ℂ D} (hVf : FiniteDimensi
   exact ⟨layer ε E V m, finiteDimensional_layer hVf m, layer_le_genSub m,
     fun x hx => casimirK_mem_of_kStable (layer_kStable hE hVk m) hx, hm⟩
 
+/- English proof (translation)
+Simplify using `only [casimirK, LinearMap.sum_apply, map_sum, Module.End.mul_apply]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hι a b _ (hS' b a y hy), hι b a y hy]`.
+-/
 theorem coefB_ι_casimirK (dual : Bool) {S' : Submodule ℂ D} {ι : D →ₗ[ℂ] (Fin n → D)}
     (hS' : ∀ a b, ∀ v ∈ S', E a b v ∈ S')
     (hι : ∀ a b, ∀ x ∈ S', ι (E a b x) = tensF dual E a b (ι x)) {y : D} (hy : y ∈ S') :
@@ -193,6 +253,25 @@ theorem coefB_ι_casimirK (dual : Bool) {S' : Submodule ℂ D} {ι : D →ₗ[�
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
   rw [hι a b _ (hS' b a y hy), hι b a y hy]
 
+/- English proof (translation)
+Introduce `f hf`. Establish `hE` using `hD.glRep`. Establish `hU` using `isInfUnitary_of_isDerivedOn hσ hD`. Establish `hUk` using `isKUnitary_of_isInfUnitary hU`. Establish `hf' : ∀ c, ∃ m, f c ∈ layer ε E V m` using `fun c => exists_layer_of_mem_genSub hE hVk ((Submodule.mem_pi.1 hf) c (Set.mem_univ c))`.
+
+Use `choose m hm using hf'`. Use `set k := Finset.univ.sup m`. Establish `hk : ∀ c, f c ∈ layer ε E V k` using `fun c => layer_mono (Finset.le_sup (f := m) (Finset.mem_univ c)) (hm c)`. Use `set e := WithLp.linearEquiv 2 ℂ (Fin n → D)`. Use `set TY := casimirK ε (fun a b => coefTr (tensF dual E a b))`.
+
+Establish `hTY : ∀ x y, inner ℂ (TY x) y = inner ℂ x (TY y)` using `casimirK_inner_symm (coefB_isKUnitary dual hUk)`. Establish `hTYa : ∀ u, TY (WithLp.toLp 2 u) = WithLp.toLp 2 (casimirK ε (tensF dual E) u)`. Introduce `u`. Simplify using `only [TY, coefTr_casimirK, coefTr_apply]`. Use `set Lk := tensSub (n := n) (layer ε E V k)`.
+
+Use `set L : Submodule ℂ (WithLp 2 (Fin n → D)) := Lk.comap e.toLinearMap`. Establish `hLd : FiniteDimensional ℂ L` using `by set P : (Fin n → layer ε E V k) →ₗ[ℂ] WithLp 2 (Fin n → D) := e.symm.toLinearMap ∘ₗ LinearMap.pi (fun c => (layer ε E V k).subtype ∘ₗ LinearMap.proj c)`. Establish `: FiniteDimensional ℂ (layer ε E V k)` using `finiteDimensional_layer hVf k`. Establish `hle : L ≤ LinearMap.range P`. Introduce `u hu`.
+
+Establish `hu' : ∀ c, WithLp.ofLp u c ∈ layer ε E V k` using `fun c => (Submodule.mem_pi.1 hu) c (Set.mem_univ c)`. Conclude with `⟨fun c => ⟨WithLp.ofLp u c, hu' c⟩, rfl⟩`. Conclude with `Submodule.finiteDimensional_of_le hle`. Establish `hLs : ∀ x ∈ L, TY x ∈ L`. Introduce `x hx`.
+
+Establish `: TY x = WithLp.toLp 2 (casimirK ε (tensF dual E) (WithLp.ofLp x))` using `hTYa _`. Establish `h2 : casimirK ε (tensF dual E) (WithLp.ofLp x) ∈ Lk` using `coefB_casimirK_mem (coefB_tensSub_kStable dual (layer_kStable hE hVk k)) hx`. Use `show WithLp.ofLp (TY x) ∈ Lk`. Rewrite using `[this]`. Conclude with `h2`.
+
+Take `⟨C, hC⟩` from `coefA_high hTY hLd hLs`. Take `⟨K, hK⟩` from `coefB_adm hE hU hV' hc' hgap' C`. Use `set ℓ : D →ₗ[ℂ] ℂ := (innerₛₗ ℂ (WithLp.toLp 2 f)).comp (e.symm.toLinearMap ∘ₗ ι)`. Establish `hℓ : ∀ y, ℓ y = ∑ c, inner ℂ (f c) (ι y c)`. Introduce `y`.
+
+Use `show inner ℂ (WithLp.toLp 2 f) (WithLp.toLp 2 (ι y)) = _`. Rewrite using `[PiLp.inner_apply]`. Establish `hfL : WithLp.toLp 2 f ∈ L` using `Submodule.mem_pi.2 fun c _ => hk c`. Establish `hTsym : ∀ x y, inner ℂ (casimirK ε E x) y = inner ℂ x (casimirK ε E y)` using `casimirK_inner_symm hUk`. Take `⟨z, hzM, hz⟩` from `coefA_toSum hTsym (coefB_locFin hE hV'.1 hV'.2.1) ℓ C (finiteDimensional_layer hV'.1 K) (layer_le_genSub K) (fun y hy θ hθ hyθ => hK y hy θ hθ hyθ) (fun y hy θ hθ hyθ => by`.
+
+Use `hC _ hfL (WithLp.toLp 2 (ι y)) θ hθ ?_` and prove the remaining obligations. Rewrite using `[hTYa, ← coefB_ι_casimirK dual (fun a b v hv => closure_E_mem_genSub a b hv) hι.2.2.1 hy, hyθ, map_smul]`. Use the proof step `rfl)`. Conclude with `⟨z, hzM, fun y hy => by rw [hz y hy, hℓ]⟩`.
+-/
 theorem coefB_toSum_exists (dual : Bool) (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     {lam' : Fin n → ℝ} {V V' : Submodule ℂ D} (hVf : FiniteDimensional ℂ V)
     (hVk : IsKStableSub ε E V) (hgap' : StdGap ε lam') (hV' : IsKIrrHW ε E (lowK ε lam') V')
@@ -256,6 +335,19 @@ theorem coefB_toSum_exists (dual : Bool) (hσ : IsURepOn (UJset ε) σ) (hD : Is
       rfl)
   exact ⟨z, hzM, fun y hy => by rw [hz y hy, hℓ]⟩
 
+/- English proof (translation)
+Introduce `z hz`. Establish `hE` using `hD.glRep`. Establish `hU` using `isInfUnitary_of_isDerivedOn hσ hD`. Establish `hUk` using `isKUnitary_of_isInfUnitary hU`. Use `set e := WithLp.linearEquiv 2 ℂ (Fin n → D)`.
+
+Use `set TY := casimirK ε (fun a b => coefTr (tensF dual E a b))`. Establish `hTY : ∀ x y, inner ℂ (TY x) y = inner ℂ x (TY y)` using `casimirK_inner_symm (coefB_isKUnitary dual hUk)`. Establish `hTYa : ∀ u, TY (WithLp.toLp 2 u) = WithLp.toLp 2 (casimirK ε (tensF dual E) u)`. Introduce `u`. Simplify using `only [TY, coefTr_casimirK, coefTr_apply]`.
+
+Establish `hTsym : ∀ x y, inner ℂ (casimirK ε E x) y = inner ℂ x (casimirK ε E y)` using `casimirK_inner_symm hUk`. Use `set ιY : D →ₗ[ℂ] WithLp 2 (Fin n → D) := e.symm.toLinearMap ∘ₗ ι`. Establish `hιT : ∀ y ∈ genSub E V', ιY (casimirK ε E y) = TY (ιY y)`. Introduce `y hy`. Use `show WithLp.toLp 2 (ι (casimirK ε E y)) = TY (WithLp.toLp 2 (ι y))`.
+
+Rewrite using `[hTYa, coefB_ι_casimirK dual (fun a b v hv => closure_E_mem_genSub a b hv) hι.2.2.1 hy]`. Establish `hinj : ∀ y ∈ genSub E V', ιY y = 0 → y = 0`. Introduce `y hy h0`. Use `hι.2.1 y hy ?_` and prove the remaining obligations. Use `congrArg WithLp.ofLp h0` as an intermediate fact.
+
+Conclude with `this`. Establish `hfin : ∀ θ : ℝ, ∃ Z : Submodule ℂ D, FiniteDimensional ℂ Z ∧ ∀ y ∈ genSub E V', casimirK ε E y = (θ : ℂ) • y → y ∈ Z`. Introduce `θ`. Take `⟨K, hK⟩` from `coefB_adm hE hU hV' hc' hgap' θ`. Conclude with `⟨layer ε E V' K, finiteDimensional_layer hV'.1 K, fun y hy hyθ => hK y hy θ le_rfl hyθ⟩`.
+
+Take `⟨f, hfM, hf⟩` from `coefA_ofSum hTsym hTY (coefB_locFin hE hV'.1 hV'.2.1) ιY hιT hinj hfin z hz`. Take `⟨y₀, hy₀, rfl⟩` from `hfM`. Use `⟨ι y₀, hι.1 y₀ hy₀, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[← hf y hy, PiLp.inner_apply]`. Both sides reduce to the same expression.
+-/
 theorem coefB_ofSum_exists (dual : Bool) (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     {lam' : Fin n → ℝ} {V V' : Submodule ℂ D} (hgap' : StdGap ε lam')
     (hV' : IsKIrrHW ε E (lowK ε lam') V')

@@ -12,6 +12,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.StdFrameInv
 
+/- English proof (translation)
+Establish `hhat : (fun k => (Pi.single j 1 : Fin n → E) k ⊗ₜ[F] (1 : Formalism.L2.Herm.Af F)) ∈ Formalism.L2.Herm.hatL (F` using `F) Λ := Submodule.subset_span ⟨_, hmem, rfl⟩`. Establish `e : (fun k => (Pi.single j 1 : Fin n → E) k ⊗ₜ[F] (1 : Formalism.L2.Herm.Af F)) = Pi.single j 1`. Use function extensionality and compare the values at `k`. Rewrite using `[Pi.single_apply, Pi.single_apply]`. Use `split_ifs`.
+
+Both sides reduce to the same expression. Conclude with `TensorProduct.zero_tmul _ _`. Rewrite `hhat` using `[e]`. Use `(hfr _).1 hhat a` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_single_one]`.
+
+Conclude with `this`.
+-/
 theorem inv_col_int {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (Λ : Submodule (𝓞 E) (Fin n → E)) (hfr : Formalism.L2.DIV.IsFrame β Λ)
     (a j : Fin n) (hmem : (Pi.single j 1 : Fin n → E) ∈ Λ) : (β⁻¹).val a j ∈ Formalism.L2.Herm.intAf F E := by
@@ -28,6 +35,11 @@ theorem inv_col_int {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
   rw [Matrix.mulVec_single_one] at this
   exact this
 
+/- English proof (translation)
+Introduce `D i β Λ hV hΛ a j`. Establish `hfr : Formalism.L2.DIV.IsFrame β Λ` using `by obtain ⟨c, h, -⟩ := hΛ; exact h`. Establish `hmem : (Pi.single j 1 : Fin (Vc D i).rank → D.host.E) ∈ Λ`. Rewrite using `[GlobalTheory.PrincInLevel.eq_latC hΛ, ← GlobalTheory.SplitReps.hLat_one, hV.2]`. Introduce `k _`.
+
+Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Conclude with `Submodule.mem_one.2 ⟨1, map_one _⟩`. Conclude with `zero_mem _`. Conclude with `inv_col_int β Λ hfr a j hmem`.
+-/
 theorem isIntM_inv : ∀ (D : D7) (i : Fin D.R.m) (β : GL (Fin (Vc D i).rank) (EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin (Vc D i).rank → D.host.E)), VStd D i → IsSDFrame (Vc D i) β Λ 1 → IsIntM (β⁻¹).val := by
   intro D i β Λ hV hΛ a j
   have hfr : Formalism.L2.DIV.IsFrame β Λ := by obtain ⟨c, h, -⟩ := hΛ; exact h

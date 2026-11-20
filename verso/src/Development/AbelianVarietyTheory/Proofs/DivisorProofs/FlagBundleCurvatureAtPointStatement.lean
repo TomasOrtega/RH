@@ -9,6 +9,9 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxForm GlobalTheory.CxPts Glob
 open scoped Classical
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LineChart.exists_chart_cosSq | exact GlobalTheory.LineChart.exists_chart_cosSq | (intros; apply GlobalTheory.LineChart.exists_chart_cosSq <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.flag_bundle_curvature_at_point : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (d : ℕ)
     (hB : IsRegVar q d) (hY : IsRegVar p (d + 1)) (π : Y ⟶ B) (w : π ≫ q = p) (E : B.Modules) (h : VMetric q E 2) (H : h.IsCInf)
     (flB : Vert.Flag E 2) (fl : Vert.Flag ((Scheme.Modules.pullback π).obj E) 2),

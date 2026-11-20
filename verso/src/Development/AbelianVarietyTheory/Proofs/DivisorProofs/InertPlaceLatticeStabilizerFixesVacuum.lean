@@ -12,6 +12,11 @@ noncomputable section
 
 namespace GlobalTheory.InertSph
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hTr v w hw hv k hk`. Take `⟨hSB, -, θ, hθ, hvac⟩` from `hTr.geo.hM'.vac v`. Take `⟨φ₁, hφ₁, hact⟩` from `GlobalTheory.T.weilRepresentation_localAtFinitePlace_unitaryGroupW F E σ B a a' G X om om' hTr v k hk.1 _ hSB`. Establish `h1` using `GlobalTheory.T.unitaryStabilizer_preserves_vacuumCondition_at_place F E σ B a a' G X om om' hTr v θ hθ k hk _ hSB φ₁ hφ₁ hact hvac`. Take `⟨c, rfl⟩` from `GlobalTheory.T.inertPlace_schwartzBruhat_vacuumCondition_eq_smul F E σ B a a' G X om om' hTr v w hw θ hθ hvac φ₁ hφ₁ h1`.
+
+Establish `hc` using `GlobalTheory.T.weil_vacuum_scalar_eq_one_inert_place F E σ B a a' G X om om' hTr v w hw hv k hk c hact`. Rewrite `hact` using `[hc, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem vac_fixed' : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ (v : Pl F) (w : HeightOneSpectrum (𝓞 E)), Formalism.UG.IsInertAt F E v w → v ∉ X.T →

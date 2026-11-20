@@ -19,11 +19,21 @@ open GlobalTheory.ZM
 namespace GlobalTheory
 namespace ClosedPts
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_spMap {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   rw [← Spec.map_comp]
   rfl
 
+/- English proof (translation)
+Rewrite using `[isJacobsonRing_iff_prime_eq]`. Introduce `P hP`. Distinguish the cases in `h : P = ⊥`. Substitute `h` using the available equality. Use `le_antisymm (fun x hx => ?_) Ideal.le_jacobson` and prove the remaining obligations.
+
+Rewrite using `[Ideal.mem_bot]`. Assume the negation of the conclusion as `h0`. Establish `h1` using `Ideal.mem_jacobson_bot.1 hx x`. Establish `h2 : 0 < x * x` using `mul_self_pos.2 h0`. Apply the tactic sequence `rcases Int.isUnit_iff.1 h1 with h3 | h3 <;> omega`.
+
+Use `Ring.DimensionLEOne.maximalOfPrime h hP` as an intermediate fact. Conclude with `Ideal.jacobson_eq_self_of_isMaximal`.
+-/
 theorem jacobson_int : IsJacobsonRing ℤ := by
   rw [isJacobsonRing_iff_prime_eq]
   intro P hP
@@ -38,6 +48,11 @@ theorem jacobson_int : IsJacobsonRing ℤ := by
   · have := Ring.DimensionLEOne.maximalOfPrime h hP
     exact Ideal.jacobson_eq_self_of_isMaximal
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Apply `hf` to reduce the goal to its premises. Rewrite using `[← IsJacobsonRing.out inferInstance hq.isRadical, Ideal.jacobson, Ideal.mem_sInf]`. Introduce and unpack `m ⟨h1, h2⟩`.
+
+Conclude with `hc m h2 h1`.
+-/
 theorem exists_maximal_notMem {R : Type} [CommRing R] [IsJacobsonRing R] (q : Ideal R) (f : R) (hq : q.IsPrime)
     (hf : f ∉ q) : ∃ m : Ideal R, m.IsMaximal ∧ q ≤ m ∧ f ∉ m := by
   by_contra hc
@@ -47,6 +62,13 @@ theorem exists_maximal_notMem {R : Type} [CommRing R] [IsJacobsonRing R] (q : Id
   rintro m ⟨h1, h2⟩
   exact hc m h2 h1
 
+/- English proof (translation)
+Establish `hp : q.IsPrime` using `hq.1.1`. Use `charZero_of_inj_zero fun n hn => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Establish `h1 : (n : o) ∈ nonZeroDivisors o` using `mem_nonZeroDivisors_of_ne_zero (by exact_mod_cast h0)`. Establish `hreg` using `Module.Flat.isSMulRegular_of_nonZeroDivisors (M := R) h1`.
+
+Establish `h2 : (n : R) ∈ q`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Conclude with `hn`. Use `Set.disjoint_left.mp (Ideal.disjoint_nonZeroDivisors_of_mem_minimalPrimes hq) h2 ?_` and prove the remaining obligations. Use `mem_nonZeroDivisors_iff_left.2 fun x hx => hreg ?_` and prove the remaining obligations.
+
+Simplify `hx` using `[Algebra.smul_def]`.
+-/
 theorem charZero_quotient {o R : Type} [CommRing o] [IsDomain o] [CharZero o] [CommRing R] [Algebra o R]
     [Module.Flat o R] {q : Ideal R} (hq : q ∈ minimalPrimes R) : CharZero (R ⧸ q) := by
   have hp : q.IsPrime := hq.1.1
@@ -61,10 +83,20 @@ theorem charZero_quotient {o R : Type} [CommRing o] [IsDomain o] [CharZero o] [C
   refine mem_nonZeroDivisors_iff_left.2 fun x hx => hreg ?_
   simpa [Algebra.smul_def] using hx
 
+/- English proof (translation)
+The claim follows from `Algebra.FiniteType.of_surjective f.toIntAlgHom hf`.
+-/
 theorem finiteType_int_of_surjective {A B : Type} [CommRing A] [CommRing B] [Algebra.FiniteType ℤ A] (f : A →+* B)
     (hf : Function.Surjective f) : Algebra.FiniteType ℤ B :=
   Algebra.FiniteType.of_surjective f.toIntAlgHom hf
 
+/- English proof (translation)
+Rewrite using `[genericPoint_eq_bot_of_affine]`. Establish `key : ∀ y : Sp K, spMap (algebraMap V K) y = (⊥ : PrimeSpectrum V)` using `fun y => by`. Use `PrimeSpectrum.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.comap (algebraMap V K) y.asIdeal = ⊥`. Establish `hy : y.asIdeal = (⊥ : Ideal K)` using `Ideal.eq_bot_of_prime (K := K) y.asIdeal (h := y.isPrime)`.
+
+Rewrite using `[hy]`. Conclude with `Ideal.comap_bot_of_injective _ (IsFractionRing.injective V K)`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`.
+
+Conclude with `key y`. Introduce and unpack `rfl`. Conclude with `⟨(⊥ : PrimeSpectrum K), key _⟩`.
+-/
 theorem range_spMap_fraction (V K : Type) [CommRing V] [IsDomain V] [Field K] [Algebra V K] [IsFractionRing V K] :
     Set.range (spMap (algebraMap V K)) = {genericPoint (Sp V)} := by
   rw [genericPoint_eq_bot_of_affine]
@@ -81,6 +113,11 @@ theorem range_spMap_fraction (V K : Type) [CommRing V] [IsDomain V] [Field K] [A
   · rintro rfl
     exact ⟨(⊥ : PrimeSpectrum K), key _⟩
 
+/- English proof (translation)
+Take `⟨t', ht'⟩` from `GlobalTheory.T.exists_thetaLevelAbelianScheme_pullback o g _ J b _ _ s s' (spMap e) t hs`. Use `⟨t', ?_, ?_, fun w w' => (GlobalTheory.T.thetaLevel_shape_primitivity_pullback_descent o g _ J b Mat κ w w' _ _ s s' _ t t' ht').2.1⟩` and prove the remaining obligations. Introduce `j`. Conclude with `(GlobalTheory.T.thetaLevel_shape_primitivity_pullback_descent o g _ J b Mat κ j j _ _ s s' _ t t' ht').1 hsh j`. Rewrite using `[GlobalTheory.T.hasThetaConstants_iff_of_thetaLevelPullback o g N' J b _ s t _ s' t' _ B (𝟙 _) _ ht', Category.id_comp]`.
+
+Use `GlobalTheory.T.hasThetaConstants_ring_baseChange h2 o g N' J b _ s t A B e (𝟙 _) v hv` as an intermediate fact. Rewrite `this` using `[Category.comp_id]`. Then use the resulting hypothesis.
+-/
 theorem exists_pull (h2 : Out.Laws2) {o : Type} [CommRing o] {g N' : ℕ} {J : Type} {b : TBase o (N' ^ 2)}
     (Mat : J → Matrix (Fin (2 * g)) (Fin (2 * g)) ℤ) (κ : ℕ) {A B : Type} [CommRing A] [CommRing B] (e : A →+* B)
     {s : Sp A ⟶ Sp o} (s' : Sp B ⟶ Sp o) (hs : spMap e ≫ s = s') (t : TObj g (N' ^ 2) J b s)
@@ -99,6 +136,35 @@ end ClosedPts
 
 open ClosedPts in
 
+/- English proof (translation)
+Introduce `h1 h2 crit g J _ Mat κ n w w' hn hodd`. Take `⟨j₁, crit⟩` from `crit g n J w w' hn hodd`. Take `⟨j₂, desc⟩` from `GlobalTheory.T.descend_to_thetaConstant_field h1 h2 g J Mat κ n w w' hn hodd`. Use `⟨max j₁ j₂, fun j hj o _ b em C d har _ R _ _ v hft _ hflat hMM hmin q f hq hf => ?_⟩` and prove the remaining obligations. Take `⟨hded, hfo, hinj⟩` from `har`.
+
+Establish `: CharZero o` using `em.charZero`. Establish `: Algebra.FiniteType ℤ R` using `Algebra.FiniteType.trans hfo hft`. Use `jacobson_int` as an intermediate fact. Establish `: IsJacobsonRing R` using `isJacobsonRing_of_finiteType (A := ℤ)`. Take `⟨m, hm, hqm, hfm⟩` from `exists_maximal_notMem q f hq hf`.
+
+Use `⟨m, ?_, hm.isPrime, hqm, hfm⟩` and prove the remaining obligations. Use `hm.isPrime` as an intermediate fact. Take `⟨q₀, hq₀, hq₀m⟩` from `Ideal.exists_minimalPrimes_le (I := (⊥ : Ideal R)) (J := m) bot_le`. Establish `hp₀ : q₀.IsPrime` using `hq₀.1.1`. Establish `: CharZero (R ⧸ q₀)` using `charZero_quotient (o := o) hq₀`.
+
+Use `finiteType_int_of_surjective (Ideal.Quotient.mk q₀) Ideal.Quotient.mk_surjective` as an intermediate fact. Take `⟨K, _, x, t, hx, hsh, hpr, hth⟩` from `hmin q₀ hq₀`. Set `Ω` to `AlgebraicClosure K`. Take `⟨tΩ, hshΩ, hthΩ, hprΩ⟩` from `exists_pull h2 Mat κ (algebraMap K Ω) _ rfl t _ hsh hth`. Set `R₀` to `R ⧸ q₀`.
+
+Set `K₀` to `FractionRing R₀`. Set `π : R →+* R₀` to `Ideal.Quotient.mk q₀`. Set `x₀ : R₀ →+* Ω` to `Ideal.Quotient.lift q₀ ((algebraMap K Ω).comp x) fun a ha => by`. Rewrite `ha` using `[← hx, RingHom.mem_ker]`. Simplify using `[ha]`.
+
+Establish `hx₀ : Function.Injective x₀`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Establish `: algebraMap K Ω (x a) = 0` using `ha`.
+
+Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, ← hx, RingHom.mem_ker]`. Conclude with `(map_eq_zero _).1 this`. Set `e : K₀ →+* Ω` to `IsFractionRing.lift hx₀`. Establish `he : ∀ a : R, e (algebraMap R₀ K₀ (π a)) = algebraMap K Ω (x a)` using `fun a => by`. Simplify using `only [e, IsFractionRing.lift_algebraMap]`.
+
+Both sides reduce to the same expression. Set `β₀ : o →+* R₀` to `π.comp (algebraMap o R)`. Take `⟨t₀, -, hsh₀, hpr₀, hth₀⟩` from `desc j (le_of_max_le_right hj) o b K₀ Ω ((algebraMap R₀ K₀).comp β₀) e _ tΩ (fun a => algebraMap R₀ K₀ (π (v a))) (by`. Simplify using `only [spMap_spMap]`. Use `congr 1`.
+
+Use extensionality with `a`. Conclude with `(he _).symm) hshΩ (hprΩ w w' hpr) (by simpa only [he] using hthΩ)`. Take `⟨t₁, hsh₁, hth₁, hpr₁⟩` from `exists_pull h2 Mat κ (RingHom.id K₀) (spMap (algebraMap R₀ K₀) ≫ spMap β₀) (by simp only [spMap_spMap, RingHom.id_comp]) t₀ _ hsh₀ hth₀`. Establish `hker : RingHom.ker π ≤ m` using `by rwa [Ideal.mk_ker]`. Establish `hm₀ : (m.map π).IsMaximal` using `(Ideal.map_eq_top_or_isMaximal_of_surjective π Ideal.Quotient.mk_surjective hm).resolve_left fun h => by`.
+
+Use `Ideal.comap_map_of_surjective' π Ideal.Quotient.mk_surjective m` as an intermediate fact. Rewrite `this` using `[h, Ideal.comap_top, sup_eq_left.2 hker]`. Conclude with `hm.ne_top this.symm`. Establish `hcm : (m.map π).comap π = m`. Rewrite using `[Ideal.comap_map_of_surjective' π Ideal.Quotient.mk_surjective m, sup_eq_left.2 hker]`.
+
+Take `⟨V, F, _, _, _, _, _, _, _, _, _, y, tF, hy, hshF, hprF, hthF⟩` from `GlobalTheory.T.exists_thetaObject_over_complete_dvr_specialisation h1 h2 o g (n ^ j) J b Mat κ w w' R₀ K₀ β₀ (fun a => π (v a)) t₁ (m.map π) hm₀ hth₁ hsh₁ (hpr₁ w w' hpr₀)`. Establish `hmem : ∀ a : R, y (π a) ∈ IsLocalRing.maximalIdeal V ↔ a ∈ m` using `fun a => by`. Rewrite using `[← Ideal.mem_comap, hy, ← Ideal.mem_comap, hcm]`. Establish `hcos : Coset n (n ^ j) (fun a => y (π (v a))) (IsLocalRing.maximalIdeal V)` using `fun a => by`. Take `⟨c, hc⟩` from `hMM.2 m hm.isPrime a`.
+
+Conclude with `⟨c, fun h => hc ((hmem _).1 h)⟩`. Take `⟨V', K', _, _, _, _, _, _, φ, ψ, t', tK, hφ, -, hK, hK', hth'⟩` from `crit j (le_of_max_le_left hj) o b V F (y.comp β₀) tF _ hprF hthF hcos`. Establish `hshK : tK.Shape Mat κ` using `(GlobalTheory.T.thetaLevel_shape_primitivity_pullback_descent o g _ J b Mat κ w w' _ _ _ _ _ tF tK hK).1 hshF`. Establish `hsh' : t'.Shape Mat κ` using `GlobalTheory.T.thetaLevelShape_of_generic_point h1 h2 o g _ J b Mat κ (Sp V') _ t' K' _ _ tK (range_spMap_fraction V' K') hK' hshK`. Set `k` to `AlgebraicClosure (IsLocalRing.ResidueField V')`.
+
+Set `r : V' →+* k` to `(algebraMap (IsLocalRing.ResidueField V') k).comp (IsLocalRing.residue V')`. Set `z : R →+* k` to `r.comp (φ.comp (y.comp π))`. Take `⟨tk, hshk, hthk, -⟩` from `exists_pull h2 Mat κ r (spMap z ≫ spMap (algebraMap o R)) (by simp only [spMap_spMap]) t' _ hsh' hth'`. Use `⟨k, inferInstance, inferInstance, z, tk, ?_, hshk, hthk⟩` and prove the remaining obligations. Use extensionality with `a`.
+
+Rewrite using `[RingHom.mem_ker, ← hmem]`. Express the relevant statement in the definitionally equal form `algebraMap (IsLocalRing.ResidueField V') k (IsLocalRing.residue V' (φ (y (π a)))) = 0 ↔ _`. Rewrite using `[map_eq_zero, IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, mem_nonunits_iff, isUnit_map_iff]`.
+-/
 theorem veryDense_objPrimes_of_minimalPrimes : Out.Laws → Out.Laws2 → (∀ (g n : ℕ) (J : Type) (w w' : J), n.Prime → Odd n → ∃ j₀ : ℕ, ∀ j ≥ j₀, ∀ (o : Type) [CommRing o] (b : TBase o ((n ^ j) ^ 2)) (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (IsLocalRing.maximalIdeal V) V] [Finite (IsLocalRing.ResidueField V)] [Field K] [CharZero K] [Algebra V K] [IsFractionRing V K] (β : o →+* V) (t : TObj g ((n ^ j) ^ 2) J b (spMap (algebraMap V K) ≫ spMap β)) (v : Ix g ((n ^ j) ^ 2) → V), t.Prim w w' → t.HasTh (𝟙 _) (fun a => algebraMap V K (v a)) → Coset n (n ^ j) v (IsLocalRing.maximalIdeal V) → ∃ (V' K' : Type) (_ : CommRing V') (_ : IsDomain V') (_ : IsDiscreteValuationRing V') (_ : Field K') (_ : Algebra V' K') (_ : IsFractionRing V' K') (φ : V →+* V') (ψ : K →+* K') (t' : TObj g ((n ^ j) ^ 2) J b (spMap φ ≫ spMap β)) (tK : TObj g ((n ^ j) ^ 2) J b (spMap (algebraMap V' K') ≫ spMap φ ≫ spMap β)), IsLocalHom φ ∧ ψ.comp (algebraMap V K) = (algebraMap V' K').comp φ ∧ TMap tK t (spMap ψ) ∧ TMap tK t' (spMap (algebraMap V' K')) ∧ t'.HasTh (𝟙 _) (fun a => φ (v a))) → ∀ (g : ℕ) (J : Type) [Finite J] (Mat : J → Matrix (Fin (2 * g)) (Fin (2 * g)) ℤ) (κ n : ℕ) (w w' : J), n.Prime → Odd n → ∃ j₀ : ℕ, ∀ j ≥ j₀, ∀ (o : Type) [CommRing o] (b : TBase o ((n ^ j) ^ 2)) (em : o →+* ℂ) (C : TObj g ((n ^ j) ^ 2) J b (spMap em) → Prop) (d : ℕ), ArBase em → GoodClass em C Mat κ w w' d → ∀ (R : Type) [CommRing R] [Algebra o R] (v : Ix g ((n ^ j) ^ 2) → R), Algebra.FiniteType o R → IsReduced R → Module.Flat o R → InMM n (n ^ j) (thIdeal em C) (algebraMap o R) v → (∀ q ∈ minimalPrimes R, ∃ (K : Type) (_ : Field K) (x : R →+* K) (t : TObj g ((n ^ j) ^ 2) J b (spMap x ≫ spMap (algebraMap o R))), RingHom.ker x = q ∧ t.Shape Mat κ ∧ t.Prim w w' ∧ t.HasTh (𝟙 _) (fun a => x (v a))) → VeryDense (objPrimes b Mat κ (algebraMap o R) v) := by
   intro h1 h2 crit g J _ Mat κ n w w' hn hodd
   obtain ⟨j₁, crit⟩ := crit g n J w w' hn hodd

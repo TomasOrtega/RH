@@ -5,6 +5,11 @@ open MeasureTheory ValuativeRel Matrix GlobalTheory.PRep GlobalTheory.SplitWeil 
 
 namespace GlobalTheory.ParHecke
 
+/- English proof (translation)
+Unfold `Multiset.esymm`. Rewrite using `[Multiset.powersetCard_map, Multiset.map_map, Multiset.sum_map_mul_left.symm]`. Use `congr 1`. Use `Multiset.map_congr rfl fun t ht => ?_` and prove the remaining obligations. Establish `hc : t.card = n` using `(Multiset.mem_powersetCard.1 ht).2`.
+
+Simplify using `only [Function.comp_apply]`. Rewrite using `[Multiset.prod_map_mul, Multiset.map_const', Multiset.prod_replicate, hc, mul_comm, Multiset.map_id']`.
+-/
 theorem esymm_map_mul_const (s : Multiset ℂ) (c : ℂ) (n : ℕ) :
     (s.map (· * c)).esymm n = c ^ n * s.esymm n := by
   unfold Multiset.esymm
@@ -15,6 +20,9 @@ theorem esymm_map_mul_const (s : Multiset ℂ) (c : ℂ) (n : ℕ) :
   simp only [Function.comp_apply]
   rw [Multiset.prod_map_mul, Multiset.map_const', Multiset.prod_replicate, hc, mul_comm, Multiset.map_id']
 
+/- English proof (translation)
+Unfold `genVal`. Establish `e : ((B.map (· * c)).map fun b : ℂˣ => (b : ℂ)) = (B.map fun b : ℂˣ => (b : ℂ)).map (· * (c : ℂ))`. Simplify using `[Multiset.map_map, Function.comp_def]`. Rewrite using `[e, esymm_map_mul_const]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem genVal_map_mul (q r N n : ℕ) (B : Multiset ℂˣ) (c : ℂˣ) :
     genVal q r N (B.map (· * c)) n = (c : ℂ) ^ n * genVal q r N B n := by
   unfold genVal

@@ -12,6 +12,11 @@ namespace RigSymForm
 
 variable {K : Type} [Field K] [Algebra K ℂ] (P : RigSymForm K)
 
+/- English proof (translation)
+Take `⟨-, h1, h2⟩` from `hf`. Establish `: w + P.latVec u v = (w + P.pt.τ *ᵥ intVec u) + intVec v`. Simplify using `only [latVec]`. Normalize the expressions using the abelian group laws. Rewrite using `[this, h1, h2, autL]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem thetaSec_add_latVec {N : ℕ} {f : P.Fn} (hf : f ∈ thetaSec P.pt P.ch N)
     (u v : Fin P.g → ℤ) (w : Fin P.g → ℂ) : f (w + P.latVec u v) = P.autL N u v w * f w := by
   obtain ⟨-, h1, h2⟩ := hf
@@ -19,13 +24,22 @@ theorem thetaSec_add_latVec {N : ℕ} {f : P.Fn} (hf : f ∈ thetaSec P.pt P.ch 
     simp only [latVec]; abel
   rw [this, h1, h2, autL]; ring
 
+/- English proof (translation)
+The claim follows from `mul_ne_zero (Complex.exp_ne_zero _) (Complex.exp_ne_zero _)`.
+-/
 theorem autL_ne_zero (N : ℕ) (u v : Fin P.g → ℤ) (w : Fin P.g → ℂ) : P.autL N u v w ≠ 0 :=
   mul_ne_zero (Complex.exp_ne_zero _) (Complex.exp_ne_zero _)
 
+/- English proof (translation)
+Simplify using `only [autL, ← perFactor_add, ← autFactor_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem autL_add (N₁ N₂ : ℕ) (u v : Fin P.g → ℤ) (w : Fin P.g → ℂ) :
     P.autL (N₁ + N₂) u v w = P.autL N₁ u v w * P.autL N₂ u v w := by
   simp only [autL, ← perFactor_add, ← autFactor_add]; ring
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero`. Simplify using `[autL, perFactor, autFactor]`. Consider the case `succ k ih => rw [Nat.mul_succ, autL_add, ih, pow_succ]`.
+-/
 theorem autL_mul (d k : ℕ) (u v : Fin P.g → ℤ) (w : Fin P.g → ℂ) :
     P.autL (d * k) u v w = P.autL d u v w ^ k := by
   induction k with
@@ -33,12 +47,18 @@ theorem autL_mul (d k : ℕ) (u v : Fin P.g → ℤ) (w : Fin P.g → ℂ) :
     simp [autL, perFactor, autFactor]
   | succ k ih => rw [Nat.mul_succ, autL_add, ih, pow_succ]
 
+/- English proof (translation)
+Simplify using `only [torsAvg, h]`.
+-/
 theorem torsAvg_congr {N m : ℕ} {F₁ F₂ : P.Fn} {z : Fin P.g → ℂ}
     (h : ∀ u v : Fin P.g → Fin m, F₁ (z + (m : ℂ)⁻¹ • P.latVec (torsIdx u) (torsIdx v)) =
       F₂ (z + (m : ℂ)⁻¹ • P.latVec (torsIdx u) (torsIdx v))) :
     P.torsAvg N m F₁ z = P.torsAvg N m F₂ z := by
   simp only [torsAvg, h]
 
+/- English proof (translation)
+Simplify using `only [cechD, torsAvg, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun v _ => Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem torsAvg_cechD {N m r : ℕ} (ψ : Finset (Fin (r + 1)) → P.Fn) (J : Finset (Fin (r + 1)))
     (z : Fin P.g → ℂ) :
     cechD (fun I => P.torsAvg N m (ψ I)) J z = P.torsAvg N m (cechD ψ J) z := by
@@ -48,6 +68,11 @@ theorem torsAvg_cechD {N m r : ℕ} (ψ : Finset (Fin (r + 1)) → P.Fn) (J : Fi
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun v _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Simplify using `only [torsAvg, hG, hY, mul_div_assoc, Finset.sum_div]`. Use `congrArg _ (Finset.sum_congr rfl fun u _ => Finset.sum_congr rfl fun v _ => ?_)` and prove the remaining obligations. Rewrite using `[autL_add, autL_mul]`. Establish `h1` using `P.autL_ne_zero n (torsIdx u) (torsIdx v) ((m : ℂ) • z)`. Establish `h2` using `P.autL_ne_zero d (torsIdx u) (torsIdx v) ((m : ℂ) • z)`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem torsAvg_div {n d k m : ℕ} {F G Y : P.Fn} {z : Fin P.g → ℂ}
     (hY : ∀ u v : Fin P.g → Fin m, Y (z + (m : ℂ)⁻¹ • P.latVec (torsIdx u) (torsIdx v)) =
       P.autL d (torsIdx u) (torsIdx v) ((m : ℂ) • z) * Y z) (hY0 : Y z ≠ 0)
@@ -63,6 +88,11 @@ theorem torsAvg_div {n d k m : ℕ} {F G Y : P.Fn} {z : Fin P.g → ℂ}
   field_simp
   ring
 
+/- English proof (translation)
+Establish `hm0 : (m : ℂ) ≠ 0` using `by exact_mod_cast (show m ≠ 0 by omega)`. Establish `hmw : (m : ℂ) • ((m : ℂ)⁻¹ • w) = w` using `by rw [smul_smul, mul_inv_cancel₀ hm0, one_smul]`. Establish `hterm : ∀ u v : Fin P.g → Fin m, (P.autL n (torsIdx u) (torsIdx v) ((m : ℂ) • ((m : ℂ)⁻¹ • w)))⁻¹ * G ((m : ℂ) • ((m : ℂ)⁻¹ • w + (m : ℂ)⁻¹ • P.latVec (torsIdx u) (torsIdx v))) = G w`. Introduce `u v`. Rewrite using `[← smul_add, hmw, smul_smul, mul_inv_cancel₀ hm0, one_smul, hG, ← mul_assoc, inv_mul_cancel₀ (P.autL_ne_zero _ _ _ _), one_mul]`.
+
+Simplify using `only [torsAvg, hterm, Finset.sum_const, Finset.card_univ, Fintype.card_fun, Fintype.card_fin, nsmul_eq_mul]`. Use `push_cast`. Establish `hg` using `pow_ne_zero P.g hm0`. Rewrite using `[two_mul, pow_add]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem torsAvg_pullback {n m : ℕ} (hm : 1 ≤ m) {G : P.Fn} {w : Fin P.g → ℂ}
     (hG : ∀ u v : Fin P.g → Fin m, G (w + P.latVec (torsIdx u) (torsIdx v)) =
       P.autL n (torsIdx u) (torsIdx v) w * G w) :

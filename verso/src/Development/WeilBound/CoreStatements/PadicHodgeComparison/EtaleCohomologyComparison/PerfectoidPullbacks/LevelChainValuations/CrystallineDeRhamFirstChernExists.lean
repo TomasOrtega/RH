@@ -21,11 +21,20 @@ open Kap
 
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
+/- English proof (translation)
+The claim follows from `CrystallineSemistableComparison.HT.levSys_ex`.
+-/
 theorem levSys_ex' [FiniteDimensional ℚ_[l] K] : ∃ S : LevSys (per l K), S.Good ∧ ∀ m, (S.L m).CrisOK := CrystallineSemistableComparison.HT.levSys_ex
 
+/- English proof (translation)
+The claim follows from `Mo.rhoSys_ex S hS hC`.
+-/
 theorem rhoSys_ex' [FiniteDimensional ℚ_[l] K] (S : LevSys (per l K)) (hS : S.Good) (hC : ∀ m, (S.L m).CrisOK) :
     Nonempty (RhoSys S Model.Sm (dat Amp) fun {M} a c => IsFirstChernDeRham M.q (lineK a.1) c) := Mo.rhoSys_ex S hS hC
 
+/- English proof (translation)
+Take `⟨S, hS, hC⟩` from `levSys_ex' (l := l) (K := K)`. Take `⟨P⟩` from `rhoSys_ex' S hS hC`. Take `⟨A⟩` from `kap_abs (facts l K) (fun c => ⟨_, rfl⟩) hS P`. Conclude with `⟨⟨A.κ, A.lin, A.lin', A.act, A.nat, A.fil, A.cup, A.one⟩, A.c1⟩`.
+-/
 theorem crystalline_deRham_firstChern_exists [FiniteDimensional ℚ_[l] K] : ∃ L : KapL (l := l) (K := K) Amp, LieComplementChartContDiffAt L := by
   obtain ⟨S, hS, hC⟩ := levSys_ex' (l := l) (K := K)
   obtain ⟨P⟩ := rhoSys_ex' S hS hC

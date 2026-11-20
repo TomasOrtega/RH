@@ -17,6 +17,15 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.Loc
 open UpperTheory.GalN.V GroundTheory.Global.SemiLocal UpperTheory.V.Published UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 namespace UpperTheory.V.Z.Win.Birth
+/- English proof (translation)
+Use `haveI : IsAlgClosure (maximalRealSubfield K) Ω := ⟨IsAlgClosure.isAlgClosed K, Algebra.IsAlgebraic.trans (maximalRealSubfield K) K Ω⟩`. Take `⟨μ, χ, c, P, hμ, hs, hc, hP⟩` from `UpperTheory.cyclotomicCharacter_plusPart (_root_.UpperTheory.V.Af.algOfCyc_s H) UpperTheory.cyclotomic_char_conj_invariant K Ω l ι n r hp`. Establish `hdual` using `_root_.UpperTheory.V.Af.self_dual_complex_of_printed_hida H K Ω l ι n hn r π ha χ μ hμ c P hc hP`. Establish `hsign` using `UpperTheory.sign_at_infinity_of_parallel_weight UpperTheory.adelicSolution_parallel _ Ω l ι χ μ hμ hs`. Take `⟨v₀⟩ : Nonempty (InfinitePlace (maximalRealSubfield K))` from `inferInstance`.
+
+Establish `hsq : ((χ.locInf v₀ (-1) : ℂˣ) : ℂ) ^ 2 = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, ← map_pow, neg_one_sq, map_one, Units.val_one]`. Choose the witnesses or unpack the hypotheses as in `⟨m, hm⟩ : ∃ m : ℕ, ∀ v, χ.locInf v (-1) = (-1) ^ m := by`. Break down `sq_eq_one_iff.1 hsq with e | e` into its components or cases. Conclude with `⟨0, fun u => (hsign u v₀).trans (Units.ext (by simpa using e))⟩`.
+
+Conclude with `⟨1, fun u => (hsign u v₀).trans (Units.ext (by simpa using e))⟩`. Establish `hnorm : compNorm K (χ * quadChar K ^ (m + n)) = compNorm K χ`. Rewrite using `[map_mul, map_pow, compNorm_quadChar, one_pow, mul_one]`. Use `⟨χ * quadChar K ^ (m + n), fun v => ?_, hnorm ▸ hdual⟩` and prove the remaining obligations. Rewrite using `[HChar.locInf_mul, locInf_pow, hm, quadChar_locInf, ← pow_add, ← add_assoc, pow_add, ← two_mul, pow_mul]`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem exists_polarized {K Ω : Type} [Field K] [NumberField K] [IsCMField K] [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω]
     {l : ℕ} [Fact l.Prime] {n : ℕ} (H : _root_.UpperTheory.V.Af.HypothesesH') {ι : Qbar l ≃+* ℂ} (hn : 1 ≤ n) {r : G K Ω →* GL (Fin n) (Qbar l)}
     {π : CuspSub K n} (hp : Sol.Pol ι r) (ha : AttC ι r π) : ∃ χ, GlobalTheory.ContraPair.PolarizedPair π χ := by
@@ -37,6 +46,13 @@ private theorem exists_polarized {K Ω : Type} [Field K] [NumberField K] [IsCMFi
   refine ⟨χ * quadChar K ^ (m + n), fun v => ?_, hnorm ▸ hdual⟩
   rw [HChar.locInf_mul, locInf_pow, hm, quadChar_locInf, ← pow_add, ← add_assoc, pow_add, ← two_mul, pow_mul]
   simp
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `ha.surj x`. Establish `h0 : deg g = 0`. Use `ha.ord_eq g` as an intermediate fact. Rewrite `this` using `[hx]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `e` using `congrArg (Polynomial.eval ((ξ j (a g) : ℂˣ) : ℂ)) (H g h0)`. Rewrite `e` using `[Polynomial.eval_prod, Finset.prod_eq_zero (Finset.mem_univ j) (by simp)]`. Establish `e2 : ((ξ j (a g) : ℂˣ) : ℂ) - 1 = 0`. Use `e.symm` as an intermediate fact. Simplify using `only [Polynomial.eval_pow, Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_one] at this`.
+
+Conclude with `(pow_eq_zero_iff j.pos.ne').1 this`. Conclude with `Units.ext (by simpa [sub_eq_zero] using e2)`.
+-/
 private theorem unram_of_charPol {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w} {a : Weil h →* (w.adicCompletion E)ˣ}
     (ha : IsLocalArtin h a) {n : ℕ} (ξ : Fin n → ((w.adicCompletion E)ˣ →* ℂˣ))
@@ -56,6 +72,21 @@ private theorem unram_of_charPol {E Ω : Type} [Field E] [NumberField E] [Field 
   exact Units.ext (by simpa [sub_eq_zero] using e2)
 end UpperTheory.V.Z.Win.Birth
 open UpperTheory.V.Z.Win UpperTheory.V.Z.Win.Birth in
+/- English proof (translation)
+Introduce `H M Ω _ _ _ _ _ _ l _ ι n hn r π hr hpol hreg hatt hW w hw A hA hu`. Establish `hRow : RowT` using `_root_.UpperTheory.Gal.SV.rowOf' H.litN.aut.gal`. Establish `hpp` using `exists_polarized H hn hpol hatt`. Take `⟨HT, -, hC⟩` from `compatTOf hRow plainRec M Ω l ι n hn r π hr hreg hpp hatt`. Take `⟨t, ht⟩` from `hW π hreg hatt`.
+
+Use `winSph M n hn π t w (ht w) ?_` and prove the remaining obligations. Introduce and unpack `s ⟨σ, hσ, hsup⟩ ζ ⟨hζ, hmem⟩`. Use `haveI : CharZero (w.adicCompletion M) := charZero_of_injective_algebraMap (algebraMap M _).injective`. Take `⟨rc, hrc⟩` from `UpperTheory.Zero.LLC.recTExists M Ω A w hA`. Take `⟨hPT, hTor, hMono⟩` from `plainRec M Ω A w hA rc hrc n π t (ht w) σ hσ`.
+
+Establish `hwd : IsWDOf ι r (rc (algNorm σ))` using `(((hC w σ hσ).1 A hA rc hrc).1 hw).isWDOf ⟨hTor, hMono⟩`. Establish `hpolW : ∀ g : Weil hA, (rc (algNorm σ)).charPol g = ((r g : Matrix (Fin n) (Fin n) (Qbar l)).charpoly).map ι.toRingHom` using `fun g => by`. Rewrite using `[← hwd.wdOf_eq hw]`. Conclude with `charPol_wdOf hw ι (Units.continuous_val.comp hr) g`. Take `⟨a, ha, hLaws⟩` from `hrc`.
+
+Take `⟨ξ, hξ, hsupx, -⟩` from `GlobalTheory.RoadU.plainTor_exists_chars (w.adicCompletion M) (IrrGL.of σ.ρ σ.smooth σ.irred) hPT`. Set `c : ℂ` to `(((1 - (n : ℝ)) / 2 : ℝ) : ℂ)`. Set `ξ' : Fin n → ((w.adicCompletion M)ˣ →* ℂˣ)` to `fun j => ξ j * absPow _ c`. Establish `hξ' : ∀ j, IsSmoothChar (ξ' j)` using `fun j => (hξ j).mul (GlobalTheory.LocGL.isSmoothChar_absPow _)`. Establish `hsup' : HasSupport (algNorm σ).rep (GlobalTheory.RoadU.chars ξ' hξ')` using `(GlobalTheory.RoadU.TwistSupp.supp_nu_chars (w.adicCompletion M) (IrrGL.of σ.ρ σ.smooth σ.irred) n ξ ξ' hξ hξ' c fun _ => rfl).1.1 hsupx`.
+
+Take `⟨hG, hZ⟩` from `GlobalTheory.geometricLemma_and_zelevinskyPolynomialRing`. Establish `hse : s = GlobalTheory.RoadU.chars ξ hξ` using `GlobalTheory.LocGL.SupportUnique.hasSupport_unique hG GlobalTheory.Laid.bzfin_holds hZ _ (IrrGL.of σ.ρ σ.smooth σ.irred) _ _ (hsup.of_equiv (IrrGL.equivOf σ.ρ σ.smooth σ.irred)) hsupx`. Take `⟨j, -, hj⟩` from `Multiset.mem_map.1 (hse ▸ hmem)`. Establish `hζj : ξ j = ζ` using `IrrGL.ofChar_inj.1 hj`. Establish `hIne : ∀ g : Weil hA, deg g = 0 → ∏ j, (X - C ((ξ' j (a g) : ℂˣ) : ℂ)) = (X - 1 : ℂ[X]) ^ n` using `fun g hg => by`.
+
+Establish `hI : (g : G M Ω) ∈ Ine (F` using `M) A := deg_eq_zero_iff.1 hg`. Rewrite using `[← charPol_of_chars hLaws _ ξ' hξ' hsup' g, hpolW, hu _ hI]`. Simplify using `[Matrix.charpoly_one]`. Introduce `x hx`. Establish `e` using `unram_of_charPol ha ξ' hIne j x (ord_eq_zero_iff.2 hx)`.
+
+Establish `e' : ξ' j x = ξ j x`. Simplify using `only [ξ', MonoidHom.mul_apply, isUnram_absPow _ c x hx, mul_one]`. Rewrite using `[← hζj, ← e', e]`.
+-/
 theorem UpperTheory.V.Z.Win.Birth.sphOfUnrW_alt :
     _root_.UpperTheory.V.Af.HypothesesH' → UpperTheory.V.Z.Win.Birth.SphOfUnrW := by
   intro H M Ω _ _ _ _ _ _ l _ ι n hn r π hr hpol hreg hatt hW w hw A hA hu

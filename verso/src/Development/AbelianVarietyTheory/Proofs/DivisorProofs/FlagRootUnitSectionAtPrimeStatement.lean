@@ -26,6 +26,9 @@ open ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CechPic
 open GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.CoverNorm GlobalTheory.ArDegIndep.TieOther
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HTConstRoot.exists_gen_const | exact GlobalTheory.HTConstRoot.exists_gen_const | (intros; apply GlobalTheory.HTConstRoot.exists_gen_const <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.flag_root_unit_section_at_prime : Hypotheses2 → HypothesesH → GlobalTheory.Published.ScholzeWeinsteinB → ∀ (D : D7) (O : Setup D), O.Core → 2 < D.R.f * (O.N - 1) →
     ∀ (B : ℝ), 2 ≤ B → ∀ (c : O.s.Comp) (τ : D.what₂.Tau) (v : HeightOneSpectrum (𝓞 D.what₂.LL)) (p : ℕ), p.Prime →
     ((p : 𝓞 D.what₂.LL) ∈ v.asIdeal) → p ∈ GlobalTheory.FlagAr.setB O.Y B →

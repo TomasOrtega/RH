@@ -7,6 +7,11 @@ open UpperTheory.V.Af.Bc (cPl)
 open UpperTheory.V.Z.Tf.GlobalTraceComparison UpperTheory.V.Z.Tf.GlobalTraceComparison.Cusp UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm UpperTheory.V.Z.Tf.GaloisFromTraceFormula
 open GroundTheory.Automorphic.AutomorphicForm (constantTerm)
 
+/- English proof (translation)
+Use `choose J i D C a b using h`. Use `⟨Σ i, J i, inferInstance, fun j => D j.1 j.2, fun j => C j.1 j.2, fun j => a j.1 j.2, fun φ m B h hm => ?_⟩` and prove the remaining obligations. Use `choose c hc using fun k => hQ (φ k) (h k).1.aut (h k).2`. Take `⟨i₀, h0⟩` from `Finite.exists_infinite_fiber c`. Establish `h1 : ∃ᶠ k in atTop, c k = i₀` using `Nat.frequently_atTop_iff_infinite.2 (Set.infinite_coe_iff.1 h0)`.
+
+Take `⟨σ, hσ, e⟩` from `extraction_of_frequently_atTop h1`. Take `⟨j, s, hs, hI, u⟩` from `b i₀ (fun k => φ (σ k)) (fun k => m (σ k)) (fun k => B (σ k)) (fun k => ⟨(h _).1, e k ▸ hc _⟩) fun τ ε hε => hσ.tendsto_atTop.eventually (hm τ ε hε)`. Conclude with `⟨⟨i₀, j⟩, fun k => σ (s k), hσ.comp hs, hI, u⟩`.
+-/
 private theorem readJ_or {E : Type} [Field E] [NumberField E] [IsCMField E] {N : ℕ} {bad : Set (UpperTheory.V.Cj.S.Pl E)} {K W m₀}
     {X : Set (CuspSub E N)} {ι : Type} [Fintype ι] {P : ι → Sm E N → Prop} {Q : Sm E N → Prop}
     (h : ∀ i, ReadJ bad K W m₀ X (P i)) (hQ : ∀ φ, IsAutForm φ → Q φ → ∃ i, P i φ) : ReadJ bad K W m₀ X Q := by
@@ -20,6 +25,19 @@ private theorem readJ_or {E : Type} [Field E] [NumberField E] [IsCMField E] {N :
     fun τ ε hε => hσ.tendsto_atTop.eventually (hm τ ε hε)
   exact ⟨⟨i₀, j⟩, fun k => σ (s k), hσ.comp hs, hI, u⟩
 
+/- English proof (translation)
+Proceed by induction on `N using Nat.strong_induction_on with`. Consider the case `_ N ih`. Introduce `K W m₀ X hK hW hX`. Break down `Nat.eq_zero_or_pos N with rfl | hN` into its components or cases. Use `⟨Unit, inferInstance, fun _ => CD.nil E, fun _ _ => 0, fun _ => ⟨fun π _ ⟨i, _⟩ => i.elim0, fun w _ => ⟨fun i => i.elim0, fun i => i.elim0, rfl⟩⟩, fun φ m B h hm => ⟨(), id, strictMono_id, ?_, fun w hw i => ?_⟩⟩` and prove the remaining obligations.
+
+Establish `e0 : m₀ = fun _ => 0`. Use function extensionality and compare the values at `τ`. Take `⟨k, hk⟩` from `(hm τ 1 one_pos).exists`. Establish `hc` using `Multiset.card_eq_card_of_rel hk`. Rewrite `hc` using `[((h k).1.cap τ).1]`.
+
+Conclude with `Multiset.card_eq_zero.1 hc.symm`. Rewrite using `[e0]`. Conclude with `fun _ => rfl`. Establish `e : ∀ k, B k w = 0` using `fun k => Multiset.card_eq_zero.1 ((h k).1.sat w hw).2.2.1`. Simplify using `only [e]`.
+
+Conclude with `tendsto_const_nhds`. Establish `ih' : ∀ M < N, ∀ K (W : Submodule ℂ (Kinf E M → ℂ)) m₀, Lev bad K → FiniteDimensional ℂ W → ReadJ (N` using `M) bad K W m₀ ∅ fun _ => True := fun M hM K W m₀ hK hW => readJ_or (ι := Unit) (fun _ => ih M hM K W m₀ ∅ hK hW fun _ h => h.elim) fun _ _ _ => ⟨(), fun _ h => h.elim⟩`. Use `readJ_or (ι := Option {r : Fin N // 0 < r.1}) (P := fun o φ => o.elim (IsCuspForm φ ∧ Excl X φ) fun r => ∃ g, constantTerm r.1.1 φ.1 g ≠ 0) ?_ fun φ ha hx => ?_` and prove the remaining obligations. Introduce and unpack `(_ | ⟨⟨r, hr⟩, h0⟩)`. Conclude with `hC E N hN bad K W m₀ X hb hK hW hX`.
+
+Take `⟨s, rfl⟩ : ∃ s, N = r + s` from `⟨N - r, by omega⟩`. Establish `h0' : 0 < r` using `h0`. Conclude with `hT E r s h0' (by omega) bad (ih' r hr) (ih' s (by omega)) K W m₀ X hK hW`. Distinguish the cases in `hc : IsCuspForm φ`. Conclude with `⟨none, hc, hx⟩`.
+
+Establish `h1 : ¬ GroundTheory.Automorphic.AutomorphicForm.IsCuspidal φ.1` using `fun h2 => hc ((UpperTheory.V.Cm.isCuspForm_iff φ).2 ⟨(UpperTheory.V.Cm.isAutForm_iff φ).1 ha, h2⟩)`. Unfold `GroundTheory.Automorphic.AutomorphicForm.IsCuspidal at h1`. Use `push Not at h1`. Take `⟨r, h0, hr, hg⟩` from `h1`. Conclude with `⟨some ⟨⟨r, hr⟩, h0⟩, hg⟩`.
+-/
 private theorem readJ_all (hC : CuspCaseJ) (hT : CtCaseJ) {E : Type} [Field E] [NumberField E] [IsCMField E]
     {bad : Set (UpperTheory.V.Cj.S.Pl E)} (hb : bad.Finite) (N : ℕ) : ∀ K (W : Submodule ℂ (Kinf E N → ℂ)) m₀ (X : Set (CuspSub E N)),
     Lev bad K → FiniteDimensional ℂ W → (∀ π ∈ X, ∀ ψ ∈ π.V, ∀ t g, ψ.1 (splitCentre E N t * g) = ψ.1 g) →
@@ -60,6 +78,11 @@ private theorem readJ_all (hC : CuspCaseJ) (hT : CtCaseJ) {E : Type} [Field E] [
       obtain ⟨r, h0, hr, hg⟩ := h1
       exact ⟨some ⟨⟨r, hr⟩, h0⟩, hg⟩
 
+/- English proof (translation)
+Introduce `hL hC hT E _ _ _ N K W bad m₀ X ho hW hb hl _ hX`. Take `⟨K', hle, hK', -⟩` from `hL E N bad K ho hl`. Take `⟨J, i, D, C, a, b⟩` from `readJ_all hC hT hb N K' W m₀ X hK' hW hX`. Use `⟨{j : J // (D j).Inf m₀}, inferInstance, fun j => D j.1, fun j => C j.1, fun j => a j.1, fun j => j.2, fun φ m B h hm => ?_⟩` and prove the remaining obligations. Take `⟨j, s, hs, hI, u⟩` from `b φ m B (fun k => ⟨⟨(h k).1, (h k).2.1, ⟨fun u hu => (h k).2.2.1.1 u (hle hu), (h k).2.2.1.2⟩, (h k).2.2.2.1, (h k).2.2.2.2.1⟩, (h k).2.2.2.2.2⟩) hm`.
+
+Conclude with `⟨⟨j, hI⟩, s, hs, u⟩`.
+-/
 theorem UpperTheory.V.Z.Tf.GaloisFromTraceFormula.cuspReadI_of :
     LevShrink → CuspCaseJ → CtCaseJ → CuspReadI := by
   intro hL hC hT E _ _ _ N K W bad m₀ X ho hW hb hl _ hX

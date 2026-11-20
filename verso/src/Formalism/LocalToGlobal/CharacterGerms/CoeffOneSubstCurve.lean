@@ -22,6 +22,41 @@ def sub1 (γ : Fin dd → PowerSeries C) (P : PS C 1 dd) : PowerSeries C :=
 def FrobX (V : VF C) (P : PS C 1 dd) : Prop :=
   ∀ μ : Fin 1 × Fin dd →₀ ℕ, (∃ i, ¬ V.l ∣ μ ((0 : Fin 1), i)) → V.MM (MvPowerSeries.coeff μ P)
 
+/- English proof (translation)
+Establish `hl` using `V.l_prime.two_le`. Establish `hγ0 : ∀ j, PowerSeries.constantCoeff (γ j) = 0` using `fun j => (hγ j).1`. Establish `hγI : ∀ j, IntS V (γ j)` using `fun j => intS_cv (hγ j).2`. Establish `hG : MvPowerSeries.HasSubst (fun q : Fin 1 × Fin dd => γ q.2)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun q => hγ0 q.2`. Establish `hγ0' : ∀ j, MvPowerSeries.constantCoeff (γ j) = 0` using `hγ0`.
+
+Take `⟨D1, hD1def⟩ : ∃ D1 : PS C 1 dd, ∀ μ, MvPowerSeries.coeff μ D1 = if (∃ i, ¬ V.l ∣ μ ((0 : Fin 1), i)) then MvPowerSeries.coeff μ P else 0` from `⟨fun μ => if (∃ i, ¬ V.l ∣ μ ((0 : Fin 1), i)) then MvPowerSeries.coeff μ P else 0, fun μ => rfl⟩`. Take `⟨D3, hD3def⟩ : ∃ D3 : PS C 1 dd, D3 = ∑ i, MvPowerSeries.monomial (Finsupp.single ((0 : Fin 1), i) V.l) (MvPowerSeries.coeff (Finsupp.single ((0 : Fin 1), i) V.l) P)` from `⟨_, rfl⟩`. Establish `hD1 : MMS V D1` using `fun μ => by`. Rewrite using `[hD1def]`. Use `split_ifs with h`.
+
+Conclude with `hfrob μ h`. Conclude with `mm_zero`. Establish `hsq : ∀ (s : Fin 1 × Fin dd), s = ((0 : Fin 1), s.2)` using `fun s => Prod.ext (Subsingleton.elim _ _) rfl`. Establish `hD2 : Agr (2 * V.l) (P - D1 - D3) 0`. Introduce `μ hμ`.
+
+Rewrite using `[map_sub, map_sub, map_zero, hD1def, hD3def, map_sum]`. Simplify using `only [MvPowerSeries.coeff_monomial]`. Distinguish the cases in `hex : ∃ i, ¬ V.l ∣ μ ((0 : Fin 1), i)`. Rewrite using `[if_pos hex, sub_self, zero_sub, neg_eq_zero]`. Use `Finset.sum_eq_zero fun i _ => if_neg ?_` and prove the remaining obligations.
+
+Introduce and unpack `rfl`. Take `⟨i', hi'⟩` from `hex`. Apply `hi'` to reduce the goal to its premises. Rewrite using `[Finsupp.single_apply]`. Use `split_ifs`.
+
+Conclude with `dvd_refl _`. Conclude with `dvd_zero _`. Rewrite `hex` using `[if_neg hex, sub_zero] push Not`. Establish `hdiv : ∀ s, V.l ∣ μ s` using `fun s => by rw [hsq s]; exact hex s.2`. Break down `FirstVanishing.divisible_small μ hdiv hμ with h0 | ⟨s, hs⟩` into its components or cases.
+
+Substitute `h0` using the available equality. Rewrite using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hPz, zero_sub, neg_eq_zero]`. Use `Finset.sum_eq_zero fun i _ => if_neg ?_` and prove the remaining obligations. Introduce `h`. Use `congrArg (fun f : Fin 1 × Fin dd →₀ ℕ => f ((0 : Fin 1), i)) h` as an intermediate fact.
+
+Simplify using `only [Finsupp.coe_zero, Pi.zero_apply, Finsupp.single_eq_same] at this`. Use linear arithmetic over natural numbers and integers. Substitute `hs` using the available equality. Rewrite using `[Finset.sum_eq_single s.2, if_pos (by rw [← hsq s]), ← hsq s, sub_self]`. Introduce `i _ hi`.
+
+Rewrite using `[if_neg]`. Introduce `h`. Apply `hi` to reduce the goal to its premises. Use `(Finsupp.single_left_inj (by omega : V.l ≠ 0)).1 h` as an intermediate fact. Rewrite using `[this]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Establish `hz : MvPowerSeries.subst (fun q : Fin 1 × Fin dd => γ q.2) (0 : PS C 1 dd) = 0`. Rewrite using `[← MvPowerSeries.coe_substAlgHom hG, map_zero]`. Establish `hsplit : P = D1 + (P - D1 - D3) + D3` using `by ring`.
+
+Establish `hdeg : (Finsupp.single () V.l).degree < 2 * V.l`. Rewrite using `[Finsupp.degree_single]`. Use linear arithmetic over natural numbers and integers. Establish `hA2` using `(agr_subst_right (a := fun q : Fin 1 × Fin dd => γ q.2) (fun q => hγ0' q.2) hD2) (Finsupp.single () V.l) hdeg`. Rewrite `hA2` using `[hz, map_zero]`.
+
+Establish `hA2' : PowerSeries.coeff V.l (MvPowerSeries.subst (fun q : Fin 1 × Fin dd => γ q.2) (P - D1 - D3)) = 0` using `hA2`. Establish `hB1' : MMS V (MvPowerSeries.subst (fun q : Fin 1 × Fin dd => γ q.2) D1)` using `MMS.subst (a := fun q : Fin 1 × Fin dd => γ q.2) (fun q => hγ0' q.2) (fun q => hγI q.2) hD1`. Establish `hB1 : V.MM (PowerSeries.coeff V.l (MvPowerSeries.subst (fun q : Fin 1 × Fin dd => γ q.2) D1))` using `hB1' (Finsupp.single () V.l)`. Establish `hD3 : MvPowerSeries.subst (fun q : Fin 1 × Fin dd => γ q.2) D3 = ∑ i, MvPowerSeries.C (MvPowerSeries.coeff (Finsupp.single ((0 : Fin 1), i) V.l) P) * γ i ^ V.l`. Rewrite using `[hD3def, ← MvPowerSeries.coe_substAlgHom hG, map_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coe_substAlgHom hG, MvPowerSeries.subst_monomial hG, Finsupp.prod_single_index (by simp)]`. Both sides reduce to the same expression. Establish `hfr : ∀ i, V.MM (PowerSeries.coeff V.l (γ i ^ V.l) - (PowerSeries.coeff 1 (γ i)) ^ V.l)`. Introduce `i`.
+
+Establish `h` using `mms_pow_frobTw (hγI i) (Finsupp.single () V.l)`. Rewrite `h` using `[map_sub, coeff_frobTw, if_pos (fun s => by simp)]`. Establish `e : (Finsupp.single () V.l).mapRange (fun n => n / V.l) (Nat.zero_div V.l) = Finsupp.single () 1`. Rewrite using `[Finsupp.mapRange_single, Nat.div_self (by omega)]`. Rewrite `h` using `[e]`.
+
+Conclude with `h`. Establish `eP : MvPowerSeries.subst (fun q : Fin 1 × Fin dd => γ q.2) P = MvPowerSeries.subst (fun q : Fin 1 × Fin dd => γ q.2) D1 + MvPowerSeries.subst (fun q : Fin 1 × Fin dd => γ q.2) (P - D1 - D3) + MvPowerSeries.subst (fun q : Fin 1 × Fin dd => γ q.2) D3` using `by conv_lhs => rw [hsplit]`. Rewrite using `[MvPowerSeries.subst_add hG, MvPowerSeries.subst_add hG]`. Rewrite using `[eP, map_add, map_add, hA2', add_zero, hD3, map_sum]`. Establish `e : ∀ (a : C) (s t : Fin dd → C), a + ∑ i, s i - ∑ i, t i = a + ∑ i, (s i - t i)` using `fun a s t => by`.
+
+Rewrite using `[Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `mm_add hB1 (mm_sum _ _ fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[show PowerSeries.coeff V.l (MvPowerSeries.C (MvPowerSeries.coeff (Finsupp.single ((0 : Fin 1), i) V.l) P) * γ i ^ V.l) = MvPowerSeries.coeff (Finsupp.single ((0 : Fin 1), i) V.l) P * PowerSeries.coeff V.l (γ i ^ V.l) from MvPowerSeries.coeff_C_mul _ _ _, ← mul_sub]`.
+
+Conclude with `mm_mul_ge' (hP _) (hfr i)`.
+-/
 theorem coeff_l_frob {P : PS C 1 dd} (hP : IntS V P) (hPz : MvPowerSeries.constantCoeff P = 0) (hfrob : FrobX V P)
     {γ : Fin dd → PowerSeries C} (hγ : IsCv V γ) :
     V.MM (PowerSeries.coeff V.l (MvPowerSeries.subst (fun q : Fin 1 × Fin dd => γ q.2) P) -
@@ -125,6 +160,21 @@ theorem coeff_l_frob {P : PS C 1 dd} (hP : IntS V P) (hPz : MvPowerSeries.consta
     MvPowerSeries.coeff_C_mul _ _ _, ← mul_sub]
   exact mm_mul_ge' (hP _) (hfr i)
 
+/- English proof (translation)
+Establish `hl` using `V.l_prime.two_le`. Establish `hγ0 : ∀ j, MvPowerSeries.constantCoeff (γ j) = 0` using `fun j => (hγ j).1`. Establish `hγI : ∀ j, IntS V (γ j)` using `fun j => intS_cv (hγ j).2`. Establish `hG : MvPowerSeries.HasSubst (fun q : Fin 1 × Fin dd => γ q.2)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun q => hγ0 q.2`. Take `⟨D1, hD1def⟩ : ∃ D1 : PS C 1 dd, ∀ μ, MvPowerSeries.coeff μ D1 = if (∃ i, ¬ V.l ∣ μ ((0 : Fin 1), i)) then MvPowerSeries.coeff μ P else 0` from `⟨fun μ => if (∃ i, ¬ V.l ∣ μ ((0 : Fin 1), i)) then MvPowerSeries.coeff μ P else 0, fun μ => rfl⟩`.
+
+Establish `hD1 : MMS V D1` using `fun μ => by`. Rewrite using `[hD1def]`. Use `split_ifs with h`. Conclude with `hfrob μ h`. Conclude with `mm_zero`.
+
+Establish `hsq : ∀ (s : Fin 1 × Fin dd), s = ((0 : Fin 1), s.2)` using `fun s => Prod.ext (Subsingleton.elim _ _) rfl`. Establish `hD2 : Agr V.l (P - D1) 0`. Introduce `μ hμ`. Rewrite using `[map_sub, map_zero, hD1def]`. Distinguish the cases in `hex : ∃ i, ¬ V.l ∣ μ ((0 : Fin 1), i)`.
+
+Rewrite using `[if_pos hex, sub_self]`. Rewrite `hex` using `[if_neg hex, sub_zero] push Not`. Establish `hdiv : ∀ s, V.l ∣ μ s` using `fun s => by rw [hsq s]; exact hex s.2`. Break down `FirstVanishing.divisible_small μ hdiv (by omega) with h0 | ⟨s, hs⟩` into its components or cases. Substitute `h0` using the available equality.
+
+Rewrite using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hPz]`. Substitute `hs` using the available equality. Rewrite `hμ` using `[Finsupp.degree_single]`. Use linear arithmetic over natural numbers and integers. Establish `hz : MvPowerSeries.subst (fun q : Fin 1 × Fin dd => γ q.2) (0 : PS C 1 dd) = 0`.
+
+Rewrite using `[← MvPowerSeries.coe_substAlgHom hG, map_zero]`. Establish `hA2` using `(agr_subst_right (a := fun q : Fin 1 × Fin dd => γ q.2) (fun q => hγ0 q.2) hD2) (Finsupp.single () n) (by rw [Finsupp.degree_single]; exact hn)`. Rewrite `hA2` using `[hz, map_zero]`. Establish `hA2' : PowerSeries.coeff n (MvPowerSeries.subst (fun q : Fin 1 × Fin dd => γ q.2) (P - D1)) = 0` using `hA2`. Establish `hB1' : MMS V (MvPowerSeries.subst (fun q : Fin 1 × Fin dd => γ q.2) D1)` using `MMS.subst (a := fun q : Fin 1 × Fin dd => γ q.2) (fun q => hγ0 q.2) (fun q => hγI q.2) hD1`.
+
+Establish `hB1 : V.MM (PowerSeries.coeff n (MvPowerSeries.subst (fun q : Fin 1 × Fin dd => γ q.2) D1))` using `hB1' (Finsupp.single () n)`. Establish `eP : MvPowerSeries.subst (fun q : Fin 1 × Fin dd => γ q.2) P = MvPowerSeries.subst (fun q : Fin 1 × Fin dd => γ q.2) D1 + MvPowerSeries.subst (fun q : Fin 1 × Fin dd => γ q.2) (P - D1)` using `by conv_lhs => rw [show P = D1 + (P - D1) by ring]`. Rewrite using `[MvPowerSeries.subst_add hG]`. Rewrite using `[eP, map_add, hA2', add_zero]`. Conclude with `hB1`.
+-/
 theorem coeff_lt_frob {P : PS C 1 dd} (hPz : MvPowerSeries.constantCoeff P = 0) (hfrob : FrobX V P)
     {γ : Fin dd → PowerSeries C} (hγ : IsCv V γ) (n : ℕ) (hn : n < V.l) :
     V.MM (PowerSeries.coeff n (MvPowerSeries.subst (fun q : Fin 1 × Fin dd => γ q.2) P)) := by
@@ -176,6 +226,9 @@ theorem coeff_lt_frob {P : PS C 1 dd} (hPz : MvPowerSeries.constantCoeff P = 0) 
 
 def LowMM (V : VF C) (f : PowerSeries C) : Prop := ∀ n ≤ V.l, V.MM (PowerSeries.coeff n f)
 
+/- English proof (translation)
+Introduce `n hn`. Rewrite using `[PowerSeries.coeff_mul]`. Use `mm_sum _ _ fun p hp => mm_mul_ge (hf p.1 ?_) (hg (Finsupp.single () p.2))` and prove the remaining obligations. Use `Finset.HasAntidiagonal.mem_antidiagonal.1 hp` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem LowMM.mul_int {f g : PowerSeries C} (hf : LowMM V f) (hg : IntS V g) : LowMM V (f * g) := by
   intro n hn
   rw [PowerSeries.coeff_mul]
@@ -183,6 +236,17 @@ theorem LowMM.mul_int {f g : PowerSeries C} (hf : LowMM V f) (hg : IntS V g) : L
   have := Finset.HasAntidiagonal.mem_antidiagonal.1 hp
   omega
 
+/- English proof (translation)
+Introduce `n hn`. Express the relevant statement in the definitionally equal form `V.MM (MvPowerSeries.coeff (Finsupp.single () n) (MvPowerSeries.subst a f))`. Rewrite using `[MvPowerSeries.coeff_subst (MvPowerSeries.hasSubst_of_constantCoeff_zero ha0)]`. Use `finsum_induction (fun x => V.MM x) mm_zero (fun x y hx hy => mm_add hx hy) fun e => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul]`.
+
+Distinguish the cases in `he : e = 0`. Substitute `he` using the available equality. Rewrite using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hf0, zero_mul]`. Conclude with `mm_zero`. Take `⟨s, hs⟩` from `Finsupp.ne_iff.mp he`.
+
+Establish `hs' : e s ≠ 0` using `by simpa using hs`. Establish `hmem : s ∈ e.support` using `Finsupp.mem_support_iff.2 hs'`. Establish `hp : LowMM V (e.prod fun s m => a s ^ m)`. Unfold `Finsupp.prod`. Rewrite using `[← Finset.mul_prod_erase _ _ hmem]`.
+
+Take `⟨m, hm⟩ : ∃ m, e s = m + 1` from `⟨e s - 1, by omega⟩`. Rewrite using `[hm]`. Use `show LowMM V (a s ^ (m + 1) * ∏ x ∈ e.support.erase s, a x ^ e x)`. Rewrite using `[pow_succ', mul_assoc]`. Use `(haL s).mul_int (intS_mul (intS_pow (haI s) _) ?_)` and prove the remaining obligations.
+
+Conclude with `Finset.prod_induction _ (IntS V) (fun _ _ h1 h2 => intS_mul h1 h2) intS_one fun t _ => intS_pow (haI t) _`. Conclude with `mm_mul_ge' (hf e) (hp n hn)`.
+-/
 theorem lowMM_subst {σ : Type} [Finite σ] {a : σ → PowerSeries C} (ha0 : ∀ s, MvPowerSeries.constantCoeff (a s) = 0)
     (haI : ∀ s, IntS V (a s)) (haL : ∀ s, LowMM V (a s)) {f : MvPowerSeries σ C} (hf : IntS V f)
     (hf0 : MvPowerSeries.constantCoeff f = 0) : LowMM V (MvPowerSeries.subst a f) := by
@@ -209,6 +273,23 @@ theorem lowMM_subst {σ : Type} [Finite σ] {a : σ → PowerSeries C} (ha0 : �
       exact Finset.prod_induction _ (IntS V) (fun _ _ h1 h2 => intS_mul h1 h2) intS_one fun t _ => intS_pow (haI t) _
     exact mm_mul_ge' (hf e) (hp n hn)
 
+/- English proof (translation)
+Establish `hG : MvPowerSeries.HasSubst (fun q : Fin 1 × Fin dd => γ q.2)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun q => hγ0 q.2`. Establish `hsq : ∀ (s : Fin 1 × Fin dd), s = ((0 : Fin 1), s.2)` using `fun s => Prod.ext (Subsingleton.elim _ _) rfl`. Take `⟨D3, hD3def⟩ : ∃ D3 : PS C 1 dd, D3 = ∑ i, MvPowerSeries.monomial (Finsupp.single ((0 : Fin 1), i) 1) (MvPowerSeries.coeff (Finsupp.single ((0 : Fin 1), i) 1) P)` from `⟨_, rfl⟩`. Establish `hD2 : Agr 2 P D3`. Introduce `μ hμ`.
+
+Rewrite using `[hD3def, map_sum]`. Simplify using `only [MvPowerSeries.coeff_monomial]`. Break down `Nat.lt_succ_iff.1 hμ |>.lt_or_eq with h1 | h1` into its components or cases. Establish `h0 : μ = 0` using `(Finsupp.degree_eq_zero_iff _).1 (by omega)`. Substitute `h0` using the available equality.
+
+Rewrite using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hPz]`. Use `symm`. Use `Finset.sum_eq_zero fun i _ => if_neg ?_` and prove the remaining obligations. Introduce `h`. Use `congrArg (fun f : Fin 1 × Fin dd →₀ ℕ => f ((0 : Fin 1), i)) h` as an intermediate fact.
+
+Simplify using `at this`. Take `⟨s, hs⟩` from `degree_one h1`. Substitute `hs` using the available equality. Rewrite using `[Finset.sum_eq_single s.2, if_pos (by rw [← hsq s]), ← hsq s]`. Introduce `i _ hi`.
+
+Rewrite using `[if_neg]`. Introduce `h`. Apply `hi` to reduce the goal to its premises. Use `(Finsupp.single_left_inj (by omega : (1 : ℕ) ≠ 0)).1 h` as an intermediate fact. Rewrite using `[this]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Establish `hA` using `(agr_subst_right (a := fun q : Fin 1 × Fin dd => γ q.2) (fun q => hγ0 q.2) hD2) (Finsupp.single () 1) (by rw [Finsupp.degree_single]; omega)`. Establish `hA' : PowerSeries.coeff 1 (MvPowerSeries.subst (fun q : Fin 1 × Fin dd => γ q.2) P) = PowerSeries.coeff 1 (MvPowerSeries.subst (fun q : Fin 1 × Fin dd => γ q.2) D3)` using `hA`. Establish `hD3 : MvPowerSeries.subst (fun q : Fin 1 × Fin dd => γ q.2) D3 = ∑ i, MvPowerSeries.C (MvPowerSeries.coeff (Finsupp.single ((0 : Fin 1), i) 1) P) * γ i ^ 1`.
+
+Rewrite using `[hD3def, ← MvPowerSeries.coe_substAlgHom hG, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coe_substAlgHom hG, MvPowerSeries.subst_monomial hG, Finsupp.prod_single_index (by simp)]`. Both sides reduce to the same expression. Rewrite using `[hA', hD3, map_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[pow_one]`. Conclude with `MvPowerSeries.coeff_C_mul _ _ _`.
+-/
 theorem coeff_one_subst_curve {P : PS C 1 dd} (hPz : MvPowerSeries.constantCoeff P = 0) {γ : Fin dd → PowerSeries C}
     (hγ0 : ∀ j, MvPowerSeries.constantCoeff (γ j) = 0) :
     PowerSeries.coeff 1 (MvPowerSeries.subst (fun q : Fin 1 × Fin dd => γ q.2) P) =

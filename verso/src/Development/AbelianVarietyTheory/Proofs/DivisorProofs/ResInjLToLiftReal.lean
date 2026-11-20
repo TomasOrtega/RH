@@ -9,6 +9,13 @@ noncomputable section
 
 namespace GlobalTheory.LiftResInj
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F tupT hm hTop hinj hθ i w hw h0`. Set `U : MMap (R.MW i (sg0 D A))` to `PiTensorProduct.lift.symm w`. Establish `hU : U ∈ Mult.Mult R.θ (R.MW i (sg0 D A)) _ _` using `(Mult.mem_multT _ _ _ _ w).1 hw`. Establish `hT : U = 0` using `GlobalTheory.LowTypeDetermined.eq_zero_of_lowT D _ _ (R.MW i (sg0 D A)) R.θ hθ (GlobalTheory.LowTypeRestriction.lowT_ne_bot _) _ _ U hU (fun v => by`. Establish `e` using `LinearMap.congr_fun h0 (PiTensorProduct.tprod ℂ v)`.
+
+Establish `e2 : w (PiTensorProduct.map (fun τ => (lowT (R.MW i (sg0 D A)) τ).subtype) (PiTensorProduct.tprod ℂ v)) = 0` using `e`. Rewrite `e2` using `[PiTensorProduct.map_tprod]`. Use `show (PiTensorProduct.lift.symm w : MMap (R.MW i (sg0 D A))) (fun ρ => (v ρ : (R.MW i (sg0 D A)).sm ρ)) = 0`. Conclude with `e2)`. Establish `e3 : PiTensorProduct.lift U = w` using `LinearEquiv.apply_symm_apply _ w`.
+
+Rewrite using `[← e3, hT]`. Conclude with `map_zero _`.
+-/
 theorem resInjL_toLiftReal : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), ∀ (F : Face D A) (tupT : D.what₂.Tup → T) (hm : 0 < D.R.m) (hTop : RecTie.TopMultH R) (hinj : ∀ i t, Function.Injective (R.extV i t)), R.models_inf → RecTie.ResInjL (RecTie.toLiftReal R F tupT hm hTop hinj) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F tupT hm hTop hinj hθ i w hw h0
   let U : MMap (R.MW i (sg0 D A)) := PiTensorProduct.lift.symm w

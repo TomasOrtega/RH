@@ -1,5 +1,16 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `l _ K _ h`. Establish `hded : IsDedekindDomain (integralClosure ℤ_[l] K)` using `IsIntegralClosure.isDedekindDomain ℤ_[l] ℚ_[l] K _`. Establish `hfr : IsFractionRing (integralClosure ℤ_[l] K) K` using `IsIntegralClosure.isFractionRing_of_finite_extension ℤ_[l] ℚ_[l] K _`. Establish `key : ∀ x : K, ‖(x : PadicAlgCl l)‖ ≤ 1 → IsLocalization.IsInteger (integralClosure ℤ_[l] K) x`. Introduce `x hx`.
+
+Establish `hi : IsIntegral ℤ_[l] x` using `(isIntegral_algHom_iff (K.val.restrictScalars ℤ_[l]) Subtype.val_injective).mp (h _ hx)`. Conclude with `⟨⟨x, hi⟩, rfl⟩`. Establish `hval : ValuationRing (integralClosure ℤ_[l] K)`. Rewrite using `[ValuationRing.iff_isInteger_or_isInteger _ K]`. Introduce `x`.
+
+Break down `le_total ‖(x : PadicAlgCl l)‖ 1 with hx | hx` into its components or cases. Conclude with `Or.inl (key x hx)`. Use `Or.inr (key _ ?_)` and prove the remaining obligations. Rewrite using `[IntermediateField.coe_inv, norm_inv]`. Conclude with `inv_le_one_of_one_le₀ hx`.
+
+Establish `hinjK : Function.Injective (algebraMap ℤ_[l] K)`. Rewrite using `[IsScalarTower.algebraMap_eq ℤ_[l] ℚ_[l] K, RingHom.coe_comp]`. Conclude with `(algebraMap ℚ_[l] K).injective.comp (IsFractionRing.injective ℤ_[l] ℚ_[l])`. Establish `hinj : Function.Injective (algebraMap ℤ_[l] (integralClosure ℤ_[l] K))`. Introduce `a b hab`.
+
+Conclude with `hinjK (congrArg Subtype.val hab)`. Establish `hnf : ¬ IsField (integralClosure ℤ_[l] K)` using `fun hf => IsDiscreteValuationRing.not_isField ℤ_[l] ((Algebra.IsIntegral.isField_iff_isField hinj).mpr hf)`. Conclude with `((IsDiscreteValuationRing.TFAE (integralClosure ℤ_[l] K) hnf).out 0 1).mpr hval`.
+-/
 theorem UpperTheory.dvr_of_norm_integral :
     ∀ {l : ℕ} [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l)) [FiniteDimensional ℚ_[l] K], (∀ x : PadicAlgCl l, ‖x‖ ≤ 1 → IsIntegral ℤ_[l] x) → IsDiscreteValuationRing (integralClosure ℤ_[l] K) := by
   intro l _ K _ h

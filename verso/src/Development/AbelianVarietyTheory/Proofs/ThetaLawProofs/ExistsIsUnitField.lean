@@ -6,6 +6,13 @@ namespace GlobalTheory.TorsExists
 
 variable {Ix : Type} [Fintype Ix] [DecidableEq Ix]
 
+/- English proof (translation)
+Use `set f := Matrix.toLin' D with hf`. Take `⟨s, hs⟩` from `f.rangeRestrict.exists_rightInverse_of_surjective f.range_rangeRestrict`. Take `⟨g, hg⟩` from `LinearMap.exists_extend s`. Use `⟨LinearMap.toMatrix' g, ?_⟩` and prove the remaining obligations. Apply `Matrix.toLin'.injective` to reduce the goal to its premises.
+
+Rewrite using `[Matrix.toLin'_mul, Matrix.toLin'_mul, Matrix.toLin'_toMatrix', ← hf]`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Establish `h1 : g (f v) = s (f.rangeRestrict v)` using `by rw [← hg]; rfl`. Establish `h2` using `congrArg Subtype.val (LinearMap.congr_fun hs (f.rangeRestrict v))`. Simplify using `only [LinearMap.comp_apply, h1]`.
+
+Conclude with `h2`.
+-/
 theorem exists_mul_mul_eq {K : Type} [Field K] (D : Matrix Ix Ix K) : ∃ G : Matrix Ix Ix K, D * G * D = D := by
   set f := Matrix.toLin' D with hf
   obtain ⟨s, hs⟩ := f.rangeRestrict.exists_rightInverse_of_surjective f.range_rangeRestrict
@@ -19,6 +26,15 @@ theorem exists_mul_mul_eq {K : Type} [Field K] (D : Matrix Ix Ix K) : ∃ G : Ma
   simp only [LinearMap.comp_apply, h1]
   exact h2
 
+/- English proof (translation)
+Take `⟨G, hG⟩` from `exists_mul_mul_eq D`. Use `⟨G, ?_⟩` and prove the remaining obligations. Use `set N := 1 - (D * G + G * D) with hN`. Establish `h1 : D * N = 0`. Rewrite using `[hN, mul_sub, mul_add, ← mul_assoc, ← mul_assoc, hD, hG]`.
+
+Simplify using the standard rewrite rules. Establish `h2 : N * D = 0`. Rewrite using `[hN, sub_mul, add_mul, mul_assoc G, hD, hG]`. Simplify using the standard rewrite rules. Establish `h3 : N * N = 0`.
+
+Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Take `⟨w, hw⟩` from `hex (N.mulVec v) (by rw [Matrix.mulVec_mulVec, h1, Matrix.zero_mulVec])`. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, ← hw, Matrix.mulVec_mulVec, h2, Matrix.zero_mulVec, Matrix.zero_mulVec]`. Establish `h4 : (D * G + G * D) * (1 + N) = 1`.
+
+Establish `: D * G + G * D = 1 - N` using `by rw [hN]; abel`. Rewrite using `[this, sub_mul, mul_add, mul_add, h3]`. Simplify using the standard rewrite rules. Conclude with `Matrix.isUnit_det_of_right_inverse h4`.
+-/
 theorem exists_isUnit_field {K : Type} [Field K] (D : Matrix Ix Ix K) (hD : D * D = 0)
     (hex : ∀ v : Ix → K, D.mulVec v = 0 → ∃ w, D.mulVec w = v) :
     ∃ G : Matrix Ix Ix K, IsUnit (D * G + G * D).det := by
@@ -40,6 +56,15 @@ theorem exists_isUnit_field {K : Type} [Field K] (D : Matrix Ix Ix K) (hD : D * 
     rw [this, sub_mul, mul_add, mul_add, h3]; simp
   exact Matrix.isUnit_det_of_right_inverse h4
 
+/- English proof (translation)
+Take `⟨G, hG⟩` from `exists_isUnit_field (D.map (IsLocalRing.residue R)) (by rw [← Matrix.map_mul, hD]; simp) hex`. Use `choose H hH using fun p q => IsLocalRing.residue_surjective (R := R) (G p q)`. Establish `hHG : (Matrix.of H).map (IsLocalRing.residue R) = G` using `by ext p q; exact hH p q`. Use `set A := D * Matrix.of H + Matrix.of H * D with hA`. Establish `hu : IsUnit A.det`.
+
+Establish `: IsLocalRing.residue R A.det = (D.map (IsLocalRing.residue R) * G + G * D.map (IsLocalRing.residue R)).det`. Rewrite using `[RingHom.map_det, ← hHG, hA]`. Simplify using `[RingHom.mapMatrix_apply, Matrix.map_mul, Matrix.map_add]`. Rewrite `hG` using `[← this]`. Conclude with `(isUnit_map_iff _ _).1 hG`.
+
+Establish `hc : A * D = D * A`. Rewrite using `[hA, add_mul, mul_add, mul_assoc (Matrix.of H), hD, ← mul_assoc D D, hD]`. Simplify using `[mul_assoc]`. Establish `hc' : A⁻¹ * D = D * A⁻¹`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `⟨Matrix.of H * A⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, hc', ← mul_assoc, ← mul_assoc, ← add_mul, ← hA, Matrix.mul_nonsing_inv _ hu]`.
+-/
 theorem exists_contraction {R : Type} [CommRing R] [IsLocalRing R] (D : Matrix Ix Ix R) (hD : D * D = 0)
     (hex : ∀ v : Ix → IsLocalRing.ResidueField R, (D.map (IsLocalRing.residue R)).mulVec v = 0 →
       ∃ w, (D.map (IsLocalRing.residue R)).mulVec w = v) :
@@ -64,6 +89,17 @@ theorem exists_contraction {R : Type} [CommRing R] [IsLocalRing R] (D : Matrix I
   refine ⟨Matrix.of H * A⁻¹, ?_⟩
   rw [mul_assoc, hc', ← mul_assoc, ← mul_assoc, ← add_mul, ← hA, Matrix.mul_nonsing_inv _ hu]
 
+/- English proof (translation)
+Use `⟨Matrix.of fun p q => if deg p = deg q + 1 then h p q else 0, fun p q hpq => by simp [hpq], ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Distinguish the cases in `hab : deg a = deg b`. Rewrite using `[← hh]`. Simplify using `only [Matrix.add_apply, Matrix.mul_apply, Matrix.of_apply]`.
+
+Apply the tactic sequence `congr 1 <;> refine Finset.sum_congr rfl fun p _ => ?_`. Use `split_ifs with hp`. Both sides reduce to the same expression. Rewrite using `[hD a p (by omega)]; simp`. Use `split_ifs with hp`.
+
+Both sides reduce to the same expression. Rewrite using `[hD p b (by omega)]; simp`. Rewrite using `[Matrix.one_apply_ne (fun e => hab (by rw [e]))]`. Simplify using `only [Matrix.add_apply, Matrix.mul_apply, Matrix.of_apply]`. Rewrite using `[Finset.sum_eq_zero, Finset.sum_eq_zero, add_zero]`.
+
+Introduce `p _ split_ifs with hp`. Rewrite using `[hD p b (by omega)]; simp`. Simplify using the standard rewrite rules. Introduce `p _ split_ifs with hp`. Rewrite using `[hD a p (by omega)]; simp`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem exists_homogeneous {R : Type} [CommRing R] (deg : Ix → ℕ) (D h : Matrix Ix Ix R)
     (hD : ∀ p q, deg q ≠ deg p + 1 → D p q = 0) (hh : D * h + h * D = 1) :
     ∃ h' : Matrix Ix Ix R, (∀ p q, deg p ≠ deg q + 1 → h' p q = 0) ∧ D * h' + h' * D = 1 := by
@@ -91,6 +127,11 @@ theorem exists_homogeneous {R : Type} [CommRing R] (deg : Ix → ℕ) (D h : Mat
       · rw [hD a p (by omega)]; simp
       · simp
 
+/- English proof (translation)
+Use extensionality with `a b`. Establish `h1 : (M * M) a.1 b.1 = (1 : Matrix {p // P p} {p // P p} R) a b`. Rewrite using `[hM]`. Simplify using `[Matrix.one_apply, Subtype.ext_iff]`. Rewrite using `[← h1]`.
+
+Simplify using `only [Matrix.mul_apply, Matrix.submatrix_apply]`. Rewrite using `[← Fintype.sum_subtype_add_sum_subtype Q (fun r => M a.1 r * M r b.1)]`. Rewrite using `[Finset.sum_eq_zero (s := (Finset.univ : Finset {r // ¬ Q r})), add_zero]`. Introduce `r _`. Rewrite using `[h0 _ _ a.2 r.2, zero_mul]`.
+-/
 theorem block_mul_block {R : Type} [CommRing R] (P Q : Ix → Prop) [DecidablePred P] [DecidablePred Q]
     (M : Matrix Ix Ix R) (hM : M * M = 1) (h0 : ∀ p r, P p → ¬ Q r → M p r = 0) :
     M.submatrix (fun p : {p // P p} => p.1) (fun r : {r // Q r} => r.1) *
@@ -105,6 +146,23 @@ theorem block_mul_block {R : Type} [CommRing R] (P Q : Ix → Prop) [DecidablePr
   intro r _
   rw [h0 _ _ a.2 r.2, zero_mul]
 
+/- English proof (translation)
+Take `⟨hD1, hD2⟩` from `hD`. Establish `e1 : D * h = 1 - h * D` using `eq_sub_of_add_eq hh`. Establish `e2 : D * h * D = D` using `by rw [e1, sub_mul, mul_assoc, hD2]; simp`. Establish `e3 : D * h * (h * D) = 0`. Establish `: D * h = 1 - h * D` using `e1`.
+
+Establish `e4 : h * D * (h * D) = h * D`. Rewrite using `[mul_assoc, ← mul_assoc D, e2]`. Rewrite using `[e1, sub_mul, e4]`. Simplify using the standard rewrite rules. Use `set M := D + h * D * h with hM`.
+
+Establish `hMM : M * M = 1`. Establish `: M * M = D * D + (D * h * D) * h + h * (D * h * D) + h * (D * h * (h * D)) * h`. Rewrite using `[hM]`. Use `noncomm_ring`. Rewrite using `[this, hD2, e2, e3, ← hh]`.
+
+Simplify using the standard rewrite rules. Establish `hpar : ∀ p q, (Even (deg p) ↔ Even (deg q)) → M p q = 0`. Introduce `p q hpq`. Establish `n1 : deg q ≠ deg p + 1` using `fun e => by`. Rewrite `hpq` using `[e, Nat.even_add_one]`.
+
+The claim follows by propositional logic. Establish `n2 : deg p ≠ deg q + 1` using `fun e => by`. Rewrite `hpq` using `[e, Nat.even_add_one]`. The claim follows by propositional logic. Rewrite using `[hM, Matrix.add_apply, hD1 p q n1, zero_add, Matrix.mul_apply]`.
+
+Use `Finset.sum_eq_zero fun r _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.sum_mul]`. Use `Finset.sum_eq_zero fun s _ => ?_` and prove the remaining obligations. Distinguish the cases in `c1 : deg p = deg s + 1`. Distinguish the cases in `c2 : deg r = deg s + 1`.
+
+Rewrite using `[hdeg r q (by omega)]; simp`. Rewrite using `[hD1 s r c2]`. Simplify using the standard rewrite rules. Rewrite using `[hdeg p s c1]`. Simplify using the standard rewrite rules.
+
+Conclude with `⟨Matrix.indexEquivOfInv (block_mul_block (fun p => Even (deg p)) (fun p => ¬ Even (deg p)) M hMM (fun p r hp hr => hpar p r (by tauto))) (block_mul_block (fun p => ¬ Even (deg p)) (fun p => Even (deg p)) M hMM (fun p r hp hr => hpar p r (by tauto)))⟩`.
+-/
 theorem nonempty_equiv {R : Type} [CommRing R] [Nontrivial R] (deg : Ix → ℕ) (D h : Matrix Ix Ix R)
     (hD : IsCx deg D) (hdeg : ∀ p q, deg p ≠ deg q + 1 → h p q = 0) (hh : D * h + h * D = 1) :
     Nonempty ({p // Even (deg p)} ≃ {p // ¬ Even (deg p)}) := by
@@ -142,6 +200,9 @@ theorem nonempty_equiv {R : Type} [CommRing R] [Nontrivial R] (deg : Ix → ℕ)
     (block_mul_block (fun p => ¬ Even (deg p)) (fun p => Even (deg p)) M hMM
       (fun p r hp hr => hpar p r (by tauto)))⟩
 
+/- English proof (translation)
+Introduce `R Ix _ _ _ deg D _ hD hex`. Take `⟨h0, hh0⟩` from `exists_contraction D hD.2 hex`. Take `⟨h, hdeg, hh⟩` from `exists_homogeneous deg D h0 hD.1 hh0`. Take `⟨e⟩` from `nonempty_equiv deg D h hD hdeg hh`. Conclude with `⟨_, h, hdeg, hh, e, rfl⟩`.
+-/
 theorem exists_torsSq : ∀ (R Ix : Type) [CommRing R] [Fintype Ix] [DecidableEq Ix] (deg : Ix → ℕ) (D : Matrix Ix Ix R) [IsLocalRing R], IsCx deg D → (∀ v : Ix → IsLocalRing.ResidueField R, (D.map (IsLocalRing.residue R)).mulVec v = 0 → ∃ w, (D.map (IsLocalRing.residue R)).mulVec w = v) → ∃ t, TorsSq deg D t := by
   intro R Ix _ _ _ deg D _ hD hex
   obtain ⟨h0, hh0⟩ := exists_contraction D hD.2 hex

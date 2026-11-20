@@ -14,6 +14,9 @@ section Pull
 
 variable {X : Scheme.{0}} {P : X.Modules}
 
+/- English proof (translation)
+Rewrite using `[Subobject.pullback_obj]`. Conclude with `Subobject.le_mk_of_comm (pullback.lift (T.factorThru (Y.arrow ≫ φ) h) Y.arrow (Subobject.factorThru_arrow _ _ _)) (pullback.lift_snd _ _ _)`.
+-/
 lemma le_pullback_of_factors {Y T : Subobject P} (φ : P ⟶ P) (h : T.Factors (Y.arrow ≫ φ)) :
     Y ≤ (Subobject.pullback φ).obj T := by
   rw [Subobject.pullback_obj]
@@ -21,6 +24,11 @@ lemma le_pullback_of_factors {Y T : Subobject P} (φ : P ⟶ P) (h : T.Factors (
     (pullback.lift (T.factorThru (Y.arrow ≫ φ) h) Y.arrow (Subobject.factorThru_arrow _ _ _))
     (pullback.lift_snd _ _ _)
 
+/- English proof (translation)
+Rewrite `h` using `[Subobject.pullback_obj]`. Establish `e : Y.arrow ≫ φ = (Y.ofLE _ h ≫ (Subobject.underlyingIso (pullback.snd T.arrow φ)).hom ≫ pullback.fst T.arrow φ) ≫ T.arrow`. Rewrite using `[← Subobject.ofLE_arrow h, ← Subobject.underlyingIso_hom_comp_eq_mk]`. Simplify using `only [Category.assoc, pullback.condition]`. Rewrite using `[e]`.
+
+Conclude with `Subobject.factors_comp_arrow _`.
+-/
 lemma factors_of_le_pullback {Y T : Subobject P} (φ : P ⟶ P)
     (h : Y ≤ (Subobject.pullback φ).obj T) : T.Factors (Y.arrow ≫ φ) := by
   rw [Subobject.pullback_obj] at h
@@ -31,6 +39,9 @@ lemma factors_of_le_pullback {Y T : Subobject P} (φ : P ⟶ P)
   rw [e]
   exact Subobject.factors_comp_arrow _
 
+/- English proof (translation)
+Unfold `GroundTheory.Arith.SchemeCoh.restrictTop`. Simplify using the standard rewrite rules.
+-/
 lemma restrictTop_whole (r : Γ(X, ⊤)) : restrictTop (X := X) ⊤ r = r := by
   unfold GroundTheory.Arith.SchemeCoh.restrictTop
   simp
@@ -44,6 +55,13 @@ attribute [local instance] algebraOfOver
 variable {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ideal A) {X : Scheme.{0}}
   [X.Over (Spec (.of A))]
 
+/- English proof (translation)
+Rewrite `ha` using `[← span_idealGen (I ^ 1)]`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun A).mp ha`. Establish `ht : (∑ i, GroundTheory.Arith.SchemeCoh.smulHom P (algebraMap A Γ(X, ⊤) (c i)) ≫ biproduct.ι (fun _ : Fin (idealGenNum (I ^ 1)) => P) i) ≫ idealSumMap P (I ^ 1) = GroundTheory.Arith.SchemeCoh.smulHom P (algebraMap A Γ(X, ⊤) a)`. Unfold `idealSumMap`. Rewrite using `[Preadditive.sum_comp]`.
+
+Simplify using `only [Category.assoc, biproduct.ι_desc, smulHom_comp_smulHom]`. Rewrite using `[← smulHom_sum, ← hc, map_sum]`. Simplify using `only [smul_eq_mul, map_mul]`. Use `⟨kernel.lift _ (GroundTheory.Arith.SchemeCoh.smulHom P (algebraMap A Γ(X, ⊤) a)) ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← ht, Category.assoc, cokernel.condition, comp_zero]`.
+
+Conclude with `kernel.lift_ι _ _ _`.
+-/
 lemma exists_smulHom_eq (P : X.Modules) {a : A} (ha : a ∈ I ^ 1) :
     ∃ m : P ⟶ idealPow I P 1, m ≫ idealPowι I P 1 = GroundTheory.Arith.SchemeCoh.smulHom P (algebraMap A Γ(X, ⊤) a) := by
   rw [← span_idealGen (I ^ 1)] at ha
@@ -60,6 +78,11 @@ lemma exists_smulHom_eq (P : X.Modules) {a : A} (ha : a ∈ I ^ 1) :
   · rw [← ht, Category.assoc, cokernel.condition, comp_zero]
   · exact kernel.lift_ι _ _ _
 
+/- English proof (translation)
+Use `show (Subobject.mk (idealPowι I P (n + 1))).Factors _`. Rewrite using `[Subobject.mk_factors_iff]`. Use `⟨(Subobject.underlyingIso (idealPowι I P n)).hom ≫ idealPowMul I P (n := n) a ha, ?_⟩` and prove the remaining obligations. Use `show ((Subobject.underlyingIso (idealPowι I P n)).hom ≫ idealPowMul I P (n := n) a ha) ≫ idealPowι I P (n + 1) = _`. Rewrite using `[Category.assoc, idealPowMul_ι, ← Category.assoc, Subobject.underlyingIso_hom_comp_eq_mk]`.
+
+Both sides reduce to the same expression.
+-/
 lemma factors_powSub (P : X.Modules) (n : ℕ) {a : A} (ha : a ∈ I ^ 1) :
     (powSub I P (n + 1)).Factors ((powSub I P n).arrow ≫ GroundTheory.Arith.SchemeCoh.smulHom P (algebraMap A Γ(X, ⊤) a)) := by
   show (Subobject.mk (idealPowι I P (n + 1))).Factors _
@@ -70,6 +93,17 @@ lemma factors_powSub (P : X.Modules) (n : ℕ) {a : A} (ha : a ∈ I ^ 1) :
   rw [Category.assoc, idealPowMul_ι, ← Category.assoc, Subobject.underlyingIso_hom_comp_eq_mk]
   rfl
 
+/- English proof (translation)
+Establish `ha1 : a ∈ I ^ 1` using `by rwa [pow_one]`. Establish `hr : toFunctions (X` using `X) (A := A) ⊤ a = algebraMap A Γ(X, ⊤) a := by`. Simplify using `only [GroundTheory.Arith.SchemeCoh.toFunctions, RingHom.comp_apply]`. Conclude with `restrictTop_whole _`. Rewrite using `[hr]`.
+
+Introduce `e`. Consider the cases of `e with`. Consider the case `zero => show (S 0).Factors ((⊤ : Subobject P).arrow ≫ GroundTheory.Arith.SchemeCoh.smulHom P _)`. Apply `Subobject.factors_of_le _ (hS.pow_le 0)` to reduce the goal to its premises. Take `⟨m, hm⟩` from `exists_smulHom_eq I P ha1`.
+
+Use `show (Subobject.mk (idealPowι I P 1)).Factors _`. Rewrite using `[Subobject.mk_factors_iff]`. Use `⟨(⊤ : Subobject P).arrow ≫ m, ?_⟩` and prove the remaining obligations. Use `show ((⊤ : Subobject P).arrow ≫ m) ≫ idealPowι I P 1 = _`. Rewrite using `[Category.assoc, hm]`.
+
+Consider the case `succ e => show (S (e + 1)).Factors ((S e).arrow ≫ GroundTheory.Arith.SchemeCoh.smulHom P _)`. Apply `factors_of_le_pullback` to reduce the goal to its premises. Rewrite using `[hS.succ e]`. Apply `sup_le` to reduce the goal to its premises. Apply `le_pullback_of_factors` to reduce the goal to its premises.
+
+Rewrite using `[← GroundTheory.Arith.SchemeCoh.smulHom_comp]`. Conclude with `Subobject.factors_comp_arrow _`. Apply `le_pullback_of_factors` to reduce the goal to its premises. Apply `Subobject.factors_of_le _ (hS.pow_le (e + 1))` to reduce the goal to its premises. Conclude with `factors_powSub I P (e + 1) ha1`.
+-/
 theorem mapsDown_toFunctions {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ideal A)
     {X : Scheme.{0}} [X.Over (Spec (.of A))] {P : X.Modules} (_ : P.IsQuasicoherent)
     (S : ℕ → Subobject P) (hS : ClosedSys I P S) (a : A) (ha : a ∈ I) :

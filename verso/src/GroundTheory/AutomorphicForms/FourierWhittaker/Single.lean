@@ -14,6 +14,23 @@ open AutomorphicForm
 
 variable {K : Type*} [Field K] [NumberField K]
 
+/- English proof (translation)
+Set `E : (ι → 𝔸[K]) ≃ᵐ (ι₁ → 𝔸[K]) × (ι₂ → 𝔸[K])` to `(MeasurableEquiv.piCongrLeft (fun _ : ι₁ ⊕ ι₂ => 𝔸[K]) e).trans (MeasurableEquiv.sumPiEquivProdPi (fun _ : ι₁ ⊕ ι₂ => 𝔸[K]))`. Establish `hE : MeasurePreserving E (vecMeasure K ι) ((vecMeasure K ι₁).prod (vecMeasure K ι₂))` using `(measurePreserving_piCongrLeft (fun _ : ι₁ ⊕ ι₂ => GroundTheory.Global.adeleMeasure K) e).trans (measurePreserving_sumPiEquivProdPi (fun _ : ι₁ ⊕ ι₂ => GroundTheory.Global.adeleMeasure K))`. Establish `hEsymm : ∀ p, E.symm p = fun i => Sum.elim p.1 p.2 (e i)`. Introduce `p`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[E, MeasurableEquiv.piCongrLeft, MeasurableEquiv.sumPiEquivProdPi, Equiv.piCongrLeft, Equiv.sumPiEquivProdPi]`. Generalize the expression as in `e i = j`. Apply the tactic sequence `cases j <;> rfl`. Establish `hpre : E ⁻¹' (vecDomain K ι₁ ×ˢ vecDomain K ι₂) = vecDomain K ι`. Use extensionality with `z`.
+
+Simplify using `only [Set.mem_preimage, Set.mem_prod, vecDomain, Set.mem_pi, Set.mem_univ, true_implies]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ i`. Establish `hz : z = E.symm (E z)` using `(E.symm_apply_apply z).symm`. Rewrite using `[hz, hEsymm]`.
+
+Use `show ((E z).1 ⊕ᵥ (E z).2) (e i) ∈ _`. Break down `e i with a | b` into its components or cases. Conclude with `h1 a`. Conclude with `h2 b`. Introduce `h`.
+
+Use `⟨fun a => ?_, fun b => ?_⟩` and prove the remaining obligations. Use `h (e.symm (Sum.inl a))` as an intermediate fact. Simplify `this` using `[E, MeasurableEquiv.piCongrLeft, MeasurableEquiv.sumPiEquivProdPi, Equiv.piCongrLeft, Equiv.sumPiEquivProdPi]`. Use `h (e.symm (Sum.inr b))` as an intermediate fact. Simplify `this` using `[E, MeasurableEquiv.piCongrLeft, MeasurableEquiv.sumPiEquivProdPi, Equiv.piCongrLeft, Equiv.sumPiEquivProdPi]`.
+
+Rewrite using `[← hpre]`. Establish `h1` using `hE.setIntegral_preimage_emb E.measurableEmbedding (fun p => h (E.symm p)) (vecDomain K ι₁ ×ˢ vecDomain K ι₂)`. Simplify using `only [E.symm_apply_apply] at h1`. Rewrite using `[h1, setIntegral_prod]`. Simplify using `only [hEsymm]`.
+
+Establish `hcont : Continuous fun p : (ι₁ → 𝔸[K]) × (ι₂ → 𝔸[K]) => h (E.symm p)`. Repeatedly rewrite using `[hEsymm]`. Use `hc.comp (continuous_pi fun i => ?_)` and prove the remaining obligations. Break down `e i with a | b` into its components or cases. Conclude with `(continuous_apply a).comp continuous_fst`.
+
+Conclude with `(continuous_apply b).comp continuous_snd`. Conclude with `(hcont.continuousOn.integrableOn_compact ((isCompact_closure_vecDomain (K := K) (ι := ι₁)).prod (isCompact_closure_vecDomain (K := K) (ι := ι₂)))).mono_set (Set.prod_mono subset_closure subset_closure)`.
+-/
 theorem setIntegral_vecDomain_sum {ι ι₁ ι₂ : Type*} [Fintype ι] [Fintype ι₁] [Fintype ι₂]
     (e : ι ≃ ι₁ ⊕ ι₂) {h : (ι → 𝔸[K]) → ℂ} (hc : Continuous h) :
     ∫ z in vecDomain K ι, h z ∂vecMeasure K ι =
@@ -75,16 +92,38 @@ def extGe {R : Type*} [Zero R] {k : ℕ} (Z : GePos n k → R) : Pos n → R :=
 def supSum (m : ℕ) (X : Pos n → 𝔸[K]) : 𝔸[K] :=
   ∑ p ∈ Finset.univ.filter (fun p : Pos n => p.1.2.val = p.1.1.val + 1 ∧ m ≤ p.1.2.val), X p
 
+/- English proof (translation)
+Simplify using `[supSum, Finset.sum_add_distrib]`.
+-/
 theorem supSum_add (m : ℕ) (X Y : Pos n → 𝔸[K]) : supSum m (X + Y) = supSum m X + supSum m Y := by
   simp [supSum, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `[supSum]`.
+-/
 theorem supSum_zero (m : ℕ) : supSum m (0 : Pos n → 𝔸[K]) = 0 := by simp [supSum]
 
+/- English proof (translation)
+Use `Finset.sum_eq_zero fun p hp => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hp`. Rewrite using `[colX_apply, dif_neg (by omega)]`.
+-/
 theorem supSum_colX_succ (k : ℕ) (x : Fin k → 𝔸[K]) : supSum (k + 1) (colX (n := n) k x) = 0 := by
   refine Finset.sum_eq_zero fun p hp => ?_
   simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hp
   rw [colX_apply, dif_neg (by omega)]
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos k with rfl | hk0` into its components or cases. Rewrite using `[supSum]`. Simplify using `only [pair, Finset.univ_eq_empty, Finset.sum_empty]`. Use `Finset.sum_eq_zero fun p _ => ?_` and prove the remaining obligations. Rewrite using `[colX_apply, dif_neg]`.
+
+Use `p.2` as an intermediate fact. Rewrite `this` using `[Fin.lt_def]`. Use linear arithmetic over natural numbers and integers. Establish `hmem : ∀ p : Pos n, (p.1.2.val = p.1.1.val + 1 ∧ k ≤ p.1.2.val) → p.1.2.val = k → p = ⟨(⟨k - 1, by omega⟩, ⟨k, hk⟩), by rw [Fin.lt_def]; simp; omega⟩`. Introduce `p h1 h2`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply the tactic sequence `apply Prod.ext <;> apply Fin.ext <;> simp <;> omega`. Rewrite using `[supSum, Finset.sum_eq_single ⟨(⟨k - 1, by omega⟩, ⟨k, hk⟩), by rw [Fin.lt_def]; simp; omega⟩]`. Rewrite using `[colX_apply, dif_pos rfl, pair, Finset.sum_eq_single ⟨k - 1, by omega⟩]`. Simplify using `[lastVec]`.
+
+Use `congr 1`. Use linear arithmetic over natural numbers and integers. Introduce `i _ hi`. Rewrite using `[lastVec, if_neg (fun h => hi (Fin.ext (by show i.val = k - 1; omega))), map_zero, zero_mul]`. Simplify using the standard rewrite rules.
+
+Introduce `p hp hne`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hp`. Rewrite using `[colX_apply, dif_neg (fun h => hne (hmem p hp h))]`. Introduce `h`. It suffices to derive a contradiction.
+
+Apply `h` to reduce the goal to its premises. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Apply the tactic sequence `constructor <;> (try simp) <;> omega`.
+-/
 theorem supSum_colX (k : ℕ) (hk : k < n) (x : Fin k → 𝔸[K]) :
     supSum k (colX (n := n) k x) = pair (lastVec k) x := by
   classical
@@ -116,6 +155,9 @@ theorem supSum_colX (k : ℕ) (hk : k < n) (x : Fin k → 𝔸[K]) :
       simp only [Finset.mem_filter, Finset.mem_univ, true_and]
       constructor <;> (try simp) <;> omega
 
+/- English proof (translation)
+Rewrite using `[extGe, dif_neg (by omega)]`.
+-/
 theorem extGe_eq_zero {R : Type*} [Zero R] {k : ℕ} (Z : GePos n (k + 1) → R) (p : Pos n)
     (hp : p.1.2.val ≤ k) : extGe Z p = 0 := by
   rw [extGe, dif_neg (by omega)]
@@ -140,6 +182,11 @@ def colSplit (k : ℕ) (hk : k < n) : GePos n k ≃ Fin k ⊕ GePos n (k + 1) wh
       rw [dif_neg (show ¬ q.1.1.2.val = k by omega)]
       rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Simplify using `only [extGe, colX_apply, Pi.add_apply]`. Distinguish the cases in `h1 : k ≤ p.1.2.val`. Rewrite using `[dif_pos h1]`. Distinguish the cases in `h2 : p.1.2.val = k`.
+
+Rewrite using `[dif_neg (by omega), dif_pos h2, zero_add] show Sum.elim x y (colSplit k hk ⟨p, h1⟩) = _`. Simplify using `only [colSplit, Equiv.coe_fn_mk, dif_pos h2, Sum.elim_inl]`. Rewrite using `[dif_pos (by omega), dif_neg h2, add_zero] show Sum.elim x y (colSplit k hk ⟨p, h1⟩) = _`. Simplify using `only [colSplit, Equiv.coe_fn_mk, dif_neg h2, Sum.elim_inr]`. Rewrite using `[dif_neg h1, dif_neg (by omega), dif_neg (by omega), add_zero]`.
+-/
 theorem extGe_colSplit {R : Type*} [CommRing R] (k : ℕ) (hk : k < n) (x : Fin k → R)
     (y : GePos n (k + 1) → R) :
     extGe (fun i => Sum.elim x y (colSplit k hk i)) = extGe y + colX k x := by
@@ -156,6 +203,9 @@ theorem extGe_colSplit {R : Type*} [CommRing R] (k : ℕ) (hk : k < n) (x : Fin 
       simp only [colSplit, Equiv.coe_fn_mk, dif_neg h2, Sum.elim_inr]
   · rw [dif_neg h1, dif_neg (by omega), dif_neg (by omega), add_zero]
 
+/- English proof (translation)
+Use `continuous_pi fun p => ?_` and prove the remaining obligations. Simplify using `only [extGe]`. Use `split_ifs`. Conclude with `continuous_apply _`. Conclude with `continuous_const`.
+-/
 theorem continuous_extGe {k : ℕ} : Continuous (extGe (n := n) (k := k) (R := 𝔸[K])) := by
   refine continuous_pi fun p => ?_
   simp only [extGe]
@@ -163,13 +213,24 @@ theorem continuous_extGe {k : ℕ} : Continuous (extGe (n := n) (k := k) (R := �
   · exact continuous_apply _
   · exact continuous_const
 
+/- English proof (translation)
+The claim follows from `continuous_finsetSum _ fun p _ => continuous_apply p`.
+-/
 theorem continuous_supSum (m : ℕ) : Continuous (supSum (K := K) (n := n) m) :=
   continuous_finsetSum _ fun p _ => continuous_apply p
 
+/- English proof (translation)
+Rewrite using `[Matrix.coe_units_inv, coe_uGL, Matrix.inv_def, det_uMat, Ring.inverse_one, one_smul]`.
+-/
 theorem coe_uGL_inv (X : Pos n → 𝔸[K]) :
     (((uGL X)⁻¹ : GL (Fin n) 𝔸[K]) : Matrix (Fin n) (Fin n) 𝔸[K]) = (uMat X).adjugate := by
   rw [Matrix.coe_units_inv, coe_uGL, Matrix.inv_def, det_uMat, Ring.inverse_one, one_smul]
 
+/- English proof (translation)
+Establish `hc : Continuous fun X : Pos n → 𝔸[K] => uMat X`. Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Simplify using `only [uMat_apply]`. Use `split_ifs`. Conclude with `continuous_const`.
+
+Conclude with `continuous_apply _`. Conclude with `continuous_const`. Use `Units.continuous_iff.2 ⟨hc, ?_⟩` and prove the remaining obligations. Simplify using `only [coe_uGL_inv]`. Conclude with `hc.matrix_adjugate`.
+-/
 theorem continuous_uGL : Continuous fun X : Pos n → 𝔸[K] => (uGL X : GL (Fin n) 𝔸[K]) := by
   have hc : Continuous fun X : Pos n → 𝔸[K] => uMat X := by
     refine continuous_pi fun a => continuous_pi fun b => ?_
@@ -185,11 +246,17 @@ theorem continuous_uGL : Continuous fun X : Pos n → 𝔸[K] => (uGL X : GL (Fi
 def wInt (m : ℕ) (ϕ : AdelicGLn.AdelicGL K n → ℂ) (g : AdelicGLn.AdelicGL K n) (X : Pos n → 𝔸[K]) : ℂ :=
   ϕ (uGL X * g) * (GroundTheory.Global.adelicChar K (-supSum m X) : ℂ)
 
+/- English proof (translation)
+The claim follows from `(hϕ.comp (continuous_uGL.mul continuous_const)).mul (continuous_subtype_val.comp (GroundTheory.Global.continuous_adelicChar.comp (continuous_supSum m).neg))`.
+-/
 theorem continuous_wInt (m : ℕ) {ϕ : AdelicGLn.AdelicGL K n → ℂ} (hϕ : Continuous ϕ)
     (g : AdelicGLn.AdelicGL K n) : Continuous (wInt m ϕ g) :=
   (hϕ.comp (continuous_uGL.mul continuous_const)).mul
     (continuous_subtype_val.comp (GroundTheory.Global.continuous_adelicChar.comp (continuous_supSum m).neg))
 
+/- English proof (translation)
+Use `setIntegral_vecDomain_sum (colSplit k hk) (hH.comp continuous_extGe)` as an intermediate fact. Simplify using `only [Function.comp_apply, extGe_colSplit] at this`. Conclude with `this`.
+-/
 theorem setIntegral_geCols (k : ℕ) (hk : k < n) {H : (Pos n → 𝔸[K]) → ℂ} (hH : Continuous H) :
     ∫ Z in vecDomain K (GePos n k), H (extGe Z) ∂vecMeasure K (GePos n k) =
       ∫ x in vecDomain K (Fin k), ∫ Y in vecDomain K (GePos n (k + 1)),
@@ -198,6 +265,19 @@ theorem setIntegral_geCols (k : ℕ) (hk : k < n) {H : (Pos n → 𝔸[K]) → �
   simp only [Function.comp_apply, extGe_colSplit] at this
   exact this
 
+/- English proof (translation)
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `k hkm hk g`. Take `rfl : k = n` from `by omega`.
+
+Rewrite using `[partialCoeff_self]`. Establish `hz : ∀ Z : GePos k k → 𝔸[K], extGe Z = 0` using `fun Z => by`. Use function extensionality and compare the values at `p; rw [extGe, dif_neg (by have := p.1.2.2; omega)]; rfl`. Simplify using `only [hz, wInt, uGL_zero, one_mul, supSum_zero, neg_zero, AddChar.map_zero_eq_one, Circle.coe_one, mul_one]`. Rewrite using `[setIntegral_const, measureReal_def, vecMeasure_vecDomain, ENNReal.toReal_one, one_smul]`.
+
+Consider the case `succ m ih`. Introduce `k hkm hk g`. Establish `hkn : k < n` using `by omega`. Rewrite using `[setIntegral_geCols k hkn (continuous_wInt k hϕ g), partialCoeff_of_lt ϕ hkn, stepCoeff, vecCoeff]`. Use `setIntegral_congr_fun measurableSet_vecDomain fun x _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[ih (k + 1) (by omega) hkn, ← integral_mul_const]`. Use `integral_congr_ae (ae_of_all _ fun Y => ?_)` and prove the remaining obligations. Simplify using `only [wInt]`. Establish `hY : ∀ p : Pos n, p.1.2.val ≤ k → extGe Y p = 0` using `fun p hp => extGe_eq_zero Y p hp`. Establish `hsup : supSum k (extGe Y) = supSum (k + 1) (extGe Y)`.
+
+Unfold `supSum`. Use `(Finset.sum_subset (fun p hp => ?_) fun p hp hp' => ?_).symm` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hp ⊢`. Use linear arithmetic over natural numbers and integers. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hp hp'`.
+
+Conclude with `hY p (by omega)`. Establish `hmul : uGL (extGe Y) * colGL k x = uGL (extGe Y + colX k x)` using `Units.ext (by`. Rewrite using `[Units.val_mul, colGL, coe_uGL, coe_uGL, coe_uGL]`. Conclude with `uMat_mul_uMat_colX hY x)`. Rewrite using `[← mul_assoc (uGL _), hmul, supSum_add, hsup, supSum_colX k hkn x, neg_add, AddChar.map_add_eq_mul, Circle.coe_mul, mul_assoc]`.
+-/
 theorem partialCoeff_eq_setIntegral {ϕ : AdelicGLn.AdelicGL K n → ℂ} (hϕ : Continuous ϕ) :
     ∀ (m k : ℕ), n - k = m → k ≤ n → ∀ g, partialCoeff ϕ k g =
       ∫ Z in vecDomain K (GePos n k), wInt k ϕ g (extGe Z) ∂vecMeasure K (GePos n k) := by
@@ -233,6 +313,13 @@ theorem partialCoeff_eq_setIntegral {ϕ : AdelicGLn.AdelicGL K n → ℂ} (hϕ :
     rw [← mul_assoc (uGL _), hmul, supSum_add, hsup, supSum_colX k hkn x, neg_add,
       AddChar.map_add_eq_mul, Circle.coe_mul, mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[setIntegral_geCols k hk (continuous_wInt (k + 1) hϕ g), vecCoeff]`. Use `setIntegral_congr_fun measurableSet_vecDomain fun x _ => ?_` and prove the remaining obligations. Simplify using `only [pair, Pi.zero_apply, map_zero, zero_mul, Finset.sum_const_zero, neg_zero, AddChar.map_zero_eq_one, Circle.coe_one, mul_one]`. Rewrite using `[partialCoeff_eq_setIntegral hϕ _ (k + 1) rfl hk]`. Use `integral_congr_ae (ae_of_all _ fun Y => ?_)` and prove the remaining obligations.
+
+Simplify using `only [wInt]`. Establish `hY : ∀ p : Pos n, p.1.2.val ≤ k → extGe Y p = 0` using `fun p hp => extGe_eq_zero Y p hp`. Establish `hmul : uGL (extGe Y) * colGL k x = uGL (extGe Y + colX k x)` using `Units.ext (by`. Rewrite using `[Units.val_mul, colGL, coe_uGL, coe_uGL, coe_uGL]`. Conclude with `uMat_mul_uMat_colX hY x)`.
+
+Rewrite using `[← mul_assoc (uGL _), hmul, supSum_add, supSum_colX_succ, add_zero]`.
+-/
 theorem vecCoeff_zero_eq_setIntegral {ϕ : AdelicGLn.AdelicGL K n → ℂ} (hϕ : Continuous ϕ) {k : ℕ}
     (hk : k < n) (g : AdelicGLn.AdelicGL K n) :
     vecCoeff (fun x => partialCoeff ϕ (k + 1) (colGL k x * g)) 0 =
@@ -275,6 +362,13 @@ def extLow {R : Type*} [Zero R] {k : ℕ} (B : LowPos n k → R) : Pos n → R :
 def extU {R : Type*} [Zero R] {k : ℕ} (A : AutomorphicForm.UPos n k → R) : Pos n → R :=
   fun p => if h : p.1.1.val < k ∧ k ≤ p.1.2.val then A ⟨p.1, h⟩ else 0
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Simplify using `only [extGe, extLow, extU, Pi.add_apply]`. Distinguish the cases in `h1 : k ≤ p.1.2.val`. Rewrite using `[dif_pos h1]`. Distinguish the cases in `h2 : k ≤ p.1.1.val`.
+
+Rewrite using `[dif_pos h2, dif_neg (by omega), add_zero] show Sum.elim B A (lowSplit k ⟨p, h1⟩) = _`. Simplify using `only [lowSplit, Equiv.coe_fn_mk, dif_pos h2, Sum.elim_inl]`. Rewrite using `[dif_neg h2, dif_pos ⟨by omega, h1⟩, zero_add] show Sum.elim B A (lowSplit k ⟨p, h1⟩) = _`. Simplify using `only [lowSplit, Equiv.coe_fn_mk, dif_neg h2, Sum.elim_inr]`. Establish `hp` using `p.2`.
+
+Rewrite `hp` using `[Fin.lt_def]`. Rewrite using `[dif_neg h1, dif_neg (by omega), dif_neg (by omega), add_zero]`.
+-/
 theorem extGe_lowSplit {R : Type*} [AddCommGroup R] (k : ℕ) (B : LowPos n k → R)
     (A : AutomorphicForm.UPos n k → R) :
     extGe (fun i => Sum.elim B A (lowSplit k i)) = extLow B + extU A := by
@@ -293,12 +387,20 @@ theorem extGe_lowSplit {R : Type*} [AddCommGroup R] (k : ℕ) (B : LowPos n k �
     rw [Fin.lt_def] at hp
     rw [dif_neg h1, dif_neg (by omega), dif_neg (by omega), add_zero]
 
+/- English proof (translation)
+Use `Finset.sum_eq_zero fun p hp => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hp`. Rewrite using `[extU, dif_neg (by omega)]`.
+-/
 theorem supSum_extU (k : ℕ) (A : AutomorphicForm.UPos n k → 𝔸[K]) :
     supSum (k + 1) (extU A) = 0 := by
   refine Finset.sum_eq_zero fun p hp => ?_
   simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hp
   rw [extU, dif_neg (by omega)]
 
+/- English proof (translation)
+Rewrite using `[vecCoeff_zero_eq_setIntegral hϕ hk g]`. Use `setIntegral_vecDomain_sum (lowSplit k) ((continuous_wInt (k + 1) hϕ g).comp (continuous_extGe (K := K) (n := n) (k := k)))` as an intermediate fact. Simplify using `only [Function.comp_apply, extGe_lowSplit] at this`. Rewrite using `[this]`. Use `setIntegral_congr_fun measurableSet_vecDomain fun B _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [wInt, supSum_add, supSum_extU, add_zero]`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (ae_of_all _ fun A => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vecCoeff_zero_eq_setIntegral_low {ϕ : AdelicGLn.AdelicGL K n → ℂ} (hϕ : Continuous ϕ)
     {k : ℕ} (hk : k < n) (g : AdelicGLn.AdelicGL K n) :
     vecCoeff (fun x => partialCoeff ϕ (k + 1) (colGL k x * g)) 0 =

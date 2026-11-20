@@ -17,6 +17,23 @@ open scoped ComplexConjugate Classical
 
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E
 
+/- English proof (translation)
+Introduce `K _ _ _ n hn μ _ 𝔞 φ hφ`. Take `⟨m, hm, hC⟩` from `(UpperTheory.ConvolutionTheory.Tf.compatEx K n hn).2.1 μ 𝔞.ν`. Establish `hUo` using `𝔞.isOpen`. Establish `hUc : IsCompact (𝔞.U : Set (FA K n))` using `(AdelicGLn.isCompact_integralFiniteGL K n).of_isClosed_subset (Subgroup.isClosed_of_isOpen _ hUo) 𝔞.le`. Establish `hpos : 0 < m.real (𝔞.U : Set (FA K n))` using `ENNReal.toReal_pos (hUo.measure_pos m ⟨1, 𝔞.U.one_mem⟩).ne' hUc.measure_lt_top.ne`.
+
+Establish `hne : ((m.real (𝔞.U : Set (FA K n)) : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hpos.ne'`. Use `⟨⟨m.real (𝔞.U : Set (FA K n)), hpos, fun Θ hΘ hfix x => ?_, ?_⟩, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[hC 𝔞.a₀ φ (fun g => Θ (x * g)) (hΘ.comp (continuous_const.mul continuous_id)), ← integral_const_mul]`. Use `integral_congr_ae (Eventually.of_forall fun a => ?_)` and prove the remaining obligations. Establish `h1 : ∀ h : FA K n, 𝔞.a₀ a * φ h * Θ (x * (archP K n a * MultiplicityOne.finProj K n h)) = (𝔞.U : Set (FA K n)).indicator (fun _ => 𝔞.a₀ a * Θ (x * archP K n a)) h`.
+
+Introduce `h`. Distinguish the cases in `hh : h ∈ (𝔞.U : Set (FA K n))`. Rewrite using `[hφ, Set.indicator_of_mem hh, Set.indicator_of_mem hh, ← mul_assoc x, hfix h hh]`. Simplify using the standard rewrite rules. Rewrite using `[hφ, Set.indicator_of_notMem hh, Set.indicator_of_notMem hh]`.
+
+Simplify using the standard rewrite rules. Simplify using `only [h1]`. Rewrite using `[integral_indicator_const _ hUo.measurableSet, Complex.real_smul]`. Take `⟨e, he, hO⟩` from `UpperTheory.ConvolutionTheory.Tf.prjFix K n μ m 𝔞.U hUo hUc`. Establish `h2 : φ = ((m.real (𝔞.U : Set (FA K n)) : ℝ) : ℂ) • e`.
+
+Use extensionality with `h`. Rewrite using `[CompactlySupportedContinuousMap.smul_apply, he, hφ]`. Distinguish the cases in `hh : h ∈ (𝔞.U : Set (FA K n))`. Rewrite using `[Set.indicator_of_mem hh, Set.indicator_of_mem hh, smul_eq_mul, mul_inv_cancel₀ hne]`. Both sides reduce to the same expression.
+
+Rewrite using `[Set.indicator_of_notMem hh, Set.indicator_of_notMem hh, smul_zero]`. Establish `h3` using `UpperTheory.ConvolutionTheory.Tf.rrTens K n hn μ 𝔞.ν m hC 𝔞.a₀ φ`. Establish `h4` using `((UpperTheory.ConvolutionTheory.Tf.opAlg K n μ 𝔞.ν m).2.2.1 ((m.real (𝔞.U : Set (FA K n)) : ℝ) : ℂ) 𝔞.a₀ e).2`. Rewrite `h4` using `[← h2, hO]`. Rewrite `h3` using `[h4, ContinuousLinearMap.comp_smul]`.
+
+Conclude with `h3`. Rewrite using `[← ((UpperTheory.ConvolutionTheory.Tf.tensApply K n hn 𝔞.a₀ φ).2.2.2.2 c).2]`. Use `(UpperTheory.ConvolutionTheory.Tf.leftSm K n hn 𝔞.a₀ (c • φ)).1 𝔞.smooth ⟨𝔞.U, hUo, fun u hu h => ?_⟩` and prove the remaining obligations. Rewrite using `[CompactlySupportedContinuousMap.smul_apply, CompactlySupportedContinuousMap.smul_apply, hφ, hφ]`. Distinguish the cases in `hh : h ∈ (𝔞.U : Set (FA K n))`.
+
+Rewrite using `[Set.indicator_of_mem hh, Set.indicator_of_mem (show u * h ∈ (𝔞.U : Set (FA K n)) from 𝔞.U.mul_mem hu hh)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hh, Set.indicator_of_notMem (show u * h ∉ (𝔞.U : Set (FA K n)) from fun h' => hh ((𝔞.U.mul_mem_cancel_left hu).1 h'))]`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E.tensAmp :
     TensAmp := by
   intro K _ _ _ n hn μ _ 𝔞 φ hφ

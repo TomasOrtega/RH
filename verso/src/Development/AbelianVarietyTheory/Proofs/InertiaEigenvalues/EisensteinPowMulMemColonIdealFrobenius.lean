@@ -8,6 +8,19 @@ open PowerSeries GlobalTheory.BK Matrix GlobalTheory.LiftCoker
 
 namespace GlobalTheory.LiftCoker
 
+/- English proof (translation)
+Introduce `α hα w hw`. Use `set x := D₂.mx τ *ᵥ w with hxdef`. Establish `hx : x ∈ D₂.Lcomp τ` using `D₂.mem_extc.2 ⟨w, hw, rfl⟩`. Establish `hxL : (Pi.single τ x : Vec K a κ) ∈ D₂.L` using `mem_tot.2 fun σ => by`. Distinguish the cases in `h : σ = τ`.
+
+Substitute `h` using the available equality. Simplify using `using hx`. Simplify using `[h, zero_mem]`. Establish `hup` using `mem_tot.1 (D₂.upper _ hxL) τ`. Simplify using `only [Pi.smul_apply, Pi.single_eq_same] at hup`.
+
+Take `⟨m, hm, hαm⟩` from `hα (E K l e ^ η • x) hup`. Establish `hmM : (Pi.single τ m : Vec K a ι) ∈ D₁.M` using `mem_tot.2 fun σ => by`. Distinguish the cases in `h : σ = τ`. Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same]`.
+
+Conclude with `hm`. Simplify using `[h, zero_mem]`. Establish `hlow` using `mem_tot.1 (D₁.lower _ hmM) τ`. Simplify using `only [Pi.smul_apply, Pi.single_eq_same] at hlow`. Take `⟨m', hm', hm'eq⟩` from `D₁.mem_extc.1 hlow`.
+
+Establish `hE : PowerSeries.map (algebraMap O K) ((X ^ e + (l : O⟦X⟧)) ^ (H + η) * α) = E K l e ^ (H + η) * PowerSeries.map (algebraMap O K) α`. Simplify using `[E, map_X, map_natCast]`. Use `⟨m', hm', ?_⟩` and prove the remaining obligations. Establish `key : D₂.mx τ *ᵥ (PowerSeries.map (algebraMap O K) ((X ^ e + (l : O⟦X⟧)) ^ (H + η) * α) • w) = D₂.mx τ *ᵥ ((F.mat (τ - 1)).map (frob K l) *ᵥ m')`. Rewrite using `[Matrix.mulVec_smul, ← hxdef, hE, pow_add, show E K l e ^ H * E K l e ^ η * PowerSeries.map (algebraMap O K) α = E K l e ^ H * (PowerSeries.map (algebraMap O K) α * E K l e ^ η) by ring, mul_smul, mul_smul, hαm, ← Matrix.mulVec_smul, hm'eq, Matrix.mulVec_mulVec, F.comm, ← Matrix. …`.
+
+Use `congrArg (fun v => D₂.mxInv τ *ᵥ v) key` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec (M := D₂.mxInv τ) (N := D₂.mx τ), Matrix.mulVec_mulVec (M := D₂.mxInv τ) (N := D₂.mx τ), PhiMod.mxInv_mul_mx, Matrix.one_mulVec, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+-/
 theorem E_pow_mul_mem_colon_frob (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K]
     [CompleteSpace K] [Algebra O K] [IsUnitBall O K] (l e a : ℕ) (ι : Type) [Fintype ι]
     [DecidableEq ι] [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] [NeZero a]

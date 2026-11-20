@@ -18,6 +18,9 @@ noncomputable section
 
 namespace GlobalTheory.UnitTau
 
+/- English proof (translation)
+Simplify using `only [mul_inv]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem commGroup_seven_term_product_rearrange {G : Type} [CommGroup G] (a b c A B C D : G) :
     a * b * c * A * (b * B)⁻¹ * (c * C)⁻¹ * D⁻¹ = a * (A * B⁻¹ * C⁻¹ * D⁻¹) := by
   simp only [mul_inv]
@@ -26,6 +29,27 @@ theorem commGroup_seven_term_product_rearrange {G : Type} [CommGroup G] (a b c A
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `R _ _ Q m t gam hM hsym ht y z`. Take `⟨n1, p1, hp1⟩` from `GlobalTheory.UnitPart.exists_isUnitPart Q t gam hM (y + z)`. Take `⟨n2, p2, hp2⟩` from `GlobalTheory.UnitPart.exists_isUnitPart Q t gam hM y`. Take `⟨n3, p3, hp3⟩` from `GlobalTheory.UnitPart.exists_isUnitPart Q t gam hM z`. Establish `hc0 : Q.c 0 = η[Q.P.A]`.
+
+Establish `h` using `Q.c_add 0 0`. Rewrite `h` using `[add_zero]`. Establish `h' : Q.c 0 * Q.c 0 = Q.c 0` using `h.symm`. Establish `h1 : Q.c 0 = 1` using `mul_eq_left.1 h'`. Rewrite using `[h1, Hom.one_def, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]`.
+
+Establish `hc0' : (Q.c 0).left = eSec Q.P.A` using `by rw [hc0]; rfl`. Set `T` to `LB.mulGen Q.P.L _ _ _ _ (LB.mulGen Q.P.L _ _ _ _ (LB.mulGen Q.P.L _ _ _ _ p1 (LB.invGen Q.P.L _ _ p2)) (LB.invGen Q.P.L _ _ p3)) (LB.invGen Q.P.L _ _ Q.rig)`. Establish `hT : T.IsGen` using `LB.isGen_mulGen (L := Q.P.L) _ _ _ _ _ _ (LB.isGen_mulGen (L := Q.P.L) _ _ _ _ _ _ (LB.isGen_mulGen (L := Q.P.L) _ _ _ _ _ _ hp1.1 (LB.isGen_invGen (L := Q.P.L) _ _ _ hp2.1)) (LB.isGen_invGen (L := Q.P.L) _ _ _ hp3.1)) (LB.isGen_invGen (L := Q.P.L) _ _ _ Q.rig_gen)`. Establish `hF : FormEq (Sum.elim (Sum.elim (Sum.elim (fun _ : PUnit => (Q.c (y + z)).left) (fun _ : PUnit => (Q.c y).left)) (fun _ : PUnit => (Q.c z).left)) (fun _ : PUnit => eSec Q.P.A)) (Sum.elim (Sum.elim (Sum.elim (fun _ : PUnit => (-1 : ℤ)) (fun _ : PUnit => -(-1 : ℤ))) (fun _ : PUnit …` using `Fin 4) ![(Q.c (y + z)).left, (Q.c y).left, (Q.c z).left, (Q.c 0).left] ![-1, 1, 1, -1] := by`. Introduce `U _ h`.
+
+Simplify using `only [Fintype.prod_sum_type, Fin.prod_univ_four, Finset.univ_unique, Finset.prod_singleton, Sum.elim_inl, Sum.elim_inr, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three, hc0', neg_neg]`. Simplify using `[Matrix.vecHead, Matrix.vecTail, hc0']`. Take `⟨τ₀, hτ, hv⟩` from `exists_gen Q.P.isLB hF T hT`. Use `⟨τ₀, hτ, ?_⟩` and prove the remaining obligations. Take `⟨-, hn1, e1, he1, hv1⟩` from `hp1`.
+
+Take `⟨-, hn2, e2, he2, hv2⟩` from `hp2`. Take `⟨-, hn3, e3, he3, hv3⟩` from `hp3`. Establish `hne : ∀ i, algebraMap R (FractionRing R) (t i) ≠ 0` using `fun i => (map_ne_zero_iff _ (IsFractionRing.injective R _)).2 (ht i)`. Set `e' : (FractionRing R)ˣ` to `∏ i, Units.mk0 _ (hne i) ^ gam i y z`. Establish `he' : (e' : FractionRing R) = ∏ i, algebraMap R _ (t i) ^ gam i y z`.
+
+Simplify using `[e', Units.coe_prod]`. Establish `hexp : ∀ i, (n1 i : ℤ) = gam i y z + n2 i + n3 i`. Introduce `i`. Establish `a` using `hn1 i`. Establish `b` using `hn2 i`.
+
+Establish `c` using `hn3 i`. Establish `s` using `hsym i y z`. Simplify using `only [map_add, LinearMap.add_apply] at a`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hee : e1 = e' * e2 * e3`.
+
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul, he1, he2, he3, he']`. Simplify using `only [map_prod, map_pow]`. Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_natCast, ← zpow_add₀ (hne i), ← zpow_add₀ (hne i), hexp i]`. Establish `hu : ∀ a b : (FractionRing R)ˣ, unitOn (a * b) = unitOn a * unitOn b` using `fun a b => map_mul (Units.map _) a b`. Use `⟨e', he', fun zz J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[hv _ _ zz J hJ]`. Simplify using `only [DegPre.tau, DegPre.rigK, T, val_mul hJ, val_inv, val_pull hJ]`.
+
+Rewrite using `[hv1 zz J hJ, hv2 zz J hJ, hv3 zz J hJ, hee, hu, hu, map_mul, map_mul, Category.id_comp]`. Conclude with `commGroup_seven_term_product_rearrange _ _ _ _ _ _ _`.
+-/
 theorem exists_isUnitTau : ∀ {R : Type} [CommRing R] [IsDomain R] (Q : DegPre R) {m : ℕ} (t : Fin m → R) (gam : Fin m → LinearMap.BilinForm ℤ Q.X), IsMonomial Q t gam → (∀ i y z, gam i y z = gam i z y) → (∀ i, t i ≠ 0) → ∀ y z, ∃ τ₀, IsUnitTau Q t gam y z τ₀ := by
   intro R _ _ Q m t gam hM hsym ht y z
   obtain ⟨n1, p1, hp1⟩ := GlobalTheory.UnitPart.exists_isUnitPart Q t gam hM (y + z)

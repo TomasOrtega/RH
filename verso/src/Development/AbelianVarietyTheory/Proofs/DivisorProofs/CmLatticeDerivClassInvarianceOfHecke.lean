@@ -26,6 +26,27 @@ open scoped ContDiff nonZeroDivisors
 
 namespace GlobalTheory.DerivAtOrigin
 
+/- English proof (translation)
+Introduce `E _ _ _ I _ _ φ hφ c y hc σ hσ m z hz`. Establish `hz1 : ‖z‖ < 1` using `(pi_norm_lt_iff one_pos).2 hz`. Use `set r : ℝ := (‖z‖ + 1) / 2 with hr`. Establish `hr1 : r < 1` using `by rw [hr]; linarith`. Establish `hzr : ‖z‖ < r` using `by rw [hr]; linarith`.
+
+Use `set U : Set (I → ℂ) := Metric.ball 0 r with hU`. Establish `hUo : IsOpen U` using `Metric.isOpen_ball`. Establish `hUc : IsPreconnected U` using `(convex_ball (0 : I → ℂ) r).isPreconnected`. Establish `hzU : z ∈ U` using `by simpa [hU] using hzr`. Establish `hUle : ∀ w ∈ U, ∀ i, ‖w i‖ ≤ r` using `fun w hw i => (norm_le_pi_norm w i).trans (show ‖w‖ < r by simpa [hU] using hw).le`.
+
+Establish `hUpd : ∀ w ∈ U, w ∈ polydisc I` using `fun w hw i => lt_of_le_of_lt (hUle w hw i) hr1`. Use `set N : modUnits (lattice c y) → ℝ := fun q => |(Algebra.norm ℚ (q.1.out : E) : ℝ)| ^ (-(1 + σ.re)) with hN`. Establish `hNs : Summable N` using `GlobalTheory.CMVal.Conv.summable_norm_rpow E c y (1 + σ.re) hc (by linarith)`. Establish `hne : ∀ q : modUnits (lattice c y), q.1.out ≠ 0` using `fun q => (out_mem_lattice q).2`. Use `choose C hC using fun m : I → ℕ => GlobalTheory.T.weightTwoDerivativeEisensteinTerm_uniform_bound E I φ hφ m σ r hσ.le hr1`.
+
+Establish `hsum : ∀ m, ∀ w ∈ U, Summable (fun q : modUnits (lattice c y) => eTerm φ m σ w q.1.out)` using `fun m w hw => Summable.of_norm_bounded (hNs.mul_left (C m)) fun q => hC m w (hUle w hw) _ (hne q)`. Use `set f' : modUnits (lattice c y) → (I → ℂ) → ((I → ℂ) →L[ℝ] ℂ) := fun q w => ∑ j, (eTerm φ (m + Pi.single j 1) σ w q.1.out • dz j + (eTerm φ m σ w q.1.out * (-σ * φ j q.1.out / starRingEnd ℂ (defCoord φ w q.1.out j))) • dzbar j) with hf'`. Use `set u : modUnits (lattice c y) → ℝ := fun q => ∑ j : I, (C (m + Pi.single j 1) * N q * ‖(dz j : (I → ℂ) →L[ℝ] ℂ)‖ + C m * N q * (‖σ‖ / (1 - r)) * ‖(dzbar j : (I → ℂ) →L[ℝ] ℂ)‖) with hu`. Establish `hus : Summable u` using `summable_sum fun j _ => ((hNs.mul_left _).mul_right _).add (((hNs.mul_left _).mul_right _).mul_right _)`. Establish `hder : ∀ q w, w ∈ U → HasFDerivAt (fun w : I → ℂ => eTerm φ m σ w q.1.out) (f' q w) w` using `fun q w hw => GlobalTheory.T.hasFDerivAt_weightTwoDerivativeEisensteinTerm E I φ m σ q.1.out (hne q) w (hUpd w hw)`.
+
+Establish `hrat : ∀ (q : modUnits (lattice c y)) w, w ∈ U → ∀ j, ‖-σ * φ j q.1.out / starRingEnd ℂ (defCoord φ w q.1.out j)‖ ≤ ‖σ‖ / (1 - r)`. Introduce `q w hw j`. Establish `hl` using `GlobalTheory.DeformedSum.Bound.defCoord_lower φ w q.1.out j (hUle w hw j)`. Establish `hp : 0 < ‖φ j q.1.out‖` using `by simpa using hne q`. Establish `hr' : 0 < 1 - r` using `by linarith`.
+
+Establish `hd : 0 < ‖defCoord φ w q.1.out j‖` using `lt_of_lt_of_le (mul_pos hr' hp) hl`. Rewrite using `[norm_div, norm_mul, norm_neg, Complex.norm_conj, div_le_div_iff₀ hd hr']`. Use polynomial arithmetic with `[norm_nonneg σ]`. Establish `hbd : ∀ q w, w ∈ U → ‖f' q w‖ ≤ u q`. Introduce `q w hw`.
+
+Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun j _ => (norm_add_le _ _).trans (add_le_add ?_ ?_))` and prove the remaining obligations. Rewrite using `[norm_smul]`. Conclude with `mul_le_mul_of_nonneg_right (hC _ w (hUle w hw) _ (hne q)) (norm_nonneg _)`. Rewrite using `[norm_smul, norm_mul]`. Establish `h1` using `hC m w (hUle w hw) _ (hne q)`.
+
+Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul h1 (hrat q w hw j) (norm_nonneg _) ((norm_nonneg _).trans h1)) (norm_nonneg _)`. Establish `hF : HasFDerivAt (fun w : I → ℂ => ∑' q : modUnits (lattice c y), eTerm φ m σ w q.1.out) (∑' q, f' q z) z` using `hasFDerivAt_tsum_of_isPreconnected hus hUo hUc hder hbd hzU (hsum m z hzU) hzU`. Use `⟨hF.differentiableAt, fun i => ?_⟩` and prove the remaining obligations. Establish `hcs : Summable (fun q => f' q z)` using `Summable.of_norm_bounded hus fun q => hbd q z hzU`. Establish `hap : ∀ v : I → ℂ, HasSum (fun q => f' q z v) ((∑' q, f' q z) v)` using `fun v => (ContinuousLinearMap.apply ℝ ℂ v).hasSum hcs.hasSum`.
+
+Unfold `wirt`. Rewrite using `[hF.fderiv]`. Use `(HasSum.tsum_eq ?_).symm` and prove the remaining obligations. Use `(((hap _).add ((hap _).mul_left _)).div_const 2).congr_fun ?_` and prove the remaining obligations. Introduce `q`.
+
+Simplify using `only [hf', ContinuousLinearMap.sum_apply, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, dz_apply, dzbar_apply, smul_eq_mul]`. Rewrite using `[Finset.sum_eq_single i (fun j _ hj => by simp [Pi.single_apply, hj]) (by simp), Finset.sum_eq_single i (fun j _ hj => by simp [Pi.single_apply, hj]) (by simp)]`. Simplify using `only [Pi.single_eq_same, map_one, Complex.conj_I, Bool.false_eq_true, if_false]`. Take the linear combination `(eTerm φ (m + Pi.single i 1) σ z q.1.out / 2 - eTerm φ m σ z q.1.out * (-σ * φ i q.1.out / starRingEnd ℂ (defCoord φ z q.1.out i)) / 2) * Complex.I_mul_I`.
+-/
 theorem series_weightTwo : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] [DecidableEq I] (φ : I → E →+* ℂ), IsCMType φ → ∀ (c : Ideal (OF E)) (y : (Af E)ˣ), c ≠ ⊥ → ∀ (σ : ℂ), 0 < σ.re → ∀ (m : I → ℕ) (z : I → ℂ), z ∈ polydisc I → DifferentiableAt ℝ (fun w : I → ℂ => ∑' q : modUnits (lattice c y), eTerm φ m σ w q.1.out) z ∧ ∀ i : I, wirt i false (fun w : I → ℂ => ∑' q : modUnits (lattice c y), eTerm φ m σ w q.1.out) z = ∑' q : modUnits (lattice c y), eTerm φ (m + Pi.single i 1) σ z q.1.out := by
   intro E _ _ _ I _ _ φ hφ c y hc σ hσ m z hz
   have hz1 : ‖z‖ < 1 := (pi_norm_lt_iff one_pos).2 hz
@@ -92,6 +113,11 @@ theorem series_weightTwo : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E
   linear_combination (eTerm φ (m + Pi.single i 1) σ z q.1.out / 2 -
     eTerm φ m σ z q.1.out * (-σ * φ i q.1.out / starRingEnd ℂ (defCoord φ z q.1.out i)) / 2) * Complex.I_mul_I
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => exact h`. Consider the case `cons a w ih`. Introduce `z hz`. Establish `hev : wirtWord w f =ᶠ[nhds z] wirtWord w g` using `by filter_upwards [hU.mem_nhds hz] with u hu using ih u hu`.
+
+Simplify using `only [wirtWord_cons, wirt, hev.fderiv_eq]`.
+-/
 theorem wirtWord_congr {I : Type} [Fintype I] {U : Set (I → ℂ)} (hU : IsOpen U) {f g : (I → ℂ) → ℂ}
     (h : ∀ z ∈ U, f z = g z) (w : List (I × Bool)) : ∀ z ∈ U, wirtWord w f z = wirtWord w g z := by
   induction w with
@@ -102,11 +128,19 @@ theorem wirtWord_congr {I : Type} [Fintype I] {U : Set (I → ℂ)} (hU : IsOpen
       filter_upwards [hU.mem_nhds hz] with u hu using ih u hu
     simp only [wirtWord_cons, wirt, hev.fderiv_eq]
 
+/- English proof (translation)
+Simplify using `only [wirt, fderiv_const_mul hf, ContinuousLinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem wirt_const_mul {I : Type} [Fintype I] (i : I) (bar : Bool) (a : ℂ) {f : (I → ℂ) → ℂ} {z : I → ℂ}
     (hf : DifferentiableAt ℝ f z) : wirt i bar (fun w => a * f w) z = a * wirt i bar f z := by
   simp only [wirt, fderiv_const_mul hf, ContinuousLinearMap.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Establish `ho : IsOpen halfPlane` using `isOpen_lt continuous_const Complex.continuous_re`. Establish `hc : IsPreconnected halfPlane` using `(convex_halfSpace_re_gt _).isPreconnected`. Establish `h1 : (1 : ℂ) ∈ halfPlane` using `by simp [halfPlane]; norm_num`. Establish `h0 : (0 : ℂ) ∈ halfPlane` using `by simp [halfPlane]; norm_num`. Establish `ho' : IsOpen {s : ℂ | 0 < s.re}` using `isOpen_lt continuous_const Complex.continuous_re`.
+
+Use `(hf.analyticOnNhd ho).eqOn_of_preconnected_of_eventuallyEq (hg.analyticOnNhd ho) hc h1 ?_ h0` and prove the remaining obligations. Use `filter_upwards [ho'.mem_nhds (show (1 : ℂ) ∈ {s : ℂ | 0 < s.re} by simp)] with s hs using h s hs`.
+-/
 theorem eq_at_zero {f g : ℂ → ℂ} (hf : DifferentiableOn ℂ f halfPlane) (hg : DifferentiableOn ℂ g halfPlane)
     (h : ∀ σ : ℂ, 0 < σ.re → f σ = g σ) : f 0 = g 0 := by
   have ho : IsOpen halfPlane := isOpen_lt continuous_const Complex.continuous_re
@@ -117,12 +151,42 @@ theorem eq_at_zero {f g : ℂ → ℂ} (hf : DifferentiableOn ℂ f halfPlane) (
   refine (hf.analyticOnNhd ho).eqOn_of_preconnected_of_eventuallyEq (hg.analyticOnNhd ho) hc h1 ?_ h0
   filter_upwards [ho'.mem_nhds (show (1 : ℂ) ∈ {s : ℂ | 0 < s.re} by simp)] with s hs using h s hs
 
+/- English proof (translation)
+Establish `: upperHalf F = ⋂ τ : Emb F, {z : Emb F → ℂ | 0 < (z τ).im}`. Use extensionality with `z`. Simplify using `[upperHalf]`. Rewrite using `[this]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_lt continuous_const (Complex.continuous_im.comp (continuous_apply i))`.
+-/
 theorem isOpen_upperHalf (F : Type) [Field F] [NumberField F] : IsOpen (upperHalf F) := by
   have : upperHalf F = ⋂ τ : Emb F, {z : Emb F → ℂ | 0 < (z τ).im} := by
     ext z; simp [upperHalf]
   rw [this]
   exact isOpen_iInter_of_finite fun i => isOpen_lt continuous_const (Complex.continuous_im.comp (continuous_apply i))
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `GlobalTheory.T.exists_equiv_cmType_realEmbeddings_maxRealSubfield E I φ hφ`. Take `⟨θ₀, hθ₀⟩` from `GlobalTheory.T.exists_element_pos_im_under_cmType E I φ hφ`. Establish `hne : Nonempty I`. Take `⟨i, -⟩` from `hφ (Classical.arbitrary (E →+* ℂ))`. Conclude with `⟨i⟩`.
+
+Establish `hnot : ∀ θ : E, (∀ i, 0 < (φ i θ).im) → θ ∉ maximalRealSubfield E` using `fun θ h hθ => by`. Take `⟨i⟩` from `hne`. Establish `h1` using `h i`. Rewrite `h1` using `[show θ = ((⟨θ, hθ⟩ : maximalRealSubfield E) : E) from rfl, he]`. Simplify using `at h1`.
+
+Take `⟨𝔞, 𝔟, a₀, hL⟩` from `GlobalTheory.T.orderLattice_eq_steinitzForm_cm E c y hc θ₀ (hnot θ₀ hθ₀)`. Use `set θ : E := θ₀ + a₀ with hθdef`. Establish `hθ : ∀ i, 0 < (φ i θ).im` using `fun i => by`. Rewrite using `[hθdef, map_add, he]`. Simplify using `using hθ₀ i`.
+
+Take `⟨G, ⟨hG1, hG2, hG3⟩, hG0, -⟩` from `hH (maximalRealSubfield E) hF 𝔞 𝔟`. Establish `hP` using `GlobalTheory.WeightTwoSum.isOpen_polydisc I`. Establish `hmaps : Set.MapsTo (modPt φ e θ) (polydisc I) (upperHalf _)` using `fun z hz τ => modPt_im_pos φ e θ hθ hz τ`. Use `set cw : ℂ := (cWt E 2 : ℂ) with hcw`. Use `set b : (I → ℂ) → ℂ := fun z => (homFac z)⁻¹ ^ 2 with hb`.
+
+Establish `hbC : ContDiffOn ℂ ∞ b (polydisc I)` using `(contDiff_homFac.contDiffOn.inv fun z hz => homFac_ne_zero hz).pow 2`. Use `set K : ℂ → (I → ℂ) → ℂ := fun σ z => b z * Complex.exp (-σ * logFac z) * G σ (modPt φ e θ z) with hK`. Establish `hchain : ∀ (a : ℂ) (w : List (I × Bool)), ∀ z ∈ polydisc I, DifferentiableOn ℂ (fun σ => wirtWord w (fun z' => a * K σ z') z) halfPlane` using `fun a w z hz => by`. Establish `h` using `GlobalTheory.T.differentiableOn_wirtWord_mul_exp_comp' _ I (polydisc I) (upperHalf _) halfPlane G (modPt φ e θ) (fun z => a * b z) logFac hP (isOpen_upperHalf _) hmaps ((contDiffOn_modPt φ e θ).restrict_scalars ℝ) ((contDiffOn_const.mul hbC).restrict_scalars ℝ) contDiffOn_logFac …`. Simplify `h` using `only [hK, mul_assoc]`.
+
+Establish `hKd : ∀ z ∈ polydisc I, DifferentiableOn ℂ (fun σ => K σ z) halfPlane` using `fun z hz => by`. Simplify `hchain 1 [] z hz` using `[wirtWord_nil]`. Establish `hKs : ∀ z ∈ polydisc I, ∀ σ : ℂ, 0 < σ.re → HasSum (fun q : modUnits (lattice c y) => defTerm φ 2 z σ q.1.out) (K σ z)` using `fun z hz σ hσ => by`. Take `⟨h1, h2⟩` from `hG1 σ hσ _ (hmaps hz)`. Use `GlobalTheory.T.hasSum_deformedLatticeEisensteinSummand_weight_two E I φ e he 𝔞 𝔟 θ _ (hnot θ hθ) hL z hz σ _ ?_` and prove the remaining obligations.
+
+Rewrite using `[h2]`. Conclude with `h1.hasSum`. Establish `hagree : ∀ g, IsDefSum φ 2 (lattice c y) g → ∀ z ∈ polydisc I, g z = cw * K 0 z`. Introduce `g hg z hz`. Take `⟨G', hG', hgz⟩` from `hg z hz`.
+
+Take `⟨H, hH1, hH2, rfl⟩` from `hG'.2 rfl`. Rewrite using `[hgz, eq_at_zero hH1 (hKd z hz) fun σ hσ => (hH2 σ hσ).unique (hKs z hz σ hσ)]`. Establish `hK0 : DifferentiableOn ℂ (fun z => cw * K 0 z) (polydisc I)`. Simplify using `only [hK, neg_zero, zero_mul, Complex.exp_zero, mul_one]`. Use `(((hbC.differentiableOn (by simp)).mul (hG0.comp ((contDiffOn_modPt φ e θ).differentiableOn (by simp)) hmaps))).const_mul _` and prove the remaining obligations.
+
+Use `⟨⟨fun z => cw * K 0 z, fun z hz => ⟨K 0 z, ⟨fun h => absurd rfl h, fun _ => ⟨fun σ => K σ z, hKd z hz, hKs z hz, rfl⟩⟩, rfl⟩⟩, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hgd : DifferentiableOn ℂ g (polydisc I)` using `hK0.congr (hagree g hg)`. Use `⟨hgd, fun κ l hl => ⟨fun S hS => ?_, fun h => absurd h (by norm_num)⟩⟩` and prove the remaining obligations. Establish `h0 : (0 : I → ℂ) ∈ polydisc I` using `GlobalTheory.DerivAtOrigin.zero_mem_polydisc I`. Establish `hκ : (fun j => l.count j) = κ` using `funext hl`.
+
+Establish `hser : ∀ σ : ℂ, 0 < σ.re → ∀ l : List I, ∀ z ∈ polydisc I, wirtWord (l.map fun i => (i, false)) (fun z' => cw * K σ z') z = cw * ∑' q : modUnits (lattice c y), eTerm φ (fun j => l.count j) σ z q.1.out`. Introduce `σ hσ l`. Proceed by induction on `l with`. Consider the case `nil`. Introduce `z hz`.
+
+Establish `: (fun j : I => ([] : List I).count j) = 0` using `by funext j; simp`. Rewrite using `[this]`. Simplify using `only [List.map_nil, wirtWord_nil, eTerm_zero]`. Rewrite using `[(hKs z hz σ hσ).tsum_eq]`. Consider the case `cons i l ih`.
+
+Introduce `z hz`. Take `⟨h1, h2⟩` from `series_weightTwo E I φ hφ c y hc σ hσ (fun j => l.count j) z hz`. Establish `h3` using `wirtWord_congr hP ih [(i, false)] z hz`. Rewrite using `[List.map_cons, wirtWord_cons, count_cons_eq, ← h2 i, ← wirt_const_mul i false cw h1]`. Conclude with `h3`.
+
+Rewrite using `[GlobalTheory.T.iteratedComplexPartialDerivative_eq_wirtingerWord I _ g hP hgd l 0 h0, wirtWord_congr hP (hagree g hg) _ 0 h0, ← risingS_zero]`. Use `eq_at_zero (f := fun σ => wirtWord (l.map fun i => (i, false)) (fun z' => cw * K σ z') 0) (g := fun σ => cw * risingS σ κ * S σ) (hchain cw _ 0 h0) ((((differentiable_risingS κ).const_mul cw).mul hS.1).differentiableOn) fun σ hσ => ?_` and prove the remaining obligations. Establish `h4` using `hS.2 σ (by push_cast; linarith)`. Simplify using `only [hser σ hσ l 0 h0, hκ, eTerm_origin]`. Rewrite using `[tsum_mul_left, h4.tsum_eq, mul_assoc]`.
+-/
 theorem derivFormula_two (hH : HeckeWeightTwo) (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I]
     [DecidableEq I] (φ : I → E →+* ℂ) (hF : 2 ≤ Module.finrank ℚ (maximalRealSubfield E)) (hφ : IsCMType φ)
     (c : Ideal (OF E)) (y : (Af E)ˣ) (hc : c ≠ ⊥) : DerivFormula φ 2 (lattice c y) := by
@@ -202,6 +266,11 @@ theorem derivFormula_two (hH : HeckeWeightTwo) (E : Type) [Field E] [NumberField
   simp only [hser σ hσ l 0 h0, hκ, eTerm_origin]
   rw [tsum_mul_left, h4.tsum_eq, mul_assoc]
 
+/- English proof (translation)
+Introduce `E _ _ _ I _ _ φ hF hφ`. Establish `hV` using `GlobalTheory.DualFormOrtho.dualFormValue_of_values E I φ hφ (GlobalTheory.DualFormExists.dualForm_existsUnique E) (GlobalTheory.DualFormValues.dualForm_values E)`. Use `⟨fun s hs => ⟨fun c y hc => ⟨?_, GlobalTheory.HomothetyLatSum.homothety E I φ hφ s _⟩, GlobalTheory.ClassInv.classInvariance E I φ hφ (GlobalTheory.HomothetyLatSum.homothety E I φ hφ) s⟩, hV, GlobalTheory.DualBase.dualFormBase_of_value E I φ hφ hV⟩` and prove the remaining obligations. Break down `Nat.lt_or_ge s 2 with h | h` into its components or cases. Take `rfl : s = 1` from `by omega`.
+
+Conclude with `derivFormula_two hH E I φ hF hφ c y hc`. Conclude with `derivFormula_of_series E I φ (2 * s) _ (by omega) (fun m z hz => GlobalTheory.DeformedSum.Series.series_differentiable E I φ hφ s h c y hc m z hz)`.
+-/
 theorem statement (hH : HeckeWeightTwo) : GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates.Statement := by
   intro E _ _ _ I _ _ φ hF hφ
   have hV := GlobalTheory.DualFormOrtho.dualFormValue_of_values E I φ hφ (GlobalTheory.DualFormExists.dualForm_existsUnique E)

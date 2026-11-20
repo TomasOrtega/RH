@@ -15,6 +15,19 @@ open GlobalTheory.FrameValue GlobalTheory.IndefiniteRowSideFullHecke.HermitianTe
 variable {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} {u : HolUnif A L g}
   {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ}
 
+/- English proof (translation)
+Take `⟨U, hU, s, hs⟩` from `hs (default : PrimeSpectrum ℂ)`. Establish `hr : Set.range (𝟙 A.left : A.left ⟶ A.left) ⊆ Set.range (A.hom ⁻¹ᵁ U).ι`. Introduce and unpack `x -`. Use `⟨⟨x, ?_⟩, rfl⟩` and prove the remaining obligations. Establish `e : A.hom x = (default : PrimeSpectrum ℂ)` using `Subsingleton.elim (α := PrimeSpectrum ℂ) _ _`.
+
+Use `show A.hom x ∈ U`. Rewrite using `[e]`. Conclude with `hU`. Take `⟨p, hp⟩ : ∃ p : A.left ⟶ (A.hom ⁻¹ᵁ U).toScheme, p ≫ (A.hom ⁻¹ᵁ U).ι = 𝟙 _` from `⟨_, IsOpenImmersion.lift_fac _ _ hr⟩`. Establish `hz : ∀ w, IsLift u (K` using `Fin 2) ![(A.hom ⁻¹ᵁ U).ι ≫ (GrpObj.inv : A ⟶ A).left, (A.hom ⁻¹ᵁ U).ι] ((u.ex w).left ≫ p) ![-w, w] := fun w k => by fin_cases k`.
+
+Use `show ((u.ex w).left ≫ p) ≫ (A.hom ⁻¹ᵁ U).ι ≫ (GrpObj.inv : A ⟶ A).left = (u.ex (-w)).left`. Rewrite using `[Category.assoc, reassoc_of% hp]`. Conclude with `ex_neg_left u w`. Use `show ((u.ex w).left ≫ p) ≫ (A.hom ⁻¹ᵁ U).ι = (u.ex w).left`. Rewrite using `[Category.assoc, hp, Category.comp_id]`.
+
+Apply the tactic sequence `have hd : Differentiable ℂ fun w => genVal u hL s ((u.ex w).left ≫ p) ![-w, w] := differentiable_genVal hL hs p (q := id) differentiable_id (z := fun w => ![-w, w]) (fun k => by fin_cases k <;> simp <;> fun_prop) hz`. Establish `hper : ∀ (l : u.Λ) w, genVal u hL s ((u.ex (w + l)).left ≫ p) ![-(w + l), w + l] = χ (-l) / χ l * genVal u hL s ((u.ex w).left ≫ p) ![-w, w]` using `fun l w => by`. Establish `e₂ : ![-(w + l), w + l] = fun k => ![-w, w] k + ((![-l, l] : Fin 2 → u.Λ) k : Fin g → ℂ)`. Use function extensionality and compare the values at `k`. Apply the tactic sequence `fin_cases k <;> simp [add_comm]`.
+
+Rewrite using `[ex_add_period u w l l.2, e₂, genVal_add_period hL h s (hz w)]`. Use `congr 1`. Establish `n` using `chi_ne_zero h l`. Simplify using `[ahFactor, hermForm_neg_left, hermForm_neg_right]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hc` using `const_of_norm_periodic u hd (fun l w => by`. Rewrite using `[hper, norm_mul, norm_div, h.2.2.1, h.2.2.1, div_one, _root_.one_mul])`. Establish `e` using `hper l 0`. Rewrite `e` using `[hc _ 0]`. Conclude with `(div_eq_one_iff_eq (chi_ne_zero h l)).1 (mul_right_cancel₀ (genVal_ne_zero hL s (hz 0)) (e.symm.trans (_root_.one_mul _).symm))`.
+-/
 theorem chi_neg_of_sym (hL : L.IsLB) (hs : Out.Sym A L) (h : u.IsAH Hm χ) (l : u.Λ) : χ (-l) = χ l := by
   obtain ⟨U, hU, s, hs⟩ := hs (default : PrimeSpectrum ℂ)
   have hr : Set.range (𝟙 A.left : A.left ⟶ A.left) ⊆ Set.range (A.hom ⁻¹ᵁ U).ι := by
@@ -53,6 +66,9 @@ theorem chi_neg_of_sym (hL : L.IsLB) (hs : Out.Sym A L) (h : u.IsAH Hm χ) (l : 
   exact (div_eq_one_iff_eq (chi_ne_zero h l)).1
     (mul_right_cancel₀ (genVal_ne_zero hL s (hz 0)) (e.symm.trans (_root_.one_mul _).symm))
 
+/- English proof (translation)
+Establish `e` using `chi_add hL h l (-l)`. Establish `hi : (hermForm Hm l l).im = 0` using `Complex.conj_eq_iff_im.1 (hermForm_conj Hm h.1 l l).symm`. Rewrite `e` using `[add_neg_cancel, chi_zero hL h, chi_neg_of_sym hL hs h, Submodule.coe_neg, hermForm_neg_right, Complex.neg_im, hi]`. Conclude with `mul_self_eq_one_iff.1 (by simpa using e.symm)`.
+-/
 theorem chi_eq_one_or_of_sym (hL : L.IsLB) (hs : Out.Sym A L) (h : u.IsAH Hm χ) (l : u.Λ) : χ l = 1 ∨ χ l = -1 := by
   have e := chi_add hL h l (-l)
   have hi : (hermForm Hm l l).im = 0 := Complex.conj_eq_iff_im.1 (hermForm_conj Hm h.1 l l).symm

@@ -19,6 +19,11 @@ namespace TailChernBound
 
 variable {e : ℕ} {X : Type} [TopologicalSpace X]
 
+/- English proof (translation)
+Establish `hd : ∀ᶠ y in 𝓝 z, DifferentiableAt ℝ f y` using `(hf.eventually (by decide)).mono fun y hy => hy.differentiableAt two_ne_zero`. Establish `hdd : DifferentiableAt ℝ (fderiv ℝ f) z` using `(hf.fderiv_right (m := 1) (by norm_num)).differentiableAt one_ne_zero`. Establish `h2 : fderiv ℝ (fun y => c * f y) =ᶠ[𝓝 z] fun y => c • fderiv ℝ f y` using `hd.mono fun y hy => (hy.hasFDerivAt.const_mul c).fderiv`. Establish `h3 : fderiv ℝ (fderiv ℝ (fun y => c * f y)) z = c • fderiv ℝ (fderiv ℝ f) z`. Rewrite using `[h2.fderiv_eq]`.
+
+Conclude with `(hdd.hasFDerivAt.const_smul c).fderiv`. Unfold `levi`. Rewrite using `[h3]`. Simplify using `only [ContinuousLinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem levi_smul' {f : (Fin e → ℂ) → ℝ} {z : Fin e → ℂ} (c : ℝ) (hf : ContDiffAt ℝ 2 f z)
     (w : Fin e → ℂ) : levi (fun y => c * f y) z w = c * levi f z w := by
   have hd : ∀ᶠ y in 𝓝 z, DifferentiableAt ℝ f y :=
@@ -35,6 +40,9 @@ theorem levi_smul' {f : (Fin e → ℂ) → ℝ} {z : Fin e → ℂ} (c : ℝ) (
   simp only [ContinuousLinearMap.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Unfold `levi`. Rewrite using `[smul_comm Complex.I t w]`. Simplify using `only [map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem levi_rsmul_lemma (φ : (Fin e → ℂ) → ℝ) (z w : Fin e → ℂ) (t : ℝ) :
     levi φ z (t • w) = t ^ 2 * levi φ z w := by
   unfold levi
@@ -42,6 +50,9 @@ private theorem levi_rsmul_lemma (φ : (Fin e → ℂ) → ℝ) (z w : Fin e →
   simp only [map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+The claim follows from `|levi (L.φ p ∘ (A.chart j).symm) y u| ≤ m * levi (Θ.φ p ∘ (A.chart j).symm) y u := by have hSo : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' (Θ.U p ∩ L.U p)) := (A.chart j).isOpen_inter_preimage_symm ((Θ.isOpen_U p).inter (L.isOpen_U p)) have haS : A.chart j p ∈ (A.chart j) …`.
+-/
 theorem chern_local (A : FinHolAtlas e X) (Θ L : LocPot X) (hΘ : IsPotential A Θ)
     (hpos : IsPosPot A Θ) (hL : IsPotential A L) (p : X) (j : Fin A.n)
     (hp : p ∈ (A.chart j).source) :
@@ -125,6 +136,13 @@ theorem chern_local (A : FinHolAtlas e X) (Θ L : LocPot X) (hΘ : IsPotential A
         mul_le_mul_of_nonneg_left hMc (sq_nonneg _)
     _ = M / c * (‖u‖ ^ 2 * levi (Θ.φ p ∘ (A.chart j).symm) y u0) := by ring
 
+/- English proof (translation)
+Establish `hdf : ∀ᶠ y in 𝓝 z, DifferentiableAt ℝ f y` using `(hf.eventually (by decide)).mono fun y hy => hy.differentiableAt two_ne_zero`. Establish `hdg : ∀ᶠ y in 𝓝 z, DifferentiableAt ℝ g y` using `(hg.eventually (by decide)).mono fun y hy => hy.differentiableAt two_ne_zero`. Establish `hddf : DifferentiableAt ℝ (fderiv ℝ f) z` using `(hf.fderiv_right (m := 1) (by norm_num)).differentiableAt one_ne_zero`. Establish `hddg : DifferentiableAt ℝ (fderiv ℝ g) z` using `(hg.fderiv_right (m := 1) (by norm_num)).differentiableAt one_ne_zero`. Establish `h2 : fderiv ℝ (fun y => a * f y + b * g y) =ᶠ[𝓝 z] fun y => a • fderiv ℝ f y + b • fderiv ℝ g y` using `(hdf.and hdg).mono fun y hy => ((hy.1.hasFDerivAt.const_mul a).add (hy.2.hasFDerivAt.const_mul b)).fderiv`.
+
+Establish `h3 : fderiv ℝ (fderiv ℝ (fun y => a * f y + b * g y)) z = a • fderiv ℝ (fderiv ℝ f) z + b • fderiv ℝ (fderiv ℝ g) z`. Rewrite using `[h2.fderiv_eq]`. Conclude with `((hddf.hasFDerivAt.const_smul a).add (hddg.hasFDerivAt.const_smul b)).fderiv`. Unfold `levi`. Rewrite using `[h3]`.
+
+Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem levi_lin {f g : (Fin e → ℂ) → ℝ} {z : Fin e → ℂ} (a b : ℝ) (hf : ContDiffAt ℝ 2 f z)
     (hg : ContDiffAt ℝ 2 g z) (w : Fin e → ℂ) :
     levi (fun y => a * f y + b * g y) z w = a * levi f z w + b * levi g z w := by
@@ -149,6 +167,15 @@ theorem levi_lin {f g : (Fin e → ℂ) → ℝ} {z : Fin e → ℂ} (a b : ℝ)
   simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Take `⟨W, hWo, hqW, G, hG, hGeq⟩` from `hP.2 x p q ⟨hqx, hqp⟩`. Establish `ha_t : A.chart j q ∈ (A.chart j).target` using `(A.chart j).map_source hqs`. Establish `hsa : (A.chart j).symm (A.chart j q) = q` using `(A.chart j).left_inv hqs`. Establish `hSo : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' (W ∩ P.U x ∩ P.U p))` using `(A.chart j).isOpen_inter_preimage_symm ((hWo.inter (P.isOpen_U x)).inter (P.isOpen_U p))`. Establish `haS : A.chart j q ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' (W ∩ P.U x ∩ P.U p)` using `⟨ha_t, by rw [Set.mem_preimage, hsa]; exact ⟨⟨hqW, hqx⟩, hqp⟩⟩`.
+
+Establish `hev : (P.φ x ∘ (A.chart j).symm) =ᶠ[𝓝 (A.chart j q)] fun y => 1 * (P.φ p ∘ (A.chart j).symm) y + 1 * ((G ∘ (A.chart j).symm) y).re` using `by filter_upwards [hSo.mem_nhds haS] with y hy`. Establish `h1` using `hGeq ((A.chart j).symm y) hy.2`. Simplify using `only [Function.comp_apply]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpo : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' P.U p)` using `(A.chart j).isOpen_inter_preimage_symm (P.isOpen_U p)`.
+
+Establish `hpa : A.chart j q ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' P.U p` using `⟨ha_t, by rw [Set.mem_preimage, hsa]; exact hqp⟩`. Establish `hsx : ContDiffAt ℝ 2 (P.φ p ∘ (A.chart j).symm) (A.chart j q)`. Establish `h` using `(hP.1 p j).contDiffAt (hpo.mem_nhds hpa)`. Conclude with `contDiffAt_infty.1 h 2` after adjusting the coercions. Establish `hGa : AnalyticAt ℂ (G ∘ (A.chart j).symm) (A.chart j q)` using `hG j (A.chart j q) ⟨ha_t, by rw [Set.mem_preimage, hsa]; exact hqW⟩`.
+
+Establish `hre : ContDiffAt ℝ 2 (fun y => ((G ∘ (A.chart j).symm) y).re) (A.chart j q)` using `Complex.reCLM.contDiff.contDiffAt.comp (A.chart j q) ((hGa.contDiffAt (n := 2)).restrict_scalars ℝ)`. Establish `h2` using `levi_lin (z := A.chart j q) (1 : ℝ) 1 hsx hre u`. Rewrite using `[levi_congr hev u, h2, levi_re_analytic hGa u]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem base_change (A : FinHolAtlas e X) (P : LocPot X) (hP : IsPotential A P) (x p q : X)
     (j : Fin A.n) (hqs : q ∈ (A.chart j).source) (hqx : q ∈ P.U x) (hqp : q ∈ P.U p)
     (u : Fin e → ℂ) :
@@ -183,6 +210,31 @@ theorem base_change (A : FinHolAtlas e X) (P : LocPot X) (hP : IsPotential A P) 
   rw [levi_congr hev u, h2, levi_re_analytic hGa u]
   ring
 
+/- English proof (translation)
+Use `choose j hj using A.cover`. Use `choose r hr m hsub hbd using fun p => chern_local A Θ L hΘ hpos hL p (j p) (hj p)`. Establish `hVo : ∀ p, IsOpen ((A.chart (j p)).source ∩ A.chart (j p) ⁻¹' Metric.ball (A.chart (j p) p) (r p))` using `fun p => (A.chart (j p)).continuousOn.isOpen_inter_preimage (A.chart (j p)).open_source Metric.isOpen_ball`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun p => (A.chart (j p)).source ∩ A.chart (j p) ⁻¹' Metric.ball (A.chart (j p) p) (r p)) hVo (fun x _ => Set.mem_iUnion.2 ⟨x, hj x, Metric.mem_ball_self (hr x)⟩)`. Take `⟨C, hC0, hCm⟩ : ∃ C : ℝ, 0 ≤ C ∧ ∀ i ∈ t, m i ≤ C` from `⟨∑ i ∈ t, |m i|, Finset.sum_nonneg fun i _ => abs_nonneg _, fun i hi => (le_abs_self _).trans (Finset.single_le_sum (f := fun i => |m i|) (fun i _ => abs_nonneg _) hi)⟩`.
+
+Use `⟨C, hC0, ?_⟩` and prove the remaining obligations. Introduce `ε hε x k y hy v`. Establish `hU` using `ht (Set.mem_univ ((A.chart k).symm y))`. Simplify using `only [Set.mem_iUnion, Set.mem_inter_iff, Set.mem_preimage, exists_prop] at hU`. Take `⟨i, hit, hqi⟩` from `hU`.
+
+Establish `hq_src : (A.chart k).symm y ∈ (A.chart (j i)).source` using `hqi.1`. Establish `hb_ball : A.chart (j i) ((A.chart k).symm y) ∈ Metric.closedBall (A.chart (j i) i) (r i)` using `Metric.ball_subset_closedBall hqi.2`. Establish `hb` using `hsub i hb_ball`. Establish `hsb : (A.chart (j i)).symm (A.chart (j i) ((A.chart k).symm y)) = (A.chart k).symm y` using `(A.chart (j i)).left_inv hq_src`. Establish `hqΘi : (A.chart k).symm y ∈ Θ.U i`.
+
+Establish `h : (A.chart (j i)).symm (A.chart (j i) ((A.chart k).symm y)) ∈ Θ.U i` using `hb.2.1`. Rewrite `h` using `[hsb]`. Then use the resulting hypothesis. Establish `hqLi : (A.chart k).symm y ∈ L.U i`. Establish `h : (A.chart (j i)).symm (A.chart (j i) ((A.chart k).symm y)) ∈ L.U i` using `hb.2.2`. Rewrite `h` using `[hsb]`. Then use the resulting hypothesis.
+
+Establish `hqΘx : (A.chart k).symm y ∈ Θ.U x` using `hy.2.1`. Establish `hqLx : (A.chart k).symm y ∈ L.U x` using `hy.2.2`. Establish `hyT : y ∈ (A.chart k).target ∩ (A.chart k).symm ⁻¹' (A.chart (j i)).source` using `⟨hy.1, hq_src⟩`. Establish `hτ : AnalyticAt ℂ (A.chart (j i) ∘ (A.chart k).symm) y` using `A.holo k (j i) y hyT`. Establish `hOT : IsOpen ((A.chart k).target ∩ (A.chart k).symm ⁻¹' (A.chart (j i)).source)` using `(A.chart k).isOpen_inter_preimage_symm (A.chart (j i)).open_source`.
+
+Establish `hchg : ∀ P : LocPot X, IsPotential A P → (A.chart k).symm y ∈ P.U x → levi (P.φ x ∘ (A.chart k).symm) y v = levi (P.φ x ∘ (A.chart (j i)).symm) (A.chart (j i) ((A.chart k).symm y)) (fderiv ℂ (A.chart (j i) ∘ (A.chart k).symm) y v)`. Introduce `P hP hqx`. Establish `hev : (P.φ x ∘ (A.chart k).symm) =ᶠ[𝓝 y] (P.φ x ∘ (A.chart (j i)).symm) ∘ (A.chart (j i) ∘ (A.chart k).symm)` using `by filter_upwards [hOT.mem_nhds hyT] with z hz`. Simplify using `only [Function.comp_apply, (A.chart (j i)).left_inv hz.2]`. Establish `hO : IsOpen ((A.chart (j i)).target ∩ (A.chart (j i)).symm ⁻¹' P.U x)` using `(A.chart (j i)).isOpen_inter_preimage_symm (P.isOpen_U x)`.
+
+Establish `hm : (A.chart (j i) ∘ (A.chart k).symm) y ∈ (A.chart (j i)).target ∩ (A.chart (j i)).symm ⁻¹' P.U x` using `⟨(A.chart (j i)).map_source hq_src, by`. Simplify using `only [Set.mem_preimage, Function.comp_apply, hsb]`. Conclude with `hqx⟩`. Establish `hsm : ContDiffAt ℝ 2 (P.φ x ∘ (A.chart (j i)).symm) ((A.chart (j i) ∘ (A.chart k).symm) y)`. Establish `h` using `(hP.1 x (j i)).contDiffAt (hO.mem_nhds hm)`.
+
+Conclude with `contDiffAt_infty.1 h 2` after adjusting the coercions. Conclude with `(levi_congr hev v).trans (levi_comp v hτ hsm)`. Establish `eΘ` using `(hchg Θ hΘ hqΘx).trans (base_change A Θ hΘ x i ((A.chart k).symm y) (j i) hq_src hqΘx hqΘi _)`. Establish `eL` using `(hchg L hL hqLx).trans (base_change A L hL x i ((A.chart k).symm y) (j i) hq_src hqLx hqLi _)`. Establish `hbd'` using `hbd i _ hb_ball (fderiv ℂ (A.chart (j i) ∘ (A.chart k).symm) y v)`.
+
+Establish `hF0 : 0 ≤ levi (Θ.φ i ∘ (A.chart (j i)).symm) (A.chart (j i) ((A.chart k).symm y)) (fderiv ℂ (A.chart (j i) ∘ (A.chart k).symm) y v)`. Distinguish the cases in `hw0 : fderiv ℂ (A.chart (j i) ∘ (A.chart k).symm) y v = 0`. Rewrite using `[hw0, levi_zero]`. Conclude with `(hpos i (j i) _ ⟨hb.1, hb.2.1⟩ _ hw0).le`. Establish `hFk : ContDiffAt ℝ 2 (Θ.φ x ∘ (A.chart k).symm) y`.
+
+Establish `hO : IsOpen ((A.chart k).target ∩ (A.chart k).symm ⁻¹' Θ.U x)` using `(A.chart k).isOpen_inter_preimage_symm (Θ.isOpen_U x)`. Establish `h` using `(hΘ.1 x k).contDiffAt (hO.mem_nhds ⟨hy.1, hqΘx⟩)`. Conclude with `contDiffAt_infty.1 h 2` after adjusting the coercions. Establish `hLk : ContDiffAt ℝ 2 (L.φ x ∘ (A.chart k).symm) y`. Establish `hO : IsOpen ((A.chart k).target ∩ (A.chart k).symm ⁻¹' L.U x)` using `(A.chart k).isOpen_inter_preimage_symm (L.isOpen_U x)`.
+
+Establish `h` using `(hL.1 x k).contDiffAt (hO.mem_nhds ⟨hy.1, hqLx⟩)`. Conclude with `contDiffAt_infty.1 h 2` after adjusting the coercions. Establish `hlin` using `levi_lin (z := y) C ε hFk hLk v`. Use `le_of_le_of_eq ?_ hlin.symm` and prove the remaining obligations. Rewrite using `[eΘ, eL]`.
+
+Establish `h1` using `hε (levi (L.φ i ∘ (A.chart (j i)).symm) (A.chart (j i) ((A.chart k).symm y)) (fderiv ℂ (A.chart (j i) ∘ (A.chart k).symm) y v))`. Establish `h2` using `mul_le_mul_of_nonneg_right (hCm i hit) hF0`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_levi_nonneg_chern_bound [CompactSpace X] (A : FinHolAtlas e X) (Θ L : LocPot X)
     (hΘ : IsPotential A Θ) (hpos : IsPosPot A Θ) (hL : IsPotential A L) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ ε : ℝ, (∀ a : ℝ, -|a| ≤ ε * a) → ∀ x k,
@@ -277,14 +329,23 @@ end TailChernBound
 
 namespace TailBoundAlt
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem add_φ {X : Type} [TopologicalSpace X] (P Q : LocPot X) :
     (P + Q).φ = fun x y => P.φ x y + Q.φ x y := rfl
 
+/- English proof (translation)
+Simplify using `only [mInt, integralWith, locDens, h]`.
+-/
 theorem mInt_congr_phi {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X)
     (Φ Ψ : Fin e → LocPot X) (h : ∀ i, (Φ i).φ = (Ψ i).φ) (g : X → ℝ) :
     mInt A Φ g = mInt A Ψ g := by
   simp only [mInt, integralWith, locDens, h]
 
+/- English proof (translation)
+Unfold `mInt`. Use `split_ifs with hne`. Simplify using `[integralWith]`. Both sides reduce to the same expression.
+-/
 theorem mInt_zero {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X)
     (Φ : Fin e → LocPot X) : mInt A Φ (fun _ => 0) = 0 := by
   unfold mInt
@@ -292,6 +353,9 @@ theorem mInt_zero {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X
   · simp [integralWith]
   · rfl
 
+/- English proof (translation)
+Introduce `x j y hy w`. Distinguish the cases in `hw : w = 0`. Substitute `hw` using the available equality. Simplify using `[levi]`. Conclude with `(h x j y hy w hw).le`.
+-/
 theorem isPsh_of_isPosPot {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X)
     (P : LocPot X) (h : IsPosPot A P) : IsPsh A P := by
   intro x j y hy w
@@ -300,12 +364,22 @@ theorem isPsh_of_isPosPot {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolA
     simp [levi]
   · exact (h x j y hy w hw).le
 
+/- English proof (translation)
+Introduce `x j y hy w`. Rewrite using `[hφ]`. Conclude with `hP x j y ⟨hy.1, hU x hy.2⟩ w`.
+-/
 theorem isPsh_congr {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X) (P Q : LocPot X)
     (hP : IsPsh A P) (hU : ∀ x, Q.U x ⊆ P.U x) (hφ : Q.φ = P.φ) : IsPsh A Q := by
   intro x j y hy w
   rw [hφ]
   exact hP x j y ⟨hy.1, hU x hy.2⟩ w
 
+/- English proof (translation)
+Establish `h0` using `mIntNonneg B Ψ hΨ hΨp (fun y => 1 * g y + (fun _ => a) y) (fun y => by`. Simplify using `only [one_mul]`. Combine the linear relations using `[hga y])`. Establish `hl` using `mIntLinear B Ψ hΨ 1 g (fun _ => a) (mIntegrableCont B Ψ hΨ g hg) (mIntegrableCont B Ψ hΨ _ continuous_const)`. Establish `hl2` using `mIntLinear B Ψ hΨ a (fun _ => 1) (fun _ => 0) (mIntegrableCont B Ψ hΨ _ continuous_const) (mIntegrableCont B Ψ hΨ _ continuous_const)`.
+
+Establish `hz` using `mInt_zero B Ψ`. Establish `ha : mInt B Ψ (fun _ => a) = a * mInt B Ψ (fun _ => 1)`. Establish `e1 : (fun _ : Y => a) = fun x => a * (fun _ : Y => (1 : ℝ)) x + (fun _ : Y => (0 : ℝ)) x`. Use function extensionality and compare the values at `x`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e1, hl2, hz, add_zero]`. Rewrite `h0` using `[hl, ha]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem mInt_lower {d : ℕ} {Y : Type} [TopologicalSpace Y] [CompactSpace Y] [T2Space Y]
     (B : FinHolAtlas d Y) (Ψ : Fin d → LocPot Y) (hΨ : ∀ i, IsPotential B (Ψ i))
     (hΨp : ∀ i, IsPsh B (Ψ i)) (g : Y → ℝ) (hg : Continuous g) (a : ℝ) (hga : ∀ y, -a ≤ g y) :
@@ -324,6 +398,13 @@ theorem mInt_lower {d : ℕ} {Y : Type} [TopologicalSpace Y] [CompactSpace Y] [T
   rw [hl, ha] at h0
   linarith
 
+/- English proof (translation)
+Unfold `mInt`. Use `split_ifs with hne`. Unfold `integralWith`. Use `Finset.sum_nonpos fun j _ => ?_` and prove the remaining obligations. Use `MeasureTheory.integral_nonpos_of_ae (Filter.Eventually.mono (MeasureTheory.ae_restrict_mem (B.chart j).open_target.measurableSet) fun y hy => ?_)` and prove the remaining obligations.
+
+Establish `h1` using `hne.some.nonneg j ((B.chart j).symm y)`. Establish `h2` using `locDens_nonneg B Ψ hΨ hΨp j hy`. Establish `h3` using `hg0 ((B.chart j).symm y)`. Use `show _ * _ * _ ≤ (0 : ℝ)`. Use polynomial arithmetic with `[mul_nonneg h1 h2]`.
+
+Conclude with `le_rfl`.
+-/
 theorem mInt_nonpos {d : ℕ} {Y : Type} [TopologicalSpace Y] [CompactSpace Y] [T2Space Y]
     (B : FinHolAtlas d Y) (Ψ : Fin d → LocPot Y) (hΨ : ∀ i, IsPotential B (Ψ i))
     (hΨp : ∀ i, IsPsh B (Ψ i)) (g : Y → ℝ) (hg : Continuous g) (hg0 : ∀ y, g y ≤ 0) :
@@ -342,6 +423,15 @@ theorem mInt_nonpos {d : ℕ} {Y : Type} [TopologicalSpace Y] [CompactSpace Y] [
     nlinarith [mul_nonneg h1 h2]
   · exact le_rfl
 
+/- English proof (translation)
+Take `⟨C, hC0, hC⟩` from `TailChernBound.exists_levi_nonneg_chern_bound A Θ L hΘ hΘp hL`. Use `⟨C, hC0, ?_, ?_⟩` and prove the remaining obligations. Introduce `x j y hy w`. Establish `key : (Θ.rsmul C + L).φ x = fun z => C * Θ.φ x z + 1 * L.φ x z`. Rewrite using `[add_φ]`.
+
+Use function extensionality and compare the values at `z`. Simplify using `[LocPot.rsmul]`. Rewrite using `[key]`. Conclude with `hC 1 (fun a => by rw [one_mul]; exact neg_abs_le a) x j y hy w`. Introduce `x j y hy w`.
+
+Establish `key : (Θ.rsmul C + L.rsmul (-1)).φ x = fun z => C * Θ.φ x z + (-1) * L.φ x z`. Rewrite using `[add_φ]`. Use function extensionality and compare the values at `z`. Simplify using `[LocPot.rsmul]`. Rewrite using `[key]`.
+
+Conclude with `hC (-1) (fun a => by rw [neg_one_mul, neg_le_neg_iff]; exact le_abs_self a) x j y hy w`.
+-/
 theorem exists_psh_chern_bound {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X] [T2Space X]
     (A : FinHolAtlas e X) (Θ L : LocPot X) (hΘ : IsPotential A Θ) (hΘp : IsPosPot A Θ)
     (hL : IsPotential A L) :

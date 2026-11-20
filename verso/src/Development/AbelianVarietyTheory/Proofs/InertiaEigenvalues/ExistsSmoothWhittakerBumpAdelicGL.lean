@@ -6,6 +6,31 @@ open scoped ContDiff Topology
 
 open NumberField IsDedekindDomain GlobalTheory.CuspRep Matrix MeasureTheory GlobalTheory.WhitBump in
 
+/- English proof (translation)
+Introduce `E _ _ _ m`. Take `⟨f, hf, hfc, hfs, hf1⟩` from `exists_bumpInf_ne (E := E) (n := m + 1)`. Take `⟨h1, hN, hK, hsupp⟩` from `bumpFin_spec (E := E) (n := m + 1) fun u hu hk => psiFin_integral u hu hk`. Use `set c := bumpInf f (oneL E (m + 1)) with hc`. Set `pI : GA E (m + 1) → GL (Fin (m + 1)) (Cinf E)` to `fun g => GeneralLinearGroup.map (pInf E) g`.
+
+Set `pF : GA E (m + 1) → GL (Fin (m + 1)) (Af E)` to `fun g => GeneralLinearGroup.map (pFin E) g`. Use `⟨fun g => bumpInf f (toL (pI g : Matrix (Fin (m + 1)) (Fin (m + 1)) (Cinf E))) / c * bumpFin (pF g), ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [pI, pF, map_one, Units.val_one, h1, mul_one]`. Conclude with `div_self hf1`. Introduce `u hu g`.
+
+Simplify using `only [pI, pF, map_mul, Units.val_mul]`. Establish `e` using `bumpInf_mul f _ (pInf_mem_unipB hu) (toL ((GeneralLinearGroup.map (pInf E) g : GL (Fin (m + 1)) (Cinf E)) : Matrix (Fin (m + 1)) (Fin (m + 1)) (Cinf E)))`. Use `erw [e]`. Rewrite using `[hN _ (pFin_mem_unipB hu), psiN_eq]`. Expand and normalize the polynomial expressions, which then agree.
+
+Set `T` to `tsupport f`. Set `C : Set (GA E (m + 1))` to `(fun q : GL (Fin (m + 1)) (Cinf E) × GL (Fin (m + 1)) (Af E) => infGL E (m + 1) q.1 * finGL E (m + 1) q.2) '' ({y : GL (Fin (m + 1)) (Cinf E) | toL (y : Matrix (Fin (m + 1)) (Fin (m + 1)) (Cinf E)) ∈ T} ×ˢ (GroundTheory.Automorphic.AdelicGLn.integralFiniteGL E (m + 1) : Set (GL ( …`. Use `⟨C, ?_, ?_⟩` and prove the remaining obligations. Use `((isCompact_setOf_toL T hfc hfs).prod (GroundTheory.Automorphic.AdelicGLn.isCompact_integralFiniteGL E (m + 1))).image ?_` and prove the remaining obligations. Conclude with `((GlobalTheory.ConstTermSmooth.continuous_infGL).comp continuous_fst).mul (continuous_finGL_bump.comp continuous_snd)`.
+
+Introduce `p hp`. Establish `hI : bumpInf f (toL (pI p : Matrix (Fin (m + 1)) (Fin (m + 1)) (Cinf E))) ≠ 0`. Introduce `h`. Apply `hp` to reduce the goal to its premises. Simplify using `only [h, zero_div, zero_mul]`.
+
+Establish `hF : bumpFin (pF p) ≠ 0`. Introduce `h`. Apply `hp` to reduce the goal to its premises. Simplify using `only [h, mul_zero]`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t, f (toL (nu t * Matrix.of (toL (pI p : Matrix (Fin (m + 1)) (Fin (m + 1)) (Cinf E))))) ≠ 0 := by`.
+
+Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Establish `hall' : ∀ t, f (toL (nu t * (pI p : Matrix (Fin (m + 1)) (Fin (m + 1)) (Cinf E)))) = 0` using `hall`. Apply `hI` to reduce the goal to its premises. Unfold `bumpInf`.
+
+Simplify using `[hall']`. Take `⟨uf, huf, hk⟩` from `hsupp _ hF`. Use `⟨infGL E (m + 1) (nuGL t)⁻¹ * finGL E (m + 1) uf, mem_NA_of (inv_mem (nuGL_mem t)) huf, ⟨(nuGL t * pI p, uf⁻¹ * pF p), ⟨?_, hk⟩, ?_⟩⟩` and prove the remaining obligations. Conclude with `subset_tsupport f ht`. Apply the tactic sequence `refine ga_ext ?_ ?_ <;> simp [pI, pF]`.
+
+Use `⟨GroundTheory.Automorphic.AdelicGLn.integralFiniteGL E (m + 1), GroundTheory.Automorphic.AdelicGLn.isOpen_integralFiniteGL E (m + 1), fun k hk g => ?_⟩` and prove the remaining obligations. Simplify using `only [pI, pF, map_mul, pInf_finGL, pFin_finGL, mul_one]`. Rewrite using `[hK k hk]`. Introduce `g`. Establish `hsm` using `contDiffOn_bumpInf f hf hfc hfs`.
+
+Use `set L := lmul (toL (pI g : Matrix (Fin (m + 1)) (Fin (m + 1)) (Cinf E))) with hL`. Establish `hmaps : Set.MapsTo L (invSet E (m + 1)) (invSet E (m + 1))` using `fun x hx => by`. Establish `hx' : IsUnit (Matrix.of x)` using `hx`. Express the relevant statement in the definitionally equal form `IsUnit ((pI g : Matrix (Fin (m + 1)) (Fin (m + 1)) (Cinf E)) * Matrix.of x)`. Conclude with `(pI g).isUnit.mul hx'`.
+
+Establish `h2 : ContDiffOn ℝ ∞ (fun x : Lie E (m + 1) => bumpInf f (L x)) (invSet E (m + 1))` using `hsm.comp (L.contDiff.contDiffOn) hmaps`. Establish `hl : ContDiffOn ℝ ∞ (fun x : Lie E (m + 1) => bumpInf f (L x) / c * bumpFin (pF g)) (invSet E (m + 1))` using `(h2.div_const c).mul contDiffOn_const`. Use `hl.congr fun x hx => ?_` and prove the remaining obligations. Establish `hx' : IsUnit (Matrix.of x)` using `hx`. Rewrite using `[chart, dif_pos hx']`.
+
+Simplify using `only [pI, pF, map_mul, pInf_infGL, pFin_infGL, mul_one, Units.val_mul, IsUnit.unit_spec]`. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.WhitBump.exists_bump_glob : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ), ∃ b : GA E (a + 1) → ℂ, b 1 = 1 ∧ (∀ u ∈ GlobalTheory.JSW.NA E (a + 1), ∀ g, b (u * g) = GlobalTheory.JSW.psiN u * b g) ∧ (∃ C : Set (GA E (a + 1)), IsCompact C ∧ ∀ p, b p ≠ 0 → ∃ u ∈ GlobalTheory.JSW.NA E (a + 1), u⁻¹ * p ∈ C) ∧ (∃ U : Subgroup (GL (Fin (a + 1)) (Af E)), IsOpen (U : Set (GL (Fin (a + 1)) (Af E))) ∧ ∀ u ∈ U, ∀ g, b (g * finGL E (a + 1) u) = b g) ∧ ∀ g, ContDiffOn ℝ ∞ (chart b g) (invSet E (a + 1)) := by
   intro E _ _ _ m
   obtain ⟨f, hf, hfc, hfs, hf1⟩ := exists_bumpInf_ne (E := E) (n := m + 1)

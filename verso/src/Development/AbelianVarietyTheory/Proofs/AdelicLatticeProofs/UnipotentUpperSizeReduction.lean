@@ -5,6 +5,23 @@ open scoped Kronecker ComplexOrder TensorProduct
 
 namespace GlobalTheory.ClassFin
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero`. Use `⟨Pi.single j 1, by simp, fun l hl => by simp [Pi.single_apply, hl.ne'], ?_⟩` and prove the remaining obligations. Introduce `i hi hk`. Conclude with `absurd hk (by have : (i : ℕ) < j := hi; omega)`.
+
+Consider the case `succ k ih`. Take `⟨z, hz1, hz0, hz⟩` from `ih`. Distinguish the cases in `hk : k + 1 ≤ (j : ℕ)`. Set `i0 : Fin N` to `⟨j - (k + 1), by have := j.2; omega⟩`. Establish `hi0v : (i0 : ℕ) = j - (k + 1)` using `rfl`.
+
+Establish `hi0 : i0 < j` using `by show (i0 : ℕ) < j`. Use linear arithmetic over natural numbers and integers. Use `set c : ℤ := -round (∑ l, n i0 l * (z l : ℝ)) with hc`. Establish `key : ∀ i, ∑ l, n i l * (((z + Pi.single i0 c : Fin N → ℤ) l : ℤ) : ℝ) = ∑ l, n i l * (z l : ℝ) + n i i0 * c`. Introduce `i`.
+
+Simplify using `only [Pi.add_apply, Int.cast_add, mul_add, Finset.sum_add_distrib]`. Use `congr 1`. Rewrite using `[Finset.sum_eq_single i0]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+
+Simplify using `[Pi.single_apply, hb]`. Simplify using the standard rewrite rules. Use `⟨z + Pi.single i0 c, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[Pi.single_apply, hi0.ne', hz1]`. Introduce `l hl`.
+
+Simplify using `[Pi.single_apply, (hi0.trans hl).ne', hz0 l hl]`. Introduce `i hi hik`. Rewrite using `[key]`. Distinguish the cases in `h : i = i0`. Substitute `h` using the available equality.
+
+Rewrite using `[h1, one_mul, hc, Int.cast_neg, ← sub_eq_add_neg]`. Conclude with `abs_sub_round _`. Establish `hne : (i : ℕ) ≠ i0` using `fun e => h (Fin.ext e)`. Establish `hlt : i0 < i` using `by show (i0 : ℕ) < i`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[h0 i i0 hlt, zero_mul, add_zero]`. Conclude with `hz i hi (by omega)`. Conclude with `⟨z, hz1, hz0, fun i hi _ => hz i hi (by omega)⟩`.
+-/
 theorem unipotent_size_reduction_column {N : ℕ} (n : Matrix (Fin N) (Fin N) ℝ)
     (h1 : ∀ i, n i i = 1) (h0 : ∀ i j, j < i → n i j = 0) (j : Fin N) (k : ℕ) :
     ∃ z : Fin N → ℤ, z j = 1 ∧ (∀ l, j < l → z l = 0) ∧
@@ -51,6 +68,11 @@ theorem unipotent_size_reduction_column {N : ℕ} (n : Matrix (Fin N) (Fin N) �
           exact hz i hi (by omega)
     · exact ⟨z, hz1, hz0, fun i hi _ => hz i hi (by omega)⟩
 
+/- English proof (translation)
+Introduce `N n h1 h0`. Use `choose z hz1 hz0 hz using fun j => unipotent_size_reduction_column n h1 h0 j N`. Use `⟨Matrix.of fun i j => z j i, fun i => hz1 i, fun i j h => hz0 j i h, ?_⟩` and prove the remaining obligations. Introduce `i j hij`. Rewrite using `[Matrix.mul_apply]`.
+
+Conclude with `hz j i hij (by have := j.2; omega)`.
+-/
 theorem unipotent_size_reduction :
     ∀ (N : ℕ) (n : Matrix (Fin N) (Fin N) ℝ), (∀ i, n i i = 1) → (∀ i j, j < i → n i j = 0) →
       ∃ ν : Matrix (Fin N) (Fin N) ℤ, (∀ i, ν i i = 1) ∧ (∀ i j, j < i → ν i j = 0) ∧

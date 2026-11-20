@@ -7,6 +7,17 @@ namespace PI.OneCosetSharp.W
 
 open Loc LocE
 
+/- English proof (translation)
+Substitute `hN` using the available equality. Establish `hK : Matrix.reindex finSumFinEquiv.symm finSumFinEquiv.symm K = Matrix.fromBlocks (Matrix.of fun s s' : Fin a => K (Fin.castAdd t s) (Fin.castAdd t s')) 0 (Matrix.of fun (s : Fin t) (s' : Fin a) => K (Fin.natAdd a s) (Fin.castAdd t s')) 1`. Use extensionality with `(s | s) (s' | s')`. Both sides reduce to the same expression. Use `show K (Fin.castAdd t s) (Fin.natAdd a s') = 0`.
+
+Rewrite using `[h0 (Fin.castAdd t s) (Fin.natAdd a s') (by simp), if_neg]`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [Fin.val_castAdd, Fin.val_natAdd] at this`. Use linear arithmetic over natural numbers and integers.
+
+Both sides reduce to the same expression. Use `show K (Fin.natAdd a s) (Fin.natAdd a s') = (1 : Matrix (Fin t) (Fin t) k) s s'`. Rewrite using `[h0 (Fin.natAdd a s) (Fin.natAdd a s') (by simp), Matrix.one_apply]`. Distinguish the cases in `h : s = s'`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Rewrite using `[if_neg h, if_neg]`. Introduce `h'`. Apply `h` to reduce the goal to its premises. Use `congrArg Fin.val h'` as an intermediate fact.
+
+Simplify using `only [Fin.val_natAdd] at this`. Conclude with `Fin.ext (by omega)`. Rewrite using `[← Matrix.det_reindex_self finSumFinEquiv.symm K, hK, Matrix.det_fromBlocks_zero₁₂, Matrix.det_one, mul_one]`. Both sides reduce to the same expression.
+-/
 private theorem det_eq_det_castLE_of_cols_eq_one {k : Type} [Field k] {a t N : ℕ} (hN : a + t = N)
     (K : Matrix (Fin N) (Fin N) k) (h0 : ∀ p q : Fin N, a ≤ q.1 → K p q = if p = q then 1 else 0) :
     K.det = (Matrix.of fun s s' : Fin a =>
@@ -39,6 +50,11 @@ private theorem det_eq_det_castLE_of_cols_eq_one {k : Type} [Field k] {a t N : �
     Matrix.det_one, mul_one]
   rfl
 
+/- English proof (translation)
+Unfold `PI.OneCosetSharp.Allow at h ⊢`. Use `split_ifs at h ⊢`. Conclude with `h`. Conclude with `h`. Break down `h with h | ⟨h1, h2⟩` into its components or cases.
+
+Conclude with `Or.inl h`. Conclude with `Or.inr ⟨lt_of_lt_of_le h1 hab, h2⟩`.
+-/
 private theorem allow_mono {k₀ m t a b p q : ℕ} (hab : a ≤ b) (h : PI.OneCosetSharp.Allow k₀ m t a p q) :
     PI.OneCosetSharp.Allow k₀ m t b p q := by
   unfold PI.OneCosetSharp.Allow at h ⊢
@@ -49,6 +65,31 @@ private theorem allow_mono {k₀ m t a b p q : ℕ} (hab : a ≤ b) (h : PI.OneC
     · exact Or.inl h
     · exact Or.inr ⟨lt_of_lt_of_le h1 hab, h2⟩
 
+/- English proof (translation)
+Introduce `k inst ψ₀ χ k₀ m t j n' c n hadm y hy`. Take `⟨hk, hr⟩` from `PI.OneCosetSharp.W.P2.nums_le hadm`. Take `⟨-, -, -, hj1, -, -, hdom, hcod⟩` from `hadm`. Establish `hN : k₀ + m - 1 + (j - 1) * t + t = n + c`. Rewrite using `[hcod]`.
+
+Take `⟨j', rfl⟩ : ∃ j', j = j' + 1` from `⟨j - 1, by omega⟩`. Rewrite using `[Nat.add_sub_cancel]`. Generalize the expression as in `k₀ + m - 1 = r`. Expand and normalize the polynomial expressions, which then agree. Establish `key : (∀ p', p' < k₀ + m - 1 → PI.OneCosetSharp.ent k₀ (c + 1) n' c n y p' p' = 1) ∧ (∀ p p', p < n + c → p' < k₀ + m - 1 + (j - 1) * t → p ≠ p' → PI.OneCosetSharp.ent k₀ (c + 1) n' c n y p p' ≠ 0 → PI.OneCosetSharp.Allow k₀ m t (k₀ + m - 1 + (j - 1) * t) p p') ∧ (Matrix.of fun s …`.
+
+Simplify using `only [PI.OneCosetSharp.PhiS] at hy`. Use `split_ifs at hy with hcond`. Use `⟨hcond.1, hcond.2, fun hdet => hy ?_⟩` and prove the remaining obligations. Rewrite using `[hdet]`. Simplify using `[PI.OneCosetSharp.chiV]`.
+
+Conclude with `absurd rfl hy`. Establish `hcoord : ∀ (v : Fin (n + c) → k) (l : Fin (n + c)), PI.OneCosetSharp.Loc.atN v l.1 = v l` using `fun v l => by`. Simplify using `only [PI.OneCosetSharp.Loc.atN, dif_pos l.2, Fin.eta]`. Take `⟨K, hK⟩ : ∃ K : Matrix (Fin (n + c)) (Fin (n + c)) k, ∀ p q, K p q = if q.1 < k₀ + m - 1 + (j - 1) * t then PI.OneCosetSharp.ent k₀ (c + 1) n' c n y p.1 q.1 else if p = q then 1 else 0` from `⟨Matrix.of fun p q => if q.1 < k₀ + m - 1 + (j - 1) * t then PI.OneCosetSharp.ent k₀ (c + 1) n' c n y p.1 q.1 else if p = q then 1 else 0, fun _ _ => rfl⟩`. Establish `hdetK : K.det ≠ 0`.
+
+Rewrite using `[det_eq_det_castLE_of_cols_eq_one hN K (fun p q hq => by rw [hK, if_neg (not_lt.mpr hq)])]`. Use `ne_of_eq_of_ne ?_ key.2.2` and prove the remaining obligations. Use `congr 1`. Use extensionality with `s s'`. Simplify using `only [Matrix.of_apply]`.
+
+Apply the tactic sequence `rw [hK, if_pos] <;> first | rfl | exact s'.2`. Establish `hA : IsUnit (K.submatrix (PI.OneCosetSharp.W.P2.fe k₀ c n hk).symm (PI.OneCosetSharp.W.P2.fe k₀ c n hk).symm).det`. Rewrite using `[Matrix.det_submatrix_equiv_self]`. Conclude with `isUnit_iff_ne_zero.mpr hdetK`. Take `⟨κ, hκ⟩ : ∃ κ : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k), κ.toLinearMap = Matrix.toLin' (K.submatrix (PI.OneCosetSharp.W.P2.fe k₀ c n hk).symm (PI.OneCosetSharp.W.P2.fe k₀ c n hk).symm)` from `⟨Matrix.toLinearEquiv' _ (Matrix.invertibleOfIsUnitDet _ hA), rfl⟩`.
+
+Establish `hperm : PI.OneCosetSharp.W.P2.Pm k₀ hk κ = K`. Unfold `PI.OneCosetSharp.W.P2.Pm`. Rewrite using `[hκ, LinearMap.toMatrix'_toLin']`. Use extensionality with `p q`. Simplify using `only [Matrix.submatrix_apply, Equiv.symm_apply_apply]`.
+
+Use `⟨κ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[PI.OneCosetSharp.W.P2.injs_iff hk hr κ, hperm, PI.OneCosetSharp.W.P2.mem_alg]`. Use `⟨fun p q hpq => ?_, fun p hp => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hpq' : p = q`. Conclude with `Or.inl (congrArg Fin.val hpq')`.
+
+Use `Or.inr ?_` and prove the remaining obligations. Establish `hne : p.1 ≠ q.1` using `fun h => hpq' (Fin.ext h)`. Distinguish the cases in `hq : q.1 < k₀ + m - 1 + (j - 1) * t`. Rewrite `hpq` using `[hK, if_pos hq]`. Conclude with `allow_mono (Nat.le.intro hN) (key.2.1 p.1 q.1 p.2 hq hne hpq)`.
+
+Rewrite `hpq` using `[hK, if_neg hq, if_neg hpq']`. Conclude with `absurd rfl hpq`. Establish `hpa : p.1 < k₀ + m - 1 + (j - 1) * t` using `by omega`. Rewrite using `[hK, if_pos hpa]`. Conclude with `key.1 p.1 hp`.
+
+Introduce `p hp`. Establish `hpa : p < k₀ + m - 1 + (j - 1) * t` using `by omega`. Establish `hpN : p < n + c` using `by omega`. Use function extensionality and compare the values at `l`. Establish `hl : PI.OneCosetSharp.LocE.fIdx k₀ c n ((PI.OneCosetSharp.W.P2.fe k₀ c n hk).symm l).1 = l.1` using `congrArg Fin.val ((PI.OneCosetSharp.W.P2.fe k₀ c n hk).apply_symm_apply l)`.
+
+Establish `e1` using `PI.OneCosetSharp.W.P2.ent_eq hk κ ((PI.OneCosetSharp.W.P2.fe k₀ c n hk).symm l) ⟨p, hpN⟩`. Rewrite `e1` using `[hperm, hK, if_pos hpa]`. Unfold `PI.OneCosetSharp.ent at e1`. Rewrite `e1` using `[hl, hcoord, hcoord]`. Conclude with `e1`.
+-/
 theorem kappaZero : KappaZero := by
   intro k inst ψ₀ χ k₀ m t j n' c n hadm y hy
   obtain ⟨hk, hr⟩ := PI.OneCosetSharp.W.P2.nums_le hadm

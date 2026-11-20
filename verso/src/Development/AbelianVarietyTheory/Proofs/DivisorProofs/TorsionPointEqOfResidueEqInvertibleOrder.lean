@@ -11,6 +11,27 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.TorsionReduction
 
+/- English proof (translation)
+Introduce `S _ P T _ _ b n hn x y hx hy hr`. Use `letI := P.isAb.comm`. Use `haveI : Smooth P.A.hom := P.isAb.smooth`. Set `j : Sp T ⟶ Sp S` to `spMap b`. Set `G : Over (Sp T)` to `(Over.pullback j).obj P.A`.
+
+Establish `hn' : IsUnit (n : Γ(Sp T, ⊤))`. Simplify using `using hn.map (Scheme.ΓSpecIso (CommRingCat.of T)).inv.hom`. Set `m : G.left ⟶ G.left` to `(Out.mulA G n).left`. Establish `hw : m ≫ G.hom = G.hom` using `Over.w _`. Establish `h₁ : FormallyUnramified m` using `formallyUnramified_mulA (Sp T) G n hn'`.
+
+Establish `h₂ : LocallyOfFiniteType (m ≫ G.hom)`. Rewrite using `[hw]`. Simplify using `[G]`. Use `infer_instance`. Establish `h₃ : LocallyOfFiniteType m` using `locallyOfFiniteType_of_comp _ G.hom`.
+
+Establish `e : (Over.pullback j).map (Out.mulA P.A n) = Out.mulA G n` using `(map_pow (Over.pullback j).homMonoidHom (𝟙 P.A) n).trans (congrArg (· ^ n) (CategoryTheory.Functor.map_id (Over.pullback j) P.A))`. Establish `mf : m ≫ pullback.fst P.A.hom j = pullback.fst P.A.hom j ≫ (Out.mulA P.A n).left`. Express the relevant statement in the definitionally equal form `(Out.mulA G n).left ≫ _ = _`. Rewrite using `[← e]`. Conclude with `pullback.lift_fst _ _ _`.
+
+Establish `kx : ∀ z : Over.mk (spMap b) ⟶ P.A, z ^ n = 1 → z.left ≫ (Out.mulA P.A n).left = j ≫ (η[P.A]).left`. Introduce `z hz`. Rewrite using `[← Over.comp_left, Out.mulA, MonObj.comp_pow, Category.comp_id, hz, Hom.one_def]`. Simplify using `[j]`. Set `x' : Sp T ⟶ G.left` to `pullback.lift x.left (𝟙 _) (by simpa [j] using Over.w x)`.
+
+Set `y' : Sp T ⟶ G.left` to `pullback.lift y.left (𝟙 _) (by simpa [j] using Over.w y)`. Establish `x₁ : x' ≫ pullback.fst P.A.hom j = x.left` using `pullback.lift_fst _ _ _`. Establish `y₁ : y' ≫ pullback.fst P.A.hom j = y.left` using `pullback.lift_fst _ _ _`. Establish `x₂ : x' ≫ pullback.snd P.A.hom j = 𝟙 _` using `pullback.lift_snd _ _ _`. Establish `y₂ : y' ≫ pullback.snd P.A.hom j = 𝟙 _` using `pullback.lift_snd _ _ _`.
+
+Establish `hab : x' ≫ m = y' ≫ m`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, mf, pullback.lift_fst_assoc, pullback.lift_fst_assoc, kx x hx, kx y hy]`. Rewrite using `[Category.assoc, Category.assoc]`. Express the relevant statement in the definitionally equal form `x' ≫ m ≫ G.hom = y' ≫ m ≫ G.hom`.
+
+Rewrite using `[hw]`. Conclude with `(pullback.lift_snd _ _ _).trans (pullback.lift_snd _ _ _).symm`. Establish `hc : spMap (IsLocalRing.residue T) ≫ x' = spMap (IsLocalRing.residue T) ≫ y'`. Apply `pullback.hom_ext` to reduce the goal to its premises. Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) x₁).trans (hr.trans ((Category.assoc _ _ _).trans (congrArg (_ ≫ ·) y₁)).symm))`.
+
+Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (x₂.trans y₂.symm)).trans (Category.assoc _ _ _).symm)`. Establish `hopen` using `isOpenImmersion_equalizer_ι_of_unramified m hab`. Establish `hsub` using `range_subset_range_equalizer_ι _ hc`. Establish `hcl : IsLocalRing.closedPoint T ∈ Set.range (equalizer.ι x' y')` using `hsub ⟨IsLocalRing.closedPoint _, IsLocalRing.comap_closedPoint (IsLocalRing.residue T)⟩`. Establish `hall : Set.range (equalizer.ι x' y') = Set.univ` using `Set.eq_univ_of_forall fun p => (IsLocalRing.specializes_closedPoint p).mem_open (equalizer.ι x' y').isOpenEmbedding.isOpen_range hcl`.
+
+Establish `hxy : x' = y'` using `eq_of_range_equalizer_ι_eq_univ m hab hall`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `x₁.symm.trans ((congrArg (· ≫ pullback.fst P.A.hom j) hxy).trans y₁)`.
+-/
 theorem eq_of_residue_eq : ∀ (S : Type) [CommRing S] (P : Out.PolAV (Sp S)) (T : Type) [CommRing T] [IsLocalRing T] (b : S →+* T) (n : ℕ), IsUnit (n : T) → ∀ x y : Over.mk (spMap b) ⟶ P.A, x ^ n = 1 → y ^ n = 1 → spMap (IsLocalRing.residue T) ≫ x.left = spMap (IsLocalRing.residue T) ≫ y.left → x = y := by
   intro S _ P T _ _ b n hn x y hx hy hr
   letI := P.isAb.comm

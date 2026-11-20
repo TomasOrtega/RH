@@ -16,6 +16,17 @@ section General
 open NumberField IsDedekindDomain GlobalTheory.AdLat
 open scoped TensorProduct Matrix
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Take `⟨f, hf, -, -⟩` from `exists_linear_approx_tower F E n _ g Λ h1 h2 hΛ`. Establish `hle : Λ ≤ LinearMap.range ι`. Introduce `v hv`. Establish `hv' : v ∈ (Λ : Set (Fin n → E))` using `hv`.
+
+Rewrite `hv'` using `[hΛ]`. Take `⟨z, hz, hzv⟩` from `hv'`. Use `((hat_rational_points_and_approx F E n _ h1 h2).1 v).1 ?_` and prove the remaining obligations. Rewrite using `[← hzv]`. Conclude with `hg z hz`.
+
+Set `e : La ≃ₗ[𝓞 E] LinearMap.range ι` to `LinearEquiv.ofInjective ι hi`. Establish `he : ∀ x : LinearMap.range ι, ι (e.symm x) = x` using `fun x => by`. Establish `: ((e (e.symm x) : LinearMap.range ι) : Fin n → E) = x` using `by rw [e.apply_symm_apply]`. Conclude with `this`. Use `⟨e.symm.toLinearMap ∘ₗ Submodule.inclusion hle ∘ₗ f N ∘ₗ e.toLinearMap, fun a => ?_⟩` and prove the remaining obligations.
+
+Take `⟨w, hw, hfw⟩` from `hf N hN (e a)`. Use `⟨-((g : Matrix (Fin n) (Fin n) (RA F E)) *ᵥ w), neg_mem (hg w hw), ?_⟩` and prove the remaining obligations. Establish `h3 : ι ((e.symm.toLinearMap ∘ₗ Submodule.inclusion hle ∘ₗ f N ∘ₗ e.toLinearMap) a) = (f N (e a) : Fin n → E)` using `he _`. Establish `h4 : ((e a : LinearMap.range ι) : Fin n → E) = ι a` using `rfl`. Rewrite using `[h3, hfw, h4, Matrix.mulVec_add, GlobalTheory.AdLat.Tower.mulVec_nsmul, smul_neg]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem exists_endo_approx_of_keeps_hat {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {n : ℕ} (L Λ : Submodule (𝓞 E) (Fin n → E)) (g : GL (Fin n) (RA F E)) (h1 : L.FG)
     (h2 : Submodule.span E (L : Set (Fin n → E)) = ⊤)
@@ -59,6 +70,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D V La _ _ ι hι N hN κ hκ`. Take `⟨h1, h2, -, -, h5, -⟩` from `GlobalTheory.Member.latG_lattice_and_completion D V 1`. Take `⟨-, -, h3, -⟩` from `GlobalTheory.Member.latG_lattice_and_completion D V κ`. Establish `hk` using `(GlobalTheory.Member.AALev.congruences_agree D V κ).1.2 hκ`. Rewrite `hk`, the goal using `[h5]`.
+
+Conclude with `exists_endo_approx_of_keeps_hat (F := D.host.F) (latG V 1) (latG V κ) (finHom V κ) h1 h2 h3 hk ι hι.1 hι.2 N hN`.
+-/
 theorem exists_endo_approx : ∀ (D : D7) (V : HSp D) (La : Type) [AddCommGroup La] [Module (𝓞 D.host.E) La] (ι : La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)), LatEmb V ι → ∀ (N : ℕ), 0 < N → ∀ κ : GA D V, FinCong V 1 κ → ∃ γ₀ : La →ₗ[𝓞 D.host.E] La, ∀ a, ∃ w ∈ latGHat V 1, (finHom V κ).1.mulVec (finVec V (ι a)) - finVec V (ι (γ₀ a)) = N • w := by
   intro D V La _ _ ι hι N hN κ hκ
   obtain ⟨h1, h2, -, -, h5, -⟩ := GlobalTheory.Member.latG_lattice_and_completion D V 1

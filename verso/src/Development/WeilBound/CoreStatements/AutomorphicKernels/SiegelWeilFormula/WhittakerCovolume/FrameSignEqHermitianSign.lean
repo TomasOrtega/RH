@@ -12,15 +12,30 @@ open PositivityTheory.SiegelWeilFormula
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Set `τ : E →+* ℂ` to `(IsAlgClosed.lift (R := ℚ) (S := E) (M := ℂ) : E →ₐ[ℚ] ℂ).toRingHom`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2, h.2.2.2, star_star]`.
+-/
 theorem rel_sigma_sigma (h : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   let τ : E →+* ℂ := (IsAlgClosed.lift (R := ℚ) (S := E) (M := ℂ) : E →ₐ[ℚ] ℂ).toRingHom
   apply τ.injective
   rw [h.2.2.2, h.2.2.2, star_star]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[incM, cA, inclR, Algebra.TensorProduct.map_tmul]`.
+-/
 theorem rel_cA_incM {a b : Type} (X : Matrix a b E) : (incM F X).map (cA σ) = incM F (X.map σ) := by
   ext i j
   simp [incM, cA, inclR, Algebra.TensorProduct.map_tmul]
 
+/- English proof (translation)
+Establish `e1 : (incM F d.b.1).map (cA σ) = incM F (d.b.1.map σ)`. Use extensionality with `i j`. Simplify using `[incM, cA, inclR, Algebra.TensorProduct.map_tmul]`. Establish `e2 : dbl (incM F d.Y.J) = incM F (dbl d.Y.J)`. Simplify using `[dbl, incM, Matrix.fromBlocks_map, Matrix.map_neg]`.
+
+Establish `key : incM F (d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ) = (incM F d.b.1)ᵀ * incM F (dbl d.Y.J) * incM F (d.b.1.map σ)`. Simplify using `only [incM, Matrix.map_mul, Matrix.transpose_map]`. Establish `hF : (incM F d.b.1)ᵀ * dbl (incM F d.Y.J) * (incM F d.b.1).map (cA σ) = Matrix.fromBlocks 0 1 (((ε : ℤ) : AE F E) • 1) 0`. Rewrite using `[e1, e2, ← key, hε]`. Simplify using `only [incM, Matrix.fromBlocks_map, Matrix.map_zero _ (map_zero _), Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Use `congr 1`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hM : (mat2 y)ᵀ * dbl (incM F d.Y.J) * (mat2 y).map (cA σ) = dbl (incM F d.Y.J)` using `y.2`.
+
+Use `form_conj_in (cA σ).toRingHom (incM_mul_inv d) hM` as an intermediate fact. Rewrite using `[← hF]`. Conclude with `this`.
+-/
 theorem rel_frame (d : SD σ) (ε : ℤˣ)
     (hε : d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0) (y : d.G) :
     (inFrame d.b y)ᵀ * Matrix.fromBlocks 0 1 (((ε : ℤ) : AE F E) • 1) 0 * (inFrame d.b y).map (cA σ) =
@@ -46,6 +61,15 @@ theorem rel_frame (d : SD σ) (ε : ℤˣ)
   rw [← hF]
   exact this
 
+/- English proof (translation)
+Take `⟨β, hβ⟩` from `β`. Use `show βᵀ + ((ε : ℤ) : AE F E) • β.map (cA σ) = 0`. Proceed by induction on `hβ using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨y, hy⟩` from `hx`.
+
+Establish `h` using `rel_frame d ε hε y`. Rewrite `h` using `[hy]`. Simplify using `only [Matrix.fromBlocks_transpose, Matrix.fromBlocks_map, Matrix.fromBlocks_multiply, Matrix.transpose_zero, Matrix.transpose_one, Matrix.map_zero _ (map_zero (cA σ)), Matrix.map_one _ (map_zero (cA σ)) (map_one (cA σ)), Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add, Matri …`. Rewrite using `[add_comm]`. Establish `h4` using `h.2.2.2`.
+
+Rewrite `h4` using `[Matrix.smul_mul, Matrix.one_mul]`. Conclude with `h4`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Rewrite using `[Matrix.transpose_add, Matrix.map_add _ (map_add (cA σ)), smul_add]`.
+
+Combine the equalities or inequalities in the displayed calculation. Consider the case `neg x _ hx`. Rewrite using `[Matrix.transpose_neg, Matrix.map_neg _ (map_neg (cA σ)), smul_neg, ← neg_add, hx, neg_zero]`.
+-/
 theorem rel_nA_cond (d : SD σ) (ε : ℤˣ)
     (hε : d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0) (β : nA σ d.Y d.b) :
     β.1ᵀ + ((ε : ℤ) : AE F E) • β.1.map (cA σ) = 0 := by
@@ -72,6 +96,15 @@ theorem rel_nA_cond (d : SD σ) (ε : ℤˣ)
   | neg x _ hx =>
     rw [Matrix.transpose_neg, Matrix.map_neg _ (map_neg (cA σ)), smul_neg, ← neg_add, hx, neg_zero]
 
+/- English proof (translation)
+Establish `hD : (dbl d.Y.J).map σ = c • (dbl d.Y.J)ᵀ`. Simplify using `only [dbl, Matrix.fromBlocks_map, Matrix.fromBlocks_transpose, Matrix.fromBlocks_smul, hc, Matrix.map_neg _ (map_neg σ), Matrix.map_zero _ (map_zero σ), Matrix.transpose_zero, Matrix.transpose_neg, smul_zero, smul_neg]`. Establish `hbb : (d.b.1.map σ).map σ = d.b.1`. Use extensionality with `i j`. Simplify using `[hσ]`.
+
+Establish `h1` using `congrArg σ.mapMatrix hε`. Simplify using `only [map_mul, AlgHom.mapMatrix_apply, hD, hbb] at h1`. Establish `h2` using `congrArg Matrix.transpose h1`. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_smul, Matrix.transpose_transpose, Matrix.mul_smul, Matrix.smul_mul, Matrix.transpose_map] at h2`. Rewrite `h2` using `[← Matrix.mul_assoc, hε]`.
+
+Use `congrFun (congrFun h2 (Sum.inr i)) (Sum.inl i)` as an intermediate fact. Simplify using `[Matrix.fromBlocks_map] at this`. Establish `hε2 : ((ε : ℤ) : E) * ((ε : ℤ) : E) = 1`. Rewrite using `[← Int.cast_mul, ← Units.val_mul, Int.units_mul_self]`. Simplify using the standard rewrite rules.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem frame_sign_eq_hermitian_sign (d : SD σ) (hσ : ∀ x, σ (σ x) = x) (ε : ℤˣ)
     (hε : d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0) (c : E)
     (hc : d.Y.J.map σ = c • d.Y.Jᵀ) (i : Fin d.n) : ((ε : ℤ) : E) = c := by
@@ -97,6 +130,11 @@ theorem frame_sign_eq_hermitian_sign (d : SD σ) (hσ : ∀ x, σ (σ x) = x) (�
     _ = c * (((ε : ℤ) : E) * ((ε : ℤ) : E)) := by ring
     _ = c := by rw [hε2, mul_one]
 
+/- English proof (translation)
+Establish `hσ` using `rel_sigma_sigma d.ok.good.cm`. Establish `i : Fin d.n` using `⟨0, d.ok.hn⟩`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `frame_sign_eq_hermitian_sign d hσ ε hε (-1) (by ext a b; simp [h b a]) i` as an intermediate fact.
+
+Conclude with `Units.ext (Int.cast_injective (α := E) (by simpa using this))`. Introduce `h`. Use `frame_sign_eq_hermitian_sign d hσ ε hε 1 (by ext a b; simp [h b a]) i` as an intermediate fact. Conclude with `Units.ext (Int.cast_injective (α := E) (by simpa using this))`.
+-/
 theorem rel_sign (d : SD σ) (ε : ℤˣ)
     (hε : d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0) :
     ((∀ i j, σ (d.Y.J j i) = -d.Y.J i j) → ε = -1) ∧ ((∀ i j, σ (d.Y.J j i) = d.Y.J i j) → ε = 1) := by
@@ -110,6 +148,13 @@ theorem rel_sign (d : SD σ) (ε : ℤˣ)
     have := frame_sign_eq_hermitian_sign d hσ ε hε 1 (by ext a b; simp [h b a]) i
     exact Units.ext (Int.cast_injective (α := E) (by simpa using this))
 
+/- English proof (translation)
+Establish `hσ` using `rel_sigma_sigma h`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, σ x ≠ x := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Use `h.2.1` as an intermediate fact.
+
+Set `w : InfinitePlace E` to `Classical.arbitrary _`. Establish `hw : w.IsComplex` using `NumberField.IsTotallyComplex.isComplex w`. Rewrite `hw` using `[NumberField.InfinitePlace.isComplex_iff]`. Apply `hw` to reduce the goal to its premises. Rewrite using `[NumberField.ComplexEmbedding.isReal_iff]`.
+
+Use extensionality with `y`. Rewrite using `[NumberField.ComplexEmbedding.conjugate_coe_eq, ← Complex.star_def, ← h.2.2.2, hc]`. Use `⟨x - σ x, sub_ne_zero.mpr (Ne.symm hx), ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, hσ, neg_sub]`.
+-/
 theorem rel_anti (h : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCMExt F E σ) : ∃ η : E, η ≠ 0 ∧ σ η = -η := by
   have hσ := rel_sigma_sigma h
   obtain ⟨x, hx⟩ : ∃ x, σ x ≠ x := by
@@ -126,6 +171,11 @@ theorem rel_anti (h : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.
   refine ⟨x - σ x, sub_ne_zero.mpr (Ne.symm hx), ?_⟩
   rw [map_sub, hσ, neg_sub]
 
+/- English proof (translation)
+Break down `d.ok.sign with ⟨hA, hY⟩ | ⟨hA, hY⟩` into its components or cases. Establish `he` using `(rel_sign d ε hε).1 hY`. Substitute `he` using the available equality. Use `⟨1, one_ne_zero, by simp, fun i j => by simp [hA.herm i j]⟩` and prove the remaining obligations. Establish `he` using `(rel_sign d ε hε).2 hY`.
+
+Substitute `he` using the available equality. Take `⟨η, hη, hση⟩` from `rel_anti d.ok.good.cm`. Use `⟨η, hη, by simp [hση], fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hση, hA.skew i j, neg_mul_neg]`.
+-/
 theorem rel_eta (d : SD σ) (ε : ℤˣ)
     (hε : d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0) :
     ∃ η : E, η ≠ 0 ∧ σ η = -(((ε : ℤ) : E) * η) ∧ ∀ i j, σ (η * d.A.J j i) = η * d.A.J i j := by

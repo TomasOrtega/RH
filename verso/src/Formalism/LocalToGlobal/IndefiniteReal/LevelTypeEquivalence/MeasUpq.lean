@@ -26,10 +26,16 @@ instance instBorelUpq (p q : ℕ) : BorelSpace (UpqT p q) := ⟨rfl⟩
 
 instance instT2SpaceIndefiniteUnitary (p q : ℕ) : T2Space (UpqT p q) := inferInstanceAs (T2Space (Formalism.UG.Upq p q))
 
+/- English proof (translation)
+The claim follows from `Leaf.Proofs.transferStatement_holds (Formalism.REAL.UJ (epsPQ p q)) (UpqT p q) (phiPQ p q).symm (fun ν hν => uJ_rightInv (epsPQ p q) ν hν) μ hμ`.
+-/
 theorem upq_rightInv (p q : ℕ) (μ : Measure (UpqT p q)) (hμ : μ.IsHaarMeasure) : μ.IsMulRightInvariant :=
   Leaf.Proofs.transferStatement_holds (Formalism.REAL.UJ (epsPQ p q)) (UpqT p q) (phiPQ p q).symm
     (fun ν hν => uJ_rightInv (epsPQ p q) ν hν) μ hμ
 
+/- English proof (translation)
+Establish `hR` using `upq_rightInv p q m inferInstance`. Establish `e : (fun c : UpqT p q => u⁻¹ * c * u) = (fun c => c * u) ∘ (fun c => u⁻¹ * c)` using `rfl`. Rewrite using `[e, ← Measure.map_map (measurable_mul_const u) (measurable_const_mul u⁻¹), Measure.IsMulLeftInvariant.map_mul_left_eq_self (μ := m) u⁻¹, hR.map_mul_right_eq_self]`.
+-/
 theorem map_conj_upq {p q : ℕ} (m : Measure (UpqT p q)) [m.IsHaarMeasure] (u : UpqT p q) :
     m.map (fun c => u⁻¹ * c * u) = m := by
   have hR := upq_rightInv p q m inferInstance
@@ -37,6 +43,15 @@ theorem map_conj_upq {p q : ℕ} (m : Measure (UpqT p q)) [m.IsHaarMeasure] (u :
   rw [e, ← Measure.map_map (measurable_mul_const u) (measurable_const_mul u⁻¹),
     Measure.IsMulLeftInvariant.map_mul_left_eq_self (μ := m) u⁻¹, hR.map_mul_right_eq_self]
 
+/- English proof (translation)
+Use `h.1` as an intermediate fact. Use `h'.1` as an intermediate fact. Use `set a := Measure.addHaarScalarFactor lam' lam`. Establish `hs : lam' = (a : ENNReal) • lam`. Rewrite using `[← ENNReal.smul_def]`.
+
+Conclude with `Measure.isAddLeftInvariant_eq_smul lam' lam`. Establish `e2` using `h'.2`. Rewrite `e2` using `[hs, Measure.prod_smul_left, Measure.prod_smul_right, smul_smul, Measure.map_smul, h.2]`. Establish `hpos : 0 < (volume : Measure ((Fin p ⊕ Fin q) × (Fin p ⊕ Fin q) → ℂ)) (Metric.ball 0 1)` using `Metric.isOpen_ball.measure_pos _ ⟨0, Metric.mem_ball_self one_pos⟩`. Establish `hfin : (volume : Measure ((Fin p ⊕ Fin q) × (Fin p ⊕ Fin q) → ℂ)) (Metric.ball 0 1) ≠ ⊤` using `measure_ball_lt_top.ne`.
+
+Establish `e3` using `congrArg (fun ν : Measure ((Fin p ⊕ Fin q) × (Fin p ⊕ Fin q) → ℂ) => ν (Metric.ball 0 1)) e2`. Simplify using `only [Measure.smul_apply, smul_eq_mul] at e3`. Establish `e4 : (a : ENNReal) * a = 1` using `(ENNReal.mul_left_inj hpos.ne' hfin).mp (e3.trans (one_mul _).symm)`. Establish `e5 : a = 1`. Establish `h2 : a ^ 2 = 1`.
+
+Rewrite using `[sq]`. Conclude with `e4` after adjusting the coercions. Conclude with `(pow_eq_one_iff_of_nonneg (by positivity) two_ne_zero).mp h2`. Rewrite using `[hs, e5, ENNReal.coe_one, one_smul]`.
+-/
 theorem omegaLeb_unique {p q : ℕ} {lam lam' : Measure (lieU p q)} (h : IsOmegaLeb lam) (h' : IsOmegaLeb lam') :
     lam' = lam := by
   have := h.1
@@ -59,6 +74,13 @@ theorem omegaLeb_unique {p q : ℕ} {lam lam' : Measure (lieU p q)} (h : IsOmega
     exact (pow_eq_one_iff_of_nonneg (by positivity) two_ne_zero).mp h2
   rw [hs, e5, ENNReal.coe_one, one_smul]
 
+/- English proof (translation)
+Take `⟨hm, lam, hlam, hl⟩` from `h`. Take `⟨hm', lam', hlam', hl'⟩` from `h'`. Rewrite `hl'` using `[omegaLeb_unique hlam hlam']`. Use `set k := Measure.haarScalarFactor m' m`. Establish `hs : m' = (k : ENNReal) • m`.
+
+Rewrite using `[← ENNReal.smul_def]`. Conclude with `Measure.isMulLeftInvariant_eq_smul m' m`. Establish `h2` using `ENNReal.Tendsto.const_mul hl (Or.inr (ENNReal.coe_ne_top (r := k)))`. Establish `h3 : Tendsto (fun r : ℝ => m' {g | ∃ X ∈ ballU p q r, UpqT.mat g = NormedSpace.exp (X : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)} / lam (ballU p q r)) (𝓝[>] 0) (𝓝 ((k : ENNReal) * Formalism.L2.Theta.minfDensity (p + q)))`. Use `h2.congr fun r => ?_` and prove the remaining obligations.
+
+Rewrite using `[hs, Measure.smul_apply, smul_eq_mul, mul_div_assoc]`. Establish `e` using `tendsto_nhds_unique hl' h3`. Establish `hk : (k : ENNReal) = 1` using `(ENNReal.mul_left_inj (minfDensity_ne_zero (p + q)) (minfDensity_ne_top (p + q))).mp (e.symm.trans (one_mul _).symm)`. Rewrite using `[hs, hk, one_smul]`.
+-/
 theorem isMinf_unique {p q : ℕ} {m m' : Measure (UpqT p q)} (h : Lev.IsMinf m) (h' : Lev.IsMinf m') : m' = m := by
   obtain ⟨hm, lam, hlam, hl⟩ := h
   obtain ⟨hm', lam', hlam', hl'⟩ := h'
@@ -78,9 +100,17 @@ theorem isMinf_unique {p q : ℕ} {m m' : Measure (UpqT p q)} (h : Lev.IsMinf m)
       (e.symm.trans (one_mul _).symm)
   rw [hs, hk, one_smul]
 
+/- English proof (translation)
+The claim follows from `Leaf.Proofs.exists_haar_measure_with_density p q _ (minfDensity_ne_zero (p + q)) (minfDensity_ne_top (p + q))`.
+-/
 theorem isMinf_exists (p q : ℕ) : ∃ m : Measure (UpqT p q), Lev.IsMinf m :=
   Leaf.Proofs.exists_haar_measure_with_density p q _ (minfDensity_ne_zero (p + q)) (minfDensity_ne_top (p + q))
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Conclude with `i.elim0`. Conclude with `i.elim0`. Conclude with `j.elim0`.
+
+Simplify using `[Formalism.UG.Jpq, Matrix.one_apply, Matrix.neg_apply]`.
+-/
 theorem Jpq_zero_left (q : ℕ) : Formalism.UG.Jpq 0 q = -1 := by
   ext i j
   rcases i with i | i <;> rcases j with j | j
@@ -107,6 +137,11 @@ instance instCompactUpq0 (q : ℕ) : CompactSpace (UpqT 0 q) := by
   rw [← e] at hc
   exact isCompact_iff_compactSpace.mp hc
 
+/- English proof (translation)
+Use `⟨(Measure.haar (G := UpqT p q) Set.univ)⁻¹ • Measure.haar, ?_, ?_⟩` and prove the remaining obligations. Establish `h0 : (Measure.haar (G` using `UpqT p q) Set.univ) ≠ 0 := (Measure.measure_univ_pos.mpr (NeZero.ne _)).ne'`. Establish `ht : (Measure.haar (G` using `UpqT p q) Set.univ) ≠ ⊤ := measure_ne_top _ _`. Conclude with `Measure.IsHaarMeasure.smul _ (ENNReal.inv_ne_zero.mpr ht) (ENNReal.inv_ne_top.mpr h0)`. Prove the components needed by the constructor for the conclusion.
+
+Rewrite using `[Measure.smul_apply, smul_eq_mul, ENNReal.inv_mul_cancel]`. Conclude with `(Measure.measure_univ_pos.mpr (NeZero.ne _)).ne'`. Conclude with `measure_ne_top _ _`.
+-/
 theorem prob_exists {p q : ℕ} [CompactSpace (UpqT p q)] :
     ∃ m : Measure (UpqT p q), m.IsHaarMeasure ∧ IsProbabilityMeasure m := by
   refine ⟨(Measure.haar (G := UpqT p q) Set.univ)⁻¹ • Measure.haar, ?_, ?_⟩
@@ -118,6 +153,11 @@ theorem prob_exists {p q : ℕ} [CompactSpace (UpqT p q)] :
     · exact (Measure.measure_univ_pos.mpr (NeZero.ne _)).ne'
     · exact measure_ne_top _ _
 
+/- English proof (translation)
+Take `⟨hm, hp⟩` from `h`. Take `⟨hm', hp'⟩` from `h'`. Establish `hs : m' = (Measure.haarScalarFactor m' m : ENNReal) • m`. Rewrite using `[← ENNReal.smul_def]`. Conclude with `Measure.isMulLeftInvariant_eq_smul m' m`.
+
+Establish `e` using `congrArg (fun ν : Measure (UpqT p q) => ν Set.univ) hs`. Simplify using `only [Measure.smul_apply, smul_eq_mul, measure_univ, mul_one] at e`. Rewrite using `[hs, ← e, one_smul]`.
+-/
 theorem prob_unique {p q : ℕ} {m m' : Measure (UpqT p q)} (h : m.IsHaarMeasure ∧ IsProbabilityMeasure m)
     (h' : m'.IsHaarMeasure ∧ IsProbabilityMeasure m') : m' = m := by
   obtain ⟨hm, hp⟩ := h

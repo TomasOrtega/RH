@@ -12,11 +12,19 @@ namespace GlobalTheory.Cong.LevelExt
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
+/- English proof (translation)
+Unfold `locU Apart`. Simplify using `only [Subgroup.mem_inf, Subgroup.mem_iInf, MonoidHom.mem_ker]`.
+-/
 theorem mem_locU_iff {w : HeightOneSpectrum (𝓞 E)} (x : UA E n) :
     x ∈ locU n w ↔ x ∈ finU E n ∧ ∀ u, Apart u w → cLoc u x = 1 := by
   unfold locU Apart
   simp only [Subgroup.mem_inf, Subgroup.mem_iInf, MonoidHom.mem_ker]
 
+/- English proof (translation)
+Establish `hw1 : ∀ v, v = w → cLoc v x = 1`. Introduce and unpack `v rfl`. Conclude with `h1`. Establish `hce` using `GlobalTheory.SplitPts.comp_eq x (conjSrc (GlobalTheory.SplitPts.conjE E) w)`. Rewrite `hce` using `[hw1 _ (GlobalTheory.SplitPts.conjSrc_conjSrc_cm w), Units.val_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one, Matrix.one_mul]`.
+
+Conclude with `Units.ext hce`.
+-/
 theorem cLoc_conj_eq_one {w : HeightOneSpectrum (𝓞 E)} (x : UA E n) (h1 : cLoc w x = 1) :
     cLoc (conjSrc (GlobalTheory.SplitPts.conjE E) w) x = 1 := by
   have hw1 : ∀ v, v = w → cLoc v x = 1 := by
@@ -27,6 +35,11 @@ theorem cLoc_conj_eq_one {w : HeightOneSpectrum (𝓞 E)} (x : UA E n) (h1 : cLo
     Matrix.transpose_one, Matrix.one_mul] at hce
   exact Units.ext hce
 
+/- English proof (translation)
+Introduce `u hu`. Establish `hu' : u.under (𝓞 (maximalRealSubfield E)) = w.under (𝓞 (maximalRealSubfield E))`. Assume the negation of the conclusion as `h`. Conclude with `hu h`. Break down `(GlobalTheory.SplitPts.over_split hw).2.2 u hu' with rfl | rfl` into its components or cases.
+
+Conclude with `h1`. Conclude with `cLoc_conj_eq_one x h1`.
+-/
 theorem one_of_cLoc {w : HeightOneSpectrum (𝓞 E)} (hw : IsSplitAt w) (x : UA E n) (h1 : cLoc w x = 1) :
     ∀ u, ¬ Apart u w → cLoc u x = 1 := by
   intro u hu

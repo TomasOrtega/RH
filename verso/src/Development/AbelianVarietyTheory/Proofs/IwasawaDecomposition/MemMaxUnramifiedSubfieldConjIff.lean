@@ -18,9 +18,15 @@ def rightCongr (LL V : Type) [Field LL] [Algebra Qp LL] [AddCommGroup V] [Module
     [IsScalarTower Qp LL V] (s : B ≃ₗ[Qp] B) : V ⊗[Qp] B ≃ₗ[LL] V ⊗[Qp] B :=
   AlgebraTensorModule.congr (LinearEquiv.refl LL V) s
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem rightCongr_tmul (s : B ≃ₗ[Qp] B) (v : V) (b : B) :
     rightCongr LL V s (v ⊗ₜ b) = v ⊗ₜ s b := rfl
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [h]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem rightCongr_map (s : B ≃ₗ[Qp] B) (f : V →ₗ[LL] V) (u u' : B →ₗ[Qp] B) (h : ∀ b, s (u b) = u' (s b))
     (x : V ⊗[Qp] B) :
     rightCongr LL V s (AlgebraTensorModule.map f u x) = AlgebraTensorModule.map f u' (rightCongr LL V s x) := by
@@ -29,6 +35,11 @@ theorem rightCongr_map (s : B ≃ₗ[Qp] B) (f : V →ₗ[LL] V) (u u' : B →�
   | tmul v b => simp [h]
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `hx`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => exact ⟨v ⊗ₜ[Qp] ⟨s b.1, h _ b.2⟩, rfl⟩`. Consider the case `add x y hx hy => rw [map_add, map_add]`.
+
+Conclude with `Submodule.add_mem _ hx hy`.
+-/
 theorem rightCongr_mem_range (s : B ≃ₗ[Qp] B) (F F' : Submodule Qp B) (h : ∀ b ∈ F, s b ∈ F') {x : V ⊗[Qp] B}
     (hx : x ∈ LinearMap.range (AlgebraTensorModule.map (LinearMap.id : V →ₗ[LL] V) F.subtype)) :
     rightCongr LL V s x ∈ LinearMap.range (AlgebraTensorModule.map (LinearMap.id : V →ₗ[LL] V) F'.subtype) := by
@@ -38,6 +49,9 @@ theorem rightCongr_mem_range (s : B ≃ₗ[Qp] B) (F F' : Submodule Qp B) (h : �
   | tmul v b => exact ⟨v ⊗ₜ[Qp] ⟨s b.1, h _ b.2⟩, rfl⟩
   | add x y hx hy => rw [map_add, map_add]; exact Submodule.add_mem _ hx hy
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem rightCongr_symm_apply (s : B ≃ₗ[Qp] B) (x : V ⊗[Qp] B) :
     rightCongr LL V s.symm (rightCongr LL V s x) = x := by
   induction x using TensorProduct.induction_on with
@@ -45,6 +59,9 @@ theorem rightCongr_symm_apply (s : B ≃ₗ[Qp] B) (x : V ⊗[Qp] B) :
   | tmul v b => simp
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Establish `: S.map (T : M →ₗ[LL] M) = S'`. Use extensionality with `y`. Rewrite using `[Submodule.mem_map_equiv, h, T.apply_symm_apply]`. Rewrite using `[← this, LinearEquiv.finrank_map_eq]`.
+-/
 theorem finrank_eq_of_mem_iff {M : Type} [AddCommGroup M] [Module LL M] (T : M ≃ₗ[LL] M) (S S' : Submodule LL M)
     (h : ∀ x, x ∈ S ↔ T x ∈ S') : finrank LL ↥S = finrank LL ↥S' := by
   have : S.map (T : M →ₗ[LL] M) = S' := by
@@ -56,6 +73,13 @@ end Tensor
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Unfold `MaximalUnramifiedExtension at hx ⊢`. Proceed by induction on `hx using IntermediateField.adjoin_induction with`. Consider the case `mem y hy`. Take `⟨m, h0, hm, hy⟩` from `hy`. Conclude with `IntermediateField.subset_adjoin _ _ ⟨m, h0, hm, by rw [← map_pow, hy, map_one]⟩`.
+
+Consider the case `algebraMap y => rw [g.commutes]`. Conclude with `IntermediateField.algebraMap_mem _ y`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`. Consider the case `inv a _ ha => rw [map_inv₀]`.
+
+Conclude with `inv_mem ha`. Consider the case `mul a b _ _ ha hb => rw [map_mul]`. Conclude with `mul_mem ha hb`.
+-/
 theorem apply_mem_Kur (g : GQ l) {x : Om l} (hx : x ∈ MaximalUnramifiedExtension l) : g x ∈ MaximalUnramifiedExtension l := by
   unfold MaximalUnramifiedExtension at hx ⊢
   induction hx using IntermediateField.adjoin_induction with
@@ -82,17 +106,26 @@ section Conj
 variable (P : LocPrime l) (g : GQ l) {K₁ K₂ : FinExt l} (hK : ∀ x, x ∈ K₁.1 ↔ g x ∈ K₂.1)
 include hK
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨(hK x).1 h.1, apply_mem_Kur g h.2⟩, fun h => ⟨(hK x).2 h.1, by have := apply_mem_Kur g.symm h.2 rwa [g.symm_apply_apply] at this⟩⟩`.
+-/
 theorem mem_maxUnramifiedSubfield_conj_iff (x : Om l) : x ∈ K0 K₁ ↔ g x ∈ K0 K₂ :=
   ⟨fun h => ⟨(hK x).1 h.1, apply_mem_Kur g h.2⟩, fun h => ⟨(hK x).2 h.1, by
     have := apply_mem_Kur g.symm h.2
     rwa [g.symm_apply_apply] at this⟩⟩
 
+/- English proof (translation)
+Use `⟨⟨g * σ₁ * g⁻¹, (IntermediateField.mem_fixingSubgroup_iff _ _).2 fun y hy => ?_⟩, by simp⟩` and prove the remaining obligations. Establish `h1 : g.symm y ∈ K₁.1` using `(hK _).2 (by rwa [g.apply_symm_apply])`. Express the relevant statement in the definitionally equal form `g ((σ₁ : GQ l) (g.symm y)) = y`. Rewrite using `[(IntermediateField.mem_fixingSubgroup_iff _ _).1 σ₁.2 _ h1, g.apply_symm_apply]`.
+-/
 theorem exists_conj_left (σ₁ : ↥(GK K₁)) : ∃ σ₂ : ↥(GK K₂), (σ₂ : GQ l) * g = g * σ₁ := by
   refine ⟨⟨g * σ₁ * g⁻¹, (IntermediateField.mem_fixingSubgroup_iff _ _).2 fun y hy => ?_⟩, by simp⟩
   have h1 : g.symm y ∈ K₁.1 := (hK _).2 (by rwa [g.apply_symm_apply])
   change g ((σ₁ : GQ l) (g.symm y)) = y
   rw [(IntermediateField.mem_fixingSubgroup_iff _ _).1 σ₁.2 _ h1, g.apply_symm_apply]
 
+/- English proof (translation)
+Use `⟨⟨g⁻¹ * σ₂ * g, (IntermediateField.mem_fixingSubgroup_iff _ _).2 fun y hy => ?_⟩, by` and prove the remaining obligations. Simplify using `[mul_assoc]⟩`. Express the relevant statement in the definitionally equal form `g.symm ((σ₂ : GQ l) (g y)) = y`. Rewrite using `[(IntermediateField.mem_fixingSubgroup_iff _ _).1 σ₂.2 _ ((hK y).1 hy), g.symm_apply_apply]`.
+-/
 theorem exists_conj_right (σ₂ : ↥(GK K₂)) : ∃ σ₁ : ↥(GK K₁), (σ₂ : GQ l) * g = g * σ₁ := by
   refine ⟨⟨g⁻¹ * σ₂ * g, (IntermediateField.mem_fixingSubgroup_iff _ _).2 fun y hy => ?_⟩, by
     simp [mul_assoc]⟩
@@ -104,6 +137,13 @@ variable {LL : Type} [Field LL] [Algebra ℚ_[l] LL] {V : Type} [AddCommGroup V]
 
 omit hK in
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨K₀, hg⟩ : ∃ K₀ : FinExt l, g ∈ GK K₀ := by`. Use `⟨⟨⊥, inferInstance⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[GK, IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`. Take `⟨c, rfl⟩` from `IntermediateField.mem_bot.1 hx`.
+
+Conclude with `g.commutes c`. Establish `h1 : b ∈ (P.PD K₀).Fil a`. Rewrite using `[← SetLike.mem_coe, P.PD_Fil K₀ K]`. Conclude with `hb`. Establish `h2` using `(P.PD K₀).Fil_G ⟨g, hg⟩ a b h1`.
+
+Rewrite `h2` using `[P.PD_actdR, ← SetLike.mem_coe, P.PD_Fil K₀ K']`. Conclude with `h2`.
+-/
 theorem actQdR_mem_Fil (K K' : FinExt l) (a : ℤ) {b : P.R.BdR} (hb : b ∈ (P.PD K).Fil a) :
     P.actQdR g b ∈ (P.PD K').Fil a := by
   obtain ⟨K₀, hg⟩ : ∃ K₀ : FinExt l, g ∈ GK K₀ := by
@@ -120,6 +160,11 @@ theorem actQdR_mem_Fil (K K' : FinExt l) (a : ℤ) {b : P.R.BdR} (hb : b ∈ (P.
 
 omit hK in
 
+/- English proof (translation)
+Unfold `FilV`. Use `⟨fun h => rightCongr_mem_range (P.actQdR g).toLinearEquiv (((P.PD K).Fil a).restrictScalars ℚ_[l]) (((P.PD K').Fil a).restrictScalars ℚ_[l]) (fun b hb => actQdR_mem_Fil P g K K' a hb) h, fun h => ?_⟩` and prove the remaining obligations. Use `rightCongr_mem_range (P.actQdR g).toLinearEquiv.symm (((P.PD K').Fil a).restrictScalars ℚ_[l]) (((P.PD K).Fil a).restrictScalars ℚ_[l]) (fun b hb => by` as an intermediate fact. Use `actQdR_mem_Fil P g⁻¹ K' K a hb` as an intermediate fact. Rewrite `this` using `[map_inv]`.
+
+Conclude with `this) h`. Rewrite `this` using `[rightCongr_symm_apply]`. Then use the resulting hypothesis.
+-/
 theorem mem_FilV_iff (K K' : FinExt l) (a : ℤ) (x : V ⊗[ℚ_[l]] P.R.BdR) :
     x ∈ FilV (P.PD K) (LL := LL) (V := V) a ↔
       rightCongr LL V (P.actQdR g).toLinearEquiv x ∈ FilV (P.PD K') (LL := LL) (V := V) a := by
@@ -136,6 +181,13 @@ theorem mem_FilV_iff (K K' : FinExt l) (a : ℤ) (x : V ⊗[ℚ_[l]] P.R.BdR) :
 variable (hρ : ∀ (σ₁ : ↥(GK K₁)) (σ₂ : ↥(GK K₂)), (σ₂ : GQ l) * g = g * σ₁ → ρ₁ σ₁ = ρ₂ σ₂)
 include hρ
 
+/- English proof (translation)
+Establish `key : ∀ (σ₁ : ↥(GK K₁)) (σ₂ : ↥(GK K₂)), (σ₂ : GQ l) * g = g * σ₁ → rightCongr LL V (P.actQ g).toLinearEquiv (actVB (P.PD K₁) ρ₁ σ₁ x) = actVB (P.PD K₂) ρ₂ σ₂ (rightCongr LL V (P.actQ g).toLinearEquiv x)` using `fun σ₁ σ₂ h => by`. Rewrite using `[actVB, actVB, hρ σ₁ σ₂ h]`. Use `rightCongr_map _ _ _ _ (fun b => ?_) x` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `P.actQ g ((P.PD K₁).actB σ₁ b) = (P.PD K₂).actB σ₂ (P.actQ g b)`. Rewrite using `[P.PD_actB, P.PD_actB, ← AlgEquiv.mul_apply, ← AlgEquiv.mul_apply, ← map_mul, ← map_mul, h]`.
+
+Simplify using `only [Dcris, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Use `⟨fun h σ₂ => ?_, fun h σ₁ => ?_⟩` and prove the remaining obligations. Take `⟨σ₁, e⟩` from `exists_conj_right g hK σ₂`. Rewrite using `[← key σ₁ σ₂ e, h]`. Take `⟨σ₂, e⟩` from `exists_conj_left g hK σ₁`.
+
+Conclude with `(rightCongr LL V (P.actQ g).toLinearEquiv).injective ((key σ₁ σ₂ e).trans (h σ₂))`.
+-/
 theorem mem_Dcris_iff (x : V ⊗[ℚ_[l]] P.R.B) :
     x ∈ Dcris (P.PD K₁) ρ₁ ↔ rightCongr LL V (P.actQ g).toLinearEquiv x ∈ Dcris (P.PD K₂) ρ₂ := by
   have key : ∀ (σ₁ : ↥(GK K₁)) (σ₂ : ↥(GK K₂)), (σ₂ : GQ l) * g = g * σ₁ →
@@ -152,6 +204,13 @@ theorem mem_Dcris_iff (x : V ⊗[ℚ_[l]] P.R.B) :
   · obtain ⟨σ₂, e⟩ := exists_conj_left g hK σ₁
     exact (rightCongr LL V (P.actQ g).toLinearEquiv).injective ((key σ₁ σ₂ e).trans (h σ₂))
 
+/- English proof (translation)
+Establish `key : ∀ (σ₁ : ↥(GK K₁)) (σ₂ : ↥(GK K₂)), (σ₂ : GQ l) * g = g * σ₁ → rightCongr LL V (P.actQdR g).toLinearEquiv (actVdR (P.PD K₁) ρ₁ σ₁ x) = actVdR (P.PD K₂) ρ₂ σ₂ (rightCongr LL V (P.actQdR g).toLinearEquiv x)` using `fun σ₁ σ₂ h => by`. Rewrite using `[actVdR, actVdR, hρ σ₁ σ₂ h]`. Use `rightCongr_map _ _ _ _ (fun b => ?_) x` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `P.actQdR g ((P.PD K₁).actdR σ₁ b) = (P.PD K₂).actdR σ₂ (P.actQdR g b)`. Rewrite using `[P.PD_actdR, P.PD_actdR, ← AlgEquiv.mul_apply, ← AlgEquiv.mul_apply, ← map_mul, ← map_mul, h]`.
+
+Simplify using `only [DdR, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Use `⟨fun h σ₂ => ?_, fun h σ₁ => ?_⟩` and prove the remaining obligations. Take `⟨σ₁, e⟩` from `exists_conj_right g hK σ₂`. Rewrite using `[← key σ₁ σ₂ e, h]`. Take `⟨σ₂, e⟩` from `exists_conj_left g hK σ₁`.
+
+Conclude with `(rightCongr LL V (P.actQdR g).toLinearEquiv).injective ((key σ₁ σ₂ e).trans (h σ₂))`.
+-/
 theorem mem_DdR_iff (x : V ⊗[ℚ_[l]] P.R.BdR) :
     x ∈ DdR (P.PD K₁) ρ₁ ↔ rightCongr LL V (P.actQdR g).toLinearEquiv x ∈ DdR (P.PD K₂) ρ₂ := by
   have key : ∀ (σ₁ : ↥(GK K₁)) (σ₂ : ↥(GK K₂)), (σ₂ : GQ l) * g = g * σ₁ →
@@ -168,10 +227,20 @@ theorem mem_DdR_iff (x : V ⊗[ℚ_[l]] P.R.BdR) :
   · obtain ⟨σ₂, e⟩ := exists_conj_left g hK σ₁
     exact (rightCongr LL V (P.actQdR g).toLinearEquiv).injective ((key σ₁ σ₂ e).trans (h σ₂))
 
+/- English proof (translation)
+Rewrite using `[IsCrys, IsCrys, finrank_eq_of_mem_iff _ _ _ (mem_Dcris_iff P g hK hρ), (conjField g (mem_maxUnramifiedSubfield_conj_iff g hK)).toLinearEquiv.finrank_eq]`.
+-/
 theorem isCrys_iff : IsCrys (P.PD K₁) ρ₁ ↔ IsCrys (P.PD K₂) ρ₂ := by
   rw [IsCrys, IsCrys, finrank_eq_of_mem_iff _ _ _ (mem_Dcris_iff P g hK hρ),
     (conjField g (mem_maxUnramifiedSubfield_conj_iff g hK)).toLinearEquiv.finrank_eq]
 
+/- English proof (translation)
+Establish `key : ∀ c : ↥K₁.1, rightCongr LL V (P.actQdR g).toLinearEquiv (mulVdR (K` using `↥K₁.1) (LL := LL) c x) = mulVdR (K := ↥K₂.1) (LL := LL) (conjField g hK c) (rightCongr LL V (P.actQdR g).toLinearEquiv x) := fun c => by`. Use `rightCongr_map _ _ _ _ (fun b => ?_) x` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `P.actQdR g (algebraMap (Om l) P.R.BdR c * b) = algebraMap (Om l) P.R.BdR (g c) * P.actQdR g b`. Rewrite using `[map_mul, P.actQdR_Om]`. Use `and_congr (mem_DdR_iff P g hK hρ x) ?_` and prove the remaining obligations.
+
+Simplify using `only [SetLike.mem_coe, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.smul_apply, sub_eq_zero]`. Use `⟨fun h c => ?_, fun h c => ?_⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `(conjField g hK).surjective c`. Rewrite using `[← key, h, map_smul]`. Both sides reduce to the same expression.
+
+Apply `(rightCongr LL V (P.actQdR g).toLinearEquiv).injective` to reduce the goal to its premises. Rewrite using `[key, h, map_smul]`. Both sides reduce to the same expression.
+-/
 theorem mem_DdRE_iff (τ : ↥K₂.1 →ₐ[ℚ_[l]] LL) (x : V ⊗[ℚ_[l]] P.R.BdR) :
     x ∈ DdRE (P.PD K₁) ρ₁ (τ.comp (conjField g hK).toAlgHom) ↔
       rightCongr LL V (P.actQdR g).toLinearEquiv x ∈ DdRE (P.PD K₂) ρ₂ τ := by
@@ -193,6 +262,9 @@ theorem mem_DdRE_iff (τ : ↥K₂.1 →ₐ[ℚ_[l]] LL) (x : V ⊗[ℚ_[l]] P.R
     rw [key, h, map_smul]
     rfl
 
+/- English proof (translation)
+Establish `h : ∀ a, finrank LL ↥(FildR (P.PD K₁) ρ₁ (τ.comp (conjField g hK).toAlgHom) a) = finrank LL ↥(FildR (P.PD K₂) ρ₂ τ a)` using `fun a => finrank_eq_of_mem_iff (rightCongr LL V (P.actQdR g).toLinearEquiv) _ _ fun x => and_congr (mem_DdRE_iff P g hK hρ τ x) (mem_FilV_iff P g K₁ K₂ a x)`. Unfold `multV`. Rewrite using `[h, h]`.
+-/
 theorem multV_eq (τ : ↥K₂.1 →ₐ[ℚ_[l]] LL) (a : ℤ) :
     multV (P.PD K₁) ρ₁ (τ.comp (conjField g hK).toAlgHom) a = multV (P.PD K₂) ρ₂ τ a := by
   have h : ∀ a, finrank LL ↥(FildR (P.PD K₁) ρ₁ (τ.comp (conjField g hK).toAlgHom) a) =
@@ -202,6 +274,11 @@ theorem multV_eq (τ : ↥K₂.1 →ₐ[ℚ_[l]] LL) (a : ℤ) :
   unfold multV
   rw [h, h]
 
+/- English proof (translation)
+Use `K'.2` as an intermediate fact. Set `K'' : FinExt l` to `⟨K'.1.map g.toAlgHom, (IntermediateField.equivMap K'.1 g.toAlgHom).toLinearEquiv.finiteDimensional⟩`. Establish `hK' : ∀ x, x ∈ K'.1 ↔ g x ∈ K''.1` using `fun x => ⟨fun hx => ⟨x, hx, rfl⟩, fun ⟨y, hy, e⟩ => (g.injective e : y = x) ▸ hy⟩`. Establish `h' : K₂.1 ≤ K''.1` using `fun y hy => by`. Rewrite `hy`, the goal using `[← g.apply_symm_apply y]`.
+
+Conclude with `(hK' _).1 (h ((hK _).2 hy))`. Conclude with `⟨K'', h', (isCrys_iff P g hK' fun σ₁ σ₂ e => hρ (Subgroup.inclusion (GK_le h) σ₁) (Subgroup.inclusion (GK_le h') σ₂) e).1 hc⟩`.
+-/
 theorem potCrys_conj (K' : FinExt l) (h : K₁.1 ≤ K'.1)
     (hc : IsCrys (P.PD K') (ρ₁.comp (Subgroup.inclusion (GK_le h)))) :
     ∃ (K'' : FinExt l) (h' : K₂.1 ≤ K''.1), IsCrys (P.PD K'') (ρ₂.comp (Subgroup.inclusion (GK_le h'))) := by
@@ -227,6 +304,13 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed E`. Establish `hd` using `PlaceBridge.denseRange_embedding B₁.j`. Take `⟨g, hg⟩` from `PlaceBridge.exists_algEquiv B₁.j B₂.j hd (PlaceBridge.norm_eq_of_le_one_iff _ _ fun x => (h₁ x).symm.trans (h₂ x))`. Establish `he : ∀ σ, (B₂.e σ : GQ l) * g = g * B₁.e σ` using `fun σ => PlaceBridge.algEquiv_ext hd fun x => by`. Rewrite using `[AlgEquiv.mul_apply, AlgEquiv.mul_apply, hg, B₁.e_comm, B₂.e_comm, hg]`.
+
+Establish `hm : ∀ (K : FinExt l) (x : Om l), x ∈ K.1 ↔ ∀ σ : ↥(GK K), (σ : GQ l) x = x` using `fun K x => by`. Rewrite using `[← InfiniteGalois.fixedField_fixingSubgroup K.1, IntermediateField.mem_fixedField_iff]`. Conclude with `⟨fun h σ => h σ σ.2, fun h σ hσ => h ⟨σ, hσ⟩⟩`. Use `⟨g, hg, fun x => ?_, fun σ₁ σ₂ e => ?_⟩` and prove the remaining obligations. Rewrite using `[hm, hm, B₁.e.surjective.forall, B₂.e.surjective.forall]`.
+
+Use `forall_congr' fun σ => ?_` and prove the remaining obligations. Rewrite using `[← AlgEquiv.mul_apply, he, AlgEquiv.mul_apply, g.injective.eq_iff]`. Take `⟨σ, rfl⟩` from `B₁.e.surjective σ₁`. Rewrite `e` using `[← he, mul_left_inj]`. Rewrite using `[Subtype.ext e, B₁.e.symm_apply_apply, B₂.e.symm_apply_apply]`.
+-/
 theorem exists_conj (h₁ : GlobalTheory.Pst.Induces B₁) (h₂ : GlobalTheory.Pst.Induces B₂) :
     ∃ g : GQ l, (∀ x, g (B₁.j x) = B₂.j x) ∧ (∀ x, x ∈ B₁.Kw.1 ↔ g x ∈ B₂.Kw.1) ∧
       ∀ (σ₁ : ↥(GK B₁.Kw)) (σ₂ : ↥(GK B₂.Kw)), (σ₂ : GQ l) * g = g * σ₁ → B₁.e.symm σ₁ = B₂.e.symm σ₂ := by
@@ -250,6 +334,11 @@ theorem exists_conj (h₁ : GlobalTheory.Pst.Induces B₁) (h₂ : GlobalTheory.
 
 end Bridge
 
+/- English proof (translation)
+Introduce `l _ P E Ω _ _ _ _ _ A O₁ O₂ _ _ _ _ _ _ B₁ B₂ h₁ h₂ L _ m r`. Take `⟨g, hg, hK, he⟩` from `exists_conj B₁ B₂ h₁ h₂`. Take `⟨g', -, hK', he'⟩` from `exists_conj B₂ B₁ h₂ h₁`. Establish `hρ : ∀ (σ₁ : ↥(GK B₁.Kw)) (σ₂ : ↥(GK B₂.Kw)), (σ₂ : GQ l) * g = g * σ₁ → B₁.repE L r σ₁ = B₂.repE L r σ₂` using `fun σ₁ σ₂ e => congrArg (fun σ => Matrix.toLinAlgEquiv' (r σ : Matrix (Fin m) (Fin m) ↥L.1)) (he σ₁ σ₂ e)`. Establish `hρ' : ∀ (σ₂ : ↥(GK B₂.Kw)) (σ₁ : ↥(GK B₁.Kw)), (σ₁ : GQ l) * g' = g' * σ₂ → B₂.repE L r σ₂ = B₁.repE L r σ₁` using `fun σ₂ σ₁ e => congrArg (fun σ => Matrix.toLinAlgEquiv' (r σ : Matrix (Fin m) (Fin m) ↥L.1)) (he' σ₂ σ₁ e)`.
+
+Use `⟨isCrys_iff P g hK hρ, ?_, ⟨fun ⟨K', h, hc⟩ => potCrys_conj P g hK hρ K' h hc, fun ⟨K', h, hc⟩ => potCrys_conj P g' hK' hρ' K' h hc⟩, fun τ τ₂ hτ => ⟨τ₂.comp (conjField g hK).toAlgHom, fun x => ?_, multV_eq P g hK hρ τ₂⟩⟩` and prove the remaining obligations. Rewrite using `[LocBridge.IsdRE, LocBridge.IsdRE, finrank_eq_of_mem_iff _ _ _ (mem_DdR_iff P g hK hρ), (conjField g hK).toLinearEquiv.finrank_eq]`. Rewrite using `[hτ x]`. Conclude with `congrArg (fun y => ((τ₂ y : ↥L.1) : Om l)) (Subtype.ext (hg _).symm)`.
+-/
 theorem bridge_indep : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (O₁ O₂ : Type) [CommRing O₁] [Algebra ℤ_[l] O₁] [TopologicalSpace O₁] [CommRing O₂] [Algebra ℤ_[l] O₂] [TopologicalSpace O₂] (B₁ : LocBridge l E Ω (Dec (F := E) A) O₁) (B₂ : LocBridge l E Ω (Dec (F := E) A) O₂), GlobalTheory.Pst.Induces B₁ → GlobalTheory.Pst.Induces B₂ → ∀ (L : Loc.FinExt l), B₁.LL.1 ≤ L.1 → ∀ (m : ℕ) (r : ↥(Dec (F := E) A) →* GL (Fin m) ↥L.1), (B₁.IsCrysE P L r ↔ B₂.IsCrysE P L r) ∧ (B₁.IsdRE P L r ↔ B₂.IsdRE P L r) ∧ (B₁.IsPotCrysE P L r ↔ B₂.IsPotCrysE P L r) ∧ ∀ (τ : E →+* Loc.Om l) (τ₂ : ↥B₂.Kw.1 →ₐ[ℚ_[l]] ↥L.1), GlobalTheory.Pst.IsInduced B₂ τ τ₂ → ∃ τ₁ : ↥B₁.Kw.1 →ₐ[ℚ_[l]] ↥L.1, GlobalTheory.Pst.IsInduced B₁ τ τ₁ ∧ ∀ a : ℤ, B₁.multE P L r τ₁ a = B₂.multE P L r τ₂ a := by
   intro l _ P E Ω _ _ _ _ _ A O₁ O₂ _ _ _ _ _ _ B₁ B₂ h₁ h₂ L _ m r
   obtain ⟨g, hg, hK, he⟩ := exists_conj B₁ B₂ h₁ h₂

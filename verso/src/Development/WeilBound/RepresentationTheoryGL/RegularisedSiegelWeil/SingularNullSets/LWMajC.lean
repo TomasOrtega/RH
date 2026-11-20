@@ -28,6 +28,11 @@ section Sup
 
 variable {S T : HSp D} (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) (K : Set (GA D S × GA D T))
 
+/- English proof (translation)
+Unfold `supK`. Use `iSup₂_le fun x hx => iSup_le fun w => ?_` and prove the remaining obligations. Rewrite using `[map_add, Pi.add_apply]`. Use `(enorm_add_le _ _).trans (add_le_add ?_ ?_)` and prove the remaining obligations. Conclude with `le_iSup₂_of_le (f := fun x _ => ⨆ w, ‖om x f w‖ₑ) x hx (le_iSup (fun w => ‖om x f w‖ₑ) w)`.
+
+Conclude with `le_iSup₂_of_le (f := fun x _ => ⨆ w, ‖om x f' w‖ₑ) x hx (le_iSup (fun w => ‖om x f' w‖ₑ) w)`.
+-/
 theorem supK_add (f f' : WO S T → ℂ) : supK om K (f + f') ≤ supK om K f + supK om K f' := by
   unfold supK
   refine iSup₂_le fun x hx => iSup_le fun w => ?_
@@ -36,6 +41,9 @@ theorem supK_add (f f' : WO S T → ℂ) : supK om K (f + f') ≤ supK om K f + 
   · exact le_iSup₂_of_le (f := fun x _ => ⨆ w, ‖om x f w‖ₑ) x hx (le_iSup (fun w => ‖om x f w‖ₑ) w)
   · exact le_iSup₂_of_le (f := fun x _ => ⨆ w, ‖om x f' w‖ₑ) x hx (le_iSup (fun w => ‖om x f' w‖ₑ) w)
 
+/- English proof (translation)
+Simplify using `only [supK, map_smul, Pi.smul_apply, smul_eq_mul, enorm_mul, ENNReal.mul_iSup]`.
+-/
 theorem supK_smul (c : ℂ) (f : WO S T → ℂ) : supK om K (c • f) = ‖c‖ₑ * supK om K f := by
   simp only [supK, map_smul, Pi.smul_apply, smul_eq_mul, enorm_mul, ENNReal.mul_iSup]
 
@@ -44,6 +52,11 @@ end Sup
 variable {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle}
   {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, K₀, hK₀, hc⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Establish `hcont : Continuous fun p : (GA D S × GA D T) × WO S T => om p.1 F p.2` using `GlobalTheory.Unf.jointCont_all D ψ S T χS χT om hom F hF`. Take `⟨M, hM⟩` from `(hK.prod hK₀).exists_bound_of_continuousOn hcont.continuousOn`. Use `ne_top_of_le_ne_top (ENNReal.ofReal_ne_top (r := M)) ?_` and prove the remaining obligations. Use `iSup₂_le fun x hx => iSup_le fun w => ?_` and prove the remaining obligations.
+
+Take `⟨γ, hγ, h⟩` from `hc w`. Rewrite using `[← ofReal_norm, ← theta_norm_periodic hψ (hom.om_pres x F hF) γ hγ w]`. Conclude with `ENNReal.ofReal_le_ofReal (hM (x, γ + w) (Set.mk_mem_prod hx h))`.
+-/
 theorem supK_ne_top (hψ : IsStdChar D ψ (-1)) (hom : IsWeilDatumO ψ S T χS χT om) {K : Set (GA D S × GA D T)}
     (hK : IsCompact K) {F : WO S T → ℂ} (hF : IsThetaFunO ψ S T F) : supK om K F ≠ ⊤ := by
   obtain ⟨-, -, -, -, -, K₀, hK₀, hc⟩ := GlobalTheory.AdelicMatrixLattice.lattice D T S
@@ -61,6 +74,11 @@ section Sob
 variable (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (K : Set (GA D S × GA D T))
 include hψ hθ
 
+/- English proof (translation)
+Use `wordSum_le_add fun l => le_of_eq_of_le (congrArg _ ?_) (supK_add om K _ _)` and prove the remaining obligations. Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons a l ih`. Rewrite using `[wordAct_cons, ih]`.
+
+Conclude with `dRho_add hψ hθ a.1 _ (theta_word hψ hθ l h) (theta_word hψ hθ l h')`.
+-/
 theorem sobK_add_le {f f' : WO S T → ℂ} (h : IsThetaFunO ψ S T f) (h' : IsThetaFunO ψ S T f') (d : ℕ) :
     wordSum (heisDer ψ θ) (supK om K) d (f + f') ≤
       wordSum (heisDer ψ θ) (supK om K) d f + wordSum (heisDer ψ θ) (supK om K) d f' := by
@@ -72,12 +90,18 @@ theorem sobK_add_le {f f' : WO S T → ℂ} (h : IsThetaFunO ψ S T f) (h' : IsT
     exact dRho_add hψ hθ a.1 _ (theta_word hψ hθ l h) (theta_word hψ hθ l h')
 
 omit hψ hθ in
+/- English proof (translation)
+The claim follows from `wordSum_eq_mul fun l => by rw [← supK_smul] exact congrArg _ (wordAct_rel (R := fun g g' => g = c • g') l (fun a _ _ _ e => e ▸ dRho_smul a.1 _ c _) rfl)`.
+-/
 theorem sobK_smul (d : ℕ) (c : ℂ) (f : WO S T → ℂ) :
     wordSum (heisDer ψ θ) (supK om K) d (c • f) = ‖c‖ₑ * wordSum (heisDer ψ θ) (supK om K) d f :=
   wordSum_eq_mul fun l => by
     rw [← supK_smul]
     exact congrArg _ (wordAct_rel (R := fun g g' => g = c • g') l (fun a _ _ _ e => e ▸ dRho_smul a.1 _ c _) rfl)
 
+/- English proof (translation)
+Use `Finset.le_sum_of_subadditive_on_pred (wordSum (heisDer ψ θ) (supK om K) d) (IsThetaFunO ψ S T) ?_ (fun _ _ a b => sobK_add_le hψ hθ K a b d) (fun _ _ => theta_add) g hg` and prove the remaining obligations. Use `sobK_smul (ψ := ψ) (θ := θ) (om := om) K d 0 (0 : WO S T → ℂ)` as an intermediate fact. Rewrite `this` using `[zero_smul, enorm_zero, zero_mul]`. Conclude with `this.le`.
+-/
 theorem sobK_sum_le {ι : Type} (s : Finset ι) {g : ι → WO S T → ℂ} (hg : ∀ i ∈ s, IsThetaFunO ψ S T (g i)) (d : ℕ) :
     wordSum (heisDer ψ θ) (supK om K) d (∑ i ∈ s, g i) ≤ ∑ i ∈ s, wordSum (heisDer ψ θ) (supK om K) d (g i) := by
   refine Finset.le_sum_of_subadditive_on_pred (wordSum (heisDer ψ θ) (supK om K) d) (IsThetaFunO ψ S T) ?_
@@ -86,6 +110,13 @@ theorem sobK_sum_le {ι : Type} (s : Finset ι) {g : ι → WO S T → ℂ} (hg 
   rw [zero_smul, enorm_zero, zero_mul] at this
   exact this.le
 
+/- English proof (translation)
+Establish `ht : ∀ (c : ℂ) a, IsThetaFunO ψ S T (c • heisDer ψ θ a f)` using `fun c a => theta_smul c (theta_dRho hθ hψ a.1 _ hf)`. Establish `hb : ∀ (c : ℝ) a, wordSum (heisDer ψ θ) (supK om K) d ((c : ℂ) • heisDer ψ θ a f) ≤ ENNReal.ofReal |c| * wordSum (heisDer ψ θ) (supK om K) (d + 1) f` using `fun c a => by`. Rewrite using `[sobK_smul, ← ofReal_norm, Complex.norm_real, Real.norm_eq_abs]`. Use `gcongr`. Conclude with `wordSum_letter_le d a f`.
+
+Rewrite using `[dRho_eq_sum_heisDer hψ hθ hf, ENNReal.ofReal_sum_of_nonneg fun i _ => by positivity, Finset.sum_mul]`. Use `(sobK_sum_le hψ hθ K _ (fun i _ => theta_finsetSum _ fun j _ => theta_add (ht _ _) (ht _ _)) d).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_sum_of_nonneg fun i _ => by positivity, Finset.sum_mul]`. Use `(sobK_sum_le hψ hθ K _ (fun j _ => theta_add (ht _ _) (ht _ _)) d).trans (Finset.sum_le_sum fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_add (abs_nonneg _) (abs_nonneg _), add_mul]`.
+
+Conclude with `(sobK_add_le hψ hθ K (ht _ _) (ht _ _) d).trans (add_le_add (hb _ _) (hb _ _))`.
+-/
 theorem sobK_dRho_le {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (τ : D.what₂.Tau)
     (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) (d : ℕ) :
     wordSum (heisDer ψ θ) (supK om K) d (Formalism.IndefR.Datum.dRho (heisO ψ S T) θ τ z f) ≤
@@ -107,6 +138,19 @@ theorem sobK_dRho_le {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (τ : D.wh
 
 end Sob
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero`. Use `⟨1, fun l hl x hx g _ => ?_⟩` and prove the remaining obligations. Take `rfl : l = []` from `List.eq_nil_of_length_eq_zero hl`. Rewrite using `[wordAct_nil, wordSum_zero, ENNReal.coe_one, one_mul]`.
+
+Conclude with `le_iSup₂_of_le (f := fun x _ => ⨆ w, ‖om x g w‖ₑ) x hx le_rfl`. Consider the case `succ k ih`. Take `⟨C, hC⟩` from `ih`. Use `⟨C * B, fun l hl x hx g hg => ?_⟩` and prove the remaining obligations. Take `⟨g1, h1⟩` from `x`.
+
+Establish `hne : l ≠ []` using `by rintro rfl; simp at hl`. Rewrite using `[← List.dropLast_append_getLast hne, wordAct_append, wordAct_cons, wordAct_nil]`. Use `set a := l.getLast hne`. Establish `e` using `dRho_om hom hθ g1 h1 a.1 (Matrix.single a.2.1 a.2.2.1 (if a.2.2.2 then Complex.I else 1)) hg`. Establish `e' : heisDer ψ θ a (om (g1, h1) g) = Formalism.IndefR.Datum.dRho (heisO ψ S T) θ a.1 (Matrix.single a.2.1 a.2.2.1 (if a.2.2.2 then Complex.I else 1)) (om (g1, h1) g)` using `rfl`.
+
+Rewrite using `[e', e]`. Establish `hg'` using `GlobalTheory.OrientedHeis.theta_dRho hθ hom.std a.1 (compAt θ a.1 (Formalism.L2.Theta.mt T h1⁻¹) * Matrix.single a.2.1 a.2.2.1 (if a.2.2.2 then Complex.I else 1) * compAt θ a.1 (Formalism.L2.Theta.mt S g1)) hg`. Establish `hs : ENNReal.ofReal (∑ i, ∑ j, (|((compAt θ a.1 (Formalism.L2.Theta.mt T h1⁻¹) * Matrix.single a.2.1 a.2.2.1 (if a.2.2.2 then Complex.I else 1) * compAt θ a.1 (Formalism.L2.Theta.mt S g1)) i j).re| + |((compAt θ a.1 (Formalism.L2.Theta.mt T h1⁻¹) * Matrix.single a.2.1 a.2.2.1 (if …`. Rewrite using `[← ENNReal.ofReal_coe_nnreal]`. Use `ENNReal.ofReal_le_ofReal (le_trans ?_ (hB _ hx))` and prove the remaining obligations.
+
+Unfold `dirSize`. Conclude with `Finset.single_le_sum (f := fun a : D.what₂.Tau × Fin T.rank × Fin S.rank × Bool => ∑ i, ∑ j, (|((compAt θ a.1 (Formalism.L2.Theta.mt T h1⁻¹) * Matrix.single a.2.1 a.2.2.1 (if a.2.2.2 then Complex.I else 1) * compAt θ a.1 (Formalism.L2.Theta.mt S g1)) i j).re| + |((compAt θ a.1 (F …`. Combine the equalities or inequalities in the displayed calculation. Conclude with `sobK_dRho_le hom.std hθ K hg a.1 _ k`. Use `_ ≤ C * (B * wordSum (heisDer ψ θ) (supK om K) (k + 1) g) := by gcongr`.
+
+Use `_ = ((C * B : ℝ≥0) : ℝ≥0∞) * wordSum (heisDer ψ θ) (supK om K) (k + 1) g := by push_cast; ring`.
+-/
 theorem word_om_sup_le (hom : IsWeilDatumO ψ S T χS χT om) (hθ : IsInfFam θ) {K : Set (GA D S × GA D T)}
     (B : ℝ≥0) (hB : ∀ x ∈ K, dirSize θ S T x ≤ B) (k : ℕ) :
     ∃ C : ℝ≥0, ∀ l : List (D.what₂.Tau × Fin T.rank × Fin S.rank × Bool), l.length = k → ∀ x ∈ K,
@@ -152,6 +196,13 @@ theorem word_om_sup_le (hom : IsWeilDatumO ψ S T χS χT om) (hθ : IsInfFam θ
       _ ≤ C * (B * wordSum (heisDer ψ θ) (supK om K) (k + 1) g) := by gcongr
       _ = ((C * B : ℝ≥0) : ℝ≥0∞) * wordSum (heisDer ψ θ) (supK om K) (k + 1) g := by push_cast; ring
 
+/- English proof (translation)
+Use `set K : Set (GA D S × GA D T) := C ×ˢ {1} with hKdef`. Establish `hK : IsCompact K` using `hC.prod isCompact_singleton`. Take `⟨B0, hB0⟩` from `hK.bddAbove_image (continuous_dirSize hθ S T).continuousOn`. Establish `hB : ∀ x ∈ K, dirSize θ S T x ≤ (B0.toNNReal : ℝ)` using `fun x hx => (hB0 ⟨x, hx, rfl⟩).trans (Real.le_coe_toNNReal B0)`. Use `choose Cw hCw using word_om_sup_le hom hθ (K := K) _ hB`.
+
+Establish `hfin : ∀ k, wordSum (heisDer ψ θ) (supK om K) k f ≠ ⊤` using `fun k => wordSum_ne_top_iff.2 fun l _ => supK_ne_top hψ hom hK (theta_word hψ hθ l hf)`. Use `set B' : ℝ≥0∞ := ∑ k ∈ Finset.range (N + 1), ∑ _a : Fin k → D.what₂.Tau × Fin T.rank × Fin S.rank × Bool, (Cw k : ℝ≥0∞) * wordSum (heisDer ψ θ) (supK om K) k f with hB'`. Establish `hB'fin : B' ≠ ⊤` using `ENNReal.sum_ne_top.2 fun k _ => ENNReal.sum_ne_top.2 fun _ _ => ENNReal.mul_ne_top ENNReal.coe_ne_top (hfin k)`. Use `⟨B'.toNNReal, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[ENNReal.coe_toNNReal hB'fin]`.
+
+Use `show wordSum (heisDer ψ θ) (fun φ : WO S T → ℂ => ⨆ w, ‖φ w‖ₑ) N (om (g, 1) f) ≤ B'`. Unfold `wordSum`. Use `Finset.sum_le_sum fun k _ => Finset.sum_le_sum fun a _ => ?_` and prove the remaining obligations. Conclude with `hCw k _ List.length_ofFn (g, 1) (Set.mk_mem_prod hg rfl) f hf`.
+-/
 theorem unifSob {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {θ : InfFam D} (hθ : IsInfFam θ) {S T : HSp D}
     {χS χT : (AE D)ˣ →* Circle} {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (hom : IsWeilDatumO ψ S T χS χT om)
     {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (C : Set (GA D S)) (hC : IsCompact C) (N : ℕ) :

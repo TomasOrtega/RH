@@ -13,6 +13,15 @@ section General
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Take `⟨s, rfl⟩` from `hL`. Take `⟨y, hy0, hy⟩` from `exists_integral_multiples ℤ ℚ ((s ×ˢ (Finset.univ : Finset (Fin n))).image fun p => p.1 p.2)`. Use `⟨(y : E), by exact_mod_cast hy0, fun x hx i => ?_⟩` and prove the remaining obligations. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Use `hy (x i) (Finset.mem_image.2 ⟨(x, i), by simpa using hx, rfl⟩)` as an intermediate fact. Simplify `this` using `[zsmul_eq_mul]`. Consider the case `zero => simpa using isIntegral_zero`. Consider the case `add x z _ _ hx hz => rw [Pi.add_apply, mul_add]`. Conclude with `hx.add hz`.
+
+Consider the case `smul c x _ hx`. Establish `: (y : E) * (c • x) i = (c : E) * ((y : E) * x i)`. Express the relevant statement in the definitionally equal form `(y : E) * ((c : E) * x i) = _`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+
+Conclude with `c.isIntegral_coe.mul hx`.
+-/
 theorem exists_denom {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E)) (hL : L.FG) :
     ∃ d : E, d ≠ 0 ∧ ∀ x ∈ L, ∀ i, IsIntegral ℤ (d * x i) := by
   classical
@@ -33,6 +42,11 @@ theorem exists_denom {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E)) (hL : L.FG
     rw [this]
     exact c.isIntegral_coe.mul hx
 
+/- English proof (translation)
+Establish `h` using `NumberField.Embeddings.finite_of_norm_le E ℂ ((∑ φ : E →+* ℂ, ‖φ d‖) * R)`. Use `(h.preimage (f := fun x => d * x) (mul_right_injective₀ hd).injOn).subset ?_` and prove the remaining obligations. Introduce and unpack `x ⟨hx, hb⟩`. Use `⟨hx, fun φ => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, norm_mul]`.
+
+Conclude with `mul_le_mul (Finset.single_le_sum (f := fun φ : E →+* ℂ => ‖φ d‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ φ)) (hb φ) (norm_nonneg _) (Finset.sum_nonneg fun _ _ => norm_nonneg _)`.
+-/
 theorem finite_of_denom (d : E) (hd : d ≠ 0) (R : ℝ) :
     {x : E | IsIntegral ℤ (d * x) ∧ ∀ φ : E →+* ℂ, ‖φ x‖ ≤ R}.Finite := by
   have h := NumberField.Embeddings.finite_of_norm_le E ℂ ((∑ φ : E →+* ℂ, ‖φ d‖) * R)
@@ -43,6 +57,13 @@ theorem finite_of_denom (d : E) (hd : d ≠ 0) (R : ℝ) :
   exact mul_le_mul (Finset.single_le_sum (f := fun φ : E →+* ℂ => ‖φ d‖) (fun _ _ => norm_nonneg _)
     (Finset.mem_univ φ)) (hb φ) (norm_nonneg _) (Finset.sum_nonneg fun _ _ => norm_nonneg _)
 
+/- English proof (translation)
+Rewrite using `[FractionalIdeal.mem_spanSingleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`. Establish `: d * (z • d⁻¹) = (z : E)`. Express the relevant statement in the definitionally equal form `d * ((z : E) * d⁻¹) = _`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Conclude with `z.isIntegral_coe`. Introduce `h`. Use `⟨⟨d * x, h⟩, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `d * x * d⁻¹ = x`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem mem_spanSingleton_inv (d : E) (hd : d ≠ 0) (x : E) :
     x ∈ FractionalIdeal.spanSingleton (𝓞 E)⁰ d⁻¹ ↔ IsIntegral ℤ (d * x) := by
   rw [FractionalIdeal.mem_spanSingleton]
@@ -60,9 +81,15 @@ theorem mem_spanSingleton_inv (d : E) (hd : d ≠ 0) (x : E) :
 
 end General
 
+/- English proof (translation)
+The claim follows from `hx.map (starRingEnd D.host.E).toIntAlgHom`.
+-/
 theorem isIntegral_star (D : D7) {x : D.host.E} (hx : IsIntegral ℤ x) : IsIntegral ℤ (star x) :=
   hx.map (starRingEnd D.host.E).toIntAlgHom
 
+/- English proof (translation)
+Take `⟨τ, hτ⟩` from `(GlobalTheory.CMTypePlaces.mk_tauE_bijective D).2 (InfinitePlace.mk φ)`. Use `h τ` as an intermediate fact. Rewrite `this`, the goal using `[← InfinitePlace.apply]`. Rewrite using `[← hτ]`. Conclude with `this`.
+-/
 theorem norm_emb_le (D : D7) {x : D.host.E} {R : ℝ} (h : ∀ τ, ‖tauE D τ x‖ ≤ R) (φ : D.host.E →+* ℂ) :
     ‖φ x‖ ≤ R := by
   obtain ⟨τ, hτ⟩ := (GlobalTheory.CMTypePlaces.mk_tauE_bijective D).2 (InfinitePlace.mk φ)
@@ -71,6 +98,25 @@ theorem norm_emb_le (D : D7) {x : D.host.E} {R : ℝ} (h : ∀ τ, ‖tauE D τ 
   rw [← hτ]
   exact this
 
+/- English proof (translation)
+Introduce `D S T ΛS ΛT hS hT R`. Take `⟨dS, hdS, hS'⟩` from `exists_denom ΛS hS.1.fg`. Take `⟨dT, hdT, hT'⟩` from `exists_denom ΛT hT.1.fg`. Take `⟨dA, hdA, hA'⟩` from `D.host.AA.2`. Take `⟨y, hy0, hy⟩` from `exists_integral_multiples ℤ ℚ ((Finset.univ : Finset (Fin S.rank × Fin S.rank)).image fun p => S.gram p.1 p.2)`.
+
+Establish `hdA0 : (dA : D.host.E) ≠ 0`. Use `nonZeroDivisors.ne_zero hdA` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `hd : (dA : D.host.E) * dT * (star dS * (y : D.host.E)) ≠ 0` using `mul_ne_zero (mul_ne_zero hdA0 hdT) (mul_ne_zero (star_ne_zero.2 hdS) (by exact_mod_cast hy0))`. Use `set d : D.host.E := (dA : D.host.E) * dT * (star dS * (y : D.host.E)) with hdd`.
+
+Establish `hgen : ∀ a ∈ D.host.AA, ∀ s ∈ ΛS, ∀ t ∈ ΛT, ∀ i j, IsIntegral ℤ (d * (a * t i * ∑ k, star (s k) * S.gram k j))`. Introduce `a ha s hs t ht i j`. Establish `e : d * (a * t i * ∑ k, star (s k) * S.gram k j) = ((dA : D.host.E) * a) * (dT * t i) * ∑ k, star (dS * s k) * ((y : D.host.E) * S.gram k j)`. Simplify using `only [hdd, Finset.mul_sum, star_mul]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`.
+
+Rewrite using `[e]`. Use `IsIntegral.mul (IsIntegral.mul ?_ (hT' t ht i)) (IsIntegral.sum _ fun k _ => (isIntegral_star D (hS' s hs k)).mul ?_)` and prove the remaining obligations. Take `⟨b, hb⟩` from `hA' a ha`. Establish `: (dA : D.host.E) * a = (b : D.host.E)` using `hb.symm`. Rewrite using `[this]`.
+
+Conclude with `b.isIntegral_coe`. Use `hy (S.gram k j) (Finset.mem_image.2 ⟨(k, j), Finset.mem_univ _, rfl⟩)` as an intermediate fact. Simplify `this` using `[zsmul_eq_mul]`. Establish `hlat : ∀ l ∈ (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True), ∀ i j, finPart D (l i j) ∈ GlobalTheory.AdLat.hat1 D.host.F ((FractionalIdeal.spanSingleton (𝓞 D.host.E)⁰ d⁻¹ : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) : Set D.host.E)`. Introduce `l hl i j`.
+
+Proceed by induction on `hl using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, -, a, ha, s, hs, t, ht, rfl⟩` from `hw`. Conclude with `AddSubgroup.subset_closure ⟨α, hα, _, (mem_spanSingleton_inv d hd _).2 (hgen a ha s hs t ht i j), rfl⟩`. Consider the case `zero => rw [Matrix.zero_apply, RingHom.map_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add x z _ _ hx hz => rw [Matrix.add_apply, RingHom.map_add]`. Conclude with `add_mem hx hz`. Consider the case `neg x _ hx => rw [Matrix.neg_apply, RingHom.map_neg]`. Conclude with `neg_mem hx`.
+
+Use `(Set.Finite.pi' fun _ : Fin T.rank => Set.Finite.pi' fun _ : Fin S.rank => finite_of_denom d hd R).subset ?_` and prove the remaining obligations. Introduce and unpack `g ⟨⟨l, hl, hgl⟩, hb⟩ i j`. Use `⟨?_, norm_emb_le D fun τ => hb τ i j⟩` and prove the remaining obligations. Establish `h1 : finPart D (incA D (g i j) - l i j) = 0` using `congrFun (congrFun hgl i) j`. Rewrite `h1` using `[RingHom.map_sub, sub_eq_zero]`.
+
+Establish `h2` using `hlat l hl i j`. Rewrite `h2` using `[← h1]`. Conclude with `(mem_spanSingleton_inv d hd _).1 (((GlobalTheory.AdLat.adelicCompletion_fractionalIdeal_properties D.host.F D.host.E).2.1 _ (g i j)).1 h2)`.
+-/
 theorem finite_rational_points : ∀ (D : D7) (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)), IsSelfDualC S ΛS → IsSelfDualC T ΛT → ∀ R : ℝ, {g : Matrix (Fin T.rank) (Fin S.rank) D.host.E | (∃ l ∈ (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True), ((ratW T S g : WO S T) - l).map (finPart D) = 0) ∧ ∀ τ i j, ‖tauE D τ (g i j)‖ ≤ R}.Finite := by
   classical
   intro D S T ΛS ΛT hS hT R

@@ -18,6 +18,9 @@ noncomputable section
 
 namespace GlobalTheory.GenericIsoAb
 
+/- English proof (translation)
+Introduce `W L _ _ _ _ _ _ G _ A a φ hG hφ M M' hM hM' h`. Establish `hi : pullback.fst G.hom (spMap (algebraMap W L)) = hφ.isoPullback.inv ≫ φ` using `hφ.isoPullback_inv_fst.symm`. Establish `h' : LBIso (M.pull (pullback.fst G.hom (spMap (algebraMap W L)))) (M'.pull (pullback.fst G.hom (spMap (algebraMap W L))))` using `GlobalTheory.GenericSpread.lbIso_pull_of_comp hφ.isoPullback.inv hi h`. Conclude with `GlobalTheory.GenericIsoConst.lbIso_of_generic W L G hG M M' hM hM' h'`.
+-/
 theorem lbIso_of_generic_pullback : ∀ (W L : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field L] [Algebra W L] [IsFractionRing W L] (G : Over (Sp W)) [GrpObj G] (A : Scheme.{0}) (a : A ⟶ Sp L) (φ : A ⟶ G.left), IsAbelianScheme G → IsPullback φ a G.hom (spMap (algebraMap W L)) → ∀ M M' : LB G.left, M.IsLB → M'.IsLB → LBIso (M.pull φ) (M'.pull φ) → LBIso M M' := by
   intro W L _ _ _ _ _ _ G _ A a φ hG hφ M M' hM hM' h
   have hi : pullback.fst G.hom (spMap (algebraMap W L)) = hφ.isoPullback.inv ≫ φ := hφ.isoPullback_inv_fst.symm

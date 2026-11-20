@@ -11,9 +11,17 @@ namespace GlobalTheory.CompanionTheory.ChartBc
 section Ring
 variable {R R' D : Type} [CommRing R] [CommRing R'] [CommRing D] [Algebra R R'] [Algebra R D]
 
+/- English proof (translation)
+Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`.
+-/
 theorem left_right (r : R) : (algebraMap R R' r) ⊗ₜ[R] (1 : D) = (1 : R') ⊗ₜ[R] (algebraMap R D r) := by
   rw [Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]
 
+/- English proof (translation)
+Establish `key : ∀ r : R, (Algebra.TensorProduct.includeRight : D →ₐ[R] R' ⊗[R] D).toRingHom (algebraMap R D r) = (Algebra.TensorProduct.includeLeftRingHom : R' →+* R' ⊗[R] D) (algebraMap R R' r)` using `fun r => (left_right r).symm`. Use `IsDPMorphism.on_span δ δ' (S := algebraMap R D '' I) (by rw [hJ]; rfl) ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Rewrite using `[key]`. Conclude with `Ideal.mem_map_of_mem _ (hσ.1 (Ideal.mem_map_of_mem _ ha))`.
+
+Introduce and unpack `n _ ⟨a, ha, rfl⟩`. Rewrite using `[hδ.2 a ha, key, key, hδ'.2 _ (hσ.1 (Ideal.mem_map_of_mem _ ha)), hσ.2 a ha]`.
+-/
 theorem dp_right {I : Ideal R} {I' : Ideal R'} {γ : DividedPowers I} {γ' : DividedPowers I'} {J : Ideal D}
     (δ : DividedPowers J)
     (δ' : DividedPowers (I'.map (Algebra.TensorProduct.includeLeftRingHom : R' →+* R' ⊗[R] D)))
@@ -31,6 +39,21 @@ theorem dp_right {I : Ideal R} {I' : Ideal R'} {γ : DividedPowers I} {γ' : Div
   · rintro n _ ⟨a, ha, rfl⟩
     rw [hδ.2 a ha, key, key, hδ'.2 _ (hσ.1 (Ideal.mem_map_of_mem _ ha)), hσ.2 a ha]
 
+/- English proof (translation)
+Use `letI : Algebra R B := ((a.comp (Ideal.Quotient.mk I')).comp (algebraMap R R')).toAlgebra`. Set `f1 : R' →ₐ[R] B` to `{ a.comp (Ideal.Quotient.mk I') with commutes' := fun _ => rfl }`. Set `f2 : D →ₐ[R] B` to `{ b.comp (Ideal.Quotient.mk J) with commutes' := fun r => (hab r).symm }`. Set `Φ : R' ⊗[R] D →ₐ[R] B` to `Algebra.TensorProduct.productMap f1 f2`. Establish `hΦ : ∀ r x, Φ (r ⊗ₜ[R] x) = a (Ideal.Quotient.mk I' r) * b (Ideal.Quotient.mk J x)` using `fun r x => by`.
+
+Simplify using `only [Φ, Algebra.TensorProduct.productMap_apply_tmul]`. Both sides reduce to the same expression. Establish `hker : I'.map (Algebra.TensorProduct.includeLeftRingHom : R' →+* R' ⊗[R] D) ≤ RingHom.ker Φ.toRingHom`. Use `Ideal.map_le_iff_le_comap.2 fun x hx => ?_` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker]`.
+
+Express the relevant statement in the definitionally equal form `Φ (x ⊗ₜ[R] 1) = 0`. Rewrite using `[hΦ, Ideal.Quotient.eq_zero_iff_mem.2 hx, map_zero, zero_mul]`. Set `φ` to `Ideal.Quotient.lift _ Φ.toRingHom fun z hz => hker hz`. Establish `hφ : ∀ r x, φ (Ideal.Quotient.mk _ (r ⊗ₜ[R] x)) = a (Ideal.Quotient.mk I' r) * b (Ideal.Quotient.mk J x)` using `fun r x => by`. Rewrite using `[Ideal.Quotient.lift_mk]`.
+
+Conclude with `hΦ r x`. Use `⟨φ, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `Ideal.Quotient.ringHom_ext (RingHom.ext fun r => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ (Ideal.Quotient.mk _ (r ⊗ₜ[R] 1)) = a (Ideal.Quotient.mk I' r)`. Rewrite using `[hφ, map_one, map_one, mul_one]`.
+
+Use `Ideal.Quotient.ringHom_ext (RingHom.ext fun x => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ (Ideal.Quotient.mk _ ((1 : R') ⊗ₜ[R] x)) = b (Ideal.Quotient.mk J x)`. Rewrite using `[hφ, map_one, map_one, one_mul]`. Introduce and unpack `φ₂ ⟨h1, h2⟩`. Use `Ideal.Quotient.ringHom_ext (RingHom.ext fun w => ?_)` and prove the remaining obligations.
+
+Use `TensorProduct.induction_on w (by simp) (fun r x => ?_) (fun u v hu hv => ?_)` and prove the remaining obligations. Establish `t : r ⊗ₜ[R] x = (r ⊗ₜ[R] (1 : D)) * ((1 : R') ⊗ₜ[R] x)` using `by simp`. Establish `e1` using `RingHom.congr_fun h1 (Ideal.Quotient.mk I' r)`. Establish `e2` using `RingHom.congr_fun h2 (Ideal.Quotient.mk J x)`. Express the relevant statement in the definitionally equal form `φ₂ (Ideal.Quotient.mk _ (r ⊗ₜ[R] 1)) = _ at e1`.
+
+Express the relevant statement in the definitionally equal form `φ₂ (Ideal.Quotient.mk _ ((1 : R') ⊗ₜ[R] x)) = _ at e2`. Express the relevant statement in the definitionally equal form `φ₂ (Ideal.Quotient.mk _ (r ⊗ₜ[R] x)) = φ (Ideal.Quotient.mk _ (r ⊗ₜ[R] x))`. Rewrite using `[hφ, t, map_mul, map_mul, e1, e2]`. Simplify using `only [RingHom.comp_apply, map_add] at hu hv ⊢`. Rewrite using `[hu, hv]`.
+-/
 theorem lift_unique {I' : Ideal R'} {J : Ideal D} {B : Type} [CommRing B]
     (hle : J ≤ (I'.map (Algebra.TensorProduct.includeLeftRingHom : R' →+* R' ⊗[R] D)).comap
       (Algebra.TensorProduct.includeRight : D →ₐ[R] R' ⊗[R] D).toRingHom)
@@ -79,6 +102,35 @@ theorem lift_unique {I' : Ideal R'} {J : Ideal D} {B : Type} [CommRing B]
 
 end Ring
 
+/- English proof (translation)
+Introduce `O R R' _ _ _ I I' γ γ' p X q κ κ' σ m hu hg hnil V d c`. Use `letI a1 : Algebra R R' := σ.toAlgebra`. Use `letI a2 : Algebra R c.D.B := c.D.i.toAlgebra`. Set `iL : R' →+* R' ⊗[R] c.D.B` to `Algebra.TensorProduct.includeLeftRingHom`. Set `iR : c.D.B →+* R' ⊗[R] c.D.B` to `(Algebra.TensorProduct.includeRight : c.D.B →ₐ[R] R' ⊗[R] c.D.B).toRingHom`.
+
+Establish `hcomm : ∀ r, iR (c.D.i r) = iL (σ r)` using `fun r => (left_right (R := R) (R' := R') (D := c.D.B) r).symm`. Establish `hEt : (MvPolynomial.eval₂Hom iL (fun i => (1 : R') ⊗ₜ[R] c.t i) : MvPolynomial (Fin d) R' →+* R' ⊗[R] c.D.B).Etale` using `GlobalTheory.CompanionTheory.ChartAlg.etale_tensor (O := R) (R := R') (G := c.D.B) c.t c.etale`. Use `haveI hF : Module.Flat R' (R' ⊗[R] c.D.B) := GlobalTheory.CompanionTheory.ChartAlg.flat_of_etale _ hEt`. Take `⟨δ', hδ'⟩ : ∃ δ' : DividedPowers (I'.map iL), IsDPMorphism γ' δ' iL` from `GlobalTheory.CompanionTheory.JLiftDP.dpFlat R' (R' ⊗[R] c.D.B) I' γ'`. Establish `hle : c.D.J ≤ (I'.map iL).comap iR`.
+
+Rewrite using `[c.J_eq]`. Use `Ideal.map_le_iff_le_comap.2 fun x hx => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `iR (c.D.i x) ∈ I'.map iL`. Rewrite using `[hcomm]`. Conclude with `Ideal.mem_map_of_mem iL (m.hI.1 (Ideal.mem_map_of_mem σ hx))`.
+
+Set `h : c.D.B ⧸ c.D.J →+* (R' ⊗[R] c.D.B) ⧸ I'.map iL` to `Ideal.quotientMap _ iR hle`. Set `ψ : R' ⧸ I' →+* (R' ⊗[R] c.D.B) ⧸ I'.map iL` to `Ideal.quotientMap _ iL Ideal.le_comap_map`. Set `y₀ : PtOver X q κ (c.D.B ⧸ c.D.J)` to `c.D.y`. Establish `hw : ∀ r, y₀.1.1 (Ideal.Quotient.mk I r) = Ideal.Quotient.mk c.D.J (c.D.i r)` using `c.D.w`. Establish `hhy : h.comp y₀.1.1 = ψ.comp m.bar`.
+
+Use `Ideal.Quotient.ringHom_ext (RingHom.ext fun r => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `h (y₀.1.1 (Ideal.Quotient.mk I r)) = Ideal.Quotient.mk _ (iL (σ r))`. Rewrite using `[hw, ← hcomm]`. Both sides reduce to the same expression. Establish `hκ' : m.bar.comp κ = κ'`.
+
+Use `m.bar_κ` as an intermediate fact. Rewrite `this` using `[hg, RingHom.comp_id]`. Conclude with `this`. Set `y' : PtOver X q κ' ((R' ⊗[R] c.D.B) ⧸ I'.map iL)` to `⟨(ψ, Spec.map (CommRingCat.ofHom h) ≫ pt c.D), by`. Express the relevant statement in the definitionally equal form `(Spec.map (CommRingCat.ofHom h) ≫ pt c.D) ≫ q = _`.
+
+Establish `e0 : pt c.D ≫ q = Spec.map (CommRingCat.ofHom (y₀.1.1.comp κ))` using `y₀.2`. Rewrite using `[Category.assoc, e0, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← RingHom.comp_assoc, hhy, RingHom.comp_assoc, hκ']⟩`. Set `D' : Thick (nlFun γ' p X q κ')` to `mkT (R' ⊗[R] c.D.B) iL (I'.map iL) δ' ⟨fun hp => by`. Establish `h1 : IsNilpotent (p : c.D.B)` using `c.D.adm.1 hp`. Establish `h2` using `h1.map iR`.
+
+Rewrite using `[map_natCast] at h2,` and apply the resulting hypothesis. Use `fun hp => by`. Take `⟨n, hn⟩` from `hnil hp`. Conclude with `⟨n, by rw [← Ideal.map_pow, hn]; exact Ideal.map_bot⟩⟩ hδ' y' (fun r => rfl)`. Establish `hin : InU V D'` using `fun x _ => c.inV (show Spec.map (CommRingCat.ofHom h) x ∈ (⊤ : (Spec (CommRingCat.of (c.D.B ⧸ c.D.J))).Opens) from trivial)`.
+
+Set `c' : Chart γ' p q κ' V d` to `{ D := D' t := fun k => (1 : R') ⊗ₜ[R] c.t k etale := hEt J_eq := rfl inV := hin rep := fun B z hz => by`. Set `y0 : PtOver X q κ B` to `⟨(z.1.1.comp m.bar, z.1.2), by`. Rewrite using `[z.2, RingHom.comp_assoc, hκ']⟩`. Take `⟨φ, hφ, hun⟩` from `c.rep B y0 hz`. Establish `hφ1 : φ.comp y₀.1.1 = z.1.1.comp m.bar` using `congrArg (fun w : PtOver X q κ B => w.1.1) hφ`.
+
+Establish `hφ2 : Spec.map (CommRingCat.ofHom φ) ≫ pt c.D = z.1.2` using `congrArg (fun w : PtOver X q κ B => w.1.2) hφ`. Establish `hab : ∀ r, z.1.1 (Ideal.Quotient.mk I' (algebraMap R R' r)) = φ (Ideal.Quotient.mk c.D.J (algebraMap R c.D.B r))` using `fun r => by`. Establish `e1` using `RingHom.congr_fun hφ1 (Ideal.Quotient.mk I r)`. Express the relevant statement in the definitionally equal form `φ (y₀.1.1 (Ideal.Quotient.mk I r)) = _ at e1`. Rewrite `e1` using `[hw]`.
+
+Conclude with `e1.symm`. Take `⟨φ', ⟨h1, h2⟩, hu'⟩` from `lift_unique (R := R) (R' := R') (D := c.D.B) hle z.1.1 φ hab`. Use `⟨φ', ?_, fun φ₂ hφ₂ => hu' φ₂ ?_⟩` and prove the remaining obligations. Use `Subtype.ext (Prod.ext h1 ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Spec.map (CommRingCat.ofHom φ') ≫ (Spec.map (CommRingCat.ofHom h) ≫ pt c.D) = z.1.2`.
+
+Rewrite using `[← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `e2 : φ'.comp h = φ` using `h2`. Rewrite using `[e2, hφ2]`. Establish `ha : φ₂.comp ψ = z.1.1` using `congrArg (fun w : PtOver X q κ' B => w.1.1) hφ₂`. Establish `hb : Spec.map (CommRingCat.ofHom φ₂) ≫ (Spec.map (CommRingCat.ofHom h) ≫ pt c.D) = z.1.2` using `congrArg (fun w : PtOver X q κ' B => w.1.2) hφ₂`.
+
+Use `⟨ha, hun (φ₂.comp h) (Subtype.ext (Prod.ext ?_ ?_))⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(φ₂.comp h).comp y₀.1.1 = z.1.1.comp m.bar`. Rewrite using `[RingHom.comp_assoc, hhy, ← RingHom.comp_assoc, ha]`. Express the relevant statement in the definitionally equal form `Spec.map (CommRingCat.ofHom (φ₂.comp h)) ≫ pt c.D = z.1.2`. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc]`.
+
+Conclude with `hb }`. Set `e : c.D ⟶ (m.mor p).functor.obj c'.D` to `mkH (T' := (m.mor p).functor.obj c'.D) iR hcomm (dp_right (R := R) (R' := R') (D := c.D.B) c.D.δ δ' c.J_eq c.D.compat hδ' m.hI) hle (Subtype.ext (Prod.ext hhy (by`. Express the relevant statement in the definitionally equal form `Spec.map (CommRingCat.ofHom h) ≫ pt c.D = (Spec.map (CommRingCat.ofHom h) ≫ pt c.D) ≫ m.u`. Rewrite using `[hu, Category.comp_id])))`. Conclude with `⟨c', e, fun _ => rfl, fun _ => RingHom.flat_algebraMap_iff.2 hF, RingEquiv.refl _, fun _ => rfl, fun _ => rfl⟩`.
+-/
 theorem chart_bc : ∀ {O R R' : Type} [CommRing O] [CommRing R] [CommRing R'] {I : Ideal R} {I' : Ideal R'}
     {γ : DividedPowers I} {γ' : DividedPowers I'} {p : ℕ} {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)}
     {κ : O →+* R ⧸ I} {κ' : O →+* R' ⧸ I'} {σ : R →+* R'} (m : NMor γ q κ γ' q κ' σ) (hu : m.u = 𝟙 X) (hg : m.g = RingHom.id O)

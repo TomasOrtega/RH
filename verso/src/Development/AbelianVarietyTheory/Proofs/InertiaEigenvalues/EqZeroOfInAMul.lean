@@ -14,14 +14,23 @@ namespace GlobalTheory.AinfK
 
 variable {l : ℕ} [hl : Fact l.Prime] (K : FinExt l)
 
+/- English proof (translation)
+Apply `GlobalTheory.RingIface.sigA_coeff` to reduce the goal to its premises.
+-/
 theorem sigA_coeff_pt (l : ℕ) [Fact l.Prime] (g : Per.Gq l) (w : Per.Ainf l) (n : ℕ) :
     (Per.σA g w).coeff n = Per.σF g (w.coeff n) := by
   apply GlobalTheory.RingIface.sigA_coeff
 
+/- English proof (translation)
+Apply `GlobalTheory.RingIface.sigO_coe` to reduce the goal to its premises.
+-/
 theorem sigO_coe_pt (l : ℕ) [Fact l.Prime] (g : Per.Gq l) (y : Per.OC l) :
     ((Per.σO g y : Per.OC l) : ℂ_[l]) = Per.σC g (y : ℂ_[l]) := by
   apply GlobalTheory.RingIface.sigO_coe
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.RingBasics.φA_apply, WittVector.coeff_frobenius_charP]`.
+-/
 theorem phiA_coeff_pt (l : ℕ) [Fact l.Prime] (w : Per.Ainf l) (n : ℕ) :
     (Per.φA l w).coeff n = w.coeff n ^ l := by
   rw [GlobalTheory.RingBasics.φA_apply, WittVector.coeff_frobenius_charP]
@@ -32,8 +41,14 @@ scoped instance algWA : Algebra (W0 K) (Ainf l) := (wA l (fK K)).toRingHom.toAlg
 
 scoped instance algWO : Algebra (W0 K) ↥(OL K) := (thetaW (fK K) K).toRingHom.toAlgebra
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem algebraMap_WA (w : W0 K) : algebraMap (W0 K) (Ainf l) w = wA l (fK K) w := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem algebraMap_WO (w : W0 K) : algebraMap (W0 K) ↥(OL K) w = thetaW (fK K) K w := rfl
 
 scoped instance towWO : IsScalarTower ℤ_[l] (W0 K) ↥(OL K) :=
@@ -41,6 +56,9 @@ scoped instance towWO : IsScalarTower ℤ_[l] (W0 K) ↥(OL K) :=
 
 scoped instance finiteWO : Module.Finite (W0 K) ↥(OL K) := Module.Finite.of_restrictScalars_finite ℤ_[l] _ _
 
+/- English proof (translation)
+Introduce `x y h` and use `GlobalTheory.TameFrob.iotaO_injective l (fK K) ((algebraMap (Om l) ℂ_[l]).injective (by have h1 := congrArg (intToOC K) h rw [intToOC_thetaW, intToOC_thetaW, ← intToOC_thetaW _ (unrExt l (fK K)), ← intToOC_thetaW _ (unrExt l (fK K))] at h1 exact congrArg Subtype.val h1))`.
+-/
 theorem thetaW_injective : Function.Injective (thetaW (fK K) K) := fun x y h =>
   GlobalTheory.TameFrob.iotaO_injective l (fK K) ((algebraMap (Om l) ℂ_[l]).injective (by
     have h1 := congrArg (intToOC K) h
@@ -52,6 +70,11 @@ scoped instance freeWO : Module.Free (W0 K) ↥(OL K) := by
   have : FaithfulSMul (W0 K) ↥(OL K) := (faithfulSMul_iff_algebraMap_injective _ _).2 (thetaW_injective K)
   infer_instance
 
+/- English proof (translation)
+Use `free_Wq l (fK K)` as an intermediate fact. Establish `h1` using `Module.finrank_mul_finrank ℤ_[l] (W0 K) ↥(OL K)`. Establish `h2` using `Module.finrank_mul_finrank ℚ_[l] ↥(K0 K) ↥K.1`. Establish `h3 : Module.finrank ℤ_[l] ↥(OL K) = Module.finrank ℚ_[l] ↥K.1` using `(IsFractionRing.finrank_eq ℤ_[l] ℚ_[l] ↥(OL K) ↥K.1).symm`. Rewrite `h1` using `[finrank_Wq, h3, ← h2]`.
+
+Conclude with `Nat.eq_of_mul_eq_mul_left (NeZero.pos (fK K)) h1`.
+-/
 theorem finrank_WO : Module.finrank (W0 K) ↥(OL K) = Module.finrank ↥(K0 K) ↥K.1 := by
   have := free_Wq l (fK K)
   have h1 := Module.finrank_mul_finrank ℤ_[l] (W0 K) ↥(OL K)
@@ -74,6 +97,9 @@ instance : Module.Free (Ainf l) (AK K) := inferInstanceAs (Module.Free (Ainf l) 
 
 instance : Module.Finite (Ainf l) (AK K) := inferInstanceAs (Module.Finite (Ainf l) (Ainf l ⊗[W0 K] ↥(OL K)))
 
+/- English proof (translation)
+The claim follows from `(Module.finrank_baseChange (R := Ainf l) (S := W0 K) (M' := ↥(OL K))).trans (finrank_WO K)`.
+-/
 theorem finrank_AK : Module.finrank (Ainf l) (AK K) = Module.finrank ↥(K0 K) ↥K.1 :=
   (Module.finrank_baseChange (R := Ainf l) (S := W0 K) (M' := ↥(OL K))).trans (finrank_WO K)
 
@@ -81,15 +107,24 @@ abbrev inA : Ainf l →+* AK K := algebraMap (Ainf l) (AK K)
 
 abbrev inO : ↥(OL K) →+* AK K := algebraMap ↥(OL K) (AK K)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `a ⊗ₜ[W0 K] c = (a ⊗ₜ[W0 K] (1 : ↥(OL K))) * ((1 : Ainf l) ⊗ₜ[W0 K] c)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`.
+-/
 theorem tmul_eq (a : Ainf l) (c : ↥(OL K)) : (show AK K from a ⊗ₜ[W0 K] c) = inA K a * inO K c := by
   change a ⊗ₜ[W0 K] c = (a ⊗ₜ[W0 K] (1 : ↥(OL K))) * ((1 : Ainf l) ⊗ₜ[W0 K] c)
   rw [Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]
 
+/- English proof (translation)
+The claim follows from `((Algebra.TensorProduct.includeRight : ↥(OL K) →ₐ[W0 K] Ainf l ⊗[W0 K] ↥(OL K)).commutes w).symm`.
+-/
 theorem inA_wA (w : W0 K) : inA K (wA l (fK K) w) = inO K (thetaW (fK K) K w) :=
   ((Algebra.TensorProduct.includeRight : ↥(OL K) →ₐ[W0 K] Ainf l ⊗[W0 K] ↥(OL K)).commutes w).symm
 
 variable {K} in
 
+/- English proof (translation)
+The claim follows from `TensorProduct.induction_on (motive := p) x (by have := mul 0 0; rwa [map_zero, zero_mul] at this) (fun a c => by have := mul a c; rwa [← tmul_eq] at this) add`.
+-/
 @[elab_as_elim] theorem induction_on {p : AK K → Prop} (x : AK K) (mul : ∀ a c, p (inA K a * inO K c))
     (add : ∀ x y, p x → p y → p (x + y)) : p x :=
   TensorProduct.induction_on (motive := p) x (by
@@ -98,6 +133,9 @@ variable {K} in
 
 variable {K} in
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun x => induction_on x (fun a c => by rw [map_mul, map_mul, hA, hO]) fun x y hx hy => by rw [map_add, map_add, hx, hy]`.
+-/
 theorem ringHom_ext {S : Type*} [CommRing S] {u v : AK K →+* S} (hA : ∀ a, u (inA K a) = v (inA K a))
     (hO : ∀ c, u (inO K c) = v (inO K c)) : u = v :=
   RingHom.ext fun x => induction_on x (fun a c => by rw [map_mul, map_mul, hA, hO])
@@ -113,10 +151,16 @@ def lift : AK K →+* S :=
   (Algebra.TensorProduct.productMap (R := W0 K) { toRingHom := u, commutes' := fun _ => rfl }
     { toRingHom := v, commutes' := fun w => (h w).symm }).toRingHom
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `u a * v 1 = u a`. Rewrite using `[map_one, mul_one]`.
+-/
 @[simp] theorem lift_inA (a : Ainf l) : lift u v h (inA K a) = u a := by
   change u a * v 1 = u a
   rw [map_one, mul_one]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `u 1 * v c = v c`. Rewrite using `[map_one, one_mul]`.
+-/
 @[simp] theorem lift_inO (c : ↥(OL K)) : lift u v h (inO K c) = v c := by
   change u 1 * v c = v c
   rw [map_one, one_mul]
@@ -130,16 +174,25 @@ def mapA (s : Ainf l →+* Ainf l) (hs : ∀ w : W0 K, s (wA l (fK K) w) = wA l 
   commutes' c := lift_inO _ _ _ c
 
 variable {K} in
+/- English proof (translation)
+The claim follows from `lift_inA ((inA K).comp s) (inO K) (fun w => by rw [RingHom.comp_apply, hs, inA_wA]) a`.
+-/
 theorem mapA_inA (s : Ainf l →+* Ainf l) (hs : ∀ w : W0 K, s (wA l (fK K) w) = wA l (fK K) w) (a : Ainf l) :
     mapA s hs (inA K a) = inA K (s a) :=
   lift_inA ((inA K).comp s) (inO K) (fun w => by rw [RingHom.comp_apply, hs, inA_wA]) a
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Function.iterate_succ_apply', phiA_coeff_pt, ih, ← pow_mul, ← pow_succ]`.
+-/
 theorem coeff_iter (n : ℕ) (a : Ainf l) (i : ℕ) : ((⇑(Per.φA l))^[n] a).coeff i = a.coeff i ^ l ^ n := by
   induction n with
   | zero => simp
   | succ n ih =>
     rw [Function.iterate_succ_apply', phiA_coeff_pt, ih, ← pow_mul, ← pow_succ]
 
+/- English proof (translation)
+Use `WittVector.ext fun i => ?_` and prove the remaining obligations. Rewrite using `[RingHom.coe_pow, coeff_iter]`. Conclude with `(w.coeff i).2`.
+-/
 theorem iter_wA (w : W0 K) : (Per.φA l ^ fK K) (wA l (fK K) w) = wA l (fK K) w := by
   refine WittVector.ext fun i => ?_
   rw [RingHom.coe_pow, coeff_iter]
@@ -147,11 +200,26 @@ theorem iter_wA (w : W0 K) : (Per.φA l ^ fK K) (wA l (fK K) w) = wA l (fK K) w 
 
 def frobq : AK K →ₐ[↥(OL K)] AK K := mapA (Per.φA l ^ fK K) (iter_wA K)
 
+/- English proof (translation)
+Rewrite using `[frobq, mapA_inA, RingHom.coe_pow]`.
+-/
 theorem frobq_inA (a : Ainf l) : frobq K (inA K a) = inA K ((⇑(Per.φA l))^[fK K] a) := by
   rw [frobq, mapA_inA, RingHom.coe_pow]
 
+/- English proof (translation)
+The claim follows from `(frobq K).commutes c`.
+-/
 theorem frobq_inO (c : ↥(OL K)) : frobq K (inO K c) = inO K c := (frobq K).commutes c
 
+/- English proof (translation)
+Establish `hb : Function.Bijective (Per.φA l ^ fK K : Ainf l →+* Ainf l)`. Rewrite using `[RingHom.coe_pow]`. Use `Function.Bijective.iterate ?_ _` and prove the remaining obligations. Rewrite using `[show ⇑(Per.φA l) = WittVector.frobenius from funext (GlobalTheory.RingBasics.φA_apply l)]`. Conclude with `(WittVector.frobeniusEquiv l (OCb l)).bijective`.
+
+Set `e` to `RingEquiv.ofBijective _ hb`. Establish `he : ∀ a, e a = (Per.φA l ^ fK K : Ainf l →+* Ainf l) a` using `fun _ => rfl`. Set `ψ` to `mapA (K := K) e.symm.toRingHom fun w => e.injective (by`. Rewrite using `[RingEquiv.toRingHom_eq_coe, RingHom.coe_coe, e.apply_symm_apply, he, iter_wA])`. Establish `h1 : ψ.toRingHom.comp (frobq K).toRingHom = RingHom.id _` using `ringHom_ext (fun a => by`.
+
+Express the relevant statement in the definitionally equal form `ψ (mapA _ (iter_wA K) _) = _`. Rewrite using `[mapA_inA, mapA_inA, ← he]`. Conclude with `congrArg (inA K) (e.symm_apply_apply a)) fun c => by simp`. Establish `h2 : (frobq K).toRingHom.comp ψ.toRingHom = RingHom.id _` using `ringHom_ext (fun a => by`. Express the relevant statement in the definitionally equal form `mapA _ (iter_wA K) (ψ _) = _`.
+
+Rewrite using `[mapA_inA, mapA_inA, ← he]`. Conclude with `congrArg (inA K) (e.apply_symm_apply a)) fun c => by simp`. Conclude with `⟨Function.LeftInverse.injective (g := ψ) (RingHom.congr_fun h1), Function.RightInverse.surjective (g := ψ) (RingHom.congr_fun h2)⟩`.
+-/
 theorem frobq_bijective : Function.Bijective (frobq K) := by
   have hb : Function.Bijective (Per.φA l ^ fK K : Ainf l →+* Ainf l) := by
     rw [RingHom.coe_pow]
@@ -175,18 +243,30 @@ theorem frobq_bijective : Function.Bijective (frobq K) := by
 
 variable {K}
 
+/- English proof (translation)
+The claim follows from `gal_wA l _ (fun x hx => (IntermediateField.mem_fixingSubgroup_iff _ _).1 g.2 x (HasUnr.le hx)) w`.
+-/
 theorem σA_wA (g : ↥(GK K)) (w : W0 K) : Per.σA (g : GQ l) (wA l (fK K) w) = wA l (fK K) w :=
   gal_wA l _ (fun x hx => (IntermediateField.mem_fixingSubgroup_iff _ _).1 g.2 x (HasUnr.le hx)) w
 
 def galHom (g : ↥(GK K)) : AK K →ₐ[↥(OL K)] AK K := mapA (Per.σA (g : GQ l)) (σA_wA g)
 
+/- English proof (translation)
+The claim follows from `mapA_inA _ _ a`.
+-/
 theorem galHom_inA (g : ↥(GK K)) (a : Ainf l) : galHom g (inA K a) = inA K (Per.σA (g : GQ l) a) :=
   mapA_inA _ _ a
 
+/- English proof (translation)
+The claim follows from `RingHom.congr_fun (ringHom_ext (u := (galHom (1 : ↥(GK K))).toRingHom) (v := RingHom.id _) (fun a => (galHom_inA 1 a).trans (congrArg (inA K) (GlobalTheory.RingBasics.σA_one a))) fun c => (galHom 1).commutes c) x`.
+-/
 theorem galHom_one (x : AK K) : galHom (1 : ↥(GK K)) x = x :=
   RingHom.congr_fun (ringHom_ext (u := (galHom (1 : ↥(GK K))).toRingHom) (v := RingHom.id _)
     (fun a => (galHom_inA 1 a).trans (congrArg (inA K) (GlobalTheory.RingBasics.σA_one a))) fun c => (galHom 1).commutes c) x
 
+/- English proof (translation)
+The claim follows from `RingHom.congr_fun (ringHom_ext (u := (galHom (g * h)).toRingHom) (v := (galHom g).toRingHom.comp (galHom h).toRingHom) (fun a => by change galHom (g * h) _ = galHom g (galHom h _) rw [galHom_inA, galHom_inA, galHom_inA, Subgroup.coe_mul, GlobalTheory.RingBasics.σA_mul]) fun c => …`.
+-/
 theorem galHom_mul (g h : ↥(GK K)) (x : AK K) : galHom (g * h) x = galHom g (galHom h x) :=
   RingHom.congr_fun (ringHom_ext (u := (galHom (g * h)).toRingHom)
     (v := (galHom g).toRingHom.comp (galHom h).toRingHom)
@@ -203,15 +283,27 @@ def gal : ↥(GK K) →* (AK K ≃ₐ[↥(OL K)] AK K) where
   map_one' := AlgEquiv.ext galHom_one
   map_mul' g h := AlgEquiv.ext (galHom_mul g h)
 
+/- English proof (translation)
+The claim follows from `galHom_inA g a`.
+-/
 theorem gal_inA (g : ↥(GK K)) (a : Ainf l) : gal K g (inA K a) = inA K (Per.σA (g : GQ l) a) := galHom_inA g a
 
+/- English proof (translation)
+The claim follows from `(gal K g).commutes c`.
+-/
 theorem gal_inO (g : ↥(GK K)) (c : ↥(OL K)) : gal K g (inO K c) = inO K c := (gal K g).commutes c
 
+/- English proof (translation)
+Use `WittVector.ext fun i => ?_` and prove the remaining obligations. Rewrite using `[coeff_iter, sigA_coeff_pt, sigA_coeff_pt, coeff_iter, map_pow]`.
+-/
 theorem σA_iter (g : GQ l) (n : ℕ) (a : Ainf l) :
     Per.σA g ((⇑(Per.φA l))^[n] a) = (⇑(Per.φA l))^[n] (Per.σA g a) := by
   refine WittVector.ext fun i => ?_
   rw [coeff_iter, sigA_coeff_pt, sigA_coeff_pt, coeff_iter, map_pow]
 
+/- English proof (translation)
+The claim follows from `induction_on x (fun a c => by simp only [map_mul, frobq_inA, frobq_inO, gal_inA, gal_inO, σA_iter]) fun x y hx hy => by simp only [map_add, hx, hy]`.
+-/
 theorem gal_frobq (g : ↥(GK K)) (x : AK K) : gal K g (frobq K x) = frobq K (gal K g x) :=
   induction_on x (fun a c => by
     simp only [map_mul, frobq_inA, frobq_inO, gal_inA, gal_inO, σA_iter])
@@ -221,14 +313,26 @@ variable (K) in
 
 def thetaK : AK K →+* OC l := lift (Per.θ l) (intToOC K) fun w => (intToOC_thetaW _ K w).symm
 
+/- English proof (translation)
+The claim follows from `lift_inA _ _ _ a`.
+-/
 theorem thetaK_inA (a : Ainf l) : thetaK K (inA K a) = Per.θ l a := lift_inA _ _ _ a
 
+/- English proof (translation)
+The claim follows from `lift_inO _ _ _ c`.
+-/
 theorem thetaK_inO (c : ↥(OL K)) : thetaK K (inO K c) = intToOC K c := lift_inO _ _ _ c
 
+/- English proof (translation)
+The claim follows from `Subtype.ext ((sigO_coe_pt l (g : GQ l) _).trans ((GlobalTheory.RingBasics.σC_coe (g : GQ l) _).trans (congrArg _ ((IntermediateField.mem_fixingSubgroup_iff _ _).1 g.2 _ (c : ↥K.1).2))))`.
+-/
 theorem σO_intToOC (g : ↥(GK K)) (c : ↥(OL K)) : Per.σO (g : GQ l) (intToOC K c) = intToOC K c :=
   Subtype.ext ((sigO_coe_pt l (g : GQ l) _).trans ((GlobalTheory.RingBasics.σC_coe (g : GQ l) _).trans (congrArg _
     ((IntermediateField.mem_fixingSubgroup_iff _ _).1 g.2 _ (c : ↥K.1).2))))
 
+/- English proof (translation)
+The claim follows from `induction_on x (fun a c => by simp only [map_mul, gal_inA, gal_inO, thetaK_inA, thetaK_inO, GlobalTheory.RingBasics.θ_σA, σO_intToOC]) fun x y hx hy => by simp only [map_add, hx, hy]`.
+-/
 theorem thetaK_gal (g : ↥(GK K)) (x : AK K) : thetaK K (gal K g x) = Per.σO (g : GQ l) (thetaK K x) :=
   induction_on x (fun a c => by
     simp only [map_mul, gal_inA, gal_inO, thetaK_inA, thetaK_inO, GlobalTheory.RingBasics.θ_σA, σO_intToOC])
@@ -236,12 +340,20 @@ theorem thetaK_gal (g : ↥(GK K)) (x : AK K) : thetaK K (gal K g x) = Per.σO (
 
 variable (K) in
 
+/- English proof (translation)
+Introduce `c` and use `by obtain ⟨x, hx⟩ := GlobalTheory.MemLoc.FundOnto.untilt_surjective l c exact ⟨inA K (WittVector.teichmuller l x), by rw [thetaK_inA, WittVector.fontaineTheta_teichmuller, hx]⟩`.
+-/
 theorem thetaK_surjective : Function.Surjective (thetaK K) := fun c => by
   obtain ⟨x, hx⟩ := GlobalTheory.MemLoc.FundOnto.untilt_surjective l c
   exact ⟨inA K (WittVector.teichmuller l x), by rw [thetaK_inA, WittVector.fontaineTheta_teichmuller, hx]⟩
 
 variable (K) in
 
+/- English proof (translation)
+Set `φ : W0 K →+* ResidueField ↥(OL K)` to `(residue _).comp (thetaW (fK K) K).toRingHom`. Establish `hs : Function.Surjective φ` using `fun y => (residue_surjective y).elim fun x hx => hx ▸ exists_thetaW (card_res K) x`. Establish `hk : RingHom.ker φ ≤ RingHom.ker (WittVector.constantCoeff : W0 K →+* Fq l (fK K))` using `fun w hw => by`. Assume the negation of the conclusion as `h`. Conclude with `((WittVector.isUnit_of_coeff_zero_ne_zero w h).map φ).ne_zero hw`.
+
+Conclude with `⟨φ.liftOfSurjective hs ⟨_, hk⟩, fun w => φ.liftOfSurjective_comp_apply hs ⟨_, hk⟩ w⟩`.
+-/
 theorem exists_resInv : ∃ r : ResidueField ↥(OL K) →+* Fq l (fK K),
     ∀ w : W0 K, r (residue _ (thetaW (fK K) K w)) = w.coeff 0 := by
   let φ : W0 K →+* ResidueField ↥(OL K) := (residue _).comp (thetaW (fK K) K).toRingHom
@@ -256,8 +368,14 @@ variable (K) in
 
 def resO : ↥(OL K) →+* Fq l (fK K) := (exists_resInv K).choose.comp (residue _)
 
+/- English proof (translation)
+The claim follows from `(exists_resInv K).choose_spec w`.
+-/
 theorem resO_thetaW (w : W0 K) : resO K (thetaW (fK K) K w) = w.coeff 0 := (exists_resInv K).choose_spec w
 
+/- English proof (translation)
+Rewrite using `[resO, RingHom.comp_apply, map_eq_zero, residue_eq_zero_iff]`. Both sides reduce to the same expression.
+-/
 theorem resO_eq_zero_iff (c : ↥(OL K)) : resO K c = 0 ↔ ¬ IsUnit c := by
   rw [resO, RingHom.comp_apply, map_eq_zero, residue_eq_zero_iff]
   rfl
@@ -268,31 +386,55 @@ def red : AK K →+* OCb l :=
   lift WittVector.constantCoeff ((Fq.val l (fK K)).comp (resO K)) fun w => by
     rw [RingHom.comp_apply, resO_thetaW]; rfl
 
+/- English proof (translation)
+The claim follows from `lift_inA _ _ _ a`.
+-/
 theorem red_inA (a : Ainf l) : red K (inA K a) = a.coeff 0 := lift_inA _ _ _ a
 
+/- English proof (translation)
+Rewrite using `[red_inA, WittVector.teichmuller_coeff_zero]`.
+-/
 theorem red_teich (x : OCb l) : red K (inA K (WittVector.teichmuller l x)) = x := by
   rw [red_inA, WittVector.teichmuller_coeff_zero]
 
+/- English proof (translation)
+The claim follows from `lift_inO _ _ _ c`.
+-/
 theorem red_inO (c : ↥(OL K)) : red K (inO K c) = Fq.val l (fK K) (resO K c) := lift_inO _ _ _ c
 
+/- English proof (translation)
+Rewrite using `[red_inO, (resO_eq_zero_iff c).2 hc, map_zero]`.
+-/
 theorem red_inO_eq_zero {c : ↥(OL K)} (hc : ¬ IsUnit c) : red K (inO K c) = 0 := by
   rw [red_inO, (resO_eq_zero_iff c).2 hc, map_zero]
 
 variable (K) in
 
+/- English proof (translation)
+Introduce `x` and use `⟨_, red_teich x⟩`.
+-/
 theorem red_surjective : Function.Surjective (red K) := fun x => ⟨_, red_teich x⟩
 
+/- English proof (translation)
+The claim follows from `induction_on x (fun a c => by rw [map_mul, frobq_inA, frobq_inO, map_mul, map_mul, red_inA, red_inA, coeff_iter, mul_pow, red_inO, ← map_pow (Fq.val l (fK K)), Fq.pow_card]) fun x y hx hy => by rw [map_add, map_add, hx, hy, map_add, add_pow_char_pow]`.
+-/
 theorem red_frobq (x : AK K) : red K (frobq K x) = red K x ^ l ^ fK K :=
   induction_on x (fun a c => by
     rw [map_mul, frobq_inA, frobq_inO, map_mul, map_mul, red_inA, red_inA, coeff_iter, mul_pow, red_inO,
       ← map_pow (Fq.val l (fK K)), Fq.pow_card])
     fun x y hx hy => by rw [map_add, map_add, hx, hy, map_add, add_pow_char_pow]
 
+/- English proof (translation)
+The claim follows from `(sigA_coeff_pt l (g : GQ l) (wA l (fK K) (WittVector.teichmuller l z)) 0).symm.trans (congrArg (WittVector.coeff · 0) (σA_wA g (WittVector.teichmuller l z)))`.
+-/
 theorem σF_val (g : ↥(GK K)) (z : Fq l (fK K)) :
     Per.σF (g : GQ l) (Fq.val l (fK K) z) = Fq.val l (fK K) z :=
   (sigA_coeff_pt l (g : GQ l) (wA l (fK K) (WittVector.teichmuller l z)) 0).symm.trans
     (congrArg (WittVector.coeff · 0) (σA_wA g (WittVector.teichmuller l z)))
 
+/- English proof (translation)
+The claim follows from `induction_on x (fun a c => by simp only [map_mul, gal_inA, gal_inO, red_inA, red_inO, σF_val] rw [sigA_coeff_pt]) fun x y hx hy => by simp only [map_add, hx, hy]`.
+-/
 theorem red_gal (g : ↥(GK K)) (x : AK K) : red K (gal K g x) = Per.σF (g : GQ l) (red K x) :=
   induction_on x (fun a c => by
     simp only [map_mul, gal_inA, gal_inO, red_inA, red_inO, σF_val]
@@ -304,18 +446,30 @@ section Unif
 variable {π : ↥(OL K)} (hπ : Irreducible π)
 include hπ
 
+/- English proof (translation)
+Rewrite using `[← Ideal.mem_span_singleton, ← hπ.maximalIdeal_eq]`. Conclude with `hc`.
+-/
 theorem dvd_of_not_isUnit {c : ↥(OL K)} (hc : ¬ IsUnit c) : π ∣ c := by
   rw [← Ideal.mem_span_singleton, ← hπ.maximalIdeal_eq]
   exact hc
 
+/- English proof (translation)
+Simplify using `using map_dvd (inO K) (dvd_of_not_isUnit hπ (l_mem_max K))`.
+-/
 theorem dvd_l : inO K π ∣ (l : AK K) := by
   simpa using map_dvd (inO K) (dvd_of_not_isUnit hπ (l_mem_max K))
 
+/- English proof (translation)
+Take `⟨n, h⟩` from `IsDiscreteValuationRing.associated_pow_irreducible (x := (l : ↥(OL K))) (Nat.cast_ne_zero.2 hl.out.ne_zero) hπ`. Conclude with `⟨n, h.dvd.trans (pow_dvd_pow _ n.le_succ)⟩`.
+-/
 theorem exists_l_dvd_pow : ∃ n : ℕ, (l : ↥(OL K)) ∣ π ^ (n + 1) := by
   obtain ⟨n, h⟩ := IsDiscreteValuationRing.associated_pow_irreducible
     (x := (l : ↥(OL K))) (Nat.cast_ne_zero.2 hl.out.ne_zero) hπ
   exact ⟨n, h.dvd.trans (pow_dvd_pow _ n.le_succ)⟩
 
+/- English proof (translation)
+The claim follows from `induction_on x (fun a c => by obtain ⟨w, hw⟩ := exists_thetaW (card_res K) c rw [eq_comm, ← sub_eq_zero, ← map_sub, residue_eq_zero_iff] at hw obtain ⟨d, hd⟩ := dvd_of_not_isUnit hπ hw refine ⟨a * wA l (fK K) w, inA K a * inO K d, ?_⟩ rw [map_mul, inA_wA, sub_eq_iff_eq_add.1 hd, …`.
+-/
 theorem exists_inA (x : AK K) : ∃ a y, x = inA K a + inO K π * y :=
   induction_on x (fun a c => by
     obtain ⟨w, hw⟩ := exists_thetaW (card_res K) c
@@ -326,6 +480,11 @@ theorem exists_inA (x : AK K) : ∃ a y, x = inA K a + inO K π * y :=
     ring)
     fun x y ⟨a, z, h⟩ ⟨a', z', h'⟩ => ⟨a + a', z + z', by rw [h, h', map_add]; ring⟩
 
+/- English proof (translation)
+Use `le_antisymm (fun x hx => ?_) ?_` and prove the remaining obligations. Take `⟨a, y, rfl⟩` from `exists_inA hπ x`. Rewrite `hx` using `[RingHom.mem_ker, map_add, map_mul, red_inO_eq_zero hπ.not_isUnit, zero_mul, add_zero, red_inA, ← WittVector.constantCoeff_apply, ← RingHom.mem_ker, WittVector.ker_constantCoeff, Ideal.mem_span_singleton]`. Use `Ideal.mem_span_singleton.2 (dvd_add ((dvd_l hπ).trans ?_) (dvd_mul_right _ _))` and prove the remaining obligations. Simplify using `using map_dvd (inA K) hx`.
+
+Rewrite using `[Ideal.span_singleton_le_iff_mem]`. Conclude with `red_inO_eq_zero hπ.not_isUnit`.
+-/
 theorem ker_red : RingHom.ker (red K) = Ideal.span {inO K π} := by
   refine le_antisymm (fun x hx => ?_) ?_
   · obtain ⟨a, y, rfl⟩ := exists_inA hπ x
@@ -337,16 +496,28 @@ theorem ker_red : RingHom.ker (red K) = Ideal.span {inO K π} := by
   · rw [Ideal.span_singleton_le_iff_mem]
     exact red_inO_eq_zero hπ.not_isUnit
 
+/- English proof (translation)
+Rewrite using `[← Ideal.mem_span_singleton, ← ker_red hπ, RingHom.mem_ker, map_sub, sub_eq_zero]`.
+-/
 theorem red_eq_iff (x y : AK K) : red K x = red K y ↔ inO K π ∣ x - y := by
   rw [← Ideal.mem_span_singleton, ← ker_red hπ, RingHom.mem_ker, map_sub, sub_eq_zero]
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `(red_eq_iff hπ x _).1 (red_teich (red K x)).symm`. Conclude with `⟨y, by rw [← hy]; ring⟩`.
+-/
 theorem exists_teich_add (x : AK K) : ∃ y, x = inA K (WittVector.teichmuller l (red K x)) + inO K π * y := by
   obtain ⟨y, hy⟩ := (red_eq_iff hπ x _).1 (red_teich (red K x)).symm
   exact ⟨y, by rw [← hy]; ring⟩
 
+/- English proof (translation)
+The claim follows from `(red_eq_iff hπ _ _).1 (by rw [red_frobq, map_pow])`.
+-/
 theorem dvd_frobq_sub (x : AK K) : inO K π ∣ frobq K x - x ^ l ^ fK K :=
   (red_eq_iff hπ _ _).1 (by rw [red_frobq, map_pow])
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `exists_teich_add hπ x`. Use `⟨thetaK K y, ?_⟩` and prove the remaining obligations. Use `conv_lhs => enter [1]`. Rewrite using `[hy]`. Rewrite using `[map_add, map_mul, thetaK_inA, thetaK_inO, WittVector.fontaineTheta_teichmuller, add_sub_cancel_left]`.
+-/
 theorem dvd_thetaK_sub (x : AK K) : intToOC K π ∣ thetaK K x - (red K x).untilt := by
   obtain ⟨y, hy⟩ := exists_teich_add hπ x
   refine ⟨thetaK K y, ?_⟩
@@ -355,6 +526,9 @@ theorem dvd_thetaK_sub (x : AK K) : intToOC K π ∣ thetaK K x - (red K x).unti
 
 omit hπ in
 
+/- English proof (translation)
+Rewrite `h` using `[← Algebra.smul_def]`. Use `(Module.Free.chooseBasis (Ainf l) (AK K)).repr.injective (Finsupp.ext fun i => ?_)` and prove the remaining obligations. Establish `h1` using `congrArg (fun y => (Module.Free.chooseBasis (Ainf l) (AK K)).repr y i) h`. Simplify using `only [map_smul, map_zero, Finsupp.smul_apply, smul_eq_mul, Finsupp.zero_apply] at h1 ⊢`. Conclude with `(mul_eq_zero.1 h1).resolve_left ha`.
+-/
 theorem eq_zero_of_inA_mul {a : Ainf l} (ha : a ≠ 0) {x : AK K} (h : inA K a * x = 0) : x = 0 := by
   rw [← Algebra.smul_def] at h
   refine (Module.Free.chooseBasis (Ainf l) (AK K)).repr.injective (Finsupp.ext fun i => ?_)
@@ -362,6 +536,9 @@ theorem eq_zero_of_inA_mul {a : Ainf l} (ha : a ≠ 0) {x : AK K} (h : inA K a *
   simp only [map_smul, map_zero, Finsupp.smul_apply, smul_eq_mul, Finsupp.zero_apply] at h1 ⊢
   exact (mul_eq_zero.1 h1).resolve_left ha
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `dvd_l hπ`. Use `eq_zero_of_inA_mul (a := (l : Ainf l)) (WittVector.p_nonzero l _) ?_` and prove the remaining obligations. Rewrite using `[map_natCast, hc]`. Take the linear combination `c * h`.
+-/
 theorem eq_zero_of_mul_pi (x : AK K) (h : x * inO K π = 0) : x = 0 := by
   obtain ⟨c, hc⟩ := dvd_l hπ
   refine eq_zero_of_inA_mul (a := (l : Ainf l)) (WittVector.p_nonzero l _) ?_
@@ -371,6 +548,9 @@ theorem eq_zero_of_mul_pi (x : AK K) (h : x * inO K π = 0) : x = 0 := by
 omit hπ in
 variable (K) in
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.HWL.TensorWitt.complete_tensor (Module.Free.chooseBasis (W0 K) ↥(OL K)) (l : Ainf l)`. Set `e : ↥(OL K) ⊗[W0 K] Ainf l ≃+* AK K` to `(Algebra.TensorProduct.comm (W0 K) ↥(OL K) (Ainf l)).toRingEquiv`. Rewrite `h` using `[← IsAdicComplete.congr_ringEquiv _ e, Ideal.map_span, Set.image_singleton]`. Establish `e1 : e ((1 : ↥(OL K)) ⊗ₜ[W0 K] (l : Ainf l)) = (l : AK K)` using `map_natCast (inA K) l`. Rewrite `h` using `[e1]`. Then use the resulting hypothesis.
+-/
 theorem complete_l : IsAdicComplete (Ideal.span {(l : AK K)}) (AK K) := by
   have h := GlobalTheory.HWL.TensorWitt.complete_tensor (Module.Free.chooseBasis (W0 K) ↥(OL K)) (l : Ainf l)
   let e : ↥(OL K) ⊗[W0 K] Ainf l ≃+* AK K := (Algebra.TensorProduct.comm (W0 K) ↥(OL K) (Ainf l)).toRingEquiv
@@ -380,6 +560,9 @@ theorem complete_l : IsAdicComplete (Ideal.span {(l : AK K)}) (AK K) := by
 
 omit hπ hl in
 
+/- English proof (translation)
+The claim follows from `IsHausdorff.haus' (I := J) x fun n => by have := hx ((N + 1) * n) simp only [SModEq.zero, smul_eq_mul, Ideal.mul_top, pow_mul] at this ⊢ exact Ideal.pow_right_mono h n this prec' f hf := by simp only [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top] at hf ⊢ obtain ⟨L, hL⟩ := IsPrecomp …`.
+-/
 theorem complete_of_le {A : Type*} [CommRing A] {I J : Ideal A} {N : ℕ} (h : I ^ (N + 1) ≤ J) (hJ : J ≤ I)
     [IsAdicComplete J A] : IsAdicComplete I A where
   haus' x hx := IsHausdorff.haus' (I := J) x fun n => by
@@ -398,6 +581,9 @@ theorem complete_of_le {A : Type*} [CommRing A] {I J : Ideal A} {N : ℕ} (h : I
     have h1 := hf (m := n) (n := (N + 1) * n) (Nat.le_mul_of_pos_left n N.succ_pos)
     simpa using add_mem h1 (Ideal.pow_right_mono hJ n (hL n))
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `exists_l_dvd_pow hπ`. Use `complete_l K` as an intermediate fact. Use `complete_of_le (J := Ideal.span {(l : AK K)}) (N := n) ?_ (Ideal.span_singleton_le_span_singleton.2 (dvd_l hπ))` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_pow, Ideal.span_singleton_le_span_singleton]`. Simplify using `using map_dvd (inO K) hn`.
+-/
 theorem complete_pi : IsAdicComplete (Ideal.span {inO K π}) (AK K) := by
   obtain ⟨n, hn⟩ := exists_l_dvd_pow hπ
   have := complete_l K
@@ -408,6 +594,11 @@ theorem complete_pi : IsAdicComplete (Ideal.span {inO K π}) (AK K) := by
 
 open GlobalTheory.Per.AinfComplete in
 
+/- English proof (translation)
+Use `complete_pi hπ` as an intermediate fact. Establish `h1 : IsNilpotent (Perfection.coeff (ModP (OC l) l) l 0 (red K y))` using `nilpotent_of_not_isUnit l _ fun h => hy (perfection_isUnit _ h)`. Use `⟨summ_of_tails (tails_of_mod (inO K π) y fun b => ?_), hausdorff_pair (red K) _ y (ker_red hπ) (eq_zero_of_mul_pi hπ) (perfection_haus h1)⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `perfection_tails h1 fun n => red K (b n)`. Use `choose s hs using fun n => red_surjective K (t n)`.
+
+Establish `: ∀ n, ∃ c, b n - (s n - y * s (n + 1)) = inO K π * c` using `fun n => (red_eq_iff hπ _ _).1 (by rw [map_sub, map_mul, hs, hs]; exact ht n)`. Use `choose c hc using this`. Conclude with `⟨s, c, fun n => by linear_combination hc n⟩`.
+-/
 theorem summ_haus {y : AK K} (hy : ¬ IsUnit (red K y)) :
     Summ y ∧ IsHausdorff (Ideal.span {inO K π, y}) (AK K) := by
   have := complete_pi hπ
@@ -424,10 +615,20 @@ theorem summ_haus {y : AK K} (hy : ¬ IsUnit (red K y)) :
 
 end Unif
 
+/- English proof (translation)
+The claim follows from `IsDiscreteValuationRing.exists_irreducible _`.
+-/
 theorem exists_unif : ∃ π : ↥(OL K), Irreducible π := IsDiscreteValuationRing.exists_irreducible _
 
 open GlobalTheory.Per.AinfComplete in
 
+/- English proof (translation)
+Take `⟨π, hπ⟩` from `exists_unif (K := K)`. Establish `hP` using `precomplete_pair (summ_haus hπ (y := x) (by rw [hx]; exact not_isUnit_zero)).1 (summ_haus hπ hy).1`. Establish `hH` using `(summ_haus hπ hy).2`. Establish `hle : Ideal.span {x, y} ≤ Ideal.span {inO K π, y}`. Rewrite using `[Ideal.span_insert, Ideal.span_insert]`.
+
+Use `sup_le_sup_right ?_ _` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_le_iff_mem, ← ker_red hπ]`. Conclude with `hx`. Establish `hH' : IsHausdorff (Ideal.span {x, y}) (AK K)`. Use `⟨fun z hz => hH.haus' z fun n => ?_⟩` and prove the remaining obligations.
+
+Use `hz n` as an intermediate fact. Simplify using `only [smul_eq_mul, Ideal.mul_top, SModEq.zero] at this ⊢`. Conclude with `Ideal.pow_right_mono hle n this`. Conclude with `{ hH', hP with }`.
+-/
 theorem complete_pair {x y : AK K} (hx : red K x = 0) (hy : ¬ IsUnit (red K y)) :
     IsAdicComplete (Ideal.span {x, y}) (AK K) := by
   obtain ⟨π, hπ⟩ := exists_unif (K := K)
@@ -445,10 +646,18 @@ theorem complete_pair {x y : AK K} (hx : red K x = 0) (hy : ¬ IsUnit (red K y))
     exact Ideal.pow_right_mono hle n this
   exact { hH', hP with }
 
+/- English proof (translation)
+Use `complete_pair (x := 0) (map_zero _) hy` as an intermediate fact. Rewrite `this` using `[Ideal.span_insert_zero]`. Then use the resulting hypothesis.
+-/
 theorem complete_single {y : AK K} (hy : ¬ IsUnit (red K y)) : IsAdicComplete (Ideal.span {y}) (AK K) := by
   have := complete_pair (x := 0) (map_zero _) hy
   rwa [Ideal.span_insert_zero] at this
 
+/- English proof (translation)
+Use `⟨fun h => h.map _, fun h => ?_⟩` and prove the remaining obligations. Take `⟨π, hπ⟩` from `exists_unif (K := K)`. Use `complete_pi hπ` as an intermediate fact. Take `⟨u, hu⟩` from `h.exists_right_inv`. Take `⟨y, rfl⟩` from `red_surjective K u`.
+
+Establish `hm : x * y - 1 ∈ Ideal.span {inO K π}`. Rewrite using `[← ker_red hπ, RingHom.mem_ker, map_sub, map_mul, hu, map_one, sub_self]`. Establish `h1` using `Ideal.mem_jacobson_bot.1 (IsAdicComplete.le_jacobson_bot _ hm) 1`. Rewrite `h1` using `[mul_one, sub_add_cancel]`. Conclude with `isUnit_of_mul_isUnit_left h1`.
+-/
 theorem isUnit_iff_red (x : AK K) : IsUnit x ↔ IsUnit (red K x) := by
   refine ⟨fun h => h.map _, fun h => ?_⟩
   obtain ⟨π, hπ⟩ := exists_unif (K := K)
@@ -495,11 +704,21 @@ variable {π : ↥(OL K)} (hπ : Irreducible π) {p : OCb l} (hp : p.untilt = in
 def eta (π : ↥(OL K)) (p : OCb l) : AK K := inA K (WittVector.teichmuller l p) - inO K π
 
 include hp in
+/- English proof (translation)
+Rewrite using `[eta, map_sub, thetaK_inA, thetaK_inO, WittVector.fontaineTheta_teichmuller, hp, sub_self]`.
+-/
 theorem thetaK_eta : thetaK K (eta π p) = 0 := by
   rw [eta, map_sub, thetaK_inA, thetaK_inO, WittVector.fontaineTheta_teichmuller, hp, sub_self]
 
 include hπ hp in
 
+/- English proof (translation)
+Establish `h1` using `dvd_thetaK_sub hπ x`. Rewrite `h1` using `[hx, zero_sub, dvd_neg, ← hp]`. Take `⟨z, hz⟩` from `GlobalTheory.TiltAlgClosed.dvd_of_untilt_dvd h1`. Take `⟨y, hy⟩` from `exists_teich_add hπ x`. Rewrite `hy` using `[hz, map_mul, map_mul]`.
+
+Establish `e : x = eta π p * inA K (WittVector.teichmuller l z) + inO K π * (inA K (WittVector.teichmuller l z) + y)`. Rewrite using `[hy, eta]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨_, _, ?_, e⟩` and prove the remaining obligations. Establish `h2` using `congrArg (thetaK K) e`.
+
+Rewrite `h2` using `[hx, map_add, map_mul, map_mul, thetaK_eta hp, zero_mul, zero_add, thetaK_inO]`. Conclude with `(mul_eq_zero.1 h2.symm).resolve_left ((map_ne_zero_iff _ (intToOC_injective K)).2 hπ.ne_zero)`.
+-/
 theorem ker_step {x : AK K} (hx : thetaK K x = 0) :
     ∃ z y, thetaK K y = 0 ∧ x = eta π p * z + inO K π * y := by
   have h1 := dvd_thetaK_sub hπ x
@@ -516,6 +735,13 @@ theorem ker_step {x : AK K} (hx : thetaK K x = 0) :
 
 include hπ hp in
 
+/- English proof (translation)
+Use `le_antisymm (fun x hx => ?_) ((Ideal.span_singleton_le_iff_mem _).2 (thetaK_eta hp))` and prove the remaining obligations. Use `complete_pi hπ` as an intermediate fact. Use `choose z y hy e using fun x : RingHom.ker (thetaK K) => ker_step hπ hp x.2`. Set `T : RingHom.ker (thetaK K) → RingHom.ker (thetaK K)` to `fun x => ⟨y x, hy x⟩`. Take `⟨L, hL⟩` from `GlobalTheory.Per.AinfComplete.summ_of_precomplete (inO K π) fun n => z (T^[n] ⟨x, hx⟩)`.
+
+Establish `key : ∀ n, x = eta π p * ∑ i ∈ Finset.range n, inO K π ^ i * z (T^[i] ⟨x, hx⟩) + inO K π ^ n * (T^[n] ⟨x, hx⟩ : RingHom.ker (thetaK K))` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Finset.sum_range_succ, Function.iterate_succ_apply']`.
+
+Take the linear combination `ih + inO K π ^ n * e (T^[n] ⟨x, hx⟩)`. Use `Ideal.mem_span_singleton.2 ⟨L, sub_eq_zero.1 (GlobalTheory.Per.AinfComplete.eq_zero_of_haus (inO K π) _ fun n => ?_)⟩` and prove the remaining obligations. Use `sub_mem (Ideal.mul_mem_right (T^[n] ⟨x, hx⟩ : RingHom.ker (thetaK K)).1 _ (Ideal.mem_span_singleton_self (inO K π ^ n))) (Ideal.mul_mem_left _ (eta π p) (hL n)) using 1` and compare the differences between its conclusion and the goal. Take the linear combination `key n`.
+-/
 theorem ker_thetaK : RingHom.ker (thetaK K) = Ideal.span {eta π p} := by
   refine le_antisymm (fun x hx => ?_) ((Ideal.span_singleton_le_iff_mem _).2 (thetaK_eta hp))
   have := complete_pi hπ
@@ -539,6 +765,15 @@ end Ker
 
 variable (K) in
 
+/- English proof (translation)
+Take `⟨π, hπ⟩` from `exists_unif (K := K)`. Take `⟨p, hp⟩` from `GlobalTheory.MemLoc.FundOnto.untilt_surjective l (intToOC K π)`. Take `⟨n, c, hc⟩` from `exists_l_dvd_pow hπ`. Take `⟨d, hd⟩` from `GlobalTheory.MemLoc.FundOnto.untilt_surjective l (intToOC K c)`. Use `set J := Ideal.span {(l : AK K)} ⊔ (RingHom.ker (Per.θ l)).map (inA K)`.
+
+Establish `hl' : (l : AK K) ∈ J` using `Ideal.mem_sup_left (Ideal.mem_span_singleton_self _)`. Establish `h1 : inO K π ^ (n + 1) ∈ J`. Rewrite using `[← map_pow, hc, map_mul, map_natCast]`. Conclude with `Ideal.mul_mem_right _ _ hl'`. Establish `h2 : inA K (WittVector.teichmuller l p) ^ (n + 1) ∈ J`.
+
+Establish `h3 : inA K (WittVector.teichmuller l p ^ (n + 1) - l * WittVector.teichmuller l d) ∈ J` using `Ideal.mem_sup_right (Ideal.mem_map_of_mem _ (by`. Rewrite using `[RingHom.mem_ker, map_sub, map_pow, map_mul, map_natCast, WittVector.fontaineTheta_teichmuller, WittVector.fontaineTheta_teichmuller, hp, hd, ← map_pow, hc, map_mul, map_natCast, sub_self]))`. Rewrite `h3` using `[map_sub, map_pow, map_mul, map_natCast]`. Simplify using `using add_mem h3 (Ideal.mul_mem_right (inA K (WittVector.teichmuller l d)) _ hl')`. Use `⟨n + 1 + (n + 1), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[ker_thetaK hπ hp, Ideal.span_singleton_pow, Ideal.span_singleton_le_iff_mem, eta, sub_eq_add_neg]`. Use `Ideal.add_pow_mem_of_pow_mem_of_le (n := n + 1) _ h2 ?_ (by omega)` and prove the remaining obligations. Rewrite using `[neg_pow]`. Conclude with `Ideal.mul_mem_left _ _ h1`.
+-/
 theorem exists_ker_pow_le : ∃ N : ℕ, RingHom.ker (thetaK K) ^ N ≤
     Ideal.span {(l : AK K)} ⊔ (RingHom.ker (Per.θ l)).map (inA K) := by
   obtain ⟨π, hπ⟩ := exists_unif (K := K)
@@ -563,6 +798,9 @@ theorem exists_ker_pow_le : ∃ N : ℕ, RingHom.ker (thetaK K) ^ N ≤
   rw [neg_pow]
   exact Ideal.mul_mem_left _ _ h1
 
+/- English proof (translation)
+Introduce `l _ K`. Conclude with `⟨card_res K, inferInstance, inferInstance, finrank_AK K, fun ϖ h => complete_pair (by rw [map_natCast, CharP.cast_eq_zero]) (by rwa [red_teich]), frobq_inA K, frobq_bijective K, gal_inA, gal_frobq, thetaK_inA, thetaK_inO, thetaK_surjective K, thetaK_gal, red_inA, red_surjective K …`.
+-/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l),
     Nat.card (ResidueField ↥(OL K)) = l ^ Module.finrank ℚ_[l] ↥(K0 K) ∧
     IsDomain (AK K) ∧ Module.Free (Ainf l) (AK K) ∧

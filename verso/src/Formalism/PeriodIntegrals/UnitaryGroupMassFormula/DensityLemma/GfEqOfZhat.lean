@@ -33,6 +33,11 @@ section rel
 
 variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ}
 
+/- English proof (translation)
+Establish `Gz` using `PI.UnitaryGroupMassFormula.DLm.unipotent_integral_closed k r z hz`. Establish `Gz'` using `PI.UnitaryGroupMassFormula.DLm.unipotent_integral_closed k r z' hz'`. Establish `hux` using `Gz.unit x hx`. Use `⟨x⁻¹, Gz.inv_mem x hx, 1, Gz.one_mem, y, hy, 1, Gz'.one_mem, 1, one_mem_UW z, 1, one_mem_UW z', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.nonsing_inv_nonsing_inv x hux, hb]`.
+
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 theorem rel_of (hz : C2.StdZ k r z) (hz' : C2.StdZ k r z') {a b x y : B.Mat k r} (hx : x ∈ C2.N0set k r z)
     (hy : y ∈ C2.N0set k r z') (hb : b = x * a * y) : Rel z z' a b := by
   have Gz := PI.UnitaryGroupMassFormula.DLm.unipotent_integral_closed k r z hz
@@ -42,6 +47,17 @@ theorem rel_of (hz : C2.StdZ k r z) (hz' : C2.StdZ k r z') {a b x y : B.Mat k r}
   · rw [Matrix.nonsing_inv_nonsing_inv x hux, hb]; simp
   · simp
 
+/- English proof (translation)
+Take `⟨n, hn, m, hm, n', hn', m', hm', c, hc, c', hc', hb, ha⟩` from `h`. Establish `Gz` using `PI.UnitaryGroupMassFormula.DLm.unipotent_integral_closed k r z hz`. Establish `Gz'` using `PI.UnitaryGroupMassFormula.DLm.unipotent_integral_closed k r z' hz'`. Establish `Wz` using `Formalism.FourierDecayAlt.P.weyl_subgroup_closed k r z`. Establish `Wz'` using `Formalism.FourierDecayAlt.P.weyl_subgroup_closed k r z'`.
+
+Establish `hcu` using `Wz.unit c hc`. Establish `hcu'` using `Wz'.unit c' hc'`. Establish `hmu` using `Gz.unit m hm`. Establish `hmu'` using `Gz'.unit m' hm'`. Establish `K : m * c⁻¹ * a * c'⁻¹ * m'⁻¹ = a`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_nonsing_inv_cancel_left c' _ hcu', Matrix.mul_nonsing_inv m' hmu', Matrix.mul_one, Matrix.nonsing_inv_mul_cancel_left c _ hcu, Matrix.mul_nonsing_inv_cancel_left m _ hmu]`. Establish `hP : c * n⁻¹ * c⁻¹ ∈ C2.N0set k r z` using `unipotent_normal_unitary hz hc (Gz.inv_mem n hn)`. Establish `hX : c * m * c⁻¹ ∈ C2.N0set k r z` using `unipotent_normal_unitary hz hc hm`.
+
+Establish `hY : c'⁻¹ * m'⁻¹ * c' ∈ C2.N0set k r z'`. Use `unipotent_normal_unitary hz' (Wz'.inv_mem c' hc') (Gz'.inv_mem m' hm')` as an intermediate fact. Rewrite `this` using `[Matrix.nonsing_inv_nonsing_inv c' hcu']`. Then use the resulting hypothesis. Establish `hQ : c'⁻¹ * n' * c' ∈ C2.N0set k r z'`. Use `unipotent_normal_unitary hz' (Wz'.inv_mem c' hc') hn'` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.nonsing_inv_nonsing_inv c' hcu']`. Then use the resulting hypothesis. Use `⟨c * n⁻¹ * c⁻¹ * (c * m * c⁻¹), Gz.mul_mem _ hP _ hX, c'⁻¹ * m'⁻¹ * c' * (c'⁻¹ * n' * c'), Gz'.mul_mem _ hY _ hQ, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hcu, Matrix.mul_nonsing_inv_cancel_left _ _ hcu']`.
+-/
 theorem mem_of_rel (hz : C2.StdZ k r z) (hz' : C2.StdZ k r z') {a b : B.Mat k r} (h : Rel z z' a b) :
     ∃ x ∈ C2.N0set k r z, ∃ y ∈ C2.N0set k r z', b = x * a * y := by
   obtain ⟨n, hn, m, hm, n', hn', m', hm', c, hc, c', hc', hb, ha⟩ := h
@@ -75,6 +91,9 @@ theorem mem_of_rel (hz : C2.StdZ k r z) (hz' : C2.StdZ k r z') {a b : B.Mat k r}
         simp only [Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hcu,
           Matrix.mul_nonsing_inv_cancel_left _ _ hcu']
 
+/- English proof (translation)
+Take `⟨x, hx, y, hy, rfl⟩` from `mem_of_rel hz hz' h1`. Take `⟨x', hx', y', hy', rfl⟩` from `mem_of_rel hz hz' h2`. Use `rel_of hz hz' ((PI.UnitaryGroupMassFormula.DLm.unipotent_integral_closed k r z hz).mul_mem _ hx' _ hx) ((PI.UnitaryGroupMassFormula.DLm.unipotent_integral_closed k r z' hz').mul_mem _ hy _ hy') ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem rel_trans (hz : C2.StdZ k r z) (hz' : C2.StdZ k r z') {a b c : B.Mat k r} (h1 : Rel z z' a b)
     (h2 : Rel z z' b c) : Rel z z' a c := by
   obtain ⟨x, hx, y, hy, rfl⟩ := mem_of_rel hz hz' h1
@@ -85,12 +104,34 @@ theorem rel_trans (hz : C2.StdZ k r z) (hz' : C2.StdZ k r z') {a b c : B.Mat k r
 
 end rel
 
+/- English proof (translation)
+Unfold `Gf Dmin`. Rewrite using `[h]`.
+-/
 theorem gf_eq_of_zhat {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {g₁ g₂ : B.Mat k r}
     (h : Zhat k r z z' g₁ = Zhat k r z z' g₂) : Gf k r z z' g₂ = Gf k r z z' g₁ := by
   unfold Gf Dmin
   rw [h]
 
 open Classical in
+/- English proof (translation)
+Introduce `k r z z' hk hr hz hz'`. Take `⟨Fr, hne, hU, hinv, heq, hrel, hloc⟩` from `hF k r z z' hk hr hz hz'`. Set `T : B.Mat k r → B.Mat k r × B.Mat k r` to `fun g => if h : (Fr g).Nonempty then h.some else (1, 1)`. Establish `hT : ∀ g ∈ B.GV k r, 0 < Gf k r z z' g → T g ∈ Fr g`. Introduce `g hg hG`.
+
+Establish `h` using `hne g hg hG`. Simplify using `only [T, dif_pos h]`. Conclude with `h.some_mem`. Establish `Wz` using `Formalism.FourierDecayAlt.P.weyl_subgroup_closed k r z`. Establish `Wz'` using `Formalism.FourierDecayAlt.P.weyl_subgroup_closed k r z'`.
+
+Establish `Gz` using `PI.UnitaryGroupMassFormula.DLm.unipotent_integral_closed k r z hz`. Establish `Gz'` using `PI.UnitaryGroupMassFormula.DLm.unipotent_integral_closed k r z' hz'`. Use `⟨T, fun g hg hG => hU g hg hG _ (hT g hg hG), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g hg hG n hn n' hn'`. Simplify using `only [T, hinv g hg hG n hn n' hn']`.
+
+Introduce `g₁ hg₁ g₂ hg₂ hG₁ hZ`. Establish `hG₂ : 0 < Gf k r z z' g₂` using `by rw [gf_eq_of_zhat hZ]; exact hG₁`. Take `⟨c, hc, n, hn, n', hn', c', hc', e⟩` from `hW k r z z' hk hr hz hz' g₁ hg₁ g₂ hg₂ hG₁ hZ`. Use `set p := T g₁ with hp`. Establish `hp1 : p ∈ Fr g₁` using `hT g₁ hg₁ hG₁`.
+
+Take `⟨hpa, hpb⟩` from `hU g₁ hg₁ hG₁ p hp1`. Establish `hp2 : (p.1 * c⁻¹, c'⁻¹ * p.2) ∈ Fr g₂`. Rewrite using `[e]`. Conclude with `heq g₁ hg₁ hG₁ c hc n hn n' hn' c' hc' p hp1`. Establish `hr1 : Rel z z' (nrm T g₁) (p.1 * c⁻¹ * g₂ * (c'⁻¹ * p.2))`.
+
+Establish `hua` using `Wz.unit p.1 hpa`. Establish `hub` using `Wz'.unit p.2 hpb`. Establish `hcu` using `Wz.unit c hc`. Establish `hcu'` using `Wz'.unit c' hc'`. Establish `hx : p.1 * n⁻¹ * p.1⁻¹ ∈ C2.N0set k r z` using `unipotent_normal_unitary hz hpa (Gz.inv_mem n hn)`.
+
+Establish `hy : p.2⁻¹ * n' * p.2 ∈ C2.N0set k r z'`. Use `unipotent_normal_unitary hz' (Wz'.inv_mem p.2 hpb) hn'` as an intermediate fact. Rewrite `this` using `[Matrix.nonsing_inv_nonsing_inv p.2 hub]`. Then use the resulting hypothesis. Use `rel_of hz hz' hx hy ?_` and prove the remaining obligations. Use `show p.1 * c⁻¹ * g₂ * (c'⁻¹ * p.2) = p.1 * n⁻¹ * p.1⁻¹ * (p.1 * g₁ * p.2) * (p.2⁻¹ * n' * p.2)`.
+
+Rewrite using `[e]`. Simplify using `only [Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hcu, Matrix.nonsing_inv_mul_cancel_left _ _ hua, Matrix.mul_nonsing_inv_cancel_left _ _ hcu', Matrix.mul_nonsing_inv_cancel_left _ _ hub]`. Establish `hr2 : Rel z z' (p.1 * c⁻¹ * g₂ * (c'⁻¹ * p.2)) (nrm T g₂)` using `hrel g₂ hg₂ hG₂ _ hp2 _ (hT g₂ hg₂ hG₂)`. Conclude with `rel_trans hz hz' hr1 hr2`. Introduce `g₀ hg₀ hG₀`.
+
+Take `⟨O, Fl, hO, hgO, hs, hFl⟩` from `hloc g₀ hg₀ hG₀`. Use `⟨O, Fl, hO, hgO, hs, fun g hgO' hg hG => ?_⟩` and prove the remaining obligations. Establish `h1` using `hFl g hgO' hg hG`. Take `⟨ha, hb⟩` from `hU g hg hG _ h1`. Conclude with `⟨ha, hb, hrel g hg hG _ h1 _ (hT g hg hG)⟩`.
+-/
 theorem gramSlice_of (hW : GsWitt) (hF : GsFrames) : GramSlice := by
   intro k r z z' hk hr hz hz'
   obtain ⟨Fr, hne, hU, hinv, heq, hrel, hloc⟩ := hF k r z z' hk hr hz hz'

@@ -6,6 +6,11 @@ open ReciprocityTheory.ChartRestriction.G.Out GlobalTheory.AbLaw GlobalTheory.Fo
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `X Z φ V hV hf`. Use `haveI : IsAffine (V : Scheme) := hV`. Establish `h1 : IsAffine (φ ⁻¹ᵁ V : Scheme)` using `isAffine_of_isAffineHom (φ ∣_ V)`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `h2` using `hf.finite_app ⊤ (isAffineOpen_top _)`.
+
+Rewrite `h2` using `[morphismRestrict_app]`. Establish `e : V.ι ''ᵁ ⊤ = V` using `by simp`. Rewrite using `[← e]`. Conclude with `(RingHom.finite_respectsIso.cancel_right_isIso _ _).mp h2`.
+-/
 theorem isAffineOpen_preimage_and_finite_app_of_isFinite_restrict :
     ∀ (X Z : Scheme.{0}) (φ : X ⟶ Z) (V : Z.Opens), IsAffineOpen V → IsFinite (φ ∣_ V) →
       IsAffineOpen (φ ⁻¹ᵁ V) ∧ (φ.app V).hom.Finite := by

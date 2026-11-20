@@ -19,6 +19,25 @@ def vmvBil (E : Type) [Field E] [NumberField E] (n r : ℕ) :
     (fun v u u' => by ext i j; simp [vecMulVec, mul_add])
     (fun a v u => by ext i j; simp [vecMulVec, mul_smul_comm])
 
+/- English proof (translation)
+Use `set A := tens Λ (𝔞 • L) with hA`. Use `set B := tens Λ ((𝔞 * 𝔪) • L) with hB`. Establish `hM : (Submodule.map₂ (vmvBil E n r) Λ L).FG` using `hΛ.map₂ _ hL`. Establish `hMZ : ((Submodule.map₂ (vmvBil E n r) Λ L).restrictScalars ℤ).FG` using `hM.restrictScalars`. Establish `hle : A.toIntSubmodule ≤ (Submodule.map₂ (vmvBil E n r) Λ L).restrictScalars ℤ`.
+
+Introduce `x hx`. Establish `hsub : A ≤ ((Submodule.map₂ (vmvBil E n r) Λ L).restrictScalars ℤ).toAddSubgroup`. Rewrite using `[hA, tens, AddSubgroup.closure_le]`. Introduce and unpack `y ⟨v, hv, u, hu, rfl⟩`. Conclude with `Submodule.apply_mem_map₂ (vmvBil E n r) hv (Submodule.smul_le_right hu)`.
+
+Conclude with `hsub hx`. Establish `hAfg : A.toIntSubmodule.FG` using `(isNoetherian_submodule.mp (isNoetherian_of_fg_of_noetherian _ hMZ)) _ hle`. Use `haveI : AddGroup.FG A := by`. Establish `: Module.Finite ℤ A.toIntSubmodule` using `Module.Finite.iff_fg.mpr hAfg`. Conclude with `(Module.Finite.iff_addGroup_fg).mp this`.
+
+Use `set N := Ideal.absNorm 𝔪 with hN`. Establish `hNpos : 0 < N` using `Nat.pos_of_ne_zero (fun h => hm (Ideal.absNorm_eq_zero_iff.mp h))`. Establish `hNA : ∀ x ∈ A, N • x ∈ B`. Introduce `x hx`. Proceed by induction on `hx using AddSubgroup.closure_induction with`.
+
+Consider the case `mem y hy`. Take `⟨v, hv, u, hu, rfl⟩` from `hy`. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises. Use `⟨v, hv, N • u, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : ((N : 𝓞 E)) • u ∈ 𝔪 • (𝔞 • L)` using `Submodule.smul_mem_smul (Ideal.absNorm_mem 𝔪) hu`.
+
+Rewrite `h1` using `[← Submodule.mul_smul, mul_comm]`. Rewrite using `[← Nat.cast_smul_eq_nsmul (𝓞 E)]` and apply the resulting hypothesis. Use extensionality with `i j`. Simplify using `[vecMulVec]`. Expand and normalize the polynomial expressions, which then agree.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `neg_mem hx`.
+
+Use `haveI : AddGroup.FG (A ⧸ B.addSubgroupOf A) := AddGroup.fg_of_surjective (QuotientAddGroup.mk'_surjective _)`. Apply `AddCommGroup.finite_of_fg_torsion` to reduce the goal to its premises. Introduce `q`. Proceed by induction on `q using QuotientAddGroup.induction_on with`. Consider the case `H x`.
+
+Use `isOfFinAddOrder_iff_nsmul_eq_zero.mpr ⟨N, hNpos, ?_⟩` and prove the remaining obligations. Rewrite using `[← QuotientAddGroup.mk_nsmul, QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf]`. Simplify using `using hNA x x.2`.
+-/
 theorem tens_quot_finite {E : Type} [Field E] [NumberField E] {n r : ℕ} (Λ : Lt E n) (L : Lt E r)
     (hΛ : Λ.FG) (hL : L.FG) (𝔞 𝔪 : Ideal (𝓞 E)) (hm : 𝔪 ≠ ⊥) :
     Finite (tens Λ (𝔞 • L) ⧸ (tens Λ ((𝔞 * 𝔪) • L)).addSubgroupOf (tens Λ (𝔞 • L))) := by
@@ -63,6 +82,9 @@ theorem tens_quot_finite {E : Type} [Field E] [NumberField E] {n r : ℕ} (Λ : 
     rw [← QuotientAddGroup.mk_nsmul, QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf]
     simpa using hNA x x.2
 
+/- English proof (translation)
+Introduce `D S T C Lv`. Conclude with `tens_quot_finite _ _ (Submodule.fg_span (Set.finite_range _)) C.X.Λ_fg _ _ Lv.ne_bot`.
+-/
 theorem lvCls_finite : ∀ (D : D7) (S T : HSp D) (C : Ctx S T) (Lv : GlobalTheory.SW.Level C.X), Finite (GlobalTheory.LiftLevel.LvCls C Lv) := by
   intro D S T C Lv
   exact tens_quot_finite _ _ (Submodule.fg_span (Set.finite_range _)) C.X.Λ_fg _ _ Lv.ne_bot

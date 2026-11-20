@@ -14,6 +14,13 @@ open Pb HT
 
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
+/- English proof (translation)
+Take `⟨r⟩` from `GlobalTheory.CompanionTheory.RootsC.rootsEx l`. Take `⟨v, hv⟩` from `(P.first_chern_class_exists S.Y S.smY S.D hEt S.loc).1 r`. Take `⟨e, he, -⟩` from `(P.first_chern_class_exists S.Y S.smY S.D hEt S.loc).2`. Take `⟨c, w, z, m₀, a₀, b₀, ab₀, m, i, j, hij, a, b, ab, one, N, hz, hcz, hcup₀, hcup, hjne, hdec, hone, hN, hli, hsum₀⟩` from `hD l K M d hd hM hs S hEt r v hv`. Use `(sm_gen S.smP).1` as an intermediate fact.
+
+Use `(sm_gen S.smP).2` as an intermediate fact. Use `proper_genMap S.π S.hπ S.smY S.smP` as an intermediate fact. Use `⟨⟨S, c, m₀, a₀, b₀, ab₀, m, i, j, hij, a, b, ab, one, N, hcup₀, hcup, hjne, hdec, hone, hN, hli, hsum₀, ?_⟩⟩` and prove the remaining obligations. Introduce `A a' n' y hy Θ`. Apply `stepA hC P S hEt r v hv e he c w z hz hcz A` to reduce the goal to its premises.
+
+Introduce `C hCd`. Rewrite using `[LinearMap.comp_apply, LinearMap.flip_apply, cupL_apply, killR hK (↥K) M.gen S.P.gen S.Y.gen S.P.q (Model.genMap S.Δ S.hΔ) (Model.genMap S.π S.hπ) S.Y.q (Model.genMap_q S.π S.hπ) M.q (Model.genMap_q S.Δ S.hΔ) (genD S.D) (d + 1) (by omega) S.blow e he A (2 + 2 * d) a' n' C y hCd h …`.
+-/
 theorem mkDat (hC : CupLaws) (hK : HodgeKill) (hD : DiagEt3) (P : HTPre l K) [FiniteDimensional ℚ_[l] K] {M : Model l K}
     {d : ℕ} (hd : 1 ≤ d) (hM : M.Sm) (hs : SmoothOfRelativeDimension (d + 1) M.p) (S : Sq M (d + 1)) (hEt : Etale S.D.f) :
     Nonempty (Dat hC P M d) := by

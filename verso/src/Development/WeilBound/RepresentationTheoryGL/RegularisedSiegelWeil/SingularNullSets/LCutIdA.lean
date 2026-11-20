@@ -22,6 +22,9 @@ open GlobalTheory.StdUnn.Model
 
 variable {D : D7} {n : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]`. Consider the case `tmul a e => simp [Algebra.TensorProduct.basis_repr_tmul]`.
+-/
 theorem repr_map' {F E R R' ι : Type} [Field F] [Field E] [Algebra F E] [CommRing R] [Algebra F R] [CommRing R']
     [Algebra F R'] (φ : R →ₐ[F] R') (b : Module.Basis ι F E) (z : R ⊗[F] E) (k : ι) :
     (Algebra.TensorProduct.basis R' b).repr (Algebra.TensorProduct.map φ (AlgHom.id F E) z) k =
@@ -31,6 +34,13 @@ theorem repr_map' {F E R R' ι : Type} [Field F] [Field E] [Algebra F E] [CommRi
   | add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]
   | tmul a e => simp [Algebra.TensorProduct.basis_repr_tmul]
 
+/- English proof (translation)
+Set `b` to `Module.Basis.ofVectorSpace D.host.F D.host.E`. Apply `(Algebra.TensorProduct.basis (AF D.host.F) b).repr.injective` to reduce the goal to its premises. Use `Finsupp.ext fun k => Prod.ext ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Establish `h1` using `repr_map' (evInf D.host.F w) b z k`.
+
+Establish `h2` using `repr_map' (evInf D.host.F w) b z' k`. Establish `h : Algebra.TensorProduct.map (evInf D.host.F w) (AlgHom.id D.host.F D.host.E) z = Algebra.TensorProduct.map (evInf D.host.F w) (AlgHom.id D.host.F D.host.E) z'` using `hi w`. Rewrite `h1` using `[h, h2]`. Conclude with `h1.symm`. Use `FiniteAdeleRing.ext _ fun v => ?_` and prove the remaining obligations.
+
+Establish `h1` using `repr_map' (evFin D.host.F v) b z k`. Establish `h2` using `repr_map' (evFin D.host.F v) b z' k`. Establish `h : Algebra.TensorProduct.map (evFin D.host.F v) (AlgHom.id D.host.F D.host.E) z = Algebra.TensorProduct.map (evFin D.host.F v) (AlgHom.id D.host.F D.host.E) z'` using `hf v`. Rewrite `h1` using `[h, h2]`. Conclude with `h1.symm`.
+-/
 theorem ae_ext (z z' : AE D) (hi : ∀ w, compInf D.host.F D.host.E w z = compInf D.host.F D.host.E w z')
     (hf : ∀ v, cv D v z = cv D v z') : z = z' := by
   let b := Module.Basis.ofVectorSpace D.host.F D.host.E
@@ -51,6 +61,13 @@ theorem ae_ext (z z' : AE D) (hi : ∀ w, compInf D.host.F D.host.E w z = compIn
     rw [h, h2] at h1
     exact h1.symm
 
+/- English proof (translation)
+Set `b` to `Module.Basis.ofVectorSpace D.host.F D.host.E`. Establish `hk : ∀ k, ((Algebra.TensorProduct.basis (AF D.host.F) b).repr z k).1 = 0` using `fun k => by`. Use function extensionality and compare the values at `w`. Establish `h1` using `repr_map' (evInf D.host.F w) b z k`. Establish `h2 : Algebra.TensorProduct.map (evInf D.host.F w) (AlgHom.id D.host.F D.host.E) z = 0` using `h w`.
+
+Rewrite `h1` using `[h2, LinearEquiv.map_zero, Finsupp.zero_apply]`. Conclude with `h1.symm`. Apply `(Algebra.TensorProduct.basis (Ainf D.host.F) b).repr.injective` to reduce the goal to its premises. Use `Finsupp.ext fun k => ?_` and prove the remaining obligations. Rewrite using `[repr_map', LinearEquiv.map_zero, Finsupp.zero_apply]`.
+
+Conclude with `hk k`.
+-/
 theorem fst_zero (z : AE D) (h : ∀ w, compInf D.host.F D.host.E w z = 0) :
     Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E) z = 0 := by
   let b := Module.Basis.ofVectorSpace D.host.F D.host.E
@@ -65,12 +82,22 @@ theorem fst_zero (z : AE D) (h : ∀ w, compInf D.host.F D.host.E w z = 0) :
   rw [repr_map', LinearEquiv.map_zero, Finsupp.zero_apply]
   exact hk k
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [blk4, Matrix.map_apply, Matrix.submatrix_apply]`. Apply the tactic sequence `rcases finSumFinEquiv.symm i with i | i <;> rcases finSumFinEquiv.symm j with j | j <;> rfl`.
+-/
 theorem block_matrix_map_ringHom {R S : Type} [Semiring R] [Semiring S] (φ : R →+* S) (a b c d : Matrix (Fin n) (Fin n) R) :
     (blk4 a b c d).map φ = blk4 (a.map φ) (b.map φ) (c.map φ) (d.map φ) := by
   ext i j
   simp only [blk4, Matrix.map_apply, Matrix.submatrix_apply]
   rcases finSumFinEquiv.symm i with i | i <;> rcases finSumFinEquiv.symm j with j | j <;> rfl
 
+/- English proof (translation)
+Simplify using `only [blk4, Matrix.submatrix_apply]`. Apply the tactic sequence `rcases finSumFinEquiv.symm i with i | i <;> rcases finSumFinEquiv.symm j with j | j`. Rewrite using `[Matrix.fromBlocks_apply₁₁, Matrix.one_apply]`. Use `split_ifs`. Use `exacts [T.one_mem, T.zero_mem]`.
+
+Rewrite using `[Matrix.fromBlocks_apply₁₂]`. Conclude with `hY i j`. Rewrite using `[Matrix.fromBlocks_apply₂₁, Matrix.zero_apply]`. Conclude with `T.zero_mem`. Rewrite using `[Matrix.fromBlocks_apply₂₂, Matrix.one_apply]`.
+
+Use `split_ifs`. Use `exacts [T.one_mem, T.zero_mem]`.
+-/
 theorem unipotent_block_mem_subring {S : Type} [Ring S] (T : Subring S) (Y : Matrix (Fin n) (Fin n) S) (hY : ∀ i j, Y i j ∈ T) (i j : Fin (n + n)) :
     blk4 1 Y 0 1 i j ∈ T := by
   simp only [blk4, Matrix.submatrix_apply]
@@ -80,19 +107,37 @@ theorem unipotent_block_mem_subring {S : Type} [Ring S] (T : Subring S) (Y : Mat
   · rw [Matrix.fromBlocks_apply₂₁, Matrix.zero_apply]; exact T.zero_mem
   · rw [Matrix.fromBlocks_apply₂₂, Matrix.one_apply]; split_ifs; exacts [T.one_mem, T.zero_mem]
 
+/- English proof (translation)
+Rewrite using `[hnb y, block_matrix_map_ringHom, Matrix.map_one _ (map_zero φ) (map_one φ), Matrix.map_zero _ (map_zero φ)]`.
+-/
 theorem mat_nb_map {nb : hermA D n → G D n} (hnb : IsNMap nb) {S : Type} [CommRing S] (φ : AE D →+* S) (y : hermA D n) :
     (mat (nb y)).map φ = blk4 1 (y.1.map φ) 0 1 := by
   rw [hnb y, block_matrix_map_ringHom, Matrix.map_one _ (map_zero φ) (map_one φ), Matrix.map_zero _ (map_zero φ)]
 
+/- English proof (translation)
+Rewrite using `[mat_nb_map hnb, show y.1.map φ = 0 from Matrix.ext fun i j => h i j, block_matrix_one]`.
+-/
 theorem mat_nb_map_one {nb : hermA D n → G D n} (hnb : IsNMap nb) {S : Type} [CommRing S] (φ : AE D →+* S) (y : hermA D n)
     (h : ∀ i j, φ (y.1 i j) = 0) : (mat (nb y)).map φ = 1 := by
   rw [mat_nb_map hnb, show y.1.map φ = 0 from Matrix.ext fun i j => h i j, block_matrix_one]
 
+/- English proof (translation)
+Rewrite using `[Matrix.map_mul, Matrix.map_mul]`. Apply the tactic sequence `rcases h with h | h <;> rw [h, one_mul, mul_one]`.
+-/
 theorem map_comm {m : ℕ} {S : Type} [CommRing S] (φ : AE D →+* S) (A B : Mx D m m) (h : A.map φ = 1 ∨ B.map φ = 1) :
     (A * B).map φ = (B * A).map φ := by
   rw [Matrix.map_mul, Matrix.map_mul]
   rcases h with h | h <;> rw [h, one_mul, mul_one]
 
+/- English proof (translation)
+Apply `GlobalTheory.CompanionTheory.FourierN.mat_injective` to reduce the goal to its premises. Use `show mat (nb y) * mat g = mat g * mat (nb y)`. Establish `hgv : (mat g).map (cv D v) = 1`. Establish `e` using `congrArg (fun k => (GlobalTheory.AdelicU.matHom (Fv D.host.F v) D.sp.cm.sig (Jst D n) k).1) hg`. Simplify using `only [map_one, Units.val_one] at e`.
+
+Conclude with `e`. Establish `key : ∀ {S : Type} [CommRing S] (φ : AE D →+* S), (mat (nb y)).map φ = 1 ∨ (mat g).map φ = 1 → ∀ i j, φ ((mat (nb y) * mat g) i j) = φ ((mat g * mat (nb y)) i j)`. Introduce `S _ φ h i j`. Establish `e` using `map_comm φ (mat (nb y)) (mat g) h`. Conclude with `congrFun (congrFun e i) j`.
+
+Use extensionality with `i j`. Use `ae_ext _ _ (fun w => key _ (Or.inl (mat_nb_map_one hnb _ y fun a b => hi w a b)) i j) (fun v' => ?_)` and prove the remaining obligations. Distinguish the cases in `hv : v' = v`. Substitute `hv` using the available equality. Conclude with `key _ (Or.inr hgv) i j`.
+
+Conclude with `key _ (Or.inl (mat_nb_map_one hnb _ y fun a b => ho v' hv a b)) i j`.
+-/
 theorem nb_comm {nb : hermA D n → G D n} (hnb : IsNMap nb) {v : Pl D} {y : hermA D n}
     (hi : ∀ w i j, compInf D.host.F D.host.E w (y.1 i j) = 0) (ho : ∀ v' ≠ v, ∀ i j, cv D v' (y.1 i j) = 0)
     {g : G D n} (hg : proj D.sp.cm.sig (Jst D n) v g = 1) : nb y * g = g * nb y := by
@@ -114,6 +159,13 @@ theorem nb_comm {nb : hermA D n → G D n} (hnb : IsNMap nb) {v : Pl D} {y : her
     exact key _ (Or.inr hgv) i j
   · exact key _ (Or.inl (mat_nb_map_one hnb _ y fun a b => ho v' hv a b)) i j
 
+/- English proof (translation)
+Use `set M := GlobalTheory.AdelicU.matHom (Fv D.host.F v) D.sp.cm.sig (Jst D n) k`. Establish `hint : ∀ (N : Matrix (Fin (n + n)) (Fin (n + n)) (Fv D.host.F v ⊗[D.host.F] D.host.E)), (∀ i j, N i j ∈ intLoc D.host.F D.host.E v) → ∀ z : Fin (n + n) → Fv D.host.F v ⊗[D.host.F] D.host.E, (∀ i, z i ∈ intLoc D.host.F D.host.E v) → ∀ i, (N *ᵥ z) i ∈ intLoc D.host.F D.host.E v` using `fun N hN z hz i => by`. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Subring.sum_mem _ fun j _ => Subring.mul_mem _ (hN i j) (hz j)`. Use `GlobalTheory.AdelicU.mem_stabLoc.2 fun z => ?_` and prove the remaining obligations.
+
+Simplify using `only [GlobalTheory.AdelicU.mem_latLoc_stdLattice]`. Use `⟨fun hz => hint _ hM z hz, fun hz => ?_⟩` and prove the remaining obligations. Establish `e : (M⁻¹).1 *ᵥ (M.1 *ᵥ z) = z`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Rewrite using `[← e]`.
+
+Conclude with `hint _ hM' _ hz`.
+-/
 theorem stab_of_int (v : Pl D) (k : GLoc D.sp.cm.sig (Jst D n) v)
     (hM : ∀ i j, (GlobalTheory.AdelicU.matHom (Fv D.host.F v) D.sp.cm.sig (Jst D n) k).1 i j ∈ intLoc D.host.F D.host.E v)
     (hM' : ∀ i j, ((GlobalTheory.AdelicU.matHom (Fv D.host.F v) D.sp.cm.sig (Jst D n) k)⁻¹).1 i j ∈ intLoc D.host.F D.host.E v) :
@@ -135,6 +187,23 @@ theorem stab_of_int (v : Pl D) (k : GLoc D.sp.cm.sig (Jst D n) v)
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Take `⟨hi, ho, hint⟩` from `hy`. Establish `hcv : ∀ (v' : Pl D) i j, cv D v' (y.1 i j) ∈ intLoc D.host.F D.host.E v'`. Introduce `v' i j`. Distinguish the cases in `hv : v' = v`. Substitute `hv` using the available equality.
+
+Conclude with `hint i j`. Rewrite using `[ho v' hv i j]`. Conclude with `zero_mem _`. Establish `hinv : (nb y)⁻¹ = nb (-y)`. Rewrite using `[inv_eq_iff_mul_eq_one, ← GlobalTheory.CompanionTheory.FourierN.nb_add hnb, add_neg_cancel, GlobalTheory.CompanionTheory.FourierN.nb_zero hnb]`.
+
+Establish `hstab : ∀ v' : Pl D, proj D.sp.cm.sig (Jst D n) v' (nb y) ∈ stabLoc D.sp.cm.sig (Jst D n) (stdLattice D.host.E (n + n)) v'`. Introduce `v'`. Use `stab_of_int v' _ (fun i j => ?_) (fun i j => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((mat (nb y)).map (cv D v')) i j ∈ _`. Rewrite using `[mat_nb_map hnb]`.
+
+Conclude with `unipotent_block_mem_subring _ _ (fun a b => hcv v' a b) i j`. Rewrite using `[← map_inv, ← map_inv, hinv]`. Express the relevant statement in the definitionally equal form `((mat (nb (-y))).map (cv D v')) i j ∈ _`. Rewrite using `[mat_nb_map hnb]`. Use `unipotent_block_mem_subring _ _ (fun a b => ?_) i j` and prove the remaining obligations.
+
+Use `show cv D v' ((-y).1 a b) ∈ _`. Rewrite using `[show (-y).1 a b = -(y.1 a b) from rfl, RingHom.map_neg]`. Conclude with `neg_mem (hcv v' a b)`. Establish `harch : ∀ w, projArch D.sp.cm.sig (Jst D n) w (nb y) = 1` using `fun w => Subtype.ext (Units.ext (mat_nb_map_one hnb _ y fun a b => hi w a b))`. Establish `hoff : ∀ v' ≠ v, proj D.sp.cm.sig (Jst D n) v' (nb y) = 1` using `fun v' hv => Subtype.ext (Units.ext (mat_nb_map_one hnb _ y fun a b => ho v' hv a b))`.
+
+Use `Subgroup.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `show nb y ∈ levelAll D.sp.cm.sig (Jst D n) (stdLattice D.host.E (n + n)) 1`. Use `Subgroup.mem_inf.2 ⟨mem_levelOpen.2 hstab, Subgroup.mem_iInf.2 fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.mem_comap, harch w]`. Conclude with `one_mem _`.
+
+Use `Subgroup.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `show nb y ∈ MonoidHom.ker _`. Rewrite using `[MonoidHom.mem_ker]`. Establish `e` using `mat_nb_map_one hnb (Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E)).toRingHom y fun a b => fst_zero _ fun w => hi w a b`. Apply `Units.ext` to reduce the goal to its premises.
+
+Rewrite using `[MonoidHom.comp_apply, Formalism.UG.bc, Units.coe_map, Units.val_one]`. Conclude with `e`. Use `Subgroup.mem_iInf.2 fun v' => Subgroup.mem_iInf.2 fun hv' => ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.mem_ker]`. Conclude with `hoff v' fun h => hv' (Finset.mem_singleton.2 h)`.
+-/
 theorem nb_mem_KAt {nb : hermA D n → G D n} (hnb : IsNMap nb) {v : Pl D} {y : hermA D n} (hy : IntAt v y) :
     nb y ∈ KAt D n v := by
   obtain ⟨hi, ho, hint⟩ := hy

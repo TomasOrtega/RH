@@ -3,6 +3,17 @@ import Development.AutomorphicArithmetic.PrimeDiscriminants.SmallRam
 
 open NumberField IsDedekindDomain
 
+/- English proof (translation)
+Introduce `φ H hex E' _ _ f P p hp hpP hpP2`. Use `haveI hPp : P.asIdeal.IsPrime := P.isPrime`. Set `g : 𝓞 H.E ≃+* 𝓞 E'` to `(NumberField.RingOfIntegers.mapRingEquiv f).symm`. Set `Q : Ideal (𝓞 H.E)` to `P.asIdeal.comap g`. Use `haveI : Q.IsPrime := Ideal.comap_isPrime g P.asIdeal`.
+
+Establish `hndvd : ¬ p ∣ H.QS`. Introduce `hdvd`. Establish `hmem : ((p : ℕ) : 𝓞 H.E) ∈ Q` using `by show g (p : 𝓞 H.E) ∈ P.asIdeal`. Rewrite using `[map_natCast]`. Conclude with `hpP`.
+
+Establish `h2` using `H.mem_sq_of_dvd_QS hex hp hdvd Q hmem`. Establish `h3 : g (p : 𝓞 H.E) ∈ P.asIdeal ^ 2` using `Ideal.le_comap_pow g 2 h2`. Rewrite `h3` using `[map_natCast]`. Conclude with `hpP2 h3`. Use `⟨hndvd, fun hQS => ?_⟩` and prove the remaining obligations.
+
+Establish `hcop : p.Coprime H.QS` using `(Nat.Prime.coprime_iff_not_dvd hp).2 hndvd`. Establish `hb` using `Nat.gcd_eq_gcd_ab p H.QS`. Rewrite `hb` using `[hcop.gcd_eq_one]`. Apply `P.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`.
+
+Establish `h1` using `congrArg (Int.cast : ℤ → 𝓞 E') hb`. Move the coercions through the operations in `at h1`. Rewrite using `[h1]`. Conclude with `add_mem (P.asIdeal.mul_mem_right _ hpP) (P.asIdeal.mul_mem_right _ hQS)`.
+-/
 theorem UpperTheory.Ram.not_dvd_QS_of_notMem_sq :
     ∀ {φ : Formalism.HC.Frame} (H : Formalism.HC.HostAx φ), H.toHostRaw.Exact → ∀ (E' : Type) [Field E'] [NumberField E'] (_ : E' ≃+* H.E) (P : HeightOneSpectrum (𝓞 E')) (p : ℕ), p.Prime →
       (p : 𝓞 E') ∈ P.asIdeal → (p : 𝓞 E') ∉ P.asIdeal ^ 2 → ¬ p ∣ H.QS ∧ (H.QS : 𝓞 E') ∉ P.asIdeal := by

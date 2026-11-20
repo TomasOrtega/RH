@@ -33,17 +33,26 @@ def splitHomeo [TopologicalSpace P] [IsTopologicalGroup P] [TopologicalSpace G�
     refine Continuous.prodMk (Continuous.subtype_mk ?_ _) hπ
     fun_prop
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem splitHomeo_apply [TopologicalSpace P] [IsTopologicalGroup P] [TopologicalSpace G₁]
     (ι : G₁ →* P) (π : P →* G₁) (hι : Continuous ι) (hπ : Continuous π)
     (h : ∀ u, π (ι u) = u) (z : π.ker × G₁) :
     splitHomeo ι π hι hπ h z = (z.1 : P) * ι z.2 := rfl
 
+/- English proof (translation)
+Simplify using `only [kerPart, Subgroup.coe_mul, MulAut.conjNormal_apply, map_mul]`. Use `group`.
+-/
 theorem mul_split (ι : G₁ →* P) (π : P →* G₁) (h : ∀ u, π (ι u) = u) (g : P) (m : π.ker) (u : G₁) :
     g * ((m : P) * ι u) =
       ((kerPart ι π h g * MulAut.conjNormal (ι (π g)) m : π.ker) : P) * ι (π g * u) := by
   simp only [kerPart, Subgroup.coe_mul, MulAut.conjNormal_apply, map_mul]
   group
 
+/- English proof (translation)
+Use `Continuous.subtype_mk (f := fun z : G₁ × π.ker => ι z.1 * (z.2 : P) * (ι z.1)⁻¹) ?_ _` and prove the remaining obligations. Use `fun_prop`.
+-/
 theorem continuous_conj [TopologicalSpace P] [IsTopologicalGroup P] [TopologicalSpace G₁]
     (ι : G₁ →* P) (π : P →* G₁) (hι : Continuous ι) :
     Continuous fun z : G₁ × π.ker => MulAut.conjNormal (ι z.1) z.2 := by

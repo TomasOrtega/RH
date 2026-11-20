@@ -26,6 +26,17 @@ def GreenSymmetry.Statement : Prop :=
       cycleIntegral h (divCycle W u) e (fsLog h u') + coneIntegral h W (e + 1) (fsLog h u) =
         cycleIntegral h (divCycle W u') e (fsLog h u) + coneIntegral h W (e + 1) (fsLog h u')
 
+/- English proof (translation)
+Establish `h0 : linForm (fun j : Fin 2 => if j = 0 then (1 : ℂ) else 0) = X 0`. Simplify using `[linForm]`. Establish `h1 : linForm (fun j : Fin 2 => if j = 1 then (1 : ℂ) else 0) = X 1`. Simplify using `[linForm]`. Use `⟨LineChowForm.isProjPrime_line, ⟨LineChowForm.D2, LineChowForm.isChowForm_line⟩, LineChowForm.linForm_line, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h1, Ideal.mem_bot]`. Conclude with `X_ne_zero _`. Introduce `W' hW' hX1`. Rewrite `hX1` using `[h1]`. Establish `hmem : W' ∈ relComps ((⊥ : Ideal (MvPolynomial (Fin 2) ℂ)) ⊔ Ideal.span {linForm (fun j : Fin 2 => if j = 0 then (1 : ℂ) else 0)})`.
+
+Assume the negation of the conclusion as `hc`. Apply `Finsupp.mem_support_iff.mp hW'` to reduce the goal to its premises. Simplify using `only [divCycle, fundCycle, Finsupp.onFinset_apply]`. Conclude with `if_neg hc`. Take `⟨hmin, j, hj⟩` from `hmem`.
+
+Establish `hX0 : X 0 ∈ W'`. Apply `hmin.1.2` to reduce the goal to its premises. Rewrite using `[h0]`. Conclude with `Ideal.mem_sup_right (Ideal.subset_span rfl)`. Use `fin_cases j`.
+
+Conclude with `hj hX0`. Conclude with `hj hX1`.
+-/
 theorem GreenSymmetry.hypotheses_inhabited :
     IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 2) ℂ)) ∧
       (∃ g : MvPolynomial (Fin (0 + 2) × Fin 2) ℂ, IsChowForm (⊥ : Ideal (MvPolynomial (Fin 2) ℂ)) (0 + 2) g) ∧

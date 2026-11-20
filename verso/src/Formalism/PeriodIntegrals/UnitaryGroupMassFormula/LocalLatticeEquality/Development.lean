@@ -25,12 +25,20 @@ def CoreP : Prop :=
     (n : ℕ) (Λ : Submodule (𝓞 E) (Fin n → E)), Λ.FG → ∀ y : Fin n → E, bc A y ∈ latL A Λ →
     ∃ d : 𝓞 F, d ∉ p.asIdeal ∧ algebraMap (𝓞 F) (𝓞 E) d • y ∈ Λ
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[bc, Algebra.smul_def]`.
+-/
 theorem bc_smul {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {sig : E →ₐ[F] E} {p : HeightOneSpectrum (𝓞 F)} (A : LocAt F E sig p) {n : ℕ}
     (s : 𝓞 E) (x : Fin n → E) : bc A (s • x) = A.ιE (s : E) • bc A x := by
   funext i
   simp [bc, Algebra.smul_def]
 
+/- English proof (translation)
+Apply `Submodule.span_le.mpr` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨d, hd, hdx⟩` from `h x hx`. Take `⟨u, hu, hu1⟩` from `hU F E sig p A d hd`. Establish `hmem : ((⟨u, hu⟩ : A.O) • bc A (algebraMap (𝓞 F) (𝓞 E) d • x)) ∈ latL A Λ'` using `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, hdx, rfl⟩)`.
+
+Establish `heq : (⟨u, hu⟩ : A.O) • bc A (algebraMap (𝓞 F) (𝓞 E) d • x) = bc A x`. Rewrite using `[Subring.smul_def, bc_smul, smul_smul]`. Simplify using `only [hu1, one_smul]`. Rewrite using `[SetLike.mem_coe, ← heq]`. Conclude with `hmem`.
+-/
 theorem latL_le {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {sig : E →ₐ[F] E} {p : HeightOneSpectrum (𝓞 F)} (A : LocAt F E sig p) {n : ℕ} (hU : UnitP)
     (Λ Λ' : Submodule (𝓞 E) (Fin n → E))
@@ -48,6 +56,19 @@ theorem latL_le {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
   rw [SetLike.mem_coe, ← heq]
   exact hmem
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ h2 sig p A n Λ₁ Λ₂ hf1 hf2`. Prove the components needed by the constructor for the conclusion. Introduce `heq P hP x`. Establish `key : ∀ (Λ Λ' : Submodule (𝓞 E) (Fin n → E)), Λ'.FG → latL A Λ = latL A Λ' → (∃ s : 𝓞 E, s ∉ P.asIdeal ∧ s • x ∈ Λ) → (∃ s : 𝓞 E, s ∉ P.asIdeal ∧ s • x ∈ Λ')`. Introduce and unpack `Λ Λ' hf' he ⟨s, hs, hsx⟩`.
+
+Establish `hy : bc A (s • x) ∈ latL A Λ'` using `he ▸ Submodule.subset_span ⟨_, hsx, rfl⟩`. Take `⟨d, hd, hdy⟩` from `hC F E h2 sig p A n Λ' hf' (s • x) hy`. Use `⟨algebraMap (𝓞 F) (𝓞 E) d * s, ?_, by rwa [mul_smul]⟩` and prove the remaining obligations. Introduce `hm`. Break down `P.isPrime.mem_or_mem hm with h | h` into its components or cases.
+
+Apply `hd` to reduce the goal to its premises. Rewrite using `[← hP]`. Conclude with `h`. Conclude with `hs h`. Conclude with `⟨key Λ₁ Λ₂ hf2 heq, key Λ₂ Λ₁ hf1 heq.symm⟩`.
+
+Introduce `h`. Establish `side : ∀ (Λ Λ' : Submodule (𝓞 E) (Fin n → E)), (∀ P : HeightOneSpectrum (𝓞 E), P.asIdeal.comap (algebraMap (𝓞 F) (𝓞 E)) = p.asIdeal → ∀ x : Fin n → E, (∃ s : 𝓞 E, s ∉ P.asIdeal ∧ s • x ∈ Λ) → (∃ s : 𝓞 E, s ∉ P.asIdeal ∧ s • x ∈ Λ')) → latL A Λ ≤ latL A Λ'`. Introduce `Λ Λ' hh`. Apply `latL_le A hU` to reduce the goal to its premises. Introduce `x hx`.
+
+Apply `hA F E p (Λ'.comap (LinearMap.toSpanSingleton (𝓞 E) _ x))` to reduce the goal to its premises. Introduce `P hP hle`. Establish `h1 : (1 : 𝓞 E) ∉ P.asIdeal` using `fun h1 => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h1)`. Take `⟨s, hs, hsx⟩` from `hh P hP x ⟨1, h1, by simpa using hx⟩`. Conclude with `hs (hle (by simpa [LinearMap.toSpanSingleton_apply] using hsx))`.
+
+Conclude with `le_antisymm (side Λ₁ Λ₂ (fun P hP x => (h P hP x).1)) (side Λ₂ Λ₁ (fun P hP x => (h P hP x).2))`.
+-/
 theorem locLatEq_of (hU : UnitP) (hA : AvoidP) (hC : CoreP) : PI.LocLatEq.Stmt := by
   intro F E _ _ _ _ _ h2 sig p A n Λ₁ Λ₂ hf1 hf2
   constructor

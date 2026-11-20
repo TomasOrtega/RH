@@ -7,6 +7,9 @@ open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.ThreeDimData Matrix
 
 namespace GlobalTheory.BesselNorm
 
+/- English proof (translation)
+Introduce `_ _` and use `⟨fun x y => PI.PolynomialProperness.GN.gN_mul_le x y, fun _ hx => ⟨PI.PolynomialProperness.GN.gN_inv hx, PI.PolynomialProperness.GN.gN_ge_one hx⟩⟩`.
+-/
 theorem hilbertSchmidt_normInv : Formalism.FourierDecayAlt.ThreeDimData.NormInv := fun _ _ =>
   ⟨fun x y => PI.PolynomialProperness.GN.gN_mul_le x y,
     fun _ hx => ⟨PI.PolynomialProperness.GN.gN_inv hx, PI.PolynomialProperness.GN.gN_ge_one hx⟩⟩

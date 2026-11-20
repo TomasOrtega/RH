@@ -39,6 +39,11 @@ def UnipotentCoveringCount : Prop :=
     IsFundamentalDomain (ratOf (K := Nsub (AF X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u))) 𝓕 (X.measW u).μN →
     covol (X.measW u).μN = ((X.measW u).μN 𝓕).toReal
 
+/- English proof (translation)
+Introduce `D X hb hK u FdN hT hL hF`. Establish `hN : (X.measW u).IsTextNorm` using `X.measW_norm u`. Establish `hfd` using `h3 hSA NLev.nLevel_holds NBr.bridgeK_holds hS X hb hK u FdN hT hL hF`. Establish `h4'` using `h4 hS X hb u FdN hN hT hF`. Establish `hc'` using `hc X u _ hN hfd`.
+
+Use `show covol (X.measW u).μN = (X.muN u FdN).toReal * ((X.measW u).μNf (Subtype.val ⁻¹' (KX X : Set (HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J)))).toReal`. Rewrite using `[hc', h4', ENNReal.toReal_mul]`.
+-/
 theorem nVolAll_of (hSA : StrongApproxN) (hS : SplitIso) (h3 : UnipotentFundamentalDomain) (h4 : N4) (hc : UnipotentCoveringCount) : NVolAll := by
   intro D X hb hK u FdN hT hL hF
   have hN : (X.measW u).IsTextNorm := X.measW_norm u

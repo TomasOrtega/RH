@@ -10,10 +10,16 @@ noncomputable section
 
 namespace GlobalTheory.ThK.AdaptEv.Restr
 
+/- English proof (translation)
+Apply the tactic sequence `funext k; simp only [ext0, Pi.smul_apply]; cases eq k <;> simp`.
+-/
 theorem extendByZeroOffSubset_smul_apply {κ ι κ₁ R S : Type} [Zero R] [SMulZeroClass S R] (eq : κ ≃ ι ⊕ κ₁) (c : S) (a : κ₁ → R) :
     ext0 eq (c • a) = c • ext0 eq a := by
   funext k; simp only [ext0, Pi.smul_apply]; cases eq k <;> simp
 
+/- English proof (translation)
+Apply the tactic sequence `funext k; simp only [ext0]; cases eq k <;> rfl`.
+-/
 theorem matrixExtendByZero_zero {κ ι κ₁ R : Type} [Zero R] (eq : κ ≃ ι ⊕ κ₁) : ext0 eq (0 : κ₁ → R) = 0 := by
   funext k; simp only [ext0]; cases eq k <;> rfl
 
@@ -28,9 +34,15 @@ def extendByZeroCLM' {κ ι κ₁ : Type} [Fintype κ] [Fintype κ₁] (eq : κ 
       map_add' := matrixExtendByZero_add eq
       map_smul' := fun c x => extendByZeroOffSubset_smul_apply eq c x }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem extend_by_zero_linear_apply {κ ι κ₁ : Type} [Fintype κ] [Fintype κ₁] (eq : κ ≃ ι ⊕ κ₁)
     (x : κ₁ → mixedEmbedding.mixedSpace F) : extendByZeroCLM' F eq x = ext0 eq x := rfl
 
+/- English proof (translation)
+Use `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun p => ?_` and prove the remaining obligations. Use `norm_le_pi_norm (ext0 eq x) (eq.symm (Sum.inr p))` as an intermediate fact. Rewrite `this` using `[ext0_inr]`. Then use the resulting hypothesis.
+-/
 theorem norm_le_norm_extend_by_zero {κ ι κ₁ : Type} [Fintype κ] [Fintype κ₁] (eq : κ ≃ ι ⊕ κ₁)
     (x : κ₁ → mixedEmbedding.mixedSpace F) : ‖x‖ ≤ ‖ext0 eq x‖ := by
   refine (pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun p => ?_
@@ -44,9 +56,17 @@ def restrS {κ ι κ₁ : Type} [Fintype κ] [Fintype κ₁] (eq : κ ≃ ι ⊕
       simp only [extend_by_zero_linear_apply, pow_one, one_mul]
       linarith [norm_nonneg (ext0 eq x)]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem restrS_apply {κ ι κ₁ : Type} [Fintype κ] [Fintype κ₁] (eq : κ ≃ ι ⊕ κ₁) (f : SInf F κ)
     (y : κ₁ → mixedEmbedding.mixedSpace F) : restrS F eq f y = f (ext0 eq y) := rfl
 
+/- English proof (translation)
+Introduce `h`. Set `b : ContDiffBump (0 : κ → mixedEmbedding.mixedSpace F)` to `⟨1, 2, one_pos, one_lt_two⟩`. Establish `hs : HasCompactSupport (fun x => ((b x : ℝ) : ℂ))` using `b.hasCompactSupport.comp_left (g := fun t : ℝ => (t : ℂ)) (by simp)`. Establish `hc : ContDiff ℝ (⊤ : ℕ∞) (fun x => ((b x : ℝ) : ℂ))` using `Complex.ofRealCLM.contDiff.comp b.contDiff`. Establish `h1` using `congrArg (fun T : SInf F κ →L[ℂ] SInf F κ₁ => T (hs.toSchwartzMap hc) 0) h`.
+
+Establish `h2 : b 0 = 1` using `b.one_of_mem_closedBall (by simp [b])`. Simplify using `only [restrS_apply, matrixExtendByZero_zero, ContinuousLinearMap.zero_apply, SchwartzMap.zero_apply] at h1`. Express the relevant statement in the definitionally equal form `((b 0 : ℝ) : ℂ) = 0 at h1`. Simplify using `[h2] at h1`.
+-/
 theorem restrS_ne_zero {κ ι κ₁ : Type} [Fintype κ] [Fintype κ₁] (eq : κ ≃ ι ⊕ κ₁) : restrS F eq ≠ 0 := by
   classical
   intro h
@@ -62,6 +82,9 @@ theorem restrS_ne_zero {κ ι κ₁ : Type} [Fintype κ] [Fintype κ₁] (eq : �
 
 end GlobalTheory.ThK.AdaptEv.Restr
 
+/- English proof (translation)
+Introduce `F _ _ κ ι κ₁ _ _ _ eq`. Conclude with `⟨Restr.restrS F eq, Restr.restrS_ne_zero F eq, fun f y => rfl⟩`.
+-/
 theorem GlobalTheory.ThK.AdaptEv.exists_restr_schwartz :
     ∀ (F : Type) [Field F] [NumberField F] {κ ι κ₁ : Type} [Fintype κ] [Fintype ι] [Fintype κ₁] (eq : κ ≃ ι ⊕ κ₁),
     ∃ ei : SInf F κ →L[ℂ] SInf F κ₁, ei ≠ 0 ∧ ∀ f y, ei f y = f (ext0 eq y) := by

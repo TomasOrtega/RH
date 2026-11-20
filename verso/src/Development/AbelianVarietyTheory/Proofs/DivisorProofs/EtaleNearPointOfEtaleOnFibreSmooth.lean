@@ -14,6 +14,13 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Establish `e : (show (Spec R).Opens from PrimeSpectrum.basicOpen f).ι ≫ Spec.map θ = (basicOpenIsoSpecAway f).hom ≫ Spec.map (θ ≫ CommRingCat.ofHom (algebraMap R (Localization.Away f)))`. Rewrite using `[Spec.map_comp, ← Category.assoc, basicOpenIsoSpecAway_hom_SpecMap]`. Rewrite using `[e]`. Establish `key : Etale (Spec.map (θ ≫ CommRingCat.ofHom (algebraMap R (Localization.Away f)))) ↔ ((algebraMap R (Localization.Away f)).comp θ.hom).Etale` using `HasRingHomProperty.Spec_iff (P := @Etale)`. Rewrite using `[← key]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `H`. Establish `e2 : Spec.map (θ ≫ CommRingCat.ofHom (algebraMap R (Localization.Away f))) = (basicOpenIsoSpecAway f).inv ≫ ((basicOpenIsoSpecAway f).hom ≫ Spec.map (θ ≫ CommRingCat.ofHom (algebraMap R (Localization.Away f))))` using `(Iso.inv_hom_id_assoc _ _).symm`. Rewrite using `[e2]`. Use `infer_instance`.
+
+Introduce `H`. Use `infer_instance`.
+-/
 theorem etale_basicOpen_comp_SpecMap_iff (S R : CommRingCat.{0}) (θ : S ⟶ R) (f : R) :
     Etale ((show (Spec R).Opens from PrimeSpectrum.basicOpen f).ι ≫ Spec.map θ) ↔
       ((algebraMap R (Localization.Away f)).comp θ.hom).Etale := by
@@ -33,6 +40,9 @@ theorem etale_basicOpen_comp_SpecMap_iff (S R : CommRingCat.{0}) (θ : S ⟶ R) 
     rw [e2]; infer_instance
   · intro H; infer_instance
 
+/- English proof (translation)
+Introduce `hE`. Establish `e : (iX ''ᵁ U).ι ≫ h = (iX.isoImage U).inv ≫ (U.ι ≫ h') ≫ iZ`. Rewrite using `[Iso.eq_inv_comp, ← Category.assoc, Scheme.Hom.isoImage_hom_ι, Category.assoc, sh, Category.assoc]`. Rewrite using `[e]`. Use `infer_instance`.
+-/
 theorem etale_image_comp_of_etale (X Z X' Z' : Scheme.{0}) (h : X ⟶ Z) (h' : X' ⟶ Z') (iX : X' ⟶ X) (iZ : Z' ⟶ Z)
     [IsOpenImmersion iX] [IsOpenImmersion iZ] (sh : iX ≫ h = h' ≫ iZ) (U : X'.Opens) :
     Etale (U.ι ≫ h') → Etale ((iX ''ᵁ U).ι ≫ h) := by
@@ -44,6 +54,29 @@ theorem etale_image_comp_of_etale (X Z X' Z' : Scheme.{0}) (h : X ⟶ Z) (h' : X
 
 end GlobalTheory.Mum
 
+/- English proof (translation)
+Introduce `T X Z p q h hh hp hq Ω _ x W w hw hE`. Substitute `hh` using the available equality. Take `⟨UA, hUA, hzA, -⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.mp T.isBasis_affineOpens) (show (h ≫ q) (pullback.fst (h ≫ q) x w) ∈ (⊤ : T.Opens) from trivial)`. Take `⟨UC, hUC, hzC, hCA⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.mp Z.isBasis_affineOpens) (show h (pullback.fst (h ≫ q) x w) ∈ q ⁻¹ᵁ UA by simpa using hzA)`. Take `⟨UB, hUB, hzB, hBC⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.mp X.isBasis_affineOpens) (show pullback.fst (h ≫ q) x w ∈ h ⁻¹ᵁ UC from hzC)`.
+
+Establish `hUA' : IsAffineOpen UA` using `hUA`. Establish `hUB' : IsAffineOpen UB` using `hUB`. Establish `hUC' : IsAffineOpen UC` using `hUC`. Use `haveI := hUA'.isOpenImmersion_fromSpec`. Use `haveI := hUB'.isOpenImmersion_fromSpec`.
+
+Use `haveI := hUC'.isOpenImmersion_fromSpec`. Establish `hxr : Set.range x ⊆ Set.range hUA'.fromSpec`. Rewrite using `[hUA'.range_fromSpec]`. Introduce and unpack `_ ⟨y, rfl⟩`. Establish `: Subsingleton (Sp Ω)` using `inferInstanceAs (Subsingleton (PrimeSpectrum Ω))`.
+
+Take `rfl : y = pullback.snd (h ≫ q) x w` from `Subsingleton.elim _ _`. Use `congrArg (fun g => g w) (pullback.condition (f := h ≫ q) (g := x))` as an intermediate fact. Simplify using `only [Scheme.Hom.comp_apply] at this`. Use `show x (pullback.snd (h ≫ q) x w) ∈ UA`. Rewrite using `[← this]`.
+
+Simplify using `using hzA`. Use `set φ := q.appLE UA UC hCA`. Use `set ψ := h.appLE UC UB hBC`. Set `x'` to `IsOpenImmersion.lift hUA'.fromSpec x hxr`. Set `ω : Γ(T, UA) ⟶ CommRingCat.of Ω` to `Spec.preimage x'`.
+
+Establish `sx : Spec.map ω ≫ hUA'.fromSpec = x`. Simplify using `only [ω, Spec.map_preimage]`. Conclude with `IsOpenImmersion.lift_fac _ _ _`. Take `⟨W', w', hw', hfst, hE'⟩` from `GlobalTheory.T.fibre_etale_restrict_open_alt T X Z _ _ _ (Sp Ω) (h ≫ q) q h rfl (Spec.map (φ ≫ ψ)) (Spec.map φ) (Spec.map ψ) (by rw [Spec.map_comp]) hUA'.fromSpec hUB'.fromSpec hUC'.fromSpec (hUA'.SpecMap_appLE_fromSpec q hUC' hCA).symm (hUC'.SpecMap_appLE_fromSpec h hUB' hBC).sy …`. Take `⟨Q', hQ', f, hcomap, hf, hEt⟩` from `GlobalTheory.T.etale_localisation_of_etale_affine_fibre' _ _ _ φ ψ Ω ω W' w' hw' hE'`.
+
+Use `letI := φ.hom.toAlgebra`. Use `letI := ψ.hom.toAlgebra`. Use `letI := (φ ≫ ψ).hom.toAlgebra`. Use `letI := ω.hom.toAlgebra`. Use `letI : IsScalarTower Γ(T, UA) Γ(Z, UC) Γ(X, UB) := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`.
+
+Use `haveI := hQ'`. Use `haveI hQprime : (pullback.fst (Spec.map (φ ≫ ψ)) (Spec.map ω) w').asIdeal.IsPrime := PrimeSpectrum.isPrime _`. Establish `hbij` using `GlobalTheory.T.localization_tensor_prime_comap_compat Γ(T, UA) Γ(Z, UC) Γ(X, UB) Ω (pullback.fst (Spec.map (φ ≫ ψ)) (Spec.map ω) w').asIdeal Q' f hcomap hf hEt`. Use `haveI : Algebra.Smooth Γ(T, UA) Γ(Z, UC) := HasRingHomProperty.appLE @Smooth q hq ⟨UA, hUA'⟩ ⟨UC, hUC'⟩ hCA`. Use `haveI : Algebra.Smooth Γ(T, UA) Γ(X, UB) := by`.
+
+Use `HasRingHomProperty.appLE @Smooth (h ≫ q) hp ⟨UA, hUA'⟩ ⟨UB, hUB'⟩ (hBC.trans (h.preimage_mono hCA))` as an intermediate fact. Rewrite `this` using `[← Scheme.Hom.appLE_comp_appLE h q UA UC UB hCA hBC]`. Conclude with `this`. Take `⟨g, hg, hgEt⟩` from `GlobalTheory.T.exists_etale_away_of_bijective_kaehler_mapBaseChange Γ(T, UA) Γ(Z, UC) Γ(X, UB) (pullback.fst (Spec.map (φ ≫ ψ)) (Spec.map ω) w').asIdeal hbij`. Establish `hR : ((algebraMap Γ(X, UB) (Localization.Away g)).comp ψ.hom).Etale`.
+
+Use `RingHom.etale_algebraMap.mpr hgEt` as an intermediate fact. Rewrite `this` using `[IsScalarTower.algebraMap_eq Γ(Z, UC) Γ(X, UB) (Localization.Away g)]`. Then use the resulting hypothesis. Establish `hV` using `(etale_basicOpen_comp_SpecMap_iff _ _ ψ g).mpr hR`. Use `⟨hUB'.fromSpec ''ᵁ (PrimeSpectrum.basicOpen g), ?_, etale_image_comp_of_etale X Z _ _ h (Spec.map ψ) hUB'.fromSpec hUC'.fromSpec (hUC'.SpecMap_appLE_fromSpec h hUB' hBC).symm _ hV⟩` and prove the remaining obligations. Rewrite using `[← hfst]`.
+
+Conclude with `Set.mem_image_of_mem _ hg`.
+-/
 theorem GlobalTheory.Mum.etale_near_of_etale_fibre : ∀ (T X Z : Scheme.{0}) (p : X ⟶ T) (q : Z ⟶ T) (h : X ⟶ Z) (hh : h ≫ q = p), Smooth p → Smooth q → ∀ (Ω : Type) [Field Ω] (x : Sp Ω ⟶ T) (W : (pullback p x).Opens) (w : ↥(pullback p x)), w ∈ W → Etale (W.ι ≫ pullback.map p x q x h (𝟙 _) (𝟙 _) (by simp [hh]) (by simp)) → ∃ V : X.Opens, pullback.fst p x w ∈ V ∧ Etale (V.ι ≫ h) := by
   intro T X Z p q h hh hp hq Ω _ x W w hw hE
   subst hh

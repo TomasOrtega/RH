@@ -11,6 +11,11 @@ namespace Formalism.L2.SG.LeadingMinorsNonvanishing
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `h0`. Take `⟨τ⟩ : Nonempty (D.host.E →+* ℂ)` from `inferInstance`. Establish `h1` using `(b_G_pos (p_starConj D) hT F F' hz hz' hG (p_posX D T hT F) τ).1`. Rewrite `h1` using `[b_tauG (p_starConj D) F F' τ, h0, map_zero, norm_zero, Complex.ofReal_re]`. Establish `h2 : (0:ℝ) ≤ (T:ℝ) * T' * ‖τ (Dr F F')‖ ^ 2` using `by positivity`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem leading_minor_ne_zero {D : D7} {T T' : ℕ} (hT : 0 < T) (F : LFlag (hS D) D.R.rS (T : D.host.E))
     (F' : LFlag (hS D) D.R.rS (T' : D.host.E)) (hz : F.zt = F.fl.z) (hz' : F'.zt = F'.fl.z) (hG : Gval F F' ≠ 0) :
     Dr1 F F' ≠ 0 := by
@@ -21,6 +26,15 @@ theorem leading_minor_ne_zero {D : D7} {T T' : ℕ} (hT : 0 < T) (F : LFlag (hS 
   have h2 : (0:ℝ) ≤ (T:ℝ) * T' * ‖τ (Dr F F')‖ ^ 2 := by positivity
   nlinarith
 
+/- English proof (translation)
+Introduce `D X Y u u' t hG hrel`. Take `⟨F', ⟨hP, hmk⟩, hR⟩` from `hrel`. Establish `hf` using `Formalism.L2.SG.Closed.TermFun_holds D u u' (X.Fu u) _ ((Y.rowsOK u).1 t.lam t.mem)`. Establish `hGv : Gval (lf D (X.Fu u)) F' ≠ 0`. Establish `e` using `Formalism.L2.SG.TermDef.Gt_mk hf.1 ⟨F', hP⟩`.
+
+Rewrite `e` using `[hmk]`. Conclude with `fun h0 => hG (e.trans h0)`. Establish `hTu` using `tie_Tu_pos D u`. Establish `hTu'` using `tie_Tu_pos D u'`. Establish `hDr1 : Dl (lf D (X.Fu u)).fl F'.fl (D.R.rS + 1) ≠ 0` using `leading_minor_ne_zero hTu (lf D (X.Fu u)) F' rfl hP.1.2 hGv`.
+
+Establish `geo` using `cell_geom D.host.F D.host.E (hS D) D.R.rS _ _ (lf D (X.Fu u)).fl F'.fl (tie_trace D.sp.cm) (tie_aniso D _ hTu (lf D (X.Fu u))) (tie_aniso D _ hTu' F') hR`. Take `⟨p, hp⟩` from `cell_of_matRel cell_inv cell_sign cell_bruhat cell_mono cell_point (le_refl (D.R.rS + 1)) ((Zhat (lf D (X.Fu u)).fl F'.fl).submatrix (Fin.castLE (le_refl (D.R.rS + 1))) (Fin.castLE (le_refl (D.R.rS + 1)))) (by rw [← tie_Dl_eq']; exact hDr1) (geo (D.R.rS + 1) le_rfl (Or.inr ⟨rfl, …`. Use `⟨p, F', ⟨hP, hmk⟩, hGv, ?_⟩` and prove the remaining obligations. Take `⟨L, U, hL, hU, hZ⟩` from `hp`. Use `⟨L, U, hL, hU, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hZ]`. Use function extensionality and compare the values at `a b`. Use `first`. Consider the case `rfl`. Consider the case `(simp [ZhatOM, ZhatL, Matrix.submatrix_apply]; rfl)`.
+-/
 theorem atSomeAll_holds : Formalism.L2.SG.TermTieOf.AtSomeAll := by
   intro D X Y u u' t hG hrel
   obtain ⟨F', ⟨hP, hmk⟩, hR⟩ := hrel

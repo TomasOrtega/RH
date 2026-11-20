@@ -6,6 +6,25 @@ open scoped Matrix
 
 namespace UpperTheory.V.Sd
 
+/- English proof (translation)
+Establish `ev : ∀ x : k, x * x - (α + β) * x + α * β = 0 → ∃ v : Fin 2 → k, v ≠ 0 ∧ M 0 0 * v 0 + M 0 1 * v 1 = x * v 0 ∧ M 1 0 * v 0 + M 1 1 * v 1 = x * v 1`. Introduce `x hx`. Establish `: ((M : Matrix (Fin 2) (Fin 2) k) - x • 1).det = 0`. Rewrite using `[Matrix.det_fin_two]`. Simplify using the standard rewrite rules.
+
+Take the linear combination `hx + hd - x * ht`. Take `⟨v, hv, h⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 this`. Establish `h0` using `congrFun h 0`. Establish `h1` using `congrFun h 1`. Simplify using `[Matrix.mulVec, dotProduct, Fin.sum_univ_two] at h0 h1`.
+
+Conclude with `⟨v, hv, by linear_combination h0, by linear_combination h1⟩`. Take `⟨v, hv, v0, v1⟩` from `ev α (by ring)`. Take `⟨w, hw, w0, w1⟩` from `ev β (by ring)`. Establish `hs : α - β ≠ 0` using `sub_ne_zero.2 hne`. Establish `hdet : (!![v 0, w 0; v 1, w 1] : Matrix (Fin 2) (Fin 2) k).det ≠ 0`.
+
+Rewrite using `[Matrix.det_fin_two_of]`. Introduce `h`. Establish `a00 : v 0 * w 0 = 0`. Apply `mul_left_cancel₀ hs` to reduce the goal to its premises. Take the linear combination `v 0 * w0 - w 0 * v0 - M 0 1 * h`.
+
+Establish `a11 : v 1 * w 1 = 0`. Apply `mul_left_cancel₀ hs` to reduce the goal to its premises. Take the linear combination `v 1 * w1 - w 1 * v1 + M 1 0 * h`. Establish `a01 : v 0 * w 1 = 0`. Apply `mul_left_cancel₀ hs` to reduce the goal to its premises.
+
+Take the linear combination `v 1 * w0 - w 1 * v0 + (M 0 0 - β) * h`. Establish `a10 : v 1 * w 0 = 0` using `by linear_combination a01 - h`. Apply `hv` to reduce the goal to its premises. Use extensionality with `i`. Assume the negation of the conclusion as `hi`.
+
+Apply `hw` to reduce the goal to its premises. Apply the tactic sequence `fin_cases i <;> ext j <;> fin_cases j <;> simp_all`. Set `P : GL (Fin 2) k` to `Matrix.GeneralLinearGroup.mkOfDetNeZero _ hdet`. Establish `hP : (P : Matrix (Fin 2) (Fin 2) k) = !![v 0, w 0; v 1, w 1]` using `rfl`. Establish `key : (M : Matrix (Fin 2) (Fin 2) k) * P = P * !![α, 0; 0, β]`.
+
+Rewrite using `[hP]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]`. Take the linear combination `v0`. Take the linear combination `w0`.
+
+Take the linear combination `v1`. Take the linear combination `w1`. Establish `: ((P⁻¹ * M * P⁻¹⁻¹ : GL (Fin 2) k) : Matrix (Fin 2) (Fin 2) k) = !![α, 0; 0, β]`. Rewrite using `[inv_inv, Units.val_mul, Units.val_mul, mul_assoc, key, ← mul_assoc, Units.inv_mul, one_mul]`. Apply the tactic sequence `refine ⟨P⁻¹, ?_, ?_, ?_, ?_⟩ <;> rw [this] <;> simp`.
+-/
 private theorem diag2 {k : Type} [Field k] (M : GL (Fin 2) k) (α β : k) (hne : α ≠ β)
     (ht : M 0 0 + M 1 1 = α + β) (hd : M 0 0 * M 1 1 - M 0 1 * M 1 0 = α * β) :
     ∃ g : GL (Fin 2) k, (g * M * g⁻¹) 0 1 = 0 ∧ (g * M * g⁻¹) 1 0 = 0 ∧ (g * M * g⁻¹) 0 0 = α ∧ (g * M * g⁻¹) 1 1 = β := by
@@ -53,6 +72,9 @@ private theorem diag2 {k : Type} [Field k] (M : GL (Fin 2) k) (α β : k) (hne :
     rw [inv_inv, Units.val_mul, Units.val_mul, mul_assoc, key, ← mul_assoc, Units.inv_mul, one_mul]
   refine ⟨P⁻¹, ?_, ?_, ?_, ?_⟩ <;> rw [this] <;> simp
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.IrreducibleInvariant.exists_ne ρ h g`.
+-/
 private theorem exists_ne {Γ k : Type} [Group Γ] [Field k] (ρ : Γ →* GL (Fin 2) k) (h : IsIrr ρ) (g : GL (Fin 2) k) :
     ∃ s, (g * ρ s * g⁻¹) 0 1 ≠ 0 :=
   _root_.UpperTheory.Reformulated.B.IrreducibleInvariant.exists_ne ρ h g
@@ -60,20 +82,43 @@ private theorem exists_ne {Γ k : Type} [Group Γ] [Field k] (ρ : Γ →* GL (F
 section
 variable {k : Type} [NormedField k] [IsUltrametricDist k]
 
+/- English proof (translation)
+The claim follows from `(IsUltrametricDist.norm_add_le_max x y).trans_lt (max_lt hx hy)`.
+-/
 private theorem nadd {x y : k} (hx : ‖x‖ < 1) (hy : ‖y‖ < 1) : ‖x + y‖ < 1 :=
   (IsUltrametricDist.norm_add_le_max x y).trans_lt (max_lt hx hy)
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg]; exact nadd hx (by rwa [norm_neg])`.
+-/
 private theorem nsub {x y : k} (hx : ‖x‖ < 1) (hy : ‖y‖ < 1) : ‖x - y‖ < 1 := by
   rw [sub_eq_add_neg]; exact nadd hx (by rwa [norm_neg])
 
+/- English proof (translation)
+Rewrite using `[norm_mul]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_right hx (norm_nonneg _) hy`.
+-/
 private theorem nmul {x y : k} (hx : ‖x‖ ≤ 1) (hy : ‖y‖ < 1) : ‖x * y‖ < 1 := by
   rw [norm_mul]; exact mul_lt_one_of_nonneg_of_lt_one_right hx (norm_nonneg _) hy
 
+/- English proof (translation)
+Use `IsUltrametricDist.norm_add_le_max (x - y) y` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Conclude with `this.trans (max_le h.le hy.le)`.
+-/
 private theorem nle {x y : k} (hy : ‖y‖ = 1) (h : ‖x - y‖ < 1) : ‖x‖ ≤ 1 := by
   have := IsUltrametricDist.norm_add_le_max (x - y) y
   rw [sub_add_cancel] at this
   exact this.trans (max_le h.le hy.le)
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `IsAlgClosed.exists_root (X ^ 2 - C t * X + C d : k[X]) (by`. Establish `: (X ^ 2 - C t * X + C d : k[X]).degree = 2` using `by compute_degree!`. Rewrite using `[this]`. Use the proof step `decide)`. Establish `hx' : d = x * (t - x)`.
+
+Simplify using `at hx`. Take the linear combination `hx`. Establish `h1 : ‖(x - a) * (t - x - a)‖ < 1`. Establish `: (x - a) * (t - x - a) = (d - a * b) - a * (t - (a + b))` using `by rw [hx']; ring`. Rewrite using `[this]`.
+
+Conclude with `nsub hd (nmul ha.le ht)`. Establish `h2 : ‖x - a‖ < 1 ∨ ‖t - x - a‖ < 1`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Rewrite `h1` using `[norm_mul]`.
+
+Conclude with `absurd (one_le_mul_of_one_le_of_one_le hc.1 hc.2) (not_le.2 h1)`. Break down `h2 with h | h` into its components or cases. Use `⟨x, t - x, by ring, hx', h, ?_⟩` and prove the remaining obligations. Establish `: t - x - b = (t - (a + b)) - (x - a)` using `by ring`. Rewrite using `[this]`.
+
+Conclude with `nsub ht h`. Use `⟨t - x, x, by ring, by rw [hx']; ring, h, ?_⟩` and prove the remaining obligations. Establish `: x - b = (t - (a + b)) - (t - x - a)` using `by ring`. Rewrite using `[this]`. Conclude with `nsub ht h`.
+-/
 private theorem roots [IsAlgClosed k] (t d a b : k) (ha : ‖a‖ = 1) (ht : ‖t - (a + b)‖ < 1) (hd : ‖d - a * b‖ < 1) :
     ∃ α β : k, t = α + β ∧ d = α * β ∧ ‖α - a‖ < 1 ∧ ‖β - b‖ < 1 := by
   obtain ⟨x, hx⟩ := IsAlgClosed.exists_root (X ^ 2 - C t * X + C d : k[X]) (by
@@ -97,6 +142,31 @@ private theorem roots [IsAlgClosed k] (t d a b : k) (ha : ‖a‖ = 1) (ht : ‖
     have : x - b = (t - (a + b)) - (t - x - a) := by ring
     rw [this]; exact nsub ht h
 
+/- English proof (translation)
+Establish `hmul : ∀ s t i j, σ (s * t) i j = σ s i 0 * σ t 0 j + σ s i 1 * σ t 1 j`. Introduce `s t i j`. Rewrite using `[map_mul, Units.val_mul, Matrix.mul_apply, Fin.sum_univ_two]`. Establish `hβ : ‖σ g₀ 1 1‖ ≤ 1` using `nle (hab g₀).2 h11`. Establish `hαβ : 1 ≤ ‖σ g₀ 0 0 - σ g₀ 1 1‖`.
+
+Assume the negation of the conclusion as `h`. Apply `hg` to reduce the goal to its premises. Establish `: (a g₀ : k) - b g₀ = (σ g₀ 0 0 - σ g₀ 1 1) - (σ g₀ 0 0 - a g₀) + (σ g₀ 1 1 - b g₀)` using `by ring`. Rewrite using `[this]`. Conclude with `nadd (nsub (not_le.1 h) h00) h11`.
+
+Establish `hA : ∀ s, ‖σ s 0 0 - a s‖ < 1`. Introduce `s`. Establish `h1` using `htr (g₀ * s)`. Rewrite `h1` using `[hmul, hmul, h01, h10, map_mul, map_mul, Units.val_mul, Units.val_mul]`. Establish `h2 : (σ g₀ 0 0 - σ g₀ 1 1) * (σ s 0 0 - a s) = (σ g₀ 0 0 * σ s 0 0 + 0 * σ s 1 0 + (0 * σ s 0 1 + σ g₀ 1 1 * σ s 1 1) - (a g₀ * a s + b g₀ * b s)) - σ g₀ 1 1 * (σ s 0 0 + σ s 1 1 - (a s + b s)) - a s * (σ g₀ 0 0 - a g₀) - b s * (σ g₀ 1 1 - b g₀)` using `by ring`.
+
+Establish `h3 : ‖(σ g₀ 0 0 - σ g₀ 1 1) * (σ s 0 0 - a s)‖ < 1`. Rewrite using `[h2]`. Conclude with `nsub (nsub (nsub h1 (nmul hβ (htr s))) (nmul (hab s).1.le h00)) (nmul (hab s).2.le h11)`. Rewrite `h3` using `[norm_mul]`. Conclude with `(le_mul_of_one_le_left (norm_nonneg _) hαβ).trans_lt h3`.
+
+Establish `hD : ∀ s, ‖σ s 1 1 - b s‖ < 1`. Introduce `s`. Establish `: σ s 1 1 - b s = (σ s 0 0 + σ s 1 1 - (a s + b s)) - (σ s 0 0 - a s)` using `by ring`. Rewrite using `[this]`. Conclude with `nsub (htr s) (hA s)`.
+
+Establish `hBC : ∀ s t, ‖σ s 0 1 * σ t 1 0‖ < 1`. Introduce `s t`. Establish `h1` using `hA (s * t)`. Rewrite `h1` using `[hmul, map_mul, Units.val_mul]`. Establish `: σ s 0 1 * σ t 1 0 = (σ s 0 0 * σ t 0 0 + σ s 0 1 * σ t 1 0 - a s * a t) - σ s 0 0 * (σ t 0 0 - a t) - a t * (σ s 0 0 - a s)` using `by ring`.
+
+Rewrite using `[this]`. Conclude with `nsub (nsub h1 (nmul (nle (hab s).1 (hA s)) (hA t))) (nmul (hab t).1.le (hA s))`. Establish `hcB : Continuous fun s => ‖σ s 0 1‖` using `((Units.continuous_val.comp hc).matrix_elem 0 1).norm`. Take `⟨s₀, -, hs₀⟩` from `isCompact_univ.exists_isMaxOn (Set.univ_nonempty) hcB.continuousOn`. Establish `hmax : ∀ s, ‖σ s 0 1‖ ≤ ‖σ s₀ 0 1‖` using `fun s => hs₀ (Set.mem_univ s)`.
+
+Take `⟨s₁, hs₁⟩` from `hne`. Establish `hpos : 0 < ‖σ s₀ 0 1‖` using `(norm_pos_iff.2 hs₁).trans_le (hmax s₁)`. Establish `hB : σ s₀ 0 1 ≠ 0` using `norm_pos_iff.1 hpos`. Use `set B := σ s₀ 0 1 with hBdef`. Set `g : GL (Fin 2) k` to `⟨!![1, 0; 0, B], !![1, 0; 0, B⁻¹], by`.
+
+Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, hB], by`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, hB]⟩`. Establish `hgv : ∀ s, ((g * σ s * g⁻¹ : GL (Fin 2) k) : Matrix (Fin 2) (Fin 2) k) = !![σ s 0 0, σ s 0 1 * B⁻¹; B * σ s 1 0, σ s 1 1]`. Introduce `s`. Use `show !![1, 0; 0, B] * (σ s : Matrix (Fin 2) (Fin 2) k) * !![1, 0; 0, B⁻¹] = _`.
+
+Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.vecMul, dotProduct, Matrix.mul_apply, Fin.sum_univ_two]`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `refine ⟨g, ?_, ?_, fun s => ⟨?_, ?_, ?_, ?_⟩, s₀, ?_⟩ <;> rw [hgv]`. Simplify using `[h01]`. Simplify using `[h10]`.
+
+Conclude with `hA s`. Conclude with `hD s`. Conclude with `hBC s₀ s`. Use `show ‖σ s 0 1 * B⁻¹‖ ≤ 1`. Rewrite using `[norm_mul, norm_inv, ← div_eq_mul_inv, div_le_one hpos]`.
+
+Conclude with `hmax s`. Use `show ‖B * B⁻¹‖ = 1`. Rewrite using `[mul_inv_cancel₀ hB, norm_one]`.
+-/
 private theorem core {Γ : Type} [Group Γ] [TopologicalSpace Γ] [CompactSpace Γ] (σ : Γ →* GL (Fin 2) k) (a b : Γ →* kˣ)
     (hc : Continuous σ) (hne : ∃ s, σ s 0 1 ≠ 0) (hab : ∀ s, ‖(a s : k)‖ = 1 ∧ ‖(b s : k)‖ = 1)
     (htr : ∀ s, ‖σ s 0 0 + σ s 1 1 - (a s + b s)‖ < 1) (g₀ : Γ) (hg : ¬ ‖(a g₀ : k) - b g₀‖ < 1)
@@ -170,6 +240,23 @@ end
 end UpperTheory.V.Sd
 
 open UpperTheory.V.Sd in
+/- English proof (translation)
+Introduce `l _ Γ _ _ _ _ _ ρ a b hc hirr hab hres g₀ hg`. Establish `hprod : ∀ s, (∏ j, (X - C ((![a, b] j s : (Qbar l)ˣ) : Qbar l))) = X ^ 2 - C ((a s : Qbar l) + b s) * X + C ((a s : Qbar l) * b s)`. Introduce `s`. Simplify using `only [Fin.prod_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, map_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `htr : ∀ s, ‖(ρ s : Matrix (Fin 2) (Fin 2) (Qbar l)).trace - (a s + b s)‖ < 1`. Introduce `s`. Use `hres s 1` as an intermediate fact. Rewrite `this` using `[hprod, Matrix.charpoly_fin_two]`. Simplify using `only [coeff_add, coeff_sub, coeff_C_mul_X, coeff_X_pow, coeff_C] at this`.
+
+Evaluate the numerical expressions using `only [if_true, if_false, reduceIte] at this`. Rewrite using `[← norm_neg]`. Use `lt_of_eq_of_lt (congrArg _ ?_) this` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hdet : ‖(ρ g₀ : Matrix (Fin 2) (Fin 2) (Qbar l)).det - a g₀ * b g₀‖ < 1`.
+
+Use `hres g₀ 0` as an intermediate fact. Rewrite `this` using `[hprod, Matrix.charpoly_fin_two]`. Simplify using `only [coeff_add, coeff_sub, coeff_C_mul_X, coeff_X_pow, coeff_C] at this`. Use `this using 2` and compare the differences between its conclusion and the goal. Simplify using the standard rewrite rules.
+
+Take `⟨α, β, h1, h2, h3, h4⟩` from `roots _ _ _ _ (hab g₀).1 (htr g₀) hdet`. Establish `hne : α ≠ β`. Introduce and unpack `rfl`. Apply `hg` to reduce the goal to its premises. Establish `: (a g₀ : Qbar l) - b g₀ = (α - b g₀) - (α - a g₀)` using `by ring`.
+
+Unfold `Cong`. Rewrite using `[this]`. Conclude with `nsub h4 h3`. Rewrite `h1` using `[Matrix.trace_fin_two]`. Rewrite `h2` using `[Matrix.det_fin_two]`.
+
+Take `⟨P, p1, p2, p3, p4⟩` from `diag2 (ρ g₀) α β hne h1 h2`. Set `σ : Γ →* GL (Fin 2) (Qbar l)` to `(MulAut.conj P).toMonoidHom.comp ρ`. Establish `hσ : ∀ s, σ s = P * ρ s * P⁻¹` using `fun s => rfl`. Establish `hσc : Continuous σ` using `(continuous_const.mul hc).mul continuous_const`. Take `⟨g, q1, q2, q3, q4⟩` from `core σ a b hσc (exists_ne ρ hirr P) hab (fun s => by`.
+
+Rewrite using `[← Matrix.trace_fin_two, hσ, Units.val_mul, Units.val_mul, Matrix.trace_units_conj]`. Conclude with `htr s) g₀ hg p1 p2 (by rw [hσ, p3]; exact h3) (by rw [hσ, p4]; exact h4)`. Use `⟨(MulAut.conj g).toMonoidHom.comp σ, ⟨g * P, fun s => ?_⟩, q1, q2, q3, q4⟩` and prove the remaining obligations. Use `show g * (P * ρ s * P⁻¹) * g⁻¹ = _`. Use `group`.
+-/
 theorem UpperTheory.V.Sd.ribetLat :
     UpperTheory.V.Sd.RibetLat := by
   intro l _ Γ _ _ _ _ _ ρ a b hc hirr hab hres g₀ hg

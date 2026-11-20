@@ -14,13 +14,26 @@ variable (k r' : ℕ)
 
 def mw (c : ℂ) : ℝ := min (‖c‖ ^ (-((4 * r' + 2 * k + 3 : ℕ) : ℝ))) ‖c‖⁻¹
 
+/- English proof (translation)
+The claim follows from `le_min (Real.rpow_nonneg (norm_nonneg _) _) (inv_nonneg.mpr (norm_nonneg _))`.
+-/
 theorem mw_nonneg (c : ℂ) : 0 ≤ mw k r' c :=
   le_min (Real.rpow_nonneg (norm_nonneg _) _) (inv_nonneg.mpr (norm_nonneg _))
 
+/- English proof (translation)
+Unfold `mw`. Conclude with `(measurable_norm.pow_const _).min measurable_norm.inv`.
+-/
 theorem mw_meas : Measurable (mw k r') := by
   unfold mw
   exact (measurable_norm.pow_const _).min measurable_norm.inv
 
+/- English proof (translation)
+Establish `hpos : 0 < ‖c‖` using `norm_pos_iff.mpr hc`. Establish `h1 : ∀ l, (‖c‖₊ : ℝ≥0∞) ^ (-s l) = ENNReal.ofReal (‖c‖ ^ (-s l))` using `fun l => by`. Establish `e : (‖c‖₊ : ℝ≥0∞) = ENNReal.ofReal ‖c‖` using `by rw [← coe_nnnorm, ENNReal.ofReal_coe_nnreal]`. Rewrite using `[e, ENNReal.ofReal_rpow_of_pos hpos]`. Simplify using `only [h1]`.
+
+Rewrite using `[← ENNReal.ofReal_prod_of_nonneg (fun l _ => Real.rpow_nonneg (norm_nonneg _) _), ← ENNReal.ofReal_mul (pow_nonneg (norm_nonneg _) _)]`. Use `congr 1`. Rewrite using `[← Real.rpow_sum_of_pos hpos, ← Real.rpow_natCast, ← Real.rpow_add hpos]`. Use `congr 1`. Use `push_cast`.
+
+Rewrite using `[Finset.sum_neg_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem weight_eq (s : Fin (1 + r' + 1) → ℝ) (c : ℂ) (hc : c ≠ 0) :
     ENNReal.ofReal (‖c‖ ^ (2 * (2 * r' + k + 1))) * ∏ l, (‖c‖₊ : ℝ≥0∞) ^ (-s l) =
       ENNReal.ofReal (‖c‖ ^ (2 * ((2 * r' + k + 1 : ℕ) : ℝ) - ∑ l, s l)) := by
@@ -37,6 +50,13 @@ theorem weight_eq (s : Fin (1 + r' + 1) → ℝ) (c : ℂ) (hc : c ≠ 0) :
   push_cast
   rw [Finset.sum_neg_distrib]; ring
 
+/- English proof (translation)
+Unfold `Qf JInt`. Rewrite using `[← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `lintegral_mono_ae ?_` and prove the remaining obligations. Establish `hconc : ∀ᵐ g ∂μ₁, Matrix.of g ∈ GV k r'` using `by rw [ae_iff]; exact hμ₁.conc`. Use `filter_upwards [hconc] with g hg`.
+
+Rewrite using `[← mul_assoc]`. Use `gcongr ?_ * _`. Use `(hC0 c hc _ hg).trans ?_` and prove the remaining obligations. Establish `hG : 0 ≤ gN (Matrix.of g) ^ (((4 * r' + 2 * k + 3 : ℕ) : ℝ) - A)` using `Real.rpow_nonneg (by unfold gN; exact Real.sqrt_nonneg _) _`. Rewrite using `[← ENNReal.ofReal_mul (mul_nonneg (abs_nonneg _) (mw_nonneg k r' c)), show -(A - ((4 * r' + 2 * k + 3 : ℕ) : ℝ)) = ((4 * r' + 2 * k + 3 : ℕ) : ℝ) - A by ring]`.
+
+Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_abs_self _) (mw_nonneg k r' c)) hG`.
+-/
 theorem Qf_le (A C0 : ℝ)
     (hC0 : ∀ c : ℂ, c ≠ 0 → ∀ g ∈ GV k r', EInt k r' A c g ≤ ENNReal.ofReal (C0 * mw k r' c *
         gN g ^ (((4 * r' + 2 * k + 3 : ℕ) : ℝ) - A)))
@@ -58,6 +78,13 @@ theorem Qf_le (A C0 : ℝ)
   refine ENNReal.ofReal_le_ofReal ?_
   exact mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_abs_self _) (mw_nonneg k r' c)) hG
 
+/- English proof (translation)
+Establish `hF : Measurable fun c : ℂ => ENNReal.ofReal (‖c‖ ^ aw) * ENNReal.ofReal (mw k r' c)` using `(measurable_norm.pow_const _).ennreal_ofReal.mul (mw_meas k r').ennreal_ofReal`. Establish `h1 : ∀ c : ℂ, ENNReal.ofReal (‖c‖ ^ aw) * ENNReal.ofReal (mw k r' (c * (D : ℂ))) = ENNReal.ofReal (D ^ (-aw)) * (ENNReal.ofReal (‖D • c‖ ^ aw) * ENNReal.ofReal (mw k r' (D • c)))`. Introduce `c`. Establish `e : c * (D : ℂ) = D • c` using `by rw [Complex.real_smul, mul_comm]`. Rewrite using `[e, norm_smul, Real.norm_of_nonneg hD.le, Real.mul_rpow hD.le (norm_nonneg _), ← mul_assoc, ← ENNReal.ofReal_mul (Real.rpow_nonneg hD.le _), ← mul_assoc, ← Real.rpow_add hD, neg_add_cancel, Real.rpow_zero, one_mul]`.
+
+Repeatedly rewrite using `[h1]`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Establish `h2 : ∫⁻ c : ℂ, ENNReal.ofReal (‖D • c‖ ^ aw) * ENNReal.ofReal (mw k r' (D • c)) = ENNReal.ofReal (D ^ (-2 : ℝ)) * ∫⁻ c : ℂ, ENNReal.ofReal (‖c‖ ^ aw) * ENNReal.ofReal (mw k r' c)`. Rewrite using `[← lintegral_map hF (measurable_const_smul D), Measure.map_addHaar_smul volume hD.ne', lintegral_smul_measure]`. Use `congr 2`.
+
+Rewrite using `[Complex.finrank_real_complex, abs_of_pos (inv_pos.mpr (pow_pos hD 2)), Real.rpow_neg hD.le, Real.rpow_two]`. Rewrite using `[h2, ← mul_assoc, ← ENNReal.ofReal_mul (Real.rpow_nonneg hD.le _), ← Real.rpow_add hD]`. Use `congr 3`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem scale_c (aw D : ℝ) (hD : 0 < D) :
     ∫⁻ c : ℂ, ENNReal.ofReal (‖c‖ ^ aw) * ENNReal.ofReal (mw k r' (c * (D : ℂ))) =
       ENNReal.ofReal (D ^ (-(aw + 2))) * ∫⁻ c : ℂ, ENNReal.ofReal (‖c‖ ^ aw) * ENNReal.ofReal (mw k r' c) := by
@@ -82,6 +109,27 @@ theorem scale_c (aw D : ℝ) (hD : 0 < D) :
   rw [h2, ← mul_assoc, ← ENNReal.ofReal_mul (Real.rpow_nonneg hD.le _), ← Real.rpow_add hD]
   congr 3; ring
 
+/- English proof (translation)
+Take `⟨-, -, -, hHI, hHM, -, -, hHA, -, -, -⟩` from `heisenbergFacts_of_inductiveInput hB2`. Establish `hos : ∀ (x : HPar k r') (g : Mat k r') (x' : HPar k r'), oneStep k r' x c g x' = heis0 k r' (-x.1, -x.2) * w0 k r' c * ιLev k 1 r' g * heis0 k r' x'`. Introduce `x g x'`. Unfold `oneStep`. Rewrite using `[hHI]`.
+
+Establish `hK : (∏ l, (‖c‖₊ : ℝ≥0∞) ^ (-s l)) ≠ ⊤` using `ENNReal.prod_ne_top fun l _ => by`. Rewrite using `[← ENNReal.coe_rpow_of_ne_zero (nnnorm_ne_zero_iff.mpr hc)]`. Conclude with `ENNReal.coe_ne_top`. Take `⟨H, hHdef⟩ : ∃ H : (HPar k r' × HPar k r') × Mt k r' → ℝ≥0∞, H = fun p => ENNReal.ofReal (gN (oneStep k r' p.1.1 c (Matrix.of p.2) p.1.2) ^ (-A)) * FsE k r' (fun l => s (sc r' l)) (Matrix.of p.2)` from `⟨_, rfl⟩`. Establish `h3` using `gN_cont k (1 + r')`.
+
+Establish `h2` using `lev_cont k r'`. Establish `h1` using `heisenberg_map_continuous k r'`. Establish `hHm : Measurable H`. Establish `hc1 : Continuous fun p : (HPar k r' × HPar k r') × Mt k r' => gN (heis0 k r' (-p.1.1.1, -p.1.1.2) * w0 k r' c * ιLev k 1 r' (Matrix.of p.2) * heis0 k r' p.1.2)` using `by fun_prop`. Establish `e : H = fun p => ENNReal.ofReal (gN (heis0 k r' (-p.1.1.1, -p.1.1.2) * w0 k r' c * ιLev k 1 r' (Matrix.of p.2) * heis0 k r' p.1.2) ^ (-A)) * FsE k r' (fun l => s (sc r' l)) (Matrix.of p.2)`.
+
+Rewrite using `[hHdef]`. Use function extensionality and compare the values at `p`. Rewrite using `[hos]`. Rewrite using `[e]`. Conclude with `(hc1.measurable.pow_const _).ennreal_ofReal.mul ((FsE_meas k r' _).comp measurable_snd)`.
+
+Establish `hstep1 : ∀ p : (HPar k r' × HPar k r') × Mt k r', ENNReal.ofReal (gN (Matrix.of (oneStep k r' p.1.1 c (Matrix.of p.2) p.1.2)) ^ (-A)) * FsE k (1 + r') s (Matrix.of (oneStep k r' p.1.1 c (Matrix.of p.2) p.1.2)) = (∏ l, (‖c‖₊ : ℝ≥0∞) ^ (-s l)) * H p`. Introduce `p`. Establish `hf : FsE k (1 + r') s (oneStep k r' p.1.1 c (Matrix.of p.2) p.1.2) = (∏ l, (‖c‖₊ : ℝ≥0∞) ^ (-s l)) * FsE k r' (fun l => s (sc r' l)) (Matrix.of p.2)` using `FsE_oneStep k r' hHA hHM p.1.1 p.1.2 c (Matrix.of p.2) s`. Use `show ENNReal.ofReal (gN (oneStep k r' p.1.1 c (Matrix.of p.2) p.1.2) ^ (-A)) * FsE k (1 + r') s (oneStep k r' p.1.1 c (Matrix.of p.2) p.1.2) = _`. Rewrite using `[hf, hHdef]`.
+
+Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[hstep1]`. Rewrite using `[lintegral_const_mul' _ _ hK, ← mul_assoc, weight_eq k r' s c hc]`. Use `gcongr`. Rewrite using `[lintegral_prod _ hHm.aemeasurable, show (volume : Measure (HPar k r' × HPar k r')) = (volume : Measure (HPar k r')).prod volume from rfl, lintegral_prod _ hHm.lintegral_prod_right'.aemeasurable]`.
+
+Use `lintegral_mono fun x => ?_` and prove the remaining obligations. Establish `hsw : Measurable (Function.uncurry fun (x' : HPar k r') (g : Mt k r') => H ((x, x'), g))` using `hHm.comp ((measurable_const.prodMk measurable_fst).prodMk measurable_snd)`. Rewrite using `[lintegral_lintegral_swap hsw.aemeasurable]`. Establish `hmx : ∀ g : Mt k r', Measurable fun x' : HPar k r' => ENNReal.ofReal (gN (oneStep k r' x c (Matrix.of g) x') ^ (-A))`. Introduce `g`.
+
+Establish `e : (fun x' : HPar k r' => ENNReal.ofReal (gN (oneStep k r' x c (Matrix.of g) x') ^ (-A))) = fun x' => ENNReal.ofReal (gN (heis0 k r' (-x.1, -x.2) * w0 k r' c * ιLev k 1 r' (Matrix.of g) * heis0 k r' x') ^ (-A))`. Use function extensionality and compare the values at `x'`. Rewrite using `[hos]`. Rewrite using `[e]`. Conclude with `((by fun_prop : Continuous fun x' : HPar k r' => gN (heis0 k r' (-x.1, -x.2) * w0 k r' c * ιLev k 1 r' (Matrix.of g) * heis0 k r' x')).measurable.pow_const _).ennreal_ofReal`.
+
+Establish `hin : ∀ g : Mt k r', ∫⁻ x', H ((x, x'), g) = (∫⁻ x', ENNReal.ofReal (gN (oneStep k r' x c (Matrix.of g) x') ^ (-A))) * FsE k r' (fun l => s (sc r' l)) (Matrix.of g)`. Introduce `g`. Simplify using `only [hHdef]`. Conclude with `lintegral_mul_const _ (hmx g)`. Repeatedly rewrite using `[hin]`.
+
+Rewrite using `[inner_eq k r' hB2 hIW hT hk A s μ₁ hμ₁ x c hc]`. Use `gcongr`. Establish `hG0` using `(yx_ga hB2 hIW k r' hk x).1`. Establish `hD : 0 < Dx k r' x` using `Real.sqrt_pos.mpr hG0`. Conclude with `Qf_le k r' A C0 hC0 _ μ₁ hμ₁ _ (mul_ne_zero hc (Complex.ofReal_ne_zero.mpr hD.ne'))`.
+-/
 theorem inner_c_le (hB2 : InductiveHeisenbergInputs) (hIW : IW) (hT : TLeft) (hk : 1 ≤ k) (A C0 : ℝ)
     (hC0 : ∀ c : ℂ, c ≠ 0 → ∀ g ∈ GV k r', EInt k r' A c g ≤ ENNReal.ofReal (C0 * mw k r' c *
         gN g ^ (((4 * r' + 2 * k + 3 : ℕ) : ℝ) - A)))

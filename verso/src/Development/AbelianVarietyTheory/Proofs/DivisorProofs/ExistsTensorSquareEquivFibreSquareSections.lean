@@ -13,6 +13,13 @@ noncomputable section
 
 namespace GlobalTheory.LBDescent
 
+/- English proof (translation)
+Use `letI : Algebra Γ(Y, V₀) Γ(X, f ⁻¹ᵁ V₀) := (f.app V₀).hom.toAlgebra`. Establish `hV' : IsAffineOpen (f ⁻¹ᵁ V₀)` using `hV₀.preimage f`. Establish `P` using `ReciprocityTheory.ChartRestriction.G.Out.GtBCPf.isPushout_appLE (IsPullback.of_hasPullback f f).flip inferInstance hV₀ hV' le_rfl h`. Rewrite `P` using `[Scheme.Hom.appLE_eq_app]`. Establish `T` using `CommRingCat.isPushout_tensorProduct Γ(Y, V₀) Γ(X, f ⁻¹ᵁ V₀) Γ(X, f ⁻¹ᵁ V₀)`.
+
+Set `I` to `IsPushout.isoIsPushout _ _ T P.flip`. Use `⟨I.commRingCatIsoToRingEquiv, fun a b => ?_⟩` and prove the remaining obligations. Establish `h1 : I.hom.hom (a ⊗ₜ 1) = ((pullback.fst f f).app (f ⁻¹ᵁ V₀)).hom a` using `congrArg (fun t => t.hom a) (IsPushout.inl_isoIsPushout_hom _ _ T P.flip)`. Establish `h2 : I.hom.hom (1 ⊗ₜ b) = ((pullback.snd f f).appLE (f ⁻¹ᵁ V₀) _ h).hom b` using `congrArg (fun t => t.hom b) (IsPushout.inr_isoIsPushout_hom _ _ T P.flip)`. Establish `hab : (a ⊗ₜ[Γ(Y, V₀)] b : Γ(X, f ⁻¹ᵁ V₀) ⊗[Γ(Y, V₀)] Γ(X, f ⁻¹ᵁ V₀)) = (a ⊗ₜ 1) * (1 ⊗ₜ b)`.
+
+Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, _root_.mul_one, _root_.one_mul]`. Express the relevant statement in the definitionally equal form `I.hom.hom (a ⊗ₜ b) = _`. Rewrite using `[hab, map_mul, h1, h2]`.
+-/
 theorem exists_tensorSquare_equiv_sections {X Y : Scheme.{0}} (f : X ⟶ Y) [IsFinite f] (V₀ : Y.Opens)
     (hV₀ : IsAffineOpen V₀)
     (h : pullback.fst f f ⁻¹ᵁ f ⁻¹ᵁ V₀ ≤ pullback.snd f f ⁻¹ᵁ f ⁻¹ᵁ V₀) :

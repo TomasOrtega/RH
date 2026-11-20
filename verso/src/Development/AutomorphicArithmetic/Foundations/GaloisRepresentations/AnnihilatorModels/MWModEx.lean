@@ -26,6 +26,17 @@ private def killedSub {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRin
       rw [Category.assoc, ← o.act.mul, ← map_mul, mul_comm, map_mul, o.act.mul, ← Category.assoc, hg a ha,
         one_comp] }
 
+/- English proof (translation)
+Introduce `p _ D R _ b N S s o w T`. Use `letI := ptModuleWvs o T`. Establish `htor : Module.IsTorsionBySet (𝓞 D.F) (killedSub o w T) (w : Set (𝓞 D.F))`. Introduce `x a`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `show (a : 𝓞 D.F) • (x : Additive (T ⟶ o.A)) = Additive.ofMul 1`. Conclude with `x.2 a a.2`. Use `letI : Module (𝓞 D.F ⧸ w) (killedSub o w T) := htor.module`. Use `⟨⟨killedSub o w T, fun x => Additive.toMul (x : Additive (T ⟶ o.A)), ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `x y h`.
+
+Conclude with `Subtype.ext (Additive.toMul.injective h)`. Introduce `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, rfl⟩`. Conclude with `h.2`.
+
+Introduce `hg`. Conclude with `⟨⟨Additive.ofMul g, hg⟩, rfl⟩`. Introduce `x y`. Both sides reduce to the same expression. Introduce `a x`.
+
+Rewrite using `[Module.IsTorsionBySet.mk_smul]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.Gal.crystallineComparison.Mod.wModEx_of :
     WModEx := by
   intro p _ D R _ b N S s o w T

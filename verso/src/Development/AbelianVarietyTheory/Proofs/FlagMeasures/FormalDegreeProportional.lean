@@ -16,6 +16,27 @@ namespace GlobalTheory.DegreeTie
 
 open Formalism.FourierDecayAlt.P.HaarUniquenessConjugation
 
+/- English proof (translation)
+Take `⟨hPu, hPJ⟩` from `hP`. Take `⟨hQu, hQJ⟩` from `hQ`. Use `set Pu := hPu.unit with hPu_def`. Use `set Qu := hQu.unit with hQu_def`. Establish `hQQ : Q * Q⁻¹ = 1`.
+
+Rewrite using `[← hQu.unit_spec, ← Matrix.coe_units_inv, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `hmJ : (P * Q⁻¹)ᴴ * Formalism.REAL.Jm ε * (P * Q⁻¹) = Formalism.REAL.Jm ε`. Establish `h1 : (Q⁻¹)ᴴ * Qᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul, hQQ, Matrix.conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = ((Q⁻¹)ᴴ * Qᴴ) * Formalism.REAL.Jm ε * (Q * Q⁻¹) := by`. Rewrite using `[hPJ, ← hQJ]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm ε := by rw [h1, hQQ, Matrix.one_mul, Matrix.mul_one]`.
+
+Establish `hmem : Pu * Qu⁻¹ ∈ Formalism.REAL.UJ ε`. Establish `hv : ((Pu * Qu⁻¹ : (Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)ˣ) : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) = P * Q⁻¹`. Rewrite using `[Units.val_mul, Matrix.coe_units_inv, hPu_def, hQu_def, hPu.unit_spec, hQu.unit_spec]`. Use `show Formalism.REAL.inUJ ε _`. Rewrite using `[hv]`.
+
+Conclude with `hmJ`. Use `set m : Formalism.REAL.UJ ε := ⟨Pu * Qu⁻¹, hmem⟩ with hm_def`. Establish `hval : ∀ (A : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (hA : IsUnit A) (u : Formalism.REAL.UJ ε), phi ε A u = ((hA.unit⁻¹ * (u : (Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)ˣ) * hA.unit : (Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)ˣ) : Matrix (Fi …`. Introduce `A hA u`. Rewrite using `[Units.val_mul, Units.val_mul, Matrix.coe_units_inv, hA.unit_spec]`.
+
+Both sides reduce to the same expression. Establish `hconj : phi ε Q = phi ε P ∘ (fun u => m * u * m⁻¹)`. Use function extensionality and compare the values at `u`. Rewrite using `[Function.comp_apply, hval Q hQu, hval P hPu]`. Use `congr 1`.
+
+Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, hm_def]`. Rewrite using `[hPu_def, hQu_def]`. Apply the tactic sequence `group <;> rfl`. Establish `hcont : ∀ A : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ, Continuous (phi ε A)`. Introduce `A`.
+
+Establish `: Continuous (fun u : Formalism.REAL.UJ ε => ((u : (Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)ˣ) : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ))` using `Units.continuous_val.comp continuous_subtype_val`. Conclude with `(continuous_const.matrix_mul this).matrix_mul continuous_const`. Establish `hinv : (Formalism.REAL.muG ε).map (fun u => m * u * m⁻¹) = Formalism.REAL.muG ε`. Establish `hL : Measurable (fun u : Formalism.REAL.UJ ε => m * u)` using `measurable_const_mul m`. Establish `hR : Measurable (fun u : Formalism.REAL.UJ ε => u * m⁻¹)` using `measurable_mul_const m⁻¹`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Measure.map_map hR hL]`. Both sides reduce to the same expression. Use `_ = (Formalism.REAL.muG ε).map (fun u => u * m⁻¹) := by`. Rewrite using `[MeasureTheory.map_mul_left_eq_self (Formalism.REAL.muG ε) m]`.
+
+Use `_ = Formalism.REAL.muG ε := Formalism.REAL.indefinite_unitary_unimodular _ ε m⁻¹`. Rewrite using `[hconj, ← Measure.map_map (hcont P).measurable (by`. Conclude with `(measurable_const_mul m).mul_const m⁻¹), hinv]`.
+-/
 theorem map_phi_eq {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {P Q : MatKR k r} (hP : IsCayley k r ε P)
     (hQ : IsCayley k r ε Q) : (Formalism.REAL.muG ε).map (phi ε P) = (Formalism.REAL.muG ε).map (phi ε Q) := by
   obtain ⟨hPu, hPJ⟩ := hP
@@ -72,6 +93,37 @@ theorem map_phi_eq {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {P Q : MatKR 
   rw [hconj, ← Measure.map_map (hcont P).measurable (by
     exact (measurable_const_mul m).mul_const m⁻¹), hinv]
 
+/- English proof (translation)
+Introduce `_ D τ w w' θ W _ hW`. Distinguish the cases in `hC : ∃ P0 : MatKR D.R.k D.R.rS, IsCayley D.R.k D.R.rS (epsSH D.R) P0`. Use `swap`. Use `⟨1, one_pos, ?_⟩` and prove the remaining obligations. Introduce `lam A hA`.
+
+Take `⟨P, hP, -⟩` from `hA.2.2.2.2.2.2.2.2.2.2`. Conclude with `absurd ⟨P, hP⟩ hC`. Take `⟨P0, hP0⟩` from `hC`. Establish `hP0det : IsUnit P0.det` using `(Matrix.isUnit_iff_isUnit_det P0).1 hP0.1`. Take `⟨c, hc0, hctop, hμ⟩` from `GlobalTheory.BesselDegree.haar_eq_smul (ε := epsSH D.R) hP0det hP0.2 W.μG hW.2.2.2.2.2.2.1`.
+
+Use `set cd : NNReal := D.s.cdScale _ (epsSH D.R) with hcd_def`. Establish `hI : ∀ (P : MatKR D.R.k D.R.rS), IsCayley D.R.k D.R.rS (epsSH D.R) P → ∀ (F : Formalism.QuantumDeterminants.Mt D.R.k D.R.rS → ℝ), ∫ x, F x ∂W.μG = c.toReal * ∫ u, F (phi (epsSH D.R) P u) ∂(Formalism.REAL.muG (epsSH D.R))`. Introduce `P hP F`. Establish `hPP : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P ((Matrix.isUnit_iff_isUnit_det P).1 hP.1)`. Establish `hPP' : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul P ((Matrix.isUnit_iff_isUnit_det P).1 hP.1)`.
+
+Set `h : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ ≃ₜ Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ` to `{ toFun := fun x => P⁻¹ * x * P invFun := fun x => P * x * P⁻¹ left_inv := fun x => by`. Simplify using `only [← Matrix.mul_assoc, hPP, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, hPP, Matrix.mul_one]`. Use `right_inv := fun x => by`. Simplify using `only [← Matrix.mul_assoc, hPP', Matrix.one_mul]`.
+
+Rewrite using `[Matrix.mul_assoc, hPP', Matrix.mul_one]`. Use `continuous_toFun := (continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`. Use `continuous_invFun := (continuous_const.matrix_mul continuous_id).matrix_mul continuous_const }`. Establish `hemb : Topology.IsClosedEmbedding (phi (epsSH D.R) P)` using `h.isClosedEmbedding.comp (Formalism.REAL.isClosedEmbeddingMatrix _ (epsSH D.R)).1`. Rewrite using `[hμ, map_phi_eq hP0 hP, integral_smul_measure, smul_eq_mul, hemb.measurableEmbedding.integral_map]`.
+
+Distinguish the cases in `hcd : cd = 0`. Use `⟨1, one_pos, ?_⟩` and prove the remaining obligations. Introduce `lam A hA v hv`. Take `⟨P, -, hF⟩` from `hA.2.2.2.2.2.2.2.2.2.2`. Establish `h2` using `(hF.2 v v v v).2`.
+
+Rewrite `h2` using `[← hcd_def]`. Rewrite `h2` using `[hcd, ENNReal.coe_zero, zero_smul, integral_zero_measure]`. Establish `hv' : (⟪v, v⟫_ℂ : ℂ) ≠ 0` using `inner_self_ne_zero.2 hv`. Establish `hd : (A.deg : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hF.1.ne'`. Conclude with `absurd h2.symm (div_ne_zero (mul_ne_zero hv' hv') hd)`.
+
+Establish `hcpos : 0 < c.toReal` using `ENNReal.toReal_pos hc0 hctop`. Establish `hcdpos : (0 : ℝ) < cd`. Rewrite using `[NNReal.coe_pos]`. Conclude with `pos_iff_ne_zero.2 hcd`. Use `⟨c.toReal / cd, div_pos hcpos hcdpos, ?_⟩` and prove the remaining obligations.
+
+Introduce `lam A hA v hv`. Take `⟨P, hP, hF⟩` from `hA.2.2.2.2.2.2.2.2.2.2`. Use `⟨?_, hF.1⟩` and prove the remaining obligations. Establish `h2` using `(hF.2 v v v v).2`. Rewrite `h2` using `[← hcd_def]`.
+
+Use `set J := ∫ u, ‖⟪v, A.σ (P⁻¹ * ((u : (Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ)ˣ) : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ) * P) v⟫_ℂ‖ ^ 2 ∂(Formalism.REAL.muG (epsSH D.R)) with hJ`. Establish `hJc : ((cd : ℝ) * J : ℂ) = (‖v‖ ^ 4 / A.deg : ℝ)`. Establish `hin : (⟪v, v⟫_ℂ : ℂ) = ((‖v‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[inner_self_eq_norm_sq_to_K]`. Use `norm_cast`.
+
+Establish `hint : ∫ g, coefOn (fun g => A.σ (P⁻¹ * g * P)) v v g * star (coefOn (fun g => A.σ (P⁻¹ * g * P)) v v g) ∂(Formalism.REAL.muG (epsSH D.R)) = ((J : ℝ) : ℂ)`. Rewrite using `[hJ, ← integral_complex_ofReal]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+
+Use `push_cast`. Both sides reduce to the same expression. Rewrite `h2` using `[integral_smul_measure, hint, hin, ENNReal.coe_toReal, Complex.real_smul]`. Rewrite using `[h2]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hJr : (cd : ℝ) * J = ‖v‖ ^ 4 / A.deg` using `by exact_mod_cast hJc`. Establish `hIv` using `hI P hP (fun x => ‖⟪v, A.σ (Matrix.of x) v⟫_ℂ‖ ^ 2)`. Establish `hnv : 0 < ‖v‖` using `norm_pos_iff.2 hv`. Establish `hdeg` using `hF.1`.
+
+Unfold `PI.BesselPeriodGGP.fdegH`. Rewrite using `[hIv]`. Express the relevant statement in the definitionally equal form `A.deg = c.toReal / cd * (‖v‖ ^ 4 / (c.toReal * J))`. Establish `hJ' : J = ‖v‖ ^ 4 / A.deg / cd`. Rewrite using `[← hJr]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[hJ']`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem deg_eq_mul_fdegH : Hyps → ∀ (D : D7) τ w w' θ (W : LocW D.R.k D.R.rS), cdScaleTie D → GoodW D τ w w' θ W → ∃ κ : ℝ, 0 < κ ∧ ∀ (lam : Fin (2 * D.R.rS + D.R.k + 1) → ℝ) (A : LocS W), GoodS D lam A → ∀ v : A.H, v ≠ 0 → A.deg = κ * PI.BesselPeriodGGP.fdegH W.μG A.σ v ∧ 0 < A.deg := by
   intro _ D τ w w' θ W _ hW
 

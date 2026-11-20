@@ -18,6 +18,23 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.StdUnn.SchDatum
 
+/- English proof (translation)
+Introduce `D A V ψ hψ χ hχ hr θ hθ ν 𝓨 hν ω hω`. Take `⟨ψ₀, h₀, lam, hlam, hψeq⟩` from `GlobalTheory.ThetaAllChar.exists_std hψ`. Establish `hsh : ψ = shift ψ₀ lam`. Use extensionality with `x`. Rewrite using `[hψeq]`.
+
+Both sides reduce to the same expression. Establish `hlamE : algebraMap D.host.F D.host.E lam ≠ 0` using `(map_ne_zero _).2 hlam`. Establish `hxi : D.host.xi0 ≠ 0` using `GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D`. Use `set μ' : D.host.E := -D.host.xi0 / algebraMap D.host.F D.host.E lam with hμ'`. Establish `hsk : IsSkew μ'`.
+
+Use `⟨div_ne_zero (neg_ne_zero.2 hxi) hlamE, ?_⟩` and prove the remaining obligations. Rewrite using `[hμ', star_div₀, star_neg, GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg, Formalism.IndefR.Eqv.star_algebraMapF]`. Expand and normalize the polynomial expressions, which then agree. Establish `hl : algebraMap D.host.F D.host.E lam = -D.host.xi0 / μ'`. Rewrite using `[hμ']`.
+
+Clear the denominators using the available nonvanishing facts. Take `⟨κ, hκ⟩` from `GlobalTheory.StdUnn.chart_exists D A μ' hsk`. Take `⟨hχi, hri⟩` from `GlobalTheory.StdUnn.isHeckeChar_resEta_inv D χ V.rank hχ hr`. Establish `hr1 : ResEta D 1 (dblSp A).rank`. Use `GlobalTheory.Eis.SimplePoleModel.resEta_one_two_mul D A.rank` as an intermediate fact.
+
+Use `this using 2` and compare the differences between its conclusion and the goal. Simplify using `[GlobalTheory.Doubling.dblSp]`. Use linear arithmetic over natural numbers and integers. Take `⟨omh, homh⟩` from `GlobalTheory.weilRepresentationUnitaryPair D ψ₀ (dblSp A) V 1 χ⁻¹ h₀ ⟨continuous_const, fun _ => rfl⟩ hχi hr1 hri`. Take `⟨omS, hS⟩` from `GlobalTheory.StdUnn.exists_transport_std D ψ₀ A V χ⁻¹ omh homh ν 𝓨 hν θ hθ κ`.
+
+Establish `hWS : IsWeilSch (shift ψ₀ lam) χ θ V ν omS`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g a hg Φ x`. Use `GlobalTheory.StdUnn.transport_levi D ψ₀ A V χ⁻¹ omh homh ν 𝓨 hν θ hθ μ' hsk κ hκ omS hS lam hl g a hg Φ x` as an intermediate fact. Rewrite `this` using `[inv_inv]`.
+
+Conclude with `this`. Introduce `g b hg Φ x`. Conclude with `GlobalTheory.StdUnn.Unip.transport_unip D ψ₀ A V χ⁻¹ omh homh ν 𝓨 hν θ hθ μ' hsk κ hκ omS hS lam hl g b hg Φ x`. Introduce `g hg Φ x`. Conclude with `GlobalTheory.StdUnn.WeylStd.main D ψ₀ A V χ⁻¹ omh homh ν 𝓨 hν θ hθ μ' hsk κ hκ omS hS lam hl g hg Φ x`.
+
+Substitute `hsh` using the available equality. Take `rfl` from `GlobalTheory.SiegelWeilLitCompare.isWeilSch_unique hω hWS`. Conclude with `⟨ψ₀, μ', lam, κ, omh, h₀, hsk, hl, rfl, hκ, homh, hS⟩`.
+-/
 theorem exists_datum : ∀ (D : D7) (A V : HSp D) (ψ : AddChar (AF D.host.F) ℂ), IsCharAF D.host.F ψ → ∀ χ : (AE D)ˣ →* Circle, IsHeckeChar D χ → ResEta D χ V.rank → ∀ θ : InfFam D, IsInfFam θ → ∀ (ν : Measure (WO A V)) (𝓨 : Set (WO A V)), IsCovolOne (ratL V A) ν 𝓨 → ∀ ω : G D A.rank →* Module.End ℂ (schwartzA θ V.rank A.rank), IsWeilSch ψ χ θ V ν ω → ∃ (ψ₀ : AddChar (AF D.host.F) ℂ) (μ : D.host.E) (lam : D.host.F) (κ : GA D (dblSp A) ≃* G D A.rank) (omh : GA D (dblSp A) × GA D V →* Module.End ℂ (WO (dblSp A) V → ℂ)), IsStdChar D ψ₀ (-1) ∧ IsSkew μ ∧ algebraMap D.host.F D.host.E lam = -D.host.xi0 / μ ∧ ψ = shift ψ₀ lam ∧ IsChart A μ κ ∧ IsWeilDatumO ψ₀ (dblSp A) V 1 χ⁻¹ omh ∧ IsTransport ψ₀ θ A V ν 𝓨 omh κ ω := by
   intro D A V ψ hψ χ hχ hr θ hθ ν 𝓨 hν ω hω
   obtain ⟨ψ₀, h₀, lam, hlam, hψeq⟩ := GlobalTheory.ThetaAllChar.exists_std hψ

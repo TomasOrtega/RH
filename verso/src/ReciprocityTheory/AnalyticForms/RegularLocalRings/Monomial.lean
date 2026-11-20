@@ -7,6 +7,19 @@ open IsLocalRing
 
 variable {R : Type*} [CommRing R]
 
+/- English proof (translation)
+Introduce `s`. Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty`. Introduce `_ x hx`. Use `⟨0, le_refl _, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Multiset.map_zero, Multiset.prod_zero] at hx ⊢`. Conclude with `associated_one_iff_isUnit.2 (isUnit_of_dvd_one hx)`. Consider the case `cons a s ih`. Introduce `hs x hx`. Establish `ha : Prime (f a)` using `hs a (Multiset.mem_cons_self a s)`.
+
+Establish `hs' : ∀ i ∈ s, Prime (f i)` using `fun i hi => hs i (Multiset.mem_cons_of_mem hi)`. Rewrite `hx` using `[Multiset.map_cons, Multiset.prod_cons]`. Distinguish the cases in `hax : f a ∣ x`. Take `⟨y, rfl⟩` from `hax`. Establish `hy : y ∣ (s.map f).prod` using `(mul_dvd_mul_iff_left ha.ne_zero).1 hx`.
+
+Take `⟨t, ht, hyt⟩` from `ih hs' hy`. Use `⟨a ::ₘ t, Multiset.cons_le_cons a ht, ?_⟩` and prove the remaining obligations. Rewrite using `[Multiset.map_cons, Multiset.prod_cons]`. Conclude with `hyt.mul_left (f a)`. Take `⟨z, hz⟩` from `hx`.
+
+Establish `h1 : f a ∣ x * z` using `⟨(s.map f).prod, hz.symm⟩`. Establish `h2 : f a ∣ z` using `(ha.dvd_or_dvd h1).resolve_left hax`. Take `⟨w, rfl⟩` from `h2`. Establish `h3 : (s.map f).prod = x * w`. Apply `mul_left_cancel₀ ha.ne_zero` to reduce the goal to its premises.
+
+Rewrite using `[hz]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨t, ht, hxt⟩` from `ih hs' ⟨w, h3⟩`. Conclude with `⟨t, ht.trans (Multiset.le_cons_self s a), hxt⟩`.
+-/
 theorem exists_le_associated_of_dvd_prod_primes [IsDomain R] {ι : Type*} (f : ι → R) :
     ∀ (s : Multiset ι), (∀ i ∈ s, Prime (f i)) → ∀ {x : R}, x ∣ (s.map f).prod →
       ∃ t ≤ s, Associated x (t.map f).prod := by
@@ -40,6 +53,9 @@ theorem exists_le_associated_of_dvd_prod_primes [IsDomain R] {ι : Type*} (f : �
       obtain ⟨t, ht, hxt⟩ := ih hs' ⟨w, h3⟩
       exact ⟨t, ht.trans (Multiset.le_cons_self s a), hxt⟩
 
+/- English proof (translation)
+Establish `hm : f i ∈ maximalIdeal R`. Rewrite using `[← hspan]`. Conclude with `Ideal.subset_span ⟨i, rfl⟩`. Conclude with `prime_of_not_mem_sq hm ((regular_params_spec f hspan hdim).1 i)`.
+-/
 theorem prime_of_regular_params [IsRegularLocalRing R] {n : ℕ} (f : Fin n → R)
     (hspan : Ideal.span (Set.range f) = maximalIdeal R) (hdim : (n : WithBot ℕ∞) = ringKrullDim R)
     (i : Fin n) : Prime (f i) := by
@@ -48,6 +64,15 @@ theorem prime_of_regular_params [IsRegularLocalRing R] {n : ℕ} (f : Fin n → 
     exact Ideal.subset_span ⟨i, rfl⟩
   exact prime_of_not_mem_sq hm ((regular_params_spec f hspan hdim).1 i)
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `hrad`. Rewrite `hk` using `[Ideal.mem_span_singleton]`. Establish `hprimes : ∀ i ∈ k • J.val, Prime (f i)` using `fun i _ => prime_of_regular_params f hspan hdim i`. Establish `hprod : ((k • J.val).map f).prod = (∏ i ∈ J, f i) ^ k`. Rewrite using `[Multiset.map_nsmul, Multiset.prod_nsmul]`.
+
+Both sides reduce to the same expression. Rewrite `hk` using `[← hprod]`. Take `⟨t, ht, hxt⟩` from `exists_le_associated_of_dvd_prod_primes f (k • J.val) hprimes hk`. Establish `htJ : ∀ i, i ∉ J → Multiset.count i t = 0` using `fun i hi => Multiset.count_eq_zero.2 fun hit => hi (Multiset.mem_of_mem_nsmul (Multiset.mem_of_le ht hit))`. Take `⟨u, hu⟩` from `hxt.symm`.
+
+Use `⟨u, fun i => Multiset.count i t, htJ, ?_⟩` and prove the remaining obligations. Rewrite using `[← hu, Finset.prod_multiset_map_count, mul_comm]`. Use `congr 1`. Apply `Finset.prod_subset` to reduce the goal to its premises. Introduce `i hi`.
+
+Assume the negation of the conclusion as `hiJ`. Conclude with `Multiset.count_ne_zero.2 (Multiset.mem_toFinset.1 hi) (htJ i hiJ)`. Introduce `i _ hi`. Rewrite using `[Multiset.count_eq_zero.2 (fun h => hi (Multiset.mem_toFinset.2 h)), pow_zero]`.
+-/
 theorem eq_unit_mul_monomial [IsRegularLocalRing R] {n : ℕ} (f : Fin n → R)
     (hspan : Ideal.span (Set.range f) = maximalIdeal R) (hdim : (n : WithBot ℕ∞) = ringKrullDim R)
     (J : Finset (Fin n)) {x : R} (hx0 : x ≠ 0) (hrad : (∏ i ∈ J, f i) ∈ (Ideal.span {x}).radical) :
@@ -73,6 +98,21 @@ theorem eq_unit_mul_monomial [IsRegularLocalRing R] {n : ℕ} (f : Fin n → R)
   · intro i _ hi
     rw [Multiset.count_eq_zero.2 (fun h => hi (Multiset.mem_toFinset.2 h)), pow_zero]
 
+/- English proof (translation)
+Establish `: IsDomain R` using `isDomain_of_isRegularLocalRing`. Use `set P := Ideal.span {f i} with hP`. Use `set S := Localization.AtPrime P`. Establish `hpr : ∀ j, Prime (f j)` using `prime_of_regular_params f hspan hdim`. Establish `hout : ∀ j, j ≠ i → f j ∉ P`.
+
+Introduce `j hji hj`. Rewrite `hj` using `[hP, Ideal.mem_span_singleton]`. Take `⟨c, hc⟩` from `hj`. Establish `hdc : f j ∣ f i * c` using `⟨1, by rw [mul_one, hc]⟩`. Break down `(hpr j).dvd_or_dvd hdc with h | h` into its components or cases.
+
+Conclude with `(regular_params_spec f hspan hdim).2 j i hji (associated_of_dvd_dvd h ⟨c, hc⟩)`. Take `⟨d, rfl⟩` from `h`. Establish `: f j * 1 = f j * (f i * d)` using `by linear_combination hc`. Establish `h1` using `mul_left_cancel₀ (hpr j).ne_zero this`. Conclude with `(hpr i).not_isUnit (isUnit_of_dvd_one ⟨d, h1⟩)`.
+
+Establish `hunit : ∀ j, j ≠ i → IsUnit (algebraMap R S (f j))` using `fun j hj => IsLocalization.map_units S (⟨f j, hout j hj⟩ : P.primeCompl)`. Use `set π := algebraMap R S (f i)`. Establish `hinj : Function.Injective (algebraMap R S)` using `IsLocalization.injective S (Ideal.primeCompl_le_nonZeroDivisors P)`. Establish `hπ0 : π ≠ 0` using `fun h => (hpr i).ne_zero (hinj (by rw [map_zero]; exact h))`. Establish `hπnzd : π ∈ nonZeroDivisors S` using `mem_nonZeroDivisors_of_ne_zero hπ0`.
+
+Establish `hmax : Ideal.span {π} = maximalIdeal S`. Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal]`. Use `show Ideal.span {π} = Ideal.map (algebraMap R S) (Ideal.span {f i})`. Rewrite using `[Ideal.map_span, Set.image_singleton]`. Establish `hord1 : Ring.ord S π = 1`.
+
+Unfold `Ring.ord`. Rewrite using `[hmax, Module.length_eq_one_iff]`. Conclude with `isSimpleModule_iff_isCoatom.mpr (Ideal.isMaximal_def.mp (IsLocalRing.maximalIdeal.isMaximal S))`. Rewrite using `[← Finset.mul_prod_erase J _ hi, map_mul, map_mul, map_pow, Ring.ord_mul_of_isUnit_left ((Units.isUnit u).map _)]`. Establish `hrest : IsUnit (algebraMap R S (∏ j ∈ J.erase i, f j ^ m j))`.
+
+Rewrite using `[map_prod]`. Conclude with `IsUnit.prod_iff.mpr fun j hj => by`. Rewrite using `[map_pow]`. Conclude with `(hunit j (Finset.ne_of_mem_erase hj)).pow _`. Rewrite using `[Ring.ord_mul_of_isUnit_right hrest, Ring.ord_pow hπnzd, hord1, nsmul_eq_mul, mul_one]`.
+-/
 theorem ord_localization_eq_exponent [IsRegularLocalRing R] {n : ℕ} (f : Fin n → R)
     (hspan : Ideal.span (Set.range f) = maximalIdeal R) (hdim : (n : WithBot ℕ∞) = ringKrullDim R)
     (J : Finset (Fin n)) (u : Rˣ) (m : Fin n → ℕ) (i : Fin n) (hi : i ∈ J)

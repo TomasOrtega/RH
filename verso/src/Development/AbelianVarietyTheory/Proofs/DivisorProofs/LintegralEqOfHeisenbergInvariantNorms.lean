@@ -14,6 +14,13 @@ open Classical
 
 namespace GlobalTheory.RealWeilF
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, K, hK, hc⟩` from `GlobalTheory.AdelicMatrixLatticeF.lattice F E nS nT`. Use `haveI : BorelSpace (WOF F E nS nT) := ⟨rfl⟩`. Use `haveI : Countable (ratLF F E nS nT) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Establish `hfin` using `GlobalTheory.measure_addFundamentalDomain_lt_top_of_cocompact (G := WOF F E nS nT) (ratLF F E nS nT) hK hc μ h𝓕`. Use `haveI : IsFiniteMeasure (μ.restrict 𝓕) := ⟨by rwa [Measure.restrict_apply_univ]⟩`.
+
+Establish `key : ∀ H : BBF σ JS JT ξ₀ ψ, ∫⁻ w in 𝓕, ‖H.1 w‖ₑ ^ 2 ∂μ = ENNReal.ofReal (∫ w in 𝓕, ‖H.1 w‖ ^ 2 ∂μ)`. Introduce `H`. Rewrite using `[ofReal_integral_eq_lintegral_ofReal _ (Filter.Eventually.of_forall fun w => by positivity)]`. Simplify using `only [ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]`. Conclude with `Integrable.of_bound (H.1.continuous.norm.pow 2).aestronglyMeasurable (‖H‖ ^ 2) (Filter.Eventually.of_forall fun w => by`.
+
+Rewrite using `[norm_pow, norm_norm]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (norm_ev_le w H) 2)`. Rewrite using `[key, key, coe_rhoBF]`. Simplify using `only [norm_heisOF hψ]`. Rewrite using `[GlobalTheory.HeisOrtho.setIntegral_add_right (G := WOF F E nS nT) (ratLF F E nS nT) μ 𝓕 h𝓕 (fun w => ‖G.1 w‖ ^ 2) (fun γ hγ w => by rw [BBF_norm_periodic hψ G γ hγ]) u]`.
+-/
 theorem lintegral_rhoBF {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {nS nT : ℕ} {JS : Matrix (Fin nS) (Fin nS) E} {JT : Matrix (Fin nT) (Fin nT) E} {ξ₀ : E}
     {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F ψ) (μ : Measure (WOF F E nS nT)) (𝓕 : Set (WOF F E nS nT))
@@ -37,6 +44,11 @@ theorem lintegral_rhoBF {F E : Type} [Field F] [NumberField F] [Field E] [Number
   rw [GlobalTheory.HeisOrtho.setIntegral_add_right (G := WOF F E nS nT) (ratLF F E nS nT) μ 𝓕 h𝓕 (fun w => ‖G.1 w‖ ^ 2)
     (fun γ hγ w => by rw [BBF_norm_periodic hψ G γ hγ]) u]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ nS nT JS JT ξ₀ ψ hψ μ 𝓕 hμ h𝓕 f f' hn`. Take `⟨i1, i2, i3, i4, i5, K, hK, hc⟩` from `GlobalTheory.AdelicMatrixLatticeF.lattice F E nS nT`. Use `haveI : BorelSpace (WOF F E nS nT) := ⟨rfl⟩`. Use `haveI : Countable (ratLF F E nS nT) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Establish `hlt` using `GlobalTheory.measure_addFundamentalDomain_lt_top_of_cocompact (G := WOF F E nS nT) (ratLF F E nS nT) hK hc μ h𝓕`.
+
+Use `haveI : IsFiniteMeasure (μ.restrict 𝓕) := ⟨by rwa [Measure.restrict_apply_univ]⟩`. Rewrite using `[lintegral_norm_sq_eq_toL2, lintegral_norm_sq_eq_toL2, enorm_sq_inj]`. Use `hn _ (toL2 _ _ (μ.restrict 𝓕)) fun v G => ?_` and prove the remaining obligations. Rewrite using `[← enorm_sq_inj, ← lintegral_norm_sq_eq_toL2, ← lintegral_norm_sq_eq_toL2]`. Conclude with `lintegral_rhoBF hψ μ 𝓕 hμ h𝓕 _ G`.
+-/
 theorem lintegral_eq_of_normsF : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (nS nT : ℕ)
     (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E) (ξ₀ : E) (ψ : AddChar (AF F) ℂ)

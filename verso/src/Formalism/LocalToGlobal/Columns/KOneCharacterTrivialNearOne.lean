@@ -22,6 +22,11 @@ def kOneLastExponents (n c : ℕ) (l : ℕ) : ℤ := if l + 1 = n then (c : ℤ)
 
 def twistedLevelExponent (n c : ℕ) (l : ℕ) : ℤ := if l + 1 = n then 0 else (c : ℤ)
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[ciMem_sclLat]`. Establish `hy : ((qOf P : E) ^ (c : ℤ))⁻¹ • x ∈ stdAt E n P`. Rewrite using `[ciMem_stdAt]`. Introduce `l`. Simplify `hx l` using `[Pi.smul_apply, smul_eq_mul]`.
+
+Establish `h1` using `(hg _).2 hy`. Rewrite `h1` using `[map_smul, ciMem_stdAt]`. Introduce `l`. Simplify `h1 l` using `[Pi.smul_apply, smul_eq_mul]`.
+-/
 theorem scaledConstLattice_stable {n c : ℕ} {g : Sp E n ≃ₗ[E] Sp E n} (hg : g ∈ GLint E n P) {x : Sp E n}
     (hx : x ∈ LocE.sclLat P (qOf P) n (fun _ => (c : ℤ))) :
     g x ∈ LocE.sclLat P (qOf P) n (fun _ => (c : ℤ)) := by
@@ -63,6 +68,11 @@ def twK1H (n r c : ℕ) : Subgroup ↥(GLint E n P) where
     rw [e]
     exact neg_mem (scaledConstLattice_stable P (a⁻¹).2 (ha4 w hw))
 
+/- English proof (translation)
+Establish `hc : ∀ r : Sp E (n + 0) ≃ₗ[E] Sp E (n + 0), Loc.R1cond E n 0 r` using `fun r => by`. Establish `hU : ∀ i (v : Sp E (n + 0)), v ∈ Loc.Ufl E n 0 i` using `fun i v l hl => absurd (show l.1 < n + i by have := l.2; omega) hl`. Establish `he : Loc.eN E (n + 0) n = 0`. Use function extensionality and compare the values at `l; unfold Loc.eN; rw [if_neg (by have := l.2; omega)]; rfl`. Conclude with `⟨fun i v _ => hU i _, by rw [he, map_zero], fun i => hU i _⟩`.
+
+Conclude with `⟨hc g, hc g⁻¹⟩`.
+-/
 theorem mem_R1_zero {n : ℕ} (g : Sp E (n + 0) ≃ₗ[E] Sp E (n + 0)) : g ∈ Loc.R1 E n 0 := by
   have hc : ∀ r : Sp E (n + 0) ≃ₗ[E] Sp E (n + 0), Loc.R1cond E n 0 r := fun r => by
     have hU : ∀ i (v : Sp E (n + 0)), v ∈ Loc.Ufl E n 0 i := fun i v l hl => absurd (show l.1 < n + i by have := l.2; omega) hl
@@ -98,6 +108,19 @@ def kOneCharacter (n r c : ℕ) (ξ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) : ↥(t
 def kOneLevel (n r c : ℕ) (ξ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) : LevI E K n P :=
   ⟨twK1H P n r c, (kOneCharacter P n r c ξ).toHomUnits⟩
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[ciMem_sclLat]`. Establish `hvq0 : P.valuation E (qOf P : E) ≠ 0` using `(map_ne_zero _).2 hq0`. Establish `hvq1 : P.valuation E (qOf P : E) ≤ 1` using `qth_vq_le P (qOf P)`. Establish `hpow : ∀ k : ℤ, 0 ≤ k → P.valuation E (qOf P : E) ^ k ≤ 1` using `fun k hk => by`. Rewrite using `[show k = ((k.toNat : ℕ) : ℤ) by omega, zpow_natCast]`.
+
+Conclude with `pow_le_one' hvq1 _`. Establish `hxl : ∀ l : Fin m, P.valuation E (x l) ≤ P.valuation E (qOf P : E) ^ e l.1` using `fun l => by`. Establish `h1` using `(qth_intAt_iff P _).1 (hx l)`. Rewrite `h1` using `[map_mul, map_inv₀, map_zpow₀]`. Establish `h2 : P.valuation E (qOf P : E) ^ e l.1 ≠ 0` using `zpow_ne_zero _ hvq0`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, mul_inv_cancel₀ h2, one_mul]`. Use `_ ≤ P.valuation E (qOf P : E) ^ e l.1 * 1 := mul_le_mul' le_rfl h1`. Use `_ = _ := mul_one _`. Establish `hxl1 : ∀ l : Fin m, P.valuation E (x l) ≤ 1` using `fun l => le_trans (hxl l) (hpow _ (he l.1).1)`.
+
+Introduce `i`. Rewrite using `[qth_mulVec, Pi.add_apply, mul_add]`. Use `IntAt.add (hx i) ((qth_intAt_iff P _).2 ?_)` and prove the remaining obligations. Rewrite using `[Matrix.mulVec, dotProduct, Finset.mul_sum]`. Use `Valuation.map_sum_le _ fun l _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, map_mul, map_inv₀, map_zpow₀]`. Establish `h3 : P.valuation E ((((toGLm E m W : GL (Fin m) E) : Matrix (Fin m) (Fin m) E) - 1) i l) * P.valuation E (x l) ≤ P.valuation E (qOf P : E) ^ c`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[zpow_sub₀ hvq0, zpow_natCast, div_eq_mul_inv, mul_comm]`.
+
+Use `_ ≤ 1 := hpow _ (by have := (he i.1).2; omega)`.
+-/
 theorem twClose_c {m c : ℕ} (e : ℕ → ℤ) (he : ∀ l, 0 ≤ e l ∧ e l ≤ c) (hq0 : (qOf P : E) ≠ 0) (W : Sp E m ≃ₗ[E] Sp E m)
     (hW : ∀ i j, P.valuation E ((((toGLm E m W : GL (Fin m) E) : Matrix (Fin m) (Fin m) E) - 1) i j) ≤ P.valuation E (qOf P : E) ^ c)
     {x : Sp E m} (hx : x ∈ LocE.sclLat P (qOf P) m e) : W x ∈ LocE.sclLat P (qOf P) m e := by
@@ -132,6 +155,23 @@ theorem twClose_c {m c : ℕ} (e : ℕ → ℤ) (he : ∀ l, 0 ≤ e l ∧ e l �
       rw [zpow_sub₀ hvq0, zpow_natCast, div_eq_mul_inv, mul_comm]
     _ ≤ 1 := hpow _ (by have := (he i.1).2; omega)
 
+/- English proof (translation)
+Unfold `LocE.lamQB`. Use `set D : Matrix (Fin (n' - kj)) (Fin (n' - kj)) E := Matrix.of fun s t : Fin (n' - kj) => Loc.atN ((y : Sp E N →ₗ[E] Sp E N) (Loc.eN E N (kj + t.1))) (kj + s.1) with hD`. Establish `hent : ∀ s t : Fin (n' - kj), IntAt P (D s t) ∧ redP P (D s t) = (1 : Matrix _ _ (𝓞 E ⧸ P.asIdeal)) s t`. Introduce `s t`. Establish `hs : kj + s.1 < N` using `by have := s.2; omega`.
+
+Establish `ht : kj + t.1 < N` using `by have := t.2; omega`. Establish `e1 : Loc.eN E N (kj + t.1) = Pi.single ⟨kj + t.1, ht⟩ 1`. Use function extensionality and compare the values at `l`. Unfold `Loc.eN`. Rewrite using `[Pi.single_apply]`.
+
+Use `congr 1`. Apply `propext` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `Fin.ext h`.
+
+Introduce `h`. Rewrite using `[h]`. Establish `e2 : D s t = ((toGLm E N y : GL (Fin N) E) : Matrix (Fin N) (Fin N) E) ⟨kj + s.1, hs⟩ ⟨kj + t.1, ht⟩`. Rewrite using `[qsp_toGLm_apply, hD, Matrix.of_apply, e1]`. Unfold `Loc.atN`.
+
+Rewrite using `[dif_pos hs]`. Both sides reduce to the same expression. Apply the tactic sequence `obtain ⟨h1, h2⟩ := qth_red_entry P (qOf P) hq0 hq hy ⟨kj + s.1, hs⟩ ⟨kj + t.1, ht⟩`. Rewrite using `[e2]`. Use `⟨h1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h2, Matrix.one_apply, Matrix.one_apply]`. Distinguish the cases in `hst : s = t`. Rewrite using `[if_pos (Fin.ext (by simp [hst])), if_pos hst, redP_one]`. Rewrite using `[if_neg (fun h => hst (Fin.ext (by have := congrArg Fin.val h; simp at this; omega))), if_neg hst, redP_zero]`. Establish `hdet : redP P D.det = 1`.
+
+Rewrite using `[redP_det D fun s t => (hent s t).1]`. Establish `: D.map (redP P) = 1` using `Matrix.ext fun s t => (hent s t).2`. Rewrite using `[this, Matrix.det_one]`. Unfold `LocE.unitV`. Establish `hu : IsUnit (redP P D.det)` using `by rw [hdet]; exact isUnit_one`.
+
+Rewrite using `[dif_pos hu]`. Establish `: hu.unit = 1` using `Units.ext (by rw [IsUnit.unit_spec, hdet]; rfl)`. Rewrite using `[this, map_one, Units.val_one, inv_one]`.
+-/
 theorem twLamQB_one (hq : ((qOf P : ℕ) : 𝓞 E) ∈ P.asIdeal) (hq0 : ((qOf P : ℕ) : E) ≠ 0) (ξ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ)
     {kj n' N : ℕ} (hn : n' ≤ N) (y : Sp E N ≃ₗ[E] Sp E N) (hy : QClose P (qOf P) y) :
     LocE.lamQB ξ kj n' (y : Sp E N →ₗ[E] Sp E N) = 1 := by
@@ -174,6 +214,31 @@ theorem twLamQB_one (hq : ((qOf P : ℕ) : 𝓞 E) ∈ P.asIdeal) (hq0 : ((qOf P
   have : hu.unit = 1 := Units.ext (by rw [IsUnit.unit_spec, hdet]; rfl)
   rw [this, map_one, Units.val_one, inv_one]
 
+/- English proof (translation)
+Establish `hq0 : ((qOf P : ℕ) : E) ≠ 0` using `by exact_mod_cast (Formalism.L2.Ker.qOf_pos P).ne'`. Establish `hq : ((qOf P : ℕ) : 𝓞 E) ∈ P.asIdeal` using `ciQ_mem P`. Establish `hv0 : P.valuation E ((qOf P : ℕ) : E) ≠ 0` using `(map_ne_zero _).2 hq0`. Establish `hvq1 : P.valuation E (qOf P : E) ≤ 1` using `qth_vq_le P (qOf P)`. Choose the witnesses or unpack the hypotheses as in `⟨e, he⟩ : ∃ e : ℕ, WithZero.exp (-(e : ℤ)) ≤ P.valuation E ((qOf P : ℕ) : E) := by`.
+
+Use `⟨(-(WithZero.log (P.valuation E ((qOf P : ℕ) : E)))).toNat, ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [← WithZero.exp_log hv0]`. Rewrite using `[WithZero.exp_le_exp]`. Use `Int.self_le_toNat (-(WithZero.log (P.valuation E ((qOf P : ℕ) : E))))` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Use `⟨(e + 1) * c, Nat.mul_pos (Nat.succ_pos _) hc, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hexp : WithZero.exp (-(((e + 1) * c : ℕ) : ℤ)) ≤ P.valuation E (qOf P : E) ^ c`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← WithZero.exp_nsmul, WithZero.exp_le_exp, nsmul_eq_mul]`. Use `push_cast`.
+
+Use the polynomial consequences of the given equalities and inequalities. Use `_ ≤ _ := pow_le_pow_left' he c`. Establish `hqc : P.valuation E (qOf P : E) ^ c ≤ P.valuation E (qOf P : E)`. Take `⟨d, rfl⟩ : ∃ d, c = d + 1` from `⟨c - 1, by omega⟩`. Rewrite using `[pow_succ]`.
+
+Conclude with `mul_le_of_le_one_left' (pow_le_one' hvq1 d)`. Establish `hWc : ∀ (y : ↥(GLint E n P)), lqPrinc P ((e + 1) * c) (y : Sp E n ≃ₗ[E] Sp E n) → ∀ i j, P.valuation E ((((toGLm E n (y : Sp E n ≃ₗ[E] Sp E n) : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) - 1) i j) ≤ P.valuation E (qOf P : E) ^ c` using `fun y hy i j => le_trans (hy i j) hexp`. Establish `hg'` using `qth_princ_inv P g hg`. Establish `c1` using `hWc g hg`. Establish `c2` using `hWc g⁻¹ hg'`.
+
+Establish `q1 : QClose P (qOf P) (g : Sp E n ≃ₗ[E] Sp E n)` using `fun i j => le_trans (c1 i j) hqc`. Establish `q2 : QClose P (qOf P) ((g⁻¹ : ↥(GLint E n P)) : Sp E n ≃ₗ[E] Sp E n)` using `fun i j => le_trans (c2 i j) hqc`. Establish `hstab : ∀ (f : ℕ → ℤ), (∀ l, 0 ≤ f l ∧ f l ≤ c) → (g : Sp E n ≃ₗ[E] Sp E n) ∈ stabL E n (LocE.sclLat P (qOf P) n f)` using `fun f hf x => ⟨fun hx => by`. Use `twClose_c P f hf hq0 _ c2 hx` as an intermediate fact. Rewrite using `[show ((g⁻¹ : ↥(GLint E n P)) : Sp E n ≃ₗ[E] Sp E n) ((g : Sp E n ≃ₗ[E] Sp E n) x) = x from (g : Sp E n ≃ₗ[E] Sp E n).symm_apply_apply x] at this,` and apply the resulting hypothesis.
+
+Use `fun hx => twClose_c P f hf hq0 _ c1 hx⟩`. Apply the tactic sequence `have hbound : ∀ l, 0 ≤ kOneLastExponents n c l ∧ kOneLastExponents n c l ≤ c := fun l => by unfold kOneLastExponents; split_ifs <;> omega`. Apply the tactic sequence `have hboundX : ∀ l, 0 ≤ twistedLevelExponent n c l ∧ twistedLevelExponent n c l ≤ c := fun l => by unfold twistedLevelExponent; split_ifs <;> omega`. Establish `hS : ∀ w ∈ LocE.sclLat P (qOf P) n (twistedLevelExponent n c), (g : Sp E n ≃ₗ[E] Sp E n) w - w ∈ LocE.sclLat P (qOf P) n (fun _ => (c : ℤ))`. Introduce `w hw`.
+
+Rewrite `hw`, the goal using `[ciMem_sclLat]`. Establish `hwl : ∀ l : Fin n, P.valuation E (w l) ≤ 1` using `fun l => by`. Establish `h1` using `(qth_intAt_iff P _).1 (hw l)`. Rewrite `h1` using `[map_mul, map_inv₀, map_zpow₀]`. Establish `hpow : P.valuation E (qOf P : E) ^ twistedLevelExponent n c l.1 ≤ 1`.
+
+Rewrite using `[show twistedLevelExponent n c l.1 = (((twistedLevelExponent n c l.1).toNat : ℕ) : ℤ) by have := (hboundX l.1).1; omega, zpow_natCast]`. Conclude with `pow_le_one' hvq1 _`. Establish `h2 : P.valuation E (qOf P : E) ^ twistedLevelExponent n c l.1 ≠ 0` using `zpow_ne_zero _ hv0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, mul_inv_cancel₀ h2, one_mul]`.
+
+Use `_ ≤ 1 * 1 := mul_le_mul' hpow h1`. Use `_ = 1 := one_mul 1`. Introduce `i`. Rewrite using `[qth_mulVec, Pi.sub_apply, Pi.add_apply, add_sub_cancel_left]`. Rewrite using `[qth_intAt_iff, map_mul, map_inv₀, map_zpow₀, Matrix.mulVec, dotProduct]`.
+
+Establish `hsum : P.valuation E (∑ l, (((toGLm E n (g : Sp E n ≃ₗ[E] Sp E n) : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) - 1) i l * w l) ≤ P.valuation E (qOf P : E) ^ c`. Use `Valuation.map_sum_le _ fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hmem : g ∈ (kOneLevel P n r c ξ).H` using `⟨qth_mem_JQ P (qOf P) hq0 (n := n) (c := 0) r (g : Sp E n ≃ₗ[E] Sp E n) q1 q2, hstab _ hbound, hstab _ hboundX, hS⟩`. Use `⟨hmem, Units.ext ?_⟩` and prove the remaining obligations. Use `show LocE.lamQB ξ r n ((g : Sp E n ≃ₗ[E] Sp E n) : Sp E n →ₗ[E] Sp E n) = 1`. Conclude with `twLamQB_one P hq hq0 ξ (le_refl n) _ q1`.
+-/
 theorem kOneCharacter_trivial_near_one (n r c : ℕ) (hc : 0 < c) (ξ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) :
     ∃ N : ℕ, 0 < N ∧ ∀ g : ↥(GLint E n P), lqPrinc P N (g : Sp E n ≃ₗ[E] Sp E n) →
       ∃ h : g ∈ (kOneLevel P n r c ξ).H, (kOneLevel P n r c ξ).lam ⟨g, h⟩ = 1 := by
@@ -261,9 +326,15 @@ def twLt : ∀ j, LevFam X.E X.K (R.N j) Pr.vGs := colLevSym Ch
 def twTt : ∀ j, LevQFam X.E X.K (R.N j) (QE sel (mu : Chr X.F X.E X.K)) := fun j P =>
   kOneLevel P.1 (R.N j) R.r (twTopDepth R) (resChar (mu : Chr X.F X.E X.K) P.1)
 
+/- English proof (translation)
+Introduce `P` and use `kOneCharacter_trivial_near_one P.1 (R.N j) R.r (twTopDepth R) (by unfold twTopDepth; omega) _`.
+-/
 theorem twTt_open (j : ℕ) : ThetaOpen (twTt (R := R) sel mu j) := fun P =>
   kOneCharacter_trivial_near_one P.1 (R.N j) R.r (twTopDepth R) (by unfold twTopDepth; omega) _
 
+/- English proof (translation)
+The claim follows from `chF_ok_twIdxTop W Ch sel mu cst m2 (twLt Ch) (twTt sel mu) hX hc hQg (fun j' _ => twTt_open (R := R) sel mu j') u j`.
+-/
 theorem twTop_chF_ok (W : Wts X Pr.Word R) (hX : X.Ok) {cst : LocCst X (rowSG Pr sel mu)} (hc : cst.Ok)
     (hQg : ∀ P ∈ QE sel (mu : Chr X.F X.E X.K), P ∉ Pr.vGs) (m2 : ℕ) (u : Pr.Word) (j : ℕ) :
     (chF W sel mu (twIdxTop Ch sel mu cst m2 (twLt Ch) (twTt sel mu)) u j).Ok :=
@@ -271,6 +342,13 @@ theorem twTop_chF_ok (W : Wts X Pr.Word R) (hX : X.Ok) {cst : LocCst X (rowSG Pr
 
 open Classical in
 
+/- English proof (translation)
+Introduce `h w _`. Establish `hg0` using `h.2 ⟨w.1, hSG w.2⟩ (Set.mem_univ _)`. Establish `e : (rowTy Ch sel mu (rPsymF Ch)) ⟨w.1, hSG w.2⟩ = (rowTyG Ch (rPsymF Ch)) w`. Unfold `rowTy`. Rewrite using `[LevFam.glue_of_mem _ _ _ w.2]`.
+
+Establish `hg : h.1 ⟨w.1, hSG w.2⟩ ∈ ((rowTyG Ch (rPsymF Ch)) w).inv.H`. Express the relevant statement in the definitionally equal form `h.1 ⟨w.1, hSG w.2⟩ ∈ ((rowTy Ch sel mu (rPsymF Ch)) ⟨w.1, hSG w.2⟩).inv.inv.H at hg0`. Rewrite `hg0` using `[e]`. Conclude with `hg0`. Establish `key` using `symX_ext_mem (N_m_succ R) R.k R.r R.t R.m R.rS (rank_X'_eq R) (r_le_X' R) (r_le_N_of_le (by omega)) h.1 ⟨w.1, hSG w.2⟩ hg`.
+
+Rewrite `key` using `[← colLevSym_top_H Ch le_rfl w]`. Conclude with `key`.
+-/
 theorem twLevExtL (hSG : Pr.vGs ⊆ rowSG Pr sel mu) :
     LevExtL (twLt Ch R.m) hSG (rowTy Ch sel mu (rPsymF Ch)).inv := by
   intro h w _

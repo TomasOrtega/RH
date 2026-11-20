@@ -4,6 +4,31 @@ namespace GlobalTheory.AuxiliaryLemmaSecond
 
 open IsLocalRing
 
+/- English proof (translation)
+Introduce `κ _ R _ _ _ Q _ hQ0 hmin`. Establish `hS : Q.primeCompl ≤ nonZeroDivisors R` using `Q.primeCompl_le_nonZeroDivisors`. Use `set A : Subalgebra R κ := Localization.subalgebra.ofField κ Q.primeCompl hS with hAdef`. Establish `memA : ∀ x : κ, x ∈ A ↔ ∃ (a s : R) (_ : s ∈ Q.primeCompl), x = algebraMap R κ a * (algebraMap R κ s)⁻¹` using `fun x => Iff.rfl`. Use `haveI : IsLocalization.AtPrime A Q := Localization.subalgebra.isLocalization_ofField κ _ hS`.
+
+Use `haveI : IsLocalRing A := IsLocalization.AtPrime.isLocalRing A Q`. Use `haveI : IsNoetherianRing A := IsLocalization.isNoetherianRing Q.primeCompl A inferInstance`. Use `haveI : IsIntegrallyClosed A := isIntegrallyClosed_of_isLocalization A Q.primeCompl hS`. Establish `hcm : (maximalIdeal A).comap (algebraMap R A) = Q` using `IsLocalization.AtPrime.comap_maximalIdeal A Q`. Establish `hmap : ∀ r : R, algebraMap R κ r = (r : κ)` using `fun r => rfl`.
+
+Simplify using `only [hmap] at memA`. Establish `hinj : Function.Injective (algebraMap R A)` using `IsLocalization.injective A hS`. Establish `hm0 : maximalIdeal A ≠ ⊥`. Introduce `h`. Apply `hQ0` to reduce the goal to its premises.
+
+Rewrite using `[← hcm, h]`. Conclude with `Ideal.comap_bot_of_injective _ hinj`. Establish `hnf : ¬ IsField A` using `isField_iff_maximalIdeal_eq.not.mpr hm0`. Establish `hDVR : IsDiscreteValuationRing A`. Establish `h03` using `(IsDiscreteValuationRing.TFAE A hnf).out 0 3`.
+
+Use `h03.mpr ⟨inferInstance, ExistsUnique.intro (maximalIdeal A) ⟨hm0, inferInstance⟩ ?_⟩` and prove the remaining obligations. Introduce and unpack `P ⟨hP0, hPp⟩`. Establish `eP : Ideal.map (algebraMap R A) (P.comap (algebraMap R A)) = P` using `IsLocalization.map_comap Q.primeCompl A P`. Establish `eM : Ideal.map (algebraMap R A) ((maximalIdeal A).comap (algebraMap R A)) = maximalIdeal A` using `IsLocalization.map_comap Q.primeCompl A (maximalIdeal A)`. Establish `hc : P.comap (algebraMap R A) = Q`.
+
+Apply `hmin` to reduce the goal to its premises. Conclude with `Ideal.comap_isPrime _ _`. Introduce `h`. Apply `hP0` to reduce the goal to its premises. Rewrite using `[← eP, h, Ideal.map_bot]`.
+
+Rewrite using `[← hcm]`. Conclude with `Ideal.comap_mono (le_maximalIdeal hPp.ne_top)`. Rewrite using `[← eP, ← eM, hc, hcm]`. Set `W : ValuationSubring κ` to `.ofSubring A.toSubring fun x => by`. Simplify `ValuationRing.isInteger_or_isInteger A x` using `[IsLocalization.IsInteger]`.
+
+Use `⟨W, hDVR, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `r show (r : κ) ∈ A`. Conclude with `(memA _).mpr ⟨r, 1, Q.primeCompl.one_mem, by simp⟩`. Introduce `r hr show (r : κ)⁻¹ ∈ A`. Conclude with `(memA _).mpr ⟨1, r, hr, by simp⟩`.
+
+Introduce `r hrQ hr0 hmem`. Express the relevant statement in the definitionally equal form `(r : κ)⁻¹ ∈ A at hmem`. Take `⟨a, s, hs, hx⟩` from `(memA _).mp hmem`. Establish `hs0 : (s : κ) ≠ 0`. Introduce `h`.
+
+Apply `hs` to reduce the goal to its premises. Establish `: s = 0` using `Subtype.ext h`. Rewrite using `[this]`. Conclude with `Q.zero_mem`. Establish `hr0' : (r : κ) ≠ 0` using `fun h => hr0 (Subtype.ext h)`.
+
+Establish `key : (s : κ) = (r : κ) * (a : κ)`. Establish `hx' : (r : κ)⁻¹ = (a : κ) * (s : κ)⁻¹` using `by simpa using hx`. Clear denominators, using `at hx'` for the nonvanishing conditions. Take the linear combination `hx'`. Establish `: s = r * a` using `Subtype.ext (by simpa using key)`.
+
+Conclude with `hs (this ▸ Q.mul_mem_right a hrQ)`. Introduce `w hw`. Express the relevant statement in the definitionally equal form `w ∈ A at hw`. Take `⟨a, s, hs, rfl⟩` from `(memA _).mp hw`. Conclude with `⟨a, s, hs, by simp [div_eq_mul_inv]⟩`.
+-/
 theorem main : ∀ {κ : Type} [inst : Field κ] (R : Subring κ) [IsNoetherianRing ↥R] [IsIntegrallyClosed ↥R]
     [IsFractionRing (↥R) κ] (Q : Ideal ↥R) [Ideal.IsPrime Q], Q ≠ ⊥ →
     (∀ (p : Ideal ↥R), Ideal.IsPrime p → p ≠ ⊥ → p ≤ Q → p = Q) →

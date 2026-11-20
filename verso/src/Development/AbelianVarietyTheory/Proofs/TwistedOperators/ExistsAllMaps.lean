@@ -24,6 +24,35 @@ namespace GlobalTheory.CuspRepr
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `D θ hθ V S M μ _ _ Φ hΦ K hK hKfix`. Take `⟨𝓕, ρ, e, hp, hρ, he, hrep⟩` from `GlobalTheory.T.exists_L2AdelicQuotient_model_equivalence D V μ`. Take `⟨hcusp, hequiv⟩` from `(GlobalTheory.AutMult.mem_homDS hθ).1 hΦ`. Take `⟨Φ', hΦ'⟩ : ∃ Φ' : ContinuousMultilinearMap ℂ M.H (Lp ℂ 2 (nuQ V μ 𝓕)), ∀ y, Φ' y = e (Φ y)` from `⟨(e.toContinuousLinearEquiv : DividedPowerChartLift V μ →L[ℂ] Lp ℂ 2 (nuQ V μ 𝓕)).compContinuousMultilinearMap Φ, fun _ => rfl⟩`. Establish `e2 : ∀ τ, ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), ∀ y, Φ' (Function.update y τ (M.rep τ g (y τ))) = ρ (atTau θ V τ g) (Φ' y)`.
+
+Introduce `τ g hg y`. Rewrite using `[hΦ', hΦ', hequiv τ g hg y, he]`. Take `⟨r1, r2, -, r4, -, -⟩` from `GlobalTheory.T.bounded_automorphic_has_representative D V μ 𝓕 ρ hp hρ`. Set `U : Subgroup (GA D V)` to `K.comap (GlobalTheory.AutMult.toFin V)`. Establish `hU : IsOpen (U : Set (GA D V))` using `hK.preimage (GlobalTheory.AutMult.continuous_toFin V)`.
+
+Establish `hfix : ∀ y, ∀ k ∈ U, k ∈ GfC V → ρ k (Φ' y) = Φ' y`. Introduce `y k hk hk'`. Establish `h1 : (⟨k, hk'⟩ : GfC V) ∈ K`. Establish `h2 : GlobalTheory.AutMult.toFin V k ∈ K` using `hk`. Rewrite `h2` using `[show GlobalTheory.AutMult.toFin V k = ⟨k, hk'⟩ from GlobalTheory.AutMult.toFin_coe (⟨k, hk'⟩ : GfC V)]`. Then use the resulting hypothesis.
+
+Rewrite using `[hΦ', ← he]`. Conclude with `congrArg e (hKfix _ h1 y)`. Establish `hsmM` using `GlobalTheory.T.equivariantMultilinear_maps_smoothVectors_intertwines D θ V hθ S M _ ρ Φ' e2`. Use `choose ψ p1 p2 p3 p4 using fun y : M.Vec => GlobalTheory.T.smooth_vector_automorphic_derivatives D θ V hθ μ 𝓕 ρ hp hρ U hU (Φ' fun τ => (y τ : M.H τ)) (hsmM y).1 (hfix _)`. Establish `p1' : ∀ y : M.Vec, Repr V μ 𝓕 (e (Φ fun τ => (y τ : M.H τ))) (ψ y)` using `fun y => hΦ' _ ▸ p1 y`.
+
+Use `haveI : ∀ τ, CompleteSpace (M.H τ) := fun τ => (GlobalTheory.T.discreteSeriesModel_unitary_irreducible_orthonormal D V S M τ).1`. Establish `hH : ∀ τ, (gramAt D V τ).IsHermitian` using `GlobalTheory.SmoothAutCheck.gramAt_herm V`. Establish `hdet : ∀ τ, (gramAt D V τ).det ≠ 0` using `fun τ => (GlobalTheory.SmoothAutCheck.gramAt_unit V τ).ne_zero`. Establish `hsv` using `fun τ => GlobalTheory.T.smoothVectors_subspace_stable_sobolevForm_deriv V.rank (gramAt D V τ) (M.H τ) (M.rep τ) (hH τ) (hdet τ) (GlobalTheory.T.discreteSeriesModel_unitary_irreducible_orthonormal D V S M τ).2.1`. Establish `hsm : ∀ τ, ∀ X ∈ lieAt V τ, ∀ w : M.sm τ, dRep (M.rep τ) X (w : M.H τ) ∈ M.sm τ` using `fun τ X hX w => Submodule.subset_span (((hsv τ).2 w ((hsv τ).1 w w.2)).2.1 X hX).1`.
+
+Establish `uniq : ∀ (y : M.Vec) f, Continuous f → Repr V μ 𝓕 (Φ' fun τ => (y τ : M.H τ)) f → ψ y = f` using `fun y f hf h => r2 _ _ _ (p2 y).cont hf (p1 y) h`. Set `T : MMap M` to `MultilinearMap.mk' ψ (fun y τ a b => by`. Use `uniq _ _ ((p2 _).cont.add (p2 _).cont) ?_` and prove the remaining obligations. Use `repr_add hp hρ (p1 (Function.update y τ a)) (p1 (Function.update y τ b))` as an intermediate fact. Rewrite `this` using `[coe_update, coe_update, ← Φ'.map_update_add]`.
+
+Rewrite using `[coe_update]`. Conclude with `this)`. Use the proof step `(fun y τ c a => by`. Use `uniq _ _ ((p2 _).cont.const_smul c) ?_` and prove the remaining obligations. Use `repr_smul hp hρ c (p1 (Function.update y τ a))` as an intermediate fact.
+
+Rewrite `this` using `[coe_update, ← Φ'.map_update_smul]`. Rewrite using `[coe_update]`. Conclude with `this)`. Establish `hT : ∀ (y : M.Vec) τ, ∀ X ∈ lieAt V τ, ∀ w : M.sm τ, (w : M.H τ) = dRep (M.rep τ) X (y τ) → Rder θ V τ X (T y) = T (Function.update y τ w)`. Introduce `y τ X hX w hw`.
+
+Take `⟨q1, q2⟩` from `p4 y [(τ, X)] (by simpa using hX)`. Simplify using `only [List.foldr_cons, List.foldr_nil] at q1 q2`. Use `(uniq _ _ q1 ?_).symm` and prove the remaining obligations. Rewrite using `[coe_update, hw, ← (hsmM y).2 τ X hX]`. Conclude with `q2`.
+
+Take `⟨N, L, hL, hgr⟩` from `GlobalTheory.T.sobolev_bound_for_smooth_vectors D θ V hθ μ 𝓕 ρ hp hρ U hU`. Establish `hEq : GlobalTheory.RepSmooth.IsEquiv θ T`. Introduce `τ g hg y z hz`. Use `uniq _ _ (continuous_rTr (atTau θ V τ g) (p2 y).cont) ?_` and prove the remaining obligations. Rewrite using `[coe_update, hz, e2 τ g hg]`.
+
+Conclude with `r4 _ _ _ (p1 y)`. Establish `hSob : GlobalTheory.RepSmooth.IsSob T`. Introduce `τ y x`. Take `⟨C, hC⟩` from `hgr x`. Use `cont_value ρ Φ' T hsm (fun y => (hsmM y).2) L hL x (C * normInf θ V 1 ^ N) (fun y => ?_) τ y` and prove the remaining obligations.
+
+Use `hC _ _ (hsmM y).1 (hfix _) (p2 y).cont (p1 y) 1 (one_mem _)` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis. Establish `hmult : IsMultMap θ M ∅ (fun _ => 1) T`. Use `⟨fun y => ⟨p2 y, p3 y, GlobalTheory.RepSmooth.zfin hEq hSob y, N, fun l hl x => ?_⟩, fun y => ?_, fun y k hk => hk.elim, hEq, hSob⟩` and prove the remaining obligations. Take `⟨y', hy'⟩` from `word_value T hsm hT l hl y`.
+
+Take `⟨C, hC⟩` from `hgr x`. Use `⟨C * (L.map fun l => ‖l.foldr (dL2 θ V ρ) (Φ' fun τ => (y' τ : M.H τ))‖).sum, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[hy', mul_right_comm]`. Conclude with `hC _ _ (hsmM y').1 (hfix _) (p2 y').cont (p1 y') g hg`. Conclude with `GlobalTheory.T.cuspidal_of_continuous_representative D V μ _ (hcusp _) (ψ y) (p2 y).cont (p2 y).left ((hrep _ _).1 (p1' y))`.
+
+Conclude with `⟨T, Submodule.subset_span hmult, fun v => (hrep _ _).1 (p1' v)⟩`.
+-/
 theorem exists_allMaps : ∀ (D : D7) (θ : D.what₂.Tau → (TensorProduct D.host.F (Ainf D.host.F) D.host.E →+* ℂ)), IsInfFam θ → ∀ (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (μ : Measure (GA D V)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant], ∀ Φ ∈ homDS M (RG V μ) (GlobalTheory.Cusp.L2cusp V μ), ∀ K : Subgroup (GfC V), IsOpen (K : Set (GfC V)) → (∀ k ∈ K, ∀ y, RG V μ (k : GA D V) (Φ y) = Φ y) → ∃ T ∈ GlobalTheory.CuspMult.allMaps θ M, ∀ v : M.Vec, lift (GQ V) (Φ fun τ => (v τ : M.H τ)) =ᵐ[μ] T v := by
   intro D θ hθ V S M μ _ _ Φ hΦ K hK hKfix
   obtain ⟨𝓕, ρ, e, hp, hρ, he, hrep⟩ := GlobalTheory.T.exists_L2AdelicQuotient_model_equivalence D V μ

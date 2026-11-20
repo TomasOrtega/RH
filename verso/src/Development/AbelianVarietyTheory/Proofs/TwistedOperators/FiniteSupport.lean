@@ -26,6 +26,11 @@ def intersection_update_fsHerm_neg_one {ι : Type} {K : ι → Type} [∀ i, Add
     Module.End ℂ (⨂[ℂ] j, K j) :=
   PiTensorProduct.map (Function.update (fun j => (LinearMap.id : K j →ₗ[ℂ] K j)) i f)
 
+/- English proof (translation)
+Unfold `intersection_update_fsHerm_neg_one`. Rewrite using `[PiTensorProduct.map_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Break down `eq_or_ne j i with rfl | hji` into its components or cases.
+
+Simplify using the standard rewrite rules. Simplify using `[hji]`.
+-/
 theorem position_tprod {ι : Type} {K : ι → Type} [∀ i, AddCommGroup (K i)] [∀ i, Module ℂ (K i)] (i : ι)
     (f : Module.End ℂ (K i)) (v : ∀ j, K j) :
     intersection_update_fsHerm_neg_one i f (PiTensorProduct.tprod ℂ v) = PiTensorProduct.tprod ℂ (Function.update v i (f (v i))) := by

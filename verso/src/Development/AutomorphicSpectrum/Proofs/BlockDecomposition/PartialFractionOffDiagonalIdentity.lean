@@ -7,6 +7,15 @@ open Finset Matrix PositivityTheory.RgHe.Frame
 
 namespace GlobalTheory.CompanionTheory.RgHeFrame
 
+/- English proof (translation)
+Introduce `m d d' hinj i k hik`. Establish `hi` using `GlobalTheory.T.partial_fraction_diagonal_identity d d' hinj i`. Establish `hk` using `GlobalTheory.T.partial_fraction_diagonal_identity d d' hinj k`. Establish `hne : d i - d k ≠ 0` using `sub_ne_zero.mpr fun h => hik (Sum.inl.inj (@hinj (Sum.inl i) (Sum.inl k) h))`. Establish `hij : ∀ j, d i - d' j ≠ 0` using `fun j => sub_ne_zero.mpr fun h => Sum.inl_ne_inr (@hinj (Sum.inl i) (Sum.inr j) h)`.
+
+Establish `hkj : ∀ j, d k - d' j ≠ 0` using `fun j => sub_ne_zero.mpr fun h => Sum.inl_ne_inr (@hinj (Sum.inl k) (Sum.inr j) h)`. Establish `hdiff : ∑ j, pfR d d' j / (d i - d' j) - ∑ j, pfR d d' j / (d k - d' j) = -(d i - d k) * ∑ j, pfR d d' j / ((d i - d' j) * (d k - d' j))`. Rewrite using `[← Finset.sum_sub_distrib, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Clear denominators, using `[hij j, hkj j]` for the nonvanishing conditions.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `key : (d i - d k) * (1 - ∑ j, pfR d d' j / ((d i - d' j) * (d k - d' j))) = 0`. Take the linear combination `hi - hk - hdiff`. Break down `mul_eq_zero.mp key with h | h` into its components or cases. Conclude with `absurd h hne`.
+
+Conclude with `h`.
+-/
 theorem pfOrth : ∀ {m : ℕ} (d : Fin (m + 1) → ℝ) (d' : Fin m → ℝ),
     Function.Injective (Sum.elim d d') → ∀ i k, i ≠ k →
       1 - ∑ j, pfR d d' j / ((d i - d' j) * (d k - d' j)) = 0 := by

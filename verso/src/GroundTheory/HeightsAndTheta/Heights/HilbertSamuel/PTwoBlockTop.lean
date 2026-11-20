@@ -18,6 +18,11 @@ namespace TwoBlockTop
 
 variable {κ : Type}
 
+/- English proof (translation)
+Use `⟨?_, fun z => rfl⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Use `show (Pi.single b 1 : Fin 2 → ℤ) k = Function.extend (blkOf b) (fun _ : Unit => (1 : ℤ)) 0 k`. Distinguish the cases in `hk : k = b`. Substitute `hk` using the available equality.
+
+Rewrite using `[Pi.single_eq_same]`. Conclude with `(Function.Injective.extend_apply (f := blkOf k) (fun _ _ _ => Subsingleton.elim _ _) (fun _ => (1 : ℤ)) (0 : Fin 2 → ℤ) ()).symm`. Rewrite using `[Pi.single_eq_of_ne hk, Function.extend_apply' _ _ _ (fun ⟨_, hu⟩ => hk hu.symm)]`. Both sides reduce to the same expression.
+-/
 theorem isPullHerm_blockLine [Fintype κ] (m : ConeMetric ℂ (Ix κ)) (b : Fin 2) :
     IsPullHerm (blkOf b) (blkV κ b) (HermLine.ofCone m) (blockLine m b) := by
   refine ⟨?_, fun z => rfl⟩
@@ -31,11 +36,17 @@ theorem isPullHerm_blockLine [Fintype κ] (m : ConeMetric ℂ (Ix κ)) (b : Fin 
   · rw [Pi.single_eq_of_ne hk, Function.extend_apply' _ _ _ (fun ⟨_, hu⟩ => hk hu.symm)]
     rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Take `⟨⟨⟩, i⟩` from `p`. Simplify using `[pair, blkV]`.
+-/
 theorem pair_comp_blkV_zero {Ω : Type} [Field Ω] (x x' : Ix κ → Ω) : pair x x' ∘ blkV κ 0 = x := by
   funext p
   obtain ⟨⟨⟩, i⟩ := p
   simp [pair, blkV]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Take `⟨⟨⟩, i⟩` from `p`. Simplify using `[pair, blkV]`.
+-/
 theorem pair_comp_blkV_one {Ω : Type} [Field Ω] (x x' : Ix κ → Ω) : pair x x' ∘ blkV κ 1 = x' := by
   funext p
   obtain ⟨⟨⟩, i⟩ := p
@@ -45,6 +56,17 @@ end TwoBlockTop
 
 open TwoBlockTop in
 
+/- English proof (translation)
+Introduce `D Ω _ _ κ _ I x B m m' hI hx _ hB hm hm'`. Take `⟨hFp, hFB⟩` from `hF Ω κ x B hB`. Establish `hxA : IsArithVar (mCoordIdeal (ι` using `GlobalTheory κ) x) (D + 1) := by`. Rewrite using `[← coordIdeal_eq_mCoordIdeal]`. Conclude with `hx`.
+
+Take `⟨i, hi⟩` from `hx.2.1.2.2 ()`. Establish `hx0 : x ≠ 0` using `fun h => hi ((X_mem_coordIdeal_iff x _).mpr (by rw [h]; rfl))`. Take `⟨B', -, hB'⟩` from `isInvMat_mul hB`. Establish `hBx0 : matAct B x ≠ 0` using `fun h => hx0 ((matAct_eq_zero_iff hB' x).mp h)`. Take `⟨⟨⟨⟩, i₀⟩, hi₀⟩` from `Function.ne_iff.mp hx0`.
+
+Take `⟨⟨⟨⟩, i₁⟩, hi₁⟩` from `Function.ne_iff.mp hBx0`. Establish `hpA : IsArithVar (mCoordIdeal (ι` using `FinTwoTypeFamily κ) (pair x (matAct B x))) (D + 1) := hA Unit (GlobalTheory κ) (Fin 2) (FinTwoTypeFamily κ) Ω x (pair x (matAct B x)) (D + 1) ⟨0⟩ (fun k => by fin_cases k`. Conclude with `⟨i₀, by simpa [pair] using hi₀⟩`. Conclude with `⟨i₁, by simpa [pair] using hi₁⟩) hFp.symm hxA`. Establish `hBA : IsArithVar (mCoordIdeal (ι` using `GlobalTheory κ) (matAct B x)) (D + 1) := hA Unit (GlobalTheory κ) Unit (GlobalTheory κ) Ω x (matAct B x) (D + 1) ⟨()⟩ (fun _ => ⟨i₁, hi₁⟩) hFB.symm hxA`.
+
+Establish `key : ∀ (b : Fin 2) (z : Ix κ → Ω) (μ : ConeMetric ℂ (Ix κ)), pair x (matAct B x) ∘ blkV κ b = z → IsArithVar (mCoordIdeal (ι` using `GlobalTheory κ) z) (D + 1) → blockFnField (ι := GlobalTheory κ) z = blockFnField (ι := GlobalTheory κ) x → IsSmoothMetric μ → I (Fin 2) (FinTwoTypeFamily κ) (twoBlockIdeal x (matAct B x)) (D + 1) (fun _ => blockLine μ b) = top I z μ D := by`. Introduce `b z μ hz hzA hzF hμ`. Establish `himg : imageZ (blkV κ b) (mCoordIdeal (ι` using `FinTwoTypeFamily κ) (pair x (matAct B x))) = coordIdeal ℤ z := by`. Rewrite using `[hIm Unit (GlobalTheory κ) (Fin 2) (FinTwoTypeFamily κ) (blkOf b) (blkV κ b) Ω _ (isBlockMap_blkV κ b), hz, coordIdeal_eq_mCoordIdeal]`. Establish `h` using `hPF I hI Unit (GlobalTheory κ) (Fin 2) (FinTwoTypeFamily κ) (blkOf b) (blkV κ b) Ω (pair x (matAct B x)) (D + 1) (fun _ => HermLine.ofCone μ) (fun _ => blockLine μ b) (isBlockMap_blkV κ b) hpA (by rw [himg, coordIdeal_eq_mCoordIdeal]; exact hzA) (fun _ => gbamix_smoothHerm_ofCone …`.
+
+Rewrite `h` using `[IntermediateField.relfinrank_eq_one_iff.mpr (by rw [hz, hzF, hFp]), Nat.cast_one, one_mul]`. Rewrite using `[top, ← himg]`. Conclude with `h`. Conclude with `⟨key 0 x m (pair_comp_blkV_zero _ _) hxA rfl hm, key 1 (matAct B x) m' (pair_comp_blkV_one _ _) hBA hFB (hS κ B m m' hB hm hm')⟩`.
+-/
 theorem TwoBlockTop.proof (hPF : PFCoordStatement) (hIm : ImageCoordStatement) (hA : CoordArithOfFnField.Statement)
     (hF : TwoBlockFnField.Statement) (hS : MetricTransportSmooth.Statement) : TwoBlockTop.Statement := by
   classical

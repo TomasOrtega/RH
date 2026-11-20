@@ -18,6 +18,9 @@ section Gen
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 variable {R S : Type} [CommRing R] [Algebra F R] [CommRing S] [Algebra F S]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e`. Simplify using `[Algebra.TensorProduct.basis_repr_tmul, Finsupp.mapRange_apply, Algebra.smul_def]`. Consider the case `add x y hx hy => simp [map_add, hx, hy]`.
+-/
 theorem repr_tmap (f : R →ₐ[F] S) {ι : Type} (b : Module.Basis ι F E) (z : R ⊗[F] E) (k : ι) :
     (Algebra.TensorProduct.basis S b).repr (Algebra.TensorProduct.map f (AlgHom.id F E) z) k =
       f ((Algebra.TensorProduct.basis R b).repr z k) := by
@@ -27,6 +30,11 @@ theorem repr_tmap (f : R →ₐ[F] S) {ι : Type} (b : Module.Basis ι F E) (z :
     simp [Algebra.TensorProduct.basis_repr_tmul, Finsupp.mapRange_apply, Algebra.smul_def]
   | add x y hx hy => simp [map_add, hx, hy]
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis F E`. Rewrite using `[Algebra.trace_eq_matrix_trace (Algebra.TensorProduct.basis R b), Algebra.trace_eq_matrix_trace (Algebra.TensorProduct.basis S b)]`. Simplify using `only [Matrix.trace, Matrix.diag, Algebra.leftMulMatrix_eq_repr_mul, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← repr_tmap, map_mul]`.
+
+Simplify using `only [Algebra.TensorProduct.basis_apply, Algebra.TensorProduct.map_tmul, map_one, AlgHom.coe_id, id_eq]`.
+-/
 theorem trace_tmap [Module.Finite F E] (f : R →ₐ[F] S) (z : R ⊗[F] E) :
     f (Algebra.trace R (R ⊗[F] E) z) =
       Algebra.trace S (S ⊗[F] E) (Algebra.TensorProduct.map f (AlgHom.id F E) z) := by
@@ -39,6 +47,9 @@ theorem trace_tmap [Module.Finite F E] (f : R →ₐ[F] S) (z : R ⊗[F] E) :
   rw [← repr_tmap, map_mul]
   simp only [Algebra.TensorProduct.basis_apply, Algebra.TensorProduct.map_tmul, map_one, AlgHom.coe_id, id_eq]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e => simp [sigR]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem tmap_sigR (f : R →ₐ[F] S) (σ : E →ₐ[F] E) (z : R ⊗[F] E) :
     Algebra.TensorProduct.map f (AlgHom.id F E) (sigR R σ z) =
       sigR S σ (Algebra.TensorProduct.map f (AlgHom.id F E) z) := by
@@ -47,10 +58,16 @@ theorem tmap_sigR (f : R →ₐ[F] S) (σ : E →ₐ[F] E) (z : R ⊗[F] E) :
   | tmul r e => simp [sigR]
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Simplify using `[inclR]`.
+-/
 theorem tmap_inclR (f : R →ₐ[F] S) (e : E) :
     Algebra.TensorProduct.map f (AlgHom.id F E) (inclR R e) = inclR S e := by
   simp [inclR]
 
+/- English proof (translation)
+Use extensionality with `a c`. Simplify using `only [Matrix.map_apply, gramR, hR, Formalism.UG.hform, JR, map_sum, map_mul, tmap_sigR, tmap_inclR]`.
+-/
 theorem tmap_gramR (f : R →ₐ[F] S) (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (X : Fin n → Fin M → R ⊗[F] E) :
     (gramR R σ J X).map (Algebra.TensorProduct.map f (AlgHom.id F E)) =
@@ -58,6 +75,9 @@ theorem tmap_gramR (f : R →ₐ[F] S) (σ : E →ₐ[F] E) {M n : ℕ} (J : Mat
   ext a c
   simp only [Matrix.map_apply, gramR, hR, Formalism.UG.hform, JR, map_sum, map_mul, tmap_sigR, tmap_inclR]
 
+/- English proof (translation)
+Rewrite using `[map_mul, AlgHom.commutes, trace_tmap, ← tmap_gramR]`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.map_apply, map_sum, map_mul]`.
+-/
 theorem tmap_phase [Module.Finite F E] (f : R →ₐ[F] S) (σ : E →ₐ[F] E) {M n : ℕ}
     (J : Matrix (Fin M) (Fin M) E) (B : Matrix (Fin n) (Fin n) (R ⊗[F] E))
     (X : Fin n → Fin M → R ⊗[F] E) :
@@ -70,6 +90,13 @@ theorem tmap_phase [Module.Finite F E] (f : R →ₐ[F] S) (σ : E →ₐ[F] E) 
 
 end Gen
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ _ M J n ψ b X`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Establish `h1` using `tmap_phase (fstA F) σ J (b : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)) X`. Establish `h2` using `tmap_phase (sndA F) σ J (b : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)) X`. Establish `key : ∀ T : AF F, ψ T = psiInf F ψ (fstA F T) * psiFin F ψ (sndA F T)`.
+
+Introduce `T`. Simplify using `only [psiInf, psiFin]`. Rewrite using `[← AddChar.map_add_eq_mul]`. Use `congr 1`. Conclude with `(Prod.fst_add_snd T).symm`.
+
+Rewrite using `[key, h1, h2]`. Both sides reduce to the same expression.
+-/
 theorem adelic_phase_split : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
   IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (n : ℕ) (ψ : AddChar (AF F) ℂ)
   (b : HermR (AF F) σ n) (X : Fin n → Fin M → AF F ⊗[F] E),

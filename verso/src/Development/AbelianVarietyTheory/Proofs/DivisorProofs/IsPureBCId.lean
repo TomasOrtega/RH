@@ -20,6 +20,9 @@ def IsPureBC {S : Type} [CommRing S] (G : Over (Sp S)) [GrpObj G] (W : G ⟶ G) 
   ∀ (R : Type) [CommRing R] (f : S →+* R) (A : Over (Sp R)) [GrpObj A] (φ : A.left ⟶ G.left),
     IsGrpPullback A G (spMap f) φ → ∀ (W' : A ⟶ A) [IsMonHom W'], W'.left ≫ φ = φ ≫ W.left → IsPure A W' (f r) (f s)
 
+/- English proof (translation)
+Establish `hm` using `h.2 y`. Rewrite `hm` using `[hy, ← sub_smul]`. Take `⟨u, hu'⟩` from `hu`. Establish `hv` using `(Fil A).smul_mem (↑u⁻¹ : R) hm`. Rewrite `hv` using `[smul_smul, ← hu', Units.inv_mul, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem IsPure.mem_Fil {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A] {W : A ⟶ A} [IsMonHom W] {r r' s : R}
     (h : IsPure A W r' s) (hu : IsUnit (r - s)) {y : HdR A} (hy : push (dp0 R) (𝟙 _) W y = r • y) : y ∈ Fil A := by
   have hm := h.2 y

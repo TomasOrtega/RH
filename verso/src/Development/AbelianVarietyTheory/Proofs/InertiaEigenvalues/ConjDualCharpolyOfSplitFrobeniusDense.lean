@@ -13,10 +13,16 @@ noncomputable section
 
 namespace GlobalTheory.CharDualDense
 
+/- English proof (translation)
+The claim follows from `(IsAdic.isHausdorff_iff (X.twistBaseCoefficientRing_isAdic i)).1 inferInstance`.
+-/
 theorem t2_O0 {D : D7} {N : NData D.R D.host D.what₂} (X : NTw D.R D.host D.what₂ D.LL0 N) (i : X.Tw) :
     T2Space (X.O0 i) :=
   (IsAdic.isHausdorff_iff (X.twistBaseCoefficientRing_isAdic i)).1 inferInstance
 
+/- English proof (translation)
+Use `(X.S0 i).finite_toSet.union ?_` and prove the remaining obligations. Use `((X.S0 i).finite_toSet.biUnion (t := fun P' => {P | IsConjPl D.host P' P}) fun P' _ => ?_).subset ?_` and prove the remaining obligations. Conclude with `(show ({P | IsConjPl D.host P' P} : Set (PlE D.host)).Subsingleton from fun a ha b hb => GlobalTheory.TwistDet.isConjPl_unique ha hb).finite`. Introduce and unpack `P ⟨P', hP', hc⟩`. Conclude with `Set.mem_biUnion (x := P') hP' (GlobalTheory.TwistDet.isConjPl_symm hc)`.
+-/
 theorem finite_S0_conj {D : D7} {N : NData D.R D.host D.what₂} (X : NTw D.R D.host D.what₂ D.LL0 N) (i : X.Tw) :
     ((X.S0 i : Set (PlE D.host)) ∪ {P | ∃ P' ∈ X.S0 i, IsConjPl D.host P P'}).Finite := by
   refine (X.S0 i).finite_toSet.union ?_
@@ -26,6 +32,13 @@ theorem finite_S0_conj {D : D7} {N : NData D.R D.host D.what₂} (X : NTw D.R D.
   · rintro P ⟨P', hP', hc⟩
     exact Set.mem_biUnion (x := P') hP' (GlobalTheory.TwistDet.isConjPl_symm hc)
 
+/- English proof (translation)
+Introduce `D hF i s hFD g g' hg'`. Use `haveI := t2_O0 D.ntw i`. Establish `e : g' = GlobalTheory.TwistDet.cConj D.ntw g`. Use extensionality with `x`. Rewrite using `[hg', GlobalTheory.TwistDet.cConj_apply]`.
+
+Substitute `e` using the available equality. Use `GlobalTheory.TypeLeaf.charpoly_eq_of_dense (Gen.GE D.nd) (D.ntw.O0 i) D.R.r (fun g => Tdual i s (GlobalTheory.TwistDet.cConj D.ntw g)) (fun g => ((((eps0 D.ntw i g : (D.ntw.O0 i)ˣ) : D.ntw.O0 i) ^ D.R.t) • Tmat i s g)) _ (hF _ (finite_S0_conj D.ntw i)) ((GlobalTheory.PrimeToInert …` and prove the remaining obligations. Establish `h1 : Continuous fun g : Gen.GE D.nd => ((eps0 D.ntw i g : (D.ntw.O0 i)ˣ) : D.ntw.O0 i)` using `(GlobalTheory.PrimeToInertia.continuous_algebraMap_padicInt _ (D.ntw.twistBaseCoefficientRing_isAdic i) (GlobalTheory.PrimeToInertia.l_mem i)).comp (Units.continuous_val.comp (continuous_cycZ D.host.E D.nd.Om (D.ntw.l i)))`. Conclude with `(h1.pow _).smul (GlobalTheory.PrimeToInertia.continuous_Tmat i s)`. Introduce and unpack `σ ⟨w, hwT, hsp, B, hB, hσ⟩`.
+
+Use `hFD w (fun h => hwT (Or.inl h)) hsp (fun P' hc h => hwT (Or.inr ⟨P', h, hc⟩)) B hB σ _ hσ (GlobalTheory.TwistDet.cConj_apply D.ntw σ)` and prove the remaining obligations.
+-/
 theorem charDual_of_frobDual : ∀ (D : D7), GlobalTheory.TypeLeaf.FrobDense D → ∀ (i : D.ntw.Tw) (s : D.ntw.Sig i),
     FrobDual i s → CharDual i s := by
   intro D hF i s hFD g g' hg'

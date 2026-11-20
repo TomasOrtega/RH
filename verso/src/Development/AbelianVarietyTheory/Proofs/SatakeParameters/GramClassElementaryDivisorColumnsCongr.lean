@@ -10,12 +10,18 @@ namespace GlobalTheory.Hk3.IntWitt
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
+/- English proof (translation)
+Simplify using `only [Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hform_smul_smul (σ : L →+* L) {n : ℕ} (J : Matrix (Fin n) (Fin n) L) (s t : L) (u v : Fin n → L) :
     Formalism.UG.hform σ J (s • u) (t • v) = σ s * t * Formalism.UG.hform σ J u v := by
   simp only [Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Introduce `r`. Establish `: (V *ᵥ Pi.single i (1 : L)) r = V r i`. Simplify using `[mulVec, dotProduct, Pi.single_apply]`. Rewrite using `[this]`. Conclude with `hV r i`.
+-/
 theorem mulVec_single_int {n : ℕ} (V : Matrix (Fin n) (Fin n) L) (hV : ∀ i j, V i j ∈ Formalism.UG.intL L) (i : Fin n) :
     ∀ r, (V *ᵥ Pi.single i (1 : L)) r ∈ Formalism.UG.intL L := by
   intro r
@@ -23,11 +29,27 @@ theorem mulVec_single_int {n : ℕ} (V : Matrix (Fin n) (Fin n) L) (hV : ∀ i j
     simp [mulVec, dotProduct, Pi.single_apply]
   rw [this]; exact hV r i
 
+/- English proof (translation)
+Use extensionality with `r`. Distinguish the cases in `h : r = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`.
+-/
 theorem single_eq_smul {n : ℕ} (i : Fin n) (c : L) : (Pi.single i c : Fin n → L) = c • Pi.single i (1 : L) := by
   ext r; by_cases h : r = i
   · subst h; simp
   · simp [Pi.single_apply, h]
 
+/- English proof (translation)
+Introduce `L _ _ ϖ σ q hU n n' JT x y V a hV hiff hG i j`. Establish `hϖv : Valued.v ϖ ≤ 1`. Rewrite using `[hU.2.2.2.1]; exact le_of_lt (by decide)`. Establish `hϖ : ϖ ∈ Formalism.UG.intL L` using `hϖv`. Use `set k := max (a i) (a j) with hk`.
+
+Use `set c : L := ϖ ^ k with hc`. Establish `hcI : c ∈ Formalism.UG.intL L` using `(Formalism.UG.intL L).pow_mem hϖ _`. Establish `hcond : ∀ l, a l ≤ k → ∀ r, (x *ᵥ (c • (V *ᵥ Pi.single l (1 : L)))) r ∈ Formalism.UG.intL L`. Introduce `l hl`. Establish `hI : ∀ t, (Pi.single l c : Fin n → L) t ∈ Formalism.UG.intL L`.
+
+Introduce `t`. Distinguish the cases in `h : t = l`. Substitute `h` using the available equality. Simplify using `using hcI`. Simplify using `[Pi.single_apply, h, (Formalism.UG.intL L).zero_mem]`.
+
+Use `(hiff (Pi.single l c) hI).mpr (by` as an intermediate fact. Introduce `t`. Distinguish the cases in `h : t = l`. Substitute `h` using the available equality. Use `⟨ϖ ^ (k - a t), (Formalism.UG.intL L).pow_mem hϖ _, ?_⟩` and prove the remaining obligations.
+
+Simplify using `[hc, ← pow_add, Nat.add_sub_cancel' hl]`. Simplify `dvdPow_zero ϖ (a t))` using `[Pi.single_apply, h]`. Rewrite `this` using `[single_eq_smul, mulVec_smul]`. Then use the resulting hypothesis. Establish `hD` using `hG _ _ (mulVec_single_int V hV i) (mulVec_single_int V hV j) c hcI (hcond i (le_max_left _ _)) (hcond j (le_max_right _ _))`. Use `⟨_, hD, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[single_eq_smul i, single_eq_smul j, mulVec_smul, mulVec_smul, mulVec_smul, mulVec_smul, mulVec_smul, mulVec_smul, hform_smul_smul, hform_smul_smul, map_pow, hU.2.2.1, hc, ← mul_sub, ← mul_assoc, ← pow_add, ← pow_add, min_add_max]`.
+-/
 theorem gram_class_columns : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L) (σ : L →+* L) (q : ℕ),
     Formalism.UG.IsUnramInv ϖ σ q → ∀ (n n' : ℕ) (JT : GL (Fin n') L) (x y : Matrix (Fin n') (Fin n) L)
     (V : Matrix (Fin n) (Fin n) L) (a : Fin n → ℕ), (∀ i j, V i j ∈ Formalism.UG.intL L) →

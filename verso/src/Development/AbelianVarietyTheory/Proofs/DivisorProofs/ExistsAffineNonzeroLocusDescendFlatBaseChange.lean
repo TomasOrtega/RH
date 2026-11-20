@@ -13,6 +13,15 @@ namespace GlobalTheory.AmplePoint
 
 variable {R R' : Type} [CommRing R] [CommRing R'] {X X' : Scheme.{0}}
 
+/- English proof (translation)
+It suffices to establish `h : ∀ r, ∃ x : R' ⊗[R] (N.restrictScalars R), e ((N.restrictScalars R).subtype.lTensor R' x) = r * y by`. Simplify using `using h 1`. Use `Submodule.span_induction (p := fun y _ => ∀ r, ∃ x : R' ⊗[R] (N.restrictScalars R), e ((N.restrictScalars R).subtype.lTensor R' x) = r * y) ?_ ?_ ?_ ?_ hy` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩ r`. Take `⟨t, rfl⟩` from `e.surjective r`.
+
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `tmul c a => exact ⟨c ⊗ₜ ⟨a * v, N.mul_mem_left a hv⟩, by simp [he, mul_assoc]⟩`. Consider the case `add a b ha hb`. Take `⟨x, hx⟩` from `ha`.
+
+Take `⟨x', hx'⟩` from `hb`. Conclude with `⟨x + x', by rw [map_add, map_add, hx, hx', map_add, add_mul]⟩`. Conclude with `fun r => ⟨0, by simp⟩`. Introduce `a b _ _ ha hb r`. Take `⟨x, hx⟩` from `ha r`.
+
+Take `⟨x', hx'⟩` from `hb r`. Conclude with `⟨x + x', by rw [map_add, map_add, hx, hx', mul_add]⟩`. Introduce `a b _ hb r`. Take `⟨x, hx⟩` from `hb (r * a)`. Conclude with `⟨x, by rw [hx, smul_eq_mul, mul_assoc]⟩`.
+-/
 theorem exists_of_mem_map [Algebra R R'] {A A' : Type} [CommRing A] [CommRing A'] [Algebra R A] (p : A →+* A')
     (s' : R' →+* A') (e : R' ⊗[R] A ≃+ A') (he : ∀ c v, e (c ⊗ₜ v) = s' c * p v) (N : Ideal A) {y : A'}
     (hy : y ∈ N.map p) : ∃ x : R' ⊗[R] (N.restrictScalars R), e ((N.restrictScalars R).subtype.lTensor R' x) = y := by
@@ -47,6 +56,13 @@ def vanIdeal (W U : X.Opens) : Ideal Γ(X, W) where
     rw [Scheme.basicOpen_mul]
     exact inf_le_right.trans ha
 
+/- English proof (translation)
+Establish `hW'` using `hW.preimage π`. Express the relevant statement in the definitionally equal form `t ∈ ((vanIdeal W U).map (π.app W).hom).radical`. Rewrite using `[Ideal.radical_eq_sInf, Submodule.mem_sInf]`. Introduce and unpack `P ⟨hP, hp⟩`. Assume the negation of the conclusion as `h`.
+
+Set `z : Spec Γ(X', π ⁻¹ᵁ W)` to `⟨P, hp⟩`. Establish `key : ∀ s : Γ(X', π ⁻¹ᵁ W), hW'.fromSpec z ∈ X'.basicOpen s ↔ s ∉ P` using `fun s => by`. Express the relevant statement in the definitionally equal form `z ∈ hW'.fromSpec ⁻¹ᵁ X'.basicOpen s ↔ _`. Rewrite using `[hW'.fromSpec_preimage_basicOpen]`. Both sides reduce to the same expression.
+
+Establish `hz` using `(key t).2 h`. Take `⟨v, hv, hzv⟩` from `hW.exists_basicOpen_le (V := U) ⟨π (hW'.fromSpec z), ht hz⟩ (X'.basicOpen_le t hz)`. Use `(key ((π.app W).hom v)).1 ?_ (hP (Ideal.mem_map_of_mem _ hv))` and prove the remaining obligations. Rewrite using `[← Scheme.preimage_basicOpen]`. Conclude with `hzv`.
+-/
 theorem exists_pow_mem (π : X' ⟶ X) [IsAffineHom π] {W : X.Opens} (hW : IsAffineOpen W) (U : X.Opens)
     (t : Γ(X', π ⁻¹ᵁ W)) (ht : X'.basicOpen t ≤ π ⁻¹ᵁ U) : ∃ m, t ^ m ∈ (vanIdeal W U).map (π.app W).hom := by
   have hW' := hW.preimage π
@@ -65,6 +81,23 @@ theorem exists_pow_mem (π : X' ⟶ X) [IsAffineHom π] {W : X.Opens} (hW : IsAf
   rw [← Scheme.preimage_basicOpen]
   exact hzv
 
+/- English proof (translation)
+Set `_ : Algebra R R'` to `g.toAlgebra`. Establish `: Module.Flat R R'` using `hg`. Set `_ : ∀ U : X.Opens, Algebra R Γ(X, U)` to `fun U => (cst f U).toAlgebra`. Use `choose e he using fun a => exists_equiv_of_isPushout (R := R) (π.app (W a)) (cst f' (π ⁻¹ᵁ W a)) (isPushout_app hg H (hA a).isCompact (hA a).isQuasiSeparated)`. Use `choose e' he' using fun p : α × α => exists_equiv_of_isPushout (R := R) (π.app (W p.1 ⊓ W p.2)) (cst f' (π ⁻¹ᵁ (W p.1 ⊓ W p.2))) (isPushout_app hg H (QuasiSeparatedSpace.inter_isCompact _ _ (W p.1).isOpen (hA p.1).isCompact (W p.2).isOpen (hA p.2).isCompact) (IsQuasiSeparated.of_ …`.
+
+Set `d : (∀ a, (N a).restrictScalars R) →ₗ[R] (∀ p : α × α, Γ(X, W p.1 ⊓ W p.2))` to `{ toFun := fun v p => rs X inf_le_left (v p.1).1 - rs X (inf_le_inf (hW p.1) (hW p.2)) (M.g (j p.1) (j p.2)).val * rs X inf_le_right (v p.2).1 map_add' := fun v w => funext fun p => by`. Simplify using `only [Pi.add_apply, Submodule.coe_add, map_add]`. Expand and normalize the polynomial expressions, which then agree. Use the proof step `map_smul' := fun r v => funext fun p => by`. Simplify using `only [Pi.smul_apply, Submodule.coe_smul, Algebra.smul_def, map_mul, RingHom.algebraMap_toAlgebra, rs_cst, RingHom.id_apply]`.
+
+Use `ring }`. Use `choose x hxe using fun a => exists_of_mem_map (π.app (W a)).hom (cst f' (π ⁻¹ᵁ W a)) (e a) (he a) (N a) (hσ a)`. Establish `hx : ∀ {n : ℕ} {c : Fin n → R'} {v : Fin n → ∀ a, (N a).restrictScalars R}, (∀ a, x a = ∑ i, AddEquiv.refl _ (c i ⊗ₜ v i a)) → ∀ a z, π z ∈ W a → gs (𝟙 X') z _ (σ.f fun _ => j a) = ∑ i, gs (𝟙 X') z ⊤ (cst f' ⊤ (c i)) * gs π z _ (v i a).1` using `fun {n c v} h a z hz => by`. Establish `h'` using `congrArg (gs (𝟙 X') z (π ⁻¹ᵁ W a)) (hxe a).symm`. Simplify using `only [h a, map_sum, AddEquiv.refl_apply, LinearMap.lTensor_tmul, Submodule.subtype_apply, he] at h'`.
+
+Rewrite `h'` using `[gs_comb f' π _ z hz]`. Conclude with `(gs_res (𝟙 X') z _ hz _).symm.trans h'`. Take `⟨n, c, v, hv, hd⟩` from `exists_comb_ker (fun a => AddEquiv.refl _) e' d x (fun n c v h p => fn_ext fun z hz => by`. Simplify using `only [he']`. Rewrite using `[gs_comb f' π _ z hz, LBGerm.gs_zero (𝟙 X') z _ hz]`.
+
+Establish `h₁` using `gs_pull_trans σ z (hW _ hz.1) (hW _ hz.2)`. Rewrite `h₁` using `[hx h p.1 z hz.1, hx h p.2 z hz.2, Finset.mul_sum, ← sub_eq_zero, ← Finset.sum_sub_distrib]`. Use `Eq.trans (Finset.sum_congr rfl fun i _ => ?_) h₁` and prove the remaining obligations. Use `(congrArg _ (gs_diff (hW p.1) (hW p.2) (v i p.1).1 (v i p.2).1 π z hz)).trans ?_` and prove the remaining obligations. Use the proof step `ring)`.
+
+Use `choose u hu using fun i => exists_sec_of_refinement hM W j hW hc (fun a => (v i a).1) fun y a b ha hb => by`. Establish `h` using `congrArg (gs (𝟙 X) y (W a ⊓ W b)) (congrFun (hd i) (a, b))`. Conclude with `sub_eq_zero.1 ((gs_diff (hW a) (hW b) (v i a).1 (v i b).1 (𝟙 X) y ⟨ha, hb⟩).symm.trans (h.trans (LBGerm.gs_zero (𝟙 X) y _ ⟨ha, hb⟩)))`. Establish `hu' : ∀ i a, rs X (hW a) ((u i).f (j a)) = (v i a).1` using `fun i a => fn_ext fun y hy => by`. Rewrite using `[gs_res (𝟙 X) y _ hy, hu i y (j a) a (hW a hy) hy, gm_self hM (𝟙 X) y (hW a hy), Units.val_one, _root_.one_mul]`.
+
+Take `⟨a, ha⟩` from `hc (π z)`. Establish `h₁` using `(mem_nonzeroLocus_iff_isUnit σ (k := fun _ => j a) (mem_pull.2 (hW a ha))).1 hz`. Use `replace h₁ := hx hv a z ha ▸ h₁`. Take `⟨i, -, hi⟩` from `IsLocalRing.exists_of_isUnit_sum h₁`. Use `⟨u i, (mem_nonzeroLocus_iff_pull (u i) π z (hW a ha)).2 ?_, fun b => hu' i b ▸ (v i b).2⟩` and prove the remaining obligations.
+
+Rewrite using `[← gs_res π z (hW a) ha]`. Conclude with `(congrArg (fun w => IsUnit (gs π z _ w)) (hu' i a)).mpr (isUnit_of_mul_isUnit_right hi)`.
+-/
 theorem exists_sec_mem (g : R →+* R') (hg : g.Flat) [CompactSpace X] [QuasiSeparatedSpace X]
     (f : X ⟶ Spec (CommRingCat.of R)) (π : X' ⟶ X) (f' : X' ⟶ Spec (CommRingCat.of R'))
     (H : IsPullback π f' f (Spec.map (CommRingCat.ofHom g))) (M : LB X) (hM : M.IsLB) {α : Type} [Fintype α]
@@ -136,6 +169,23 @@ def chartPullPullPow (L : LB X) (f : X' ⟶ X) (n : ℕ) :
     rw [Category.id_comp]
     rfl
 
+/- English proof (translation)
+Introduce and unpack `R R' _ _ ρ hρ X q _ _ L hL x' ⟨n, hn, s, hs, ha⟩`. Establish `H` using `IsPullback.of_hasPullback q (spMap ρ)`. Generalize the expression as in `pullback.snd q (spMap ρ) = q' at H`. Establish `hπ : IsAffineHom (pullback.fst q (spMap ρ))` using `isAffineHom_isStableUnderBaseChange.of_isPullback (IsPullback.of_hasPullback q (spMap ρ)).flip inferInstance`. Generalize the expression as in `pullback.fst q (spMap ρ) = π at *`.
+
+Generalize the expression as in `Limits.pullback q (spMap ρ) = X' at *`. Establish `: CompactSpace X` using `QuasiCompact.compactSpace_of_compactSpace q`. Establish `: QuasiSeparatedSpace X` using `quasiSeparatedSpace_of_quasiSeparated q`. Establish `: CompactSpace X'` using `QuasiCompact.compactSpace_of_compactSpace π`. Establish `: QuasiSeparatedSpace X'` using `quasiSeparatedSpace_of_quasiSeparated π`.
+
+Take `⟨U, hU, hx, -⟩` from `exists_isAffineOpen_mem_and_subset (U := ⊤) (x := π x') trivial`. Take `⟨φ, hφ, hxφ⟩` from `ha.exists_basicOpen_le (V := π ⁻¹ᵁ U) ⟨x', hx⟩ hs`. Take `⟨k, hk, t, ht⟩` from `exists_nonzeroLocus_eq_basicOpen (LB.isLB_pull hL π) s φ`. Take `⟨α, _, W, J, hWa, hW, hc⟩ : ∃ (α : Type) (_ : Fintype α) (W : α → X.Opens) (J : α → PUnit → L.ι), (∀ a, IsAffineOpen (W a)) ∧ (∀ a, W a ≤ powChart L (J a)) ∧ ∀ y : X, ∃ a, y ∈ W a` from `exists_finite_affine_refinement (isLB_lbPow hL 0)`. Establish `le : ∀ a, π ⁻¹ᵁ W a ≤ powChart (L.pull π) (fun _ _ => J a PUnit.unit)` using `fun a y hy => mem_powChart.2 (mem_pull.2 (mem_powChart.1 (hW a hy)))`.
+
+Use `choose m hm using fun a => exists_pow_mem π (hWa a) U (resG X' (le a) (powFn t _)) fun y hy => by`. Establish `hy₁ : y ∈ π ⁻¹ᵁ W a` using `X'.basicOpen_le _ hy`. Establish `h` using `(LBGerm.isUnit_gs_iff (𝟙 X') y _ hy₁ _).2 hy`. Conclude with `hφ (ht.le ((mem_nonzeroLocus_iff_powFn t (le a hy₁)).2 ((congrArg IsUnit (gs_res (𝟙 X') y (le a) hy₁ _)).mp h)))`. Set `K` to `Finset.univ.sup m + 1`.
+
+Establish `hK : 1 ≤ K` using `Nat.le_add_left _ _`. Take `⟨u, hxu, hu⟩` from `exists_sec_mem ρ hρ q π q' H (lbPow L (n * k * K)) (isLB_lbPow hL _) W J hWa hW hc (fun a => vanIdeal (W a) U) (chartSec (chartPullPullPow L π _) (secPow t K)) (fun a => by`. Establish `e : rs X' (le_pull (lbPow L (n * k * K)) π (hW a)) ((chartSec (chartPullPullPow L π _) (secPow t K)).f fun _ => J a) = resG X' (le a) (powFn t _) ^ K` using `fn_ext fun y hy => by`. Use `(gs_res (𝟙 X') y _ hy _).trans ((gs_chartSec _ _ (𝟙 X') y _ (le_pull (lbPow L (n * k * K)) π (hW a) hy)).trans ?_)` and prove the remaining obligations. Rewrite using `[Category.comp_id, LBGerm.gs_pow (𝟙 X') y _ hy, gs_res (𝟙 X') y _ hy]`.
+
+Conclude with `LBGerm.gs_pow (𝟙 X') y _ (le a hy) _ _`. Rewrite using `[e]`. Conclude with `Ideal.pow_mem_of_pow_mem _ (hm a) ((Finset.le_sup (f := m) (Finset.mem_univ a)).trans (Nat.le_succ _)))`. Use the proof step `x' (by`. Rewrite using `[nonzeroLocus_chartSec_id (chartPullPullPow L π _) _ fun y I hI => ⟨fun _ _ => I PUnit.unit PUnit.unit, mem_pull.2 (mem_powChart.2 (mem_pull.1 (mem_powChart.1 hI)))⟩, nonzeroLocus_secPow t hK, ht]`.
+
+Conclude with `hxφ)`. Establish `hle : nonzeroLocus u ≤ U` using `fun y hy => by`. Take `⟨a, hya⟩` from `hc y`. Use `(show X.basicOpen _ ≤ U from hu a) ((LBGerm.isUnit_gs_iff (𝟙 X) y _ hya _).1 ?_)` and prove the remaining obligations. Conclude with `(congrArg IsUnit (gs_res (𝟙 X) y (hW a) hya _)).mpr ((mem_nonzeroLocus_iff_isUnit u (hW a hya)).1 hy)`.
+
+Establish `h` using `isAffineOpen_nonzeroLocus_inf (isLB_lbPow hL _) u hU`. Rewrite `h` using `[inf_eq_left.2 hle]`. Conclude with `⟨_, Nat.mul_pos (Nat.mul_pos hn hk) hK, u, hxu, h⟩`.
+-/
 theorem exists_affine_locus : ∀ (R R' : Type) [CommRing R] [CommRing R'] (ρ : R →+* R'), ρ.Flat → ∀ (X : Scheme.{0}) (q : X ⟶ Sp R), QuasiCompact q → QuasiSeparated q → ∀ (L : LB X), L.IsLB → ∀ (x' : ↥(Limits.pullback q (spMap ρ))), (∃ n, 1 ≤ n ∧ ∃ s : (lbPow (L.pull (pullback.fst q (spMap ρ))) n).Sec, x' ∈ nonzeroLocus s ∧ IsAffineOpen (nonzeroLocus s)) → ∃ n, 1 ≤ n ∧ ∃ s : (lbPow L n).Sec, pullback.fst q (spMap ρ) x' ∈ nonzeroLocus s ∧ IsAffineOpen (nonzeroLocus s) := by
   rintro R R' _ _ ρ hρ X q _ _ L hL x' ⟨n, hn, s, hs, ha⟩
   have H := IsPullback.of_hasPullback q (spMap ρ)

@@ -14,6 +14,11 @@ section Gen
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : Formalism.BasicNotions.HSpace E}
 variable {Λ : Submodule (𝓞 E) S.V} {r : ℕ}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h x hx`. Establish `h1 : g x ∈ B₂` using `(hB _).2 (by simpa using hx)`. Use `(hA _).1 (h _ h1)` as an intermediate fact. Simplify `this` using `[map_sub]`.
+
+Introduce `h y hy`. Establish `h1` using `h (g.symm y) ((hB y).1 hy)`. Rewrite using `[hA]`. Simplify `h1` using `[map_sub]`.
+-/
 theorem cond_conj (g s : S.V ≃ₗ[E] S.V) {A₁ B₁ A₂ B₂ : Submodule E S.V}
     (hA : ∀ x, x ∈ A₂ ↔ g.symm x ∈ A₁) (hB : ∀ x, x ∈ B₂ ↔ g.symm x ∈ B₁) :
     (∀ y ∈ B₂, s y - y ∈ A₂) ↔ (∀ x ∈ B₁, g.symm (s (g x)) - x ∈ A₁) := by
@@ -29,11 +34,17 @@ theorem cond_conj (g s : S.V ≃ₗ[E] S.V) {A₁ B₁ A₂ B₂ : Submodule E S
 
 variable {T' : E} {F₁ F₂ : LFlag S r T'} {g : S.V ≃ₗ[E] S.V}
 
+/- English proof (translation)
+Use `hfr (Fin.castSucc i)` as an intermediate fact. Simplify `this` using `[frame, FlagG.fvec]`.
+-/
 theorem e_of_frame (hfr : ∀ a, frame F₂ a = g (frame F₁ a)) (i : Fin r) :
     F₂.fl.e i = g (F₁.fl.e i) := by
   have := hfr (Fin.castSucc i)
   simpa [frame, FlagG.fvec] using this
 
+/- English proof (translation)
+Establish `he : F₂.fl.e = fun i => g (F₁.fl.e i)` using `funext (e_of_frame hfr)`. Use `show Submodule.span E (F₂.fl.e '' _) = (Submodule.span E (F₁.fl.e '' _)).map _`. Rewrite using `[Submodule.map_span, Set.image_image, he]`. Both sides reduce to the same expression.
+-/
 theorem xflag_eq_map (hfr : ∀ a, frame F₂ a = g (frame F₁ a)) (j : ℕ) :
     Xflag F₂ j = (Xflag F₁ j).map (g : S.V →ₗ[E] S.V) := by
   have he : F₂.fl.e = fun i => g (F₁.fl.e i) := funext (e_of_frame hfr)
@@ -41,6 +52,9 @@ theorem xflag_eq_map (hfr : ∀ a, frame F₂ a = g (frame F₁ a)) (j : ℕ) :
   rw [Submodule.map_span, Set.image_image, he]
   rfl
 
+/- English proof (translation)
+Establish `he : F₂.fl.e = fun i => g (F₁.fl.e i)` using `funext (e_of_frame hfr)`. Use `show Submodule.span E (Set.range F₂.fl.e) = (Submodule.span E (Set.range F₁.fl.e)).map _`. Rewrite using `[Submodule.map_span, ← Set.range_comp, he]`. Both sides reduce to the same expression.
+-/
 theorem xsp_eq_map (hfr : ∀ a, frame F₂ a = g (frame F₁ a)) :
     Xsp F₂ = (Xsp F₁).map (g : S.V →ₗ[E] S.V) := by
   have he : F₂.fl.e = fun i => g (F₁.fl.e i) := funext (e_of_frame hfr)
@@ -48,6 +62,13 @@ theorem xsp_eq_map (hfr : ∀ a, frame F₂ a = g (frame F₁ a)) :
   rw [Submodule.map_span, ← Set.range_comp, he]
   rfl
 
+/- English proof (translation)
+Establish `hi : ∀ x y, S.hT (g x) (g y) = S.hT x y` using `hiso`. Rewrite using `[mem_orth_iff, mem_orth_iff, xsp_eq_map hfr]`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx`. Use `h (g x) ⟨x, hx, rfl⟩` as an intermediate fact.
+
+Rewrite using `[← hi x (g.symm y)]`. Simplify using `using this`. Introduce and unpack `h _ ⟨x, hx, rfl⟩`. Use `h x hx` as an intermediate fact. Rewrite `this` using `[← hi x (g.symm y)]`.
+
+Simplify using `using this`.
+-/
 theorem orth_mem (hfr : ∀ a, frame F₂ a = g (frame F₁ a)) (hiso : g ∈ Formalism.HermitianLatticesTheory.isom S.hT)
     (y : S.V) : y ∈ orth S (Xsp F₂) ↔ g.symm y ∈ orth S (Xsp F₁) := by
   have hi : ∀ x y, S.hT (g x) (g y) = S.hT x y := hiso
@@ -62,6 +83,15 @@ theorem orth_mem (hfr : ∀ a, frame F₂ a = g (frame F₁ a)) (hiso : g ∈ Fo
     rw [← hi x (g.symm y)] at this
     simpa using this
 
+/- English proof (translation)
+Establish `hA : ∀ j x, x ∈ Xflag F₂ j ↔ g.symm x ∈ Xflag F₁ j` using `fun j x => by`. Rewrite using `[xflag_eq_map hfr]`. Conclude with `Submodule.mem_map_equiv _`. Establish `hX : ∀ x, x ∈ Xsp F₂ ↔ g.symm x ∈ Xsp F₁` using `fun x => by`. Rewrite using `[xsp_eq_map hfr]`.
+
+Conclude with `Submodule.mem_map_equiv _`. Establish `hO : ∀ x, x ∈ orth S (Xsp F₂) ↔ g.symm x ∈ orth S (Xsp F₁)` using `orth_mem hfr hg.1`. Establish `hAut : IsAutLam S Λ s ↔ IsAutLam S Λ (g⁻¹ * s * g)`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Conclude with `isAutLam_mul Λ (isAutLam_mul Λ (isAutLam_inv Λ hg) h) hg`. Introduce `h`. Use `isAutLam_mul Λ (isAutLam_mul Λ hg h) (isAutLam_inv Λ hg)` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Use `show (IsAutLam S Λ s ∧ _ ∧ _) ↔ (IsAutLam S Λ (g⁻¹ * s * g) ∧ _ ∧ _)`.
+
+Rewrite using `[hAut]`. Use `and_congr Iff.rfl (and_congr ?_ ?_)` and prove the remaining obligations. Conclude with `forall_congr' fun j => cond_conj g s (hA j) (hA (j + 1))`. Conclude with `cond_conj g s hX hO`.
+-/
 theorem nlam_conj (hg : IsAutLam S Λ g) (hfr : ∀ a, frame F₂ a = g (frame F₁ a))
     (s : S.V ≃ₗ[E] S.V) : s ∈ NLam Λ F₂ ↔ g⁻¹ * s * g ∈ NLam Λ F₁ := by
   have hA : ∀ j x, x ∈ Xflag F₂ j ↔ g.symm x ∈ Xflag F₁ j := fun j x => by

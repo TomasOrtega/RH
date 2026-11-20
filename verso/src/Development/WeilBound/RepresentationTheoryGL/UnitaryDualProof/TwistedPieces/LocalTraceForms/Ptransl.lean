@@ -19,6 +19,9 @@ def trH (c : Matrix (Fin n) (Fin n) k) : Sp k n ≃ₜ Sp k n where
   continuous_invFun := (continuous_fst.add continuous_const).prodMk continuous_snd
 
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Take `⟨⟨hlc, hcs⟩, hsupp⟩` from `hf`. Use `⟨⟨hlc.comp_continuous e.continuous, hcs.comp_homeomorph e⟩, ?_⟩` and prove the remaining obligations. Introduce `p hp`. Conclude with `hUV p (hsupp hp)`.
+-/
 theorem comp_mem {U V : Set (Sp k n)} (e : Sp k n ≃ₜ Sp k n) (hUV : ∀ p, e p ∈ U → p ∈ V) {f : Sp k n → ℂ}
     (hf : f ∈ supportedIn U) : (fun p => f (e p)) ∈ supportedIn V := by
   obtain ⟨⟨hlc, hcs⟩, hsupp⟩ := hf
@@ -26,6 +29,11 @@ theorem comp_mem {U V : Set (Sp k n)} (e : Sp k n ≃ₜ Sp k n) (hUV : ∀ p, e
   intro p hp
   exact hUV p (hsupp hp)
 
+/- English proof (translation)
+Establish `hcomm : c * (g : Matrix (Fin n) (Fin n) k) = g * c` using `hg c hc`. Establish `hconj : (g : Matrix (Fin n) (Fin n) k) * c * (g⁻¹ : GL (Fin n) k) = c`. Rewrite using `[← hcomm, Matrix.mul_assoc]`. Simplify using the standard rewrite rules. Simplify using `only [act, trH, Homeomorph.homeomorph_mk_coe, Equiv.coe_fn_mk, Prod.mk.injEq, and_true]`.
+
+Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, hconj]`.
+-/
 theorem act_trH {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} {c : Matrix (Fin n) (Fin n) k} (hc : c ∈ Z)
     {g : GL (Fin n) k} (hg : g ∈ Gz Z) (p : Sp k n) : act g (trH c p) = trH c (act g p) := by
   have hcomm : c * (g : Matrix (Fin n) (Fin n) k) = g * c := hg c hc
@@ -35,6 +43,21 @@ theorem act_trH {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} {c : Matrix (Fin n
   simp only [act, trH, Homeomorph.homeomorph_mk_coe, Equiv.coe_fn_mk, Prod.mk.injEq, and_true]
   rw [Matrix.mul_sub, Matrix.sub_mul, hconj]
 
+/- English proof (translation)
+Introduce `m Z hCR hNB c hc F hF hnil ξ hsupp hinv`. Set `ξ' : (Sp k m → ℂ) →ₗ[ℂ] ℂ` to `ξ.comp (LinearMap.funLeft ℂ ℂ (trH c))`. Establish `hξ' : ∀ f, ξ' f = ξ (fun p => f (trH c p))` using `fun f => rfl`. Establish `hmem : ∀ f ∈ supportedIn (Set.univ : Set (Sp k m)), (fun p => f (trH c p)) ∈ supportedIn (Set.univ : Set (Sp k m))` using `fun f hf => comp_mem (trH c) (fun _ _ => Set.mem_univ _) hf`. Establish `hS : Supp ξ' (NB Z ×ˢ Set.univ)`.
+
+Introduce `f hf hz`. Rewrite using `[hξ']`. Use `hsupp _ (hmem f hf) ?_` and prove the remaining obligations. Introduce and unpack `⟨x, v⟩ ⟨hx, -⟩`. Apply `hz` to reduce the goal to its premises.
+
+Use `⟨⟨?_, ?_⟩, Set.mem_univ _⟩` and prove the remaining obligations. Introduce `a ha`. Establish `h1 : a * x = x * a` using `hF hx a ha`. Establish `h2 : a * c = c * a` using `hCR.1 a ha c hc`. Express the relevant statement in the definitionally equal form `a * (x - c) = (x - c) * a`.
+
+Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, h1, h2]`. Conclude with `hnil x hx`. Establish `hI : T.Inv Z ξ'`. Introduce `g hg f hf`. Rewrite using `[hξ', hξ']`.
+
+Establish `: (fun p => f (act g (trH c p))) = (fun p => (fun q => f (trH c q)) (act g p))`. Use function extensionality and compare the values at `p`. Rewrite using `[act_trH hc hg]`. Rewrite using `[this]`. Conclude with `hinv g hg _ (hmem f hf)`.
+
+Establish `hK` using `hNB ξ' hS hI`. Introduce `f hf`. Establish `hf' : (fun p => f ((trH c).symm p)) ∈ supportedIn {p : Sp k m | p.2 ≠ 0}` using `comp_mem (trH c).symm (fun _ h => h) hf`. Use `hK _ hf'` as an intermediate fact. Rewrite `this` using `[hξ']`.
+
+Simplify using `using this`.
+-/
 theorem transl : Transl k := by
   intro m Z hCR hNB c hc F hF hnil ξ hsupp hinv
   let ξ' : (Sp k m → ℂ) →ₗ[ℂ] ℂ := ξ.comp (LinearMap.funLeft ℂ ℂ (trH c))

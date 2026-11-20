@@ -11,6 +11,35 @@ open GlobalTheory.ZM
 
 namespace GlobalTheory.CoverGlue
 
+/- English proof (translation)
+Introduce `S I U A G _ ψ m n e hU hpb hgrp hone`. Establish `hl : ∀ i (T' : Over (U i).toScheme) (a : Over.mk (T'.hom ≫ (U i).ι) ⟶ A), ∃ x : T' ⟶ G i, a.left = x.left ≫ ψ i` using `fun i _ a => GlobalTheory.CoverGlue.exists_lift (hpb i) a`. Establish `hm : ∀ i (T' : Over (U i).toScheme) (a b : Over.mk (T'.hom ≫ (U i).ι) ⟶ A) (x y : T' ⟶ G i), a.left = x.left ≫ ψ i → b.left = y.left ≫ ψ i → (lift a b ≫ m).left = (x * y).left ≫ ψ i` using `fun i T' a b x y ha hb => (hgrp i T' x y a b ha hb).1`. Establish `hn : ∀ i (T' : Over (U i).toScheme) (a b : Over.mk (T'.hom ≫ (U i).ι) ⟶ A) (x y : T' ⟶ G i), a.left = x.left ≫ ψ i → b.left = y.left ≫ ψ i → (lift a b ≫ n).left = (x⁻¹).left ≫ ψ i` using `fun i T' a b x y ha hb => (hgrp i T' x y a b ha hb).2`. Take `⟨e', he'⟩ : ∃ e' : 𝟙_ (Over S) ⟶ A, e' = e` from `⟨e, rfl⟩`.
+
+Substitute `he'` using the available equality. Establish `h1 : ∀ i (T' : Over (U i).toScheme) (p : Over.mk (T'.hom ≫ (U i).ι) ⟶ 𝟙_ (Over S)), (p ≫ e').left = (1 : T' ⟶ G i).left ≫ ψ i`. Introduce `i T' p`. Establish `hp : p.left = T'.hom ≫ (U i).ι`. Establish `h` using `Over.w p`.
+
+Apply the tactic sequence `first | simpa using h | simpa [Over.tensorUnit_hom] using h | exact (Category.comp_id _).symm.trans h`. Establish `hT : (toUnit T').left = T'.hom`. Establish `h` using `Over.w (toUnit T')`. Apply the tactic sequence `first | simpa using h | simpa [Over.tensorUnit_hom] using h | exact (Category.comp_id _).symm.trans h`. Establish `h1' : (1 : T' ⟶ G i) = toUnit T' ≫ (1 : Out.baseOver (U i).toScheme ⟶ G i)`.
+
+Rewrite using `[CategoryTheory.Hom.one_def, CategoryTheory.Hom.one_def, ← Category.assoc]`. Apply the tactic sequence `first | exact congrArg (· ≫ _) (toUnit_unique _ _) | (congr 1; exact toUnit_unique _ _)`. Rewrite using `[h1']`. Use `first`. Consider the case `(rw [Over.comp_left, Over.comp_left, Category.assoc, hone i, hp, hT, Category.assoc])`.
+
+Consider the case `(simp only [Over.comp_left, Category.assoc, hone i, hp, hT])`. Establish `ax1 : e' ▷ A ≫ m = (λ_ A).hom`. Apply `GlobalTheory.CoverGlue.over_ext hU` to reduce the goal to its premises. Introduce `i T' r`. Take `⟨p, c, rfl⟩ : ∃ p c, r = lift p c` from `⟨_, _, (lift_comp_fst_snd r).symm⟩`.
+
+Take `⟨z, hz⟩` from `hl i T' c`. Simplify using `only [lift_whiskerRight_assoc, leftUnitor_hom, lift_snd]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hm i T' _ _ 1 z (h1 i T' p) hz, _root_.one_mul, hz]`. Establish `ax2 : A ◁ e' ≫ m = (ρ_ A).hom`.
+
+Apply `GlobalTheory.CoverGlue.over_ext hU` to reduce the goal to its premises. Introduce `i T' r`. Take `⟨c, p, rfl⟩ : ∃ c p, r = lift c p` from `⟨_, _, (lift_comp_fst_snd r).symm⟩`. Take `⟨z, hz⟩` from `hl i T' c`. Simplify using `only [lift_whiskerLeft_assoc, rightUnitor_hom, lift_fst]`.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hm i T' _ _ z 1 hz (h1 i T' p), _root_.mul_one, hz]`. Establish `ax3 : m ▷ A ≫ m = (α_ A A A).hom ≫ A ◁ m ≫ m`. Apply `GlobalTheory.CoverGlue.over_ext hU` to reduce the goal to its premises. Introduce `i T' r`.
+
+Take `⟨q, c, rfl⟩ : ∃ q c, r = lift q c` from `⟨_, _, (lift_comp_fst_snd r).symm⟩`. Take `⟨a, b, rfl⟩ : ∃ a b, q = lift a b` from `⟨_, _, (lift_comp_fst_snd q).symm⟩`. Take `⟨x, hx⟩` from `hl i T' a`. Take `⟨y, hy⟩` from `hl i T' b`. Take `⟨z, hz⟩` from `hl i T' c`.
+
+Simplify using `only [lift_whiskerRight_assoc, lift_lift_associator_hom_assoc, lift_whiskerLeft_assoc]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hm i T' _ _ (x * y) z (hm i T' a b x y hx hy) hz, hm i T' _ _ x (y * z) hx (hm i T' b c y z hy hz), _root_.mul_assoc]`. Establish `ax4 : lift (lift (𝟙 A) (𝟙 A) ≫ n) (𝟙 A) ≫ m = toUnit A ≫ e'`. Apply `GlobalTheory.CoverGlue.over_ext hU` to reduce the goal to its premises.
+
+Introduce `i T' r`. Take `⟨z, hz⟩` from `hl i T' r`. Simplify using `only [comp_lift_assoc, Category.comp_id]`. Rewrite using `[← Category.assoc r (toUnit A) e']`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Rewrite using `[hm i T' _ _ z⁻¹ z (hn i T' r r z z hz hz) hz, _root_.inv_mul_cancel, h1 i T' (r ≫ toUnit A)]`. Establish `ax5 : lift (𝟙 A) (lift (𝟙 A) (𝟙 A) ≫ n) ≫ m = toUnit A ≫ e'`. Apply `GlobalTheory.CoverGlue.over_ext hU` to reduce the goal to its premises. Introduce `i T' r`. Take `⟨z, hz⟩` from `hl i T' r`.
+
+Simplify using `only [comp_lift_assoc, comp_lift, Category.comp_id]`. Rewrite using `[← Category.assoc r (toUnit A) e']`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hm i T' _ _ z z⁻¹ hz (hn i T' r r z z hz hz), _root_.mul_inv_cancel, h1 i T' (r ≫ toUnit A)]`. Set `inst : GrpObj A` to `{ one := e', mul := m, inv := lift (𝟙 A) (𝟙 A) ≫ n, one_mul := ax1, mul_one := ax2, mul_assoc := ax3, left_inv := ax4, right_inv := ax5 }`.
+
+Use `⟨inst, fun i => ⟨hpb i, fun T x y x₀ y₀ hx hy => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[CategoryTheory.Hom.mul_def]`. Conclude with `hm i T x₀ y₀ x y hx hy`.
+-/
 theorem exists_grpObj_of_cover : ∀ (S : Scheme.{0}) (I : Type) (U : I → S.Opens) (A : Over S) (G : ∀ i, Over (U i).toScheme) [∀ i, GrpObj (G i)] (ψ : ∀ i, (G i).left ⟶ A.left) (m n : A ⊗ A ⟶ A) (e : Out.baseOver S ⟶ A), iSup U = ⊤ → (∀ i, IsPullback (ψ i) (G i).hom A.hom (U i).ι) → (∀ i (T : Over (U i).toScheme) (x y : T ⟶ G i) (x₀ y₀ : Over.mk (T.hom ≫ (U i).ι) ⟶ A), x₀.left = x.left ≫ ψ i → y₀.left = y.left ≫ ψ i → (lift x₀ y₀ ≫ m).left = (x * y).left ≫ ψ i ∧ (lift x₀ y₀ ≫ n).left = (x⁻¹).left ≫ ψ i) → (∀ i, (1 : Out.baseOver (U i).toScheme ⟶ G i).left ≫ ψ i = (U i).ι ≫ e.left) → ∃ _ : GrpObj A, ∀ i, IsGrpPullback (G i) A (U i).ι (ψ i) := by
   intro S I U A G _ ψ m n e hU hpb hgrp hone
 

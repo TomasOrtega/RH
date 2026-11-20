@@ -22,6 +22,19 @@ namespace InvBound
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Ψ : Finset (E →+* ℂ)} {n N : ℕ}
 
+/- English proof (translation)
+Establish `h1 : IsIntegral ℤ (Algebra.trace ℚ E t)` using `Algebra.isIntegral_trace ht`. Take `⟨k, hk⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h1`. Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `h2` using `trace_eq_sum_embeddings (K := ℚ) (L := E) ℂ (x := t)`. Establish `h3 : ∑ σ : E →ₐ[ℚ] ℂ, σ t = ∑ σ : E →+* ℂ, σ t` using `(Fintype.sum_equiv (RingHom.equivRatAlgHom _ _) _ _ fun _ => rfl).symm`.
+
+Establish `h4 : ∑ σ ∈ Ψᶜ, σ t = ∑ σ ∈ Ψ, σ t`. Use `Finset.sum_bij' (fun σ _ => ComplexEmbedding.conjugate σ) (fun σ _ => ComplexEmbedding.conjugate σ) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `σ hσ`. Assume the negation of the conclusion as `h`. Conclude with `(Finset.mem_compl.1 hσ) ((hΨ σ).2 h)`.
+
+Introduce `σ hσ`. Conclude with `Finset.mem_compl.2 ((hΨ σ).1 hσ)`. Introduce `σ _`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+
+Introduce `σ _`. Use extensionality with `x`. Simplify using the standard rewrite rules. Introduce `σ _`. Use `Base.map_cc σ t` as an intermediate fact.
+
+Rewrite `this` using `[hc]`. Simplify using `using this`. Rewrite `h2` using `[h3, ← Finset.sum_add_sum_compl Ψ, h4, ← hk]`. Rewrite using `[Finset.sum_coe_sort Ψ (fun τ => τ (2 * t))]`. Simplify using `only [map_mul, map_ofNat, ← Finset.mul_sum]`.
+
+Rewrite using `[two_mul, ← h2]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_int_sum_type (hΨ : IsType Ψ) {t : E} (ht : IsIntegral ℤ t) (hc : cc t = t) :
     ∃ k : ℤ, ∑ τ : Ψ, τ.1 (2 * t) = k := by
   have h1 : IsIntegral ℤ (Algebra.trace ℚ E t) := Algebra.isIntegral_trace ht
@@ -50,6 +63,17 @@ theorem exists_int_sum_type (hΨ : IsType Ψ) {t : E} (ht : IsIntegral ℤ t) (h
   rw [two_mul, ← h2]
   simp
 
+/- English proof (translation)
+Use `set u := (R : E) • x with hu`. Establish `e : (x * (((2 * R ^ 2 : ℕ) : E) • y) * ccT x).trace = 2 * (u * y * ccT u).trace`. Establish `: ccT u = (R : E) • ccT x`. Use extensionality with `i j`. Simplify using `[hu, ccT, cc]`.
+
+Rewrite using `[this, hu]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, Matrix.trace_smul, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hi : IsIntegral ℤ (u * y * ccT u).trace`.
+
+Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply]`. Conclude with `IsIntegral.sum _ fun k _ => IsIntegral.sum _ fun b _ => (IsIntegral.sum _ fun a _ => (hx k a).mul (hy a b)).mul (Base.isIntegral_cc (hx k b))`. Establish `hr : cc (u * y * ccT u).trace = (u * y * ccT u).trace`. Establish `h1 : ccT (u * y * ccT u) = u * y * ccT u`. Rewrite using `[Base.ccT_mul, Base.ccT_mul, Base.ccT_ccT, hc, Matrix.mul_assoc]`.
+
+Establish `h2 : ∀ w : Matrix (Fin n) (Fin n) E, cc w.trace = (ccT w).trace` using `fun w => by`. Simplify using `[Matrix.trace, ccT, cc]`. Rewrite using `[h2, h1]`. Take `⟨k, hk⟩` from `exists_int_sum_type hΨ hi hr`. Rewrite using `[chiH, e, hk, mul_comm]`.
+
+Conclude with `Complex.exp_int_mul_two_pi_mul_I k`.
+-/
 theorem chiH_eq_one (hΨ : IsType Ψ) (R : ℕ) {y : Matrix (Fin N) (Fin N) E} (hy : IntM y)
     (hc : ccT y = y) {x : Matrix (Fin n) (Fin N) E} (hx : IntM ((R : E) • x)) :
     chiH Ψ (((2 * R ^ 2 : ℕ) : E) • y) x = 1 := by
@@ -74,6 +98,17 @@ theorem chiH_eq_one (hΨ : IsType Ψ) (R : ℕ) {y : Matrix (Fin N) (Fin N) E} (
   rw [chiH, e, hk, mul_comm]
   exact Complex.exp_int_mul_two_pi_mul_I k
 
+/- English proof (translation)
+Use `haveI : Finite (Cls E n M) := (finite_cls_and_stab E n M hM).1`. Use `haveI := Fintype.ofFinite (Cls E n M)`. Use `choose s hs _ h1 h2 using fun c : Cls E n M => (Quot.out c).2.2.2`. Use `⟨(∏ c, s c) * R, Nat.mul_pos (Finset.prod_pos fun c _ => hs c) hR, fun φ hφ c => ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩ : s c ∣ ∏ c, s c` from `Finset.dvd_prod_of_mem _ (Finset.mem_univ c)`.
+
+Rewrite using `[hm]`. Prove the components needed by the constructor for the conclusion. Introduce `x hx k a`. Use `Base.nat_smul_mem _ m (h1 c _ (hφ.supp _ (Quot.out c).2 x hx a))` as an intermediate fact. Use `(Base.mem_stdL _).1 this k` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Introduce `x y hy`. Use `hφ.per _ (Quot.out c).2 x (((s c * m : ℕ) : E) • y) fun a => by` as an intermediate fact.
+
+Use `Base.nat_smul_mem _ m (h2 c (yᵀ a) ((Base.mem_stdL _).2 fun k => hy k a))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `k`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[← this, smul_smul]`. Use `congr 3`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_common_level {M R : ℕ} (hM : 0 < M) (hR : 0 < R) :
     ∃ R₀ : ℕ, 0 < R₀ ∧ ∀ φ : Fam E n N, admitted M R φ → ∀ c : Cls E n M,
       HasLevel R₀ (φ (Quot.out c).1) := by
@@ -100,6 +135,9 @@ theorem exists_common_level {M R : ℕ} (hM : 0 < M) (hR : 0 < R) :
 
 omit [IsCMField E] in
 
+/- English proof (translation)
+Establish `g : Differentiable ℂ (fun Z : CF Ψ N N => ((Z, 0, 0) : CF Ψ N N × CF Ψ n N × CF Ψ n N))` using `differentiable_id.prodMk (differentiable_const _)`. Use `DifferentiableOn.comp (s := {Z : CF Ψ N N | (Z : CM Ψ N N) ∈ Hn Ψ N}) hD.1 g.differentiableOn fun Z hZ => hZ` as an intermediate fact. Conclude with `this`.
+-/
 theorem differentiableOn_of_isHeat {D : CM Ψ N N → CM Ψ n N → CM Ψ n N → ℂ} (hD : IsHeat Ψ D) :
     DifferentiableOn ℂ (fun Z : CF Ψ N N => D Z 0 0) {Z | (Z : CM Ψ N N) ∈ Hn Ψ N} := by
   have g : Differentiable ℂ (fun Z : CF Ψ N N => ((Z, 0, 0) : CF Ψ N N × CF Ψ n N × CF Ψ n N)) :=
@@ -108,6 +146,25 @@ theorem differentiableOn_of_isHeat {D : CM Ψ N N → CM Ψ n N → CM Ψ n N �
     g.differentiableOn fun Z hZ => hZ
   exact this
 
+/- English proof (translation)
+Distinguish the cases in `hMR : 0 < M ∧ 0 < R`. Use `swap`. Conclude with `⟨0, fun φ hφ => (hMR hφ.pos).elim⟩`. Take `⟨hM, hR⟩` from `hMR`. Use `haveI : Finite (Cls E n M) := (finite_cls_and_stab E n M hM).1`.
+
+Use `haveI := Fintype.ofFinite (Cls E n M)`. Take `⟨R₀, hR₀, hL⟩` from `exists_common_level (E := E) (n := n) (N := N + 1) hM hR`. Take `⟨C₁, hC₁⟩` from `GlobalTheory.T.hermitianTheta_eisenstein_converge_bounded E Ψ hΨ n (N + 1) hn hN R₀ (δ / 4) hR₀ (by positivity)`. Take `⟨C₂, hC₂⟩` from `GlobalTheory.T.decay_of_vanishing_at_cusps' E Ψ hΨ (N + 1) (2 * R₀ ^ 2) δ ((n : ℝ) / 2) (Nat.succ_pos N) (by positivity) hδ (by positivity)`. Take `⟨R', C', -, hsb⟩` from `GlobalTheory.T.weil_action_level_supNorm_uniform_in_lattice E Ψ hΨ n (N + 1) hn 1 R one_pos hR`.
+
+Use `⟨C₂ * ((∑ c : Cls E n M, ‖(wt M (Quot.out c).1 : ℂ)‖) * (2 * C₁)), fun φ hφ B hB Z hZ => ?_⟩` and prove the remaining obligations. Establish `hSB : ∀ Λ ∈ Vset E n M, IsSB (φ Λ)` using `fun Λ hΛ => (hsb M Λ hΛ 1 Base.one_mem_UU (fun i j => by`. Apply the tactic sequence `by_cases h : i = j <;> simp [h, isIntegral_one, isIntegral_zero])`. Use the proof step `(φ Λ) ⟨hφ.supp Λ hΛ, hφ.per Λ hΛ⟩).1`. Rewrite using `[mul_assoc]`.
+
+Use `hC₂ (fun Z => swd Ψ M φ Z 0 0) _ ?_ ?_ ?_ ?_ Z hZ` and prove the remaining obligations. Conclude with `differentiableOn_of_isHeat (GlobalTheory.T.isHeat_swd_of_adm E Ψ hΨ n (N + 1) hn hN M R φ hφ)`. Introduce `y hy hc W hW`. Establish `h` using `(GlobalTheory.T.siegelWeilDifference_automorphy_linearity E Ψ hΨ n (N + 1) hn hN M φ hM hSB W hW).2.1 (((2 * R₀ ^ 2 : ℕ) : E) • y) (by conv_rhs => rw [← hc]`. Use extensionality with `i j`.
+
+Simplify using `[ccT, cc])`. Express the relevant statement in the definitionally equal form `swd Ψ M φ _ 0 0 = swd Ψ M φ W 0 0`. Rewrite using `[← h]`. Unfold `swd classSum`. Use `finsum_congr fun c => ?_` and prove the remaining obligations.
+
+Establish `: (fun x => chiH Ψ (((2 * R₀ ^ 2 : ℕ) : E) • y) x * φ (Quot.out c).1 x) = φ (Quot.out c).1`. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : φ (Quot.out c).1 x = 0`. Rewrite using `[hx, mul_zero]`. Rewrite using `[chiH_eq_one hΨ R₀ hy hc ((hL φ hφ c).1 x hx), one_mul]`.
+
+Simplify using `only [this]`. Introduce `W hW`. Unfold `swd classSum`. Rewrite using `[finsum_eq_sum_of_fintype, mul_assoc, Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun c _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[norm_mul]`. Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations. Take `⟨-, h1, h2⟩` from `hC₁ _ (hL φ hφ c) B (hB _ (Quot.out c).2) W hW`. Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Conclude with `GlobalTheory.T.tendsto_swd_pushZ_atTop_zero E Ψ hΨ n N hn hN hS M R φ hφ`.
+-/
 theorem bound_high (hΨ : IsType Ψ) (hn : Even n) (hN : 4 * (N + 1) < n) (hS : SWAt Ψ n N)
     (M R : ℕ) {δ : ℝ} (hδ : 0 < δ) : ∃ C : ℝ, ∀ φ : Fam E n (N + 1), admitted M R φ → ∀ B : ℝ,
       (∀ Λ ∈ Vset E n M, ∀ x, ‖φ Λ x‖ ≤ B) → ∀ Z ∈ HnGe Ψ (N + 1) δ,
@@ -159,11 +216,27 @@ theorem bound_high (hΨ : IsType Ψ) (hn : Even n) (hN : 4 * (N + 1) < n) (hS : 
     linarith
   · exact GlobalTheory.T.tendsto_swd_pushZ_atTop_zero E Ψ hΨ n N hn hN hS M R φ hφ
 
+/- English proof (translation)
+The claim follows from `Finset.prod_nonneg fun τ _ => (Complex.le_def.1 (hZ τ).det_pos.le).1`.
+-/
 theorem detIm_nonneg {Z : CM Ψ N N} (hZ : Z ∈ Hn Ψ N) : 0 ≤ detIm Z :=
   Finset.prod_nonneg fun τ _ => (Complex.le_def.1 (hZ τ).det_pos.le).1
 
 end InvBound
 
+/- English proof (translation)
+Introduce `E _ _ _ Ψ hΨ n N hn hN hS M R`. Distinguish the cases in `hMR : 0 < M ∧ 0 < R`. Use `swap`. Conclude with `⟨0, fun φ hφ => (hMR hφ.pos).elim⟩`. Take `⟨hM, hR⟩` from `hMR`.
+
+Take `⟨c, δ, hc, hδ, hred⟩` from `GlobalTheory.T.exists_unitary_move_hermitianHalfSpace_high E Ψ hΨ (N + 1)`. Take `⟨R', hadm⟩` from `GlobalTheory.T.admissibleLatticeFamily_hermitianWeilAction E Ψ hΨ n (N + 1) hn c R hc`. Take `⟨R'', C₁, -, hlev⟩` from `GlobalTheory.T.weil_action_level_supNorm_uniform_in_lattice E Ψ hΨ n (N + 1) hn c R hc hR`. Take `⟨C₂, hC₂⟩` from `InvBound.bound_high hΨ hn hN hS M R' hδ`. Use `⟨C₂ * C₁, fun φ hφ B hB Z hZ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨γ, hγ, hd, hW⟩` from `hred Z hZ`. Establish `hl` using `fun Λ hΛ => hlev M Λ hΛ γ hγ hd (φ Λ) ⟨hφ.supp Λ hΛ, hφ.per Λ hΛ⟩`. Establish `h` using `hC₂ _ (hadm M φ hφ γ hγ hd) (C₁ * B) (fun Λ hΛ => (hl Λ hΛ).2.2 B (hB Λ hΛ)) _ hW`. Rewrite `h` using `[(GlobalTheory.T.siegelWeilDifference_automorphy_linearity E Ψ hΨ n (N + 1) hn hN M φ hM (fun Λ hΛ => (hl Λ hΛ).1) Z hZ).1 γ hγ]`. Take `⟨-, hH, hdet, -⟩` from `(unitary_act_halfSpace E Ψ (N + 1) γ hγ).2 Z hZ`.
+
+Establish `hf : ‖hFac Ψ γ Z (0 : CM Ψ n (N + 1)) 0‖ = (∏ τ, ‖(hDen Ψ γ Z τ).det‖ ^ 2) ^ ((n : ℝ) / 2)`. Establish `h0 : ∀ (τ : Ψ) (k : Fin n), (0 : CM Ψ n (N + 1)) τ k = 0` using `fun _ _ => rfl`. Rewrite using `[← Real.finset_prod_rpow _ _ fun _ _ => by positivity]`. Simplify using `only [hFac, h0, zero_dotProduct, Finset.sum_const_zero, mul_zero, Complex.exp_zero, mul_one, norm_prod, norm_pow]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Real.rpow_natCast, ← Real.rpow_natCast, ← Real.rpow_mul (norm_nonneg _)]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hdet, Real.mul_rpow (InvBound.detIm_nonneg hH) (Finset.prod_nonneg fun _ _ => by positivity), ← hf, mul_assoc C₂]`.
+
+Rewrite `h` using `[norm_mul]`. Use `le_of_eq_of_le ?_ h` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem swd_invariant_bound : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
     (Ψ : Finset (E →+* ℂ)), IsType Ψ → ∀ (n N : ℕ), Even n → 4 * (N + 1) < n → SWAt Ψ n N →
     ∀ M R : ℕ, ∃ C : ℝ, ∀ φ : Fam E n (N + 1), admitted M R φ → ∀ B : ℝ,

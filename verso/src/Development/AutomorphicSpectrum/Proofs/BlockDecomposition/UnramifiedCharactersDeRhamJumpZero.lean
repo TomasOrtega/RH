@@ -20,6 +20,31 @@ variable {l : ℕ} [Fact l.Prime]
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Use `compactSpace_GK K` as an intermediate fact. Use `LL.2` as an intermediate fact. Take `⟨n, e, he, hcont, -⟩` from `GlobalTheory.Cyc.LatBasis.exists_basis l (GK K) LL T`. Establish `hint : ∀ g i j, ‖e.repr (T.ρ g (e j)) i‖ ≤ 1` using `fun g i j => (he _).1 (T.L.stable g _ ((he _).2 fun k => by`. Rewrite using `[e.repr_self, Finsupp.single_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp)) i`. Take `⟨M, hM⟩` from `GlobalTheory.UnramifiedRep.exists_matrixHom T.ρ e hint`. Take `⟨W, hW, hWg⟩` from `GlobalTheory.UnramifiedRep.exists_witt_matrix (p := l) (AI.actT.comp (GK K).subtype) (fun y m hm hy => (continuous_subtype_val.tendsto (1 : ↥(GK K))).eventually (eventually_actT_eq AI y m hm hy)) M (continuous_pi fun i => continuous_pi fun j => continuous_induced_rng.2 (by`. Establish `h` using `(continuous_apply i).comp (hcont.comp (T.cont (e j)))`. Conclude with `h.congr fun g => (hM g i j).symm))`.
+
+Use the proof step `(fun g hg => by`. Establish `h` using `hI g (Subgroup.subset_closure fun x hx => norm_sub_lt_one_of_fix AI g (fun m hm y hy => hg m hm y hy) x hx)`. Rewrite using `[← map_one M]`. Use extensionality with `i j`. Apply `PadicInt.ext` to reduce the goal to its premises.
+
+Rewrite using `[hM, hM, h, map_one, Module.End.one_apply])`. Establish `hB : ∀ g, (Matrix.of fun i j => algebraMap ℚ_[l] P.R.B (e.repr (T.ρ g (e j)) i)) * (AI.ιA.mapMatrix W).map ((P.PD K).actB g) = AI.ιA.mapMatrix W` using `fun g => by conv_rhs => rw [← hWg g, map_mul]`. Use `congr 1`. Use extensionality with `i j`. Rewrite using `[Matrix.of_apply, ← hM]`.
+
+Conclude with `(ιA_zlW AI Ti (M g i j)).symm`. Use extensionality with `i j`. Conclude with `(P.PD_actB K g _).trans (AI.ιA_act g _).symm`. Set `f : Ainf l →+* P.R.BdR` to `((P.PD K).ι : P.R.B →+* P.R.BdR).comp AI.ιA`. Establish `hf : ∀ a, f a ∈ (P.PD K).Fil 0` using `fun a => by`.
+
+Express the relevant statement in the definitionally equal form `(P.PD K).ι (AI.ιA a) ∈ _`. Rewrite using `[P.PD_ι]`. Conclude with `AI.ainf_image_mem_filtration_zero K a`. Establish `hWW : f.mapMatrix W * f.mapMatrix W⁻¹ = 1`. Rewrite using `[← map_mul, Matrix.mul_nonsing_inv _ hW, map_one]`.
+
+Establish `hg : ∀ g, (Matrix.of fun i j => algebraMap ℚ_[l] P.R.BdR (e.repr (T.ρ g (e j)) i)) * (f.mapMatrix W).map ((P.PD K).actdR g) = f.mapMatrix W` using `fun g => by`. Establish `hι : ∀ c : ℚ_[l], ((P.PD K).ι : P.R.B →+* P.R.BdR) (algebraMap ℚ_[l] P.R.B c) = algebraMap ℚ_[l] P.R.BdR c` using `fun c => (P.PD_ι K _).trans (P.ιB.commutes c)`. Conclude with `GlobalTheory.UnramifiedRep.map_mul_map_eq ((P.PD K).ι : P.R.B →+* P.R.BdR) (hB g) (fun i j => hι _) ((P.PD K).ι_comm g)`. Take `⟨k, hk⟩` from `GlobalTheory.SplitJump.exists_coord (P.PD K) T.ρ e _ _ hWW hg y hy`. Establish `hc : GlobalTheory.SplitJump.coord e P.R.BdR y = (f.mapMatrix W).mulVec fun i => algebraMap ↥K.1 P.R.BdR (k i)`.
+
+Rewrite using `[hk, Matrix.mulVec_mulVec, hWW, Matrix.one_mulVec]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[GlobalTheory.SplitJump.mem_filV (P.PD K) e]`. Introduce `i`. Rewrite using `[hc]`.
+
+Simplify using `only [Matrix.mulVec, dotProduct]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, ← Algebra.smul_def]`. Conclude with `((P.PD K).Fil 0).smul_mem _ (hf _)`. Introduce `h1`.
+
+Establish `hF` using `(GlobalTheory.SplitJump.mem_filV (P.PD K) e 1 y).1 h1`. Establish `hk0 : ∀ i, k i = 0` using `fun i => by`. Use `GlobalTheory.SplitJump.eq_zero_of_mem_fil_one (P.PD K) _ ?_` and prove the remaining obligations. Rewrite using `[congrFun hk i]`. Simplify using `only [Matrix.mulVec, dotProduct]`.
+
+Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Use `(P.PD K).Fil_mul 0 1 _ _ (hf (W⁻¹ i j)) (hF j)` as an intermediate fact. Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis. Apply `(GlobalTheory.SplitJump.coord e P.R.BdR).injective` to reduce the goal to its premises. Rewrite using `[hc, map_zero]`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[hk0, Matrix.mulVec, dotProduct]`.
+-/
 theorem fil_of_unramified (P : LocPrime l) (AI : LocAinf l P) (Ti : LocTied l P AI) (K LL : FinExt l)
     (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)) (hI : ∀ g ∈ IK K, ∀ x, T.ρ g x = x)
     (y : T.V ⊗[ℚ_[l]] P.R.BdR) (hy : y ∈ DdR (P.PD K) T.ρ) :
@@ -140,12 +165,18 @@ def lineLoc (K LL : FinExt l) (ρ : Representation ↥LL.1 ↥(GK K) (Fin 1 → 
 
 section Line
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.UnramifiedRep.isCrys_and_jump_eq_zero l P AI Ti K LL (lineLoc K LL ρ μ hρ hμ hO) (fun g hg (x : Fin 1 → ↥LL.1) => (hρ g x).trans (by rw [hI g hg, one_smul]))).1`.
+-/
 theorem crys_line (P : LocPrime l) (AI : LocAinf l P) (Ti : LocTied l P AI) (K LL : FinExt l) (ρ : Representation ↥LL.1 ↥(GK K) (Fin 1 → ↥LL.1))
     (μ : ↥(GK K) → ↥LL.1) (hρ : ∀ g x, ρ g x = μ g • x) (hμ : Continuous μ) (hO : ∀ g, μ g ∈ OL LL)
     (hI : ∀ g ∈ IK K, μ g = 1) : IsCrys (P.PD K) ρ :=
   (GlobalTheory.UnramifiedRep.isCrys_and_jump_eq_zero l P AI Ti K LL (lineLoc K LL ρ μ hρ hμ hO)
     (fun g hg (x : Fin 1 → ↥LL.1) => (hρ g x).trans (by rw [hI g hg, one_smul]))).1
 
+/- English proof (translation)
+The claim follows from `fil_of_unramified P AI Ti K LL (lineLoc K LL ρ μ hρ hμ hO) (fun g hg (x : Fin 1 → ↥LL.1) => (hρ g x).trans (by rw [hI g hg, one_smul])) y hy`.
+-/
 theorem fil_line (P : LocPrime l) (AI : LocAinf l P) (Ti : LocTied l P AI) (K LL : FinExt l) (ρ : Representation ↥LL.1 ↥(GK K) (Fin 1 → ↥LL.1))
     (μ : ↥(GK K) → ↥LL.1) (hρ : ∀ g x, ρ g x = μ g • x) (hμ : Continuous μ) (hO : ∀ g, μ g ∈ OL LL)
     (hI : ∀ g ∈ IK K, μ g = 1) (y : (Fin 1 → ↥LL.1) ⊗[ℚ_[l]] P.R.BdR) (hy : y ∈ DdR (P.PD K) ρ) :
@@ -156,6 +187,17 @@ theorem fil_line (P : LocPrime l) (AI : LocAinf l P) (Ti : LocTied l P AI) (K LL
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Establish `hdown : ∀ b : ℤ, b ≤ 0 → FilV (P.PD K) (LL` using `↥LL.1) (V := Fin 1 → ↥LL.1) 0 ≤ FilV (P.PD K) (LL := ↥LL.1) (V := Fin 1 → ↥LL.1) b := by`. Introduce `b hb`. Proceed by induction on `b, hb using Int.le_induction_down with`. Consider the case `base => exact le_rfl`. Consider the case `pred n _ ih`.
+
+Use `GlobalTheory.JumpDescent.FilV_anti (LL := ↥LL.1) (V := Fin 1 → ↥LL.1) P K (n - 1)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Conclude with `ih.trans this`. Establish `hup : ∀ b : ℤ, 1 ≤ b → FilV (P.PD K) (LL` using `↥LL.1) (V := Fin 1 → ↥LL.1) b ≤ FilV (P.PD K) (LL := ↥LL.1) (V := Fin 1 → ↥LL.1) 1 := by`. Introduce `b hb`.
+
+Proceed by induction on `b, hb using Int.le_induction with`. Consider the case `base => exact le_rfl`. Consider the case `succ n _ ih => exact (GlobalTheory.JumpDescent.FilV_anti (LL := ↥LL.1) (V := Fin 1 → ↥LL.1) P K n).trans ih`. Establish `hneg : ∀ b : ℤ, b ≤ 0 → FildR (P.PD K) ρ τ b = DdRE (P.PD K) ρ τ` using `fun b hb => inf_eq_left.2 fun y hy => hdown b hb (h0 y hy.1)`. Establish `hpos : ∀ b : ℤ, 1 ≤ b → FildR (P.PD K) ρ τ b = ⊥` using `fun b hb => (Submodule.eq_bot_iff _).2 fun y hy => h1 y hy.1.1 (hup b hb hy.2)`.
+
+Establish `hfin : finrank ↥LL.1 ↥(DdRE (P.PD K) ρ τ) = 1`. Use `((GlobalTheory.Per.Components.components_finrank l P AI Ti K LL (Fin 1 → ↥LL.1) ρ).1 τ).2.2 hDR` as an intermediate fact. Simplify using `using this`. Unfold `multV`. Break down `lt_trichotomy a 0 with h | h | h` into its components or cases.
+
+Rewrite using `[hneg a h.le, hneg (a + 1) (by omega), sub_self, if_neg h.ne]`. Substitute `h` using the available equality. Rewrite using `[hneg 0 le_rfl, hpos (0 + 1) (by omega), finrank_bot, hfin]`. Simplify using the standard rewrite rules. Rewrite using `[hpos a (by omega), hpos (a + 1) (by omega), sub_self, if_neg h.ne']`.
+-/
 theorem multV_of_fil (P : LocPrime l) (AI : LocAinf l P) (Ti : LocTied l P AI) (K LL : FinExt l) (ρ : Representation ↥LL.1 ↥(GK K) (Fin 1 → ↥LL.1))
     (hDR : IsDR (P.PD K) ρ)
     (h0 : ∀ y ∈ DdR (P.PD K) ρ, y ∈ FilV (P.PD K) (LL := ↥LL.1) (V := Fin 1 → ↥LL.1) 0)
@@ -202,6 +244,33 @@ open GlobalTheory.HeckeGal GlobalTheory.Pst GlobalTheory.TripleGal
 set_option maxHeartbeats 3200000 in
 open scoped Classical in
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ l _ P AI hT w A hA O _ _ _ Bw hInd LL' hle ψ hcont hnorm V hV hVI`. Take `⟨Ti⟩` from `hT`. Establish `hK : ∃ (K' : FinExt l) (h : Bw.Kw.1 ≤ K'.1), ∀ g : ↥(GK K'), ((Bw.e.symm (Subgroup.inclusion (GK_le h) g) : ↥(Dec (F` using `E) A)) : G E Ω) ∈ V := by`. Establish `hU : IsOpen {g : ↥(GK Bw.Kw) | ((Bw.e.symm g : ↥(Dec (F` using `E) A)) : G E Ω) ∈ V} := hV.preimage (continuous_subtype_val.comp Bw.e_symm_cont)`. Take `⟨U', hU', hUU'⟩` from `isOpen_induced_iff.1 hU`.
+
+Establish `h1 : (1 : GQ l) ∈ U'`. Establish `: (1 : ↥(GK Bw.Kw)) ∈ Subtype.val ⁻¹' U'`. Rewrite using `[hUU']`. Express the relevant statement in the definitionally equal form `((Bw.e.symm 1 : ↥(Dec (F := E) A)) : G E Ω) ∈ V`. Rewrite using `[map_one]`.
+
+Conclude with `V.one_mem`. Conclude with `this`. Take `⟨F, hF, hsub⟩` from `(krullTopology_mem_nhds_one_iff ℚ_[l] (Om l) _).1 (hU'.mem_nhds h1)`. Use `haveI := Bw.Kw.2`. Set `K' : FinExt l` to `⟨Bw.Kw.1 ⊔ F, IntermediateField.finiteDimensional_sup _ _⟩`.
+
+Establish `hKK' : Bw.Kw.1 ≤ K'.1` using `le_sup_left`. Use `⟨K', hKK', fun g => ?_⟩` and prove the remaining obligations. Establish `hg : (g : GQ l) ∈ U'` using `hsub (GK_le (K := ⟨F, hF⟩) (K' := K') (le_sup_right : F ≤ K'.1) g.2)`. Establish `: (Subgroup.inclusion (GK_le hKK') g) ∈ (Subtype.val ⁻¹' U' : Set ↥(GK Bw.Kw))` using `hg`. Rewrite `this` using `[hUU']`.
+
+Conclude with `this`. Take `⟨K', hKK', hK'⟩` from `hK`. Set `μh : ↥(GK Bw.Kw) →* (↥LL'.1)ˣ` to `ψ.comp Bw.e.symm.toMonoidHom`. Set `ρ` to `Bw.repE LL' ((PositivityTheory.HodgeLocalCharacter.HLC.toGL1 ↥LL'.1).comp ψ)`. Set `i : ↥(GK K') →* ↥(GK Bw.Kw)` to `Subgroup.inclusion (GK_le hKK')`.
+
+Establish `hμc : Continuous fun g => ((μh g : (↥LL'.1)ˣ) : ↥LL'.1)` using `continuous_induced_rng.2 (hcont.comp Bw.e_symm_cont)`. Establish `hρ : ∀ g x, ρ g x = ((μh g : (↥LL'.1)ˣ) : ↥LL'.1) • x`. Introduce `g x`. Use function extensionality and compare the values at `k`. Use `fin_cases k`.
+
+Simplify using `[ρ, μh, LocBridge.repE, PositivityTheory.HodgeLocalCharacter.HLC.toGL1, Matrix.mulVec, dotProduct]`. Establish `hIK : IK K' ≤ (μh.comp i).ker`. Use `(Subgroup.closure_le _).2 fun g hg => ?_` and prove the remaining obligations. Use `hVI (Bw.e.symm (i g)) (hK' g) ⟨(Bw.e.symm (i g)).2, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[hInd.valuation_lt_one_iff, map_sub, ← Bw.e_comm, MulEquiv.apply_symm_apply]`.
+
+Conclude with `hg _ ((hInd x).1 ((A.valuation_le_one_iff x).1 hx))`. Establish `hI : ∀ g ∈ IK K', ((μh (i g) : (↥LL'.1)ˣ) : ↥LL'.1) = 1` using `fun g hg => by`. Establish `: μh (i g) = 1` using `hIK hg`. Rewrite using `[this, Units.val_one]`. Establish `hc' : Continuous fun g => ((μh (i g) : (↥LL'.1)ˣ) : ↥LL'.1)` using `hμc.comp (continuous_induced_rng.2 continuous_subtype_val)`.
+
+Establish `hO : ∀ g, ((μh (i g) : (↥LL'.1)ˣ) : ↥LL'.1) ∈ OL LL'` using `fun g => GlobalTheory.UnramifiedChar.val_mem_OL Bw.Kw LL' μh hμc (i g)`. Establish `hρ' : ∀ g x, (ρ.comp i) g x = ((μh (i g) : (↥LL'.1)ˣ) : ↥LL'.1) • x` using `fun g x => hρ (i g) x`. Establish `hcr` using `crys_line P AI Ti K' LL' (ρ.comp i) _ hρ' hc' hO hI`. Establish `hdr'` using `(GlobalTheory.Per.CrisDR.isDR_of_isCrys l P AI Ti K' LL' _ (ρ.comp i) hcr).1`. Establish `hdr : IsDR (P.PD Bw.Kw) ρ` using `((GlobalTheory.Per.TiedRestrict.restrict_crys_deRham l P AI Ti Bw.Kw K' LL' hKK' _ ρ).2).2 hdr'`.
+
+Establish `hup : ∀ y ∈ DdR (P.PD Bw.Kw) ρ, y ∈ DdR (P.PD K') (ρ.comp i)` using `fun y hy => (GlobalTheory.JumpDescent.mem_DdR P K' _ y).2 fun g => by`. Rewrite using `[GlobalTheory.JumpDescent.actVdR_comp P hKK']`. Conclude with `(GlobalTheory.JumpDescent.mem_DdR P Bw.Kw _ y).1 hy _`. Establish `hf` using `fun y hy => fil_line P AI Ti K' LL' (ρ.comp i) _ hρ' hc' hO hI y (hup y hy)`. Establish `h0 : ∀ y ∈ DdR (P.PD Bw.Kw) ρ, y ∈ FilV (P.PD Bw.Kw) (LL` using `↥LL'.1) (V := Fin 1 → ↥LL'.1) 0 := fun y hy => by`.
+
+Rewrite using `[← GlobalTheory.JumpDescent.FilV_eq P Bw.Kw K' 0]`. Conclude with `(hf y hy).1`. Establish `h1 : ∀ y ∈ DdR (P.PD Bw.Kw) ρ, y ∈ FilV (P.PD Bw.Kw) (LL` using `↥LL'.1) (V := Fin 1 → ↥LL'.1) 1 → y = 0 := fun y hy h => by`. Rewrite `h` using `[← GlobalTheory.JumpDescent.FilV_eq P Bw.Kw K' 1]`. Conclude with `(hf y hy).2 h`.
+
+Use `⟨?_, fun τ' a => ?_⟩` and prove the remaining obligations. Establish `h2` using `hdr`. Unfold `IsDR at h2`. Unfold `LocBridge.IsdRE`. Simplify using `using h2`.
+
+Conclude with `multV_of_fil P AI Ti Bw.Kw LL' ρ hdr h0 h1 τ' a`.
+-/
 theorem isdRJ_zero_of_trivial_on_open_inertia :
     ∀ {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {l : ℕ} [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), Nonempty (LocTied l P AI) →
     ∀ (w : HeightOneSpectrum (𝓞 E)) (A : ValuationSubring Ω), IsPlaceOver A w →

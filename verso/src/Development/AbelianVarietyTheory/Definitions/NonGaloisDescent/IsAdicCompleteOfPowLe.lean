@@ -27,10 +27,16 @@ def liftInj {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* C
   map_add' x y := hg (by
     rw [map_add g, (h _).choose_spec, (h _).choose_spec, (h _).choose_spec, map_add])
 
+/- English proof (translation)
+The claim follows from `(h x).choose_spec`.
+-/
 theorem liftInj_spec {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* C) (g : B →+* C)
     (hg : Function.Injective g) (h : ∀ x, ∃ y, g y = f x) (x : A) : g (liftInj f g hg h x) = f x :=
   (h x).choose_spec
 
+/- English proof (translation)
+The claim follows from `IsHausdorff.haus' (I := I) x fun n => by have := hx n simp only [SModEq.zero, smul_eq_mul, Ideal.mul_top] at this ⊢ exact Ideal.pow_right_mono hJ n this prec' f hf := by simp only [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top] at hf ⊢ obtain ⟨L, hL⟩ := IsPrecomplete.prec' (I := I) …`.
+-/
 theorem isAdicComplete_of_pow_le {A : Type} [CommRing A] {I J : Ideal A} {N : ℕ} (h : I ^ (N + 1) ≤ J)
     (hJ : J ≤ I) [IsAdicComplete I A] : IsAdicComplete J A where
   haus' x hx := IsHausdorff.haus' (I := I) x fun n => by
@@ -49,6 +55,9 @@ theorem isAdicComplete_of_pow_le {A : Type} [CommRing A] {I J : Ideal A} {N : �
     rw [pow_mul] at h2
     simpa using add_mem h1 (Ideal.pow_right_mono h n h2)
 
+/- English proof (translation)
+Use `letI : Algebra R B := (f.comp C).toAlgebra`. Conclude with `congrArg AlgHom.toRingHom (GlobalTheory.Cyc.IoMap.algHom_unique (R := R) { toRingHom := f, commutes' := fun _ => rfl } { toRingHom := g, commutes' := fun r => (hC r).symm } hX hs)`.
+-/
 theorem ringHom_ext_of_sep {R B : Type} [CommRing R] [CommRing B] (f g : R⟦X⟧ →+* B)
     (hC : ∀ r, f (C r) = g (C r)) (hX : f X = g X) (hs : ∀ x : B, (∀ n, f X ^ n ∣ x) → x = 0) : f = g := by
   letI : Algebra R B := (f.comp C).toAlgebra
@@ -63,12 +72,23 @@ def resSub : Subring (OCb l) := RingHom.eqLocus (iterateFrobenius (OCb l) l a) (
 
 variable {l a} in
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_resSub {x : OCb l} : x ∈ resSub l a ↔ x ^ l ^ a = x := Iff.rfl
 
 variable [NeZero a]
 
+/- English proof (translation)
+The claim follows from `Nat.one_lt_pow (NeZero.ne a) hl.out.one_lt`.
+-/
 theorem one_lt_pow_l : 1 < l ^ a := Nat.one_lt_pow (NeZero.ne a) hl.out.one_lt
 
+/- English proof (translation)
+Use `(eq_or_ne x 0).symm.imp (fun hx => ?_) id` and prove the remaining obligations. Take `⟨m, hm⟩` from `Nat.exists_eq_add_of_lt (one_lt_pow_l l a)`. Establish `h : x ^ l ^ a = x` using `Subtype.ext x.2`. Use `IsUnit.of_mul_eq_one (x ^ m) (mul_left_cancel₀ hx ?_)` and prove the remaining obligations. Rewrite `h` using `[hm]`.
+
+Take the linear combination `h`.
+-/
 theorem isUnit_resSub (x : ↥(resSub l a)) : IsUnit x ∨ x = 0 := by
   refine (eq_or_ne x 0).symm.imp (fun hx => ?_) id
   obtain ⟨m, hm⟩ := Nat.exists_eq_add_of_lt (one_lt_pow_l l a)
@@ -87,15 +107,24 @@ instance : Field (Fq l a) := Field.ofIsUnitOrEqZero (isUnit_resSub l a)
 
 def Fq.val : Fq l a →+* OCb l := (resSub l a).subtype
 
+/- English proof (translation)
+The claim follows from `Subtype.val_injective`.
+-/
 theorem Fq.val_injective : Function.Injective (Fq.val l a) := Subtype.val_injective
 
 variable {l a} in
 
+/- English proof (translation)
+The claim follows from `(Fq.val_injective l a) (by rw [map_pow]; exact x.2)`.
+-/
 theorem Fq.pow_card (x : Fq l a) : x ^ l ^ a = x :=
   (Fq.val_injective l a) (by rw [map_pow]; exact x.2)
 
 instance : CharP (Fq l a) l := (Fq.val l a).charP (Fq.val_injective l a) l
 
+/- English proof (translation)
+Establish `h : (Polynomial.X ^ l ^ a - Polynomial.X : Polynomial R) ≠ 0` using `fun h => by`. Use `congrArg (Polynomial.coeff · 1) h` as an intermediate fact. Simplify using `[Polynomial.coeff_X_pow, (one_lt_pow_l l a).ne] at this`. Use `(Polynomial.finite_setOf_isRoot h).subset fun x hx => ?_` and prove the remaining obligations. Simplify `hx` using `[sub_eq_zero]`.
+-/
 theorem finite_sol (R : Type) [CommRing R] [IsDomain R] : {x : R | x ^ l ^ a = x}.Finite := by
   have h : (Polynomial.X ^ l ^ a - Polynomial.X : Polynomial R) ≠ 0 := fun h => by
     have := congrArg (Polynomial.coeff · 1) h
@@ -105,6 +134,15 @@ theorem finite_sol (R : Type) [CommRing R] [IsDomain R] : {x : R | x ^ l ^ a = x
 
 instance : Finite (Fq l a) := (finite_sol l a (OCb l)).to_subtype
 
+/- English proof (translation)
+Establish `h1` using `one_lt_pow_l l a`. Establish `h0 : 0 < l ^ a - 1` using `by omega`. Establish `: NeZero (l ^ a - 1)` using `⟨h0.ne'⟩`. Take `⟨ω, hω⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot (Om l) (l ^ a - 1)`. Establish `hd : ¬ l ∣ l ^ a - 1` using `fun h => hl.out.not_dvd_one ((Nat.dvd_sub_iff_right h1.le (dvd_pow_self l (NeZero.ne a))).1 h)`.
+
+Take `⟨x, hx⟩` from `GlobalTheory.MemLoc.exists_isTiltOf ω _ h0 hd hω.pow_eq_one`. Establish `h2 : ∀ y : OCb l, y ^ l ^ a = y ^ (l ^ a - 1) * y` using `fun y => by`. Rewrite using `[← pow_succ, Nat.sub_add_cancel h1.le]`. Establish `h3` using `GlobalTheory.MemLoc.IsTiltOf.pow_eq_one hx`. Establish `h4 : IsPrimitiveRoot x (l ^ a - 1)` using `⟨h3, fun k hk => hω.dvd_of_pow_eq_one k (by`.
+
+Apply `(algebraMap (Om l) ℂ_[l]).injective` to reduce the goal to its premises. Establish `h5` using `congrArg (fun y : OCb l => ((y.untilt : OC l) : ℂ_[l])) hk`. Simplify using `only [map_pow, map_one, SubmonoidClass.coe_pow, GlobalTheory.MemLoc.IsTiltOf.untilt_eq hx] at h5 ⊢`. Conclude with `h5)⟩`. Use `⟨⟨x, by rw [mem_resSub, h2, h3, one_mul]⟩, ω, hω, hx, fun y hy => ?_⟩` and prove the remaining obligations.
+
+Establish `hy0 : Fq.val l a y ≠ 0` using `(map_ne_zero _).2 hy`. Establish `h6 : Fq.val l a y ^ (l ^ a - 1) = 1` using `mul_right_cancel₀ hy0 (by rw [← h2, one_mul, ← map_pow, Fq.pow_card])`. Take `⟨k, -, hk⟩` from `h4.eq_pow_of_pow_eq_one h6`. Conclude with `⟨k, (Fq.val_injective l a) (hk.symm.trans (map_pow (Fq.val l a) (⟨x, by rw [mem_resSub, h2, h3, one_mul]⟩ : ↥(resSub l a)) k).symm)⟩`.
+-/
 theorem exists_gen : ∃ (z : Fq l a) (ω : Om l), IsPrimitiveRoot ω (l ^ a - 1) ∧
     IsTiltOf ω (l ^ a - 1) (Fq.val l a z) ∧ ∀ x : Fq l a, x ≠ 0 → ∃ k : ℕ, x = z ^ k := by
   have h1 := one_lt_pow_l l a
@@ -130,6 +168,15 @@ theorem exists_gen : ∃ (z : Fq l a) (ω : Om l), IsPrimitiveRoot ω (l ^ a - 1
   exact ⟨k, (Fq.val_injective l a) (hk.symm.trans
     (map_pow (Fq.val l a) (⟨x, by rw [mem_resSub, h2, h3, one_mul]⟩ : ↥(resSub l a)) k).symm)⟩
 
+/- English proof (translation)
+Take `⟨z, ω, hω, hz, h⟩` from `exists_gen l a`. Establish `h1` using `one_lt_pow_l l a`. Establish `hz0 : z ≠ 0` using `fun h0 => by`. Use `GlobalTheory.MemLoc.IsTiltOf.pow_eq_one hz` as an intermediate fact. Rewrite `this` using `[h0, map_zero, zero_pow (by omega)]`.
+
+Conclude with `zero_ne_one this`. Establish `h2 : IsPrimitiveRoot (Units.mk0 z hz0) (l ^ a - 1)`. Rewrite using `[← IsPrimitiveRoot.coe_units_iff]`. Use `⟨Fq.val_injective l a (by rw [map_pow, map_one]; exact GlobalTheory.MemLoc.IsTiltOf.pow_eq_one hz), fun k hk => hω.dvd_of_pow_eq_one k ((algebraMap (Om l) ℂ_[l]).injective ?_)⟩` and prove the remaining obligations. Establish `h5` using `congrArg (fun y : Fq l a => (((Fq.val l a y).untilt : OC l) : ℂ_[l])) hk`.
+
+Simplify using `only [map_pow, map_one, SubmonoidClass.coe_pow, Units.val_mk0, GlobalTheory.MemLoc.IsTiltOf.untilt_eq hz] at h5 ⊢`. Conclude with `h5`. Establish `h3 : Nat.card (Fq l a)ˣ = l ^ a - 1`. Rewrite using `[h2.eq_orderOf]`. Use `(orderOf_eq_card_of_forall_mem_powers fun x => ?_).symm` and prove the remaining obligations.
+
+Take `⟨k, hk⟩` from `h x x.ne_zero`. Conclude with `⟨k, Units.ext (by simp [hk])⟩`. Rewrite `h3` using `[Nat.card_units]`. Use `Nat.card_pos (α := Fq l a)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem card_Fq : Nat.card (Fq l a) = l ^ a := by
   obtain ⟨z, ω, hω, hz, h⟩ := exists_gen l a
   have h1 := one_lt_pow_l l a
@@ -162,24 +209,44 @@ def wA : Wq l a →ₐ[ℤ_[l]] Ainf l where
   toRingHom := WittVector.map (Fq.val l a)
   commutes' := map_zlW l _
 
+/- English proof (translation)
+The claim follows from `WittVector.map_injective _ (Fq.val_injective l a)`.
+-/
 theorem wA_injective : Function.Injective (wA l a) := WittVector.map_injective _ (Fq.val_injective l a)
 
+/- English proof (translation)
+The claim follows from `WittVector.map_teichmuller l _ x`.
+-/
 theorem wA_teich (x : Fq l a) :
     wA l a (WittVector.teichmuller l x) = WittVector.teichmuller l (Fq.val l a x) :=
   WittVector.map_teichmuller l _ x
 
 def sigma : Wq l a ≃ₐ[ℤ_[l]] Wq l a := mapAlgEquivW l (frobeniusEquiv (Fq l a) l)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coeff_sigma (w : Wq l a) (n : ℕ) : (sigma l a w).coeff n = w.coeff n ^ l := rfl
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ', AlgEquiv.mul_apply, coeff_sigma, ih, ← pow_mul, ← pow_succ]`.
+-/
 theorem coeff_sigma_pow (k : ℕ) (w : Wq l a) (n : ℕ) : ((sigma l a ^ k) w).coeff n = w.coeff n ^ l ^ k := by
   induction k with
   | zero => simp
   | succ k ih => rw [pow_succ', AlgEquiv.mul_apply, coeff_sigma, ih, ← pow_mul, ← pow_succ]
 
+/- English proof (translation)
+The claim follows from `AlgEquiv.ext fun w => WittVector.ext fun n => (coeff_sigma_pow l a a w n).trans (Fq.pow_card _)`.
+-/
 theorem sigma_pow_eq_one : sigma l a ^ a = 1 :=
   AlgEquiv.ext fun w => WittVector.ext fun n => (coeff_sigma_pow l a a w n).trans (Fq.pow_card _)
 
+/- English proof (translation)
+Rewrite using `[← map_pow]`. Use `WittVector.ext fun n => ?_` and prove the remaining obligations. Rewrite using `[coeff_sigma_pow]`. Break down `n with _ | n` into its components or cases. Rewrite using `[WittVector.teichmuller_coeff_zero, WittVector.teichmuller_coeff_zero]`.
+
+Rewrite using `[WittVector.teichmuller_coeff_pos _ _ _ n.succ_pos, WittVector.teichmuller_coeff_pos _ _ _ n.succ_pos, zero_pow (pow_pos hl.out.pos k).ne']`.
+-/
 theorem sigma_pow_teich (k : ℕ) (x : Fq l a) :
     (sigma l a ^ k) (WittVector.teichmuller l x) = WittVector.teichmuller l x ^ l ^ k := by
   rw [← map_pow]
@@ -190,10 +257,22 @@ theorem sigma_pow_teich (k : ℕ) (x : Fq l a) :
   · rw [WittVector.teichmuller_coeff_pos _ _ _ n.succ_pos, WittVector.teichmuller_coeff_pos _ _ _ n.succ_pos,
       zero_pow (pow_pos hl.out.pos k).ne']
 
+/- English proof (translation)
+Rewrite using `[WittVector.frobenius_eq_map_frobenius]`. Conclude with `WittVector.ext fun n => map_pow (Fq.val l a) (w.coeff n) l`.
+-/
 theorem wA_sigma (w : Wq l a) : wA l a (sigma l a w) = WittVector.frobenius (wA l a w) := by
   rw [WittVector.frobenius_eq_map_frobenius]
   exact WittVector.ext fun n => map_pow (Fq.val l a) (w.coeff n) l
 
+/- English proof (translation)
+Use `Fintype.ofFinite (Fq l a)` as an intermediate fact. Establish `hc : IsAdicComplete (Ideal.span {(l : ℤ_[l])}) (Wq l a)`. Rewrite using `[← IsAdicComplete.map_algebraMap_iff (S := Wq l a), Ideal.map_span, Set.image_singleton, map_natCast]`. Use `infer_instance`. Establish `hz : IsAdicComplete (Ideal.span {(l : ℤ_[l])}) ℤ_[l]`.
+
+Rewrite using `[← PadicInt.maximalIdeal_eq_span_p]`. Use `infer_instance`. Establish `hp : IsPrecomplete (Ideal.span {(l : ℤ_[l])}) (Fq l a → ℤ_[l])` using `GlobalTheory.CompleteBaseChange.isPrecomplete_pi _ (Submodule.fg_span_singleton _)`. Rewrite using `[← Fintype.range_linearCombination, LinearMap.range_eq_top]`. Use `surjective_of_mkQ_comp_surjective (I := Ideal.span {(l : ℤ_[l])}) fun G => ?_` and prove the remaining obligations.
+
+Take `⟨g, rfl⟩` from `Submodule.mkQ_surjective _ G`. Use `⟨Pi.single (g.coeff 0) 1, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq, Fintype.linearCombination_apply_single, one_smul]`. Establish `h0 : WittVector.teichmuller l (g.coeff 0) - g ∈ Ideal.span {(l : Wq l a)}`. Rewrite using `[← WittVector.ker_constantCoeff, RingHom.mem_ker, map_sub]`.
+
+Simplify using `[WittVector.constantCoeff_apply]`. Take `⟨u, hu⟩` from `Ideal.mem_span_singleton.1 h0`. Establish `h1 : (l : Wq l a) * u = (l : ℤ_[l]) • u` using `by rw [Algebra.smul_def, map_natCast]`. Rewrite using `[hu, h1]`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) Submodule.mem_top`.
+-/
 theorem span_teich : Submodule.span ℤ_[l] (Set.range (WittVector.teichmuller l : Fq l a → Wq l a)) = ⊤ := by
   classical
   have := Fintype.ofFinite (Fq l a)
@@ -218,6 +297,9 @@ theorem span_teich : Submodule.span ℤ_[l] (Set.range (WittVector.teichmuller l
   rw [hu, h1]
   exact Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) Submodule.mem_top
 
+/- English proof (translation)
+Rewrite using `[← Ideal.mem_span_singleton, ← WittVector.ker_constantCoeff, RingHom.mem_ker]`. Assume the negation of the conclusion as `h0`. Conclude with `h (WittVector.isUnit_of_coeff_zero_ne_zero w h0)`.
+-/
 theorem dvd_of_not_isUnit {w : Wq l a} (h : ¬ IsUnit w) : (l : Wq l a) ∣ w := by
   rw [← Ideal.mem_span_singleton, ← WittVector.ker_constantCoeff, RingHom.mem_ker]
   by_contra h0
@@ -232,6 +314,11 @@ def unrExt : FinExt l :=
     have := (finite_sol l a (Om l)).to_subtype
     exact IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x⟩
 
+/- English proof (translation)
+Use `IntermediateField.adjoin_le_iff.2 fun x hx => ?_` and prove the remaining obligations. Break down `eq_or_ne x 0 with rfl | h0` into its components or cases. Conclude with `zero_mem _`. Establish `h1` using `one_lt_pow_l l a`. Use `IntermediateField.subset_adjoin _ _ ⟨l ^ a - 1, by omega, fun h => hl.out.not_dvd_one ((Nat.dvd_sub_iff_right h1.le (dvd_pow_self l (NeZero.ne a))).1 h), mul_right_cancel₀ h0 ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← pow_succ, Nat.sub_add_cancel h1.le, one_mul]`. Conclude with `hx`.
+-/
 theorem Kunr_le_Kur : Kunr l a ≤ MaximalUnramifiedExtension l := by
   refine IntermediateField.adjoin_le_iff.2 fun x hx => ?_
   rcases eq_or_ne x 0 with rfl | h0
@@ -257,19 +344,31 @@ namespace PiSys
 
 variable {l} {e : ℕ} (ϖ : PiSys l e)
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ', pow_mul, ϖ.seq_succ, ih]`.
+-/
 theorem seq_pow (n : ℕ) : ϖ.seq n ^ l ^ n = ϖ.seq 0 := by
   induction n with
   | zero => simp
   | succ n ih => rw [pow_succ', pow_mul, ϖ.seq_succ, ih]
 
+/- English proof (translation)
+Rewrite using `[pow_mul, seq_pow, ϖ.seq_zero]`.
+-/
 theorem seq_pow_mul (n : ℕ) : ϖ.seq n ^ (l ^ n * e) = -(l : Om l) := by
   rw [pow_mul, seq_pow, ϖ.seq_zero]
 
+/- English proof (translation)
+Introduce `h` and use `by have := ϖ.seq_pow_mul n rw [h, zero_pow (mul_ne_zero (pow_pos hl.out.pos n).ne' (NeZero.ne e)), eq_comm, neg_eq_zero] at this exact Nat.cast_ne_zero.2 hl.out.ne_zero this`.
+-/
 theorem seq_ne_zero [NeZero e] (n : ℕ) : ϖ.seq n ≠ 0 := fun h => by
   have := ϖ.seq_pow_mul n
   rw [h, zero_pow (mul_ne_zero (pow_pos hl.out.pos n).ne' (NeZero.ne e)), eq_comm, neg_eq_zero] at this
   exact Nat.cast_ne_zero.2 hl.out.ne_zero this
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Establish `h1` using `congrArg (fun x : Om l => ‖algebraMap (Om l) ℂ_[l] x‖) (ϖ.seq_pow_mul n)`. Simplify using `only [map_pow, norm_pow, map_neg, norm_neg, map_natCast] at h1`. Conclude with `absurd (h1 ▸ one_le_pow₀ (not_lt.1 h)) (not_le.2 GlobalTheory.RingBasics.norm_p_lt)`.
+-/
 theorem norm_seq_lt_one (n : ℕ) : ‖(ϖ.seq n : ℂ_[l])‖ < 1 := by
   by_contra h
   have h1 := congrArg (fun x : Om l => ‖algebraMap (Om l) ℂ_[l] x‖) (ϖ.seq_pow_mul n)
@@ -278,11 +377,20 @@ theorem norm_seq_lt_one (n : ℕ) : ‖(ϖ.seq n : ℂ_[l])‖ < 1 := by
 
 def seqO (n : ℕ) : OC l := ⟨(ϖ.seq n : ℂ_[l]), (GlobalTheory.RingBasics.mem_OC _).2 (ϖ.norm_seq_lt_one n).le⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_seqO (n : ℕ) : (ϖ.seqO n : ℂ_[l]) = algebraMap (Om l) ℂ_[l] (ϖ.seq n) := rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by rw [SubmonoidClass.coe_pow, coe_seqO, ← map_pow, ϖ.seq_succ, coe_seqO])`.
+-/
 theorem seqO_succ (n : ℕ) : ϖ.seqO (n + 1) ^ l = ϖ.seqO n :=
   Subtype.ext (by rw [SubmonoidClass.coe_pow, coe_seqO, ← map_pow, ϖ.seq_succ, coe_seqO])
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by rw [SubmonoidClass.coe_pow, coe_seqO, ← map_pow, ϖ.seq_zero]; simp)`.
+-/
 theorem seqO_zero : ϖ.seqO 0 ^ e = -(l : OC l) :=
   Subtype.ext (by rw [SubmonoidClass.coe_pow, coe_seqO, ← map_pow, ϖ.seq_zero]; simp)
 
@@ -290,9 +398,15 @@ def flat : OCb l :=
   (⟨fun n => Ideal.Quotient.mk _ (ϖ.seqO n), fun n => by rw [← map_pow, seqO_succ]⟩ :
     Perfection (ModP (OC l) l) l)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coeff_flat (n : ℕ) :
     PreTilt.coeff n ϖ.flat = Ideal.Quotient.mk (Ideal.span {((l : ℕ) : OC l)}) (ϖ.seqO n) := rfl
 
+/- English proof (translation)
+Use `Perfection.teichmuller_spec (I := Ideal.span {((l : ℕ) : OC l)}) fun n => ⟨ϖ.seqO n, rfl, ?_⟩` and prove the remaining obligations. Establish `: ϖ.seqO n ^ l ^ n = ϖ.seqO 0` using `Subtype.ext (by rw [SubmonoidClass.coe_pow, coe_seqO, ← map_pow, ϖ.seq_pow, coe_seqO])`. Rewrite using `[this]`.
+-/
 theorem untilt_flat : ϖ.flat.untilt = ϖ.seqO 0 := by
   refine Perfection.teichmuller_spec (I := Ideal.span {((l : ℕ) : OC l)}) fun n => ⟨ϖ.seqO n, rfl, ?_⟩
   have : ϖ.seqO n ^ l ^ n = ϖ.seqO 0 :=
@@ -301,14 +415,23 @@ theorem untilt_flat : ϖ.flat.untilt = ϖ.seqO 0 := by
 
 def teich : Ainf l := WittVector.teichmuller l ϖ.flat
 
+/- English proof (translation)
+The claim follows from `(WittVector.fontaineTheta_teichmuller _).trans ϖ.untilt_flat`.
+-/
 theorem theta_teich : Per.θ l ϖ.teich = ϖ.seqO 0 :=
   (WittVector.fontaineTheta_teichmuller _).trans ϖ.untilt_flat
 
+/- English proof (translation)
+Introduce `h` and use `by have h1 := ϖ.theta_teich rw [teich, h, WittVector.teichmuller_zero, map_zero] at h1 exact ϖ.seq_ne_zero 0 ((map_eq_zero (algebraMap (Om l) ℂ_[l])).1 (congrArg Subtype.val h1).symm)`.
+-/
 theorem flat_ne_zero [NeZero e] : ϖ.flat ≠ 0 := fun h => by
   have h1 := ϖ.theta_teich
   rw [teich, h, WittVector.teichmuller_zero, map_zero] at h1
   exact ϖ.seq_ne_zero 0 ((map_eq_zero (algebraMap (Om l) ℂ_[l])).1 (congrArg Subtype.val h1).symm)
 
+/- English proof (translation)
+Introduce `h` and use `by obtain ⟨u, hu⟩ := h.exists_right_inv have h1 := congrArg (fun x : OC l => ‖(x : ℂ_[l])‖) hu simp only [MulMemClass.coe_mul, norm_mul, OneMemClass.coe_one, norm_one] at h1 have h2 := (GlobalTheory.RingBasics.mem_OC _).1 u.2 have h3 : ‖(ϖ.seqO n : ℂ_[l])‖ < 1 := ϖ.norm_seq_lt_on …`.
+-/
 theorem not_isUnit_seqO (n : ℕ) : ¬ IsUnit (ϖ.seqO n) := fun h => by
   obtain ⟨u, hu⟩ := h.exists_right_inv
   have h1 := congrArg (fun x : OC l => ‖(x : ℂ_[l])‖) hu
@@ -317,16 +440,28 @@ theorem not_isUnit_seqO (n : ℕ) : ¬ IsUnit (ϖ.seqO n) := fun h => by
   have h3 : ‖(ϖ.seqO n : ℂ_[l])‖ < 1 := ϖ.norm_seq_lt_one n
   nlinarith [norm_nonneg (u : ℂ_[l]), norm_nonneg (ϖ.seqO n : ℂ_[l])]
 
+/- English proof (translation)
+Introduce `h` and use `ϖ.not_isUnit_seqO 0 (ϖ.theta_teich ▸ h.map (Per.θ l))`.
+-/
 theorem not_isUnit_teich : ¬ IsUnit ϖ.teich := fun h =>
   ϖ.not_isUnit_seqO 0 (ϖ.theta_teich ▸ h.map (Per.θ l))
 
+/- English proof (translation)
+The claim follows from `WittVector.isUnit_of_coeff_zero_ne_zero _ fun h => ϖ.flat_ne_zero (IsFractionRing.injective (OCb l) (Cb l) (h.trans (map_zero _).symm))`.
+-/
 theorem isUnit_inclW_teich [NeZero e] : IsUnit (inclW l ϖ.teich) :=
   WittVector.isUnit_of_coeff_zero_ne_zero _ fun h => ϖ.flat_ne_zero
     (IsFractionRing.injective (OCb l) (Cb l) (h.trans (map_zero _).symm))
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.Per.AinfComplete.main l _ ϖ.not_isUnit_teich).2`.
+-/
 theorem complete_teich : IsAdicComplete (Ideal.span {ϖ.teich}) (Ainf l) :=
   (GlobalTheory.Per.AinfComplete.main l _ ϖ.not_isUnit_teich).2
 
+/- English proof (translation)
+The claim follows from `have := ϖ.complete_teich GlobalTheory.Per.AinfComplete.eq_zero_of_haus _ x fun n => Ideal.mem_span_singleton.2 (h n)`.
+-/
 theorem sep_teich (x : Ainf l) (h : ∀ n, ϖ.teich ^ n ∣ x) : x = 0 :=
   have := ϖ.complete_teich
   GlobalTheory.Per.AinfComplete.eq_zero_of_haus _ x fun n => Ideal.mem_span_singleton.2 (h n)
@@ -337,11 +472,20 @@ def field : FinExt l :=
     have := IntermediateField.adjoin.finiteDimensional (K := ℚ_[l]) (Algebra.IsIntegral.isIntegral (ϖ.seq 0))
     infer_instance⟩
 
+/- English proof (translation)
+The claim follows from `(le_sup_right : _ ≤ Kunr l a ⊔ _) (IntermediateField.mem_adjoin_simple_self _ _)`.
+-/
 theorem pi_mem_field : ϖ.seq 0 ∈ (ϖ.field a).1 :=
   (le_sup_right : _ ≤ Kunr l a ⊔ _) (IntermediateField.mem_adjoin_simple_self _ _)
 
+/- English proof (translation)
+The claim follows from `le_sup_left`.
+-/
 theorem Kunr_le_field : Kunr l a ≤ (ϖ.field a).1 := le_sup_left
 
+/- English proof (translation)
+The claim follows from `(IntermediateField.mem_fixingSubgroup_iff _ _).1 g.2 _ (ϖ.pi_mem_field a)`.
+-/
 theorem gal_pi (g : ↥(GK (ϖ.field a))) : (g : GQ l) (ϖ.seq 0) = ϖ.seq 0 :=
   (IntermediateField.mem_fixingSubgroup_iff _ _).1 g.2 _ (ϖ.pi_mem_field a)
 
@@ -351,11 +495,20 @@ def Kinf : IntermediateField ℚ_[l] (Om l) :=
 def fieldInf : IntermediateField ℚ_[l] (Om l) :=
   (ϖ.field a).1 ⊔ IntermediateField.adjoin ℚ_[l] (Set.range ϖ.seq)
 
+/- English proof (translation)
+The claim follows from `le_sup_left`.
+-/
 theorem field_le_fieldInf : (ϖ.field a).1 ≤ ϖ.fieldInf a := le_sup_left
 
+/- English proof (translation)
+The claim follows from `(le_sup_right : _ ≤ (ϖ.field a).1 ⊔ _) (IntermediateField.subset_adjoin _ _ ⟨n, rfl⟩)`.
+-/
 theorem seq_mem_fieldInf (n : ℕ) : ϖ.seq n ∈ ϖ.fieldInf a :=
   (le_sup_right : _ ≤ (ϖ.field a).1 ⊔ _) (IntermediateField.subset_adjoin _ _ ⟨n, rfl⟩)
 
+/- English proof (translation)
+The claim follows from `IntermediateField.fixingSubgroup_antitone (ϖ.field_le_fieldInf a)`.
+-/
 theorem fixing_fieldInf_le : (ϖ.fieldInf a).fixingSubgroup ≤ GK (ϖ.field a) :=
   IntermediateField.fixingSubgroup_antitone (ϖ.field_le_fieldInf a)
 
@@ -363,6 +516,9 @@ def GKinf : Subgroup (GQ l) := ϖ.Kinf.fixingSubgroup
 
 def GfieldInf : Subgroup (GQ l) := (ϖ.fieldInf a).fixingSubgroup
 
+/- English proof (translation)
+Use `letI : Algebra (Wq l a) (Ainf l) := (wA l a).toRingHom.toAlgebra`. Use `ϖ.complete_teich` as an intermediate fact. Take `⟨f, hf⟩` from `GlobalTheory.Cyc.IoMap.algHom_exists (R := Wq l a) ϖ.teich (GlobalTheory.Per.AinfComplete.summ_of_precomplete _) ϖ.sep_teich`. Conclude with `⟨f.toRingHom, hf, f.commutes⟩`.
+-/
 theorem exists_ev : ∃ f : (Wq l a)⟦X⟧ →+* Ainf l, f X = ϖ.teich ∧ ∀ w, f (C w) = wA l a w := by
   letI : Algebra (Wq l a) (Ainf l) := (wA l a).toRingHom.toAlgebra
   have := ϖ.complete_teich
@@ -372,10 +528,19 @@ theorem exists_ev : ∃ f : (Wq l a)⟦X⟧ →+* Ainf l, f X = ϖ.teich ∧ ∀
 
 def ev : (Wq l a)⟦X⟧ →+* Ainf l := (ϖ.exists_ev a).choose
 
+/- English proof (translation)
+The claim follows from `(ϖ.exists_ev a).choose_spec.1`.
+-/
 @[simp] theorem ev_X : ϖ.ev a X = ϖ.teich := (ϖ.exists_ev a).choose_spec.1
 
+/- English proof (translation)
+The claim follows from `(ϖ.exists_ev a).choose_spec.2 w`.
+-/
 @[simp] theorem ev_C (w : Wq l a) : ϖ.ev a (C w) = wA l a w := (ϖ.exists_ev a).choose_spec.2 w
 
+/- English proof (translation)
+The claim follows from `ringHom_ext_of_sep _ _ (fun w => by rw [hC, ev_C]) (by rw [hX, ev_X]) (by rw [hX]; exact ϖ.sep_teich)`.
+-/
 theorem eq_ev (f : (Wq l a)⟦X⟧ →+* Ainf l) (hX : f X = ϖ.teich) (hC : ∀ w, f (C w) = wA l a w) :
     f = ϖ.ev a :=
   ringHom_ext_of_sep _ _ (fun w => by rw [hC, ev_C]) (by rw [hX, ev_X]) (by rw [hX]; exact ϖ.sep_teich)
@@ -385,13 +550,24 @@ end PiSys
 def frobS : (Wq l a)⟦X⟧ →+* (Wq l a)⟦X⟧ :=
   (PowerSeries.map (sigma l a : Wq l a →+* Wq l a)).comp (PowerSeries.expand l hl.out.ne_zero).toRingHom
 
+/- English proof (translation)
+Simplify using `[frobS]`.
+-/
 @[simp] theorem frobS_X : frobS l a X = X ^ l := by simp [frobS]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `PowerSeries.map (sigma l a : Wq l a →+* Wq l a) (PowerSeries.expand l hl.out.ne_zero (C w)) = _`. Rewrite using `[expand_C, map_C]`. Both sides reduce to the same expression.
+-/
 @[simp] theorem frobS_C (w : Wq l a) : frobS l a (C w) = C (sigma l a w) := by
   change PowerSeries.map (sigma l a : Wq l a →+* Wq l a) (PowerSeries.expand l hl.out.ne_zero (C w)) = _
   rw [expand_C, map_C]
   rfl
 
+/- English proof (translation)
+Establish `: ∀ n, (l : Wq l a) ∣ coeff n g` using `fun n => by`. Rewrite using `[← Ideal.mem_span_singleton, ← WittVector.ker_constantCoeff, RingHom.mem_ker]`. Simplify using `using congrArg (coeff n) h`. Use `choose c hc using this`. Use `⟨mk c, PowerSeries.ext fun n => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← map_natCast (C : Wq l a →+* (Wq l a)⟦X⟧), coeff_C_mul, coeff_mk, hc]`.
+-/
 theorem dvd_of_map_eq_zero (g : (Wq l a)⟦X⟧)
     (h : PowerSeries.map (WittVector.constantCoeff (p := l) (R := Fq l a)) g = 0) : (l : (Wq l a)⟦X⟧) ∣ g := by
   have : ∀ n, (l : Wq l a) ∣ coeff n g := fun n => by
@@ -401,12 +577,23 @@ theorem dvd_of_map_eq_zero (g : (Wq l a)⟦X⟧)
   refine ⟨mk c, PowerSeries.ext fun n => ?_⟩
   rw [← map_natCast (C : Wq l a →+* (Wq l a)⟦X⟧), coeff_C_mul, coeff_mk, hc]
 
+/- English proof (translation)
+Rewrite using `[← map_natCast (C : Fq l a →+* (Fq l a)⟦X⟧)]`. Simplify using the standard rewrite rules.
+-/
 theorem l_eq_zero : (l : (Fq l a)⟦X⟧) = 0 := by
   rw [← map_natCast (C : Fq l a →+* (Fq l a)⟦X⟧)]; simp
 
+/- English proof (translation)
+Introduce `h` and use `WittVector.p_nonzero l (Fq l a) (by simpa using congrArg constantCoeff h)`.
+-/
 theorem l_ne_zero : (l : (Wq l a)⟦X⟧) ≠ 0 := fun h =>
   WittVector.p_nonzero l (Fq l a) (by simpa using congrArg constantCoeff h)
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `dvd_of_map_eq_zero l a (frobS l a x - x ^ l) (by`. Rewrite using `[map_sub, map_pow, sub_eq_zero]`. Establish `h1` using `MvPowerSeries.map_frobenius_expand l hl.out.ne_zero (f := PowerSeries.map (WittVector.constantCoeff (p := l) (R := Fq l a)) x)`. Use `Eq.trans ?_ h1` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = PowerSeries.map (frobenius (Fq l a) l) (PowerSeries.expand l hl.out.ne_zero _)`.
+
+Rewrite using `[← PowerSeries.map_expand]`. Use extensionality with `n`. Use the proof step `rfl)`. Conclude with `⟨b, by rw [← sub_eq_iff_eq_add']; exact hb⟩`.
+-/
 theorem frobS_eq (x : (Wq l a)⟦X⟧) : ∃ b, frobS l a x = x ^ l + (l : (Wq l a)⟦X⟧) * b := by
   obtain ⟨b, hb⟩ := dvd_of_map_eq_zero l a (frobS l a x - x ^ l) (by
     rw [map_sub, map_pow, sub_eq_zero]
@@ -426,9 +613,25 @@ def eis (e : ℕ) : (Wq l a)⟦X⟧ := X ^ e + (l : (Wq l a)⟦X⟧)
 
 variable (e : ℕ) [NeZero e]
 
+/- English proof (translation)
+Simplify using `[eis, NeZero.ne e]`.
+-/
 theorem constantCoeff_eis : constantCoeff (eis l a e) = (l : Wq l a) := by
   simp [eis, NeZero.ne e]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_or]`. Establish `key : ∀ m : ℕ, ∃ v y : (Wq l a)⟦X⟧, x = v * X ^ m + eis l a e * y`. Introduce `m`. Proceed by induction on `m with`.
+
+Consider the case `zero => exact ⟨x, 0, by simp⟩`. Consider the case `succ m ih`. Take `⟨v, y, hx⟩` from `ih`. Take `⟨c, hc⟩` from `dvd_of_not_isUnit l a (w := constantCoeff v) fun hu => h.2 ⟨m, v, y, isUnit_iff_constantCoeff.2 hu, hx⟩`. Take `⟨k, hk⟩` from `Nat.exists_eq_succ_of_ne_zero (NeZero.ne e)`.
+
+Establish `hv` using `v.eq_X_mul_shift_add_const`. Rewrite `hv` using `[hc, map_mul, map_natCast]`. Use `⟨(mk fun p => coeff (p + 1) v) - X ^ k * C c, y + C c * X ^ m, ?_⟩` and prove the remaining obligations. Rewrite using `[hx]`. Use `conv_lhs => rw [hv]`.
+
+Rewrite using `[eis, hk, Nat.succ_eq_add_one]`. Expand and normalize the polynomial expressions, which then agree. Establish `hH : IsHausdorff (Ideal.span {(X : (Wq l a)⟦X⟧)}) ((Wq l a)⟦X⟧ ⧸ Ideal.span {eis l a e})` using `IsHausdorff.of_isLocalRing _ _ (by`. Rewrite using `[Ne, Ideal.span_singleton_eq_top, isUnit_iff_constantCoeff]`. Use the proof step `simp)`.
+
+Use `h.1 (Ideal.mem_span_singleton.1 (Ideal.Quotient.eq_zero_iff_mem.1 (hH.haus _ fun m => ?_)))` and prove the remaining obligations. Take `⟨v, y, hx⟩` from `key m`. Establish `h1 : Ideal.Quotient.mk (Ideal.span {eis l a e}) x = (X : (Wq l a)⟦X⟧) ^ m • Ideal.Quotient.mk (Ideal.span {eis l a e}) v`. Rewrite using `[Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, Ideal.Quotient.eq, Ideal.mem_span_singleton]`. Conclude with `⟨y, by rw [hx]; ring⟩`.
+
+Rewrite using `[SModEq.zero, h1]`. Conclude with `Submodule.smul_mem_smul (Ideal.pow_mem_pow (Ideal.mem_span_singleton_self _) m) Submodule.mem_top`.
+-/
 theorem dvd_or_unit (x : (Wq l a)⟦X⟧) :
     eis l a e ∣ x ∨ ∃ (m : ℕ) (v y : (Wq l a)⟦X⟧), IsUnit v ∧ x = v * X ^ m + eis l a e * y := by
   by_contra h
@@ -462,6 +665,13 @@ theorem dvd_or_unit (x : (Wq l a)⟦X⟧) :
   rw [SModEq.zero, h1]
   exact Submodule.smul_mem_smul (Ideal.pow_mem_pow (Ideal.mem_span_singleton_self _) m) Submodule.mem_top
 
+/- English proof (translation)
+Establish `h` using `ReciprocityTheory.P1.isAdicComplete_comap_constantCoeff (Ideal.span {(l : Wq l a)})`. Rewrite `h` using `[← ReciprocityTheory.P1.map_C_sup_span_X, Ideal.map_span, Set.image_singleton, map_natCast]`. Establish `h1 : X ^ e ∈ Ideal.span {(l : (Wq l a)⟦X⟧)} ⊔ Ideal.span {eis l a e}`. Establish `: (X : (Wq l a)⟦X⟧) ^ e = eis l a e - l` using `by rw [eis]; ring`. Rewrite using `[this]`.
+
+Conclude with `sub_mem (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)) (Ideal.mem_sup_left (Ideal.mem_span_singleton_self _))`. Use `isAdicComplete_of_pow_le (I := Ideal.span {(l : (Wq l a)⟦X⟧)} ⊔ Ideal.span {X}) (N := e) ?_ ?_` and prove the remaining obligations. Rewrite using `[add_comm]`. Use `Ideal.sup_pow_add_le_pow_sup_pow.trans (sup_le (by simp) ?_)` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_pow, Ideal.span_singleton_le_iff_mem]` and apply the resulting hypothesis.
+
+Use `sup_le le_sup_left ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_le_iff_mem]`. Conclude with `add_mem (Ideal.mem_sup_right (Ideal.pow_mem_of_mem _ (Ideal.mem_span_singleton_self _) _ (NeZero.pos e))) (Ideal.mem_sup_left (Ideal.mem_span_singleton_self _))`.
+-/
 theorem complete_eis :
     IsAdicComplete (Ideal.span {(l : (Wq l a)⟦X⟧)} ⊔ Ideal.span {eis l a e}) (Wq l a)⟦X⟧ := by
   have h := ReciprocityTheory.P1.isAdicComplete_comap_constantCoeff (Ideal.span {(l : Wq l a)})
@@ -480,6 +690,15 @@ theorem complete_eis :
     exact add_mem (Ideal.mem_sup_right (Ideal.pow_mem_of_mem _ (Ideal.mem_span_singleton_self _) _
       (NeZero.pos e))) (Ideal.mem_sup_left (Ideal.mem_span_singleton_self _))
 
+/- English proof (translation)
+Take `⟨k, hk⟩ : ∃ k, l = k + 2` from `⟨l - 2, by have := hl.out.two_le; omega⟩`. Establish `hu : IsUnit (1 - (-(l : (Wq l a)⟦X⟧)) ^ (k + 1))`. Rewrite using `[isUnit_iff_constantCoeff]`. Use `WittVector.isUnit_of_coeff_zero_ne_zero _ ?_` and prove the remaining obligations. Rewrite using `[← WittVector.constantCoeff_apply]`.
+
+Simplify using `only [map_sub, map_one, map_pow, map_neg, map_natCast, CharP.cast_eq_zero, neg_zero, zero_pow k.succ_ne_zero, sub_zero]`. Conclude with `one_ne_zero`. Take `⟨v, hv⟩` from `hu.exists_left_inv`. Take `⟨c, hc⟩` from `sub_dvd_pow_sub_pow (X ^ e : (Wq l a)⟦X⟧) (-(l : (Wq l a)⟦X⟧)) l`. Establish `h1 : frobS l a (eis l a e) = ((X : (Wq l a)⟦X⟧) ^ e) ^ l + l`.
+
+Rewrite using `[eis, map_add, map_pow, frobS_X, map_natCast, ← pow_mul, ← pow_mul, mul_comm]`. Establish `h2 : (-(l : (Wq l a)⟦X⟧)) ^ l = -(l : (Wq l a)⟦X⟧) * (-(l : (Wq l a)⟦X⟧)) ^ (k + 1)`. Rewrite using `[← pow_succ' (-(l : (Wq l a)⟦X⟧)), show k + 1 + 1 = l by omega]`. Establish `h3 : (l : (Wq l a)⟦X⟧) = eis l a e * (-(v * c)) + v * frobS l a (eis l a e)`. Rewrite using `[h1, eis]`.
+
+Take the linear combination `(-(l : (Wq l a)⟦X⟧)) * hv - v * hc - v * h2`. Establish `h4` using `Submodule.add_mem_sup (Ideal.mul_mem_right (-(v * c)) _ (Ideal.mem_span_singleton_self (eis l a e))) (Ideal.mul_mem_left _ v (Ideal.mem_map_of_mem (frobS l a) (Ideal.mem_span_singleton_self (eis l a e))))`. Rewrite `h4` using `[← h3]`. Then use the resulting hypothesis.
+-/
 theorem l_mem_eis : (l : (Wq l a)⟦X⟧) ∈
     Ideal.span {eis l a e} ⊔ (Ideal.span {eis l a e}).map (deltaS l a).φ := by
   obtain ⟨k, hk⟩ : ∃ k, l = k + 2 := ⟨l - 2, by have := hl.out.two_le; omega⟩
@@ -509,10 +728,18 @@ variable {l e} (ϖ : PiSys l e)
 
 omit [NeZero e] in
 
+/- English proof (translation)
+Rewrite using `[eis, map_add, map_pow, ev_X, map_natCast, map_add, map_pow, theta_teich, seqO_zero, map_natCast, neg_add_cancel]`.
+-/
 theorem theta_ev_eis : Per.θ l (ϖ.ev a (eis l a e)) = 0 := by
   rw [eis, map_add, map_pow, ev_X, map_natCast, map_add, map_pow, theta_teich, seqO_zero, map_natCast,
     neg_add_cancel]
 
+/- English proof (translation)
+Use `⟨fun h => (dvd_or_unit l a e x).resolve_right ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨m, v, y, hv, rfl⟩`. Simplify using `only [map_add, map_mul, map_pow, ev_X, theta_teich, theta_ev_eis, zero_mul, add_zero] at h`. Break down `mul_eq_zero.1 h with h | h` into its components or cases. Conclude with `((hv.map _).map _).ne_zero h`.
+
+Conclude with `ϖ.seq_ne_zero 0 ((map_eq_zero (algebraMap (Om l) ℂ_[l])).1 (congrArg Subtype.val (eq_zero_of_pow_eq_zero h)))`. Introduce and unpack `⟨y, rfl⟩`. Rewrite using `[map_mul, map_mul, theta_ev_eis, zero_mul]`.
+-/
 theorem theta_ev_eq_zero_iff (x : (Wq l a)⟦X⟧) : Per.θ l (ϖ.ev a x) = 0 ↔ eis l a e ∣ x := by
   refine ⟨fun h => (dvd_or_unit l a e x).resolve_right ?_, ?_⟩
   · rintro ⟨m, v, y, hv, rfl⟩
@@ -533,6 +760,19 @@ namespace Bridge.RamInt
 
 open Polynomial
 
+/- English proof (translation)
+Establish `hQ : (X ^ e + C (l : F) : F[X]).Monic` using `monic_X_pow_add_C _ he`. Establish `hQ0 : aeval π (X ^ e + C (l : F) : F[X]) = 0`. Simplify using `[hπ]`. Establish `hint : IsIntegral F π` using `⟨_, hQ, hQ0⟩`. Establish `hle : F ⊔ IntermediateField.adjoin ℚ_[l] {π} ≤ (IntermediateField.adjoin F {π}).restrictScalars ℚ_[l]`.
+
+Apply `sup_le` to reduce the goal to its premises. Introduce `c hc`. Conclude with `(IntermediateField.adjoin F {π}).algebraMap_mem ⟨c, hc⟩`. Rewrite using `[IntermediateField.adjoin_simple_le_iff]`. Conclude with `IntermediateField.mem_adjoin_simple_self F π`.
+
+Establish `h1 : x ∈ (IntermediateField.adjoin F {π}).toSubalgebra` using `hle hx`. Rewrite `h1` using `[IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic hint.isAlgebraic, Algebra.adjoin_singleton_eq_range_aeval]`. Take `⟨P, hP⟩` from `h1`. Establish `hP' : aeval π P = x` using `hP`. Establish `hne : (X ^ e + C (l : F) : F[X]) ≠ 1`.
+
+Introduce `h`. Use `congrArg natDegree h` as an intermediate fact. Rewrite `this` using `[natDegree_X_pow_add_C, natDegree_one]`. Conclude with `he this`. Establish `hdeg : (P %ₘ (X ^ e + C (l : F))).natDegree < e`.
+
+Use `natDegree_modByMonic_lt P hQ hne` as an intermediate fact. Rewrite `this` using `[natDegree_X_pow_add_C]`. Then use the resulting hypothesis. Establish `h2 : aeval π (P %ₘ (X ^ e + C (l : F))) = x`. Rewrite using `[← hP']`. Use `conv_rhs => rw [← modByMonic_add_div P (X ^ e + C (l : F))]`.
+
+Rewrite using `[map_add, map_mul, hQ0, zero_mul, add_zero]`. Use `⟨fun i => ((P %ₘ (X ^ e + C (l : F))).coeff i : F), fun i => Subtype.property _, ?_⟩` and prove the remaining obligations. Rewrite using `[← h2, aeval_eq_sum_range' hdeg]`. Both sides reduce to the same expression.
+-/
 theorem expand {l : ℕ} [Fact l.Prime] (F : IntermediateField ℚ_[l] (PadicAlgCl l))
     (π : PadicAlgCl l) {e : ℕ} (he : e ≠ 0) (hπ : π ^ e = -(l : PadicAlgCl l))
     (x : PadicAlgCl l) (hx : x ∈ F ⊔ IntermediateField.adjoin ℚ_[l] {π}) :
@@ -569,6 +809,9 @@ theorem expand {l : ℕ} [Fact l.Prime] (F : IntermediateField ℚ_[l] (PadicAlg
   rw [← h2, aeval_eq_sum_range' hdeg]
   rfl
 
+/- English proof (translation)
+Use `PadicAlgCl.norm_extends l (l : ℚ_[l])` as an intermediate fact. Establish `h : ((l : ℚ_[l]) : PadicAlgCl l) = (l : PadicAlgCl l)` using `map_natCast (algebraMap ℚ_[l] (PadicAlgCl l)) l`. Rewrite `this` using `[h]`. Rewrite using `[this]`. Conclude with `Padic.norm_p_lt_one`.
+-/
 theorem norm_l_lt {l : ℕ} [Fact l.Prime] : ‖(l : PadicAlgCl l)‖ < 1 := by
   have := PadicAlgCl.norm_extends l (l : ℚ_[l])
   have h : ((l : ℚ_[l]) : PadicAlgCl l) = (l : PadicAlgCl l) := map_natCast (algebraMap ℚ_[l] (PadicAlgCl l)) l
@@ -576,6 +819,27 @@ theorem norm_l_lt {l : ℕ} [Fact l.Prime] : ‖(l : PadicAlgCl l)‖ < 1 := by
   rw [this]
   exact Padic.norm_p_lt_one
 
+/- English proof (translation)
+Distinguish the cases in `hci : c i = 0`. Simplify using `[hci]`. Establish `hl0 : (l : PadicAlgCl l) ≠ 0` using `Nat.cast_ne_zero.mpr hl.out.ne_zero`. Establish `ht : ‖π‖ ^ e = ‖(l : PadicAlgCl l)‖` using `by rw [← norm_pow, hπ, norm_neg]`. Establish `ht0 : 0 < ‖π‖`.
+
+Rewrite using `[norm_pos_iff]`. Introduce and unpack `rfl`. Rewrite `hπ` using `[zero_pow he]`. Conclude with `hl0 (neg_eq_zero.mp hπ.symm)`. Establish `ht1 : ‖π‖ < 1`.
+
+Assume the negation of the conclusion as `h`. Establish `h1` using `one_le_pow₀ (not_lt.mp h) (n := e)`. Use `norm_l_lt (l := l)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key : ∀ j, c j ≠ 0 → ∃ n : ℤ, ‖c j‖ = ‖π‖ ^ ((e : ℤ) * n) ∧ ‖c j * π ^ j‖ = ‖π‖ ^ ((e : ℤ) * n + j)`.
+
+Introduce `j hj`. Take `⟨n, hn⟩` from `hc j hj`. Establish `h1 : ‖c j‖ = ‖π‖ ^ ((e : ℤ) * n)` using `by rw [hn, ← ht, zpow_mul, zpow_natCast]`. Use `⟨n, h1, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow, h1, zpow_add₀ ht0.ne', zpow_natCast]`.
+
+Use `set s := (Finset.range e).filter (fun j => c j ≠ 0) with hs`. Establish `hsum : ∑ i ∈ Finset.range e, c i * π ^ i = ∑ i ∈ s, c i * π ^ i`. Rewrite using `[hs, Finset.sum_filter]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with h`.
+
+Both sides reduce to the same expression. Rewrite using `[not_not.mp h, zero_mul]`. Establish `his : i ∈ s` using `by simp [hs, hi, hci]`. Establish `hpw : Set.Pairwise (s : Set ℕ) (fun j k => ‖c j * π ^ j‖ ≠ ‖c k * π ^ k‖)`. Introduce `j hj k hk hjk h`.
+
+Simplify using `only [hs, Finset.coe_filter, Finset.mem_range, Set.mem_setOf_eq] at hj hk`. Take `⟨n, -, hn⟩` from `key j hj.2`. Take `⟨m, -, hm⟩` from `key k hk.2`. Rewrite `h` using `[hn, hm]`. Establish `h2` using `zpow_right_injective₀ ht0 ht1.ne h`.
+
+Establish `h3` using `congrArg (fun z : ℤ => z % (e : ℤ)) h2`. Simplify using `only [Int.mul_add_emod_self_left] at h3`. Rewrite `h3` using `[Int.emod_eq_of_lt (by positivity) (by exact_mod_cast hj.1), Int.emod_eq_of_lt (by positivity) (by exact_mod_cast hk.1)]`. Conclude with `hjk (by exact_mod_cast h3)`. Rewrite `hx` using `[hsum, IsUltrametricDist.norm_sum_eq_sup'_of_pairwise_ne ⟨i, his⟩ hpw]`.
+
+Establish `h4 : ‖c i * π ^ i‖ ≤ 1` using `(Finset.le_sup' (fun j => ‖c j * π ^ j‖) his).trans hx`. Take `⟨n, h5, h6⟩` from `key i hci`. Rewrite `h4` using `[h6, zpow_le_one_iff_right_of_lt_one₀ ht0 ht1]`. Rewrite using `[h5, zpow_le_one_iff_right_of_lt_one₀ ht0 ht1]`. Establish `hie : (i : ℤ) < e` using `by exact_mod_cast hi`.
+
+Establish `hn : 0 ≤ n`. Assume the negation of the conclusion as `hneg`. Establish `: n ≤ -1` using `by omega`. Use the polynomial consequences of the given equalities and inequalities. Check the signs of the components of the expression.
+-/
 theorem coeff_le_one {l : ℕ} [hl : Fact l.Prime]
     (π : PadicAlgCl l) {e : ℕ} (he : e ≠ 0) (hπ : π ^ e = -(l : PadicAlgCl l))
     (c : ℕ → PadicAlgCl l) (hc : ∀ i, c i ≠ 0 → ∃ n : ℤ, ‖c i‖ = ‖(l : PadicAlgCl l)‖ ^ n)
@@ -635,15 +899,32 @@ theorem coeff_le_one {l : ℕ} [hl : Fact l.Prime]
     nlinarith
   positivity
 
+/- English proof (translation)
+Rewrite using `[← PadicComplex.coe_natCast, PadicComplex.norm_extends]`. Conclude with `norm_l_lt`.
+-/
 theorem norm_l_lt' {l : ℕ} [Fact l.Prime] : ‖(l : ℂ_[l])‖ < 1 := by
   rw [← PadicComplex.coe_natCast, PadicComplex.norm_extends]
   exact norm_l_lt
 
+/- English proof (translation)
+Rewrite using `[PadicComplexInt, Valuation.mem_valuationSubring_iff, PadicComplex.norm_eq_norm, Valuation.norm_def, ← NNReal.coe_one, NNReal.coe_le_coe, PadicComplex.RankOne.hom_eq_embedding, Valuation.embedding_restrict]`.
+-/
 theorem mem_int_iff {l : ℕ} [Fact l.Prime] (x : ℂ_[l]) : x ∈ PadicComplexInt l ↔ ‖x‖ ≤ 1 := by
   rw [PadicComplexInt, Valuation.mem_valuationSubring_iff, PadicComplex.norm_eq_norm,
     Valuation.norm_def, ← NNReal.coe_one, NNReal.coe_le_coe, PadicComplex.RankOne.hom_eq_embedding,
     Valuation.embedding_restrict]
 
+/- English proof (translation)
+Set `g : ℤ_[l] →+* ℂ_[l]` to `(algebraMap ℚ_[l] ℂ_[l]).comp PadicInt.Coe.ringHom`. Establish `hg : ∀ z, ‖g z‖ ≤ 1`. Introduce `z`. Establish `: ‖g z‖ = ‖(z : ℚ_[l])‖` using `PadicComplex.norm_extends' l (z : ℚ_[l])`. Rewrite using `[this]`.
+
+Conclude with `z.2`. Express the relevant statement in the definitionally equal form `f z = g z`. Establish `hb : ∀ k : ℕ, ‖f z - g z‖ ≤ 2 * ‖(l : ℂ_[l])‖ ^ k`. Introduce `k`. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.mp (PadicInt.appr_spec k z)`.
+
+Establish `hz : z = (PadicInt.appr z k : ℤ_[l]) + y * (l : ℤ_[l]) ^ k` using `by rw [hy]; ring`. Establish `: f z - g z = (f y - g y) * (l : ℂ_[l]) ^ k` using `by conv_lhs => rw [hz]`. Simplify using `only [map_add, map_mul, map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, norm_mul, norm_pow]`.
+
+Establish `h1` using `norm_sub_le (f y) (g y)`. Establish `h2` using `hf y`. Establish `h3` using `hg y`. Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `ht : Filter.Tendsto (fun k : ℕ => 2 * ‖(l : ℂ_[l])‖ ^ k) Filter.atTop (nhds (2 * 0))` using `(tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) norm_l_lt').const_mul 2`. Use `ge_of_tendsto' ht hb` as an intermediate fact. Rewrite `this` using `[mul_zero]`. Conclude with `sub_eq_zero.mp (norm_le_zero_iff.mp this)`.
+-/
 theorem hom_padicInt {l : ℕ} [Fact l.Prime] (f : ℤ_[l] →+* ℂ_[l]) (hf : ∀ z, ‖f z‖ ≤ 1)
     (z : ℤ_[l]) : f z = algebraMap ℚ_[l] ℂ_[l] (z : ℚ_[l]) := by
   let g : ℤ_[l] →+* ℂ_[l] := (algebraMap ℚ_[l] ℂ_[l]).comp PadicInt.Coe.ringHom
@@ -673,6 +954,19 @@ theorem hom_padicInt {l : ℕ} [Fact l.Prime] (f : ℤ_[l] →+* ℂ_[l]) (hf : 
   rw [mul_zero] at this
   exact sub_eq_zero.mp (norm_le_zero_iff.mp this)
 
+/- English proof (translation)
+Establish `h1 : c ∈ (IntermediateField.adjoin ℚ_[l] S).toSubalgebra` using `hc`. Rewrite `h1` using `[IntermediateField.adjoin_toSubalgebra]`. Use `clear hc`. Proceed by induction on `h1 using Algebra.adjoin_induction with`. Consider the case `mem x hx`.
+
+Take `⟨w, hw⟩` from `hS x hx`. Conclude with `⟨0, w, by simp [hw]⟩`. Consider the case `algebraMap r`. Choose the witnesses or unpack the hypotheses as in `⟨n, hn⟩ : ∃ n : ℕ, ‖(l : ℚ_[l]) ^ n * r‖ ≤ 1 := by`. Establish `ht : Filter.Tendsto (fun k : ℕ => ‖(l : ℚ_[l])‖ ^ k * ‖r‖) Filter.atTop (nhds (0 * ‖r‖))` using `(tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) Padic.norm_p_lt_one).mul_const _`.
+
+Rewrite `ht` using `[zero_mul]`. Take `⟨n, hn⟩` from `(ht.eventually (ge_mem_nhds one_pos)).exists`. Conclude with `⟨n, by rwa [norm_mul, norm_pow]⟩`. Use `⟨n, g ⟨_, hn⟩, ?_⟩` and prove the remaining obligations. Use `hom_padicInt (φ.comp g) (fun z => hφ _) ⟨_, hn⟩` as an intermediate fact.
+
+Use `Eq.trans this ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap ℚ_[l] ℂ_[l] ((l : ℚ_[l]) ^ n * r) = _`. Rewrite using `[← IsScalarTower.algebraMap_apply, map_mul, map_pow, map_natCast]`. Consider the case `add x y _ _ hx hy`. Take `⟨n, w, hw⟩` from `hx`.
+
+Take `⟨m, v, hv⟩` from `hy`. Use `⟨n + m, (l : W) ^ m * w + (l : W) ^ n * v, ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul, map_pow, map_natCast, hw, hv]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul x y _ _ hx hy`.
+
+Take `⟨n, w, hw⟩` from `hx`. Take `⟨m, v, hv⟩` from `hy`. Use `⟨n + m, w * v, ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, hw, hv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem frac {l : ℕ} [hl : Fact l.Prime] {W : Type} [CommRing W] (g : ℤ_[l] →+* W)
     (φ : W →+* ℂ_[l]) (hφ : ∀ w, ‖φ w‖ ≤ 1) (S : Set (PadicAlgCl l))
     (hS : ∀ ζ ∈ S, ∃ w, φ w = algebraMap (PadicAlgCl l) ℂ_[l] ζ)
@@ -711,6 +1005,21 @@ theorem frac {l : ℕ} [hl : Fact l.Prime] {W : Type} [CommRing W] (g : ℤ_[l] 
     simp only [map_mul, hw, hv]
     ring
 
+/- English proof (translation)
+Distinguish the cases in `hc0 : c = 0`. Conclude with `⟨fun h => (h hc0).elim, fun _ => ⟨0, by simp [hc0]⟩⟩`. Take `⟨n, w, hw⟩` from `hc`. Establish `hl0 : (l : ℂ_[l]) ≠ 0` using `Nat.cast_ne_zero.mpr hl.out.ne_zero`. Establish `hw0 : w ≠ 0`.
+
+Introduce and unpack `rfl`. Rewrite `hw` using `[map_zero]`. Conclude with `mul_ne_zero (pow_ne_zero _ hl0) ((_root_.map_ne_zero _).mpr hc0) hw.symm`. Take `⟨m, u, rfl⟩` from `hW w hw0`. Establish `hu : ‖φ u‖ = 1`.
+
+Establish `h1 : ‖φ u‖ * ‖φ (u⁻¹ : Wˣ)‖ = 1`. Rewrite using `[← norm_mul, ← map_mul, Units.mul_inv, map_one, norm_one]`. Establish `h2` using `hφ u`. Establish `h3` using `hφ (u⁻¹ : Wˣ)`. Establish `h4` using `norm_nonneg (φ u)`.
+
+Use the polynomial consequences of the given equalities and inequalities. Rewrite `hw` using `[map_mul, map_pow, map_natCast]`. Establish `hcn : ‖algebraMap (PadicAlgCl l) ℂ_[l] c‖ = ‖c‖` using `PadicComplex.norm_extends l c`. Establish `hln : ‖(l : ℂ_[l])‖ = ‖(l : PadicAlgCl l)‖`. Rewrite using `[← PadicComplex.coe_natCast, PadicComplex.norm_extends]`.
+
+Establish `hp : 0 < ‖(l : ℂ_[l])‖` using `norm_pos_iff.mpr hl0`. Establish `hn` using `congrArg norm hw`. Rewrite `hn` using `[norm_mul, norm_mul, norm_pow, norm_pow, hu, mul_one, hcn]`. Establish `hcz : ‖c‖ = ‖(l : ℂ_[l])‖ ^ ((m : ℤ) - n)`. Rewrite using `[zpow_sub₀ hp.ne', zpow_natCast, zpow_natCast, hn]`.
+
+Clear the denominators using the available nonvanishing facts. Use `⟨fun _ => ⟨_, hln ▸ hcz⟩, fun h => ?_⟩` and prove the remaining obligations. Rewrite `h` using `[hcz, zpow_le_one_iff_right_of_lt_one₀ hp norm_l_lt']`. Take `⟨k, rfl⟩ : ∃ k, m = n + k` from `⟨m - n, by omega⟩`. Use `⟨(l : W) ^ k * u, mul_left_cancel₀ (pow_ne_zero n hl0) ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hw, map_mul, map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem unram {l : ℕ} [hl : Fact l.Prime] {W : Type} [CommRing W]
     (hW : ∀ w : W, w ≠ 0 → ∃ (m : ℕ) (u : Wˣ), w = (l : W) ^ m * u)
     (φ : W →+* ℂ_[l]) (hφ : ∀ w, ‖φ w‖ ≤ 1) (c : PadicAlgCl l)
@@ -752,6 +1061,11 @@ theorem unram {l : ℕ} [hl : Fact l.Prime] {W : Type} [CommRing W]
 
 open GlobalTheory.BKReal
 
+/- English proof (translation)
+Establish `h1 : t = Perfection.quotientMulEquiv l (Ideal.span {(l : Formalism.BasicNotions.Loc.OC l)}) ⟨s, hs⟩` using `Subtype.ext (funext fun n => ht n)`. Use `(WittVector.fontaineTheta_teichmuller t).trans ?_` and prove the remaining obligations. Establish `h2` using `Perfection.coeff_zero_symm_quotientMulEquiv (p := l) (I := Ideal.span {(l : Formalism.BasicNotions.Loc.OC l)}) t`. Use `Eq.trans h2.symm ?_` and prove the remaining obligations. Rewrite using `[h1]`.
+
+Conclude with `congrArg (Perfection.coeffMonoidHom _ l 0) (MulEquiv.symm_apply_apply _ _)`.
+-/
 theorem theta_seq {l : ℕ} [hl : Fact l.Prime] (s : ℕ → Formalism.BasicNotions.Loc.OC l)
     (hs : ∀ n, s (n + 1) ^ l = s n) (t : Formalism.BasicNotions.Loc.OCb l)
     (ht : ∀ n, t.1 n = Ideal.Quotient.mk (Ideal.span {(l : Formalism.BasicNotions.Loc.OC l)}) (s n)) :
@@ -765,6 +1079,23 @@ theorem theta_seq {l : ℕ} [hl : Fact l.Prime] (s : ℕ → Formalism.BasicNoti
   rw [h1]
   exact congrArg (Perfection.coeffMonoidHom _ l 0) (MulEquiv.symm_apply_apply _ _)
 
+/- English proof (translation)
+Establish `hq : 1 < l ^ a` using `Nat.one_lt_pow (NeZero.ne a) hl.out.one_lt`. Establish `hn : ‖algebraMap (PadicAlgCl l) ℂ_[l] ζ‖ ≤ 1`. Establish `h0 : ‖algebraMap (PadicAlgCl l) ℂ_[l] ζ‖ = ‖ζ‖` using `PadicComplex.norm_extends l ζ`. Rewrite using `[h0]`. Assume the negation of the conclusion as `h`.
+
+Establish `h1` using `pow_lt_pow_right₀ (not_le.mp h) hq`. Rewrite `h1` using `[← norm_pow, ← norm_pow, hζ, pow_one]`. Conclude with `lt_irrefl _ h1`. Set `z : Formalism.BasicNotions.Loc.OC l` to `⟨_, (mem_int_iff _).mpr hn⟩`. Establish `hz : z ^ l ^ a = z`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(algebraMap (PadicAlgCl l) ℂ_[l] ζ) ^ l ^ a = algebraMap (PadicAlgCl l) ℂ_[l] ζ`. Rewrite using `[← map_pow, hζ]`. Take `⟨b, rfl⟩ : ∃ b, a = b + 1` from `⟨a - 1, by have := NeZero.ne a; omega⟩`. Set `s : ℕ → Formalism.BasicNotions.Loc.OC l` to `fun n => z ^ l ^ (b * n)`.
+
+Establish `hs : ∀ n, s (n + 1) ^ l = s n`. Introduce `n`. Express the relevant statement in the definitionally equal form `(z ^ l ^ (b * (n + 1))) ^ l = z ^ l ^ (b * n)`. Use `conv_rhs => rw [← hz]`. Rewrite using `[← pow_mul, ← pow_mul]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hs2 : ∀ n, s n ^ l ^ (b + 1) = s n`. Introduce `n`. Express the relevant statement in the definitionally equal form `(z ^ l ^ (b * n)) ^ l ^ (b + 1) = z ^ l ^ (b * n)`.
+
+Rewrite using `[← pow_mul, mul_comm, pow_mul, hz]`. Set `y : Perfection (Formalism.BasicNotions.Loc.OC l) l` to `⟨s, hs⟩`. Establish `hy : y ^ l ^ (b + 1) = y` using `Subtype.ext (funext fun n => hs2 n)`. Set `t : Formalism.BasicNotions.Loc.OCb l` to `Perfection.quotientMulEquiv l (Ideal.span {(l : Formalism.BasicNotions.Loc.OC l)}) y`. Establish `ht : t ∈ resSub l (b + 1)`.
+
+Express the relevant statement in the definitionally equal form `t ^ l ^ (b + 1) = t`. Use `congrArg (Perfection.quotientMulEquiv l (Ideal.span {(l : Formalism.BasicNotions.Loc.OC l)})) hy` as an intermediate fact. Rewrite `this` using `[map_pow]`. Conclude with `this`. Set `t' : Fq l (b + 1)` to `⟨t, ht⟩`.
+
+Use `⟨WittVector.teichmuller l t', ?_⟩` and prove the remaining obligations. Establish `h1 : wA l (b + 1) (WittVector.teichmuller l t') = WittVector.teichmuller l t` using `WittVector.map_teichmuller l (Fq.val l (b + 1)) t'`. Rewrite using `[h1, theta_seq s hs t (fun n => rfl)]`. Simplify using `[s, z]`.
+-/
 theorem root_lift {l : ℕ} [hl : Fact l.Prime] (a : ℕ) [NeZero a] (ζ : PadicAlgCl l)
     (hζ : ζ ^ l ^ a = ζ) :
     ∃ w : Wq l a, ((Formalism.Per.θ l (wA l a w) : Formalism.Per.OC l) : ℂ_[l]) =
@@ -811,6 +1142,9 @@ theorem root_lift {l : ℕ} [hl : Fact l.Prime] (a : ℕ) [NeZero a] (ζ : Padic
   rw [h1, theta_seq s hs t (fun n => rfl)]
   simp [s, z]
 
+/- English proof (translation)
+The claim follows from `WittVector.exists_eq_pow_p_mul' (k := Fq l a) w hw`.
+-/
 theorem wq_unit {l : ℕ} [hl : Fact l.Prime] (a : ℕ) [NeZero a] (w : Wq l a) (hw : w ≠ 0) :
     ∃ (m : ℕ) (u : (Wq l a)ˣ), w = (l : Wq l a) ^ m * u :=
   WittVector.exists_eq_pow_p_mul' (k := Fq l a) w hw
@@ -818,6 +1152,27 @@ theorem wq_unit {l : ℕ} [hl : Fact l.Prime] (a : ℕ) [NeZero a] (w : Wq l a) 
 end Bridge.RamInt
 
 open GlobalTheory.BKReal Bridge.RamInt in
+/- English proof (translation)
+Introduce `l hl a inst e _ ϖ x`. Establish `hspec : PiSys.ev a ϖ PowerSeries.X = ϖ.teich ∧ ∀ w : Wq l a, PiSys.ev a ϖ (PowerSeries.C w) = wA l a w`. Unfold `PiSys.ev`. Conclude with `Exists.choose_spec (PiSys.exists_ev a ϖ)`. Set `φ : Wq l a →+* ℂ_[l]` to `(PadicComplexInt l).subtype.comp ((Formalism.Per.θ l).comp (wA l a).toRingHom)`.
+
+Establish `hφ : ∀ w, ‖φ w‖ ≤ 1` using `fun w => (mem_int_iff _).mp (Formalism.Per.θ l (wA l a w)).2`. Establish `hF : ∀ c ∈ Kunr l a, (c ≠ 0 → ∃ n : ℤ, ‖c‖ = ‖(l : PadicAlgCl l)‖ ^ n) ∧ (‖c‖ ≤ 1 → ∃ w, φ w = algebraMap (PadicAlgCl l) ℂ_[l] c)` using `fun c hc => unram (wq_unit a) φ hφ c (frac (algebraMap ℤ_[l] (Wq l a)) φ hφ _ (fun ζ hζ => root_lift a ζ hζ) c hc)`. Establish `hπ : ((Formalism.Per.θ l ϖ.teich : Formalism.Per.OC l) : ℂ_[l]) = algebraMap (PadicAlgCl l) ℂ_[l] (ϖ.seq 0)`. Establish `hs : ∀ n, ϖ.seqO (n + 1) ^ l = ϖ.seqO n`. Introduce `n`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(algebraMap (PadicAlgCl l) ℂ_[l] (ϖ.seq (n + 1))) ^ l = algebraMap (PadicAlgCl l) ℂ_[l] (ϖ.seq n)`. Rewrite using `[← map_pow, ϖ.seq_succ]`. Use `theta_seq ϖ.seqO hs ϖ.flat (fun n => rfl)` as an intermediate fact. Conclude with `congrArg Subtype.val this`.
+
+Set `x0 : PadicAlgCl l` to `x.1.1`. Establish `hx0 : ((GlobalTheory.Prism.intToOC (PiSys.field a ϖ) x : Formalism.Per.OC l) : ℂ_[l]) = algebraMap (PadicAlgCl l) ℂ_[l] x0` using `rfl`. Establish `hxn : ‖x0‖ ≤ 1`. Establish `h0 : ‖algebraMap (PadicAlgCl l) ℂ_[l] x0‖ = ‖x0‖` using `PadicComplex.norm_extends l x0`. Rewrite using `[← h0, ← hx0]`.
+
+Conclude with `(mem_int_iff _).mp (Subtype.property _)`. Establish `hxm : x0 ∈ Kunr l a ⊔ IntermediateField.adjoin ℚ_[l] {ϖ.seq 0}` using `x.1.2`. Take `⟨c, hc, hsum⟩` from `expand (Kunr l a) (ϖ.seq 0) (NeZero.ne e) ϖ.seq_zero x0 hxm`. Establish `hc1 : ∀ i, i < e → ‖c i‖ ≤ 1` using `coeff_le_one (ϖ.seq 0) (NeZero.ne e) ϖ.seq_zero c (fun i => (hF _ (hc i)).1) (hsum ▸ hxn)`. Establish `hw : ∀ i, ∃ w : Wq l a, i < e → φ w = algebraMap (PadicAlgCl l) ℂ_[l] (c i)`.
+
+Introduce `i`. Distinguish the cases in `hi : i < e`. Take `⟨w, hw⟩` from `(hF _ (hc i)).2 (hc1 i hi)`. Conclude with `⟨w, fun _ => hw⟩`. Conclude with `⟨0, fun h => (hi h).elim⟩`.
+
+Use `choose w hw using hw`. Use `⟨∑ i ∈ Finset.range e, PowerSeries.C (w i) * PowerSeries.X ^ i, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hx0, hsum, map_sum (algebraMap (PadicAlgCl l) ℂ_[l])]`. Set `Θ : PowerSeries (Wq l a) →+* ℂ_[l]` to `(PadicComplexInt l).subtype.comp ((Formalism.Per.θ l).comp (PiSys.ev a ϖ))`.
+
+Establish `hΘX : Θ PowerSeries.X = algebraMap (PadicAlgCl l) ℂ_[l] (ϖ.seq 0)`. Rewrite using `[← hπ, ← hspec.1]`. Both sides reduce to the same expression. Establish `hΘC : ∀ v, Θ (PowerSeries.C v) = φ v`. Introduce `v`.
+
+Express the relevant statement in the definitionally equal form `((Formalism.Per.θ l (PiSys.ev a ϖ (PowerSeries.C v)) : Formalism.Per.OC l) : ℂ_[l]) = ((Formalism.Per.θ l (wA l a v) : Formalism.Per.OC l) : ℂ_[l])`. Rewrite using `[hspec.2]`. Express the relevant statement in the definitionally equal form `Θ _ = _`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, map_pow, hΘX, hΘC, hw i (Finset.mem_range.mp hi), map_mul, map_pow]`.
+-/
 theorem Bridge.exists_powerSeries_eval_eq : ∀ {l : ℕ} [hl : Fact (Nat.Prime l)] (a : ℕ) [inst : NeZero a] {e : ℕ} [NeZero e] (ϖ : GlobalTheory.BKReal.PiSys l e) (x : ↥(Formalism.BasicNotions.Loc.OL (GlobalTheory.BKReal.PiSys.field a ϖ))), ∃ (y : PowerSeries (GlobalTheory.BKReal.Wq l a)), (Formalism.Per.θ l) ((GlobalTheory.BKReal.PiSys.ev a ϖ) y) = (GlobalTheory.Prism.intToOC (GlobalTheory.BKReal.PiSys.field a ϖ)) x := by
   intro l hl a inst e _ ϖ x
   have hspec : PiSys.ev a ϖ PowerSeries.X = ϖ.teich ∧
@@ -888,6 +1243,9 @@ variable (e : ℕ) [NeZero e]
 namespace PiSys
 variable {l e} (ϖ : PiSys l e)
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact Bridge.exists_powerSeries_eval_eq | exact Bridge.exists_powerSeries_eval_eq .. | (intros; apply Bridge.exists_powerSeries_eval_eq <;> assumption)`.
+-/
 theorem exists_theta_ev_eq (x : ↥(OL (ϖ.field a))) :
     ∃ y, Per.θ l (ϖ.ev a y) = intToOC (ϖ.field a) x := by
   first | exact Bridge.exists_powerSeries_eval_eq | exact Bridge.exists_powerSeries_eval_eq .. | (intros; apply Bridge.exists_powerSeries_eval_eq <;> assumption)
@@ -896,9 +1254,15 @@ def quotToOC : ((Wq l a)⟦X⟧ ⧸ Ideal.span {eis l a e}) →+* OC l :=
   Ideal.Quotient.lift _ ((Per.θ l).comp (ϖ.ev a)) fun x hx =>
     (ϖ.theta_ev_eq_zero_iff a x).2 (Ideal.mem_span_singleton.1 hx)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem quotToOC_mk (x : (Wq l a)⟦X⟧) :
     ϖ.quotToOC a (Ideal.Quotient.mk _ x) = Per.θ l (ϖ.ev a x) := rfl
 
+/- English proof (translation)
+The claim follows from `RingHom.lift_injective_of_ker_le_ideal _ _ fun x hx => Ideal.mem_span_singleton.2 ((ϖ.theta_ev_eq_zero_iff a x).1 hx)`.
+-/
 theorem quotToOC_injective : Function.Injective (ϖ.quotToOC a) :=
   RingHom.lift_injective_of_ker_le_ideal _ _ fun x hx =>
     Ideal.mem_span_singleton.2 ((ϖ.theta_ev_eq_zero_iff a x).1 hx)
@@ -907,6 +1271,9 @@ def strMap : ↥(OL (ϖ.field a)) →+* ((Wq l a)⟦X⟧ ⧸ Ideal.span {eis l a
   liftInj (intToOC (ϖ.field a)) (ϖ.quotToOC a) (ϖ.quotToOC_injective a) fun x =>
     (ϖ.exists_theta_ev_eq a x).elim fun y hy => ⟨Ideal.Quotient.mk _ y, hy⟩
 
+/- English proof (translation)
+The claim follows from `liftInj_spec _ _ _ _ x`.
+-/
 theorem quotToOC_strMap (x : ↥(OL (ϖ.field a))) :
     ϖ.quotToOC a (ϖ.strMap a x) = intToOC (ϖ.field a) x := liftInj_spec _ _ _ _ x
 
@@ -928,6 +1295,11 @@ def prism : Obj l ↥(OL (ϖ.field a)) where
 
 omit [NeZero e] in
 
+/- English proof (translation)
+Establish `h1 : WittVector.frobenius ϖ.teich = ϖ.teich ^ l`. Rewrite using `[WittVector.frobenius_eq_map_frobenius, teich, WittVector.map_teichmuller, frobenius_def, map_pow]`. Use `RingHom.congr_fun (ringHom_ext_of_sep ((ϖ.ev a).comp (frobS l a)) (WittVector.frobenius.comp (ϖ.ev a)) (fun w => ?_) ?_ fun y hy => ϖ.sep_teich y fun n => ?_) x` and prove the remaining obligations. Simplify using `[wA_sigma]`. Simplify using `[h1]`.
+
+Use `Dvd.dvd.trans ?_ (hy n)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, frobS_X, map_pow, ev_X]`. Conclude with `pow_dvd_pow_of_dvd (dvd_pow_self _ hl.out.ne_zero) n`.
+-/
 theorem ev_frobS (x : (Wq l a)⟦X⟧) : ϖ.ev a (frobS l a x) = WittVector.frobenius (ϖ.ev a x) := by
   have h1 : WittVector.frobenius ϖ.teich = ϖ.teich ^ l := by
     rw [WittVector.frobenius_eq_map_frobenius, teich, WittVector.map_teichmuller, frobenius_def, map_pow]
@@ -946,8 +1318,22 @@ def toAinf : Hom (ϖ.prism a) (ainfObj (ϖ.field a)) where
   f_str r x h := ((isAinf_ainfObj _).mk_eq_str_iff r (ϖ.ev a x)).2
     ((congrArg (ϖ.quotToOC a) h).trans (ϖ.quotToOC_strMap a r))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toAinf_f (x : (Wq l a)⟦X⟧) : (ϖ.toAinf a).f x = ϖ.ev a x := rfl
 
+/- English proof (translation)
+Take `⟨ξ, h, -, h1⟩` from `exists_generator l`. Establish `h0 : Per.θ l ξ = 0` using `by rw [← RingHom.mem_ker, h]; exact Ideal.mem_span_singleton_self ξ`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ξ ∣ ϖ.ev a (eis l a e) := by`. Rewrite using `[← Ideal.mem_span_singleton, ← h]`. Conclude with `ϖ.theta_ev_eis a`.
+
+Establish `h2` using `l_mem_eis l a e`. Rewrite `h2` using `[Ideal.map_span, Set.image_singleton, ← Ideal.span_insert, Ideal.mem_span_pair]`. Take `⟨x, y, hxy⟩` from `h2`. Establish `h3` using `congrArg (fun z => Per.θ l (ϖ.ev a z)) hxy`. Simplify using `only [map_add, map_mul, theta_ev_eis, mul_zero, zero_add, map_natCast] at h3`.
+
+Rewrite `h3` using `[show (deltaS l a).φ (eis l a e) = frobS l a (eis l a e) from rfl, ev_frobS, hc, map_mul, map_mul, h1]`. Establish `h4 : ϖ.ev a y * WittVector.frobenius c - 1 ∈ Ideal.span {ξ}`. Rewrite using `[← h, RingHom.mem_ker, map_sub, map_mul, map_one, sub_eq_zero]`. Conclude with `mul_left_cancel₀ (Nat.cast_ne_zero.2 hl.out.ne_zero : (l : OC l) ≠ 0) (by linear_combination h3)`. Use `(GlobalTheory.Per.AinfComplete.main l ξ fun hu => (hu.map (Per.θ l)).ne_zero h0).2` as an intermediate fact.
+
+Establish `h5` using `Ideal.mem_jacobson_bot.1 (IsAdicComplete.le_jacobson_bot _ h4) 1`. Rewrite `h5` using `[mul_one, sub_add_cancel]`. Establish `h6 : IsUnit c`. Rewrite using `[← (WittVector.frobeniusEquiv l (OCb l)).symm_apply_apply c]`. Conclude with `(isUnit_of_mul_isUnit_right h5).map (WittVector.frobeniusEquiv l (OCb l)).symm`.
+
+Rewrite using `[h, hc, Ideal.span_singleton_mul_right_unit h6]`.
+-/
 theorem span_ev_eis : Ideal.span {ϖ.ev a (eis l a e)} = RingHom.ker (Per.θ l) := by
   obtain ⟨ξ, h, -, h1⟩ := exists_generator l
   have h0 : Per.θ l ξ = 0 := by rw [← RingHom.mem_ker, h]; exact Ideal.mem_span_singleton_self ξ
@@ -971,9 +1357,15 @@ theorem span_ev_eis : Ideal.span {ϖ.ev a (eis l a e)} = RingHom.ker (Per.θ l) 
     exact (isUnit_of_mul_isUnit_right h5).map (WittVector.frobeniusEquiv l (OCb l)).symm
   rw [h, hc, Ideal.span_singleton_mul_right_unit h6]
 
+/- English proof (translation)
+The claim follows from `isUnit_inclW_of_span (ϖ.span_ev_eis a)`.
+-/
 theorem isUnit_inclW_ev_eis : IsUnit (inclW l (ϖ.ev a (eis l a e))) :=
   isUnit_inclW_of_span (ϖ.span_ev_eis a)
 
+/- English proof (translation)
+Introduce `h` and use `by have h1 : Per.θ l (ϖ.ev a (l : (Wq l a)⟦X⟧)) = 0 := (ϖ.toAinf a).f_I _ h rw [map_natCast, map_natCast] at h1 exact Nat.cast_ne_zero.2 hl.out.ne_zero h1`.
+-/
 example : ((l : ℕ) : (Wq l a)⟦X⟧) ∉ (ϖ.prism a).I := fun h => by
   have h1 : Per.θ l (ϖ.ev a (l : (Wq l a)⟦X⟧)) = 0 := (ϖ.toAinf a).f_I _ h
   rw [map_natCast, map_natCast] at h1
@@ -993,11 +1385,17 @@ def ratio (g : GQ l) (n : ℕ) : OC l :=
 
 omit [NeZero e] in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_ratio (g : GQ l) (n : ℕ) :
     (ϖ.ratio g n : ℂ_[l]) = algebraMap (Om l) ℂ_[l] (g (ϖ.seq n) / ϖ.seq n) := rfl
 
 omit [NeZero e] in
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by rw [SubmonoidClass.coe_pow, coe_ratio, coe_ratio, ← map_pow, div_pow, ← map_pow, ϖ.seq_succ])`.
+-/
 theorem ratio_succ (g : GQ l) (n : ℕ) : ϖ.ratio g (n + 1) ^ l = ϖ.ratio g n :=
   Subtype.ext (by
     rw [SubmonoidClass.coe_pow, coe_ratio, coe_ratio, ← map_pow, div_pow, ← map_pow, ϖ.seq_succ])
@@ -1008,9 +1406,15 @@ def kummer (g : GQ l) : OCb l :=
 
 omit [NeZero e] in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coeff_kummer (g : GQ l) (n : ℕ) :
     PreTilt.coeff n (ϖ.kummer g) = Ideal.Quotient.mk (Ideal.span {((l : ℕ) : OC l)}) (ϖ.ratio g n) := rfl
 
+/- English proof (translation)
+The claim follows from `Perfection.ext fun n => by refine (GlobalTheory.AdicMaps.coeff_galois l g ϖ.flat n (ϖ.seqO n) rfl).trans ?_ change Ideal.Quotient.mk (Ideal.span {((l : ℕ) : OC l)}) (Per.σO g (ϖ.seqO n)) = Ideal.Quotient.mk _ (ϖ.ratio g n) * Ideal.Quotient.mk _ (ϖ.seqO n) rw [← map_mul] congr 1 r …`.
+-/
 theorem gal_flat (g : GQ l) : Per.σF g ϖ.flat = ϖ.kummer g * ϖ.flat :=
   Perfection.ext fun n => by
     refine (GlobalTheory.AdicMaps.coeff_galois l g ϖ.flat n (ϖ.seqO n) rfl).trans ?_
@@ -1024,6 +1428,9 @@ theorem gal_flat (g : GQ l) : Per.σF g ϖ.flat = ϖ.kummer g * ϖ.flat :=
 
 omit [NeZero e] in
 
+/- English proof (translation)
+Use `Perfection.teichmuller_spec (I := Ideal.span {((l : ℕ) : OC l)}) fun n => ⟨ϖ.ratio g n, rfl, ?_⟩` and prove the remaining obligations. Establish `: ϖ.ratio g n ^ l ^ n = ϖ.ratio g 0` using `Subtype.ext (by`. Rewrite using `[SubmonoidClass.coe_pow, coe_ratio, coe_ratio, ← map_pow, div_pow, ← map_pow, ϖ.seq_pow])`. Rewrite using `[this]`.
+-/
 theorem untilt_kummer (g : GQ l) : (ϖ.kummer g).untilt = ϖ.ratio g 0 := by
   refine Perfection.teichmuller_spec (I := Ideal.span {((l : ℕ) : OC l)}) fun n => ⟨ϖ.ratio g n, rfl, ?_⟩
   have : ϖ.ratio g n ^ l ^ n = ϖ.ratio g 0 :=
@@ -1033,10 +1440,16 @@ theorem untilt_kummer (g : GQ l) : (ϖ.kummer g).untilt = ϖ.ratio g 0 := by
 
 def mu (g : GQ l) : Ainf l := WittVector.teichmuller l (ϖ.kummer g) - 1
 
+/- English proof (translation)
+Rewrite using `[mu, add_sub_cancel, teich, ← map_mul, ← gal_flat]`. Conclude with `GlobalTheory.RingIface.sigA_teich l g _`.
+-/
 theorem gal_teich (g : GQ l) : Per.σA g ϖ.teich = (1 + ϖ.mu g) * ϖ.teich := by
   rw [mu, add_sub_cancel, teich, ← map_mul, ← gal_flat]
   exact GlobalTheory.RingIface.sigA_teich l g _
 
+/- English proof (translation)
+Rewrite using `[mu, map_sub, map_one, WittVector.fontaineTheta_teichmuller, untilt_kummer, sub_eq_zero]`. Conclude with `Subtype.ext (by rw [coe_ratio, hg, div_self (ϖ.seq_ne_zero 0), map_one]; rfl)`.
+-/
 theorem theta_mu {g : GQ l} (hg : g (ϖ.seq 0) = ϖ.seq 0) : Per.θ l (ϖ.mu g) = 0 := by
   rw [mu, map_sub, map_one, WittVector.fontaineTheta_teichmuller, untilt_kummer, sub_eq_zero]
   exact Subtype.ext (by rw [coe_ratio, hg, div_self (ϖ.seq_ne_zero 0), map_one]; rfl)
@@ -1044,6 +1457,17 @@ theorem theta_mu {g : GQ l} (hg : g (ϖ.seq 0) = ϖ.seq 0) : Per.θ l (ϖ.mu g) 
 def IsExponent (ζ : ℕ → Om l) (g : GQ l) (x : ℤ_[l]) : Prop :=
   ∀ n, g (ϖ.seq n) = ζ n ^ (PadicInt.toZModPow n x).val * ϖ.seq n
 
+/- English proof (translation)
+Establish `hp : ∀ n k, ζ (n + k) ^ l ^ n = ζ k` using `fun n k => by`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ', pow_mul, show n + 1 + k = n + k + 1 by omega, hs, ih]`. Establish `hprim : ∀ n, IsPrimitiveRoot (ζ n) (l ^ n)` using `fun n => by`.
+
+Break down `n with _ | n` into its components or cases. Simplify using `[h0]`. Rewrite using `[← orderOf_eq_prime_pow (x := ζ (n + 1)) (p := l) (n := n) (by rw [hp n 1]; exact h1) (by rw [← h0]; exact hp (n + 1) 0)]`. Conclude with `IsPrimitiveRoot.orderOf _`. Establish `hN : ∀ n, NeZero (l ^ n)` using `fun n => ⟨(pow_pos hl.out.pos n).ne'⟩`.
+
+Establish `hk : ∀ n, ∃ k : ℕ, ζ n ^ k = g (ϖ.seq n) / ϖ.seq n` using `fun n => ((hprim n).eq_pow_of_pow_eq_one (by`. Rewrite using `[div_pow, ← map_pow, seq_pow, hg, div_self (ϖ.seq_ne_zero 0)])).imp fun _ h => h.2`. Use `choose k hk using hk`. Establish `hd : ∀ n, (l : ℤ) ^ n ∣ (k (n + 1) : ℤ) - k n` using `fun n => by`. Establish `h2 : ζ n ^ k (n + 1) = ζ n ^ k n`.
+
+Rewrite using `[hk, ← hs n, ← pow_mul, mul_comm, pow_mul, hk, div_pow, ← map_pow, ϖ.seq_succ]`. Establish `h3` using `(hprim n).isUnit_unit (pow_pos hl.out.pos n).ne'`. Establish `h4 : ((hprim n).isUnit (pow_pos hl.out.pos n).ne').unit ^ k n = ((hprim n).isUnit (pow_pos hl.out.pos n).ne').unit ^ k (n + 1)` using `Units.ext (by simpa using h2.symm)`. Rewrite `h4` using `[pow_eq_pow_iff_modEq, ← h3.eq_orderOf]`. Conclude with `h4.dvd` after adjusting the coercions.
+
+Use `⟨PadicInt.ofIntSeq _ (PadicInt.isCauSeq_padicNorm_of_pow_dvd_sub (fun n => (k n : ℤ)) l hd), fun n => ?_, fun y hy => PadicInt.ext_of_toZModPow.1 fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[PadicInt.toZModPow_ofIntSeq_of_pow_dvd_sub (fun n => (k n : ℤ)) l hd n, Int.cast_natCast, ZMod.val_natCast, ← pow_eq_pow_mod _ (hprim n).pow_eq_one, hk, div_mul_cancel₀ _ (ϖ.seq_ne_zero n)]`. Rewrite using `[PadicInt.toZModPow_ofIntSeq_of_pow_dvd_sub (fun n => (k n : ℤ)) l hd n, Int.cast_natCast]`. Use `ZMod.val_injective _ ((hprim n).pow_inj (ZMod.val_lt _) (ZMod.val_lt _) ?_)` and prove the remaining obligations. Rewrite using `[ZMod.val_natCast, ← pow_eq_pow_mod _ (hprim n).pow_eq_one, hk, hy n, mul_div_cancel_right₀ _ (ϖ.seq_ne_zero n)]`.
+-/
 theorem existsUnique_isExponent (ζ : ℕ → Om l) (h0 : ζ 0 = 1) (hs : ∀ n, ζ (n + 1) ^ l = ζ n) (h1 : ζ 1 ≠ 1)
     {g : GQ l} (hg : g (ϖ.seq 0) = ϖ.seq 0) : ∃! x, ϖ.IsExponent ζ g x := by
   have hp : ∀ n k, ζ (n + k) ^ l ^ n = ζ k := fun n k => by
@@ -1078,6 +1502,9 @@ theorem existsUnique_isExponent (ζ : ℕ → Om l) (h0 : ζ 0 = 1) (hs : ∀ n,
     rw [ZMod.val_natCast, ← pow_eq_pow_mod _ (hprim n).pow_eq_one, hk, hy n,
       mul_div_cancel_right₀ _ (ϖ.seq_ne_zero n)]
 
+/- English proof (translation)
+Rewrite using `[PiSys.coeff_kummer, ← map_pow]`. Use `congr 1`. Conclude with `Subtype.ext (by`. Rewrite using `[coe_ratio, h n, mul_div_cancel_right₀ _ (ϖ.seq_ne_zero n), map_pow, SubmonoidClass.coe_pow, hz])`.
+-/
 theorem IsExponent.coeff_kummer {ϖ : PiSys l e} {ζ : ℕ → Om l} {g : GQ l} {x : ℤ_[l]}
     (h : ϖ.IsExponent ζ g x) (n : ℕ) (z : OC l) (hz : (z : ℂ_[l]) = algebraMap (Om l) ℂ_[l] (ζ n)) :
     PreTilt.coeff n (ϖ.kummer g) = Ideal.Quotient.mk (Ideal.span {((l : ℕ) : OC l)}) z ^
@@ -1089,6 +1516,15 @@ theorem IsExponent.coeff_kummer {ϖ : PiSys l e} {ζ : ℕ → Om l} {g : GQ l} 
 
 end PiSys
 
+/- English proof (translation)
+Take `⟨z, ω, hω, hz, h⟩` from `exists_gen l a`. Establish `h1` using `one_lt_pow_l l a`. Establish `hω' : g ω = ω` using `hg ω (IntermediateField.subset_adjoin _ _ (show ω ^ l ^ a = ω by`. Rewrite using `[← Nat.sub_add_cancel h1.le, pow_succ, hω.pow_eq_one, one_mul]))`. Establish `hd : ¬ l ∣ l ^ a - 1` using `fun h => hl.out.not_dvd_one ((Nat.dvd_sub_iff_right h1.le (dvd_pow_self l (NeZero.ne a))).1 h)`.
+
+Establish `h2 : Per.σF g (Fq.val l a z) = Fq.val l a z`. Use `(GlobalTheory.UnramIdem.tilt_pow (k := 1) hd dvd_rfl hz fun n => ?_).trans (pow_one _)` and prove the remaining obligations. Take `⟨y, y1, y2, y3⟩` from `hz n`. Use `⟨Per.σO g y, ?_, by rw [← map_pow, y2, map_one], GlobalTheory.AdicMaps.coeff_galois l g _ n y y3⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.RingIface.sigO_coe l g y, ← map_pow, y1, GlobalTheory.RingBasics.σC_coe, hω', pow_one]`.
+
+Use `WittVector.ext fun n => ?_` and prove the remaining obligations. Use `(GlobalTheory.RingIface.sigA_coeff l g _ n).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Per.σF g (Fq.val l a (w.coeff n)) = Fq.val l a (w.coeff n)`. Break down `eq_or_ne (w.coeff n) 0 with h0 | h0` into its components or cases. Rewrite using `[h0, map_zero, map_zero]`.
+
+Take `⟨k, hk⟩` from `h _ h0`. Rewrite using `[hk, map_pow, map_pow, h2]`.
+-/
 theorem gal_wA {g : GQ l} (hg : ∀ x ∈ Kunr l a, g x = x) (w : Wq l a) : Per.σA g (wA l a w) = wA l a w := by
   obtain ⟨z, ω, hω, hz, h⟩ := exists_gen l a
   have h1 := one_lt_pow_l l a
@@ -1110,6 +1546,13 @@ theorem gal_wA {g : GQ l} (hg : ∀ x ∈ Kunr l a, g x = x) (w : Wq l a) : Per.
   · obtain ⟨k, hk⟩ := h _ h0
     rw [hk, map_pow, map_pow, h2]
 
+/- English proof (translation)
+Establish `h` using `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hg`. Use `RingHom.congr_fun (ϖ.eq_ev a ((Per.σA g).comp (ϖ.ev a)) ?_ fun w => ?_) x` and prove the remaining obligations. Establish `: ϖ.kummer g = 1` using `Perfection.ext fun n => by`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (ϖ.ratio g n) = Ideal.Quotient.mk _ 1`. Use `congr 1`.
+
+Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[PiSys.coe_ratio, h _ (ϖ.seq_mem_fieldInf a n), div_self (ϖ.seq_ne_zero n), map_one]`. Both sides reduce to the same expression. Rewrite using `[RingHom.comp_apply, PiSys.ev_X, PiSys.gal_teich, PiSys.mu, this]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[RingHom.comp_apply, PiSys.ev_C]`. Conclude with `gal_wA l a (fun y hy => h y (ϖ.field_le_fieldInf a (ϖ.Kunr_le_field a hy))) w`.
+-/
 theorem PiSys.gal_ev {e : ℕ} [NeZero e] (ϖ : PiSys l e) {g : GQ l} (hg : g ∈ ϖ.GfieldInf a)
     (x : (Wq l a)⟦X⟧) : Per.σA g (ϖ.ev a x) = ϖ.ev a x := by
   have h := (IntermediateField.mem_fixingSubgroup_iff _ _).1 hg

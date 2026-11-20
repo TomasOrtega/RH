@@ -9,6 +9,23 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.DualCon
 
+/- English proof (translation)
+Introduce `S A _ hA s`. Use `hA.smooth` as an intermediate fact. Use `hA.geomConnected` as an intermediate fact. Use `choose n W hW hd using ReciprocityTheory.ChartRestriction.G.H1.exists_dim A.hom`. Establish `loc : ∀ x y, y ∈ W x → n y = n x` using `fun x y hy => by`.
+
+Use `hd x` as an intermediate fact. Use `hd y` as an intermediate fact. Establish `e₁ : SmoothOfRelativeDimension (0 + n y) ((W y ⊓ W x).ι ≫ A.hom)`. Rewrite using `[← Scheme.homOfLE_ι _ (inf_le_left : W y ⊓ W x ≤ W y), Category.assoc]`. Use `infer_instance`.
+
+Establish `e₂ : SmoothOfRelativeDimension (0 + n x) ((W y ⊓ W x).ι ≫ A.hom)`. Rewrite using `[← Scheme.homOfLE_ι _ (inf_le_right : W y ⊓ W x ≤ W x), Category.assoc]`. Use `infer_instance`. Simplify using `using ReciprocityTheory.ChartRestriction.G.H1.dim_unique _ e₁ e₂ ⟨y, hW y, hy⟩`. Establish `hc : IsLocallyConstant n` using `(IsLocallyConstant.iff_exists_open n).2 fun x => ⟨W x, (W x).isOpen, hW x, loc x⟩`.
+
+Establish `hsec : η[A].left ≫ A.hom = 𝟙 S` using `Over.w η[A]`. Establish `he : ∀ t : S, A.hom (η[A].left t) = t` using `fun t => by`. Rewrite using `[← Scheme.Hom.comp_apply, hsec]`. Both sides reduce to the same expression. Establish `fib : ∀ x, n x = n (η[A].left (A.hom x))` using `fun x => by`.
+
+Establish `hconn : _root_.IsPreconnected (A.hom ⁻¹' {A.hom x})`. Rewrite using `[← Scheme.Hom.range_fiberι, ← Set.image_univ]`. Conclude with `isPreconnected_univ.image _ (A.hom.fiberι _).continuous.continuousOn`. Conclude with `hc.apply_eq_of_isPreconnected hconn rfl (he (A.hom x))`. Set `x₀ : A.left` to `η[A].left s`.
+
+Set `U : S.Opens` to `η[A].left ⁻¹ᵁ W x₀`. Establish `hsU : s ∈ U` using `hW x₀`. Take `⟨V, hV, hsV, hVU⟩` from `exists_isAffineOpen_mem_and_subset hsU`. Use `⟨V, n x₀, hV, hsV, ?_⟩` and prove the remaining obligations. Establish `dimy : ∀ y, n (pullback.fst A.hom V.ι y) = n x₀` using `fun y => by`.
+
+Establish `h1 : A.hom (pullback.fst A.hom V.ι y) ∈ V`. Use `congrArg (fun g => g y) (pullback.condition (f := A.hom) (g := V.ι))` as an intermediate fact. Simplify using `only [Scheme.Hom.comp_apply] at this`. Rewrite using `[this]`. Conclude with `(pullback.snd A.hom V.ι y).2`.
+
+Rewrite using `[fib, loc _ _ (hVU h1)]`. Establish `: IsZariskiLocalAtSource (@SmoothOfRelativeDimension (n x₀))` using `HasRingHomProperty.instIsZariskiLocalAtSource`. Use `IsZariskiLocalAtSource.of_iSup_eq_top (P := @SmoothOfRelativeDimension (n x₀)) (fun y => pullback.fst A.hom V.ι ⁻¹ᵁ W (pullback.fst A.hom V.ι y)) (top_le_iff.1 fun y _ => TopologicalSpace.Opens.mem_iSup.2 ⟨y, hW _⟩) fun y => ?_` and prove the remaining obligations. Rewrite using `[← dimy y]`. Conclude with `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback ((isPullback_morphismRestrict (pullback.fst A.hom V.ι) (W _)).paste_vert (IsPullback.of_hasPullback _ _)) (hd (pullback.fst A.hom V.ι y))`.
+-/
 theorem abelianScheme_locally_relDim : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A], IsAbelianScheme A → ∀ s : S,
     ∃ (V : S.Opens) (g : ℕ), IsAffineOpen V ∧ s ∈ V ∧ SmoothOfRelativeDimension g (pullback.snd A.hom V.ι) := by
   intro S A _ hA s

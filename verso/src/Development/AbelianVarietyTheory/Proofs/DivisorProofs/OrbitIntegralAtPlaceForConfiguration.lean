@@ -15,6 +15,19 @@ open scoped GlobalTheory.VacAny
 
 namespace GlobalTheory.CommVac
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' X om om' hX hC v γ hγat hγiso hγlat u`. Take `⟨hSB, -, θ, -, hact⟩` from `hX.geo.hM.vac v`. Take `⟨y, rfl⟩` from `hγiso`. Establish `hg : ∑ j, ∑ l, incV F H'.x j * incM F G.W.J j l * cA σ (incV F H'.x l) = 0`. Establish `e : ∑ j, ∑ l, incV F H'.x j * incM F G.W.J j l * cA σ (incV F H'.x l) = inclR (F` using `F) (AF F) (form σ G.W.J H'.x H'.x) := by`.
+
+Establish `hc : ∀ e : E, cA σ (inclR (F` using `F) (AF F) e) = inclR (F := F) (AF F) (σ e) := fun _ => rfl`. Simplify using `only [form, dotProduct, Matrix.mulVec, incV, incM, Matrix.map_apply, hc, map_sum, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => by ring`. Rewrite using `[e, hC.hH'.xx, map_zero]`. Establish `h0 : hTens (cA σ) (incM F G.V.J) (incM F G.W.J) (Matrix.vecMulVec y (incV F H'.x)) (Matrix.vecMulVec y (incV F H'.x)) = 0`.
+
+Unfold `hTens`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Establish `: ∀ j, ∑ l, Matrix.vecMulVec y (incV F H'.x) i j * incM F G.V.J i k * incM F G.W.J j l * cA σ (Matrix.vecMulVec y (incV F H'.x) k l) = (y i * incM F G.V.J i k * cA σ (y k)) * ∑ l, incV F H'.x j * incM F G.W.J j l * cA σ (incV F H'.x l)`.
+
+Introduce `j`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.vecMulVec_apply, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [this, ← Finset.mul_sum, hg, mul_zero]`. Establish `hfix : schr (GlobalTheory.LatVac.psiAt B.ψ v) (GlobalTheory.LatVac.locCo G.M.co v (Matrix.vecMulVec y (incV F H'.x))) (G.M.vac v) = G.M.vac v`. Apply `GlobalTheory.TensUniq.eq_of_tens_eq v (G.M.vac v) _ _ hSB` to reduce the goal to its premises. Introduce `r hr`. Rewrite using `[← GlobalTheory.VacBridge.rho_acts_locCo G.M.co B.ψ v _ hγat _ r hr, hact _ hγlat r hr]`.
+
+Simplify using `only [GlobalTheory.WeilM.symp, h0, mul_zero, map_zero, AddChar.map_zero_eq_one, one_smul]`. Rewrite using `[GlobalTheory.VacLoc.schr_comm, hfix]`. Use `congr 2`. Rewrite using `[G.M.co.form]`. Simplify using `only [GlobalTheory.LatVac.locCo, AddMonoidHom.coe_mk, ZeroHom.coe_mk, dotProduct, map_sub, map_sum, map_mul]`.
+-/
 theorem commVac : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) {b a' : ℕ}
     (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')) (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' → CfgA B G G₁ H H' →

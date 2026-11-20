@@ -18,6 +18,9 @@ open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX)
 
 namespace GlobalTheory.CompanionTheory.Ar.BaseZ.ChartDown
 
+/- English proof (translation)
+Establish `hloc` using `hU.isLocalization_basicOpen n`. Establish `hres : (resG X (X.basicOpen_le n)).Etale` using `RingHom.etale_algebraMap.2 (Algebra.Etale.of_isLocalizationAway n)`. Establish `hcomp` using `RingHom.Etale.stableUnderComposition _ _ h hres`. Rewrite `hcomp` using `[MvPolynomial.comp_eval₂Hom]`. Rewrite `hcomp` using `[show (resG X (X.basicOpen_le n)).comp (algX t U) = Int.castRingHom _ from RingHom.ext_int _ _]`. Then use the resulting hypothesis.
+-/
 theorem etale_res_int {X : Scheme.{0}} (t : X ⟶ Sp ℤ) {U : X.Opens} (hU : IsAffineOpen U) (n : Γ(X, U))
     {D : ℕ} (x : Fin D → Γ(X, U)) (h : (MvPolynomial.eval₂Hom (algX t U) x).Etale) :
     (MvPolynomial.eval₂Hom (Int.castRingHom Γ(X, X.basicOpen n))
@@ -29,12 +32,18 @@ theorem etale_res_int {X : Scheme.{0}} (t : X ⟶ Sp ℤ) {U : X.Opens} (hU : Is
   rw [MvPolynomial.comp_eval₂Hom] at hcomp
   rwa [show (resG X (X.basicOpen_le n)).comp (algX t U) = Int.castRingHom _ from RingHom.ext_int _ _] at hcomp
 
+/- English proof (translation)
+Establish `hloc` using `hU.isLocalization_basicOpen (N : Γ(X, U))`. Use `IsLocalization.Away.algebraMap_isUnit (S := Γ(X, X.basicOpen (N : Γ(X, U)))) (N : Γ(X, U))` as an intermediate fact. Simplify using `using this`.
+-/
 theorem isUnit_natCast_basicOpen {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) (N : ℕ) :
     IsUnit (N : Γ(X, X.basicOpen (N : Γ(X, U)))) := by
   have hloc := hU.isLocalization_basicOpen (N : Γ(X, U))
   have := IsLocalization.Away.algebraMap_isUnit (S := Γ(X, X.basicOpen (N : Γ(X, U)))) (N : Γ(X, U))
   simpa using this
 
+/- English proof (translation)
+Use `(mem_ptsIn_basicOpen hy _).2 ?_` and prove the remaining obligations. Establish `h` using `ev_algX hy (N : k)`. Rewrite `h` using `[map_natCast, map_natCast]`. Rewrite using `[h]`. Conclude with `hN` after adjusting the coercions.
+-/
 theorem mem_ptsIn_basicOpen_natCast {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ}
     {U : X.Opens} {N : ℕ} (hN : N ≠ 0) {y : CxPts p σ} (hy : y ∈ ptsIn p σ U) :
     y ∈ ptsIn p σ (X.basicOpen (N : Γ(X, U))) := by
@@ -48,6 +57,25 @@ end GlobalTheory.CompanionTheory.Ar.BaseZ.ChartDown
 
 open GlobalTheory.CompanionTheory.Ar.BaseZ.ChartDown in
 
+/- English proof (translation)
+Introduce `k _ _ _ _ X p t τ σ D c' hne`. Take `⟨N, hN0, hN⟩` from `GlobalTheory.T.etale_over_integers_localization k`. Take `⟨hemb, -⟩` from `GlobalTheory.T.sheet_isOpenEmbedding_range k X p t τ σ`. Establish `hle` using `X.basicOpen_le (N : Γ(X, c'.U))`. Establish `hetZ` using `etale_res_int t c'.affine (N : Γ(X, c'.U)) c'.x c'.etale`.
+
+Establish `hetk` using `(GlobalTheory.T.etale_polynomial_base_change_iff k _ N hN (algX p (X.basicOpen (N : Γ(X, c'.U)))) (isUnit_natCast_basicOpen c'.affine N) D _).2 hetZ`. Set `s` to `IsOpenEmbedding.toOpenPartialHomeomorph (sheet t τ : CxPts p σ → CxPts t τ) hemb`. Establish `hs : (s : CxPts p σ → CxPts t τ) = sheet t τ` using `IsOpenEmbedding.toOpenPartialHomeomorph_apply _ hemb`. Establish `hss : s.source = Set.univ` using `IsOpenEmbedding.toOpenPartialHomeomorph_source _ hemb`. Establish `hst : s.target = Set.range (sheet t τ : CxPts p σ → CxPts t τ)` using `IsOpenEmbedding.toOpenPartialHomeomorph_target _ hemb`.
+
+Establish `hsrc : (s.trans c'.e).source = sheet t τ ⁻¹' c'.e.source`. Rewrite using `[OpenPartialHomeomorph.trans_source, hss, Set.univ_inter, hs]`. Establish `happ : ∀ y, (s.trans c'.e) y = c'.e (sheet t τ y)` using `fun y => by`. Rewrite using `[OpenPartialHomeomorph.coe_trans, Function.comp_apply, hs]`. Establish `hsym : ∀ v ∈ (s.trans c'.e).target, sheet t τ ((s.trans c'.e).symm v) = c'.e.symm v`.
+
+Introduce `v hv`. Rewrite `hv` using `[OpenPartialHomeomorph.trans_target]`. Establish `h2 : c'.e.symm v ∈ s.target` using `hv.2`. Rewrite using `[OpenPartialHomeomorph.trans_symm_eq_symm_trans_symm, OpenPartialHomeomorph.coe_trans, Function.comp_apply, ← hs]`. Conclude with `s.right_inv h2`.
+
+Use `⟨{ e := s.trans c'.e U := X.basicOpen (N : Γ(X, c'.U)) affine := c'.affine.basicOpen _ x := fun a => resG X hle (c'.x a) etale := hetk source_subset := ?_ apply_eq := ?_ holo := ?_ }, hsrc, fun y _ => (happ y).symm⟩` and prove the remaining obligations. Introduce `y hy`. Rewrite `hy` using `[hsrc]`. Establish `h1 : sheet t τ y ∈ ptsIn t τ c'.U` using `c'.source_subset hy`. Conclude with `mem_ptsIn_basicOpen_natCast hN0 (show y ∈ ptsIn p σ c'.U from h1)`.
+
+Introduce `y hy a`. Rewrite `hy` using `[hsrc]`. Establish `h1 : sheet t τ y ∈ ptsIn t τ c'.U` using `c'.source_subset hy`. Establish `hB` using `mem_ptsIn_basicOpen_natCast hN0 (show y ∈ ptsIn p σ c'.U from h1)`. Rewrite using `[happ, c'.apply_eq _ hy a, ev_res hle hB]`.
+
+Both sides reduce to the same expression. Introduce `W f`. Use `((c'.holo W f).mono ?_).congr ?_` and prove the remaining obligations. Introduce and unpack `v ⟨hv, hw⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hv` using `[OpenPartialHomeomorph.trans_target]`. Conclude with `hv.1`. Use `show c'.e.symm v ∈ ptsIn t τ W`. Rewrite using `[← hsym v hv]`. Conclude with `hw`.
+
+Introduce and unpack `v ⟨hv, -⟩ show ev p σ W f _ = ev t τ W f (c'.e.symm v)`. Rewrite using `[← hsym v hv]`. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.CompanionTheory.Ar.BaseZ.exists_chart_sheet : ∀ (k : Type) [CommRing k] [IsDomain k] [CharZero k] [Module.Finite ℤ k] (X : Scheme.{0}) (p : X ⟶ Sp k) (t : X ⟶ Sp ℤ) (τ : ℤ →+* ℂ) (σ : k →+* ℂ) (D : ℕ) (c' : AlgChart t τ D), Nonempty (CxPts p σ) → ∃ c : AlgChart p σ D, c.e.source = sheet t τ ⁻¹' c'.e.source ∧ ∀ y ∈ c.e.source, c'.e (sheet t τ y) = c.e y := by
   intro k _ _ _ _ X p t τ σ D c' hne
   obtain ⟨N, hN0, hN⟩ := GlobalTheory.T.etale_over_integers_localization k

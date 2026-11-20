@@ -16,16 +16,31 @@ section Lin
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem choose_congr {α : Sort*} {p q : α → Prop} (e : p = q) (h : ∃ x, p x) (h' : ∃ x, q x) :
     h.choose = h'.choose := by
   subst e; rfl
 
+/- English proof (translation)
+Unfold `Formalism.FourierDecayAlt.D.orbIntegrand Formalism.FourierDecayAlt.B.rho`. Rewrite using `[ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul, smul_comm]`.
+-/
 theorem orbIntegrand_smul (D : Formalism.FourierDecayAlt.B.RealPlaceData k r Wp Wq) (γ : Formalism.FourierDecayAlt.B.Mat k r)
     (F : Formalism.FourierDecayAlt.B.Mat k r → (Wq →L[ℂ] Wp)) (c : ℂ) (p : Formalism.FourierDecayAlt.B.SS k r) :
     Formalism.FourierDecayAlt.D.orbIntegrand D γ (fun g => c • F g) p = c • Formalism.FourierDecayAlt.D.orbIntegrand D γ F p := by
   unfold Formalism.FourierDecayAlt.D.orbIntegrand Formalism.FourierDecayAlt.B.rho
   rw [ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul, smul_comm]
 
+/- English proof (translation)
+Establish `hP : (fun θ => Formalism.FourierDecayAlt.D.IsNormCut D γ μ θ ∧ Integrable (fun p => θ p • Formalism.FourierDecayAlt.D.orbIntegrand D γ (fun g => c • F g) p) D.μSS) = (fun θ => Formalism.FourierDecayAlt.D.IsNormCut D γ μ θ ∧ Integrable (fun p => θ p • Formalism.FourierDecayAlt.D.o …`. Use function extensionality and compare the values at `θ`. Establish `e : (fun p => θ p • Formalism.FourierDecayAlt.D.orbIntegrand D γ (fun g => c • F g) p) = c • (fun p => θ p • Formalism.FourierDecayAlt.D.orbIntegrand D γ F p)`. Use function extensionality and compare the values at `p`. Rewrite using `[orbIntegrand_smul, smul_comm]`.
+
+Both sides reduce to the same expression. Rewrite using `[e, integrable_smul_iff hc]`. Establish `e2 : ∀ θ : Formalism.FourierDecayAlt.B.SS k r → ℝ, (fun p => θ p • Formalism.FourierDecayAlt.D.orbIntegrand D γ (fun g => c • F g) p) = fun p => c • (θ p • Formalism.FourierDecayAlt.D.orbIntegrand D γ F p)` using `fun θ => by`. Use function extensionality and compare the values at `p`. Rewrite using `[orbIntegrand_smul, smul_comm]`.
+
+Unfold `Formalism.FourierDecayAlt.D.orbJ`. Distinguish the cases in `h2 : ∃ θ, Formalism.FourierDecayAlt.D.IsNormCut D γ μ θ ∧ Integrable (fun p => θ p • Formalism.FourierDecayAlt.D.orbIntegrand D γ F p) D.μSS`. Establish `h1 : ∃ θ, Formalism.FourierDecayAlt.D.IsNormCut D γ μ θ ∧ Integrable (fun p => θ p • Formalism.FourierDecayAlt.D.orbIntegrand D γ (fun g => c • F g) p) D.μSS`. Rewrite using `[show (∃ θ, Formalism.FourierDecayAlt.D.IsNormCut D γ μ θ ∧ Integrable (fun p => θ p • Formalism.FourierDecayAlt.D.orbIntegrand D γ (fun g => c • F g) p) D.μSS) = ∃ θ, Formalism.FourierDecayAlt.D.IsNormCut D γ μ θ ∧ Integrable (fun p => θ p • Formalism.FourierDecayAlt.D.orbIntegr …`. Conclude with `h2`.
+
+Rewrite using `[dif_pos h1, dif_pos h2, choose_congr hP h1 h2, e2, integral_smul]`. Establish `h1 : ¬ ∃ θ, Formalism.FourierDecayAlt.D.IsNormCut D γ μ θ ∧ Integrable (fun p => θ p • Formalism.FourierDecayAlt.D.orbIntegrand D γ (fun g => c • F g) p) D.μSS`. Rewrite using `[show (∃ θ, Formalism.FourierDecayAlt.D.IsNormCut D γ μ θ ∧ Integrable (fun p => θ p • Formalism.FourierDecayAlt.D.orbIntegrand D γ (fun g => c • F g) p) D.μSS) = ∃ θ, Formalism.FourierDecayAlt.D.IsNormCut D γ μ θ ∧ Integrable (fun p => θ p • Formalism.FourierDecayAlt.D.orbIntegr …`. Conclude with `h2`. Rewrite using `[dif_neg h1, dif_neg h2, smul_zero]`.
+-/
 theorem orbJ_smulF (D : Formalism.FourierDecayAlt.B.RealPlaceData k r Wp Wq) (γ : Formalism.FourierDecayAlt.B.Mat k r) (μ : Measure (Formalism.QuantumDeterminants.Mt k r))
     (F : Formalism.FourierDecayAlt.B.Mat k r → (Wq →L[ℂ] Wp)) {c : ℂ} (hc : c ≠ 0) :
     Formalism.FourierDecayAlt.D.orbJ D γ μ (fun g => c • F g) = c • Formalism.FourierDecayAlt.D.orbJ D γ μ F := by
@@ -79,6 +94,9 @@ def PinCovE (P : Parts X u u') : Prop := ∃ lam : InfinitePlace X.B.I.F → ℂ
 def rescale (P : Parts X u u') (c : Fin P.S.f → ℂ) : Parts X u u' :=
   { P with f := fun j g => c j • P.f j g }
 
+/- English proof (translation)
+Introduce `v γ μRv ν hH`. Establish `hH' : PinHyp P v γ μRv ν` using `hH`. Rewrite using `[h v γ μRv ν hH']`. Use `show _ = ((P.eP v).toContinuousLinearEquiv : _ →L[ℂ] X.Vloc u v).comp ((Formalism.FourierDecayAlt.D.orbJ (P.T (P.τ.symm v)).base (trG (P.Q v) (P.Qi v) γ) (trMeas P v μRv) (fun g => lam (P.τ (P.τ.symm v)) • P.f (P.τ.symm v) g)).comp ((P.eQ v).symm.toContinuousLinearEquiv : X.Vloc …`. Rewrite using `[orbJ_smulF _ _ _ _ (by rw [Equiv.apply_symm_apply]; exact hne v), Equiv.apply_symm_apply, ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul]`.
+-/
 theorem pinCov_rescale (P : Parts X u u') (lam : InfinitePlace X.B.I.F → ℂ) (hne : ∀ v, lam v ≠ 0)
     (h : PinCovS P lam) : PinCov (rescale P (fun j => lam (P.τ j))) := by
   intro v γ μRv ν hH

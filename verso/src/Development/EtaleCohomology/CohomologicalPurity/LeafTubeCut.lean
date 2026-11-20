@@ -65,9 +65,15 @@ def Sys.toAff {P : SP d} (S : Sys P) (H : Hens) : S.hen H ⟶ S.aff where
     dsimp only [Sys.hen, Sys.aff]
     rw [← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, H.map_η]; rfl
 
+/- English proof (translation)
+Introduce `j k f` and use `(yoneda.map_comp _ _).symm.trans (congrArg yoneda.map ((S.V k).2.map_fromSpec (S.V j).2 (homOfLE (S.mono f.le)).op))`.
+-/
 theorem Sys.cocAff {P : SP d} (S : Sys P) : Coc (S.aff ⋙ yoneda) fun j => yoneda.map (S.V j).2.fromSpec := fun j k f =>
   (yoneda.map_comp _ _).symm.trans (congrArg yoneda.map ((S.V k).2.map_fromSpec (S.V j).2 (homOfLE (S.mono f.le)).op))
 
+/- English proof (translation)
+Introduce `j k f` and use `(yoneda.map_comp _ _).symm.trans (congrArg yoneda.map (by have h := (S.toAff H).naturality f exact (Category.assoc _ _ _).symm.trans ((congrArg (· ≫ (S.V k).2.fromSpec) h).trans ((Category.assoc _ _ _).trans (congrArg (_ ≫ ·) ((S.V k).2.map_fromSpec (S.V j).2 (homOfLE (S.mono f.l …`.
+-/
 theorem Sys.cocHen {P : SP d} (S : Sys P) (H : Hens) :
     Coc (S.hen H ⋙ yoneda) fun j => yoneda.map (hensTo H P (S.V j)) := fun j k f =>
   (yoneda.map_comp _ _).symm.trans (congrArg yoneda.map (by
@@ -125,6 +131,9 @@ def LeafRefine : Prop := ∀ (hC : LeafChart) (H : Hens) (d : ℕ) (P' P : SP d)
   ∃ (S' : Sys P') (a : S'.E H ⟶ (Sys.all hC P').E H) (b : S'.E H ⟶ (Sys.all hC P).E H),
     a ≫ (Sys.all hC P').π H = S'.π H ∧ b ≫ (Sys.all hC P).π H = S'.π H ≫ sch.map φ.f
 
+/- English proof (translation)
+Establish `e : dbl.map (φ ≫ ψ) = dbl.map φ ≫ dbl.map ψ`. Conclude with `(pushout.map_comp φ.left ψ.left _ _ _ _ (Arrow.w φ).symm (Arrow.w φ).symm (Arrow.w ψ).symm (Arrow.w ψ).symm).symm`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `pull _ (dbl.map (φ ≫ ψ)) _ _ x.1 = pull _ (dbl.map φ) _ _ (pull _ (dbl.map ψ) _ _ x.1)`. Rewrite using `[e, pull_comp]`.
+-/
 theorem hs_pull_comp (q : ℕ) {P'' P' P : Arrow Spc} (φ : P'' ⟶ P') (ψ : P' ⟶ P) (n i : ℤ) (x : Hs q P n i) :
     Hs.pull q (φ ≫ ψ) n i x = Hs.pull q φ n i (Hs.pull q ψ n i x) := by
   have e : dbl.map (φ ≫ ψ) = dbl.map φ ≫ dbl.map ψ := by
@@ -133,24 +142,49 @@ theorem hs_pull_comp (q : ℕ) {P'' P' P : Arrow Spc} (φ : P'' ⟶ P') (ψ : P'
   change pull _ (dbl.map (φ ≫ ψ)) _ _ x.1 = pull _ (dbl.map φ) _ _ (pull _ (dbl.map ψ) _ _ x.1)
   rw [e, pull_comp]
 
+/- English proof (translation)
+Introduce `n i` and use `by have e : ⇑(Hs.pull q (φ ≫ ψ) n i) = Hs.pull q φ n i ∘ Hs.pull q ψ n i := funext (hs_pull_comp q φ ψ n i) rw [e]; exact (h n i).comp (h' n i)`.
+-/
 theorem exc_comp (q : ℕ) {P'' P' P : Arrow Spc} {φ : P'' ⟶ P'} {ψ : P' ⟶ P} (h : Exc q φ) (h' : Exc q ψ) : Exc q (φ ≫ ψ) :=
   fun n i => by
     have e : ⇑(Hs.pull q (φ ≫ ψ) n i) = Hs.pull q φ n i ∘ Hs.pull q ψ n i := funext (hs_pull_comp q φ ψ n i)
     rw [e]; exact (h n i).comp (h' n i)
 
+/- English proof (translation)
+Introduce `n` and use `by have e : ⇑(pull R (f ≫ g) F n) = pull R f F n ∘ pull R g F n := funext (pull_comp R f g F n) rw [e]; exact (h n).comp (h' n)`.
+-/
 theorem eqv_comp {R : Type} [CommRing R] {E'' E' E : Spc} {f : E'' ⟶ E'} {g : E' ⟶ E} {F : Shv R} (h : Eqv R f F)
     (h' : Eqv R g F) : Eqv R (f ≫ g) F := fun n => by
   have e : ⇑(pull R (f ≫ g) F n) = pull R f F n ∘ pull R g F n := funext (pull_comp R f g F n)
   rw [e]; exact (h n).comp (h' n)
 
+/- English proof (translation)
+Introduce `n` and use `Function.bijective_iff_has_inverse.2 ⟨pull R (inv f) F n, fun x => by rw [← pull_comp, IsIso.inv_hom_id, pull_id], fun x => by rw [← pull_comp, IsIso.hom_inv_id, pull_id]⟩`.
+-/
 theorem eqv_iso {R : Type} [CommRing R] {E' E : Spc} (f : E' ⟶ E) [IsIso f] (F : Shv R) : Eqv R f F := fun n =>
   Function.bijective_iff_has_inverse.2 ⟨pull R (inv f) F n,
     fun x => by rw [← pull_comp, IsIso.inv_hom_id, pull_id], fun x => by rw [← pull_comp, IsIso.hom_inv_id, pull_id]⟩
 
+/- English proof (translation)
+The claim follows from `Arrow.hom_ext _ _ ((pullback.lift_snd _ _ _).trans (Category.comp_id _)) h`.
+-/
 theorem abvRel_abvMap {X : Scheme.{0}} (U : X.Opens) {E' E : Spc} (a : E' ⟶ E) (π' : E' ⟶ sch.obj X) (π : E ⟶ sch.obj X)
     (h : a ≫ π = π') : abvRel U a π' π h ≫ abvMap U π = abvMap U π' :=
   Arrow.hom_ext _ _ ((pullback.lift_snd _ _ _).trans (Category.comp_id _)) h
 
+/- English proof (translation)
+Introduce `hyp d`. Take `⟨H⟩` from `hH`. Establish `hyp'` using `hyp`. Take `⟨a1, -, a3, -, -, -, -, -, -, -, -, e1⟩` from `hyp'`. Establish `ok : ∀ (P : SP d) (S : Sys P) (q : ℕ) [NeZero q], IsUnit (q : Γ(P.X, ⊤)) → (∀ i, Eqv _ (pullback.fst (S.π H) (sch.map P.ι)) (tw q i)) ∧ (∀ i, Eqv _ (pullback.snd (S.π H) (sch.map P.ι)) (tw q i)) ∧ Exc q (abvMap P.U (S.π H)) ∧ Prd q P.U (S.π H) (fcl d q P)`.
+
+Introduce `P S q _ hq`. Establish `L : Loc (aug _ S.cocAff)` using `loc S.J S.aff P.X (fun j => (S.V j).2.fromSpec) (fun j => (S.V j).2.isOpenImmersion_fromSpec) (fun x => by`. Take `⟨j, h⟩` from `S.cov x`. Conclude with `⟨j, (S.V j).2.range_fromSpec.ge h⟩)`. Use the proof step `(fun x j k hj hk => by`.
+
+Take `⟨l, h, h', h''⟩` from `S.dir x j k ((S.V j).2.range_fromSpec.le hj) ((S.V k).2.range_fromSpec.le hk)`. Conclude with `⟨l, h, h', (S.V l).2.range_fromSpec.ge h''⟩) S.cocAff`. Establish `hj : ∀ j, (Functor.whiskerRight (S.toAff H) yoneda).app j ≫ yoneda.map (S.V j).2.fromSpec = yoneda.map (hensTo H P (S.V j))` using `fun j => (yoneda.map_comp _ _).symm`. Establish `hj'` using `fun j => (disc.map_comp _ _).symm.trans (congrArg disc.map (hj j))`. Establish `hg` using `map_aug _ _ _ (S.cocHen H) S.cocAff hj`.
+
+Use `⟨fun i => fst a3 _ _ _ _ _ _ (yoneda.map P.ι) _ (S.cocHen H) fun j => lf e1 H d P (S.V j) q hq i, fun i => ?_, ?_, prd hyp q _ _ _ P.U _ (S.cocHen H) _ _ _ fun j => lp hyp H d P (S.V j) q hq (S.good j)⟩` and prove the remaining obligations. Establish `e : pullback.snd (S.π H) (sch.map P.ι) = pbRel (sch.map P.ι) _ _ _ hg ≫ pullback.snd (aug _ S.cocAff) (sch.map P.ι)` using `((pullback.lift_snd _ _ _).trans (Category.comp_id _)).symm`. Rewrite using `[e]`. Use `eqv_comp (rel a3 _ _ _ _ _ _ _ _ (yoneda.map P.ι) _ _ (S.cocHen H) S.cocAff hj' hg fun j => ?_) fun n => ?_` and prove the remaining obligations. Conclude with `@eqv_iso _ _ _ _ _ (li H d P (S.V j) (hj' j)) _`.
+
+Conclude with `@a1 _ _ _ _ _ (L _ _ P.ι) _ n`. Rewrite using `[← abvRel_abvMap P.U _ _ _ hg]`. Conclude with `exc_comp q (exc a3 q _ _ _ _ _ P.U _ _ (S.cocHen H) S.cocAff hj' hg fun j => lh hyp H d P (S.V j) q hq (S.good j).1 (hj' j)) (locExc a1 q _ _ _ _ L)`. Use `⟨fun P => ⟨_, (Sys.all hC P).π H, ok P _⟩, fun P' P φ => ?_⟩` and prove the remaining obligations. Take `⟨S', a, b, ha, hb⟩` from `ref hC H d P' P φ`.
+
+Conclude with `⟨⟨_, S'.π H, ok P' S'⟩, a, b, ha, hb⟩`.
+-/
 theorem goal_of (hH : LeafHens) (hC : LeafChart) (fst : LeafFstHoc) (rel : LeafRelHoc) (exc : LeafExcHoc) (prd : LeafPrdHoc)
     (loc : LeafLoc) (locExc : LeafLocExc) (lf : LeafLocFst) (li : LeafLocIso) (lh : LeafLocHen) (lp : LeafLocPrd)
     (ref : LeafRefine) : LeafTube := by

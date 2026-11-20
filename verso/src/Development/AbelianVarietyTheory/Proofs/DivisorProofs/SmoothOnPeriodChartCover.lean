@@ -22,12 +22,22 @@ noncomputable section
 
 namespace GlobalTheory.ThetaRR.CInfChart
 
+/- English proof (translation)
+Introduce `k _ S p P h σ D D' c τ ex HP`. Establish `hB : IsOpen (cov c.e.target P.g)` using `c.e.open_target.prod isOpen_univ`. Conclude with `⟨GlobalTheory.TrueCx.TorHolo.continuousOn_of_isHolTo HP.2.1, fun c' q hq hs => GlobalTheory.TrueCx.TorHolo.differentiableAt_chart hB HP.2.1 c' hq hs⟩`.
+-/
 theorem continuous_and_holo : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k) (P : PPAS S) (h : VMetric p (omega P.A) P.g) (σ : k →+* ℂ) (D D' : ℕ) (c : AlgChart p σ D) (τ : V D → Matrix (Fin P.g) (Fin P.g) ℂ) (ex : Pt (V D) P.g → CxPts (P.A.hom ≫ p) σ), IsPeriodChart h c τ ex → ContinuousOn ex (cov c.e.target P.g) ∧ ∀ (c' : AlgChart (P.A.hom ≫ p) σ D'), ∀ q ∈ cov c.e.target P.g, ex q ∈ c'.e.source → DifferentiableAt ℂ (fun x => c'.e (ex x)) q := by
   intro k _ S p P h σ D D' c τ ex HP
   have hB : IsOpen (cov c.e.target P.g) := c.e.open_target.prod isOpen_univ
   exact ⟨GlobalTheory.TrueCx.TorHolo.continuousOn_of_isHolTo HP.2.1,
     fun c' q hq hs => GlobalTheory.TrueCx.TorHolo.differentiableAt_chart hB HP.2.1 c' hq hs⟩
 
+/- English proof (translation)
+Introduce `k _ S p hp P σ y`. Take `⟨-, hU⟩` from `GlobalTheory.RegGenSmooth.genSmooth_of_isRegSurf k S p hp`. Take `⟨U, hyU, hsm⟩` from `hU σ (Points.PtsOver.map P.A.hom rfl _ y)`. Use `haveI : SmoothOfRelativeDimension P.g (P.A.hom ∣_ U) := (smoothOfRelativeDimension_isStableUnderBaseChange (n := P.g)).of_isPullback (isPullback_morphismRestrict P.A.hom U).flip P.smoothDim`. Use `haveI : SmoothOfRelativeDimension (P.g + 1) ((P.A.hom ⁻¹ᵁ U).ι ≫ P.A.hom ≫ p) := by`.
+
+Establish `e : (P.A.hom ⁻¹ᵁ U).ι ≫ P.A.hom ≫ p = (P.A.hom ∣_ U) ≫ (U.ι ≫ p)`. Rewrite using `[← Category.assoc, ← morphismRestrict_ι, Category.assoc]`. Rewrite using `[e]`. Use `infer_instance`. Establish `hmem : y.1 (IsLocalRing.closedPoint ℂ) ∈ P.A.hom ⁻¹ᵁ U` using `mem_ptsIn.1 hyU`.
+
+Take `⟨V', x, hV, hz, hx⟩` from `GlobalTheory.ModelCharts.exists_etale_coords_of_opens (P.A.hom ≫ p) (P.g + 1) (P.A.hom ⁻¹ᵁ U) hmem`. Take `⟨c, hc, -⟩` from `AlgChart.exists_of_etale hV x hx (mem_ptsIn.2 hz)`. Conclude with `⟨c, hc⟩`.
+-/
 theorem exists_chart_total : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k), IsRegSurf p → ∀ (P : PPAS S) (σ : k →+* ℂ) (y : CxPts (P.A.hom ≫ p) σ), ∃ c' : AlgChart (P.A.hom ≫ p) σ (P.g + 1), y ∈ c'.e.source := by
   intro k _ S p hp P σ y
   obtain ⟨-, hU⟩ := GlobalTheory.RegGenSmooth.genSmooth_of_isRegSurf k S p hp
@@ -43,6 +53,17 @@ theorem exists_chart_total : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S
   obtain ⟨c, hc, -⟩ := AlgChart.exists_of_etale hV x hx (mem_ptsIn.2 hz)
   exact ⟨c, hc⟩
 
+/- English proof (translation)
+Introduce `k _ S p P h σ D c τ ex HP v hv`. Establish `hs` using `LieVB.sec_hom (MonObj.one (X := P.A))`. Take `⟨U, W, hx, hle, ch⟩` from `Conormal.exists_isChart hs (mem_ptsIn.1 (h.isVB.mem_pick (p := p) (σ := σ) (c.e.symm v)))`. Establish `hU : c.e.symm v ∈ ptsIn p σ U` using `mem_ptsIn.2 hx`. Set `c₀ : VB.Chart (omega P.A) P.g` to `⟨U, _, (h.isVB.pick (c.e.symm v)).isFrame.res hle⟩`.
+
+Use `choose f hf using fun a => ch.d_surjective hs (c₀.e a)`. Establish `hG : (h.met σ).G c₀ (c.e.symm v) = HermFrame.chg (Matrix.of fun a b => cot ex W (f b) v a) ((2 : ℂ) • imPart τ v)`. Use extensionality with `a b`. Rewrite using `[← (h.met σ).form_frame c₀ hU, ← hf, ← hf, HermFrame.chg_apply]`. Conclude with `(HP.2.2 v hv).2.2.2.2 U W ch.le _ _ hU`.
+
+Establish `hP` using `(h.met σ).posDef c₀ _ hU`. Rewrite `hP` using `[hG]`. Establish `hu` using `hP.det_pos.ne'.isUnit`. Rewrite `hu` using `[HermFrame.chg, det_mul, det_mul]`. Establish `e : (ex (v, 0)).1 = (c.e.symm v).1 ≫ LieVB.unitSec P.A` using `((HP.2.2 v hv).2.2.2.1 0).2 ⟨0, zero_mem _, by funext i; simp [GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.per, vecMul, dotProduct]⟩`.
+
+Use `⟨W, f, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `⊤ ≤ (ex (v, 0)).1 ⁻¹ᵁ W`. Rewrite using `[e]`. Conclude with `fun x hx' => ch.le (hU hx')`. Establish `ht : (Matrix.of fun a b => cot ex W (f a) v b) = (Matrix.of fun a b => cot ex W (f b) v a)ᵀ` using `by ext; rfl`.
+
+Rewrite using `[ht]`. Conclude with `isUnit_of_mul_isUnit_left (isUnit_of_mul_isUnit_left hu)`.
+-/
 theorem exists_frame_cot : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k) (P : PPAS S) (h : VMetric p (omega P.A) P.g) (σ : k →+* ℂ) (D : ℕ) (c : AlgChart p σ D) (τ : V D → Matrix (Fin P.g) (Fin P.g) ℂ) (ex : Pt (V D) P.g → CxPts (P.A.hom ≫ p) σ), IsPeriodChart h c τ ex → ∀ v ∈ c.e.target, ∃ (W : P.A.left.Opens) (f : Fin P.g → Γ(P.A.left, W)), ex (v, 0) ∈ ptsIn (P.A.hom ≫ p) σ W ∧ IsUnit (Matrix.of fun a b => cot ex W (f a) v b).det := by
   intro k _ S p P h σ D c τ ex HP v hv
   have hs := LieVB.sec_hom (MonObj.one (X := P.A))
@@ -70,6 +91,53 @@ theorem exists_frame_cot : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S �
     rw [ht]
     exact isUnit_of_mul_isUnit_left (isUnit_of_mul_isUnit_left hu)
 
+/- English proof (translation)
+Introduce `k _ S p P h σ D D' c τ ex HP c' v z₀ hv hs W f hW`. Establish `hB : IsOpen (cov c.e.target P.g)` using `c.e.open_target.prod isOpen_univ`. Establish `hcont : ContinuousOn ex (cov c.e.target P.g)` using `GlobalTheory.TrueCx.TorHolo.continuousOn_of_isHolTo HP.2.1`. Set `π : CxPts (P.A.hom ≫ p) σ → CxPts p σ` to `Points.PtsOver.map P.A.hom rfl _`. Establish `hover : ∀ w ∈ c.e.target, ∀ z, π (ex (w, z)) = c.e.symm w` using `fun w hw z => Subtype.ext ((HP.2.2 w hw).1 z)`.
+
+Set `β : V D' → V D` to `fun ξ => c.e (π (c'.e.symm ξ))`. Set `a : V D' → (Sp ℂ ⟶ P.A.left)` to `fun ξ => (ex (β ξ, -z₀)).1`. Set `b : V D' → (Sp ℂ ⟶ P.A.left)` to `fun ξ => (c'.e.symm ξ).1`. Set `m : V D' → (Sp ℂ ⟶ pullback P.A.hom P.A.hom)` to `fun ξ => if hξ : a ξ ≫ P.A.hom = b ξ ≫ P.A.hom then pullback.lift (a ξ) (b ξ) hξ else pullback.lift (b ξ) (b ξ) rfl`. Set `μl : pullback P.A.hom P.A.hom ⟶ P.A.left` to `(MonObj.mul : P.A ⊗ P.A ⟶ P.A).left`.
+
+Establish `hkey : ∀ w ∈ c.e.target, ∀ z, ex (w, z) ∈ c'.e.source → m (c'.e (ex (w, z))) ≫ μl = (ex (w, -z₀ + z)).1`. Introduce `w hw z hz`. Establish `e1 : c'.e.symm (c'.e (ex (w, z))) = ex (w, z)` using `c'.e.left_inv hz`. Establish `e2 : β (c'.e (ex (w, z))) = w`. Express the relevant statement in the definitionally equal form `c.e (π (c'.e.symm (c'.e (ex (w, z))))) = w`.
+
+Rewrite using `[e1, hover w hw, c.e.right_inv hw]`. Establish `ha : a (c'.e (ex (w, z))) = (ex (w, -z₀)).1`. Express the relevant statement in the definitionally equal form `(ex (β (c'.e (ex (w, z))), -z₀)).1 = _`. Rewrite using `[e2]`. Establish `hb : b (c'.e (ex (w, z))) = (ex (w, z)).1`.
+
+Express the relevant statement in the definitionally equal form `(c'.e.symm (c'.e (ex (w, z)))).1 = _`. Rewrite using `[e1]`. Establish `ho` using `(HP.2.2 w hw).1`. Establish `hab : a (c'.e (ex (w, z))) ≫ P.A.hom = b (c'.e (ex (w, z))) ≫ P.A.hom`. Rewrite using `[ha, hb, ho, ho]`.
+
+Establish `hm : m (c'.e (ex (w, z))) = pullback.lift (a (c'.e (ex (w, z)))) (b (c'.e (ex (w, z)))) hab` using `dif_pos hab`. Set `x : Over.mk (c.e.symm w).1 ⟶ P.A` to `Over.homMk (ex (w, -z₀)).1 (ho _)`. Set `y : Over.mk (c.e.symm w).1 ⟶ P.A` to `Over.homMk (ex (w, z)).1 (ho _)`. Establish `hxy` using `(HP.2.2 w hw).2.1 (-z₀) z x y rfl rfl`. Rewrite using `[← hxy, CategoryTheory.Hom.mul_def, Over.comp_left, Over.lift_left, hm]`.
+
+Use `congr 1`. Conclude with `pullback.hom_ext (by rw [pullback.lift_fst, pullback.lift_fst, ha]; rfl) (by rw [pullback.lift_snd, pullback.lift_snd, hb]; rfl)`. Establish `congrH : ∀ {X : Scheme.{0}} {B : Set (V D')} {c₁ c₂ : V D' → (Sp ℂ ⟶ X)}, IsHolTo B c₁ → (∀ ξ ∈ B, c₂ ξ = c₁ ξ) → IsHolTo B c₂`. Introduce `X B c₁ c₂ hc he U g`. Establish `e : {ξ ∈ B | ⊤ ≤ c₂ ξ ⁻¹ᵁ U} = {ξ ∈ B | ⊤ ≤ c₁ ξ ⁻¹ᵁ U}`.
+
+Use extensionality with `ξ`. Conclude with `and_congr_right fun hξ => by rw [he ξ hξ]`. Rewrite using `[e]`. Conclude with `⟨(hc U g).1, (hc U g).2.congr fun ξ hξ => by rw [he ξ hξ.1]⟩`. Establish `hyπ : IsHolTo c'.e.target fun ξ => (π (c'.e.symm ξ)).1` using `GlobalTheory.HolFibre.isHolTo_comp (GlobalTheory.TrueCx.TorHolo.isHolTo_symm c') P.A.hom`.
+
+Establish `hπc : ContinuousOn (fun ξ => π (c'.e.symm ξ)) c'.e.target` using `GlobalTheory.TrueCx.TorHolo.continuousOn_of_isHolTo hyπ`. Set `T` to `c'.e.target ∩ (fun ξ => π (c'.e.symm ξ)) ⁻¹' c.e.source`. Establish `hT : IsOpen T` using `hπc.isOpen_inter_preimage c'.e.open_target c.e.open_source`. Establish `hβ : ∀ ξ ∈ T, DifferentiableAt ℂ β ξ` using `fun ξ hξ => GlobalTheory.TrueCx.TorHolo.differentiableAt_chart c'.e.open_target hyπ c hξ.1 hξ.2`. Establish `hβT : ∀ ξ ∈ T, β ξ ∈ c.e.target` using `fun ξ hξ => c.e.map_source hξ.2`.
+
+Establish `haH : IsHolTo T a`. Introduce `U g`. Take `⟨ho, hd⟩` from `HP.2.1 U g`. Set `kk : V D' → Pt (V D) P.g` to `fun ξ => (β ξ, -z₀)`. Establish `hkc : ContinuousOn kk T` using `fun ξ hξ => ((hβ ξ hξ).continuousAt.prodMk continuousAt_const).continuousWithinAt`.
+
+Establish `e : {ξ ∈ T | ⊤ ≤ a ξ ⁻¹ᵁ U} = T ∩ kk ⁻¹' {P' ∈ cov c.e.target P.g | ⊤ ≤ (ex P').1 ⁻¹ᵁ U}`. Use extensionality with `ξ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1, ⟨hβT ξ h1, trivial⟩, h2⟩`.
+
+Introduce and unpack `⟨h1, -, h2⟩`. Conclude with `⟨h1, h2⟩`. Rewrite using `[e]`. Use `⟨hkc.isOpen_inter_preimage hT ho, fun ξ hξ => ?_⟩` and prove the remaining obligations. Establish `hk : DifferentiableAt ℂ kk ξ` using `(hβ ξ hξ.1).prodMk (differentiableAt_const _)`.
+
+Conclude with `((hd.differentiableAt (ho.mem_nhds hξ.2)).comp ξ hk).differentiableWithinAt`. Establish `hbH : IsHolTo T b`. Introduce `U g`. Take `⟨ho, hd⟩` from `GlobalTheory.TrueCx.TorHolo.isHolTo_symm c' U g`. Establish `e : {ξ ∈ T | ⊤ ≤ b ξ ⁻¹ᵁ U} = T ∩ {ξ ∈ c'.e.target | ⊤ ≤ (c'.e.symm ξ).1 ⁻¹ᵁ U}`.
+
+Use extensionality with `ξ`. Conclude with `⟨fun h => ⟨h.1, h.1.1, h.2⟩, fun h => ⟨h.1, h.2.2⟩⟩`. Rewrite using `[e]`. Conclude with `⟨hT.inter ho, hd.mono inter_subset_right⟩`. Establish `habT : ∀ ξ ∈ T, a ξ ≫ P.A.hom = b ξ ≫ P.A.hom`.
+
+Introduce `ξ hξ`. Establish `h1 : a ξ ≫ P.A.hom = (c.e.symm (β ξ)).1` using `(HP.2.2 _ (hβT ξ hξ)).1 _`. Establish `h2 : c.e.symm (β ξ) = π (c'.e.symm ξ)` using `c.e.left_inv hξ.2`. Rewrite using `[h1, h2]`. Both sides reduce to the same expression.
+
+Establish `hmH : IsHolTo T m`. Use `GlobalTheory.HolFibre.isHolTo_of_isPullback (IsPullback.of_hasPullback P.A.hom P.A.hom) ?_ ?_` and prove the remaining obligations. Conclude with `congrH haH fun ξ hξ => by`. Express the relevant statement in the definitionally equal form `m ξ ≫ pullback.fst _ _ = a ξ`. Rewrite using `[show m ξ = pullback.lift (a ξ) (b ξ) (habT ξ hξ) from dif_pos (habT ξ hξ), pullback.lift_fst]`.
+
+Conclude with `congrH hbH fun ξ hξ => by`. Express the relevant statement in the definitionally equal form `m ξ ≫ pullback.snd _ _ = b ξ`. Rewrite using `[show m ξ = pullback.lift (a ξ) (b ξ) (habT ξ hξ) from dif_pos (habT ξ hξ), pullback.lift_snd]`. Establish `hmu : IsHolTo T fun ξ => m ξ ≫ μl` using `GlobalTheory.HolFibre.isHolTo_comp hmH μl`. Establish `hξ0 : c'.e (ex (v, z₀)) ∈ T`.
+
+Use `⟨c'.e.map_source hs, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `π (c'.e.symm (c'.e (ex (v, z₀)))) ∈ c.e.source`. Rewrite using `[c'.e.left_inv hs, hover v hv]`. Conclude with `c.e.map_target hv`. Establish `hm0 : m (c'.e (ex (v, z₀))) ≫ μl = (ex (v, 0)).1`.
+
+Rewrite using `[hkey v hv z₀ hs, neg_add_cancel]`. Use `⟨fun ξ => valAt' (m ξ ≫ μl) W f, ?_, ?_⟩` and prove the remaining obligations. Take `⟨ho, hd⟩` from `hmu W f`. Establish `hmem : c'.e (ex (v, z₀)) ∈ {ξ ∈ T | ⊤ ≤ (m ξ ≫ μl) ⁻¹ᵁ W}`. Use `⟨hξ0, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hm0]`. Conclude with `hW`. Conclude with `hd.differentiableAt (ho.mem_nhds hmem)`. Establish `hQ : ((v, z₀) : Pt (V D) P.g) ∈ cov c.e.target P.g` using `⟨hv, trivial⟩`. Establish `ht : Tendsto (fun q : Pt (V D) P.g => q + ((0 : V D), z₀)) (𝓝 (v, 0)) (𝓝 (v, z₀))`.
+
+Apply the tactic sequence `have e : ((v, 0) : Pt (V D) P.g) + ((0 : V D), z₀) = (v, z₀) := by ext <;> simp`. Conclude with `(continuous_id.add continuous_const : Continuous fun q : Pt (V D) P.g => q + ((0 : V D), z₀)).tendsto' _ _ e`. Establish `h1 : ∀ᶠ q in 𝓝 ((v, 0) : Pt (V D) P.g), ex (q + ((0 : V D), z₀)) ∈ c'.e.source` using `ht.eventually ((hcont.continuousAt (hB.mem_nhds hQ)).preimage_mem_nhds (c'.e.open_source.mem_nhds hs))`. Establish `h2 : ∀ᶠ q in 𝓝 ((v, 0) : Pt (V D) P.g), q.1 ∈ c.e.target` using `continuous_fst.continuousAt.preimage_mem_nhds (c.e.open_target.mem_nhds hv)`. Use `filter_upwards [h1, h2] with q hq1 hq2`.
+
+Apply the tactic sequence `have e2 : q + ((0 : V D), z₀) = (q.1, q.2 + z₀) := by ext <;> simp`. Rewrite `hq1`, the goal using `[e2]`. Express the relevant statement in the definitionally equal form `valAt' (ex q).1 W f = valAt' (m (c'.e (ex (q.1, q.2 + z₀))) ≫ μl) W f`. Rewrite using `[hkey q.1 hq2 _ hq1]`. Apply the tactic sequence `have e3 : ((q.1, -z₀ + (q.2 + z₀)) : Pt (V D) P.g) = q := by ext <;> simp`.
+
+Rewrite using `[e3]`.
+-/
 theorem exists_transl_fn : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k) (P : PPAS S) (h : VMetric p (omega P.A) P.g) (σ : k →+* ℂ) (D D' : ℕ) (c : AlgChart p σ D) (τ : V D → Matrix (Fin P.g) (Fin P.g) ℂ) (ex : Pt (V D) P.g → CxPts (P.A.hom ≫ p) σ), IsPeriodChart h c τ ex → ∀ (c' : AlgChart (P.A.hom ≫ p) σ D') (v : V D) (z₀ : Fin P.g → ℂ), v ∈ c.e.target → ex (v, z₀) ∈ c'.e.source → ∀ (W : P.A.left.Opens) (f : Γ(P.A.left, W)), ex (v, 0) ∈ ptsIn (P.A.hom ≫ p) σ W → ∃ M : V D' → ℂ, DifferentiableAt ℂ M (c'.e (ex (v, z₀))) ∧ ∀ᶠ q in 𝓝 ((v, 0) : Pt (V D) P.g), ev (P.A.hom ≫ p) σ W f (ex q) = M (c'.e (ex (q + ((0 : V D), z₀)))) := by
   intro k _ S p P h σ D D' c τ ex HP c' v z₀ hv hs W f hW
   classical
@@ -198,6 +266,17 @@ theorem exists_transl_fn : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S �
     have e3 : ((q.1, -z₀ + (q.2 + z₀)) : Pt (V D) P.g) = q := by ext <;> simp
     rw [e3]
 
+/- English proof (translation)
+Introduce `k _ S p P h σ D D' c τ ex HP c' v z₀ hv hs`. Establish `hB : IsOpen (cov c.e.target P.g)` using `c.e.open_target.prod isOpen_univ`. Establish `hcont : ContinuousOn ex (cov c.e.target P.g)` using `GlobalTheory.TrueCx.TorHolo.continuousOn_of_isHolTo HP.2.1`. Set `π : CxPts (P.A.hom ≫ p) σ → CxPts p σ` to `Points.PtsOver.map P.A.hom rfl _`. Establish `hover : ∀ w ∈ c.e.target, ∀ z, π (ex (w, z)) = c.e.symm w` using `fun w hw z => Subtype.ext ((HP.2.2 w hw).1 z)`.
+
+Use `⟨fun ξ => c.e (π (c'.e.symm ξ)), ?_, ?_⟩` and prove the remaining obligations. Establish `hy : IsHolTo c'.e.target fun ξ => (π (c'.e.symm ξ)).1` using `GlobalTheory.HolFibre.isHolTo_comp (GlobalTheory.TrueCx.TorHolo.isHolTo_symm c') P.A.hom`. Establish `h0 : c'.e.symm (c'.e (ex (v, z₀))) = ex (v, z₀)` using `c'.e.left_inv hs`. Establish `hsrc : π (c'.e.symm (c'.e (ex (v, z₀)))) ∈ c.e.source`. Rewrite using `[h0, hover v hv]`.
+
+Conclude with `c.e.map_target hv`. Conclude with `GlobalTheory.TrueCx.TorHolo.differentiableAt_chart c'.e.open_target hy c (c'.e.map_source hs) hsrc`. Establish `hQ : ((v, z₀) : Pt (V D) P.g) ∈ cov c.e.target P.g` using `⟨hv, trivial⟩`. Establish `ht : Tendsto (fun q : Pt (V D) P.g => q + ((0 : V D), z₀)) (𝓝 (v, 0)) (𝓝 (v, z₀))`. Apply the tactic sequence `have e : ((v, 0) : Pt (V D) P.g) + ((0 : V D), z₀) = (v, z₀) := by ext <;> simp`.
+
+Conclude with `(continuous_id.add continuous_const : Continuous fun q : Pt (V D) P.g => q + ((0 : V D), z₀)).tendsto' _ _ e`. Establish `h1 : ∀ᶠ q in 𝓝 ((v, 0) : Pt (V D) P.g), ex (q + ((0 : V D), z₀)) ∈ c'.e.source` using `ht.eventually ((hcont.continuousAt (hB.mem_nhds hQ)).preimage_mem_nhds (c'.e.open_source.mem_nhds hs))`. Establish `h2 : ∀ᶠ q in 𝓝 ((v, 0) : Pt (V D) P.g), q.1 ∈ c.e.target` using `continuous_fst.continuousAt.preimage_mem_nhds (c.e.open_target.mem_nhds hv)`. Use `filter_upwards [h1, h2] with q hq1 hq2`. Establish `e1 : c'.e.symm (c'.e (ex (q + ((0 : V D), z₀)))) = ex (q + ((0 : V D), z₀))` using `c'.e.left_inv hq1`.
+
+Apply the tactic sequence `have e2 : q + ((0 : V D), z₀) = (q.1, q.2 + z₀) := by ext <;> simp`. Use `show q.1 = c.e (π (c'.e.symm (c'.e (ex (q + ((0 : V D), z₀))))))`. Rewrite using `[e1, e2, hover q.1 hq2, c.e.right_inv hq2]`.
+-/
 theorem exists_base_fn : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k) (P : PPAS S) (h : VMetric p (omega P.A) P.g) (σ : k →+* ℂ) (D D' : ℕ) (c : AlgChart p σ D) (τ : V D → Matrix (Fin P.g) (Fin P.g) ℂ) (ex : Pt (V D) P.g → CxPts (P.A.hom ≫ p) σ), IsPeriodChart h c τ ex → ∀ (c' : AlgChart (P.A.hom ≫ p) σ D') (v : V D) (z₀ : Fin P.g → ℂ), v ∈ c.e.target → ex (v, z₀) ∈ c'.e.source → ∃ M : V D' → V D, DifferentiableAt ℂ M (c'.e (ex (v, z₀))) ∧ ∀ᶠ q in 𝓝 ((v, 0) : Pt (V D) P.g), q.1 = M (c'.e (ex (q + ((0 : V D), z₀)))) := by
   intro k _ S p P h σ D D' c τ ex HP c' v z₀ hv hs
   have hB : IsOpen (cov c.e.target P.g) := c.e.open_target.prod isOpen_univ
@@ -226,6 +305,49 @@ theorem exists_base_fn : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶
     show q.1 = c.e (π (c'.e.symm (c'.e (ex (q + ((0 : V D), z₀))))))
     rw [e1, e2, hover q.1 hq2, c.e.right_inv hq2]
 
+/- English proof (translation)
+Introduce `k _ S p hp P h σ c τ ex HP u hu Q hQ`. Take `⟨v, z₀⟩` from `Q`. Establish `hv : v ∈ c.e.target` using `hQ.1`. Establish `hcovO : IsOpen (cov c.e.target P.g)` using `c.e.open_target.prod isOpen_univ`. Take `⟨c', hc'⟩` from `exists_chart_total k S p hp P σ (ex (v, z₀))`.
+
+Take `⟨hcont, hdiff⟩` from `continuous_and_holo k S p P h σ 1 (P.g + 1) c τ ex HP`. Take `⟨W, f, hW, hdet⟩` from `exists_frame_cot k S p P h σ 1 c τ ex HP v hv`. Use `choose M hM hMe using fun a => exists_transl_fn k S p P h σ 1 (P.g + 1) c τ ex HP c' v z₀ hv hc' W (f a) hW`. Take `⟨M₀, hM₀, hM₀e⟩` from `exists_base_fn k S p P h σ 1 (P.g + 1) c τ ex HP c' v z₀ hv hc'`. Set `Ψ : Pt (V 1) P.g → V (P.g + 1)` to `fun x => c'.e (ex x)`.
+
+Set `N` to `cov c.e.target P.g ∩ ex ⁻¹' c'.e.source`. Establish `hNo : IsOpen N` using `hcont.isOpen_inter_preimage hcovO c'.e.open_source`. Establish `hQN : ((v, z₀) : Pt (V 1) P.g) ∈ N` using `⟨hQ, hc'⟩`. Establish `hΨN : DifferentiableOn ℂ Ψ N` using `fun x hx => (hdiff c' x hx.1 hx.2).differentiableWithinAt`. Establish `hCω : ContDiffAt ℂ ω Ψ (v, z₀)` using `GlobalTheory.SCV.contDiffAt_of_differentiableOn hΨN (hNo.mem_nhds hQN) ω`.
+
+Establish `hΨd : HasFDerivAt Ψ (fderiv ℂ Ψ (v, z₀)) (v, z₀)` using `(hdiff c' _ hQ hc').hasFDerivAt`. Set `F : Pt (V 1) P.g → (Fin P.g → ℂ)` to `fun x a => ev (P.A.hom ≫ p) σ W (f a) (ex x)`. Set `Φ : Pt (V 1) P.g → Pt (V 1) P.g` to `fun x => (x.1, F x)`. Set `Mt : V (P.g + 1) → Pt (V 1) P.g` to `fun ξ => (M₀ ξ, fun a => M a ξ)`. Establish `hMt : DifferentiableAt ℂ Mt (Ψ (v, z₀))` using `hM₀.prodMk (differentiableAt_pi.2 hM)`.
+
+Apply the tactic sequence `have hsh : ((v, 0) : Pt (V 1) P.g) + ((0 : V 1), z₀) = (v, z₀) := by ext <;> simp`. Establish `hΨd' : HasFDerivAt Ψ (fderiv ℂ Ψ (v, z₀)) (((v, 0) : Pt (V 1) P.g) + ((0 : V 1), z₀))`. Rewrite using `[hsh]`. Conclude with `hΨd`. Establish `hΨ' : HasFDerivAt (fun x : Pt (V 1) P.g => Ψ (x + ((0 : V 1), z₀))) (fderiv ℂ Ψ (v, z₀)) (v, 0)`.
+
+Use `hΨd'.comp ((v, 0) : Pt (V 1) P.g) ((hasFDerivAt_id ((v, 0) : Pt (V 1) P.g)).add_const ((0 : V 1), z₀))` as an intermediate fact. Rewrite `this` using `[ContinuousLinearMap.comp_id]`. Conclude with `this`. Establish `hev : Φ =ᶠ[𝓝 ((v, 0) : Pt (V 1) P.g)] Mt ∘ fun x => Ψ (x + ((0 : V 1), z₀))` using `by filter_upwards [hM₀e, Filter.eventually_all.2 hMe] with x h0 h1`. Conclude with `Prod.ext h0 (funext h1)`.
+
+Establish `hMt' : HasFDerivAt Mt (fderiv ℂ Mt (Ψ (v, z₀))) (Ψ (((v, 0) : Pt (V 1) P.g) + ((0 : V 1), z₀)))`. Rewrite using `[hsh]`. Conclude with `hMt.hasFDerivAt`. Establish `hΦ : HasFDerivAt Φ ((fderiv ℂ Mt (Ψ (v, z₀))).comp (fderiv ℂ Ψ (v, z₀))) (v, 0)` using `(hMt'.comp ((v, 0) : Pt (V 1) P.g) hΨ').congr_of_eventuallyEq hev`. Establish `hF : DifferentiableAt ℂ F (v, 0)`.
+
+Use `differentiableAt_pi.2 fun a => ?_` and prove the remaining obligations. Take `⟨ho, hd⟩` from `HP.2.1 W (f a)`. Establish `hm : ((v, 0) : Pt (V 1) P.g) ∈ {b ∈ cov c.e.target P.g | ⊤ ≤ (ex b).1 ⁻¹ᵁ W}` using `⟨⟨hv, trivial⟩, hW⟩`. Conclude with `hd.differentiableAt (ho.mem_nhds hm)`. Establish `hΦ2 : HasFDerivAt Φ ((ContinuousLinearMap.fst ℂ (V 1) (Fin P.g → ℂ)).prod (fderiv ℂ F (v, 0))) (v, 0)` using `hasFDerivAt_fst.prodMk hF.hasFDerivAt`.
+
+Establish `huq` using `hΦ.unique hΦ2`. Set `G : (Fin P.g → ℂ) →L[ℂ] (Fin P.g → ℂ)` to `(fderiv ℂ F (v, 0)).comp (ContinuousLinearMap.inr ℂ (V 1) (Fin P.g → ℂ))`. Establish `hinc : HasFDerivAt (fun z : Fin P.g → ℂ => F (v, z)) G 0` using `hF.hasFDerivAt.comp (0 : Fin P.g → ℂ) (hasFDerivAt_prodMk_right v 0)`. Establish `hcot : ∀ a b, cot ex W (f a) v b = G (Pi.single b 1) a`. Introduce `a b`.
+
+Use `(hasFDerivAt_apply a (F (v, 0))).comp (0 : Fin P.g → ℂ) hinc` as an intermediate fact. Conclude with `congrArg (· (Pi.single b 1)) this.fderiv`. Establish `hinj : Function.Injective (fderiv ℂ Ψ (v, z₀))`. Use `(injective_iff_map_eq_zero _).2 fun x hx => ?_` and prove the remaining obligations. Establish `e1` using `congrArg (· x) huq`.
+
+Simplify using `only [ContinuousLinearMap.comp_apply, hx, map_zero, ContinuousLinearMap.prod_apply, ContinuousLinearMap.coe_fst'] at e1`. Establish `hx1 : x.1 = 0` using `(congrArg Prod.fst e1).symm`. Establish `hx2 : fderiv ℂ F (v, 0) x = 0` using `(congrArg Prod.snd e1).symm`. Establish `hxe : x = ((0 : V 1), x.2)` using `Prod.ext hx1 rfl`. Establish `hG : G x.2 = 0`.
+
+Rewrite `hx2` using `[hxe]`. Conclude with `hx2`. Establish `hx2s : x.2 = ∑ b, x.2 b • (Pi.single b (1 : ℂ) : Fin P.g → ℂ)`. Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+
+Establish `hmv : (Matrix.of fun a b => cot ex W (f a) v b) *ᵥ x.2 = 0`. Use function extensionality and compare the values at `a`. Use `congrArg (· a) hG` as an intermediate fact. Rewrite `this` using `[hx2s]`. Simplify using `only [map_sum, map_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at this`.
+
+Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, hcot, Pi.zero_apply]`. Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun b _ => mul_comm _ _`. Establish `hx2' : x.2 = 0` using `Matrix.mulVec_injective_iff_isUnit.2 ((Matrix.isUnit_iff_isUnit_det _).2 hdet) (hmv.trans (Matrix.mulVec_zero _).symm)`. Conclude with `Prod.ext hx1 hx2'`.
+
+Establish `hdim : Module.finrank ℂ (Pt (V 1) P.g) = Module.finrank ℂ (V (P.g + 1))`. Simplify using `[Module.finrank_prod, add_comm]`. Set `e` to `(LinearMap.linearEquivOfInjective ((fderiv ℂ Ψ (v, z₀) : Pt (V 1) P.g →L[ℂ] V (P.g + 1)) : Pt (V 1) P.g →ₗ[ℂ] V (P.g + 1)) hinj hdim).toContinuousLinearEquiv`. Establish `he : ((e : Pt (V 1) P.g →L[ℂ] V (P.g + 1))) = fderiv ℂ Ψ (v, z₀)` using `ContinuousLinearMap.ext fun x => rfl`. Establish `hf' : HasFDerivAt Ψ (e : Pt (V 1) P.g →L[ℂ] V (P.g + 1)) (v, z₀)` using `he ▸ hΨd`.
+
+Establish `hn : (ω : WithTop ℕ∞) ≠ 0` using `by simp`. Set `ψ` to `hCω.localInverse hf' hn`. Establish `hψ : ContDiffAt ℂ ω ψ (Ψ (v, z₀))` using `hCω.to_localInverse hf' hn`. Establish `hri : ∀ᶠ ξ in 𝓝 (Ψ (v, z₀)), Ψ (ψ ξ) = ξ` using `(hCω.hasStrictFDerivAt' hf' hn).eventually_right_inverse`. Establish `hψQ : ψ (Ψ (v, z₀)) = (v, z₀)` using `hCω.localInverse_apply_image hf' hn`.
+
+Establish `hψN : ∀ᶠ ξ in 𝓝 (Ψ (v, z₀)), ψ ξ ∈ N` using `hψ.continuousAt.preimage_mem_nhds (by rw [hψQ]; exact hNo.mem_nhds hQN)`. Establish `hψω : ∀ᶠ ξ in 𝓝 (Ψ (v, z₀)), ContDiffAt ℂ ω ψ ξ` using `hψ.eventually (by simp)`. Set `O` to `interior {ξ | ContDiffAt ℂ ω ψ ξ ∧ Ψ (ψ ξ) = ξ ∧ ψ ξ ∈ N}`. Establish `hO : IsOpen O` using `isOpen_interior`. Establish `hξO : Ψ (v, z₀) ∈ O` using `mem_interior_iff_mem_nhds.2 (hψω.and (hri.and hψN))`.
+
+Establish `hOsub : O ⊆ {ξ | ContDiffAt ℂ ω ψ ξ ∧ Ψ (ψ ξ) = ξ ∧ ψ ξ ∈ N}` using `interior_subset`. Establish `hS : IsOpen (c'.e.source ∩ c'.e ⁻¹' O)` using `c'.e.continuousOn.isOpen_inter_preimage c'.e.open_source hO`. Use `cInfAt_of_chart hS c' ?_ hc' ⟨hc', hξO⟩` and prove the remaining obligations. Introduce `ξ hξ`. Establish `hξO' : ξ ∈ O`.
+
+Use `hξ.2.2` as an intermediate fact. Rewrite `this` using `[mem_preimage, c'.e.right_inv hξ.1]`. Then use the resulting hypothesis. Establish `key : ∀ ξ' ∈ O, (u ∘ c'.e.symm) ξ' = u (ex (ψ ξ'))`. Introduce `ξ' h'`. Take `⟨-, h2, h3⟩` from `hOsub h'`.
+
+Establish `e2 : c'.e.symm (c'.e (ex (ψ ξ'))) = ex (ψ ξ')` using `c'.e.left_inv h3.2`. Establish `e3 : c'.e (ex (ψ ξ')) = ξ'` using `h2`. Rewrite `e2` using `[e3]`. Simplify using `only [Function.comp_apply, e2]`. Establish `hcd : ContDiffAt ℝ ∞ (fun ξ' => u (ex (ψ ξ'))) ξ`.
+
+Take `⟨h1, -, h3⟩` from `hOsub hξO'`. Establish `hu' : ContDiffAt ℝ ∞ (fun x => u (ex x)) (ψ ξ)` using `hu.contDiffAt (hcovO.mem_nhds h3.1)`. Conclude with `hu'.comp ξ ((h1.restrict_scalars ℝ).of_le le_top)`. Conclude with `(hcd.congr_of_eventuallyEq (eventually_of_mem (hO.mem_nhds hξO') key)).contDiffWithinAt`.
+-/
 theorem cInfAt_of_periodChart : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k), IsRegSurf p → ∀ (P : PPAS S) (h : VMetric p (omega P.A) P.g) (σ : k →+* ℂ) (c : AlgChart p σ 1) (τ : V 1 → Matrix (Fin P.g) (Fin P.g) ℂ) (ex : Pt (V 1) P.g → CxPts (P.A.hom ≫ p) σ), IsPeriodChart h c τ ex → ∀ u : CxPts (P.A.hom ≫ p) σ → ℝ, ContDiffOn ℝ ∞ (fun Q => u (ex Q)) (cov c.e.target P.g) → ∀ Q ∈ cov c.e.target P.g, CInfAt u (ex Q) := by
   intro k _ S p hp P h σ c τ ex HP u hu Q hQ
   obtain ⟨v, z₀⟩ := Q

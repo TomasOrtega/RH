@@ -15,6 +15,9 @@ noncomputable section
 
 namespace GlobalTheory.NodePar
 
+/- English proof (translation)
+Establish `hm` using `GlobalTheory.TowerSplit.hasSignature_of_model N.M τ`. Rewrite `hm` using `[GlobalTheory.TowerSplit.signCard_of_isEnum (N.M.enum τ), GlobalTheory.TowerSplit.signCard_of_isEnum (N.M.enum τ)]`. Establish `hs : Formalism.UG.HasSignature (gramAt D N.V τ) (N.V.sig (tauE D τ)).1 (N.V.sig (tauE D τ)).2` using `h (tauE D τ)`. Take `⟨e1, e2⟩` from `Formalism.UG.P.signature_unique _ _ _ _ _ _ hm hs`. Conclude with `⟨N.M.lam τ, N.M.ε τ, N.M.enum τ, GlobalTheory.Published.HermitianUnique.isHCParam_of_isDS (N.M.enum τ).1 (N.M.ds τ), e1, e2⟩`.
+-/
 theorem goodPar_of_sigOK {D : D7} (N : GlobalTheory.Grid.Node D) (h : N.V.SigOK) (τ : D.what₂.Tau) :
     GoodPar N.V.rank (N.V.sig (tauE D τ)).1 (N.V.sig (tauE D τ)).2 (N.S τ) := by
   have hm := GlobalTheory.TowerSplit.hasSignature_of_model N.M τ

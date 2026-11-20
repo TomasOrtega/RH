@@ -8,6 +8,11 @@ noncomputable section
 namespace GlobalTheory.Glob.IntegralWittCoefficients.Model
 open NumberField Formalism.BasicNotions Classical Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric
 
+/- English proof (translation)
+Set `e : {w : ℂ // w ∈ Λ' ∧ w ≠ 0} ≃ {w : ℂ // w ∈ Λ ∧ w ≠ 0}` to `Equiv.subtypeEquiv (Equiv.mulLeft₀ c hc) (fun w => by simp [h, hc])`. Unfold `eisG`. Rewrite using `[← e.tsum_eq, ← tsum_mul_left]`. Use `tsum_congr fun w => ?_` and prove the remaining obligations. Establish `hw : (w : ℂ) ≠ 0` using `w.2.2`.
+
+Establish `: ((e w : {w : ℂ // w ∈ Λ ∧ w ≠ 0}) : ℂ) = c * w` using `rfl`. Rewrite using `[this]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eisG_scale {Λ Λ' : AddSubgroup ℂ} {c : ℂ} (hc : c ≠ 0) (h : ∀ z, z ∈ Λ' ↔ c * z ∈ Λ) (k : ℕ) :
     eisG Λ' k = c ^ (2 * k) * eisG Λ k := by
   let e : {w : ℂ // w ∈ Λ' ∧ w ≠ 0} ≃ {w : ℂ // w ∈ Λ ∧ w ≠ 0} :=
@@ -29,6 +34,25 @@ def gaussPair : PeriodPair := ⟨1, Complex.I, by
   simp at e1 e2
   exact ⟨e1, e2⟩⟩
 
+/- English proof (translation)
+Set `Λ₀ : AddSubgroup ℂ` to `gaussPair.lattice.toAddSubgroup`. Establish `hm : ∀ z, z ∈ Λ₀ ↔ ∃ m n : ℤ, (m : ℂ) + n * Complex.I = z` using `fun z => by show z ∈ gaussPair.lattice ↔ _`. Rewrite using `[PeriodPair.mem_lattice]`. Simplify using `[gaussPair]`. Establish `hI : ∀ z, z ∈ Λ₀ ↔ Complex.I * z ∈ Λ₀` using `fun z => by`.
+
+Rewrite using `[hm, hm]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, n, rfl⟩`. Use `⟨-n, m, ?_⟩` and prove the remaining obligations. Use `push_cast`.
+
+Take the linear combination `(-(n : ℂ)) * Complex.I_mul_I`. Introduce and unpack `⟨m, n, h⟩`. Use `⟨n, -m, ?_⟩` and prove the remaining obligations. Use `push_cast`. Take the linear combination `(-Complex.I) * h + ((n : ℂ) - z) * Complex.I_mul_I`.
+
+Establish `h3 : eisG Λ₀ 3 = 0`. Use `eisG_scale Complex.I_ne_zero hI 3` as an intermediate fact. Establish `h6 : Complex.I ^ (2 * 3) = -1` using `by rw [pow_mul, Complex.I_sq]; norm_num`. Rewrite `this` using `[h6]`. Take the linear combination `this / 2`.
+
+Establish `hd` using `GlobalTheory.CurveLattice.discr_ne_zero Λ₀ gaussPair (fun _ => Iff.rfl)`. Establish `h2 : g2 Λ₀ ≠ 0`. Introduce `h0`. Apply `hd` to reduce the goal to its premises. Simplify using `[TaylorLogMetric.discr, h0, g3, h3]`.
+
+Take `⟨c, hc⟩` from `IsAlgClosed.exists_pow_nat_eq (4 / g2 Λ₀) (n := 4) (by norm_num)`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Establish `: (4 : ℂ) / g2 Λ₀ ≠ 0` using `div_ne_zero (by norm_num) h2`. Apply `this` to reduce the goal to its premises.
+
+Rewrite using `[← hc]`. Evaluate the numerical expressions. Set `Λ : AddSubgroup ℂ` to `Λ₀.comap (AddMonoidHom.mulLeft c)`. Establish `hΛ : ∀ z, z ∈ Λ ↔ c * z ∈ Λ₀` using `fun _ => Iff.rfl`. Use `⟨Λ, c, hc0, fun z => (hΛ z).trans (hm _), ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `: g2 Λ = c ^ 4 * g2 Λ₀`. Rewrite using `[g2, g2, eisG_scale hc0 hΛ 2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, hc]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[g3, eisG_scale hc0 hΛ 3, h3]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_gauss : ∃ (Λ : AddSubgroup ℂ) (c : ℂ), c ≠ 0 ∧
     (∀ z, z ∈ Λ ↔ ∃ m n : ℤ, (m : ℂ) + n * Complex.I = c * z) ∧ g2 Λ = 4 ∧ g3 Λ = 0 := by
   let Λ₀ : AddSubgroup ℂ := gaussPair.lattice.toAddSubgroup
@@ -70,15 +94,32 @@ theorem exists_gauss : ∃ (Λ : AddSubgroup ℂ) (c : ℂ), c ≠ 0 ∧
     rw [this, hc]; field_simp
   · rw [g3, eisG_scale hc0 hΛ 3, h3]; simp
 
+/- English proof (translation)
+The claim follows from `haveI : Algebra.IsAlgebraic ℚ Qbar := algebraicClosure.isAlgebraic ℚ ℂ ⟨(IsAlgClosed.lift (R := ℚ) (S := Qbar) (M := ℂ_[p])).toRingHom⟩`.
+-/
 theorem nonempty_place (p : ℕ) [Fact p.Prime] : Nonempty (Qbar →+* ℂ_[p]) :=
   haveI : Algebra.IsAlgebraic ℚ Qbar := algebraicClosure.isAlgebraic ℚ ℂ
   ⟨(IsAlgClosed.lift (R := ℚ) (S := Qbar) (M := ℂ_[p])).toRingHom⟩
 
+/- English proof (translation)
+Establish `h1 : (2 : ℂ_[p]) = algebraMap ℚ_[p] ℂ_[p] ((2 : ℕ) : ℚ_[p])` using `by simp [map_ofNat]`. Rewrite using `[h1, norm_algebraMap', Padic.norm_natCast_eq_one_iff]`. Conclude with `(Nat.coprime_primes Fact.out Nat.prime_two).2 hp`.
+-/
 theorem norm_two {p : ℕ} [Fact p.Prime] (hp : p ≠ 2) : ‖(2 : ℂ_[p])‖ = 1 := by
   have h1 : (2 : ℂ_[p]) = algebraMap ℚ_[p] ℂ_[p] ((2 : ℕ) : ℚ_[p]) := by simp [map_ofNat]
   rw [h1, norm_algebraMap', Padic.norm_natCast_eq_one_iff]
   exact (Nat.coprime_primes Fact.out Nat.prime_two).2 hp
 
+/- English proof (translation)
+Take `⟨Λ, c, hc, hΛ, h2, h3⟩` from `exists_gauss`. Take `⟨lam⟩` from `nonempty_place p`. Establish `hW : (1 : WeierstrassCurve.VariableChange ℂ_[p]) • wModel lam Λ = ⟨0, 0, 0, -1, 0⟩`. Rewrite using `[one_smul, wModel, h2, h3]`. Establish `e1 : lamC lam (-4 / 4) = -1`.
+
+Establish `: (-4 / 4 : ℂ) = ((-1 : Qbar) : ℂ)` using `by norm_num`. Rewrite using `[this, lamC, dif_pos (-1 : Qbar).2]`. Conclude with `(map_neg lam 1).trans (by rw [map_one])`. Establish `e0 : lamC lam (-0 / 4) = 0`. Establish `: (-0 / 4 : ℂ) = ((0 : Qbar) : ℂ)` using `by norm_num`.
+
+Rewrite using `[this, lamC, dif_pos (0 : Qbar).2]`. Conclude with `map_zero lam`. Rewrite using `[e1, e0]`. Take `⟨wq, hwq⟩` from `GlobalTheory.GenusOneDatum.exists_isWq ((1 : WeierstrassCurve.VariableChange ℂ_[p]) • wModel lam Λ)`. Take `⟨ex, he0, he⟩` from `GlobalTheory.GenusOneDatum.exists_subst_eq_X _ (GlobalTheory.GenusOneDatum.constantCoeff_flog _ wq) (GlobalTheory.GenusOneDatum.coeff_one_flog hwq)`.
+
+Use `⟨⟨lam, Λ, 1, wq, ex⟩, ⟨?_, hwq, he0, he⟩, ?_, hW, h2, h3, c, hc, hΛ⟩` and prove the remaining obligations. Simplify using `only [IsModelU, hW, IsIntP]`. Use `⟨by simp, by simp, by simp, by simp, by simp, ?_⟩` and prove the remaining obligations. Establish `: (⟨0, 0, 0, -1, 0⟩ : WeierstrassCurve ℂ_[p]).Δ = 2 ^ 6`. Simplify using `[WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆, WeierstrassCurve.b₈]`.
+
+Evaluate the numerical expressions. Rewrite using `[this, norm_pow, norm_two hp, one_pow]`. Simplify using `only [ModelOverW, hW]`. Conclude with `⟨zero_mem _, zero_mem _, zero_mem _, neg_mem (one_mem _), zero_mem _⟩`.
+-/
 theorem exists_ok (p : ℕ) [Fact p.Prime] (hp : p ≠ 2) :
     ∃ g : G1 p, g.Ok ∧ ModelOverW g.lam g.abelian₂ g.C ∧ g.W = ⟨0, 0, 0, -1, 0⟩ ∧ g2 g.abelian₂ = 4 ∧ g3 g.abelian₂ = 0 ∧
       ∃ c : ℂ, c ≠ 0 ∧ ∀ z, z ∈ g.abelian₂ ↔ ∃ m n : ℤ, (m : ℂ) + n * Complex.I = c * z := by
@@ -110,9 +151,15 @@ theorem exists_ok (p : ℕ) [Fact p.Prime] (hp : p ≠ 2) :
 
 def ofRec {p : ℕ} [Fact p.Prime] (g : GL3Theta.G1 p) : G1 p := ⟨g.lam, g.abelian₂, g.C, g.wq, g.ex⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem at_ofRec (D : D7) {p : ℕ} [Fact p.Prime] (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (g : GL3Theta.G1 p) :
     At D cc δ (ofRec g) ↔ GL3Theta.At D cc δ g := Iff.rfl
 
+/- English proof (translation)
+Take `⟨δ, hδ⟩` from `IsAlgClosed.exists_pow_nat_eq (TaylorLogMetric.discr (lamOf D cc 1)) (n := 12) (by norm_num)`. Take `⟨g, hg, hl, -⟩` from `GlobalTheory.GenusOneDatum.exists_genusOne_datum D (GlobalTheory.UnitModel.modelEx_holds D) p lam cc δ ⟨h1, hδ⟩ h3`. Conclude with `⟨δ, ofRec g, hg, hl⟩`.
+-/
 theorem exists_at (D : D7) (p : ℕ) [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) (cc : Ideal (𝓞 D.host.K))
     (h1 : IsCurveIdeal D cc) (h3 : Nat.Coprime (Ideal.absNorm cc) p) :
     ∃ (δ : ℂ) (g : G1 p), At D cc δ g ∧ g.lam = lam := by
@@ -121,11 +168,19 @@ theorem exists_at (D : D7) (p : ℕ) [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) (
     ⟨h1, hδ⟩ h3
   exact ⟨δ, ofRec g, hg, hl⟩
 
+/- English proof (translation)
+Take `⟨lam⟩` from `nonempty_place p`. Take `⟨δ, g, h, -⟩` from `exists_at D p lam ⊤ ⟨by simp, by simp⟩ (by simp)`. Conclude with `⟨δ, g, h⟩`.
+-/
 theorem exists_at_top (D : D7) (p : ℕ) [Fact p.Prime] : ∃ (δ : ℂ) (g : G1 p), At D ⊤ δ g := by
   obtain ⟨lam⟩ := nonempty_place p
   obtain ⟨δ, g, h, -⟩ := exists_at D p lam ⊤ ⟨by simp, by simp⟩ (by simp)
   exact ⟨δ, g, h⟩
 
+/- English proof (translation)
+Use `⟨by simp, fun α => ?_⟩` and prove the remaining obligations. Rewrite using `[sub_self]`. Use `show ‖∑ n ∈ Finset.range ((α.sum fun _ k => k) + 1), MvPowerSeries.coeff α ((0 : MvPowerSeries σ ℂ_[p]) ^ n) / (n.factorial : ℂ_[p])‖ ≤ 1`. Rewrite using `[Finset.sum_eq_single 0]`. Apply the tactic sequence `simp only [pow_zero, MvPowerSeries.coeff_one] split_ifs <;> simp`.
+
+Introduce `n _ hn`. Simplify using `[hn]`. Simplify using the standard rewrite rules.
+-/
 theorem simeq_refl {σ : Type*} {p : ℕ} [Fact p.Prime] (f : MvPowerSeries σ ℂ_[p]) : Simeq f f := by
   refine ⟨by simp, fun α => ?_⟩
   rw [sub_self]
@@ -138,6 +193,17 @@ theorem simeq_refl {σ : Type*} {p : ℕ} [Fact p.Prime] (f : MvPowerSeries σ �
     simp [hn]
   · simp
 
+/- English proof (translation)
+Introduce and unpack `⟨-, h⟩`. Establish `h1` using `h (Finsupp.single () p)`. Rewrite `h1` using `[sub_zero]`. Express the relevant statement in the definitionally equal form `‖∑ n ∈ Finset.range (((Finsupp.single () p).sum fun _ k => k) + 1), MvPowerSeries.coeff (Finsupp.single () p) ((MvPowerSeries.X () : MvPowerSeries Unit ℂ_[p]) ^ n) / (n.factorial : ℂ_[p])‖ ≤ 1 at h1`. Rewrite `h1` using `[Finset.sum_eq_single p]`.
+
+Rewrite `h1` using `[MvPowerSeries.coeff_X_pow, if_pos rfl, norm_div, norm_one]`. Establish `e : ((p.factorial : ℕ) : ℂ_[p]) = algebraMap ℚ_[p] ℂ_[p] ((p.factorial : ℕ) : ℚ_[p])` using `by simp`. Establish `hlt : ‖((p.factorial : ℕ) : ℂ_[p])‖ < 1`. Rewrite using `[e, norm_algebraMap', Padic.norm_natCast_lt_one_iff]`. Conclude with `Nat.dvd_factorial (Fact.out : p.Prime).pos le_rfl`.
+
+Establish `hpos : 0 < ‖((p.factorial : ℕ) : ℂ_[p])‖`. Rewrite using `[norm_pos_iff]`. Conclude with `p.factorial_ne_zero` after adjusting the coercions. Rewrite `h1` using `[div_le_one hpos]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Introduce `n _ hn`. Rewrite using `[MvPowerSeries.coeff_X_pow, if_neg]`. Simplify using the standard rewrite rules. Introduce `e`. Conclude with `hn ((Finsupp.single_injective ()) e).symm`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem not_simeq_X (p : ℕ) [Fact p.Prime] : ¬ Simeq (Xv () : MvPowerSeries Unit ℂ_[p]) 0 := by
   rintro ⟨-, h⟩
   have h1 := h (Finsupp.single () p)
@@ -162,12 +228,18 @@ theorem not_simeq_X (p : ℕ) [Fact p.Prime] : ¬ Simeq (Xv () : MvPowerSeries U
       exact hn ((Finsupp.single_injective ()) e).symm
   · simp
 
+/- English proof (translation)
+Establish `hp : (p : ℕ) ^ 2 ≠ 1`. Use `(Fact.out : p.Prime).two_le` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Simplify using `[logF, Finset.sum_range_succ, hp.symm]`.
+-/
 theorem coeff_one_logF (p : ℕ) [Fact p.Prime] : PowerSeries.coeff 1 (logF p) = 1 := by
   have hp : (p : ℕ) ^ 2 ≠ 1 := by
     have := (Fact.out : p.Prime).two_le
     nlinarith
   simp [logF, Finset.sum_range_succ, hp.symm]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Simplify using `[hP, Finset.mul_sum, mul_assoc]`. Simplify using `only [hP, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp <;> ring`.
+-/
 theorem hP_smul {p : ℕ} [Fact p.Prime] {ι : Type*} [Fintype ι] (a : ℂ_[p] × ℂ_[p]) (x y : ι → ℂ_[p] × ℂ_[p]) :
     hP (fun k => a * x k) y = a * hP x y ∧ hP x (fun k => a * y k) = a.swap * hP x y := by
   constructor
@@ -179,15 +251,32 @@ theorem hP_smul {p : ℕ} [Fact p.Prime] {ι : Type*} [Fintype ι] (a : ℂ_[p] 
 def stdLat (E : Type) [Field E] [NumberField E] (N : ℕ) : Submodule (𝓞 E) (Fin N → E) :=
   Submodule.pi Set.univ fun _ => (1 : Submodule (𝓞 E) E)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by rintro ⟨a, rfl⟩; exact a.2, fun h => ⟨⟨x, h⟩, rfl⟩⟩`.
+-/
 theorem mem_range_iff {E : Type} [Field E] [NumberField E] (x : E) :
     x ∈ (algebraMap (𝓞 E) E).range ↔ IsIntegral ℤ x :=
   ⟨by rintro ⟨a, rfl⟩; exact a.2, fun h => ⟨⟨x, h⟩, rfl⟩⟩
 
+/- English proof (translation)
+Simplify using `only [stdLat, Submodule.mem_pi, Set.mem_univ, forall_true_left, Submodule.mem_one]`. Conclude with `forall_congr' fun k => mem_range_iff (x k)`.
+-/
 theorem mem_stdLat {E : Type} [Field E] [NumberField E] {N : ℕ} (x : Fin N → E) :
     x ∈ stdLat E N ↔ ∀ k, IsIntegral ℤ (x k) := by
   simp only [stdLat, Submodule.mem_pi, Set.mem_univ, forall_true_left, Submodule.mem_one]
   exact forall_congr' fun k => mem_range_iff (x k)
 
+/- English proof (translation)
+Establish `hs : ∀ k : Fin N, (Pi.single k 1 : Fin N → E) ∈ stdLat E N` using `fun k => by`. Rewrite using `[mem_stdLat]`. Introduce `j`. Rewrite using `[Pi.single_apply]`. Use `split_ifs`.
+
+Conclude with `isIntegral_one`. Conclude with `isIntegral_zero`. Use `⟨Submodule.fg_pi fun _ => ?_, ?_, fun y => ⟨fun hy x hx => ?_, fun h => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Submodule.one_eq_span]`. Conclude with `Submodule.fg_span_singleton _`.
+
+Rewrite using `[eq_top_iff, ← (Pi.basisFun E (Fin N)).span_eq]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Simplify using `using hs k`. Rewrite using `[mem_range_iff]`.
+
+Rewrite `hx`, `hy` using `[mem_stdLat]`. Conclude with `IsIntegral.sum _ fun i _ => ((hx i).map (starRingEnd E).toIntAlgHom).mul (hy i)`. Rewrite using `[mem_stdLat]`. Introduce `k`. Use `h _ (hs k)` as an intermediate fact.
+
+Rewrite `this` using `[mem_range_iff]`. Simplify `this` using `[stdH, Pi.single_apply, apply_ite]`.
+-/
 theorem isSDLat_std (E : Type) [Field E] [NumberField E] [StarRing E] (N : ℕ) : IsSDLat E N (stdLat E N) := by
   have hs : ∀ k : Fin N, (Pi.single k 1 : Fin N → E) ∈ stdLat E N := fun k => by
     rw [mem_stdLat]
@@ -233,6 +322,9 @@ def frameChain (D : D7) (u : D.what₂.Word) : ColumnChain D.R D.what₂.Tau (D.
   sDiv := (D.mem u).C.sDiv
   sDiv_eq := (D.mem u).C.sDiv_eq
 
+/- English proof (translation)
+Set `_` to `D.host.cmStar`. Conclude with `⟨{ mt := D.muTil L0 := fun i => ⟨stdLat _ _, isSDLat_std _ _⟩ lattice_integral_coordinates := fun i x => mem_stdLat x lat := fun i _ => ⟨stdLat _ _, isSDLat_std _ _⟩ dt := fun _ _ => 1 dt_lat := fun i c => (D.relDet_self _ _).symm c13 := fun i _ => ⟨fun c => by simp [frameChain], …`.
+-/
 theorem nonempty_liftObj (D : D7) (u : D.what₂.Word) (s : D.what₂.Tau → ℂ)
     (hs : ∃ (M : IntermediateField ℚ ℂ) (_ : NumberField M), (∀ τ x, embT D τ x ∈ M) ∧ ∀ τ, ∃ t : M, (t : ℂ) = s τ ∧
       ellT D M τ = Submodule.span (𝓞 M) {t}) : Nonempty (LiftObj D (frameChain D u)) := by

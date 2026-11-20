@@ -11,9 +11,15 @@ def DecayUnifOfParts : Prop := KB.RadHead → KB.HeadTop → WaveDiffForm → De
 
 def DecayUnifOfHeads : Prop := KB.RadHead → KB.HeadTop → DecayUnif
 
+/- English proof (translation)
+Introduce `hRH hHT` and use `decayUnif_of hRH hHT Formalism.FourierDecayAlt.P.wave_difference_form`.
+-/
 theorem decayUnifOfHeads : DecayUnifOfHeads := fun hRH hHT =>
   decayUnif_of hRH hHT Formalism.FourierDecayAlt.P.wave_difference_form
 
 end Formalism.FourierDecayAlt.P.PBO
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.PBO.decayUnifOfHeads`.
+-/
 theorem Formalism.FourierDecayAlt.P.uniform_decay_of_heads : Formalism.FourierDecayAlt.P.PBO.DecayUnifOfHeads := Formalism.FourierDecayAlt.P.PBO.decayUnifOfHeads

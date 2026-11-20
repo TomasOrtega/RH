@@ -14,6 +14,11 @@ variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologic
 
 section MapAlong
 
+/- English proof (translation)
+Establish `h1 : (CochainComplex.isoHomologyπ₀ (cochainsComplex A)).inv.hom (cohomologyπ A 0 z) = z`. Conclude with `congrArg (fun φ => φ.hom z) (CochainComplex.isoHomologyπ₀ (cochainsComplex A)).hom_inv_id`. Establish `h2` using `congrArg (fun φ => φ.hom z) (cocyclesIso₀_hom_comp_f A)`. Express the relevant statement in the definitionally equal form `(shortComplexH0 A).f.hom ((cocyclesIso₀ A).hom.hom z) = cocycleι A 0 z at h2`. Express the relevant statement in the definitionally equal form `(((cocyclesIso₀ A).hom.hom ((CochainComplex.isoHomologyπ₀ (cochainsComplex A)).inv.hom (cohomologyπ A 0 z)) : A.ρ.invariants) : A) = _`.
+
+Rewrite using `[h1, ← h2]`. Both sides reduce to the same expression.
+-/
 theorem H0Iso_hom_cohomology_class_zero (A : Rep.{u} k G) [IsDiscreteRep A] (z : cocycles A 0) :
     (((H0Iso A).hom.hom (cohomologyπ A 0 z) : A.ρ.invariants) : A) =
       cochainOf A (cocycleι A 0 z) Fin.elim0 := by
@@ -30,6 +35,9 @@ variable {H : Type u} [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
   {A : Rep.{u} k G} {B : Rep.{u} k H} [IsDiscreteRep A] [IsDiscreteRep B] (φ : H →* G)
   (hφ : Continuous φ) (f : Rep.res φ A ⟶ B)
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `cohomologyπ_surjective A 0 x`. Rewrite using `[cohomologyMapAlong_cohomologyπ, H0Iso_hom_cohomology_class_zero, H0Iso_hom_cohomology_class_zero, cochainOf_cocycleι_cocyclesMapAlong]`. Express the relevant statement in the definitionally equal form `f.hom (cochainOf A (cocycleι A 0 z) (⇑φ ∘ Fin.elim0)) = _`. Rewrite using `[Subsingleton.elim (⇑φ ∘ Fin.elim0) Fin.elim0]`.
+-/
 theorem H0Iso_hom_cohomologyMapAlong (x : cohomology A 0) :
     (((H0Iso B).hom.hom ((cohomologyMapAlong φ hφ f 0).hom x) : B.ρ.invariants) : B) =
       f.hom (((H0Iso A).hom.hom x : A.ρ.invariants) : A) := by
@@ -59,15 +67,24 @@ def invariantsConj (g : G) : (Rep.res N.subtype A).ρ.invariants →ₗ[k] (Rep.
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] [IsDiscreteRep A] in
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_invariantsConj_apply (g : G) (a : (Rep.res N.subtype A).ρ.invariants) :
     ((invariantsConj A N g a : (Rep.res N.subtype A).ρ.invariants) : A) = A.ρ g a :=
   rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (H0Iso_hom_cohomologyMapAlong _ _ _ x)`.
+-/
 theorem H0Iso_hom_cohomologyConj (g : G) (x : cohomology (Rep.res N.subtype A) 0) :
     (H0Iso (Rep.res N.subtype A)).hom.hom ((cohomologyConj A N 0 g).hom x) =
       invariantsConj A N g ((H0Iso (Rep.res N.subtype A)).hom.hom x) :=
   Subtype.ext (H0Iso_hom_cohomologyMapAlong _ _ _ x)
 
+/- English proof (translation)
+Establish `h` using `H0Iso_hom_cohomologyConj A N g ((H0Iso (Rep.res N.subtype A)).inv.hom a)`. Rewrite `h` using `[H0Iso_hom_inv_apply]`. Rewrite using `[← h, H0Iso_inv_hom_apply]`.
+-/
 theorem cohomologyConj_H0Iso_inv (g : G) (a : (Rep.res N.subtype A).ρ.invariants) :
     (cohomologyConj A N 0 g).hom ((H0Iso (Rep.res N.subtype A)).inv.hom a) =
       (H0Iso (Rep.res N.subtype A)).inv.hom (invariantsConj A N g a) := by
@@ -75,6 +92,9 @@ theorem cohomologyConj_H0Iso_inv (g : G) (a : (Rep.res N.subtype A).ρ.invariant
   rw [H0Iso_hom_inv_apply] at h
   rw [← h, H0Iso_inv_hom_apply]
 
+/- English proof (translation)
+Rewrite using `[← cohomologyConj_H0Iso_inv]`. Conclude with `(congrArg (fun φ => φ.hom ((H0Iso (Rep.res N.subtype S.X₃)).inv.hom a)) (δ_comp_cohomologyConj N hS 0 1 rfl g)).symm`.
+-/
 theorem δ_H0Iso_inv_invariantsConj {S : ShortComplex (Rep.{u} k G)} [IsDiscreteRep S.X₁]
     [IsDiscreteRep S.X₂] [IsDiscreteRep S.X₃] (hS : S.ShortExact) (g : G)
     (a : (Rep.res N.subtype S.X₃).ρ.invariants) :

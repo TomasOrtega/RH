@@ -16,6 +16,21 @@ open ModularForm (E₄ E₆)
 
 namespace GlobalTheory.WpFam
 
+/- English proof (translation)
+Introduce `N _ τ ω hj hω x y hx hy`. Take `⟨hR, -, -, -, hz, -⟩` from `GlobalTheory.T.modularGroup_rowVec_and_conj_rightActions N`. Establish `hvz : ∀ (v : Fin 2 → ZMod N) (γ : SL(2, ℤ)), vact N v γ = 0 ↔ v = 0` using `fun v γ => hz v _`. Set `ι` to `{p : (Fin 2 → ZMod N) × (Fin 2 → ZMod N) // p.1 ≠ 0 ∧ p.2 ≠ 0}`. Set `act : ι → SL(2, ℤ) → ι` to `fun p γ => ⟨(vact N p.1.1 γ, vact N p.1.2 γ), by simp only [ne_eq, hvz]; exact p.2⟩`.
+
+Establish `hRA : IsRAct act` using `⟨fun p => Subtype.ext (Prod.ext (hR.1 _) (hR.1 _)), fun p γ δ => Subtype.ext (Prod.ext (hR.2 _ _ _) (hR.2 _ _ _))⟩`. Establish `h1 : IsFam act 2 (fun p => wp N p.1.1)` using `(GlobalTheory.QFam.isFam_algebra _ (vact N)).2.2.2.2.2.2.2 ι act (fun p => p.1.1) 2 (wp N) (fun _ _ => rfl) (GlobalTheory.T.weierstrassP_torsion_isModularFamily N).1`. Establish `h2 : IsFam act 2 (fun p => wp N p.1.2)` using `(GlobalTheory.QFam.isFam_algebra _ (vact N)).2.2.2.2.2.2.2 ι act (fun p => p.1.2) 2 (wp N) (fun _ _ => rfl) (GlobalTheory.T.weierstrassP_torsion_isModularFamily N).1`. Establish `hsub` using `((GlobalTheory.QFam.isFam_algebra ι act).2.1 2 _ _ h1 h2).2`. Establish `hfam : IsFam act ((2 : ℕ) : ℤ) (fun p τ => (N : ℂ) ^ 2 * (wp N p.1.1 τ - wp N p.1.2 τ))`.
+
+Use `(GlobalTheory.QFam.isFam_algebra ι act).2.2.1 2 ((N : ℂ) ^ 2) _ hsub` as an intermediate fact. Simplify using `using this`. Set `R : Subring ℂ` to `(integralClosure ℤ ℂ).toSubring`. Establish `hmem : ∀ z : ℂ, z ∈ R ↔ IsIntegral ℤ z` using `fun z => by`. Simplify using `[R, Subalgebra.mem_toSubring, mem_integralClosure_iff]`.
+
+Establish `hNx : ∀ v : Fin 2 → ZMod N, N • v = 0` using `fun v => by`. Use function extensionality and compare the values at `i`. Simplify using `[nsmul_eq_mul, ZMod.natCast_self]`. Establish `hQ : ∀ p : ι, QAll (· ∈ R) N (fun τ => (N : ℂ) ^ 2 * (wp N p.1.1 τ - wp N p.1.2 τ))`. Introduce `p`.
+
+Use `⟨fun n => (N : ℂ) ^ 2 * (cP N p.1.1 n - cP N p.1.2 n), ?_, fun n => ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.QFam.hasQ_linear N).2.2.1 _ _ _ ((GlobalTheory.QFam.hasQ_linear N).2.1 _ _ _ _ (GlobalTheory.T.hasQExpansion_normalizedWeierstrassPTorsion N _) (GlobalTheory.T.hasQExpansion_normalizedWeierstrassPTorsion N _))`. Use `show (N : ℂ) ^ 2 * (cP N p.1.1 n - cP N p.1.2 n) ∈ R`. Rewrite using `[hmem]`. Establish `e : (N : ℂ) ^ 2 * (cP N p.1.1 n - cP N p.1.2 n) = (N : ℂ) ^ 2 * cB N p.1.1 n - (N : ℂ) ^ 2 * cB N p.1.2 n`.
+
+Simplify using `only [cP, if_neg p.2.1, if_neg p.2.2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(GlobalTheory.T.isIntegral_weierstrassTorsion_qCoefficients N N p.1.1 n (NeZero.pos N) (hNx _)).1.sub (GlobalTheory.T.isIntegral_weierstrassTorsion_qCoefficients N N p.1.2 n (NeZero.pos N) (hNx _)).1`. Establish `hjR : IsIntegral R (jT τ)` using `hj.tower_top`.
+
+Establish `hT` using `GlobalTheory.T.isIntegral_modularFamily_value_div_period_pow ι act 2 N (fun p τ => (N : ℂ) ^ 2 * (wp N p.1.1 τ - wp N p.1.2 τ)) R τ ω (NeZero.pos N) hRA.actBij hfam hQ hjR hω ⟨(x, y), hx, hy⟩`. Use `haveI : Algebra.IsIntegral ℤ R := ⟨fun r => by`. Establish `h : IsIntegral ℤ ((r : ℂ))` using `(hmem _).1 r.2`. Conclude with `(isIntegral_algHom_iff (R.subtype.toIntAlgHom) Subtype.coe_injective).1 h⟩`. Conclude with `isIntegral_trans _ hT`.
+-/
 theorem isIntegral_sq_mul_wp_sub_div : ∀ (N : ℕ) [NeZero N] (τ : ℍ) (ω : ℂ), IsIntegral ℤ (jT τ) → ω ^ 12 = DD τ →
     ∀ x y : Fin 2 → ZMod N, x ≠ 0 → y ≠ 0 →
       IsIntegral ℤ ((N : ℂ) ^ 2 * (wp N x τ - wp N y τ) / ω ^ 2) := by

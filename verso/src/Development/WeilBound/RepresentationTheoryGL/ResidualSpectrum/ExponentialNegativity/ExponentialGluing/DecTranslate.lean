@@ -20,14 +20,27 @@ def Dec (μ : Measure G) (ρ : ℝ) (a : ℝ → G) (H : G → ℂ) : Prop :=
 
 variable (μ : Measure G) [μ.IsHaarMeasure] (ρ : ℝ) (a : ℝ → G)
 
+/- English proof (translation)
+The claim follows from `((hH.comp (continuous_const.mul continuous_id)).norm.pow 2).continuousOn.integrableOn_compact hQ`.
+-/
 theorem intOn {H : G → ℂ} (hH : Continuous H) {Q : Set G} (hQ : IsCompact Q) (t : ℝ) :
     IntegrableOn (fun g => ‖H (a t * g)‖ ^ 2) Q μ :=
   ((hH.comp (continuous_const.mul continuous_id)).norm.pow 2).continuousOn.integrableOn_compact hQ
 
+/- English proof (translation)
+Use `⟨continuous_const, fun Q _ => ?_⟩` and prove the remaining obligations. Simplify using `using (tendsto_const_nhds : Tendsto (fun _ : ℝ => (0 : ℝ)) atTop (𝓝 0))`.
+-/
 theorem dec_zero : Dec μ ρ a 0 := by
   refine ⟨continuous_const, fun Q _ => ?_⟩
   simpa using (tendsto_const_nhds : Tendsto (fun _ : ℝ => (0 : ℝ)) atTop (𝓝 0))
 
+/- English proof (translation)
+Use `⟨h₁.1.add h₂.1, fun Q hQ => ?_⟩` and prove the remaining obligations. Establish `hlim` using `((h₁.2 Q hQ).const_mul 2).add ((h₂.2 Q hQ).const_mul 2)`. Simplify using `only [mul_zero, add_zero] at hlim`. Use `tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds hlim (fun t => ?_) (fun t => ?_)` and prove the remaining obligations. Conclude with `mul_nonneg (Real.exp_pos _).le (integral_nonneg fun _ => by positivity)`.
+
+Establish `hle : ∫ g in Q, ‖(H₁ + H₂) (a t * g)‖ ^ 2 ∂μ ≤ ∫ g in Q, (2 * ‖H₁ (a t * g)‖ ^ 2 + 2 * ‖H₂ (a t * g)‖ ^ 2) ∂μ`. Use `integral_mono (intOn μ a (h₁.1.add h₂.1) hQ t) (((intOn μ a h₁.1 hQ t).const_mul 2).add ((intOn μ a h₂.1 hQ t).const_mul 2)) (fun g => ?_)` and prove the remaining obligations. Simplify using `only [Pi.add_apply]`. Establish `h` using `norm_add_le (H₁ (a t * g)) (H₂ (a t * g))`. Establish `h'` using `mul_le_mul h h (norm_nonneg _) (by positivity)`.
+
+Use polynomial arithmetic with `[sq_nonneg (‖H₁ (a t * g)‖ - ‖H₂ (a t * g)‖)]`. Rewrite `hle` using `[integral_add ((intOn μ a h₁.1 hQ t).const_mul 2) ((intOn μ a h₂.1 hQ t).const_mul 2), integral_const_mul, integral_const_mul]`. Establish `he` using `(Real.exp_pos (-(2 * ρ * t))).le`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem dec_add {H₁ H₂ : G → ℂ} (h₁ : Dec μ ρ a H₁) (h₂ : Dec μ ρ a H₂) : Dec μ ρ a (H₁ + H₂) := by
   refine ⟨h₁.1.add h₂.1, fun Q hQ => ?_⟩
   have hlim := ((h₁.2 Q hQ).const_mul 2).add ((h₂.2 Q hQ).const_mul 2)
@@ -49,6 +62,11 @@ theorem dec_add {H₁ H₂ : G → ℂ} (h₁ : Dec μ ρ a H₁) (h₂ : Dec μ
           2 * ∫ g in Q, ‖H₂ (a t * g)‖ ^ 2 ∂μ) := mul_le_mul_of_nonneg_left hle he
       _ = _ := by ring
 
+/- English proof (translation)
+Use `⟨h.1.const_smul c, fun Q hQ => ?_⟩` and prove the remaining obligations. Establish `e : ∀ t, Real.exp (-(2 * ρ * t)) * ∫ g in Q, ‖(c • H) (a t * g)‖ ^ 2 ∂μ = ‖c‖ ^ 2 * (Real.exp (-(2 * ρ * t)) * ∫ g in Q, ‖H (a t * g)‖ ^ 2 ∂μ)`. Introduce `t`. Simplify using `only [Pi.smul_apply, smul_eq_mul, norm_mul, mul_pow]`. Rewrite using `[integral_const_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `(tendsto_congr e).2 ?_` and prove the remaining obligations. Simplify using `using (h.2 Q hQ).const_mul (‖c‖ ^ 2)`.
+-/
 theorem dec_smul (c : ℂ) {H : G → ℂ} (h : Dec μ ρ a H) : Dec μ ρ a (c • H) := by
   refine ⟨h.1.const_smul c, fun Q hQ => ?_⟩
   have e : ∀ t, Real.exp (-(2 * ρ * t)) * ∫ g in Q, ‖(c • H) (a t * g)‖ ^ 2 ∂μ =
@@ -59,6 +77,13 @@ theorem dec_smul (c : ℂ) {H : G → ℂ} (h : Dec μ ρ a H) : Dec μ ρ a (c 
   refine (tendsto_congr e).2 ?_
   simpa using (h.2 Q hQ).const_mul (‖c‖ ^ 2)
 
+/- English proof (translation)
+Use `⟨h.1.comp (continuous_const.mul continuous_id), fun Q hQ => ?_⟩` and prove the remaining obligations. Use `set S : Set G := (fun x => (a s)⁻¹ * x) ⁻¹' Q with hSdef`. Establish `hS : IsCompact S` using `(Homeomorph.mulLeft (a s)⁻¹).isCompact_preimage.2 hQ`. Establish `hpre : (fun x => a s * x) ⁻¹' S = Q` using `by ext x; simp [hSdef]`. Establish `e : ∀ t, ∫ g in Q, ‖H (a s * (a t * g))‖ ^ 2 ∂μ = ∫ g in S, ‖H (a t * g)‖ ^ 2 ∂μ`.
+
+Introduce `t`. Use `(measurePreserving_mul_left μ (a s)).setIntegral_preimage_emb (measurableEmbedding_mulLeft (a s)) (fun g => ‖H (a t * g)‖ ^ 2) S` as an intermediate fact. Rewrite `this` using `[hpre]`. Rewrite using `[← this]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `x`. Rewrite using `[← mul_assoc, hcomm, mul_assoc]`. Use `(tendsto_congr fun t => ?_).2 (h.2 S hS)` and prove the remaining obligations. Simplify using `only [e t]`.
+-/
 theorem dec_translate (hcomm : ∀ s t, a s * a t = a t * a s) (s : ℝ) {H : G → ℂ} (h : Dec μ ρ a H) :
     Dec μ ρ a (fun g => H (a s * g)) := by
   refine ⟨h.1.comp (continuous_const.mul continuous_id), fun Q hQ => ?_⟩

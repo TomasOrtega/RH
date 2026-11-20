@@ -13,6 +13,27 @@ noncomputable section
 
 namespace HadamardQuotient
 
+/- English proof (translation)
+Use `set y : ι → M ⧸ F := F.mkQ ∘ x with hy_def`. Take `⟨s, hs, hmax⟩` from `exists_maximal_linearIndepOn R y`. Establish `hfin : Finite s` using `LinearIndependent.finite_of_isNoetherian hs`. Use `set S : Submodule R (M ⧸ F) := span R (y '' s) with hS_def`. Establish `hy : ∀ i, S.mkQ (y i) ∈ torsion R ((M ⧸ F) ⧸ S)`.
+
+Introduce `i`. Distinguish the cases in `hi : i ∈ s`. Establish `h0 : S.mkQ (y i) = 0` using `(Submodule.Quotient.mk_eq_zero S).mpr (subset_span ⟨i, hi, rfl⟩)`. Rewrite using `[h0]`. Conclude with `zero_mem _`.
+
+Take `⟨a, ha, h⟩` from `hmax i hi`. Use `⟨⟨a, mem_nonZeroDivisors_of_ne_zero ha⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `a • S.mkQ (y i) = 0`. Rewrite using `[← map_smul, mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `h`.
+
+Establish `hspan : span R (Set.range y) ≤ (torsion R ((M ⧸ F) ⧸ S)).comap S.mkQ` using `span_le.mpr (by rintro _ ⟨i, rfl⟩; exact hy i)`. Use `set N : Submodule R M := span R (Set.range x) with hN_def`. Establish `hN : finrank R (M ⧸ N) = 0`. Establish `h` using `rank_quotient_add_rank_of_isDomain N`. Rewrite `h` using `[← finrank_eq_rank, ← finrank_eq_rank, ← finrank_eq_rank]`.
+
+Normalize the coercions in `at h`. Use linear arithmetic over natural numbers and integers. Establish `hQS : finrank R ((M ⧸ F) ⧸ S) = 0`. Rewrite using `[Module.finrank_eq_zero_iff]`. Introduce `q`.
+
+Take `⟨q, rfl⟩` from `S.mkQ_surjective q`. Take `⟨m, rfl⟩` from `F.mkQ_surjective q`. Take `⟨a, ha, ham⟩` from `Module.finrank_eq_zero_iff.mp hN (N.mkQ m)`. Establish `h1 : a • m ∈ N`. Rewrite `ham` using `[← map_smul, mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
+
+Conclude with `ham`. Establish `h2 : F.mkQ (a • m) ∈ span R (Set.range y)`. Establish `h` using `Submodule.mem_map_of_mem (f := F.mkQ) h1`. Rewrite `h` using `[hN_def, Submodule.map_span, ← Set.range_comp]`. Then use the resulting hypothesis. Take `⟨⟨b, hb⟩, hbm⟩` from `hspan h2`.
+
+Use `⟨b * a, mul_ne_zero (nonZeroDivisors.ne_zero hb) ha, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `b • S.mkQ (F.mkQ (a • m)) = 0 at hbm`. Rewrite using `[mul_smul, ← map_smul, ← map_smul, ← map_smul, ← map_smul]`. Rewrite `hbm` using `[map_smul, map_smul]`. Rewrite using `[map_smul, map_smul]`.
+
+Conclude with `hbm`. Establish `hadd` using `rank_quotient_add_rank_of_isDomain S`. Rewrite `hadd` using `[← finrank_eq_rank, ← finrank_eq_rank, ← finrank_eq_rank]`. Normalize the coercions in `at hadd`. Use `Fintype.ofFinite s` as an intermediate fact.
+
+Establish `hSr : finrank R S = Nat.card s`. Rewrite using `[hS_def, Set.image_eq_range, Nat.card_eq_fintype_card]`. Conclude with `finrank_span_eq_card hs`. Conclude with `⟨s, hs, hfin, by omega⟩`.
+-/
 theorem exists_subfamily_card_eq_finrank {R M : Type*} [CommRing R] [IsDomain R]
     [IsNoetherianRing R] [AddCommGroup M] [Module R M] [Module.Finite R M] (F : Submodule R M)
     {ι : Type*} (x : ι → M) (hx : finrank R (span R (Set.range x)) = finrank R M) :
@@ -75,6 +96,9 @@ theorem exists_subfamily_card_eq_finrank {R M : Type*} [CommRing R] [IsDomain R]
 
 variable {K : Type*} [Field K] [NumberField K]
 
+/- English proof (translation)
+Establish `h` using `HermitianBundle.quot_norm_eq_iInf M F hF σ ((1 : ComplexAt σ) ⊗ₜ[𝓞 K] (F.mkQ x : M.carrier ⧸ F))`. Use `(le_of_eq h).trans ?_` and prove the remaining obligations. Conclude with `ciInf_le ⟨0, by rintro _ ⟨y, rfl⟩; exact norm_nonneg _⟩ (⟨(1 : ComplexAt σ) ⊗ₜ[𝓞 K] x, rfl⟩ : {y : Fibre σ M.carrier // F.mkQ.lTensor (ComplexAt σ) y = (1 : ComplexAt σ) ⊗ₜ[𝓞 K] F.mkQ x})`.
+-/
 theorem normAt_mkQ_le (M : HermitianBundle K) (F : Submodule (𝓞 K) M.carrier) (hF : M.Saturated F)
     (σ : K →+* ℂ) (x : M.carrier) :
     (M.quot F hF).normAt σ (F.mkQ x) ≤ M.normAt σ x := by
@@ -87,6 +111,9 @@ theorem normAt_mkQ_le (M : HermitianBundle K) (F : Submodule (𝓞 K) M.carrier)
 
 end HadamardQuotient
 
+/- English proof (translation)
+Introduce `K _ _ M F hF ι x La hx hLa`. Take `⟨s, hs, hfin, hcard⟩` from `exists_subfamily_card_eq_finrank F x hx`. Use `Fintype.ofFinite s` as an intermediate fact. Conclude with `h1 K (M.quot F hF) (ι := s) (fun i ↦ F.mkQ (x i)) La hs (by rw [← Nat.card_eq_fintype_card]; exact hcard) (fun i σ ↦ (normAt_mkQ_le M F hF σ (x i)).trans (hLa i σ))`.
+-/
 theorem HadamardQuotient.proof (h1 : Hadamard.Statement.{u, v, w}) :
     HadamardQuotient.Statement.{u, v, w} := by
   intro K _ _ M F hF ι x La hx hLa

@@ -18,6 +18,9 @@ section Gen
 variable {X : Fields} {Pr : Primes X} (hc : CMData X.F X.E) (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word)
 
 include hPr in
+/- English proof (translation)
+Use `show (Pr.T u : 𝓞 X.F) ∈ P.1.asIdeal.comap (algebraMap (𝓞 X.F) (𝓞 X.E))`. Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `T_mem hPr u P`.
+-/
 theorem att_T_mem_under (P : {P // P ∈ Pr.vT u}) : (Pr.T u : 𝓞 X.F) ∈ (underPl X.F P.1).asIdeal := by
   show (Pr.T u : 𝓞 X.F) ∈ P.1.asIdeal.comap (algebraMap (𝓞 X.F) (𝓞 X.E))
   rw [Ideal.mem_comap, map_natCast]
@@ -35,8 +38,14 @@ def tieEV : {P // P ∈ Pr.vT u} ≃ {v : HeightOneSpectrum (𝓞 X.F) // (Pr.T 
       obtain ⟨P, hP, hov⟩ := (mem_plUnder_iff_norm hc (rls_vT_iff hX hPr u) (Pr.T u) (hPr.piT_norm u) v).2 hv
       exact ⟨⟨P, hP⟩, Subtype.ext (HeightOneSpectrum.ext hov.symm)⟩)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tieEV_over (P : {P // P ∈ Pr.vT u}) : IsOver (tieEV hc hX hPr u P).1 P.1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tieEV_val (P : {P // P ∈ Pr.vT u}) : (tieEV hc hX hPr u P).1 = underPl X.F P.1 := rfl
 
 end Gen
@@ -48,6 +57,13 @@ variable {K : Type} [Field K] [NumberField K] (Pl : Rows.Places K) (pw : Pl.Pl �
 
 include hval in
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Establish `h0 : Pl.val w (((0 : 𝓞 K) : 𝓞 K) : K) = ⊤`. Rewrite using `[show (((0 : 𝓞 K) : 𝓞 K) : K) = 0 from rfl]`. Conclude with `(Pl.val w).map_zero`.
+
+Rewrite using `[h0]`. Conclude with `⟨fun _ => zero_mem _, fun _ => WithTop.coe_lt_top (0 : ℤ)⟩`. Establish `hx' : (x : K) ≠ 0` using `fun h => hx (RingOfIntegers.ext h)`. Establish `h0 : (pw w).valuation K (x : K) ≠ 0` using `(Valuation.ne_zero_iff _).2 hx'`. Rewrite using `[hval w _ hx', ← (pw w).valuation_lt_one_iff_mem (K := K)]`.
+
+Unfold `Formalism.BasicNotions.vAdd`. Rewrite using `[← WithTop.coe_zero, WithTop.coe_lt_coe, neg_pos, ← WithZero.log_one, WithZero.log_lt_log h0 one_ne_zero]`.
+-/
 theorem att_val_pos (w : Pl.Pl) (x : 𝓞 K) : (0 : WithTop ℤ) < Pl.val w (x : K) ↔ x ∈ (pw w).asIdeal := by
   by_cases hx : x = 0
   · subst hx
@@ -64,6 +80,9 @@ theorem att_val_pos (w : Pl.Pl) (x : 𝓞 K) : (0 : WithTop ℤ) < Pl.val w (x :
 
 include hval in
 
+/- English proof (translation)
+Rewrite using `[← att_val_pos Pl pw hval]`. Establish `h` using `Pl.val_resChar w`. Establish `e : ((((Pl.resChar w : ℕ) : 𝓞 K) : 𝓞 K) : K) = ((Pl.resChar w : ℕ) : K)` using `map_natCast (algebraMap (𝓞 K) K) _`. Rewrite using `[e, h, ← WithTop.coe_zero, WithTop.coe_lt_coe]`. Conclude with `Pl.ramIdx_pos w` after adjusting the coercions.
+-/
 theorem att_resChar_mem (w : Pl.Pl) : ((Pl.resChar w : ℕ) : 𝓞 K) ∈ (pw w).asIdeal := by
   rw [← att_val_pos Pl pw hval]
   have h := Pl.val_resChar w
@@ -79,10 +98,18 @@ variable {X : Fields} {Pr : Primes X} (hc : CMData X.F X.E) (hX : X.Ok) (hPr : P
 
 include hc in
 
+/- English proof (translation)
+Rewrite using `[mem_conjP, rll_cO_algebraMap hc]`.
+-/
 theorem att_mem_conjP (P : Pl X.E) (x : 𝓞 X.F) :
     algebraMap (𝓞 X.F) (𝓞 X.E) x ∈ (conjPrime₂ P).asIdeal ↔ algebraMap (𝓞 X.F) (𝓞 X.E) x ∈ P.asIdeal := by
   rw [mem_conjP, rll_cO_algebraMap hc]
 
+/- English proof (translation)
+Use `hX.nonempty_Tau` as an intermediate fact. Establish `e : tauOfR hX hPr u w P = tauOfC w P.1`. Unfold `tauOfR`. Rewrite using `[dif_pos hw]`. Both sides reduce to the same expression.
+
+Rewrite using `[e, ← mem_pullW]`. Use `show algebraMap (𝓞 X.F) (𝓞 X.E) x ∈ P.1.asIdeal ↔ _`. Break down `tauOfC_spec hX hPr u w hw P with h | h` into its components or cases. Rewrite using `[show pullW (tauOfC w P.1) w = P.1 from h]`. Rewrite using `[show pullW (tauOfC w P.1) w = conjPrime₂ P.1 from h, att_mem_conjP hc]`.
+-/
 theorem att_tauOf (w : HeightOneSpectrum (𝓞 X.K)) (hw : (Pr.T u : 𝓞 X.K) ∈ w.asIdeal) (P : {P // P ∈ Pr.vT u}) (x : 𝓞 X.F) :
     x ∈ (tieEV hc hX hPr u P).1.asIdeal ↔ X.embO (tauOfR hX hPr u w P) (algebraMap (𝓞 X.F) (𝓞 X.E) x) ∈ w.asIdeal := by
   have := hX.nonempty_Tau
@@ -99,6 +126,9 @@ theorem att_tauOf (w : HeightOneSpectrum (𝓞 X.K)) (hw : (Pr.T u : 𝓞 X.K) �
 include hX hPr in
 open Classical in
 
+/- English proof (translation)
+Distinguish the cases in `h : seenC Pr u w`. Rewrite using `[if_pos (decide_eq_true h)]`. Conclude with `h τ`. Rewrite using `[if_neg (by simpa using h)]`. Conclude with `((seenC_or_seenBarC hX hPr u w hw).resolve_left h) τ`.
+-/
 theorem att_seenP (w : HeightOneSpectrum (𝓞 X.K)) (hw : (Pr.T u : 𝓞 X.K) ∈ w.asIdeal) (τ : X.Tau) :
     X.embO τ (if decide (seenC Pr u w) = true then Pr.piT u else X.conjO (Pr.piT u)) ∈ w.asIdeal := by
   by_cases h : seenC Pr u w
@@ -113,6 +143,9 @@ section Rec
 
 variable {d : ColDat} (a : ColArgs d)
 
+/- English proof (translation)
+The claim follows from `Formalism.BasicNotions.Examples₂.star_eq_conj d.host x`.
+-/
 theorem att_star_eq (x : d.host.E) : star x = d.host.conj x := Formalism.BasicNotions.Examples₂.star_eq_conj d.host x
 
 set_option maxHeartbeats 1000000 in

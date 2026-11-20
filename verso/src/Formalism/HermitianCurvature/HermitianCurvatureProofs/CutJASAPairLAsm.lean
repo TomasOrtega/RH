@@ -9,6 +9,35 @@ namespace Formalism.FourierDecayAlt.P.CutMP.JA.SA
 
 open NumberField Formalism.FourierDecayAlt.P.CutMP Formalism.FourierDecayAlt.P.CutMP.JA
 
+/- English proof (translation)
+Take `⟨C1, hZ'⟩` from `hZ`. Take `⟨C2, hL'⟩` from `hL`. Take `⟨C3, hE'⟩` from `hE`. Take `⟨C4, hJC'⟩` from `hJC`. Take `⟨C5, hB3'⟩` from `hB3`.
+
+Use `⟨max C1 (max C2 (max C3 (max C4 C5))), ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v e he Θ hΘ K hK J hJ hΘK hΘJ hKt`. Establish `mono : ∀ c : ℝ, c ≤ max C1 (max C2 (max C3 (max C4 C5))) → BuiltOW c S T f χ ν' m₀ top A₀` using `fun c h => ⟨isBuiltPlace_mono h hB.1, hB.2⟩`. Establish `hB1` using `mono C1 (le_max_left _ _)`. Establish `hB2` using `mono C2 (le_trans (le_max_left _ _) (le_max_right _ _))`.
+
+Establish `hB3` using `mono C3 (le_trans (le_max_left _ _) (le_trans (le_max_right _ _) (le_max_right _ _)))`. Establish `hB4` using `mono C4 (le_trans (le_max_left _ _) (le_trans (le_max_right _ _) (le_trans (le_max_right _ _) (le_max_right _ _))))`. Establish `hB5` using `mono C5 (le_trans (le_max_right _ _) (le_trans (le_max_right _ _) (le_trans (le_max_right _ _) (le_max_right _ _))))`. Establish `hplace : Q.IsPlace (D.parOf S v) (T v).base.z (T v).base.z' (T v).base.π (T v).base.π'` using `(hB.1.2.2.2.1.2 v).2.2.2.1`. Use `set Qs := MA.Qset (D.parOf S v).r (D.parOf S v).TT with hQs`.
+
+Use `set Cs : Set (MA.E (D.parOf S v).r) := ⋃ π, tsupport (MA.ext ((trJ S T v e K π : MA.SmQ (D.parOf S v).r (D.parOf S v).TT) : MA.Qp (D.parOf S v).r (D.parOf S v).TT → ℂ)) with hCsdef`. Establish `hCc : IsCompact Cs` using `isCompact_iUnion fun π => (hKt π).1`. Establish `hCQ : Cs ⊆ Qs` using `Set.iUnion_subset fun π => (hKt π).2`. Establish `hCcl : IsClosed Cs` using `hCc.isClosed`. Establish `hK0 : ∀ y ∈ Qs, y ∉ Cs → K (B.gq (T v).base y) = 0`.
+
+Introduce `y hy hyC`. Use `hZ' E Wp Wq S T f χ ν' m₀ top A₀ hB1 v e he K hK y hy fun π => ?_` and prove the remaining obligations. Establish `hn : y ∉ tsupport (MA.ext ((trJ S T v e K π : MA.SmQ (D.parOf S v).r (D.parOf S v).TT) : MA.Qp (D.parOf S v).r (D.parOf S v).TT → ℂ))` using `fun h => hyC (Set.mem_iUnion.2 ⟨π, h⟩)`. Establish `h0` using `image_eq_zero_of_notMem_tsupport hn`. Simplify using `only [MA.ext] at h0`.
+
+Use `first`. Consider the case `exact h0 hy`. Consider the case `exact (dif_pos hy).symm.trans h0`. Establish `hΘK0 : ∀ y ∈ Qs, y ∉ Cs → B.opApply Θ K (B.gq (T v).base y) = 0` using `fun y hy hyC => hL' E Wp Wq S T f χ ν' m₀ top A₀ hB2 v Θ hΘ K hK (Qs \ Cs) ((MA.Qset_open _ _).sdiff hCcl) Set.sdiff_subset (fun y' hy' => hK0 y' hy'.1 hy'.2) y ⟨hy, hyC⟩`. Use `⟨fun π => ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hsm` using `En.trace_smoothness E Wp Wq S T v hplace e he (B.opApply Θ K) hΘK π`. Establish `hsupp : Function.support (MA.ext ((trJ S T v e (B.opApply Θ K) π : MA.SmQ (D.parOf S v).r (D.parOf S v).TT) : MA.Qp (D.parOf S v).r (D.parOf S v).TT → ℂ)) ⊆ Cs`. Introduce `y hy`. Assume the negation of the conclusion as `hyC`. Apply `hy` to reduce the goal to its premises.
+
+Distinguish the cases in `hyQ : y ∈ Qs`. Simplify using `only [MA.ext]`. Unfold `trJ`. Rewrite using `[En.toSm_val_of_mem _ hsm]`. Simplify using `[hΘK0 y hyQ hyC, GA.hsVec_zero']`.
+
+Simplify using `only [MA.ext] first`. Consider the case `exact fun h => absurd h hyQ`. Consider the case `exact dif_neg hyQ`. Establish `hts` using `closure_minimal hsupp hCcl`. Conclude with `⟨hCc.of_isClosed_subset (isClosed_tsupport _) hts, hts.trans hCQ⟩`.
+
+Take `⟨F₁, U₁, -, hCU₁, hF₁s, hF₁c, hF₁O, hF₁e⟩` from `hE' E Wp Wq S T f χ ν' m₀ top A₀ hB3 v K hK Cs hCc hCQ`. Take `⟨F₂, U₂, hU₂o, hCU₂, hF₂s, hF₂c, hF₂O, hF₂e⟩` from `hE' E Wp Wq S T f χ ν' m₀ top A₀ hB3 v J hJ Cs hCc hCQ`. Establish `hKF₁ : ∀ y ∈ Qs, K (B.gq (T v).base y) = B.JF (T v).base F₁ (B.gq (T v).base y)`. Introduce `y hy`. Distinguish the cases in `hyU : y ∈ U₁`.
+
+Conclude with `((hF₁e y hy).1 hyU).symm`. Establish `hyC : y ∉ Cs` using `fun h => hyU (hCU₁ h)`. Rewrite using `[hK0 y hy hyC, (hF₁e y hy).2 (hK0 y hy hyC)]`. Establish `hc1` using `hJC' E Wp Wq S T f χ ν' m₀ top A₀ hB4 v Θ hΘ F₁ hF₁s hF₁c hF₁O Set.univ K isOpen_univ hK (fun y hy _ => hKF₁ y hy)`. Establish `hc2` using `hJC' E Wp Wq S T f χ ν' m₀ top A₀ hB4 v Θ hΘ F₂ hF₂s hF₂c hF₂O U₂ J hU₂o hJ (fun y hy hyU => ((hF₂e y hy).1 hyU).symm)`.
+
+Take `⟨hF₁5, hF₂5, hΘF₁5, hΘF₂5, hβ⟩` from `hB3' E Wp Wq S T f χ ν' m₀ top A₀ hB5 v Θ hΘ F₁ F₂ hF₁s hF₁c hF₁O hF₂s hF₂c hF₂O`. Establish `hLp` using `GA.group_action_pairing_holds _ E Wp Wq S T f χ ν' m₀ top A₀ hB v e he (B.opApply Θ K) J (B.opApply Θ F₁) F₂ hΘK hJ hΘF₁5 hF₂5 (Filter.Eventually.of_forall fun y hy => ⟨(hc1 y hy trivial).1, fun hne => by`. Establish `hyC : y ∈ Cs`. Assume the negation of the conclusion as `hyC`. Conclude with `hne (hΘK0 y hy hyC)`.
+
+Conclude with `((hF₂e y hy).1 (hCU₂ hyC)).symm⟩)`. Establish `hRp` using `GA.group_action_pairing_holds _ E Wp Wq S T f χ ν' m₀ top A₀ hB v e he K (B.opAdj Θ J) F₁ (B.opAdj Θ F₂) hK hΘJ hF₁5 hΘF₂5 (Filter.Eventually.of_forall fun y hy => ⟨hKF₁ y hy, fun hne => by`. Establish `hyC : y ∈ Cs`. Assume the negation of the conclusion as `hyC`. Conclude with `hne (hK0 y hy hyC)`.
+
+Conclude with `(hc2 y hy (hCU₂ hyC)).2⟩)`. Rewrite using `[hLp, hRp]`. Conclude with `hβ`.
+-/
 theorem sAPairOne_of_parts (hZ : SAZero) (hL : SALocal) (hE : SAExh) (hJC : SAJCommC) (hB3 : CompactSupportClassMembership) :
     SAPairOne := by
   obtain ⟨C1, hZ'⟩ := hZ
@@ -101,6 +130,9 @@ theorem sAPairOne_of_parts (hZ : SAZero) (hL : SALocal) (hE : SAExh) (hJC : SAJC
     rw [hLp, hRp]
     exact hβ
 
+/- English proof (translation)
+The claim follows from `sAPairL_of_one hF (sAPairOne_of_parts self_adjoint_zero_holds hL hE hJC hB3)`.
+-/
 theorem sAPairL_of_parts (hF : JAFFStable) (hL : SALocal) (hE : SAExh) (hJC : SAJCommC) (hB3 : CompactSupportClassMembership) : SAPairL :=
   sAPairL_of_one hF (sAPairOne_of_parts self_adjoint_zero_holds hL hE hJC hB3)
 

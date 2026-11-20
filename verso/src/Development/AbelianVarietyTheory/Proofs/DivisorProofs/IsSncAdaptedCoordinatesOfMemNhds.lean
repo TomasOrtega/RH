@@ -9,6 +9,27 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.TopForm
 
 namespace GlobalTheory.PairStep
 
+/- English proof (translation)
+Take `⟨W, hW, hyW, hWO⟩` from `exists_isAffineOpen_mem_and_subset hy`. Use `haveI := IsLocallyNoetherian.component_noetherian ⟨W, hW⟩`. Establish `hN : NoetherianSpace W`. Use `NoetherianSpace.range hW.fromSpec hW.fromSpec.continuous` as an intermediate fact. Rewrite `this` using `[hW.range_fromSpec]`.
+
+Conclude with `this`. Establish `hC : IsClosed ((Subtype.val : W → Y) ⁻¹' F)` using `hF.preimage continuous_subtype_val`. Take `⟨S, hS, hc, hi, hU⟩` from `@NoetherianSpace.exists_finite_set_isClosed_irreducible _ _ hN _ hC`. Set `y₀ : W` to `⟨y, hyW⟩`. Set `bad : Set W` to `⋃₀ {T ∈ S | y₀ ∉ T}`.
+
+Establish `hS' : {T ∈ S | y₀ ∉ T}.Finite` using `hS.subset fun T hT => hT.1`. Establish `hbad : IsClosed bad`. Express the relevant statement in the definitionally equal form `IsClosed (⋃₀ {T ∈ S | y₀ ∉ T})`. Rewrite using `[Set.sUnion_eq_biUnion]`. Conclude with `hS'.isClosed_biUnion fun T hT => hc T hT.1`.
+
+Use `⟨⟨Subtype.val '' badᶜ, W.isOpen.isOpenMap_subtype_val _ hbad.isOpen_compl⟩, ⟨y₀, ?_, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨T, ⟨-, hyT⟩, hyT'⟩`. Conclude with `hyT hyT'`. Introduce and unpack `_ ⟨x, -, rfl⟩`. Conclude with `hWO x.2`.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩ v hv hcv hvF`. Establish `hvW : v ∈ W` using `hv.mem_open W.isOpen x.2`. Set `v' : W` to `⟨v, hvW⟩`. Establish `hv' : v' ⤳ x` using `Topology.IsInducing.subtypeVal.specializes_iff.1 hv`. Establish `hvS : v' ∈ ⋃₀ S` using `hU ▸ hvF`.
+
+Take `⟨T, hT, hvT⟩` from `hvS`. Establish `hxT : x ∈ T` using `hv'.mem_closed (hc T hT) hvT`. Establish `hyT : y₀ ∈ T`. Assume the negation of the conclusion as `h`. Conclude with `hx ⟨T, ⟨hT, h⟩, hxT⟩`.
+
+Take `⟨g, hg⟩` from `QuasiSober.sober (hi T hT) (hc T hT)`. Establish `hgF : g.1 ∈ F`. Establish `: g ∈ ⋃₀ S` using `⟨T, hT, hg.mem⟩`. Rewrite `this` using `[← hU]`. Conclude with `this`.
+
+Establish `hgv : g.1 ⤳ v` using `Topology.IsInducing.subtypeVal.specializes_iff.2 (hg.specializes hvT)`. Establish `hgy : g.1 ⤳ y` using `Topology.IsInducing.subtypeVal.specializes_iff.2 (hg.specializes hyT)`. Establish `hgη : g.1 < genericPoint Y`. Use `lt_of_le_not_ge (genericPoint_specializes _) fun e => ?_` and prove the remaining obligations. Establish `e' : g.1 = genericPoint Y` using `(Specializes.antisymm e (genericPoint_specializes _)).eq`.
+
+Conclude with `hη (e' ▸ hgF)`. Establish `hvg : v = g.1`. Assume the negation of the conclusion as `hne`. Establish `h₃` using `Order.coheight_add_one_le (show v < g.1 from lt_of_le_not_ge hgv fun e => hne (Specializes.antisymm e hgv).eq)`. Establish `h₄` using `Order.coheight_add_one_le hgη`.
+
+Rewrite `h₃` using `[hcv]`. Establish `h₅ : (1 : ℕ∞) + 1 ≤ 1` using `(add_le_add_left (le_add_self.trans h₄) 1).trans h₃`. Conclude with `absurd h₅ (by decide)`. Rewrite using `[hvg]`. Conclude with `hgy`.
+-/
 theorem exists_nbhd_specializes_of_isClosed {Y : Scheme.{0}} [IsIntegral Y] [IsLocallyNoetherian Y]
     (F : Set Y) (hF : IsClosed F) (hη : genericPoint Y ∉ F) {y : Y} {O : Y.Opens} (hy : y ∈ O) :
     ∃ V : Y.Opens, y ∈ V ∧ V ≤ O ∧
@@ -67,6 +88,29 @@ theorem exists_nbhd_specializes_of_isClosed {Y : Scheme.{0}} [IsIntegral Y] [IsL
     rw [hvg]
     exact hgy
 
+/- English proof (translation)
+Introduce `Y _ _ q n _ B y U hy z J w u hη hc`. Establish `hηb : ∀ j ∈ J, genericPoint Y ∈ Y.basicOpen (z j)` using `fun j hj => (Y.mem_basicOpen (z j) _ (gen_mem hy)).2 (by`. Establish `: IsUnit (u j : Y.functionField)` using `(u j).isUnit`. Rewrite `this` using `[hc.val j hj]`. Conclude with `this)`.
+
+Establish `hord0 : ∀ j ∈ J, ∀ v ∈ Y.basicOpen (z j), Scheme.ord (u j : Y.functionField) v = 0`. Introduce `j hj v hv`. Use `haveI : Nonempty (Y.basicOpen (z j)) := ⟨⟨v, hv⟩⟩`. Establish `h1` using `Scheme.ord_of_isUnit (U := Y.basicOpen (z j)) (Y.toRingedSpace.isUnit_res_basicOpen (z j)) hv`. Rewrite using `[hc.val j hj, ← h1]`.
+
+Use `congr 1`. Conclude with `(Y.presheaf.germ_res_apply (homOfLE (Y.basicOpen_le (z j))) _ _ (z j)).symm`. Set `F : Set Y` to `(B : Set Y) ∪ ⋃ j ∈ J, ((Y.basicOpen (z j) : Set Y))ᶜ`. Establish `hF : IsClosed F` using `B.isClosed.union (isClosed_biUnion_finset fun j _ => (Y.basicOpen (z j)).isOpen.isClosed_compl)`. Establish `hηF : genericPoint Y ∉ F`.
+
+Introduce and unpack `(h | h)`. Conclude with `hη h`. Take `⟨j, hj, h⟩` from `Set.mem_iUnion₂.1 h`. Conclude with `h (hηb j hj)`. Take `⟨V, hyV, hVU, hV⟩` from `exists_nbhd_specializes_of_isClosed F hF hηF hy`.
+
+Use `⟨V, hyV, fun y' hy' => ?_⟩` and prove the remaining obligations. Establish `hy'U : y' ∈ U` using `hVU hy'`. Use `⟨hy'U, J.filter (fun j => w j ⤳ y'), Finset.filter_subset _ _, ⟨hc.frame, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `j hj`. Conclude with `hc.val j (Finset.mem_filter.1 hj).1`.
+
+Introduce `j hj`. Conclude with `(Finset.mem_filter.1 hj).2`. Introduce `j hj`. Conclude with `hc.coheight j (Finset.mem_filter.1 hj).1`. Conclude with `hc.inj.mono fun j hj => (Finset.mem_filter.1 hj).1`.
+
+Introduce `j hj`. Conclude with `hc.ord_self j (Finset.mem_filter.1 hj).1`. Introduce `j hj v hv hne`. Establish `hjJ` using `(Finset.mem_filter.1 hj).1`. Distinguish the cases in `hb : v ∈ Y.basicOpen (z j)`.
+
+Conclude with `hord0 j hjJ v hb`. Distinguish the cases in `hcv : Order.coheight v = 1`. Conclude with `hc.ord_other j hjJ v (hV y' hy' v hv hcv (Or.inr (Set.mem_iUnion₂.2 ⟨j, hjJ, hb⟩))) hne`. Conclude with `Scheme.ord_eq_zero_of_coheight_neq_one hcv _`. Introduce `v hv hcv`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hvB`. Take `⟨j, hj, rfl⟩` from `(hc.mem v (hV y' hy' v hv hcv (Or.inl hvB)) hcv).1 hvB`. Conclude with `⟨j, Finset.mem_filter.2 ⟨hj, hv⟩, rfl⟩`. Introduce and unpack `⟨j, hj, rfl⟩`.
+
+Establish `hjJ` using `(Finset.mem_filter.1 hj).1`. Conclude with `(hc.mem _ (hc.spec j hjJ) hcv).2 ⟨j, hjJ, rfl⟩`. Introduce `j hj hb`. Establish `hjJ` using `(Finset.mem_filter.1 hj).1`. Establish `h0` using `hord0 j hjJ (w j) ((Finset.mem_filter.1 hj).2.mem_open (Y.basicOpen (z j)).isOpen hb)`.
+
+Rewrite `h0` using `[hc.ord_self j hjJ]`. Conclude with `one_ne_zero h0`.
+-/
 theorem isSncChart_spread : ∀ (Y : Scheme.{0}) [IsIntegral Y] [IsLocallyNoetherian Y] (q : Y ⟶ Sp ℂ)
     (n : ℕ) [SmoothOfRelativeDimension n q], ∀ (B : Closeds Y) (y : Y) (U : Y.Opens) (hy : y ∈ U)
     (z : Fin n → Γ(Y, U)) (J : Finset (Fin n)) (w : Fin n → Y) (u : Fin n → Y.functionFieldˣ),

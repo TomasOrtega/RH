@@ -16,10 +16,16 @@ import Development.WeilBound.RepresentationTheoryGL.JacquetShalikaBounds.Absolut
 
 namespace PositivityTheory.RgJS
 
+/- English proof (translation)
+The claim follows from `absolute_rigidity_of_common (common_of_landau_euler landauL euler_product_log_bound (convergence_of_landau_euler landauL euler_product_log_bound) (dirichlet_series_unbounded landauL newton_identities_low_degree euler_product_log_bound removable_singularity_holds (convergence_of_l …`.
+-/
 theorem absRig_closed : AbsRig :=
   absolute_rigidity_of_common (common_of_landau_euler landauL euler_product_log_bound (convergence_of_landau_euler landauL euler_product_log_bound)
     (dirichlet_series_unbounded landauL newton_identities_low_degree euler_product_log_bound removable_singularity_holds (convergence_of_landau_euler landauL euler_product_log_bound)))
 
+/- English proof (translation)
+The claim follows from `jacquet_shalika_rigidity_of_bound absRig_closed unit_exponent_holds satake_twist_holds determinant_one_condition_holds prime_sum_converges_and_diverges (rankin_selberg_unitary_of_pole norm_exponent_equality satake_twist_holds h) hB`.
+-/
 theorem rigid (h : RSPole) (hB : GlobalTheory.Published.JacquetShalikaBound) : GlobalTheory.Published.JacquetShalikaRigidity :=
   jacquet_shalika_rigidity_of_bound absRig_closed unit_exponent_holds satake_twist_holds determinant_one_condition_holds prime_sum_converges_and_diverges (rankin_selberg_unitary_of_pole norm_exponent_equality satake_twist_holds h) hB
 

@@ -9,6 +9,11 @@ noncomputable section
 
 namespace GlobalTheory.UnitaryTheta
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.OrthonormalEigenbasis.exists_orthonormal_eigenbasis`. Consider the case `exact _root_.GlobalTheory.OrthonormalEigenbasis.exists_orthonormal_eigenbasis`. Consider the case `(apply _root_.GlobalTheory.OrthonormalEigenbasis.exists_orthonormal_eigenbasis <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.OrthonormalEigenbasis.exists_orthonormal_eigenbasis <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.OrthonormalEigenbasis.exists_orthonormal_eigenbasis <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.OrthonormalEigenbasis.exists_orthonormal_eigenbasis ..)`.
+-/
 theorem exists_eigenbasis_of_isPosHerm {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     (H : Sesq V) (hH : IsPosHerm H) (a : V →ₗ[ℂ] V) (ha : ∀ z w, H (a z) (a w) = H z w) :
     ∃ (n : ℕ) (e : Module.Basis (Fin n) ℂ V) (l : Fin n → ℂ),
@@ -21,6 +26,9 @@ theorem exists_eigenbasis_of_isPosHerm {V : Type} [AddCommGroup V] [Module ℂ V
   | (intros; apply @_root_.GlobalTheory.OrthonormalEigenbasis.exists_orthonormal_eigenbasis <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.OrthonormalEigenbasis.exists_orthonormal_eigenbasis ..)
 
+/- English proof (translation)
+Introduce `_ _ _ _ H hH a ha` and use `exists_eigenbasis_of_isPosHerm H hH a.toLinearMap ha`.
+-/
 theorem unitary_exists_orthonormal_eigenbasis :
     ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] [FiniteDimensional ℂ V] (H : Sesq V), IsPosHerm H →
       ∀ a : V ≃ₗ[ℂ] V, (∀ z w, H (a z) (a w) = H z w) →

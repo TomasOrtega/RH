@@ -13,5 +13,8 @@ open GlobalTheory.DeRham (spOver spOver_comp)
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.points_separate_localization_away | exact GlobalTheory.points_separate_localization_away | (intros; apply GlobalTheory.points_separate_localization_away <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.eq_zero_of_algHom_localizationAway_vanish : ∀ (R K C : Type) [CommRing R] [Field K] [Algebra R K] [CommRing C] [Algebra R C], (∀ a : C, (∀ ψ : C →ₐ[R] K, ψ a = 0) → a = 0) → ∀ (e : C) (y : Localization.Away e), (∀ χ : Localization.Away e →ₐ[R] K, χ y = 0) → y = 0 := by
   first | exact @GlobalTheory.points_separate_localization_away | exact GlobalTheory.points_separate_localization_away | (intros; apply GlobalTheory.points_separate_localization_away <;> assumption)

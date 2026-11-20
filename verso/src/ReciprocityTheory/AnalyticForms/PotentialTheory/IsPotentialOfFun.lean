@@ -175,6 +175,9 @@ def maMeasure [MeasurableSpace X] (A : FinHolAtlas e X) (Φ : Fin e → LocPot X
       ENNReal.ofReal (h.some.χ j ((A.chart j).symm y) * locDens A Φ j y)).map (A.chart j).symm
   else 0
 
+/- English proof (translation)
+Use `⟨fun x => hu, fun x x' y _ => ⟨Set.univ, isOpen_univ, Set.mem_univ _, fun _ => 0, fun j => by exact analyticOnNhd_const, fun z _ => by simp [LocPot.ofFun]⟩⟩` and prove the remaining obligations.
+-/
 theorem isPotential_ofFun (A : FinHolAtlas e X) (u : X → ℝ) (hu : A.Smooth u) :
     IsPotential A (LocPot.ofFun u) := by
   refine ⟨fun x => hu, fun x x' y _ => ⟨Set.univ, isOpen_univ, Set.mem_univ _, fun _ => 0,

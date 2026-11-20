@@ -16,11 +16,17 @@ open GlobalTheory.UU
 
 namespace GlobalTheory.UU.ShiftExp
 
+/- English proof (translation)
+The claim follows from `(gs_mul r z _ (hJ.mem _ r) _ _).trans (congrArg₂ (· * ·) (gs_res r z le_top (hJ.mem _ r) _) rfl)`.
+-/
 theorem sval_secScale {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (c : Γ(Y, ⊤)) (s : LB.Sec (LB.LinComb L φ ε)) (r : Z ⟶ Y) (z : Z) {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) :
     sval (DVR.SecOps.secScale c s) r z J = gs r z ⊤ c * sval s r z J :=
   (gs_mul r z _ (hJ.mem _ r) _ _).trans (congrArg₂ (· * ·) (gs_res r z le_top (hJ.mem _ r) _) rfl)
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem gs_scal {Y Z : Scheme.{0}} {R : Type} [CommRing R] (p : Y ⟶ Spec (CommRingCat.of R)) (r : Z ⟶ Y) (z : Z)
     (c : R) : gs r z ⊤ (scal p c) = gs (𝟙 _) z ⊤ (scal (r ≫ p) c) := by
   calc gs r z ⊤ (scal p c) = gs (𝟙 _ ≫ r) z ⊤ (scal p c) := by rw [Category.id_comp]
@@ -30,6 +36,19 @@ theorem gs_scal {Y Z : Scheme.{0}} {R : Type} [CommRing R] (p : Y ⟶ Spec (Comm
 variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegPre R}
   {A : PolAV (Spec (CommRingCat.of (FractionRing R)))} {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G]
 
+/- English proof (translation)
+Set `T : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))` to `Over.mk (y ≫ (thickObj R I e G).hom)`. Set `yo : T ⟶ thickObj R I e G` to `Over.homMk y rfl`. Establish `hb : rG ≫ (TA R W ⊗ G).hom = T.hom ≫ thick R I e`. Rewrite using `[← Over.w (snd (TA R W) G), ← Category.assoc, h₁, Category.assoc, Over.w (fstG I e G)]`. Conclude with `(Category.assoc _ _ _).symm`.
+
+Set `ro : Over.mk (T.hom ≫ thick R I e) ⟶ TA R W ⊗ G` to `Over.homMk rG hb`. Set `x₀ : Over.mk (T.hom ≫ thick R I e) ⟶ G` to `ro ≫ fst _ _ ≫ x`. Set `xe : T ⟶ thickObj R I e G` to `Over.homMk (pullback.lift x₀.left T.hom (Over.w x₀)) (pullback.lift_snd _ _ _)`. Establish `hxe : xe.left ≫ pullback.fst G.hom (thick R I e) = x₀.left` using `pullback.lift_fst _ _ _`. Establish `hm` using `(isGrpPullback_pullback G (thick R I e)).2 T xe yo x₀ (ro ≫ snd _ _) hxe.symm h₁`.
+
+Establish `ht : ro ≫ translPt G x = x₀ * (ro ≫ snd _ _)` using `MonObj.comp_mul ro (fst _ _ ≫ x) (snd _ _)`. Establish `hf : y' ≫ pullback.fst G.hom (thick R I e) = (xe * yo).left ≫ pullback.fst G.hom (thick R I e)` using `h₂.trans ((congrArg (fun q => q.left) ht).trans hm)`. Use `haveI : Mono (thick R I e) := by haveI : IsClosedImmersion (thick R I e) := IsClosedImmersion.spec_of_surjective _ Ideal.Quotient.mk_surjective infer_instance`. Establish `hy : y' = (xe * yo).left` using `(cancel_mono (pullback.fst G.hom (thick R I e))).1 hf`. Take `⟨p₁, p₂⟩` from `hx e Z (rG ≫ (fst (TA R W) G).left) xe.left (hxe.trans (Category.assoc _ _ _).symm)`.
+
+Establish `hone : GlobalTheory.TorusCoord.im (U.gt e) xe = 1`. Establish `: (ro ≫ fst _ _) ≫ (1 : TA R W ⟶ D.P.A) = 1` using `MonObj.comp_one _`. Conclude with `(Over.OverMorphism.ext p₁).trans this`. Substitute `hy` using the available equality. Use `⟨?_, fun χ z J hJ => ?_⟩` and prove the remaining obligations.
+
+Use `GlobalTheory.TorusCoord.im_mul (U.gt e) xe yo` as an intermediate fact. Rewrite `this` using `[hone, _root_.one_mul]`. Conclude with `congrArg (fun q => q.left) this`. Establish `k` using `GlobalTheory.TorusCoord.val_t_mul_points (U.gt e) hG χ xe yo z J hJ`. Establish `c : GlobalTheory.TorusCoord.cubeVal (U.gt e) χ z J xe yo = 1`.
+
+Unfold `GlobalTheory.TorusCoord.cubeVal`. Rewrite using `[hone]`. Conclude with `(isCub_cubV D.cub (T := (Over.map (thick R I e)).obj T) hJ).face₂ _ _`. Rewrite `k` using `[c, _root_.mul_one]`. Conclude with `(congrArg Units.val k).trans ((Units.val_mul _ _).trans (congrArg (· * _) (p₂ χ z J hJ)))`.
+-/
 theorem shift (hG : GlobalFnsSt) (U : PreU I D A G) {W : Type} [CommRing W] [Algebra R W]
     (a : Multiplicative D.X →* Wˣ) (x : TA R W ⟶ G) (hx : U.TorPt a x) (e : ℕ) (Z : Scheme.{0})
     (y y' : Z ⟶ (thickObj R I e G).left) (rG : Z ⟶ (TA R W ⊗ G).left)
@@ -76,6 +95,13 @@ theorem shift (hG : GlobalFnsSt) (U : PreU I D A G) {W : Type} [CommRing W] [Alg
 
 end GlobalTheory.UU.ShiftExp
 
+/- English proof (translation)
+Introduce `hG R _ _ I D A G _ _ U W _ _ a x hx k σ f hf e`. Take `⟨s, hs⟩` from `hf e`. Use `⟨s, fun Z y y' rG rB h₁ h₂ h₃ h₄ z JG J hJG hJ => ?_⟩` and prove the remaining obligations. Take `⟨p₁, p₂⟩` from `ShiftExp.shift hG U a x hx e Z y y' rG h₁ h₄`. Establish `e₁ : (translT G x).left ≫ (snd (TA R W) G).left = (translPt G x).left` using `congrArg (fun q => q.left) (lift_snd (fst (TA R W) G) (translPt G x))`.
+
+Establish `e₂ : (translT G x).left ≫ (fst (TA R W) G).left = (fst (TA R W) G).left` using `congrArg (fun q => q.left) (lift_fst (fst (TA R W) G) (translPt G x))`. Take `⟨q₁, q₂⟩` from `hs Z y' (rG ≫ (translT G x).left) rB (by rw [Category.assoc, e₁, h₄]) (h₂.trans p₁.symm) (by rw [Category.assoc, e₂, h₃]) z JG J hJG hJ`. Establish `tw : ∀ α, sval (twist a f α) rB z J = gs (𝟙 Z) z ⊤ (scal (R` using `W) (rG ≫ (fst (TA R W) G).left) (a (Multiplicative.ofAdd α)).val) * sval (f α) rB z J := fun α => by`. Rewrite using `[← h₃]`. Conclude with `(ShiftExp.sval_secScale _ _ rB z hJ).trans (congrArg (· * _) (ShiftExp.gs_scal _ rB z _))`.
+
+Use `⟨fun α hα => by rw [tw, q₁ α hα, mul_zero], q₂.trans (Finset.sum_congr rfl fun α _ => ?_)⟩` and prove the remaining obligations. Rewrite using `[tw, p₂ α z J hJ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GlobalTheory.UU.expansion_translate_torus : GlobalFnsSt → ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegPre R) (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (U : PreU I D A G) (W : Type) [CommRing W] [Algebra R W] (a : Multiplicative D.X →* Wˣ) (x : TA R W ⟶ G), U.TorPt a x → ∀ (k : ℕ) (σ : U.SecGT (TA R W) k) (f : ∀ α, SecBT D (TA R W) k α), U.ExpT (TA R W) k σ f → ∀ e : ℕ, ∃ s : Finset D.X, ∀ (Z : Scheme.{0}) (y y' : Z ⟶ (thickObj R I e G).left) (rG : Z ⟶ (TA R W ⊗ G).left) (rB : Z ⟶ (TA R W ⊗ D.P.A).left), rG ≫ (snd _ G).left = y ≫ (fstG I e G).left → rB ≫ (snd _ D.P.A).left = y ≫ (U.gt e).pG.left → rB ≫ (fst _ D.P.A).left = rG ≫ (fst _ G).left → y' ≫ (fstG I e G).left = rG ≫ (translPt G x).left → ∀ (z : Z) (JG) (J), Good U.P.L.L z JG → Good D.P.L z J → (∀ α ∉ s, sval (twist a f α) rB z J = 0) ∧ (U.wv e y' z JG J).val ^ k * sval σ (rG ≫ (translT G x).left) z JG = ∑ α ∈ s, sval (twist a f α) rB z J * (val ((U.gt e).t α) y z J).val := by
   intro hG R _ _ I D A G _ _ U W _ _ a x hx k σ f hf e
   obtain ⟨s, hs⟩ := hf e

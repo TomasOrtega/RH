@@ -5,6 +5,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped Matrix
 open GlobalTheory.HodgeCoh GlobalTheory.CechDR Polynomial UpperTheory.Gal.W2
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_mulVec, h, ← Matrix.mulVec_mulVec]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `[Matrix.mulVec_diagonal]`.
+-/
 private theorem mulVec_mulVec_of_mul_eq_mul_diagonal {g : ℕ} (Sb A : Matrix (Fin g) (Fin g) ℂ) (d : Fin g → ℂ)
     (h : A * Sb = Sb * Matrix.diagonal d) (w : Fin g → ℂ) :
     A *ᵥ (Sb *ᵥ w) = Sb *ᵥ (fun j => d j * w j) := by
@@ -13,6 +16,31 @@ private theorem mulVec_mulVec_of_mul_eq_mul_diagonal {g : ℕ} (Sb A : Matrix (F
   funext j
   simp [Matrix.mulVec_diagonal]
 
+/- English proof (translation)
+Introduce `hTC F _ _ O _ bar g ρ a n t₀ ε hsig H Sb ty ev hD mu`. Take `⟨hdet, hρ, hH⟩` from `hD`. Establish `hcard` using `(hTC F O bar g ρ a n t₀ ε hsig H Sb ty ev ⟨hdet, hρ, hH⟩ t₀).1`. Rewrite `hcard` using `[show typeMult n t₀ ε t₀ = 1 by simp [typeMult]]`. Unfold `evAt at hcard ⊢`.
+
+Rewrite `hcard` using `[Multiset.card_map, Finset.card_val, Finset.card_eq_one]`. Take `⟨i₀, hi₀⟩` from `hcard`. Rewrite using `[hi₀, Finset.singleton_val, Multiset.map_singleton, Multiset.singleton_inj]`. Establish `hmemS : ∀ j, ty j = t₀ ↔ j = i₀`. Introduce `j`.
+
+Use `congrArg (j ∈ ·) hi₀` as an intermediate fact. Simplify using `using this`. Establish `hcol` using `mulVec_mulVec_of_mul_eq_mul_diagonal Sb`. Establish `hinj` using `Matrix.mulVec_injective_of_det_ne_zero hdet`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨v, hv0, hvρ, hvH⟩`. Establish `hunit : IsUnit Sb.det` using `isUnit_iff_ne_zero.2 hdet`. Take `⟨w, hvw⟩ : ∃ w, v = Sb *ᵥ w` from `⟨Sb⁻¹ *ᵥ v, by rw [Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hunit, Matrix.one_mulVec]⟩`. Substitute `hvw` using the available equality. Establish `hsupp : ∀ j, w j ≠ 0 → j = i₀`.
+
+Introduce `j hj`. Rewrite using `[← hmemS]`. Apply `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 F))` to reduce the goal to its premises. Use extensionality with `c`. Establish `h1` using `hvρ c`.
+
+Rewrite `h1` using `[hcol _ _ (hρ c), ← Matrix.mulVec_smul]`. Establish `h2` using `congr_fun (hinj h1) j`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at h2`. Simplify using `only [RingHom.comp_apply]`. Conclude with `mul_right_cancel₀ hj h2`.
+
+Establish `hw0 : w ≠ 0`. Introduce `h`. Apply `hv0` to reduce the goal to its premises. Rewrite using `[h, Matrix.mulVec_zero]`. Take `⟨j, hj⟩` from `Function.ne_iff.1 hw0`.
+
+Rewrite `hj` using `[hsupp j hj]`. Establish `h1` using `hvH`. Rewrite `h1` using `[hcol _ _ hH, ← Matrix.mulVec_smul]`. Establish `h2` using `congr_fun (hinj h1) i₀`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at h2`.
+
+Conclude with `mul_right_cancel₀ hj h2`. Introduce `h`. Use `⟨Sb *ᵥ Pi.single i₀ 1, ?_, fun c => ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Establish `: Pi.single i₀ (1 : ℂ) = 0` using `hinj (by rw [h0, Matrix.mulVec_zero])`.
+
+Simplify using `using congr_fun this i₀`. Rewrite using `[hcol _ _ (hρ c), ← Matrix.mulVec_smul]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i₀`.
+
+Substitute `hj` using the available equality. Simplify using `[(hmemS _).2 rfl]`. Simplify using `[Pi.single_apply, hj]`. Rewrite using `[hcol _ _ hH, ← Matrix.mulVec_smul]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i₀`. Substitute `hj` using the available equality. Simplify using `[h]`. Simplify using `[Pi.single_apply, hj]`.
+-/
 theorem UpperTheory.Gal.W2.markDiag_of :
     UpperTheory.Gal.W2.TypeCount → UpperTheory.Gal.W2.MarkDiag := by
   intro hTC F _ _ O _ bar g ρ a n t₀ ε hsig H Sb ty ev hD mu

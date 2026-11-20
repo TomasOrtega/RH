@@ -12,10 +12,16 @@ variable {L : Type} [Field L] {n r : ℕ}
 def incl (L : Type) [Field L] (e : Fin r → Fin n) : Matrix (Fin n) (Fin r) L :=
   Matrix.of fun a i => if a = e i then 1 else 0
 
+/- English proof (translation)
+Simplify using `[Matrix.mul_apply, incl, he.eq_iff]`.
+-/
 theorem incl_mul_apply {p : Type} {e : Fin r → Fin n} (he : Function.Injective e) (M : Matrix (Fin r) p L)
     (i : Fin r) (j : p) : (incl L e * M) (e i) j = M i j := by
   simp [Matrix.mul_apply, incl, he.eq_iff]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Establish `: a ≠ e i` using `fun h => ha ⟨i, h.symm⟩`. Simplify using `[incl, this]`.
+-/
 theorem incl_mul_apply_of_not {p : Type} {e : Fin r → Fin n} (M : Matrix (Fin r) p L)
     {a : Fin n} (ha : a ∉ Set.range e) (j : p) : (incl L e * M) a j = 0 := by
   rw [Matrix.mul_apply]
@@ -23,10 +29,16 @@ theorem incl_mul_apply_of_not {p : Type} {e : Fin r → Fin n} (M : Matrix (Fin 
   have : a ≠ e i := fun h => ha ⟨i, h.symm⟩
   simp [incl, this]
 
+/- English proof (translation)
+Simplify using `[Matrix.mul_apply, incl, he.eq_iff]`.
+-/
 theorem mul_inclT_apply {p : Type} {e : Fin r → Fin n} (he : Function.Injective e) (M : Matrix p (Fin r) L)
     (i : p) (j : Fin r) : (M * (incl L e)ᵀ) i (e j) = M i j := by
   simp [Matrix.mul_apply, incl, he.eq_iff]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Establish `: a ≠ e j` using `fun h => ha ⟨j, h.symm⟩`. Simplify using `[incl, this]`.
+-/
 theorem mul_inclT_apply_of_not {p : Type} {e : Fin r → Fin n} (M : Matrix p (Fin r) L)
     (i : p) {a : Fin n} (ha : a ∉ Set.range e) : (M * (incl L e)ᵀ) i a = 0 := by
   rw [Matrix.mul_apply]
@@ -34,20 +46,34 @@ theorem mul_inclT_apply_of_not {p : Type} {e : Fin r → Fin n} (M : Matrix p (F
   have : a ≠ e j := fun h => ha ⟨j, h.symm⟩
   simp [incl, this]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, incl, he.eq_iff, Matrix.one_apply, eq_comm]`.
+-/
 theorem inclT_mul_incl {e : Fin r → Fin n} (he : Function.Injective e) : (incl L e)ᵀ * incl L e = 1 := by
   ext i j
   simp [Matrix.mul_apply, incl, he.eq_iff, Matrix.one_apply, eq_comm]
 
+/- English proof (translation)
+Establish `: (i.val + j.val + 1 = n) ↔ i.rev = j`. Use `i.2` as an intermediate fact. Rewrite using `[Fin.ext_iff, Fin.val_rev]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [antiJ, this]`.
+-/
 theorem antiJ_apply (i j : Fin n) : antiJ L n i j = if i.rev = j then 1 else 0 := by
   have : (i.val + j.val + 1 = n) ↔ i.rev = j := by
     have := i.2
     rw [Fin.ext_iff, Fin.val_rev]; omega
   simp only [antiJ, this]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.transpose_apply, antiJ, add_comm i.val j.val]`.
+-/
 theorem antiJ_transpose : (antiJ L n)ᵀ = antiJ L n := by
   ext i j
   simp only [Matrix.transpose_apply, antiJ, add_comm i.val j.val]
 
+/- English proof (translation)
+Use extensionality with `a i`. Establish `h1 : (antiJ L n * incl L e) a i = incl L e a.rev i`. Simplify using `[Matrix.mul_apply, antiJ_apply]`. Establish `h2 : (incl L e * antiJ L r) a i = incl L e a i.rev`. Simplify using `[Matrix.mul_apply, antiJ_apply, Fin.rev_eq_iff]`.
+
+Rewrite using `[h1, h2]`. Simplify using `[incl, hr, Fin.rev_eq_iff]`.
+-/
 theorem antiJ_mul_incl {e : Fin r → Fin n} (hr : ∀ i, e i.rev = (e i).rev) :
     antiJ L n * incl L e = incl L e * antiJ L r := by
   ext a i
@@ -58,6 +84,9 @@ theorem antiJ_mul_incl {e : Fin r → Fin n} (hr : ∀ i, e i.rev = (e i).rev) :
   rw [h1, h2]
   simp [incl, hr, Fin.rev_eq_iff]
 
+/- English proof (translation)
+Use `congrArg Matrix.transpose (antiJ_mul_incl (L := L) hr)` as an intermediate fact. Rewrite `this` using `[Matrix.transpose_mul, Matrix.transpose_mul, antiJ_transpose, antiJ_transpose]`. Then use the resulting hypothesis.
+-/
 theorem inclT_mul_antiJ {e : Fin r → Fin n} (hr : ∀ i, e i.rev = (e i).rev) :
     (incl L e)ᵀ * antiJ L n = antiJ L r * (incl L e)ᵀ := by
   have := congrArg Matrix.transpose (antiJ_mul_incl (L := L) hr)
@@ -66,6 +95,11 @@ theorem inclT_mul_antiJ {e : Fin r → Fin n} (hr : ∀ i, e i.rev = (e i).rev) 
 def ext1 (e : Fin r → Fin n) (M : Matrix (Fin r) (Fin r) L) : Matrix (Fin n) (Fin n) L :=
   1 + incl L e * (M - 1) * (incl L e)ᵀ
 
+/- English proof (translation)
+Establish `h : incl L e * (M - 1) * (incl L e)ᵀ * (incl L e * (N - 1) * (incl L e)ᵀ) = incl L e * ((M - 1) * (N - 1)) * (incl L e)ᵀ`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (incl L e)ᵀ, inclT_mul_incl he, Matrix.one_mul]`. Establish `h2 : M * N - 1 = (M - 1) + (N - 1) + (M - 1) * (N - 1)` using `by noncomm_ring`. Unfold `ext1`.
+
+Rewrite using `[add_mul, mul_add, mul_add, h, h2]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.one_mul, Matrix.mul_one]`. Normalize the expressions using the abelian group laws.
+-/
 theorem extendMatrixByIdentityAlongIndices_mul {e : Fin r → Fin n} (he : Function.Injective e) (M N : Matrix (Fin r) (Fin r) L) :
     ext1 e (M * N) = ext1 e M * ext1 e N := by
   have h : incl L e * (M - 1) * (incl L e)ᵀ * (incl L e * (N - 1) * (incl L e)ᵀ)
@@ -78,6 +112,11 @@ theorem extendMatrixByIdentityAlongIndices_mul {e : Fin r → Fin n} (he : Funct
   simp only [Matrix.mul_add, Matrix.add_mul, Matrix.one_mul, Matrix.mul_one]
   abel
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [cT, ext1, Matrix.transpose_apply, Matrix.map_apply, Matrix.add_apply, Matrix.mul_apply, map_add, map_sum, map_mul, incl, Matrix.of_apply, Matrix.sub_apply, map_sub, Matrix.one_apply, apply_ite σ, map_one, map_zero, Finset.sum_mul]`. Use `congr 1`. Simplify using `only [eq_comm]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [eq_comm (a := i) (b := j)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem conjTranspose_extendMatrixByIdentityAlongIndices (σ : L →+* L) (e : Fin r → Fin n) (M : Matrix (Fin r) (Fin r) L) :
     cT σ (ext1 e M) = ext1 e (cT σ M) := by
   ext a b
@@ -91,6 +130,11 @@ theorem conjTranspose_extendMatrixByIdentityAlongIndices (σ : L →+* L) (e : F
     simp only [eq_comm (a := i) (b := j)]
     ring
 
+/- English proof (translation)
+Establish `hJ : ∀ N : Matrix (Fin r) (Fin r) L, antiJ L n * ext1 e N = ext1 e (antiJ L r * N * antiJ L r) * antiJ L n`. Introduce `N`. Establish `h2 : antiJ L r * N * antiJ L r - 1 = antiJ L r * (N - 1) * antiJ L r`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, GlobalTheory.UnitarySwap.antiJ_mul_self]`. Unfold `ext1`.
+
+Rewrite using `[h2, Matrix.mul_add, Matrix.add_mul, Matrix.one_mul, Matrix.mul_one, ← Matrix.mul_assoc, ← Matrix.mul_assoc, antiJ_mul_incl hr]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[inclT_mul_antiJ hr, ← Matrix.mul_assoc (antiJ L r) (antiJ L r), GlobalTheory.UnitarySwap.antiJ_mul_self, Matrix.one_mul]`. Rewrite using `[conjTranspose_extendMatrixByIdentityAlongIndices, Matrix.mul_assoc, hJ, ← Matrix.mul_assoc, ← extendMatrixByIdentityAlongIndices_mul he, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hM, GlobalTheory.UnitarySwap.antiJ_mul_self]`. Simplify using `[ext1]`.
+-/
 theorem extendMatrixByIdentityAlongIndices_unitary [Valued L (WithZero (Multiplicative ℤ))] (σ : L →+* L) {e : Fin r → Fin n} (he : Function.Injective e)
     (hr : ∀ i, e i.rev = (e i).rev) (M : Matrix (Fin r) (Fin r) L)
     (hM : cT σ M * antiJ L r * M = antiJ L r) :
@@ -114,6 +158,11 @@ end GlobalTheory.SatakeWeyl.InclusionMultiplication
 
 open GlobalTheory.SatakeWeyl.InclusionMultiplication in
 
+/- English proof (translation)
+Introduce `L _ _ σ n r e he hr`. Use `choose f hf using fun g : GU σ r => exists_mat (σ := σ) (ext1 e (mat g)) (extendMatrixByIdentityAlongIndices_unitary σ he hr _ g.2)`. Use `⟨MonoidHom.mk' f fun a b => mat_injective ?_, fun g => ⟨fun i j => ?_, fun a b hab => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[mat_mul, hf, hf, hf, mat_mul, extendMatrixByIdentityAlongIndices_mul he]`. Rewrite using `[MonoidHom.mk'_apply, hf, ext1, Matrix.add_apply, mul_inclT_apply he, incl_mul_apply he]`.
+
+Simplify using `[Matrix.one_apply, he.eq_iff]`. Rewrite using `[MonoidHom.mk'_apply, hf, ext1, Matrix.add_apply]`. Break down `hab with h | h` into its components or cases. Rewrite using `[Matrix.mul_assoc, incl_mul_apply_of_not _ h, add_zero]`. Rewrite using `[mul_inclT_apply_of_not _ _ h, add_zero]`.
+-/
 theorem GlobalTheory.SatakeWeyl.embExists : GlobalTheory.SatakeWeyl.EmbExists := by
   intro L _ _ σ n r e he hr
   choose f hf using fun g : GU σ r => exists_mat (σ := σ) (ext1 e (mat g)) (extendMatrixByIdentityAlongIndices_unitary σ he hr _ g.2)

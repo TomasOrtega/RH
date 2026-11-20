@@ -6,6 +6,11 @@ namespace PI.SlopeSteps
 
 open MvPolynomial Formalism.GradedWeylDivisibility
 
+/- English proof (translation)
+Establish `hfg : (weyl ℤ N N le_rfl ν).FG` using `(Formalism.L2.DIV.we_nabla_fg N N ν).of_le (weylLeDual ℤ N N le_rfl ν hν)`. Establish `: Module.Finite ℤ (weyl ℤ N N le_rfl ν)` using `Module.Finite.iff_fg.mpr hfg`. Set `e` to `(Module.Free.chooseBasis ℤ (weyl ℤ N N le_rfl ν)).reindex (Fintype.equivFin _)`. Establish `hmem : hw ℤ le_rfl ν ∈ weyl ℤ N N le_rfl ν` using `Submodule.subset_span ⟨[], rfl⟩`. Establish `hne : (⟨hw ℤ le_rfl ν, hmem⟩ : weyl ℤ N N le_rfl ν) ≠ 0` using `fun h0 => hwNe ℤ N N le_rfl ν (congrArg Subtype.val h0)`.
+
+Establish `: Nontrivial (weyl ℤ N N le_rfl ν)` using `nontrivial_of_ne _ _ hne`. Conclude with `⟨_, _, e, Fin.pos_iff_nonempty.mpr e.index_nonempty, rfl⟩`.
+-/
 theorem muStd_exists (N : ℕ) (ν : Fin N → ℕ) (hν : Antitone ν) : ∃ μ, PI.MuStd ν μ := by
   have hfg : (weyl ℤ N N le_rfl ν).FG :=
     (Formalism.L2.DIV.we_nabla_fg N N ν).of_le (weylLeDual ℤ N N le_rfl ν hν)

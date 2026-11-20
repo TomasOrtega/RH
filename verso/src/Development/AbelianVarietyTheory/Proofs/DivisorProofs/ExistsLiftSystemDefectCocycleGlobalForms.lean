@@ -22,23 +22,35 @@ abbrev al {U V : AffOp X₀} (a : U ⟶ V) : S.F.obj U →ₐ[R] S'.F.obj V :=
 abbrev be {U V : AffOp X₀} (a : U ⟶ V) : S.F.obj U →ₐ[R] S'.F.obj V :=
   (Φ.φ V : S.F.obj V →ₐ[R] S'.F.obj V).comp (mp S.F a)
 
+/- English proof (translation)
+Establish `h` using `Ideal.mem_map_of_mem (f : B →+* B') hx`. Rewrite `h` using `[Ideal.map_map, f.comp_algebraMap]`. Then use the resulting hypothesis.
+-/
 theorem map_mem {B B' : Type} [CommRing B] [CommRing B'] [Algebra R B] [Algebra R B'] (f : B →ₐ[R] B')
     {x : B} (hx : x ∈ I.map (algebraMap R B)) : f x ∈ I.map (algebraMap R B') := by
   have h := Ideal.mem_map_of_mem (f : B →+* B') hx
   rwa [Ideal.map_map, f.comp_algebraMap] at h
 
+/- English proof (translation)
+Establish `h` using `Ideal.mul_mem_mul hx hy`. Rewrite `h` using `[← sq, map_sq hI B]`. Simplify using `using h`.
+-/
 theorem mul_eq_zero' (hI : I ^ 2 = 0) {B : Type} [CommRing B] [Algebra R B] {x y : B}
     (hx : x ∈ I.map (algebraMap R B)) (hy : y ∈ I.map (algebraMap R B)) : x * y = 0 := by
   have h := Ideal.mul_mem_mul hx hy
   rw [← sq, map_sq hI B] at h
   simpa using h
 
+/- English proof (translation)
+Rewrite using `[← S'.ker V, map_sub, sub_eq_zero]`. Express the relevant statement in the definitionally equal form `S'.p V (mp S'.F a (Φ.φ U b)) = S'.p V (Φ.φ V (mp S.F a b))`. Rewrite using `[S'.nat, Φ.red, Φ.red, S.nat]`.
+-/
 theorem diff_mem {U V : AffOp X₀} (a : U ⟶ V) (b : S.F.obj U) :
     al Φ a b - be Φ a b ∈ I.map (algebraMap R (S'.F.obj V)) := by
   rw [← S'.ker V, map_sub, sub_eq_zero]
   change S'.p V (mp S'.F a (Φ.φ U b)) = S'.p V (Φ.φ V (mp S.F a b))
   rw [S'.nat, Φ.red, Φ.red, S.nat]
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.T.algHom_lifts_sqZero_classified_by_differentials R R₀ (S.F.obj U) (Sec s₀ U.unop.1) (S'.F.obj V) I hI π hπ (S.p U) (S.semi U) (S.surj U) (S.ker U) (al Φ a)).1 (be Φ a) (diff_mem Φ a)`.
+-/
 theorem ex (hI : I ^ 2 = 0) (hπ : Function.Surjective π) {U V : AffOp X₀} (a : U ⟶ V) :
     ∃! θ : Ω[Sec s₀ U.unop.1⁄R₀] →+ S'.F.obj V, IsTheta I (S.p U) (al Φ a) (be Φ a) θ :=
   (GlobalTheory.T.algHom_lifts_sqZero_classified_by_differentials R R₀ (S.F.obj U) (Sec s₀ U.unop.1) (S'.F.obj V) I hI π hπ (S.p U) (S.semi U)
@@ -47,9 +59,27 @@ theorem ex (hI : I ^ 2 = 0) (hπ : Function.Surjective π) {U V : AffOp X₀} (a
 def th (hI : I ^ 2 = 0) (hπ : Function.Surjective π) {U V : AffOp X₀} (a : U ⟶ V) : Ω[Sec s₀ U.unop.1⁄R₀] →+ S'.F.obj V :=
   (ex Φ hI hπ a).exists.choose
 
+/- English proof (translation)
+The claim follows from `(ex Φ hI hπ a).exists.choose_spec`.
+-/
 theorem th_spec (hI : I ^ 2 = 0) (hπ : Function.Surjective π) {U V : AffOp X₀} (a : U ⟶ V) : IsTheta I (S.p U) (al Φ a) (be Φ a) (th Φ hI hπ a) :=
   (ex Φ hI hπ a).exists.choose_spec
 
+/- English proof (translation)
+Set `θ' : Ω[Sec s₀ U.unop.1⁄R₀] →+ S'.F.obj W` to `((mp S'.F b).toRingHom.toAddMonoidHom.comp (th Φ hI hπ a)) + (th Φ hI hπ b).comp (p1 (OAff s₀) a).toAddMonoidHom`. Establish `hA` using `th_spec Φ hI hπ a`. Establish `hB` using `th_spec Φ hI hπ b`. Establish `h : IsTheta I (S.p U) (al Φ (a ≫ b)) (be Φ (a ≫ b)) θ'`. Use `⟨fun c w ↦ ?_, fun c ↦ ?_, fun w ↦ ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `mp S'.F b (th Φ hI hπ a (S.p U c • w)) + th Φ hI hπ b (p1 (OAff s₀) a (S.p U c • w)) = al Φ (a ≫ b) c * (mp S'.F b (th Φ hI hπ a w) + th Φ hI hπ b (p1 (OAff s₀) a w))`. Rewrite using `[hA.smul, oneFormsMapOfFunctorMorphism_smul]`. Establish `e : mp (OAff s₀) a (S.p U c) = S.p V (mp S.F a c)` using `(S.nat a c).symm`. Rewrite using `[e, hB.smul, map_mul]`. Establish `hz : (mp S'.F b (al Φ a c) - al Φ b (mp S.F a c)) * th Φ hI hπ b (p1 (OAff s₀) a w) = 0`.
+
+Use `mul_eq_zero' hI ?_ (hB.mem _)` and prove the remaining obligations. Establish `: al Φ b (mp S.F a c) = mp S'.F b (be Φ a c)` using `rfl`. Rewrite using `[this, ← map_sub]`. Conclude with `map_mem _ (diff_mem Φ a c)`. Establish `e2 : al Φ (a ≫ b) c = mp S'.F b (al Φ a c)` using `mp_comp S'.F a b _`.
+
+Rewrite using `[e2]`. Take the linear combination `-hz`. Express the relevant statement in the definitionally equal form `mp S'.F b (th Φ hI hπ a (D R₀ _ (S.p U c))) + th Φ hI hπ b (p1 (OAff s₀) a (D R₀ _ (S.p U c))) = al Φ (a ≫ b) c - be Φ (a ≫ b) c`. Rewrite using `[hA.der, p1_D]`. Establish `e : mp (OAff s₀) a (S.p U c) = S.p V (mp S.F a c)` using `(S.nat a c).symm`.
+
+Rewrite using `[e, hB.der, map_sub]`. Establish `e2 : al Φ (a ≫ b) c = mp S'.F b (al Φ a c)` using `mp_comp S'.F a b _`. Establish `e3 : be Φ (a ≫ b) c = be Φ b (mp S.F a c)`. Express the relevant statement in the definitionally equal form `Φ.φ W (mp S.F (a ≫ b) c) = Φ.φ W (mp S.F b (mp S.F a c))`. Rewrite using `[mp_comp]`.
+
+Establish `e4 : al Φ b (mp S.F a c) = mp S'.F b (be Φ a c)` using `rfl`. Rewrite using `[e2, e3, e4]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `Ideal.add_mem _ (map_mem _ (hA.mem w)) (hB.mem _)`. Use `(ex Φ hI hπ (a ≫ b)).unique (th_spec Φ hI hπ (a ≫ b)) h` as an intermediate fact.
+
+Conclude with `DFunLike.congr_fun this x`.
+-/
 theorem th_comp (hI : I ^ 2 = 0) (hπ : Function.Surjective π) {U V W : AffOp X₀} (a : U ⟶ V)
     (b : V ⟶ W) (x : Ω[Sec s₀ U.unop.1⁄R₀]) :
     th Φ hI hπ (a ≫ b) x = mp S'.F b (th Φ hI hπ a x) + th Φ hI hπ b (p1 (OAff s₀) a x) := by
@@ -94,6 +124,9 @@ def cocyc (hI : I ^ 2 = 0) (hπ : Function.Surjective π) : GlobForm s₀ →+ Z
   map_zero' := Subtype.ext (by funext U V a; exact map_zero _)
   map_add' w w' := Subtype.ext (by funext U V a; exact map_add _ _ _)
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul (Sec s₀ U.unop.1) (π r) x, ← (S.semi U).map_algebraMap, (th_spec Φ hI hπ a).smul, AlgHom.commutes, ← Algebra.smul_def]`.
+-/
 theorem th_smul (hI : I ^ 2 = 0) (hπ : Function.Surjective π) {U V : AffOp X₀} (a : U ⟶ V) (r : R)
     (x : Ω[Sec s₀ U.unop.1⁄R₀]) : th Φ hI hπ a (π r • x) = r • th Φ hI hπ a x := by
   rw [← algebraMap_smul (Sec s₀ U.unop.1) (π r) x, ← (S.semi U).map_algebraMap, (th_spec Φ hI hπ a).smul,
@@ -101,6 +134,9 @@ theorem th_smul (hI : I ^ 2 = 0) (hπ : Function.Surjective π) {U V : AffOp X�
 
 end GlobalTheory.LiftSys.Defect
 
+/- English proof (translation)
+Introduce `R R₀ _ _ I hI π hπ _ X₀ s₀ S S' Φ`. Use `⟨fun U V a ↦ Defect.th Φ hI hπ a, Defect.cocyc Φ hI hπ, fun U V a ↦ Defect.th_spec Φ hI hπ a, fun w U V a ↦ rfl, fun w U V a ↦ (Defect.th_spec Φ hI hπ a).mem _, fun r w ↦ ?_⟩` and prove the remaining obligations. Use `Subtype.ext ?_` and prove the remaining obligations. Use function extensionality and compare the values at `U V a`. Conclude with `Defect.th_smul Φ hI hπ a r (w.1 U)`.
+-/
 theorem GlobalTheory.LiftSys.exists_defect_cocycle : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (I : Ideal R) (hI : I ^ 2 = 0) (π : R →+* R₀) (hπ : Function.Surjective π) (hk : RingHom.ker π = I) (X₀ : Scheme.{0}) (s₀ : X₀ ⟶ Sp R₀), ∀ (S S' : Sys I π s₀) (Φ : S.LocIso S'), ∃ (θ : ∀ (U V : AffOp X₀) (_ : U ⟶ V), Ω[Sec s₀ U.unop.1⁄R₀] →+ S'.F.obj V) (v : GlobForm s₀ →+ Z1 S'.F), Φ.IsDefect θ ∧ (∀ w U V a, (v w).1 U V a = θ U V a (w.1 U)) ∧ (∀ w, S'.IsIdealValuedLiftSystemCocycle (v w)) ∧ ∀ (r : R) w, v (π r • w) = r • v w := by
   intro R R₀ _ _ I hI π hπ _ X₀ s₀ S S' Φ
   refine ⟨fun U V a ↦ Defect.th Φ hI hπ a, Defect.cocyc Φ hI hπ, fun U V a ↦ Defect.th_spec Φ hI hπ a,

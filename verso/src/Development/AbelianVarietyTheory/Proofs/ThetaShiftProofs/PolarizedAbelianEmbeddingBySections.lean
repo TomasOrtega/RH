@@ -18,16 +18,28 @@ open ReciprocityTheory.ChartRestriction.G.H1 ReciprocityTheory.ChartRestriction.
 
 variable {X X' Y Y' Z : Scheme.{0}}
 
+/- English proof (translation)
+Simplify using `only [gs_eq r z U h, map_sub]`.
+-/
 theorem gs_sub' (r : Z ⟶ X) (z : Z) (U : X.Opens) (h : r z ∈ U) (a b : Γ(X, U)) :
     gs r z U (a - b) = gs r z U a - gs r z U b := by simp only [gs_eq r z U h, map_sub]
 
+/- English proof (translation)
+Simplify using `only [gs_eq r z U h, map_sum]`.
+-/
 theorem gs_sum' (r : Z ⟶ X) (z : Z) (U : X.Opens) (h : r z ∈ U) {ι : Type} [Fintype ι]
     (a : ι → Γ(X, U)) : gs r z U (∑ i, a i) = ∑ i, gs r z U (a i) := by
   simp only [gs_eq r z U h, map_sum]
 
+/- English proof (translation)
+Simplify using `only [gs_eq r z U h, map_one]`.
+-/
 theorem gs_one' (r : Z ⟶ X) (z : Z) (U : X.Opens) (h : r z ∈ U) : gs r z U 1 = 1 := by
   simp only [gs_eq r z U h, map_one]
 
+/- English proof (translation)
+Rewrite using `[gs_eq r z U h]`. Use `((Z.mem_basicOpen ((r.app U).hom a) z h).symm).trans ?_` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.preimage_basicOpen]`. Both sides reduce to the same expression.
+-/
 theorem isUnit_gs_iff (r : Z ⟶ X) (z : Z) (U : X.Opens) (h : r z ∈ U) (a : Γ(X, U)) :
     IsUnit (gs r z U a) ↔ r z ∈ X.basicOpen a := by
   rw [gs_eq r z U h]
@@ -35,6 +47,11 @@ theorem isUnit_gs_iff (r : Z ⟶ X) (z : Z) (U : X.Opens) (h : r z ∈ U) (a : �
   rw [← Scheme.Hom.preimage_basicOpen]
   rfl
 
+/- English proof (translation)
+Rewrite using `[isUnit_gs_iff r z _ hk]`. Use `⟨fun h => ?_, fun h => Opens.mem_iSup.2 ⟨k, h⟩⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `Opens.mem_iSup.1 h`. Establish `hj' : r z ∈ H.U j` using `X.basicOpen_le _ hj`. Rewrite using `[← isUnit_gs_iff r z _ hk, gs_compat t r z hk hj']`.
+
+Conclude with `(Units.isUnit _).mul ((isUnit_gs_iff r z _ hj' _).2 hj)`.
+-/
 theorem mem_nonzeroLocus_iff_gs {H : LB X} (t : LB.Sec H) (r : Z ⟶ X) (z : Z) {k : H.ι}
     (hk : r z ∈ H.U k) : r z ∈ nonzeroLocus t ↔ IsUnit (gs r z _ (t.f k)) := by
   rw [isUnit_gs_iff r z _ hk]
@@ -44,6 +61,9 @@ theorem mem_nonzeroLocus_iff_gs {H : LB X} (t : LB.Sec H) (r : Z ⟶ X) (z : Z) 
   rw [← isUnit_gs_iff r z _ hk, gs_compat t r z hk hj']
   exact (Units.isUnit _).mul ((isUnit_gs_iff r z _ hj' _).2 hj)
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `Opens.mem_iSup.1 h`. Conclude with `⟨j, X.basicOpen_le _ hj⟩`.
+-/
 theorem exists_chart_of_mem {H : LB X} (t : LB.Sec H) {x : X} (h : x ∈ nonzeroLocus t) :
     ∃ k, x ∈ H.U k := by
   obtain ⟨j, hj⟩ := Opens.mem_iSup.1 h
@@ -54,6 +74,9 @@ def IsRatio {H : LB X} (s t : LB.Sec H) (r : Γ(X, nonzeroLocus t)) : Prop :=
     resG X (inf_le_left : nonzeroLocus t ⊓ H.U k ≤ nonzeroLocus t) r *
       resG X (inf_le_right : nonzeroLocus t ⊓ H.U k ≤ H.U k) (t.f k)
 
+/- English proof (translation)
+Establish `hm : ρ z ∈ nonzeroLocus t ⊓ H.U k` using `⟨ht, hk⟩`. Establish `e` using `congrArg (Geo.Tor.gs ρ z _) (h k)`. Rewrite `e` using `[gs_res _ z _ hm, gs_mul _ z _ hm, gs_res _ z _ hm, gs_res _ z _ hm]`. Then use the resulting hypothesis.
+-/
 theorem IsRatio.gs {H : LB X} {s t : LB.Sec H} {r : Γ(X, nonzeroLocus t)} (h : IsRatio s t r)
     (ρ : Z ⟶ X) (z : Z) {k : H.ι} (ht : ρ z ∈ nonzeroLocus t) (hk : ρ z ∈ H.U k) :
     gs ρ z _ (s.f k) = gs ρ z _ r * gs ρ z _ (t.f k) := by
@@ -61,6 +84,9 @@ theorem IsRatio.gs {H : LB X} {s t : LB.Sec H} {r : Γ(X, nonzeroLocus t)} (h : 
   have e := congrArg (Geo.Tor.gs ρ z _) (h k)
   rwa [gs_res _ z _ hm, gs_mul _ z _ hm, gs_res _ z _ hm, gs_res _ z _ hm] at e
 
+/- English proof (translation)
+Introduce `k`. Use `fn_ext fun x hx => ?_` and prove the remaining obligations. Take `⟨j, hj, e⟩` from `h x hx.1`. Rewrite using `[gs_res _ x _ hx, gs_mul _ x _ hx, gs_res _ x _ hx, gs_res _ x _ hx, gs_compat s (𝟙 X) x hx.2 hj, gs_compat t (𝟙 X) x hx.2 hj, e]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isRatio_of_gs {H : LB X} {s t : LB.Sec H} {r : Γ(X, nonzeroLocus t)}
     (h : ∀ x ∈ nonzeroLocus t, ∃ k, x ∈ H.U k ∧
       gs (𝟙 X) x _ (s.f k) = gs (𝟙 X) x _ r * gs (𝟙 X) x _ (t.f k)) : IsRatio s t r := by
@@ -71,6 +97,9 @@ theorem isRatio_of_gs {H : LB X} {s t : LB.Sec H} {r : Γ(X, nonzeroLocus t)}
     gs_compat s (𝟙 X) x hx.2 hj, gs_compat t (𝟙 X) x hx.2 hj, e]
   ring
 
+/- English proof (translation)
+Use `fn_ext fun x hx => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `exists_chart_of_mem t hx`. Conclude with `((mem_nonzeroLocus_iff_gs t (𝟙 X) x hk).1 hx).mul_right_cancel ((h.gs (𝟙 X) x hx hk).symm.trans (h'.gs (𝟙 X) x hx hk))`.
+-/
 theorem IsRatio.unique {H : LB X} {s t : LB.Sec H} {r r' : Γ(X, nonzeroLocus t)}
     (h : IsRatio s t r) (h' : IsRatio s t r') : r = r' := by
   refine fn_ext fun x hx => ?_
@@ -78,6 +107,15 @@ theorem IsRatio.unique {H : LB X} {s t : LB.Sec H} {r r' : Γ(X, nonzeroLocus t)
   exact ((mem_nonzeroLocus_iff_gs t (𝟙 X) x hk).1 hx).mul_right_cancel
     ((h.gs (𝟙 X) x hx hk).symm.trans (h'.gs (𝟙 X) x hx hk))
 
+/- English proof (translation)
+Establish `hu : ∀ k, IsUnit (resG X (X.basicOpen_le (t.f k)) (t.f k))` using `fun k => X.toRingedSpace.isUnit_res_basicOpen (t.f k)`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : ∃ u : ∀ k, Γ(X, X.basicOpen (t.f k)), ∀ k x, x ∈ X.basicOpen (t.f k) → gs (𝟙 X) x _ (s.f k) = gs (𝟙 X) x _ (u k) * gs (𝟙 X) x _ (t.f k) := by`. Use `⟨fun k => resG X (X.basicOpen_le (t.f k)) (s.f k) * ((hu k).unit⁻¹).val, fun k x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[← gs_res (𝟙 X) x (X.basicOpen_le (t.f k)) hx (t.f k), ← gs_mul _ x _ hx, mul_assoc, IsUnit.val_inv_mul, mul_one, gs_res _ x _ hx]`. Take `⟨a, ha, -⟩` from `X.sheaf.existsUnique_gluing' (fun k => X.basicOpen (t.f k)) (nonzeroLocus t) (fun k => homOfLE (le_iSup (fun k => X.basicOpen (t.f k)) k)) le_rfl u (fun j k => fn_ext (V := X.basicOpen (t.f j) ⊓ X.basicOpen (t.f k)) fun y hy => by`.
+
+Use `(gs_res (𝟙 X) y inf_le_left hy _).trans (Eq.trans ?_ (gs_res (𝟙 X) y inf_le_right hy _).symm)` and prove the remaining obligations. Establish `hj : (𝟙 X : X ⟶ X) y ∈ H.U j` using `X.basicOpen_le _ hy.1`. Establish `hk : (𝟙 X : X ⟶ X) y ∈ H.U k` using `X.basicOpen_le _ hy.2`. Use `((isUnit_gs_iff (𝟙 X) y _ hj _).2 hy.1).mul_right_cancel ?_` and prove the remaining obligations. Rewrite using `[← hu j y hy.1, gs_compat s (𝟙 X) y hj hk, gs_compat t (𝟙 X) y hj hk, hu k y hy.2]`.
+
+Use the proof step `ring)`. Use `⟨a, isRatio_of_gs fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `Opens.mem_iSup.1 hx`. Use `⟨k, X.basicOpen_le _ hk, (hu k x hk).trans ?_⟩` and prove the remaining obligations. Rewrite using `[← ha k]`.
+
+Conclude with `congrArg (· * _) (gs_res (𝟙 X) x (le_iSup (fun k => X.basicOpen (t.f k)) k) hk a)`.
+-/
 theorem exists_isRatio {H : LB X} (s t : LB.Sec H) : ∃ r, IsRatio s t r := by
   have hu : ∀ k, IsUnit (resG X (X.basicOpen_le (t.f k)) (t.f k)) := fun k =>
     X.toRingedSpace.isUnit_res_basicOpen (t.f k)
@@ -102,6 +140,11 @@ theorem exists_isRatio {H : LB X} (s t : LB.Sec H) : ∃ r, IsRatio s t r := by
   rw [← ha k]
   exact congrArg (· * _) (gs_res (𝟙 X) x (le_iSup (fun k => X.basicOpen (t.f k)) k) hk a)
 
+/- English proof (translation)
+Use extensionality with `x`. Establish `key : x ∈ nonzeroLocus t → (x ∈ X.basicOpen r ↔ x ∈ nonzeroLocus s)` using `fun hx => by`. Take `⟨k, hk⟩` from `exists_chart_of_mem t hx`. Use `(isUnit_gs_iff (𝟙 X) x _ hx r).symm.trans (Iff.trans ?_ (mem_nonzeroLocus_iff_gs s (𝟙 X) x hk).symm)` and prove the remaining obligations. Rewrite using `[h.gs (𝟙 X) x hx hk, IsUnit.mul_iff]`.
+
+Conclude with `⟨fun e => ⟨e, (mem_nonzeroLocus_iff_gs t (𝟙 X) x hk).1 hx⟩, fun e => e.1⟩`. Conclude with `⟨fun hx => ⟨X.basicOpen_le _ hx, (key (X.basicOpen_le _ hx)).1 hx⟩, fun hx => (key hx.1).2 hx.2⟩`.
+-/
 theorem IsRatio.basicOpen {H : LB X} {s t : LB.Sec H} {r : Γ(X, nonzeroLocus t)}
     (h : IsRatio s t r) : X.basicOpen r = nonzeroLocus t ⊓ nonzeroLocus s := by
   ext x
@@ -122,20 +165,41 @@ def EmbedsBy (f : X ⟶ Y) {H : LB X} {ι : Type} (s : ι → LB.Sec H) : Prop :
 def InSpan (f : X ⟶ Y) {H : LB X} {ι : Type} [Fintype ι] (t : ι → LB.Sec H) (s : LB.Sec H) : Prop :=
   ∃ c : ι → Γ(Y, ⊤), ∀ k, s.f k = ∑ l, (f.appLE ⊤ (H.U k) le_top).hom (c l) * (t l).f k
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem veryAmpleAt_iff {S : Scheme.{0}} (A : Over S) [GrpObj A] (L : LB A.left) (N : ℕ) :
     VeryAmpleAt A L N ↔ ∀ U : S.Opens, IsAffineOpen U →
       ∃ M : ℕ, ∃ s : Fin (M + 1) → LB.Sec (powOver A L U N), EmbedsBy (A.hom ∣_ U) s := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `gs_appLE f ⊤ W le_top r z h b`.
+-/
 theorem gs_const (f : X ⟶ Y) (W : X.Opens) (r : Z ⟶ X) (z : Z) (h : r z ∈ W) (b : Γ(Y, ⊤)) :
     gs r z W ((f.appLE ⊤ W le_top).hom b) = gs (r ≫ f) z ⊤ b := gs_appLE f ⊤ W le_top r z h b
 
+/- English proof (translation)
+Discharge the goal by the elementary cases of `trivial`.
+-/
 theorem mem_top' (x : X) : x ∈ (⊤ : X.Opens) := trivial
 
+/- English proof (translation)
+Rewrite using `[← cancel_mono (Scheme.ΓSpecIso Γ(Y, ⊤)).hom, Iso.inv_hom_id, ← Scheme.toSpecΓ_appTop, ← Scheme.Hom.comp_appTop]`. Conclude with `(congrArg Scheme.Hom.appTop Y.isoSpec.hom_inv_id).trans Scheme.Hom.id_appTop`.
+-/
 theorem isoSpec_inv_appTop [IsAffine Y] : Y.isoSpec.inv.appTop = (Scheme.ΓSpecIso Γ(Y, ⊤)).inv := by
   rw [← cancel_mono (Scheme.ΓSpecIso Γ(Y, ⊤)).hom, Iso.inv_hom_id, ← Scheme.toSpecΓ_appTop,
     ← Scheme.Hom.comp_appTop]
   exact (congrArg Scheme.Hom.appTop Y.isoSpec.hom_inv_id).trans Scheme.Hom.id_appTop
 
+/- English proof (translation)
+Use `⟨D.toSpecΓ ≫ Spec.map ψ, ?_, fun z a => ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ← Spec.map_comp_assoc, h, ← Category.assoc, Iso.eq_comp_inv]`. Rewrite using `[Category.assoc]`. Express the relevant statement in the definitionally equal form `D.ι ≫ f ≫ Y.toSpecΓ = D.toSpecΓ ≫ Spec.map (f.appTop ≫ X.presheaf.map (homOfLE le_top).op)`. Rewrite using `[Spec.map_comp, Scheme.Opens.toSpecΓ_SpecMap_presheaf_map_top_assoc, Scheme.toSpecΓ_naturality]`.
+
+Establish `e : (D.toSpecΓ ≫ Spec.map ψ).appTop.hom ((Scheme.ΓSpecIso P).inv.hom a) = D.topIso.inv.hom (ψ.hom a)`. Express the relevant statement in the definitionally equal form `((Scheme.ΓSpecIso P).inv ≫ (D.toSpecΓ ≫ Spec.map ψ).appTop).hom a = (ψ ≫ D.topIso.inv).hom a`. Rewrite using `[Scheme.Hom.comp_appTop, ← Scheme.ΓSpecIso_inv_naturality_assoc, Scheme.Opens.toSpecΓ_appTop, Iso.inv_hom_id_assoc]`. Establish `hz : D.ι z ∈ D` using `z.2`. Establish `e' : D.topIso.inv = D.ι.appLE D ⊤ (fun x _ => x.2)`.
+
+Conclude with `(Scheme.Opens.ι_appLE D D ⊤ _).symm`. Establish `e₁` using `gs_appLE D.ι D ⊤ (fun x _ => x.2) (𝟙 _) z trivial (ψ.hom a)`. Establish `e₂` using `gs_pull (𝟙 _) (D.toSpecΓ ≫ Spec.map ψ) z ⊤ trivial ((Scheme.ΓSpecIso P).inv.hom a)`. Rewrite `e₁`, `e₂` using `[Category.id_comp]`. Rewrite using `[← e₁, ← e₂, ← e', ← e]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_hom_spec (f : X ⟶ Y) [IsAffine Y] (D : X.Opens) (P : CommRingCat.{0})
     (C : Γ(Y, ⊤) ⟶ P) (ψ : P ⟶ Γ(X, D)) (h : C ≫ ψ = f.appLE ⊤ D le_top) :
     ∃ q : D.toScheme ⟶ Spec P, D.ι ≫ f = q ≫ Spec.map C ≫ Y.isoSpec.inv ∧
@@ -159,6 +223,35 @@ theorem exists_hom_spec (f : X ⟶ Y) [IsAffine Y] (D : X.Opens) (P : CommRingCa
     rw [← e₁, ← e₂, ← e', ← e]
     rfl
 
+/- English proof (translation)
+Set `P : CommRingCat.{0}` to `.of (MvPolynomial ι Γ(Y, ⊤))`. Set `C : Γ(Y, ⊤) ⟶ P` to `CommRingCat.ofHom MvPolynomial.C`. Set `ψ : P ⟶ Γ(X, nonzeroLocus t₀)` to `CommRingCat.ofHom (MvPolynomial.eval₂Hom (f.appLE ⊤ (nonzeroLocus t₀) le_top).hom r)`. Take `⟨q, hq, hq'⟩` from `exists_hom_spec f (nonzeroLocus t₀) P C ψ (CommRingCat.hom_ext (RingHom.ext fun b => MvPolynomial.eval₂Hom_C _ _ b))`. Set `g : Spec P ⟶ Y` to `Spec.map C ≫ Y.isoSpec.inv`.
+
+Set `e : P →+* Γ(Spec P, ⊤)` to `(Scheme.ΓSpecIso P).inv.hom`. Establish `hg : ∀ b, (g.app ⊤).hom b = e (MvPolynomial.C b)` using `fun b => by`. Express the relevant statement in the definitionally equal form `g.appTop.hom b = (C ≫ (Scheme.ΓSpecIso P).inv).hom b`. Rewrite using `[Scheme.ΓSpecIso_inv_naturality, Scheme.Hom.comp_appTop]`. Rewrite using `[isoSpec_inv_appTop]`.
+
+Set `p₁` to `pullback.fst f g`. Set `p₂` to `pullback.snd f g`. Set `d : ∀ (k : H.ι) (l : ι), Γ(pullback f g, p₁ ⁻¹ᵁ H.U k)` to `fun k l => (p₁.app _).hom ((t l).f k) - (p₂.appLE ⊤ _ le_top).hom (e (MvPolynomial.X l)) * (p₁.app _).hom (t₀.f k)`. Establish `hd : ∀ (Z : Scheme.{0}) (ρ : Z ⟶ pullback f g) (z : Z) k l, p₁ (ρ z) ∈ H.U k → gs ρ z _ (d k l) = gs (ρ ≫ p₁) z _ ((t l).f k) - gs (ρ ≫ p₂) z ⊤ (e (MvPolynomial.X l)) * gs (ρ ≫ p₁) z _ (t₀.f k)` using `fun Z ρ z k l h => by`. Establish `h' : ρ z ∈ p₁ ⁻¹ᵁ H.U k` using `h`.
+
+Rewrite using `[gs_sub' _ _ _ h', gs_mul _ _ _ h', gs_pull _ _ _ _ h, gs_pull _ _ _ _ h, gs_const _ _ _ _ h']`. Set `O : (pullback f g).Opens` to `⨆ kl : H.ι × ι, (pullback f g).basicOpen (d kl.1 kl.2)`. Establish `hC : IsClosed (p₂ '' (O : Set (pullback f g : Scheme))ᶜ)` using `p₂.isClosedMap _ O.isOpen.isClosed_compl`. Establish `h₁ : ∀ z, q z ∈ p₂ '' (O : Set (pullback f g : Scheme))ᶜ` using `fun z => by`. Set `γ` to `pullback.lift _ _ hq`.
+
+Establish `e₁ : γ ≫ p₁ = (nonzeroLocus t₀).ι` using `pullback.lift_fst _ _ _`. Establish `e₂ : γ ≫ p₂ = q` using `pullback.lift_snd _ _ _`. Use `⟨γ z, fun hz => ?_, by rw [← e₂]; rfl⟩` and prove the remaining obligations. Take `⟨⟨k, l⟩, hkl⟩` from `Opens.mem_iSup.1 hz`. Establish `hk : γ z ∈ p₁ ⁻¹ᵁ H.U k` using `(pullback f g).basicOpen_le _ hkl`.
+
+Establish `hk' : (nonzeroLocus t₀).ι z ∈ H.U k` using `by rw [← e₁]; exact hk`. Establish `u` using `(isUnit_gs_iff γ z _ hk _).2 hkl`. Rewrite `u` using `[hd _ γ z k l hk, e₁, e₂, hq', (hr l).gs _ z z.2 hk']`. Establish `e₃ : ψ.hom (MvPolynomial.X l) = r l` using `MvPolynomial.eval₂Hom_X' _ _ l`. Rewrite `u` using `[e₃, sub_self]`.
+
+Conclude with `not_isUnit_zero u`. Assume the negation of the conclusion as `hne`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ hne`. Set `x : Spec P` to `(⟨m, hm.isPrime⟩ : PrimeSpectrum P)`. Establish `hx : x ∈ p₂ '' (O : Set (pullback f g : Scheme))ᶜ`.
+
+Assume the negation of the conclusion as `hx`. Take `⟨_, ⟨a, rfl⟩, ha, hsub⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open hx hC.isOpen_compl`. Establish `hn : IsNilpotent (ψ.hom a)`. Rewrite using `[Scheme.isNilpotent_iff_basicOpen_eq_bot_of_isCompact hD, eq_bot_iff]`. Introduce `y hy`.
+
+Set `z : (nonzeroLocus t₀).toScheme` to `⟨y, X.basicOpen_le _ hy⟩`. Establish `u` using `(isUnit_gs_iff (nonzeroLocus t₀).ι z _ z.2 _).2 hy`. Rewrite `u` using `[← hq', isUnit_gs_iff _ _ _ (mem_top' _)]`. Use `(hsub ?_ (h₁ z)).elim` and prove the remaining obligations. Conclude with `(basicOpen_eq_of_affine (R := P) a).le u`.
+
+Take `⟨n, hn⟩` from `hn`. Use `ha (hm.isPrime.mem_of_pow_mem n (hle (Ideal.mem_sup_left ?_)))` and prove the remaining obligations. Conclude with `(map_pow _ _ _).trans hn`. Take `⟨z, hz, hzx⟩` from `hx`. Take `⟨j, hj⟩` from `Opens.mem_iSup.1 (show p₁ z ∈ ⨆ j, nonzeroLocus (s j) by rw [hcov]; trivial)`.
+
+Take `⟨k, hk⟩` from `exists_chart_of_mem _ hj`. Establish `u` using `(mem_nonzeroLocus_iff_gs (s j) p₁ z hk).1 hj`. Establish `nu : ∀ l, gs p₁ z _ ((t l).f k) - gs p₂ z ⊤ (e (MvPolynomial.X l)) * gs p₁ z _ (t₀.f k) ∈ IsLocalRing.maximalIdeal _` using `fun l hu => by`. Use `hd _ (𝟙 _) z k l hk` as an intermediate fact. Rewrite `this` using `[Category.id_comp, Category.id_comp]`.
+
+Rewrite `hu` using `[← this, isUnit_gs_iff (𝟙 _) z _ hk]`. Conclude with `hz (Opens.mem_iSup.2 ⟨(k, l), hu⟩)`. Establish `nl : gs p₂ z ⊤ (e (∑ l, MvPolynomial.C (c j l) * MvPolynomial.X l)) ∈ IsLocalRing.maximalIdeal _` using `fun hu => by`. Rewrite `hu` using `[isUnit_gs_iff _ _ _ (mem_top' _), hzx]`. Conclude with `(basicOpen_eq_of_affine (R := P) _).le hu (hle (Ideal.mem_sup_right (Ideal.subset_span ⟨j, rfl⟩)))`.
+
+Establish `hb : ∀ b, gs p₁ z _ ((f.appLE ⊤ (H.U k) le_top).hom b) = gs p₂ z ⊤ (e (MvPolynomial.C b))` using `fun b => by`. Rewrite using `[gs_const _ _ _ _ hk, ← hg, pullback.condition]`. Conclude with `(gs_pull p₂ g z ⊤ trivial b).symm`. Establish `key : gs p₁ z _ ((s j).f k) = ∑ l, gs p₂ z ⊤ (e (MvPolynomial.C (c j l))) * (gs p₁ z _ ((t l).f k) - gs p₂ z ⊤ (e (MvPolynomial.X l)) * gs p₁ z _ (t₀.f k)) + gs p₂ z ⊤ (e (∑ l, MvPolynomial.C (c j l) * MvPolynomial.X l)) * gs p₁ z _ (t₀.f k)`. Rewrite using `[hc, gs_sum' _ _ _ hk, map_sum, gs_sum' _ _ _ (mem_top' _), Finset.sum_mul, ← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[gs_mul _ _ _ hk, hb, map_mul, gs_mul _ _ _ (mem_top' _)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `u` using `[key]`. Conclude with `(Ideal.add_mem _ (Ideal.sum_mem _ fun l _ => Ideal.mul_mem_left _ _ (nu l)) (Ideal.mul_mem_right _ _ nl)) u`.
+-/
 theorem ker_sup_span_eq_top (f : X ⟶ Y) [IsAffine Y] [UniversallyClosed f] {H : LB X} {ι κ : Type}
     [Fintype ι] (t : ι → LB.Sec H) (s : κ → LB.Sec H) (hcov : ⨆ j, nonzeroLocus (s j) = ⊤)
     (c : κ → ι → Γ(Y, ⊤))
@@ -252,6 +345,11 @@ theorem ker_sup_span_eq_top (f : X ⟶ Y) [IsAffine Y] [UniversallyClosed f] {H 
   exact (Ideal.add_mem _ (Ideal.sum_mem _ fun l _ => Ideal.mul_mem_left _ _ (nu l))
     (Ideal.mul_mem_right _ _ nl)) u
 
+/- English proof (translation)
+Establish `e : nonzeroLocus t₀ = ⨆ j, nonzeroLocus (s j) ⊓ nonzeroLocus t₀`. Rewrite using `[← iSup_inf_eq, hcov, top_inf_eq]`. Rewrite using `[e, Opens.coe_iSup]`. Use `isCompact_iUnion fun j => ?_` and prove the remaining obligations. Take `⟨σ, hσ⟩` from `exists_isRatio t₀ (s j)`.
+
+Rewrite using `[← hσ.basicOpen]`. Conclude with `((haff j).basicOpen σ).isCompact`.
+-/
 theorem isCompact_nonzeroLocus {H : LB X} {κ : Type} [Finite κ] (s : κ → LB.Sec H)
     (hcov : ⨆ j, nonzeroLocus (s j) = ⊤) (haff : ∀ j, IsAffineOpen (nonzeroLocus (s j)))
     (t₀ : LB.Sec H) : IsCompact (nonzeroLocus t₀ : Set X) := by
@@ -263,6 +361,45 @@ theorem isCompact_nonzeroLocus {H : LB X} {κ : Type} [Finite κ] (s : κ → LB
   rw [← hσ.basicOpen]
   exact ((haff j).basicOpen σ).isCompact
 
+/- English proof (translation)
+Take `⟨hcov, hs⟩` from `hs`. Use `choose haff rs hrs hsurj using hs`. Use `choose c hc using hst`. Establish `hD` using `isCompact_nonzeroLocus s hcov haff t₀`. Use `choose σ hσ using fun j => exists_isRatio t₀ (s j)`.
+
+Establish `main : ∀ r : ι → Γ(X, nonzeroLocus t₀), (∀ l, IsRatio (t l) t₀ (r l)) → IsAffineOpen (nonzeroLocus t₀) ∧ Function.Surjective (MvPolynomial.eval₂Hom (f.appLE ⊤ (nonzeroLocus t₀) le_top).hom r)`. Introduce `r hr`. Establish `top` using `ker_sup_span_eq_top f t s hcov c hc t₀ hD r hr`. Use `set ψ := MvPolynomial.eval₂Hom (f.appLE ⊤ (nonzeroLocus t₀) le_top).hom r with hψ`. Use `set lam : κ → MvPolynomial ι Γ(Y, ⊤) := fun j => ∑ l, MvPolynomial.C (c j l) * MvPolynomial.X l with hlam`.
+
+Establish `hρ : ∀ j, IsRatio (s j) t₀ (ψ (lam j))` using `fun j => isRatio_of_gs fun x hx => by`. Take `⟨k, hk⟩` from `exists_chart_of_mem t₀ hx`. Use `⟨k, hk, ?_⟩` and prove the remaining obligations. Rewrite using `[hc, gs_sum' (𝟙 X) x _ hk, hlam, map_sum, gs_sum' (𝟙 X) x _ hx, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, hψ, MvPolynomial.eval₂Hom_C, MvPolynomial.eval₂Hom_X', gs_mul (𝟙 X) x _ hk, gs_mul (𝟙 X) x _ hx, gs_const f _ (𝟙 X) x hk, gs_const f _ (𝟙 X) x hx, (hr l).gs (𝟙 X) x hx hk, mul_assoc]`. Establish `hbo : ∀ j, X.basicOpen (ψ (lam j)) = X.basicOpen (σ j)` using `fun j => by`. Rewrite using `[(hρ j).basicOpen, (hσ j).basicOpen, inf_comm]`. Establish `hA : IsAffineOpen (nonzeroLocus t₀)`. Use `isAffineOpen_of_isAffineOpen_basicOpen _ (Set.range fun j => ψ (lam j)) ?_ ?_` and prove the remaining obligations.
+
+Use `congrArg (Ideal.map ψ) top` as an intermediate fact. Rewrite `this` using `[Ideal.map_sup, Ideal.map_top, Ideal.map_span, ← Set.range_comp, (Ideal.map_eq_bot_iff_le_ker ψ).2 le_rfl, bot_sup_eq]`. Conclude with `this`. Introduce and unpack `_ ⟨j, rfl⟩`. Rewrite using `[hbo]`.
+
+Conclude with `(haff j).basicOpen _`. Use `⟨hA, fun x₀ => ?_⟩` and prove the remaining obligations. Establish `loc : ∀ j, ∃ n, ψ (lam j) ^ n * x₀ ∈ ψ.range` using `fun j => by`. Establish `hV : X.basicOpen (σ j) ≤ nonzeroLocus t₀` using `(hbo j).ge.trans (X.basicOpen_le _)`. Establish `hV' : X.basicOpen (σ j) ≤ nonzeroLocus (s j)` using `X.basicOpen_le _`.
+
+Set `θ : MvPolynomial ι Γ(Y, ⊤) →+* Γ(X, X.basicOpen (σ j))` to `(resG X hV).comp ψ`. Establish `rat : ∀ (w : LB.Sec H) (a : Γ(X, nonzeroLocus (s j))) (b : Γ(X, nonzeroLocus t₀)), IsRatio w (s j) a → IsRatio w t₀ b → θ (lam j) * resG X hV' a = resG X hV b` using `fun w a b ha hb => fn_ext fun x hx => by`. Take `⟨k, hk⟩` from `exists_chart_of_mem t₀ (hV hx)`. Use `((mem_nonzeroLocus_iff_gs t₀ (𝟙 X) x hk).1 (hV hx)).mul_right_cancel ?_` and prove the remaining obligations. Rewrite using `[gs_mul (𝟙 X) x _ hx, gs_res (𝟙 X) x _ hx, gs_res (𝟙 X) x _ hx, ← hb.gs (𝟙 X) x (hV hx) hk, ha.gs (𝟙 X) x (hV' hx) hk, (hρ j).gs (𝟙 X) x (hV hx) hk]`.
+
+Establish `: gs (𝟙 X) x _ (θ (lam j)) = gs (𝟙 X) x _ (ψ (lam j))` using `gs_res (𝟙 X) x hV hx _`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Establish `one : θ (lam j) * resG X hV' (σ j) = 1` using `(rat t₀ (σ j) 1 (hσ j) (fun k => by rw [map_one, one_mul])).trans (map_one _)`. Establish `poly : ∀ p, ∃ n a, θ (lam j) ^ n * resG X hV' (MvPolynomial.eval₂Hom (f.appLE ⊤ (nonzeroLocus (s j)) le_top).hom (rs j) p) = θ a` using `fun p => by`.
+
+Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C b`. Use `⟨0, MvPolynomial.C b, fn_ext fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[pow_zero, one_mul, MvPolynomial.eval₂Hom_C, gs_res (𝟙 X) x _ hx, gs_const f _ (𝟙 X) x (hV' hx)]`. Use `Eq.symm ((gs_res (𝟙 X) x hV hx _).trans ?_)` and prove the remaining obligations.
+
+Rewrite using `[hψ, MvPolynomial.eval₂Hom_C, gs_const f _ (𝟙 X) x (hV hx)]`. Consider the case `add p q hp hq`. Take `⟨n, a, ha⟩` from `hp`. Take `⟨m, b, hb⟩` from `hq`. Use `⟨n + m, lam j ^ m * a + lam j ^ n * b, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_add, map_add, map_add, map_mul, map_mul, map_pow, map_pow, ← ha, ← hb]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul_X p i hp`. Take `⟨n, a, ha⟩` from `hp`. Use `⟨n + 1, a * lam i, ?_⟩` and prove the remaining obligations.
+
+Establish `e : θ (lam j) * resG X hV' (rs j i) = θ (lam i)` using `rat (s i) _ _ (hrs j i) (hρ i)`. Rewrite using `[map_mul, map_mul, map_mul, MvPolynomial.eval₂Hom_X', ← ha, ← e]`. Expand and normalize the polynomial expressions, which then agree. Use `haveI := (haff j).isLocalization_basicOpen (σ j)`. Take `⟨m, y, hy⟩` from `IsLocalization.Away.surj (σ j) (resG X hV x₀)`.
+
+Take `⟨p, rfl⟩` from `hsurj j y`. Take `⟨n, a, ha⟩` from `poly p`. Establish `hy' : resG X hV x₀ * resG X hV' (σ j) ^ m = resG X hV' (MvPolynomial.eval₂Hom (f.appLE ⊤ (nonzeroLocus (s j)) le_top).hom (rs j) p)` using `hy`. Establish `z : resG X hV (ψ (lam j) ^ n * x₀ - ψ (lam j ^ m * a)) = 0`. Express the relevant statement in the definitionally equal form `(resG X hV) (_ - _) = 0`.
+
+Rewrite using `[map_sub, map_mul, map_pow]`. Express the relevant statement in the definitionally equal form `θ (lam j) ^ n * _ - θ (lam j ^ m * a) = 0`. Rewrite using `[map_mul, map_pow, ← ha, ← hy']`. Use `congrArg (· ^ m) one` as an intermediate fact. Simplify using `only [mul_pow, one_pow] at this`.
+
+Take the linear combination `(-(θ (lam j) ^ n * resG X hV x₀)) * this`. Take `⟨k, hk⟩` from `exists_pow_mul_eq_zero_of_res_basicOpen_eq_zero_of_isAffineOpen X hA (ψ (lam j) ^ n * x₀ - ψ (lam j ^ m * a)) (ψ (lam j)) (fn_ext fun x hx => by`. Establish `hx' : x ∈ X.basicOpen (σ j)` using `(hbo j).le hx`. Establish `e` using `congrArg (gs (𝟙 X) x _) z`. Rewrite `e` using `[gs_res (𝟙 X) x _ hx']`.
+
+Use `(gs_res (𝟙 X) x (X.basicOpen_le _) hx _).trans (e.trans ?_)` and prove the remaining obligations. Simplify using `only [gs_eq (𝟙 X) x _ hx, gs_eq (𝟙 X) x _ hx', map_zero])`. Use `⟨k + n, lam j ^ k * (lam j ^ m * a), ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul ψ (lam j ^ k), map_pow]`. Take the linear combination `-hk`.
+
+Use `letI : Algebra (MvPolynomial ι Γ(Y, ⊤)) Γ(X, nonzeroLocus t₀) := ψ.toAlgebra`. Use `Submodule.mem_of_span_eq_top_of_smul_pow_mem (LinearMap.range (Algebra.linearMap (MvPolynomial ι Γ(Y, ⊤)) Γ(X, nonzeroLocus t₀))) ((RingHom.ker ψ : Set _) ∪ Set.range lam) (by rw [Ideal.span_union, Ideal.span_eq]; exact top) x₀ (by` as an intermediate fact. Introduce and unpack `⟨a, ha | ⟨j, rfl⟩⟩`. Use `⟨1, 0, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ψ 0 = ψ (a ^ 1) * x₀`.
+
+Rewrite using `[pow_one, show ψ a = 0 from ha, map_zero, zero_mul]`. Take `⟨n, a, ha⟩` from `loc j`. Use `⟨n, a, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ψ a = ψ (lam j ^ n) * x₀`. Rewrite using `[map_pow, ha])`.
+
+Conclude with `this`. Use `choose r hr using fun l => exists_isRatio (t l) t₀`. Conclude with `⟨(main r hr).1, fun r hr => (main r hr).2⟩`.
+-/
 theorem EmbedsBy.affine_and_surjective {f : X ⟶ Y} [IsAffine Y] [UniversallyClosed f] {H : LB X}
     {ι κ : Type} [Fintype ι] [Finite κ] {s : κ → LB.Sec H} (hs : EmbedsBy f s) {t : ι → LB.Sec H}
     (hst : ∀ j, InSpan f t (s j)) (t₀ : LB.Sec H) :
@@ -378,6 +515,11 @@ theorem EmbedsBy.affine_and_surjective {f : X ⟶ Y} [IsAffine Y] [UniversallyCl
   choose r hr using fun l => exists_isRatio (t l) t₀
   exact ⟨(main r hr).1, fun r hr => (main r hr).2⟩
 
+/- English proof (translation)
+Use `top_le_iff.1 fun x _ => ?_` and prove the remaining obligations. Take `⟨j, hj⟩` from `Opens.mem_iSup.1 (show x ∈ ⨆ j, nonzeroLocus (s j) by rw [hcov]; trivial)`. Take `⟨k, hk⟩` from `exists_chart_of_mem _ hj`. Take `⟨c, hc⟩` from `hst j`. Establish `u` using `(mem_nonzeroLocus_iff_gs (s j) (𝟙 X) x hk).1 hj`.
+
+Rewrite `u` using `[hc, gs_sum' (𝟙 X) x _ hk]`. Take `⟨l, -, hl⟩` from `IsLocalRing.exists_of_isUnit_sum u`. Rewrite `hl` using `[gs_mul (𝟙 X) x _ hk]`. Conclude with `Opens.mem_iSup.2 ⟨l, (mem_nonzeroLocus_iff_gs (t l) (𝟙 X) x hk).2 (isUnit_of_mul_isUnit_right hl)⟩`.
+-/
 theorem iSup_nonzeroLocus_of_inSpan {f : X ⟶ Y} {H : LB X} {ι κ : Type} [Fintype ι]
     {s : κ → LB.Sec H} (hcov : ⨆ j, nonzeroLocus (s j) = ⊤) {t : ι → LB.Sec H}
     (hst : ∀ j, InSpan f t (s j)) : ⨆ l, nonzeroLocus (t l) = ⊤ := by
@@ -392,6 +534,9 @@ theorem iSup_nonzeroLocus_of_inSpan {f : X ⟶ Y} {H : LB X} {ι κ : Type} [Fin
   exact Opens.mem_iSup.2
     ⟨l, (mem_nonzeroLocus_iff_gs (t l) (𝟙 X) x hk).2 (isUnit_of_mul_isUnit_right hl)⟩
 
+/- English proof (translation)
+Use `⟨iSup_nonzeroLocus_of_inSpan hs.1 hst, fun i => ?_⟩` and prove the remaining obligations. Take `⟨h₁, h₂⟩` from `hs.affine_and_surjective hst (t i)`. Use `choose r hr using fun l => exists_isRatio (t l) (t i)`. Conclude with `⟨h₁, r, hr, h₂ r hr⟩`.
+-/
 theorem EmbedsBy.of_inSpan {f : X ⟶ Y} [IsAffine Y] [UniversallyClosed f] {H : LB X}
     {ι κ : Type} [Fintype ι] [Finite κ] {s : κ → LB.Sec H} (hs : EmbedsBy f s) {t : ι → LB.Sec H}
     (hst : ∀ j, InSpan f t (s j)) : EmbedsBy f t := by
@@ -400,6 +545,9 @@ theorem EmbedsBy.of_inSpan {f : X ⟶ Y} [IsAffine Y] [UniversallyClosed f] {H :
   choose r hr using fun l => exists_isRatio (t l) (t i)
   exact ⟨h₁, r, hr, h₂ r hr⟩
 
+/- English proof (translation)
+Use `and_congr_right fun _ => forall_congr' fun i => and_congr_right fun _ => exists_congr fun r => and_congr_right fun _ => ?_` and prove the remaining obligations. Establish `e : MvPolynomial.eval₂Hom ((resG X le_top).comp (f.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom)) r = (MvPolynomial.eval₂Hom (f.appLE ⊤ (nonzeroLocus (s i)) le_top).hom r).comp (MvPolynomial.map (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom)` using `RingHom.ext fun p => (MvPolynomial.eval₂Hom_map_hom (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r (f.appLE ⊤ (nonzeroLocus (s i)) le_top).hom p).symm`. Rewrite using `[e, RingHom.coe_comp]`. Conclude with `(Function.Surjective.of_comp_iff _ (MvPolynomial.map_surjective _ (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of R)).inv).2)).symm`.
+-/
 theorem embedsBy_spec_iff {R : Type} [CommRing R] (f : X ⟶ Spec (CommRingCat.of R)) {H : LB X}
     {ι : Type} (s : ι → LB.Sec H) : EmbedsBy f s ↔
       (⨆ i, nonzeroLocus (s i) = ⊤) ∧ ∀ i, IsAffineOpen (nonzeroLocus (s i)) ∧
@@ -419,6 +567,17 @@ theorem embedsBy_spec_iff {R : Type} [CommRing R] (f : X ⟶ Spec (CommRingCat.o
   exact (Function.Surjective.of_comp_iff _ (MvPolynomial.map_surjective _
     (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of R)).inv).2)).symm
 
+/- English proof (translation)
+Establish `: IsAffineHom ψ` using `MorphismProperty.of_isPullback (P := @IsAffineHom) sq.flip inferInstance`. Establish `loc : ∀ i, nonzeroLocus (s' i) = ψ ⁻¹ᵁ nonzeroLocus (s i)` using `fun i => by`. Use extensionality with `y`. Take `⟨j, k, hj, hk, u, e⟩` from `hs' y`. Use `(mem_nonzeroLocus_iff_gs (s' i) (𝟙 X') y hk).trans (Iff.trans ?_ (mem_nonzeroLocus_iff_gs (s i) ψ y hj).symm)` and prove the remaining obligations.
+
+Rewrite using `[e, Units.isUnit_units_mul]`. Take `⟨hcov, hs⟩` from `hs`. Use `⟨top_le_iff.1 fun y _ => ?_, fun i => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `Opens.mem_iSup.1 (show ψ y ∈ ⨆ i, nonzeroLocus (s i) by rw [hcov]; trivial)`. Conclude with `Opens.mem_iSup.2 ⟨i, by rw [loc]; exact hi⟩`.
+
+Take `⟨haff, r, hr, hsurj⟩` from `hs i`. Use `⟨by rw [loc]; exact haff.preimage ψ, fun j => (ψ.appLE _ _ (loc i).le).hom (r j), fun j => isRatio_of_gs fun y hy => ?_, ?_⟩` and prove the remaining obligations. Take `⟨l, k, hl, hk, u, e⟩` from `hs' y`. Use `⟨k, hk, u.mul_right_inj.1 ?_⟩` and prove the remaining obligations. Rewrite using `[← e, mul_left_comm, ← e, gs_appLE ψ _ _ _ (𝟙 _) y hy, Category.id_comp]`.
+
+Conclude with `(hr j).gs ψ y ((loc i).le hy) hl`. Establish `po` using `(isIso_pushoutSection_iff sq (US := ⊤) (UT := ⊤) (UX := nonzeroLocus (s i)) le_top le_top (UY := nonzeroLocus (s' i)) (by rw [loc]; simp)).1 (isIso_pushoutSection_of_isAffineOpen sq _ _ _ (isAffineOpen_top _) (isAffineOpen_top _) haff)`. Rewrite using `[← RingHom.range_eq_top, ← top_le_iff, ← CommRingCat.closure_range_union_range_eq_top_of_isPushout po, Subring.closure_le]`. Introduce and unpack `_ (⟨d, rfl⟩ | ⟨c, rfl⟩)`. Take `⟨p, rfl⟩` from `hsurj d`.
+
+Use `⟨MvPolynomial.map (g.appLE ⊤ ⊤ le_top).hom p, ?_⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.eval₂Hom_map_hom]`. Conclude with `((congrArg (fun q => MvPolynomial.eval₂Hom q _ p) (congrArg CommRingCat.Hom.hom po.w.symm)).trans (MvPolynomial.map_eval₂Hom _ _ _ p).symm)`. Conclude with `⟨MvPolynomial.C c, MvPolynomial.eval₂Hom_C _ _ _⟩`.
+-/
 theorem EmbedsBy.pull {f : X ⟶ Y} {f' : X' ⟶ Y'} {ψ : X' ⟶ X} {g : Y' ⟶ Y} [IsAffine Y]
     [IsAffine Y'] (sq : IsPullback ψ f' f g) {H : LB X} {H' : LB X'} {ι : Type}
     {s : ι → LB.Sec H} (hs : EmbedsBy f s) {s' : ι → LB.Sec H'}
@@ -460,12 +619,20 @@ section Translate
 variable {L : LB X} {K K' : Type} [Fintype K] [Fintype K'] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
   {φ' : K' → (Y' ⟶ X)} {ε' : K' → ℤ} {h : Y' ⟶ Y}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun H _ r z _ hJ => SectionScalarValuation.secScal_sval H r z hJ, fun H => SectionScalarValuation.secScal_of_sval hL fun y J hJ => H _ _ y J hJ⟩`.
+-/
 theorem secScal_iff_sval (hL : L.IsLB) {s' : LB.Sec (LB.LinComb L φ' ε')}
     {s : LB.Sec (LB.LinComb L φ ε)} : GeneratorPullback.SecScal L φ' ε' s' φ ε s h 1 ↔
       ∀ (Z : Scheme.{0}) (r : Z ⟶ Y') (z : Z) (J), Good L z J → sval s (r ≫ h) z J = sval s' r z J :=
   ⟨fun H _ r z _ hJ => SectionScalarValuation.secScal_sval H r z hJ,
     fun H => SectionScalarValuation.secScal_of_sval hL fun y J hJ => H _ _ y J hJ⟩
 
+/- English proof (translation)
+Take `⟨s', hs'⟩` from `exists_sec hL e (pullSec L φ ε s h)`. Establish `H : GeneratorPullback.SecScal L φ' ε' s' φ ε s h 1` using `(secScal_iff_sval hL).2 fun Z r z J hJ => ((hs' Z r z J hJ).trans (SectionScalarValuation.sval_pullSec φ ε s h r z hJ)).symm`. Use `⟨s', H, fun s'' H' => ?_⟩` and prove the remaining obligations. Use `funext (sec_ext_val hL (s := s'') (s' := s') fun y J hJ => (SectionScalarValuation.secScal_sval H' _ y hJ).symm.trans (SectionScalarValuation.secScal_sval H _ y hJ))` as an intermediate fact. Consider the cases of `s'`.
+
+Consider the cases of `s''`. Consider the cases of `this`. Both sides reduce to the same expression.
+-/
 theorem existsUnique_secScal (hL : L.IsLB) (e : FormEq (fun k => h ≫ φ k) ε φ' ε')
     (s : LB.Sec (LB.LinComb L φ ε)) :
     ∃! s' : LB.Sec (LB.LinComb L φ' ε'), GeneratorPullback.SecScal L φ' ε' s' φ ε s h 1 := by
@@ -477,15 +644,26 @@ theorem existsUnique_secScal (hL : L.IsLB) (e : FormEq (fun k => h ≫ φ k) ε 
     (SectionScalarValuation.secScal_sval H' _ y hJ).symm.trans (SectionScalarValuation.secScal_sval H _ y hJ))
   cases s'; cases s''; cases this; rfl
 
+/- English proof (translation)
+The claim follows from `(secScal_iff_sval hL).2 fun _ r z _ hJ => by rw [← SectionScalarValuation.secScal_sval H (r ≫ h') z hJ, Category.assoc, e, Category.comp_id]`.
+-/
 theorem secScal_symm (hL : L.IsLB) {s' : LB.Sec (LB.LinComb L φ' ε')}
     {s : LB.Sec (LB.LinComb L φ ε)} (H : GeneratorPullback.SecScal L φ' ε' s' φ ε s h 1) {h' : Y ⟶ Y'}
     (e : h' ≫ h = 𝟙 Y) : GeneratorPullback.SecScal L φ ε s φ' ε' s' h' 1 :=
   (secScal_iff_sval hL).2 fun _ r z _ hJ => by
     rw [← SectionScalarValuation.secScal_sval H (r ≫ h') z hJ, Category.assoc, e, Category.comp_id]
 
+/- English proof (translation)
+Introduce `U _ v` and use `e U (fun q => v (h ≫ q))`.
+-/
 theorem formEq_comp {φ₁ : K' → (Y ⟶ X)} (e : FormEq φ ε φ₁ ε') (h : Y' ⟶ Y) :
     FormEq (fun k => h ≫ φ k) ε (fun k => h ≫ φ₁ k) ε' := fun U _ v => e U (fun q => v (h ≫ q))
 
+/- English proof (translation)
+Establish `e' : FormEq (fun k => inv h ≫ φ' k) ε' φ ε` using `fun U _ v => by`. Use `formEq_comp e (inv h) U v` as an intermediate fact. Simplify using `only [IsIso.inv_hom_id_assoc] at this`. Conclude with `this.symm`. Use `choose F hF uF using existsUnique_secScal hL e`.
+
+Use `choose G hG uG using existsUnique_secScal hL e'`. Use `⟨⟨F, G, fun s => (uG _ _ (secScal_symm hL (hF s) (IsIso.inv_hom_id h))).symm, fun s => (uF _ _ (secScal_symm hL (hG s) (IsIso.hom_inv_id h))).symm⟩, fun s s' => ⟨fun H => (uF s s' H).symm, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hF s`.
+-/
 theorem exists_equiv_secScal (hL : L.IsLB) [IsIso h] (e : FormEq (fun k => h ≫ φ k) ε φ' ε') :
     ∃ E : LB.Sec (LB.LinComb L φ ε) ≃ LB.Sec (LB.LinComb L φ' ε'),
       ∀ s s', GeneratorPullback.SecScal L φ' ε' s' φ ε s h 1 ↔ E s = s' := by
@@ -501,6 +679,15 @@ theorem exists_equiv_secScal (hL : L.IsLB) [IsIso h] (e : FormEq (fun k => h ≫
   rintro rfl
   exact hF s
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `hs`. Use `⟨fun l => g.appTop.hom (c l), fun j => fn_ext fun y hy => ?_⟩` and prove the remaining obligations. Use `choose I hI using fun χ : Y' ⟶ X => exists_chart hL (χ y)`. Establish `hI' : Good L y I` using `hI`. Establish `hm` using `hI'.mem φ (𝟙 Y' ≫ h)`.
+
+Use `(sec_trans s' (𝟙 Y') y hy (hI'.mem φ' (𝟙 Y'))).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ * sval s' (𝟙 Y') y I = _`. Rewrite using `[← SectionScalarValuation.secScal_sval hs' _ y hI', sval]`. Use `(congrArg _ ((congrArg (gs _ y _) (hc _)).trans (gs_sum' _ y _ hm _))).trans (Eq.trans ?_ (gs_sum' (𝟙 Y') y _ hy _).symm)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `(congrArg _ (gs_mul _ y _ hm _ _)).trans (Eq.trans ?_ (gs_mul (𝟙 Y') y _ hy _ _).symm)` and prove the remaining obligations. Use `(mul_left_comm _ _ _).trans (congrArg₂ (· * ·) ?_ ?_)` and prove the remaining obligations. Use `(gs_const f _ _ y hm _).trans (Eq.trans ?_ (gs_const f' _ (𝟙 Y') y hy _).symm)` and prove the remaining obligations. Rewrite using `[Category.assoc, w, ← Category.assoc]`.
+
+Conclude with `(gs_pull _ g y ⊤ trivial _).symm`. Use `Eq.trans ?_ (sec_trans (t' l) (𝟙 Y') y hy (hI'.mem φ' (𝟙 Y'))).symm` and prove the remaining obligations. Conclude with `congrArg _ (SectionScalarValuation.secScal_sval (ht' l) _ y hI')`.
+-/
 theorem InSpan.secScal (hL : L.IsLB) {B B' : Scheme.{0}} {f : Y ⟶ B} {f' : Y' ⟶ B'} {g : B' ⟶ B}
     (w : h ≫ f = f' ≫ g) {ι : Type} [Fintype ι] {t : ι → LB.Sec (LB.LinComb L φ ε)}
     {s : LB.Sec (LB.LinComb L φ ε)} (hs : InSpan f t s) {t' : ι → LB.Sec (LB.LinComb L φ' ε')}
@@ -525,6 +712,11 @@ theorem InSpan.secScal (hL : L.IsLB) {B B' : Scheme.{0}} {f : Y ⟶ B} {f' : Y' 
   · refine Eq.trans ?_ (sec_trans (t' l) (𝟙 Y') y hy (hI'.mem φ' (𝟙 Y'))).symm
     exact congrArg _ (SectionScalarValuation.secScal_sval (ht' l) _ y hI')
 
+/- English proof (translation)
+Use `hs.pull sq fun y => ?_` and prove the remaining obligations. Use `choose I hI using fun χ : Y' ⟶ X => exists_chart hL (χ y)`. Establish `hI' : Good L y I` using `hI`. Use `⟨_, _, hI'.mem φ h, hI'.mem φ' (𝟙 Y'), 1, fun i => ?_⟩` and prove the remaining obligations. Use `SectionScalarValuation.secScal_sval (hs' i) (𝟙 Y') y hI'` as an intermediate fact.
+
+Rewrite `this` using `[Category.id_comp]`. Rewrite using `[Units.val_one, one_mul]`. Conclude with `this`.
+-/
 theorem EmbedsBy.secScal (hL : L.IsLB) {B B' : Scheme.{0}} [IsAffine B] [IsAffine B'] {f : Y ⟶ B}
     {f' : Y' ⟶ B'} {g : B' ⟶ B} (sq : IsPullback h f' f g) {ι : Type}
     {s : ι → LB.Sec (LB.LinComb L φ ε)} (hs : EmbedsBy f s) {s' : ι → LB.Sec (LB.LinComb L φ' ε')}
@@ -538,6 +730,9 @@ theorem EmbedsBy.secScal (hL : L.IsLB) {B B' : Scheme.{0}} [IsAffine B] [IsAffin
   rw [Units.val_one, one_mul]
   exact this
 
+/- English proof (translation)
+Introduce `U _ v` and use `by have key : ∀ (K : Type) [Fintype K] (ε : K → ℤ) (a : U), ∏ k, a ^ ε k = a ^ ∑ k, ε k := fun K _ ε a => (map_prod (zpowersHom U a) (fun k => Multiplicative.ofAdd (ε k)) _).symm rw [e] exact (key K ε _).trans ((congrArg _ hε).trans (key K' ε' _).symm)`.
+-/
 theorem formEq_const {χ χ' : Y ⟶ X} (e : χ = χ') (hε : ∑ k, ε k = ∑ k, ε' k) :
     FormEq (fun _ : K => χ) ε (fun _ : K' => χ') ε' := fun U _ v => by
   have key : ∀ (K : Type) [Fintype K] (ε : K → ℤ) (a : U), ∏ k, a ^ ε k = a ^ ∑ k, ε k :=
@@ -545,6 +740,11 @@ theorem formEq_const {χ χ' : Y ⟶ X} (e : χ = χ') (hε : ∑ k, ε k = ∑ 
   rw [e]
   exact (key K ε _).trans ((congrArg _ hε).trans (key K' ε' _).symm)
 
+/- English proof (translation)
+Substitute `e` using the available equality. Rewrite using `[secScal_iff_sval hL]`. Use `⟨fun H i Z r z hz => ?_, fun H Z r z J hJ => ?_⟩` and prove the remaining obligations. Take `⟨J, hJ, e⟩` from `exists_good L hL z (K := PUnit) (fun _ => r ≫ h ≫ χ) (fun _ => i) (fun _ _ _ => rfl) (fun _ => hz)`. Use `H Z r z J hJ` as an intermediate fact.
+
+Rewrite `this` using `[sval_of s (r ≫ h) z J (fun _ => i) (fun _ => by rw [Category.assoc]; exact e ⟨⟩), sval_of s' r z J (fun _ => i) (fun _ => e ⟨⟩)]`. Then use the resulting hypothesis. Rewrite using `[sval_of s (r ≫ h) z J (fun _ => J (r ≫ h ≫ χ)) (fun _ => by rw [Category.assoc])]`. Conclude with `H _ Z r z (hJ (r ≫ h ≫ χ))`.
+-/
 theorem secScal_const_iff (hL : L.IsLB) {χ : Y ⟶ X} {χ' : Y' ⟶ X} (e : h ≫ χ = χ')
     {s' : LB.Sec (LB.LinComb L (fun _ : K' => χ') ε')} {s : LB.Sec (LB.LinComb L (fun _ : K => χ) ε)} :
     GeneratorPullback.SecScal L (fun _ => χ') ε' s' (fun _ => χ) ε s h 1 ↔
@@ -569,6 +769,9 @@ variable {S : Scheme.{0}} (A : Over S) [GrpObj A] {L : LB A.left} {N : ℕ}
 
 omit [GrpObj A] in
 
+/- English proof (translation)
+Establish `P` using `(isPullback_morphismRestrict A.hom U).flip`. Use `⟨P.lift φ (f' ≫ g) (sq.w.trans (Category.assoc _ _ _).symm), P.lift_fst _ _ _, ?_⟩` and prove the remaining obligations. Use `IsPullback.of_right ?_ (P.lift_snd _ _ _) P` and prove the remaining obligations. Rewrite using `[P.lift_fst]`. Conclude with `sq`.
+-/
 theorem exists_isPullback_restrict {U : S.Opens} {φ : X' ⟶ A.left} {f' : X' ⟶ Y'}
     {g : Y' ⟶ U.toScheme} (sq : IsPullback φ f' A.hom (g ≫ U.ι)) :
     ∃ h : X' ⟶ (A.hom ⁻¹ᵁ U).toScheme, h ≫ (A.hom ⁻¹ᵁ U).ι = φ ∧
@@ -579,8 +782,14 @@ theorem exists_isPullback_restrict {U : S.Opens} {φ : X' ⟶ A.left} {f' : X' �
   rw [P.lift_fst]
   exact sq
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem sum_one_fin (N : ℕ) : ∑ _ : Fin N, (1 : ℤ) = ∑ _ : Fin 1, (N : ℤ) := by simp
 
+/- English proof (translation)
+The claim follows from `have : IsAffine U := hU hs.of_inSpan hst`.
+-/
 theorem embedsBy_powOver_of_inSpan [UniversallyClosed A.hom] {U : S.Opens} (hU : IsAffineOpen U)
     {M : ℕ} {s : Fin (M + 1) → LB.Sec (powOver A L U N)} (hs : EmbedsBy (A.hom ∣_ U) s)
     {ι : Type} [Fintype ι] (t : ι → LB.Sec (powOver A L U N))
@@ -588,12 +797,18 @@ theorem embedsBy_powOver_of_inSpan [UniversallyClosed A.hom] {U : S.Opens} (hU :
   have : IsAffine U := hU
   hs.of_inSpan hst
 
+/- English proof (translation)
+Take `⟨M, s, hs⟩` from `(veryAmpleAt_iff A L N).1 hA U hU`. Conclude with `embedsBy_powOver_of_inSpan A hU hs t fun j => ht _`.
+-/
 theorem embedsBy_powOver [UniversallyClosed A.hom] (hA : VeryAmpleAt A L N) {U : S.Opens}
     (hU : IsAffineOpen U) {ι : Type} [Fintype ι] (t : ι → LB.Sec (powOver A L U N))
     (ht : ∀ s, InSpan (A.hom ∣_ U) t s) : EmbedsBy (A.hom ∣_ U) t := by
   obtain ⟨M, s, hs⟩ := (veryAmpleAt_iff A L N).1 hA U hU
   exact embedsBy_powOver_of_inSpan A hU hs t fun j => ht _
 
+/- English proof (translation)
+Establish `: IsAffine U` using `hU`. Take `⟨M, s, hs⟩` from `(veryAmpleAt_iff A L N).1 hA U hU`. Take `⟨h, e, sq'⟩` from `exists_isPullback_restrict A sq`. Use `choose s' hs' _ using fun i => existsUnique_secScal hL (φ := fun _ : Fin N => (A.hom ⁻¹ᵁ U).ι) (ε := fun _ => 1) (h := h) (formEq_const (K' := K) (ε' := ε) e (by simp [hε])) (s i)`. Conclude with `⟨M, s', EmbedsBy.secScal hL sq' hs hs'⟩`.
+-/
 theorem exists_embedsBy_of_isPullback (hL : L.IsLB) (hA : VeryAmpleAt A L N) {U : S.Opens}
     (hU : IsAffineOpen U) [IsAffine Y'] {φ : X' ⟶ A.left} {f' : X' ⟶ Y'} {g : Y' ⟶ U.toScheme}
     (sq : IsPullback φ f' A.hom (g ≫ U.ι)) {K : Type} [Fintype K] {ε : K → ℤ}
@@ -606,6 +821,9 @@ theorem exists_embedsBy_of_isPullback (hL : L.IsLB) (hA : VeryAmpleAt A L N) {U 
     (ε := fun _ => 1) (h := h) (formEq_const (K' := K) (ε' := ε) e (by simp [hε])) (s i)
   exact ⟨M, s', EmbedsBy.secScal hL sq' hs hs'⟩
 
+/- English proof (translation)
+Establish `: UniversallyClosed f'` using `MorphismProperty.of_isPullback (P := @UniversallyClosed) sq inferInstance`. Take `⟨M, s, hs⟩` from `exists_embedsBy_of_isPullback A hL hA hU sq hε`. Conclude with `⟨hs.of_inSpan fun j => ht _, hs.affine_and_surjective fun j => ht _⟩`.
+-/
 theorem embedsBy_of_isPullback [UniversallyClosed A.hom] (hL : L.IsLB) (hA : VeryAmpleAt A L N)
     {U : S.Opens} (hU : IsAffineOpen U) [IsAffine Y'] {φ : X' ⟶ A.left} {f' : X' ⟶ Y'}
     {g : Y' ⟶ U.toScheme} (sq : IsPullback φ f' A.hom (g ≫ U.ι)) {K : Type} [Fintype K]
@@ -621,13 +839,24 @@ theorem embedsBy_of_isPullback [UniversallyClosed A.hom] (hL : L.IsLB) (hA : Ver
   exact ⟨hs.of_inSpan fun j => ht _, hs.affine_and_surjective fun j => ht _⟩
 
 omit [GrpObj A] in
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem comp_topIso_inv_ι (g : Y' ⟶ S) : (g ≫ S.topIso.inv) ≫ (⊤ : S.Opens).ι = g := by simp
 
+/- English proof (translation)
+The claim follows from `(embedsBy_of_isPullback A hL hA (isAffineOpen_top S) (g := 𝟙 S ≫ S.topIso.inv) (by rw [comp_topIso_inv_ι]; exact IsPullback.of_id_fst) (by simp) t ht).1`.
+-/
 theorem embeds_by_global_sections [IsAffine S] [UniversallyClosed A.hom] (hL : L.IsLB) (hA : VeryAmpleAt A L N)
     {ι : Type} [Fintype ι] (t : ι → H0 L N) (ht : ∀ s, InSpan A.hom t s) : EmbedsBy A.hom t :=
   (embedsBy_of_isPullback A hL hA (isAffineOpen_top S) (g := 𝟙 S ≫ S.topIso.inv)
     (by rw [comp_topIso_inv_ι]; exact IsPullback.of_id_fst) (by simp) t ht).1
 
+/- English proof (translation)
+Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Use `exists_congr fun c => ?_` and prove the remaining obligations. Rewrite using `[Subtype.ext_iff, Submodule.coe_sum, eq_comm, funext_iff]`. Use `forall_congr' fun k => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_apply]`.
+
+Both sides reduce to the same expression.
+-/
 theorem inSpan_iff_mem_span {a : ℤ} {T : Over S} {ι : Type} [Fintype ι]
     (t : ι → LB.Sec (LPow A L a T)) (s : LB.Sec (LPow A L a T)) :
     InSpan (fst T A).left t s ↔ SecM.ofSec A s ∈
@@ -639,6 +868,9 @@ theorem inSpan_iff_mem_span {a : ℤ} {T : Over S} {ι : Type} [Fintype ι]
   rw [Finset.sum_apply]
   rfl
 
+/- English proof (translation)
+The claim follows from `(embedsBy_of_isPullback A hL hA hU (g := g) (φ := (snd T A).left) (by rw [hg]; exact (IsPullback.of_hasPullback T.hom A.hom).flip) (by simp) t fun s => (inSpan_iff_mem_span A t s).2 (by rw [ht]; trivial)).1`.
+-/
 theorem embedsBy_LPow [UniversallyClosed A.hom] (hL : L.IsLB) (hA : VeryAmpleAt A L N)
     {U : S.Opens} (hU : IsAffineOpen U) (T : Over S) [IsAffine T.left] (g : T.left ⟶ U.toScheme)
     (hg : g ≫ U.ι = T.hom) {ι : Type} [Fintype ι] (t : ι → LB.Sec (LPow A L N T))
@@ -649,6 +881,9 @@ theorem embedsBy_LPow [UniversallyClosed A.hom] (hL : L.IsLB) (hA : VeryAmpleAt 
     (by rw [hg]; exact (IsPullback.of_hasPullback T.hom A.hom).flip) (by simp) t
     fun s => (inSpan_iff_mem_span A t s).2 (by rw [ht]; trivial)).1
 
+/- English proof (translation)
+The claim follows from `have : IsAffine (baseAt x).left := inferInstanceAs (IsAffine (Spec (CommRingCat.of R))) embedsBy_LPow A hL hA hV (baseAt x) x (congrArg (x ≫ ·) (Category.comp_id V.ι).symm) t ht`.
+-/
 theorem embedsBy_baseAt [UniversallyClosed A.hom] (hL : L.IsLB) (hA : VeryAmpleAt A L N)
     {V : S.Opens} (hV : IsAffineOpen V) {R : Type} [CommRing R]
     (x : Spec (CommRingCat.of R) ⟶ (overRes (T := baseOver S) V).left) {ι : Type} [Fintype ι]
@@ -659,6 +894,9 @@ theorem embedsBy_baseAt [UniversallyClosed A.hom] (hL : L.IsLB) (hA : VeryAmpleA
   have : IsAffine (baseAt x).left := inferInstanceAs (IsAffine (Spec (CommRingCat.of R)))
   embedsBy_LPow A hL hA hV (baseAt x) x (congrArg (x ≫ ·) (Category.comp_id V.ι).symm) t ht
 
+/- English proof (translation)
+Take `⟨h, e, sq⟩` from `exists_isPullback_restrict A (φ := (snd T A).left) (f' := (fst T A).left) (g := g) (by rw [hg]; exact (IsPullback.of_hasPullback T.hom A.hom).flip)`. Use `⟨h, e, sq, fun s => existsUnique_secScal hL (formEq_const e (sum_one_fin N)) s, fun _ => ?_⟩` and prove the remaining obligations. Establish `: IsIso h` using `sq.isIso_fst_of_isIso`. Conclude with `exists_equiv_secScal hL (formEq_const e (sum_one_fin N))`.
+-/
 theorem translate_powOver_LPow (hL : L.IsLB) (N : ℕ) {U : S.Opens} (T : Over S)
     (g : T.left ⟶ U.toScheme) (hg : g ≫ U.ι = T.hom) :
     ∃ h : (T ⊗ A).left ⟶ (A.hom ⁻¹ᵁ U).toScheme, h ≫ (A.hom ⁻¹ᵁ U).ι = (snd T A).left ∧
@@ -675,6 +913,9 @@ theorem translate_powOver_LPow (hL : L.IsLB) (N : ℕ) {U : S.Opens} (T : Over S
 
 omit [GrpObj A] in
 
+/- English proof (translation)
+The claim follows from `have : IsIso (A.hom ⁻¹ᵁ ⊤).ι := A.left.topIso.isIso_hom exists_equiv_secScal hL (formEq_const (Category.comp_id _) (sum_one_fin N).symm)`.
+-/
 theorem global_sections_power_over_top (hL : L.IsLB) (N : ℕ) :
     ∃ E : H0 L N ≃ LB.Sec (powOver A L ⊤ N),
       ∀ s s', GeneratorPullback.SecScal L _ _ s' _ _ s (A.hom ⁻¹ᵁ ⊤).ι 1 ↔ E s = s' :=
@@ -683,12 +924,18 @@ theorem global_sections_power_over_top (hL : L.IsLB) (N : ℕ) :
 
 end Group
 
+/- English proof (translation)
+The claim follows from `have := P.isAb.proper embeds_by_global_sections P.A P.isLB (hA S P N hN).2 t ht`.
+-/
 theorem polarized_abelian_embeds_by_sections (hA : AmpleSt) {S : Scheme.{0}} [IsAffine S] [IsLocallyNoetherian S]
     (P : PolAV S) {N : ℕ} (hN : 4 ≤ N) {ι : Type} [Fintype ι] (t : ι → H0 P.L N)
     (ht : ∀ s, InSpan P.A.hom t s) : EmbedsBy P.A.hom t :=
   have := P.isAb.proper
   embeds_by_global_sections P.A P.isLB (hA S P N hN).2 t ht
 
+/- English proof (translation)
+The claim follows from `P.ample U hU`.
+-/
 theorem exists_embedsBy_polAV {S : Scheme.{0}} (P : PolAV S) {U : S.Opens} (hU : IsAffineOpen U) :
     ∃ N : ℕ, 1 ≤ N ∧ ∃ M : ℕ, ∃ s : Fin (M + 1) → LB.Sec (powOver P.A P.L U N),
       EmbedsBy (P.A.hom ∣_ U) s := P.ample U hU

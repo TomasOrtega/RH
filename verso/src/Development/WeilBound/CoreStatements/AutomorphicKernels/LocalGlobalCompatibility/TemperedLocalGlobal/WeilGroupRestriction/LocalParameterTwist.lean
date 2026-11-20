@@ -30,6 +30,11 @@ section SS
 
 variable {k : Type} [Field k] {a : ℕ}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hW g v hv`. Take `⟨g₁, e⟩` from `h₂₁ g`. Rewrite using `[← e]`. Conclude with `hW g₁ v hv`.
+
+Introduce `hW g v hv`. Take `⟨g₂, e⟩` from `h₁₂ g`. Rewrite using `[← e]`. Conclude with `hW g₂ v hv`.
+-/
 theorem isInv_iff_of_image {Γ₁ Γ₂ : Type} [Group Γ₁] [Group Γ₂] (ρ₁ : Γ₁ →* GL (Fin a) k)
     (ρ₂ : Γ₂ →* GL (Fin a) k) (h₁₂ : ∀ g, ∃ g', ρ₂ g' = ρ₁ g) (h₂₁ : ∀ g', ∃ g, ρ₁ g = ρ₂ g')
     (W : Submodule k (Fin a → k)) : IsInv ρ₁ W ↔ IsInv ρ₂ W := by
@@ -43,6 +48,9 @@ theorem isInv_iff_of_image {Γ₁ Γ₂ : Type} [Group Γ₁] [Group Γ₂] (ρ�
     rw [← e]
     exact hW g₂ v hv
 
+/- English proof (translation)
+Introduce `W hW`. Take `⟨W', h1, h2⟩` from `h W ((isInv_iff_of_image ρ₁ ρ₂ h₁₂ h₂₁ W).2 hW)`. Conclude with `⟨W', (isInv_iff_of_image ρ₁ ρ₂ h₁₂ h₂₁ W').1 h1, h2⟩`.
+-/
 theorem isSSRep_of_image {Γ₁ Γ₂ : Type} [Group Γ₁] [Group Γ₂] (ρ₁ : Γ₁ →* GL (Fin a) k)
     (ρ₂ : Γ₂ →* GL (Fin a) k) (h₁₂ : ∀ g, ∃ g', ρ₂ g' = ρ₁ g) (h₂₁ : ∀ g', ∃ g, ρ₁ g = ρ₂ g')
     (h : IsSSRep ρ₁) : IsSSRep ρ₂ := by
@@ -50,6 +58,11 @@ theorem isSSRep_of_image {Γ₁ Γ₂ : Type} [Group Γ₁] [Group Γ₂] (ρ₁
   obtain ⟨W', h1, h2⟩ := h W ((isInv_iff_of_image ρ₁ ρ₂ h₁₂ h₂₁ W).2 hW)
   exact ⟨W', (isInv_iff_of_image ρ₁ ρ₂ h₁₂ h₂₁ W').1 h1, h2⟩
 
+/- English proof (translation)
+Establish `h1` using `GlobalTheory.TraceSemisimple.isSSRep_comp_subtype_of_normal_finiteIndex Γ k a ρ H.normalCore H.normalCore_normal inferInstance hρ`. Use `GlobalTheory.ssRep_of_normal_finiteIndex H k a (ρ.comp H.subtype) (H.normalCore.subgroupOf H) (H.normalCore_normal.subgroupOf H) inferInstance (isSSRep_of_image _ _ ?_ ?_ h1)` and prove the remaining obligations. Introduce `n`. Conclude with `⟨⟨⟨n.1, H.normalCore_le n.2⟩, Subgroup.mem_subgroupOf.2 n.2⟩, rfl⟩`. Introduce `n`.
+
+Conclude with `⟨⟨n.1.1, Subgroup.mem_subgroupOf.1 n.2⟩, rfl⟩`.
+-/
 theorem isSSRep_comp_subtype [CharZero k] {Γ : Type} [Group Γ] (ρ : Γ →* GL (Fin a) k) (H : Subgroup Γ)
     [H.FiniteIndex] (hρ : IsSSRep ρ) : IsSSRep (ρ.comp H.subtype) := by
   have h1 := GlobalTheory.TraceSemisimple.isSSRep_comp_subtype_of_normal_finiteIndex Γ k a ρ H.normalCore
@@ -69,6 +82,13 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
 
 omit [NumberField E] [IsAlgClosure E Ω] in
 
+/- English proof (translation)
+Use extensionality with `σ`. Rewrite using `[MonoidHom.mem_range, IntermediateField.mem_fixingSubgroup_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨τ, rfl⟩ x hx`. Take `⟨m, rfl⟩` from `(AlgHom.mem_fieldRange).1 hx`.
+
+Use `show τ (algebraMap X.M Ω m) = algebraMap X.M Ω m`. Conclude with `τ.commutes m`. Introduce `hσ`. Use `⟨AlgEquiv.ofRingEquiv (f := σ.toRingEquiv) (fun m => hσ (algebraMap X.M Ω m) ((AlgHom.mem_fieldRange).2 ⟨m, rfl⟩)), ?_⟩` and prove the remaining obligations. Use extensionality with `x`.
+
+Both sides reduce to the same expression.
+-/
 theorem range_resG (X : CMExt E Ω) :
     (resG E (E' := X.M) (Ω := Ω)).range = (IsScalarTower.toAlgHom E X.M Ω).fieldRange.fixingSubgroup := by
   ext σ
@@ -84,6 +104,11 @@ theorem range_resG (X : CMExt E Ω) :
     ext x
     rfl
 
+/- English proof (translation)
+Establish `: IsGalois E Ω` using `{}`. Rewrite using `[range_resG]`. Use `set L := (IsScalarTower.toAlgHom E X.M Ω).fieldRange with hL`. Establish `hfd : FiniteDimensional E L`. Set `g : X.M →ₗ[E] L` to `{ toFun := fun m => ⟨algebraMap X.M Ω m, (AlgHom.mem_fieldRange).2 ⟨m, rfl⟩⟩ map_add' := fun x y => Subtype.ext (map_add (algebraMap X.M Ω) x y) map_smul' := fun c x => Subtype.ext (by`.
+
+Simplify using `[Algebra.smul_def, IsScalarTower.algebraMap_apply E X.M Ω]) }`. Use `Module.Finite.of_surjective g fun y => ?_` and prove the remaining obligations. Take `⟨m, hm⟩` from `(AlgHom.mem_fieldRange).1 y.2`. Conclude with `⟨m, Subtype.ext hm⟩`. Conclude with `⟨fun h0 => (Module.finrank_pos (R := E) (M := L)).ne' ((IntermediateField.finrank_eq_fixingSubgroup_index (F := E) (E' := Ω) L).trans h0)⟩`.
+-/
 theorem finiteIndex_range_resG (X : CMExt E Ω) : (resG E (E' := X.M) (Ω := Ω)).range.FiniteIndex := by
   have : IsGalois E Ω := {}
   rw [range_resG]
@@ -108,6 +133,11 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
 
 omit [NumberField E] [IsAlgClosure E Ω] in
 
+/- English proof (translation)
+Introduce `x`. Rewrite using `[HeightOneSpectrum.under_asIdeal, Ideal.under_def, Ideal.mem_comap, ← h' (algebraMap (𝓞 E) (𝓞 X.M) x)]`. Establish `e : algebraMap X.M Ω ((algebraMap (𝓞 E) (𝓞 X.M) x : 𝓞 X.M) : X.M) = algebraMap E Ω (x : E)`. Rewrite using `[IsScalarTower.algebraMap_apply E X.M Ω]`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`.
+-/
 theorem isPlaceOver_under (X : CMExt E Ω) {A : ValuationSubring Ω} {w' : HeightOneSpectrum (𝓞 X.M)}
     (h' : IsPlaceOver A w') : IsPlaceOver A (w'.under (𝓞 E)) := by
   intro x
@@ -119,11 +149,19 @@ theorem isPlaceOver_under (X : CMExt E Ω) {A : ValuationSubring Ω} {w' : Heigh
 
 omit [NumberField E] [IsAlgClosure E Ω] in
 
+/- English proof (translation)
+Rewrite using `[HeightOneSpectrum.under_asIdeal, Ideal.under_def, Ideal.mem_comap, map_natCast]`. Conclude with `hl`.
+-/
 theorem natCast_notMem_under (X : CMExt E Ω) {w' : HeightOneSpectrum (𝓞 X.M)} {l : ℕ}
     (hl : ((l : ℕ) : 𝓞 X.M) ∉ w'.asIdeal) : ((l : ℕ) : 𝓞 E) ∉ (w'.under (𝓞 E)).asIdeal := by
   rw [HeightOneSpectrum.under_asIdeal, Ideal.under_def, Ideal.mem_comap, map_natCast]
   exact hl
 
+/- English proof (translation)
+Take `⟨σ₀, hσ₀, -⟩` from `LocEx.exists_isLocComp CuspFormAutomorphicBounds.automorphicFormsFiniteGL K a π w`. Take `⟨α, rfl, hα⟩` from `GlobalTheory.LFun.SphComp.hasSatake_of_isLocComp π hB hσ₀`. Establish `hα' : GlobalTheory.SmGL.HasSatake (ParLaws.toRep σ₀).ρ α` using `hα`. Rewrite using `[ParLaws.locPar_mk hL hσ₀ h, ParLaws.rec_eq_diag (ParLaws.isRec_locRec hL h) hα', WD.lpTw_mk, WD.charPol_mk, WDRep.tw_ρ, WDRep.diag_ρ]`. Establish `e2 : ∀ (c : ℂ) (d : Fin a → ℂ), c • diagEnd d = diagEnd fun i => c * d i` using `fun c d => LinearMap.ext fun v => funext fun i => by simp [mul_assoc]`.
+
+Rewrite using `[e2, charpoly_diagEnd, Multiset.map_map, Finset.prod_eq_multiset_prod]`. Both sides reduce to the same expression.
+-/
 theorem charPol_locPar_tw (hL : GlobalTheory.Published.LocalLanglandsGL) {K : Type} [Field K] [NumberField K] [IsTotallyComplex K]
     [Algebra K Ω] [IsAlgClosure K Ω] {a : ℕ} (π : CuspSub K a) {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 K)}
     (h : IsPlaceOver A w) {B : Multiset ℂˣ} (hB : (CG.mk π).HasSat w B) (s : ℝ) (σ : Weil h) :
@@ -139,6 +177,9 @@ theorem charPol_locPar_tw (hL : GlobalTheory.Published.LocalLanglandsGL) {K : Ty
   rw [e2, charpoly_diagEnd, Multiset.map_map, Finset.prod_eq_multiset_prod]
   rfl
 
+/- English proof (translation)
+Take `⟨σ, hσ, -⟩` from `LocEx.exists_isLocComp CuspFormAutomorphicBounds.automorphicFormsFiniteGL K a π w`. Rewrite using `[H.wdOf_eq hl (ParLaws.isRec_locRec hL h) hσ]`. Conclude with `congrArg (fun x : WD h => x.lpTw _) (ParLaws.locPar_mk hL hσ h).symm`.
+-/
 theorem wdOf_eq_locPar (hL : GlobalTheory.Published.LocalLanglandsGL) {K : Type} [Field K] [NumberField K] [IsCMField K]
     [Algebra K Ω] [IsAlgClosure K Ω] {a : ℕ} {π : CuspSub K a} {l : ℕ} [Fact l.Prime] {ι : Qbar l ≃+* ℂ}
     {χ : HChar (maximalRealSubfield K)} {r : G K Ω →* GL (Fin a) (Qbar l)} {wt : ℤ} {HT : (K →+* Qbar l) → Multiset ℤ}
@@ -149,6 +190,11 @@ theorem wdOf_eq_locPar (hL : GlobalTheory.Published.LocalLanglandsGL) {K : Type}
   rw [H.wdOf_eq hl (ParLaws.isRec_locRec hL h) hσ]
   exact congrArg (fun x : WD h => x.lpTw _) (ParLaws.locPar_mk hL hσ h).symm
 
+/- English proof (translation)
+Establish `hq : (0 : ℝ) ≤ q` using `Nat.cast_nonneg q`. Establish `h1 : (((q ^ f : ℕ) : ℂ) ^ ((s : ℝ) : ℂ)) = ((q : ℂ) ^ ((s : ℝ) : ℂ)) ^ f`. Establish `e0 : ((q ^ f : ℕ) : ℂ) = (((q : ℝ) ^ f : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[e0, ← Complex.ofReal_cpow (pow_nonneg hq f), ← Real.rpow_natCast_mul hq, mul_comm, Real.rpow_mul_natCast hq, Complex.ofReal_pow, Complex.ofReal_cpow hq, Complex.ofReal_natCast]`. Establish `h2 : (((b ^ f)⁻¹ : ℂˣ) : ℂ) = ((b⁻¹ : ℂˣ) : ℂ) ^ f`.
+
+Rewrite using `[← inv_pow, Units.val_pow_eq_pow_val]`. Rewrite using `[h1, h2, ← zpow_natCast ((q : ℂ) ^ ((s : ℝ) : ℂ)), ← zpow_natCast ((b⁻¹ : ℂˣ) : ℂ), ← zpow_mul, ← zpow_mul]`.
+-/
 theorem scal_eq (q f : ℕ) (s : ℝ) (d : ℤ) (b : ℂˣ) :
     ((((q ^ f : ℕ) : ℂ) ^ ((s : ℝ) : ℂ)) ^ d * (((b ^ f)⁻¹ : ℂˣ) : ℂ) ^ d) =
       (((q : ℂ) ^ ((s : ℝ) : ℂ)) ^ ((f : ℤ) * d) * ((b⁻¹ : ℂˣ) : ℂ) ^ ((f : ℤ) * d)) := by
@@ -161,6 +207,13 @@ theorem scal_eq (q f : ℕ) (s : ℝ) (d : ℤ) (b : ℂˣ) :
     rw [← inv_pow, Units.val_pow_eq_pow_val]
   rw [h1, h2, ← zpow_natCast ((q : ℂ) ^ ((s : ℝ) : ℂ)), ← zpow_natCast ((b⁻¹ : ℂˣ) : ℂ), ← zpow_mul, ← zpow_mul]
 
+/- English proof (translation)
+Establish `h` using `isPlaceOver_under X h'`. Establish `hl` using `natCast_notMem_under X hl'`. Take `⟨B, hB, hB'⟩` from `hW (resF h h') (normV_eq_pow_resF h h')`. Use `Polynomial.map_injective ι.toRingHom ι.injective ?_` and prove the remaining obligations. Establish `e1` using `charPol_wdOf hl' ι (Units.continuous_val.comp H'.cont) σ`.
+
+Establish `e2` using `charPol_wdOf hl ι (Units.continuous_val.comp H.cont) (resW h h' σ)`. Rewrite `e2` using `[coe_resW]`. Rewrite using `[← e1, ← e2, wdOf_eq_locPar hL H' h' hl', wdOf_eq_locPar hL H h hl, charPol_locPar_tw hL P h' hB', charPol_locPar_tw hL π h hB, deg_resW, normV_eq_pow_resF h h', Multiset.map_map]`. Use `congrArg Multiset.prod (Multiset.map_congr rfl fun b _ => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`.
+
+Rewrite using `[scal_eq]`.
+-/
 theorem charpoly_eq_at (hL : GlobalTheory.Published.LocalLanglandsGL) [IsCMField E] (X : CMExt E Ω) {a : ℕ} {π : CuspSub E a}
     {P : CuspSub X.M a} {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {r : G E Ω →* GL (Fin a) (Qbar l)} {wt : ℤ}
     {HT : (E →+* Qbar l) → Multiset ℤ} {r' : G X.M Ω →* GL (Fin a) (Qbar l)} {wt' : ℤ}
@@ -192,6 +245,15 @@ end LocalParameterTwist
 
 open LocalParameterTwist in
 
+/- English proof (translation)
+Introduce `hL E Ω _ _ _ _ _ _ a ha π X P hWL l _ ι r wt HT r' wt' HT' H H'`. Establish `hss : IsSSRep (r.comp (resG E (E'` using `X.M) (Ω := Ω))) := by`. Use `finiteIndex_range_resG X` as an intermediate fact. Use `isSSRep_of_image (r.comp (resG E (E' := X.M) (Ω := Ω)).range.subtype) _ ?_ ?_ (isSSRep_comp_subtype r _ H.ss)` and prove the remaining obligations. Introduce and unpack `⟨g, g', e⟩`.
+
+Conclude with `⟨g', by simp [e]⟩`. Introduce `g'`. Conclude with `⟨⟨resG E g', g', rfl⟩, rfl⟩`. Establish `hWL' : ∀ᶠ w' : HeightOneSpectrum (𝓞 X.M) in Filter.cofinite, ∀ f : ℕ, normV w' = normV (w'.under (𝓞 E)) ^ f → ∃ B, (CG.mk π).HasSat (w'.under (𝓞 E)) B ∧ (CG.mk P).HasSat w' (B.map (· ^ f))` using `hWL`. Establish `hev` using `(GlobalTheory.HeightCounting.eventually_natCast_notMem X.M l).and hWL'`.
+
+Establish `hD` using `GlobalTheory.Published.ChebotarevDegreeOne.dense (F := X.M) (Ω := Ω) GlobalTheory.Published.chebotarevDegreeOne' (Filter.eventually_cofinite.1 hev)`. Establish `hall` using `GlobalTheory.TypeLeaf.charpoly_eq_of_dense (G X.M Ω) (Qbar l) a (fun g => ((r' g : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l))) (fun g => ((r (resG E g) : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l))) _ hD (Units.continuous_val.comp H'.cont) ((Units.continu …`. Introduce and unpack `g ⟨v, hv, -, B, hB, hg⟩`. Establish `hv'` using `not_not.1 hv`. Conclude with `charpoly_eq_at hL X ι H H' hB hv'.1 hv'.2 ⟨g, mem_Weil_of_isFrob hB hg⟩)`.
+
+Take `⟨Pm, hPm⟩` from `Formalism.MainNotions.SumRepresentations.brauerNesbitt_matrix (r.comp (resG E (E' := X.M) (Ω := Ω))) r' hss H'.ss fun g => (hall g).symm`. Conclude with `⟨Pm⁻¹, fun g => by rw [hPm g, inv_inv]; rfl⟩`.
+-/
 theorem weak_lift_galois_restriction : FinitePlaceStep := by
   intro hL E Ω _ _ _ _ _ _ a ha π X P hWL l _ ι r wt HT r' wt' HT' H H'
   have hss : IsSSRep (r.comp (resG E (E' := X.M) (Ω := Ω))) := by

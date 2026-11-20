@@ -24,6 +24,31 @@ noncomputable section
 namespace GlobalTheory.UT.FrameVal
 open GlobalTheory.UT.CoefBasic GlobalTheory.UT.CoefUnit
 
+/- English proof (translation)
+Introduce `V _ _ _ _ _ ϖ hϖ D Q hQ F _ _ _ v hv n hn p w hw κ hκ H`. Establish `hL` using `D.toPre.P.isLB`. Take `⟨m, hm⟩` from `TWM.exists_liftO hϖ hv (D := D) p.g.b`. Establish `hmy : cP D.toPre (TWM.TO hϖ hv) p.y = m ^ n` using `TWM.liftO_unique hϖ hv _ _ (by`. Rewrite using `[comp_cP, cPoint_y, ← hm]`.
+
+Conclude with `(map_pow (preHom (TWM.ιS hϖ hv)) m n).symm)`. Take `⟨t₀, ht₀⟩` from `exists_gen_of_local D.toPre.P.L hL (TWM.lineφO hϖ hv m) (DegPre.lineε 1)`. Establish `hl : ∀ i, DegPre.lineφ D.toPre F p.g.b i = (TWM.ιS hϖ hv).left ≫ TWM.lineφO hϖ hv m i`. Introduce `i`. Use `fin_cases i`.
+
+Use `show (DegPre.zeroF D.toPre F).left = (TWM.ιS hϖ hv).left ≫ (1 : TWM.TO hϖ hv ⟶ D.toPre.P.A).left`. Rewrite using `[← Over.comp_left, MonObj.comp_one]`. Both sides reduce to the same expression. Use `show p.g.b.left = (TWM.ιS hϖ hv).left ≫ m.left`. Rewrite using `[← Over.comp_left, hm]`.
+
+Take `⟨x, hx0, hx⟩` from `TWM.exists_ratio hL w hw (LB.pullGen D.toPre.P.L _ _ t₀ (TWM.ιS hϖ hv).left) (pullGen_isGen _ _ _ _ ht₀ _) (fun U _ h => Finset.prod_congr rfl fun i _ => by rw [hl])`. Establish `hx' : ∀ z J, Good D.toPre.P.L z J → (val w (𝟙 _) z J).val = cst (R` using `V) F z x * (val t₀ (TWM.ιS hϖ hv).left z J).val := fun z J hJ => by`. Establish `e` using `hx _ (𝟙 _) z J hJ`. Rewrite `e` using `[val_pull hJ]`. Conclude with `e`.
+
+Use `⟨TWM.lineφO hϖ hv m, hl, t₀, ht₀, x, ?_, hx'⟩` and prove the remaining obligations. Take `⟨e, c, he, hc, hce⟩` from `SectionScalarValuation.exists_val_genHasVal (hQ p.y)`. Take `⟨u, hu, eu⟩` from `exists_ratio_zero hϖ hv hL (fun U _ h => by`. Establish `q : (TWM.TO hϖ hv).hom ≫ eSec D.toPre.P.A = (1 : TWM.TO hϖ hv ⟶ D.toPre.P.A).left` using `rfl`. Establish `q₁ : (TWM.TO hϖ hv).hom ≫ (D.toPre.c p.y).left = (m ^ n).left` using `hmy ▸ rfl`.
+
+Establish `q₂ : m.left ≫ (𝟙 D.toPre.P.A ^ n).left = (m ^ n).left` using `congrArg (·.left) ((map_pow (preHom m) (𝟙 D.toPre.P.A) n).trans (congrArg (· ^ n) (Category.comp_id m)))`. Establish `q₃ : m.left ≫ (1 : D.toPre.P.A ⟶ D.toPre.P.A).left = (1 : TWM.TO hϖ hv ⟶ D.toPre.P.A).left` using `congrArg (·.left) (MonObj.comp_one (M := D.toPre.P.A) m)`. Rewrite using `[Fintype.prod_sum_type, Fintype.prod_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr]`. Rewrite using `[Fintype.prod_unique (_ : PUnit → U), Fintype.prod_unique (_ : PUnit → U), q, q₁, Fin.prod_univ_two, Fin.prod_univ_three]`.
+
+Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, TWM.lineφO, DegPre.lineε, q₂, q₃, Category.comp_id]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_zpow]`. Use the proof step `module)`. Use the proof step `(LB.mulGen _ _ _ _ _ (GeneratorPullback.powGen _ _ _ t₀ (4 * n ^ 2)) (LB.pullGen _ _ _ κ m.left))`.
+
+Use the proof step `(mulGen_isGen _ _ _ _ _ _ _ (DVR.powGen_isGen _ _ _ _ ht₀ _) (DVR.pullGen_isGen _ _ _ _ hκ _))`. Use the proof step `(GeneratorPullback.powGen _ _ _ (LB.mulGen _ _ _ _ _ (LB.pullGen _ _ _ e (TWM.TO hϖ hv).hom) (LB.pullGen D.toPre.P.L (fun _ : PUnit => eSec D.toPre.P.A) (fun _ => 1) D.toPre.rig (TWM.TO hϖ hv).hom)) 4)`. Use the proof step `(DVR.powGen_isGen _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ (DVR.pullGen_isGen _ _ _ _ he _) (DVR.pullGen_isGen _ _ _ _ D.toPre.rig_gen _)) _)`. Take `⟨z⟩` from `exists_pt (R := V) (F := F)`. Take `⟨J, hJ⟩` from `exists_good' hL z`.
+
+Establish `a` using `eu z J hJ`. Rewrite `a` using `[val_mul hJ, RatioVal.val_powGen, RatioVal.val_powGen, val_mul hJ, val_pull hJ, val_pull hJ, val_pull hJ, Over.w (TWM.ιS hϖ hv), ← Over.comp_left, hm]`. Establish `b` using `congrArg Units.val (H z J hJ)`. Establish `d : (@id ((TF (R` using `V) F).left.presheaf.stalk z)ˣ (val (D.toPre.psi p.y) (jFK (R := V) F) z J)).val = cstH z (algebraMap (FractionRing V) F c) * (val e (TF (R := V) F).hom z J).val := (hce _ (jFK (R := V) F) z J hJ).trans (congrArg (· * _) (RatioVal.gs_scal _ z c))`. Establish `key : x ^ (4 * n ^ 2) * u = algebraMap (FractionRing V) F c ^ 4`.
+
+Apply `cstH_inj (R := V) z` to reduce the goal to its premises. Apply `((val e (TF (R := V) F).hom z J * rigV D.toPre (TF (R := V) F).hom z J) ^ 4).isUnit.mul_right_cancel` to reduce the goal to its premises. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val, d, hx' z J hJ, cst_eq, rigV, map_mul, map_pow, mul_pow] at a b ⊢`. Take the linear combination `b - cstH z x ^ (4 * n ^ 2) * a`. Establish `k` using `congrArg v key`.
+
+Take `⟨q, hq⟩` from `TWM.wt_coe_of_ne (v := v) hx0`. Rewrite `k` using `[AddValuation.map_mul, AddValuation.map_pow, AddValuation.map_pow, hu, hv _ _ hc, hq]`. Establish `k' : (4 * n ^ 2) • q + 0 = 4 • ((Q p.y : ℤ) : ℚ)` using `by exact_mod_cast k`. Establish `hn0 : (n : ℚ) ≠ 0` using `by exact_mod_cast (by omega : n ≠ 0)`. Rewrite using `[hq, WithTop.coe_inj, eq_div_iff (pow_ne_zero 2 hn0)]`.
+
+Simplify using `only [nsmul_eq_mul] at k'`. Move the coercions through the operations in `at k'`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem genV_of_pow : AllDV fun {V} _ _ _ {ϖ} hϖ D Q {F} _ _ {v} hv => ∀ (n : ℕ), 1 ≤ n → ∀ (p : QkPt D.toPre F n) (w₁ : Frm D.toPre F 1 p.g.b), w₁.IsGen → ∀ κ : LB.Gen (kapLB D.toPre (𝟙 D.toPre.P.A ^ n) (4 * n ^ 2) 4), κ.IsGen → (∀ z J, Good D.toPre.P.L z J → val w₁ (𝟙 _) z J ^ (4 * n ^ 2) * val κ p.g.b.left z J = (@id ((TF (R := V) F).left.presheaf.stalk z)ˣ (val (D.toPre.psi p.y) (jFK (R := V) F) z J) * rigV D.toPre (TF (R := V) F).hom z J) ^ 4) → GenV hϖ hv w₁ ((Q p.y : ℚ) / (n : ℚ) ^ 2) := by
   intro V _ _ _ _ _ ϖ hϖ D Q hQ F _ _ _ v hv n hn p w hw κ hκ H
   have hL := D.toPre.P.isLB

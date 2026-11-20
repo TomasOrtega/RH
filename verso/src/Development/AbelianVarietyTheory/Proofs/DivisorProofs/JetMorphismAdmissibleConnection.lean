@@ -21,6 +21,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.JetLiftMain
 
+/- English proof (translation)
+Introduce `hGD hDR hDC F _ _ _ 𝔠 R _ _ _ _ I _ n J X N hN m`. Establish `hs : J.π.comp (algebraMap R J.B) = RingHom.id R` using `RingHom.ext fun r ↦ JetRing.π_algebraMap J r`. Take `⟨A, _, i, h, hA, hg⟩` from `GlobalTheory.T.abelian_scheme_lift_along_split_surjection J.B R J.π (algebraMap R J.B) hs X.A _ X.ab X.dim`. Take `⟨hsum, hred⟩` from `GlobalTheory.T.jet_ring_group_morphism_de_rham_lift hGD hDR hDC F 𝔠 R I n J X N hN m`. Conclude with `GlobalTheory.T.group_object_lift_divided_powers hGD hDR hDC F 𝔠 J.B R (RingHom.ker J.π) J.κ J.nil J.π (fun r ↦ ⟨algebraMap R J.B r, JetRing.π_algebraMap J r⟩) rfl X A i h hA hg _ hsum hred (GlobalTheory.T.jet_ring_morphism_compatible_nilpotent hGD hDR hDC F 𝔠 R I n J X N hN m) (G …`.
+-/
 theorem exists_jetLift : GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.Published.AbelianDeRham → GlobalTheory.Published.AbelianDualCrystal → ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔠 : FracId F) (R : Type) [CommRing R] [IsDomain R] [CharZero R]
     [IsLocalRing R] (I : Type) [Fintype I] (n : ℕ) (J : JetRing R I n) (X : Obj F 𝔠 (Sp R))
     (N : I → Module.End R (HdR X.A)), admitted X N →

@@ -6,6 +6,9 @@ open scoped Matrix
 open GlobalTheory.WeilM GlobalTheory.FullRankCoinv MeasureTheory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FibreLinear.fibre_linear | exact GlobalTheory.FibreLinear.fibre_linear | (intros; apply GlobalTheory.FibreLinear.fibre_linear <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.full_rank_partial_integration_projection : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ρ e d : ℕ)
     [MeasurableSpace (Matrix (Fin e) (Fin d) k)] [BorelSpace (Matrix (Fin e) (Fin d) k)]
     (μ : Measure (Matrix (Fin e) (Fin d) k)) [μ.IsAddHaarMeasure],

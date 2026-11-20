@@ -8,6 +8,23 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ c D _ R _ _ _ r r' s h1 h2 hc hP`. Establish `hone : ∀ X : UpperTheory.V.GradeZeroInterpolatingElement.M4 R, X = 1 → UpperTheory.V.GradeZeroInterpolatingElement.tconj s X = 1`. Introduce and unpack `X rfl`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [UpperTheory.V.GradeZeroInterpolatingElement.tconj, UpperTheory.V.GradeZeroInterpolatingElement.wv, UpperTheory.V.GradeZeroInterpolatingElement.wt, Matrix.one_apply]`.
+
+Establish `hent : ∀ (X : UpperTheory.V.GradeZeroInterpolatingElement.M4 R) (i j : Fin 4), UpperTheory.V.GradeZeroInterpolatingElement.tconj s X i j = 0 ↔ X i j = 0`. Introduce `X i j`. Simplify using `only [UpperTheory.V.GradeZeroInterpolatingElement.tconj, Matrix.of_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Use `congrArg (fun x => (↑(UpperTheory.V.GradeZeroInterpolatingElement.wv s (UpperTheory.V.GradeZeroInterpolatingElement.wt i j))⁻¹ : R) * x) h` as an intermediate fact. Simplify `this` using `[← mul_assoc]`. Introduce `h`. Simplify using `[h]`. Establish `hEl' : D.hEl r'.hom = UpperTheory.V.GradeZeroInterpolatingElement.tconj s (D.hEl r.hom)`.
+
+Simplify using `only [UpperTheory.V.GradeZeroInterpolatingElement.Raw.hEl, hc]`. Use extensionality with `i j`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, UpperTheory.V.GradeZeroInterpolatingElement.tconj, Matrix.of_apply]`. Rewrite using `[mul_add, mul_smul_comm]`. Take `⟨hb, h02, h20⟩` from `hP.nrm`.
+
+Use `⟨?_, ?_, ⟨?_, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `g`. Rewrite using `[hc]`. Conclude with `UpperTheory.V.Ws.Po.gsp_conj s (hP.mult g)`. Introduce `A hA g hg hb'`.
+
+Rewrite using `[hc]`. Conclude with `hone _ (hP.unr A hA g hg hb')`. Introduce `i j hij`. Rewrite using `[hc, hent]`. Conclude with `hb i j hij`.
+
+Rewrite using `[hEl', hent]`. Conclude with `h02`. Rewrite using `[hEl', hent]`. Conclude with `h20`. Conclude with `UpperTheory.V.Ws.Po.onCompTorus c.O _ (D.rbarAt l) D.condL (D.r0At l) (fun R _ _ _ R' _ _ _ f ρ h => UpperTheory.V.GradeZeroInterpolatingElement.Ex.condL_map D f ρ h) (fun R _ _ _ ρ ρ' t h hq => UpperTheory.V.Ws.Po.torusL D ρ ρ' t h hq) R (D.loc r l) (D.loc r' l) s h1 h2 (fun g = …`.
+
+Introduce `p hp`. Conclude with `UpperTheory.V.Ws.Po.onCompTorus c.O _ (D.rbarAt p) (D.condP p) (D.r0At p) (fun R _ _ _ R' _ _ _ f ρ h => UpperTheory.V.GradeZeroInterpolatingElement.Ex.condP_map D p f ρ h) (fun R _ _ _ ρ ρ' t h hq => UpperTheory.V.Ws.Po.torusP D p ρ ρ' t h hq) R (D.loc r p) (D.loc r' p) s h1 h2 …`.
+-/
 theorem UpperTheory.V.Ws.Po.ptTorus :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ (R : Type) [CommRing R] [Algebra c.O R] [IsCO c.O R] (r r' : Lift c.O D.rbar R) (s : Rˣ × Rˣ),
       res c.O R s.1 = 1 → res c.O R s.2 = 1 → (∀ g, r'.hom g = tconj s (r.hom g)) → D.IsPt r → D.IsPt r' := by

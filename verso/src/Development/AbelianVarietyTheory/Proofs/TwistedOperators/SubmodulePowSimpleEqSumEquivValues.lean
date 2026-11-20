@@ -18,10 +18,16 @@ def snocZero (m : ℕ) : (Fin m → P) →ₗ[ℂ] (Fin (m+1) → P) where
   map_smul' c x := by
     funext j; refine Fin.lastCases ?_ (fun j => ?_) j <;> simp
 
+/- English proof (translation)
+Apply the tactic sequence `funext j; refine Fin.lastCases ?_ (fun j => ?_) j <;> simp [snocZero]`.
+-/
 lemma snocZero_diag {m : ℕ} (b : Module.End ℂ P) (z : Fin m → P) :
     snocZero m (fun j => b (z j)) = fun j => b (snocZero m z j) := by
   funext j; refine Fin.lastCases ?_ (fun j => ?_) j <;> simp [snocZero]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = Fin.last m`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne h]`.
+-/
 lemma single_diag {m : ℕ} (b : Module.End ℂ P) (p : P) :
     (Pi.single (Fin.last m) (b p) : Fin (m+1) → P) = fun j => b ((Pi.single (Fin.last m) p : Fin (m+1) → P) j) := by
   funext j
@@ -29,6 +35,53 @@ lemma single_diag {m : ℕ} (b : Module.End ℂ P) (p : P) :
   · subst h; simp
   · simp [Pi.single_eq_of_ne h]
 
+/- English proof (translation)
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `N _ y _`. Rewrite using `[Subsingleton.elim y 0]`.
+
+Conclude with `zero_mem _`. Consider the case `succ m ih`. Introduce `N hN y hy`. Set `B : Submodule ℂ P` to `N.comap (LinearMap.single ℂ (fun _ : Fin (m+1) => P) (Fin.last m))`. Establish `hBmem : ∀ p, p ∈ B ↔ (Pi.single (Fin.last m) p : Fin (m+1) → P) ∈ N` using `fun p => by`.
+
+Simplify using `[B]`. Establish `hBst : ∀ i, ∀ p ∈ B, a i p ∈ B`. Introduce `i p hp`. Rewrite `hp`, the goal using `[hBmem]`. Rewrite using `[single_diag]`.
+
+Conclude with `hN i _ hp`. Distinguish the cases in `hB : B = ⊥`. Set `I : (Fin (m+1) → P) →ₗ[ℂ] (Fin m → P)` to `LinearMap.funLeft ℂ P Fin.castSucc`. Establish `hinj : ∀ x₁ ∈ N, ∀ x₂ ∈ N, I x₁ = I x₂ → x₁ = x₂`. Introduce `x₁ h₁ x₂ h₂ he`.
+
+Establish `hd : x₁ - x₂ ∈ N` using `N.sub_mem h₁ h₂`. Establish `hs' : x₁ - x₂ = Pi.single (Fin.last m) ((x₁ - x₂) (Fin.last m))`. Use function extensionality and compare the values at `j`. Use `Fin.lastCases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Establish `h` using `congrFun he j`. Express the relevant statement in the definitionally equal form `x₁ (Fin.castSucc j) = x₂ (Fin.castSucc j) at h`. Rewrite using `[Pi.single_eq_of_ne (Fin.castSucc_lt_last j).ne]`. Simplify using `[h]`. Establish `hB' : (x₁ - x₂) (Fin.last m) ∈ B`.
+
+Rewrite using `[hBmem, ← hs']`. Conclude with `hd`. Rewrite `hB'` using `[hB, Submodule.mem_bot]`. Rewrite `hs'` using `[hB', Pi.single_zero]`. Conclude with `sub_eq_zero.mp hs'`.
+
+Set `N0` to `N.map I`. Establish `hN0 : ∀ i, ∀ w ∈ N0, (fun j => a i (w j)) ∈ N0`. Introduce `i w hw`. Take `⟨x, hx, rfl⟩` from `hw`. Conclude with `⟨_, hN i x hx, rfl⟩`.
+
+Establish `lift : ∀ S : P →ₗ[ℂ] (Fin m → P), (∀ p, S p ∈ N0) → ∃ S' : P →ₗ[ℂ] (Fin (m+1) → P), (∀ p, S' p ∈ N) ∧ ∀ p, I (S' p) = S p`. Introduce `S hS`. Set `J : N →ₗ[ℂ] (Fin m → P)` to `I ∘ₗ N.subtype`. Establish `hJ : Function.Injective J`. Introduce `u v huv`.
+
+Conclude with `Subtype.ext (hinj u u.2 v v.2 huv)`. Establish `hS' : ∀ p, S p ∈ LinearMap.range J`. Introduce `p`. Take `⟨x, hx, hxe⟩` from `hS p`. Conclude with `⟨⟨x, hx⟩, hxe⟩`.
+
+Establish `key : ∀ v, J ((LinearEquiv.ofInjective J hJ).symm v) = v` using `fun v => by`. Establish `h` using `congrArg Subtype.val ((LinearEquiv.ofInjective J hJ).apply_symm_apply v)`. Rewrite `h` using `[LinearEquiv.ofInjective_apply]`. Conclude with `h`. Use `⟨N.subtype ∘ₗ (LinearEquiv.ofInjective J hJ).symm.toLinearMap ∘ₗ S.codRestrict _ hS', fun p => Subtype.property _, fun p => ?_⟩` and prove the remaining obligations.
+
+Conclude with `key ⟨S p, hS' p⟩`. Establish `h1` using `ih N0 hN0 (I y) ⟨y, hy, rfl⟩`. Take `⟨n, f, g, hfg⟩` from `(Submodule.mem_span_set').mp h1`. Establish `hg : ∀ k, ∃ S : P →ₗ[ℂ] (Fin m → P), (∀ i p, S (a i p) = fun j => a i (S p j)) ∧ (∀ p, S p ∈ N0) ∧ ∃ q, (g k : Fin m → P) = S q` using `fun k => (g k).2`. Use `choose S hSa hSN q hq using hg`.
+
+Use `choose S' hS'N hS'I using fun k => lift (S k) (hSN k)`. Establish `hS'a : ∀ k i p, S' k (a i p) = fun j => a i (S' k p j)`. Introduce `k i p`. Apply `hinj _ (hS'N k _) _ (hN i _ (hS'N k p))` to reduce the goal to its premises. Rewrite using `[hS'I, hSa, ← hS'I k p]`.
+
+Both sides reduce to the same expression. Establish `hy_eq : y = ∑ k, f k • S' k (q k)`. Apply `hinj _ hy _ (sum_mem fun k _ => N.smul_mem _ (hS'N k _))` to reduce the goal to its premises. Rewrite using `[← hfg, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul, hS'I, hq]`. Rewrite using `[hy_eq]`. Conclude with `sum_mem fun k _ => smul_mem _ _ (subset_span ⟨S' k, hS'a k, hS'N k, q k, rfl⟩)`. Establish `hBt` using `hs B hBst hB`. Establish `hmem : ∀ p, (Pi.single (Fin.last m) p : Fin (m+1) → P) ∈ N` using `fun p => by`.
+
+Rewrite using `[← hBmem, hBt]`. Conclude with `Submodule.mem_top`. Take `⟨y', hy'⟩ : ∃ y', y' = y - Pi.single (Fin.last m) (y (Fin.last m))` from `⟨_, rfl⟩`. Establish `hy'N : y' ∈ N` using `hy' ▸ N.sub_mem hy (hmem _)`. Establish `hy'last : y' (Fin.last m) = 0` using `by simp [hy']`.
+
+Set `N'` to `N.comap (snocZero m)`. Establish `hN' : ∀ i, ∀ z ∈ N', (fun j => a i (z j)) ∈ N'`. Introduce `i z hz`. Use `show snocZero m _ ∈ N`. Rewrite using `[snocZero_diag]`.
+
+Conclude with `hN i _ hz`. Set `z : Fin m → P` to `fun j => y' (Fin.castSucc j)`. Establish `hz : snocZero m z = y'`. Use function extensionality and compare the values at `j`. Use `Fin.lastCases ?_ (fun j => ?_) j` and prove the remaining obligations.
+
+Simplify using `[snocZero, hy'last]`. Simplify using `[snocZero, z]`. Establish `hzN' : z ∈ N'` using `show snocZero m z ∈ N from hz ▸ hy'N`. Establish `h1` using `ih N' hN' z hzN'`. Establish `h2 : y' ∈ span ℂ (equivValues a (m+1) N)`.
+
+Rewrite using `[← hz]`. Establish `h` using `Submodule.mem_map_of_mem (f := snocZero m) h1`. Rewrite `h` using `[Submodule.map_span]`. Use `Submodule.span_mono ?_ h` and prove the remaining obligations. Introduce and unpack `_ ⟨v, ⟨S, hSa, hSN, q, rfl⟩, rfl⟩`.
+
+Use `⟨snocZero m ∘ₗ S, ?_, fun p => hSN p, q, rfl⟩` and prove the remaining obligations. Introduce `i p`. Simplify using `only [LinearMap.comp_apply, hSa, snocZero_diag]`. Establish `h3 : (Pi.single (Fin.last m) (y (Fin.last m)) : Fin (m+1) → P) ∈ span ℂ (equivValues a (m+1) N)`. Use `Submodule.subset_span ⟨LinearMap.single ℂ (fun _ : Fin (m+1) => P) (Fin.last m), ?_, ?_, y (Fin.last m), rfl⟩` and prove the remaining obligations.
+
+Introduce `i p`. Simplify using `only [LinearMap.single_apply]`. Conclude with `single_diag _ _`. Introduce `p`. Simplify using `using hmem p`.
+
+Establish `: y = y' + Pi.single (Fin.last m) (y (Fin.last m))` using `by simp [hy']`. Rewrite using `[this]`. Conclude with `add_mem h2 h3`.
+-/
 theorem mem_span_equivValues (a : ι → Module.End ℂ P)
     (hs : ∀ B : Submodule ℂ P, (∀ i, ∀ p ∈ B, a i p ∈ B) → B ≠ ⊥ → B = ⊤) :
     ∀ (m : ℕ) (N : Submodule ℂ (Fin m → P)), (∀ i, ∀ y ∈ N, (fun j => a i (y j)) ∈ N) →
@@ -140,6 +193,11 @@ end GlobalTheory.SubmodulePowSimple
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `P _ _ ι a hs m N hN y hy`. Take `⟨n, f, g, hfg⟩` from `(Submodule.mem_span_set').mp (SubmodulePowSimple.mem_span_equivValues a hs m N hN y hy)`. Establish `hg : ∀ k, ∃ S : P →ₗ[ℂ] (Fin m → P), (∀ i p, S (a i p) = fun j => a i (S p j)) ∧ (∀ p, S p ∈ N) ∧ ∃ q, (g k : Fin m → P) = S q` using `fun k => (g k).2`. Use `choose S hSa hSN q hq using hg`. Use `⟨n, S, fun k => f k • q k, hSa, hSN, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hfg]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hq, map_smul]`.
+-/
 theorem submodule_pow_simple_eq_sum_equiv_values :
     ∀ {P : Type} [AddCommGroup P] [Module ℂ P] {ι : Type} (a : ι → Module.End ℂ P),
     (∀ B : Submodule ℂ P, (∀ i, ∀ p ∈ B, a i p ∈ B) → B ≠ ⊥ → B = ⊤) →

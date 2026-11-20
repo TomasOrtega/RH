@@ -9,6 +9,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.Discrepancy GlobalTheory.FieldPair
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FieldPair.klt_of_klt_restrict | exact GlobalTheory.FieldPair.klt_of_klt_restrict | (intros; apply GlobalTheory.FieldPair.klt_of_klt_restrict <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.klt_of_klt_restrict_alt : GlobalTheory.Published.Principalisation →
   ∀ {L K : Type} [Field L] [Field K] (cL : ℂ →+* L) (cK : ℂ →+* K) (n : ℕ) (T : Subring L) (hT : IsLocModel cL T)
     (ψ : T →+* K) (f : T) (w : Fin n → T) (θ : T →₀ ℚ),

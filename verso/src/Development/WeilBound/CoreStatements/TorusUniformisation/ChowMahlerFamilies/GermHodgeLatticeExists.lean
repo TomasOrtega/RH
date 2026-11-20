@@ -20,6 +20,13 @@ section Alg
 
 variable {R Ω : Type} [CommRing R] [Field Ω] {d : ℕ}
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun h => Submodule.subset_span h⟩` and prove the remaining obligations. Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem y h => exact h`. Consider the case `zero => exact ⟨0, fun i => ⟨A.zero_mem, A.zero_mem⟩, (map_zero T).symm⟩`. Consider the case `add a b _ _ ha hb`.
+
+Take `⟨a, ha, rfl⟩` from `ha`. Take `⟨b, hb, rfl⟩` from `hb`. Conclude with `⟨a + b, fun i => ⟨A.add_mem (ha i).1 (hb i).1, A.add_mem (ha i).2 (hb i).2⟩, (map_add T a b).symm⟩`. Consider the case `smul c a _ ha`. Take `⟨a, ha, rfl⟩` from `ha`.
+
+Conclude with `⟨(c : Ω) • a, fun i => ⟨A.mul_mem c.2 (ha i).1, A.mul_mem c.2 (ha i).2⟩, (map_smul T (c : Ω) a).symm⟩`.
+-/
 theorem mem_stdLat (A : Subring Ω) (T : ((Fin d → Ω) × (Fin d → Ω)) →ₗ[Ω] (Fin d → Ω) × (Fin d → Ω))
     (y : (Fin d → Ω) × (Fin d → Ω)) :
     y ∈ stdLat A T ↔ ∃ y₀ : (Fin d → Ω) × (Fin d → Ω), (∀ i, y₀.1 i ∈ A ∧ y₀.2 i ∈ A) ∧ y = T y₀ := by
@@ -35,6 +42,9 @@ theorem mem_stdLat (A : Subring Ω) (T : ((Fin d → Ω) × (Fin d → Ω)) →�
     obtain ⟨a, ha, rfl⟩ := ha
     exact ⟨(c : Ω) • a, fun i => ⟨A.mul_mem c.2 (ha i).1, A.mul_mem c.2 (ha i).2⟩, (map_smul T (c : Ω) a).symm⟩
 
+/- English proof (translation)
+Simplify using `only [← Matrix.mulVec_smul, ← Matrix.mulVec_sum]`. Use `congr 1`. Use extensionality with `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+-/
 theorem sum_cols (P : Matrix (Fin d) (Fin d) Ω) (u : Fin d → Ω) :
     ∑ l, u l • P.mulVec (Pi.single l 1) = P.mulVec u := by
   simp only [← Matrix.mulVec_smul, ← Matrix.mulVec_sum]
@@ -42,6 +52,11 @@ theorem sum_cols (P : Matrix (Fin d) (Fin d) Ω) (u : Fin d → Ω) :
   ext i
   simp [Finset.sum_apply, Pi.single_apply]
 
+/- English proof (translation)
+Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`. Conclude with `⟨fun i => c i, fun i => (c i).2, sum_cols P fun i => c i⟩`. Introduce and unpack `⟨u, hu, rfl⟩`.
+
+Conclude with `⟨fun i => ⟨u i, hu i⟩, sum_cols P u⟩`.
+-/
 theorem mem_span_cols (A : Subring Ω) (P : Matrix (Fin d) (Fin d) Ω) (e : Fin d → Ω) :
     e ∈ Submodule.span A (Set.range fun l => P.mulVec (Pi.single l 1)) ↔
       ∃ u : Fin d → Ω, (∀ i, u i ∈ A) ∧ e = P.mulVec u := by
@@ -52,16 +67,27 @@ theorem mem_span_cols (A : Subring Ω) (P : Matrix (Fin d) (Fin d) Ω) (e : Fin 
   · rintro ⟨u, hu, rfl⟩
     exact ⟨fun i => ⟨u i, hu i⟩, sum_cols P u⟩
 
+/- English proof (translation)
+Apply the tactic sequence `ext i <;> simp [Prod.fst_sum, Prod.snd_sum, Finset.sum_apply, Pi.single_apply]`.
+-/
 theorem decomp (y : (Fin d → R) × (Fin d → R)) :
     y = ∑ i, y.1 i • ((Pi.single i 1, 0) : (Fin d → R) × (Fin d → R)) +
       ∑ i, y.2 i • ((0, Pi.single i 1) : (Fin d → R) × (Fin d → R)) := by
   ext i <;> simp [Prod.fst_sum, Prod.snd_sum, Finset.sum_apply, Pi.single_apply]
 
+/- English proof (translation)
+Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Use `exacts [A.one_mem, A.zero_mem]`.
+-/
 theorem single_mem (A : Subring Ω) (i j : Fin d) : (Pi.single i 1 : Fin d → Ω) j ∈ A := by
   rw [Pi.single_apply]
   split_ifs
   exacts [A.one_mem, A.zero_mem]
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff]`. Introduce and unpack `y -`. Take `⟨y, rfl⟩` from `hT y`. Rewrite using `[decomp y, map_add, map_sum, map_sum]`. Apply the tactic sequence `refine Submodule.add_mem _ (Submodule.sum_mem _ fun i _ => ?_) (Submodule.sum_mem _ fun i _ => ?_) <;>`.
+
+Apply the tactic sequence `rw [map_smul] <;> refine Submodule.smul_mem _ _ (Submodule.subset_span (Submodule.subset_span ?_))`. Conclude with `⟨_, fun j => ⟨single_mem A i j, A.zero_mem⟩, rfl⟩`. Conclude with `⟨_, fun j => ⟨A.zero_mem, single_mem A i j⟩, rfl⟩`.
+-/
 theorem span_stdLat (A : Subring Ω) (T : ((Fin d → Ω) × (Fin d → Ω)) →ₗ[Ω] (Fin d → Ω) × (Fin d → Ω))
     (hT : Function.Surjective T) : Submodule.span Ω (stdLat A T : Set ((Fin d → Ω) × (Fin d → Ω))) = ⊤ := by
   rw [eq_top_iff]
@@ -76,10 +102,24 @@ theorem span_stdLat (A : Subring Ω) (T : ((Fin d → Ω) × (Fin d → Ω)) →
 def mp (f : R →+* Ω) (y : (Fin d → R) × (Fin d → R)) : (Fin d → Ω) × (Fin d → Ω) :=
   (fun i => f (y.1 i), fun i => f (y.2 i))
 
+/- English proof (translation)
+Apply the tactic sequence `ext j <;> simp [mp, Prod.fst_sum, Prod.snd_sum, Finset.sum_apply]`.
+-/
 theorem mp_sum (f : R →+* Ω) {J : Type} [Fintype J] (c : J → R) (w : J → (Fin d → R) × (Fin d → R)) :
     mp f (∑ i, c i • w i) = ∑ i, f (c i) • mp f (w i) := by
   ext j <;> simp [mp, Prod.fst_sum, Prod.snd_sum, Finset.sum_apply]
 
+/- English proof (translation)
+Use `choose c hc using fun y => (Submodule.mem_span_range_iff_exists_fun R).1 (hw.ge (Submodule.mem_top (x := y)))`. Use `⟨Set.range (fun k : Fin d × J => c (Pi.single k.1 1, 0) k.2) ∪ Set.range (fun k : Fin d × J => c (0, Pi.single k.1 1) k.2) ∪ Set.range (fun k : Fin d × J => (w k.2).1 k.1) ∪ Set.range (fun k : Fin d × J => (w k.2).2 k.1), (((Set.finite_range _).union (Set.finite_range _)).union ( …` and prove the remaining obligations. Establish `key : ∀ y, (∀ k, f (c y k) ∈ A) → T (mp f y) ∈ Submodule.span A (Set.range fun i => T (mp f (w i)))`. Introduce `y hy`. Rewrite using `[← hc y, mp_sum, map_sum]`.
+
+Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem _ (⟨_, hy k⟩ : A) (Submodule.subset_span ⟨k, rfl⟩)`. Rewrite using `[stdLat, Submodule.span_le]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+
+Rewrite using `[decomp y, map_add, map_sum, map_sum]`. Apply the tactic sequence `refine Submodule.add_mem _ (Submodule.sum_mem _ fun i _ => ?_) (Submodule.sum_mem _ fun i _ => ?_) <;>`. Rewrite using `[map_smul]`. Use `Submodule.smul_mem _ (⟨_, (hy i).1⟩ : A) ?_` and prove the remaining obligations. Use `key (Pi.single i 1, 0) fun k => hA _ (Or.inl (Or.inl (Or.inl ⟨(i, k), rfl⟩))) using 2` and compare the differences between its conclusion and the goal.
+
+Apply the tactic sequence `ext j <;> simp [mp, Pi.single_apply, apply_ite f]`. Use `Submodule.smul_mem _ (⟨_, (hy i).2⟩ : A) ?_` and prove the remaining obligations. Use `key (0, Pi.single i 1) fun k => hA _ (Or.inl (Or.inl (Or.inr ⟨(i, k), rfl⟩))) using 2` and compare the differences between its conclusion and the goal. Apply the tactic sequence `ext j <;> simp [mp, Pi.single_apply, apply_ite f]`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `Submodule.subset_span ⟨_, fun i => ⟨hA _ (Or.inl (Or.inr ⟨(i, k), rfl⟩)), hA _ (Or.inr ⟨(i, k), rfl⟩)⟩, rfl⟩`.
+-/
 theorem exists_finite (f : R →+* Ω) {J : Type} [Fintype J] (w : J → (Fin d → R) × (Fin d → R))
     (hw : Submodule.span R (Set.range w) = ⊤) :
     ∃ s : Set R, s.Finite ∧ ∀ A : Subring Ω, (∀ r ∈ s, f r ∈ A) →
@@ -112,11 +152,19 @@ theorem exists_finite (f : R →+* Ω) {J : Type} [Fintype J] (w : J → (Fin d 
     rintro _ ⟨k, rfl⟩
     exact Submodule.subset_span ⟨_, fun i => ⟨hA _ (Or.inl (Or.inr ⟨(i, k), rfl⟩)), hA _ (Or.inr ⟨(i, k), rfl⟩)⟩, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[← Module.finrank_eq_card_basis (Module.Basis.mk h hw.ge)]`. Simplify using the standard rewrite rules.
+-/
 theorem card_eq [Nontrivial R] {J : Type} [Fintype J] (w : J → (Fin d → R) × (Fin d → R))
     (h : LinearIndependent R w) (hw : Submodule.span R (Set.range w) = ⊤) : Fintype.card J = d + d := by
   rw [← Module.finrank_eq_card_basis (Module.Basis.mk h hw.ge)]
   simp
 
+/- English proof (translation)
+Establish `h1` using `(GlobalTheory.T.formal_data_base_change R Ω f d O B B₂ h).1`. Establish `hv : ∀ (N : Matrix (Fin d) (Fin d) R) (v : Fin d → R) (i : Fin d), (N.map f).mulVec (fun j => f (v j)) i = f (N.mulVec v i)` using `fun N v i => (RingHom.map_mulVec _ _ _ _).symm`. Rewrite using `[rhoH_apply, rhoH_apply, (h1 a).1, (h1 a).2, (h1 (star a)).1, ← Matrix.transpose_map, ← Matrix.transpose_map]`. Use extensionality with `i`. Conclude with `hv _ _ i`.
+
+Simplify using `only [mp, Pi.sub_apply, map_sub, hv]`.
+-/
 theorem rhoH_mp {O : Type} [CommRing O] [StarRing O] (f : R →+* Ω) {B : Germ.FB R d O} {B₂ : Germ.FB Ω d O}
     (h : IsMapOf f B B₂) (a : O) (y : (Fin d → R) × (Fin d → R)) : rhoH B₂ a (mp f y) = mp f (rhoH B a y) := by
   have h1 := (GlobalTheory.T.formal_data_base_change R Ω f d O B B₂ h).1
@@ -130,10 +178,18 @@ theorem rhoH_mp {O : Type} [CommRing O] [StarRing O] (f : R →+* Ω) {B : Germ.
 def dd (Ω : Type) [Field Ω] (d : ℕ) : ((Fin d → Ω) × (Fin d → Ω)) ≃ₗ[Ω] (Fin d → Ω) × Module.Dual Ω (Fin d → Ω) :=
   (LinearEquiv.refl Ω _).prodCongr (dotProductEquiv Ω (Fin d))
 
+/- English proof (translation)
+Use `Prod.ext rfl (LinearMap.ext fun v => ?_)` and prove the remaining obligations. Simplify using `[dd]`.
+-/
 theorem dd_apply (y : (Fin d → Ω) × (Fin d → Ω)) : dd Ω d y = (y.1, dotProductBilin Ω Ω y.2) := by
   refine Prod.ext rfl (LinearMap.ext fun v => ?_)
   simp [dd]
 
+/- English proof (translation)
+Rewrite using `[mem_span_cols]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Take `⟨z, hz, rfl⟩` from `(mem_stdLat _ _ _).1 hy`. Conclude with `⟨z.1, fun i => (hz i).1, by rw [transH_apply]⟩`.
+
+Introduce and unpack `⟨u, hu, rfl⟩`. Conclude with `⟨_, (mem_stdLat _ _ _).2 ⟨(u, 0), fun i => ⟨hu i, A.zero_mem⟩, rfl⟩, by rw [transH_apply]⟩`.
+-/
 theorem fst_stdLat (A : Subring Ω) (φ ψ : Germ.Pt Ω 1 d) (lam : Germ.PS Ω 2 d) (e : Fin d → Ω) :
     (∃ y ∈ stdLat A (transH φ ψ lam), y.1 = e) ↔
       e ∈ Submodule.span A (Set.range fun l => (lin φ 1).mulVec (Pi.single l 1)) := by
@@ -145,6 +201,15 @@ theorem fst_stdLat (A : Subring Ω) (φ ψ : Germ.Pt Ω 1 d) (lam : Germ.PS Ω 2
   · rintro ⟨u, hu, rfl⟩
     exact ⟨_, (mem_stdLat _ _ _).2 ⟨(u, 0), fun i => ⟨hu i, A.zero_mem⟩, rfl⟩, by rw [transH_apply]⟩
 
+/- English proof (translation)
+Rewrite using `[mem_stdLat]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, e⟩ v hv`. Take `⟨u, hu, rfl⟩` from `(mem_span_cols _ _ _).1 hv`. Rewrite `e` using `[transH_apply]`.
+
+Take `⟨e1, e2⟩` from `Prod.ext_iff.1 e`. Establish `h0 : y.1 = 0`. Use `congrArg (lin ψ 1).mulVec e1` as an intermediate fact. Simplify `this.symm` using `[Matrix.mulVec_mulVec, h2]`. Simplify using `only [h0, Matrix.mulVec_zero, add_zero] at e2`.
+
+Rewrite using `[e2, Matrix.mulVec_transpose, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, h2, Matrix.one_mulVec]`. Conclude with `A.sum_mem fun i _ => A.mul_mem (hy i).2 (hu i)`. Introduce `h`. Use `⟨(0, (lin φ 1).transpose.mulVec w), fun i => ⟨A.zero_mem, ?_⟩, ?_⟩` and prove the remaining obligations. Use `h _ (Submodule.subset_span ⟨i, rfl⟩) using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[Matrix.dotProduct_mulVec, Matrix.mulVec_transpose, dotProduct_single, _root_.mul_one]`. Rewrite using `[transH_apply]`. Simplify using `[Matrix.mulVec_mulVec, ← Matrix.transpose_mul, h1]`.
+-/
 theorem inr_stdLat (A : Subring Ω) (φ ψ : Germ.Pt Ω 1 d) (lam : Germ.PS Ω 2 d) (h1 : lin φ 1 * lin ψ 1 = 1)
     (h2 : lin ψ 1 * lin φ 1 = 1) (w : Fin d → Ω) :
     (0, w) ∈ stdLat A (transH φ ψ lam) ↔
@@ -176,6 +241,9 @@ open Formalism.L2.Pj
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X0 : Scheme.{0}}
 
+/- English proof (translation)
+The claim follows from `| 0, u => by simp only [List.ofFn_zero, List.prod_nil]; exact MonObj.comp_one f | m + 1, u => by rw [List.ofFn_succ, List.ofFn_succ, List.prod_cons, List.prod_cons, MonObj.comp_mul, comp_prod_ofFn f (fun l => u l.succ)]`.
+-/
 theorem comp_prod_ofFn {G T T' : Over X0} [GrpObj G] (f : T' ⟶ T) :
     ∀ {m : ℕ} (u : Fin m → (T ⟶ G)), f ≫ (List.ofFn u).prod = (List.ofFn fun l => f ≫ u l).prod
   | 0, u => by simp only [List.ofFn_zero, List.prod_nil]; exact MonObj.comp_one f
@@ -185,6 +253,9 @@ theorem comp_prod_ofFn {G T T' : Over X0} [GrpObj G] (f : T' ⟶ T) :
 
 variable (t : SAB H X0)
 
+/- English proof (translation)
+The claim follows from `| 0, c => by simp only [List.ofFn_zero, List.prod_nil, Finset.univ_eq_empty, Finset.sum_empty] have h := M.add 0 0 rw [add_zero] at h exact (mul_left_cancel (h.symm.trans (_root_.mul_one _).symm)).symm | m + 1, c => by rw [List.ofFn_succ, List.prod_cons, pt_sum M (fun l => c l.su …`.
+-/
 theorem pt_sum {S : Type} [CommRing S] {x : Sp S ⟶ X0} {V : Type} [AddCommGroup V] [Module S V]
     (M : GlobalTheory.CompanionTheory.Ar.LieModel t.G x V) :
     ∀ {m : ℕ} (c : Fin m → V), (List.ofFn fun l => M.pt (c l)).prod = M.pt (∑ l, c l)
@@ -196,6 +267,13 @@ theorem pt_sum {S : Type} [CommRing S] {x : Sp S ⟶ X0} {V : Type} [AddCommGrou
   | m + 1, c => by
     rw [List.ofFn_succ, List.prod_cons, pt_sum M (fun l => c l.succ), Fin.sum_univ_succ, M.add]
 
+/- English proof (translation)
+Take `⟨u, hu, hw⟩` from `h`. Establish `e : ∀ l, M.pt (f (cf l) • b l) = LieCarrier.epsHom f x x' hx ≫ u l` using `fun l => by`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = Spec.map (CommRingCat.ofHom (GlobalTheory.CompanionTheory.Ar.dualMap f)) ≫ (u l).left`. Rewrite using `[M.smul, hb, hu]`.
+
+Establish `: Spec.map (CommRingCat.ofHom (GlobalTheory.CompanionTheory.Ar.epsMul (f (cf l)))) ≫ Spec.map (CommRingCat.ofHom (GlobalTheory.CompanionTheory.Ar.dualMap f)) = Spec.map (CommRingCat.ofHom (GlobalTheory.CompanionTheory.Ar.dualMap f)) ≫ Spec.map (CommRingCat.ofHom (GlobalTheory.Com …`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, LieCarrier.dualMap_epsMul]`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ v l) this).trans (Category.assoc _ _ _))`. Rewrite using `[← pt_sum, ← hw]`. Simplify using `only [e]`.
+
+Conclude with `(congrArg CommaMorphism.left (comp_prod_ofFn (LieCarrier.epsHom f x x' hx) u)).symm`.
+-/
 theorem comb_map {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') {x : Sp R ⟶ X0} {x' : Sp R' ⟶ X0}
     (hx : Spec.map (CommRingCat.ofHom f) ≫ x = x') {V : Type} [AddCommGroup V] [Module R' V]
     (M : GlobalTheory.CompanionTheory.Ar.LieModel t.G x' V) {m : ℕ} {v : Fin m → (Sp (DualNumber R) ⟶ t.G.left)} {cf : Fin m → R}
@@ -220,6 +298,11 @@ theorem comb_map {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') {x : 
 
 variable [StarRing (𝓞 E)] {t} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X0} {d : ℕ} {M : LieModel t.G ξ (Fin d → Ω)}
 
+/- English proof (translation)
+Use `le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_mono ?_)` and prove the remaining obligations. Introduce and unpack `e ⟨v, hv, he⟩`. Take `⟨a, ha, -⟩` from `(S.g p).basis v.left ⟨Over.w v, hv⟩`. Establish `h` using `comb_map t (genMap ξ p) (LieCarrier.genMap_fromSpecStalk p) M ha _ (S.dir p)`. Rewrite using `[M.inj (Over.OverMorphism.ext (he.trans h.symm))]`.
+
+Conclude with `Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ (⟨_, a l, rfl⟩ : regAt ξ p) (Submodule.subset_span ⟨l, rfl⟩)`. Introduce and unpack `_ ⟨l, rfl⟩`. Conclude with `⟨Over.homMk ((S.g p).tg l) ((S.g p).tan l).1, ((S.g p).tan l).2, S.dir p l⟩`.
+-/
 theorem lat_eq (S : GermSys t ξ M) (p : Cpt ξ) :
     M.lat p = Submodule.span (regAt ξ p) (Set.range fun l => (lin (S.φ p) 1).mulVec (Pi.single l 1)) := by
   refine le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_mono ?_)
@@ -232,6 +315,11 @@ theorem lat_eq (S : GermSys t ξ M) (p : Cpt ξ) :
   · rintro _ ⟨l, rfl⟩
     exact ⟨Over.homMk ((S.g p).tg l) ((S.g p).tan l).1, ((S.g p).tan l).2, S.dir p l⟩
 
+/- English proof (translation)
+Proceed by induction on `s, hs using Set.Finite.induction_on with`. Consider the case `empty => exact ⟨⊤, trivial, fun _ _ _ h => h.elim⟩`. Consider the case `@insert a s _ _ ih`. Take `⟨U, hU, h⟩` from `ih`. Take `⟨V, hV, h'⟩` from `exists_open_mem_regAt ξ p _ ⟨a, rfl⟩`.
+
+Use `⟨U ⊓ V, ⟨hU, hV⟩, fun q hq r hr => ?_⟩` and prove the remaining obligations. Break down `hr with rfl | hr` into its components or cases. Use `exacts [h' q hq.2, h q hq.1 r hr]`.
+-/
 theorem exists_open {ξ : Sp Ω ⟶ X0} (p : Cpt ξ) (s : Set (X0.presheaf.stalk p.1)) (hs : s.Finite) :
     ∃ U : X0.Opens, p.1 ∈ U ∧ ∀ q : Cpt ξ, q.1 ∈ U → ∀ r ∈ s, genMap ξ p r ∈ regAt ξ q := by
   induction s, hs using Set.Finite.induction_on with

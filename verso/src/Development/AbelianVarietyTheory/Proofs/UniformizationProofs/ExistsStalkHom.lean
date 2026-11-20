@@ -19,6 +19,9 @@ noncomputable section
 namespace GlobalTheory.EquivDesc
 variable {S : Scheme.{0}}
 
+/- English proof (translation)
+Use `⟨Units.map (κ.stalkMap z).hom.toMonoidHom, Units.map_injective (ConcreteCategory.bijective_of_isIso (κ.stalkMap z)).1, fun Y f U a h => Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[gm_val (κ ≫ f) z U h]`. Express the relevant statement in the definitionally equal form `(κ.stalkMap z).hom (gm f (κ z) U a).val = _`. Rewrite using `[gm_val f (κ z) U h]`. Conclude with `Scheme.Hom.germ_stalkMap_apply κ (f ⁻¹ᵁ U) z h _`.
+-/
 theorem exists_stalk_hom {Z Z' : Scheme.{0}} (κ : Z' ⟶ Z) [IsOpenImmersion κ] (z : Z') :
     ∃ Φ : (Z.presheaf.stalk (κ z))ˣ →* (Z'.presheaf.stalk z)ˣ, Function.Injective Φ ∧
       ∀ (Y : Scheme.{0}) (f : Z ⟶ Y) (U : Y.Opens) (a : Γ(Y, U)ˣ), f (κ z) ∈ U →
@@ -30,11 +33,17 @@ theorem exists_stalk_hom {Z Z' : Scheme.{0}} (κ : Z' ⟶ Z) [IsOpenImmersion κ
   rw [gm_val f (κ z) U h]
   exact Scheme.Hom.germ_stalkMap_apply κ (f ⁻¹ᵁ U) z h _
 
+/- English proof (translation)
+The claim follows from `(gm_res (𝟙 Z) z h trivial (pullU f U a)).trans ((gm_pull (𝟙 Z) f z U (h trivial) a).trans (by rw [Category.id_comp]))`.
+-/
 theorem gm_appLE {Z Y : Scheme.{0}} (f : Z ⟶ Y) (U : Y.Opens) (h : ⊤ ≤ f ⁻¹ᵁ U) (a : Γ(Y, U)ˣ) (z : Z) :
     gm (𝟙 Z) z ⊤ (Units.map (f.appLE U ⊤ h).hom.toMonoidHom a) = gm f z U a :=
   (gm_res (𝟙 Z) z h trivial (pullU f U a)).trans ((gm_pull (𝟙 Z) f z U (h trivial) a).trans
     (by rw [Category.id_comp]))
 
+/- English proof (translation)
+Use `Units.map_injective (f := (q.app V).hom.toMonoidHom) (FunDescent.app_injective q V) (unit_ext (a := pullU q V a) (b := pullU q V b) fun y hy => ?_)` and prove the remaining obligations. Rewrite using `[gm_pull (𝟙 Y) q y V hy, gm_pull (𝟙 Y) q y V hy, Category.id_comp]`. Conclude with `h y hy`.
+-/
 theorem unit_ext_of_flat {Y B : Scheme.{0}} (q : Y ⟶ B) [Flat q] [Surjective q] {V : B.Opens} {a b : Γ(B, V)ˣ}
     (h : ∀ y, q y ∈ V → gm q y V a = gm q y V b) : a = b := by
   refine Units.map_injective (f := (q.app V).hom.toMonoidHom) (FunDescent.app_injective q V)
@@ -42,6 +51,17 @@ theorem unit_ext_of_flat {Y B : Scheme.{0}} (q : Y ⟶ B) [Flat q] [Surjective q
   rw [gm_pull (𝟙 Y) q y V hy, gm_pull (𝟙 Y) q y V hy, Category.id_comp]
   exact h y hy
 
+/- English proof (translation)
+Set `β` to `Module.Free.chooseBasis ℤ X`. Use `choose V hV u hu using fun k => Q.loc b (β k)`. Set `V₀ : Q.B.left.Opens` to `⟨⋂ k, (V k : Set Q.B.left), isOpen_iInter_of_finite fun k => (V k).isOpen⟩`. Establish `le : ∀ k, Q.q.left ⁻¹ᵁ V₀ ≤ Q.q.left ⁻¹ᵁ V k` using `fun k y hy => Set.mem_iInter.1 hy k`. Set `f : X →ₗ[ℤ] Additive Γ(G.left, Q.q.left ⁻¹ᵁ V₀)ˣ` to `β.constr ℤ fun k => Additive.ofMul (res (le k) (u k))`.
+
+Use `⟨V₀, Set.mem_iInter.2 hV, AddMonoidHom.toMultiplicativeLeft f.toAddMonoidHom, fun χ => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsWt Q.i _ (Additive.toMul (f χ)).val χ`. Establish `hχ : χ ∈ AddSubgroup.closure (Set.range β)`. Rewrite using `[← Submodule.span_int_eq_addSubgroupClosure, β.span_eq]`. Discharge the goal by the elementary cases of `trivial`.
+
+Proceed by induction on `hχ using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨k, rfl⟩` from `hx`. Rewrite using `[Module.Basis.constr_basis]`. Conclude with `(hu k).res (le k)`.
+
+Consider the case `zero => rw [map_zero]`. Conclude with `isWt_one`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `hx.mul hy`. Consider the case `neg x _ hx => rw [map_neg]`.
+
+Conclude with `hx.inv`.
+-/
 theorem exists_units {X : Type} [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] {G : Over S} [GrpObj G]
     (Q : TQ G X) (b : Q.B.left) : ∃ V : Q.B.left.Opens, b ∈ V ∧
       ∃ u : Multiplicative X →* Γ(G.left, Q.q.left ⁻¹ᵁ V)ˣ, ∀ χ, IsWt Q.i _ (u (Multiplicative.ofAdd χ)).val χ := by
@@ -67,6 +87,17 @@ abbrev opn {G : Over S} (U : G.left.Opens) : Over S := Over.mk (U.ι ≫ G.hom)
 
 abbrev opnι {G : Over S} (U : G.left.Opens) : opn U ⟶ G := Over.homMk U.ι rfl
 
+/- English proof (translation)
+Set `τ : opn U ⟶ splitTorus S X` to `(splitTorusPointsEquiv S X (opn U)).symm ((Units.map U.topIso.inv.hom.toMonoidHom).comp u)`. Establish `hτ₀ : ∀ χ : X, τ.left.appTop.hom (charUnit S X χ).val = U.topIso.inv.hom (u (Multiplicative.ofAdd χ)).val`. Introduce `χ`. Rewrite using `[← splitTorusPointsEquiv_val, MulEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+
+Establish `hle : ∀ {Z : Over S} (g : Z ⟶ opn U), ⊤ ≤ (g ≫ opnι U).left ⁻¹ᵁ U`. Introduce `Z g x _`. Conclude with `(g.left x).2`. Establish `hτ₁ : ∀ {Z : Over S} (g : Z ⟶ opn U) (χ : X), (g ≫ τ).left.appTop.hom (charUnit S X χ).val = ((g ≫ opnι U).left.appLE U ⊤ (hle g)).hom (u (Multiplicative.ofAdd χ)).val`. Introduce `Z g χ`.
+
+Set `g' : Z.left ⟶ U` to `g.left`. Establish `h : U.topIso.inv ≫ g'.appTop = (g' ≫ U.ι).appLE U ⊤ (hle g)`. Rewrite using `[← Scheme.Hom.appLE_comp_appLE g' U.ι U ⊤ ⊤ (by simp) (by simp), Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE, Scheme.Opens.ι_appLE, Scheme.Opens.topIso_inv]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `g'.appTop.hom (τ.left.appTop.hom (charUnit S X χ).val) = _`.
+
+Rewrite using `[hτ₀]`. Conclude with `congrArg (fun f => f.hom (u (Multiplicative.ofAdd χ)).val) h`. Use `⟨τ, fun Z t g g' hg => ?_⟩` and prove the remaining obligations. Apply `(splitTorusPointsEquiv S X Z).injective` to reduce the goal to its premises. Rewrite using `[map_mul]`.
+
+Use extensionality with `χ`. Express the relevant statement in the definitionally equal form `(splitTorusPointsEquiv S X Z _ (Multiplicative.ofAdd χ)).val = (splitTorusPointsEquiv S X Z _ (Multiplicative.ofAdd χ)).val * (splitTorusPointsEquiv S X Z _ (Multiplicative.ofAdd χ)).val`. Rewrite using `[splitTorusPointsEquiv_val, splitTorusPointsEquiv_val, splitTorusPointsEquiv_val, hτ₁, hτ₁, TorusInj.appLE_of_eq (congrArg Over.Hom.left hg)]`. Conclude with `hu χ Z t (g ≫ opnι U) _ _`.
+-/
 theorem exists_coord {X : Type} [AddCommGroup X] {G : Over S} [GrpObj G] (i : splitTorus S X ⟶ G) (U : G.left.Opens)
     (u : Multiplicative X →* Γ(G.left, U)ˣ) (hu : ∀ χ, IsWt i _ (u (Multiplicative.ofAdd χ)).val χ) :
     ∃ τ : opn U ⟶ splitTorus S X, ∀ (Z : Over S) (t : Z ⟶ splitTorus S X) (g g' : Z ⟶ opn U),
@@ -112,14 +143,23 @@ def av (a : LB.Gen (LB.LinComb L (actφ i) ![1, -1])) {T : Over S} (t : T ⟶ H)
     (k₁ k₂ : L.ι) : (T.left.presheaf.stalk z)ˣ :=
   gm (lift t x).left z (LB.wchart L (actφ i) ![k₁, k₂]) (a.s ![k₁, k₂])
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(lift t x ≫ ((fst H G ≫ i) * snd H G)).left = _`. Rewrite using `[MonObj.comp_mul, lift_fst_assoc, lift_snd]`.
+-/
 theorem lift_actφ_zero {T : Over S} (t : T ⟶ H) (x : T ⟶ G) : (lift t x).left ≫ actφ i 0 = ((t ≫ i) * x).left := by
   change (lift t x ≫ ((fst H G ≫ i) * snd H G)).left = _
   rw [MonObj.comp_mul, lift_fst_assoc, lift_snd]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(lift t x ≫ snd H G).left = _`. Rewrite using `[lift_snd]`.
+-/
 theorem lift_actφ_one {T : Over S} (t : T ⟶ H) (x : T ⟶ G) : (lift t x).left ≫ actφ i 1 = x.left := by
   change (lift t x ≫ snd H G).left = _
   rw [lift_snd]
 
+/- English proof (translation)
+The claim follows from `Set.mem_iInter.2 fun k => by fin_cases k · rw [← lift_actφ_zero] at h₁; exact h₁ · rw [← lift_actφ_one (i := i) t] at h₂; exact h₂`.
+-/
 theorem mem_chart {T : Over S} (t : T ⟶ H) (x : T ⟶ G) (z : T.left) {k₁ k₂ : L.ι}
     (h₁ : ((t ≫ i) * x).left z ∈ L.U k₁) (h₂ : x.left z ∈ L.U k₂) :
     (lift t x).left z ∈ LB.wchart L (actφ i) ![k₁, k₂] := Set.mem_iInter.2 fun k => by
@@ -129,6 +169,9 @@ theorem mem_chart {T : Over S} (t : T ⟶ H) (x : T ⟶ G) (z : T.left) {k₁ k�
 
 variable {a : LB.Gen (LB.LinComb L (actφ i) ![1, -1])}
 
+/- English proof (translation)
+The claim follows from `val_of a _ z J _ fun k => by fin_cases k · exact congrArg J (lift_actφ_zero t x) · exact congrArg J (lift_actφ_one t x)`.
+-/
 theorem val_eq_av {T : Over S} (t : T ⟶ H) (x : T ⟶ G) (z : T.left) (J) :
     val a (lift t x).left z J = av a t x z (J ((t ≫ i) * x).left) (J x.left) :=
   val_of a _ z J _ fun k => by
@@ -136,6 +179,9 @@ theorem val_eq_av {T : Over S} (t : T ⟶ H) (x : T ⟶ G) (z : T.left) (J) :
     · exact congrArg J (lift_actφ_zero t x)
     · exact congrArg J (lift_actφ_one t x)
 
+/- English proof (translation)
+Use `(gen_trans ha _ z (mem_chart t x z h₁ h₂) (mem_chart t x z g₁ g₂)).trans (congrArg (· * _) ?_)` and prove the remaining obligations. Rewrite using `[trF, Fin.prod_univ_two, lift_actφ_zero, lift_actφ_one]`. Express the relevant statement in the definitionally equal form `gm _ z _ (L.g k₁ l₁) ^ (1 : ℤ) * gm _ z _ (L.g k₂ l₂) ^ (-1 : ℤ) = _`. Rewrite using `[zpow_neg, zpow_one, zpow_one]`.
+-/
 theorem av_change (ha : a.IsGen) {T : Over S} (t : T ⟶ H) (x : T ⟶ G) (z : T.left) {k₁ k₂ l₁ l₂ : L.ι}
     (h₁ : ((t ≫ i) * x).left z ∈ L.U k₁) (h₂ : x.left z ∈ L.U k₂)
     (g₁ : ((t ≫ i) * x).left z ∈ L.U l₁) (g₂ : x.left z ∈ L.U l₂) :
@@ -149,6 +195,11 @@ def IsAct (a : LB.Gen (LB.LinComb L (actφ i) ![1, -1])) : Prop :=
   ∀ (T : Over S) (t t' : T ⟶ H) (x : T ⟶ G) (z : T.left) (J), Good L z J →
     val a (lift (t * t') x).left z J = val a (lift t ((t' ≫ i) * x)).left z J * val a (lift t' x).left z J
 
+/- English proof (translation)
+Take `⟨J, hJ⟩` from `exists_good_pt hL z`. Establish `e : (t ≫ i) * ((t' ≫ i) * x) = ((t * t') ≫ i) * x` using `by rw [MonObj.mul_comp, _root_.mul_assoc]`. Establish `c` using `hc T t t' x z J hJ`. Rewrite `c` using `[val_eq_av, val_eq_av, val_eq_av]`. Rewrite using `[av_change ha _ _ z h₁ h₃ (hJ _) (hJ _), av_change ha t _ z (by rw [e]; exact h₁) h₂ (hJ _) (hJ _), av_change ha t' _ z h₂ h₃ (hJ _) (hJ _), c, e]`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 theorem av_mul [IsMonHom i] (hL : L.IsLB) (ha : a.IsGen) (hc : IsAct a) {T : Over S} (t t' : T ⟶ H) (x : T ⟶ G)
     (z : T.left) {k₁ k₂ k₃ : L.ι} (h₁ : (((t * t') ≫ i) * x).left z ∈ L.U k₁) (h₂ : ((t' ≫ i) * x).left z ∈ L.U k₂)
     (h₃ : x.left z ∈ L.U k₃) :
@@ -170,6 +221,9 @@ variable {G B H : Over S} [GrpObj G] [GrpObj B] [GrpObj H] {q : G ⟶ B} {i : H 
   {L : LB G.left} {a : LB.Gen (LB.LinComb L (actφ i) ![1, -1])}
 
 omit [GrpObj H] [IsMonHom i] in
+/- English proof (translation)
+Establish `: (t ≫ i) ≫ q = 1`. Rewrite using `[Category.assoc, hk.w, ← Category.assoc, Hom.one_def]`. Use `congr 1`. Conclude with `toUnit_unique _ _`. Rewrite using `[← Over.comp_left, ← Over.comp_left, MonObj.mul_comp, this, _root_.one_mul]`.
+-/
 theorem act_comp (hk : IsPullback i (toUnit _) q η[B]) {T : Over S} (t : T ⟶ H) (x : T ⟶ G) :
     ((t ≫ i) * x).left ≫ q.left = x.left ≫ q.left := by
   have : (t ≫ i) ≫ q = 1 := by
@@ -179,6 +233,9 @@ theorem act_comp (hk : IsPullback i (toUnit _) q η[B]) {T : Over S} (t : T ⟶ 
   rw [← Over.comp_left, ← Over.comp_left, MonObj.mul_comp, this, _root_.one_mul]
 
 omit [GrpObj H] [IsMonHom i] in
+/- English proof (translation)
+Establish `w : (x' * x⁻¹) ≫ q = toUnit T ≫ η[B]`. Rewrite using `[MonObj.mul_comp, GrpObj.inv_comp, e, mul_inv_cancel]`. Both sides reduce to the same expression. Conclude with `⟨hk.lift _ _ w, by rw [hk.lift_fst, inv_mul_cancel_right]⟩`.
+-/
 theorem exists_diff (hk : IsPullback i (toUnit _) q η[B]) {T : Over S} (x x' : T ⟶ G) (e : x' ≫ q = x ≫ q) :
     ∃ t : T ⟶ H, x' = (t ≫ i) * x := by
   have w : (x' * x⁻¹) ≫ q = toUnit T ≫ η[B] := by
@@ -194,6 +251,37 @@ structure InvGen (q : G ⟶ B) (a : LB.Gen (LB.LinComb L (actφ i) ![1, -1])) (V
     ((t ≫ i) * x).left z ∈ L.U k₁ → x.left z ∈ L.U k₂ →
     gm ((t ≫ i) * x).left z _ (e k₁) = av a t x z k₁ k₂ * gm x.left z _ (e k₂)
 
+/- English proof (translation)
+Set `U : G.left.Opens` to `q.left ⁻¹ᵁ V₀`. Set `j : opn U ⟶ G` to `opnι U`. Set `ρ : opn U ⟶ G` to `(τ⁻¹ ≫ i) * j`. Establish `hρ₁ : ∀ {Z : Over S} (g : Z ⟶ opn U), ((g ≫ τ) ≫ i) * (g ≫ ρ) = g ≫ j` using `fun g => by`. Rewrite using `[MonObj.comp_mul, ← Category.assoc, GrpObj.comp_inv, GrpObj.inv_comp, mul_inv_cancel_left]`.
+
+Establish `hρ₂ : ∀ {Z : Over S} (t : Z ⟶ H) (g g' : Z ⟶ opn U), g' ≫ j = (t ≫ i) * (g ≫ j) → g' ≫ ρ = g ≫ ρ`. Introduce `Z t g g' h`. Apply `mul_left_cancel (a := (g' ≫ τ) ≫ i)` to reduce the goal to its premises. Rewrite using `[hρ₁, hτ Z t g g' h, MonObj.mul_comp, _root_.mul_assoc, hρ₁, h]`. Establish `: Surjective (q.left ∣_ V₀)` using `IsZariskiLocalAtTarget.restrict (P := @Surjective) ‹_› V₀`.
+
+Set `ρ' : U.toScheme ⟶ G.left` to `ρ.left`. Establish `hd : ∀ {Z : Scheme.{0}} (g₁ g₂ : Z ⟶ U.toScheme), g₁ ≫ (q.left ∣_ V₀) = g₂ ≫ (q.left ∣_ V₀) → g₁ ≫ ρ' = g₂ ≫ ρ'`. Introduce `Z g₁ g₂ e`. Establish `e₀ : g₁ ≫ U.ι ≫ q.left = g₂ ≫ U.ι ≫ q.left`. Rewrite using `[← morphismRestrict_ι, reassoc_of% e]`.
+
+Set `Z' : Over S` to `Over.mk (g₂ ≫ U.ι ≫ G.hom)`. Set `k₂ : Z' ⟶ opn U` to `Over.homMk g₂ rfl`. Set `k₁ : Z' ⟶ opn U` to `Over.homMk g₁ (by`. Express the relevant statement in the definitionally equal form `g₁ ≫ U.ι ≫ G.hom = g₂ ≫ U.ι ≫ G.hom`. Rewrite using `[← Over.w q, reassoc_of% e₀])`.
+
+Take `⟨t, ht⟩` from `exists_diff hk (k₂ ≫ j) (k₁ ≫ j) (Over.OverMorphism.ext e₀)`. Conclude with `congrArg (fun m => m.left) (hρ₂ t k₂ k₁ ht)`. Take `⟨σ, hσ⟩ : ∃ σ : V₀.toScheme ⟶ G.left, (q.left ∣_ V₀) ≫ σ = ρ'` from `⟨_, EffectiveEpi.fac _ ρ' hd⟩`. Take `⟨k₀, hk₀⟩` from `exists_chart hL (σ ⟨b, hb⟩)`. Set `V : B.left.Opens` to `V₀.ι ''ᵁ (σ ⁻¹ᵁ L.U k₀)`.
+
+Establish `hV₀ : V ≤ V₀` using `V₀.ι_image_le _`. Establish `hV : ∀ {Z : Over S} (g : Z ⟶ opn U) (z : Z.left), q.left ((g ≫ j).left z) ∈ V → (g ≫ ρ).left z ∈ L.U k₀`. Introduce and unpack `Z g z ⟨v, hv, e⟩`. Establish `: v = (q.left ∣_ V₀) (g.left z)` using `Subtype.ext (e.trans (congrArg (fun m => m (g.left z)) (morphismRestrict_ι q.left V₀)).symm)`. Substitute `this` using the available equality.
+
+Conclude with `(congrArg (fun m : U.toScheme ⟶ G.left => m (g.left z) ∈ L.U k₀) hσ).mp hv`. Set `m : U.toScheme ⟶ (H ⊗ G).left` to `(lift τ ρ).left`. Use `choose c hc₀ using fun k : L.ι => exists_ext_unit U.ι (m ⁻¹ᵁ LB.wchart L (actφ i) ![k, k₀]) (pullU m _ (a.s ![k, k₀]))`. Establish `mem : ∀ {Z : Over S} (g : Z ⟶ opn U) (z : Z.left) (k), q.left ((g ≫ j).left z) ∈ V → (g ≫ j).left z ∈ L.U k → m (g.left z) ∈ LB.wchart L (actφ i) ![k, k₀]` using `fun g z k h₁ h₂ => by`. Use `mem_chart (i := i) (g ≫ τ) (g ≫ ρ) z (by rw [hρ₁]; exact h₂) (hV g z h₁)` as an intermediate fact.
+
+Rewrite `this` using `[← comp_lift]`. Conclude with `this`. Establish `le : ∀ k, q.left ⁻¹ᵁ V ⊓ L.U k ≤ U.ι ''ᵁ (m ⁻¹ᵁ LB.wchart L (actφ i) ![k, k₀])` using `fun k y hy => ⟨⟨y, hV₀ hy.1⟩, mem (𝟙 _) ⟨y, hV₀ hy.1⟩ k hy.1 hy.2, rfl⟩`. Establish `ev : ∀ {Z : Over S} (g : Z ⟶ opn U) (z : Z.left) (k), q.left ((g ≫ j).left z) ∈ V → (g ≫ j).left z ∈ L.U k → gm (g ≫ j).left z _ (res (le k) (c k)) = av a (g ≫ τ) (g ≫ ρ) z k k₀` using `fun g z k h₁ h₂ => by`. Rewrite using `[av, ← comp_lift]`.
+
+Conclude with `(gm_res _ z (le k) ⟨h₁, h₂⟩ _).trans ((hc₀ k _ g.left z (mem g z k h₁ h₂)).trans (gm_pull g.left m z _ (mem g z k h₁ h₂) _))`. Establish `loc : ∀ {T : Over S} (x : T ⟶ G) (z : T.left), q.left (x.left z) ∈ V → ∃ (T' : Over S) (κ : T' ⟶ T) (_ : IsOpenImmersion κ.left) (z' : T'.left) (g : T' ⟶ opn U), κ.left z' = z ∧ g ≫ j = κ ≫ x` using `fun x z h => ⟨opn (x.left ⁻¹ᵁ U), opnι _, inferInstanceAs (IsOpenImmersion (x.left ⁻¹ᵁ U).ι), ⟨z, hV₀ h⟩, Over.homMk (x.left ∣_ U) (by`. Express the relevant statement in the definitionally equal form `(x.left ∣_ U) ≫ U.ι ≫ G.hom = (x.left ⁻¹ᵁ U).ι ≫ _`. Rewrite using `[morphismRestrict_ι_assoc, Over.w]), rfl, Over.OverMorphism.ext (morphismRestrict_ι _ _)⟩`. Use `⟨V, ⟨⟨b, hb⟩, hk₀, rfl⟩, fun k => res (le k) (c k), fun Y f y k k' h₀ h₁ h₂ => ?_, fun T t x z k₁ k₂ h₀ h₁ h₂ => ?_⟩` and prove the remaining obligations.
+
+Set `x : Over.mk (f ≫ G.hom) ⟶ G` to `Over.homMk f rfl`. Take `⟨T', κ, _, z, g, rfl, hg⟩` from `loc x y h₀`. Take `⟨Φ, hΦ, HΦ⟩` from `exists_stalk_hom κ.left z`. Establish `e : κ.left ≫ f = (g ≫ j).left` using `congrArg (fun m => m.left) hg.symm`. Establish `p : f (κ.left z) = (g ≫ j).left z` using `congrArg (fun m => m z) e`.
+
+Apply `hΦ` to reduce the goal to its premises. Rewrite using `[map_mul, HΦ _ f (q.left ⁻¹ᵁ V ⊓ L.U k) _ ⟨h₀, h₁⟩, HΦ _ f (q.left ⁻¹ᵁ V ⊓ L.U k') _ ⟨h₀, h₂⟩, HΦ _ f (L.U k ⊓ L.U k') _ ⟨h₁, h₂⟩, e]`. Rewrite `h₀`, `h₁`, `h₂` using `[p]`. Rewrite using `[ev g z k h₀ h₁, ev g z k' h₀ h₂, av_change ha _ _ z (by rw [hρ₁]; exact h₁) (hV g z h₀) (by rw [hρ₁]; exact h₂) (hV g z h₀), hρ₁, gm_self hL _ z (hV g z h₀), inv_one, _root_.mul_one]`. Take `⟨T', κ, _, z, g, rfl, hg⟩` from `loc x z h₀`.
+
+Take `⟨Φ, hΦ, HΦ⟩` from `exists_stalk_hom κ.left z`. Establish `hq` using `act_comp hk (κ ≫ t) (g ≫ j)`. Take `⟨g', hg'⟩ : ∃ g' : T' ⟶ opn U, g' ≫ j = ((κ ≫ t) ≫ i) * (g ≫ j)` from `⟨Over.homMk (IsOpenImmersion.lift U.ι (((κ ≫ t) ≫ i) * (g ≫ j)).left (by`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`.
+
+Conclude with `(congrArg (fun m => m y ∈ V₀) hq).mpr (g.left y).2)) ((IsOpenImmersion.lift_fac_assoc U.ι _ _ G.hom).trans (Over.w _)), Over.OverMorphism.ext (IsOpenImmersion.lift_fac _ _ _)⟩`. Establish `e : κ.left ≫ x.left = (g ≫ j).left` using `congrArg (fun m => m.left) hg.symm`. Establish `e' : κ.left ≫ ((t ≫ i) * x).left = (g' ≫ j).left`. Rewrite using `[hg', hg, ← Over.comp_left, MonObj.comp_mul, Category.assoc]`. Establish `e'' : κ.left ≫ (lift t x).left = (lift (κ ≫ t) (g ≫ j)).left`.
+
+Rewrite using `[hg, ← Over.comp_left, comp_lift]`. Establish `p : x.left (κ.left z) = (g ≫ j).left z` using `congrArg (fun m => m z) e`. Establish `p' : ((t ≫ i) * x).left (κ.left z) = (g' ≫ j).left z` using `congrArg (fun m => m z) e'`. Establish `h₀' : q.left (((t ≫ i) * x).left (κ.left z)) ∈ V` using `(congrArg (fun m => m (κ.left z) ∈ V) (act_comp hk t x)).mpr h₀`. Establish `A : Φ (av a t x (κ.left z) k₁ k₂) = av a (κ ≫ t) (g ≫ j) z k₁ k₂` using `(HΦ _ _ _ _ (mem_chart t x _ h₁ h₂)).trans (congrArg (fun r => gm r z (LB.wchart L (actφ i) ![k₁, k₂]) (a.s ![k₁, k₂])) e'')`.
+
+Apply `hΦ` to reduce the goal to its premises. Rewrite using `[map_mul, A, HΦ _ ((t ≫ i) * x).left (q.left ⁻¹ᵁ V ⊓ L.U k₁) _ ⟨h₀', h₁⟩, HΦ _ x.left (q.left ⁻¹ᵁ V ⊓ L.U k₂) _ ⟨h₀, h₂⟩, e, e']`. Rewrite `h₀`, `h₂` using `[p]`. Rewrite `h₀'`, `h₁` using `[p']`. Rewrite using `[ev g z k₂ h₀ h₂, ev g' z k₁ h₀' h₁, hτ _ _ _ _ hg', hρ₂ _ _ _ hg', av_mul hL ha hc _ _ _ z (k₂ := k₂) (by rw [MonObj.mul_comp, _root_.mul_assoc, hρ₁, ← hg']; exact h₁) (by rw [hρ₁]; exact h₂) (hV g z h₀), hρ₁]`.
+-/
 theorem exists_invGen [Flat q.left] [Surjective q.left] [QuasiCompact q.left] (hk : IsPullback i (toUnit _) q η[B])
     (hL : L.IsLB) (ha : a.IsGen) (hc : IsAct a) (V₀ : B.left.Opens) (τ : opn (q.left ⁻¹ᵁ V₀) ⟶ H)
     (hτ : ∀ (Z : Over S) (t : Z ⟶ H) (g g' : Z ⟶ opn (q.left ⁻¹ᵁ V₀)),
@@ -303,6 +391,17 @@ section Global
 variable {G B H : Over S} [GrpObj G] [GrpObj B] [GrpObj H] {q : G ⟶ B} {i : H ⟶ G} [IsMonHom q] [IsMonHom i]
   {L : LB G.left} {a : LB.Gen (LB.LinComb L (actφ i) ![1, -1])}
 
+/- English proof (translation)
+Set `W : L.ι → G.left.Opens` to `fun k => q.left ⁻¹ᵁ (V ⊓ V') ⊓ L.U k`. Establish `l₁ : ∀ k, W k ≤ q.left ⁻¹ᵁ V ⊓ L.U k` using `fun k y hy => ⟨hy.1.1, hy.2⟩`. Establish `l₂ : ∀ k, W k ≤ q.left ⁻¹ᵁ V' ⊓ L.U k` using `fun k y hy => ⟨hy.1.2, hy.2⟩`. Establish `hu : ∀ (Y : Scheme.{0}) (f : Y ⟶ G.left) (y : Y) (k : L.ι), f y ∈ W k → gm f y (W k) (res (l₂ k) (e' k) * (res (l₁ k) (e k))⁻¹) = gm f y _ (e' k) * (gm f y _ (e k))⁻¹` using `fun Y f y k h => by rw [map_mul, map_inv, gm_res f y _ h, gm_res f y _ h]`. Take `⟨s, hs⟩` from `glue_unit (q.left ⁻¹ᵁ (V ⊓ V')) W (fun _ => inf_le_left) (fun y hy => by`.
+
+Take `⟨k, hk⟩` from `exists_chart hL y`. Conclude with `Opens.mem_iSup.2 ⟨k, hy, hk⟩) (fun k => res (l₂ k) (e' k) * (res (l₁ k) (e k))⁻¹) (fun k k' y hy => by`. Rewrite using `[hu _ (𝟙 _) y k hy.1, hu _ (𝟙 _) y k' hy.2, he.gen _ (𝟙 _) y k k' hy.1.1.1 hy.1.2 hy.2.2, he'.gen _ (𝟙 _) y k k' hy.1.1.2 hy.1.2 hy.2.2, ← div_eq_mul_inv, mul_div_mul_left_eq_div, div_eq_mul_inv])`. Establish `hs' : ∀ (Y : Scheme.{0}) (f : Y ⟶ G.left) (y : Y) (k : L.ι), f y ∈ W k → gm f y _ s = gm f y _ (e' k) * (gm f y _ (e k))⁻¹` using `fun Y f y k h => (gm_res f y inf_le_left h s).symm.trans ((congrArg (gm f y (W k)) (hs k)).trans (hu Y f y k h))`. Take `⟨-, d₂, d₃⟩` from `invariant_functions_descend S G B H q i ‹_› ‹_› ‹_› ‹_› ‹_› hk (V ⊓ V')`.
+
+Take `⟨m, hm⟩` from `d₃ s.val fun Z t g h₁ h₂ => by`. Use `congrArg Units.val (unit_ext (a := Units.map (((t ≫ i) * g).left.appLE _ ⊤ h₁).hom.toMonoidHom s) (b := Units.map (g.left.appLE _ ⊤ h₂).hom.toMonoidHom s) fun z _ => ?_)` and prove the remaining obligations. Take `⟨k₁, hk₁⟩` from `exists_chart hL (((t ≫ i) * g).left z)`. Take `⟨k₂, hk₂⟩` from `exists_chart hL (g.left z)`. Establish `m₂ : g.left z ∈ q.left ⁻¹ᵁ (V ⊓ V')` using `h₂ trivial`.
+
+Rewrite using `[gm_appLE, gm_appLE, hs' _ _ z k₁ ⟨h₁ trivial, hk₁⟩, hs' _ _ z k₂ ⟨m₂, hk₂⟩, he.inv Z t g z k₁ k₂ m₂.1 hk₁ hk₂, he'.inv Z t g z k₁ k₂ m₂.2 hk₁ hk₂, ← div_eq_mul_inv, mul_div_mul_left_eq_div, div_eq_mul_inv]`. Establish `um : IsUnit m` using `d₂ m (hm ▸ s.isUnit)`. Establish `pm : pullU q.left _ um.unit = s` using `Units.ext hm`. Use `⟨um.unit, fun Y f y k h h' hk => ?_⟩` and prove the remaining obligations. Rewrite using `[← gm_pull f q.left y (V ⊓ V') ⟨h, h'⟩, pm]`.
+
+Conclude with `hs' Y f y k ⟨⟨h, h'⟩, hk⟩`.
+-/
 theorem exists_ratio [Flat q.left] [Surjective q.left] [QuasiCompact q.left] (hk : IsPullback i (toUnit _) q η[B])
     (hL : L.IsLB) {V V' : B.left.Opens} {e e'} (he : InvGen q a V e) (he' : InvGen q a V' e') :
     ∃ m : Γ(B.left, V ⊓ V')ˣ, ∀ (Y : Scheme.{0}) (f : Y ⟶ G.left) (y : Y) (k : L.ι), q.left (f y) ∈ V →
@@ -336,6 +435,17 @@ theorem exists_ratio [Flat q.left] [Surjective q.left] [QuasiCompact q.left] (hk
   rw [← gm_pull f q.left y (V ⊓ V') ⟨h, h'⟩, pm]
   exact hs' Y f y k ⟨⟨h, h'⟩, hk⟩
 
+/- English proof (translation)
+Use `choose V hV e he using h`. Use `choose m hm using fun b b' => exists_ratio hk hL (he b) (he b')`. Set `M : LB B.left` to `⟨B.left, V, m⟩`. Set `w : LB.Iso L (M.pull q.left)` to `⟨fun p => res (le_inf (fun _ hx => mem_pull.1 hx.1) inf_le_right : (M.pull q.left).U p.1 ⊓ L.U p.2 ≤ q.left ⁻¹ᵁ V (p.1 PUnit.unit) ⊓ L.U p.2) (e (p.1 PUnit.unit) p.2)⁻¹⟩`. Establish `hw : ∀ (Y : Scheme.{0}) (f : Y ⟶ G.left) (y : Y) (j : M.ι) (k : L.ι), q.left (f y) ∈ V j → f y ∈ L.U k → gw w f y j k = (gm f y _ (e j k))⁻¹` using `fun Y f y j k hj hk => (gm_res f y _ (show f y ∈ (M.pull q.left).U (fun _ => j) ⊓ L.U k from ⟨mem_pull.2 hj, hk⟩) _).trans (map_inv _ _)`.
+
+Establish `hm' : ∀ b b' y k, q.left y ∈ V b → q.left y ∈ V b' → y ∈ L.U k → gm q.left y _ (m b b') = gm (𝟙 _) y _ (e b' k) * (gm (𝟙 _) y _ (e b k))⁻¹` using `fun b b' y k h₁ h₂ h₃ => by`. Use `hm b b' _ (𝟙 _) y k h₁ h₂ h₃` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Then use the resulting hypothesis. Use `⟨M, w, ⟨?_, fun b => unit_ext_of_flat q.left fun y hy => ?_, fun b b' b'' => unit_ext_of_flat q.left fun y hy => ?_⟩, (isGen_iff w).2 fun Y f y j j' k k' hj hj' hk hk' => ?_, fun T t x z J j hJ hj => ?_⟩` and prove the remaining obligations. Conclude with `top_le_iff.1 fun b _ => Opens.mem_iSup.2 ⟨b, hV b⟩`.
+
+Take `⟨k, hk⟩` from `exists_chart hL y`. Rewrite using `[gm_res _ y _ hy, map_one]`. Conclude with `(hm' b b y k hy hy hk).trans (mul_inv_cancel _)`. Take `⟨k, hk⟩` from `exists_chart hL y`. Rewrite using `[map_mul, gm_res _ y _ hy, gm_res _ y _ hy, gm_res _ y _ hy]`.
+
+Use `(congrArg₂ (· * ·) (hm' b b' y k hy.1.1 hy.1.2 hk) (hm' b' b'' y k hy.1.2 hy.2 hk)).trans (Eq.trans ?_ (hm' b b'' y k hy.1.1 hy.2 hk).symm)` and prove the remaining obligations. Rewrite using `[mul_comm, _root_.mul_assoc, inv_mul_cancel_left]`. Use `hm j j' Y f y k' hj hj' hk'` as an intermediate fact. Rewrite using `[hw Y f y j k hj hk, hw Y f y j' k' hj' hk', (he j).gen Y f y k k' hj hk hk']`. Use `Eq.trans ?_ (congrArg (· * _ * _) this).symm` and prove the remaining obligations.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws. Establish `hj' : q.left (((t ≫ i) * x).left z) ∈ V j` using `(congrArg (fun m => m z ∈ V j) (act_comp hk t x)).mpr hj`. Rewrite using `[hw _ _ z j _ hj' (hJ _), hw _ _ z j _ hj (hJ _), (he j).inv T t x z _ _ hj (hJ _) (hJ _), val_eq_av, mul_inv_rev, inv_mul_cancel_right]`.
+-/
 theorem descend [Flat q.left] [Surjective q.left] [QuasiCompact q.left] (hk : IsPullback i (toUnit _) q η[B])
     (hL : L.IsLB) (h : ∀ b : B.left, ∃ V : B.left.Opens, b ∈ V ∧ ∃ e, InvGen q a V e) :
     ∃ (M : LB B.left) (w : LB.Iso L (M.pull q.left)), M.IsLB ∧ w.IsGen ∧
@@ -377,6 +487,11 @@ theorem descend [Flat q.left] [Surjective q.left] [QuasiCompact q.left] (hk : Is
 
 end Global
 
+/- English proof (translation)
+Introduce `S X _ _ _ G _ Q L hL a ha hc`. Use `Q.q_hom` as an intermediate fact. Use `Q.i_hom` as an intermediate fact. Use `Q.q_flat` as an intermediate fact. Use `Q.q_surj` as an intermediate fact.
+
+Use `Q.q_affine` as an intermediate fact. Use `descend Q.isKernel hL fun b => ?_` and prove the remaining obligations. Take `⟨V, hV, u, hu⟩` from `exists_units Q b`. Take `⟨τ, hτ⟩` from `exists_coord Q.i _ u hu`. Conclude with `exists_invGen Q.isKernel hL ha hc V τ hτ b hV`.
+-/
 theorem main : (∀ (S : Scheme.{0}) (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (G : Over S) [GrpObj G] (Q : TQ G X) (L : LB G.left), L.IsLB → ∀ a : LB.Gen (LB.LinComb L (K := Fin 2) ![((fst (splitTorus S X) G ≫ Q.i) * snd (splitTorus S X) G).left, (snd (splitTorus S X) G).left] ![1, -1]), a.IsGen → (∀ (T : Over S) (t t' : T ⟶ splitTorus S X) (x : T ⟶ G) (z : T.left) (J), Good L z J → val a (lift (t * t') x).left z J = val a (lift t ((t' ≫ Q.i) * x)).left z J * val a (lift t' x).left z J) → ∃ (M : LB Q.B.left) (w : LB.Iso L (M.pull Q.q.left)), M.IsLB ∧ w.IsGen ∧ ∀ (T : Over S) (t : T ⟶ splitTorus S X) (x : T ⟶ G) (z : T.left) (J) (j : M.ι), Good L z J → Q.q.left (x.left z) ∈ M.U j → gw w ((t ≫ Q.i) * x).left z j (J ((t ≫ Q.i) * x).left) * val a (lift t x).left z J = gw w x.left z j (J x.left)) := by
   intro S X _ _ _ G _ Q L hL a ha hc
   have := Q.q_hom

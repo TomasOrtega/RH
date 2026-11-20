@@ -14,12 +14,24 @@ section Alg
 
 variable {K : Type} [Field K] {n r : ℕ}
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.ExistsFactor.exists_factor e he`.
+-/
 theorem exists_factor (e : Matrix (Fin n) (Fin n) K) (he : e * e = e) :
     ∃ (r : ℕ) (M : Matrix (Fin n) (Fin r) K) (N : Matrix (Fin r) (Fin n) K), N * M = 1 ∧ M * N = e :=
   _root_.UpperTheory.Reformulated.B.ExistsFactor.exists_factor e he
 
 variable {R : Type*} [CommRing R] [Algebra K R] {R' : Type*} [CommRing R'] [Algebra K R']
 
+/- English proof (translation)
+Establish `e1 : (aeval γ h).map (algebraMap K R) = aeval (γ.map (algebraMap K R)) h`. Use `Polynomial.aeval_algHom_apply ((Algebra.ofId K R).mapMatrix (m := Fin n)) γ h` as an intermediate fact. Conclude with `this.symm`. Rewrite using `[e1]`. Establish `h1 : Algebra.adjoin K {γ.map (algebraMap K R)} ≤ Subalgebra.centralizer K {X}`.
+
+Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce `a ha`. Rewrite `ha` using `[Set.mem_singleton_iff]`. Substitute `ha` using the available equality. Rewrite using `[SetLike.mem_coe, Subalgebra.mem_centralizer_iff]`.
+
+Introduce `b hb`. Rewrite `hb` using `[Set.mem_singleton_iff]`. Substitute `hb` using the available equality. Conclude with `hX`. Establish `h2` using `h1 (Polynomial.aeval_mem_adjoin_singleton K (γ.map (algebraMap K R)) (p := h))`.
+
+Rewrite `h2` using `[Subalgebra.mem_centralizer_iff]`. Conclude with `h2 X rfl`.
+-/
 theorem comm_aeval (γ : Matrix (Fin n) (Fin n) K) (X : Matrix (Fin n) (Fin n) R)
     (hX : X * γ.map (algebraMap K R) = γ.map (algebraMap K R) * X) (h : K[X]) :
     X * (aeval γ h).map (algebraMap K R) = (aeval γ h).map (algebraMap K R) * X := by
@@ -53,11 +65,19 @@ def detPoly (h : Fin n → K[X]) (γ : Matrix (Fin n) (Fin n) K) (M : Matrix (Fi
     (N : Matrix (Fin r) (Fin n) K) : MvPolynomial (Fin n) K :=
   (Qm h γ M N (MvPolynomial.X : Fin n → MvPolynomial (Fin n) K)).det
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[Ph, Matrix.sum_apply, map_sum, Matrix.map_apply]`.
+-/
 theorem Ph_map (h : Fin n → K[X]) (γ : Matrix (Fin n) (Fin n) K) (f : R →ₐ[K] R') (z : Fin n → R) :
     (Ph h γ z).map f = Ph h γ (f ∘ z) := by
   ext a b
   simp [Ph, Matrix.sum_apply, map_sum, Matrix.map_apply]
 
+/- English proof (translation)
+Establish `hm : ∀ {a b : Type} (A : Matrix a b K), (A.map (algebraMap K R)).map f = A.map (algebraMap K R')`. Introduce `a b A`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Unfold `Qm`.
+
+Rewrite using `[← Ph_map, ← hm N, ← hm M]`. Conclude with `(Matrix.map_mul (f := (f : R →+* R'))).trans (by rw [Matrix.map_mul (f := (f : R →+* R'))]; rfl)`.
+-/
 theorem Qm_map (h : Fin n → K[X]) (γ : Matrix (Fin n) (Fin n) K) (M : Matrix (Fin n) (Fin r) K)
     (N : Matrix (Fin r) (Fin n) K) (f : R →ₐ[K] R') (z : Fin n → R) :
     (Qm h γ M N z).map f = Qm h γ M N (f ∘ z) := by
@@ -70,6 +90,11 @@ theorem Qm_map (h : Fin n → K[X]) (γ : Matrix (Fin n) (Fin n) K) (M : Matrix 
   rw [← Ph_map, ← hm N, ← hm M]
   exact (Matrix.map_mul (f := (f : R →+* R'))).trans (by rw [Matrix.map_mul (f := (f : R →+* R'))]; rfl)
 
+/- English proof (translation)
+Establish `hy : (MvPolynomial.aeval y : MvPolynomial (Fin n) K →ₐ[K] R) ∘ MvPolynomial.X = y`. Use function extensionality and compare the values at `p`. Simplify using the standard rewrite rules. Rewrite using `[detPoly, AlgHom.map_det]`. Use `Qm_map h γ M N (MvPolynomial.aeval y) (MvPolynomial.X : Fin n → MvPolynomial (Fin n) K)` as an intermediate fact.
+
+Rewrite `this` using `[hy]`. Rewrite using `[← this]`. Both sides reduce to the same expression.
+-/
 theorem aeval_detPoly (h : Fin n → K[X]) (γ : Matrix (Fin n) (Fin n) K) (M : Matrix (Fin n) (Fin r) K)
     (N : Matrix (Fin r) (Fin n) K) (y : Fin n → R) :
     MvPolynomial.aeval y (detPoly h γ M N) = (Qm h γ M N y).det := by
@@ -82,10 +107,16 @@ theorem aeval_detPoly (h : Fin n → K[X]) (γ : Matrix (Fin n) (Fin n) K) (M : 
   rw [← this]
   rfl
 
+/- English proof (translation)
+Simplify using `[Ph, Finset.smul_sum, smul_smul]`.
+-/
 theorem Ph_smul (h : Fin n → K[X]) (γ : Matrix (Fin n) (Fin n) K) (t : R) (z : Fin n → R) :
     Ph h γ (t • z) = t • Ph h γ z := by
   simp [Ph, Finset.smul_sum, smul_smul]
 
+/- English proof (translation)
+Rewrite using `[aeval_detPoly, aeval_detPoly]`. Establish `: Qm h γ M N (t • y) = t • Qm h γ M N y`. Simplify using `[Qm, Ph_smul]`. Rewrite using `[this, Matrix.det_smul, Fintype.card_fin]`.
+-/
 theorem aeval_detPoly_smul (h : Fin n → K[X]) (γ : Matrix (Fin n) (Fin n) K)
     (M : Matrix (Fin n) (Fin r) K) (N : Matrix (Fin r) (Fin n) K) (t : R) (y : Fin n → R) :
     MvPolynomial.aeval (t • y) (detPoly h γ M N) = t ^ r * MvPolynomial.aeval y (detPoly h γ M N) := by
@@ -96,6 +127,11 @@ theorem aeval_detPoly_smul (h : Fin n → K[X]) (γ : Matrix (Fin n) (Fin n) K)
 
 variable {v : Fin n → K} {h : Fin n → K[X]} {γ : Matrix (Fin n) (Fin n) K}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `RingHom.map_vecMul (algebraMap K R) (aeval γ (h j)) v i` as an intermediate fact. Rewrite using `[← this, ← hs j]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hij]`.
+-/
 theorem vecMul_map_single (hs : ∀ j, (Pi.single j 1 : Fin n → K) = v ᵥ* aeval γ (h j)) (j : Fin n) :
     (algebraMap K R ∘ v) ᵥ* (aeval γ (h j)).map (algebraMap K R) = Pi.single j 1 := by
   funext i
@@ -105,6 +141,11 @@ theorem vecMul_map_single (hs : ∀ j, (Pi.single j 1 : Fin n → K) = v ᵥ* ae
   · subst hij; simp
   · simp [Pi.single_apply, hij]
 
+/- English proof (translation)
+Establish `h1 : ∀ (s : Finset (Fin n)) (A : Fin n → Matrix (Fin n) (Fin n) R) (w : Fin n → R), w ᵥ* ∑ j ∈ s, A j = ∑ j ∈ s, w ᵥ* A j`. Introduce `s A w`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, Matrix.vecMul_add, ih]`.
+
+Rewrite using `[Ph, h1]`. Simplify using `only [Matrix.vecMul_smul, vecMul_map_single hs]`. Use function extensionality and compare the values at `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+-/
 theorem vecMul_Ph (hs : ∀ j, (Pi.single j 1 : Fin n → K) = v ᵥ* aeval γ (h j)) (z : Fin n → R) :
     (algebraMap K R ∘ v) ᵥ* Ph h γ z = z := by
   have h1 : ∀ (s : Finset (Fin n)) (A : Fin n → Matrix (Fin n) (Fin n) R) (w : Fin n → R),
@@ -119,6 +160,9 @@ theorem vecMul_Ph (hs : ∀ j, (Pi.single j 1 : Fin n → K) = v ᵥ* aeval γ (
   funext i
   simp [Finset.sum_apply, Pi.single_apply]
 
+/- English proof (translation)
+Establish `hγ : ∀ j, (aeval γ (h j)).map (algebraMap K R) * γ.map (algebraMap K R) = γ.map (algebraMap K R) * (aeval γ (h j)).map (algebraMap K R)`. Introduce `j`. Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, pol_comm γ _ _ ⟨h j, rfl⟩ ⟨Polynomial.X, (aeval_X _).symm⟩]`. Simplify using `only [Ph, Finset.sum_mul, Finset.mul_sum, Matrix.smul_mul, Matrix.mul_smul, hγ]`.
+-/
 theorem Ph_comm (z : Fin n → R) :
     Ph h γ z * γ.map (algebraMap K R) = γ.map (algebraMap K R) * Ph h γ z := by
   have hγ : ∀ j, (aeval γ (h j)).map (algebraMap K R) * γ.map (algebraMap K R) =
@@ -127,6 +171,9 @@ theorem Ph_comm (z : Fin n → R) :
     rw [← Matrix.map_mul, ← Matrix.map_mul, pol_comm γ _ _ ⟨h j, rfl⟩ ⟨Polynomial.X, (aeval_X _).symm⟩]
   simp only [Ph, Finset.sum_mul, Finset.mul_sum, Matrix.smul_mul, Matrix.mul_smul, hγ]
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `h1 : (Pi.single i 1 : Fin n → R) ᵥ* X = 0`. Rewrite using `[← vecMul_map_single hs i, Matrix.vecMul_vecMul, ← comm_aeval γ X hX, ← Matrix.vecMul_vecMul, h0, Matrix.zero_vecMul]`. Establish `h2` using `congrFun h1 j`. Simplify using `using h2`.
+-/
 theorem eq_zero_of_vecMul (hs : ∀ j, (Pi.single j 1 : Fin n → K) = v ᵥ* aeval γ (h j))
     (X : Matrix (Fin n) (Fin n) R) (hX : X * γ.map (algebraMap K R) = γ.map (algebraMap K R) * X)
     (h0 : (algebraMap K R ∘ v) ᵥ* X = 0) : X = 0 := by
@@ -137,6 +184,9 @@ theorem eq_zero_of_vecMul (hs : ∀ j, (Pi.single j 1 : Fin n → K) = v ᵥ* ae
   have h2 := congrFun h1 j
   simpa using h2
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero]`. Use `eq_zero_of_vecMul hs _ ?_ ?_` and prove the remaining obligations. Rewrite using `[sub_mul, mul_sub, Ph_comm, mul_assoc, hA, ← mul_assoc, ← mul_assoc, Ph_comm]`. Rewrite using `[Matrix.vecMul_sub, vecMul_Ph hs, ← Matrix.vecMul_vecMul, vecMul_Ph hs, sub_self]`.
+-/
 theorem Ph_vecMul (hs : ∀ j, (Pi.single j 1 : Fin n → K) = v ᵥ* aeval γ (h j))
     (A : Matrix (Fin n) (Fin n) R) (hA : A * γ.map (algebraMap K R) = γ.map (algebraMap K R) * A)
     (z : Fin n → R) : Ph h γ (z ᵥ* A) = Ph h γ z * A := by
@@ -154,6 +204,17 @@ variable {R : Type*} [CommRing R] [Algebra K R]
 variable {v : Fin n → K} {h : Fin n → K[X]} {γ e : Matrix (Fin n) (Fin n) K}
 variable {M : Matrix (Fin n) (Fin r) K} {N : Matrix (Fin r) (Fin n) K}
 
+/- English proof (translation)
+Take `⟨f, hf⟩` from `hp`. Establish `hMNR : M.map (algebraMap K R) * N.map (algebraMap K R) = e.map (algebraMap K R)`. Rewrite using `[← hMN, Matrix.map_mul]`. Establish `hNMR : N.map (algebraMap K R) * M.map (algebraMap K R) = 1`. Rewrite using `[← Matrix.map_mul, hNM, Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Establish `hAe : A * e.map (algebraMap K R) = e.map (algebraMap K R) * A`. Rewrite using `[hf]`. Conclude with `comm_aeval γ A hA f`. Establish `hAM : A * M.map (algebraMap K R) = M.map (algebraMap K R) * (N.map (algebraMap K R) * A * M.map (algebraMap K R))`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hNMR, Matrix.mul_one]`. Use `_ = (A * e.map (algebraMap K R)) * M.map (algebraMap K R) := by`. Rewrite using `[← hMNR]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = e.map (algebraMap K R) * A * M.map (algebraMap K R) := by rw [hAe]`.
+
+Use `_ = _ := by rw [← hMNR]; simp only [Matrix.mul_assoc]`. Simplify using `only [Qm]`. Rewrite using `[Ph_vecMul hs A hA]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = N.map (algebraMap K R) * Ph h γ z * (M.map (algebraMap K R) * (N.map (algebraMap K R) * A * M.map (algebraMap K R))) := by`. Rewrite using `[hAM]`. Use `_ = _ := by simp only [Matrix.mul_assoc]`.
+-/
 theorem Qm_vecMul (hs : ∀ j, (Pi.single j 1 : Fin n → K) = v ᵥ* aeval γ (h j))
     (hp : IsPol γ e) (hNM : N * M = 1) (hMN : M * N = e)
     (A : Matrix (Fin n) (Fin n) R) (hA : A * γ.map (algebraMap K R) = γ.map (algebraMap K R) * A)
@@ -186,6 +247,11 @@ theorem Qm_vecMul (hs : ∀ j, (Pi.single j 1 : Fin n → K) = v ᵥ* aeval γ (
         rw [hAM]
     _ = _ := by simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `hMNR : M.map (algebraMap K R) * N.map (algebraMap K R) = e.map (algebraMap K R)`. Rewrite using `[← hMN, Matrix.map_mul]`. Establish `hNMR : N.map (algebraMap K R) * M.map (algebraMap K R) = 1`. Rewrite using `[← Matrix.map_mul, hNM, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `h1 : e.map (algebraMap K R) * (A - 1) = M.map (algebraMap K R) * (N.map (algebraMap K R) * (A - 1))`.
+
+Rewrite using `[← hMNR, Matrix.mul_assoc]`. Establish `h2 : N.map (algebraMap K R) * (A - 1) * M.map (algebraMap K R) = N.map (algebraMap K R) * A * M.map (algebraMap K R) - 1`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hNMR]`. Rewrite using `[h1, Matrix.det_one_add_mul_comm, h2, add_sub_cancel]`.
+-/
 theorem det_compress (hNM : N * M = 1) (hMN : M * N = e) (A : Matrix (Fin n) (Fin n) R) :
     (N.map (algebraMap K R) * A * M.map (algebraMap K R)).det =
       (1 + e.map (algebraMap K R) * (A - 1)).det := by
@@ -201,6 +267,17 @@ theorem det_compress (hNM : N * M = 1) (hMN : M * N = e) (A : Matrix (Fin n) (Fi
     rw [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hNMR]
   rw [h1, Matrix.det_one_add_mul_comm, h2, add_sub_cancel]
 
+/- English proof (translation)
+Establish `hB : Ph h γ x = aeval γ (∑ j, Polynomial.C (x j) * h j)`. Simplify using `[Ph, map_sum, Algebra.smul_def, Polynomial.aeval_C]`. Establish `hv : v ᵥ* Ph h γ x = x`. Use `vecMul_Ph (R := K) hs x` as an intermediate fact. Simplify using `using this`.
+
+Use `set p : K[X] := ∑ j, Polynomial.C (x j) * h j with hp`. Establish `hne : aeval γ p * e ≠ 0`. Introduce `h0`. Apply `hx` to reduce the goal to its premises. Rewrite using `[← hv, Matrix.vecMul_vecMul, hB, h0, Matrix.vecMul_zero]`.
+
+Take `⟨p', hp'⟩` from `he.inv p hne`. Establish `hc : e * aeval γ p = aeval γ p * e` using `pol_comm γ _ _ he.pol ⟨p, rfl⟩`. Establish `hQ : Qm h γ M N x = N * aeval γ p * M`. Simplify using `[Qm, hB]`. Establish `h1 : (N * aeval γ p' * M) * (N * aeval γ p * M) = 1`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hQ]`. Introduce `h0`. Establish `h2` using `congrArg Matrix.det h1`. Rewrite `h2` using `[Matrix.det_mul, h0, mul_zero, Matrix.det_one]`.
+
+Conclude with `zero_ne_one h2`.
+-/
 theorem det_Qm_ne_zero (hs : ∀ j, (Pi.single j 1 : Fin n → K) = v ᵥ* aeval γ (h j))
     (he : IsPrim γ e) (hNM : N * M = 1) (hMN : M * N = e) (x : Fin n → K) (hx : x ᵥ* e ≠ 0) :
     (Qm h γ M N x).det ≠ 0 := by
@@ -237,6 +314,27 @@ section Main
 
 open scoped NumberField.AdeleRing
 
+/- English proof (translation)
+Introduce `K _ _ n γ v hcyc e he c hc`. Use `choose h hs using fun j : Fin n => hcyc (Pi.single j 1)`. Take `⟨r, M, N, hNM, hMN⟩` from `exists_factor e he.idem`. Establish `hr : 0 < r`. Use `Nat.pos_of_ne_zero fun h0 => ?_` and prove the remaining obligations.
+
+Substitute `h0` using the available equality. Apply `he.ne` to reduce the goal to its premises. Rewrite using `[← hMN]`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`.
+
+Take `⟨C, hC, hCb⟩` from `GroundTheory.Automorphic.Anisotropic.exists_adelicNorm_aeval_le (K := K) (d := r) (m := 1) hr (fun _ => detPoly h γ M N) (fun w t y k => aeval_detPoly_smul h γ M N t y) (fun w t y k => aeval_detPoly_smul h γ M N t y)`. Use `⟨min 1 (c / C), lt_min one_pos (div_pos hc hC), fun g hg s hsdet hcs x hx => ?_⟩` and prove the remaining obligations. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Conclude with `hx (Matrix.zero_vecMul _)`.
+
+Use `set y := GroundTheory.Automorphic.Reduction.ratVec x ᵥ* (g : Matrix (Fin n) (Fin n) 𝔸[K]) with hy`. Set `z : Fin 1 → K` to `fun _ => (Qm h γ M N x).det`. Establish `hz : z ≠ 0` using `fun h0 => det_Qm_ne_zero hs he hNM hMN x hx (congrFun h0 0)`. Establish `hrat : (Qm h γ M N (GroundTheory.Automorphic.Reduction.ratVec x)).det = algebraMap K 𝔸[K] (Qm h γ M N x).det`. Establish `h1` using `Qm_map h γ M N (Algebra.ofId K 𝔸[K]) x`.
+
+Establish `h2 : (Algebra.ofId K 𝔸[K]) ∘ x = GroundTheory.Automorphic.Reduction.ratVec x` using `rfl`. Rewrite `h1` using `[h2]`. Rewrite using `[← h1]`. Conclude with `(AlgHom.map_det (Algebra.ofId K 𝔸[K]) _).symm`. Establish `hval : (fun _ : Fin 1 => MvPolynomial.aeval y (detPoly h γ M N)) = (s : 𝔸[K]) • GroundTheory.Automorphic.Reduction.ratVec z`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[aeval_detPoly, hy, Qm_vecMul hs he.pol hNM hMN _ hg, Matrix.det_mul, det_compress hNM hMN, ← hsdet, hrat, mul_comm]`. Both sides reduce to the same expression. Establish `hyf` using `GroundTheory.Automorphic.Reduction.hasFiniteContent_height g hx0`. Establish `hzf` using `GroundTheory.Automorphic.Reduction.hasFiniteContent_ratVec hz`.
+
+Establish `hfz : GroundTheory.Automorphic.Reduction.HasFiniteContent (fun _ : Fin 1 => MvPolynomial.aeval y (detPoly h γ M N))`. Rewrite using `[hval]`. Conclude with `hzf.smul s`. Establish `h1 : c ≤ GroundTheory.Automorphic.Reduction.adelicNorm (fun _ : Fin 1 => MvPolynomial.aeval y (detPoly h γ M N))`. Rewrite using `[hval, GroundTheory.Automorphic.Reduction.adelicNorm_smul hzf]`.
+
+Use `GroundTheory.Automorphic.Reduction.one_le_adelicNorm_ratVec hz` as an intermediate fact. Use polynomial arithmetic with `[hcs, hc]`. Establish `h2 : c ≤ C * GroundTheory.Automorphic.Reduction.height g x ^ r` using `h1.trans (hCb y hyf hfz)`. Establish `h0 : 0 ≤ GroundTheory.Automorphic.Reduction.height g x` using `GroundTheory.Automorphic.Reduction.height_nonneg g x`. Distinguish the cases in `h1' : 1 ≤ GroundTheory.Automorphic.Reduction.height g x`.
+
+Conclude with `(min_le_left _ _).trans h1'`. Use `replace h1' := not_le.1 h1'`. Establish `hpow : GroundTheory.Automorphic.Reduction.height g x ^ r ≤ GroundTheory.Automorphic.Reduction.height g x` using `pow_le_of_le_one h0 h1'.le hr.ne'`. Establish `h3 : c ≤ C * GroundTheory.Automorphic.Reduction.height g x` using `h2.trans (mul_le_mul_of_nonneg_left hpow hC.le)`. Use `(min_le_right _ _).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[div_le_iff₀ hC, mul_comm]`. Conclude with `h3`.
+-/
 theorem exists_pos_le_height :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (γ : Matrix (Fin n) (Fin n) K) (v : Fin n → K), (∀ y : Fin n → K, ∃ h : K[X], y = v ᵥ* aeval γ h) → ∀ e : Matrix (Fin n) (Fin n) K, IsPrim γ e → ∀ c : ℝ, 0 < c → ∃ ε : ℝ, 0 < ε ∧ ∀ g : GroundTheory.Automorphic.AdelicGLn.AdelicGL K n, g.val * γ.map (algebraMap K (AdeleRing (𝓞 K) K)) = γ.map (algebraMap K (AdeleRing (𝓞 K) K)) * g.val → ∀ s : (AdeleRing (𝓞 K) K)ˣ, (s : AdeleRing (𝓞 K) K) = (1 + e.map (algebraMap K (AdeleRing (𝓞 K) K)) * (g.val - 1)).det → c ≤ (GroundTheory.Global.IdeleGroup.ideleModule K s : ℝ) → ∀ x : Fin n → K, x ᵥ* e ≠ 0 → ε ≤ GroundTheory.Automorphic.Reduction.height g x := by
   intro K _ _ n γ v hcyc e he c hc

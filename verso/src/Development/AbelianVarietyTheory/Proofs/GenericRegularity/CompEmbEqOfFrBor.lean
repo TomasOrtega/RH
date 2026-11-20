@@ -13,6 +13,11 @@ open AlgebraicGeometry CategoryTheory Limits NumberField Topology ReciprocityThe
 
 namespace GlobalTheory.Reg.GenericFlagInj
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.UnitriangularLowerMulEq.eq_of_unitriangular_of_eq_lower_mul`. Consider the case `exact _root_.GlobalTheory.UnitriangularLowerMulEq.eq_of_unitriangular_of_eq_lower_mul`. Consider the case `(apply _root_.GlobalTheory.UnitriangularLowerMulEq.eq_of_unitriangular_of_eq_lower_mul <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.UnitriangularLowerMulEq.eq_of_unitriangular_of_eq_lower_mul <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.UnitriangularLowerMulEq.eq_of_unitriangular_of_eq_lower_mul <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.UnitriangularLowerMulEq.eq_of_unitriangular_of_eq_lower_mul ..)`.
+-/
 theorem unitri_eq_of_lower {S : Type} [CommRing S] {n : ℕ} (A A' L : Matrix (Fin n) (Fin n) S)
     (hA : ∀ i j, j < i → A i j = 0) (hAd : ∀ i, A i i = 1)
     (hA' : ∀ i j, j < i → A' i j = 0) (hAd' : ∀ i, A' i i = 1)
@@ -28,16 +33,29 @@ theorem unitri_eq_of_lower {S : Type} [CommRing S] {n : ℕ} (A A' L : Matrix (F
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Establish `g : ∀ W : Comp Xo c, IsGenericPoint (genPt W) (W : Set (Xo.XF c))` using `fun W => W.2.1.isGenericPoint_genericPoint (isClosed_of_mem_irreducibleComponents _ W.2)`. Conclude with `Subtype.ext (by rw [← (g Z).def, ← (g Z').def, h])`.
+-/
 theorem genPt_inj {Z Z' : Comp Xo c} (h : genPt Z = genPt Z') : Z = Z' := by
   have g : ∀ W : Comp Xo c, IsGenericPoint (genPt W) (W : Set (Xo.XF c)) := fun W =>
     W.2.1.isGenericPoint_genericPoint (isClosed_of_mem_irreducibleComponents _ W.2)
   exact Subtype.ext (by rw [← (g Z).def, ← (g Z').def, h])
 
+/- English proof (translation)
+Use `symm`. Use `show Spec.map (CommRingCat.ofHom (Spec.preimage (genSp Z ≫ strK)).hom) = _`. Rewrite using `[CommRingCat.ofHom_hom, Spec.map_preimage]`.
+-/
 theorem genSp_strK (Z : Comp Xo c) : genSp Z ≫ strK = spMap (algebraMap c.F (kap Z)) := by
   symm
   show Spec.map (CommRingCat.ofHom (Spec.preimage (genSp Z ≫ strK)).hom) = _
   rw [CommRingCat.ofHom_hom, Spec.map_preimage]
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc]`. Conclude with `h`. Establish `e` using `genSp_strK Z`. Establish `e'` using `genSp_strK Z'`.
+
+Rewrite using `[Category.assoc, Category.assoc]`. Use `erw [e, e']`. Rewrite using `[spMap_comp_ring, spMap_comp_ring]`. Use `congr 1`. Use extensionality with `r`.
+
+Conclude with `(ψ.commutes r).trans (ψ'.commutes r).symm`.
+-/
 theorem genSp_eq {T : Type} [CommRing T] [Algebra c.F T] {Z Z' : Comp Xo c} (ψ : kap Z →ₐ[c.F] T)
     (ψ' : kap Z' →ₐ[c.F] T) (h : spMap ψ.toRingHom ≫ xGen Z = spMap ψ'.toRingHom ≫ xGen Z') :
     spMap ψ.toRingHom ≫ genSp Z = spMap ψ'.toRingHom ≫ genSp Z' := by
@@ -53,6 +71,9 @@ theorem genSp_eq {T : Type} [CommRing T] [Algebra c.F T] {Z Z' : Comp Xo c} (ψ 
     ext r
     exact (ψ.commutes r).trans (ψ'.commutes r).symm
 
+/- English proof (translation)
+Take `⟨p⟩ : Nonempty (Sp T)` from `inferInstanceAs (Nonempty (PrimeSpectrum T))`. Establish `e` using `congrArg (fun f : Sp T ⟶ Xo.XF c => f p) (genSp_eq ψ ψ' h)`. Simplify using `only [Scheme.Hom.comp_apply, genSp] at e`. Apply `genPt_inj` to reduce the goal to its premises. Conclude with `(Scheme.fromSpecResidueField_apply _ _).symm.trans (e.trans (Scheme.fromSpecResidueField_apply _ _))`.
+-/
 theorem comp_eq {T : Type} [CommRing T] [Nontrivial T] [Algebra c.F T] {Z Z' : Comp Xo c} (ψ : kap Z →ₐ[c.F] T)
     (ψ' : kap Z' →ₐ[c.F] T) (h : spMap ψ.toRingHom ≫ xGen Z = spMap ψ'.toRingHom ≫ xGen Z') : Z = Z' := by
   obtain ⟨p⟩ : Nonempty (Sp T) := inferInstanceAs (Nonempty (PrimeSpectrum T))
@@ -61,6 +82,9 @@ theorem comp_eq {T : Type} [CommRing T] [Nontrivial T] [Algebra c.F T] {Z Z' : C
   apply genPt_inj
   exact (Scheme.fromSpecResidueField_apply _ _).symm.trans (e.trans (Scheme.fromSpecResidueField_apply _ _))
 
+/- English proof (translation)
+Establish `e` using `genSp_eq ψ ψ' h`. Use `haveI : Mono (genSp Z) := by unfold genSp; infer_instance`. Establish `e2 : spMap ψ.toRingHom = spMap ψ'.toRingHom` using `(cancel_mono (genSp Z)).1 e`. Establish `e3` using `congrArg CommRingCat.Hom.hom (Spec.map_injective e2)`. Conclude with `AlgHom.coe_ringHom_injective e3`.
+-/
 theorem emb_eq {T : Type} [CommRing T] [Algebra c.F T] {Z : Comp Xo c} (ψ ψ' : kap Z →ₐ[c.F] T)
     (h : spMap ψ.toRingHom ≫ xGen Z = spMap ψ'.toRingHom ≫ xGen Z) : ψ = ψ' := by
   have e := genSp_eq ψ ψ' h
@@ -76,11 +100,31 @@ noncomputable def resKap {T : Type} [CommRing T] [Algebra c.F T] {Z : Comp Xo c}
       rw [gfp_tower] at this
       exact this }
 
+/- English proof (translation)
+Rewrite using `[hy.1, (isGenFr_genFr h Z).1, ← Category.assoc, spMap_comp_ring]`. Both sides reduce to the same expression.
+-/
 theorem x_eq {T : Type} [CommRing T] [Algebra c.F T] (h : GenFrEx Xo c) {Z : Comp Xo c} (φ : Om Z →ₐ[c.F] T)
     {y : FrPt Xo c T} (hy : FrMap φ (genFr h Z) y) : y.x = spMap (resKap φ).toRingHom ≫ xGen Z := by
   rw [hy.1, (isGenFr_genFr h Z).1, ← Category.assoc, spMap_comp_ring]
   rfl
 
+/- English proof (translation)
+Establish `hx` using `x_eq h φ hy`. Establish `hx'` using `x_eq h φ' hy'`. Establish `hxx` using `hx.symm.trans (hb.1.symm.trans hx')`. Take `rfl : Z = Z'` from `comp_eq _ _ hxx`. Use `⟨rfl, heq_of_eq ?_⟩` and prove the remaining obligations.
+
+Establish `hψ : resKap φ = resKap φ'` using `emb_eq _ _ hxx`. Take `⟨y₀, hy₀, hc⟩` from `(isGenFr_genFr h Z).2`. Establish `pull : ∀ (χ : Om Z →ₐ[c.F] T) (w : FrPt Xo c T), FrMap χ (genFr h Z) w → ∀ τ i, IsCombAt w.x (fun j => spMap (dualMap (resKap χ).toRingHom) ≫ y₀.u τ j) (fun j => χ (genCoef Z τ i j)) (w.u τ i)`. Introduce `χ w hw τ i`. Use `isCombAt_pull χ.toRingHom hw.1 (fun j => ?_) (hw.2.1 τ i) (hc τ i)` and prove the remaining obligations.
+
+Rewrite using `[← Category.assoc, spMap_comp_ring, ← dualMap_comp]`. Both sides reduce to the same expression. Establish `hcoef : ∀ τ i j, φ' (genCoef Z τ i j) = φ (genCoef Z τ i j)`. Introduce `τ`. Use `choose cf hd hz hcf using hb.2.1 τ`.
+
+Establish `hyx : y.x = spMap (resKap φ).toRingHom ≫ y₀.x` using `by rw [hx, hy₀]`. Establish `key` using `unitri_eq_of_lower (Matrix.of fun i j => φ (genCoef Z τ i j)) (Matrix.of fun i j => φ' (genCoef Z τ i j)) (Matrix.of cf) (fun i j hij => by simp [genCoef, not_lt.2 hij.le, hij.ne']) (fun i => by simp [genCoef]) (fun i j hij => by simp [genCoef, not_lt.2 hij.le, hij.ne']) (fun i = …`. Introduce `i j`. Conclude with `congrFun (congrFun key i) j`. Use extensionality with `i j`.
+
+Establish `h1` using `pull φ' y' hy' τ i`. Rewrite `h1` using `[← hψ, hb.1]`. Establish `h2` using `GlobalTheory.TangentLinear.isCombAt_mulVec E H Dw l Xo T y.x (fun j => spMap (dualMap (resKap φ).toRingHom) ≫ y₀.u τ j) (fun j => hyx ▸ GlobalTheory.Frames.FramedBaseChange.tan_bc (resKap φ).toRingHom (y₀.tan τ j)) (y.u τ) (Matrix.of fun j i => φ (genCoef Z τ i j)) (cf i) (y'.u τ …`. Establish `ht : IsTanAt y.x (y'.u τ i)` using `hb.1 ▸ y'.tan τ i`. Rewrite `h1`, `h2`, `ht` using `[hyx]`.
+
+Establish `h3` using `(GlobalTheory.Frames.eigenbasis_baseChange E H Dw l Xo c _ T (resKap φ) y₀ τ _ ht (y'.eig τ i)).unique h1 h2`. Establish `h4` using `congrFun h3 j`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply] at h4`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Rewrite using `[h4]`.
+
+Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`. Apply `AlgHom.coe_ringHom_injective` to reduce the goal to its premises. Use `IsLocalization.ringHom_ext (nonZeroDivisors (MvPolynomial (FlagVar Dw) (kap Z))) ?_` and prove the remaining obligations. Use `MvPolynomial.ringHom_ext (fun r => ?_) (fun v => ?_)` and prove the remaining obligations. Conclude with `AlgHom.congr_fun hψ r`.
+
+Take `⟨τ, ⟨i, j⟩, hij⟩` from `v`. Use `hcoef τ i j` as an intermediate fact. Simplify using `only [genCoef, dif_pos (show i < j from hij)] at this`. Conclude with `this.symm`.
+-/
 theorem eq_of_frBor {T : Type} [CommRing T] [Nontrivial T] [Algebra c.F T] (h : GenFrEx Xo c) (Z Z' : Comp Xo c)
     (φ : Om Z →ₐ[c.F] T) (φ' : Om Z' →ₐ[c.F] T) (y y' : FrPt Xo c T) (t : Ix Dw → Tˣ)
     (hy : FrMap φ (genFr h Z) y) (hy' : FrMap φ' (genFr h Z') y') (hb : FrBor t y y') : Z = Z' ∧ HEq φ φ' := by

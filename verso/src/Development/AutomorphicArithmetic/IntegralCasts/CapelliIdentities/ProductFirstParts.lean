@@ -27,6 +27,9 @@ noncomputable def UpperTheory.Reformulated.B.product_first_partition.tensorLat.{
                   (UpperTheory.Reformulated.B.product_first_partition.blockEmb K s : MvPolynomial (Fin k × Fin n) K → MvPolynomial (S × Fin k × Fin n) K)
                     (F s)}
 
+/- English proof (translation)
+Rewrite using `[Submodule.mul_def]`. Use `congr 1`. Use extensionality with `X`. Simplify using `only [Set.mem_setOf_eq, Set.mem_mul, SetLike.mem_coe, eq_comm]`.
+-/
 private theorem UpperTheory.Reformulated.B.product_first_partition.span_mul_eq {R A : Type} [CommRing R] [CommRing A] [Algebra R A]
     (M N : Submodule R A) :
     Submodule.span R {X : A | ∃ F ∈ M, ∃ G ∈ N, X = F * G} = M * N := by
@@ -35,6 +38,13 @@ private theorem UpperTheory.Reformulated.B.product_first_partition.span_mul_eq {
   ext X
   simp only [Set.mem_setOf_eq, Set.mem_mul, SetLike.mem_coe, eq_comm]
 
+/- English proof (translation)
+Establish `h : ∀ s : S, (N s).map ((UpperTheory.Reformulated.B.product_first_partition.blockEmb K s).restrictScalars R).toLinearMap = Submodule.span R (((N s).map ((UpperTheory.Reformulated.B.product_first_partition.blockEmb K s).restrictScalars R).toLinearMap : Submodule R _) : Set _)` using `fun s => (Submodule.span_eq _).symm`. Rewrite using `[Finset.prod_congr rfl fun s _ => h s, Submodule.prod_span]`. Unfold `UpperTheory.Reformulated.B.product_first_partition.tensorLat`. Use `congr 1`. Use extensionality with `P`.
+
+Rewrite using `[Set.mem_fintype_prod]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨F, hF, rfl⟩`. Conclude with `⟨fun s => UpperTheory.Reformulated.B.product_first_partition.blockEmb K s (F s), fun s => ⟨F s, hF s, rfl⟩, rfl⟩`. Introduce and unpack `⟨g, hg, rfl⟩ choose F hF hFg using hg`.
+
+Conclude with `⟨F, hF, Finset.prod_congr rfl fun s _ => (hFg s).symm⟩`.
+-/
 private theorem UpperTheory.Reformulated.B.product_first_partition.tensorLat_eq {R K : Type} [CommRing R] [CommRing K] [Algebra R K]
     {S : Type} [Fintype S] [DecidableEq S] {k n : ℕ}
     (N : S → Submodule R (MvPolynomial (Fin k × Fin n) K)) :
@@ -56,6 +66,11 @@ private theorem UpperTheory.Reformulated.B.product_first_partition.tensorLat_eq 
     choose F hF hFg using hg
     exact ⟨F, hF, Finset.prod_congr rfl fun s _ => (hFg s).symm⟩
 
+/- English proof (translation)
+Introduce `R K _ _ _ S _ _ k n A B M h`. Rewrite using `[UpperTheory.Reformulated.B.product_first_partition.span_mul_eq, UpperTheory.Reformulated.B.product_first_partition.tensorLat_eq, UpperTheory.Reformulated.B.product_first_partition.tensorLat_eq, UpperTheory.Reformulated.B.product_first_partition.tensorLat_eq, ← Finset.prod_mul_di …`. Use `Finset.prod_le_prod' fun s _ => ?_` and prove the remaining obligations. Rewrite using `[← Submodule.map_mul]`. Use `Submodule.map_mono ?_` and prove the remaining obligations.
+
+Rewrite using `[← UpperTheory.Reformulated.B.product_first_partition.span_mul_eq]`. Conclude with `h s`.
+-/
 theorem UpperTheory.Reformulated.B.product_first_partition.tensor_onto :
     ∀ {R K : Type} [inst : CommRing R] [inst_1 : Field K] [inst_2 : Algebra R K] {S : Type} [inst_3 : Fintype S]
       [DecidableEq S] {k n : ℕ} (A B M : S → Submodule R (MvPolynomial (Fin k × Fin n) K)),

@@ -11,6 +11,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ConeBump.integral_indicator_disp_ne_zero | exact GlobalTheory.ConeBump.integral_indicator_disp_ne_zero | (intros; apply GlobalTheory.ConeBump.integral_indicator_disp_ne_zero <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.local_compact_idele_volume : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (X : Spc F E n) (x₀ : Fin n → E) (K : Subgroup (UA σ X.J)) (v : Pl F) (μK : Measure (KAt K (evFin F v)))
     (μ : Measure (idelesAt E (evFin F v))), IsNormK K (evFin F v) μK → IsNormE E v μ →

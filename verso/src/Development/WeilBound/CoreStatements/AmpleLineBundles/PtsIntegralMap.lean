@@ -12,14 +12,25 @@ variable {K : Type} [Fintype K] {ι ι' : K → Type} [∀ k, Fintype (ι k)] [�
 def ren : MRing ι ≃+* MRing ι' := (renameEquiv ℤ (Equiv.sigmaCongrRight e)).toRingEquiv
 
 omit [Fintype K] [∀ k, Fintype (ι k)] [∀ k, Fintype (ι' k)] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ren_apply (f : MRing ι) : ren e f = rename (Equiv.sigmaCongrRight e) f := rfl
 
 omit [Fintype K] [∀ k, Fintype (ι k)] [∀ k, Fintype (ι' k)] in
+/- English proof (translation)
+Rewrite using `[ren_apply, rename_X]`. Both sides reduce to the same expression.
+-/
 theorem ren_X (k : K) (i : ι k) : ren e (X ⟨k, i⟩) = X ⟨k, e k i⟩ := by
   rw [ren_apply, rename_X]
   rfl
 
 omit [Fintype K] in
+/- English proof (translation)
+Introduce `m hm k`. Rewrite `hm` using `[ren_apply, support_rename_of_injective (Equiv.sigmaCongrRight e).injective, Finset.mem_image]`. Take `⟨m0, hm0, rfl⟩` from `hm`. Establish `h1 : ∀ i : ι' k, Finsupp.mapDomain (Equiv.sigmaCongrRight e) m0 ⟨k, i⟩ = m0 ⟨k, (e k).symm i⟩`. Introduce `i`.
+
+Establish `: (⟨k, i⟩ : Σ k, ι' k) = Equiv.sigmaCongrRight e ⟨k, (e k).symm i⟩` using `by simp`. Rewrite using `[this, Finsupp.mapDomain_apply (Equiv.sigmaCongrRight e).injective]`. Simplify using `only [h1]`. Rewrite using `[Equiv.sum_comp (e k).symm (fun j => m0 ⟨k, j⟩)]`. Conclude with `hg m0 hm0 k`.
+-/
 theorem homog_ren {g : MRing ι} {a : K → ℕ} (hg : IsMultiHomog g a) : IsMultiHomog (ren e g) a := by
   classical
   intro m hm k
@@ -34,6 +45,11 @@ theorem homog_ren {g : MRing ι} {a : K → ℕ} (hg : IsMultiHomog g a) : IsMul
   exact hg m0 hm0 k
 
 omit [Fintype K] [∀ k, Fintype (ι k)] [∀ k, Fintype (ι' k)] in
+/- English proof (translation)
+Use `forall_congr' fun k => ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨i, hi⟩`. Take `⟨j, rfl⟩` from `(e k).surjective i`. Conclude with `⟨j, by rwa [← ren_X, mem_map_ringEquiv_iff] at hi⟩`. Introduce and unpack `⟨j, hj⟩`.
+
+Conclude with `⟨e k j, by rwa [← ren_X, mem_map_ringEquiv_iff]⟩`.
+-/
 theorem relevant_iff (V : Ideal (MRing ι)) : IsRelevant (V.map (ren e)) ↔ IsRelevant V := by
   refine forall_congr' fun k => ⟨?_, ?_⟩
   · rintro ⟨i, hi⟩
@@ -43,12 +59,18 @@ theorem relevant_iff (V : Ideal (MRing ι)) : IsRelevant (V.map (ren e)) ↔ IsR
     exact ⟨e k j, by rwa [← ren_X, mem_map_ringEquiv_iff]⟩
 
 omit [Fintype K] [∀ k, Fintype (ι k)] [∀ k, Fintype (ι' k)] in
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, ← mem_map_ringEquiv_iff (ren e) V, ren_apply, rename_C]`.
+-/
 theorem comap_C (V : Ideal (MRing ι)) :
     (V.map (ren e)).comap (C : ℤ →+* MRing ι') = V.comap (C : ℤ →+* MRing ι) := by
   ext n
   rw [Ideal.mem_comap, Ideal.mem_comap, ← mem_map_ringEquiv_iff (ren e) V, ren_apply, rename_C]
 
 omit [Fintype K] in
+/- English proof (translation)
+Take `⟨S, hS, rfl⟩` from `h`. Use `⟨ren e '' S, ?_, Ideal.map_span _ _⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Take `⟨a, ha⟩` from `hS f hf`. Conclude with `⟨a, homog_ren e ha⟩`.
+-/
 theorem homogIdeal_map {V : Ideal (MRing ι)} (h : IsMultiHomogIdeal V) : IsMultiHomogIdeal (V.map (ren e)) := by
   obtain ⟨S, hS, rfl⟩ := h
   refine ⟨ren e '' S, ?_, Ideal.map_span _ _⟩
@@ -56,6 +78,11 @@ theorem homogIdeal_map {V : Ideal (MRing ι)} (h : IsMultiHomogIdeal V) : IsMult
   obtain ⟨a, ha⟩ := hS f hf
   exact ⟨a, homog_ren e ha⟩
 
+/- English proof (translation)
+Take `⟨hne, ⟨hp, hh, hr⟩, hhor, hdim⟩` from `h`. Use `⟨hne, ⟨(isPrime_map_ringEquiv_iff _ V).2 hp, homogIdeal_map e hh, (relevant_iff e V).2 hr⟩, ?_, ?_⟩` and prove the remaining obligations. Unfold `IsHorizontal`. Rewrite using `[comap_C]`. Conclude with `hhor`.
+
+Rewrite using `[ringKrullDim_quotient_map, hdim]`.
+-/
 theorem arithVar_map {V : Ideal (MRing ι)} {d : ℕ} (h : IsArithVar V d) : IsArithVar (V.map (ren e)) d := by
   obtain ⟨hne, ⟨hp, hh, hr⟩, hhor, hdim⟩ := h
   refine ⟨hne, ⟨(isPrime_map_ringEquiv_iff _ V).2 hp, homogIdeal_map e hh, (relevant_iff e V).2 hr⟩, ?_, ?_⟩
@@ -65,11 +92,19 @@ theorem arithVar_map {V : Ideal (MRing ι)} {d : ℕ} (h : IsArithVar V d) : IsA
   · rw [ringKrullDim_quotient_map, hdim]
 
 omit [Fintype K] [∀ k, Fintype (ι k)] [∀ k, Fintype (ι' k)] in
+/- English proof (translation)
+Rewrite using `[Ideal.map_sup, Ideal.map_span, Set.image_singleton]`.
+-/
 theorem sup_map (V : Ideal (MRing ι)) (s : MRing ι) :
     V.map (ren e) ⊔ Ideal.span {ren e s} = (V ⊔ Ideal.span {s}).map (ren e) := by
   rw [Ideal.map_sup, Ideal.map_span, Set.image_singleton]
 
 omit [Fintype K] [∀ k, Fintype (ι k)] [∀ k, Fintype (ι' k)] in
+/- English proof (translation)
+Use extensionality with `W'`. Simplify using `only [divSupp, Set.mem_setOf_eq, Set.mem_image, sup_map, minimalPrimes_map_ringEquiv]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨W, hW, rfl⟩, hrel⟩`. Conclude with `⟨W, ⟨hW, (relevant_iff e W).1 hrel⟩, rfl⟩`.
+
+Introduce and unpack `⟨W, ⟨hW, hrel⟩, rfl⟩`. Conclude with `⟨⟨W, hW, rfl⟩, (relevant_iff e W).2 hrel⟩`.
+-/
 theorem divSupp_map (V : Ideal (MRing ι)) (s : MRing ι) :
     divSupp (V.map (ren e)) (ren e s) = Ideal.map (ren e) '' divSupp V s := by
   ext W'
@@ -81,6 +116,11 @@ theorem divSupp_map (V : Ideal (MRing ι)) (s : MRing ι) :
     exact ⟨⟨W, hW, rfl⟩, (relevant_iff e W).2 hrel⟩
 
 omit [Fintype K] [∀ k, Fintype (ι k)] [∀ k, Fintype (ι' k)] in
+/- English proof (translation)
+Unfold `multAt`. Distinguish the cases in `hV : V.IsPrime`. Establish `hV' : (V.map (ren e)).IsPrime` using `(isPrime_map_ringEquiv_iff (ren e) V).2 hV`. Rewrite using `[dif_pos hV, dif_pos hV']`. Conclude with `congrArg ENat.toNat (length_localizedModule_quotient_map (ren e) J V)`.
+
+Establish `hV' : ¬ (V.map (ren e)).IsPrime` using `fun h' => hV ((isPrime_map_ringEquiv_iff (ren e) V).1 h')`. Rewrite using `[dif_neg hV, dif_neg hV']`.
+-/
 theorem multAt_map (J V : Ideal (MRing ι)) : multAt (J.map (ren e)) (V.map (ren e)) = multAt J V := by
   unfold multAt
   by_cases hV : V.IsPrime
@@ -94,6 +134,9 @@ def chartId (V : Ideal (MRing ι)) (c : ∀ k, ι k) : Ideal (MRing ι) :=
   V ⊔ Ideal.span (Set.range fun k => (X ⟨k, c k⟩ : MRing ι) - 1)
 
 omit [Fintype K] [∀ k, Fintype (ι k)] [∀ k, Fintype (ι' k)] in
+/- English proof (translation)
+Unfold `chartId`. Rewrite using `[Ideal.map_sup, Ideal.map_span, ← Set.range_comp]`. Use `congr 3`. Use function extensionality and compare the values at `k`. Simplify using `[ren_X]`.
+-/
 theorem chartId_map (V : Ideal (MRing ι)) (c : ∀ k, ι k) :
     (chartId V c).map (ren e) = chartId (V.map (ren e)) fun k => e k (c k) := by
   unfold chartId
@@ -102,6 +145,13 @@ theorem chartId_map (V : Ideal (MRing ι)) (c : ∀ k, ι k) :
   funext k
   simp [ren_X]
 
+/- English proof (translation)
+Establish `hV'` using `(relevant_iff e V).2 hV`. Establish `h1 : geoNum 0 V b = ((Module.length ℤ (MRing ι ⧸ chartId V fun k => (hV k).choose)).toNat : ℤ)`. Simplify using `only [geoNum]`. Rewrite using `[dif_pos hV]`. Both sides reduce to the same expression.
+
+Establish `h2 : geoNum 0 (V.map (ren e)) a = ((Module.length ℤ (MRing ι' ⧸ chartId (V.map (ren e)) fun k => (hV' k).choose)).toNat : ℤ)`. Simplify using `only [geoNum]`. Rewrite using `[dif_pos hV']`. Both sides reduce to the same expression. Take `⟨φ⟩` from `hc (fun k => (hV' k).choose) (fun k => e k (hV k).choose) (fun k => (hV' k).choose_spec) (fun k => by`.
+
+Rewrite using `[← ren_X, mem_map_ringEquiv_iff]`. Conclude with `(hV k).choose_spec)`. Rewrite using `[h1, h2, φ.toAddEquiv.toIntLinearEquiv.length_eq, ← chartId_map, length_int_quotient_map]`.
+-/
 theorem geoNum_map (V : Ideal (MRing ι)) (hV : IsRelevant V) (a b : Fin 0 → K → ℤ)
     (hc : ∀ c c' : ∀ k, ι' k, (∀ k, (X ⟨k, c k⟩ : MRing ι') ∉ V.map (ren e)) →
       (∀ k, (X ⟨k, c' k⟩ : MRing ι') ∉ V.map (ren e)) →
@@ -126,12 +176,20 @@ theorem geoNum_map (V : Ideal (MRing ι)) (hV : IsRelevant V) (a b : Fin 0 → K
 def pull {F : Type} (z : (Σ k, ι' k) → F) : (Σ k, ι k) → F := fun p => z ⟨p.1, e p.1 p.2⟩
 
 omit [Fintype K] [∀ k, Fintype (ι k)] [∀ k, Fintype (ι' k)] in
+/- English proof (translation)
+Rewrite using `[ren_apply, map_rename, eval_rename]`. Both sides reduce to the same expression.
+-/
 theorem eval_ren (z : (Σ k, ι' k) → ℂ) (f : MRing ι) :
     eval z (map (Int.castRingHom ℂ) (ren e f)) = eval (pull e z) (map (Int.castRingHom ℂ) f) := by
   rw [ren_apply, map_rename, eval_rename]
   rfl
 
 omit [Fintype K] [∀ k, Fintype (ι k)] [∀ k, Fintype (ι' k)] in
+/- English proof (translation)
+Use `forall_congr' fun k => ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨i, hi⟩`. Conclude with `⟨e k i, hi⟩`. Introduce and unpack `⟨i, hi⟩`. Take `⟨j, rfl⟩` from `(e k).surjective i`.
+
+Conclude with `⟨j, hi⟩`.
+-/
 theorem nz_pull {F : Type} [Zero F] (z : (Σ k, ι' k) → F) :
     (∀ k, ∃ i, pull e z ⟨k, i⟩ ≠ 0) ↔ ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0 := by
   refine forall_congr' fun k => ⟨?_, ?_⟩
@@ -142,6 +200,11 @@ theorem nz_pull {F : Type} [Zero F] (z : (Σ k, ι' k) → F) :
     exact ⟨j, hi⟩
 
 omit [Fintype K] [∀ k, Fintype (ι k)] [∀ k, Fintype (ι' k)] in
+/- English proof (translation)
+Use `and_congr (nz_pull e z).symm ⟨fun h f hf => ?_, fun h f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[← eval_ren]`. Conclude with `h _ ((mem_map_ringEquiv_iff _ V f).2 hf)`. Take `⟨g, rfl⟩` from `(ren e).surjective f`. Rewrite using `[eval_ren]`.
+
+Conclude with `h _ ((mem_map_ringEquiv_iff _ V g).1 hf)`.
+-/
 theorem mem_mcPts (V : Ideal (MRing ι)) (z : (Σ k, ι' k) → ℂ) :
     z ∈ mcPts (V.map (ren e)) ↔ pull e z ∈ mcPts V := by
   refine and_congr (nz_pull e z).symm ⟨fun h f hf => ?_, fun h f hf => ?_⟩
@@ -177,9 +240,15 @@ def projEquiv (V : Ideal (MRing ι)) : projPts (V.map (ren e)) ≃ projPts V :=
       obtain ⟨j, rfl⟩ := (e k).surjective i
       exact congrFun h ⟨k, j⟩
 
+/- English proof (translation)
+The claim follows from `Nat.card_congr (projEquiv e V)`.
+-/
 theorem degC_map (V : Ideal (MRing ι)) : degC (V.map (ren e)) = degC V :=
   Nat.card_congr (projEquiv e V)
 
+/- English proof (translation)
+Set `G : projPts V → ℝ` to `Quot.lift (fun z : mcPts V => g z) (by`. Introduce and unpack `z z' ⟨c, hc, h⟩`. Rewrite using `[h, hg c z hc z.2])`. Establish `h1 : ∀ w : mcPts V, g w = G (Quot.mk _ w)` using `fun _ => rfl`. Rewrite using `[h1, h1, Quot.out_eq]`.
+-/
 theorem out_eq (V : Ideal (MRing ι)) (g : ((Σ k, ι k) → ℂ) → ℝ)
     (hg : ∀ (c : K → ℂ) (z : (Σ k, ι k) → ℂ), (∀ k, c k ≠ 0) → z ∈ mcPts V → g (fun p => c p.1 * z p) = g z)
     (z : mcPts V) : g (Quot.out (Quot.mk _ z : projPts V) : mcPts V) = g z := by
@@ -189,6 +258,21 @@ theorem out_eq (V : Ideal (MRing ι)) (g : ((Σ k, ι k) → ℂ) → ℝ)
   have h1 : ∀ w : mcPts V, g w = G (Quot.mk _ w) := fun _ => rfl
   rw [h1, h1, Quot.out_eq]
 
+/- English proof (translation)
+Establish `hg0 : ∀ (c : K → ℂ) (z : (Σ k, ι k) → ℂ), (∀ k, c k ≠ 0) → z ∈ mcPts V → g (fun p => c p.1 * z p) = g z`. Introduce `c z hc hz`. Take `⟨z', hz'⟩` from `(ptsEquiv e V).surjective ⟨z, hz⟩`. Establish `hz'' : pull e z'.1 = z` using `congrArg Subtype.val hz'`. Establish `hmem : (fun p : Σ k, ι' k => c p.1 * z'.1 p) ∈ mcPts (V.map (ren e))`.
+
+Take `⟨S, hS, hVS⟩` from `homogIdeal_map e hV`. Use `⟨fun k => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `z'.2.1 k`. Conclude with `⟨i, mul_ne_zero (hc k) hi⟩`. Establish `hle : Ideal.span S ≤ RingHom.ker ((eval fun p : Σ k, ι' k => c p.1 * z'.1 p).comp (map (Int.castRingHom ℂ)))`.
+
+Use `Ideal.span_le.2 fun t ht => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `hS t ht`. Establish `h0` using `z'.2.2 t (hVS ▸ Ideal.subset_span ht)`. Express the relevant statement in the definitionally equal form `eval _ (map _ t) = 0`. Rewrite `h0`, the goal using `[eval_map, eval₂_eq']`.
+
+Establish `: ∀ m ∈ t.support, (Int.castRingHom ℂ) (coeff m t) * ∏ p : Σ k, ι' k, (c p.1 * z'.1 p) ^ m p = (∏ k, c k ^ a k) * ((Int.castRingHom ℂ) (coeff m t) * ∏ p, z'.1 p ^ m p)`. Introduce `m hm`. Establish `h1 : ∏ p : Σ k, ι' k, c p.1 ^ m p = ∏ k, c k ^ a k`. Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Use `show ∏ i, c k ^ m ⟨k, i⟩ = _`. Rewrite using `[Finset.prod_pow_eq_pow_sum, ha m hm k]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, h1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl this, ← Finset.mul_sum, h0, mul_zero]`.
+
+Conclude with `hle (hVS ▸ hf)`. Rewrite using `[← hz'', ← hgg _ z'.2, ← hg c _ hc z'.2, hgg _ hmem]`. Both sides reduce to the same expression. Use `haveI := hfin`. Rewrite using `[PtsIntegralPoints.homogProof K ι V g hV hfin hg0, PtsIntegralPoints.homogProof K ι' _ g' (homogIdeal_map e hV) (Finite.of_equiv _ (projEquiv e V).symm) hg, ← finsum_comp_equiv (projEquiv e V)]`.
+
+Use `finsum_congr fun q => ?_` and prove the remaining obligations. Proceed by induction on `q using Quot.ind with`. Consider the case `mk z`. Rewrite using `[out_eq _ g' hg z, hgg _ z.2]`. Conclude with `(out_eq V g hg0 (ptsEquiv e V z)).symm`.
+-/
 theorem ptsIntegral_map [Nonempty K] (V : Ideal (MRing ι)) (hV : IsMultiHomogIdeal V)
     (hfin : Finite (projPts V)) (g : ((Σ k, ι k) → ℂ) → ℝ) (g' : ((Σ k, ι' k) → ℂ) → ℝ)
     (hg : ∀ (c : K → ℂ) (z : (Σ k, ι' k) → ℂ), (∀ k, c k ≠ 0) → z ∈ mcPts (V.map (ren e)) →
@@ -237,6 +321,15 @@ theorem ptsIntegral_map [Nonempty K] (V : Ideal (MRing ι)) (hV : IsMultiHomogId
     rw [out_eq _ g' hg z, hgg _ z.2]
     exact (out_eq V g hg0 (ptsEquiv e V z)).symm
 
+/- English proof (translation)
+Unfold `recR`. Use `congr 1`. Rewrite `hvert`, `hc`, the goal using `[divSupp_map]`. Rewrite using `[finsum_mem_image (map_ringEquiv_injective (ren e)).injOn]`. Use `finsum_mem_congr rfl fun V hV => ?_` and prove the remaining obligations.
+
+Establish `h1` using `hvert _ ⟨V, hV, rfl⟩`. Establish `h2 : ¬ IsHorizontal V`. Introduce `h`. Apply `h1` to reduce the goal to its premises. Unfold `IsHorizontal`.
+
+Rewrite using `[comap_C]`. Conclude with `h`. Establish `h3 : charOf (V.map (ren e)) = charOf V` using `by simp only [charOf, comap_C]`. Rewrite using `[if_neg h1, if_neg h2, sup_map, multAt_map, h3, geoNum_map e V hV.2 _ _ (hc _ ⟨V, hV, rfl⟩)]`. Establish `e0 : (fun j z => Real.log (((Fin.elim0 : Fin 0 → HermLine ι) j).h z)) = (Fin.elim0 : Fin 0 → ((Σ k, ι k) → ℂ) → ℝ)` using `funext fun j => j.elim0`.
+
+Establish `e1 : (fun j z => Real.log (((Fin.elim0 : Fin 0 → HermLine ι') j).h z)) = (Fin.elim0 : Fin 0 → ((Σ k, ι' k) → ℂ) → ℝ)` using `funext fun j => j.elim0`. Rewrite using `[arInt, arInt, e0, e1]`. Use `ptsIntegral_map e W hW hfin _ _ hinv fun z hz => ?_` and prove the remaining obligations. Rewrite using `[logNorm, logNorm, eval_ren, hA z hz.1]`.
+-/
 theorem recR_map [Nonempty K] (I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ)
     (I' : Ideal (MRing ι') → (n : ℕ) → (Fin n → HermLine ι') → ℝ)
     (W : Ideal (MRing ι)) (hW : IsMultiHomogIdeal W) (hfin : Finite (projPts W))

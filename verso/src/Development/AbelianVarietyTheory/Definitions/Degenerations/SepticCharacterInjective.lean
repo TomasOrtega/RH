@@ -11,6 +11,17 @@ def dbl {A U : Type} [CommGroup A] [CommGroup U] (θ : A → A → A → U) (σ 
 def mulq {A U : Type} [CommGroup A] [CommGroup U] (θ : A → A → A → U) (σ : A → U) (n : ℕ) (x : A) : U :=
   ∏ i ∈ Finset.range n, cubN θ i 1 x x / dbl θ σ x ^ i
 
+/- English proof (translation)
+Use `⟨fun x => ?_, fun x y u => ?_⟩` and prove the remaining obligations. Use `h x x⁻¹` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, h1, inv_inv, one_mul, hθ.s01 x⁻¹]`. Conclude with `(mul_eq_right.1 this.symm)`. Establish `E` using `fun {p q : U} (e : p = q) => congrArg Additive.ofMul e`.
+
+Establish `a` using `E (h (x * y) u)`. Establish `b` using `E (h x u)`. Establish `c` using `E (h y u)`. Establish `d` using `hθ.compat x y u u⁻¹`. Establish `k1` using `hθ.coc x y (x * y)⁻¹ u⁻¹`.
+
+Establish `k2` using `hθ.coc y y⁻¹ x⁻¹ u⁻¹`. Establish `r : ∀ z, θ u u⁻¹ z = θ z u u⁻¹` using `fun z => by rw [hθ.s12, hθ.s01]`. Rewrite `d` using `[mul_inv_cancel, hθ.face₃]`. Rewrite `k1` using `[show y * (x * y)⁻¹ = x⁻¹ by rw [mul_inv, mul_comm x⁻¹, mul_inv_cancel_left]]`. Rewrite `k2` using `[mul_inv_cancel, hθ.face, mul_comm y⁻¹, ← mul_inv, hθ.s01 y⁻¹]`.
+
+Establish `d` using `E d`. Establish `k1` using `E k1`. Establish `k2` using `E k2`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [r, ofMul_mul, ofMul_one] at a b c d k1 k2 ⊢`.
+
+Take the linear combination `(norm := abel) b + c - a - d + k1 - k2`.
+-/
 theorem sym_of_mul {A U : Type} [CommGroup A] [CommGroup U] {θ : A → A → A → U} (hθ : IsCub θ) {σ : A → U} (h1 : σ 1 = 1)
     (h : ∀ x y, σ (x * y) * θ x x⁻¹ y⁻¹ = σ x * σ y * θ y y⁻¹ x) :
     (∀ x, σ x * σ x⁻¹ = 1) ∧
@@ -88,40 +99,70 @@ variable (N : NumD O)
 
 def τ (a b : N.X) : Oˣ := N.ψ (a + b) / N.ψ a / N.ψ b
 
+/- English proof (translation)
+Use `N.c_add 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `mul_eq_left.1 this.symm`.
+-/
 @[simp] theorem c_zero : N.c 0 = 1 := by
   have := N.c_add 0 0
   rw [add_zero] at this
   exact mul_eq_left.1 this.symm
 
+/- English proof (translation)
+The claim follows from `eq_inv_of_mul_eq_one_left (by rw [← N.c_add, neg_add_cancel, N.c_zero])`.
+-/
 theorem c_neg (a : N.X) : N.c (-a) = (N.c a)⁻¹ :=
   eq_inv_of_mul_eq_one_left (by rw [← N.c_add, neg_add_cancel, N.c_zero])
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [succ_nsmul, N.c_add, ih, pow_succ]`.
+-/
 theorem c_nsmul (k : ℕ) (a : N.X) : N.c (k • a) = N.c a ^ k := by
   induction k with
   | zero => simp
   | succ k ih => rw [succ_nsmul, N.c_add, ih, pow_succ]
 
+/- English proof (translation)
+Simplify using `only [τ, add_comm a b, div_right_comm]`.
+-/
 theorem τ_symm (a b : N.X) : N.τ a b = N.τ b a := by
   simp only [τ, add_comm a b, div_right_comm]
 
+/- English proof (translation)
+The claim follows from `N.bimult a a' b`.
+-/
 theorem τ_add_left (a a' b : N.X) :
     N.τ (a + a') b * N.θ (N.c a) (N.c a') (N.c b) = N.τ a b * N.τ a' b := N.bimult a a' b
 
+/- English proof (translation)
+Rewrite using `[N.τ_symm a, N.τ_symm a, N.τ_symm a, N.τ_add_left]`.
+-/
 theorem τ_add_right (a b b' : N.X) :
     N.τ a (b + b') * N.θ (N.c b) (N.c b') (N.c a) = N.τ a b * N.τ a b' := by
   rw [N.τ_symm a, N.τ_symm a, N.τ_symm a, N.τ_add_left]
 
+/- English proof (translation)
+Use `N.τ_add_left 0 0 b` as an intermediate fact. Rewrite `this` using `[add_zero, N.c_zero, N.cub.face, mul_one]`. Conclude with `mul_eq_left.1 this.symm`.
+-/
 @[simp] theorem τ_zero_left (b : N.X) : N.τ 0 b = 1 := by
   have := N.τ_add_left 0 0 b
   rw [add_zero, N.c_zero, N.cub.face, mul_one] at this
   exact mul_eq_left.1 this.symm
 
+/- English proof (translation)
+Rewrite using `[N.τ_symm, N.τ_zero_left]`.
+-/
 @[simp] theorem τ_zero_right (a : N.X) : N.τ a 0 = 1 := by rw [N.τ_symm, N.τ_zero_left]
 
+/- English proof (translation)
+Use `N.τ_zero_left 0` as an intermediate fact. Simplify `this` using `[τ]`.
+-/
 @[simp] theorem ψ_zero : N.ψ 0 = 1 := by
   have := N.τ_zero_left 0
   simpa [τ] using this
 
+/- English proof (translation)
+Rewrite using `[τ, mul_right_comm, div_mul_cancel, div_mul_cancel]`.
+-/
 theorem ψ_add (a b : N.X) : N.ψ (a + b) = N.τ a b * N.ψ a * N.ψ b := by
   rw [τ, mul_right_comm, div_mul_cancel, div_mul_cancel]
 
@@ -179,28 +220,55 @@ instance : CommGroup N.Gt where
 namespace Gt
 variable {N}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem mul_b (g g' : N.Gt) : (g * g').b = g.b * g'.b := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mul_s (g g' : N.Gt) (χ : N.X) : (g * g').s χ = g.s χ * g'.s χ / N.θ (N.c χ) g.b g'.b := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem one_b : (1 : N.Gt).b = 1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem generator_inv_base (χ : N.X) : (1 : N.Gt).s χ = 1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem inv_b (g : N.Gt) : g⁻¹.b = g.b⁻¹ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem generator_inv_apply (g : N.Gt) (χ : N.X) : g⁻¹.s χ = N.θ (N.c χ) g.b g.b⁻¹ / g.s χ := rfl
 
+/- English proof (translation)
+Use `g.mult 0 0` as an intermediate fact. Rewrite `this` using `[add_zero, N.c_zero, N.cub.face, mul_one]`. Conclude with `mul_eq_left.1 this.symm`.
+-/
 @[simp] theorem s_zero (g : N.Gt) : g.s 0 = 1 := by
   have := g.mult 0 0
   rw [add_zero, N.c_zero, N.cub.face, mul_one] at this
   exact mul_eq_left.1 this.symm
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ, pow_succ, mul_b, ih]`.
+-/
 @[simp] theorem pow_b (g : N.Gt) (k : ℕ) : (g ^ k).b = g.b ^ k := by
   induction k with
   | zero => simp
   | succ k ih => rw [pow_succ, pow_succ, mul_b, ih]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp [cubN]`. Consider the case `succ k ih`. Rewrite `ih` using `[cubN]`. Rewrite using `[pow_succ, pow_succ, mul_s, cubN, Finset.prod_range_succ, ← ih, pow_b, one_mul, N.cub.s12 (g.b ^ k), N.cub.s01 (g.b ^ k), ← mul_assoc, mul_right_comm, div_mul_cancel, mul_right_comm]`.
+-/
 theorem pow_s (g : N.Gt) (k : ℕ) (χ : N.X) : (g ^ k).s χ * cubN N.θ k 1 g.b (N.c χ) = g.s χ ^ k := by
   induction k with
   | zero => simp [cubN]
@@ -215,14 +283,26 @@ def projB : N.Gt →* N.A where
   map_one' := rfl
   map_mul' _ _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem projB_apply (g : N.Gt) : N.projB g = g.b := rfl
 
 def io (y : N.X) : N.Gt := ⟨N.c y, fun χ => N.τ y χ, fun χ χ' => N.τ_add_right y χ χ'⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem io_b (y : N.X) : (N.io y).b = N.c y := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem io_s (y χ : N.X) : (N.io y).s χ = N.τ y χ := rfl
 
+/- English proof (translation)
+Use `Gt.ext (N.c_add a b) (funext fun χ => ?_)` and prove the remaining obligations. Rewrite using `[Gt.mul_s, io_s, io_s, io_s, io_b, io_b, ← N.τ_add_left, N.cub.s12 (N.c a), N.cub.s01 (N.c a), mul_div_cancel_right]`.
+-/
 theorem io_add (a b : N.X) : N.io (a + b) = N.io a * N.io b := by
   refine Gt.ext (N.c_add a b) (funext fun χ => ?_)
   rw [Gt.mul_s, io_s, io_s, io_s, io_b, io_b, ← N.τ_add_left, N.cub.s12 (N.c a), N.cub.s01 (N.c a),
@@ -231,21 +311,42 @@ theorem io_add (a b : N.X) : N.io (a + b) = N.io a * N.io b := by
 def ioHom : Multiplicative N.X →* N.Gt :=
   MonoidHom.mk' (fun y => N.io y.toAdd) fun a b => N.io_add a.toAdd b.toAdd
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem ioHom_apply (y : Multiplicative N.X) : N.ioHom y = N.io y.toAdd := rfl
 
+/- English proof (translation)
+The claim follows from `N.ioHom.map_one`.
+-/
 @[simp] theorem io_zero : N.io 0 = 1 := N.ioHom.map_one
 
+/- English proof (translation)
+The claim follows from `N.ioHom.map_inv (Multiplicative.ofAdd a)`.
+-/
 theorem io_neg (a : N.X) : N.io (-a) = (N.io a)⁻¹ := N.ioHom.map_inv (Multiplicative.ofAdd a)
 
+/- English proof (translation)
+The claim follows from `N.ioHom.map_pow (Multiplicative.ofAdd a) k`.
+-/
 theorem io_nsmul (k : ℕ) (a : N.X) : N.io (k • a) = N.io a ^ k := N.ioHom.map_pow (Multiplicative.ofAdd a) k
 
 def tor (t : Multiplicative N.X →* Oˣ) : N.Gt := ⟨1, fun χ => t (Multiplicative.ofAdd χ), fun χ χ' => by
   rw [N.cub.face₃, mul_one, ofAdd_add, map_mul]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem tor_b (t : Multiplicative N.X →* Oˣ) : (N.tor t).b = 1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem torus_generator_apply (t : Multiplicative N.X →* Oˣ) (χ : N.X) : (N.tor t).s χ = t (Multiplicative.ofAdd χ) := rfl
 
+/- English proof (translation)
+Use `Gt.ext (mul_one (1 : N.A)).symm (funext fun χ => ?_)` and prove the remaining obligations. Rewrite using `[Gt.mul_s, tor_b, tor_b, N.cub.face₃, div_one]`. Both sides reduce to the same expression.
+-/
 theorem tor_mul (t t' : Multiplicative N.X →* Oˣ) : N.tor (t * t') = N.tor t * N.tor t' := by
   refine Gt.ext (mul_one (1 : N.A)).symm (funext fun χ => ?_)
   rw [Gt.mul_s, tor_b, tor_b, N.cub.face₃, div_one]
@@ -253,17 +354,37 @@ theorem tor_mul (t t' : Multiplicative N.X →* Oˣ) : N.tor (t * t') = N.tor t 
 
 def torHom : (Multiplicative N.X →* Oˣ) →* N.Gt := MonoidHom.mk' N.tor N.tor_mul
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem torHom_apply (t : Multiplicative N.X →* Oˣ) : N.torHom t = N.tor t := rfl
 
+/- English proof (translation)
+The claim follows from `N.torHom.map_one`.
+-/
 @[simp] theorem tor_one : N.tor 1 = 1 := N.torHom.map_one
 
+/- English proof (translation)
+The claim follows from `N.torHom.map_inv t`.
+-/
 theorem tor_inv (t : Multiplicative N.X →* Oˣ) : N.tor t⁻¹ = (N.tor t)⁻¹ := N.torHom.map_inv t
 
+/- English proof (translation)
+The claim follows from `N.torHom.map_pow t k`.
+-/
 theorem tor_pow (t : Multiplicative N.X →* Oˣ) (k : ℕ) : N.tor (t ^ k) = N.tor t ^ k := N.torHom.map_pow t k
 
+/- English proof (translation)
+Introduce `t t' h` and use `MonoidHom.ext fun χ => congrArg (fun g : N.Gt => g.s χ.toAdd) h`.
+-/
 theorem tor_injective : Function.Injective N.tor := fun t t' h =>
   MonoidHom.ext fun χ => congrArg (fun g : N.Gt => g.s χ.toAdd) h
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, rfl⟩`. Both sides reduce to the same expression. Introduce `h`. Use `⟨MonoidHom.mk' (fun χ => g.s χ.toAdd) fun a b => ?_, Gt.ext h.symm rfl⟩` and prove the remaining obligations.
+
+Use `g.mult a.toAdd b.toAdd` as an intermediate fact. Rewrite `this` using `[h, N.cub.face₃, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem exists_tor_iff (g : N.Gt) : (∃ t, N.tor t = g) ↔ g.b = 1 := by
   constructor
   · rintro ⟨t, rfl⟩; rfl
@@ -272,10 +393,19 @@ theorem exists_tor_iff (g : N.Gt) : (∃ t, N.tor t = g) ↔ g.b = 1 := by
     have := g.mult a.toAdd b.toAdd
     rwa [h, N.cub.face₃, mul_one] at this
 
+/- English proof (translation)
+The claim follows from `Set.ext fun g => N.exists_tor_iff g`.
+-/
 theorem range_tor : Set.range N.tor = {g | g.b = 1} := Set.ext fun g => N.exists_tor_iff g
 
+/- English proof (translation)
+The claim follows from `Subgroup.ext fun g => N.exists_tor_iff g`.
+-/
 theorem range_torHom : N.torHom.range = N.projB.ker := Subgroup.ext fun g => N.exists_tor_iff g
 
+/- English proof (translation)
+Rewrite using `[Gt.mul_s, tor_b, N.cub.face₂, div_one, torus_generator_apply]`.
+-/
 theorem tor_mul_s_apply (t : Multiplicative N.X →* Oˣ) (g : N.Gt) (χ : N.X) :
     (N.tor t * g).s χ = t (Multiplicative.ofAdd χ) * g.s χ := by
   rw [Gt.mul_s, tor_b, N.cub.face₂, div_one, torus_generator_apply]
@@ -292,8 +422,14 @@ def QT (k : ℕ) : Subgroup (Multiplicative N.X × N.Gt) where
     change p.2⁻¹ ^ k = N.io (-p.1.toAdd)
     rw [inv_pow, N.io_neg, (show p.2 ^ k = _ from h)]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_QT {k : ℕ} {p : Multiplicative N.X × N.Gt} : p ∈ N.QT k ↔ p.2 ^ k = N.io p.1.toAdd := Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[← Gt.pow_b, N.mem_QT.1 p.2, io_b]`.
+-/
 theorem QT_pow_b {k : ℕ} (p : N.QT k) : p.1.2.b ^ k = N.c p.1.1.toAdd := by
   rw [← Gt.pow_b, N.mem_QT.1 p.2, io_b]
 
@@ -305,10 +441,16 @@ def qTor {k : ℕ} (t : Multiplicative N.X →* Oˣ) (ht : t ^ k = 1) : N.QT k :
 def QEq {k : ℕ} (p p' : N.QT k) : Prop :=
   ∃ z : N.X, p'.1.1.toAdd = p.1.1.toAdd + k • z ∧ p'.1.2 = p.1.2 * N.io z
 
+/- English proof (translation)
+The claim follows from `exists_congr fun _ => ⟨fun h => Subtype.ext (Prod.ext h.1 h.2), fun h => ⟨congrArg (fun q : N.QT k => q.1.1.toAdd) h, congrArg (fun q : N.QT k => q.1.2) h⟩⟩`.
+-/
 theorem qEq_iff {k : ℕ} (p p' : N.QT k) : N.QEq p p' ↔ ∃ z, p' = p * N.qTriv k z :=
   exists_congr fun _ => ⟨fun h => Subtype.ext (Prod.ext h.1 h.2),
     fun h => ⟨congrArg (fun q : N.QT k => q.1.1.toAdd) h, congrArg (fun q : N.QT k => q.1.2) h⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, by simp, by simp⟩ symm := by rintro p p' ⟨z, h, h'⟩ exact ⟨-z, by rw [h, smul_neg, add_neg_cancel_right], by rw [h', N.io_neg, mul_inv_cancel_right]⟩ trans := by rintro p p' p'' ⟨z, h, h'⟩ ⟨w, e, e'⟩ exact ⟨z + w, by rw [e, h, smul_add, add_assoc], by rw [e', h', N.io_add, mu …`.
+-/
 theorem qEq_equivalence (k : ℕ) : Equivalence (N.QEq (k := k)) where
   refl p := ⟨0, by simp, by simp⟩
   symm := by
@@ -322,16 +464,28 @@ def tk {k : ℕ} (p p' : N.QT k) : Oˣ := p.1.2.s p'.1.1.toAdd * cubN N.θ k 1 p
 
 def wp {k : ℕ} (p p' : N.QT k) : Oˣ := N.tk p p' / N.tk p' p
 
+/- English proof (translation)
+The claim follows from `div_self' _`.
+-/
 theorem wp_self {k : ℕ} (p : N.QT k) : N.wp p p = 1 := div_self' _
 
+/- English proof (translation)
+The claim follows from `(inv_div _ _).symm`.
+-/
 theorem wp_swap {k : ℕ} (p p' : N.QT k) : N.wp p' p = (N.wp p p')⁻¹ := (inv_div _ _).symm
 
+/- English proof (translation)
+Establish `a : cubN N.θ k 1 1 p'.1.2.b = 1` using `Finset.prod_eq_one fun _ _ => N.cub.face₂ _ _`. Express the relevant statement in the definitionally equal form `t p'.1.1 * cubN N.θ k 1 p'.1.2.b 1 / (p'.1.2.s 0 * cubN N.θ k 1 1 p'.1.2.b) = _`. Rewrite using `[a, N.cub.N_one, Gt.s_zero, mul_one, mul_one, div_one]`.
+-/
 theorem wp_qTor {k : ℕ} (t : Multiplicative N.X →* Oˣ) (ht : t ^ k = 1) (p' : N.QT k) :
     N.wp (N.qTor t ht) p' = t p'.1.1 := by
   have a : cubN N.θ k 1 1 p'.1.2.b = 1 := Finset.prod_eq_one fun _ _ => N.cub.face₂ _ _
   change t p'.1.1 * cubN N.θ k 1 p'.1.2.b 1 / (p'.1.2.s 0 * cubN N.θ k 1 1 p'.1.2.b) = _
   rw [a, N.cub.N_one, Gt.s_zero, mul_one, mul_one, div_one]
 
+/- English proof (translation)
+Simplify using `only [wp, tk, h, h', Gt.s_zero, one_mul, NumB.weil]`.
+-/
 theorem wp_of_eq_zero {k : ℕ} (p p' : N.QT k) (h : p.1.1.toAdd = 0) (h' : p'.1.1.toAdd = 0) :
     N.wp p p' = N.weil k p.1.2.b p'.1.2.b := by
   simp only [wp, tk, h, h', Gt.s_zero, one_mul, NumB.weil]
@@ -361,6 +515,9 @@ structure Iso (N' N : NumD O) extends NumB.Iso N'.toNumB N.toNumB where
 def Iso.Rel {N' N : NumD O} (I : Iso N' N) (g' : N'.Gt) (g : N.Gt) : Prop :=
   g.b = I.φ g'.b ∧ ∀ χ, g.s (I.e χ) * I.h (N'.c χ * g'.b) = g'.s χ * I.h (N'.c χ) * I.h g'.b
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(map_one I.φ).symm, fun χ => by simp [I.h_one]⟩`.
+-/
 theorem Iso.rel_one {N' N : NumD O} (I : Iso N' N) : I.Rel 1 1 :=
   ⟨(map_one I.φ).symm, fun χ => by simp [I.h_one]⟩
 end NumD
@@ -481,12 +638,18 @@ def tate (q : Oˣ) : NumD O where
     congr 1
     ring
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `q ^ (a + b) ^ 2 / q ^ a ^ 2 / q ^ b ^ 2 = _`. Simplify using `only [div_eq_mul_inv, ← zpow_neg, ← zpow_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tate_τ (q : Oˣ) (a b : ℤ) : (tate q).τ a b = q ^ (2 * a * b) := by
   change q ^ (a + b) ^ 2 / q ^ a ^ 2 / q ^ b ^ 2 = _
   simp only [div_eq_mul_inv, ← zpow_neg, ← zpow_add]
   congr 1
   ring
 
+/- English proof (translation)
+The claim follows from `mul_one _`.
+-/
 theorem tate_vt (q : Oˣ) (t : Multiplicative ℤ →* Oˣ) (n : ℤ) :
     (tate q).vt ((tate q).tor t) n = (q ^ n ^ 2 * t (Multiplicative.ofAdd n) : Oˣ) := mul_one _
 
@@ -503,10 +666,16 @@ def tateQ (r : Oˣ) (k : ℕ) (y : ℤ) : (tate (r ^ k)).QT k :=
 def tateForm {C : Type} [NormedField C] (q : Cˣ) : QuadraticMap ℤ ℤ ℝ :=
   (LinearMap.toSpanSingleton ℤ ℝ (-Real.log ‖(q : C)‖)).compQuadraticMap QuadraticMap.sq
 
+/- English proof (translation)
+Simplify using `[tateForm, sq]`.
+-/
 theorem tateForm_apply {C : Type} [NormedField C] (q : Cˣ) (n : ℤ) :
     tateForm q n = (n : ℝ) ^ 2 * (-Real.log ‖(q : C)‖) := by
   simp [tateForm, sq]
 
+/- English proof (translation)
+The claim follows from `norm_one σ _ := norm_one th _ := norm_one.le ψ (n : ℤ) := by have h0 : 0 < ‖(q : C)‖ := norm_pos_iff.2 q.ne_zero change ‖((q ^ n ^ 2 : Cˣ) : C)‖ = Real.exp (-tateForm q n) rw [tateForm_apply, Units.val_zpow_eq_zpow_val, norm_zpow, ← Real.rpow_intCast, Real.rpow_def_of_pos h0] con …`.
+-/
 theorem tate_int {C : Type} [NormedField C] (q : Cˣ) (hq : ‖(q : C)‖ < 1) : (tate q).Int (tateForm q) where
   θ _ _ _ := norm_one
   σ _ := norm_one
@@ -528,6 +697,9 @@ theorem tate_int {C : Type} [NormedField C] (q : Cˣ) (hq : ‖(q : C)‖ < 1) :
     exact ((Filter.tendsto_pow_atTop two_ne_zero).comp
       ((tendsto_norm_cocompact_atTop (E := ℝ)).comp Int.tendsto_coe_cofinite)).atTop_mul_const hl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨x, rfl⟩ str j := by haveI : Unique (tate q).A := inferInstanceAs (Unique PUnit) haveI : Unique (powMonoidHom (n ^ j) : (tate q).A →* (tate q).A).ker := ⟨⟨1⟩, fun _ => Subsingleton.elim _ _⟩ haveI : IsEmpty (Fin (2 * 0)) := inferInstanceAs (IsEmpty (Fin 0)) exact ⟨MulEquiv.ofUniq …`.
+-/
 theorem tate_tors {C : Type} [NormedField C] (q : Cˣ) (n : ℕ) : (tate q).toNumB.Tors n 0 where
   div x := ⟨x, rfl⟩
   str j := by
@@ -554,12 +726,24 @@ def cube (x y u : A₃) : Multiplicative (ZMod 3) := Multiplicative.ofAdd
 def sym (x : A₃) : Multiplicative (ZMod 3) :=
   Multiplicative.ofAdd (- carry (x.toAdd.1.val + (-x.toAdd.1).val) * x.toAdd.2)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by decide +kernel, by decide +kernel, by decide +kernel, by decide +kernel⟩`.
+-/
 theorem isCub_cube : IsCub cube := ⟨by decide +kernel, by decide +kernel, by decide +kernel, by decide +kernel⟩
 
+/- English proof (translation)
+Use `decide +kernel`.
+-/
 theorem sym_one : sym 1 = 1 := by decide +kernel
 
+/- English proof (translation)
+Use `decide +kernel`.
+-/
 theorem sym_mul : ∀ x y, sym (x * y) * cube x x⁻¹ y⁻¹ = sym x * sym y * cube y y⁻¹ x := by decide +kernel
 
+/- English proof (translation)
+Simplify using `only [cubN, Finset.prod_range_succ, Finset.prod_range_zero]`. Use `decide +kernel`.
+-/
 theorem cube_nondeg : ∀ b : A₃, (∀ b', cubN cube 3 1 b' b / cubN cube 3 1 b b' = 1) → b = 1 := by
   simp only [cubN, Finset.prod_range_succ, Finset.prod_range_zero]
   decide +kernel
@@ -574,6 +758,9 @@ def bun (f : Multiplicative (ZMod 3) →* Oˣ) (s : A₃ → O) : NumB O where
   σ_mul x y := by rw [← map_mul, sym_mul, map_mul, map_mul]
   th := s
 
+/- English proof (translation)
+Use `cube_nondeg b fun b' => hf ?_` and prove the remaining obligations. Rewrite using `[map_one, map_div, cubN, cubN, map_prod, map_prod]`. Conclude with `hb b'`.
+-/
 theorem bun_nondeg (f : Multiplicative (ZMod 3) →* Oˣ) (hf : Function.Injective f) (s : A₃ → O) (b : A₃)
     (hb : ∀ b' : A₃, (bun f s).weil 3 b b' = 1) : b = 1 := by
   refine cube_nondeg b fun b' => hf ?_
@@ -605,11 +792,17 @@ def dat (f : Multiplicative (ZMod 3) →* Oˣ) (s : A₃ → O) (q : Oˣ) : NumD
 def chi7 : Multiplicative (ZMod 3) →* (ZMod 7)ˣ :=
   MonoidHom.mk' (fun a => (⟨2, 4, by decide, by decide⟩ : (ZMod 7)ˣ) ^ a.toAdd.val) (by decide +kernel)
 
+/- English proof (translation)
+Introduce `a b`. Use `revert a b`. Use `decide +kernel`.
+-/
 theorem septicCharacter_injective : Function.Injective chi7 := by
   intro a b
   revert a b
   decide +kernel
 
+/- English proof (translation)
+Establish `t : ∀ b : A₃, b ^ 3 = 1` using `by decide +kernel`. Assume the negation of the conclusion as `h`. Use `bun_nondeg chi7 septicCharacter_injective (fun _ => 1) (Multiplicative.ofAdd (1, 0)) fun b' => not_not.1 fun e => h ⟨dat chi7 (fun _ => 1) 1, _, b', t _, t _, e⟩` as an intermediate fact. Use `revert this`. Evaluate the decidable proposition.
+-/
 theorem exists_weil_ne_one : ∃ (N : NumD (ZMod 7)) (b b' : N.A), b ^ 3 = 1 ∧ b' ^ 3 = 1 ∧ N.weil 3 b b' ≠ 1 := by
   have t : ∀ b : A₃, b ^ 3 = 1 := by decide +kernel
   by_contra h
@@ -619,10 +812,16 @@ theorem exists_weil_ne_one : ∃ (N : NumD (ZMod 7)) (b b' : N.A), b ^ 3 = 1 ∧
   decide
 end Level3
 
+/- English proof (translation)
+The claim follows from `NumD.wp_qTor _ _ _ _`.
+-/
 example (r ζ : Oˣ) (k : ℕ) (hζ : zpowersHom Oˣ ζ ^ k = 1) (y : ℤ) :
     (tate (r ^ k)).wp ((tate (r ^ k)).qTor (zpowersHom Oˣ ζ) hζ) (tateQ r k y) = ζ ^ y :=
   NumD.wp_qTor _ _ _ _
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `1 * h (x * x⁻¹) * h (x * x) * h (x⁻¹ * x) / (h (x * x⁻¹ * x) * h x * h x⁻¹ * h x) / (1 * h x / h x⁻¹) = _`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [mul_inv_cancel, inv_mul_cancel, one_mul, h₁, ofMul_mul, ofMul_div, ofMul_one, ofMul_pow]`. Normalize the expressions using the abelian group laws.
+-/
 example (A : Type) [CommGroup A] (f : A → O) (h : A → Oˣ) (h₁ : h 1 = 1) (x : A) :
     dbl ((NumB.triv A f).regauge h h₁).θ ((NumB.triv A f).regauge h h₁).σ x = h (x * x) / h x ^ 4 := by
   change 1 * h (x * x⁻¹) * h (x * x) * h (x⁻¹ * x) / (h (x * x⁻¹ * x) * h x * h x⁻¹ * h x) / (1 * h x / h x⁻¹) = _
@@ -630,6 +829,9 @@ example (A : Type) [CommGroup A] (f : A → O) (h : A → Oˣ) (h₁ : h 1 = 1) 
   simp only [mul_inv_cancel, inv_mul_cancel, one_mul, h₁, ofMul_mul, ofMul_div, ofMul_one, ofMul_pow]
   abel
 
+/- English proof (translation)
+The claim follows from `tate_τ q 1 1`.
+-/
 example (q : Oˣ) : ((tate q).io (1 : ℤ)).s (1 : ℤ) = q ^ (2 : ℤ) := tate_τ q 1 1
 end GlobalTheory.Ex
 end

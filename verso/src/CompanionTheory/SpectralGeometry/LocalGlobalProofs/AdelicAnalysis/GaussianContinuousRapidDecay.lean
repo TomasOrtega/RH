@@ -7,6 +7,17 @@ open scoped TensorProduct ENNReal NNReal Matrix
 
 namespace GlobalTheory.CompanionTheory.SW.BB.GaussReg
 
+/- English proof (translation)
+Establish `hpos : ∀ x : n → ℝ, x ≠ 0 → 0 < x ⬝ᵥ (P *ᵥ x)` using `fun x hx => by`. Simplify using `using hP.dotProduct_mulVec_pos hx`. Establish `hcont : Continuous fun x : n → ℝ => x ⬝ᵥ (P *ᵥ x)` using `by fun_prop`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc, hmin⟩ : ∃ c : ℝ, 0 < c ∧ ∀ u ∈ Metric.sphere (0 : n → ℝ) 1, c ≤ u ⬝ᵥ (P *ᵥ u) := by`. Break down `(Metric.sphere (0 : n → ℝ) 1).eq_empty_or_nonempty with h | h` into its components or cases.
+
+Conclude with `⟨1, one_pos, by simp [h]⟩`. Take `⟨u, hu, hm⟩` from `(isCompact_sphere (0 : n → ℝ) 1).exists_isMinOn h hcont.continuousOn`. Use `⟨_, hpos u ?_, fun v hv => hm hv⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Simplify using `at hu`.
+
+Use `⟨c, hc, fun x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Establish `hn : ‖x‖ ≠ 0` using `norm_ne_zero_iff.2 hx`. Establish `hu : ‖x‖⁻¹ • x ∈ Metric.sphere (0 : n → ℝ) 1`.
+
+Simplify using `[norm_smul, hn]`. Establish `h1` using `hmin _ hu`. Establish `h2 : (‖x‖⁻¹ • x) ⬝ᵥ (P *ᵥ (‖x‖⁻¹ • x)) = (‖x‖⁻¹) ^ 2 * (x ⬝ᵥ (P *ᵥ x))`. Simplify using `[Matrix.mulVec_smul, dotProduct_smul, smul_dotProduct, sq, mul_assoc]`. Rewrite `h1` using `[h2]`.
+
+Establish `h3 : 0 < ‖x‖ ^ 2` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_lower_sup {n : Type} [Fintype n] [DecidableEq n] {P : Matrix n n ℝ} (hP : P.PosDef) :
     ∃ c : ℝ, 0 < c ∧ ∀ x : n → ℝ, c * ‖x‖ ^ 2 ≤ x ⬝ᵥ (P *ᵥ x) := by
   have hpos : ∀ x : n → ℝ, x ≠ 0 → 0 < x ⬝ᵥ (P *ᵥ x) := fun x hx => by
@@ -34,6 +45,13 @@ theorem exists_lower_sup {n : Type} [Fintype n] [DecidableEq n] {P : Matrix n n 
         mul_le_mul_of_nonneg_right h1 h3.le
     _ = x ⬝ᵥ (P *ᵥ x) := by field_simp
 
+/- English proof (translation)
+Take `⟨c, hc, h⟩` from `exists_lower_sup hP`. Use `set N : ℝ := (Fintype.card n : ℝ)`. Establish `hN : 0 ≤ N` using `Nat.cast_nonneg _`. Use `⟨c / (N ^ 2 + 1), by positivity, fun x => (?_ : _ ≤ _).trans (h x)⟩` and prove the remaining obligations. Establish `h1 : ∑ p, |x p| ≤ N * ‖x‖`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h0 : 0 ≤ ∑ p, |x p|` using `Finset.sum_nonneg fun _ _ => abs_nonneg _`. Establish `h2 : (∑ p, |x p|) ^ 2 ≤ (N ^ 2 + 1) * ‖x‖ ^ 2`. Use `pow_le_pow_left₀ h0 h1 2` as an intermediate fact. Use polynomial arithmetic with `[sq_nonneg ‖x‖]`.
+
+Rewrite using `[div_mul_eq_mul_div, div_le_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem posdef_quadratic_lower_bound_l1 {n : Type} [Fintype n] [DecidableEq n] {P : Matrix n n ℝ} (hP : P.PosDef) :
     ∃ c : ℝ, 0 < c ∧ ∀ x : n → ℝ, c * (∑ p, |x p|) ^ 2 ≤ x ⬝ᵥ (P *ᵥ x) := by
   obtain ⟨c, hc, h⟩ := exists_lower_sup hP
@@ -50,6 +68,15 @@ theorem posdef_quadratic_lower_bound_l1 {n : Type} [Fintype n] [DecidableEq n] {
   rw [div_mul_eq_mul_div, div_le_iff₀ (by positivity)]
   nlinarith
 
+/- English proof (translation)
+Use `choose c hc h using fun i => posdef_quadratic_lower_bound_l1 (hP i)`. Choose the witnesses or unpack the hypotheses as in `⟨c0, hc0, hle⟩ : ∃ c0 : ℝ, 0 < c0 ∧ ∀ i, c0 ≤ c i := by`. Break down `isEmpty_or_nonempty ι with hι | hι` into its components or cases. Conclude with `⟨1, one_pos, fun i => (hι.false i).elim⟩`. Take `⟨i, hi⟩` from `Finite.exists_min c`.
+
+Conclude with `⟨c i, hc i, hi⟩`. Use `set W : ℝ := (Fintype.card ι : ℝ)`. Establish `hW : 0 ≤ W` using `Nat.cast_nonneg _`. Use `⟨c0 / (W + 1), by positivity, fun y => ?_⟩` and prove the remaining obligations. Establish `h1 : (∑ i, ∑ p, |y i p|) ^ 2 ≤ W * ∑ i, (∑ p, |y i p|) ^ 2`.
+
+Simplify `sq_sum_le_card_mul_sum_sq (s := Finset.univ) (f := fun i => ∑ p, |y i p|)` using `[W]`. Establish `hS : 0 ≤ ∑ i, (∑ p, |y i p|) ^ 2` using `Finset.sum_nonneg fun _ _ => sq_nonneg _`. Establish `h2 : c0 * ∑ i, (∑ p, |y i p|) ^ 2 ≤ ∑ i, y i ⬝ᵥ (P i *ᵥ y i)`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_le_sum fun i _ => (mul_le_mul_of_nonneg_right (hle i) (sq_nonneg _)).trans (h i (y i))`.
+
+Use `le_trans ?_ h2` and prove the remaining obligations. Rewrite using `[div_mul_eq_mul_div, div_le_iff₀ (by positivity)]`. Establish `h3 : (∑ i, ∑ p, |y i p|) ^ 2 ≤ (W + 1) * ∑ i, (∑ p, |y i p|) ^ 2` using `by nlinarith`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h3 hc0.le]`.
+-/
 theorem exists_lower_family {ι n : Type} [Fintype ι] [Fintype n] [DecidableEq n]
     {P : ι → Matrix n n ℝ} (hP : ∀ i, (P i).PosDef) :
     ∃ c : ℝ, 0 < c ∧ ∀ y : ι → n → ℝ,
@@ -75,6 +102,13 @@ theorem exists_lower_family {ι n : Type} [Fintype ι] [Fintype n] [DecidableEq 
   have h3 : (∑ i, ∑ p, |y i p|) ^ 2 ≤ (W + 1) * ∑ i, (∑ p, |y i p|) ^ 2 := by nlinarith
   nlinarith [mul_le_mul_of_nonneg_left h3 hc0.le]
 
+/- English proof (translation)
+Establish `h1 : (1 + s) ^ N ≤ Real.exp ((N : ℝ) * s)`. Rewrite using `[mul_comm, Real.exp_mul, Real.rpow_natCast]`. Conclude with `pow_le_pow_left₀ (by linarith) (by linarith [Real.add_one_le_exp s]) N`. Combine the equalities or inequalities in the displayed calculation. Apply `Real.exp_le_exp.2` to reduce the goal to its premises.
+
+Establish `h2 : (N : ℝ) * s ≤ a * s ^ 2 + (N : ℝ) ^ 2 / (4 * a)`. Establish `: 0 ≤ (2 * a * s - N) ^ 2 / (4 * a)` using `by positivity`. Establish `e : (2 * a * s - N) ^ 2 / (4 * a) = a * s ^ 2 + (N : ℝ) ^ 2 / (4 * a) - N * s`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exp_mul_pow_le {a : ℝ} (ha : 0 < a) (N : ℕ) {s : ℝ} (hs : 0 ≤ s) {q : ℝ} (hq : a * s ^ 2 ≤ q) :
     Real.exp (-q) * (1 + s) ^ N ≤ Real.exp ((N : ℝ) ^ 2 / (4 * a)) := by
   have h1 : (1 + s) ^ N ≤ Real.exp ((N : ℝ) * s) := by
@@ -99,6 +133,9 @@ namespace GlobalTheory.CompanionTheory.SW.BB
 
 open GaussReg
 
+/- English proof (translation)
+Simplify using `only [sizeTup, sizeInf, xw, cv, he, Fintype.sum_prod_type, Fin.sum_univ_one]`. Use `symm`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_comm`.
+-/
 theorem sizeTup_eq_sum_xw {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
     {M d : ℕ} (b : Module.Basis (Fin d) F E) (e : Ainf F ≃+* (InfinitePlace F → ℝ))
     (he : ∀ y w, |e y w| = ‖y w‖) (X : Fin 1 → Fin M → Ainf F ⊗[F] E) :
@@ -108,6 +145,19 @@ theorem sizeTup_eq_sum_xw {F E : Type} [Field F] [NumberField F] [Field E] [Alge
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_comm
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M d b e hom he Pm`. Take `⟨h1, h2, h3, h4, -⟩` from `GlobalTheory.T.infinite_adeles_local_ring_totally_real F hCM.1`. Use `haveI := h1`. Use `haveI := h2`. Use `haveI := h3`.
+
+Use `haveI := h4`. Take `⟨-, -, -, -, -, -, hco, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (Ainf F)`. Establish `hxw : ∀ w p, Continuous fun X : Fin 1 → Fin M → Ainf F ⊗[F] E => xw e b X w p`. Introduce `w p`. Establish `h` using `(hco d b).continuous`.
+
+Conclude with `(continuous_apply w).comp (hom.continuous.comp ((continuous_apply p.2).comp (h.comp ((continuous_apply p.1).comp (continuous_apply 0)))))`. Establish `hxw' : ∀ w, Continuous fun X : Fin 1 → Fin M → Ainf F ⊗[F] E => xw e b X w` using `fun w => continuous_pi (hxw w)`. Use `⟨?_, fun hP N => ?_⟩` and prove the remaining obligations. Unfold `gaussQ`. Use `Real.continuous_exp.comp (continuous_const.mul (continuous_finset_sum _ fun w _ => ?_))` and prove the remaining obligations.
+
+Conclude with `(hxw' w).dotProduct (Continuous.matrix_mulVec continuous_const (hxw' w))`. Take `⟨c, hc, hlow⟩` from `exists_lower_family hP`. Use `⟨Real.exp ((N : ℝ) ^ 2 / (4 * (Real.pi * c))), fun X => ?_⟩` and prove the remaining obligations. Establish `hs` using `sizeTup_eq_sum_xw b e he X`. Establish `hs0 : 0 ≤ sizeTup b X`.
+
+Rewrite using `[hs]`. Conclude with `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _`. Establish `hq` using `hlow fun w => xw e b X w`. Rewrite `hq` using `[← hs]`. Establish `hn : ‖((gaussQ e b Pm X : ℝ) : ℂ)‖ = gaussQ e b Pm X`.
+
+Rewrite using `[Complex.norm_real, gaussQ, Real.norm_of_nonneg (Real.exp_pos _).le]`. Rewrite using `[hn]`. Establish `key` using `exp_mul_pow_le (a := Real.pi * c) (mul_pos Real.pi_pos hc) N hs0 (q := Real.pi * ∑ w, xw e b X w ⬝ᵥ (Pm w *ᵥ xw e b X w)) (by rw [mul_assoc]; exact mul_le_mul_of_nonneg_left hq Real.pi_pos.le)`. Simplify `key` using `[gaussQ, neg_mul]`.
+-/
 theorem gaussQ_continuous_rapidDecay : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M d : ℕ) (b : Module.Basis (Fin d) F E) (e : Ainf F ≃+* (InfinitePlace F → ℝ)), IsHomeomorph e → (∀ y w, |e y w| = ‖y w‖) → ∀ (Pm : InfinitePlace F → Matrix (Fin M × Fin d) (Fin M × Fin d) ℝ), Continuous (gaussQ e b Pm) ∧ ((∀ w, (Pm w).PosDef) → RapidDecay b (fun X => (gaussQ e b Pm X : ℂ))) := by
   intro F E _ _ _ _ _ σ hCM M d b e hom he Pm
   obtain ⟨h1, h2, h3, h4, -⟩ := GlobalTheory.T.infinite_adeles_local_ring_totally_real F hCM.1

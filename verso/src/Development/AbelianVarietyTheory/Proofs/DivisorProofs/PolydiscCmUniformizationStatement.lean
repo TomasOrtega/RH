@@ -15,6 +15,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates (IsDefSum polyd
 
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LatSumCmp.defSum_eq_eis | exact GlobalTheory.LatSumCmp.defSum_eq_eis | (intros; apply GlobalTheory.LatSumCmp.defSum_eq_eis <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.polydisc_cm_uniformization : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (𝔞 𝔟 : FracId (FR E))
     (φ : I → E →+* ℂ) (c : Ideal (OF E)) (y : (Af E)ˣ), IsCMType φ → c ≠ ⊥ → ∀ s : ℕ, 1 ≤ s →
     ∀ z ∈ polydisc I, ∀ (ue : Fin (Module.finrank ℚ (FR E)) ≃ I) (e : Fin (Module.finrank ℚ (FR E)) ≃ (FR E →+* ℝ))

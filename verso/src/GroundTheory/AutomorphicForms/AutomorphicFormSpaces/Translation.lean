@@ -20,16 +20,27 @@ def rightTranslateL (a : AdelicGLn.AdelicGL K n) :
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem rightTranslateL_apply (a : AdelicGLn.AdelicGL K n) (φ : AdelicGLn.AdelicGL K n → ℂ) :
     rightTranslateL a φ = rightTranslate a φ := rfl
 
 abbrev archPart (g : AdelicGLn.AdelicGL K n) : archGroup K n :=
   archEquiv K n (AdelicGLn.prodEquiv K n g).1
 
+/- English proof (translation)
+The claim follows from `infEmb_mul_finEmb g`.
+-/
 theorem infEmb_archPart_mul_finEmb_finPart (g : AdelicGLn.AdelicGL K n) :
     infEmb K n (archPart g) * finEmb K n (finPart g) = g :=
   infEmb_mul_finEmb g
 
+/- English proof (translation)
+Use `⟨fun w => ?_, fun v => ?_⟩` and prove the remaining obligations. Establish `: infAt w (infEmb K n (archPart k)) = infAt w k` using `by show (AdelicGLn.infiniteEquiv K n (AdelicGLn.prodEquiv K n (infEmb K n (archPart k))).1) w = (AdelicGLn.infiniteEquiv K n (AdelicGLn.prodEquiv K n k).1) w`. Rewrite using `[prodEquiv_infEmb, ContinuousMulEquiv.symm_apply_apply]`. Rewrite using `[this]`. Conclude with `hk.1 w`.
+
+Establish `: finAt v (infEmb K n (archPart k)) = 1` using `by show (AdelicGLn.finiteRestrictedEquiv K n (AdelicGLn.prodEquiv K n (infEmb K n (archPart k))).2) v = 1`. Rewrite using `[prodEquiv_infEmb, map_one]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `one_mem _`.
+-/
 theorem infEmb_archPart_mem_maxCompact {k : AdelicGLn.AdelicGL K n} (hk : k ∈ maxCompact) :
     infEmb K n (archPart k) ∈ maxCompact := by
   refine ⟨fun w => ?_, fun v => ?_⟩
@@ -47,30 +58,48 @@ theorem infEmb_archPart_mem_maxCompact {k : AdelicGLn.AdelicGL K n} (hk : k ∈ 
     rw [this]
     exact one_mem _
 
+/- English proof (translation)
+The claim follows from `infEmb_archPart_mem_maxCompact hk`.
+-/
 theorem archPart_mem_archCompact {k : AdelicGLn.AdelicGL K n} (hk : k ∈ maxCompact) :
     archPart k ∈ archCompact K n :=
   infEmb_archPart_mem_maxCompact hk
 
+/- English proof (translation)
+The claim follows from `(AdelicGLn.mem_integralFiniteGL_iff_forall K n).2 fun v => hk.2 v`.
+-/
 theorem finPart_mem_integralFiniteGL {k : AdelicGLn.AdelicGL K n} (hk : k ∈ maxCompact) :
     finPart k ∈ AdelicGLn.integralFiniteGL K n :=
   (AdelicGLn.mem_integralFiniteGL_iff_forall K n).2 fun v => hk.2 v
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [archSlice_apply, rightTranslate, mul_assoc, infEmb_mul_finEmb_comm]`.
+-/
 theorem archSlice_rightTranslate_finEmb (φ : AdelicGLn.AdelicGL K n → ℂ)
     (g : AdelicGLn.AdelicGL K n) (h : AdelicGLn.FiniteAdelicGL K n) :
     archSlice (rightTranslate (finEmb K n h) φ) g = archSlice φ (g * finEmb K n h) := by
   funext x
   simp only [archSlice_apply, rightTranslate, mul_assoc, infEmb_mul_finEmb_comm]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [archSlice_apply, rightTranslate, mul_assoc, map_mul]`.
+-/
 theorem archSlice_rightTranslate_infEmb (φ : AdelicGLn.AdelicGL K n → ℂ)
     (g : AdelicGLn.AdelicGL K n) (a : archGroup K n) :
     archSlice (rightTranslate (infEmb K n a) φ) g = rightTranslate a (archSlice φ g) := by
   funext x
   simp only [archSlice_apply, rightTranslate, mul_assoc, map_mul]
 
+/- English proof (translation)
+Introduce `g` and use `by rw [archSlice_rightTranslate_finEmb]; exact hφ _`.
+-/
 theorem IsArchSmooth.rightTranslate_finEmb {φ : AdelicGLn.AdelicGL K n → ℂ} (hφ : IsArchSmooth φ)
     (h : AdelicGLn.FiniteAdelicGL K n) : IsArchSmooth (rightTranslate (finEmb K n h) φ) :=
   fun g => by rw [archSlice_rightTranslate_finEmb]; exact hφ _
 
+/- English proof (translation)
+Introduce `g` and use `by rw [archSlice_rightTranslate_infEmb] exact (isExpLieAlgebra K n).isSmoothFun_rightTranslate (hφ g) a`.
+-/
 theorem IsArchSmooth.rightTranslate_infEmb {φ : AdelicGLn.AdelicGL K n → ℂ} (hφ : IsArchSmooth φ)
     (a : archGroup K n) : IsArchSmooth (rightTranslate (infEmb K n a) φ) :=
   fun g => by
@@ -83,14 +112,23 @@ def rtFin (h : AdelicGLn.FiniteAdelicGL K n) : archSmooth K n →ₗ[ℂ] archSm
 def rtInf (a : archGroup K n) : archSmooth K n →ₗ[ℂ] archSmooth K n :=
   (rightTranslateL (infEmb K n a)).restrict fun _ hφ => IsArchSmooth.rightTranslate_infEmb hφ a
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_rtFin (h : AdelicGLn.FiniteAdelicGL K n) (φ : archSmooth K n) :
     ((rtFin h φ : archSmooth K n) : AdelicGLn.AdelicGL K n → ℂ) =
       rightTranslate (finEmb K n h) (φ : AdelicGLn.AdelicGL K n → ℂ) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_rtInf (a : archGroup K n) (φ : archSmooth K n) :
     ((rtInf a φ : archSmooth K n) : AdelicGLn.AdelicGL K n → ℂ) =
       rightTranslate (infEmb K n a) (φ : AdelicGLn.AdelicGL K n → ℂ) := rfl
 
+/- English proof (translation)
+Use extensionality with `g`. Simplify using `only [coe_uAction, coe_rtFin, uActFun, rightTranslate]`. Establish `e : sliceL g (rtFin h φ) = sliceL (g * finEmb K n h) φ` using `Subtype.ext (archSlice_rightTranslate_finEmb (φ : AdelicGLn.AdelicGL K n → ℂ) g h)`. Rewrite using `[e]`.
+-/
 theorem uAction_rtFin (u : UEnv K n) (h : AdelicGLn.FiniteAdelicGL K n) (φ : archSmooth K n) :
     uAction u (rtFin h φ) = rtFin h (uAction u φ) := by
   ext g
@@ -99,6 +137,11 @@ theorem uAction_rtFin (u : UEnv K n) (h : AdelicGLn.FiniteAdelicGL K n) (φ : ar
     Subtype.ext (archSlice_rightTranslate_finEmb (φ : AdelicGLn.AdelicGL K n → ℂ) g h)
   rw [e]
 
+/- English proof (translation)
+Use extensionality with `g`. Simplify using `only [coe_uAction, coe_rtInf, rightTranslate]`. Establish `e : sliceL g (rtInf a φ) = (isExpLieAlgebra K n).rightTranslateEnd a (sliceL g φ)` using `Subtype.ext (archSlice_rightTranslate_infEmb (φ : AdelicGLn.AdelicGL K n → ℂ) g a)`. Establish `key` using `congrArg (fun T : Module.End ℂ ((isExpLieAlgebra K n).smoothFuns (F := ℂ)) => ((T (sliceL g φ) : (isExpLieAlgebra K n).smoothFuns (F := ℂ)) : archGroup K n → ℂ) 1) ((isExpLieAlgebra K n).rightUAction_comp_rightTranslate (F := ℂ) a u)`. Simplify using `only [Module.End.mul_apply, IsExpLieAlgebra.coe_rightTranslateEnd, rightTranslate, one_mul] at key`.
+
+Establish `hs` using `congrFun (archSlice_uActFun ((isExpLieAlgebra K n).AdU a⁻¹ u) φ g) a`. Simplify using `only [archSlice_apply] at hs`. Rewrite using `[uActFun, e, key, ← hs]`.
+-/
 theorem uAction_rtInf (u : UEnv K n) (a : archGroup K n) (φ : archSmooth K n) :
     uAction u (rtInf a φ) = rtInf a (uAction ((isExpLieAlgebra K n).AdU a⁻¹ u) φ) := by
   ext g
@@ -114,18 +157,32 @@ theorem uAction_rtInf (u : UEnv K n) (a : archGroup K n) (φ : archSmooth K n) :
   simp only [archSlice_apply] at hs
   rw [uActFun, e, key, ← hs]
 
+/- English proof (translation)
+Introduce `γ g` and use `by simp only [GroundTheory.Automorphic.rightTranslate, mul_assoc, hφ γ]`.
+-/
 theorem IsLeftInvariant.translate {φ : AdelicGLn.AdelicGL K n → ℂ} (hφ : IsLeftInvariant φ)
     (a : AdelicGLn.AdelicGL K n) : IsLeftInvariant (rightTranslate a φ) :=
   fun γ g => by simp only [GroundTheory.Automorphic.rightTranslate, mul_assoc, hφ γ]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hφ.1.rightTranslate_finEmb h, fun g => hφ.eventually_mul_finEmb_mul g (finEmb K n h)⟩`.
+-/
 theorem IsSmooth.rightTranslate_finEmb {φ : AdelicGLn.AdelicGL K n → ℂ} (hφ : IsSmooth φ)
     (h : AdelicGLn.FiniteAdelicGL K n) : IsSmooth (rightTranslate (finEmb K n h) φ) :=
   ⟨hφ.1.rightTranslate_finEmb h, fun g => hφ.eventually_mul_finEmb_mul g (finEmb K n h)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hφ.1.rightTranslate_infEmb a, fun g => hφ.eventually_mul_finEmb_mul g (infEmb K n a)⟩`.
+-/
 theorem IsSmooth.rightTranslate_infEmb {φ : AdelicGLn.AdelicGL K n → ℂ} (hφ : IsSmooth φ)
     (a : archGroup K n) : IsSmooth (rightTranslate (infEmb K n a) φ) :=
   ⟨hφ.1.rightTranslate_infEmb a, fun g => hφ.eventually_mul_finEmb_mul g (infEmb K n a)⟩
 
+/- English proof (translation)
+Unfold `IsZFinite at *`. Establish `hle : Submodule.span ℂ ((fun z => uAction z (rtFin h φ)) '' ((isExpLieAlgebra K n).centerU : Set (UEnv K n))) ≤ (Submodule.span ℂ ((fun z => uAction z φ) '' ((isExpLieAlgebra K n).centerU : Set (UEnv K n)))).map (rtFin h)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `⟨_, Submodule.subset_span ⟨z, hz, rfl⟩, (uAction_rtFin z h φ).symm⟩`.
+
+Conclude with `Submodule.finiteDimensional_of_le hle`.
+-/
 theorem IsZFinite.map_rtFin {φ : archSmooth K n} (hφ : IsZFinite φ) (h : AdelicGLn.FiniteAdelicGL K n) :
     IsZFinite (rtFin h φ) := by
   unfold IsZFinite at *
@@ -138,6 +195,11 @@ theorem IsZFinite.map_rtFin {φ : archSmooth K n} (hφ : IsZFinite φ) (h : Adel
     exact ⟨_, Submodule.subset_span ⟨z, hz, rfl⟩, (uAction_rtFin z h φ).symm⟩
   exact Submodule.finiteDimensional_of_le hle
 
+/- English proof (translation)
+Unfold `IsZFinite at *`. Establish `hle : Submodule.span ℂ ((fun z => uAction z (rtInf a φ)) '' ((isExpLieAlgebra K n).centerU : Set (UEnv K n))) ≤ (Submodule.span ℂ ((fun z => uAction z φ) '' ((isExpLieAlgebra K n).centerU : Set (UEnv K n)))).map (rtInf a)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `⟨_, Submodule.subset_span ⟨_, (isExpLieAlgebra K n).AdU_mem_centerU a⁻¹ hz, rfl⟩, (uAction_rtInf z a φ).symm⟩`.
+
+Conclude with `Submodule.finiteDimensional_of_le hle`.
+-/
 theorem IsZFinite.map_rtInf {φ : archSmooth K n} (hφ : IsZFinite φ) (a : archGroup K n) :
     IsZFinite (rtInf a φ) := by
   unfold IsZFinite at *
@@ -151,6 +213,9 @@ theorem IsZFinite.map_rtInf {φ : archSmooth K n} (hφ : IsZFinite φ) (a : arch
       (uAction_rtInf z a φ).symm⟩
   exact Submodule.finiteDimensional_of_le hle
 
+/- English proof (translation)
+Take `⟨C, N, hC⟩` from `hφ`. Use `⟨|C| * (heightConst K n * height a) ^ N, N, fun g => ?_⟩` and prove the remaining obligations. Establish `h1` using `hC (g * a)`. Establish `h2 : height (g * a) ^ N ≤ (heightConst K n * height g * height a) ^ N` using `pow_le_pow_left₀ (height_pos _).le (height_mul_le g a) N`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem HasModerateGrowth.translate {φ : AdelicGLn.AdelicGL K n → ℂ} (hφ : HasModerateGrowth φ)
     (a : AdelicGLn.AdelicGL K n) : HasModerateGrowth (rightTranslate a φ) := by
   obtain ⟨C, N, hC⟩ := hφ
@@ -166,6 +231,11 @@ theorem HasModerateGrowth.translate {φ : AdelicGLn.AdelicGL K n → ℂ} (hφ :
         mul_le_mul_of_nonneg_left h2 (abs_nonneg C)
     _ = |C| * (heightConst K n * height a) ^ N * height g ^ N := by ring
 
+/- English proof (translation)
+Unfold `IsKFinite at *`. Establish `hle : Submodule.span ℂ (range fun k' : (maxCompact : Subgroup (AdelicGLn.AdelicGL K n)) => rightTranslate (k' : AdelicGLn.AdelicGL K n) (rightTranslate k φ)) ≤ Submodule.span ℂ (range fun k' : (maxCompact : Subgroup (AdelicGLn.AdelicGL K n)) => rightTranslate (k' : AdelicGLn.Adel …`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k', rfl⟩`. Use `Submodule.subset_span ⟨⟨_, mul_mem k'.2 hk⟩, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [rightTranslate_mul']`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+-/
 theorem IsKFinite.rightTranslate_of_mem_maxCompact {φ : AdelicGLn.AdelicGL K n → ℂ}
     (hφ : IsKFinite φ) {k : AdelicGLn.AdelicGL K n} (hk : k ∈ maxCompact) :
     IsKFinite (rightTranslate k φ) := by
@@ -181,6 +251,29 @@ theorem IsKFinite.rightTranslate_of_mem_maxCompact {φ : AdelicGLn.AdelicGL K n 
     simp only [rightTranslate_mul']
   exact Submodule.finiteDimensional_of_le hle
 
+/- English proof (translation)
+Take `⟨U, -, hU⟩` from `exists_openSubgroup_rightInvariant hs hk`. Use `set Kf := AdelicGLn.integralFiniteGL K n`. Set `V : Subgroup Kf` to `{ carrier := {v | h⁻¹ * (v : AdelicGLn.FiniteAdelicGL K n) * h ∈ U} one_mem' := by show h⁻¹ * ((1 : Kf) : AdelicGLn.FiniteAdelicGL K n) * h ∈ U`. Rewrite using `[OneMemClass.coe_one, mul_one, inv_mul_cancel]`. Conclude with `one_mem U`.
+
+Use the proof step `mul_mem' := fun {v w} hv hw => by`. Express the relevant statement in the definitionally equal form `h⁻¹ * (v : AdelicGLn.FiniteAdelicGL K n) * h ∈ U at hv`. Express the relevant statement in the definitionally equal form `h⁻¹ * (w : AdelicGLn.FiniteAdelicGL K n) * h ∈ U at hw`. Use `show h⁻¹ * ((v * w : Kf) : AdelicGLn.FiniteAdelicGL K n) * h ∈ U`. Rewrite using `[Subgroup.coe_mul]`.
+
+Use `mul_mem hv hw` as an intermediate fact. Simplify `this` using `only [mul_assoc, mul_inv_cancel_left]`. Use the proof step `inv_mem' := fun {v} hv => by`. Express the relevant statement in the definitionally equal form `h⁻¹ * (v : AdelicGLn.FiniteAdelicGL K n) * h ∈ U at hv`. Use `show h⁻¹ * ((v⁻¹ : Kf) : AdelicGLn.FiniteAdelicGL K n) * h ∈ U`.
+
+Rewrite using `[InvMemClass.coe_inv]`. Use `inv_mem hv` as an intermediate fact. Simplify `this }` using `only [mul_inv_rev, inv_inv, mul_assoc]`. Establish `hVopen : IsOpen (V : Set Kf)`. Establish `hc : Continuous fun v : Kf => h⁻¹ * (v : AdelicGLn.FiniteAdelicGL K n) * h` using `(continuous_const.mul continuous_subtype_val).mul continuous_const`.
+
+Conclude with `U.isOpen.preimage hc`. Use `haveI : CompactSpace Kf := isCompact_iff_compactSpace.1 (AdelicGLn.isCompact_integralFiniteGL K n)`. Use `haveI : Finite (Kf ⧸ V) := Subgroup.quotient_finite_of_isOpen V hVopen`. Establish `hinv : ∀ v ∈ V, ∀ g, φ (g * finEmb K n (v : AdelicGLn.FiniteAdelicGL K n) * finEmb K n h) = φ (g * finEmb K n h)`. Introduce `v hv g`.
+
+Use `hU (g * finEmb K n h) _ hv` as an intermediate fact. Rewrite using `[← this]`. Use `congr 1`. Simplify using `only [map_mul, map_inv, mul_assoc, mul_inv_cancel_left]`. Use `set W := Submodule.span ℂ (range fun k : (maxCompact : Subgroup (AdelicGLn.AdelicGL K n)) => rightTranslate (k : AdelicGLn.AdelicGL K n) φ)`.
+
+Use `haveI : FiniteDimensional ℂ W := hk`. Unfold `IsKFinite`. Establish `hle : Submodule.span ℂ (range fun k : (maxCompact : Subgroup (AdelicGLn.AdelicGL K n)) => rightTranslate (k : AdelicGLn.AdelicGL K n) (rightTranslate (finEmb K n h) φ)) ≤ ⨆ q : Kf ⧸ V, W.map (rightTranslateL (finEmb K n ((q.out : AdelicGLn.FiniteAdelicGL K n) * h)))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`.
+
+Use `set kf : Kf := ⟨finPart (k : AdelicGLn.AdelicGL K n), finPart_mem_integralFiniteGL k.2⟩`. Use `set a := archPart (k : AdelicGLn.AdelicGL K n)`. Use `set q : Kf ⧸ V := QuotientGroup.mk kf`. Use `Submodule.mem_iSup_of_mem q ⟨rightTranslate (infEmb K n a) φ, Submodule.subset_span ⟨⟨_, infEmb_archPart_mem_maxCompact k.2⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Take `⟨v, hv⟩` from `QuotientGroup.mk_out_eq_mul V kf`.
+
+Establish `hout : ((q.out : Kf) : AdelicGLn.FiniteAdelicGL K n) = (kf : AdelicGLn.FiniteAdelicGL K n) * ((v : Kf) : AdelicGLn.FiniteAdelicGL K n)`. Rewrite using `[hv]`. Both sides reduce to the same expression. Establish `hk_dec : infEmb K n a * finEmb K n (kf : AdelicGLn.FiniteAdelicGL K n) = (k : AdelicGLn.AdelicGL K n)` using `infEmb_archPart_mul_finEmb_finPart _`. Use function extensionality and compare the values at `g`.
+
+Use `show φ (g * finEmb K n ((q.out : AdelicGLn.FiniteAdelicGL K n) * h) * infEmb K n a) = φ (g * (k : AdelicGLn.AdelicGL K n) * finEmb K n h)`. Establish `hcomm : g * finEmb K n ((kf : AdelicGLn.FiniteAdelicGL K n) * ((v : Kf) : AdelicGLn.FiniteAdelicGL K n) * h) * infEmb K n a = g * infEmb K n a * finEmb K n (kf : AdelicGLn.FiniteAdelicGL K n) * finEmb K n ((v : Kf) : AdelicGLn.FiniteAdelicGL K n) * finEmb K n h`. Rewrite using `[mul_assoc g, ← infEmb_mul_finEmb_comm]`. Simplify using `only [map_mul, mul_assoc]`. Rewrite using `[hout, hcomm, hinv (v : Kf) v.2, ← hk_dec, mul_assoc g]`.
+
+Conclude with `Submodule.finiteDimensional_of_le hle`.
+-/
 theorem IsKFinite.rightTranslate_finEmb {φ : AdelicGLn.AdelicGL K n → ℂ} (hs : IsSmooth φ)
     (hk : IsKFinite φ) (h : AdelicGLn.FiniteAdelicGL K n) :
     IsKFinite (rightTranslate (finEmb K n h) φ) := by
@@ -255,6 +348,9 @@ theorem IsKFinite.rightTranslate_finEmb {φ : AdelicGLn.AdelicGL K n → ℂ} (h
     rw [hout, hcomm, hinv (v : Kf) v.2, ← hk_dec, mul_assoc g]
   exact Submodule.finiteDimensional_of_le hle
 
+/- English proof (translation)
+The claim follows from `hφ.isLeftInvariant.translate _ isSmooth := hφ.isSmooth.rightTranslate_finEmb h isKFinite := IsKFinite.rightTranslate_finEmb hφ.isSmooth hφ.isKFinite h isZFinite := hφ.isZFinite.map_rtFin h hasModerateGrowth := hφ.hasModerateGrowth.translate _`.
+-/
 theorem IsAutomorphicForm.rightTranslate_finEmb {φ : AdelicGLn.AdelicGL K n → ℂ}
     (hφ : IsAutomorphicForm φ) (h : AdelicGLn.FiniteAdelicGL K n) :
     IsAutomorphicForm (rightTranslate (finEmb K n h) φ) where
@@ -264,6 +360,9 @@ theorem IsAutomorphicForm.rightTranslate_finEmb {φ : AdelicGLn.AdelicGL K n →
   isZFinite := hφ.isZFinite.map_rtFin h
   hasModerateGrowth := hφ.hasModerateGrowth.translate _
 
+/- English proof (translation)
+The claim follows from `hφ.isLeftInvariant.translate _ isSmooth := hφ.isSmooth.rightTranslate_infEmb a isKFinite := hφ.isKFinite.rightTranslate_of_mem_maxCompact ha isZFinite := hφ.isZFinite.map_rtInf a hasModerateGrowth := hφ.hasModerateGrowth.translate _`.
+-/
 theorem IsAutomorphicForm.rightTranslate_infEmb {φ : AdelicGLn.AdelicGL K n → ℂ}
     (hφ : IsAutomorphicForm φ) {a : archGroup K n} (ha : a ∈ archCompact K n) :
     IsAutomorphicForm (rightTranslate (infEmb K n a) φ) where
@@ -273,12 +372,18 @@ theorem IsAutomorphicForm.rightTranslate_infEmb {φ : AdelicGLn.AdelicGL K n →
   isZFinite := hφ.isZFinite.map_rtInf a
   hasModerateGrowth := hφ.hasModerateGrowth.translate _
 
+/- English proof (translation)
+Rewrite using `[← infEmb_archPart_mul_finEmb_finPart k, rightTranslate_mul']`. Conclude with `(hφ.rightTranslate_finEmb _).rightTranslate_infEmb (archPart_mem_archCompact hk)`.
+-/
 theorem IsAutomorphicForm.rightTranslate_of_mem_maxCompact {φ : AdelicGLn.AdelicGL K n → ℂ}
     (hφ : IsAutomorphicForm φ) {k : AdelicGLn.AdelicGL K n} (hk : k ∈ maxCompact) :
     IsAutomorphicForm (rightTranslate k φ) := by
   rw [← infEmb_archPart_mul_finEmb_finPart k, rightTranslate_mul']
   exact (hφ.rightTranslate_finEmb _).rightTranslate_infEmb (archPart_mem_archCompact hk)
 
+/- English proof (translation)
+Introduce `r hr hrn g` and use `by rw [constantTerm_rightTranslate]; exact hφ r hr hrn _`.
+-/
 theorem IsCuspidal.translate {φ : AdelicGLn.AdelicGL K n → ℂ} (hφ : IsCuspidal φ)
     (a : AdelicGLn.AdelicGL K n) : IsCuspidal (rightTranslate a φ) :=
   fun r hr hrn g => by rw [constantTerm_rightTranslate]; exact hφ r hr hrn _
@@ -305,14 +410,23 @@ def archCompactRep : Representation ℂ (archCompact K n) (automorphicForms K n)
 
 variable {K n}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_finRep_apply (h : AdelicGLn.FiniteAdelicGL K n) (φ : automorphicForms K n) :
     ((finRep K n h φ : automorphicForms K n) : AdelicGLn.AdelicGL K n → ℂ) =
       rightTranslate (finEmb K n h) (φ : AdelicGLn.AdelicGL K n → ℂ) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_archCompactRep_apply (k : archCompact K n) (φ : automorphicForms K n) :
     ((archCompactRep K n k φ : automorphicForms K n) : AdelicGLn.AdelicGL K n → ℂ) =
       rightTranslate (infEmb K n k) (φ : AdelicGLn.AdelicGL K n → ℂ) := rfl
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Simplify using `only [coe_finRep_apply, coe_archCompactRep_apply, GroundTheory.Automorphic.rightTranslate, mul_assoc, infEmb_mul_finEmb_comm]`.
+-/
 theorem finRep_archCompactRep_comm (h : AdelicGLn.FiniteAdelicGL K n) (k : archCompact K n)
     (φ : automorphicForms K n) :
     finRep K n h (archCompactRep K n k φ) = archCompactRep K n k (finRep K n h φ) := by

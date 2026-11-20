@@ -14,17 +14,28 @@ section general
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[← hQ, ← hP, conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem iso_mul {A B C P Q : Matrix (Fin n) (Fin n) ℂ} (hP : Pᴴ * A * P = B) (hQ : Qᴴ * B * Q = C) :
     (P * Q)ᴴ * A * (P * Q) = C := by
   rw [← hQ, ← hP, conjTranspose_mul]
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Use `iso_mul hP (rfl : Qᴴ * B * Q = _)` as an intermediate fact. Rewrite using `[← this, h]`. Simplify using the standard rewrite rules.
+-/
 theorem iso_inv {A B P Q : Matrix (Fin n) (Fin n) ℂ} (hP : Pᴴ * A * P = B) (h : P * Q = 1) :
     Qᴴ * B * Q = A := by
   have := iso_mul hP (rfl : Qᴴ * B * Q = _)
   rw [← this, h]
   simp
 
+/- English proof (translation)
+Establish `h : (B * Pᴴ * A) * P = 1`. Rewrite using `[← hB]`. Use `conv_rhs => rw [← hP]`. Use `conv_rhs => enter [1]`. Rewrite using `[hP]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Conclude with `⟨_, mul_eq_one_comm.mp h, h⟩`.
+-/
 theorem iso_exists_inv {A B P : Matrix (Fin n) (Fin n) ℂ} (hP : Pᴴ * A * P = B) (hB : B * B = 1) :
     ∃ Q, P * Q = 1 ∧ Q * P = 1 := by
   have h : (B * Pᴴ * A) * P = 1 := by
@@ -34,29 +45,47 @@ theorem iso_exists_inv {A B P : Matrix (Fin n) (Fin n) ℂ} (hP : Pᴴ * A * P =
     simp only [Matrix.mul_assoc]
   exact ⟨_, mul_eq_one_comm.mp h, h⟩
 
+/- English proof (translation)
+Use `iso_mul (A := 1) (B := 1) (C := 1) (P := P) (Q := Q) (by simpa using hP) (by simpa using hQ)` as an intermediate fact. Simplify `this` using `only [Matrix.mul_one]`.
+-/
 theorem uni_mul {P Q : Matrix (Fin n) (Fin n) ℂ} (hP : Pᴴ * P = 1) (hQ : Qᴴ * Q = 1) :
     (P * Q)ᴴ * (P * Q) = 1 := by
   have := iso_mul (A := 1) (B := 1) (C := 1) (P := P) (Q := Q) (by simpa using hP) (by simpa using hQ)
   simpa only [Matrix.mul_one] using this
 
+/- English proof (translation)
+Use `conv_lhs => rw [← hv]`. Rewrite using `[mulVec_mulVec, h, one_mulVec]`.
+-/
 theorem fix_inv {P Q : Matrix (Fin n) (Fin n) ℂ} (h : Q * P = 1) {v : Fin n → ℂ} (hv : P *ᵥ v = v) :
     Q *ᵥ v = v := by
   conv_lhs => rw [← hv]
   rw [mulVec_mulVec, h, one_mulVec]
 
+/- English proof (translation)
+Rewrite using `[← mulVec_mulVec, hw, hv]`.
+-/
 theorem fix_mul {P Q : Matrix (Fin n) (Fin n) ℂ} {v : Fin n → ℂ} (hv : P *ᵥ v = v) (hw : Q *ᵥ v = v) :
     (P * Q) *ᵥ v = v := by
   rw [← mulVec_mulVec, hw, hv]
 
+/- English proof (translation)
+Use `conv_rhs => rw [← hB, ← hP, ← mulVec_mulVec, ← mulVec_mulVec, hv, hA]`.
+-/
 theorem fix_adj {A B P : Matrix (Fin n) (Fin n) ℂ} (hP : Pᴴ * A * P = B) {v w : Fin n → ℂ} (hv : P *ᵥ v = v)
     (hA : A *ᵥ v = w) (hB : B *ᵥ v = w) : Pᴴ *ᵥ w = w := by
   conv_rhs => rw [← hB, ← hP, ← mulVec_mulVec, ← mulVec_mulVec, hv, hA]
 
+/- English proof (translation)
+Use `congrFun h j` as an intermediate fact. Simplify `this` using `[bvec, Pi.single_apply]`.
+-/
 theorem col_of_fix {P : Matrix (Fin n) (Fin n) ℂ} {i : Fin n} (h : P *ᵥ bvec i = bvec i) (j : Fin n) :
     P j i = if j = i then 1 else 0 := by
   have := congrFun h j
   simpa [bvec, Pi.single_apply] using this
 
+/- English proof (translation)
+Use `congrArg star (col_of_fix h j)` as an intermediate fact. Rewrite `this` using `[conjTranspose_apply, star_star]`. Rewrite using `[this]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem row_of_fix {P : Matrix (Fin n) (Fin n) ℂ} {i : Fin n} (h : Pᴴ *ᵥ bvec i = bvec i) (j : Fin n) :
     P i j = if j = i then 1 else 0 := by
   have := congrArg star (col_of_fix h j)
@@ -68,6 +97,17 @@ end general
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply]`. Distinguish the cases in `hi : outer k r i`. Rewrite using `[Finset.sum_eq_single (⟨2 * r + k - i.val, by omega⟩ : Fin (2 * r + k + 1))]`. Establish `h2 : outer k r ⟨2 * r + k - i.val, by omega⟩`.
+
+Unfold `outer at *`. Use `i.isLt` as an intermediate fact. Simplify using `only`. Use linear arithmetic over natural numbers and integers. Use `i.isLt` as an intermediate fact.
+
+Simplify using `only [Hq, hi, h2, if_true, Matrix.one_apply, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | omega | simp`. Introduce `b _ hb`. Establish `: ¬ (i.val + b.val = 2 * r + k)` using `fun h => hb (Fin.ext (by simp only; omega))`. Simplify using `[Hq, hi, this]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_eq_single i]`. Simplify using `[Hq, hi, Matrix.one_apply]`. Introduce `b _ hb`. Simplify using `[Hq, hi, Ne.symm hb]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem hq_sq : Hq k r * Hq k r = 1 := by
   ext i j
   rw [Matrix.mul_apply]
@@ -88,6 +128,9 @@ theorem hq_sq : Hq k r * Hq k r = 1 := by
       simp [Hq, hi, Ne.symm hb]
     · simp
 
+/- English proof (translation)
+Use extensionality with `i`. Use `a.isLt` as an intermediate fact. Use `i.isLt` as an intermediate fact. Simplify using `only [bvec, mulVec_single_one, Matrix.col_apply, Pi.single_apply, Hq, outer, eI, esI, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | omega | rfl`.
+-/
 theorem hq_e (a : Fin r) : Hq k r *ᵥ bvec (eI k r a) = bvec (esI k r a) := by
   ext i
   have := a.isLt
@@ -95,6 +138,9 @@ theorem hq_e (a : Fin r) : Hq k r *ᵥ bvec (eI k r a) = bvec (esI k r a) := by
   simp only [bvec, mulVec_single_one, Matrix.col_apply, Pi.single_apply, Hq, outer, eI, esI, Fin.ext_iff]
   split_ifs <;> first | omega | rfl
 
+/- English proof (translation)
+Use extensionality with `i`. Use `a.isLt` as an intermediate fact. Use `i.isLt` as an intermediate fact. Simplify using `only [bvec, mulVec_single_one, Matrix.col_apply, Pi.single_apply, Hq, outer, eI, esI, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | omega | rfl`.
+-/
 theorem hq_es (a : Fin r) : Hq k r *ᵥ bvec (esI k r a) = bvec (eI k r a) := by
   ext i
   have := a.isLt
@@ -102,6 +148,9 @@ theorem hq_es (a : Fin r) : Hq k r *ᵥ bvec (esI k r a) = bvec (eI k r a) := by
   simp only [bvec, mulVec_single_one, Matrix.col_apply, Pi.single_apply, Hq, outer, eI, esI, Fin.ext_iff]
   split_ifs <;> first | omega | rfl
 
+/- English proof (translation)
+Use extensionality with `i`. Use `a.isLt` as an intermediate fact. Use `i.isLt` as an intermediate fact. Simplify using `only [bvec, mulVec_single_one, Matrix.col_apply, Pi.single_apply, Hpk, eI, esI, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | omega | rfl`.
+-/
 theorem hpk_e (a : Fin r) : Hpk k r *ᵥ bvec (eI k r a) = bvec (esI k r a) := by
   ext i
   have := a.isLt
@@ -109,6 +158,9 @@ theorem hpk_e (a : Fin r) : Hpk k r *ᵥ bvec (eI k r a) = bvec (esI k r a) := b
   simp only [bvec, mulVec_single_one, Matrix.col_apply, Pi.single_apply, Hpk, eI, esI, Fin.ext_iff]
   split_ifs <;> first | omega | rfl
 
+/- English proof (translation)
+Use extensionality with `i`. Use `a.isLt` as an intermediate fact. Use `i.isLt` as an intermediate fact. Simplify using `only [bvec, mulVec_single_one, Matrix.col_apply, Pi.single_apply, Hpk, eI, esI, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | omega | rfl`.
+-/
 theorem hpk_es (a : Fin r) : Hpk k r *ᵥ bvec (esI k r a) = bvec (eI k r a) := by
   ext i
   have := a.isLt
@@ -116,6 +168,11 @@ theorem hpk_es (a : Fin r) : Hpk k r *ᵥ bvec (esI k r a) = bvec (eI k r a) := 
   simp only [bvec, mulVec_single_one, Matrix.col_apply, Pi.single_apply, Hpk, eI, esI, Fin.ext_iff]
   split_ifs <;> first | omega | rfl
 
+/- English proof (translation)
+Use `i.isLt` as an intermediate fact. Break down `hi with hi | hi` into its components or cases. Establish `e : i = eI k r ⟨i.val, hi⟩` using `rfl`. Rewrite using `[e]`. Conclude with `⟨col_of_fix (hf _).1 j, row_of_fix (fix_adj hP (hf _).2 (hA _).2 (hB _).2) j⟩`.
+
+Establish `e : i = esI k r ⟨2 * r + k - i.val, by omega⟩` using `Fin.ext (by simp only [esI]; omega)`. Rewrite using `[e]`. Conclude with `⟨col_of_fix (hf _).2 j, row_of_fix (fix_adj hP (hf _).1 (hA _).1 (hB _).1) j⟩`.
+-/
 theorem block_of_fix {A B P : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hP : Pᴴ * A * P = B)
     (hA : ∀ a : Fin r, A *ᵥ bvec (eI k r a) = bvec (esI k r a) ∧ A *ᵥ bvec (esI k r a) = bvec (eI k r a))
     (hB : ∀ a : Fin r, B *ᵥ bvec (eI k r a) = bvec (esI k r a) ∧ B *ᵥ bvec (esI k r a) = bvec (eI k r a))
@@ -131,6 +188,23 @@ theorem block_of_fix {A B P : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1))
     rw [e]
     exact ⟨col_of_fix (hf _).2 j, row_of_fix (fix_adj hP (hf _).1 (hA _).1 (hB _).1) j⟩
 
+/- English proof (translation)
+Establish `hQ` using `iso_inv hP hPQ`. Establish `bP` using `block_of_fix hP (fun a => ⟨hpk_e a, hpk_es a⟩) (fun a => ⟨hq_e a, hq_es a⟩) hf`. Establish `bQ` using `block_of_fix hQ (fun a => ⟨hq_e a, hq_es a⟩) (fun a => ⟨hpk_e a, hpk_es a⟩) (fun a => ⟨fix_inv hQP (hf a).1, fix_inv hQP (hf a).2⟩)`. Take `⟨hm0, hm1, hm2⟩` from `hm`. Establish `key : ∀ i j, (P * m * Q) i j = (if i = j then 1 else 0) + ∑ p, ∑ l, P i l * (m - 1) l p * Q p j`.
+
+Introduce `i j`. Establish `: P * m * Q = 1 + P * (m - 1) * Q`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hPQ]`. Normalize the expressions using the abelian group laws. Rewrite using `[this, Matrix.add_apply, Matrix.one_apply, Matrix.mul_apply]`.
+
+Simplify using `only [Matrix.mul_apply, Finset.sum_mul]`. Use `⟨iso_mul (iso_mul hP hm0) hQ, fun a i hi => ?_, fun i j hj1 hj2 hi => ?_⟩` and prove the remaining obligations. Rewrite using `[key, Finset.sum_eq_zero, add_zero]`. Introduce `p _`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations.
+
+Establish `ha` using `a.isLt`. Distinguish the cases in `hp : p = eI k r a`. Substitute `hp` using the available equality. Distinguish the cases in `hl : a.val ≤ l.val`. Rewrite using `[Matrix.sub_apply, hm1 a l hl, Matrix.one_apply]`.
+
+Simplify using the standard rewrite rules. Establish `: i ≠ l` using `by rintro rfl; exact hl hi`. Rewrite using `[(bP l (Or.inl (by omega)) i).1, if_neg this]; simp`. Rewrite using `[(bQ (eI k r a) (Or.inl ha) p).1, if_neg hp]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[key, Finset.sum_eq_zero, add_zero]`. Introduce `p _`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hp : p.val < r ∨ r + k < p.val`. Establish `: j ≠ p` using `by rintro rfl; omega`.
+
+Rewrite using `[(bQ p hp j).2, if_neg this]`. Simplify using the standard rewrite rules. Distinguish the cases in `hl : r ≤ l.val`. Rewrite using `[Matrix.sub_apply, hm2 l p (by omega) (by omega) hl, Matrix.one_apply]; simp`. Establish `: i ≠ l` using `by rintro rfl; exact hl hi`.
+
+Rewrite using `[(bP l (Or.inl (by omega)) i).1, if_neg this]; simp`.
+-/
 theorem conj_mem_N {P Q m : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hP : Pᴴ * Hpk k r * P = Hq k r) (hPQ : P * Q = 1) (hQP : Q * P = 1)
     (hf : ∀ a : Fin r, P *ᵥ bvec (eI k r a) = bvec (eI k r a) ∧ P *ᵥ bvec (esI k r a) = bvec (esI k r a))
@@ -169,6 +243,13 @@ theorem conj_mem_N {P Q m : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) �
       · have : i ≠ l := by rintro rfl; exact hl hi
         rw [(bP l (Or.inl (by omega)) i).1, if_neg this]; simp
 
+/- English proof (translation)
+Take `⟨-, h2, h3, -⟩` from `hd`. Use `show (dg d)ᴴ * Hq k r * dg d = Hq k r`. Use extensionality with `i j`. Simplify using `only [dg, diagonal_conjTranspose, mul_diagonal, diagonal_mul, Pi.star_apply, Complex.star_def, Complex.conj_ofReal, Hq]`. Use `split_ifs with h h' h'`.
+
+Rewrite using `[mul_one, ← Complex.ofReal_mul, h2 i j h h', Complex.ofReal_one]`. Simplify using the standard rewrite rules. Substitute `h'` using the available equality. Rewrite using `[h3 i h]`. Simplify using the standard rewrite rules.
+
+Simplify using the standard rewrite rules.
+-/
 theorem dg_mem {d : Fin (2 * r + k + 1) → ℝ} (hd : IsTor k r d) : dg d ∈ UH (Hq k r) := by
   obtain ⟨-, h2, h3, -⟩ := hd
   show (dg d)ᴴ * Hq k r * dg d = Hq k r
@@ -181,9 +262,17 @@ theorem dg_mem {d : Fin (2 * r + k + 1) → ℝ} (hd : IsTor k r d) : dg d ∈ U
   · subst h'; rw [h3 i h]; simp
   · simp
 
+/- English proof (translation)
+Simplify using `[dg, diagonal_mul_diagonal]`.
+-/
 theorem dg_mul (t t' : Fin (2 * r + k + 1) → ℝ) : dg t * dg t' = dg (fun i => t i * t' i) := by
   simp [dg, diagonal_mul_diagonal]
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `h`. Take `⟨g1, g2, g3, g4⟩` from `h'`. Use `⟨fun i => mul_pos (h1 i) (g1 i), fun i j hi hij => ?_, fun i hi => ?_, ?_⟩` and prove the remaining obligations. Establish `a` using `h2 i j hi hij`. Establish `b` using `g2 i j hi hij`.
+
+Use `show t i * t' i * (t j * t' j) = 1`. Rewrite using `[mul_mul_mul_comm, a, b, one_mul]`. Use `show t i * t' i = 1`. Rewrite using `[h3 i hi, g3 i hi, one_mul]`. Conclude with `mul_le_one₀ h4 (g1 _).le g4`.
+-/
 theorem isTor_mul {t t' : Fin (2 * r + k + 1) → ℝ} (h : IsTor k r t) (h' : IsTor k r t') :
     IsTor k r (fun i => t i * t' i) := by
   obtain ⟨h1, h2, h3, h4⟩ := h
@@ -197,6 +286,17 @@ theorem isTor_mul {t t' : Fin (2 * r + k + 1) → ℝ} (h : IsTor k r t) (h' : I
     rw [h3 i hi, g3 i hi, one_mul]
   · exact mul_le_one₀ h4 (g1 _).le g4
 
+/- English proof (translation)
+Establish `b` using `block_of_fix hh.1 (fun a => ⟨hq_e a, hq_es a⟩) (fun a => ⟨hq_e a, hq_es a⟩) hh.2`. Take `⟨-, h2, h3, -⟩` from `ht`. Establish `mid : ∀ i : Fin (2 * r + k + 1), ¬ (i.val < r ∨ r + k < i.val) → t i = 1`. Introduce `i hi`. Distinguish the cases in `ho : outer k r i`.
+
+Distinguish the cases in `h0 : i.val = r`. Establish `: i = wI k r 0` using `Fin.ext (by simp [wI, h0])`. Rewrite using `[this, ht0]`. Use `h2 i (wI k r 0) ho (by unfold outer at ho; simp only [wI, Fin.val_zero]; omega)` as an intermediate fact. Rewrite `this` using `[ht0, mul_one]`. Then use the resulting hypothesis.
+
+Conclude with `h3 i ho`. Use extensionality with `i j`. Simplify using `only [dg, mul_diagonal, diagonal_mul]`. Distinguish the cases in `hi : i.val < r ∨ r + k < i.val`. Rewrite using `[(b i hi j).2] split_ifs with e`.
+
+Substitute `e` using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Distinguish the cases in `hj : j.val < r ∨ r + k < j.val`. Rewrite using `[(b j hj i).1] split_ifs with e`.
+
+Substitute `e` using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite using `[mid i hi, mid j hj]`. Simplify using the standard rewrite rules.
+-/
 theorem dg_comm {t : Fin (2 * r + k + 1) → ℝ} (ht : IsTor k r t) (ht0 : t (wI k r 0) = 1)
     {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hh : h ∈ Wbq k r) : dg t * h = h * dg t := by
   have b := block_of_fix hh.1 (fun a => ⟨hq_e a, hq_es a⟩) (fun a => ⟨hq_e a, hq_es a⟩) hh.2
@@ -224,6 +324,21 @@ theorem dg_comm {t : Fin (2 * r + k + 1) → ℝ} (ht : IsTor k r t) (ht0 : t (w
       · simp
     · rw [mid i hi, mid j hj]; simp
 
+/- English proof (translation)
+Introduce `hA hI hL hC k r z Γ hk _ hΓ g hg`. Take `⟨⟨Γ₀, hu0, hΓ0⟩, -⟩` from `hA k r hk`. Take `⟨hΓi, hΓf, ρ, -, hz⟩` from `hΓ`. Take `⟨Γ', hΓ1, hΓ2⟩` from `iso_exists_inv hΓi hq_sq`. Establish `hu0' : Γ₀ * Γ₀ᴴ = 1` using `mul_eq_one_comm.mp hu0`.
+
+Establish `hΓ'i` using `iso_inv hΓi hΓ1`. Establish `hx : Γ' * g * Γ₀ ∈ UH (Hq k r)` using `iso_mul (iso_mul hΓ'i hg) hΓ0`. Take `⟨s, hs, κ₁, hκ₁, hst, hu1, e1⟩` from `hI k r hk _ hx`. Take `⟨m, hm, t, μ, hμ, κ₂, hκ₂, ht, ht0, hu2, e2⟩` from `hL k r hk s hs hst`. Take `⟨h, hh, t', κ₃, hκ₃, hfix, ht', -, hu3, e3⟩` from `hC k r hk μ hμ`.
+
+Take `⟨h', hh1, hh2⟩` from `iso_exists_inv hh.1 hq_sq`. Establish `hh'i` using `iso_inv hh.1 hh1`. Establish `hd` using `isTor_mul ht ht'`. Use `⟨Γ * h * Γ', ⟨iso_mul (iso_mul hΓi hh.1) hΓ'i, fun a => ⟨?_, ?_⟩, ?_⟩, (Γ * h') * m * (h * Γ'), ?_, fun i => t i * t' i, κ₃ * κ₂ * κ₁ * Γ₀ᴴ, hd, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `fix_mul (fix_mul (hΓf a).1 (hh.2 a).1) (fix_inv hΓ2 (hΓf a).1)`.
+
+Conclude with `fix_mul (fix_mul (hΓf a).2 (hh.2 a).2) (fix_inv hΓ2 (hΓf a).2)`. Rewrite using `[hz, mulVec_smul, mulVec_mulVec, Matrix.mul_assoc, hΓ2, Matrix.mul_one, ← mulVec_mulVec, hfix]`. Use `conj_mem_N (iso_mul hΓi hh'i) ?_ ?_ (fun a => ⟨?_, ?_⟩) hm` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc h', hh2, Matrix.one_mul, hΓ1]`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc Γ', hΓ2, Matrix.one_mul, hh1]`.
+
+Conclude with `fix_mul (hΓf a).1 (fix_inv hh2 (hh.2 a).1)`. Conclude with `fix_mul (hΓf a).2 (fix_inv hh2 (hh.2 a).2)`. Conclude with `uni_mul (uni_mul (uni_mul hu3 hu2) hu1) (by rw [conjTranspose_conjTranspose]; exact hu0')`. Conclude with `iso_mul (iso_mul hΓi (dg_mem hd)) (iso_mul (iso_mul (iso_mul hκ₃ hκ₂) hκ₁) (iso_inv hΓ0 hu0'))`. Establish `eg : g = Γ * (Γ' * g * Γ₀) * Γ₀ᴴ`.
+
+Simplify using `only [← Matrix.mul_assoc]`. Rewrite using `[hΓ1, Matrix.one_mul, Matrix.mul_assoc, hu0', Matrix.mul_one]`. Establish `c1 : ∀ X : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ, Γ' * (Γ * X) = X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, hΓ2, Matrix.one_mul]`. Establish `c2 : ∀ X : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ, h * (h' * X) = X` using `fun X => by`.
+
+Rewrite using `[← Matrix.mul_assoc, hh1, Matrix.one_mul]`. Establish `c3 : ∀ X : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ, dg t * (h * X) = h * (dg t * X)` using `fun X => by rw [← Matrix.mul_assoc, dg_comm ht ht0 hh, Matrix.mul_assoc]`. Rewrite using `[eg, e1, e2, e3, ← dg_mul]`. Simplify using `only [Matrix.mul_assoc, c1, c2, c3]`.
+-/
 theorem decomp : AdaptExists → IwaQ → LeviQ → CartanQ → Decomp := by
   intro hA hI hL hC k r z Γ hk _ hΓ g hg
   obtain ⟨⟨Γ₀, hu0, hΓ0⟩, -⟩ := hA k r hk

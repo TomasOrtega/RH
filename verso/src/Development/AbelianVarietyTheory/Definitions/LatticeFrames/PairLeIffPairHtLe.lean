@@ -34,9 +34,15 @@ def ValLe (N B : HLat K) (Ψ : N.V →ₗ[K] B.V) (h : ℝ) : Prop :=
   ∃ c : InfinitePlace K → ℝ, (∀ v x, nrm B v (Ψ x) ^ 2 ≤ Real.exp (c v) * nrm N v x ^ 2) ∧
     (1 / (Formalism.HN.nPl K : ℝ)) * ∑ v, c v ≤ h
 
+/- English proof (translation)
+The claim follows from `Real.sqrt_nonneg _`.
+-/
 theorem nrm_nonneg (A : HLat K) (v : InfinitePlace K) (x : A.V) : 0 ≤ nrm A v x :=
   Real.sqrt_nonneg _
 
+/- English proof (translation)
+Take `⟨z, hz, hzn⟩` from `hn w v`. Establish `hw` using `nrm_nonneg B v w`. Establish `hle` using `h z`. Rewrite `hle` using `[hz, hzn]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem Norming.nrm_le {B M : HLat K} {pr : B.V →ₗ[K] Module.Dual K M.V} (hn : Norming B M pr) (w : B.V) (v : InfinitePlace K)
     {C : ℝ} (hC : 0 ≤ C) (h : ∀ y, v (pr w y) ≤ C * nrm M v y) : nrm B v w ≤ C := by
   obtain ⟨z, hz, hzn⟩ := hn w v
@@ -45,6 +51,9 @@ theorem Norming.nrm_le {B M : HLat K} {pr : B.V →ₗ[K] Module.Dual K M.V} (hn
   rw [hz, hzn] at hle
   nlinarith
 
+/- English proof (translation)
+Take `⟨e, pr, he, hn, hΦ⟩` from `hr`. Use `⟨e, he, fun x v C hC hb => hn.nrm_le (Ψ x) v hC fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[← hΦ x]`. Conclude with `hb y`.
+-/
 theorem Reads.exists_nrm_le {N B A M : HLat K} {Ψ : N.V →ₗ[K] B.V} {Φ : A.V →ₗ[K] Module.Dual K M.V}
     (hr : Reads N B A M Ψ Φ) : ∃ e : N.V →ₗ[K] A.V, IsoAll N A e ∧ ∀ x v (C : ℝ), 0 ≤ C →
       (∀ y, v (Φ (e x) y) ≤ C * nrm M v y) → nrm B v (Ψ x) ≤ C := by
@@ -53,6 +62,15 @@ theorem Reads.exists_nrm_le {N B A M : HLat K} {Ψ : N.V →ₗ[K] B.V} {Φ : A.
   rw [← hΦ x]
   exact hb y
 
+/- English proof (translation)
+Take `⟨c, hc, hmean⟩` from `hp`. Take `⟨e, he, hbd⟩` from `hr.exists_nrm_le`. Use `⟨c, fun v x => ?_, hmean⟩` and prove the remaining obligations. Establish `hs : Real.exp (c v / 2) ^ 2 = Real.exp (c v)`. Rewrite using `[sq, ← Real.exp_add, add_halves]`.
+
+Establish `hE : 0 ≤ Real.exp (c v / 2)` using `(Real.exp_pos _).le`. Establish `hN` using `nrm_nonneg N v x`. Establish `key : nrm B v (Ψ x) ≤ Real.exp (c v / 2) * nrm N v x`. Use `hbd x v _ (mul_nonneg hE hN) fun y => ?_` and prove the remaining obligations. Establish `h1` using `hc v (e x) y`.
+
+Rewrite `h1` using `[he v x, ← hs]`. Establish `hM` using `nrm_nonneg M v y`. Establish `hb : 0 ≤ Real.exp (c v / 2) * nrm N v x * nrm M v y` using `mul_nonneg (mul_nonneg hE hN) hM`. Use the polynomial consequences of the given equalities and inequalities. Establish `hk` using `nrm_nonneg B v (Ψ x)`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem valLe_of_reads {N B A M : HLat K} {Ψ : N.V →ₗ[K] B.V} {Φ : A.V →ₗ[K] Module.Dual K M.V} {h : ℝ}
     (hr : Reads N B A M Ψ Φ) (hp : PairLe A M Φ h) : ValLe N B Ψ h := by
   obtain ⟨c, hc, hmean⟩ := hp
@@ -91,13 +109,26 @@ def dot : (lat K n).V →ₗ[K] Module.Dual K (lat K n).V := dotProductBilin K K
 
 variable {K n}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dot_apply (x y : Fin n → K) : dot K n x y = ∑ i, x i * y i := rfl
 
+/- English proof (translation)
+Unfold `nrm Formalism.HermitianLatticesTheory.normAt Formalism.HermitianLatticesTheory.cnorm`. Rewrite using `[Real.sq_sqrt (Finset.sum_nonneg fun i _ => sq_nonneg _)]`. Simplify using `[Formalism.HermitianLatticesTheory.fcoord, Formalism.HermitianLatticesTheory.vecAt, lat]`.
+-/
 theorem nrm_sq (v : InfinitePlace K) (x : Fin n → K) : nrm (lat K n) v x ^ 2 = ∑ i, ‖v.embedding (x i)‖ ^ 2 := by
   unfold nrm Formalism.HermitianLatticesTheory.normAt Formalism.HermitianLatticesTheory.cnorm
   rw [Real.sq_sqrt (Finset.sum_nonneg fun i _ => sq_nonneg _)]
   simp [Formalism.HermitianLatticesTheory.fcoord, Formalism.HermitianLatticesTheory.vecAt, lat]
 
+/- English proof (translation)
+Introduce `w v`. Take `⟨σ, hσ⟩` from `NumberField.ComplexEmbedding.exists_comp_symm_eq_of_comp_eq (k := ℚ) v.embedding (NumberField.ComplexEmbedding.conjugate v.embedding) (RingHom.ext_rat _ _)`. Establish `hc : ∀ a, v.embedding (σ.symm a) = starRingEnd ℂ (v.embedding a)` using `fun a => RingHom.congr_fun hσ a`. Use `⟨fun i => σ.symm (w i), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[nrm_sq, dot_apply, ← NumberField.InfinitePlace.norm_embedding_eq, map_sum]`.
+
+Simplify using `only [map_mul, hc, Complex.mul_conj]`. Rewrite using `[← Complex.ofReal_sum, Complex.norm_of_nonneg (Finset.sum_nonneg fun i _ => Complex.normSq_nonneg _)]`. Simplify using `only [Complex.normSq_eq_norm_sq]`. Establish `h2 : nrm (lat K n) v (fun i => σ.symm (w i)) ^ 2 = nrm (lat K n) v w ^ 2`. Rewrite using `[nrm_sq, nrm_sq]`.
+
+Simplify using `only [hc, Complex.norm_conj]`. Rewrite using `[← Real.sqrt_sq (nrm_nonneg _ v w), ← h2, Real.sqrt_sq (nrm_nonneg _ _ _)]`.
+-/
 theorem norming_dot [IsGalois ℚ K] : Norming (lat K n) (lat K n) (dot K n) := by
   intro w v
 
@@ -115,10 +146,18 @@ theorem norming_dot [IsGalois ℚ K] : Norming (lat K n) (lat K n) (dot K n) := 
       simp only [hc, Complex.norm_conj]
     rw [← Real.sqrt_sq (nrm_nonneg _ v w), ← h2, Real.sqrt_sq (nrm_nonneg _ _ _)]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨LinearMap.id, dot K m, fun _ _ => rfl, norming_dot, fun _ => rfl⟩`.
+-/
 theorem reads_dot [IsGalois ℚ K] {m : ℕ} (Ψ : (lat K n).V →ₗ[K] (lat K m).V) :
     Reads (lat K n) (lat K m) (lat K n) (lat K m) Ψ (dot K m ∘ₗ Ψ) :=
   ⟨LinearMap.id, dot K m, fun _ _ => rfl, norming_dot, fun _ => rfl⟩
 
+/- English proof (translation)
+Use `⟨fun _ => 0, fun v x y => ?_, by simp⟩` and prove the remaining obligations. Rewrite using `[Real.exp_zero, one_mul, nrm_sq, nrm_sq, dot_apply, ← NumberField.InfinitePlace.norm_embedding_eq, map_sum]`. Establish `h1 : ‖∑ i, v.embedding (x i * y i)‖ ≤ ∑ i, ‖v.embedding (x i)‖ * ‖v.embedding (y i)‖` using `(norm_sum_le _ _).trans_eq (by simp only [map_mul, norm_mul])`. Establish `h2` using `Finset.sum_mul_sq_le_sq_mul_sq Finset.univ (fun i => ‖v.embedding (x i)‖) (fun i => ‖v.embedding (y i)‖)`. Establish `h0` using `norm_nonneg (∑ i, v.embedding (x i * y i))`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem pairLe_dot : PairLe (lat K n) (lat K n) (dot K n) 0 := by
   refine ⟨fun _ => 0, fun v x y => ?_, by simp⟩
   rw [Real.exp_zero, one_mul, nrm_sq, nrm_sq, dot_apply,
@@ -133,6 +172,9 @@ theorem pairLe_dot : PairLe (lat K n) (lat K n) (dot K n) 0 := by
         pow_le_pow_left₀ h0 h1 2
     _ ≤ _ := h2
 
+/- English proof (translation)
+The claim follows from `valLe_of_reads (reads_dot LinearMap.id) pairLe_dot`.
+-/
 example [IsGalois ℚ K] : ValLe (lat K 2) (lat K 2) LinearMap.id 0 := valLe_of_reads (reads_dot LinearMap.id) pairLe_dot
 
 end Std

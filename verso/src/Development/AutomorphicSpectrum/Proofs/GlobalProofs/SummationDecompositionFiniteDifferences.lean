@@ -8,6 +8,15 @@ open NumberField Formalism.MainNotions.ShortIntervalPrimes GlobalTheory.RayZeta 
 
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel
 
+/- English proof (translation)
+Introduce `ι _ r a b u cs N p hN hcase hval`. Distinguish the cases in `hex : ∃ i, cs.count i = N`. Take `⟨i, hi⟩` from `hex`. Use `⟨0, ?_⟩` and prove the remaining obligations. Establish `h0` using `GlobalTheory.T.high_difference_vanishes_negative_integer ι r a b cs i N p hi hN`.
+
+Simplify using `[h0]`. Establish `hsupp : ∀ m : Fin r → ℕ, m ≠ 0 → u m = 0`. Introduce `m hm`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, m i ≠ 0 := by`. Assume the negation of the conclusion as `hcon`.
+
+Use `push Not at hcon`. Conclude with `hm (funext hcon)`. Break down `hcase i with h | h` into its components or cases. Conclude with `absurd ⟨i, h⟩ hex`. Conclude with `h m hi`.
+
+Take `⟨ρ, hρ⟩` from `GlobalTheory.T.cone_values_negative_integer_rational ι r a b p hval cs`. Use `⟨u 0 * ρ 0, ?_⟩` and prove the remaining obligations. Rewrite using `[tsum_eq_single 0 (fun m hm => by simp [hsupp m hm]), hρ 0]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem series_value_rational : ∀ (ι : Type) [Fintype ι] (r : ℕ) (a : ι → Fin r → ℝ) (b : ι → ℝ) (u : (Fin r → ℕ) → ℚ) (cs : List (Fin r)) (N p : ℕ), Fintype.card ι * p < N →
   (∀ i, cs.count i = N ∨ ∀ m, m i ≠ 0 → u m = 0) →
   (∀ m : Fin r → ℕ, ∃ q : ℚ, ∏ j, (b j + ∑ i, a j i * (m i : ℝ)) ^ p = (q : ℝ)) →

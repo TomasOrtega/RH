@@ -8,6 +8,11 @@ open Finset
 
 variable {𝒰 : Type} [Ring 𝒰] {I S : Type} [DecidableEq I] [Fintype S] [DecidableEq S]
 
+/- English proof (translation)
+Unfold `Lw`. Rewrite using `[List.ofFn_succ, List.prod_cons]`. Use `congr 1`. Simplify using the standard rewrite rules. Use `congr 2`.
+
+Use function extensionality and compare the values at `j`. Use `split_ifs`. Move the coercions through the operations in `[Fin.val_succ]`. Normalize the expressions using the abelian group laws. Both sides reduce to the same expression.
+-/
 theorem Lw_succ (x d : I → S → 𝒰) {k : ℕ} (w g : Fin (k + 1) → I) :
     Lw x d w g = (Eop x d (w 0) (g 0) + if w 0 = g 0 then (k : 𝒰) else 0) *
       Lw x d (fun i => w i.succ) (fun i => g i.succ) := by
@@ -22,6 +27,11 @@ theorem Lw_succ (x d : I → S → 𝒰) {k : ℕ} (w g : Fin (k + 1) → I) :
       abel
     · rfl
 
+/- English proof (translation)
+Establish `h` using `E_Pn x d hxx hdx (fun i => w i.succ) (fun i => g i.succ) (w 0) (g 0)`. Establish `hw : (Fin.cons (w 0) (fun i => w i.succ) : Fin (k + 1) → I) = w` using `Fin.cons_self_tail w`. Establish `hg : (Fin.cons (g 0) (fun i => g i.succ) : Fin (k + 1) → I) = g` using `Fin.cons_self_tail g`. Rewrite `h` using `[hw, hg]`. Rewrite using `[h]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem Pn_succ (x d : I → S → 𝒰) (hxx : ∀ a s b t, x a s * x b t = x b t * x a s)
     (hdx : ∀ a s b t, d b t * x a s = x a s * d b t + if a = b ∧ s = t then 1 else 0)
     {k : ℕ} (w g : Fin (k + 1) → I) :
@@ -35,6 +45,9 @@ theorem Pn_succ (x d : I → S → 𝒰) (hxx : ∀ a s b t, x a s * x b t = x b
   rw [h]
   abel
 
+/- English proof (translation)
+Rewrite using `[Lw_succ, Pn_succ x d hxx hdx]`. Apply the tactic sequence `have hc : (if w 0 = g 0 then (k : 𝒰) else 0) * Pn x d (fun i => w i.succ) (fun i => g i.succ) = (k : ℕ) • (if w 0 = g 0 then Pn x d (fun i => w i.succ) (fun i => g i.succ) else 0) := by split_ifs <;> simp [nsmul_eq_mul]`. Rewrite using `[mul_sub, add_mul (Eop x d (w 0) (g 0)), add_mul (Eop x d (w 0) (g 0)) _ (Pn x d (fun i => w i.succ) (fun i => g i.succ)), hc]`. Normalize the expressions using the abelian group laws.
+-/
 theorem D_succ (x d : I → S → 𝒰) (hxx : ∀ a s b t, x a s * x b t = x b t * x a s)
     (hdx : ∀ a s b t, d b t * x a s = x a s * d b t + if a = b ∧ s = t then 1 else 0)
     {k : ℕ} (w g : Fin (k + 1) → I) :
@@ -53,6 +66,11 @@ theorem D_succ (x d : I → S → 𝒰) (hxx : ∀ a s b t, x a s * x b t = x b 
     add_mul (Eop x d (w 0) (g 0)) _ (Pn x d (fun i => w i.succ) (fun i => g i.succ)), hc]
   abel
 
+/- English proof (translation)
+Rewrite using `[← Equiv.Perm.decomposeFin.symm.sum_comp, Fintype.sum_prod_type]`. Use `Finset.sum_eq_zero fun p _ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.Perm.decomposeFin.symm_sign, Equiv.Perm.decomposeFin_symm_apply_zero, Equiv.Perm.decomposeFin_symm_apply_succ]`. Establish `h0 : ∑ τ : Equiv.Perm (Fin k), ((Equiv.Perm.sign τ : ℤˣ) : ℤ) • Δ (fun i => r (Equiv.swap 0 p (τ i).succ)) = 0` using `hIH (fun j => r (Equiv.swap 0 p j.succ))`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.smul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, mul_smul, mul_smul_comm, mul_smul_comm]`. Use `_ = 0 := by rw [h0, smul_zero, mul_zero]`.
+-/
 theorem alt_first {k : ℕ} (F : I → 𝒰) (Δ : (Fin k → I) → 𝒰) (r : Fin (k + 1) → I)
     (hIH : ∀ r' : Fin k → I,
       ∑ τ : Equiv.Perm (Fin k), ((Equiv.Perm.sign τ : ℤˣ) : ℤ) • Δ (fun j => r' (τ j)) = 0) :
@@ -71,6 +89,19 @@ theorem alt_first {k : ℕ} (F : I → 𝒰) (Δ : (Fin k → I) → 𝒰) (r : 
         rw [Units.val_mul, mul_smul, mul_smul_comm, mul_smul_comm]
     _ = 0 := by rw [h0, smul_zero, mul_zero]
 
+/- English proof (translation)
+Take `⟨A, hA⟩ : ∃ A : Equiv.Perm (Fin (k + 1)) → 𝒰, ∀ σ, A σ = if r (σ 0) = b then Q (fun i => r (σ i.succ)) else 0` from `⟨_, fun _ => rfl⟩`. Establish `hB : ∀ (σ : Equiv.Perm (Fin (k + 1))) (j : Fin k), (if r (σ j.succ) = b then Q (Function.update (fun i => r (σ i.succ)) j (r (σ 0))) else 0) = A (σ * Equiv.swap 0 j.succ)`. Introduce `σ j`. Establish `hf : Function.update (fun i => r (σ i.succ)) j (r (σ 0)) = fun i => r (σ (Equiv.swap 0 j.succ i.succ))`. Use function extensionality and compare the values at `i`.
+
+Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Rewrite using `[Function.update_apply, if_pos rfl, Equiv.swap_apply_right]`. Rewrite using `[Function.update_apply, if_neg h, Equiv.swap_apply_of_ne_of_ne (Fin.succ_ne_zero i) (fun e => h (Fin.succ_injective _ e))]`. Rewrite using `[hA]`.
+
+Simplify using `only [Equiv.Perm.mul_apply, Equiv.swap_apply_left]`. Rewrite using `[hf]`. Establish `hS : ∀ j : Fin k, ∑ σ : Equiv.Perm (Fin (k + 1)), ((Equiv.Perm.sign σ : ℤˣ) : ℤ) • A (σ * Equiv.swap 0 j.succ) = -∑ σ : Equiv.Perm (Fin (k + 1)), ((Equiv.Perm.sign σ : ℤˣ) : ℤ) • A σ`. Introduce `j`. Rewrite using `[← Equiv.sum_comp (Equiv.mulRight (Equiv.swap (0 : Fin (k + 1)) j.succ)), ← Finset.sum_neg_distrib]`.
+
+Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulRight]`. Rewrite using `[mul_assoc, Equiv.swap_mul_self, mul_one, Equiv.Perm.sign_mul, Equiv.Perm.sign_swap (Fin.succ_ne_zero j).symm, Units.val_mul, Units.val_neg, Units.val_one, mul_neg_one, neg_smul]`. Establish `e : ∀ σ : Equiv.Perm (Fin (k + 1)), ((Equiv.Perm.sign σ : ℤˣ) : ℤ) • ((k : ℕ) • (if r (σ 0) = b then Q (fun i => r (σ i.succ)) else 0) + ∑ j : Fin k, if r (σ j.succ) = b then Q (Function.update (fun i => r (σ i.succ)) j (r (σ 0))) else 0) = (k : ℕ) • (((Equiv.Perm.sign σ : ℤˣ) : …`. Introduce `σ`.
+
+Rewrite using `[smul_add, Finset.smul_sum, smul_comm ((Equiv.Perm.sign σ : ℤˣ) : ℤ) (k : ℕ), ← hA σ]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hB σ j]`. Rewrite using `[Finset.sum_congr rfl fun σ _ => e σ, Finset.sum_add_distrib, Finset.sum_comm, ← Finset.smul_sum]`.
+
+Repeatedly rewrite using `[hS]`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_neg, add_neg_cancel]`.
+-/
 theorem alt_contract {k : ℕ} (Q : (Fin k → I) → 𝒰) (r : Fin (k + 1) → I) (b : I) :
     ∑ σ : Equiv.Perm (Fin (k + 1)), ((Equiv.Perm.sign σ : ℤˣ) : ℤ) •
       ((k : ℕ) • (if r (σ 0) = b then Q (fun i => r (σ i.succ)) else 0) +
@@ -119,6 +150,15 @@ theorem alt_contract {k : ℕ} (Q : (Fin k → I) → 𝒰) (r : Fin (k + 1) →
   simp_rw [hS]
   rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_neg, add_neg_cancel]
 
+/- English proof (translation)
+Unfold `CapAbsMain`. Introduce `𝒰 _ I S _ _ _ x d hxx hdx k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `r g`.
+
+Simplify using `only [Lw, Pn, xw, dw]`. Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `r g`. Establish `h1` using `alt_first (fun a => Eop x d a (g 0) + if a = g 0 then (k : 𝒰) else 0) (fun w' => Lw x d w' (fun i => g i.succ) - Pn x d w' (fun i => g i.succ)) r (fun r' => ih r' (fun i => g i.succ))`.
+
+Establish `h2` using `alt_contract (fun w' => Pn x d w' (fun i => g i.succ)) r (g 0)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_add, D_succ x d hxx hdx, add_assoc]`.
+
+Use `_ = 0 + 0 := congrArg₂ (· + ·) h1 h2`. Use `_ = 0 := add_zero 0`.
+-/
 theorem capelli_absolute_value : CapAbsMain := by
   unfold CapAbsMain
   intro 𝒰 _ I S _ _ _ x d hxx hdx k

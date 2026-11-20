@@ -24,6 +24,15 @@ namespace GlobalTheory.AscFin.RowAAUnit
 
 variable {D : D7}
 
+/- English proof (translation)
+Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨α, hαi, hα, a, ha, x, hx, rfl⟩` from `hy`. Use `AddSubgroup.subset_closure ⟨GlobalTheory.FinPlLoc.ePl D (· = v) * α, fun w => ?_, fun w hw => ?_, a, ha, x, hx, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`.
+
+Conclude with `mul_mem (GlobalTheory.FinPlLoc.ePl_int _ w) (hαi w)`. Rewrite using `[map_mul, GlobalTheory.FinPlLoc.evalV_ePl, if_neg hw, zero_mul]`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, smul_eq_mul]`. Unfold `GlobalTheory.FinPlLoc.idem`.
+
+Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, ← GlobalTheory.FinPlLoc.pairA_mul, one_mul]`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add y y' _ _ h h' => rw [smul_add]`. Conclude with `add_mem h h'`.
+
+Consider the case `neg y _ h => rw [smul_neg]`. Conclude with `neg_mem h`.
+-/
 theorem idem_smul_latA {S : HSp D} {L : Lat S} {P : GlobalTheory.FinPl.Pl D → Prop} (v : GlobalTheory.FinPl.Pl D)
     {z : Fin S.rank → AE D} (hz : z ∈ latA S L P) : GlobalTheory.FinPlLoc.idem D (· = v) • z ∈ latA S L (· = v) := by
   induction hz using AddSubgroup.closure_induction with
@@ -40,6 +49,13 @@ theorem idem_smul_latA {S : HSp D} {L : Lat S} {P : GlobalTheory.FinPl.Pl D → 
   | add y y' _ _ h h' => rw [smul_add]; exact add_mem h h'
   | neg y _ h => rw [smul_neg]; exact neg_mem h
 
+/- English proof (translation)
+Introduce `D hOff T L μ0 hL sc G W Mv hM F hF ρ h M hMr v y hy s hs`. Establish `hV : IsSelfDualC (G.V (.grid (2 * ρ + 2) 0)) (G.Λ (.grid (2 * ρ + 2) 0))` using `(G.isV (X := .grid (2 * ρ + 2) 0) ⟨h, Nat.zero_le _⟩ (fun j hj => by injection hj with h1 h2; omega)).sd`. Establish `hO : M ∈ latO (G.V (.grid (2 * ρ + 2) 0)) (G.V (.grid (2 * ρ + 1) 0)) (G.Λ (.grid (2 * ρ + 2) 0) : Set _) (G.Λ (.grid (2 * ρ + 1) 0) : Set _) (fun _ => True)` using `GlobalTheory.RowLoc.mem_latO_negSp.1 hMr.1`. Establish `hyT : y ∈ latV _ (G.Λ (.grid (2 * ρ + 2) 0)) (fun _ => True)` using `GlobalTheory.FinPl.PsiUnit.latV_mono trivial hy`. Establish `hA : M *ᵥ y ∈ latA _ (G.Λ (.grid (2 * ρ + 1) 0)) (fun _ => True)` using `GlobalTheory.FinPl.LatMem.latO_maps hV hO hyT`.
+
+Establish `hy' : GlobalTheory.FinPlLoc.idem D (· = v) • y = y`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, smul_eq_mul]`. Conclude with `(GlobalTheory.FinPlLoc.mem_idAt_iff _ _).1 (GlobalTheory.FinPlLoc.latV_idAt hy i)`. Establish `hAv : M *ᵥ y ∈ latA _ (G.Λ (.grid (2 * ρ + 1) 0)) (· = v)`.
+
+Rewrite using `[← hy', Matrix.mulVec_smul]`. Conclude with `idem_smul_latA v hA`. Conclude with `(((GlobalTheory.SeeSaw.idV_props D W.ψ W.ψ_std v).2.2.2.2.2.2 _ _ _).1 hAv).2 s hs`.
+-/
 theorem smul_mulVec_mem_latV : OnStd fun {D} _ _ {sc} {G} W F => ∀ ρ (h : 2 * ρ + 2 ≤ D.R.m) (M : WO (G.V (.grid (2 * ρ + 2) 0)) (G.V (.grid (2 * ρ + 1) 0))), M ∈ latRow G (2 * ρ + 1) → ∀ v : GlobalTheory.FinPl.Pl D, ∀ y ∈ latV _ (G.Λ (.grid (2 * ρ + 2) 0)) (· = v), ∀ s ∈ GlobalTheory.SeeSaw.idV (D.host.AA⁻¹) v, s • (M *ᵥ y) ∈ latV _ (G.Λ (.grid (2 * ρ + 1) 0)) (· = v) := by
   intro D hOff T L μ0 hL sc G W Mv hM F hF ρ h M hMr v y hy s hs
   have hV : IsSelfDualC (G.V (.grid (2 * ρ + 2) 0)) (G.Λ (.grid (2 * ρ + 2) 0)) :=

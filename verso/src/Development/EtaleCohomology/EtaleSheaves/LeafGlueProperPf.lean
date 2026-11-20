@@ -31,9 +31,15 @@ def GH (Ω L : Type) [Field Ω] [Field L] [Algebra Ω L] (A B : Subalgebra Ω L)
 abbrev Dr (Ω : Type) {L : Type} [Field Ω] [Field L] [Algebra Ω L] (A : Subalgebra Ω L) (u : L) : Subalgebra Ω L :=
   Algebra.adjoin Ω ((A : Set L) ∪ {u⁻¹})
 
+/- English proof (translation)
+Introduce `x hx` and use `Algebra.subset_adjoin (Set.mem_union_left _ hx)`.
+-/
 theorem le_Dr_A {Ω L : Type} [Field Ω] [Field L] [Algebra Ω L] (A : Subalgebra Ω L) (u : L) : A ≤ Dr Ω A u :=
   fun x hx => Algebra.subset_adjoin (Set.mem_union_left _ hx)
 
+/- English proof (translation)
+Introduce `x hx`. Use `show x ∈ Algebra.adjoin Ω ((A : Set L) ∪ {u⁻¹})`. Rewrite using `[h]`. Conclude with `Algebra.subset_adjoin (Set.mem_union_left _ hx)`.
+-/
 theorem le_Dr_B {Ω L : Type} [Field Ω] [Field L] [Algebra Ω L] (A B : Subalgebra Ω L) (u : L)
     (h : Algebra.adjoin Ω ((A : Set L) ∪ {u⁻¹}) = Algebra.adjoin Ω ((B : Set L) ∪ {u})) : B ≤ Dr Ω A u := by
   intro x hx
@@ -64,6 +70,9 @@ def LeafGlueGeneric : Prop := ∀ (Ω L : Type) [Field Ω] [Field L] [Algebra Ω
   ∃ (x : G.C0) (ψ : Spec (G.C0.presheaf.stalk x) ⟶ Sp L), IsGenericPoint x (⊤ : Set G.C0) ∧
     ψ ≫ Spec.map (CommRingCat.ofHom (algebraMap Ω L)) = G.C0.fromSpecStalk x ≫ G.c0
 
+/- English proof (translation)
+Introduce `Ω L _ _ _ A B u hu huA huB hfA hfB hicA hicB hdA hdB hfrA hfrB hadj hV`. Establish `h : GH Ω L A B u` using `⟨hu, huA, huB, hfA, hfB, hicA, hicB, hdA, hdB, hfrA, hfrB, hadj, hV⟩`. Take `⟨G⟩` from `h1 Ω L A B u h`. Take `⟨x, ψ, hx, hψ⟩` from `h6 Ω L A B u h G`. Conclude with `⟨G.C0, G.c0, x, ψ, h2 Ω L A B u h G, h5 Ω L A B u h G, h3 Ω L A B u h G, h4 Ω L A B u h G, hx, hψ⟩`.
+-/
 theorem LeafGlueProper_of (h1 : LeafGlueExists) (h2 : LeafGlueIntegral) (h3 : LeafGlueNormal) (h4 : LeafGlueDim)
     (h5 : LeafGlueIsProper) (h6 : LeafGlueGeneric) : LateralTheory.E.LeafNormalModelPf.LeafGlueProper := by
   intro Ω L _ _ _ A B u hu huA huB hfA hfB hicA hicB hdA hdB hfrA hfrB hadj hV
@@ -72,6 +81,9 @@ theorem LeafGlueProper_of (h1 : LeafGlueExists) (h2 : LeafGlueIntegral) (h3 : Le
   obtain ⟨x, ψ, hx, hψ⟩ := h6 Ω L A B u h G
   exact ⟨G.C0, G.c0, x, ψ, h2 Ω L A B u h G, h5 Ω L A B u h G, h3 Ω L A B u h G, h4 Ω L A B u h G, hx, hψ⟩
 
+/- English proof (translation)
+Set `q : PrimeSpectrum R` to `p`. Establish `: IsIntegrallyClosed ((AlgebraicGeometry.Spec.structureSheaf R).presheaf.stalk q)` using `by haveI : q.asIdeal.IsPrime := q.isPrime`. Conclude with `isIntegrallyClosed_of_isLocalization (R := R) _ q.asIdeal.primeCompl (fun x hx => mem_nonZeroDivisors_of_ne_zero (fun h => hx (h ▸ q.asIdeal.zero_mem)))`. Conclude with `this`.
+-/
 theorem normal_spec (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] (p : Sp R) :
     IsIntegrallyClosed ((Sp R).presheaf.stalk p) := by
   let q : PrimeSpectrum R := p
@@ -81,10 +93,18 @@ theorem normal_spec (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] 
       (fun x hx => mem_nonZeroDivisors_of_ne_zero (fun h => hx (h ▸ q.asIdeal.zero_mem)))
   exact this
 
+/- English proof (translation)
+The claim follows from `IsIntegrallyClosed.of_equiv (asIso (f.stalkMap x)).commRingCatIsoToRingEquiv.symm`.
+-/
 theorem normal_of_openImm {X Y : Scheme.{0}} (f : X ⟶ Y) [IsOpenImmersion f] (x : X)
     (h : IsIntegrallyClosed (X.presheaf.stalk x)) : IsIntegrallyClosed (Y.presheaf.stalk (f.base x)) :=
   IsIntegrallyClosed.of_equiv (asIso (f.stalkMap x)).commRingCatIsoToRingEquiv.symm
 
+/- English proof (translation)
+Introduce `Ω L _ _ _ A B u h G y`. Use `haveI := G.hiA`. Use `haveI := G.hiB`. Establish `hy : y ∈ Set.range G.iA.base ∪ Set.range G.iB.base` using `G.cover ▸ Set.mem_univ y`. Break down `hy with ⟨z, rfl⟩ | ⟨z, rfl⟩` into its components or cases.
+
+Use `haveI := h.2.2.2.2.2.1`. Conclude with `normal_of_openImm G.iA z (normal_spec A z)`. Use `haveI := h.2.2.2.2.2.2.1`. Conclude with `normal_of_openImm G.iB z (normal_spec B z)`.
+-/
 theorem glued_affine_curve_stalks_integrally_closed : LeafGlueNormal := by
   intro Ω L _ _ _ A B u h G y
   haveI := G.hiA; haveI := G.hiB
@@ -93,10 +113,18 @@ theorem glued_affine_curve_stalks_integrally_closed : LeafGlueNormal := by
   · haveI := h.2.2.2.2.2.1; exact normal_of_openImm G.iA z (normal_spec A z)
   · haveI := h.2.2.2.2.2.2.1; exact normal_of_openImm G.iB z (normal_spec B z)
 
+/- English proof (translation)
+The claim follows from `LeafGlueProper_of h1 h2 glued_affine_curve_stalks_integrally_closed h4 h5 h6`.
+-/
 theorem LeafGlueProper_of' (h1 : LeafGlueExists) (h2 : LeafGlueIntegral) (h4 : LeafGlueDim)
     (h5 : LeafGlueIsProper) (h6 : LeafGlueGeneric) : LateralTheory.E.LeafNormalModelPf.LeafGlueProper :=
   LeafGlueProper_of h1 h2 glued_affine_curve_stalks_integrally_closed h4 h5 h6
 
+/- English proof (translation)
+Establish `h1 : V ⊆ closure (V ∩ U)` using `subset_closure_inter_of_isPreirreducible_of_isOpen hV.2 hVo (by rwa [Set.inter_comm])`. Establish `h2 : closure U = Set.univ`. Apply `Set.eq_univ_of_univ_subset` to reduce the goal to its premises. Rewrite using `[← hc]`. Conclude with `Set.union_subset subset_closure (h1.trans (closure_mono Set.inter_subset_right))`.
+
+Use `hU.closure` as an intermediate fact. Rewrite `this` using `[h2]`. Conclude with `(irreducibleSpace_def X).2 this`.
+-/
 theorem irr_union {X : Type} [TopologicalSpace X] {U V : Set X} (hU : IsIrreducible U) (hV : IsIrreducible V)
     (hVo : IsOpen U) (hi : (U ∩ V).Nonempty) (hc : U ∪ V = Set.univ) : IrreducibleSpace X := by
   have h1 : V ⊆ closure (V ∩ U) :=
@@ -109,6 +137,15 @@ theorem irr_union {X : Type} [TopologicalSpace X] {U V : Set X} (hU : IsIrreduci
   rw [h2] at this
   exact (irreducibleSpace_def X).2 this
 
+/- English proof (translation)
+Introduce `Ω L _ _ _ A B u h G`. Use `haveI := G.hiA`. Use `haveI := G.hiB`. Use `haveI : IrreducibleSpace G.C0 := by`. Establish `hA` using `(IrreducibleSpace.isIrreducible_univ (Sp A)).image G.iA.base G.iA.base.hom.continuous.continuousOn`.
+
+Establish `hB` using `(IrreducibleSpace.isIrreducible_univ (Sp B)).image G.iB.base G.iB.base.hom.continuous.continuousOn`. Rewrite `hA`, `hB` using `[Set.image_univ]`. Use `irr_union hA hB G.iA.isOpenEmbedding.isOpen_range ?_ G.cover` and prove the remaining obligations. Rewrite using `[G.inter]`. Conclude with `Set.range_nonempty _`.
+
+Use `haveI : ∀ y : G.C0, _root_.IsReduced (G.C0.presheaf.stalk y) := by`. Introduce `y`. Establish `hy : y ∈ Set.range G.iA.base ∪ Set.range G.iB.base` using `G.cover ▸ Set.mem_univ y`. Break down `hy with ⟨z, rfl⟩ | ⟨z, rfl⟩` into its components or cases. Conclude with `isReduced_of_injective (asIso (G.iA.stalkMap z)).commRingCatIsoToRingEquiv.toRingHom (asIso (G.iA.stalkMap z)).commRingCatIsoToRingEquiv.injective`.
+
+Conclude with `isReduced_of_injective (asIso (G.iB.stalkMap z)).commRingCatIsoToRingEquiv.toRingHom (asIso (G.iB.stalkMap z)).commRingCatIsoToRingEquiv.injective`. Use `haveI : IsReduced G.C0 := isReduced_of_isReduced_stalk _`. Conclude with `isIntegral_of_irreducibleSpace_of_isReduced _`.
+-/
 theorem glued_affine_curve_is_integral_scheme : LeafGlueIntegral := by
   intro Ω L _ _ _ A B u h G
   haveI := G.hiA; haveI := G.hiB
@@ -129,6 +166,9 @@ theorem glued_affine_curve_is_integral_scheme : LeafGlueIntegral := by
   haveI : IsReduced G.C0 := isReduced_of_isReduced_stalk _
   exact isIntegral_of_irreducibleSpace_of_isReduced _
 
+/- English proof (translation)
+The claim follows from `LeafGlueProper_of h1 glued_affine_curve_is_integral_scheme glued_affine_curve_stalks_integrally_closed h4 h5 h6`.
+-/
 theorem LeafGlueProper_of'' (h1 : LeafGlueExists) (h4 : LeafGlueDim) (h5 : LeafGlueIsProper) (h6 : LeafGlueGeneric) :
     LateralTheory.E.LeafNormalModelPf.LeafGlueProper :=
   LeafGlueProper_of h1 glued_affine_curve_is_integral_scheme glued_affine_curve_stalks_integrally_closed h4 h5 h6

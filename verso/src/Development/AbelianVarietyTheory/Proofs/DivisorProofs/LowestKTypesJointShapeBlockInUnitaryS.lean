@@ -7,10 +7,16 @@ open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible GlobalTheo
 
 namespace GlobalTheory.TypesMirror
 
+/- English proof (translation)
+Apply the tactic sequence `cases a <;> cases b <;> simp [sameBlock]`.
+-/
 theorem sameBlock_swap {p q : ℕ} (a b : Ix p q) :
     sameBlock (p := q) (q := p) a.swap b.swap ↔ sameBlock a b := by
   cases a <;> cases b <;> simp [sameBlock]
 
+/- English proof (translation)
+Use `Finset.card_equiv (Equiv.sumComm (Fin p) (Fin q)) ?_` and prove the remaining obligations. Introduce `b`. Simplify using `using h b`.
+-/
 theorem card_filter_swap {p q : ℕ} (P : Ix p q → Prop) (Q : Ix q p → Prop)
     [DecidablePred P] [DecidablePred Q] (h : ∀ b, P b ↔ Q b.swap) :
     (Finset.univ.filter P).card = (Finset.univ.filter Q).card := by
@@ -18,6 +24,9 @@ theorem card_filter_swap {p q : ℕ} (P : Ix p q → Prop) (Q : Ix q p → Prop)
   intro b
   simpa using h b
 
+/- English proof (translation)
+Unfold `blattner rhoNC`. Rewrite using `[card_filter_swap (fun b : Ix p q => ¬ sameBlock a b ∧ lam b.swap < lam a.swap) (fun b : Ix q p => ¬ sameBlock a.swap b ∧ lam b < lam a.swap) (fun b => by rw [sameBlock_swap]), card_filter_swap (fun b : Ix p q => ¬ sameBlock a b ∧ lam a.swap < lam b.swap) (fun b : Ix q p => ¬ sam …`.
+-/
 theorem blattner_swap {p q : ℕ} (lam : Ix q p → ℚ) (a : Ix p q) :
     blattner (fun b : Ix p q => lam b.swap) a = blattner lam a.swap := by
   unfold blattner rhoNC
@@ -34,15 +43,24 @@ theorem blattner_swap {p q : ℕ} (lam : Ix q p → ℚ) (a : Ix p q) :
       (fun b : Ix q p => sameBlock a.swap b ∧ lam a.swap < lam b)
       (fun b => by rw [sameBlock_swap])]
 
+/- English proof (translation)
+Apply the tactic sequence `cases a <;> simp only [shiftNu, blattner_swap, Sum.swap_inl, Sum.swap_inr, cPair] <;> ring`.
+-/
 theorem shiftNu_swap {p q : ℕ} (r s : ℕ) (lam : Ix q p → ℚ) (a : Ix p q) :
     shiftNu (cPair r s) (blattner (fun b : Ix p q => lam b.swap)) a =
       shiftNu (cPair s r) (blattner lam) a.swap := by
   cases a <;> simp only [shiftNu, blattner_swap, Sum.swap_inl, Sum.swap_inr, cPair] <;> ring
 
+/- English proof (translation)
+Apply the tactic sequence `funext b; cases b <;> rfl`.
+-/
 theorem ofBlocks_swap {p q : ℕ} (l₁ l₂ : List ℚ) :
     (ofBlocks l₁ l₂ : Ix p q → ℚ) = fun b => (ofBlocks l₂ l₁ : Ix q p → ℚ) b.swap := by
   funext b; cases b <;> rfl
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `h`. Use `⟨h1.comp (Equiv.sumComm (Fin p) (Fin q)).injective, ?_, fun a => h3 _, fun a b => h4 _ _⟩` and prove the remaining obligations. Introduce `a b hab`. Apply `h2` to reduce the goal to its premises. Apply the tactic sequence `cases a <;> cases b <;> simpa [posC] using hab`.
+-/
 theorem isParam_swap {p q : ℕ} (lam : Ix q p → ℚ) (h : IsParam lam) :
     IsParam (fun b : Ix p q => lam b.swap) := by
   obtain ⟨h1, h2, h3, h4⟩ := h
@@ -51,6 +69,11 @@ theorem isParam_swap {p q : ℕ} (lam : Ix q p → ℚ) (h : IsParam lam) :
   apply h2
   cases a <;> cases b <;> simpa [posC] using hab
 
+/- English proof (translation)
+Take `⟨a, b, c, d, ha, hc, hb, hd, pa, pb, pc, pd, l1, l2, l3, l4, e1, e2⟩` from `h`. Use `⟨c, d, a, b, hc, ha, hd, hb, pc, pd, pa, pb, l2, l1, l4, l3, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Rewrite using `[shiftNu_swap, e1, ofBlocks_swap]`. Simplify using the standard rewrite rules.
+
+Use function extensionality and compare the values at `x`. Rewrite using `[shiftNu_swap, e2, ofBlocks_swap]`. Simplify using the standard rewrite rules.
+-/
 theorem jointShape_swap {p q r s : ℕ} (lam : Ix q p → ℚ) (lam' : Ix s r → ℚ)
     (h : JointShape q p s r (blattner lam) (blattner lam')) :
     JointShape p q r s (blattner fun b => lam b.swap) (blattner fun b => lam' b.swap) := by
@@ -63,6 +86,9 @@ theorem jointShape_swap {p q r s : ℕ} (lam : Ix q p → ℚ) (lam' : Ix s r �
     rw [shiftNu_swap, e2, ofBlocks_swap]
     simp
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11⟩` from `h`. Establish `hp : (ga ++ de ++ al ++ be).Perm (al ++ be ++ ga ++ de)`. Rewrite using `[List.append_assoc (ga ++ de), List.append_assoc (al ++ be)]`. Conclude with `List.perm_append_comm`. Use `⟨h1, by omega, h5, h6, h3, h4, hp.nodup_iff.mpr h7, fun e he => h8 e (List.perm_append_comm.mem_iff.mp he), fun e he => h9 e (List.perm_append_comm.mem_iff.mp he), fun e he => h10 e (hp.mem_iff.mp he), fun e he => h11 e (hp.mem_iff.mp he)⟩` and prove the remaining obligations.
+-/
 theorem hypA_swap {t : ℕ} {al be ga de : List ℚ} (h : HypA t al be ga de) :
     HypA t ga de al be := by
   obtain ⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11⟩ := h
@@ -74,6 +100,11 @@ theorem hypA_swap {t : ℕ} {al be ga de : List ℚ} (h : HypA t al be ga de) :
     fun e he => h9 e (List.perm_append_comm.mem_iff.mp he),
     fun e he => h10 e (hp.mem_iff.mp he), fun e he => h11 e (hp.mem_iff.mp he)⟩
 
+/- English proof (translation)
+Introduce `t al be ga de h`. Take `⟨k1, -, k3, k4, k5⟩` from `GlobalTheory.T.lowest_kTypes_jointShape_block_unitary t ga de al be (hypA_swap h)`. Establish `e1 : lamA al be ga de = fun b => lamA ga de al be b.swap` using `ofBlocks_swap _ _`. Establish `e2 : lamM' t al be ga de = fun b => lamA' t ga de al be b.swap` using `ofBlocks_swap _ _`. Rewrite using `[e1, e2]`.
+
+Use `⟨jointShape_swap _ _ k1, isParam_swap _ k3, fun a => ?_, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[shiftNu_swap]`. Conclude with `k4 a.swap`. Rewrite using `[shiftNu_swap]`. Conclude with `k5 c.swap`.
+-/
 theorem types_mirror : ∀ (t : ℕ) (al be ga de : List ℚ), HypA t al be ga de → JointShape _ _ _ _ (blattner (lamA al be ga de)) (blattner (lamM' t al be ga de)) ∧ IsParam (lamM' t al be ga de) ∧ (∀ a, (0 < lamA al be ga de a → 0 ≤ shiftNu (cPair (al.length + de.length) (ga.length + be.length + t)) (blattner (lamA al be ga de)) a) ∧ (lamA al be ga de a < 0 → shiftNu (cPair (al.length + de.length) (ga.length + be.length + t)) (blattner (lamA al be ga de)) a ≤ 0)) ∧ (∀ c, ((t : ℚ) / 2 < lamM' t al be ga de c → 0 ≤ shiftNu (cPair (al.length + be.length) (ga.length + de.length)) (blattner (lamM' t al be ga de)) c) ∧ (lamM' t al be ga de c ≤ (t : ℚ) / 2 → shiftNu (cPair (al.length + be.length) (ga.length + de.length)) (blattner (lamM' t al be ga de)) c ≤ 0)) := by
   intro t al be ga de h
   obtain ⟨k1, -, k3, k4, k5⟩ := GlobalTheory.T.lowest_kTypes_jointShape_block_unitary t ga de al be (hypA_swap h)

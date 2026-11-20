@@ -20,6 +20,11 @@ instance instModuleFiniteArchMatrix : Module.Finite ℝ (ArchMatrix K n) :=
 
 instance instFreeArchMatrix : Module.Free ℝ (ArchMatrix K n) := Module.Free.of_divisionRing ℝ _
 
+/- English proof (translation)
+Rewrite using `[NormedSpace.exp_eq_tsum ℝ]`. Use `show ∑' k, _ = _`. Rewrite using `[tsum_eq_sum (s := Finset.range 2)]`. Simplify using `[Finset.sum_range_succ]`. Introduce `k hk`.
+
+Simplify using `only [Finset.mem_range, not_lt] at hk`. Take `⟨m, rfl⟩` from `Nat.exists_eq_add_of_le hk`. Rewrite using `[pow_add, pow_two, h, zero_mul, smul_zero]`.
+-/
 theorem exp_eq_one_add_of_mul_self_eq_zero {𝔸 : Type*} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸]
     [CompleteSpace 𝔸] {Y : 𝔸} (h : Y * Y = 0) : NormedSpace.exp Y = 1 + Y := by
   rw [NormedSpace.exp_eq_tsum ℝ]
@@ -34,10 +39,16 @@ theorem exp_eq_one_add_of_mul_self_eq_zero {𝔸 : Type*} [NormedRing 𝔸] [Nor
 def archExp (Y : ArchMatrix K n) : AdelicGLn.AdelicGL K n :=
   infEmb K n ((isExpLieAlgebra K n).expG ⟨Y, Submodule.mem_top⟩)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_expG_top (Y : ArchMatrix K n) :
     ((((isExpLieAlgebra K n).expG ⟨Y, Submodule.mem_top⟩ : archGroup K n) : (ArchMatrix K n)ˣ) :
       ArchMatrix K n) = NormedSpace.exp Y := rfl
 
+/- English proof (translation)
+Use `Subtype.ext (Units.ext ?_)` and prove the remaining obligations. Simplify using `only [Subgroup.coe_mul, Units.val_mul, coe_expG_top]`. Conclude with `exp_add_of_commute' ℝ h`.
+-/
 theorem expG_top_add {Y Z : ArchMatrix K n} (h : Commute Y Z) :
     (isExpLieAlgebra K n).expG ⟨Y + Z, Submodule.mem_top⟩ =
       (isExpLieAlgebra K n).expG ⟨Y, Submodule.mem_top⟩ *
@@ -46,15 +57,24 @@ theorem expG_top_add {Y Z : ArchMatrix K n} (h : Commute Y Z) :
   simp only [Subgroup.coe_mul, Units.val_mul, coe_expG_top]
   exact exp_add_of_commute' ℝ h
 
+/- English proof (translation)
+Establish `: (⟨0, Submodule.mem_top⟩ : archLie K n) = 0` using `rfl`. Rewrite using `[archExp, this, IsExpLieAlgebra.expG_zero, map_one]`.
+-/
 theorem archExp_zero : archExp (0 : ArchMatrix K n) = 1 := by
   have : (⟨0, Submodule.mem_top⟩ : archLie K n) = 0 := rfl
   rw [archExp, this, IsExpLieAlgebra.expG_zero, map_one]
 
+/- English proof (translation)
+Rewrite using `[archExp, expG_top_add h, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem archExp_add {Y Z : ArchMatrix K n} (h : Commute Y Z) :
     archExp (Y + Z) = archExp Y * archExp Z := by
   rw [archExp, expG_top_add h, map_mul]
   rfl
 
+/- English proof (translation)
+The claim follows from `continuous_infEmb.comp ((isExpLieAlgebra K n).continuous_expG.comp (continuous_id.subtype_mk _))`.
+-/
 theorem continuous_archExp : Continuous (archExp (K := K) (n := n)) :=
   continuous_infEmb.comp ((isExpLieAlgebra K n).continuous_expG.comp
     (continuous_id.subtype_mk _))
@@ -64,6 +84,11 @@ def lieOf : ArchMatrix K n →ₗ[ℝ] (isExpLieAlgebra K n).lieSubalgebra where
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Rewrite using `[uAction_ι_apply]`. Establish `h` using `(isExpLieAlgebra K n).hasDerivAt_rightDeriv (ψ.2 (g * archExp (s₀ • Y))) ((isExpLieAlgebra K n).ofLie (lieOf Y)) 1`. Rewrite `h` using `[← sub_self s₀]`. Use `(h.comp_sub_const s₀ s₀).congr_of_eventuallyEq (Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Simplify using `only [archSlice_apply, one_mul]`.
+
+Establish `e : infEmb K n ((isExpLieAlgebra K n).expG ((s - s₀) • (isExpLieAlgebra K n).ofLie (lieOf Y))) = archExp ((s - s₀) • Y)` using `rfl`. Rewrite using `[e, mul_assoc, ← archExp_add ((Commute.refl Y).smul_left _ |>.smul_right _)]`. Rewrite using `[show s₀ • Y + (s - s₀) • Y = s • Y by module]`.
+-/
 theorem hasDerivAt_archExp (ψ : archSmooth K n) (g : AdelicGLn.AdelicGL K n) (Y : ArchMatrix K n)
     (s₀ : ℝ) :
     HasDerivAt (fun s : ℝ => (ψ : AdelicGLn.AdelicGL K n → ℂ) (g * archExp (s • Y)))
@@ -84,6 +109,9 @@ def diffSum (ψ : AdelicGLn.AdelicGL K n → ℂ) (x : AdelicGLn.AdelicGL K n) {
     (Y : Fin k → ArchMatrix K n) : ℂ :=
   ∑ ε : Fin k → Bool, (altSign ε : ℂ) * ψ (x * archExp (altPoint Y ε))
 
+/- English proof (translation)
+Rewrite using `[altSum_eq_sum, diffSum]`. Use `Finset.sum_congr rfl fun ε _ => ?_` and prove the remaining obligations. Rewrite using `[zero_add, zsmul_eq_mul]`.
+-/
 theorem diffSum_eq_altSum (ψ : AdelicGLn.AdelicGL K n → ℂ) (x : AdelicGLn.AdelicGL K n) {k : ℕ}
     (Y : Fin k → ArchMatrix K n) :
     diffSum ψ x Y = altSum k (fun Z => ψ (x * archExp Z)) Y 0 := by
@@ -91,6 +119,9 @@ theorem diffSum_eq_altSum (ψ : AdelicGLn.AdelicGL K n → ℂ) (x : AdelicGLn.A
   refine Finset.sum_congr rfl fun ε _ => ?_
   rw [zero_add, zsmul_eq_mul]
 
+/- English proof (translation)
+Unfold `altPoint`. Use `Commute.sum_right _ _ _ fun i _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `h i`. Conclude with `Commute.zero_right Z`.
+-/
 theorem commute_altPoint {Z : ArchMatrix K n} {k : ℕ} {Y : Fin k → ArchMatrix K n}
     (h : ∀ i, Commute Z (Y i)) (ε : Fin k → Bool) : Commute Z (altPoint Y ε) := by
   unfold altPoint
@@ -99,6 +130,9 @@ theorem commute_altPoint {Z : ArchMatrix K n} {k : ℕ} {Y : Fin k → ArchMatri
   · exact h i
   · exact Commute.zero_right Z
 
+/- English proof (translation)
+Rewrite using `[diffSum_eq_altSum, altSum_succ, altSum_eq_sum, diffSum, diffSum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun ε _ => ?_` and prove the remaining obligations. Establish `hc : Commute (Y 0) (altPoint (Fin.tail Y) ε)` using `commute_altPoint (fun i => hY 0 i.succ) ε`. Rewrite using `[zero_add, zsmul_eq_mul, mul_sub, add_comm, archExp_add hc, mul_assoc]`.
+-/
 theorem diffSum_succ (ψ : AdelicGLn.AdelicGL K n → ℂ) (x : AdelicGLn.AdelicGL K n) {k : ℕ}
     (Y : Fin (k + 1) → ArchMatrix K n) (hY : ∀ i j, Commute (Y i) (Y j)) :
     diffSum ψ x Y = diffSum ψ (x * archExp (Y 0)) (Fin.tail Y) - diffSum ψ x (Fin.tail Y) := by
@@ -108,6 +142,9 @@ theorem diffSum_succ (ψ : AdelicGLn.AdelicGL K n → ℂ) (x : AdelicGLn.Adelic
     commute_altPoint (fun i => hY 0 i.succ) ε
   rw [zero_add, zsmul_eq_mul, mul_sub, add_comm, archExp_add hc, mul_assoc]
 
+/- English proof (translation)
+Simplify using `only [diffSum, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun ε _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem diffSum_sum {ι : Type*} (s : Finset ι) (c : ι → ℂ) (ψ : ι → AdelicGLn.AdelicGL K n → ℂ)
     (x : AdelicGLn.AdelicGL K n) {k : ℕ} (Y : Fin k → ArchMatrix K n) :
     diffSum (fun g => ∑ j ∈ s, c j * ψ j g) x Y = ∑ j ∈ s, c j * diffSum (ψ j) x Y := by
@@ -116,6 +153,13 @@ theorem diffSum_sum {ι : Type*} (s : Finset ι) (c : ι → ℂ) (ψ : ι → A
   refine Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun ε _ => ?_
   ring
 
+/- English proof (translation)
+Establish `key : ∀ (P : ArchMatrix K n), Commute Y₀ P → ∀ s : ℝ, x * archExp (s • Y₀) * archExp P = x * archExp P * archExp (s • Y₀)`. Introduce `P hP s`. Rewrite using `[mul_assoc, mul_assoc, ← archExp_add (hP.smul_left s), ← archExp_add (hP.smul_left s).symm, add_comm]`. Use `HasDerivAt.sum (u := Finset.univ) (x := s₀) (A := fun ε (s : ℝ) => (altSign ε : ℂ) * (ψ : AdelicGLn.AdelicGL K n → ℂ) (x * archExp (altPoint Y ε) * archExp (s • Y₀))) (A' := fun ε => (altSign ε : ℂ) * (uAction (UniversalEnvelopingAlgebra.ι ℝ (lieOf Y₀)) ψ : AdelicGLn.AdelicGL K n …` as an intermediate fact. Use `(this.congr_of_eventuallyEq (Eventually.of_forall fun s => ?_)).congr_deriv ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_apply]`. Simplify using `only [diffSum]`. Use `Finset.sum_congr rfl fun ε _ => ?_` and prove the remaining obligations. Rewrite using `[key _ (commute_altPoint hc ε)]`. Simplify using `only [diffSum]`.
+
+Use `Finset.sum_congr rfl fun ε _ => ?_` and prove the remaining obligations. Rewrite using `[key _ (commute_altPoint hc ε)]`.
+-/
 theorem hasDerivAt_diffSum (ψ : archSmooth K n) (x : AdelicGLn.AdelicGL K n) (Y₀ : ArchMatrix K n)
     {k : ℕ} (Y : Fin k → ArchMatrix K n) (hc : ∀ i, Commute Y₀ (Y i)) (s₀ : ℝ) :
     HasDerivAt (fun s : ℝ => diffSum (ψ : AdelicGLn.AdelicGL K n → ℂ) (x * archExp (s • Y₀)) Y)
@@ -155,12 +199,24 @@ def uJ : (k : ℕ) → (Fin k → Fin (archDim K n)) → UEnv K n
   | 0, _ => 1
   | k + 1, J => uJ k (Fin.tail J) * UniversalEnvelopingAlgebra.ι ℝ (lieOf (archBasis K n (J 0)))
 
+/- English proof (translation)
+Rewrite using `[uJ, map_mul, Module.End.mul_apply]`.
+-/
 theorem uAction_uJ_succ {k : ℕ} (J : Fin (k + 1) → Fin (archDim K n)) (ψ : archSmooth K n) :
     uAction (uJ (k + 1) J) ψ =
       uAction (uJ k (Fin.tail J)) (uAction (UniversalEnvelopingAlgebra.ι ℝ
         (lieOf (archBasis K n (J 0)))) ψ) := by
   rw [uJ, map_mul, Module.End.mul_apply]
 
+/- English proof (translation)
+Establish `hc : Continuous f` using `LinearMap.continuous_of_finiteDimensional f`. Take `⟨δ, hδ, hδf⟩` from `Metric.continuousAt_iff.1 hc.continuousAt 1 one_pos`. Use `⟨2 / δ, by positivity, fun x => ?_⟩` and prove the remaining obligations. Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Simplify using the standard rewrite rules.
+
+Establish `hxn : 0 < ‖x‖` using `norm_pos_iff.2 hx`. Use `set c : ℝ := δ / (2 * ‖x‖)`. Establish `hc0 : 0 < c` using `by positivity`. Establish `h1 : dist (c • x) 0 < δ`. Rewrite using `[dist_zero_right, norm_smul, Real.norm_of_nonneg hc0.le]`.
+
+Establish `: c * ‖x‖ = δ / 2` using `by simp only [c]; field_simp`. Rewrite using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2` using `hδf h1`. Rewrite `h2` using `[map_zero, dist_zero_right, map_smul, smul_eq_mul, Real.norm_eq_abs, abs_mul, abs_of_pos hc0]`.
+
+Establish `: |f x| < 1 / c` using `by rw [lt_div_iff₀ hc0]; linarith`. Use `this.le.trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [c]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_abs_le_of_linear (f : ArchMatrix K n →ₗ[ℝ] ℝ) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ x, |f x| ≤ C * ‖x‖ := by
   have hc : Continuous f := LinearMap.continuous_of_finiteDimensional f
@@ -182,6 +238,9 @@ theorem exists_abs_le_of_linear (f : ArchMatrix K n →ₗ[ℝ] ℝ) :
   refine this.le.trans (le_of_eq ?_)
   simp only [c]; field_simp
 
+/- English proof (translation)
+The claim follows from `|(archBasis K n).repr Y j| ≤ c * ‖Y‖ := by choose C hC0 hC using fun j => exists_abs_le_of_linear ((archBasis K n).coord j) refine ⟨∑ j, C j, Finset.sum_nonneg fun j _ => hC0 j, fun Y j => ?_⟩ refine (hC j Y).trans (mul_le_mul_of_nonneg_right ?_ (norm_nonneg _)) exact Finset.sing …`.
+-/
 theorem exists_abs_archBasis_repr_le :
     ∃ c : ℝ, 0 ≤ c ∧ ∀ (Y : ArchMatrix K n) (j : Fin (archDim K n)),
       |(archBasis K n).repr Y j| ≤ c * ‖Y‖ := by
@@ -190,6 +249,9 @@ theorem exists_abs_archBasis_repr_le :
   refine (hC j Y).trans (mul_le_mul_of_nonneg_right ?_ (norm_nonneg _))
   exact Finset.single_le_sum (f := C) (fun j _ => hC0 j) (Finset.mem_univ j)
 
+/- English proof (translation)
+Use `conv_lhs => rw [← (archBasis K n).sum_repr Y]`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, Submodule.coe_sum, Submodule.coe_smul_of_tower, Finset.sum_apply, Pi.smul_apply, Complex.real_smul]`.
+-/
 theorem uAction_lieOf_apply (Y : ArchMatrix K n) (ψ : archSmooth K n) (g : AdelicGLn.AdelicGL K n) :
     (uAction (UniversalEnvelopingAlgebra.ι ℝ (lieOf Y)) ψ : AdelicGLn.AdelicGL K n → ℂ) g =
       ∑ j, ((archBasis K n).repr Y j : ℂ) *
@@ -200,6 +262,9 @@ theorem uAction_lieOf_apply (Y : ArchMatrix K n) (ψ : archSmooth K n) (g : Adel
     Submodule.coe_sum, Submodule.coe_smul_of_tower, Finset.sum_apply, Pi.smul_apply,
     Complex.real_smul]
 
+/- English proof (translation)
+The claim follows from `| 0, ψ, x, Y, _, B, _, hB => by have h := hB Fin.elim0 Fin.elim0 fun i => i.elim0 simp only [uJ, map_one, Module.End.one_apply, Finset.univ_eq_empty, Finset.sum_empty, archExp_zero, mul_one] at h simpa [diffSum, altSign, altPoint, archExp_zero] using h | k + 1, ψ, x, Y, hY, B, hB …`.
+-/
 theorem norm_diffSum_le {c : ℝ} (hc0 : 0 ≤ c)
     (hc : ∀ (Y : ArchMatrix K n) (j : Fin (archDim K n)), |(archBasis K n).repr Y j| ≤ c * ‖Y‖) :
     ∀ (k : ℕ) (ψ : archSmooth K n) (x : AdelicGLn.AdelicGL K n) (Y : Fin k → ArchMatrix K n),
@@ -276,12 +341,26 @@ theorem norm_diffSum_le {c : ℝ} (hc0 : 0 ≤ c)
 def HasGrowth (φ : AdelicGLn.AdelicGL K n → ℂ) (N : ℕ) : Prop :=
   ∃ C : ℝ, ∀ g, ‖φ g‖ ≤ C * height g ^ N
 
+/- English proof (translation)
+Take `⟨C₁, h₁⟩` from `hφ`. Take `⟨C₂, h₂⟩` from `hψ`. Conclude with `⟨C₁ + C₂, fun g => (norm_add_le _ _).trans (by rw [add_mul]; exact add_le_add (h₁ g) (h₂ g))⟩`.
+-/
 theorem HasGrowth.add {φ ψ : AdelicGLn.AdelicGL K n → ℂ} {N : ℕ} (hφ : HasGrowth φ N)
     (hψ : HasGrowth ψ N) : HasGrowth (φ + ψ) N := by
   obtain ⟨C₁, h₁⟩ := hφ
   obtain ⟨C₂, h₂⟩ := hψ
   exact ⟨C₁ + C₂, fun g => (norm_add_le _ _).trans (by rw [add_mul]; exact add_le_add (h₁ g) (h₂ g))⟩
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `hφ`. Take `⟨M, hM⟩` from `exists_height_infEmb_le (K := K) (n := n) hDc.isCompact`. Use `set M' := max M 1`. Establish `hc0 : 0 ≤ heightConst K n` using `le_trans zero_le_one one_le_heightConst`. Use `⟨|C| * (heightConst K n * M') ^ N * ∫ y, ‖D y‖ ∂μ, fun g => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hψ]`. Establish `hb : ∀ y, ‖φ (g * infEmb K n y) * D y‖ ≤ |C| * (heightConst K n * M') ^ N * height g ^ N * ‖D y‖`. Introduce `y`. Distinguish the cases in `hy : y ∈ tsupport D`. Rewrite using `[norm_mul]`.
+
+Use `mul_le_mul_of_nonneg_right ?_ (norm_nonneg _)` and prove the remaining obligations. Establish `hhg` using `height_pos g`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (height_pos _).le ?_ _) (abs_nonneg _)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Use `_ = |C| * (heightConst K n * M') ^ N * height g ^ N := by ring`. Rewrite using `[image_eq_zero_of_notMem_tsupport hy, mul_zero, norm_zero, mul_zero]`. Establish `hint : Integrable (fun y => ‖D y‖) μ` using `hD.norm.integrable_of_hasCompactSupport hDc.norm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_const_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem HasGrowth.of_eq_integral [MeasurableSpace (archGroup K n)] [BorelSpace (archGroup K n)]
     {φ ψ : AdelicGLn.AdelicGL K n → ℂ} {N : ℕ}
     (hφ : HasGrowth φ N) (μ : Measure (archGroup K n)) [μ.IsHaarMeasure]
@@ -319,6 +398,17 @@ theorem HasGrowth.of_eq_integral [MeasurableSpace (archGroup K n)] [BorelSpace (
     _ = |C| * (heightConst K n * M') ^ N * (∫ y, ‖D y‖ ∂μ) * height g ^ N := by
         rw [integral_const_mul]; ring
 
+/- English proof (translation)
+Proceed by induction on `u using UEnv.induction with`. Consider the case `halg r`. Introduce `φ hφ hN`. Rewrite using `[coe_uAction_algebraMap]`. Take `⟨C, hC⟩` from `hN`.
+
+Use `⟨|r| * C, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, norm_mul, Complex.norm_real, Real.norm_eq_abs, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hC g) (abs_nonneg r)`. Consider the case `hι X`. Introduce `φ hφ hN`.
+
+Set `_ : MeasurableSpace (archGroup K n)` to `borel _`. Establish `_ : BorelSpace (archGroup K n)` using `⟨rfl⟩`. Take `⟨D, hD, hDc, hrep⟩` from `exists_integral_uAction_ι hφ Measure.haar X`. Conclude with `hN.of_eq_integral Measure.haar hD hDc hrep`. Consider the case `hmul a b ha hb`.
+
+Introduce `φ hφ hN`. Rewrite using `[coe_uAction_mul]`. Conclude with `ha (hφ.uAction b) (hb hφ hN)`. Consider the case `hadd a b ha hb`. Introduce `φ hφ hN`.
+
+Rewrite using `[map_add, LinearMap.add_apply, Submodule.coe_add]`. Conclude with `(ha hφ hN).add (hb hφ hN)`.
+-/
 theorem hasGrowth_uAction {N : ℕ} (u : UEnv K n) :
     ∀ {φ : AdelicGLn.AdelicGL K n → ℂ} (hφ : IsSmoothKZ φ), HasGrowth φ N →
       HasGrowth (uAction u ⟨φ, hφ.isSmooth.1⟩ : AdelicGLn.AdelicGL K n → ℂ) N := by
@@ -345,6 +435,21 @@ theorem hasGrowth_uAction {N : ℕ} (u : UEnv K n) :
     rw [map_add, LinearMap.add_apply, Submodule.coe_add]
     exact (ha hφ hN).add (hb hφ hN)
 
+/- English proof (translation)
+Take `⟨C₀, N, hC₀⟩` from `hφ.hasModerateGrowth`. Use `⟨N, fun k T => ?_⟩` and prove the remaining obligations. Take `⟨c, hc0, hc⟩` from `exists_abs_archBasis_repr_le (K := K) (n := n)`. Establish `hgrowth : ∀ J : Fin k → Fin (archDim K n), HasGrowth (uAction (uJ k J) ⟨φ, hφ.isSmooth.1⟩ : AdelicGLn.AdelicGL K n → ℂ) N` using `fun J => hasGrowth_uAction (uJ k J) hφ.isSmoothKZ ⟨C₀, hC₀⟩`. Use `choose CJ hCJ using hgrowth`.
+
+Use `set T' := (k : ℝ) * max T 0`. Use `set S : Set (archGroup K n) := (fun Z : ArchMatrix K n => (isExpLieAlgebra K n).expG ⟨Z, Submodule.mem_top⟩) '' Metric.closedBall 0 T'`. Establish `hS : IsCompact S` using `(isCompact_closedBall _ _).image ((isExpLieAlgebra K n).continuous_expG.comp (continuous_id.subtype_mk _))`. Take `⟨Mh, hMh⟩` from `exists_height_infEmb_le (K := K) (n := n) hS`. Use `set Mh' := max Mh 1`.
+
+Use `set Cs := ∑ J, |CJ J|`. Establish `hCs : 0 ≤ Cs` using `Finset.sum_nonneg fun J _ => abs_nonneg _`. Establish `hc0' : 0 ≤ heightConst K n` using `le_trans zero_le_one one_le_heightConst`. Use `⟨(archDim K n * c) ^ k * (Cs * (heightConst K n * Mh') ^ N), fun x Y hYY hYT => ?_⟩` and prove the remaining obligations. Establish `hcomm : ∀ i j, Commute (Y i) (Y j)` using `fun i j => (hYY i j).trans (hYY j i).symm`.
+
+Establish `hB0 : 0 ≤ Cs * (heightConst K n * Mh') ^ N * height x ^ N`. Use `height_pos x` as an intermediate fact. Establish `: 0 ≤ Mh'` using `le_trans zero_le_one (le_max_right _ _)`. Check the signs of the components of the expression. Establish `h` using `norm_diffSum_le hc0 hc k ⟨φ, hφ.isSmooth.1⟩ x Y hcomm _ hB0 fun J t ht => by`.
+
+Establish `hZ : ‖∑ i, t i • Y i‖ ≤ T'`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_smul, Real.norm_of_nonneg (ht i).1]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `_ = T' := by rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Establish `hmem : (isExpLieAlgebra K n).expG ⟨∑ i, t i • Y i, Submodule.mem_top⟩ ∈ S` using `⟨_, mem_closedBall_zero_iff.2 hZ, rfl⟩`. Establish `hh : height (x * archExp (∑ i, t i • Y i)) ≤ heightConst K n * height x * Mh'` using `(height_mul_le _ _).trans (mul_le_mul_of_nonneg_left ((hMh _ hmem).trans (le_max_left _ _)) (mul_nonneg hc0' (height_pos x).le))`. Combine the equalities or inequalities in the displayed calculation. Use `height_pos x` as an intermediate fact.
+
+Establish `: 0 ≤ Mh'` using `le_trans zero_le_one (le_max_right _ _)`. Use the proof step `positivity)`. Use `_ = Cs * (heightConst K n * Mh') ^ N * height x ^ N := by ring`. Use `h.trans (le_of_eq ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_norm_diffSum_le {φ : AdelicGLn.AdelicGL K n → ℂ} (hφ : IsAutomorphicForm φ) :
     ∃ N : ℕ, ∀ (k : ℕ) (T : ℝ), ∃ C : ℝ, ∀ (x : AdelicGLn.AdelicGL K n)
       (Y : Fin k → ArchMatrix K n), (∀ i j, Y i * Y j = 0) → (∀ i, ‖Y i‖ ≤ T) →

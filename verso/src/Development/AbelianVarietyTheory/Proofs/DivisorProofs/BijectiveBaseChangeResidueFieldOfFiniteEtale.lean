@@ -5,6 +5,9 @@ open IsLocalRing
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R A B _ _ _ _ _ _ _ _ _ _` and use `bijective_baseChange_residueField_of_etale R A B`.
+-/
 theorem bijective_baseChange_residueField_of_finiteEtale :
     ∀ (R A B : Type) [CommRing R] [HenselianLocalRing R] [CommRing A] [CommRing B] [Algebra R A]
       [Algebra R B] [Algebra.Etale R A] [Module.Finite R A] [Algebra.Etale R B]

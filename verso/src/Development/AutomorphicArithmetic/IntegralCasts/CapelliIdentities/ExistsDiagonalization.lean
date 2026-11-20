@@ -1,5 +1,18 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `K _ n P α hα hP`. Establish `h1 : ∀ i, ∃ v : Fin n → K, v ≠ 0 ∧ P.mulVec v = α i • v`. Introduce `i`. Establish `h0 : P.charpoly.eval (α i) = 0`. Rewrite using `[hP, Polynomial.eval_prod]`.
+
+Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (by simp)`. Rewrite `h0` using `[Matrix.eval_charpoly]`. Take `⟨v, hv, hv0⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr h0`. Use `⟨v, hv, ?_⟩` and prove the remaining obligations. Rewrite `hv0` using `[Matrix.sub_mulVec, sub_eq_zero]`.
+
+Rewrite using `[← hv0]`. Use extensionality with `j`. Simplify using `[Matrix.mulVec_diagonal]`. Use `choose v hv0 hv using h1`. Establish `hli : LinearIndependent K v`.
+
+Use `Module.End.eigenvectors_linearIndependent' (Matrix.toLin' P) α hα v ?_` and prove the remaining obligations. Introduce `i`. Use `⟨?_, hv0 i⟩` and prove the remaining obligations. Rewrite using `[Module.End.mem_eigenspace_iff]`. Simplify using `using hv i`.
+
+Use `⟨(Matrix.of v).transpose, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Matrix.linearIndependent_cols_iff_isUnit.mp hli`. Use extensionality with `j i`. Establish `h` using `congrFun (hv i) j`. Rewrite using `[Matrix.mul_diagonal]`.
+
+Simplify `h` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, mul_comm]`.
+-/
 theorem UpperTheory.Reformulated.B.ExistsDiagonalization.exists_diag :
     ∀ {K : Type} [inst : Field K] {n : ℕ}
     (P : Matrix (Fin n) (Fin n) K) (α : Fin n → K),

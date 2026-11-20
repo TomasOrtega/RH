@@ -12,6 +12,11 @@ open GlobalTheory.ZJ
 
 namespace GlobalTheory.ZJ
 
+/- English proof (translation)
+Use `letI := L.grp`. Use `letI := L.comm`. Use `L.smooth` as an intermediate fact. Establish `: Smooth C.GG.hom` using `SmoothOfRelativeDimension.smooth C.g _`. Establish `h : Etale (ReciprocityTheory.ChartRestriction.G.Semi.mulN C.GG T.m).left` using `GlobalTheory.GrpTangent.etale_mulN C.GG T.m_unit`.
+
+Conclude with `⟨h, (ReciprocityTheory.ChartRestriction.G.Semi.mulN C.GG T.m).left.isOpenMap _ (Out.nonzeroLocus T.s).isOpen⟩`.
+-/
 theorem etale_mulN_and_isOpen_om (C : Core) (L : C.Law) (T : C.Theta) :
     letI := L.grp; Etale (ReciprocityTheory.ChartRestriction.G.Semi.mulN C.GG T.m).left ∧ IsOpen (T.Om L) := by
   letI := L.grp
@@ -21,6 +26,9 @@ theorem etale_mulN_and_isOpen_om (C : Core) (L : C.Law) (T : C.Theta) :
   have h : Etale (ReciprocityTheory.ChartRestriction.G.Semi.mulN C.GG T.m).left := GlobalTheory.GrpTangent.etale_mulN C.GG T.m_unit
   exact ⟨h, (ReciprocityTheory.ChartRestriction.G.Semi.mulN C.GG T.m).left.isOpenMap _ (Out.nonzeroLocus T.s).isOpen⟩
 
+/- English proof (translation)
+Introduce `C L T _ _` and use `etale_mulN_and_isOpen_om C L T`.
+-/
 theorem etale_mulN_and_isOpen_om_of_isSemiAbelian : ∀ (C : Core) (L : C.Law) (T : C.Theta), letI := L.grp; letI := L.comm; IsSemiAbelian C.GG → Out.MulNSt → Etale (ReciprocityTheory.ChartRestriction.G.Semi.mulN C.GG T.m).left ∧ IsOpen (T.Om L) :=
   fun C L T _ _ => etale_mulN_and_isOpen_om C L T
 

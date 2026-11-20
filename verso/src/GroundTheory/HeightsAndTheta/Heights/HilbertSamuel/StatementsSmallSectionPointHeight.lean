@@ -16,6 +16,9 @@ def SmallSectionPointHeight.Statement : Prop :=
     ∃ f : MRing ι, (∃ d, IsMultiHomog f d) ∧ f ∉ mCoordIdeal y ∧
       ∀ W : Ideal (MRing ι), IsArithVar W 1 → mCoordIdeal y ≤ W → f ∉ W → 0 ≤ II K ι W 1 ![A]
 
+/- English proof (translation)
+Introduce `s hs c hc`. Establish `h` using `hs c hc`. Conclude with `(mem_integralClosure_iff _ _).mpr (isIntegral_algebraMap (x := (⟨_, h⟩ : chartRingZ y c)))`.
+-/
 theorem SmallSectionPointHeight.chartLat_le_chartLatNm {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type}
     [Field Ω] (y : (Σ k, ι k) → Ω) (a : K → ℤ) (τ : ℕ) : chartLat y a τ ≤ chartLatNm y a τ := by
   intro s hs c hc

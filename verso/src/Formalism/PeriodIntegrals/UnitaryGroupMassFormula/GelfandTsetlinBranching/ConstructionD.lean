@@ -7,13 +7,22 @@ namespace PI.WGB
 
 open Formalism.BasicNotions MvPolynomial
 
+/- English proof (translation)
+Introduce `i j hij`. Conclude with `Int.toNat_le_toNat (sub_le_sub_right (lam.anti hij) _)`.
+-/
 theorem natW_anti_D {N : ℕ} (lam : DomWeight N) : Antitone lam.natW := by
   intro i j hij
   exact Int.toNat_le_toNat (sub_le_sub_right (lam.anti hij) _)
 
+/- English proof (translation)
+The claim follows from `Formalism.GradedWeylDivisibility.hwMem ℂ n n le_rfl mu.natW (natW_anti_D mu)`.
+-/
 theorem extremal_mem_D (n : ℕ) (mu : DomWeight n) : extremal ℂ n mu ∈ nablaSq ℂ n mu :=
   Formalism.GradedWeylDivisibility.hwMem ℂ n n le_rfl mu.natW (natW_anti_D mu)
 
+/- English proof (translation)
+The claim follows from `Formalism.GradedWeylDivisibility.hwNe ℂ n n le_rfl mu.natW`.
+-/
 theorem extremal_ne_D (n : ℕ) (mu : DomWeight n) : extremal ℂ n mu ≠ 0 :=
   Formalism.GradedWeylDivisibility.hwNe ℂ n n le_rfl mu.natW
 
@@ -25,9 +34,15 @@ def sqLinD (N : ℕ) (lam : DomWeight N) (g : GL (Fin N) ℂ) :
     simp only [sqAct, RingHom.id_apply, map_smul]
     rw [smul_comm]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sqLinD_apply (N : ℕ) (lam : DomWeight N) (g : GL (Fin N) ℂ) (f : MvPolynomial (Fin N × Fin N) ℂ) :
     sqLinD N lam g f = sqAct ℂ N lam g f := rfl
 
+/- English proof (translation)
+Use `⟨fun s _ => by` and prove the remaining obligations. Simplify using `only [LinearMap.zero_apply]`. Conclude with `Submodule.zero_mem _, fun g s _ => ?_⟩`. Simplify using `only [LinearMap.zero_apply]`. Rewrite using `[← sqLinD_apply, map_zero]`.
+-/
 theorem isEqv_zero_D {n N : ℕ} (h : n + 1 = N) (mu : DomWeight n) (lam : DomWeight N) :
     IsEqv h mu lam 0 := by
   refine ⟨fun s _ => by
@@ -36,6 +51,9 @@ theorem isEqv_zero_D {n N : ℕ} (h : n + 1 = N) (mu : DomWeight n) (lam : DomWe
   simp only [LinearMap.zero_apply]
   rw [← sqLinD_apply, map_zero]
 
+/- English proof (translation)
+Use `⟨fun s hs => ?_, fun g s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply]`. Conclude with `Submodule.smul_mem _ c (hφ.1 s hs)`. Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, hφ.2 g s hs, ← sqLinD_apply, ← sqLinD_apply, map_smul]`.
+-/
 theorem isEqv_smul_D {n N : ℕ} (h : n + 1 = N) {mu : DomWeight n} {lam : DomWeight N}
     {φ : MvPolynomial (Fin n × Fin n) ℂ →ₗ[ℂ] MvPolynomial (Fin N × Fin N) ℂ} (hφ : IsEqv h mu lam φ) (c : ℂ) :
     IsEqv h mu lam (c • φ) := by
@@ -44,6 +62,17 @@ theorem isEqv_smul_D {n N : ℕ} (h : n + 1 = N) {mu : DomWeight n} {lam : DomWe
     exact Submodule.smul_mem _ c (hφ.1 s hs)
   · rw [LinearMap.smul_apply, LinearMap.smul_apply, hφ.2 g s hs, ← sqLinD_apply, ← sqLinD_apply, map_smul]
 
+/- English proof (translation)
+Set `U : Submodule ℂ (MvPolynomial (Fin n × Fin n) ℂ)` to `nablaSq ℂ n mu ⊓ LinearMap.ker (φ - ψ)`. Establish `hU : U ≤ nablaSq ℂ n mu` using `inf_le_left`. Establish `hstab : ∀ (g : GL (Fin n) ℂ), ∀ f ∈ U, sqAct ℂ n mu g f ∈ U`. Introduce and unpack `g f ⟨hf1, hf2⟩`. Use `⟨(he n mu).2.2 g f hf1, ?_⟩` and prove the remaining obligations.
+
+Establish `hf2' : φ f = ψ f`. Rewrite `hf2` using `[SetLike.mem_coe, LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`. Conclude with `hf2`. Use `show sqAct ℂ n mu g f ∈ LinearMap.ker (φ - ψ)`. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero, hφ.2 g f hf1, hψ.2 g f hf1, hf2']`.
+
+Break down `(hI n mu).2.1 U hU hstab with hbot | htop` into its components or cases. It suffices to derive a contradiction. Establish `he_mem : extremal ℂ n mu ∈ U` using `⟨extremal_mem_D n mu, by show extremal ℂ n mu ∈ LinearMap.ker (φ - ψ)`. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, hext, sub_self]⟩`. Rewrite `he_mem` using `[hbot]`.
+
+Conclude with `extremal_ne_D n mu ((Submodule.mem_bot ℂ).mp he_mem)`. Introduce `s hs`. Establish `hsU : s ∈ U` using `by rw [htop]; exact hs`. Establish `h2 : s ∈ LinearMap.ker (φ - ψ)` using `hsU.2`. Rewrite `h2` using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`.
+
+Conclude with `h2`.
+-/
 theorem eq_on_of_extremal_D (hI : PI.HwIrred) (he : ExtremalFacts) {n N : ℕ} (h : n + 1 = N)
     {mu : DomWeight n} {lam : DomWeight N}
     {φ ψ : MvPolynomial (Fin n × Fin n) ℂ →ₗ[ℂ] MvPolynomial (Fin N × Fin N) ℂ}
@@ -73,6 +102,9 @@ theorem eq_on_of_extremal_D (hI : PI.HwIrred) (he : ExtremalFacts) {n N : ℕ} (
     rw [LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero] at h2
     exact h2
 
+/- English proof (translation)
+Establish `hmem` using `extremal_mem_D n mu`. Use `⟨fun g hg1 hg2 => ?_, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[← hφ.2 g _ hmem, (he n mu).1 g hg1 hg2]`. Rewrite using `[← hφ.2 _ _ hmem, (he n mu).2.1 t, map_smul]`.
+-/
 theorem fixed_of_eqv_D (he : ExtremalFacts) {n N : ℕ} (h : n + 1 = N) {mu : DomWeight n} {lam : DomWeight N}
     {φ : MvPolynomial (Fin n × Fin n) ℂ →ₗ[ℂ] MvPolynomial (Fin N × Fin N) ℂ} (hφ : IsEqv h mu lam φ) :
     IsFixedW h lam mu (φ (extremal ℂ n mu)) := by
@@ -81,6 +113,13 @@ theorem fixed_of_eqv_D (he : ExtremalFacts) {n N : ℕ} (h : n + 1 = N) {mu : Do
   · rw [← hφ.2 g _ hmem, (he n mu).1 g hg1 hg2]
   · rw [← hφ.2 _ _ hmem, (he n mu).2.1 t, map_smul]
 
+/- English proof (translation)
+Establish `hmem` using `extremal_mem_D n mu`. Establish `hne' : φ' (extremal ℂ n mu) ≠ 0`. Introduce `h0`. Take `⟨s, hs, hs0⟩` from `hne`. Apply `hs0` to reduce the goal to its premises.
+
+Establish `h3` using `eq_on_of_extremal_D hI he h hφ' (isEqv_zero_D h mu lam) (by rw [h0, LinearMap.zero_apply]) s hs`. Rewrite using `[h3, LinearMap.zero_apply]`. Take `⟨⟨c, hc⟩, hint⟩` from `ha n N h lam mu (φ (extremal ℂ n mu)) (φ' (extremal ℂ n mu)) (hφ.1 _ hmem) (hφ'.1 _ hmem) (fixed_of_eqv_D he h hφ) (fixed_of_eqv_D he h hφ') hne'`. Use `⟨hint, c, fun s hs => ?_⟩` and prove the remaining obligations. Establish `h3` using `eq_on_of_extremal_D hI he h hφ (isEqv_smul_D h hφ' c) (by rw [LinearMap.smul_apply, hc]) s hs`.
+
+Rewrite using `[h3, LinearMap.smul_apply]`.
+-/
 theorem equivariant_map_interlacing_unique (hI : PI.HwIrred) (he : ExtremalFacts) (ha : FixedLine) {n N : ℕ} (h : n + 1 = N)
     (lam : DomWeight N) (mu : DomWeight n)
     (φ φ' : MvPolynomial (Fin n × Fin n) ℂ →ₗ[ℂ] MvPolynomial (Fin N × Fin N) ℂ)
@@ -104,6 +143,19 @@ def brSupD {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) : Submodule ℂ (MvPo
     (φ : MvPolynomial (Fin n × Fin n) ℂ →ₗ[ℂ] MvPolynomial (Fin N × Fin N) ℂ)
     (_ : IsEqv h mu lam φ), (nablaSq ℂ n mu).map φ
 
+/- English proof (translation)
+Establish `hmemS : ∀ (mu : DomWeight n) (hint : Interlace h lam mu) (φ : MvPolynomial (Fin n × Fin n) ℂ →ₗ[ℂ] MvPolynomial (Fin N × Fin N) ℂ) (hφ : IsEqv h mu lam φ), (nablaSq ℂ n mu).map φ ≤ brSupD h lam` using `fun mu hint φ hφ => le_iSup_of_le mu (le_iSup_of_le hint (le_iSup_of_le φ (le_iSup_of_le hφ le_rfl)))`. Establish `hle : brSupD h lam ≤ nablaSq ℂ N lam`. Use `iSup_le fun mu => iSup_le fun hint => iSup_le fun φ => iSup_le fun hφ => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨s, hs, rfl⟩`. Conclude with `hφ.1 s hs`.
+
+Establish `hstab : IsStable h lam (brSupD h lam)`. Introduce `g`. Establish `key : brSupD h lam ≤ (brSupD h lam).comap (sqLinD N lam (embGL ℂ n N h g))`. Use `iSup_le fun mu => iSup_le fun hint => iSup_le fun φ => iSup_le fun hφ => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨s, hs, rfl⟩`.
+
+Rewrite using `[Submodule.mem_comap, sqLinD_apply, ← hφ.2 g s hs]`. Conclude with `hmemS mu hint φ hφ ⟨_, (he n mu).2.2 g s hs, rfl⟩`. Introduce `f hf`. Conclude with `key hf`. Take `⟨W', hW'le, hW'st, hsup, hinf⟩` from `hb n N h lam (brSupD h lam) hle hstab`.
+
+Distinguish the cases in `hW' : W' = ⊥`. Rewrite `hsup` using `[hW', sup_bot_eq]`. Conclude with `hsup.symm`. It suffices to derive a contradiction. Take `⟨f, hfW, hf0, mu, hfix⟩` from `hc n N h lam W' hW'le hW'st hW'`.
+
+Take `⟨φ, hφ, hφe⟩` from `hd n N h lam mu f (hW'le hfW) hfix hf0`. Establish `hint : Interlace h lam mu` using `(ha n N h lam mu f f (hW'le hfW) (hW'le hfW) hfix hfix hf0).2`. Establish `hfS : f ∈ brSupD h lam` using `hmemS mu hint φ hφ ⟨_, extremal_mem_D n mu, hφe⟩`. Establish `hfI : f ∈ brSupD h lam ⊓ W'` using `⟨hfS, hfW⟩`. Rewrite `hfI` using `[hinf]`.
+
+Conclude with `hf0 ((Submodule.mem_bot ℂ).mp hfI)`.
+-/
 theorem branching_rule_decomposition (he : ExtremalFacts) (ha : FixedLine) (hb : StableCompl) (hc : HighestVec) (hd : Realize)
     {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) : nablaSq ℂ N lam = brSupD h lam := by
   have hmemS : ∀ (mu : DomWeight n) (hint : Interlace h lam mu)
@@ -136,6 +188,9 @@ theorem branching_rule_decomposition (he : ExtremalFacts) (ha : FixedLine) (hb :
     rw [hinf] at hfI
     exact hf0 ((Submodule.mem_bot ℂ).mp hfI)
 
+/- English proof (translation)
+Introduce `n N hnN lam`. Use `⟨fun mu φ φ' hψ hne => ?_, branching_rule_decomposition he ha hb hc hd hnN lam⟩` and prove the remaining obligations. Establish `hφ : IsEqv hnN mu lam φ` using `hψ φ (by simp)`. Establish `hφ' : IsEqv hnN mu lam φ'` using `hψ φ' (by simp)`. Conclude with `equivariant_map_interlacing_unique h he ha hnN lam mu φ φ' hφ hφ' hne`.
+-/
 theorem gTBranch_of_steps (h : PI.HwIrred) (he : ExtremalFacts) (ha : FixedLine) (hb : StableCompl)
     (hc : HighestVec) (hd : Realize) : PI.GTBranch := by
   intro n N hnN lam

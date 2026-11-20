@@ -13,12 +13,22 @@ section Generic
 
 variable {R : Type} [CommRing R] (S : Subring R) {n : ℕ}
 
+/- English proof (translation)
+Introduce `i`. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `S.sum_mem fun j _ => S.mul_mem (hM i j) (hv j)`.
+-/
 theorem lvA_mulVec_int {ι κ : Type} [Fintype κ] (M : Matrix ι κ R) (hM : ∀ i j, M i j ∈ S)
     (v : κ → R) (hv : ∀ i, v i ∈ S) : ∀ i, (M *ᵥ v) i ∈ S := by
   intro i
   simp only [Matrix.mulVec, dotProduct]
   exact S.sum_mem fun j _ => S.mul_mem (hM i j) (hv j)
 
+/- English proof (translation)
+Introduce `y hy`. Establish `hcy : ∀ i, (c₁ • y) i ∈ S` using `fun i => by`. Simplify `h₁ y hy i` using `[Pi.smul_apply, smul_eq_mul]`. Establish `hw : ∀ i, ((c • P) *ᵥ (N *ᵥ ((c • Q) *ᵥ (c₁ • y)))) i ∈ S` using `lvA_mulVec_int S _ hP _ (lvA_mulVec_int S _ hN _ (lvA_mulVec_int S _ hQ _ hcy))`. Use `⟨c₂ • ((c • P) *ᵥ (N *ᵥ ((c • Q) *ᵥ (c₁ • y)))), h₂ _ hw, ?_⟩` and prove the remaining obligations.
+
+Establish `hexp : P * u * Q - 1 = (g * c₂ * c * c * c₁) • (P * N * Q)`. Rewrite using `[hu, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, hPQ, Matrix.mul_smul, Matrix.smul_mul]`. Normalize the expressions using the abelian group laws. Rewrite using `[hexp]`. Simplify using `only [Matrix.smul_mulVec, Matrix.mulVec_smul, smul_smul, ← Matrix.mulVec_mulVec]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lvA_key {ι : Type} [Fintype ι] [DecidableEq ι] (LA : Submodule S (Fin n → R))
     (c₁ c₂ c g : R)
     (h₁ : ∀ y ∈ LA, ∀ i, c₁ * y i ∈ S) (h₂ : ∀ y : Fin n → R, (∀ i, y i ∈ S) → c₂ • y ∈ LA)
@@ -41,6 +51,9 @@ theorem lvA_key {ι : Type} [Fintype ι] [DecidableEq ι] (LA : Submodule S (Fin
   congr 1
   ring
 
+/- English proof (translation)
+Introduce `y hy`. Take `⟨z, hz, hzeq⟩` from `lvA_key S LA c₁ c₂ c g h₁ h₂ P Q hPQ hP hQ N hN u hu y hy`. Rewrite `hzeq` using `[Matrix.sub_mulVec, Matrix.one_mulVec, sub_eq_iff_eq_add']`. Rewrite using `[hzeq]`. Conclude with `LA.add_mem hy (LA.smul_mem (⟨g, hg⟩ : S) hz)`.
+-/
 theorem lvA_maps {ι : Type} [Fintype ι] [DecidableEq ι] (LA : Submodule S (Fin n → R))
     (c₁ c₂ c g : R) (hg : g ∈ S)
     (h₁ : ∀ y ∈ LA, ∀ i, c₁ * y i ∈ S) (h₂ : ∀ y : Fin n → R, (∀ i, y i ∈ S) → c₂ • y ∈ LA)
@@ -55,6 +68,17 @@ theorem lvA_maps {ι : Type} [Fintype ι] [DecidableEq ι] (LA : Submodule S (Fi
   rw [hzeq]
   exact LA.add_mem hy (LA.smul_mem (⟨g, hg⟩ : S) hz)
 
+/- English proof (translation)
+Take `⟨u', hu', rfl⟩` from `Subgroup.mem_map.1 hu`. Establish `h1 : Formalism.UG.redGL (Ideal.span {d}) u' = 1` using `Subgroup.mem_bot.1 (Subgroup.mem_comap.1 hu')`. Establish `hent : ∀ i j, ∃ a : S, a * d = (u' : Matrix ι ι S) i j - (1 : Matrix ι ι S) i j`. Introduce `i j`. Establish `h2` using `congrArg (fun g : GL ι (S ⧸ Ideal.span {d}) => (g : Matrix ι ι (S ⧸ Ideal.span {d})) i j) h1`.
+
+Simplify using `only [Formalism.UG.redGL, Formalism.UG.bc, Units.coe_map, MonoidHom.coe_coe, RingHom.mapMatrix_apply, Matrix.map_apply, Units.val_one] at h2`. Establish `h3 : (u' : Matrix ι ι S) i j - (1 : Matrix ι ι S) i j ∈ Ideal.span {d}`. Rewrite using `[← Ideal.Quotient.eq]`. Establish `h2' : Ideal.Quotient.mk (Ideal.span {d}) ((u' : Matrix ι ι S) i j) = (1 : Matrix ι ι (S ⧸ Ideal.span {d})) i j` using `h2`. Rewrite using `[h2', Matrix.one_apply, Matrix.one_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Conclude with `Ideal.mem_span_singleton'.1 h3`. Use `choose a ha using hent`. Use `⟨fun i j => (a i j : R), fun i j => (a i j).2, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+
+Establish `h4` using `congrArg (fun s : S => (s : R)) (ha i j)`. Move the coercions through the operations in `at h4`. Use `show S.subtype ((u' : Matrix ι ι S) i j) = (1 : Matrix ι ι R) i j + (d : R) * (a i j : R)`. Rewrite using `[Subring.coe_subtype, Matrix.one_apply]`. Rewrite `h4` using `[Matrix.one_apply]`.
+
+Apply the tactic sequence `split_ifs at h4 ⊢ <;> simp at h4 ⊢ <;> linear_combination -h4`.
+-/
 theorem lvA_princ_form {ι : Type} [Fintype ι] [DecidableEq ι] (d : S) (u : GL ι R)
     (hu : u ∈ Formalism.UG.princ (n := ι) S.subtype (Ideal.span {d})) :
     ∃ N : Matrix ι ι R, (∀ i j, N i j ∈ S) ∧ (u : Matrix ι ι R) = 1 + (d : R) • N := by

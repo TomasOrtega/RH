@@ -21,6 +21,15 @@ noncomputable section
 
 namespace GlobalTheory.EigDiv
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c TF Z R _ _ p`. Establish `hid : spMap (RingHom.id c.F) = 𝟙 _` using `Spec.map_id _`. Use `haveI : IsIso (spMap (RingHom.id c.F)) := by rw [hid]; infer_instance`. Use `haveI : IsIso (GlobalTheory.Toroidal.genι TF.Y) := inferInstanceAs (IsIso (pullback.fst TF.Y.s (spMap (RingHom.id c.F))))`. Establish `hs : inv (GlobalTheory.Toroidal.genι TF.Y) ≫ GlobalTheory.Toroidal.genStr TF.Y = TF.Y.s`.
+
+Rewrite using `[IsIso.inv_comp_eq]`. Combine the equalities or inequalities in the displayed calculation. Set `x : Sp R ⟶ GlobalTheory.Toroidal.gen TF.Y` to `(p ≫ (barComp TF.Y Z).ι) ≫ inv (GlobalTheory.Toroidal.genι TF.Y)`. Set `φ : c.F →+* R` to `(Spec.preimage (p ≫ s₀ TF.Y Z)).hom`. Establish `hφ : spMap φ = p ≫ s₀ TF.Y Z` using `Spec.map_preimage _`.
+
+Establish `hx : x ≫ GlobalTheory.Toroidal.genStr TF.Y = spMap φ`. Rewrite using `[hφ, Category.assoc, hs, Category.assoc]`. Take `⟨f⟩` from `GlobalTheory.ShFam.EigLoc.exists_eigFrame E H Dw l Xo c c.F (RingHom.id c.F) TF.Y R φ x hx`. Establish `e : x ≫ GlobalTheory.Toroidal.genι TF.Y = p ≫ (barComp TF.Y Z).ι`. Simplify using `only [x, Category.assoc, IsIso.inv_hom_id, Category.comp_id]`.
+
+Conclude with `⟨φ, e ▸ f, hφ.symm⟩`.
+-/
 theorem exists_eigFrame_stalk : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c) (R : Type) [CommRing R] [IsLocalRing R] (p : Sp R ⟶ X₀ TF.Y Z), ∃ (φ : c.F →+* R) (_ : GlobalTheory.ShFam.EigFrame TF.Y φ (p ≫ (barComp TF.Y Z).ι)), p ≫ s₀ TF.Y Z = spMap φ := by
   intro E _ _ _ H Dw l Xo c TF Z R _ _ p
   have hid : spMap (RingHom.id c.F) = 𝟙 _ := Spec.map_id _
@@ -40,6 +49,11 @@ theorem exists_eigFrame_stalk : ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
     simp only [x, Category.assoc, IsIso.inv_hom_id, Category.comp_id]
   exact ⟨φ, e ▸ f, hφ.symm⟩
 
+/- English proof (translation)
+Establish `hv : ∀ τ, v τ = w τ * u τ` using `fun τ => Units.ext (by rw [Units.val_mul]; exact h τ)`. Rewrite using `[← Finset.prod_div_distrib]`. Use `S.prod_mem fun τ _ => ?_` and prove the remaining obligations. Establish `e : u τ / v τ = (w τ)⁻¹` using `by rw [hv, div_mul_eq_div_div_swap, div_self', one_div]`. Rewrite using `[← div_zpow, e]`.
+
+Conclude with `S.zpow_mem (S.inv_mem (hw τ)) _`.
+-/
 theorem ratio_mem {K : Type} [Field K] (S : Subgroup Kˣ) {ι : Type} [Fintype ι] (u v w : ι → Kˣ)
     (h : ∀ τ, (v τ : K) = w τ * u τ) (hw : ∀ τ, w τ ∈ S) (a : ι → ℤ) :
     (∏ τ, u τ ^ (-a τ)) / (∏ τ, v τ ^ (-a τ)) ∈ S := by
@@ -50,6 +64,9 @@ theorem ratio_mem {K : Type} [Field K] (S : Subgroup Kˣ) {ι : Type} [Fintype �
   rw [← div_zpow, e]
   exact S.zpow_mem (S.inv_mem (hw τ)) _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨show cartierGroup X from ⟨fun x => germOf x (g x), fun x => by obtain ⟨U, hx, hU⟩ := h x exact ⟨U, hx, g x, fun y hy => germOf_eq_iff.2 (hU y hy)⟩⟩, fun _ => rfl⟩`.
+-/
 theorem exists_div {X : Scheme.{0}} [IsIntegral X] (g : X → X.functionFieldˣ)
     (h : ∀ x, ∃ U : X.Opens, x ∈ U ∧ ∀ y ∈ U, UnitAt y ((g x : X.functionField) / g y)) :
     ∃ D : CartierDiv X, ∀ x, D.IsEqn x (g x) :=
@@ -57,6 +74,19 @@ theorem exists_div {X : Scheme.{0}} [IsIntegral X] (g : X → X.functionFieldˣ)
     obtain ⟨U, hx, hU⟩ := h x
     exact ⟨U, hx, g x, fun y hy => germOf_eq_iff.2 (hU y hy)⟩⟩, fun _ => rfl⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c TF Z _`. Establish `hloc : ∀ x : X₀ TF.Y Z, IsLocalRing ((X₀ TF.Y Z).presheaf.stalk x)` using `fun x => inferInstance`. Take `⟨φ₀, f₀, h₀⟩` from `@exists_eigFrame_stalk E _ _ _ H Dw l Xo c TF Z ((X₀ TF.Y Z).presheaf.stalk (genericPoint (X₀ TF.Y Z))) _ (hloc _) ((X₀ TF.Y Z).fromSpecStalk (genericPoint (X₀ TF.Y Z)))`. Use `⟨φ₀, f₀, h₀, fun a => ?_⟩` and prove the remaining obligations. Use `choose φx fx hx using fun x : X₀ TF.Y Z => @exists_eigFrame_stalk E _ _ _ H Dw l Xo c TF Z ((X₀ TF.Y Z).presheaf.stalk x) _ (hloc x) ((X₀ TF.Y Z).fromSpecStalk x)`.
+
+Establish `hpt : ∀ x : X₀ TF.Y Z, spMap (algebraMap ((X₀ TF.Y Z).presheaf.stalk x) (X₀ TF.Y Z).functionField) ≫ (X₀ TF.Y Z).fromSpecStalk x = (X₀ TF.Y Z).fromSpecStalk (genericPoint (X₀ TF.Y Z))` using `fun x => Scheme.SpecMap_stalkSpecializes_fromSpecStalk (genericPoint_specializes x)`. Establish `hφ : ∀ x, φ₀ = (algebraMap _ (X₀ TF.Y Z).functionField).comp (φx x)` using `fun x => GlobalTheory.ShFam.EigLoc.spMap_inj (by rw [← h₀, ← hpt x, Category.assoc, hx x]; exact (Spec.map_comp _ _).symm)`. Use `choose fK hfK using fun x => (fx x).exists_isMap (algebraMap _ (X₀ TF.Y Z).functionField) (hφ x) (x' := (X₀ TF.Y Z).fromSpecStalk (genericPoint (X₀ TF.Y Z)) ≫ (barComp TF.Y Z).ι) (by rw [← hpt x]; exact Category.assoc _ _ _)`. Set `g : ∀ fK : GlobalTheory.ShFam.EigFrame TF.Y φ₀ ((X₀ TF.Y Z).fromSpecStalk (genericPoint (X₀ TF.Y Z)) ≫ (barComp TF.Y Z).ι), (X₀ TF.Y Z).functionFieldˣ` to `fun fK => ∏ τ, (fK.isUnit_det_co f₀ τ).unit ^ (-a τ)`. Establish `key : ∀ (y : X₀ TF.Y Z) (fK fK' : GlobalTheory.ShFam.EigFrame TF.Y φ₀ ((X₀ TF.Y Z).fromSpecStalk (genericPoint (X₀ TF.Y Z)) ≫ (barComp TF.Y Z).ι)), (∀ τ, UnitAt y (fK'.co fK τ).det) → UnitAt y ((g fK : (X₀ TF.Y Z).functionField) / g fK')`.
+
+Introduce `y fK fK' hu`. Use `ratio_mem (unitsAt y) (fun τ => (fK.isUnit_det_co f₀ τ).unit) (fun τ => (fK'.isUnit_det_co f₀ τ).unit) (fun τ => (fK'.isUnit_det_co fK τ).unit) (fun τ => by` as an intermediate fact. Simplify using `only [IsUnit.unit_spec]`. Rewrite using `[← Matrix.det_mul, GlobalTheory.ShFam.EigFrame.co_mul]) (fun τ => hu τ) a`. Rewrite using `[← Units.val_div_eq_div_val (g fK) (g fK')]`.
+
+Conclude with `this`. Take `⟨D, hD⟩` from `exists_div (fun x => g (fK x)) fun x => by`. Take `⟨U, hxU, hU⟩` from `GlobalTheory.T.eigenFrameCoordinates_locallyConstant_upToUnits E H Dw l Xo c TF Z x (φx x) (fx x) (hx x)`. Conclude with `⟨U, hxU, fun y hy => key y _ _ (hU y hy (φx y) (fx y) φ₀ (fK x) (fK y) (hx y) h₀ (hfK x) (hfK y))⟩`. Use `⟨D, ?_, fun x => ⟨φx x, fx x, fun τ => (fK x |>.co f₀ τ).transpose, fun τ => (fK x |>.isUnit_det_co f₀ τ).unit, hx x, fun τ => (IsUnit.unit_spec _).trans (Matrix.det_transpose _).symm, fun τ i => ?_, hD x⟩⟩` and prove the remaining obligations.
+
+Use `GlobalTheory.T.flagSpacePullback_eigenDeterminantDivisor_eq_gradedLines E H Dw l Xo c TF Z φ₀ f₀ a D h₀ fun x φ f fK' hs hm => ?_` and prove the remaining obligations. Take `⟨U, hxU, hU⟩` from `GlobalTheory.T.eigenFrameCoordinates_locallyConstant_upToUnits E H Dw l Xo c TF Z x φ f hs`. Conclude with `(hD x).iff_unitAt.2 (key x _ _ (hU x hxU (φx x) (fx x) φ₀ fK' (fK x) (hx x) h₀ hm (hfK x)))`. Establish `e : (fK x).v τ = fun k => spMap (dualMap (algebraMap ((X₀ TF.Y Z).presheaf.stalk x) (X₀ TF.Y Z).functionField)) ≫ (fx x).v τ k` using `funext (hfK x τ)`. Rewrite using `[← e]`.
+
+Conclude with `(fK x).co_spec f₀ τ i`.
+-/
 theorem exists_detDiv : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c) [IsIntegral (X₀ TF.Y Z)], ∃ (φ₀ : c.F →+* (X₀ TF.Y Z).functionField) (f₀ : GlobalTheory.ShFam.EigFrame TF.Y φ₀ ((show Sp (X₀ TF.Y Z).functionField ⟶ X₀ TF.Y Z from (X₀ TF.Y Z).fromSpecStalk (genericPoint (X₀ TF.Y Z))) ≫ (barComp TF.Y Z).ι)), (show Sp (X₀ TF.Y Z).functionField ⟶ X₀ TF.Y Z from (X₀ TF.Y Z).fromSpecStalk (genericPoint (X₀ TF.Y Z))) ≫ s₀ TF.Y Z = spMap φ₀ ∧ ∀ a : (E →+* ℂ) → ℤ, ∃ D : CartierDiv (X₀ TF.Y Z), CechPic.pull (π₀ TF.X Z) (cls (toLB D) (isLB_toLB D)) = cls (LL₀ TF.X Z fun ix => ix.elim 0 fun x => a x.1) (LB.isLB_pull (TF.X.F.isLB_LL _) _) ∧ ∀ x : X₀ TF.Y Z, ∃ (φ : c.F →+* (X₀ TF.Y Z).presheaf.stalk x) (f : GlobalTheory.ShFam.EigFrame TF.Y φ ((show Sp ((X₀ TF.Y Z).presheaf.stalk x) ⟶ X₀ TF.Y Z from (X₀ TF.Y Z).fromSpecStalk x) ≫ (barComp TF.Y Z).ι)) (A : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) (X₀ TF.Y Z).functionField) (d : (E →+* ℂ) → (X₀ TF.Y Z).functionFieldˣ), (show Sp ((X₀ TF.Y Z).presheaf.stalk x) ⟶ X₀ TF.Y Z from (X₀ TF.Y Z).fromSpecStalk x) ≫ s₀ TF.Y Z = spMap φ ∧ (∀ τ, (d τ : (X₀ TF.Y Z).functionField) = (A τ).det) ∧ (∀ τ i, IsCombAtG TF.Y.t ((show Sp (X₀ TF.Y Z).functionField ⟶ X₀ TF.Y Z from (X₀ TF.Y Z).fromSpecStalk (genericPoint (X₀ TF.Y Z))) ≫ (barComp TF.Y Z).ι) (fun k => spMap (dualMap (algebraMap ((X₀ TF.Y Z).presheaf.stalk x) (X₀ TF.Y Z).functionField)) ≫ f.v τ k) (A τ i) (f₀.v τ i)) ∧ D.IsEqn x (∏ τ, d τ ^ (-a τ)) := by
   intro E _ _ _ H Dw l Xo c TF Z _
   have hloc : ∀ x : X₀ TF.Y Z, IsLocalRing ((X₀ TF.Y Z).presheaf.stalk x) := fun x => inferInstance

@@ -139,6 +139,13 @@ def TieOK (u : D.what₂.Word) : Prop :=
 def aboveSet (t₀ : D.s.Term u u) (i0 b0 : ℕ) : Set (D.s.Term u u) :=
   {t | IsInertiaCyclotomicGeneratorElement t ∧ SameDatum X t₀ t ∧ SameDC (X.fl t₀) (X.fl' t₀) (X.fl' t) ∧ iT X t = i0 ∧ b1T X t = b0}
 
+/- English proof (translation)
+Unfold `NormOK at hN`. Take `⟨p, h1, h2, hb, -⟩` from `hN.2 t ht`. Unfold `SameDatum`. Use `⟨p, h1, h2, ?_⟩` and prove the remaining obligations. Unfold `EtaOne`.
+
+Rewrite using `[hb, h2, h1]`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `x ⟨y, hy, rfl⟩`. Conclude with `hy.1.1.1`. Introduce `x hx`.
+
+Use `⟨(x, x), ⟨⟨⟨hx, hx⟩, ?_⟩, ?_⟩, rfl⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 theorem sameDatum_self {D : D7} {X : TermTie D} {u : D.what₂.Word} (hN : NormOK X u) {t : D.s.Term u u} (ht : IsInertiaCyclotomicGeneratorElement t) :
     SameDatum X t t := by
   unfold NormOK at hN
@@ -157,6 +164,9 @@ theorem sameDatum_self {D : D7} {X : TermTie D} {u : D.what₂.Word} (hN : NormO
 
 end Datum
 
+/- English proof (translation)
+Establish `hfl` using `Y.fl_eq t`. Unfold `FrameHyp`. Rewrite using `[hfl]`. Conclude with `⟨Y.flag_e_eq_hyperbolic, Y.formsAtZero, Y.isRows.1 _ (Y.Lam_mem t), Y.frame_ok t⟩`.
+-/
 theorem frameHyp_of_loop {D : D7} {large₂ : SizeData₂ D} {X : TermTie D} {u : D.what₂.Word} {C1 : ℝ}
     (Y : LoopTie D large₂ X u u C1) (t : D.s.Term u u) : FrameHyp X t := by
   have hfl := Y.fl_eq t
@@ -311,6 +321,11 @@ def Conclusion5 (C' Cl Cg cb Cu cT CT C0 : ℝ) : Prop :=
 
 end Targets
 
+/- English proof (translation)
+Unfold `Conclusion1 at h`. Unfold `adm11 UnitaryVolumeMass.stIrr UnitaryVolumeMass.cIrr at h0`. Introduce `hK u u' hne t hG`. Distinguish the cases in `hr : D.s.relevant t`. Conclude with `((h hK).2.1 u u' t hne hr hG).1`.
+
+Conclude with `h0 hK.1 u u' t hr`.
+-/
 theorem pairs_with_finite_group_of_parameters_bounds {D : D7} {large₂ : SizeData₂ D} {X : TermTie D} {C' Cl Cg cb Cu cT CT C0 : ℝ}
     (h0 : adm11 D large₂ C' Cl Cg cb Cu cT CT C0) (h : Conclusion1 D large₂ X C' Cl Cg cb Cu cT CT C0) :
     PairsWithFiniteGroup D large₂ C' Cl Cg cb Cu cT CT C0 := by

@@ -11,6 +11,13 @@ section Gen
 
 variable {K : Type} [Field K] {σ : Type}
 
+/- English proof (translation)
+Establish `hS : ∀ (F : MvPolynomial σ K) (T : Finset (σ →₀ ℕ)), F.support ⊆ T → fock F G = ∑ m ∈ T, F.coeff m * G.coeff m * (expFact m : K)`. Introduce `F T hT`. Unfold `fock`. Use `Finset.sum_subset hT fun m _ hm => ?_` and prove the remaining obligations. Establish `h0 : F.coeff m = 0` using `by simpa [mem_support_iff] using hm`.
+
+Rewrite using `[h0, zero_mul, zero_mul]`. Rewrite using `[hS _ (s.biUnion fun i => (f i).support) support_sum]`. Simplify using `only [coeff_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+
+Conclude with `(hS (f i) _ (Finset.subset_biUnion_of_mem (fun i => (f i).support) hi)).symm`.
+-/
 theorem fock_sum_left {ι : Type} (s : Finset ι) (f : ι → MvPolynomial σ K) (G : MvPolynomial σ K) :
     fock (∑ i ∈ s, f i) G = ∑ i ∈ s, fock (f i) G := by
   classical
@@ -27,18 +34,37 @@ theorem fock_sum_left {ι : Type} (s : Finset ι) (f : ι → MvPolynomial σ K)
   refine Finset.sum_congr rfl fun i hi => ?_
   exact (hS (f i) _ (Finset.subset_biUnion_of_mem (fun i => (f i).support) hi)).symm
 
+/- English proof (translation)
+Unfold `fock`. Simplify using `only [coeff_sum, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem fock_sum_right {ι : Type} (s : Finset ι) (F : MvPolynomial σ K) (g : ι → MvPolynomial σ K) :
     fock F (∑ i ∈ s, g i) = ∑ i ∈ s, fock F (g i) := by
   unfold fock
   simp only [coeff_sum, Finset.mul_sum, Finset.sum_mul]
   rw [Finset.sum_comm]
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite `hF` using `[mem_supported]`. Conclude with `hF ((mem_vars x).mpr ⟨a, ha, hx⟩)`.
+-/
 theorem supp_of_supported {A : Set σ} {F : MvPolynomial σ K} (hF : F ∈ supported K A) {a : σ →₀ ℕ}
     (ha : a ∈ F.support) : (a.support : Set σ) ⊆ A := by
   intro x hx
   rw [mem_supported] at hF
   exact hF ((mem_vars x).mpr ⟨a, ha, hx⟩)
 
+/- English proof (translation)
+Establish `zA : ∀ (c : σ →₀ ℕ), (c.support : Set σ) ⊆ A → ∀ x, x ∉ A → c x = 0`. Introduce `c hc x hx`. Assume the negation of the conclusion as `hne`. Conclude with `hx (hc (Finset.mem_coe.mpr (Finsupp.mem_support_iff.mpr hne)))`. Establish `zB : ∀ (c : σ →₀ ℕ), (c.support : Set σ) ⊆ B → ∀ x, x ∈ A → c x = 0`.
+
+Introduce `c hc x hx`. Assume the negation of the conclusion as `hne`. Conclude with `Set.disjoint_left.mp hAB hx (hc (Finset.mem_coe.mpr (Finsupp.mem_support_iff.mpr hne)))`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Establish `hx : ∀ x, a' x + b' x = a x + b x` using `fun x => by`. Establish `h1` using `congrArg (fun f : σ →₀ ℕ => f x) h`. Simplify using `using h1`. Use `⟨Finsupp.ext fun x => ?_, Finsupp.ext fun x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hxA : x ∈ A`.
+
+Use `hx x` as an intermediate fact. Rewrite `this` using `[zB b hb x hxA, zB b' hb' x hxA]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[zA a ha x hxA, zA a' ha' x hxA]`. Distinguish the cases in `hxA : x ∈ A`.
+
+Rewrite using `[zB b hb x hxA, zB b' hb' x hxA]`. Use `hx x` as an intermediate fact. Rewrite `this` using `[zA a ha x hxA, zA a' ha' x hxA]`. Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨rfl, rfl⟩`.
+
+Both sides reduce to the same expression.
+-/
 theorem add_eq_add_disj {A B : Set σ} (hAB : Disjoint A B) {a a' b b' : σ →₀ ℕ} (ha : (a.support : Set σ) ⊆ A)
     (ha' : (a'.support : Set σ) ⊆ A) (hb : (b.support : Set σ) ⊆ B) (hb' : (b'.support : Set σ) ⊆ B) :
     a' + b' = a + b ↔ a' = a ∧ b' = b := by
@@ -69,6 +95,9 @@ theorem add_eq_add_disj {A B : Set σ} (hAB : Disjoint A B) {a a' b b' : σ →�
   · rintro ⟨rfl, rfl⟩
     rfl
 
+/- English proof (translation)
+Unfold `expFact`. Apply `Finsupp.prod_add_index_of_disjoint` to reduce the goal to its premises. Rewrite using `[Finset.disjoint_left]`. Introduce `x hxa hxb`. Conclude with `Set.disjoint_left.mp hAB (ha hxa) (hb hxb)`.
+-/
 theorem expFact_add_disj {A B : Set σ} (hAB : Disjoint A B) {a b : σ →₀ ℕ} (ha : (a.support : Set σ) ⊆ A)
     (hb : (b.support : Set σ) ⊆ B) : expFact (a + b) = expFact a * expFact b := by
   unfold expFact
@@ -77,6 +106,17 @@ theorem expFact_add_disj {A B : Set σ} (hAB : Disjoint A B) {a b : σ →₀ �
   intro x hxa hxb
   exact Set.disjoint_left.mp hAB (ha hxa) (hb hxb)
 
+/- English proof (translation)
+Establish `hmono : ∀ (u v : σ →₀ ℕ) (x y : K), fock (monomial u x) (monomial v y) = if u = v then x * y * (expFact u : K) else 0`. Introduce `u v x y`. Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Rewrite using `[monomial_zero]`.
+
+Unfold `fock`. Rewrite using `[support_zero, Finset.sum_empty]`. Apply the tactic sequence `split_ifs <;> simp`. Unfold `fock`. Rewrite using `[support_monomial, if_neg hx, Finset.sum_singleton, coeff_monomial, coeff_monomial, if_pos rfl]`.
+
+Distinguish the cases in `huv : u = v`. Substitute `huv` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl]`. Rewrite using `[if_neg (Ne.symm huv), if_neg huv, mul_zero, zero_mul]`. Rewrite using `[monomial_mul, monomial_mul, hmono, hmono, hmono]`.
+
+Establish `hiff : a + b = a' + b' ↔ a = a' ∧ b = b'`. Rewrite using `[eq_comm, add_eq_add_disj hAB ha ha' hb hb', eq_comm, @eq_comm _ b']`. Apply the tactic sequence `by_cases h1 : a = a' <;> by_cases h2 : b = b'`. Rewrite using `[if_pos (hiff.mpr ⟨h1, h2⟩), if_pos h1, if_pos h2, expFact_add_disj hAB ha hb]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg (fun h => h2 (hiff.mp h).2), if_neg h2, mul_zero]`. Rewrite using `[if_neg (fun h => h1 (hiff.mp h).1), if_neg h1, zero_mul]`. Rewrite using `[if_neg (fun h => h1 (hiff.mp h).1), if_neg h1, zero_mul]`.
+-/
 theorem fock_mono_disj {A B : Set σ} (hAB : Disjoint A B) {a a' b b' : σ →₀ ℕ} (ha : (a.support : Set σ) ⊆ A)
     (ha' : (a'.support : Set σ) ⊆ A) (hb : (b.support : Set σ) ⊆ B) (hb' : (b'.support : Set σ) ⊆ B)
     (c1 c2 c3 c4 : K) :
@@ -109,6 +149,19 @@ theorem fock_mono_disj {A B : Set σ} (hAB : Disjoint A B) {a a' b b' : σ →�
   · rw [if_neg (fun h => h1 (hiff.mp h).1), if_neg h1, zero_mul]
   · rw [if_neg (fun h => h1 (hiff.mp h).1), if_neg h1, zero_mul]
 
+/- English proof (translation)
+Establish `e : ∀ (F G : MvPolynomial σ K), fock F G = ∑ a ∈ F.support, ∑ a' ∈ G.support, fock (monomial a (F.coeff a)) (monomial a' (G.coeff a'))`. Introduce `F G`. Use `conv_lhs => rw [F.as_sum, G.as_sum]`. Rewrite using `[fock_sum_left]`. Conclude with `Finset.sum_congr rfl fun a _ => fock_sum_right _ _ _`.
+
+Establish `hprod : ∀ (P Q : MvPolynomial σ K), P * Q = ∑ a ∈ P.support, ∑ b ∈ Q.support, monomial a (P.coeff a) * monomial b (Q.coeff b)`. Introduce `P Q`. Use `conv_lhs => rw [P.as_sum, Q.as_sum]`. Rewrite using `[Finset.sum_mul_sum]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hprod F1 F2, hprod G1 G2, fock_sum_left]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[fock_sum_left]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[fock_sum_right]`.
+
+Conclude with `Finset.sum_congr rfl fun a' _ => fock_sum_right _ _ _`. Use `_ = ∑ a ∈ F1.support, ∑ a' ∈ G1.support, ∑ b ∈ F2.support, ∑ b' ∈ G2.support, fock (monomial a (F1.coeff a)) (monomial a' (G1.coeff a')) * fock (monomial b (F2.coeff b)) (monomial b' (G2.coeff b')) := by`. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm (s := F2.support) (t := G1.support)]`. Use `Finset.sum_congr rfl fun a' ha' => Finset.sum_congr rfl fun b hb => Finset.sum_congr rfl fun b' hb' => ?_` and prove the remaining obligations.
+
+Conclude with `fock_mono_disj hAB (supp_of_supported hF1 ha) (supp_of_supported hG1 ha') (supp_of_supported hF2 hb) (supp_of_supported hG2 hb') _ _ _ _`. Use `_ = fock F1 G1 * fock F2 G2 := by`. Rewrite using `[e F1 G1, e F2 G2, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun a' _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+-/
 theorem fock_mul_disj {A B : Set σ} (hAB : Disjoint A B) {F1 G1 F2 G2 : MvPolynomial σ K}
     (hF1 : F1 ∈ supported K A) (hG1 : G1 ∈ supported K A) (hF2 : F2 ∈ supported K B) (hG2 : G2 ∈ supported K B) :
     fock (F1 * F2) (G1 * G2) = fock F1 G1 * fock F2 G2 := by
@@ -152,12 +205,22 @@ theorem fock_mul_disj {A B : Set σ} (hAB : Disjoint A B) {F1 G1 F2 G2 : MvPolyn
         refine Finset.sum_congr rfl fun b _ => ?_
         rw [Finset.mul_sum]
 
+/- English proof (translation)
+Unfold `fock`. Rewrite using `[← C_1, support_C, if_neg one_ne_zero, Finset.sum_singleton, coeff_C, if_pos rfl]`. Simplify using `[expFact]`.
+-/
 theorem fock_one_one : fock (1 : MvPolynomial σ K) 1 = 1 := by
   classical
   unfold fock
   rw [← C_1, support_C, if_neg one_ne_zero, Finset.sum_singleton, coeff_C, if_pos rfl]
   simp [expFact]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [fock_one_one]`. Consider the case `insert j s hj ih`. Rewrite using `[Finset.prod_insert hj, Finset.prod_insert hj, Finset.prod_insert hj, ← ih]`. Establish `hsupp : ∀ H : J → MvPolynomial σ K, (∀ j, H j ∈ supported K (A j)) → (∏ j' ∈ s, H j') ∈ supported K (⋃ j' ∈ s, A j')`.
+
+Introduce `H hH`. Conclude with `Subalgebra.prod_mem _ fun j' hj' => supported_mono (Set.subset_biUnion_of_mem hj') (hH j')`. Establish `hdisj : Disjoint (A j) (⋃ j' ∈ s, A j')`. Rewrite using `[Set.disjoint_iUnion₂_right]`. Introduce `j' hj'`.
+
+Conclude with `hA j j' (fun h => hj (h ▸ hj'))`. Conclude with `fock_mul_disj hdisj (hF j) (hG j) (hsupp F hF) (hsupp G hG)`.
+-/
 theorem fock_prod_disj {J : Type} (A : J → Set σ) (hA : ∀ j j', j ≠ j' → Disjoint (A j) (A j')) (s : Finset J)
     (F G : J → MvPolynomial σ K) (hF : ∀ j, F j ∈ supported K (A j)) (hG : ∀ j, G j ∈ supported K (A j)) :
     fock (∏ j ∈ s, F j) (∏ j ∈ s, G j) = ∏ j ∈ s, fock (F j) (G j) := by
@@ -176,6 +239,9 @@ theorem fock_prod_disj {J : Type} (A : J → Set σ) (hA : ∀ j j', j ≠ j' �
       exact hA j j' (fun h => hj (h ▸ hj'))
     exact fock_mul_disj hdisj (hF j) (hG j) (hsupp F hF) (hsupp G hG)
 
+/- English proof (translation)
+Establish `h1 : aeval f u ∈ Algebra.adjoin K (Set.range f)`. Rewrite using `[← MvPolynomial.aeval_range]`. Conclude with `AlgHom.mem_range_self _ u`. Conclude with `Algebra.adjoin_le (Set.range_subset_iff.mpr hf) h1`.
+-/
 theorem aeval_mem_sub {τ : Type} (S : Subalgebra K (MvPolynomial σ K)) (f : τ → MvPolynomial σ K) (hf : ∀ v, f v ∈ S)
     (u : MvPolynomial τ K) : aeval f u ∈ S := by
   have h1 : aeval f u ∈ Algebra.adjoin K (Set.range f) := by
@@ -188,6 +254,11 @@ end Gen
 def segVars (X : Loc) (j : Fin (numSeg X.TT)) : Set ((X.TT × Bool) × Fin (X.m + 1)) :=
   {v | v.1.1 = topEnd X j ∨ ∃ i, v.1.1 = topOdd X j i}
 
+/- English proof (translation)
+Unfold `cdist`. Establish `hu` using `u.isLt`. Establish `hv` using `v.isLt`. Use `split_ifs with h`. Rewrite using `[show v.val + n' - u.val = (v.val - u.val) + n' by omega, Nat.add_mod_right, Nat.mod_eq_of_lt (by omega)]`.
+
+Conclude with `Nat.mod_eq_of_lt (by omega)`.
+-/
 private theorem cdist_eq_ite {n' : ℕ} (u v : Fin n') :
     cdist u v = if u.val ≤ v.val then v.val - u.val else v.val + n' - u.val := by
   unfold cdist
@@ -197,6 +268,11 @@ private theorem cdist_eq_ite {n' : ℕ} (u v : Fin n') :
   · rw [show v.val + n' - u.val = (v.val - u.val) + n' by omega, Nat.add_mod_right, Nat.mod_eq_of_lt (by omega)]
   · exact Nat.mod_eq_of_lt (by omega)
 
+/- English proof (translation)
+Establish `ha` using `a.isLt`. Establish `hb` using `b.isLt`. Establish `hx` using `x.isLt`. Rewrite `h1`, `h3` using `[cdist_eq_ite]`. Rewrite `h2`, `h4` using `[cdist_eq_ite, cdist_eq_ite]`.
+
+Apply the tactic sequence `split_ifs at h1 h2 h3 h4 <;> omega`.
+-/
 private theorem false_of_cdist_between_both_ways {n' : ℕ} (a b x : Fin n') (h1 : 0 < cdist a x) (h2 : cdist a x < cdist a b)
     (h3 : 0 < cdist b x) (h4 : cdist b x < cdist b a) : False := by
   have ha := a.isLt
@@ -206,6 +282,11 @@ private theorem false_of_cdist_between_both_ways {n' : ℕ} (a b x : Fin n') (h1
   rw [cdist_eq_ite, cdist_eq_ite] at h2 h4
   split_ifs at h1 h2 h3 h4 <;> omega
 
+/- English proof (translation)
+Apply `Fin.ext` to reduce the goal to its premises. Establish `ha` using `a.isLt`. Establish `hs` using `s.isLt`. Use `show (a.val + cdist a s) % n' = s.val`. Rewrite using `[cdist_eq_ite]`.
+
+Use `split_ifs with h`. Rewrite using `[show a.val + (s.val - a.val) = s.val by omega, Nat.mod_eq_of_lt hs]`. Rewrite using `[show a.val + (s.val + n' - a.val) = s.val + n' by omega, Nat.add_mod_right, Nat.mod_eq_of_lt hs]`.
+-/
 private theorem posAdd_cdist_eq_self' {n' : ℕ} (a s : Fin n') : posAdd a (cdist a s) = s := by
   apply Fin.ext
   have ha := a.isLt
@@ -216,6 +297,35 @@ private theorem posAdd_cdist_eq_self' {n' : ℕ} (a s : Fin n') : posAdd a (cdis
   · rw [show a.val + (s.val - a.val) = s.val by omega, Nat.mod_eq_of_lt hs]
   · rw [show a.val + (s.val + n' - a.val) = s.val + n' by omega, Nat.add_mod_right, Nat.mod_eq_of_lt hs]
 
+/- English proof (translation)
+Establish `hnodup : (evenTops X.TT).Nodup` using `Finset.sort_nodup _ _`. Establish `hN : 2 ≤ numSeg X.TT`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Use `j.isLt` as an intermediate fact.
+
+Use `j'.isLt` as an intermediate fact. Conclude with `h (Fin.ext (by omega))`. Establish `hEnd : ∀ a b : Fin (numSeg X.TT), topEnd X a = topEnd X b → a = b`. Introduce `a b hab`. Establish `h1 : segNext X.TT a = segNext X.TT b` using `congrArg Subtype.val hab`.
+
+Unfold `segNext at h1`. Establish `h2` using `congrArg Fin.val ((List.Nodup.get_inj_iff hnodup).1 h1)`. Simplify using `only at h2`. Establish `ha` using `a.isLt`. Establish `hb` using `b.isLt`.
+
+Apply `Fin.ext` to reduce the goal to its premises. Apply the tactic sequence `by_cases ha1 : a.val + 1 < numSeg X.TT <;> by_cases hb1 : b.val + 1 < numSeg X.TT`. Rewrite `h2` using `[Nat.mod_eq_of_lt ha1, Nat.mod_eq_of_lt hb1]`. Use linear arithmetic over natural numbers and integers. Rewrite `h2` using `[Nat.mod_eq_of_lt ha1, show b.val + 1 = numSeg X.TT by omega, Nat.mod_self]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite `h2` using `[show a.val + 1 = numSeg X.TT by omega, Nat.mod_self, Nat.mod_eq_of_lt hb1]`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Establish `hpar : ∀ a (i : Fin (segS X.TT a)) b, topOdd X a i ≠ topEnd X b`.
+
+Introduce `a i b heq`. Establish `hv : segPos X.TT a i = segNext X.TT b` using `congrArg Subtype.val heq`. Establish `h1` using `(pos_mem X.TT a i).2`. Rewrite `h1` using `[hv]`. Conclude with `h1 (next_mem X.TT b).2`.
+
+Establish `hseg : ∀ a (i : Fin (segS X.TT a)), 0 < cdist (segStart X.TT a) (segPos X.TT a i) ∧ cdist (segStart X.TT a) (segPos X.TT a i) < segG X.TT a`. Introduce `a i`. Use `set d := (segDists X.TT a).get i with hdd`. Establish `hd : d ∈ segDists X.TT a` using `List.get_mem _ _`. Unfold `segDists at hd`.
+
+Rewrite `hd` using `[Finset.mem_sort, Finset.mem_image]`. Take `⟨s, hs, hsd⟩` from `hd`. Establish `hps : segPos X.TT a i = s` using `by show posAdd (segStart X.TT a) d = s`. Rewrite using `[← hsd, posAdd_cdist_eq_self']`. Rewrite using `[hps]`.
+
+Conclude with `⟨(Finset.mem_filter.1 hs).2.2.1, (Finset.mem_filter.1 hs).2.2.2⟩`. Establish `hsm : ∀ c : Fin (numSeg X.TT), segStart X.TT c ∈ X.TT ∧ Even (segStart X.TT c).val`. Introduce `c`. Establish `hm : segStart X.TT c ∈ evenTops X.TT` using `List.get_mem _ _`. Rewrite `hm` using `[evenTops, Finset.mem_sort, Finset.mem_filter]`.
+
+Conclude with `hm`. Establish `hodd : ∀ a b (i : Fin (segS X.TT a)) (i' : Fin (segS X.TT b)), topOdd X a i = topOdd X b i' → a = b`. Introduce `a b i i' heq`. Assume the negation of the conclusion as `hab`. Establish `hx : segPos X.TT a i = segPos X.TT b i'` using `congrArg Subtype.val heq`.
+
+Establish `hsa` using `hseg a i`. Establish `hsb` using `hseg b i'`. Rewrite `hsa` using `[hx]`. Establish `hstart : segStart X.TT a ≠ segStart X.TT b`. Introduce `hs`.
+
+Conclude with `hab ((List.Nodup.get_inj_iff hnodup).1 hs)`. Establish `hna` using `next_min X.TT a (segStart X.TT b) (hsm b).1 (hsm b).2 (Ne.symm hstart)`. Establish `hnb` using `next_min X.TT b (segStart X.TT a) (hsm a).1 (hsm a).2 hstart`. Establish `hga` using `(segG_eq X.TT hN a).1`. Establish `hgb` using `(segG_eq X.TT hN b).1`.
+
+Conclude with `false_of_cdist_between_both_ways (segStart X.TT a) (segStart X.TT b) (segPos X.TT b i') hsa.1 (by omega) hsb.1 (by omega)`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `⟨⟨v, bb⟩, cc⟩ hv hv'`. Simplify using `only [segVars, Set.mem_setOf_eq] at hv hv'`. Apply the tactic sequence `rcases hv with hv | ⟨i, hv⟩ <;> rcases hv' with hv' | ⟨i', hv'⟩`.
+
+Conclude with `h (hEnd j j' (hv.symm.trans hv'))`. Conclude with `hpar j' i' j (hv'.symm.trans hv)`. Conclude with `hpar j i j' (hv.symm.trans hv')`. Conclude with `h (hodd j j' i i' (hv.symm.trans hv'))`.
+-/
 theorem segVars_disj (X : Loc) (j j' : Fin (numSeg X.TT)) (h : j ≠ j') : Disjoint (segVars X j) (segVars X j') := by
   classical
   have hnodup : (evenTops X.TT).Nodup := Finset.sort_nodup _ _
@@ -290,6 +400,11 @@ theorem segVars_disj (X : Loc) (j j' : Fin (numSeg X.TT)) (h : j ≠ j') : Disjo
   · exact hpar j i j' (hv.symm.trans hv')
   · exact h (hodd j j' i i' (hv.symm.trans hv'))
 
+/- English proof (translation)
+Break down `v with ⟨a, c⟩ | ⟨l, b⟩` into its components or cases. Simplify using `only [symVar] split_ifs with h`. Conclude with `Or.inr ⟨_, rfl⟩`. Conclude with `Or.inl rfl`. Simplify using `only [symVar] split_ifs with h`.
+
+Conclude with `Or.inr ⟨_, rfl⟩`. Conclude with `Or.inl rfl`.
+-/
 theorem symVar_mem (C0 CE1 CE2 : ℝ) (X : Loc) (j : Fin (numSeg X.TT))
     (v : BVar (2 * segS X.TT j + 1) X.m (X.seg C0 CE1 CE2 j).t) : symVar C0 CE1 CE2 X j v ∈ segVars X j := by
   rcases v with ⟨a, c⟩ | ⟨l, b⟩
@@ -302,6 +417,11 @@ theorem symVar_mem (C0 CE1 CE2 : ℝ) (X : Loc) (j : Fin (numSeg X.TT))
     · exact Or.inr ⟨_, rfl⟩
     · exact Or.inl rfl
 
+/- English proof (translation)
+Establish `hX : ∀ v, v ∈ segVars X j → (MvPolynomial.X v : MvPolynomial ((X.TT × Bool) × Fin (X.m + 1)) K) ∈ supported K (segVars X j)` using `fun v hv => X_mem_supported.mpr hv`. Establish `hodd : ∀ i (β : Bool) c, ((topOdd X j i, β), c) ∈ segVars X j` using `fun i β c => Or.inr ⟨i, rfl⟩`. Unfold `ioBlock digitMon sTopMon`. Use `Subalgebra.mul_mem _ (Subalgebra.mul_mem _ ?_ ?_) ?_` and prove the remaining obligations. Conclude with `Subalgebra.prod_mem _ fun i _ => Subalgebra.prod_mem _ fun c _ => Subalgebra.mul_mem _ (Subalgebra.pow_mem _ (hX _ (hodd i true c)) _) (Subalgebra.pow_mem _ (hX _ (hodd i false c)) _)`.
+
+Use `Subalgebra.prod_mem _ fun i _ => ?_ split_ifs` and prove the remaining obligations. Conclude with `Subalgebra.mul_mem _ (Subalgebra.pow_mem _ (hX _ (hodd i true 0)) _) (Subalgebra.pow_mem _ (hX _ (hodd i false 0)) _)`. Conclude with `Subalgebra.one_mem _`. Conclude with `aeval_mem_sub _ _ (fun v => Subalgebra.pow_mem _ (hX _ (symVar_mem C0 CE1 CE2 X j v)) _) u`.
+-/
 theorem ioBlock_supported (K : Type) [Field K] (C0 CE1 CE2 : ℝ) (X : Loc) (j : Fin (numSeg X.TT))
     (b : SegBlock (segS X.TT j) X.m) (u : MvPolynomial (BVar (2 * segS X.TT j + 1) X.m (X.seg C0 CE1 CE2 j).t) K) :
     ioBlock K X.p C0 CE1 CE2 X j b u ∈ supported K (segVars X j) := by
@@ -321,6 +441,9 @@ theorem ioBlock_supported (K : Type) [Field K] (C0 CE1 CE2 : ℝ) (X : Loc) (j :
     · exact Subalgebra.one_mem _
   · exact aeval_mem_sub _ _ (fun v => Subalgebra.pow_mem _ (hX _ (symVar_mem C0 CE1 CE2 X j v)) _) u
 
+/- English proof (translation)
+Introduce `X K _ hseg β β' s s'`. Unfold `symFam`. Conclude with `fock_prod_disj (segVars X) (segVars_disj X) Finset.univ _ _ (fun j => ioBlock_supported K C0 CE1 CE2 X j (β j) (s j)) (fun j => ioBlock_supported K C0 CE1 CE2 X j (β' j) (s' j))`.
+-/
 theorem prodAt (C0 CE1 CE2 : ℝ) : ProdAt C0 CE1 CE2 := by
   intro X K _ hseg β β' s s'
   unfold symFam

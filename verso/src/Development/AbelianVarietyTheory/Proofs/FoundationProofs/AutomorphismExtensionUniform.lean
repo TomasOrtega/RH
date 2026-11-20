@@ -5,6 +5,13 @@ open scoped NNReal
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Distinguish the cases in `h : ∃ g₀ : L ≃ₐ[K] L, g₀ a = b`. Take `⟨g₀, hg₀⟩` from `h`. Establish `hc : IsClosed ((MulAction.stabilizer (L ≃ₐ[K] L) a : Subgroup _) : Set (L ≃ₐ[K] L))` using `Subgroup.isClosed_of_isOpen _ (stabilizer_isOpen_of_isIntegral a)`. Establish `hp` using `hc.preimage (continuous_const_mul g₀⁻¹)`. Use `hp using 1` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `g`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_preimage, SetLike.mem_coe, MulAction.mem_stabilizer_iff, mul_smul, inv_smul_eq_iff]`. Simplify using `only [AlgEquiv.smul_def, hg₀]`. Establish `: {g : L ≃ₐ[K] L | g a = b} = ∅`. Use extensionality with `g`.
+
+Simplify using `only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false]`. Conclude with `fun hg => h ⟨g, hg⟩`. Rewrite using `[this]`. Conclude with `isClosed_empty`.
+-/
 theorem isClosed_setOf_algEquiv_apply_eq {K L : Type} [Field K] [Field L] [Algebra K L]
     [Algebra.IsIntegral K L] (a b : L) : IsClosed {g : L ≃ₐ[K] L | g a = b} := by
   by_cases h : ∃ g₀ : L ≃ₐ[K] L, g₀ a = b
@@ -24,6 +31,15 @@ theorem isClosed_setOf_algEquiv_apply_eq {K L : Type} [Field K] [Field L] [Algeb
     rw [this]
     exact isClosed_empty
 
+/- English proof (translation)
+Set `F : IntermediateField k Ω` to `IntermediateField.adjoin k (u : Set Ω)`. Use `haveI : FiniteDimensional k F := IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x`. Take `⟨α, hα⟩` from `Field.exists_primitive_element k F`. Use `⟨α, fun {L} _ φ ψ hk hx y hy => ?_⟩` and prove the remaining obligations. Establish `key : ∀ z : F, z ∈ IntermediateField.adjoin k {α} → φ z = ψ z`.
+
+Introduce `z hz`. Proceed by induction on `hz using IntermediateField.adjoin_induction with`. Consider the case `mem x hx'`. Rewrite using `[Set.mem_singleton_iff.mp hx']`. Conclude with `hx`.
+
+Consider the case `algebraMap q`. Conclude with `DFunLike.congr_fun hk q`. Consider the case `add x y _ _ hx hy => simp [hx, hy]`. Consider the case `inv x _ hx => simp [hx]`. Consider the case `mul x y _ _ hx hy => simp [hx, hy]`.
+
+Conclude with `key ⟨y, IntermediateField.subset_adjoin k _ hy⟩ (by rw [hα]; trivial)`.
+-/
 theorem exists_primitive_for_finset (k : Type) {Ω : Type} [Field k] [CharZero k] [Field Ω]
     [Algebra k Ω] [Algebra.IsAlgebraic k Ω]
     (u : Finset Ω) : ∃ x : Ω, ∀ {L : Type} [Field L] (φ ψ : Ω →+* L),
@@ -47,6 +63,13 @@ theorem exists_primitive_for_finset (k : Type) {Ω : Type} [Field k] [CharZero k
     | mul x y _ _ hx hy => simp [hx, hy]
   exact key ⟨y, IntermediateField.subset_adjoin k _ hy⟩ (by rw [hα]; trivial)
 
+/- English proof (translation)
+Introduce `Ω L K _ _ _ _ _ _ _ _ _ j s h`. Use `haveI : IsAlgClosure K L := ⟨inferInstance, inferInstance⟩`. Use `haveI : IsGalois K L := {}`. Use `haveI : Algebra.IsAlgebraic ℚ Ω := IsAlgClosure.isAlgebraic`. Establish `hne` using `(isCompact_univ (X := L ≃ₐ[K] L)).inter_iInter_nonempty (fun x : Ω => {g : L ≃ₐ[K] L | g (j x) = j (s x)}) (fun x => isClosed_setOf_algEquiv_apply_eq _ _) (fun u => by`.
+
+Take `⟨x, hx⟩` from `exists_primitive_for_finset ℚ u`. Take `⟨g, hg⟩` from `h x`. Use `⟨g, Set.mem_univ _, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_iInter, Set.mem_ofPred_eq]`. Introduce `y hy`.
+
+Conclude with `hx ((g : L →+* L).comp j) (j.comp (s : Ω →+* Ω)) (RingHom.ext_rat _ _) hg y hy)`. Take `⟨g, -, hg⟩` from `hne`. Simplify using `only [Set.mem_iInter, Set.mem_ofPred_eq] at hg`. Conclude with `⟨g, hg⟩`.
+-/
 theorem exists_algEquiv_inducing_of_forall_conj :
     ∀ (Ω L K : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] [Field L] [IsAlgClosed L]
       [Field K] [CharZero K] [Algebra K L] [Algebra.IsAlgebraic K L] (j : Ω →+* L)

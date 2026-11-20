@@ -13,6 +13,15 @@ noncomputable section
 
 namespace GlobalTheory.Mem.Col2.IdxEx.LocMatch
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hs1, hs2⟩`. Use `⟨(Loc.R1 k n c).mul_mem ((Loc.R1 k n c).mul_mem ((Loc.R1 k n c).inv_mem hr) hs1) hr, ?_⟩` and prove the remaining obligations. Establish `h2 : (r * h' * κ)⁻¹ * s * (r * h' * κ)⁻¹⁻¹ ∈ J` using `hs2`. Use `show h'⁻¹ * (r⁻¹ * s * r) * h'⁻¹⁻¹ ∈ J`.
+
+Establish `e : h'⁻¹ * (r⁻¹ * s * r) * h'⁻¹⁻¹ = κ * ((r * h' * κ)⁻¹ * s * (r * h' * κ)⁻¹⁻¹) * κ⁻¹` using `by group`. Rewrite using `[e]`. Conclude with `mul_mem (mul_mem hκ h2) (inv_mem hκ)`. Introduce and unpack `⟨hs1, hs2⟩`. Establish `hs1' : s ∈ Loc.R1 k n c`.
+
+Use `(Loc.R1 k n c).mul_mem ((Loc.R1 k n c).mul_mem hr hs1) ((Loc.R1 k n c).inv_mem hr)` as an intermediate fact. Rewrite `this` using `[show r * (r⁻¹ * s * r) * r⁻¹ = s by group]`. Then use the resulting hypothesis. Use `⟨hs1', ?_⟩` and prove the remaining obligations. Establish `h2 : h'⁻¹ * (r⁻¹ * s * r) * h'⁻¹⁻¹ ∈ J` using `hs2`. Use `show (r * h' * κ)⁻¹ * s * (r * h' * κ)⁻¹⁻¹ ∈ J`.
+
+Establish `e : (r * h' * κ)⁻¹ * s * (r * h' * κ)⁻¹⁻¹ = κ⁻¹ * (h'⁻¹ * (r⁻¹ * s * r) * h'⁻¹⁻¹) * κ` using `by group`. Rewrite using `[e]`. Conclude with `mul_mem (mul_mem (inv_mem hκ) h2) hκ`.
+-/
 theorem cbe_iff {k : Type} [CommRing k] {n c : ℕ} (J : Subgroup ((Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)))
     {r h' κ s : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)} (hr : r ∈ Loc.R1 k n c) (hκ : κ ∈ J) :
     s ∈ Loc.Cbe J (r * h' * κ) ↔ r⁻¹ * s * r ∈ Loc.Cbe J h' := by
@@ -35,6 +44,11 @@ theorem cbe_iff {k : Type} [CommRing k] {n c : ℕ} (J : Subgroup ((Fin (n + c) 
     rw [e]
     exact mul_mem (mul_mem (inv_mem hκ) h2) hκ
 
+/- English proof (translation)
+Introduce `y hy`. Establish `h1 : δ.1⁻¹ y ∈ stdAt E n P` using `((δ⁻¹).2 y).2 hy`. Establish `h2 : g (δ.1⁻¹ y) ∈ stdAt E n P` using `(hg _).2 h1`. Use `show redV P (δ.1 (g (δ.1⁻¹ y))) = _`. Rewrite using `[GlobalTheory.TopStep.redV_redGL δ h2, hA _ h1]`.
+
+Establish `h3` using `GlobalTheory.TopStep.redV_redGL δ⁻¹ hy`. Establish `e : (δ⁻¹).1 y = δ.1⁻¹ y` using `rfl`. Rewrite `h3` using `[e]`. Rewrite using `[h3, map_inv, Units.val_mul, Units.val_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`.
+-/
 theorem red_conj {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} {P : HeightOneSpectrum (𝓞 E)}
     (δ : GLint E n P) {g : Sp E n ≃ₗ[E] Sp E n} (hg : g ∈ GLint E n P) {A : GL (Fin n) (𝓞 E ⧸ P.asIdeal)}
     (hA : ∀ y ∈ stdAt E n P, redV P (g y) = A.1.mulVec (redV P y)) :
@@ -54,6 +68,9 @@ end GlobalTheory.Mem.Col2.IdxEx.LocMatch
 
 namespace GlobalTheory.Mem.Col2.IdxEx.LocMatch
 
+/- English proof (translation)
+Unfold `lamYat`. Rewrite using `[if_pos hP]`. Conclude with `⟨fun hx => by simpa only [GlobalTheory.CongLevel.resX_inX] using GlobalTheory.CongLevel.resX_mem P _ _ _ _ hx, GlobalTheory.CongLevel.inX_mem_lamY P _ _ _ x⟩`.
+-/
 theorem inX_mem_lamYat_iff {X : Fields} {Pr : Primes X} {R : Ranks} (j : ℕ) {P : HeightOneSpectrum (𝓞 X.E)}
     (hP : P ∈ Pr.vGs) (x : Sp X.E (R.N j)) :
     Loc.inX X.E (R.N j) (cOf R j) x ∈ lamYat (Pr := Pr) (R := R) j P ↔ x ∈ stdAt X.E (R.N j) P := by
@@ -62,6 +79,9 @@ theorem inX_mem_lamYat_iff {X : Fields} {Pr : Primes X} {R : Ranks} (j : ℕ) {P
   exact ⟨fun hx => by simpa only [GlobalTheory.CongLevel.resX_inX] using GlobalTheory.CongLevel.resX_mem P _ _ _ _ hx,
     GlobalTheory.CongLevel.inX_mem_lamY P _ _ _ x⟩
 
+/- English proof (translation)
+Unfold `lamRow`. Simplify using `only [if_pos hP, if_true]`.
+-/
 theorem lamRow_tup {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m) {S : Set ℕ}
     (mu mu' : Tup X.F X.E X.K S) (j : ℕ) {P : HeightOneSpectrum (𝓞 X.E)} (hP : P ∈ Pr.vGs)
     (f : HomE X.E (R.N j + cOf R j) (R.N j + cOf R j)) :
@@ -73,6 +93,51 @@ end GlobalTheory.Mem.Col2.IdxEx.LocMatch
 
 namespace GlobalTheory.Mem.Col2.IdxEx.LocMatch
 
+/- English proof (translation)
+Introduce `X Pr R Ch sel S mu mu' cst cst' L L' G m2 _ _ _ hs hs' hok hok' j hj b b' w r κ hr hκ he`. Establish `hP : w.1 ∈ Pr.vGs` using `w.2`. Establish `hjm : j < R.m` using `by rw [hok.hm]; omega`. Establish `hG` using `hok.grpG j b w`. Establish `hG'` using `hok'.grpG j b' w`.
+
+Establish `hC` using `hok.chrG j b w`. Establish `hC'` using `hok'.chrG j b' w`. Establish `hint` using `hok.int j b ⟨w.1, Finset.mem_union_left _ w.2⟩`. Establish `hint'` using `hok'.int j b' ⟨w.1, Finset.mem_union_left _ w.2⟩`. Establish `hst` using `hok.stabG j b ⟨w.1, Finset.mem_union_left _ w.2⟩ hP`.
+
+Establish `hst'` using `hok'.stabG j b' ⟨w.1, Finset.mem_union_left _ w.2⟩ hP`. Establish `hpsi` using `fun a ha => hok.psi0 ⟨w.1, Finset.mem_union_left _ w.2⟩ a hP ha`. Establish `hpsi'` using `fun a ha => hok'.psi0 ⟨w.1, Finset.mem_union_left _ w.2⟩ a hP ha`. Rewrite `hG`, `hC`, `hint` using `[hs]`. Rewrite `hG'`, `hC'`, `hint'` using `[hs']`.
+
+Unfold `chiInv at hC hC'`. Rewrite `hC` using `[hs]`. Rewrite `hC'` using `[hs']`. Generalize the expression as in `L.h j b ⟨w.1, Finset.mem_union_left _ w.2⟩ = h at hG hC hint hst he`. Generalize the expression as in `L'.h j b' ⟨w.1, Finset.mem_union_left _ w.2⟩ = h' at hG' hC' hint' hst' he`.
+
+Substitute `he` using the available equality. Establish `hκs` using `jat_le_stab_lamY true j w.1 hP κ hκ`. Establish `hrs : r ∈ stabL X.E _ (lamYat (Pr` using `Pr) (R := R) j w.1) := by`. Use `mul_mem (mul_mem hst (inv_mem hκs)) (inv_mem hst')` as an intermediate fact. Rewrite `this` using `[show r * h' * κ * κ⁻¹ * h'⁻¹ = r by group]`. Then use the resulting hypothesis.
+
+Take `⟨γ, hγ⟩` from `GlobalTheory.QNormal.exists_res hr`. Establish `hγint : γ ∈ GLint X.E (R.N j) w.1`. Introduce `y`. Rewrite using `[← inX_mem_lamYat_iff (Pr := Pr) j hP, ← inX_mem_lamYat_iff (Pr := Pr) j hP, ← hγ y]`. Conclude with `hrs _`.
+
+Use `set γg : GLint X.E (R.N j) w.1 := ⟨γ, hγint⟩ with hγg`. Use `⟨GlobalTheory.TopStep.redGL (R.N j) w.1 γg⁻¹, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h1`. Substitute `h1` using the available equality. Establish `e : γ = 1`.
+
+Use `LinearEquiv.ext fun y => GlobalTheory.QNormal.inX_injective (c := cOf R j) ?_` and prove the remaining obligations. Rewrite using `[← hγ y]`. Both sides reduce to the same expression. Establish `e2 : γg = 1` using `Subtype.ext e`. Rewrite using `[e2, inv_one, map_one]`.
+
+Introduce `hbar`. Rewrite using `[hG, hG']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, ⟨r₁, hr₁, hres⟩, hred⟩`. Use `⟨γ⁻¹ * g * γ, ⟨r⁻¹ * r₁ * r, (cbe_iff _ hr hκ).1 hr₁, GlobalTheory.Proof.level_eq_parahoric_category.conj_res hγ hres⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce `y hy`. Conclude with `red_conj γg⁻¹ (hint ⟨r₁, hr₁, hres⟩) hred y hy`. Introduce and unpack `⟨g', ⟨r₁', hr₁', hres'⟩, hred'⟩`. Establish `hγ' : ∀ y, r⁻¹ (Loc.inX X.E (R.N j) (cOf R j) y) = Loc.inX X.E (R.N j) (cOf R j) (γ⁻¹ y)`. Introduce `y`.
+
+Use `show r.symm _ = _`. Rewrite using `[LinearEquiv.symm_apply_eq, hγ]`. Use `show _ = Loc.inX X.E (R.N j) (cOf R j) (γ (γ.symm y))`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Establish `hmem : r * r₁' * r⁻¹ ∈ Loc.Cbe (Jat (Pr` using `Pr) true j w.1) (r * h' * κ) := by`.
+
+Use `(cbe_iff _ hr hκ).2 ?_` and prove the remaining obligations. Rewrite using `[show r⁻¹ * (r * r₁' * r⁻¹) * r = r₁' by group]` and apply the resulting hypothesis. Use `⟨γ * g' * γ⁻¹, ⟨r * r₁' * r⁻¹, hmem, fun y => GlobalTheory.Proof.level_eq_parahoric_category.conj_res hγ' hres' y⟩, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Establish `e : ∀ (Q A : GL (Fin (R.N j)) (𝓞 X.E ⧸ w.1.asIdeal)), Q * (Q⁻¹ * A * Q⁻¹⁻¹) * Q⁻¹ = A`.
+
+Introduce `Q A`. Use `group`. Use `red_conj γg (hint' ⟨r₁', hr₁', hres'⟩) hred' y hy` as an intermediate fact. Rewrite `this` using `[map_inv, e]`. Conclude with `this`.
+
+Introduce `hbar hbar' hx`. Take `⟨g, ⟨r₁, hr₁, hres⟩, hred⟩` from `(hG hbar.1).1 hbar.2`. Establish `hgint` using `hint ⟨r₁, hr₁, hres⟩`. Establish `hr₁'` using `(cbe_iff _ hr hκ).1 hr₁`. Establish `hres'` using `GlobalTheory.Proof.level_eq_parahoric_category.conj_res hγ hres`.
+
+Establish `hred' : ∀ y ∈ stdAt X.E (R.N j) w.1, redV w.1 ((γ⁻¹ * g * γ) y) = hbar'.1.1.mulVec (redV w.1 y)`. Introduce `y hy`. Rewrite using `[hx]`. Conclude with `red_conj γg⁻¹ hgint hred y hy`. Establish `e1` using `hC hbar g r₁ hr₁ hres hred`.
+
+Establish `e2` using `hC' hbar' (γ⁻¹ * g * γ) (r⁻¹ * r₁ * r) hr₁' hres' hred'`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[e1, e2, GlobalTheory.Proof.level_eq_parahoric_category.n1Arg_conj_eq hr hr₁.1]`. Establish `hr₁s : r₁ ∈ stabL X.E _ (LocE.lamY w.1 (qOf w.1) (R.N j) (cOf R j) fun i => i + 1)`. Establish `h1 : (r * h' * κ)⁻¹ * r₁ * (r * h' * κ)⁻¹⁻¹ ∈ Jat (Pr` using `Pr) true j w.1 := hr₁.2`.
+
+Establish `h2` using `jat_le_stab_lamY true j w.1 hP _ h1`. Establish `h3` using `mul_mem (mul_mem hst h2) (inv_mem hst)`. Rewrite `h3` using `[show r * h' * κ * ((r * h' * κ)⁻¹ * r₁ * (r * h' * κ)⁻¹⁻¹) * (r * h' * κ)⁻¹ = r₁ by group]`. Unfold `lamYat at h3`. Rewrite `h3` using `[if_pos hP]`.
+
+Conclude with `h3`. Establish `hq` using `GlobalTheory.TopStep.qOf_ne_zero (P := w.1) (E := X.E)`. Establish `hia` using `GlobalTheory.Mem.LevFin.intAt_n1Arg_G hq r₁ hr₁s`. Establish `ea : ((qOf w.1 : ℕ) : X.E) * Loc.n1Arg r₁ / ((qOf w.1 : ℕ) : X.E) = Loc.n1Arg r₁`. Clear the denominators using the available nonvanishing facts.
+
+Establish `p1` using `hpsi _ hia`. Establish `p2` using `hpsi' _ hia`. Rewrite `p1`, `p2` using `[ea]`. Rewrite using `[p1, p2]`. Use `congr 1`.
+
+Rewrite using `[lamRow_tup Ch mu mu' j hP]`. Establish `ht : h'⁻¹ * (r⁻¹ * r₁ * r) * h'⁻¹⁻¹ ∈ Jat (Pr` using `Pr) true j w.1 := hr₁'.2`. Rewrite `ht` using `[inv_inv]`. Establish `e : (r * h' * κ)⁻¹ * r₁ * (r * h' * κ) = κ⁻¹ * (h'⁻¹ * (r⁻¹ * r₁ * r) * h') * κ` using `by group`. Rewrite using `[e]`.
+
+Generalize the expression as in `h'⁻¹ * (r⁻¹ * r₁ * r) * h' = t at ht ⊢`. Establish `LM` using `GlobalTheory.SymLevelMul.lamRow_mul Ch mu' j w.1 hjm hP`. Establish `hκi : κ⁻¹ ∈ Jat (Pr` using `Pr) (R := R) true j w.1 := inv_mem hκ`. Rewrite using `[LM _ (mul_mem hκi ht) _ hκ, LM _ hκi _ ht]`. Establish `e3 : lamRow Ch mu' true j w.1 t.toLinearMap = lamRow Ch mu' true j w.1 t.toLinearMap * lamRow Ch mu' true j w.1 (κ⁻¹ : AutY X R j).toLinearMap * lamRow Ch mu' true j w.1 κ.toLinearMap` using `by conv_lhs => rw [show t = t * κ⁻¹ * κ by group]`.
+
+Rewrite using `[LM _ (mul_mem ht hκi) _ hκ, LM _ ht _ hκi]`. Take the linear combination `-e3`.
+-/
 theorem loc_match : ∀ {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu mu' : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) (cst' : LocCst X (rowSG Pr sel mu')) (L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))) (L' : ChIdx X Pr R (QE sel (mu' : Chr X.F X.E X.K))) (G : ChGlob X R.m) (m2 : ℕ), X.Ok → Pr.Ok → Ch.Ok → cst.sharp = true → cst'.sharp = true → L.Ok Ch sel mu cst G m2 → L'.Ok Ch sel mu' cst' G m2 → ∀ (j : ℕ), j ≤ m2 + 1 → ∀ (b : L.β j) (b' : L'.β j) (w : {w // w ∈ Pr.vGs}) (r κ : AutY X R j), r ∈ Loc.R1 X.E (R.N j) (cOf R j) → κ ∈ Jat (Pr := Pr) true j w.1 → L.h j b ⟨w.1, Finset.mem_union_left _ w.2⟩ = r * L'.h j b' ⟨w.1, Finset.mem_union_left _ w.2⟩ * κ → ∃ x : GL (Fin (R.N j)) (𝓞 X.E ⧸ w.1.asIdeal), (r = 1 → x = 1) ∧ (∀ hbar : GL (Fin (R.N j)) (𝓞 X.E ⧸ w.1.asIdeal), hbar ∈ (L.levG j b w).H ↔ x * hbar * x⁻¹ ∈ (L'.levG j b' w).H) ∧ ∀ (hbar : ↥(L.levG j b w).H) (hbar' : ↥(L'.levG j b' w).H), hbar'.1 = x * hbar.1 * x⁻¹ → (L.levG j b w).lam hbar = (L'.levG j b' w).lam hbar' := by
   intro X Pr R Ch sel S mu mu' cst cst' L L' G m2 _ _ _ hs hs' hok hok' j hj b b' w r κ hr hκ he
   have hP : w.1 ∈ Pr.vGs := w.2

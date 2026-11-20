@@ -34,14 +34,25 @@ def thL : (ι → Fin 2 → Fin 2 → ℝ) →ₗ[ℝ] (ι → Fin 2 → Fin 2 �
     funext τ i k; simp only [th, Pi.smul_apply, RingHom.id_apply, smul_eq_mul, Complex.real_smul]
     split_ifs <;> push_cast <;> ring
 
+/- English proof (translation)
+Introduce `τ i k`. Apply the tactic sequence `fin_cases i <;> fin_cases k <;> simp [th] <;> ring`.
+-/
 lemma th_herm (y : ι → Fin 2 → Fin 2 → ℝ) : IsHermFam (th y) := by
   intro τ i k
   fin_cases i <;> fin_cases k <;> simp [th] <;> ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ i k`. Apply the tactic sequence `fin_cases i <;> fin_cases k <;> simp [kap, th]`.
+-/
 lemma kap_th (y : ι → Fin 2 → Fin 2 → ℝ) : kap (th y) = y := by
   funext τ i k
   fin_cases i <;> fin_cases k <;> simp [kap, th]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ i k`. Establish `h00` using `hb τ 0 0`. Establish `h11` using `hb τ 1 1`. Establish `h01` using `hb τ 0 1`. Rewrite `h00`, `h11`, `h01` using `[Complex.ext_iff]`.
+
+Simplify using `at h00 h11 h01`. Apply the tactic sequence `fin_cases i <;> fin_cases k <;> apply Complex.ext <;> simp [th, kap] <;> linarith`.
+-/
 lemma th_kap {b : ι → Fin 2 → Fin 2 → ℂ} (hb : IsHermFam b) : th (kap b) = b := by
   funext τ i k
   have h00 := hb τ 0 0
@@ -51,6 +62,9 @@ lemma th_kap {b : ι → Fin 2 → Fin 2 → ℂ} (hb : IsHermFam b) : th (kap b
   simp at h00 h11 h01
   fin_cases i <;> fin_cases k <;> apply Complex.ext <;> simp [th, kap] <;> linarith
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ i k`. Simplify using `[th]`.
+-/
 lemma th_zero : th (0 : ι → Fin 2 → Fin 2 → ℝ) = 0 := by
   funext τ i k
   simp [th]
@@ -63,6 +77,9 @@ def hermSub : Submodule ℝ (ι → Fin 2 → Fin 2 → ℂ) where
   smul_mem' s b hb τ i k := by
     simp only [Pi.smul_apply, Complex.real_smul, map_mul, Complex.conj_ofReal]; rw [hb τ i k]
 
+/- English proof (translation)
+Introduce `τ i k`. Use `show conj (χ τ k i) = conj (conj (χ τ i k))`. Rewrite using `[h τ i k]`.
+-/
 lemma conj_herm {χ : ι → Fin 2 → Fin 2 → ℂ} (h : IsHermFam χ) :
     IsHermFam (fun τ i k => conj (χ τ i k)) := by
   intro τ i k
@@ -71,15 +88,27 @@ lemma conj_herm {χ : ι → Fin 2 → Fin 2 → ℂ} (h : IsHermFam χ) :
 
 def pr (χ b : ι → Fin 2 → Fin 2 → ℂ) : ℝ := (∑ τ, ∑ i, ∑ k, χ τ i k * b τ i k).re
 
+/- English proof (translation)
+Simplify using `only [pr, Pi.add_apply, mul_add, Finset.sum_add_distrib, Complex.add_re]`.
+-/
 lemma pr_add_right (χ b c : ι → Fin 2 → Fin 2 → ℂ) : pr χ (b + c) = pr χ b + pr χ c := by
   simp only [pr, Pi.add_apply, mul_add, Finset.sum_add_distrib, Complex.add_re]
 
+/- English proof (translation)
+Simplify using `only [pr, Pi.add_apply, add_mul, Finset.sum_add_distrib, Complex.add_re]`.
+-/
 lemma pr_add_left (χ ψ b : ι → Fin 2 → Fin 2 → ℂ) : pr (χ + ψ) b = pr χ b + pr ψ b := by
   simp only [pr, Pi.add_apply, add_mul, Finset.sum_add_distrib, Complex.add_re]
 
+/- English proof (translation)
+Simplify using `only [pr, Pi.smul_apply, smul_eq_mul, mul_left_comm _ (s : ℂ), ← Finset.mul_sum, Complex.re_ofReal_mul]`.
+-/
 lemma pr_smul_right (χ b : ι → Fin 2 → Fin 2 → ℂ) (s : ℝ) : pr χ ((s : ℂ) • b) = s * pr χ b := by
   simp only [pr, Pi.smul_apply, smul_eq_mul, mul_left_comm _ (s : ℂ), ← Finset.mul_sum, Complex.re_ofReal_mul]
 
+/- English proof (translation)
+Simplify using `only [pr, Pi.smul_apply, smul_eq_mul, mul_assoc, ← Finset.mul_sum, Complex.re_ofReal_mul]`.
+-/
 lemma pr_smul_left (χ b : ι → Fin 2 → Fin 2 → ℂ) (s : ℝ) : pr ((s : ℂ) • χ) b = s * pr χ b := by
   simp only [pr, Pi.smul_apply, smul_eq_mul, mul_assoc, ← Finset.mul_sum, Complex.re_ofReal_mul]
 
@@ -93,12 +122,20 @@ def prR (b : ι → Fin 2 → Fin 2 → ℂ) : (ι → Fin 2 → Fin 2 → ℂ) 
   map_add' χ ψ := pr_add_left χ ψ b
   map_smul' s χ := by simp only [RingHom.id_apply, smul_eq_mul]; rw [← Complex.coe_smul, pr_smul_left]
 
+/- English proof (translation)
+Use `show prL χ (∑ j, (c j : ℂ) • ω j) = _`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => pr_smul_right χ (ω j) (c j)`.
+-/
 lemma pr_sum {N : ℕ} (χ : ι → Fin 2 → Fin 2 → ℂ) (c : Fin N → ℝ) (ω : Fin N → ι → Fin 2 → Fin 2 → ℂ) :
     pr χ (∑ j, (c j : ℂ) • ω j) = ∑ j, c j * pr χ (ω j) := by
   show prL χ (∑ j, (c j : ℂ) • ω j) = _
   rw [map_sum]
   exact Finset.sum_congr rfl fun j _ => pr_smul_right χ (ω j) (c j)
 
+/- English proof (translation)
+Simplify using `only [pr, Complex.mul_conj] at h`. Simplify using `only [← Complex.ofReal_sum, Complex.ofReal_re] at h`. Use function extensionality and compare the values at `τ i k`. Rewrite `h` using `[Finset.sum_eq_zero_iff_of_nonneg (fun τ _ => Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun k _ => Complex.normSq_nonneg _)]`. Establish `h2` using `h τ (Finset.mem_univ _)`.
+
+Rewrite `h2` using `[Finset.sum_eq_zero_iff_of_nonneg (fun i _ => Finset.sum_nonneg fun k _ => Complex.normSq_nonneg _)]`. Establish `h3` using `h2 i (Finset.mem_univ _)`. Rewrite `h3` using `[Finset.sum_eq_zero_iff_of_nonneg (fun k _ => Complex.normSq_nonneg _)]`. Conclude with `Complex.normSq_eq_zero.mp (h3 k (Finset.mem_univ _))`.
+-/
 lemma eq_zero_of_pr_conj {χ : ι → Fin 2 → Fin 2 → ℂ}
     (h : pr χ (fun τ i k => conj (χ τ i k)) = 0) : χ = 0 := by
   simp only [pr, Complex.mul_conj] at h
@@ -113,6 +150,9 @@ lemma eq_zero_of_pr_conj {χ : ι → Fin 2 → Fin 2 → ℂ}
   rw [Finset.sum_eq_zero_iff_of_nonneg (fun k _ => Complex.normSq_nonneg _)] at h3
   exact Complex.normSq_eq_zero.mp (h3 k (Finset.mem_univ _))
 
+/- English proof (translation)
+Rewrite using `[Module.finrank_pi_fintype]`. Simplify using `[Module.finrank_pi_fintype, mul_comm]`.
+-/
 lemma finrank_rfam : Module.finrank ℝ (ι → Fin 2 → Fin 2 → ℝ) = 4 * Fintype.card ι := by
   rw [Module.finrank_pi_fintype]
   simp [Module.finrank_pi_fintype, mul_comm]
@@ -123,6 +163,11 @@ section Basis
 
 variable {ι : Type} [Fintype ι] {N : ℕ} (ω : Fin N → ι → Fin 2 → Fin 2 → ℂ)
 
+/- English proof (translation)
+Rewrite `hli`, the goal using `[linearIndependent_iff']`. Introduce `s g hg i hi`. Use `hli s g ?_ i hi` and prove the remaining obligations. Establish `h` using `congrArg thL hg`. Rewrite `h` using `[map_sum, map_zero]`.
+
+Rewrite using `[← h]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Conclude with `congrArg _ (th_kap (hω j)).symm`.
+-/
 lemma kap_li (hω : ∀ j, IsHermFam (ω j)) (hli : LinearIndependent ℝ ω) :
     LinearIndependent ℝ (fun j => kap (ω j)) := by
   rw [linearIndependent_iff'] at hli ⊢
@@ -139,6 +184,11 @@ def basR (hω : ∀ j, IsHermFam (ω j)) (hli : LinearIndependent ℝ ω) (hN : 
     Module.Basis (Fin N) ℝ (ι → Fin 2 → Fin 2 → ℝ) :=
   basisOfLinearIndependentOfCardEqFinrank' _ (kap_li ω hω hli) (by rw [Fintype.card_fin, finrank_rfam, hN])
 
+/- English proof (translation)
+Take `⟨B, hB⟩ : ∃ B : Module.Basis (Fin N) ℝ (ι → Fin 2 → Fin 2 → ℝ), ⇑B = fun j => kap (ω j)` from `⟨basR ω hω hli hN, by unfold basR; exact coe_basisOfLinearIndependentOfCardEqFinrank' _ _ _⟩`. Use `⟨B.repr (kap b), ?_⟩` and prove the remaining obligations. Establish `hsum` using `B.sum_repr (kap b)`. Simplify using `only [hB] at hsum`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Complex.coe_smul]`. Conclude with `congrArg _ (th_kap (hω j))`.
+-/
 lemma herm_eq_sum (hω : ∀ j, IsHermFam (ω j)) (hli : LinearIndependent ℝ ω)
     (hN : N = 4 * Fintype.card ι) {b : ι → Fin 2 → Fin 2 → ℂ} (hb : IsHermFam b) :
     ∃ s : Fin N → ℝ, b = ∑ j, (s j : ℂ) • ω j := by
@@ -158,8 +208,18 @@ lemma herm_eq_sum (hω : ∀ j, IsHermFam (ω j)) (hli : LinearIndependent ℝ �
 def phiL : (ι → Fin 2 → Fin 2 → ℝ) →ₗ[ℝ] (Fin N → ℝ) :=
   LinearMap.pi fun j => (2 : ℝ) • ((prR (ω j)).comp thL)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma phiL_apply (z : ι → Fin 2 → Fin 2 → ℝ) (j : Fin N) : phiL ω z j = 2 * pr (th z) (ω j) := rfl
 
+/- English proof (translation)
+Use `(injective_iff_map_eq_zero (phiL ω)).mpr fun z hz => ?_` and prove the remaining obligations. Establish `hp : ∀ j, pr (th z) (ω j) = 0` using `fun j => by`. Establish `h` using `congrFun hz j`. Rewrite `h` using `[phiL_apply]`. Simplify using `using h`.
+
+Take `⟨s, hs⟩` from `herm_eq_sum ω hω hli hN (conj_herm (th_herm z))`. Establish `h0 : pr (th z) (fun τ i k => conj (th z τ i k)) = 0`. Rewrite using `[hs, pr_sum]`. Simplify using `[hp]`. Establish `hz0` using `eq_zero_of_pr_conj h0`.
+
+Rewrite using `[← kap_th z, hz0]`. Use function extensionality and compare the values at `τ i k`. Simplify using `[kap]`.
+-/
 lemma phiL_inj (hω : ∀ j, IsHermFam (ω j)) (hli : LinearIndependent ℝ ω)
     (hN : N = 4 * Fintype.card ι) : Function.Injective (phiL ω) := by
   refine (injective_iff_map_eq_zero (phiL ω)).mpr fun z hz => ?_
@@ -176,6 +236,9 @@ lemma phiL_inj (hω : ∀ j, IsHermFam (ω j)) (hli : LinearIndependent ℝ ω)
   funext τ i k
   simp [kap]
 
+/- English proof (translation)
+The claim follows from `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by rw [finrank_rfam, Module.finrank_fin_fun, hN])).mp (phiL_inj ω hω hli hN)`.
+-/
 lemma phiL_surj (hω : ∀ j, IsHermFam (ω j)) (hli : LinearIndependent ℝ ω)
     (hN : N = 4 * Fintype.card ι) : Function.Surjective (phiL ω) := (LinearMap.injective_iff_surjective_of_finrank_eq_finrank
     (by rw [finrank_rfam, Module.finrank_fin_fun, hN])).mp (phiL_inj ω hω hli hN)
@@ -186,13 +249,24 @@ def chiOf (hω : ∀ j, IsHermFam (ω j)) (hli : LinearIndependent ℝ ω)
 
 variable (hω : ∀ j, IsHermFam (ω j)) (hli : LinearIndependent ℝ ω) (hN : N = 4 * Fintype.card ι)
 
+/- English proof (translation)
+The claim follows from `th_herm _`.
+-/
 lemma chiOf_herm (m : Fin N → ℝ) : IsHermFam (chiOf ω hω hli hN m) := th_herm _
 
+/- English proof (translation)
+Unfold `chiOf`. Conclude with `congrFun (LinearEquiv.apply_symm_apply (LinearEquiv.ofBijective (phiL ω) ⟨phiL_inj ω hω hli hN, phiL_surj ω hω hli hN⟩) m) j`.
+-/
 lemma chiOf_pair (m : Fin N → ℝ) (j : Fin N) : 2 * pr (chiOf ω hω hli hN m) (ω j) = m j := by
   unfold chiOf
   exact congrFun (LinearEquiv.apply_symm_apply
     (LinearEquiv.ofBijective (phiL ω) ⟨phiL_inj ω hω hli hN, phiL_surj ω hω hli hN⟩) m) j
 
+/- English proof (translation)
+Unfold `chiOf`. Establish `he : phiL ω (kap χ) = m` using `funext fun j => by rw [phiL_apply, th_kap hχ, hm j]`. Rewrite using `[← th_kap hχ]`. Use `congr 1`. Rewrite using `[← he]`.
+
+Conclude with `((LinearEquiv.ofBijective (phiL ω) ⟨phiL_inj ω hω hli hN, phiL_surj ω hω hli hN⟩).symm_apply_apply (kap χ)).symm`.
+-/
 lemma chiOf_eq {χ : ι → Fin 2 → Fin 2 → ℂ} (hχ : IsHermFam χ) {m : Fin N → ℝ}
     (hm : ∀ j, 2 * pr χ (ω j) = m j) : χ = chiOf ω hω hli hN m := by
   unfold chiOf
@@ -203,6 +277,9 @@ lemma chiOf_eq {χ : ι → Fin 2 → Fin 2 → ℂ} (hχ : IsHermFam χ) {m : F
   exact ((LinearEquiv.ofBijective (phiL ω) ⟨phiL_inj ω hω hli hN, phiL_surj ω hω hli hN⟩).symm_apply_apply
     (kap χ)).symm
 
+/- English proof (translation)
+Introduce `m m' h`. Use function extensionality and compare the values at `j`. Rewrite using `[← chiOf_pair ω hω hli hN m j, ← chiOf_pair ω hω hli hN m' j, h]`.
+-/
 lemma chiOf_inj : Function.Injective (chiOf ω hω hli hN) := by
   intro m m' h
   funext j
@@ -215,19 +292,33 @@ section ZbFacts
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
   (u : Fin 2 → Fin r → E)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma mat_Zb (b : X.Ψ → Fin 2 → Fin 2 → ℂ) (x : Frame X.Ψ r) (τ : X.Ψ) :
     mat (X.Zb u b x) τ = X.zmat u b τ * mat x τ := rfl
 
+/- English proof (translation)
+Use extensionality with `a j`. Simplify using `[Data.zmat, Matrix.one_apply]`.
+-/
 lemma zmat_zero (τ : X.Ψ) : X.zmat u 0 τ = 1 := by
   ext a j
   simp [Data.zmat, Matrix.one_apply]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Use `show X.zmat u 0 τ * mat x τ = x τ`. Rewrite using `[zmat_zero, one_mul]`. Both sides reduce to the same expression.
+-/
 lemma Zb_zero (x : Frame X.Ψ r) : X.Zb u 0 x = x := by
   funext τ
   show X.zmat u 0 τ * mat x τ = x τ
   rw [zmat_zero, one_mul]
   rfl
 
+/- English proof (translation)
+Establish `hcol : ∀ a, col (n τ * A) a = (n τ).mulVec (col A a)`. Introduce `a`. Use function extensionality and compare the values at `k`. Simplify using `[col, Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Use extensionality with `a c'`.
+
+Simplify using `only [gram, Matrix.of_apply, hcol, hn τ]`.
+-/
 lemma gram_unitary {n : X.Ψ → Matrix (Fin r) (Fin r) ℂ} (hn : X.IsUnitaryC n) (τ : X.Ψ)
     (A : Matrix (Fin r) (Fin r) ℂ) : gram τ.1 X.Gm (n τ * A) = gram τ.1 X.Gm A := by
   have hcol : ∀ a, col (n τ * A) a = (n τ).mulVec (col A a) := by
@@ -240,9 +331,15 @@ lemma gram_unitary {n : X.Ψ → Matrix (Fin r) (Fin r) ℂ} (hn : X.IsUnitaryC 
 def fac (la : Wt X.Ψ r) (x : Frame X.Ψ r) : ℝ :=
   ∏ τ, ∏ i : Fin r, ‖dmin X.Gm x τ i.succ / dmin X.Gm x τ i.castSucc‖ ^ (-(la τ i : ℝ) / 2)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma pnorm_eq (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (x : Frame X.Ψ r) :
     X.pnorm la P x = ‖P x‖ * fac X la x := rfl
 
+/- English proof (translation)
+The claim follows from `Finset.prod_nonneg fun _ _ => Finset.prod_nonneg fun _ _ => Real.rpow_nonneg (norm_nonneg _) _`.
+-/
 lemma fac_nonneg (la : Wt X.Ψ r) (x : Frame X.Ψ r) : 0 ≤ fac X la x := Finset.prod_nonneg fun _ _ => Finset.prod_nonneg fun _ _ => Real.rpow_nonneg (norm_nonneg _) _
 
 end ZbFacts

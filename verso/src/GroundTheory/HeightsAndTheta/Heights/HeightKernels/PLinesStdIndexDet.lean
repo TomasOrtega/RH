@@ -11,6 +11,13 @@ noncomputable section
 
 namespace KLinesStdIndexDet
 
+/- English proof (translation)
+Rewrite using `[← Submodule.span_int_eq_addSubgroupClosure]`. Establish `hs : Submodule.span ℤ (Set.range (RingOfIntegers.basis K)) = ⊤` using `(RingOfIntegers.basis K).span_eq`. Establish `h` using `Submodule.span_smul_of_span_eq_top hs (Set.range fun j : Fin k => f (Pi.single j 1))`. Establish `hr : (Set.range (RingOfIntegers.basis K) • Set.range fun j : Fin k => f (Pi.single j 1)) = Set.range fun p : Module.Free.ChooseBasisIndex ℤ (𝓞 K) × Fin k => integralBasis K p.1 • f (Pi.single p.2 1)`. Rewrite using `[Set.range_smul_range]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `p`. Rewrite using `[integralBasis_apply, algebraMap_smul]`. Rewrite `h` using `[hr]`. Rewrite using `[h]`.
+
+Both sides reduce to the same expression.
+-/
 theorem span_toAddSubgroup_eq_closure (K : Type) [Field K] [NumberField K] (k : ℕ)
     (f : (Fin k → K) →ₗ[K] (Fin k → K)) :
     (Submodule.span (𝓞 K) (Set.range fun j : Fin k => f (Pi.single j 1))).toAddSubgroup =
@@ -36,6 +43,21 @@ end KLinesStdIndexDet
 
 open KLinesStdIndexDet in
 
+/- English proof (translation)
+Introduce `K _ _ k V hV`. Set `B0 : Module.Basis (Module.Free.ChooseBasisIndex ℤ (𝓞 K) × Fin k) ℚ (Fin k → K)` to `(integralBasis K).smulTower (Pi.basisFun K (Fin k))`. Establish `hB0 : ∀ p, B0 p = integralBasis K p.1 • (Pi.single p.2 1 : Fin k → K)`. Introduce `p`. Simplify using `only [B0, Module.Basis.smulTower_apply, Pi.basisFun_apply]`.
+
+Set `Ve : (Fin k → K) ≃ₗ[K] (Fin k → K)` to `Matrix.toLinearEquiv' V (Matrix.invertibleOfIsUnitDet V (Ne.isUnit hV))`. Establish `hVe : ∀ v, Ve v = V *ᵥ v` using `fun v => rfl`. Set `Vq : (Fin k → K) ≃ₗ[ℚ] (Fin k → K)` to `Ve.restrictScalars ℚ`. Establish `hA : (stdLattice K k).toAddSubgroup = AddSubgroup.closure (Set.range B0)`. Use `span_toAddSubgroup_eq_closure K k LinearMap.id` as an intermediate fact.
+
+Simplify using `only [LinearMap.id_apply] at this`. Rewrite using `[stdLattice, this]`. Conclude with `congrArg (fun s => AddSubgroup.closure s) (congrArg Set.range (funext fun p => (hB0 p).symm))`. Establish `hB : (Submodule.span (𝓞 K) (Set.range fun j => V *ᵥ (Pi.single j 1 : Fin k → K))).toAddSubgroup = AddSubgroup.closure (Set.range (B0.map Vq))`. Use `span_toAddSubgroup_eq_closure K k (Matrix.toLin' V)` as an intermediate fact.
+
+Simplify using `only [Matrix.toLin'_apply] at this`. Rewrite using `[this]`. Use `congrArg (fun s => AddSubgroup.closure s) (congrArg Set.range (funext fun p => ?_))` and prove the remaining obligations. Rewrite using `[Module.Basis.map_apply, hB0]`. Express the relevant statement in the definitionally equal form `_ = Ve _`.
+
+Rewrite using `[map_smul, hVe]`. Rewrite using `[h1 (Fin k → K) _ B0 (B0.map Vq) _ _ hA hB]`. Establish `hdet : B0.det (B0.map Vq) = Algebra.norm ℚ V.det`. Establish `hc : (⇑(B0.map Vq) : _ → Fin k → K) = (Vq : (Fin k → K) →ₗ[ℚ] (Fin k → K)) ∘ B0`. Use function extensionality and compare the values at `p`.
+
+Both sides reduce to the same expression. Rewrite using `[hc, Module.Basis.det_comp, Module.Basis.det_self, mul_one]`. Establish `hq : (Vq : (Fin k → K) →ₗ[ℚ] (Fin k → K)) = (Matrix.toLin' V).restrictScalars ℚ`. Use extensionality with `v`. Both sides reduce to the same expression.
+
+Rewrite using `[hq, LinearMap.det_restrictScalars, LinearMap.det_toLin']`. Rewrite using `[hdet]`.
+-/
 theorem LinesStdIndexDet.proof (h1 : LinesGenIndexDet.Statement) : LinesStdIndexDet.Statement := by
   classical
   intro K _ _ k V hV

@@ -19,6 +19,13 @@ open GlobalTheory.SS
 
 namespace GlobalTheory.KTrivPoints
 
+/- English proof (translation)
+Introduce `k _ _ _ B _ hB M hM hA`. Take `⟨H, j, hj, hfin, hH⟩` from `GlobalTheory.KernelRep.exists_finite_closed_kernel GlobalTheory.abelianSchemeLaws_all.1.globalFns k B hB M hM hA`. Use `hB.comm` as an intermediate fact. Use `⟨?_, fun x y hx hy => GlobalTheory.UU.InK.mul hM hx hy, fun hx => ?_⟩` and prove the remaining obligations. Establish `: IsFinite (toUnit H).left` using `hfin`.
+
+Establish `hf` using `GlobalTheory.TorsionDivisible.finite_fibre_points (toUnit H) (𝟙 _)`. Use `Finite.of_surjective (fun z : {x : 𝟙_ (Over (Sp k)) ⟶ H // x ≫ toUnit H = 𝟙 _} => (⟨z.1 ≫ j, (hH _ _).2 ⟨z.1, rfl⟩⟩ : {x : (𝟙_ (Over (Sp k)) ⟶ B) // GlobalTheory.MemKL B M x})) fun x => ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `(hH _ _).1 x.2`. Conclude with `⟨⟨z, toUnit_unique _ _⟩, Subtype.ext hz⟩`. Establish `hm : Mono j` using `(Over.forget _).mono_of_mono_map (inferInstanceAs (Mono j.left))`.
+
+Establish `key` using `GlobalTheory.FiniteOnePoint.main _ B H j hm hfin ((hH _ _).1 (GlobalTheory.memKL_one hM _)) (fun T x y => (hH _ _).1 (GlobalTheory.UU.InK.mul hM ((hH _ _).2 ⟨x, rfl⟩) (GlobalTheory.UU.InK.inv hM ((hH _ _).2 ⟨y, rfl⟩)))) k (𝟙 _) (fun x => hx _ ((hH _ _).2 ⟨x, rfl⟩))`. Use `GlobalTheory.UU.kTriv_iff_forall.2 fun T x hxK => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `(hH T x).1 hxK`. Conclude with `key T (toUnit T) y`.
+-/
 theorem finite_mul_kTriv : ∀ (k : Type) [Field k] [IsAlgClosed k] [CharZero k] (B : Over (Sp k)) [GrpObj B], IsAbelianScheme B → ∀ M : LB B.left, M.IsLB → Out.RelAmple B M → Finite {x : (𝟙_ (Over (Sp k)) ⟶ B) // GlobalTheory.MemKL B M x} ∧ (∀ x y : (𝟙_ (Over (Sp k)) ⟶ B), GlobalTheory.MemKL B M x → GlobalTheory.MemKL B M y → GlobalTheory.MemKL B M (x * y)) ∧ ((∀ x : (𝟙_ (Over (Sp k)) ⟶ B), GlobalTheory.MemKL B M x → x = 1) → Out.KTriv B M) := by
   intro k _ _ _ B _ hB M hM hA
   obtain ⟨H, j, hj, hfin, hH⟩ :=

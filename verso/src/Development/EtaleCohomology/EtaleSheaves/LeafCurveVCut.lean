@@ -33,6 +33,17 @@ def LeafExtend : Prop := ∀ (k Ω : Type) [Field k] [Field Ω] [Algebra k Ω] {
       ψ ≫ p = C0.fromSpecStalk x ≫ c0 ≫ Spec.map (CommRingCat.ofHom (algebraMap k Ω)) →
       ∃ e : C0 ⟶ X, C0.fromSpecStalk x ≫ e = ψ ∧ e ≫ p = c0 ≫ Spec.map (CommRingCat.ofHom (algebraMap k Ω))
 
+/- English proof (translation)
+Introduce `k _ _ X _ p _ hd`. Take `⟨F, _, _, K, _, _, n, s, t, η, hn, hs, halg, ht, hfin, hη, hgen⟩` from `hA k p hd`. Take `⟨L, _, _, u, φ, hu, hufin, hφ⟩` from `hB1 F (AlgebraicClosure F) K t ht hfin`. Take `⟨C0, c0, x, ψ, hc0, hx, hψ⟩` from `hB2 (AlgebraicClosure F) L u hu hufin`. Establish `hring : CommRingCat.ofHom ((algebraMap F K).comp (algebraMap k F)) ≫ CommRingCat.ofHom φ = CommRingCat.ofHom (algebraMap k (AlgebraicClosure F)) ≫ CommRingCat.ofHom (algebraMap (AlgebraicClosure F) L)`.
+
+Use extensionality with `a`. Use `congrArg (fun f => f (algebraMap k F a)) hφ` as an intermediate fact. Simplify using `only [RingHom.coe_comp, Function.comp_apply] at this`. Simplify using `only [CommRingCat.hom_comp, CommRingCat.hom_ofHom, RingHom.coe_comp, Function.comp_apply, this, IsScalarTower.algebraMap_apply k F (AlgebraicClosure F)]`. Establish `hcompat : (ψ ≫ Spec.map (CommRingCat.ofHom φ) ≫ η) ≫ p = C0.fromSpecStalk x ≫ c0 ≫ Spec.map (CommRingCat.ofHom (algebraMap k (AlgebraicClosure F)))`.
+
+Rewrite using `[Category.assoc, Category.assoc, hη, ← Spec.map_comp, hring, Spec.map_comp, ← Category.assoc, hψ, Category.assoc]`. Take `⟨e, he1, he2⟩` from `hC k (AlgebraicClosure F) p c0 x hc0 hx _ hcompat`. Use `⟨AlgebraicClosure F, inferInstance, inferInstance, inferInstance, C0, c0, e, hc0, he2, ?_, ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `hgen`. Set `w : Spec (C0.presheaf.stalk x)` to `IsLocalRing.closedPoint (C0.presheaf.stalk x)`.
+
+Use `⟨C0.fromSpecStalk x w, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, he1, ← hz]`. Simplify using `only [Scheme.Hom.comp_apply]`. Use `congr 1`. Conclude with `Subsingleton.elim _ _`.
+
+Introduce `R hR`. Conclude with `lt_of_le_of_lt (hT k F (AlgebraicClosure F) n s hs halg R hR) hn`.
+-/
 theorem goal_of (hA : LeafFibreField) (hT : LeafTrdegDim) (hB1 : LeafBaseChangeField) (hB2 : LeafModelCurve)
     (hC : LeafExtend) : LateralTheory.E.LeafGeoVCut.LeafCurveV := by
   intro k _ _ X _ p _ hd

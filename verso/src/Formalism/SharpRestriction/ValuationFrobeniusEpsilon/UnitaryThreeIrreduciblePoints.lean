@@ -13,6 +13,9 @@ instance numberField_of_fd (K : IntermediateField ℚ QbarQ) [FiniteDimensional 
 def scalarGL (R : Type) [CommRing R] (n : ℕ) : Rˣ →* GL (Fin n) R :=
   Units.map (Matrix.scalar (Fin n) : R →+* Matrix (Fin n) (Fin n) R).toMonoidHom
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Conclude with `Matrix.scalar_commute (u : R) (fun r => Commute.all _ r) (M : Matrix (Fin n) (Fin n) R)`.
+-/
 theorem scalarGL_commute (R : Type) [CommRing R] (n : ℕ) (u : Rˣ) (M : GL (Fin n) R) :
     Commute (scalarGL R n u) M := by
   apply Units.ext
@@ -60,8 +63,18 @@ open Classical in
 
 def chiOrbit (D : D7) (χ : Chi D) : Finset (Chi D) := Finset.univ.filter (ChiConj D χ)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, Nat.coprime_one_left _, (pow_one χ).symm⟩`.
+-/
 theorem ChiConj.refl (D : D7) (χ : Chi D) : ChiConj D χ χ := ⟨1, Nat.coprime_one_left _, (pow_one χ).symm⟩
 
+/- English proof (translation)
+Take `⟨k, hk, rfl⟩` from `h`. Establish `ho : orderOf (χ ^ k) = orderOf χ` using `hk.symm.orderOf_pow`. Break down `Nat.lt_or_ge 1 (orderOf χ) with hn | hn` into its components or cases. Take `⟨m, -, hm⟩` from `Nat.exists_mul_mod_eq_one_of_coprime hk hn`. Use `⟨m, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[ho]`. Use `Nat.coprime_of_mul_modEq_one k ?_` and prove the remaining obligations. Rewrite using `[Nat.ModEq, Nat.mul_comm, hm, Nat.mod_eq_of_lt hn]`. Rewrite using `[← pow_mul, ← pow_mod_orderOf, hm, pow_one]`. Establish `h1 : orderOf χ = 1` using `le_antisymm hn (orderOf_pos χ)`.
+
+Establish `hχ : χ = 1` using `orderOf_eq_one_iff.mp h1`. Conclude with `⟨1, Nat.coprime_one_left _, by rw [hχ]; simp⟩`.
+-/
 theorem ChiConj.symm (D : D7) {χ χ'' : Chi D} (h : ChiConj D χ χ'') : ChiConj D χ'' χ := by
   obtain ⟨k, hk, rfl⟩ := h
   have ho : orderOf (χ ^ k) = orderOf χ := hk.symm.orderOf_pow

@@ -21,6 +21,35 @@ namespace GlobalTheory.ExpandSummPair
 
 open GlobalTheory.ExpandXDenom GlobalTheory.IsoXArchDecay GlobalTheory.HeisSchA GlobalTheory.Published.Metaplectic GlobalTheory.DiffDecay GlobalTheory.XTermDecay
 
+/- English proof (translation)
+Take `⟨r, s, r', s', hX, hW⟩` from `hsp`. Establish `hstd : IsStd B.ψ` using `hB.std`. Establish `hσσ : ∀ x, σ (σ x) = x` using `GlobalTheory.AdelicU.cm_conj_conj hB.cm`. Establish `hxy : form σ X.J H.y H.x = 1`. Establish `h1` using `hxy0`.
+
+Establish `e1 : form σ X.J H.y H.x = σ (form σ X.J H.x H.y)`. Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσσ]`. Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hX.herm]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, h1, map_one]`. Establish `hJ : W₁.J.det ≠ 0`. Take `⟨v⟩ : Nonempty (InfinitePlace F)` from `inferInstance`.
+
+Establish `h` using `GlobalTheory.SigDet.det_ne_zero_of_hasSig _ _ _ _ (hW.sig v)`. Rewrite `h` using `[Matrix.det_smul]`. Establish `h' : (W₁.J.map (B.emb v).1).det ≠ 0` using `right_ne_zero_of_mul h`. Introduce `h0`. Apply `h'` to reduce the goal to its premises.
+
+Use `RingHom.map_det (B.emb v).1 W₁.J` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Conclude with `this.symm`. Take `⟨m, β, D, hD, hDen⟩` from `GlobalTheory.DenomTrace.integral_traces_bounded_denominators E (σ : E →+* E) W₁.J hJ`. Use `choose yr zr hyz using fun j : Fin m => hM₁.rat (Matrix.vecMulVec H.x (fun i => (β j i : E)))`.
+
+Take `⟨N, hN, hinv⟩` from `GlobalTheory.SmallHeisFix.main F (Fin n × Fin d₁) B.ψ hstd.1 φ hφ m (fun j k => algebraMap F (Af F) (yr j k)) (fun j k => algebraMap F (Af F) (zr j k))`. Use `⟨D * N, Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero hD hN), fun w hw => ?_⟩` and prove the remaining obligations. Use `set T : AF F := pairA F 0 (N : Af F) with hT`. Establish `hTa : ∀ q : F, T * algebraMap F (AF F) q = pairA F 0 ((N : Af F) * algebraMap F (Af F) q)`. Introduce `q`.
+
+Use `Prod.ext ?_ ?_` and prove the remaining obligations. Conclude with `zero_mul _`. Both sides reduce to the same expression. Establish `hbeq : ∀ j, Matrix.vecMulVec (incV F H.x) (T • incV F (fun i => (β j i : E))) = Matrix.vecMulVec (T • incV F H.x) (incV F (fun i => (β j i : E)))`. Introduce `j`.
+
+Use extensionality with `a c`. Simplify using `only [Matrix.vecMulVec_apply, Pi.smul_apply, smul_mul_assoc, mul_smul_comm]`. Establish `hfix : ∀ j, M₁.co.rho B.ψ (Matrix.vecMulVec (incV F H.x) (T • incV F (fun i => (β j i : E)))) φ = φ`. Introduce `j`. Establish `e1 : Matrix.vecMulVec (incV F H.x) (T • incV F (fun i => (β j i : E))) = T • incM F (Matrix.vecMulVec H.x (fun i => (β j i : E)))`.
+
+Use extensionality with `a c`. Simplify using `only [Matrix.vecMulVec_apply, Matrix.smul_apply, Pi.smul_apply, incM, incV, Matrix.map_apply, map_mul, mul_smul_comm]`. Rewrite using `[Darboux.rho, e1, map_smul, hyz j]`. Use `hinv j using 2` and compare the differences between its conclusion and the goal. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `k`. Conclude with `hTa (yr j k)`. Use function extensionality and compare the values at `k`. Conclude with `hTa (zr j k)`. Establish `htr : ∀ j, ∃ z : ℤ, Algebra.trace ℚ E ((fun i => ((N : ℕ) : E) * w i) ⬝ᵥ W₁.J *ᵥ fun i => (σ : E →+* E) (β j i)) = z`.
+
+Introduce `j`. Establish `hψ` using `ev_pairing_trivial B M₁ M₂ H.ι 1 _ e' hev hstd φ hφ _ _ ⟨_, rfl⟩ (hfix j) hw`. Rewrite `hψ` using `[← M₁.co.form, hbeq j, symp_vecMulVec, hxy, one_mul, hTa, ← map_natCast (algebraMap F (Af F)) N, ← map_mul, GlobalTheory.PsiNontriv.isStd_fin_rat hstd, Complex.exp_eq_one_iff]`. Take `⟨z, hz⟩` from `hψ`. Use `⟨-z, ?_⟩` and prove the remaining obligations.
+
+Establish `hq : ((Algebra.trace ℚ F ((N : F) * Algebra.trace F E (-form σ W₁.J w fun i => (β j i : E))) : ℚ) : ℂ) = z`. Establish `hpi : (2 * Real.pi * Complex.I : ℂ) ≠ 0` using `by simp [Real.pi_ne_zero]`. Apply `mul_left_cancel₀ hpi` to reduce the goal to its premises. Rewrite using `[hz]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hq' : Algebra.trace ℚ F ((N : F) * Algebra.trace F E (-form σ W₁.J w fun i => (β j i : E))) = z`. Conclude with `hq` after adjusting the coercions. Establish `e1 : ((fun i => ((N : ℕ) : E) * w i) ⬝ᵥ W₁.J *ᵥ fun i => (σ : E →+* E) (β j i)) = -(algebraMap F E (N : F) * -form σ W₁.J w (fun i => (β j i : E)))`. Rewrite using `[map_natCast, show (fun i => ((N : ℕ) : E) * w i) = ((N : ℕ) : E) • w from rfl, smul_dotProduct, smul_eq_mul, mul_neg, neg_neg]`. Both sides reduce to the same expression.
+
+Rewrite using `[e1, map_neg, ← Algebra.trace_trace (R := ℚ) (S := F) (T := E), ← Algebra.smul_def, map_smul, smul_eq_mul, hq', Int.cast_neg]`. Introduce `i`. Take `⟨o, ho⟩` from `hDen _ htr i`. Conclude with `⟨o, by rw [← ho]; push_cast; ring⟩`.
+-/
 theorem denom {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} (B : Base F E)
     {n d₁ n₁ : ℕ} {X : Spc F E n} {W₁ : Spc F E d₁} {X₁ : Spc F E n₁} (M₁ : Model σ X W₁) (M₂ : Model σ X₁ W₁)
     (H : Plane E n n₁) (e' : Fn F n d₁ →ₗ[ℂ] Fn F n₁ d₁) (hM₁ : M₁.IsGood B.ψ) (hM₂ : M₂.IsGood B.ψ)
@@ -111,6 +140,23 @@ theorem denom {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [
   obtain ⟨o, ho⟩ := hDen _ htr i
   exact ⟨o, by rw [← ho]; push_cast; ring⟩
 
+/- English proof (translation)
+Take `⟨r, s, r', s', hX, hW⟩` from `hsp`. Take `⟨l, hl, hlθ⟩` from `GlobalTheory.ThetaAdmitted.exists_admitted_form_eq_adelicThetaDistribution_alt F (Fin n₁ × Fin d₁)`. Establish `hadm` using `GlobalTheory.EvAdm.comp_mem_adm F E σ B n d₁ n₁ d₁ X W₁ X₁ W₁ M₁ M₂ H.ι 1 _ e' hM₁ hM₂ hev l hl`. Take `⟨x', hx'⟩` from `exists_dual_vec σ W₁.J (det_ne_zero_of_skew hW)`. Establish `hyx : form σ X.J H.y H.x = 1` using `by rw [form_swap_herm hB.cm hX.herm, hxy0, map_one]`.
+
+Take `⟨t, ht⟩` from `dualPair_family σ X.J W₁.J H.y H.x x' hyx hx'`. Set `Sm : Fin d₁ × Fin (Module.finrank F E) → Matrix (Fin n) (Fin d₁) (AE F E)` to `fun q => inclR (F := F) (AF F) (Module.finBasis F E q.2) • Matrix.vecMulVec (incV F H.y) (incV F (Pi.single q.1 1))`. Set `Um : Fin d₁ × Fin (Module.finrank F E) → Matrix (Fin n) (Fin d₁) (AE F E)` to `fun p => Matrix.vecMulVec (inclR (F := F) (AF F) (t p.2) • incV F H.x) (incV F (x' p.1))`. Establish `hUI : ∀ p (a : AF F), a • Um p ∈ {u | ∃ z, u = Matrix.vecMulVec (incV F H.x) z}` using `fun p a => ⟨a • inclR (F := F) (AF F) (t p.2) • incV F (x' p.1), smul_vecMulVec_move _ _ _ _⟩`. Establish `hinv : ∀ p (a : AF F), ∀ Ψ ∈ schA F (Fin n × Fin d₁), (l ∘ₗ e') (schr B.ψ (a • M₁.co.e (Um p)) Ψ) = (l ∘ₗ e') Ψ` using `fun p a Ψ hΨ => by`.
+
+Rewrite using `[← map_smul, LinearMap.comp_apply, LinearMap.comp_apply]`. Conclude with `congrArg l (hev.inv _ (hUI p a) Ψ hΨ)`. Take `⟨C₁, hC₁⟩` from `scalar_decay B.ψ hB.std (fun q => M₁.co.e (Sm q)) (fun p => M₁.co.e (Um p)) (fun p q => by rw [← M₁.co.form]; convert ht p q) (l ∘ₗ e') hadm hinv φ hφ K`. Take `⟨A, hA, hAw⟩` from `sum_places_le (F := F) (E := E) d₁`. Use `⟨max C₁ 0 * (1 + A) ^ K, fun w _ => ?_⟩` and prove the remaining obligations.
+
+Set `x : Fin d₁ × Fin (Module.finrank F E) → AF F` to `fun p => realAd F 1 * algebraMap F (AF F) ((Module.finBasis F E).repr (w p.1) p.2)`. Establish `hx : ∀ p, p2 (x p) = 0` using `fun p => real_adele_mul_finite_part_zero _`. Establish `hrho : M₁.co.rho B.ψ (realAd F 1 • Matrix.vecMulVec (incV F H.y) (incV F w)) φ = schr B.ψ (∑ p, x p • M₁.co.e (Sm p)) φ`. Rewrite using `[Darboux.rho, vecMulVec_sum, map_sum]`. Simplify using `only [map_smul]`.
+
+Both sides reduce to the same expression. Establish `hθ : thetaSum F (e' (M₁.co.rho B.ψ (realAd F 1 • Matrix.vecMulVec (incV F H.y) (incV F w)) φ)) = (l ∘ₗ e') (schr B.ψ (∑ p, x p • M₁.co.e (Sm p)) φ)`. Rewrite using `[hrho, LinearMap.comp_apply, hlθ _ (hev.maps _ (schr_mem_schA B.ψ hB.std _ _ hφ))]`. Establish `hb` using `hC₁ x hx`. Establish `hr : ∑ p, ∑ v : InfinitePlace F, ‖(x p).1 v‖ = ∑ p : Fin d₁ × Fin (Module.finrank F E), ∑ v : InfinitePlace F, v ((Module.finBasis F E).repr (w p.1) p.2)`.
+
+Simplify using `only [x, norm_realAd_mul_algebraMap]`. Rewrite `hb` using `[hr]`. Use `set ρ := ∑ p : Fin d₁ × Fin (Module.finrank F E), ∑ v : InfinitePlace F, v ((Module.finBasis F E).repr (w p.1) p.2) with hρ`. Establish `hρ0 : 0 ≤ ρ` using `by positivity`. Establish `hR` using `hAw w`.
+
+Establish `hR0 : 0 ≤ ∑ i, ∑ v : InfinitePlace E, v (w i)` using `by positivity`. Rewrite using `[hθ]`. Establish `h1 : (1 + ∑ i, ∑ v : InfinitePlace E, v (w i)) ^ K ≤ (1 + A) ^ K * (1 + ρ) ^ K`. Rewrite using `[← mul_pow]`. Use `gcongr`.
+
+Use polynomial arithmetic with `[mul_nonneg hA hρ0]`. Establish `h2 : (1 + ρ) ^ (-(K : ℝ)) * (1 + ρ) ^ K = 1`. Rewrite using `[Real.rpow_neg (by positivity), Real.rpow_natCast, inv_mul_cancel₀ (by positivity)]`. Establish `h3 : ‖(l ∘ₗ e') (schr B.ψ (∑ p, x p • M₁.co.e (Sm p)) φ)‖ ≤ max C₁ 0 * (1 + ρ) ^ (-(K : ℝ))` using `hb.trans (by gcongr; exact le_max_left _ _)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem arch_decay {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} (B : Base F E)
     {n d₁ n₁ : ℕ} {X : Spc F E n} {W₁ : Spc F E d₁} {X₁ : Spc F E n₁} (M₁ : Model σ X W₁) (M₂ : Model σ X₁ W₁)
     (H : Plane E n n₁) (e' : Fn F n d₁ →ₗ[ℂ] Fn F n₁ d₁) (hM₁ : M₁.IsGood B.ψ) (hM₂ : M₂.IsGood B.ψ)
@@ -176,6 +222,11 @@ theorem arch_decay {F E : Type} [Field F] [NumberField F] [Field E] [NumberField
     _ = max C₁ 0 * (1 + A) ^ K * ((1 + ρ) ^ (-(K : ℝ)) * (1 + ρ) ^ K) := by ring
     _ = _ := by rw [h2, mul_one]
 
+/- English proof (translation)
+Take `⟨S, hSf, hSs, hS⟩` from `GlobalTheory.FinPartHeis.finPart_right F E σ B n d₁ X W₁ M₁ H.y hB hM₁ φ hφ N hN`. Establish `hC : ∀ Φ, Φ ∈ S → ∃ C : ℝ, ∀ w : Fin d₁ → E, (∀ i, ∃ o : 𝓞 E, (N : E) * w i = o) → ‖thetaSum F (e' (M₁.co.rho B.ψ (realAd F 1 • Matrix.vecMulVec (incV F H.y) (incV F w)) Φ))‖ * (1 + ∑ i, ∑ v : InfinitePlace E, v (w i)) ^ K ≤ C` using `fun Φ hΦ => arch_decay B M₁ M₂ H e' hM₁ hM₂ hev hB hsp hxy0 Φ (hSs hΦ) N K`. Use `choose! C hC using hC`. Use `⟨∑ Φ ∈ hSf.toFinset, max (C Φ) 0, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨Φ, hΦS, hΦe⟩` from `hS w hw`.
+
+Rewrite using `[hΦe]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem decay {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} (B : Base F E)
     {n d₁ n₁ : ℕ} {X : Spc F E n} {W₁ : Spc F E d₁} {X₁ : Spc F E n₁} (M₁ : Model σ X W₁) (M₂ : Model σ X₁ W₁)
     (H : Plane E n n₁) (e' : Fn F n d₁ →ₗ[ℂ] Fn F n₁ d₁) (hM₁ : M₁.IsGood B.ψ) (hM₂ : M₂.IsGood B.ψ)
@@ -198,6 +249,15 @@ theorem decay {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [
     _ ≤ max (C Φ) 0 := le_max_left _ _
     _ ≤ _ := Finset.single_le_sum (f := fun Φ => max (C Φ) 0) (fun _ _ => le_max_right _ _) (hSf.mem_toFinset.2 hΦS)
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₂ H hH V₁ M₁ e _ hM₁ hev Ψ hΨ`. Establish `hsp : ∃ r s r' s' : ℕ, X.IsHerm σ B r s ∧ W.IsSkew σ B r' s'` using `⟨r, s, r', s', hP.herm, hP.skew⟩`. Establish `hxy0 : form σ X.J H.x H.y = 1` using `hH.2.2.2.1`. Take `⟨N, hN, hsupp⟩` from `denom B M M₁ H e hP.good hM₁ hev hP.base hsp hxy0 Ψ hΨ`. Take `⟨K, hA⟩` from `GlobalTheory.ExpandSummX.summable_of_denom_decay' E d`.
+
+Take `⟨C, hC⟩` from `decay B M M₁ H e hP.good hM₁ hev hP.base hsp hxy0 Ψ hΨ N K hN`. Establish `hz : ∀ w : Fin d → E, thetaSum F (e (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.y) (incV F w)) Ψ)) ≠ 0 → ∀ i, ∃ o : 𝓞 E, (N : E) * w i = o`. Introduce `w h0`. Use `hsupp w fun h1 => h0 ?_` and prove the remaining obligations. Rewrite using `[h1]`.
+
+Simplify using `[thetaSum]`. Use `hA N _ hN hz (max C 0) fun w => ?_` and prove the remaining obligations. Distinguish the cases in `hw : ∀ i, ∃ o : 𝓞 E, (N : E) * w i = o`. Conclude with `(hC w hw).trans (le_max_left _ _)`. Establish `h0 : thetaSum F (e (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.y) (incV F w)) Ψ)) = 0`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hw (hz w h)`. Rewrite using `[h0, norm_zero, zero_mul]`. Conclude with `le_max_right _ _`.
+-/
 theorem main : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ),
     IsPair B M χX χW om r s r' s' →

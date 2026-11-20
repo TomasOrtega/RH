@@ -17,10 +17,16 @@ def laurentVar (A : Type) [CommRing A] : (Γ(Spec (CommRingCat.of (LaurentPolyno
 
 namespace GmPhi
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Substitute `hi` using the available equality. Both sides reduce to the same expression.
+-/
 theorem cast_zero {q : ℕ} {E : Spc} {n i n' i' : ℤ} (hn : n = n') (hi : i = i') :
     (0 : Ht q E n i).cast hn hi = 0 := by
   subst hn; subst hi; rfl
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Substitute `hi` using the available equality. Both sides reduce to the same expression.
+-/
 theorem cast_add {q : ℕ} {E : Spc} {n i n' i' : ℤ} (hn : n = n') (hi : i = i') (x y : Ht q E n i) :
     (x + y).cast hn hi = x.cast hn hi + y.cast hn hi := by
   subst hn; subst hi; rfl

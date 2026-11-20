@@ -14,6 +14,29 @@ namespace GlobalTheory.SplitLagrF
 section Alg
 variable {R : Type} [CommRing R] {ι : Type} [Fintype ι] [DecidableEq ι]
 end Alg
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB n JT hT e he t ht`. Establish `hc : IsCMExt F E σ` using `hB.cm`. Establish `hcc` using `cAF_invol hc`. Choose the witnesses or unpack the hypotheses as in `⟨r, hr⟩ : ∃ r : AEF F E, 2 * r = 1 := by`. Establish `h` using `(IsUnit.mk0 (2 : F) two_ne_zero).map (algebraMap F (AF F ⊗[F] E))`.
+
+Rewrite `h` using `[map_ofNat]`. Conclude with `h.exists_right_inv`. Establish `hJ : ((JR (F` using `F) (AF F) JT).map (cAF σ))ᵀ = JR (F := F) (AF F) JT := by`. Use extensionality with `i j`. Use `show (1 : AF F) ⊗ₜ[F] σ (JT j i) = (1 : AF F) ⊗ₜ[F] JT i j`.
+
+Rewrite using `[hT.1]`. Establish `hu : IsUnit (JR (F` using `F) (AF F) JT).det := by`. Use `((Ne.isUnit hT.2).map (inclR (F := F) (AF F)))` as an intermediate fact. Rewrite `this` using `[RingHom.map_det]`. Then use the resulting hypothesis. Establish `ha : cAF σ (e + cAF σ e) = e + cAF σ e` using `by rw [RingHom.map_add, hcc, add_comm]`.
+
+Take `⟨H, H', g1, g2, g3, g4, g5, ⟨M, hM, g6⟩, g7⟩` from `levi_alg (cAF σ) hcc r hr _ hJ hu _ ha t.1 (t⁻¹).1 t.mul_inv t.inv_mul (by ext i j; exact ht i j)`. Establish `eJ : JR (F` using `F) (AF F) (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) = (Matrix.fromBlocks (JR (F := F) (AF F) JT) 0 0 (-JR (F := F) (AF F) JT)).submatrix finSumFinEquiv.symm finSumFinEquiv.symm := by`. Use extensionality with `i j`. Take `⟨i, rfl⟩` from `finSumFinEquiv.surjective i`. Take `⟨j, rfl⟩` from `finSumFinEquiv.surjective j`.
+
+Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Apply the tactic sequence `simp only [GlobalTheory.WeilSchrodinger.DblTargetF.dblG, JR, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.map_apply] <;> simp [dbl]`. Set `G : GL (Fin (n + n)) (AF F ⊗[F] E)` to `⟨H.submatrix finSumFinEquiv.symm finSumFinEquiv.symm, H'.submatrix finSumFinEquiv.symm finSumFinEquiv.symm, by rw [Matrix.submatrix_mul_equiv, g1, Matrix.submatrix_one_equiv], by rw [Matrix.submatrix_mul_equiv, g2, Matrix.submatrix_one_equiv]⟩`. Establish `hG : G ∈ HR (AF F) σ (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT)` using `by show ((H.map (cAF σ))ᵀ).submatrix finSumFinEquiv.symm finSumFinEquiv.symm * JR (F := F) (AF F) (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) * H.submatrix finSumFinEquiv.symm finSumFinEquiv.symm = JR (F := F) (AF F) (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT)`. Rewrite using `[eJ, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, g3]`.
+
+Take `⟨h, m1, m2⟩ : ∃ h : GAF σ (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT), mtF σ _ h = H.submatrix finSumFinEquiv.symm finSumFinEquiv.symm ∧ mtF σ _ h⁻¹ = H'.submatrix finSumFinEquiv.symm finSumFinEquiv.symm` from `⟨⟨G, hG⟩, rfl, rfl⟩`. Establish `sub : ∀ (X : Matrix (Fin n ⊕ Fin n) (Fin n) (AEF F E)) (Y : Matrix (Fin n) (Fin n) (AEF F E)), (X * Y).submatrix (finSumFinEquiv (m` using `n) (n := n)).symm id = X.submatrix finSumFinEquiv.symm id * Y := fun X Y => rfl`. Establish `e1 : e * e = e` using `he.1`. Establish `e2 : e * cAF σ e = 0` using `he.2.1`. Establish `e3 : cAF σ e * cAF σ e = cAF σ e` using `by rw [← RingHom.map_mul, e1]`.
+
+Establish `hd : (1 - (e + cAF σ e)) * (t.1.det - 1) = 0` using `GlobalTheory.SplitDetCharF.mul_det_sub_one _ _ fun i j => by rw [sub_mul, one_mul, ht i j, sub_self]`. Use `⟨h, ?_, ?_, ⟨M, hM, fun nS y => ?_⟩, GlobalTheory.SplitDetCharF.cutDet σ _ e e1 h, ?_, fun χ m hχ => ?_⟩` and prove the remaining obligations. Rewrite using `[m1, dC, Matrix.submatrix_mul_equiv, ← sub]`. Conclude with `congrArg (fun X => Matrix.submatrix X finSumFinEquiv.symm id) g4`. Introduce `i j`.
+
+Rewrite using `[m1, ← Matrix.submatrix_one_equiv (finSumFinEquiv (m := n) (n := n)).symm]`. Conclude with `congrFun (congrFun g5 (finSumFinEquiv.symm i)) (finSumFinEquiv.symm j)`. Rewrite using `[m2, ← Matrix.mul_assoc, ← Matrix.mul_assoc, aC, Matrix.submatrix_mul_equiv, ← sub]`. Conclude with `congrArg (fun X => Matrix.submatrix X finSumFinEquiv.symm id * y) g6`. Conclude with `add_comm _ _`.
+
+Set `w : (AEF F E)ˣ` to `Units.map (GlobalTheory.SplitDetCharF.cut (cAF σ e) e3) (Matrix.GeneralLinearGroup.det t)`. Set `u : (AEF F E)ˣ` to `Units.map (GlobalTheory.SplitDetCharF.cut e e1) (Matrix.GeneralLinearGroup.det t)`. Establish `hw : (w : AEF F E) = (1 - cAF σ e) + cAF σ e * t.1.det` using `rfl`. Establish `hu' : (u : AEF F E) = (1 - e) + e * t.1.det` using `rfl`. Establish `huw : Matrix.GeneralLinearGroup.det t = u * w`.
+
+Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, hw, hu', Matrix.GeneralLinearGroup.val_det_apply]`. Take the linear combination `hd - (t.1.det - 1) ^ 2 * e2`. Take `⟨w', hw'⟩ : IsUnit (cAF σ (w : AEF F E))` from `w.isUnit.map (cAF σ)`. Establish `hx : GlobalTheory.SplitDetCharF.cutDet σ _ e e1 h * w' = u`.
+
+Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, hw', hw, hu', GlobalTheory.SplitDetCharF.cutDet_val, m1, Matrix.det_submatrix_equiv_self, RingHom.map_add, RingHom.map_sub, RingHom.map_mul, RingHom.map_one, hcc]`. Take the linear combination `(H.det - 1) * (cAF σ t.1.det - 1) * e1 + e * g7`. Establish `hy` using `GlobalTheory.SplitDetCharF.char_eq_of_mul_conj hc hχ w'⁻¹ w (by rw [← hw', Units.inv_mul])`. Rewrite using `[huw, map_mul, ← hy, ← map_mul, ← hx, mul_inv_cancel_right]`.
+-/
 theorem exists_levi_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → ∀ (nT : ℕ) (JT : Matrix (Fin nT) (Fin nT) E), IsHermND σ JT →
       ∀ e, IsSplitIdemF σ e → ∀ t : GL (Fin nT) (AF F ⊗[F] E),

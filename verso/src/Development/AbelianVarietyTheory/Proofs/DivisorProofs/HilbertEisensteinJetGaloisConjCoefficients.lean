@@ -22,6 +22,15 @@ open GlobalTheory.LatJet (EisExp IsEis FR)
 
 namespace GlobalTheory.HilbFam
 
+/- English proof (translation)
+Introduce `hE F _ _ _ hf s N L hs hN hL z hz g m κ κ' Ch Ch' hm hg hκ hC`. Take `⟨𝔞, 𝔟, x, rfl⟩` from `exists_eq_split_of_hasLevel F N L hN hL`. Establish `htw` using `GlobalTheory.T.hilbertSplitLattice_twist_diagonal_coprime F N 𝔞 𝔟 x m hm hL`. Establish `hL'` using `hasLevel_twist_of_hasLevel F N _ (Matrix.diagonal ![1, (m : ZMod N)]) hL`. Rewrite `hL'`, the goal using `[htw]`.
+
+Take `⟨Z, a, hZ, ha⟩` from `GlobalTheory.T.exists_hilbertEisenstein_fourierCoeffFamily hE F hf 𝔞 𝔟 s hs`. Establish `h0` using `constTerm_eq_zetaVal F (2 * s) z _ Z (by omega) hz hZ`. Take `⟨π, hπ⟩` from `aut_perm_emb F g`. Establish `hκ' : κ' = fun j ↦ κ (π.symm j)`. Use function extensionality and compare the values at `j`.
+
+Use `hκ (π.symm j) j fun y ↦ ?_` and prove the remaining obligations. Rewrite using `[hπ, Equiv.apply_symm_apply]`. Take `⟨c, hc, hc'⟩` from `hC`. Establish `hev : Even (2 * s)` using `even_two_mul s`. Use `⟨_, GlobalTheory.T.hasQExpansionOfLevel_hilbertEisensteinQuasiPeriodJet F (2 * s) 𝔞 𝔟 _ a x N κ Ch c hN hev ha hL hc, ?_⟩` and prove the remaining obligations.
+
+Establish `h2` using `GlobalTheory.T.hasQExpansionOfLevel_hilbertEisensteinQuasiPeriodJet F (2 * s) 𝔞 𝔟 _ a (m * x) N κ' Ch' _ hN hev ha hL' hc'`. Establish `h3` using `fun n ↦ GlobalTheory.T.hilbertEisensteinSeries_ringEquiv_conj F (2 * s) 𝔞 𝔟 _ a x s N g m π κ c n rfl hN ha (by rw [h0, map_ratCast]) hL hg hπ`. Simplify using `only [h3]`. Rewrite `h2`, the goal using `[hκ']`. Conclude with `h2`.
+-/
 theorem qConj_hfun_twist : EisExp → ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F], 2 ≤ Module.finrank ℚ F → ∀ (s N : ℕ) (L : Lat F), 1 ≤ s → 0 < N → HasLevel N L → ∀ (z : ClassGroup (𝓞 F) → ℚ), ZetaVals (2 * s) z → ∀ (g : ℂ ≃+* ℂ) (m : ℤ) (κ κ' : Emb F → ℕ) (Ch Ch' : ℍ → ℂ), IsCoprime m (N : ℤ) → g (Complex.exp ((2 * Real.pi * Complex.I) / N)) = Complex.exp ((2 * Real.pi * Complex.I) * m / N) → (∀ i j : Emb F, (∀ y : F, g ((i y : ℝ) : ℂ) = ((j y : ℝ) : ℂ)) → κ' j = κ i) → QConj g N Ch Ch' → QConj g N (hfun (2 * s) L κ Ch) (hfun (2 * s) (twist N L (Matrix.diagonal ![1, (m : ZMod N)])) κ' Ch') := by
   intro hE F _ _ _ hf s N L hs hN hL z hz g m κ κ' Ch Ch' hm hg hκ hC
   obtain ⟨𝔞, 𝔟, x, rfl⟩ := exists_eq_split_of_hasLevel F N L hN hL

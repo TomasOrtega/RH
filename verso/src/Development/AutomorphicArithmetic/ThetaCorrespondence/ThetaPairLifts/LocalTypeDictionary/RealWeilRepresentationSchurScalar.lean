@@ -13,6 +13,19 @@ variable {l : Type} [Fintype l]
 end GlobalTheory.RealWeil.SchurSchwartz
 namespace GlobalTheory.RealWeil.SchurSchwartz
 variable {l : Type} [Fintype l]
+/- English proof (translation)
+Introduce `_ l _ U hc hU`. Distinguish the cases in `h0 : ∃ (g : Sch l) (y : EuclideanSpace ℝ l), g y ≠ 0`. Take `⟨g, y0, hg⟩` from `h0`. Establish `hb` using `conj_mul_eq U hc hU g g y0`. Rewrite `hb` using `[Complex.conj_mul', Complex.conj_mul']`.
+
+Establish `h2 : ‖U g y0‖ ^ 2 = ‖g y0‖ ^ 2` using `by exact_mod_cast hb`. Establish `hnb : ‖U g y0‖ = ‖g y0‖` using `by first`. Consider the case `exact (sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _)).1 h2`. Consider the case `exact pow_left_injective₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero h2`. Consider the case `nlinarith [norm_nonneg (U g y0), norm_nonneg (g y0)]`.
+
+Establish `hb0 : U g y0 ≠ 0`. Introduce `h`. Apply `hg` to reduce the goal to its premises. Rewrite using `[← norm_eq_zero, ← hnb, h, norm_zero]`. Establish `hcb : conj (U g y0) ≠ 0` using `(map_ne_zero _).2 hb0`.
+
+Use `⟨conj (g y0 / U g y0), ?_, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[Complex.norm_conj, norm_div, hnb, div_self (norm_ne_zero_iff.2 hg)]`. Use extensionality with `x`. Establish `e1` using `conj_mul_eq U hc hU f (trS (y0 - x) g) x`. Establish `hxy : x + (y0 - x) = y0` using `by abel`.
+
+Rewrite `e1` using `[hc (trPt (y0 - x)) g (trS (y0 - x) g) (coe_trS _ _), coe_trS, rhoFun_trPt, rhoFun_trPt, hxy]`. Establish `e2` using `congrArg conj e1`. Simplify using `only [map_mul, Complex.conj_conj] at e2`. Rewrite using `[SchwartzMap.smul_apply, smul_eq_mul, map_div₀, div_mul_eq_mul_div, eq_div_iff hcb, e2, mul_comm]`. Use `push_neg at h0`.
+
+Use `⟨1, by simp, fun h => ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Rewrite using `[h0 (U h) x, one_smul, h0 h x]`.
+-/
 theorem weil_schwartz_schur_lemma : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (l : Type) [Fintype l] (U : GlobalTheory.RealWeil.Sch l →ₗ[ℂ] GlobalTheory.RealWeil.Sch l),
     (∀ (w : l ⊕ l → ℝ) (h h₁ : GlobalTheory.RealWeil.Sch l), ⇑h₁ = GlobalTheory.RealWeil.rhoFun w ⇑h →
       ⇑(U h₁) = GlobalTheory.RealWeil.rhoFun w ⇑(U h)) →
@@ -54,6 +67,9 @@ end
 section
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.RealWeil.SchurSchwartz.weil_schwartz_schur_lemma | exact _root_.GlobalTheory.RealWeil.SchurSchwartz.weil_schwartz_schur_lemma | (intros; apply _root_.GlobalTheory.RealWeil.SchurSchwartz.weil_schwartz_schur_lemma <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.real_weil_representation_schur_scalar : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (l : Type) [Fintype l] (U : GlobalTheory.RealWeil.Sch l →ₗ[ℂ] GlobalTheory.RealWeil.Sch l),
     (∀ (w : l ⊕ l → ℝ) (h h₁ : GlobalTheory.RealWeil.Sch l), ⇑h₁ = GlobalTheory.RealWeil.rhoFun w ⇑h →
       ⇑(U h₁) = GlobalTheory.RealWeil.rhoFun w ⇑(U h)) →

@@ -40,6 +40,9 @@ def PModel.twoThree : PModel ℤ (fun j => algebraMap ℤ ℚ ((![2, 3] : Fin 2 
       (Ideal.subset_span ⟨1, rfl⟩) (Ideal.subset_span ⟨0, rfl⟩)
     simpa using h)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun M => by obtain ⟨c, hc⟩ := M.tie.cover (CptModel.self M.ξ) exact hc.1 rfl⟩`.
+-/
 theorem PModel.isEmpty_zero (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Algebra o Ω] (κ : Type) :
     IsEmpty (PModel o (0 : κ → Ω)) :=
   ⟨fun M => by
@@ -120,21 +123,38 @@ section API
 variable {ξ : Spec (CommRingCat.of Ω) ⟶ X} {ξ' : Spec (CommRingCat.of Ω') ⟶ X'}
   {ξ'' : Spec (CommRingCat.of Ω'') ⟶ X''}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ h => h, fun _ _ h => h⟩`.
+-/
 theorem IsCtrOf.refl (p : Cpt ξ) : IsCtrOf (RingHom.id Ω) p p := ⟨fun _ h => h, fun _ _ h => h⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a ha => h'.1 _ (h.1 a ha), fun a ha hu => h.2 a ha (h'.2 _ (h.1 a ha) hu)⟩`.
+-/
 theorem IsCtrOf.comp {i : Ω →+* Ω'} {i' : Ω' →+* Ω''} {p : Cpt ξ} {p' : Cpt ξ'} {p'' : Cpt ξ''}
     (h : IsCtrOf i p p') (h' : IsCtrOf i' p' p'') : IsCtrOf (i'.comp i) p p'' :=
   ⟨fun a ha => h'.1 _ (h.1 a ha), fun a ha hu => h.2 a ha (h'.2 _ (h.1 a ha) hu)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.2 a ha, fun hu => ⟨(map_ne_zero i).2 hu.1, h.1 _ hu.2.1, by rw [← map_inv₀]; exact h.1 _ hu.2.2⟩⟩`.
+-/
 theorem IsCtrOf.unitAt_iff {i : Ω →+* Ω'} {p : Cpt ξ} {p' : Cpt ξ'} (h : IsCtrOf i p p') {a : Ω}
     (ha : a ∈ regAt ξ p) : unitAt ξ' p' (i a) ↔ unitAt ξ p a :=
   ⟨h.2 a ha, fun hu => ⟨(map_ne_zero i).2 hu.1, h.1 _ hu.2.1, by rw [← map_inv₀]; exact h.1 _ hu.2.2⟩⟩
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `M.tie.cover p`. Conclude with `⟨c, hc.1, fun a ha => h.1 a ((M.tie.ring c hc.1 a).1 ha p hc)⟩`.
+-/
 theorem IsCtrOf.mem_ctrSet {o : Type} [CommRing o] [Algebra o Ω] {κ : Type} {x : κ → Ω} {M : PModel o x}
     {i : Ω →+* Ω'} {p : Cpt M.ξ} {p' : Cpt ξ'} (h : IsCtrOf i p p') : p' ∈ ctrSet o x i ξ' := by
   obtain ⟨c, hc⟩ := M.tie.cover p
   exact ⟨c, hc.1, fun a ha => h.1 a ((M.tie.ring c hc.1 a).1 ha p hc)⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h0, -, h⟩ hc`. Take `⟨r, s, hs, -, e⟩` from `(CptModel.mem_regAt_iff φ p _).1 h`. Establish `: s = a * r` using `hφ (by rw [map_mul, ← e, mul_inv_cancel_left₀ h0])`. Conclude with `hs (this ▸ Ideal.mul_mem_right _ _ hc)`.
+
+Introduce `hc`. Establish `h0 : φ a ≠ 0` using `(map_ne_zero_iff _ hφ).2 fun h => hc (h ▸ Ideal.zero_mem _)`. Conclude with `⟨h0, ⟨_, CptModel.genMap_toStalk φ p a⟩, (CptModel.mem_regAt_iff φ p _).2 ⟨1, a, hc, h0, by rw [map_one, inv_mul_cancel₀ h0]⟩⟩`.
+-/
 theorem IsCtrOf.unitAt_spec {R : Type} [CommRing R] {φ : R →+* Ω} (hφ : Function.Injective φ)
     (p : Cpt (CptModel.pt φ)) (a : R) : unitAt (CptModel.pt φ) p (φ a) ↔ a ∉ p.1.asIdeal := by
   constructor
@@ -147,6 +167,9 @@ theorem IsCtrOf.unitAt_spec {R : Type} [CommRing R] {φ : R →+* Ω} (hφ : Fun
     exact ⟨h0, ⟨_, CptModel.genMap_toStalk φ p a⟩,
       (CptModel.mem_regAt_iff φ p _).2 ⟨1, a, hc, h0, by rw [map_one, inv_mul_cancel₀ h0]⟩⟩
 
+/- English proof (translation)
+Use `Subtype.ext (PrimeSpectrum.ext (Ideal.ext fun a => not_iff_not.1 ?_))` and prove the remaining obligations. Conclude with `((IsCtrOf.unitAt_spec hφ p a).symm.trans ((hp.unitAt_iff ⟨_, CptModel.genMap_toStalk φ p a⟩).symm.trans (hq.unitAt_iff ⟨_, CptModel.genMap_toStalk φ q a⟩))).trans (IsCtrOf.unitAt_spec hφ q a)`.
+-/
 theorem IsCtrOf.unique_spec {R : Type} [CommRing R] {φ : R →+* Ω} (hφ : Function.Injective φ) {i : Ω →+* Ω'}
     {p q : Cpt (CptModel.pt φ)} {p' : Cpt ξ'} (hp : IsCtrOf i p p') (hq : IsCtrOf i q p') : p = q := by
   refine Subtype.ext (PrimeSpectrum.ext (Ideal.ext fun a => not_iff_not.1 ?_))
@@ -154,10 +177,16 @@ theorem IsCtrOf.unique_spec {R : Type} [CommRing R] {φ : R →+* Ω} (hφ : Fun
     ((hp.unitAt_iff ⟨_, CptModel.genMap_toStalk φ p a⟩).symm.trans
       (hq.unitAt_iff ⟨_, CptModel.genMap_toStalk φ q a⟩))).trans (IsCtrOf.unitAt_spec hφ q a)
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨p, h, e, he, rfl⟩`.
+-/
 theorem Lat.mem_pullLoc_of_ctr {L : Lat ξ E} {i : Ω →+* Ω'} (j : E →+ F) {p : Cpt ξ} {p' : Cpt ξ'}
     (h : IsCtrOf i p p') {e : E} (he : e ∈ L p) : j e ∈ L.pullLoc ξ' i j p' :=
   Submodule.subset_span ⟨p, h, e, he, rfl⟩
 
+/- English proof (translation)
+Use `congrArg _ (Set.ext fun e' => ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce and unpack `⟨p, hp, e, he, rfl⟩`. Conclude with `⟨e, hu p hp e he, rfl⟩`. Introduce and unpack `⟨e, he, rfl⟩`. Conclude with `⟨p₀, h, e, he, rfl⟩`.
+-/
 theorem Lat.pullLoc_eq_span_of_ctr {L : Lat ξ E} {i : Ω →+* Ω'} (j : E →+ F) {p₀ : Cpt ξ} {p' : Cpt ξ'}
     (h : IsCtrOf i p₀ p') (hu : ∀ p : Cpt ξ, IsCtrOf i p p' → ∀ e ∈ L p, e ∈ L p₀) :
     L.pullLoc ξ' i j p' = Submodule.span (regAt ξ' p') (j '' (L p₀ : Set E)) := by
@@ -167,15 +196,24 @@ theorem Lat.pullLoc_eq_span_of_ctr {L : Lat ξ E} {i : Ω →+* Ω'} (j : E →+
   · rintro ⟨e, he, rfl⟩
     exact ⟨p₀, h, e, he, rfl⟩
 
+/- English proof (translation)
+Use `congrArg _ (Set.ext fun e' => exists_congr fun p => and_congr_right fun hp => ?_)` and prove the remaining obligations. Rewrite using `[h p hp]`.
+-/
 theorem Lat.pullLoc_congr_ctr {L L' : Lat ξ E} {i : Ω →+* Ω'} (j : E →+ F) {p' : Cpt ξ'}
     (h : ∀ p : Cpt ξ, IsCtrOf i p p' → L p = L' p) : L.pullLoc ξ' i j p' = L'.pullLoc ξ' i j p' := by
   refine congrArg _ (Set.ext fun e' => exists_congr fun p => and_congr_right fun hp => ?_)
   rw [h p hp]
 
+/- English proof (translation)
+The claim follows from `Submodule.span_eq_bot.2 fun _ ⟨p, hp, _⟩ => (h p hp).elim`.
+-/
 theorem Lat.pullLoc_eq_bot_of_no_ctr (L : Lat ξ E) {i : Ω →+* Ω'} (j : E →+ F) {p' : Cpt ξ'}
     (h : ∀ p : Cpt ξ, ¬ IsCtrOf i p p') : L.pullLoc ξ' i j p' = ⊥ :=
   Submodule.span_eq_bot.2 fun _ ⟨p, hp, _⟩ => (h p hp).elim
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Rewrite using `[Lat.pullLoc_eq_span_of_ctr _ (IsCtrOf.refl p) fun q hq e he => by`. Rewrite using `[← IsCtrOf.unique_spec hφ hq (IsCtrOf.refl p)]]` and apply the resulting hypothesis. Simplify using the standard rewrite rules.
+-/
 theorem Lat.pullLoc_id_spec {R : Type} [CommRing R] {φ : R →+* Ω} (hφ : Function.Injective φ)
     (L : Lat (CptModel.pt φ) E) : L.pullLoc (CptModel.pt φ) (RingHom.id Ω) (AddMonoidHom.id E) = L := by
   funext p
@@ -183,14 +221,27 @@ theorem Lat.pullLoc_id_spec {R : Type} [CommRing R] {φ : R →+* Ω} (hφ : Fun
     rwa [← IsCtrOf.unique_spec hφ hq (IsCtrOf.refl p)]]
   simp
 
+/- English proof (translation)
+Use `⟨⟨p, rfl, fun q hq => Subtype.ext hq⟩, fun q hq => ?_, by simp [Dominates]⟩` and prove the remaining obligations. Take `rfl : q = p` from `Subtype.ext hq`. Conclude with `(Subring.map_id _).symm`.
+-/
 theorem IsoAt.refl (p : Cpt ξ) : IsoAt ξ (𝟙 X) (RingHom.id Ω) p := by
   refine ⟨⟨p, rfl, fun q hq => Subtype.ext hq⟩, fun q hq => ?_, by simp [Dominates]⟩
   obtain rfl : q = p := Subtype.ext hq
   exact (Subring.map_id _).symm
 
+/- English proof (translation)
+The claim follows from `IsLocalRing.of_surjective' (genMap ξ p).rangeRestrict (genMap ξ p).rangeRestrict_surjective`.
+-/
 theorem NormAt.isLocalRing_regAt (p : Cpt ξ) : IsLocalRing (regAt ξ p) :=
   IsLocalRing.of_surjective' (genMap ξ p).rangeRestrict (genMap ξ p).rangeRestrict_surjective
 
+/- English proof (translation)
+Take `rfl` from `IsLocalRing.eq_maximalIdeal hP`. Use `le_antisymm ?_ (LocalSubring.le_ofPrime A _)` and prove the remaining obligations. Introduce `a ha`. Take `⟨⟨u, s⟩, e⟩` from `IsLocalization.surj (IsLocalRing.maximalIdeal A).primeCompl (⟨a, ha⟩ : (LocalSubring.ofPrime A (IsLocalRing.maximalIdeal A)).toSubring)`. Establish `hs : IsUnit (s : A)`.
+
+Assume the negation of the conclusion as `h`. Conclude with `s.2 h`. Take `⟨v, hv⟩` from `hs.exists_right_inv`. Establish `e' : a * ((s : A) : Ω) = (u : Ω)` using `congrArg Subtype.val e`. Establish `hv' : ((s : A) : Ω) * (v : Ω) = 1` using `congrArg Subtype.val hv`.
+
+Establish `: a = (u : Ω) * v` using `by rw [← e', mul_assoc, hv', mul_one]`. Rewrite using `[this]`. Conclude with `A.mul_mem u.2 v.2`.
+-/
 theorem NormAt.ofPrime_of_isLocalRing (A : Subring Ω) [IsLocalRing A] (P : Ideal A) (hP : P.IsMaximal) :
     (LocalSubring.ofPrime A P).toSubring = A := by
   obtain rfl := IsLocalRing.eq_maximalIdeal hP
@@ -208,6 +259,11 @@ theorem NormAt.ofPrime_of_isLocalRing (A : Subring Ω) [IsLocalRing A] (P : Idea
   rw [this]
   exact A.mul_mem u.2 v.2
 
+/- English proof (translation)
+Establish `loc : IsLocalRing (integralClosure ((regAt ξ p).map i) Ω').toSubring`. Rewrite using `[e]`. Conclude with `NormAt.isLocalRing_regAt p₀`. Use `⟨fun q hq => ?_, fun P hP => ⟨p₀, ⟨h₀, ((NormAt.ofPrime_of_isLocalRing _ P hP).trans e).symm⟩, fun q hq => hu q hq.1⟩, hd⟩` and prove the remaining obligations. Rewrite using `[hu q hq]`.
+
+Conclude with `⟨_, IsLocalRing.maximalIdeal.isMaximal _, ((NormAt.ofPrime_of_isLocalRing _ _ (IsLocalRing.maximalIdeal.isMaximal _)).trans e).symm⟩`.
+-/
 theorem NormAt.of_unique {f : X' ⟶ X} {i : Ω →+* Ω'} {p : Cpt ξ} (hd : Dominates ξ' ξ f i) (p₀ : Cpt ξ')
     (h₀ : f p₀.1 = p.1) (hu : ∀ q : Cpt ξ', f q.1 = p.1 → q = p₀)
     (e : (integralClosure ((regAt ξ p).map i) Ω').toSubring = regAt ξ' p₀) : NormAt ξ' f i p := by
@@ -220,6 +276,9 @@ theorem NormAt.of_unique {f : X' ⟶ X} {i : Ω →+* Ω'} {p : Cpt ξ} (hd : Do
   exact ⟨_, IsLocalRing.maximalIdeal.isMaximal _,
     ((NormAt.ofPrime_of_isLocalRing _ _ (IsLocalRing.maximalIdeal.isMaximal _)).trans e).symm⟩
 
+/- English proof (translation)
+Use `NormAt.of_unique (by simp [Dominates]) p rfl (fun q hq => Subtype.ext hq) ?_` and prove the remaining obligations. Rewrite using `[Subring.map_id]`. Use extensionality with `a`. Conclude with `⟨h a, fun ha => isIntegral_algebraMap (x := (⟨a, ha⟩ : regAt ξ p))⟩`.
+-/
 theorem NormAt.refl (p : Cpt ξ) (h : ∀ a : Ω, IsIntegral (regAt ξ p) a → a ∈ regAt ξ p) :
     NormAt ξ (𝟙 X) (RingHom.id Ω) p := by
   refine NormAt.of_unique (by simp [Dominates]) p rfl (fun q hq => Subtype.ext hq) ?_
@@ -227,21 +286,35 @@ theorem NormAt.refl (p : Cpt ξ) (h : ∀ a : Ω, IsIntegral (regAt ξ p) a → 
   ext a
   exact ⟨h a, fun ha => isIntegral_algebraMap (x := (⟨a, ha⟩ : regAt ξ p))⟩
 
+/- English proof (translation)
+Take `⟨P, hP⟩` from `Ideal.exists_maximal (integralClosure ((regAt ξ p).map i) Ω').toSubring`. Take `⟨q, hq, -⟩` from `h.existsUnique P hP`. Conclude with `⟨q, hq.1⟩`.
+-/
 theorem NormAt.exists_point {f : X' ⟶ X} {i : Ω →+* Ω'} {p : Cpt ξ} (h : NormAt ξ' f i p) :
     ∃ p' : Cpt ξ', f p'.1 = p.1 := by
   obtain ⟨P, hP⟩ := Ideal.exists_maximal (integralClosure ((regAt ξ p).map i) Ω').toSubring
   obtain ⟨q, hq, -⟩ := h.existsUnique P hP
   exact ⟨q, hq.1⟩
 
+/- English proof (translation)
+The claim follows from `eq_top_iff.2 fun a _ => ⟨_, CptModel.genMap_toStalk (RingHom.id Ω) p a⟩`.
+-/
 theorem NormAt.regAt_field (p : Cpt (CptModel.pt (RingHom.id Ω))) : regAt _ p = ⊤ :=
   eq_top_iff.2 fun a _ => ⟨_, CptModel.genMap_toStalk (RingHom.id Ω) p a⟩
 
+/- English proof (translation)
+Unfold `Dominates`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, Spec.map_inj]`. Conclude with `⟨fun h => congrArg CommRingCat.Hom.hom h, fun h => h ▸ rfl⟩`.
+-/
 theorem NormAt.dominates_field_iff (φ i : Ω →+* Ω') :
     Dominates (CptModel.pt (RingHom.id Ω')) (CptModel.pt (RingHom.id Ω)) (CptModel.pt φ) i ↔ φ = i := by
   unfold Dominates
   rw [← Spec.map_comp, ← Spec.map_comp, Spec.map_inj]
   exact ⟨fun h => congrArg CommRingCat.Hom.hom h, fun h => h ▸ rfl⟩
 
+/- English proof (translation)
+Use `NormAt.of_unique ((NormAt.dominates_field_iff _ _).2 rfl) (CptModel.self _) (Subsingleton.elim (α := PrimeSpectrum Ω) _ _) (fun q _ => Subtype.ext (Subsingleton.elim (α := PrimeSpectrum Ω') _ _)) ?_` and prove the remaining obligations. Rewrite using `[NormAt.regAt_field, NormAt.regAt_field, eq_top_iff]`. Introduce `a _`. Set `g : Ω →+* (⊤ : Subring Ω).map (algebraMap Ω Ω')` to `(algebraMap Ω Ω').codRestrict _ fun b => ⟨b, trivial, rfl⟩`. Establish `h : IsIntegral Ω a` using `Algebra.IsIntegral.isIntegral a`.
+
+Conclude with `IsIntegral.map_of_comp_eq g (RingHom.id Ω') (RingHom.ext fun _ => rfl) h`.
+-/
 theorem NormAt.of_isAlgebraic [Algebra Ω Ω'] [Algebra.IsAlgebraic Ω Ω'] (p : Cpt (CptModel.pt (RingHom.id Ω))) :
     NormAt (CptModel.pt (RingHom.id Ω')) (CptModel.pt (algebraMap Ω Ω')) (algebraMap Ω Ω') p := by
   refine NormAt.of_unique ((NormAt.dominates_field_iff _ _).2 rfl) (CptModel.self _)
@@ -254,6 +327,13 @@ theorem NormAt.of_isAlgebraic [Algebra Ω Ω'] [Algebra.IsAlgebraic Ω Ω'] (p :
   have h : IsIntegral Ω a := Algebra.IsIntegral.isIntegral a
   exact IsIntegral.map_of_comp_eq g (RingHom.id Ω') (RingHom.ext fun _ => rfl) h
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨(NormAt.dominates_field_iff _ _).1 h.dom, fun a => ?_⟩` and prove the remaining obligations. Establish `e` using `h.regAt_eq (CptModel.self _) (Subsingleton.elim (α := PrimeSpectrum Ω) _ _)`. Rewrite `e` using `[NormAt.regAt_field]`.
+
+Take `⟨b, -, hb⟩ : a ∈ (regAt _ p).map i` from `e ▸ Subring.mem_top a`. Conclude with `⟨b, hb⟩`. Introduce and unpack `⟨h, hs⟩`. Use `⟨⟨CptModel.self _, Subsingleton.elim (α := PrimeSpectrum Ω) _ _, fun q _ => Subtype.ext (Subsingleton.elim (α := PrimeSpectrum Ω') _ _)⟩, fun q _ => ?_, (NormAt.dominates_field_iff _ _).2 h⟩` and prove the remaining obligations. Rewrite using `[NormAt.regAt_field, NormAt.regAt_field, eq_comm, eq_top_iff]`.
+
+Introduce `a _`. Take `⟨b, rfl⟩` from `hs a`. Conclude with `⟨b, trivial, rfl⟩`.
+-/
 theorem IsoAt.field_iff (φ i : Ω →+* Ω') (p : Cpt (CptModel.pt (RingHom.id Ω))) :
     IsoAt (CptModel.pt (RingHom.id Ω')) (CptModel.pt φ) i p ↔ φ = i ∧ Function.Surjective i := by
   constructor
@@ -272,11 +352,21 @@ theorem IsoAt.field_iff (φ i : Ω →+* Ω') (p : Cpt (CptModel.pt (RingHom.id 
     obtain ⟨b, rfl⟩ := hs a
     exact ⟨b, trivial, rfl⟩
 
+/- English proof (translation)
+Introduce `p hp` and use `by obtain ⟨U, hU, b, -, hb⟩ := h p hp exact ⟨U, hU, r, b, fun q hq hqU => (hb q hq hqU).2⟩`.
+-/
 theorem Lat.IsCohOn.of_isVBOn {L : Lat ξ E} {T : Set (Cpt ξ)} {r : ℕ} {V : Submodule Ω E} (h : L.IsVBOn T r V) :
     L.IsCohOn T := fun p hp => by
   obtain ⟨U, hU, b, -, hb⟩ := h p hp
   exact ⟨U, hU, r, b, fun q hq hqU => (hb q hq hqU).2⟩
 
+/- English proof (translation)
+Introduce `h2`. Use `haveI := NormAt.isLocalRing_regAt p`. Establish `key : ∀ n : ℕ, IsUnit (n : regAt ξ p) → unitAt ξ p (n : Ω)`. Introduce `n hn`. Take `⟨v, hv⟩` from `hn.exists_right_inv`.
+
+Establish `hv' : (n : Ω) * (v : Ω) = 1` using `by simpa using congrArg Subtype.val hv`. Use `⟨left_ne_zero_of_mul_eq_one hv', natCast_mem _ n, ?_⟩` and prove the remaining obligations. Rewrite using `[← eq_inv_of_mul_eq_one_right hv']`. Conclude with `v.2`. Take `⟨a, b, e⟩` from `(Nat.Coprime.cast (R := regAt ξ p) h)`.
+
+Break down `IsLocalRing.isUnit_or_isUnit_of_add_one e with h' | h'` into its components or cases. Conclude with `h1 (key _ (isUnit_of_mul_isUnit_right h'))`. Conclude with `h2 (key _ (isUnit_of_mul_isUnit_right h'))`.
+-/
 theorem Lat.not_inFibre_of_coprime (p : Cpt ξ) {q q' : ℕ} (h : q.Coprime q') (h1 : InFibre ξ q p) :
     ¬ InFibre ξ q' p := by
   intro h2
@@ -293,6 +383,11 @@ theorem Lat.not_inFibre_of_coprime (p : Cpt ξ) {q q' : ℕ} (h : q.Coprime q') 
   · exact h1 (key _ (isUnit_of_mul_isUnit_right h'))
   · exact h2 (key _ (isUnit_of_mul_isUnit_right h'))
 
+/- English proof (translation)
+Establish `h : ∃ q ∈ S, InFibre ξ q p` using `⟨q, hq, hp⟩`. Unfold `Lat.glue`. Rewrite using `[dif_pos h]`. Distinguish the cases in `e : h.choose = q`. Rewrite using `[e]`.
+
+Conclude with `(Lat.not_inFibre_of_coprime p ((Nat.coprime_primes (hS _ h.choose_spec.1) (hS _ hq)).2 e) h.choose_spec.2 hp).elim`.
+-/
 theorem Lat.glue_apply_of_inFibre {S : Finset ℕ} (hS : ∀ q ∈ S, q.Prime) (L₀ : Lat ξ E) (Lq : ℕ → Lat ξ E)
     {q : ℕ} (hq : q ∈ S) {p : Cpt ξ} (hp : InFibre ξ q p) : Lat.glue S L₀ Lq p = Lq q p := by
   have h : ∃ q ∈ S, InFibre ξ q p := ⟨q, hq, hp⟩
@@ -303,15 +398,26 @@ theorem Lat.glue_apply_of_inFibre {S : Finset ℕ} (hS : ∀ q ∈ S, q.Prime) (
   · exact (Lat.not_inFibre_of_coprime p ((Nat.coprime_primes (hS _ h.choose_spec.1) (hS _ hq)).2 e)
       h.choose_spec.2 hp).elim
 
+/- English proof (translation)
+The claim follows from `dif_neg fun ⟨q, hq, h⟩ => hp q hq h`.
+-/
 theorem Lat.glue_apply_of_not_inFibre {S : Finset ℕ} (L₀ : Lat ξ E) (Lq : ℕ → Lat ξ E) {p : Cpt ξ}
     (hp : ∀ q ∈ S, ¬ InFibre ξ q p) : Lat.glue S L₀ Lq p = L₀ p :=
   dif_neg fun ⟨q, hq, h⟩ => hp q hq h
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem Lat.mem_predualIn_iff {L : Lat ξ (Module.Dual Ω E)} {V : Submodule Ω E} {p : Cpt ξ} {v : E} :
     v ∈ L.predualIn V p ↔ v ∈ V ∧ ∀ w ∈ L p, w v ∈ regAt ξ p := Iff.rfl
 
 end API
 
+/- English proof (translation)
+Establish `hx : Ideal.span (Set.range (![2, 3] : Fin 2 → ℤ)) = ⊤`. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `h` using `Ideal.sub_mem (Ideal.span (Set.range (![2, 3] : Fin 2 → ℤ))) (Ideal.subset_span ⟨1, rfl⟩) (Ideal.subset_span ⟨0, rfl⟩)`. Simplify using `using h`. Use `⟨(CoordInhab.inChart_iff _ hx 1 CptModel.two).2 fun h => ?_, fun h => (CoordInhab.inChart_iff _ hx 0 CptModel.two).1 h (Ideal.mem_span_singleton_self _)⟩` and prove the remaining obligations.
+
+Conclude with `absurd (Ideal.mem_span_singleton.1 h) (by decide)`.
+-/
 example : InChart PModel.twoThree.ξ (fun j => algebraMap ℤ ℚ ((![2, 3] : Fin 2 → ℤ) j)) 1 CptModel.two ∧
     ¬ InChart PModel.twoThree.ξ (fun j => algebraMap ℤ ℚ ((![2, 3] : Fin 2 → ℤ) j)) 0 CptModel.two := by
   have hx : Ideal.span (Set.range (![2, 3] : Fin 2 → ℤ)) = ⊤ := by
@@ -323,12 +429,18 @@ example : InChart PModel.twoThree.ξ (fun j => algebraMap ℤ ℚ ((![2, 3] : Fi
     fun h => (CoordInhab.inChart_iff _ hx 0 CptModel.two).1 h (Ideal.mem_span_singleton_self _)⟩
   exact absurd (Ideal.mem_span_singleton.1 h) (by decide)
 
+/- English proof (translation)
+Introduce `h` and use `by have e := IsCtrOf.unique_spec (IsFractionRing.injective ℤ ℚ) h (IsCtrOf.refl _) apply CptModel.half_notMem rw [e, CptModel.regAt_self CptModel.isCptGen_int] trivial`.
+-/
 example : ¬ IsCtrOf (RingHom.id ℚ) CptModel.two (CptModel.self (CptModel.pt (algebraMap ℤ ℚ))) := fun h => by
   have e := IsCtrOf.unique_spec (IsFractionRing.injective ℤ ℚ) h (IsCtrOf.refl _)
   apply CptModel.half_notMem
   rw [e, CptModel.regAt_self CptModel.isCptGen_int]
   trivial
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨NormAt.of_isAlgebraic p, fun h => by obtain ⟨b, hb⟩ := ((IsoAt.field_iff _ _ p).1 h).2 Complex.I simpa using congrArg Complex.im hb⟩`.
+-/
 example (p : Cpt (CptModel.pt (RingHom.id ℝ))) :
     NormAt (CptModel.pt (RingHom.id ℂ)) (CptModel.pt (algebraMap ℝ ℂ)) (algebraMap ℝ ℂ) p ∧
       ¬ IsoAt (CptModel.pt (RingHom.id ℂ)) (CptModel.pt (algebraMap ℝ ℂ)) (algebraMap ℝ ℂ) p :=
@@ -336,6 +448,9 @@ example (p : Cpt (CptModel.pt (RingHom.id ℝ))) :
     obtain ⟨b, hb⟩ := ((IsoAt.field_iff _ _ p).1 h).2 Complex.I
     simpa using congrArg Complex.im hb⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(IsoAt.field_iff _ _ p).2 ⟨rfl, fun a => ⟨starRingEnd ℂ a, Complex.conj_conj a⟩⟩, fun h => by have := congrArg (fun g : ℂ →+* ℂ => (g Complex.I).im) ((IsoAt.field_iff _ _ p).1 h).1 norm_num at this⟩`.
+-/
 example (p : Cpt (CptModel.pt (RingHom.id ℂ))) :
     IsoAt (CptModel.pt (RingHom.id ℂ)) (CptModel.pt (starRingEnd ℂ)) (starRingEnd ℂ) p ∧
       ¬ IsoAt (CptModel.pt (RingHom.id ℂ)) (CptModel.pt (starRingEnd ℂ)) (RingHom.id ℂ) p :=
@@ -343,6 +458,9 @@ example (p : Cpt (CptModel.pt (RingHom.id ℂ))) :
     have := congrArg (fun g : ℂ →+* ℂ => (g Complex.I).im) ((IsoAt.field_iff _ _ p).1 h).1
     norm_num at this⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by simpa [invFib] using CptModel.unitAt_three, fun h => CptModel.not_unitAt_two (by simpa [invFib] using h), fun h => CptModel.not_unitAt_two (by simpa using h 2 (by norm_num)), fun h => CptModel.not_unitAt_two (by simpa using h 2 two_pos)⟩`.
+-/
 example : CptModel.two ∈ invFib _ 3 ∧ CptModel.two ∉ invFib _ 2 ∧ CptModel.two ∉ locFib _ 3 ∧
     CptModel.two ∉ genFib _ :=
   ⟨by simpa [invFib] using CptModel.unitAt_three, fun h => CptModel.not_unitAt_two (by simpa [invFib] using h),

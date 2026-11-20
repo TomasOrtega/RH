@@ -16,6 +16,15 @@ open MeasureTheory NumberField Formalism.BasicNotions Formalism.MainNotions.S Fo
 open Formalism.L2.SG.HidaSetting Formalism.L2.SG.PoincareInHH.PoincareSetting Formalism.L2.SG.TermOp Formalism.L2.SG.TermOp.IdBlocks Formalism.L2.SG.Full
   Formalism.L2.SG.PoincareInHH.Cut
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, hγ, rfl⟩`. Take `⟨hG, hP⟩` from `Subgroup.mem_inf.1 hγ`. Take `⟨h1, h2⟩` from `Subgroup.mem_prod.1 hP`. Take `⟨hN, hk⟩` from `Subgroup.mem_inf.1 h2`.
+
+Take `⟨k, hk, hke⟩` from `Subgroup.mem_map.1 hk`. Use `⟨γ, hG, rfl, h1, hN, ?_⟩` and prove the remaining obligations. Establish `: γ.2 = c * k * c⁻¹` using `by rw [← hke]; rfl`. Rewrite using `[this]`. Establish `: c⁻¹ * (c * k * c⁻¹) * c = k` using `by group`.
+
+Rewrite using `[this]`. Conclude with `hk`. Introduce and unpack `⟨γ, hG, rfl, h1, hN, hk⟩`. Use `⟨γ, Subgroup.mem_inf.2 ⟨hG, Subgroup.mem_prod.2 ⟨h1, Subgroup.mem_inf.2 ⟨hN, ?_⟩⟩⟩, rfl⟩` and prove the remaining obligations. Use `Subgroup.mem_map.2 ⟨c⁻¹ * γ.2 * c, hk, ?_⟩` and prove the remaining obligations.
+
+Use `show c * (c⁻¹ * γ.2 * c) * c⁻¹ = γ.2`. Use `group`.
+-/
 theorem mem_gcS {D : D7} (X : HidaSetting D) (u : D.what₂.Word) (hK : X.LevelSubgroupCharacter) (c : X.B.I.Gf) (s : X.B.I.Ginf) :
     s ∈ GcS X u hK c ↔ ∃ γ : X.B.I.GA, γ ∈ X.B.I.GFset ∧ γ.1 = s ∧ γ.1 ∈ X.NinfU u ∧ γ.2 ∈ X.NfinU u ∧
       c⁻¹ * γ.2 * c ∈ X.K2 := by
@@ -36,6 +45,11 @@ theorem mem_gcS {D : D7} (X : HidaSetting D) (u : D.what₂.Word) (hK : X.LevelS
     show c * (c⁻¹ * γ.2 * c) * c⁻¹ = γ.2
     group
 
+/- English proof (translation)
+Introduce `D X u hK`. Use extensionality with `s`. Rewrite using `[SetLike.mem_coe, mem_gcS]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, hG, h1, hN, hF, hk⟩`.
+
+Conclude with `⟨γ, hG, h1, hN, hF, hk⟩`. Introduce and unpack `⟨γ, hG, h1, hN, hF, hk⟩`. Conclude with `⟨γ, hG, h1, hN, hF, hk⟩`.
+-/
 theorem noinfEqC_holds : NOinfEqC := by
   intro D X u hK
   ext s
@@ -46,6 +60,11 @@ theorem noinfEqC_holds : NOinfEqC := by
   · rintro ⟨γ, hG, h1, hN, hF, hk⟩
     exact ⟨γ, hG, h1, hN, hF, hk⟩
 
+/- English proof (translation)
+Introduce `D X Y u ρ`. Use extensionality with `s`. Rewrite using `[SetLike.mem_coe, mem_gcS]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, n, hx, rfl, hn⟩`.
+
+Conclude with `⟨x, ratLink_mem X hx, rfl, nLamNinf_holds D X u _ x n hx hn, nLamNfin_holds D X u _ x n hx hn, (nilradical_conj_level' D X Y u ρ x n hn hx).1⟩`. Introduce and unpack `⟨γ, hG, rfl, hN, hF, hk⟩`. Conclude with `Formalism.L2.SG.Pf.SlabCoverPf.nilradical_rational_lattice D X Y u ρ γ (Formalism.L2.SG.Closed.level_subgroup_properties X) hG hN hF hk`.
+-/
 theorem nocolEqC_holds : NOcolEqC := by
   intro D X Y u ρ
   ext s
@@ -57,6 +76,11 @@ theorem nocolEqC_holds : NOcolEqC := by
   · rintro ⟨γ, hG, rfl, hN, hF, hk⟩
     exact Formalism.L2.SG.Pf.SlabCoverPf.nilradical_rational_lattice D X Y u ρ γ (Formalism.L2.SG.Closed.level_subgroup_properties X) hG hN hF hk
 
+/- English proof (translation)
+Introduce `D X u hK c`. Establish `hR : (RcS X u hK c : Set X.B.I.GA).Countable` using `(Set.countable_coe_iff.1 (Formalism.MainNotions.LeviCoordinates.rr_GF_countable X.B.I)).mono (fun _ h => (Subgroup.mem_inf.1 h).1)`. Establish `: (GcS X u hK c : Set X.B.I.Ginf).Countable`. Unfold `GcS`. Rewrite using `[Subgroup.coe_map]`.
+
+Conclude with `hR.image _`. Conclude with `this.to_subtype`.
+-/
 theorem gcCountC_holds : GcCountC := by
   intro D X u hK c
   have hR : (RcS X u hK c : Set X.B.I.GA).Countable :=
@@ -67,6 +91,15 @@ theorem gcCountC_holds : GcCountC := by
     exact hR.image _
   exact this.to_subtype
 
+/- English proof (translation)
+Introduce `D X u hK g c`. Use extensionality with `x`. Simplify using `only [UcS, Subgroup.mem_inf, Subgroup.mem_map, MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hN, k, hk, hke⟩`.
+
+Use `⟨(g : X.B.I.Gf)⁻¹ * x * (g : X.B.I.Gf), ⟨?_, k, hk, ?_⟩, ?_⟩` and prove the remaining obligations. Use `(nfinConj_holds X u g⁻¹ x hN).1` as an intermediate fact. Simplify using `only [InvMemClass.coe_inv, inv_inv] at this`. Conclude with `this`. Rewrite using `[← hke]`.
+
+Use `group`. Use `group`. Introduce and unpack `⟨y, ⟨hN, k, hk, hke⟩, rfl⟩`. Use `⟨(nfinConj_holds X u g y hN).1, k, hk, ?_⟩` and prove the remaining obligations. Rewrite using `[← hke]`.
+
+Use `group`.
+-/
 theorem conjUC_holds : ConjUC := by
   intro D X u hK g c
   ext x

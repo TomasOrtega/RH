@@ -13,6 +13,9 @@ section WeightAlgebra
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨p1, p2, p3⟩` from `hb ⟨a1, a2.2, b3, bB, bC⟩`. Conclude with `h8 ⟨a1, a2, a3, a4, p1, p2, p3⟩`.
+-/
 theorem quadratic_statement_of_parts (large₂ : SizeData₂ D) {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} (X : WeightAlgebra.Prov D B P)
     (K : WeightAlgebra.KAdm) (H : WeightAlgebra.KHyp) (Ch Ah Cq Aq C2 A2 CR Bx CT A : ℝ)
     (hb : WeightFamilies.Stmt large₂ B K.CG K.AG K.CL K.AL K.CRm H.CK Ch Ah Cq Aq)

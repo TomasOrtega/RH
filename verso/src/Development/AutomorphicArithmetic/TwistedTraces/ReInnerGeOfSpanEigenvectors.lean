@@ -3,6 +3,27 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.
 open MeasureTheory NumberField GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.RightCosetSpace
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum UpperTheory.ConvolutionTheory.C Polynomial Topology
 
+/- English proof (translation)
+Introduce `M H _ _ _ _ j V T c s hsym hs v hv`. Establish `hle : Submodule.span ℂ s ≤ ⨆ κ : {κ : ℂ // -c ≤ κ.re}, (V ⊓ Module.End.eigenspace T (κ : ℂ))`. Use `Submodule.span_le.2 fun x hx => ?_` and prove the remaining obligations. Take `⟨hxV, κ, hκ, hT⟩` from `hs x hx`. Conclude with `Submodule.mem_iSup_of_mem (⟨κ, hκ⟩ : {κ : ℂ // -c ≤ κ.re}) ⟨hxV, Module.End.mem_eigenspace_iff.2 hT⟩`.
+
+Take `⟨f, hf, hfv⟩` from `(Submodule.mem_iSup_iff_exists_finsupp _ _).1 (hle hv)`. Establish `hV : ∀ κ, f κ ∈ V` using `fun κ => (hf κ).1`. Establish `hT : ∀ κ, T (f κ) = (κ : ℂ) • f κ` using `fun κ => Module.End.mem_eigenspace_iff.1 (hf κ).2`. Establish `hrel : ∀ a b : {κ : ℂ // -c ≤ κ.re}, (starRingEnd ℂ) (a : ℂ) * inner ℂ (j (f a)) (j (f b)) = (b : ℂ) * inner ℂ (j (f a)) (j (f b))`. Introduce `a b`.
+
+Use `hsym _ (hV a) _ (hV b)` as an intermediate fact. Rewrite `this` using `[hT, hT, map_smul, map_smul, inner_smul_left, inner_smul_right]`. Then use the resulting hypothesis. Establish `horth : ∀ a b, a ≠ b → inner ℂ (j (f a)) (j (f b)) = 0`. Introduce `a b hab`. Distinguish the cases in `h0 : j (f a) = 0`.
+
+Rewrite using `[h0, inner_zero_left]`. Establish `h1 : (starRingEnd ℂ) (a : ℂ) = a` using `mul_right_cancel₀ (fun h => h0 (inner_self_eq_zero.1 h)) (hrel a a)`. Establish `h2` using `hrel a b`. Rewrite `h2` using `[h1]`. Assume the negation of the conclusion as `h3`.
+
+Conclude with `hab (Subtype.ext (mul_right_cancel₀ h3 h2))`. Establish `hv' : v = ∑ a ∈ f.support, f a` using `hfv.symm`. Establish `e1 : inner ℂ (j v) (j v) = ∑ a ∈ f.support, inner ℂ (j (f a)) (j (f a))`. Rewrite using `[hv', map_sum, sum_inner]`. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations.
+
+Rewrite using `[inner_sum, Finset.sum_eq_single_of_mem a ha]`. Introduce `b _ hb`. Conclude with `horth a b hb.symm`. Establish `e2 : inner ℂ (j v) (j (T v)) = ∑ a ∈ f.support, (a : ℂ) * inner ℂ (j (f a)) (j (f a))`. Rewrite using `[hv', map_sum T, map_sum, map_sum, sum_inner]`.
+
+Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Rewrite using `[inner_sum, Finset.sum_eq_single_of_mem a ha, hT, map_smul, inner_smul_right]`. Introduce `b _ hb`. Rewrite using `[hT, map_smul, inner_smul_right, horth a b hb.symm, mul_zero]`. Establish `hn : ∀ x : H, inner ℂ x x = ((‖x‖ ^ 2 : ℝ) : ℂ)`.
+
+Introduce `x`. Rewrite using `[inner_self_eq_norm_sq_to_K]`. Use `push_cast`. Both sides reduce to the same expression. Establish `e3 : ‖j v‖ ^ 2 = ∑ a ∈ f.support, ‖j (f a)‖ ^ 2`.
+
+Simplify using `only [hn] at e1`. Conclude with `e1` after adjusting the coercions. Rewrite using `[e2, e3, Complex.re_sum, Finset.mul_sum]`. Use `Finset.sum_le_sum fun a _ => ?_` and prove the remaining obligations. Rewrite using `[hn, Complex.re_mul_ofReal]`.
+
+Conclude with `mul_le_mul_of_nonneg_right a.2 (sq_nonneg _)`.
+-/
 theorem UpperTheory.re_inner_ge_of_span_eigenvectors :
     ∀ (M H : Type) [AddCommGroup M] [Module ℂ M] [NormedAddCommGroup H] [InnerProductSpace ℂ H] (j : M →ₗ[ℂ] H) (V : Submodule ℂ M) (T : Module.End ℂ M) (c : ℝ) (s : Set M), (∀ x ∈ V, ∀ y ∈ V, inner ℂ (j (T x)) (j y) = inner ℂ (j x) (j (T y))) → (∀ x ∈ s, x ∈ V ∧ ∃ κ : ℂ, -c ≤ κ.re ∧ T x = κ • x) → ∀ v ∈ Submodule.span ℂ s, -c * ‖j v‖ ^ 2 ≤ (inner ℂ (j v) (j (T v))).re := by
   intro M H _ _ _ _ j V T c s hsym hs v hv

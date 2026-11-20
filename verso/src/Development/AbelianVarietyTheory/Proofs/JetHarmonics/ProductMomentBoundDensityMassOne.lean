@@ -8,6 +8,9 @@ open scoped ENNReal
 
 namespace GlobalTheory.MomentHolder
 
+/- English proof (translation)
+Rewrite using `[lintegral_withDensity_eq_lintegral_mul₀ hPh.ennreal_ofReal hf.ennreal_ofReal.aemeasurable]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Simplify using `only [Pi.mul_apply]`. Rewrite using `[mul_comm (f x), ENNReal.ofReal_mul (h0 x)]`.
+-/
 theorem lintegral_density {Ω : Type} [MeasurableSpace Ω] (ν : Measure Ω) (Ph : Ω → ℝ)
     (hPh : AEMeasurable Ph ν) (h0 : ∀ x, 0 ≤ Ph x) (f : Ω → ℝ) (hf : Measurable f) :
     ∫⁻ x, ENNReal.ofReal (f x) ∂(ν.withDensity fun x => ENNReal.ofReal (Ph x))
@@ -18,6 +21,11 @@ theorem lintegral_density {Ω : Type} [MeasurableSpace Ω] (ν : Measure Ω) (Ph
   simp only [Pi.mul_apply]
   rw [mul_comm (f x), ENNReal.ofReal_mul (h0 x)]
 
+/- English proof (translation)
+Use `⟨fun x => if 0 < hf.mk f x then hf.mk f x else 1, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Measurable.ite (measurableSet_lt measurable_const hf.measurable_mk) hf.measurable_mk measurable_const`. Introduce `x`. Apply the tactic sequence `by_cases h : 0 < hf.mk f x <;> simp [h]`. Use `filter_upwards [hf.ae_eq_mk, hpos] with x hx hp`.
+
+Rewrite using `[← hx, if_pos hp]`.
+-/
 theorem exists_pos_version {Ω : Type} [MeasurableSpace Ω] (ν : Measure Ω) (f : Ω → ℝ)
     (hf : AEMeasurable f ν) (hpos : ∀ᵐ x ∂ν, 0 < f x) :
     ∃ g : Ω → ℝ, Measurable g ∧ (∀ x, 0 < g x) ∧ f =ᵐ[ν] g := by
@@ -30,6 +38,21 @@ theorem exists_pos_version {Ω : Type} [MeasurableSpace Ω] (ν : Measure Ω) (f
   · filter_upwards [hf.ae_eq_mk, hpos] with x hx hp
     rw [← hx, if_pos hp]
 
+/- English proof (translation)
+Introduce `Ω _ ν r len Ph A Rr hm hpos hPh h0 hmass hA hR h1 h2`. Use `choose l hlm hlp hle using fun a => exists_pos_version ν (len a) (hm a) (hpos a)`. Establish `hall : ∀ᵐ x ∂ν, ∀ a, len a x = l a x` using `ae_all_iff.2 hle`. Use `set μ : Measure Ω := ν.withDensity fun x => ENNReal.ofReal (Ph x) with hμ`. Use `haveI : IsProbabilityMeasure μ := ⟨by`.
+
+Rewrite using `[hμ, withDensity_apply _ MeasurableSet.univ, Measure.restrict_univ, hmass]⟩`. Establish `hR0 : 0 ≤ Rr` using `zero_le_one.trans hR`. Establish `hsq : ∀ q : ℕ, Real.sqrt A ^ (2 * q) = A ^ q` using `fun q => by`. Rewrite using `[pow_mul, Real.sq_sqrt hA]`. Establish `hup` using `Formalism.HermitianLatticeCounting.P.corollary_upper_estimate_holds Ω μ r (r + 1) l (Real.sqrt A) Rr hlm hlp (Real.sqrt_nonneg A) hR0 (fun q hq => by`.
+
+Rewrite using `[hμ, lintegral_density ν Ph hPh h0 _ ((hlm 0).pow_const _), hsq]`. Use `le_of_eq_of_le (lintegral_congr_ae ?_) (h1 q (by rw [sq]; exact hq))` and prove the remaining obligations. Use `filter_upwards [hall] with x hx`. Rewrite using `[hx])`. Use the proof step `(fun c q hq => by`.
+
+Rewrite using `[hμ, lintegral_density ν Ph hPh h0 (fun ω => (l c.succ ω / l c.castSucc ω) ^ (2 * q)) (((hlm _).div (hlm _)).pow_const _)]`. Use `le_of_eq_of_le (lintegral_congr_ae ?_) (h2 c q (by rw [sq]; exact hq))` and prove the remaining obligations. Use `filter_upwards [hall] with x hx`. Rewrite using `[hx, hx])`. Establish `hprod` using `Formalism.HermitianLatticeCounting.P.corollary_product_estimate_holds Ω μ r 1 (r + 1) l (Real.sqrt A * Rr ^ r) hlm hlp (by positivity) le_rfl (fun a _ => by`.
+
+Rewrite using `[mul_one]`. Use `(hup a).trans (ENNReal.ofReal_le_ofReal ?_)` and prove the remaining obligations. Rewrite using `[mul_pow, ← pow_mul Rr r]`. Use `mul_le_mul_of_nonneg_left (pow_le_pow_right₀ hR ?_) (by positivity)` and prove the remaining obligations. Rewrite using `[mul_comm r]`.
+
+Conclude with `Nat.mul_le_mul_left _ (Nat.lt_succ_iff.1 a.isLt))`. Establish `hfilt : univ.filter (fun a : Fin (r + 1) => a.val < r + 1) = univ` using `filter_true_of_mem fun a _ => a.isLt`. Rewrite `hprod` using `[hfilt, hμ, lintegral_density ν Ph hPh h0 _ ((Finset.measurable_prod _ fun a _ => hlm a).pow_const _)]`. Use `le_of_eq_of_le (lintegral_congr_ae ?_) (hprod.trans_eq ?_)` and prove the remaining obligations. Use `filter_upwards [hall] with x hx`.
+
+Simplify using `only [hx, mul_one, Finset.prod_pow]`. Use `congr 1`. Rewrite using `[mul_one, mul_pow, hsq, mul_pow, ← pow_mul, ← pow_mul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem product_moment_le :
     ∀ (Ω : Type) [MeasurableSpace Ω] (ν : Measure Ω) (r : ℕ) (len : Fin (r + 1) → Ω → ℝ)
       (Ph : Ω → ℝ) (A Rr : ℝ), (∀ a, AEMeasurable (len a) ν) → (∀ a, ∀ᵐ x ∂ν, 0 < len a x) →

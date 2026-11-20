@@ -16,6 +16,11 @@ section Trans
 
 variable {S T Y Z : Scheme.{0}}
 
+/- English proof (translation)
+Substitute `e₂ e₁ eg` using the available equality. Establish `H` using `congrArg (fun φ => φ.app M) (Scheme.Modules.pseudofunctor_associativity g₁ g₂ h)`. Simplify using `only [NatTrans.comp_app, Functor.whiskerRight_app, Functor.associator_hom_app, Functor.whiskerLeft_app, Category.id_comp, eqToHom_app] at H`. Establish `H' : (Scheme.Modules.pullbackComp g₁ (g₂ ≫ h)).inv.app M ≫ (Scheme.Modules.pullback g₁).map ((Scheme.Modules.pullbackComp g₂ h).inv.app M) ≫ (Scheme.Modules.pullbackComp g₁ g₂).hom.app _ = eqToHom (by simp) ≫ (Scheme.Modules.pullbackComp (g₁ ≫ g₂) h).inv.app M`. Rewrite using `[← reassoc_of% H]`.
+
+Simplify using the standard rewrite rules. Simplify using `only [pullbackCompIso, Scheme.Modules.pullbackCongr, Iso.trans_hom, Iso.symm_hom, Iso.app_inv, eqToIso_refl, Iso.refl_inv, NatTrans.id_app, Functor.mapIso_refl, Iso.refl_hom, Category.id_comp, Category.comp_id, Functor.map_comp, Category.assoc, eqToIso.inv, eqToHom_app]`. Simplify using `using H'`.
+-/
 lemma pullbackCompIso_trans {g₁ : S ⟶ T} {g₂ : T ⟶ Y} {h : Y ⟶ Z} {k₂ : T ⟶ Z} {k : S ⟶ Z}
     {g : S ⟶ Y} (e₂ : g₂ ≫ h = k₂) (e₁ : g₁ ≫ k₂ = k) (eg : g₁ ≫ g₂ = g) (e : g ≫ h = k)
     (M : Z.Modules) :
@@ -40,6 +45,13 @@ lemma pullbackCompIso_trans {g₁ : S ⟶ T} {g₂ : T ⟶ Y} {h : Y ⟶ Z} {k�
     eqToHom_app]
   simpa using H'
 
+/- English proof (translation)
+Establish `hF` using `pullbackCompIso_trans e₂ e₁ eg e F`. Establish `hG` using `pullbackCompIso_trans e₂ e₁ eg e G`. Substitute `eg` using the available equality. Simplify using `only [Scheme.Modules.pullbackCongr, eqToIso_refl, Iso.refl_hom, NatTrans.id_app, Category.comp_id] at hF hG`. Establish `hG' : (pullbackCompIso e (Iso.refl ((Scheme.Modules.pullback h).obj G))).inv = (Scheme.Modules.pullbackComp g₁ g₂).inv.app _ ≫ (Scheme.Modules.pullback g₁).map (pullbackCompIso e₂ (Iso.refl _)).inv ≫ (pullbackCompIso e₁ (Iso.refl _)).inv`.
+
+Apply `Iso.inv_ext` to reduce the goal to its premises. Rewrite using `[← hG]`. Simplify using `[← Functor.map_comp_assoc]`. Unfold `pullbackHomAlong`. Rewrite using `[← hF, hG']`.
+
+Establish `nat : (Scheme.Modules.pullbackComp g₁ g₂).hom.app _ ≫ (Scheme.Modules.pullback (g₁ ≫ g₂)).map ψ ≫ (Scheme.Modules.pullbackComp g₁ g₂).inv.app _ = (Scheme.Modules.pullback g₁).map ((Scheme.Modules.pullback g₂).map ψ)`. Rewrite using `[← (Scheme.Modules.pullbackComp g₁ g₂).hom.naturality_assoc ψ]`. Simplify using the standard rewrite rules. Simplify using `only [Functor.map_comp, Category.assoc]`. Rewrite using `[reassoc_of% nat]`.
+-/
 lemma pullbackHomAlong_trans {g₁ : S ⟶ T} {g₂ : T ⟶ Y} {h : Y ⟶ Z} {k₂ : T ⟶ Z} {k : S ⟶ Z}
     {g : S ⟶ Y} (e₂ : g₂ ≫ h = k₂) (e₁ : g₁ ≫ k₂ = k) (eg : g₁ ≫ g₂ = g) (e : g ≫ h = k)
     {F G : Z.Modules}
@@ -69,11 +81,19 @@ lemma pullbackHomAlong_trans {g₁ : S ⟶ T} {g₂ : T ⟶ Y} {h : Y ⟶ Z} {k�
 
 end Trans
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `h`. Conclude with `invOpen_mul_le_left f m c`.
+-/
 lemma invOpen_le_of_dvd {X : Scheme.{0}} (f : X ⟶ SpecZ) {m k : ℤ} (h : m ∣ k) :
     invOpen f k ≤ invOpen f m := by
   obtain ⟨c, rfl⟩ := h
   exact invOpen_mul_le_left f m c
 
+/- English proof (translation)
+Introduce `X f _ _ a ha F G hF hG φ`. Take `⟨W, hWa, hW, ψ, hψ⟩` from `h₁ X f a ha F G hF hG φ`. Take `⟨m, hm, hmW⟩` from `h₂ X f W hW`. Use `⟨m, hm, fun n hn hmn => ?_⟩` and prove the remaining obligations. Establish `hle : invOpen f ((a : ℤ) * (n : ℤ)) ≤ W` using `(invOpen_le_of_dvd f (Dvd.dvd.mul_left (Int.natCast_dvd_natCast.mpr hmn) _)).trans hmW`.
+
+Use `⟨pullbackHomAlong (X.homOfLE_homOfLE hle hWa) ψ, ?_⟩` and prove the remaining obligations. Rewrite using `[pullbackHomAlong_trans _ _ ?_ (toOpen_homOfLE f ℚ W hW (isUnit_intCast_rat a (by exact_mod_cast ha.ne')) hWa)]`. Conclude with `hψ`. Rewrite using `[← cancel_mono W.ι]`. Simplify using `[Scheme.homOfLE_ι]`.
+-/
 theorem SpreadHom.proof (h₁ : SpreadHomNbhd.Statement) (h₂ : InvOpenInsideRat.Statement) :
     SpreadHom.Statement := by
   intro X f _ _ a ha F G hF hG φ

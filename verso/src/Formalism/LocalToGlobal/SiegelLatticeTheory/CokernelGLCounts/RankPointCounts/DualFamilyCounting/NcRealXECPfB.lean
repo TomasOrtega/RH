@@ -11,6 +11,11 @@ open Formalism.MainNotions.BridgeCSB (Fil lieN dg)
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Establish `h1` using `volume_measurePreserving_sumPiEquivProdPi (fun _ : J k r => ℝ)`. Establish `h2` using `volume_measurePreserving_sumPiEquivProdPi (fun _ : CI k r ⊕ CI k r => ℝ)`. Establish `h3` using `(volume_measurePreserving_arrowProdEquivProdArrow ℝ ℝ (CI k r)).symm`. Establish `h4 : MeasurePreserving (fun (w : CI k r → ℝ × ℝ) (i : CI k r) => Complex.measurableEquivRealProd.symm (w i)) volume volume` using `volume_preserving_pi (fun _ => Complex.volume_preserving_equiv_real_prod.symm)`. Establish `h5` using `((h4.comp h3).comp h2).prod (MeasurePreserving.id (volume : Measure (Fin r → ℝ)))`.
+
+Establish `h6` using `h5.comp h1`. Use `h6 using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `all_goals first | rfl | (funext y; rfl)`.
+-/
 theorem mp_toC : MeasurePreserving (toC (k := k) (r := r)) volume volume := by
   have h1 := volume_measurePreserving_sumPiEquivProdPi (fun _ : J k r => ℝ)
   have h2 := volume_measurePreserving_sumPiEquivProdPi (fun _ : CI k r ⊕ CI k r => ℝ)
@@ -28,9 +33,15 @@ def fromC (t : (CI k r → ℂ) × (Fin r → ℝ)) : J k r → ℝ
   | Sum.inl (Sum.inr c) => (t.1 c).im
   | Sum.inr a => t.2 a
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toC_fromC (t : (CI k r → ℂ) × (Fin r → ℝ)) : toC (fromC t) = t := by
   rfl
 
+/- English proof (translation)
+Use `continuous_pi fun j => ?_` and prove the remaining obligations. Break down `j with (c | c) | a` into its components or cases. Conclude with `Complex.continuous_re.comp ((continuous_apply c).comp continuous_fst)`. Conclude with `Complex.continuous_im.comp ((continuous_apply c).comp continuous_fst)`. Conclude with `(continuous_apply a).comp continuous_snd`.
+-/
 theorem continuous_fromC : Continuous (fromC (k := k) (r := r)) := by
   refine continuous_pi fun j => ?_
   rcases j with (c | c) | a
@@ -42,6 +53,9 @@ section Cont
 
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
+/- English proof (translation)
+The claim follows from `NormedSpace.exp_continuous.comp continuous_LJ`.
+-/
 theorem continuous_expLJ : Continuous fun y : J k r → ℝ => (NormedSpace.exp (LJ y) : Mx k r) :=
   NormedSpace.exp_continuous.comp continuous_LJ
 
@@ -49,15 +63,34 @@ end Cont
 
 def sJ (y : J k r → ℝ) : J k r → ℝ := fromC (psiC (NormedSpace.exp (LJ y)), psiR (NormedSpace.exp (LJ y)))
 
+/- English proof (translation)
+The claim follows from `continuous_fromC.comp ((continuous_psiC.comp continuous_expLJ).prodMk (continuous_psiR.comp continuous_expLJ))`.
+-/
 theorem continuous_sJ : Continuous (sJ (k := k) (r := r)) :=
   continuous_fromC.comp ((continuous_psiC.comp continuous_expLJ).prodMk (continuous_psiR.comp continuous_expLJ))
 
+/- English proof (translation)
+Establish `h1` using `h i j (by omega)`. Rewrite `h1` using `[Matrix.sub_apply, sub_eq_zero]`. Conclude with `h1`.
+-/
 theorem entry_of_fil {D E : Mx k r} {p : ℕ} (h : Fil (p + 1) (D - E)) {i j : Fin (2 * r + k + 1)}
     (hij : dg k r j ≤ dg k r i + p) : D i j = E i j := by
   have h1 := h i j (by omega)
   rw [Matrix.sub_apply, sub_eq_zero] at h1
   exact h1
 
+/- English proof (translation)
+Establish `h1` using `((Formalism.MainNotions.BridgeCSB.mem_N_iff g).1 hg).2`. Establish `h1'` using `((Formalism.MainNotions.BridgeCSB.mem_N_iff g').1 hg').2`. Establish `key : ∀ c : Fin r, star (g (esI k r c) (esI k r a)) * g (eI k r c) (esI k r b) - star (g' (esI k r c) (esI k r a)) * g' (eI k r c) (esI k r b) = if c = a then g (eI k r a) (esI k r b) - g' (eI k r a) (esI k r b) else 0`. Introduce `c`. Establish `ha` using `a.isLt`.
+
+Establish `hb` using `b.isLt`. Establish `hc` using `c.isLt`. Break down `lt_trichotomy c a with h | rfl | h` into its components or cases. Establish `hca : c.val < a.val` using `h`. Establish `e1` using `h1 (esI k r c) (esI k r a) (by rw [dg_esI, dg_esI]; omega)`.
+
+Establish `e2` using `h1' (esI k r c) (esI k r a) (by rw [dg_esI, dg_esI]; omega)`. Rewrite `e1`, `e2` using `[Matrix.sub_apply, Matrix.one_apply, if_neg (fun e => (ne_of_lt h) (esI_inj.1 e)), sub_zero]`. Rewrite using `[e1, e2, if_neg (ne_of_lt h)]`. Simplify using the standard rewrite rules. Establish `e1` using `h1 (esI k r c) (esI k r c) (by rw [dg_esI]; omega)`.
+
+Establish `e2` using `h1' (esI k r c) (esI k r c) (by rw [dg_esI]; omega)`. Rewrite `e1`, `e2` using `[Matrix.sub_apply, Matrix.one_apply, if_pos rfl, sub_eq_zero]`. Rewrite using `[e1, e2, if_pos rfl]`. Simplify using the standard rewrite rules. Establish `hac : a.val < c.val` using `h`.
+
+Establish `e1` using `hG (esI k r c) (esI k r a) (by rw [dg_esI, dg_esI]; omega)`. Establish `e2` using `hG (eI k r c) (esI k r b) (by rw [dg_esI, dg_eI]; omega)`. Rewrite `e1`, `e2` using `[Matrix.sub_apply, sub_eq_zero]`. Rewrite using `[e1, e2, if_neg (ne_of_gt h), sub_self]`. Simplify using `only [mof, Matrix.mul_apply, conjTranspose_apply, bF, bC]`.
+
+Rewrite using `[← Finset.sum_sub_distrib, Finset.sum_congr rfl (fun c _ => key c)]`. Simplify using the standard rewrite rules.
+-/
 theorem mof_sub {g g' : Mx k r} (hg : g ∈ Nset k r) (hg' : g' ∈ Nset k r) (a b : Fin r)
     (hG : Fil (2 * r - a.val - b.val) (g - g')) :
     mof g a b - mof g' a b = g (eI k r a) (esI k r b) - g' (eI k r a) (esI k r b) := by
@@ -87,6 +120,21 @@ theorem mof_sub {g g' : Mx k r} (hg : g ∈ Nset k r) (hg' : g' ∈ Nset k r) (a
   rw [← Finset.sum_sub_distrib, Finset.sum_congr rfl (fun c _ => key c)]
   simp
 
+/- English proof (translation)
+Establish `hg` using `Formalism.MainNotions.BridgeCSB.exp_mem_N (Lm_mem t)`. Establish `hg'` using `Formalism.MainNotions.BridgeCSB.exp_mem_N (Lm_mem t')`. Establish `ent : ∀ i j, dg k r j ≤ dg k r i + hC c → (NormedSpace.exp (Lm t) - NormedSpace.exp (Lm t')) i j = (Lm t - Lm t') i j` using `fun i j h => entry_of_fil hE h`. Break down `c with ⟨⟨a, b⟩, h⟩ | ⟨a, j⟩ | ⟨⟨a, b⟩, h⟩` into its components or cases. Establish `hab : a.val < b.val` using `h`.
+
+Use `ent (eI k r a) (eI k r b) (by rw [dg_eI, dg_eI]; simp only [hC]; omega)` as an intermediate fact. Simplify using `only [Matrix.sub_apply, Lm_ee, chart_matrix_upper _ h] at this`. Conclude with `this`. Use `ent (eI k r a) (wI k r j) (by rw [dg_eI, dg_wI]; simp only [hC]; omega)` as an intermediate fact. Simplify using `only [Matrix.sub_apply, Lm_ew] at this`.
+
+Conclude with `this`. Establish `hab' : a.val < b.val` using `h`. Establish `hb` using `b.isLt`. Establish `eh : hC (Sum.inr (Sum.inr ⟨(a, b), h⟩) : CI k r) = 2 * r - a.val - b.val` using `rfl`. Establish `hab` using `mof_sub hg hg' a b (by rw [← eh]; exact hG)`.
+
+Establish `hba` using `mof_sub hg hg' b a (by`. Establish `: 2 * r - b.val - a.val = 2 * r - a.val - b.val` using `by omega`. Rewrite using `[this, ← eh]`. Conclude with `hG)`. Establish `e1` using `ent (eI k r a) (esI k r b) (by rw [dg_eI, dg_esI, eh]; omega)`.
+
+Establish `e2` using `ent (eI k r b) (esI k r a) (by rw [dg_eI, dg_esI, eh]; omega)`. Simplify using `only [Matrix.sub_apply, Lm_es] at e1 e2`. Establish `hba'` using `congrArg star hba`. Establish `e2'` using `congrArg star e2`. Simplify using `only [star_sub] at hba' e2'`.
+
+Establish `sk` using `cK_skew t.1 t.2 a b`. Establish `sk'` using `cK_skew t'.1 t'.2 a b`. Establish `hx : ∀ x : CI k r → ℂ, ∀ s, cK x s a b = x (Sum.inr (Sum.inr ⟨(a, b), h⟩))`. Introduce `x s`. Unfold `cK`.
+
+Rewrite using `[dif_pos h]`. Use `show kof _ a b - kof _ a b = _`. Rewrite using `[← hx t.1 t.2, ← hx t'.1 t'.2]`. Simplify using `only [kof]`. Take the linear combination `(1 / 2 : ℂ) * hab + (1 / 2 : ℂ) * e1 - (1 / 2 : ℂ) * hba' - (1 / 2 : ℂ) * e2' - (1 / 2 : ℂ) * sk + (1 / 2 : ℂ) * sk'`.
+-/
 theorem psiC_sub (t t' : (CI k r → ℂ) × (Fin r → ℝ)) (c : CI k r)
     (hG : Fil (hC c) (NormedSpace.exp (Lm t) - NormedSpace.exp (Lm t')))
     (hE : Fil (hC c + 1) ((NormedSpace.exp (Lm t) - NormedSpace.exp (Lm t')) - (Lm t - Lm t'))) :
@@ -127,6 +175,15 @@ theorem psiC_sub (t t' : (CI k r → ℂ) × (Fin r → ℝ)) (c : CI k r)
     linear_combination (1 / 2 : ℂ) * hab + (1 / 2 : ℂ) * e1 - (1 / 2 : ℂ) * hba' - (1 / 2 : ℂ) * e2' -
       (1 / 2 : ℂ) * sk + (1 / 2 : ℂ) * sk'
 
+/- English proof (translation)
+Establish `hg` using `Formalism.MainNotions.BridgeCSB.exp_mem_N (Lm_mem t)`. Establish `hg'` using `Formalism.MainNotions.BridgeCSB.exp_mem_N (Lm_mem t')`. Establish `ha` using `a.isLt`. Establish `hm` using `mof_sub hg hg' a a (by`. Establish `: 2 * r - a.val - a.val = 2 * r - 2 * a.val` using `by omega`.
+
+Rewrite using `[this]`. Conclude with `hG)`. Establish `e1` using `entry_of_fil hE (i := eI k r a) (j := esI k r a) (by rw [dg_eI, dg_esI]; omega)`. Simplify using `only [Matrix.sub_apply, Lm_es] at e1`. Establish `hk : ∀ (x : CI k r → ℂ) (s : Fin r → ℝ), cK x s a a = (s a : ℂ) * Complex.I`.
+
+Introduce `x s`. Unfold `cK`. Rewrite using `[dif_neg (lt_irrefl a), dif_neg (lt_irrefl a)]`. Rewrite `e1` using `[hk, hk]`. Use `congrArg Complex.im (hm.trans e1)` as an intermediate fact.
+
+Simplify using `only [Complex.sub_im, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, Complex.I_re, Complex.I_im, mul_one, mul_zero, add_zero] at this`. Simplify using `only [psiR]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem psiR_sub (t t' : (CI k r → ℂ) × (Fin r → ℝ)) (a : Fin r)
     (hG : Fil (2 * r - 2 * a.val) (NormedSpace.exp (Lm t) - NormedSpace.exp (Lm t')))
     (hE : Fil (2 * r - 2 * a.val + 1) ((NormedSpace.exp (Lm t) - NormedSpace.exp (Lm t')) - (Lm t - Lm t'))) :
@@ -148,6 +205,15 @@ theorem psiR_sub (t t' : (CI k r → ℂ) × (Fin r → ℝ)) (a : Fin r)
   simp only [psiR]
   linarith
 
+/- English proof (translation)
+Establish `hF` using `Lm_fil_sub h`. Establish `hE` using `Formalism.MainNotions.BridgeCSB.Fil.exp_sub_exp (chart_filtration_one (toC y)) (chart_filtration_one (toC y')) hF`. Establish `hG : Fil (ht i) (NormedSpace.exp (Lm (toC y)) - NormedSpace.exp (Lm (toC y')))`. Use `(hE.mono (Nat.le_succ _)).add hF` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+
+Break down `i with (c | c) | a` into its components or cases. Use `congrArg Complex.re (psiC_sub (toC y) (toC y') c hG hE)` as an intermediate fact. Simplify using `only [Complex.sub_re] at this`. Use `show (psiC (NormedSpace.exp (Lm (toC y))) c).re - ((toC y).1 c).re = (psiC (NormedSpace.exp (Lm (toC y'))) c).re - ((toC y').1 c).re`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `congrArg Complex.im (psiC_sub (toC y) (toC y') c hG hE)` as an intermediate fact. Simplify using `only [Complex.sub_im] at this`. Use `show (psiC (NormedSpace.exp (Lm (toC y))) c).im - ((toC y).1 c).im = (psiC (NormedSpace.exp (Lm (toC y'))) c).im - ((toC y').1 c).im`. Combine the linear equalities and inequalities to obtain the conclusion. Use `psiR_sub (toC y) (toC y') a hG hE show psiR (NormedSpace.exp (Lm (toC y))) a - (toC y).2 a = psiR (NormedSpace.exp (Lm (toC y'))) a - (toC y').2 a` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sJ_shear (i : J k r) (y y' : J k r → ℝ) (h : ∀ j, ht j < ht i → y j = y' j) :
     sJ y i - y i = sJ y' i - y' i := by
   have hF := Lm_fil_sub h
@@ -171,6 +237,11 @@ theorem sJ_shear (i : J k r) (y y' : J k r → ℝ) (h : ∀ j, ht j < ht i → 
       psiR (NormedSpace.exp (Lm (toC y'))) a - (toC y').2 a
     linarith
 
+/- English proof (translation)
+Introduce `k r`. Use `⟨fun y => (psiC (NormedSpace.exp (LJ y)), psiR (NormedSpace.exp (LJ y))), ?_, ?_⟩` and prove the remaining obligations. Establish `hS` using `Formalism.MainNotions.BridgeCSB.shearMP (J k r) ht sJ continuous_sJ.measurable (fun i y y' h => sJ_shear i y y' h)`. Use `mp_toC.comp hS` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `y`. Simplify using `only [Function.comp, sJ, toC_fromC]`. Introduce `y`. Conclude with `nilpotent_chart_left_inverse (Formalism.MainNotions.BridgeCSB.exp_mem_N (Lm_mem (toC y)))`.
+-/
 theorem shear_change_holds : ShearStep := by
   intro k r
   refine ⟨fun y => (psiC (NormedSpace.exp (LJ y)), psiR (NormedSpace.exp (LJ y))), ?_, ?_⟩

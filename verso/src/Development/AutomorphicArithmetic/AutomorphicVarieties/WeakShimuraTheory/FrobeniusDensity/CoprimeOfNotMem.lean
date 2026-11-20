@@ -17,10 +17,22 @@ section SlopeTestRemainingChoices
 
 variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω]
 
+/- English proof (translation)
+Rewrite using `[isAlgClosure_iff]`. Conclude with `⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) K⟩`.
+-/
 private theorem algClosure (K : IntermediateField ℚ Ω) : IsAlgClosure K Ω := by
   rw [isAlgClosure_iff]
   exact ⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) K⟩
 
+/- English proof (translation)
+Use `haveI : NeZero N := ⟨by omega⟩`. Unfold `Af.KillsMu at hφ`. Establish `hsurj` using `(Chr.clsOnto Ω N).1`. Establish `hker : (Chr.cls ℚ Ω N).ker ≤ φ.ker`. Introduce `σ hσ`.
+
+Rewrite `hσ`, the goal using `[MonoidHom.mem_ker]`. Apply `hφ σ` to reduce the goal to its premises. Introduce `ζ hζ`. Rewrite using `[Chr.cls_spec N σ ζ hζ, hσ, Units.val_one, ZMod.val_one_eq_one_mod, ← pow_eq_pow_mod 1 hζ, pow_one]`. Take `⟨ψ, hψ⟩ : ∃ ψ : (ZMod N)ˣ →* kˣ, ψ.comp (Chr.cls ℚ Ω N) = φ` from `⟨_, MonoidHom.liftOfRightInverse_comp _ _ (Function.rightInverse_surjInv hsurj) ⟨φ, hker⟩⟩`.
+
+Take `⟨χ, hχ⟩ : ∃ χ : DirichletCharacter k N, χ.toUnitHom = ψ` from `⟨MulChar.ofUnitHom ψ, by simp [MulChar.toUnitHom_eq, MulChar.ofUnitHom_eq]⟩`. Use `haveI : NeZero χ.conductor := ⟨χ.conductor_ne_zero⟩`. Use `⟨χ.conductor, inferInstance, χ.primitiveCharacter, χ.primitiveCharacter_isPrimitive, ?_⟩` and prove the remaining obligations. Establish `h2 : χ.toUnitHom = χ.primitiveCharacter.toUnitHom.comp (ZMod.unitsMap χ.conductor_dvd_level)` using `by conv_lhs => rw [← χ.changeLevel_primitiveCharacter]`. Rewrite using `[DirichletCharacter.changeLevel_toUnitHom]`.
+
+Establish `h3` using `(Chr.clsFacts ℚ Ω N).2.1 χ.conductor χ.conductor_dvd_level`. Unfold `Chr.dirG`. Rewrite using `[← hψ, ← hχ, h2, MonoidHom.comp_assoc, h3]`.
+-/
 private theorem exists_prim {k : Type} [Field k] {N : ℕ} (hN : 1 ≤ N) (φ : G ℚ Ω →* kˣ) (hφ : Af.KillsMu N φ) :
     ∃ (M : ℕ) (_ : NeZero M) (χ : DirichletCharacter k M), χ.IsPrimitive ∧ φ = Chr.dirG ℚ Ω χ := by
   haveI : NeZero N := ⟨by omega⟩
@@ -47,6 +59,17 @@ private theorem exists_prim {k : Type} [Field k] {N : ℕ} (hN : 1 ≤ N) (φ : 
   unfold Chr.dirG
   rw [← hψ, ← hχ, h2, MonoidHom.comp_assoc, h3]
 
+/- English proof (translation)
+Introduce `hle`. Establish `hM0 : M ≠ 0` using `NeZero.ne M`. Take `⟨p, hp, hpA⟩` from `((Chr.placesQ Ω).2.1 A M hM0).1 hA`. Establish `hpp : p.Prime` using `Nat.prime_of_mem_primeFactors hp`. Establish `hpM : p ∣ M` using `Nat.dvd_of_mem_primeFactors hp`.
+
+Establish `hc : HV.comp p χ = 1` using `((HV.compIne Ω M p hpp A hpA).2 k χ).2.mp hle`. Establish `hc' : ∀ v, χ.toUnitHom (HV.proj p M v) = 1`. Introduce `v`. Establish `h0` using `(MulChar.ext_iff.mp hc) v`. Unfold `HV.comp at h0`.
+
+Simplify using `only [MulChar.ofUnitHom_coe, MonoidHom.comp_apply, MulChar.one_apply_coe] at h0`. Conclude with `Units.val_eq_one.mp h0`. Establish `hfac : χ.FactorsThrough (M / p ^ M.factorization p)`. Rewrite using `[DirichletCharacter.factorsThrough_iff_ker_unitsMap (Nat.ordCompl_dvd M p)]`. Introduce `u hu`.
+
+Rewrite `hu` using `[← (HV.projFacts M p hpp).2.2.2.2.2.1]`. Take `⟨v, rfl⟩` from `hu`. Conclude with `hc' v`. Establish `hle' : χ.conductor ≤ M / p ^ M.factorization p` using `Nat.sInf_le hfac`. Rewrite `hle'` using `[(DirichletCharacter.isPrimitive_def χ).mp hχ]`.
+
+Establish `hk : M.factorization p ≠ 0` using `(hpp.factorization_pos_of_dvd hM0 hpM).ne'`. Establish `hlt : M / p ^ M.factorization p < M` using `Nat.div_lt_self (Nat.pos_of_ne_zero hM0) (Nat.one_lt_pow hk hpp.one_lt)`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem ramified {k : Type} [Field k] {M : ℕ} [NeZero M] {χ : DirichletCharacter k M} (hχ : χ.IsPrimitive)
     {A : ValuationSubring Ω} (hA : A.valuation (M : Ω) < 1) : ¬ Ine (F := ℚ) A ≤ (Chr.dirG ℚ Ω χ).ker := by
   intro hle
@@ -74,6 +97,11 @@ private theorem ramified {k : Type} [Field k] {M : ℕ} [NeZero M] {χ : Dirichl
     Nat.div_lt_self (Nat.pos_of_ne_zero hM0) (Nat.one_lt_pow hk hpp.one_lt)
   omega
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `exists_isConjOm (E := ℚ) (Ω := Ω)`. Use `⟨AlgEquiv.ofRingEquiv (f := σ) (fun x => by` and prove the remaining obligations. Rewrite using `[eq_ratCast (algebraMap ℚ Ω) x]`. Conclude with `map_ratCast σ x), ?_⟩`. Unfold `IsCC`.
+
+Unfold `IsConjOm at hσ`. Take `⟨j, hj⟩` from `hσ`. Conclude with `⟨j, fun x => hj x⟩`.
+-/
 private theorem exists_cc : ∃ σ : G ℚ Ω, IsCC σ := by
   obtain ⟨σ, hσ⟩ := exists_isConjOm (E := ℚ) (Ω := Ω)
   refine ⟨AlgEquiv.ofRingEquiv (f := σ) (fun x => by
@@ -84,6 +112,9 @@ private theorem exists_cc : ∃ σ : G ℚ Ω, IsCC σ := by
   obtain ⟨j, hj⟩ := hσ
   exact ⟨j, fun x => hj x⟩
 
+/- English proof (translation)
+Establish `hM : M ≠ 0` using `NeZero.ne M`. Conclude with `⟨((ZMod.equivPi M hM).symm : _ →+* ZMod M).comp (Pi.ringHom fun p : M.primeFactors => (h p p.2 (M.factorization p)).some)⟩`.
+-/
 private theorem exists_hom {R : Type} [CommRing R] {M : ℕ} [NeZero M]
     (h : ∀ p ∈ M.primeFactors, ∀ n : ℕ, Nonempty (R →+* ZMod (p ^ n))) : Nonempty (R →+* ZMod M) := by
   classical
@@ -91,6 +122,11 @@ private theorem exists_hom {R : Type} [CommRing R] {M : ℕ} [NeZero M]
   exact ⟨((ZMod.equivPi M hM).symm : _ →+* ZMod M).comp
     (Pi.ringHom fun p : M.primeFactors => (h p p.2 (M.factorization p)).some)⟩
 
+/- English proof (translation)
+Establish `h1 : (1 : R) ∈ Ideal.span {a} ⊔ Ideal.span {(M : R)}`. Rewrite using `[Ideal.isCoprime_iff_sup_eq.mp h]`. Conclude with `Submodule.mem_top`. Rewrite `h1` using `[← Ideal.span_insert, Ideal.mem_span_pair]`. Take `⟨x, z, hxz⟩` from `h1`.
+
+Establish `h2` using `congrArg φ hxz`. Simplify using `only [map_add, map_mul, map_natCast, ZMod.natCast_self, mul_zero, add_zero, map_one] at h2`. Conclude with `isUnit_iff_exists_inv'.mpr ⟨_, h2⟩`.
+-/
 private theorem unit_of_coprime {R : Type} [CommRing R] {M : ℕ} (φ : R →+* ZMod M) {a : R}
     (h : IsCoprime (Ideal.span {a}) (Ideal.span {(M : R)})) : IsUnit (φ a) := by
   have h1 : (1 : R) ∈ Ideal.span {a} ⊔ Ideal.span {(M : R)} := by
@@ -102,6 +138,11 @@ private theorem unit_of_coprime {R : Type} [CommRing R] {M : ℕ} (φ : R →+* 
   simp only [map_add, map_mul, map_natCast, ZMod.natCast_self, mul_zero, add_zero, map_one] at h2
   exact isUnit_iff_exists_inv'.mpr ⟨_, h2⟩
 
+/- English proof (translation)
+Rewrite using `[Ideal.isCoprime_iff_sup_eq]`. Establish `hmax : w.asIdeal.IsMaximal` using `w.isPrime.isMaximal w.ne_bot`. Assume the negation of the conclusion as `hne`. Apply `h` to reduce the goal to its premises. Establish `heq` using `hmax.eq_of_le hne (le_sup_left : w.asIdeal ≤ w.asIdeal ⊔ Ideal.span {a})`.
+
+Rewrite using `[heq]`. Conclude with `Ideal.mem_sup_right (Ideal.mem_span_singleton_self a)`.
+-/
 private theorem coprime_of_not_mem {R : Type} [CommRing R] [IsDedekindDomain R] (w : HeightOneSpectrum R) {a : R}
     (h : a ∉ w.asIdeal) : IsCoprime w.asIdeal (Ideal.span {a}) := by
   rw [Ideal.isCoprime_iff_sup_eq]
@@ -112,6 +153,9 @@ private theorem coprime_of_not_mem {R : Type} [CommRing R] [IsDedekindDomain R] 
   rw [heq]
   exact Ideal.mem_sup_right (Ideal.mem_span_singleton_self a)
 
+/- English proof (translation)
+Establish `h1` using `(ML.placeBasic Ω).2.2.2.2.2.2.1 A q M σ h hA`. Establish `h2` using `(Chr.clsFacts ℚ Ω M).2.2.1 σ hq.unit fun ζ hζ => by`. Rewrite using `[h1 ζ hζ, hq.unit_spec, ZMod.val_natCast, ← pow_eq_pow_mod q hζ]`. Rewrite using `[h2, hq.unit_spec]`.
+-/
 private theorem cls_frob {M q : ℕ} [NeZero M] {A : ValuationSubring Ω} (hA : ¬ A.valuation (M : Ω) < 1) {σ : G ℚ Ω}
     (h : IsFrob (F := ℚ) A q σ) (hq : IsUnit (q : ZMod M)) : ((Chr.cls ℚ Ω M σ : (ZMod M)ˣ) : ZMod M) = q := by
   have h1 := (ML.placeBasic Ω).2.2.2.2.2.2.1 A q M σ h hA
@@ -119,6 +163,13 @@ private theorem cls_frob {M q : ℕ} [NeZero M] {A : ValuationSubring Ω} (hA : 
     rw [h1 ζ hζ, hq.unit_spec, ZMod.val_natCast, ← pow_eq_pow_mod q hζ]
   rw [h2, hq.unit_spec]
 
+/- English proof (translation)
+Use `haveI : Finite (Γ ⧸ κ.ker) := Subgroup.quotient_finite_of_isOpen _ hκ`. Establish `hn : κ.ker.index ≠ 0` using `Subgroup.index_ne_zero_of_finite`. Take `⟨a, n', hn', hnn⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hn l hl.ne_one`. Establish `hco : (l ^ a).Coprime m` using `Nat.Coprime.pow_left a hm`. Take `⟨j, hj0, hj1⟩` from `Nat.chineseRemainder hco 0 1`.
+
+Use `⟨j, n', (Nat.Prime.coprime_iff_not_dvd hl).2 hn', ?_, hj1⟩` and prove the remaining obligations. Take `⟨t, ht⟩ : l ^ a ∣ j` from `(Nat.modEq_zero_iff_dvd).1 hj0`. Establish `hjn : j * n' = κ.ker.index * t` using `by rw [ht, hnn]; ring`. Rewrite using `[← pow_mul, hjn]`. Use extensionality with `g`.
+
+Rewrite using `[MonoidHom.one_apply, pow_mul]`. Simplify using `only [MonoidHom.pow_apply]`. Rewrite using `[← map_pow, (κ.mem_ker).1 (Subgroup.pow_index_mem _ g), one_pow]`.
+-/
 private theorem primeTo {Γ C : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] [CommGroup C]
     (κ : Γ →* C) (hκ : IsOpen (κ.ker : Set Γ)) {l m : ℕ} (hl : l.Prime) (hm : l.Coprime m) :
     ∃ j m' : ℕ, l.Coprime m' ∧ (κ ^ j) ^ m' = 1 ∧ j ≡ 1 [MOD m] := by
@@ -138,6 +189,87 @@ private theorem primeTo {Γ C : Type} [Group Γ] [TopologicalSpace Γ] [IsTopolo
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ hl2 K _ _ h2 h2split η N m hN hη hm hηm hcc hram`. Use `haveI : IsAlgClosure K Ω := algClosure K`. Take `⟨M, _, χ, hχ, rfl⟩` from `exists_prim hN η hη`. Establish `hM0 : M ≠ 0` using `NeZero.ne M`. Take `⟨τ, hτc, hτn, hτf, hsp, hun⟩` from `Tw.quadFacts Ω l hl2 K h2`.
+
+Establish `hρ : Nonempty (𝓞 K →+* ZMod M)`. Apply `exists_hom` to reduce the goal to its premises. Introduce `p hp n`. Establish `hpp : p.Prime` using `Nat.prime_of_mem_primeFactors hp`. Take `⟨A, hA⟩` from `(Chr.placesQ Ω).1 p hpp`.
+
+Establish `hAM : A.valuation (M : Ω) < 1` using `((Chr.placesQ Ω).2.1 A M hM0).2 ⟨p, hp, hA⟩`. Establish `hdec : Dec (F` using `ℚ) A ≤ K.fixingSubgroup := (hram A).resolve_left (ramified hχ hAM)`. Take `⟨w, -, -, -, hφ⟩` from `hsp p A hpp hA hdec`. Take `⟨φ, -⟩` from `hφ n`. Conclude with `⟨φ⟩`.
+
+Take `⟨ρ⟩` from `hρ`. Use `set 𝔪 : Ideal (𝓞 K) := Ideal.span {(M : 𝓞 K)} with h𝔪def`. Establish `h𝔪 : 𝔪 ≠ ⊥`. Rewrite using `[h𝔪def, Ne, Ideal.span_singleton_eq_bot]`. Conclude with `Nat.cast_ne_zero.mpr hM0`.
+
+Establish `hρM : ∀ x ∈ 𝔪, ρ x = 0`. Introduce `x hx`. Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.mp hx`. Rewrite using `[map_mul, map_natCast, ZMod.natCast_self, mul_zero]`. Set `g : 𝓞 K → (PadicAlgCl l)ˣ` to `fun a => if h : IsUnit (ρ a) then χ.toUnitHom h.unit else 1`.
+
+Establish `hg : ∀ a (h : IsUnit (ρ a)), ((g a : (PadicAlgCl l)ˣ) : PadicAlgCl l) = χ (ρ a)`. Introduce `a h`. Simplify using `only [g, dif_pos h, MulChar.coe_toUnitHom, IsUnit.unit_spec]`. Establish `hχm1 : χ (-1) = 1`. Take `⟨c0, hc0⟩` from `exists_cc (Ω := Ω)`.
+
+Establish `h1` using `hcc c0 hc0`. Establish `h2' : Chr.cls ℚ Ω M c0 = -1` using `(Chr.clsFacts ℚ Ω M).2.2.2.1 c0 (by`. Unfold `IsConjOm`. Unfold `IsCC at hc0`. Conclude with `hc0)`.
+
+Unfold `Chr.dirG at h1`. Rewrite `h1` using `[MonoidHom.comp_apply, h2']`. Establish `h3` using `congrArg Units.val h1`. Rewrite `h3` using `[MulChar.coe_toUnitHom]`. Simplify using `using h3`.
+
+Take `⟨f, hfmul, hfg⟩` from `Tw.extIdeal K 𝔪 h𝔪 (PadicAlgCl l) g (by`. Introduce `a b _ _ hca hcb`. Establish `hua` using `unit_of_coprime ρ hca`. Establish `hub` using `unit_of_coprime ρ hcb`. Establish `hab : IsUnit (ρ (a * b))` using `by rw [map_mul]; exact hua.mul hub`.
+
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, hg _ hab, hg _ hua, hg _ hub, map_mul, map_mul]) (by`. Introduce `u`. Break down `hun h2split u with h | h` into its components or cases. Rewrite using `[h, Units.val_one]`.
+
+Establish `h1 : IsUnit (ρ 1)` using `by rw [map_one]; exact isUnit_one`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hg _ h1, map_one, MulChar.map_one, Units.val_one]`. Rewrite using `[h, Units.val_neg, Units.val_one]`. Establish `h1 : IsUnit (ρ (-1))` using `by rw [map_neg, map_one]; exact isUnit_one.neg`.
+
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hg _ h1, map_neg, map_one, hχm1, Units.val_one])`. Take `⟨κ0, hκopen, hκ⟩` from `Tw.rayChar K Ω 𝔪 h𝔪 (PadicAlgCl l)ˣ f hfmul (by`. Introduce `a ha0 ha1`. Establish `hcop : IsCoprime (Ideal.span {a}) 𝔪`.
+
+Rewrite using `[Ideal.isCoprime_iff_sup_eq, Ideal.eq_top_iff_one]`. Establish `h1 : (1 : 𝓞 K) = a - (a - 1)` using `by ring`. Rewrite using `[h1]`. Conclude with `Ideal.sub_mem _ (Ideal.mem_sup_left (Ideal.mem_span_singleton_self a)) (Ideal.mem_sup_right ha1)`. Rewrite using `[hfg a ha0 hcop]`.
+
+Establish `hρa : ρ a = 1`. Establish `h1` using `hρM _ ha1`. Rewrite `h1` using `[map_sub, map_one, sub_eq_zero]`. Then use the resulting hypothesis. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hg a (by rw [hρa]; exact isUnit_one), hρa, MulChar.map_one, Units.val_one])`.
+
+Establish `key : ∀ c ∉ K.fixingSubgroup, ∀ s s' : G K Ω, resQ K s' = c * resQ K s * c⁻¹ → κ0 s * κ0 s' = Chr.dirG ℚ Ω χ (resQ K s)`. Introduce `c hc`. Establish `hci : c⁻¹ ∉ K.fixingSubgroup` using `fun h => hc (by simpa using K.fixingSubgroup.inv_mem h)`. Set `τK : K ≃+* K` to `IsFractionRing.ringEquivOfRingEquiv (K := K) (L := K) τ`. Establish `hlift : IsLift τK (c⁻¹).toRingEquiv`.
+
+Establish `hext : ((c⁻¹).toRingEquiv.toRingHom.comp (algebraMap K Ω)) = (algebraMap K Ω).comp τK.toRingHom`. Apply `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 K))` to reduce the goal to its premises. Use extensionality with `x`. Simplify using `only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom]`. Rewrite using `[IsFractionRing.ringEquivOfRingEquiv_algebraMap]`.
+
+Conclude with `hτc _ hci x`. Unfold `IsLift`. Introduce `x`. Conclude with `RingHom.congr_fun hext x`. Set `Cg` to `conjGal hlift`.
+
+Establish `hCg : ∀ s, resQ K (Cg s) = c * resQ K s * c⁻¹` using `fun s => by`. Use extensionality with `x`. Both sides reduce to the same expression. Establish `hFx : ∀ x, (κ0 * κ0.comp Cg * ((Chr.dirG ℚ Ω χ).comp (resQ K))⁻¹) x = κ0 x * κ0 (Cg x) * (Chr.dirG ℚ Ω χ (resQ K x))⁻¹` using `fun x => rfl`. Establish `hFopen : IsOpen ((κ0 * κ0.comp Cg * ((Chr.dirG ℚ Ω χ).comp (resQ K))⁻¹).ker : Set (G K Ω))`.
+
+Apply `Subgroup.isOpen_mono (H₁ := κ0.ker ⊓ κ0.ker.comap Cg ⊓ (Chr.cls K Ω M).ker)` to reduce the goal to its premises. Introduce `x hx`. Take `⟨⟨h1, h2⟩, h3⟩` from `hx`. Establish `h1' : κ0 x = 1` using `h1`. Establish `h2' : κ0 (Cg x) = 1` using `h2`.
+
+Establish `h3' : Chr.cls K Ω M x = 1` using `h3`. Rewrite using `[MonoidHom.mem_ker]`. Establish `h4 : Chr.cls ℚ Ω M (resQ K x) = 1`. Apply `(Chr.clsFacts ℚ Ω M).2.2.1` to reduce the goal to its premises. Introduce `ζ hζ`.
+
+Establish `h5` using `Chr.cls_spec M x ζ hζ`. Rewrite `h5` using `[h3']`. Conclude with `h5`. Rewrite using `[hFx, h1', h2']`. Unfold `Chr.dirG`.
+
+Rewrite using `[MonoidHom.comp_apply, h4, map_one, inv_one, mul_one, mul_one]`. Rewrite using `[Subgroup.coe_inf, Subgroup.coe_inf, Subgroup.coe_comap]`. Conclude with `(hκopen.inter (hκopen.preimage (continuous_conjGal hlift))).inter (Chr.clsFacts K Ω M).1`. Establish `hclosed` using `Subgroup.isClosed_of_isOpen _ hFopen`. Establish `hsub : {σ | ∃ w A, ¬w.asIdeal ∣ 𝔪 ∧ IsPlaceOver A w ∧ IsFrob A (normV w) σ} ⊆ ((κ0 * κ0.comp Cg * ((Chr.dirG ℚ Ω χ).comp (resQ K))⁻¹).ker : Set (G K Ω))`.
+
+Introduce and unpack `σ ⟨w, A, hw, hA, hfr⟩`. Establish `hwM : (M : 𝓞 K) ∉ w.asIdeal` using `fun h => hw (Ideal.dvd_span_singleton.mpr h)`. Take `⟨w', A', hw', hA', hfr'⟩` from `hτf c hc σ (Cg σ) (hCg σ) w A hA hfr`. Establish `hw'M : (M : 𝓞 K) ∉ w'.asIdeal`. Rewrite using `[hw']`.
+
+Introduce `h`. Apply `hwM` to reduce the goal to its premises. Take `⟨y, hy, hyM⟩` from `(Ideal.mem_map_of_equiv τ _).mp h`. Establish `hyM' : y = (M : 𝓞 K)` using `τ.injective (by rw [hyM, map_natCast])`. Conclude with `hyM' ▸ hy`.
+
+Establish `hw'd : ¬ w'.asIdeal ∣ 𝔪` using `fun h => hw'M (Ideal.dvd_span_singleton.mp h)`. Establish `hκw` using `(hκ w hw A hA).2 σ hfr`. Establish `hκw'` using `(hκ w' hw'd A' hA').2 (Cg σ) hfr'`. Establish `hcw : IsCoprime w.asIdeal 𝔪` using `coprime_of_not_mem w hwM`. Establish `hcw' : IsCoprime w'.asIdeal 𝔪` using `coprime_of_not_mem w' hw'M`.
+
+Establish `hprod : w.asIdeal * w'.asIdeal = Ideal.span {((Ideal.absNorm w.asIdeal : ℕ) : 𝓞 K)}`. Rewrite using `[hw']`. Conclude with `hτn w.asIdeal`. Establish `hcq : IsCoprime (Ideal.span {((Ideal.absNorm w.asIdeal : ℕ) : 𝓞 K)}) 𝔪`. Rewrite using `[← hprod]`.
+
+Conclude with `hcw.mul_left hcw'`. Establish `hq0 : ((Ideal.absNorm w.asIdeal : ℕ) : 𝓞 K) ≠ 0`. Introduce `h`. Rewrite `hprod` using `[h, Ideal.span_singleton_eq_bot.mpr rfl, Ideal.mul_eq_bot]`. Break down `hprod with h' | h'` into its components or cases.
+
+Conclude with `w.ne_bot h'`. Conclude with `w'.ne_bot h'`. Establish `hfq : f w.asIdeal * f w'.asIdeal = g ((Ideal.absNorm w.asIdeal : ℕ) : 𝓞 K)`. Rewrite using `[← hfmul _ _ w.ne_bot w'.ne_bot hcw hcw', hprod, hfg _ hq0 hcq]`. Establish `huq : IsUnit (ρ ((Ideal.absNorm w.asIdeal : ℕ) : 𝓞 K))` using `unit_of_coprime ρ hcq`.
+
+Establish `hqM : IsUnit ((Ideal.absNorm w.asIdeal : ℕ) : ZMod M)`. Rewrite `huq` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hnorm : normV w = Ideal.absNorm w.asIdeal`. Unfold `normV`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+
+Establish `hAM : ¬ A.valuation (M : Ω) < 1`. Introduce `h`. Apply `hwM` to reduce the goal to its premises. Unfold `IsPlaceOver at hA`. Conclude with `(hA (M : 𝓞 K)).mp (by simpa using h)`.
+
+Establish `hfrQ : IsFrob (F` using `ℚ) A (Ideal.absNorm w.asIdeal) (resQ K σ) := by`. Rewrite using `[← hnorm]`. Unfold `IsFrob at hfr ⊢`. Conclude with `hfr`. Establish `hcls` using `cls_frob hAM hfrQ hqM`.
+
+Use `show σ ∈ (κ0 * κ0.comp Cg * ((Chr.dirG ℚ Ω χ).comp (resQ K))⁻¹).ker`. Rewrite using `[MonoidHom.mem_ker, hFx, hκw, hκw', hfq, mul_inv_eq_one]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hg _ huq]`. Unfold `Chr.dirG`.
+
+Rewrite using `[MonoidHom.comp_apply, MulChar.coe_toUnitHom, hcls, map_natCast]`. Introduce `s s' hs'`. Establish `hs'' : s' = Cg s`. Apply `AlgEquiv.ext` to reduce the goal to its premises. Introduce `x`.
+
+Conclude with `congrArg (fun g : G ℚ Ω => g x) (hs'.trans (hCg s).symm)`. Substitute `hs''` using the available equality. Establish `hmem : s ∈ (κ0 * κ0.comp Cg * ((Chr.dirG ℚ Ω χ).comp (resQ K))⁻¹).ker` using `closure_minimal hsub hclosed ((Tw.frobDense K Ω 𝔪 h𝔪).closure_eq ▸ Set.mem_univ s)`. Rewrite `hmem` using `[MonoidHom.mem_ker, hFx, mul_inv_eq_one]`. Conclude with `hmem`.
+
+Take `⟨j, m', hm', hκm, hj⟩` from `primeTo κ0 hκopen (Fact.out : l.Prime) hm`. Establish `kerle : κ0.ker ≤ (κ0 ^ j).ker`. Introduce `x hx`. Rewrite `hx`, the goal using `[MonoidHom.mem_ker]`. Simplify using `only [MonoidHom.pow_apply, hx, one_pow]`.
+
+Use `⟨κ0 ^ j, m', Subgroup.isOpen_mono kerle hκopen, hm', hκm, ?_, ?_⟩` and prove the remaining obligations. Introduce `c hc s s' hs'`. Establish `h0` using `key c hc s s' hs'`. Establish `hpow : ∀ x : G ℚ Ω, Chr.dirG ℚ Ω χ x ^ j = Chr.dirG ℚ Ω χ x`. Introduce `x`.
+
+Establish `hxm : Chr.dirG ℚ Ω χ x ^ m = 1`. Establish `h1` using `congrArg (fun φ : G ℚ Ω →* (PadicAlgCl l)ˣ => φ x) hηm`. Simplify using `using h1`. Rewrite using `[pow_eq_pow_mod j hxm, show j % m = 1 % m from hj, ← pow_eq_pow_mod 1 hxm, pow_one]`. Simplify using `only [MonoidHom.pow_apply]`.
+
+Rewrite using `[← mul_pow, h0, hpow]`. Introduce `A hA`. Break down `eq_or_ne A ⊤ with hT | hT` into its components or cases. Rewrite using `[((Base.places K Ω l A).2.1 hT).1]`. Conclude with `bot_le`.
+
+Take `⟨v, hv⟩` from `(Base.places K Ω l A).1 hT`. Distinguish the cases in `hvM : (M : 𝓞 K) ∈ v.asIdeal`. It suffices to derive a contradiction. Establish `hAM : A.valuation (M : Ω) < 1`. Unfold `IsPlaceOver at hv`.
+
+Simplify using `using (hv (M : 𝓞 K)).mpr hvM`. Conclude with `ramified hχ hAM hA`. Establish `hd : ¬ v.asIdeal ∣ 𝔪` using `fun h => hvM (Ideal.dvd_span_singleton.mp h)`. Conclude with `le_trans (hκ v hd A hv).1 kerle`.
+-/
 theorem UpperTheory.V.Ws.Tw.kap0 :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime], l ≠ 2 → ∀ (K : IntermediateField ℚ Ω) [NumberField K] [IsTotallyComplex K], Module.finrank ℚ K = 2 → (∀ A : ValuationSubring Ω, A.valuation (2 : Ω) < 1 → Dec (F := ℚ) A ≤ K.fixingSubgroup) → ∀ (η : G ℚ Ω →* (PadicAlgCl l)ˣ) (N m : ℕ), 1 ≤ N → Af.KillsMu N η → l.Coprime m → η ^ m = 1 → (∀ c, IsCC c → η c = 1) → (∀ A : ValuationSubring Ω, Ine (F := ℚ) A ≤ η.ker ∨ Dec (F := ℚ) A ≤ K.fixingSubgroup) → ∃ (κ : G K Ω →* (PadicAlgCl l)ˣ) (m' : ℕ), IsOpen (κ.ker : Set (G K Ω)) ∧ l.Coprime m' ∧ κ ^ m' = 1 ∧ (∀ c ∉ K.fixingSubgroup, ∀ s s' : G K Ω, resQ K s' = c * resQ K s * c⁻¹ → κ s * κ s' = η (resQ K s)) ∧ ∀ A : ValuationSubring Ω, Ine (F := ℚ) A ≤ η.ker → Ine (F := K) A ≤ κ.ker := by
   intro Ω _ _ _ l _ hl2 K _ _ h2 h2split η N m hN hη hm hηm hcc hram

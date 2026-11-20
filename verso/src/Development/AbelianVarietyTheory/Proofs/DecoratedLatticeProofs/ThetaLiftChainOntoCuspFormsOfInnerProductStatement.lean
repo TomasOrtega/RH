@@ -13,5 +13,8 @@ open scoped TensorProduct InnerProductSpace ComplexConjugate
 open GlobalTheory.ChainOnto
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ChainOnto.ontoAll_of_classicalTheorems | exact GlobalTheory.ChainOnto.ontoAll_of_classicalTheorems | (intros; apply GlobalTheory.ChainOnto.ontoAll_of_classicalTheorems <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.thetaLiftChain_onto_cuspForms_of_innerProduct : GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CasselmanWallach → ∀ D : D7, GlobalTheory.Core.Rk.IP.HeckeForm D → UpPar D → OntoAll D := by
   first | exact @GlobalTheory.ChainOnto.ontoAll_of_classicalTheorems | exact GlobalTheory.ChainOnto.ontoAll_of_classicalTheorems | (intros; apply GlobalTheory.ChainOnto.ontoAll_of_classicalTheorems <;> assumption)

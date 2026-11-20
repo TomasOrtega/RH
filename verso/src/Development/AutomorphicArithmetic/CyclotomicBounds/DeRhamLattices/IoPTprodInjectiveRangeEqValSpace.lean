@@ -18,6 +18,25 @@ set_option maxHeartbeats 1600000
 open GlobalTheory.PlaceRead
 open GlobalTheory.HeightCounting.Up (PrN)
 
+/- English proof (translation)
+Introduce `D X X0 Y S YS Z c w j H ι hι u hu`. Establish `hC : GlobalTheory.Hk3.Core X.R.toRealDat X.F.lv2` using `⟨X.char.lev, X.char.grp, X.char.fam, X.char.models, X.char.chain, X.char.thP⟩`. Establish `hG : (baseOf Z c w j).Good` using `Z.good.base (c.twI w) j (c.sd w)`. Establish `hBo : GlobalTheory.ConjTwist.BaseOf X.R.toRealDat j (baseOf Z c w j)` using `GlobalTheory.BigOn.Exp.TwConj.baseOf_of_realPin X.char.lev Z.good Z.pin (c.twI w) j (c.sd w)`. Establish `hio : Formalism.IndefR.FWT.IoExt X.R.toRealDat` using `GlobalTheory.IoExtremal.ioExt D _ _ _ _ _ X.R.toRealDat hC.lev hC.fam hC.models hC.thP`.
+
+Establish `hcV : (X.R.cV j).Is` using `hC.models.cV j`. Take `⟨u', w₀, hu', -, hw⟩` from `Formalism.IndefR.FWT.IsChosenExtremalVector.io _ (Z.vec j) hio`. Establish `huu : u' = u` using `funext fun ρ => Subtype.ext ((hu' ρ).trans (hu ρ).symm)`. Rewrite `hw` using `[huu]`. Establish `hT` using `Scale.io_act hC.lev hC.thP hG hBo.ψ hBo.θ hBo.sT hBo.BS hBo.BT hBo.mu0 hBo.eta (PiTensorProduct.tprod ℂ u)`.
+
+Establish `hΔ0` using `GlobalTheory.AdTh.IoExtPf.Delta_ne (D := D) j`. Establish `hval : ∀ x, X.R.ioP j (PiTensorProduct.tprod ℂ u) x ∈ (baseOf Z c w j).valSpace`. Introduce `x`. Break down `hcV.2.2.2.2 ((harm (Wc D j).rank (baseOf Z c w j).w (baseOf Z c w j).F.BS).comap (X.R.ioP j (PiTensorProduct.tprod ℂ u))) (fun h => by` into its components or cases. Take `⟨a, ha, k, hk, rfl⟩` from `(GlobalTheory.UnitarySplit.real_finite_split D _).1 h`.
+
+Rewrite using `[map_mul, hcV.1 k hk, mul_one]`. Introduce and unpack `_ ⟨w, hw', rfl⟩`. Rewrite using `[Submodule.mem_comap, hT a ha]`. Conclude with `fockGL_mem_harm _ _ _ hw') with h | h`. Establish `h0 : w₀ ∈ (harm (Wc D j).rank (baseOf Z c w j).w (baseOf Z c w j).F.BS).comap (X.R.ioP j (PiTensorProduct.tprod ℂ u))`.
+
+Rewrite using `[Submodule.mem_comap, hw, ← hBo.delta]`. Conclude with `delta_mem_harm _ _`. Rewrite `h0` using `[h, Submodule.mem_bot]`. Rewrite `hw` using `[h0, map_zero]`. Conclude with `absurd hw.symm hΔ0`.
+
+Conclude with `(h ▸ Submodule.mem_top : x ∈ (harm (Wc D j).rank (baseOf Z c w j).w (baseOf Z c w j).F.BS).comap (X.R.ioP j (PiTensorProduct.tprod ℂ u)))`. Use `⟨?_, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Break down `hcV.2.2.2.2 (LinearMap.ker (X.R.ioP j (PiTensorProduct.tprod ℂ u))) (fun h => by` into its components or cases. Take `⟨a, ha, k, hk, rfl⟩` from `(GlobalTheory.UnitarySplit.real_finite_split D _).1 h`. Rewrite using `[map_mul, hcV.1 k hk, mul_one]`.
+
+Introduce and unpack `_ ⟨w, hw', rfl⟩`. Establish `h0 : X.R.ioP j (PiTensorProduct.tprod ℂ u) w = 0` using `hw'`. Rewrite using `[LinearMap.mem_ker, hT a ha, h0, map_zero]) with h | h`. Conclude with `LinearMap.ker_eq_bot.1 h`. Establish `h0 : w₀ ∈ LinearMap.ker (X.R.ioP j (PiTensorProduct.tprod ℂ u))` using `h ▸ Submodule.mem_top`.
+
+Rewrite `h0` using `[LinearMap.mem_ker, hw]`. Conclude with `absurd h0 hΔ0`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `hval x`. Take `⟨u1, cc, κ, hu1, -, hκ0, hv, hκ, -⟩` from `GlobalTheory.T.exists_scale_twisted_place_coefficient_map D X X0 Y S YS Z c w j H`.
+
+Establish `e : u1 = u` using `funext fun ρ => Subtype.ext ((hu1 ρ).trans (hu ρ).symm)`. Substitute `e` using the available equality. Introduce `P hP`. Take `⟨x, hx, -⟩` from `GlobalTheory.CoefLatConj.existsUnique_eq (X.R.ioP j (PiTensorProduct.tprod ℂ u1) ∘ₗ cc) hG hBo.lam hκ0 hv hκ P hP`. Conclude with `⟨cc x, hx.symm⟩`.
+-/
 theorem _root_.UpperTheory.KN.ioP_tprod_injective_and_range_eq_valSpace :
     ∀ (D : D7) (X : RealSide D) (X0 : BaseLevelRowSide D) (Y : GlobalTheory.Mem.R3.Read (A3 := X.A3) X.R.toRealDat X.F.lv2 X0) (S : NX.RatDat D.ntw) (YS : NX.NExpRealS X.R X.cG S) (Z : ExportTie YS X.geo.v₀) (c : NChoice D) (w : D.what₂.places.Pl) (j : Fin D.R.m) (H : AtPlace Y Z c w j),
       ∀ ι : KE c w →+* ℂ, (∀ x, ι (c.embW w x) = D.what₂.embLL x) →

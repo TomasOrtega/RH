@@ -5,6 +5,21 @@ open scoped ENNReal Pointwise
 
 namespace GlobalTheory.CompanionTheory.Xa1
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ _ _ μ hinv hfin K hK k hk`. Set `ν : Measure G` to `Measure.haar`. Establish `hmeas : Measurable (fun x : G => x * k)` using `measurable_mul_const k`. Establish `key : ν.map (fun x => x * k) = ν`. Take `⟨C, hC, hC1⟩` from `exists_compact_mem_nhds (1 : G)`.
+
+Establish `hS : IsCompact (C * (K : Set G))` using `hC.mul hK`. Establish `hsub : C ⊆ C * (K : Set G)` using `fun x hx => ⟨x, hx, 1, K.one_mem, mul_one x⟩`. Establish `hpos : ν (C * (K : Set G)) ≠ 0` using `((Measure.measure_pos_of_mem_nhds ν hC1).trans_le (measure_mono hsub)).ne'`. Establish `htop : ν (C * (K : Set G)) ≠ ⊤` using `hS.measure_lt_top.ne`. Establish `hpre : (fun x : G => x * k) ⁻¹' (C * (K : Set G)) = C * (K : Set G)`.
+
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, l, hl, h⟩`. Use `⟨c, hc, l * k⁻¹, K.mul_mem hl (K.inv_mem hk), ?_⟩` and prove the remaining obligations. Simplify using `only at h ⊢`.
+
+Rewrite using `[← mul_assoc, h, mul_inv_cancel_right]`. Introduce and unpack `⟨c, hc, l, hl, rfl⟩`. Conclude with `⟨c, hc, l * k, K.mul_mem hl hk, (mul_assoc _ _ _).symm⟩`. Use `haveI : IsFiniteMeasureOnCompacts (ν.map (fun x => x * k)) := ⟨fun L hL => by`. Rewrite using `[Measure.map_apply hmeas hL.measurableSet]`.
+
+Conclude with `((Homeomorph.mulRight k).isCompact_preimage.2 hL).measure_lt_top⟩`. Establish `h1` using `Measure.isMulLeftInvariant_eq_smul (ν.map (fun x => x * k)) ν`. Use `set c := Measure.haarScalarFactor (ν.map (fun x => x * k)) ν with hc`. Establish `h2 : (ν.map (fun x => x * k)) (C * (K : Set G)) = ν (C * (K : Set G))`. Rewrite using `[Measure.map_apply hmeas hS.measurableSet, hpre]`.
+
+Rewrite `h2` using `[h1, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Establish `h3 : (c : ℝ≥0∞) = 1`. Use `(ENNReal.mul_left_inj hpos htop).1 (h2.trans (one_mul _).symm)` as an intermediate fact. Conclude with `this`. Establish `h4 : c = 1` using `by exact_mod_cast h3`.
+
+Rewrite using `[h1, h4, one_smul]`. Establish `h` using `Measure.isMulLeftInvariant_eq_smul μ ν`. Rewrite using `[h, Measure.map_smul, key]`.
+-/
 theorem map_mul_right_eq_of_mem_compact_subgroup :
     ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G), μ.IsMulLeftInvariant → IsFiniteMeasureOnCompacts μ → ∀ K : Subgroup G, IsCompact (K : Set G) → ∀ k ∈ K, μ.map (fun x => x * k) = μ := by
   intro G _ _ _ _ _ _ _ _ μ hinv hfin K hK k hk

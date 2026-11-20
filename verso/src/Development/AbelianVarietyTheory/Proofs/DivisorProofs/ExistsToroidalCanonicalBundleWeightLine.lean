@@ -18,6 +18,15 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.OrbitSep
 namespace GlobalTheory.LogCanon
 
+/- English proof (translation)
+Use function extensionality and compare the values at `ix`. Break down `ix with _ | ⟨τ, i⟩` into its components or cases. Both sides reduce to the same expression. Distinguish the cases in `h' : τ (H.rt : E) = H.rt0`. Establish `hi : (i : ℕ) < Dw.p`.
+
+Use `i.2` as an intermediate fact. Simplify using `only [Datum.mult, if_pos h'] at this`. Conclude with `this`. Simplify using `only [Option.elim, AllWt.exOf, exZ, AllWt.wtOf, if_pos h', dif_pos h', dif_pos hi, kapBase, sub_zero, if_pos hi]`. Establish `hi : (i : ℕ) < Dw.q`.
+
+Use `i.2` as an intermediate fact. Simplify using `only [Datum.mult, if_neg h'] at this`. Conclude with `this`. Establish `hc : conjEmb τ (H.rt : E) = H.rt0`. Use `(ReciprocityTheory.ChartRestriction.G.PullbackSections.CVA.inPsi_or H τ).resolve_left h'` as an intermediate fact.
+
+Unfold `InPsi at this`. Rewrite `this` using `[ComplexEmbedding.conjugate_coe_eq]`. Conclude with `this`. Establish `hn : ¬ (Dw.p + (Dw.q - 1 - (i : ℕ)) < Dw.p)` using `by omega`. Simplify using `only [Option.elim, AllWt.exOf, exZ, AllWt.wtOf, if_neg h', dif_neg h', dif_pos hc, dif_pos hi, kapBase, if_neg hn, neg_neg, sub_zero]`.
+-/
 theorem exOf_kapBase {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     (Dw : Datum H) :
     (fun ix : Ix Dw => Option.elim ix 0 fun x =>
@@ -42,6 +51,13 @@ theorem exOf_kapBase {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Rec
       simp only [Option.elim, AllWt.exOf, exZ, AllWt.wtOf, if_neg h', dif_neg h', dif_pos hc, dif_pos hi, kapBase,
         if_neg hn, neg_neg, sub_zero]
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c TF Z hpq hF _ K`. Take `⟨hI, -⟩` from `GlobalTheory.BaseVar.isVariety_barComp E H Dw l Xo c TF Z hF`. Take `⟨φ₀, f₀, hgen, hdiv⟩` from `GlobalTheory.T.exists_cartierDivisor_det_lieEigenparts_toroidal E H Dw l Xo c TF Z`. Take `⟨D, hpull, hD⟩` from `hdiv fun τ => if τ (H.rt : E) = H.rt0 then (Dw.q : ℤ) else Dw.p`. Use `⟨toLB D, isLB_toLB D, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hpull` using `[exOf_kapBase Dw]`. Conclude with `hpull`. Take `⟨i₀, hi₀⟩ : ∃ i, genericPoint (X₀ TF.Y Z) ∈ K.bundle.U i` from `Opens.mem_iSup.1 (K.isLB.cover.ge (Set.mem_univ _))`. Establish `hP` using `presents_ofLB K.isLB i₀ hi₀`. Take `⟨h, hh⟩` from `GlobalTheory.T.exists_logKodairaSpencer_divisor_toroidalComponent E H Dw l Xo c TF Z hpq hF K _ _ hP φ₀ f₀ hgen D hD`.
+
+Conclude with `GlobalTheory.Cartier.exists_sec_div_nonzeroLocus_eq D _ K.bundle _ hP _ h hh`.
+-/
 theorem exists_kap_theta : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c), 1 ≤ Dw.p + Dw.q → FnAlgClosed Xo c → ∀ [SmoothOfRelativeDimension Dw.dim (s₀ TF.Y Z)] (K : CanonLB (s₀ TF.Y Z) Dw.dim), ∃ (κ : LB (X₀ TF.Y Z)) (hκ : κ.IsLB), CechPic.pull (π₀ TF.X Z) (cls κ hκ) = cls (L₀ TF.X Z (kapBase Dw)) (isLB_L₀ TF.X Z _) ∧ ∃ θ : (LB.div κ K.bundle).Sec, nonzeroLocus θ = (j₀ TF.Y Z).opensRange := by
   intro E _ _ _ H Dw l Xo c TF Z hpq hF _ K
   obtain ⟨hI, -⟩ := GlobalTheory.BaseVar.isVariety_barComp E H Dw l Xo c TF Z hF

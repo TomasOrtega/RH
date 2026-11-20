@@ -8,6 +8,13 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W M π f hf φ hφ h`. Take `⟨κ, -, hκ⟩` from `UpperTheory.ConvolutionTheory.R2.Ff.finTr F E D`. Establish `ht` using `UpperTheory.ConvolutionTheory.R2.Ff.transl F E D W M`. Establish `hF` using `(UpperTheory.ConvolutionTheory.R2.fockSt F E D W).fin`. Take `⟨y₀, k, hh⟩ : ∃ y₀ k, h = infGL E 2 y₀ * finGL E 2 k` from `⟨_, _, (infGL_mul_finGL h).symm⟩`.
+
+Establish `hv : ∀ x, (TR.finRep F 2 (κ k) f).1 x = f.1 (x * dM (nu F (finGL E 2 k)))` using `fun x => by`. Rewrite using `[hκ k]`. Both sides reduce to the same expression. Use `⟨TR.finRep F 2 (κ k) f, π.stable (.fin (κ k)) f hf, W.L (finGL E 2 k) φ, hF k φ hφ, y₀, k, hh, rfl, hv, ?_⟩` and prove the remaining obligations. Introduce `φ₁ y`.
+
+Establish `e : h * infGL E 2 y = infGL E 2 (y₀ * y) * finGL E 2 k`. Rewrite using `[hh, map_mul, mul_assoc, mul_assoc, infGL_comm]`. Establish `hfun : (TR.finRep F 2 (κ k) f).1 = fun x => f.1 (x * dM (nu F (finGL E 2 k)))` using `funext hv`. Rewrite using `[e, ht f.1 φ₁ (infGL E 2 (y₀ * y)) (finGL E 2 k), hfun]`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.redLift :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2), RedLift W M π := by
   intro F E _ _ _ _ _ _ _ D W M π f hf φ hφ h

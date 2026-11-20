@@ -9,6 +9,9 @@ namespace Formalism.IndefR.Fock.DeltaPf
 
 open Formalism.REAL
 
+/- English proof (translation)
+Unfold `fockF`. Use `Finset.sum_subset h ?_` and prove the remaining obligations. Introduce `m _ hm`. Rewrite `hm` using `[MvPolynomial.mem_support_iff, not_not]`. Simplify using `[hm]`.
+-/
 theorem fockF_eq_sum_of_subset {σ : Type*} {f g : MvPolynomial σ ℂ} {s : Finset (σ →₀ ℕ)} (h : f.support ⊆ s) :
     fockF f g = ∑ m ∈ s, f.coeff m * star (g.coeff m) * ((∏ k ∈ m.support, (m k).factorial : ℕ) : ℂ) := by
   unfold fockF
@@ -17,6 +20,11 @@ theorem fockF_eq_sum_of_subset {σ : Type*} {f g : MvPolynomial σ ℂ} {s : Fin
   rw [MvPolynomial.mem_support_iff, not_not] at hm
   simp [hm]
 
+/- English proof (translation)
+Rewrite using `[fockF_eq_sum_of_subset (s := {0})]`. Simplify using the standard rewrite rules. Introduce `m hm`. Rewrite `hm` using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_one]`. Rewrite using `[Finset.mem_singleton]`.
+
+Assume the negation of the conclusion as `h0`. Conclude with `hm (if_neg (Ne.symm h0))`.
+-/
 theorem fockF_one {σ : Type*} : fockF (1 : MvPolynomial σ ℂ) 1 = 1 := by
   classical
   rw [fockF_eq_sum_of_subset (s := {0})]
@@ -27,10 +35,18 @@ theorem fockF_one {σ : Type*} : fockF (1 : MvPolynomial σ ℂ) 1 = 1 := by
     by_contra h0
     exact hm (if_neg (Ne.symm h0))
 
+/- English proof (translation)
+Unfold `fockF`. Simplify using `[MvPolynomial.support_neg, MvPolynomial.coeff_neg]`.
+-/
 theorem fockF_neg {σ : Type*} (f : MvPolynomial σ ℂ) : fockF (-f) (-f) = fockF f f := by
   unfold fockF
   simp [MvPolynomial.support_neg, MvPolynomial.coeff_neg]
 
+/- English proof (translation)
+Unfold `fockF`. Rewrite using `[MvPolynomial.support_rename_of_injective hi, Finset.sum_image (by`. Introduce `a _ b _ hab`. Conclude with `Finsupp.mapDomain_injective hi hab)]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[MvPolynomial.coeff_rename_mapDomain i hi, MvPolynomial.coeff_rename_mapDomain i hi, Finsupp.mapDomain_support_of_injective hi, Finset.prod_image (by`. Introduce `a _ b _ hab`. Conclude with `hi hab)]`. Simplify using `only [Finsupp.mapDomain_apply hi]`.
+-/
 theorem fockF_rename {σ τ : Type*} {i : σ → τ} (hi : Function.Injective i) (f g : MvPolynomial σ ℂ) :
     fockF (rename i f) (rename i g) = fockF f g := by
   classical
@@ -45,6 +61,11 @@ theorem fockF_rename {σ τ : Type*} {i : σ → τ} (hi : Function.Injective i)
       exact hi hab)]
   simp only [Finsupp.mapDomain_apply hi]
 
+/- English proof (translation)
+Unfold `fockF Formalism.GradedWeylDivisibility.fockQ`. Establish `hs : ∀ q : ℚ, star (q : ℂ) = q` using `fun q => by`. Rewrite using `[← Complex.ofReal_ratCast, ← starRingEnd_apply, Complex.conj_ofReal]`. Rewrite using `[MvPolynomial.support_map_of_injective _ (algebraMap ℚ ℂ).injective]`. Use `push_cast`.
+
+Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_map, eq_ratCast, hs]`.
+-/
 theorem fockF_map_rat {σ : Type*} (f : MvPolynomial σ ℚ) :
     fockF (map (algebraMap ℚ ℂ) f) (map (algebraMap ℚ ℂ) f) = ((Formalism.GradedWeylDivisibility.fockQ f f : ℝ) : ℂ) := by
   unfold fockF Formalism.GradedWeylDivisibility.fockQ
@@ -55,6 +76,17 @@ theorem fockF_map_rat {σ : Type*} (f : MvPolynomial σ ℚ) :
   refine Finset.sum_congr rfl fun d _ => ?_
   rw [MvPolynomial.coeff_map, eq_ratCast, hs]
 
+/- English proof (translation)
+Establish `key : ∀ k, x k = a k ∧ y k = b k`. Introduce `k`. Establish `hk` using `DFunLike.congr_fun h k`. Simplify using `only [Finsupp.add_apply] at hk`. Distinguish the cases in `hA : k ∈ A`.
+
+Establish `hB : k ∉ B` using `fun hB => Set.disjoint_left.mp hAB hA hB`. Establish `hy0 : y k = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hB (hy (Finset.mem_coe.2 (Finsupp.mem_support_iff.mpr hne)))`. Establish `hb0 : b k = 0`.
+
+Assume the negation of the conclusion as `hne`. Conclude with `hB (hb (Finset.mem_coe.2 (Finsupp.mem_support_iff.mpr hne)))`. Use linear arithmetic over natural numbers and integers. Establish `hx0 : x k = 0`. Assume the negation of the conclusion as `hne`.
+
+Conclude with `hA (hx (Finset.mem_coe.2 (Finsupp.mem_support_iff.mpr hne)))`. Establish `ha0 : a k = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hA (ha (Finset.mem_coe.2 (Finsupp.mem_support_iff.mpr hne)))`. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `⟨Finsupp.ext fun k => (key k).1, Finsupp.ext fun k => (key k).2⟩`.
+-/
 theorem split_unique {σ : Type*} {A B : Set σ} (hAB : Disjoint A B) {x y a b : σ →₀ ℕ}
     (hx : (↑x.support : Set σ) ⊆ A) (hy : (↑y.support : Set σ) ⊆ B) (ha : (↑a.support : Set σ) ⊆ A)
     (hb : (↑b.support : Set σ) ⊆ B) (h : x + y = a + b) : x = a ∧ y = b := by
@@ -80,6 +112,27 @@ theorem split_unique {σ : Type*} {A B : Set σ} (hAB : Disjoint A B) {x y a b :
       omega
   exact ⟨Finsupp.ext fun k => (key k).1, Finsupp.ext fun k => (key k).2⟩
 
+/- English proof (translation)
+Establish `hPs : ∀ x ∈ P.support, (↑x.support : Set σ) ⊆ A` using `fun x hx k hk => (MvPolynomial.mem_supported.1 hP) (Finset.mem_coe.2 ((MvPolynomial.mem_vars k).2 ⟨x, hx, Finset.mem_coe.1 hk⟩))`. Establish `hQs : ∀ y ∈ Q.support, (↑y.support : Set σ) ⊆ B` using `fun y hy k hk => (MvPolynomial.mem_supported.1 hQ) (Finset.mem_coe.2 ((MvPolynomial.mem_vars k).2 ⟨y, hy, Finset.mem_coe.1 hk⟩))`. Establish `hcoeff : ∀ x ∈ P.support, ∀ y ∈ Q.support, (P * Q).coeff (x + y) = P.coeff x * Q.coeff y`. Introduce `x hx y hy`. Rewrite using `[MvPolynomial.coeff_mul]`.
+
+Use `Finset.sum_eq_single (x, y) ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨u, v⟩ huv hne`. Rewrite `huv` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Distinguish the cases in `hu : u ∈ P.support`. Distinguish the cases in `hv : v ∈ Q.support`.
+
+Conclude with `absurd (Prod.ext_iff.2 (split_unique hAB (hPs u hu) (hQs v hv) (hPs x hx) (hQs y hy) huv)) hne`. Rewrite `hv` using `[MvPolynomial.mem_support_iff, not_not]`. Rewrite using `[hv, mul_zero]`. Rewrite `hu` using `[MvPolynomial.mem_support_iff, not_not]`. Rewrite using `[hu, zero_mul]`.
+
+Introduce `hn`. Conclude with `(hn (by simp)).elim`. Establish `hw : ∀ x ∈ P.support, ∀ y ∈ Q.support, (∏ k ∈ (x + y).support, ((x + y) k).factorial) = (∏ k ∈ x.support, (x k).factorial) * ∏ k ∈ y.support, (y k).factorial`. Introduce `x hx y hy`. Establish `hd : Disjoint x.support y.support`.
+
+Rewrite using `[Finset.disjoint_left]`. Introduce `k hkx hky`. Conclude with `Set.disjoint_left.1 hAB (hPs x hx (Finset.mem_coe.2 hkx)) (hQs y hy (Finset.mem_coe.2 hky))`. Rewrite using `[Finsupp.support_add_eq hd, Finset.prod_union hd]`. Use `congr 1`.
+
+Use `Finset.prod_congr rfl fun k hk => ?_` and prove the remaining obligations. Establish `h0 : y k = 0` using `by simpa using Finset.disjoint_left.1 hd hk`. Simplify using `[h0]`. Use `Finset.prod_congr rfl fun k hk => ?_` and prove the remaining obligations. Establish `h0 : x k = 0` using `by simpa using Finset.disjoint_right.1 hd hk`.
+
+Simplify using `[h0]`. Establish `hinj : ∀ p ∈ P.support ×ˢ Q.support, ∀ q ∈ P.support ×ˢ Q.support, p.1 + p.2 = q.1 + q.2 → p = q`. Introduce `p hp q hq h`. Rewrite `hp`, `hq` using `[Finset.mem_product]`. Take `⟨h1, h2⟩` from `split_unique hAB (hPs _ hp.1) (hQs _ hp.2) (hPs _ hq.1) (hQs _ hq.2) h`.
+
+Conclude with `Prod.ext h1 h2`. Establish `hsub : (P * Q).support ⊆ (P.support ×ˢ Q.support).image (fun p : (σ →₀ ℕ) × (σ →₀ ℕ) => p.1 + p.2)`. Introduce `m hm`. Take `⟨x, hx, y, hy, rfl⟩` from `Finset.mem_add.1 (MvPolynomial.support_mul P Q hm)`. Conclude with `Finset.mem_image.2 ⟨(x, y), Finset.mem_product.2 ⟨hx, hy⟩, rfl⟩`.
+
+Rewrite using `[fockF_eq_sum_of_subset hsub, Finset.sum_image (by`. Introduce `p hp q hq h`. Conclude with `hinj p hp q hq h), Finset.sum_product]`. Unfold `fockF`. Rewrite using `[Finset.sum_mul_sum]`.
+
+Use `Finset.sum_congr rfl fun x hx => Finset.sum_congr rfl fun y hy => ?_` and prove the remaining obligations. Simplify using `only [hcoeff x hx y hy, hw x hx y hy, star_mul', Nat.cast_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fockF_mul_of_disjoint {σ : Type*} {A B : Set σ} (hAB : Disjoint A B) {P Q : MvPolynomial σ ℂ}
     (hP : P ∈ supported ℂ A) (hQ : Q ∈ supported ℂ B) :
     fockF (P * Q) (P * Q) = fockF P P * fockF Q Q := by
@@ -137,6 +190,11 @@ theorem fockF_mul_of_disjoint {σ : Type*} {A B : Set σ} (hAB : Disjoint A B) {
   simp only [hcoeff x hx y hy, hw x hx y hy, star_mul', Nat.cast_mul]
   ring
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [fockF_one]`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.prod_insert hi, Finset.prod_insert hi]`. Rewrite using `[fockF_mul_of_disjoint (A := A i) (B := ⋃ j ∈ s, A j) ?_ (hP i) ?_, ih]`.
+
+Conclude with `Set.disjoint_iUnion₂_right.2 fun j hj => hA (fun hij => hi (by rw [hij]; exact hj))`. Conclude with `prod_mem fun j hj => MvPolynomial.supported_mono (fun x hx => Set.mem_iUnion₂.2 ⟨j, hj, hx⟩) (hP j)`.
+-/
 theorem fockF_prod {ι σ : Type*} (s : Finset ι) (A : ι → Set σ) (hA : Pairwise fun i j => Disjoint (A i) (A j))
     (P : ι → MvPolynomial σ ℂ) (hP : ∀ i, P i ∈ supported ℂ (A i)) :
     fockF (∏ i ∈ s, P i) (∏ i ∈ s, P i) = ∏ i ∈ s, fockF (P i) (P i) := by
@@ -149,6 +207,9 @@ theorem fockF_prod {ι σ : Type*} (s : Finset ι) (A : ι → Set σ) (hA : Pai
     · exact Set.disjoint_iUnion₂_right.2 fun j hj => hA (fun hij => hi (by rw [hij]; exact hj))
     · exact prod_mem fun j hj => MvPolynomial.supported_mono (fun x hx => Set.mem_iUnion₂.2 ⟨j, hj, hx⟩) (hP j)
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.mem_supported]`. Introduce `v hv`. Take `⟨w, -, rfl⟩` from `Finset.mem_image.1 (MvPolynomial.vars_rename i f (Finset.mem_coe.1 hv))`. Conclude with `⟨w, rfl⟩`.
+-/
 theorem rename_mem_supported {σ τ : Type*} (i : σ → τ) (f : MvPolynomial σ ℂ) :
     rename i f ∈ supported ℂ (Set.range i) := by
   classical
@@ -159,6 +220,11 @@ theorem rename_mem_supported {σ τ : Type*} (i : σ → τ) (f : MvPolynomial �
 
 def PmEq {R : Type*} [Ring R] (f g : R) : Prop := f = g ∨ f = -g
 
+/- English proof (translation)
+Unfold `PmEq at *`. Apply the tactic sequence `rcases h with rfl | rfl <;> rcases h' with rfl | rfl`. Conclude with `Or.inl rfl`. Conclude with `Or.inr (mul_neg _ _)`. Conclude with `Or.inr (neg_mul _ _)`.
+
+Conclude with `Or.inl (neg_mul_neg _ _)`.
+-/
 theorem PmEq.mul {R : Type*} [Ring R] {f g f' g' : R} (h : PmEq f g) (h' : PmEq f' g') : PmEq (f * f') (g * g') := by
   unfold PmEq at *
   rcases h with rfl | rfl <;> rcases h' with rfl | rfl
@@ -167,11 +233,17 @@ theorem PmEq.mul {R : Type*} [Ring R] {f g f' g' : R} (h : PmEq f g) (h' : PmEq 
   · exact Or.inr (neg_mul _ _)
   · exact Or.inl (neg_mul_neg _ _)
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => exact Or.inl (by rw [pow_zero, pow_zero])`. Consider the case `succ k ih => simpa only [pow_succ] using ih.mul h`.
+-/
 theorem PmEq.pow {R : Type*} [Ring R] {f g : R} (h : PmEq f g) (k : ℕ) : PmEq (f ^ k) (g ^ k) := by
   induction k with
   | zero => exact Or.inl (by rw [pow_zero, pow_zero])
   | succ k ih => simpa only [pow_succ] using ih.mul h
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact Or.inl (by simp)`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.prod_insert hi, Finset.prod_insert hi]`. Conclude with `(h i (Finset.mem_insert_self i s)).mul (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+-/
 theorem PmEq.prod {ι R : Type*} [CommRing R] (s : Finset ι) (f g : ι → R) (h : ∀ i ∈ s, PmEq (f i) (g i)) :
     PmEq (∏ i ∈ s, f i) (∏ i ∈ s, g i) := by
   classical
@@ -181,6 +253,11 @@ theorem PmEq.prod {ι R : Type*} [CommRing R] (s : Finset ι) (f g : ι → R) (
     rw [Finset.prod_insert hi, Finset.prod_insert hi]
     exact (h i (Finset.mem_insert_self i s)).mul (ih fun j hj => h j (Finset.mem_insert_of_mem hj))
 
+/- English proof (translation)
+Unfold `PmEq`. Break down `Int.units_eq_one_or u with rfl | rfl` into its components or cases. Use `left`. Simplify using the standard rewrite rules. Use `right`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem pmEq_sign {R : Type*} [CommRing R] (u : ℤˣ) (x : R) : PmEq (((u : ℤ) : R) * x) x := by
   unfold PmEq
   rcases Int.units_eq_one_or u with rfl | rfl
@@ -189,12 +266,18 @@ theorem pmEq_sign {R : Type*} [CommRing R] (u : ℤˣ) (x : R) : PmEq (((u : ℤ
   · right
     simp
 
+/- English proof (translation)
+Unfold `PmEq at h`. Break down `h with rfl | rfl` into its components or cases. Both sides reduce to the same expression. Conclude with `fockF_neg g`.
+-/
 theorem fockF_pm {σ : Type*} {f g : MvPolynomial σ ℂ} (h : PmEq f g) : fockF f f = fockF g g := by
   unfold PmEq at h
   rcases h with rfl | rfl
   · rfl
   · exact fockF_neg g
 
+/- English proof (translation)
+Unfold `PmEq at h`. Break down `h with rfl | rfl` into its components or cases. Conclude with `hg`. Conclude with `neg_mem hg`.
+-/
 theorem PmEq.mem {σ : Type*} {S : Set σ} {f g : MvPolynomial σ ℂ} (h : PmEq f g) (hg : g ∈ supported ℂ S) :
     f ∈ supported ℂ S := by
   unfold PmEq at h
@@ -202,6 +285,9 @@ theorem PmEq.mem {σ : Type*} {S : Set σ} {f g : MvPolynomial σ ℂ} (h : PmEq
   · exact hg
   · exact neg_mem hg
 
+/- English proof (translation)
+Establish `h1` using `PI.HookLower.one_le_cNu ν h`. Unfold `PI.cNu at h1`. Establish `hpos : (0 : ℝ) < ∏ l, ((ν l).factorial : ℝ)` using `Finset.prod_pos fun l _ => by exact_mod_cast Nat.factorial_pos _`. Rewrite `h1` using `[one_le_div hpos]`. Then use the resulting hypothesis.
+-/
 theorem hw_low (N : ℕ) (ν : Fin N → ℕ) (h : Antitone ν) :
     (∏ l, ((ν l).factorial : ℝ)) ≤ (Formalism.GradedWeylDivisibility.fockQ (Formalism.GradedWeylDivisibility.hw ℚ le_rfl ν) (Formalism.GradedWeylDivisibility.hw ℚ le_rfl ν) : ℝ) := by
   have h1 := PI.HookLower.one_le_cNu ν h
@@ -220,6 +306,9 @@ def iotaP (τ : D.what₂.Tau) {P : ℕ} (hm : P ≤ m) (hn : P ≤ n) (v : Fin 
 def embedding₂ (τ : D.what₂.Tau) (P : ℕ) {Q : ℕ} (hm : P + Q ≤ m) (hn : Q ≤ n) (v : Fin Q × Fin Q) : FVar D m n :=
   (τ, ⟨P + v.2, by have := v.2.isLt; omega⟩, ⟨n - 1 - v.1, by have := v.1.isLt; omega⟩)
 
+/- English proof (translation)
+Introduce `v w h`. Establish `h1` using `congrArg (fun z : FVar D m n => (z.2.2 : ℕ)) h`. Establish `h2` using `congrArg (fun z : FVar D m n => (z.2.1 : ℕ)) h`. Simplify using `only [iotaP, Fin.coe_castLE] at h1 h2`. Conclude with `Prod.ext (Fin.ext h1) (Fin.ext h2)`.
+-/
 theorem cornerInclusion_injective (τ : D.what₂.Tau) {P : ℕ} (hm : P ≤ m) (hn : P ≤ n) : Function.Injective (iotaP τ hm hn) := by
   intro v w h
   have h1 := congrArg (fun z : FVar D m n => (z.2.2 : ℕ)) h
@@ -227,6 +316,11 @@ theorem cornerInclusion_injective (τ : D.what₂.Tau) {P : ℕ} (hm : P ≤ m) 
   simp only [iotaP, Fin.coe_castLE] at h1 h2
   exact Prod.ext (Fin.ext h1) (Fin.ext h2)
 
+/- English proof (translation)
+Introduce `v w h`. Establish `h1` using `congrArg (fun z : FVar D m n => (z.2.2 : ℕ)) h`. Establish `h2` using `congrArg (fun z : FVar D m n => (z.2.1 : ℕ)) h`. Simplify using `only [embedding₂] at h1 h2`. Use `v.1.isLt` as an intermediate fact.
+
+Use `w.1.isLt` as an intermediate fact. Conclude with `Prod.ext (Fin.ext (by omega)) (Fin.ext (by omega))`.
+-/
 theorem iotaM_inj (τ : D.what₂.Tau) (P : ℕ) {Q : ℕ} (hm : P + Q ≤ m) (hn : Q ≤ n) :
     Function.Injective (embedding₂ (D := D) τ P hm hn) := by
   intro v w h
@@ -245,6 +339,11 @@ def psiM (τ : D.what₂.Tau) (P : ℕ) {Q : ℕ} (hm : P + Q ≤ m) (hn : Q ≤
     MvPolynomial (Fin Q × Fin Q) ℚ →+* MvPolynomial (FVar D m n) ℂ :=
   (rename (embedding₂ τ P hm hn)).toRingHom.comp (map (algebraMap ℚ ℂ))
 
+/- English proof (translation)
+Unfold `minorPlus Formalism.GradedWeylDivisibility.lpMinor`. Rewrite using `[RingHom.map_det]`. Use `congrArg Matrix.det (Matrix.ext fun α β => ?_)` and prove the remaining obligations. Establish `hα` using `α.isLt`. Establish `hβ` using `β.isLt`.
+
+Simplify using `[psiP, iotaP, varF, RingHom.mapMatrix_apply]`. Use `split_ifs with h`. Both sides reduce to the same expression. Conclude with `absurd ⟨by omega, by omega⟩ h`.
+-/
 theorem minorPlus_eq (τ : D.what₂.Tau) {P : ℕ} (hm : P ≤ m) (hn : P ≤ n) (k : ℕ) (hk : k ≤ P) (hk' : k ≤ P) :
     psiP τ hm hn (Formalism.GradedWeylDivisibility.lpMinor ℚ k hk hk') = minorPlus τ k := by
   unfold minorPlus Formalism.GradedWeylDivisibility.lpMinor
@@ -257,6 +356,13 @@ theorem minorPlus_eq (τ : D.what₂.Tau) {P : ℕ} (hm : P ≤ m) (hn : P ≤ n
   · rfl
   · exact absurd ⟨by omega, by omega⟩ h
 
+/- English proof (translation)
+Unfold `minorMinus Formalism.GradedWeylDivisibility.lpMinor`. Rewrite using `[RingHom.map_det, ← Matrix.det_permute]`. Use `congrArg Matrix.det (Matrix.ext fun α β => ?_)` and prove the remaining obligations. Establish `hα` using `α.isLt`. Establish `hβ` using `β.isLt`.
+
+Simplify using `[psiM, embedding₂, varF, RingHom.mapMatrix_apply, Fin.revPerm_apply]`. Use `split_ifs with h`. Use `first`. Consider the case `rfl`. Consider the case `(congr 1`.
+
+Apply the tactic sequence `refine Prod.ext rfl (Prod.ext (Fin.ext ?_) (Fin.ext ?_)) <;> (try simp [Fin.val_rev]) <;> omega)`. Consider the case `(simp [Fin.val_rev]; omega)`. Conclude with `absurd ⟨by omega, by omega⟩ h`.
+-/
 theorem minorMinus_eq (τ : D.what₂.Tau) (P : ℕ) {Q : ℕ} (hm : P + Q ≤ m) (hn : Q ≤ n) (k : ℕ) (hk : k ≤ Q)
     (hk' : k ≤ Q) :
     minorMinus τ P k =
@@ -276,6 +382,11 @@ theorem minorMinus_eq (τ : D.what₂.Tau) (P : ℕ) {Q : ℕ} (hm : P + Q ≤ m
       | (simp [Fin.val_rev]; omega)
   · exact absurd ⟨by omega, by omega⟩ h
 
+/- English proof (translation)
+Rewrite using `[Finset.prod_range]`. Unfold `Formalism.GradedWeylDivisibility.hw`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Establish `hs` using `s.isLt`.
+
+Rewrite using `[map_pow, minorPlus_eq τ hm hn (s.val + 1) (by omega) (by omega)]`. Use `congr 1`. Apply the tactic sequence `all_goals simp [Formalism.GradedWeylDivisibility.nuNext]`.
+-/
 theorem plusPart_eq (τ : D.what₂.Tau) {P : ℕ} (hm : P ≤ m) (hn : P ≤ n) (a : ℕ → ℕ) :
     (∏ i ∈ Finset.range P, minorPlus (D := D) (m := m) (n := n) τ (i + 1) ^ (a i - if i + 1 < P then a (i + 1) else 0)) =
       psiP τ hm hn (Formalism.GradedWeylDivisibility.hw ℚ le_rfl (fun s : Fin P => a s)) := by
@@ -288,6 +399,11 @@ theorem plusPart_eq (τ : D.what₂.Tau) {P : ℕ} (hm : P ≤ m) (hn : P ≤ n)
   congr 1
   all_goals simp [Formalism.GradedWeylDivisibility.nuNext]
 
+/- English proof (translation)
+Rewrite using `[Finset.prod_range]`. Unfold `Formalism.GradedWeylDivisibility.hw`. Rewrite using `[map_prod]`. Use `PmEq.prod _ _ _ fun s _ => ?_` and prove the remaining obligations. Establish `hs` using `s.isLt`.
+
+Rewrite using `[map_pow, minorMinus_eq τ P hm hn (s.val + 1) (by omega) (by omega)]`. Establish `he : (a ↑s - if ↑s + 1 < Q then a (↑s + 1) else 0) = a ↑s - Formalism.GradedWeylDivisibility.nuNext (fun s : Fin Q => a ↑s) s`. Simplify using `[Formalism.GradedWeylDivisibility.nuNext]`. Rewrite using `[he]`. Conclude with `(pmEq_sign _ _).pow _`.
+-/
 theorem minusPart_pm (τ : D.what₂.Tau) (P : ℕ) {Q : ℕ} (hm : P + Q ≤ m) (hn : Q ≤ n) (a : ℕ → ℕ) :
     PmEq (∏ i ∈ Finset.range Q,
         minorMinus (D := D) (m := m) (n := n) τ P (i + 1) ^ (a i - if i + 1 < Q then a (i + 1) else 0))
@@ -310,17 +426,26 @@ section Asm
 
 variable {D : D7} {m n : ℕ}
 
+/- English proof (translation)
+Use `show fockF (rename (iotaP τ hm hn) (map (algebraMap ℚ ℂ) x)) (rename (iotaP τ hm hn) (map (algebraMap ℚ ℂ) x)) = _`. Rewrite using `[fockF_rename (cornerInclusion_injective τ hm hn), fockF_map_rat]`.
+-/
 theorem fockF_psiP (τ : D.what₂.Tau) {P : ℕ} (hm : P ≤ m) (hn : P ≤ n) (x : MvPolynomial (Fin P × Fin P) ℚ) :
     fockF (psiP τ hm hn x) (psiP τ hm hn x) = ((Formalism.GradedWeylDivisibility.fockQ x x : ℝ) : ℂ) := by
   show fockF (rename (iotaP τ hm hn) (map (algebraMap ℚ ℂ) x)) (rename (iotaP τ hm hn) (map (algebraMap ℚ ℂ) x)) = _
   rw [fockF_rename (cornerInclusion_injective τ hm hn), fockF_map_rat]
 
+/- English proof (translation)
+Use `show fockF (rename (embedding₂ τ P hm hn) (map (algebraMap ℚ ℂ) x)) (rename (embedding₂ τ P hm hn) (map (algebraMap ℚ ℂ) x)) = _`. Rewrite using `[fockF_rename (iotaM_inj τ P hm hn), fockF_map_rat]`.
+-/
 theorem fockF_psiM (τ : D.what₂.Tau) (P : ℕ) {Q : ℕ} (hm : P + Q ≤ m) (hn : Q ≤ n)
     (x : MvPolynomial (Fin Q × Fin Q) ℚ) :
     fockF (psiM τ P hm hn x) (psiM τ P hm hn x) = ((Formalism.GradedWeylDivisibility.fockQ x x : ℝ) : ℂ) := by
   show fockF (rename (embedding₂ τ P hm hn) (map (algebraMap ℚ ℂ) x)) (rename (embedding₂ τ P hm hn) (map (algebraMap ℚ ℂ) x)) = _
   rw [fockF_rename (iotaM_inj τ P hm hn), fockF_map_rat]
 
+/- English proof (translation)
+Use `show rename (iotaP τ hm hn) (map (algebraMap ℚ ℂ) x) ∈ _`. Use `MvPolynomial.supported_mono ?_ (rename_mem_supported (iotaP τ hm hn) _)` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩`. Simplify using `[iotaP]`.
+-/
 theorem psiP_mem_supported (τ : D.what₂.Tau) {P : ℕ} (hm : P ≤ m) (hn : P ≤ n) (x : MvPolynomial (Fin P × Fin P) ℚ) :
     psiP τ hm hn x ∈ supported ℂ {v : FVar D m n | v.1 = τ ∧ (v.2.1 : ℕ) < P} := by
   show rename (iotaP τ hm hn) (map (algebraMap ℚ ℂ) x) ∈ _
@@ -328,6 +453,9 @@ theorem psiP_mem_supported (τ : D.what₂.Tau) {P : ℕ} (hm : P ≤ m) (hn : P
   rintro _ ⟨v, rfl⟩
   simp [iotaP]
 
+/- English proof (translation)
+Use `show rename (embedding₂ τ P hm hn) (map (algebraMap ℚ ℂ) x) ∈ _`. Use `MvPolynomial.supported_mono ?_ (rename_mem_supported (embedding₂ τ P hm hn) _)` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩`. Simplify using `[embedding₂]`.
+-/
 theorem psiM_mem (τ : D.what₂.Tau) (P : ℕ) {Q : ℕ} (hm : P + Q ≤ m) (hn : Q ≤ n)
     (x : MvPolynomial (Fin Q × Fin Q) ℚ) :
     psiM τ P hm hn x ∈ supported ℂ {v : FVar D m n | v.1 = τ ∧ P ≤ (v.2.1 : ℕ)} := by
@@ -336,6 +464,13 @@ theorem psiM_mem (τ : D.what₂.Tau) (P : ℕ) {Q : ℕ} (hm : P + Q ≤ m) (hn
   rintro _ ⟨v, rfl⟩
   simp [embedding₂]
 
+/- English proof (translation)
+Unfold `deltaAt`. Establish `h1 : P ≤ m` using `le_trans (Nat.le_add_right P Q) hm`. Establish `hP` using `plusPart_eq (D := D) τ h1 hPn ap`. Establish `hM` using `minusPart_pm (D := D) τ P hm hQn am`. Establish `hAB : Disjoint {v : FVar D m n | v.1 = τ ∧ (v.2.1 : ℕ) < P} {v : FVar D m n | v.1 = τ ∧ P ≤ (v.2.1 : ℕ)}`.
+
+Rewrite using `[Set.disjoint_left]`. Introduce and unpack `v ⟨-, hv1⟩ ⟨-, hv2⟩`. Use linear arithmetic over natural numbers and integers. Establish `hPmem` using `psiP_mem_supported (D := D) τ h1 hPn (Formalism.GradedWeylDivisibility.hw ℚ le_rfl (fun s : Fin P => ap s))`. Rewrite `hPmem` using `[← hP]`.
+
+Establish `hMmem` using `hM.mem (psiM_mem (D := D) τ P hm hQn (Formalism.GradedWeylDivisibility.hw ℚ le_rfl (fun s : Fin Q => am s)))`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[fockF_mul_of_disjoint hAB hPmem hMmem, fockF_pm hM, hP, fockF_psiP, fockF_psiM]`. Conclude with `mul_mem (MvPolynomial.supported_mono (fun v hv => hv.1) hPmem) (MvPolynomial.supported_mono (fun v hv => hv.1) hMmem)`.
+-/
 theorem deltaAt_fock (τ : D.what₂.Tau) (P Q : ℕ) (hm : P + Q ≤ m) (hPn : P ≤ n) (hQn : Q ≤ n) (ap am : ℕ → ℕ) :
     fockF (deltaAt (D := D) (m := m) (n := n) τ P ap Q am) (deltaAt τ P ap Q am) =
         ((Formalism.GradedWeylDivisibility.fockQ (Formalism.GradedWeylDivisibility.hw ℚ le_rfl fun s : Fin P => ap s) (Formalism.GradedWeylDivisibility.hw ℚ le_rfl fun s : Fin P => ap s) :
@@ -359,6 +494,13 @@ theorem deltaAt_fock (τ : D.what₂.Tau) (P Q : ℕ) (hm : P + Q ≤ m) (hPn : 
   · exact mul_mem (MvPolynomial.supported_mono (fun v hv => hv.1) hPmem)
       (MvPolynomial.supported_mono (fun v hv => hv.1) hMmem)
 
+/- English proof (translation)
+Establish `hA : Pairwise fun τ τ' : D.what₂.Tau => Disjoint {v : FVar D m n | v.1 = τ} {v : FVar D m n | v.1 = τ'}`. Introduce `τ τ' hne`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `v hv hv'`. Conclude with `hne (hv.symm.trans hv')`.
+
+Establish `hD` using `fun τ => deltaAt_fock (D := D) (m := m) (n := n) τ (p τ) (q τ) (h1 τ) (h2 τ).1 (h2 τ).2 (ap τ) (am τ)`. Unfold `delta`. Rewrite using `[fockF_prod Finset.univ (fun τ => {v : FVar D m n | v.1 = τ}) hA _ (fun τ => (hD τ).2), Finset.prod_congr rfl fun τ _ => (hD τ).1]`. Simplify using `only [← Complex.ofReal_mul, ← Complex.ofReal_prod, Complex.ofReal_re]`. Use `Finset.prod_le_prod (fun τ _ => by positivity) (fun τ _ => ?_)` and prove the remaining obligations.
+
+Establish `hp` using `hw_low (p τ) (fun s : Fin (p τ) => ap τ s) (fun a b hab => (h3 τ).1 hab)`. Establish `hq` using `hw_low (q τ) (fun s : Fin (q τ) => am τ s) (fun a b hab => (h3 τ).2 hab)`. Rewrite using `[Finset.prod_range (fun i => ((ap τ i).factorial : ℝ)), Finset.prod_range (fun i => ((am τ i).factorial : ℝ))]`. Conclude with `mul_le_mul hp hq (by positivity) (le_trans (by positivity) hp)`.
+-/
 theorem fockDeltaLow_core (m n : ℕ) (p q : D.what₂.Tau → ℕ) (ap am : D.what₂.Tau → ℕ → ℕ)
     (h1 : ∀ τ, p τ + q τ ≤ m) (h2 : ∀ τ, p τ ≤ n ∧ q τ ≤ n) (h3 : ∀ τ, Antitone (ap τ) ∧ Antitone (am τ)) :
     (∏ τ, ((∏ i ∈ Finset.range (p τ), ((ap τ i).factorial : ℝ)) *
@@ -382,6 +524,9 @@ theorem fockDeltaLow_core (m n : ℕ) (p q : D.what₂.Tau → ℕ) (ap am : D.w
 
 end Asm
 
+/- English proof (translation)
+Unfold `Formalism.IndefR.Fock.Delta.FockDeltaLow`. Introduce `m n p q ap am h1 h2 h3 _ _`. Unfold `Formalism.IndefR.Fock.Delta.factProd`. Conclude with `fockDeltaLow_core m n p q ap am h1 h2 h3`.
+-/
 theorem fockDeltaLow (D : D7) : Formalism.IndefR.Fock.Delta.FockDeltaLow D := by
   unfold Formalism.IndefR.Fock.Delta.FockDeltaLow
   intro m n p q ap am h1 h2 h3 _ _

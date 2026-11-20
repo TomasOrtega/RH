@@ -15,6 +15,11 @@ section Gen
 variable {E V : Type*} [Field E] [NumberField E] [AddCommGroup V] [Module E V] [Module (𝓞 E) V]
   [IsScalarTower (𝓞 E) E V]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.NonzeroSmulMemSpanLattice.exists_ne_zero_smul_mem`. Consider the case `exact _root_.GlobalTheory.NonzeroSmulMemSpanLattice.exists_ne_zero_smul_mem`. Consider the case `(apply _root_.GlobalTheory.NonzeroSmulMemSpanLattice.exists_ne_zero_smul_mem <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.NonzeroSmulMemSpanLattice.exists_ne_zero_smul_mem <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.NonzeroSmulMemSpanLattice.exists_ne_zero_smul_mem <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.NonzeroSmulMemSpanLattice.exists_ne_zero_smul_mem ..)`.
+-/
 theorem exists_smul_mem_lat (Λ : Submodule (𝓞 E) V) (hL : Submodule.IsLattice E Λ) (v : V) :
     ∃ o : 𝓞 E, o ≠ 0 ∧ o • v ∈ Λ := by
   first
@@ -29,6 +34,9 @@ end Gen
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hle : Submodule.span D.host.E (Set.range v) ≤ LinearMap.ker ((VS D).hT.flip w)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Simplify using `using h a`. Simplify using `using hle hy`.
+-/
 theorem hT_span_left {ι : Type*} (v : ι → (VS D).V) (w : (VS D).V) (h : ∀ a, (VS D).hT (v a) w = 0)
     {y : (VS D).V} (hy : y ∈ Submodule.span D.host.E (Set.range v)) : (VS D).hT y w = 0 := by
   have hle : Submodule.span D.host.E (Set.range v) ≤ LinearMap.ker ((VS D).hT.flip w) := by
@@ -37,6 +45,9 @@ theorem hT_span_left {ι : Type*} (v : ι → (VS D).V) (w : (VS D).V) (h : ∀ 
     simpa using h a
   simpa using hle hy
 
+/- English proof (translation)
+Establish `hle : Submodule.span D.host.E (Set.range v) ≤ LinearMap.ker ((VS D).hT w)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `h a`. Conclude with `hle hy`.
+-/
 theorem hT_span_right {ι : Type*} (v : ι → (VS D).V) (w : (VS D).V) (h : ∀ a, (VS D).hT w (v a) = 0)
     {y : (VS D).V} (hy : y ∈ Submodule.span D.host.E (Set.range v)) : (VS D).hT w y = 0 := by
   have hle : Submodule.span D.host.E (Set.range v) ≤ LinearMap.ker ((VS D).hT w) := by
@@ -45,6 +56,9 @@ theorem hT_span_right {ι : Type*} (v : ι → (VS D).V) (w : (VS D).V) (h : ∀
     exact h a
   exact hle hy
 
+/- English proof (translation)
+Unfold `Formalism.L2.SG.Saturated.latSpan`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, x, -, rfl⟩`. Conclude with `Submodule.smul_mem _ x (Submodule.subset_span ⟨a, rfl⟩)`.
+-/
 theorem latSpan_le {r : ℕ} (aa : Fin r → FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)
     (v : Fin r → (VS D).V) :
     Formalism.L2.SG.Saturated.latSpan aa v ≤ (Submodule.span D.host.E (Set.range v)).restrictScalars (𝓞 D.host.E) := by
@@ -55,10 +69,18 @@ theorem latSpan_le {r : ℕ} (aa : Fin r → FractionalIdeal (nonZeroDivisors (�
 
 variable (X : HidaSetting D)
 
+/- English proof (translation)
+Rewrite using `[a_herm, X.ef]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem hT_fe (a b : Fin D.R.rS) : (VS D).hT (X.fY b) (X.eX a) = if a = b then 1 else 0 := by
   rw [a_herm, X.ef]
   split_ifs <;> simp
 
+/- English proof (translation)
+Unfold `GlobalTheory.TypeAsm.F0 Formalism.HermitianLatticeCounting.S6.FlagD.X Formalism.HermitianLatticeCounting.S6.FlagD.Xa`. Establish `h : (fun b : Fin D.R.rS => (GlobalTheory.TypeAsm.frF (lf D (X.Fu u)).fl (GlobalTheory.TypeAsm.tu_ne D u)).e b.castSucc) = X.eX` using `funext fun b => by`. Rewrite using `[← X.Fu_e u]`. Conclude with `GlobalTheory.TypeAsm.fv_cast _ b`. Rewrite using `[h]`.
+
+Use `congr 1`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+-/
 theorem fixed_frame_span (u : D.what₂.Word) : (GlobalTheory.TypeAsm.F0 X u).X = Submodule.span D.host.E (Set.range X.eX) := by
   unfold GlobalTheory.TypeAsm.F0 Formalism.HermitianLatticeCounting.S6.FlagD.X Formalism.HermitianLatticeCounting.S6.FlagD.Xa
   have h : (fun b : Fin D.R.rS => (GlobalTheory.TypeAsm.frF (lf D (X.Fu u)).fl (GlobalTheory.TypeAsm.tu_ne D u)).e b.castSucc)
@@ -73,10 +95,18 @@ theorem fixed_frame_span (u : D.what₂.Word) : (GlobalTheory.TypeAsm.F0 X u).X 
 def pr : (VS D).V →ₗ[D.host.E] (VS D).V :=
   LinearMap.id - ∑ a, ((VS D).hT (X.fY a)).smulRight (X.eX a) - ∑ a, ((VS D).hT (X.eX a)).smulRight (X.fY a)
 
+/- English proof (translation)
+Simplify using `[pr, LinearMap.sub_apply, LinearMap.sum_apply, LinearMap.smulRight_apply]`.
+-/
 theorem pr_apply (v : (VS D).V) :
     pr X v = v - ∑ a, (VS D).hT (X.fY a) v • X.eX a - ∑ a, (VS D).hT (X.eX a) v • X.fY a := by
   simp [pr, LinearMap.sub_apply, LinearMap.sum_apply, LinearMap.smulRight_apply]
 
+/- English proof (translation)
+Rewrite using `[mem_Wb]`. Introduce `b`. Prove the components needed by the constructor for the conclusion. Rewrite using `[pr_apply]`. Simplify using `only [map_sub, map_sum, map_smul, X.ee, X.ef, smul_eq_mul, mul_zero, Finset.sum_const_zero, sub_zero, mul_ite, mul_one, Finset.sum_ite_eq, Finset.mem_univ, if_true, sub_self]`.
+
+Rewrite using `[pr_apply]`. Simplify using `only [map_sub, map_sum, map_smul, X.ff, hT_fe, smul_eq_mul, mul_zero, Finset.sum_const_zero, sub_zero, mul_ite, mul_one, Finset.sum_ite_eq', Finset.mem_univ, if_true, sub_self]`.
+-/
 theorem pr_mem (v : (VS D).V) : pr X v ∈ Wb X := by
   rw [mem_Wb]
   intro b
@@ -88,11 +118,17 @@ theorem pr_mem (v : (VS D).V) : pr X v ∈ Wb X := by
     simp only [map_sub, map_sum, map_smul, X.ff, hT_fe, smul_eq_mul, mul_zero, Finset.sum_const_zero, sub_zero,
       mul_ite, mul_one, Finset.sum_ite_eq', Finset.mem_univ, if_true, sub_self]
 
+/- English proof (translation)
+Rewrite using `[pr_apply]`. Simplify using `only [hT_fe, X.ee, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true, Finset.sum_const_zero, sub_zero, sub_self]`.
+-/
 theorem pr_eX (c : Fin D.R.rS) : pr X (X.eX c) = 0 := by
   rw [pr_apply]
   simp only [hT_fe, X.ee, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true,
     Finset.sum_const_zero, sub_zero, sub_self]
 
+/- English proof (translation)
+Establish `hle : Submodule.span D.host.E (Set.range X.eX) ≤ LinearMap.ker (pr X)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `pr_eX X a`. Conclude with `hle hx`.
+-/
 theorem pr_X {x : (VS D).V} (hx : x ∈ Submodule.span D.host.E (Set.range X.eX)) : pr X x = 0 := by
   have hle : Submodule.span D.host.E (Set.range X.eX) ≤ LinearMap.ker (pr X) := by
     rw [Submodule.span_le]
@@ -100,6 +136,9 @@ theorem pr_X {x : (VS D).V} (hx : x ∈ Submodule.span D.host.E (Set.range X.eX)
     exact pr_eX X a
   exact hle hx
 
+/- English proof (translation)
+Rewrite `hw` using `[mem_Wb]`. Rewrite using `[pr_apply]`. Simplify using `[(hw _).1, (hw _).2]`.
+-/
 theorem pr_Wb {w : (VS D).V} (hw : w ∈ Wb X) : pr X w = w := by
   rw [mem_Wb] at hw
   rw [pr_apply]
@@ -107,6 +146,9 @@ theorem pr_Wb {w : (VS D).V} (hw : w ∈ Wb X) : pr X w = w := by
 
 def pW : (VS D).V →ₗ[D.host.E] Wb X := LinearMap.codRestrict (Wb X) (pr X) (pr_mem X)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pW_coe (v : (VS D).V) : ((pW X v : Wb X) : (VS D).V) = pr X v := rfl
 
 end GlobalTheory.RowsOrb.Basic
@@ -114,11 +156,25 @@ end GlobalTheory.RowsOrb.Basic
 namespace GlobalTheory.RowsOrb.Basic
 variable {D : D7} (X : HidaSetting D)
 
+/- English proof (translation)
+Rewrite using `[← fixed_frame_span X u]`. Both sides reduce to the same expression.
+-/
 theorem mem_XO (u : D.what₂.Word) (x : (VS D).V) :
     x ∈ GlobalTheory.HermLat.rs (𝓞 D.host.E) (GlobalTheory.TypeAsm.F0 X u).X ↔ x ∈ Submodule.span D.host.E (Set.range X.eX) := by
   rw [← fixed_frame_span X u]
   rfl
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hfg : (Λ.map ((pW X).restrictScalars (𝓞 D.host.E))).FG` using `hΛ.fg.map _ haveI : Module.Finite (𝓞 D.host.E) (Λ.map ((pW X).restrictScalars (𝓞 D.host.E))) := Module.Finite.iff_fg.2 hfg haveI : IsNoetherian (𝓞 D.host.E) (Λ.map ((pW X).restrictScalars (𝓞 D.host.E))) := isNoetherian_of_isNoetherianRing_of_finite _ _`. Use `Submodule.FG.of_le_of_isNoetherian (T := Λ.map ((pW X).restrictScalars (𝓞 D.host.E))) ?_` and prove the remaining obligations. Introduce `w hw`. Rewrite `hw` using `[mem_Lmap]`.
+
+Take `⟨l, hl, x, hx, hlx⟩` from `Submodule.mem_sup.1 hw`. Use `⟨l, hl, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `pr X l = (w : (VS D).V)`. Establish `hx0 : pr X x = 0` using `pr_X X ((mem_XO X u x).1 hx)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[eq_top_iff]`. Introduce `w _`. Take `⟨o, ho, hmem⟩` from `exists_smul_mem_lat Λ hΛ (w : (VS D).V)`. Establish `h1 : o • w ∈ Lmap X u Λ`.
+
+Rewrite using `[mem_Lmap]`. Conclude with `Submodule.mem_sup_left hmem`. Establish `ho' : ((o : D.host.E)) ≠ 0` using `by simpa using ho`. Establish `e : w = ((o : D.host.E)⁻¹) • (o • w)`. Rewrite using `[← algebraMap_smul D.host.E o w, smul_smul]`.
+
+Establish `: (o : D.host.E)⁻¹ * algebraMap (𝓞 D.host.E) D.host.E o = 1` using `inv_mul_cancel₀ ho'`. Rewrite using `[this, one_smul]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span h1)`.
+-/
 theorem lmap_isLattice (u : D.what₂.Word) (Λ : Submodule (𝓞 D.host.E) (VS D).V)
     (hΛ : Submodule.IsLattice D.host.E Λ) : Submodule.IsLattice D.host.E (Lmap X u Λ) := by
   refine ⟨?_, ?_⟩
@@ -156,10 +212,30 @@ end GlobalTheory.RowsOrb.Basic
 namespace GlobalTheory.RowsOrb.Basic
 variable {D : D7} (X : HidaSetting D)
 
+/- English proof (translation)
+Simplify using `[orth, Submodule.mem_iInf, LinearMap.mem_ker]`.
+-/
 theorem mem_orth_iff (U : Submodule D.host.E (VS D).V) (v : (VS D).V) :
     v ∈ orth (VS D) U ↔ ∀ x ∈ U, (VS D).hT x v = 0 := by
   simp [orth, Submodule.mem_iInf, LinearMap.mem_ker]
 
+/- English proof (translation)
+Rewrite using `[mem_Lmap, Submodule.coe_smul, zb_coe, Submodule.mem_one]`. Establish `hXsp : Xsp (lf D (X.Fu u)) = Submodule.span D.host.E (Set.range X.eX)` using `by show (X.Fu u).X = _`. Rewrite using `[FlagG.X, X.Fu_e]`. Establish `hz : (lf D (X.Fu u)).fl.z = X.zu u` using `X.flagZVector u`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Take `⟨l, hl, x, hx, hsum⟩` from `Submodule.mem_sup.1 h`. Establish `hxX` using `(mem_XO X u x).1 hx`. Establish `hzo : t • X.zu u ∈ orth (VS D) (Submodule.span D.host.E (Set.range X.eX))`. Rewrite using `[mem_orth_iff]`.
+
+Introduce `y hy`. Rewrite using `[map_smul]`. Rewrite using `[hT_span_left X.eX (X.zu u) (fun a => (X.zu_orth u a).1) hy, smul_zero]`. Establish `hxo : x ∈ orth (VS D) (Submodule.span D.host.E (Set.range X.eX))`. Rewrite using `[mem_orth_iff]`.
+
+Introduce `y hy`. Conclude with `hT_span_left X.eX x (fun a => hT_span_right X.eX (X.eX a) (fun b => X.ee a b) hxX) hy`. Establish `hl' : l = t • X.zu u - x` using `by rw [← hsum, add_sub_cancel_right]`. Establish `hlo : l ∈ orth (VS D) (Submodule.span D.host.E (Set.range X.eX))`. Rewrite using `[hl']`.
+
+Conclude with `Submodule.sub_mem _ hzo hxo`. Establish `hmem : t • (lf D (X.Fu u)).fl.z ∈ Lsub Λ (lf D (X.Fu u))`. Rewrite using `[hz]`. Unfold `Lsub Lrep`. Rewrite using `[hXsp]`.
+
+Use `Submodule.mem_inf.2 ⟨?_, hzo⟩` and prove the remaining obligations. Rewrite using `[← hsum]`. Conclude with `Submodule.add_mem_sup (Submodule.mem_inf.2 ⟨hl, hlo⟩) hxX`. Take `⟨o, ho⟩` from `hF.2.2.2.2 t hmem`. Conclude with `⟨o, ho⟩`.
+
+Introduce and unpack `⟨o, rfl⟩`. Apply `Submodule.mem_sup_left` to reduce the goal to its premises. Establish `hzΛ : X.zu u ∈ Λ`. Use `hF.2.2.1.1` as an intermediate fact. Rewrite `this` using `[hz]`. Then use the resulting hypothesis.
+
+Rewrite using `[algebraMap_smul]`. Conclude with `Λ.smul_mem o hzΛ`.
+-/
 theorem lmap_prim (u : D.what₂.Word) (Λ : Submodule (𝓞 D.host.E) (VS D).V)
     (hF : FixedHyp D Λ (lf D (X.Fu u))) (t : D.host.E) :
     t • zb X u ∈ Lmap X u Λ ↔ t ∈ (1 : Submodule (𝓞 D.host.E) D.host.E) := by
@@ -206,6 +282,9 @@ end GlobalTheory.RowsOrb.Basic
 namespace GlobalTheory.RowsOrb.Basic
 variable {D : D7} (X : HidaSetting D)
 
+/- English proof (translation)
+Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap]`. Both sides reduce to the same expression.
+-/
 theorem mem_hdual_iff {W : Type} [AddCommGroup W] [Module D.host.E W] [Module (𝓞 D.host.E) W]
     [IsScalarTower (𝓞 D.host.E) D.host.E W] (h : W →ₗ⋆[D.host.E] W →ₗ[D.host.E] D.host.E)
     (L : Submodule (𝓞 D.host.E) W) (x : W) :
@@ -213,6 +292,41 @@ theorem mem_hdual_iff {W : Type} [AddCommGroup W] [Module D.host.E W] [Module (�
   simp only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap]
   rfl
 
+/- English proof (translation)
+Establish `hrow` using `(Y.rowsOK u).1 Λ hΛ`. Establish `hU : Formalism.HermitianLatticesTheory.dual (VS D).hT Λ = Λ` using `hrow.2.1.2.1`. Establish `memΛ : ∀ x, x ∈ Λ ↔ ∀ y ∈ Λ, (VS D).hT y x ∈ (1 : Submodule (𝓞 D.host.E) D.host.E)`. Introduce `x`. Rewrite using `[← mem_hdual_iff, hU]`.
+
+Take `⟨f, L, hff, hef, hL, hz, hΛeq⟩` from `Y.split u Λ hΛ`. Simplify using `only [X.Fu_e] at hef hL`. Rewrite `hΛeq` using `[X.Fu_e]`. Unfold `Formalism.HermitianLatticesTheory.IsUnimodular`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Introduce `w hw`. Rewrite `hw` using `[mem_hdual_iff]`. Establish `hwW` using `(mem_Wb X _).1 w.2`. Take `⟨w', hw'⟩ : ∃ w' : (VS D).V, w' = (w : (VS D).V) - ∑ a, (VS D).hT (f a) w • X.eX a` from `⟨_, rfl⟩`. Establish `hfe : ∀ a b, (VS D).hT (f b) (X.eX a) = if a = b then 1 else 0`.
+
+Introduce `a b`. Rewrite using `[a_herm, hef]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hw'f : ∀ b, (VS D).hT (f b) w' = 0`. Introduce `b`.
+
+Rewrite using `[hw']`. Simplify using `only [map_sub, map_sum, map_smul, hfe, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, sub_self]`. Establish `hw'e : ∀ b, (VS D).hT (X.eX b) w' = 0`. Introduce `b`. Rewrite using `[hw']`.
+
+Simplify using `only [map_sub, map_sum, map_smul, X.ee, (hwW b).1, smul_eq_mul, mul_zero, Finset.sum_const_zero, sub_zero]`. Establish `hw'Λ : w' ∈ Λ`. Rewrite using `[memΛ]`. Introduce `y hy`. Rewrite `hy` using `[hΛeq]`.
+
+Take `⟨y1, hy1, y3, hy3, rfl⟩` from `Submodule.mem_sup.1 hy`. Take `⟨y0, hy0, l, hl, rfl⟩` from `Submodule.mem_sup.1 hy1`. Establish `h0 : (VS D).hT y0 w' = 0` using `hT_span_left X.eX w' hw'e (latSpan_le (Formalism.L2.SG.Saturated.aaS D) X.eX hy0)`. Establish `h3 : (VS D).hT y3 w' = 0` using `hT_span_left f w' hw'f (latSpan_le (fun a => (Formalism.L2.SG.Saturated.aaS D a)⁻¹) f hy3)`. Rewrite using `[map_add, map_add, LinearMap.add_apply, LinearMap.add_apply, h0, h3, zero_add, add_zero]`.
+
+Establish `hle : ∀ a, (VS D).hT l (X.eX a) = 0`. Introduce `a`. Rewrite using `[a_herm, (hL l hl a).1, star_zero]`. Establish `e1 : (VS D).hT l w' = (VS D).hT l w`. Rewrite using `[hw']`.
+
+Simplify using `only [map_sub, map_sum, map_smul, hle, smul_zero, Finset.sum_const_zero, sub_zero]`. Establish `hpl : pW X l ∈ Lmap X u Λ`. Rewrite using `[mem_Lmap, pW_coe, pr_apply]`. Establish `e0 : ∑ a, (VS D).hT (X.eX a) l • X.fY a = 0`. Simplify using `only [(hL l hl _).1, zero_smul, Finset.sum_const_zero]`.
+
+Rewrite using `[e0, sub_zero]`. Use `Submodule.sub_mem_sup ?_ ?_` and prove the remaining obligations. Rewrite using `[hΛeq]`. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_right hl)`. Rewrite using `[mem_XO]`.
+
+Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`. Establish `h2` using `hw _ hpl`. Rewrite `h2` using `[hb_apply, pW_coe, pr_apply]`. Establish `e2 : (VS D).hT (l - ∑ a, (VS D).hT (X.fY a) l • X.eX a - ∑ a, (VS D).hT (X.eX a) l • X.fY a) w = (VS D).hT l w`. Simplify using `only [map_sub, map_sum, LinearMap.sub_apply, LinearMap.sum_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, (hwW _).1, (hwW _).2, smul_zero, Finset.sum_const_zero, sub_zero]`.
+
+Rewrite using `[e1, ← e2]`. Conclude with `h2`. Use `show (w : (VS D).V) ∈ Λ ⊔ GlobalTheory.HermLat.rs (𝓞 D.host.E) (GlobalTheory.TypeAsm.F0 X u).X`. Establish `e3 : (w : (VS D).V) = w' + ∑ a, (VS D).hT (f a) w • X.eX a` using `by rw [hw', sub_add_cancel]`. Rewrite using `[e3]`.
+
+Use `Submodule.add_mem_sup hw'Λ ?_` and prove the remaining obligations. Rewrite using `[mem_XO]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`. Introduce `w hw`. Rewrite using `[mem_hdual_iff]`.
+
+Introduce `y hy`. Rewrite using `[hb_apply]`. Rewrite `hw`, `hy` using `[mem_Lmap]`. Take `⟨l1, hl1, x1, hx1, h1⟩` from `Submodule.mem_sup.1 hy`. Take `⟨l2, hl2, x2, hx2, h2⟩` from `Submodule.mem_sup.1 hw`.
+
+Establish `hx1'` using `(mem_XO X u x1).1 hx1`. Establish `hx2'` using `(mem_XO X u x2).1 hx2`. Establish `hyW` using `(mem_Wb X _).1 y.2`. Establish `hwW` using `(mem_Wb X _).1 w.2`. Establish `ea : (VS D).hT x1 w = 0` using `hT_span_left X.eX w (fun a => (hwW a).1) hx1'`.
+
+Establish `eb : (VS D).hT (y : (VS D).V) x2 = 0` using `hT_span_right X.eX _ (fun a => by rw [a_herm, (hyW a).1, star_zero]) hx2'`. Establish `ec : (VS D).hT x1 x2 = 0` using `hT_span_left X.eX x2 (fun a => hT_span_right X.eX (X.eX a) (fun b => X.ee a b) hx2') hx1'`. Establish `ed : (VS D).hT l1 x2 = 0`. Use `eb` as an intermediate fact. Rewrite `this` using `[← h1, map_add, LinearMap.add_apply, ec, add_zero]`.
+
+Conclude with `this`. Establish `key : (VS D).hT (y : (VS D).V) w = (VS D).hT l1 l2`. Rewrite using `[← h1, map_add, LinearMap.add_apply, ea, add_zero, ← h2, map_add, ed, add_zero]`. Rewrite using `[key]`. Conclude with `(memΛ l2).1 hl2 l1 hl1`.
+-/
 theorem lmap_unimod (Y : Full X) (u : D.what₂.Word) (Λ : Submodule (𝓞 D.host.E) (VS D).V) (hΛ : Λ ∈ Y.what₂ u) :
     Formalism.HermitianLatticesTheory.IsUnimodular (hb X) (Lmap X u Λ) := by
   have hrow := (Y.rowsOK u).1 Λ hΛ
@@ -311,6 +425,9 @@ end GlobalTheory.RowsOrb.Basic
 
 namespace GlobalTheory.RowsOrb.Basic
 
+/- English proof (translation)
+Introduce `D large₂ X Y u _ Λ hΛ`. Establish `hF : FixedHyp D Λ (lf D (X.Fu u))` using `((Y.rowsOK u).1 Λ hΛ).2.1`. Conclude with `⟨lmap_isLattice X u Λ hF.1, lmap_unimod X Y u Λ hΛ, lmap_prim X u Λ hF⟩`.
+-/
 theorem lmap_basic : ∀ (D : D7) (large₂ : SizeData₂ D) (X : HidaSetting D) (Y : Full X) (u : D.what₂.Word),
     GlobalTheory.TypeAsm.Std D large₂ → ∀ Λ ∈ Y.what₂ u, Submodule.IsLattice D.host.E (GlobalTheory.RowsOrb.Lmap X u Λ) ∧
       Formalism.HermitianLatticesTheory.IsUnimodular (GlobalTheory.RowsOrb.hb X) (GlobalTheory.RowsOrb.Lmap X u Λ) ∧

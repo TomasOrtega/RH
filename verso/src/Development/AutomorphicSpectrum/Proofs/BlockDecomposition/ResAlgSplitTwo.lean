@@ -14,6 +14,9 @@ def barσ {R : Type} [CommRing R] (σ : R →+* R) (ϖ : R) (h : σ ϖ = ϖ) (k 
     apply Ideal.Quotient.eq_zero_iff_mem.2
     exact Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem barσ_mk {R : Type} [CommRing R] (σ : R →+* R) (ϖ : R) (h : σ ϖ = ϖ) (k : ℕ) (a : R) :
     barσ σ ϖ h k (Ideal.Quotient.mk (lev ϖ k) a) = Ideal.Quotient.mk (lev ϖ k) (σ a) := rfl
 
@@ -25,6 +28,17 @@ structure ResAlg (E : Type) [CommRing E] (τ : E →+* E) (q : ℕ) (ε : ℤ) :
   card : Nat.card E = q ^ 2
   eps : (ε = -1 ∧ IsField E) ∨ (ε = 1 ∧ ¬ IsField E)
 
+/- English proof (translation)
+Use `⟨fun a => ?_, ?_, ?_, by norm_num, ?_, ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `rfl`. Consider the case `simp`. Consider the case `(ext <;> rfl)`.
+
+Apply the tactic sequence `rintro ⟨x, y⟩ h hne fin_cases x <;> fin_cases y all_goals first`. Consider the case `exact (hne rfl).elim`. Consider the case `exact absurd h (by decide)`. Consider the case `exact isUnit_one`. Consider the case `(convert isUnit_one using 1; decide)`.
+
+Use `⟨(1, 0), ?_, ?_⟩` and prove the remaining obligations. Use `isUnit_one using 1` and compare the differences between its conclusion and the goal. Evaluate the decidable proposition. Introduce and unpack `⟨p, r⟩`. Use `⟨(r, r), (p - r, p - r), rfl, rfl, ?_⟩` and prove the remaining obligations.
+
+Apply the tactic sequence `ext <;> first | simp | (simp; ring) | ring`. Use `first`. Consider the case `simp`. Consider the case `(rw [Nat.card_eq_fintype_card]; rfl)`. Consider the case `decide`.
+
+Use `right`. Use `⟨rfl, fun hF => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `hF.mul_inv_cancel (a := ((1, 0) : ZMod 2 × ZMod 2)) (by decide)`. Establish `h2` using `congrArg Prod.snd hb`. Simplify using `at h2`.
+-/
 theorem resAlg_split_two :
     ResAlg (ZMod 2 × ZMod 2) (RingEquiv.prodComm : ZMod 2 × ZMod 2 ≃+* ZMod 2 × ZMod 2).toRingHom 2 1 := by
   refine ⟨fun a => ?_, ?_, ?_, by norm_num, ?_, ?_⟩
@@ -70,19 +84,34 @@ namespace HermSp
 
 variable (B : HermSp E τ V)
 
+/- English proof (translation)
+Establish `h0` using `B.smul_left 0 0 w`. Rewrite `h0` using `[zero_smul, zero_mul]`. Then use the resulting hypothesis.
+-/
 theorem zero_left (w : V) : B.h 0 w = 0 := by
   have h0 := B.smul_left 0 0 w
   rwa [zero_smul, zero_mul] at h0
 
+/- English proof (translation)
+Rewrite using `[B.symm 0 v, B.zero_left, map_zero]`.
+-/
 theorem zero_right (v : V) : B.h v 0 = 0 := by
   rw [B.symm 0 v, B.zero_left, map_zero]
 
+/- English proof (translation)
+Rewrite using `[B.symm (u + w) v, B.add_left, map_add, ← B.symm, ← B.symm]`.
+-/
 theorem add_right (v u w : V) : B.h v (u + w) = B.h v u + B.h v w := by
   rw [B.symm (u + w) v, B.add_left, map_add, ← B.symm, ← B.symm]
 
+/- English proof (translation)
+Rewrite using `[B.symm (a • w) v, B.smul_left, map_mul, ← B.symm]`.
+-/
 theorem smul_right (a : E) (v w : V) : B.h v (a • w) = τ a * B.h v w := by
   rw [B.symm (a • w) v, B.smul_left, map_mul, ← B.symm]
 
+/- English proof (translation)
+Conclude with `(B.symm v v).symm`.
+-/
 theorem self_fixed (hτ : ∀ a, τ (τ a) = a) (v : V) : τ (B.h v v) = B.h v v := by
   exact (B.symm v v).symm
 
@@ -98,11 +127,19 @@ def perp (w : V) : Submodule E V where
     simp only [Set.mem_setOf_eq] at *
     rw [B.smul_left, hx, mul_zero]
 
+/- English proof (translation)
+Conclude with `Iff.rfl`.
+-/
 theorem mem_perp {w v : V} : v ∈ B.perp w ↔ B.h v w = 0 := by
   exact Iff.rfl
 
 noncomputable def coef {w : V} (hw : IsUnit (B.h w w)) (z : V) : E := B.h z w * (hw.unit⁻¹ : Eˣ)
 
+/- English proof (translation)
+Establish `hu : ((hw.unit⁻¹ : Eˣ) : E) * B.h w w = 1`. Establish `h1` using `hw.unit.inv_mul`. Simplify using `using h1`. Establish `hc : B.coef hw z * B.h w w = B.h z w`. Unfold `coef`.
+
+Rewrite using `[mul_assoc, hu, mul_one]`. Establish `e : B.h z w = B.h (z - B.coef hw z • w) w + B.h (B.coef hw z • w) w`. Rewrite using `[← B.add_left, sub_add_cancel]`. Rewrite `e` using `[B.smul_left, hc]`. Take the linear combination `-e`.
+-/
 theorem coef_spec {w : V} (hw : IsUnit (B.h w w)) (z : V) : B.h (z - B.coef hw z • w) w = 0 := by
   have hu : ((hw.unit⁻¹ : Eˣ) : E) * B.h w w = 1 := by
     have h1 := hw.unit.inv_mul
@@ -131,6 +168,9 @@ noncomputable def perpForm {w : V} (hw : IsUnit (B.h w w)) : HermSp E τ (B.perp
     rw [hz, B.add_right, B.smul_right, h0, mul_zero, add_zero]
     exact h1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem perpForm_h {w : V} (hw : IsUnit (B.h w w)) (a b : B.perp w) :
     (B.perpForm hw).h a b = B.h a b := rfl
 
@@ -154,9 +194,15 @@ noncomputable def perpEquiv {w : V} (hw : IsUnit (B.h w w)) : E × B.perp w ≃ 
     intro z
     simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem perpEquiv_apply {w : V} (hw : IsUnit (B.h w w)) (p : E × B.perp w) :
     B.perpEquiv hw p = p.1 • w + (p.2 : V) := rfl
 
+/- English proof (translation)
+Establish `hwv : B.h w v = 0` using `by rw [B.symm v w, hv, map_zero]`. Simplify using `only [B.add_left, B.smul_left, B.add_right, B.smul_right, hv, hwv, mul_zero, add_zero]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_perp {w v : V} (hv : B.h v w = 0) (a : E) :
     B.h (a • w + v) (a • w + v) = a * τ a * B.h w w + B.h v v := by
   have hwv : B.h w v = 0 := by rw [B.symm v w, hv, map_zero]
@@ -195,6 +241,9 @@ def HermSp.ofMatrix (hτ : ∀ a, τ (τ a) = a) {m : ℕ} (S : Matrix (Fin m) (
     have hu : S⁻¹ * S = 1 := Matrix.nonsing_inv_mul _ hd
     simpa [Matrix.mulVec_mulVec, hu] using this
 
+/- English proof (translation)
+Use `show (cT τ x * S * x) i j = dotProduct (fun a => τ (x a i)) (S.mulVec (fun a => x a j))`. Simplify using `only [Matrix.mul_apply, cT, Matrix.transpose_apply, Matrix.map_apply, dotProduct, Matrix.mulVec, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gram_apply (hτ : ∀ a, τ (τ a) = a) {m n : ℕ} (S : Matrix (Fin m) (Fin m) E)
     (hS : cT τ S = S) (hd : IsUnit S.det) (x : Matrix (Fin m) (Fin n) E) (i j : Fin n) :
     (cT τ x * S * x) i j = (HermSp.ofMatrix hτ S hS hd).h (fun a => x a j) (fun a => x a i) := by

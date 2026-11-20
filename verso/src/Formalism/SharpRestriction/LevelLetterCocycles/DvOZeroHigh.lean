@@ -19,6 +19,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 
 open Formalism.MainNotions.ArcLiftingSetup Formalism.MainNotions.UnusedSlot80.PhiPowers
 
+/- English proof (translation)
+Set `E : K₀ ≃ₐ[Qp] K` to `AlgEquiv.ofBijective (IsScalarTower.toAlgHom Qp K₀ K) hbij`. Use `⟨(W.emb c).comp E.symm.toAlgHom, ?_, fun x => ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using `only [AlgHom.comp_apply, AlgEquiv.toAlgHom_eq_coe, AlgHom.coe_coe]`. Use `congr 1`.
+
+Conclude with `E.symm_apply_apply x`. Simplify using `only [AlgHom.comp_apply, AlgEquiv.toAlgHom_eq_coe, AlgHom.coe_coe]`. Use `congr 1`. Conclude with `E.symm_apply_apply x`.
+-/
 theorem tau_over (hbij : Function.Bijective (algebraMap K₀ K)) (c : ZMod n) :
     ∃ τ : K →ₐ[Qp] LL, Formalism.MainNotions.LiftingTheory.Over W τ c ∧ ∀ x : K₀, τ (algebraMap K₀ K x) = W.emb c x := by
   let E : K₀ ≃ₐ[Qp] K := AlgEquiv.ofBijective (IsScalarTower.toAlgHom Qp K₀ K) hbij
@@ -31,6 +36,11 @@ theorem tau_over (hbij : Function.Bijective (algebraMap K₀ K)) (c : ZMod n) :
     congr 1
     exact E.symm_apply_apply x
 
+/- English proof (translation)
+Unfold `dvO dv`. Use `Submodule.sum_mem _ fun m _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `hbN : b m ∈ W.N T` using `(hb.1 m).1.1`. Establish `hbl : (letE c' : LetA O n) • b m = b m` using `Formalism.MainNotions.UnusedSlot80.ArcF.letter_of_Nl W T c' (hb.1 m).2`. Establish `hcl : cmpD W T (b m) ∈ DcrisL PD T.ρ (W.emb c')`.
+
+Rewrite using `[Formalism.MainNotions.UnusedSlot80.ArcF.cmpD_of_mem W T hbN]`. Conclude with `Formalism.MainNotions.UnusedSlot80.ArcF.cmp_mem_letter W T c' hbN hbl`. Conclude with `Formalism.MainNotions.UnusedSlot80.ArcF.φVB_pow_letter W T c' hcl e`.
+-/
 theorem dvO_letter (T : LocLat G Qp LL O) (c' : ZMod n) {d : ℕ} (b : Fin d → W.DD T)
     (hb : Formalism.MainNotions.LiftingTheory.IsFrameΔ W T c' b) (e : ℕ) (c₀ : Fin d → O) :
     dvO W T e b c₀ ∈ DcrisL PD T.ρ (W.emb (c' + (e : ZMod n))) := by
@@ -44,6 +54,13 @@ theorem dvO_letter (T : LocLat G Qp LL O) (c' : ZMod n) {d : ℕ} (b : Fin d →
 
 variable [IsDomain O]
 
+/- English proof (translation)
+Use `set i : ZMod n := c' + ((e - s : ℕ) : ZMod n) with hidef`. Take `⟨τ, hτ, hover⟩` from `tau_over W hbij i`. Establish `hJ : ∀ a, IsJumpV PD T.ρ τ a → -(A.Hs (c' + (e : ZMod n)) e s : ℤ) ≤ a`. Introduce `a ha`. Establish `hw` using `Formalism.MainNotions.UnusedSlot80.PhiPowers.win_sub A.G₀ A.S A.η (A.ty i) (hA.2.2.2.2.1 i) (hT.2 i τ hτ a ha)`.
+
+Establish `hle` using `Formalism.MainNotions.UnusedSlot80.ArcC.hs_ge A hA c' hc' e (e - s) (by omega) (by omega)`. Rewrite `hle` using `[show e - (e - s) = s by omega, ← hidef]`. Use `hw.1` as an intermediate fact. Move the coercions through the operations in `at this ⊢`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hy` using `fil_low W T i τ hover hbij.2 _ hJ (dvO_letter W T c' b hb (e - s) c₀)`. Use `⟨dvO W T (e - s) b c₀, ⟨hy, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[show c' + (e : ZMod n) - (s : ZMod n) = i by rw [hidef]; push_cast [Nat.cast_sub hse.le]; ring]`. Conclude with `dvO_letter W T c' b hb (e - s) c₀`. Rewrite using `[← dvO_add, Nat.sub_add_cancel hse.le]`.
+-/
 theorem dvO_filLow (hbij : Function.Bijective (algebraMap K₀ K)) (A : ArcP n) (hA : A.OK) (c' : ZMod n)
     (hc' : c' ∈ A.cuts) (T : LocLat G Qp LL O) (hT : Win W A T) {d : ℕ} (b : Fin d → W.DD T)
     (hb : Formalism.MainNotions.LiftingTheory.IsFrameΔ W T c' b) (e s : ℕ) (hse : s < e) (c₀ : Fin d → O) :
@@ -64,6 +81,15 @@ theorem dvO_filLow (hbij : Function.Bijective (algebraMap K₀ K)) (A : ArcP n) 
     exact dvO_letter W T c' b hb (e - s) c₀
   · rw [← dvO_add, Nat.sub_add_cancel hse.le]
 
+/- English proof (translation)
+Take `⟨y, ⟨hyF, hyD⟩, hye⟩` from `h`. Use `set i : ZMod n := c' + (e : ZMod n) - (s : ZMod n) with hidef`. Take `⟨τ, hτ, hover⟩` from `tau_over W hbij i`. Establish `hHw : Hw A.G₀ A.S A.η (A.ty i) ≤ A.Hs (c' + (e : ZMod n)) e s` using `Formalism.MainNotions.UnusedSlot80.ArcC.hw_le_hs A hA c' hc' e s hse`. Establish `hJ : ∀ a, IsJumpV PD T.ρ τ a → a ≤ (Hw A.G₀ A.S A.η (A.ty i) : ℤ)` using `fun a ha => (Formalism.MainNotions.UnusedSlot80.PhiPowers.win_sub A.G₀ A.S A.η (A.ty i) (hA.2.2.2.2.1 i) (hT.2 i τ hτ a ha)).2`.
+
+Establish `hy0` using `fil_high W T i τ hover hbij.2 _ hJ u (by omega) hyD hyF`. Rewrite `hye` using `[hy0, map_zero]`. Establish `hfb` using `(Formalism.MainNotions.UnusedSlot80.ArcF.frame_basis W hs hV T h3 (h5 T _ _ hT.1 (jumpsLet_of_win W A hA T hT)) hmod c' e b hb).1`. Establish `hdv : dvO W T e b c₀ = ∑ m, algebraMap O LL (c₀ m) • dv W T e b (Pi.single m 1)`. Simplify using `only [Formalism.MainNotions.UnusedSlot80.ArcF.dv_single]`.
+
+Both sides reduce to the same expression. Establish `hsum : ∑ m, algebraMap O LL (c₀ m) • dv W T e b (Pi.single m 1) = 0` using `by rw [← hdv, ← hye]`. Use function extensionality and compare the values at `m`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[Fintype.linearIndependent_iff.1 hfb _ hsum m]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem dvO_zero_high [NeZero n] (hbij : Function.Bijective (algebraMap K₀ K))
     (hinj : Function.Injective (algebraMap O LL)) (hV : Formalism.MainNotions.WachCoordinates.Br.ValRing (LL := LL) O v)
     (hs : W.s = 1) (h5 : ∀ (T : LocLat G Qp LL O) (M h : ZMod n → ℕ), IsCrys PD T.ρ →
@@ -92,6 +118,13 @@ theorem dvO_zero_high [NeZero n] (hbij : Function.Bijective (algebraMap K₀ K))
   rw [Fintype.linearIndependent_iff.1 hfb _ hsum m]
   simp
 
+/- English proof (translation)
+Use `⟨d, h, fun i => Pi.single i 1, fun _ s => (A.Hs a e s : ℤ), fun i => ⟨?_, ?_⟩, fun k => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, hhu⟩` from `hh i`. Use `⟨W.π₀ * u, W.AΔ.mul_mem hπ hu, ?_⟩` and prove the remaining obligations. Establish `hnum : ∏ s ∈ Finset.range e, ps W s ^ ((A.Hs a e s : ℤ)).toNat = abelian₂ W A a e`. Simplify using `[abelian₂]`.
+
+Establish `hden : ∏ s ∈ Finset.range e, ps W s ^ (-(A.Hs a e s : ℤ)).toNat = 1` using `Finset.prod_eq_one fun s _ => by rw [Int.toNat_eq_zero.2 (by omega), pow_zero]`. Use `show algebraMap (LetA O n) W.EE (∏ s ∈ Finset.range e, ps W s ^ (-(A.Hs a e s : ℤ)).toNat) * h i = algebraMap (LetA O n) W.EE ((letE a * ∏ s ∈ Finset.range e, ps W s ^ ((A.Hs a e s : ℤ)).toNat) * (W.π₀ * u))`. Rewrite using `[hden, hnum, ← one_mul (h i), ← map_one (algebraMap (LetA O n) W.EE), hhu, map_one, one_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `s hs`. Conclude with `hlow _ s hs`. Simplify using `[Pi.single_apply]`.
+-/
 theorem secIn_piLam (hπ : W.π₀ ∈ W.AΔ) (A : ArcP n) (a : ZMod n) (e : ℕ) (T : LocLat G Qp LL O) {d : ℕ}
     (b : Fin d → W.DD T)
     (hlow : ∀ c₀ : Fin d → O, ∀ s < e, dvO W T e b c₀ ∈ FilS W T a s (-(A.Hs a e s : ℤ)))

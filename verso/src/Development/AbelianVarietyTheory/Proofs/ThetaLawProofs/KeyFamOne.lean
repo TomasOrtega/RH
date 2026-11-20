@@ -9,6 +9,9 @@ open GlobalTheory.KeyCl
 
 namespace GlobalTheory.KeyFamClosing
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.KeyFamOfExact.keyFam_of_keyFormula GlobalTheory.T.exactKeyFormula_proof`.
+-/
 theorem keyFam_one : KeyFam fun _ => 1 :=
   GlobalTheory.KeyFamOfExact.keyFam_of_keyFormula GlobalTheory.T.exactKeyFormula_proof
 

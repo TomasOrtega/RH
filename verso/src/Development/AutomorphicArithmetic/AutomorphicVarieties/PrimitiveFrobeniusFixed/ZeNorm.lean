@@ -14,6 +14,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Bern
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.V.Odd UpperTheory.V.Stick UpperTheory.V.ML
 open scoped nonZeroDivisors Pointwise
 
+/- English proof (translation)
+Take `⟨hinj, -, -, -, -, h0, hfin, -, -⟩` from `dvrFacts l c.O`. Establish `hE : (eO l c.O).toNat ≠ 0`. Rewrite using `[Ne, ENat.toNat_eq_zero, not_or]`. Conclude with `⟨h0, ne_top_of_le_ne_top (ENat.coe_ne_top _) hfin⟩`. Establish `hl : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`.
+
+Establish `hl0 : (0 : ℝ) < (l : ℝ)⁻¹` using `by positivity`. Establish `hl1 : (l : ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ hl`. Use `⟨fun x => ?_, fun x y h => ?_⟩` and prove the remaining obligations. Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Simplify using the standard rewrite rules.
+
+Use `normO l c.O x hx` as an intermediate fact. Rewrite using `[← pow_le_one_iff_of_nonneg (norm_nonneg _) hE, this]`. Conclude with `pow_le_one₀ hl0.le hl1.le`. Break down `eq_or_ne y 0 with rfl | hy` into its components or cases. Conclude with `dvd_zero _`.
+
+Establish `hx : x ≠ 0`. Introduce and unpack `rfl`. Apply `hy` to reduce the goal to its premises. Establish `: (y : PadicAlgCl l) = 0` using `by simpa using h`. Conclude with `Subtype.ext this`.
+
+Establish `h1` using `pow_le_pow_left₀ (norm_nonneg _) h (eO l c.O).toNat`. Rewrite `h1` using `[normO l c.O x hx, normO l c.O y hy, pow_le_pow_iff_right_of_lt_one₀ hl0 hl1]`. Rewrite using `[← IsDiscreteValuationRing.addVal_le_iff_dvd]`. Establish `a1 : IsDiscreteValuationRing.addVal c.O x ≠ ⊤`. Rewrite using `[Ne, IsDiscreteValuationRing.addVal_eq_top_iff]`.
+
+Conclude with `hx`. Establish `a2 : IsDiscreteValuationRing.addVal c.O y ≠ ⊤`. Rewrite using `[Ne, IsDiscreteValuationRing.addVal_eq_top_iff]`. Conclude with `hy`. Rewrite using `[← ENat.coe_toNat a1, ← ENat.coe_toNat a2]`.
+
+Conclude with `h1` after adjusting the coercions.
+-/
 private theorem ze_norm {l : ℕ} [Fact l.Prime] (c : HV.Coef l) :
     (∀ x : c.O, ‖(x : PadicAlgCl l)‖ ≤ 1) ∧ ∀ x y : c.O, ‖(y : PadicAlgCl l)‖ ≤ ‖(x : PadicAlgCl l)‖ → x ∣ y := by
   obtain ⟨hinj, -, -, -, -, h0, hfin, -, -⟩ := dvrFacts l c.O
@@ -46,6 +61,13 @@ private theorem ze_norm {l : ℕ} [Fact l.Prime] (c : HV.Coef l) :
     rw [← ENat.coe_toNat a1, ← ENat.coe_toNat a2]
     exact_mod_cast h1
 
+/- English proof (translation)
+Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed ℚ`. Establish `: CharZero Ω` using `charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Establish `: NeZero ((l : ℕ) : Ω)` using `⟨Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω (l ^ m)`. Establish `h1 : g ζ = ζ ^ (PadicInt.toZModPow m ((cycZ ℚ Ω l g : ℤ_[l]ˣ) : ℤ_[l])).val` using `cyclotomicCharacter.spec l g.toRingEquiv ζ hζ.pow_eq_one`.
+
+Establish `h2 : g ζ = ζ ^ k` using `hg ζ (by obtain ⟨d, rfl⟩ := h; rw [pow_mul, hζ.pow_eq_one, one_pow])`. Establish `h3 : (PadicInt.toZModPow m ((cycZ ℚ Ω l g : ℤ_[l]ˣ) : ℤ_[l])).val ≡ k [MOD l ^ m]`. Establish `ho : IsOfFinOrder ζ` using `isOfFinOrder_iff_pow_eq_one.2 ⟨_, NeZero.pos _, hζ.pow_eq_one⟩`. Use `h1.symm.trans h2` as an intermediate fact. Rewrite `this` using `[ho.pow_eq_pow_iff_modEq, ← hζ.eq_orderOf]`. Then use the resulting hypothesis.
+
+Establish `h4 : ((cycZ ℚ Ω l g : ℤ_[l]ˣ) : ℤ_[l]) - k ∈ Ideal.span {(l : ℤ_[l]) ^ m}`. Rewrite using `[← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, map_natCast, ← (ZMod.natCast_eq_natCast_iff _ _ _).2 h3, ZMod.natCast_zmod_val, sub_self]`. Establish `h5` using `map_dvd (algebraMap ℤ_[l] O) (Ideal.mem_span_singleton.1 h4)`. Simplify `h5` using `[chiO]`.
+-/
 private theorem ze_chi {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O]
     [Algebra ℤ_[l] O] {F m k : ℕ} (h : l ^ m ∣ F) {g : G ℚ Ω} (hg : Pows F k g) :
     (l : O) ^ m ∣ (chiO ℚ Ω l O g : O) - k := by
@@ -66,6 +88,9 @@ private theorem ze_chi {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ
   have h5 := map_dvd (algebraMap ℤ_[l] O) (Ideal.mem_span_singleton.1 h4)
   simpa [chiO] using h5
 
+/- English proof (translation)
+Establish `h1 : Chr.cls ℚ Ω f g = ZMod.unitOfCoprime k (hk.of_dvd_right h)`. Use `(Chr.clsFacts ℚ Ω f).2.2.1 g _ fun ζ hζ => ?_` and prove the remaining obligations. Rewrite using `[ZMod.coe_unitOfCoprime, ZMod.val_natCast, ← pow_eq_pow_mod k hζ]`. Conclude with `hg ζ (by obtain ⟨d, rfl⟩ := h; rw [pow_mul, hζ, one_pow])`. Rewrite using `[Chr.dirG, MonoidHom.comp_apply, h1, MulChar.coe_toUnitHom, ZMod.coe_unitOfCoprime]`.
+-/
 private theorem ze_dir {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {O : Type} [CommRing O]
     {f F k : ℕ} [NeZero f] (ψ : DirichletCharacter O f) (h : f ∣ F) (hk : k.Coprime F) {g : G ℚ Ω} (hg : Pows F k g) :
     (Chr.dirG ℚ Ω ψ g : O) = ψ k := by
@@ -75,6 +100,11 @@ private theorem ze_dir {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ
     exact hg ζ (by obtain ⟨d, rfl⟩ := h; rw [pow_mul, hζ, one_pow])
   rw [Chr.dirG, MonoidHom.comp_apply, h1, MulChar.coe_toUnitHom, ZMod.coe_unitOfCoprime]
 
+/- English proof (translation)
+Establish `h1` using `(ze_chi l O hl hg).trans (sub_dvd_pow_sub_pow _ _ e)`. Establish `h2 : (Chr.Psi l e (Chr.dirG ℚ Ω ψ) g : O) = (chiO ℚ Ω l O g : O) ^ e * ψ k`. Rewrite using `[← ze_dir ψ h hk hg]`. Simplify using `[Chr.Psi]`. Rewrite using `[h2, ← sub_mul]`.
+
+Conclude with `h1.mul_right _`.
+-/
 private theorem ze_psi {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] {O : Type} [CommRing O]
     [Algebra ℤ_[l] O] {f F m k : ℕ} [NeZero f] (ψ : DirichletCharacter O f) (e : ℕ) (hl : l ^ m ∣ F) (h : f ∣ F)
     (hk : k.Coprime F) {g : G ℚ Ω} (hg : Pows F k g) :
@@ -86,6 +116,19 @@ private theorem ze_psi {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ
   rw [h2, ← sub_mul]
   exact h1.mul_right _
 
+/- English proof (translation)
+Use `⟨fun g hg => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Establish `h1` using `ze_psi l ψ e hl h (Nat.coprime_one_left F) (g := g) (fun x hx => by rw [pow_one]; exact hg x hx)`. Rewrite using `[MonoidHom.inv_apply]`. Use `set u := Chr.Psi l e (Chr.dirG ℚ Ω ψ) g`. Establish `e1 : ((u⁻¹ : Oˣ) : O) - 1 = (u - ((1 : ℕ) : O) ^ e * ψ (1 : ℕ)) * (-(u⁻¹ : Oˣ))`.
+
+Simplify using `[sub_mul]`. Rewrite using `[e1]`. Conclude with `h1.mul_right _`. Establish `h1` using `ze_psi l ψ e hl h (ZMod.val_coe_unit_coprime _) hg set k := (((-1 : (ZMod F)ˣ) : ZMod F)).val with hk`. Establish `h2 : F ∣ k + 1`.
+
+Rewrite using `[← ZMod.natCast_eq_zero_iff, Nat.cast_add, hk, ZMod.natCast_zmod_val]`. Simplify using the standard rewrite rules. Establish `h3 : (k : ZMod f) = -1`. Use `(ZMod.natCast_eq_zero_iff _ _).2 (h.trans h2)` as an intermediate fact. Rewrite `this` using `[Nat.cast_add, Nat.cast_one]`.
+
+Conclude with `eq_neg_of_add_eq_zero_left this`. Establish `h4 : (l : O) ^ m ∣ (k : O) - (-1)`. Use `Nat.cast_dvd_cast (α := O) (hl.trans h2)` as an intermediate fact. Simplify using `using this`. Establish `h5` using `h1.add ((h4.trans (sub_dvd_pow_sub_pow _ _ e)).mul_right (ψ k))`.
+
+Rewrite `h5` using `[h3, hψ]`. Rewrite using `[MonoidHom.inv_apply]`. Use `set u := Chr.Psi l e (Chr.dirG ℚ Ω ψ) g`. Establish `e0 : (-1 : O) ^ e * (-1) ^ (e + 1) = -1`. Rewrite using `[← pow_add]; exact Odd.neg_one_pow ⟨e, by ring⟩`.
+
+Establish `e1 : ((u⁻¹ : Oˣ) : O) + 1 = (u - (k : O) ^ e * (-1) ^ (e + 1) + ((k : O) ^ e - (-1) ^ e) * (-1) ^ (e + 1)) * ((u⁻¹ : Oˣ) : O)`. Take the linear combination `((u⁻¹ : Oˣ) : O) * e0 - u.mul_inv`. Rewrite using `[e1]`. Conclude with `h5.mul_right _`.
+-/
 private theorem ze_dat {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] {O : Type} [CommRing O]
     [Algebra ℤ_[l] O] {f F m : ℕ} [NeZero f] [NeZero F] (ψ : DirichletCharacter O f) (e : ℕ) (hl : l ^ m ∣ F) (h : f ∣ F)
     (hψ : ψ (-1) = (-1) ^ (e + 1)) :
@@ -120,6 +163,15 @@ private theorem ze_dat {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ
       linear_combination ((u⁻¹ : Oˣ) : O) * e0 - u.mul_inv
     rw [e1]; exact h5.mul_right _
 
+/- English proof (translation)
+Rewrite using `[Bern.b_level h (e + 1) χ (NeZero.pos F) (by omega), norm_mul, norm_prod, Finset.prod_eq_one, mul_one]`. Introduce `p hp`. Establish `hpp` using `Nat.prime_of_mem_primeFactors hp`. Break down `hF p hpp (Nat.dvd_of_mem_primeFactors hp) with rfl | hd` into its components or cases. Establish `h1 : ‖(p : PadicAlgCl p)‖ < 1`.
+
+Establish `: (p : PadicAlgCl p) = algebraMap ℚ_[p] (PadicAlgCl p) (p : ℚ_[p])` using `by simp`. Rewrite using `[this, norm_algebraMap']`. Conclude with `Padic.norm_p_lt_one`. Establish `h2 : ‖-(χ p * (p : PadicAlgCl p) ^ (e + 1 - 1))‖ < ‖(1 : PadicAlgCl p)‖`. Rewrite using `[norm_neg, norm_mul, norm_pow, norm_one]`.
+
+Conclude with `mul_lt_one_of_nonneg_of_lt_one_right (hχ _) (by positivity) (pow_lt_one₀ (norm_nonneg _) h1 (by omega))`. Rewrite using `[sub_eq_add_neg, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm h2.ne', max_eq_left h2.le, norm_one]`. Rewrite using `[MulChar.map_nonunit χ (a := (p : ZMod f)) (by`. Rewrite using `[ZMod.isUnit_iff_coprime]`. Conclude with `fun hc => hpp.one_lt.ne' (Nat.Coprime.eq_one_of_dvd hc hd))]`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem ze_gen {l : ℕ} [Fact l.Prime] {f F e : ℕ} [NeZero F] (h : f ∣ F) (he : 1 ≤ e)
     (hF : ∀ p : ℕ, p.Prime → p ∣ F → p = l ∨ p ∣ f) (χ : DirichletCharacter (PadicAlgCl l) f)
     (hχ : ∀ x, ‖χ x‖ ≤ 1) :
@@ -141,10 +193,20 @@ private theorem ze_gen {l : ℕ} [Fact l.Prime] {f F e : ℕ} [NeZero F] (h : f 
       exact fun hc => hpp.one_lt.ne' (Nat.Coprime.eq_one_of_dvd hc hd))]
     simp
 
+/- English proof (translation)
+Establish `: x = (x - y) + y` using `by ring`. Rewrite using `[this, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm h.ne, max_eq_right h.le]`.
+-/
 private theorem ze_eq {K : Type} [NormedField K] [IsUltrametricDist K] {x y : K} (h : ‖x - y‖ < ‖y‖) : ‖x‖ = ‖y‖ := by
   have : x = (x - y) + y := by ring
   rw [this, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm h.ne, max_eq_right h.le]
 
+/- English proof (translation)
+Establish `hw : ‖2 * u * T‖ = ‖T‖` using `by rw [norm_mul, norm_mul, h2, hu, one_mul, one_mul]`. Establish `h3 : ‖v * S‖ = ‖2 * u * T‖`. Apply `ze_eq` to reduce the goal to its premises. Rewrite using `[hw]`. Rewrite `h` using `[norm_mul]`.
+
+Conclude with `lt_of_mul_lt_mul_left (h.trans_lt hε) (norm_nonneg d)`. Rewrite `h3` using `[hw, norm_mul, hv, one_mul]`. Rewrite using `[← h3]`. Apply `ze_eq` to reduce the goal to its premises. Rewrite using `[h3]`.
+
+Conclude with `(hz.trans_lt hε).trans_le (mul_le_of_le_one_left (norm_nonneg _) hd)`.
+-/
 private theorem ze_an {K : Type} [NormedField K] [IsUltrametricDist K] {z S v u T d : K} {ε : ℝ} (hv : ‖v‖ = 1) (hu : ‖u‖ = 1)
     (h2 : ‖(2 : K)‖ = 1) (hd : ‖d‖ ≤ 1) (h : ‖d * (v * S - 2 * u * T)‖ ≤ ε) (hz : ‖z - S‖ ≤ ε) (hε : ε < ‖d‖ * ‖T‖) :
     ‖z‖ = ‖T‖ := by
@@ -160,6 +222,51 @@ private theorem ze_an {K : Type} [NormedField K] [IsUltrametricDist K] {z S v u 
   rw [h3]
   exact (hz.trans_lt hε).trans_le (mul_le_of_le_one_left (norm_nonneg _) hd)
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l hlp c hl2 f _ ψ e he hprim hpar hg a ha a₀ ha₀`. Establish `hp : l.Prime` using `hlp.out`. Take `⟨hle, hdvd⟩` from `ze_norm c`. Establish `hunit : ∀ x : c.O, IsUnit x → ‖(x : PadicAlgCl l)‖ = 1`. Introduce and unpack `_ ⟨u, rfl⟩`.
+
+Establish `h1 : ‖((u : c.O) : PadicAlgCl l)‖ * ‖((u⁻¹ : c.Oˣ) : c.O).1‖ = 1`. Rewrite using `[← norm_mul, ← Subalgebra.coe_mul, Units.mul_inv]`. Simplify using the standard rewrite rules. Establish `h2` using `hle u`. Establish `h3` using `hle (u⁻¹ : c.Oˣ)`.
+
+Establish `h4` using `norm_nonneg ((u : c.O) : PadicAlgCl l)`. Use the polynomial consequences of the given equalities and inequalities. Establish `hdn : ∀ x y : c.O, x ∣ y → ‖(y : PadicAlgCl l)‖ ≤ ‖(x : PadicAlgCl l)‖`. Introduce and unpack `x _ ⟨y, rfl⟩`. Rewrite using `[Subalgebra.coe_mul, norm_mul]`.
+
+Conclude with `mul_le_of_le_one_right (norm_nonneg _) (hle y)`. Establish `hnat : ∀ n : ℕ, ‖(n : PadicAlgCl l)‖ ≤ 1` using `fun n => by simpa using hle n`. Establish `hnu : ∀ n : ℕ, ¬ l ∣ n → ‖(n : PadicAlgCl l)‖ = 1` using `fun n hn => by`. Simplify using `using hunit n ((dvrFacts l c.O).2.2.2.2.2.2.2.2 n hn)`. Establish `hl1 : ‖(l : PadicAlgCl l)‖ < 1`.
+
+Establish `: (l : PadicAlgCl l) = algebraMap ℚ_[l] (PadicAlgCl l) (l : ℚ_[l])` using `by simp`. Rewrite using `[this, norm_algebraMap']`. Conclude with `Padic.norm_p_lt_one`. Use `set ψ' : DirichletCharacter (PadicAlgCl l) f := ψ.ringHomComp c.O.val.toRingHom with hψ'`. Establish `hv : ∀ x, ψ' x = ((ψ x : c.O) : PadicAlgCl l)` using `fun x => rfl`.
+
+Establish `hpar' : ψ' (-1) = (-1) ^ (e + 1)` using `by rw [hv, hpar]; simp`. Establish `hprim' : ψ'.IsPrimitive` using `((Bern.b_condmap c.O.val.toRingHom Subtype.val_injective ψ).1).trans hprim`. Establish `hB : Bern.Bprim (e + 1) ψ' = Bern.genB (e + 1) (ψ' : ZMod f → PadicAlgCl l)` using `((Bern.b_primeq (e + 1) ψ').1 hprim').1`. Establish `hB0` using `(Bern.b_nzany ψ' (e + 1) (by omega) hpar').1`. Establish `he0 : ((e : PadicAlgCl l) + 1) ≠ 0` using `by exact_mod_cast Nat.succ_ne_zero e`.
+
+Establish `hd0 : (Stk.dk (e + 1) : PadicAlgCl l) ≠ 0` using `by exact_mod_cast (Stk.dk_pos (Nat.succ_pos e)).ne'`. Establish `ha0 : (a₀ : PadicAlgCl l) ≠ 0` using `fun h => ha₀ (Subtype.ext h)`. Use `set T : ℝ := ‖Bern.Bprim (e + 1) ψ' / (e + 1)‖ with hT`. Establish `hTpos : 0 < T` using `norm_pos_iff.2 (div_ne_zero hB0 he0)`. Establish `hpos : 0 < ‖(a₀ : PadicAlgCl l)‖ * (‖(Stk.dk (e + 1) : PadicAlgCl l)‖ * T)` using `mul_pos (norm_pos_iff.2 ha0) (mul_pos (norm_pos_iff.2 hd0) hTpos)`.
+
+Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hpos hl1`. Take `⟨m, hm1, hmf, hm⟩ : ∃ m : ℕ, 1 ≤ m ∧ f.factorization l ≤ m ∧ ‖(l : PadicAlgCl l) ^ m‖ < ‖(a₀ : PadicAlgCl l)‖ * (‖(Stk.dk (e + 1) : PadicAlgCl l)‖ * T)` from `⟨n + f.factorization l + 1, by omega, by omega, by`. Rewrite using `[norm_pow]`. Conclude with `(pow_le_pow_of_le_one (norm_nonneg _) hl1.le (by omega)).trans_lt hn⟩`. Establish `hF0 : NeZero (ordCompl[l] f * l ^ m)` using `⟨mul_ne_zero (Nat.ordCompl_pos l (NeZero.ne f)).ne' (pow_ne_zero _ hp.ne_zero)⟩`.
+
+Establish `hfF : f ∣ ordCompl[l] f * l ^ m` using `by conv_lhs => rw [← Nat.ordProj_mul_ordCompl_eq_self f l, mul_comm]`. Conclude with `Nat.mul_dvd_mul_left _ (pow_dvd_pow l hmf)`. Establish `hlF : l ^ m ∣ ordCompl[l] f * l ^ m` using `dvd_mul_left _ _`. Establish `hFp : ∀ p : ℕ, p.Prime → p ∣ ordCompl[l] f * l ^ m → p = l ∨ p ∣ f` using `fun p hpp hd => (hpp.dvd_mul.1 hd).elim (fun h => Or.inr (h.trans (Nat.ordCompl_dvd f l))) fun h => Or.inl ((Nat.prime_dvd_prime_iff_eq hpp hp).1 (hpp.dvd_of_dvd_pow h))`. Establish `hcop : (ordCompl[l] f).Coprime l` using `(Nat.coprime_ordCompl hp (NeZero.ne f)).symm`.
+
+Use `⟨m, ?_⟩` and prove the remaining obligations. Generalize the expression as in `hF : ordCompl[l] f * l ^ m = F at hF0 hfF hlF hFp ⊢`. Take `⟨hd1, hd2⟩` from `ze_dat (Ω := Ω) l ψ e hlF hfF hpar`. Use `choose σ hσ' using (galBasic Ω F (NeZero.ne F)).2.2.2.1`. Take `⟨g, hg'⟩` from `id hg`.
+
+Use `set b := ((Chr.cls ℚ Ω F g : (ZMod F)ˣ) : ZMod F).val with hb`. Establish `hbc : b.Coprime F` using `ZMod.val_coe_unit_coprime _`. Establish `hgb : Pows F b g` using `fun x hx => Chr.cls_spec F g x hx`. Establish `hχ : ∀ k : ℕ, k.Coprime F → DirichletCharacter.changeLevel hfF ψ' (k : ZMod F) = ψ' (k : ZMod f)` using `fun k hk => by`. Use `DirichletCharacter.changeLevel_eq_cast_of_dvd ψ' hfF (ZMod.unitOfCoprime k hk)` as an intermediate fact.
+
+Rewrite `this` using `[ZMod.coe_unitOfCoprime, ZMod.cast_natCast hfF]`. Then use the resulting hypothesis. Establish `hχ1 : DirichletCharacter.changeLevel hfF ψ' (-1) = (-1) ^ (e + 1)`. Use `DirichletCharacter.changeLevel_eq_cast_of_dvd ψ' hfF (-1)` as an intermediate fact. Rewrite `this` using `[Units.val_neg, Units.val_one, ZMod.cast_neg hfF, ZMod.cast_one hfF]`. Rewrite using `[this, hpar']`.
+
+Establish `hc` using `zCong l F m e b hlF hm1 he hbc _ hχ1`. Establish `hlb : ¬ l ∣ b` using `fun h => hp.one_lt.ne' (Nat.eq_one_of_dvd_coprimes hbc h ((dvd_pow_self l (by omega)).trans hlF))`. Establish `hψb : ‖ψ' (b : ZMod f)‖ = 1`. Rewrite using `[hv, ← ze_dir ψ hfF hbc hgb]`. Conclude with `hunit _ (Units.isUnit _)`.
+
+Establish `hlm : ‖(l : PadicAlgCl l) ^ m‖ < 1`. Rewrite using `[norm_pow]; exact pow_lt_one₀ (norm_nonneg _) hl1 (by omega)`. Establish `hu : ‖ψ' (b : ZMod f) * (b : PadicAlgCl l) ^ (e + 1) - 1‖ = 1`. Establish `h1` using `ze_psi l ψ e hlF hfF hbc hgb`. Establish `h2` using `ze_chi l c.O hlF hgb`.
+
+Rewrite `hg'` using `[MonoidHom.inv_apply]`. Use `set u := Chr.Psi l e (Chr.dirG ℚ Ω ψ) g`. Use `set w := (chiO ℚ Ω l c.O g : c.O)`. Establish `h3` using `hunit _ (hg'.mul u.isUnit).neg`. Establish `h4 : (l : c.O) ^ m ∣ (ψ (b : ZMod f) * (b : c.O) ^ (e + 1) - 1) - -((((u⁻¹ : c.Oˣ) : c.O) - w) * u)`.
+
+Use `((h1.mul_right (b : c.O)).add (h2.mul_right (u : c.O))).neg_right` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Take the linear combination `u.inv_mul`. Establish `h5` using `hdn _ _ h4`. Rewrite using `[← h3]`.
+
+Apply `ze_eq` to reduce the goal to its premises. Rewrite using `[h3]`. Use `lt_of_le_of_lt ?_ hlm` and prove the remaining obligations. Simplify `h5` using `[hv]`. Establish `hz : ‖((zVal (Chr.Psi l e (Chr.dirG ℚ Ω ψ))⁻¹ σ b : c.O) : PadicAlgCl l) - ∑ t : (ZMod F)ˣ, (th F b t : PadicAlgCl l) * (((t : ZMod F).val : PadicAlgCl l) ^ e * DirichletCharacter.changeLevel hfF ψ' t)‖ ≤ ‖(l : PadicAlgCl l) ^ m‖`.
+
+Establish `h1 : (l : c.O) ^ m ∣ zVal (Chr.Psi l e (Chr.dirG ℚ Ω ψ))⁻¹ σ b - ∑ t : (ZMod F)ˣ, (th F b t : c.O) * (((t : ZMod F).val : c.O) ^ e * ψ (t : ZMod F).val)`. Rewrite using `[zVal, zSum, ← Finset.sum_sub_distrib]`. Use `Finset.dvd_sum fun t _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_sub, MonoidHom.inv_apply, inv_inv]`. Conclude with `(ze_psi l ψ e hlF hfF (ZMod.val_coe_unit_coprime t) (hσ' t)).mul_left _`.
+
+Establish `h2 : ∀ t : (ZMod F)ˣ, DirichletCharacter.changeLevel hfF ψ' t = ((ψ (t : ZMod F).val : c.O) : PadicAlgCl l)` using `fun t => by`. Rewrite using `[← hv, ← hχ _ (ZMod.val_coe_unit_coprime t), ZMod.natCast_zmod_val]`. Establish `h3` using `hdn _ _ h1`. Simplify using `only [h2]`. Move the coercions through the operations in `at h3`.
+
+Conclude with `h3`. Establish `hT' : ‖Bern.genB (e + 1) (DirichletCharacter.changeLevel hfF ψ' : ZMod F → PadicAlgCl l) / (e + 1)‖ = T`. Rewrite using `[hT, norm_div, norm_div, ze_gen hfF he hFp ψ' (fun x => hle _), hB]`. Establish `hzT` using `ze_an (by rw [hχ b hbc, norm_mul, norm_pow, hnu b hlb, hψb, one_pow, one_mul]) (by rw [hχ b hbc]; exact hu) (by simpa using hnu 2 fun h => hl2 ((Nat.prime_dvd_prime_iff_eq hp Nat.prime_two).1 h)) (hnat _) hc hz (by rw [hT']; exact hm.trans_le (mul_le_of_le_one_left (by positivity …`. Rewrite `hzT` using `[hT']`.
+
+Use `⟨b, hF0, σ, ⟨hl2, hcop, hm1, hF.symm, hd1, hd2, hg⟩, ZMod.val_lt _, hσ', hdvd _ _ ?_, hdvd _ _ ?_⟩` and prove the remaining obligations. Rewrite using `[Subalgebra.coe_mul, norm_mul, hzT]`. Use `push_cast`. Conclude with `hm.le.trans (mul_le_mul_of_nonneg_left (mul_le_of_le_one_left hTpos.le (hnat _)) (norm_nonneg _))`. Rewrite using `[hzT, ha, alN, hT, norm_mul, norm_div, le_div_iff₀ (norm_pos_iff.2 he0)]`.
+
+Establish `h1` using `hnat (Bern.den f (e + 1))`. Establish `h2` using `hnat (e + 1)`. Move the coercions through the operations in `at h2`. Conclude with `(mul_le_of_le_one_right (by positivity) h2).trans (mul_le_of_le_one_left (norm_nonneg _) h1)`.
+-/
 theorem UpperTheory.V.ML.zEval :
     ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (c : HV.Coef l), l ≠ 2 → ∀ (f : ℕ) [NeZero f] (ψ : DirichletCharacter c.O f) (e : ℕ), 1 ≤ e → ψ.IsPrimitive → ψ (-1) = (-1) ^ (e + 1) →
     (∃ g : G ℚ Ω, IsUnit ((((Chr.Psi l e (Chr.dirG ℚ Ω ψ))⁻¹ g : c.Oˣ) : c.O) - (chiO ℚ Ω l c.O g : c.O))) →

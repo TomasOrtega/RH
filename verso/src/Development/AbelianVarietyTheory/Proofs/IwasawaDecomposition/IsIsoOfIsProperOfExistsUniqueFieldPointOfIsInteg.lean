@@ -7,6 +7,13 @@ open AlgebraicGeometry CategoryTheory Limits ReciprocityTheory.ChartRestriction.
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `x x' hx`. Take `⟨z, hz, hz'⟩` from `Scheme.Pullback.exists_preimage_pullback (f := f) (g := f) x x' hx`. Set `p : Sp ((pullback f f).residueField z) ⟶ pullback f f` to `(pullback f f).fromSpecResidueField z`. Establish `e : p ≫ pullback.fst f f = p ≫ pullback.snd f f` using `(h _ (p ≫ pullback.fst f f ≫ f)).unique (by simp) (by simp [pullback.condition])`.
+
+Set `a : Sp ((pullback f f).residueField z)` to `IsLocalRing.closedPoint _`. Establish `ha : p a = z` using `Scheme.fromSpecResidueField_apply z a`. Establish `e' : (p ≫ pullback.fst f f) a = (p ≫ pullback.snd f f) a` using `by rw [e]`. Rewrite `e'` using `[Scheme.Hom.comp_apply, Scheme.Hom.comp_apply, ha, hz, hz']`. Then use the resulting hypothesis. Introduce `t`.
+
+Take `⟨z, hz, -⟩` from `h (T.residueField t) (T.fromSpecResidueField t)`. Set `a : Sp (T.residueField t)` to `IsLocalRing.closedPoint _`. Use `⟨z a, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, hz]`. Conclude with `Scheme.fromSpecResidueField_apply t a`.
+-/
 theorem bijective_of_existsUnique_field_point {S T : Scheme.{0}} (f : S ⟶ T)
     (h : ∀ (k : Type) [Field k] (w : Sp k ⟶ T), ∃! z : Sp k ⟶ S, z ≫ f = w) :
     Function.Bijective f := by
@@ -28,6 +35,11 @@ theorem bijective_of_existsUnique_field_point {S T : Scheme.{0}} (f : S ⟶ T)
     rw [← Scheme.Hom.comp_apply, hz]
     exact Scheme.fromSpecResidueField_apply t a
 
+/- English proof (translation)
+Take `⟨z, hz, hu⟩` from `h k (w ≫ V.ι)`. Establish `P` using `(isPullback_morphismRestrict f V).flip`. Use `⟨P.lift z w hz, P.lift_snd _ _ _, fun y hy ↦ ?_⟩` and prove the remaining obligations. Apply `P.hom_ext` to reduce the goal to its premises. Rewrite using `[P.lift_fst]`.
+
+Apply `hu` to reduce the goal to its premises. Use `show (y ≫ _) ≫ f = _`. Rewrite using `[Category.assoc, ← morphismRestrict_ι, ← Category.assoc, hy]`. Rewrite using `[P.lift_snd]`. Conclude with `hy`.
+-/
 theorem existsUnique_field_point_morphismRestrict {S T : Scheme.{0}} (f : S ⟶ T)
     (h : ∀ (k : Type) [Field k] (w : Sp k ⟶ T), ∃! z : Sp k ⟶ S, z ≫ f = w) (V : T.Opens)
     (k : Type) [Field k] (w : Sp k ⟶ V) : ∃! z : Sp k ⟶ (f ⁻¹ᵁ V), z ≫ (f ∣_ V) = w := by
@@ -41,6 +53,17 @@ theorem existsUnique_field_point_morphismRestrict {S T : Scheme.{0}} (f : S ⟶ 
     rw [Category.assoc, ← morphismRestrict_ι, ← Category.assoc, hy]
   · rw [P.lift_snd]; exact hy
 
+/- English proof (translation)
+Establish `hs : z (IsLocalRing.closedPoint _) = genericPoint S`. Apply `hf` to reduce the goal to its premises. Rewrite using `[apply_genericPoint_of_isDominant f]`. Use `(Scheme.Hom.comp_apply z f _).symm.trans ?_` and prove the remaining obligations. Rewrite using `[hz]`.
+
+Conclude with `Scheme.fromSpecStalk_closedPoint`. Establish `hF : IsField (S.presheaf.stalk (z (IsLocalRing.closedPoint _)))`. Rewrite using `[hs]`. Conclude with `Field.toIsField S.functionField`. Rewrite using `[← hs]`.
+
+Establish `h1 : IsIso (Scheme.stalkClosedPointTo (z ≫ f))`. Rewrite using `[hz, Scheme.stalkClosedPointTo_fromSpecStalk]`. Use `infer_instance`. Rewrite `h1` using `[Scheme.stalkClosedPointTo_comp]`. Establish `h2 : IsIso (Scheme.stalkClosedPointTo z)`.
+
+Rewrite using `[ConcreteCategory.isIso_iff_bijective]`. Prove the components needed by the constructor for the conclusion. Use `letI := hF.toField`. Conclude with `(Scheme.stalkClosedPointTo z).hom.injective`. Introduce `y`.
+
+Take `⟨x, hx⟩` from `(@ConcreteCategory.bijective_of_isIso _ _ _ _ _ _ _ _ _ h1).2 y`. Conclude with `⟨_, hx⟩`. Conclude with `@IsIso.of_isIso_comp_right _ _ _ _ _ _ (Scheme.stalkClosedPointTo z) h2 h1`.
+-/
 theorem isIso_stalkMap_genericPoint_of_lift {S T : Scheme.{0}} (f : S ⟶ T) [IsIntegral S]
     [IsIntegral T] [IsDominant f] (hf : Function.Injective f)
     (z : Spec T.functionField ⟶ S) (hz : z ≫ f = T.fromSpecStalk (genericPoint T)) :
@@ -68,6 +91,11 @@ theorem isIso_stalkMap_genericPoint_of_lift {S T : Scheme.{0}} (f : S ⟶ T) [Is
       exact ⟨_, hx⟩
   exact @IsIso.of_isIso_comp_right _ _ _ _ _ _ (Scheme.stalkClosedPointTo z) h2 h1
 
+/- English proof (translation)
+Establish `hb` using `bijective_of_existsUnique_field_point f h`. Establish `hh : IsHomeomorph f` using `isHomeomorph_iff_continuous_isClosedMap_bijective.mpr ⟨f.continuous, f.isClosedMap, hb⟩`. Establish `: IrreducibleSpace S` using `hh.homeomorph.symm.irreducibleSpace_iff.mp inferInstance`. Establish `: IsIntegral S` using `isIntegral_of_irreducibleSpace_of_isReduced S`. Establish `: IsDominant f` using `⟨hb.2.denseRange⟩`.
+
+Establish `: LocallyQuasiFinite f` using `LocallyQuasiFinite.of_finite_preimage_singleton f fun t ↦ (Set.finite_singleton t).preimage hb.1.injOn`. Take `⟨z, hz, -⟩` from `h T.functionField (T.fromSpecStalk (genericPoint T))`. Use `isIso_stalkMap_genericPoint_of_lift f hb.1 z hz` as an intermediate fact. Conclude with `isIso_of_isProper_of_quasiFinite_of_isIso_stalkMap f fun _ ↦ inferInstance`.
+-/
 theorem isIso_of_isProper_of_existsUnique_field_point_of_isIntegral {S T : Scheme.{0}} (f : S ⟶ T)
     [IsProper f] [IsReduced S] [IsIntegral T] [GlobalTheory.IsNormalScheme T]
     (h : ∀ (k : Type) [Field k] (w : Sp k ⟶ T), ∃! z : Sp k ⟶ S, z ≫ f = w) : IsIso f := by
@@ -83,6 +111,9 @@ theorem isIso_of_isProper_of_existsUnique_field_point_of_isIntegral {S T : Schem
   have := isIso_stalkMap_genericPoint_of_lift f hb.1 z hz
   exact isIso_of_isProper_of_quasiFinite_of_isIso_stalkMap f fun _ ↦ inferInstance
 
+/- English proof (translation)
+Use `GlobalTheory.IsNormalScheme.of_pred hT` as an intermediate fact. Use `(IsZariskiLocalAtTarget.iff_of_iSup_eq_top (P := .isomorphisms _) GlobalTheory.IsNormalScheme.component (GlobalTheory.IsNormalScheme.iSup_component T)).mpr fun Z ↦ ?_` and prove the remaining obligations. Conclude with `isIso_of_isProper_of_existsUnique_field_point_of_isIntegral (f ∣_ GlobalTheory.IsNormalScheme.component Z) (existsUnique_field_point_morphismRestrict f h _)`.
+-/
 theorem isIso_of_isProper_of_existsUnique_field_point (S T : Scheme.{0}) (f : S ⟶ T)
     (hf : IsProper f) (hS : IsReduced S) (hT : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme T)
     (hN : IsLocallyNoetherian T)

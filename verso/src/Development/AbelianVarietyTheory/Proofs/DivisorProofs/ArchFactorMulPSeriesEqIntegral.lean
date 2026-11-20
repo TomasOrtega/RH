@@ -16,6 +16,45 @@ open NumberField MeasureTheory
 
 namespace GlobalTheory.HeckeMellin
 
+/- English proof (translation)
+Introduce `K _ _ _ I _ φ hφ n hn F C hF hinv p hp hp0 hsum s hs`. Use `haveI : Countable (𝓞 K) := (RingOfIntegers.basis K).equivFun.injective.countable`. Use `haveI : Countable (𝓞 K)ˣ := (Units.val_injective (α := 𝓞 K)).countable`. Establish `hs0 : 0 < s.re` using `by linarith`. Use `set tm : 𝓞 K → (I → ℝ) → ℂ := fun α => GlobalTheory.HeckeMellin.term n s (GlobalTheory.HeckeTheta.emb φ (α : K)) with htm`.
+
+Establish `hulog_inv : ∀ u : (𝓞 K)ˣ, GlobalTheory.HeckeTheta.ulog φ u⁻¹ = - GlobalTheory.HeckeTheta.ulog φ u`. Introduce `u`. Use function extensionality and compare the values at `i`. Simplify using `only [GlobalTheory.HeckeTheta.ulog, Pi.neg_apply]`. Rewrite using `[← Real.log_inv, ← inv_pow, ← norm_inv, ← map_inv₀]`.
+
+Use `congr 4`. Establish `h` using `congrArg (fun x : 𝓞 K => (x : K)) (Units.inv_mul u)`. Move the coercions through the operations in `at h`. Conclude with `eq_inv_of_mul_eq_one_left h`. Establish `hsum' : ∀ y, HasSum (fun u : (𝓞 K)ˣ => p (y - GlobalTheory.HeckeTheta.ulog φ u)) 1`.
+
+Introduce `y`. Rewrite using `[← (Equiv.inv (𝓞 K)ˣ).hasSum_iff]`. Simplify `hsum y` using `[Function.comp_def, hulog_inv, sub_neg_eq_add]`. Establish `hp1 : ∀ y, p y ≤ 1` using `fun y => by`. Establish `h` using `le_hasSum (hsum y) 1 (fun u _ => hp0 _)`.
+
+Establish `h1 : GlobalTheory.HeckeTheta.ulog φ (1 : (𝓞 K)ˣ) = 0` using `by funext i; simp [GlobalTheory.HeckeTheta.ulog]`. Simplify `h` using `[h1]`. Establish `hemb0 : GlobalTheory.HeckeTheta.emb φ ((0 : 𝓞 K) : K) = 0` using `by funext i; simp [GlobalTheory.HeckeTheta.emb]`. Establish `htm0 : tm 0 = 0` using `by funext y; simp only [htm, hemb0, GlobalTheory.HeckeMellin.term_zero hn]; rfl`. Establish `hint : ∀ α : 𝓞 K, Integrable (tm α)`.
+
+Introduce `α`. Distinguish the cases in `h : α = 0`. Substitute `h` using the available equality. Rewrite using `[htm0]`. Conclude with `integrable_zero _ _ _`.
+
+Conclude with `(GlobalTheory.T.heckeMellinGaussIntegral_nonzero_integer K I φ hφ n s hs0 α h).1`. Establish `hshift : ∀ (u : (𝓞 K)ˣ) (α : 𝓞 K) y, tm ((u : 𝓞 K) * α) y = GlobalTheory.HeckeStrip.wt φ n ((u : 𝓞 K) : K) * tm α (y + GlobalTheory.HeckeTheta.ulog φ u)`. Introduce `u α y`. Establish `: (((u : 𝓞 K) * α : 𝓞 K) : K) = ((u : 𝓞 K) : K) * (α : K)` using `by push_cast; rfl`. Simplify using `only [htm, this]`.
+
+Conclude with `GlobalTheory.T.heckeMellinGaussIntegrand_unit_mul K I φ hφ n s u α y`. Establish `hwtu : ∀ u : (𝓞 K)ˣ, ‖GlobalTheory.HeckeStrip.wt φ n ((u : 𝓞 K) : K)‖ = 1` using `fun u => GlobalTheory.HeckeStrip.norm_wt φ n (by`. Use `u.ne_zero` as an intermediate fact. Conclude with `this)` after adjusting the coercions. Establish `hgen : ∀ J : {J : Ideal (𝓞 K) // J ≠ ⊥ ∧ J.IsPrincipal}, (haveI` using `J.2.2; Submodule.IsPrincipal.generator J.1) ≠ 0 := by`.
+
+Introduce `J h`. Use `haveI := J.2.2`. Conclude with `J.2.1 ((Submodule.IsPrincipal.eq_bot_iff_generator_eq_zero J.1).2 h)`. Establish `hspan : ∀ J : {J : Ideal (𝓞 K) // J ≠ ⊥ ∧ J.IsPrincipal}, Ideal.span {(haveI` using `J.2.2; Submodule.IsPrincipal.generator J.1)} = J.1 := by`. Introduce `J`.
+
+Use `haveI := J.2.2`. Conclude with `Ideal.span_singleton_generator J.1`. Establish `horb : ∀ g : 𝓞 K, g ≠ 0 → HasSum (fun u : (𝓞 K)ˣ => ∫ y, p y * ‖tm ((u : 𝓞 K) * g) y‖) (∫ y, ‖tm g y‖) ∧ HasSum (fun u : (𝓞 K)ˣ => F ((u : 𝓞 K) * g) * ∫ y, (p y : ℂ) * tm ((u : 𝓞 K) * g) y) (F g * ∫ y, tm g y)`. Introduce `g hg`. Establish `hO` using `GlobalTheory.T.orbit_unfold_integral_partition_of_unity I (𝓞 K)ˣ (GlobalTheory.HeckeTheta.ulog φ) p hp hp0 hsum' (tm g) (hint g)`.
+
+Prove the components needed by the constructor for the conclusion. Use `(congrArg (fun f => HasSum f _) (funext fun u => ?_)).mpr hO.2` and prove the remaining obligations. Simplify using `only [hshift, norm_mul, hwtu, one_mul]`. Use `(congrArg (fun f => HasSum f _) (funext fun u => ?_)).mpr (hO.1.mul_left (F g))` and prove the remaining obligations. Establish `hw : F ((u : 𝓞 K) * g) * GlobalTheory.HeckeStrip.wt φ n ((u : 𝓞 K) : K) = F g`.
+
+Establish `h1` using `hinv u g`. Establish `hgK : (g : K) ≠ 0` using `by exact_mod_cast hg`. Establish `: (((u : 𝓞 K) * g : 𝓞 K) : K) = ((u : 𝓞 K) : K) * (g : K)` using `by push_cast; rfl`. Rewrite `h1` using `[this, GlobalTheory.HeckeStrip.wt_mul]`. Establish `hne : GlobalTheory.HeckeStrip.wt φ n (g : K) ≠ 0`.
+
+Rewrite using `[← norm_ne_zero_iff, GlobalTheory.HeckeStrip.norm_wt φ n hgK]`. Conclude with `one_ne_zero`. Conclude with `mul_right_cancel₀ hne (by rw [mul_assoc, h1])`. Simplify using `only [hshift]`. Rewrite using `[← hw, mul_assoc]`.
+
+Use `congr 1`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `set cst : ℝ := ∏ i, (2 * Real.pi) ^ (-(s.re + (|n i| : ℝ) / 2)) * Real.Gamma (s.re + (|n i| : ℝ) / 2) with hcst`. Establish `hnorm : ∀ J : {J : Ideal (𝓞 K) // J ≠ ⊥ ∧ J.IsPrincipal}, ∫ y, ‖tm (haveI` using `J.2.2; Submodule.IsPrincipal.generator J.1) y‖ = cst * ((Ideal.absNorm J.1 : ℕ) : ℝ) ^ (-s.re) := by`. Introduce `J`. Rewrite using `[(GlobalTheory.T.heckeMellinGaussIntegral_nonzero_integer K I φ hφ n s hs0 _ (hgen J)).2.2, hspan J]`. Establish `hb : Summable (fun J : {J : Ideal (𝓞 K) // J ≠ ⊥ ∧ J.IsPrincipal} => ∫ y, ‖tm (haveI` using `J.2.2; Submodule.IsPrincipal.generator J.1) y‖) := by`.
+
+Simplify using `only [hnorm]`. Conclude with `(((ReciprocityTheory.Cheb.summable_absNorm_rpow_ideal K hs).comp_injective Subtype.val_injective).mul_left cst)`. Establish `hR` using `GlobalTheory.T.sum_nonzero_integers_principal_ideals_units K ℝ (fun α => ∫ y, p y * ‖tm α y‖) (by simp [htm0]) (fun J => ∫ y, ‖tm (haveI := J.2.2; Submodule.IsPrincipal.generator J.1) y‖) (fun J u => ∫ y, p y * ‖tm ((u : 𝓞 K) * (haveI := J.2.2; Submodule.IsPrincipal.generator J.1 …`. Establish `hI` using `GlobalTheory.T.hasSum_integral_theta_mellin_interchange I (𝓞 K) (fun α => GlobalTheory.HeckeTheta.emb φ (α : K)) F C hF n s p hp hp0 hp1 hint hR.summable`. Establish `hU` using `GlobalTheory.T.sum_nonzero_integers_principal_ideals_units K ℂ (fun α => F α * ∫ y, (p y : ℂ) * tm α y) (by simp [htm0]) (fun J => F (haveI := J.2.2; Submodule.IsPrincipal.generator J.1) * ∫ y, tm (haveI := J.2.2; Submodule.IsPrincipal.generator J.1) y) (fun J u => C * ∫ y, p y * …`.
+
+Rewrite using `[norm_mul]`. Use `mul_le_mul (hF _) ((norm_integral_le_integral_norm _).trans (le_of_eq ?_)) (norm_nonneg _) ((norm_nonneg _).trans (hF 0))` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg (hp0 y)])`.
+
+Use the proof step `(fun J => (horb _ (hgen J)).1.mul_left C) (hb.mul_left C)`. Rewrite using `[hI.unique hU, GlobalTheory.HeckeStrip.pSeries, ← tsum_mul_left, ← tsum_mul_left]`. Use `congr 1`. Use function extensionality and compare the values at `J`. Establish `h3` using `(GlobalTheory.T.heckeMellinGaussIntegral_nonzero_integer K I φ hφ n s hs0 _ (hgen J)).2.1`.
+
+Rewrite `h3` using `[hspan J]`. Simplify using `only [GlobalTheory.HeckeStrip.pval]`. Take the linear combination `(-F (haveI := J.2.2; Submodule.IsPrincipal.generator J.1)) * h3`.
+-/
 theorem archFactor_mul_pSeries_eq_integral : ∀ (K : Type) [Field K] [NumberField K] [NumberField.IsTotallyComplex K] (I : Type) [Fintype I] (φ : I → K →+* ℂ), GlobalTheory.CMVal.IsCMType φ → ∀ (n : I → ℤ), (∃ i, n i ≠ 0) → ∀ (F : NumberField.RingOfIntegers K → ℂ) (C : ℝ), (∀ α, ‖F α‖ ≤ C) → (∀ (u : (NumberField.RingOfIntegers K)ˣ) (α : NumberField.RingOfIntegers K), F ((u : NumberField.RingOfIntegers K) * α) * GlobalTheory.HeckeStrip.wt φ n (((u : NumberField.RingOfIntegers K) * α : NumberField.RingOfIntegers K) : K) = F α * GlobalTheory.HeckeStrip.wt φ n (α : K)) → ∀ p : (I → ℝ) → ℝ, Measurable p → (∀ y, 0 ≤ p y) → (∀ y, HasSum (fun u : (NumberField.RingOfIntegers K)ˣ => p (y + GlobalTheory.HeckeTheta.ulog φ u)) 1) → ∀ s : ℂ, 1 < s.re → GlobalTheory.IndefiniteRowSideFullHecke.CompletedLStripBounds.archFactor n s * GlobalTheory.HeckeStrip.pSeries F φ n s = 2 ^ Fintype.card I * ∫ y, (p y : ℂ) * GlobalTheory.HeckeTheta.theta (fun α : NumberField.RingOfIntegers K => GlobalTheory.HeckeTheta.emb φ (α : K)) F n y * Complex.exp (s * ((∑ i, y i : ℝ) : ℂ)) := by
   intro K _ _ _ I _ φ hφ n hn F C hF hinv p hp hp0 hsum s hs
   haveI : Countable (𝓞 K) := (RingOfIntegers.basis K).equivFun.injective.countable

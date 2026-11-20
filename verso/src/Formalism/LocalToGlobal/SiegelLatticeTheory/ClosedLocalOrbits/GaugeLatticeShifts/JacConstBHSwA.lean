@@ -15,11 +15,21 @@ attribute [local instance] Matrix.frobeniusNormedAddCommGroup Matrix.frobeniusNo
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Use extensionality with `⟨i, j, b⟩`. Apply the tactic sequence `cases b <;> simp [RL, Formalism.MainNotions.S.realifyFun, Formalism.MainNotions.S.unrealify]`.
+-/
 theorem RL_unrealify (Y : EuclideanSpace ℝ (Fin (2 * r + k + 1) × Fin (2 * r + k + 1) × Bool)) :
     RL (k := k) (r := r) (Formalism.MainNotions.S.unrealify Y) = Y := by
   ext ⟨i, j, b⟩
   cases b <;> simp [RL, Formalism.MainNotions.S.realifyFun, Formalism.MainNotions.S.unrealify]
 
+/- English proof (translation)
+Rewrite using `[EuclideanSpace.norm_eq, Matrix.frobenius_norm_def, Real.sqrt_eq_rpow]`. Use `congr 1`. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_bool]`. Simplify using `only [RL, Formalism.MainNotions.S.realifyFun, LinearMap.coe_mk, AddHom.coe_mk, Real.norm_eq_abs, sq_abs, if_true, Bool.false_eq_true, if_false]`. Rewrite using `[Real.rpow_two, Complex.sq_norm, Complex.normSq_apply]`. Simplify using `[WithLp.equiv]`.
+
+Unfold `Formalism.MainNotions.S.realifyFun`. Simplify using `only [if_true, Bool.false_eq_true, if_false]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_RL (X : Mat k r) : ‖RL X‖ = ‖X‖ := by
   rw [EuclideanSpace.norm_eq, Matrix.frobenius_norm_def, Real.sqrt_eq_rpow]
   congr 1
@@ -36,10 +46,20 @@ theorem norm_RL (X : Mat k r) : ‖RL X‖ = ‖X‖ := by
 
 def LongWeylElementSquare : Prop := ∀ k r : ℕ, w0B k r * w0B k r = 1
 
+/- English proof (translation)
+Rewrite `*` using `[mem_UH_iff]`. Rewrite using `[adjH_mul, Matrix.mul_assoc, ← Matrix.mul_assoc (adjH a), ha, Matrix.one_mul, hb]`.
+-/
 theorem uh_mul {a b : Mat k r} (ha : a ∈ UH (Hpk k r)) (hb : b ∈ UH (Hpk k r)) : a * b ∈ UH (Hpk k r) := by
   rw [mem_UH_iff] at *
   rw [adjH_mul, Matrix.mul_assoc, ← Matrix.mul_assoc (adjH a), ha, Matrix.one_mul, hb]
 
+/- English proof (translation)
+Use `set x := ⨅ i, ⨅ (_ : P i), (nm i : ℝ≥0∞) with hx`. Establish `hxt : x < ⊤`. Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_lt, top_le_iff]`. Rewrite `h` using `[hc]`.
+
+Simplify using `at h`. Establish `hopen : IsOpen {t : ℝ≥0∞ | t ^ 2 + R < T}` using `isOpen_lt ((ENNReal.continuous_pow 2).add continuous_const) continuous_const`. Take `⟨u, hxu, hu⟩` from `exists_Ico_subset_of_mem_nhds (hopen.mem_nhds h) ⟨⊤, hxt⟩`. Establish `: x < u` using `hxu`. Rewrite `this` using `[hx, iInf_lt_iff]`.
+
+Take `⟨i, hi⟩` from `this`. Rewrite `hi` using `[iInf_lt_iff]`. Take `⟨hPi, hlt⟩` from `hi`. Use `⟨i, hPi, hu ⟨?_, hlt⟩⟩` and prove the remaining obligations. Conclude with `iInf₂_le i hPi`.
+-/
 theorem approx {ι : Type*} (P : ι → Prop) (nm : ι → ℝ≥0) (R T : ℝ≥0∞)
     (h : (⨅ i, ⨅ (_ : P i), (nm i : ℝ≥0∞)) ^ 2 + R < T) : ∃ i, P i ∧ (nm i : ℝ≥0∞) ^ 2 + R < T := by
   set x := ⨅ i, ⨅ (_ : P i), (nm i : ℝ≥0∞) with hx

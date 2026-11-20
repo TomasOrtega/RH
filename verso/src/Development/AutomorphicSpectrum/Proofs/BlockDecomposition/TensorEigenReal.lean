@@ -12,18 +12,33 @@ noncomputable def contr (v : V ⊗[ℂ] W) : Module.Dual ℂ V →ₗ[ℂ] W whe
   map_add' l m := by simp [LinearMap.rTensor_add]
   map_smul' c l := by simp [LinearMap.rTensor_smul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem contr_apply (v : V ⊗[ℂ] W) (l : Module.Dual ℂ V) :
     contr v l = TensorProduct.lid ℂ W (LinearMap.rTensor W l v) := rfl
 
+/- English proof (translation)
+Simplify using `[contr_apply]`.
+-/
 theorem contr_tmul (a : V) (b : W) (l : Module.Dual ℂ V) : contr (a ⊗ₜ[ℂ] b) l = l a • b := by
   simp [contr_apply]
 
+/- English proof (translation)
+Simplify using `[contr_apply]`.
+-/
 theorem contr_add (v w : V ⊗[ℂ] W) (l : Module.Dual ℂ V) : contr (v + w) l = contr v l + contr w l := by
   simp [contr_apply]
 
+/- English proof (translation)
+Simplify using `[contr_apply]`.
+-/
 theorem contr_smul (c : ℂ) (v : V ⊗[ℂ] W) (l : Module.Dual ℂ V) : contr (c • v) l = c • contr v l := by
   simp [contr_apply]
 
+/- English proof (translation)
+Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp [contr_apply]`. Consider the case `tmul a b => simp [contr_tmul]`. Consider the case `add x y hx hy => simp only [map_add, contr_add, hx, hy]`.
+-/
 theorem contr_map (A : Module.End ℂ V) (B : Module.End ℂ W) (v : V ⊗[ℂ] W) (l : Module.Dual ℂ V) :
     B (contr v (l ∘ₗ A)) = contr (TensorProduct.map A B v) l := by
   induction v using TensorProduct.induction_on with
@@ -31,6 +46,13 @@ theorem contr_map (A : Module.End ℂ V) (B : Module.End ℂ W) (v : V ⊗[ℂ] 
   | tmul a b => simp [contr_tmul]
   | add x y hx hy => simp only [map_add, contr_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨⊥, inferInstance, fun l => by simp [contr_apply]⟩`. Consider the case `tmul a b`. Conclude with `⟨ℂ ∙ b, inferInstance, fun l => by`. Rewrite using `[contr_tmul]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self b)⟩`. Consider the case `add x y hx hy`. Take `⟨T, hT, h⟩` from `hx`. Take `⟨T', hT', h'⟩` from `hy`. Conclude with `⟨T ⊔ T', inferInstance, fun l => by`.
+
+Rewrite using `[contr_add]`. Conclude with `Submodule.add_mem_sup (h l) (h' l)⟩`.
+-/
 theorem exists_finiteDimensional (v : V ⊗[ℂ] W) :
     ∃ T : Submodule ℂ W, FiniteDimensional ℂ T ∧ ∀ l, contr v l ∈ T := by
   induction v using TensorProduct.induction_on with
@@ -44,6 +66,13 @@ theorem exists_finiteDimensional (v : V ⊗[ℂ] W) :
     exact ⟨T ⊔ T', inferInstance, fun l => by
       rw [contr_add]; exact Submodule.add_mem_sup (h l) (h' l)⟩
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hv` to reduce the goal to its premises. Set `b` to `Module.Free.chooseBasis ℂ V`. Establish `key : ∀ (w : V ⊗[ℂ] W) i, TensorProduct.equivFinsuppOfBasisLeft b w i = contr w (b.coord i)`.
+
+Introduce `w i`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp [contr_apply]`. Consider the case `tmul a c => simp [contr_tmul, TensorProduct.equivFinsuppOfBasisLeft_apply_tmul_apply]`. Consider the case `add x y hx hy => simp only [map_add, Finsupp.add_apply, contr_add, hx, hy]`.
+
+Apply `(TensorProduct.equivFinsuppOfBasisLeft (N := W) b).injective` to reduce the goal to its premises. Use extensionality with `i : 1`. Rewrite using `[key, hcon]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_contr_ne_zero {v : V ⊗[ℂ] W} (hv : v ≠ 0) : ∃ l, contr v l ≠ 0 := by
   by_contra hcon
   push_neg at hcon
@@ -60,6 +89,35 @@ theorem exists_contr_ne_zero {v : V ⊗[ℂ] W} (hv : v ≠ 0) : ∃ l, contr v 
   rw [key, hcon]
   simp
 
+/- English proof (translation)
+Take `⟨l₀, hl₀⟩` from `exists_contr_ne_zero hv`. Break down `isEmpty_or_nonempty Y with hY | ⟨⟨y0⟩⟩` into its components or cases. Conclude with `⟨l₀, 1, one_ne_zero, hl₀, fun y => isEmptyElim y⟩`. Establish `key : ∀ y l, B y (contr v (l ∘ₗ A)) = (a * mu y) • contr v l`. Introduce `y l`.
+
+Rewrite using `[contr_map, h, contr_smul]`. Set `S` to `LinearMap.range (contr v)`. Take `⟨T, hT, hST⟩` from `exists_finiteDimensional v`. Establish `hSfd : FiniteDimensional ℂ S` using `Submodule.finiteDimensional_of_le (S₂ := T) (by rintro _ ⟨l, rfl⟩; exact hST l)`. Set `b : Module.Dual ℂ V →ₗ[ℂ] W` to `contr v ∘ₗ A.dualMap`.
+
+Establish `hb : ∀ l, b l = contr v (l ∘ₗ A)` using `fun l => rfl`. Set `S'` to `LinearMap.range b`. Establish `hle : S' ≤ S` using `LinearMap.range_comp_le_range _ _`. Establish `hS'fd : FiniteDimensional ℂ S'` using `Submodule.finiteDimensional_of_le hle`. Establish `hne : a * mu y0 ≠ 0` using `mul_ne_zero ha (hmu y0)`.
+
+Establish `hmap : S ≤ S'.map (B y0)`. Introduce and unpack `_ ⟨l, rfl⟩`. Use `⟨b ((a * mu y0)⁻¹ • l), ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hb, key, map_smul, smul_smul, mul_inv_cancel₀ hne, one_smul]`. Establish `hfr : Module.finrank ℂ S ≤ Module.finrank ℂ S'` using `(Submodule.finrank_mono hmap).trans (Submodule.finrank_map_le _ _)`.
+
+Establish `hSS' : S' = S` using `Submodule.eq_of_le_of_finrank_le hle hfr`. Establish `hrep : ∀ s ∈ S, ∃ l, s = contr v (l ∘ₗ A)`. Introduce `s hs`. Rewrite `hs` using `[← hSS']`. Take `⟨l, rfl⟩` from `hs`.
+
+Conclude with `⟨l, hb l⟩`. Establish `hform : ∀ s ∈ S, ∀ y, mu y0 • B y s = mu y • B y0 s`. Introduce `s hs y`. Take `⟨l, rfl⟩` from `hrep s hs`. Rewrite using `[key, key, smul_smul, smul_smul]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hinv : ∀ s ∈ S, B y0 s ∈ S`. Introduce `s hs`. Take `⟨l, rfl⟩` from `hrep s hs`.
+
+Rewrite using `[key]`. Conclude with `S.smul_mem _ ⟨l, rfl⟩`. Set `R : Module.End ℂ S` to `(B y0).restrict hinv`. Establish `hsurj : Function.Surjective R`. Introduce and unpack `⟨s, hs⟩`.
+
+Take `⟨t, ht, rfl⟩` from `hmap hs`. Conclude with `⟨⟨t, hle ht⟩, rfl⟩`. Establish `hinj : Function.Injective R` using `LinearMap.injective_iff_surjective.mpr hsurj`. Establish `hnt : Nontrivial S` using `⟨⟨⟨contr v l₀, ⟨l₀, rfl⟩⟩, 0, fun e => hl₀ (congrArg Subtype.val e)⟩⟩`. Take `⟨γ, hγ⟩` from `Module.End.exists_eigenvalue R`.
+
+Take `⟨u, hu⟩` from `hγ.exists_hasEigenvector`. Establish `hRu : R u = γ • u` using `hu.apply_eq_smul`. Establish `hu0 : u ≠ 0` using `hu.2`. Establish `hγ0 : γ ≠ 0`. Introduce and unpack `rfl`.
+
+Apply `hu0` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hRu]`. Simplify using the standard rewrite rules. Establish `hBu : B y0 (u : W) = γ • (u : W)` using `congrArg Subtype.val hRu`.
+
+Take `⟨l, hl⟩` from `u.2`. Use `⟨l, γ / mu y0, div_ne_zero hγ0 (hmu y0), ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[hl]`. Conclude with `fun e => hu0 (Subtype.ext e)`. Rewrite using `[hl]`.
+
+Establish `e` using `hform u u.2 y`. Rewrite `e` using `[hBu]`. Establish `e2 : B y (u : W) = (mu y0)⁻¹ • mu y0 • B y (u : W)`. Rewrite using `[smul_smul, inv_mul_cancel₀ (hmu y0), one_smul]`. Rewrite using `[e2, e, smul_smul, smul_smul]`.
+
+Use `congr 1`. Clear denominators, using `[hmu y0]` for the nonvanishing conditions.
+-/
 theorem core {Y : Type} (A : Module.End ℂ V) (B : Y → Module.End ℂ W) (a : ℂ) (ha : a ≠ 0) (mu : Y → ℂ)
     (hmu : ∀ y, mu y ≠ 0) (v : V ⊗[ℂ] W) (hv : v ≠ 0)
     (h : ∀ y, TensorProduct.map A (B y) v = (a * mu y) • v) :
@@ -136,6 +194,9 @@ theorem core {Y : Type} (A : Module.End ℂ V) (B : Y → Module.End ℂ W) (a :
     congr 1
     field_simp [hmu y0]
 
+/- English proof (translation)
+Introduce `V W X Y _ _ _ _ A B lam mu v hv hX hlam hmu hAB`. Take `⟨x0⟩` from `hX`. Conclude with `core (A x0) B (lam x0) (hlam x0) mu hmu v hv (hAB x0)`.
+-/
 theorem tensEigR : PositivityTheory.Rg.BcB.F.Tail.PExp.TensEigR := by
   intro V W X Y _ _ _ _ A B lam mu v hv hX hlam hmu hAB
   obtain ⟨x0⟩ := hX

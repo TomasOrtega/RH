@@ -27,6 +27,13 @@ open GlobalTheory.HalfAverage
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h` using `d.hO_ext T x 0 0 a 0 0`. Simplify using `only [map_zero, add_zero, zero_add] at h`. Establish `h0 : hO S₀ T (0 : WO S₀ T) 0 = 0` using `by simp [hO]`. Establish `hp : pairS T (0 : Mx D T.rank ρ) 0 = 0` using `by simp [pairS, adj]`. Rewrite `h` using `[h0, hp, add_zero, add_zero]`.
+
+Unfold `symplO halfSympl`. Rewrite using `[h]`. Use `congr 2`. Simplify using `only [pairS, halfPair, Matrix.trace, Matrix.diag, Matrix.mul_apply, adj, gA, Matrix.transpose_apply, Matrix.map_apply, Finset.mul_sum, mul_assoc, rat]`. Use `symm`.
+
+Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_comm`.
+-/
 theorem symplO_extX_extY {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (T : HSp D) (x a : Mx D T.rank ρ) :
     symplO S T (d.extX T x) (d.extY T a) = halfSympl T a x := by
   have h := d.hO_ext T x 0 0 a 0 0
@@ -43,10 +50,20 @@ theorem symplO_extX_extY {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (T :
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun j _ => Finset.sum_comm
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Simplify using `[heisO, symplOH, symplO, hO]`.
+-/
 theorem heisO_zero' (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (f : WO S T → ℂ) : heisO ψ S T 0 f = f := by
   funext w
   simp [heisO, symplOH, symplO, hO]
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos ρ with rfl | hρ` into its components or cases. Take `⟨-, hb, hth, -⟩` from `GlobalTheory.WeilSrc.om0_ext0_eq_om_emb0_of_isWeilDatumO D ψ S S₀ T d hψ`. Establish `hc : (fun w => (f₀ ∘ (Equiv.ofBijective _ hb).symm) (d.ext0 T w)) = f₀`. Use function extensionality and compare the values at `w`. Conclude with `congrArg f₀ ((Equiv.ofBijective _ hb).symm_apply_apply w)`.
+
+Use `⟨f₀ ∘ (Equiv.ofBijective _ hb).symm, (hth _).1 (by rw [hc]; exact hf₀), ?_⟩` and prove the remaining obligations. Rewrite using `[(GlobalTheory.Unf.mixRankZero D ψ).1 S S₀ T d μ 𝓕 hμ, hc]`. Take `⟨h1, h2, -, -, -, h6, -⟩` from `GlobalTheory.Bridge.heis_bridge D ψ S S₀ T ρ d`. Take `⟨f, hf, hff⟩` from `GlobalTheory.TowerSurj.res_surjective D S S₀ T ρ d.e d.i₀ (h1 hρ) ψ hψ μ 𝓕 (h2 ▸ hμ) f₀ hf₀`. Use `⟨f, hf, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h6, map_zero, heisO_zero', hff]`.
+-/
 theorem exists_mixS_zero {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S S₀ T : HSp D} {ρ : ℕ}
     (d : HypDec S S₀ ρ) {μ : Measure (Mx D T.rank ρ)} {𝓕 : Set (Mx D T.rank ρ)}
     (hμ : IsCovolOne (ratMx D T.rank ρ) μ 𝓕) {f₀ : WO S₀ T → ℂ} (hf₀ : IsThetaFunO ψ S₀ T f₀) :
@@ -65,6 +82,17 @@ theorem exists_mixS_zero {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D ψ hψ S S₀ T ρ d μ 𝓕 hμ e he ℓ₀ ⟨f₀, hf₀, hℓ⟩ H hH mH bH ν hν`. Take `rfl : H = halfMx (cA D e) T.rank ρ` from `AddSubgroup.ext fun x => hH x`. Take `⟨f, hf, hmix⟩` from `exists_mixS_zero hψ d hμ hf₀`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`.
+
+Take `⟨-, hY, -⟩` from `GlobalTheory.HeisMixSource.heis_mixS D ψ hψ S S₀ T ρ d ⟨μ, 𝓕, hμ⟩ f hf`. Take `⟨⟨U, hU, hUinv⟩, K, hK, hKs⟩` from `GlobalTheory.MixHalf.mixS_half D ψ hψ S S₀ T ρ d μ 𝓕 hμ e he f hf`. Take `⟨L, hL, hLU, hsep⟩` from `GlobalTheory.HalfSeparate.exists_open_separated D ψ hψ T ρ e he (U.comap (halfMx (cA D e) T.rank ρ).subtype) (hU.preimage continuous_subtype_val)`. Establish `hφ` using `@GlobalTheory.fourier_uniqueness_of_openSubgroup (halfMx (cA D e) T.rank ρ) (halfMx e T.rank ρ) _ _ _ mH bH ν hν _ (fun a t => ψ (halfSympl T (a : Mx D T.rank ρ) (t : Mx D T.rank ρ))) (fun a s t => by simp only [AddSubgroup.coe_add, halfSympl_add_right, AddChar.map_add_eq_mul]) ( …`. Establish `: d.mixS T ψ μ 𝓕 f t.1 = 0`.
+
+Assume the negation of the conclusion as `h`. Conclude with `ht (hKs t.1 t.2 h)`. Simplify using `only [this, map_zero])`. Use the proof step `(fun t l hl => by`. Simplify using `only [AddSubgroup.coe_add]`.
+
+Rewrite using `[hUinv l.1 (hLU hl) l.2])`. Use the proof step `(fun a _ => by`. Rewrite using `[← hall _ (GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hf (d.extY T a.1))]`. Use `congrArg (fun g => @integral _ ℂ _ _ mH ν g) (funext fun t => ?_)` and prove the remaining obligations. Use `hY t.1 a.1` as an intermediate fact.
+
+Simplify using `only at this`. Rewrite using `[this, map_smul, smul_eq_mul, symplO_extX_extY])`. Apply `hℓ` to reduce the goal to its premises. Use `congrFun hφ 0` as an intermediate fact. Simplify `this` using `[hmix]`.
+-/
 theorem avg_mixS_ne_zero : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S S₀ T : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (μ : Measure (Mx D T.rank ρ)) (𝓕 : Set (Mx D T.rank ρ)), IsCovolOne (ratMx D T.rank ρ) μ 𝓕 → ∀ e, IsSplitIdem D e → ∀ ℓ₀ : (WO S₀ T → ℂ) →ₗ[ℂ] ℂ, (∃ f, IsThetaFunO ψ S₀ T f ∧ ℓ₀ f ≠ 0) → ∀ H : AddSubgroup (Mx D T.rank ρ), (∀ x, x ∈ H ↔ ∀ i j, cA D e * x i j = x i j) → ∀ [MeasurableSpace H] [BorelSpace H] (ν : Measure H) [ν.IsAddHaarMeasure], ∃ f, IsThetaFunO ψ S T f ∧ ∫ x : H, ℓ₀ (d.mixS T ψ μ 𝓕 f x.1) ∂ν ≠ 0 := by
   intro D ψ hψ S S₀ T ρ d μ 𝓕 hμ e he ℓ₀ ⟨f₀, hf₀, hℓ⟩ H hH mH bH ν hν
   obtain rfl : H = halfMx (cA D e) T.rank ρ := AddSubgroup.ext fun x => hH x

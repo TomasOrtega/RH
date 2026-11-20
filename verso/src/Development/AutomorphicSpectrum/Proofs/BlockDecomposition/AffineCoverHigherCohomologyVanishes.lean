@@ -19,20 +19,32 @@ section Rs
 
 variable {X : Scheme.{0}}
 
+/- English proof (translation)
+Simplify using `only [rs, ← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem rs_rs {A B C : X.Opens} (h₁ : B ≤ A) (h₂ : C ≤ B) (x : Γ(X, A)) :
     rs h₂ (rs h₁ x) = rs (h₂.trans h₁) x := by
   simp only [rs, ← CommRingCat.comp_apply, ← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Establish `: (homOfLE h).op = 𝟙 (op A)` using `rfl`. Simplify using `only [rs, this, CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
+-/
 theorem rs_self {A : X.Opens} (h : A ≤ A) (x : Γ(X, A)) : rs h x = x := by
   have : (homOfLE h).op = 𝟙 (op A) := rfl
   simp only [rs, this, CategoryTheory.Functor.map_id]
   rfl
 
+/- English proof (translation)
+The claim follows from `TopCat.Sheaf.eq_of_locally_eq' X.sheaf C T (fun j => homOfLE (hC j)) hc a b h`.
+-/
 theorem eq_of_cover {J : Type} {T : X.Opens} (C : J → X.Opens) (hC : ∀ j, C j ≤ T)
     (hc : T ≤ iSup C) {a b : Γ(X, T)} (h : ∀ j, rs (hC j) a = rs (hC j) b) : a = b :=
   TopCat.Sheaf.eq_of_locally_eq' X.sheaf C T (fun j => homOfLE (hC j)) hc a b h
 
+/- English proof (translation)
+Take `⟨a, ha, -⟩` from `TopCat.Sheaf.existsUnique_gluing' X.sheaf C T (fun j => homOfLE (hC j)) hc t (fun j l => h j l _ inf_le_left inf_le_right)`. Conclude with `⟨a, ha⟩`.
+-/
 theorem exists_glue {J : Type} {T : X.Opens} (C : J → X.Opens) (hC : ∀ j, C j ≤ T)
     (hc : T ≤ iSup C) (t : ∀ j, Γ(X, C j))
     (h : ∀ j l (D : X.Opens) (hj : D ≤ C j) (hl : D ≤ C l), rs hj (t j) = rs hl (t l)) :
@@ -55,6 +67,9 @@ def Compat (V : X.Opens) (s : ∀ α, κ α → Γ(X, V ⊓ U α)) : Prop :=
 
 variable {U κ g} in
 
+/- English proof (translation)
+Establish `hT : T ≤ V ⊓ U α ⊓ U β` using `le_inf h₁ (h₂.trans inf_le_right)`. Use `congrArg (rs hT) (hs α β k)` as an intermediate fact. Simplify using `only [map_sum, map_mul, rs_rs] at this`. Conclude with `this`.
+-/
 theorem Compat.on {V : X.Opens} {s : ∀ α, κ α → Γ(X, V ⊓ U α)} (hs : Compat U κ g V s) (α β : ι)
     (k : κ α) {T : X.Opens} (h₁ : T ≤ V ⊓ U α) (h₂ : T ≤ U α ⊓ U β) (h₃ : T ≤ V ⊓ U β) :
     rs h₁ (s α k) = ∑ k' : κ β, rs h₂ (g α β k k') * rs h₃ (s β k') := by
@@ -95,6 +110,9 @@ instance secGroupModule (V : X.Opens) : Module Γ(X, V) (secGroup U κ g V) wher
 
 variable {U κ g} in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem smul_val {V : X.Opens} (a : Γ(X, V)) (s : secGroup U κ g V) (α : ι) (k : κ α) :
     (a • s).1 α k = rs inf_le_left a * s.1 α k := rfl
 
@@ -108,9 +126,15 @@ def secRes {V V' : X.Opens} (h : V' ≤ V) : secGroup U κ g V →+ secGroup U �
   map_add' s t := Subtype.ext <| funext fun α => funext fun k => map_add _ _ _
 
 variable {U κ g} in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem secRes_val {V V' : X.Opens} (h : V' ≤ V) (s : secGroup U κ g V) (α : ι) (k : κ α) :
     (secRes U κ g h s).1 α k = rs (inf_le_inf_right _ h) (s.1 α k) := rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.ext <| funext fun α => funext fun k => by simp only [secRes_val, smul_val, map_mul, rs_rs]`.
+-/
 theorem secRes_smul {V V' : X.Opens} (h : V' ≤ V) (r : Γ(X, V)) (m : secGroup U κ g V) :
     secRes U κ g h (r • m) = rs h r • secRes U κ g h m :=
   Subtype.ext <| funext fun α => funext fun k => by
@@ -126,6 +150,21 @@ def secPresheaf : TopCat.Presheaf Ab.{0} X where
     ext s α k
     exact (rs_rs _ _ _).symm
 
+/- English proof (translation)
+Rewrite using `[TopCat.Presheaf.isSheaf_iff_isSheafUniqueGluing]`. Introduce `J C sf hsf`. Set `sf' (j : J) : secGroup U κ g (C j)` to `sf j`. Establish `hsf' (j l : J) (α : ι) (k : κ α) (D : X.Opens) (hj : D ≤ C j ⊓ U α) (hl : D ≤ C l ⊓ U α) : rs hj ((sf' j).1 α k) = rs hl ((sf' l).1 α k)`. Establish `e : secRes U κ g (inf_le_left : C j ⊓ C l ≤ C j) (sf' j) = secRes U κ g (inf_le_right : C j ⊓ C l ≤ C l) (sf' l)` using `hsf j l`.
+
+Establish `e'` using `congrArg (fun s => s.1 α k) e`. Simplify using `only [secRes_val] at e'`. Establish `hD : D ≤ (C j ⊓ C l) ⊓ U α` using `le_inf (le_inf (hj.trans inf_le_left) (hl.trans inf_le_left)) (hj.trans inf_le_right)`. Establish `e''` using `congrArg (rs hD) e'`. Simplify `e''` using `only [rs_rs]`.
+
+Establish `hcov (α : ι) : iSup C ⊓ U α ≤ ⨆ j, C j ⊓ U α`. Rewrite using `[iSup_inf_eq]`. Establish `hC (α : ι) (j : J) : C j ⊓ U α ≤ iSup C ⊓ U α` using `inf_le_inf_right _ (le_iSup C j)`. Use `choose b hb using fun (α : ι) (k : κ α) => exists_glue (fun j => C j ⊓ U α) (hC α) (hcov α) (fun j => (sf' j).1 α k) fun j l D hj hl => hsf' j l α k D hj hl`. Establish `hbc : Compat U κ g (iSup C) b` using `fun α β k => by`.
+
+Establish `hle : iSup C ⊓ U α ⊓ U β ≤ ⨆ j, C j ⊓ U α ⊓ U β`. Rewrite using `[iSup_inf_eq, iSup_inf_eq]`. Use `eq_of_cover (fun j => C j ⊓ U α ⊓ U β) (fun j => inf_le_inf_right _ (hC α j)) hle fun j => ?_` and prove the remaining obligations. Simplify using `only [map_sum, map_mul, rs_rs]`. Establish `h1` using `(sf' j).2.on α β k (T := C j ⊓ U α ⊓ U β) inf_le_left (inf_le_inf_right _ inf_le_right) (inf_le_inf_right _ inf_le_left)`.
+
+Rewrite `h1` using `[← hb α k j, rs_rs]`. Rewrite using `[h1]`. Use `Finset.sum_congr rfl fun k' _ => ?_` and prove the remaining obligations. Rewrite using `[← hb β k' j, rs_rs]`. Use `⟨(⟨b, hbc⟩ : secGroup U κ g (iSup C)), fun j => ?_, fun t ht => ?_⟩` and prove the remaining obligations.
+
+Use `Subtype.ext <| funext fun α => funext fun k => ?_` and prove the remaining obligations. Conclude with `hb α k j`. Set `t' : secGroup U κ g (iSup C)` to `t`. Use `Subtype.ext <| funext fun α => funext fun k => ?_` and prove the remaining obligations. Use `eq_of_cover (fun j => C j ⊓ U α) (hC α) (hcov α) fun j => ?_` and prove the remaining obligations.
+
+Establish `e : secRes U κ g (le_iSup C j) t' = sf' j` using `ht j`. Rewrite using `[hb α k j]`. Conclude with `congrArg (fun s => s.1 α k) e`.
+-/
 theorem isSheaf_secPresheaf : (secPresheaf U κ g).IsSheaf := by
   rw [TopCat.Presheaf.isSheaf_iff_isSheafUniqueGluing]
   intro J C sf hsf
@@ -198,6 +237,9 @@ def coord {V : X.Opens} {β : ι} (h : V ≤ U β) : secGroup U κ g V →ₗ[Γ
     change rs _ (rs _ a * s.1 β k) = a * rs _ (s.1 β k)
     rw [map_mul, rs_rs, rs_self]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coord_apply {V : X.Opens} {β : ι} (h : V ≤ U β) (s : secGroup U κ g V) (k : κ β) :
     coord h s k = rs (le_inf le_rfl h) (s.1 β k) := rfl
 
@@ -215,20 +257,32 @@ def ofCoord (hg : IsCoc U κ g) {V : X.Opens} {β : ι} (h : V ≤ U β) (t : κ
     rw [← this]
     simp only [Finset.mul_sum]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofCoord_val (hg : IsCoc U κ g) {V : X.Opens} {β : ι} (h : V ≤ U β) (t : κ β → Γ(X, V))
     (α : ι) (k : κ α) : (ofCoord hg h t).1 α k =
       ∑ k', rs (le_inf inf_le_right (inf_le_left.trans h)) (g α β k k') * rs inf_le_left (t k') := rfl
 
+/- English proof (translation)
+Simplify using `only [coord_apply, ofCoord_val, map_sum, map_mul, rs_rs, rs_self]`.
+-/
 theorem coord_ofCoord' (hg : IsCoc U κ g) {V : X.Opens} {α β : ι} (hα : V ≤ U α) (hβ : V ≤ U β)
     (t : κ β → Γ(X, V)) (k : κ α) :
     coord hα (ofCoord hg hβ t) k = ∑ k', rs (le_inf hα hβ) (g α β k k') * t k' := by
   simp only [coord_apply, ofCoord_val, map_sum, map_mul, rs_rs, rs_self]
 
+/- English proof (translation)
+The claim follows from `funext fun k => by rw [coord_ofCoord'] exact hg.1 β V (le_inf h h) k t`.
+-/
 theorem coord_ofCoord (hg : IsCoc U κ g) {V : X.Opens} {β : ι} (h : V ≤ U β) (t : κ β → Γ(X, V)) :
     coord h (ofCoord hg h t) = t := funext fun k => by
   rw [coord_ofCoord']
   exact hg.1 β V (le_inf h h) k t
 
+/- English proof (translation)
+The claim follows from `Subtype.ext <| funext fun α => funext fun k => by rw [ofCoord_val] have hT : V ⊓ U α ≤ V ⊓ U α ⊓ U β := le_inf le_rfl (inf_le_left.trans h) have := s.2.on α β k (T := V ⊓ U α) le_rfl (le_inf inf_le_right (inf_le_left.trans h)) (le_inf inf_le_left (inf_le_left.trans h)) rw [rs_sel …`.
+-/
 theorem ofCoord_coord (hg : IsCoc U κ g) {V : X.Opens} {β : ι} (h : V ≤ U β)
     (s : secGroup U κ g V) : ofCoord hg h (coord h s) = s :=
   Subtype.ext <| funext fun α => funext fun k => by
@@ -248,10 +302,16 @@ def secEquiv (hg : IsCoc U κ g) {V : X.Opens} {β : ι} (h : V ≤ U β) :
     left_inv := ofCoord_coord hg h
     right_inv := coord_ofCoord hg h }
 
+/- English proof (translation)
+Simplify using `only [coord_apply, secRes_val, rs_rs]`.
+-/
 theorem coord_secRes {V V' : X.Opens} {β : ι} (h : V ≤ U β) (h' : V' ≤ V) (s : secGroup U κ g V)
     (k : κ β) : coord (h'.trans h) (secRes U κ g h' s) k = rs h' (coord h s k) := by
   simp only [coord_apply, secRes_val, rs_rs]
 
+/- English proof (translation)
+Rewrite using `[← ofCoord_coord hg h s, ← ofCoord_coord hg h t, funext e]`.
+-/
 theorem sec_ext_coord {V : X.Opens} {β : ι} (hg : IsCoc U κ g) (h : V ≤ U β) {s t : secGroup U κ g V}
     (e : ∀ k, coord h s k = coord h t k) : s = t := by
   rw [← ofCoord_coord hg h s, ← ofCoord_coord hg h t, funext e]
@@ -269,6 +329,11 @@ def frame (hg : IsCoc U κ g) (β : ι) (k : κ β) : Γ(toMod U κ g, U β) :=
   show secGroup U κ g (U β) from ofCoord hg le_rfl (Pi.single k 1)
 
 open Classical in
+/- English proof (translation)
+Use `GlobalTheory.VB.isFrame_of_basis (fun V h => (Module.Basis.ofEquivFun (secEquiv hg h) : Module.Basis (κ β) Γ(X, V) (secGroup U κ g V))) fun V h k => ?_` and prove the remaining obligations. Use `(congrFun (Module.Basis.coe_ofEquivFun (secEquiv hg h)) k).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ofCoord hg h (Pi.single k 1) = secRes U κ g h (ofCoord hg le_rfl (Pi.single k 1))`. Use `sec_ext_coord hg h fun k' => ?_` and prove the remaining obligations. Rewrite using `[coord_ofCoord, coord_secRes (le_refl (U β)) h, coord_ofCoord, Pi.single_apply, Pi.single_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem isFrame_frame (hg : IsCoc U κ g) (β : ι) : GlobalTheory.VB.IsFrame (frame (U := U) hg β) := by
   refine GlobalTheory.VB.isFrame_of_basis
     (fun V h => (Module.Basis.ofEquivFun (secEquiv hg h) : Module.Basis (κ β) Γ(X, V) (secGroup U κ g V)))
@@ -279,6 +344,9 @@ theorem isFrame_frame (hg : IsCoc U κ g) (β : ι) : GlobalTheory.VB.IsFrame (f
   rw [coord_ofCoord, coord_secRes (le_refl (U β)) h, coord_ofCoord, Pi.single_apply, Pi.single_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.OmegaGlobal.isQuasicoherent_of_frames fun x => by obtain ⟨β, hβ⟩ := Opens.mem_iSup.1 (hU ▸ trivial : x ∈ iSup U) exact ⟨U β, Fintype.card (κ β), _, hβ, (isFrame_frame hg β).comp_equiv (Fintype.equivFin _).symm⟩`.
+-/
 theorem isQuasicoherent_toMod (hg : IsCoc U κ g) (hU : iSup U = ⊤) :
     (toMod U κ g).IsQuasicoherent :=
   GlobalTheory.OmegaGlobal.isQuasicoherent_of_frames fun x => by
@@ -295,6 +363,11 @@ attribute [local instance] VB.fin
 variable {O : Type} [CommRing O] {X : Scheme.{0}} {str : ∀ W : X.Opens, O →+* Γ(X, W)}
   {ι : Type} {U : ι → X.Opens} {K : Cos.{1} O} (V : VB str U K)
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `(V.e n c).surjective (fun i' => if h : i' = i then h ▸ Pi.single m 1 else 0)`. Establish `hxi : V.e n c x i = Pi.single m 1`. Rewrite using `[hx]`. Simplify using the standard rewrite rules. Establish `h1` using `V.e_chg n a c x i k`.
+
+Establish `h2` using `V.e_chg n a b x i k`. Rewrite `h1` using `[h2]`. Simplify using `only [fun k' => V.e_chg n b c x i k', hxi, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h1`. Conclude with `h1`.
+-/
 theorem mul_g_tuple {n : ℕ} (a b c : Fin (n + 1)) (i : Fin (n + 1) → ι) (k : V.κ (i a)) (m : V.κ (i c)) :
     ∑ k', rs (le_inf (capO_le U i a) (capO_le U i b)) (V.g (i a) (i b) k k') *
       rs (le_inf (capO_le U i b) (capO_le U i c)) (V.g (i b) (i c) k' m) =
@@ -313,6 +386,11 @@ theorem mul_g_tuple {n : ℕ} (a b c : Fin (n + 1)) (i : Fin (n + 1) → ι) (k 
 
 open Classical in
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `(V.e n a).surjective (fun i' => if h : i' = i then h ▸ Pi.single m 1 else 0)`. Establish `hxi : V.e n a x i = Pi.single m 1`. Rewrite using `[hx]`. Simplify using the standard rewrite rules. Establish `h1` using `V.e_chg n a a x i k`.
+
+Simplify using `only [hxi, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h1`. Conclude with `h1.symm`.
+-/
 theorem g_self_tuple {n : ℕ} (a : Fin (n + 1)) (i : Fin (n + 1) → ι) (k m : V.κ (i a)) :
     rs (le_inf (capO_le U i a) (capO_le U i a)) (V.g (i a) (i a) k m) = if k = m then 1 else 0 := by
   classical
@@ -325,6 +403,17 @@ theorem g_self_tuple {n : ℕ} (a : Fin (n + 1)) (i : Fin (n + 1) → ι) (k m :
     if_true] at h1
   exact h1.symm
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `α T h k f`. Set `i : Fin 1 → ι` to `fun _ => α`. Establish `hT : T ≤ capO U i` using `le_iInf fun _ => h.trans inf_le_left`. Establish `e (k' : V.κ α) : rs h (V.g α α k k') = if k = k' then 1 else 0`.
+
+Use `congrArg (rs hT) (g_self_tuple V (0 : Fin 1) i k k')` as an intermediate fact. Simplify using `only [rs_rs] at this`. Rewrite using `[this]`. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [e, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+
+Introduce `α β γ T h₁ h₂ h₃ k f`. Set `i : Fin 3 → ι` to `![α, β, γ]`. Establish `hT : T ≤ capO U i` using `le_iInf fun a => by fin_cases a`. Conclude with `h₁.trans inf_le_left`. Conclude with `h₁.trans inf_le_right`.
+
+Conclude with `h₂.trans inf_le_right`. Establish `e (m : V.κ γ) : ∑ k', rs h₁ (V.g α β k k') * rs h₂ (V.g β γ k' m) = rs h₃ (V.g α γ k m)`. Use `congrArg (rs hT) (mul_g_tuple V (0 : Fin 3) 1 2 i k m)` as an intermediate fact. Simplify using `only [map_sum, map_mul, rs_rs] at this`. Conclude with `this`.
+
+Simplify using `only [← e, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k' _ => Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isCoc : IsCoc U V.κ V.g := by
   classical
   constructor
@@ -364,12 +453,21 @@ attribute [local instance] VB.fin
 variable {O : Type} [CommRing O] {X : Scheme.{0}} {str : ∀ W : X.Opens, O →+* Γ(X, W)}
   {ι : Type} {U : ι → X.Opens} {K : Cos.{1} O} (V : VB str U K)
 
+/- English proof (translation)
+The claim follows from `(inter_eq_iInf U i).le`.
+-/
 theorem inter_le_capO {n : ℕ} (i : Fin n → ι) : inter (X := X.toTopCat) U i ≤ capO U i :=
   (inter_eq_iInf U i).le
 
+/- English proof (translation)
+The claim follows from `(inter_eq_iInf U i).ge`.
+-/
 theorem capO_le_inter {n : ℕ} (i : Fin n → ι) : capO U i ≤ inter (X := X.toTopCat) U i :=
   (inter_eq_iInf U i).ge
 
+/- English proof (translation)
+The claim follows from `(inter_le_capO i).trans (capO_le U i a)`.
+-/
 theorem inter_le' {n : ℕ} (i : Fin n → ι) (a : Fin n) : inter (X := X.toTopCat) U i ≤ U (i a) :=
   (inter_le_capO i).trans (capO_le U i a)
 
@@ -377,6 +475,9 @@ def secOf (n : ℕ) (x : K.X n) (i : Fin (n + 1) → ι) :
     secGroup U V.κ V.g (inter (X := X.toTopCat) U i) :=
   ofCoord (isCoc V) (inter_le' i 0) fun k => rs (inter_le_capO i) (V.e n 0 x i k)
 
+/- English proof (translation)
+Rewrite using `[secOf, coord_ofCoord', V.e_chg n a 0 x i k]`. Simplify using `only [map_sum, map_mul, rs_rs]`.
+-/
 theorem coord_secOf (n : ℕ) (x : K.X n) (i : Fin (n + 1) → ι) (a : Fin (n + 1)) (k : V.κ (i a)) :
     coord (inter_le' i a) (secOf V n x i) k = rs (inter_le_capO i) (V.e n a x i k) := by
   rw [secOf, coord_ofCoord', V.e_chg n a 0 x i k]
@@ -403,6 +504,11 @@ def cochainEquiv (n : ℕ) : K.X n ≃+ Cochain (modulesAb (toMod U V.κ V.g)).o
     rw [map_add, Pi.add_apply, coord_secOf, coord_secOf, coord_secOf, map_add, Pi.add_apply,
       Pi.add_apply, map_add]
 
+/- English proof (translation)
+Use `sec_ext_coord (isCoc V) (inter_le' i (j.succAbove 0)) fun k => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `coord _ (secOf V (n + 1) (K.δ n j x) i) k = coord _ (secRes U V.κ V.g (inter_le_comp U i j.succAbove) (secOf V n x (i ∘ j.succAbove))) k`. Rewrite using `[coord_secOf, V.e_δ n 0 j x i k, rs_rs]`. Use `coord_secRes (inter_le' (i ∘ j.succAbove) 0) (inter_le_comp U i j.succAbove) (secOf V n x (i ∘ j.succAbove)) k` as an intermediate fact. Use `Eq.trans ?_ this.symm` and prove the remaining obligations.
+
+Rewrite using `[coord_secOf, rs_rs]`.
+-/
 theorem cochainEquiv_δ (n : ℕ) (j : Fin (n + 2)) (x : K.X n) (i : Fin (n + 2) → ι) :
     cochainEquiv V (n + 1) (K.δ n j x) i =
       res (modulesAb (toMod U V.κ V.g)).obj (inter_le_comp U i j.succAbove)
@@ -416,6 +522,9 @@ theorem cochainEquiv_δ (n : ℕ) (j : Fin (n + 2)) (x : K.X n) (i : Fin (n + 2)
   refine Eq.trans ?_ this.symm
   rw [coord_secOf, rs_rs]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Rewrite using `[d_apply, Cos.d_apply, map_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, Pi.smul_apply, cochainEquiv_δ]`.
+-/
 theorem cochainEquiv_d (n : ℕ) (x : K.X n) :
     cochainEquiv V (n + 1) (K.d n x) = d (modulesAb (toMod U V.κ V.g)).obj U n (cochainEquiv V n x) := by
   funext i
@@ -434,6 +543,15 @@ attribute [local instance] VB.fin
 variable {O : Type} [CommRing O] {X : Scheme.{0}} {str : ∀ W : X.Opens, O →+* Γ(X, W)}
   {ι : Type} {U : ι → X.Opens} {K : Cos.{1} O}
 
+/- English proof (translation)
+Establish `hq : (toMod U V.κ V.g).IsQuasicoherent` using `isQuasicoherent_toMod (isCoc V) hU`. Take `⟨e⟩` from `nonempty_cechH_equiv_H.{0, 0} (toMod U V.κ V.g) U hU ha (p + 1)`. Establish `h1 : Subsingleton (Sheaf.H.{0} (modulesAb (toMod U V.κ V.g)) (p + 1))` using `(GlobalTheory.coh.toH (toMod U V.κ V.g) (p + 1)).symm.toEquiv.subsingleton`. Establish `h2` using `e.toEquiv.subsingleton`. Establish `key : ∀ c : K.cx.H (p + 1), c = 0` using `fun c => by`.
+
+Take `⟨⟨x, hx⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ c`. Establish `hx' : K.d (p + 1) x = 0` using `hx`. Establish `hσ : d (modulesAb (toMod U V.κ V.g)).obj U (p + 1) (cochainEquiv V (p + 1) x) = 0`. Rewrite using `[← cochainEquiv_d, hx', map_zero]`. Establish `h3` using `Subsingleton.elim (cls _ hσ) 0`.
+
+Rewrite `h3` using `[cls_eq_zero_iff]`. Take `⟨τ, hτ⟩` from `h3`. Take `⟨y, rfl⟩` from `(cochainEquiv V p).surjective τ`. Rewrite `hτ` using `[← cochainEquiv_d]`. Establish `h4` using `(cochainEquiv V (p + 1)).injective hτ`.
+
+Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨y, h4⟩`. Conclude with `⟨fun a b => (key a).trans (key b).symm⟩`.
+-/
 theorem subsingleton_H_of_isAffine [IsAffine X] (hU : iSup U = ⊤)
     (ha : ∀ n (i : Fin (n + 1) → ι), IsAffineOpen (capO U i)) (V : VB str U K) (p : ℕ) :
     Subsingleton (K.cx.H (p + 1)) := by
@@ -471,28 +589,46 @@ def toY {A : X.Opens} {T : W.toScheme.Opens} (h : W.ι ''ᵁ T ≤ A) : Γ(X, A)
 def ofY {A : X.Opens} {T : W.toScheme.Opens} (h : A ≤ W.ι ''ᵁ T) : Γ(W.toScheme, T) →+* Γ(X, A) :=
   rs h
 
+/- English proof (translation)
+The claim follows from `(rs_rs h' h x).trans (rs_self (le_refl (W.ι ''ᵁ T)) x)`.
+-/
 theorem toY_ofY {A : X.Opens} {T : W.toScheme.Opens} (h : W.ι ''ᵁ T ≤ A) (h' : A ≤ W.ι ''ᵁ T)
     (x : Γ(W.toScheme, T)) : toY W h (ofY W h' x) = x :=
   (rs_rs h' h x).trans (rs_self (le_refl (W.ι ''ᵁ T)) x)
 
+/- English proof (translation)
+The claim follows from `(rs_rs h h' x).trans (rs_self _ x)`.
+-/
 theorem ofY_toY {A : X.Opens} {T : W.toScheme.Opens} (h : W.ι ''ᵁ T ≤ A) (h' : A ≤ W.ι ''ᵁ T)
     (x : Γ(X, A)) : ofY W h' (toY W h x) = x :=
   (rs_rs h h' x).trans (rs_self _ x)
 
+/- English proof (translation)
+The claim follows from `(rs_rs h (W.ι.image_mono hT) x).trans (rs_rs hAB h' x).symm`.
+-/
 theorem rs_toY {A B : X.Opens} {T T' : W.toScheme.Opens} (h : W.ι ''ᵁ T ≤ A) (hT : T' ≤ T)
     (hAB : B ≤ A) (h' : W.ι ''ᵁ T' ≤ B) (x : Γ(X, A)) :
     rs hT (toY W h x) = toY W h' (rs hAB x) :=
   (rs_rs h (W.ι.image_mono hT) x).trans (rs_rs hAB h' x).symm
 
+/- English proof (translation)
+The claim follows from `rs_rs hAB h' x`.
+-/
 theorem toY_toY {A B : X.Opens} {T : W.toScheme.Opens} (hAB : B ≤ A) (h' : W.ι ''ᵁ T ≤ B)
     (h : W.ι ''ᵁ T ≤ A) (x : Γ(X, A)) : toY W h' (rs hAB x) = toY W h x :=
   rs_rs hAB h' x
 
+/- English proof (translation)
+Rewrite using `[Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι, inf_eq_right.2 h]`.
+-/
 theorem image_preimage_of_le {A : X.Opens} (h : A ≤ W) : W.ι ''ᵁ (W.ι ⁻¹ᵁ A) = A := by
   rw [Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι, inf_eq_right.2 h]
 
 variable {ι : Type} {U : ι → X.Opens}
 
+/- English proof (translation)
+Use `SetLike.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[← SetLike.mem_coe, capO, Opens.coe_iInf, Set.mem_iInter]`. Express the relevant statement in the definitionally equal form `_ ↔ W.ι x ∈ capO U i`. Rewrite using `[← SetLike.mem_coe, capO, Opens.coe_iInf, Set.mem_iInter]`. Both sides reduce to the same expression.
+-/
 theorem capO_preimage {n : ℕ} (i : Fin n → ι) :
     capO (fun α => W.ι ⁻¹ᵁ U α) i = W.ι ⁻¹ᵁ capO U i := by
   refine SetLike.ext fun x => ?_
@@ -501,10 +637,16 @@ theorem capO_preimage {n : ℕ} (i : Fin n → ι) :
   rw [← SetLike.mem_coe, capO, Opens.coe_iInf, Set.mem_iInter]
   rfl
 
+/- English proof (translation)
+Rewrite using `[capO_preimage, image_preimage_of_le W ((capO_le U i 0).trans (hUW _))]`.
+-/
 theorem image_capO (hUW : ∀ α, U α ≤ W) {n : ℕ} (i : Fin (n + 1) → ι) :
     W.ι ''ᵁ capO (fun α => W.ι ⁻¹ᵁ U α) i = capO U i := by
   rw [capO_preimage, image_preimage_of_le W ((capO_le U i 0).trans (hUW _))]
 
+/- English proof (translation)
+The claim follows from `image_preimage_of_le W (inf_le_left.trans (hUW α))`.
+-/
 theorem image_inf (hUW : ∀ α, U α ≤ W) (α β : ι) :
     W.ι ''ᵁ (W.ι ⁻¹ᵁ U α ⊓ W.ι ⁻¹ᵁ U β) = U α ⊓ U β :=
   image_preimage_of_le W (inf_le_left.trans (hUW α))
@@ -514,6 +656,9 @@ variable {O : Type} [CommRing O] {str : ∀ W : X.Opens, O →+* Γ(X, W)} {K : 
 def strY (str : ∀ W : X.Opens, O →+* Γ(X, W)) (T : W.toScheme.Opens) : O →+* Γ(W.toScheme, T) :=
   str (W.ι ''ᵁ T)
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `rs_self _ _`.
+-/
 theorem toY_str {A : X.Opens} {T : W.toScheme.Opens} (e : W.ι ''ᵁ T = A) (c : O) :
     toY W e.le (str A c) = strY W str T c := by
   subst e
@@ -554,6 +699,11 @@ def restrictVB (hUW : ∀ α, U α ≤ W) (V : VB str U K) :
 
 end Restrict
 
+/- English proof (translation)
+Introduce `O _ X str W hW ι _ U hU ha K V p`. Use `haveI : IsAffine W.toScheme := hW`. Establish `hUW (α : ι) : U α ≤ W` using `hU ▸ le_iSup U α`. Use `subsingleton_H_of_isAffine (X := W.toScheme) (U := fun α => W.ι ⁻¹ᵁ U α) ?_ ?_ (restrictVB W hUW V) p` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.preimage_iSup, hU]`.
+
+Conclude with `Scheme.Opens.ι_preimage_self W`. Introduce `n i`. Rewrite using `[← W.ι.isAffineOpen_iff_of_isOpenImmersion]`. Conclude with `(image_capO W hUW i).symm ▸ ha n i`.
+-/
 theorem subsingleton_H : ∀ {O : Type} [CommRing O] {X : Scheme.{0}} (str : ∀ W : X.Opens, O →+* Γ(X, W)) (W : X.Opens) (hW : IsAffineOpen W)
     {ι : Type} [Fintype ι] (U : ι → X.Opens) (hU : (⨆ α, U α) = W) (ha : ∀ n (i : Fin (n + 1) → ι), IsAffineOpen (capO U i))
     (K : Cos.{1} O) (V : VB str U K) (p : ℕ), Subsingleton (K.cx.H (p + 1)) := by

@@ -152,6 +152,9 @@ def FinitePlaceStep : Prop :=
       (r' : G X.M Ω →* GL (Fin a) (Qbar l)) wt' HT', IsGalRepOf π (quadChar E ^ a) ι r wt HT →
       IsGalRepOf P (quadChar X.M ^ a) ι r' wt' HT' → ∃ p : GL (Fin a) (Qbar l), ∀ g, r' g = p * r (resG E g) * p⁻¹
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ _ a ha π hc hr X hG hp l _ ι r wt HT H ⟨g, hg, ht⟩`. Break down `hW E X.M hp a ha π with ⟨η, h1, h2, h3', h4''⟩ | ⟨P, hP, hi⟩` into its components or cases. Conclude with `absurd (h3 hL E Ω a ha π X hG hp l ι r wt HT H η h1 h2 h3' h4'' g hg) ht`. Conclude with `⟨P, (h4 hJ E Ω a ha π X P).1 hc hP, (h4 hJ E Ω a ha π X P).2 hr hi, h4' hL E Ω a ha π X P hP⟩`.
+-/
 theorem oneStep_of (hW : WBC) (h3 : ContinuationThroughChart) (h4 : InfinitePlaceStep) (h4' : FinitePlaceStep) (hL : GlobalTheory.Published.LocalLanglandsGL)
     (hJ : GlobalTheory.Published.JacquetShalikaRigidity) : OneStep := by
   intro E Ω _ _ _ _ _ _ a ha π hc hr X hG hp l _ ι r wt HT H ⟨g, hg, ht⟩
@@ -224,6 +227,9 @@ def IwahoriLocalGlobal : Prop :=
 
 def K9 : Prop := GlobalTheory.Published.DeRhamPotSemistable → Main → LocalGlobalAboveLAlt.IwahoriBaseChange
 
+/- English proof (translation)
+The claim follows from `k9 hB (k8c hG hB hL k2c (k8b hG (k2a k1) (k2b k1) k2c k3a (k8a hG hL (oneStep_of hW k3b k4a k4b hL hJ))) k5 k6 k7)`.
+-/
 theorem iwahori_compatibility_of_chains (k1 : K1) (k2a : CyclicCMExtensionExists) (k2b : SimplePoleRescaling) (k2c : ContinuousInvariantCoefficients) (k3a : KillingPolyConst) (k3b : ContinuationThroughChart) (k4a : InfinitePlaceStep) (k4b : FinitePlaceStep) (k5 : K5) (k6 : K6)
     (k7 : K7) (k8a : LocalHeckeAlgebra) (k8b : WeakLiftRestriction) (k8c : IwahoriLocalGlobal) (k9 : K9) (hW : WBC) (hG : GlobalTheory.Published.GaloisRepOfPolarizedCuspidal)
     (hB : GlobalTheory.Published.DeRhamPotSemistable) (hL : GlobalTheory.Published.LocalLanglandsGL) (hJ : GlobalTheory.Published.JacquetShalikaRigidity) :

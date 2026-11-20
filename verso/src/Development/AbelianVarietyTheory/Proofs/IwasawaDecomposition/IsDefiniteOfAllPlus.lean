@@ -23,6 +23,13 @@ section DefiniteBasics
 open Matrix MeasureTheory
 open scoped ComplexOrder
 
+/- English proof (translation)
+Take `⟨hn, Q, hQ⟩` from `Formalism.UG.P.sig_data G p q h`. Establish `hq : q = 0`. Assume the negation of the conclusion as `hq`. Establish `j : Fin q` using `⟨0, Nat.pos_of_ne_zero hq⟩`. Establish `h1` using `(hG.posSemidef.conjTranspose_mul_mul_same Q).diag_nonneg (i := Sum.inr j)`.
+
+Rewrite `h1` using `[hQ]`. Simplify using `[Formalism.UG.Jpq] at h1`. Conclude with `absurd h1 (by norm_num)`. Substitute `hq` using the available equality. Simplify using `at hn`.
+
+Rewrite using `[hn]`.
+-/
 theorem sig_eq_of_posDef {n : ℕ} {G : Matrix (Fin n) (Fin n) ℂ} (hG : G.PosDef) {p q : ℕ}
     (h : Formalism.UG.HasSignature G p q) : (p, q) = (n, 0) := by
   obtain ⟨hn, Q, hQ⟩ := Formalism.UG.P.sig_data G p q h
@@ -37,6 +44,13 @@ theorem sig_eq_of_posDef {n : ℕ} {G : Matrix (Fin n) (Fin n) ℂ} (hG : G.PosD
   simp at hn
   rw [hn]
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `(factEmb D.R D.host).1.2 σ`. Establish `key : ∀ (t : D.R.GG) (ht : t ∈ D.R.Psi), tauE D (D.eTau.symm ⟨t, ht⟩) = D.host.emb t` using `fun t ht => by`. Unfold `tauE`. Rewrite using `[Equiv.apply_symm_apply]`. Distinguish the cases in `h : g ∈ D.R.Psi`.
+
+Conclude with `⟨D.eTau.symm ⟨_, h⟩, Or.inl (key g h).symm⟩`. Establish `h' : g * D.R.cc ∈ D.R.Psi`. Assume the negation of the conclusion as `h2`. Conclude with `h ((Formalism.L2.Geo.mem_Psi_iff_mul_cc_notMem _).2 h2)`. Use `⟨D.eTau.symm ⟨_, h'⟩, Or.inr ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[key, Formalism.L2.Geo.emb_mul_cc_comp]`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Use `D.host.conjE_apply (D.host.emb g) x` as an intermediate fact. Conclude with `((starRingEnd_self_apply _).symm.trans (congrArg (starRingEnd ℂ) this.symm))`.
+-/
 theorem exists_tauE_or_conj (D : D7) (σ : D.host.E →+* ℂ) :
     ∃ τ, σ = tauE D τ ∨ σ = (starRingEnd ℂ).comp (tauE D τ) := by
   obtain ⟨g, rfl⟩ := (factEmb D.R D.host).1.2 σ
@@ -57,6 +71,11 @@ theorem exists_tauE_or_conj (D : D7) (σ : D.host.E →+* ℂ) :
 
 variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel V S}
 
+/- English proof (translation)
+Introduce `σ`. Use `Or.inl (sig_eq_of_posDef ?_ (hs σ))` and prove the remaining obligations. Take `⟨τ, rfl | rfl⟩` from `exists_tauE_or_conj D σ`. Conclude with `h.posDef τ`. Establish `e : V.gram.map ((starRingEnd ℂ).comp (tauE D τ)) = (gramAt D V τ)ᴴᵀ`.
+
+Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `(h.posDef τ).conjTranspose.transpose`.
+-/
 theorem isDefinite_of_allPlus (hs : V.SigOK) (h : AllPlus M) : V.IsDefinite := by
   intro σ
   refine Or.inl (sig_eq_of_posDef ?_ (hs σ))
@@ -68,6 +87,15 @@ theorem isDefinite_of_allPlus (hs : V.SigOK) (h : AllPlus M) : V.IsDefinite := b
     rw [e]
     exact (h.posDef τ).conjTranspose.transpose
 
+/- English proof (translation)
+Take `⟨-, -, r3, -⟩` from `(GlobalTheory.SmoothForms.RealPts.realPoints D).2 θ hθ V`. Establish `hu` using `GlobalTheory.RealLift.archM_mem hθ V k`. Establish `e : GlobalTheory.RealLift.prodAt θ V Finset.univ.toList (fun τ => Formalism.L2.Pj.archM V (θ τ) k) = k` using `r3 _ (GlobalTheory.RealLift.prodAt_mem θ V _ _) _ hk fun τ => by`. Rewrite using `[GlobalTheory.RealLift.infMat_prodAt hθ V hu τ _ (Finset.nodup_toList _), if_pos (Finset.mem_toList.2 (Finset.mem_univ _))]`. Both sides reduce to the same expression.
+
+Rewrite using `[← e]`. Use `clear e`. Generalize the expression as in `(Finset.univ.toList : List D.what₂.Tau) = l`. Proceed by induction on `l with`. Consider the case `nil`.
+
+Introduce `f hf`. Use `hf using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Conclude with `congrArg f (mul_one g)`. Consider the case `cons τ l ih`.
+
+Introduce `f hf`. Use `hU τ _ (hu τ) _ (ih f hf) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Conclude with `congrArg f (mul_assoc _ _ _).symm`.
+-/
 theorem rTr_mem_of_places {θ : InfFam D} (hθ : IsInfFam θ) (U : Set (GA D V → ℂ))
     (hU : ∀ τ, ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), ∀ f ∈ U, rTr V (atTau θ V τ g) f ∈ U) {k : GA D V}
     (hk : k ∈ GinfC V) : ∀ f ∈ U, rTr V k f ∈ U := by
@@ -95,6 +123,11 @@ theorem rTr_mem_of_places {θ : InfFam D} (hθ : IsInfFam θ) (U : Set (GA D V �
     exact congrArg f (mul_assoc _ _ _).symm
 
 open Classical in
+/- English proof (translation)
+Unfold `inclT actT`. Simplify using `only [PiTensorProduct.map_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `ρ`. Distinguish the cases in `c : ρ = τ`.
+
+Substitute `c` using the available equality. Simplify using `using hw`. Simplify using `[Function.update_of_ne c]`.
+-/
 theorem inclT_update_tprod (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) ℂ) (v : M.Vec) (w : M.sm τ)
     (hw : (w : M.H τ) = M.rep τ g (v τ)) :
     inclT M (PiTensorProduct.tprod ℂ (Function.update v τ w)) = actT M τ g (inclT M (PiTensorProduct.tprod ℂ v)) := by
@@ -109,6 +142,11 @@ theorem inclT_update_tprod (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.
 
 end DefiniteBasics
 
+/- English proof (translation)
+Use `⟨fun q => ρ q.2.choose (Ψ q.2.choose), fun h => ?_⟩` and prove the remaining obligations. Establish `ha : h⁻¹ * (p.rangeRestrict h).2.choose ∈ p.ker`. Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv, (p.rangeRestrict h).2.choose_spec]`. Conclude with `inv_mul_cancel _`. Use `hU _ ha h` as an intermediate fact.
+
+Rewrite `this` using `[mul_inv_cancel_left]`. Use `beta_reduce`. Rewrite using `[this, ← Module.End.mul_apply, ← map_mul, mul_inv_rev, inv_inv, mul_inv_cancel_left]`.
+-/
 theorem exists_descend {G H W : Type} [Group G] [Group H] [AddCommGroup W] [Module ℂ W] (p : G →* H)
     (ρ : G →* Module.End ℂ W) (Ψ : G → W) (hU : ∀ a ∈ p.ker, ∀ h, Ψ (h * a) = ρ a⁻¹ (Ψ h)) :
     ∃ f : p.range → W, ∀ h, f (p.rangeRestrict h) = ρ h (Ψ h) := by
@@ -121,23 +159,38 @@ theorem exists_descend {G H W : Type} [Group G] [Group H] [AddCommGroup W] [Modu
   beta_reduce
   rw [this, ← Module.End.mul_apply, ← map_mul, mul_inv_rev, inv_inv, mul_inv_cancel_left]
 
+/- English proof (translation)
+Rewrite using `[map_mul, hk, mul_one]`.
+-/
 theorem rho_right {G W : Type} [Group G] [AddCommGroup W] [Module ℂ W] (ρ : G →* Module.End ℂ W) (g : G) {k : G}
     (hk : ρ k = 1) : ρ (g * k) = ρ g := by
   rw [map_mul, hk, mul_one]
 
+/- English proof (translation)
+Rewrite using `[mul_inv_rev, map_mul, hk, one_mul]`.
+-/
 theorem rho_right_inv {G W : Type} [Group G] [AddCommGroup W] [Module ℂ W] (ρ : G →* Module.End ℂ W) (g : G) {k : G}
     (hk : ρ k⁻¹ = 1) : ρ (g * k)⁻¹ = ρ g⁻¹ := by
   rw [mul_inv_rev, map_mul, hk, one_mul]
 
+/- English proof (translation)
+Simplify using `using hf 1 h k`.
+-/
 theorem adForms_level {G Γ W : Type} [Group G] [Group Γ] [NormedAddCommGroup W] [InnerProductSpace ℂ W] {ι : Γ →* G}
     {ρ : Γ →* Module.End ℂ W} {J : Subgroup G} {χ : J →* ℂˣ} {f : G → W} (hf : f ∈ Bridge.AdForms ι ρ J χ) (h : G)
     (k : J) : f (h * k) = (χ k : ℂ) • f h := by
   simpa using hf 1 h k
 
+/- English proof (translation)
+Rewrite using `[map_mul, show p.rangeRestrict a = 1 from Subtype.ext ha, one_mul]`.
+-/
 theorem range_ker_mul {G H : Type} [Group G] [Group H] (p : G →* H) {a : G} (ha : a ∈ p.ker) (k : G) :
     p.rangeRestrict (a * k) = p.rangeRestrict k := by
   rw [map_mul, show p.rangeRestrict a = 1 from Subtype.ext ha, one_mul]
 
+/- English proof (translation)
+Introduce and unpack `γ q ⟨k, hk⟩`. Take `⟨g, rfl⟩` from `p.rangeRestrict_surjective q`. Take `⟨κ, hκ, rfl⟩` from `hK k`. Use `show f (p.rangeRestrict γ * p.rangeRestrict g * p.rangeRestrict κ) = _ • ρ γ _`. Rewrite using `[← map_mul, ← map_mul, hf, hf, rho_right ρ _ (hρ κ hκ), h γ γ.2 g κ hκ hk, map_smul, map_mul, Module.End.mul_apply]`.
+-/
 theorem mem_adForms {G H W : Type} [Group G] [Group H] [NormedAddCommGroup W] [InnerProductSpace ℂ W] (p : G →* H)
     (Γ K : Subgroup G) (hK : ∀ q : p.range, ∃ κ ∈ K, p.rangeRestrict κ = q) (ρ : G →* Module.End ℂ W) (hρ : ∀ κ ∈ K, ρ κ = 1)
     (J : Subgroup p.range) (χ : J →* ℂˣ) (Ψ : G → W) (f : p.range → W) (hf : ∀ h, f (p.rangeRestrict h) = ρ h (Ψ h))
@@ -149,6 +202,9 @@ theorem mem_adForms {G H W : Type} [Group G] [Group H] [NormedAddCommGroup W] [I
   show f (p.rangeRestrict γ * p.rangeRestrict g * p.rangeRestrict κ) = _ • ρ γ _
   rw [← map_mul, ← map_mul, hf, hf, rho_right ρ _ (hρ κ hκ), h γ γ.2 g κ hκ hk, map_smul, map_mul, Module.End.mul_apply]
 
+/- English proof (translation)
+Take `⟨κ', rfl⟩` from `(finHom V).rangeRestrict_surjective q`. Take `⟨a, ha, κ, hκ, rfl⟩` from `(GlobalTheory.UnitarySplit.real_finite_split D V).1 κ'`. Conclude with `⟨κ, hκ, (range_ker_mul (finHom V) ha κ).symm⟩`.
+-/
 theorem exists_fin_lift {D : D7} (V : HSp D) (q : Bridge.Gf V) : ∃ κ ∈ GfC V, (finHom V).rangeRestrict κ = q := by
   obtain ⟨κ', rfl⟩ := (finHom V).rangeRestrict_surjective q
   obtain ⟨a, ha, κ, hκ, rfl⟩ := (GlobalTheory.UnitarySplit.real_finite_split D V).1 κ'
@@ -157,6 +213,11 @@ theorem exists_fin_lift {D : D7} (V : HSp D) (q : Bridge.Gf V) : ∃ κ ∈ GfC 
 variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel V S} {θ : InfFam D} {c : CoefA V}
   {pr : c.W →ₗ[ℂ] SmT M →ₗ[ℂ] ℂ}
 
+/- English proof (translation)
+Establish `h` using `rTr_mem_of_places hθ {f | ∃ x ∈ U, f = rTr V x (fun g => if g ∈ U then 1 else 0)} (fun τ g hg f hf => by`. Take `⟨x, hx, rfl⟩` from `hf`. Conclude with `⟨_, U.mul_mem (hU τ g hg) hx, funext fun y => by simp only [rTr, mul_assoc]⟩) hk _ ⟨1, U.one_mem, rfl⟩`. Take `⟨x, hx, e⟩` from `h`. Use `congrFun e 1` as an intermediate fact.
+
+Simplify using `only [rTr, mul_one, one_mul, if_pos hx] at this`. Assume the negation of the conclusion as `hn`. Rewrite `this` using `[if_neg hn]`. Conclude with `zero_ne_one this`.
+-/
 theorem real_le (hθ : IsInfFam θ) (U : Submonoid (GA D V))
     (hU : ∀ τ, ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), atTau θ V τ g ∈ U) {k : GA D V} (hk : k ∈ GinfC V) : k ∈ U := by
   classical
@@ -171,6 +232,9 @@ theorem real_le (hθ : IsInfFam θ) (U : Submonoid (GA D V))
   rw [if_neg hn] at this
   exact zero_ne_one this
 
+/- English proof (translation)
+Introduce `f f' h`. Use function extensionality and compare the values at `q`. Take `⟨_, g, rfl⟩` from `q`. Use `congrArg (c.ρ g) (congrFun h g)` as an intermediate fact. Conclude with `(GlobalTheory.DefiniteEnd.rho_inv_cancel g _).symm.trans (this.trans (GlobalTheory.DefiniteEnd.rho_inv_cancel g _))`.
+-/
 theorem ext_injective (c : CoefA V) : Function.Injective c.ext := by
   intro f f' h
   funext q
@@ -178,6 +242,11 @@ theorem ext_injective (c : CoefA V) : Function.Injective c.ext := by
   have := congrArg (c.ρ g) (congrFun h g)
   exact (GlobalTheory.DefiniteEnd.rho_inv_cancel g _).symm.trans (this.trans (GlobalTheory.DefiniteEnd.rho_inv_cancel g _))
 
+/- English proof (translation)
+Proceed by induction on `x using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r v`. Set `y : M.sm τ` to `⟨M.rep τ (unfr M τ u) (v τ), Submodule.eq_top_iff'.1 (hsm τ) _⟩`. Establish `e : π τ u (PiTensorProduct.tprod ℂ v) = PiTensorProduct.tprod ℂ (Function.update v τ y)` using `hinj ((hπ τ u _).trans (inclT_update_tprod τ _ v y rfl).symm)`. Use `hpr.2 τ _ (hp.unfr_mem τ u) (c.ρ (atTau θ V τ (unfr M τ u))⁻¹ w) v y rfl` as an intermediate fact.
+
+Rewrite `this` using `[GlobalTheory.DefiniteEnd.rho_inv_cancel]`. Rewrite using `[map_smul, map_smul, map_smul, e, this]`. Consider the case `add x y hx hy => rw [map_add, map_add, map_add, hx, hy]`.
+-/
 theorem pair_tens (hp : AllPlus M) (hsm : ∀ τ, M.sm τ = ⊤) (hinj : Function.Injective (inclT M)) {π} (hπ : IsTensAct M π)
     (hpr : IsDualPair θ M c pr) (τ : D.what₂.Tau) (u : Matrix.unitaryGroup (Fin V.rank) ℂ) (w : c.W) (x : SmT M) :
     pr w (π τ u x) = pr (c.ρ (atTau θ V τ (unfr M τ u))⁻¹ w) x := by
@@ -192,6 +261,17 @@ theorem pair_tens (hp : AllPlus M) (hsm : ∀ τ, M.sm τ = ⊤) (hinj : Functio
     rw [map_smul, map_smul, map_smul, e, this]
   | add x y hx hy => rw [map_add, map_add, map_add, hx, hy]
 
+/- English proof (translation)
+Establish `m` using `AllPlus.finite_smooth_irreducible D V S M hp`. Take `⟨fd, inj, π, hπ, irr⟩` from `tensor_irreducible D V S M m hp`. Establish `key` using `pair_tens hp (fun τ => (m τ).2.1) inj hπ hpr`. Prove the components needed by the constructor for the conclusion. Set `U : Submonoid (GA D V)` to `{ carrier := {h | ∀ w, pr w = 0 → pr (c.ρ h⁻¹ w) = 0} one_mem' := fun w hw => by rwa [inv_one, map_one] mul_mem' := fun {a b} ha hb w hw => by`.
+
+Rewrite using `[mul_inv_rev, map_mul]`. Conclude with `hb _ (ha w hw) }`. Establish `hU : ∀ h, h ∈ U` using `fun h => by`. Take `⟨a, ha, k, hk, rfl⟩` from `(GlobalTheory.UnitarySplit.real_finite_split D V).1 h`. Use `U.mul_mem (real_le hθ U (fun τ g hg w hw => ?_) ha) fun w hw => by rwa [hc.1 _ (inv_mem hk)]` and prove the remaining obligations.
+
+Take `⟨u, rfl⟩` from `hp.exists_unfr τ hg`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[← key, hw]`. Both sides reduce to the same expression. Rewrite using `[← LinearMap.ker_eq_bot]`.
+
+Use `(hc.2.2.2.2 _ fun h => ?_).resolve_right fun e => hpr.1 (LinearMap.ker_eq_top.1 e)` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Use `hU h⁻¹ w hw` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Establish `h : Function.Injective pr.flip`.
+
+Rewrite using `[← LinearMap.ker_eq_bot]`. Use `(irr _ fun τ u x hx => ?_).resolve_right fun e => hpr.1 ?_` and prove the remaining obligations. Conclude with `LinearMap.ext fun w => (key τ u w x).trans (LinearMap.congr_fun hx _)`. Conclude with `LinearMap.ext₂ fun w x => LinearMap.congr_fun₂ (LinearMap.ker_eq_top.1 e) x w`. Conclude with `LinearMap.flip_injective_iff₂.1 h`.
+-/
 theorem pair_bijective (hθ : IsInfFam θ) (hp : AllPlus M) (hc : c.Is) (hpr : IsDualPair θ M c pr) :
     Function.Bijective pr := by
   have m := AllPlus.finite_smooth_irreducible D V S M hp
@@ -222,6 +302,9 @@ theorem pair_bijective (hθ : IsInfFam θ) (hp : AllPlus M) (hc : c.Is) (hpr : I
       · exact LinearMap.ext₂ fun w x => LinearMap.congr_fun₂ (LinearMap.ker_eq_top.1 e) x w
     exact LinearMap.flip_injective_iff₂.1 h
 
+/- English proof (translation)
+Introduce `_ _ h` and use `ext_injective c (funext fun g => (pair_bijective hθ hp hc hpr).1 (LinearMap.ext fun v => congrFun (LinearMap.congr_fun h v) g))`.
+-/
 theorem toMap_injective (hθ : IsInfFam θ) (hp : AllPlus M) (hc : c.Is) (hpr : IsDualPair θ M c pr) :
     Function.Injective (c.toMap pr) := fun _ _ h =>
   ext_injective c (funext fun g => (pair_bijective hθ hp hc hpr).1
@@ -229,6 +312,9 @@ theorem toMap_injective (hθ : IsInfFam θ) (hp : AllPlus M) (hc : c.Is) (hpr : 
 
 variable {β : GL (Fin V.rank) (Lev.EAf D)} {L : LevDat D.host.E ℂ V.rank}
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.DefiniteEnd.isMultMap_toMap hθ hs (isDefinite_of_allPlus hs hp) M hc hpr hf`. Use `(mem_multT θ M _ _ _).2 (Submodule.subset_span ⟨h.aut, h.cusp, fun v k hk g => ?_, h.equiv, h.cont⟩)` and prove the remaining obligations. Establish `e : f ((finHom V).rangeRestrict (g * k)) = levChi V β (flag1L L) k • f ((finHom V).rangeRestrict g)` using `(congrArg f (map_mul (finHom V).rangeRestrict g k)).trans (adForms_level hf _ ⟨(finHom V).rangeRestrict k, hk.2⟩)`. Establish `e2 : c.ext f (g * k) = levChi V β (flag1L L) k • c.ext f g` using `((congrArg (c.ρ (g * k)⁻¹) e).trans (LinearMap.congr_fun (rho_right_inv c.ρ g (hc.1 _ (inv_mem hk.1))) _)).trans (map_smul _ _ _)`. Conclude with `(congrArg (fun w => pr w (PiTensorProduct.tprod ℂ v)) e2).trans (LinearMap.congr_fun (map_smul pr _ _) _)`.
+-/
 theorem toMap_mem (hθ : IsInfFam θ) (hs : V.SigOK) (hp : AllPlus M) (hc : c.Is) (hpr : IsDualPair θ M c pr)
     {f : Bridge.Gf V → c.W} (hf : f ∈ Bridge.AdForms (Bridge.ratF V) c.coef.ρ (levEnv V β L).J (levEnv V β L).χ) :
     c.toMap pr f ∈ MultT θ M (levS V β (flag1L L)) (levChi V β (flag1L L)) := by
@@ -241,6 +327,19 @@ theorem toMap_mem (hθ : IsInfFam θ) (hs : V.SigOK) (hp : AllPlus M) (hc : c.Is
       (map_smul _ _ _)
   exact (congrArg (fun w => pr w (PiTensorProduct.tprod ℂ v)) e2).trans (LinearMap.congr_fun (map_smul pr _ _) _)
 
+/- English proof (translation)
+Establish `m` using `AllPlus.finite_smooth_irreducible D V S M hp`. Take `⟨fd, inj, π, hπ, irr⟩` from `tensor_irreducible D V S M m hp`. Establish `key` using `pair_tens hp (fun τ => (m τ).2.1) inj hπ hpr`. Establish `hb` using `pair_bijective hθ hp hc hpr`. Establish `hE` using `GlobalTheory.multT_cont_left_equiv D θ V S M π _ _ hp (fun τ => (m τ).2.1) inj hπ T hT`.
+
+Use `choose Ψ hΨ using fun h : GA D V => hb.2 (LinearMap.proj h ∘ₗ T)`. Use `replace hΨ : ∀ h x, pr (Ψ h) x = T x h := fun h x => LinearMap.congr_fun (hΨ h) x`. Establish `hlev : ∀ k ∈ levS V β (flag1L L), ∀ x g, T x (g * k) = levChi V β (flag1L L) k * T x g` using `fun k hk x g => by`. Proceed by induction on `x using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r v`.
+
+Use `(mult_value_left_cont_level θ M _ _ _ ((mem_multT θ M _ _ _).1 hT) v).2.2 k hk g` as an intermediate fact. Rewrite using `[map_smul, Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul, mul_left_comm]`. Conclude with `congrArg (r * ·) this`. Consider the case `add x y hx hy => rw [map_add, Pi.add_apply, Pi.add_apply, hx, hy, mul_add]`. Set `U : Submonoid (GA D V)` to `{ carrier := {a | ∀ h, Ψ (h * a) = c.ρ a⁻¹ (Ψ h)} one_mem' := fun h => by rw [mul_one, inv_one, map_one]; rfl mul_mem' := fun {a b} ha hb h => by rw [← mul_assoc, hb, ha, mul_inv_rev, map_mul]; rfl }`.
+
+Take `⟨f, hf⟩` from `exists_descend (finHom V) c.ρ Ψ fun a ha => real_le hθ U (fun τ g hg h => by`. Take `⟨u, rfl⟩` from `hp.exists_unfr τ hg`. Use `hb.1 (LinearMap.ext fun x => ?_)` and prove the remaining obligations. Rewrite using `[← key, hΨ, hΨ, (hE x).2.2]`. Use the proof step `rfl) ha`.
+
+Use `⟨f, mem_adForms (finHom V) (GQ V) (GfC V) (exists_fin_lift V) c.ρ hc.1 _ _ Ψ f hf fun γ hγ g κ hκ hk => ?_, LinearMap.ext fun x => funext fun h => ?_⟩` and prove the remaining obligations. Establish `e2 : Ψ (γ * g * κ) = levChi V β (flag1L L) κ • Ψ g`. Use `hb.1 (LinearMap.ext fun x => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, LinearMap.smul_apply, hΨ, hΨ, hlev κ ⟨hκ, hk⟩, (hE x).2.1 γ hγ, smul_eq_mul]`. Conclude with `e2`.
+
+Establish `e` using `GlobalTheory.DefiniteEnd.rho_inv_cancel (c := c) h⁻¹ (Ψ h)`. Rewrite `e` using `[inv_inv]`. Conclude with `(congrArg (fun w => pr w x) ((congrArg (c.ρ h⁻¹) (hf h)).trans e)).trans (hΨ h x)`.
+-/
 theorem exists_form (hθ : IsInfFam θ) (hp : AllPlus M) (hc : c.Is) (hpr : IsDualPair θ M c pr)
     {T : SmT M →ₗ[ℂ] (GA D V → ℂ)} (hT : T ∈ MultT θ M (levS V β (flag1L L)) (levChi V β (flag1L L))) :
     ∃ f ∈ Bridge.AdForms (Bridge.ratF V) c.coef.ρ (levEnv V β L).J (levEnv V β L).χ, c.toMap pr f = T := by
@@ -276,11 +375,19 @@ theorem exists_form (hθ : IsInfFam θ) (hp : AllPlus M) (hc : c.Is) (hpr : IsDu
     rw [inv_inv] at e
     exact (congrArg (fun w => pr w x) ((congrArg (c.ρ h⁻¹) (hf h)).trans e)).trans (hΨ h x)
 
+/- English proof (translation)
+The claim follows from `le_antisymm (by rintro _ ⟨f, hf, rfl⟩; exact toMap_mem hθ hs hp hc hpr hf) fun _ hT => exists_form hθ hp hc hpr hT`.
+-/
 theorem map_adForms (hθ : IsInfFam θ) (hs : V.SigOK) (hp : AllPlus M) (hc : c.Is) (hpr : IsDualPair θ M c pr) :
     (Bridge.AdForms (Bridge.ratF V) c.coef.ρ (levEnv V β L).J (levEnv V β L).χ).map (c.toMap pr) =
       MultT θ M (levS V β (flag1L L)) (levChi V β (flag1L L)) :=
   le_antisymm (by rintro _ ⟨f, hf, rfl⟩; exact toMap_mem hθ hs hp hc hpr hf) fun _ hT => exists_form hθ hp hc hpr hT
 
+/- English proof (translation)
+Introduce `τ a`. Take `⟨-, q, -, hq⟩` from `M.enum τ`. Establish `h : (q a, M.ε τ a) ∈ parB P j τ` using `hq ▸ Finset.mem_image_of_mem _ (Finset.mem_univ a)`. Simplify using `only [parB, dualPar, TPar.Dpar, Finset.mem_image, Finset.mem_union, Finset.mem_biUnion, Prod.mk.injEq] at h`. Take `⟨_, ⟨x, hx, rfl⟩, -, h⟩` from `h`.
+
+Rewrite using `[← h]`. Break down `hx with (⟨i, -, rfl⟩ | ⟨i, -, rfl⟩) | ⟨i, -, y, -, rfl⟩` into its components or cases. Both sides reduce to the same expression. Conclude with `decide_eq_true (Or.inl (by have := i.2; omega))`. Both sides reduce to the same expression.
+-/
 theorem allPlus_parB (P : TPar D) {j : ℕ} (hj : D.R.m - 1 ≤ j) (M : DSModel V (parB P j)) : AllPlus M := by
   intro τ a
   obtain ⟨-, q, -, hq⟩ := M.enum τ
@@ -298,6 +405,9 @@ section Real
 variable {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)
 
+/- English proof (translation)
+Establish `e : flag1L (R.datXt t) = R.datXt t` using `rfl`. Establish `h` using `map_adForms (β := R.βX) (L := R.datXt t) hθ D.sp.X'_sig (allPlus_parB _ (Nat.sub_le _ _) _) hc hpr`. Rewrite `h` using `[e]`. Conclude with `(LinearMap.range_comp _ _).trans ((congrArg (Submodule.map _) (hH t).2.1).trans h)`.
+-/
 theorem range_top (hθ : R.models_inf) (hc : R.models_cX) (hpr : R.models_prX) (hH : R.models_HX) (t : T) :
     LinearMap.range (R.cX.toMap R.prX ∘ₗ (R.HX t).e) =
       MultT R.θ R.MX (levS _ R.βX (R.datXt t)) (levChi _ R.βX (R.datXt t)) := by
@@ -306,10 +416,16 @@ theorem range_top (hθ : R.models_inf) (hc : R.models_cX) (hpr : R.models_prX) (
   rw [e] at h
   exact (LinearMap.range_comp _ _).trans ((congrArg (Submodule.map _) (hH t).2.1).trans h)
 
+/- English proof (translation)
+The claim follows from `(toMap_injective hθ (allPlus_parB _ (Nat.sub_le _ _) _) hc hpr).comp (hH t).1`.
+-/
 theorem top_injective (hθ : R.models_inf) (hc : R.models_cX) (hpr : R.models_prX) (hH : R.models_HX) (t : T) :
     Function.Injective (R.cX.toMap R.prX ∘ₗ (R.HX t).e) :=
   (toMap_injective hθ (allPlus_parB _ (Nat.sub_le _ _) _) hc hpr).comp (hH t).1
 
+/- English proof (translation)
+The claim follows from `(ext_injective (R.cV i)).comp (hH i t).1`.
+-/
 theorem extV_injective (hH : R.models_HV) (i : Fin D.R.m) (t : T) : Function.Injective (R.extV i t) :=
   (ext_injective (R.cV i)).comp (hH i t).1
 

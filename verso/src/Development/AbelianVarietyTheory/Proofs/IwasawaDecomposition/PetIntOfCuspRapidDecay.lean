@@ -12,6 +12,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Mem.Th
 
+/- English proof (translation)
+Introduce `_ hθ _ μ 𝓕 hq _ _ hψ hφ` and use `GlobalTheory.CuspDecay.integrableOn_star_mul hP GlobalTheory.Mem.VolFin.finVol hθ μ 𝓕 hq.1 hq.2 hψ hφ.1 hφ.2`.
+-/
 theorem petInt_of_cuspRapidDecay (hP : GlobalTheory.Published.CuspRapidDecay) (D : D7) : PetInt D :=
   fun _ hθ _ μ 𝓕 hq _ _ hψ hφ =>
     GlobalTheory.CuspDecay.integrableOn_star_mul hP GlobalTheory.Mem.VolFin.finVol hθ μ 𝓕 hq.1 hq.2 hψ hφ.1 hφ.2

@@ -7,6 +7,11 @@ open ReciprocityTheory.Gal
 
 namespace GlobalTheory.ShapeNeg
 
+/- English proof (translation)
+Introduce `O _ _ _ _ _ _ h`. Establish `hopen : IsOpen ((IsLocalRing.maximalIdeal O : Ideal O) : Set O)`. Use `(isAdic_iff.mp h).1 1` as an intermediate fact. Simplify using `using this`. Establish `hfin : Finite (O ⧸ (IsLocalRing.maximalIdeal O).toAddSubgroup)` using `AddSubgroup.quotient_finite_of_isOpen _ hopen`.
+
+Conclude with `hfin`.
+-/
 theorem finite_residueField_of_compact_isAdic :
     ∀ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [TopologicalSpace O]
     [IsTopologicalRing O] [CompactSpace O], IsAdic (IsLocalRing.maximalIdeal O) →

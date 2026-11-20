@@ -34,6 +34,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace UpperTheory.Gal.Spc
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Simplify using `only [conv, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← smul_eq_mul, smul_finsum]`. Conclude with `finsum_congr fun x => by simp only [smul_eq_mul]; ring`.
+-/
 private theorem conv_smul_right {X : Type} [Group X] (K : Subgroup X) (f y : X → ℂ) (b : ℂ) :
     conv K f (b • y) = b • conv K f y := by
   funext g
@@ -41,6 +44,9 @@ private theorem conv_smul_right {X : Type} [Group X] (K : Subgroup X) (f y : X �
   rw [← smul_eq_mul, smul_finsum]
   exact finsum_congr fun x => by simp only [smul_eq_mul]; ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Simplify using `only [conv, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← smul_eq_mul, smul_finsum]`. Conclude with `finsum_congr fun x => by simp only [smul_eq_mul]; ring`.
+-/
 private theorem conv_smul_left {X : Type} [Group X] (K : Subgroup X) (x y : X → ℂ) (a : ℂ) :
     conv K (a • x) y = a • conv K x y := by
   funext g
@@ -48,6 +54,9 @@ private theorem conv_smul_left {X : Type} [Group X] (K : Subgroup X) (x y : X �
   rw [← smul_eq_mul, smul_finsum]
   exact finsum_congr fun x => by simp only [smul_eq_mul]; ring
 
+/- English proof (translation)
+Establish `e1 : conv K f y = a • conv K x y`. Rewrite using `[← hey, ← (hR X K hK f hf e he).2 y hy, h1, conv_smul_left, hey]`. Establish `e2 : conv K f' x = b • conv K y x`. Rewrite using `[← hex, ← (hR X K hK f' hf' e he).2 x hx, h2, conv_smul_left, hex]`. Rewrite using `[h2, h1, conv_smul_right, conv_smul_right, e1, e2, hxy, smul_comm]`.
+-/
 private theorem comm_of_scaled {X : Type} [Group X] (K : Subgroup X) (hK : IsCommensurated K) (hR : ConvRing)
     {e f f' x y : X → ℂ} {a b : ℂ} (he : e ∈ Hecke ℂ K) (hf : f ∈ Hecke ℂ K) (hf' : f' ∈ Hecke ℂ K)
     (hx : x ∈ Hecke ℂ K) (hy : y ∈ Hecke ℂ K) (hex : conv K e x = x) (hey : conv K e y = y)
@@ -59,12 +68,18 @@ private theorem comm_of_scaled {X : Type} [Group X] (K : Subgroup X) (hK : IsCom
     rw [← hex, ← (hR X K hK f' hf' e he).2 x hx, h2, conv_smul_left, hex]
   rw [h2, h1, conv_smul_right, conv_smul_right, e1, e2, hxy, smul_comm]
 
+/- English proof (translation)
+Establish `e : DoubleCoset.doubleCoset h (T.K : Set X) T.K = DoubleCoset.doubleCoset 1 (T.K : Set X) T.K` using `DoubleCoset.doubleCoset_eq_of_mem (DoubleCoset.mem_doubleCoset.2 ⟨h, hh, 1, T.K.one_mem, by simp⟩)`. Use function extensionality and compare the values at `g`. Simplify using `only [TyLev.tf, dosetInd, e]`.
+-/
 private theorem tf_of_mem {X M : Type} [Group X] [Group M] (T : TyLev X M) {h : X} (hh : h ∈ T.K) : T.tf h = T.tf 1 := by
   have e : DoubleCoset.doubleCoset h (T.K : Set X) T.K = DoubleCoset.doubleCoset 1 (T.K : Set X) T.K :=
     DoubleCoset.doubleCoset_eq_of_mem (DoubleCoset.mem_doubleCoset.2 ⟨h, hh, 1, T.K.one_mem, by simp⟩)
   funext g
   simp only [TyLev.tf, dosetInd, e]
 
+/- English proof (translation)
+Introduce `hb`. Take `⟨u, v, huv⟩` from `Nat.isCoprime_iff_coprime.2 hab`. Establish `h : (u : R) * a + v * b = 1` using `by exact_mod_cast congrArg (Int.cast : ℤ → R) huv`. Conclude with `hI ((Ideal.eq_top_iff_one I).2 (h ▸ I.add_mem (I.mul_mem_left _ ha) (I.mul_mem_left _ hb)))`.
+-/
 private theorem nat_not_mem {R : Type} [CommRing R] {I : Ideal R} (hI : I ≠ ⊤) {a b : ℕ} (hab : a.Coprime b)
     (ha : (a : R) ∈ I) : (b : R) ∉ I := by
   intro hb
@@ -72,11 +87,19 @@ private theorem nat_not_mem {R : Type} [CommRing R] {I : Ideal R} (hI : I ≠ �
   have h : (u : R) * a + v * b = 1 := by exact_mod_cast congrArg (Int.cast : ℤ → R) huv
   exact hI ((Ideal.eq_top_iff_one I).2 (h ▸ I.add_mem (I.mul_mem_left _ ha) (I.mul_mem_left _ hb)))
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Simplify using `[Units.val_mul, h]`.
+-/
 private theorem gl_comm_of_scalar {k : Type} [Field k] {n : ℕ} (A B : GL (Fin n) k) (c : k)
     (h : A.val = c • (1 : Matrix (Fin n) (Fin n) k)) : A * B = B * A := by
   apply Units.ext
   simp [Units.val_mul, h]
 
+/- English proof (translation)
+Establish `hCen : TfCen` using `pTfCen pAvgK pTfAdm`. Establish `hIdem : TfIdem` using `pTfIdem pTfAdm hCen`. Establish `hAct : TfAct` using `pTfAct pAvgK pDosetCosets pTfAdm`. Establish `hMulCen : TfMulCen` using `pTfMulCen pTfAdm hCen hIdem`. Establish `hMulL : TfMulL` using `pTfMulL pTfAdm hAct pDosetIff`.
+
+Establish `hMulR : TfMulR` using `pTfMulR pAvgK pTfAdm pDosetIff`. Establish `hLoc : TfLoc` using `pTfLoc pTfAdm hAct pDosetIff`. Conclude with `⟨pTfAdm, hIdem, pTfComm pTfAdm pConvRing hMulCen hMulL hMulR hLoc⟩`.
+-/
 private theorem tf_facts : TfAdm ∧ TfIdem ∧ TfComm := by
   have hCen : TfCen := pTfCen pAvgK pTfAdm
   have hIdem : TfIdem := pTfIdem pTfAdm hCen
@@ -89,6 +112,11 @@ private theorem tf_facts : TfAdm ∧ TfIdem ∧ TfComm := by
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {A : Arith E} {n p : ℕ} [Fact p.Prime] {S : Setup A n p}
 
+/- English proof (translation)
+Take `⟨g', rfl⟩` from `F.surj g`. Use `show F.j z * F.j g' = F.j g' * F.j z`. Rewrite using `[← map_mul, ← map_mul, F.j_tr]`. Use `(F.tr.j_eq _ _).2 fun u _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`.
+
+Distinguish the cases in `h : SameK x (cj u) w`. Conclude with `gl_comm_of_scalar _ _ _ ((hz u).1 h)`. Rewrite using `[(hz u).2 h]`. Simplify using the standard rewrite rules.
+-/
 private theorem cen_comm (F : Frame S) {x : E} {w : Plc E} {z : GUf E n} (hz : IsCen x w z) (g : S.G.GAf) :
     Commute (F.j z) g := by
   obtain ⟨g', rfl⟩ := F.surj g
@@ -100,16 +128,27 @@ private theorem cen_comm (F : Frame S) {x : E} {w : Plc E} {z : GUf E n} (hz : I
   · exact gl_comm_of_scalar _ _ _ ((hz u).1 h)
   · rw [(hz u).2 h]; simp
 
+/- English proof (translation)
+Establish `h' : u.under (𝓞 (maximalRealSubfield E)) = w.under (𝓞 (maximalRealSubfield E))` using `not_not.1 h`. Conclude with `GlobalTheory.BCT.FiberTwo.eq_or_eq_of_under_eq E w (cj w) u hne (GlobalTheory.DefU.LocRet.under_conjSrc w) h'`.
+-/
 private theorem place_cases {w u : Plc E} (hne : cj w ≠ w) (h : ¬ GlobalTheory.Cong.Apart u w) : u = w ∨ u = cj w := by
   have h' : u.under (𝓞 (maximalRealSubfield E)) = w.under (𝓞 (maximalRealSubfield E)) := not_not.1 h
   exact GlobalTheory.BCT.FiberTwo.eq_or_eq_of_under_eq E w (cj w) u hne (GlobalTheory.DefU.LocRet.under_conjSrc w) h'
 
+/- English proof (translation)
+Introduce `e`. Apply `h` to reduce the goal to its premises. Rewrite using `[e]`. Conclude with `fun _ _ => Iff.rfl`.
+-/
 private theorem not_sameK_ne {x : E} {w : Plc E} (h : ¬ SameK x (cj w) w) : cj w ≠ w := by
   intro e
   apply h
   rw [e]
   exact fun _ _ => Iff.rfl
 
+/- English proof (translation)
+Introduce `h`. Establish `h1 : (b : 𝓞 (maximalRealSubfield E)) ∈ (u.under (𝓞 (maximalRealSubfield E))).asIdeal` using `by show algebraMap _ (𝓞 E) (b : 𝓞 (maximalRealSubfield E)) ∈ u.asIdeal`. Simplify using `using hb`. Rewrite `h1` using `[← h]`. Establish `h2 : algebraMap _ (𝓞 E) (b : 𝓞 (maximalRealSubfield E)) ∈ w.asIdeal` using `h1`.
+
+Conclude with `nat_not_mem w.isPrime.ne_top hab ha (by simpa using h2)`.
+-/
 private theorem apart_of_primes {w u : Plc E} {a b : ℕ} (hab : a.Coprime b) (ha : (a : 𝓞 E) ∈ w.asIdeal)
     (hb : (b : 𝓞 E) ∈ u.asIdeal) : GlobalTheory.Cong.Apart w u := by
   intro h
@@ -120,6 +159,11 @@ private theorem apart_of_primes {w u : Plc E} {a b : ℕ} (hab : a.Coprime b) (h
   have h2 : algebraMap _ (𝓞 E) (b : 𝓞 (maximalRealSubfield E)) ∈ w.asIdeal := h1
   exact nat_not_mem w.isPrime.ne_top hab ha (by simpa using h2)
 
+/- English proof (translation)
+Establish `ha` using `GlobalTheory.LadicPair.cT_cLoc_conjSrc_mul a.1 w`. Establish `hb` using `GlobalTheory.LadicPair.cT_cLoc_conjSrc_mul b.1 w`. Establish `h' : cLoc w a.1 = cLoc w b.1` using `h`. Rewrite `ha` using `[h']`. Establish `e` using `(Units.mul_left_inj (cLoc w b.1)).1 (ha.trans hb.symm)`.
+
+Establish `e2` using `Matrix.map_injective (RingHom.injective _) (Matrix.transpose_injective e)`. Conclude with `Units.ext e2`.
+-/
 private theorem comp_cj_ofU (w : Plc E) (a b : finU E n)
     (h : comp w (CertificateRingHomMap.ofU a) = comp w (CertificateRingHomMap.ofU b)) : comp (cj w) (CertificateRingHomMap.ofU a) = comp (cj w) (CertificateRingHomMap.ofU b) := by
   have ha := GlobalTheory.LadicPair.cT_cLoc_conjSrc_mul a.1 w
@@ -135,6 +179,19 @@ private def Sh {w₀ : Plc E} (L : ∀ w : Spl E p, Loc S.G.GAf (GLw n w.1)) (Ty
   ∃ (w : Spl E p) (t : GLw n w.1) (Z : S.G.GAf), h = (L w).loc t * Z ∧ Ty.Cen Z ∧
     (L w).Fact Ty.K (GlobalTheory.LFun.KGL w.1 n) ∧ Ty.L.Apart (L w) ∧ ¬ SameK x (cj w.1) w.1
 
+/- English proof (translation)
+Take `⟨w, t, Z, rfl, hZ, hf, ha, hs⟩` from `hh`. Take `⟨w', t', Z', rfl, hZ', hf', ha', hs'⟩` from `hh'`. Establish `hC` using `tf_facts.2.2`. Distinguish the cases in `hap : GlobalTheory.Cong.Apart w'.1 w.1`. Establish `hLL : (L w).Apart (L w')`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `y`. Rewrite using `[(hfac w').2, (hfac w).1]`. Conclude with `CertificateRingHomMap.comp_loc_of_apart w'.2.1 (Ne.symm hap) y`. Introduce `y`.
+
+Rewrite using `[(hfac w).2, (hfac w').1]`. Conclude with `CertificateRingHomMap.comp_loc_of_apart w.2.1 hap y`. Conclude with `(hC _ _ _ _ Ty (L w) _ hf ha Z Z' hZ hZ' t).1 (L w') t' ha' hLL`. Break down `place_cases (not_sameK_ne hs) hap with e | e` into its components or cases. Establish `e' : w' = w` using `Subtype.ext e`.
+
+Substitute `e'` using the available equality. Conclude with `(hC _ _ _ (GLw n w'.1) Ty (L w') _ hf ha Z Z' hZ hZ' t).2 t' (pSphComm E n w'.1 t t')`. Establish `hloc : (L w').loc t' = (L w).loc (comp w.1 (CertificateRingHomMap.loc w'.2.1 t'))`. Rewrite using `[(hfac w').2, (hfac w).2, F.j_tr]`. Use `(F.tr.j_eq _ _).2 fun u _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hu : GlobalTheory.Cong.Apart u w.1`. Establish `hu' : GlobalTheory.Cong.Apart u w'.1` using `fun e2 => hu (e2.trans (not_not.1 hap))`. Rewrite using `[CertificateRingHomMap.comp_loc_of_apart w.2.1 hu, CertificateRingHomMap.comp_loc_of_apart w'.2.1 hu']`. Break down `place_cases (not_sameK_ne hs) hu with rfl | rfl` into its components or cases. Rewrite using `[CertificateRingHomMap.comp_loc]`.
+
+Conclude with `comp_cj_ofU w.1 (CertificateRingHomMap.locF w'.2.1 t') (CertificateRingHomMap.locF w.2.1 _) (CertificateRingHomMap.comp_loc w.2.1 _).symm`. Rewrite using `[hloc]`. Conclude with `(hC _ _ _ (GLw n w.1) Ty (L w) _ hf ha Z Z' hZ hZ' t).2 _ (pSphComm E n w.1 _ _)`.
+-/
 private theorem sh_comm (F : Frame S) {w₀ : Plc E} {x : E} {L : ∀ w : Spl E p, Loc S.G.GAf (GLw n w.1)}
     {Ty : TyLev S.G.GAf (GLw n w₀)} (hfac : ∀ w, IsFac F w (L w)) {h h' : S.G.GAf} (hh : Sh L Ty x h) (hh' : Sh L Ty x h') :
     conv Ty.K₀ (Ty.tf h) (Ty.tf h') = conv Ty.K₀ (Ty.tf h') (Ty.tf h) := by
@@ -167,6 +224,31 @@ private theorem sh_comm (F : Frame S) {w₀ : Plc E} {x : E} {L : ∀ w : Spl E 
       rw [hloc]
       exact (hC _ _ _ (GLw n w.1) Ty (L w) _ hf ha Z Z' hZ hZ' t).2 _ (pSphComm E n w.1 _ _)
 
+/- English proof (translation)
+Introduce `E _ _ _ A n p _ S F x U w₀ Up V hodd hsc hgen hoff hq r W hAux N hN hStab L hw Ty hTy g g' θ θ' hs hs'`. Take `⟨hAdm, hIdem, -⟩` from `tf_facts`. Establish `hMF` using `UpperTheory.Gal.Spc.memFn E A n p S F x U w₀ Up V hodd hsc hgen hoff hq r W hAux N hN hStab L hw Ty hTy`. Establish `hTF` using `UpperTheory.Gal.Spc.tyFact E A n p S F x U w₀ Up V hodd hsc hgen hoff hq r W hAux N hN hStab L hw Ty hTy`. Establish `hOff : ∀ (g : Mem S.L N) (θ : ℂ), Seen F V r g θ → conv Ty.K₀ g.fn (Ty.tf 1) ∈ Off2 W L Ty`.
+
+Introduce `g θ hs`. Take `⟨-, -, hb⟩` from `hMF g θ hs`. Break down `hb with ⟨-, -, he⟩ | ⟨hpr, hW, he⟩` into its components or cases. Rewrite using `[he]`. Conclude with `Submodule.subset_span ⟨1, map_one _, fun w _ => map_one _, rfl⟩`.
+
+Rewrite using `[he]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨g.h⁻¹, by simp [hpr], fun w hw => by simp [hW w hw], rfl⟩)`. Establish `key : ∀ (g : Mem S.L N) (θ : ℂ), Seen F V r g θ → ∃ (a : ℂ) (h : S.G.GAf), conv Ty.K₀ g.fn (Ty.tf 1) = a • Ty.tf h ∧ Ty.L.pr h = 1 ∧ (h = 1 ∨ Sh L Ty x h)`. Introduce `g θ hs`. Take `⟨-, -, hb⟩` from `hMF g θ hs`.
+
+Break down `hb with ⟨-, -, he⟩ | ⟨hpr, hW, he⟩` into its components or cases. Conclude with `⟨1, 1, by rw [he, one_smul], map_one _, Or.inl rfl⟩`. Break down `hs with ⟨-, ⟨k', hk', hlev, -⟩, -, -⟩ | ⟨w, σ, i, B, hfree, hqr, -, htm, -, -⟩` into its components or cases. Establish `hK : g.h ∈ Ty.K` using `(hTy.K_iff _).2 ⟨⟨k', hk', hlev⟩, fun w hw => by rw [hW w hw]; exact one_mem _⟩`. Conclude with `⟨idx g, 1, by rw [he, tf_of_mem Ty (Ty.K.inv_mem hK)], map_one _, Or.inl rfl⟩`.
+
+Take `⟨-, -, hIsH, -⟩` from `htm`. Take `⟨hw', t, z, -, hcen, hh⟩` from `hIsH`. Establish `hqw : (σ.q : 𝓞 E) ∈ w.asIdeal` using `σ.atp.le (Ideal.subset_span (Or.inl rfl))`. Establish `hp : (p : 𝓞 E) ∉ w.asIdeal` using `nat_not_mem w.isPrime.ne_top ((Nat.coprime_primes σ.atp.prime Fact.out).2 σ.atp.ne) hqw`. Take `⟨wS, hwS⟩ : ∃ wS : Spl E p, wS = ⟨w, hw', hp⟩` from `⟨_, rfl⟩`.
+
+Establish `hap : ∀ u ∈ W, GlobalTheory.Cong.Apart wS.1 u.1` using `fun u hu => by`. Rewrite using `[hwS]`. Conclude with `apart_of_primes ((Nat.coprime_primes σ.atp.prime hAux.prime).2 hqr) hqw (hAux.half.above u hu)`. Establish `hfr : wS.1 ∉ V.S ∧ cj wS.1 ∉ V.S ∧ ¬ SameK x (cj wS.1) wS.1`. Rewrite using `[hwS]`.
+
+Conclude with `⟨hfree.2.1, hfree.2.2.1, hfree.2.2.2.2⟩`. Take `⟨hfact, hTap⟩` from `hTF.2.1 wS hfr.1 hfr.2.1 hap`. Choose the witnesses or unpack the hypotheses as in `⟨t₁, ht₁⟩ : ∃ t₁ : GLw n wS.1, (L wS).loc t₁ = F.j (CertificateRingHomMap.loc hw' t) := by`. Substitute `hwS` using the available equality. Conclude with `⟨t, (hTy.fac ⟨w, hw', hp⟩).2 t⟩`.
+
+Take `⟨C, hCdef⟩ : ∃ C, C = F.j z ^ i` from `⟨_, rfl⟩`. Establish `hC : ∀ y, Commute C y` using `fun y => hCdef ▸ (cen_comm F hcen y).pow_left i`. Establish `hgh : g.h = (L wS).loc t₁ * C` using `by rw [hh, map_mul, map_pow, ht₁, hCdef]`. Establish `hprC : Ty.L.pr C = 1`. Establish `h1` using `hpr`.
+
+Rewrite `h1` using `[hgh, map_mul, hTap.1 t₁, one_mul]`. Conclude with `h1`. Establish `hinv : g.h⁻¹ = (L wS).loc t₁⁻¹ * C⁻¹`. Rewrite using `[hgh, map_inv, _root_.mul_inv_rev]`. Conclude with `((hC _).inv_left.inv_right).eq`.
+
+Conclude with `⟨idx g, g.h⁻¹, he, by simp [hpr], Or.inr ⟨wS, t₁⁻¹, C⁻¹, hinv, ⟨fun y => (hC y).inv_left.eq, by simp [hprC]⟩, hfact, hTap, hfr.2.2⟩⟩`. Take `⟨a, h, e1, hp, hs1⟩` from `key g θ hs`. Take `⟨b, h', e2, hp', hs2⟩` from `key g' θ' hs'`. Use `⟨hOff g θ hs, ?_⟩` and prove the remaining obligations. Establish `he : Ty.tf 1 ∈ Hecke ℂ Ty.K₀` using `(hAdm _ _ Ty 1 (map_one _)).1.1`.
+
+Use `comm_of_scaled Ty.K₀ Ty.cms pConvRing he (hMF g θ hs).1 (hMF g' θ' hs').1 (hAdm _ _ Ty h hp).1.1 (hAdm _ _ Ty h' hp').1.1 (hIdem _ _ Ty h hp).2.2 (hIdem _ _ Ty h' hp').2.2 e1 e2 ?_` and prove the remaining obligations. Break down `hs1 with rfl | hs1` into its components or cases. Rewrite using `[(hIdem _ _ Ty h' hp').2.1, (hIdem _ _ Ty h' hp').2.2]`. Break down `hs2 with rfl | hs2` into its components or cases. Rewrite using `[(hIdem _ _ Ty h hp).2.1, (hIdem _ _ Ty h hp).2.2]`.
+
+Conclude with `sh_comm F hTy.fac hs1 hs2`.
+-/
 theorem memComm : UpperTheory.Gal.Spc.MemComm := by
   intro E _ _ _ A n p _ S F x U w₀ Up V hodd hsc hgen hoff hq r W hAux N hN hStab L hw Ty hTy g g' θ θ' hs hs'
   obtain ⟨hAdm, hIdem, -⟩ := tf_facts

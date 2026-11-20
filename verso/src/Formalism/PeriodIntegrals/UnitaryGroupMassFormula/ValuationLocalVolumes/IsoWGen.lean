@@ -12,6 +12,49 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (ψ : AddChar (AF F) ℂ)
   (v : HeightOneSpectrum (𝓞 F)) (Λ : Set (Fin n → E))
 
+/- English proof (translation)
+Introduce `hG`. Take `⟨hS, hL, hSD, hUn, -, hYp⟩` from `hG`. Establish `hcm` using `hS.1`. Establish `hJ : ∀ i j, σ (J j i) = J i j` using `hS.2.1.1`. Establish `hconj : ∀ x y, sigR (Fv F v) σ (hR (Fv F v) σ J x y) = hR (Fv F v) σ J y x` using `fun x y => PI.OmLocU.Orb.hR_conj σ J v hcm hJ x y`.
+
+Establish `hsc : ∀ r : Fv F v, sigR (Fv F v) σ (sc (E` using `E) v r) = sc (E := E) v r := fun r => PI.OmLocU.NormOneUnitFixedPoints.sigR_sc' σ v r`. Use `set G := gramR (Fv F v) σ J Y with hGdef`. Take `⟨S, hSi, hTS1⟩` from `hTS`. Establish `hGi : ∀ i j, G i j ∈ OEv (E` using `E) v := fun i j => PI.OmLocU.hR_mem_oEv σ J v Λ hSD (hYp.1 i) (hYp.1 j)`. Establish `hBi : ∀ i j, bordM v G z i j ∈ OEv (E` using `E) v := by`.
+
+Introduce `i j`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => simp only [bordM, Fin.snoc_last]`.
+
+Conclude with `oEv_zero v`. Consider the case `cast j`. Simplify using `only [bordM, Fin.snoc_last, Fin.snoc_castSucc]`. Use `split_ifs`. Conclude with `oEv_one v`.
+
+Conclude with `oEv_zero v`. Consider the case `cast i`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last`. Simplify using `only [bordM, Fin.snoc_last, Fin.snoc_castSucc]`.
+
+Use `split_ifs`. Conclude with `oEv_one v`. Conclude with `oEv_zero v`. Consider the case `cast j => simp only [bordM, Fin.snoc_castSucc]`. Conclude with `hGi i j`.
+
+Use `⟨bordM v G z, ⟨S.det, det_int v _ hSi, det_int v _ hBi, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.det_mul, hTS1, Matrix.det_one]`. Introduce `X hX hXY`. Take `⟨W, hW, hWd⟩` from `hPD hS hSD hUn hL X hX`. Use `set g := sc (E := E) v γ with hg`.
+
+Establish `hgO : g ∈ OEv (E` using `E) v := PI.OmLocU.NormOneUnitFixedPoints.sc_mem v hγ`. Establish `hXz : ∀ i, hR (Fv F v) σ J (X i) (X z) = if i = z then g else 0`. Introduce `i`. Use `congrFun (congrFun hXY i) z` as an intermediate fact. Simplify using `only [gramR] at this`.
+
+Rewrite using `[this]`. Conclude with `hz i`. Use `set w0 := W z with hw0`. Establish `hw0L : w0 ∈ latLoc (E` using `E) v Λ := hW z`. Establish `hXw0 : ∀ i, hR (Fv F v) σ J (X i) w0 = if i = z then 1 else 0` using `fun i => (hWd i z).1`.
+
+Establish `hw0X : ∀ i, hR (Fv F v) σ J w0 (X i) = if i = z then 1 else 0` using `fun i => (hWd i z).2`. Use `set y := X z + (-g) • w0 with hy`. Establish `hyL : y ∈ latLoc (E` using `E) v Λ := Submodule.add_mem _ (hX.1 z) (PI.OmLocU.Orb.oSmul v Λ hL _ (oEv_neg v hgO) _ hw0L)`. Establish `hXy : ∀ i, hR (Fv F v) σ J (X i) y = 0`. Introduce `i`.
+
+Rewrite using `[hy, hAddR, hSmulR, hXz, hXw0]`. Apply the tactic sequence `split_ifs <;> ring`. Establish `hyX : ∀ i, hR (Fv F v) σ J y (X i) = 0`. Introduce `i`. Rewrite using `[← hconj, hXy, map_zero]`.
+
+Use `set b := hR (Fv F v) σ J w0 w0 with hb`. Establish `hbO : b ∈ OEv (E` using `E) v := PI.OmLocU.hR_mem_oEv σ J v Λ hSD hw0L hw0L`. Take `⟨β, hβ, hbβ⟩` from `PI.OmLocU.NormOneUnitFixedPoints.fix_int_sc σ v hcm hbO (hconj w0 w0)`. Establish `h1 : hR (Fv F v) σ J w0 y = 1 + (-g) * b`. Rewrite using `[hy, hAddR, hSmulR, hw0X, if_pos rfl]`.
+
+Establish `h2 : hR (Fv F v) σ J y w0 = 1 + (-g) * b`. Rewrite using `[← hconj, h1, map_add, map_one, map_mul, map_neg, hg, hsc, hconj]`. Establish `h3 : hR (Fv F v) σ J y y = (-g) * (1 + (-g) * b)`. Rewrite using `[hy, hAddR, hSmulR, ← hy, hyX, h2, zero_add]`. Take `⟨θ, hθO, hθ⟩` from `PI.OmLocU.Red.trOnto_holds σ J ψ v hS hUn 1 (oEv_one v) (map_one _)`.
+
+Establish `hinv : ∀ x, sigR (Fv F v) σ (sigR (Fv F v) σ x) = x` using `PI.OmLocU.Orb.sigR_invol σ v hcm`. Establish `hNO : sigR (Fv F v) σ θ * θ ∈ OEv (E` using `E) v := by`. Use `oEv_mul v ?_ hθO` and prove the remaining obligations. Use `hθ ▸ (oEv_one (E := E) v)` as an intermediate fact. Establish `e : sigR (Fv F v) σ θ = (θ + sigR (Fv F v) σ θ) - θ` using `by ring`.
+
+Rewrite using `[e]`. Conclude with `oEv_add v this (oEv_neg v hθO)`. Establish `hNf : sigR (Fv F v) σ (sigR (Fv F v) σ θ * θ) = sigR (Fv F v) σ θ * θ`. Rewrite using `[map_mul, hinv, mul_comm]`. Take `⟨ν, hν, hNν⟩` from `PI.OmLocU.NormOneUnitFixedPoints.fix_int_sc σ v hcm hNO hNf`.
+
+Take `⟨s, hsO, hs⟩` from `exists_integral_root_of_quadratic v β γ ν hβ hγ hγm hν`. Use `set t := sc (E := E) v s * θ with ht`. Establish `htO : t ∈ OEv (E` using `E) v := oEv_mul v (PI.OmLocU.NormOneUnitFixedPoints.sc_mem v hsO) hθO`. Establish `hσt : sigR (Fv F v) σ t = sc (E` using `E) v s * sigR (Fv F v) σ θ := by`. Rewrite using `[ht, map_mul, hsc]`.
+
+Use `set w := w0 + t • y with hw`. Establish `hwL : w ∈ latLoc (E` using `E) v Λ := Submodule.add_mem _ hw0L (PI.OmLocU.Orb.oSmul v Λ hL _ htO _ hyL)`. Establish `hXw : ∀ i, hR (Fv F v) σ J (X i) w = if i = z then 1 else 0`. Introduce `i`. Rewrite using `[hw, hAddR, hSmulR, hXy, hXw0, mul_zero, add_zero]`.
+
+Establish `hwX : ∀ i, hR (Fv F v) σ J w (X i) = if i = z then 1 else 0`. Introduce `i`. Rewrite using `[hw, hAddL, hSmulL, hyX, hw0X, mul_zero, add_zero]`. Establish `E0 : hR (Fv F v) σ J w w = b + t * hR (Fv F v) σ J w0 y + (sigR (Fv F v) σ t * hR (Fv F v) σ J y w0 + sigR (Fv F v) σ t * (t * hR (Fv F v) σ J y y))`. Rewrite using `[hw, hAddL, hAddR, hAddR, hSmulR, hSmulL, hSmulL, hSmulR]`.
+
+Establish `key : sc (E` using `E) v (β + (1 - γ * β) * s - γ * (1 - γ * β) * ν * s ^ 2) = 0 := by`. Rewrite using `[hs]`. Simplify using `[sc]`. Establish `keyE : sc (E` using `E) v β + (1 - g * sc (E := E) v β) * sc (E := E) v s - g * (1 - g * sc (E := E) v β) * sc (E := E) v ν * sc (E := E) v s ^ 2 = 0 := by`. Rewrite using `[← key, hg]`.
+
+Simplify using `only [PI.OmLocU.NormOneUnitFixedPoints.sc_eq, map_add, map_sub, map_mul, map_one, map_pow]`. Establish `hww : hR (Fv F v) σ J w w = 0`. Rewrite using `[E0, h1, h2, h3, hσt, hbβ, ht]`. Take the linear combination `keyE + ((1 - g * sc (E := E) v β) * sc (E := E) v s) * hθ - (g * (1 - g * sc (E := E) v β) * sc (E := E) v s ^ 2) * hNν`. Use `⟨w, hwL, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[gram_augT σ J v X w z hXw hwX hww, hXY]`.
+-/
 theorem isoW_gen {a : ℕ} (Y : TupV (E := E) v n a) (z : Fin a) (γ : Fv F v)
     (hγ : γ ∈ v.adicCompletionIntegers F) (hγm : Valued.v γ < 1)
     (hz : ∀ i, gramR (Fv F v) σ J Y i z = if i = z then sc (E := E) v γ else 0)

@@ -11,8 +11,14 @@ namespace GlobalTheory.UTrans.CharDet
 
 variable {E : Type} [Field E] {n : ℕ} {σ : E →+* E} {G : Matrix (Fin n) (Fin n) E}
 
+/- English proof (translation)
+Introduce `x y` and use `by simp`.
+-/
 theorem isU_one : IsU σ G 1 := fun x y => by simp
 
+/- English proof (translation)
+Apply `Calc.isU_tv σ G hG.invol hG.herm` to reduce the goal to its premises. Rewrite using `[map_div₀, Calc.hf_conj σ G hG.invol hG.herm, map_sub, map_one]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hu`.
+-/
 theorem isU_refl (hG : IsHerm σ G) {x : Fin n → E} {u : E} (hx : hf σ G x x ≠ 0) (hu : u * σ u = 1) :
     IsU σ G (tv σ G x ((u - 1) / hf σ G x x)) := by
   apply Calc.isU_tv σ G hG.invol hG.herm
@@ -20,6 +26,9 @@ theorem isU_refl (hG : IsHerm σ G) {x : Fin n → E} {u : E} (hx : hf σ G x x 
   field_simp
   linear_combination hu
 
+/- English proof (translation)
+Rewrite using `[Calc.tv_mul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem refl_mul {x : Fin n → E} (u v : E) (hx : hf σ G x x ≠ 0) :
     tv σ G x ((u - 1) / hf σ G x x) * tv σ G x ((v - 1) / hf σ G x x) =
       tv σ G x ((u * v - 1) / hf σ G x x) := by
@@ -28,18 +37,35 @@ theorem refl_mul {x : Fin n → E} (u v : E) (hx : hf σ G x x ≠ 0) :
   field_simp
   ring
 
+/- English proof (translation)
+Rewrite using `[Calc.tv_det]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem refl_det {x : Fin n → E} (u : E) (hx : hf σ G x x ≠ 0) :
     (tv σ G x ((u - 1) / hf σ G x x)).det = u := by
   rw [Calc.tv_det]
   field_simp
   ring
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[tv]`.
+-/
 theorem refl_one (x : Fin n → E) : tv σ G x ((1 - 1) / hf σ G x x) = 1 := by
   ext a b
   simp [tv]
 
 variable [CharZero E] {A : Type} [CommGroup A] {X : Matrix (Fin n) (Fin n) E → A}
 
+/- English proof (translation)
+Break down `h with h | h` into its components or cases. Take `⟨m, hm, e⟩` from `quasiReflection_eq_tvGen_mul E n σ G hG h x y u hx hy hu`. Rewrite using `[e, hX _ _ ((tvGen_normal E n σ G hG).2 m hm).1 (isU_refl hG hy hu), GlobalTheory.T.unitaryCharacter_kills_unitaryTransvections E n σ G hG A X hX m hm, one_mul]`. Take `⟨a, ha⟩` from `h x y hx hy`. Establish `h1 : hf σ G (a • x) (a • x) = hf σ G y y`.
+
+Rewrite using `[Calc.hf_smul_left, Calc.hf_smul_right, ha]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨γ, hγ, e⟩` from `(GlobalTheory.T.unitary_generated_by_quasiReflections_and_witt E n σ G hG).2 y (a • x) hy h1`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`.
+
+Simplify using `at ha`. Conclude with `hy ha`. Establish `ha1 : σ a ≠ 0` using `(map_ne_zero σ).2 ha0`. Establish `h2 : tv σ G x ((u - 1) / hf σ G x x) = tv σ G (a • x) ((u - 1) / hf σ G y y)`. Rewrite using `[Calc.tv_smul, ha]`.
+
+Use `congr 1`. Clear the denominators using the available nonvanishing facts. Establish `h3 : γ * tv σ G x ((u - 1) / hf σ G x x) = tv σ G y ((u - 1) / hf σ G y y) * γ`. Rewrite using `[h2, Calc.conj_tv σ G γ _ _ hγ, e]`. Establish `h4` using `congrArg X h3`.
+
+Rewrite `h4` using `[hX _ _ hγ (isU_refl hG hx hu), hX _ _ (isU_refl hG hy hu) hγ, mul_comm]`. Conclude with `mul_right_cancel h4`.
+-/
 theorem char_refl_eq (hG : IsHerm σ G)
     (h : (∃ z : Fin n → E, z ≠ 0 ∧ hf σ G z z = 0) ∨ ∀ x y : Fin n → E, hf σ G x x ≠ 0 → hf σ G y y ≠ 0 →
       ∃ a : E, hf σ G y y = σ a * a * hf σ G x x)
@@ -69,6 +95,11 @@ theorem char_refl_eq (hG : IsHerm σ G)
     rw [hX _ _ hγ (isU_refl hG hx hu), hX _ _ (isU_refl hG hy hu) hγ, mul_comm] at h4
     exact mul_right_cancel h4
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact ⟨isU_one, by simp only [List.map_nil, List.prod_nil, Matrix.det_one, refl_one]⟩`. Consider the case `cons p l ih`. Take `⟨h1, h2⟩` from `ih fun q hq => hl q (List.mem_cons_of_mem _ hq)`. Take `⟨hp, hv⟩` from `hl p List.mem_cons_self`.
+
+Rewrite using `[List.map_cons, List.prod_cons]`. Use `⟨Calc.isU_mul σ G _ _ (isU_refl hG hp hv) h1, ?_⟩` and prove the remaining obligations. Rewrite using `[hX _ _ (isU_refl hG hp hv) h1, h2, char_refl_eq hG h hX hp hx hv, Matrix.det_mul, refl_det _ hp, ← refl_mul _ _ hx, hX _ _ (isU_refl hG hx hv) (isU_refl hG hx (h1.det_mul_conj_det hG.det_ne))]`.
+-/
 theorem char_prod (hG : IsHerm σ G)
     (h : (∃ z : Fin n → E, z ≠ 0 ∧ hf σ G z z = 0) ∨ ∀ x y : Fin n → E, hf σ G x x ≠ 0 → hf σ G y y ≠ 0 →
       ∃ a : E, hf σ G y y = σ a * a * hf σ G x x)
@@ -90,6 +121,13 @@ theorem char_prod (hG : IsHerm σ G)
 
 end GlobalTheory.UTrans.CharDet
 
+/- English proof (translation)
+Introduce `E _ _ n σ G hG h A _ X hX γ hγ hd`. Establish `h1 : X 1 = 1`. Use `hX 1 1 CharDet.isU_one CharDet.isU_one` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `left_eq_mul.1 this`.
+
+Take `⟨l, hl, e⟩` from `(GlobalTheory.T.unitary_generated_by_quasiReflections_and_witt E n σ G hG).1 γ hγ`. Consider the cases of `l with`. Consider the case `nil => rw [e]`. Simplify using `using h1`. Consider the case `cons p l`.
+
+Establish `h2` using `(CharDet.char_prod hG h hX (hl p List.mem_cons_self).1 _ hl).2`. Rewrite `h2` using `[← e, hd, CharDet.refl_one]`. Rewrite using `[h2, h1]`.
+-/
 theorem GlobalTheory.UTrans.char_eq_one_of_det_eq_one : ∀ (E : Type) [Field E] [CharZero E] (n : ℕ) (σ : E →+* E) (G : Matrix (Fin n) (Fin n) E), GlobalTheory.UTrans.IsHerm σ G → ((∃ z : Fin n → E, z ≠ 0 ∧ GlobalTheory.UTrans.hf σ G z z = 0) ∨ ∀ x y : Fin n → E, GlobalTheory.UTrans.hf σ G x x ≠ 0 → GlobalTheory.UTrans.hf σ G y y ≠ 0 → ∃ a : E, GlobalTheory.UTrans.hf σ G y y = σ a * a * GlobalTheory.UTrans.hf σ G x x) → ∀ (A : Type) [CommGroup A] (X : Matrix (Fin n) (Fin n) E → A), (∀ a b, GlobalTheory.UTrans.IsU σ G a → GlobalTheory.UTrans.IsU σ G b → X (a * b) = X a * X b) → ∀ γ, GlobalTheory.UTrans.IsU σ G γ → γ.det = 1 → X γ = 1 := by
   intro E _ _ n σ G hG h A _ X hX γ hγ hd
   have h1 : X 1 = 1 := by

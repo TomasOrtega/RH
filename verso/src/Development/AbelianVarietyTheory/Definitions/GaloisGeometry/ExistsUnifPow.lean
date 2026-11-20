@@ -22,6 +22,9 @@ variable {D : D7}
 def ChiDRat (D : D7) : Prop := ∀ z : D.Dt, ∃ r : D.what₂.LL, D.what₂.embLL r = ((D.chiD z : ℂˣ) : ℂ)
 
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Take `⟨r, hr⟩` from `h (Y.dt x)`. Use `⟨r ^ c, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zpow₀, hr]`. Use `show _ = (((D.chiD (Y.dt x)) ^ c : ℂˣ) : ℂ)`. Rewrite using `[Units.val_zpow_eq_zpow_val]`.
+-/
 theorem chRat_ofChiD (h : ChiDRat D) {i : ℕ} {hi : i ≤ D.R.m} {T : ℕ} {bad : Set (HeightOneSpectrum (𝓞 D.host.F))}
     {S : StepLevel D.host.F D.host.E (sigD D) (gramN D i hi) T D.R.f bad} (Y : DetTie S) (c : ℤ)
     (x : UPts (sigD D) (gramN D i hi) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) :
@@ -33,6 +36,11 @@ theorem chRat_ofChiD (h : ChiDRat D) {i : ℕ} {hi : i ≤ D.R.m} {T : ℕ} {bad
   rw [Units.val_zpow_eq_zpow_val]
 
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Distinguish the cases in `h' : i + 1 = D.R.m`. Rewrite using `[formsInMem_top F dt i hi h']`. Introduce `β cl`. Conclude with `chRat_ofChiD h _ _ _`. Rewrite using `[formsInMem_mid F dt i hi (by omega)]`.
+
+Introduce `β cl`. Conclude with `chRat_ofChiD h _ _ _`.
+-/
 theorem chRat_mem (h : ChiDRat D) {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : ∀ i, (D.mem u).C.cls i → Ch i} (F : FormsTiedSym D u Ch chOf)
     (dt : MemDt F) (i : ℕ) (hi : i + 1 ≤ D.R.m) :
     ∀ β cl, ∃ r : D.what₂.LL, D.what₂.embLL r = (((formsInMem F dt i hi).tw β).ch (((formsInMem F dt i hi).K β).y cl) : ℂ) := by
@@ -47,6 +55,13 @@ theorem chRat_mem (h : ChiDRat D) {u : D.what₂.Word} {Ch : ℕ → Type} {chOf
 variable {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G.LatInst D} {Kc : G.Consts} {Dx : DivX D} {cX : ExtraC}
   {ex : Extra D L hT Gi Gl Kc Dx cX}
 
+/- English proof (translation)
+Introduce `u w hg v s b hb`. Establish `h1` using `ex.fills_all u w hg v s (b + 1) (Finset.mem_Icc.2 ⟨by omega, by omega⟩)`. Establish `h2 : wj D (b + 1) (hT.gat_pos u w hg ⟨v, s⟩) = (((D.hcW u (hT.gat_pos u w hg ⟨v, s⟩)).e ⟨b, hb⟩ : ℚ) : ℝ)`. Unfold `wj`. Rewrite using `[dif_pos (show b + 1 - 1 < D.R.m by simpa using hb), D.hcW_e]`.
+
+Both sides reduce to the same expression. Rewrite `h1` using `[h2]`. Establish `e : ((((Gl.Fl u w hg).w v (b + 1) s : ℤ) : ℚ) : ℝ) = ((wG D.R ((D.hcW u (hT.gat_pos u w hg ⟨v, s⟩)).e ⟨b, hb⟩) (b + 1) : ℚ) : ℝ)`. Rewrite using `[Rat.cast_intCast, h1]`. Unfold `wG G.kaJ`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `Rat.cast_injective e`.
+-/
 theorem fillRec (ex : Extra D L hT Gi Gl Kc Dx cX) : ∀ u w hg, FillTie hT u w hg (Gl.Fl u w hg) := by
   intro u w hg v s b hb
   have h1 := ex.fills_all u w hg v s (b + 1) (Finset.mem_Icc.2 ⟨by omega, by omega⟩)
@@ -78,14 +93,25 @@ section Gen
 
 variable {L : Type} [Field L] [NumberField L]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ide_snd_mul (a b : Ideles L) (v : HeightOneSpectrum (𝓞 L)) :
     ((a * b : Ideles L) : AdeleRing (𝓞 L) L).2 v = (a : AdeleRing (𝓞 L) L).2 v * (b : AdeleRing (𝓞 L) L).2 v := rfl
 
+/- English proof (translation)
+Rewrite using `[← ide_snd_mul, inv_mul_cancel]`. Both sides reduce to the same expression.
+-/
 theorem ide_snd_inv_mul (a : Ideles L) (v : HeightOneSpectrum (𝓞 L)) :
     ((a⁻¹ : Ideles L) : AdeleRing (𝓞 L) L).2 v * (a : AdeleRing (𝓞 L) L).2 v = 1 := by
   rw [← ide_snd_mul, inv_mul_cancel]
   rfl
 
+/- English proof (translation)
+Establish `h1` using `(a : AdeleRing (𝓞 L) L).2.2`. Establish `h2` using `((a⁻¹ : Ideles L) : AdeleRing (𝓞 L) L).2.2`. Use `Filter.eventually_cofinite.1 ((h1.and h2).mono fun v hv => ?_)` and prove the remaining obligations. Establish `e1 : Valued.v ((a : AdeleRing (𝓞 L) L).2 v) ≤ 1` using `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 hv.1`. Establish `e2 : Valued.v (((a⁻¹ : Ideles L) : AdeleRing (𝓞 L) L).2 v) ≤ 1` using `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 hv.2`.
+
+Establish `e3` using `congrArg Valued.v (ide_snd_inv_mul a v)`. Rewrite `e3` using `[map_mul, map_one]`. Use `le_antisymm e1 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ide_finite (a : Ideles L) : {v : HeightOneSpectrum (𝓞 L) | ¬ Valued.v ((a : AdeleRing (𝓞 L) L).2 v) = 1}.Finite := by
   have h1 := (a : AdeleRing (𝓞 L) L).2.2
   have h2 := ((a⁻¹ : Ideles L) : AdeleRing (𝓞 L) L).2.2
@@ -99,6 +125,9 @@ theorem ide_finite (a : Ideles L) : {v : HeightOneSpectrum (𝓞 L) | ¬ Valued.
     _ ≤ 1 * Valued.v ((a : AdeleRing (𝓞 L) L).2 v) := mul_le_mul_left e2 _
     _ = _ := one_mul _
 
+/- English proof (translation)
+Establish `h0 : Valued.v y ≠ 0` using `(Valuation.ne_zero_iff _).2 hy`. Use `⟨-WithZero.log (Valued.v y), ?_⟩` and prove the remaining obligations. Establish `hu : Valued.v ((atFin v (unif v) : (v.adicCompletion L)ˣ) : v.adicCompletion L) = WithZero.exp (-1 : ℤ)` using `unif_spec v`. Rewrite using `[Units.val_zpow_eq_zpow_val, map_zpow₀, hu, ← WithZero.exp_zsmul]`. Simplify using `[WithZero.exp_log h0]`.
+-/
 theorem exists_unif_pow (v : HeightOneSpectrum (𝓞 L)) (y : v.adicCompletion L) (hy : y ≠ 0) :
     ∃ n : ℤ, Valued.v (((atFin v (unif v)) ^ n : (v.adicCompletion L)ˣ) : v.adicCompletion L) = Valued.v y := by
   have h0 : Valued.v y ≠ 0 := (Valuation.ne_zero_iff _).2 hy
@@ -107,6 +136,21 @@ theorem exists_unif_pow (v : HeightOneSpectrum (𝓞 L)) (y : v.adicCompletion L
   rw [Units.val_zpow_eq_zpow_val, map_zpow₀, hu, ← WithZero.exp_zsmul]
   simp [WithZero.exp_log h0]
 
+/- English proof (translation)
+Establish `key : ∀ (T : Finset (HeightOneSpectrum (𝓞 L))) (a : Ideles L), (∀ v, v ∉ T → Valued.v ((a : AdeleRing (𝓞 L) L).2 v) = 1) → f a ∈ S`. Introduce `T`. Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty`. Introduce `a ha`.
+
+Rewrite using `[hU a fun v => ha v (Finset.notMem_empty v)]`. Conclude with `S.one_mem`. Consider the case `insert v0 T _ ih`. Introduce `a ha`. Establish `hy : (a : AdeleRing (𝓞 L) L).2 v0 ≠ 0`.
+
+Introduce `h0`. Use `ide_snd_inv_mul a v0` as an intermediate fact. Rewrite `this` using `[h0, mul_zero]`. Conclude with `zero_ne_one this`. Take `⟨n, hn⟩` from `exists_unif_pow v0 _ hy`.
+
+Establish `h1 : f (a * (localIdele L v0 ((atFin v0 (unif v0)) ^ n))⁻¹) ∈ S`. Use `ih _ fun v hv => ?_` and prove the remaining obligations. Rewrite using `[← map_inv, ide_snd_mul]`. Distinguish the cases in `hvv : v = v0`. Substitute `hvv` using the available equality.
+
+Rewrite using `[localIdele_snd_self, map_mul, Units.val_inv_eq_inv_val, map_inv₀, hn]`. Conclude with `mul_inv_cancel₀ ((Valuation.ne_zero_iff _).2 hy)`. Rewrite using `[(localIdele_isSupportedAt L v0 _).2 v hvv, mul_one]`. Conclude with `ha v fun h => (Finset.mem_insert.1 h).elim hvv hv`. Establish `h2 : f a = f (a * (localIdele L v0 ((atFin v0 (unif v0)) ^ n))⁻¹) * f (localIdele L v0 (atFin v0 (unif v0))) ^ n`.
+
+Rewrite using `[map_mul, map_inv, map_zpow (localIdele L v0), map_zpow f, inv_mul_cancel_right]`. Rewrite using `[h2]`. Conclude with `S.mul_mem h1 (S.zpow_mem (hS v0) n)`. Conclude with `key (ide_finite a).toFinset a fun v hv => by`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hv ((ide_finite a).mem_toFinset.2 h)`.
+-/
 theorem ide_values {Gp : Type} [CommGroup Gp] (f : Ideles L →* Gp)
     (hU : ∀ a : Ideles L, (∀ v, Valued.v ((a : AdeleRing (𝓞 L) L).2 v) = 1) → f a = 1) (S : Subgroup Gp)
     (hS : ∀ v, f (localIdele L v (atFin v (unif v))) ∈ S) (a : Ideles L) : f a ∈ S := by
@@ -158,6 +202,13 @@ def ratSub (D : D7) : Subgroup ℂˣ where
     rintro a ⟨r, hr⟩
     exact ⟨r⁻¹, by rw [map_inv₀, hr, Units.val_inv_eq_inv_val]⟩
 
+/- English proof (translation)
+Introduce `z`. Take `⟨a, rfl⟩` from `T.surj z`. Use `ide_values (D.chiD.comp T.eDt) (fun a ha => D.chiD_UO _ ((T.UO_eq _).2 ⟨a, ha, rfl⟩)) (ratSub D) (fun v => ?_) a` and prove the remaining obligations. Take `⟨y, hy⟩` from `hV v (C.isChi.unr v)`. Use `⟨y, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hy]`. Use `show _ = ((D.chiD (T.eDt (localIdele D.host.E v (atFin v (unif v)))) : ℂˣ) : ℂ)`. Rewrite using `[T.chiD_eq _ (fun w => (localIdele_isSupportedAt D.host.E v _).1 w)]`. Unfold `HChar.valTw`. Rewrite using `[Complex.ofReal_zero, neg_zero, Complex.cpow_zero, mul_one]`.
+
+Both sides reduce to the same expression.
+-/
 theorem chiDRat_of {C : CharFrame D} (T : DtTied D C) (hV : C.chiPsi.ValuesIn 0 D.what₂.embLL) : ChiDRat D := by
   intro z
   obtain ⟨a, rfl⟩ := T.surj z

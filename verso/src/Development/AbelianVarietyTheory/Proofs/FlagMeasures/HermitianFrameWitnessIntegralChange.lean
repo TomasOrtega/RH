@@ -16,6 +16,11 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
   {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] {H : HermSp M V} {r : ℕ}
 
+/- English proof (translation)
+Use extensionality with `v`. Simplify using `only [img, Submodule.mem_map, LinearMap.restrictScalars_apply, LinearEquiv.coe_coe, LinearEquiv.mul_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Conclude with `⟨k u, ⟨u, hu, rfl⟩, rfl⟩`.
+
+Introduce and unpack `⟨w, ⟨u, hu, rfl⟩, rfl⟩`. Conclude with `⟨u, hu, rfl⟩`.
+-/
 lemma img_mul (g k : V ≃ₗ[E] V) (Λ : Submodule M.L.O V) : img (g * k) Λ = img g (img k Λ) := by
   ext v
   simp only [img, Submodule.mem_map, LinearMap.restrictScalars_apply, LinearEquiv.coe_coe,
@@ -24,6 +29,13 @@ lemma img_mul (g k : V ≃ₗ[E] V) (Λ : Submodule M.L.O V) : img (g * k) Λ = 
   · rintro ⟨u, hu, rfl⟩; exact ⟨k u, ⟨u, hu, rfl⟩, rfl⟩
   · rintro ⟨w, ⟨u, hu, rfl⟩, rfl⟩; exact ⟨u, hu, rfl⟩
 
+/- English proof (translation)
+Unfold `FrameD.prF`. Establish `h1 : ∑ c, H.h (Fr.f a.castSucc) (Fr.es c) • Fr.e c = Fr.f a.castSucc`. Rewrite using `[Finset.sum_eq_single a]`. Rewrite using `[Fr.h_es, if_pos rfl, one_smul]`. Both sides reduce to the same expression.
+
+Introduce `c _ hc`. Rewrite using `[Fr.h_es, if_neg (Ne.symm hc), zero_smul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`. Establish `h2 : ∑ c, H.h (Fr.f a.castSucc) (Fr.e c) • Fr.es c = 0` using `Finset.sum_eq_zero (fun c _ => by show H.h (Fr.f a.castSucc) (Fr.f c.castSucc) • Fr.es c = _`.
+
+Rewrite using `[Fr.h_iso _ _ (Or.inl (Fin.castSucc_lt_last a).ne), zero_smul])`. Rewrite using `[h1, h2]`. Simplify using the standard rewrite rules.
+-/
 lemma prF_e (Fr : FrameD H r) (a : Fin r) : Fr.prF (Fr.f a.castSucc) = 0 := by
   unfold FrameD.prF
   have h1 : ∑ c, H.h (Fr.f a.castSucc) (Fr.es c) • Fr.e c = Fr.f a.castSucc := by
@@ -37,6 +49,11 @@ lemma prF_e (Fr : FrameD H r) (a : Fin r) : Fr.prF (Fr.f a.castSucc) = 0 := by
       rw [Fr.h_iso _ _ (Or.inl (Fin.castSucc_lt_last a).ne), zero_smul])
   rw [h1, h2]; simp
 
+/- English proof (translation)
+Unfold `FrameD.prF`. Establish `h1 : ∑ c, H.h (Fr.f (Fin.last r)) (Fr.es c) • Fr.e c = 0` using `Finset.sum_eq_zero (fun c _ => by rw [H.h_herm (Fr.es c) _, Fr.h_sz, map_zero, zero_smul])`. Establish `h2 : ∑ c, H.h (Fr.f (Fin.last r)) (Fr.e c) • Fr.es c = 0` using `Finset.sum_eq_zero (fun c _ => by show H.h (Fr.f (Fin.last r)) (Fr.f c.castSucc) • Fr.es c = _`. Rewrite using `[Fr.h_iso _ _ (Or.inr (Fin.castSucc_lt_last c).ne), zero_smul])`. Rewrite using `[h1, h2]`.
+
+Simplify using the standard rewrite rules.
+-/
 lemma frame_projection_last_eq_self (Fr : FrameD H r) : Fr.prF (Fr.f (Fin.last r)) = Fr.f (Fin.last r) := by
   unfold FrameD.prF
   have h1 : ∑ c, H.h (Fr.f (Fin.last r)) (Fr.es c) • Fr.e c = 0 :=
@@ -47,6 +64,17 @@ lemma frame_projection_last_eq_self (Fr : FrameD H r) : Fr.prF (Fr.f (Fin.last r
       rw [Fr.h_iso _ _ (Or.inr (Fin.castSucc_lt_last c).ne), zero_smul])
   rw [h1, h2]; simp
 
+/- English proof (translation)
+Apply `Submodule.subset_span` to reduce the goal to its premises. Break down `Fin.eq_castSucc_or_eq_last b with ⟨a, rfl⟩ | rfl` into its components or cases. Use `⟨fun c => ?_, fun c => ?_, ⟨0, ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Fr.h_es]`. Use `split_ifs`.
+
+Conclude with `M.L.O.one_mem`. Conclude with `M.L.O.zero_mem`. Use `show H.h (Fr.f a.castSucc) (Fr.f c.castSucc) ∈ _`. Rewrite using `[Fr.h_iso _ _ (Or.inl (Fin.castSucc_lt_last a).ne)]`. Conclude with `M.L.O.zero_mem`.
+
+Conclude with `(prF_e Fr a).symm`. Rewrite using `[map_zero]`. Conclude with `L.zero_mem`. Take `⟨xz, hxz, hxL, _⟩` from `hL.2.2`. Use `⟨fun c => ?_, fun c => ?_, ⟨xz, ?_, hxL⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[H.h_herm (Fr.es c) _, Fr.h_sz, map_zero]`. Conclude with `M.L.O.zero_mem`. Use `show H.h (Fr.f (Fin.last r)) (Fr.f c.castSucc) ∈ _`. Rewrite using `[Fr.h_iso _ _ (Or.inr (Fin.castSucc_lt_last c).ne)]`. Conclude with `M.L.O.zero_mem`.
+
+Rewrite using `[hxz]`. Conclude with `(frame_projection_last_eq_self Fr).symm`.
+-/
 lemma frame_mem (Fr : FrameD H r) {L : Submodule M.L.O (H.Wb Fr.f)} (hL : Fr.IsInner L) (b : Fin (r + 1)) :
     Fr.f b ∈ Fr.LamStd L := by
   apply Submodule.subset_span
@@ -68,6 +96,13 @@ lemma frame_mem (Fr : FrameD H r) {L : Submodule M.L.O (H.Wb Fr.f)} (hL : Fr.IsI
 
 end
 
+/- English proof (translation)
+Take `⟨kl, hkl, hkle, hklz, hklL⟩` from `GlobalTheory.T.unitriangular_change_frame_unipotent M hOK H r Fr L A hA hAO`. Take `⟨y, hyL, hyz, hyes⟩` from `GlobalTheory.T.exists_inner_lattice_vector_anisotropic M hOK H r Fr L hL`. Establish `hx : ∑ a : Fin r, A a.castSucc (Fin.last r) • Fr.f a.castSucc ∈ Submodule.span M.L.O (Set.range fun a : Fin r => Fr.f a.castSucc)` using `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ (⟨A a.castSucc (Fin.last r), hAO _ _⟩ : M.L.O) (Submodule.subset_span ⟨a, rfl⟩)`. Take `⟨kz, hkz, hkzz, hkzX, hkzL⟩` from `GlobalTheory.T.exists_unipotent_add_isotropic_to_anisotropic M hOK H r Fr L hL y hyL hyz hyes _ hx`. Use `⟨kz * kl, mul_mem hkz hkl, fun b => ?_, by rw [img_mul, hklL, hkzL]⟩` and prove the remaining obligations.
+
+Proceed by induction on `b using Fin.lastCases with`. Consider the case `last`. Rewrite using `[LinearEquiv.mul_apply, hklz, hkzz, Fin.sum_univ_castSucc, hA.2, one_smul, add_comm]`. Consider the case `cast c`. Rewrite using `[LinearEquiv.mul_apply, hkle c]`.
+
+Apply `hkzX` to reduce the goal to its premises. Rewrite using `[Fin.sum_univ_castSucc, hA.1 _ _ (Fin.castSucc_lt_last c), zero_smul, add_zero]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`.
+-/
 theorem integral_change {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
     {M : Model F E} (hOK : M.OK) {V : Type} [AddCommGroup V] [Module E V] {H : HermSp M V} {r : ℕ}
@@ -91,6 +126,23 @@ theorem integral_change {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace 
     rw [Fin.sum_univ_castSucc, hA.1 _ _ (Fin.castSucc_lt_last c), zero_smul, add_zero]
     exact Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)
 
+/- English proof (translation)
+Introduce `F _ _ _ E _ _ _ _ M hOK V _ _ H r k P hk hrel d t ht A A' g g' hA hA' hAA hg hg'`. Take `⟨hT, hT', ⟨n, hn, hf, hLam⟩, ⟨n', hn', hf', hLam'⟩, hadm⟩` from `ht`. Take `⟨kA, hkA, hkAf, hkAL⟩` from `integral_change hOK P.A d.L d.hL A hA (fun a b => (hAA a b).1)`. Take `⟨kB, hkB, hkBf, hkBL⟩` from `integral_change hOK P.B d.L' d.hL' A' hA' (fun a b => (hAA a b).2.1)`. Establish `hfΛ : ∀ a, t.f a ∈ t.abelian₂`.
+
+Introduce `a`. Rewrite using `[hf, hLam]`. Conclude with `⟨P.A.f a, frame_mem P.A d.hL a, rfl⟩`. Use `⟨hT, hT', ⟨n * kA, mul_mem hn hkA, ?_, ?_⟩, ⟨n' * kB, mul_mem hn' hkB, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `b show g b = n (kA (P.A.f b))`.
+
+Rewrite using `[hg b, hkAf b, map_sum, hf]`. Simplify using `only [map_smul]`. Use `show t.abelian₂ = _`. Rewrite using `[img_mul, hkAL, hLam]`. Use function extensionality and compare the values at `b show g' b = n' (kB (P.B.f b))`.
+
+Rewrite using `[hg' b, hkBf b, map_sum, hf']`. Simplify using `only [map_smul]`. Use `show t.abelian₂ = _`. Rewrite using `[img_mul, hkBL, hLam']`. Introduce `gg hgg`.
+
+Take `⟨had, hio⟩` from `hadm gg hgg`. Use `⟨fun b => ?_, hio⟩` and prove the remaining obligations. Establish `hθ : theta M = (gg.q : F)` using `by simp [theta, hgg]`. Use `show g' b - g b ∈ H.smulLat (algebraMap F E (gg.q : F)) t.abelian₂`. Establish `e1 : g' b - g b = ∑ a, (A' a b • (t.f' a - t.f a) - (A a b - A' a b) • t.f a)`.
+
+Rewrite using `[hg b, hg' b, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [smul_sub, sub_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e1]`.
+
+Use `Submodule.sum_mem _ fun a _ => Submodule.sub_mem _ ?_ ?_` and prove the remaining obligations. Conclude with `Submodule.smul_mem _ (⟨A' a b, (hAA a b).2.1⟩ : M.L.O) (had a)`. Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.1 (hAA a b).2.2`. Rewrite `hc` using `[hθ]`. Rewrite using `[← hc]`.
+
+Establish `h1 : algebraMap F E (gg.q : F) • t.f a ∈ H.smulLat (algebraMap F E (gg.q : F)) t.abelian₂` using `Submodule.subset_span ⟨t.f a, hfΛ a, rfl⟩`. Rewrite using `[smul_assoc]`. Conclude with `Submodule.smul_mem _ c h1`.
+-/
 theorem witness_change : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] (M : Model F E), M.OK → ∀ {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V) (r : ℕ), ∀ (k : ℕ) (P : FPair H r), Module.finrank E V = k + 2 * r + 1 → P.RelG (theta M) → ∀ (d : Datum P) (t : Term V M r), IsTermOver P d t → ∀ (A A' : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (g g' : Fin (r + 1) → V), Uni A → Uni A' → (∀ a b, A a b ∈ M.L.O ∧ A' a b ∈ M.L.O ∧ A a b - A' a b ∈ Submodule.span M.L.O {algebraMap F E (theta M)}) → Chg t.f A g → Chg t.f' A' g' → IsTermOver P d ⟨t.abelian₂, g, g', t.T, t.T'⟩ := by
   intro F _ _ _ E _ _ _ _ M hOK V _ _ H r k P hk hrel d t ht A A' g g' hA hA' hAA hg hg'
   obtain ⟨hT, hT', ⟨n, hn, hf, hLam⟩, ⟨n', hn', hf', hLam'⟩, hadm⟩ := ht

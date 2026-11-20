@@ -11,6 +11,13 @@ open GlobalTheory.UT GlobalTheory.Mum GlobalTheory.Mum.Two GlobalTheory.Mum.Two.
 
 namespace GlobalTheory.Mum.Two.WeilCmp.AddFst
 
+/- English proof (translation)
+Apply the tactic sequence `have e : ∀ I : Finset (Fin 2), (lift x y).left ≫ (psum B ![fst A A ≫ f, snd A A ≫ g] I).left = (psum B ![x ≫ f, y ≫ g] I).left := fun I => congrArg (fun q => q.left) ((psum_hom (preHom (lift x y)) ![fst A A ≫ f, snd A A ≫ g] I).trans (congrArg (fun q => psum B q I) (funext fun i …`. Use `(Fintype.prod_equiv Equiv.ulift _ (fun I => h (psum B ![x ≫ f, y ≫ g] I).left ^ ((-1 : ℤ) ^ (2 - I.card))) fun I => congrArg (fun q => h q ^ ((-1 : ℤ) ^ (2 - I.down.card))) (e I.down)).trans ?_` and prove the remaining obligations. Rewrite using `[show (Finset.univ : Finset (Finset (Fin 2))) = {∅, {0}, {1}, {0, 1}} by decide, Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_singleton]`. Establish `p₀ : psum B ![x ≫ f, y ≫ g] ∅ = 1` using `rfl`. Establish `p₁ : psum B ![x ≫ f, y ≫ g] {0} = x ≫ f` using `_root_.mul_one (x ≫ f)`.
+
+Establish `p₂ : psum B ![x ≫ f, y ≫ g] {1} = y ≫ g` using `_root_.mul_one (y ≫ g)`. Establish `p₃ : psum B ![x ≫ f, y ≫ g] {0, 1} = (x ≫ f) * (y ≫ g)` using `congrArg ((x ≫ f) * ·) (_root_.mul_one (y ≫ g))`. Establish `q₀ : (-1 : ℤ) ^ (2 - (∅ : Finset (Fin 2)).card) = 1` using `by decide`. Establish `q₁ : ∀ i : Fin 2, (-1 : ℤ) ^ (2 - ({i} : Finset (Fin 2)).card) = -1` using `by decide`. Establish `q₃ : (-1 : ℤ) ^ (2 - ({0, 1} : Finset (Fin 2)).card) = 1` using `by decide`.
+
+Rewrite using `[p₀, p₁, p₂, p₃, q₀, q₁, q₁, q₃]`. Simplify using `only [zpow_neg, zpow_one]`. The two sides agree by associativity and commutativity.
+-/
 theorem prod_pair {S : Scheme.{0}} {A B : Over S} [GrpObj B] [IsCommMonObj B] (f g : A ⟶ B) {T : Over S} (x y : T ⟶ A)
     {U : Type} [CommGroup U] (h : (T.left ⟶ B.left) → U) :
     ∏ I : ULift.{0} (Finset (Fin 2)), h ((lift x y).left ≫ (psum B ![fst A A ≫ f, snd A A ≫ g] I.down).left) ^
@@ -35,6 +42,11 @@ theorem prod_pair {S : Scheme.{0}} {A B : Over S} [GrpObj B] [IsCommMonObj B] (f
   simp only [zpow_neg, zpow_one]
   ac_rfl
 
+/- English proof (translation)
+Use `DVR.prod_sum₂ _ ?_ ?_` and prove the remaining obligations. Use `Eq.trans (Finset.prod_congr rfl fun I _ => ?_) (prod_pair f₂ g₂ x y fun q => h (q ≫ coprod.inr))` and prove the remaining obligations. Rewrite using `[Category.assoc]`. Both sides reduce to the same expression. Use `Eq.trans (Finset.prod_congr rfl fun I _ => ?_) (DVR.prod_neg _ _ (prod_pair f₁ g₁ x y fun q => h (q ≫ coprod.inl)))` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc]`. Both sides reduce to the same expression.
+-/
 theorem prod_cmp {S : Scheme.{0}} (P₀ P₁ P₂ : PolAV S) (f₁ g₁ : P₀.A ⟶ P₁.A) (f₂ g₂ : P₀.A ⟶ P₂.A) {T : Over S}
     (x y : T ⟶ P₀.A) {U : Type} [CommGroup U] (h : (T.left ⟶ P₁.A.left ⨿ P₂.A.left) → U) :
     ∏ i, h ((lift x y).left ≫ cmpφ P₀ P₁ P₂ f₁ g₁ f₂ g₂ i) ^ cmpε i =
@@ -49,6 +61,25 @@ theorem prod_cmp {S : Scheme.{0}} (P₀ P₁ P₂ : PolAV S) (f₁ g₁ : P₀.A
       (DVR.prod_neg _ _ (prod_pair f₁ g₁ x y fun q => h (q ≫ coprod.inl)))
     rw [Category.assoc]; rfl
 
+/- English proof (translation)
+Introduce `hG S P₀ P₁ P₂ _ _ f₁ g₁ f₂ g₂ _ _ _ _ r₁ hr₁ c₁ r₂ hr₂ c₂ u hu h₀ T z J hJ x x' y`. Establish `hA` using `P₀.isAb`. Set `p₀` to `x3 P₀.A 0`. Set `p₁` to `x3 P₀.A 1`. Set `p₂` to `x3 P₀.A 2`.
+
+Establish `vp : ∀ {T T' : Over S} (ρ : T' ⟶ T) {z : T'.left} {J}, Good (join P₁.L P₂.L) z J → ∀ a b : T ⟶ P₀.A, val (LB.pullGen (join P₁.L P₂.L) _ _ u (lift a b).left) ρ.left z J = val u (lift (ρ ≫ a) (ρ ≫ b)).left z J` using `fun ρ z J hJ a b => by rw [val_pull hJ, ← Over.comp_left, comp_lift]`. Establish `v1 : ∀ {y : (𝟙_ (Over S)).left} {J}, Good (join P₁.L P₂.L) y J → val u (lift (1 : 𝟙_ (Over S) ⟶ P₀.A) (1 : 𝟙_ (Over S) ⟶ P₀.A)).left y J = 1` using `fun {y J} hJ => by`. Establish `e : lift (1 : 𝟙_ (Over S) ⟶ P₀.A) (1 : 𝟙_ (Over S) ⟶ P₀.A) = lift η[P₀.A] η[P₀.A]` using `by simp [Hom.one_def]`. Use `h₀ _ (𝟙 S) y J hJ` as an intermediate fact. Rewrite using `[e]`.
+
+Conclude with `(congrArg (fun q => val u q y J) (Category.id_comp _)).symm.trans this`. Set `e : 𝟙_ (Over S) ⟶ G3 P₀.A` to `lift 1 (lift 1 1)`. Establish `e₀ : e ≫ p₀ = 1` using `by simp [e, p₀, x3]`. Establish `e₁ : e ≫ p₁ = 1` using `by simp [e, p₁, x3]`. Establish `e₂ : e ≫ p₂ = 1` using `by simp [e, p₂, x3]`.
+
+Establish `sj : Function.Surjective ((snd P₀.A (P₀.A ⊗ P₀.A)).left ≫ (snd P₀.A P₀.A).left ≫ P₀.A.hom).appTop.hom` using `surj_comp (surj_snd hG hA _) (surj_comp (surj_snd hG hA _) (hG _ _ hA).2)`. Establish `he : e.left ≫ (snd P₀.A (P₀.A ⊗ P₀.A)).left ≫ (snd P₀.A P₀.A).left ≫ P₀.A.hom = 𝟙 _`. Rewrite using `[Over.w, Over.w]`. Conclude with `Over.w e`. Set `ρ : T ⟶ G3 P₀.A` to `lift x (lift x' y)`.
+
+Establish `s₀ : ρ ≫ p₀ = x` using `by simp [ρ, p₀, x3]`. Establish `s₁ : ρ ≫ p₁ = x'` using `by simp [ρ, p₁, x3]`. Establish `s₂ : ρ ≫ p₂ = y` using `by simp [ρ, p₂, x3]`. Establish `o₁ : e ≫ (p₀ * p₁) = 1` using `(MonObj.comp_mul _ _ _).trans (by rw [e₀, e₁, _root_.mul_one])`. Establish `o₂ : ρ ≫ (p₀ * p₁) = x * x'` using `(MonObj.comp_mul _ _ _).trans (by rw [s₀, s₁])`.
+
+Establish `hl` using `isPart_inl P₁.L P₂.L`. Establish `hr` using `isPart_inr P₁.L P₂.L`. Establish `ev : ∀ {T' : Over S} (σ : T' ⟶ G3 P₀.A) {z : T'.left} {J}, Good (join P₁.L P₂.L) z J → val (LB.mulGen (join P₁.L P₂.L) _ _ _ _ (LB.pullGen (join P₁.L P₂.L) _ _ u (lift (p₀ * p₁) p₂).left) (hl.gen (LB.pullGen P₁.L (thφ P₁.A (x3 P₁.A)) thε c₁.t (lift (p₀ ≫ f₁) (lift (p₁ ≫ f₁) (p₂ ≫ …` using `fun σ z J hJ => ⟨(val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (vp σ hJ _ _) ((hl.val_gen _ _ _ hJ).trans (val_cub c₁ σ (hl.good hJ) _ _ _))), (val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((hr.val_gen _ _ _ hJ).trans (val_cub c₂ σ (hr.good hJ) _ _ _)) ((val_mul hJ _ _ _).trans (cong …`. Establish `key` using `(ev ρ hJ).1.symm.trans (Eq.trans (gen_unique' (join_isLB P₁.isLB P₂.isLB) (fun V _ k => ?_) _ e.left he sj (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.pullGen_isGen _ _ _ _ hu _) (hl.gen_isGen (DVR.pullGen_isGen _ _ _ _ c₁.isGen _))) (DVR.mulGen_isGen _ _ _ _ _ _ _ (hr.gen_isGen (DVR.pu …`. Simplify using `only [← Category.assoc] at key`.
+
+Rewrite `key` using `[o₂, s₀, s₁, s₂]`. Then use the resulting hypothesis. Use `(DVR.prod_sum₂ (K := thK) (K' := KK ⊕ KK) (U := V) _ (prod_cub (p₀ ≫ f₂) (p₁ ≫ f₂) (p₂ ≫ g₂) fun q => k (q ≫ coprod.inr)) (DVR.prod_sum₂ (K := KK) (K' := KK) (U := V) _ (prod_cmp P₀ P₁ P₂ f₁ g₁ f₂ g₂ p₀ p₂ k) (prod_cmp P₀ P₁ P₂ f₁ g₁ f₂ g₂ p₁ p₂ k))).trans (Eq.trans ?_ (DVR.prod_ …` and prove the remaining obligations. Rewrite using `[MonObj.mul_comp p₀ p₁ f₁, MonObj.mul_comp p₀ p₁ f₂]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`.
+
+Normalize the expressions using the abelian group laws. Establish `C₁` using `isCub_cubV c₁ (hl.good hI)`. Establish `C₂` using `isCub_cubV c₂ (hr.good hI)`. Use `(ev e hI).1.trans (Eq.trans ?_ (ev e hI).2.symm)` and prove the remaining obligations. Rewrite using `[← Category.assoc e p₀, ← Category.assoc e p₀, o₁, e₀, e₁, e₂, MonObj.one_comp, MonObj.one_comp, v1 hI]`.
+
+Rewrite using `[C₁.face, C₂.face]`. Simplify using the standard rewrite rules.
+-/
 theorem cmp_add_fst : GlobalFnsSt → ∀ (S : Scheme.{0}) (P₀ P₁ P₂ : PolAV S) [Nonempty P₁.A.left] [Nonempty P₂.A.left] (f₁ g₁ : P₀.A ⟶ P₁.A) (f₂ g₂ : P₀.A ⟶ P₂.A) [IsMonHom f₁] [IsMonHom g₁] [IsMonHom f₂] [IsMonHom g₂], ∀ (r₁ : LB.Gen (P₁.L.pull (eSec P₁.A))) (hr₁ : r₁.IsGen) (c₁ : CubicalStr P₁.A ⟨P₁.L, r₁, P₁.isLB, hr₁⟩) (r₂ : LB.Gen (P₂.L.pull (eSec P₂.A))) (hr₂ : r₂.IsGen) (c₂ : CubicalStr P₂.A ⟨P₂.L, r₂, P₂.isLB, hr₂⟩) (u : LB.Gen (CmpL P₀ P₁ P₂ f₁ g₁ f₂ g₂)), u.IsGen → (∀ (Z : Scheme.{0}) (r : Z ⟶ S) (z : Z) (J), Good (join P₁.L P₂.L) z J → val u (r ≫ zero2 P₀.A) z J = 1) → ∀ (T : Over S) (z : T.left) (J : (T.left ⟶ P₁.A.left ⨿ P₂.A.left) → (join P₁.L P₂.L).ι), Good (join P₁.L P₂.L) z J → ∀ (x x' y : T ⟶ P₀.A), val u (lift (x * x') y).left z J * cubV c₁ z (rl J) (x ≫ f₁) (x' ≫ f₁) (y ≫ g₁) = cubV c₂ z (rr J) (x ≫ f₂) (x' ≫ f₂) (y ≫ g₂) * (val u (lift x y).left z J * val u (lift x' y).left z J) := by
   intro hG S P₀ P₁ P₂ _ _ f₁ g₁ f₂ g₂ _ _ _ _ r₁ hr₁ c₁ r₂ hr₂ c₂ u hu h₀ T z J hJ x x' y
   have hA := P₀.isAb

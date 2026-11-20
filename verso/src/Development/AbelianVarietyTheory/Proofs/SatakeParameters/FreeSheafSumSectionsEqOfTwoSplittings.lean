@@ -9,11 +9,17 @@ end GlobalTheory.EtC.Tr.SumEq
 namespace GlobalTheory.EtC.Tr
 
 open CategoryTheory Limits AlgebraicGeometry in
+/- English proof (translation)
+The claim follows from `(sigmaOpenCover g).exists_eq q`.
+-/
 private lemma exists_sigma_ι_apply_eq_of_finite_coprod {σ : Type} [Finite σ] (g : σ → Scheme.{0}) (q : ↥(∐ g)) :
     ∃ k a, (Sigma.ι g k) a = q :=
   (sigmaOpenCover g).exists_eq q
 
 open CategoryTheory Limits AlgebraicGeometry in
+/- English proof (translation)
+Take `⟨q, rfl⟩` from `Scheme.Hom.surjective (Sigma.desc fun j => pullback.lift (s j) (𝟙 V) (by simp [hc j]) : (∐ fun _ : Fin m => V) ⟶ pullback f y) p`. Take `⟨k, a, rfl⟩` from `exists_sigma_ι_apply_eq_of_finite_coprod _ q`. Conclude with `⟨k, a, by rw [← Scheme.Hom.comp_apply, Sigma.ι_desc]⟩`.
+-/
 private lemma exists_pullback_lift_apply_eq_of_isIso_sigmaDesc {Z X V : Scheme.{0}} {f : Z ⟶ X} {y : V ⟶ X} {m : ℕ}
     {s : Fin m → (V ⟶ Z)} (hc : ∀ j, s j ≫ f = y)
     [IsIso (Sigma.desc fun j => pullback.lift (s j) (𝟙 V) (by simp [hc j]) :
@@ -26,6 +32,9 @@ private lemma exists_pullback_lift_apply_eq_of_isIso_sigmaDesc {Z X V : Scheme.{
   exact ⟨k, a, by rw [← Scheme.Hom.comp_apply, Sigma.ι_desc]⟩
 
 open CategoryTheory Limits AlgebraicGeometry in
+/- English proof (translation)
+Rewrite using `[← Sigma.ι_desc (fun j => pullback.lift (s j) (𝟙 V) (by simp [hc j]) : (j : Fin m) → V ⟶ pullback f y) k]`. Use `infer_instance`.
+-/
 private lemma isOpenImmersion_pullback_lift_of_isIso_sigmaDesc {Z X V : Scheme.{0}} {f : Z ⟶ X} {y : V ⟶ X} {m : ℕ}
     {s : Fin m → (V ⟶ Z)} (hc : ∀ j, s j ≫ f = y)
     [IsIso (Sigma.desc fun j => pullback.lift (s j) (𝟙 V) (by simp [hc j]) :
@@ -36,12 +45,18 @@ private lemma isOpenImmersion_pullback_lift_of_isIso_sigmaDesc {Z X V : Scheme.{
   infer_instance
 
 open CategoryTheory Limits AlgebraicGeometry in
+/- English proof (translation)
+Rewrite using `[← Scheme.Hom.comp_apply, pullback.lift_snd]`. Both sides reduce to the same expression.
+-/
 private lemma pullback_snd_lift_id_apply {Z X V : Scheme.{0}} {f : Z ⟶ X} {y : V ⟶ X} (t : V ⟶ Z)
     (h : t ≫ f = 𝟙 V ≫ y) (a : ↥V) : pullback.snd f y (pullback.lift t (𝟙 V) h a) = a := by
   rw [← Scheme.Hom.comp_apply, pullback.lift_snd]
   rfl
 
 open CategoryTheory Limits AlgebraicGeometry in
+/- English proof (translation)
+Establish `h1 : (Sigma.desc fun j => pullback.lift (s j) (𝟙 V) (by simp [hc j]) : (∐ fun _ : Fin m => V) ⟶ pullback f y) (Sigma.ι (fun _ : Fin m => V) j a) = (Sigma.desc fun j => pullback.lift (s j) (𝟙 V) (by simp [hc j]) : (∐ fun _ : Fin m => V) ⟶ pullback f y) (Sigma.ι (fun _ : Fin m => V …`. Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, Sigma.ι_desc, Sigma.ι_desc]`. Conclude with `h`. Establish `h2 : (Sigma.ι (fun _ : Fin m => V) j) a = (Sigma.ι (fun _ : Fin m => V) j') b` using `Scheme.Hom.injective _ h1`. Conclude with `congrArg Sigma.fst ((sigmaι_eq_iff (fun _ : Fin m => V) j j' a b).mp (by convert h2))`.
+-/
 private lemma index_eq_of_pullback_lift_apply_eq {Z X V : Scheme.{0}} {f : Z ⟶ X} {y : V ⟶ X} {m : ℕ}
     {s : Fin m → (V ⟶ Z)} (hc : ∀ j, s j ≫ f = y)
     [IsIso (Sigma.desc fun j => pullback.lift (s j) (𝟙 V) (by simp [hc j]) :
@@ -61,6 +76,11 @@ private lemma index_eq_of_pullback_lift_apply_eq {Z X V : Scheme.{0}} {f : Z ⟶
   exact congrArg Sigma.fst ((sigmaι_eq_iff (fun _ : Fin m => V) j j' a b).mp (by convert h2))
 
 open CategoryTheory Limits AlgebraicGeometry in
+/- English proof (translation)
+Introduce `j j' hjj`. Establish `hA : ∀ i, A i = x` using `fun i => by`. Use `congrArg (pullback.snd f y) (hKA i)` as an intermediate fact. Rewrite `this` using `[pullback_snd_lift_id_apply, pullback_snd_lift_id_apply]`. Then use the resulting hypothesis. Use `index_eq_of_pullback_lift_apply_eq hc x x ?_` and prove the remaining obligations.
+
+Rewrite using `[← hKA j, ← hKA j', hA, hA]`. Establish `key : ∀ k k' : Fin m', k = k' → (pullback.lift (s' k) (𝟙 V) (by simp [hc' k]) : V ⟶ pullback f y) x = (pullback.lift (s' k') (𝟙 V) (by simp [hc' k']) : V ⟶ pullback f y) x`. Introduce and unpack `k _ rfl`. Both sides reduce to the same expression. Conclude with `key _ _ hjj`.
+-/
 private lemma injective_of_pullback_lift_apply_eq_of_isIso {Z X V : Scheme.{0}} {f : Z ⟶ X} {y : V ⟶ X} {m m' : ℕ}
     {s : Fin m → (V ⟶ Z)} {s' : Fin m' → (V ⟶ Z)} (hc : ∀ j, s j ≫ f = y) (hc' : ∀ j, s' j ≫ f = y)
     [IsIso (Sigma.desc fun j => pullback.lift (s j) (𝟙 V) (by simp [hc j]) :
@@ -83,6 +103,25 @@ private lemma injective_of_pullback_lift_apply_eq_of_isIso {Z X V : Scheme.{0}} 
 
 open CategoryTheory Limits AlgebraicGeometry in
 
+/- English proof (translation)
+Introduce `R _ Z X V f y m m' s s' hs hs'`. Take `⟨hc, hi⟩` from `hs`. Take `⟨hc', hi'⟩` from `hs'`. Set `T : Sieve V` to `{ arrows := fun W v => (_root_.GlobalTheory.EtC.free R).map (yoneda.map v) ≫ ∑ j, (_root_.GlobalTheory.EtC.free R).map (yoneda.map (s j)) = (_root_.GlobalTheory.EtC.free R).map (yoneda.map v) ≫ ∑ j, (_root_.GlobalTheory.EtC.free R).map (yoneda.map (s' j)) downward_closed := by`. Introduce `W W' v hv g`.
+
+Rewrite using `[Functor.map_comp, Functor.map_comp, Category.assoc, Category.assoc, hv] }`. Use `_root_.GlobalTheory.EtC.Tr.free_hom_ext_of_covering R (_root_.GlobalTheory.EtC.Tr.freeSch R Z) _ _ T ?_ (fun W v hv => hv)` and prove the remaining obligations. Apply `Scheme.zariskiTopology_le_etaleTopology` to reduce the goal to its premises. Use `choose K A hKA using fun (x : ↥V) (j : Fin m) => exists_pullback_lift_apply_eq_of_isIso_sigmaDesc hc' ((pullback.lift (s j) (𝟙 V) (by simp [hc j]) : V ⟶ pullback f y) x)`. Use `choose K' A' hKA' using fun (x : ↥V) (k : Fin m') => exists_pullback_lift_apply_eq_of_isIso_sigmaDesc hc ((pullback.lift (s' k) (𝟙 V) (by simp [hc' k]) : V ⟶ pullback f y) x)`.
+
+Establish `hopen` using `isOpenImmersion_pullback_lift_of_isIso_sigmaDesc hc'`. Set `U : ↥V → V.Opens` to `fun x => ⟨⋂ j, (pullback.lift (s j) (𝟙 V) (by simp [hc j]) : V ⟶ pullback f y) ⁻¹' Set.range (pullback.lift (s' (K x j)) (𝟙 V) (by simp [hc' (K x j)]) : V ⟶ pullback f y), isOpen_iInter_of_finite fun j => (Scheme.Hom.isOpenEmbedding _).isOpen_range.preimage (Scheme.Hom.continuous …`. Establish `hxU : ∀ x, x ∈ U x` using `fun x => Set.mem_iInter.mpr fun j => ⟨A x j, hKA x j⟩`. Establish `hagree : ∀ x, T ((U x).ι)`. Introduce `x`.
+
+Establish `hinj` using `injective_of_pullback_lift_apply_eq_of_isIso hc hc' x (K x) (A x) (hKA x)`. Establish `hinj'` using `injective_of_pullback_lift_apply_eq_of_isIso hc' hc x (K' x) (A' x) (hKA' x)`. Establish `hbij : Function.Bijective (K x)` using `(Fintype.bijective_iff_injective_and_card _).mpr ⟨hinj, le_antisymm (Fintype.card_le_of_injective _ hinj) (Fintype.card_le_of_injective _ hinj')⟩`. Establish `hsec : ∀ j, (U x).ι ≫ s j = (U x).ι ≫ s' (K x j)`. Introduce `j`.
+
+Establish `hr : Set.range ⇑((U x).ι ≫ (pullback.lift (s j) (𝟙 V) (by simp [hc j]) : V ⟶ pullback f y)) ⊆ Set.range (pullback.lift (s' (K x j)) (𝟙 V) (by simp [hc' (K x j)]) : V ⟶ pullback f y)`. Introduce and unpack `_ ⟨w, rfl⟩`. Establish `hw : (U x).ι w ∈ U x`. Establish `hw' : (U x).ι w ∈ Set.range (U x).ι` using `⟨w, rfl⟩`. Rewrite `hw'` using `[Scheme.Opens.range_ι]`. Then use the resulting hypothesis.
+
+Rewrite using `[Scheme.Hom.comp_apply]`. Conclude with `Set.mem_iInter.mp hw j`. Establish `hg` using `IsOpenImmersion.lift_fac _ _ hr`. Establish `hgι : IsOpenImmersion.lift _ _ hr = (U x).ι`. Use `congrArg (· ≫ pullback.snd f y) hg` as an intermediate fact.
+
+Simplify using `only [Category.assoc, pullback.lift_snd, Category.comp_id] at this`. Conclude with `this`. Rewrite `hg` using `[hgι]`. Use `congrArg (· ≫ pullback.fst f y) hg` as an intermediate fact. Simplify using `only [Category.assoc, pullback.lift_fst] at this`.
+
+Conclude with `this.symm`. Use `show (_root_.GlobalTheory.EtC.free R).map (yoneda.map (U x).ι) ≫ _ = (_root_.GlobalTheory.EtC.free R).map (yoneda.map (U x).ι) ≫ _`. Rewrite using `[Preadditive.comp_sum, Preadditive.comp_sum]`. Use `Fintype.sum_equiv (Equiv.ofBijective _ hbij) _ _ fun j => ?_` and prove the remaining obligations. Rewrite using `[← Functor.map_comp, ← Functor.map_comp, ← Functor.map_comp, ← Functor.map_comp, Equiv.ofBijective_apply, hsec j]`.
+
+Rewrite using `[show Scheme.zariskiTopology = Scheme.grothendieckTopology @IsOpenImmersion from rfl, Scheme.mem_grothendieckTopology_iff]`. Use `⟨Scheme.Cover.mkOfCovers V (fun x => (U x : Scheme.{0})) (fun x => (U x).ι) (fun x => ⟨x, ⟨x, hxU x⟩, rfl⟩), ?_⟩` and prove the remaining obligations. Introduce and unpack `W _ ⟨x⟩`. Conclude with `hagree x`.
+-/
 theorem _root_.GlobalTheory.EtC.Tr.sum_sections_eq_of_two_splittings : ∀ (R : Type) [CommRing R] {Z X V : Scheme.{0}} {f : Z ⟶ X} {y : V ⟶ X}
     {m m' : ℕ} {s : Fin m → (V ⟶ Z)} {s' : Fin m' → (V ⟶ Z)}, _root_.GlobalTheory.EtC.Tr.SplitBy f y s → _root_.GlobalTheory.EtC.Tr.SplitBy f y s' →
     ∑ j, (_root_.GlobalTheory.EtC.free R).map (yoneda.map (s j)) = ∑ j, (_root_.GlobalTheory.EtC.free R).map (yoneda.map (s' j)) := by

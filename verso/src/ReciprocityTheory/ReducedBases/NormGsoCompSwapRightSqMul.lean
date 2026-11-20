@@ -11,6 +11,13 @@ variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] {d : ℕ}
 def pot (b : Fin d → E) : ℝ :=
   ∏ k, ∏ j ∈ univ.filter (fun j : Fin d => j ≤ k), ‖gs b j‖ ^ 2
 
+/- English proof (translation)
+Distinguish the cases in `h1 : l = j`. Rewrite using `[h1, Equiv.swap_apply_left]`. Rewrite `hl` using `[h1]`. Establish `: k.val ≠ j1.val` using `fun h => hk (Fin.ext h)`. Rewrite `hl`, the goal using `[Fin.lt_iff_val_lt_val]`.
+
+Use linear arithmetic over natural numbers and integers. Distinguish the cases in `h2 : l = j1`. Rewrite using `[h2, Equiv.swap_apply_right]`. Rewrite `hl` using `[h2]`. Rewrite `hl`, the goal using `[Fin.lt_iff_val_lt_val]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[Equiv.swap_apply_of_ne_of_ne h1 h2]`. Conclude with `hl`.
+-/
 lemma swap_lt (j j1 : Fin d) (hj : j1.val = j.val + 1) (k : Fin d) (hk : k ≠ j1) (l : Fin d)
     (hl : l < k) : Equiv.swap j j1 l < k := by
   by_cases h1 : l = j
@@ -27,6 +34,11 @@ lemma swap_lt (j j1 : Fin d) (hj : j1.val = j.val + 1) (k : Fin d) (hk : k ≠ j
     · rw [Equiv.swap_apply_of_ne_of_ne h1 h2]
       exact hl
 
+/- English proof (translation)
+Establish `hs : (Equiv.swap j j1) '' Set.Iio k = Set.Iio k`. Use extensionality with `l`. Simplify using `only [Set.mem_image, Set.mem_Iio]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm, rfl⟩`.
+
+Conclude with `swap_lt j j1 hj k hk m hm`. Introduce `hl`. Conclude with `⟨Equiv.swap j j1 l, swap_lt j j1 hj k hk l hl, Equiv.swap_apply_self _ _ _⟩`. Rewrite using `[Set.image_comp, hs]`.
+-/
 lemma swap_img (b : Fin d → E) (j j1 : Fin d) (hj : j1.val = j.val + 1) (k : Fin d)
     (hk : k ≠ j1) : (b ∘ Equiv.swap j j1) '' Set.Iio k = b '' Set.Iio k := by
   have hs : (Equiv.swap j j1) '' Set.Iio k = Set.Iio k := by
@@ -39,6 +51,11 @@ lemma swap_img (b : Fin d → E) (j j1 : Fin d) (hj : j1.val = j.val + 1) (k : F
       exact ⟨Equiv.swap j j1 l, swap_lt j j1 hj k hk l hl, Equiv.swap_apply_self _ _ _⟩
   rw [Set.image_comp, hs]
 
+/- English proof (translation)
+Establish `hkk : Equiv.swap j j1 k = k` using `Equiv.swap_apply_of_ne_of_ne hk hk1`. Use `gs_eq_of _ _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[swap_img b j j1 hj k hk1]`. Simplify using `only [Function.comp_apply, hkk]`. Conclude with `b_sub_gs_mem b k`.
+
+Introduce `i hi`. Apply `inner_gs_span b k` to reduce the goal to its premises. Apply `Submodule.subset_span` to reduce the goal to its premises. Conclude with `⟨Equiv.swap j j1 i, swap_lt j j1 hj k hk1 i hi, rfl⟩`.
+-/
 lemma swap_gs_other (b : Fin d → E) (j j1 : Fin d) (hj : j1.val = j.val + 1) (k : Fin d)
     (hk : k ≠ j) (hk1 : k ≠ j1) : gs (b ∘ Equiv.swap j j1) k = gs b k := by
   have hkk : Equiv.swap j j1 k = k := Equiv.swap_apply_of_ne_of_ne hk hk1
@@ -51,6 +68,21 @@ lemma swap_gs_other (b : Fin d → E) (j j1 : Fin d) (hj : j1.val = j.val + 1) (
     apply Submodule.subset_span
     exact ⟨Equiv.swap j j1 i, swap_lt j j1 hj k hk1 i hi, rfl⟩
 
+/- English proof (translation)
+Establish `hne : j ≠ j1` using `fun h => by rw [Fin.ext_iff] at h; omega`. Establish `hne' : j1 ≠ j` using `fun h => hne h.symm`. Establish `hsj : Equiv.swap j j1 j = j1` using `Equiv.swap_apply_left j j1`. Establish `hI : Set.Iio j1 = insert j (Set.Iio j)`. Use extensionality with `l`.
+
+Simplify using `only [Set.mem_Iio, Set.mem_insert_iff, Fin.lt_iff_val_lt_val, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Establish `hmem` using `b_sub_gs_mem b j1`. Rewrite `hmem` using `[hI, Set.image_insert_eq, Submodule.mem_span_insert]`. Take `⟨c, s, hs, hcs⟩` from `hmem`.
+
+Establish `hG0 : ‖gs b j‖ ^ 2 ≠ 0` using `pow_ne_zero 2 (norm_ne_zero_iff.mpr (gs_ne_zero b hb j))`. Establish `hc : c = mu b j1 j`. Establish `h1 : ⟪gs b j, b j1 - gs b j1⟫_ℝ = mu b j1 j * ‖gs b j‖ ^ 2`. Rewrite using `[inner_sub_right, gs_orth b hne, sub_zero]`. Unfold `mu`.
+
+Rewrite using `[div_mul_cancel₀ _ hG0]`. Establish `h2 : ⟪gs b j, b j1 - gs b j1⟫_ℝ = c * ‖gs b j‖ ^ 2`. Rewrite using `[hcs, inner_add_right, real_inner_smul_right, inner_gs_b_self, inner_gs_span b j hs, add_zero]`. Conclude with `mul_right_cancel₀ hG0 (h2.symm.trans h1)`. Substitute `hc` using the available equality.
+
+Use `gs_eq_of _ _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[swap_img b j j1 hj j hne]`. Simplify using `only [Function.comp_apply, hsj]`. Establish `he : b j1 - (gs b j1 + mu b j1 j • gs b j) = mu b j1 j • (b j - gs b j) + s`. Rewrite using `[sub_add_eq_sub_sub, hcs, smul_sub]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[he]`. Conclude with `Submodule.add_mem _ (Submodule.smul_mem _ _ (b_sub_gs_mem b j)) hs`. Introduce `i hi`. Establish `hi1 : i < j1` using `lt_trans hi (by rw [Fin.lt_iff_val_lt_val]; omega)`.
+
+Establish `hsi : Equiv.swap j j1 i = i` using `Equiv.swap_apply_of_ne_of_ne (ne_of_lt hi) (ne_of_lt hi1)`. Simplify using `only [Function.comp_apply, hsi]`. Rewrite using `[inner_add_left, real_inner_smul_left, gs_inner_b_of_lt b hi1, gs_inner_b_of_lt b hi]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma swap_gs_j (b : Fin d → E) (hb : LinearIndependent ℝ b) (j j1 : Fin d)
     (hj : j1.val = j.val + 1) :
     gs (b ∘ Equiv.swap j j1) j = gs b j1 + mu b j1 j • gs b j := by
@@ -89,6 +121,9 @@ lemma swap_gs_j (b : Fin d → E) (hb : LinearIndependent ℝ b) (j j1 : Fin d)
     rw [inner_add_left, real_inner_smul_left, gs_inner_b_of_lt b hi1, gs_inner_b_of_lt b hi]
     ring
 
+/- English proof (translation)
+Establish `hne : j1 ≠ j` using `fun h => by rw [Fin.ext_iff] at h; omega`. Rewrite using `[norm_add_sq_real, real_inner_smul_right, gs_orth b hne, norm_smul, Real.norm_eq_abs, mul_pow, sq_abs]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma norm_swap_j (b : Fin d → E) (j j1 : Fin d) (hj : j1.val = j.val + 1) :
     ‖gs b j1 + mu b j1 j • gs b j‖ ^ 2 = ‖gs b j1‖ ^ 2 + mu b j1 j ^ 2 * ‖gs b j‖ ^ 2 := by
   have hne : j1 ≠ j := fun h => by rw [Fin.ext_iff] at h; omega
@@ -96,6 +131,27 @@ lemma norm_swap_j (b : Fin d → E) (j j1 : Fin d) (hj : j1.val = j.val + 1) :
     sq_abs]
   ring
 
+/- English proof (translation)
+Establish `hne : j ≠ j1` using `fun h => by rw [Fin.ext_iff] at h; omega`. Establish `hjlt : j < j1` using `by rw [Fin.lt_iff_val_lt_val]; omega`. Establish `hb' : LinearIndependent ℝ (b ∘ Equiv.swap j j1)` using `hb.comp _ (Equiv.injective _)`. Establish `hu` using `swap_gs_j b hb j j1 hj`. Establish `hN` using `norm_swap_j b j j1 hj`.
+
+Establish `hN0 : ‖gs (b ∘ Equiv.swap j j1) j‖ ^ 2 ≠ 0` using `pow_ne_zero 2 (norm_ne_zero_iff.mpr (gs_ne_zero _ hb' j))`. Establish `hG0 : ‖gs b j‖ ^ 2 ≠ 0` using `pow_ne_zero 2 (norm_ne_zero_iff.mpr (gs_ne_zero b hb j))`. Establish `hv : gs (b ∘ Equiv.swap j j1) j1 = gs b j - (mu b j1 j * ‖gs b j‖ ^ 2 / ‖gs (b ∘ Equiv.swap j j1) j‖ ^ 2) • gs (b ∘ Equiv.swap j j1) j`. Use `gs_eq_of _ _ _ ?_ ?_` and prove the remaining obligations. Establish `hmono : span ℝ ((b ∘ Equiv.swap j j1) '' Set.Iio j) ≤ span ℝ ((b ∘ Equiv.swap j j1) '' Set.Iio j1)` using `Submodule.span_mono (Set.image_mono (Set.Iio_subset_Iio (le_of_lt hjlt)))`.
+
+Establish `hbj : (b ∘ Equiv.swap j j1) j ∈ span ℝ ((b ∘ Equiv.swap j j1) '' Set.Iio j1)` using `Submodule.subset_span ⟨j, hjlt, rfl⟩`. Establish `hgs : gs (b ∘ Equiv.swap j j1) j ∈ span ℝ ((b ∘ Equiv.swap j j1) '' Set.Iio j1)`. Establish `h` using `Submodule.sub_mem _ hbj (hmono (b_sub_gs_mem (b ∘ Equiv.swap j j1) j))`. Rewrite `h` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Establish `hB : b j - gs b j ∈ span ℝ ((b ∘ Equiv.swap j j1) '' Set.Iio j1)`.
+
+Apply `hmono` to reduce the goal to its premises. Rewrite using `[swap_img b j j1 hj j hne]`. Conclude with `b_sub_gs_mem b j`. Establish `hbj1 : (b ∘ Equiv.swap j j1) j1 = b j` using `by simp [Equiv.swap_apply_right]`. Rewrite using `[hbj1]`.
+
+Establish `he : ∀ (t : ℝ) (x : E), b j - (gs b j - t • x) = (b j - gs b j) + t • x`. Introduce `t x`. Normalize the expressions using the abelian group laws. Rewrite using `[he]`. Conclude with `Submodule.add_mem _ hB (Submodule.smul_mem _ _ hgs)`.
+
+Introduce `i hi`. Establish `hij : i ≤ j`. Rewrite using `[Fin.le_iff_val_le_val]`. Rewrite `hi` using `[Fin.lt_iff_val_lt_val]`. Use linear arithmetic over natural numbers and integers.
+
+Break down `lt_or_eq_of_le hij with h | h` into its components or cases. Establish `hsi : Equiv.swap j j1 i = i` using `Equiv.swap_apply_of_ne_of_ne (ne_of_lt h) (ne_of_lt (lt_trans h hjlt))`. Rewrite using `[inner_sub_left, real_inner_smul_left, gs_inner_b_of_lt _ h]`. Simplify using `only [Function.comp_apply, hsi, gs_inner_b_of_lt b h]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[h, inner_sub_left, real_inner_smul_left, inner_gs_b_self (b ∘ Equiv.swap j j1) j]`. Establish `hsj : (b ∘ Equiv.swap j j1) j = b j1` using `by simp`. Establish `hmu : ⟪gs b j, b j1⟫_ℝ = mu b j1 j * ‖gs b j‖ ^ 2`. Unfold `mu`. Rewrite using `[div_mul_cancel₀ _ hG0]`.
+
+Rewrite using `[hsj, hmu, div_mul_cancel₀ _ hN0, sub_self]`. Establish `hip : ⟪gs b j, gs (b ∘ Equiv.swap j j1) j⟫_ℝ = mu b j1 j * ‖gs b j‖ ^ 2`. Rewrite using `[hu, inner_add_right, real_inner_smul_right, gs_orth b hne, real_inner_self_eq_norm_sq]`. Expand and normalize the polynomial expressions, which then agree. Establish `hN' : ‖gs (b ∘ Equiv.swap j j1) j‖ ^ 2 = ‖gs b j1‖ ^ 2 + mu b j1 j ^ 2 * ‖gs b j‖ ^ 2`.
+
+Rewrite using `[hu, hN]`. Rewrite using `[hv, ← hu, norm_sub_sq_real, real_inner_smul_right, hip, norm_smul, mul_pow, Real.norm_eq_abs, sq_abs, hN']`. Establish `hD : ‖gs b j1‖ ^ 2 + mu b j1 j ^ 2 * ‖gs b j‖ ^ 2 ≠ 0` using `hN' ▸ hN0`. Establish `key : mu b j1 j * ‖gs b j‖ ^ 2 / (‖gs b j1‖ ^ 2 + mu b j1 j ^ 2 * ‖gs b j‖ ^ 2) * (‖gs b j1‖ ^ 2 + mu b j1 j ^ 2 * ‖gs b j‖ ^ 2) = mu b j1 j * ‖gs b j‖ ^ 2` using `div_mul_cancel₀ _ hD`. Take the linear combination `(mu b j1 j * ‖gs b j‖ ^ 2 / (‖gs b j1‖ ^ 2 + mu b j1 j ^ 2 * ‖gs b j‖ ^ 2) * (‖gs b j1‖ ^ 2 + mu b j1 j ^ 2 * ‖gs b j‖ ^ 2) - mu b j1 j * ‖gs b j‖ ^ 2) * key`.
+-/
 lemma norm_gso_comp_swap_right_sq_mul (b : Fin d → E) (hb : LinearIndependent ℝ b) (j j1 : Fin d)
     (hj : j1.val = j.val + 1) :
     ‖gs (b ∘ Equiv.swap j j1) j1‖ ^ 2 * ‖gs b j1 + mu b j1 j • gs b j‖ ^ 2 =
@@ -158,6 +214,15 @@ lemma norm_gso_comp_swap_right_sq_mul (b : Fin d → E) (hb : LinearIndependent 
   linear_combination (mu b j1 j * ‖gs b j‖ ^ 2 / (‖gs b j1‖ ^ 2 + mu b j1 j ^ 2 * ‖gs b j‖ ^ 2) *
       (‖gs b j1‖ ^ 2 + mu b j1 j ^ 2 * ‖gs b j‖ ^ 2) - mu b j1 j * ‖gs b j‖ ^ 2) * key
 
+/- English proof (translation)
+Rewrite using `[Finset.prod_mul_distrib]`. Simplify using `only [Finset.prod_ite_eq', Finset.mem_filter, Finset.mem_univ, true_and]`. Break down `lt_trichotomy k j with h | h | h` into its components or cases. Establish `h1 : ¬ j ≤ k` using `not_le.mpr h`. Establish `h2 : ¬ j1 ≤ k`.
+
+Rewrite using `[Fin.le_iff_val_le_val]`. Rewrite `h` using `[Fin.lt_iff_val_lt_val]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg h1, if_neg h2, if_neg (ne_of_lt h), one_mul]`. Establish `h2 : ¬ j1 ≤ j` using `by rw [Fin.le_iff_val_le_val]; omega`.
+
+Rewrite using `[h, if_pos le_rfl, if_neg h2, if_pos rfl, mul_one]`. Establish `h1 : j ≤ k` using `le_of_lt h`. Establish `h2 : j1 ≤ k`. Rewrite using `[Fin.le_iff_val_le_val]`. Rewrite `h` using `[Fin.lt_iff_val_lt_val]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[if_pos h1, if_pos h2, if_neg (ne_of_gt h), hAB]`.
+-/
 private lemma prod_filter_le_ite_eq_of_mul_eq_one (j j1 : Fin d) (hj : j1.val = j.val + 1) (A B : ℝ) (hAB : A * B = 1)
     (k : Fin d) :
     ∏ i ∈ univ.filter (fun i : Fin d => i ≤ k),
@@ -176,6 +241,17 @@ private lemma prod_filter_le_ite_eq_of_mul_eq_one (j j1 : Fin d) (hj : j1.val = 
       rw [Fin.le_iff_val_le_val]; rw [Fin.lt_iff_val_lt_val] at h; omega
     rw [if_pos h1, if_pos h2, if_neg (ne_of_gt h), hAB]
 
+/- English proof (translation)
+Establish `hne : j ≠ j1` using `fun h => by rw [Fin.ext_iff] at h; omega`. Establish `hb' : LinearIndependent ℝ (b ∘ Equiv.swap j j1)` using `hb.comp _ (Equiv.injective _)`. Establish `hG0 : ‖gs b j‖ ^ 2 ≠ 0` using `pow_ne_zero 2 (norm_ne_zero_iff.mpr (gs_ne_zero b hb j))`. Establish `hU0 : ‖gs b j1 + mu b j1 j • gs b j‖ ^ 2 ≠ 0`. Rewrite using `[← swap_gs_j b hb j j1 hj]`.
+
+Conclude with `pow_ne_zero 2 (norm_ne_zero_iff.mpr (gs_ne_zero _ hb' j))`. Establish `hf : ∀ i, ‖gs (b ∘ Equiv.swap j j1) i‖ ^ 2 = ‖gs b i‖ ^ 2 * ((if i = j then ‖gs b j1 + mu b j1 j • gs b j‖ ^ 2 / ‖gs b j‖ ^ 2 else 1) * (if i = j1 then ‖gs b j‖ ^ 2 / ‖gs b j1 + mu b j1 j • gs b j‖ ^ 2 else 1))`. Introduce `i`. Distinguish the cases in `h1 : i = j`. Rewrite using `[h1, if_pos rfl, if_neg hne, swap_gs_j b hb j j1 hj, mul_one, mul_comm, div_mul_cancel₀ _ hG0]`.
+
+Distinguish the cases in `h2 : i = j1`. Rewrite using `[h2, if_neg (Ne.symm hne), if_pos rfl, one_mul, mul_div_assoc', eq_div_iff hU0]`. Take the linear combination `norm_gso_comp_swap_right_sq_mul b hb j j1 hj`. Rewrite using `[if_neg h1, if_neg h2, swap_gs_other b j j1 hj i h1 h2]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hAB : ‖gs b j1 + mu b j1 j • gs b j‖ ^ 2 / ‖gs b j‖ ^ 2 * (‖gs b j‖ ^ 2 / ‖gs b j1 + mu b j1 j • gs b j‖ ^ 2) = 1`. Rewrite using `[div_mul_div_comm, div_eq_one_iff_eq (mul_ne_zero hG0 hU0)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hk : ∀ k : Fin d, ∏ i ∈ univ.filter (fun i : Fin d => i ≤ k), ‖gs (b ∘ Equiv.swap j j1) i‖ ^ 2 = (∏ i ∈ univ.filter (fun i : Fin d => i ≤ k), ‖gs b i‖ ^ 2) * (if k = j then ‖gs b j1 + mu b j1 j • gs b j‖ ^ 2 / ‖gs b j‖ ^ 2 else 1)`. Introduce `k`.
+
+Rewrite using `[← prod_filter_le_ite_eq_of_mul_eq_one j j1 hj _ _ hAB k, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl (fun i _ => hf i)`. Unfold `pot`. Rewrite using `[Finset.prod_congr rfl (fun k _ => hk k), Finset.prod_mul_distrib, Finset.prod_ite_eq' univ j, if_pos (Finset.mem_univ j)]`.
+-/
 lemma pot_swap (b : Fin d → E) (hb : LinearIndependent ℝ b) (j j1 : Fin d)
     (hj : j1.val = j.val + 1) :
     pot (b ∘ Equiv.swap j j1) =

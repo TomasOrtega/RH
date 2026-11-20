@@ -3,6 +3,31 @@ open MeasureTheory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `X _ μ K _hK hcov H _ _ E _ _ D hD P Q hP hQ hPb hQb hPQ u`. Establish `key : ∀ n, ∀ᵐ x ∂μ.restrict (K n), P u x = Q u x`. Introduce `n`. Take `⟨CP, hCP⟩` from `hPb n`. Take `⟨CQ, hCQ⟩` from `hQb n`.
+
+Establish `hmeas : AEMeasurable (fun x => ((‖P u x - Q u x‖₊ : ENNReal)) ^ 2) (μ.restrict (K n))` using `(((hCP u).1.sub (hCQ u).1).nnnorm.aemeasurable.coe_nnreal_ennreal).pow_const 2`. Use `set M : ℝ := 2 * (|CP| + |CQ|) with hM`. Establish `hbound : ∀ δ : ℝ, 0 < δ → ∫⁻ x, ((‖P u x - Q u x‖₊ : ENNReal)) ^ 2 ∂(μ.restrict (K n)) ≤ ENNReal.ofReal (M * δ ^ 2)`. Introduce `δ hδ`. Take `⟨u', hu'D, hdist⟩` from `hD.exists_dist_lt u hδ`.
+
+Establish `hwδ : ‖u - u'‖ ^ 2 ≤ δ ^ 2`. Establish `: ‖u - u'‖ < δ` using `by rw [← dist_eq_norm]; exact hdist`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) this.le 2`. Establish `hae : ∀ᵐ x ∂(μ.restrict (K n)), ((‖P u x - Q u x‖₊ : ENNReal)) ^ 2 ≤ 2 * ((‖P (u - u') x‖₊ : ENNReal)) ^ 2 + 2 * ((‖Q (u - u') x‖₊ : ENNReal)) ^ 2`. Establish `h1` using `ae_restrict_of_ae (s := K n) (hP u u')`.
+
+Establish `h2` using `ae_restrict_of_ae (s := K n) (hQ u u')`. Establish `h3` using `ae_restrict_of_ae (s := K n) (hPQ u' hu'D)`. Use `filter_upwards [h1, h2, h3] with x e1 e2 e3`. Establish `e1' : P u x - P u' x = P (u - u') x` using `e1`. Establish `e2' : Q u x - Q u' x = Q (u - u') x` using `e2`.
+
+Establish `e3' : P u' x = Q u' x` using `e3`. Establish `e : P u x - Q u x = P (u - u') x - Q (u - u') x`. Establish `: P u x - Q u x = (P u x - P u' x) - (Q u x - Q u' x) + (P u' x - Q u' x)` using `by abel`. Rewrite using `[this, e1', e2', e3', sub_self, add_zero]`. Rewrite using `[e]`.
+
+Establish `hn : ‖P (u - u') x - Q (u - u') x‖₊ ≤ ‖P (u - u') x‖₊ + ‖Q (u - u') x‖₊` using `nnnorm_sub_le _ _`. Establish `hsq : ‖P (u - u') x - Q (u - u') x‖₊ ^ 2 ≤ 2 * ‖P (u - u') x‖₊ ^ 2 + 2 * ‖Q (u - u') x‖₊ ^ 2`. Establish `hn' : ((‖P (u - u') x - Q (u - u') x‖₊ : NNReal) : ℝ) ≤ ((‖P (u - u') x‖₊ : NNReal) : ℝ) + ((‖Q (u - u') x‖₊ : NNReal) : ℝ)` using `by exact_mod_cast hn`. Establish `h0 : (0:ℝ) ≤ ((‖P (u - u') x - Q (u - u') x‖₊ : NNReal) : ℝ)` using `NNReal.coe_nonneg _`. Establish `hreal : ((‖P (u - u') x - Q (u - u') x‖₊ : NNReal) : ℝ) ^ 2 ≤ 2 * ((‖P (u - u') x‖₊ : NNReal) : ℝ) ^ 2 + 2 * ((‖Q (u - u') x‖₊ : NNReal) : ℝ) ^ 2`.
+
+Use polynomial arithmetic with `[sq_nonneg (((‖P (u - u') x‖₊ : NNReal) : ℝ) - ((‖Q (u - u') x‖₊ : NNReal) : ℝ))]`. Conclude with `hreal` after adjusting the coercions. Use `ENNReal.coe_le_coe.mpr hsq` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_add_left' (((hCP (u - u')).1.nnnorm.aemeasurable.coe_nnreal_ennreal.pow_const 2).const_mul 2), lintegral_const_mul' _ _ (by norm_num), lintegral_const_mul' _ _ (by norm_num)]`. Use `_ ≤ 2 * ENNReal.ofReal (CP * ‖u - u'‖ ^ 2) + 2 * ENNReal.ofReal (CQ * ‖u - u'‖ ^ 2) := by gcongr`. Conclude with `(hCP (u - u')).2`. Conclude with `(hCQ (u - u')).2`.
+
+Apply the tactic sequence `_ ≤ 2 * ENNReal.ofReal (|CP| * δ ^ 2) + 2 * ENNReal.ofReal (|CQ| * δ ^ 2) := by gcongr <;> first | exact le_abs_self _ | exact hwδ`. Use `_ = ENNReal.ofReal (M * δ ^ 2) := by`. Establish `: M * δ ^ 2 = 2 * (|CP| * δ ^ 2) + 2 * (|CQ| * δ ^ 2)` using `by rw [hM]; ring`. Rewrite using `[this, ENNReal.ofReal_add (by positivity) (by positivity), ENNReal.ofReal_mul (by norm_num), ENNReal.ofReal_mul (by norm_num)]`. Simplify using the standard rewrite rules.
+
+Establish `hzero : ∫⁻ x, ((‖P u x - Q u x‖₊ : ENNReal)) ^ 2 ∂(μ.restrict (K n)) = 0`. Establish `hlim : Filter.Tendsto (fun δ : ℝ => ENNReal.ofReal (M * δ ^ 2)) (nhdsWithin 0 (Set.Ioi 0)) (nhds (ENNReal.ofReal (M * 0 ^ 2)))`. Apply `Filter.Tendsto.mono_left _ nhdsWithin_le_nhds` to reduce the goal to its premises. Conclude with `(ENNReal.continuous_ofReal.comp (continuous_const.mul (continuous_pow 2))).tendsto 0`. Use `ge_of_tendsto hlim (eventually_nhdsWithin_of_forall (fun δ hδ => hbound δ hδ))` as an intermediate fact.
+
+Simplify using `using this`. Establish `hae0` using `(lintegral_eq_zero_iff' hmeas).mp hzero`. Use `filter_upwards [hae0] with x hx`. Establish `hx' : ((‖P u x - Q u x‖₊ : ENNReal)) ^ 2 = 0` using `hx`. Simplify `hx'` using `[sub_eq_zero]`.
+
+Establish `hall : ∀ᵐ x ∂μ.restrict (⋃ n, K n), P u x = Q u x` using `(ae_restrict_iUnion_iff K (fun x => P u x = Q u x)).mpr key`. Rewrite `hall` using `[hcov, Measure.restrict_univ]`. Conclude with `hall`.
+-/
 theorem ae_eq_of_dense_of_local_sq_bound : ∀ {X : Type} [MeasurableSpace X] (μ : Measure X) (K : ℕ → Set X),
     (∀ n, MeasurableSet (K n)) → ⋃ n, K n = Set.univ →
     ∀ {H : Type} [NormedAddCommGroup H] [NormedSpace ℂ H] {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]

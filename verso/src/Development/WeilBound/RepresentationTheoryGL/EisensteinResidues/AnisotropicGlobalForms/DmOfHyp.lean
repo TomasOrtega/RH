@@ -21,6 +21,11 @@ def DM : Prop :=
           (∀ s : ℂ, (V.rank : ℝ) / 2 < s.re → BasicIdentity V μ m (flat V a φ s₁ s) f₁ f₂) ∧
           ZetaContinues V μ m (flat V a φ s₁) f₁ f₂
 
+/- English proof (translation)
+Introduce `hC hS _ D V hV a ha hI μ b hμ hb s₁ φ hφ`. Establish `h1` using `hS D V hV a ha hI μ b hμ hb s₁ φ hφ`. Use `⟨h1, trivial, fun θ hθ _ A _ m hm f₁ h₁ f₂ h₂ => ?_⟩` and prove the remaining obligations. Establish `r₁` using `GlobalTheory.Grow.rapidDec_of_cuspForm hC hθ (GlobalTheory.Cusp.mem_cuspForms.1 h₁).1.1 (GlobalTheory.Cusp.mem_cuspForms.1 h₁).1.2`. Establish `r₂` using `GlobalTheory.Grow.rapidDec_of_cuspForm hC hθ (GlobalTheory.Cusp.mem_cuspForms.1 h₂).1.1 (GlobalTheory.Cusp.mem_cuspForms.1 h₂).1.2`.
+
+Establish `hB : ∀ s : ℂ, (V.rank : ℝ) / 2 < s.re → BasicIdentity V μ m (flat V a φ s₁ s) f₁ f₂` using `fun s hs => GlobalTheory.T.doubling_basicIdentity_unfolding D V a ha μ hμ s hs _ (flat_mem hI hφ s) (GlobalTheory.T.siegelEisenstein_spherical_moderateGrowth_real_point hS D V hV a ha hI s.re hs) m hm f₁ f₂ r₁ r₂ (GlobalTheory.Cusp.mem_cuspForms.1 h₁).1.2`. Conclude with `⟨hB, zetaContinues_of_eisRegularAt hμ hm h1.1 h1.1.1.analyticOnNhd_flat h1.2 r₁ r₂ ⟨h1.1.1, fun s hs => (hB s hs).1⟩⟩`.
+-/
 theorem dm_of_two : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.SiegelEisensteinContinuation → True → DM := by
   intro hC hS _ D V hV a ha hI μ b hμ hb s₁ φ hφ
   have h1 := hS D V hV a ha hI μ b hμ hb s₁ φ hφ

@@ -8,6 +8,11 @@ open scoped TensorProduct
 
 namespace GlobalTheory.Mem.Col2.AdT.PlaceUnder
 
+/- English proof (translation)
+Assume the negation of the conclusion as `H`. Use `push Not at H`. Use `hX.cplxE` as an intermediate fact. Take `⟨φ⟩ : Nonempty (X.E →+* ℂ)` from `inferInstance`. Use `IsTotallyComplex.complexEmbedding_not_isReal φ ?_` and prove the remaining obligations.
+
+Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `x`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, ← hX.conjE, H]`.
+-/
 theorem exists_star_ne {X : Fields} (hX : X.Ok) : ∃ x : X.E, star x ≠ x := by
   by_contra H
   push Not at H
@@ -18,6 +23,13 @@ theorem exists_star_ne {X : Fields} (hX : X.Ok) : ∃ x : X.E, star x ≠ x := b
   ext x
   rw [ComplexEmbedding.conjugate_coe_eq, ← hX.conjE, H]
 
+/- English proof (translation)
+Introduce `B X I hI _ l Z a P _`. Establish `hseam : ∀ Q : HeightOneSpectrum (𝓞 B.fields.E), GlobalTheory.TwU.seamP (sm I l Z) Q = Q`. Introduce `Q`. Use extensionality with `x`. Conclude with `GlobalTheory.TwU.mem_seamP (sm I l Z) Q x`.
+
+Take `⟨hX, -, -⟩` from `base_fields_primes_ok B X`. Establish `hc` using `(GlobalTheory.TopStepPrimes.primes_top_ok hI B.u₀ a).2.1`. Use `⟨HeightOneSpectrum.under (𝓞 (I.rec7 l Z).host.F) (GlobalTheory.TwU.seamP (sm I l Z) P.1), rfl, fun P' hne hov => ?_⟩` and prove the remaining obligations. Rewrite `hov` using `[hseam, hseam]`. Establish `hu : P'.1.under (𝓞 B.fields.F) = P.1.under (𝓞 B.fields.F)` using `HeightOneSpectrum.ext (Eq.symm hov)`.
+
+Break down `(GlobalTheory.NormOneUnit.under_eq_iff hX.star_F hX.rankE (exists_star_ne hX) P.1 P'.1).1 hu with h | h` into its components or cases. Conclude with `hne (Subtype.ext h)`. Conclude with `hc P.1 (Finset.mem_union_right _ P.2) (h ▸ Finset.mem_union_right _ P'.2)`.
+-/
 theorem main : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (a : I.ι) (P : SBof I a), P.1 ∈ I.Q a → ∃ v : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F), Formalism.L2.Col.IsOver v (GlobalTheory.TwU.seamP (sm I l Z) P.1) ∧ ∀ P' : SBof I a, P' ≠ P → ¬ Formalism.L2.Col.IsOver v (GlobalTheory.TwU.seamP (sm I l Z) P'.1) := by
   classical
   intro B X I hI _ l Z a P _

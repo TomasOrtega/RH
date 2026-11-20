@@ -17,6 +17,37 @@ noncomputable section
 
 namespace GlobalTheory.ThKConstTerm
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH' hM₁ e₀ he₀`. Distinguish the cases in `hQ : B.IsGood σ ∧ M.IsGood B.ψ ∧ ∃ r s r' s' : ℕ, X.IsHerm σ B r s ∧ W.IsSkew σ B r' s'`. Use `swap`. Use `⟨1, one_ne_zero, fun _ χX χW om r s r' s' hP => (hQ ⟨hP.base, hP.good, r, s, r', s', hP.herm, hP.skew⟩).elim, ?_⟩` and prove the remaining obligations. Introduce `n₁ X₁ H j₀ j₁ M₂ _ _ e _`.
+
+Conclude with `⟨1, one_ne_zero, fun γ _ χX χW om r s r' s' hP => (hQ ⟨hP.base, hP.good, r, s, r', s', hP.herm, hP.skew⟩).elim⟩`. Take `⟨hB, hM, hXW⟩` from `hQ`. Take `⟨C₀, hC₀, hexp⟩` from `GlobalTheory.T.eigen_intertwiner_restriction_rank hKP F E σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH' hM₁ e₀ he₀ hB hM hXW`. Establish `key : ∀ (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' → ∀ (μ : Measure (unip σ W H')) (𝓕 : Set (unip σ W H')), μ.IsHaarMeasure → IsFundamentalDomain ((ratU σ W.J).subgroupOf (unip σ W H')) 𝓕 μ → μ 𝓕 = 1 → ∀ Φ ∈ schA F (Fin n × Fin d), ∀ g h, (S …`. Introduce `χX χW om r s r' s' hP μ 𝓕 hμ h𝓕 h1 Φ hΦ g h`.
+
+Establish `hpres : ∀ x, ∀ Φ ∈ schA F (Fin n × Fin d), om x Φ ∈ schA F (Fin n × Fin d)` using `fun x Φ hΦ => (IsUWeilPair.isUSplitting hP.weil).pres x Φ hΦ`. Establish `hΨ` using `hpres (g, h) Φ hΦ`. Take `⟨hs, hsw⟩` from `GlobalTheory.T.eigen_intertwiner_restriction_character hKP F E σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH' hM₁ e₀ he₀ χX χW om r s r' s' hP μ 𝓕 hμ h𝓕 h1 _ hΨ`. Use `⟨hs, ?_⟩` and prove the remaining obligations. Rewrite using `[← hsw, ← integral_const_mul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `u`. Establish `e1 : ((g, u.1 * h) : UA σ X.J × UA σ W.J) = (1, u.1) * (g, h)` using `by simp`. Rewrite using `[theta, e1, map_mul, Module.End.mul_apply]`. Conclude with `(hexp _ (hpres _ _ hΨ)).2`.
+
+Establish `zero : ∀ (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' → ∀ (μ : Measure (unip σ W H')) (𝓕 : Set (unip σ W H')), μ 𝓕 = 1 → ∀ Ψ ∈ schA F (Fin n × Fin d), ∫ u in 𝓕, thetaSum F (e₀ (M.co.rho B.ψ (Matrix.vecMulVec (incV F 0) (incV F H'.y)) (om (1, u …`. Introduce `χX χW om r s r' s' hP μ 𝓕 h1 Ψ hΨ`. Establish `e2 : ∀ u : unip σ W H', thetaSum F (e₀ (M.co.rho B.ψ (Matrix.vecMulVec (incV F 0) (incV F H'.y)) (om (1, u.1) Ψ))) = thetaSum F (e₀ Ψ)`. Introduce `u`. Establish `hz : M.co.rho B.ψ (Matrix.vecMulVec (incV F 0) (incV F H'.y)) (om (1, u.1) Ψ) = om (1, u.1) Ψ`.
+
+Establish `h0 : incV F (0 : Fin n → E) = 0`. Use function extensionality and compare the values at `i`. Unfold `incV`. Simplify using the standard rewrite rules. Use function extensionality and compare the values at `x`.
+
+Simplify using `[Darboux.rho, schr, h0]`. Rewrite using `[hz, GlobalTheory.T.eigen_intertwiner_restriction_pair hKP F E σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH' hM₁ e₀ he₀ χX χW om r s r' s' hP u.1 u.2 Ψ hΨ]`. Simplify using `only [e2, setIntegral_const, measureReal_def, h1, ENNReal.toReal_one, one_smul]`. Use `⟨C₀, hC₀, ?_, ?_⟩` and prove the remaining obligations. Introduce `hanis χX χW om r s r' s' hP Φ hΦ g μ 𝓕 hμ h𝓕 h1 h`.
+
+Take `⟨-, hk⟩` from `key χX χW om r s r' s' hP μ 𝓕 hμ h𝓕 h1 Φ hΦ g h`. Establish `hΨ : om (g, h) Φ ∈ schA F (Fin n × Fin d)` using `(IsUWeilPair.isUSplitting hP.weil).pres _ Φ hΦ`. Rewrite using `[hk, tsum_eq_single 0, zero χX χW om r s r' s' hP μ 𝓕 h1 _ hΨ]`. Introduce `ξ hξ`. Conclude with `GlobalTheory.T.eigen_intertwiner_restriction_unitary hKP F E σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH' hM₁ e₀ he₀ χX χW om r s r' s' hP μ 𝓕 hμ h𝓕 h1 _ hΨ ξ (fun h0 => hξ (hanis ξ h0))`.
+
+Introduce `n₁ X₁ H j₀ j₁ M₂ hH hM₂ e he`. Take `⟨C, hC, hiso⟩` from `GlobalTheory.T.eigen_intertwiner_double_restriction hKP F E σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH' hM₁ e₀ he₀ n₁ X₁ H j₀ j₁ M₂ hH hM₂ e he`. Use `⟨C₀ * C, mul_ne_zero hC₀ hC, fun γ hγ χX χW om r s r' s' hP Φ hΦ g => ⟨fun h => ?_, ?_⟩⟩` and prove the remaining obligations. Establish `hΨ : om (g, h) Φ ∈ schA F (Fin n × Fin d)` using `(IsUWeilPair.isUSplitting hP.weil).pres _ Φ hΦ`. Use `GlobalTheory.T.eigen_intertwiner_double_restriction_pair hKP F E σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH' hM₁ e₀ he₀ n₁ X₁ H j₀ j₁ M₂ hH hM₂ e he γ hγ χX χW om r s r' s' hP _ hΨ` as an intermediate fact.
+
+Use `this.congr fun x => ?_` and prove the remaining obligations. Establish `e1 : ((γ x * g, h) : UA σ X.J × UA σ W.J) = (γ x, 1) * (g, h)` using `by simp`. Rewrite using `[e1, map_mul, Module.End.mul_apply]`. Introduce `μ 𝓕 hμ h𝓕 h1 h`. Establish `hΨ : om (g, h) Φ ∈ schA F (Fin n × Fin d)` using `(IsUWeilPair.isUSplitting hP.weil).pres _ Φ hΦ`.
+
+Take `⟨hs, hk⟩` from `key χX χW om r s r' s' hP μ 𝓕 hμ h𝓕 h1 Φ hΦ g h`. Rewrite using `[hk]`. Use `set a : (Fin n → E) → ℂ := fun ξ => ∫ u in 𝓕, thetaSum F (e₀ (M.co.rho B.ψ (Matrix.vecMulVec (incV F ξ) (incV F H'.y)) (om (1, u.1) (om (g, h) Φ)))) ∂μ with ha`. Establish `hsupp : Function.support (fun ξ => if ξ = 0 then 0 else a ξ) ⊆ {x | x ≠ 0 ∧ form σ X.J x x = 0}`. Introduce `ξ hξ`.
+
+Simplify using `only [Function.mem_support, ne_eq, ite_eq_left_iff, not_forall] at hξ`. Take `⟨h0, hne⟩` from `hξ`. Use `⟨h0, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hf`. Conclude with `hne (GlobalTheory.T.eigen_intertwiner_restriction_unitary hKP F E σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH' hM₁ e₀ he₀ χX χW om r s r' s' hP μ 𝓕 hμ h𝓕 h1 _ hΨ ξ hf)`.
+
+Rewrite using `[hs.tsum_eq_add_tsum_ite 0, ← tsum_subtype_eq_of_support_subset hsupp]`. Establish `hval : ∀ x : {x : Fin n → E | x ≠ 0 ∧ form σ X.J x x = 0}, (if (x : Fin n → E) = 0 then 0 else a x) = C * thetaSum F (e (M.co.rho B.ψ (shiftA H H' 1) (om (γ ⟨x.1, x.2⟩ * g, h) Φ)))`. Introduce `x`. Rewrite using `[if_neg x.2.1]`. Establish `e1 : ((γ ⟨x.1, x.2⟩ * g, h) : UA σ X.J × UA σ W.J) = (γ ⟨x.1, x.2⟩, 1) * (g, h)` using `by simp`.
+
+Rewrite using `[e1, map_mul, Module.End.mul_apply]`. Conclude with `hiso χX χW om r s r' s' hP μ 𝓕 hμ h𝓕 h1 _ hΨ x.1 x.2.1 x.2.2 _ (hγ ⟨x.1, x.2⟩).1 (hγ ⟨x.1, x.2⟩).2`. Rewrite using `[tsum_congr hval, tsum_mul_left]`. Establish `hz` using `zero χX χW om r s r' s' hP μ 𝓕 h1 _ hΨ`. Simplify using `only [ha, hz]`.
+
+Use `beta_reduce`. Rewrite using `[mul_add, ← mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem constantTerm_theta : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (W₁ : Spc F E d₁)
     (M : Model σ X W) (M₁ : Model σ X W₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ), H'.IsAdapted σ B W W₁ i₀ i₁ → M₁.IsGood B.ψ →
     ∀ e₀, IsEv B M M₁ 1 H'.ι (iso0 n H') e₀ → ∃ C₀ : ℂ, C₀ ≠ 0 ∧

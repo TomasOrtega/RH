@@ -30,6 +30,11 @@ namespace CompanionTheory.Exh
 variable (hZ : GlobalTheory.Published.SegmentRepresentation) (hI : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], GlobalTheory.BZSeg.LUnlinkedIrr k)
 
 include hZ hI in
+/- English proof (translation)
+Establish `hA` using `irreducibleAdmissibleGL`. Introduce `k _ _ _ _ _ 𝔪 h N x hd hx`. Take `⟨Γ, hΓ, hL⟩` from `GlobalTheory.T.langlands_factors_dual_reverse_ordered hA (GlobalTheory.T.langlands_segment_dual hA hZ) 𝔪 x hx`. Take `⟨hd', ⟨e⟩⟩` from `GlobalTheory.T.contragredient_product_irreducible hA x hd`. Take `⟨τ, hτ⟩` from `GlobalTheory.T.reverse_ordered_product_has_socle hA (GlobalTheory.T.segment_jacquet_all hA hZ) (hI k) (GlobalTheory.T.unlinked_commute_of_irreducible k hA (hI k)) Γ (fun a => dualCl (x a)) hd' hΓ hL`.
+
+Conclude with `GlobalTheory.T.cosocle_of_contragredient_socle hA (prodIrr x hd) (isSmooth_prodIrr x hd) (GlobalTheory.T.product_irreducible_finite_length hA x hd) τ (hτ.of_equiv (Representation.Equiv.refl _) e.symm)`.
+-/
 theorem standardCosocle_of : GlobalTheory.Published.StandardCosocleGL := by
   have hA := irreducibleAdmissibleGL
   intro k _ _ _ _ _ 𝔪 h N x hd hx
@@ -40,14 +45,23 @@ theorem standardCosocle_of : GlobalTheory.Published.StandardCosocleGL := by
     (hτ.of_equiv (Representation.Equiv.refl _) e.symm)
 
 include hI in
+/- English proof (translation)
+The claim follows from `CompanionTheory.PfEss.Zc2.cs_orderfree irreducibleAdmissibleGL (GlobalTheory.T.unlinked_commute_of_irreducible k irreducibleAdmissibleGL (hI k))`.
+-/
 theorem lOrderFree_of (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] : LOrderFree k :=
   CompanionTheory.PfEss.Zc2.cs_orderfree irreducibleAdmissibleGL (GlobalTheory.T.unlinked_commute_of_irreducible k irreducibleAdmissibleGL (hI k))
 
 include hI in
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.langlands_socle_of_order_free irreducibleAdmissibleGL (GlobalTheory.T.local_langlands_of_irreducible_admissible irreducibleAdmissibleGL) (lOrderFree_of hI k)`.
+-/
 theorem lSocleGL_of (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] : LSocleGL k :=
   GlobalTheory.T.langlands_socle_of_order_free irreducibleAdmissibleGL (GlobalTheory.T.local_langlands_of_irreducible_admissible irreducibleAdmissibleGL) (lOrderFree_of hI k)
 
 include hZ hI in
+/- English proof (translation)
+Establish `hA` using `irreducibleAdmissibleGL`. Use `exhaustion_of_steps fun k _ _ _ _ _ => ?_` and prove the remaining obligations. Take `⟨hM, hR, hS⟩` from `H k`. Establish `hC` using `cuspEmbP_of_refine k hR`. Conclude with `⟨hM, hR, hS, hC, suppP k, juxtP_of_fineUniq hA hM hR hS hC (GlobalTheory.T.segment_product_word_in_shuffle hA (GlobalTheory.T.segment_jacquet_all hA hZ)) (GlobalTheory.T.irreducible_sub_segment_product hA hZ), linkP, minP, peelGoodP (standardCosocle_of hZ hI) (lSocleGL_of hI k) h …`.
+-/
 theorem exhaustion_of_three (H : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], MidP k ∧ RefineP k ∧ SwapP k) : GlobalTheory.Published.LanglandsExhaustionGL := by
   have hA := irreducibleAdmissibleGL
   refine exhaustion_of_steps fun k _ _ _ _ _ => ?_
@@ -57,6 +71,9 @@ theorem exhaustion_of_three (H : ∀ (k : Type) [Field k] [ValuativeRel k] [Topo
     linkP, minP, peelGoodP (standardCosocle_of hZ hI) (lSocleGL_of hI k) hR⟩
 
 include hZ hI in
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.langlands_multisegments_of_exhaustion_gl irreducibleAdmissibleGL (lSocleGL_of hI) (fun _ _ _ _ _ => GlobalTheory.T.segment_jacquet_all irreducibleAdmissibleGL hZ) (lOrderFree_of hI) hE`.
+-/
 theorem multisegments_of (hE : GlobalTheory.Published.LanglandsExhaustionGL) : GlobalTheory.Published.LanglandsMultisegments :=
   GlobalTheory.T.langlands_multisegments_of_exhaustion_gl irreducibleAdmissibleGL (lSocleGL_of hI) (fun _ _ _ _ _ => GlobalTheory.T.segment_jacquet_all irreducibleAdmissibleGL hZ) (lOrderFree_of hI) hE
 

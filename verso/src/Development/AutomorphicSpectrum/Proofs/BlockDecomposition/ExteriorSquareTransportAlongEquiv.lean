@@ -4,6 +4,11 @@ open CategoryTheory AlgebraicGeometry TensorProduct Opposite MonoidalCategory Ca
 
 namespace GlobalTheory.CompanionTheory.HopfC
 
+/- English proof (translation)
+Establish `h₁ : (u : V →ₗ[R] V') ∘ₗ (u.symm : V' →ₗ[R] V) = LinearMap.id` using `LinearMap.ext fun x => by simp`. Establish `h₂ : (u.symm : V' →ₗ[R] V) ∘ₗ (u : V →ₗ[R] V') = LinearMap.id` using `LinearMap.ext fun x => by simp`. Set `A : ⋀[R]^2 V ≃ₗ[R] ⋀[R]^2 V'` to `LinearEquiv.ofLinear (exteriorPower.map 2 (u : V →ₗ[R] V')) (exteriorPower.map 2 (u.symm : V' →ₗ[R] V)) (by rw [← exteriorPower.map_comp, h₁, exteriorPower.map_id]) (by rw [← exteriorPower.map_comp, h₂, exteriorPower.map_id])`. Use `⟨A.trans (e.trans v.symm), fun a b => ?_⟩` and prove the remaining obligations. Establish `hu : (⇑(u : V →ₗ[R] V') ∘ ![a, b]) = ![u a, u b]`.
+
+Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`. Rewrite using `[LinearEquiv.trans_apply, LinearEquiv.trans_apply, LinearEquiv.ofLinear_apply, exteriorPower.map_apply_ιMulti, hu, he, ← h, LinearEquiv.symm_apply_apply]`.
+-/
 theorem wedge_transport {R : Type} [CommRing R] {V V' W W' : Type} [AddCommGroup V] [Module R V] [AddCommGroup V'] [Module R V'] [AddCommGroup W] [Module R W] [AddCommGroup W'] [Module R W'] (u : V ≃ₗ[R] V') (v : W ≃ₗ[R] W') (c : V →ₗ[R] V →ₗ[R] W) (c' : V' →ₗ[R] V' →ₗ[R] W') (h : ∀ a b, v (c a b) = c' (u a) (u b)) (e : ⋀[R]^2 V' ≃ₗ[R] W') (he : ∀ a b, e (exteriorPower.ιMulti R 2 ![a, b]) = c' a b) : ∃ e' : ⋀[R]^2 V ≃ₗ[R] W, ∀ a b, e' (exteriorPower.ιMulti R 2 ![a, b]) = c a b := by
   have h₁ : (u : V →ₗ[R] V') ∘ₗ (u.symm : V' →ₗ[R] V) = LinearMap.id :=
     LinearMap.ext fun x => by simp

@@ -31,6 +31,33 @@ namespace GlobalTheory.Mem.R3.Rw.FwBase
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `B B' f f' T T' w w' hPre Z hX Wt z Z' hX' Wt' core' alg' halg hcore hlaws Xg tr R' hR hmu ι hι i σ hg`. Take `⟨P'⟩` from `B'`. Simplify using `only at hPre`. Substitute `hPre` using the available equality. Take `⟨hH, hl, hc, -, -, -, -, -, -, -, -, -, hx, -⟩` from `hcore`.
+
+Establish `hs` using `((hR.2.2.2.2.2.2.2.2.2.2.2.2.1 i i rfl).2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2 ι hι).1 σ`. Take `⟨⟨h1, h2, h3, h4, h5, h6, h7, -⟩, -⟩` from `hs`. Use `clear hR hmu hlaws`. Take `⟨⟨⟨H', l', c', Dw', Xo', eO'⟩, U', V', dict', mu', Kf', pb'⟩, cE', chiW', x0', iota'⟩` from `core'`. Simplify using `only at hH hl hc hx halg h1 h2 h3 h4 h5 h6 h7 hg ⊢`.
+
+Use the proof step `( (`. Establish `e : @Eq (type_of% (H')) ((by with_unfolding_all exact ((z.core.Q.H) :))) (H')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (H')) (H') (((z.core.Q.H))) (((hH)))).symm : _))`. Use `clear (hH)`. Substitute `e))` using the available equality. Use the proof step `( (`.
+
+Establish `e : @Eq (type_of% (l')) ((by with_unfolding_all exact ((z.core.Q.l) :))) (l')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (l')) (l') (((z.core.Q.l))) (((hl)))).symm : _))`. Use `clear (hl)`. Substitute `e))` using the available equality. Use the proof step `( (`. Establish `e : @Eq (type_of% (c')) ((by with_unfolding_all exact ((z.core.Q.c) :))) (c')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (c')) (c') (((z.core.Q.c))) (((hc)))).symm : _))`.
+
+Use `clear (hc)`. Substitute `e))` using the available equality. Use the proof step `( (`. Establish `e : @Eq (type_of% (x0')) ((by with_unfolding_all exact ((z.core.x₀) :))) (x0')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (x0')) (x0') (((z.core.x₀))) (((hx)))).symm : _))`. Use `clear (hx)`.
+
+Substitute `e))` using the available equality. Use `letI := z.alg`. Establish `hia : ∀ y : z.core.Q.c.F, ι (algebraMap z.core.Q.c.F (w.st Z).toD7.what₂.LL y) = @algebraMap _ _ _ _ alg' y` using `fun y => (w'.st Z').toD7.what₂.embLL.injective ((hι _).trans ((z.alg_eq y).trans (halg y).symm))`. Establish `hca : σ.comp (@algebraMap _ _ _ _ alg') = (σ.comp ι).comp (algebraMap z.core.Q.c.F (w.st Z).toD7.what₂.LL)` using `RingHom.ext fun y => by simp only [RingHom.comp_apply, hia]`. Rewrite `hg`, the goal using `[hca]`.
+
+Establish `h0` using `z.geo.fw.x0 i (σ.comp ι) hg`. Generalize the expression as in `R'.MW i σ = M' at h1 h2 h3 h4 h5 h6 h7 ⊢`. Take `@⟨H, nacg, ips, sg, lam, ep, fr, enum, ds, fu, fg⟩` from `M'`. Simplify using `only at h1 h2 h3 h4 h5 h6 h7`. Use the proof step `( (`.
+
+Establish `e : @Eq (type_of% (H)) ((by with_unfolding_all exact (((z.R.MW i (σ.comp ι)).H) :))) (H)` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (H)) (H) ((((z.R.MW i (σ.comp ι)).H))) (((h1)))).symm : _))`. Use `clear (h1)`. Substitute `e))` using the available equality. Use the proof step `( (`. Establish `e : @Eq (type_of% (nacg)) ((by with_unfolding_all exact (((z.R.MW i (σ.comp ι)).nacg) :))) (nacg)` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (nacg)) (nacg) ((((z.R.MW i (σ.comp ι)).nacg))) (((h2)))).symm : _))`.
+
+Use `clear (h2)`. Substitute `e))` using the available equality. Use the proof step `( (`. Establish `e : @Eq (type_of% (ips)) ((by with_unfolding_all exact (((z.R.MW i (σ.comp ι)).ips) :))) (ips)` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (ips)) (ips) ((((z.R.MW i (σ.comp ι)).ips))) (((h3)))).symm : _))`. Use `clear (h3)`.
+
+Substitute `e))` using the available equality. Use the proof step `( (`. Establish `e : @Eq (type_of% (sg)) ((by with_unfolding_all exact (((z.R.MW i (σ.comp ι)).σ) :))) (sg)` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (sg)) (sg) ((((z.R.MW i (σ.comp ι)).σ))) (((h4)))).symm : _))`. Use `clear (h4)`. Substitute `e))` using the available equality.
+
+Use the proof step `( (`. Establish `e : @Eq (type_of% (lam)) ((by with_unfolding_all exact (((z.R.MW i (σ.comp ι)).lam) :))) (lam)` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (lam)) (lam) ((((z.R.MW i (σ.comp ι)).lam))) (((h5)))).symm : _))`. Use `clear (h5)`. Substitute `e))` using the available equality. Use the proof step `( (`.
+
+Establish `e : @Eq (type_of% (ep)) ((by with_unfolding_all exact (((z.R.MW i (σ.comp ι)).ε) :))) (ep)` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (ep)) (ep) ((((z.R.MW i (σ.comp ι)).ε))) (((h6)))).symm : _))`. Use `clear (h6)`. Substitute `e))` using the available equality. Use the proof step `( (`. Establish `e : @Eq (type_of% (fr)) ((by with_unfolding_all exact (((z.R.MW i (σ.comp ι)).fr) :))) (fr)` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (fr)) (fr) ((((z.R.MW i (σ.comp ι)).fr))) (((h7)))).symm : _))`.
+
+Use `clear (h7)`. Substitute `e))` using the available equality. Conclude with `(h0)`.
+-/
 theorem coreBaseFrames_eq_modelFrames_enlargedCoefficientBase : ∀ (B B' : Base) (f : Fr B.toPre) (f' : Fr B'.toPre) (T : TwDat B) (T' : TwDat B') (w : ColW B f T) (w' : ColW B' f' T'),
     B'.toPre = B.toPre → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl) (z : Dat (w.st Z) w.I hX T Wt) (Z' : w'.Lt) (hX' : B'.fields.Ok)
     (Wt' : Set B'.places.Pl) (core' : Formalism.L2.Pj.CoreJ (w'.st Z').toD7) (alg' : Algebra core'.Q.c.F (w'.st Z').toD7.what₂.LL),

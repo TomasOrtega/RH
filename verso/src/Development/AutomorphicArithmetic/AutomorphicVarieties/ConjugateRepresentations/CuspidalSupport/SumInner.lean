@@ -6,6 +6,11 @@ open UpperTheory.V.Af.Fin (emb e1 e2 blk Bdd)
 open GlobalTheory.PRep (fixed)
 open scoped TensorProduct
 
+/- English proof (translation)
+Set `e : (P → R) ≃ ((A → R) × (B → R)) × (C → R)` to `((Equiv.ofBijective _ h).symm.arrowCongr (Equiv.refl R)).trans ((Equiv.sumArrowEquivProdArrow _ _ _).trans ((Equiv.sumArrowEquivProdArrow _ _ _).prodCongr (Equiv.refl _)))`. Establish `h1 : ∑ c : P → R, g (c ∘ f) (c ∘ f') = ∑ x : ((A → R) × (B → R)) × (C → R), g x.1.1 x.1.2` using `Fintype.sum_equiv e _ _ (fun c => rfl)`. Rewrite using `[h1, Fintype.sum_prod_type]`. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fun, nsmul_eq_mul]`. Rewrite using `[← Finset.mul_sum, Fintype.sum_prod_type]`.
+
+Use `push_cast`. Both sides reduce to the same expression.
+-/
 private theorem sum_three {A B C P R : Type} [Fintype A] [Fintype B] [Fintype C] [Fintype P] [Fintype R]
     [DecidableEq A] [DecidableEq B] [DecidableEq C] [DecidableEq P]
     (f : A → P) (f' : B → P) (f'' : C → P) (h : Function.Bijective (Sum.elim (Sum.elim f f') f''))
@@ -29,6 +34,17 @@ private def pair3 {r s : ℕ} (S : Finset (Fin (r + s))) (p : sub1 S × ((sub2 S
     simp only [Fin.lt_def, Fin.val_castAdd, Fin.val_natAdd]
     omega⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `rintro ((⟨⟨a, b⟩, h⟩ | ⟨⟨a, b⟩, h⟩) | ⟨⟨a, h⟩, ⟨b, h'⟩⟩) ((⟨⟨c, d⟩, k⟩ | ⟨⟨c, d⟩, k⟩) | ⟨⟨c, k⟩, ⟨d, k'⟩⟩) H <;>`. Apply the tactic sequence `simp only [Sum.elim_inl, Sum.elim_inr, pair1, pair2, pair3, Subtype.mk.injEq, Prod.mk.injEq, Fin.ext_iff, Fin.val_castAdd, Fin.val_natAdd, Sum.inl.injEq, Sum.inr.injEq, reduceCtorEq] at H ⊢ <;>`. Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨⟨a, b⟩, h1, h2, h3⟩`.
+
+Proceed by induction on `a using Fin.addCases with`. Consider the case `left a`. Proceed by induction on `b using Fin.addCases with`. Consider the case `left b`. Conclude with `⟨.inl (.inl ⟨(a, b), by simpa [sub1] using h1, by simpa [sub1] using h2, h3⟩), rfl⟩`.
+
+Consider the case `right b`. Conclude with `⟨.inr (⟨a, by simpa [sub1] using h1⟩, ⟨b, by simpa [sub2] using h2⟩), rfl⟩`. Consider the case `right a`. Proceed by induction on `b using Fin.addCases with`. Consider the case `left b`.
+
+It suffices to derive a contradiction. Simplify using `only [Fin.lt_def, Fin.val_castAdd, Fin.val_natAdd] at h3`. Use linear arithmetic over natural numbers and integers. Consider the case `right b`. Use `⟨.inl (.inr ⟨(a, b), by simpa [sub2] using h1, by simpa [sub2] using h2, ?_⟩), rfl⟩` and prove the remaining obligations.
+
+Simplify using `only [Fin.lt_def, Fin.val_natAdd] at h3 ⊢`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem bij3 {r s : ℕ} (S : Finset (Fin (r + s))) :
     Function.Bijective (Sum.elim (Sum.elim (pair1 S) (pair2 S)) (pair3 S)) := by
   constructor
@@ -55,6 +71,9 @@ private theorem bij3 {r s : ℕ} (S : Finset (Fin (r + s))) :
         simp only [Fin.lt_def, Fin.val_natAdd] at h3 ⊢
         omega
 
+/- English proof (translation)
+Introduce `r s R _ S g`. Rewrite using `[sum_three (pair1 S) (pair2 S) (pair3 S) (bij3 S) g]`. Simplify using `only [Fintype.card_prod, Fintype.card_coe, Finset.card_compl, Fintype.card_fin]`.
+-/
 theorem UpperTheory.V.Cj.S.sumInner :
     UpperTheory.V.Cj.S.SumInner := by
   intro r s R _ S g

@@ -9,6 +9,15 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `haveI : Algebra.FinitePresentation K A := Algebra.FinitePresentation.of_finiteType.mp ‹_›`. Set `P` to `Algebra.Presentation.ofFinitePresentation K A`. Use `⟨P.finite_coeffs.toFinset, fun k _ β hs => ?_⟩` and prove the remaining obligations. Use `letI : Algebra k K := β.toAlgebra`. Use `letI : Algebra k A := ((algebraMap K A).comp β).toAlgebra`.
+
+Use `haveI : IsScalarTower k K A := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI : P.HasCoeffs k := ⟨fun x hx => hs (by simpa using hx)⟩`. Set `e` to `P.tensorModelOfHasCoeffsEquiv k`. Establish `h` using `(CommRingCat.isPushout_tensorProduct k K (P.ModelOfHasCoeffs k)).flip`. Use `⟨CommRingCat.of (P.ModelOfHasCoeffs k), CommRingCat.ofHom (algebraMap k _), CommRingCat.ofHom (Algebra.TensorProduct.includeRight.toRingHom) ≫ e.toRingEquiv.toCommRingCatIso.hom, ?_⟩` and prove the remaining obligations.
+
+Use `h.of_iso (Iso.refl _) (Iso.refl _) (Iso.refl _) e.toRingEquiv.toCommRingCatIso ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use extensionality with `x`.
+
+Conclude with `e.commutes x`.
+-/
 theorem exists_finset_isPushout_model (K A : Type) [Field K] [CommRing A] [Algebra K A]
     [Algebra.FiniteType K A] :
     ∃ s : Finset K, ∀ (k : Type) [Field k] (β : k →+* K), (s : Set K) ⊆ Set.range β →
@@ -34,6 +43,15 @@ theorem exists_finset_isPushout_model (K A : Type) [Field K] [CommRing A] [Algeb
   · ext x
     exact e.commutes x
 
+/- English proof (translation)
+Introduce `K _ X hX hft`. Take `⟨ψ, hψ⟩` from `Spec.map_surjective (R := CommRingCat.of K) (S := Γ(X.left, ⊤)) (X.left.isoSpec.inv ≫ X.hom)`. Establish `h1 : LocallyOfFiniteType (Spec.map ψ)` using `by rw [hψ]; infer_instance`. Rewrite `h1` using `[HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)]`. Use `letI : Algebra K Γ(X.left, ⊤) := ψ.hom.toAlgebra`.
+
+Use `haveI : Algebra.FiniteType K Γ(X.left, ⊤) := h1`. Take `⟨s, hs⟩` from `exists_finset_isPushout_model K Γ(X.left, ⊤)`. Use `⟨s, fun k _ β hβ => ?_⟩` and prove the remaining obligations. Take `⟨A₀, f, g, h⟩` from `hs k β hβ`. Establish `h2 : IsPullback (Spec.map g) (Spec.map ψ) (Spec.map f) (spMap β)` using `isPullback_SpecMap_of_isPushout _ _ _ _ h`.
+
+Use `⟨Over.mk (Spec.map f), X.left.isoSpec.hom ≫ Spec.map g, ?_⟩` and prove the remaining obligations. Use `h2.of_iso X.left.isoSpec.symm (Iso.refl _) (Iso.refl _) (Iso.refl _) ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `[hψ]`. Simplify using the standard rewrite rules.
+
+Simplify using the standard rewrite rules.
+-/
 theorem exists_finset_model_of_isAffine :
     ∀ (K : Type) [Field K] (X : Over (Sp K)), IsAffine X.left → LocallyOfFiniteType X.hom →
       ∃ s : Finset K, ∀ (k : Type) [Field k] (β : k →+* K), (s : Set K) ⊆ Set.range β →

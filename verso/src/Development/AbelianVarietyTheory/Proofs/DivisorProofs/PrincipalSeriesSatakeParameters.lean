@@ -22,12 +22,25 @@ def toFun {n : ℕ} (χ : Fin n → (w.adicCompletion E)ˣ →* ℂˣ) :
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Introduce `_ _ h` and use `Subtype.ext (Subtype.ext h)`.
+-/
 theorem toFun_injective {n : ℕ} (χ : Fin n → (w.adicCompletion E)ˣ →* ℂˣ) : Function.Injective (toFun w χ) :=
   fun _ _ h => Subtype.ext (Subtype.ext h)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toFun_intertwines {n : ℕ} (χ : Fin n → (w.adicCompletion E)ˣ →* ℂˣ) (g) (f) :
     toFun w χ (prinSeries χ g f) = rightReg ℂ _ ℂ g (toFun w χ f) := rfl
 
+/- English proof (translation)
+Establish `hK : KO (w.adicCompletion E) (Fin n) = KGL w n` using `SphCompletion.KO_completion w n`. Prove the components needed by the constructor for the conclusion. Take `⟨φ, h, h1, -⟩` from `Formalism.UG.Final.SphericalExists E w n (fun i => (α i : ℂ)) fun i => (α i).ne_zero`. Take `⟨f, hf, rfl⟩` from `(SphCompletion.isSpherical_iff E w n α _).1 h`. Use `(Submodule.ne_bot_iff _).2 ⟨f, hK ▸ hf, fun h0 => ?_⟩` and prove the remaining obligations.
+
+Substitute `h0` using the available equality. Simplify using `at h1`. Introduce `x hx h0`. Establish `hx' : x ∈ fixed (prinSeries fun i => unrChar (w.adicCompletion E) (α i)) (KO (w.adicCompletion E) (Fin n))` using `hK ▸ hx`. Establish `hs` using `(SphCompletion.isSpherical_iff E w n α x.1.1).2 ⟨x, hx', rfl⟩`.
+
+Conclude with `IsSatVecGL.of_map (toFun w _) (toFun_intertwines w _) (toFun_injective w _) (isSatVecGL_of_isSpherical hs fun h => h0 (toFun_injective w _ (h.trans (map_zero _).symm)))`.
+-/
 theorem hasSatGL_prinSeries {n : ℕ} (α : Fin n → ℂˣ) :
     HasSatGL w (prinSeries fun i => unrChar (w.adicCompletion E) (α i)) (Finset.univ.val.map α) := by
   have hK : KO (w.adicCompletion E) (Fin n) = KGL w n := SphCompletion.KO_completion w n
@@ -52,9 +65,17 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+The claim follows from `mem_parab_iff.2 fun a b _ _ hab => absurd hab (by rw [Subsingleton.elim a b]; exact lt_irrefl _)`.
+-/
 theorem mem_parab_one (g : GL (Fin 1) k) : g ∈ parab k (points (Fin 1)) :=
   mem_parab_iff.2 fun a b _ _ hab => absurd hab (by rw [Subsingleton.elim a b]; exact lt_irrefl _)
 
+/- English proof (translation)
+Rewrite using `[PrinProd.cB_eq, Fin.prod_univ_one, Fin.prod_univ_one]`. Establish `h : PrinProd.dg p 0 = Matrix.GeneralLinearGroup.det (p : GL (Fin 1) k)`. Use `ext`. Rewrite using `[PrinProd.val_dg, Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_unique]`. Both sides reduce to the same expression.
+
+Rewrite using `[h]`. Simplify using the standard rewrite rules.
+-/
 theorem cB_one (μ : kˣ →* ℂˣ) (p : parab k (points (Fin 1))) :
     PrinProd.cB (fun _ : Fin 1 => μ) p = μ (Matrix.GeneralLinearGroup.det (p : GL (Fin 1) k)) := by
   rw [PrinProd.cB_eq, Fin.prod_univ_one, Fin.prod_univ_one]
@@ -101,6 +122,13 @@ namespace GlobalTheory.PrinSat
 
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LFun GlobalTheory.SplitWeil
 
+/- English proof (translation)
+Set `f : V →ₗ[ℂ] W` to `e.toLinearEquiv.toLinearMap`. Establish `hi : ∀ g y, f (ρ g y) = σ g (f y)` using `fun g y => e.toIntertwiningMap.isIntertwining _ _ g y`. Establish `inj : Function.Injective f` using `e.toLinearEquiv.injective`. Prove the components needed by the constructor for the conclusion. Take `⟨y, hy⟩` from `h.exists_vec`.
+
+Establish `hfy : f (e.toLinearEquiv.symm y) = y` using `e.toLinearEquiv.apply_symm_apply y`. Establish `hs : IsSatVecGL w ρ (e.toLinearEquiv.symm y) B` using `IsSatVecGL.of_map f hi inj (by rw [hfy]; exact hy)`. Conclude with `(Submodule.ne_bot_iff _).2 ⟨_, hs.2.1, hs.1⟩`. Introduce `x hx h0`. Establish `hfx : f x ∈ fixed σ (KGL w n)` using `GlobalTheory.LGrp.mem_fixed.2 fun g hg => by rw [← hi, GlobalTheory.LGrp.mem_fixed.1 hx g hg]`.
+
+Conclude with `IsSatVecGL.of_map f hi inj (h.2 _ hfx fun h1 => h0 (inj (h1.trans (map_zero f).symm)))`.
+-/
 theorem hasSatGL_of_equiv {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {n : ℕ}
     {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {ρ : Representation ℂ (GL (Fin n) (w.adicCompletion E)) V}
@@ -121,6 +149,11 @@ theorem hasSatGL_of_equiv {E : Type} [Field E] [NumberField E] {w : HeightOneSpe
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Set `o : kˣ →* Multiplicative ℤ` to `MonoidHom.mk' (fun x => .ofAdd (ord k x)) fun x y => by`. Rewrite using `[ord_mul, ofAdd_add]`. Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations. Establish `h1 : o (x / ϖ ^ ord k x) = 1`. Rewrite using `[map_div, map_zpow, show o ϖ = .ofAdd 1 from congrArg Multiplicative.ofAdd hϖ, ← ofAdd_zsmul, smul_eq_mul, mul_one]`.
+
+Conclude with `div_self' _`. Establish `h2` using `h _ (ord_eq_zero_iff.1 (ofAdd_eq_one.1 h1))`. Rewrite `h2` using `[map_div, map_zpow, div_eq_one]`. Conclude with `h2`.
+-/
 theorem eq_unrChar_of_ord {χ : kˣ →* ℂˣ} (h : IsUnram χ) {ϖ : kˣ} (hϖ : ord k ϖ = 1) :
     χ = unrChar k (χ ϖ) := by
   let o : kˣ →* Multiplicative ℤ := MonoidHom.mk' (fun x => .ofAdd (ord k x)) fun x y => by
@@ -134,18 +167,31 @@ theorem eq_unrChar_of_ord {χ : kˣ →* ℂˣ} (h : IsUnram χ) {ϖ : kˣ} (hϖ
   rw [map_div, map_zpow, div_eq_one] at h2
   exact h2
 
+/- English proof (translation)
+Establish `h : Valued.v ((Formalism.L2.Host.atFin w (Formalism.L2.Host.unif w) : (w.adicCompletion E)ˣ) : w.adicCompletion E) = WithZero.exp (-1 : ℤ)` using `Formalism.L2.Host.unif_spec w`. Rewrite using `[SphCompletion.ord_completion, h, WithZero.log_exp, neg_neg]`.
+-/
 theorem ord_unif {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) :
     ord (w.adicCompletion E) (Formalism.L2.Host.atFin w (Formalism.L2.Host.unif w)) = 1 := by
   have h : Valued.v ((Formalism.L2.Host.atFin w (Formalism.L2.Host.unif w) : (w.adicCompletion E)ˣ) : w.adicCompletion E) =
       WithZero.exp (-1 : ℤ) := Formalism.L2.Host.unif_spec w
   rw [SphCompletion.ord_completion, h, WithZero.log_exp, neg_neg]
 
+/- English proof (translation)
+Simplify using `[Fin.univ_val_map, List.ofFn_succ]`. Both sides reduce to the same expression.
+-/
 theorem univ_map_two (a b : ℂˣ) : (Finset.univ.val.map ![a, b] : Multiset ℂˣ) = {a, b} := by
   simp [Fin.univ_val_map, List.ofFn_succ]
   rfl
 
 end GlobalTheory.PrinSat
 
+/- English proof (translation)
+Introduce `E _ _ w μ₁ μ₂ h1 h2`. Establish `e1` using `GlobalTheory.PrinSat.eq_unrChar_of_ord h1 (GlobalTheory.PrinSat.ord_unif w)`. Establish `e2` using `GlobalTheory.PrinSat.eq_unrChar_of_ord h2 (GlobalTheory.PrinSat.ord_unif w)`. Take `⟨E1⟩` from `GlobalTheory.SmGL.PrinProd.stage_one (fun _ : Fin 1 => μ₁) (fun _ : Fin 1 => μ₂)`. Take `⟨E2⟩` from `GlobalTheory.SmGL.PrinProd.stage_two (fun _ : Fin 1 => μ₁) (fun _ : Fin 1 => μ₂)`.
+
+Set `T` to `(GlobalTheory.LocGL.prod₂Equiv (GlobalTheory.PrinSat.oneEquiv μ₁ (GlobalTheory.SmGL.isSmoothChar_of_isUnram h1)) (GlobalTheory.PrinSat.oneEquiv μ₂ (GlobalTheory.SmGL.isSmoothChar_of_isUnram h2))).trans (E1.trans E2)`. Establish `hA : Fin.append (fun _ : Fin 1 => μ₁) (fun _ : Fin 1 => μ₂) = fun i => GlobalTheory.SmGL.unrChar (w.adicCompletion E) (![μ₁ (Formalism.L2.Host.atFin w (Formalism.L2.Host.unif w)), μ₂ (Formalism.L2.Host.atFin w (Formalism.L2.Host.unif w))] i)`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Conclude with `e1`.
+
+Conclude with `e2`. Establish `key` using `GlobalTheory.PrinSat.hasSatGL_prinSeries w ![μ₁ (Formalism.L2.Host.atFin w (Formalism.L2.Host.unif w)), μ₂ (Formalism.L2.Host.atFin w (Formalism.L2.Host.unif w))]`. Rewrite `key` using `[GlobalTheory.PrinSat.univ_map_two, ← hA]`. Conclude with `GlobalTheory.PrinSat.hasSatGL_of_equiv T key`.
+-/
 theorem GlobalTheory.PrinSat.hasSatGL_prod₂_detRep : ∀ (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E))
     (μ₁ μ₂ : (w.adicCompletion E)ˣ →* ℂˣ), GlobalTheory.SplitWeil.IsUnram μ₁ → GlobalTheory.SplitWeil.IsUnram μ₂ →
     GlobalTheory.LFun.HasSatGL w (GlobalTheory.SmGL.prod₂ (GlobalTheory.SmGL.detRep (Fin 1) μ₁) (GlobalTheory.SmGL.detRep (Fin 1) μ₂))

@@ -7,6 +7,17 @@ open scoped nonZeroDivisors
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Take `⟨C0, hC0⟩` from `h`. Take `⟨C, hC⟩` from `Finite.exists_max (fun C => ‖((x C : ℚ) : ℚ_[l])‖)`. Establish `h0 : 1 < ‖((x C0 : ℚ) : ℚ_[l])‖`.
+
+Unfold `InZl at hC0`. Use `push_neg at hC0`. Conclude with `hC0`. Establish `h1 : 1 < ‖((x C : ℚ) : ℚ_[l])‖` using `lt_of_lt_of_le h0 (hC C0)`. Establish `hqn : ‖((q : ℚ) : ℚ_[l])‖ < 1`.
+
+Rewrite using `[Rat.cast_natCast]`. Conclude with `Padic.norm_natCast_lt_one_iff.2 hq`. Establish `hy : ‖(((x C - (q : ℚ) * x (C * g) : ℚ)) : ℚ_[l])‖ ≤ 1` using `hx C`. Establish `hsplit : ((x C : ℚ) : ℚ_[l]) = (((x C - (q : ℚ) * x (C * g) : ℚ)) : ℚ_[l]) + ((q : ℚ) : ℚ_[l]) * ((x (C * g) : ℚ) : ℚ_[l])` using `by push_cast; ring`. Establish `hprod : ‖((q : ℚ) : ℚ_[l]) * ((x (C * g) : ℚ) : ℚ_[l])‖ < ‖((x C : ℚ) : ℚ_[l])‖`.
+
+Rewrite using `[norm_mul]`. Establish `hle : ‖((x (C * g) : ℚ) : ℚ_[l])‖ ≤ ‖((x C : ℚ) : ℚ_[l])‖` using `hC (C * g)`. Combine the equalities or inequalities in the displayed calculation. Establish `hna` using `Padic.nonarchimedean (p := l) (((x C - (q : ℚ) * x (C * g) : ℚ)) : ℚ_[l]) (((q : ℚ) : ℚ_[l]) * ((x (C * g) : ℚ) : ℚ_[l]))`. Rewrite `hna` using `[← hsplit]`.
+
+Break down `le_max_iff.1 hna with h2 | h2` into its components or cases. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem inZl_of_twisted_difference {G : Type} [CommGroup G] [Finite G] (l : ℕ) [Fact l.Prime]
     (g : G) (q : ℕ) (hq : l ∣ q) (x : G → ℚ)
     (hx : ∀ C, InZl l (x C - (q : ℚ) * x (C * g))) : ∀ C, InZl l (x C) := by
@@ -40,6 +51,9 @@ theorem inZl_of_twisted_difference {G : Type} [CommGroup G] [Finite G] (l : ℕ)
   · linarith
   · linarith
 
+/- English proof (translation)
+The claim follows from `@inZl_of_twisted_difference`.
+-/
 example : ∀ {G : Type} [CommGroup G] [Finite G] (l : ℕ) [Fact l.Prime] (g : G) (q : ℕ), l ∣ q →
     ∀ x : G → ℚ, (∀ C, InZl l (x C - (q : ℚ) * x (C * g))) → ∀ C, InZl l (x C) :=
   @inZl_of_twisted_difference

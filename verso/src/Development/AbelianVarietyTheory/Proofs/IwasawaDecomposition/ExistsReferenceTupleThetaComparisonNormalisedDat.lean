@@ -40,6 +40,13 @@ open GlobalTheory.Member
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hσ : d.c₂.F.val.toRingHom = (inC c).comp (d.eF.symm : d.c₂.F →+* c.F)` using `RingHom.ext fun _ => rfl`. Establish `hg₂ : GoodEmb d.c₂ ((inC c).comp (d.eF.symm : d.c₂.F →+* c.F))`. Rewrite using `[← hσ]`. Both sides reduce to the same expression. Take `⟨C, hC, hCι, hCx⟩` from `(exists_ctx D H Dw d.l₂ d.Xo₂ d.c₂ _ V r hr ι hio hpos hA hg₂).2.2 x₀ hx₀`.
+
+Take `⟨Kf, hKf⟩` from `(PrincLevel.exists_levelK_and_nhds D V d.l₂.M).1`. Take `⟨un, dict, mu, -, -, hP⟩` from `exists_pkgLaws D _ _ _ _ _ _ _ _ C hC Kf hKf 1 ⟨continuous_const, fun _ => rfl⟩ (fun _ => rfl)`. Take `⟨g, e, F, ik, φ, th, hth, hdu, hdl⟩` from `hP.dictLaws`. Use `⟨C.unf un, dict, hP.unf, hP.modelW, g, e, F, ik, φ, th, hth, ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[← hCι, ← hCx]`.
+
+Conclude with `hdl`. Rewrite using `[hδ]`. Use `(dif_pos (hdu.2.2.2.1 h)).trans ?_` and prove the remaining obligations. Establish `: _root_.IsReduced (CAt ((inC c).comp (d.eF.symm : d.c₂.F →+* c.F)))` using `inferInstanceAs (_root_.IsReduced ℂ)`. Conclude with `evalAt_one (S := CAt ((inC c).comp (d.eF.symm : d.c₂.F →+* c.F))) _ _ _ (GlobalTheory.Frames.allTest_of_secBaseChange GlobalTheory.firstFiveLaws.1.secBaseChange _ H Dw d.l₂ d.Xo₂ d.c₂ (CAt ((inC c).comp (d.eF.symm : d.c₂.F →+* c.F))) _)`.
+-/
 theorem exists_unf_one {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
     {n r : ℕ} (d : DeltaDat Xo c n) (V : HSp D) (hr : V.rank = r) (ι : Dw.La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E))
     (x₀ : (D.host.E →+* ℂ) → Matrix (Fin r) (Fin r) ℂ) (hio : IotaOK Dw V ι) (hpos : 1 ≤ Dw.p + Dw.q)
@@ -83,11 +90,25 @@ section Data
 
 variable {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)
 
+/- English proof (translation)
+Use `Finset.eq_empty_of_forall_notMem fun PP h => (hL.Q_ram A.μ0 PP).2 (Or.inl h) ?_` and prove the remaining obligations. Rewrite using `[hL.xi_base]`. Conclude with `fun _ _ => rfl`.
+-/
 theorem places_ref (hL : R.toLevCh.Is A.μ0) : R.Q A.μ0 = ∅ := by
   refine Finset.eq_empty_of_forall_notMem fun PP h => (hL.Q_ram A.μ0 PP).2 (Or.inl h) ?_
   rw [hL.xi_base]
   exact fun _ _ => rfl
 
+/- English proof (translation)
+Establish `key : ∀ v : HeightOneSpectrum (𝓞 D.host.E), ((bad : ℕ) : 𝓞 D.host.E) ∉ v.asIdeal → (((R.C.mu0 i * R.xiH A.μ0 * R.C.eta⁻¹).val v : ℂˣ) : ℂ) * ((Real.sqrt (Ideal.absNorm v.asIdeal : ℝ) : ℝ) : ℂ) ∈ M`. Introduce `v hb`. Establish `u1 : (R.C.mu0 i).UnrAt v` using `(R.C.isMu0 i).unr v fun k hk => hb (by`. Establish `hk' : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ v.asIdeal` using `hk`. Establish `hd : D.host.g k ∣ bad`.
+
+Use `dvd_trans ?_ hg` and prove the remaining obligations. Use `fin_cases k`. Conclude with `dvd_mul_right _ _`. Conclude with `dvd_mul_left _ _`. Take `⟨c, rfl⟩` from `hd`.
+
+Rewrite using `[Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ hk')`. Take `⟨y1, hy1⟩` from `hv.mu0 i v u1`. Take `⟨y3, hy3⟩` from `hv.eta v (R.C.isEta.unr v)`. Establish `h2 : (R.xiH A.μ0).valTw 0 v = 1`.
+
+Rewrite using `[hL.xi_base]`. Establish `e : (1 : Formalism.L2.Host.HChar D.host.E).val v = 1` using `rfl`. Simplify using `[Formalism.L2.Host.HChar.valTw, e]`. Rewrite using `[GlobalTheory.Mem.BVal.val_mul_sqrt, ← hy1, h2, ← hy3]`. Conclude with `mul_mem (mul_mem (hM _) (one_mem _)) (inv_mem (hM _))`.
+
+Use `⟨fun cc => if h : cc ≠ ⊥ ∧ cc ⊔ Ideal.span {((bad : ℕ) : 𝓞 D.host.E)} = ⊤ then ⟨_, GlobalTheory.Mem.BVal.mem_of_primes _ M _ key cc h.1 h.2⟩ else 0, fun cc h0 h1 => ?_⟩` and prove the remaining obligations. Simplify using `only [dif_pos (And.intro h0 h1)]`. Both sides reduce to the same expression.
+-/
 theorem exists_BIs (hL : R.toLevCh.Is A.μ0) (hv : Formalism.L2.Host.ValLL D R.C) (i : Fin D.R.m) (M : IntermediateField ℚ ℂ)
     (hM : ∀ y, D.what₂.embLL y ∈ M) (bad : ℕ) (hg : D.host.g 0 * D.host.g 1 ∣ bad) :
     ∃ B : Ideal (𝓞 D.host.E) → M, BIs R i M.val.toRingHom A.μ0 bad B := by
@@ -120,6 +141,13 @@ theorem exists_BIs (hL : R.toLevCh.Is A.μ0) (hv : Formalism.L2.Host.ValLL D R.C
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨M₀, -, h⟩` from `GlobalTheory.LevelDatum.exists_phi D G Pl0 T0 A Ks R hL hvP i hV t La ι hι`. Take `⟨φ, e, he, hφ⟩` from `h M₀ le_rfl hP J hJ`. Establish `hm : ∀ q, ((φ q : M₀) : ℂ) ∈ M` using `fun q => by`. Establish `h1` using `(hφ fun b => (q b).out).2`. Establish `h2 : (fun b => Submodule.Quotient.mk (q b).out) = q` using `funext fun b => Quotient.out_eq _`.
+
+Rewrite `h1` using `[h2]`. Rewrite using `[show ((φ q : M₀) : ℂ) = _ from h1, hQ]`. Use `mul_mem ?_ ?_` and prove the remaining obligations. Unfold `Formalism.IndefR.Datum.omegaK split_ifs exacts [one_mem _, zero_mem _]`. Unfold `Formalism.IndefR.Datum.omegaQ split_ifs`.
+
+Conclude with `prod_mem fun PP _ => absurd PP.2 (Finset.notMem_empty _)`. Conclude with `zero_mem _`. Conclude with `⟨fun q => ⟨_, hm q⟩, e, he, hφ⟩`.
+-/
 theorem exists_phi_of_empty (hL : R.toLevCh.Is A.μ0) (hvP : R.thP_vP) (i : Fin D.R.m) (hV : VStd D i) (t : T0) (hQ : R.Q t = ∅)
     {La : Type} [AddCommGroup La] [Module (𝓞 D.host.E) La] (ι : La →ₗ[𝓞 D.host.E] (Fin (Wc D i).rank → D.host.E))
     (hι : LatEmb (Wc D i) ι) (M : IntermediateField ℚ ℂ)
@@ -149,6 +177,15 @@ end Data
 
 variable (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F)
 
+/- English proof (translation)
+Establish `hβ` using `hL.βW i`. Establish `hle : ∀ PP ∈ R.Pg, T.Q.l.Mb ≤ PP.asIdeal`. Introduce `PP hP`. Take `⟨k, hk⟩` from `(hL.Pg PP).1 hP`. Rewrite using `[hT.half.2]`.
+
+Use `(Ideal.prod_le_inf.trans (Finset.inf_le (Finset.mem_univ k))).trans ?_` and prove the remaining obligations. Rewrite using `[hpb, ← show PP.under (𝓞 D.host.K) = R.C.P.pb k from hk]`. Conclude with `Ideal.map_comap_le`. Establish `hlift : Lev.LiftsExist (Wc D i) (R.βW i) (R.datWp i R.triv)`. Take `⟨c, hc⟩` from `hβ`.
+
+Use `GlobalTheory.T.parahoricLevel_liftsExist _ _ _ _ _ hc (fun PP h PP' h' => ?_) (Finset.disjoint_empty_right _)` and prove the remaining obligations. Break down `h' with h' | h'` into its components or cases. Conclude with `GlobalTheory.LevelAction.not_isConjPl T.Q.l (hle PP h) (hle PP' h')`. Conclude with `absurd h' (Finset.notMem_empty _)`. Establish `hM : 0 < T.Q.l.M` using `lt_of_lt_of_le (by norm_num) T.Q.l.three_le`.
+
+Use `choose k hk using fun g => hlift (R.eG g)`. Use `choose f hf using fun g => GlobalTheory.LevelAction.exists_endo (iotaW T i) (GlobalTheory.LevelAction.latEmb_iotaW T hT i) hM (GlobalTheory.LevelAction.finCong_of_mem_St hβ (parLev_St (hk g).2.1))`. Conclude with `⟨f, fun g => ⟨k g, hk g, fun a _ => hf g a⟩⟩`.
+-/
 theorem exists_levIs (hL : R.toLevCh.Is A.μ0) (hT : LawsJ T) (hpb : T.pb = R.C.P.pb) (i : Fin D.R.m) :
     ∃ lev, LevIs R i (iotaW T i) T.Q.l.M (Mfr T.Q.l) lev := by
   have hβ := hL.βW i
@@ -173,6 +210,11 @@ theorem exists_levIs (hL : R.toLevCh.Is A.μ0) (hT : LawsJ T) (hpb : T.pb = R.C.
 
 variable (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec)
 
+/- English proof (translation)
+Introduce `i PP hPP x`. Establish `e0 : res T D.what₂.embLL = T.σ₀` using `res_embLL T t.alg t.laws.pins.2.2.1`. Establish `hσ : GoodEmb T.Q.c (res T D.what₂.embLL)` using `e0 ▸ T.good_σ₀`. Use `GlobalTheory.ChiDetValues.res_mem _ _ _ (hL.mu0 i) (fun x hx => ?_) _ _ (hL.chi i _ hPP) _` and prove the remaining obligations. Take `⟨y, hy, -⟩` from `(t.chiR i D.what₂.embLL hσ).2.2.2.1 x hx`.
+
+Conclude with `⟨_, hy.symm⟩`.
+-/
 theorem chiVal_of_tie (hL : R.toLevCh.Is A.μ0) (t : TieIn T R κ v₀) : ChiVal R := by
   intro i PP hPP x
   have e0 : res T D.what₂.embLL = T.σ₀ := res_embLL T t.alg t.laws.pins.2.2.1
@@ -181,6 +223,9 @@ theorem chiVal_of_tie (hL : R.toLevCh.Is A.μ0) (t : TieIn T R κ v₀) : ChiVal
   obtain ⟨y, hy, -⟩ := (t.chiR i D.what₂.embLL hσ).2.2.2.1 x hx
   exact ⟨_, hy.symm⟩
 
+/- English proof (translation)
+Establish `hle : T.Q.c.F ≤ D.what₂.embLL.toRatAlgHom.fieldRange` using `fun x hx => ⟨algebraMap T.Q.c.F D.what₂.LL ⟨x, hx⟩, RingHom.congr_fun (res_embLL T ha hp) ⟨x, hx⟩⟩`. Conclude with `⟨⟨_, LinearEquiv.finiteDimensional (D.what₂.embLL.toRatAlgHom.equivFieldRange).toLinearEquiv, fun τ a => hle (T.Q.c.conj τ a), hle T.Q.c.zeta_mem, T.Q.c.le.trans hle⟩, rfl, hle⟩`.
+-/
 theorem exists_coeff_rows (ha : AlgTie T) (hp : T.Q.PinField) :
     ∃ c' : Coeff T.Q.l, c'.F = D.what₂.embLL.toRatAlgHom.fieldRange ∧ T.Q.c.F ≤ c'.F := by
   have hle : T.Q.c.F ≤ D.what₂.embLL.toRatAlgHom.fieldRange := fun x hx =>
@@ -190,6 +235,31 @@ theorem exists_coeff_rows (ha : AlgTie T) (hp : T.Q.PinField) :
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Establish `hT` using `ht.laws`. Establish `hL` using `hR.lev`. Establish `hQ` using `places_ref R hL`. Establish `hj : InR D ((i : ℕ) + 1)` using `inR i`. Establish `hodd : Odd ((T.Q.Dw ((i : ℕ) + 1)).p + (T.Q.Dw ((i : ℕ) + 1)).q)`.
+
+Take `⟨e1, e2, -⟩` from `hT.pins.2.2.2 _ (inR i)`. Establish `h5` using `Formalism.L2.NTheta.odd_r D.R`. Establish `h6` using `i.2`. Establish `h7` using `D.R.m_add_three_le_k`. Rewrite using `[e1, e2]`.
+
+Use `h5 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Ranks.sigW, Ranks.r]`. Use linear arithmetic over natural numbers and integers. Establish `hpos : 1 ≤ (T.Q.Dw ((i : ℕ) + 1)).p + (T.Q.Dw ((i : ℕ) + 1)).q` using `hodd.pos`. Take `⟨c', hF, hle⟩` from `exists_coeff_rows T ht.alg hT.pins.2.2.1`.
+
+Establish `hLL : ∀ y, D.what₂.embLL y ∈ c'.F` using `fun y => hF.ge ⟨y, rfl⟩`. Take `⟨d, -, hI, hl, -, -, hδ, hlv, hnab⟩` from `GlobalTheory.LevelCover.exists_deltaDat_isLev _ _ _ _ (T.Q.Xo ((i : ℕ) + 1)) c' hpos (Vc D i).rank 1 ⊤ T.Q.l (T.Q.Xo ((i : ℕ) + 1)) c' rfl ⟨dvd_rfl, le_rfl, dvd_rfl⟩ (Nat.mul_one _).symm (Nat.coprime_one_left _) (Ideal.mul_top _).symm (top_sup_eq _)`. Establish `hA : d.l₂.A = 1` using `(congrArg (·.A) hl).trans hT.pins.2.1.2`. Establish `hσ : GoodEmb T.Q.c (sOv T.toCore c' hle)` using `rfl`. Take `⟨hio', hx₀⟩` from `GlobalTheory.TupleCover.iotaOK_and_frame T hT _ hj _ hσ (Wc D i) (hT.spaceW _ hj _ hσ) (rank_Wc i)`.
+
+Take `⟨U₂, dict₂, hU, hmod, g, e, F, ik, φ', th, hth, hdl, hone⟩` from `exists_unf_one d (Wc D i) (rank_Wc i) (iotaW T i) _ hio' hpos hx₀ hA hδ`. Take `⟨xi, hxi, -, -, hx1⟩` from `GlobalTheory.TupleCover.exists_xi D (Wc D i) (R.xi A.μ0) (R.xiH A.μ0) (hL.xi _) 1 one_pos ((pow_one _).trans hL.xi_base) (hL.xi_triv _) (hL.xi_tame _)`. Establish `hhalf : HalfIs R A.μ0 T.Q.l.Mb d.I`. Take `⟨_, _, -, h⟩` from `GlobalTheory.CoverHalf.exists_half_of_laws T.toCore R hT.toLawsM hL hpb hG A.μ0`. Conclude with `⟨h.1, fun PP hPP => absurd (hQ ▸ hPP) (Finset.notMem_empty _), h.2.2⟩`.
+
+Set `jL : D.what₂.LL →+* c'.F` to `D.what₂.embLL.codRestrict c'.F hLL`. Establish `hjL : (inC c').comp jL = D.what₂.embLL` using `RingHom.ext fun _ => rfl`. Take `⟨gramR, c0R, c0L, htie⟩` from `hR.fam.tie`. Take `⟨c0', hc0⟩` from `GlobalTheory.Mem.PlaceVal.exists_ext_VV (W := (R.cV i).W) jL (inC c') hjL (lamV D i) (c0L i)`. Establish `hplace : ∀ (Cl : Type) [Fintype Cl] (h : Cl → GA D (Vc D i)), PlaceEx R i A.μ0 h c0'` using `fun Cl _ h => GlobalTheory.RationalValues.placeEx_of_type_mem R i jL (inC c') A.μ0 h c0' hR.models.jV htie hc0 (GlobalTheory.RationalValues.type_mem R i A.μ0 _ (fun PP hPP x => by`.
+
+Take `⟨y, hy⟩` from `chiVal_of_tie T R κ v₀ hL ht i PP hPP x`. Conclude with `⟨jL y, hy⟩)`. Use `fun PP hPP => absurd (hQ ▸ hPP) (Finset.notMem_empty _))`. Take `⟨lev, hlev⟩` from `exists_levIs T R hL hT hpb i`. Take `⟨Cl, fCl, h, J', bad, Lh, gam, vol, La, Nc, hrep, hbad, hcl⟩` from `GlobalTheory.SplitReps.exists_repsR_repsCov R i (hL.βV i) hV c'.F (T.Q.Xo ((i : ℕ) + 1)) c' (fun _ : Unit => A.μ0) fun _ => d`.
+
+Use `choose B hBis using fun t => exists_BIs R hL hv i c'.F hLL (bad t) (hbad t).2.2.2.2`. Use `choose epF hepF using fun t => (GlobalTheory.ClassTieCompare.exists_epIs_iff (n := (Vc D i).rank) (Dw := T.Q.Dw ((i : ℕ) + 1)) (bad t) (B t)).2 fun L cc g d => GlobalTheory.LawOfSquares.law_of_squares _ _ _ _ hodd L cc g.1 g.2.2 d.1 d.2`. Take `⟨io, hw, hio⟩` from `GlobalTheory.CoefMapRecord.exists_io_record D T.Q hT.pins κ ht.kap i c'`. Take `⟨φ, hφis⟩` from `exists_phi_of_empty R hL hR.thP.vP i hV A.μ0 hQ (iotaW T i) (GlobalTheory.LevelAction.latEmb_iotaW T hT i) c'.F hhalf.2.2 (Mfr d.l₂) fun PP hPP c hc => by`. Establish `hM : d.l₂.Mb ≤ PP.asIdeal`.
+
+Rewrite using `[hlv.2.2.2.1]`. Break down `hPP with hPP | hPP` into its components or cases. Rewrite using `[hhalf.1]`. Conclude with `Ideal.mul_le_left.trans (Ideal.prod_le_inf.trans (Finset.inf_le hPP))`. Conclude with `Ideal.mul_le_right.trans (hhalf.2.1 PP hPP)`.
+
+Take `⟨b, hb, rfl⟩` from `(Ideal.mem_map_iff_of_surjective _ T.Q.H.bar.surjective).1 hc`. Use `⟨b, hM hb, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = star ((T.Q.H.bar b : 𝓞 D.host.E) : D.host.E)`. Rewrite using `[T.Q.H.bar_eq]`. Conclude with `(star_star _).symm`.
+
+Use `choose thAd hth' using fun t => GlobalTheory.AdelicSide.exists_thAd_of_models D G Pl0 T0 A _ R hR.models i A.μ0 _ _ c0' _ (h t) _ (hrep t).1.2.2.1 (hrep t).1.2.2.2.2.2.1 (v₀ i (sg0 D A))`. Establish `hact` using `fun c => GlobalTheory.LevelActFromLevel.actLev_of_levIs D G Pl0 T0 A T R hL hT hpb i c lev hlev`. Use `⟨{ c' := c', hle := hle, jL := jL, hV := hT.spaceW _ (inR i) _ rfl, c0' := c0', lev := lev, dδ := fun _ => d, Cl' := Cl, bad := bad, Lh := Lh, La := La, Nc := Nc, gam := gam, vol := vol, ep := fun t k => epF t (Lh t k), B := B, epF := epF, io := io, hw := hw, φ := fun _ => φ, w : …` and prove the remaining obligations. Establish `h1` using `hx1 (γ * a)`. Rewrite `h1` using `[pow_one]`.
+
+Conclude with `(hone a).trans (by rw [h1, Units.val_one, one_mul])`.
+-/
 theorem exists_pins_ref (hR : PreChar R) (hv : Formalism.L2.Host.ValLL D R.C) (ht : TieIn T R κ v₀) (hpb : T.pb = R.C.P.pb)
     (hG : QGuard R) (i : Fin D.R.m) (hV : VStd D i) :
     ∃ O : OMDat T.toCore R i Unit (fun _ => A.μ0), O.c'.F = D.what₂.embLL.toRatAlgHom.fieldRange ∧
@@ -273,6 +343,9 @@ theorem exists_pins_ref (hR : PreChar R) (hv : Formalism.L2.Host.ValLL D R.C) (h
   rw [pow_one] at h1
   exact (hone a).trans (by rw [h1, Units.val_one, one_mul])
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A T _ R κ v₀ hR hv ht hpb hG hV`. Use `choose O hO using fun i => exists_pins_ref T R κ v₀ hR hv ht hpb hG i (hV i)`. Conclude with `⟨O, hO⟩`.
+-/
 theorem exists_omPins : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), PreChar R → Formalism.L2.Host.ValLL D R.C → TieIn T R κ v₀ → T.pb = R.C.P.pb → QGuard R → (∀ i, VStd D i) → ∃ (O : ∀ i, OMDat T.toCore R i Unit (fun _ => A.μ0)), ∀ i, OMPins T R κ v₀ O i := by
   intro D G _ _ Pl0 T0 A T _ R κ v₀ hR hv ht hpb hG hV
   choose O hO using fun i => exists_pins_ref T R κ v₀ hR hv ht hpb hG i (hV i)

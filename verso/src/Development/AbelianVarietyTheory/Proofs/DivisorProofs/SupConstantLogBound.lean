@@ -34,6 +34,27 @@ open scoped TensorProduct
 
 namespace GlobalTheory.ConstSzRows
 
+/- English proof (translation)
+Introduce `D M Lb w hM hLb hMl hsz hfrl hw hwl`. Use `haveI : IsCMField D.host.E := inferInstance`. Establish `hfd` using `GlobalTheory.FramedCMPointCompare.fdeg_host D`. Establish `hf0 : 1 ≤ D.R.f` using `by have : 0 < D.R.n := D.R.ord_pos; unfold Formalism.BasicNotions.Ranks.f; omega`. Establish `hr2 : 2 ≤ D.R.r`.
+
+Use `D.R.two_le_m` as an intermediate fact. Use `D.R.m_add_three_le_k` as an intermediate fact. Unfold `Formalism.BasicNotions.Ranks.r`. Use linear arithmetic over natural numbers and integers. Establish `hqd` using `D.host.qd_big`.
+
+Establish `hd1 : 1 ≤ D.host.d` using `by omega`. Establish `hq1 : 1 ≤ D.host.q` using `by omega`. Establish `hfR : (1 : ℝ) ≤ D.R.f` using `by exact_mod_cast hf0`. Establish `hrR : (1 : ℝ) ≤ D.R.r` using `by exact_mod_cast (by omega : 1 ≤ D.R.r)`. Establish `hnR : (Module.finrank ℚ D.host.E : ℝ) = 2 * D.R.f` using `by exact_mod_cast D.host.finrank_E'`.
+
+Establish `hnpos : (0 : ℝ) < Module.finrank ℚ D.host.E` using `by rw [hnR]; linarith`. Establish `hrd` using `(GlobalTheory.CovTop.log_rd_le_fieldSz D.host.E).trans hsz`. Establish `hld : Real.log |(discr D.host.E : ℝ)| ≤ 6 * D.R.f * Lb`. Establish `h` using `(div_le_iff₀ hnpos).1 hrd`. Rewrite `h` using `[hnR]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `set L : ℝ := 25 * Lb / 2 with hL`. Establish `hdE : Real.log (ReciprocityTheory.ChartRestriction.G.FD.dE D.host.E) ≤ 4 * (ReciprocityTheory.ChartRestriction.G.FD.fdeg D.host.E : ℝ) * L`. Unfold `ReciprocityTheory.ChartRestriction.G.FD.dE`. Rewrite using `[hfd]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hdpow : D.host.d ^ D.R.f ≤ (discr D.host.E).natAbs` using `Nat.le_of_dvd (Nat.pos_of_ne_zero (Int.natAbs_ne_zero.2 (discr_ne_zero _))) (UpperTheory.HF.rad_bounds2 D.host.toHostAx).2.2.1`. Establish `hdpowR : ((D.host.d : ℝ)) ^ D.R.f ≤ |(discr D.host.E : ℝ)|`. Establish `: (((discr D.host.E).natAbs : ℕ) : ℝ) = |(discr D.host.E : ℝ)|`. Rewrite using `[Nat.cast_natAbs, Int.cast_abs]`.
+
+Rewrite using `[← this]`. Conclude with `hdpow` after adjusting the coercions. Establish `hdR : (0 : ℝ) < D.host.d` using `by exact_mod_cast hd1`. Establish `hlogd : Real.log D.host.d ≤ 4 * L`. Establish `h1` using `Real.log_le_log (by positivity) hdpowR`.
+
+Rewrite `h1` using `[Real.log_pow]`. Establish `h3 : (D.R.f : ℝ) * Real.log D.host.d ≤ D.R.f * (6 * Lb)` using `by linarith`. Establish `h4` using `le_of_mul_le_mul_left h3 (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlogfr : Real.log ((ReciprocityTheory.ChartRestriction.G.FD.fdeg D.host.E : ℝ) * D.R.r) ≤ L`.
+
+Rewrite using `[hfd]`. Move the coercions through the operations in `at hfrl`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmain` using `GlobalTheory.T.supremum_constant_log_bound D.host.E D.R.r D.host.d M w L hr2 hd1 hM (by linarith) hw hlogfr (by linarith) hdE hlogd (by linarith)`. Use `⟨hmain.1, hmain.2.trans ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hfd]`. Establish `hx : (1 : ℝ) ≤ (D.R.f : ℝ) * D.R.r` using `one_le_mul_of_one_le_of_one_le hfR hrR`. Establish `h1 : ((D.R.f : ℝ) * D.R.r) ^ 2 * Lb ≤ ((D.R.f : ℝ) * D.R.r) ^ 3 * Lb ^ 3` using `mul_le_mul (pow_le_pow_right₀ hx (by norm_num)) (le_self_pow₀ hLb (by norm_num)) (by linarith) (by positivity)`. Establish `h2 : (0 : ℝ) ≤ ((D.R.f : ℝ) * D.R.r) ^ 2 * Lb` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem supConst_size_rows : ∀ (D : D7) (M : ℕ) (Lb w : ℝ), 1 ≤ M → 1 ≤ Lb → Real.log M ≤ 30 * Lb → fieldSz D.host.E ≤ 3 * Lb → Real.log (D.R.f * D.R.r) ≤ Lb → 1 ≤ w → Real.log w ≤ 25 * Lb → 1 ≤ GlobalTheory.LevGeo.supConst D.host.E D.R.r D.host.d M w ∧ Real.log (GlobalTheory.LevGeo.supConst D.host.E D.R.r D.host.d M w) ≤ 4000 * ((D.R.f : ℝ) * D.R.r * Lb) ^ 3 := by
   intro D M Lb w hM hLb hMl hsz hfrl hw hwl
   haveI : IsCMField D.host.E := inferInstance

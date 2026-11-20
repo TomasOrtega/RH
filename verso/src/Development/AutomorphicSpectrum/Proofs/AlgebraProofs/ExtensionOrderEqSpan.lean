@@ -4,6 +4,13 @@ open GlobalTheory.CompanionTheory.Ar.BT TensorProduct
 
 namespace GlobalTheory.CompanionTheory.Ar.BT.ExtSpan
 
+/- English proof (translation)
+Introduce `R _ T _ R' _ φ A g`. Use `set S : Set (T → R') := {g : T → R' | ∃ f ∈ A, g = fun t => φ (f t)} with hS`. Establish `hmul : ∀ {x y : T → R'}, x ∈ S → y ∈ S → x * y ∈ S`. Introduce and unpack `_ _ ⟨f1, hf1, rfl⟩ ⟨f2, hf2, rfl⟩`. Conclude with `⟨f1 * f2, A.mul_mem hf1 hf2, by funext t; simp [map_mul]⟩`.
+
+Establish `hone : (1 : T → R') ∈ S` using `⟨1, A.one_mem, by funext t; simp⟩`. Set `M : Submonoid (T → R')` to `{ carrier := S, mul_mem' := hmul, one_mem' := hone }`. Establish `hcl : ((Submonoid.closure S : Submonoid (T → R')) : Set (T → R')) = S` using `congrArg (fun N : Submonoid (T → R') => (N : Set (T → R'))) (Submonoid.closure_eq M)`. Establish `hspan : Subalgebra.toSubmodule (Algebra.adjoin R' S) = Submodule.span R' S`. Rewrite using `[Algebra.adjoin_eq_span, hcl]`.
+
+Establish `hdef : extOrder φ A = Algebra.adjoin R' S` using `by first`. Consider the case `rfl`. Consider the case `(unfold extOrder; congr 1)`. Consider the case `(unfold extOrder; congr 1; ext x; simp only [hS, Set.mem_setOf_eq, Set.mem_range, Set.mem_image, Subtype.exists, exists_prop, SetLike.mem_coe]; constructor <;> rintro ⟨f, hf, h⟩ <;> exact ⟨f, hf, h.symm⟩)`. Rewrite using `[hdef, ← Subalgebra.mem_toSubmodule, hspan]`.
+-/
 theorem extOrder_eq_span : ∀ (R : Type) [CommRing R] (T : Type) [CommGroup T] (R' : Type) [CommRing R'] (φ : R →+* R') (A : Subalgebra R (T → R)) (g : T → R'), g ∈ extOrder φ A ↔ g ∈ Submodule.span R' {g : T → R' | ∃ f ∈ A, g = fun t => φ (f t)} := by
   intro R _ T _ R' _ φ A g
   set S : Set (T → R') := {g : T → R' | ∃ f ∈ A, g = fun t => φ (f t)} with hS

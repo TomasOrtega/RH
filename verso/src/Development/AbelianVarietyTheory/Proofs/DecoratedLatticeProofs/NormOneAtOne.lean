@@ -51,6 +51,9 @@ def LastAt (ψ : AddChar (AF D.host.F) ℂ) {S S₀ : HSp D} {ρ : ℕ} (d : Hyp
 def coreLat {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (L : Lat S) : Lat S₀ :=
   L.comap ((Matrix.mulVecLin d.i₀).restrictScalars (𝓞 D.host.E))
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_coreLat {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (L : Lat S) (x : Fin S₀.rank → D.host.E) :
     x ∈ coreLat d L ↔ d.i₀ *ᵥ x ∈ L := Iff.rfl
 
@@ -92,8 +95,14 @@ def GluedW {p : SplitPt D k} {S : HSp D} {n : Type} [Fintype n] [DecidableEq n] 
 
 end Split
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by simp, by simp⟩`.
+-/
 theorem normOneAt_one (v : GlobalTheory.FinPl.Pl D) : NormOneAt v (1 : AE D) := ⟨by simp, by simp⟩
 
+/- English proof (translation)
+Simplify using `only [SMoves, Moves, one_smul]`.
+-/
 theorem sMoves_one {S : HSp D} (g : GA D S) (L M : Lat S) (v : GlobalTheory.FinPl.Pl D) : SMoves S 1 g L M v ↔ Moves S g L M (· = v) := by
   simp only [SMoves, Moves, one_smul]
 

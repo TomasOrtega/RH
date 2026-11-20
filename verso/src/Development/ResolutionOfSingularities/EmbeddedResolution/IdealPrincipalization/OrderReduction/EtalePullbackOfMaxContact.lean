@@ -41,19 +41,33 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace MaxContactCoverDescent
 
+/- English proof (translation)
+The claim follows from `hQ.of_isPullback (IsPullback.of_hasPullback g g).flip hg`.
+-/
 private theorem morphismProperty_pullback_fst_self {X Y : Scheme.{u}} (g : Y ⟶ X) (Q : MorphismProperty Scheme.{u})
     (hQ : Q.IsStableUnderBaseChange) (hg : Q g) : Q (pullback.fst g g) :=
   hQ.of_isPullback (IsPullback.of_hasPullback g g).flip hg
 
+/- English proof (translation)
+The claim follows from `hQ.of_isPullback (IsPullback.of_hasPullback g g) hg`.
+-/
 private theorem morphismProperty_pullback_snd_self {X Y : Scheme.{u}} (g : Y ⟶ X) (Q : MorphismProperty Scheme.{u})
     (hQ : Q.IsStableUnderBaseChange) (hg : Q g) : Q (pullback.snd g g) :=
   hQ.of_isPullback (IsPullback.of_hasPullback g g) hg
 
+/- English proof (translation)
+The claim follows from `hQ.comp_mem f p hf hp`.
+-/
 private theorem morphismProperty_comp {X Y Z : Scheme.{u}} (f : X ⟶ Y) (p : Y ⟶ Z)
     (Q : MorphismProperty Scheme.{u}) (hQ : Q.IsStableUnderComposition) (hf : Q f) (hp : Q p) :
     Q (f ≫ p) :=
   hQ.comp_mem f p hf hp
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons D L ih`. Simplify using `only [List.map_cons, List.cons.injEq]`. Use `⟨?_, ih⟩` and prove the remaining obligations.
+
+Establish `hD : D.comap (a ≫ g) = D.comap (b ≫ g)` using `by rw [hab]`. Simplify using `using hD`.
+-/
 private theorem map_comap_map_comap_eq_of_comp_eq {W X Y : Scheme.{u}} (a b : W ⟶ X) (g : X ⟶ Y)
     (hab : a ≫ g = b ≫ g) (L : List Y.IdealSheafData) :
     List.map (fun D : X.IdealSheafData => D.comap a)
@@ -68,6 +82,9 @@ private theorem map_comap_map_comap_eq_of_comp_eq {W X Y : Scheme.{u}} (a b : W 
       have hD : D.comap (a ≫ g) = D.comap (b ≫ g) := by rw [hab]
       simpa using hD
 
+/- English proof (translation)
+Substitute `hS` using the available equality. Establish `hEq : H₁ = H₂` using `eq_of_heq hH`. Substitute `hEq` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem heq_reduceAlongHypersurface_of_eq (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
     (resolveLower : (S : MarkedIdealWithBoundary.{u}) → S.krullDimSucc ≤ T.krullDimSucc → ℕ → S.SequenceOfBlowups)
     {S₁ S₂ : MarkedIdealWithBoundary.{u}} (hS : S₁ = S₂)
@@ -79,6 +96,11 @@ private theorem heq_reduceAlongHypersurface_of_eq (hinv : ComapIsoInvariance.{u}
   subst hEq
   rfl
 
+/- English proof (translation)
+Use `hf` as an intermediate fact. Use `hq` as an intermediate fact. Establish `hpb` using `hin.valid_pullbackAlong S' hV Y (f ≫ S'.structMap) f rfl`. Establish `hs : (S'.pullbackAlong Y (f ≫ S'.structMap) f).structMap = f ≫ S'.structMap` using `MarkedIdealWithBoundary.pullbackAlong_structureMorphism S' Y (f ≫ S'.structMap) f`. Establish `hb : (S'.pullbackAlong Y (f ≫ S'.structMap) f).boundary = List.map (fun D : S'.scheme.IdealSheafData => D.comap f) S'.boundary` using `MarkedIdealWithBoundary.pullbackAlong_boundary S' Y (f ≫ S'.structMap) f`.
+
+Establish `hsnc` using `hpb.snc`. Rewrite `hsnc` using `[hs, hb]`. Conclude with `hsnc`.
+-/
 private theorem inStrictNormalCrossingPosition_comap_boundary (hin : OrderReduction.OrderReductionHypotheses.{u})
     (S' : MarkedIdealWithBoundary.{u})
     (hV : S'.IsAdmissible) {Y : Scheme.{u}} (f : Y ⟶ S'.scheme)
@@ -98,6 +120,13 @@ private theorem inStrictNormalCrossingPosition_comap_boundary (hin : OrderReduct
   rw [hs, hb] at hsnc
   exact hsnc
 
+/- English proof (translation)
+Use `hqsmooth` as an intermediate fact. Use `hqflat` as an intermediate fact. Use `hqSu` as an intermediate fact. Use `hqEt` as an intermediate fact. Establish `hNS : AlgebraicGeometry.IsNoetherian S.scheme` using `hSV.isNoetherian`.
+
+Establish `hLNS : AlgebraicGeometry.IsLocallyNoetherian S.scheme` using `inferInstance`. Establish `hV' : (LowerDimReductionPullback.pullbackTriple S q).IsAdmissible` using `hin.valid_pullbackAlong S hSV X' (q ≫ S.structMap) q rfl`. Establish `hdim' : (LowerDimReductionPullback.pullbackTriple S q).krullDimSucc ≤ T.krullDimSucc` using `le_trans (hin.schemeDim_le_of_etale X' S.scheme q hSV.topologicalKrullDim_lt_top) hSdim`. Use `BoundarySeparationBaseChange.isStrictPullbackBlowupSeq_reduceAlongHypersurface hstar hin hmc hsap hinv P hmono A B hspec T hPdimT S hSV hSO hSdim H hH hHsnc q hV' hdim' H' ?_ ?_` and prove the remaining obligations. Introduce `_inst`.
+
+Conclude with `hadm'`. Conclude with `hsnc'`.
+-/
 private theorem isStrictPullbackBlowupSeq_reduceAlongHypersurface_pullback (hstar : MaxContactCoverProperties.{u})
     (hin : OrderReduction.OrderReductionHypotheses.{u})
     (hmc : BoundarySeparationBaseChange.IsMaxContactInvariantBalancedTuned.{u}) (hsap : BoundarySeparationBaseChange.MaxContactHypersurfaceSmoothPullback.{u})
@@ -139,6 +168,35 @@ private theorem isStrictPullbackBlowupSeq_reduceAlongHypersurface_pullback (hsta
     exact hadm'
   · exact hsnc'
 
+/- English proof (translation)
+Use `hSV.charZero` as an intermediate fact. Use `hSV.smooth` as an intermediate fact. Use `hSV.locallyOfFiniteType` as an intermediate fact. Use `hSV.quasiCompact` as an intermediate fact. Use `hgEt` as an intermediate fact.
+
+Use `hgsmooth` as an intermediate fact. Use `hgflat` as an intermediate fact. Use `hgSu` as an intermediate fact. Establish `hNS : AlgebraicGeometry.IsNoetherian S.scheme` using `hSV.isNoetherian`. Establish `hNSp : TopologicalSpace.NoetherianSpace ↥S.scheme` using `inferInstance`.
+
+Establish `hQCg : AlgebraicGeometry.QuasiCompact g` using `⟨fun U _ _ => TopologicalSpace.NoetherianSpace.isCompact _⟩`. Establish `hcolS : ∀ (W : Scheme.{u}) (a b : W ⟶ S.scheme), a ≫ g = b ≫ g → a ≫ S.structMap = b ≫ S.structMap`. Introduce `W a b hab`. Rewrite using `[hgs, ← Category.assoc, ← Category.assoc, hab]`. Establish `hcolI : ∀ (W : Scheme.{u}) (a b : W ⟶ S.scheme), a ≫ g = b ≫ g → S.ideal.comap a = S.ideal.comap b`.
+
+Introduce `W a b hab`. Establish `hD : J.comap (a ≫ g) = J.comap (b ≫ g)` using `by rw [hab]`. Rewrite using `[hgi]`. Simplify using `using hD`. Establish `hcolB : ∀ (W : Scheme.{u}) (a b : W ⟶ S.scheme), a ≫ g = b ≫ g → List.map (fun D : S.scheme.IdealSheafData => D.comap a) S.boundary = List.map (fun D : S.scheme.IdealSheafData => D.comap b) S.boundary`.
+
+Introduce `W a b hab`. Rewrite using `[hgb]`. Conclude with `map_comap_map_comap_eq_of_comp_eq a b g hab E`. Establish `hcol : ∀ (W : Scheme.{u}) (a b : W ⟶ S.scheme), a ≫ g = b ≫ g → LowerDimReductionPullback.pullbackTriple S a = LowerDimReductionPullback.pullbackTriple S b`. Introduce `W a b hab`.
+
+Simplify using `only [LowerDimReductionPullback.pullbackTriple, MarkedIdealWithBoundary.pullbackAlong]`. Rewrite using `[hcolS W a b hab, hcolI W a b hab, hcolB W a b hab]`. Establish `hEt1 : AlgebraicGeometry.Etale (pullback.fst g g)` using `morphismProperty_pullback_fst_self g (@AlgebraicGeometry.Etale : MorphismProperty Scheme.{u}) inferInstance inferInstance`. Establish `hEt2 : AlgebraicGeometry.Etale (pullback.snd g g)` using `morphismProperty_pullback_snd_self g (@AlgebraicGeometry.Etale : MorphismProperty Scheme.{u}) inferInstance inferInstance`. Establish `hSm1 : AlgebraicGeometry.Smooth (pullback.fst g g)` using `morphismProperty_pullback_fst_self g (@AlgebraicGeometry.Smooth : MorphismProperty Scheme.{u}) inferInstance inferInstance`.
+
+Establish `hSm2 : AlgebraicGeometry.Smooth (pullback.snd g g)` using `morphismProperty_pullback_snd_self g (@AlgebraicGeometry.Smooth : MorphismProperty Scheme.{u}) inferInstance inferInstance`. Establish `hSu1 : AlgebraicGeometry.Surjective (pullback.fst g g)` using `morphismProperty_pullback_fst_self g (@AlgebraicGeometry.Surjective : MorphismProperty Scheme.{u}) inferInstance inferInstance`. Establish `hSu2 : AlgebraicGeometry.Surjective (pullback.snd g g)` using `morphismProperty_pullback_snd_self g (@AlgebraicGeometry.Surjective : MorphismProperty Scheme.{u}) inferInstance inferInstance`. Establish `hFl1 : AlgebraicGeometry.Flat (pullback.fst g g)` using `morphismProperty_pullback_fst_self g (@AlgebraicGeometry.Flat : MorphismProperty Scheme.{u}) inferInstance inferInstance`. Establish `hFl2 : AlgebraicGeometry.Flat (pullback.snd g g)` using `morphismProperty_pullback_snd_self g (@AlgebraicGeometry.Flat : MorphismProperty Scheme.{u}) inferInstance inferInstance`.
+
+Establish `hQ1 : AlgebraicGeometry.QuasiCompact (pullback.fst g g)` using `morphismProperty_pullback_fst_self g (@AlgebraicGeometry.QuasiCompact : MorphismProperty Scheme.{u}) inferInstance inferInstance`. Establish `hQ2 : AlgebraicGeometry.QuasiCompact (pullback.snd g g)` using `morphismProperty_pullback_snd_self g (@AlgebraicGeometry.QuasiCompact : MorphismProperty Scheme.{u}) inferInstance inferInstance`. Establish `hSm1' : AlgebraicGeometry.Smooth (pullback.fst g g)` using `hSm1`. Establish `hSm2' : AlgebraicGeometry.Smooth (pullback.snd g g)` using `hSm2`. Establish `hQC1 : AlgebraicGeometry.QuasiCompact (pullback.fst g g ≫ S.structMap)` using `morphismProperty_comp (pullback.fst g g) S.structMap (@AlgebraicGeometry.QuasiCompact : MorphismProperty Scheme.{u}) inferInstance inferInstance inferInstance`.
+
+Establish `hQC2 : AlgebraicGeometry.QuasiCompact (pullback.snd g g ≫ S.structMap)` using `morphismProperty_comp (pullback.snd g g) S.structMap (@AlgebraicGeometry.QuasiCompact : MorphismProperty Scheme.{u}) inferInstance inferInstance inferInstance`. Establish `hLF1 : AlgebraicGeometry.LocallyOfFiniteType (pullback.fst g g ≫ S.structMap)` using `morphismProperty_comp (pullback.fst g g) S.structMap (@AlgebraicGeometry.LocallyOfFiniteType : MorphismProperty Scheme.{u}) inferInstance inferInstance inferInstance`. Establish `hLF2 : AlgebraicGeometry.LocallyOfFiniteType (pullback.snd g g ≫ S.structMap)` using `morphismProperty_comp (pullback.snd g g) S.structMap (@AlgebraicGeometry.LocallyOfFiniteType : MorphismProperty Scheme.{u}) inferInstance inferInstance inferInstance`. Establish `hcond : pullback.snd g g ≫ g = pullback.fst g g ≫ g` using `pullback.condition.symm`. Establish `hstruct : pullback.snd g g ≫ S.structMap = pullback.fst g g ≫ S.structMap` using `hcolS (pullback g g) (pullback.snd g g) (pullback.fst g g) hcond`.
+
+Establish `hideal : S.ideal.comap (pullback.snd g g) = S.ideal.comap (pullback.fst g g)` using `hcolI (pullback g g) (pullback.snd g g) (pullback.fst g g) hcond`. Establish `htriple : LowerDimReductionPullback.pullbackTriple S (pullback.snd g g) = LowerDimReductionPullback.pullbackTriple S (pullback.fst g g)` using `hcol (pullback g g) (pullback.snd g g) (pullback.fst g g) hcond`. Establish `hadm1 : IsMaxContactHypersurface S.base (pullback.fst g g ≫ S.structMap) (S.ideal.comap (pullback.fst g g)) S.mult (H.comap (pullback.fst g g))` using `hsap S.base S.scheme S.structMap (pullback g g) (pullback.fst g g) S.ideal S.mult hSV.one_le_mult H hH`. Establish `hadm2 : IsMaxContactHypersurface S.base (pullback.snd g g ≫ S.structMap) (S.ideal.comap (pullback.snd g g)) S.mult (H.comap (pullback.fst g g))` using `isMaxContactHypersurface_of_eq_of_eq_of_eq S.base hstruct.symm hideal.symm rfl hadm1`. Establish `hVb : (S.withBoundary [H]).IsAdmissible` using `{ charZero := hSV.charZero locallyOfFiniteType := hSV.locallyOfFiniteType nonzeroOnComponents := hSV.nonzeroOnComponents one_le_mult := hSV.one_le_mult quasiCompact := hSV.quasiCompact smooth := hSV.smooth snc := hHsnc }`.
+
+Establish `hsnc1 : InStrictNormalCrossingPosition (pullback.fst g g ≫ S.structMap) [H.comap (pullback.fst g g)]` using `inStrictNormalCrossingPosition_comap_boundary hin (S.withBoundary [H]) hVb (pullback.fst g g) hSm1 hQC1`. Establish `hsnc2 : InStrictNormalCrossingPosition (pullback.snd g g ≫ S.structMap) [H.comap (pullback.fst g g)]`. Rewrite using `[hstruct]`. Conclude with `hsnc1`. Establish `hs1` using `isStrictPullbackBlowupSeq_reduceAlongHypersurface_pullback hstar hin hmc hsap hinv P hmono A B hspec T hPdimT S hSV hSO hSdim H hH hHsnc (pullback.fst g g) hSm1 hFl1 hSu1 hEt1 (H.comap (pullback.fst g g)) hadm1 hsnc1`.
+
+Establish `hs2` using `isStrictPullbackBlowupSeq_reduceAlongHypersurface_pullback hstar hin hmc hsap hinv P hmono A B hspec T hPdimT S hSV hSO hSdim H hH hHsnc (pullback.snd g g) hSm2 hFl2 hSu2 hEt2 (H.comap (pullback.fst g g)) hadm2 hsnc2`. Establish `hseq : (MaxContactReduction.reduceAlongHypersurface hinv T (fun S' _ i => A i S') (LowerDimReductionPullback.pullbackTriple S (pullback.snd g g)) (H.comap (pullback.fst g g))).toMarkedSequenceOfBlowups.toSequenceOfBlowups = (MaxContactReduction.reduceAlongHypersurface hinv T (fun …` using `eq_of_heq (heq_reduceAlongHypersurface_of_eq hinv T (fun S' _ i => A i S') htriple (H.comap (pullback.fst g g)) (H.comap (pullback.fst g g)) (HEq.refl (H.comap (pullback.fst g g))))`. Establish `hs2' : IsStrictPullbackBlowupSeq (pullback.snd g g) (MaxContactReduction.reduceAlongHypersurface hinv T (fun S' _ i => A i S') (LowerDimReductionPullback.pullbackTriple S (pullback.fst g g)) (H.comap (pullback.fst g g))).toMarkedSequenceOfBlowups.toSequenceOfBlowups (MaxContactRe …`. Rewrite using `[← hseq]`. Conclude with `hs2`.
+
+Establish `hbc1 : IsStrictPullbackBlowupSeq (pullback.fst g g) ((MaxContactReduction.reduceAlongHypersurface hinv T (fun S' _ i => A i S') S H).toMarkedSequenceOfBlowups.toSequenceOfBlowups.baseChange (pullback.fst g g)) (MaxContactReduction.reduceAlongHypersurface hinv T (fun S' _ i => A i …` using `isStrictPullbackSequenceOfBlowups_baseChange _ _`. Establish `hbc2 : IsStrictPullbackBlowupSeq (pullback.snd g g) ((MaxContactReduction.reduceAlongHypersurface hinv T (fun S' _ i => A i S') S H).toMarkedSequenceOfBlowups.toSequenceOfBlowups.baseChange (pullback.snd g g)) (MaxContactReduction.reduceAlongHypersurface hinv T (fun S' _ i => A i …` using `isStrictPullbackSequenceOfBlowups_baseChange _ _`. Establish `e1` using `hbc1.isomorphic hs1`. Establish `e2` using `hbc2.isomorphic hs2'`. Take `⟨s, hs⟩` from `exists_isStrictPullback_of_isomorphic_baseChange g (MaxContactReduction.reduceAlongHypersurface hinv T (fun S' _ i => A i S') S H).toMarkedSequenceOfBlowups.toSequenceOfBlowups (e1.trans e2.symm)`.
+
+Conclude with `⟨BlowupSequenceData.ofSequenceOfBlowups s, hs.of_isomorphic_base (BlowupSequenceData.ofSequenceOfBlowups_toSequenceOfBlowups_isomorphic s).symm⟩`.
+-/
 private theorem exists_isStrictPullbackBlowupSeq_reduceAlongHypersurface (hstar : MaxContactCoverProperties.{u})
     (hin : OrderReduction.OrderReductionHypotheses.{u})
     (hmc : BoundarySeparationBaseChange.IsMaxContactInvariantBalancedTuned.{u}) (hsap : BoundarySeparationBaseChange.MaxContactHypersurfaceSmoothPullback.{u})
@@ -313,6 +371,11 @@ private theorem exists_isStrictPullbackBlowupSeq_reduceAlongHypersurface (hstar 
     (e1.trans e2.symm)
   exact ⟨BlowupSequenceData.ofSequenceOfBlowups s, hs.of_isomorphic_base (BlowupSequenceData.ofSequenceOfBlowups_toSequenceOfBlowups_isomorphic s).symm⟩
 
+/- English proof (translation)
+Take `⟨d, hd⟩` from `exists_isStrictPullbackBlowupSeq_reduceAlongHypersurface hstar hin hmc hsap hinv P hmono A B hspec T h.dim_prop (MaxContactCoverData.coverTriple T h.valid) (BoundarySeparationByMaxContact.isAdmissible_coverTriple hstar P T h) (BoundarySeparationByMaxContact.orderAt_coverTriple_id …`. Introduce `_inst`. Conclude with `BoundarySeparationByMaxContact.isMaxContactHypersurface_coverMaxContactIdeal hstar P T h)`. Use the proof step `(BoundarySeparationByMaxContact.inStrictNormalCrossingPosition_coverMaxContactIdeal hstar P T h)`. Establish `hcs : MaxContactCoverData.coverMarkedBlowupData T h.valid hinv (MaxContactFunctoriality.lowerDimensionalFamily A T) = MaxContactReduction.reduceAlongHypersurface hinv T (fun S' _ i => A i S') (MaxContactCoverData.coverTriple T h.valid) (MaxContactCoverData.coverMaxContactIdeal T …` using `by with_unfolding_all rfl`.
+
+Use `⟨d, ?_⟩` and prove the remaining obligations. Rewrite using `[hcs, ← MarkedBlowupSequenceData.toMarkedSequence_toSequenceOfBlowups]`. Conclude with `hd`.
+-/
 theorem exists_isStrictPullback_coverMarkedSequence
     (hstar : MaxContactCoverProperties.{u}) (hin : OrderReduction.OrderReductionHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (P : ℕ → Prop) (hmono : ∀ a b : ℕ, a ≤ b → P b → P a)

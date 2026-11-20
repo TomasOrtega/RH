@@ -76,6 +76,9 @@ def Mv.pre {D₀ : D7} {L : LocAll (lay0 D₀)} (m : Mv (withLoc L)) : Mv D₀ :
 
 def Mv.loc (L : LocAll (lay0 D)) : LocAll (lay0 m.D) := (by with_unfolding_all exact (L :))
 
+/- English proof (translation)
+The claim follows from `(by with_unfolding_all exact ((Eq.refl m.D) :))`.
+-/
 theorem Mv.withLoc_pre {D₀ : D7} {L : LocAll (lay0 D₀)} (m : Mv (withLoc L)) : m.D = withLoc (m.pre.loc L) := (by with_unfolding_all exact ((Eq.refl m.D) :))
 
 def Mv.cf (cf : CharFrame D) : CharFrame m.D :=

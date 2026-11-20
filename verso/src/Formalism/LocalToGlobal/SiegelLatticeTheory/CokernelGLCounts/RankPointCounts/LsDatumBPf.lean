@@ -14,6 +14,9 @@ section Pass
 variable {D : Formalism.BasicNotions.D7} {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} {δ : ∀ p : PlF D, (D.s.atP p).Fp}
   {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS (CntLocal.Tn u)} {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)}
 
+/- English proof (translation)
+Establish `e : fL M δ (D.mem u).A.T (D.mem u').A.T p w τ = fun O => if O = x0L M δ (D.mem u).A.T (D.mem u').A.T p w then (1 : ℂ) else 0` using `funext hi`. Rewrite `hs` using `[e]`. Conclude with `hs.unique (hasSum_ite_eq _ _)`.
+-/
 theorem bbtop_eq_one_of {w : Point D.host.E (D.R.rS + 1)} {p : PlF D} {τ : Option ((M p).Cls D.R.rS)}
     (hs : HasSum (fL M δ (D.mem u).A.T (D.mem u').A.T p w τ) (BBtop M δ (D.mem u).A.T (D.mem u').A.T p w τ))
     (hi : ∀ O, fL M δ (D.mem u).A.T (D.mem u').A.T p w τ O =
@@ -24,6 +27,23 @@ theorem bbtop_eq_one_of {w : Point D.host.E (D.R.rS + 1)} {p : PlF D} {τ : Opti
   rw [e] at hs
   exact hs.unique (hasSum_ite_eq _ _)
 
+/- English proof (translation)
+Introduce `γ w hγ w' hG'`. Distinguish the cases in `hk : kind w' = kind w`. Use `swap`. Establish `h0 : (fun γ' : {γ' : TermDef.Term D u u' F0 what₂ // Corank.TermScal D γ γ' ∧ EligAt γ' w'} => PairVal.cAt (PairVal.vRdef D u u' F0 what₂ δ M) γ'.1 w') = 0`. Use function extensionality and compare the values at `γ'`.
+
+Conclude with `absurd (hK γ γ'.1 w w' hγ γ'.2.2 γ'.2.1).symm hk`. Rewrite using `[h0]`. Unfold `BBG`. Rewrite using `[if_neg hk]`. Conclude with `hasSum_zero`.
+
+Take `⟨S, hS⟩` from `hU w' hG'`. Establish `hRf` using `hR γ w hγ`. Take `⟨hres, hsum⟩` from `hP γ w hγ w' hG' hk`. Establish `hoff : ∀ p ∉ S ∪ hRf.toFinset, ∀ O, fL M δ (D.mem u).A.T (D.mem u').A.T p w' (thT M δ γ p) O = if O = x0L M δ (D.mem u).A.T (D.mem u').A.T p w' then 1 else 0`. Introduce `p hp O`.
+
+Establish `hpS : p ∉ S` using `fun h => hp (Finset.mem_union_left _ h)`. Establish `hth : thT M δ γ p = θ0 p`. Assume the negation of the conclusion as `h`. Conclude with `hp (Finset.mem_union_right _ (hRf.mem_toFinset.2 h))`. Rewrite using `[((hS p hpS).2 _ O).1]`.
+
+Simplify using `only [hth, and_true]`. Establish `hfin : Finite {γ' : TermDef.Term D u u' F0 what₂ // Corank.TermScal D γ γ' ∧ EligAt γ' w'}` using `(Set.Finite.subset (s := {γ' : TermDef.Term D u u' F0 what₂ | EligAt γ' w'}) (t := {γ' : TermDef.Term D u u' F0 what₂ | Corank.TermScal D γ γ' ∧ EligAt γ' w'}) (hF w') fun γ' h => h.2).to_subtype`. Set `cls : {γ' : TermDef.Term D u u' F0 what₂ // Corank.TermScal D γ γ' ∧ EligAt γ' w'} → Rst (fun p => x0L M δ (D.mem u).A.T (D.mem u').A.T p w')` to `fun y => ⟨locT M δ y.1, hres y.1 y.2.1 y.2.2⟩`. Establish `hF' : ∀ g : Rst (fun p => x0L M δ (D.mem u).A.T (D.mem u').A.T p w'), HasSum (fun y : {y // cls y = g} => PairVal.cAt (PairVal.vRdef D u u' F0 what₂ δ M) y.1.1 w') (∏ᶠ p, fL M δ (D.mem u).A.T (D.mem u').A.T p w' (thT M δ γ p) (g.1 p))`. Introduce `g`.
+
+Establish `h2` using `(Equiv.subtypeSubtypeEquivSubtypeInter (fun γ' : TermDef.Term D u u' F0 what₂ => Corank.TermScal D γ γ' ∧ EligAt γ' w') (fun γ' => locT M δ γ' = g.1)).hasSum_iff.2 (hsum g)`. Establish `h3` using `(Equiv.subtypeEquivRight (p := fun y => cls y = g) (q := fun y => locT M δ y.1 = g.1) (fun y => Subtype.ext_iff)).hasSum_iff.2 h2`. Conclude with `h3`. Establish `hmain` using `hasSum_passage (fun y : {γ' : TermDef.Term D u u' F0 what₂ // Corank.TermScal D γ γ' ∧ EligAt γ' w'} => PairVal.cAt (PairVal.vRdef D u u' F0 what₂ δ M) y.1 w') cls _ hF' (fun p => x0L M δ (D.mem u).A.T (D.mem u').A.T p w') (Equiv.refl _) (fun p => fL M δ (D.mem u).A.T (D.mem u'). …`. Use `hmain using 1` and compare the differences between its conclusion and the goal.
+
+Unfold `BBG`. Rewrite using `[if_pos hk]`. Apply `finprod_eq_prod_of_mulSupport_subset` to reduce the goal to its premises. Introduce `p hp`. Assume the negation of the conclusion as `hS'`.
+
+Conclude with `(Function.mem_mulSupport.1 hp) (bbtop_eq_one_of (hL w' hG' p _).1 (hoff p hS'))`.
+-/
 theorem partnerSumC_of {θ0 : ∀ p, Option ((M p).Cls D.R.rS)}
     (hL : LocOrbSum M δ u u') (hU : LocUnram M δ u u' θ0) (hR : ThRestricted M δ u u' F0 what₂ θ0)
     (hK : ScalKind u u' F0 what₂) (hF : EligFinite u u' F0 what₂) (hP : PartnerTupleSum M δ u u' F0 what₂) :
@@ -80,6 +100,33 @@ theorem partnerSumC_of {θ0 : ∀ p, Option ((M p).Cls D.R.rS)}
   by_contra hS'
   exact (Function.mem_mulSupport.1 hp) (bbtop_eq_one_of (hL w' hG' p _).1 (hoff p hS'))
 
+/- English proof (translation)
+Introduce `w hG γ₀ w₀ hγ₀`. Distinguish the cases in `hk : kind w = kind w₀`. Use `swap`. Establish `h0 : (fun γ : {γ : TermDef.Term D u u' F0 what₂ // EligAt γ w ∧ kind w = kind w₀ ∧ thT M δ γ = thT M δ γ₀} => (PairVal.massTerm γ.1 : ℂ) * PairVal.cAt (PairVal.vRdef D u u' F0 what₂ δ M) γ.1 w) = 0`. Use function extensionality and compare the values at `γ`.
+
+Conclude with `absurd γ.2.2.1 hk`. Rewrite using `[h0]`. Unfold `BBG`. Rewrite using `[if_neg hk, mul_zero]`. Conclude with `hasSum_zero`.
+
+Take `⟨S, hS⟩` from `hU w hG`. Establish `hRf` using `hR γ₀ w₀ hγ₀`. Take `⟨hres, hsum⟩` from `hQ nc hnc ϖ hϖ w hG γ₀ w₀ hγ₀ hk`. Establish `hpS : ∀ p ∉ S ∪ hRf.toFinset, p ∉ S` using `fun p hp h => hp (Finset.mem_union_left _ h)`. Establish `hth : ∀ p ∉ S ∪ hRf.toFinset, thT M δ γ₀ p = θ0 p`.
+
+Introduce `p hp`. Assume the negation of the conclusion as `h`. Conclude with `hp (Finset.mem_union_right _ (hRf.mem_toFinset.2 h))`. Establish `hoffg : ∀ p ∉ S ∪ hRf.toFinset, ∀ O, gL M δ (D.mem u).A.T (D.mem u').A.T p w (thT M δ γ₀ p) O = if O = x0L M δ (D.mem u).A.T (D.mem u').A.T p w then 1 else 0`. Introduce `p hp O`.
+
+Rewrite using `[((hS p (hpS p hp)).2 _ O).2]`. Simplify using `only [hth p hp, and_true]`. Establish `hofff : ∀ p ∉ S ∪ hRf.toFinset, ∀ O, fL M δ (D.mem u).A.T (D.mem u').A.T p w (thT M δ γ₀ p) O = if O = x0L M δ (D.mem u).A.T (D.mem u').A.T p w then 1 else 0`. Introduce `p hp O`. Rewrite using `[((hS p (hpS p hp)).2 _ O).1]`.
+
+Simplify using `only [hth p hp, and_true]`. Establish `hfin : Finite {γ : TermDef.Term D u u' F0 what₂ // EligAt γ w ∧ kind w = kind w₀ ∧ thT M δ γ = thT M δ γ₀}` using `(Set.Finite.subset (s := {γ : TermDef.Term D u u' F0 what₂ | EligAt γ w}) (t := {γ : TermDef.Term D u u' F0 what₂ | EligAt γ w ∧ kind w = kind w₀ ∧ thT M δ γ = thT M δ γ₀}) (hF w) fun γ h => h.1).to_subtype`. Set `cls : {γ : TermDef.Term D u u' F0 what₂ // EligAt γ w ∧ kind w = kind w₀ ∧ thT M δ γ = thT M δ γ₀} → Rst (fun p => x0L M δ (D.mem u).A.T (D.mem u').A.T p w)` to `fun y => ⟨locT M δ y.1, hres y.1 y.2.1⟩`. Establish `hF' : ∀ g : Rst (fun p => x0L M δ (D.mem u).A.T (D.mem u').A.T p w), HasSum (fun y : {y // cls y = g} => (PairVal.massTerm y.1.1 : ℂ) * PairVal.cAt (PairVal.vRdef D u u' F0 what₂ δ M) y.1.1 w) ((n0 nc (D.mem u).A.T (D.mem u').A.T w : ℂ) * (dnT M δ L ϖ γ₀ : ℂ) * ∏ᶠ p, gL M δ (D.me …`. Introduce `g`.
+
+Establish `h2` using `(Equiv.subtypeSubtypeEquivSubtypeInter (fun γ : TermDef.Term D u u' F0 what₂ => EligAt γ w ∧ kind w = kind w₀ ∧ thT M δ γ = thT M δ γ₀) (fun γ => locT M δ γ = g.1)).hasSum_iff.2 (hsum g)`. Establish `h3` using `(Equiv.subtypeEquivRight (p := fun y => cls y = g) (q := fun y => locT M δ y.1 = g.1) (fun y => Subtype.ext_iff)).hasSum_iff.2 h2`. Conclude with `h3`. Use `hasSum_of_fiber _ cls _ hF' ?_` and prove the remaining obligations. Establish `h` using `(hasSum_rst (fun p => x0L M δ (D.mem u).A.T (D.mem u').A.T p w) (fun p => gL M δ (D.mem u).A.T (D.mem u').A.T p w (thT M δ γ₀ p)) (fun p => BBtop M δ (D.mem u).A.T (D.mem u').A.T p w (thT M δ γ₀ p) / Pf.autP M p (thT M δ γ₀ p)) (S ∪ hRf.toFinset) hoffg (fun p _ => ((hL w hG p _). …`.
+
+Establish `hB : BBG M δ (D.mem u).A.T (D.mem u').A.T w (kind w₀) (thT M δ γ₀) = ∏ p ∈ S ∪ hRf.toFinset, BBtop M δ (D.mem u).A.T (D.mem u').A.T p w (thT M δ γ₀ p)`. Unfold `BBG`. Rewrite using `[if_pos hk]`. Apply `finprod_eq_prod_of_mulSupport_subset` to reduce the goal to its premises. Introduce `p hp`.
+
+Assume the negation of the conclusion as `hp'`. Conclude with `(Function.mem_mulSupport.1 hp) (bbtop_eq_one_of (hL w hG p _).1 (hofff p hp'))`. Establish `hA : Pf.autR M (thT M δ γ₀) = ∏ p ∈ S ∪ hRf.toFinset, Pf.autPR M p (thT M δ γ₀ p)`. Unfold `Pf.autR`. Apply `finprod_eq_prod_of_mulSupport_subset` to reduce the goal to its premises.
+
+Introduce `p hp`. Assume the negation of the conclusion as `hp'`. Apply `(Function.mem_mulSupport.1 hp)` to reduce the goal to its premises. Establish `h1 : Pf.autP M p (thT M δ γ₀ p) = 1`. Rewrite using `[hth p hp']`.
+
+Conclude with `(hS p (hpS p hp')).1`. Rewrite `h1` using `[← Pf.autP_ofReal]`. Conclude with `h1` after adjusting the coercions. Establish `hval : (n0 nc (D.mem u).A.T (D.mem u').A.T w : ℂ) * (dnT M δ L ϖ γ₀ : ℂ) * (((Pf.autR M (thT M δ γ₀))⁻¹ : ℝ) : ℂ) * BBG M δ (D.mem u).A.T (D.mem u').A.T w (kind w₀) (thT M δ γ₀) = (n0 nc (D.mem u).A.T (D.mem u').A.T w : ℂ) * (dnT M δ L ϖ γ₀ : ℂ) * ∏ p ∈ S ∪ hRf.toFinset, BBtop M …`. Rewrite using `[hB, hA]`.
+
+Use `push_cast`. Rewrite using `[Finset.prod_div_distrib]`. Simplify using `only [Pf.autP_ofReal]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hval]`.
+
+Conclude with `h`.
+-/
 theorem fiberCntC_of {L : CntLocal.LocSp D M} {nc : ℝ} (hnc : CntLocal.Formula δ L u u' F0 what₂ nc)
     {ϖ : ∀ p : PlF D, 𝒪[(D.s.atP p).Fp]} (hϖ : ∀ p, Irreducible (ϖ p)) {θ0 : ∀ p, Option ((M p).Cls D.R.rS)}
     (hL : LocOrbSum M δ u u') (hU : LocUnram M δ u u' θ0) (hR : ThRestricted M δ u u' F0 what₂ θ0)
@@ -171,6 +218,17 @@ theorem fiberCntC_of {L : CntLocal.LocSp D M} {nc : ℝ} (hnc : CntLocal.Formula
   rw [hval]
   exact h
 
+/- English proof (translation)
+Introduce `θ0' hθ γ w hγ`. Establish `hGw` using `hG γ w hγ.2`. Take `⟨S1, h1⟩` from `hθ w`. Take `⟨S2, h2⟩` from `hU w hGw`. Establish `heq : ∀ p ∉ S1 ∪ S2, θ0' p = θ0 p`.
+
+Introduce `p hp`. Establish `hp1 : p ∉ S1` using `fun h => hp (Finset.mem_union_left _ h)`. Establish `hp2 : p ∉ S2` using `fun h => hp (Finset.mem_union_right _ h)`. Establish `hb : BBtop M δ (D.mem u).A.T (D.mem u').A.T p w (θ0 p) = 1`. Use `bbtop_eq_one_of (hL w hGw p (θ0 p)).1 fun O => ?_` and prove the remaining obligations.
+
+Rewrite using `[((h2 p hp2).2 (θ0 p) O).1]`. Simplify using `only [and_true]`. Establish `hb'` using `(h1 p hp1).2 (θ0 p)`. Rewrite `hb'` using `[hb]`. Assume the negation of the conclusion as `hne`.
+
+Rewrite `hb'` using `[if_neg (Ne.symm hne)]`. Conclude with `one_ne_zero hb'`. Use `((hR γ w hγ).union (S1 ∪ S2).finite_toSet).subset ?_` and prove the remaining obligations. Introduce `p hp`. Distinguish the cases in `hpS : p ∈ S1 ∪ S2`.
+
+Conclude with `Or.inr hpS`. Use `left`. Introduce `h`. Apply `hp` to reduce the goal to its premises. Rewrite using `[h, heq p hpS]`.
+-/
 theorem restricted_of {θ0 : ∀ p, Option ((M p).Cls D.R.rS)}
     (hL : LocOrbSum M δ u u') (hU : LocUnram M δ u u' θ0) (hR : ThRestricted M δ u u' F0 what₂ θ0)
     (hG : AtPtG u u' F0 what₂) :
@@ -203,12 +261,18 @@ theorem restricted_of {θ0 : ∀ p, Option ((M p).Cls D.R.rS)}
     apply hp
     rw [h, heq p hpS]
 
+/- English proof (translation)
+Distinguish the cases in `h : Multipliable f`. Conclude with `ge_of_tendsto' h.hasProd fun s => Finset.prod_nonneg fun i _ => hf i`. Rewrite using `[tprod_eq_one_of_not_multipliable h]`. Conclude with `zero_le_one`.
+-/
 theorem tprod_nonneg' {ι : Type*} (f : ι → ℝ) (hf : ∀ i, 0 ≤ f i) : 0 ≤ ∏' i, f i := by
   by_cases h : Multipliable f
   · exact ge_of_tendsto' h.hasProd fun s => Finset.prod_nonneg fun i _ => hf i
   · rw [tprod_eq_one_of_not_multipliable h]
     exact zero_le_one
 
+/- English proof (translation)
+Introduce and unpack `d ⟨Z, -, rfl⟩`. Conclude with `tprod_nonneg' _ fun p => by`. Unfold `CntLocal.densP Formalism.MainNotions.S.Loc.HermSp.dens`. Check the signs of the components of the expression.
+-/
 theorem dens_nonneg (L : CntLocal.LocSp D M) (ϖ : ∀ p : PlF D, 𝒪[(D.s.atP p).Fp]) :
     ∀ d ∈ DataInst.densSet L δ ϖ u u' F0 what₂, 0 ≤ d := by
   rintro d ⟨Z, -, rfl⟩
@@ -216,10 +280,18 @@ theorem dens_nonneg (L : CntLocal.LocSp D M) (ϖ : ∀ p : PlF D, 𝒪[(D.s.atP 
     unfold CntLocal.densP Formalism.MainNotions.S.Loc.HermSp.dens
     positivity
 
+/- English proof (translation)
+Introduce `w` and use `(TermDef.term_atPt_finite hfin hsig F0 what₂ hrows w).subset fun _ h => h.2`.
+-/
 theorem eligFinite_of (hfin : TermDef.TermsAtFinite D u u') (hsig : (VS D).SigOK) (hrows : IsRowReps D F0 what₂) :
     EligFinite u u' F0 what₂ := fun w =>
   (TermDef.term_atPt_finite hfin hsig F0 what₂ hrows w).subset fun _ h => h.2
 
+/- English proof (translation)
+Take `⟨hL, hK, hC, hP, hQ, hNR, hT, θ0, hU, hR⟩` from `h`. Establish `hD` using `dnInDens_of hNR hrows`. Establish `hG` using `atPtG_holds u u' F0 what₂`. Use `⟨dens_nonneg L ϖ, thT M δ, dnT M δ L ϖ, restricted_of hL hU hR hG, fun γ w hγ => ?_, partnerSumC_of hL hU hR hK hF (partnerTupleSum_of hU hR hC hP), fiberCntC_of hnc hϖ hL hU hR hF (fiberTupleSum_of hU hR hC hQ) hT⟩` and prove the remaining obligations. Take `⟨Λ, hΛ, hne⟩` from `hD γ w hγ`.
+
+Conclude with `⟨zT γ, ⟨Λ, hΛ, hne⟩, rfl⟩`.
+-/
 theorem rowsDatum_at {L : CntLocal.LocSp D M} (h : CutAt M δ L u u' F0 what₂) (hF : EligFinite u u' F0 what₂)
     (hrows : IsRowReps D F0 what₂)
     (ϖ : ∀ p : PlF D, 𝒪[(D.s.atP p).Fp]) (hϖ : ∀ p, Irreducible (ϖ p))
@@ -243,6 +315,9 @@ theorem rowsDatum_at {L : CntLocal.LocSp D M} (h : CutAt M δ L u u' F0 what₂)
 
 end Pass
 
+/- English proof (translation)
+Introduce `hsig δ M hA L u u' hc F0 what₂ hRo ϖ hϖ nc hnc`. Conclude with `rowsDatum_at (h hsig δ M hA L u u' hc F0 what₂ hRo) (eligFinite_of (Formalism.L2.SG.Closed.TermsAtFinite_holds D u u') hsig hRo) hRo ϖ hϖ nc hnc`.
+-/
 theorem rowsDatum_of {D : Formalism.BasicNotions.D7}
     (h : (VS D).SigOK → ∀ (δ : ∀ p : PlF D, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep),
       (∀ p, Agree δ M p) → ∀ (L : CntLocal.LocSp D M) (u u' : D.what₂.Word),

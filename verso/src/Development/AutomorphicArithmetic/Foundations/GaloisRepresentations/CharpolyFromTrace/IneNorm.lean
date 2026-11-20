@@ -10,11 +10,25 @@ open GlobalTheory.GalCut GlobalTheory.UnitaryBC GlobalTheory.PRep GlobalTheory.S
 section
 variable {E M Ω : Type} [Field E] [NumberField E] [Field M] [NumberField M] [Field Ω] [Algebra E M] [Algebra E Ω] [Algebra M Ω] [IsScalarTower E M Ω]
 
+/- English proof (translation)
+The claim follows from `(Iff.rfl)`.
+-/
 private theorem res_mem_Ine_iff (A : ValuationSubring Ω) (σ : G M Ω) :
     (AlgEquiv.restrictScalarsHom E σ : G E Ω) ∈ Ine (F := E) A ↔ σ ∈ Ine (F := M) A := (Iff.rfl)
 
 end
 
+/- English proof (translation)
+Introduce `E M Ω _ _ _ _ _ _ _ _ _ _ _ A v w _ h h' hfix art art' ha ha'`. Establish `hl : ∀ s : Ine (F` using `E) A, ∃ t : G M Ω, AlgEquiv.restrictScalarsHom E t = (s : G E Ω) := by`. Introduce `s`. Conclude with `⟨{ (s : G E Ω) with commutes' := fun x => hfix s s.2 x }, by ext x; rfl⟩`. Establish `hr : ∀ t : Ine (F` using `M) A, (AlgEquiv.restrictScalarsHom E (t : G M Ω) : G E Ω) ∈ Ine (F := E) A := fun t => (res_mem_Ine_iff (E := E) (M := M) A (t : G M Ω)).2 t.2`.
+
+Take `⟨r, hrv⟩ : ∃ r : Ine (F` from `M) A →* Ine (F := E) A, ∀ t, (r t : G E Ω) = AlgEquiv.restrictScalarsHom E (t : G M Ω) := ⟨MonoidHom.codRestrict ((AlgEquiv.restrictScalarsHom E).comp (Ine (F := M) A).subtype) (Ine (F := E) A) hr, fun t => rfl⟩`. Establish `hbij : Function.Bijective r`. Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use extensionality with `x`. Establish `hab'` using `congrArg Subtype.val hab`. Rewrite `hab'` using `[hrv, hrv]`. Conclude with `DFunLike.congr_fun hab' x`. Introduce `s`.
+
+Take `⟨t, ht⟩` from `hl s`. Establish `htm : t ∈ Ine (F` using `M) A := (res_mem_Ine_iff (E := E) (M := M) A t).1 (ht ▸ s.2)`. Conclude with `⟨⟨t, htm⟩, Subtype.ext ((hrv _).trans ht)⟩`. Take `⟨e, he⟩ : ∃ e : Ine (F` from `E) A ≃* Ine (F := M) A, ∀ s, r (e s) = s := ⟨(MulEquiv.ofBijective r hbij).symm, fun s => (MulEquiv.ofBijective r hbij).apply_symm_apply s⟩`. Establish `key : ∀ s, (AlgEquiv.restrictScalarsHom E ((e s : Ine (F` using `M) A) : G M Ω) : G E Ω) = s := by`.
+
+Introduce `s`. Rewrite using `[← hrv, he]`. Use `⟨e, key, fun s => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.ArtinNormU.localArtin_normU E M Ω A v w h h' art art' ha ha' _ _ (fun z => (DFunLike.congr_fun (key s) z).symm)`.
+-/
 theorem UpperTheory.Gal.NearKilling.ineNorm :
     IneNorm := by
   intro E M Ω _ _ _ _ _ _ _ _ _ _ _ A v w _ h h' hfix art art' ha ha'

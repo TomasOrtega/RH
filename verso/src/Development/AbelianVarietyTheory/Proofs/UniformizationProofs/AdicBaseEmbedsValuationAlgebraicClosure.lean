@@ -24,6 +24,9 @@ section RationalValues
 
 variable {Γ : Type*} [LinearOrderedCommGroupWithZero Γ]
 
+/- English proof (translation)
+Establish `e1 : a ^ (n * n') = t ^ (m * n')` using `by rw [pow_mul, ha, zpow_mul, zpow_natCast]`. Establish `e2 : b ^ (n * n') = t ^ (m' * n)` using `by rw [mul_comm n, pow_mul, hb, zpow_mul, zpow_natCast]`. Rewrite using `[← pow_le_pow_iff_left₀ zero_le' zero_le' (Nat.mul_pos hn hn').ne', e1, e2, zpow_le_zpow_iff_right_of_lt_one₀ h0 h1, div_le_div_iff₀ (by exact_mod_cast hn) (by exact_mod_cast hn')]`. Use `norm_cast`.
+-/
 theorem le_iff_of_pow_eq_zpow {t a b : Γ} (h0 : 0 < t) (h1 : t < 1) {n n' : ℕ} (hn : 0 < n)
     (hn' : 0 < n') {m m' : ℤ} (ha : a ^ n = t ^ m) (hb : b ^ n' = t ^ m') :
     b ≤ a ↔ (m : ℚ) / n ≤ (m' : ℚ) / n' := by
@@ -34,6 +37,27 @@ theorem le_iff_of_pow_eq_zpow {t a b : Γ} (h0 : 0 < t) (h1 : t < 1) {n n' : ℕ
       (by exact_mod_cast hn')]
   norm_cast
 
+/- English proof (translation)
+Use `choose! n m hn hnm using h`. Set `f : F → WithTop ℚ` to `fun x => if x = 0 then ⊤ else (((m x : ℚ) / n x : ℚ) : WithTop ℚ)`. Establish `f0 : f 0 = ⊤` using `if_pos rfl`. Establish `key : ∀ (x : F) (a : ℕ) (b : ℤ), 0 < a → w x ^ a = t ^ b → f x = (((b : ℚ) / a : ℚ) : WithTop ℚ)`. Introduce `x a b ha hab`.
+
+Establish `hx : x ≠ 0`. Introduce and unpack `rfl`. Rewrite `hab` using `[map_zero, zero_pow ha.ne']`. Conclude with `(zpow_pos h0 b).ne hab`. Simplify using `only [f, if_neg hx, WithTop.coe_inj]`.
+
+Conclude with `le_antisymm ((le_iff_of_pow_eq_zpow h0 h1 (hn x hx) ha (hnm x hx) hab).1 le_rfl) ((le_iff_of_pow_eq_zpow h0 h1 ha (hn x hx) hab (hnm x hx)).1 le_rfl)`. Establish `mono : ∀ x y : F, w y ≤ w x → f x ≤ f y`. Introduce `x y hxy`. Distinguish the cases in `hy : y = 0`. Rewrite using `[hy, f0]`.
+
+Conclude with `le_top`. Establish `hx : x ≠ 0`. Introduce and unpack `rfl`. Rewrite `hxy` using `[map_zero, le_zero_iff, Valuation.zero_iff]`. Conclude with `hy hxy`.
+
+Simplify using `only [f, if_neg hx, if_neg hy, WithTop.coe_le_coe]`. Conclude with `(le_iff_of_pow_eq_zpow h0 h1 (hn x hx) (hn y hy) (hnm x hx) (hnm y hy)).1 hxy`. Use `⟨AddValuation.of f f0 ?_ ?_ ?_, fun x b hb => ?_⟩` and prove the remaining obligations. Rewrite using `[key 1 1 0 one_pos (by simp)]`. Simplify using the standard rewrite rules.
+
+Introduce `x y`. Break down `le_max_iff.1 (w.map_add x y) with h | h` into its components or cases. Conclude with `min_le_of_left_le (mono _ _ h)`. Conclude with `min_le_of_right_le (mono _ _ h)`. Introduce `x y`.
+
+Distinguish the cases in `hx : x = 0`. Rewrite using `[hx, MulZeroClass.zero_mul, f0, top_add]`. Distinguish the cases in `hy : y = 0`. Rewrite using `[hy, MulZeroClass.mul_zero, f0, add_top]`. Establish `hx'` using `hn x hx`.
+
+Establish `hy'` using `hn y hy`. Rewrite using `[key (x * y) (n x * n y) (m x * n y + m y * n x) (Nat.mul_pos hx' hy') (by`. Rewrite using `[map_mul, mul_pow, pow_mul, mul_comm (n x), pow_mul, hnm x hx, hnm y hy, zpow_add₀ h0.ne', zpow_mul, zpow_mul, zpow_natCast, zpow_natCast])]`. Simplify using `only [f, if_neg hx, if_neg hy, ← WithTop.coe_add, WithTop.coe_inj]`. Establish `: (n x : ℚ) ≠ 0` using `by exact_mod_cast hx'.ne'`.
+
+Establish `: (n y : ℚ) ≠ 0` using `by exact_mod_cast hy'.ne'`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Express the relevant statement in the definitionally equal form `f x = _`. Rewrite using `[key x 1 b one_pos (by simpa using hb)]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem exists_ratAddValuation_of_pow_eq_zpow {F : Type*} [Field F] (w : Valuation F Γ) {t : Γ}
     (h0 : 0 < t) (h1 : t < 1) (h : ∀ x : F, x ≠ 0 → ∃ (n : ℕ) (m : ℤ), 0 < n ∧ w x ^ n = t ^ m) :
     ∃ v : AddValuation F (WithTop ℚ), ∀ (x : F) (m : ℤ), w x = t ^ m →
@@ -88,6 +112,21 @@ theorem exists_ratAddValuation_of_pow_eq_zpow {F : Type*} [Field F] (w : Valuati
     rw [key x 1 b one_pos (by simpa using hb)]
     simp
 
+/- English proof (translation)
+Take `⟨p, hp0, hp⟩` from `hx`. Set `g : ℕ → F` to `fun i => algebraMap K F (p.coeff i) * x ^ i`. Establish `hsum : ∑ i ∈ p.support, g i = 0`. Rewrite `hp` using `[Polynomial.aeval_def, Polynomial.eval₂_eq_sum, Polynomial.sum_def]`. Conclude with `hp`.
+
+Establish `hc : ∀ i ∈ p.support, w (algebraMap K F (p.coeff i)) ≠ 0` using `fun i hi => by`. Simplify using `using hi`. Establish `hw : w x ≠ 0` using `by simpa using hx0`. Establish `aux : ∀ i ∈ p.support, ∀ j ∈ p.support, j < i → w (g i) = w (g j) → ∃ (n : ℕ) (c : K), 0 < n ∧ c ≠ 0 ∧ w x ^ n = w (algebraMap K F c)`. Introduce `i hi j hj hji e`.
+
+Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_lt hji`. Use `⟨d + 1, p.coeff j / p.coeff (j + d + 1), Nat.succ_pos d, div_ne_zero (Polynomial.mem_support_iff.1 hj) (Polynomial.mem_support_iff.1 hi), ?_⟩` and prove the remaining obligations. Simplify using `only [g, map_mul, map_pow] at e`. Rewrite using `[map_div₀, map_div₀, eq_div_iff (hc _ hi)]`. Apply `mul_right_cancel₀ (pow_ne_zero j hw)` to reduce the goal to its premises.
+
+Rewrite using `[← e, _root_.add_assoc j, pow_add (w x) j]`. The two sides agree by associativity and commutativity. Take `⟨i, hi, hmax⟩` from `p.support.exists_max_image (fun i => w (g i)) (Polynomial.support_nonempty.2 hp0)`. Assume the negation of the conclusion as `hne`. Establish `hlt : ∀ j ∈ p.support \ {i}, w (g j) < w (g i)`.
+
+Introduce `j hj`. Rewrite `hj` using `[Finset.mem_sdiff, Finset.mem_singleton]`. Use `lt_of_le_of_ne (hmax j hj.1) fun e => hne ?_` and prove the remaining obligations. Break down `lt_or_gt_of_ne hj.2 with h | h` into its components or cases. Conclude with `aux i hi j hj.1 h e.symm`.
+
+Conclude with `aux j hj.1 i hi h e`. Establish `hgi : w (g i) ≠ 0`. Simplify using `only [g, map_mul, map_pow]`. Conclude with `mul_ne_zero (hc i hi) (pow_ne_zero i hw)`. Use `w.map_sum_eq_of_lt hi hlt` as an intermediate fact.
+
+Rewrite `this` using `[hsum, map_zero]`. Conclude with `hgi this.symm`.
+-/
 theorem exists_valuation_pow_eq_of_isAlgebraic {K F : Type*} [Field K] [Field F] [Algebra K F]
     (w : Valuation F Γ) {x : F} (hx : IsAlgebraic K x) (hx0 : x ≠ 0) :
     ∃ (n : ℕ) (c : K), 0 < n ∧ c ≠ 0 ∧ w x ^ n = w (algebraMap K F c) := by
@@ -130,6 +169,17 @@ theorem exists_valuation_pow_eq_of_isAlgebraic {K F : Type*} [Field K] [Field F]
 
 end RationalValues
 
+/- English proof (translation)
+Set `K` to `FractionRing V`. Set `f : V →+* F` to `(algebraMap K F).comp (algebraMap V K)`. Establish `hf : Function.Injective f` using `(algebraMap K F).injective.comp (IsFractionRing.injective V K)`. Take `⟨W, hW⟩` from `(LocalSubring.range f).exists_le_valuationSubring`. Take `⟨hW1, hW2⟩` from `(localSubring_range_le_valuationSubring_iff f W).1 hW`.
+
+Set `w` to `W.valuation`. Establish `h0 : 0 < w (f ϖ)`. Rewrite using `[Valuation.pos_iff]`. Conclude with `(map_ne_zero_iff _ hf).2 hϖ.ne_zero`. Establish `h1 : w (f ϖ) < 1` using `(W.mem_nonunits_iff).1 (hW2 ϖ hϖ.not_isUnit)`.
+
+Establish `hu : ∀ u : Vˣ, w (f u) = 1` using `fun u => W.valuation_unit (Units.map (f.codRestrict W hW1 : V →* W) u)`. Establish `hval : ∀ (c : K) (n : ℤ), HasVal ϖ c n → w (algebraMap K F c) = w (f ϖ) ^ n`. Introduce and unpack `c n ⟨u, rfl⟩`. Rewrite using `[map_mul, map_mul, map_zpow₀, map_zpow₀]`. Express the relevant statement in the definitionally equal form `w (f ϖ) ^ n * w (f u) = _`.
+
+Rewrite using `[hu, _root_.mul_one]`. Take `⟨v, hv⟩` from `exists_ratAddValuation_of_pow_eq_zpow w h0 h1 fun x hx => by`. Take `⟨n, c, hn, hc, e⟩` from `exists_valuation_pow_eq_of_isAlgebraic (K := K) w (Algebra.IsAlgebraic.isAlgebraic x) hx`. Take `⟨m, hm⟩` from `hasVal_of_ne_zero hϖ hc`. Conclude with `⟨n, m, hn, e.trans (hval c m hm)⟩`.
+
+Conclude with `⟨v, fun c n hc => hv _ n (hval c n hc)⟩`.
+-/
 theorem exists_valOver_of_isAlgebraic {V : Type} [CommRing V] [IsDomain V]
     [IsDiscreteValuationRing V] {ϖ : V} (hϖ : Irreducible ϖ) (F : Type) [Field F]
     [Algebra (FractionRing V) F] [Algebra.IsAlgebraic (FractionRing V) F] :
@@ -158,6 +208,11 @@ theorem exists_valOver_of_isAlgebraic {V : Type} [CommRing V] [IsDomain V]
     exact ⟨n, m, hn, e.trans (hval c m hm)⟩
   exact ⟨v, fun c n hc => hv _ n (hval c n hc)⟩
 
+/- English proof (translation)
+Distinguish the cases in `h : I = ⊥`. Set `K` to `FractionRing R`. Use `⟨PowerSeries K, inferInstance, inferInstance, inferInstance, (PowerSeries.C (R := K)).comp (algebraMap R K), ?_, PowerSeries.C_injective.comp (IsFractionRing.injective R K), by simp [h]⟩` and prove the remaining obligations. Rewrite using `[PowerSeries.maximalIdeal_eq_span_X]`. Use `infer_instance`.
+
+Take `⟨p, hp, hIp⟩` from `I.exists_le_maximal hI`. Use `hp.isPrime` as an intermediate fact. Take `⟨O, _, _, _, hO, φ, h1, h2⟩` from `exists_complete_discreteValuationRing_of_prime_lt (⊥ : Ideal R) p (lt_of_lt_of_le (bot_lt_iff_ne_bot.2 h) hIp)`. Conclude with `⟨O, inferInstance, inferInstance, inferInstance, φ, hO, (RingHom.injective_iff_ker_eq_bot φ).2 h1, Ideal.map_le_iff_le_comap.2 (h2 ▸ hIp)⟩`.
+-/
 theorem exists_complete_discreteValuationRing_map_le {R : Type} [CommRing R] [IsDomain R]
     [IsNoetherianRing R] {I : Ideal R} (hI : I ≠ ⊤) :
     ∃ (V : Type) (_ : CommRing V) (_ : IsDomain V) (_ : IsDiscreteValuationRing V) (φ : R →+* V),
@@ -176,6 +231,9 @@ theorem exists_complete_discreteValuationRing_map_le {R : Type} [CommRing R] [Is
     exact ⟨O, inferInstance, inferInstance, inferInstance, φ, hO,
       (RingHom.injective_iff_ker_eq_bot φ).2 h1, Ideal.map_le_iff_le_comap.2 (h2 ▸ hIp)⟩
 
+/- English proof (translation)
+Use `⟨fun R _ _ _ I hR => ?_, fun V _ _ _ ϖ hϖ => exists_valOver_of_isAlgebraic hϖ _⟩` and prove the remaining obligations. Take `⟨hN, -, -, hc⟩` from `hR`. Use `exists_complete_discreteValuationRing_map_le ?_` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `not_subsingleton R (IsHausdorff.subsingleton hc.toIsHausdorff)`.
+-/
 theorem adic_base_embeds_valuation_algebraic_closure :
     (∀ (R : Type) [CommRing R] [IsDomain R] [CharZero R] (I : Ideal R), AdmBase R I → ∃ (V : Type) (_ : CommRing V) (_ : IsDomain V) (_ : IsDiscreteValuationRing V) (φ : R →+* V), IsAdicComplete (maximalIdeal V) V ∧ Function.Injective φ ∧ I.map φ ≤ maximalIdeal V) ∧ ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (ϖ : V), Irreducible ϖ → ∃ v : AddValuation (AlgebraicClosure (FractionRing V)) (WithTop ℚ), ValOver ϖ (AlgebraicClosure (FractionRing V)) v := by
   refine ⟨fun R _ _ _ I hR => ?_, fun V _ _ _ ϖ hϖ => exists_valOver_of_isAlgebraic hϖ _⟩

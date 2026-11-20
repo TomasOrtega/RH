@@ -14,6 +14,9 @@ variable {R R' : Type} [CommRing R] [CommRing R'] {X X' : Scheme.{0}} (φ : X' �
 
 def preU (U : X.affineOpens) : X'.affineOpens := ⟨φ ⁻¹ᵁ U.1, U.2.preimage φ⟩
 
+/- English proof (translation)
+The claim follows from `fun _ _ h _ hx ↦ h hx`.
+-/
 theorem preU_mono : Monotone (preU φ) := fun _ _ h _ hx ↦ h hx
 
 def prePair (U : X.affineOpens) : Pair φ := ⟨(preU φ U, U), le_rfl⟩
@@ -37,6 +40,9 @@ def preCoef (h : φ ≫ s = s' ≫ spMap σ) : CoefMap σ (OAff s) (OPre φ s') 
       ⟨preU_mono φ (leOfHom a.unop), leOfHom a.unop⟩)).op b
   smul U := semiHom_secPull h (prePair φ U.unop)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (U : X.affineOpens) : preU (𝟙 X) U = U := rfl
 
 end GlobalTheory.AbCoh

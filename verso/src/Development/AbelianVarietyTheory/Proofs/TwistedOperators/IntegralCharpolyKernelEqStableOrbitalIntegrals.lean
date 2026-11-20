@@ -20,6 +20,13 @@ namespace GlobalTheory.TrEll
 
 open GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt (ratClass classKernel)
 
+/- English proof (translation)
+Set `e : {δ | IsConj g δ} → ratClass ι.range (ι g)` to `fun δ => ⟨ι δ, by`. Take `⟨c, hc⟩` from `isConj_iff.1 δ.2`. Conclude with `⟨ι c⁻¹, ⟨_, rfl⟩, by rw [← hc]; simp⟩⟩`. Establish `he : Function.Bijective e`. Use `⟨fun a b h => Subtype.ext (hι (congrArg Subtype.val h)), ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨_, _, ⟨c, rfl⟩, rfl⟩`. Conclude with `⟨⟨c⁻¹ * g * c, isConj_iff.2 ⟨c⁻¹, by simp⟩⟩, Subtype.ext (by simp [e])⟩`. Rewrite using `[classKernel, ← (Equiv.ofBijective e he).tsum_eq fun δ => f (x⁻¹ * δ * x)]`. Use `(tsum_subtype {δ | IsConj g δ} fun δ => f (x⁻¹ * ι δ * x)).trans (tsum_eq_sum fun δ hδ => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+
+Conclude with `hδ (hT δ fun h0 => h (by simp [indicator, h0]))`.
+-/
 theorem classKernel_eq_sum {G H : Type} [Group G] [Group H] (ι : H →* G) (hι : Function.Injective ι) (g : H) (f : G → ℂ)
     (x : G) (T : Finset H) (hT : ∀ δ, f (x⁻¹ * ι δ * x) ≠ 0 → δ ∈ T) :
     classKernel ι.range (ι g) f x = ∑ δ ∈ T, {δ | IsConj g δ}.indicator (fun δ => f (x⁻¹ * ι δ * x)) δ := by
@@ -35,6 +42,13 @@ theorem classKernel_eq_sum {G H : Type} [Group G] [Group H] (ι : H →* G) (hι
   by_contra h
   exact hδ (hT δ fun h0 => h (by simp [indicator, h0]))
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_congr rfl fun i _ => classKernel_eq_sum ι hι (g i) f x hx.toFinset fun δ h => hx.mem_toFinset.2 h, Finset.sum_comm]`. Use `(finsum_set_coe_eq_finsum_mem (f := fun δ => f (x⁻¹ * ι δ * x)) {δ | p δ}).trans ?_` and prove the remaining obligations. Rewrite using `[finsum_mem_def, finsum_eq_sum_of_support_subset (s := hx.toFinset) _ fun δ h => by`. Simplify using `using fun h0 => h (by simp [indicator, h0])]`. Use `Finset.sum_congr rfl fun δ hδ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `h : p δ`. Take `⟨i, hi⟩` from `(hp δ).1 h`. Establish `hiS : i ∈ S`. Assume the negation of the conclusion as `hn`. Take `⟨c, hc⟩` from `isConj_iff.1 hi`.
+
+Use `hx.mem_toFinset.1 hδ ?_` and prove the remaining obligations. Rewrite using `[← hS i hn ((ι c)⁻¹ * x), ← hc]`. Simplify using `[mul_assoc]`. Rewrite using `[indicator_of_mem (show δ ∈ {δ | p δ} from h), Finset.sum_eq_single_of_mem i hiS fun j _ hj => indicator_of_notMem (s := {δ | IsConj (g j) δ}) (fun (hc : IsConj (g j) δ) => hj (hg j i (hc.trans hi.symm))) _, indicator_of_mem (show δ ∈ {δ | IsConj (g i) δ} from hi)]`. Rewrite using `[indicator_of_notMem (show δ ∉ {δ | p δ} from h), Finset.sum_eq_zero fun j _ => indicator_of_notMem (s := {δ | IsConj (g j) δ}) (fun (hc : IsConj (g j) δ) => h ((hp δ).2 ⟨j, hc⟩)) _]`.
+-/
 theorem finsum_eq_sum_classKernel {G H I : Type} [Group G] [Group H] (ι : H →* G) (hι : Function.Injective ι)
     (p : H → Prop) (g : I → H) (hp : ∀ δ, p δ ↔ ∃ i, IsConj (g i) δ) (hg : ∀ i j, IsConj (g i) (g j) → i = j)
     (f : G → ℂ) (S : Finset I) (hS : ∀ i ∉ S, ∀ x, f (x⁻¹ * ι (g i) * x) = 0) (x : G)
@@ -61,6 +75,9 @@ theorem finsum_eq_sum_classKernel {G H I : Type} [Group G] [Group H] (ι : H →
   · rw [indicator_of_notMem (show δ ∉ {δ | p δ} from h), Finset.sum_eq_zero fun j _ =>
       indicator_of_notMem (s := {δ | IsConj (g j) δ}) (fun (hc : IsConj (g j) δ) => h ((hp δ).2 ⟨j, hc⟩)) _]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Use `(tsum_congr ?_).trans tsum_zero` and prove the remaining obligations. Introduce and unpack `⟨_, c, -, rfl⟩`. Rewrite using `[← h (c * x)]`. Simplify using `[mul_assoc]`.
+-/
 theorem classKernel_eq_zero {G : Type} [Group G] (Γ : Subgroup G) (γ : G) (f : G → ℂ) (h : ∀ x, f (x⁻¹ * γ * x) = 0) :
     classKernel Γ γ f = 0 := by
   funext x
@@ -69,6 +86,9 @@ theorem classKernel_eq_zero {G : Type} [Group G] (Γ : Subgroup G) (γ : G) (f :
   rw [← h (c * x)]
   simp [mul_assoc]
 
+/- English proof (translation)
+Establish `: Finite {v | ¬ ∀ i ∈ A, (i.1.1 v).1 = 1}` using `eventually_cofinite.1 h`. Use `Set.Finite.of_finite_image (f := fun i : {q // p q} => ((fun v : {v | ¬ ∀ i ∈ A, (i.1.1 v).1 = 1} => i.1.1 v), i.1.2)) (Set.toFinite _) fun i hi j hj e => Subtype.ext (Prod.ext (funext fun v => ?_) (congrArg Prod.snd e :))` and prove the remaining obligations. Distinguish the cases in `hv : ∀ i ∈ A, (i.1.1 v).1 = 1`. Conclude with `Subtype.ext ((hv i hi).trans (hv j hj).symm)`. Conclude with `congrFun (congrArg Prod.fst e) ⟨v, hv⟩`.
+-/
 theorem finite_of_eventually_eq_one {V Y : Type} [Finite Y] {C : V → Type} [∀ v, One (C v)] [∀ v, Finite (C v)]
     {X : ∀ v, Set (C v)} {p : (∀ v, X v) × Y → Prop} (A : Set {q // p q})
     (h : ∀ᶠ v in cofinite, ∀ i ∈ A, (i.1.1 v).1 = 1) : A.Finite := by
@@ -86,6 +106,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {J : Matrix (Fin n) (Fin n) E} {L : Submodule (𝓞 E) (Fin n → E)} [Submodule.IsLattice E L]
   {fa : ∀ w, GArch σ J w → ℂ} {ff : ∀ v, GLoc σ J v → ℂ}
 
+/- English proof (translation)
+Use `⟨_, (infFinEquiv σ J).toHomeomorph.isClosedEmbedding.isCompact_preimage (IsCompact.prod ((infContEquivPi σ J).toHomeomorph.isClosedEmbedding.isCompact_preimage (isCompact_univ_pi ha)) hf.tensorFin_mem.2), fun y hy => ?_⟩` and prove the remaining obligations. Rewrite `hy` using `[tensor_eq_infFin]`. Conclude with `⟨fun w _ => subset_tsupport _ (Finset.prod_ne_zero_iff.1 (left_ne_zero_of_mul hy) w (Finset.mem_univ w)), subset_tsupport _ (right_ne_zero_of_mul hy)⟩`.
+-/
 theorem exists_isCompact_tensor (ha : ∀ w, HasCompactSupport (fa w)) (hf : IsFinFamily σ J L ff) :
     ∃ C, IsCompact C ∧ ∀ y, tensor σ J fa ff y ≠ 0 → y ∈ C := by
   refine ⟨_, (infFinEquiv σ J).toHomeomorph.isClosedEmbedding.isCompact_preimage (IsCompact.prod
@@ -95,6 +118,9 @@ theorem exists_isCompact_tensor (ha : ∀ w, HasCompactSupport (fa w)) (hf : IsF
   exact ⟨fun w _ => subset_tsupport _ (Finset.prod_ne_zero_iff.1 (left_ne_zero_of_mul hy) w (Finset.mem_univ w)),
     subset_tsupport _ (right_ne_zero_of_mul hy)⟩
 
+/- English proof (translation)
+Rewrite `hy` using `[tensor_eq_infFin]`. Simplify `(hf.tensorFin_ne_zero_iff _).1 (right_ne_zero_of_mul hy) v` using `only [projFinLoc_projFin]`.
+-/
 theorem ne_zero_of_tensor (hf : IsFinFamily σ J L ff) {y : GAd σ J} (hy : tensor σ J fa ff y ≠ 0) (v) :
     ff v (proj σ J v y) ≠ 0 := by
   rw [tensor_eq_infFin] at hy
@@ -102,6 +128,9 @@ theorem ne_zero_of_tensor (hf : IsFinFamily σ J L ff) {y : GAd σ J} (hy : tens
 
 omit [NumberField F] [NumberField E] in
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `isConj_iff.1 h`. Establish `: (c * γ * c⁻¹).1.1 = c.1.1 * γ.1.1 * (c.1⁻¹).1` using `rfl`. Rewrite using `[this, Matrix.coe_units_inv, Matrix.charpoly_units_conj]`.
+-/
 theorem charpoly_eq_of_isConj {γ δ : GRat σ J} (h : IsConj γ δ) : δ.1.1.charpoly = γ.1.1.charpoly := by
   obtain ⟨c, rfl⟩ := isConj_iff.1 h
   have : (c * γ * c⁻¹).1.1 = c.1.1 * γ.1.1 * (c.1⁻¹).1 := rfl
@@ -109,6 +138,29 @@ theorem charpoly_eq_of_isConj {γ δ : GRat σ J} (h : IsConj γ δ) : δ.1.1.ch
 
 end Adelic
 
+/- English proof (translation)
+Introduce `E _ _ F _ σ hCM hun r P J hJ L _ μa μf μ hμ fa ff hfa hff dta dtf dt hdt`. Take `⟨H1, H2, H3⟩` from `GlobalTheory.T.rational_unitary_classes_iff_local_class_families E F σ hCM hun r P J hJ`. Take `⟨Ff, Fa⟩` from `GlobalTheory.T.finite_unitaryTorusNormClasses_at_all_places F E σ hCM r P`. Establish `hae` using `GlobalTheory.T.eventually_unitaryTorus_orbitalClass_trivial_local F E σ hCM r P J hJ L`. Establish `hcl` using `GlobalTheory.T.rationalClassTerm_eq_volume_mul_prod_orbitalIntegrals F E σ hCM r P J hJ L μa μf μ hμ fa ff hfa hff dta dtf dt hdt`.
+
+Set `I` to `{p : (∀ v : HeightOneSpectrum (𝓞 F), XSet P (Fv F v) J) × (∀ w : InfinitePlace F, XSet P w.Completion J) // ∀ᶠ v in cofinite, (p.1 v).1 = 1}`. Take `⟨hsupp, hsum⟩` from `finsum_restrictedFamily_eq_prod_finsum (HeightOneSpectrum (𝓞 F)) (InfinitePlace F) (fun v => Cls P (Fv F v)) (fun v => XSet P (Fv F v) J) (fun w => XSet P w.Completion J) (fun v => Set.toFinite _) (fun v => orbCls (μf v) (dtf v) (ff v)) (fun w => orbCls (μa w) (dta w) (fa w)) (by …`. Rewrite using `[h2]`. Conclude with `⟨h1.1, h1.2.2.2 _ _ (hμ.haar_loc v) (IsRestrictedProd.haar_loc hdt v) h3 h4⟩)`. Use `choose g g1 g2 g3 using fun i : I => H3 (fun v => (i.1.1 v).1) (fun w => (i.1.2 w).1) (fun v => (i.1.1 v).2) (fun w => (i.1.2 w).2) i.2`.
+
+Establish `hp : ∀ δ : GRat σ J, δ.1.1.charpoly = P.1 ↔ ∃ i, IsConj (g i) δ` using `fun δ => by`. Use `⟨fun h => ?_, fun ⟨i, hi⟩ => (charpoly_eq_of_isConj hi).trans (g1 i)⟩` and prove the remaining obligations. Take `⟨a1, a2, a3⟩` from `H1 δ h`. Use `choose qf qf1 qf2 using a1`. Use `choose qa qa1 qa2 using a2`.
+
+Set `i : I` to `⟨(fun v => ⟨qf v, (qf1 v).mem⟩, fun w => ⟨qa w, (qa1 w).mem⟩), a3.mono fun v hv => (qf2 v 1 hv).symm⟩`. Use `⟨i, IsConj.symm ((H2 δ (g i) h (g1 i)).2 ⟨fun v q hq => ?_, fun w q hq => ?_⟩)⟩` and prove the remaining obligations. Rewrite using `[qf2 v q hq]`. Conclude with `g2 i v`. Rewrite using `[qa2 w q hq]`.
+
+Conclude with `g3 i w`. Establish `hg : ∀ i j, IsConj (g i) (g j) → i = j` using `fun i j h => by`. Take `⟨b1, b2⟩` from `(H2 _ _ (g1 i) (g1 j)).1 h`. Take `⟨a1, a2, -⟩` from `H1 _ (g1 j)`. Establish `e1 : ∀ v, i.1.1 v = j.1.1 v` using `fun v => Subtype.ext ((a1 v).unique (b1 v _ (g2 i v)) (g2 j v))`.
+
+Establish `e2 : ∀ w, i.1.2 w = j.1.2 w` using `fun w => Subtype.ext ((a2 w).unique (b2 w _ (g3 i w)) (g3 j w))`. Conclude with `Subtype.ext (Prod.ext (funext e1) (funext e2))`. Establish `hfin : {i : I | ∃ x, tensor σ J fa ff (x⁻¹ * ratEmb σ J (g i) * x) ≠ 0}.Finite`. Use `finite_of_eventually_eq_one _ ?_` and prove the remaining obligations. Use `filter_upwards [hae, hff.2] with v h1 h2`.
+
+Introduce and unpack `i ⟨x, hx⟩`. Establish `h3` using `ne_zero_of_tensor hff hx v`. Rewrite `h3` using `[h2, map_mul, map_mul, map_inv]`. Conclude with `h1.2.1 _ _ (g2 i v) ⟨_, by_contra fun hn => h3 (indicator_of_notMem hn _)⟩`. Establish `hS : ∀ i ∉ hfin.toFinset, ∀ x, tensor σ J fa ff (x⁻¹ * ratEmb σ J (g i) * x) = 0` using `fun i hi x =>`.
+
+Assume the negation of the conclusion as `fun h => hi (hfin.mem_toFinset.2 ⟨x, h⟩)`. Take `⟨C, hC, hC'⟩` from `exists_isCompact_tensor (fun w => (hfa w).2) hff`. Establish `hker0 : ∀ x, polKernel P J (tensor σ J fa ff) x = ∑ i ∈ hfin.toFinset, classKernel (ratPts σ J) (ratEmb σ J (g i)) (tensor σ J fa ff) x` using `fun x => by`. Rewrite using `[polKernel, ← range_ratEmb]`. Conclude with `finsum_eq_sum_classKernel (ratEmb σ J) (ratEmb_injective σ J) _ g hp hg _ _ hS x (((GlobalTheory.TrFinite.finite_charpoly_and_ratPts F E σ hCM r J C hC).2 x).subset fun δ h => hC' _ h)`.
+
+Establish `hker : descend (ratPts σ J) (polKernel P J (tensor σ J fa ff)) = fun q => ∑ i ∈ hfin.toFinset, descend (ratPts σ J) (classKernel (ratPts σ J) (ratEmb σ J (g i)) (tensor σ J fa ff)) q`. Use function extensionality and compare the values at `q`. Simplify using `only [descend, hker0]`. Establish `hi` using `fun i : I => hcl (g i) (g1 i) i.1.1 i.1.2 (g2 i) (g3 i)`. Rewrite using `[hker]`.
+
+Use `⟨integrable_finset_sum _ fun i _ => (hi i).1, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_finset_sum _ fun i _ => (hi i).1, Finset.sum_congr rfl fun i _ => (hi i).2, mul_assoc]`. Simplify using `only [Phi]`. Rewrite using `[← hsum, mul_finsum' _ _ hsupp]`. Use `(finsum_eq_sum_of_support_subset _ fun i hn => ?_).symm` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `h`. Use `hn ((hi i).2.symm.trans ?_)` and prove the remaining obligations. Rewrite using `[classKernel_eq_zero _ _ _ (hS i h)]`. Simplify using `only [descend, Pi.zero_apply, integral_zero]`.
+-/
 theorem integral_polKernel : ∀ (E : Type) [Field E] [NumberField E] (F : Subfield E) [NumberField F] (σ : E →ₐ[F] E), IsCMExt F E σ → Algebra.Unramified (𝓞 F) (𝓞 E) → ∀ (r : ℕ) (P : PPol σ r) (J : Matrix (Fin r) (Fin r) E), IsHermND σ J → ∀ (L : Submodule (𝓞 E) (Fin r → E)) [Submodule.IsLattice E L], ∀ μa μf μ, IsRestrictedProd σ J L μa μf μ → ∀ fa ff, (∀ w, Continuous (fa w) ∧ HasCompactSupport (fa w)) → IsFinFamily σ J L ff → ∀ dta dtf dt, IsTorusMeas P dta dtf dt → Integrable (descend (ratPts σ J) (polKernel P J (tensor σ J fa ff))) (quotMeasure (ratPts σ J) μ) ∧ ∫ q, descend (ratPts σ J) (polKernel P J (tensor σ J fa ff)) q ∂quotMeasure (ratPts σ J) μ = ((torVol P dt).toReal : ℂ) * (∏ᶠ v, Phi (J := J) (μf v) (dtf v) (ff v)) * ∏ w, Phi (J := J) (μa w) (dta w) (fa w) := by
   classical
   intro E _ _ F _ σ hCM hun r P J hJ L _ μa μf μ hμ fa ff hfa hff dta dtf dt hdt

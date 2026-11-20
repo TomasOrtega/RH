@@ -4,6 +4,11 @@ open IsLocalRing TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hsurj : Function.Surjective (IsScalarTower.toAlgHom k R F).kerSquareLift` using `fun x ↦ by`. Take `⟨y, rfl⟩` from `hs x`. Conclude with `⟨Ideal.Quotient.mk _ y, rfl⟩`. Establish `hnil : RingHom.ker (IsScalarTower.toAlgHom k R F).kerSquareLift.toRingHom ^ 2 = ⊥`. Rewrite using `[AlgHom.ker_kerSquareLift, Ideal.cotangentIdeal_square]`.
+
+Take `⟨l, hl⟩` from `(retractionKerCotangentToTensorEquivSection (R := k) hs).symm ⟨_, Algebra.FormallySmooth.comp_liftOfSurjective (AlgHom.id k F) _ hsurj ⟨2, hnil⟩⟩`. Conclude with `Function.LeftInverse.injective (g := l) fun x ↦ congr($hl x)`.
+-/
 theorem kerCotangentToTensor_injective_of_formallySmooth (k R F : Type*) [CommRing k] [CommRing R]
     [CommRing F] [Algebra k R] [Algebra k F] [Algebra R F] [IsScalarTower k R F]
     [Algebra.FormallySmooth k F] (hs : Function.Surjective (algebraMap R F)) :
@@ -18,6 +23,25 @@ theorem kerCotangentToTensor_injective_of_formallySmooth (k R F : Type*) [CommRi
     ⟨_, Algebra.FormallySmooth.comp_liftOfSurjective (AlgHom.id k F) _ hsurj ⟨2, hnil⟩⟩
   exact Function.LeftInverse.injective (g := l) fun x ↦ congr($hl x)
 
+/- English proof (translation)
+Introduce `Λ _ _ _ σ _ Q _ hQ x hx hd`. Use `haveI : Fintype σ := Fintype.ofFinite σ`. Set `R` to `Localization.AtPrime Q`. Set `F` to `ResidueField R`. Set `k` to `FractionRing Λ`.
+
+Establish `hunit : ∀ a : nonZeroDivisors Λ, IsUnit (algebraMap Λ R a)`. Introduce `a`. Rewrite using `[IsScalarTower.algebraMap_apply Λ (MvPolynomial σ Λ) R]`. Conclude with `IsLocalization.map_units R (M := Q.primeCompl) ⟨MvPolynomial.C a.1, fun h => nonZeroDivisors.coe_ne_zero a (hQ _ h)⟩`. Use `letI : Algebra k R := (IsLocalization.lift (M := nonZeroDivisors Λ) (S := k) hunit).toAlgebra`.
+
+Use `haveI : IsScalarTower Λ k R := IsScalarTower.of_algebraMap_eq (fun a => (IsLocalization.lift_eq (M := nonZeroDivisors Λ) (S := k) hunit a).symm)`. Use `letI : Algebra k F := ((algebraMap R F).comp (algebraMap k R)).toAlgebra`. Use `haveI : IsScalarTower k R F := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Use `haveI : IsScalarTower Λ k F := IsScalarTower.of_algebraMap_eq (fun a => by`. Rewrite using `[IsScalarTower.algebraMap_apply Λ R F, IsScalarTower.algebraMap_apply Λ k R]`.
+
+Use the proof step `rfl)`. Use `haveI : Algebra.EssFiniteType (MvPolynomial σ Λ) R := .of_isLocalization R Q.primeCompl`. Use `haveI : Algebra.EssFiniteType Λ R := .comp Λ (MvPolynomial σ Λ) R`. Use `haveI : Algebra.EssFiniteType R F := .of_surjective (Algebra.ofId R F) residue_surjective`. Use `haveI : Algebra.EssFiniteType Λ F := .comp Λ R F`.
+
+Use `haveI : Algebra.EssFiniteType k F := Algebra.EssFiniteType.of_comp Λ k F`. Use `haveI : Algebra.FormallySmooth k F := Algebra.FormallySmooth.of_perfectField`. Use `haveI : Algebra.FormallySmooth Λ k := Algebra.FormallySmooth.of_isLocalization (nonZeroDivisors Λ)`. Use `haveI : Algebra.FormallySmooth Λ F := Algebra.FormallySmooth.comp Λ k F`. Establish `hinj` using `kerCotangentToTensor_injective_of_formallySmooth Λ R F (residue_surjective)`.
+
+Establish `hker : RingHom.ker (algebraMap R F) = maximalIdeal R` using `ker_residue`. Establish `hmem : ∀ p ∈ Q, algebraMap (MvPolynomial σ Λ) R p ∈ RingHom.ker (algebraMap R F)`. Introduce `p hp`. Rewrite using `[hker]`. Conclude with `(IsLocalization.AtPrime.to_map_mem_maximal_iff R Q p).mpr hp`.
+
+Establish `hym` using `hmem x hx`. Establish `hD : KaehlerDifferential.D Λ (MvPolynomial σ Λ) x = ∑ s, MvPolynomial.pderiv s x • KaehlerDifferential.D Λ (MvPolynomial σ Λ) (MvPolynomial.X s)` using `by conv_lhs => rw [← (KaehlerDifferential.mvPolynomialBasis Λ σ).sum_repr (KaehlerDifferential.D Λ _ x)]`. Simplify using `[KaehlerDifferential.mvPolynomialBasis_repr_apply, KaehlerDifferential.mvPolynomialBasis_apply]`. Establish `h0 : KaehlerDifferential.kerCotangentToTensor Λ R F ((RingHom.ker (algebraMap R F)).toCotangent ⟨_, hym⟩) = 0`. Rewrite using `[KaehlerDifferential.kerCotangentToTensor_toCotangent]`.
+
+Rewrite using `[← KaehlerDifferential.map_D Λ Λ (MvPolynomial σ Λ) R, hD, map_sum, tmul_sum]`. Use `Finset.sum_eq_zero fun s _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smul_of_tower, ← algebraMap_smul R, ← smul_tmul, Algebra.smul_def, mul_one, RingHom.mem_ker.mp (hmem _ (hd s)), zero_tmul]`. Establish `h2 : algebraMap (MvPolynomial σ Λ) R x ∈ RingHom.ker (algebraMap R F) ^ 2` using `(Ideal.toCotangent_eq_zero _ _).mp (hinj (h0.trans (map_zero _).symm))`. Rewrite `h2` using `[hker, ← Localization.AtPrime.map_eq_maximalIdeal, ← Ideal.map_pow]`.
+
+Take `⟨m, hm, hmx⟩` from `(IsLocalization.algebraMap_mem_map_algebraMap_iff (M := Q.primeCompl) (S := R) _ _).mp h2`. Conclude with `⟨m, hm, hmx⟩`.
+-/
 theorem mem_sq_localization_of_pderiv_mem :
     ∀ (Λ : Type) [CommRing Λ] [IsDomain Λ] [PerfectField (FractionRing Λ)] (σ : Type) [Finite σ] (Q : Ideal (MvPolynomial σ Λ)) [Q.IsPrime], (∀ a : Λ, MvPolynomial.C a ∈ Q → a = 0) → ∀ x ∈ Q, (∀ s, MvPolynomial.pderiv s x ∈ Q) → ∃ g, g ∉ Q ∧ g * x ∈ Q ^ 2 := by
   intro Λ _ _ _ σ _ Q _ hQ x hx hd

@@ -30,6 +30,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h1 : G⁻¹ * Cᴴ * J * C = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc Cᴴ, h, Matrix.nonsing_inv_mul _ hG]`. Generalize the expression as in `G⁻¹ * Cᴴ * J = C' at h1`. Establish `h2 : C * C' = 1` using `(Matrix.mul_eq_one_comm_of_equiv e).1 h1`. Establish `h3 : C * (C' * J * C) = J * C` using `by rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, h2, Matrix.one_mul]`.
+
+Establish `h4 : G * (C' * J * C) = Cᴴ * C`. Rewrite using `[← h, Matrix.mul_assoc, h3, Matrix.mul_assoc, ← Matrix.mul_assoc J, hJ, Matrix.one_mul]`. Use `⟨C' * J * C, ⟨?_, ?_, ?_⟩, h3⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc (C' * J), h3, Matrix.mul_assoc C', ← Matrix.mul_assoc J, hJ, Matrix.one_mul, h1]`. Rewrite using `[Matrix.mul_assoc, h4, ← Matrix.mul_assoc, ← Matrix.conjTranspose_mul, h3, Matrix.conjTranspose_mul, hJ', h]`.
+
+Rewrite using `[h4]`. Use `Matrix.PosDef.conjTranspose_mul_self _ fun x y hxy => ?_` and prove the remaining obligations. Use `congrArg (C' *ᵥ ·) hxy` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_mulVec, h1]`.
+-/
 theorem exists_cartan {m : Type} [Fintype m] [DecidableEq m] {n : ℕ} (e : Fin n ≃ m) {C : Matrix m (Fin n) ℂ}
     {J : Matrix m m ℂ} {G : Matrix (Fin n) (Fin n) ℂ} (hJ : J * J = 1) (hJ' : Jᴴ = J) (hG : IsUnit G.det)
     (h : Cᴴ * J * C = G) : ∃ s, IsCartanInv G s ∧ C * s = J * C := by
@@ -48,11 +55,19 @@ theorem exists_cartan {m : Type} [Fintype m] [DecidableEq m] {n : ℕ} (e : Fin 
     have := congrArg (C' *ᵥ ·) hxy
     simpa [Matrix.mulVec_mulVec, h1] using this
 
+/- English proof (translation)
+Establish `: (gramAt D V τ).det = tauE D τ V.gram.det` using `(RingHom.map_det _ _).symm`. Rewrite using `[this]`. Conclude with `(GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.gram_det_isUnit V).map _`.
+-/
 theorem gramAt_unit (V : HSp D) (τ : D.what₂.Tau) : IsUnit (gramAt D V τ).det := by
   have : (gramAt D V τ).det = tauE D τ V.gram.det := (RingHom.map_det _ _).symm
   rw [this]
   exact (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.gram_det_isUnit V).map _
 
+/- English proof (translation)
+Take `⟨cA, hc⟩` from `exists_isCartanFrame A hA`. Use `choose sA hs hs' using fun τ => exists_cartan (hA (tauE D τ)).choose (J := Formalism.UG.Jpq (A.sig (tauE D τ)).1 (A.sig (tauE D τ)).2) (by simp [Formalism.UG.Jpq, Matrix.fromBlocks_multiply]) (by simp [Formalism.UG.Jpq, Matrix.fromBlocks_conjTranspose]) (gramAt_unit A τ) (hc τ)`. Take `⟨a, ha, -, ha'⟩` from `exists_isMaj_frameInv_eq hθ hs`. Take `⟨b, hb⟩` from `exists_isMaj B`. Use `⟨sA, frameInv θ B b, cA, a, ⟨h1, ht, hB, hθ, hA, hc, hs, hb.isCartanInv hθ, hs'⟩, ha, fun τ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨ε, hε⟩` from `(isMaj_iff hθ).1 ha τ`. Rewrite using `[← ha' τ, frameInv]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hε, diagonal_sign_mul_self]`.
+-/
 theorem exists_real {θ : InfFam D} (hθ : IsInfFam θ) (A B : HSp D) (hA : A.SigOK) (h1 : 1 ≤ A.rank) {t : ℕ} (ht : 1 ≤ t)
     (hB : B.rank = A.rank + t) : ∃ sA sB cA a, HidaSetting θ A B sA sB t cA ∧ IsMaj A a ∧
       ∀ τ, (compAt θ τ a.1)ᴴ * (gramAt D A τ * sA τ) * compAt θ τ a.1 = 1 := by
@@ -70,6 +85,21 @@ theorem exists_real {θ : InfFam D} (hθ : IsInfFam θ) (A B : HSp D) (hA : A.Si
         simp only [Matrix.mul_assoc]
     _ = 1 := by rw [hε, diagonal_sign_mul_self]
 
+/- English proof (translation)
+Establish `hun : Formalism.MainNotions.SchurIrreducible.IsUnram (E` using `D.host.E) v := fun P _ => by haveI := GlobalTheory.BaseChangeExistsCompare.unram_of_cm D D.sp.cm P`. Conclude with `Ideal.ramificationIdx_eq_one_of_isUnramifiedAt`. Break down `(LFun.exists_isInertChart _ (isCMExt_host D) v).1 hun with hs | ⟨w, hw⟩` into its components or cases. Conclude with `hs`. It suffices to derive a contradiction.
+
+Unfold `Formalism.UG.IsInertAt at hw`. Take `⟨ω, k, hω, hc⟩` from `GlobalTheory.SplitIdem.exists_omega D`. Set `c : 𝓞 D.host.E →+* 𝓞 D.host.E` to `RingOfIntegers.mapRingHom D.sp.cm.sig.toRingHom`. Establish `hst : ∀ x ∈ w.asIdeal, c x ∈ w.asIdeal`. Establish `: w.asIdeal ≤ w.asIdeal.comap c` using `by conv_lhs => rw [← hw]`.
+
+Use `Ideal.map_le_iff_le_comap.2 fun a ha => ?_` and prove the remaining obligations. Establish `e : c (algebraMap _ _ a) = algebraMap _ _ a` using `Subtype.ext (D.sp.cm.sig.commutes a)`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, e, ← hw]`. Conclude with `Ideal.mem_map_of_mem _ ha`. Conclude with `this`.
+
+Establish `hcω : c ω = 1 - ω` using `RingOfIntegers.ext (by`. Express the relevant statement in the definitionally equal form `star (ω : D.host.E) = _`. Rewrite using `[GlobalTheory.SplitIdem.star_eq_conj, hc]`. Use the proof step `simp)`. Establish `h2' : (2 : 𝓞 D.host.E) ∈ w.asIdeal`.
+
+Rewrite using `[← hw, ← map_ofNat (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) 2]`. Conclude with `Ideal.mem_map_of_mem _ h2`. Establish `hp : ω * (1 - ω) = 2 * k` using `RingOfIntegers.ext (by`. Move the coercions through the operations in `at hω ⊢`. Simplify using `only [map_mul, map_sub, map_one, map_ofNat, map_natCast]`.
+
+Take the linear combination `-hω)`. Establish `hone : ω ∈ w.asIdeal → False` using `fun h => w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (by have := add_mem h (hcω ▸ hst ω h); rwa [add_sub_cancel] at this))`. Break down `w.isPrime.mem_or_mem (hp ▸ Ideal.mul_mem_right _ _ h2') with h | h` into its components or cases. Conclude with `hone h`. Use `hst _ h` as an intermediate fact.
+
+Rewrite `this` using `[map_sub, map_one, hcω, sub_sub_cancel]`. Conclude with `hone this`.
+-/
 theorem isSplit_two (v : FinPl D) (h2 : (2 : 𝓞 D.host.F) ∈ v.asIdeal) : Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) v := by
   have hun : Formalism.MainNotions.SchurIrreducible.IsUnram (E := D.host.E) v := fun P _ => by
     haveI := GlobalTheory.BaseChangeExistsCompare.unram_of_cm D D.sp.cm P
@@ -106,6 +136,11 @@ theorem isSplit_two (v : FinPl D) (h2 : (2 : 𝓞 D.host.F) ∈ v.asIdeal) : For
       rw [map_sub, map_one, hcω, sub_sub_cancel] at this
       exact hone this
 
+/- English proof (translation)
+Establish `hle : latO S T LS LT (fun v => v ∉ Sf) ≤ latO S T LS LT fun _ => True` using `AddSubgroup.closure_mono fun _ ⟨α, h1, _, h3⟩ => ⟨α, h1, fun _ h => absurd trivial h, h3⟩`. Use `⟨⟨h.2.theta, 1, fun l hl => ?_⟩, ⟨fun u hu => h.2.lat.1 u (hle hu), fun e he u hu => h.2.lat.2 e he u (hle hu)⟩, ?_⟩` and prove the remaining obligations. Take `⟨p, rfl⟩` from `List.length_eq_one_iff.1 hl`. Conclude with `h.2.fock p.1 p.2`. Introduce and unpack `rfl`.
+
+Take `⟨⟨p, hp⟩, h'⟩` from `h.2.norm`. Simplify `h' p hp` using `[nrm2]`.
+-/
 theorem isSphOff_of_vac {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D} {sS : RealMat S} {sT : RealMat T}
     {LS : Lat S} {LT : Lat T} {Φ : WO S T → ℂ} (h : IsVacO ψ θ S T sS sT LS LT Φ) (Sf : Finset (FinPl D)) :
     IsFockVec ψ θ S T sS sT Φ ∧ IsSphOff ψ S T LS LT Sf Φ ∧ Φ ≠ 0 := by
@@ -118,6 +153,13 @@ theorem isSphOff_of_vac {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : 
     obtain ⟨⟨p, hp⟩, h'⟩ := h.2.norm
     simpa [nrm2] using h' p hp
 
+/- English proof (translation)
+Take `⟨⟨θ, hθ⟩, ψ, hψ⟩` from `GlobalTheory.Ker.exists_infFam_and_stdChar D`. Take `⟨η, hη⟩` from `GlobalTheory.WeilParts.exists_isEtaTilde_unramified D`. Take `⟨om, hom, -⟩` from `GlobalTheory.WeilProduct.exists_weilDatum_etaTilde D ψ hψ A B θ hθ LA LB hLA hLB η hη`. Take `⟨sA, sB, cA, a, hs, ha, ha'⟩` from `exists_real hθ A B hA h1 ht hr`. Take `⟨ν, 𝓕, hν⟩` from `GlobalTheory.MixModel.exists_isCovolOne D B.rank A.rank`.
+
+Take `⟨Φ, hΦ⟩` from `GlobalTheory.VacuumO.vacExists D ψ θ hψ hθ A B sA sB hA hB hs.2.2.2.2.2.2.1 hs.2.2.2.2.2.2.2.1 LA LB hLA hLB`. Use `⟨ψ, θ, _, _, sA, sB, cA, a, om, ν, 𝓕, Φ, ⟨hs, ha, ha', hom, hν⟩, (isSphOff_of_vac hΦ ∅).1, ?_, fun Sf => ⟨hLA, hLB, fun v _ => isSplit_two v, fun w _ => ?_, (isSphOff_of_vac hΦ Sf).2.1, (isSphOff_of_vac hΦ Sf).2.1⟩⟩` and prove the remaining obligations. Use `hΦ.2.norm.2 (ν, 𝓕) hν` as an intermediate fact. Rewrite using `[wcoef, Prod.mk_one_one, map_one, Module.End.one_apply, ip]`. Simplify using `only [Complex.mul_conj, Complex.normSq_eq_norm_sq, integral_complex_ofReal]`.
+
+Conclude with `this` after adjusting the coercions. Use `LFun.unrAt_of_unramEverywhere (fun x a b c => ?_) w` and prove the remaining obligations. Rewrite using `[MonoidHom.pow_apply, hη.2.1 x a b c, one_pow]`.
+-/
 theorem exists_pair_unram (A B : HSp D) (hA : A.SigOK) (hB : B.SigOK) (h1 : 1 ≤ A.rank) {t : ℕ} (ht : 1 ≤ t)
     (hr : B.rank = A.rank + t) (LA : Lat A) (LB : Lat B) (hLA : IsSelfDualC A LA) (hLB : IsSelfDualC B LB) :
     ∃ ψ θ χA χB sA sB cA a om ν 𝓕 Φ, Pair ψ θ A B χA χB sA sB t cA a om ν 𝓕 ∧ IsFockVec ψ θ A B sA sB Φ ∧
@@ -137,6 +179,21 @@ theorem exists_pair_unram (A B : HSp D) (hA : A.SigOK) (hB : B.SigOK) (h1 : 1 �
   · refine LFun.unrAt_of_unramEverywhere (fun x a b c => ?_) w
     rw [MonoidHom.pow_apply, hη.2.1 x a b c, one_pow]
 
+/- English proof (translation)
+Establish `hH` using `isHermND_gram V`. Establish `hL` using `isLattice_frameLat_host V`. Establish `hd` using `GlobalTheory.AdelicU.SelfDual.isSelfDualAt_frameLat D V v`. Establish `hun : Formalism.MainNotions.SchurIrreducible.IsUnram (E` using `D.host.E) v := fun P _ => by haveI := GlobalTheory.BaseChangeExistsCompare.unram_of_cm D D.sp.cm P`. Conclude with `Ideal.ramificationIdx_eq_one_of_isUnramifiedAt`.
+
+Establish `h0 : (fun _ : G => (1 : ℂ)) ≠ 0` using `fun e => one_ne_zero (congrFun e 1)`. Break down `(LFun.exists_isInertChart _ (isCMExt_host D) v).1 hun with hs | ⟨w', hw'⟩` into its components or cases. Take `⟨e, he, -, -⟩` from `LFun.SplitChart.exists_isSplitChart (isCMExt_host D) hH hL.fg hL.span_eq_top h hs hd`. Take `⟨B, hB, -⟩` from `GlobalTheory.FinZeta.ParGL.exists_isSatVecGL_bound D.host.E w V.rank ℂ 1 ⟨(innerₛₗ ℂ : ℂ →ₗ⋆[ℂ] ℂ →ₗ[ℂ] ℂ).flip, fun a b => by simp [mul_comm], fun a ha => by`. Establish `: 0 < ‖a‖ ^ 2` using `by positivity`.
+
+Simplify `this,` using `[← Complex.normSq_eq_conj_mul_self, ← Complex.ofReal_pow]`. Use `fun _ _ _ => rfl⟩ 1 one_ne_zero (GlobalTheory.LGrp.mem_fixed.2 fun _ _ => rfl) fun _ _ => ⟨_, (mul_one _).symm⟩`. Conclude with `⟨B, Or.inl ⟨hs, e, he, hB.map (LinearMap.pi fun _ => LinearMap.id) (fun _ _ => rfl) h0⟩⟩`. Establish `h' : w'.under (𝓞 D.host.F) = v` using `HeightOneSpectrum.ext (v.isMaximal.eq_of_le (Ideal.comap_ne_top _ w'.isPrime.ne_top) (Ideal.map_le_iff_le_comap.1 (le_of_eq hw'))).symm`. Take `⟨-, -, huniq, -, -⟩` from `(LFun.exists_isInertChart _ (isCMExt_host D) v).2 w' h' hw'`.
+
+Take `rfl : w = w'` from `(huniq w).1 h`. Take `⟨-, ⟨τ, hτ, -⟩, -, -, hconj⟩` from `(LFun.exists_isInertChart _ (isCMExt_host D) v).2 w h hw'`. Take `⟨⟨ϖ, hϖ⟩, hch⟩` from `hconj τ hτ`. Take `⟨e, he, -, -⟩` from `hch V.rank V.gram (frameLat V) hH hL.fg hL.span_eq_top hd`. Establish `hq : ((Formalism.UG.qV D.host.F v : ℕ) : ℂ) ≠ 0` using `by exact_mod_cast LFun.qV_ne_zero v`.
+
+Set `α : Fin (V.rank / 2) → ℂˣ` to `fun i => Units.mk0 _ hq ^ ((V.rank : ℤ) - 1 - 2 * (i.val : ℤ))`. Establish `h1 : LFun.IsSatVecU ϖ (Formalism.UG.qV D.host.F v) (PRep.rightReg ℂ (Formalism.UG.GU τ V.rank) ℂ) (fun _ => 1) α` using `LFun.isSatVecU_of_isSphericalU hϖ (fun b _ _ _ _ => by`. Rewrite using `[mul_one, Formalism.UG.chiDeltaU]`. Use `(Finset.prod_eq_one fun i _ => ?_).symm` and prove the remaining obligations. Use `split_ifs`.
+
+Simplify using `only [α, Units.val_zpow_eq_zpow_val, Units.val_mk0]`. Rewrite using `[← zpow_mul, ← zpow_add₀ hq]`. Use `zpow_zero _ using 2` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Use the proof step `rfl) fun e => one_ne_zero (congrFun e 1)`.
+
+Establish `h2 : LFun.IsSatVecU ϖ (Formalism.UG.qV D.host.F v) (1 : Representation ℂ (Formalism.UG.GU τ V.rank) ℂ) 1 α` using `LFun.IsSatVecU.of_map hϖ (LinearMap.pi fun _ => LinearMap.id) (fun _ _ => rfl) (fun _ _ e => congrFun e 1) h1`. Conclude with `⟨_, Or.inr ⟨hw', τ, ϖ, e, α, hϖ, he, h2.map hϖ (LinearMap.pi fun _ => LinearMap.id) (fun _ _ => rfl) h0, rfl⟩⟩`.
+-/
 theorem exists_param_one (V : HSp D) {G : Type} [Group G] (v : FinPl D) (j : Gv V v →* G)
     (w : HeightOneSpectrum (𝓞 D.host.E)) (h : w.under (𝓞 D.host.F) = v) :
     ∃ B, LFun.IsParamVec D.sp.cm.sig V.gram (frameLat V) h ((PRep.rightReg ℂ G ℂ).comp j) (fun _ => 1) B := by
@@ -179,6 +236,9 @@ theorem exists_param_one (V : HSp D) {G : Type} [Group G] (v : FinPl D) (j : Gv 
         (fun _ _ e => congrFun e 1) h1
     exact ⟨_, Or.inr ⟨hw', τ, ϖ, e, α, hϖ, he, h2.map hϖ (LinearMap.pi fun _ => LinearMap.id) (fun _ _ => rfl) h0, rfl⟩⟩
 
+/- English proof (translation)
+Use `choose B hB using exists_param_one V v (MonoidHom.id _)`. Use `⟨fun w => if h : w.under (𝓞 D.host.F) = v then B w h else 0, ⟨1, fun _ => by simp⟩, Gv V v → ℂ, inferInstance, inferInstance, (PRep.rightReg ℂ _ ℂ).comp (MonoidHom.id _), fun _ => 1, LinearMap.proj 1, fun w h => ?_, fun _ _ _ => rfl, fun _ => rfl⟩` and prove the remaining obligations. Simplify `hB w h` using `only [dif_pos h]`.
+-/
 theorem exists_isSphCoef_one (V : HSp D) (v : FinPl D) : ∃ par, IsSphCoef V (frameLat V) v par fun _ => 1 := by
   classical
   choose B hB using exists_param_one V v (MonoidHom.id _)
@@ -187,6 +247,9 @@ theorem exists_isSphCoef_one (V : HSp D) (v : FinPl D) : ∃ par, IsSphCoef V (f
     fun _ _ _ => rfl, fun _ => rfl⟩
   simpa only [dif_pos h] using hB w h
 
+/- English proof (translation)
+Use `choose B hB using fun w : HeightOneSpectrum (𝓞 D.host.E) => exists_param_one V (w.under (𝓞 D.host.F)) (emb D.sp.cm.sig V.gram _) w rfl`. Conclude with `⟨B, fun Sf => ⟨fun v _ w h => by subst h; exact hB w, fun _ _ _ _ _ => rfl⟩⟩`.
+-/
 theorem exists_isParamFun_one (V : HSp D) : ∃ par, ∀ Sf : Finset (FinPl D),
     LFun.IsParamFun D.sp.cm.sig V.gram (frameLat V) (Sf : Set (FinPl D)) (fun _ => (1 : ℂ)) par ∧
       SphFun V (frameLat V) Sf fun _ => 1 := by
@@ -199,6 +262,11 @@ section Coef
 variable {ψ : AddChar (AF D.host.F) ℂ} {A B : HSp D} {χA χB : (AE D)ˣ →* Circle} {om : WRep A B} {ν : Measure (WO A B)}
   {𝓕 : Set (WO A B)} {Φ₁ Φ₂ : WO A B → ℂ}
 
+/- English proof (translation)
+Establish `: BorelSpace (WO A B)` using `⟨rfl⟩`. Establish `: IsFiniteMeasure (ν.restrict 𝓕)` using `⟨by rw [Measure.restrict_apply_univ, hν.2.2]; exact ENNReal.one_lt_top⟩`. Establish `h : Measurable (Function.uncurry fun (g : GA D A) (w : WO A B) => om (g, 1) Φ₁ w * conj (Φ₂ w))` using `measurable_uncurry_of_continuous_of_measurable (fun w => ((hom.om_cont Φ₁ h₁ w).comp (Continuous.prodMk_left 1)).mul continuous_const) fun g => ((hom.om_pres _ _ h₁).cont.mul (Complex.continuous_conj.comp h₂.cont)).measurable`. Establish `: SigmaFinite (ν.restrict 𝓕)` using `IsFiniteMeasure.toSigmaFinite _`. Establish `: SFinite (ν.restrict 𝓕)` using `instSFiniteOfSigmaFinite`.
+
+Conclude with `h.stronglyMeasurable.integral_prod_right`.
+-/
 theorem measurable_wcoef (hom : IsWeilDatumO ψ A B χA χB om) (hν : IsCovolOne (ratL B A) ν 𝓕)
     (h₁ : IsThetaFunO ψ A B Φ₁) (h₂ : IsThetaFunO ψ A B Φ₂) : StronglyMeasurable (wcoef om ν 𝓕 Φ₁ Φ₂) := by
   have : BorelSpace (WO A B) := ⟨rfl⟩
@@ -211,6 +279,9 @@ theorem measurable_wcoef (hom : IsWeilDatumO ψ A B χA χB om) (hν : IsCovolOn
   have : SFinite (ν.restrict 𝓕) := instSFiniteOfSigmaFinite
   exact h.stronglyMeasurable.integral_prod_right
 
+/- English proof (translation)
+Use `⟨(GlobalTheory.Size.l2O ν 𝓕 Φ₁ * GlobalTheory.Size.l2O ν 𝓕 Φ₂).toReal, fun g => ?_⟩` and prove the remaining obligations. Establish `h` using `GlobalTheory.Size.enorm_ipO_le ν 𝓕 (hom.om_pres (g, 1) _ h₁).cont h₂.cont`. Rewrite `h` using `[GlobalTheory.Size.l2O_om_apply_eq_of_isThetaFunO hom hν.1 hν.2.1 h₁]`. Rewrite using `[← toReal_enorm]`. Conclude with `ENNReal.toReal_mono (ENNReal.mul_ne_top (GlobalTheory.Size.l2NormOnFundamentalDomain_thetaFunction_ne_top hom.std hν.1 hν.2.1 h₁) (GlobalTheory.Size.l2NormOnFundamentalDomain_thetaFunction_ne_top hom.std hν.1 hν.2.1 h₂)) h`.
+-/
 theorem bounded_wcoef (hom : IsWeilDatumO ψ A B χA χB om) (hν : IsCovolOne (ratL B A) ν 𝓕)
     (h₁ : IsThetaFunO ψ A B Φ₁) (h₂ : IsThetaFunO ψ A B Φ₂) : ∃ C : ℝ, ∀ g, ‖wcoef om ν 𝓕 Φ₁ Φ₂ g‖ ≤ C := by
   refine ⟨(GlobalTheory.Size.l2O ν 𝓕 Φ₁ * GlobalTheory.Size.l2O ν 𝓕 Φ₂).toReal, fun g => ?_⟩
@@ -222,6 +293,15 @@ theorem bounded_wcoef (hom : IsWeilDatumO ψ A B χA χB om) (hν : IsCovolOne (
 
 end Coef
 
+/- English proof (translation)
+Take `⟨-, -, -, hθ, -, hc, -, -, hs⟩` from `h.setting`. Establish `h1 : ∀ τ, frameInv θ A a τ = 1` using `fun τ => by`. Establish `hJ : Formalism.UG.Jpq (A.sig (tauE D τ)).1 (A.sig (tauE D τ)).2 = 1`. Establish `: IsEmpty (Fin (A.sig (tauE D τ)).2)` using `by rw [hq]; infer_instance`. Rewrite using `[Formalism.UG.Jpq, ← Matrix.fromBlocks_one]`.
+
+Use `congr 1`. Conclude with `Subsingleton.elim _ _`. Establish `h2 : gramAt D A τ * sA τ = gramAt D A τ` using `by conv_lhs => rw [← hc τ, Matrix.mul_assoc, hs τ]`. Rewrite using `[← hc τ, hJ]`. Simplify using the standard rewrite rules.
+
+Establish `h3` using `h.maj_eq τ`. Rewrite `h3` using `[h2]`. Rewrite using `[frameInv, Matrix.mul_assoc]`. Conclude with `mul_eq_one_comm.1 h3`. Use extensionality with `g`.
+
+Rewrite using `[SetLike.mem_coe, h.maj.mem_Kmax_iff hθ, mem_levelOpen]`. Simplify using `[openOff, h1]`.
+-/
 theorem openOff_empty {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {A B : HSp D} {χA χB : (AE D)ˣ →* Circle}
     {sA : RealMat A} {sB : RealMat B} {t : ℕ} {cA : CptF A} {a : GL (Fin A.rank) (AE D)} {om : WRep A B}
     {ν : Measure (WO A B)} {𝓕 : Set (WO A B)} (h : Pair ψ θ A B χA χB sA sB t cA a om ν 𝓕) (hq : ∀ τ, (A.sig τ).2 = 0) :
@@ -244,6 +324,15 @@ theorem openOff_empty {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {A B : HS
   rw [SetLike.mem_coe, h.maj.mem_Kmax_iff hθ, mem_levelOpen]
   simp [openOff, h1]
 
+/- English proof (translation)
+Set `A : HSp D` to `Examples₂.posSpace (E := D.host.E) Examples₂.star_isIntegral n`. Set `B : HSp D` to `Examples₂.posSpace (E := D.host.E) Examples₂.star_isIntegral (n + t)`. Establish `hA : IsAniso A` using `GlobalTheory.ThetaMean.Model.isAniso_posSpace n`. Take `⟨ψ, θ, χA, χB, sA, sB, cA, a, om, ν, 𝓕, Φ, hP, hΦ, h1, hU⟩` from `exists_pair_unram A B (Examples₂.posSpace_sigOK _ _) (Examples₂.posSpace_sigOK _ _) hn ht rfl _ _ (GlobalTheory.WeilAtPlace.isSelfDualC_frameLat A) (GlobalTheory.WeilAtPlace.isSelfDualC_frameLat B)`. Take `⟨par, hpar⟩` from `exists_isParamFun_one A`.
+
+Establish `hcc : (fun _ => (1 : ℂ)) ∈ cuspCont A` using `⟨continuous_const, fun _ _ _ => rfl, fun r C hC => absurd hC (hA r C)⟩`. Use `⟨A, B, ψ, θ, χA, χB, sA, sB, cA, a, om, ν, 𝓕, Φ, Measure.haar, par, rfl, hP, wittIndex_eq_zero_iff_isAniso.2 (GlobalTheory.ThetaMean.Model.isAniso_posSpace _), hΦ, h1, hU ∅, inferInstance, ⟨⟨isAutFunSm_const θ A 1, .of_invariant fun _ _ _ => rfl⟩, hcc⟩, (hpar ∅).1, (hpar ∅).2, fu …` and prove the remaining obligations. Rewrite using `[openOff_empty hP fun _ => rfl]`. Establish `hK : IsCompact (Kmax A a : Set (GA D A))` using `isCompact_levelAll (isCMExt_host D) _ _ _`. Take `⟨C, hC⟩` from `bounded_wcoef hP.weil hP.covol hΦ.1 hΦ.1`.
+
+Establish `h2 : IntegrableOn (wcoef om ν 𝓕 Φ Φ) (Kmax A a) Measure.haar` using `Measure.integrableOn_of_bounded hK.measure_ne_top (measurable_wcoef hP.weil hP.covol hΦ.1 hΦ.1).aestronglyMeasurable (.of_forall hC)`. Use `IntegrableOn.congr_fun (h2.mul_const (petersson A Measure.haar (fun _ => 1) fun _ => 1)) (fun g hg => ?_) hK.measurableSet` and prove the remaining obligations. Establish `h3 : hgtL A (frameLat A) a g = 1`. Use `hgt_mul A a 1 ((io_mem_Khat A a).2 ⟨hg, one_mem _⟩)` as an intermediate fact. Express the relevant statement in the definitionally equal form `hgt A a (io A (g, 1)) = 1`.
+
+Simplify using `using this`. Simplify using `only [integrand, h3, one_npow, mul_one]`. Both sides reduce to the same expression.
+-/
 theorem heckeForm_hypotheses (D : D7) {n t : ℕ} (hn : 1 ≤ n) (ht : 1 ≤ t) :
     ∃ (A B : HSp D) (ψ : _) (θ : _) (χA χB : _) (sA : _) (sB : _) (cA : _) (a : _) (om : _) (ν : _) (𝓕 : _) (Φ : _)
       (m : Measure (GA D A)) (par : _), A.rank = n ∧
@@ -277,11 +366,17 @@ theorem heckeForm_hypotheses (D : D7) {n t : ℕ} (hn : 1 ≤ n) (ht : 1 ≤ t) 
   simp only [integrand, h3, one_npow, mul_one]
   rfl
 
+/- English proof (translation)
+The claim follows from `funext fun h => by simp only [up, AutomorphicL2Unitary.descend, Pi.smul_apply, smul_eq_mul, ← integral_const_mul] exact integral_congr_ae (.of_forall fun q => by ring)`.
+-/
 theorem up_smul {A B : HSp D} (om : WRep A B) (m : Measure (GA D A)) (Φ : WO A B → ℂ) (c : ℂ) (u : GA D A → ℂ) :
     up om m Φ (c • u) = c • up om m Φ u := funext fun h => by
   simp only [up, AutomorphicL2Unitary.descend, Pi.smul_apply, smul_eq_mul, ← integral_const_mul]
   exact integral_congr_ae (.of_forall fun q => by ring)
 
+/- English proof (translation)
+Simplify using `only [up, GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.lift, petersson, pet, AutomorphicL2Unitary.descend, ← integral_conj, map_mul, Complex.conj_conj]`.
+-/
 theorem up_eq_conj_lift {A B : HSp D} (om : WRep A B) (m : Measure (GA D A)) (Φ : WO A B → ℂ) (u : GA D A → ℂ)
     (h : GA D B) : up om m Φ u h = conj (GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.lift m (fun g h => conj (thetaKO om g h Φ)) u h) := by
   simp only [up, GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.lift, petersson, pet, AutomorphicL2Unitary.descend, ← integral_conj, map_mul, Complex.conj_conj]

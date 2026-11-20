@@ -15,6 +15,9 @@ open Matrix Complex NumberField in
 open scoped ComplexConjugate Classical in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[ComplexEmbedding.conjugate_coe_eq]`.
+-/
 theorem _root_.GlobalTheory.Ker.ConjDatum.conjugate_twice (τ : E →+* ℂ) :
     ComplexEmbedding.conjugate (ComplexEmbedding.conjugate τ) = τ := by
   ext x
@@ -24,6 +27,9 @@ open Matrix Complex NumberField in
 open scoped ComplexConjugate Classical in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[_root_.ReciprocityTheory.ChartRestriction.G.FD.gram, _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC, _root_.ReciprocityTheory.ChartRestriction.G.FD.col, ComplexEmbedding.conjugate_coe_eq, map_sum]`.
+-/
 theorem _root_.GlobalTheory.Ker.ConjDatum.gram_conjugate (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
     (P : Matrix (Fin r) (Fin r) ℂ) :
     _root_.ReciprocityTheory.ChartRestriction.G.FD.gram (ComplexEmbedding.conjugate τ) G (P.map (starRingEnd ℂ)) =
@@ -34,6 +40,9 @@ theorem _root_.GlobalTheory.Ker.ConjDatum.gram_conjugate (τ : E →+* ℂ) (G :
 open Matrix Complex NumberField in
 open scoped ComplexConjugate Classical in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
+/- English proof (translation)
+Establish `hdet : (M.map (starRingEnd ℂ)).det = starRingEnd ℂ M.det`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[hdet]`. Conclude with `(map_ne_zero _).2 h`.
+-/
 theorem _root_.GlobalTheory.Ker.ConjDatum.det_map_ne {M : Matrix (Fin r) (Fin r) ℂ} (h : M.det ≠ 0) :
     (M.map (starRingEnd ℂ)).det ≠ 0 := by
   have hdet : (M.map (starRingEnd ℂ)).det = starRingEnd ℂ M.det := by
@@ -46,6 +55,9 @@ open Matrix Complex NumberField in
 open scoped ComplexConjugate Classical in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Rewrite using `[Finset.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨σ, hσ, rfl⟩`. Rewrite using `[_root_.GlobalTheory.Ker.ConjDatum.conjugate_twice]` and apply the resulting hypothesis. Conclude with `fun h => ⟨_, h, _root_.GlobalTheory.Ker.ConjDatum.conjugate_twice τ⟩`.
+-/
 theorem _root_.GlobalTheory.Ker.ConjDatum.mem_image_conjugate (Ψ : Finset (E →+* ℂ)) (τ : E →+* ℂ) :
     τ ∈ Ψ.image ComplexEmbedding.conjugate ↔ ComplexEmbedding.conjugate τ ∈ Ψ := by
   rw [Finset.mem_image]
@@ -64,6 +76,15 @@ open Matrix Complex NumberField in
 open scoped ComplexConjugate Classical in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Introduce `τ`. Take `⟨hdet, hpos⟩` from `hx (_root_.GlobalTheory.Ker.ConjDatum.cpl Ψ τ)`. Establish `hmat : _root_.ReciprocityTheory.ChartRestriction.G.FD.mat (_root_.GlobalTheory.Ker.ConjDatum.cfr Ψ x) τ = (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x (_root_.GlobalTheory.Ker.ConjDatum.cpl Ψ τ)).map (starRingEnd ℂ)`. Use extensionality with `a b`. Both sides reduce to the same expression.
+
+Establish `hgram : _root_.ReciprocityTheory.ChartRestriction.G.FD.gram (τ : E →+* ℂ) G (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat (_root_.GlobalTheory.Ker.ConjDatum.cfr Ψ x) τ) = (_root_.ReciprocityTheory.ChartRestriction.G.FD.gram (_root_.GlobalTheory.Ker.ConjDatum.cpl Ψ τ : E →+* …`. Rewrite using `[hmat]`. Establish `h` using `_root_.GlobalTheory.Ker.ConjDatum.gram_conjugate (ComplexEmbedding.conjugate (τ : E →+* ℂ)) G (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x (_root_.GlobalTheory.Ker.ConjDatum.cpl Ψ τ))`. Rewrite `h` using `[_root_.GlobalTheory.Ker.ConjDatum.conjugate_twice]`. Conclude with `h`.
+
+Use `⟨?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hmat]`. Conclude with `_root_.GlobalTheory.Ker.ConjDatum.det_map_ne hdet`. Establish `h` using `hpos i`. Establish `hminor : _root_.ReciprocityTheory.ChartRestriction.G.FD.dmin G (_root_.GlobalTheory.Ker.ConjDatum.cfr Ψ x) τ i = starRingEnd ℂ (_root_.ReciprocityTheory.ChartRestriction.G.FD.dmin G x (_root_.GlobalTheory.Ker.ConjDatum.cpl Ψ τ) i)`.
+
+Simplify using `only [_root_.ReciprocityTheory.ChartRestriction.G.FD.dmin, _root_.ReciprocityTheory.ChartRestriction.G.FD.lminor, hgram, ← Matrix.submatrix_map]`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[hminor, Complex.conj_re]`. Conclude with `h`.
+-/
 theorem _root_.GlobalTheory.Ker.ConjDatum.cfr_mem_GG (Ψ : Finset (E →+* ℂ)) (G : Matrix (Fin r) (Fin r) E)
     (p : ℕ) {x : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame (Ψ.image ComplexEmbedding.conjugate) r} (hx : x ∈ _root_.ReciprocityTheory.ChartRestriction.G.FD.GG _ G p) :
     _root_.GlobalTheory.Ker.ConjDatum.cfr Ψ x ∈ _root_.ReciprocityTheory.ChartRestriction.G.FD.GG Ψ G p := by
@@ -97,6 +118,11 @@ open Matrix Complex NumberField in
 open scoped ComplexConjugate Classical in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Introduce `τ`. Take `⟨hdet, htri⟩` from `hx (_root_.GlobalTheory.Ker.ConjDatum.cpl Ψ τ)`. Use `⟨?_, fun a c hca => ?_⟩` and prove the remaining obligations. Establish `hmat : _root_.ReciprocityTheory.ChartRestriction.G.FD.mat (_root_.GlobalTheory.Ker.ConjDatum.cfr Ψ x) τ = (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x (_root_.GlobalTheory.Ker.ConjDatum.cpl Ψ τ)).map (starRingEnd ℂ)`. Use extensionality with `a b`.
+
+Both sides reduce to the same expression. Rewrite using `[hmat]`. Conclude with `_root_.GlobalTheory.Ker.ConjDatum.det_map_ne hdet`. Simplify using `[_root_.GlobalTheory.Ker.ConjDatum.cfr, htri a c hca]`.
+-/
 theorem _root_.GlobalTheory.Ker.ConjDatum.cfr_mem_Bor (Ψ : Finset (E →+* ℂ))
     {x : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame (Ψ.image ComplexEmbedding.conjugate) r} (hx : x ∈ _root_.ReciprocityTheory.ChartRestriction.G.FD.Bor _ r) :
     _root_.GlobalTheory.Ker.ConjDatum.cfr Ψ x ∈ _root_.ReciprocityTheory.ChartRestriction.G.FD.Bor Ψ r := by
@@ -115,6 +141,9 @@ open Matrix Complex NumberField in
 open scoped ComplexConjugate Classical in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Use function extensionality and compare the values at `τ a c`. Simplify using `[_root_.GlobalTheory.Ker.ConjDatum.cfr, _root_.ReciprocityTheory.ChartRestriction.G.FD.rmul, _root_.ReciprocityTheory.ChartRestriction.G.FD.mat, Matrix.mul_apply, map_sum]`.
+-/
 theorem _root_.GlobalTheory.Ker.ConjDatum.cfr_rmul (Ψ : Finset (E →+* ℂ))
     (x b : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame (Ψ.image ComplexEmbedding.conjugate) r) :
     _root_.GlobalTheory.Ker.ConjDatum.cfr Ψ (_root_.ReciprocityTheory.ChartRestriction.G.FD.rmul x b) =
@@ -126,6 +155,9 @@ open Matrix Complex NumberField in
 open scoped ComplexConjugate Classical in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Use function extensionality and compare the values at `τ a c`. Simplify using `[_root_.GlobalTheory.Ker.ConjDatum.cfr, _root_.ReciprocityTheory.ChartRestriction.G.FD.lact, _root_.ReciprocityTheory.ChartRestriction.G.FD.mat, Matrix.mul_apply, map_sum, _root_.GlobalTheory.Ker.ConjDatum.cpl, ComplexEmbedding.conjugate_coe_eq]`.
+-/
 theorem _root_.GlobalTheory.Ker.ConjDatum.cfr_lact (Ψ : Finset (E →+* ℂ)) (γ : GL (Fin r) E)
     (x : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame (Ψ.image ComplexEmbedding.conjugate) r) :
     _root_.GlobalTheory.Ker.ConjDatum.cfr Ψ (_root_.ReciprocityTheory.ChartRestriction.G.FD.lact γ x) =

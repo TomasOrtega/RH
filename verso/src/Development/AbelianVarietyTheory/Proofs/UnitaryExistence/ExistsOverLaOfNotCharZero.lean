@@ -17,21 +17,38 @@ section Places
 variable {V K' : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K'] [Algebra V K']
   [IsFractionRing V K']
 
+/- English proof (translation)
+The claim follows from `HeightOneSpectrum.valuation_le_one _ v`.
+-/
 theorem valV_le_one (v : V) : valV V (algebraMap V K' v) ≤ 1 :=
   HeightOneSpectrum.valuation_le_one _ v
 
+/- English proof (translation)
+The claim follows from `HeightOneSpectrum.valuation_lt_one_iff_mem _ v`.
+-/
 theorem valV_lt_one_iff (v : V) : valV V (algebraMap V K' v) < 1 ↔ v ∈ maximalIdeal V :=
   HeightOneSpectrum.valuation_lt_one_iff_mem _ v
 
+/- English proof (translation)
+The claim follows from `le_antisymm (valV_le_one v) (not_lt.1 fun h' => h ((valV_lt_one_iff v).1 h'))`.
+-/
 theorem valV_eq_one {v : V} (h : v ∉ maximalIdeal V) : valV V (algebraMap V K' v) = 1 :=
   le_antisymm (valV_le_one v) (not_lt.1 fun h' => h ((valV_lt_one_iff v).1 h'))
 
+/- English proof (translation)
+Establish `h1 : algebraMap V K' v ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective V K')).2 h0`. Use `(WithZero.log_lt_log (valV_ne_zero (V := V) h1) one_ne_zero).2 ((valV_lt_one_iff v).2 h)` as an intermediate fact. Simplify using `only [WithZero.log_one] at this`. Simplify using `only [vV]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem vV_pos {v : V} (h0 : v ≠ 0) (h : v ∈ maximalIdeal V) : 0 < vV V (algebraMap V K' v) := by
   have h1 : algebraMap V K' v ≠ 0 := (map_ne_zero_iff _ (IsFractionRing.injective V K')).2 h0
   have := (WithZero.log_lt_log (valV_ne_zero (V := V) h1) one_ne_zero).2 ((valV_lt_one_iff v).2 h)
   simp only [WithZero.log_one] at this
   simp only [vV]; omega
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hn`. Use `h (charZero_of_inj_zero fun n h0 => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `hn0`.
+
+Conclude with `hn ⟨n, hn0, by rw [← residue_eq_zero_iff, map_natCast, h0]⟩`. Introduce and unpack `⟨n, hn, hm⟩ _`. Rewrite `hm` using `[← residue_eq_zero_iff, map_natCast]`. Conclude with `hn (by exact_mod_cast hm)`.
+-/
 theorem not_charZero_iff : ¬ CharZero (ResidueField V) ↔ ∃ n : ℕ, n ≠ 0 ∧ (n : V) ∈ maximalIdeal V := by
   constructor
   · intro h
@@ -45,6 +62,15 @@ theorem not_charZero_iff : ¬ CharZero (ResidueField V) ↔ ∃ n : ℕ, n ≠ 0
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Rewrite using `[not_charZero_iff]`. Establish `hn : Ideal.absNorm la.asIdeal ≠ 0` using `fun h => la.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`. Use `⟨_, hn, ?_⟩` and prove the remaining obligations. Establish `hmem` using `Ideal.absNorm_mem la.asIdeal`. Generalize the expression as in `Ideal.absNorm la.asIdeal = n at hn hmem`.
+
+Assume the negation of the conclusion as `hV`. Establish `hK : ((n : ℕ) : K) ≠ 0` using `by exact_mod_cast hn`. Establish `h1 : valV V ((n : ℕ) : K') = 1`. Rewrite using `[← map_natCast (algebraMap V K') n]`. Conclude with `valV_eq_one hV`.
+
+Establish `h2 : la.valuation K ((n : ℕ) : K) < 1`. Rewrite using `[← map_natCast (algebraMap (𝓞 K) K) n, HeightOneSpectrum.valuation_lt_one_iff_mem]`. Conclude with `hmem`. Establish `h3 : WithZero.log (la.valuation K ((n : ℕ) : K)) < 0`. Use `(WithZero.log_lt_log ((la.valuation K).ne_zero_iff.2 hK) one_ne_zero).2 h2` as an intermediate fact.
+
+Simplify using `using this`. Establish `h4` using `ho.2 ((n : ℕ) : K)`. Rewrite `h4` using `[map_natCast, vV, h1, vLa, WithZero.log_one]`. Establish `he : (0 : ℤ) < e` using `by exact_mod_cast ho.1`. Use polynomial arithmetic with `[mul_pos he (neg_pos.2 h3)]`.
+-/
 theorem not_charZero_of_overLa {la : HeightOneSpectrum (𝓞 K)} {io : K →+* K'} {e : ℕ}
     (ho : OverLa la V io e) : ¬ CharZero (ResidueField V) := by
   rw [not_charZero_iff]
@@ -68,6 +94,27 @@ theorem not_charZero_of_overLa {la : HeightOneSpectrum (𝓞 K)} {io : K →+* K
   have he : (0 : ℤ) < e := by exact_mod_cast ho.1
   nlinarith [mul_pos he (neg_pos.2 h3)]
 
+/- English proof (translation)
+Establish `hint : ∀ a : 𝓞 K, ∃ v : V, algebraMap V K' v = io a` using `fun a => IsIntegrallyClosed.algebraMap_eq_of_integral (R := V) (K := K') (IsIntegral.map_of_comp_eq (Int.castRingHom V) io (RingHom.ext_int _ _) a.isIntegral_coe)`. Use `choose g0 hg0 using hint`. Establish `hinj` using `IsFractionRing.injective V K'`. Set `g : 𝓞 K →+* V` to `{ toFun := g0 map_one' := hinj (by simp [hg0]) map_mul' := fun a b => hinj (by simp [hg0]) map_zero' := hinj (by simp [hg0]) map_add' := fun a b => hinj (by simp [hg0]) }`. Establish `hg : ∀ a, algebraMap V K' (g a) = io (algebraMap (𝓞 K) K a)` using `hg0`.
+
+Establish `hne : (maximalIdeal V).comap g ≠ ⊥`. Take `⟨n, hn, hm⟩` from `not_charZero_iff.1 hT`. Introduce `h`. Establish `h1 : ((n : ℕ) : 𝓞 K) ∈ (maximalIdeal V).comap g`. Rewrite using `[Ideal.mem_comap, map_natCast]`.
+
+Conclude with `hm`. Rewrite `h1` using `[h, Ideal.mem_bot]`. Conclude with `hn (by exact_mod_cast h1)`. Set `la : HeightOneSpectrum (𝓞 K)` to `⟨(maximalIdeal V).comap g, Ideal.comap_isPrime _ _, hne⟩`. Establish `hun : ∀ a : 𝓞 K, a ∉ la.asIdeal → valV V (io (algebraMap (𝓞 K) K a)) = 1` using `fun a ha => by`.
+
+Rewrite using `[← hg]`. Conclude with `valV_eq_one ha`. Establish `hone : ∀ x : K, la.valuation K x = 1 → valV V (io x) = 1` using `fun x hx => by`. Take `⟨n, d, h⟩` from `la.exists_primeCompl_mul_eq_of_integer x hx.le`. Establish `hd : la.valuation K (algebraMap (𝓞 K) K d) = 1` using `(la.valuation_eq_one_iff_notMem).2 d.2`.
+
+Establish `hn : la.valuation K (algebraMap (𝓞 K) K n) = 1` using `by rw [← h, map_mul, hx, hd, one_mul]`. Establish `h2` using `hun n ((la.valuation_eq_one_iff_notMem).1 hn)`. Rewrite `h2` using `[← h, map_mul, map_mul, hun d d.2, mul_one]`. Then use the resulting hypothesis. Take `⟨π, hπ⟩` from `la.intValuation_exists_uniformizer`. Establish `hπK : la.valuation K (algebraMap (𝓞 K) K π) = WithZero.exp (-1 : ℤ)`.
+
+Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap, hπ]`. Establish `hπ0 : algebraMap (𝓞 K) K π ≠ 0` using `fun h => by`. Simplify using `[h] at hπK`. Conclude with `WithZero.exp_ne_zero hπK.symm`. Establish `hπm : π ∈ la.asIdeal`.
+
+Rewrite using `[← la.valuation_lt_one_iff_mem (K := K), hπK, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions. Establish `hpos : 0 < vV V (io (algebraMap (𝓞 K) K π))`. Rewrite using `[← hg]`. Use `vV_pos (fun h => ?_) hπm` and prove the remaining obligations.
+
+Use `hg π` as an intermediate fact. Rewrite `this` using `[h, map_zero]`. Conclude with `(map_ne_zero io).2 hπ0 this.symm`. Use `⟨la, (vV V (io (algebraMap (𝓞 K) K π))).toNat, by omega, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[Int.toNat_of_nonneg hpos.le]`.
+
+Distinguish the cases in `ha : a = 0`. Simplify using `[ha, vV, vLa]`. Establish `hva : la.valuation K a ≠ 0` using `(Valuation.ne_zero_iff _).2 ha`. Establish `h1` using `hone (a * (algebraMap (𝓞 K) K π) ^ (-vLa la a)) (by`. Rewrite using `[map_mul, map_zpow₀, hπK, ← WithZero.exp_zsmul, ← WithZero.exp_log hva, ← WithZero.exp_add]`.
+
+Simplify using `[vLa])`. Establish `h2` using `congrArg WithZero.log h1`. Rewrite `h2` using `[map_mul, map_mul, map_zpow₀, map_zpow₀, WithZero.log_mul (valV_ne_zero ((map_ne_zero io).2 ha)) (zpow_ne_zero _ (valV_ne_zero ((map_ne_zero io).2 hπ0))), WithZero.log_zpow, WithZero.log_one]`. Simplify using `only [vV, smul_eq_mul] at h2 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_overLa_of_not_charZero (io : K →+* K') (hT : ¬ CharZero (ResidueField V)) :
     ∃ (la : HeightOneSpectrum (𝓞 K)) (e : ℕ), OverLa la V io e := by
   have hint : ∀ a : 𝓞 K, ∃ v : V, algebraMap V K' v = io a := fun a =>

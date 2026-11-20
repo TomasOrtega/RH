@@ -9,6 +9,9 @@ open Formalism.BasicNotions Formalism.BasicNotions.DV Formalism.MainNotions Form
 
 namespace GlobalTheory.MeanTop
 
+/- English proof (translation)
+Establish `h2 : (2 : ℝ) ≤ p` using `by exact_mod_cast hp.two_le`. Establish `hpos : (0 : ℝ) < (p : ℝ) - 1` using `by linarith`. Use `⟨div_nonneg (Real.log_nonneg (by linarith)) hpos.le, ?_⟩` and prove the remaining obligations. Rewrite using `[div_le_one hpos]`. Conclude with `Real.log_le_sub_one_of_pos (by linarith)`.
+-/
 theorem log_div_pred_mem_of_prime {p : ℕ} (hp : p.Prime) :
     0 ≤ Real.log p / ((p : ℝ) - 1) ∧ Real.log p / ((p : ℝ) - 1) ≤ 1 := by
   have h2 : (2 : ℝ) ≤ p := by exact_mod_cast hp.two_le

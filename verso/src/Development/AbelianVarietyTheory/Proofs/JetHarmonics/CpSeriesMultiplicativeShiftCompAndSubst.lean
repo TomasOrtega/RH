@@ -10,8 +10,20 @@ open scoped ComplexConjugate BigOperators Topology
 namespace GlobalTheory.MomOne.ShiftComp
 variable {q : ℕ} [Fact q.Prime]
 
+/- English proof (translation)
+The claim follows from `(norm_nonneg _).trans (h 0)`.
+-/
 theorem bd_nonneg {B : ℝ} {f : ℂ_[q]⟦X⟧} (h : Bd B f) : 0 ≤ B := (norm_nonneg _).trans (h 0)
 
+/- English proof (translation)
+Establish `hB` using `bd_nonneg hh`. Establish `hr0 : 0 ≤ ‖coeff 0 u‖` using `norm_nonneg _`. Establish `hr1 : ‖coeff 0 u‖ ≤ 1` using `hu 0`. Proceed by induction on `N with`. Consider the case `zero => intro n`.
+
+Simplify using `using hh n`. Consider the case `succ N ih`. Introduce `n`. Rewrite using `[pow_succ', mul_assoc, coeff_mul]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) fun x hx => ?_` and prove the remaining obligations.
+
+Establish `hx' : x.1 + x.2 = n` using `by simpa using hx`. Rewrite using `[norm_mul]`. Break down `Nat.eq_zero_or_pos x.1 with h0 | h0` into its components or cases. Rewrite using `[h0]`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem coeff_pow_mul_le (u h : ℂ_[q]⟦X⟧) (B : ℝ) (hu : Bd 1 u) (hh : Bd B h) (N : ℕ) :
     ∀ n, ‖coeff n (u ^ N * h)‖ ≤ B * ‖coeff 0 u‖ ^ (N - n) := by
   have hB := bd_nonneg hh
@@ -41,24 +53,41 @@ structure Hom (Φ : ℂ_[q]⟦X⟧ → ℂ_[q]⟦X⟧) : Prop where
   mul : ∀ f g, Bdd f → Bdd g → Φ (f * g) = Φ f * Φ g
   const : ∀ c, Φ (C c) = C c
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.MomOne.Shift.shift_laws q ζ hζ).1 add f g hf hg := ((GlobalTheory.MomOne.Shift.shift_laws q ζ hζ).2.1 f g hf hg).1 mul f g hf hg := ((GlobalTheory.MomOne.Shift.shift_laws q ζ hζ).2.1 f g hf hg).2 const := (GlobalTheory.MomOne.Shift.shift_laws q ζ hζ).2.2.1`.
+-/
 theorem hom_shift {ζ : ℂ_[q]} (hζ : ‖ζ - 1‖ < 1) : Hom (shiftS ζ) where
   bd := (GlobalTheory.MomOne.Shift.shift_laws q ζ hζ).1
   add f g hf hg := ((GlobalTheory.MomOne.Shift.shift_laws q ζ hζ).2.1 f g hf hg).1
   mul f g hf hg := ((GlobalTheory.MomOne.Shift.shift_laws q ζ hζ).2.1 f g hf hg).2
   const := (GlobalTheory.MomOne.Shift.shift_laws q ζ hζ).2.2.1
 
+/- English proof (translation)
+Apply the tactic sequence `intro n; rw [coeff_X]; split_ifs <;> simp`.
+-/
 theorem bd_X : Bd 1 (X : ℂ_[q]⟦X⟧) := by
   intro n; rw [coeff_X]; split_ifs <;> simp
 
+/- English proof (translation)
+Use `⟨‖c‖, fun n => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rw [coeff_C]; split_ifs <;> simp`.
+-/
 theorem bdd_C (c : ℂ_[q]) : Bdd (C c : ℂ_[q]⟦X⟧) := by
   refine ⟨‖c‖, fun n => ?_⟩
   rw [coeff_C]; split_ifs <;> simp
 
+/- English proof (translation)
+Take `⟨A, hA⟩` from `hf`. Take `⟨B, hB⟩` from `hg`. Conclude with `⟨A + B, fun n => by rw [map_add]; exact (norm_add_le _ _).trans (add_le_add (hA n) (hB n))⟩`.
+-/
 theorem bdd_add {f g : ℂ_[q]⟦X⟧} (hf : Bdd f) (hg : Bdd g) : Bdd (f + g) := by
   obtain ⟨A, hA⟩ := hf
   obtain ⟨B, hB⟩ := hg
   exact ⟨A + B, fun n => by rw [map_add]; exact (norm_add_le _ _).trans (add_le_add (hA n) (hB n))⟩
 
+/- English proof (translation)
+Take `⟨A, hA⟩` from `hf`. Take `⟨B, hB⟩` from `hg`. Use `⟨A * B, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[coeff_mul]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (mul_nonneg (bd_nonneg hA) (bd_nonneg hB)) fun x _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hA _) (hB _) (norm_nonneg _) (bd_nonneg hA)`.
+-/
 theorem bdd_mul {f g : ℂ_[q]⟦X⟧} (hf : Bdd f) (hg : Bdd g) : Bdd (f * g) := by
   obtain ⟨A, hA⟩ := hf
   obtain ⟨B, hB⟩ := hg
@@ -69,6 +98,9 @@ theorem bdd_mul {f g : ℂ_[q]⟦X⟧} (hf : Bdd f) (hg : Bdd g) : Bdd (f * g) :
   rw [norm_mul]
   exact mul_le_mul (hA _) (hB _) (norm_nonneg _) (bd_nonneg hA)
 
+/- English proof (translation)
+The claim follows from `h.bd _ _ (h'.bd _ _ hf) add f g hf hg := by rw [h'.add f g hf hg, h.add _ _ (hf.imp fun B hB => h'.bd _ _ hB) (hg.imp fun B hB => h'.bd _ _ hB)] mul f g hf hg := by rw [h'.mul f g hf hg, h.mul _ _ (hf.imp fun B hB => h'.bd _ _ hB) (hg.imp fun B hB => h'.bd _ _ hB)] const c := by …`.
+-/
 theorem Hom.comp {Φ Ψ : ℂ_[q]⟦X⟧ → ℂ_[q]⟦X⟧} (h : Hom Φ) (h' : Hom Ψ) : Hom (fun f => Φ (Ψ f)) where
   bd f B hf := h.bd _ _ (h'.bd _ _ hf)
   add f g hf hg := by
@@ -77,6 +109,19 @@ theorem Hom.comp {Φ Ψ : ℂ_[q]⟦X⟧ → ℂ_[q]⟦X⟧} (h : Hom Φ) (h' : 
     rw [h'.mul f g hf hg, h.mul _ _ (hf.imp fun B hB => h'.bd _ _ hB) (hg.imp fun B hB => h'.bd _ _ hB)]
   const c := by rw [h'.const, h.const]
 
+/- English proof (translation)
+Take `⟨B, hB⟩` from `hf`. Establish `key : ∀ N : ℕ, ∀ f, Bd B f → ∃ g, Bd (B + B) g ∧ Φ f - Ψ f = Ψ X ^ N * g`. Introduce `N`. Proceed by induction on `N with`. Consider the case `zero`.
+
+Introduce `f hf`. Use `⟨Φ f - Ψ f, fun n => ?_, by simp⟩` and prove the remaining obligations. Rewrite using `[map_sub]`. Conclude with `(norm_sub_le _ _).trans (add_le_add (h.bd _ _ hf n) (h'.bd _ _ hf n))`. Consider the case `succ N ih`.
+
+Introduce `f hf`. Establish `hg : Bd B (PowerSeries.mk fun p => coeff (p + 1) f)` using `fun n => by`. Rewrite using `[coeff_mk]`. Conclude with `hf _`. Take `⟨g, hg1, hg2⟩` from `ih _ hg`.
+
+Use `⟨g, hg1, ?_⟩` and prove the remaining obligations. Establish `e` using `eq_X_mul_shift_add_const f`. Establish `b1 : Bdd (X : ℂ_[q]⟦X⟧)` using `⟨1, bd_X⟩`. Rewrite using `[e, h.add _ _ (bdd_mul b1 ⟨B, hg⟩) (bdd_C _), h'.add _ _ (bdd_mul b1 ⟨B, hg⟩) (bdd_C _), h.mul _ _ b1 ⟨B, hg⟩, h'.mul _ _ b1 ⟨B, hg⟩, h.const, h'.const, hX, pow_succ', mul_assoc, ← hg2]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[← sub_eq_zero]`. Use extensionality with `n`. Rewrite using `[map_zero, ← norm_le_zero_iff]`. Establish `lim : Filter.Tendsto (fun N : ℕ => (B + B) * ‖coeff 0 (Ψ X)‖ ^ N) Filter.atTop (𝓝 0)`. Simplify using `using (tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) h0).const_mul (B + B)`.
+
+Use `ge_of_tendsto' lim fun N => ?_` and prove the remaining obligations. Take `⟨g, hg1, hg2⟩` from `key (N + n) f hB`. Rewrite using `[hg2]`. Simplify using `using coeff_pow_mul_le _ g _ (h'.bd _ _ bd_X) hg1 (N + n) n`.
+-/
 theorem Hom.ext {Φ Ψ : ℂ_[q]⟦X⟧ → ℂ_[q]⟦X⟧} (h : Hom Φ) (h' : Hom Ψ) (hX : Φ X = Ψ X)
     (h0 : ‖coeff 0 (Ψ X)‖ < 1) (f : ℂ_[q]⟦X⟧) (hf : Bdd f) : Φ f = Ψ f := by
   obtain ⟨B, hB⟩ := hf
@@ -109,9 +154,15 @@ theorem Hom.ext {Φ Ψ : ℂ_[q]⟦X⟧ → ℂ_[q]⟦X⟧} (h : Hom Φ) (h' : H
   rw [hg2]
   simpa using coeff_pow_mul_le _ g _ (h'.bd _ _ bd_X) hg1 (N + n) n
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.MomOne.Shift.shift_laws q ζ hζ).2.2.2.1`.
+-/
 theorem shift_X {ζ : ℂ_[q]} (hζ : ‖ζ - 1‖ < 1) : shiftS ζ X = C ζ * (1 + X) - 1 :=
   (GlobalTheory.MomOne.Shift.shift_laws q ζ hζ).2.2.2.1
 
+/- English proof (translation)
+Establish `b1 : Bdd (X : ℂ_[q]⟦X⟧)` using `⟨1, bd_X⟩`. Establish `e : (C c * (1 + X) - 1 : ℂ_[q]⟦X⟧) = C c * X + C (c - 1)` using `by rw [map_sub, map_one]; ring`. Rewrite using `[e, h.add _ _ (bdd_mul (bdd_C _) b1) (bdd_C _), h.mul _ _ (bdd_C _) b1, h.const, h.const, map_sub, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Hom.lin {Φ : ℂ_[q]⟦X⟧ → ℂ_[q]⟦X⟧} (h : Hom Φ) (c : ℂ_[q]) :
     Φ (C c * (1 + X) - 1) = C c * (1 + Φ X) - 1 := by
   have b1 : Bdd (X : ℂ_[q]⟦X⟧) := ⟨1, bd_X⟩
@@ -119,11 +170,17 @@ theorem Hom.lin {Φ : ℂ_[q]⟦X⟧ → ℂ_[q]⟦X⟧} (h : Hom Φ) (c : ℂ_[
   rw [e, h.add _ _ (bdd_mul (bdd_C _) b1) (bdd_C _), h.mul _ _ (bdd_C _) b1, h.const, h.const, map_sub, map_one]
   ring
 
+/- English proof (translation)
+Use `IsUltrametricDist.norm_add_le_max (ζ - 1) 1` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, norm_one]`. Conclude with `this.trans (max_le hζ.le le_rfl)`.
+-/
 theorem norm_le_one_of {ζ : ℂ_[q]} (hζ : ‖ζ - 1‖ < 1) : ‖ζ‖ ≤ 1 := by
   have := IsUltrametricDist.norm_add_le_max (ζ - 1) 1
   rw [sub_add_cancel, norm_one] at this
   exact this.trans (max_le hζ.le le_rfl)
 
+/- English proof (translation)
+Establish `e : ζ * ξ - 1 = ζ * (ξ - 1) + (ζ - 1)` using `by ring`. Rewrite using `[e]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt ?_ hζ)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) (norm_le_one_of hζ)).trans_lt hξ`.
+-/
 theorem norm_mul_sub_one {ζ ξ : ℂ_[q]} (hζ : ‖ζ - 1‖ < 1) (hξ : ‖ξ - 1‖ < 1) : ‖ζ * ξ - 1‖ < 1 := by
   have e : ζ * ξ - 1 = ζ * (ξ - 1) + (ζ - 1) := by ring
   rw [e]
@@ -131,11 +188,19 @@ theorem norm_mul_sub_one {ζ ξ : ℂ_[q]} (hζ : ‖ζ - 1‖ < 1) (hξ : ‖ξ
   rw [norm_mul]
   exact (mul_le_of_le_one_left (norm_nonneg _) (norm_le_one_of hζ)).trans_lt hξ
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ]`. Conclude with `norm_mul_sub_one ih hζ`.
+-/
 theorem norm_pow_sub_one {ζ : ℂ_[q]} (hζ : ‖ζ - 1‖ < 1) (k : ℕ) : ‖ζ ^ k - 1‖ < 1 := by
   induction k with
   | zero => simp
   | succ k ih => rw [pow_succ]; exact norm_mul_sub_one ih hζ
 
+/- English proof (translation)
+Establish `hm` using `norm_mul_sub_one hζ hξ`. Use `((hom_shift hζ).comp (hom_shift hξ)).ext (hom_shift hm) ?_ ?_ f hf` and prove the remaining obligations. Use `show shiftS ζ (shiftS ξ X) = _`. Rewrite using `[shift_X hξ, (hom_shift hζ).lin, shift_X hζ, shift_X hm, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[shift_X hm]`. Simplify using `using hm`.
+-/
 theorem shift_shift (ζ ξ : ℂ_[q]) (f : ℂ_[q]⟦X⟧) (hζ : ‖ζ - 1‖ < 1) (hξ : ‖ξ - 1‖ < 1) (hf : Bdd f) :
     shiftS ζ (shiftS ξ f) = shiftS (ζ * ξ) f := by
   have hm := norm_mul_sub_one hζ hξ
@@ -146,17 +211,31 @@ theorem shift_shift (ζ ξ : ℂ_[q]) (f : ℂ_[q]⟦X⟧) (hζ : ‖ζ - 1‖ <
   · rw [shift_X hm]
     simpa using hm
 
+/- English proof (translation)
+Establish `h` using `PadicComplex.norm_extends' q (a : ℚ_[q])`. Simplify `h` using `[zc]`.
+-/
 theorem norm_zc (a : ℤ_[q]) : ‖zc a‖ = ‖a‖ := by
   have h := PadicComplex.norm_extends' q (a : ℚ_[q])
   simpa [zc] using h
 
+/- English proof (translation)
+Simplify using `[zc]`.
+-/
 theorem zc_natCast (m : ℕ) : zc (m : ℤ_[q]) = (m : ℂ_[q]) := by simp [zc]
 
+/- English proof (translation)
+Use `(Isometry.of_dist_eq fun a b => ?_).continuous` and prove the remaining obligations. Rewrite using `[dist_eq_norm, dist_eq_norm, ← norm_zc]`. Simplify using `[zc]`.
+-/
 theorem continuous_zc : Continuous (zc : ℤ_[q] → ℂ_[q]) := by
   refine (Isometry.of_dist_eq fun a b => ?_).continuous
   rw [dist_eq_norm, dist_eq_norm, ← norm_zc]
   simp [zc]
 
+/- English proof (translation)
+Introduce `n`. Rewrite using `[mulS, coeff_mk]`. Use `split_ifs`. Simplify using the standard rewrite rules. Rewrite using `[norm_zc]`.
+
+Conclude with `PadicInt.norm_le_one _`.
+-/
 theorem bd_mulS (a : ℤ_[q]) : Bd 1 (mulS a) := by
   intro n
   rw [mulS, coeff_mk]
@@ -164,15 +243,26 @@ theorem bd_mulS (a : ℤ_[q]) : Bd 1 (mulS a) := by
   · simp
   · rw [norm_zc]; exact PadicInt.norm_le_one _
 
+/- English proof (translation)
+Rewrite using `[← coeff_zero_eq_constantCoeff_apply, mulS, coeff_mk]`. Simplify using the standard rewrite rules.
+-/
 theorem const_mulS (a : ℤ_[q]) : constantCoeff (mulS a) = 0 := by
   rw [← coeff_zero_eq_constantCoeff_apply, mulS, coeff_mk]; simp
 
+/- English proof (translation)
+Simplify using `only [mulS, coeff_mk]`. Use `split_ifs`. Conclude with `continuous_const`. Conclude with `continuous_zc.comp (PadicInt.continuous_choose n)`.
+-/
 theorem continuous_coeff_mulS (n : ℕ) : Continuous fun a : ℤ_[q] => coeff n (mulS a) := by
   simp only [mulS, coeff_mk]
   split_ifs
   · exact continuous_const
   · exact continuous_zc.comp (PadicInt.continuous_choose n)
 
+/- English proof (translation)
+Use extensionality with `n`. Establish `e : ((1 + X : ℂ_[q]⟦X⟧)) ^ m = (((1 + Polynomial.X) ^ m : Polynomial ℂ_[q]) : ℂ_[q]⟦X⟧)` using `by simp`. Rewrite using `[mulS, coeff_mk, map_sub, e, Polynomial.coeff_coe, Polynomial.coeff_one_add_X_pow, coeff_one, Ring.choose_natCast, zc_natCast]`. Use `split_ifs with h`. Simplify using `[h]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem mulS_natCast (m : ℕ) : mulS (m : ℤ_[q]) = (1 + X) ^ m - 1 := by
   ext n
   have e : ((1 + X : ℂ_[q]⟦X⟧)) ^ m = (((1 + Polynomial.X) ^ m : Polynomial ℂ_[q]) : ℂ_[q]⟦X⟧) := by simp
@@ -182,12 +272,22 @@ theorem mulS_natCast (m : ℕ) : mulS (m : ℤ_[q]) = (1 + X) ^ m - 1 := by
   · simp [h]
   · simp
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.MomOne.sup_norm_laws q).2.1 f _ B hf (bd_mulS a) (const_mulS a) add f g _ _ := subst_add (HasSubst.of_constantCoeff_zero' (const_mulS a)) f g mul f g _ _ := subst_mul (HasSubst.of_constantCoeff_zero' (const_mulS a)) f g const c := subst_C c`.
+-/
 theorem hom_subst (a : ℤ_[q]) : Hom (fun f : ℂ_[q]⟦X⟧ => f.subst (mulS a : ℂ_[q]⟦X⟧)) where
   bd f B hf := (GlobalTheory.MomOne.sup_norm_laws q).2.1 f _ B hf (bd_mulS a) (const_mulS a)
   add f g _ _ := subst_add (HasSubst.of_constantCoeff_zero' (const_mulS a)) f g
   mul f g _ _ := subst_mul (HasSubst.of_constantCoeff_zero' (const_mulS a)) f g
   const c := subst_C c
 
+/- English proof (translation)
+Establish `h` using `hom_shift hζ`. Establish `b1 : Bdd (1 + X : ℂ_[q]⟦X⟧)` using `bdd_add (by simpa using bdd_C (1 : ℂ_[q])) ⟨1, bd_X⟩`. Establish `h1 : shiftS ζ (1 + X) = C ζ * (1 + X)`. Rewrite using `[show (1 + X : ℂ_[q]⟦X⟧) = C 1 + X by simp, h.add _ _ (bdd_C _) ⟨1, bd_X⟩, h.const, shift_X hζ, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hp : ∀ m : ℕ, Bdd ((1 + X : ℂ_[q]⟦X⟧) ^ m) ∧ shiftS ζ ((1 + X) ^ m) = C (ζ ^ m) * (1 + X) ^ m`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => exact ⟨by simpa using bdd_C (1 : ℂ_[q]), by simpa using h.const 1⟩`. Consider the case `succ m ih`.
+
+Use `⟨by rw [pow_succ]; exact bdd_mul ih.1 b1, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ, h.mul _ _ ih.1 b1, ih.2, h1, map_pow, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mulS_natCast, show ((1 + X) ^ m - 1 : ℂ_[q]⟦X⟧) = (1 + X) ^ m + C (-1) by simp [sub_eq_add_neg], h.add _ _ (hp m).1 (bdd_C _), h.const, (hp m).2]`. Simplify using `[sub_eq_add_neg]`.
+-/
 theorem shift_mulS_natCast {ζ : ℂ_[q]} (hζ : ‖ζ - 1‖ < 1) (m : ℕ) :
     shiftS ζ (mulS (m : ℤ_[q])) = C (ζ ^ m) * (1 + mulS (m : ℤ_[q])) - 1 := by
   have h := hom_shift hζ
@@ -207,6 +307,11 @@ theorem shift_mulS_natCast {ζ : ℂ_[q]} (hζ : ‖ζ - 1‖ < 1) (m : ℕ) :
     h.add _ _ (hp m).1 (bdd_C _), h.const, (hp m).2]
   simp [sub_eq_add_neg]
 
+/- English proof (translation)
+Simplify using `only [shiftS, coeff_mk]`. Use `continuous_tsum (u := fun m => ‖ζ - 1‖ ^ (m - n)) (fun m => (continuous_coeff_mulS m).mul continuous_const) ?_ fun m a => ?_` and prove the remaining obligations. Rewrite using `[← summable_nat_add_iff n]`. Simplify using `using summable_geometric_of_lt_one (norm_nonneg _) hζ`. Rewrite using `[norm_mul, norm_mul, norm_mul, norm_pow, norm_pow]`.
+
+Establish `h1` using `bd_mulS a m`. Establish `h2 : ‖(m.choose n : ℂ_[q])‖ ≤ 1` using `IsUltrametricDist.norm_natCast_le_one _ _`. Establish `h3 : ‖ζ‖ ^ n ≤ 1` using `pow_le_one₀ (norm_nonneg _) (norm_le_one_of hζ)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem continuous_coeff_shift_mulS {ζ : ℂ_[q]} (hζ : ‖ζ - 1‖ < 1) (n : ℕ) :
     Continuous fun a : ℤ_[q] => coeff n (shiftS ζ (mulS a)) := by
   simp only [shiftS, coeff_mk]
@@ -221,6 +326,19 @@ theorem continuous_coeff_shift_mulS {ζ : ℂ_[q]} (hζ : ‖ζ - 1‖ < 1) (n :
     calc _ ≤ 1 * (1 * 1 * ‖ζ - 1‖ ^ (m - n)) := by gcongr
       _ = _ := by ring
 
+/- English proof (translation)
+Establish `hp : q.Prime` using `Fact.out`. Establish `hn : q ^ n ≠ 0` using `pow_ne_zero _ hp.ne_zero`. Establish `h1 : ‖ζ‖ = 1`. Use `congrArg norm h` as an intermediate fact. Rewrite `this` using `[norm_pow, norm_one]`.
+
+Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn).mp this`. Set `O : Subring ℂ_[q]` to `{ carrier := {x | ‖x‖ ≤ 1} mul_mem' := fun {a b} ha hb => by show ‖a * b‖ ≤ 1`. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ ha (norm_nonneg _) hb`. Use the proof step `one_mem' := by simp`.
+
+Use the proof step `add_mem' := fun {a b} ha hb => (IsUltrametricDist.norm_add_le_max a b).trans (max_le ha hb)`. Use the proof step `zero_mem' := by simp`. Use the proof step `neg_mem' := fun {a} ha => by simpa using ha }`. Establish `hz : ζ ∈ O` using `h1.le`. Take `⟨r, hr⟩` from `exists_add_pow_prime_pow_eq hp ((⟨ζ, hz⟩ : O) - 1) 1 n`.
+
+Establish `hr'` using `congrArg (fun x : O => (x : ℂ_[q])) hr`. Simplify using `only [sub_add_cancel] at hr'`. Move the coercions through the operations in `at hr'`. Establish `hq : ‖(q : ℂ_[q])‖ < 1`. Rewrite using `[← zc_natCast, norm_zc]`.
+
+Conclude with `Padic.norm_p_lt_one`. Establish `e : (ζ - 1) ^ q ^ n = -((q : ℂ_[q]) * ((ζ - 1) * r))`. Rewrite `hr'` using `[h, one_pow]`. Take the linear combination `-hr'`. Establish `hm : ‖(ζ - 1) * r‖ ≤ 1` using `O.mul_mem (O.sub_mem hz O.one_mem) r.2`.
+
+Establish `: ‖ζ - 1‖ ^ q ^ n < 1`. Rewrite using `[← norm_pow, e, norm_neg, norm_mul]`. Conclude with `(mul_le_of_le_one_right (norm_nonneg _) hm).trans_lt hq`. Conclude with `(pow_lt_one_iff_of_nonneg (norm_nonneg _) hn).mp this`.
+-/
 theorem norm_sub_one_lt_of_root {ζ : ℂ_[q]} {n : ℕ} (h : ζ ^ (q ^ n) = 1) : ‖ζ - 1‖ < 1 := by
   have hp : q.Prime := Fact.out
   have hn : q ^ n ≠ 0 := pow_ne_zero _ hp.ne_zero
@@ -253,6 +371,13 @@ theorem norm_sub_one_lt_of_root {ζ : ℂ_[q]} {n : ℕ} (h : ζ ^ (q ^ n) = 1) 
     exact (mul_le_of_le_one_right (norm_nonneg _) hm).trans_lt hq
   exact (pow_lt_one_iff_of_nonneg (norm_nonneg _) hn).mp this
 
+/- English proof (translation)
+Establish `hζ` using `norm_sub_one_lt_of_root h`. Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.mp ((PadicInt.norm_le_pow_iff_mem_span_pow _ _).mp ha)`. Take `rfl : a = k + b * (q : ℤ_[q]) ^ n` from `by rw [hb]; ring`. Use `clear hb ha`. Use extensionality with `j`.
+
+Establish `hc : Continuous fun b : ℤ_[q] => (k : ℤ_[q]) + b * (q : ℤ_[q]) ^ n` using `by fun_prop`. Use `PadicInt.denseRange_natCast.induction_on b (isClosed_eq ?_ ?_) fun m => ?_` and prove the remaining obligations. Conclude with `(continuous_coeff_shift_mulS hζ j).comp hc`. Simplify using `only [map_sub, coeff_C_mul, map_add]`. Conclude with `(continuous_const.mul (continuous_const.add ((continuous_coeff_mulS j).comp hc))).sub continuous_const`.
+
+Establish `e : (k : ℤ_[q]) + (m : ℤ_[q]) * (q : ℤ_[q]) ^ n = ((k + q ^ n * m : ℕ) : ℤ_[q])` using `by push_cast; ring`. Rewrite using `[e, shift_mulS_natCast hζ, pow_add, pow_mul, h, one_pow, mul_one]`.
+-/
 theorem shift_mulS {ζ : ℂ_[q]} {n k : ℕ} {a : ℤ_[q]} (h : ζ ^ (q ^ n) = 1)
     (ha : ‖a - (k : ℤ_[q])‖ ≤ (q : ℝ) ^ (-(n : ℤ))) :
     shiftS ζ (mulS a) = C (ζ ^ k) * (1 + mulS a) - 1 := by
@@ -270,6 +395,13 @@ theorem shift_mulS {ζ : ℂ_[q]} {n k : ℕ} {a : ℤ_[q]} (h : ζ ^ (q ^ n) = 
       push_cast; ring
     rw [e, shift_mulS_natCast hζ, pow_add, pow_mul, h, one_pow, mul_one]
 
+/- English proof (translation)
+Establish `hζ` using `norm_sub_one_lt_of_root h`. Establish `hk` using `norm_pow_sub_one hζ k`. Establish `hX : (X : ℂ_[q]⟦X⟧).subst (mulS a : ℂ_[q]⟦X⟧) = mulS a` using `subst_X (HasSubst.of_constantCoeff_zero' (const_mulS a))`. Establish `e : (shiftS (ζ ^ k) X).subst (mulS a : ℂ_[q]⟦X⟧) = C (ζ ^ k) * (1 + mulS a) - 1`. Rewrite using `[shift_X hk]`.
+
+Use `(hom_subst a).lin (ζ ^ k)` as an intermediate fact. Rewrite `this` using `[hX]`. Conclude with `this`. Use `((hom_shift hζ).comp (hom_subst a)).ext ((hom_subst a).comp (hom_shift hk)) ?_ ?_ f hf` and prove the remaining obligations. Use `show shiftS ζ ((X : ℂ_[q]⟦X⟧).subst (mulS a : ℂ_[q]⟦X⟧)) = (shiftS (ζ ^ k) X).subst (mulS a : ℂ_[q]⟦X⟧)`.
+
+Rewrite using `[hX, e, shift_mulS h ha]`. Use `show ‖coeff 0 ((shiftS (ζ ^ k) X).subst (mulS a : ℂ_[q]⟦X⟧))‖ < 1`. Rewrite using `[e]`. Simplify `hk` using `[const_mulS]`.
+-/
 theorem shift_subst (ζ : ℂ_[q]) (n k : ℕ) (a : ℤ_[q]) (f : ℂ_[q]⟦X⟧) (h : ζ ^ (q ^ n) = 1)
     (ha : ‖a - (k : ℤ_[q])‖ ≤ (q : ℝ) ^ (-(n : ℤ))) (hf : Bdd f) :
     shiftS ζ (f.subst (mulS a : ℂ_[q]⟦X⟧)) = (shiftS (ζ ^ k) f).subst (mulS a : ℂ_[q]⟦X⟧) := by
@@ -289,6 +421,9 @@ theorem shift_subst (ζ : ℂ_[q]) (n k : ℕ) (a : ℤ_[q]) (f : ℂ_[q]⟦X⟧
     rw [e]
     simpa [const_mulS] using hk
 
+/- English proof (translation)
+Introduce `_ _` and use `⟨shift_shift, fun ζ n k a f h ha hf => ⟨norm_sub_one_lt_of_root h, shift_subst ζ n k a f h ha hf⟩⟩`.
+-/
 theorem main : ∀ (q : ℕ) [Fact q.Prime], (∀ (ζ ξ : ℂ_[q]) (f : ℂ_[q]⟦X⟧), ‖ζ - 1‖ < 1 → ‖ξ - 1‖ < 1 → Bdd f → shiftS ζ (shiftS ξ f) = shiftS (ζ * ξ) f) ∧ ∀ (ζ : ℂ_[q]) (n k : ℕ) (a : ℤ_[q]) (f : ℂ_[q]⟦X⟧), ζ ^ (q ^ n) = 1 → ‖a - (k : ℤ_[q])‖ ≤ (q : ℝ) ^ (-(n : ℤ)) → Bdd f → ‖ζ - 1‖ < 1 ∧ shiftS ζ (f.subst (mulS a : ℂ_[q]⟦X⟧)) = (shiftS (ζ ^ k) f).subst (mulS a : ℂ_[q]⟦X⟧) :=
   fun _ _ => ⟨shift_shift, fun ζ n k a f h ha hf => ⟨norm_sub_one_lt_of_root h, shift_subst ζ n k a f h ha hf⟩⟩
 

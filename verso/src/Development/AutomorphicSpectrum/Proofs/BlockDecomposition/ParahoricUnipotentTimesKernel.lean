@@ -8,6 +8,13 @@ namespace GlobalTheory.CompanionTheory.GxSplit
 
 open PositivityTheory.LowerBoundConstant GlobalTheory GlobalTheory.Published GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.SplitRead Topology
 
+/- English proof (translation)
+Set `H : Subgroup G` to `{ carrier := {g | ∃ u ∈ A, ∃ h ∈ K, g = u * h} mul_mem' := by`. Introduce and unpack `_ _ ⟨u₁, hu₁, h₁, hh₁, rfl⟩ ⟨u₂, hu₂, h₂, hh₂, rfl⟩`. Use `⟨u₁ * u₂, A.mul_mem hu₁ hu₂, (u₂⁻¹ * h₁ * u₂⁻¹⁻¹) * h₂, K.mul_mem (hc _ (A.inv_mem hu₂) _ hh₁) hh₂, ?_⟩` and prove the remaining obligations. Use `group`. Use the proof step `one_mem' := ⟨1, A.one_mem, 1, K.one_mem, by simp⟩`.
+
+Use the proof step `inv_mem' := by`. Introduce and unpack `_ ⟨u, hu, h, hh, rfl⟩`. Use `⟨u⁻¹, A.inv_mem hu, u * h⁻¹ * u⁻¹, hc _ hu _ (K.inv_mem hh), ?_⟩` and prove the remaining obligations. Use `group }`. Establish `hle : K ⊔ A ≤ H` using `sup_le (fun h hh => ⟨1, A.one_mem, h, hh, by simp⟩) (fun u hu => ⟨u, hu, 1, K.one_mem, by simp⟩)`.
+
+Conclude with `hle hg`.
+-/
 theorem exists_mul_of_mem_sup {G : Type*} [Group G] {A K : Subgroup G}
     (hc : ∀ w ∈ A, ∀ g ∈ K, w * g * w⁻¹ ∈ K) {g : G} (hg : g ∈ K ⊔ A) :
     ∃ u ∈ A, ∃ h ∈ K, g = u * h := by
@@ -27,6 +34,9 @@ theorem exists_mul_of_mem_sup {G : Type*} [Group G] {A K : Subgroup G}
     (fun u hu => ⟨u, hu, 1, K.one_mem, by simp⟩)
   exact hle hg
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n s d e g hg`. Conclude with `exists_mul_of_mem_sup (fun w hw h hh => GlobalTheory.DepthZeroJac.conj_mem_KOne (Subgroup.mem_inf.1 hw).2 hh) hg`.
+-/
 theorem gx_split : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n s : ℕ) (d : Fin s → ℕ) (e : (Σ a, Fin (d a)) ≃ Fin n), ∀ g ∈ Gx k e,
     ∃ u ∈ unipRad k e ⊓ KO k (Fin n), ∃ h ∈ KOne k (Fin n), g = u * h := by

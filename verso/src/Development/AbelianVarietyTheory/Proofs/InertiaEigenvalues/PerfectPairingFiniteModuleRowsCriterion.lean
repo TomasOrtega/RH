@@ -9,6 +9,9 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 
 namespace GlobalTheory.NewPrime.CharDual
 
+/- English proof (translation)
+Use `haveI : NeZero n := ⟨hn⟩`. Use `letI : Module (ZMod n) G := AddCommGroup.zmodModule hG`. Take `⟨f, hf⟩` from `GlobalTheory.ZModPerp.exists_dual_ne_zero (n := n) hg`. Conclude with `⟨f.toAddMonoidHom, hf⟩`.
+-/
 theorem exists_char_ne_zero (n : ℕ) (hn : n ≠ 0) {G : Type} [AddCommGroup G]
     (hG : ∀ g : G, n • g = 0) {g : G} (hg : g ≠ 0) : ∃ φ : G →+ ZMod n, φ g ≠ 0 := by
   haveI : NeZero n := ⟨hn⟩
@@ -39,6 +42,9 @@ def charModule : Module A (A →+ ZMod n) where
     show φ (0 * b) = 0
     rw [zero_mul, map_zero]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem charModule_smul_apply (a : A) (φ : A →+ ZMod n) (b : A) :
     (@HSMul.hSMul A (A →+ ZMod n) (A →+ ZMod n)
       (@instHSMul A (A →+ ZMod n) (charModule A n).toSMul) a φ) b = φ (a * b) := rfl
@@ -49,6 +55,27 @@ namespace GlobalTheory.NewPrime
 
 open GlobalTheory.NewPrime.CharDual in
 
+/- English proof (translation)
+Introduce `A _ _ n hn hnA`. Use `haveI : NeZero n := ⟨hn⟩`. Use `letI : Module A (A →+ ZMod n) := charModule A n`. Use `haveI : Finite (A →+ ZMod n) := Finite.of_injective (fun φ : A →+ ZMod n => (φ : A → ZMod n)) DFunLike.coe_injective`. Use `⟨A →+ ZMod n, inferInstance, inferInstance, inferInstance, AddMonoidHom.id _, ⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce `a y y'`. Both sides reduce to the same expression. Introduce `y hy`. Use extensionality with `b`. Conclude with `hy b`.
+
+Introduce `y' hy'`. Assume the negation of the conclusion as `h`. Take `⟨φ, hφ⟩` from `exists_char_ne_zero n hn (G := A) (fun g => by`. Rewrite using `[nsmul_eq_mul, hnA, zero_mul]) h`. Conclude with `hφ (hy' φ)`.
+
+Introduce `a Φ v hv`. Assume the negation of the conclusion as `hvr`. Use `set Q := (Fin a → A) ⧸ what₂ Φ`. Establish `hQ : ∀ q : Q, n • q = 0`. Introduce `q`.
+
+Proceed by induction on `q using Submodule.Quotient.induction_on with`. Consider the case `H w => show n • (Submodule.Quotient.mk w : Q) = 0`. Rewrite using `[← Nat.cast_smul_eq_nsmul A, ← Submodule.Quotient.mk_smul, hnA, zero_smul, Submodule.Quotient.mk_zero]`. Establish `hmk : (Submodule.Quotient.mk v : Q) ≠ 0`. Rewrite using `[Ne, Submodule.Quotient.mk_eq_zero]` and apply the resulting hypothesis.
+
+Take `⟨ψ, hψ⟩` from `exists_char_ne_zero n hn hQ hmk`. Set `L : (Fin a → A) →+ ZMod n` to `ψ.comp (what₂ Φ).mkQ.toAddMonoidHom`. Set `x : Fin a → (A →+ ZMod n)` to `fun j => L.comp (AddMonoidHom.single (fun _ => A) j)`. Establish `key : ∀ (w : Fin a → A) (b : A), (∑ j, w j • x j) b = L (fun k => w k * b)`. Introduce `w b`.
+
+Rewrite using `[AddMonoidHom.finset_sum_apply]`. Establish `: (fun k => w k * b) = ∑ j, Pi.single j (w j * b)` using `(Finset.univ_sum_single _).symm`. Rewrite using `[this, map_sum]`. Both sides reduce to the same expression. Establish `hx : matAct Φ x = 0`.
+
+Use function extensionality and compare the values at `i`. Use extensionality with `b`. Use `show (∑ j, Φ i j • x j) b = 0`. Rewrite using `[key]`. Establish `: (fun k => Φ i k * b) = b • Φ i`.
+
+Use function extensionality and compare the values at `k`. Simplify using `[mul_comm]`. Rewrite using `[this]`. Establish `hmem : b • Φ i ∈ what₂ Φ` using `Submodule.smul_mem _ b (Submodule.subset_span ⟨i, rfl⟩)`. Use `show ψ (Submodule.Quotient.mk _) = 0`.
+
+Rewrite using `[(Submodule.Quotient.mk_eq_zero _).2 hmem, map_zero]`. Establish `h1` using `congrArg (fun f : A →+ ZMod n => f 1) (hv x hx)`. Rewrite `h1` using `[key]`. Simplify using `only [mul_one] at h1`. Conclude with `hψ h1`.
+-/
 theorem charDual_cogenerator : ∀ (A : Type) [CommRing A] [Finite A] (n : ℕ), n ≠ 0 → (n : A) = 0 →
     ∃ (Y : Type) (_ : AddCommGroup Y) (_ : Module A Y) (_ : Finite Y) (β : Y →+ A →+ ZMod n),
       Perf A β ∧ ∀ (a : ℕ) (Φ : Matrix (Fin a) (Fin a) A) (v : Fin a → A),

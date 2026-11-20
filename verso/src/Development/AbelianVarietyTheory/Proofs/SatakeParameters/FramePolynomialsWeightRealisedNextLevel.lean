@@ -9,14 +9,23 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 namespace GlobalTheory.TwV.DelA
 
+/- English proof (translation)
+Unfold `sgRev`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin n))) with h | h <;> rw [h] <;> norm_num`.
+-/
 theorem sgRev_mul_self_eq_one (n : ℕ) : sgRev n * sgRev n = 1 := by
   unfold sgRev
   rcases Int.units_eq_one_or (Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin n))) with h | h <;> rw [h] <;> norm_num
 
+/- English proof (translation)
+Introduce `h` and use `by simpa [h] using sgRev_mul_self_eq_one n`.
+-/
 theorem sgRev_ne_zero_of_sq (n : ℕ) : sgRev n ≠ 0 := fun h => by simpa [h] using sgRev_mul_self_eq_one n
 
 variable {p : ℕ} [Fact p.Prime] (X : Sys p) (D : D7) (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ D.what₂.Tau)
 
+/- English proof (translation)
+Unfold `zT`. Rewrite using `[if_pos ho]`. Establish `: (((f τ)⁻¹).transpose.submatrix id Fin.rev) = (((f τ)⁻¹).transpose.submatrix id (Fin.revPerm : Equiv.Perm (Fin n)))` using `rfl`. Rewrite using `[this, Matrix.det_permute', Matrix.det_transpose, Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`. Both sides reduce to the same expression.
+-/
 theorem det_zT_of_odd {n : ℕ}
     (f : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ) (τ : D.what₂.Tau) (ho : IsOddPos (pos.symm τ).2) :
     (zT X D pos f τ).det = sgRev n * ((f τ).det)⁻¹ := by
@@ -26,6 +35,9 @@ theorem det_zT_of_odd {n : ℕ}
   rw [this, Matrix.det_permute', Matrix.det_transpose, Matrix.det_nonsing_inv, Ring.inverse_eq_inv']
   rfl
 
+/- English proof (translation)
+Unfold `zT`. Rewrite using `[if_neg ho]`.
+-/
 theorem det_zT_of_even {n : ℕ}
     (f : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ) (τ : D.what₂.Tau) (ho : ¬ IsOddPos (pos.symm τ).2) :
     (zT X D pos f τ).det = (f τ).det := by
@@ -35,6 +47,9 @@ theorem det_zT_of_even {n : ℕ}
 def frVarToModel (i : ℕ) {n : ℕ} (h : (X.Pj i).m + 1 = n) (k : GL3Theta.FrV D n) : Var (X.Pj i) :=
   ⟨((posJ X D pos i).symm k.1).1, ((posJ X D pos i).symm k.1).2, (Fin.cast h.symm k.2.1, Fin.cast h.symm k.2.2)⟩
 
+/- English proof (translation)
+Unfold `valZ GL3Theta.evFr`. Rewrite using `[MvPolynomial.eval_rename]`. Use `congr 2`. Use function extensionality and compare the values at `k`. Simplify using `[frVarToModel]`.
+-/
 theorem valZ_rename_frVar (i : ℕ) {n : ℕ} (h : (X.Pj i).m + 1 = n) (R0 : MvPolynomial (GL3Theta.FrV D n) ℂ)
     (f : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ) :
     valZ X D pos i h (MvPolynomial.rename (frVarToModel X D pos i h) R0) f = GL3Theta.evFr D R0 (zT X D pos f) := by
@@ -50,6 +65,19 @@ end
 noncomputable section
 namespace GlobalTheory.TwV.DelA
 
+/- English proof (translation)
+Introduce `p _ X D pos j n h ν hν Q hQ`. Take `⟨R0, hR0⟩` from `GlobalTheory.T.weightPolynomial_div_detPow_eq_poly_of_blockMatrices X D pos ν (cT1 X D pos j) hν Q hQ`. Use `⟨(∏ τ, if IsOddPos (pos.symm τ).2 then sgRev n ^ (-(wT X D pos j τ - cT1 X D pos j τ)) else 1) • MvPolynomial.rename (frVarToModel X D pos (j + 1) h) R0, ?_⟩` and prove the remaining obligations. Introduce `f`. Establish `hd : ∀ τ, (f.1 τ).det ≠ 0` using `fun τ => (f.2 τ).ne_zero`.
+
+Establish `hv` using `valZ_rename_frVar X D pos (j + 1) h R0 f.1`. Unfold `valZ at hv`. Rewrite using `[ev1_eq_prod_det_pow_mul_valZ]`. Unfold `valZ`. Rewrite using `[MvPolynomial.smul_eval, hv, hR0 f.1 hd]`.
+
+Establish `key : (∏ τ, (zT X D pos f.1 τ).det ^ eT X D pos (j + 1) τ) * (∏ τ, if IsOddPos (pos.symm τ).2 then sgRev n ^ (-(wT X D pos j τ - cT1 X D pos j τ)) else 1) * (∏ τ, if IsOddPos (pos.symm τ).2 then (f.1 τ).det ^ (-(cT1 X D pos j τ)) else 1) = ∏ τ, (f.1 τ).det ^ (-(wT X D pos j τ))`. Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[(GlobalTheory.T.realPlaceBlockWeightLastEntry_consecutive_levels X D pos j τ).2]`. Distinguish the cases in `ho : IsOddPos (pos.symm τ).2`.
+
+Simplify using `only [if_pos ho]`. Rewrite using `[det_zT_of_odd X D pos f.1 τ ho, mul_zpow, inv_zpow']`. Establish `hs : sgRev n ^ (wT X D pos j τ - cT1 X D pos j τ) * sgRev n ^ (-(wT X D pos j τ - cT1 X D pos j τ)) = 1`. Rewrite using `[← zpow_add₀ (sgRev_ne_zero_of_sq n), add_neg_cancel, zpow_zero]`. Establish `hdd : (f.1 τ).det ^ (-(wT X D pos j τ - cT1 X D pos j τ)) * (f.1 τ).det ^ (-(cT1 X D pos j τ)) = (f.1 τ).det ^ (-(wT X D pos j τ))`.
+
+Rewrite using `[← zpow_add₀ (hd τ)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [if_neg ho, mul_one]`.
+
+Rewrite using `[det_zT_of_even X D pos f.1 τ ho]`. Rewrite using `[← key]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem realises_of_wtPol : ∀ {p : ℕ} [Fact p.Prime] (X : Sys p) (D : D7) (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ D.what₂.Tau) (j : ℕ) {n : ℕ} (h : (X.Pj (j + 1)).m + 1 = n) (ν : D.what₂.Tau → Fin n → ℕ), (∀ τ r, (ν τ r : ℤ) ≤ cT1 X D pos j τ) → ∀ Q : MvPolynomial (GL3Theta.FrV D n) ℂ, Q ∈ WtPol ℂ ν → ∃ R, Realises X D pos (j + 1) h (wT X D pos j) Q R := by
   intro p _ X D pos j n h ν hν Q hQ
   obtain ⟨R0, hR0⟩ := GlobalTheory.T.weightPolynomial_div_detPow_eq_poly_of_blockMatrices X D pos ν (cT1 X D pos j) hν Q hQ

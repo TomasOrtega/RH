@@ -18,6 +18,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} (X : HidaSetting D) (Y : Formalism.L2.SG.Full.Full X) (u u' : D.what₂.Word)
 
+/- English proof (translation)
+Establish `hG' : s.G ≠ 0` using `fun h => hG (by show Formalism.L2.SG.TermOp.Gt s = 0; simp [Formalism.L2.SG.TermOp.Gt, h])`. Establish `hRL : IsRowLat D (X.Fu u) s.lam` using `(Y.rowsOK u).1 s.lam s.mem`. Establish `hEq` using `Formalism.L2.SG.Closed.TermEqIff_holds D u u' (X.Fu u) s.lam hRL`. Establish `hGF` using `(Formalism.L2.SG.Closed.TermFun_holds D u u' (X.Fu u) s.lam hRL).1`. Set `x : Formalism.L2.SG.TermDef.Carrier (Formalism.L2.SG.TermDef.PD D s.lam (lf D (X.Fu u)) u')` to `⟨s.frame, s.rep.2.2.2.2⟩`.
+
+Establish `gv : Formalism.L2.SG.TermDef.Gt s.lam (lf D (X.Fu u)) (Formalism.L2.SG.TermDef.PD D s.lam (lf D (X.Fu u)) u') (Formalism.L2.SG.TermDef.mk _ _ _ x) = Gval (lf D (X.Fu u)) x.1` using `hGF _ _ ((hEq _ _).1 (Quot.out_eq (Formalism.L2.SG.TermDef.mk s.lam (lf D (X.Fu u)) (Formalism.L2.SG.TermDef.PD D s.lam (lf D (X.Fu u)) u') x)))`. Rewrite using `[← gv]`. Conclude with `hG'`.
+-/
 theorem gval_ne (s : Formalism.L2.SG.TermOp.GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u'))
     (hG : (Y.tO u u').G s ≠ 0) : Gval (lf D (X.Fu u)) s.frame ≠ 0 := by
   have hG' : s.G ≠ 0 := fun h => hG (by show Formalism.L2.SG.TermOp.Gt s = 0; simp [Formalism.L2.SG.TermOp.Gt, h])
@@ -34,30 +39,79 @@ theorem gval_ne (s : Formalism.L2.SG.TermOp.GTerm X u u' (X.Fu u) (X.Fu u') (Y.w
 
 variable (s : Formalism.L2.SG.TermOp.GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u'))
 
+/- English proof (translation)
+Use `firstNormal_pairing X Y u u' s h a.castSucc` as an intermediate fact. Rewrite `this` using `[if_neg (Fin.castSucc_lt_last a).ne]`. Simplify `this` using `[FlagG.fvec]`.
+-/
 theorem firstNormal_e (h : (ZE X u u' (Mof X Y u u' s)).det ≠ 0) (a : Fin D.R.rS) :
     (VS D).hT ((X.Fu u).e a) (Formalism.L2.SG.Pf.Level.toV X (nu1E X u u' (Mof X Y u u' s))) = 0 := by
   have := firstNormal_pairing X Y u u' s h a.castSucc
   rw [if_neg (Fin.castSucc_lt_last a).ne] at this
   simpa [FlagG.fvec] using this
 
+/- English proof (translation)
+Use `firstNormal_pairing X Y u u' s h (Fin.last _)` as an intermediate fact. Rewrite `this` using `[if_pos rfl]`. Simplify `this` using `[FlagG.fvec]`.
+-/
 theorem firstNormal_z (h : (ZE X u u' (Mof X Y u u' s)).det ≠ 0) :
     (VS D).hT (X.Fu u).z (Formalism.L2.SG.Pf.Level.toV X (nu1E X u u' (Mof X Y u u' s))) = 1 := by
   have := firstNormal_pairing X Y u u' s h (Fin.last _)
   rw [if_pos rfl] at this
   simpa [FlagG.fvec] using this
 
+/- English proof (translation)
+Use `secondNormal_pairing X Y u u' s h b.castSucc` as an intermediate fact. Rewrite `this` using `[if_neg (Fin.castSucc_lt_last b).ne]`. Simplify `this` using `[FlagG.fvec]`.
+-/
 theorem secondNormal_e (h : (ZE X u u' (Mof X Y u u' s)).det ≠ 0) (b : Fin D.R.rS) :
     (VS D).hT (Formalism.L2.SG.Pf.Level.toV X (x2E X u u' (Mof X Y u u' s))) (s.frame.fl.e b) = 0 := by
   have := secondNormal_pairing X Y u u' s h b.castSucc
   rw [if_neg (Fin.castSucc_lt_last b).ne] at this
   simpa [FlagG.fvec] using this
 
+/- English proof (translation)
+Use `secondNormal_pairing X Y u u' s h (Fin.last _)` as an intermediate fact. Rewrite `this` using `[if_pos rfl]`. Simplify `this` using `[FlagG.fvec]`.
+-/
 theorem secondNormal_z (h : (ZE X u u' (Mof X Y u u' s)).det ≠ 0) :
     (VS D).hT (Formalism.L2.SG.Pf.Level.toV X (x2E X u u' (Mof X Y u u' s))) s.frame.fl.z = 1 := by
   have := secondNormal_pairing X Y u u' s h (Fin.last _)
   rw [if_pos rfl] at this
   simpa [FlagG.fvec] using this
 
+/- English proof (translation)
+Establish `hRL : IsRowLat D (X.Fu u) s₁.lam` using `(Y.rowsOK u).1 s₁.lam s₁.mem`. Take `⟨_, ⟨hlat, _, hlift, _⟩, _⟩` from `hRL`. Establish `hL₁ : IsLift s₁.lam s₁.frame` using `s₁.rep.2.2.2.2.1`. Establish `hL₂ : IsLift s₁.lam s₂.frame` using `by rw [hl]; exact s₂.rep.2.2.2.2.1`. Establish `gv₁` using `gval_ne X Y u u' s₁ hG₁`.
+
+Establish `gv₂` using `gval_ne X Y u u' s₂ hG₂`. Establish `nd₁` using `PI.UnitaryGroupMassFormula.ScalEquivGen.ndOfQ hlat hlift hL₁ gv₁`. Establish `nd₂` using `PI.UnitaryGroupMassFormula.ScalEquivGen.ndOfQ hlat hlift hL₂ gv₂`. Establish `hdim` using `PI.UnitaryGroupMassFormula.ScalarEquivalenceHermitianSpace.finrank_VS D`. Establish `hTh` using `PI.UnitaryGroupMassFormula.ScalEquivGen.thEqQ hdim nd₁ hs0`.
+
+Establish `hTh''` using `PI.UnitaryGroupMassFormula.ScalEquivGen.thEq''Q hlat hdim nd₁ nd₂ hs0`. Establish `hz₁` using `frame_zt X Y u u' s₁`. Establish `hz₂` using `frame_zt X Y u u' s₂`. Establish `hT0` using `PI.UnitaryGroupMassFormula.ScalarEquivalenceHermitianSpace.tu_ne_zero D u`. Establish `hT0'` using `PI.UnitaryGroupMassFormula.ScalarEquivalenceHermitianSpace.tu_ne_zero D u'`.
+
+Establish `hi : s₂.lin * s₁.lin⁻¹ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `Subgroup.mul_mem _ (lin_iso X Y u u' s₂) (Subgroup.inv_mem _ (lin_iso X Y u u' s₁))`. Establish `hβ : ∀ x, (s₂.lin * s₁.lin⁻¹) x = s₂.lin (s₁.lin.symm x)` using `fun x => rfl`. Establish `hβe : ∀ b, (s₂.lin * s₁.lin⁻¹) (s₁.frame.fl.e b) = s₂.frame.fl.e b`. Introduce `b`. Rewrite using `[hβ, frame_e, frame_e, LinearEquiv.symm_apply_apply]`.
+
+Establish `hβz : (s₂.lin * s₁.lin⁻¹) s₁.frame.fl.z = s₂.frame.fl.z`. Rewrite using `[hβ, frame_z_eq_lin_zu, frame_z_eq_lin_zu, LinearEquiv.symm_apply_apply]`. Establish `hdet : (ZE X u u' (Mof X Y u u' s₁)).det = 0 ↔ (ZE X u u' (Mof X Y u u' s₂)).det = 0`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Take `⟨d, hd, hdO, hd0⟩` from `ker_of_det X Y u u' s₁ gv₁ h`. Take `⟨d₂, hd₂, hd₂O, hd₂0⟩` from `ker_transport hlat rfl hz₁ hz₂ gv₁ hTh'' hsc hd hdO hd0`. Conclude with `det_of_ker X Y u u' s₂ hd₂ hd₂O hd₂0`. Introduce `h`. Take `⟨d, hd, hdO, hd0⟩` from `ker_of_det X Y u u' s₂ gv₂ h`.
+
+Take `⟨d₁, hd₁, hd₁O, hd₁0⟩` from `ker_transport_rev hlat rfl hz₁ hz₂ gv₂ hTh hsc hd hdO hd0`. Conclude with `det_of_ker X Y u u' s₁ hd₁ hd₁O hd₁0`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h₁ : (ZE X u u' (Mof X Y u u' s₁)).det = 0`. Establish `h₂` using `hdet.1 h₁`.
+
+Simplify using `[nu1E, h₁, h₂]`. Establish `h₂ : (ZE X u u' (Mof X Y u u' s₂)).det ≠ 0` using `fun h => h₁ (hdet.2 h)`. Take `⟨ν, hνm, hνe, hνz, hνd⟩` from `firstNormal_transport hlat rfl hz₁ hz₂ hT0 hTh'' hsc (firstNormal_mem_Xplus X Y u u' s₁) (firstNormal_e X Y u u' s₁ h₁) (firstNormal_z X Y u u' s₁ h₁)`. Establish `hνeq : ν = Formalism.L2.SG.Pf.Level.toV X (nu1E X u u' (Mof X Y u u' s₂))`. Assume the negation of the conclusion as `hne`.
+
+Apply `h₂` to reduce the goal to its premises. Use `det_of_ker X Y u u' s₂ (Submodule.sub_mem _ hνm (firstNormal_mem_Xplus X Y u u' s₂)) ?_ (sub_ne_zero.2 hne)` and prove the remaining obligations. Rewrite using `[PI.ScalarPairDr.W.mem_orth_Xplus (S := VS D) (X.Fu u)]`. Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub]`.
+
+Establish `e1` using `hνe a`. Establish `e2` using `firstNormal_e X Y u u' s₂ h₂ a`. Simplify using `only at e1`. Rewrite using `[e1, e2, sub_zero]`. Rewrite using `[map_sub]`.
+
+Establish `e1` using `hνz`. Simplify using `only at e1`. Rewrite using `[e1, firstNormal_z X Y u u' s₂ h₂, sub_self]`. Apply `wperp_of X u` to reduce the goal to its premises. Rewrite using `[Formalism.L2.SG.Pf.Level.toV_sub, ← hνeq]`.
+
+Conclude with `fixedX X u _ hνd`. Distinguish the cases in `h₁ : (ZE X u u' (Mof X Y u u' s₁)).det = 0`. Establish `h₂` using `hdet.1 h₁`. Simplify using `[nu2E, h₁, h₂]`. Establish `h₂ : (ZE X u u' (Mof X Y u u' s₂)).det ≠ 0` using `fun h => h₁ (hdet.2 h)`.
+
+Take `⟨x, hxm, hxe, hxz, hxd⟩` from `secondNormal_transport hlat rfl hz₁ hz₂ hT0' hi hβe hβz hTh'' hsc (secondNormal_mem_Xplus X Y u u' s₁) (secondNormal_e X Y u u' s₁ h₁) (secondNormal_z X Y u u' s₁ h₁)`. Establish `hxeq : x = Formalism.L2.SG.Pf.Level.toV X (x2E X u u' (Mof X Y u u' s₂))`. Assume the negation of the conclusion as `hne`. Apply `h₂` to reduce the goal to its premises. Use `det_of_lker X Y u u' s₂ (Submodule.sub_mem _ hxm (secondNormal_mem_Xplus X Y u u' s₂)) ?_ (sub_ne_zero.2 hne)` and prove the remaining obligations.
+
+Introduce `b`. Use `Fin.lastCases ?_ (fun i => ?_) b` and prove the remaining obligations. Simplify using `only [FlagG.fvec, Fin.snoc_last]`. Rewrite using `[map_sub, LinearMap.sub_apply, hxz, secondNormal_z X Y u u' s₂ h₂, sub_self]`. Simplify using `only [FlagG.fvec, Fin.snoc_castSucc]`.
+
+Rewrite using `[map_sub, LinearMap.sub_apply, hxe i, secondNormal_e X Y u u' s₂ h₂ i, sub_self]`. Apply `wperp_of X u'` to reduce the goal to its premises. Rewrite using `[Formalism.L2.SG.Pf.Level.toV_sub, secondNormal_toV, secondNormal_toV, ← hxeq]`. Establish `key : s₂.lin.symm x = s₁.lin.symm ((s₂.lin * s₁.lin⁻¹).symm x)`. Rewrite using `[LinearEquiv.symm_apply_eq, ← hβ, LinearEquiv.apply_symm_apply]`.
+
+Rewrite using `[key, ← map_sub, ← neg_sub, map_neg]`. Conclude with `Submodule.neg_mem _ (symm_frameX X Y u u' s₁ hxd)`. Introduce `y₂ hy₂`. Establish `hV` using `orthogonal_toV (Λ := s₁.lam) X Y u u' s₂ hy₂`. Take `⟨y₁, hy₁, hd1, hd2⟩` from `orthogonal_transport hTh'' hV`.
+
+Use `⟨X.crd y₁, orthogonal_ofV X Y u u' s₁ hlat hlift hL₁ hy₁, ?_, ?_⟩` and prove the remaining obligations. Apply `wperp_of X u` to reduce the goal to its premises. Rewrite using `[Formalism.L2.SG.Pf.Level.toV_sub, Formalism.L2.SG.Pf.Level.toV_crd]`. Conclude with `fixedX X u _ hd1`. Apply `wperp_of X u'` to reduce the goal to its premises.
+
+Rewrite using `[Formalism.L2.SG.Pf.Level.toV_sub, ← linsymm_toV, ← linsymm_toV, Formalism.L2.SG.Pf.Level.toV_crd]`. Establish `key : s₁.lin.symm y₁ = s₂.lin.symm ((s₂.lin * s₁.lin⁻¹) y₁)`. Rewrite using `[hβ, LinearEquiv.symm_apply_apply]`. Rewrite using `[key, ← map_sub]`. Conclude with `symm_frameX X Y u u' s₂ hd2`.
+-/
 theorem agree_pair (s₁ s₂ : Formalism.L2.SG.TermOp.GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u'))
     (hG₁ : (Y.tO u u').G s₁ ≠ 0) (hG₂ : (Y.tO u u').G s₂ ≠ 0) (hl : s₁.lam = s₂.lam)
     (hs0 : Lat.s0 s₁.lam (lf D (X.Fu u)) s₁.frame s₂.frame (s₂.lin * s₁.lin⁻¹) D.R.k = 1)
@@ -175,6 +229,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} (X : HidaSetting D) (Y : Formalism.L2.SG.Full.Full X) (u u' : D.what₂.Word)
   (κ : Formalism.L2.SG.TermDef.Term D u u' (X.Fu u) (Y.what₂ u) → ℕ)
 
+/- English proof (translation)
+Introduce `R ρ s₁ s₂ _ _`. Take `⟨hG₁, hn₁, hr₁, hk₁⟩` from `s₁.2`. Take `⟨hG₂, hn₂, hr₂, hk₂⟩` from `s₂.2`. Establish `h` using `(hS s₁.1 s₂.1 hG₁ hG₂ hn₁ hn₂ (hr₁.trans hr₂.symm)).2 (hk₁.trans hk₂.symm)`. Establish `h2 : Formalism.L2.SG.TermOp.scalT s₁.1 s₂.1` using `h.2`.
+
+Take `⟨⟨hl, -⟩, hs0, hsc⟩` from `h2`. Conclude with `agree_pair X Y u u' s₁.1 s₂.1 hG₁ hG₂ hl hs0 hsc`.
+-/
 theorem scalarAgreeRatC_of_scalT (hS : ScalTC X Y u u' κ) : ScalarAgreeRatC X Y u u' κ := by
   intro R ρ s₁ s₂ _ _
   obtain ⟨hG₁, hn₁, hr₁, hk₁⟩ := s₁.2
@@ -184,6 +243,9 @@ theorem scalarAgreeRatC_of_scalT (hS : ScalTC X Y u u' κ) : ScalarAgreeRatC X Y
   obtain ⟨⟨hl, -⟩, hs0, hsc⟩ := h2
   exact agree_pair X Y u u' s₁.1 s₂.1 hG₁ hG₂ hl hs0 hsc
 
+/- English proof (translation)
+The claim follows from `scalarAgreeC_of_rat X Y u u' κ (scalarAgreeRatC_of_scalT X Y u u' κ hS)`.
+-/
 theorem scalarAgreeC_of_scalT (hS : ScalTC X Y u u' κ) : ScalarAgreeC X Y u u' κ :=
   scalarAgreeC_of_rat X Y u u' κ (scalarAgreeRatC_of_scalT X Y u u' κ hS)
 

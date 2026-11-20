@@ -1,6 +1,39 @@
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MulMatMemUnitaryGroup
 open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ A r M Ax j lam α hαl hαc f hf`. Establish `hstar : Continuous (star : E → E)`. Apply the tactic sequence `have : Isometry (starAddEquiv : E ≃+ E) := (AddMonoidHomClass.isometry_iff_norm (starAddEquiv : E ≃+ E)).2 (fun x => Unram.norm_star F x)`. Conclude with `this.continuous`. Use `haveI : ContinuousStar E := ⟨hstar⟩`.
+
+Use `haveI : LocallyCompactSpace F := Unram.lcF E`. Use `haveI : ProperSpace F := ProperSpace.of_locallyCompactSpace F`. Use `haveI : IsTopologicalAddGroup A.L := IsModuleTopology.topologicalAddGroup F A.L`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_eq_succ (Unram.finrank_eq (F := F) (E := E))`. Establish `hj : Continuous j` using `IsModuleTopology.continuous_of_linearMap ((j : A.L →ₗ[E] (Fin r → E)).restrictScalars F)`.
+
+Establish `hjs : Continuous j.symm` using `LinearMap.continuous_of_finiteDimensional ((j.symm : (Fin r → E) →ₗ[E] A.L).restrictScalars F)`. Establish `hact : Continuous (fun p : A.L × Matrix.unitaryGroup (Fin r) E => (actU p.2 (Ax, j p.1, lam) : Hn r F E))`. Establish `hg : Continuous (fun p : A.L × Matrix.unitaryGroup (Fin r) E => (p.2 : Matrix (Fin r) (Fin r) E))` using `continuous_subtype_val.comp continuous_snd`. Establish `c1 : Continuous (fun p : A.L × Matrix.unitaryGroup (Fin r) E => (p.2 : Matrix (Fin r) (Fin r) E) * Ax.1 * star (p.2 : Matrix (Fin r) (Fin r) E))` using `(hg.mul continuous_const).mul hg.star`. Establish `c2 : Continuous (fun p : A.L × Matrix.unitaryGroup (Fin r) E => (p.2 : Matrix (Fin r) (Fin r) E) *ᵥ j p.1)` using `Continuous.matrix_mulVec hg (hj.comp continuous_fst)`.
+
+Conclude with `Continuous.prodMk (Continuous.subtype_mk c1 _) (Continuous.prodMk c2 continuous_const)`. Use `set Φ : A.L × Matrix.unitaryGroup (Fin r) E → ℂ := fun p => f (actU p.2 (Ax, j p.1, lam)) * (α p.2 : ℂ) with hΦ`. Establish `hΦl : IsLocallyConstant Φ`. Use `IsLocallyConstant.mul (hf.1.comp_continuous hact) ?_` and prove the remaining obligations. Conclude with `(hαl.comp_continuous continuous_snd).comp (fun x : ℝ => (x : ℂ))`.
+
+Establish `hdesc : ∀ y, A.descFn M Ax j lam α f y = (letI` using `M.mU; ∫ g, Φ (y, g) ∂M.μU) := fun y => rfl`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `y0`. Establish `key : ∀ᶠ y in 𝓝 y0, ∀ g ∈ tsupport α, Φ (y, g) = Φ (y0, g)`.
+
+Use `hαc.isCompact.eventually_forall_of_forall_eventually ?_` and prove the remaining obligations. Introduce `g _`. Establish `h1` using `(IsLocallyConstant.iff_eventually_eq Φ).1 hΦl (y0, g)`. Establish `h2 : ∀ᶠ z : A.L × Matrix.unitaryGroup (Fin r) E in 𝓝 (y0, g), Φ (y0, z.2) = Φ (y0, g)`. Establish `h3 : Tendsto (fun z : A.L × Matrix.unitaryGroup (Fin r) E => ((y0, z.2) : A.L × _)) (𝓝 (y0, g)) (𝓝 (y0, g))`.
+
+Establish `: Continuous (fun z : A.L × Matrix.unitaryGroup (Fin r) E => ((y0, z.2) : A.L × _))` using `continuous_const.prodMk continuous_snd`. Simplify using `using this.tendsto (y0, g)`. Conclude with `h3.eventually h1`. Use `filter_upwards [h1, h2] with z hz1 hz2`. Rewrite using `[hz1, hz2]`.
+
+Use `filter_upwards [key] with y hy`. Rewrite using `[hdesc, hdesc]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Distinguish the cases in `hg : g ∈ tsupport α`.
+
+Conclude with `hy g hg`. Establish `: α g = 0` using `image_eq_zero_of_notMem_tsupport hg`. Simplify using `[hΦ, this]`. Set `S : Set (Fin r → E)` to `Prod.fst '' (Prod.snd '' tsupport f)`. Set `Kset : Set A.L` to `(fun p : Matrix.unitaryGroup (Fin r) E × (Fin r → E) => j.symm (star (p.1 : Matrix (Fin r) (Fin r) E) *ᵥ p.2)) '' (tsupport α ×ˢ S)`.
+
+Establish `hS : IsCompact S` using `(hf.2.isCompact.image continuous_snd).image continuous_fst`. Establish `hK : IsCompact Kset`. Use `(hαc.isCompact.prod hS).image ?_` and prove the remaining obligations. Use `hjs.comp ?_` and prove the remaining obligations. Conclude with `Continuous.matrix_mulVec ((continuous_subtype_val.comp continuous_fst).star) continuous_snd`.
+
+Establish `hKc : IsClosed Kset`. Establish `h1 : IsClosed (j '' Kset)` using `(hK.image hj).isClosed`. Establish `h2 : Kset = j ⁻¹' (j '' Kset)` using `(Set.preimage_image_eq _ j.injective).symm`. Rewrite using `[h2]`. Conclude with `h1.preimage hj`.
+
+Use `HasCompactSupport.intro' hK hKc ?_` and prove the remaining obligations. Introduce `y hy`. Assume the negation of the conclusion as `hne`. Rewrite `hne` using `[hdesc]`. Establish `: ∃ g, Φ (y, g) ≠ 0`.
+
+Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Apply `hne` to reduce the goal to its premises. Establish `: (fun g => Φ (y, g)) = fun _ => 0` using `funext hall`. Rewrite using `[this]`.
+
+Simplify using the standard rewrite rules. Take `⟨g, hg⟩` from `this`. Establish `hfg : f (actU g (Ax, j y, lam)) ≠ 0` using `left_ne_zero_of_mul hg`. Establish `hαg : (α g : ℂ) ≠ 0` using `right_ne_zero_of_mul hg`. Establish `hαg' : α g ≠ 0` using `by exact_mod_cast hαg`.
+
+Apply `hy` to reduce the goal to its premises. Use `⟨(g, g.1 *ᵥ j y), ⟨subset_tsupport _ hαg', ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `⟨(actU g (Ax, j y, lam)).2, ⟨actU g (Ax, j y, lam), subset_tsupport _ hfg, rfl⟩, rfl⟩`. Simplify using `only [Matrix.mulVec_mulVec]`. Establish `hu : star (g.1 : Matrix (Fin r) (Fin r) E) * g.1 = 1` using `Matrix.UnitaryGroup.star_mul_self g`.
+
+Rewrite using `[hu, Matrix.one_mulVec, LinearEquiv.symm_apply_apply]`.
+-/
 theorem GlobalTheory.JR.descFn_isTest : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (r : ℕ) (M : Meas r F E) (Ax : selfAdjoint (Matrix (Fin r) (Fin r) E)) (j : A.L ≃ₗ[E] (Fin r → E)) (lam : F) (α : Matrix.unitaryGroup (Fin r) E → ℝ), IsLocallyConstant α → HasCompactSupport α → ∀ f : Hn r F E → ℂ, IsTest f → IsTest (A.descFn M Ax j lam α f) := by
   intro F E _ _ _ _ _ A r M Ax j lam α hαl hαc f hf
 

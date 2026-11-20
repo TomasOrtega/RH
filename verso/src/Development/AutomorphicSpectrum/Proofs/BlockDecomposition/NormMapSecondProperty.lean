@@ -10,6 +10,11 @@ section
 
 variable {O O' : Type} [CommRing O] [CommRing O'] [Algebra O O']
 
+/- English proof (translation)
+Rewrite using `[map_sum]`. Establish `e` using `(Finset.sum_range_succ' (fun j => (τ ^ j) u) ℓ).symm.trans (Finset.sum_range_succ (fun j => (τ ^ j) u) ℓ)`. Rewrite `e` using `[hτ, pow_zero]`. Rewrite using `[← add_right_cancel e]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[pow_succ', AlgEquiv.mul_apply]`.
+-/
 theorem trace_fixed (ℓ : ℕ) (τ : O' ≃ₐ[O] O') (hτ : τ ^ ℓ = 1) (u : O') :
     τ (∑ j ∈ Finset.range ℓ, (τ ^ j) u) = ∑ j ∈ Finset.range ℓ, (τ ^ j) u := by
   rw [map_sum]
@@ -20,6 +25,21 @@ theorem trace_fixed (ℓ : ℕ) (τ : O' ≃ₐ[O] O') (hτ : τ ^ ℓ = 1) (u :
   refine Finset.sum_congr rfl fun j _ => ?_
   rw [pow_succ', AlgEquiv.mul_apply]
 
+/- English proof (translation)
+Take `⟨x, y, hxy⟩` from `hdual`. Establish `hc : ∀ i, ∃ c : O, algebraMap O O' c = ∑ j ∈ Finset.range ℓ, (τ ^ j) (y i)` using `fun i => hfix _ (GlobalTheory.CompanionTheory.NormLoc.trace_fixed ℓ τ hτ (y i))`. Use `choose c hc using hc`. Establish `hsum : ∑ i, x i * algebraMap O O' (c i) = 1`. Repeatedly rewrite using `[hc, Finset.mul_sum]`.
+
+Rewrite using `[Finset.sum_comm, Finset.sum_congr rfl fun j hj => hxy j (Finset.mem_range.mp hj)]`. Simplify using `[hℓ]`. Distinguish the cases in `hunit : ∃ i, IsUnit (c i)`. Take `⟨i, u, hu⟩` from `hunit`. Use `⟨algebraMap O O' (↑u⁻¹ : O) * y i, ?_⟩` and prove the remaining obligations.
+
+Establish `h : ∀ j, (τ ^ j) (algebraMap O O' (↑u⁻¹ : O) * y i) = algebraMap O O' (↑u⁻¹ : O) * (τ ^ j) (y i)`. Introduce `j`. Rewrite using `[map_mul, AlgEquiv.commutes]`. Repeatedly rewrite using `[h]`. Rewrite using `[← Finset.mul_sum, ← hc i, ← map_mul, ← hu, Units.inv_mul, map_one]`.
+
+Use `push_neg at hunit`. Establish `htop : (⊤ : Submodule O O') ≤ IsLocalRing.maximalIdeal O • ⊤`. Introduce `z _`. Establish `hz : z = ∑ i, c i • (z * x i)`. Repeatedly rewrite using `[Algebra.smul_def]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hsum, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Rewrite using `[hz]`. Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul ?_ Submodule.mem_top` and prove the remaining obligations.
+
+Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `hunit i`. Establish `hbot` using `Submodule.eq_bot_of_le_smul_of_le_jacobson_bot (IsLocalRing.maximalIdeal O) ⊤ Module.Finite.fg_top htop (IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top).ge`. Establish `h1 : (1 : O') = 0`. Establish `: (1 : O') ∈ (⊤ : Submodule O O')` using `Submodule.mem_top`.
+
+Rewrite `this` using `[hbot]`. Conclude with `this`. Use `haveI : Subsingleton O' := subsingleton_of_zero_eq_one h1.symm`. Conclude with `⟨0, Subsingleton.elim _ _⟩`.
+-/
 theorem exists_trace_one [IsLocalRing O] [Module.Finite O O'] (ℓ : ℕ) (τ : O' ≃ₐ[O] O')
     (hℓ : 0 < ℓ) (hτ : τ ^ ℓ = 1)
     (hfix : ∀ z : O', τ z = z → z ∈ Set.range (algebraMap O O'))
@@ -66,6 +86,9 @@ theorem exists_trace_one [IsLocalRing O] [Module.Finite O O'] (ℓ : ℕ) (τ : 
 
 variable {R : Type} [CommRing R] [Algebra O R]
 
+/- English proof (translation)
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul u r => simp [Algebra.TensorProduct.map_tmul, pow_succ']`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem map_pow_succ_apply (τ : O' ≃ₐ[O] O') (j : ℕ) (t : O' ⊗[O] R) :
     Algebra.TensorProduct.map ((τ ^ (j + 1) : O' ≃ₐ[O] O').toAlgHom) (AlgHom.id O R) t =
       Algebra.TensorProduct.map τ.toAlgHom (AlgHom.id O R)
@@ -75,6 +98,11 @@ theorem map_pow_succ_apply (τ : O' ≃ₐ[O] O') (j : ℕ) (t : O' ⊗[O] R) :
   | tmul u r => simp [Algebra.TensorProduct.map_tmul, pow_succ']
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => clear hs`. Proceed by induction on `s using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul x r => simp`.
+
+Consider the case `add x y hx hy => rw [map_add, hx, hy]`. Consider the case `succ j ih => rw [GlobalTheory.CompanionTheory.NormLoc.map_pow_succ_apply, ih, hs]`.
+-/
 theorem map_pow_fixed (τ : O' ≃ₐ[O] O') (s : O' ⊗[O] R)
     (hs : Algebra.TensorProduct.map τ.toAlgHom (AlgHom.id O R) s = s) (j : ℕ) :
     Algebra.TensorProduct.map ((τ ^ j : O' ≃ₐ[O] O').toAlgHom) (AlgHom.id O R) s = s := by
@@ -87,6 +115,13 @@ theorem map_pow_fixed (τ : O' ≃ₐ[O] O') (s : O' ⊗[O] R)
     | add x y hx hy => rw [map_add, hx, hy]
   | succ j ih => rw [GlobalTheory.CompanionTheory.NormLoc.map_pow_succ_apply, ih, hs]
 
+/- English proof (translation)
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `tmul x r`. Take `⟨c, hc⟩` from `hfix _ (GlobalTheory.CompanionTheory.NormLoc.trace_fixed ℓ τ hτ x)`. Use `⟨c • r, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Algebra.TensorProduct.map_tmul, AlgHom.id_apply, AlgEquiv.toAlgHom_eq_coe, AlgEquiv.coe_algHom]`. Rewrite using `[← TensorProduct.sum_tmul, ← hc, Algebra.TensorProduct.includeRight_apply, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`. Consider the case `add x y hx hy`. Take `⟨a, ha⟩` from `hx`. Take `⟨b, hb⟩` from `hy`.
+
+Conclude with `⟨a + b, by simp only [map_add, Finset.sum_add_distrib, ha, hb]⟩`.
+-/
 theorem trace_tensor_mem (ℓ : ℕ) (τ : O' ≃ₐ[O] O') (hτ : τ ^ ℓ = 1)
     (hfix : ∀ z : O', τ z = z → z ∈ Set.range (algebraMap O O')) (t : O' ⊗[O] R) :
     ∑ j ∈ Finset.range ℓ,
@@ -106,6 +141,11 @@ theorem trace_tensor_mem (ℓ : ℕ) (τ : O' ≃ₐ[O] O') (hτ : τ ^ ℓ = 1)
     obtain ⟨b, hb⟩ := hy
     exact ⟨a + b, by simp only [map_add, Finset.sum_add_distrib, ha, hb]⟩
 
+/- English proof (translation)
+Establish `key : ∑ j ∈ Finset.range ℓ, Algebra.TensorProduct.map ((τ ^ j : O' ≃ₐ[O] O').toAlgHom) (AlgHom.id O R) ((a ⊗ₜ[O] (1 : R)) * s) = s`. Simplify using `only [map_mul, GlobalTheory.CompanionTheory.NormLoc.map_pow_fixed τ s hs]`. Simplify using `only [Algebra.TensorProduct.map_tmul, AlgHom.id_apply, AlgEquiv.toAlgHom_eq_coe, AlgEquiv.coe_algHom, map_one]`. Rewrite using `[← Finset.sum_mul, ← TensorProduct.sum_tmul, ha, ← Algebra.TensorProduct.one_def, one_mul]`. Rewrite using `[← key]`.
+
+Conclude with `GlobalTheory.CompanionTheory.NormLoc.trace_tensor_mem ℓ τ hτ hfix _`.
+-/
 theorem fixed_mem_range (ℓ : ℕ) (τ : O' ≃ₐ[O] O') (hτ : τ ^ ℓ = 1)
     (hfix : ∀ z : O', τ z = z → z ∈ Set.range (algebraMap O O')) (a : O')
     (ha : ∑ j ∈ Finset.range ℓ, (τ ^ j) a = 1) (s : O' ⊗[O] R)
@@ -120,6 +160,15 @@ theorem fixed_mem_range (ℓ : ℕ) (τ : O' ≃ₐ[O] O') (hτ : τ ^ ℓ = 1)
   rw [← key]
   exact GlobalTheory.CompanionTheory.NormLoc.trace_tensor_mem ℓ τ hτ hfix _
 
+/- English proof (translation)
+Establish `hrr : r * r ∈ J ^ (m + 1)`. Establish `h` using `Ideal.mul_mem_mul hr hr`. Rewrite `h` using `[← pow_add]`. Conclude with `Ideal.pow_le_pow_right (by omega) h`. Proceed by induction on `S using Finset.induction_on with`.
+
+Consider the case `empty => simp`. Consider the case `insert k S hk ih`. Rewrite using `[Finset.prod_insert hk, Finset.sum_insert hk]`. Establish `h : (1 + b k ⊗ₜ[O] r) * ∏ j ∈ S, (1 + b j ⊗ₜ[O] r) - (1 + (b k + ∑ j ∈ S, b j) ⊗ₜ[O] r) = (1 + b k ⊗ₜ[O] r) * (∏ j ∈ S, (1 + b j ⊗ₜ[O] r) - (1 + (∑ j ∈ S, b j) ⊗ₜ[O] r)) + (b k * ∑ j ∈ S, b j) ⊗ₜ[O] (r * r)`. Rewrite using `[TensorProduct.add_tmul, ← Algebra.TensorProduct.tmul_mul_tmul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`. Use `Ideal.add_mem _ (Ideal.mul_mem_left _ _ ih) ?_` and prove the remaining obligations. Establish `h' : (b k * ∑ j ∈ S, b j) ⊗ₜ[O] (r * r) = ((b k * ∑ j ∈ S, b j) ⊗ₜ[O] (1 : R)) * (includeRight : R →ₐ[O] O' ⊗[O] R) (r * r)`. Rewrite using `[Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`.
+
+Rewrite using `[h']`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_map_of_mem _ hrr)`.
+-/
 theorem prod_one_add_tmul_sub_mem (J : Ideal R) (m : ℕ) (hm : 1 ≤ m) (r : R) (hr : r ∈ J ^ m)
     (S : Finset ℕ) (b : ℕ → O') :
     (∏ j ∈ S, (1 + b j ⊗ₜ[O] r)) - (1 + (∑ j ∈ S, b j) ⊗ₜ[O] r) ∈
@@ -149,6 +198,13 @@ theorem prod_one_add_tmul_sub_mem (J : Ideal R) (m : ℕ) (hm : 1 ≤ m) (r : R)
 
 end
 
+/- English proof (translation)
+Unfold `PositivityTheory.Rg.Tf.Loc.N2`. Introduce `O O' R _ _ _ _ _ _ _ _ _ _ _ _ ℓ τ hℓ hτ hfix hdual`. Take `⟨a, ha⟩` from `GlobalTheory.CompanionTheory.NormLoc.exists_trace_one ℓ τ hℓ hτ hfix hdual`. Use `⟨fun s hs => GlobalTheory.CompanionTheory.NormLoc.fixed_mem_range ℓ τ hτ hfix a ha s hs, a, ha, ?_⟩` and prove the remaining obligations. Introduce `m hm r hr`.
+
+Establish `key` using `GlobalTheory.CompanionTheory.NormLoc.prod_one_add_tmul_sub_mem (O := O) (O' := O') (Ideal.jacobson (⊥ : Ideal R)) m hm r hr (Finset.range ℓ) (fun j => (τ ^ j) a)`. Establish `e1 : ∏ j ∈ Finset.range ℓ, Algebra.TensorProduct.map ((τ ^ j : O' ≃ₐ[O] O').toAlgHom) (AlgHom.id O R) (1 + a ⊗ₜ[O] r) = ∏ j ∈ Finset.range ℓ, (1 + (τ ^ j) a ⊗ₜ[O] r)` using `Finset.prod_congr rfl fun j _ => by simp`. Establish `e2 : (includeRight : R →ₐ[O] O' ⊗[O] R) (1 + r) = 1 + (∑ j ∈ Finset.range ℓ, (τ ^ j) a) ⊗ₜ[O] r`. Rewrite using `[ha, Algebra.TensorProduct.includeRight_apply, TensorProduct.tmul_add, ← Algebra.TensorProduct.one_def]`. Rewrite `key` using `[← e1, ← e2]`.
+
+Conclude with `key`.
+-/
 theorem fixedRing_traceOne_firstOrder : PositivityTheory.Rg.Tf.Loc.N2 := by
   unfold PositivityTheory.Rg.Tf.Loc.N2
   intro O O' R _ _ _ _ _ _ _ _ _ _ _ _ ℓ τ hℓ hτ hfix hdual

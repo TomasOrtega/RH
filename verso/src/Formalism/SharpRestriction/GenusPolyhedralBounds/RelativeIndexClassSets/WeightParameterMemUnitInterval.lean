@@ -47,6 +47,9 @@ def Th0 : Submodule (𝓞 B.KO) (B.Cusp Q.jn Q.ka) :=
 
 def eLa (la : HeightOneSpectrum (𝓞 B.KO)) : ℤ := Q.X.eLa Q.T Q.nus la
 
+/- English proof (translation)
+Use `le_trans ?_ (Int.le_ceil _)` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left ?_ (Nat.cast_nonneg _)` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> linarith`.
+-/
 theorem eLa_ge (la : HeightOneSpectrum (𝓞 B.KO)) : (Q.T : ℝ) * Q.nus la ≤ (Q.eLa la : ℝ) := by
   refine le_trans ?_ (Int.le_ceil _)
   refine mul_le_mul_of_nonneg_left ?_ (Nat.cast_nonneg _)
@@ -223,19 +226,41 @@ variable {R K F : Type} [CommRing R] [IsDedekindDomain R] [Field K] [Algebra R K
 abbrev OOv : Subalgebra R K :=
   Localization.subalgebra.ofField K v.asIdeal.primeCompl v.asIdeal.primeCompl_le_nonZeroDivisors
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_OOv (x : K) :
     x ∈ OOv (K := K) v ↔ ∃ (a s : R) (_ : s ∈ v.asIdeal.primeCompl),
       x = algebraMap R K a * (algebraMap R K s)⁻¹ :=
   Iff.rfl
 
+/- English proof (translation)
+The claim follows from `IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain R v.ne_bot (OOv (K := K) v)`.
+-/
 theorem isDVR_OOv : IsDiscreteValuationRing (OOv (K := K) v) :=
   IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain R v.ne_bot (OOv (K := K) v)
 
+/- English proof (translation)
+Introduce `h`. Establish `: s = 0` using `(IsFractionRing.injective R K) (by rw [h, map_zero])`. Conclude with `hs (this ▸ v.asIdeal.zero_mem)`.
+-/
 theorem alg_ne_zero {s : R} (hs : s ∉ v.asIdeal) : algebraMap R K s ≠ 0 := by
   intro h
   have : s = 0 := (IsFractionRing.injective R K) (by rw [h, map_zero])
   exact hs (this ▸ v.asIdeal.zero_mem)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hsx⟩`. Establish `hs0` using `alg_ne_zero (K := K) v hs`. Establish `hu : (algebraMap R K s)⁻¹ ∈ OOv (K` using `K) v := (mem_OOv v _).mpr ⟨1, s, hs, by simp⟩`. Establish `hx : x = (⟨_, hu⟩ : OOv (K` using `K) v) • (s • x) := by`.
+
+Rewrite using `[Subalgebra.smul_def, ← algebraMap_smul K s x, smul_smul]`. Simplify using `[hs0]`. Rewrite using `[hx]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hsx)`. Introduce `hx`.
+
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, Submonoid.one_mem _, by simpa using hy⟩`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz => exact Submodule.add_mem _ hy hz`. Consider the case `smul a y _ hy`.
+
+Take `⟨s, hs, hsy⟩` from `hy`. Take `⟨r, t, ht, hat⟩` from `(mem_OOv v (a : K)).mp a.2`. Use `⟨t * s, mul_mem ht hs, ?_⟩` and prove the remaining obligations. Establish `ht0` using `alg_ne_zero (K := K) v ht`. Establish `he : (t * s) • (a • y) = r • (s • y)`.
+
+Rewrite using `[Subalgebra.smul_def, hat, ← algebraMap_smul K (t * s), ← algebraMap_smul K r, ← algebraMap_smul K s, smul_smul, smul_smul]`. Use `congr 1`. Rewrite using `[map_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[he]`.
+
+Conclude with `M.smul_mem r hsy`.
+-/
 theorem mem_localization_iff_mem_span' (M : Submodule R F) (x : F) :
     x ∈ localization₂ v.asIdeal M ↔ x ∈ Submodule.span (OOv (K := K) v) (M : Set F) := by
   constructor
@@ -266,9 +291,27 @@ theorem mem_localization_iff_mem_span' (M : Submodule R F) (x : F) :
       rw [he]
       exact M.smul_mem r hsy
 
+/- English proof (translation)
+The claim follows from `v.valuedAdicCompletion_eq_valuation' k`.
+-/
 theorem val_alg (k : K) : Valued.v (algebraMap K (v.adicCompletion K) k) = v.valuation K k :=
   v.valuedAdicCompletion_eq_valuation' k
 
+/- English proof (translation)
+Use `isDVR_OOv (K := K) v` as an intermediate fact. Break down `ValuationRing.isInteger_or_isInteger (OOv (K := K) v) a with ⟨c, hc⟩ | ⟨c, hc⟩` into its components or cases. Rewrite using `[← hc]`. Conclude with `c.2`. Distinguish the cases in `ha : a = 0`.
+
+Rewrite using `[ha]`. Conclude with `Subalgebra.zero_mem _`. Take `⟨r, s, hs, hrs⟩` from `(mem_OOv v _).mp c.2`. Establish `hc' : a⁻¹ = algebraMap R K r * (algebraMap R K s)⁻¹`. Rewrite using `[← hrs, ← hc]`.
+
+Both sides reduce to the same expression. Establish `hs0` using `alg_ne_zero (K := K) v hs`. Distinguish the cases in `hr : r ∈ v.asIdeal`. It suffices to derive a contradiction. Establish `h1 : v.valuation K (algebraMap R K r) < 1`.
+
+Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `(v.intValuation_lt_one_iff_mem r).2 hr`. Establish `h2 : v.valuation K (algebraMap R K s) = 1`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `(v.intValuation_eq_one_iff_mem_primeCompl s).2 hs`.
+
+Establish `h3 : v.valuation K a⁻¹ < 1`. Rewrite using `[hc', map_mul, map_inv₀, h2, inv_one, mul_one]`. Conclude with `h1`. Establish `h4 : v.valuation K (a * a⁻¹) < 1`. Rewrite using `[map_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite `h4` using `[mul_inv_cancel₀ ha, map_one]`. Conclude with `lt_irrefl _ h4`. Establish `hr0` using `alg_ne_zero (K := K) v hr`. Use `(mem_OOv v _).mpr ⟨s, r, hr, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← inv_inv a, hc']`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem mem_OOv_of_val {a : K} (h : v.valuation K a ≤ 1) : a ∈ OOv (K := K) v := by
   have := isDVR_OOv (K := K) v
   rcases ValuationRing.isInteger_or_isInteger (OOv (K := K) v) a with ⟨c, hc⟩ | ⟨c, hc⟩
@@ -308,6 +351,11 @@ section CompD
 variable {R K F : Type} [CommRing R] [IsDedekindDomain R] [Field K] [Algebra R K] [IsFractionRing R K]
   [AddCommGroup F] [Module K F] [Module R F] [IsScalarTower R K F] (v : HeightOneSpectrum R)
 
+/- English proof (translation)
+Take `⟨r, s, hs, rfl⟩` from `(mem_OOv v a).mp h`. Establish `h2 : v.valuation K (algebraMap R K s) = 1`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `(v.intValuation_eq_one_iff_mem_primeCompl s).2 hs`. Rewrite using `[map_mul, map_inv₀, h2, inv_one, mul_one]`.
+
+Conclude with `v.valuation_le_one r`.
+-/
 theorem val_of_mem_OOv {a : K} (h : a ∈ OOv (K := K) v) : v.valuation K a ≤ 1 := by
   obtain ⟨r, s, hs, rfl⟩ := (mem_OOv v a).mp h
   have h2 : v.valuation K (algebraMap R K s) = 1 := by
@@ -315,9 +363,51 @@ theorem val_of_mem_OOv {a : K} (h : a ∈ OOv (K := K) v) : v.valuation K a ≤ 
   rw [map_mul, map_inv₀, h2, inv_one, mul_one]
   exact v.valuation_le_one r
 
+/- English proof (translation)
+Rewrite using `[map_smul, algebraMap_smul]`.
+-/
 theorem bc_smul (k : K) (x : F) : bcC (K := K) v (k • x) = algebraMap K (v.adicCompletion K) k • bcC (K := K) v x := by
   rw [map_smul, algebraMap_smul]
 
+/- English proof (translation)
+Establish `hdvr` using `isDVR_OOv (K := K) v`. Take `⟨t', ht', hy'⟩` from `Submodule.mem_span_finite_of_mem_span h`. Take `⟨t, htT, rfl⟩` from `Finset.subset_set_image_iff.1 ht'`. Use `set L : Submodule (OOv (K := K) v) F := Submodule.span (OOv (K := K) v) (t : Set F) with hL`. Establish `hfin : Module.Finite (OOv (K` using `K) v) L := Module.Finite.of_fg (Submodule.fg_span t.finite_toSet)`.
+
+Establish `htf : Module.IsTorsionFree (OOv (K` using `K) v) L := by`. Use `Module.IsTorsionFree.of_smul_eq_zero fun r m h => ?_` and prove the remaining obligations. Establish `h1 : ((r : K)) • (m : F) = 0` using `congrArg Subtype.val h`. Break down `smul_eq_zero.1 h1 with h2 | h2` into its components or cases. Conclude with `Or.inl (Subtype.ext h2)`.
+
+Conclude with `Or.inr (Subtype.ext h2)`. Establish `hfree : Module.Free (OOv (K` using `K) v) L := Module.free_of_finite_type_torsion_free'`. Set `u` to `Module.Free.chooseBasis (OOv (K := K) v) L`. Set `u' : Module.Free.ChooseBasisIndex (OOv (K` to `K) v) L → F := fun i => (u i : F)`. Establish `hli0 : LinearIndependent (OOv (K` using `K) v) u' := u.linearIndependent.map' L.subtype (Submodule.ker_subtype _)`.
+
+Establish `hli : LinearIndependent K u'` using `(LinearIndependent.iff_fractionRing (OOv (K := K) v) K).1 hli0`. Establish `hspan : Submodule.span (OOv (K` using `K) v) (Set.range u') = L := by`. Establish `e : Set.range u' = L.subtype '' Set.range u`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression.
+
+Rewrite using `[e, Submodule.span_image, u.span_eq, Submodule.map_top, Submodule.range_subtype]`. Set `b` to `Module.Basis.extend hli.linearIndepOn_id`. Set `bh` to `b.baseChange (v.adicCompletion K)`. Establish `hPF : ∀ x ∈ L, ∀ i, b.repr x i ∈ OOv (K` using `K) v ∧ ((i : F) ∉ Set.range u' → b.repr x i = 0) := by`. Introduce `x hx`.
+
+Rewrite `hx` using `[← hspan]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Introduce `i`. Establish `hx'` using `Module.Basis.subset_extend hli.linearIndepOn_id hx`.
+
+Establish `e : x = b ⟨x, hx'⟩` using `(Module.Basis.extend_apply_self hli.linearIndepOn_id ⟨x, hx'⟩).symm`. Rewrite using `[e, b.repr_self, Finsupp.single_apply]`. Use `split_ifs with hi`. Conclude with `⟨Subalgebra.one_mem _, fun h => absurd (hi ▸ hx) h⟩`. Conclude with `⟨Subalgebra.zero_mem _, fun _ => rfl⟩`.
+
+Consider the case `zero => intro i`. Simplify using the standard rewrite rules. Consider the case `add x z _ _ hx hz`. Introduce `i`. Rewrite using `[map_add, Finsupp.add_apply]`.
+
+Conclude with `⟨Subalgebra.add_mem _ (hx i).1 (hz i).1, fun h => by rw [(hx i).2 h, (hz i).2 h, add_zero]⟩`. Consider the case `smul a x _ hx`. Introduce `i`. Rewrite using `[Subalgebra.smul_def, map_smul, Finsupp.smul_apply, smul_eq_mul]`. Conclude with `⟨Subalgebra.mul_mem _ a.2 (hx i).1, fun h => by rw [(hx i).2 h, mul_zero]⟩`.
+
+Establish `hPH : ∀ z ∈ Submodule.span (v.adicCompletionIntegers K) ((t.image (bcC (K` using `K) v) : Finset _) : Set _), ∀ i, Valued.v (bh.repr z i) ≤ 1 ∧ ((i : F) ∉ Set.range u' → bh.repr z i = 0) := by`. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`. Introduce `i`.
+
+Rewrite `hz` using `[Finset.coe_image]`. Take `⟨τ, hτ, rfl⟩` from `hz`. Establish `h1` using `hPF τ (Submodule.subset_span hτ) i`. Establish `e : bh.repr (bcC (K` using `K) v τ) i = algebraMap K (v.adicCompletion K) (b.repr τ i) := by show bh.repr ((1 : v.adicCompletion K) ⊗ₜ[K] τ) i = _`. Rewrite using `[Module.Basis.baseChange_repr_tmul, Algebra.smul_def, mul_one]`.
+
+Rewrite using `[e, val_alg]`. Conclude with `⟨val_of_mem_OOv v h1.1, fun h => by rw [h1.2 h, map_zero]⟩`. Consider the case `zero => intro i`. Simplify using the standard rewrite rules. Consider the case `add x z _ _ hx hz`.
+
+Introduce `i`. Rewrite using `[map_add, Finsupp.add_apply]`. Conclude with `⟨Valuation.map_add_le _ (hx i).1 (hz i).1, fun h => by rw [(hx i).2 h, (hz i).2 h, add_zero]⟩`. Consider the case `smul a x _ hx`. Introduce `i`.
+
+Establish `e : a • x = (a : v.adicCompletion K) • x` using `rfl`. Rewrite using `[e, map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul]`. Conclude with `⟨mul_le_one' ((HeightOneSpectrum.mem_adicCompletionIntegers R K v).1 a.2) (hx i).1, fun h => by rw [(hx i).2 h, mul_zero]⟩`. Establish `hy` using `hPH _ hy'`. Establish `e : ∀ i, bh.repr (bcC (K` using `K) v y) i = algebraMap K (v.adicCompletion K) (b.repr y i) := by`.
+
+Introduce `i`. Use `show bh.repr ((1 : v.adicCompletion K) ⊗ₜ[K] y) i = _`. Rewrite using `[Module.Basis.baseChange_repr_tmul, Algebra.smul_def, mul_one]`. Establish `hyL : y ∈ L`. Rewrite using `[← b.linearCombination_repr y, Finsupp.linearCombination_apply, Finsupp.sum]`.
+
+Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `h1` using `hy i`. Rewrite `h1` using `[e i, val_alg]`. Distinguish the cases in `hi : (i : F) ∈ Set.range u'`. Establish `h2` using `mem_OOv_of_val v h1.1`.
+
+Establish `e2 : b.repr y i • b i = (⟨_, h2⟩ : OOv (K` using `K) v) • (i : F) := by`. Rewrite using `[Subalgebra.smul_def, Module.Basis.extend_apply_self]`. Rewrite using `[e2]`. Conclude with `hspan.le (Submodule.smul_mem _ _ (Submodule.subset_span hi))`. Establish `h3` using `h1.2 hi`.
+
+Establish `h4 : b.repr y i = 0` using `(algebraMap K (v.adicCompletion K)).injective (by rw [h3, map_zero])`. Rewrite using `[h4, zero_smul]`. Conclude with `Submodule.zero_mem _`. Establish `h5 : y ∈ Submodule.span (OOv (K` using `K) v) ((Submodule.span R (t : Set F) : Submodule R F) : Set F) := Submodule.span_mono Submodule.subset_span hyL`. Establish `h6` using `(mem_localization_iff_mem_span' (K := K) v _ y).2 h5`.
+
+Take `⟨s, hs, hsy⟩` from `h6`. Conclude with `⟨s, hs, (Submodule.span_le.2 htT) hsy⟩`.
+-/
 theorem descent (T : Submodule R F) (y : F) (h : bcC (K := K) v y ∈ locC (K := K) v T) : y ∈ localization₂ v.asIdeal T := by
   classical
   have hdvr := isDVR_OOv (K := K) v
@@ -424,9 +514,17 @@ section CompA
 variable {R K F : Type} [CommRing R] [IsDedekindDomain R] [Field K] [Algebra R K] [IsFractionRing R K]
   [AddCommGroup F] [Module K F] [Module R F] [IsScalarTower R K F] (v : HeightOneSpectrum R)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_algO (r : R) : ((algebraMap R (v.adicCompletionIntegers K) r : v.adicCompletionIntegers K) : v.adicCompletion K) =
     algebraMap K (v.adicCompletion K) (algebraMap R K r) := rfl
 
+/- English proof (translation)
+Take `⟨y, i, hi, hyi⟩` from `v.isMaximal.exists_inv hs`. Take `⟨w, hw⟩` from `sub_dvd_pow_sub_pow (1 : R) i n`. Use `⟨y * w, ?_⟩` and prove the remaining obligations. Establish `e : 1 - s * (y * w) = i ^ n`. Establish `h1 : (1 : R) - i = y * s` using `by rw [← hyi]; ring`.
+
+Rewrite `hw` using `[h1, one_pow]`. Take the linear combination `hw`. Rewrite using `[e]`. Conclude with `Ideal.pow_mem_pow hi n`.
+-/
 theorem exists_inv_mod (n : ℕ) {s : R} (hs : s ∉ v.asIdeal) : ∃ t : R, 1 - s * t ∈ v.asIdeal ^ n := by
   obtain ⟨y, i, hi, hyi⟩ := v.isMaximal.exists_inv hs
   obtain ⟨w, hw⟩ := sub_dvd_pow_sub_pow (1 : R) i n
@@ -438,6 +536,27 @@ theorem exists_inv_mod (n : ℕ) {s : R} (hs : s ∉ v.asIdeal) : ∃ t : R, 1 -
   rw [e]
   exact Ideal.pow_mem_pow hi n
 
+/- English proof (translation)
+Take `⟨π, hπ⟩` from `v.intValuation_exists_uniformizer`. Use `set p : v.adicCompletion K := algebraMap K (v.adicCompletion K) (algebraMap R K π) with hp`. Establish `hpv : Valued.v p = WithZero.exp (-1 : ℤ)`. Rewrite using `[hp, val_alg, HeightOneSpectrum.valuation_of_algebraMap, hπ]`. Establish `hpn : Valued.v (p ^ n) = WithZero.exp (-(n : ℤ))`.
+
+Rewrite using `[map_pow, hpv, ← WithZero.exp_nsmul]`. Use `congr 1`. Simplify using the standard rewrite rules. Establish `hopen : IsOpen {x : v.adicCompletion K | (x - (c : v.adicCompletion K)) * (p ^ n)⁻¹ ∈ (Valued.v.valuationSubring : ValuationSubring (v.adicCompletion K))}` using `(Valued.isOpen_valuationSubring (v.adicCompletion K)).preimage ((continuous_sub_right _).mul continuous_const)`. Take `⟨k, hk⟩` from `(v.denseRange_algebraMap K).exists_mem_open hopen ⟨c, by simp⟩`.
+
+Establish `hk' : Valued.v (algebraMap K (v.adicCompletion K) k - (c : v.adicCompletion K)) ≤ WithZero.exp (-(n : ℤ))`. Establish `h1 : Valued.v ((algebraMap K (v.adicCompletion K) k - (c : v.adicCompletion K)) * (p ^ n)⁻¹) ≤ 1` using `(Valuation.mem_valuationSubring_iff _ _).1 hk`. Rewrite `h1` using `[map_mul, map_inv₀, hpn]`. Establish `h2` using `mul_le_mul' h1 (le_refl (WithZero.exp (-(n : ℤ))))`. Rewrite `h2` using `[mul_assoc, inv_mul_cancel₀ WithZero.exp_ne_zero, mul_one, one_mul]`. Then use the resulting hypothesis.
+
+Establish `hle1 : WithZero.exp (-(n : ℤ)) ≤ (1 : WithZero (Multiplicative ℤ))`. Rewrite using `[← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Establish `hk1 : v.valuation K k ≤ 1`. Rewrite using `[← val_alg]`.
+
+Establish `e : algebraMap K (v.adicCompletion K) k = (algebraMap K (v.adicCompletion K) k - c) + c` using `by ring`. Rewrite using `[e]`. Conclude with `Valuation.map_add_le _ (hk'.trans hle1) ((HeightOneSpectrum.mem_adicCompletionIntegers R K v).1 c.2)`. Take `⟨a, s, hs, rfl⟩` from `(mem_OOv v k).mp (mem_OOv_of_val v hk1)`. Take `⟨t, ht⟩` from `exists_inv_mod v n hs`.
+
+Use `⟨a * t, ?_⟩` and prove the remaining obligations. Establish `hs0` using `alg_ne_zero (K := K) v hs`. Establish `e1 : algebraMap R K a * (algebraMap R K s)⁻¹ - algebraMap R K (a * t) = algebraMap R K a * algebraMap R K (1 - s * t) * (algebraMap R K s)⁻¹`. Simplify using `only [map_mul, map_sub, map_one]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `h2 : v.valuation K (algebraMap R K s) = 1`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `(v.intValuation_eq_one_iff_mem_primeCompl s).2 hs`. Establish `h3 : v.valuation K (algebraMap R K a * (algebraMap R K s)⁻¹ - algebraMap R K (a * t)) ≤ WithZero.exp (-(n : ℤ))`. Rewrite using `[e1, map_mul, map_mul, map_inv₀, h2, inv_one, mul_one]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul' (v.valuation_le_one a) ?_` and prove the remaining obligations. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `(v.intValuation_le_pow_iff_mem _ n).2 ht`. Use `_ = _ := one_mul _`.
+
+Establish `e2 : (c : v.adicCompletion K) - algebraMap K (v.adicCompletion K) (algebraMap R K (a * t)) = -(algebraMap K (v.adicCompletion K) (algebraMap R K a * (algebraMap R K s)⁻¹) - c) + algebraMap K (v.adicCompletion K) (algebraMap R K a * (algebraMap R K s)⁻¹ - algebraMap R K (a * t))`. Rewrite using `[map_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`. Use `Valuation.map_add_le _ ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[Valuation.map_neg]`. Conclude with `hk'`. Rewrite using `[val_alg]`. Conclude with `h3`.
+-/
 theorem approx (c : v.adicCompletionIntegers K) (n : ℕ) :
     ∃ r : R, Valued.v ((c : v.adicCompletion K) - algebraMap K (v.adicCompletion K) (algebraMap R K r)) ≤
       WithZero.exp (-(n : ℤ)) := by
@@ -492,6 +611,9 @@ theorem approx (c : v.adicCompletionIntegers K) (n : ℕ) :
   · rw [Valuation.map_neg]; exact hk'
   · rw [val_alg]; exact h3
 
+/- English proof (translation)
+Establish `e : algebraMap R (v.adicCompletionIntegers K) r • bcC (K` using `K) v x = ((algebraMap R (v.adicCompletionIntegers K) r : v.adicCompletionIntegers K) : v.adicCompletion K) • bcC (K := K) v x := rfl`. Rewrite using `[e, coe_algO, ← bc_smul, algebraMap_smul]`.
+-/
 theorem bc_smulR (r : R) (x : F) :
     bcC (K := K) v (r • x) = algebraMap R (v.adicCompletionIntegers K) r • bcC (K := K) v x := by
   have e : algebraMap R (v.adicCompletionIntegers K) r • bcC (K := K) v x =
@@ -499,11 +621,19 @@ theorem bc_smulR (r : R) (x : F) :
         bcC (K := K) v x := rfl
   rw [e, coe_algO, ← bc_smul, algebraMap_smul]
 
+/- English proof (translation)
+Rewrite using `[HeightOneSpectrum.adicCompletionIntegers.isUnit_iff_valued_eq_one, coe_algO, val_alg, HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `(v.intValuation_eq_one_iff_mem_primeCompl s).2 hs`.
+-/
 theorem isUnit_algO {s : R} (hs : s ∉ v.asIdeal) : IsUnit (algebraMap R (v.adicCompletionIntegers K) s) := by
   rw [HeightOneSpectrum.adicCompletionIntegers.isUnit_iff_valued_eq_one, coe_algO, val_alg,
     HeightOneSpectrum.valuation_of_algebraMap]
   exact (v.intValuation_eq_one_iff_mem_primeCompl s).2 hs
 
+/- English proof (translation)
+Take `⟨s, hs, hsx⟩` from `hx`. Take `⟨u, hu⟩` from `isUnit_algO (K := K) v hs`. Establish `h1 : bcC (K` using `K) v (s • x) ∈ locC (K := K) v N := Submodule.subset_span ⟨_, hsx, rfl⟩`. Rewrite `h1` using `[bc_smulR, ← hu]`. Establish `h2` using `(locC (K := K) v N).smul_mem (↑u⁻¹ : v.adicCompletionIntegers K) h1`.
+
+Rewrite `h2` using `[smul_smul, Units.inv_mul, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem bc_mem_locC (N : Submodule R F) {x : F} (hx : x ∈ localization₂ v.asIdeal N) : bcC (K := K) v x ∈ locC (K := K) v N := by
   obtain ⟨s, hs, hsx⟩ := hx
   obtain ⟨u, hu⟩ := isUnit_algO (K := K) v hs
@@ -512,6 +642,15 @@ theorem bc_mem_locC (N : Submodule R F) {x : F} (hx : x ∈ localization₂ v.as
   have h2 := (locC (K := K) v N).smul_mem (↑u⁻¹ : v.adicCompletionIntegers K) h1
   rwa [smul_smul, Units.inv_mul, one_smul] at h2
 
+/- English proof (translation)
+Use `set p : v.adicCompletion K := algebraMap K (v.adicCompletion K) (algebraMap R K π) with hp`. Establish `hpv : Valued.v p = WithZero.exp (-1 : ℤ)`. Rewrite using `[hp, val_alg, HeightOneSpectrum.valuation_of_algebraMap, hπ]`. Establish `hp0 : p ≠ 0`. Introduce `h`.
+
+Rewrite `hpv` using `[h, map_zero]`. Conclude with `WithZero.exp_ne_zero hpv.symm`. Establish `hpn : Valued.v (p ^ n) = WithZero.exp (-(n : ℤ))`. Rewrite using `[map_pow, hpv, ← WithZero.exp_nsmul]`. Use `congr 1`.
+
+Simplify using the standard rewrite rules. Establish `hmem : (d : v.adicCompletion K) * (p ^ n)⁻¹ ∈ v.adicCompletionIntegers K`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_mul, map_inv₀, hpn]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨⟨_, hmem⟩, Subtype.ext ?_⟩` and prove the remaining obligations.
+
+Use `show (d : v.adicCompletion K) = p ^ n * ((d : v.adicCompletion K) * (p ^ n)⁻¹)`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_factor {π : R} (hπ : v.intValuation π = WithZero.exp (-1 : ℤ)) (n : ℕ) (d : v.adicCompletionIntegers K)
     (hd : Valued.v (d : v.adicCompletion K) ≤ WithZero.exp (-(n : ℤ))) :
     ∃ d' : v.adicCompletionIntegers K, d = algebraMap R (v.adicCompletionIntegers K) π ^ n * d' := by
@@ -540,6 +679,9 @@ section CompM
 variable {R K F : Type} [CommRing R] [IsDedekindDomain R] [Field K] [Algebra R K] [IsFractionRing R K]
   [AddCommGroup F] [Module K F] [Module R F] [IsScalarTower R K F] (v : HeightOneSpectrum R)
 
+/- English proof (translation)
+Take `⟨s, hs, hsx⟩` from `hx`. Establish `hs0` using `alg_ne_zero (K := K) v hs`. Establish `h1 : algebraMap R K s • x ∈ W` using `by rw [algebraMap_smul]; exact hsx`. Establish `h2` using `W.smul_mem (algebraMap R K s)⁻¹ h1`. Rewrite `h2` using `[smul_smul, inv_mul_cancel₀ hs0, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem mem_of_mem_localization_restrictScalars (W : Submodule K F) {x : F} (hx : x ∈ localization₂ v.asIdeal (W.restrictScalars R)) : x ∈ W := by
   obtain ⟨s, hs, hsx⟩ := hx
   have hs0 := alg_ne_zero (K := K) v hs
@@ -547,6 +689,37 @@ theorem mem_of_mem_localization_restrictScalars (W : Submodule K F) {x : F} (hx 
   have h2 := W.smul_mem (algebraMap R K s)⁻¹ h1
   rwa [smul_smul, inv_mul_cancel₀ hs0, one_smul] at h2
 
+/- English proof (translation)
+Introduce `A T W hfin`. Use `set Ah := locC (K := K) v A ⊓ (locKC v W).restrictScalars (v.adicCompletionIntegers K) with hAh`. Use `set Th := locC (K := K) v T ⊓ (locKC v W).restrictScalars (v.adicCompletionIntegers K) with hTh`. Use `set A' := localization₂ v.asIdeal (A ⊓ W.restrictScalars R) with hA'`. Use `set B' := localization₂ v.asIdeal (A ⊓ W.restrictScalars R ⊓ T) with hB'`.
+
+Establish `hW : ∀ x ∈ A', x ∈ W` using `fun x hx => mem_of_mem_localization_restrictScalars v W (Formalism.HermitianLatticesTheory.locBasic_locS_mono _ inf_le_right hx)`. Establish `hmem : ∀ x ∈ A', bcC (K` using `K) v x ∈ Ah := fun x hx => ⟨bc_mem_locC v A (Formalism.HermitianLatticesTheory.locBasic_locS_mono _ inf_le_left hx), Submodule.subset_span ⟨x, hW x hx, rfl⟩⟩`. Set `g : A' → (Ah ⧸ Th.comap Ah.subtype)` to `fun x => Submodule.Quotient.mk ⟨bcC (K := K) v x, hmem x x.2⟩`. Establish `g_add : ∀ x y, g (x + y) = g x + g y`. Introduce `x y`.
+
+Establish `e : (⟨bcC (K` using `K) v ((x + y : A') : F), hmem _ (x + y).2⟩ : Ah) = ⟨bcC (K := K) v (x : F), hmem x x.2⟩ + ⟨bcC (K := K) v (y : F), hmem y y.2⟩ := Subtype.ext (map_add (bcC (K := K) v) (x : F) (y : F))`. Use `show Submodule.Quotient.mk _ = _`. Rewrite using `[e]`. Both sides reduce to the same expression. Establish `g_zero : g 0 = 0`.
+
+Establish `e : (⟨bcC (K` using `K) v ((0 : A') : F), hmem _ (0 : A').2⟩ : Ah) = 0 := Subtype.ext (map_zero (bcC (K := K) v))`. Use `show Submodule.Quotient.mk _ = _`. Rewrite using `[e]`. Both sides reduce to the same expression. Establish `g_smul : ∀ (r : R) x, g (r • x) = algebraMap R (v.adicCompletionIntegers K) r • g x`.
+
+Introduce `r x`. Establish `e : (⟨bcC (K` using `K) v ((r • x : A') : F), hmem _ (r • x).2⟩ : Ah) = algebraMap R (v.adicCompletionIntegers K) r • ⟨bcC (K := K) v (x : F), hmem x x.2⟩ := Subtype.ext (bc_smulR (K := K) v r (x : F))`. Use `show Submodule.Quotient.mk _ = _`. Rewrite using `[e]`. Both sides reduce to the same expression.
+
+Establish `g_ker : ∀ x y, g x = g y → ((x : F) - (y : F)) ∈ B'`. Introduce `x y h`. Establish `h1` using `(Submodule.Quotient.eq _).1 h`. Establish `h2 : bcC (K` using `K) v (x : F) - bcC (K := K) v (y : F) ∈ Th := h1`. Rewrite `h2` using `[← map_sub]`.
+
+Establish `h3` using `descent v T _ h2.1`. Establish `h4 : ((x : F) - (y : F)) ∈ A'` using `A'.sub_mem x.2 y.2`. Establish `h5 : ((x : F) - (y : F)) ∈ locS v.asIdeal.primeCompl (A ⊓ W.restrictScalars R) ⊓ locS v.asIdeal.primeCompl T` using `⟨h4, h3⟩`. Rewrite `h5` using `[← Formalism.HermitianLatticesTheory.locBasic_locS_inf]`. Conclude with `h5`.
+
+Take `⟨π, hπ⟩` from `v.intValuation_exists_uniformizer`. Establish `hπm : algebraMap R (v.adicCompletionIntegers K) π ∈ IsLocalRing.maximalIdeal (v.adicCompletionIntegers K)`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, HeightOneSpectrum.adicCompletionIntegers.isUnit_iff_valued_eq_one, coe_algO, val_alg, HeightOneSpectrum.valuation_of_algebraMap, hπ, ← WithZero.exp_zero]`. Introduce `h`. Use `WithZero.exp_injective h` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Take `⟨n, hn⟩` from `Formalism.EigenvalueLevelCeiling.ThreeFormsAlt.exists_pow_smul_eq_zero (v.adicCompletionIntegers K) _ hπm (Ah ⧸ Th.comap Ah.subtype) (Module.length_ne_top_iff.1 hfin)`. Establish `hact : ∀ (c : v.adicCompletionIntegers K), ∃ r : R, ∀ q : (Ah ⧸ Th.comap Ah.subtype), c • q = algebraMap R (v.adicCompletionIntegers K) r • q`. Introduce `c`. Take `⟨r, hr⟩` from `approx v c n`.
+
+Take `⟨d', hd'⟩` from `exists_factor v hπ n (c - algebraMap R (v.adicCompletionIntegers K) r) hr`. Use `⟨r, fun q => ?_⟩` and prove the remaining obligations. Establish `e : c = algebraMap R (v.adicCompletionIntegers K) r + d' * algebraMap R (v.adicCompletionIntegers K) π ^ n`. Rewrite using `[mul_comm, ← hd']`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `conv_lhs => rw [e]`. Rewrite using `[add_smul, mul_smul, hn, smul_zero, add_zero]`. Set `Φ : Submodule R (A' ⧸ B'.comap A'.subtype) → Submodule (v.adicCompletionIntegers K) (Ah ⧸ Th.comap Ah.subtype)` to `fun N => { carrier := g '' (N.comap (B'.comap A'.subtype).mkQ : Set A') zero_mem' := ⟨0, Submodule.zero_mem _, g_zero⟩ add_mem' := by`. Introduce and unpack `_ _ ⟨x, hx, rfl⟩ ⟨y, hy, rfl⟩`. Conclude with `⟨x + y, Submodule.add_mem _ hx hy, g_add x y⟩`.
+
+Use the proof step `smul_mem' := by`. Introduce and unpack `c _ ⟨x, hx, rfl⟩`. Take `⟨r, hr⟩` from `hact c`. Conclude with `⟨r • x, Submodule.smul_mem _ r hx, by rw [g_smul, hr]⟩ }`. Establish `hΦ : StrictMono Φ`.
+
+Use `strictMono_of_le_iff_le fun N N' => ⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `⟨x, Submodule.comap_mono h hx, rfl⟩`. Introduce `q hq`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`.
+
+Establish `h1 : g x ∈ Φ N` using `⟨x, hq, rfl⟩`. Take `⟨y, hy, hxy⟩` from `h h1`. Establish `h2` using `g_ker y x hxy`. Establish `h3 : (Submodule.Quotient.mk y : A' ⧸ B'.comap A'.subtype) = Submodule.Quotient.mk x` using `(Submodule.Quotient.eq _).2 h2`. Rewrite using `[← h3]`.
+
+Conclude with `hy`. Rewrite using `[Module.length_eq_height, Module.length_eq_height]`. Conclude with `(Order.height_le_height_apply_of_strictMono Φ hΦ ⊤).trans (Order.height_mono le_top)`.
+-/
 theorem l1 : LengthLocalizationLeCompletion (K := K) (F := F) v := by
   intro A T W hfin
   set Ah := locC (K := K) v A ⊓ (locKC v W).restrictScalars (v.adicCompletionIntegers K) with hAh
@@ -656,6 +829,13 @@ noncomputable section
 
 namespace Formalism.MainNotions.Gaps.LocalGlobalPassage
 
+/- English proof (translation)
+Take `⟨ϖ, -, hϖ0, hϖ1, -⟩` from `Formalism.DivisionValues.idxChange_unif (K := K) v`. Establish `h0 : algebraMap (𝓞 K) K ϖ ≠ 0`. Simplify using `using hϖ0`. Establish `h1 : Formalism.DivisionValues.vw v (algebraMap (𝓞 K) K ϖ) = 1` using `hϖ1`. Use `⟨algebraMap (𝓞 K) K ϖ ^ E, pow_ne_zero _ h0, ?_⟩` and prove the remaining obligations.
+
+Proceed by induction on `E with`. Consider the case `zero`. Rewrite using `[pow_zero]`. Conclude with `Formalism.DivisionValues.idxChange_cnt_one v`. Consider the case `succ n ih`.
+
+Establish `h2 : Formalism.DivisionValues.vw v (algebraMap (𝓞 K) K ϖ ^ n * algebraMap (𝓞 K) K ϖ) = Formalism.DivisionValues.vw v (algebraMap (𝓞 K) K ϖ ^ n) + Formalism.DivisionValues.vw v (algebraMap (𝓞 K) K ϖ)` using `Formalism.DivisionValues.idxChange_cnt_mul v (pow_ne_zero _ h0) h0`. Rewrite using `[pow_succ, h2, ih, h1]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_vw_eq {K : Type} [Field K] [NumberField K] [StarRing K] (v : HeightOneSpectrum (𝓞 K)) (E : ℕ) :
     ∃ a : K, a ≠ 0 ∧ Formalism.DivisionValues.vw v a = (E : ℤ) := by
   obtain ⟨ϖ, -, hϖ0, hϖ1, -⟩ := Formalism.DivisionValues.idxChange_unif (K := K) v
@@ -680,6 +860,11 @@ section Comp
 variable {R K F : Type} [CommRing R] [IsDedekindDomain R] [Field K] [Algebra R K] [IsFractionRing R K]
   [AddCommGroup F] [Module K F] [Module R F] [IsScalarTower R K F] (v : HeightOneSpectrum R)
 
+/- English proof (translation)
+Introduce `A W hW`. Unfold `locKC`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Establish `h : Submodule.span K (A : Set F) ≤ ((Submodule.span (v.adicCompletion K) (bcC v '' (A : Set F))).restrictScalars K).comap (bcC v)`.
+
+Rewrite using `[Submodule.span_le]`. Introduce `x hx`. Conclude with `Submodule.subset_span ⟨x, hx, rfl⟩`. Conclude with `h (hW hw)`.
+-/
 theorem l1c : CompletionSpanContainment (K := K) (F := F) v := by
   intro A W hW
   unfold locKC
@@ -692,6 +877,15 @@ theorem l1c : CompletionSpanContainment (K := K) (F := F) v := by
     exact Submodule.subset_span ⟨x, hx, rfl⟩
   exact h (hW hw)
 
+/- English proof (translation)
+Introduce `W hWf`. Establish `hinj : Function.Injective (LinearMap.baseChange (v.adicCompletion K) W.subtype)` using `Module.Flat.lTensor_preserves_injective_linearMap W.subtype W.injective_subtype`. Establish `hr : LinearMap.range (LinearMap.baseChange (v.adicCompletion K) W.subtype) = locKC v W`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, rfl⟩`.
+
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a w`. Establish `e : LinearMap.baseChange (v.adicCompletion K) W.subtype (a ⊗ₜ[K] w) = a • bcC v (w : F)`. Simplify using `[bcC, TensorProduct.smul_tmul']`.
+
+Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨w, w.2, rfl⟩)`. Consider the case `add x y hx hy`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+
+Unfold `locKC`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Conclude with `⟨(1 : v.adicCompletion K) ⊗ₜ[K] (⟨w, hw⟩ : W), by simp [bcC]⟩`. Rewrite using `[← hr, LinearMap.finrank_range_of_inj hinj, Module.finrank_baseChange]`.
+-/
 theorem l1b : CompletionPreservesFinrank (K := K) (F := F) v := by
   intro W hWf
   have hinj : Function.Injective (LinearMap.baseChange (v.adicCompletion K) W.subtype) :=
@@ -739,6 +933,9 @@ section LocBasis
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
   {Z : Type} [AddCommGroup Z] [Module K Z] [Module (𝓞 K) Z] [IsScalarTower (𝓞 K) K Z] [FiniteDimensional K Z]
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Qi33.exists_loc_basis w A hfg hA`.
+-/
 theorem exists_loc_basis (w : HeightOneSpectrum (𝓞 K)) (A : Submodule (𝓞 K) Z) (hfg : A.FG)
     (hA : Submodule.span K (A : Set Z) = ⊤) :
     ∃ b : Basis (Fin (finrank K Z)) K Z,
@@ -755,12 +952,20 @@ variable {K0 K : Type} [Field K0] [NumberField K0] [Field K] [NumberField K] [Al
   {Z0 : Type} [AddCommGroup Z0] [Module K0 Z0] [FiniteDimensional K0 Z0] [Module (𝓞 K0) Z0] [IsScalarTower (𝓞 K0) K0 Z0]
   {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul K0 s x, map_smul, ← algebraMap_smul K (algebraMap (𝓞 K0) (𝓞 K) s) (ι x), ← algebraMap_smul K (algebraMap (𝓞 K0) K0 s) (ι x)]`. Use `congr 1`.
+-/
 theorem iota_smul (ι : Z0 →ₗ[K0] (Fin n → K)) (s : 𝓞 K0) (x : Z0) :
     ι (s • x) = (algebraMap (𝓞 K0) (𝓞 K) s) • ι x := by
   rw [← algebraMap_smul K0 s x, map_smul, ← algebraMap_smul K (algebraMap (𝓞 K0) (𝓞 K) s) (ι x),
     ← algebraMap_smul K (algebraMap (𝓞 K0) K0 s) (ι x)]
   congr 1
 
+/- English proof (translation)
+Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨s, hs, hsx⟩` from `h hx`. Use `⟨algebraMap (𝓞 K0) (𝓞 K) s, ?_, ?_⟩` and prove the remaining obligations. Introduce `hmem`.
+
+Conclude with `hs hmem`. Rewrite using `[← iota_smul]`. Conclude with `Submodule.subset_span ⟨_, hsx, rfl⟩`.
+-/
 theorem up_le_locP (ι : Z0 →ₗ[K0] (Fin n → K)) (v : HeightOneSpectrum (𝓞 K)) {A0 B0 : Submodule (𝓞 K0) Z0}
     (h : A0 ≤ localization₂ (v.under (𝓞 K0)).asIdeal B0) : up ι A0 ≤ localization₂ v.asIdeal (up ι B0) := by
   refine Submodule.span_le.mpr ?_
@@ -772,6 +977,11 @@ theorem up_le_locP (ι : Z0 →ₗ[K0] (Fin n → K)) (v : HeightOneSpectrum (�
   · rw [← iota_smul]
     exact Submodule.subset_span ⟨_, hsx, rfl⟩
 
+/- English proof (translation)
+Establish `key : ∀ {X Y : Submodule (𝓞 K0) Z0}, localization₂ (v.under (𝓞 K0)).asIdeal X = localization₂ (v.under (𝓞 K0)).asIdeal Y → localization₂ v.asIdeal (up ι X) ≤ localization₂ v.asIdeal (up ι Y)`. Introduce `X Y hXY`. Establish `h1 : X ≤ localization₂ (v.under (𝓞 K0)).asIdeal Y`. Rewrite using `[← hXY]`. Conclude with `locBasic_le_locS _ X`.
+
+Establish `h2` using `locBasic_locS_mono v.asIdeal.primeCompl (up_le_locP ι v h1)`. Rewrite `h2` using `[show locS v.asIdeal.primeCompl (localization₂ v.asIdeal (up ι Y)) = localization₂ v.asIdeal (up ι Y) from locBasic_locS_idem _ _]`. Then use the resulting hypothesis. Conclude with `le_antisymm (key h) (key h.symm)`.
+-/
 theorem localization_up_congr (ι : Z0 →ₗ[K0] (Fin n → K)) (v : HeightOneSpectrum (𝓞 K)) {A0 B0 : Submodule (𝓞 K0) Z0}
     (h : localization₂ (v.under (𝓞 K0)).asIdeal A0 = localization₂ (v.under (𝓞 K0)).asIdeal B0) :
     localization₂ v.asIdeal (up ι A0) = localization₂ v.asIdeal (up ι B0) := by
@@ -786,6 +996,15 @@ theorem localization_up_congr (ι : Z0 →ₗ[K0] (Fin n → K)) (v : HeightOneS
       locBasic_locS_idem _ _] at h2
   exact le_antisymm (key h) (key h.symm)
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`.
+
+Take `⟨i, rfl⟩` from `hy`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz => rw [map_add]`.
+
+Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul s y _ hy => rw [iota_smul]`. Conclude with `Submodule.smul_mem _ _ hy`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`.
+
+Conclude with `⟨a i, Submodule.subset_span ⟨i, rfl⟩, rfl⟩`.
+-/
 theorem up_span_range (ι : Z0 →ₗ[K0] (Fin n → K)) {I : Type} (a : I → Z0) :
     up ι (Submodule.span (𝓞 K0) (Set.range a)) = Submodule.span (𝓞 K) (Set.range fun i => ι (a i)) := by
   apply le_antisymm
@@ -812,12 +1031,18 @@ variable {K0 K : Type} [Field K0] [NumberField K0] [Field K] [NumberField K] [Al
   {Z0 : Type} [AddCommGroup Z0] [Module K0 Z0] [FiniteDimensional K0 Z0] [Module (𝓞 K0) Z0] [IsScalarTower (𝓞 K0) K0 Z0]
   {n : ℕ}
 
+/- English proof (translation)
+Use `conv_lhs => rw [← b.sum_repr z, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, algebraMap_smul]`.
+-/
 theorem iota_eq_sum (ι : Z0 →ₗ[K0] (Fin n → K)) {d : ℕ} (b : Basis (Fin d) K0 Z0) (z : Z0) :
     ι z = ∑ i, algebraMap K0 K (b.repr z i) • ι (b i) := by
   conv_lhs => rw [← b.sum_repr z, map_sum]
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [map_smul, algebraMap_smul]
 
+/- English proof (translation)
+Rewrite using `[← htop]`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[iota_eq_sum ι b z]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+-/
 theorem span_iota_basis (ι : Z0 →ₗ[K0] (Fin n → K)) (htop : Submodule.span K (Set.range ι) = ⊤) {d : ℕ}
     (b : Basis (Fin d) K0 Z0) : ⊤ ≤ Submodule.span K (Set.range fun i => ι (b i)) := by
   rw [← htop]
@@ -826,6 +1051,29 @@ theorem span_iota_basis (ι : Z0 →ₗ[K0] (Fin n → K)) (htop : Submodule.spa
   rw [iota_eq_sum ι b z]
   exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
 
+/- English proof (translation)
+Introduce `hind htop A0 C0 hAfg hA hCfg hC v`. Set `_ : StarRing K0` to `starRingOfComm`. Take `⟨a, ha⟩` from `exists_loc_basis (v.under (𝓞 K0)) A0 hAfg hA`. Take `⟨c, hc⟩` from `exists_loc_basis (v.under (𝓞 K0)) C0 hCfg hC`. Set `aK : Basis (Fin (finrank K0 Z0)) K (Fin n → K)` to `Basis.mk (hind _ a a.linearIndependent) (span_iota_basis ι htop a)`.
+
+Set `cK : Basis (Fin (finrank K0 Z0)) K (Fin n → K)` to `Basis.mk (hind _ c c.linearIndependent) (span_iota_basis ι htop c)`. Establish `haK : ∀ i, aK i = ι (a i)` using `fun i => Basis.mk_apply _ _ i`. Establish `hcK : ∀ i, cK i = ι (c i)` using `fun i => Basis.mk_apply _ _ i`. Set `γ0 : Z0 ≃ₗ[K0] Z0` to `a.equiv c (Equiv.refl _)`. Set `γ : (Fin n → K) ≃ₗ[K] (Fin n → K)` to `aK.equiv cK (Equiv.refl _)`.
+
+Establish `hγ0 : ∀ i, γ0 (a i) = c i` using `fun i => by simp [γ0]`. Establish `hγ : ∀ i, γ (aK i) = cK i` using `fun i => by simp [γ]`. Establish `hL : lidx (v.under (𝓞 K0)).asIdeal A0 C0 = FractionalIdeal.count K0 (v.under (𝓞 K0)) (FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 K0)) (LinearMap.det (γ0 : Z0 →ₗ[K0] Z0)))`. Rewrite using `[PI.LatIdxDetW.lidx_congr _ ha hc, ← PI.LatIdxDetW.lidx_free (v.under (𝓞 K0)) a γ0]`. Use `congr 1`.
+
+Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Use `congrArg (Submodule.span (𝓞 K0)) (congrArg Set.range ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Conclude with `(hγ0 i).symm`. Establish `hR : lidx v.asIdeal (up ι A0) (up ι C0) = FractionalIdeal.count K v (FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 K)) (LinearMap.det (γ : (Fin n → K) →ₗ[K] (Fin n → K))))`.
+
+Establish `h1` using `localization_up_congr ι v ha`. Establish `h2` using `localization_up_congr ι v hc`. Rewrite `h1`, `h2` using `[up_span_range]`. Establish `e1 : (Set.range fun i => ι (a i)) = Set.range aK`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Conclude with `(haK i).symm`. Establish `e2 : (Set.range fun i => ι (c i)) = Set.range cK`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Conclude with `(hcK i).symm`. Rewrite `h1` using `[e1]`. Rewrite `h2` using `[e2]`. Rewrite using `[PI.LatIdxDetW.lidx_congr _ h1 h2, ← PI.LatIdxDetW.lidx_free v aK γ]`. Use `congr 1`.
+
+Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Use `congrArg (Submodule.span (𝓞 K)) (congrArg Set.range ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Conclude with `(hγ i).symm`. Establish `hrepr : ∀ (z : Z0) (i : Fin (finrank K0 Z0)), aK.repr (ι z) i = algebraMap K0 K (a.repr z i)`.
+
+Introduce `z i`. Establish `h1 : ι z = ∑ i, algebraMap K0 K (a.repr z i) • aK i`. Rewrite using `[iota_eq_sum ι a z]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [haK]`. Rewrite using `[h1, Basis.repr_sum_self]`.
+
+Establish `hdet : LinearMap.det (γ : (Fin n → K) →ₗ[K] (Fin n → K)) = algebraMap K0 K (LinearMap.det (γ0 : Z0 →ₗ[K0] Z0))`. Rewrite using `[← LinearMap.det_toMatrix aK, ← LinearMap.det_toMatrix a, RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Rewrite using `[LinearMap.toMatrix_apply, RingHom.mapMatrix_apply, Matrix.map_apply, LinearMap.toMatrix_apply]`.
+
+Use `show aK.repr (γ (aK j)) i = algebraMap K0 K (a.repr (γ0 (a j)) i)`. Rewrite using `[hγ, hγ0, hcK, hrepr]`. Rewrite using `[hL, hR, hdet]`. Conclude with `h3a v _ (LinearEquiv.isUnit_det' γ0).ne_zero`.
+-/
 theorem l3 (h3a : ValuationMulRamificationIndex K0 K) (ι : Z0 →ₗ[K0] (Fin n → K)) : IndexMulRamificationIndex ι := by
   intro hind htop A0 C0 hAfg hA hCfg hC v
   let _ : StarRing K0 := starRingOfComm
@@ -905,19 +1153,31 @@ section BC4
 
 variable {K0 K : Type} [Field K0] [NumberField K0] [Field K] [NumberField K] [Algebra K0 K]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by rw [HeightOneSpectrum.under_asIdeal]⟩`.
+-/
 theorem liesOver_under (v : HeightOneSpectrum (𝓞 K)) : v.asIdeal.LiesOver (v.under (𝓞 K0)).asIdeal :=
   ⟨by rw [HeightOneSpectrum.under_asIdeal]⟩
 
+/- English proof (translation)
+Use `liesOver_under (K0 := K0) v` as an intermediate fact. Conclude with `Ideal.ramificationIdx'_eq_ramificationIdx _ _ (v.under (𝓞 K0)).ne_bot`.
+-/
 theorem ram_eq (v : HeightOneSpectrum (𝓞 K)) :
     (v.under (𝓞 K0)).asIdeal.ramificationIdx' v.asIdeal = v.asIdeal.ramificationIdx (𝓞 K0) := by
   have := liesOver_under (K0 := K0) v
   exact Ideal.ramificationIdx'_eq_ramificationIdx _ _ (v.under (𝓞 K0)).ne_bot
 
+/- English proof (translation)
+Introduce `v` and use `by have := liesOver_under (K0 := K0) v rw [← ram_eq] exact Ideal.IsDedekindDomain.ramificationIdx'_ne_zero_of_liesOver v.asIdeal (v.under (𝓞 K0)).ne_bot`.
+-/
 theorem l3e : RamificationIndexNeZero K0 K := fun v => by
   have := liesOver_under (K0 := K0) v
   rw [← ram_eq]
   exact Ideal.IsDedekindDomain.ramificationIdx'_ne_zero_of_liesOver v.asIdeal (v.under (𝓞 K0)).ne_bot
 
+/- English proof (translation)
+Introduce `v a ha` and use `by have := liesOver_under (K0 := K0) v have ha' : algebraMap K0 K a ≠ 0 := by simpa using ha rw [← PI.LatIdxDetW.neg_log_valuation v ha', ← PI.LatIdxDetW.neg_log_valuation (v.under (𝓞 K0)) ha, ← HeightOneSpectrum.valuation_liesOver K (v.under (𝓞 K0)) v a, WithZero.log_pow, ram_eq …`.
+-/
 theorem l3a : ValuationMulRamificationIndex K0 K := fun v a ha => by
   have := liesOver_under (K0 := K0) v
   have ha' : algebraMap K0 K a ≠ 0 := by simpa using ha
@@ -925,6 +1185,9 @@ theorem l3a : ValuationMulRamificationIndex K0 K := fun v a ha => by
     ← HeightOneSpectrum.valuation_liesOver K (v.under (𝓞 K0)) v a, WithZero.log_pow, ram_eq]
   simp
 
+/- English proof (translation)
+Use `liesOver_under (K0 := K0) v` as an intermediate fact. Unfold `Formalism.BasicNotions.lw`. Rewrite using `[← Ideal.absNorm_pow_inertiaDeg (v.under (𝓞 K0)).asIdeal v.asIdeal, Nat.cast_pow, Real.log_pow]`.
+-/
 theorem lw_eq (v : HeightOneSpectrum (𝓞 K)) :
     Formalism.BasicNotions.lw K v = (v.asIdeal.inertiaDeg (𝓞 K0) : ℝ) *
       Real.log (Ideal.absNorm (v.under (𝓞 K0)).asIdeal : ℝ) / (finrank ℚ K : ℝ) := by
@@ -932,6 +1195,13 @@ theorem lw_eq (v : HeightOneSpectrum (𝓞 K)) :
   unfold Formalism.BasicNotions.lw
   rw [← Ideal.absNorm_pow_inertiaDeg (v.under (𝓞 K0)).asIdeal v.asIdeal, Nat.cast_pow, Real.log_pow]
 
+/- English proof (translation)
+Set `_ : Fintype (la.asIdeal.primesOver (𝓞 K))` to `Fintype.ofFinite _`. Establish `h` using `Ideal.sum_ramification_inertia_eq_finrank la.asIdeal (𝓞 K)`. Rewrite `h` using `[← IsFractionRing.finrank_eq (𝓞 K0) K0 (𝓞 K) K, Finset.sum_set_coe (la.asIdeal.primesOver (𝓞 K)) (f := fun q : Ideal (𝓞 K) => q.ramificationIdx (𝓞 K0) * q.inertiaDeg (𝓞 K0))]`. Rewrite using `[← h]`. Establish `hinj : Set.InjOn (fun v : HeightOneSpectrum (𝓞 K) => v.asIdeal) (T : Set (HeightOneSpectrum (𝓞 K)))` using `fun a _ b _ hab => HeightOneSpectrum.ext hab`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum_of_subset ?_` and prove the remaining obligations. Introduce `q hq`. Take `⟨v, hv, rfl⟩` from `Finset.mem_image.1 hq`. Rewrite using `[Set.mem_toFinset]`.
+
+Use `⟨v.isPrime, ?_⟩` and prove the remaining obligations. Rewrite using `[← hT v hv]`. Conclude with `liesOver_under v`.
+-/
 theorem sum_ef_le (la : HeightOneSpectrum (𝓞 K0)) (T : Finset (HeightOneSpectrum (𝓞 K)))
     (hT : ∀ v ∈ T, v.under (𝓞 K0) = la) :
     ∑ v ∈ T, v.asIdeal.ramificationIdx (𝓞 K0) * v.asIdeal.inertiaDeg (𝓞 K0) ≤ finrank K0 K := by
@@ -957,10 +1227,24 @@ theorem sum_ef_le (la : HeightOneSpectrum (𝓞 K0)) (T : Finset (HeightOneSpect
       rw [← hT v hv]
       exact liesOver_under v
 
+/- English proof (translation)
+Unfold `Formalism.BasicNotions.lw`. Conclude with `div_nonneg (Real.log_natCast_nonneg _) (Nat.cast_nonneg _)`.
+-/
 theorem lw_nonneg' (la : HeightOneSpectrum (𝓞 K0)) : 0 ≤ Formalism.BasicNotions.lw K0 la := by
   unfold Formalism.BasicNotions.lw
   exact div_nonneg (Real.log_natCast_nonneg _) (Nat.cast_nonneg _)
 
+/- English proof (translation)
+Introduce `r hr hs S'`. Use `set u : HeightOneSpectrum (𝓞 K) → HeightOneSpectrum (𝓞 K0) := fun v => v.under (𝓞 K0) with hu`. Establish `h1 : ∑ v ∈ S', Formalism.BasicNotions.lw K v * ((v.asIdeal.ramificationIdx (𝓞 K0) : ℝ) * r (u v)) = ∑ la ∈ S'.image u, ∑ v ∈ S' with u v = la, Formalism.BasicNotions.lw K v * ((v.asIdeal.ramificationIdx (𝓞 K0) : ℝ) * r (u v))` using `(Finset.sum_fiberwise_of_maps_to (fun v hv => Finset.mem_image_of_mem u hv) _).symm`. Rewrite using `[h1]`. Use `le_trans (Finset.sum_le_sum fun la _ => ?_) (hs.sum_le_tsum (S'.image u) fun la _ => mul_nonneg (hr la) (lw_nonneg' la))` and prove the remaining obligations.
+
+Establish `h2 : ∀ v ∈ S'.filter (fun v => u v = la), Formalism.BasicNotions.lw K v * ((v.asIdeal.ramificationIdx (𝓞 K0) : ℝ) * r (u v)) = (r la * Real.log (Ideal.absNorm la.asIdeal : ℝ) / (finrank ℚ K : ℝ)) * ((v.asIdeal.ramificationIdx (𝓞 K0) * v.asIdeal.inertiaDeg (𝓞 K0) : ℕ) : ℝ)`. Introduce `v hv`. Establish `hv' : u v = la` using `(Finset.mem_filter.1 hv).2`. Rewrite using `[lw_eq (K0 := K0) v, hv']`. Establish `hv'' : v.under (𝓞 K0) = la` using `hv'`.
+
+Rewrite using `[hv'']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl h2, ← Finset.mul_sum, ← Nat.cast_sum]`. Establish `h3` using `sum_ef_le la (S'.filter (fun v => u v = la)) (fun v hv => (Finset.mem_filter.1 hv).2)`.
+
+Establish `h4 : (0 : ℝ) ≤ r la * Real.log (Ideal.absNorm la.asIdeal : ℝ) / (finrank ℚ K : ℝ)` using `div_nonneg (mul_nonneg (hr la) (Real.log_natCast_nonneg _)) (Nat.cast_nonneg _)`. Use `le_trans (mul_le_mul_of_nonneg_left (Nat.cast_le.2 h3) h4) (le_of_eq ?_)` and prove the remaining obligations. Unfold `Formalism.BasicNotions.lw`. Rewrite using `[← Module.finrank_mul_finrank ℚ K0 K]`. Establish `h5 : (finrank ℚ K0 : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 (Module.finrank_pos).ne'`.
+
+Establish `h6 : (finrank K0 K : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 (Module.finrank_pos).ne'`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem l4 : SumOverPlacesLeBaseSum K0 K := by
   classical
   intro r hr hs S'
@@ -1015,6 +1299,21 @@ open Formalism.BasicNotions Formalism.MainNotions
 open Formalism.HermitianLatticesTheory (lidx localization₂ locLen locS)
 open Formalism.EigenvalueLevelCeiling
 
+/- English proof (translation)
+Introduce `x hx`. Establish `hxA : x ∈ localization₂ v.asIdeal A` using `⟨1, v.asIdeal.primeCompl.one_mem, by simpa using hx⟩`. Use `set q := (localization₂ v.asIdeal N).comap (localization₂ v.asIdeal A).subtype with hq`. Use `set f : R →ₗ[R] (↥(localization₂ v.asIdeal A) ⧸ q) := LinearMap.toSpanSingleton R _ (q.mkQ ⟨x, hxA⟩) with hf`. Establish `hni : ¬ Function.Injective f`.
+
+Introduce `hi`. Establish `h1 : Module.length R R ≠ ⊤` using `ne_top_of_le_ne_top h (Module.length_le_of_injective f hi)`. Establish `h2 : IsFiniteLength R R` using `Module.length_ne_top_iff.mp h1`. Establish `h3 : IsArtinian R R` using `(isFiniteLength_iff_isNoetherian_isArtinian.mp h2).2`. Establish `h4 : IsArtinianRing R` using `h3`.
+
+Establish `h5 : IsField R` using `IsArtinianRing.isField_of_isDomain R`. Conclude with `Ring.not_isField_iff_exists_prime.mpr ⟨v.asIdeal, v.ne_bot, v.isPrime⟩ h5`. Establish `: ∃ d : R, d ≠ 0 ∧ f d = 0`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+
+Apply `hni` to reduce the goal to its premises. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `d hd`. Assume the negation of the conclusion as `h0`. Conclude with `hc d h0 hd`.
+
+Take `⟨d, hd0, hd⟩` from `this`. Establish `hd' : d • (⟨x, hxA⟩ : ↥(localization₂ v.asIdeal A)) ∈ q`. Establish `: q.mkQ (d • (⟨x, hxA⟩ : ↥(localization₂ v.asIdeal A))) = 0`. Rewrite using `[map_smul]`. Simplify `hd` using `[hf, LinearMap.toSpanSingleton_apply]`.
+
+Simplify using `using this`. Take `⟨s, hs, hsx⟩ : d • x ∈ localization₂ v.asIdeal N` from `hd'`. Establish `hs0 : s ≠ 0` using `fun e => hs (e ▸ v.asIdeal.zero_mem)`. Establish `hK : algebraMap R K (s * d) ≠ 0`. Simplify using `using (mul_ne_zero hs0 hd0)`.
+
+Establish `e : x = (algebraMap R K (s * d))⁻¹ • (s • d • x)`. Rewrite using `[smul_smul, ← algebraMap_smul K (s * d) x, smul_smul, inv_mul_cancel₀ hK, one_smul]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hsx)`.
+-/
 theorem span_of_fin {R K V : Type} [CommRing R] [IsDedekindDomain R] [Field K] [Algebra R K] [IsFractionRing R K]
     [AddCommGroup V] [Module K V] [Module R V] [IsScalarTower R K V] (v : HeightOneSpectrum R) (A N : Submodule R V)
     (h : Module.length R (↥(localization₂ v.asIdeal A) ⧸ (localization₂ v.asIdeal N).comap (localization₂ v.asIdeal A).subtype) ≠ ⊤) :
@@ -1061,6 +1360,9 @@ def lenC {R K F : Type} [CommRing R] [IsDedekindDomain R] [Field K] [Algebra R K
         (locC v T ⊓ V.restrictScalars (v.adicCompletionIntegers K)).comap
           (locC v A ⊓ V.restrictScalars (v.adicCompletionIntegers K)).subtype)
 
+/- English proof (translation)
+The claim follows from `H1 A T W h`.
+-/
 theorem l1' {R K F : Type} [CommRing R] [IsDedekindDomain R] [Field K] [Algebra R K] [IsFractionRing R K]
     [AddCommGroup F] [Module K F] [Module R F] [IsScalarTower R K F] (v : HeightOneSpectrum R)
     (H1 : LengthLocalizationLeCompletion (K := K) (F := F) v) (A T : Submodule R F) (W : Submodule K F) (h : lenC v A T (locKC v W) ≠ ⊤) :
@@ -1070,10 +1372,32 @@ theorem l1' {R K F : Type} [CommRing R] [IsDedekindDomain R] [Field K] [Algebra 
 
 variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem qlen_gen {j : ℕ} (X : WeightAlgebra.PJ D B P j) (la : HeightOneSpectrum (𝓞 B.KO)) (A T : Submodule (𝓞 B.KO) X.Forms)
     (V : Submodule (X.Kl la) (X.Vl la)) :
     X.qlen la (X.loc la A ⊓ X.ofK la V) (X.loc la T ⊓ X.ofK la V) = lenC la A T V := rfl
 
+/- English proof (translation)
+Take `⟨r, h0, h1, h2, h3⟩` from `h`. Use `⟨r, h0, h1, h2, fun la => ?_⟩` and prove the remaining obligations. Use `set φ : B.Cusp Q.jn Q.ka →ₗ[B.KO] Q.X.Forms := Q.X.inc Q.ka with hφ`. Establish `hinj : Function.Injective φ` using `Q.X.inc_inj Q.ka`. Establish `hinj' : Function.Injective (φ.restrictScalars (𝓞 B.KO))` using `hinj`.
+
+Establish `key : ∀ e0 : ℤ, (Q.T : ℝ) * Q.nus la ≤ (e0 : ℝ) → ∀ W0 : Submodule B.KO (B.Cusp Q.jn Q.ka), Module.length (𝓞 B.KO) (↥(localization₂ la.asIdeal (Q.M0 ⊓ W0.restrictScalars (𝓞 B.KO))) ⧸ (localization₂ la.asIdeal (Q.M0 ⊓ W0.restrictScalars (𝓞 B.KO) ⊓ Q.Th0)).comap (localization₂ la.a …`. Introduce `e0 he0 W0`. Establish `hW : W0.map φ ≤ Submodule.span B.KO ((Q.X.Msup Q.ka : Submodule (𝓞 B.KO) Q.X.Forms) : Set Q.X.Forms)`. Establish `e1 : Submodule.span B.KO ((Q.X.Msup Q.ka : Submodule (𝓞 B.KO) Q.X.Forms) : Set Q.X.Forms) = (Submodule.span B.KO (Q.M0 : Set _)).map φ` using `idxRules_span_map φ Q.M0`. Rewrite using `[e1, hM.span_eq_top]`.
+
+Conclude with `Submodule.map_mono le_top`. Establish `hV : locKC la (W0.map φ) ≤ Q.X.locK la (Q.X.Msup Q.ka)` using `H1c la (Q.X.Msup Q.ka) (W0.map φ) hW`. Take `⟨hfin, hle⟩` from `h3 la e0 he0 (locKC la (W0.map φ)) hV`. Rewrite `hfin`, `hle` using `[qlen_gen]`. Establish `hl1` using `l1' la (H1 la) (Q.X.Msup Q.ka) (Q.X.Theta Q.S Q.ka Q.wL Q.wF Q.T) (W0.map φ) hfin`.
+
+Establish `eA : Q.X.Msup Q.ka ⊓ (W0.map φ).restrictScalars (𝓞 B.KO) = (Q.M0 ⊓ W0.restrictScalars (𝓞 B.KO)).map (φ.restrictScalars (𝓞 B.KO))`. Rewrite using `[Submodule.map_inf _ hinj']`. Both sides reduce to the same expression. Establish `eT : Q.X.Msup Q.ka ⊓ (W0.map φ).restrictScalars (𝓞 B.KO) ⊓ Q.X.Theta Q.S Q.ka Q.wL Q.wF Q.T = (Q.M0 ⊓ W0.restrictScalars (𝓞 B.KO) ⊓ Q.Th0).map (φ.restrictScalars (𝓞 B.KO))`. Rewrite using `[eA]`.
+
+Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨x, hx, rfl⟩, hy⟩`. Conclude with `⟨x, ⟨hx, hy⟩, rfl⟩`. Introduce and unpack `⟨x, ⟨hx, hx'⟩, rfl⟩`.
+
+Conclude with `⟨⟨x, hx, rfl⟩, hx'⟩`. Rewrite `hl1` using `[eT, eA, localization_map₄, localization_map₄, idxRules_len_map _ hinj']`. Establish `hdim : finrank (la.adicCompletion B.KO) (locKC la (W0.map φ)) = finrank B.KO W0`. Rewrite using `[H1b la _ inferInstance]`. Conclude with `(LinearEquiv.finrank_eq (Submodule.equivMapOfInjective φ hinj W0)).symm`.
+
+Rewrite `hle` using `[hdim]`. Unfold `locLen`. Conclude with `⟨ne_top_of_le_ne_top hfin hl1, le_trans (by exact_mod_cast ENat.toNat_le_toNat hl1 hfin) hle⟩`. Prove the components needed by the constructor for the conclusion. Establish `h4` using `span_of_fin (K := B.KO) la _ _ (key _ (Q.eLa_ge la) ⊤).1`.
+
+Rewrite `h4` using `[Submodule.restrictScalars_top, inf_top_eq]`. Rewrite using `[eq_top_iff, ← hM.span_eq_top]`. Conclude with `Submodule.span_le.mpr h4`. Introduce `e0 he0 W0`. Rewrite using `[inf_right_comm, idxRules_lidx_of_le la.asIdeal inf_le_left]`.
+
+Conclude with `(key e0 he0 W0).2`.
+-/
 theorem l2 (Q : Run D B P) (H1 : ∀ la : HeightOneSpectrum (𝓞 B.KO), LengthLocalizationLeCompletion (K := B.KO) (F := Q.X.Forms) la)
     (H1b : ∀ la : HeightOneSpectrum (𝓞 B.KO), CompletionPreservesFinrank (K := B.KO) (F := Q.X.Forms) la)
     (H1c : ∀ la : HeightOneSpectrum (𝓞 B.KO), CompletionSpanContainment (K := B.KO) (F := Q.X.Forms) la)
@@ -1158,6 +1482,13 @@ section Mono
 variable {R K V : Type} [CommRing R] [IsDedekindDomain R] [Field K] [Algebra R K] [IsFractionRing R K]
   [AddCommGroup V] [Module K V] [Module R V] [IsScalarTower R K V]
 
+/- English proof (translation)
+Rewrite using `[idxRules_lidx_of_le p hB'A]`. Establish `h1 : lidx p A B ≤ (locLen p A (A ⊓ B) : ℤ)`. Unfold `lidx`. Establish `: (0 : ℤ) ≤ (locLen p B (A ⊓ B) : ℤ)` using `Int.natCast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `h1.trans ?_` and prove the remaining obligations. Establish `hfin` using `idxRules_fin p A B' hA (idxRules_le_locS hAW hB'W)`. Establish `hle : localization₂ p B' ≤ localization₂ p (A ⊓ B)` using `Formalism.HermitianLatticesTheory.locBasic_locS_mono _ (le_inf hB'A hB)`. Use `qlen_anti_right (localization₂ p A) hle` as an intermediate fact. Unfold `locLen`.
+
+Conclude with `ENat.toNat_le_toNat this hfin` after adjusting the coercions.
+-/
 theorem lidx_anti (p : Ideal R) [p.IsPrime] (W : Submodule K V) {A B' B : Submodule R V} (hA : A.FG)
     (hAW : Submodule.span K (A : Set V) = W) (hB'W : Submodule.span K (B' : Set V) = W) (hB'A : B' ≤ A) (hB : B' ≤ B) :
     lidx p A B ≤ lidx p A B' := by
@@ -1181,15 +1512,28 @@ variable {K0 K : Type} [Field K0] [NumberField K0] [Field K] [NumberField K] [St
   {Z0 : Type} [AddCommGroup Z0] [Module K0 Z0] [FiniteDimensional K0 Z0] [Module (𝓞 K0) Z0] [IsScalarTower (𝓞 K0) K0 Z0]
   {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `Submodule.span_mono (Set.image_mono h)`.
+-/
 theorem up_mono (ι : Z0 →ₗ[K0] (Fin n → K)) {A0 B0 : Submodule (𝓞 K0) Z0} (h : A0 ≤ B0) : up ι A0 ≤ up ι B0 :=
   Submodule.span_mono (Set.image_mono h)
 
+/- English proof (translation)
+Take `⟨s, rfl⟩` from `h`. Establish `e : (s : Set Z0) = Set.range (fun x : s => (x : Z0))` using `by simp`. Rewrite using `[e, up_span_range]`. Conclude with `Submodule.fg_span (Set.finite_range _)`.
+-/
 theorem up_fg (ι : Z0 →ₗ[K0] (Fin n → K)) {A0 : Submodule (𝓞 K0) Z0} (h : A0.FG) : (up ι A0).FG := by
   obtain ⟨s, rfl⟩ := h
   have e : (s : Set Z0) = Set.range (fun x : s => (x : Z0)) := by simp
   rw [e, up_span_range]
   exact Submodule.fg_span (Set.finite_range _)
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff, ← htop]`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`. Establish `hz : z ∈ Submodule.span K0 (A0 : Set Z0)` using `by rw [h]; exact Submodule.mem_top`. Proceed by induction on `hz using Submodule.span_induction with`.
+
+Consider the case `mem x hx => exact Submodule.subset_span (Submodule.subset_span ⟨x, hx, rfl⟩)`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+
+Consider the case `smul a x _ hx`. Rewrite using `[map_smul, ← algebraMap_smul K a (ι x)]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem up_top (ι : Z0 →ₗ[K0] (Fin n → K)) (htop : Submodule.span K (Set.range ι) = ⊤) {A0 : Submodule (𝓞 K0) Z0}
     (h : Submodule.span K0 (A0 : Set Z0) = ⊤) : Submodule.span K (up ι A0 : Set (Fin n → K)) = ⊤ := by
   rw [eq_top_iff, ← htop]
@@ -1204,6 +1548,33 @@ theorem up_top (ι : Z0 →ₗ[K0] (Fin n → K)) (htop : Submodule.span K (Set.
     rw [map_smul, ← algebraMap_smul K a (ι x)]
     exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+Set `_ : StarRing K0` to `starRingOfComm`. Use `set la := v.under (𝓞 K0) with hla`. Use `set e := v.asIdeal.ramificationIdx (𝓞 K0) with he`. Establish `he0 : e ≠ 0` using `l3e v`. Establish `hepos : (0 : ℤ) < (e : ℤ)` using `by exact_mod_cast Nat.pos_of_ne_zero he0`.
+
+Establish `he0nn : 0 ≤ e0`. Assume the negation of the conclusion as `hc`. Establish `: (e : ℤ) * e0 < 0` using `mul_neg_of_pos_of_neg hepos (not_le.mp hc)`. Establish `h2 : (0 : ℤ) ≤ (E : ℤ)` using `Int.natCast_nonneg _`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨E0, rfl⟩` from `Int.eq_ofNat_of_zero_le he0nn`. Take `⟨a0, ha0, hva0⟩` from `exists_vw_eq la E0`. Establish `hNfg : N0.FG`. Establish `: IsNoetherian (𝓞 K0) M0` using `isNoetherian_of_fg_of_noetherian M0 hMfg`. Conclude with `isNoetherian_submodule.mp this _ hNM`.
+
+Establish `hML : IsLatIn ⊤ M0` using `⟨hMfg, hM⟩`. Establish `hNL : IsLatIn ⊤ N0` using `⟨hNfg, hN⟩`. Establish `h3f` using `(three_forms K0 Z0 la M0 N0 hML hNL hNM a0 E0 ρ ha0 hva0).mp (fun W0 => by`. Use `h W0` as an intermediate fact. Simplify using `only [Int.cast_natCast] at this`.
+
+Conclude with `this)`. Use `set C0 := M0 ⊓ sc a0⁻¹ N0 with hC0`. Establish `hCL : IsLatIn ⊤ C0` using `lattice_intersection K0 Z0 M0 N0 hML hNL a0⁻¹ (inv_ne_zero ha0)`. Establish `hl3` using `l3 l3a ι hind htop M0 C0 hMfg hM hCL.1 hCL.2 v`. Use `set a : K := algebraMap K0 K a0 with ha`.
+
+Establish `hane : a ≠ 0`. Rewrite using `[ha]`. Simplify using `using ha0`. Establish `hva : vw v a = (E : ℤ)`. Rewrite using `[hE]`.
+
+Use `l3a v a0 ha0` as an intermediate fact. Unfold `vw at hva0 ⊢`. Rewrite using `[this, hva0]`. Establish `hMsL : IsLatIn ⊤ (up ι M0)` using `⟨up_fg ι hMfg, up_top ι htop hM⟩`. Establish `hNsL : IsLatIn ⊤ (up ι N0)` using `⟨up_fg ι hNfg, up_top ι htop hN⟩`.
+
+Establish `hCsL : IsLatIn ⊤ (up ι C0)` using `⟨up_fg ι hCL.1, up_top ι htop hCL.2⟩`. Establish `hIL : IsLatIn ⊤ (up ι M0 ⊓ sc a⁻¹ (up ι N0))` using `lattice_intersection K _ _ _ hMsL hNsL a⁻¹ (inv_ne_zero hane)`. Establish `hCle : up ι C0 ≤ up ι M0 ⊓ sc a⁻¹ (up ι N0)`. Use `le_inf (up_mono ι inf_le_left) (Submodule.span_le.mpr ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+
+Establish `hx2 : a0 • x ∈ N0` using `(mem_sc_inv ha0 N0 x).mp hx.2`. Use `(mem_sc_inv hane _ _).mpr ?_` and prove the remaining obligations. Rewrite using `[ha, algebraMap_smul, ← map_smul]`. Conclude with `Submodule.subset_span ⟨_, hx2, rfl⟩`. Establish `hmono` using `index_monotone K _ v ⊤ (up ι M0) (up ι C0) (up ι M0 ⊓ sc a⁻¹ (up ι N0)) hMsL hCsL hIL hCle`.
+
+Establish `hd : (lix v (up ι M0) (up ι M0 ⊓ sc a⁻¹ (up ι N0)) : ℝ) ≤ (e : ℝ) * ρ`. Establish `h1 : (lix v (up ι M0) (up ι M0 ⊓ sc a⁻¹ (up ι N0)) : ℝ) ≤ (lix v (up ι M0) (up ι C0) : ℝ)`. Conclude with `hmono` after adjusting the coercions. Establish `h2 : (lix v (up ι M0) (up ι C0) : ℝ) = (e : ℝ) * (lix la M0 C0 : ℝ)`. Unfold `lix`.
+
+Rewrite using `[hl3]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite `h1` using `[h2]`. Conclude with `h1.trans (mul_le_mul_of_nonneg_left h3f (Nat.cast_nonneg _))`.
+
+Establish `hall` using `(three_forms K _ v (up ι M0) (up ι N0) hMsL hNsL (up_mono ι hNM) a E _ hane hva).mpr hd`. Introduce `W`. Use `le_trans ?_ (hall W)` and prove the remaining obligations. Establish `hcA` using `isLatIn_cut W (up ι M0) hMsL`. Establish `hcN` using `isLatIn_cut W (up ι N0) hNsL`.
+
+Use `lidx_anti (K := K) v.asIdeal W (A := cut W (up ι M0)) (B' := cut W (up ι N0)) (B := cut W Th) hcA.1 hcA.2 hcN.2 (inf_le_inf_right _ (up_mono ι hNM)) (inf_le_inf_right _ hTh)` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+-/
 theorem l5 (ι : Z0 →ₗ[K0] (Fin n → K))
     (hind : ∀ (m : ℕ) (b : Fin m → Z0), LinearIndependent K0 b → LinearIndependent K fun a => ι (b a))
     (htop : Submodule.span K (Set.range ι) = ⊤) (M0 N0 : Submodule (𝓞 K0) Z0) (hMfg : M0.FG)
@@ -1302,10 +1673,16 @@ open Formalism.EigenvalueLevelCeiling (lix cut sc IsLatIn plc)
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 variable {Bs : DefBase K} {Df : DefSide Bs} {S : IndefData Df} {P' : Type} [Group P'] [Finite P'] {c : OnConst}
 
+/- English proof (translation)
+Unfold `OnObj.r rOf used`. Apply the tactic sequence `by_cases h : plc v = O.pde <;> simp [h]`.
+-/
 theorem r_eq_rOf (O : OnObj S P' c) (v : HeightOneSpectrum (𝓞 K)) (j : Bs.J) : O.r v j = rOf O (used O v) v j := by
   unfold OnObj.r rOf used
   by_cases h : plc v = O.pde <;> simp [h]
 
+/- English proof (translation)
+Introduce `W`. Use `(h W).trans ?_` and prove the remaining obligations. Establish `h1 : (E' : ℝ) ≤ (E : ℝ)` using `by exact_mod_cast hE`. Establish `h2 : (0 : ℝ) ≤ (finrank K W : ℝ)` using `Nat.cast_nonneg _`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right h1 h2]`.
+-/
 theorem RemOK.mono {n : ℕ} {v : HeightOneSpectrum (𝓞 K)} {M Th : Submodule (𝓞 K) (Fin n → K)} {E' E : ℕ} {ρ : ℝ}
     (hE : E' ≤ E) (h : RemOK v M Th E' ρ) : RemOK v M Th E ρ := by
   intro W
@@ -1314,6 +1691,17 @@ theorem RemOK.mono {n : ℕ} {v : HeightOneSpectrum (𝓞 K)} {M Th : Submodule 
   have h2 : (0 : ℝ) ≤ (finrank K W : ℝ) := Nat.cast_nonneg _
   nlinarith [mul_le_mul_of_nonneg_right h1 h2]
 
+/- English proof (translation)
+Take `⟨r, h0, h1, h2, h3⟩` from `l2 (t.run k j) (fun la => l1 la) (fun la => l1b la) (fun la => l1c la) (t.isLattice_lattice k j) h`. Establish `hMs : O.Ms j = up (t.ι k j) (t.run k j).M0` using `t.Ms_eq k j`. Establish `htop : Submodule.span K (Set.range (t.ι k j)) = ⊤`. Rewrite using `[eq_top_iff, ← t.Ms_top j, hMs]`. Establish `hsub : up (t.ι k j) (t.run k j).M0 ≤ (Submodule.span K (Set.range (t.ι k j))).restrictScalars (𝓞 K)`.
+
+Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, _, rfl⟩`. Conclude with `Submodule.subset_span ⟨z, rfl⟩`. Conclude with `Submodule.span_le.mpr hsub`. Establish `hle : ∀ v, up (t.ι k j) ((t.run k j).M0 ⊓ (t.run k j).Th0) ≤ t.ThR k v j` using `fun v => (up_mono _ inf_le_right).trans (t.Th_le k v j)`.
+
+Use `⟨r, h0, h1, h2, fun v => ?_, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← up_top (t.ι k j) htop (h3 (v.under (𝓞 B.KO))).1]`. Conclude with `Submodule.span_mono (hle v)`. Rewrite using `[hMs]`. Establish `hge : ((t.run k j).T : ℝ) * (t.run k j).nus (v.under (𝓞 B.KO)) ≤ ((max (t.e0 k (v.under (𝓞 B.KO)) j) 0 : ℤ) : ℝ)` using `(t.exponent_bound_ter k _ j).trans (by exact_mod_cast le_max_left _ _)`.
+
+Establish `hE' : ((((v.asIdeal.ramificationIdx (𝓞 B.KO) : ℤ) * max (t.e0 k (v.under (𝓞 B.KO)) j) 0).toNat : ℕ) : ℤ) = (v.asIdeal.ramificationIdx (𝓞 B.KO) : ℤ) * max (t.e0 k (v.under (𝓞 B.KO)) j) 0` using `Int.toNat_of_nonneg (mul_nonneg (Int.natCast_nonneg _) (le_max_right _ _))`. Establish `hle' : ((v.asIdeal.ramificationIdx (𝓞 B.KO) : ℤ) * max (t.e0 k (v.under (𝓞 B.KO)) j) 0).toNat ≤ t.ER k v j`. Establish `h5 : (v.asIdeal.ramificationIdx (𝓞 B.KO) : ℤ) * max (t.e0 k (v.under (𝓞 B.KO)) j) 0 ≤ (t.ER k v j : ℤ)`. Break down `max_choice (t.e0 k (v.under (𝓞 B.KO)) j) 0 with hm | hm` into its components or cases. Rewrite using `[hm]`.
+
+Conclude with `t.E_le k v j`. Rewrite using `[hm, mul_zero]`. Conclude with `Int.natCast_nonneg _`. Use linear arithmetic over natural numbers and integers. Conclude with `RemOK.mono hle' (l5 (t.ι k j) (t.indep k j) htop _ _ (t.isLattice_lattice k j).fg (t.isLattice_lattice k j).span_eq_top (h3 (v.under (𝓞 B.KO))).1 inf_le_left v _ _ _ hE' ((h3 (v.under (𝓞 B.KO))).2 _ hge) _ (hle v))`.
+-/
 theorem run_ok (O : OnObj S P' c) {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} [Algebra B.KO K]
     (t : TheoremZeroData O B P) (k : Bool) (j : Bs.J) (h : (t.run k j).Concl) :
     ∃ r : HeightOneSpectrum (𝓞 B.KO) → ℝ, (∀ la, 0 ≤ r la) ∧ Summable (fun la => r la * Formalism.BasicNotions.lw B.KO la) ∧
@@ -1352,6 +1740,15 @@ theorem run_ok (O : OnObj S P' c) {D : D7} {B : WeightFamilies.Prov D} {P : Modu
       (h3 (v.under (𝓞 B.KO))).1 inf_le_left v _ _ _ hE'
       ((h3 (v.under (𝓞 B.KO))).2 _ hge) _ (hle v))
 
+/- English proof (translation)
+Establish `hbud : ∀ k j, ∀ S' : Finset (HeightOneSpectrum (𝓞 K)), ∑ v ∈ S', Formalism.DivisionValues.lw v * rOf O k v j ≤ (O.nZ j : ℝ) * (O.f * O.m * O.b * O.de2)`. Introduce `k j S'`. Take `⟨r, h0, h1, h2, -, h4⟩` from `run_ok O t k j (h k j)`. Use `le_trans ?_ ((l4 r h0 h1 S').trans (h2.trans (t.budget k j)))` and prove the remaining obligations. Use `Finset.sum_le_sum fun v _ => ?_` and prove the remaining obligations.
+
+Use `mul_le_mul_of_nonneg_left ?_ (lw_nonneg' v)` and prove the remaining obligations. Conclude with `t.r_le k v j _ (mul_nonneg (Nat.cast_nonneg _) (h0 _)) (h4 v)`. Establish `hloc : ∀ v, (∀ j, (O.Th1 v j).FG ∧ O.Th1 v j ≤ O.Th v j) → ∀ j, IsLatIn ⊤ (O.Th1 v j) ∧ O.Th1 v j ≤ O.Th v j ∧ O.a v j ≠ 0 ∧ vw v (O.a v j) = (O.E v j : ℤ) ∧ ∀ W : Submodule K (Fin (O.nZ j) → K), (lix v (cut W (O.Ms j)) (cut W (O.Th1 v j)) : ℝ) ≤ (O.E v j : ℝ) * (finrank K W : ℝ) …`. Introduce `v hv j`. Take `⟨r, h0, -, -, h3, h4⟩` from `run_ok O t (used O v) j (h _ j)`.
+
+Use `⟨⟨(hv j).1, ?_⟩, (hv j).2, (t.a_ok v j).1, (t.a_ok v j).2, ?_⟩` and prove the remaining obligations. Rewrite using `[t.Th1_eq v j]`. Conclude with `h3 v`. Use `t.r_ok v j ((v.asIdeal.ramificationIdx (𝓞 B.KO) : ℝ) * r (v.under (𝓞 B.KO))) (mul_nonneg (Nat.cast_nonneg _) (h0 _)) ?_` and prove the remaining obligations. Rewrite using `[t.Th1_eq v j, t.E_used v j]`.
+
+Conclude with `h4 v`. Use `⟨fun w hw => ⟨hloc w (t.Th1_ok w hw).1, hloc _ (t.Th1_ok w hw).2⟩, t.weight_parameter_mem_unit_interval.1, t.weight_parameter_mem_unit_interval.2, fun v j => ⟨t.r_nonneg false v j, t.r_nonneg true v j⟩, fun j S' => ⟨hbud false j S', hbud true j S'⟩⟩` and prove the remaining obligations.
+-/
 theorem leafStatement_of_conclusions (O : OnObj S P' c) {D : D7} (B : WeightFamilies.Prov D) (P : ModuliIntegralCharts.Prov D) [Algebra B.KO K]
     (t : TheoremZeroData O B P) (h : ∀ k j, (t.run k j).Concl) : LatticeIndexBoundAtPairs O := by
   have hbud : ∀ k j, ∀ S' : Finset (HeightOneSpectrum (𝓞 K)),
@@ -1402,9 +1799,15 @@ def rem (v : HeightOneSpectrum (𝓞 K)) (M Th : Submodule (𝓞 K) (Fin n → K
   max 0 (sSup (Set.range fun W : Submodule K (Fin n → K) =>
     (lix v (cut W M) (cut W Th) : ℝ) - (E : ℝ) * (finrank K W : ℝ)))
 
+/- English proof (translation)
+The claim follows from `le_max_left _ _`.
+-/
 theorem rem_nonneg (v : HeightOneSpectrum (𝓞 K)) (M Th : Submodule (𝓞 K) (Fin n → K)) (E : ℕ) : 0 ≤ rem v M Th E :=
   le_max_left _ _
 
+/- English proof (translation)
+Use `max_le h0 (csSup_le (Set.range_nonempty _) ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨W, rfl⟩`. Use `h W` as an intermediate fact. Simplify using `only`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem rem_le {v : HeightOneSpectrum (𝓞 K)} {M Th : Submodule (𝓞 K) (Fin n → K)} {E : ℕ} {ρ : ℝ} (h0 : 0 ≤ ρ)
     (h : RemOK v M Th E ρ) : rem v M Th E ≤ ρ := by
   refine max_le h0 (csSup_le (Set.range_nonempty _) ?_)
@@ -1413,6 +1816,13 @@ theorem rem_le {v : HeightOneSpectrum (𝓞 K)} {M Th : Submodule (𝓞 K) (Fin 
   simp only
   linarith
 
+/- English proof (translation)
+Introduce `W`. Establish `hb : BddAbove (Set.range fun W : Submodule K (Fin n → K) => (lix v (cut W M) (cut W Th) : ℝ) - (E : ℝ) * (finrank K W : ℝ))`. Use `⟨ρ, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨W, rfl⟩`. Use `h W` as an intermediate fact.
+
+Simplify using `only`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `le_csSup hb ⟨W, rfl⟩`. Establish `h2 : sSup (Set.range fun W : Submodule K (Fin n → K) => (lix v (cut W M) (cut W Th) : ℝ) - (E : ℝ) * (finrank K W : ℝ)) ≤ rem v M Th E` using `le_max_right _ _`. Simplify using `only at h1`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem rem_ok {v : HeightOneSpectrum (𝓞 K)} {M Th : Submodule (𝓞 K) (Fin n → K)} {E : ℕ} {ρ : ℝ}
     (h : RemOK v M Th E ρ) : RemOK v M Th E (rem v M Th E) := by
   intro W
@@ -1438,6 +1848,9 @@ variable {K0 K : Type} [Field K0] [NumberField K0] [Field K] [NumberField K] [Al
 def EOf (e0 : HeightOneSpectrum (𝓞 K0) → ℤ) (v : HeightOneSpectrum (𝓞 K)) : ℕ :=
   ((v.asIdeal.ramificationIdx (𝓞 K0) : ℤ) * e0 (v.under (𝓞 K0))).toNat
 
+/- English proof (translation)
+The claim follows from `Int.toNat_of_nonneg (mul_nonneg (Int.natCast_nonneg _) (h _))`.
+-/
 theorem EOf_eq {e0 : HeightOneSpectrum (𝓞 K0) → ℤ} (h : ∀ la, 0 ≤ e0 la) (v : HeightOneSpectrum (𝓞 K)) :
     (EOf e0 v : ℤ) = (v.asIdeal.ramificationIdx (𝓞 K0) : ℤ) * e0 (v.under (𝓞 K0)) :=
   Int.toNat_of_nonneg (mul_nonneg (Int.natCast_nonneg _) (h _))
@@ -1464,6 +1877,11 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K]
 variable {Bs : DefBase K} {Df : DefSide Bs} {S : IndefData Df} {P' : Type} [Group P'] [Finite P'] {c : OnConst}
   {O : OnObj S P' c} {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} [Algebra B.KO K]
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff, ← t.Ms_top j, t.Ms_eq k j]`. Establish `hsub : Submodule.span (𝓞 K) (t.ι k j '' ((t.run k j).M0 : Set _)) ≤ (Submodule.span K (Set.range (t.ι k j))).restrictScalars (𝓞 K)`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, _, rfl⟩`. Conclude with `Submodule.subset_span ⟨z, rfl⟩`.
+
+Conclude with `Submodule.span_le.mpr hsub`.
+-/
 theorem TheoremZeroData.range_top (t : TheoremZeroData O B P) (k : Bool) (j : Bs.J) : Submodule.span K (Set.range (t.ι k j)) = ⊤ := by
   rw [eq_top_iff, ← t.Ms_top j, t.Ms_eq k j]
   have hsub : Submodule.span (𝓞 K) (t.ι k j '' ((t.run k j).M0 : Set _)) ≤
@@ -1473,6 +1891,13 @@ theorem TheoremZeroData.range_top (t : TheoremZeroData O B P) (k : Bool) (j : Bs
     exact Submodule.subset_span ⟨z, rfl⟩
   exact Submodule.span_le.mpr hsub
 
+/- English proof (translation)
+Establish `h1 : (t.run k j).X.rk (t.run k j).ka (B.Mlat (t.run k j).jn (t.run k j).ka) = finrank B.KO (B.Cusp (t.run k j).jn (t.run k j).ka)`. Unfold `WeightAlgebra.PJ.rk`. Use `(t.isLattice_lattice k j).span_eq_top` as an intermediate fact. Unfold `Run.M0 at this`. Rewrite using `[this, finrank_top]`.
+
+Rewrite using `[h1]`. Use `set b := Module.finBasis B.KO (B.Cusp (t.run k j).jn (t.run k j).ka)`. Establish `hli` using `t.indep k j _ b b.linearIndependent`. Establish `hsp` using `span_iota_basis (t.ι k j) (t.range_top k j) b`. Use `Module.finrank_eq_card_basis (Module.Basis.mk hli hsp)` as an intermediate fact.
+
+Rewrite `this` using `[Module.finrank_fin_fun, Fintype.card_fin]`. Conclude with `this.symm`.
+-/
 theorem TheoremZeroData.rk_eq (t : TheoremZeroData O B P) (k : Bool) (j : Bs.J) :
     (t.run k j).X.rk (t.run k j).ka (B.Mlat (t.run k j).jn (t.run k j).ka) = O.nZ j := by
   have h1 : (t.run k j).X.rk (t.run k j).ka (B.Mlat (t.run k j).jn (t.run k j).ka) =

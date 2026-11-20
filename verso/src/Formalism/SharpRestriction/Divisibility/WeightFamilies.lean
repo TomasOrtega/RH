@@ -23,6 +23,9 @@ def RRv (D : D7) (CR : ℝ) : ℝ := D.host.rdE ^ CR
 
 def PPv (D : D7) (L : SizeData₂ D) (C A : ℝ) : ℝ := C * zBase L ^ A
 
+/- English proof (translation)
+Unfold `PPv`. Conclude with `T.PP_eq.symm`.
+-/
 theorem PPv_rec {D : D7} {L : SizeData₂ D} {P : ParameterChoice' D L} (T : ParamsT D L P) : PPv D L T.CP T.eP = T.PP := by
   unfold PPv
   exact T.PP_eq.symm
@@ -42,6 +45,9 @@ def Wt.size {D : D7} {j : ℕ} (ka : Wt D j) : ℝ :=
   (∑ τ, ((∑ i, (ka.aP τ i : ℝ)) + ∑ i, (ka.aM τ i : ℝ))) +
     (D.R.f : ℝ) * ((max (D.R.sigW j).2 1 : ℕ) : ℝ) * (D.R.r : ℝ) * (ka.n : ℝ) + 1
 
+/- English proof (translation)
+Unfold `Wt.size`. Establish `h1 : 0 ≤ ∑ τ, ((∑ i, (ka.aP τ i : ℝ)) + ∑ i, (ka.aM τ i : ℝ))` using `Finset.sum_nonneg fun τ _ => add_nonneg (Finset.sum_nonneg fun i _ => Nat.cast_nonneg _) (Finset.sum_nonneg fun i _ => Nat.cast_nonneg _)`. Establish `h2 : 0 ≤ (D.R.f : ℝ) * ((max (D.R.sigW j).2 1 : ℕ) : ℝ) * (D.R.r : ℝ) * (ka.n : ℝ)`. Check the signs of the components of the expression. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem Wt.one_le_size {D : D7} {j : ℕ} (ka : Wt D j) : 1 ≤ ka.size := by
   unfold Wt.size
   have h1 : 0 ≤ ∑ τ, ((∑ i, (ka.aP τ i : ℝ)) + ∑ i, (ka.aM τ i : ℝ)) :=
@@ -101,6 +107,9 @@ def PsdRat (b : BForm D n) : Prop :=
 def pairB (A : Matrix (Fin n) (Fin n) D.host.E) (b : BForm D n) : ℝ :=
   ∑ τ, (Matrix.trace (b τ * A.map (DV.tauEmb D τ))).re
 
+/- English proof (translation)
+Establish `hg : D.host.gal D.host.conj = D.R.cc` using `by first`. Consider the case `exact MulEquiv.apply_symm_apply _ _`. Consider the case `simp [Formalism.HC.HostRaw.conj]`. Conclude with `(D.host.der.conj_iff σ D.host.conj).mpr hg z`.
+-/
 theorem emb_conj (σ : D.host.E →+* ℂ) (z : D.host.E) : σ (D.host.conj z) = star (σ z) := by
   have hg : D.host.gal D.host.conj = D.R.cc := by
     first
@@ -108,11 +117,17 @@ theorem emb_conj (σ : D.host.E →+* ℂ) (z : D.host.E) : σ (D.host.conj z) =
     | simp [Formalism.HC.HostRaw.conj]
   exact (D.host.der.conj_iff σ D.host.conj).mpr hg z
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[embV]`.
+-/
 theorem embV_add (τ : D.what₂.Tau) (x y : Fin n → D.host.E) :
     embV D τ (x + y) = embV D τ x + embV D τ y := by
   funext i
   simp [embV]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[embV]`.
+-/
 theorem embV_smul (τ : D.what₂.Tau) (c : D.host.E) (x : Fin n → D.host.E) :
     embV D τ (c • x) = DV.tauEmb D τ c • embV D τ x := by
   funext i
@@ -122,6 +137,9 @@ def Bv (b : BForm D n) (x y : Fin n → D.host.E) : ℝ :=
   ∑ τ, (star (embV D τ x) ⬝ᵥ (b τ).mulVec (embV D τ y) +
     star (embV D τ y) ⬝ᵥ (b τ).mulVec (embV D τ x)).re
 
+/- English proof (translation)
+Unfold `Bv Qv`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.add_re]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Bv_self (b : BForm D n) (x : Fin n → D.host.E) : Bv D b x x = 2 * Qv D b x := by
   unfold Bv Qv
   rw [Finset.mul_sum]
@@ -129,11 +147,17 @@ theorem Bv_self (b : BForm D n) (x : Fin n → D.host.E) : Bv D b x x = 2 * Qv D
   rw [Complex.add_re]
   ring
 
+/- English proof (translation)
+Unfold `Bv`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[add_comm]`.
+-/
 theorem Bv_comm (b : BForm D n) (x y : Fin n → D.host.E) : Bv D b x y = Bv D b y x := by
   unfold Bv
   refine Finset.sum_congr rfl fun τ _ => ?_
   rw [add_comm]
 
+/- English proof (translation)
+Unfold `Bv`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `[embV_add, Matrix.mulVec_add, Complex.add_re]`. Apply the tactic sequence `try ring`.
+-/
 theorem Bv_add_left (b : BForm D n) (x x' y : Fin n → D.host.E) :
     Bv D b (x + x') y = Bv D b x y + Bv D b x' y := by
   unfold Bv
@@ -142,6 +166,9 @@ theorem Bv_add_left (b : BForm D n) (x x' y : Fin n → D.host.E) :
   simp [embV_add, Matrix.mulVec_add, Complex.add_re]
   try ring
 
+/- English proof (translation)
+Unfold `Bv`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[embV_smul, embV_smul, emb_conj]`. Simplify using `[Matrix.mulVec_smul]`. Apply the tactic sequence `try ring`.
+-/
 theorem Bv_bal (b : BForm D n) (c : D.host.E) (x y : Fin n → D.host.E) :
     Bv D b (c • x) y = Bv D b x (D.host.conj c • y) := by
   unfold Bv
@@ -168,6 +195,9 @@ def symB (X : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) (b : BForm D n) :
       have h2 : ((c' • y : X) : Fin n → D.host.E) = (c' : D.host.E) • (y : Fin n → D.host.E) := rfl
       rw [h1, h2, h, Bv_bal]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem symB_apply (X : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) (b : BForm D n) (x y : X) :
     (symB D X b : X →ₗ[ℤ] X →ₗ[ℤ] ℝ) x y = Bv D b x y := rfl
 
@@ -185,6 +215,11 @@ section Half
 
 variable {E : Type} [Field E] [NumberField E] {cj : E → E} {Y : Type} [AddCommGroup Y] [Module (𝓞 E) Y]
 
+/- English proof (translation)
+Establish `hs` using `β.2.1`. Establish `hb` using `β.2.2 c c' hc y y`. Establish `h2 : (β : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) ((c + c') • y) y = (β : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) (c • y) y + (β : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) (c' • y) y`. Rewrite using `[add_smul, map_add, LinearMap.add_apply]`. Rewrite `h2` using `[h1, one_smul, hs (c' • y) y, ← hb]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem halfForm_eq (β : ModuliIntegralCharts.SymB cj Y) (c c' : 𝓞 E) (hc : (c' : E) = cj (c : E)) (h1 : c + c' = 1) (y : Y) :
     (β : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) y y = 2 * (β : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) (c • y) y := by
   have hs := β.2.1
@@ -195,6 +230,9 @@ theorem halfForm_eq (β : ModuliIntegralCharts.SymB cj Y) (c c' : 𝓞 E) (hc : 
   rw [h1, one_smul, hs (c' • y) y, ← hb] at h2
   linarith
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `hβ (c • y) y`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[halfForm_eq β c c' hc h1 y, hz]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem halfForm_int (β : ModuliIntegralCharts.SymB cj Y) (c c' : 𝓞 E) (hc : (c' : E) = cj (c : E)) (h1 : c + c' = 1)
     (hβ : ∀ a b, ∃ z : ℤ, (β : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) a b = z) (y : Y) :
     ∃ z : ℤ, (β : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) y y / 2 = z := by
@@ -205,6 +243,11 @@ theorem halfForm_int (β : ModuliIntegralCharts.SymB cj Y) (c c' : 𝓞 E) (hc :
 
 end Half
 
+/- English proof (translation)
+Use `⟨Polynomial.X ^ 2 - Polynomial.X + Polynomial.C k, ?_, ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `monicity!`. Consider the case `monicity`. Establish `h4 : (4 : E) * (k : E) = (d : E) + 1` using `by exact_mod_cast hk.symm`.
+
+Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_sub, Polynomial.eval₂_pow, Polynomial.eval₂_X, Polynomial.eval₂_C]`. Apply the tactic sequence `try simp only [algebraMap_int_eq, eq_intCast]`. Take the linear combination `(1 / 4 : E) * hs + (1 / 4 : E) * h4`.
+-/
 private theorem isIntegral_one_add_sqrt_neg_div_two {E : Type} [Field E] [NumberField E] (s : E) (d : ℕ) (k : ℤ)
     (hs : s ^ 2 = -(d : E)) (hk : (d : ℤ) + 1 = 4 * k) : IsIntegral ℤ ((1 + s) / 2) := by
   refine ⟨Polynomial.X ^ 2 - Polynomial.X + Polynomial.C k, ?_, ?_⟩
@@ -217,6 +260,23 @@ private theorem isIntegral_one_add_sqrt_neg_div_two {E : Type} [Field E] [Number
     try simp only [algebraMap_int_eq, eq_intCast]
     linear_combination (1 / 4 : E) * hs + (1 / 4 : E) * h4
 
+/- English proof (translation)
+Establish `h16 : D.host.d % 16 = 7` using `D.host.hyp.2.2.2.1`. Take `⟨k, hk⟩ : ∃ k : ℤ, (D.host.d : ℤ) + 1 = 4 * k` from `⟨((D.host.d : ℤ) + 1) / 4, by omega⟩`. Use `set s := D.host.sqd with hs_def`. Establish `hs : s ^ 2 = -(D.host.d : D.host.E)` using `D.host.sqd_sq`. Establish `hcs : D.host.conj s = -s`.
+
+Apply `D.host.φ₀.injective` to reduce the goal to its premises. Rewrite using `[emb_conj, map_neg]`. Establish `hw : (D.host.φ₀ s) ^ 2 = -(D.host.d : ℂ)`. Rewrite using `[← map_pow, hs, map_neg, map_natCast]`. Use `set w := D.host.φ₀ s`.
+
+Establish `hre : w.re * w.re - w.im * w.im = -(D.host.d : ℝ)`. Establish `h` using `congrArg Complex.re hw`. Use `first`. Consider the case `rwa [pow_two, Complex.mul_re, Complex.neg_re, Complex.natCast_re] at h`. Consider the case `simpa [pow_two] using h`.
+
+Establish `him : w.re * w.im + w.im * w.re = 0`. Establish `h` using `congrArg Complex.im hw`. Use `first`. Consider the case `rwa [pow_two, Complex.mul_im, Complex.neg_im, Complex.natCast_im, neg_zero] at h`. Consider the case `simpa [pow_two] using h`.
+
+Establish `hdpos : (0 : ℝ) < (D.host.d : ℝ)`. Establish `h : 0 < D.host.d` using `by omega`. Conclude with `h` after adjusting the coercions. Establish `h0 : w.re = 0`. Assume the negation of the conclusion as `hne`.
+
+Establish `him' : w.im = 0`. Establish `h : w.re * w.im = 0` using `by linarith`. Break down `mul_eq_zero.mp h with h | h` into its components or cases. Conclude with `absurd h hne`. Conclude with `h`.
+
+Rewrite `hre` using `[him']`. Use polynomial arithmetic with `[mul_self_nonneg w.re]`. Apply the tactic sequence `apply Complex.ext <;> simp [h0]`. Establish `hint : IsIntegral ℤ ((1 + s) / 2)` using `isIntegral_one_add_sqrt_neg_div_two s D.host.d k hs hk`. Set `c : 𝓞 D.host.E` to `⟨(1 + s) / 2, hint⟩`.
+
+Establish `hc : ((1 - c : 𝓞 D.host.E) : D.host.E) = (fun x : D.host.E => D.host.conj x) (c : D.host.E)` using `by show (1 : D.host.E) - (1 + s) / 2 = D.host.conj ((1 + s) / 2)`. Rewrite using `[map_div₀, map_add, map_one, hcs, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `halfForm_int β c (1 - c) hc (add_sub_cancel c 1) hβ y`.
+-/
 theorem halfForm_int_host (D : D7) {Y : Type} [AddCommGroup Y] [Module (𝓞 D.host.E) Y]
     (β : ModuliIntegralCharts.SymB (fun x : D.host.E => D.host.conj x) Y)
     (hβ : ∀ a b, ∃ z : ℤ, (β : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) a b = z) (y : Y) :
@@ -264,6 +324,9 @@ theorem halfForm_int_host (D : D7) {Y : Type} [AddCommGroup Y] [Module (𝓞 D.h
     ring
   exact halfForm_int β c (1 - c) hc (add_sub_cancel c 1) hβ y
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `halfForm_int_host D (symB D X b) (fun a c => by rw [symB_apply]; exact hb a c) x`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite `hz` using `[symB_apply, Bv_self]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem Qv_int_host (D : D7) {n : ℕ} (X : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) (b : BForm D n)
     (hb : ∀ x y : X, ∃ z : ℤ, Bv D b x y = z) (x : X) : ∃ z : ℤ, Qv D b x = z := by
   obtain ⟨z, hz⟩ := halfForm_int_host D (symB D X b) (fun a c => by rw [symB_apply]; exact hb a c) x
@@ -337,6 +400,11 @@ def rhoP (CR T c : ℝ) (j : ℕ) (ka : Wt D j) : ℕ :=
 def meanLogSup {j : ℕ} {ka : Wt D j} (F : X.Cusp j ka) : ℝ :=
   (∑ σ : X.KO →+* ℂ, Real.log (X.supN j ka σ F)) / (Fintype.card (X.KO →+* ℂ) : ℝ)
 
+/- English proof (translation)
+Unfold `meanLogSup`. Establish `hc : (0 : ℝ) < (Fintype.card (X.KO →+* ℂ) : ℝ)`. Establish `h0 : 0 < Fintype.card (X.KO →+* ℂ)` using `by first`. Consider the case `(rw [NumberField.Embeddings.card]; exact Module.finrank_pos)`. Consider the case `exact Fintype.card_pos`.
+
+Conclude with `h0` after adjusting the coercions. Rewrite using `[div_le_iff₀ hc]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_comm]`.
+-/
 theorem meanLogSup_le {j : ℕ} {ka : Wt D j} (F : X.Cusp j ka) {b : ℝ}
     (h : ∀ σ : X.KO →+* ℂ, Real.log (X.supN j ka σ F) ≤ b) : meanLogSup X F ≤ b := by
   unfold meanLogSup
@@ -427,6 +495,9 @@ def TransferenceBound (X : Prov D) (CR : ℝ) : Prop := TransferenceTheoremCond 
 
 end Statements
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(isNoetherian_submodule.mp (isNoetherian_of_fg_of_noetherian N₂ h₂.fg)) M b`. Apply `eq_top_iff.mpr` to reduce the goal to its premises. Rewrite using `[← h₁.span_eq_top]`. Conclude with `Submodule.span_mono (fun v hv => a hv)`.
+-/
 theorem isLattice_of_le_of_le {K V : Type*} [Field K] [NumberField K] [AddCommGroup V] [Module K V]
     [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] {N₁ M N₂ : Submodule (𝓞 K) V}
     (h₁ : Submodule.IsLattice K N₁) (h₂ : Submodule.IsLattice K N₂) (a : N₁ ≤ M) (b : M ≤ N₂) :
@@ -441,6 +512,11 @@ def Between {D : D7} (X : Prov D) : Prop :=
   ∀ j, 1 ≤ j → j ≤ D.R.m → ∀ ka : Wt D j, ∃ N₁ N₂ : Submodule (𝓞 X.KO) (X.Cusp j ka),
     Submodule.IsLattice X.KO N₁ ∧ Submodule.IsLattice X.KO N₂ ∧ N₁ ≤ X.Mlat j ka ∧ X.Mlat j ka ≤ N₂
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h j hj hjm ka`. Conclude with `⟨X.Mlat j ka, X.Mlat j ka, h j hj hjm ka, h j hj hjm ka, le_rfl, le_rfl⟩`. Introduce `h j hj hjm ka`. Take `⟨N₁, N₂, h₁, h₂, ha, hb⟩` from `h j hj hjm ka`.
+
+Conclude with `isLattice_of_le_of_le h₁ h₂ ha hb`.
+-/
 theorem lattice_iff_between_lattices {D : D7} (X : Prov D) : adm1 X ↔ Between X := by
   constructor
   · intro h j hj hjm ka
@@ -449,6 +525,11 @@ theorem lattice_iff_between_lattices {D : D7} (X : Prov D) : adm1 X ↔ Between 
     obtain ⟨N₁, N₂, h₁, h₂, ha, hb⟩ := h j hj hjm ka
     exact isLattice_of_le_of_le h₁ h₂ ha hb
 
+/- English proof (translation)
+Unfold `dP rho`. Establish `h1 : 1 ≤ (D.R.sigW j).2` using `by show 1 ≤ D.R.m - j`. Use linear arithmetic over natural numbers and integers. Establish `h2 : 1 ≤ D.R.f`. Unfold `Formalism.BasicNotions.Ranks.f Formalism.BasicNotions.Ranks.n`.
+
+Use `D.R.m_le_f` as an intermediate fact. Use `D.R.two_le_m` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem two_le_dP (D : D7) {j : ℕ} (hj : j < D.R.m) : 2 ≤ dP D j := by
   unfold dP rho
   have h1 : 1 ≤ (D.R.sigW j).2 := by
@@ -462,6 +543,11 @@ theorem two_le_dP (D : D7) {j : ℕ} (hj : j < D.R.m) : 2 ≤ dP D j := by
   calc 2 = 2 * 1 * 1 := by norm_num
     _ ≤ 2 * D.R.f * (D.R.sigW j).2 := by gcongr
 
+/- English proof (translation)
+Introduce `_ j _ hjm hd`. It suffices to derive a contradiction. Establish `h2 : (2 : ℝ) ≤ (dP D j : ℝ)` using `by exact_mod_cast two_le_dP D hjm`. Unfold `RRv at hd`. Rewrite `hd` using `[Real.rpow_zero]`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem sup_bound_at_zero_exponent {D : D7} (X : Prov D) : Conclusion2 X 0 := by
   intro _ j _ hjm hd
   exfalso
@@ -470,6 +556,9 @@ theorem sup_bound_at_zero_exponent {D : D7} (X : Prov D) : Conclusion2 X 0 := by
   rw [Real.rpow_zero] at hd
   nlinarith
 
+/- English proof (translation)
+Introduce `_ _ j _ _ ka _ _ hs`. It suffices to derive a contradiction. Rewrite `hs` using `[zero_mul, zero_mul, zero_mul]`. Combine the linear relations using `[Wt.one_le_size ka]`.
+-/
 theorem q_bound_at_zero_weight_constant {D : D7} (L : SizeData₂ D) (X : Prov D) (CR Ch Ah Cc Ac : ℝ) : PointsLemma L X CR 0 Ch Ah Cc Ac := by
   intro _ _ j _ _ ka _ _ hs
   exfalso
@@ -527,14 +616,23 @@ def MeanLogSupLowerBoundFamilyGivenPolynomial (C A : ℝ) : Prop :=
 def QBoundFamilyGivenPolynomials (CR Ck Ch Ah Cc Ac : ℝ) : Prop :=
   ∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, PointsLemma (Fm.L x i) (XF x hx i) CR Ck Ch Ah Cc Ac
 
+/- English proof (translation)
+Take `⟨h1, ⟨x0, h2⟩, h3, h4, h5⟩` from `h`. Conclude with `⟨h1, ⟨CG, AG, x0, h2⟩, h3, h4, h5⟩`.
+-/
 theorem AdmFK.toF {CG AG : ℝ} (h : AdmFK Fm XF CG AG) : AdmF Fm XF := by
   obtain ⟨h1, ⟨x0, h2⟩, h3, h4, h5⟩ := h
   exact ⟨h1, ⟨CG, AG, x0, h2⟩, h3, h4, h5⟩
 
+/- English proof (translation)
+Take `⟨x0, hx⟩` from `h`. Conclude with `⟨C, A, x0, hx⟩`.
+-/
 theorem MeanLogSupLowerBoundFamilyGivenPolynomial.toF {C A : ℝ} (h : MeanLogSupLowerBoundFamilyGivenPolynomial Fm XF C A) : Conclusion1Family Fm XF := by
   obtain ⟨x0, hx⟩ := h
   exact ⟨C, A, x0, hx⟩
 
+/- English proof (translation)
+Introduce `Ch Ah`. Take `⟨Cc, Ac, x0, hx⟩` from `h Ch Ah`. Conclude with `⟨Cc, Ac, x0, hx⟩`.
+-/
 theorem q_bound_family_of_polynomials {CR Ck : ℝ} (h : ∀ Ch Ah : ℝ, ∃ Cc Ac : ℝ, QBoundFamilyGivenPolynomials Fm XF CR Ck Ch Ah Cc Ac) :
     Conclusion3Family Fm XF CR Ck := by
   intro Ch Ah
@@ -543,6 +641,15 @@ theorem q_bound_family_of_polynomials {CR Ck : ℝ} (h : ∀ Ch Ah : ℝ, ∃ Cc
 
 end FamilyK
 
+/- English proof (translation)
+Unfold `zBase`. Establish `hL : 1 ≤ L.sc.L`. Unfold `Formalism.BasicNotions.Scale.L`. Conclude with `le_of_lt (Real.one_lt_rpow L.sc.one_lt_alt L.sc.eps_pos)`. Establish `hf : (1 : ℝ) ≤ (D.R.f : ℝ)`.
+
+Establish `h : 1 ≤ D.R.f`. Unfold `Formalism.BasicNotions.Ranks.f Formalism.BasicNotions.Ranks.n`. Use `D.R.m_le_f` as an intermediate fact. Use `D.R.two_le_m` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `h` after adjusting the coercions. Establish `hr : (1 : ℝ) ≤ (D.R.r : ℝ)`. Establish `h : 1 ≤ D.R.r`. Unfold `Formalism.BasicNotions.Ranks.r`. Use `D.R.two_le_m` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `h` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem one_le_zBase {D : D7} (L : SizeData₂ D) : 1 ≤ zBase L := by
   unfold zBase
   have hL : 1 ≤ L.sc.L := by
@@ -564,6 +671,9 @@ theorem one_le_zBase {D : D7} (L : SizeData₂ D) : 1 ≤ zBase L := by
   calc (1 : ℝ) = 1 * 1 * 1 := by norm_num
     _ ≤ (D.R.f : ℝ) * (D.R.r : ℝ) * L.sc.L := by gcongr
 
+/- English proof (translation)
+Unfold `PPv`. Establish `hZ` using `one_le_zBase L`. Establish `h1 : zBase L ^ A ≤ zBase L ^ A'` using `Real.rpow_le_rpow_of_exponent_le hZ hA`. Establish `h2 : 0 ≤ zBase L ^ A` using `Real.rpow_nonneg (by linarith) _`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem PPv_mono {D : D7} (L : SizeData₂ D) {C C' A A' : ℝ} (h0 : 0 ≤ C) (hC : C ≤ C') (hA : A ≤ A') :
     PPv D L C A ≤ PPv D L C' A' := by
   unfold PPv
@@ -573,6 +683,11 @@ theorem PPv_mono {D : D7} (L : SizeData₂ D) {C C' A A' : ℝ} (h0 : 0 ≤ C) (
   calc C * zBase L ^ A ≤ C * zBase L ^ A' := mul_le_mul_of_nonneg_left h1 h0
     _ ≤ C' * zBase L ^ A' := mul_le_mul_of_nonneg_right hC (le_trans h2 h1)
 
+/- English proof (translation)
+Introduce `hCR hO j hj hjm ka hn hL hs T c hT hc0 hTc`. Take `⟨hOd, hOr⟩` from `hO`. Take `⟨be, hbe0, hbe, H⟩` from `h hCR ⟨hOd.trans hh, hOr.trans hh⟩ j hj hjm ka hn hL hs T c hT hc0 hTc`. Establish `hsz : 0 ≤ ka.size` using `le_trans zero_le_one (Wt.one_le_size ka)`. Use `⟨be, hbe0, hbe.trans (mul_le_mul_of_nonneg_right hc hsz), fun th hspan hth => ?_⟩` and prove the remaining obligations.
+
+Take `⟨nn, hnn, hsum⟩` from `H th hspan (fun i => (hth i).trans (mul_le_mul_of_nonneg_right hh hsz))`. Use `⟨nn, hnn, hsum.trans ?_⟩` and prove the remaining obligations. Establish `hr : (0 : ℝ) ≤ (rhoP X CR T c j ka : ℝ)` using `Nat.cast_nonneg _`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem PointsLemma.mono {D : D7} {L : SizeData₂ D} {X : Prov D} {CR Ck Ch Ah Cc Ac Ch' Ah' Cc' Ac' : ℝ}
     (hh : PPv D L Ch' Ah' ≤ PPv D L Ch Ah) (hc : PPv D L Cc Ac ≤ PPv D L Cc' Ac')
     (h : PointsLemma L X CR Ck Ch Ah Cc Ac) : PointsLemma L X CR Ck Ch' Ah' Cc' Ac' := by
@@ -590,6 +705,9 @@ theorem PointsLemma.mono {D : D7} {L : SizeData₂ D} {X : Prov D} {CR Ck Ch Ah 
         mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right hc hsz) hr
     _ = (rhoP X CR T c j ka : ℝ) * PPv D L Cc' Ac' * ka.size := by ring
 
+/- English proof (translation)
+Take `⟨x0, hx⟩` from `h`. Conclude with `⟨x0, fun x hx1 hx0 i => PointsLemma.mono (PPv_mono _ h1 h2 h3) (PPv_mono _ h4 h5 h6) (hx x hx1 hx0 i)⟩`.
+-/
 theorem QBoundFamilyGivenPolynomials.mono {eps : ℝ} {Fm : Formalism.MainNotions.FamP eps} {XF : ProvF Fm} {CR Ck Ch Ah Cc Ac Ch' Ah' Cc' Ac' : ℝ}
     (h1 : 0 ≤ Ch') (h2 : Ch' ≤ Ch) (h3 : Ah' ≤ Ah) (h4 : 0 ≤ Cc) (h5 : Cc ≤ Cc') (h6 : Ac ≤ Ac')
     (h : QBoundFamilyGivenPolynomials Fm XF CR Ck Ch Ah Cc Ac) : QBoundFamilyGivenPolynomials Fm XF CR Ck Ch' Ah' Cc' Ac' := by
@@ -604,6 +722,9 @@ def PacketAlongFamilyInClass (𝒪 : ObjClass) (CG AG C A CR Ck Ch Ah Cc Ac : �
   ∀ XF : ProvF Fm, (∀ x hx i, 𝒪 (Fm.L x i) (XF x hx i)) → AdmFK Fm XF CG AG →
     MeanLogSupLowerBoundFamilyGivenPolynomial Fm XF C A ∧ Conclusion2Family Fm XF CR ∧ QBoundFamilyGivenPolynomials Fm XF CR Ck Ch Ah Cc Ac
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem polynomial_family_iff_objects {𝒪 : ObjClass} {CG AG C A CR Ck Ch Ah Cc Ac : ℝ} {eps : ℝ} {Fm : Formalism.MainNotions.FamP eps} {CH : ℝ} :
     PacketAlongFamilyInClass 𝒪 CG AG C A CR Ck Ch Ah Cc Ac Fm CH ↔
       ∀ XF : ProvF Fm, (∀ x hx i, 𝒪 (Fm.L x i) (XF x hx i)) → PolynomialFamilyAtObjects CG AG C A CR Ck Ch Ah Cc Ac Fm XF := Iff.rfl
@@ -611,11 +732,17 @@ theorem polynomial_family_iff_objects {𝒪 : ObjClass} {CG AG C A CR Ck Ch Ah C
 def LambdaBoundFamilyOnly (𝒪 : ObjClass) (CG AG C A : ℝ) {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (_CH : ℝ) : Prop :=
   ∀ XF : ProvF Fm, (∀ x hx i, 𝒪 (Fm.L x i) (XF x hx i)) → AdmFK Fm XF CG AG → MeanLogSupLowerBoundFamilyGivenPolynomial Fm XF C A
 
+/- English proof (translation)
+Introduce `XF hX hA`. Conclude with `(h XF hX hA).1`.
+-/
 theorem PacketAlongFamilyInClass.lam {𝒪 : ObjClass} {CG AG C A CR Ck Ch Ah Cc Ac : ℝ} {eps : ℝ} {Fm : Formalism.MainNotions.FamP eps} {CH : ℝ}
     (h : PacketAlongFamilyInClass 𝒪 CG AG C A CR Ck Ch Ah Cc Ac Fm CH) : LambdaBoundFamilyOnly 𝒪 CG AG C A Fm CH := by
   intro XF hX hA
   exact (h XF hX hA).1
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `PacketAlongFamilyInClass.lam h`. Introduce `h XF hX hA`. Conclude with `⟨h XF hX hA, fun x hx i => sup_bound_at_zero_exponent _, ⟨0, fun x hx _ i => q_bound_at_zero_weight_constant _ _ _ _ _ _ _⟩⟩`.
+-/
 theorem polynomial_family_zero_iff_lambda {𝒪 : ObjClass} {CG AG C A Ch Ah Cc Ac : ℝ} {eps : ℝ} {Fm : Formalism.MainNotions.FamP eps} {CH : ℝ} :
     PacketAlongFamilyInClass 𝒪 CG AG C A 0 0 Ch Ah Cc Ac Fm CH ↔ LambdaBoundFamilyOnly 𝒪 CG AG C A Fm CH := by
   constructor
@@ -634,6 +761,11 @@ def ClosedAbsoluteShare (𝒪 : ObjClass) (𝒞 : Formalism.MainNotions.FamClass
   ∃ s : Sel, Formalism.MainNotions.Closed 𝒞 (fun Fm CH => ∀ CG AG CR Ck Ch Ah : ℝ,
     PacketAlongFamilyInClass 𝒪 CG AG (s.C CG AG) (s.A CG AG) CR Ck Ch Ah (s.Cc CG AG CR Ck Ch Ah) (s.Ac CG AG CR Ck Ch Ah) Fm CH)
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `h`. Unfold `Formalism.MainNotions.Closed at hs`. Take `⟨ε1, hε1, hK⟩` from `hs`. Introduce `CG AG`. Use `⟨s.C CG AG, s.A CG AG, fun CR Ck Ch Ah => ⟨s.Cc CG AG CR Ck Ch Ah, s.Ac CG AG CR Ck Ch Ah, ?_⟩⟩` and prove the remaining obligations.
+
+Unfold `Formalism.MainNotions.Closed`. Use `⟨ε1, hε1, fun eps he1 he2 => ?_⟩` and prove the remaining obligations. Take `⟨K, hK'⟩` from `hK eps he1 he2`. Conclude with `⟨K, fun Fm CH hC hL => hK' Fm CH hC hL CG AG CR Ck Ch Ah⟩`.
+-/
 theorem ClosedAbsoluteShare.fixed {𝒪 : ObjClass} {𝒞 : Formalism.MainNotions.FamClass} (h : ClosedAbsoluteShare 𝒪 𝒞) :
     ∀ CG AG : ℝ, ∃ C A : ℝ, ∀ CR Ck Ch Ah : ℝ, ∃ Cc Ac : ℝ,
       Formalism.MainNotions.Closed 𝒞 (fun Fm CH => PacketAlongFamilyInClass 𝒪 CG AG C A CR Ck Ch Ah Cc Ac Fm CH) := by

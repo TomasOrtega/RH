@@ -20,6 +20,9 @@ def KStab (θ : InfFam D) (N : GlobalTheory.Grid.Node D) (s : Set D.what₂.Tau)
   ∀ τ ∈ s, ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D N.V τ), N.M.fr τ * g * (N.M.fr τ)⁻¹ ∈ Formalism.REAL.Kset (N.M.ε τ) →
     ∀ f ∈ W, rTr N.V (atTau θ N.V τ g) f ∈ W
 
+/- English proof (translation)
+Introduce `_ h` and use `h.elim`.
+-/
 theorem kStab_empty (θ : InfFam D) (N : GlobalTheory.Grid.Node D) (W : Submodule ℂ (GA D N.V → ℂ)) : KStab θ N ∅ W := fun _ h => h.elim
 
 end GlobalTheory.KFinCuspApprox

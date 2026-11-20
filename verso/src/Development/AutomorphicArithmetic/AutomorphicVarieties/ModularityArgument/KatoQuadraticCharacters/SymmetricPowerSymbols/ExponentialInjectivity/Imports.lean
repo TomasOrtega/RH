@@ -8,6 +8,25 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open scoped MatrixGroups Matrix
 open GlobalTheory.KZ GlobalTheory.K4 UpperTheory.V.Z.Kato.Sym
 
+/- English proof (translation)
+Introduce `Ω _ _ _ ε X m c d M hm hc hd hc6 hd6 hL t w ht hw s s' x y hxy`. Unfold `Lv at hL`. Unfold `IsSec at ht`. Unfold `IsSymb at hw`. Take `⟨hM, hcM, hdM⟩` from `hL`.
+
+Take `⟨hgr, hok, -⟩` from `rowB Ω M hM`. Take `⟨-, hadm, -⟩` from `admB Ω ε X`. Use `set x1 := gr M s⁻¹ x`. Use `set y1 := gr M s⁻¹ y`. Establish `hxy1 : Ok x1 y1` using `(hok x y hxy).2.2.1 s⁻¹`.
+
+Establish `hxy2 : Ok (gr M s'⁻¹ x1) (gr M s'⁻¹ y1)` using `(hok x1 y1 hxy1).2.2.1 s'⁻¹`. Establish `ex : gr M (s * s')⁻¹ x = gr M s'⁻¹ x1` using `by rw [mul_inv_rev, (hgr _ _ _).1]`. Establish `ey : gr M (s * s')⁻¹ y = gr M s'⁻¹ y1` using `by rw [mul_inv_rev, (hgr _ _ _).1]`. Establish `w1` using `(hw s' x1 y1 hxy1).2`. Establish `w2` using `(hw s x y hxy).2`.
+
+Establish `w3` using `(hw (s * s') x y hxy).2`. Rewrite `w3` using `[ex, ey]`. Establish `pt : ∀ a b : Row M, Ok a b → IsPt X m (sg X c M a) (sg X d M b) (t (sg X c M a) (sg X d M b))`. Introduce `a b hab`. Conclude with `(ht _ _ (sgB Ω ε X c M hc hc6 hM hcM a (hok a b hab).1).1 (sgB Ω ε X d M hd hd6 hM hdM b (hok a b hab).2.1).1).1`.
+
+Establish `gs : ∀ (r : Gal(Ω/ℚ)) (a b : Row M), Ok a b → (X.gal r) (sg X c M a) = sg X c M (gr M r a) ∧ (X.gal r) (sg X d M b) = sg X d M (gr M r b)`. Introduce `r a b hab`. Conclude with `⟨(sgB Ω ε X c M hc hc6 hM hcM a (hok a b hab).1).2.2.1 r, (sgB Ω ε X d M hd hd6 hM hdM b (hok a b hab).2.1).2.2.1 r⟩`. Establish `inv1 : ∀ (r : Gal(Ω/ℚ)) (a : Row M), gr M r (gr M r⁻¹ a) = a`. Introduce `r a`.
+
+Rewrite using `[← (hgr _ _ _).1, mul_inv_cancel, (hgr 1 1 a).2]`. Establish `q1 : IsPt X m ((X.gal s') (sg X c M (gr M s'⁻¹ x1))) ((X.gal s') (sg X d M (gr M s'⁻¹ y1))) (t (sg X c M x1) (sg X d M y1))`. Rewrite using `[(gs s' _ _ hxy2).1, (gs s' _ _ hxy2).2, inv1, inv1]`. Conclude with `pt _ _ hxy1`. Establish `q2 : IsPt X m ((X.gal s) ((X.gal s') (sg X c M (gr M s'⁻¹ x1)))) ((X.gal s) ((X.gal s') (sg X d M (gr M s'⁻¹ y1)))) (t (sg X c M x) (sg X d M y))`.
+
+Rewrite using `[(gs s' _ _ hxy2).1, (gs s' _ _ hxy2).2, inv1, inv1, (gs s _ _ hxy1).1, (gs s _ _ hxy1).2, inv1, inv1]`. Conclude with `pt _ _ hxy`. Establish `comp` using `mvComp Ω ε X m hm (X.gal s') (X.gal s) s' s (hadm s') (hadm s) _ _ _ _ _ (pt _ _ hxy2) q1 q2 _ _ w1 w2`. Establish `eg : (X.gal s').trans (X.gal s) = X.gal (s * s')`. Use extensionality with `f`.
+
+Rewrite using `[gal_mul_apply]`. Both sides reduce to the same expression. Rewrite `comp` using `[eg]`. Establish `u` using `((mvEx Ω ε X m hm (X.gal (s * s')) (s * s') (hadm _) _ _ _ (pt _ _ hxy2)).2.2.2 _ ?_ _ _ comp).1 w3`. Unfold `tw`.
+
+Rewrite using `[mul_comm (w s x y)]`. Conclude with `u`. Rewrite using `[gal_mul_apply, gal_mul_apply]`. Conclude with `q2`.
+-/
 theorem UpperTheory.V.Z.Kato.Sym.PC.coc :
     ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (m c d M : ℕ), 0 < m → 1 < c → 1 < d → Nat.Coprime c 6 → Nat.Coprime d 6 → Lv c d M → ∀ t w, IsSec X m t → IsSymb X m c d M t w → ∀ s s' x y, Ok x y → Cgr m (w (s * s') x y) (w s x y * tw X m M s (w s') x y) := by
   intro Ω _ _ _ ε X m c d M hm hc hd hc6 hd6 hL t w ht hw s s' x y hxy

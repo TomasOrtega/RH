@@ -26,6 +26,9 @@ def UnitaryTwoStatement : Prop :=
     X.PartsW false → OntoC A3 X P0 ψ0 P1 ψ1 hW →
     LiftsEig3 A3 X P0 ψ0 (eigensystemChoice A3 X P0 ψ0 P1 ψ1 hW) ∧ LiftsTyp3 A3 (eigensystemChoice A3 X P0 ψ0 P1 ψ1 hW)
 
+/- English proof (translation)
+Introduce `A3 X s P0 ψ0 P1 ψ1 Dc Sp Zsc hW gW hOk hKL hJL hRZ hOkH hHT hGU hGE hLev hParts hOnto`. Establish `hEigC` using `eigCOf A3 X s P0 ψ0 P1 ψ1 Dc Sp Zsc hW gW decompOfNormal hOk hKL hJL hRZ hOkH hHT hGU hGE hLev hOnto`. Conclude with `⟨eig0Of A3 X s P0 ψ0 P1 ψ1 hW decompOfNormal hOk hKL hJL hOkH hEigC, typ0Of A3 X P0 ψ0 P1 ψ1 hW hHT hParts⟩`.
+-/
 theorem u2 : @UnitaryTwoStatement K _ _ _ G _ _ Pl0 I0 Ty T m := by
   intro A3 X s P0 ψ0 P1 ψ1 Dc Sp Zsc hW gW hOk hKL hJL hRZ hOkH hHT hGU hGE hLev hParts hOnto
   have hEigC := eigCOf A3 X s P0 ψ0 P1 ψ1 Dc Sp Zsc hW gW decompOfNormal hOk hKL hJL hRZ hOkH hHT hGU hGE
@@ -45,6 +48,9 @@ def UnitaryTwoPackageStatement : Prop :=
     X.PartsW false → OntoC A3 X P0 ψ0 P1 ψ1 hW →
     LiftsEig3 A3 X P0 ψ0 (eigensystemChoice A3 X P0 ψ0 P1 ψ1 hW) ∧ LiftsTyp3 A3 (eigensystemChoice A3 X P0 ψ0 P1 ψ1 hW)
 
+/- English proof (translation)
+Introduce `A3 X s P0 ψ0 P1 ψ1 Dc Sp Zsc hW gW hOk hKR hKL hJR hJL hRow hLift hOkH hHT hGU hGE hLev hParts hOnto`. Conclude with `u2 A3 X s P0 ψ0 P1 ψ1 Dc Sp Zsc hW gW hOk hKL hJL (Formalism.IndefR.Rat.ratZOfTests X (cvOf3 A3 P0 ψ0 P1 ψ1) hKR hKL hJR hJL hRow hLift) hOkH hHT hGU hGE hLev hParts hOnto`.
+-/
 theorem unitary_two_package : @UnitaryTwoPackageStatement K _ _ _ G _ _ Pl0 I0 Ty T m := by
   intro A3 X s P0 ψ0 P1 ψ1 Dc Sp Zsc hW gW hOk hKR hKL hJR hJL hRow hLift hOkH hHT hGU hGE hLev hParts hOnto
   exact u2 A3 X s P0 ψ0 P1 ψ1 Dc Sp Zsc hW gW hOk hKL hJL

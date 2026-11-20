@@ -15,5 +15,8 @@ open Ad3.R (G2 Jd md KA lc)
 open scoped NumberField.AdeleRing ValuativeRel
 open GlobalTheory.CompanionTheory.GL2Factorization
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.GL2Factorization.EmRCont.continuous_emR | exact GlobalTheory.CompanionTheory.GL2Factorization.EmRCont.continuous_emR | (intros; apply GlobalTheory.CompanionTheory.GL2Factorization.EmRCont.continuous_emR <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.continuous_real_embedding_GL3 : Continuous GL2LocalData.emR := by
   first | exact @GlobalTheory.CompanionTheory.GL2Factorization.EmRCont.continuous_emR | exact GlobalTheory.CompanionTheory.GL2Factorization.EmRCont.continuous_emR | (intros; apply GlobalTheory.CompanionTheory.GL2Factorization.EmRCont.continuous_emR <;> assumption)

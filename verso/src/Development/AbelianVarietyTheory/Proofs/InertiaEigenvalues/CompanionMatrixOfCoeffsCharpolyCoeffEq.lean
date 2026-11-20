@@ -5,12 +5,20 @@ open GlobalTheory.JR Matrix
 
 namespace GlobalTheory.JR.CompanionCharpoly
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, companion, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem companion_map {k k' : Type} [CommRing k] [CommRing k'] (f : k →+* k') {r : ℕ} (p : Fin r → k) :
     (companion p).map f = companion (fun i => f (p i)) := by
   ext i j
   simp only [Matrix.map_apply, companion, Matrix.of_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use `set R := MvPolynomial (Fin r) ℤ`. Use `set K := FractionRing R`. Establish `hinj : Function.Injective (algebraMap R K)` using `IsFractionRing.injective R K`. Apply `hinj` to reduce the goal to its premises. Establish `h` using `GlobalTheory.JR.NormalFormL.charpoly_companion_coeff (fun j : Fin r => algebraMap R K (MvPolynomial.X j)) i`.
+
+Rewrite `h` using `[← companion_map, Matrix.charpoly_map, Polynomial.coeff_map]`. Conclude with `h`.
+-/
 theorem coeff_universal (r : ℕ) (i : Fin r) :
     (companion (fun j : Fin r => (MvPolynomial.X j : MvPolynomial (Fin r) ℤ))).charpoly.coeff (i : ℕ) =
       MvPolynomial.X i := by
@@ -23,6 +31,11 @@ theorem coeff_universal (r : ℕ) (i : Fin r) :
   rw [← companion_map, Matrix.charpoly_map, Polynomial.coeff_map] at h
   exact h
 
+/- English proof (translation)
+Introduce `k _ r p i`. Set `f : MvPolynomial (Fin r) ℤ →+* k` to `MvPolynomial.eval₂Hom (Int.castRingHom k) p`. Establish `hp : companion p = (companion (fun j : Fin r => (MvPolynomial.X j : MvPolynomial (Fin r) ℤ))).map f`. Rewrite using `[companion_map]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `j`. Simplify using `[f]`. Rewrite using `[hp, Matrix.charpoly_map, Polynomial.coeff_map, coeff_universal]`. Simplify using `[f]`.
+-/
 theorem charpoly_companion_coeff_ring :
     ∀ (k : Type) [CommRing k] (r : ℕ) (p : Fin r → k) (i : Fin r), (companion p).charpoly.coeff (i : ℕ) = p i := by
   intro k _ r p i

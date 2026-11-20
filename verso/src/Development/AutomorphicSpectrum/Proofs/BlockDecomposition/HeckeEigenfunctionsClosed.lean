@@ -7,6 +7,11 @@ open NumberField IsDedekindDomain GlobalTheory.CuspGeneric GlobalTheory.CuspRep 
 
 namespace GlobalTheory.CompanionTheory.HeckeEigenspaces
 
+/- English proof (translation)
+Use `⟨{ carrier := {φ | ∀ T ∈ 𝒯, T φ = 0} add_mem' := fun {x y} hx hy T hT => by rw [map_add, hx T hT, hy T hT, add_zero] zero_mem' := fun T _ => map_zero T smul_mem' := fun c x hx T hT => by rw [map_smul, hx T hT, smul_zero] }, ?_, fun _ => Iff.rfl⟩` and prove the remaining obligations. Establish `e : ({φ | ∀ T ∈ 𝒯, T φ = 0} : Set X) = ⋂ T ∈ 𝒯, T ⁻¹' {0}`. Use extensionality with `φ`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `IsClosed ({φ | ∀ T ∈ 𝒯, T φ = 0} : Set X)`.
+
+Rewrite using `[e]`. Conclude with `isClosed_biInter fun T _ => isClosed_singleton.preimage T.continuous`.
+-/
 theorem exists_closed_common_ker {X : Type} [NormedAddCommGroup X] [NormedSpace ℂ X] (𝒯 : Set (X →L[ℂ] X)) :
     ∃ Y : Submodule ℂ X, IsClosed (Y : Set X) ∧ ∀ φ, φ ∈ Y ↔ ∀ T ∈ 𝒯, T φ = 0 := by
   refine ⟨{ carrier := {φ | ∀ T ∈ 𝒯, T φ = 0}
@@ -21,6 +26,11 @@ theorem exists_closed_common_ker {X : Type} [NormedAddCommGroup X] [NormedSpace 
 
 variable {E : Type} [Field E] [NumberField E] {a : ℕ}
 
+/- English proof (translation)
+Establish `hs` using `Formalism.UG.P.finite_support_cosets (Final.GLintComm E w a) hh.2`. Use `⟨∑ c ∈ hs.toFinset, h c.out • Rt E a (fl a w c.out), fun x => ?_, fun A hA => ?_⟩` and prove the remaining obligations. Rewrite using `[heckeVec, finsum_eq_sum_of_support_subset (s := hs.toFinset)]`. Simplify using the standard rewrite rules. Introduce `c hc`.
+
+Use `Finset.mem_coe.2 (hs.mem_toFinset.2 fun h0 => hc (by simp [h0]))` and prove the remaining obligations. Conclude with `Commute.sum_right _ _ _ fun c _ => (hA c.out).smul_right _`.
+-/
 theorem exists_heckeOp (w : Pl E) {h : GL (Fin a) (w.adicCompletion E) → ℂ} (hh : h ∈ Hecke ℂ (KGL w a)) :
     ∃ T : XB E a →L[ℂ] XB E a, (∀ x, heckeVec (repW a w) (KGL w a) h x = T x) ∧
       ∀ A : XB E a →L[ℂ] XB E a, (∀ u, Commute A (Rt E a (fl a w u))) → Commute A T := by
@@ -33,6 +43,21 @@ theorem exists_heckeOp (w : Pl E) {h : GL (Fin a) (w.adicCompletion E) → ℂ} 
       refine Finset.mem_coe.2 (hs.mem_toFinset.2 fun h0 => hc (by simp [h0]))
   · exact Commute.sum_right _ _ _ fun c _ => (hA c.out).smul_right _
 
+/- English proof (translation)
+Introduce `h0 E _ _ _ a w B hB`. Establish `hcomm : ∀ g : GA E a, cLoc w g = 1 → ∀ u, Commute (Rt E a g) (Rt E a (fl a w u))` using `fun g hg u => by`. Establish `e` using `(h0 E a).2.2.2.2.2.2.2.1 w g hg u`. Express the relevant statement in the definitionally equal form `Rt E a g * Rt E a (fl a w u) = Rt E a (fl a w u) * Rt E a g`. Rewrite using `[← map_mul, ← map_mul, e]`.
+
+Use `choose T hT hC using fun (p : {ϖ // IsUnifV E w ϖ}) (j : ℕ) => exists_heckeOp (a := a) w (Tj_mem_hecke (n := a) p.2 j)`. Take `⟨Y, hcl, hY⟩` from `exists_closed_common_ker ({R | (∃ k ∈ KGL w a, R = Rt E a (fl a w k) - 1) ∨ ∃ (p : {ϖ // IsUnifV E w ϖ}) (j : ℕ), j ≤ a ∧ R = T p j - satEig (qV E w) a B j • 1} : Set (XB E a →L[ℂ] XB E a))`. Use `⟨Y, hcl, fun g hg φ hφ => ?_, fun φ => ?_⟩` and prove the remaining obligations. Rewrite `hφ`, the goal using `[hY]`. Introduce `R hR`.
+
+Establish `hRc : Commute (Rt E a g) R`. Break down `hR with ⟨k, -, rfl⟩ | ⟨p, j, -, rfl⟩` into its components or cases. Conclude with `(hcomm g hg k).sub_right (Commute.one_right _)`. Conclude with `(hC p j _ (hcomm g hg)).sub_right ((Commute.one_right _).smul_right _)`. Establish `e : R (Rt E a g φ) = Rt E a g (R φ)` using `(DFunLike.congr_fun hRc.eq φ).symm`.
+
+Rewrite using `[e, hφ R hR, map_zero]`. Rewrite using `[hY]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Distinguish the cases in `hφ : φ = 0`.
+
+Conclude with `Or.inl hφ`. Use `Or.inr ⟨hφ, GlobalTheory.LGrp.mem_fixed.2 fun k hk => ?_, hB, fun ϖ hϖ j hj => ?_⟩` and prove the remaining obligations. Use `h _ (Or.inl ⟨k, hk, rfl⟩)` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`. Use `h _ (Or.inr ⟨⟨ϖ, hϖ⟩, j, hj, rfl⟩)` as an intermediate fact.
+
+Rewrite using `[hT ⟨ϖ, hϖ⟩ j]`. Simplify `this` using `[sub_eq_zero]`. Introduce and unpack `(rfl | ⟨-, hfix, -, heig⟩) R hR`. Conclude with `map_zero R`. Break down `hR with ⟨k, hk, rfl⟩ | ⟨p, j, hj, rfl⟩` into its components or cases.
+
+Use `GlobalTheory.LGrp.mem_fixed.1 hfix k hk` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`. Use `heig p.1 p.2 j hj` as an intermediate fact. Rewrite `this` using `[hT p j]`. Simplify `this` using `[sub_eq_zero]`.
+-/
 theorem hecke_eigenfunctions_closed : G0 → G2c := by
   intro h0 E _ _ _ a w B hB
   have hcomm : ∀ g : GA E a, cLoc w g = 1 → ∀ u, Commute (Rt E a g) (Rt E a (fl a w u)) := fun g hg u => by

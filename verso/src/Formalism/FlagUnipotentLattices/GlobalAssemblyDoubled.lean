@@ -3,8 +3,17 @@ import Formalism.FlagUnipotentLattices.MinkowskiFactorialBounds.GaussSumCharacte
 
 namespace Formalism.HermitianLatticeCounting.Final.S4
 
+/- English proof (translation)
+The claim follows from `Formalism.HermitianLatticeCounting.P.hermitian_assembly_numeric_bound`.
+-/
 theorem global_assembly : Formalism.HermitianLatticeCounting.S4.WeightedAmplitudeSqSumBoundTwoTypeClasses := Formalism.HermitianLatticeCounting.P.hermitian_assembly_numeric_bound
+/- English proof (translation)
+The claim follows from `Formalism.HermitianLatticeCounting.P.non_generic_bound_large_height`.
+-/
 theorem global_assembly_doubled : Formalism.HermitianLatticeCounting.S4.NonGenericBoundLargeHeight := Formalism.HermitianLatticeCounting.P.non_generic_bound_large_height
+/- English proof (translation)
+The claim follows from `Formalism.HermitianLatticeCounting.P.geometric_powers_bound`.
+-/
 theorem geomPowers : Formalism.HermitianLatticeCounting.S4.GeomPowers := Formalism.HermitianLatticeCounting.P.geometric_powers_bound
 
 end Formalism.HermitianLatticeCounting.Final.S4

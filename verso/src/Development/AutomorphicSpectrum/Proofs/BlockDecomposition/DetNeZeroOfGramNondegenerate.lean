@@ -13,6 +13,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CompanionTheory.ColumnSplitting.Frame
 
+/- English proof (translation)
+Introduce `D W b₀ hb x₀ hx h0`. Apply `hb` to reduce the goal to its premises. Rewrite using `[← hx]`. Unfold `gramQ`. Simplify using `[Matrix.det_mul, h0]`.
+-/
 theorem det_ne_zero_of_gramQ : ∀ (D : D7) (W : HSp D) (b₀ : HermE D W.rank), b₀.1.det ≠ 0 →
     ∀ x₀, gramQ W x₀ = b₀.1 → x₀.det ≠ 0 := by
   intro D W b₀ hb x₀ hx h0

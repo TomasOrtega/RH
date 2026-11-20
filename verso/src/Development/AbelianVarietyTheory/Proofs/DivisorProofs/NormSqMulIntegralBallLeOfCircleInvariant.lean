@@ -7,6 +7,15 @@ open scoped ComplexOrder
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `n δ U f W _ hU hsub hf hW hW0 hinv`. Establish `hS : MeasurableSet (ball (0 : V n) δ)` using `measurableSet_ball`. Establish `hWb : ContinuousOn W (ball (0 : V n) δ)` using `hW.mono ball_subset_closedBall`. Use `set W' : V n → ℝ := (ball (0 : V n) δ).piecewise W (fun _ => 0) with hW'`. Establish `hm : Measurable W'` using `hWb.measurable_piecewise continuousOn_const hS`.
+
+Establish `heq : ∀ z ∈ ball (0 : V n) δ, W' z = W z` using `fun z hz => Set.piecewise_eq_of_mem _ _ _ hz`. Establish `h` using `enorm_pow_mul_lintegral_le_of_balanced (volume : Measure (V n)) hS balanced_ball_zero (φ := f) (fun z hz => hf.differentiableAt (hU.mem_nhds (hsub (ball_subset_closedBall hz)))) (w := fun z => ENNReal.ofReal (W' z)) hm.ennreal_ofReal (fun c hc z hz => by`. Establish `hz' : c • z ∈ ball (0 : V n) δ`. Simplify `hz` using `[norm_smul, hc]`. Rewrite using `[heq _ hz', heq _ hz, hinv c z hc]) 2`.
+
+Establish `e1 : ∫⁻ z in ball (0 : V n) δ, ENNReal.ofReal (W' z) = ∫⁻ z in ball (0 : V n) δ, ENNReal.ofReal (W z)` using `setLIntegral_congr_fun hS fun z hz => by simp only [heq z hz]`. Establish `e2 : ∫⁻ z in ball (0 : V n) δ, ‖f z‖ₑ ^ 2 * ENNReal.ofReal (W' z) = ∫⁻ z in ball (0 : V n) δ, ‖f z‖ₑ ^ 2 * ENNReal.ofReal (W z)` using `setLIntegral_congr_fun hS fun z hz => by simp only [heq z hz]`. Rewrite `h` using `[e1, e2]`. Establish `hfc : ContinuousOn f (closedBall 0 δ)` using `hf.continuousOn.mono hsub`. Establish `hi : IntegrableOn W (ball (0 : V n) δ)` using `(hW.integrableOn_compact (isCompact_closedBall _ _)).mono_set ball_subset_closedBall`.
+
+Establish `hi' : IntegrableOn (fun z => ‖f z‖ ^ 2 * W z) (ball (0 : V n) δ)` using `(((hfc.norm.pow 2).mul hW).integrableOn_compact (isCompact_closedBall _ _)).mono_set ball_subset_closedBall`. Establish `h0 : ∀ z : V n, 0 ≤ ‖f z‖ ^ 2 * W z` using `fun z => mul_nonneg (by positivity) (hW0 z)`. Rewrite using `[← ENNReal.ofReal_le_ofReal_iff (integral_nonneg h0), ENNReal.ofReal_mul (by positivity), ofReal_integral_eq_lintegral_ofReal hi (Filter.Eventually.of_forall hW0), ofReal_integral_eq_lintegral_ofReal hi' (Filter.Eventually.of_forall h0)]`. Simplify `h` using `[ENNReal.ofReal_mul, ENNReal.ofReal_pow]`.
+-/
 theorem norm_sq_mul_integral_ball_le_of_circle_invariant :
     ∀ (n : ℕ) (δ : ℝ) (U : Set (V n)) (f : V n → ℂ) (W : V n → ℝ), 0 < δ → IsOpen U →
       closedBall 0 δ ⊆ U → DifferentiableOn ℂ f U → ContinuousOn W (closedBall 0 δ) →

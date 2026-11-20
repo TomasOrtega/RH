@@ -9,19 +9,37 @@ open scoped TensorProduct
 
 def negTail (N q : ℕ) : Fin N → Bool := fun i => decide (N - q ≤ (i : ℕ))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [negTail, decide_eq_false_iff_not, Nat.sub_zero, not_le]`. Conclude with `i.isLt`.
+-/
 theorem negTail_zero (N : ℕ) : negTail N 0 = fun _ => false := by
   funext i
   simp only [negTail, decide_eq_false_iff_not, Nat.sub_zero, not_le]
   exact i.isLt
 
+/- English proof (translation)
+Unfold `negTail`. Conclude with `decide_eq_false (by omega)`.
+-/
 theorem negTail_false (N q : ℕ) (i : Fin N) (h : (i : ℕ) < N - q) : negTail N q i = false := by
   unfold negTail
   exact decide_eq_false (by omega)
 
+/- English proof (translation)
+Unfold `negTail`. Conclude with `decide_eq_true h`.
+-/
 theorem negTail_true (N q : ℕ) (i : Fin N) (h : N - q ≤ (i : ℕ)) : negTail N q i = true := by
   unfold negTail
   exact decide_eq_true h
 
+/- English proof (translation)
+Set `e : Fin N ≃ Fin (N - q) ⊕ Fin q` to `(finCongr (by omega : N = (N - q) + q)).trans finSumFinEquiv.symm`. Establish `hl : ∀ i, ((e.symm (Sum.inl i) : Fin N) : ℕ) = i` using `fun i => by simp [e]`. Establish `hr : ∀ i, ((e.symm (Sum.inr i) : Fin N) : ℕ) = N - q + i` using `fun i => by simp [e]`. Use `⟨e, 1, ?_⟩` and prove the remaining obligations. Simplify using `only [Units.val_one, Formalism.UG.cT_one, Matrix.one_mul, Matrix.mul_one]`.
+
+Use extensionality with `i j`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.diagonal_apply, e.symm.injective.eq_iff]`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Establish `hn : negTail N q (e.symm (Sum.inl i)) = false` using `negTail_false _ _ _ (by rw [hl]; exact i.isLt)`. Simplify using `only [Formalism.UG.Jpq, Matrix.fromBlocks_apply₁₁, Matrix.one_apply, Sum.inl.injEq, hn]`.
+
+Simplify using `[sgn]`. Simplify using `[Formalism.UG.Jpq]`. Simplify using `[Formalism.UG.Jpq]`. Establish `hn : negTail N q (e.symm (Sum.inr i)) = true` using `negTail_true _ _ _ (by rw [hr]; omega)`. Simplify using `only [Formalism.UG.Jpq, Matrix.fromBlocks_apply₂₂, Matrix.neg_apply, Matrix.one_apply, Sum.inr.injEq, hn]`.
+
+Apply the tactic sequence `split_ifs <;> simp [sgn]`.
+-/
 theorem hasSig_tail (N q : ℕ) (h : q ≤ N) : Formalism.UG.HasSignature
     (Matrix.diagonal fun i : Fin N => (sgn (negTail N q i) : ℂ)) (N - q) q := by
   let e : Fin N ≃ Fin (N - q) ⊕ Fin q :=
@@ -53,6 +71,11 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
 def dSpace (N q : ℕ) : HSpace E := stdSpace hstar N (negTail N q) (N - q) q
 
+/- English proof (translation)
+Introduce `τ`. Establish `hg : (dSpace hstar N q).gram.map τ = Matrix.diagonal fun i : Fin N => (sgn (negTail N q i) : ℂ)`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply]`. Use `(congrArg τ (stdSpace_gram_apply hstar N (negTail N q) (N - q) q i j)).trans ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `τ (if i = j then (sgn (negTail N q i) : E) else 0) = if i = j then (sgn (negTail N q i) : ℂ) else 0`. Apply the tactic sequence `by_cases h : i = j <;> simp [h, map_sgn]`. Rewrite using `[hg]`. Conclude with `hasSig_tail N q h`.
+-/
 theorem dSpace_sigOK (N q : ℕ) (h : q ≤ N) : (dSpace hstar N q).SigOK := by
   intro τ
   have hg : (dSpace hstar N q).gram.map τ =
@@ -77,10 +100,20 @@ def extLE (a b : ℕ) : (Fin a → E) →ₗ[E] (Fin b → E) where
     simp only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply]
     split_ifs <;> simp
 
+/- English proof (translation)
+Simplify using `only [extLE, LinearMap.coe_mk, AddHom.coe_mk]`. Rewrite using `[dif_neg (by omega)]`.
+-/
 theorem extLE_of_le (a b : ℕ) (x : Fin a → E) (i : Fin b) (h : a ≤ (i : ℕ)) : extLE a b x i = 0 := by
   simp only [extLE, LinearMap.coe_mk, AddHom.coe_mk]
   rw [dif_neg (by omega)]
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `Nat.exists_eq_add_of_le hab`. Rewrite using `[diagForm_apply, diagForm_apply, Fin.sum_univ_add]`. Establish `h2 : ∀ i : Fin c, star (extLE a (a + c) x (Fin.natAdd a i)) * sgn (neg' (Fin.natAdd a i)) * extLE a (a + c) y (Fin.natAdd a i) = 0` using `fun i => by`. Rewrite using `[extLE_of_le a (a + c) y _ (by simp)]; simp`. Rewrite using `[Finset.sum_eq_zero (fun i _ => h2 i), add_zero]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h3 : ∀ z : Fin a → E, extLE a (a + c) z (Fin.castAdd c i) = z i` using `fun z => by`. Simplify using `[extLE]`. Rewrite using `[h3, h3]`. Use `congr 3`.
+
+Conclude with `hneg i`.
+-/
 theorem extLE_isom (a b : ℕ) (hab : a ≤ b) (neg : Fin a → Bool) (neg' : Fin b → Bool)
     (hneg : ∀ i : Fin a, neg' ⟨i, lt_of_lt_of_le i.isLt hab⟩ = neg i) (x y : Fin a → E) :
     diagForm b neg' (extLE a b x) (extLE a b y) = diagForm a neg x y := by
@@ -97,11 +130,17 @@ theorem extLE_isom (a b : ℕ) (hab : a ≤ b) (neg : Fin a → Bool) (neg' : Fi
   congr 3
   exact hneg i
 
+/- English proof (translation)
+Rewrite using `[diagForm_single_left]`. Simplify using `[sgn]`.
+-/
 theorem z_anis_le (a b : ℕ) (h : a < b) :
     diagForm (E := E) b (fun _ => false) (Pi.single ⟨a, h⟩ 1) (Pi.single ⟨a, h⟩ 1) ≠ 0 := by
   rw [diagForm_single_left]
   simp [sgn]
 
+/- English proof (translation)
+Rewrite using `[diagForm_single_right, extLE_of_le a b x ⟨a, h⟩ (le_refl a)]`. Simplify using the standard rewrite rules.
+-/
 theorem z_orth_le (a b : ℕ) (h : a < b) (x : Fin a → E) :
     diagForm b (fun _ => false) (extLE a b x) (Pi.single ⟨a, h⟩ 1) = 0 := by
   rw [diagForm_single_right, extLE_of_le a b x ⟨a, h⟩ (le_refl a)]
@@ -114,6 +153,9 @@ section Congr
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
   (hstar : ∀ x : E, IsIntegral ℤ x → IsIntegral ℤ (star x)) (cm : CMData F E)
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.map_apply]`. Use `(congrArg (Formalism.UG.inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) (stdSpace_gram_apply hstar N (negTail N p) (N - p) p i j)).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Formalism.UG.inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (if i = j then (sgn (negTail N p i) : E) else 0) = if i = j then (sgn (negTail N p i) : E ⊗[F] FiniteAdeleRing (𝓞 F) F) else 0`. Apply the tactic sequence `by_cases h : i = j <;> simp [h, map_sgn]`.
+-/
 theorem dSpace_gram_map (N p : ℕ) :
     (dSpace hstar N p).gram.map (Formalism.UG.inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) =
       Matrix.diagonal fun i : Fin N => (sgn (negTail N p i) : E ⊗[F] FiniteAdeleRing (𝓞 F) F) := by
@@ -125,6 +167,15 @@ theorem dSpace_gram_map (N p : ℕ) :
     if i = j then (sgn (negTail N p i) : E ⊗[F] FiniteAdeleRing (𝓞 F) F) else 0
   by_cases h : i = j <;> simp [h, map_sgn]
 
+/- English proof (translation)
+Substitute `hN` using the available equality. Take `⟨y, hy⟩` from `hy`. Establish `hyu : y * (-(Formalism.UG.sigR cm.sig (FiniteAdeleRing (𝓞 F) F) y)) = 1`. Rewrite using `[mul_neg, mul_comm, hy, neg_neg]`. Apply the tactic sequence `refine ⟨Equiv.refl _, diagUnit (n := Fin N) (fun i => if negTail N q i = negTail N q' i then 1 else y) (fun i => if negTail N q i = negTail N q' i then 1 else -(Formalism.UG.sigR cm.sig (FiniteAdeleRing (𝓞 F) F) y)) (fun i => by split_ifs <;> simp [hyu]), ?_⟩`.
+
+Establish `key : Formalism.UG.cT (Formalism.UG.sigR cm.sig (FiniteAdeleRing (𝓞 F) F)) (Matrix.diagonal (fun i : Fin N => if negTail N q i = negTail N q' i then 1 else y)) * Matrix.diagonal (fun i : Fin N => (sgn (negTail N q i) : E ⊗[F] FiniteAdeleRing (𝓞 F) F)) * Matrix.diagonal (fun i : F …`. Use `diag_congr _ _ _ _ (fun i => ?_)` and prove the remaining obligations. Distinguish the cases in `h : negTail N q i = negTail N q' i`. Simplify using `[h]`. Simplify using `only [if_neg h]`.
+
+Establish `h' : (sgn (negTail N q' i) : E ⊗[F] FiniteAdeleRing (𝓞 F) F) = - sgn (negTail N q i)`. Apply the tactic sequence `cases h1 : negTail N q i <;> cases h2 : negTail N q' i <;> simp_all [sgn]`. Rewrite using `[h', mul_right_comm, hy]`. Expand and normalize the polynomial expressions, which then agree. Use `Eq.trans ?_ (key.trans (dSpace_gram_map (F := F) hstar N q').symm)` and prove the remaining obligations.
+
+Rewrite using `[← dSpace_gram_map (F := F) hstar N q]`. Both sides reduce to the same expression.
+-/
 theorem dSpace_congr (hy : ∃ y : E ⊗[F] FiniteAdeleRing (𝓞 F) F,
       Formalism.UG.sigR cm.sig (FiniteAdeleRing (𝓞 F) F) y * y = -1) (N N' q q' : ℕ) (hN : N = N') :
     ∃ e : Fin (dSpace hstar N q).rank ≃ Fin (dSpace hstar N' q').rank,
@@ -164,32 +215,53 @@ theorem dSpace_congr (hy : ∃ y : E ⊗[F] FiniteAdeleRing (𝓞 F) F,
 
 end Congr
 
+/- English proof (translation)
+Use `R.two_le_m` as an intermediate fact. Unfold `Ranks.rS`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem half_rank_eq_witt_index_succ (R : Ranks) : (R.m - 0) / 2 = R.rS + 1 := by
   have := R.two_le_m
   unfold Ranks.rS
   omega
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `R.m_even`. Use `R.two_le_m` as an intermediate fact. Unfold `Ranks.rankY Ranks.r Ranks.rS`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem baseSpaceRank_eq_sum (R : Ranks) : R.rankY 0 = R.k + R.rS + (R.rS + 1) := by
   obtain ⟨a, ha⟩ := R.m_even
   have := R.two_le_m
   unfold Ranks.rankY Ranks.r Ranks.rS
   omega
 
+/- English proof (translation)
+Simplify using `[Ranks.rankY]`.
+-/
 theorem baseSpaceRank_eq_r (R : Ranks) : R.rankY 0 = R.r := by simp [Ranks.rankY]
 
+/- English proof (translation)
+Simplify using `[Ranks.N]`.
+-/
 theorem baseRank_eq_k (R : Ranks) : R.N 0 = R.k := by simp [Ranks.N]
 
+/- English proof (translation)
+Establish `h : R.m * (R.t + 1) = R.m * R.t + R.m` using `Nat.mul_succ _ _`. Use `R.two_le_m` as an intermediate fact. Unfold `Ranks.N Ranks.rankX' Ranks.r`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rk_Xm (R : Ranks) : R.N R.m = R.rankX' + 1 := by
   have h : R.m * (R.t + 1) = R.m * R.t + R.m := Nat.mul_succ _ _
   have := R.two_le_m
   unfold Ranks.N Ranks.rankX' Ranks.r
   omega
 
+/- English proof (translation)
+Establish `h : j * (R.t + 1) = j * R.t + j` using `Nat.mul_succ _ _`. Unfold `Ranks.N Ranks.rankY Ranks.r`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rk_XY (R : Ranks) (j : ℕ) (hj : j < R.m) : R.N j ≤ R.rankY j - (R.m - j) / 2 := by
   have h : j * (R.t + 1) = j * R.t + j := Nat.mul_succ _ _
   unfold Ranks.N Ranks.rankY Ranks.r
   omega
 
+/- English proof (translation)
+Use `R.m_add_three_le_k` as an intermediate fact. Unfold `Ranks.rankY Ranks.r`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rk_qY (R : Ranks) (j : ℕ) : (R.m - j) / 2 ≤ R.rankY j := by
   have := R.m_add_three_le_k
   unfold Ranks.rankY Ranks.r
@@ -211,16 +283,25 @@ def ixN (i : Fin R.rS) : Fin (R.rankY 0) :=
 
 def ixZ : Fin (R.rankY 0) := ⟨R.k + R.rS, by have := baseSpaceRank_eq_sum R; omega⟩
 
+/- English proof (translation)
+The claim follows from `negTail_false _ _ _ (by show R.k + (i : ℕ) < _ have := baseSpaceRank_eq_sum R; have := half_rank_eq_witt_index_succ R; have := i.isLt; omega)`.
+-/
 theorem neg_ixP (i : Fin R.rS) : negTail (R.rankY 0) ((R.m - 0) / 2) (ixP R i) = false :=
   negTail_false _ _ _ (by
     show R.k + (i : ℕ) < _
     have := baseSpaceRank_eq_sum R; have := half_rank_eq_witt_index_succ R; have := i.isLt; omega)
 
+/- English proof (translation)
+The claim follows from `negTail_true _ _ _ (by show _ ≤ R.k + R.rS + 1 + (i : ℕ) have := baseSpaceRank_eq_sum R; have := half_rank_eq_witt_index_succ R; omega)`.
+-/
 theorem neg_ixN (i : Fin R.rS) : negTail (R.rankY 0) ((R.m - 0) / 2) (ixN R i) = true :=
   negTail_true _ _ _ (by
     show _ ≤ R.k + R.rS + 1 + (i : ℕ)
     have := baseSpaceRank_eq_sum R; have := half_rank_eq_witt_index_succ R; omega)
 
+/- English proof (translation)
+The claim follows from `negTail_true _ _ _ (by show _ ≤ R.k + R.rS have := baseSpaceRank_eq_sum R; have := half_rank_eq_witt_index_succ R; omega)`.
+-/
 theorem neg_ixZ : negTail (R.rankY 0) ((R.m - 0) / 2) (ixZ R) = true :=
   negTail_true _ _ _ (by
     show _ ≤ R.k + R.rS
@@ -229,39 +310,60 @@ theorem neg_ixZ : negTail (R.rankY 0) ((R.m - 0) / 2) (ixZ R) = true :=
 abbrev f0 : (Fin (R.rankY 0) → E) →ₗ⋆[E] (Fin (R.rankY 0) → E) →ₗ[E] E :=
   diagForm (R.rankY 0) (negTail (R.rankY 0) ((R.m - 0) / 2))
 
+/- English proof (translation)
+Rewrite using `[diagForm_single, neg_ixP]`. Establish `: ixP R i = ixP R i' ↔ i = i'` using `by simp [ixP, Fin.ext_iff]`. Simplify using `[this, sgn]`.
+-/
 theorem baseForm_positive_positive_pairing (i i' : Fin R.rS) : f0 (E := E) R (Pi.single (ixP R i) 1) (Pi.single (ixP R i') 1) =
     if i = i' then 1 else 0 := by
   rw [diagForm_single, neg_ixP]
   have : ixP R i = ixP R i' ↔ i = i' := by simp [ixP, Fin.ext_iff]
   simp [this, sgn]
 
+/- English proof (translation)
+Rewrite using `[diagForm_single, neg_ixN]`. Establish `: ixN R i = ixN R i' ↔ i = i'` using `by simp [ixN, Fin.ext_iff]`. Simplify using `[this, sgn]`.
+-/
 theorem baseForm_negative_negative_pairing (i i' : Fin R.rS) : f0 (E := E) R (Pi.single (ixN R i) 1) (Pi.single (ixN R i') 1) =
     if i = i' then -1 else 0 := by
   rw [diagForm_single, neg_ixN]
   have : ixN R i = ixN R i' ↔ i = i' := by simp [ixN, Fin.ext_iff]
   simp [this, sgn]
 
+/- English proof (translation)
+Introduce `h`. Establish `h' : R.k + (i : ℕ) = R.k + R.rS + 1 + (i' : ℕ)` using `congrArg Fin.val h`. Use `i.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem posIndex_ne_negIndex (i i' : Fin R.rS) : ixP R i ≠ ixN R i' := by
   intro h
   have h' : R.k + (i : ℕ) = R.k + R.rS + 1 + (i' : ℕ) := congrArg Fin.val h
   have := i.isLt
   omega
 
+/- English proof (translation)
+Introduce `h`. Establish `h' : R.k + (i : ℕ) = R.k + R.rS` using `congrArg Fin.val h`. Use `i.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem posIndex_ne_zeroIndex (i : Fin R.rS) : ixP R i ≠ ixZ R := by
   intro h
   have h' : R.k + (i : ℕ) = R.k + R.rS := congrArg Fin.val h
   have := i.isLt
   omega
 
+/- English proof (translation)
+Introduce `h`. Establish `h' : R.k + R.rS + 1 + (i : ℕ) = R.k + R.rS` using `congrArg Fin.val h`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem ixN_ne_ixZ (i : Fin R.rS) : ixN R i ≠ ixZ R := by
   intro h
   have h' : R.k + R.rS + 1 + (i : ℕ) = R.k + R.rS := congrArg Fin.val h
   omega
 
+/- English proof (translation)
+Rewrite using `[diagForm_single, if_neg (posIndex_ne_negIndex R i i')]`.
+-/
 theorem baseForm_positive_negative_zero (i i' : Fin R.rS) :
     f0 (E := E) R (Pi.single (ixP R i) 1) (Pi.single (ixN R i') 1) = 0 := by
   rw [diagForm_single, if_neg (posIndex_ne_negIndex R i i')]
 
+/- English proof (translation)
+Rewrite using `[diagForm_single, if_neg (posIndex_ne_negIndex R i' i).symm]`.
+-/
 theorem baseForm_negative_positive_zero (i i' : Fin R.rS) :
     f0 (E := E) R (Pi.single (ixN R i) 1) (Pi.single (ixP R i') 1) = 0 := by
   rw [diagForm_single, if_neg (posIndex_ne_negIndex R i' i).symm]
@@ -271,15 +373,24 @@ def hypEv (i : Fin R.rS) : Fin (R.rankY 0) → E := Pi.single (ixP R i) 1 + Pi.s
 def hypFv (i : Fin R.rS) : Fin (R.rankY 0) → E :=
   (2 : E)⁻¹ • (Pi.single (ixP R i) 1 - Pi.single (ixN R i) 1)
 
+/- English proof (translation)
+Simplify using `only [hypEv, map_add, LinearMap.add_apply, baseForm_positive_positive_pairing, baseForm_negative_negative_pairing, baseForm_positive_negative_zero, baseForm_negative_positive_zero]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem hyperbolic_basis_basis_zero (i i' : Fin R.rS) : f0 (E := E) R (hypEv R i) (hypEv R i') = 0 := by
   simp only [hypEv, map_add, LinearMap.add_apply, baseForm_positive_positive_pairing, baseForm_negative_negative_pairing, baseForm_positive_negative_zero, baseForm_negative_positive_zero]
   split_ifs <;> simp
 
+/- English proof (translation)
+Simplify using `only [hypFv, map_smulₛₗ, LinearMap.smul_apply, map_sub, LinearMap.sub_apply, baseForm_positive_positive_pairing, baseForm_negative_negative_pairing, baseForm_positive_negative_zero, baseForm_negative_positive_zero]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem hyperbolic_dual_dual_zero (i i' : Fin R.rS) : f0 (E := E) R (hypFv R i) (hypFv R i') = 0 := by
   simp only [hypFv, map_smulₛₗ, LinearMap.smul_apply, map_sub, LinearMap.sub_apply, baseForm_positive_positive_pairing, baseForm_negative_negative_pairing,
     baseForm_positive_negative_zero, baseForm_negative_positive_zero]
   split_ifs <;> simp
 
+/- English proof (translation)
+Simplify using `only [hypEv, hypFv, map_smulₛₗ, map_add, LinearMap.add_apply, map_sub, baseForm_positive_positive_pairing, baseForm_negative_negative_pairing, baseForm_positive_negative_zero, baseForm_negative_positive_zero, RingHom.id_apply, smul_eq_mul]`. Use `split_ifs`. Evaluate the numerical expressions. Simplify using the standard rewrite rules.
+-/
 theorem hyperbolic_basis_dual_pairing (i i' : Fin R.rS) :
     f0 (E := E) R (hypEv R i) (hypFv R i') = if i = i' then 1 else 0 := by
   simp only [hypEv, hypFv, map_smulₛₗ, map_add, LinearMap.add_apply, map_sub, baseForm_positive_positive_pairing, baseForm_negative_negative_pairing,
@@ -288,16 +399,25 @@ theorem hyperbolic_basis_dual_pairing (i i' : Fin R.rS) :
   · norm_num
   · simp
 
+/- English proof (translation)
+Rewrite using `[diagForm_single_right, extLE_of_le _ _ _ _ (by rw [baseRank_eq_k]; exact hj)]`. Simplify using the standard rewrite rules.
+-/
 theorem baseForm_extension_orthogonal_single (x : Fin (R.N 0) → E) (j : Fin (R.rankY 0)) (hj : R.k ≤ (j : ℕ)) (b : E) :
     f0 R (extLE (R.N 0) (R.rankY 0) x) (Pi.single j b) = 0 := by
   rw [diagForm_single_right, extLE_of_le _ _ _ _ (by rw [baseRank_eq_k]; exact hj)]
   simp
 
+/- English proof (translation)
+Rewrite using `[diagForm_single_right, Pi.single_eq_of_ne hj]`. Simplify using the standard rewrite rules.
+-/
 theorem baseForm_anisotropic_orthogonal_single (j : Fin (R.rankY 0)) (hj : j ≠ ixZ R) (b : E) :
     f0 R (Pi.single (ixZ R) pz) (Pi.single j b) = 0 := by
   rw [diagForm_single_right, Pi.single_eq_of_ne hj]
   simp
 
+/- English proof (translation)
+Establish `h1` using `baseForm_extension_orthogonal_single R x (ixP R i) (Nat.le_add_right _ _) 1`. Establish `h2` using `baseForm_extension_orthogonal_single R x (ixN R i) (by show R.k ≤ R.k + R.rS + 1 + (i : ℕ); omega) 1`. Prove the components needed by the constructor for the conclusion. Simplify using `only [hypEv, map_add, h1, h2, add_zero]`. Simplify using `only [hypFv, map_smul, map_sub, h1, h2, sub_zero, smul_zero]`.
+-/
 theorem hyperbolic_orthogonal_extension (i : Fin R.rS) (x : Fin (R.N 0) → E) :
     f0 R (extLE (R.N 0) (R.rankY 0) x) (hypEv R i) = 0 ∧
       f0 R (extLE (R.N 0) (R.rankY 0) x) (hypFv R i) = 0 := by
@@ -307,6 +427,9 @@ theorem hyperbolic_orthogonal_extension (i : Fin R.rS) (x : Fin (R.N 0) → E) :
   · simp only [hypEv, map_add, h1, h2, add_zero]
   · simp only [hypFv, map_smul, map_sub, h1, h2, sub_zero, smul_zero]
 
+/- English proof (translation)
+Establish `h1` using `baseForm_anisotropic_orthogonal_single R pz (ixP R i) (posIndex_ne_zeroIndex R i) 1`. Establish `h2` using `baseForm_anisotropic_orthogonal_single R pz (ixN R i) (ixN_ne_ixZ R i) 1`. Prove the components needed by the constructor for the conclusion. Simplify using `only [hypEv, map_add, h1, h2, add_zero]`. Simplify using `only [hypFv, map_smul, map_sub, h1, h2, sub_zero, smul_zero]`.
+-/
 theorem hyperbolic_orthogonal_anisotropic (i : Fin R.rS) :
     f0 R (Pi.single (ixZ R) pz) (hypEv R i) = 0 ∧ f0 R (Pi.single (ixZ R) pz) (hypFv R i) = 0 := by
   have h1 := baseForm_anisotropic_orthogonal_single R pz (ixP R i) (posIndex_ne_zeroIndex R i) 1
@@ -316,6 +439,9 @@ theorem hyperbolic_orthogonal_anisotropic (i : Fin R.rS) :
   · simp only [hypFv, map_smul, map_sub, h1, h2, sub_zero, smul_zero]
 
 include hpz in
+/- English proof (translation)
+Rewrite using `[diagForm_single_left, neg_ixZ]`. Simplify using `only [Pi.single_eq_same, sgn, if_true]`. Rewrite using `[← hpz]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem anisotropic_vector_norm_eq_neg : f0 R (Pi.single (ixZ R) pz) (Pi.single (ixZ R) pz) = -(T : E) := by
   rw [diagForm_single_left, neg_ixZ]
   simp only [Pi.single_eq_same, sgn, if_true]
@@ -385,8 +511,14 @@ def spacesOfRanks : Spaces R F E where
     rw [Pi.basisFun_apply, Pi.basisFun_apply, diagForm_single]
     simp [sgn]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem spacesOfRanks_T : (spacesOfRanks R hstar cm T hT pz hpz hy).T = T := rfl
 
+/- English proof (translation)
+Introduce `_ _ _` and use `rfl`.
+-/
 theorem spaces_signature_eq : ∀ j, j ≤ R.m → ∀ τ : E →+* ℂ,
     ((spacesOfRanks R hstar cm T hT pz hpz hy).Y j).sig τ = sigYD R j := fun _ _ _ => rfl
 

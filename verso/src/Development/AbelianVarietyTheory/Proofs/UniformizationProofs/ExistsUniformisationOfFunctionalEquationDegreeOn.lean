@@ -20,6 +20,11 @@ open GlobalTheory.UU
 
 namespace GlobalTheory.UU
 
+/- English proof (translation)
+Introduce `hL hL2 V _ _ _ hV D A G _ _ U h1`. Take `⟨U', hM⟩` from `ToChart.exists_match V (IsLocalRing.maximalIdeal V) D A G U`. Use `⟨⟨U', fun k hk => ?_⟩, hM⟩` and prove the remaining obligations. Establish `hb : U.FE (Kbar V) k` using `GlobalTheory.T.functional_equation_all_degrees_algebraic_closure hL hL2 V hV D.toPre A G U D.tau_bimult h1 k hk`. Establish `hF : U.FE (FractionRing V) k` using `GlobalTheory.T.finite_exponent_base_change_field hL.globalFns V hV D.toPre A G U k hb (FractionRing V)`.
+
+Conclude with `GlobalTheory.T.expBij_of_match_of_fam_expF hL hL2 V hV D A G U U' hM k hk hF (ExpOnto.exists_expF_of_fam hL hL2 V hV D.toPre A G U D.tau_bimult (FractionRing V) k hk hF)`.
+-/
 theorem exists_unif_of_fe_one : Laws → Laws2 → ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], CDVR V → ∀ (D : DegData V (IsLocalRing.maximalIdeal V)) (A : PolAV (Spec (CommRingCat.of (FractionRing V)))) (G : Over (Spec (CommRingCat.of V))) [GrpObj G] [IsCommMonObj G] (U : PreU (IsLocalRing.maximalIdeal V) D.toPre A G), U.FE (Kbar V) 1 → ∃ U' : Unif (IsLocalRing.maximalIdeal V) D A G, Match U U'.toUnifPre := by
   intro hL hL2 V _ _ _ hV D A G _ _ U h1
   obtain ⟨U', hM⟩ := ToChart.exists_match V (IsLocalRing.maximalIdeal V) D A G U

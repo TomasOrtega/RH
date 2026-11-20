@@ -3,6 +3,17 @@ import GroundTheory.AutomorphicForms.Satake
 
 open MeasureTheory GroundTheory.Automorphic GroundTheory.Automorphic.Spherical UpperTheory.Gal.Gen
 
+/- English proof (translation)
+Introduce `n Φ`. Use `⟨polyEmb n (∏ σ : Equiv.Perm (Fin n), MvPolynomial.rename σ Φ), ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show ∀ τ : Equiv.Perm (Fin n), permAct τ _ = _`. Introduce `τ`. Rewrite using `[← polyEmb_rename]`.
+
+Use `congr 1`. Rewrite using `[map_prod]`. Repeatedly rewrite using `[MvPolynomial.rename_rename]`. Conclude with `Fintype.prod_equiv (Equiv.mulLeft τ) _ _ (fun σ => rfl)`. Introduce `z`.
+
+Rewrite using `[evalAt_polyEmb, map_prod]`. Use `Finset.prod_congr rfl (fun σ _ => ?_)` and prove the remaining obligations. Rewrite using `[MvPolynomial.aeval_rename]`. Both sides reduce to the same expression. Introduce `hΦ`.
+
+Use `⟨∏ σ : Equiv.Perm (Fin n), MvPolynomial.rename σ Φ, ?_, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `σ _ h`. Apply `hΦ` to reduce the goal to its premises. Conclude with `MvPolynomial.rename_injective _ σ.injective (by rw [h, map_zero])`.
+
+Rewrite using `[evalAt_polyEmb]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.Gal.Gen.symEx_pf :
     UpperTheory.Gal.Gen.SymEx := by
   intro n Φ

@@ -63,9 +63,23 @@ structure Num (R : Ranks) (x eps : ℝ) (Del h : ℕ) : Prop where
   kDel : 4 * (R.k : ℝ) * Del ≤ Real.exp (x ^ eps / 2)
   eta_log : Real.log (2 * (R.m : ℝ) * h) ≤ x ^ (eps / 4)
 
+/- English proof (translation)
+Rewrite using `[bx, Real.exp_half]`.
+-/
 theorem sqrt_bx (x eps : ℝ) : Real.sqrt (bx x eps) = Real.exp (x ^ eps / 2) := by
   rw [bx, Real.exp_half]
 
+/- English proof (translation)
+Establish `hx` using `N.x_ge`. Establish `hL : 0 ≤ x ^ eps` using `by positivity`. Establish `hb : 0 < bx x eps` using `Real.exp_pos _`. Establish `hY : 1 ≤ x ^ ((11 : ℝ) / 2)` using `Real.one_le_rpow hx (by norm_num)`. Establish `hX : 1 ≤ Real.exp (x ^ (eps / 3))` using `Real.one_le_exp (by positivity)`.
+
+Establish `hba : bx x eps ≤ aC x eps` using `by unfold aC; nlinarith`. Establish `h1 : Real.exp (x ^ eps / 2) ≤ bpC x eps`. Unfold `bpC`. Rewrite using `[le_div_iff₀ (by positivity), ← Real.exp_add]`. Use `le_trans ?_ hba` and prove the remaining obligations.
+
+Conclude with `Real.exp_le_exp.2 (by linarith [N.third])`. Establish `hk : (5 : ℝ) ≤ R.k`. Use `R.m_add_three_le_k` as an intermediate fact. Use `R.two_le_m` as an intermediate fact. Conclude with `(by omega : 5 ≤ R.k)` after adjusting the coercions.
+
+Establish `hbp : 0 ≤ bpC x eps` using `le_trans (Real.exp_pos _).le h1`. Use `⟨h1, ?_, Real.exp_le_exp.2 (by linarith), hba, ?_, ?_, div_le_self hbp hx, hk, ?_⟩` and prove the remaining obligations. Unfold `bpC; exact div_le_self (by linarith) hX`. Unfold `aC`. Use polynomial arithmetic with `[N.a_le]`.
+
+Rewrite using `[le_div_iff₀ (by linarith)]; linarith [N.kx]`. Use polynomial arithmetic with `[N.kx]`.
+-/
 theorem Num.facts {R : Ranks} {x eps : ℝ} {Del h : ℕ} (N : Num R x eps Del h) :
     Real.exp (x ^ eps / 2) ≤ bpC x eps ∧ bpC x eps ≤ aC x eps ∧ Real.exp (x ^ eps / 2) ≤ bx x eps ∧
       bx x eps ≤ aC x eps ∧ 4 * aC x eps ≤ bx x eps ^ 2 ∧ 2 * (R.k : ℝ) ≤ bpC x eps / x ∧ bpC x eps / x ≤ bpC x eps ∧
@@ -91,6 +105,9 @@ theorem Num.facts {R : Ranks} {x eps : ℝ} {Del h : ℕ} (N : Num R x eps Del h
   · rw [le_div_iff₀ (by linarith)]; linarith [N.kx]
   · nlinarith [N.kx]
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `R.k_even`. Conclude with `⟨c - 1, by rw [hc]; push_cast; ring⟩`.
+-/
 theorem half_k (R : Ranks) : ∃ z : ℤ, ((R.k : ℚ) - 1) / 2 = z + 1 / 2 := by
   obtain ⟨c, hc⟩ := R.k_even
   exact ⟨c - 1, by rw [hc]; push_cast; ring⟩
@@ -133,6 +150,41 @@ def hcOff (N : Num R x eps Del h) : HCParam R :=
       exact_mod_cast this)
     ⟨4 * Del * (R.k - 2) + 4 * R.k * Del, by push_cast; ring⟩ ⟨-1, by norm_num⟩
 
+/- English proof (translation)
+Take `⟨a1, a2, a3, a4, a5, a6, a7, a8, a9⟩` from `N.facts`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `hm` using `D.R.two_le_m`. Establish `k0 : D.R.k - 1 ≠ 0` using `by omega`. Establish `k1 : D.R.k - 1 + 1 = D.R.k` using `by omega`.
+
+Establish `k2 : ((D.R.k - 2 : ℕ) : ℝ) = (D.R.k : ℝ) - 2` using `by rw [Nat.cast_sub (by omega)]; norm_num`. Establish `m1 : ((D.R.m - 1 : ℕ) : ℝ) = (D.R.m : ℝ) - 1` using `by rw [Nat.cast_sub (by omega)]; norm_num`. Establish `hh : (1 : ℝ) ≤ h` using `by have := N.hh; exact_mod_cast (by omega : 1 ≤ h)`. Establish `hD : (1 : ℝ) ≤ Del` using `by exact_mod_cast N.Del_pos`. Establish `hm' : (2 : ℝ) ≤ D.R.m` using `by exact_mod_cast hm`.
+
+Establish `he` using `N.eta_le`. Establish `c1` using `Int.le_ceil (aC x eps)`. Establish `c2` using `Int.ceil_lt_add_one (aC x eps)`. Establish `c3` using `Int.le_ceil (bpC x eps)`. Establish `c4` using `Int.ceil_lt_add_one (bpC x eps)`.
+
+Establish `c5` using `Int.le_ceil (bx x eps)`. Establish `c6` using `Int.ceil_lt_add_one (bx x eps)`. Establish `c7` using `Int.floor_le (bpC x eps / x)`. Establish `c8` using `Int.lt_floor_add_one (bpC x eps / x)`. Establish `hj : ∀ j : Fin D.R.m, 0 ≤ 2 * (h : ℝ) * (j.1 : ℝ) ∧ 2 * (h : ℝ) * (j.1 : ℝ) + 2 * h ≤ 2 * (D.R.m : ℝ) * h`.
+
+Introduce `j`. Establish `: (j.1 : ℝ) + 1 ≤ D.R.m` using `by exact_mod_cast j.2`. Conclude with `⟨by positivity, by nlinarith⟩`. Establish `tU : ∀ τ, Top D τ → uFirst D τ = (⌈aC x eps⌉ : ℝ) + ((D.R.k : ℝ) - 1) / 2` using `fun τ ht => by`. Simplify using `[uFirst, hT τ ht, hcTop, hcMk]`.
+
+Establish `tW : ∀ τ, Top D τ → uLast D τ = -(⌈bpC x eps⌉ : ℝ) - ((D.R.k : ℝ) - 1) / 2` using `fun τ ht => by`. Simplify using `[uLast, hT τ ht, hcTop, hcMk, k0, k1]`. Establish `tB : ∀ τ, Top D τ → bFirst D τ = (⌈bpC x eps⌉ : ℝ) + (⌊bpC x eps / x⌋ : ℝ)` using `fun τ ht => by`. Simplify using `[bFirst, hT τ ht, hcTop, hcMk]`. Establish `tb : ∀ τ, Top D τ → ∀ j, (((D.hc τ).b j : ℚ) : ℝ) = (⌈bpC x eps⌉ : ℝ) + (⌊bpC x eps / x⌋ : ℝ) + 2 * (h : ℝ) * (j.1 : ℝ)` using `fun τ ht j => by`.
+
+Simplify using `[hT τ ht, hcTop, hcMk]`. Establish `te : ∀ τ, Top D τ → ∀ j, (((D.hc τ).e j : ℚ) : ℝ) = (⌈bpC x eps⌉ : ℝ) + (⌊bpC x eps / x⌋ : ℝ) + 2 * (h : ℝ) * (j.1 : ℝ) + h` using `fun τ ht j => by`. Simplify using `[hT τ ht, hcTop, hcMk]`. Establish `ob : ∀ τ, ¬ Top D τ → ∀ j, (((D.hc τ).b j : ℚ) : ℝ) = (⌈bx x eps⌉ : ℝ) + 2 * (h : ℝ) * (j.1 : ℝ)` using `fun τ ht j => by`. Simplify using `[hO τ ht, hcOff, hcMk]`.
+
+Establish `oe : ∀ τ, ¬ Top D τ → ∀ j, (((D.hc τ).e j : ℚ) : ℝ) = (⌈bx x eps⌉ : ℝ) + 2 * (h : ℝ) * (j.1 : ℝ) + h` using `fun τ ht j => by`. Simplify using `[hO τ ht, hcOff, hcMk]`. Establish `av : ∀ τ i, (((D.hc τ).v i : ℚ) : ℝ) = 4 * (Del : ℝ) * ((D.R.k : ℝ) - 2 - (i.1 : ℝ))` using `fun τ i => by`. Distinguish the cases in `ht : Top D τ`. Simplify using `[hT τ ht, hcTop, hcMk]`.
+
+Simplify using `[hO τ ht, hcOff, hcMk]`. Use `⟨⟨by positivity, N.eta_log, fun τ ht => ⟨tU τ ht, tW τ ht, tB τ ht, fun j => ?_⟩, fun τ ht j => ⟨?_, ?_⟩⟩, ⟨fun τ j => ?_, fun τ => ?_, fun τ ht => ?_⟩, fun τ j hj' => ?_, fun τ i => ?_, fun τ ht => ?_⟩` and prove the remaining obligations. Rewrite using `[te τ ht]`. Combine the linear relations using `[(hj j).2]`. Rewrite using `[ob τ ht]`.
+
+Combine the linear relations using `[(hj j).1]`. Rewrite using `[oe τ ht]`. Combine the linear relations using `[(hj j).2]`. Rewrite using `[sqrt_bx]`. Distinguish the cases in `ht : Top D τ`.
+
+Apply the tactic sequence `rw [tb τ ht]; constructor <;> linarith [(hj j).1, (hj j).2]`. Apply the tactic sequence `rw [ob τ ht]; constructor <;> linarith [(hj j).1, (hj j).2]`. Unfold `bLast bFirst`. Use `(hj ⟨D.R.m - 1, by omega⟩).2` as an intermediate fact. Distinguish the cases in `ht : Top D τ`.
+
+Rewrite using `[tb τ ht, tb τ ht]`. Simplify using `only [Nat.cast_zero, mul_zero] at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[ob τ ht, ob τ ht]`. Simplify using `only [Nat.cast_zero, mul_zero] at this ⊢`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[sqrt_bx, tU τ ht, tW τ ht, tB τ ht]`. Use `⟨by linarith, by linarith, by linarith, by linarith⟩` and prove the remaining obligations. Use `push_cast`. Distinguish the cases in `ht : Top D τ`.
+
+Rewrite using `[tb τ ht, tb τ ht]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[ob τ ht, ob τ ht]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[av, hDel]`. Establish `: (i.1 : ℝ) + 2 ≤ D.R.k` using `by have := i.2; exact_mod_cast (by omega : i.1 + 2 ≤ D.R.k)`. Establish `h0 : (0 : ℝ) ≤ i.1` using `by positivity`. Use `push_cast`.
+
+Apply the tactic sequence `constructor <;> nlinarith`. Establish `oU : uFirst D τ = 4 * (Del : ℝ) * ((D.R.k : ℝ) - 2) + 4 * D.R.k * Del + 1 / 2`. Simplify using `[uFirst, hO τ ht, hcOff, hcMk]`. Establish `oW : uLast D τ = -1 / 2` using `by simp [uLast, hO τ ht, hcOff, hcMk, k0, k1]`. Unfold `vFirst vLast`.
+
+Rewrite using `[oU, oW, av, av, hDel]`. Simplify using `only [k2, Nat.cast_zero]`. Use `push_cast`. Use `⟨by linarith, by nlinarith, by ring⟩` and prove the remaining obligations.
+-/
 theorem place_rows (D : D7) (N : Num D.R x eps Del h) (hDel : D.s.Del = Del)
     (hT : ∀ τ, Top D τ → D.hc τ = hcTop N) (hO : ∀ τ, ¬ Top D τ → D.hc τ = hcOff N) :
     OneScale D x eps (2 * (D.R.m : ℝ) * h) ∧ Nodes D x eps ∧
@@ -250,6 +302,9 @@ def rcd (H : Host R) (A : Arith H) (G : LocalGap H) (N : Num R x eps Del h) (Gam
         linarith)
     A.hg A.ht A.hlev A.hpde A.pz A.hK A.hpz A.hcong G
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun τ ht => show hcAll H N τ = hcTop N from if_pos ht, fun τ ht => show hcAll H N τ = hcOff N from if_neg ht⟩`.
+-/
 theorem rcd_rows (H : Host R) (A : Arith H) (G : LocalGap H) (N : Num R x eps Del h) (Gam : ℝ) (hG : 1 < Gam) :
     (∀ τ, Top (rcd H A G N Gam hG) τ → (rcd H A G N Gam hG).hc τ = hcTop (R := (rcd H A G N Gam hG).R) N) ∧
     (∀ τ, ¬ Top (rcd H A G N Gam hG) τ → (rcd H A G N Gam hG).hc τ = hcOff (R := (rcd H A G N Gam hG).R) N) :=
@@ -257,6 +312,13 @@ theorem rcd_rows (H : Host R) (A : Arith H) (G : LocalGap H) (N : Num R x eps De
 
 open Classical in
 
+/- English proof (translation)
+Take `⟨h1, -, -, h4, -⟩` from `factTopsThick D.R D.host`. Rewrite using `[← h4]`. Establish `hinj : Function.Injective (fun τ : D.what₂.Tau => (D.eTau τ : D.R.GG))` using `Subtype.val_injective.comp D.eTau.injective`. Rewrite using `[← Finset.card_image_of_injective _ hinj]`. Use `congr 1`.
+
+Use extensionality with `g`. Simplify using `only [Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨τ, ⟨t, ht⟩, rfl⟩`. Conclude with `Finset.mem_image.2 ⟨t, t.2, ht.symm⟩`.
+
+Introduce `hg`. Take `⟨t, ht, e⟩` from `Finset.mem_image.1 hg`. Apply the tactic sequence `refine ⟨D.eTau.symm ⟨g, h1 g hg⟩, ⟨⟨t, ht⟩, ?_⟩, ?_⟩ <;> simp [e]`.
+-/
 theorem card_top (D : D7) : (Finset.univ.filter (fun τ => Top D τ)).card = D.host.TT.card := by
   obtain ⟨h1, -, -, h4, -⟩ := factTopsThick D.R D.host
   rw [← h4]
@@ -273,6 +335,15 @@ theorem card_top (D : D7) : (Finset.univ.filter (fun τ => Top D τ)).card = D.h
     obtain ⟨t, ht, e⟩ := Finset.mem_image.1 hg
     refine ⟨D.eTau.symm ⟨g, h1 g hg⟩, ⟨⟨t, ht⟩, ?_⟩, ?_⟩ <;> simp [e]
 
+/- English proof (translation)
+Introduce `j`. Take `⟨a, ha⟩` from `A.e_int j`. Take `⟨b, hb⟩` from `B.e_int j`. Take `⟨c, hc⟩` from `hev`. Establish `h1` using `card_top D`.
+
+Establish `h2` using `Finset.card_filter_add_card_filter_not (s := (Finset.univ : Finset D.what₂.Tau)) (fun τ => Top D τ)`. Rewrite `h2` using `[Finset.card_univ, D.what₂.card_Tau, h1, hc]`. Establish `h3 : ((Finset.univ.filter (fun τ => ¬ Top D τ)).card : ℚ) = 2 * D.R.n - 2 * c`. Establish `: ((c + c + (Finset.univ.filter (fun τ => ¬ Top D τ)).card : ℕ) : ℚ) = ((2 * D.R.n : ℕ) : ℚ)`. Rewrite using `[h2]`.
+
+Both sides reduce to the same expression. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨c * a + (D.R.n - c) * b, ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.sum_filter_add_sum_filter_not Finset.univ (fun τ => Top D τ), Finset.sum_congr rfl (fun τ hτ => show (D.hc τ).e j = (a : ℚ) by rw [hT τ (Finset.mem_filter.1 hτ).2, ha]), Finset.sum_congr rfl (fun τ hτ => show (D.hc τ).e j = (b : ℚ) by rw [hO τ (Finset.mem_filter.1 hτ).2 …`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem even_of_const (D : D7) (A B : HCParam D.R) (hT : ∀ τ, Top D τ → D.hc τ = A) (hO : ∀ τ, ¬ Top D τ → D.hc τ = B)
     (hev : Even D.host.TT.card) : EvenCentres D := by
   classical
@@ -294,9 +365,15 @@ theorem even_of_const (D : D7) (A B : HCParam D.R) (hT : ∀ τ, Top D τ → D.
     Finset.sum_const, Finset.sum_const, nsmul_eq_mul, nsmul_eq_mul, h3, h1, hc]
   push_cast; ring
 
+/- English proof (translation)
+The claim follows from `h.card_even hm`.
+-/
 theorem even_card {H : Host R} {J : ℕ} (h : TopsCoset H J) (hm : 2 * R.m ≤ 2 ^ R.e) : Even H.TT.card :=
   h.card_even hm
 
+/- English proof (translation)
+Take `⟨r1, r2⟩` from `rcd_rows H A G N Gam hG`. Take `⟨o, n, -⟩` from `place_rows (rcd H A G N Gam hG) N rfl r1 r2`. Conclude with `⟨o, n, even_of_const _ _ _ r1 r2 (even_card hJ hm), Del, rfl⟩`.
+-/
 theorem rcd_datum (H : Host R) (A : Arith H) (G : LocalGap H) (N : Num R x eps Del h) (Gam : ℝ) (hG : 1 < Gam) {J : ℕ}
     (hJ : TopsCoset H J) (hm : 2 * R.m ≤ 2 ^ R.e) :
     OneScale (rcd H A G N Gam hG) x eps (2 * (R.m : ℝ) * h) ∧ Nodes (rcd H A G N Gam hG) x eps ∧
@@ -307,31 +384,64 @@ theorem rcd_datum (H : Host R) (A : Arith H) (G : LocalGap H) (N : Num R x eps D
 
 @[irreducible] def P (n : ℕ) : ℝ := 2 ^ n
 
+/- English proof (translation)
+Unfold `P`. Both sides reduce to the same expression.
+-/
 theorem charpoly_eq_of_isIso (n : ℕ) : P n = 2 ^ n := by unfold P; rfl
 
+/- English proof (translation)
+Rewrite using `[charpoly_eq_of_isIso]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem natCast_two_pow (n : ℕ) : ((2 ^ n : ℕ) : ℝ) = P n := by rw [charpoly_eq_of_isIso]; push_cast; rfl
 
+/- English proof (translation)
+Rewrite using `[charpoly_eq_of_isIso]`. Check the signs of the components of the expression.
+-/
 theorem twoPow_pos (n : ℕ) : 0 < P n := by rw [charpoly_eq_of_isIso]; positivity
 
+/- English proof (translation)
+Simplify using `only [charpoly_eq_of_isIso, pow_add]`.
+-/
 theorem twoPow_mul_twoPow (a b : ℕ) : P a * P b = P (a + b) := by simp only [charpoly_eq_of_isIso, pow_add]
 
+/- English proof (translation)
+Simplify using `only [charpoly_eq_of_isIso, pow_mul]`.
+-/
 theorem twoPow_pow (a n : ℕ) : P a ^ n = P (a * n) := by simp only [charpoly_eq_of_isIso, pow_mul]
 
+/- English proof (translation)
+Rewrite using `[charpoly_eq_of_isIso, charpoly_eq_of_isIso]; exact pow_le_pow_right₀ (by norm_num) h`.
+-/
 theorem P_le {a b : ℕ} (h : a ≤ b) : P a ≤ P b := by
   rw [charpoly_eq_of_isIso, charpoly_eq_of_isIso]; exact pow_le_pow_right₀ (by norm_num) h
 
+/- English proof (translation)
+Rewrite using `[charpoly_eq_of_isIso, ← Real.rpow_natCast, ← Real.rpow_mul (by norm_num)]`.
+-/
 theorem twoPow_rpow (N : ℕ) (c : ℝ) : P N ^ c = (2 : ℝ) ^ ((N : ℝ) * c) := by
   rw [charpoly_eq_of_isIso, ← Real.rpow_natCast, ← Real.rpow_mul (by norm_num)]
 
+/- English proof (translation)
+Rewrite using `[twoPow_rpow, h, Real.rpow_natCast, charpoly_eq_of_isIso]`.
+-/
 theorem twoPow_rpow_of_mul_eq {N n : ℕ} {c : ℝ} (h : (N : ℝ) * c = n) : P N ^ c = P n := by
   rw [twoPow_rpow, h, Real.rpow_natCast, charpoly_eq_of_isIso]
 
+/- English proof (translation)
+Rewrite using `[twoPow_rpow, charpoly_eq_of_isIso n, ← Real.rpow_natCast]; exact Real.rpow_le_rpow_of_exponent_le (by norm_num) h`.
+-/
 theorem twoPow_rpow_le {N n : ℕ} {c : ℝ} (h : (N : ℝ) * c ≤ n) : P N ^ c ≤ P n := by
   rw [twoPow_rpow, charpoly_eq_of_isIso n, ← Real.rpow_natCast]; exact Real.rpow_le_rpow_of_exponent_le (by norm_num) h
 
+/- English proof (translation)
+Rewrite using `[twoPow_rpow, charpoly_eq_of_isIso n, ← Real.rpow_natCast]; exact Real.rpow_le_rpow_of_exponent_le (by norm_num) h`.
+-/
 theorem twoPow_le_rpow {N n : ℕ} {c : ℝ} (h : (n : ℝ) ≤ (N : ℝ) * c) : P n ≤ P N ^ c := by
   rw [twoPow_rpow, charpoly_eq_of_isIso n, ← Real.rpow_natCast]; exact Real.rpow_le_rpow_of_exponent_le (by norm_num) h
 
+/- English proof (translation)
+Establish `h2 : (2 : ℝ) ≤ Real.exp 1` using `by linarith [Real.add_one_le_exp (1 : ℝ)]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem twoPow_le_exp {n : ℕ} {y : ℝ} (h : (n : ℝ) ≤ y) : P n ≤ Real.exp y := by
   have h2 : (2 : ℝ) ≤ Real.exp 1 := by linarith [Real.add_one_le_exp (1 : ℝ)]
   calc P n = 2 ^ n := charpoly_eq_of_isIso n
@@ -339,14 +449,26 @@ theorem twoPow_le_exp {n : ℕ} {y : ℝ} (h : (n : ℝ) ≤ y) : P n ≤ Real.e
     _ = Real.exp n := by rw [← Real.exp_nat_mul, mul_one]
     _ ≤ Real.exp y := Real.exp_le_exp.2 h
 
+/- English proof (translation)
+Rewrite using `[Real.log_le_iff_le_exp hy]`. Conclude with `h.trans (twoPow_le_exp le_rfl)`.
+-/
 theorem log_le_of_le_P {n : ℕ} {y : ℝ} (hy : 0 < y) (h : y ≤ P n) : Real.log y ≤ n := by
   rw [Real.log_le_iff_le_exp hy]; exact h.trans (twoPow_le_exp le_rfl)
 
+/- English proof (translation)
+Rewrite using `[charpoly_eq_of_isIso]; exact one_le_pow₀ (by norm_num)`.
+-/
 theorem one_le_P (n : ℕ) : 1 ≤ P n := by rw [charpoly_eq_of_isIso]; exact one_le_pow₀ (by norm_num)
 
+/- English proof (translation)
+Rewrite using `[twoPow_rpow_of_mul_eq (n := 14) (by norm_num), charpoly_eq_of_isIso]; norm_num`.
+-/
 theorem L_small : P 2800 ^ ((1 : ℝ) / 200) = 16384 := by
   rw [twoPow_rpow_of_mul_eq (n := 14) (by norm_num), charpoly_eq_of_isIso]; norm_num
 
+/- English proof (translation)
+The claim follows from `le_rfl hh := by decide x_ge := one_le_P _ third := by rw [L_small] refine (twoPow_rpow_le (n := 5) (by norm_num)).trans ?_ rw [charpoly_eq_of_isIso]; norm_num a_le := by have h4 : (4 : ℝ) = P 2 := by rw [charpoly_eq_of_isIso]; norm_num rw [bx, L_small, twoPow_rpow_of_mul_eq (n := …`.
+-/
 theorem num_small : Num R0 (P 2800) (1 / 200) 1 9 where
   Del_pos := le_rfl
   hh := by decide
@@ -397,6 +519,9 @@ def H1 : Host R0 :=
 def A1 : Arith H1 :=
   ⟨T0, examplePrime_prime, exampleHost_type_primes_split, ⟨exampleHost_typeHypothesis.cond, exampleHost_typeHypothesis.bb, exampleHost_typeHypothesis.jac⟩, examplePrime_mem_levelPrimes, examplePrime_ne_split_primes, π0O, π0_mem_K, π0_norm, π0_cong⟩
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `factPlaces D.R.toFrame`. Use `⟨D.eTau.symm ⟨D.R.tau2 0, (h1 _).2 (Or.inr ⟨0, rfl⟩)⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨t, ht⟩`. Rewrite `ht` using `[Equiv.apply_symm_apply]`. Conclude with `h2 _ _ ht.symm`.
+-/
 theorem exists_not_top (D : D7) : ∃ τ, ¬ Top D τ := by
   obtain ⟨h1, h2⟩ := factPlaces D.R.toFrame
   refine ⟨D.eTau.symm ⟨D.R.tau2 0, (h1 _).2 (Or.inr ⟨0, rfl⟩)⟩, ?_⟩
@@ -404,11 +529,17 @@ theorem exists_not_top (D : D7) : ∃ τ, ¬ Top D τ := by
   rw [Equiv.apply_symm_apply] at ht
   exact h2 _ _ ht.symm
 
+/- English proof (translation)
+Take `⟨h1, -⟩` from `factPlaces D.R.toFrame`. Take `⟨t, ht⟩` from `h`. Conclude with `⟨D.eTau.symm ⟨D.R.tau1 t, (h1 _).2 (Or.inl ⟨t, rfl⟩)⟩, ⟨t, ht⟩, by rw [Equiv.apply_symm_apply]⟩`.
+-/
 theorem exists_top (D : D7) (h : D.host.TT.Nonempty) : ∃ τ, Top D τ := by
   obtain ⟨h1, -⟩ := factPlaces D.R.toFrame
   obtain ⟨t, ht⟩ := h
   exact ⟨D.eTau.symm ⟨D.R.tau1 t, (h1 _).2 (Or.inl ⟨t, rfl⟩)⟩, ⟨t, ht⟩, by rw [Equiv.apply_symm_apply]⟩
 
+/- English proof (translation)
+Establish `h2 : (0 : ℝ) < (R.m : ℝ)` using `by have := R.two_le_m; exact_mod_cast (by omega : 0 < R.m)`. Establish `h3 : (0 : ℝ) < (R.f : ℝ)`. Establish `: 0 < R.f` using `by unfold Ranks.f Ranks.n; positivity`. Conclude with `this` after adjusting the coercions. Conclude with `Real.one_lt_exp_iff.2 (by positivity)`.
+-/
 theorem gam_gt {CG y : ℝ} (R : Ranks) (hC : 0 < CG) (hy : 0 < y) : 1 < Real.exp (CG * (R.m : ℝ) ^ 5 * R.f * y) := by
   have h2 : (0 : ℝ) < (R.m : ℝ) := by have := R.two_le_m; exact_mod_cast (by omega : 0 < R.m)
   have h3 : (0 : ℝ) < (R.f : ℝ) := by
@@ -416,14 +547,25 @@ theorem gam_gt {CG y : ℝ} (R : Ranks) (hC : 0 < CG) (hy : 0 < y) : 1 < Real.ex
     exact_mod_cast this
   exact Real.one_lt_exp_iff.2 (by positivity)
 
+/- English proof (translation)
+Use `decide hi := by decide coset := ⟨0, fun t => Finset.mem_image.trans ⟨fun ⟨s, _, h⟩ => ⟨s, congrArg R0.h h.symm⟩, fun ⟨s, h⟩ => ⟨s, Finset.mem_univ _, (exampleRanks_h_injective h).symm⟩⟩⟩`.
+-/
 theorem small_host_tops_coset : TopsCoset H1 1 where
   lo := by decide
   hi := by decide
   coset := ⟨0, fun t => Finset.mem_image.trans
     ⟨fun ⟨s, _, h⟩ => ⟨s, congrArg R0.h h.symm⟩, fun ⟨s, h⟩ => ⟨s, Finset.mem_univ _, (exampleRanks_h_injective h).symm⟩⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨0, Finset.mem_singleton_self _⟩, 3, exampleRanks_jetIndex_bound, le_refl 50⟩`.
+-/
 theorem small_host_dead_labels : DeadLabels H1 := ⟨⟨0, Finset.mem_singleton_self _⟩, 3, exampleRanks_jetIndex_bound, le_refl 50⟩
 
+/- English proof (translation)
+Apply `Nat.le_of_lt_succ` to reduce the goal to its premises. Rewrite using `[Nat.floor_lt hy]`. Assume the negation of the conclusion as `hc`. Establish `h7 : (7 : ℝ) ≤ y` using `by push_cast at hc; linarith [not_lt.1 hc]`. Establish `h8` using `pow_le_pow_left₀ (by norm_num) h7 5`.
+
+Evaluate the numerical expressions using `at h8`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem floor_le_six {y : ℝ} (hy : 0 ≤ y) (h : y ^ 5 ≤ 16384) : ⌊y⌋₊ ≤ 6 := by
   apply Nat.le_of_lt_succ
   rw [Nat.floor_lt hy]
@@ -433,6 +575,11 @@ theorem floor_le_six {y : ℝ} (hy : 0 ≤ y) (h : y ^ 5 ≤ 16384) : ⌊y⌋₊
   norm_num at h8
   linarith
 
+/- English proof (translation)
+Establish `h1 : 1 ≤ x ^ (eps / 100)` using `Real.one_le_rpow hx (by positivity)`. Use `SplitLab.of_one h ?_ ?_` and prove the remaining obligations. Rewrite using `[exampleRanks_o]`. Conclude with `h1` after adjusting the coercions. Use `show ((2 ^ (2 + 2) : ℕ) : ℝ) ≤ 4 * ((4 : ℕ) : ℝ) * _ push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem small_host_split_clause {x eps : ℝ} (hx : 1 ≤ x) (he : 0 ≤ eps) (h : ⌊x ^ (eps / 5)⌋₊ ≤ 6) : SplitLab H1 x eps := by
   have h1 : 1 ≤ x ^ (eps / 100) := Real.one_le_rpow hx (by positivity)
   refine SplitLab.of_one h ?_ ?_
@@ -440,6 +587,11 @@ private theorem small_host_split_clause {x eps : ℝ} (hx : 1 ≤ x) (he : 0 ≤
   · show ((2 ^ (2 + 2) : ℕ) : ℝ) ≤ 4 * ((4 : ℕ) : ℝ) * _
     push_cast; linarith
 
+/- English proof (translation)
+Establish `hG` using `gam_gt R0 hC (Real.rpow_pos_of_pos (twoPow_pos 2800) (1 / 200))`. Take `⟨o, n, e, d⟩` from `rcd_datum H1 A1 (LocalGap.localGapOfRecord D0 H1) num_small _ hG small_host_tops_coset (by decide)`. Establish `h1 : 2 * (R0.m : ℝ) * ((9 : ℕ) : ℝ) = 36` using `by show 2 * ((2 : ℕ) : ℝ) * _ = _; norm_num`. Rewrite `o` using `[h1]`. Use `⟨_, small_host_tops_coset.card_eq (by decide), rfl, o, n, (labels_iff _ _ _ _).2 ⟨small_host_dead_labels, ?_, hC, fun u => Real.log_exp _⟩, small_host_tops_coset, e, d⟩` and prove the remaining obligations.
+
+Use `small_host_split_clause (one_le_P _) (by norm_num) (floor_le_six (Real.rpow_pos_of_pos (twoPow_pos _) _).le ?_)` and prove the remaining obligations. Rewrite using `[← Real.rpow_natCast (P 2800 ^ _), ← Real.rpow_mul (twoPow_pos _).le, twoPow_rpow_of_mul_eq (n := 14) (by norm_num), charpoly_eq_of_isIso]`. Evaluate the numerical expressions.
+-/
 theorem small_witness (D0 : D7) (CG : ℝ) (hC : 0 < CG) : ∃ D : D7, D.host.TT.card = 2 ∧ D.R.f = 8 ∧
     OneScale D (P 2800) (1 / 200) 36 ∧ Nodes D (P 2800) (1 / 200) ∧ Labels D (P 2800) (1 / 200) CG ∧
     TopsCoset D.host 1 ∧ EvenCentres D ∧ DelInt D := by
@@ -453,18 +605,33 @@ theorem small_witness (D0 : D7) (CG : ℝ) (hC : 0 < CG) : ∃ D : D7, D.host.TT
   rw [← Real.rpow_natCast (P 2800 ^ _), ← Real.rpow_mul (twoPow_pos _).le, twoPow_rpow_of_mul_eq (n := 14) (by norm_num), charpoly_eq_of_isIso]
   norm_num
 
+/- English proof (translation)
+Rewrite using `[twoPow_rpow_of_mul_eq (n := 12) (by norm_num), charpoly_eq_of_isIso]; norm_num`.
+-/
 theorem L_coarse : P 1 ^ (12 : ℝ) = 4096 := by
   rw [twoPow_rpow_of_mul_eq (n := 12) (by norm_num), charpoly_eq_of_isIso]; norm_num
 
+/- English proof (translation)
+Rewrite using `[twoPow_rpow_of_mul_eq (n := 4) (by norm_num), charpoly_eq_of_isIso]; norm_num`.
+-/
 theorem X_coarse : P 1 ^ ((12 : ℝ) / 3) = 16 := by
   rw [twoPow_rpow_of_mul_eq (n := 4) (by norm_num), charpoly_eq_of_isIso]; norm_num
 
+/- English proof (translation)
+The claim follows from `(twoPow_rpow_le (n := 6) (by norm_num)).trans (by rw [charpoly_eq_of_isIso]; norm_num)`.
+-/
 theorem Y_coarse : P 1 ^ ((11 : ℝ) / 2) ≤ 64 :=
   (twoPow_rpow_le (n := 6) (by norm_num)).trans (by rw [charpoly_eq_of_isIso]; norm_num)
 
+/- English proof (translation)
+The claim follows from `(h1.trans (charpoly_eq_of_isIso n).ge).trans (twoPow_le_exp h2)`.
+-/
 theorem le_exp_of_le {y z : ℝ} (n : ℕ) (h1 : y ≤ 2 ^ n) (h2 : (n : ℝ) ≤ z) : y ≤ Real.exp z :=
   (h1.trans (charpoly_eq_of_isIso n).ge).trans (twoPow_le_exp h2)
 
+/- English proof (translation)
+The claim follows from `le_rfl hh := by decide x_ge := one_le_P _ third := by rw [L_coarse, X_coarse]; norm_num a_le := by rw [bx, L_coarse] exact le_exp_of_le 8 (by linarith [Y_coarse]) (by norm_num) kx := by rw [L_coarse, charpoly_eq_of_isIso] exact le_exp_of_le 5 (by show 2 * ((8 : ℕ) : ℝ) * _ ≤ _; n …`.
+-/
 theorem num_coarse : Num R0 (P 1) 12 1 9 where
   Del_pos := le_rfl
   hh := by decide
@@ -488,6 +655,11 @@ theorem num_coarse : Num R0 (P 1) 12 1 9 where
     refine (log_le_of_le_P (n := 6) (by norm_num) (by rw [charpoly_eq_of_isIso]; norm_num)).trans ?_
     rw [charpoly_eq_of_isIso]; norm_num
 
+/- English proof (translation)
+Establish `h` using `(factRd R0 H1).2.1`. Establish `h1 : (H1.QS : ℝ) / 2 ≤ 8` using `by show ((2 ^ (2 + 2) : ℕ) : ℝ) / 2 ≤ 8; norm_num`. Establish `h2 : Real.sqrt ((H1.q : ℝ) * H1.d) ≤ 1024`. Rewrite using `[Real.sqrt_le_iff]`. Conclude with `⟨by norm_num, by show ((571 : ℕ) : ℝ) * ((599 : ℕ) : ℝ) ≤ _; norm_num⟩`.
+
+Establish `h3` using `mul_le_mul h1 h2 (Real.sqrt_nonneg _) (by norm_num)`. Unfold `Host.v`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem small_host_root_discriminant_le : H1.v ≤ 4096 := by
   have h := (factRd R0 H1).2.1
   have h1 : (H1.QS : ℝ) / 2 ≤ 8 := by show ((2 ^ (2 + 2) : ℕ) : ℝ) / 2 ≤ 8; norm_num
@@ -498,12 +670,20 @@ theorem small_host_root_discriminant_le : H1.v ≤ 4096 := by
   unfold Host.v
   linarith
 
+/- English proof (translation)
+Establish `hb : 0 < bx x eps` using `Real.exp_pos _`. Unfold `aC`. Apply the tactic sequence `constructor <;> nlinarith`.
+-/
 theorem a_thresholds {x eps v : ℝ} (h1 : x ^ ((11 : ℝ) / 2) ≤ bx x eps) (h2 : x ^ ((11 : ℝ) / 2) * v ≤ bx x eps) :
     aC x eps ≤ bx x eps ^ 2 ∧ aC x eps * v ≤ bx x eps ^ 2 := by
   have hb : 0 < bx x eps := Real.exp_pos _
   unfold aC
   constructor <;> nlinarith
 
+/- English proof (translation)
+Establish `hY` using `Y_coarse`. Establish `hY0 : 0 < P 1 ^ ((11 : ℝ) / 2)` using `Real.rpow_pos_of_pos (twoPow_pos _) _`. Take `⟨a1, a2⟩` from `a_thresholds (x := P 1) (eps := 12) (v := v) (by rw [bx, L_coarse]; exact le_exp_of_le 6 (by linarith) (by norm_num)) (by rw [bx, L_coarse]; exact le_exp_of_le 18 (by nlinarith) (by norm_num))`. Use `⟨by rw [charpoly_eq_of_isIso]; norm_num, a1, a2, ?_, ?_, by linarith, ?_⟩` and prove the remaining obligations. Rewrite using `[X_coarse]; exact le_exp_of_le 15 (by linarith) (by norm_num)`.
+
+Rewrite using `[bx, L_coarse]`. Use `pow_le_pow_left₀ hY0.le hY 3` as an intermediate fact. Conclude with `le_exp_of_le 50 (by linarith) (by norm_num)`. Rewrite using `[bx, L_coarse, X_coarse, charpoly_eq_of_isIso, show (4096 : ℝ) = 4080 + 16 by norm_num, Real.exp_add]`. Conclude with `mul_le_mul_of_nonneg_right (le_exp_of_le 9 (by norm_num) (by norm_num)) (Real.exp_pos _).le`.
+-/
 theorem thresh_coarse {v : ℝ} (hv : v ≤ 4096) : ThreshNums (P 1) 12 8 8 40 32 36 v 599 := by
   have hY := Y_coarse
   have hY0 : 0 < P 1 ^ ((11 : ℝ) / 2) := Real.rpow_pos_of_pos (twoPow_pos _) _
@@ -518,6 +698,11 @@ theorem thresh_coarse {v : ℝ} (hv : v ≤ 4096) : ThreshNums (P 1) 12 8 8 40 3
   · rw [bx, L_coarse, X_coarse, charpoly_eq_of_isIso, show (4096 : ℝ) = 4080 + 16 by norm_num, Real.exp_add]
     exact mul_le_mul_of_nonneg_right (le_exp_of_le 9 (by norm_num) (by norm_num)) (Real.exp_pos _).le
 
+/- English proof (translation)
+Establish `hG` using `gam_gt R0 hC (Real.rpow_pos_of_pos (twoPow_pos 1) 12)`. Take `⟨o, n, e, d⟩` from `rcd_datum H1 A1 (LocalGap.localGapOfRecord D0 H1) num_coarse _ hG small_host_tops_coset (by decide)`. Establish `h1 : 2 * (R0.m : ℝ) * ((9 : ℕ) : ℝ) = 36` using `by show 2 * ((2 : ℕ) : ℝ) * _ = _; norm_num`. Rewrite `o` using `[h1]`. Use `⟨_, small_host_tops_coset.card_eq (by decide), rfl, ⟨o, small_host_tops_coset, e, ?_, d⟩, n, (labels_iff _ _ _ _).2 ⟨small_host_dead_labels, ?_, hC, fun u => Real.log_exp _⟩⟩` and prove the remaining obligations.
+
+Use `show ThreshNums (P 1) 12 ((8 : ℕ) : ℝ) ((8 : ℕ) : ℝ) ((40 : ℕ) : ℝ) (4 * ((8 : ℕ) : ℝ) * ((((1 : ℕ) : ℚ)) : ℝ)) 36 H1.v ((599 : ℕ) : ℝ)`. Apply the tactic sequence `convert thresh_coarse small_host_root_discriminant_le using 1 <;> norm_num`. Use `small_host_split_clause (one_le_P _) (by norm_num) (floor_le_six (Real.rpow_pos_of_pos (twoPow_pos _) _).le ?_)` and prove the remaining obligations. Rewrite using `[← Real.rpow_natCast (P 1 ^ _), ← Real.rpow_mul (twoPow_pos _).le, twoPow_rpow_of_mul_eq (n := 12) (by norm_num), charpoly_eq_of_isIso]`. Evaluate the numerical expressions.
+-/
 theorem coarse_witness (D0 : D7) (CG : ℝ) (hC : 0 < CG) : ∃ D : D7, D.host.TT.card = 2 ∧ D.R.f = 8 ∧
     OneScaleDatum D (P 1) 12 36 1 ∧ Nodes D (P 1) 12 ∧ Labels D (P 1) 12 CG := by
   have hG := gam_gt R0 hC (Real.rpow_pos_of_pos (twoPow_pos 1) 12)
@@ -552,6 +737,25 @@ def Rk (α e κ : ℕ) (h1 : 1 ≤ α) (h2 : α ≤ e + 1) (h3 : e + 1 ≤ κ) (
     f_le_k := a3
     m_sq_le_N := by nlinarith }
 
+/- English proof (translation)
+Establish `L : P 240000 ^ ((1 : ℝ) / 200) = P 1200` using `twoPow_rpow_of_mul_eq (by norm_num)`. Establish `L2 : P 240000 ^ ((1 : ℝ) / 200 / 2) = P 600` using `twoPow_rpow_of_mul_eq (by norm_num)`. Establish `L3 : P 240000 ^ ((1 : ℝ) / 200 / 3) = P 400` using `twoPow_rpow_of_mul_eq (by norm_num)`. Establish `L4 : P 240000 ^ ((1 : ℝ) / 200 / 4) = P 300` using `twoPow_rpow_of_mul_eq (by norm_num)`. Establish `locP_mono₂ : P 240000 ^ ((1 : ℝ) / 200 / 100) = P 12` using `twoPow_rpow_of_mul_eq (by norm_num)`.
+
+Establish `q1 : (2 : ℝ) = P 1` using `by rw [charpoly_eq_of_isIso]; norm_num`. Establish `q2 : (4 : ℝ) = P 2` using `by rw [charpoly_eq_of_isIso]; norm_num`. Establish `hh2 : P 1200 / 2 = P 1199`. Rewrite using `[div_eq_iff (by norm_num), q1, twoPow_mul_twoPow]`. Establish `big : ∀ n, 27 ≤ n → (100000000 : ℝ) ≤ P n` using `fun n hn => le_trans (by rw [charpoly_eq_of_isIso]; norm_num) (P_le hn)`.
+
+Establish `ex : ∀ a n : ℕ, 27 ≤ n → a ≤ 100000000 → P a ≤ Real.exp (P n)` using `fun a n hn ha => twoPow_le_exp (le_trans (by exact_mod_cast ha) (big n hn))`. Establish `lg : ∀ a n : ℕ, 27 ≤ n → a ≤ 100000000 → Real.log (P a) ≤ P n` using `fun a n hn ha => (log_le_of_le_P (twoPow_pos a) le_rfl).trans (le_trans (by exact_mod_cast ha) (big n hn))`. Use `⟨⟨?_, ?_, one_le_P _, ?_, ?_, ?_, ?_, ?_, ?_⟩, fun lrd l1 l2 => ⟨?_, ?_, ?_, ?_, ?_, l1, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `one_le_P 32000000` as an intermediate fact. Rewrite `this` using `[← hD]`.
+
+Conclude with `this` after adjusting the coercions. Establish `h1 : 4 * (R.k : ℝ) ≤ h` using `by rw [hk, hh, q2, twoPow_mul_twoPow]; exact P_le (by norm_num)`. Establish `h2 : 4 * R.k ≤ h` using `by exact_mod_cast h1`. Use `R.m_add_three_le_k` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[L, L3, hh2]; exact P_le (by norm_num)`. Rewrite using `[bx, L, twoPow_rpow_of_mul_eq (n := 1320000) (by norm_num), q2, twoPow_mul_twoPow]; exact ex _ _ (by norm_num) (by norm_num)`. Rewrite using `[L, hh2, hk, q1, twoPow_mul_twoPow, twoPow_mul_twoPow]; exact ex _ _ (by norm_num) (by norm_num)`. Rewrite using `[L, hh2, hm, hh, q1, twoPow_mul_twoPow, twoPow_mul_twoPow]; exact ex _ _ (by norm_num) (by norm_num)`. Rewrite using `[L, hh2, hk, hD, q2, twoPow_mul_twoPow, twoPow_mul_twoPow]; exact ex _ _ (by norm_num) (by norm_num)`.
+
+Rewrite using `[L4, hm, hh, q1, twoPow_mul_twoPow, twoPow_mul_twoPow]; exact lg _ _ (by norm_num) (by norm_num)`. Rewrite using `[hm]; exact twoPow_rpow_le (by norm_num)`. Rewrite using `[hm, hf, twoPow_pow]; exact P_le (by norm_num)`. Rewrite using `[hk, hf]; exact P_le (by norm_num)`. Rewrite using `[L2, L, hm, hf, hk, twoPow_pow, twoPow_mul_twoPow, twoPow_mul_twoPow, twoPow_mul_twoPow]; exact P_le (by norm_num)`.
+
+Rewrite using `[hk]; exact twoPow_le_rpow (by norm_num)`. Rewrite using `[L2]`. Conclude with `l2`. Rewrite using `[L, hk, hf, hD, twoPow_mul_twoPow, twoPow_mul_twoPow]; exact twoPow_rpow_le (by norm_num)`. Rewrite using `[L2, hD]; exact lg _ _ (by norm_num) (by norm_num)`.
+
+Establish `hr : (R.r : ℝ) ≤ P 1092001`. Establish `h1 : R.r ≤ 2 * R.k` using `by have := R.m_add_three_le_k; unfold Ranks.r; omega`. Establish `h2 : (R.r : ℝ) ≤ 2 * R.k` using `by exact_mod_cast h1`. Rewrite `h2` using `[hk, q1, twoPow_mul_twoPow]`. Then use the resulting hypothesis. Establish `hr19 : (R.r : ℝ) ^ 19 ≤ P 1092001 ^ 19` using `pow_le_pow_left₀ (by positivity) hr 19`.
+
+Rewrite using `[locP_mono₂, L, hf, hh]`. Use `twoPow_pos 12` as an intermediate fact. Use `twoPow_pos 489601` as an intermediate fact. Use `twoPow_pos 1200` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem big_nums (R : Ranks) (Del h : ℕ) (hm : (R.m : ℝ) = P 119925) (hf : (R.f : ℝ) = P 489601) (hk : (R.k : ℝ) = P 1092000)
     (ht : R.t = 4 * R.k + 1) (hD : (Del : ℝ) = P 32000000) (hh : (h : ℝ) = P 24000000) :
     Num R (P 240000) (1 / 200) Del h ∧
@@ -602,6 +806,9 @@ theorem big_nums (R : Ranks) (Del h : ℕ) (hm : (R.m : ℝ) = P 119925) (hf : (
     calc _ ≤ P 12 * P 1092001 ^ 19 * P 489601 ^ 5 * P 1200 := by gcongr
       _ ≤ _ := by rw [twoPow_pow, twoPow_pow, twoPow_mul_twoPow, twoPow_mul_twoPow, twoPow_mul_twoPow, q1, twoPow_mul_twoPow]; exact P_le (by norm_num)
 
+/- English proof (translation)
+Establish `key : ∀ (α e κ a b : ℕ) (h1 : 1 ≤ α) (h2 : α ≤ e + 1) (h3 : e + 1 ≤ κ) (h4 : α + 2 ≤ κ), ∃ (R : Ranks) (Del h : ℕ), (R.m : ℝ) = P α ∧ (R.f : ℝ) = P (e + 1) ∧ (R.k : ℝ) = P κ ∧ R.t = 4 * R.k + 1 ∧ (Del : ℝ) = P a ∧ (h : ℝ) = P b` using `fun α e κ a b h1 h2 h3 h4 => ⟨Rk α e κ h1 h2 h3 h4, 2 ^ a, 2 ^ b, natCast_two_pow _, by rw [← natCast_two_pow, pow_succ']; rfl, natCast_two_pow _, rfl, natCast_two_pow _, natCast_two_pow _⟩`. Conclude with `key 119925 489600 1092000 32000000 24000000 (by norm_num) (by norm_num) (by norm_num) (by norm_num)`.
+-/
 theorem big_ranks : ∃ (R : Ranks) (Del h : ℕ), (R.m : ℝ) = P 119925 ∧ (R.f : ℝ) = P 489601 ∧ (R.k : ℝ) = P 1092000 ∧
     R.t = 4 * R.k + 1 ∧ (Del : ℝ) = P 32000000 ∧ (h : ℝ) = P 24000000 := by
   have key : ∀ (α e κ a b : ℕ) (h1 : 1 ≤ α) (h2 : α ≤ e + 1) (h3 : e + 1 ≤ κ) (h4 : α + 2 ≤ κ),
@@ -610,6 +817,27 @@ theorem big_ranks : ∃ (R : Ranks) (Del h : ℕ), (R.m : ℝ) = P 119925 ∧ (R
     ⟨Rk α e κ h1 h2 h3 h4, 2 ^ a, 2 ^ b, natCast_two_pow _, by rw [← natCast_two_pow, pow_succ']; rfl, natCast_two_pow _, rfl, natCast_two_pow _, natCast_two_pow _⟩
   exact key 119925 489600 1092000 32000000 24000000 (by norm_num) (by norm_num) (by norm_num) (by norm_num)
 
+/- English proof (translation)
+Establish `L : P 240000 ^ ((1 : ℝ) / 200) = P 1200` using `twoPow_rpow_of_mul_eq (by norm_num)`. Establish `L3 : P 240000 ^ ((1 : ℝ) / 200 / 3) = P 400` using `twoPow_rpow_of_mul_eq (by norm_num)`. Establish `Y : P 240000 ^ ((11 : ℝ) / 2) = P 1320000` using `twoPow_rpow_of_mul_eq (by norm_num)`. Establish `q1 : (2 : ℝ) = P 1` using `by rw [charpoly_eq_of_isIso]; norm_num`. Establish `q2 : (4 : ℝ) = P 2` using `by rw [charpoly_eq_of_isIso]; norm_num`.
+
+Establish `big : ∀ n, 27 ≤ n → (100000000 : ℝ) ≤ P n` using `fun n hn => le_trans (by rw [charpoly_eq_of_isIso]; norm_num) (P_le hn)`. Establish `ex : ∀ a n : ℕ, 27 ≤ n → a ≤ 100000000 → P a ≤ Real.exp (P n)` using `fun a n hn ha => twoPow_le_exp (le_trans (by exact_mod_cast ha) (big n hn))`. Establish `dbl : ∀ n, n < 1200 → Real.exp (P n) * Real.exp (P n) ≤ Real.exp (P 1200)` using `fun n hn => by`. Rewrite using `[← Real.exp_add, ← two_mul, q1, twoPow_mul_twoPow]; exact Real.exp_le_exp.2 (P_le (by omega))`. Establish `four : ∀ n, 4 * P n = P (n + 2)` using `fun n => by rw [q2, twoPow_mul_twoPow, add_comm]`.
+
+Establish `hN : (R.N R.m : ℝ) ≤ P 1211928`. Establish `h1 : R.N R.m ≤ 8 * (R.m * R.k)`. Use `R.two_le_m` as an intermediate fact. Use `R.m_add_three_le_k` as an intermediate fact. Unfold `Ranks.N`.
+
+Rewrite using `[ht]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h2 : (R.N R.m : ℝ) ≤ 8 * (R.m * R.k)` using `by exact_mod_cast h1`. Rewrite `h2` using `[hm, hk, show (8 : ℝ) = P 3 by rw [charpoly_eq_of_isIso]; norm_num, twoPow_mul_twoPow, twoPow_mul_twoPow]`. Then use the resulting hypothesis. Establish `hN0 : (0 : ℝ) ≤ R.N R.m` using `by positivity`.
+
+Establish `hS : 4 * (R.k : ℝ) * Del = P 33092002` using `by rw [hk, hD, q2, twoPow_mul_twoPow, twoPow_mul_twoPow]`. Establish `he : 2 * (R.m : ℝ) * h = P 24119926` using `by rw [hm, hh, q1, twoPow_mul_twoPow, twoPow_mul_twoPow]`. Establish `hfN : (R.f : ℝ) * (R.N R.m : ℝ) ^ 2 ≤ P 33092002`. Use `twoPow_pos 489601` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+
+Take `⟨a1, a2⟩` from `a_thresholds (x := P 240000) (eps := 1 / 200) (v := v) (by rw [bx, L, Y]; exact ex _ _ (by norm_num) (by norm_num)) (by`. Rewrite using `[bx, L, Y]`. Use `le_trans ?_ (dbl 600 (by norm_num))` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `⟨lt_of_lt_of_le (by rw [← q1]; norm_num) (P_le (show 1 ≤ 240000 by norm_num)), a1, a2, ?_, ?_, by rwa [Y], ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[L3, Y, hk]`. Use `twoPow_pos 1092000` as an intermediate fact. Use `twoPow_pos 1320000` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[bx, L, Y, hS, he]`.
+
+Establish `h1 : P 24119926 ≤ P 33092002` using `P_le (by norm_num)`. Establish `h2 : P 33092002 + P 24119926 + (R.f : ℝ) * (R.N R.m : ℝ) ^ 2 ≤ P (33092002 + 2)`. Rewrite using `[← four 33092002]`. Combine the linear relations using `[twoPow_pos 33092002]`. Use `twoPow_pos 33092002` as an intermediate fact.
+
+Use `twoPow_pos 24119926` as an intermediate fact. Use `twoPow_pos 1320000` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[bx, L, L3, hS, four]`. Use `le_trans (mul_le_mul_of_nonneg_right ?_ (Real.exp_pos _).le) (dbl 400 (by norm_num))` and prove the remaining obligations.
+
+Establish `h1 : P 1211928 ≤ P (33092002 + 2)` using `P_le (by norm_num)`. Establish `h2 : (R.N R.m : ℝ) + P (33092002 + 2) + 1 ≤ P (33092002 + 2 + 2)`. Rewrite using `[← four (33092002 + 2)]`. Combine the linear relations using `[one_le_P (33092002 + 2)]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem big_thresh (R : Ranks) (Del h : ℕ) (hm : (R.m : ℝ) = P 119925) (hf : (R.f : ℝ) = P 489601) (hk : (R.k : ℝ) = P 1092000)
     (ht : R.t = 4 * R.k + 1) (hD : (Del : ℝ) = P 32000000) (hh : (h : ℝ) = P 24000000) {v d : ℝ}
     (hv : v ≤ Real.exp (P 600)) (hd : 2 * P 1320000 < d) :
@@ -665,6 +893,15 @@ theorem big_thresh (R : Ranks) (Del h : ℕ) (hm : (R.m : ℝ) = P 119925) (hf :
     calc _ ≤ P (33092002 + 2 + 2) * P 240000 := mul_le_mul_of_nonneg_right h2 (twoPow_pos _).le
       _ ≤ _ := by rw [twoPow_mul_twoPow]; exact ex _ _ (by norm_num) (by norm_num)
 
+/- English proof (translation)
+Take `⟨N, n2, n3⟩` from `big_nums R Del h hm hf hk ht hD hh`. Establish `hG` using `gam_gt R hC (Real.rpow_pos_of_pos (twoPow_pos 240000) (1 / 200))`. Establish `rn` using `n2 _ (Real.log_le_log (by norm_num) r1) r2`. Set `D` to `rcd H A (LocalGap.localGapOfRecord D0 H) N _ hG`. Take `⟨s1, s2⟩` from `rcd_rows H A (LocalGap.localGapOfRecord D0 H) N _ hG`.
+
+Take `⟨-, -, g, c, f⟩` from `place_rows D N rfl s1 s2`. Take `⟨o, n, ev, di⟩` from `rcd_datum H A (LocalGap.localGapOfRecord D0 H) N _ hG hJ (two_m_le_two_pow H rn.mf)`. Establish `e : ((D.s.Del : ℚ) : ℝ) = (Del : ℝ)` using `by show (((Del : ℕ) : ℚ) : ℝ) = _ push_cast; rfl`. Use `⟨D, rfl, HEq.rfl, ⟨?_, r1, hg, fun _ => hT, fun τ j hj => ?_, c, f⟩, n, ⟨o, hJ, ev, ?_, di⟩, ⟨hs, hC, fun u => Real.log_exp _⟩⟩` and prove the remaining obligations. Rewrite using `[e]`.
+
+Conclude with `rn`. Rewrite using `[g τ j hj]`. Conclude with `n3`. Unfold `Thresholds`. Rewrite using `[e]`.
+
+Use `big_thresh R Del h hm hf hk ht hD hh ?_ hd` and prove the remaining obligations. Use `(Real.log_le_iff_le_exp (by linarith)).1 r2` as an intermediate fact. Use `show H.rdE / 2 ≤ _`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem big_witness (D0 : D7) (R : Ranks) (Del h : ℕ) (hm : (R.m : ℝ) = P 119925) (hf : (R.f : ℝ) = P 489601)
     (hk : (R.k : ℝ) = P 1092000) (ht : R.t = 4 * R.k + 1) (hD : (Del : ℝ) = P 32000000) (hh : (h : ℝ) = P 24000000)
     (H : Host R) (A : Arith H) (Cg CT CG : ℝ) (hC : 0 < CG) (J : ℕ) (hJ : TopsCoset H J)

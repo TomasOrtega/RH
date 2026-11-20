@@ -22,6 +22,11 @@ noncomputable section
 namespace GlobalTheory.MovedTr
 variable {D : D7}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Simplify using `only [heisO, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[Formalism.IndefR.Fin.symplOH_add_right, Formalism.IndefR.Fin.symplOH_add_left, AddChar.map_add_eq_mul, AddChar.map_add_eq_mul, add_assoc]`. Establish `h1 : ψ (-symplOH S T w₀ u) * ψ (symplOH S T w₀ u) = 1`. Rewrite using `[← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one]`.
+
+Take the linear combination `(-(ψ (symplOH S T w w₀) * ψ (symplOH S T w u) * F (w + (w₀ + u)))) * h1`.
+-/
 theorem heisO_add_eq (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (w₀ u : WO S T) (F : WO S T → ℂ) :
     heisO ψ S T (w₀ + u) F = ψ (-symplOH S T w₀ u) • heisO ψ S T w₀ (heisO ψ S T u F) := by
   funext w
@@ -32,6 +37,11 @@ theorem heisO_add_eq (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (w₀ u : WO
     rw [← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one]
   linear_combination (-(ψ (symplOH S T w w₀) * ψ (symplOH S T w u) * F (w + (w₀ + u)))) * h1
 
+/- English proof (translation)
+Introduce `i j`. Take `⟨t, ht, e⟩` from `h i j`. Use `⟨(k : Formalism.MainNotions.StandardLatticesGL3.AE D) * t, ?_, ?_⟩` and prove the remaining obligations. Establish `: (k : Formalism.MainNotions.StandardLatticesGL3.AE D) * t = k • t` using `by rw [nsmul_eq_mul]`. Rewrite using `[this]`.
+
+Conclude with `AddSubgroup.nsmul_mem _ ht k`. Rewrite using `[e]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem closeTo_of_mul {cc : Ideal (𝓞 D.host.K)} {N N' : ℕ} {k m : ℕ} {g : GL (Fin N) (Formalism.MainNotions.StandardLatticesGL3.AE D)}
     {g' : GL (Fin N') (Formalism.MainNotions.StandardLatticesGL3.AE D)} {z z' : Matrix (Fin N') (Fin N) D.host.E}
     (h : Formalism.MainNotions.StandardLatticesGL3.CloseTo D cc (k * m) g g' z z') : Formalism.MainNotions.StandardLatticesGL3.CloseTo D cc m g g' z z' := by
@@ -42,6 +52,15 @@ theorem closeTo_of_mul {cc : Ideal (𝓞 D.host.K)} {N N' : ℕ} {k m : ℕ} {g 
     rw [this]; exact AddSubgroup.nsmul_mem _ ht k
   · rw [e]; push_cast; ring
 
+/- English proof (translation)
+Introduce `D ψ θ S T a d hS hT cc δ r hset χS χT om hom x y g h hg hh f₀ hf₀ z`. Establish `hF` using `hom.om_pres (g, h) f₀ hf₀`. Take `⟨n₁, hn₁, H₁⟩` from `GlobalTheory.T.heisenbergTranslate_fixes_theta_deepLevel ψ θ S T hS hT cc δ r hset x y g h hg hh _ hF z`. Take `⟨n₂, hn₂, H₂⟩` from `GlobalTheory.T.standardChar_halfSymplectic_movedFinitePoint_trivial ψ θ S T hS hT cc δ r hset x y g h hg hh z`. Take `⟨n₃, hn₃, H₃⟩` from `GlobalTheory.T.exists_level_curvePhase_eq_of_close cc δ hset.crv x y z`.
+
+Use `⟨n₁ * n₂ * n₃, by positivity, fun z' hz' => ?_⟩` and prove the remaining obligations. Establish `c1 : Formalism.MainNotions.StandardLatticesGL3.CloseTo D cc n₁ (x : GL (Fin a) (Formalism.MainNotions.StandardLatticesGL3.AE D)) (y : GL (Fin d) (Formalism.MainNotions.StandardLatticesGL3.AE D)) z z'` using `closeTo_of_mul (k := n₂ * n₃) (by rwa [show n₂ * n₃ * n₁ = n₁ * n₂ * n₃ by ring])`. Establish `c2 : Formalism.MainNotions.StandardLatticesGL3.CloseTo D cc n₂ (x : GL (Fin a) (Formalism.MainNotions.StandardLatticesGL3.AE D)) (y : GL (Fin d) (Formalism.MainNotions.StandardLatticesGL3.AE D)) z z'` using `closeTo_of_mul (k := n₁ * n₃) (by rwa [show n₁ * n₃ * n₂ = n₁ * n₂ * n₃ by ring])`. Establish `c3 : Formalism.MainNotions.StandardLatticesGL3.CloseTo D cc n₃ (x : GL (Fin a) (Formalism.MainNotions.StandardLatticesGL3.AE D)) (y : GL (Fin d) (Formalism.MainNotions.StandardLatticesGL3.AE D)) z z'` using `closeTo_of_mul (k := n₁ * n₂) (by rwa [show n₁ * n₂ * n₃ = n₁ * n₂ * n₃ by ring])`. Rewrite using `[hom.om_heis g h _ f₀ hf₀, H₃ z' c3]`.
+
+Establish `e : actO S T g h (finPt hS hT r z) = finPt hS hT r z' + (actO S T g h (finPt hS hT r z) - finPt hS hT r z')` using `by abel`. Establish `hψ : ψ (-symplOH S T (finPt hS hT r z') (actO S T g h (finPt hS hT r z) - finPt hS hT r z')) = 1`. Establish `h2` using `H₂ z' c2`. Establish `h0 : ψ (-symplOH S T (finPt hS hT r z') (actO S T g h (finPt hS hT r z) - finPt hS hT r z')) * ψ (symplOH S T (finPt hS hT r z') (actO S T g h (finPt hS hT r z) - finPt hS hT r z')) = 1`. Rewrite using `[← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one]`.
+
+Rewrite `h0` using `[h2, mul_one]`. Then use the resulting hypothesis. Rewrite using `[e, heisO_add_eq, H₁ z' c1, hψ, one_smul]`.
+-/
 theorem moved_translate : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) {a d : ℕ} (hS : S.rank = a) (hT : T.rank = d)
   (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (r : D.host.E), Setup ψ θ S T cc δ r →
   ∀ (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om →

@@ -19,6 +19,9 @@ def CharEig (ι : Qbar l ≃+* ℂ) (δ : G F Ω →* (Qbar l)ˣ) (w : HeightOne
   ∀ A : ValuationSubring Ω, IsPlaceOver A w → (∀ s ∈ Ine (F := F) A, δ s = 1) ∧
     ∀ σ : G F Ω, IsFrob A (normV w) σ → ι ((δ σ⁻¹ : (Qbar l)ˣ) : Qbar l) = z
 
+/- English proof (translation)
+Introduce `_ _` and use `⟨fun _ _ => rfl, fun _ _ => by simp⟩`.
+-/
 theorem charEig_one (ι : Qbar l ≃+* ℂ) (w : HeightOneSpectrum (𝓞 F)) : CharEig ι (1 : G F Ω →* (Qbar l)ˣ) w 1 :=
   fun _ _ => ⟨fun _ _ => rfl, fun _ _ => by simp⟩
 

@@ -5,6 +5,15 @@ namespace GlobalTheory.PMon.Ram
 
 open Classical in
 
+/- English proof (translation)
+Introduce `G _ R A B C hR ⟨m, hm⟩ hBC`. Establish `hbot : ∀ t, m ≤ t → ∀ D : Subgroup G, A ⊓ R t ≤ D`. Introduce `t ht D`. Establish `: R t ≤ ⊥` using `hm ▸ hR ht`. Conclude with `le_trans inf_le_right (le_trans this bot_le)`.
+
+Establish `hfin : ∀ D : Subgroup G, (Function.support fun t : ℕ => if A ⊓ R t ≤ D then 0 else Nat.card ↥(A ⊓ R t)) ⊆ ↑(Finset.range m)`. Introduce `D`. Introduce `t ht`. Simplify using `only [Finset.coe_range, Set.mem_Iio]`. Assume the negation of the conclusion as `h`.
+
+Apply `ht` to reduce the goal to its premises. Simplify using `[hbot t (not_lt.mp h) D]`. Unfold `jumpSum`. Rewrite using `[finsum_eq_sum_of_support_subset _ (hfin B), finsum_eq_sum_of_support_subset _ (hfin C)]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises.
+
+Introduce `t _`. Distinguish the cases in `hC : A ⊓ R t ≤ C`. Simplify using `[hBC t hC]`. Apply the tactic sequence `rw [if_neg hC] split_ifs <;> simp`.
+-/
 theorem jumpSum_mono_of_le :
     ∀ (G : Type) [Group G] (R : ℕ → Subgroup G) (A B C : Subgroup G), Antitone R → (∃ m, R m = ⊥) →
       (∀ t, A ⊓ R t ≤ C → A ⊓ R t ≤ B) → jumpSum R A B ≤ jumpSum R A C := by

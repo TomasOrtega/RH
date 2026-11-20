@@ -81,6 +81,9 @@ def CMSpread : Prop :=
           p ≫ pullback.fst _ _ = (e z).left → p ≫ pullback.snd _ _ = spMap R.val.toRingHom →
           p ≫ (φ pos x).left = (U.ex i P (z • P (x : (U.Di i).La))).left
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Rewrite using `[hP.1, Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `h : ty j (H.rt : E) = H.rt0`. Rewrite using `[h]`. Rewrite using `[x.2 j (by simp [h]), mul_zero, mul_zero]`.
+-/
 example {D : Datum H} {g : ℕ} {ty : Fin g → (E →+* ℂ)} {P : D.La →+ (Fin g → ℂ)} (hP : IsPeriod D ty P)
     (x : pureSub hP true) : P (H.rt • (x : D.La)) = H.rt0 • P x := by
   funext j
@@ -89,6 +92,11 @@ example {D : Datum H} {g : ℕ} {ty : Fin g → (E →+* ℂ)} {P : D.La →+ (F
   · rw [h]
   · rw [x.2 j (by simp [h]), mul_zero, mul_zero]
 
+/- English proof (translation)
+Use `⟨Over.homMk (spMap (Chart.dualMapR a) ≫ v.left) ?_, rfl⟩` and prove the remaining obligations. Establish `hv : v.left ≫ A.hom = spMap (algebraMap k (DualNumber k))` using `Over.w v`. Express the relevant statement in the definitionally equal form `(spMap (Chart.dualMapR a) ≫ v.left) ≫ A.hom = spMap (algebraMap R (DualNumber R)) ≫ spMap a`. Rewrite using `[Category.assoc, hv, ← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`.
+
+Apply the tactic sequence `ext b <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 example {k R : Type} [CommRing k] [CommRing R] (a : k →+* R) (A : Over (Sp k)) (v : epsR k ⟶ A) :
     ∃ vR : Over.mk (spMap (algebraMap R (DualNumber R)) ≫ spMap a) ⟶ A,
       vR.left = spMap (Chart.dualMapR a) ≫ v.left := by

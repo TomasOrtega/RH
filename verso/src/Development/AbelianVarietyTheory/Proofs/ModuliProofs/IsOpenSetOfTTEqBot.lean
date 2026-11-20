@@ -22,6 +22,11 @@ open Classical
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ S M I d e hdiv h`. Use `haveI : NeZero (S.r * S.N) := ⟨Nat.mul_ne_zero (by have := S.r_pos; omega) (by have := S.N_ge; omega)⟩`. Use `isOpen_iff_forall_mem_open.2 fun z hz => ?_` and prove the remaining obligations. Take `⟨x₀, hx₀⟩` from `hdiv z`. Take `⟨k, hk, hreg⟩` from `(h z x₀ hx₀).1 hz`.
+
+Use `⟨{w | M.Div S.th x₀ w} ∩ {w | S.th x₀ ^ e / d k ∈ M.O w}, ?_, (M.isOpen_setOf_div S.th x₀).inter (M.isOpen_setOf_mem_O _), hx₀, hreg⟩` and prove the remaining obligations. Introduce and unpack `w ⟨hw1, hw2⟩`. Conclude with `(h w x₀ hw1).2 ⟨k, hk, hw2⟩`.
+-/
 theorem isOpen_setOf_TT_eq_bot : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (S : GlobalTheory.ZH.ThetaSys o Ω) (M : GlobalTheory.ZH.RatModel o Ω) (I : Type) (d : I → Ω) (e : ℕ), M.HasDiv S.th → (∀ z : M.Z, ∀ x₀ ∈ S.supI M z, (S.TT M z = ⊥ ↔ ∃ k, d k ≠ 0 ∧ S.th x₀ ^ e / d k ∈ M.O z)) → IsOpen {z : M.Z | S.TT M z = ⊥} := by
   intro o Ω _ _ _ S M I d e hdiv h
   haveI : NeZero (S.r * S.N) :=

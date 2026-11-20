@@ -15,8 +15,14 @@ open GlobalTheory.Doubling (absE)
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 variable {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {W₁ : Spc F E d₁}
 
+/- English proof (translation)
+The claim follows from `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem incM_one : incM F (1 : Matrix (Fin n) (Fin n) E) = 1 := Matrix.map_one _ (map_zero _) (map_one _)
 
+/- English proof (translation)
+Introduce `_ h` and use `h Heisenberg₂ := fun z Φ _ => by simp [incM_one] inv := fun _ h => h.elim loc := ⟨ContinuousLinearMap.id _ _, fun _ => LinearMap.id, by classical intro h let b : ContDiffBump (0 : Fin n × Fin d → mixedEmbedding.mixedSpace F) := ⟨1, 2, one_pos, one_lt_two⟩ have hs : HasCompactSupp …`.
+-/
 theorem isEv_id (B : Base F E) (M : Model σ X W) : IsEv B M M 1 1 ∅ LinearMap.id where
   maps := fun _ h => h
   Heisenberg₂ := fun z Φ _ => by simp [incM_one]
@@ -32,9 +38,15 @@ theorem isEv_id (B : Base F E) (M : Model σ X W) : IsEv B M M 1 1 ∅ LinearMap
     simp [h2] at h1,
     fun v => ⟨rfl, Submodule.map_id _⟩, fun _ _ _ _ => rfl⟩
 
+/- English proof (translation)
+Simplify using `[IsLevi, mat]`.
+-/
 theorem isLevi_one (H' : Plane E d d₁) : IsLevi (σ := σ) (W := W) (W₁ := W₁) H' 1 1 1 := by
   simp [IsLevi, mat]
 
+/- English proof (translation)
+Rewrite using `[shiftA, Matrix.smul_mul, Matrix.vecMulVec_mul, Matrix.vecMul_transpose, h.2.1, smul_comm]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec_apply, mul_left_comm]`.
+-/
 theorem shiftA_levi (H : Plane E n n₁) (H' : Plane E d d₁) {t : (AE F E)ˣ} {h₁ : UA σ W₁.J} {m : UA σ W.J}
     (h : IsLevi H' t h₁ m) (l : (AE F E)ˣ) : shiftA H H' l * (mat m)ᵀ = cA σ (t⁻¹).1 • shiftA H H' l := by
   rw [shiftA, Matrix.smul_mul, Matrix.vecMulVec_mul, Matrix.vecMul_transpose, h.2.1, smul_comm]
@@ -42,6 +54,9 @@ theorem shiftA_levi (H : Plane E n n₁) (H' : Plane E d d₁) {t : (AE F E)ˣ} 
   ext i j
   simp [Matrix.vecMulVec_apply, mul_left_comm]
 
+/- English proof (translation)
+Rewrite using `[shiftB, Matrix.smul_mul, Matrix.vecMulVec_mul, Matrix.vecMul_transpose, h.1, smul_comm]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec_apply, mul_left_comm]`.
+-/
 theorem shiftB_levi (H : Plane E n n₁) (H' : Plane E d d₁) {t : (AE F E)ˣ} {h₁ : UA σ W₁.J} {m : UA σ W.J}
     (h : IsLevi H' t h₁ m) (l : (AE F E)ˣ) : shiftB σ H H' l * (mat m)ᵀ = t.1 • shiftB σ H H' l := by
   rw [shiftB, Matrix.smul_mul, Matrix.vecMulVec_mul, Matrix.vecMul_transpose, h.1, smul_comm]
@@ -49,14 +64,23 @@ theorem shiftB_levi (H : Plane E n n₁) (H' : Plane E d d₁) {t : (AE F E)ˣ} 
   ext i j
   simp [Matrix.vecMulVec_apply, mul_left_comm]
 
+/- English proof (translation)
+Introduce `μ 𝓕 _ _ h1 h`. Rewrite using `[integral_const, Measure.real, Measure.restrict_apply_univ, h1, ENNReal.toReal_one, one_smul]`.
+-/
 theorem isCT_const (H' : Plane E d d₁) (c : ℂ) : IsCT (σ := σ) (W := W) H' (fun _ => c) fun _ => c := by
   intro μ 𝓕 _ _ h1 h
   rw [integral_const, Measure.real, Measure.restrict_apply_univ, h1, ENNReal.toReal_one, one_smul]
 
+/- English proof (translation)
+Introduce `t m _ h`. Simplify using the standard rewrite rules.
+-/
 theorem hasLaw_const (H' : Plane E d d₁) (c : ℂ) : HasLaw (σ := σ) (W := W) W₁ H' 1 0 fun _ => c := by
   intro t m _ h
   simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Assume the negation of the conclusion as `hg`. Establish `e` using `congrArg norm (mul_right_cancel₀ hg ((h t m hm g).symm.trans (h' t m hm g)))`. Simplify using `only [norm_mul, Circle.norm_coe, one_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.rpow_pos_of_pos h0 _)] at e`. Conclude with `hz ((Real.rpow_right_inj h0 ht).1 e)`.
+-/
 theorem eq_zero_of_hasLaw (H' : Plane E d d₁) {χ χ' : Chr F E} {z z' : ℝ} (hz : z ≠ z') {T : UA σ W.J → ℂ}
     (h : HasLaw W₁ H' χ z T) (h' : HasLaw W₁ H' χ' z' T) {t : (AE F E)ˣ} {m : UA σ W.J} (hm : IsLevi (W₁ := W₁) H' t 1 m)
     (h0 : 0 < (absE F E t : ℝ)) (ht : (absE F E t : ℝ) ≠ 1) : T = 0 := by
@@ -67,6 +91,9 @@ theorem eq_zero_of_hasLaw (H' : Plane E d d₁) {χ χ' : Chr F E} {z z' : ℝ} 
     abs_of_pos (Real.rpow_pos_of_pos h0 _)] at e
   exact hz ((Real.rpow_right_inj h0 ht).1 e)
 
+/- English proof (translation)
+Apply the tactic sequence `constructor <;> ring`.
+-/
 example (a a' : ℝ) : (1 - a) / 2 + (a + a' - 1) / 2 = a' / 2 ∧ (1 - a') / 2 + (a + a' - 1) / 2 = a / 2 := by
   constructor <;> ring
 
@@ -85,6 +112,9 @@ variable (E) in
 
 def pl : Plane E 2 0 := ⟨![1, 0], ![0, 1], 0, 1⟩
 
+/- English proof (translation)
+The claim follows from `rfl xx := by simp [form, pl, hyp, dotProduct, Matrix.mulVec, Fin.sum_univ_two] yy := by simp [form, pl, hyp, dotProduct, Matrix.mulVec, Fin.sum_univ_two] xy := by simp [form, pl, hyp, dotProduct, Matrix.mulVec, Fin.sum_univ_two] orth := fun u => by simp [form, pl] gram := Subsing …`.
+-/
 theorem pl_adapted (B : Base F E) (ε : E) : (pl E).IsAdapted σ B (hyp F ε) (pt F E) 0 1 where
   rank := rfl
   xx := by simp [form, pl, hyp, dotProduct, Matrix.mulVec, Fin.sum_univ_two]
@@ -119,11 +149,19 @@ theorem pl_adapted (B : Base F E) (ε : E) : (pl E).IsAdapted σ B (hyp F ε) (p
   bas := fun v i => by
     refine ⟨fun h r => ?_, fun h r => ?_, fun j => j.elim0⟩ <;> fin_cases i <;> fin_cases r <;> simp_all [pl, hyp]
 
+/- English proof (translation)
+Take `⟨co, -⟩` from `GlobalTheory.RatDarboux.exists_darboux (AF F) h2 σ hσ h1 h5 h1' h5'`. Conclude with `⟨⟨co, fun _ => 0, 0, ∅⟩⟩`.
+-/
 theorem nonempty_model (h2 : Module.finrank F E = 2) (hσ : ∀ x, σ (σ x) = x) (h1 : ∀ i j, σ (X.J j i) = X.J i j)
     (h5 : ∀ i j, σ (W.J j i) = -W.J i j) (h1' : X.J.det ≠ 0) (h5' : W.J.det ≠ 0) : Nonempty (Model σ X W) := by
   obtain ⟨co, -⟩ := GlobalTheory.RatDarboux.exists_darboux (AF F) h2 σ hσ h1 h5 h1' h5'
   exact ⟨⟨co, fun _ => 0, 0, ∅⟩⟩
 
+/- English proof (translation)
+Apply the tactic sequence `have a1 : ∀ i j, σ ((hyp F (1 : E)).J j i) = (hyp F (1 : E)).J i j := fun i j => by fin_cases i <;> fin_cases j <;> simp [hyp]`. Apply the tactic sequence `have a2 : ∀ i j, σ ((hyp F (-1 : E)).J j i) = -(hyp F (-1 : E)).J i j := fun i j => by fin_cases i <;> fin_cases j <;> simp [hyp]`. Establish `d1 : (hyp F (1 : E)).J.det ≠ 0` using `by simp [hyp, Matrix.det_fin_two]`. Establish `d2 : (hyp F (-1 : E)).J.det ≠ 0` using `by simp [hyp, Matrix.det_fin_two]`. Establish `d0 : (pt F E).J.det ≠ 0` using `by simp`.
+
+Take `⟨M⟩` from `nonempty_model h2 hσ a1 a2 d1 d2`. Take `⟨M₀⟩` from `nonempty_model (X := pt F E) h2 hσ (fun i => i.elim0) a2 d0 d2`. Take `⟨M₁⟩` from `nonempty_model (X := pt F E) (W := pt F E) h2 hσ (fun i => i.elim0) (fun i => i.elim0) d0 d0`. Conclude with `⟨⟨⟨0, 1, pt F E, hyp F 1, hyp F (-1), M₀, M⟩, ⟨0, 0, pt F E, pt F E, pt F E, M₁, M₁⟩, pl E, pl E, rfl, rfl, rfl, pl_adapted B _, pl_adapted B _⟩, ⟨1, 0, hyp F 1, pt F E, hyp F (-1), M, M₀⟩, ⟨0, 0, pt F E, pt F E, pt F E, M₁, M₁⟩, pl E, pl E, rfl, rfl, rfl, rfl, pl_adapted B _, pl …`.
+-/
 theorem exists_cfg (h2 : Module.finrank F E = 2) (hσ : ∀ x, σ (σ x) = x) (B : Base F E) :
     (∃ (G : Geo σ 0 (0 + 2)) (G₁ : Geo σ 0 0) (H : Plane E (0 + 2) 0) (H' : Plane E (0 + (0 + 2)) (0 + 0)), CfgB B G G₁ H H') ∧
     ∃ (G : Geo σ (0 + 2) 0) (G₁ : Geo σ 0 0) (H : Plane E (0 + 2) 0) (H' : Plane E (0 + 2 + 0) (0 + 0)), CfgA B G G₁ H H' := by
@@ -142,6 +180,9 @@ theorem exists_cfg (h2 : Module.finrank F E = 2) (hσ : ∀ x, σ (σ x) = x) (B
     ⟨1, 0, hyp F 1, pt F E, hyp F (-1), M, M₀⟩, ⟨0, 0, pt F E, pt F E, pt F E, M₁, M₁⟩, pl E, pl E,
       rfl, rfl, rfl, rfl, pl_adapted B _, pl_adapted B _⟩
 
+/- English proof (translation)
+Introduce `x` and use `by rw [MonoidHom.div_apply, Circle.coe_div, h x, h' x, hm] split_ifs · simp · rcases neg_one_pow_eq_or ℂ b with e | e <;> simp [pow_add, e, div_neg]`.
+-/
 theorem resEta_div {K : Subgroup (AF F)ˣ} {χ χ' : Chr F E} {a b m : ℕ} (h : ResEtaPow K χ a) (h' : ResEtaPow K χ' b)
     (hm : m = a + b) : ResEtaPow K (χ / χ') m := fun x => by
   rw [MonoidHom.div_apply, Circle.coe_div, h x, h' x, hm]
@@ -149,9 +190,15 @@ theorem resEta_div {K : Subgroup (AF F)ˣ} {χ χ' : Chr F E} {a b m : ℕ} (h :
   · simp
   · rcases neg_one_pow_eq_or ℂ b with e | e <;> simp [pow_add, e, div_neg]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1.div' h'.1, fun x => by rw [MonoidHom.div_apply, h.2 x, h'.2 x, div_one]⟩`.
+-/
 theorem isHecke_div {χ χ' : Chr F E} (h : IsHecke F E χ) (h' : IsHecke F E χ') : IsHecke F E (χ / χ') :=
   ⟨h.1.div' h'.1, fun x => by rw [MonoidHom.div_apply, h.2 x, h'.2 x, div_one]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨h.base, h.geo.hV, h.geo.hW, h.geo.hM, h.chars.heckeβ, isHecke_div h.chars.heckeβ h.chars.heckeα, h.chars.resβ, resEta_div h.chars.resβ h.chars.resα rfl, h.weil⟩, h.base, h.geo.hV', h.geo.hW, h.geo.hM', h.chars.heckeα, isHecke_div h.chars.heckeα h.chars.heckeβ, h.chars.resα, res …`.
+-/
 theorem isPair_of_isTriple {a a' : ℕ} {B : Base F E} {G : Geo σ a a'} {Y : Chars F E} {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W}
     (h : IsTriple B G Y om om') :
     IsPair B G.M Y.β (Y.β / Y.α) om (a - G.p) G.p (a + a' - (G.p + G.q)) (G.p + G.q) ∧
@@ -161,10 +208,26 @@ theorem isPair_of_isTriple {a a' : ℕ} {B : Base F E} {G : Geo σ a a'} {Y : Ch
     h.base, h.geo.hV', h.geo.hW, h.geo.hM', h.chars.heckeα, isHecke_div h.chars.heckeα h.chars.heckeβ, h.chars.resα,
       resEta_div h.chars.resα h.chars.resβ (add_comm _ _), h.weil'⟩
 
+/- English proof (translation)
+Use `h.eBig` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem conv_range {a a' : ℕ} {B : Base F E} {G : Geo σ a a'} (h : G.IsGood B) : a + a' + 2 * min (a - G.p) G.p < 2 * a := by
   have := h.eBig
   omega
 
+/- English proof (translation)
+Establish `hU : {x : κ → Fv F v | ∀ k, x k ∈ v.adicCompletionIntegers F} = Set.pi Set.univ (fun _ => (v.adicCompletionIntegers F : Set (Fv F v)))`. Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `hO : IsOpen (v.adicCompletionIntegers F : Set (Fv F v))` using `Valued.isOpen_integer _`. Establish `hC : IsClosed (v.adicCompletionIntegers F : Set (Fv F v))` using `Valued.isClosed_integer _`.
+
+Establish `hK : IsCompact (v.adicCompletionIntegers F : Set (Fv F v))` using `PI.AdicCompletionValuation.isCompact_adicCompletionIntegers F v`. Rewrite using `[hU]`. Establish `hUo : IsOpen (Set.pi Set.univ (fun _ : κ => (v.adicCompletionIntegers F : Set (Fv F v))))` using `isOpen_set_pi Set.finite_univ (fun _ _ => hO)`. Establish `hUc : IsClosed (Set.pi Set.univ (fun _ : κ => (v.adicCompletionIntegers F : Set (Fv F v))))` using `isClosed_set_pi (fun _ _ => hC)`. Establish `hUk : IsCompact (Set.pi Set.univ (fun _ : κ => (v.adicCompletionIntegers F : Set (Fv F v))))` using `isCompact_univ_pi (fun _ => hK)`.
+
+Generalize the expression as in `Set.pi Set.univ (fun _ : κ => (v.adicCompletionIntegers F : Set (Fv F v))) = U at hUo hUc hUk ⊢`. Use `⟨IsLocallyConstant.iff_isOpen_fiber.2 fun y => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h1 : (1 : ℂ) = y`. Establish `: U.indicator 1 ⁻¹' {y} = U`. Use extensionality with `x`.
+
+Apply the tactic sequence `by_cases hx : x ∈ U <;> simp [hx, ← h1]`. Rewrite using `[this]`. Conclude with `hUo`. Distinguish the cases in `h0 : (0 : ℂ) = y`. Establish `: U.indicator 1 ⁻¹' {y} = Uᶜ`.
+
+Use extensionality with `x`. Apply the tactic sequence `by_cases hx : x ∈ U <;> simp [hx, ← h0]`. Rewrite using `[this]`. Conclude with `hUc.isOpen_compl`. Establish `: U.indicator 1 ⁻¹' {y} = ∅`.
+
+Use extensionality with `x`. Apply the tactic sequence `by_cases hx : x ∈ U <;> simp [hx] <;> assumption`. Rewrite using `[this]`. Conclude with `isOpen_empty`. Conclude with `hUk.of_isClosed_subset (isClosed_tsupport _) (closure_minimal Set.support_indicator_subset hUc)`.
+-/
 theorem intInd_mem_SB {κ : Type} [Fintype κ] (v : HeightOneSpectrum (𝓞 F)) :
     Set.indicator {x : κ → Fv F v | ∀ k, x k ∈ v.adicCompletionIntegers F} 1 ∈ GlobalTheory.WeilM.SB (κ → Fv F v) := by
   have hU : {x : κ → Fv F v | ∀ k, x k ∈ v.adicCompletionIntegers F} =
@@ -210,11 +273,17 @@ def evOrigin (R κ κ' : Type) [Zero R] : ((κ → R) → ℂ) →ₗ[ℂ] ((κ'
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨IsLocallyConstant.of_discrete _, HasCompactSupport.of_compactSpace _⟩`.
+-/
 theorem const_mem_SB {R κ : Type} [TopologicalSpace R] [IsEmpty κ] (φ : (κ → R) → ℂ) : φ ∈ SB (κ → R) :=
   ⟨IsLocallyConstant.of_discrete _, HasCompactSupport.of_compactSpace _⟩
 
 open scoped Classical in
 
+/- English proof (translation)
+Introduce `Φ _` and use `by refine Submodule.subset_span ⟨Φ 0 • oneS (F := F) _, fun _ => 1, const_mem_SB _, ?_⟩ funext x simp [pureA, evOrigin, oneS] Heisenberg₂ := fun z Φ _ => by have hz : z = 0 := by ext i j exact isEmptyElim (i, j) subst hz funext x simp [Darboux.rho, schr, evOrigin] inv := fun u hu …`.
+-/
 theorem isEv_origin (B : Base F E) {n₁ d₁ : ℕ} [IsEmpty (Fin n₁ × Fin d₁)] {X₁ : Spc F E n₁} {W₁ : Spc F E d₁} (M : Model σ X W)
     (M₁ : Model σ X₁ W₁) (hv : ∀ v, M₁.vac v = fun _ => M.vac v 0) (ι : Matrix (Fin n) (Fin n₁) E) (ι' : Matrix (Fin d) (Fin d₁) E)
     (I : Set (Matrix (Fin n) (Fin d) (AE F E))) (hI : ∀ u ∈ I, (M.co.e u).1 = 0) :
@@ -257,9 +326,19 @@ theorem isEv_origin (B : Base F E) {n₁ d₁ : ℕ} [IsEmpty (Fin n₁ × Fin d
       simp only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, evOrigin, LinearMap.coe_mk, AddHom.coe_mk, e1, e2]
       simp [oneS]
 
+/- English proof (translation)
+The claim follows from `Subgroup.ext fun g => (h g).trans (h' g).symm`.
+-/
 theorem isStab_unique (B : Base F E) {K K' : Subgroup (UA σ X.J)} (h : IsStab B K) (h' : IsStab B K') : K = K' :=
   Subgroup.ext fun g => (h g).trans (h' g).symm
 
+/- English proof (translation)
+Establish `e : fa + fb = ga + gb` using `funext fun g => (h.1 μ 𝓕 hμ h𝓕 h1 g).trans (h'.1 μ 𝓕 hμ h𝓕 h1 g).symm`. Establish `e' : fa - ga = gb - fb` using `by linear_combination e`. Establish `la : HasLaw W₁ H' Y.α ((a' : ℝ) / 2) (fa - ga)` using `fun t m hm g => by`. Rewrite using `[Pi.sub_apply, Pi.sub_apply, h.2.1 t m hm g, h'.2.1 t m hm g]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `lb : HasLaw W₁ H' Y.β ((a : ℝ) / 2) (fa - ga)` using `fun t m hm g => by`. Rewrite using `[e', Pi.sub_apply, Pi.sub_apply, h.2.2 t m hm g, h'.2.2 t m hm g]`. Expand and normalize the polynomial expressions, which then agree. Establish `hz : ((a' : ℝ) / 2) ≠ (a : ℝ) / 2` using `fun k => ha (by exact_mod_cast (by linarith : (a : ℝ) = a'))`. Establish `z` using `eq_zero_of_hasLaw H' hz la lb hm h0 ht`.
+
+Conclude with `⟨sub_eq_zero.1 z, (sub_eq_zero.1 (e' ▸ z)).symm⟩`.
+-/
 theorem split2_unique {a a' : ℕ} (ha : a ≠ a') {W : Spc F E (a + a')} {H' : Plane E (a + a') d₁} {Y : Chars F E}
     {f fa fb ga gb : UA σ W.J → ℂ} (h : Split2 W₁ H' Y f fa fb) (h' : Split2 W₁ H' Y f ga gb)
     (μ : Measure (unip σ W H')) (𝓕 : Set (unip σ W H')) (hμ : μ.IsHaarMeasure)
@@ -276,6 +355,11 @@ theorem split2_unique {a a' : ℕ} (ha : a ≠ a') {W : Spc F E (a + a')} {H' : 
   have z := eq_zero_of_hasLaw H' hz la lb hm h0 ht
   exact ⟨sub_eq_zero.1 z, (sub_eq_zero.1 (e' ▸ z)).symm⟩
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `he`. Establish `e : a = a' + 2 * ((a - a') / 2)` using `by omega`. Generalize the expression as in `(a - a') / 2 = x at e`. Substitute `e` using the available equality. Use `push_cast`.
+
+Apply the tactic sequence `constructor <;> ring`.
+-/
 example {a a' : ℕ} (h : a' < a) (he : Even (a + a')) :
     (a : ℝ) / 2 - (((a - a') / 2 : ℕ) : ℝ) = a' / 2 ∧ ((a' : ℝ) - 2) / 2 + (((a - a') / 2 + 1 : ℕ) : ℝ) = a / 2 := by
   obtain ⟨k, hk⟩ := he
@@ -285,6 +369,9 @@ example {a a' : ℕ} (h : a' < a) (he : Even (a + a')) :
   push_cast
   constructor <;> ring
 
+/- English proof (translation)
+Rewrite using `[h, Chars.ν, MonoidHom.div_apply]`. Apply the tactic sequence `constructor <;> simp`.
+-/
 example (Y : Chars F E) (t s : (AE F E)ˣ) (h : Y.ν s = (Y.ν t)⁻¹) : Y.β t * (Y.ν s)⁻¹ = Y.α t ∧ Y.α t * Y.ν s = Y.β t := by
   rw [h, Chars.ν, MonoidHom.div_apply]
   constructor <;> simp

@@ -10,6 +10,11 @@ namespace GlobalTheory.SUVol.LieMeas
 open MeasureTheory Matrix
 open scoped ENNReal
 
+/- English proof (translation)
+Establish `h : (Matrix.of fun p q => inner ℝ (b p) (b q)) = (o.toBasis.toMatrix b)ᵀ * o.toBasis.toMatrix b`. Use extensionality with `p q`. Simplify using `only [Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Module.Basis.toMatrix_apply, OrthonormalBasis.coe_toBasis_repr_apply, OrthonormalBasis.repr_apply_apply]`. Rewrite using `[← o.sum_inner_mul_inner]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [real_inner_comm]`.
+
+Rewrite using `[h, det_mul, det_transpose, Module.Basis.det_apply, sq]`.
+-/
 theorem det_gram_eq_sq {ι W : Type} [Fintype ι] [DecidableEq ι] [NormedAddCommGroup W] [InnerProductSpace ℝ W]
     (o : OrthonormalBasis ι ℝ W) (b : ι → W) :
     (Matrix.of fun p q => inner ℝ (b p) (b q)).det = (o.toBasis.det b) ^ 2 := by
@@ -21,6 +26,11 @@ theorem det_gram_eq_sq {ι W : Type} [Fintype ι] [DecidableEq ι] [NormedAddCom
     exact Finset.sum_congr rfl fun i _ => by rw [real_inner_comm]
   rw [h, det_mul, det_transpose, Module.Basis.det_apply, sq]
 
+/- English proof (translation)
+Set `e : Fin (Module.finrank ℝ W) ≃ ι` to `Fintype.equivOfCardEq (by rw [Fintype.card_fin, Module.finrank_eq_card_basis b])`. Set `o : OrthonormalBasis ι ℝ W` to `(stdOrthonormalBasis ℝ W).reindex e`. Establish `ho : (stdOrthonormalBasis ℝ W).toBasis.addHaar = o.toBasis.addHaar`. Rewrite using `[OrthonormalBasis.addHaar_eq_volume, OrthonormalBasis.addHaar_eq_volume]`. Rewrite using `[ho, det_gram_eq_sq o, abs_sq, Real.sqrt_sq_eq_abs, ← Measure.addHaar_parallelepiped]`.
+
+Use `Measure.addHaarMeasure_unique o.toBasis.addHaar b.parallelepiped` as an intermediate fact. Rewrite `this` using `[← Module.Basis.addHaar_def]`. Conclude with `this`.
+-/
 theorem volume_eq_sqrt_gram {ι W : Type} [Fintype ι] [DecidableEq ι] [NormedAddCommGroup W]
     [InnerProductSpace ℝ W] [FiniteDimensional ℝ W] [MeasurableSpace W] [BorelSpace W]
     (b : Module.Basis ι ℝ W) :
@@ -36,6 +46,21 @@ theorem volume_eq_sqrt_gram {ι W : Type} [Fintype ι] [DecidableEq ι] [NormedA
   rw [← Module.Basis.addHaar_def] at this
   exact this
 
+/- English proof (translation)
+Set `u : (ι → κ → ℝ) ≃ₗ[ℝ] (κ × ι → ℝ)` to `{ toFun := fun c p => c p.2 p.1, invFun := fun c t i => c (i, t), map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl, left_inv := fun _ => rfl, right_inv := fun _ => rfl }`. Set `b : Module.Basis (κ × ι) ℝ W` to `Module.Basis.ofEquivFun (f.symm.trans u)`. Establish `hb : ∀ p, b p = f (Pi.single p.2 (Pi.single p.1 1))`. Introduce `p`. Rewrite using `[Module.Basis.coe_ofEquivFun]`.
+
+Simplify using `only [LinearEquiv.trans_symm, LinearEquiv.symm_symm, LinearEquiv.trans_apply]`. Use `congr 1`. Use function extensionality and compare the values at `t i`. Express the relevant statement in the definitionally equal form `Pi.single (M := fun _ => ℝ) p 1 (i, t) = _`. Take `⟨j, s⟩` from `p`.
+
+Distinguish the cases in `h : t = s`. Substitute `h` using the available equality. Simplify using `[Pi.single_apply]`. Simplify using `[Pi.single_apply, h]`. Establish `hcont : Continuous f` using `f.toLinearMap.continuous_of_finiteDimensional`.
+
+Establish `: (Measure.map f volume).IsAddHaarMeasure` using `f.toContinuousLinearEquiv.isAddHaarMeasure_map volume`. Establish `hm : b.addHaar = Measure.map f volume`. Rewrite using `[Module.Basis.addHaar_eq_iff, Measure.map_apply hcont.measurable b.parallelepiped.isCompact.measurableSet]`. Establish `: f ⁻¹' (b.parallelepiped : Set W) = Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => Set.Icc 0 1`. Use extensionality with `c`.
+
+Rewrite using `[Module.Basis.coe_parallelepiped, parallelepiped_basis_eq]`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq, Set.mem_pi, Set.mem_univ, true_imp_iff]`. Establish `hr : ∀ p, b.repr (f c) p = c p.2 p.1`. Introduce `p`. Rewrite using `[Module.Basis.ofEquivFun_repr_apply]`.
+
+Simplify using `[u]`. Simplify using `only [hr]`. Conclude with `⟨fun h t i => h (i, t), fun h p => h _ _⟩`. Rewrite using `[this]`. Simplify using `only [volume_pi_pi, Real.volume_Icc]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[volume_eq_sqrt_gram b, hm]`. Simplify using `only [hb]`.
+-/
 theorem volume_eq_sqrt_gram_map {ι κ W : Type} [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ]
     [NormedAddCommGroup W]
     [InnerProductSpace ℝ W] [FiniteDimensional ℝ W] [MeasurableSpace W] [BorelSpace W]
@@ -79,6 +104,9 @@ theorem volume_eq_sqrt_gram_map {ι κ W : Type} [Fintype ι] [DecidableEq ι] [
   rw [volume_eq_sqrt_gram b, hm]
   simp only [hb]
 
+/- English proof (translation)
+The claim follows from `|(Matrix.of fun i j => (trace (Y i * (Y j)ᴴ)).re).det| = ‖(Matrix.of fun i j => trace (Y i * Y j)).det‖ := by have hdet : D.det ≠ 0 := by intro h; have := congrArg Matrix.det hD; simp [h] at this have hH : ∀ i, (Y i)ᴴ = -(D * Y i * D) := by intro i have h1 : (Y i)ᵀ = -(D * (Y i). …`.
+-/
 theorem abs_det_re_trace {r : ℕ} (D : Matrix (Fin r) (Fin r) ℂ) (hD : D * D = 1)
     (hDc : D.map (starRingEnd ℂ) = D)
     (Y : Fin (r ^ 2 - 1) → Matrix (Fin r) (Fin r) ℂ) (hli : LinearIndependent ℝ Y)
@@ -160,9 +188,15 @@ def toFrame {Ψ : Finset (E →+* ℂ)} (x : Frame Ψ r) :
     simp only [PiLp.smul_apply, e, Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_apply, RingHom.id_apply]
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toFrame_apply {Ψ : Finset (E →+* ℂ)} (x : Frame Ψ r) (X : Ψ → Fin r → Fin r → ℂ) (τ : Ψ) :
     Matrix.of (fun a b => toFrame x X (τ, a, b)) = (mat x τ)⁻¹ * Matrix.of (X τ) * mat x τ := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Express the relevant statement in the definitionally equal form `(mat x τ * Matrix.of (fun a b => toFrame x X (τ, a, b)) * (mat x τ)⁻¹ : Matrix (Fin r) (Fin r) ℂ) = X τ`. Rewrite using `[toFrame_apply, Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_right _ _ (hx τ).isUnit, Matrix.mul_nonsing_inv_cancel_left _ _ (hx τ).isUnit]`. Both sides reduce to the same expression.
+-/
 theorem fromFrame_toFrame {Ψ : Finset (E →+* ℂ)} (x : Frame Ψ r) (hx : ∀ τ, (mat x τ).det ≠ 0)
     (X : Ψ → Fin r → Fin r → ℂ) : fromFrame x (toFrame x X) = X := by
   funext τ
@@ -171,6 +205,11 @@ theorem fromFrame_toFrame {Ψ : Finset (E →+* ℂ)} (x : Frame Ψ r) (hx : ∀
       Matrix.mul_nonsing_inv_cancel_left _ _ (hx τ).isUnit]
   rfl
 
+/- English proof (translation)
+Use `PiLp.ext fun p => ?_` and prove the remaining obligations. Take `⟨τ, a, b⟩` from `p`. Establish `h : Matrix.of (fun a b => toFrame x (fromFrame x Y) (τ, a, b)) = Matrix.of (fun a b => Y (τ, a, b))`. Rewrite using `[toFrame_apply]`. Express the relevant statement in the definitionally equal form `(mat x τ)⁻¹ * (mat x τ * Matrix.of (fun a b => Y (τ, a, b)) * (mat x τ)⁻¹) * mat x τ = _`.
+
+Rewrite using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_right _ _ (hx τ).isUnit, Matrix.nonsing_inv_mul_cancel_left _ _ (hx τ).isUnit]`. Conclude with `congrFun (congrFun h a) b`.
+-/
 theorem toFrame_fromFrame {Ψ : Finset (E →+* ℂ)} (x : Frame Ψ r) (hx : ∀ τ, (mat x τ).det ≠ 0)
     (Y : EuclideanSpace ℂ (Ψ × Fin r × Fin r)) : toFrame x (fromFrame x Y) = Y := by
   refine PiLp.ext fun p => ?_
@@ -182,12 +221,18 @@ theorem toFrame_fromFrame {Ψ : Finset (E →+* ℂ)} (x : Frame Ψ r) (hx : ∀
       Matrix.nonsing_inv_mul_cancel_left _ _ (hx τ).isUnit]
   exact congrFun (congrFun h a) b
 
+/- English proof (translation)
+Rewrite using `[PiLp.inner_apply]`. Simplify using `[Fintype.sum_prod_type, Matrix.trace, Matrix.mul_apply, Complex.inner, mul_comm]`.
+-/
 theorem inner_eq_sum_trace {ι : Type} [Fintype ι] (Y Z : EuclideanSpace ℂ (ι × Fin r × Fin r)) :
     inner ℝ Y Z = ∑ τ, (trace (Matrix.of (fun a b => Y (τ, a, b)) * (Matrix.of (fun a b => Z (τ, a, b)))ᴴ)).re := by
   rw [PiLp.inner_apply]
   simp [Fintype.sum_prod_type, Matrix.trace, Matrix.mul_apply, Complex.inner, mul_comm]
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.gram, hermC, ReciprocityTheory.ChartRestriction.G.FD.col, Matrix.of_apply, Matrix.mul_apply, Matrix.map_apply, Matrix.transpose_apply, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+-/
 theorem gram_eq (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (P : Matrix (Fin r) (Fin r) ℂ) :
     ReciprocityTheory.ChartRestriction.G.FD.gram τ G P = Pᵀ * G.map τ * P.map (starRingEnd ℂ) := by
   ext a b
@@ -195,6 +240,57 @@ theorem gram_eq (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (P : Matrix (F
     Matrix.transpose_apply, Finset.sum_mul]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Establish `hG` using `X.Gm_det`. Use `set G := X.Gm with hGdef`. Use `set D : Matrix (Fin r) (Fin r) ℂ := Matrix.diagonal fun a : Fin r => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ) with hDdef`. Establish `hD : D * D = 1`. Rewrite using `[hDdef, diagonal_mul_diagonal, ← diagonal_one]`.
+
+Apply the tactic sequence `congr 1; funext a; unfold sgn; split_ifs <;> simp`. Establish `hDc : D.map (starRingEnd ℂ) = D`. Rewrite using `[hDdef, diagonal_map (map_zero _)]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+
+Simplify using the standard rewrite rules. Establish `hxD : ∀ τ, (mat x τ)ᵀ * G.map τ.1 * (mat x τ).map (starRingEnd ℂ) = D` using `fun τ => by`. Rewrite using `[← gram_eq]`. Conclude with `ho τ`. Establish `hx : ∀ τ, (mat x τ).det ≠ 0`.
+
+Introduce `τ h`. Establish `h1` using `congrArg Matrix.det (hxD τ)`. Establish `h2` using `congrArg Matrix.det hD`. Rewrite `h1` using `[det_mul, det_mul, det_transpose, h]`. Simplify using `[← h1] at h2`.
+
+Establish `hsk : ∀ i, (e i)ᵀ * G + G * (e i).map cc = 0` using `fun i => skew_matrix G (he i).2`. Establish `hE : LinearIndependent E e` using `GlobalTheory.T.real_independent_skew_matrices G hG e hsk hli`. Establish `hR : ∀ τ : X.Ψ, LinearIndependent ℝ (fun i => (e i).map τ.1)` using `fun τ => GlobalTheory.T.linear_independent_complex_map τ.1 e hE`. Establish `hmem : ∀ (τ : X.Ψ) i, ((e i).map τ.1)ᵀ * G.map τ.1 + G.map τ.1 * ((e i).map τ.1).map (starRingEnd ℂ) = 0 ∧ ((e i).map τ.1).trace = 0`. Introduce `τ i`.
+
+Use `⟨map_skew G (hsk i) τ.1, ?_⟩` and prove the remaining obligations. Establish `h1 : ((e i).map τ.1).trace = τ.1 (e i).trace` using `by simp [Matrix.trace, map_sum]`. Rewrite using `[h1, (he i).1, map_zero]`. Establish `hinj : Function.Injective (coordMap X.Ψ e)`. Use `(injective_iff_map_eq_zero (coordMap X.Ψ e)).2 fun c hc => funext fun τ => funext fun i => ?_` and prove the remaining obligations.
+
+Establish `h1` using `coordMap_apply X.Ψ e c τ`. Rewrite `h1` using `[hc]`. Conclude with `Fintype.linearIndependent_iff.1 (hR τ) (c τ) h1.symm i`. Establish `hsurj : ∀ Z ∈ realLie X.Ψ G, ∃ c, coordMap X.Ψ e c = Z`. Introduce `Z hZ`.
+
+Establish `hX'` using `(mem_realLie_iff X.Ψ G Z).1 hZ`. Establish `hspan : ∀ τ : X.Ψ, Matrix.of (Z τ) ∈ Submodule.span ℝ (Set.range fun i => (e i).map τ.1)` using `fun τ => GlobalTheory.T.unitary_lie_algebra_spanned (G.map τ.1) (det_map_ne G hG τ.1) _ (hR τ) (hmem τ) _ (hX' τ).1 (hX' τ).2`. Use `choose c hc using fun τ => (Submodule.mem_span_range_iff_exists_fun ℝ).1 (hspan τ)`. Use `⟨c, funext fun τ => ?_⟩` and prove the remaining obligations. Establish `h1` using `coordMap_apply X.Ψ e c τ`.
+
+Rewrite `h1` using `[hc τ]`. Conclude with `h1`. Establish `hin : ∀ c, coordMap X.Ψ e c ∈ realLie X.Ψ G`. Introduce `c`. Use `(mem_realLie_iff X.Ψ G _).2 fun τ => ?_` and prove the remaining obligations.
+
+Rewrite using `[coordMap_apply]`. Use `⟨?_, by simp [trace_sum, (hmem τ _).2]⟩` and prove the remaining obligations. Establish `h1 : (∑ i, c τ i • (e i).map τ.1).map (starRingEnd ℂ) = ∑ i, c τ i • ((e i).map τ.1).map (starRingEnd ℂ)`. Use extensionality with `a b`. Simplify using `[Matrix.sum_apply]`.
+
+Rewrite using `[h1, transpose_sum, Finset.sum_mul, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[transpose_smul, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, (hmem τ i).1, smul_zero]`. Set `f0 : (X.Ψ → Fin (r ^ 2 - 1) → ℝ) →ₗ[ℝ] (realLie X.Ψ G).comap (fromFrame x)` to `((toFrame x).comp (coordMap X.Ψ e)).codRestrict _ fun c => by`. Express the relevant statement in the definitionally equal form `fromFrame x (toFrame x (coordMap X.Ψ e c)) ∈ realLie X.Ψ G`.
+
+Rewrite using `[fromFrame_toFrame x hx]`. Conclude with `hin c`. Establish `hf0 : ∀ c, fromFrame x (f0 c).1 = coordMap X.Ψ e c` using `fun c => fromFrame_toFrame x hx _`. Establish `hb : Function.Bijective f0`. Use `⟨fun c d h => hinj (by rw [← hf0, ← hf0, h]), fun Y => ?_⟩` and prove the remaining obligations.
+
+Take `⟨c, hc⟩` from `hsurj _ Y.2`. Use `⟨c, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `toFrame x (coordMap X.Ψ e c) = Y.1`. Rewrite using `[hc, toFrame_fromFrame x hx]`. Set `f` to `LinearEquiv.ofBijective f0 hb`.
+
+Set `Y : X.Ψ → Fin (r ^ 2 - 1) → Matrix (Fin r) (Fin r) ℂ` to `fun τ i => (mat x τ)⁻¹ * (e i).map τ.1 * mat x τ`. Establish `hfY : ∀ τ i σ, Matrix.of (fun a b => (f (Pi.single τ (Pi.single i 1))).1 (σ, a, b)) = if σ = τ then Y τ i else 0`. Introduce `τ i σ`. Express the relevant statement in the definitionally equal form `Matrix.of (fun a b => toFrame x (coordMap X.Ψ e (Pi.single τ (Pi.single i 1))) (σ, a, b)) = _`. Rewrite using `[toFrame_apply, coordMap_apply]`.
+
+Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using `[Y, Pi.single_apply]`. Simplify using `[h]`. Establish `hgram : (Matrix.of fun p q : Fin (r ^ 2 - 1) × X.Ψ => inner ℝ (f (Pi.single p.2 (Pi.single p.1 1))) (f (Pi.single q.2 (Pi.single q.1 1)))) = blockDiagonal fun τ => Matrix.of fun i j => (trace (Y τ i * (Y τ j)ᴴ)).re`.
+
+Use extensionality with `⟨i, τ⟩ ⟨j, σ⟩`. Rewrite using `[Matrix.of_apply, Submodule.coe_inner, inner_eq_sum_trace, blockDiagonal_apply]`. Simplify using `only [hfY]`. Rewrite using `[Finset.sum_eq_single τ (fun b _ hb => by simp [hb]) (by simp)]`. Distinguish the cases in `h : τ = σ`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`. Establish `hYli : ∀ τ, LinearIndependent ℝ (Y τ)`. Introduce `τ`.
+
+Use `Fintype.linearIndependent_iff.2 fun g hg => Fintype.linearIndependent_iff.1 (hR τ) g ?_` and prove the remaining obligations. Establish `h1 : (mat x τ)⁻¹ * (∑ i, g i • (e i).map τ.1) * mat x τ = 0`. Rewrite using `[← hg]`. Simplify using `[Y, Finset.mul_sum, Finset.sum_mul]`. Establish `h2` using `congrArg (fun M => mat x τ * M * (mat x τ)⁻¹) h1`.
+
+Simplify using `only [Matrix.mul_zero, Matrix.zero_mul] at h2`. Rewrite `h2` using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_right _ _ (hx τ).isUnit, Matrix.mul_nonsing_inv_cancel_left _ _ (hx τ).isUnit]`. Then use the resulting hypothesis. Establish `htr : ∀ τ (M : Matrix (Fin r) (Fin r) ℂ), trace ((mat x τ)⁻¹ * M * mat x τ) = trace M`. Introduce `τ M`. Rewrite using `[trace_mul_comm, Matrix.mul_nonsing_inv_cancel_left _ _ (hx τ).isUnit]`.
+
+Establish `hYsk : ∀ τ i, (Y τ i)ᵀ * D + D * (Y τ i).map (starRingEnd ℂ) = 0 ∧ (Y τ i).trace = 0`. Introduce `τ i`. Use `⟨?_, by rw [htr, (hmem τ i).2]⟩` and prove the remaining obligations. Establish `h0 : mat x τ * Y τ i = (e i).map τ.1 * mat x τ`. Simplify using `only [Y, Matrix.mul_assoc]`.
+
+Rewrite using `[Matrix.mul_nonsing_inv_cancel_left _ _ (hx τ).isUnit]`. Establish `h1` using `congrArg (fun M => (mat x τ)ᵀ * M * (mat x τ).map (starRingEnd ℂ)) (hmem τ i).1`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul] at h1`. Rewrite using `[← hxD τ, ← h1, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← transpose_mul, h0, transpose_mul, Matrix.mul_assoc _ ((mat x τ).map _), ← Matrix.map_mul, h0, Matrix.map_mul]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`.
+
+Establish `hdetτ : ∀ τ : X.Ψ, τ.1 (Matrix.of fun i j => Matrix.trace (e i * e j)).det = (Matrix.of fun i j => trace (Y τ i * Y τ j)).det`. Introduce `τ`. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`.
+
+Establish `h1 : Y τ i * Y τ j = (mat x τ)⁻¹ * ((e i * e j).map τ.1) * mat x τ`. Rewrite using `[Matrix.map_mul]`. Simplify using `only [Y, Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_nonsing_inv_cancel_left _ _ (hx τ).isUnit]`. Rewrite using `[Matrix.of_apply, h1, htr]`.
+
+Simplify using `[Matrix.trace, map_sum, Matrix.mul_apply]`. Establish `hcF : Continuous fun Z : (realLie X.Ψ G).comap (fromFrame x) => fromFrame x Z.1` using `(fromFrame x).continuous_of_finiteDimensional.comp continuous_subtype_val`. Establish `hcf : Continuous f` using `f.toLinearMap.continuous_of_finiteDimensional`. Unfold `riemLie`. Rewrite using `[volume_eq_sqrt_gram_map f, Measure.map_smul, Measure.map_map hcF.measurable hcf.measurable, hgram, det_blockDiagonal, Finset.abs_prod, norm_prod]`.
+
+Use `congr 3`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[hdetτ, abs_det_re_trace D hD hDc (Y τ) (hYli τ) (hYsk τ)]`. Use function extensionality and compare the values at `c`. Conclude with `hf0 c`.
+-/
 theorem riemLie_eq_smul_formLie (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r)
     (x : Frame X.Ψ r) (e : Fin (r ^ 2 - 1) → Matrix (Fin r) (Fin r) E) (_hr : 2 ≤ r) (ho : IsOrth X x)
     (he : ∀ i, (e i).trace = 0 ∧ ∀ u w, herm X.Gm (e i *ᵥ u) w + herm X.Gm u (e i *ᵥ w) = 0)

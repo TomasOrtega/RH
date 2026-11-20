@@ -11,6 +11,11 @@ namespace GlobalTheory.TorsionCoset
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Establish `h` using `X.eps_add 0 (zero_mem _) 0 (zero_mem _)`. Simplify using `only [add_zero] at h`. Break down `X.eps_pm 0 (zero_mem _) with h1 | h1` into its components or cases. Conclude with `h1`. Rewrite `h` using `[h1]`.
+
+Evaluate the numerical expressions using `[Hf] at h`.
+-/
 theorem eps_zero (X : PT E) : X.eps 0 = 1 := by
   have h := X.eps_add 0 (zero_mem _) 0 (zero_mem _)
   simp only [add_zero] at h
@@ -19,10 +24,20 @@ theorem eps_zero (X : PT E) : X.eps 0 = 1 := by
   · rw [h1] at h
     norm_num [Hf] at h
 
+/- English proof (translation)
+Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem hx k`.
+-/
 theorem natCast_smul_mem (X : PT E) {x : Vsp X.dim} (hx : x ∈ X.L) (k : ℕ) :
     (k : ℂ) • x ∈ X.L := by
   rw [Nat.cast_smul_eq_nsmul]; exact nsmul_mem hx k
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp [eps_zero]`. Consider the case `succ k ih`. Establish `h` using `X.eps_add _ (natCast_smul_mem X hx k) x hx`. Establish `him : (Hf ((k : ℂ) • x) x).im = 0`.
+
+Unfold `Hf`. Rewrite using `[Complex.im_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Simplify using `[PiLp.smul_apply, mul_assoc, Complex.mul_conj]`. Rewrite using `[show ((k + 1 : ℕ) : ℂ) • x = (k : ℂ) • x + x by push_cast; rw [add_smul, one_smul], h, ih, him]`.
+
+Simplify using `[pow_succ]`.
+-/
 theorem eps_natCast_smul (X : PT E) {x : Vsp X.dim} (hx : x ∈ X.L) (k : ℕ) :
     (X.eps ((k : ℂ) • x) : ℝ) = (X.eps x : ℝ) ^ k := by
   induction k with
@@ -38,6 +53,17 @@ theorem eps_natCast_smul (X : PT E) {x : Vsp X.dim} (hx : x ∈ X.L) (k : ℕ) :
       h, ih, him]
     simp [pow_succ]
 
+/- English proof (translation)
+Use `⟨fun α v => ?_, fun x hx => ?_, fun v w => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply]`. Use extensionality with `i`. Simplify using `[act]`. Expand and normalize the polynomial expressions, which then agree.
+
+Conclude with `natCast_smul_mem X hx n`. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply]`. Unfold `Hf`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply]`. Establish `h` using `eps_natCast_smul X hx n`. Establish `h2 : (X.eps x : ℝ) ^ n = (X.eps x : ℝ) ^ (n ^ 2)`.
+
+Break down `X.eps_pm x hx with h1 | h1` into its components or cases. Simplify using `[h1]`. Rewrite using `[h1]`. Use `push_cast`. Rewrite using `[sq, pow_mul]`.
+
+Apply the tactic sequence `rcases neg_one_pow_eq_or ℝ n with h3 | h3 <;> simp [h3]`. Conclude with `h.trans h2` after adjusting the coercions.
+-/
 theorem isPi_natCast (X : PT E) (n : ℕ) : IsPi X (n ^ 2) ((n : ℂ) • LinearMap.id) := by
   refine ⟨fun α v => ?_, fun x hx => ?_, fun v w => ?_, fun x hx => ?_⟩
   · simp only [LinearMap.smul_apply, LinearMap.id_apply]
@@ -62,6 +88,23 @@ theorem isPi_natCast (X : PT E) (n : ℕ) : IsPi X (n ^ 2) ((n : ℂ) • Linear
         rcases neg_one_pow_eq_or ℝ n with h3 | h3 <;> simp [h3]
     exact_mod_cast h.trans h2
 
+/- English proof (translation)
+Establish `hn' : (n : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hn`. Establish `hsq : ∀ x : Vsp X.dim, ((n ^ 2 : ℕ) : ℂ) • x = (n : ℂ) • (n : ℂ) • x` using `fun x => by`. Rewrite using `[smul_smul]`. Use `push_cast`. Rewrite using `[sq]`.
+
+Set `S : Set (Fin 1 → Vsp X.dim)` to `{b | (n : ℂ) • (n : ℂ) • b 0 ∈ X.L ∧ (n : ℂ) • b 0 ∈ ZSpan.fundamentalDomain X.b}`. Establish `hS : S.Finite`. Establish `hb` using `ZSpan.setFinite_inter X.b ((ZSpan.fundamentalDomain_isBounded X.b).smul₀ (n : ℂ))`. Use `Set.Finite.of_injOn (f := fun b => (n : ℂ) • (n : ℂ) • b 0) ?_ ?_ hb` and prove the remaining obligations. Introduce `b hb`.
+
+Conclude with `⟨Set.smul_mem_smul_set hb.2, hb.1⟩`. Introduce `b _ c _ h`. Use function extensionality and compare the values at `k`. Rewrite using `[Subsingleton.elim k 0]`. Conclude with `smul_right_injective _ hn' (smul_right_injective _ hn' h)`.
+
+Use `⟨hS.toFinset, fun b hb k => ?_, fun b hb => ?_⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim k 0, hsq]`. Conclude with `(hS.mem_toFinset.1 hb).1`. Establish `hb0` using `hb 0`. Rewrite `hb0` using `[hsq]`.
+
+Establish `hfl : (n : ℂ) • b 0 - ZSpan.fract X.b ((n : ℂ) • b 0) ∈ X.L`. Rewrite using `[ZSpan.fract_apply, sub_sub_cancel]`. Conclude with `(ZSpan.floor X.b _).2`. Use `⟨fun _ => (n : ℂ)⁻¹ • ZSpan.fract X.b ((n : ℂ) • b 0), ⟨hS.mem_toFinset.2 ⟨?_, ?_⟩, fun k => ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [smul_inv_smul₀ hn']`.
+
+Use `sub_mem hb0 (natCast_smul_mem X hfl n)` as an intermediate fact. Rewrite `this` using `[smul_sub, sub_sub_cancel]`. Then use the resulting hypothesis. Simplify using `only [smul_inv_smul₀ hn']`. Conclude with `ZSpan.fract_mem_fundamentalDomain X.b _`. Rewrite using `[Subsingleton.elim k 0]`.
+
+Simplify `hfl` using `only [LinearMap.smul_apply, LinearMap.id_apply, smul_sub, smul_inv_smul₀ hn']`. Introduce and unpack `c ⟨hc, hc'⟩`. Establish `h1` using `(hS.mem_toFinset.1 hc).2`. Establish `h2` using `hc' 0`. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply, smul_sub] at h2`.
+
+Use function extensionality and compare the values at `k`. Rewrite using `[Subsingleton.elim k 0, eq_inv_smul_iff₀ hn', ← (ZSpan.fract_eq_self.2 h1), ZSpan.fract_eq_fract, neg_add_eq_sub]`. Conclude with `h2`.
+-/
 theorem exists_isReps (X : PT E) (n : ℕ) (hn : n ≠ 0) :
     ∃ K, IsReps X (n ^ 2) 1 ((n : ℂ) • LinearMap.id) K := by
   classical
@@ -106,6 +149,17 @@ theorem exists_isReps (X : PT E) (n : ℕ) (hn : n ≠ 0) :
         ZSpan.fract_eq_fract, neg_add_eq_sub]
       exact h2
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `hn0 : n ≠ 0` using `by omega`. Establish `hn' : (n : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hn0`. Establish `hq : 2 ≤ n ^ 2` using `by nlinarith`.
+
+Take `⟨K, hK⟩` from `exists_isReps X n hn0`. Take `⟨-, -, -, hspan⟩` from `thetaBasis_holds E X (n ^ 2) 1 _ (by omega) (isPi_natCast X n) s hs h0 K hK`. Take `⟨F, hF, hFv⟩` from `GlobalTheory.BasePointFree.exists_sec_ne_zero E X s hs h0 (n ^ 2) hq (fun _ => (n : ℂ)⁻¹ • a)`. Apply `hFv` to reduce the goal to its premises. Establish `hle : Submodule.span ℂ ((fun b => X.U (n ^ 2) b (s0 X ((n : ℂ) • LinearMap.id) s)) '' (K : Set _)) ≤ LinearMap.ker (LinearMap.proj (R` using `ℂ) (φ := fun _ => ℂ) (fun _ : Fin 1 => (n : ℂ)⁻¹ • a)) := by`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Establish `h` using `hcon _ (neg_mem (hK.1 b hb 0))`. Establish `e : a + (n : ℂ)⁻¹ • -(((n ^ 2 : ℕ) : ℂ) • b 0) = (n : ℂ) • ((n : ℂ)⁻¹ • a - b 0)`. Rewrite using `[smul_sub, smul_inv_smul₀ hn', smul_neg, smul_smul, sub_eq_add_neg]`.
+
+Use `congr 3`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite `h` using `[e]`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, LinearMap.proj_apply, PT.U, s0, Fin.prod_univ_one, LinearMap.smul_apply, LinearMap.id_apply, Pi.sub_apply, h, mul_zero]`.
+
+Conclude with `hle (hspan hF)`.
+-/
 theorem exists_ne_zero_on_coset (E : Type) [Field E] [NumberField E] [IsCMField E] (X : PT E)
     (s : (Fin 1 → Vsp X.dim) → ℂ) (hs : s ∈ X.Sec 1 1) (h0 : s ≠ 0) (n : ℕ) (hn : 2 ≤ n)
     (a : Vsp X.dim) : ∃ y ∈ X.L, s (fun _ => a + ((n : ℂ)⁻¹) • y) ≠ 0 := by

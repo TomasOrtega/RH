@@ -13,6 +13,11 @@ section Gen
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] [FiniteDimensional F E]
   (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
 
+/- English proof (translation)
+Use `haveI : IsModuleTopology (Af F) (Af F ⊗[F] E) := ⟨rfl⟩`. Use `first`. Consider the case `exact IsModuleTopology.topologicalRing (Af F) (Af F ⊗[F] E)`. Consider the case `exact IsModuleTopology.isTopologicalRing (Af F) (Af F ⊗[F] E)`. Consider the case `exact IsModuleTopology.Module.isTopologicalRing (Af F) (Af F ⊗[F] E)`.
+
+Consider the case `exact ModuleTopology.topologicalRing (Af F) (Af F ⊗[F] E)`.
+-/
 theorem isTopRing_tens : IsTopologicalRing (Af F ⊗[F] E) := by
   haveI : IsModuleTopology (Af F) (Af F ⊗[F] E) := ⟨rfl⟩
   first
@@ -21,17 +26,29 @@ theorem isTopRing_tens : IsTopologicalRing (Af F ⊗[F] E) := by
   | exact IsModuleTopology.Module.isTopologicalRing (Af F) (Af F ⊗[F] E)
   | exact ModuleTopology.topologicalRing (Af F) (Af F ⊗[F] E)
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 private theorem subgroup_isTopologicalGroup {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (S : Subgroup G) : IsTopologicalGroup S :=
   inferInstance
 
+/- English proof (translation)
+Use `haveI := isTopRing_tens (F := F) (E := E)`. Unfold `HA HR Formalism.UG.UJ`. Conclude with `subgroup_isTopologicalGroup (G := GL (Fin n) (Af F ⊗[F] E)) _`.
+-/
 theorem isTopGroup_HA : IsTopologicalGroup (HA (Af F) σ J) := by
   haveI := isTopRing_tens (F := F) (E := E)
   unfold HA HR Formalism.UG.UJ
   exact subgroup_isTopologicalGroup (G := GL (Fin n) (Af F ⊗[F] E)) _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl⟩`.
+-/
 theorem borel_HA : BorelSpace (HA (Af F) σ J) := ⟨rfl⟩
 
+/- English proof (translation)
+Use `haveI := isTopGroup_HA σ J`. Use `haveI := borel_HA σ J`. Conclude with `⟨inferInstance, inferInstance⟩`.
+-/
 theorem sub_top_borel (H : Subgroup (HA (Af F) σ J)) : IsTopologicalGroup H ∧ BorelSpace H := by
   haveI := isTopGroup_HA σ J
   haveI := borel_HA σ J
@@ -45,6 +62,9 @@ def OpenCompactStep : Prop :=
       IsOpen (unitaryLevelClosureSubgroup X hb u : Set (Hsub (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u))) ∧
       IsCompact (KHg X u : Set (Hsub (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u)))
 
+/- English proof (translation)
+Introduce `D X hb hK u hm hl`. Take `⟨h1, h2⟩` from `sub_top_borel X.B.I.cm.sig X.B.I.J (Hsub (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u))`. Conclude with `⟨h1, h2, h X hb hK u hm hl⟩`.
+-/
 theorem idxTopStep_of (h : OpenCompactStep) : IdxTopStep := by
   intro D X hb hK u hm hl
   obtain ⟨h1, h2⟩ := sub_top_borel X.B.I.cm.sig X.B.I.J (Hsub (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u))

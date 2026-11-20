@@ -9,10 +9,16 @@ noncomputable section
 
 namespace GlobalTheory.FibreScalar
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem appLE_eq_of_eq {A Y : Scheme.{0}} {f g : A ⟶ Y} (h : f = g) (U : Y.Opens) (W : A.Opens)
     (e : W ≤ f ⁻¹ᵁ U) : f.appLE U W e = g.appLE U W (h ▸ e) := by
   subst h; rfl
 
+/- English proof (translation)
+Rewrite using `[Scheme.Hom.appLE, IsAffineOpen.fromSpec_app_self, Category.assoc, Category.assoc, ← Functor.map_comp_assoc]`. Establish `: ((eqToHom hU.fromSpec_preimage_self).op ≫ (homOfLE e).op : Opposite.op _ ⟶ Opposite.op _) = 𝟙 _` using `Subsingleton.elim _ _`. Rewrite using `[this, CategoryTheory.Functor.map_id, Category.id_comp, Iso.inv_hom_id]`.
+-/
 theorem fromSpec_appLE_top {Y : Scheme.{0}} {U : Y.Opens} (hU : IsAffineOpen U) (e : ⊤ ≤ hU.fromSpec ⁻¹ᵁ U) :
     hU.fromSpec.appLE U ⊤ e ≫ (Scheme.ΓSpecIso Γ(Y, U)).hom = 𝟙 _ := by
   rw [Scheme.Hom.appLE, IsAffineOpen.fromSpec_app_self, Category.assoc, Category.assoc,
@@ -21,11 +27,19 @@ theorem fromSpec_appLE_top {Y : Scheme.{0}} {U : Y.Opens} (hU : IsAffineOpen U) 
     Subsingleton.elim _ _
   rw [this, CategoryTheory.Functor.map_id, Category.id_comp, Iso.inv_hom_id]
 
+/- English proof (translation)
+Rewrite using `[← Scheme.ΓSpecIso_naturality]`. Both sides reduce to the same expression.
+-/
 theorem specMap_appLE_top {A B : CommRingCat.{0}} (f : A ⟶ B) (e : (⊤ : (Spec B).Opens) ≤ Spec.map f ⁻¹ᵁ ⊤) :
     (Spec.map f).appLE ⊤ ⊤ e ≫ (Scheme.ΓSpecIso B).hom = (Scheme.ΓSpecIso A).hom ≫ f := by
   rw [← Scheme.ΓSpecIso_naturality]
   rfl
 
+/- English proof (translation)
+Establish `e1 : (⊤ : (Sp Γ(X, U.1)).Opens) ≤ U.2.fromSpec ⁻¹ᵁ U.1` using `U.2.fromSpec_preimage_self.ge`. Establish `e2 : (⊤ : (Sp (Γ(X, U.1) ⧸ m)).Opens) ≤ spMap (Ideal.Quotient.mk m) ⁻¹ᵁ ⊤` using `le_top`. Establish `hk` using `fromSpec_appLE_top U.2 e1`. Express the relevant statement in the definitionally equal form `(spMap (Ideal.Quotient.mk m) ≫ U.2.fromSpec).appLE U.1 ⊤ e ≫ _ = _`. Establish `hk' : U.2.fromSpec.appLE U.1 ⊤ e1 ≫ (Scheme.ΓSpecIso (CommRingCat.of Γ(X, U.1))).hom = 𝟙 _` using `hk`.
+
+Rewrite using `[← Scheme.Hom.appLE_comp_appLE (spMap (Ideal.Quotient.mk m)) U.2.fromSpec _ ⊤ _ e1 e2, Category.assoc, specMap_appLE_top, ← Category.assoc, hk', Category.id_comp]`.
+-/
 theorem spMap_chart_appLE_top {X : Scheme.{0}} (U : X.affineOpens) (m : Ideal Γ(X, U.1))
     (e : ⊤ ≤ (spMap (Ideal.Quotient.mk m) ≫ chart U) ⁻¹ᵁ U.1) :
     (spMap (Ideal.Quotient.mk m) ≫ chart U).appLE U.1 ⊤ e ≫
@@ -39,6 +53,13 @@ theorem spMap_chart_appLE_top {X : Scheme.{0}} (U : X.affineOpens) (m : Ideal Γ
   rw [← Scheme.Hom.appLE_comp_appLE (spMap (Ideal.Quotient.mk m)) U.2.fromSpec _ ⊤ _ e1 e2, Category.assoc,
     specMap_appLE_top, ← Category.assoc, hk', Category.id_comp]
 
+/- English proof (translation)
+Introduce `E _ _ _ H X t U m A _ ι hpb O hO O' hO' r hr`. Use `set g := spMap (Ideal.Quotient.mk m) ≫ chart U with hg`. Establish `hw : ι ≫ t.G.hom = A.hom ≫ g` using `hpb.1.w`. Establish `e5 : (⊤ : (Sp (Γ(X, U.1) ⧸ m)).Opens) ≤ g ⁻¹ᵁ U.1`. Introduce `x _`.
+
+Express the relevant statement in the definitionally equal form `g x ∈ U.1`. Rewrite using `[hg, Scheme.Hom.comp_apply]`. Conclude with `U.2.fromSpec_preimage_self.ge (Set.mem_univ _)`. Establish `hz : (g.appLE U.1 ⊤ e5).hom r = 0`. Establish `h` using `congrArg (fun φ => φ.hom r) (spMap_chart_appLE_top U m e5)`.
+
+Simplify using `only [CommRingCat.comp_apply, CommRingCat.hom_ofHom, Ideal.Quotient.eq_zero_iff_mem.mpr hr] at h`. Establish `hinj : Function.Injective (Scheme.ΓSpecIso (CommRingCat.of (Γ(X, U.1) ⧸ m))).hom.hom` using `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of (Γ(X, U.1) ⧸ m))).hom).1`. Conclude with `hinj (h.trans (map_zero _).symm)`. Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.appLE_comp_appLE, appLE_eq_of_eq hw, ← Scheme.Hom.appLE_comp_appLE A.hom g U.1 ⊤ O' e5 (fun x _ => trivial), CommRingCat.comp_apply, hz, map_zero]`.
+-/
 theorem fibre_scalar_zero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Scheme.{0}) (t : SAB H X) (U : X.affineOpens) (m : Ideal Γ(X, U.1)) (A : Over (Sp (Γ(X, U.1) ⧸ m))) [GrpObj A] (ι : A.left ⟶ t.G.left), IsGrpPullback A t.G (spMap (Ideal.Quotient.mk m) ≫ chart U) ι → ∀ (O : t.G.left.Opens) (hO : O ≤ t.G.hom ⁻¹ᵁ U.1) (O' : A.left.Opens) (hO' : O' ≤ ι ⁻¹ᵁ O) (r : Γ(X, U.1)), r ∈ m → (ι.appLE O O' hO').hom ((t.G.hom.appLE U.1 O hO).hom r) = 0 := by
   intro E _ _ _ H X t U m A _ ι hpb O hO O' hO' r hr
   set g := spMap (Ideal.Quotient.mk m) ≫ chart U with hg

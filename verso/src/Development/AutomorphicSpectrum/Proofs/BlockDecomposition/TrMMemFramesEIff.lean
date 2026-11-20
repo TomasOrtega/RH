@@ -57,11 +57,23 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `h` using `congrFun (congrFun β.2 a) b`. Simplify `h` using `[Matrix.map_apply, Matrix.transpose_apply]`.
+-/
 theorem hermE_symm {D : D7} {r : ℕ} (β : PositivityTheory.GramSchwartzFunctions.HermE D r) (a b : Fin r) :
     D.sp.cm.sig (β.1 b a) = β.1 a b := by
   have h := congrFun (congrFun β.2 a) b
   simpa [Matrix.map_apply, Matrix.transpose_apply] using h
 
+/- English proof (translation)
+Establish `hg : HeckeCharacterZeroLocus.SiegelWeilU.gramE D.sp.cm.sig V.gram X = PositivityTheory.GramSchwartzFunctions.BC.gramQ V (trM X)`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Simplify using `only [HeckeCharacterZeroLocus.SiegelWeilU.gramE, HeckeCharacterZeroLocus.SiegelWeilU.hE, HeckeCharacterZeroLocus.SiegelWeilU.hform, PositivityTheory.GramSchwartzFunctions.BC.gramQ, trM, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Matrix.of_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by`. Rewrite using `[mul_assoc]`.
+
+Both sides reduce to the same expression. Establish `hr : LinearIndependent D.host.E X ↔ (trM X).rank = r`. Establish `h1 : (trM X).rank = (Matrix.of X).rank`. Establish `: trM X = Matrix.transpose (Matrix.of X)` using `rfl`. Rewrite using `[this, Matrix.rank_transpose]`.
+
+Rewrite using `[h1, Matrix.rank_eq_finrank_span_row]`. Use `linearIndependent_iff_card_eq_finrank_span (R := D.host.E) (b := X)` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Rewrite using `[Fintype.card_fin, eq_comm]`. Conclude with `Iff.rfl`.
+
+Simplify using `only [framesE, Set.mem_ofPred_eq, hr, hg]`.
+-/
 theorem trM_mem_framesE_iff {D : D7} (V : HSp D) {r : ℕ} (X : Fin r → Fin V.rank → D.host.E)
     (T : Matrix (Fin r) (Fin r) D.host.E) :
     X ∈ framesE D.sp.cm.sig V.gram T ↔ (trM X).rank = r ∧ PositivityTheory.GramSchwartzFunctions.BC.gramQ V (trM X) = T := by

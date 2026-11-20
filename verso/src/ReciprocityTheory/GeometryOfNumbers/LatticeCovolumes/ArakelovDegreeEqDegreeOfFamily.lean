@@ -8,27 +8,42 @@ open scoped ComplexOrder
 variable {K : Type*} [Field K] [NumberField K] {V : Type*} [AddCommGroup V] [Module K V]
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Take `⟨r, v, hv⟩` from `exists_isFullRankFamily_of_fg E hE`. Take `rfl` from `hv.length_eq_latticeRank`. Conclude with `⟨v, hv⟩`.
+-/
 theorem exists_isFrame (E : Submodule (𝓞 K) V) (hE : E.FG) :
     ∃ v : Fin (latRank K E) → V, IsFrame K E v := by
   obtain ⟨r, v, hv⟩ := exists_isFullRankFamily_of_fg E hE
   obtain rfl := hv.length_eq_latticeRank
   exact ⟨v, hv⟩
 
+/- English proof (translation)
+Conclude with `hv.length_eq_latticeRank`.
+-/
 theorem IsFrame.card_eq {E : Submodule (𝓞 K) V} {r : ℕ} {v : Fin r → V} (hv : IsFrame K E v) :
     r = latRank K E := by
   exact hv.length_eq_latticeRank
 
+/- English proof (translation)
+Conclude with `hv.relIndex_span_frame_ne_zero hE`.
+-/
 theorem IsFrame.relIndex_ne_zero {E : Submodule (𝓞 K) V} (hE : E.FG) {r : ℕ} {v : Fin r → V}
     (hv : IsFrame K E v) :
     (Submodule.span (𝓞 K) (Set.range v)).toAddSubgroup.relIndex E.toAddSubgroup ≠ 0 := by
   exact hv.relIndex_span_frame_ne_zero hE
 
+/- English proof (translation)
+Take `rfl : r = r'` from `hv.length_eq_latticeRank.trans hv'.length_eq_latticeRank.symm`. Conclude with `degreeOfFamily_eq_of_isFullRankFamily h hE hv hv'`.
+-/
 theorem degreeOfFamily_eq_degreeOfFamily (h : HermFam K V) {E : Submodule (𝓞 K) V} (hE : E.FG) {r r' : ℕ}
     {v : Fin r → V} {v' : Fin r' → V} (hv : IsFrame K E v) (hv' : IsFrame K E v') :
     degreeOfFamily h E v = degreeOfFamily h E v' := by
   obtain rfl : r = r' := hv.length_eq_latticeRank.trans hv'.length_eq_latticeRank.symm
   exact degreeOfFamily_eq_of_isFullRankFamily h hE hv hv'
 
+/- English proof (translation)
+Establish `hex : ∃ p : (Σ r : ℕ, Fin r → V), IsFrame K E p.2` using `⟨⟨r, v⟩, hv⟩`. Unfold `deg`. Rewrite using `[dif_pos hex]`. Conclude with `degreeOfFamily_eq_degreeOfFamily h hE hex.choose_spec hv`.
+-/
 theorem arakelovDegree_eq_degreeOfFamily (h : HermFam K V) {E : Submodule (𝓞 K) V} (hE : E.FG) {r : ℕ}
     {v : Fin r → V} (hv : IsFrame K E v) : deg h E = degreeOfFamily h E v := by
   have hex : ∃ p : (Σ r : ℕ, Fin r → V), IsFrame K E p.2 := ⟨⟨r, v⟩, hv⟩
@@ -36,6 +51,15 @@ theorem arakelovDegree_eq_degreeOfFamily (h : HermFam K V) {E : Submodule (𝓞 
   rw [dif_pos hex]
   exact degreeOfFamily_eq_degreeOfFamily h hE hex.choose_spec hv
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `exists_isFrame E' hE'`. Establish `hvE : IsFrame K E v`. Use `⟨fun i => hle (hv.1 i), hv.2.1, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Establish `hx'` using `hspan hx`.
+
+Rewrite `hx'` using `[← hv.ds_spanK_eq]`. Conclude with `hx'`. Rewrite using `[arakelovDegree_eq_degreeOfFamily h hE' hv, arakelovDegree_eq_degreeOfFamily h hE hvE]`. Unfold `degreeOfFamily`. Establish `hS : Submodule.span (𝓞 K) (Set.range v) ≤ E'` using `Submodule.span_le.mpr (Set.range_subset_iff.mpr hv.1)`.
+
+Establish `hmul` using `AddSubgroup.relIndex_mul_relIndex (H := (Submodule.span (𝓞 K) (Set.range v)).toAddSubgroup) (K := E'.toAddSubgroup) (L := E.toAddSubgroup) (fun x hx => hS hx) (fun x hx => hle hx)`. Establish `ha` using `hv.relIndex_span_frame_ne_zero hE'`. Establish `hc` using `hvE.relIndex_span_frame_ne_zero hE`. Establish `hb : E'.toAddSubgroup.relIndex E.toAddSubgroup ≠ 0` using `fun h0 => hc (by rw [← hmul, h0, mul_zero])`. Establish `hlog : Real.log ((Submodule.span (𝓞 K) (Set.range v)).toAddSubgroup.relIndex E.toAddSubgroup : ℝ) = Real.log ((Submodule.span (𝓞 K) (Set.range v)).toAddSubgroup.relIndex E'.toAddSubgroup : ℝ) + Real.log (E'.toAddSubgroup.relIndex E.toAddSubgroup : ℝ)`.
+
+Rewrite using `[← hmul, Nat.cast_mul, Real.log_mul (Nat.cast_ne_zero.mpr ha) (Nat.cast_ne_zero.mpr hb)]`. Rewrite using `[hlog]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem deg_of_le (h : HermFam K V) {E' E : Submodule (𝓞 K) V} (hE' : E'.FG) (hE : E.FG)
     (hle : E' ≤ E) (hspan : (E : Set V) ⊆ Submodule.span K (E' : Set V)) :
     deg h E' = deg h E -

@@ -16,6 +16,13 @@ def zcl {μ : GS Ω (S : Set Pl) →* (ZMod (l ^ n))ˣ} (hμ : μ.comp (toGS Ω 
     (hξ : Coc2 c n S ξ) (i : Ix c) : H2 (charRep μ) :=
   Submodule.Quotient.mk ⟨zc c n S ξ i, zc_mem hμ hξ i⟩
 
+/- English proof (translation)
+Take `⟨u, hu, huO, hcu⟩` from `hcob`. Unfold `zcl resH2`. Rewrite using `[Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.coe_subtype, separated_dvr_second_cohomology_mem]`. Use `⟨fun g => crd c n i (u g), continuous_crd hu.domRestrict (fun g => huO _) n i, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `⟨g, h⟩`.
+
+Rewrite using `[d1_apply, restrictCocycles2_apply]`. Express the relevant statement in the definitionally equal form `_ = zc c n S ξ i (((g : G ℚ Ω) : GS Ω (S : Set Pl)), ((h : G ℚ Ω) : GS Ω (S : Set Pl)))`. Rewrite using `[zc_mk hξ, MonoidHom.coe_comp, Function.comp_apply, charRep_apply]`. Establish `hμg : ((μ (locFam S Av v g) : ZMod (l ^ n))) = PadicInt.toZModPow n (cycZ ℚ Ω l g : ℤ_[l])` using `congrArg Units.val (DFunLike.congr_fun hμ (g : G ℚ Ω))`. Rewrite using `[hμg]`.
+
+Establish `hc` using `(cg_iff (hξ.int g h) (c.O.add_mem (c.O.sub_mem (algebraMap_mul_mem _ (huO h)) (huO _)) (huO g))).1 (hcu g g.2 h h.2) i`. Rewrite `hc` using `[crd_add i (c.O.sub_mem (algebraMap_mul_mem _ (huO h)) (huO _)) (huO g), crd_sub i (algebraMap_mul_mem _ (huO h)) (huO _), crd_algebraMap_mul i _ (huO h)]`. Rewrite using `[hc]`. Both sides reduce to the same expression.
+-/
 theorem res_zcl_eq_zero {μ : GS Ω (S : Set Pl) →* (ZMod (l ^ n))ˣ}
     (hμ : μ.comp (toGS Ω _) = cycMod ℚ Ω l n) (hξ : Coc2 c n S ξ) (Av : S → ValuationSubring Ω) (v : S)
     (hcob : Cob2 c n (Dec (F := ℚ) (Av v)) ξ) (i : Ix c) :
@@ -38,6 +45,19 @@ theorem res_zcl_eq_zero {μ : GS Ω (S : Set Pl) →* (ZMod (l ^ n))ˣ}
     crd_sub i (algebraMap_mul_mem _ (huO h)) (huO _), crd_algebraMap_mul i _ (huO h)] at hc
   rw [hc]; rfl
 
+/- English proof (translation)
+Establish `hb : ∀ i, ∃ ci : Dec (F` using `ℚ) (Av v) → ZMod (l ^ n), Continuous ci ∧ d1 ((charRep μ).comp (locFam S Av v)) ci = fun p => zc c n S ξ i (((p.1 : G ℚ Ω) : GS Ω (S : Set Pl)), ((p.2 : G ℚ Ω) : GS Ω (S : Set Pl))) := by`. Introduce `i`. Use `h0 i` as an intermediate fact. Unfold `zcl resH2 at this`. Rewrite `this` using `[Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.coe_subtype, separated_dvr_second_cohomology_mem]`.
+
+Conclude with `this`. Use `choose ci hci hd using hb`. Use `⟨fun s => if hs : s ∈ Dec (F := ℚ) (Av v) then lft c n (fun i => ci i ⟨s, hs⟩) else 0, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[continuousOn_iff_continuous_domRestrict]`. Establish `: (Set.domRestrict (Dec (F` using `ℚ) (Av v) : Set (G ℚ Ω)) fun s => if hs : s ∈ Dec (F := ℚ) (Av v) then lft c n (fun i => ci i ⟨s, hs⟩) else 0) = fun g => lft c n (fun i => ci i g) := by`.
+
+Use function extensionality and compare the values at `g`. Conclude with `dif_pos g.2`. Rewrite using `[this]`. Conclude with `Continuous.comp (g := lft c n) (f := fun g i => ci i g) continuous_of_discreteTopology (continuous_pi fun i => hci i)`. Introduce `s dsimp only split_ifs`.
+
+Conclude with `lft_mem _ _`. Conclude with `c.O.zero_mem`. Introduce `s hs t ht dsimp only`. Rewrite using `[dif_pos ht, dif_pos ((Dec (F := ℚ) (Av v)).mul_mem hs ht), dif_pos hs]`. Establish `hm : ∀ a, lft c n a ∈ c.O` using `lft_mem n`.
+
+Use `(cg_iff (hξ.int s t) (c.O.add_mem (c.O.sub_mem (algebraMap_mul_mem _ (hm _)) (hm _)) (hm _))).2 fun i => ?_` and prove the remaining obligations. Rewrite using `[crd_add i (c.O.sub_mem (algebraMap_mul_mem _ (hm _)) (hm _)) (hm _), crd_sub i (algebraMap_mul_mem _ (hm _)) (hm _), crd_algebraMap_mul i _ (hm _), crd_lft, crd_lft, crd_lft]`. Establish `e` using `congrFun (hd i) (⟨s, hs⟩, ⟨t, ht⟩)`. Rewrite `e` using `[zc_mk hξ, d1_apply, MonoidHom.coe_comp, Function.comp_apply, charRep_apply]`. Establish `hμg : ((μ (locFam S Av v ⟨s, hs⟩) : ZMod (l ^ n))) = PadicInt.toZModPow n (cycZ ℚ Ω l s : ℤ_[l])` using `congrArg Units.val (DFunLike.congr_fun hμ s)`.
+
+Rewrite `e` using `[hμg]`. Rewrite using `[← e]`. Both sides reduce to the same expression.
+-/
 theorem cob_of_res_zcl_eq_zero {μ : GS Ω (S : Set Pl) →* (ZMod (l ^ n))ˣ}
     (hμ : μ.comp (toGS Ω _) = cycMod ℚ Ω l n) (hξ : Coc2 c n S ξ) (Av : S → ValuationSubring Ω) (v : S)
     (h0 : ∀ i, resH2 (charRep μ) (locFam S Av v) (continuous_locFam S Av v) (zcl hμ hξ i) = 0) :
@@ -88,6 +108,23 @@ namespace GlobalTheory.Ord2.Rec
 
 open GlobalTheory.Published.PoitouTate
 
+/- English proof (translation)
+Introduce `hL l _ Ω _ _ _ c n S ξ v₀ hl hS hξ hv₀ hloc B hB`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Use `⟨fun _ => 0, continuousOn_const, fun _ => c.O.zero_mem, fun s _ t _ => ?_⟩` and prove the remaining obligations. Unfold `Cg`. Simplify using `only [mul_zero, sub_zero, add_zero, pow_zero, norm_one]`.
+
+Conclude with `norm_le_one_of_mem (hξ.int s t)`. Take `⟨ζ, hζ⟩` from `GlobalTheory.Published.exists_primitiveRoot_pow ℚ Ω l n`. Take `⟨inv, hinv, hPT⟩` from `hL.pt ℚ Ω l n (Or.inl hl) hn ζ hζ`. Set `Av : S → ValuationSubring Ω` to `fun v => if h : v.1 = v₀ then B else Classical.choose (hloc v.1 v.2 h)`. Establish `hAv : ∀ v, IsPlaceOver (Av v) v.1`.
+
+Introduce `v`. Distinguish the cases in `h : v.1 = v₀`. Simplify using `only [Av, dif_pos h]`. Rewrite using `[h]`. Conclude with `hB`.
+
+Simplify using `only [Av, dif_neg h]`. Conclude with `(Classical.choose_spec (hloc v.1 v.2 h)).1`. Take `⟨μ, hμ⟩` from `exists_lift_cycMod (F := ℚ) (Ω := Ω) (r := n) hS`. Establish `hNT` using `(hPT S hS Av hAv μ hμ (ZMod (l ^ n)) (charRep μ) (contAction_charRep hμ)).1`. Establish `hres : ∀ i, resH2 (charRep μ) (locFam S Av ⟨v₀, hv₀⟩) (continuous_locFam S Av _) (zcl hμ hξ i) = 0`.
+
+Introduce `i`. Establish `hsum` using `hNT.sum_eq_zero (zcl hμ hξ i)`. Rewrite `hsum` using `[Finset.sum_eq_single ⟨v₀, hv₀⟩]`. Establish `hinj : Function.Injective (invAt S Av μ hμ inv ⟨v₀, hv₀⟩)` using `(hinv _ _ (hAv ⟨v₀, hv₀⟩)).1.1.comp (toMuLoc_bijective S Av μ hμ _).1`. Conclude with `hinj (by rw [hsum, map_zero])`.
+
+Introduce `v _ hv`. Establish `hne : v.1 ≠ v₀` using `fun h => hv (Subtype.ext h)`. Establish `hcob : Cob2 c n (Dec (F` using `ℚ) (Av v)) ξ := by`. Simplify using `only [Av, dif_neg hne]`. Conclude with `(Classical.choose_spec (hloc v.1 v.2 hne)).2`.
+
+Rewrite using `[res_zcl_eq_zero hμ hξ Av v hcob i, map_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Establish `hcob` using `cob_of_res_zcl_eq_zero hμ hξ Av ⟨v₀, hv₀⟩ hres`. Establish `hA : Av ⟨v₀, hv₀⟩ = B` using `dif_pos rfl`.
+
+Rewrite `hcob` using `[hA]`. Conclude with `hcob`.
+-/
 theorem reciprocity : GlobalTheory.Mem.LiteralAutomorphy.LitCoh → ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω]
     [IsAlgClosure ℚ Ω] (c : Coef l) (n : ℕ) (S : Finset Pl) (ξ : G ℚ Ω → G ℚ Ω → Qbar l) (v₀ : Pl),
     l ≠ 2 → ContainsAbove S l → Coc2 c n S ξ → v₀ ∈ S →

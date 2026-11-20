@@ -6,6 +6,11 @@ open scoped Matrix
 open GlobalTheory.HodgeCoh GlobalTheory.CechDR Polynomial UpperTheory.Gal.W2
 
 open scoped Classical in
+/- English proof (translation)
+Unfold `evAt`. Simplify using `only [Multiset.map_map, Function.comp_def]`. Rewrite using `[← Finset.prod_fiberwise Finset.univ ty (fun i => f (ty i) (ev i))]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_eq_multiset_prod]`.
+
+Use `congr 1`. Use `Multiset.map_congr rfl fun i hi => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_val, Finset.mem_filter, Finset.mem_univ, true_and] at hi`. Rewrite using `[hi]`.
+-/
 private theorem prod_ty {F : Type} [Field F] {g : ℕ} [Fintype (F →+* ℂ)]
     (ty : Fin g → (F →+* ℂ)) (ev : Fin g → ℂ)
     (f : (F →+* ℂ) → ℂ → ℂ) :
@@ -21,6 +26,25 @@ private theorem prod_ty {F : Type} [Field F] {g : ℕ} [Fintype (F →+* ℂ)]
   rw [hi]
 
 open scoped Classical in
+/- English proof (translation)
+Introduce `F _ _ g n t₀ ε ty ev χ mu hcx hn heps hcard hrts hmu x y`. Establish `invol` using `ComplexEmbedding.involutive_conjugate F`. Take `⟨A, hA'⟩ : ∃ A : (F →+* ℂ) → ℂ, ∀ τ, A τ = ((evAt ty ev τ).map (fun r => 1 - τ x * (y * r))).prod` from `⟨_, fun _ => rfl⟩`. Take `⟨B, hB'⟩ : ∃ B : (F →+* ℂ) → ℂ, ∀ τ, B τ = ((evAt ty ev (ComplexEmbedding.conjugate τ)).map (fun r => 1 - τ x * starRingEnd ℂ r)).prod` from `⟨_, fun _ => rfl⟩`. Establish `hA : ∏ i, (1 - ty i x * (y * ev i)) = ∏ τ, A τ`.
+
+Simplify using `only [hA']`. Conclude with `prod_ty ty ev (fun τ r => 1 - τ x * (y * r))`. Establish `hB : starRingEnd ℂ (∏ i, (1 - ty i x * ev i)) = ∏ τ, B τ`. Rewrite using `[map_prod]`. Simplify using `only [map_sub, map_one, map_mul]`.
+
+Rewrite using `[prod_ty ty ev (fun τ r => 1 - starRingEnd ℂ (τ x) * starRingEnd ℂ r)]`. Use `(Equiv.prod_comp (invol.toPerm _) _).symm.trans (Finset.prod_congr rfl fun τ _ => ?_)` and prove the remaining obligations. Simplify using `[hB', Function.Involutive.coe_toPerm, ComplexEmbedding.conjugate_coe_eq]`. Establish `hmem : ComplexEmbedding.conjugate t₀ ∈ Finset.univ.erase t₀` using `Finset.mem_erase.2 ⟨hcx t₀, Finset.mem_univ _⟩`. Establish `key : ∏ τ, (A τ * B τ) = A t₀ * B t₀ * (A (ComplexEmbedding.conjugate t₀) * B (ComplexEmbedding.conjugate t₀) * ∏ τ ∈ (Finset.univ.erase t₀).erase (ComplexEmbedding.conjugate t₀), (A τ * B τ))`.
+
+Rewrite using `[Finset.mul_prod_erase _ (fun τ => A τ * B τ) hmem, Finset.mul_prod_erase _ (fun τ => A τ * B τ) (Finset.mem_univ t₀)]`. Establish `hrest : ∏ τ ∈ (Finset.univ.erase t₀).erase (ComplexEmbedding.conjugate t₀), (A τ * B τ) = ∏ τ ∈ (Finset.univ.erase t₀).erase (ComplexEmbedding.conjugate t₀), ((rts χ τ).map (fun r => 1 - τ x * (y ^ ε τ * r))).prod`. Use `Finset.prod_congr rfl fun τ hτ => ?_` and prove the remaining obligations. Establish `h1 : τ ≠ ComplexEmbedding.conjugate t₀` using `(Finset.mem_erase.1 hτ).1`. Establish `h2 : τ ≠ t₀` using `(Finset.mem_erase.1 (Finset.mem_erase.1 hτ).2).1`.
+
+Establish `h3 : ComplexEmbedding.conjugate τ ≠ t₀` using `fun h => h1 (by rw [← h, invol])`. Establish `h4 : ComplexEmbedding.conjugate τ ≠ ComplexEmbedding.conjugate t₀` using `fun h => h2 (invol.injective h)`. Establish `he` using `heps τ h2 h1`. Establish `hc1 : (evAt ty ev τ).card = n * ε τ` using `by simp [hcard, typeMult, h1, h2]`. Establish `hc2 : (evAt ty ev (ComplexEmbedding.conjugate τ)).card = n * ε (ComplexEmbedding.conjugate τ)` using `by simp [hcard, typeMult, h3, h4]`.
+
+Rewrite using `[hA', hB', hrts, evFull, Multiset.map_add, Multiset.prod_add, Multiset.map_map]`. Break down `(by omega : ε τ = 0 ∧ ε (ComplexEmbedding.conjugate τ) = 1 ∨ ε τ = 1 ∧ ε (ComplexEmbedding.conjugate τ) = 0) with ⟨e1, e2⟩ | ⟨e1, e2⟩` into its components or cases. Rewrite `hc1` using `[e1, Nat.mul_zero, Multiset.card_eq_zero]`. Rewrite using `[hc1, e1]`. Simplify using `[Function.comp_def]`.
+
+Rewrite `hc2` using `[e2, Nat.mul_zero, Multiset.card_eq_zero]`. Rewrite using `[hc2, e1]`. Simplify using `[Function.comp_def]`. Establish `hr0 : (rts χ t₀).erase mu = (evAt ty ev (ComplexEmbedding.conjugate t₀)).map (starRingEnd ℂ)`. Rewrite using `[hrts, evFull, hmu, Multiset.singleton_add, Multiset.erase_cons_head]`.
+
+Establish `hpair : A t₀ * B t₀ * (A (ComplexEmbedding.conjugate t₀) * B (ComplexEmbedding.conjugate t₀)) = (1 - t₀ x * (y * mu)) * (((rts χ t₀).erase mu).map (fun r => 1 - t₀ x * r)).prod * ((1 - starRingEnd ℂ (t₀ x) * starRingEnd ℂ mu) * (((rts χ t₀).erase mu).map (fun r => 1 - starRingEnd …`. Rewrite using `[hr0, hA', hA', hB', hB', invol t₀, hmu]`. Simplify using `only [Multiset.map_map, Function.comp_def, Multiset.map_singleton, Multiset.prod_singleton, ComplexEmbedding.conjugate_coe_eq, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hA, hB, ← Finset.prod_mul_distrib, key, hrest]`.
+
+Unfold `fibW`. Rewrite using `[← hpair]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.Gal.W2.fibW_of :
     UpperTheory.Gal.W2.FibW := by
   intro F _ _ g n t₀ ε ty ev χ mu hcx hn heps hcard hrts hmu x y

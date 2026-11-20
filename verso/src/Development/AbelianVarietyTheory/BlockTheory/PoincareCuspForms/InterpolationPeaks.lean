@@ -89,6 +89,9 @@ def Statement : Prop :=
 
 variable {E}
 
+/- English proof (translation)
+Establish `h1 : (0 : ℝ) < X.Ψ.card` using `by exact_mod_cast hf`. Establish `h2 : (0 : ℝ) < r` using `by exact_mod_cast hr`. Establish `: 0 < (X.Ψ.card : ℝ) * (r : ℝ) ^ 2` using `by positivity`. Unfold `bExp`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem four_lt_bExp (X : Data E r) (hf : 0 < X.Ψ.card) (hr : 0 < r) :
     4 * (X.Ψ.card : ℝ) * (r : ℝ) ^ 2 < bExp X := by
   have h1 : (0 : ℝ) < X.Ψ.card := by exact_mod_cast hf
@@ -96,16 +99,25 @@ theorem four_lt_bExp (X : Data E r) (hf : 0 < X.Ψ.card) (hr : 0 < r) :
   have : 0 < (X.Ψ.card : ℝ) * (r : ℝ) ^ 2 := by positivity
   unfold bExp; nlinarith
 
+/- English proof (translation)
+Use `Xa.frame_theta_weight_pos.ne'` as an intermediate fact. Unfold `tFac`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem factor_mul_firstMinimum {X : Data E r} (Xa : ArchInM X) : tFac Xa * Xa.a1 = Xa.c1 + Xa.a1 := by
   have := Xa.frame_theta_weight_pos.ne'
   unfold tFac; field_simp; ring
 
+/- English proof (translation)
+Establish `h1` using `Xa.frame_theta_weight_pos`. Establish `h2` using `Xa.frame_theta_const_pos`. Use `⟨by unfold tFac; positivity, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm]`. Conclude with `Xa.rr_le`.
+-/
 theorem tFac_range {X : Data E r} (Xa : ArchInM X) : 0 ≤ tFac Xa ∧ tFac Xa * Xa.rr ≤ 2 * Xa.T := by
   have h1 := Xa.frame_theta_weight_pos
   have h2 := Xa.frame_theta_const_pos
   refine ⟨by unfold tFac; positivity, ?_⟩
   rw [mul_comm]; exact Xa.rr_le
 
+/- English proof (translation)
+Take `⟨P, hP, hv⟩` from `h r X Xa Fl hd hm hq (fun j' => if j' = j then 1 else 0)`. Use `⟨P, hP, fun j' => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rw [hv]; by_cases e : j' = j <;> simp [e]`.
+-/
 theorem peak_of_interpGt (h : InterpGtStatement E) (X : Data E r) (Xa : ArchInM X) (Fl : FlatM X Xa)
     (hd : PropDisc X) (hm : ModeBound X)
     (hq : HasMargin X Xa.Fp Xa.L (fun x => tFac Xa * Xa.ps0 x) (bExp X)) (j : Fin Fl.δ) :

@@ -24,6 +24,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.MulFinite
 
+/- English proof (translation)
+Introduce `k _ _ B _ hB n hn1`. Establish `hG` using `GlobalTheory.laws_without_cohomology.1`. Use `haveI := hB.comm`. Use `haveI := hB.smooth`. Use `haveI := hB.proper`.
+
+Use `haveI : GeometricallyIntegral B.hom := GlobalTheory.forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ _ hB.smooth hB.geomConnected`. Use `haveI : IsIntegral B.left := GeometricallyIntegral.isIntegral_of_subsingleton B.hom`. Establish `hq : 1 ≤ n ^ 2` using `Nat.one_le_pow _ _ hn1`. Establish `hproj` using `GlobalTheory.T.isProjectiveOverRingByCharts_abelian_variety k B hB`. Take `⟨H, m, s, hH, hs, hsym⟩` from `GlobalTheory.SymVeryAmple.exists_symmetric_veryAmpleBy k B hB hproj`.
+
+Take `⟨r, hr⟩ : ∃ r : LB.Gen (H.pull (eSec B)), r.IsGen` from `DVR.exists_gen_of_isLB_local (V := k) _ (pull_isLB hH _)`. Take `⟨M, hM⟩` from `(GlobalTheory.T.abelianScheme_cubical_bundle_exists_and_maps hG _ B hB).1 ⟨H, r, hH, hr⟩ (GlobalTheory.AbLaw.CubeProj.exists_gen_theta_abelianVariety hG k B hB hproj H hH) hsym`. Establish `hiso : LBIso (AbLaw.pw H ((n ^ 2 : ℕ) : ℤ)) (H.pull (𝟙 B ^ n).left)`. Establish `h` using `GlobalTheory.T.lbIso_pw_sq_pull_pow_of_isLocalRing k B M n`. Rewrite `h` using `[hM]`.
+
+Rewrite using `[Nat.cast_pow]`. Conclude with `h`. Establish `hφ : (𝟙 B ^ n).left ≫ B.hom = B.hom` using `Over.w _`. Conclude with `GlobalTheory.T.isFinite_of_pull_veryAmple_iso_pow k _ _ B.hom _ H H m s (n ^ 2) hH hH inferInstance (by rw [hφ]; exact hs) hq hiso`.
+-/
 theorem isFinite_mul : ∀ (K : Type) [Field K] [IsAlgClosed K] (A : Over (Sp K)) [GrpObj A], IsAbelianScheme A →
     ∀ n : ℕ, 1 ≤ n → IsFinite (𝟙 A ^ n : A ⟶ A).left := by
   intro k _ _ B _ hB n hn1

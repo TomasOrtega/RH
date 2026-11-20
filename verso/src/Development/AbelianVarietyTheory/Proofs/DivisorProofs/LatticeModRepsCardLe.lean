@@ -4,6 +4,25 @@ open NumberField ReciprocityTheory.ChartRestriction.G.FD
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `E _ _ _ r M Λ hM hfg`. Set `L : Submodule ℤ (Fin r → E)` to `Λ.restrictScalars ℤ`. Establish `hLfg : L.FG` using `hfg.restrictScalars`. Use `haveI : Module.Finite ℤ L := Module.Finite.iff_fg.mpr hLfg`. Use `haveI : Module.Free ℤ L := Module.free_of_finite_type_torsion_free'`.
+
+Set `ι` to `Module.Free.ChooseBasisIndex ℤ L`. Set `b` to `Module.Free.chooseBasis ℤ L`. Establish `hli : LinearIndependent ℤ (fun i => (b i : Fin r → E))` using `b.linearIndependent.map' L.subtype (Submodule.ker_subtype L)`. Establish `hliQ : LinearIndependent ℚ (fun i => (b i : Fin r → E))` using `(LinearIndependent.iff_fractionRing ℤ ℚ).mp hli`. Establish `hcard : Fintype.card ι ≤ Module.finrank ℚ (Fin r → E)` using `hliQ.fintype_card_le_finrank`.
+
+Establish `hfr : Module.finrank ℚ (Fin r → E) = r * Module.finrank ℚ E`. Simplify using `[Module.finrank_pi_fintype]`. Establish `heven : Module.finrank ℚ E = 2 * fdeg E`. Rewrite using `[fdeg, IsTotallyComplex.finrank E]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hn : Fintype.card ι ≤ 2 * fdeg E * r`. Rewrite `hcard` using `[hfr, heven]`. Combine the linear relations using `[Nat.mul_comm r (2 * fdeg E)]`. Establish `hMpos : (0 : ℤ) < M` using `by exact_mod_cast hM`. Set `f : (ι → Fin M) → (Fin r → E)` to `fun c => ((∑ i, ((c i : ℕ) : ℤ) • b i : L) : Fin r → E)`.
+
+Use `⟨Finset.univ.image f, ?_, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Introduce `t ht`. Take `⟨c, -, rfl⟩` from `Finset.mem_image.mp ht`. Conclude with `(∑ i, ((c i : ℕ) : ℤ) • b i : L).2`.
+
+Introduce `x hx`. Set `xl : L` to `⟨x, hx⟩`. Set `k` to `b.repr xl`. Set `c : ι → Fin M` to `fun i => ⟨(k i % M).toNat, by`. Use `Int.emod_nonneg (k i) hMpos.ne'` as an intermediate fact.
+
+Use `Int.emod_lt_of_pos (k i) hMpos` as an intermediate fact. Use the proof step `omega⟩`. Use `⟨f c, Finset.mem_image_of_mem _ (Finset.mem_univ _), ((∑ i, (k i / M) • b i : L) : Fin r → E), (∑ i, (k i / M) • b i : L).2, ?_⟩` and prove the remaining obligations. Establish `hsum : xl = ∑ i, ((c i : ℕ) : ℤ) • b i + (M : ℤ) • ∑ i, (k i / M) • b i` using `by conv_lhs => rw [← b.sum_repr xl]`. Rewrite using `[Finset.smul_sum, ← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, ← add_smul]`. Use `congr 1`. Use `show k i = ((k i % M).toNat : ℤ) + M * (k i / M)`. Rewrite using `[Int.toNat_of_nonneg (Int.emod_nonneg _ hMpos.ne')]`.
+
+Combine the linear relations using `[Int.mul_ediv_add_emod (k i) (M : ℤ)]`. Establish `h2` using `congrArg Subtype.val hsum`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Submodule.coe_add, Submodule.coe_smul, natCast_zsmul]`.
+-/
 theorem lattice_mod_reps_card_le : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r M : ℕ)
     (Λ : Submodule (𝓞 E) (Fin r → E)), 1 ≤ M → Λ.FG → ∃ T : Finset (Fin r → E),
     T.card ≤ M ^ (2 * fdeg E * r) ∧ (∀ t ∈ T, t ∈ Λ) ∧ ∀ x ∈ Λ, ∃ t ∈ T, ∃ y ∈ Λ, x = t + M • y := by

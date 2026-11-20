@@ -10,6 +10,15 @@ namespace GlobalTheory.InertExchange
 
 open NumberField IsDedekindDomain Formalism.HermitianLatticesTheory Formalism.L2.Col
 
+/- English proof (translation)
+Take `⟨G, rfl⟩` from `hA`. Establish `key : ∀ G' : Finset M, (G' : Set M) ⊆ G → ∃ s ∈ S, ∀ x ∈ Submodule.span R (G' : Set M), s • x ∈ B`. Introduce `G'`. Proceed by induction on `G' using Finset.induction_on with`. Consider the case `empty => exact fun _ => ⟨1, S.one_mem, fun x hx => by`.
+
+Simplify using `only [Finset.coe_empty, Submodule.span_empty, Submodule.mem_bot] at hx`. Simplify using `[hx]⟩`. Consider the case `insert a G' _ ih`. Introduce `hsub`. Simplify using `only [Finset.coe_insert, Set.insert_subset_iff] at hsub`.
+
+Take `⟨t, ht, hta⟩` from `h a (Submodule.subset_span hsub.1)`. Take `⟨s, hs, hsG⟩` from `ih hsub.2`. Use `⟨t * s, S.mul_mem ht hs, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[Finset.coe_insert, Submodule.mem_span_insert]`. Take `⟨r, y, hy, rfl⟩` from `hx`.
+
+Establish `e : (t * s) • (r • a + y) = (r * s) • (t • a) + t • (s • y)`. Simplify using `only [smul_add, smul_smul, mul_comm, mul_assoc, mul_left_comm]`. Rewrite using `[e]`. Conclude with `B.add_mem (B.smul_mem _ hta) (B.smul_mem _ (hsG y hy))`. Conclude with `key G subset_rfl`.
+-/
 theorem exists_smul_mem_of_fg {R M : Type*} [CommRing R] [AddCommGroup M] [Module R M]
     (S : Submonoid R) (A B : Submodule R M) (hA : A.FG)
     (h : ∀ x ∈ A, ∃ s ∈ S, s • x ∈ B) : ∃ s ∈ S, ∀ x ∈ A, s • x ∈ B := by
@@ -35,6 +44,11 @@ theorem exists_smul_mem_of_fg {R M : Type*} [CommRing R] [AddCommGroup M] [Modul
       exact B.add_mem (B.smul_mem _ hta) (B.smul_mem _ (hsG y hy))
   exact key G subset_rfl
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.SmulMemOfIsLattice.exists_smul_mem_of_isLattice`. Consider the case `exact _root_.GlobalTheory.SmulMemOfIsLattice.exists_smul_mem_of_isLattice`. Consider the case `(apply _root_.GlobalTheory.SmulMemOfIsLattice.exists_smul_mem_of_isLattice <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.SmulMemOfIsLattice.exists_smul_mem_of_isLattice <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.SmulMemOfIsLattice.exists_smul_mem_of_isLattice <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SmulMemOfIsLattice.exists_smul_mem_of_isLattice ..)`.
+-/
 theorem exists_smul_mem_lattice {E : Type} [Field E] [NumberField E] {n : ℕ}
     (B : Submodule (𝓞 E) (Sp E n)) (hB : Submodule.IsLattice E B) (x : Sp E n) :
     ∃ r ∈ nonZeroDivisors (𝓞 E), r • x ∈ B := by
@@ -46,6 +60,19 @@ theorem exists_smul_mem_lattice {E : Type} [Field E] [NumberField E] {n : ℕ}
   | (intros; apply @_root_.GlobalTheory.SmulMemOfIsLattice.exists_smul_mem_of_isLattice <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.SmulMemOfIsLattice.exists_smul_mem_of_isLattice ..)
 
+/- English proof (translation)
+Use `set I : Ideal (𝓞 E) := B.colon (A : Set (Sp E n)) with hIdef`. Establish `hI0 : I ≠ ⊥`. Take `⟨s, hs, hsA⟩` from `exists_smul_mem_of_fg (nonZeroDivisors (𝓞 E)) A B hA (fun x _ => exists_smul_mem_lattice B hB x)`. Introduce `hI`. Establish `hsI : s ∈ I` using `Submodule.mem_colon.2 hsA`.
+
+Rewrite `hsI` using `[hI, Ideal.mem_bot]`. Conclude with `nonZeroDivisors.ne_zero hs hsI`. Establish `hIQ : ∀ Q : HeightOneSpectrum (𝓞 E), Q ≠ P → ¬ I ≤ Q.asIdeal`. Introduce `Q hQ hle`. Take `⟨s, hs, hsA⟩` from `exists_smul_mem_of_fg Q.asIdeal.primeCompl A B hA (fun x hx => by`.
+
+Establish `hxA : x ∈ localization₂ Q.asIdeal A` using `⟨1, Q.asIdeal.primeCompl.one_mem, by simpa using hx⟩`. Rewrite `hxA` using `[h Q hQ]`. Conclude with `hxA)`. Conclude with `hs (hle (Submodule.mem_colon.2 hsA))`. Establish `hrad : P.asIdeal ≤ I.radical`.
+
+Rewrite using `[Ideal.radical_eq_sInf]`. Use `le_sInf ?_` and prove the remaining obligations. Introduce and unpack `J ⟨hIJ, hJ⟩`. Distinguish the cases in `hJ0 : J = ⊥`. Conclude with `absurd (le_bot_iff.1 (hJ0 ▸ hIJ)) hI0`.
+
+Set `Q : HeightOneSpectrum (𝓞 E)` to `⟨J, hJ, hJ0⟩`. Distinguish the cases in `hQ : Q = P`. Establish `: Q.asIdeal = P.asIdeal` using `by rw [hQ]`. Conclude with `le_of_eq this.symm`. Conclude with `absurd hIJ (hIQ Q hQ)`.
+
+Take `⟨k, hk⟩` from `Ideal.exists_pow_le_of_le_radical_of_fg hrad (IsNoetherian.noetherian _)`. Conclude with `⟨k, Submodule.smul_le.2 fun r hr x hx => Submodule.mem_colon.1 (hk hr) x hx⟩`.
+-/
 theorem exists_pow_smul_le_of_localization_eq {E : Type} [Field E] [NumberField E] {n : ℕ}
     (P : HeightOneSpectrum (𝓞 E)) (A B : Submodule (𝓞 E) (Sp E n)) (hA : A.FG)
     (hB : Submodule.IsLattice E B)
@@ -80,6 +107,11 @@ theorem exists_pow_smul_le_of_localization_eq {E : Type} [Field E] [NumberField 
   obtain ⟨k, hk⟩ := Ideal.exists_pow_le_of_le_radical_of_fg hrad (IsNoetherian.noetherian _)
   exact ⟨k, Submodule.smul_le.2 fun r hr x hx => Submodule.mem_colon.1 (hk hr) x hx⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ n P A B hA hB h`. Take `⟨k₁, h₁⟩` from `exists_pow_smul_le_of_localization_eq P A B hA.fg hB h`. Take `⟨k₂, h₂⟩` from `exists_pow_smul_le_of_localization_eq P B A hB.fg hA (fun Q hQ => (h Q hQ).symm)`. Use `⟨max k₁ k₂, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Submodule.smul_mono_left (Ideal.pow_le_pow_right (le_max_left k₁ k₂))).trans h₁`.
+
+Conclude with `(Submodule.smul_mono_left (Ideal.pow_le_pow_right (le_max_right k₁ k₂))).trans h₂`.
+-/
 theorem exists_pow_smul_le_of_locP_eq :
     ∀ {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} (P : HeightOneSpectrum (𝓞 E))
       (A B : Submodule (𝓞 E) (Sp E n)), Submodule.IsLattice E A → Submodule.IsLattice E B →

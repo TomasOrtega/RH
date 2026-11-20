@@ -16,17 +16,26 @@ section
 variable {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ D}
 
+/- English proof (translation)
+Take `⟨S, hSf, hvS, hSK⟩` from `(hK.mem v).1 hv`. Conclude with `(hK.mem _).2 ⟨S, hSf, hSK k hk v hvS, hSK⟩`.
+-/
 theorem ba_kst (hK : CompanionTheory.D.LK.IsKMod ε σ D E) (k : Matrix (Fin n) (Fin n) ℂ) (hk : k ∈ Kset ε)
     (v : H) (hv : v ∈ D) : σ k v ∈ D := by
   obtain ⟨S, hSf, hvS, hSK⟩ := (hK.mem v).1 hv
   exact (hK.mem _).2 ⟨S, hSf, hSK k hk v hvS, hSK⟩
 
+/- English proof (translation)
+Use `⟨hK.gl, fun k hk v hv => ba_kst hK k hk v hv, fun X hX v => ?_⟩` and prove the remaining obligations. Establish `h` using `hK.real X hX v`. Use `h using 1` and compare the differences between its conclusion and the goal. Simplify using `[ReciprocityTheory.ChartRestriction.DS.actM, LinearMap.sum_apply, Submodule.coe_sum]`.
+-/
 theorem ba_der (hK : CompanionTheory.D.LK.IsKMod ε σ D E) : IsDerivedOn ε σ D E := by
   refine ⟨hK.gl, fun k hk v hv => ba_kst hK k hk v hv, fun X hX v => ?_⟩
   have h := hK.real X hX v
   convert h using 1
   simp [ReciprocityTheory.ChartRestriction.DS.actM, LinearMap.sum_apply, Submodule.coe_sum]
 
+/- English proof (translation)
+Unfold `ReciprocityTheory.ChartRestriction.DS.actM`. Rewrite using `[Fintype.sum_eq_single a (fun c hc => Finset.sum_eq_zero fun d _ => by simp [Matrix.single_apply, Ne.symm hc]), Fintype.sum_eq_single b (fun d hd => by simp [Matrix.single_apply, Ne.symm hd])]`. Simplify using the standard rewrite rules.
+-/
 theorem ba_actM_single {M : Type} [AddCommGroup M] [Module ℂ M] (F : Fin n → Fin n → Module.End ℂ M)
     (a b : Fin n) : ReciprocityTheory.ChartRestriction.DS.actM F (Matrix.single a b 1) = F a b := by
   unfold ReciprocityTheory.ChartRestriction.DS.actM
@@ -34,10 +43,16 @@ theorem ba_actM_single {M : Type} [AddCommGroup M] [Module ℂ M] (F : Fin n →
     Fintype.sum_eq_single b (fun d hd => by simp [Matrix.single_apply, Ne.symm hd])]
   simp
 
+/- English proof (translation)
+Simplify using `[Matrix.mul_apply, Matrix.single_apply, ite_and, Finset.sum_ite_eq, Finset.sum_ite_eq', mul_ite, ite_mul]`.
+-/
 theorem ba_conj_single (k l : Matrix (Fin n) (Fin n) ℂ) (a b c d : Fin n) :
     (k * Matrix.single a b (1 : ℂ) * l) c d = k c a * l b d := by
   simp [Matrix.mul_apply, Matrix.single_apply, ite_and, Finset.sum_ite_eq, Finset.sum_ite_eq', mul_ite, ite_mul]
 
+/- English proof (translation)
+Conclude with `ba_kst hK (S7.toMK k) k.2 v hv`.
+-/
 theorem base_mem (hK : CompanionTheory.D.LK.IsKMod ε σ D E) (hU : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ)
     (k : S7.KG ε) (v : H) (hv : v ∈ D) : σ (S7.toMK k) v ∈ D := by
   exact ba_kst hK (S7.toMK k) k.2 v hv
@@ -48,6 +63,57 @@ def baseRho (hK : CompanionTheory.D.LK.IsKMod ε σ D E) (hU : Formalism.MainNot
   map_add' u v := by apply Subtype.ext; simp
   map_smul' c v := by apply Subtype.ext; simp
 
+/- English proof (translation)
+Establish `hKK : S7.toMK k ∈ ReciprocityTheory.ChartRestriction.DS.Kset ε` using `k.2`. Establish `hKU : S7.toMK k ∈ Formalism.MainNotions.S.UJset ε` using `(k : S7.UJ ε).2`. Use `set K := S7.toMK k with hKdef`. Use `set J := ReciprocityTheory.ChartRestriction.DS.Jm ε with hJdef`. Establish `hKinv : Kᴴ * K = 1` using `(Matrix.mem_unitaryGroup_iff').1 hKK.1`.
+
+Establish `hKKs : K * Kᴴ = 1` using `(Matrix.mem_unitaryGroup_iff).1 hKK.1`. Establish `hJJ : J * J = 1` using `ReciprocityTheory.ChartRestriction.DS.S7.Jm_mul_self ε`. Establish `hJJ' : ∀ X : Matrix (Fin n) (Fin n) ℂ, J * (J * X) = X`. Introduce `X`. Rewrite using `[← Matrix.mul_assoc, hJJ, Matrix.one_mul]`.
+
+Establish `hJh : Jᴴ = J` using `ReciprocityTheory.ChartRestriction.DS.S7.Jm_conjTranspose ε`. Establish `hJK : K * J = J * K` using `hKK.2`. Establish `hKsJ : Kᴴ * J = J * Kᴴ`. Combine the equalities or inequalities in the displayed calculation. Establish `mulUJ : ∀ g h : Matrix (Fin n) (Fin n) ℂ, ReciprocityTheory.ChartRestriction.DS.inUJ ε g → ReciprocityTheory.ChartRestriction.DS.inUJ ε h → ReciprocityTheory.ChartRestriction.DS.inUJ ε (g * h)`.
+
+Introduce `g h hg hh`. Use `show (g * h)ᴴ * J * (g * h) = J`. Establish `hg' : gᴴ * J * g = J` using `hg`. Establish `hh' : hᴴ * J * h = J` using `hh`. Rewrite using `[Matrix.conjTranspose_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hKU' : ReciprocityTheory.ChartRestriction.DS.inUJ ε K` using `hKU`. Establish `hKsU : ReciprocityTheory.ChartRestriction.DS.inUJ ε Kᴴ` using `by show Kᴴᴴ * J * Kᴴ = J`. Rewrite using `[Matrix.conjTranspose_conjTranspose, hJK, Matrix.mul_assoc, hKKs, Matrix.mul_one]`. Establish `expUJ : ∀ X, ReciprocityTheory.ChartRestriction.DS.inG ε X → ∀ t : ℝ, ReciprocityTheory.ChartRestriction.DS.inUJ ε (NormedSpace.exp ((t : ℂ) • X))`.
+
+Introduce `X hX t`. Establish `hX' : Xᴴ * J + J * X = 0` using `hX`. Establish `hXh : Xᴴ = -(J * X * J)`. Establish `h0 : Xᴴ * J = -(J * X)` using `eq_neg_of_add_eq_zero_left hX'`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hJunit : IsUnit J` using `⟨⟨J, J, hJJ, hJJ⟩, rfl⟩`. Establish `hJinv : J⁻¹ = J` using `Matrix.inv_eq_left_inv hJJ`. Use `show (NormedSpace.exp ((t : ℂ) • X))ᴴ * J * NormedSpace.exp ((t : ℂ) • X) = J`. Establish `h1 : ((t : ℂ) • X)ᴴ = J * (-((t : ℂ) • X)) * J⁻¹`. Rewrite using `[Matrix.conjTranspose_smul, hXh, hJinv, Complex.star_def, Complex.conj_ofReal]`.
+
+Simplify using `only [Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_smul, Matrix.smul_mul, smul_neg]`. Rewrite using `[← Matrix.exp_conjTranspose, h1, Matrix.exp_conj _ _ hJunit, hJinv]`. Establish `hcomm : Commute (-((t : ℂ) • X)) ((t : ℂ) • X)` using `(Commute.refl _).neg_left`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc, hJJ', hJJ, Matrix.one_mul]`.
+
+Use `_ = J := by`. Rewrite using `[← Matrix.exp_add_of_commute _ _ hcomm, neg_add_cancel, NormedSpace.exp_zero, Matrix.mul_one]`. Establish `hKunit : IsUnit K` using `⟨⟨K, Kᴴ, hKKs, hKinv⟩, rfl⟩`. Establish `hKinv' : K⁻¹ = Kᴴ` using `Matrix.inv_eq_left_inv hKinv`. Establish `conjG : ∀ X, ReciprocityTheory.ChartRestriction.DS.inG ε X → ReciprocityTheory.ChartRestriction.DS.inG ε (K * X * Kᴴ)`.
+
+Introduce `X hX`. Establish `hX' : Xᴴ * J + J * X = 0` using `hX`. Use `show (K * X * Kᴴ)ᴴ * J + J * (K * X * Kᴴ) = 0`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc, hKsJ]`.
+
+Rewrite using `[← Matrix.mul_assoc J K, ← hJK, Matrix.mul_assoc K J]`. Use `_ = 0 := by rw [hX', Matrix.mul_zero, Matrix.zero_mul]`. Establish `key : ∀ X, ReciprocityTheory.ChartRestriction.DS.inG ε X → ∀ v : D, σ K ((ReciprocityTheory.ChartRestriction.DS.actM E X v : D) : H) = ((ReciprocityTheory.ChartRestriction.DS.actM E (K * X * Kᴴ) (baseRho hK hU k v) : D) : H)`. Introduce `X hX v`. Establish `hder` using `(ba_der hK).deriv X hX v`.
+
+Establish `h1 : HasDerivAt (fun t : ℝ => σ K (σ (NormedSpace.exp ((t : ℂ) • X)) (v : H))) (σ K ((ReciprocityTheory.ChartRestriction.DS.actM E X v : D) : H)) 0` using `((σ K).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hder`. Establish `h2` using `(ba_der hK).deriv (K * X * Kᴴ) (conjG X hX) (baseRho hK hU k v)`. Establish `hfun : (fun t : ℝ => σ K (σ (NormedSpace.exp ((t : ℂ) • X)) (v : H))) = fun t : ℝ => σ (NormedSpace.exp ((t : ℂ) • (K * X * Kᴴ))) ((baseRho hK hU k v : D) : H)`. Use function extensionality and compare the values at `t`. Establish `hexp : NormedSpace.exp ((t : ℂ) • (K * X * Kᴴ)) = K * NormedSpace.exp ((t : ℂ) • X) * Kᴴ`.
+
+Rewrite using `[← hKinv', ← Matrix.exp_conj _ _ hKunit, Matrix.mul_smul, Matrix.smul_mul]`. Establish `he` using `expUJ X hX t`. Establish `hKe` using `mulUJ _ _ hKU' he`. Establish `hKeK` using `mulUJ _ _ hKe hKsU`. Use `show σ K (σ (NormedSpace.exp ((t : ℂ) • X)) (v : H)) = σ (NormedSpace.exp ((t : ℂ) • (K * X * Kᴴ))) (σ K (v : H))`.
+
+Rewrite using `[hexp]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc (K * NormedSpace.exp ((t : ℂ) • X)), hKinv, Matrix.mul_one]`. Use `_ = σ (K * NormedSpace.exp ((t : ℂ) • X) * Kᴴ) (σ K (v : H)) := by`. Rewrite using `[hU.1.2 _ hKeK _ hKU']`.
+
+Both sides reduce to the same expression. Rewrite `h1` using `[hfun]`. Conclude with `h1.unique h2`. Establish `lin : ∀ (X Y : Matrix (Fin n) (Fin n) ℂ) (c : ℂ), ReciprocityTheory.ChartRestriction.DS.actM E (X + c • Y) = ReciprocityTheory.ChartRestriction.DS.actM E X + c • ReciprocityTheory.ChartRestriction.DS.actM E Y`. Introduce `X Y c`.
+
+Simplify using `only [ReciprocityTheory.ChartRestriction.DS.actM, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, add_smul, mul_smul, Finset.sum_add_distrib, Finset.smul_sum]`. Set `Φ : Matrix (Fin n) (Fin n) ℂ → H` to `fun M => σ K ((ReciprocityTheory.ChartRestriction.DS.actM E M x : D) : H) - ((ReciprocityTheory.ChartRestriction.DS.actM E (K * M * Kᴴ) (baseRho hK hU k x) : D) : H)`. Establish `hΦlin : ∀ X Y (c : ℂ), Φ (X + c • Y) = Φ X + c • Φ Y`. Introduce `X Y c`. Establish `hc : K * (X + c • Y) * Kᴴ = K * X * Kᴴ + c • (K * Y * Kᴴ)`.
+
+Rewrite using `[Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul]`. Simplify using `only [Φ, hc, lin, LinearMap.add_apply, LinearMap.smul_apply, Submodule.coe_add, Submodule.coe_smul, map_add, map_smul, smul_sub]`. Normalize the expressions using the abelian group laws. Establish `hΦ0 : ∀ X, ReciprocityTheory.ChartRestriction.DS.inG ε X → Φ X = 0`. Introduce `X hX`.
+
+Simplify using `only [Φ, key X hX x, sub_self]`. Establish `hall : ∀ M, Φ M = 0`. Introduce `M`. Use `set P := M - J * Mᴴ * J with hP`. Use `set Q := Complex.I • (M + J * Mᴴ * J) with hQ`.
+
+Establish `hPG : ReciprocityTheory.ChartRestriction.DS.inG ε P` using `by show Pᴴ * J + J * P = 0`. Simplify using `only [hP, Matrix.conjTranspose_sub, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hJh, Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_assoc, hJJ, Matrix.mul_one, hJJ']`. Normalize the expressions using the abelian group laws. Establish `hQG : ReciprocityTheory.ChartRestriction.DS.inG ε Q`. Establish `hR : (M + J * Mᴴ * J)ᴴ * J = J * (M + J * Mᴴ * J)`.
+
+Simplify using `only [Matrix.conjTranspose_add, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hJh, Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc, hJJ, Matrix.mul_one, hJJ']`. Normalize the expressions using the abelian group laws. Use `show Qᴴ * J + J * Q = 0`. Rewrite using `[hQ, Matrix.conjTranspose_smul, Matrix.smul_mul, Matrix.mul_smul, hR, Complex.star_def, Complex.conj_I, neg_smul, neg_add_cancel]`. Establish `h2M : (2 : ℂ) • M = P + (-Complex.I) • Q`.
+
+Rewrite using `[hP, hQ, smul_smul, neg_mul, Complex.I_mul_I, neg_neg, one_smul, two_smul]`. Normalize the expressions using the abelian group laws. Establish `h0 : Φ 0 = 0`. Simplify using `only [Φ, Matrix.mul_zero, Matrix.zero_mul]`. Establish `hz : ReciprocityTheory.ChartRestriction.DS.actM E 0 = 0` using `by simp [ReciprocityTheory.ChartRestriction.DS.actM]`.
+
+Simplify using `[hz]`. Establish `h2 : Φ ((2 : ℂ) • M) = (2 : ℂ) • Φ M`. Use `hΦlin 0 M 2` as an intermediate fact. Rewrite `this` using `[zero_add, h0, zero_add]`. Then use the resulting hypothesis. Establish `h3 : Φ ((2 : ℂ) • M) = 0`.
+
+Rewrite using `[h2M, hΦlin, hΦ0 P hPG, hΦ0 Q hQG, smul_zero, add_zero]`. Rewrite `h3` using `[h2]`. Conclude with `(smul_eq_zero.1 h3).resolve_left two_ne_zero`. Establish `hfin` using `hall (Matrix.single a b 1)`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Establish `hE : E a b x = ReciprocityTheory.ChartRestriction.DS.actM E (Matrix.single a b 1) x` using `by rw [ba_actM_single]`. Establish `hS : ReciprocityTheory.ChartRestriction.DS.actM E (K * Matrix.single a b 1 * Kᴴ) (baseRho hK hU k x) = ∑ c, ∑ d, (K c a * Kᴴ b d) • E c d (baseRho hK hU k x)`. Simplify using `only [ReciprocityTheory.ChartRestriction.DS.actM, ba_conj_single, LinearMap.sum_apply, LinearMap.smul_apply]`. Use `show σ K ((E a b x : D) : H) = ((∑ c, ∑ d, (K c a * Kᴴ b d) • E c d (baseRho hK hU k x) : D) : H)`. Rewrite using `[← hS, hE]`.
+
+Conclude with `sub_eq_zero.1 hfin`.
+-/
 theorem baseRho_compat (hK : CompanionTheory.D.LK.IsKMod ε σ D E) (hU : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ)
     (k : S7.KG ε) (a b : Fin n) (x : D) :
     baseRho hK hU k (E a b x) = ∑ c, ∑ d, (S7.toMK k c a * (S7.toMK k)ᴴ b d) • E c d (baseRho hK hU k x) := by
@@ -200,12 +266,22 @@ theorem baseRho_compat (hK : CompanionTheory.D.LK.IsKMod ε σ D E) (hU : Formal
   rw [← hS, hE]
   exact sub_eq_zero.1 hfin
 
+/- English proof (translation)
+Establish `hmem : S7.toMK k ∈ Formalism.MainNotions.S.UJset ε` using `(k : S7.UJ ε).2`. Use `show ‖σ (S7.toMK k) (x : H)‖ ≤ 1 * ‖(x : H)‖`. Rewrite using `[one_mul, hU.2.1 _ hmem]`.
+-/
 theorem baseRho_bdd (hK : CompanionTheory.D.LK.IsKMod ε σ D E) (hU : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ)
     (k : S7.KG ε) (x : D) : ‖D.subtype (baseRho hK hU k x)‖ ≤ 1 * ‖D.subtype x‖ := by
   have hmem : S7.toMK k ∈ Formalism.MainNotions.S.UJset ε := (k : S7.UJ ε).2
   show ‖σ (S7.toMK k) (x : H)‖ ≤ 1 * ‖(x : H)‖
   rw [one_mul, hU.2.1 _ hmem]
 
+/- English proof (translation)
+Take `⟨S, hSf, hxS, hSK⟩` from `(hK.mem x).1 x.2`. Use `⟨S.comap D.subtype, ?_, fun k => ?_⟩` and prove the remaining obligations. Use `haveI := hSf`. Set `f : ↥(S.comap D.subtype) →ₗ[ℂ] ↥S` to `D.subtype.restrict (fun y hy => hy)`. Establish `hf : Function.Injective f`.
+
+Introduce `a b hab`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h2` using `congrArg Subtype.val hab`. Conclude with `h2`.
+
+Conclude with `Module.Finite.of_injective f hf`. Use `show σ (S7.toMK k) (x : H) ∈ S`. Conclude with `hSK _ k.2 _ hxS`.
+-/
 theorem baseRho_fin (hK : CompanionTheory.D.LK.IsKMod ε σ D E) (hU : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ) (x : D) :
     ∃ W : Submodule ℂ D, FiniteDimensional ℂ W ∧ ∀ k, baseRho hK hU k x ∈ W := by
   obtain ⟨S, hSf, hxS, hSK⟩ := (hK.mem x).1 x.2
@@ -232,6 +308,9 @@ def baseAct (hK : CompanionTheory.D.LK.IsKMod ε σ D E) (hU : Formalism.MainNot
   bdd := ⟨1, baseRho_bdd hK hU⟩
   fin := baseRho_fin hK hU
 
+/- English proof (translation)
+Introduce `i v g k`. Use `show ⟪(i : H), σ (S7.toM g * S7.toMK k) (v : H)⟫_ℂ = ⟪(i : H), σ (S7.toM g) (σ (S7.toMK k) (v : H))⟫_ℂ`. Rewrite using `[hU.1.2 _ g.2 _ (k : S7.UJ ε).2]`. Both sides reduce to the same expression.
+-/
 theorem rightEq_base (hK : CompanionTheory.D.LK.IsKMod ε σ D E) (hU : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ) :
     RightEq (baseAct hK hU) (fun ξ : D => baseCoef σ D (ξ : H)) := by
   intro i v g k

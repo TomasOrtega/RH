@@ -10,6 +10,21 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.RankTwoDesce
 open UpperTheory.ConvolutionTheory.R2.G (FS2 nE)
 open scoped Classical
 
+/- English proof (translation)
+Introduce `E _ _ _ D f hf hL C hC`. Take `⟨N, hN, hfN⟩` from `UpperTheory.exists_level_unipotent_invariance_automorphicForm E D f hf C hC`. Take `⟨K, hK, hKN⟩` from `UpperTheory.exists_isCompact_annihilator_scaled_integralAdeles N hN`. Use `⟨K, hK, fun y k hk hW => hKN _ fun b hb => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩ : ∃ x : A ℚ, x = ((0, (N : FiniteAdeleRing (𝓞 ℚ) ℚ) * b) : A ℚ)` from `⟨_, rfl⟩`.
+
+Establish `h1 : Wo D f.1 (em E (aE y) * k) = Wo D f.1 (em E (aE y) * gl (nU (D.mkE 0 x)) * k)`. Establish `pt : ∀ G, f.1 (G * (em E (aE y) * k)) = f.1 (G * (em E (aE y) * gl (nU (D.mkE 0 x)) * k))`. Introduce `G`. Establish `h` using `hfN k hk b hb (G * em E (aE y))`. Rewrite `h` using `[← hx]`.
+
+Simplify using `only [mul_assoc] at h ⊢`. Conclude with `h.symm`. Simplify using `only [Wo]`. Use `congr 1`. Use function extensionality and compare the values at `u`.
+
+Rewrite using `[pt]`. Rewrite `h1` using `[UpperTheory.embedGL2_diag_mul_unipotent_theta_eq, mul_assoc, UpperTheory.whittaker_unipotent_mul_eq_additiveChar_mul E D f.1 hL]`. Establish `h2 : ψ (-((y : A ℚ) * x)) = 1`. Establish `h3 : ψ (-((y : A ℚ) * x)) * Wo D f.1 (em E (aE y) * k) = 1 * Wo D f.1 (em E (aE y) * k)`. Rewrite using `[one_mul]`.
+
+Conclude with `h1.symm`. Conclude with `mul_right_cancel₀ hW h3`. Establish `h4 : ψ ((y : A ℚ) * x) = 1`. Establish `h5` using `Pp.ψ_add ((y : A ℚ) * x) (-((y : A ℚ) * x))`. Establish `h6 : ψ (0 : A ℚ) = 1`.
+
+Use `Pp.ψ_rt (0 : ℚ)` as an intermediate fact. Simplify using `using this`. Rewrite `h5` using `[add_neg_cancel, h6, h2, mul_one]`. Conclude with `h5.symm`. Establish `h7 : (y : A ℚ) * x = ((0, (y : A ℚ).2 * ((N : FiniteAdeleRing (𝓞 ℚ) ℚ) * b)) : A ℚ)`.
+
+Rewrite using `[hx]`. Conclude with `Prod.ext (mul_zero _) rfl`. Rewrite using `[← h7]`. Conclude with `h4`.
+-/
 theorem UpperTheory.whittakerCoeff_ne_zero_finiteAdele_mem_compact :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (D : Dat ℚ E) (f : Sm E 2), IsAutForm f → Pp.Lf f.1 →
         ∀ C : Set (GL (Fin 2) (A E)), IsCompact C → ∃ K : Set (FiniteAdeleRing (𝓞 ℚ) ℚ), IsCompact K ∧

@@ -18,25 +18,40 @@ def siegelCols (D : D7) (n : ℕ) : Matrix (Fin (n + n)) (Fin n) D.host.E :=
 
 variable (D : D7) {n : ℕ}
 
+/- English proof (translation)
+Simplify using `[siegelCols, Fin.castAdd_inj]`.
+-/
 theorem siegelCols_castAdd (i j : Fin n) : siegelCols D n (Fin.castAdd n i) j = if i = j then 1 else 0 := by
   simp [siegelCols, Fin.castAdd_inj]
 
+/- English proof (translation)
+Simplify using `[siegelCols, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem siegelCols_natAdd (i j : Fin n) : siegelCols D n (Fin.natAdd n i) j = 0 := by
   simp [siegelCols, Fin.ext_iff]
   omega
 
+/- English proof (translation)
+Simplify using `only [StdUnn.Jst, StdUnn.blk4, Matrix.submatrix_apply]`. Rewrite using `[show finSumFinEquiv.symm (Fin.castAdd n i) = Sum.inl i from finSumFinEquiv_symm_apply_castAdd i, show finSumFinEquiv.symm (Fin.castAdd n k) = Sum.inl k from finSumFinEquiv_symm_apply_castAdd k]`. Simplify using the standard rewrite rules.
+-/
 theorem jst_cc (i k : Fin n) : StdUnn.Jst D n (Fin.castAdd n i) (Fin.castAdd n k) = 0 := by
   simp only [StdUnn.Jst, StdUnn.blk4, Matrix.submatrix_apply]
   rw [show finSumFinEquiv.symm (Fin.castAdd n i) = Sum.inl i from finSumFinEquiv_symm_apply_castAdd i,
     show finSumFinEquiv.symm (Fin.castAdd n k) = Sum.inl k from finSumFinEquiv_symm_apply_castAdd k]
   simp
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `LinearIndependent D.host.E (fun j i => siegelCols D n i j)`. Use `Fintype.linearIndependent_iff.2 fun c hc j => ?_` and prove the remaining obligations. Use `congrFun hc (Fin.castAdd n j)` as an intermediate fact. Simplify `this` using `[Finset.sum_apply, Matrix.transpose_apply, siegelCols_castAdd, eq_comm]`.
+-/
 theorem linearIndependent_siegelCols : LinearIndependent D.host.E (siegelCols D n).transpose := by
   change LinearIndependent D.host.E (fun j i => siegelCols D n i j)
   refine Fintype.linearIndependent_iff.2 fun c hc j => ?_
   have := congrFun hc (Fin.castAdd n j)
   simpa [Finset.sum_apply, Matrix.transpose_apply, siegelCols_castAdd, eq_comm] using this
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_add, Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply, siegelCols_castAdd, siegelCols_natAdd, jst_cc, map_zero, zero_mul, mul_zero, Finset.sum_const_zero, add_zero, zero_add]`. Simplify using the standard rewrite rules.
+-/
 theorem siegelCols_isotropic :
     Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (siegelCols D n) * StdUnn.Jst D n * siegelCols D n = 0 := by
   ext i j

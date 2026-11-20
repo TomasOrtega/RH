@@ -7,5 +7,8 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsRhoPtOfSp
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsComp
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX NumberField IsDedekindDomain GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HeightCounting.Up.eExp_int_allSt | exact GlobalTheory.HeightCounting.Up.eExp_int_allSt | (intros; apply GlobalTheory.HeightCounting.Up.eExp_int_allSt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exponent_integral_valued : PrN → AllSt fun _ _ _ _ _ _ x => ∀ (j : Fin (Dof x).R.m) (g : ↥((Dof x).R.Psi)), ∃ z : ℤ, eExp (Dof x) j g = (z : ℚ) := by
   first | exact @GlobalTheory.HeightCounting.Up.eExp_int_allSt | exact GlobalTheory.HeightCounting.Up.eExp_int_allSt | (intros; apply GlobalTheory.HeightCounting.Up.eExp_int_allSt <;> assumption)

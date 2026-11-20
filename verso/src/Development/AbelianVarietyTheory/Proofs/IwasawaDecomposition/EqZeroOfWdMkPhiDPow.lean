@@ -9,6 +9,23 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibl
 
 namespace GlobalTheory.PstFaithful
 
+/- English proof (translation)
+Set `: Algebra R F` to `π.toAlgebra`. Take `⟨q, hq⟩` from `exists_isCompl (RingHom.ker π)`. Establish `h1q : (1 : R) ∈ RingHom.ker π ⊔ q` using `by rw [hq.sup_eq_top]; trivial`. Take `⟨a, ha, e, he, hae⟩` from `Submodule.mem_sup.1 h1q`. Establish `hπe : π e = 1`.
+
+Use `congrArg π hae` as an intermediate fact. Rewrite `this` using `[map_add, RingHom.mem_ker.1 ha, zero_add, map_one]`. Then use the resulting hypothesis. Establish `hinj : Function.Injective ((Algebra.linearMap R F) ∘ₗ q.subtype)`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`.
+
+Establish `: (y : R) ∈ RingHom.ker π ⊓ q` using `⟨hy, y.2⟩`. Rewrite `this` using `[hq.inf_eq_bot]`. Conclude with `Subtype.ext this`. Take `⟨Λ, hΛ⟩` from `IsSemisimpleModule.extension_property _ hinj q.subtype`. Establish `hΛ1 : Λ 1 = e`.
+
+Rewrite using `[← hπe]`. Conclude with `LinearMap.congr_fun hΛ ⟨e, he⟩`. Establish `hΛm : ∀ r f, Λ (π r * f) = r * Λ f` using `fun r f => Λ.map_smul r f`. Set `β : F →ₗ[LL] End LL D` to `{ toFun := fun f => α (Λ f) map_add' := fun f g => by rw [map_add, map_add] map_smul' := fun a f => by`. Rewrite using `[Algebra.smul_def, ← h3, hΛm, map_mul, h1, ← Algebra.smul_def]`.
+
+Use `rfl }`. Establish `hβ : ∀ f x, TensorProduct.lift β (f ⊗ₜ x) = α (Λ f) x` using `fun _ _ => rfl`. Establish `hker : ∀ y ∈ letterKer m F τ, TensorProduct.lift β y = 0`. Introduce `y hy`. Use `Submodule.iSup_induction _ (motive := fun y => TensorProduct.lift β y = 0) hy ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce and unpack `c _ ⟨y, rfl⟩`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul f x`. Rewrite using `[LinearMap.sub_apply, map_sub, LinearMap.baseChange_tmul, LinearMap.smul_apply, LinearMap.id_apply, smul_tmul', hβ, hβ, smul_eq_mul, ← h4, hΛm, mul_comm, map_mul, h2, End.mul_apply, sub_self]`.
+
+Consider the case `add y z hy hz => rw [map_add, map_add, hy, hz, add_zero]`. Conclude with `map_zero _`. Introduce `y z hy hz`. Rewrite using `[map_add, hy, hz, add_zero]`. Use `⟨e, hπe, fun x hx => ?_⟩` and prove the remaining obligations.
+
+Rewrite `hx` using `[letterMk, ← LinearMap.mem_ker, ker_letterQ]`. Rewrite using `[← hΛ1, ← hβ]`. Conclude with `hker _ hx`.
+-/
 theorem exists_idem {LL U D R : Type} [Field LL] [Field U] [AddCommGroup D] [Module LL D]
     (m : U →+* End LL D) (F : Type) [Field F] [Algebra LL F] (τ : U →+* F)
     [CommRing R] [IsSemisimpleRing R] (α : R →+* End LL D) (π : R →+* F) (iL : LL → R) (iU : U → R)
@@ -59,6 +76,15 @@ theorem exists_idem {LL U D R : Type} [Field LL] [Field U] [AddCommGroup D] [Mod
 
 variable {l : ℕ} [hl : Fact l.Prime] (LL : FinExt l)
 
+/- English proof (translation)
+Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨1, one_pos, hl.out.not_dvd_one, fun f _ => map_zero _⟩`. Consider the case `tmul c a`. Take `⟨m, hm, hlm, H⟩` from `MemLoc.FrobLaws.exists_level c.2`. Use `⟨m, hm, hlm, fun f hf => ?_⟩` and prove the remaining obligations.
+
+Take `⟨g, hg⟩` from `MemLoc.FrobLaws.exists_ext f`. Establish `h` using `H g 1 fun ζ hζ => by`. Set `z : ↥(MaximalUnramifiedExtension l)` to `⟨ζ, IntermediateField.subset_adjoin _ _ ⟨m, hm, hlm, hζ⟩⟩`. Conclude with `(hg z).trans (congrArg Subtype.val (hf z (Subtype.ext hζ)))`. Establish `h' : f c = c` using `Subtype.ext ((hg c).symm.trans h)`.
+
+Rewrite using `[Algebra.TensorProduct.map_tmul, h', AlgHom.id_apply]`. Consider the case `add x y hx hy`. Take `⟨m, hm, hlm, ha⟩` from `hx`. Take `⟨n, hn, hln, hb⟩` from `hy`. Use `⟨m * n, Nat.mul_pos hm hn, fun hd => ((hl.out.dvd_mul).1 hd).elim hlm hln, fun f H => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_add, ha f fun ζ hζ => H ζ (by rw [pow_mul, hζ, one_pow]), hb f fun ζ hζ => H ζ (by rw [mul_comm, pow_mul, hζ, one_pow])]`.
+-/
 theorem exists_level_tensor (r : ↥(MaximalUnramifiedExtension l) ⊗[ℚ_[l]] ↥LL.1) : ∃ m : ℕ, 0 < m ∧ ¬ l ∣ m ∧
     ∀ f : ↥(MaximalUnramifiedExtension l) →ₐ[ℚ_[l]] ↥(MaximalUnramifiedExtension l), (∀ c : ↥(MaximalUnramifiedExtension l), c ^ m = 1 → f c = c) →
       Algebra.TensorProduct.map f (AlgHom.id ℚ_[l] ↥LL.1) r = r := by
@@ -80,6 +106,11 @@ theorem exists_level_tensor (r : ↥(MaximalUnramifiedExtension l) ⊗[ℚ_[l]] 
     rw [map_add, ha f fun ζ hζ => H ζ (by rw [pow_mul, hζ, one_pow]),
       hb f fun ζ hζ => H ζ (by rw [mul_comm, pow_mul, hζ, one_pow])]
 
+/- English proof (translation)
+Take `⟨M, hM, hIM⟩` from `Ideal.exists_le_maximal I hI`. Set `` to `Ideal.Quotient.field M`. Set `ψ₀ : (R ⧸ M) →ₐ[U] Ω` to `IsAlgClosed.lift`. Use `⟨ψ₀.comp (Ideal.Quotient.mkₐ _ M), fun r hr => ?_⟩` and prove the remaining obligations. Establish `: Ideal.Quotient.mkₐ U M r = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (hIM hr)`.
+
+Rewrite using `[AlgHom.comp_apply, this, map_zero]`.
+-/
 theorem exists_algHom_ker (U R Ω : Type) [Field U] [CommRing R] [Algebra U R] [Module.Finite U R] [Field Ω]
     [IsAlgClosed Ω] [Algebra U Ω] (I : Ideal R) (hI : I ≠ ⊤) : ∃ ψ : R →ₐ[U] Ω, ∀ r ∈ I, ψ r = 0 := by
   obtain ⟨M, hM, hIM⟩ := Ideal.exists_le_maximal I hI
@@ -89,6 +120,11 @@ theorem exists_algHom_ker (U R Ω : Type) [Field U] [CommRing R] [Algebra U R] [
   have : Ideal.Quotient.mkₐ U M r = 0 := Ideal.Quotient.eq_zero_iff_mem.2 (hIM hr)
   rw [AlgHom.comp_apply, this, map_zero]
 
+/- English proof (translation)
+Establish `hle : (MaximalUnramifiedExtension l).map (g : Om l →ₐ[ℚ_[l]] Om l) ≤ MaximalUnramifiedExtension l`. Unfold `MaximalUnramifiedExtension`. Rewrite using `[IntermediateField.adjoin_map]`. Apply `IntermediateField.adjoin.mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, ⟨m, hm, hlm, hx⟩, rfl⟩`.
+
+Conclude with `⟨m, hm, hlm, by rw [← map_pow, hx, map_one]⟩`. Conclude with `⟨((g : Om l →ₐ[ℚ_[l]] Om l).comp (MaximalUnramifiedExtension l).val).codRestrict (MaximalUnramifiedExtension l).toSubalgebra (fun x => hle ⟨x, x.2, rfl⟩), fun _ => rfl⟩`.
+-/
 theorem exists_restrict (g : GQ l) : ∃ t : ↥(MaximalUnramifiedExtension l) →ₐ[ℚ_[l]] ↥(MaximalUnramifiedExtension l), ∀ c, (t c : Om l) = g c := by
   have hle : (MaximalUnramifiedExtension l).map (g : Om l →ₐ[ℚ_[l]] Om l) ≤ MaximalUnramifiedExtension l := by
     unfold MaximalUnramifiedExtension
@@ -99,10 +135,26 @@ theorem exists_restrict (g : GQ l) : ∃ t : ↥(MaximalUnramifiedExtension l) �
   exact ⟨((g : Om l →ₐ[ℚ_[l]] Om l).comp (MaximalUnramifiedExtension l).val).codRestrict
     (MaximalUnramifiedExtension l).toSubalgebra (fun x => hle ⟨x, x.2, rfl⟩), fun _ => rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨AlgEquiv.ofBijective (f.liftNormal (Om l)) (Algebra.IsAlgebraic.algHom_bijective _), fun a => f.liftNormal_commutes (Om l) a⟩`.
+-/
 theorem exists_extend (f : ↥LL.1 →ₐ[ℚ_[l]] Om l) : ∃ g : GQ l, ∀ a : ↥LL.1, g a = f a :=
   ⟨AlgEquiv.ofBijective (f.liftNormal (Om l)) (Algebra.IsAlgebraic.algHom_bijective _),
     fun a => f.liftNormal_commutes (Om l) a⟩
 
+/- English proof (translation)
+Use `LL.2` as an intermediate fact. Take `⟨ψ, hψ⟩` from `exists_algHom_ker ↥(MaximalUnramifiedExtension l) _ (Om l) I hI`. Take `⟨g, hg'⟩` from `exists_extend LL ((ψ.restrictScalars ℚ_[l]).comp Algebra.TensorProduct.includeRight)`. Establish `hg : ∀ a : ↥LL.1, g a = ψ (1 ⊗ₜ a)` using `hg'`. Take `⟨t, ht⟩` from `exists_restrict g`.
+
+Establish `key : ∀ r, ψ (Algebra.TensorProduct.map t (AlgHom.id ℚ_[l] ↥LL.1) r) = g (Algebra.TensorProduct.productMap (MaximalUnramifiedExtension l).val LL.1.val r)`. Introduce `r`. Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul c a`.
+
+Establish `e1 : t c ⊗ₜ[ℚ_[l]] a = t c • ((1 : ↥(MaximalUnramifiedExtension l)) ⊗ₜ[ℚ_[l]] a)`. Rewrite using `[smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[Algebra.TensorProduct.map_tmul, AlgHom.id_apply, e1, map_smul, ← hg, Algebra.TensorProduct.productMap_apply_tmul, map_mul]`. Conclude with `congrArg (· * g a) (ht c)`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+
+Take `⟨m, hm, hlm, H⟩` from `exists_level_tensor LL e`. Take `⟨n, hn⟩` from `MemLoc.FrobLaws.gal_root g⁻¹ hm hlm`. Use `⟨n, Algebra.TensorProduct.map t (AlgHom.id ℚ_[l] ↥LL.1) e, fun h => he ?_, ?_⟩` and prove the remaining obligations. Establish `h0` using `hψ _ h`. Rewrite `h0` using `[key]`.
+
+Conclude with `g.injective (h0.trans (map_zero g).symm)`. Rewrite using `[← AlgHom.comp_apply, ← Algebra.TensorProduct.map_comp, AlgHom.id_comp]`. Use `H _ fun c hc => ?_` and prove the remaining obligations. Establish `hc' : t c ^ m = 1` using `by rw [← map_pow, hc, map_one]`. Rewrite using `[AlgHom.comp_apply, frobUr_pow_root n _ m hm hlm hc', ← map_pow]`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[ht]`. Use `hn c (congrArg Subtype.val hc)` as an intermediate fact. Rewrite using `[SubmonoidClass.coe_pow, ← this, ← AlgEquiv.mul_apply, mul_inv_cancel, AlgEquiv.one_apply]`.
+-/
 theorem exists_translate (I : Ideal (↥(MaximalUnramifiedExtension l) ⊗[ℚ_[l]] ↥LL.1)) (hI : I ≠ ⊤)
     (e : ↥(MaximalUnramifiedExtension l) ⊗[ℚ_[l]] ↥LL.1) (he : Algebra.TensorProduct.productMap (MaximalUnramifiedExtension l).val LL.1.val e ≠ 0) :
     ∃ (n : ℕ) (r : ↥(MaximalUnramifiedExtension l) ⊗[ℚ_[l]] ↥LL.1), r ∉ I ∧
@@ -140,6 +192,9 @@ theorem exists_translate (I : Ideal (↥(MaximalUnramifiedExtension l) ⊗[ℚ_[
     have := hn c (congrArg Subtype.val hc)
     rw [SubmonoidClass.coe_pow, ← this, ← AlgEquiv.mul_apply, mul_inv_cancel, AlgEquiv.one_apply]
 
+/- English proof (translation)
+Set `: Module k D` to `Module.compHom D (algebraMap k L)`. Establish `: IsScalarTower k L D` using `.of_algebraMap_smul fun _ _ => rfl`. Set `mU : U →ₐ[k] End L D` to `{ m with commutes' := hm }`. Conclude with `⟨(Algebra.TensorProduct.lift mU (IsScalarTower.toAlgHom k L (End L D)) fun c a => (Algebra.commutes a (m c)).symm).toRingHom, fun _ _ => rfl⟩`.
+-/
 theorem exists_action {k L U D : Type} [Field k] [Field L] [Field U] [Algebra k L] [Algebra k U]
     [AddCommGroup D] [Module L D] (m : U →+* End L D)
     (hm : ∀ c : k, m (algebraMap k U c) = algebraMap L _ (algebraMap k L c)) :
@@ -150,6 +205,17 @@ theorem exists_action {k L U D : Type} [Field k] [Field L] [Field U] [Algebra k 
   exact ⟨(Algebra.TensorProduct.lift mU (IsScalarTower.toAlgHom k L (End L D))
     fun c a => (Algebra.commutes a (m c)).symm).toRingHom, fun _ _ => rfl⟩
 
+/- English proof (translation)
+Set `I : Ideal (U ⊗[k] L)` to `{ carrier := {r | α r x = 0} add_mem' := fun {a b} (ha : α a x = 0) (hb : α b x = 0) => show α (a + b) x = 0 by`. Rewrite using `[map_add, LinearMap.add_apply, ha, hb, add_zero]`. Use the proof step `zero_mem' := show α 0 x = 0 by rw [map_zero, LinearMap.zero_apply]`. Use the proof step `smul_mem' := fun a b (hb : α b x = 0) => show α (a * b) x = 0 by`. Rewrite using `[map_mul, End.mul_apply, hb, map_zero] }`.
+
+Assume the negation of the conclusion as `h0`. Establish `hI : I ≠ ⊤` using `fun h => h0 (by`. Establish `: α 1 x = 0` using `(Ideal.eq_top_iff_one I).1 h`. Rewrite using `[map_one] at this)` and apply the resulting hypothesis. Take `⟨n, r, hr, hre⟩` from `he I hI`.
+
+Establish `semi : ∀ s, φ n * α s = α (Algebra.TensorProduct.map (σ n) (AlgHom.id k L) s) * φ n`. Introduce `s`. Proceed by induction on `s using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul c a`.
+
+Rewrite using `[Algebra.TensorProduct.map_tmul, AlgHom.id_apply, hα, hα, ← mul_assoc, hφ, mul_assoc, mul_assoc, Algebra.commutes]`. Consider the case `add y z hy hz => rw [map_add, map_add, map_add, mul_add, add_mul, hy, hz]`. Use `hr (?_ : α r x = 0)` and prove the remaining obligations. Establish `h1` using `LinearMap.congr_fun (semi r) x`. Rewrite `h1` using `[End.mul_apply, End.mul_apply, hre]`.
+
+Conclude with `hinj n (h1.trans ((hx n).trans (map_zero _).symm))`.
+-/
 theorem eq_zero_of_translate {k L U D : Type} [Field k] [Field L] [Field U] [Algebra k L] [Algebra k U]
     [AddCommGroup D] [Module L D] {m : U →+* End L D} (α : U ⊗[k] L →+* End L D)
     (hα : ∀ c a, α (c ⊗ₜ a) = m c * algebraMap L _ a) (σ : ℕ → U →ₐ[k] U) (φ : ℕ → End L D)
@@ -182,6 +248,9 @@ theorem eq_zero_of_translate {k L U D : Type} [Field k] [Field L] [Field U] [Alg
   rw [End.mul_apply, End.mul_apply, hre] at h1
   exact hinj n (h1.trans ((hx n).trans (map_zero _).symm))
 
+/- English proof (translation)
+Use `LL.2` as an intermediate fact. Establish `: Algebra.FormallyUnramified ℚ_[l] ↥LL.1` using `Algebra.FormallyUnramified.of_isSeparable _ _`. Establish `: IsReduced (↥(MaximalUnramifiedExtension l) ⊗[ℚ_[l]] ↥LL.1)` using `Algebra.FormallyUnramified.isReduced_of_field ↥(MaximalUnramifiedExtension l) _`. Establish `: IsArtinianRing (↥(MaximalUnramifiedExtension l) ⊗[ℚ_[l]] ↥LL.1)` using `IsArtinianRing.of_finite ↥(MaximalUnramifiedExtension l) _`. Conclude with `IsArtinianRing.isSemisimpleRing_of_isReduced _`.
+-/
 theorem isSemisimpleRing_tensor : IsSemisimpleRing (↥(MaximalUnramifiedExtension l) ⊗[ℚ_[l]] ↥LL.1) := by
   have := LL.2
   have : Algebra.FormallyUnramified ℚ_[l] ↥LL.1 := Algebra.FormallyUnramified.of_isSeparable _ _
@@ -190,6 +259,15 @@ theorem isSemisimpleRing_tensor : IsSemisimpleRing (↥(MaximalUnramifiedExtensi
   have : IsArtinianRing (↥(MaximalUnramifiedExtension l) ⊗[ℚ_[l]] ↥LL.1) := IsArtinianRing.of_finite ↥(MaximalUnramifiedExtension l) _
   exact IsArtinianRing.isSemisimpleRing_of_isReduced _
 
+/- English proof (translation)
+Use `isSemisimpleRing_tensor LL` as an intermediate fact. Take `⟨α, hα⟩` from `exists_action (k := ℚ_[l]) (mulD P ρ) fun c => LinearMap.ext fun y => Subtype.ext (by`. Establish `: mulV P ↥LL.1 V (algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l) c) = algebraMap ↥LL.1 _ (algebraMap ℚ_[l] ↥LL.1 c)` using `end_ext P fun v b => by`. Rewrite using `[mulV_tmul, ← IsScalarTower.algebraMap_apply, ← Algebra.smul_def, tmul_smul, Module.algebraMap_end_apply, algebraMap_smul]`. Conclude with `LinearMap.congr_fun this y.1)`.
+
+Set `π₀` to `Algebra.TensorProduct.productMap (MaximalUnramifiedExtension l).val LL.1.val`. Establish `hπ₀ : ∀ (c : ↥(MaximalUnramifiedExtension l)) (a : ↥LL.1), π₀ (c ⊗ₜ a) = (c : Om l) * a` using `fun _ _ => rfl`. Set `` to `algC ι LL`. Take `⟨e, he, hk⟩` from `exists_idem (mulD P ρ) ℂ (urC ι) α (ι.toRingHom.comp π₀.toRingHom) (fun a => 1 ⊗ₜ a) (fun c => c ⊗ₜ 1) (fun a => (hα 1 a).trans (by rw [map_one, one_mul])) (fun c => (hα c 1).trans (by rw [map_one, mul_one])) (fun a => congrArg ι ((hπ₀ 1 a).trans (one_mul (a : Om l)))) (fun c => …`. Establish `he0 : π₀ e ≠ 0` using `fun h => by`.
+
+Establish `h' : ι (π₀ e) = 1` using `he`. Rewrite `h'` using `[h, map_zero]`. Conclude with `zero_ne_one h'`. Use `eq_zero_of_translate α hα (fun n => frobUr l ^ n) (fun n => phiD P ρ ^ n) (fun n => ?_) (phiD_pow_mulD P ρ) e x (fun n => hk _ (hx n)) fun I hI => exists_translate LL I hI e he0` and prove the remaining obligations. Rewrite using `[End.coe_pow]`.
+
+Conclude with `(phiD_injective P ρ).iterate n`.
+-/
 theorem eq_zero_of_wdMk_phiD_pow (l : ℕ) [Fact l.Prime] (P : LocPrime l) (ι : Om l ≃+* ℂ) (K LL : FinExt l)
     (V : Type) [AddCommGroup V] [Module ↥LL.1 V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] ↥LL.1 V]
     (ρ : Representation ↥LL.1 ↥(GK K) V) (x : ↥(Dpst P ρ))

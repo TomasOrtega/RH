@@ -15,6 +15,17 @@ open GlobalTheory.OneMapRef GlobalTheory.WeilParts
 
 namespace GlobalTheory.OneMapRef
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F h i`. Establish `hL` using `h.lev`. Establish `hW` using `h.thP.ωP i A.μ0`. Establish `hr : Odd D.R.r`. Use `D.R.m_add_three_le_k` as an intermediate fact.
+
+Take `⟨a, ha⟩` from `D.R.k_even`. Take `⟨b, hb⟩` from `D.R.m_even`. Conclude with `⟨a + b - 1, by simp only [Ranks.r]; omega⟩`. Establish `rV : (Vc D i).rank = D.R.r + D.R.t` using `D.sp.V_rank _ (Nat.le_add_left _ _) i.2`. Establish `rW : (Wc D i).rank = D.R.r` using `D.sp.W_rank _ (Nat.le_add_left _ _) i.2`.
+
+Establish `hev : Even (Vc D i).rank` using `rV ▸ hr.add_odd D.R.t_odd`. Use `⟨GlobalTheory.EtaTildeOddParity.isEtaTilde_of_odd D _ _ hL.eta R.C.isEta _ _ _ hW.resS hW.resT (hev.add_odd (rW ▸ hr)), MonoidHom.ext fun x => GlobalTheory.TwistFactorCompare.eq_one_of_chrEq_one (hL.xi_base ▸ hL.xi A.μ0) x, Finset.eq_empty_of_forall_notMem fun P hP => (hL.Q_ram A …` and prove the remaining obligations. Take `⟨-, e, ⟨⟨es, hes, -⟩, -⟩, -⟩` from `h.thP.vP i t`. Establish `key` using `fun P (hP : P.under (𝓞 D.host.F) = v) => (GlobalTheory.levCh_unramified_places D T0 R.toLevCh A.μ0 hL t).2.2.2 P fun PP hPP => by`. Rewrite using `[hP]`.
+
+Conclude with `GlobalTheory.AdTh.RecPair.under_ne (hes PP (Finset.mem_union.2 hPP)) hv`. Establish `u1` using `GlobalTheory.UnramOver.unramAt_of_unrAt D _ _ (hL.mu0 i) v ε hv.1 fun P hP => (key P hP).2 i`. Establish `u2` using `GlobalTheory.UnramOver.unramAt_of_unrAt D _ _ (hL.xi t) v ε hv.1 fun P hP => (key P hP).1`. Establish `u3` using `GlobalTheory.UnramOver.unramAt_of_unrAt D _ _ hL.eta v ε hv.1 fun P _ => R.C.isEta.unr P`. Establish `u4 : GlobalTheory.WeilParts.UnramAt ε (R.toLevCh.mu t ((i : ℕ) + 1))` using `fun x a b c => by show R.mu0 ((i : ℕ) + 1) x * R.xi t x = 1`.
+
+Rewrite using `[u1 x a b c, u2 x a b c, one_mul]`. Use `⟨u4, fun x a b c => ?_⟩` and prove the remaining obligations. Use `show R.toLevCh.mu t ((i : ℕ) + 1) x * (R.eta x)⁻¹ = 1`. Rewrite using `[u4 x a b c, u3 x a b c, inv_one, one_mul]`.
+-/
 theorem chars_of_lift : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), R.Char F → ∀ (i : Fin D.R.m), IsEtaTilde D R.eta ∧ R.xi A.μ0 = 1 ∧ R.Q A.μ0 = ∅ ∧ ∀ t v ε, NonSplitAt D v ε → UnramAt ε (Lift.chrTh (R.toLevCh.mu t) R.eta ((i : ℕ) + 1)).1 ∧ UnramAt ε (Lift.chrTh (R.toLevCh.mu t) R.eta ((i : ℕ) + 1)).2 := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F h i
   classical

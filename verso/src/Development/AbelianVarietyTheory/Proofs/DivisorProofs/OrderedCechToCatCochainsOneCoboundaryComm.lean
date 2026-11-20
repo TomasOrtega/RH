@@ -19,6 +19,9 @@ def val {p : ℕ} (c : CC F p) (s : Finset κ) (b : (NE κ)ᵒᵖ) : F.obj b :=
   if h : s.card = p + 1 ∧ s ⊆ sub b then
     mp F (homOf (a := ne s (card_nonempty ⟨s, h.1⟩)) (b := b) h.2) (c ⟨s, h.1⟩) else 0
 
+/- English proof (translation)
+Unfold `val`. Take `⟨s, hs⟩` from `s`. Establish `hsub : s ⊆ sub b` using `sub_subset f`. Rewrite using `[dif_pos (⟨hs, hsub⟩ : s.card = p + 1 ∧ s ⊆ sub b)]`. Conclude with `congrArg (fun φ => mp F φ (c ⟨s, hs⟩)) (Subsingleton.elim _ _)`.
+-/
 theorem val_eq {p : ℕ} (c : CC F p) (s : {s : Finset κ // s.card = p + 1}) (b : (NE κ)ᵒᵖ)
     (f : ne s.1 (card_nonempty s) ⟶ b) : mp F f (c s) = val F c s.1 b := by
   unfold val
@@ -27,10 +30,16 @@ theorem val_eq {p : ℕ} (c : CC F p) (s : {s : Finset κ // s.card = p + 1}) (b
   rw [dif_pos (⟨hs, hsub⟩ : s.card = p + 1 ∧ s ⊆ sub b)]
   exact congrArg (fun φ => mp F φ (c ⟨s, hs⟩)) (Subsingleton.elim _ _)
 
+/- English proof (translation)
+Rewrite using `[← val_eq F c ⟨s, h⟩ b (homOf hs), ← mp_comp, val_eq]`.
+-/
 theorem mp_val {p : ℕ} (c : CC F p) (s : Finset κ) {b d : (NE κ)ᵒᵖ} (g : b ⟶ d)
     (h : s.card = p + 1) (hs : s ⊆ sub b) : mp F g (val F c s b) = val F c s d := by
   rw [← val_eq F c ⟨s, h⟩ b (homOf hs), ← mp_comp, val_eq]
 
+/- English proof (translation)
+Simplify using `only [e1, LinearMap.pi_apply]`. Use `split_ifs with h`. Simplify using `only [LinearMap.neg_apply, LinearMap.comp_apply, LinearMap.proj_apply, AlgHom.toLinearMap_apply]`. Conclude with `congrArg Neg.neg (val_eq F c ⟨{mn b, mn a}, Finset.card_pair h.ne⟩ b _)`. Both sides reduce to the same expression.
+-/
 theorem orderedCechToCatCochainsOne_apply_valueAtSubset (c : CC F 1) {a b : (NE κ)ᵒᵖ} (f : a ⟶ b) :
     e1 F c a b f = if mn b < mn a then - val F c {mn b, mn a} b else 0 := by
   simp only [e1, LinearMap.pi_apply]
@@ -39,6 +48,9 @@ theorem orderedCechToCatCochainsOne_apply_valueAtSubset (c : CC F 1) {a b : (NE 
     exact congrArg Neg.neg (val_eq F c ⟨{mn b, mn a}, Finset.card_pair h.ne⟩ b _)
   · rfl
 
+/- English proof (translation)
+Simplify using `only [e2, LinearMap.pi_apply]`. Use `split_ifs with h`. Simplify using `only [LinearMap.neg_apply, LinearMap.comp_apply, LinearMap.proj_apply, AlgHom.toLinearMap_apply]`. Conclude with `congrArg Neg.neg (val_eq F c ⟨{mn d, mn b, mn a}, card_three h.1 h.2⟩ d _)`. Both sides reduce to the same expression.
+-/
 theorem alternatingToOrderedCechDegreeTwo_apply_valueAtSubset (c : CC F 2) {a b d : (NE κ)ᵒᵖ} (f : a ⟶ b) (g : b ⟶ d) :
     e2 F c a b d f g = if mn d < mn b ∧ mn b < mn a then - val F c {mn d, mn b, mn a} d else 0 := by
   simp only [e2, LinearMap.pi_apply]
@@ -47,6 +59,9 @@ theorem alternatingToOrderedCechDegreeTwo_apply_valueAtSubset (c : CC F 2) {a b 
     exact congrArg Neg.neg (val_eq F c ⟨{mn d, mn b, mn a}, card_three h.1 h.2⟩ d _)
   · rfl
 
+/- English proof (translation)
+Rewrite using `[← val_eq F (δ F p c) ⟨t, h⟩ d (homOf ht), δ_apply, map_sum, ← Finset.sum_coe_sort t (fun i => GlobalTheory.cubeSign t i • val F c (t.erase i) d)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, ← mp_comp, val_eq]`.
+-/
 theorem val_δ {p : ℕ} (c : CC F p) (t : Finset κ) (d : (NE κ)ᵒᵖ) (h : t.card = p + 1 + 1)
     (ht : t ⊆ sub d) :
     val F (δ F p c) t d = ∑ i ∈ t, GlobalTheory.cubeSign t i • val F c (t.erase i) d := by
@@ -55,6 +70,19 @@ theorem val_δ {p : ℕ} (c : CC F p) (t : Finset κ) (d : (NE κ)ᵒᵖ) (h : t
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [map_zsmul, ← mp_comp, val_eq]
 
+/- English proof (translation)
+Establish `h₃` using `h₁.trans h₂`. Rewrite using `[val_δ F c _ d (card_three h₁ h₂) ht, Finset.sum_insert (by simp [h₁.ne, h₃.ne]), Finset.sum_pair h₂.ne]`. Establish `e₁ : ({x, y, z} : Finset κ).erase x = {y, z}`. Use extensionality with `w`. Simplify using `only [Finset.mem_erase, Finset.mem_insert, Finset.mem_singleton]`.
+
+Prove the components needed by the constructor for the conclusion. The claim follows by propositional logic. Apply the tactic sequence `rintro (rfl | rfl) <;> simp [h₁.ne', h₃.ne']`. Establish `e₂ : ({x, y, z} : Finset κ).erase y = {x, z}`. Use extensionality with `w`.
+
+Simplify using `only [Finset.mem_erase, Finset.mem_insert, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. The claim follows by propositional logic. Apply the tactic sequence `rintro (rfl | rfl) <;> simp [h₁.ne, h₂.ne']`. Establish `e₃ : ({x, y, z} : Finset κ).erase z = {x, y}`.
+
+Use extensionality with `w`. Simplify using `only [Finset.mem_erase, Finset.mem_insert, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. The claim follows by propositional logic. Apply the tactic sequence `rintro (rfl | rfl) <;> simp [h₃.ne, h₂.ne]`.
+
+Establish `s₁ : GlobalTheory.cubeSign ({x, y, z} : Finset κ) x = 1`. Simplify using `[GlobalTheory.cubeSign, Finset.filter_insert, Finset.filter_singleton, h₁.not_gt, h₃.not_gt]`. Establish `s₂ : GlobalTheory.cubeSign ({x, y, z} : Finset κ) y = -1`. Simplify using `[GlobalTheory.cubeSign, Finset.filter_insert, Finset.filter_singleton, h₁, h₂.not_gt]`. Establish `s₃ : GlobalTheory.cubeSign ({x, y, z} : Finset κ) z = 1`.
+
+Simplify using `[GlobalTheory.cubeSign, Finset.filter_insert, Finset.filter_singleton, h₃, h₂, Finset.card_pair h₁.ne]`. Rewrite using `[e₁, e₂, e₃, s₁, s₂, s₃]`. Simplify using `only [one_smul, neg_smul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem val_δ_three (c : CC F 1) {x y z : κ} (h₁ : x < y) (h₂ : y < z) (d : (NE κ)ᵒᵖ)
     (ht : ({x, y, z} : Finset κ) ⊆ sub d) :
     val F (δ F 1 c) {x, y, z} d = val F c {y, z} d - val F c {x, z} d + val F c {x, y} d := by
@@ -86,6 +114,13 @@ theorem val_δ_three (c : CC F 1) {x y z : κ} (h₁ : x < y) (h₂ : y < z) (d 
   simp only [one_smul, neg_smul]
   ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a b d f g`. Rewrite using `[d1_apply, orderedCechToCatCochainsOne_apply_valueAtSubset, orderedCechToCatCochainsOne_apply_valueAtSubset, orderedCechToCatCochainsOne_apply_valueAtSubset, alternatingToOrderedCechDegreeTwo_apply_valueAtSubset]`. Apply the tactic sequence `rcases (mn_le_of_hom f).lt_or_eq with h₂ | h₂ <;> rcases (mn_le_of_hom g).lt_or_eq with h₁ | h₁`. Rewrite using `[if_pos h₂, if_pos h₁, if_pos (h₁.trans h₂), if_pos ⟨h₁, h₂⟩, map_neg, mp_val F c _ g (Finset.card_pair h₂.ne) (pair_subset f), val_δ_three F c h₁ h₂ d (triple_subset f g)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[if_pos h₂, if_neg h₁.not_lt, if_pos (h₁ ▸ h₂), if_neg (fun h => h₁.not_lt h.1), map_neg, mp_val F c _ g (Finset.card_pair h₂.ne) (pair_subset f), h₁]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg h₂.not_lt, if_pos h₁, if_pos (h₂ ▸ h₁), if_neg (fun h => h₂.not_lt h.2), map_zero, h₂]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg h₂.not_lt, if_neg h₁.not_lt, if_neg (h₁.trans h₂).not_lt, if_neg (fun h => h₂.not_lt h.2), map_zero]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem orderedCechToCatCochainsOne_coboundary_comm {κ : Type} [LinearOrder κ] {R : Type} [CommRing R] (F : (NE κ)ᵒᵖ ⥤ CommAlgCat.{0} R)
     (c : CC F 1) : d1 F (e1 F c) = e2 F (δ F 1 c) := by
   funext a b d f g

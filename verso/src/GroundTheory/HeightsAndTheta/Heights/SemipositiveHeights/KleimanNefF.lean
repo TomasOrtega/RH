@@ -11,6 +11,17 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `F _ K _ ι _ I V n a hI hV hnef`. Establish `: V.IsPrime` using `hV.1.1`. Establish `hVd` using `HilbertSamuel.KleimanNefF.isMultiProjPrime_dvr hV.1`. Use `set y := GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.ModelGenericPoint.genPt (O := F) V`. Establish `hy : KH.mIdealOver F y = V` using `GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.ModelGenericPoint.mIdealOver_genPt V hVd.multiHomog`.
+
+Establish `hnz : ∀ k, ∃ i, y ⟨k, i⟩ ≠ 0` using `fun k => by`. Take `⟨i, hi⟩` from `hV.1.2.2 k`. Conclude with `⟨i, (GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.ModelGenericPoint.genPt_ne_zero V _).2 hi⟩`. Establish `hrel : FieldNumbers.relDim (KH.mIdealOver F y) = ((n : ℕ) : WithBot (WithTop ℤ))`. Rewrite using `[hy]`.
+
+Conclude with `(FieldNumbers.CutRegular.relDim_eq_natCast_iff V n).2 hV.2`. Establish `hnef' : ∀ j, GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Kleiman2.IsNef F y (a j)`. Introduce `j W hW hle hW1`. Rewrite `hle` using `[hy]`. Establish `hWF : IsProjVarF W 1` using `⟨⟨hW.isPrime, (NumbersDVR.VocabMultiHomogIdeal.proof NumbersDVR.VocabMultiHomog.proof F K ι W).2 hW.multiHomog, hW.relevant⟩, (FieldNumbers.CutRegular.relDim_eq_natCast_iff W 1).1 hW1⟩`.
+
+Establish `h` using `hnef j W hWF hle`. Rewrite `h` using `[HilbertSamuel.KleimanNefF.eq_intNum hI 1 W _ hWF]`. Then use the resulting hypothesis. Establish `h` using `hT F K ι _ y n a hnz hrel hnef'`. Rewrite `h` using `[hy]`. Rewrite using `[HilbertSamuel.KleimanNefF.eq_intNum hI n V a hV]`.
+
+Conclude with `h`.
+-/
 theorem KleimanNefF.kleimanNef_field_of_alt (hT : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Kleiman2.NefProductNonneg.Statement) :
     KH.KleimanNefFStatement := by
   classical
@@ -39,6 +50,9 @@ theorem KleimanNefF.kleimanNef_field_of_alt (hT : GroundTheory.Heights₂.Height
   rw [HilbertSamuel.KleimanNefF.eq_intNum hI n V a hV]
   exact h
 
+/- English proof (translation)
+Introduce `F _ K _ _ ι _ Ω _ _ y d μs hy hd hnef`. Take `⟨N, _, x, Ms, _, hsub, _, hiff, hnum⟩` from `hS F K ι Ω y d μs hy hd`. Rewrite using `[← hnum]`. Conclude with `hA F Ω N x d _ Ms hsub fun j => (hiff j).2 (hnef j)`.
+-/
 theorem NefProductNonneg.unfolding_matrix_of_form (hS : GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.SegreRealise.Statement)
     (hA : GroundTheory.Heights₂.Heights.Kleiman.NefProductNonneg.Statement.{0, 0}) :
     GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Kleiman2.NefProductNonneg.Statement := by

@@ -29,6 +29,9 @@ namespace Line
 open GroundTheory.Heights₂.Heights (CP)
 open GroundTheory.Heights₂.Heights.Regular.ProjectiveLine
 
+/- English proof (translation)
+Introduce `f hf`. Rewrite `hf` using `[mCoordIdeal_yLine, Ideal.mem_bot]`. Substitute `hf` using the available equality. Simplify using the standard rewrite rules.
+-/
 theorem isConeTangent_velL :
     IsConeTangent (Int.castRingHom ℂ) (mCoordIdeal yLine) (discL 0) velL := by
   intro f hf
@@ -36,6 +39,15 @@ theorem isConeTangent_velL :
   subst hf
   simp
 
+/- English proof (translation)
+Establish `hne : vecL (discL 0) ≠ 0` using `vecL_ne_zero (discL_mem 0)`. Establish `h0 : sChart 0 (projL (discL 0)) = 0`. Rewrite using `[sChart_projL_discL]`. Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules.
+
+Use `⟨(mem_sChart_source_iff 0 _).2 ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Unfold `projL`. Rewrite using `[dif_pos hne, CP.mk_mem_chartDomain]`. Simplify using `[vecL, discL]`. Unfold `projL`.
+
+Rewrite using `[dif_pos hne, CP.chartCoord_mk]`. Establish `: (fun j : Fin 1 => vecL (discL 0) ((0 : Fin 2).succAbove j) / vecL (discL 0) 0) = 0`. Use function extensionality and compare the values at `j`. Simplify using `[vecL, discL]`. Rewrite using `[this, norm_zero]`.
+
+Evaluate the numerical expressions. Use `show sChart 0 (projL (discL 0)) ∈ Metric.ball 0 (7 / 8)`. Rewrite using `[h0]`. Conclude with `Metric.mem_ball_self (by norm_num)`.
+-/
 theorem projL_discL_mem_mid : projL (discL 0) ∈ cpMid 0 := by
   have hne : vecL (discL 0) ≠ 0 := vecL_ne_zero (discL_mem 0)
   have h0 : sChart 0 (projL (discL 0)) = 0 := by
@@ -59,6 +71,9 @@ theorem projL_discL_mem_mid : projL (discL 0) ∈ cpMid 0 := by
 
 end Line
 
+/- English proof (translation)
+Take `⟨t, -, ht, hs, -⟩` from `NbarChartSemipos.hyps_of_setting (Line.projLineComponentSetting Line.zeroSystem Line.zero_hII) one_pos`. Conclude with `⟨t, ht, hs, Line.discL_mem 0, Line.isConeTangent_velL, (0 : Fin 2), Line.projL_discL_mem_mid⟩`.
+-/
 theorem Line.NbarLeviChart.hyps_inhabited :
     ∃ t : ℝ, 0 < t ∧ (Line.projLineComponentSetting Line.zeroSystem Line.zero_hII).M.atlas.Smooth
       ((Line.projLineComponentSetting Line.zeroSystem Line.zero_hII).S.regWeight t) ∧

@@ -20,6 +20,9 @@ def descend (ρ : Representation ℂ G V) (q : G →* M) (hq : Function.Surjecti
     Representation ℂ M V :=
   (Units.coeHom _).comp (q.liftOfSurjective hq ⟨ρ.toHomUnits, fun g hg => Units.ext (h g hg)⟩)
 
+/- English proof (translation)
+Simplify using `[descend]`.
+-/
 @[simp] theorem descend_apply (ρ : Representation ℂ G V) (q : G →* M) (hq : Function.Surjective q)
     (h : ∀ g, q g = 1 → ρ g = 1) (g : G) : descend ρ q hq h (q g) = ρ g := by
   simp [descend]
@@ -72,6 +75,9 @@ def subrepIso {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (e : �
     have h2 : e.symm (e v) ∈ T.toSubmodule := h h1
     rwa [e.symm_apply_apply] at h2
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_subrepIso {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (e : ρ.Equiv σ) (S : Subrepresentation ρ)
     (w : W) : w ∈ subrepIso e S ↔ e.symm w ∈ S := Iff.rfl
 
@@ -84,6 +90,9 @@ def subrepTwist (ρ : Representation ℂ G V) (χ : G →* ℂˣ) : Subrepresent
   right_inv _ := rfl
   map_rel_iff' := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `(subrepTwist ρ χ).isSimpleOrder_iff.2 h`.
+-/
 theorem isIrreducible_twist {ρ : Representation ℂ G V} (h : ρ.IsIrreducible) (χ : G →* ℂˣ) :
     (twist ρ χ).IsIrreducible := (subrepTwist ρ χ).isSimpleOrder_iff.2 h
 
@@ -95,17 +104,33 @@ def IsCosocle (σ : Representation ℂ G W) (π : Representation ℂ G V) : Prop
   σ.IsIrreducible ∧ ∃ f : π.IntertwiningMap σ, Function.Surjective f ∧
     ∀ S : Subrepresentation π, IsCoatom S → S = f.ker
 
+/- English proof (translation)
+The claim follows from `let ⟨_, f, hf, _⟩ := h; ⟨f, hf⟩`.
+-/
 theorem IsSocle.embeds {σ : Representation ℂ G W} {π : Representation ℂ G V} (h : IsSocle σ π) : Embeds σ π :=
   let ⟨_, f, hf, _⟩ := h; ⟨f, hf⟩
 
+/- English proof (translation)
+The claim follows from `let ⟨_, f, hf, _⟩ := h; .of_injective f hf`.
+-/
 theorem IsSocle.isSubquotient {σ : Representation ℂ G W} {π : Representation ℂ G V} (h : IsSocle σ π) :
     IsSubquotient σ π :=
   let ⟨_, f, hf, _⟩ := h; .of_injective f hf
 
+/- English proof (translation)
+The claim follows from `let ⟨_, f, hf, _⟩ := h; .of_surjective f hf`.
+-/
 theorem IsCosocle.isSubquotient {σ : Representation ℂ G W} {π : Representation ℂ G V} (h : IsCosocle σ π) :
     IsSubquotient σ π :=
   let ⟨_, f, hf, _⟩ := h; .of_surjective f hf
 
+/- English proof (translation)
+Take `⟨hi, f, hf, hS⟩` from `h`. Use `⟨isIrreducible_of_equiv a hi, b.toIntertwiningMap.comp (f.comp a.symm.toIntertwiningMap), b.toLinearEquiv.injective.comp (hf.comp a.symm.toLinearEquiv.injective), fun S h => ?_⟩` and prove the remaining obligations. Take `⟨S, rfl⟩` from `(subrepIso b).surjective S`. Rewrite using `[hS S ((OrderIso.isAtom_iff _ _).1 h)]`. Use `SetLike.ext fun y => ⟨?_, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨w, hw⟩`. Use `⟨a w, ?_⟩` and prove the remaining obligations. Use `show b (f (a.symm (a w))) = y`. Establish `hw' : f w = b.symm y` using `hw`. Simplify using `[hw']`.
+
+Introduce and unpack `⟨x, rfl⟩`. Use `⟨a.symm x, ?_⟩` and prove the remaining obligations. Use `show f (a.symm x) = b.symm (b (f (a.symm x)))`. Simplify using the standard rewrite rules.
+-/
 theorem IsSocle.of_equiv {σ : Representation ℂ G W} {π : Representation ℂ G V} {Y : Type} [AddCommGroup Y] [Module ℂ Y]
     {σ' : Representation ℂ G X} {π' : Representation ℂ G Y} (h : IsSocle σ π) (a : σ.Equiv σ') (b : π.Equiv π') :
     IsSocle σ' π' := by
@@ -125,6 +150,11 @@ theorem IsSocle.of_equiv {σ : Representation ℂ G W} {π : Representation ℂ 
     show f (a.symm x) = b.symm (b (f (a.symm x)))
     simp
 
+/- English proof (translation)
+Take `⟨hi, f, hf, hS⟩` from `h`. Use `⟨isIrreducible_of_equiv a hi, a.toIntertwiningMap.comp (f.comp b.symm.toIntertwiningMap), a.toLinearEquiv.surjective.comp (hf.comp b.symm.toLinearEquiv.surjective), fun S h => ?_⟩` and prove the remaining obligations. Take `⟨S, rfl⟩` from `(subrepIso b).surjective S`. Rewrite using `[hS S ((OrderIso.isCoatom_iff _ _).1 h)]`. Use `SetLike.ext fun y => ?_` and prove the remaining obligations.
+
+Use `show f (b.symm y) = 0 ↔ a (f (b.symm y)) = 0`. Simplify using the standard rewrite rules.
+-/
 theorem IsCosocle.of_equiv {σ : Representation ℂ G W} {π : Representation ℂ G V} {Y : Type} [AddCommGroup Y]
     [Module ℂ Y] {σ' : Representation ℂ G X} {π' : Representation ℂ G Y} (h : IsCosocle σ π) (a : σ.Equiv σ')
     (b : π.Equiv π') : IsCosocle σ' π' := by
@@ -137,16 +167,33 @@ theorem IsCosocle.of_equiv {σ : Representation ℂ G W} {π : Representation �
   show f (b.symm y) = 0 ↔ a (f (b.symm y)) = 0
   simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h, .id π, fun _ _ e => e, fun S hS => by rw [(eq_bot_or_eq_top S).resolve_left hS.1] exact SetLike.ext fun v => ⟨fun _ => (Representation.IntertwiningMap.mem_range _ _ _ _).2 ⟨v, rfl⟩, fun _ => trivial⟩⟩`.
+-/
 theorem isSocle_self {π : Representation ℂ G V} (h : π.IsIrreducible) : IsSocle π π :=
   ⟨h, .id π, fun _ _ e => e, fun S hS => by
     rw [(eq_bot_or_eq_top S).resolve_left hS.1]
     exact SetLike.ext fun v => ⟨fun _ => (Representation.IntertwiningMap.mem_range _ _ _ _).2 ⟨v, rfl⟩, fun _ => trivial⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h, .id π, fun v => ⟨v, rfl⟩, fun S hS => by rw [(eq_bot_or_eq_top S).resolve_right hS.1] exact SetLike.ext fun v => Iff.rfl⟩`.
+-/
 theorem isCosocle_self {π : Representation ℂ G V} (h : π.IsIrreducible) : IsCosocle π π :=
   ⟨h, .id π, fun v => ⟨v, rfl⟩, fun S hS => by
     rw [(eq_bot_or_eq_top S).resolve_right hS.1]
     exact SetLike.ext fun v => Iff.rfl⟩
 
+/- English proof (translation)
+Use `Model.nontrivial_of_isIrreducible h` as an intermediate fact. Take `⟨w, hw⟩` from `exists_ne (0 : W)`. Use `⟨fun e => hw (hf ?_), fun S hS => ?_⟩` and prove the remaining obligations. Establish `: f w ∈ (⊥ : Subrepresentation π)` using `e ▸ ⟨w, rfl⟩`. Rewrite using `[map_zero]`.
+
+Conclude with `this`. Set `T : Subrepresentation σ` to `⟨S.toSubmodule.comap f.toLinearMap, fun g v hv => by show f (σ g v) ∈ S.toSubmodule`. Rewrite using `[f.isIntertwining]`. Conclude with `S.apply_mem_toSubmodule g hv⟩`. Break down `eq_bot_or_eq_top T with e | e` into its components or cases.
+
+Use `eq_bot_iff.2 fun v hv => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `hS.le hv`. Establish `hx : x ∈ T` using `hv`. Rewrite `hx` using `[e]`. Establish `hx' : x = 0` using `hx`.
+
+Use `show f x = 0`. Rewrite using `[hx', map_zero]`. Use `absurd (fun v hv => ?_) hS.not_ge` and prove the remaining obligations. Take `⟨x, rfl⟩` from `hv`. Establish `hx : x ∈ T` using `e ▸ trivial`.
+
+Conclude with `hx`.
+-/
 theorem isAtom_range {σ : Representation ℂ G W} {π : Representation ℂ G V} (h : σ.IsIrreducible)
     (f : σ.IntertwiningMap π) (hf : Function.Injective f) : IsAtom f.range := by
   have := Model.nontrivial_of_isIrreducible h
@@ -171,6 +218,17 @@ theorem isAtom_range {σ : Representation ℂ G W} {π : Representation ℂ G V}
       have hx : x ∈ T := e ▸ trivial
       exact hx
 
+/- English proof (translation)
+Use `Model.nontrivial_of_isIrreducible h` as an intermediate fact. Take `⟨w, hw⟩` from `exists_ne (0 : W)`. Use `⟨fun e => hw ?_, fun S hS => ?_⟩` and prove the remaining obligations. Take `⟨v, rfl⟩` from `hf w`. Establish `: v ∈ f.ker` using `e ▸ trivial`.
+
+Conclude with `this`. Set `T : Subrepresentation σ` to `⟨S.toSubmodule.map f.toLinearMap, by`. Introduce and unpack `g _ ⟨v, hv, rfl⟩`. Conclude with `⟨π g v, S.apply_mem_toSubmodule g hv, f.isIntertwining _ _ g v⟩⟩`. Break down `eq_bot_or_eq_top T with e | e` into its components or cases.
+
+Use `absurd (fun v hv => ?_) hS.not_ge` and prove the remaining obligations. Establish `hx : f v ∈ T` using `⟨v, hv, rfl⟩`. Rewrite `hx` using `[e]`. Conclude with `hx`. Use `eq_top_iff.2 fun v _ => ?_` and prove the remaining obligations.
+
+Establish `hx : f v ∈ T` using `e ▸ trivial`. Take `⟨x, hx, hxv⟩` from `hx`. Establish `hk : v - x ∈ f.ker` using `by show f (v - x) = 0`. Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `hxv.symm`.
+
+Use `S.toSubmodule.add_mem (hS.le hk) hx` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 theorem isCoatom_ker {σ : Representation ℂ G W} {π : Representation ℂ G V} (h : σ.IsIrreducible)
     (f : π.IntertwiningMap σ) (hf : Function.Surjective f) : IsCoatom f.ker := by
   have := Model.nontrivial_of_isIrreducible h
@@ -196,6 +254,9 @@ theorem isCoatom_ker {σ : Representation ℂ G W} {π : Representation ℂ G V}
       have := S.toSubmodule.add_mem (hS.le hk) hx
       rwa [sub_add_cancel] at this
 
+/- English proof (translation)
+Set `e : W ≃ₗ[ℂ] X` to `(LinearEquiv.ofInjective f.toLinearMap hf).trans ((LinearEquiv.ofEq _ _ (congrArg Subrepresentation.toSubmodule h)).trans (LinearEquiv.ofInjective g.toLinearMap hg).symm)`. Establish `he : ∀ w, g (e w) = f w` using `fun w => congrArg Subtype.val ((LinearEquiv.ofInjective g.toLinearMap hg).apply_symm_apply _)`. Use `⟨.mk e fun x => LinearMap.ext fun w => hg ?_⟩` and prove the remaining obligations. Use `show g (e (σ x w)) = g (τ x (e w))`. Rewrite using `[he, f.isIntertwining, g.isIntertwining, he]`.
+-/
 theorem nonempty_equiv_of_range_eq {σ : Representation ℂ G W} {τ : Representation ℂ G X} {π : Representation ℂ G V}
     (f : σ.IntertwiningMap π) (hf : Function.Injective f) (g : τ.IntertwiningMap π) (hg : Function.Injective g)
     (h : f.range = g.range) : Nonempty (σ.Equiv τ) := by
@@ -208,6 +269,11 @@ theorem nonempty_equiv_of_range_eq {σ : Representation ℂ G W} {τ : Represent
   show g (e (σ x w)) = g (τ x (e w))
   rw [he, f.isIntertwining, g.isIntertwining, he]
 
+/- English proof (translation)
+Set `e : W ≃ₗ[ℂ] X` to `(f.toLinearMap.quotKerEquivOfSurjective hf).symm.trans ((Submodule.quotEquivOfEq _ _ (congrArg Subrepresentation.toSubmodule h)).trans (g.toLinearMap.quotKerEquivOfSurjective hg))`. Establish `he : ∀ v, e (f v) = g v` using `fun v => by`. Establish `: (f.toLinearMap.quotKerEquivOfSurjective hf).symm (f v) = Submodule.Quotient.mk v`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression.
+
+Conclude with `(congrArg ((Submodule.quotEquivOfEq _ _ (congrArg Subrepresentation.toSubmodule h)).trans (g.toLinearMap.quotKerEquivOfSurjective hg)) this).trans rfl`. Use `⟨.mk e fun x => LinearMap.ext fun w => ?_⟩` and prove the remaining obligations. Take `⟨v, rfl⟩` from `hf w`. Use `show e (σ x (f v)) = τ x (e (f v))`. Rewrite using `[← f.isIntertwining, he, he, g.isIntertwining]`.
+-/
 theorem nonempty_equiv_of_ker_eq {σ : Representation ℂ G W} {τ : Representation ℂ G X} {π : Representation ℂ G V}
     (f : π.IntertwiningMap σ) (hf : Function.Surjective f) (g : π.IntertwiningMap τ) (hg : Function.Surjective g)
     (h : f.ker = g.ker) : Nonempty (σ.Equiv τ) := by
@@ -224,21 +290,33 @@ theorem nonempty_equiv_of_ker_eq {σ : Representation ℂ G W} {τ : Representat
   show e (σ x (f v)) = τ x (e (f v))
   rw [← f.isIntertwining, he, he, g.isIntertwining]
 
+/- English proof (translation)
+Take `⟨-, f, hf, hS⟩` from `h`. Take `⟨g, hg⟩` from `he`. Conclude with `nonempty_equiv_of_range_eq g hg f hf (hS _ (isAtom_range hτ g hg))`.
+-/
 theorem IsSocle.equiv_of_embeds {σ : Representation ℂ G W} {τ : Representation ℂ G X} {π : Representation ℂ G V}
     (h : IsSocle σ π) (hτ : τ.IsIrreducible) (he : Embeds τ π) : Nonempty (τ.Equiv σ) := by
   obtain ⟨-, f, hf, hS⟩ := h
   obtain ⟨g, hg⟩ := he
   exact nonempty_equiv_of_range_eq g hg f hf (hS _ (isAtom_range hτ g hg))
 
+/- English proof (translation)
+Take `⟨-, f, hf, hS⟩` from `h`. Conclude with `nonempty_equiv_of_ker_eq g hg f hf (hS _ (isCoatom_ker hτ g hg))`.
+-/
 theorem IsCosocle.equiv_of_surjective {σ : Representation ℂ G W} {τ : Representation ℂ G X} {π : Representation ℂ G V}
     (h : IsCosocle σ π) (hτ : τ.IsIrreducible) (g : π.IntertwiningMap τ) (hg : Function.Surjective g) :
     Nonempty (τ.Equiv σ) := by
   obtain ⟨-, f, hf, hS⟩ := h
   exact nonempty_equiv_of_ker_eq g hg f hf (hS _ (isCoatom_ker hτ g hg))
 
+/- English proof (translation)
+The claim follows from `h.equiv_of_embeds h'.1 h'.embeds`.
+-/
 theorem IsSocle.unique {σ : Representation ℂ G W} {τ : Representation ℂ G X} {π : Representation ℂ G V}
     (h : IsSocle σ π) (h' : IsSocle τ π) : Nonempty (τ.Equiv σ) := h.equiv_of_embeds h'.1 h'.embeds
 
+/- English proof (translation)
+The claim follows from `let ⟨hi, g, hg, _⟩ := h'; h.equiv_of_surjective hi g hg`.
+-/
 theorem IsCosocle.unique {σ : Representation ℂ G W} {τ : Representation ℂ G X} {π : Representation ℂ G V}
     (h : IsCosocle σ π) (h' : IsCosocle τ π) : Nonempty (τ.Equiv σ) :=
   let ⟨hi, g, hg, _⟩ := h'; h.equiv_of_surjective hi g hg
@@ -251,9 +329,19 @@ def isotypic (σ : Representation ℂ G V) (τ : Representation ℂ G W) : Subre
     rintro f _ ⟨w, rfl⟩
     exact Submodule.mem_iSup_of_mem f ⟨τ g w, f.isIntertwining _ _ g w⟩
 
+/- English proof (translation)
+The claim follows from `Submodule.mem_iSup_of_mem f ⟨w, rfl⟩`.
+-/
 theorem apply_mem_isotypic {σ : Representation ℂ G V} {τ : Representation ℂ G W} (f : τ.IntertwiningMap σ) (w : W) :
     f w ∈ isotypic σ τ := Submodule.mem_iSup_of_mem f ⟨w, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[← not_iff_not, not_not, not_exists]`. Simplify using `only [not_not]`. Prove the components needed by the constructor for the conclusion. Introduce `h f`. Use extensionality with `w`.
+
+Use `apply_mem_isotypic f w` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `this`. Introduce `h`. Use `Subrepresentation.toSubmodule_injective (iSup_eq_bot.2 fun f => ?_)` and prove the remaining obligations.
+
+Rewrite using `[h f]`. Conclude with `LinearMap.range_zero`.
+-/
 theorem isotypic_ne_bot_iff {σ : Representation ℂ G V} {τ : Representation ℂ G W} :
     isotypic σ τ ≠ ⊥ ↔ ∃ f : τ.IntertwiningMap σ, f ≠ 0 := by
   rw [← not_iff_not, not_not, not_exists]
@@ -269,6 +357,15 @@ theorem isotypic_ne_bot_iff {σ : Representation ℂ G V} {τ : Representation �
     rw [h f]
     exact LinearMap.range_zero
 
+/- English proof (translation)
+Rewrite using `[isotypic_ne_bot_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, hf⟩`. Use `⟨f, (injective_iff_map_eq_zero _).2 fun w hw => ?_⟩` and prove the remaining obligations. Break down `eq_bot_or_eq_top f.ker with e | e` into its components or cases.
+
+Establish `: w ∈ f.ker` using `hw`. Rewrite `this` using `[e]`. Conclude with `this`. Use `absurd ?_ hf` and prove the remaining obligations. Use extensionality with `x`.
+
+Establish `: x ∈ f.ker` using `e ▸ trivial`. Conclude with `this`. Introduce and unpack `⟨f, hf⟩`. Use `Model.nontrivial_of_isIrreducible h` as an intermediate fact. Take `⟨w, hw⟩` from `exists_ne (0 : W)`.
+
+Conclude with `⟨f, fun e => hw (hf (by rw [e, map_zero]; rfl))⟩`.
+-/
 theorem isotypic_ne_bot_iff_embeds {σ : Representation ℂ G V} {τ : Representation ℂ G W} (h : τ.IsIrreducible) :
     isotypic σ τ ≠ ⊥ ↔ Embeds τ σ := by
   rw [isotypic_ne_bot_iff]
@@ -288,6 +385,11 @@ theorem isotypic_ne_bot_iff_embeds {σ : Representation ℂ G V} {τ : Represent
     obtain ⟨w, hw⟩ := exists_ne (0 : W)
     exact ⟨f, fun e => hw (hf (by rw [e, map_zero]; rfl))⟩
 
+/- English proof (translation)
+Use `Submodule.iSup_induction _ (motive := fun v => φ v ∈ isotypic σ' τ) hv ?_ ?_ fun x y hx hy => ?_` and prove the remaining obligations. Introduce and unpack `f _ ⟨w, rfl⟩`. Conclude with `apply_mem_isotypic (φ.comp f) w`. Rewrite using `[map_zero]`. Conclude with `(isotypic σ' τ).toSubmodule.zero_mem`.
+
+Rewrite using `[map_add]`. Conclude with `(isotypic σ' τ).toSubmodule.add_mem hx hy`.
+-/
 theorem map_mem_isotypic {σ : Representation ℂ G V} {σ' : Representation ℂ G X} (φ : σ.IntertwiningMap σ')
     (τ : Representation ℂ G W) {v : V} (hv : v ∈ isotypic σ τ) : φ v ∈ isotypic σ' τ := by
   refine Submodule.iSup_induction _ (motive := fun v => φ v ∈ isotypic σ' τ) hv ?_ ?_ fun x y hx hy => ?_
@@ -302,6 +404,9 @@ def isotypicMap {σ : Representation ℂ G V} {σ' : Representation ℂ G X} (φ
   toLinearMap := φ.toLinearMap.restrict fun _ hv => map_mem_isotypic φ τ hv
   isIntertwining' g := LinearMap.ext fun v => Subtype.ext (φ.isIntertwining _ _ g v)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem isotypicMap_apply {σ : Representation ℂ G V} {σ' : Representation ℂ G X} (φ : σ.IntertwiningMap σ')
     (τ : Representation ℂ G W) (v : (isotypic σ τ).toSubmodule) : (isotypicMap φ τ v : X) = φ v := rfl
 
@@ -320,11 +425,21 @@ def cosetSum (π : Representation ℂ G V) {H : Subgroup G} (U : Subgroup H) [Fi
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `QuotientGroup.mk_out_eq_mul U h`. Rewrite using `[hu, Subgroup.coe_mul, map_mul, Module.End.mul_apply, hv u u.2]`.
+-/
 theorem out_apply (π : Representation ℂ G V) {H : Subgroup G} {U : Subgroup H} {v : V} (hv : ∀ u ∈ U, π (u : H) v = v)
     (h : H) : π ((h : H ⧸ U).out : H) v = π h v := by
   obtain ⟨u, hu⟩ := QuotientGroup.mk_out_eq_mul U h
   rw [hu, Subgroup.coe_mul, map_mul, Module.End.mul_apply, hv u u.2]
 
+/- English proof (translation)
+Use `haveI : CompactSpace H := isCompact_iff_compactSpace.1 hH`. Set `S : Subgroup H` to `{ carrier := {h | π h v = v} mul_mem' := fun {a b} ha hb => by show π (a * b) v = v`. Rewrite using `[map_mul, Module.End.mul_apply, hb, ha]`. Use the proof step `one_mem' := by simp`. Use the proof step `inv_mem' := fun {a} ha => by show π (a : G)⁻¹ v = v conv_lhs => rw [← ha]`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using `}`. Establish `ho : IsOpen (S : Set H)` using `(hπ v).preimage continuous_subtype_val`. Use `haveI := S.quotient_finite_of_isOpen ho`. Use `haveI := S.finiteIndex_of_finite_quotient`.
+
+Conclude with `⟨S.normalCore, inferInstance, inferInstance, fun u hu => S.normalCore_le hu⟩`.
+-/
 theorem exists_normal_fix {π : Representation ℂ G V} (hπ : IsSmooth π) {H : Subgroup G} (hH : IsCompact (H : Set G))
     (v : V) : ∃ U : Subgroup H, U.Normal ∧ U.FiniteIndex ∧ ∀ u ∈ U, π (u : H) v = v := by
   haveI : CompactSpace H := isCompact_iff_compactSpace.1 hH
@@ -343,6 +458,25 @@ theorem exists_normal_fix {π : Representation ℂ G V} (hπ : IsSmooth π) {H :
   haveI := S.finiteIndex_of_finite_quotient
   exact ⟨S.normalCore, inferInstance, inferInstance, fun u hu => S.normalCore_le hu⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Establish `key : ∀ v ∈ twKer π H 1, ∃ U₀ : Subgroup H, U₀.FiniteIndex ∧ ∀ (U : Subgroup H) [U.Normal] [Fintype (H ⧸ U)], U ≤ U₀ → cosetSum π U v = 0`. Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨n, u, rfl⟩` from `hx`. Take `⟨U₀, -, h0, hu⟩` from `exists_normal_fix hπ hH u`. Use `⟨U₀, h0, fun U _ _ hU => ?_⟩` and prove the remaining obligations. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul, map_sub, sub_eq_zero, cosetSum, LinearMap.sum_apply]`. Use `Fintype.sum_equiv (Equiv.mulRight (n : H ⧸ U)) _ _ fun q => ?_` and prove the remaining obligations.
+
+Establish `e : Equiv.mulRight (n : H ⧸ U) q = ((q.out * n : H) : H ⧸ U)`. Rewrite using `[QuotientGroup.mk_mul, QuotientGroup.out_eq']`. Both sides reduce to the same expression. Rewrite using `[e, out_apply π fun x hx => hu x (hU hx), Subgroup.coe_mul, map_mul, Module.End.mul_apply]`. Consider the case `zero => exact ⟨⊤, inferInstance, fun U _ _ _ => map_zero _⟩`.
+
+Consider the case `add x y _ _ hx hy`. Take `⟨A, _, hA⟩` from `hx`. Take `⟨B, _, hB⟩` from `hy`. Conclude with `⟨A ⊓ B, inferInstance, fun U _ _ hU => by`. Rewrite using `[map_add, hA U (hU.trans inf_le_left), hB U (hU.trans inf_le_right), add_zero]⟩`.
+
+Consider the case `smul c x _ hx`. Take `⟨A, h0, hA⟩` from `hx`. Conclude with `⟨A, h0, fun U _ _ hU => by rw [map_smul, hA U hU, smul_zero]⟩`. Use `Submodule.disjoint_def.2 fun v hv hv' => ?_` and prove the remaining obligations. Take `⟨U, _, hU⟩` from `key v hv'`.
+
+Use `letI := Fintype.ofFinite (H ⧸ U.normalCore)`. Establish `h` using `hU U.normalCore U.normalCore_le`. Rewrite `h` using `[cosetSum, LinearMap.sum_apply, Finset.sum_congr rfl fun q _ => mem_fixed.1 hv _ (q.out : H).2, Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul ℂ]`. Conclude with `(smul_eq_zero.1 h).resolve_left (Nat.cast_ne_zero.2 Fintype.card_ne_zero)`. Use `codisjoint_iff.2 (eq_top_iff.2 fun v _ => ?_)` and prove the remaining obligations.
+
+Take `⟨U, -, _, hU⟩` from `exists_normal_fix hπ hH v`. Use `letI := Fintype.ofFinite (H ⧸ U)`. Establish `hc : (Fintype.card (H ⧸ U) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Establish `h1 : cosetSum π U v ∈ fixed π H` using `mem_fixed.2 fun h hh => by`. Simplify using `only [cosetSum, LinearMap.sum_apply, map_sum]`.
+
+Use `Fintype.sum_equiv (MulAction.toPerm (⟨h, hh⟩ : H)) _ _ fun q => ?_` and prove the remaining obligations. Use `conv_rhs => rw [MulAction.toPerm_apply, ← q.out_eq, MulAction.Quotient.smul_mk]`. Rewrite using `[out_apply π hU, smul_eq_mul, Subgroup.coe_mul, map_mul, Module.End.mul_apply]`. Establish `h2 : cosetSum π U v - (Fintype.card (H ⧸ U) : ℂ) • v ∈ twKer π H 1`. Rewrite using `[cosetSum, LinearMap.sum_apply, Nat.cast_smul_eq_nsmul, ← Finset.card_univ, ← Finset.sum_const, ← Finset.sum_sub_distrib]`.
+
+Conclude with `Submodule.sum_mem _ fun q _ => Submodule.subset_span ⟨q.out, v, by simp⟩`. Establish `h3` using `Submodule.smul_mem _ (Fintype.card (H ⧸ U) : ℂ)⁻¹ (sub_mem (Submodule.mem_sup_left h1) (Submodule.mem_sup_right h2))`. Rewrite `h3` using `[sub_sub_cancel, smul_smul, inv_mul_cancel₀ hc, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem isCompl_fixed_twKer {π : Representation ℂ G V} (hπ : IsSmooth π) {H : Subgroup G} (hH : IsCompact (H : Set G)) :
     IsCompl (fixed π H) (twKer π H 1) := by
   constructor
@@ -397,19 +531,36 @@ def idem {π : Representation ℂ G V} (hπ : IsSmooth π) {H : Subgroup G} (hH 
 
 variable {π : Representation ℂ G V} (hπ : IsSmooth π) {H : Subgroup G} (hH : IsCompact (H : Set G))
 
+/- English proof (translation)
+The claim follows from `Subtype.property _`.
+-/
 theorem idem_mem (v : V) : idem hπ hH v ∈ fixed π H := Subtype.property _
 
+/- English proof (translation)
+The claim follows from `congrArg Subtype.val (Submodule.linearProjOfIsCompl_apply_left (isCompl_fixed_twKer hπ hH) ⟨v, hv⟩)`.
+-/
 theorem idem_of_mem {v : V} (hv : v ∈ fixed π H) : idem hπ hH v = v :=
   congrArg Subtype.val (Submodule.linearProjOfIsCompl_apply_left (isCompl_fixed_twKer hπ hH) ⟨v, hv⟩)
 
+/- English proof (translation)
+Rewrite using `[← Submodule.linearProjOfIsCompl_apply_eq_zero_iff (isCompl_fixed_twKer hπ hH)]`. Conclude with `Submodule.coe_eq_zero`.
+-/
 theorem idem_eq_zero_iff {v : V} : idem hπ hH v = 0 ↔ v ∈ twKer π H 1 := by
   rw [← Submodule.linearProjOfIsCompl_apply_eq_zero_iff (isCompl_fixed_twKer hπ hH)]
   exact Submodule.coe_eq_zero
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero, ← map_sub, idem_eq_zero_iff]`. Conclude with `Submodule.subset_span ⟨⟨h, hh⟩, v, by simp⟩`.
+-/
 theorem idem_apply_mem {h : G} (hh : h ∈ H) (v : V) : idem hπ hH (π h v) = idem hπ hH v := by
   rw [← sub_eq_zero, ← map_sub, idem_eq_zero_iff]
   exact Submodule.subset_span ⟨⟨h, hh⟩, v, by simp⟩
 
+/- English proof (translation)
+Establish `hc : (Fintype.card (H ⧸ U) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Establish `h1 : ∑ q : H ⧸ U, π (q.out : H) v ∈ fixed π H` using `mem_fixed.2 fun h hh => by`. Simplify using `only [map_sum]`. Use `Fintype.sum_equiv (MulAction.toPerm (⟨h, hh⟩ : H)) _ _ fun q => ?_` and prove the remaining obligations. Use `conv_rhs => rw [MulAction.toPerm_apply, ← q.out_eq, MulAction.Quotient.smul_mk]`.
+
+Rewrite using `[out_apply π hv, smul_eq_mul, Subgroup.coe_mul, map_mul, Module.End.mul_apply]`. Rewrite using `[← idem_of_mem hπ hH h1, map_sum, Finset.sum_congr rfl fun q _ => idem_apply_mem hπ hH (q.out : H).2 v, Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hc, one_smul]`.
+-/
 theorem idem_eq_cosetSum (U : Subgroup H) [Fintype (H ⧸ U)] {v : V} (hv : ∀ u ∈ U, π (u : H) v = v) :
     idem hπ hH v = (Fintype.card (H ⧸ U) : ℂ)⁻¹ • ∑ q : H ⧸ U, π (q.out : H) v := by
   have hc : (Fintype.card (H ⧸ U) : ℂ) ≠ 0 := Nat.cast_ne_zero.2 Fintype.card_ne_zero
@@ -438,6 +589,11 @@ def orbitMap {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ
 
 omit [TopologicalSpace G] in
 
+/- English proof (translation)
+Establish `h1 : v ∈ (orbitMap ρ v).range` using `⟨MonoidAlgebra.single 1 1, by show ρ.asAlgebraHom (MonoidAlgebra.single 1 1) v = v simp⟩`. Break down `eq_bot_or_eq_top (orbitMap ρ v).range with e | e` into its components or cases. Rewrite `h1` using `[e]`. Conclude with `absurd h1 hv`. Introduce `w`.
+
+Establish `: w ∈ (orbitMap ρ v).range` using `e ▸ trivial`. Conclude with `this`.
+-/
 theorem orbitMap_surjective {V : Type} [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ G V} (h : ρ.IsIrreducible)
     {v : V} (hv : v ≠ 0) : Function.Surjective (orbitMap ρ v) := by
   have h1 : v ∈ (orbitMap ρ v).range := ⟨MonoidAlgebra.single 1 1, by
@@ -463,10 +619,16 @@ instance small_irrCl : Small.{0} (IrrCl G) := by
 
 variable {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
+/- English proof (translation)
+Use `conv_lhs => rw [← c.cl_rep]`. Conclude with `IrrRep.cl_eq_iff`.
+-/
 theorem cl_eq_iff_rep {σ : IrrRep G} {c : IrrCl G} : σ.cl = c ↔ Nonempty (σ.ρ.Equiv c.rep.ρ) := by
   conv_lhs => rw [← c.cl_rep]
   exact IrrRep.cl_eq_iff
 
+/- English proof (translation)
+Rewrite using `[← cl_eq_iff_rep, IrrCl.cl_rep]`.
+-/
 theorem irrCl_eq_iff {c d : IrrCl G} : c = d ↔ Nonempty (c.rep.ρ.Equiv d.rep.ρ) := by
   rw [← cl_eq_iff_rep, IrrCl.cl_rep]
 
@@ -479,10 +641,16 @@ def irrTwist (σ : IrrRep G) (χ : G →* ℂˣ) (hχ : IsSmoothChar χ) : IrrRe
 
 def clTwist (c : IrrCl G) (χ : G →* ℂˣ) (hχ : IsSmoothChar χ) : IrrCl G := (irrTwist c.rep χ hχ).cl
 
+/- English proof (translation)
+The claim follows from `IrrRep.cl_eq_iff.2 ⟨twistEquiv (equivRep σ).symm χ⟩`.
+-/
 theorem clTwist_cl (σ : IrrRep G) (χ : G →* ℂˣ) (hχ : IsSmoothChar χ) :
     clTwist σ.cl χ hχ = (irrTwist σ χ hχ).cl :=
   IrrRep.cl_eq_iff.2 ⟨twistEquiv (equivRep σ).symm χ⟩
 
+/- English proof (translation)
+Rewrite using `[clTwist.eq_1 c, clTwist_cl]`. Use `IrrRep.cl_eq_iff.2 ⟨?_⟩` and prove the remaining obligations. Use `show (twist (twist c.rep.ρ χ) ψ).Equiv (twist c.rep.ρ (χ * ψ))`. Rewrite using `[twist_twist, mul_comm]`. Conclude with `.refl _`.
+-/
 theorem clTwist_clTwist (c : IrrCl G) (χ ψ : G →* ℂˣ) (hχ : IsSmoothChar χ) (hψ : IsSmoothChar ψ) :
     clTwist (clTwist c χ hχ) ψ hψ = clTwist c (χ * ψ) (hχ.mul hψ) := by
   rw [clTwist.eq_1 c, clTwist_cl]
@@ -491,11 +659,17 @@ theorem clTwist_clTwist (c : IrrCl G) (χ ψ : G →* ℂˣ) (hχ : IsSmoothChar
   rw [twist_twist, mul_comm]
   exact .refl _
 
+/- English proof (translation)
+The claim follows from `cl_eq_iff_rep.2 ⟨by show (twist c.rep.ρ 1).Equiv c.rep.ρ rw [twist_one]; exact .refl _⟩`.
+-/
 theorem clTwist_one (c : IrrCl G) (h : IsSmoothChar (1 : G →* ℂˣ)) : clTwist c 1 h = c :=
   cl_eq_iff_rep.2 ⟨by
     show (twist c.rep.ρ 1).Equiv c.rep.ρ
     rw [twist_one]; exact .refl _⟩
 
+/- English proof (translation)
+Rewrite using `[clTwist_cl]`. Use `IrrRep.cl_eq_iff.2 ⟨?_⟩` and prove the remaining obligations. Use `show (twist (ofChar χ) ψ).Equiv (ofChar (χ * ψ))`. Rewrite using `[ofChar, twist_twist, mul_comm]`. Conclude with `.refl _`.
+-/
 theorem clTwist_ofChar (χ ψ : G →* ℂˣ) (hχ : IsSmoothChar χ) (hψ : IsSmoothChar ψ) :
     clTwist (IrrRep.ofChar χ hχ).cl ψ hψ = (IrrRep.ofChar (χ * ψ) (hχ.mul hψ)).cl := by
   rw [clTwist_cl]
@@ -506,6 +680,9 @@ theorem clTwist_ofChar (χ ψ : G →* ℂˣ) (hχ : IsSmoothChar χ) (hψ : IsS
 
 end Classes
 
+/- English proof (translation)
+Introduce `hs` and use `by obtain ⟨a⟩ := hs.equiv_of_embeds (isIrreducible_ofChar χ) ⟨.inl ℂ (ofChar χ) (ofChar ψ), fun _ _ e => congrArg Prod.fst e⟩ obtain ⟨b⟩ := hs.equiv_of_embeds (isIrreducible_ofChar ψ) ⟨.inr ℂ (ofChar χ) (ofChar ψ), fun _ _ e => congrArg Prod.snd e⟩ have h1 := Model.jhMult_ofChar_ …`.
+-/
 example {G W : Type} [Group G] [AddCommGroup W] [Module ℂ W] {χ ψ : G →* ℂˣ} (h : χ ≠ ψ) (σ : Representation ℂ G W) :
     ¬ IsSocle σ ((ofChar χ).prod (ofChar ψ)) := fun hs => by
   obtain ⟨a⟩ := hs.equiv_of_embeds (isIrreducible_ofChar χ)

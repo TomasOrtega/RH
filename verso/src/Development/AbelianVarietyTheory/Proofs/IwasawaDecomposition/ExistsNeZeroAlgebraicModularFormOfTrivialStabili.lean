@@ -11,6 +11,11 @@ open GlobalTheory.TwistChoice (Reading ReadsAt)
 
 namespace GlobalTheory.ClassForm
 
+/- English proof (translation)
+Establish `key : g⁻¹ * ((γ' : GAf L n)⁻¹ * γ) * g = (κ' : GAf L n) * (κ : GAf L n)⁻¹`. Combine the equalities or inequalities in the displayed calculation. Establish `hmem : (γ' : GAf L n)⁻¹ * γ ∈ GQ L n` using `(GQ L n).mul_mem ((GQ L n).inv_mem γ'.2) γ.2`. Establish `h1` using `hg _ hmem (key ▸ J.mul_mem κ'.2 (J.inv_mem κ.2))`. Establish `hγ : (γ : GAf L n) = γ'`.
+
+Rewrite `h1` using `[inv_mul_eq_one]`. Conclude with `h1.symm`. Use `⟨Subtype.ext hγ, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite `h` using `[hγ, mul_assoc, mul_assoc]`. Conclude with `(mul_left_cancel (mul_left_cancel h))`.
+-/
 theorem double_coset_unique {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
     {J : Subgroup (GAf L n)} {g : GAf L n}
     (hg : ∀ γ ∈ GQ L n, g⁻¹ * γ * g ∈ J → γ = 1)
@@ -35,6 +40,9 @@ noncomputable def cosetForm {L : Type} [Field L] [NumberField L] [IsCMField L] {
     (g : GAf L n) (w : W) (x : GAf L n) : W :=
   if h : ∃ p : GQ L n × J, x = (p.1 : GAf L n) * g * p.2 then ((χ h.choose.2 : Kˣ) : K) • ρ h.choose.1 w else 0
 
+/- English proof (translation)
+Establish `hex : ∃ p : GQ L n × J, (γ : GAf L n) * g * κ = (p.1 : GAf L n) * g * p.2` using `⟨(γ, κ), rfl⟩`. Unfold `cosetForm`. Rewrite using `[dif_pos hex]`. Take `⟨h1, h2⟩` from `double_coset_unique hg hex.choose_spec`. Rewrite using `[← h1, ← h2]`.
+-/
 theorem cosetForm_apply {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {K : Type} [Field K] {W : Type}
     [AddCommGroup W] [Module K W] (ρ : Representation K (GQ L n) W) (J : Subgroup (GAf L n)) (χ : J →* Kˣ)
     (g : GAf L n) (hg : ∀ γ ∈ GQ L n, g⁻¹ * γ * g ∈ J → γ = 1) (w : W) (γ : GQ L n) (κ : J) :
@@ -45,12 +53,30 @@ theorem cosetForm_apply {L : Type} [Field L] [NumberField L] [IsCMField L] {n : 
   obtain ⟨h1, h2⟩ := double_coset_unique hg hex.choose_spec
   rw [← h1, ← h2]
 
+/- English proof (translation)
+Unfold `cosetForm`. Rewrite using `[dif_neg hx]`.
+-/
 theorem cosetForm_not {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {K : Type} [Field K] {W : Type}
     [AddCommGroup W] [Module K W] (ρ : Representation K (GQ L n) W) (J : Subgroup (GAf L n)) (χ : J →* Kˣ)
     (g : GAf L n) (w : W) (x : GAf L n) (hx : ¬ ∃ p : GQ L n × J, x = (p.1 : GAf L n) * g * p.2) :
     cosetForm ρ J χ g w x = 0 := by
   unfold cosetForm; rw [dif_neg hx]
 
+/- English proof (translation)
+Introduce `L _ _ _ n K _ W _ _ _ ρ J χ g hg`. Take `⟨w, hw⟩` from `exists_ne (0 : W)`. Use `⟨cosetForm ρ J χ g w, ⟨fun δ x => ?_, fun μ x => ?_⟩, fun h0 => hw ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : ∃ p : GQ L n × J, x = (p.1 : GAf L n) * g * p.2`. Take `⟨⟨γ, κ⟩, rfl⟩` from `hx`.
+
+Establish `e : (δ : GAf L n) * ((γ : GAf L n) * g * κ) = ((δ * γ : GQ L n) : GAf L n) * g * κ`. Simplify using `[mul_assoc]`. Rewrite using `[e, cosetForm_apply ρ J χ g hg, cosetForm_apply ρ J χ g hg, map_smul, map_mul, Module.End.mul_apply]`. Establish `hx' : ¬ ∃ p : GQ L n × J, (δ : GAf L n) * x = (p.1 : GAf L n) * g * p.2`. Introduce and unpack `⟨⟨γ, κ⟩, hp⟩`.
+
+Use `hx ⟨(δ⁻¹ * γ, κ), ?_⟩` and prove the remaining obligations. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, mul_assoc] at hp ⊢`. Rewrite using `[← hp]`. Use `group`. Rewrite using `[cosetForm_not ρ J χ g w _ hx, cosetForm_not ρ J χ g w _ hx', map_zero]`.
+
+Distinguish the cases in `hx : ∃ p : GQ L n × J, x = (p.1 : GAf L n) * g * p.2`. Take `⟨⟨γ, κ⟩, rfl⟩` from `hx`. Establish `e : (γ : GAf L n) * g * κ * μ = (γ : GAf L n) * g * ((κ * μ : J) : GAf L n)`. Simplify using `[mul_assoc]`. Rewrite using `[e, cosetForm_apply ρ J χ g hg, cosetForm_apply ρ J χ g hg, map_mul, Units.val_mul, mul_comm, mul_smul]`.
+
+Establish `hx' : ¬ ∃ p : GQ L n × J, x * μ = (p.1 : GAf L n) * g * p.2`. Introduce and unpack `⟨⟨γ, κ⟩, hp⟩`. Use `hx ⟨(γ, κ * μ⁻¹), ?_⟩` and prove the remaining obligations. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv] at hp ⊢`. Rewrite using `[← mul_assoc, ← hp]`.
+
+Use `group`. Rewrite using `[cosetForm_not ρ J χ g w _ hx, cosetForm_not ρ J χ g w _ hx', smul_zero]`. Use `congrFun h0 g` as an intermediate fact. Establish `e` using `cosetForm_apply ρ J χ g hg w 1 1`. Simplify using `only [OneMemClass.coe_one, one_mul, mul_one, map_one, Units.val_one, one_smul] at e`.
+
+Rewrite `this` using `[e, Module.End.one_apply]`. Simplify using `using this`.
+-/
 theorem exists_form_of_trivial_stabiliser : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (K : Type) [Field K] (W : Type) [AddCommGroup W] [Module K W] [Nontrivial W] (ρ : Representation K (GQ L n) W) (J : Subgroup (GAf L n)) (χ : J →* Kˣ) (g : GAf L n), (∀ γ ∈ GQ L n, g⁻¹ * γ * g ∈ J → γ = 1) → ∃ f ∈ NX.TypeSpF L n K ρ J χ, f ≠ 0 := by
   intro L _ _ _ n K _ W _ _ _ ρ J χ g hg
   obtain ⟨w, hw⟩ := exists_ne (0 : W)

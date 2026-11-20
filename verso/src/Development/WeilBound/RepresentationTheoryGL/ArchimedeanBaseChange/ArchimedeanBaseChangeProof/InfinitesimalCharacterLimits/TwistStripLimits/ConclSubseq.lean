@@ -45,12 +45,18 @@ def Seq (N : ℕ) (W : Submodule ℂ (Kinf E N → ℂ)) (K : Subgroup (GL (Fin 
   ∀ R : ℝ, 0 < N → RepAll E → ∀ V : ℕ → Submodule ℂ (Sm E N), (∀ k, IsDiscrete (V k)) → (∀ k, HasType K W (V k)) →
     (∀ k, InfBdd R (V k)) → Concl Ω Θ V
 
+/- English proof (translation)
+Take `⟨φ, t, t₀, hφ, h1, h2, h3, h4, h5, h6, h7⟩` from `h`. Conclude with `⟨ψ ∘ φ, t, t₀, hψ.comp hφ, h1, h2, h3, h4, h5, h6, h7⟩`.
+-/
 theorem concl_subseq {N : ℕ} {Ω : ∀ M : ℕ, Set (Submodule ℂ (Kinf E M → ℂ))}
     {Θ : ∀ M : ℕ, Set (Subgroup (GL (Fin M) (Af E)))} {V : ℕ → Submodule ℂ (Sm E N)} {ψ : ℕ → ℕ} (hψ : StrictMono ψ)
     (h : Concl Ω Θ (V ∘ ψ)) : Concl Ω Θ V := by
   obtain ⟨φ, t, t₀, hφ, h1, h2, h3, h4, h5, h6, h7⟩ := h
   exact ⟨ψ ∘ φ, t, t₀, hψ.comp hφ, h1, h2, h3, h4, h5, h6, h7⟩
 
+/- English proof (translation)
+Introduce `R hN hRep V hVd hVt hVb`. Take `⟨φ, t, t₀, hφ, h1, h2, h3, h4, h5, h6, h7⟩` from `h R hN hRep V hVd hVt hVb`. Conclude with `⟨φ, t, t₀, hφ, h1, h2, h3, h4, allLeaves_mono (fun M U ⟨K', hK', W', hW', hT⟩ => ⟨K', hΘ M hK', W', hΩ M hW', hT⟩) h5, h6, h7⟩`.
+-/
 theorem seq_mono {N : ℕ} {W : Submodule ℂ (Kinf E N → ℂ)} {K : Subgroup (GL (Fin N) (Af E))}
     {Ω Ω' : ∀ M : ℕ, Set (Submodule ℂ (Kinf E M → ℂ))} {Θ Θ' : ∀ M : ℕ, Set (Subgroup (GL (Fin M) (Af E)))}
     (h : Seq N W K Ω Θ) (hΩ : ∀ M, Ω M ⊆ Ω' M) (hΘ : ∀ M, Θ M ⊆ Θ' M) : Seq N W K Ω' Θ' := by
@@ -59,6 +65,15 @@ theorem seq_mono {N : ℕ} {W : Submodule ℂ (Kinf E N → ℂ)} {K : Subgroup 
   exact ⟨φ, t, t₀, hφ, h1, h2, h3, h4, allLeaves_mono (fun M U ⟨K', hK', W', hW', hT⟩ =>
     ⟨K', hΘ M hK', W', hΩ M hW', hT⟩) h5, h6, h7⟩
 
+/- English proof (translation)
+Use `letI : MeasurableSpace (GA E N) := borel _`. Use `haveI : BorelSpace (GA E N) := ⟨rfl⟩`. Use `haveI : LocallyCompactSpace (GA E N) := Units.isClosedEmbedding_embedProduct.locallyCompactSpace`. Take `⟨V₀, hV₀⟩` from `hFD E N Measure.haar K W R ε hK hW hε (hRep N Measure.haar K W R hK hW)`. Establish `hfr' : ∃ᶠ k in atTop, ∃ V' ∈ V₀, IsoV (V k) V'` using `hfr.mono fun k hk => hV₀ (V k) (hVd k) (hVt k) (hVb k) hk`.
+
+Establish `: ∃ V' ∈ V₀, ∃ᶠ k in atTop, IsoV (V k) V'`. Assume the negation of the conclusion as `hcon`. Establish `hall : ∀ᶠ k in atTop, ∀ V' ∈ V₀, ¬ IsoV (V k) V'` using `(Filter.eventually_all_finset V₀).2 fun V' hV' => Filter.not_frequently.1 fun h => hcon ⟨V', hV', h⟩`. Take `⟨k, ⟨V', hV', hk⟩, hk'⟩` from `(hfr'.and_eventually hall).exists`. Conclude with `hk' V' hV' hk`.
+
+Take `⟨V', -, hfrV⟩` from `this`. Take `⟨ψ, hψ, hψV⟩` from `Filter.extraction_of_frequently_atTop hfrV`. Use `⟨ψ, fun _ => .leaf (V (ψ 0)) 0, .leaf (V (ψ 0)) 0, hψ, ⟨hN, hVd _⟩, ?_, fun _ => ⟨hN, hVd _⟩, fun _ => rfl, ⟨K, hKΘ, W, hWΩ, hVt _⟩, fun i => tendsto_const_nhds, fun k => ?_⟩` and prove the remaining obligations. Introduce `z hz`. Simplify using `only [Tr.twists, List.mem_singleton] at hz`.
+
+Simplify using `[hz]`. Use `show Emb (V (ψ k)) (· ∈ tw (V (ψ 0)) 0)`. Rewrite using `[tw_zero]`. Conclude with `emb_of_isoV (hVd _).stable (isoV_of_common (hVd _).stable (hψV k) (hψV 0))`.
+-/
 theorem caseA (hFD : FinDisc) {N : ℕ} (hN : 0 < N) {K : Subgroup (GL (Fin N) (Af E))} {W : Submodule ℂ (Kinf E N → ℂ)}
     (hK : IsOpen (K : Set (GL (Fin N) (Af E)))) (hW : FiniteDimensional ℂ W)
     {Ω : ∀ M : ℕ, Set (Submodule ℂ (Kinf E M → ℂ))} {Θ : ∀ M : ℕ, Set (Subgroup (GL (Fin M) (Af E)))}
@@ -88,6 +103,9 @@ theorem caseA (hFD : FinDisc) {N : ℕ} (hN : 0 < N) {K : Subgroup (GL (Fin N) (
     rw [tw_zero]
     exact emb_of_isoV (hVd _).stable (isoV_of_common (hVd _).stable (hψV k) (hψV 0))
 
+/- English proof (translation)
+Introduce `r hr hrN c hc`. Establish `hpos : (0 : ℝ) < r * ((N : ℝ) - r)` using `mul_pos (by exact_mod_cast hr) (sub_pos.2 (by exact_mod_cast hrN))`. Use `h r hr hrN c hc` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem gap_of_le {N : ℕ} {V : Submodule ℂ (Sm E N)} {lam ε : ℝ} (h : Gap lam V) (hle : ε ≤ lam) : Gap ε V := by
   intro r hr hrN c hc
   have hpos : (0 : ℝ) < r * ((N : ℝ) - r) :=
@@ -95,6 +113,15 @@ theorem gap_of_le {N : ℕ} {V : Submodule ℂ (Sm E N)} {lam ε : ℝ} (h : Gap
   have := h r hr hrN c hc
   nlinarith
 
+/- English proof (translation)
+Establish `hd : (0 : ℝ) < (Module.finrank ℚ E : ℝ)` using `by exact_mod_cast Module.finrank_pos`. Establish `hrR : (0 : ℝ) < r` using `by exact_mod_cast hr`. Establish `hsR : (0 : ℝ) < s` using `by exact_mod_cast hs`. Unfold `pE at h`. Move the coercions through the operations in `at h`.
+
+Establish `hc : c.re = (Module.finrank ℚ E : ℝ) * ((r : ℝ) * s / 2 - lam * (r * s))`. Clear denominators, using `at h ⊢` for the nonvanishing conditions. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e1 : (r : ℂ) * (Module.finrank ℚ E : ℂ) = (((r : ℝ) * (Module.finrank ℚ E : ℝ) : ℝ) : ℂ)` using `by push_cast; ring`. Establish `e2 : (s : ℂ) * (Module.finrank ℚ E : ℂ) = (((s : ℝ) * (Module.finrank ℚ E : ℝ) : ℝ) : ℂ)` using `by push_cast; ring`.
+
+Establish `h2 : ((s : ℂ) / 2).re = (s : ℝ) / 2` using `by simp`. Establish `h3 : ((r : ℂ) / 2).re = (r : ℝ) / 2` using `by simp`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Complex.sub_re, e1, Complex.div_ofReal_re, h2, hc] field_simp`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[Complex.add_re, e2, Complex.div_ofReal_re, h3, Complex.neg_re, hc] field_simp`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem re_twists {r s : ℕ} (hr : 0 < r) (hs : 0 < s) {c : ℂ} {lam : ℝ}
     (h : pE E (r + s) r c = -lam * (r * s)) :
     (c / (r * (Module.finrank ℚ E : ℂ)) - (s : ℂ) / 2).re = -(s * lam) ∧

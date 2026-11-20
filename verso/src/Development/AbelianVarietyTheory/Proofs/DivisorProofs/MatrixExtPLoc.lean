@@ -18,14 +18,23 @@ def glueM (T : Finset (Pl E)) (f : ∀ v : Pl E, Matrix (Fin n) (Fin n) (v.adicC
     · exact one_mem _
     · exact zero_mem _⟩
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (funext h)`.
+-/
 theorem pLoc_ext {a b : FiniteAdeleRing (𝓞 E) E} (h : ∀ v, pLoc E v a = pLoc E v b) : a = b :=
   Subtype.ext (funext h)
 
+/- English proof (translation)
+Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Conclude with `pLoc_ext E fun v => congrFun (congrFun (h v) i) j`.
+-/
 theorem matrix_ext_pLoc {A B : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 E) E)}
     (h : ∀ v, A.map (pLoc E v) = B.map (pLoc E v)) : A = B := by
   refine Matrix.ext fun i j => ?_
   exact pLoc_ext E fun v => congrFun (congrFun (h v) i) j
 
+/- English proof (translation)
+Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(if v ∈ T then f v i j else (1 : Matrix (Fin n) (Fin n) (v.adicCompletion E)) i j) = (if v ∈ T then f v else 1) i j`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem map_glueM (T : Finset (Pl E)) (f : ∀ v : Pl E, Matrix (Fin n) (Fin n) (v.adicCompletion E)) (v : Pl E) :
     (glueM E n T f).map (pLoc E v) = if v ∈ T then f v else 1 := by
   refine Matrix.ext fun i j => ?_
@@ -33,6 +42,9 @@ theorem map_glueM (T : Finset (Pl E)) (f : ∀ v : Pl E, Matrix (Fin n) (Fin n) 
     (if v ∈ T then f v else 1) i j
   split_ifs <;> rfl
 
+/- English proof (translation)
+Use `matrix_ext_pLoc E n fun v => ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_mul, map_glueM, map_glueM, Matrix.map_one _ (map_zero _) (map_one _)]`. Use `split_ifs`. Conclude with `hf v`. Conclude with `one_mul 1`.
+-/
 theorem glueM_mul (T : Finset (Pl E)) (f f' : ∀ v : Pl E, Matrix (Fin n) (Fin n) (v.adicCompletion E))
     (hf : ∀ v, f v * f' v = 1) : glueM E n T f * glueM E n T f' = 1 := by
   refine matrix_ext_pLoc E n fun v => ?_

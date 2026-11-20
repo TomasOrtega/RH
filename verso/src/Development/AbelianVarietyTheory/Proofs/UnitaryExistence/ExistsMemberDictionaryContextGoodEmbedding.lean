@@ -22,6 +22,11 @@ open GlobalTheory.Member
 
 namespace GlobalTheory.Member
 
+/- English proof (translation)
+Establish `h1` using `xi0_embedding_im_pos D τ ((mem_cm_type_iff D τ).2 hτ)`. Establish `hφ : D.host.φ₀ D.host.sqrtMinusD = Complex.I * (Real.sqrt D.host.d : ℂ)` using `D.host.φ₀_mem`. Establish `hpos : 0 < (D.host.φ₀ D.host.sqrtMinusD).im`. Rewrite using `[hφ]`. Establish `hd : (0 : ℝ) < D.host.d` using `by exact_mod_cast d_pos D`.
+
+Simplify using `using hd`. Rewrite `h1` using `[if_pos hpos, Int.cast_one, _root_.one_mul]`. Rewrite using `[map_neg, Complex.neg_im]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem hostCMType_neg_constant_im_neg (D : D7) (τ : D.host.E →+* ℂ)
     (hτ : τ D.host.sqrtMinusD = D.host.φ₀ D.host.sqrtMinusD) : (τ (-D.host.xi0)).im < 0 := by
   have h1 := xi0_embedding_im_pos D τ ((mem_cm_type_iff D τ).2 hτ)
@@ -34,6 +39,17 @@ theorem hostCMType_neg_constant_im_neg (D : D7) (τ : D.host.E →+* ℂ)
   rw [map_neg, Complex.neg_im]
   linarith
 
+/- English proof (translation)
+Set `e` to `(Fintype.equivFin (Σ τ : D.host.E →+* ℂ, Fin (Dw.mult τ))).symm`. Establish `hty` using `(GlobalTheory.Relab.relab_good D.host.E H l c σ hσ).2.2.2 Dw _ e`. Take `⟨F⟩` from `GlobalTheory.closing_of_abelianSchemeLaws D.host.E H Dw l Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) _ (fun j => relab c σ (e j).1) hpos hσ hty`. Take `⟨-, -, -, -, -, hcF, -, hherm, hdet, hhT, -⟩` from `GlobalTheory.Member.latHat_eq_hat_and_gram D V`. Establish `hξ : cc (-D.host.xi0) = -(-D.host.xi0)` using `by rw [cc, map_neg, conj_xi0_alt]`.
+
+Establish `hsp : Submodule.span D.host.E (Set.range ι) = ⊤`. Rewrite using `[← LinearMap.coe_range, hι.emb.2]`. Conclude with `(GlobalTheory.Member.latG_lattice_and_completion D V 1).2.1`. Establish `hG : ∀ a b, cc ((-V.gramᵀ) a b) = (-V.gramᵀ) b a` using `fun a b => by`. Rewrite using `[Matrix.neg_apply, Matrix.neg_apply, cc, map_neg, ← hherm a b, hcF, cc]`.
+
+Establish `hd : (-V.gramᵀ).det ≠ 0`. Rewrite using `[Matrix.det_neg]`. Conclude with `mul_ne_zero (pow_ne_zero _ (by simp)) hdet`. Establish `hEF : ∀ x y, ((Dw.EF x y : ℤ) : ℚ) = Algebra.trace ℚ D.host.E (-(-D.host.xi0) * herm (-V.gramᵀ) (ι x) (ι y))` using `fun x y => by`. Establish `h1 : Dw.EF x y = -Dw.EF y x`.
+
+Establish `h` using `Dw.alt (x + y)`. Simplify using `only [map_add, LinearMap.add_apply, Dw.alt] at h`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[h1, Int.cast_neg, hι.isom y x, hhT, ← map_neg]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨M, hM, -, hMG⟩` from `GlobalTheory.ModelsExist.exists_modelsOf GlobalTheory.QNorm.hasseNormSt D.host.E H Dw l Xo _ _ _ F V.rank (-D.host.xi0) (-V.gramᵀ) ι hξ (fun τ hτ => hostCMType_neg_constant_im_neg D τ (by rw [← hι.rt0, ← hι.rt, hτ])) ⟨hι.emb.1, hsp, hG, hd, hEF⟩`. Conclude with `⟨_, e, F, M, hM, fun k => ⟨(hMG k).1, (hMG k).2⟩⟩`.
+-/
 theorem exists_family_models (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H)
     (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (V : HSp D)
     (ι : Dw.La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)) (hι : IotaOK Dw V ι) (hpos : 1 ≤ Dw.p + Dw.q)
@@ -70,6 +86,15 @@ theorem exists_family_models (D : D7) (H : ReciprocityTheory.ChartRestriction.G.
     (fun τ hτ => hostCMType_neg_constant_im_neg D τ (by rw [← hι.rt0, ← hι.rt, hτ])) ⟨hι.emb.1, hsp, hG, hd, hEF⟩
   exact ⟨_, e, F, M, hM, fun k => ⟨(hMG k).1, (hMG k).2⟩⟩
 
+/- English proof (translation)
+Introduce `D H Dw l Xo c σ V r hr ι hι hpos hA hσ`. Substitute `hr` using the available equality. Take `⟨g, e, F, M, hM, hW⟩` from `exists_family_models D H Dw l Xo c σ V ι hι hpos hσ`. Take `⟨θ, hθ⟩` from `(GlobalTheory.Member.infiniteAdele_bijective D).1`. Establish `key : ∀ x₀ : (D.host.E →+* ℂ) → Matrix (Fin V.rank) (Fin V.rank) ℂ, (∀ τ : D.host.E →+* ℂ, τ (H.rt : D.host.E) = H.rt0 → gram τ (-(Matrix.reindex (finCongr rfl) (finCongr rfl) V.gram)ᵀ) (x₀ τ) = Matrix.diagonal fun a : Fin V.rank => ((sgn Dw.q (a : ℕ) : ℝ) : ℂ)) → ∃ C : Ctx Xo c …` using `fun x₀ hx => ⟨⟨rfl, g, e, F, M, ι, θ, x₀⟩, ⟨hι, hpos, hA, hσ, hM, hW, hθ, fun k τ hτ => by show gram τ (M.X k).Gm (x₀ τ) = Matrix.diagonal fun a : Fin V.rank => ((sgn (M.X k).p0 (a : ℕ) : ℝ) : ℂ)`.
+
+Rewrite using `[(hW k).1, (hM.type k).1]`. Conclude with `hx τ (((hM.type k).2 τ).1 hτ)⟩, rfl, rfl⟩`. Use `⟨?_, fun C hC k τ hτ => ?_, key⟩` and prove the remaining obligations. Set `k : Fin F.n` to `⟨0, F.n_pos⟩`. Take `⟨C, hC, h, -⟩` from `key (fun τ => if h : τ ∈ (M.X k).Ψ then ((M.X k).signature ⟨τ, h⟩).choose else 1) fun τ hτ => by`.
+
+Establish `h` using `((hM.type k).2 τ).2 hτ`. Rewrite using `[dif_pos h, ← (hW k).1, ← (hM.type k).1]`. Conclude with `((M.X k).signature ⟨τ, h⟩).choose_spec.2`. Conclude with `⟨C, hC, h⟩`. Rewrite using `[(hC.modelW k).2]`.
+
+Conclude with `hostCMType_neg_constant_im_neg D τ (by rw [← hι.rt0, ← hι.rt, ((hC.base.type k).2 τ).1 hτ])`.
+-/
 theorem exists_ctx : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (V : HSp D) (r : ℕ) (hr : V.rank = r) (ι : Dw.La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)), IotaOK Dw V ι → 1 ≤ Dw.p + Dw.q → l.A = 1 → GoodEmb c σ → (∃ C : Ctx Xo c σ V r, C.OK ∧ C.ι = ι) ∧ (∀ C : Ctx Xo c σ V r, C.OK → GlobalTheory.FrameUnif.NegXi C.M) ∧ ∀ x₀ : (D.host.E →+* ℂ) → Matrix (Fin r) (Fin r) ℂ, (∀ τ : D.host.E →+* ℂ, τ (H.rt : D.host.E) = H.rt0 → gram τ (-(Matrix.reindex (finCongr hr) (finCongr hr) V.gram)ᵀ) (x₀ τ) = Matrix.diagonal fun a : Fin r => ((sgn Dw.q (a : ℕ) : ℝ) : ℂ)) → ∃ C : Ctx Xo c σ V r, C.OK ∧ C.ι = ι ∧ C.x₀ = x₀ := by
   intro D H Dw l Xo c σ V r hr ι hι hpos hA hσ
   subst hr

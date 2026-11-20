@@ -13,6 +13,9 @@ set_option synthInstance.maxHeartbeats 200000
 section
 section
 namespace GlobalTheory.Fc.S0
+/- English proof (translation)
+Introduce `P`. Conclude with `⟨_root_.GlobalTheory.BigOn.ontoX_of_hypotheses_alt_alt P.greenCuspidal P.clozelCohomological P.heckeLAdicCharacter P.chebotarevDegreeOne P.galoisRepOfPolarizedCuspidal P.baseChangeDefiniteUnitary P.bhattScholzeCrystallineLattices P.heckeLAdicCharacterAbove P.cuspRapidDecay (_root …`.
+-/
 theorem ontoX_and_lamLow_of_unitaryGroupHypotheses' :
     _root_.GlobalTheory.Fc.S0.UnitaryGroupThirdPlaceHypotheses → _root_.GlobalTheory.BigOn.SurjectiveOntoX ∧ _root_.GlobalTheory.BigTop.LambdaLowerBound₂ := by
   intro P

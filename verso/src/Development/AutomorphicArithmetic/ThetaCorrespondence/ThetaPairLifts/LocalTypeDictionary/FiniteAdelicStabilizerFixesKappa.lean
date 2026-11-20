@@ -14,6 +14,25 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 noncomputable section
 namespace GlobalTheory.StabFinAdelic
+/- English proof (translation)
+Introduce `hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB _ _ hO hT Pi rf rl p p' _ N hN g hg Φ hΦ`. Establish `hinf` using `GlobalTheory.InfKill.smul_mat_kapX_sub_one D X e hO.JX g hg`. Take `⟨S₀, hS₀⟩` from `_root_.GlobalTheory.T.spherical_vector_fixes_vacua hP _ _ _ Bs _ _ Γ Xc om om' hT`. Establish `hfix : ∀ Ψ ∈ algD Γ.M Bs.ψ Bs.emb, ∃ T : Finset (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl D.host.F), ∀ S : Finset (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl D.host.F), T ⊆ S → S₀ ⊆ S → ∀ k : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMo …`. Introduce `Ψ hΨ`.
+
+Proceed by induction on `hΨ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, φ, -, hφ, hcof, rfl⟩` from `hx`. Use `⟨hcof.toFinset, fun S hTS hS₀S k hk1 hk2 hk3 hk4 => ?_⟩` and prove the remaining obligations. Use `(hS₀ S hS₀S k hk1 hk2 hk3 hk4).1 f φ hφ fun w hw => ?_` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hne`. Conclude with `hw (hTS (Set.Finite.mem_toFinset _ |>.2 hne))`. Consider the case `zero => exact ⟨∅, fun _ _ _ k _ _ _ _ => map_zero _⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨T₁, h₁⟩` from `hx`.
+
+Take `⟨T₂, h₂⟩` from `hy`. Use `⟨T₁ ∪ T₂, fun S hTS hS₀S k hk1 hk2 hk3 hk4 => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, h₁ S (Finset.union_subset_left hTS) hS₀S k hk1 hk2 hk3 hk4, h₂ S (Finset.union_subset_right hTS) hS₀S k hk1 hk2 hk3 hk4]`. Consider the case `smul c x _ hx`. Take `⟨T, hT'⟩` from `hx`.
+
+Conclude with `⟨T, fun S hTS hS₀S k hk1 hk2 hk3 hk4 => by rw [map_smul, hT' S hTS hS₀S k hk1 hk2 hk3 hk4]⟩`. Take `⟨T, hTfix⟩` from `hfix Φ (hN.1 hΦ)`. Take `⟨S, l, k, hTS, hl, hprod, hkinf, hkS, hkV, hkV'⟩` from `GlobalTheory.T.exists_adelicUnitary_prod_localPoints_mul_latticeStabilizer _ _ _ Bs _ _ Γ hT.geo _ hinf (T ∪ S₀)`. Establish `hk : om (1, k) Φ = Φ` using `hTfix S (Finset.union_subset_left hTS) (Finset.union_subset_right hTS) k hkinf hkS hkV hkV'`. Establish `split' : ∀ (x y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA D.sp.cm.sig Γ.W.J) Ψ, om (1, x * y) Ψ = om (1, x) (om (1, y) Ψ)`.
+
+Introduce `x y Ψ`. Rewrite using `[show ((1 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA D.sp.cm.sig Γ.V.J), x * y) = (1, x) * (1, y) by simp, map_mul, Module.End.mul_apply]`. Establish `key : ∀ l' : List (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl D.host.F × GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA D.sp.cm.sig Γ.W.J), (∀ x ∈ l', x.2 ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UAt D.sp.cm.sig Γ.W (GlobalTheory.Ad …`. Introduce `l'`. Proceed by induction on `l' with`.
+
+Consider the case `nil`. Introduce `_ Ψ hΨ`. Simplify using `only [List.map_nil, List.prod_nil]`. Rewrite using `[Prod.mk_one_one, map_one]`. Conclude with `hΨ`.
+
+Consider the case `cons x l' ih`. Introduce `hx Ψ hΨ`. Simplify using `only [List.map_cons, List.prod_cons]`. Rewrite using `[split']`. Conclude with `hN.2.1 x.1 x.2 (hx x List.mem_cons_self) _ (ih (fun y hy => hx y (List.mem_cons_of_mem _ hy)) Ψ hΨ)`.
+
+Rewrite using `[hprod, split', hk]`. Conclude with `key l (fun x hx => (hl x hx).2) Φ hΦ`.
+-/
 theorem kappa_stabilized_of_isStabilizedW : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))
     (𝓕₁ : Set (GA D W₁)) (ωA : WRep W X) (ωB : WRep W₁ X) (e : Fin X.rank ≃ Fin (W.rank + W₁.rank))
@@ -92,6 +111,9 @@ open scoped TensorProduct GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMode
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.StabFinAdelic.kappa_stabilized_of_isStabilizedW | exact _root_.GlobalTheory.StabFinAdelic.kappa_stabilized_of_isStabilizedW | (intros; apply _root_.GlobalTheory.StabFinAdelic.kappa_stabilized_of_isStabilizedW <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.finite_adelic_stabilizer_fixes_kappa : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))
     (𝓕₁ : Set (GA D W₁)) (ωA : WRep W X) (ωB : WRep W₁ X) (e : Fin X.rank ≃ Fin (W.rank + W₁.rank))

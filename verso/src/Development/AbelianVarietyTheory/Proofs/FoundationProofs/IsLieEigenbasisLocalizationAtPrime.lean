@@ -13,6 +13,23 @@ open GlobalTheory GlobalTheory.IndefiniteRowSideFullHecke GlobalTheory.CM Global
 
 namespace GlobalTheory.EigBasisPrime
 
+/- English proof (translation)
+Establish `unit : ∀ q ∈ S, IsUnit (algebraMap R R' q)` using `fun q hq => IsLocalization.map_units R' ⟨q, hq⟩`. Establish `inj : ∀ d : Fin m → R', ∑ i, d i • f (v i) = 0 → d = 0` using `fun d hd => by`. Take `⟨⟨q, hq⟩, hqi⟩` from `IsLocalization.exist_integer_multiples_of_finite S d`. Use `choose d' hd' using hqi`. Establish `h0 : f (∑ i, d' i • v i) = 0`.
+
+Simplify using `only [map_sum, hs, hd', Algebra.smul_def, mul_smul]`. Rewrite using `[← Finset.smul_sum, hd, smul_zero]`. Take `⟨r, hr, h1⟩` from `uniq _ h0`. Establish `h2 : r • d' = 0` using `(hv 0 (by simp)).unique (by rw [← h1, Finset.smul_sum]; simp [mul_smul]) (by simp)`. Use function extensionality and compare the values at `i`.
+
+Establish `h3` using `congrArg (algebraMap R R') (congrFun h2 i)`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul, hd', Algebra.smul_def, Pi.zero_apply, map_zero] at h3`. Conclude with `(unit q hq).mul_right_eq_zero.1 ((unit r hr).mul_right_eq_zero.1 h3)`. Take `⟨q, hq, x, hx⟩` from `lift w`. Establish `h1 : ∀ a : O, ∃ r ∈ S, r • (a • x - χ a • x) = 0` using `fun a => uniq _ (by`.
+
+Rewrite using `[map_sub, ha, hs, hx, smul_comm a, hw, smul_comm, sub_self])`. Use `choose r hr h1 using h1`. Take `⟨s, hsp⟩` from `Module.Finite.fg_top (R := ℤ) (M := O)`. Establish `hQ : ∏ a ∈ s, r a ∈ S` using `S.prod_mem fun a _ => hr a`. Take `⟨c, hc, -⟩` from `hv ((∏ a ∈ s, r a) • x) fun a => by`.
+
+Establish `: a ∈ Submodule.span ℤ (s : Set O)` using `hsp ▸ Submodule.mem_top`. Proceed by induction on `this using Submodule.span_induction with`. Consider the case `mem b hb`. Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem r (Finset.mem_coe.1 hb)`. Rewrite using `[smul_comm b, smul_comm (χ b), ← sub_eq_zero, ← smul_sub, hk, _root_.mul_comm, mul_smul, h1, smul_zero]`.
+
+Consider the case `zero => simp`. Consider the case `add b b' _ _ e e' => rw [add_smul, e, e', map_add, add_smul]`. Consider the case `smul k b _ e => rw [smul_assoc, e, map_zsmul, smul_assoc]`. Establish `h2` using `congrArg f hc`. Simplify using `only [map_sum, hs, hx, smul_smul] at h2`.
+
+Take `⟨u, hu⟩` from `((unit _ hQ).mul (unit q hq)).exists_left_inv`. Establish `h3 : w = ∑ i, (u * algebraMap R R' (c i)) • f (v i)`. Simplify using `only [mul_smul u]`. Rewrite using `[← Finset.smul_sum, ← h2, smul_smul, hu, one_smul]`. Use `⟨_, h3, fun c' hc' => sub_eq_zero.1 (inj _ ?_)⟩` and prove the remaining obligations.
+
+Simplify using `only [Pi.sub_apply, sub_smul, Finset.sum_sub_distrib]`. Rewrite using `[← hc', ← h3, sub_self]`.
+-/
 theorem eig_localization {R R' O L L' : Type} [CommRing R] [CommRing R'] [Algebra R R'] (S : Submonoid R)
     [IsLocalization S R'] [CommRing O] [Module.Finite ℤ O] [AddCommGroup L] [Module R L] [Module O L]
     [SMulCommClass O R L] [AddCommGroup L'] [Module R' L'] [Module O L'] [SMulCommClass O R' L'] (f : L →+ L')
@@ -62,6 +79,27 @@ theorem eig_localization {R R' O L L' : Type} [CommRing R] [CommRing R'] [Algebr
   simp only [Pi.sub_apply, sub_smul, Finset.sum_sub_distrib]
   rw [← hc', ← h3, sub_self]
 
+/- English proof (translation)
+Introduce `E _ _ _ H R _ p _ t t' n χ m v v' hv hv'`. Use `t.semi.smooth` as an intermediate fact. Establish `: ∀ s : R, Smooth (Chart.Gs t.G s).hom` using `fun s => show Smooth (pullback.snd t.G.hom _) from inferInstance`. Set `j` to `algebraMap R (Localization.AtPrime p)`. Use `choose g hg hgu using fun x : epsR R ⟶ t.G => existsUnique_isVecOver (f := j) n.cart.1 x`.
+
+Set `f₀ : Serre.Lie t.act → Serre.Lie t'.act` to `fun x => Serre.Lie.mk _ (g x.hom) ((hg _).isTangent n.cart x.isTangent)`. Establish `hf : ∀ x y, f₀ x = y ↔ IsVecOver j n.φ x.hom y.hom` using `fun x y => ⟨fun e => e ▸ hg _, fun e => Serre.Lie.ext (hgu _ _ e).symm⟩`. Establish `comb : ∀ (k : ℕ) (c : Fin k → R) (x : Fin k → Serre.Lie t.act), f₀ (∑ i, c i • x i) = ∑ i, j (c i) • f₀ (x i)` using `fun k c x => (hf _ _).2 ((lieComb_baseChange _ _ j t.G t'.G n.φ n.cart k (fun i => (x i).hom) _ c (fun i => (f₀ (x i)).hom) _ (fun i => hg _) ((Serre.Lie.isLieComb_iff c x _).2 rfl)).2 ((Serre.Lie.isLieComb_iff _ _ _).2 rfl))`. Set `f : Serre.Lie t.act →+ Serre.Lie t'.act` to `AddMonoidHom.mk' f₀ fun x y => by`. Simplify using `using comb 2 1 ![x, y]`.
+
+Establish `hs : ∀ (r : R) x, f (r • x) = j r • f x` using `fun r x => by`. Express the relevant statement in the definitionally equal form `f₀ _ = _ • f₀ _`. Simplify using `using comb 1 ![r] ![x]`. Establish `ha : ∀ (a : 𝓞 E) x, f (a • x) = a • f x` using `fun a x => (hf _ _).2 (by`. Use `hg x.hom` as an intermediate fact.
+
+Simplify using `only [IsVecOver] at this ⊢`. Express the relevant statement in the definitionally equal form `(g x.hom ≫ t'.act.act a).left ≫ _ = _ ≫ (x.hom ≫ t.act.act a).left`. Rewrite using `[Over.comp_left, Category.assoc, n.act a, ← Category.assoc, this, Category.assoc, Over.comp_left])`. Take `⟨e, he⟩` from `LiePull.exists_pushEquiv n.cart (epsR (Localization.AtPrime p)) (spMap (algebraMap R (DualNumber (Localization.AtPrime p)))) (spMap_comp_spMap _ _).symm`. Take `⟨e₀, he₀⟩` from `LiePull.exists_pushEquiv n.cart (𝟙_ (Over (Sp (Localization.AtPrime p)))) (spMap j) (Category.id_comp _).symm`.
+
+Establish `one : (1 : Over.mk (spMap j) ⟶ t.G).left = η[t'.G].left ≫ n.φ`. Rewrite using `[← map_one e₀, he₀, Hom.one_def, toUnit_unit, Category.id_comp]`. Establish `lift : ∀ y, ∃ q ∈ p.primeCompl, ∃ x, f x = j q • y` using `fun y => by`. Take `⟨q, hq, w, hw, hwy⟩` from `Chart.tan_prime_lift p (y' := e y.hom) (Over.OverMorphism.ext (by`. Use `Eq.trans ?_ one.symm` and prove the remaining obligations.
+
+Rewrite using `[Over.comp_left, he, ← y.isTangent]`. Conclude with `(Category.assoc _ _ _).symm))`. Use `⟨q, hq, Serre.Lie.mk _ w ((Chart.isTan_iff _).1 hw), (hf _ _).2 ?_⟩` and prove the remaining obligations. Use `congrArg (fun z => z.left) hwy` as an intermediate fact. Simplify using `only [Over.comp_left, he] at this`.
+
+Conclude with `(Category.assoc _ _ _).trans this.symm`. Establish `uniq : ∀ x, f x = 0 → ∃ q ∈ p.primeCompl, q • x = 0` using `fun x hx => by`. Take `⟨q, hq, h⟩` from `Chart.tan_prime_uniq p (w := x.hom) ((Chart.isTan_iff _).2 x.isTangent) (Over.OverMorphism.ext (by`. Rewrite using `[← map_one e, he]`. Conclude with `((hf _ _).1 hx).symm))`.
+
+Conclude with `⟨q, hq, Serre.Lie.ext h⟩`. Set `y : Fin m → Serre.Lie t.act` to `fun i => Serre.Lie.mk _ (v i) (hv.1 i).1`. Establish `hy : v' = fun i => (f (y i)).hom` using `funext fun i => hgu _ _ (hv' i)`. Substitute `hy` using the available equality. Use `⟨fun i => ⟨Serre.Lie.isTangent _, Serre.Lie.mem_eig_iff_left.1 fun a => ?_⟩, fun w hw => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← ha, (Serre.Lie.mem_eig_iff_left (v := y i)).2 (hv.1 i).2 a, hs]`. Both sides reduce to the same expression. Use `(existsUnique_congr fun c => ?_).1 (eig_localization p.primeCompl f hs ha lift uniq χ y (fun z hz => (existsUnique_congr fun c => ?_).1 (hv.2 z.hom ⟨z.isTangent, (Serre.Lie.mem_eig_iff_left (τ := χ) (v := z)).1 hz⟩)) (Serre.Lie.mk _ w hw.1) ((Serre.Lie.mem_eig_iff_left (τ := j.co …` and prove the remaining obligations. Rewrite using `[Serre.Lie.isLieComb_iff]`. Conclude with `⟨fun h => congrArg Serre.Lie.hom h, fun h => Serre.Lie.ext h⟩`.
+
+Conclude with `(Serre.Lie.isLieComb_iff c y _).trans ⟨fun h => Serre.Lie.ext h, fun h => congrArg Serre.Lie.hom h⟩`.
+-/
 theorem isEigBasis_atPrime : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Geo.Tor.Host E) (R : Type) [CommRing R] (p : Ideal R) [p.IsPrime] (t : SAB H (Sp R)) (t' : SAB H (Sp (Localization.AtPrime p))) (n : SABMap t' t (spMap (algebraMap R (Localization.AtPrime p)))) (χ : 𝓞 E →+* R) (m : ℕ) (v : Fin m → (epsR R ⟶ t.G)) (v' : Fin m → (epsR (Localization.AtPrime p) ⟶ t'.G)), EigenvectorLieDegree.IsEigBasis t.act χ v → (∀ i, IsVecOver (algebraMap R (Localization.AtPrime p)) n.φ (v i) (v' i)) → EigenvectorLieDegree.IsEigBasis t'.act ((algebraMap R (Localization.AtPrime p)).comp χ) v' := by
   intro E _ _ _ H R _ p _ t t' n χ m v v' hv hv'
   have := t.semi.smooth

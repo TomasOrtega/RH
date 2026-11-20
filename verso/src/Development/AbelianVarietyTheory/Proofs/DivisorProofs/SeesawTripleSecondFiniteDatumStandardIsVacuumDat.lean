@@ -20,6 +20,11 @@ noncomputable section
 
 namespace GlobalTheory.BotDict
 
+/- English proof (translation)
+Introduce `D T A A' WW X ψ θ α β νH S hA' hW hI t`. Establish `ho` using `GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum (hI.idem t)`. Establish `hth : IsThetaFunO ψ A' WW (X.f' t)` using `GlobalTheory.JointHarm.isThetaFunO_of_isThetaAt hI.isVac'.1 hI.isVac'.2.inf (hI.snd t) hI.isVac'.2.theta`. Use `⟨hth, fun τ => ?_⟩` and prove the remaining obligations. Establish `hF` using `GlobalTheory.DatumFock.isFockVacAt_of_isThetaAt hI.isVac'.1.1.1 hI.isVac'.2.inf ho.conj.infPart_eq ho.conj.conj.infPart_eq (hI.snd t) hI.isVac'.2.theta hth (hI.isVac'.2.fock τ)`.
+
+Rewrite `hF` using `[(hA'.2.2 τ).1, (hW.2.2 τ).1]`. Rewrite using `[cart_frSgn_false_stdFr, cart_stdFr]`. Conclude with `hF`.
+-/
 theorem isFinF_snd_std : ∀ {D : D7} {T : Type} {A A' WW : HSp D} (X : Tri T A A' WW) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (α β : T → ((AE D)ˣ →* Circle)) (νH : T → Formalism.L2.Host.HChar D.host.E) (S : T → Finset (HeightOneSpectrum (𝓞 D.host.E))) (hA' : X.rA'.IsStd) (hW : X.rW.IsStd), X.Is ψ θ α β νH S → ∀ t, IsFinF ψ θ false (GlobalTheory.BotDict.stdFr A' hA'.1) (GlobalTheory.BotDict.stdFr WW hW.1) (X.f' t) := by
   intro D T A A' WW X ψ θ α β νH S hA' hW hI t
   have ho := GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum (hI.idem t)

@@ -32,6 +32,41 @@ def ClsP (a : ℕ) (Y : TupV (E := E) v n a) : Prop :=
     (Nat.card (clsP σ J v Λ a ϖ (gramR (Fv F v) σ J Y)) : ℝ) =
       qv v ^ (2 * n * a - a ^ 2) * prodEtaB (E := E) v n a
 
+/- English proof (translation)
+Introduce `hG hμ ϖ hϖ`. Take `⟨hMA, hL, hP⟩` from `hM hG ϖ hϖ`. Establish `hSD : IsSDLoc σ J v Λ` using `hG.2.2.1`. Establish `hcos : ∀ x ∈ PrimT v Λ a, ∀ Z ∈ LamT v Λ a, x + sc (E` using `E) v ϖ • Z ∈ PrimT v Λ a := by`. Introduce `x hx Z hZ`.
+
+Apply `hPC hG.1 hG.2.1 hSD hG.2.2.2.1 ϖ hϖ x hx` to reduce the goal to its premises. Use `(PI.VolStabSW.mem_smulSub _ _ _).2 ⟨Z, hZ, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i p`. Use `show ϖ ^ (0 + 1) • Z i p = sc (E := E) v ϖ * Z i p`. Rewrite using `[zero_add, pow_one, Algebra.smul_def, Algebra.TensorProduct.algebraMap_apply]`.
+
+Both sides reduce to the same expression. Establish `ha : a ≤ n` using `hG.2.2.2.2.1`. Establish `hq` using `qv_pos v`. Use `set μ := dX σ J ψ v a with hμdef`. Establish `: μ.IsAddHaarMeasure`.
+
+Rewrite using `[hμdef, dX, dif_pos hμ]`. Conclude with `hμ.choose_spec.1`. Establish `hPL : lamP v Λ a ϖ ≤ lamA v Λ a`. Introduce and unpack `_ ⟨Z, hZ, rfl⟩ i`. Establish `: (sc (E` using `E) v ϖ • Z) i = sc (E := E) v ϖ • Z i := rfl`.
+
+Use `show (sc (E := E) v ϖ • Z) i ∈ latLoc (E := E) v Λ`. Rewrite using `[this]`. Establish `e : sc (E` using `E) v ϖ • Z i = (⟨ϖ, unif_int v hϖ⟩ : v.adicCompletionIntegers F) • Z i := by`. Use extensionality with `p`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+
+Use `show _ = ϖ • Z i p`. Rewrite using `[Algebra.smul_def, Algebra.TensorProduct.algebraMap_apply]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `(latLoc (E := E) v Λ).smul_mem _ (hZ i)`.
+
+Establish `hIdx` using `hI hG ϖ hϖ`. Establish `hN0 : Ideal.absNorm v.asIdeal ≠ 0`. Introduce `h0`. Establish `: qv v = 0` using `by simp [qv, h0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hfin : (lamP v Λ a ϖ).relIndex (lamA v Λ a) ≠ 0`. Rewrite using `[hIdx]`. Conclude with `pow_ne_zero _ hN0`. Establish `eL` using `PI.VolStabSW.measure_eq_relIndex_mul μ (lamP v Λ a ϖ) (lamA v Λ a) hPL hL hP hfin`. Establish `eS` using `measure_image_cosets μ (lamP v Λ a ϖ) (lamA v Λ a) hPL hP hfin {x : lamA v Λ a | (x : TupV (E := E) v n a) ∈ PrimT v Λ a ∧ (x : TupV (E := E) v n a) ∈ NearT v σ J ϖ (gramR (Fv F v) σ J Y)} (by`.
+
+Introduce and unpack `x hx y ⟨Z, hZ, hZe⟩`. Simplify using `only [Set.mem_setOf_eq]`. Rewrite using `[AddSubgroup.coe_add, ← hZe]`. Conclude with `⟨hcos _ hx.1 Z hZ, nearT_add σ J v Λ hSD hϖ _ _ _ x.2 hZ hx.2⟩)`. Establish `himg : ((↑) : lamA v Λ a → TupV (E` using `E) v n a) '' {x : lamA v Λ a | (x : TupV (E := E) v n a) ∈ PrimT v Λ a ∧ (x : TupV (E := E) v n a) ∈ NearT v σ J ϖ (gramR (Fv F v) σ J Y)} = PrimT v Λ a ∩ NearT v σ J ϖ (gramR (Fv F v) σ J Y) := by`.
+
+Use extensionality with `X`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `hx`. Introduce and unpack `⟨h1, h2⟩`.
+
+Conclude with `⟨⟨X, h1.1⟩, ⟨h1, h2⟩, rfl⟩`. Rewrite `eS` using `[himg]`. Establish `eL' : μ (LamT v Λ a) = (((lamP v Λ a ϖ).relIndex (lamA v Λ a) : ℕ) : ENNReal) * μ (lamP v Λ a ϖ)` using `eL`. Rewrite using `[eS, eL', ← mul_assoc]`. Use `congr 1`.
+
+Establish `hcard` using `hC hG ϖ hϖ`. Express the relevant statement in the definitionally equal form `(Nat.card (clsP σ J v Λ a ϖ (gramR (Fv F v) σ J Y)) : ENNReal) = _`. Rewrite using `[← ENNReal.ofReal_natCast, hcard, hIdx, ← ENNReal.ofReal_natCast, ← ENNReal.ofReal_mul]`. Use `congr 1`. Establish `hqv : ((Ideal.absNorm v.asIdeal ^ (2 * n * a) : ℕ) : ℝ) = qv v ^ (2 * n * a)`.
+
+Simplify using `[qv]`. Rewrite using `[hqv]`. Establish `hle : a ^ 2 ≤ 2 * n * a` using `by nlinarith`. Establish `e3 : qv v ^ (2 * n * a) = qv v ^ (2 * n * a - a ^ 2) * qv v ^ (a ^ 2)`. Rewrite using `[← pow_add, Nat.sub_add_cancel hle]`.
+
+Rewrite using `[e3]`. Establish `e4 : qv v ^ (-((a : ℤ) ^ 2)) * qv v ^ (a ^ 2) = 1`. Rewrite using `[zpow_neg, show ((a : ℤ) ^ 2) = ((a ^ 2 : ℕ) : ℤ) by push_cast; ring, zpow_natCast]`. Conclude with `inv_mul_cancel₀ (pow_ne_zero _ hq.ne')`. Take the linear combination `(-(qv v ^ (2 * n * a - a ^ 2) * prodEtaB (E := E) v n a)) * e4`.
+
+Establish `hP0 : 0 ≤ prodEtaB (E` using `E) v n a := by`. Unfold `prodEtaB`. Use `Finset.prod_nonneg fun j _ => ?_` and prove the remaining obligations. Establish `hq1 : (1 : ℝ) ≤ ((Ideal.absNorm v.asIdeal : ℕ) : ℝ)`. Conclude with `Nat.one_le_iff_ne_zero.2 hN0` after adjusting the coercions.
+
+Establish `habs : |((etaV (E` using `E) v : ℤ) : ℝ)| = 1 := by`. Apply the tactic sequence `unfold etaV; split_ifs <;> norm_num`. Establish `h1 : ((etaV (E` using `E) v : ℤ) : ℝ) ^ j * ((Ideal.absNorm v.asIdeal : ℕ) : ℝ) ^ (-(j : ℤ)) ≤ 1 := by`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[abs_mul, abs_pow, habs, one_pow, one_mul, abs_of_nonneg (zpow_nonneg (by linarith) _)]`.
+
+Use `_ ≤ 1 := zpow_le_one_of_nonpos₀ hq1 (by omega)`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `mul_nonneg (zpow_nonneg hq.le _) hP0`.
+-/
 theorem countP_of (a : ℕ) (Y : TupV (E := E) v n a) (hM : MeasP σ J ψ v Λ a Y)
     (hI : IdxP σ J ψ v Λ a Y) (hC : ClsP σ J ψ v Λ a Y) (hPC : PrimCos σ J ψ v Λ a) : CountP σ J ψ v Λ a Y := by
   intro hG hμ ϖ hϖ

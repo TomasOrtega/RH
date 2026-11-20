@@ -9,6 +9,33 @@ noncomputable section
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.HV GlobalTheory.Ord2 GlobalTheory.KZ GlobalTheory.Col
 
+/- English proof (translation)
+Introduce `l _ Ω _ _ _ A hA n ζ hζ u hu hfix`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Establish `hζ1 : ζ = 1` using `by simpa using hζ`. Substitute `hζ1` using the available equality.
+
+Use `⟨Polynomial.C u, fun d => ?_, by simp⟩` and prove the remaining obligations. Rewrite using `[Polynomial.coeff_C]`. Use `split_ifs`. Conclude with `⟨hu, fun s hs => hfix s hs (map_one s)⟩`. Conclude with `⟨A.zero_mem, fun s _ => map_zero s⟩`.
+
+Take `⟨P, hPfix, hPev⟩` from `GlobalTheory.T.exists_polynomial_eval_eq_of_inertia_fixed Ω A ζ u hfix`. Use `set N := (l ^ n).totient with hN`. Establish `hlpos : 0 < l ^ n` using `pow_pos (Fact.out : l.Prime).pos n`. Establish `hNpos : 0 < N` using `Nat.totient_pos.2 hlpos`. Use `set Φ := Polynomial.cyclotomic (l ^ n) Ω with hΦ`.
+
+Establish `hΦm : Φ.Monic` using `Polynomial.cyclotomic.monic _ _`. Establish `hΦdeg : Φ.natDegree = N` using `Polynomial.natDegree_cyclotomic _ _`. Establish `hΦ1 : Φ ≠ 1`. Introduce `h`. Rewrite `hΦdeg` using `[h, Polynomial.natDegree_one]`.
+
+Use linear arithmetic over natural numbers and integers. Use `set P' := P %ₘ Φ with hP'`. Establish `hroot : Φ.eval ζ = 0` using `(hζ.isRoot_cyclotomic hlpos)`. Establish `hev : P'.eval ζ = u`. Rewrite using `[← hPev]`.
+
+Use `show (P %ₘ Φ).eval ζ = P.eval ζ`. Use `conv_rhs => rw [← Polynomial.modByMonic_add_div P Φ]`. Rewrite using `[Polynomial.eval_add, Polynomial.eval_mul, hroot, zero_mul, add_zero]`. Establish `hdeg : P'.natDegree < N` using `hΦdeg ▸ Polynomial.natDegree_modByMonic_lt P hΦm hΦ1`. Establish `hPmap : ∀ s ∈ Ine (F` using `ℚ) A, P.map (s : Ω →+* Ω) = P := fun s hs => Polynomial.ext fun d => by rw [Polynomial.coeff_map]; exact hPfix s hs d`.
+
+Establish `hP'map : ∀ s ∈ Ine (F` using `ℚ) A, P'.map (s : Ω →+* Ω) = P' := fun s hs => by`. Rewrite using `[hP', Polynomial.map_modByMonic _ hΦm, hPmap s hs, hΦ, Polynomial.map_cyclotomic]`. Use `set T := Polynomial.taylor (1 : Ω) P' with hT`. Establish `hTmap : ∀ s ∈ Ine (F` using `ℚ) A, T.map (s : Ω →+* Ω) = T := fun s hs => by`. Rewrite using `[hT, Polynomial.map_taylor, hP'map s hs, map_one]`.
+
+Establish `hTdeg : T.natDegree < N` using `by rw [hT, Polynomial.natDegree_taylor]; exact hdeg`. Establish `hsum : (∑ i ∈ Finset.range N, T.coeff i * (ζ - 1) ^ i) = u`. Rewrite using `[← Polynomial.eval_eq_sum_range' hTdeg, hT, Polynomial.taylor_eval, sub_add_cancel, hev]`. Take `⟨v, hv, hlv⟩` from `hA`. Establish `hl1 : A.valuation (l : Ω) < 1`.
+
+Use `(hv ((l : ℕ) : 𝓞 ℚ)).2 hlv` as an intermediate fact. Simplify using `using this`. Establish `hl0 : (l : Ω) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`. Establish `hcA : ∀ i < N, T.coeff i ∈ A`. Use `GlobalTheory.T.coeff_mem_of_sum_mul_pow_mem_of_valuation_zpow Ω A N (ζ - 1) (l : Ω) (fun i => T.coeff i) hNpos hl0 hl1 (GlobalTheory.T.valuationSubring_primitiveRoot_sub_one_pow_totient_ratAlg l Ω A n ζ hn hζ) (fun i _ hc => ?_) (hsum ▸ hu)` and prove the remaining obligations.
+
+Use `GlobalTheory.T.inertiaFixed_valuation_eq_zpow_prime_ratAlgClosure l Ω A ⟨v, hv, hlv⟩ _ hc (fun s hs => ?_)` and prove the remaining obligations. Use `congrArg (fun p => Polynomial.coeff p i) (hTmap s hs)` as an intermediate fact. Simplify `this` using `[Polynomial.coeff_map]`. Establish `hcA' : ∀ i, T.coeff i ∈ A` using `fun i => by`. Break down `lt_or_ge i N with h | h` into its components or cases.
+
+Conclude with `hcA i h`. Rewrite using `[Polynomial.coeff_eq_zero_of_natDegree_lt (by omega)]; exact A.zero_mem`. Establish `hlift : T ∈ Polynomial.lifts (A.subtype)` using `(Polynomial.lifts_iff_coeff_lifts T).2 fun i => ⟨⟨_, hcA' i⟩, rfl⟩`. Take `⟨T₀, hT₀⟩` from `Polynomial.mem_lifts T |>.1 hlift`. Establish `hback : Polynomial.taylor (-1 : Ω) T = P'`.
+
+Rewrite using `[hT, Polynomial.taylor_taylor, neg_add_cancel, Polynomial.taylor_zero]`. Use `⟨P', fun d => ⟨?_, fun s hs => ?_⟩, hev⟩` and prove the remaining obligations. Rewrite using `[← hback, ← hT₀]`. Establish `: ((-1 : A) : Ω) = -1` using `by simp`. Rewrite using `[← this, show ((-1 : A) : Ω) = A.subtype (-1) from rfl, ← Polynomial.map_taylor, Polynomial.coeff_map]`.
+
+Conclude with `(Polynomial.taylor (-1 : A) T₀).coeff d |>.2`. Use `congrArg (fun p => Polynomial.coeff p d) (hP'map s hs)` as an intermediate fact. Simplify `this` using `[Polynomial.coeff_map]`.
+-/
 theorem GlobalTheory.ZetaPoly.exists_poly : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (A : ValuationSubring Ω), OverL l A → ∀ (n : ℕ) (ζ : Ω), IsPrimitiveRoot ζ (l ^ n) → ∀ u ∈ A, (∀ s ∈ Ine (F := ℚ) A, s ζ = ζ → s u = u) → ∃ Q : Polynomial Ω, (∀ d, Q.coeff d ∈ A ∧ ∀ s ∈ Ine (F := ℚ) A, s (Q.coeff d) = Q.coeff d) ∧ Q.eval ζ = u := by
   intro l _ Ω _ _ _ A hA n ζ hζ u hu hfix
   haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective

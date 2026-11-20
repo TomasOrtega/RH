@@ -10,12 +10,21 @@ namespace Formalism.MainNotions.G.ExtremalProjector
 
 open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees Formalism.MainNotions.G.GLWeightTheory
 
+/- English proof (translation)
+The claim follows from `restYB_of (ybat_base D restKill restPair (restPair'_of restPair)) ybat_symm`.
+-/
 theorem restYB (D : Formalism.BasicNotions.D7) : RestYB :=
   restYB_of (ybat_base D restKill restPair (restPair'_of restPair)) ybat_symm
 
+/- English proof (translation)
+The claim follows from `raising_kill_of_interface restConn restComm (restYB D) restKill`.
+-/
 theorem raising_operators_kill_image (D : Formalism.BasicNotions.D7) : SimpleRaisingKillsExtremalProjector :=
   raising_kill_of_interface restConn restComm (restYB D) restKill
 
+/- English proof (translation)
+The claim follows from `sizes_bound_of_log_estimates D (raising_operators_kill_image D)`.
+-/
 theorem extremal_projector_statement (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.CovariantDegrees.adm5 D := sizes_bound_of_log_estimates D (raising_operators_kill_image D)
 
 end Formalism.MainNotions.G.ExtremalProjector

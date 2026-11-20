@@ -7,6 +7,13 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.Loc
 
 namespace GlobalTheory.GamMul
 
+/- English proof (translation)
+Introduce `k _ _ _ _`. Use `⟨fun y => ?_, fun t m x hd ω hω τ ω' hsub hω' => ?_⟩` and prove the remaining obligations. Take `⟨f, _, hf⟩` from `LocGL.exists_smooth_hasCentralChar y.2.rep.smooth y.2.rep.irr`. Conclude with `⟨f, hf⟩`. Establish `hcen : HasCentralChar (prodIrr x hd) (∏ a, ω a)` using `CentralSupport.hasCentralChar_multiProd_prod _ (fun a => (x a).rep) ω hω`.
+
+Use `Model.nontrivial_of_isIrreducible τ.irr` as an intermediate fact. Take `⟨v, hv⟩` from `exists_ne (0 : τ.V)`. Use extensionality with `z`. Establish `h1` using `Model.scalar_of_isSubquotient hsub (hcen z) v`. Rewrite `h1` using `[hω']`.
+
+Conclude with `smul_left_injective ℂ hv h1`.
+-/
 theorem centralChar_subquotient_prodIrr : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], (∀ x : IrrGL k, ∃ ω : kˣ →* ℂˣ, HasCentralChar x.rep ω) ∧ ∀ (t m : ℕ) (x : Fin t → IrrGL k) (hd : ∑ a, (x a).1 = m) (ω : Fin t → kˣ →* ℂˣ), (∀ a, HasCentralChar (x a).rep (ω a)) → ∀ (τ : IrrRep (GL (Fin m) k)) (ω' : kˣ →* ℂˣ), IsSubquotient τ.ρ (prodIrr x hd) → HasCentralChar τ.ρ ω' → ω' = ∏ a, ω a := by
   intro k _ _ _ _
   refine ⟨fun y => ?_, fun t m x hd ω hω τ ω' hsub hω' => ?_⟩

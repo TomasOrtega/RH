@@ -23,6 +23,11 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
     {V' : Type} [AddCommGroup V'] [Module LL V'] [Module Qp V'] [IsScalarTower Qp LL V']
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `hz`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add y y' hy hy' => simp only [map_add]`. Conclude with `add_mem hy hy'`.
+
+Consider the case `tmul v' f`. Rewrite using `[AlgebraTensorModule.map_tmul, pairT_tmul, one_mul]`. Conclude with `⟨P v v' ⊗ₜ[Qp] f, rfl⟩`.
+-/
 theorem pairT_filV_right (P : V →ₗ[LL] V' →ₗ[LL] LL) (a : ℤ) (v : V) (z : V' ⊗[Qp] BdR)
     (hz : z ∈ FilV PD (LL := LL) (V := V') a) :
     pairT BdR P (v ⊗ₜ[Qp] (1 : BdR)) z ∈ FilV PD (LL := LL) (V := LL) a := by
@@ -34,6 +39,9 @@ theorem pairT_filV_right (P : V →ₗ[LL] V' →ₗ[LL] LL) (a : ℤ) (v : V) (
     rw [AlgebraTensorModule.map_tmul, pairT_tmul, one_mul]
     exact ⟨P v v' ⊗ₜ[Qp] f, rfl⟩
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul v b => simp [actVB_tmul]`.
+-/
 theorem actVB_one (ρ : Representation LL G V) (x : V ⊗[Qp] B) : actVB PD ρ 1 x = x := by
   induction x using TensorProduct.induction_on with
   | zero => simp
@@ -42,6 +50,9 @@ theorem actVB_one (ρ : Representation LL G V) (x : V ⊗[Qp] B) : actVB PD ρ 1
 
 end Gen
 
+/- English proof (translation)
+Establish `h1 : c 1 = 0` using `by simpa using hc 1 1`. Use `hc g g⁻¹` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, h1]`. Conclude with `eq_neg_of_add_eq_zero_right this.symm`.
+-/
 theorem cocycle_inv {G : Type} [Group G] {LL V : Type} [Field LL] [AddCommGroup V] [Module LL V]
     (ρ : Representation LL G V) (c : G → V) (hc : ∀ g h, c (g * h) = c g + ρ g (c h)) (g : G) :
     ρ g (c g⁻¹) = - c g := by
@@ -50,12 +61,50 @@ theorem cocycle_inv {G : Type} [Group G] {LL V : Type} [Field LL] [AddCommGroup 
   rw [mul_inv_cancel, h1] at this
   exact eq_neg_of_add_eq_zero_right this.symm
 
+/- English proof (translation)
+Use `⟨⟨inferInstance, inferInstance, inferInstance⟩, inferInstance, inferInstance, inferInstance, ?_⟩` and prove the remaining obligations. Conclude with `(PadicInt.isOpenEmbedding_coe (p := l)).isOpen_range`.
+-/
 theorem goodO_Zl (l : ℕ) [Fact l.Prime] : GoodO (Qp := ℚ_[l]) ℚ_[l] ℤ_[l] := by
   refine ⟨⟨inferInstance, inferInstance, inferInstance⟩, inferInstance, inferInstance, inferInstance, ?_⟩
   exact (PadicInt.isOpenEmbedding_coe (p := l)).isOpen_range
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Use `letI : Module ℤ_[l] V' := Module.compHom V' (algebraMap ℤ_[l] ℚ_[l])`. Use `haveI : IsScalarTower ℤ_[l] ℚ_[l] V' := IsScalarTower.of_algebraMap_smul fun _ _ => rfl`. Take `⟨hcz, b, hb⟩` from `hc`. Take `⟨haz, β, hβφ, hβ⟩` from `ha`. Take `⟨-, d, hd, hd'⟩` from `GlobalTheory.CobCrisLift.coboundary_lift l P AI hT K ℚ_[l] ℤ_[l] (goodO_Zl l) { V := V', ρ := ρ', cont := hρ' } hdR a β hβ`.
+
+Establish `hfixd : ∀ g, actVdR (P.PD K) ρ' g d = d` using `fun g => by`. Use `(Submodule.mem_iInf _).1 hd g` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Then use the resulting hypothesis. Take `⟨hsurj, hker⟩` from `GlobalTheory.FundSeq.tensor_fundamental_sequence l P AI hT K ℚ_[l] ℚ_[l]`. Take `⟨we, w0, hw0, hweφ, hweι⟩` from `hsurj 0 (pairT P.R.BdR m b d)`.
+
+Establish `hweφ' : φVB (P.PD K) (LL` using `ℚ_[l]) (V := ℚ_[l]) we = we := (sub_eq_zero.1 hweφ).symm`. Set `F : ↥(GK K) → ℚ_[l] ⊗[ℚ_[l]] P.R.B` to `fun h => (actVB (P.PD K) (charRep (cycLL (P.PD K) ℚ_[l])) h we - we) - pairT P.R.B m (c h ⊗ₜ[ℚ_[l]] (1 : P.R.B)) (actVB (P.PD K) ρ' h β)`. Establish `hFφ : ∀ h, φVB (P.PD K) (LL` using `ℚ_[l]) (V := ℚ_[l]) (F h) = F h := fun h => by`. Establish `e1 : φVB (P.PD K) (LL` using `ℚ_[l]) (V := V) (c h ⊗ₜ[ℚ_[l]] (1 : P.R.B)) = c h ⊗ₜ[ℚ_[l]] (1 : P.R.B) := by`. Simplify using `[φVB]`.
+
+Simplify using `only [F, map_sub, pairT_φVB, e1, GlobalTheory.CobCrisLift.φVB_act, hβφ, hweφ']`. Establish `hFι : ∀ h, ιV (P.PD K) (LL` using `ℚ_[l]) (V := ℚ_[l]) (F h) ∈ FilV (P.PD K) (LL := ℚ_[l]) (V := ℚ_[l]) 0 := fun h => by`. Establish `e1 : ιV (P.PD K) (LL` using `ℚ_[l]) (V := V) (c h ⊗ₜ[ℚ_[l]] (1 : P.R.B)) = c h ⊗ₜ[ℚ_[l]] (1 : P.R.BdR) := by`. Simplify using `[ιV]`. Establish `e2 : pairT P.R.BdR m (c h ⊗ₜ[ℚ_[l]] (1 : P.R.BdR)) (actVdR (P.PD K) ρ' h d) = actVdR (P.PD K) (charRep (cycLL (P.PD K) ℚ_[l])) h (pairT P.R.BdR m b d) - pairT P.R.BdR m b d`.
+
+Rewrite using `[hb h, map_sub, LinearMap.sub_apply, ← pairT_actVdR (P.PD K) ρ ρ' m hD.1 h b d, hfixd h]`. Establish `hι1 : ιV (P.PD K) (LL` using `ℚ_[l]) (V := ℚ_[l]) we = pairT P.R.BdR m b d + w0 := sub_eq_iff_eq_add.1 hweι`. Establish `s1 : ιV (P.PD K) (LL` using `ℚ_[l]) (V := ℚ_[l]) (F h) = (actVdR (P.PD K) (charRep (cycLL (P.PD K) ℚ_[l])) h w0 - w0) - pairT P.R.BdR m (c h ⊗ₜ[ℚ_[l]] (1 : P.R.BdR)) (actVdR (P.PD K) ρ' h (ιV (P.PD K) (LL := ℚ_[l]) (V := V') β - d)) := by`. Simplify using `only [F, map_sub, pairT_ιV, e1, GlobalTheory.CobCrisLift.ιV_act, hι1, map_add, e2]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[s1]`. Conclude with `sub_mem (sub_mem (actVdR_filV (P.PD K) _ 0 h w0 hw0) hw0) (pairT_filV_right (P.PD K) m 0 (c h) _ (actVdR_filV (P.PD K) ρ' 0 h _ hd'))`. Establish `hF : ∀ h, ∃ x : ℚ_[l], F h = x ⊗ₜ[ℚ_[l]] (1 : P.R.B)` using `fun h => hker (F h) (hFφ h) (hFι h)`. Use `choose f hf using hF`. Set `bas` to `Module.finBasis ℚ_[l] V`.
+
+Set `γ : Fin (finrank ℚ_[l] V) → ↥(GK K) → ℚ_[l]` to `fun i g => bas.coord i (c g)`. Establish `hγ : ∀ i, Continuous (γ i)` using `fun i => (IsModuleTopology.continuous_of_linearMap (bas.coord i)).comp hcz.1`. Set `k : ↥(GK K) → ℚ_[l]` to `fun h => charRep (cycLL (P.PD K) ℚ_[l]) h (f h⁻¹)`. Establish `hsum : ∀ g, k g ⊗ₜ[ℚ_[l]] (1 : P.R.B) = ∑ i, γ i g • pairT P.R.B m (bas i ⊗ₜ[ℚ_[l]] (1 : P.R.B)) β + (actVB (P.PD K) (charRep (cycLL (P.PD K) ℚ_[l])) g (-we) - -we)`. Introduce `g`.
+
+Establish `ec : c g ⊗ₜ[ℚ_[l]] (1 : P.R.B) = ∑ i, γ i g • (bas i ⊗ₜ[ℚ_[l]] (1 : P.R.B))` using `by conv_lhs => rw [← bas.sum_repr (c g)]`. Rewrite using `[TensorProduct.sum_tmul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[TensorProduct.smul_tmul']`. Both sides reduce to the same expression.
+
+Establish `ek : k g ⊗ₜ[ℚ_[l]] (1 : P.R.B) = actVB (P.PD K) (charRep (cycLL (P.PD K) ℚ_[l])) g (F g⁻¹)`. Rewrite using `[hf g⁻¹, actVB_tmul, map_one]`. Establish `e3 : actVB (P.PD K) (charRep (cycLL (P.PD K) ℚ_[l])) g (pairT P.R.B m (c g⁻¹ ⊗ₜ[ℚ_[l]] (1 : P.R.B)) (actVB (P.PD K) ρ' g⁻¹ β)) = -pairT P.R.B m (c g ⊗ₜ[ℚ_[l]] (1 : P.R.B)) β`. Rewrite using `[← pairT_actVB (P.PD K) ρ ρ' m hD.1 g, ← actVB_mul, mul_inv_cancel, actVB_one, actVB_tmul, map_one, cocycle_inv ρ c hcz.2 g, neg_tmul, map_neg, LinearMap.neg_apply]`. Establish `e4 : actVB (P.PD K) (charRep (cycLL (P.PD K) ℚ_[l])) g (actVB (P.PD K) (charRep (cycLL (P.PD K) ℚ_[l])) g⁻¹ we) = we`.
+
+Rewrite using `[← actVB_mul, mul_inv_cancel, actVB_one]`. Rewrite using `[ek]`. Simplify using `only [F, map_sub, e3, e4, map_neg, ec, map_sum, LinearMap.sum_apply, map_smul, LinearMap.smul_apply]`. Normalize the expressions using the abelian group laws. Establish `hk : Continuous k` using `GlobalTheory.FundCont.contCore_tied l P AI hT K ℚ_[l] ℤ_[l] (goodO_Zl l) (charGRep (Qp := ℚ_[l]) (O := ℤ_[l]) (cycLL (P.PD K) ℚ_[l]) hχ) _ (fun i => pairT P.R.B m (bas i ⊗ₜ[ℚ_[l]] (1 : P.R.B)) β) γ hγ (-we) k hsum`.
+
+Establish `hfk : f = fun g => ((cycLL (P.PD K) ℚ_[l] g : ℚ_[l]ˣ) : ℚ_[l]) * k g⁻¹`. Use function extensionality and compare the values at `g`. Simplify using `only [k, charRep_apply, inv_inv]`. Rewrite using `[← mul_assoc, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one, one_mul]`. Establish `hcont : Continuous f`.
+
+Rewrite using `[hfk]`. Conclude with `hχ.mul (hk.comp continuous_inv)`. Use `⟨f, hcont, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `⟨g, h⟩`. Establish `hcup : cupL ρ' m c a (g, h) = m (c g) (ρ' g (a h))` using `rfl`.
+
+Rewrite using `[hcup]`. Apply `tmul_one_injective (P.PD K) (LL := ℚ_[l])` to reduce the goal to its premises. Use `beta_reduce`. Establish `hd1 : ReciprocityTheory.Def.d1 (charRep (cycLL (P.PD K) ℚ_[l])) f (g, h) = charRep (cycLL (P.PD K) ℚ_[l]) g (f h) - f (g * h) + f g` using `rfl`. Establish `hact : (charRep (cycLL (P.PD K) ℚ_[l]) g (f h)) ⊗ₜ[ℚ_[l]] (1 : P.R.B) = actVB (P.PD K) (charRep (cycLL (P.PD K) ℚ_[l])) g (f h ⊗ₜ[ℚ_[l]] (1 : P.R.B))`.
+
+Rewrite using `[actVB_tmul, map_one]`. Establish `hch : actVB (P.PD K) ρ g (c h ⊗ₜ[ℚ_[l]] (1 : P.R.B)) = ρ g (c h) ⊗ₜ[ℚ_[l]] (1 : P.R.B)`. Rewrite using `[actVB_tmul, map_one]`. Establish `hcoc : c (g * h) ⊗ₜ[ℚ_[l]] (1 : P.R.B) = c g ⊗ₜ[ℚ_[l]] (1 : P.R.B) + ρ g (c h) ⊗ₜ[ℚ_[l]] (1 : P.R.B)`. Rewrite using `[hcz.2 g h, add_tmul]`.
+
+Establish `hrhs : (m (c g) (ρ' g (a h))) ⊗ₜ[ℚ_[l]] (1 : P.R.B) = pairT P.R.B m (c g ⊗ₜ[ℚ_[l]] (1 : P.R.B)) (actVB (P.PD K) ρ' g (actVB (P.PD K) ρ' h β)) - pairT P.R.B m (c g ⊗ₜ[ℚ_[l]] (1 : P.R.B)) (actVB (P.PD K) ρ' g β)`. Establish `e : (m (c g) (ρ' g (a h))) ⊗ₜ[ℚ_[l]] (1 : P.R.B) = pairT P.R.B m (c g ⊗ₜ[ℚ_[l]] (1 : P.R.B)) (actVB (P.PD K) ρ' g (a h ⊗ₜ[ℚ_[l]] (1 : P.R.B)))`. Rewrite using `[actVB_tmul, map_one, pairT_tmul, mul_one]`. Rewrite using `[e, hβ h, map_sub, map_sub]`. Establish `main : actVB (P.PD K) (charRep (cycLL (P.PD K) ℚ_[l])) g (F h) - F (g * h) + F g = pairT P.R.B m (c g ⊗ₜ[ℚ_[l]] (1 : P.R.B)) (actVB (P.PD K) ρ' g (actVB (P.PD K) ρ' h β)) - pairT P.R.B m (c g ⊗ₜ[ℚ_[l]] (1 : P.R.B)) (actVB (P.PD K) ρ' g β)`.
+
+Simplify using `only [F, map_sub, actVB_mul, hcoc, map_add, LinearMap.add_apply, ← pairT_actVB (P.PD K) ρ ρ' m hD.1 g, hch]`. Normalize the expressions using the abelian group laws. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hd1, tmul_one_sub_add, hact]`. Use `_ = actVB (P.PD K) (charRep (cycLL (P.PD K) ℚ_[l])) g (F h) - F (g * h) + F g := by`.
+
+Rewrite using `[hf h, hf (g * h), hf g]`. Use `_ = _ := main`. Use `_ = _ := hrhs.symm`.
+-/
 theorem orth_of_cont (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (hT : LocTied l P AI)
     (K : FinExt l) (V : Type) [AddCommGroup V] [Module ℚ_[l] V] [FiniteDimensional ℚ_[l] V]
     [TopologicalSpace V] [IsModuleTopology ℚ_[l] V] [ContinuousAdd V] [ContinuousConstSMul ℚ_[l] V]
@@ -191,6 +240,15 @@ theorem orth_of_cont (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P
     _ = _ := main
     _ = _ := hrhs.symm
 
+/- English proof (translation)
+Introduce `l _ P AI hT K V _ _ _ _ _ _ _ ρ V' _ _ _ _ _ _ _ ρ' m hρ hρ' hdR hD c hc a ha`. Distinguish the cases in `hV : ∃ v : V, v ≠ 0`. Take `⟨v, hv⟩` from `hV`. Choose the witnesses or unpack the hypotheses as in `⟨v', hv'⟩ : ∃ v', m v v' ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+
+Use `push_neg at h`. Conclude with `hv (hD.2.1 v h)`. Establish `hm : Continuous fun p : V × V' => m p.1 p.2` using `IsModuleTopology.continuous_bilinear_of_finite_left m`. Establish `hχ : Continuous fun g => ((cycLL (P.PD K) ℚ_[l] g : ℚ_[l]ˣ) : ℚ_[l])`. Establish `e : (fun g => ((cycLL (P.PD K) ℚ_[l] g : ℚ_[l]ˣ) : ℚ_[l])) = fun g => m (ρ g v) (ρ' g v') * (m v v')⁻¹`.
+
+Use function extensionality and compare the values at `g`. Rewrite using `[hD.1, mul_assoc, mul_inv_cancel₀ hv', mul_one]`. Rewrite using `[e]`. Conclude with `(hm.comp ((hρ v).prodMk (hρ' v'))).mul continuous_const`. Conclude with `orth_of_cont l P AI hT K V ρ V' ρ' m hρ' hdR hD hχ c hc a ha`.
+
+Use `push_neg at hV`. Use `⟨0, continuous_const, funext fun x => ?_⟩` and prove the remaining obligations. Simplify using `[cupL, hV (c x.1), ReciprocityTheory.Def.d1]`.
+-/
 theorem hyodo_orth : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K : FinExt l) (V : Type) [AddCommGroup V] [Module ℚ_[l] V] [FiniteDimensional ℚ_[l] V] [TopologicalSpace V] [IsModuleTopology ℚ_[l] V] [ContinuousAdd V] [ContinuousConstSMul ℚ_[l] V] (ρ : Representation ℚ_[l] ↥(GK K) V) (V' : Type) [AddCommGroup V'] [Module ℚ_[l] V'] [FiniteDimensional ℚ_[l] V'] [TopologicalSpace V'] [IsModuleTopology ℚ_[l] V'] [ContinuousAdd V'] [ContinuousConstSMul ℚ_[l] V'] (ρ' : Representation ℚ_[l] ↥(GK K) V') (m : V →ₗ[ℚ_[l]] V' →ₗ[ℚ_[l]] ℚ_[l]), (∀ v, Continuous fun g => ρ g v) → (∀ y, Continuous fun g => ρ' g y) → IsDR (P.PD K) ρ' → IsDual1 (P.PD K) ρ ρ' m → ∀ c ∈ geometricCocycles (P.PD K) ρ, ∀ a ∈ crystallineCocycles (P.PD K) ρ', CobL (P.PD K) (cupL ρ' m c a) := by
   intro l _ P AI hT K V _ _ _ _ _ _ _ ρ V' _ _ _ _ _ _ _ ρ' m hρ hρ' hdR hD c hc a ha
   by_cases hV : ∃ v : V, v ≠ 0

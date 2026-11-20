@@ -25,6 +25,9 @@ namespace GlobalTheory.LogNormCmp
 open GlobalTheory.LieVB (omega unitSec dUnit)
 open GlobalTheory.QCoh (pullbackSections)
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.hermitian_form_decomposition_comparison v hv Gm Gm' hG hG' A A' x hA hA' K hK`.
+-/
 theorem psd_of_span_forms {g : ℕ} {ι Tau : Type} [Fintype Tau] {d : Tau → ℕ} (v : ι → Fin g → ℂ)
     (hv : Submodule.span ℂ (Set.range v) = ⊤) (Gm Gm' : Matrix (Fin g) (Fin g) ℂ) (hG : Gm.IsHermitian)
     (hG' : Gm'.IsHermitian) (A A' : ∀ τ, Matrix (Fin (d τ)) (Fin (d τ)) ℂ) (x : ∀ τ, ι → Fin (d τ) → ℂ)
@@ -33,6 +36,9 @@ theorem psd_of_span_forms {g : ℕ} {ι Tau : Type} [Fintype Tau] {d : Tau → �
     (hK : ∀ τ, (((K : ℂ) • A' τ) - A τ).PosSemidef) : (((K : ℂ) • Gm') - Gm).PosSemidef :=
   GlobalTheory.T.hermitian_form_decomposition_comparison v hv Gm Gm' hG hG' A A' x hA hA' K hK
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.toroidal_chart_abelian_fibre j ρ y ch hy`.
+-/
 theorem exists_span_crd_dUnit
     {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}
@@ -45,6 +51,9 @@ theorem exists_span_crd_dUnit
         ch.crd q ρ (pullbackSections j _ (le_refl (j ⁻¹ᵁ U)) (dUnit Z.t.G hU f)) y) = ⊤ :=
   GlobalTheory.T.toroidal_chart_abelian_fibre j ρ y ch hy
 
+/- English proof (translation)
+Take `⟨U, W, hU, hyU, hsp⟩` from `exists_span_crd_dUnit j (σ'.comp β) y ch hy`. Conclude with `psd_of_span_forms _ hsp _ _ ((h.met _).posDef ch y hy).isHermitian ((h'.met _).posDef ch y hy).isHermitian (fun τ => ((G σ').gram yc u τ)⁻¹) (fun τ => ((G' σ').gram yc u τ)⁻¹) (fun τ f i => (valR (u.v τ i) W f).snd) (fun f f' => ((h.met _).form_eq ch hy _ _ hyU).symm.trans (hd σ' …`.
+-/
 theorem chartGram_le_of_eig
     {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}
@@ -64,6 +73,13 @@ theorem chartGram_le_of_eig
     (fun f f' => ((h.met _).form_eq ch hy _ _ hyU).symm.trans (hd σ' yc y e u U W hU f f' hyU))
     (fun f f' => ((h'.met _).form_eq ch hy _ _ hyU).symm.trans (hd' σ' yc y e u U W hU f f' hyU)) K hK
 
+/- English proof (translation)
+Establish `hr0 : 0 < x.r σ y` using `(Real.exp_pos 1).trans_le (x.exp_le_r σ y)`. Establish `hm : 0 < x.r σ y ^ C` using `Real.rpow_pos_of_pos hr0 _`. Establish `hA` using `(x.eigMetAt σ (some R)).pos y g τ`. Establish `hB` using `(x.eigMetAt σ (some R')).pos y g τ`. Establish `h0` using `(x.eigMet σ).pos y g τ`.
+
+Establish `c1` using `(InterpMetricLog.cmp_interp x hC σ R y hy g τ).inv hA h0 hm`. Establish `c2` using `(InterpMetricLog.cmp_interp x hC σ R' y hy g τ).inv hB h0 hm`. Establish `e : ((((x.r σ y ^ C) ^ 2 : ℝ) : ℂ) • ((x.eigMetAt σ (some R')).gram y g τ)⁻¹ - ((x.eigMetAt σ (some R)).gram y g τ)⁻¹) = ((x.r σ y ^ C : ℝ) : ℂ) • (((x.r σ y ^ C : ℝ) : ℂ) • ((x.eigMetAt σ (some R')).gram y g τ)⁻¹ - ((x.eigMet σ).gram y g τ)⁻¹) + ((((x.r σ y ^ C : ℝ) : ℂ) • ((x.e …`. Rewrite using `[sq, Complex.ofReal_mul, mul_smul, smul_sub]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[e]`. Conclude with `(c2.2.smul (Complex.zero_le_real.2 hm.le)).add c1.1`.
+-/
 theorem eig_inv_le {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {s : FinalTheorems S κ} (x : ToroidalCompactificationData s)
     {C : ℝ} (hC : x.IsMuExp C) (σ : κ.c.F →+* ℂ) (R R' : ℝ) (y : CxPts (genStr s.T.Z) σ)
     (hy : ¬ LiesIn y (genBd s.T.Z)) (g : EigFrame s.T.Z σ (y.1 ≫ genι s.T.Z)) (τ : D.host.E →+* ℂ) :
@@ -86,6 +102,9 @@ theorem eig_inv_le {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} 
   rw [e]
   exact (c2.2.smul (Complex.zero_le_real.2 hm.le)).add c1.1
 
+/- English proof (translation)
+Take `⟨u⟩` from `EigLoc.exists_eigFrame _ _ _ _ _ _ _ _ O.s.T.Z ℂ σ (up M.b rfl σ y).1 (up M.b rfl σ y).2`. Conclude with `chartGram_le_of_eig (fun σ' => M.x.eigMetAt σ' (some R)) (fun σ' => M.x.eigMetAt σ' (some R')) M.b ((M.h R).pull M.b rfl) ((M.h R').pull M.b rfl) (MetFam.isDualEigOn_pull (M.dual R) M.b rfl) (MetFam.isDualEigOn_pull (M.dual R') M.b rfl) σ (up M.b rfl σ y) y (up_ι M.b rfl σ y).sym …`.
+-/
 theorem chartGram_le {D : D7} {O : Setup D} {c : O.s.Comp} (M : DRBase O c) (σ : O.κ.c.F →+* ℂ) (R R' : ℝ)
     (y : CxPts M.q (σ.comp _)) (hy : Inner (up M.b rfl σ y))
     (ch : Chart ((Scheme.Modules.pullback M.b).obj (omega O.s.T.Z.t.G)) (D.R.f * O.N))
@@ -98,6 +117,9 @@ theorem chartGram_le {D : D7} {O : Setup D} {c : O.s.Comp} (M : DRBase O c) (σ 
     (MetFam.isDualEigOn_pull (M.dual R') M.b rfl) σ (up M.b rfl σ y) y (up_ι M.b rfl σ y).symm u _
     (fun τ => eig_inv_le M.x M.x.isMuExp_muExp' σ R R' _ hy u τ) ch hch
 
+/- English proof (translation)
+The claim follows from `|Real.log ((((M.lam R).pow m).φ _).nsq (secVal M.q _ sc) y) / 2 - Real.log ((((M.lam 2).pow m).φ _).nsq (secVal M.q _ sc) y) / 2| ≤ C * Real.log (M.x.r σ (up M.b rfl σ y)) := by intro D O c M m sc have hμ : 0 ≤ M.x.muExp := M.x.isMuExp_muExp'.1 refine ⟨m * (D.R.f * O.N : ℕ) * M.x …`.
+-/
 theorem abs_log_nsq_le : ∀ (D : D7) (O : Setup D) (c : O.s.Comp) (M : DRBase O c) (m : ℕ) (sc : (lbPow M.lamB m).Sec),
     ∃ C : ℝ, 0 ≤ C ∧ ∀ (σ : O.κ.c.F →+* ℂ) (R : ℝ) (y : CxPts M.q (σ.comp _)), Inner (up M.b rfl σ y) →
       |Real.log ((((M.lam R).pow m).φ _).nsq (secVal M.q _ sc) y) / 2 -

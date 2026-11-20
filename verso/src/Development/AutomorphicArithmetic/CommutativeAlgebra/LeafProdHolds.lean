@@ -7,6 +7,29 @@ import Development.AutomorphicArithmetic.CommutativeAlgebra.RepresentativesAddit
 noncomputable section
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC LateralTheory.E.t_E6Cut UpperTheory.Et
 
+/- English proof (translation)
+Introduce `_ R _ F Y ι V j _ hd hc n`. Establish `A : SlopeTestRemainingChoices` using `⟨GlobalTheory.T.etaleSheafSections_ext_and_glue, GlobalTheory.T.chosenInjectiveResolutionEtaleSheaf_sections_exactness, GlobalTheory.T.free_sections_ext_res_map, GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties, GlobalTheory.T.cocycle_ev_d_eq_zero_and_mk_eq_zero_iff, Glo …`. Establish `hsec` using `fun G : Shv R => UpperTheory.sections_bijective_disjoint_cover R G V j hd hc`. Establish `hr` using `fun U : Scheme.{0} => UpperTheory.cohomology_representatives A R (res R F) U (n - 1) n (n + 1) (by omega) rfl`. Establish `hp` using `fun {A' B' : Scheme.{0}} (g : A' ⟶ B') => (UpperTheory.representatives_additive A).1 R F g n`.
+
+Establish `hnat : ∀ {G G' : Shv R} (φ : G ⟶ G') {A' B' : Scheme.{0}} (k : A' ⟶ B') (x : Sec G B'), Sec.map φ (Sec.res k x) = Sec.res k (Sec.map φ x)`. Introduce `G G' φ A' B' k x`. Conclude with `ConcreteCategory.congr_hom (φ.hom.naturality k.op) x`. Establish `hadd : ∀ {G : Shv R} {A' B' : Scheme.{0}} (k : A' ⟶ B') (x y : Sec G B'), Sec.res k (x + y) = Sec.res k x + Sec.res k y`. Introduce `G A' B' k x y`.
+
+Conclude with `map_add _ x y`. Establish `hzero : ∀ {G G' : Shv R} (φ : G ⟶ G') {A' : Scheme.{0}}, Sec.map φ (0 : Sec G A') = 0`. Introduce `G G' φ A'`. Conclude with `map_zero _`. Establish `hzero' : ∀ {G : Shv R} {A' B' : Scheme.{0}} (k : A' ⟶ B'), Sec.res k (0 : Sec G B') = 0`.
+
+Introduce `G A' B' k`. Conclude with `map_zero _`. Prove the components needed by the constructor for the conclusion. Introduce `x x' h`. Take `⟨z, hz⟩` from `(hr Y).2.1 x`.
+
+Take `⟨z', hz'⟩` from `(hr Y).2.1 x'`. Establish `hy : ∀ a, ∃ y : Sec ((res R F).X (n - 1)) (V a), Sec.res (j a) z = Sec.res (j a) z' + Sec.map ((res R F).d (n - 1) n) y`. Introduce `a`. Establish `h1` using `hp (j a) z x hz`. Establish `h2` using `hp (j a) z' x' hz'`.
+
+Conclude with `((hr (V a)).2.2.2.1 _ _ _ _ h1 h2).2.2.1 (congrFun h a)`. Use `choose y hy using hy`. Take `⟨Y', hY⟩` from `(hsec ((res R F).X (n - 1))).2 y`. Establish `hzz : z = z' + Sec.map ((res R F).d (n - 1) n) Y'`. Apply `(hsec ((res R F).X n)).1` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `a`. Establish `hYa : Sec.res (j a) Y' = y a` using `congrFun hY a`. Express the relevant statement in the definitionally equal form `Sec.res (j a) z = Sec.res (j a) (z' + Sec.map ((res R F).d (n - 1) n) Y')`. Rewrite using `[hadd, ← hnat, hYa]`. Conclude with `hy a`.
+
+Conclude with `((hr Y).2.2.2.1 _ _ _ _ hz hz').2.2.2 ⟨Y', hzz⟩`. Introduce `c`. Establish `hz` using `fun a => (hr (V a)).2.1 (c a)`. Use `choose z hz using hz`. Take `⟨Z, hZ⟩` from `(hsec ((res R F).X n)).2 z`.
+
+Establish `hZa : ∀ a, Sec.res (j a) Z = z a` using `fun a => congrFun hZ a`. Establish `hcl : Sec.map ((res R F).d n (n + 1)) Z = 0`. Apply `(hsec ((res R F).X (n + 1))).1` to reduce the goal to its premises. Use function extensionality and compare the values at `a`. Express the relevant statement in the definitionally equal form `Sec.res (j a) (Sec.map ((res R F).d n (n + 1)) Z) = Sec.res (j a) 0`.
+
+Rewrite using `[← hnat, hZa, hzero']`. Conclude with `((hr (V a)).2.2.1 _ _ (hz a)).1`. Take `⟨C, hC⟩` from `(hr Y).1 Z hcl`. Use `⟨C, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`.
+
+Establish `h1` using `hp (j a) Z C hC`. Rewrite `h1` using `[hZa]`. Use `((hr (V a)).2.2.2.1 _ _ _ _ h1 (hz a)).2.2.2 ⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[hzero, add_zero]`.
+-/
 theorem UpperTheory.leafProd_holds :
     LeafProd := by
   intro _ R _ F Y ι V j _ hd hc n

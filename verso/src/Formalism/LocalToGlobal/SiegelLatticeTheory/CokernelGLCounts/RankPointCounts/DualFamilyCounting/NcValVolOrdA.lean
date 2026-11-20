@@ -47,12 +47,22 @@ section AbsV
 
 variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
 
+/- English proof (translation)
+Establish `h : Ideal.absNorm v.asIdeal ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `v.ne_bot`. Conclude with `Nat.pos_of_ne_zero h` after adjusting the coercions.
+-/
 theorem absNorm_pos : (0 : ℝ) < ((Ideal.absNorm v.asIdeal : ℕ) : ℝ) := by
   have h : Ideal.absNorm v.asIdeal ≠ 0 := by
     rw [Ne, Ideal.absNorm_eq_zero_iff]
     exact v.ne_bot
   exact_mod_cast Nat.pos_of_ne_zero h
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Simplify using `[absV]`. Distinguish the cases in `hy : y = 0`. Substitute `hy` using the available equality.
+
+Simplify using `[absV]`. Establish `hx' : Valued.v x ≠ 0` using `(Valuation.ne_zero_iff _).2 hx`. Establish `hy' : Valued.v y ≠ 0` using `(Valuation.ne_zero_iff _).2 hy`. Establish `hxy' : Valued.v (x * y) ≠ 0` using `(Valuation.ne_zero_iff _).2 (mul_ne_zero hx hy)`. Establish `key : WithZero.unzero hxy' = WithZero.unzero hx' * WithZero.unzero hy'`.
+
+Apply `WithZero.coe_injective` to reduce the goal to its premises. Rewrite using `[WithZero.coe_mul, WithZero.coe_unzero, WithZero.coe_unzero, WithZero.coe_unzero, map_mul]`. Establish `hN : ((Ideal.absNorm v.asIdeal : ℕ) : ℝ) ≠ 0` using `(absNorm_pos v).ne'`. Simplify using `only [absV, dif_neg hx', dif_neg hy', dif_neg hxy', key, toAdd_mul, zpow_add₀ hN]`.
+-/
 theorem absV_mul (x y : Fv F v) : absV v (x * y) = absV v x * absV v y := by
   by_cases hx : x = 0
   · subst hx
@@ -69,6 +79,9 @@ theorem absV_mul (x y : Fv F v) : absV v (x * y) = absV v x * absV v y := by
   have hN : ((Ideal.absNorm v.asIdeal : ℕ) : ℝ) ≠ 0 := (absNorm_pos v).ne'
   simp only [absV, dif_neg hx', dif_neg hy', dif_neg hxy', key, toAdd_mul, zpow_add₀ hN]
 
+/- English proof (translation)
+Establish `h1 : Valued.v (1 : Fv F v) ≠ 0` using `by simp`. Establish `key : WithZero.unzero h1 = 1`. Apply `WithZero.coe_injective` to reduce the goal to its premises. Rewrite using `[WithZero.coe_unzero, map_one, WithZero.coe_one]`. Simplify using `only [absV, dif_neg h1, key, toAdd_one, zpow_zero]`.
+-/
 theorem absV_one : absV v (1 : Fv F v) = 1 := by
   have h1 : Valued.v (1 : Fv F v) ≠ 0 := by simp
   have key : WithZero.unzero h1 = 1 := by
@@ -76,33 +89,53 @@ theorem absV_one : absV v (1 : Fv F v) = 1 := by
     rw [WithZero.coe_unzero, map_one, WithZero.coe_one]
   simp only [absV, dif_neg h1, key, toAdd_one, zpow_zero]
 
+/- English proof (translation)
+Establish `hx' : Valued.v x ≠ 0` using `(Valuation.ne_zero_iff _).2 hx`. Simplify using `only [absV, dif_neg hx']`. Conclude with `zpow_pos (absNorm_pos v) _`.
+-/
 theorem absV_pos {x : Fv F v} (hx : x ≠ 0) : 0 < absV v x := by
   have hx' : Valued.v x ≠ 0 := (Valuation.ne_zero_iff _).2 hx
   simp only [absV, dif_neg hx']
   exact zpow_pos (absNorm_pos v) _
 
+/- English proof (translation)
+Establish `h` using `absV_mul v x⁻¹ x`. Rewrite `h` using `[inv_mul_cancel₀ hx, absV_one]`. Conclude with `eq_inv_of_mul_eq_one_left h.symm`.
+-/
 theorem absV_inv {x : Fv F v} (hx : x ≠ 0) : absV v x⁻¹ = (absV v x)⁻¹ := by
   have h := absV_mul v x⁻¹ x
   rw [inv_mul_cancel₀ hx, absV_one] at h
   exact eq_inv_of_mul_eq_one_left h.symm
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp [absV_one]`. Consider the case `succ n ih => rw [pow_succ, absV_mul, ih, pow_succ]`.
+-/
 theorem absV_pow (x : Fv F v) (n : ℕ) : absV v (x ^ n) = absV v x ^ n := by
   induction n with
   | zero => simp [absV_one]
   | succ n ih => rw [pow_succ, absV_mul, ih, pow_succ]
 
+/- English proof (translation)
+Unfold `dV`. Use `split_ifs with h`. Conclude with `h.choose_spec.1`. Conclude with `one_ne_zero`.
+-/
 theorem dV_ne_zero : dV v ≠ 0 := by
   unfold dV
   split_ifs with h
   · exact h.choose_spec.1
   · exact one_ne_zero
 
+/- English proof (translation)
+Unfold `alp`. Use `split_ifs`. Conclude with `pow_ne_zero _ (inv_ne_zero (dV_ne_zero v))`. Conclude with `one_ne_zero`.
+-/
 theorem alp_ne_zero (r : ℕ) (i : Fin (r + 1)) : alp v r i ≠ 0 := by
   unfold alp
   split_ifs
   · exact pow_ne_zero _ (inv_ne_zero (dV_ne_zero v))
   · exact one_ne_zero
 
+/- English proof (translation)
+Establish `hd` using `absV_pos v (dV_ne_zero v)`. Establish `hi : (i : ℕ) ≤ r` using `Nat.lt_succ_iff.mp i.2`. Unfold `alp`. Use `split_ifs with h`. Rewrite using `[absV_pow, absV_inv v (dV_ne_zero v), ← Nat.cast_sub hi, Real.rpow_neg hd.le, Real.rpow_natCast, inv_pow]`.
+
+Establish `: (i : ℕ) = r` using `le_antisymm hi (not_lt.mp h)`. Rewrite using `[absV_one, this, sub_self, neg_zero, Real.rpow_zero]`.
+-/
 theorem absV_alp (r : ℕ) (i : Fin (r + 1)) :
     absV v (alp v r i) = absV v (dV v) ^ (-((r : ℝ) - ((i : ℕ) : ℝ))) := by
   have hd := absV_pos v (dV_ne_zero v)
@@ -118,6 +151,11 @@ end AbsV
 
 section Real
 
+/- English proof (translation)
+Establish `h1 : (a ^ x * a ^ y) ^ 2 = a ^ (2 * (x + y))`. Rewrite using `[← Real.rpow_add ha, sq, ← Real.rpow_add ha]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, ← Real.rpow_neg ha.le, mul_comm, ← Real.rpow_add_one ha.ne']`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fac (a x y : ℝ) (ha : 0 < a) : a * ((a ^ x * a ^ y) ^ 2)⁻¹ = a ^ (1 - 2 * (x + y)) := by
   have h1 : (a ^ x * a ^ y) ^ 2 = a ^ (2 * (x + y)) := by
     rw [← Real.rpow_add ha, sq, ← Real.rpow_add ha]
@@ -127,6 +165,11 @@ theorem fac (a x y : ℝ) (ha : 0 < a) : a * ((a ^ x * a ^ y) ^ 2)⁻¹ = a ^ (1
   congr 1
   ring
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Finset.sum_range_succ, ih]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_range_cast (n : ℕ) : ∑ i ∈ Finset.range n, (i : ℝ) = ((n : ℝ) ^ 2 - n) / 2 := by
   induction n with
   | zero => simp
@@ -135,6 +178,13 @@ theorem sum_range_cast (n : ℕ) : ∑ i ∈ Finset.range n, (i : ℝ) = ((n : �
     push_cast
     ring
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_range_succ]`. Establish `h0 : ∑ j ∈ Finset.range (n + 1), (if n < j then g n j else 0) = 0`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `j hj`. Establish `hj' : ¬ n < j`.
+
+Rewrite `hj` using `[Finset.mem_range]`. Use linear arithmetic over natural numbers and integers. Simplify using `[hj']`. Rewrite using `[h0, add_zero, ← Finset.sum_add_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+
+Introduce `i hi`. Establish `hin : i < n` using `Finset.mem_range.mp hi`. Rewrite using `[Finset.sum_range_succ, if_pos hin]`.
+-/
 theorem tri (g : ℕ → ℕ → ℝ) (n : ℕ) :
     ∑ i ∈ Finset.range (n + 1), ∑ j ∈ Finset.range (n + 1), (if i < j then g i j else 0) =
       ∑ i ∈ Finset.range n, ∑ j ∈ Finset.range n, (if i < j then g i j else 0) +
@@ -153,6 +203,11 @@ theorem tri (g : ℕ → ℕ → ℝ) (n : ℕ) :
   have hin : i < n := Finset.mem_range.mp hi
   rw [Finset.sum_range_succ, if_pos hin]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[tri (fun i j => (1 - 2 * ((j : ℝ) - (i : ℝ)))) n, ih]`. Establish `e : ∀ i ∈ Finset.range n, (1 - 2 * ((n : ℝ) - (i : ℝ))) = (1 - 2 * (n : ℝ)) + 2 * (i : ℝ)`.
+
+Use `intros`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl e, Finset.sum_add_distrib, ← Finset.mul_sum, sum_range_cast, Finset.sum_const, Finset.card_range, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem triU (n : ℕ) :
     ∑ i ∈ Finset.range n, ∑ j ∈ Finset.range n,
         (if i < j then (1 - 2 * ((j : ℝ) - (i : ℝ))) else 0) =
@@ -169,6 +224,9 @@ theorem triU (n : ℕ) :
     push_cast
     ring
 
+/- English proof (translation)
+Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => ∑ j : Fin n, h i j) n]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Conclude with `Fin.sum_univ_eq_sum_range (fun j => h i j) n`.
+-/
 theorem finSum2 (n : ℕ) (h : ℕ → ℕ → ℝ) :
     ∑ i : Fin n, ∑ j : Fin n, h i j = ∑ i ∈ Finset.range n, ∑ j ∈ Finset.range n, h i j := by
   rw [Fin.sum_univ_eq_sum_range (fun i => ∑ j : Fin n, h i j) n]
@@ -176,6 +234,11 @@ theorem finSum2 (n : ℕ) (h : ℕ → ℕ → ℝ) :
   intro i _
   exact Fin.sum_univ_eq_sum_range (fun j => h i j) n
 
+/- English proof (translation)
+Rewrite using `[Fintype.sum_prod_type]`. Apply the tactic sequence `try dsimp only`. Rewrite using `[finSum2 (r + 1) (fun i j => (1 - 2 * (-((r : ℝ) - (i : ℝ)) + -((r : ℝ) - (j : ℝ)))))]`. Establish `e : ∀ i j : ℕ, (1 - 2 * (-((r : ℝ) - (i : ℝ)) + -((r : ℝ) - (j : ℝ)))) = (1 + 4 * (r : ℝ)) - 2 * (i : ℝ) - 2 * (j : ℝ)`. Use `intros`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e, Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul, ← Finset.mul_sum, sum_range_cast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sumZ (r : ℕ) :
     ∑ p : Fin (r + 1) × Fin (r + 1),
         (1 - 2 * (-((r : ℝ) - ((p.1 : ℕ) : ℝ)) + -((r : ℝ) - ((p.2 : ℕ) : ℝ)))) =
@@ -192,6 +255,11 @@ theorem sumZ (r : ℕ) :
   push_cast
   ring
 
+/- English proof (translation)
+Establish `e1 : ∑ q : UIdx r, (1 - 2 * (((q.1.2 : ℕ) : ℝ) - ((q.1.1 : ℕ) : ℝ))) = ∑ p : Fin (r + 1) × Fin (r + 1), (if p.1 < p.2 then (1 - 2 * (((p.2 : ℕ) : ℝ) - ((p.1 : ℕ) : ℝ))) else 0)`. Rewrite using `[← Finset.sum_filter]`. Conclude with `(Finset.sum_subtype _ (fun p => by simp) (fun p : Fin (r + 1) × Fin (r + 1) => (1 - 2 * (((p.2 : ℕ) : ℝ) - ((p.1 : ℕ) : ℝ))))).symm`. Rewrite using `[e1, Fintype.sum_prod_type]`. Simplify using `only [Fin.lt_iff_val_lt_val]`.
+
+Rewrite using `[finSum2 (r + 1) (fun i j => if i < j then (1 - 2 * ((j : ℝ) - (i : ℝ))) else 0), triU (r + 1)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sumU (r : ℕ) :
     ∑ q : UIdx r, (1 - 2 * (((q.1.2 : ℕ) : ℝ) - ((q.1.1 : ℕ) : ℝ))) =
       ((r : ℝ) ^ 2 + r) / 2 - (r : ℝ) * (r + 1) * (r + 2) / 3 := by
@@ -213,6 +281,21 @@ end VolOrdW
 
 open VolOrdW in
 
+/- English proof (translation)
+Introduce `v hv`. Establish `hfin : Module.finrank X.B.I.F X.B.I.E = 2` using `X.B.I.cm.deg2`. Establish `ha : 0 < absV v (dV v)` using `absV_pos v (dV_ne_zero v)`. Take `⟨hH1, -, hO1⟩` from `hN v hv (Fin (D.R.rS + 1) × Fin (D.R.rS + 1))`. Take `⟨hH2, hS2, hO2⟩` from `hN v hv (UIdx D.R.rS)`.
+
+Use `hH1` as an intermediate fact. Use `hH2` as an intermediate fact. Use `hS2` as an intermediate fact. Establish `hsetZ : ZZOrd (E` using `X.B.I.E) v D.R.rS = Set.univ.pi fun p : Fin (D.R.rS + 1) × Fin (D.R.rS + 1) => {c | sc (E := X.B.I.E) v (alp v D.R.rS p.1 * alp v D.R.rS p.2) * c ∈ OEv (E := X.B.I.E) v} := by`. Use extensionality with `z`.
+
+Simplify using `[ZZOrd, locZ, Set.mem_pi, Prod.forall]`. Establish `eZ : ZZX X u u' ψ v = absV v (dV v) ^ (((D.R.rS : ℝ) + 1) ^ 2 * (2 * D.R.rS + 1))`. Unfold `ZZX volS`. Rewrite using `[if_neg hv, hsetZ, hB v (Fin (D.R.rS + 1) × Fin (D.R.rS + 1)) hfin (sdE (E := X.B.I.E) ψ v (Fin (D.R.rS + 1) × Fin (D.R.rS + 1))) (fun p : Fin (D.R.rS + 1) × Fin (D.R.rS + 1) => alp v D.R.rS p.1 * alp v D.R.rS p.2) (fun p => mul_ne_zero (alp_ne_zero v D.R.rS p.1) (alp_ne_zero v D …`. Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[absV_mul, absV_alp, absV_alp, fac _ _ _ ha]`. Establish `hsetU : UO (E` using `X.B.I.E) v D.R.rS = Set.univ.pi fun q : UIdx D.R.rS => {c | sc (E := X.B.I.E) v ((alp v D.R.rS q.1.1)⁻¹ * alp v D.R.rS q.1.2) * c ∈ OEv (E := X.B.I.E) v} := by`. Use extensionality with `z`. Simplify using `[UO, Set.mem_pi]`. Establish `eUO : (sdE (E` using `X.B.I.E) ψ v (UIdx D.R.rS) (UO (E := X.B.I.E) v D.R.rS)).toReal = absV v (dV v) ^ (((D.R.rS : ℝ) ^ 2 + D.R.rS) / 2 - (D.R.rS : ℝ) * (D.R.rS + 1) * (D.R.rS + 2) / 3) := by`.
+
+Rewrite using `[hsetU, hB v (UIdx D.R.rS) hfin (sdE (E := X.B.I.E) ψ v (UIdx D.R.rS)) (fun q : UIdx D.R.rS => (alp v D.R.rS q.1.1)⁻¹ * alp v D.R.rS q.1.2) (fun q => mul_ne_zero (inv_ne_zero (alp_ne_zero v D.R.rS q.1.1)) (alp_ne_zero v D.R.rS q.1.2)), hO2, ← Finset.card_univ, ← Finset.prod_const …`. Use `Finset.prod_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[absV_mul, absV_inv v (alp_ne_zero v D.R.rS q.1.1), absV_alp, absV_alp, ← Real.rpow_neg ha.le, neg_neg, fac _ _ _ ha]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `eU : localVolumeUnit X ψ v = absV v (dV v) ^ (((D.R.rS : ℝ) ^ 2 + D.R.rS) / 2 - (D.R.rS : ℝ) * (D.R.rS + 1) * (D.R.rS + 2) / 3) * absV v (dV v) ^ (((D.R.rS : ℝ) ^ 2 + D.R.rS) / 2 - (D.R.rS : ℝ) * (D.R.rS + 1) * (D.R.rS + 2) / 3)`. Unfold `localVolumeUnit volU`. Rewrite using `[if_neg hv, localVolumeOrdinary, Measure.prod_prod, ENNReal.toReal_mul, eUO]`. Rewrite using `[eU, eZ, ← Real.rpow_add ha, ← Real.rpow_sub ha]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem volOrd_body {D : D7} (X : HidaSetting D) (u u' : D.what₂.Word) (ψ : AddChar (AF X.B.I.F) ℂ)
     (hN : SdNormDV X ψ) (hB : BoxScaleL) :
     ∀ v : PlX X, ¬ TypAt X v →

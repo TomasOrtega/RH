@@ -22,12 +22,30 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 
 namespace GlobalTheory.FlatModel
 
+/- English proof (translation)
+Use `letI : Algebra F (FractionRing R) := (Spec.preimage f).hom.toAlgebra`. Use `haveI : CharZero (FractionRing R) := charZero_of_injective_algebraMap (algebraMap F (FractionRing R)).injective`. Conclude with `(algebraMap R (FractionRing R)).charZero_iff (IsFractionRing.injective R (FractionRing R)) |>.2 inferInstance`.
+-/
 theorem charZero_of_pt {R : Type} [CommRing R] [IsDomain R] (F : IntermediateField ℚ ℂ)
     (f : Sp (FractionRing R) ⟶ Sp F) : CharZero R := by
   letI : Algebra F (FractionRing R) := (Spec.preimage f).hom.toAlgebra
   haveI : CharZero (FractionRing R) := charZero_of_injective_algebraMap (algebraMap F (FractionRing R)).injective
   exact (algebraMap R (FractionRing R)).charZero_iff (IsFractionRing.injective R (FractionRing R)) |>.2 inferInstance
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l' Xo' c' W Y p _ n _ hstar hpW hA R _ _ _ ξ hgen g e he N a 𝔭 h𝔭`. Establish `hp : p.Prime` using `Fact.out`. Take `⟨y, hy⟩` from `GlobalTheory.T.generic_point_lift_to_field E H Dw l' Xo' c' W Y p hp hpW R ξ hgen`. Use `haveI : IsLocallyNoetherian Y.X := GlobalTheory.T.integral_model_locally_noetherian E H Dw l' Xo' c' W Y p hp hpW`. Use `haveI : CharZero R := charZero_of_pt c'.F (y ≫ pullback.snd _ _)`.
+
+Establish `hS : SplitTors Y.t ξ (p ^ n)` using `GlobalTheory.T.splitTors_of_generic_level E H Dw l' Xo' c' _ _ Y R ξ y hy (p ^ n) (hA ▸ dvd_rfl)`. Establish `hq : p ^ n ≠ 0` using `pow_ne_zero _ hp.ne_zero`. Establish `hF` using `GlobalTheory.HTMap.ex_full hq hS`. Use `choose κ hκ hW using fun m => GlobalTheory.T.integrally_closed_point_extension E H Dw l' Xo' c' W Y p n hstar hpW hA R ξ y hy (a m)`. Use `choose h' hh' using fun m => GlobalTheory.HTMap.ex_dlog hF (hκ m) he.1`.
+
+Use `⟨1, fun m k => algebraMap R _ (-(h' m k)), fun h1 => h𝔭.ne_top ((Ideal.eq_top_iff_one _).2 h1), ?_⟩` and prove the remaining obligations. Introduce `φ yy P π ψ hPt m tt hlev k x hx`. Set `x0 : R →+* 𝓞_ℂ_[p]` to `φ.comp (algebraMap R _)`. Take `⟨P', hP'⟩` from `hF ((IsLocalRing.maximalIdeal 𝓞_ℂ_[p]).comap x0) inferInstance`. Take `⟨b, hb⟩` from `P'.ex_gl (hκ m)`.
+
+Take `⟨c, hc⟩` from `GlobalTheory.HTMap.ex_char hP' hb`. Establish `hd` using `hh' m 𝓞_ℂ_[p] x0 P' b hP' hb c hc`. Establish `htan : ∀ i, IsTanAtG Y.t (spMap x0 ≫ ξ) (spMap (dualMap x0) ≫ e i)` using `(isTanBasis_bc he x0).1`. Establish `hD : ∀ (k : Fin g) (β : P'.B →+* DualNumber (𝓞_ℂ_[p] ⧸ Ideal.span {(p : 𝓞_ℂ_[p]) ^ n})), P'.At ((algebraMap 𝓞_ℂ_[p] (DualNumber (𝓞_ℂ_[p] ⧸ Ideal.span {(p : 𝓞_ℂ_[p]) ^ n}))).comp x0) (spMap (dualMap (Ideal.Quotient.mk (Ideal.span {(p : 𝓞_ℂ_[p]) ^ n}))) ≫ spMap (dualMap x0) ≫ e k) …`. Introduce `k β hβ`.
+
+Set `w` to `GlobalTheory.HTMap.mkPt (G := Y.t.G) _ (hβ.over.trans (GlobalTheory.HTMap.spc_assoc _ _ _).symm)`. Establish `h2` using `hd _ _ (GlobalTheory.HTMap.comb_single htan k) w rfl`. Rewrite `h2` using `[hc _ w β hβ]`. Rewrite using `[h2]`. Simplify using `[Pi.single_apply]`.
+
+Establish `key` using `GlobalTheory.T.tangent_basis_frame_map E H Dw l' Xo' c' W Y p n R ξ g e he P' (κ m) b hb x0 hP' yy P π ψ hPt (hK p ℂ_[p] Valued.v 𝓞_ℂ_[p] (𝓞 E) P).1 tt (hW m P' b hb x0 yy P π ψ hPt tt hlev) (fun k => x0 (h' m k)) hD k x hx`. Establish `e1 : φ (algebraMap R _ (-(h' m k))) - (P.al₀ tt).1 x = -(x0 (h' m k) + (P.al₀ tt).1 x)`. Simplify using `only [x0, RingHom.comp_apply, map_neg]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`.
+
+Conclude with `neg_mem key`.
+-/
 theorem htLocSt_of_hodgeTateKernel (hK : GlobalTheory.IndefiniteRowSideFullHecke.HodgeTateKernel.HodgeTateKernelAtPoint) : HTLocSt := by
   intro E _ _ _ H Dw l' Xo' c' W Y p _ n _ hstar hpW hA R _ _ _ ξ hgen g e he N a 𝔭 h𝔭
   have hp : p.Prime := Fact.out

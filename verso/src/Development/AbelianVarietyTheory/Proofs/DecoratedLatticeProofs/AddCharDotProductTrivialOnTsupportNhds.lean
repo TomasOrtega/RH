@@ -22,6 +22,9 @@ def boxSub (s : kˣ) : OpenAddSubgroup (n → k) where
   neg_mem' ha := fun i _ => neg_mem_cball (ha i trivial)
   isOpen' := isOpen_box s
 
+/- English proof (translation)
+The claim follows from `inferInstance is_nonarchimedean U hU := by obtain ⟨s, hs⟩ := exists_box_subset hU exact ⟨boxSub s, hs⟩`.
+-/
 theorem nonarch : NonarchimedeanAddGroup (n → k) where
   toIsTopologicalAddGroup := inferInstance
   is_nonarchimedean U hU := by
@@ -30,12 +33,32 @@ theorem nonarch : NonarchimedeanAddGroup (n → k) where
 
 variable [MeasurableSpace k] [BorelSpace k]
 
+/- English proof (translation)
+Establish `h1 : μ (box n s) ≠ 0` using `((isOpen_box s).measure_pos μ ⟨0, fun i _ => by simp [cball]⟩).ne'`. Establish `h2 : μ (box n s) ≠ ⊤` using `(isCompact_box s).measure_lt_top.ne`. Conclude with `ENNReal.toReal_ne_zero.2 ⟨h1, h2⟩` after adjusting the coercions.
+-/
 theorem measureReal_box_ne (μ : Measure (n → k)) [μ.IsAddHaarMeasure] (s : kˣ) :
     (μ.real (box n s) : ℂ) ≠ 0 := by
   have h1 : μ (box n s) ≠ 0 := ((isOpen_box s).measure_pos μ ⟨0, fun i _ => by simp [cball]⟩).ne'
   have h2 : μ (box n s) ≠ ⊤ := (isCompact_box s).measure_lt_top.ne
   exact_mod_cast ENNReal.toReal_ne_zero.2 ⟨h1, h2⟩
 
+/- English proof (translation)
+Use `haveI := secondCountable k`. Take `⟨S, hS⟩` from `GlobalTheory.WeilM.HaarUniq.exists_decomp (boxSub (n := n) s) hφ.2 hinv`. Establish `hinj : ∀ q ∈ S, ∀ q' ∈ S, Quotient.out q = Quotient.out q' → q = q'` using `fun q _ q' _ h => by`. Simplify using `using congrArg (QuotientAddGroup.mk (s := (boxSub (n := n) s).toAddSubgroup)) h`. Establish `hpt : ∀ y, φ y = ∑ x ∈ S.image Quotient.out, φ x * (box n s).indicator (fun _ => (1:ℂ)) (y - x)`.
+
+Introduce `y`. Rewrite using `[Finset.sum_image hinj]`. Use `congrFun hS y` as an intermediate fact. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at this`. Rewrite using `[this]`.
+
+Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[sub_eq_add_neg]`. Both sides reduce to the same expression. Use `⟨S.image Quotient.out, hpt, fun F hF => ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ y, φ y * F y = ∑ x ∈ S.image Quotient.out, (φ x * F x) * (box n s).indicator (fun _ => (1:ℂ)) (y - x)`.
+
+Introduce `y`. Rewrite using `[hpt y, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Distinguish the cases in `hy : y - x ∈ box n s`. Use `hF (y - x) hy x` as an intermediate fact.
+
+Rewrite `this` using `[add_sub_cancel]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[Set.indicator_of_notMem hy]`. Establish `hint : ∀ x : n → k, Integrable (fun y => (box n s).indicator (fun _ => (1:ℂ)) (y - x)) μ`.
+
+Introduce `x`. Establish `: Integrable ((box n s).indicator (fun _ => (1:ℂ))) μ` using `(integrable_indicator_iff (isOpen_box _).measurableSet).mpr (integrableOn_const (isCompact_box _).measure_lt_top.ne)`. Conclude with `this.comp_sub_right x`. Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall h1)]`. Establish `h2 : ∀ x : n → k, ∫ y, (box n s).indicator (fun _ => (1:ℂ)) (y - x) ∂μ = (μ.real (box n s) : ℂ)`.
+
+Introduce `x`. Rewrite using `[integral_sub_right_eq_self (fun y => (box n s).indicator (fun _ => (1:ℂ)) y) x, integral_indicator_const _ (isOpen_box _).measurableSet]`. Simplify using the standard rewrite rules. Rewrite using `[integral_finsetSum _ fun x _ => (hint x).const_mul _, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[integral_const_mul, h2, mul_comm]`.
+-/
 theorem decomp_integral (μ : Measure (n → k)) [μ.IsAddHaarMeasure] (s : kˣ) {φ : (n → k) → ℂ}
     (hφ : φ ∈ SB (n → k)) (hinv : ∀ t ∈ box n s, ∀ x, φ (x + t) = φ x) :
     ∃ S : Finset (n → k), (∀ y, φ y = ∑ x ∈ S, φ x * (box n s).indicator (fun _ => (1:ℂ)) (y - x)) ∧
@@ -85,6 +108,11 @@ theorem decomp_integral (μ : Measure (n → k)) [μ.IsAddHaarMeasure] (s : kˣ)
 variable {χ : AddChar k Circle} {c : kˣ}
 
 omit [MeasurableSpace k] [BorelSpace k] in
+/- English proof (translation)
+Establish `h1 : ∀ᶠ t in 𝓝 (0 : n → k), ∀ η ∈ tsupport g, χ (η ⬝ᵥ t) = 1`. Use `IsCompact.eventually_forall_of_forall_eventually hg.2 fun η _ => ?_` and prove the remaining obligations. Establish `h2 : IsLocallyConstant fun q : (n → k) × (n → k) => χ (q.2 ⬝ᵥ q.1)` using `hχ.isLocallyConstant.comp_continuous (continuous_snd.dotProduct continuous_fst)`. Use `filter_upwards [h2.eventually_eq ((0 : n → k), η)] with q hq`. Simplify using `using hq`.
+
+Conclude with `h1`.
+-/
 theorem addChar_dotProduct_trivial_on_tsupport_nhds (hχ : HasConductor χ c) {g : (n → k) → ℂ} (hg : g ∈ SB (n → k)) :
     {t : n → k | ∀ η ∈ tsupport g, χ (η ⬝ᵥ t) = 1} ∈ 𝓝 (0 : n → k) := by
   have h1 : ∀ᶠ t in 𝓝 (0 : n → k), ∀ η ∈ tsupport g, χ (η ⬝ᵥ t) = 1 := by
@@ -96,21 +124,33 @@ theorem addChar_dotProduct_trivial_on_tsupport_nhds (hχ : HasConductor χ c) {g
   exact h1
 
 omit [MeasurableSpace k] [BorelSpace k] in
+/- English proof (translation)
+The claim follows from `(isOpen_box s).mem_nhds fun i _ => by simp [cball]`.
+-/
 theorem box_nhds (s : kˣ) : box n s ∈ 𝓝 (0 : n → k) :=
   (isOpen_box s).mem_nhds fun i _ => by simp [cball]
 
 omit [MeasurableSpace k] [BorelSpace k] in
+/- English proof (translation)
+Take `⟨s, hs⟩` from `exists_box_invariant hf`. Conclude with `Filter.mem_of_superset (box_nhds s) fun t ht => hs t ht`.
+-/
 theorem invariant_nhds {f : (n → k) → ℂ} (hf : f ∈ SB (n → k)) :
     {t : n → k | ∀ x, f (x + t) = f x} ∈ 𝓝 (0 : n → k) := by
   obtain ⟨s, hs⟩ := exists_box_invariant hf
   exact Filter.mem_of_superset (box_nhds s) fun t ht => hs t ht
 
 omit [MeasurableSpace k] [BorelSpace k] in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨ha.1.comp_continuous (continuous_id.sub continuous_const), ha.2.comp_homeomorph (Homeomorph.subRight x)⟩`.
+-/
 theorem tr_mem {a : (n → k) → ℂ} (ha : a ∈ SB (n → k)) (x : n → k) :
     (fun y => a (y - x)) ∈ SB (n → k) :=
   ⟨ha.1.comp_continuous (continuous_id.sub continuous_const), ha.2.comp_homeomorph (Homeomorph.subRight x)⟩
 
 omit [MeasurableSpace k] [BorelSpace k] in
+/- English proof (translation)
+Use `⟨?_, hb.2.mul_left⟩` and prove the remaining obligations. Establish `h1 : IsLocallyConstant fun η : n → k => (χ (η ⬝ᵥ x) : ℂ)` using `(hχ.isLocallyConstant.comp_continuous (continuous_id.dotProduct continuous_const)).comp _`. Conclude with `h1.mul hb.1`.
+-/
 theorem mc_mem (hχ : HasConductor χ c) {b : (n → k) → ℂ} (hb : b ∈ SB (n → k)) (x : n → k) :
     (fun η => (χ (η ⬝ᵥ x) : ℂ) * b η) ∈ SB (n → k) := by
   refine ⟨?_, hb.2.mul_left⟩
@@ -118,6 +158,21 @@ theorem mc_mem (hχ : HasConductor χ c) {b : (n → k) → ℂ} (hb : b ∈ SB 
     (hχ.isLocallyConstant.comp_continuous (continuous_id.dotProduct continuous_const)).comp _
   exact h1.mul hb.1
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `exists_box_subset (Filter.inter_mem (invariant_nhds φ.2) (Filter.inter_mem (invariant_nhds a.2) (addChar_dotProduct_trivial_on_tsupport_nhds hχ b.2)))`. Take `⟨S, -, hint⟩` from `decomp_integral μ s φ.2 fun t ht x => (hs ht).1 x`. Use `set m : ℂ := (μ.real (box n s) : ℂ)`. Establish `hnegmem : ∀ t ∈ box n s, -t ∈ box n s` using `fun t ht i _ => neg_mem_cball (ht i trivial)`. Establish `ea : a' = ∑ x ∈ S, (m * φ.1 x) • (⟨_, tr_mem a.2 x⟩ : SB (n → k))`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `y`. Rewrite using `[Submodule.coe_sum, Finset.sum_apply, ha' y]`. Rewrite using `[hint (fun t => a.1 (y - t)) fun t ht x => by`. Use `(hs (hnegmem t ht)).2.1 (y - x)` as an intermediate fact.
+
+Rewrite using `[← this]`. Use the proof step `abel_nf]`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Simplify using `only [SetLike.val_smul, Pi.smul_apply, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `eb : b' = ∑ x ∈ S, (m * φ.1 x) • (⟨_, mc_mem hχ b.2 x⟩ : SB (n → k))`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `η`. Rewrite using `[Submodule.coe_sum, Finset.sum_apply, hb' η]`.
+
+Distinguish the cases in `hη : η ∈ tsupport b.1`. Rewrite using `[hint (fun t => (χ (η ⬝ᵥ t) : ℂ)) fun t ht x => by`. Rewrite using `[dotProduct_add, AddChar.map_add_eq_mul, (hs ht).2.2 η hη, mul_one]]`. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [SetLike.val_smul, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h0 : b.1 η = 0` using `image_eq_zero_of_notMem_tsupport hη`. Simplify using `[h0]`. Rewrite using `[ea, eb, map_sum, LinearMap.sum_apply, map_sum]`.
+
+Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, LinearMap.smul_apply, map_smul]`. Use `congr 1`. Conclude with `h2 a _ b _ x (fun y => rfl) (fun η => rfl)`.
+-/
 theorem law_integrated (hχ : HasConductor χ c) (μ : Measure (n → k)) [μ.IsAddHaarMeasure]
     (B : SB (n → k) →ₗ[ℂ] SB (n → k) →ₗ[ℂ] ℂ)
     (h2 : ∀ (a a' b b' : SB (n → k)) (t : n → k), (∀ y, a'.1 y = a.1 (y - t)) →
@@ -161,14 +216,23 @@ theorem law_integrated (hχ : HasConductor χ c) (μ : Measure (n → k)) [μ.Is
   exact h2 a _ b _ x (fun y => rfl) (fun η => rfl)
 
 omit [MeasurableSpace k] [BorelSpace k] in
+/- English proof (translation)
+Introduce `x hx i _` and use `show valuation k (x i) ≤ valuation k (s' : k) from le_trans (hx i trivial) h`.
+-/
 theorem box_mono {s s' : kˣ} (h : valuation k (s : k) ≤ valuation k (s' : k)) : box n s ⊆ box n s' :=
   fun x hx i _ => show valuation k (x i) ≤ valuation k (s' : k) from le_trans (hx i trivial) h
 
 omit [MeasurableSpace k] [BorelSpace k] in
+/- English proof (translation)
+The claim follows from `(le_total (valuation k (s : k)) (valuation k (s' : k))).imp box_mono box_mono`.
+-/
 theorem box_total (s s' : kˣ) : box n s ⊆ box n s' ∨ box n s' ⊆ box n s :=
   (le_total (valuation k (s : k)) (valuation k (s' : k))).imp box_mono box_mono
 
 omit [MeasurableSpace k] [BorelSpace k] in
+/- English proof (translation)
+Establish `h : z + t ∈ box n s ↔ z ∈ box n s` using `add_mem_cancel_right (H := (boxSub (n := n) s).toAddSubgroup) ht`. Distinguish the cases in `hz : z ∈ box n s`. Rewrite using `[Set.indicator_of_mem hz, Set.indicator_of_mem (h.2 hz)]`. Rewrite using `[Set.indicator_of_notMem hz, Set.indicator_of_notMem (fun h' => hz (h.1 h'))]`.
+-/
 theorem ind_add (s : kˣ) {t : n → k} (ht : t ∈ box n s) (z : n → k) :
     (box n s).indicator (fun _ => (1 : ℂ)) (z + t) = (box n s).indicator (fun _ => (1 : ℂ)) z := by
   have h : z + t ∈ box n s ↔ z ∈ box n s :=
@@ -178,12 +242,18 @@ theorem ind_add (s : kˣ) {t : n → k} (ht : t ∈ box n s) (z : n → k) :
   · rw [Set.indicator_of_notMem hz, Set.indicator_of_notMem (fun h' => hz (h.1 h'))]
 
 omit [MeasurableSpace k] [BorelSpace k] in
+/- English proof (translation)
+Use `haveI := t2Space k`. Conclude with `GlobalTheory.WeilM.HaarUniq.indicator_mem (boxSub (n := n) s) (isCompact_box s)`.
+-/
 theorem ind_mem (s : kˣ) : (box n s).indicator (fun _ => (1 : ℂ)) ∈ SB (n → k) := by
   haveI := t2Space k
   exact GlobalTheory.WeilM.HaarUniq.indicator_mem (boxSub (n := n) s) (isCompact_box s)
 
 def ind (s : kˣ) : SB (n → k) := ⟨_, ind_mem (n := n) s⟩
 
+/- English proof (translation)
+Take `⟨S, hpt, hint⟩` from `decomp_integral μ s hφ hinv`. Rewrite using `[hint _ fun t ht x => by`. Rewrite using `[show y - (x + t) = (y - x) + -t by abel, ind_add s (show -t ∈ box n s from fun i _ => neg_mem_cball (ht i trivial))],`. Use `hpt y]`.
+-/
 theorem conv_ind (μ : Measure (n → k)) [μ.IsAddHaarMeasure] (s : kˣ) {φ : (n → k) → ℂ}
     (hφ : φ ∈ SB (n → k)) (hinv : ∀ t ∈ box n s, ∀ x, φ (x + t) = φ x) (y : n → k) :
     ∫ t, φ t * (box n s).indicator (fun _ => (1 : ℂ)) (y - t) ∂μ = (μ.real (box n s) : ℂ) * φ y := by
@@ -196,14 +266,31 @@ def admitted (χ : AddChar k Circle) (s : kˣ) (g : (n → k) → ℂ) : Prop :=
   ∀ η, g η ≠ 0 → ∀ t ∈ box n s, χ (η ⬝ᵥ t) = 1
 
 omit [MeasurableSpace k] [BorelSpace k] in
+/- English proof (translation)
+Introduce `η hη t ht` and use `h ht η (subset_tsupport _ hη)`.
+-/
 theorem isAdmissibleBoxForCharacter_of_subset {s : kˣ} {g : (n → k) → ℂ}
     (h : box n s ⊆ {t : n → k | ∀ η ∈ tsupport g, χ (η ⬝ᵥ t) = 1}) : admitted χ s g :=
   fun η hη t ht => h ht η (subset_tsupport _ hη)
 
 omit [MeasurableSpace k] [BorelSpace k] in
+/- English proof (translation)
+Introduce `η hη t ht` and use `h η hη t (hs ht)`.
+-/
 theorem admitted.mono {s s' : kˣ} {g : (n → k) → ℂ} (h : admitted χ s g) (hs : box n s' ⊆ box n s) : admitted χ s' g :=
   fun η hη t ht => h η hη t (hs ht)
 
+/- English proof (translation)
+Use `haveI := secondCountable k`. Establish `key` using `law_integrated hχ μ B h2 (ind s') g (ind s) ((μ.real (box n s') : ℂ) • ind s) ((μ.real (box n s) : ℂ) • g) (fun y => by show (μ.real (box n s') : ℂ) * (box n s).indicator (fun _ => (1 : ℂ)) y = ∫ t, (box n s).indicator (fun _ => (1 : ℂ)) t * (box n s').indicator (fun _ => (1 : ℂ) …`. Rewrite using `[conv_ind μ s' (ind_mem s) (fun t ht x => ind_add s (hss ht) x) y]) (fun η => by`. Use `show (μ.real (box n s) : ℂ) * g.1 η = _`. Distinguish the cases in `hη : g.1 η = 0`.
+
+Simplify using `[hη]`. Use `congr 1`. Establish `: ∀ t, (ind s).1 t * (χ (η ⬝ᵥ t) : ℂ) = (box n s).indicator (fun _ => (1 : ℂ)) t`. Introduce `t`. Distinguish the cases in `ht : t ∈ box n s`.
+
+Rewrite using `[hs η hη t ht]`. Simplify using `[ind]`. Simplify using `[ind, Set.indicator_of_notMem ht]`. Simplify using `only [this]`. Rewrite using `[integral_indicator_const _ (isOpen_box _).measurableSet]`.
+
+Use the proof step `simp)`. Rewrite `key` using `[map_smul, LinearMap.smul_apply, map_smul, smul_eq_mul, smul_eq_mul]`. Establish `h1` using `measureReal_box_ne μ s`. Establish `h1'` using `measureReal_box_ne μ s'`. Clear the denominators using the available nonvanishing facts.
+
+Take the linear combination `key`.
+-/
 theorem ratio_indep (hχ : HasConductor χ c) (μ : Measure (n → k)) [μ.IsAddHaarMeasure]
     (B : SB (n → k) →ₗ[ℂ] SB (n → k) →ₗ[ℂ] ℂ)
     (h2 : ∀ (a a' b b' : SB (n → k)) (t : n → k), (∀ y, a'.1 y = a.1 (y - t)) →
@@ -235,6 +322,9 @@ theorem ratio_indep (hχ : HasConductor χ c) (μ : Measure (n → k)) [μ.IsAdd
   linear_combination key
 
 omit [MeasurableSpace k] [BorelSpace k] in
+/- English proof (translation)
+Take `⟨s, hs⟩` from `exists_box_subset (addChar_dotProduct_trivial_on_tsupport_nhds hχ g.2)`. Conclude with `⟨s, isAdmissibleBoxForCharacter_of_subset hs⟩`.
+-/
 theorem exists_adm (hχ : HasConductor χ c) (g : SB (n → k)) : ∃ s : kˣ, admitted χ s g.1 := by
   obtain ⟨s, hs⟩ := exists_box_subset (addChar_dotProduct_trivial_on_tsupport_nhds hχ g.2)
   exact ⟨s, isAdmissibleBoxForCharacter_of_subset hs⟩
@@ -252,6 +342,9 @@ variable (hχ : HasConductor χ c) (μ : Measure (n → k)) [μ.IsAddHaarMeasure
       (∀ η, b'.1 η = (χ (η ⬝ᵥ t) : ℂ) * b.1 η) → B a' b = B a b')
 include hχ h2
 
+/- English proof (translation)
+Establish `h : ∃ s : kˣ, admitted χ s g.1` using `⟨s, hs⟩`. Rewrite using `[ell, dif_pos h]`. Break down `box_total (n := n) h.choose s with h1 | h1` into its components or cases. Conclude with `(ratio_indep hχ μ B h2 g hs h1).symm`. Conclude with `ratio_indep hχ μ B h2 g h.choose_spec h1`.
+-/
 theorem ell_eq {s : kˣ} (g : SB (n → k)) (hs : admitted χ s g.1) :
     ell χ μ B g = (μ.real (box n s) : ℂ)⁻¹ * B (ind s) g := by
   have h : ∃ s : kˣ, admitted χ s g.1 := ⟨s, hs⟩
@@ -282,6 +375,15 @@ def ellL : SB (n → k) →ₗ[ℂ] ℂ where
     rw [ell_eq hχ μ B h2 _ hs, ell_eq hχ μ B h2 _ a3, map_smul, smul_eq_mul, RingHom.id_apply, smul_eq_mul]
     ring
 
+/- English proof (translation)
+Establish `hloc : {y : n → k | χ ((-u) ⬝ᵥ y) = 1} ∈ 𝓝 (0 : n → k)`. Establish `h3 : IsLocallyConstant fun y : n → k => χ ((-u) ⬝ᵥ y)` using `hχ.isLocallyConstant.comp_continuous (continuous_const.dotProduct continuous_id)`. Use `filter_upwards [h3.eventually_eq 0] with y hy`. Simplify using `using hy`. Take `⟨s, hs⟩` from `exists_box_subset (Filter.inter_mem (addChar_dotProduct_trivial_on_tsupport_nhds hχ g.2) (Filter.inter_mem (addChar_dotProduct_trivial_on_tsupport_nhds hχ hg') hloc))`.
+
+Establish `a1 : admitted χ s g.1` using `isAdmissibleBoxForCharacter_of_subset fun t ht => (hs ht).1`. Establish `a2 : admitted χ s (fun x => g.1 (x + u))` using `isAdmissibleBoxForCharacter_of_subset fun t ht => (hs ht).2.1`. Rewrite using `[ell_eq hχ μ B h2 ⟨_, hg'⟩ a2, ell_eq hχ μ B h2 g a1]`. Use `congr 1`. Use `(h1 (ind s) (ind s) g ⟨_, hg'⟩ (-u) (fun y => ?_) (fun η => ?_)).symm` and prove the remaining obligations.
+
+Distinguish the cases in `hy : y ∈ box n s`. Use `show (box n s).indicator (fun _ => (1 : ℂ)) y = _ * (box n s).indicator (fun _ => (1 : ℂ)) y`. Rewrite using `[(hs hy).2.2]`. Simplify using the standard rewrite rules. Use `show (box n s).indicator (fun _ => (1 : ℂ)) y = _ * (box n s).indicator (fun _ => (1 : ℂ)) y`.
+
+Simplify using `[Set.indicator_of_notMem hy]`. Use `show g.1 (η + u) = g.1 (η - -u)`. Rewrite using `[sub_neg_eq_add]`.
+-/
 theorem ell_translate
     (h1 : ∀ (a a' b b' : SB (n → k)) (t : n → k), (∀ y, a'.1 y = (χ (t ⬝ᵥ y) : ℂ) * a.1 y) →
       (∀ η, b'.1 η = b.1 (η - t)) → B a' b = B a b')
@@ -308,6 +410,11 @@ theorem ell_translate
   · show g.1 (η + u) = g.1 (η - -u)
     rw [sub_neg_eq_add]
 
+/- English proof (translation)
+Use `haveI := secondCountable k`. Take `⟨s, hs⟩` from `exists_box_subset (Filter.inter_mem (invariant_nhds a.2) (addChar_dotProduct_trivial_on_tsupport_nhds hχ hm))`. Establish `a1 : admitted χ s (fun η => (∫ y, a.1 y * (χ (η ⬝ᵥ y) : ℂ) ∂μ) * b.1 η)` using `isAdmissibleBoxForCharacter_of_subset fun t ht => (hs ht).2`. Rewrite using `[ell_eq hχ μ B h2 ⟨_, hm⟩ a1]`. Establish `key` using `law_integrated hχ μ B h2 (ind s) b a ((μ.real (box n s) : ℂ) • a) ⟨_, hm⟩ (fun y => by show (μ.real (box n s) : ℂ) * a.1 y = ∫ t, a.1 t * (box n s).indicator (fun _ => (1 : ℂ)) (y - t) ∂μ`.
+
+Rewrite using `[conv_ind μ s a.2 (fun t ht x => (hs ht).1 x) y]) (fun η => rfl)`. Rewrite `key` using `[map_smul, LinearMap.smul_apply, smul_eq_mul]`. Rewrite using `[← key]`. Clear denominators, using `[measureReal_box_ne μ s]` for the nonvanishing conditions.
+-/
 theorem form_eq_ell (a b : SB (n → k))
     (hm : (fun η => (∫ y, a.1 y * (χ (η ⬝ᵥ y) : ℂ) ∂μ) * b.1 η) ∈ SB (n → k)) :
     B a b = ell χ μ B ⟨_, hm⟩ := by
@@ -326,6 +433,17 @@ theorem form_eq_ell (a b : SB (n → k))
 
 end Form
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ n _ χ hc hne μ _ B hL1 hL2`. Take `⟨c, hχ⟩` from `exists_hasConductor_of_continuous χ hc hne`. Use `haveI := secondCountable k`. Use `haveI := t2Space k`. Use `haveI := nonarch (k := k) (n := n)`.
+
+Establish `hm : ∀ a b : SB (n → k), (fun η => (∫ y, a.1 y * (χ (η ⬝ᵥ y) : ℂ) ∂μ) * b.1 η) ∈ SB (n → k)`. Introduce `a b`. Establish `h3` using `fourier_mem_SB μ hχ a.2`. Establish `h4 : (fun η => ∫ y, a.1 y * (χ (η ⬝ᵥ y) : ℂ) ∂μ) = fun η => ∫ x, a.1 x * (χ (x ⬝ᵥ η) : ℂ) ∂μ`. Use function extensionality and compare the values at `η`.
+
+Simplify using `only [dotProduct_comm η]`. Rewrite `h3` using `[← h4]`. Conclude with `⟨h3.1.mul b.2.1, b.2.2.mul_left⟩`. Take `⟨M, hM⟩` from `LinearMap.exists_extend (ellL hχ μ B hL2)`. Establish `hMe : ∀ g : SB (n → k), M g.1 = ell χ μ B g` using `fun g => LinearMap.congr_fun hM g`.
+
+Take `⟨C, hC⟩` from `GlobalTheory.WeilM.HaarUniq.exists_eq_mul_integral (n → k) μ M (fun φ hφ u => by`. Establish `hmem : (fun x => φ (x + u)) ∈ SB (n → k)` using `⟨hφ.1.comp_continuous (continuous_id.add continuous_const), hφ.2.comp_homeomorph (Homeomorph.addRight u)⟩`. Rewrite using `[hMe ⟨_, hmem⟩, ell_translate hχ μ B hL2 hL1 ⟨φ, hφ⟩ u hmem]`. Conclude with `(hMe ⟨φ, hφ⟩).symm)`. Use `⟨C, fun a b => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[form_eq_ell hχ μ B hL2 a b (hm a b), ← hMe, hC _ (hm a b)]`.
+-/
 theorem heis_invariant_form : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (n : Type) [Fintype n] (χ : AddChar k Circle), Continuous χ → χ ≠ 1 → ∀ (μ : Measure (n → k)) [μ.IsAddHaarMeasure] (B : SB (n → k) →ₗ[ℂ] SB (n → k) →ₗ[ℂ] ℂ), (∀ (a a' b b' : SB (n → k)) (t : n → k), (∀ y, a'.1 y = (χ (t ⬝ᵥ y) : ℂ) * a.1 y) → (∀ η, b'.1 η = b.1 (η - t)) → B a' b = B a b') → (∀ (a a' b b' : SB (n → k)) (t : n → k), (∀ y, a'.1 y = a.1 (y - t)) → (∀ η, b'.1 η = (χ (η ⬝ᵥ t) : ℂ) * b.1 η) → B a' b = B a b') → ∃ c : ℂ, ∀ a b : SB (n → k), B a b = c * ∫ η, (∫ y, a.1 y * (χ (η ⬝ᵥ y) : ℂ) ∂μ) * b.1 η ∂μ := by
   intro k _ _ _ _ _ _ n _ χ hc hne μ _ B hL1 hL2
   classical

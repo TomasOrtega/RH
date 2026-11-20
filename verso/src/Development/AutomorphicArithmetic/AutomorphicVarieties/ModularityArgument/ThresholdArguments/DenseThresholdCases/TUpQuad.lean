@@ -9,6 +9,9 @@ set_option synthInstance.maxHeartbeats 200000
 
 section
 open UpperTheory.V.Af UpperTheory.V.Af.Bc in
+/- English proof (translation)
+Introduce `hP F E Ω _ _ _ _ _ _ _ _ _ _ _ _ l _ ι hE n _ hn r hr ⟨π, hreg, hatt⟩ hirr`. Take `⟨P, hBC⟩` from `(_root_.UpperTheory.Gal.SV.quad_base_change_w_of_printed_results hP F E hE n hn π hreg).resolve_left fun ⟨η, hη, ht⟩ => _root_.UpperTheory.V.Af.Bc.noTwist_of_prints hP F E Ω l ι hE n r π hr hatt hirr η hη ht`. Establish `h` using `UpperTheory.V.Br.bcAtt0 F E Ω l ι n r π P hBC.toIsBC0`. Conclude with `⟨P, h.1 hreg, h.2 hatt ((Bc.irrBasic.1 _ Unit _ n _).2.1 hirr)⟩`.
+-/
 theorem UpperTheory.V.Sd.up_quad_of_printed_results :
     _root_.UpperTheory.V.Af.Hypotheses' → UpperTheory.V.Sd.UpQuad := by
   intro hP F E Ω _ _ _ _ _ _ _ _ _ _ _ _ l _ ι hE n _ hn r hr ⟨π, hreg, hatt⟩ hirr

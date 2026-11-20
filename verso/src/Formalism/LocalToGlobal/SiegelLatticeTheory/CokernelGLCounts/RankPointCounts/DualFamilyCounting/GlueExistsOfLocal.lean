@@ -13,6 +13,17 @@ open Formalism.HermitianLattices.Ext.L3 Formalism.L2.SG.Pf.Cnt
 variable {K F V : Type} [Field K] [NumberField K] [StarRing K] [Field F] [NumberField F]
   [Algebra F K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by simpa using hx⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨n, hn, hnx⟩` from `hx`.
+
+Take `⟨m, hm, hmy⟩` from `hy`. Use `⟨n * m, mul_ne_zero hn hm, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `M.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`.
+
+Conclude with `zsmul_mem hnx m`. Rewrite using `[mul_smul]`. Conclude with `zsmul_mem hmy n`. Consider the case `smul a x _ hx`. Take `⟨n, hn, hnx⟩` from `hx`.
+
+Take `⟨k, hk, α, hα⟩` from `Formalism.HermitianLatticesTheory.traceReal_den a`. Use `⟨k * n, mul_ne_zero hk hn, ?_⟩` and prove the remaining obligations. Establish `e1 : (k * n) • (a • x) = α • (n • x)`. Rewrite using `[← Int.cast_smul_eq_zsmul K (k * n), ← algebraMap_smul K α (n • x), ← Int.cast_smul_eq_zsmul K n, smul_smul, smul_smul]`. Use `congr 1`.
+
+Rewrite using `[show algebraMap (NumberField.RingOfIntegers K) K α = (α : K) from rfl, ← hα]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Conclude with `M.smul_mem α hnx`.
+-/
 theorem zmult_of_span (M : Submodule (𝓞 K) V) (x : V) (hx : x ∈ Submodule.span K (M : Set V)) :
     ∃ n : ℤ, n ≠ 0 ∧ n • x ∈ M := by
   induction hx using Submodule.span_induction with
@@ -54,6 +65,11 @@ def zdiv (B : Submodule (𝓞 K) V) (n : ℤ) : Submodule (𝓞 K) V where
     rw [smul_comm]
     exact B.smul_mem c hx
 
+/- English proof (translation)
+Take `⟨S, rfl⟩` from `hA`. Use `choose! m hm hmy using fun y (hy : y ∈ S) => hAB y (Submodule.subset_span hy)`. Use `⟨∏ y ∈ S, m y, Finset.prod_ne_zero_iff.2 hm, fun x hx => ?_⟩` and prove the remaining obligations. Use `show x ∈ zdiv B (∏ y ∈ S, m y)`. Use `(Submodule.span_le.2 ?_) hx` and prove the remaining obligations.
+
+Introduce `y hy`. Use `show (∏ y ∈ S, m y) • y ∈ B`. Rewrite using `[← Finset.prod_erase_mul S m hy, mul_smul]`. Conclude with `zsmul_mem (hmy y hy) _`.
+-/
 theorem exists_zsmul_of_fg {A B : Submodule (𝓞 K) V} (hA : A.FG)
     (hAB : ∀ y ∈ A, ∃ n : ℤ, n ≠ 0 ∧ n • y ∈ B) : ∃ n : ℤ, n ≠ 0 ∧ ∀ x ∈ A, n • x ∈ B := by
   classical
@@ -67,6 +83,9 @@ theorem exists_zsmul_of_fg {A B : Submodule (𝓞 K) V} (hA : A.FG)
   rw [← Finset.prod_erase_mul S m hy, mul_smul]
   exact zsmul_mem (hmy y hy) _
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨t, ht, htx⟩` from `(LocF.mem_locF_iff hp A x).1 hx`. Use `(LocF.mem_locF_iff hp B x).2 ⟨(n : 𝓞 F) * t, fun hm => (hp.mem_or_mem hm).elim hn ht, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_intCast, mul_smul, Int.cast_smul_eq_zsmul]`. Conclude with `hAB _ htx`.
+-/
 theorem locF_le_of_zsmul {A B : Submodule (𝓞 K) V} {𝔭 : Ideal (𝓞 F)} (hp : 𝔭.IsPrime) (n : ℤ)
     (hn : (n : 𝓞 F) ∉ 𝔭) (hAB : ∀ x ∈ A, n • x ∈ B) : locF 𝔭 A ≤ locF 𝔭 B := by
   intro x hx
@@ -75,6 +94,23 @@ theorem locF_le_of_zsmul {A B : Submodule (𝓞 K) V} {𝔭 : Ideal (𝓞 F)} (h
   rw [map_mul, map_intCast, mul_smul, Int.cast_smul_eq_zsmul]
   exact hAB _ htx
 
+/- English proof (translation)
+Introduce `K F V _ _ _ _ _ _ _ _ _ _ _ hK hF Λ₀ hΛ₀ U M hM`. Use `set N : Submodule (𝓞 K) V := Λ₀ ⊓ U.restrictScalars (𝓞 K) with hN`. Establish `hMU : ∀ y ∈ M, y ∈ U` using `fun y hy => by`. Rewrite using `[← hM.2]`. Conclude with `Submodule.subset_span hy`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨n₁, hn₁, h₁⟩ : ∃ n : ℤ, n ≠ 0 ∧ ∀ x ∈ M, n • x ∈ N := by`. Use `exists_zsmul_of_fg hM.1 fun y hy => ?_` and prove the remaining obligations. Take `⟨m, hm, hmy⟩` from `Formalism.HermitianLatticesTheory.traceReal_mult Λ₀ hΛ₀ y`. Conclude with `⟨m, hm, Submodule.mem_inf.2 ⟨hmy, zsmul_mem (hMU y hy) m⟩⟩`. Establish `hNfg : N.FG` using `Submodule.FG.of_le hΛ₀.fg inf_le_left`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨n₂, hn₂, h₂⟩ : ∃ n : ℤ, n ≠ 0 ∧ ∀ x ∈ N, n • x ∈ M := by`. Use `exists_zsmul_of_fg hNfg fun y hy => zmult_of_span M y ?_` and prove the remaining obligations. Rewrite using `[hM.2]`. Conclude with `(Submodule.mem_inf.1 hy).2`. Use `set a : 𝓞 F := ((n₁ * n₂ : ℤ) : 𝓞 F) with ha`.
+
+Establish `ha0 : a ≠ 0`. Rewrite using `[ha, Int.cast_ne_zero]`. Conclude with `mul_ne_zero hn₁ hn₂`. Establish `hD : Ideal.span {a} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]` and apply the resulting hypothesis.
+
+Establish `hfin : {𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal} | a ∈ 𝔭.1}.Finite`. Use `((Ideal.finite_factors hD).image (fun v => (⟨v.asIdeal, v.isMaximal⟩ : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}))).subset ?_` and prove the remaining obligations. Introduce `𝔭 h𝔭`. Establish `hne : 𝔭.1 ≠ ⊥` using `fun e => ha0 (by`. Establish `: a ∈ 𝔭.1` using `h𝔭`.
+
+Rewrite using `[e, Ideal.mem_bot] at this)` and apply the resulting hypothesis. Use `⟨⟨𝔭.1, 𝔭.2.isPrime, hne⟩, ?_, rfl⟩` and prove the remaining obligations. Use `show 𝔭.1 ∣ Ideal.span {a}`. Rewrite using `[Ideal.dvd_iff_le, Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `h𝔭`.
+
+Use `⟨hfin.toFinset, fun 𝔭 h𝔭 => ?_⟩` and prove the remaining obligations. Establish `haP : a ∉ 𝔭.1` using `fun h => h𝔭 (hfin.mem_toFinset.2 h)`. Establish `e : a = (n₁ : 𝓞 F) * (n₂ : 𝓞 F)` using `by rw [ha]; push_cast; ring`. Establish `h1P : (n₁ : 𝓞 F) ∉ 𝔭.1` using `fun h => haP (e ▸ Ideal.mul_mem_right _ _ h)`. Establish `h2P : (n₂ : 𝓞 F) ∉ 𝔭.1` using `fun h => haP (e ▸ Ideal.mul_mem_left _ _ h)`.
+
+Conclude with `le_antisymm (locF_le_of_zsmul 𝔭.2.isPrime n₂ h2P h₂) (locF_le_of_zsmul 𝔭.2.isPrime n₁ h1P h₁)`.
+-/
 theorem badFinite : BadFinite := by
   intro K F V _ _ _ _ _ _ _ _ _ _ _ hK hF Λ₀ hΛ₀ U M hM
   classical
@@ -115,6 +151,9 @@ theorem badFinite : BadFinite := by
   exact le_antisymm (locF_le_of_zsmul 𝔭.2.isPrime n₂ h2P h₂)
     (locF_le_of_zsmul 𝔭.2.isPrime n₁ h1P h₁)
 
+/- English proof (translation)
+The claim follows from `glueExists_of_of hloc badFinite`.
+-/
 theorem glueExists_of_local (hloc : GlueLocal) : GlueExists :=
   glueExists_of_of hloc badFinite
 

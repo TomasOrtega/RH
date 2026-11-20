@@ -15,12 +15,24 @@ open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN Glob
 
 namespace GlobalTheory.TorRef.Unif
 
+/- English proof (translation)
+Introduce `σ hσ n B`. Simplify using `only [comb]`. Rewrite using `[h₁ σ hσ n B, h₂ σ hσ n B]`.
+-/
 theorem isTwInv_comb {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {ψ φ : InvFun (𝓞 E)} (a b : ℕ)
     (h₁ : IsTwInv H ψ) (h₂ : IsTwInv H φ) : IsTwInv H (comb a ψ b φ) := by
   intro σ hσ n B
   simp only [comb]
   rw [h₁ σ hσ n B, h₂ σ hσ n B]
 
+/- English proof (translation)
+Take `⟨b₁, N₁, T₁, hb₁, hN₁, r₁⟩` from `h₁`. Take `⟨b₂, N₂, T₂, hb₂, hN₂, r₂⟩` from `h₂`. Use `set s := T₁ + T₂ + 1 with hs`. Establish `hT₁ : T₁ ≤ N₂ * b₁ * s` using `le_trans (by omega) (Nat.le_mul_of_pos_left s (Nat.mul_pos hN₂ hb₁))`. Establish `hT₂ : T₂ ≤ N₁ * b₂ * s` using `le_trans (by omega) (Nat.le_mul_of_pos_left s (Nat.mul_pos hN₁ hb₂))`.
+
+Take `⟨P₁, hP₁⟩` from `r₁ _ hT₁`. Take `⟨P₂, hP₂⟩` from `r₂ _ hT₂`. Take `⟨Q₁, hQ₁⟩` from `d₁ (b₂ * (N₁ * (N₂ * b₁ * s))) (b₂ * b₁)`. Take `⟨Q₂, hQ₂⟩` from `d₂ (b₁ * (N₂ * (N₁ * b₂ * s))) (b₁ * b₂)`. Establish `k₁` using `GlobalTheory.PolScale.isPol_scale _ H D _ Xo₁ c₁ Z₁ ψ φ _ _ b₂ _ P₁ Q₁ hψ hφ hb₂ hP₁ hQ₁`.
+
+Establish `k₂` using `GlobalTheory.PolScale.isPol_scale _ H D _ Xo₂ c₂ Z₂ ψ φ _ _ b₁ _ P₂ Q₂ hψ hφ hb₁ hP₂ hQ₂`. Establish `e₁ : b₁ * (N₂ * (N₁ * b₂ * s)) = b₂ * (N₁ * (N₂ * b₁ * s))` using `by ring`. Establish `e₂ : b₁ * b₂ = b₂ * b₁` using `by ring`. Establish `e₃ : b₂ * (N₁ * (N₂ * b₁ * s) * k) = b₂ * (N₁ * (N₂ * b₁ * s)) * k` using `by ring`. Establish `e₄ : b₁ * (N₂ * (N₁ * b₂ * s) * k) = b₂ * (N₁ * (N₂ * b₁ * s)) * k` using `by ring`.
+
+Rewrite `k₁` using `[e₃]`. Rewrite `k₂` using `[e₄, e₁, e₂]`. Conclude with `⟨_, _, Nat.mul_pos hb₂ (Nat.mul_pos hN₁ (Nat.mul_pos (Nat.mul_pos hN₂ hb₁) (by omega))), Nat.mul_pos hb₂ hb₁, ⟨Q₁, k₁⟩, ⟨Q₂, k₂⟩⟩`.
+-/
 theorem exists_common_pair {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
     {l₁ l₂ : Level H} {Xo₁ : Moduli D l₁} {Xo₂ : Moduli D l₂} {c₁ : Coeff l₁} {c₂ : Coeff l₂}
     (Z₁ : GMod Xo₁ c₁) (Z₂ : GMod Xo₂ c₂) {ψ φ : InvFun (𝓞 E)} {k : ℕ} (hψ : IsTwInv H ψ) (hφ : IsTwInv H φ)
@@ -48,6 +60,17 @@ theorem exists_common_pair {E : Type} [Field E] [NumberField E] [IsCMField E] {H
   exact ⟨_, _, Nat.mul_pos hb₂ (Nat.mul_pos hN₁ (Nat.mul_pos (Nat.mul_pos hN₂ hb₁) (by omega))), Nat.mul_pos hb₂ hb₁,
     ⟨Q₁, k₁⟩, ⟨Q₂, k₂⟩⟩
 
+/- English proof (translation)
+Establish `hM : PolMapSt` using `GlobalTheory.TorRef.polMapSt`. Introduce `E _ _ _ H D _ Xo ψ φ k Z hψ hφ hZ`. Distinguish the cases in `h : ∃ (l : Level H) (c : Coeff l), ∀ p : ℕ, p.Prime → l.GoodAt p`. Use `swap`. Conclude with `⟨1, 1, one_pos, one_pos, fun l c hg => (h ⟨l, c, hg⟩).elim⟩`.
+
+Take `⟨l₀, c₀, h₀⟩` from `h`. Take `⟨b₀, N₀, T₀, hb₀, hN₀, hr₀⟩` from `(hZ l₀ c₀ h₀).1`. Use `⟨N₀ * (T₀ + 1), b₀, Nat.mul_pos hN₀ (Nat.succ_pos _), hb₀, fun l c hg => ?_⟩` and prove the remaining obligations. Take `⟨BD₀, hBD₀⟩` from `hr₀ (T₀ + 1) (Nat.le_succ _)`. Establish `hβ : ∀ (l : Level H) (c : Coeff l), IsDedFrac (algebraMap (𝓞 c.F) c.F) ∧ Algebra.FiniteType ℤ (𝓞 c.F)` using `fun l c => ⟨(GlobalTheory.CoeffRings.coeff_isDedFrac E H l c).1, (GlobalTheory.CoeffRings.coeff_isDedFrac E H l c).2.1⟩`.
+
+Take `⟨l', c', hg', b₁, b₂, r₁, r₂, ν₁, ν₂, hb₁, hb₂, hr₁, hr₂, hc₁, hc₂⟩` from `GlobalTheory.LvCover.exists_cover E H D Xo Z l c hg l₀ c₀ h₀`. Take `⟨A, B, -, -, ⟨P', hP'⟩, ⟨P₀, hP₀⟩⟩` from `exists_common_pair (Z l' c' hg') (Z l₀ c₀ h₀) hψ hφ (hZ l' c' hg').1 (hZ l' c' hg').2 (hZ l₀ c₀ h₀).1 (hZ l₀ c₀ h₀).2`. Take `⟨π₂, hπ₂, mu₂, hf₂, hj₂, -, -⟩` from `hM E H D l₀ l' (Xo l₀) (Xo l') c₀ c' _ _ _ _ (Z l₀ c₀ h₀) (Z l' c' hg') P₀ P' (comb A ψ B φ) (A * k) b₂ (RingEquiv.refl _) r₂ ν₂ (hβ l₀ c₀).1 (hβ l' c').1 (hβ l' c').2 (isTwInv_comb A B hψ hφ) rfl hP₀ hP' hc₂`. Take `⟨BD', hBD'⟩` from `(hZ l' c' hg').2 (N₀ * (T₀ + 1)) b₀`. Establish `k'` using `GlobalTheory.PolPull.isPol_pull E H D l₀ l' (Xo l₀) (Xo l') c₀ c' (Z l₀ c₀ h₀) (Z l' c' hg') BD₀ BD' _ _ b₂ _ r₂ ν₂ π₂ hπ₂ mu₂ (isTwInv_comb _ _ hψ hφ) rfl hf₂ hj₂ hBD₀ hBD'`.
+
+Take `⟨A', B', -, -, ⟨Q, hQ⟩, ⟨Q', hQ'⟩⟩` from `exists_common_pair (Z l c hg) (Z l' c' hg') hψ hφ (hZ l c hg).1 (hZ l c hg).2 (hZ l' c' hg').1 (hZ l' c' hg').2`. Take `⟨π₁, hπ₁, mu₁, hf₁, hj₁, -, -⟩` from `hM E H D l l' (Xo l) (Xo l') c c' _ _ _ _ (Z l c hg) (Z l' c' hg') Q Q' (comb A' ψ B' φ) (A' * k) b₁ (RingEquiv.refl _) r₁ ν₁ (hβ l c).1 (hβ l' c').1 (hβ l' c').2 (isTwInv_comb A' B' hψ hφ)`. Use `rfl hQ hQ' hc₁`. Establish `hs` using `GlobalTheory.ModelSurj.surjective_of_finite_lift E H D l l' (Xo l) (Xo l') c c' (Z l c hg) (Z l' c' hg') b₁ r₁ π₁ hπ₁ hb₁ hf₁ hj₁ hr₁`. Take `⟨BD, hBD⟩` from `(hZ l c hg).2 (N₀ * (T₀ + 1)) b₀`.
+
+Conclude with `⟨BD, GlobalTheory.AmpleDown.isPol_of_finite_surjective E H D l l' (Xo l) (Xo l') c c' (Z l c hg) (Z l' c' hg') BD BD' _ _ b₁ _ r₁ ν₁ π₁ hπ₁ mu₁ (isTwInv_comb _ _ hψ hφ) rfl hb₁ hf₁ hj₁ hs (CechPic.isLB_tens (isLB_lbPow (CechPic.isLB_dual (PolFin.isLB_detLie_of_polOf hQ.2.isLB)) _ …`.
+-/
 theorem uniformSt : UniformSt := by
   have hM : PolMapSt := GlobalTheory.TorRef.polMapSt
   intro E _ _ _ H D _ Xo ψ φ k Z hψ hφ hZ

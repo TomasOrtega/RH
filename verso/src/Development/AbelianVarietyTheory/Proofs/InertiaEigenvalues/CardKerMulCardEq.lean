@@ -3,6 +3,11 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CardDualZmodModu
 
 namespace GlobalTheory.ZModDual
 
+/- English proof (translation)
+Use `set K' := LinearMap.ker b.flip`. Establish `: Finite (B ⧸ K')` using `Finite.of_surjective K'.mkQ K'.mkQ_surjective`. Establish `: Finite (Module.Dual (ZMod n) B)` using `Finite.of_injective (fun f : Module.Dual (ZMod n) B => (f : B → ZMod n)) DFunLike.coe_injective`. Establish `hle : LinearMap.range b ≤ K'.dualAnnihilator`. Introduce and unpack `_ ⟨a, rfl⟩`.
+
+Rewrite using `[Submodule.mem_dualAnnihilator]`. Introduce `y hy`. Use `LinearMap.congr_fun (LinearMap.mem_ker.1 hy) a` as an intermediate fact. Simplify using `using this`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem card_quot_ker_le (n : ℕ) [NeZero n] (A B : Type) [AddCommGroup A] [Module (ZMod n) A]
     [AddCommGroup B] [Module (ZMod n) B] [Finite B]
     (b : A →ₗ[ZMod n] B →ₗ[ZMod n] ZMod n) :
@@ -25,6 +30,11 @@ theorem card_quot_ker_le (n : ℕ) [NeZero n] (A B : Type) [AddCommGroup A] [Mod
         Nat.card_congr (Submodule.dualQuotEquivDualAnnihilator K').toEquiv.symm
     _ = Nat.card (B ⧸ K') := card_dual_eq n (B ⧸ K')
 
+/- English proof (translation)
+Establish `h1` using `card_quot_ker_le n A B b`. Establish `h2` using `card_quot_ker_le n B A b.flip`. Rewrite `h2` using `[LinearMap.flip_flip]`. Establish `heq : Nat.card (A ⧸ LinearMap.ker b) = Nat.card (B ⧸ LinearMap.ker b.flip)` using `le_antisymm h1 h2`. Establish `eA` using `Submodule.card_eq_card_quotient_mul_card (LinearMap.ker b)`.
+
+Establish `eB` using `Submodule.card_eq_card_quotient_mul_card (LinearMap.ker b.flip)`. Rewrite using `[eA, eB, heq]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem card_ker_mul_card_eq (n : ℕ) [NeZero n] (A B : Type) [AddCommGroup A]
     [Module (ZMod n) A] [Finite A] [AddCommGroup B] [Module (ZMod n) B] [Finite B]
     (b : A →ₗ[ZMod n] B →ₗ[ZMod n] ZMod n) :

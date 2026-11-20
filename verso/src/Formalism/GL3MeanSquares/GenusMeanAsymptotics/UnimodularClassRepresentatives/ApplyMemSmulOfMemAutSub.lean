@@ -12,9 +12,23 @@ variable {K F : Type} [Field K] [NumberField K] [StarRing K] [Field F] [NumberFi
 variable {V : Type} [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V]
   [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+The claim follows from `Submodule.smul_mono_left (Ideal.pow_le_pow_right hij)`.
+-/
 theorem pow_smul_anti (𝔭 : Ideal (𝓞 F)) (A : Submodule (𝓞 K) V) {i j : ℕ} (hij : i ≤ j) :
     ((extP K 𝔭) ^ j • A : Submodule (𝓞 K) V) ≤ (extP K 𝔭) ^ i • A := Submodule.smul_mono_left (Ideal.pow_le_pow_right hij)
 
+/- English proof (translation)
+Use `h𝔭.isPrime` as an intermediate fact. Take `⟨n, hn, hnx⟩` from `LocF.exists_zsmul_le hM₁ hM₂`. Establish `hc : ((n : ℤ) : 𝓞 F) ≠ 0` using `by exact_mod_cast hn`. Take `⟨r, u, hu, hdvd⟩` from `D2.exists_mul_dvd h𝔭 hc`. Use `⟨r, ?_⟩` and prove the remaining obligations.
+
+Establish `key : extP K 𝔭 ^ r ≤ (locF 𝔭 M₂).colon (locF 𝔭 M₁ : Set V)`. Unfold `extP`. Rewrite using `[← Ideal.map_pow, Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Rewrite using `[Ideal.mem_comap, Submodule.mem_colon]`.
+
+Introduce `x hx`. Take `⟨s, hs, hsx⟩` from `(LocalSpans.mem_locF 𝔭 M₁ x).1 hx`. Take `⟨d, hd⟩` from `hdvd a ha`. Use `(LocalSpans.mem_locF 𝔭 M₂ _).2 ⟨u * s, fun h => (h𝔭.isPrime.mem_or_mem h).elim hu hs, ?_⟩` and prove the remaining obligations. Establish `e : algebraMap (𝓞 F) (𝓞 K) (u * s) • algebraMap (𝓞 F) (𝓞 K) a • x = algebraMap (𝓞 F) (𝓞 K) d • (n • (algebraMap (𝓞 F) (𝓞 K) s • x))`.
+
+Rewrite using `[← LocF.algebraMap_intCast_smul (F := F) (K := K) n]`. Simplify using `only [smul_smul, ← map_mul]`. Use `congr 2`. Take the linear combination `s * hd`. Rewrite using `[e]`.
+
+Conclude with `M₂.smul_mem _ (hnx _ hsx)`. Rewrite using `[Submodule.smul_le]`. Introduce `a ha x hx`. Conclude with `Submodule.mem_colon.1 (key ha) x hx`.
+-/
 theorem exists_pow_smul_le {M₁ M₂ : Submodule (𝓞 K) V} (hM₁ : Submodule.IsLattice K M₁)
     (hM₂ : Submodule.IsLattice K M₂) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) :
     ∃ r : ℕ, ((extP K 𝔭) ^ r • locF 𝔭 M₁ : Submodule (𝓞 K) V) ≤ locF 𝔭 M₂ := by
@@ -46,6 +60,9 @@ theorem exists_pow_smul_le {M₁ M₂ : Submodule (𝓞 K) V} (hM₁ : Submodule
   exact Submodule.mem_colon.1 (key ha) x hx
 
 set_option linter.unusedVariables false in
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `le_inf ?_ ?_` and prove the remaining obligations. Conclude with `(LocF.locF_mono 𝔭 inf_le_left).trans hA.le`. Conclude with `(LocF.locF_mono 𝔭 inf_le_right).trans hB.le`. Conclude with `LocF.le_locF 𝔭 _`.
+-/
 theorem locF_inf {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {A B : Submodule (𝓞 K) V}
     (hA : locF 𝔭 A = A) (hB : locF 𝔭 B = B) : locF 𝔭 (A ⊓ B) = A ⊓ B := by
   apply le_antisymm
@@ -54,6 +71,13 @@ theorem locF_inf {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {A B : Submodu
     · exact (LocF.locF_mono 𝔭 inf_le_right).trans hB.le
   · exact LocF.le_locF 𝔭 _
 
+/- English proof (translation)
+Use `h𝔭.isPrime` as an intermediate fact. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `le_inf (LocF.locF_mono 𝔭 inf_le_left) (LocF.locF_mono 𝔭 inf_le_right)`. Introduce and unpack `x ⟨h1, h2⟩`. Take `⟨s, hs, hsx⟩` from `(LocalSpans.mem_locF 𝔭 A x).1 h1`.
+
+Take `⟨t, ht, htx⟩` from `(LocalSpans.mem_locF 𝔭 B x).1 h2`. Use `(LocalSpans.mem_locF 𝔭 _ x).2 ⟨s * t, fun h => (h𝔭.isPrime.mem_or_mem h).elim hs ht, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm, map_mul, mul_smul]`. Conclude with `A.smul_mem _ hsx`. Rewrite using `[map_mul, mul_smul]`.
+
+Conclude with `B.smul_mem _ htx`.
+-/
 theorem locF_inf_locF {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (A B : Submodule (𝓞 K) V) :
     locF 𝔭 (A ⊓ B) = locF 𝔭 A ⊓ locF 𝔭 B := by
   have := h𝔭.isPrime
@@ -68,6 +92,13 @@ theorem locF_inf_locF {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (A B : Su
     · rw [map_mul, mul_smul]
       exact B.smul_mem _ htx
 
+/- English proof (translation)
+Establish `: Module.Finite (𝓞 K) ↥M₁` using `Module.Finite.iff_fg.2 hM₁.fg`. Establish `: IsNoetherian (𝓞 K) ↥M₁` using `inferInstance`. Establish `: IsNoetherian (𝓞 K) ↥(M₁ ⊓ M₂)` using `isNoetherian_of_le inf_le_left`. Rewrite using `[← Module.Finite.iff_fg]`. Use `infer_instance`.
+
+Use `span_eq_top := by`. Take `⟨n, hn, hnx⟩` from `LocF.exists_zsmul_le hM₁ hM₂`. Rewrite using `[eq_top_iff, ← hM₁.span_eq_top, Submodule.span_le]`. Introduce `x hx`. Establish `h1 : n • x ∈ Submodule.span K ((M₁ ⊓ M₂ : Submodule (𝓞 K) V) : Set V)` using `Submodule.subset_span ⟨zsmul_mem hx n, hnx x hx⟩`.
+
+Establish `h2` using `Submodule.smul_mem _ ((n : K)⁻¹) h1`. Rewrite `h2` using `[← Int.cast_smul_eq_zsmul K, smul_smul, inv_mul_cancel₀ (by exact_mod_cast hn), one_smul]`. Then use the resulting hypothesis.
+-/
 theorem isLattice_inf {M₁ M₂ : Submodule (𝓞 K) V} (hM₁ : Submodule.IsLattice K M₁)
     (hM₂ : Submodule.IsLattice K M₂) : Submodule.IsLattice K (M₁ ⊓ M₂) where
   fg := by
@@ -86,6 +117,9 @@ theorem isLattice_inf {M₁ M₂ : Submodule (𝓞 K) V} (hM₁ : Submodule.IsLa
     rwa [← Int.cast_smul_eq_zsmul K, smul_smul, inv_mul_cancel₀ (by exact_mod_cast hn),
       one_smul] at h2
 
+/- English proof (translation)
+Rewrite using `[← locF_inf_locF h𝔭]`. Conclude with `finite_quot (isLattice_inf hM₁ hM₂) h𝔭 k`.
+-/
 theorem finite_quot_inf {M₁ M₂ : Submodule (𝓞 K) V} (hM₁ : Submodule.IsLattice K M₁)
     (hM₂ : Submodule.IsLattice K M₂) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (k : ℕ) :
     Finite (↥(locF 𝔭 M₁ ⊓ locF 𝔭 M₂) ⧸
@@ -93,12 +127,18 @@ theorem finite_quot_inf {M₁ M₂ : Submodule (𝓞 K) V} (hM₁ : Submodule.Is
   rw [← locF_inf_locF h𝔭]
   exact finite_quot (isLattice_inf hM₁ hM₂) h𝔭 k
 
+/- English proof (translation)
+Establish `h2 : A.map ((g : V →ₗ[K] V).restrictScalars (𝓞 K)) = A` using `hg.2`. Rewrite using `[← h2]`. Conclude with `Submodule.mem_map_of_mem hz`.
+-/
 theorem apply_mem_of_mem_autSub {h : V →ₗ⋆[K] V →ₗ[K] K} {A : Submodule (𝓞 K) V} {g : V ≃ₗ[K] V}
     (hg : g ∈ autSub h A) {z : V} (hz : z ∈ A) : g z ∈ A := by
   have h2 : A.map ((g : V →ₗ[K] V).restrictScalars (𝓞 K)) = A := hg.2
   rw [← h2]
   exact Submodule.mem_map_of_mem hz
 
+/- English proof (translation)
+Establish `h2 : A.map ((g : V →ₗ[K] V).restrictScalars (𝓞 K)) = A` using `hg.2`. Establish `h1 : g z ∈ (I • A).map ((g : V →ₗ[K] V).restrictScalars (𝓞 K))` using `Submodule.mem_map_of_mem hz`. Rewrite `h1` using `[Submodule.map_smul'', h2]`. Then use the resulting hypothesis.
+-/
 theorem apply_mem_smul_of_mem_autSub {h : V →ₗ⋆[K] V →ₗ[K] K} {A : Submodule (𝓞 K) V}
     {g : V ≃ₗ[K] V} (hg : g ∈ autSub h A) (I : Ideal (𝓞 K)) {z : V} (hz : z ∈ I • A) :
     g z ∈ I • A := by
@@ -106,6 +146,13 @@ theorem apply_mem_smul_of_mem_autSub {h : V →ₗ⋆[K] V →ₗ[K] K} {A : Sub
   have h1 : g z ∈ (I • A).map ((g : V →ₗ[K] V).restrictScalars (𝓞 K)) := Submodule.mem_map_of_mem hz
   rwa [Submodule.map_smul'', h2] at h1
 
+/- English proof (translation)
+Take `⟨π, hπ, hπ'⟩` from `D2.exists_unif h𝔭`. Establish `hz1 : algebraMap F K (π : F) ^ r₂ • z ∈ locF 𝔭 M₁` using `h2 ((D2.mem_smul_iff_unif h𝔭 hπ hπ' M₂).2 ⟨z, hz, rfl⟩)`. Establish `h3` using `pow_smul_anti 𝔭 (locF 𝔭 M₁) hj (hg _ hz1)`. Rewrite `h3` using `[pow_add, Submodule.mul_smul]`. Establish `h4` using `Submodule.smul_mono (le_refl (extP K 𝔭 ^ r₂)) h1 h3`.
+
+Take `⟨w, hw, e⟩` from `(D2.mem_smul_iff_unif h𝔭 hπ hπ' M₂).1 h4`. Rewrite `e` using `[map_smul, ← smul_sub]`. Establish `e' : g z - z = w` using `smul_right_injective V (pow_ne_zero r₂ (D2.unif_ne_zero (K := K) hπ')) e`. Establish `: g z = w + z` using `by rw [← e']; abel`. Rewrite using `[this]`.
+
+Conclude with `add_mem hw hz`.
+-/
 theorem congr_apply_mem {M₁ M₂ : Submodule (𝓞 K) V} {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal)
     {r₁ r₂ j : ℕ} (h1 : ((extP K 𝔭) ^ r₁ • locF 𝔭 M₁ : Submodule (𝓞 K) V) ≤ locF 𝔭 M₂)
     (h2 : ((extP K 𝔭) ^ r₂ • locF 𝔭 M₂ : Submodule (𝓞 K) V) ≤ locF 𝔭 M₁) (hj : r₂ + r₁ ≤ j)
@@ -126,6 +173,13 @@ theorem congr_apply_mem {M₁ M₂ : Submodule (𝓞 K) V} {𝔭 : Ideal (𝓞 F
   rw [this]
   exact add_mem hw hz
 
+/- English proof (translation)
+Take `⟨r₁, h1⟩` from `exists_pow_smul_le hM₁ hM₂ h𝔭`. Take `⟨r₂, h2⟩` from `exists_pow_smul_le hM₂ hM₁ h𝔭`. Use `⟨r₂ + r₁, fun j hj g hg hc => ⟨hg.1, ?_⟩⟩` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨z, hz, rfl⟩`.
+
+Conclude with `congr_apply_mem h𝔭 h1 h2 hj g hc hz`. Introduce `x hx`. Establish `hc' : ∀ z ∈ locF 𝔭 M₁, g.symm z - z ∈ ((extP K 𝔭) ^ j • locF 𝔭 M₁ : Submodule (𝓞 K) V)`. Introduce `z hz`. Establish `hz' : g.symm z ∈ locF 𝔭 M₁` using `apply_mem_of_mem_autSub (inv_mem hg) hz`.
+
+Use `neg_mem (hc _ hz')` as an intermediate fact. Rewrite `this` using `[LinearEquiv.apply_symm_apply, neg_sub]`. Then use the resulting hypothesis. Conclude with `⟨g.symm x, congr_apply_mem h𝔭 h1 h2 hj g.symm hc' hx, by simp⟩`.
+-/
 theorem exists_congr_mem_autSub (h : V →ₗ⋆[K] V →ₗ[K] K) {M₁ M₂ : Submodule (𝓞 K) V}
     (hM₁ : Submodule.IsLattice K M₁) (hM₂ : Submodule.IsLattice K M₂) {𝔭 : Ideal (𝓞 F)}
     (h𝔭 : 𝔭.IsMaximal) :
@@ -147,6 +201,15 @@ theorem exists_congr_mem_autSub (h : V →ₗ⋆[K] V →ₗ[K] K) {M₁ M₂ : 
       rwa [LinearEquiv.apply_symm_apply, neg_sub] at this
     exact ⟨g.symm x, congr_apply_mem h𝔭 h1 h2 hj g.symm hc' hx, by simp⟩
 
+/- English proof (translation)
+Set `_ : MulAction (V ≃ₗ[K] V) (Submodule (𝓞 K) V)` to `{ smul := fun g L => Formalism.HermitianLatticesTheory.gmap g L one_smul := autSub_gmap_one mul_smul := autSub_gmap_mul }`. Establish `hst : MulAction.stabilizer ↥(autSub h A) B = (autSub h B).subgroupOf (autSub h A)`. Use extensionality with `g`. Rewrite using `[MulAction.mem_stabilizer_iff, Subgroup.mem_subgroupOf]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hg`. Conclude with `⟨g.2.1, hg⟩`. Introduce `hg`. Conclude with `hg.2`. Rewrite using `[Subgroup.relIndex, ← hst, Subgroup.index_eq_card, ← Nat.card_congr (MulAction.orbitEquivQuotientStabilizer _ B)]`.
+
+Unfold `orbCount`. Use `Nat.card_congr (Equiv.subtypeEquivRight ?_)` and prove the remaining obligations. Introduce `C`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, hA, hB⟩`.
+
+Conclude with `⟨⟨g, hg, hA⟩, hB⟩`. Introduce and unpack `⟨⟨g, hg, hA⟩, hB⟩`. Conclude with `⟨g, hg, hA, hB⟩`.
+-/
 theorem orbCount_eq_relIndex (h : V →ₗ⋆[K] V →ₗ[K] K) (A B : Submodule (𝓞 K) V) :
     orbCount h A B = (autSub h B).relIndex (autSub h A) := by
   let _ : MulAction (V ≃ₗ[K] V) (Submodule (𝓞 K) V) :=
@@ -172,6 +235,13 @@ theorem orbCount_eq_relIndex (h : V →ₗ⋆[K] V →ₗ[K] K) (A B : Submodule
   · rintro ⟨⟨g, hg, hA⟩, hB⟩
     exact ⟨g, hg, hA, hB⟩
 
+/- English proof (translation)
+Use `show (Γ.subgroupOf H).index ≠ 0`. Establish `hfin : Finite (H ⧸ Γ.subgroupOf H)`. Set `g : Set.range f → H ⧸ Γ.subgroupOf H` to `fun x => QuotientGroup.mk x.2.choose`. Apply `Finite.of_surjective g` to reduce the goal to its premises. Introduce `q`.
+
+Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H a`. Use `⟨⟨f a, a, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show QuotientGroup.mk _ = QuotientGroup.mk a`. Rewrite using `[QuotientGroup.eq, Subgroup.mem_subgroupOf, Subgroup.coe_mul, Subgroup.coe_inv]`.
+
+Conclude with `hf _ _ (⟨f a, a, rfl⟩ : Set.range f).2.choose_spec`. Conclude with `Subgroup.index_ne_zero_of_finite`.
+-/
 theorem relIndex_ne_zero_of_map {G X : Type*} [Group G] [Finite X] (H Γ : Subgroup G) (f : H → X)
     (hf : ∀ a b : H, f a = f b → (a : G)⁻¹ * b ∈ Γ) : Γ.relIndex H ≠ 0 := by
   classical
@@ -198,6 +268,11 @@ def redA {h : V →ₗ⋆[K] V →ₗ[K] K} {A : Submodule (𝓞 K) V} (I : Idea
     rw [← Submodule.map_le_iff_le_comap, Submodule.map_smul'']
     exact Submodule.smul_mono le_rfl le_top)
 
+/- English proof (translation)
+Establish `h1` using `congrArg (fun φ => φ (Submodule.Quotient.mk (⟨z, hz⟩ : ↥A))) e`. Simplify using `only [redA, Submodule.mapQ_apply] at h1`. Rewrite `h1` using `[eq_comm, Submodule.Quotient.eq]`. Establish `h2` using `Submodule.mem_map_of_mem (f := A.subtype) h1`. Rewrite `h2` using `[Submodule.map_smul'', Submodule.map_subtype_top]`.
+
+Simplify using `only [Submodule.subtype_apply] at h2`. Conclude with `h2`.
+-/
 theorem sub_mem_of_redA_eq {h : V →ₗ⋆[K] V →ₗ[K] K} {A : Submodule (𝓞 K) V} (I : Ideal (𝓞 K))
     {a b : autSub h A} (e : redA I a = redA I b) {z : V} (hz : z ∈ A) :
     (b : V ≃ₗ[K] V) z - (a : V ≃ₗ[K] V) z ∈ I • A := by
@@ -209,6 +284,13 @@ theorem sub_mem_of_redA_eq {h : V →ₗ⋆[K] V →ₗ[K] K} {A : Submodule (�
   simp only [Submodule.subtype_apply] at h2
   exact h2
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `exists_congr_mem_autSub h hM₁ hM₂ h𝔭`. Use `finite_quot hM₁ h𝔭 j` as an intermediate fact. Establish `: Finite ((↥(locF 𝔭 M₁) ⧸ ((extP K 𝔭) ^ j • ⊤ : Submodule (𝓞 K) ↥(locF 𝔭 M₁))) →ₗ[𝓞 K] (↥(locF 𝔭 M₁) ⧸ ((extP K 𝔭) ^ j • ⊤ : Submodule (𝓞 K) ↥(locF 𝔭 M₁))))` using `Finite.of_injective _ DFunLike.coe_injective`. Use `relIndex_ne_zero_of_map _ _ (redA (extP K 𝔭 ^ j)) fun a b e => ?_` and prove the remaining obligations. Use `hj j le_rfl _ (mul_mem (inv_mem a.2) b.2) fun z hz => ?_` and prove the remaining obligations.
+
+Establish `h1` using `apply_mem_smul_of_mem_autSub (inv_mem a.2) _ (sub_mem_of_redA_eq _ e hz)`. Establish `h2 : ((a : V ≃ₗ[K] V)⁻¹ * (b : V ≃ₗ[K] V)) z - z = (a : V ≃ₗ[K] V)⁻¹ ((b : V ≃ₗ[K] V) z - (a : V ≃ₗ[K] V) z)`. Rewrite using `[map_sub]`. Express the relevant statement in the definitionally equal form `_ = (a : V ≃ₗ[K] V).symm _ - (a : V ≃ₗ[K] V).symm _`. Rewrite using `[LinearEquiv.symm_apply_apply]`.
+
+Both sides reduce to the same expression. Rewrite using `[h2]`. Conclude with `h1`.
+-/
 theorem relIndex_autSub_ne_zero (h : V →ₗ⋆[K] V →ₗ[K] K) {M₁ M₂ : Submodule (𝓞 K) V}
     (hM₁ : Submodule.IsLattice K M₁) (hM₂ : Submodule.IsLattice K M₂) {𝔭 : Ideal (𝓞 F)}
     (h𝔭 : 𝔭.IsMaximal) :

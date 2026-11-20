@@ -12,6 +12,11 @@ noncomputable section
 
 namespace GlobalTheory.WeakClosed.TiltUnif
 
+/- English proof (translation)
+Establish `h : AI.εroot j ^ l ^ j = AI.ε`. Proceed by induction on `j with`. Consider the case `zero => simp [LocAinf.εroot]`. Consider the case `succ j ih`. Rewrite using `[pow_succ', pow_mul, LocAinf.εroot, Function.iterate_succ_apply', frobeniusEquiv_symm_pow_p]`.
+
+Conclude with `ih`. Rewrite using `[sub_pow_char_pow, h, one_pow]`.
+-/
 theorem εroot_sub_pow' {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P) (j : ℕ) :
     (AI.εroot j - 1) ^ l ^ j = AI.ε - 1 := by
   have h : AI.εroot j ^ l ^ j = AI.ε := by
@@ -22,12 +27,20 @@ theorem εroot_sub_pow' {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf 
       exact ih
   rw [sub_pow_char_pow, h, one_pow]
 
+/- English proof (translation)
+Proceed by induction on `k generalizing x with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ, pow_mul, map_pow, PreTilt.coeff_pow_p, ih]`.
+-/
 theorem coeff_pow_pow' {l : ℕ} [Fact l.Prime] (x : OCb l) (k : ℕ) :
     PreTilt.coeff k (x ^ l ^ k) = PreTilt.coeff 0 x := by
   induction k generalizing x with
   | zero => simp
   | succ k ih => rw [pow_succ, pow_mul, map_pow, PreTilt.coeff_pow_p, ih]
 
+/- English proof (translation)
+Establish `h0 : PreTilt.coeff 0 (AI.ε - 1) = 0`. Rewrite using `[map_sub, AI.ε_coeff, AI.ζ_zero, map_one, map_one, sub_self]`. Use `Perfection.ext fun k => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `hb (l ^ s * l ^ k)`. Express the relevant statement in the definitionally equal form `PreTilt.coeff k b = PreTilt.coeff k 0`.
+
+Rewrite using `[hc, map_mul, pow_mul, εroot_sub_pow', coeff_pow_pow', h0, zero_mul, map_zero]`.
+-/
 theorem eq_zero_of_forall_dvd {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P) (s : ℕ)
     (b : OCb l) (hb : ∀ m : ℕ, (AI.εroot s - 1) ^ m ∣ b) : b = 0 := by
   have h0 : PreTilt.coeff 0 (AI.ε - 1) = 0 := by
@@ -37,6 +50,11 @@ theorem eq_zero_of_forall_dvd {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : Lo
   change PreTilt.coeff k b = PreTilt.coeff k 0
   rw [hc, map_mul, pow_mul, εroot_sub_pow', coeff_pow_pow', h0, zero_mul, map_zero]
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Establish `h1` using `(h.pow (l ^ s)).map (PreTilt.coeff 0)`. Rewrite `h1` using `[εroot_sub_pow', map_sub, AI.ε_coeff, AI.ζ_zero, map_one, map_one, sub_self]`. Use `haveI : Nontrivial (ModP (OC l) l) := CharP.nontrivial_of_char_ne_one (Fact.out : l.Prime).ne_one`. Conclude with `not_isUnit_zero h1`.
+
+Assume the negation of the conclusion as `h`. Conclude with `ha (eq_zero_of_forall_dvd AI s a fun m => (ValuationRing.dvd_total _ _).resolve_right fun h' => h ⟨m, h'⟩)`.
+-/
 theorem main {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P) (s : ℕ) :
     ¬ IsUnit (AI.εroot s - 1) ∧ ∀ a : OCb l, a ≠ 0 → ∃ m : ℕ, a ∣ (AI.εroot s - 1) ^ m := by
   refine ⟨fun h => ?_, fun a ha => ?_⟩

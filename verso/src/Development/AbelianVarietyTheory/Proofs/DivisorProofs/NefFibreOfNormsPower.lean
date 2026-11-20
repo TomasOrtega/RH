@@ -27,6 +27,9 @@ namespace GlobalTheory.CoverNef
 
 variable {F : Type} [Field F] [NumberField F] {Y : Var F}
 
+/- English proof (translation)
+Take `⟨r, hr, hu, hc, hf⟩` from `h`. Use `⟨r, hr, hu, fun σ z y y' i e₁ e₂ hi => ?_, hf⟩` and prove the remaining obligations. Use `show a σ y - _ = _ - ((L.φ _).φ (i PUnit.unit) y' + 2 * t _) / 2`. Rewrite using `[hc σ z y y' i e₁ e₂ hi]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norms_shift {V : Cover Y} {L : HermLB V.p} {f : Y.X → Y.Fn} {a : ∀ σ : F →+* ℂ, Pts Y σ → ℝ}
     {l : ∀ v : HeightOneSpectrum (𝓞 F), Ext v → AlgPt Y → ℝ} (h : Norms V L f a l) (t : (𝓞 F →+* ℂ) → ℝ)
     (ht : ∀ σ, t ((starRingEnd ℂ).comp σ) = t σ) :
@@ -37,6 +40,17 @@ theorem norms_shift {V : Cover Y} {L : HermLB V.p} {f : Y.X → Y.Fn} {a : ∀ �
   rw [hc σ z y y' i e₁ e₂ hi]
   ring
 
+/- English proof (translation)
+Take `⟨m, b, b', hb, hb', hm⟩` from `GlobalTheory.exists_mul_eq_log_adicAbv_sub F c hc (GlobalTheory.T.norm_shift_rational_multiple_log F Y V L₁ L₂ f a l c h₁ h₂)`. Establish `hb₀ : (algebraMap (𝓞 F) F b) ≠ 0` using `by simpa using hb`. Establish `hb₀' : (algebraMap (𝓞 F) F b') ≠ 0` using `by simpa using hb'`. Use `set q : F := algebraMap (𝓞 F) F b' / algebraMap (𝓞 F) F b with hq`. Establish `hq₀ : q ≠ 0` using `div_ne_zero hb₀' hb₀`.
+
+Set `t : (𝓞 F →+* ℂ) → ℝ` to `fun τ => Real.log ‖τ b'‖ - Real.log ‖τ b‖`. Establish `ht : ∀ τ, t ((starRingEnd ℂ).comp τ) = t τ` using `fun τ => by simp [t]`. Establish `N₁` using `GlobalTheory.T.norms_tensor_power F Y V L₁ f a l m h₁`. Establish `N₂` using `norms_shift (GlobalTheory.T.norms_scale_by_constant F Y V _ _ _ _ q hq₀ (GlobalTheory.T.norms_tensor_power F Y V L₂ f a _ m h₂)) t ht`. Establish `hI` using `GlobalTheory.T.isometric_of_same_norms F Y V _ _ _ _ _ N₁ (N₂.congr (fun _ => rfl) (fun σ y => ?_) (fun v e y => ?_))`.
+
+Establish `hp` using `GlobalTheory.T.nefFib_pow_iff' (𝓞 F) V.X V.p V.ar.isProjOver`. Use `(hp L₁ m m.pos).1 ((GlobalTheory.TrueGeo.NefFibUniq.nefFib_iff_of_isometric hI).2 ?_)` and prove the remaining obligations. Conclude with `(GlobalTheory.TrueGeo.NefFibUniq.nefFib_shift _ _ _).2 ((hp L₂ m m.pos).2 hN)`. Establish `e₁ : (σ.comp (algebraMap (𝓞 F) F)) b' = σ (algebraMap (𝓞 F) F b')` using `rfl`. Establish `e₂ : (σ.comp (algebraMap (𝓞 F) F)) b = σ (algebraMap (𝓞 F) F b)` using `rfl`.
+
+Simplify using `only [t, e₁, e₂, hq, map_div₀, norm_div]`. Rewrite using `[Real.log_div (by simpa using hb₀') (by simpa using hb₀)]`. Expand and normalize the polynomial expressions, which then agree. Use `hm v` as an intermediate fact. Simplify using `only [hq, map_div₀]`.
+
+Rewrite using `[Real.log_div ((AbsoluteValue.pos_iff _).2 hb₀').ne' ((AbsoluteValue.pos_iff _).2 hb₀).ne']`. Take the linear combination `this`.
+-/
 theorem nefFib_of_norms {V : Cover Y} {L₁ L₂ : HermLB V.p} {f : Y.X → Y.Fn} {a : ∀ σ : F →+* ℂ, Pts Y σ → ℝ}
     {l : ∀ v : HeightOneSpectrum (𝓞 F), Ext v → AlgPt Y → ℝ} {c : HeightOneSpectrum (𝓞 F) → ℝ}
     (hc : (Function.support c).Finite) (h₁ : Norms V L₁ f a l) (h₂ : Norms V L₂ f a fun v e y => l v e y + c v)
@@ -70,6 +84,11 @@ namespace GlobalTheory.CoverNef
 
 variable {F : Type} [Field F] [NumberField F] {Y : Var F}
 
+/- English proof (translation)
+Take `⟨h₀, -⟩` from `GlobalTheory.T.cover_refinement_generic_degree F Y V V' a ha g hj hπ hg`. Establish `: IsProper V.p` using `CommonModel.isProper_of_isProjOver V.ar.isProjOver`. Establish `: IsProper V'.p` using `CommonModel.isProper_of_isProjOver V'.ar.isProjOver`. Establish `: IsProper (a ≫ V.p)` using `by rw [ha]; infer_instance`. Establish `: IsProper a` using `IsProper.of_comp a V.p`.
+
+Establish `: IsDominant a` using `⟨Dense.mono (Set.singleton_subset_iff.2 ⟨_, h₀⟩) (dense_iff_closure_eq.2 ((genericPoint_spec V.X).trans Set.top_eq_univ))⟩`. Conclude with `(surjective_of_isDominant_of_isClosed_range a a.isClosedMap.isClosed_range).surj`.
+-/
 theorem surjective_of_cover {V V' : Cover Y} (a : V'.X ⟶ V.X) (ha : a ≫ V.p = V'.p) (g : V'.G ⟶ V.G)
     (hj : V'.j ≫ a = g ≫ V.j) (hπ : g ≫ V.π = V'.π) (hg : g (genericPoint V'.G) = genericPoint V.G) :
     Function.Surjective a := by
@@ -82,6 +101,11 @@ theorem surjective_of_cover {V V' : Cover Y} (a : V'.X ⟶ V.X) (ha : a ≫ V.p 
     (dense_iff_closure_eq.2 ((genericPoint_spec V.X).trans Set.top_eq_univ))⟩
   exact (surjective_of_isDominant_of_isClosed_range a a.isClosedMap.isClosed_range).surj
 
+/- English proof (translation)
+Introduce `_ F _ _ Y A ⟨M, L₀, k₀, cf, hI, hN⟩ V L k hk hL`. Take `⟨V', a, g, b, ha, hb, hj, hπ, hg, hb'⟩` from `GlobalTheory.Mean4O.CoverDom.exists_cover_dominating F Y V M`. Establish `N₁` using `GlobalTheory.T.norms_tensor_power F Y V' _ _ _ _ (k₀ : ℕ) (GlobalTheory.T.norms_pullback_along_cover F Y V V' a ha g hj hπ hg L _ _ _ hL)`. Establish `N₂` using `GlobalTheory.T.norms_tensor_power F Y V' _ _ _ _ k (GlobalTheory.T.cover_norms_pullback_power F (cxSt F) Y A M L₀ k₀ cf hI V' b hb hb')`. Establish `hc : (Function.support fun v => (k : ℝ) * (k₀ : ℕ) * (A.n : ℕ) * cf v).Finite` using `hI.1.subset (Function.support_mul_subset_right _ _)`.
+
+Establish `hP` using `nefFib_of_norms hc N₁ (N₂.congr (fun x => by rw [← pow_mul, ← pow_mul, mul_comm]) (fun σ y => by ring) (fun v e y => by ring)) ((GlobalTheory.T.nefFib_pow_iff' (𝓞 F) V'.X V'.p V'.ar.isProjOver _ k hk).2 (GlobalTheory.T.nefFib_pullback (𝓞 F) M.X V'.X M.p V'.p M.ar.isProjOver V'.ar …`. Conclude with `GlobalTheory.T.nefFib_of_surjective_pullback (𝓞 F) V.X V'.X V.p V'.p V.ar.isProjOver V'.ar.isProjOver a ha (surjective_of_cover a ha g hj hπ hg) L ((GlobalTheory.T.nefFib_pow_iff' (𝓞 F) V'.X V'.p V'.ar.isProjOver _ _ k₀.pos).1 hP)`.
+-/
 theorem nefFib_of_norms_adl : Hypotheses2 → ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (A : Adl (cxSt F) Y), A.NefFib →
     ∀ (V : Cover Y) (L : HermLB V.p) (k : ℕ), 0 < k → Norms V L (fun x => genAt A.D x ^ k) (fun σ y => k * lnAdl A σ y)
       (fun v e y => k * A.lg v e y) → NefFib L := by

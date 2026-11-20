@@ -19,6 +19,9 @@ noncomputable section
 
 namespace GlobalTheory.HSCore.ImageDegree
 
+/- English proof (translation)
+Introduce `hQ F _ _ T V Ω _ _ _ _ _ _ Nm W ev hG hB hP`. Take `⟨-, hdeg, hdim⟩` from `GlobalTheory.T.degree_image_birational_linearSystem_eq_selfInt hQ F T.toLinSys hG.alg.variety hG.alg.bpf hB`. Take `⟨f, hf, -⟩` from `hQ.chowInt F T.N T.D T.imageIdeal T.toLinSys.isHomogeneous_imageIdeal (GlobalTheory.Adelic.HeightExists.isPrime_imageIdeal hG.alg.variety) hdim`. Rewrite using `[hP.imageDeg_eq hf]`. Conclude with `hdeg`.
+-/
 theorem imageDeg_eq_del : Quoted → ∀ (F : Type) [Field F] [NumberField F] (T : Tuple F) (V Ω : Type) [AddCommGroup V] [Module F V] [Module (𝓞 F) V] [IsScalarTower (𝓞 F) F V] [Field Ω] [Algebra F Ω] (Nm : (F →+* ℂ) → V → ℝ) (W : Submodule (𝓞 F) V) (ev : V →ₗ[F] Ω), T.IsGeometric → T.Birational → CompHt.Presents T.toHermSys Nm W ev → (CompHt.imageDeg ev T.D : ℤ) = T.del := by
   intro hQ F _ _ T V Ω _ _ _ _ _ _ Nm W ev hG hB hP
   obtain ⟨-, hdeg, hdim⟩ := GlobalTheory.T.degree_image_birational_linearSystem_eq_selfInt hQ F T.toLinSys hG.alg.variety hG.alg.bpf hB

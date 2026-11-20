@@ -31,14 +31,23 @@ def lubinTateField (hπ : Irreducible π) (hf : IsLubinTateSeries π f) (n : ℕ
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] [ValuativeRel Ω]
   [TopologicalSpace Ω] [IsValuativeTopology Ω] [ValuativeExtension K Ω] in
 
+/- English proof (translation)
+The claim follows from `adjoin.finiteDimensional (Algebra.IsAlgebraic.isAlgebraic x).isIntegral`.
+-/
 theorem finiteDimensional_adjoin_simple (x : Ω) : FiniteDimensional K K⟮x⟯ :=
   adjoin.finiteDimensional (Algebra.IsAlgebraic.isAlgebraic x).isIntegral
 
+/- English proof (translation)
+The claim follows from `subset_adjoin K _ (Set.mem_image_of_mem IdealPoint.val (SetLike.mem_coe.mpr hx))`.
+-/
 theorem val_mem_lubinTateField (hπ : Irreducible π) (hf : IsLubinTateSeries π f) {n : ℕ}
     {x : IdealPoint Ω (lubinTateFormalGroup hπ hf)} (hx : x ∈ lubinTateTorsion Ω hf n) :
     x.val ∈ lubinTateField Ω hπ hf n :=
   subset_adjoin K _ (Set.mem_image_of_mem IdealPoint.val (SetLike.mem_coe.mpr hx))
 
+/- English proof (translation)
+The claim follows from `have := finiteDimensional_adjoin_simple (K := K) x psEval_mem φ K⟮x⟯ (fun _ => mem_adjoin_simple_self K x) fun _ => hx`.
+-/
 theorem psEval_mem_adjoin_simple (φ : PowerSeries 𝒪[K]) {x : Ω} (hx : valuation Ω x < 1) :
     psEval φ (fun _ => x) ∈ K⟮x⟯ :=
   have := finiteDimensional_adjoin_simple (K := K) x
@@ -50,6 +59,11 @@ section SepClosed
 
 variable [IsSepClosed Ω]
 
+/- English proof (translation)
+Take `⟨l, hl, hann, hgen⟩` from `exists_generator_lubinTateTorsion (Ω := Ω) (hπ := hπ) hf n`. Use `⟨l, hl, hann, hgen, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[lubinTateField, adjoin_le_iff]`. Introduce and unpack `_ ⟨m, hm, rfl⟩`. Take `⟨a, rfl⟩` from `hgen m hm`.
+
+Rewrite using `[lubinTate_smul_val]`. Conclude with `psEval_mem_adjoin_simple _ l.valuation_lt_one`. Rewrite using `[adjoin_simple_le_iff]`. Conclude with `subset_adjoin K _ (Set.mem_image_of_mem IdealPoint.val (SetLike.mem_coe.mpr hl))`.
+-/
 theorem exists_lubinTateField_eq_adjoin (hf : IsLubinTateSeries π f) (n : ℕ) :
     ∃ l ∈ lubinTateTorsion Ω (hπ := hπ) hf n,
       (∀ a : 𝒪[K], a • l = 0 ↔ a ∈ Ideal.span {π ^ n}) ∧
@@ -71,6 +85,11 @@ instance finiteDimensional_lubinTateField (hf : IsLubinTateSeries π f) (n : ℕ
   rw [h]
   exact finiteDimensional_adjoin_simple _
 
+/- English proof (translation)
+Establish `key : ∀ {f g : PowerSeries 𝒪[K]} (hf : IsLubinTateSeries π f) (hg : IsLubinTateSeries π g), lubinTateField Ω hπ hf n ≤ lubinTateField Ω hπ hg n`. Introduce `f g hf hg`. Rewrite using `[lubinTateField, adjoin_le_iff]`. Introduce and unpack `_ ⟨m, hm, rfl⟩`. Take `⟨m', rfl⟩` from `(lubinTatePointEquiv hf hg).surjective m`.
+
+Establish `hm' : m' ∈ lubinTateTorsion Ω hg n` using `(lubinTatePointEquiv_mem_torsion_iff hf hg n m').mp hm`. Rewrite using `[SetLike.mem_coe, lubinTatePointEquiv_val]`. Conclude with `psEval_mem _ _ (fun _ => val_mem_lubinTateField hπ hg hm') fun _ => m'.valuation_lt_one`. Conclude with `le_antisymm (key hf hg) (key hg hf)`.
+-/
 theorem lubinTateField_eq (hf : IsLubinTateSeries π f) (hg : IsLubinTateSeries π g) (n : ℕ) :
     lubinTateField Ω hπ hf n = lubinTateField Ω hπ hg n := by
   have key : ∀ {f g : PowerSeries 𝒪[K]} (hf : IsLubinTateSeries π f)
@@ -88,6 +107,11 @@ theorem lubinTateField_eq (hf : IsLubinTateSeries π f) (hg : IsLubinTateSeries 
 
 omit [IsSepClosed Ω] in
 
+/- English proof (translation)
+Establish `hp0 : (ltPolyIter π n).map (algebraMap 𝒪[K] K) ≠ 0` using `((ltPolyIter_monic π n).1.map _).ne_zero`. Use extensionality with `z`. Rewrite using `[mem_rootSet']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`.
+
+Conclude with `⟨Polynomial.map_ne_zero hp0, (mem_lubinTateTorsion_ltPoly_iff n x).mp hx⟩`. Introduce and unpack `⟨-, hz⟩`. Conclude with `⟨IdealPoint.mk z (valuation_lt_one_of_aeval_ltPolyIter_eq_zero hπ n hz), (mem_lubinTateTorsion_ltPoly_iff n _).mpr hz, rfl⟩`.
+-/
 theorem image_val_lubinTateTorsion_ltPoly (n : ℕ) :
     IdealPoint.val '' (lubinTateTorsion Ω (isLubinTateSeries_ltPoly π) n :
       Set (IdealPoint Ω (lubinTateFormalGroup hπ (isLubinTateSeries_ltPoly π)))) =
@@ -112,6 +136,11 @@ instance isGalois_lubinTateField (hf : IsLubinTateSeries π f) (n : ℕ) :
     (L := Ω) (K := K)
   exact IsGalois.of_separable_splitting_field hsep
 
+/- English proof (translation)
+Take `⟨l, hl, hann, -, hE⟩` from `exists_lubinTateField_eq_adjoin (Ω := Ω) hπ (isLubinTateSeries_ltPoly π) (n + 1)`. Use `⟨l.val, (lubinTateField_eq hπ hf (isLubinTateSeries_ltPoly π) _).trans hE, ?_⟩` and prove the remaining obligations. Use `aeval_ltEisenstein_eq_zero ((mem_lubinTateTorsion_ltPoly_iff _ l).mp hl) fun h => ?_` and prove the remaining obligations. Establish `h1 : π ^ n • l = 0` using `(mem_lubinTateTorsion _ _ _).mp ((mem_lubinTateTorsion_ltPoly_iff n l).mpr h)`. Rewrite `h1` using `[hann, Ideal.mem_span_singleton, pow_dvd_pow_iff hπ.ne_zero hπ.not_isUnit]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_lubinTateField_eq_adjoin_eisenstein (hf : IsLubinTateSeries π f) (n : ℕ) :
     ∃ α : Ω, lubinTateField Ω hπ hf (n + 1) = K⟮α⟯ ∧
       aeval α ((ltEisenstein π n).map (algebraMap 𝒪[K] K)) = 0 := by
@@ -128,6 +157,11 @@ omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] [Valua
   [TopologicalSpace Ω] [IsValuativeTopology Ω] [ValuativeExtension K Ω] [Algebra.IsAlgebraic K Ω]
   [IsSepClosed Ω] in
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff]`. Introduce and unpack `y -`. Establish `hy : (y : Ω) ∈ (K⟮(⟨a, hE ▸ mem_adjoin_simple_self K a⟩ : E)⟯).map E.val`. Rewrite using `[adjoin_map, Set.image_singleton]`. Express the relevant statement in the definitionally equal form `(y : Ω) ∈ K⟮a⟯`.
+
+Rewrite using `[← hE]`. Conclude with `y.2`. Rewrite `hy` using `[IntermediateField.mem_map]`. Take `⟨z, hz, hzy⟩` from `hy`. Rewrite `hz` using `[show z = y from Subtype.ext hzy]`. Then use the resulting hypothesis.
+-/
 theorem adjoin_simple_eq_top_of_eq {E : IntermediateField K Ω} {a : Ω} (hE : E = K⟮a⟯) :
     K⟮(⟨a, hE ▸ mem_adjoin_simple_self K a⟩ : E)⟯ = ⊤ := by
   rw [eq_top_iff]
@@ -141,6 +175,15 @@ theorem adjoin_simple_eq_top_of_eq {E : IntermediateField K Ω} {a : Ω} (hE : E
   obtain ⟨z, hz, hzy⟩ := hy
   rwa [show z = y from Subtype.ext hzy] at hz
 
+/- English proof (translation)
+Take `⟨a, hE, ha⟩` from `exists_lubinTateField_eq_adjoin_eisenstein (Ω := Ω) hπ hf n`. Use `set E := lubinTateField Ω hπ hf (n + 1)`. Use `set α : E := ⟨a, hE ▸ mem_adjoin_simple_self K a⟩`. Establish `hgen : K⟮α⟯ = ⊤` using `adjoin_simple_eq_top_of_eq hE`. Establish `hα : aeval α (ltEisenstein π n) = 0`.
+
+Use `Subtype.val_injective ?_` and prove the remaining obligations. Establish `h2` using `aeval_algHom_apply (E.val.restrictScalars 𝒪[K]) α (ltEisenstein π n)`. Simplify using `only [AlgHom.coe_restrictScalars', coe_val] at h2`. Rewrite using `[ZeroMemClass.coe_zero, ← h2]`. Express the relevant statement in the definitionally equal form `aeval a (ltEisenstein π n) = 0`.
+
+Rewrite using `[← aeval_map_algebraMap K]` and apply the resulting hypothesis. Establish `hq` using `one_lt_card_residueField' K`. Establish `hn : 0 < (ltEisenstein π n).natDegree`. Rewrite using `[(ltEisenstein_monic π n).2]`. Conclude with `Nat.mul_pos (by omega) (pow_pos (by omega) n)`.
+
+Establish `hEis` using `isEisensteinAt_ltEisenstein hπ n`. Rewrite using `[← (ltEisenstein_monic π n).2]`. Conclude with `⟨finrank_eq_natDegree_of_isEisensteinAt hEis hn hα hgen, ramificationIndex_eq_natDegree_of_isEisensteinAt hEis hn hα hgen⟩`.
+-/
 theorem finrank_and_ramificationIndex_lubinTateField_succ (hf : IsLubinTateSeries π f) (n : ℕ) :
     Module.finrank K (lubinTateField Ω hπ hf (n + 1)) = (Nat.card 𝓀[K] - 1) * Nat.card 𝓀[K] ^ n ∧
       ramificationIndex K (lubinTateField Ω hπ hf (n + 1)) =
@@ -174,6 +217,19 @@ section Units
 variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
   {π : 𝒪[K]}
 
+/- English proof (translation)
+Use `set I := Ideal.span {π ^ (n + 1)}`. Establish `hI : I = 𝓂[K] ^ (n + 1)` using `by rw [hπ.maximalIdeal_eq, Ideal.span_singleton_pow]`. Establish `hIm : I ≤ 𝓂[K]`. Rewrite using `[hI]`. Conclude with `Ideal.pow_le_self (Nat.succ_ne_zero n)`.
+
+Set `ψ : 𝒪[K]ˣ →* (𝒪[K] ⧸ I)ˣ` to `Units.map (Ideal.Quotient.mk I : 𝒪[K] →* 𝒪[K] ⧸ I)`. Establish `hsurj : Function.Surjective ψ`. Introduce `w`. Take `⟨u, hu⟩` from `Ideal.Quotient.mk_surjective (w : 𝒪[K] ⧸ I)`. Take `⟨v, hv⟩` from `Ideal.Quotient.mk_surjective (↑w⁻¹ : 𝒪[K] ⧸ I)`.
+
+Establish `huv : u * v - 1 ∈ I`. Rewrite using `[← Ideal.Quotient.eq, map_mul, hu, hv, map_one, Units.mul_inv]`. Establish `hunit : IsUnit (u * v)`. Assume the negation of the conclusion as `h`. Establish `h1 : u * v ∈ 𝓂[K]` using `(IsLocalRing.mem_maximalIdeal _).mpr h`.
+
+Establish `h2 : (1 : 𝒪[K]) ∈ 𝓂[K]`. Use `Ideal.sub_mem _ h1 (hIm huv)` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Conclude with `(IsLocalRing.maximalIdeal.isMaximal 𝒪[K]).ne_top ((Ideal.eq_top_iff_one _).mpr h2)`. Use `⟨(isUnit_of_mul_isUnit_left hunit).unit, Units.ext ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk I u = _`. Conclude with `hu`. Establish `hker : ψ.ker = unitFiltration K (n + 1)`. Use extensionality with `u`. Rewrite using `[MonoidHom.mem_ker, mem_unitFiltration, ← hI, ← Ideal.Quotient.eq, Units.ext_iff]`.
+
+Both sides reduce to the same expression. Rewrite using `[← Nat.card_congr (QuotientGroup.quotientKerEquivOfSurjective ψ hsurj).toEquiv, hker, ← Subgroup.index, index_unitFiltration K (by omega), Nat.add_sub_cancel]`.
+-/
 theorem card_units_quotient_span_pow_succ (hπ : Irreducible π) (n : ℕ) :
     Nat.card (𝒪[K] ⧸ Ideal.span {π ^ (n + 1)})ˣ = (Nat.card 𝓀[K] - 1) * Nat.card 𝓀[K] ^ n := by
   set I := Ideal.span {π ^ (n + 1)}
@@ -223,10 +279,20 @@ def galPoint {F : _root_.FormalGroup 𝒪[K]} {E : IntermediateField K Ω} [Fini
 
 omit [TopologicalSpace Ω] [IsValuativeTopology Ω] in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem galPoint_val {F : _root_.FormalGroup 𝒪[K]} {E : IntermediateField K Ω}
     [FiniteDimensional K E] (σ : E ≃ₐ[K] E) (x : IdealPoint Ω F) (hx : x.val ∈ E) :
     (galPoint σ x hx).val = ((σ ⟨x.val, hx⟩ : E) : Ω) := rfl
 
+/- English proof (translation)
+Use `set xE : E := ⟨x.val, hx⟩`. Use `set φ := (lubinTateHom hπ hf hf a).toPowerSeries`. Establish `hxE : ∀ _ : Unit, valuation Ω ((xE : E) : Ω) < 1` using `fun _ => x.valuation_lt_one`. Establish `h1 : (⟨(a • x).val, hax⟩ : E) = psEval φ fun _ => xE` using `Subtype.ext (psEval_coe E φ (fun _ => xE) hxE)`. Establish `hσ : ∀ _ : Unit, valuation Ω (((σ xE : E)) : Ω) < 1` using `fun _ => (galPoint σ x hx).valuation_lt_one`.
+
+Apply `IdealPoint.ext` to reduce the goal to its premises. Rewrite using `[galPoint_val, h1, algEquiv_psEval σ φ (fun _ => xE) fun _ => by`. Rewrite using `[← valuation_coe_lt_one_iff]`. Conclude with `x.valuation_lt_one,`. Use the proof step `lubinTate_smul_val]`.
+
+Conclude with `(psEval_coe E φ (fun _ => σ xE) hσ).symm`.
+-/
 theorem galPoint_smul {E : IntermediateField K Ω} [FiniteDimensional K E] (hf : IsLubinTateSeries π f)
     (σ : E ≃ₐ[K] E) (a : 𝒪[K]) (x : IdealPoint Ω (lubinTateFormalGroup hπ hf)) (hx : x.val ∈ E)
     (hax : (a • x).val ∈ E) :
@@ -246,6 +312,11 @@ theorem galPoint_smul {E : IntermediateField K Ω} [FiniteDimensional K E] (hf :
 
 variable [IsSepClosed Ω]
 
+/- English proof (translation)
+Consider the cases of `n with`. Consider the case `zero`. Take `⟨l, hl, -, -, hE⟩` from `exists_lubinTateField_eq_adjoin (Ω := Ω) hπ hf 0`. Rewrite `hl` using `[mem_lubinTateTorsion, pow_zero, one_smul]`. Rewrite using `[hE, hl, IdealPoint.val_zero, adjoin_zero, IntermediateField.finrank_bot, pow_zero, Ideal.span_singleton_one]`.
+
+Establish `: Subsingleton (𝒪[K] ⧸ (⊤ : Ideal 𝒪[K]))` using `Ideal.Quotient.subsingleton_iff.mpr rfl`. Conclude with `Nat.card_unique`. Consider the case `succ n`. Rewrite using `[card_units_quotient_span_pow_succ hπ, (finrank_and_ramificationIndex_lubinTateField_succ hπ hf n).1]`.
+-/
 theorem card_units_quotient_eq_finrank (hf : IsLubinTateSeries π f) (n : ℕ) :
     Nat.card (𝒪[K] ⧸ Ideal.span {π ^ n})ˣ = Module.finrank K (lubinTateField Ω hπ hf n) := by
   cases n with
@@ -260,6 +331,29 @@ theorem card_units_quotient_eq_finrank (hf : IsLubinTateSeries π f) (n : ℕ) :
     rw [card_units_quotient_span_pow_succ hπ, (finrank_and_ramificationIndex_lubinTateField_succ
       hπ hf n).1]
 
+/- English proof (translation)
+Take `⟨l, hl, hann, hgen, hE⟩` from `exists_lubinTateField_eq_adjoin (Ω := Ω) hπ hf n`. Use `set E := lubinTateField Ω hπ hf n`. Use `set Λ := lubinTateTorsion Ω (hπ := hπ) hf n`. Use `set I := Ideal.span {π ^ n}`. Establish `hmem : ∀ {x}, x ∈ Λ → x.val ∈ E` using `fun hx => val_mem_lubinTateField hπ hf hx`.
+
+Establish `hgalΛ : ∀ (σ : E ≃ₐ[K] E) (x) (hx : x ∈ Λ), galPoint σ x (hmem hx) ∈ Λ`. Introduce `σ x hx`. Rewrite using `[mem_lubinTateTorsion, ← galPoint_smul hf σ _ x (hmem hx) (hmem (Λ.smul_mem _ hx))]`. Apply `IdealPoint.ext` to reduce the goal to its premises. Rewrite using `[galPoint_val]`.
+
+Establish `h0 : (⟨(π ^ n • x).val, hmem (Λ.smul_mem _ hx)⟩ : E) = 0` using `Subtype.ext (show (π ^ n • x).val = ((0 : E) : Ω) by`. Rewrite using `[(mem_lubinTateTorsion _ _ _).mp hx]`. Use the proof step `rfl)`. Rewrite using `[h0, map_zero]`. Both sides reduce to the same expression.
+
+Use `choose c hc using fun σ : E ≃ₐ[K] E => hgen _ (hgalΛ σ l hl)`. Establish `hmk : ∀ a b : 𝒪[K], a • l = b • l ↔ Ideal.Quotient.mk I a = Ideal.Quotient.mk I b`. Introduce `a b`. Rewrite using `[Ideal.Quotient.eq, ← hann, sub_smul, sub_eq_zero]`. Establish `hgal : ∀ (σ : E ≃ₐ[K] E) (x) (hx : x ∈ Λ), galPoint σ x (hmem hx) = c σ • x`.
+
+Introduce `σ x hx`. Take `⟨b, rfl⟩` from `hgen x hx`. Rewrite using `[galPoint_smul hf σ b l (hmem hl), ← hc, smul_comm]`. Establish `hmul : ∀ σ τ : E ≃ₐ[K] E, c (σ * τ) • l = (c σ * c τ) • l`. Introduce `σ τ`.
+
+Rewrite using `[hc, mul_smul, hc]`. Establish `h1 : galPoint (σ * τ) l (hmem hl) = galPoint σ (galPoint τ l (hmem hl)) (hmem (hgalΛ τ l hl))` using `rfl`. Rewrite using `[h1, hgal σ _ (hgalΛ τ l hl), ← hc]`. Establish `hone : c 1 • l = (1 : 𝒪[K]) • l`. Rewrite using `[hc, one_smul]`.
+
+Both sides reduce to the same expression. Set `χ₀ : (E ≃ₐ[K] E) →* 𝒪[K] ⧸ I` to `{ toFun := fun σ => Ideal.Quotient.mk I (c σ) map_one' := by rw [(hmk _ _).mp hone, map_one] map_mul' := fun σ τ => by rw [(hmk _ _).mp (hmul σ τ), map_mul] }`. Set `χ` to `χ₀.toHomUnits`. Establish `hχ : ∀ σ, (χ σ : 𝒪[K] ⧸ I) = Ideal.Quotient.mk I (c σ)` using `fun σ => rfl`. Establish `hinj : Function.Injective χ`.
+
+Rewrite using `[injective_iff_map_eq_one]`. Introduce `σ hσ`. Establish `h1 : c σ • l = (1 : 𝒪[K]) • l`. Rewrite using `[hmk, map_one, ← hχ, hσ, Units.val_one]`. Rewrite `h1` using `[one_smul, hc]`.
+
+Establish `hfix : σ ⟨l.val, hmem hl⟩ = ⟨l.val, hmem hl⟩` using `Subtype.ext (congrArg IdealPoint.val h1)`. Establish `htop : Algebra.adjoin K {(⟨l.val, hmem hl⟩ : E)} = ⊤`. Rewrite using `[← adjoin_simple_toSubalgebra_of_isAlgebraic (Algebra.IsAlgebraic.isAlgebraic _), adjoin_simple_eq_top_of_eq hE, top_toSubalgebra]`. Establish `h2` using `AlgHom.ext_of_adjoin_eq_top htop (φ₁ := (σ : E →ₐ[K] E)) (φ₂ := AlgHom.id K E) (by rintro _ rfl; exact hfix)`. Conclude with `AlgEquiv.ext fun y => congrArg (fun φ : E →ₐ[K] E => φ y) h2`.
+
+Establish `hcard : Nat.card (E ≃ₐ[K] E) = Nat.card (𝒪[K] ⧸ I)ˣ`. Rewrite using `[IsGalois.card_aut_eq_finrank, card_units_quotient_eq_finrank (Ω := Ω) hf n]`. Establish `hfin : Finite (𝒪[K] ⧸ I)ˣ` using `Nat.finite_of_card_ne_zero (by`. Rewrite using `[← hcard, IsGalois.card_aut_eq_finrank]`. Conclude with `Module.finrank_pos.ne')`.
+
+Use `⟨MulEquiv.ofBijective χ (hinj.bijective_of_nat_card_le hcard.ge), ?_⟩` and prove the remaining obligations. Introduce `σ x hx a ha`. Rewrite `ha` using `[MulEquiv.ofBijective_apply, hχ, ← hmk]`. Take `⟨b, rfl⟩` from `hgen x hx`. Rewrite using `[← galPoint_val σ (b • l) (hmem hx), hgal σ _ hx, smul_comm, ← ha, smul_comm]`.
+-/
 theorem exists_galEquiv_lubinTateField (hf : IsLubinTateSeries π f) (n : ℕ) :
     ∃ χ : (lubinTateField Ω hπ hf n ≃ₐ[K] lubinTateField Ω hπ hf n) ≃*
         (𝒪[K] ⧸ Ideal.span {π ^ n})ˣ,
@@ -336,6 +430,9 @@ def lubinTateGalEquiv (hf : IsLubinTateSeries π f) (n : ℕ) :
     (lubinTateField Ω hπ hf n ≃ₐ[K] lubinTateField Ω hπ hf n) ≃* (𝒪[K] ⧸ Ideal.span {π ^ n})ˣ :=
   Classical.choose (exists_galEquiv_lubinTateField (Ω := Ω) (hπ := hπ) hf n)
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec (exists_galEquiv_lubinTateField (Ω := Ω) (hπ := hπ) hf n) σ x hx a ha`.
+-/
 theorem lubinTateGalEquiv_spec (hf : IsLubinTateSeries π f) (n : ℕ)
     (σ : lubinTateField Ω hπ hf n ≃ₐ[K] lubinTateField Ω hπ hf n)
     (x : IdealPoint Ω (lubinTateFormalGroup hπ hf)) (hx : x ∈ lubinTateTorsion Ω hf n) (a : 𝒪[K])
@@ -352,11 +449,17 @@ variable {Ω : Type*} [Field Ω] [ValuativeRel Ω] [TopologicalSpace Ω] [IsValu
   [Algebra K Ω] [ValuativeExtension K Ω] [Algebra.IsAlgebraic K Ω] [IsSepClosed Ω]
 variable {π : 𝒪[K]} (hπ : Irreducible π) {f : PowerSeries 𝒪[K]}
 
+/- English proof (translation)
+Take `⟨m, rfl⟩` from `Nat.exists_eq_add_one_of_ne_zero hn.ne'`. Conclude with `(finrank_and_ramificationIndex_lubinTateField_succ hπ hf m).1`.
+-/
 theorem finrank_lubinTateField (hf : IsLubinTateSeries π f) {n : ℕ} (hn : 0 < n) :
     Module.finrank K (lubinTateField Ω hπ hf n) = (Nat.card 𝓀[K] - 1) * Nat.card 𝓀[K] ^ (n - 1) := by
   obtain ⟨m, rfl⟩ := Nat.exists_eq_add_one_of_ne_zero hn.ne'
   exact (finrank_and_ramificationIndex_lubinTateField_succ hπ hf m).1
 
+/- English proof (translation)
+Take `⟨m, rfl⟩` from `Nat.exists_eq_add_one_of_ne_zero hn.ne'`. Rewrite using `[(finrank_and_ramificationIndex_lubinTateField_succ hπ hf m).1, (finrank_and_ramificationIndex_lubinTateField_succ hπ hf m).2]`.
+-/
 theorem ramificationIndex_lubinTateField (hf : IsLubinTateSeries π f) {n : ℕ} (hn : 0 < n) :
     ramificationIndex K (lubinTateField Ω hπ hf n) =
       Module.finrank K (lubinTateField Ω hπ hf n) := by
@@ -364,11 +467,17 @@ theorem ramificationIndex_lubinTateField (hf : IsLubinTateSeries π f) {n : ℕ}
   rw [(finrank_and_ramificationIndex_lubinTateField_succ hπ hf m).1,
     (finrank_and_ramificationIndex_lubinTateField_succ hπ hf m).2]
 
+/- English proof (translation)
+The claim follows from `residueDegree_eq_one_of_ramificationIndex_eq_finrank K _ (ramificationIndex_lubinTateField hπ hf hn)`.
+-/
 theorem residueDegree_lubinTateField (hf : IsLubinTateSeries π f) {n : ℕ} (hn : 0 < n) :
     residueDegree K (lubinTateField Ω hπ hf n) = 1 :=
   residueDegree_eq_one_of_ramificationIndex_eq_finrank K _
     (ramificationIndex_lubinTateField hπ hf hn)
 
+/- English proof (translation)
+Take `⟨m, rfl⟩` from `Nat.exists_eq_add_one_of_ne_zero hn.ne'`. Take `⟨α, hE, hα⟩` from `exists_lubinTateField_eq_adjoin_eisenstein (Ω := Ω) hπ hf m`. Conclude with `⟨ltEisenstein π m, α, isEisensteinAt_ltEisenstein hπ m, (ltEisenstein_monic π m).2, hα, hE⟩`.
+-/
 theorem exists_isEisensteinAt_lubinTateField (hf : IsLubinTateSeries π f) {n : ℕ} (hn : 0 < n) :
     ∃ (p : 𝒪[K][X]) (α : Ω), p.IsEisensteinAt (IsLocalRing.maximalIdeal 𝒪[K]) ∧
       p.natDegree = (Nat.card 𝓀[K] - 1) * Nat.card 𝓀[K] ^ (n - 1) ∧
@@ -378,11 +487,23 @@ theorem exists_isEisensteinAt_lubinTateField (hf : IsLubinTateSeries π f) {n : 
   exact ⟨ltEisenstein π m, α, isEisensteinAt_ltEisenstein hπ m, (ltEisenstein_monic π m).2, hα,
     hE⟩
 
+/- English proof (translation)
+Establish `hq` using `one_lt_card_residueField' K`. Rewrite using `[ltEisenstein, coeff_add, coeff_C_zero, coeff_zero_eq_eval_zero, eval_pow, ← coeff_zero_eq_eval_zero, coeff_zero_ltPolyIter, zero_pow (by omega), add_zero]`.
+-/
 theorem coeff_zero_ltEisenstein (π : 𝒪[K]) (n : ℕ) : (ltEisenstein π n).coeff 0 = π := by
   have hq := one_lt_card_residueField' K
   rw [ltEisenstein, coeff_add, coeff_C_zero, coeff_zero_eq_eval_zero, eval_pow,
     ← coeff_zero_eq_eval_zero, coeff_zero_ltPolyIter, zero_pow (by omega), add_zero]
 
+/- English proof (translation)
+Take `⟨m, rfl⟩` from `Nat.exists_eq_add_one_of_ne_zero hn.ne'`. Establish `hfin` using `(finrank_and_ramificationIndex_lubinTateField_succ (Ω := Ω) hπ hf m).1`. Take `⟨a, hE, ha⟩` from `exists_lubinTateField_eq_adjoin_eisenstein (Ω := Ω) hπ hf m`. Rewrite `hfin`, the goal using `[hE]`. Use `set p := (ltEisenstein π m).map (algebraMap 𝒪[K] K)`.
+
+Establish `hpm : p.Monic` using `(ltEisenstein_monic π m).1.map _`. Establish `hint : IsIntegral K a` using `(Algebra.IsAlgebraic.isAlgebraic a).isIntegral`. Establish `hmin : minpoly K a = p`. Use `(Polynomial.eq_of_monic_of_dvd_of_natDegree_le (minpoly.monic hint) hpm (minpoly.dvd K a ha) ?_).symm` and prove the remaining obligations. Rewrite using `[← adjoin.finrank hint, hfin, natDegree_map_eq_of_injective (FaithfulSMul.algebraMap_injective 𝒪[K] K), (ltEisenstein_monic π m).2]`.
+
+Use `set pb := adjoin.powerBasis hint`. Establish `hdim : pb.dim = Module.finrank K K⟮a⟯`. Rewrite using `[adjoin.powerBasis_dim, adjoin.finrank hint]`. Establish `hnorm : Algebra.norm K pb.gen = (-1) ^ Module.finrank K K⟮a⟯ * (π : K)`. Rewrite using `[Algebra.PowerBasis.norm_gen_eq_coeff_zero_minpoly, hdim, adjoin.powerBasis_gen, minpoly_gen, hmin, coeff_map, coeff_zero_ltEisenstein]`.
+
+Both sides reduce to the same expression. Use `⟨-pb.gen, ?_⟩` and prove the remaining obligations. Establish `h1 : (-1 : K⟮a⟯) = algebraMap K K⟮a⟯ (-1)` using `by simp`. Rewrite using `[neg_eq_neg_one_mul, h1, map_mul, Algebra.norm_algebraMap, hnorm, ← mul_assoc, ← mul_pow, neg_one_mul, neg_neg, one_pow, one_mul]`.
+-/
 theorem exists_norm_eq_uniformizer (hf : IsLubinTateSeries π f) {n : ℕ} (hn : 0 < n) :
     ∃ x : lubinTateField Ω hπ hf n, Algebra.norm K x = (π : K) := by
   obtain ⟨m, rfl⟩ := Nat.exists_eq_add_one_of_ne_zero hn.ne'
@@ -416,13 +537,22 @@ section SeparableClosure
 variable (K : Type*) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
   {π : 𝒪[K]} (hπ : Irreducible π) {f : PowerSeries 𝒪[K]} (hf : IsLubinTateSeries π f)
 
+/- English proof (translation)
+The claim follows from `finrank_lubinTateField hπ hf hn`.
+-/
 example {n : ℕ} (hn : 0 < n) :
     Module.finrank K (lubinTateField (SeparableClosure K) hπ hf n) =
       (Nat.card 𝓀[K] - 1) * Nat.card 𝓀[K] ^ (n - 1) :=
   finrank_lubinTateField hπ hf hn
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example (n : ℕ) : IsGalois K (lubinTateField (SeparableClosure K) hπ hf n) := inferInstance
 
+/- English proof (translation)
+The claim follows from `lubinTateGalEquiv hπ hf n`.
+-/
 example (n : ℕ) :
     (lubinTateField (SeparableClosure K) hπ hf n ≃ₐ[K] lubinTateField (SeparableClosure K) hπ hf n)
       ≃* (𝒪[K] ⧸ Ideal.span {π ^ n})ˣ :=

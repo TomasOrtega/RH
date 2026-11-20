@@ -13,6 +13,11 @@ open scoped TensorProduct
 variable {D : D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N}
   (Y : NExp D.R D.host D.what₂ D.LL0 N X)
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨f, ⟨hf, hf0⟩, rfl⟩`. Use `⟨hφ f hf, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ f ∈ IntegralHeckeForms.Fm0 Y i j b`. Use `replace hf0 : f ∈ IntegralHeckeForms.Fm0 Y i j b := hf0`. Simplify using `only [IntegralHeckeForms.Fm0, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero] at hf0 ⊢`.
+
+Introduce `u`. Establish `h` using `LinearMap.congr_fun (hc u) f`. Simplify using `only [LinearMap.comp_apply] at h`. Rewrite using `[h, hf0 u, map_smul]`.
+-/
 theorem mall_map_le (i : X.Tw) (j : ℕ) (b : Bool) (φ : Module.End (FractionRing (X.O i)) (Y.Fm i j b))
     (hφ : ∀ f ∈ Y.Bsup i j b, φ f ∈ Y.Bsup i j b)
     (hc : ∀ g, (Y.actG i j b g).toLinearMap ∘ₗ φ = φ ∘ₗ (Y.actG i j b g).toLinearMap) :
@@ -28,6 +33,13 @@ theorem mall_map_le (i : X.Tw) (j : ℕ) (b : Bool) (φ : Module.End (FractionRi
   simp only [LinearMap.comp_apply] at h
   rw [h, hf0 u, map_smul]
 
+/- English proof (translation)
+Introduce `D E hG hF hH hU hT hC i hi j hj b`. Take `⟨hfg, hsp⟩` from `hF i hi j hj b`. Use `⟨fun g => ?_, ?_, GlobalTheory.IntRestBall.span_inf_of_span_top _ hsp _ _ (fun _ => Iff.rfl), fun k P hk => mall_map_le D.nexp i j b _ (hH i hi j hj b k P hk) (fun g => hC i hi b j hj g k P hk), ?_, hT i hi j hj b⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `hG i hi j hj b g f hf`.
+
+Conclude with `hfg.of_le (fun f hf => hf.1)`. Introduce `a ha`. Take `⟨c, hc⟩` from `hU i hi j hj b a ha`. Use `⟨c, fun Q M h1 h2 h3 h4 => ?_⟩` and prove the remaining obligations. Take `⟨Xi, hXi, hδ⟩` from `hc Q M h1 h2 h3 h4`.
+
+Rewrite using `[hXi, Finsupp.sum, Finset.smul_sum]`. Use `Submodule.sum_mem _ fun δ _ => ?_` and prove the remaining obligations. Establish `hm : ((D.ntw.l i : D.ntw.O i) ^ c) • Xi δ ∈ IntegralHeckeForms.Mall D.nexp i j b` using `⟨(hδ δ).2, ((IntegralHeckeForms.Fm0 D.nexp i j b).restrictScalars (D.ntw.O i)).smul_mem _ (hδ δ).1⟩`. Conclude with `⟨(⟨_, hm⟩ : IntegralHeckeForms.Mall D.nexp i j b) ⊗ₜ AddMonoidAlgebra.single δ (1 : D.ntw.O i), by`. Simplify using `[TensorProduct.smul_tmul']⟩`.
+-/
 theorem admInt_of_sup : ∀ (D : D7) (E : IntegralHeckeForms.XD D), SupG D → SupFull D → SupHk D → UnivSup D E → TypeKept E → CommG D →
     IntegralHeckeForms.IsotypicPartsInternalDirectSum D.nexp E := by
   intro D E hG hF hH hU hT hC i hi j hj b

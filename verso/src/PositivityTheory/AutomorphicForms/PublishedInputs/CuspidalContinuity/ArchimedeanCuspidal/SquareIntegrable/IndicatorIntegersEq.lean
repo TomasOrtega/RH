@@ -11,16 +11,27 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   [MeasurableSpace F] [BorelSpace F]
 
 omit [MeasurableSpace F] [BorelSpace F] in
+/- English proof (translation)
+Rewrite using `[← Iwasawa.coe_uniformizerUnit, ← Units.val_zpow_eq_zpow_val, ord_units_zpow, Iwasawa.coe_uniformizerUnit, ord_uniformizer (GLnLocal.irreducible_uniformizer F), mul_one]`.
+-/
 theorem ord_unif_zpow (n : ℤ) : ord ((GLnLocal.uniformizer F : F) ^ n) = n := by
   rw [← Iwasawa.coe_uniformizerUnit, ← Units.val_zpow_eq_zpow_val, ord_units_zpow,
     Iwasawa.coe_uniformizerUnit, ord_uniformizer (GLnLocal.irreducible_uniformizer F), mul_one]
 
 omit [MeasurableSpace F] [BorelSpace F] in
+/- English proof (translation)
+Rewrite using `[← Iwasawa.coe_uniformizerUnit, ← Units.val_zpow_eq_zpow_val]`. Conclude with `Units.ne_zero _`.
+-/
 theorem unif_zpow_ne_zero (n : ℤ) : (GLnLocal.uniformizer F : F) ^ n ≠ 0 := by
   rw [← Iwasawa.coe_uniformizerUnit, ← Units.val_zpow_eq_zpow_val]
   exact Units.ne_zero _
 
 omit [MeasurableSpace F] [BorelSpace F] in
+/- English proof (translation)
+Take `⟨h00, h11, h10⟩` from `unip_entries hu`. Establish `hdu : GeneralLinearGroup.det u = 1`. Use `ext`. Rewrite using `[GeneralLinearGroup.val_det_apply, det_fin_two, h00, h11, h10]`. Simplify using the standard rewrite rules.
+
+Establish `hdt : ((GeneralLinearGroup.det (Iwasawa.torusPow F 2 l) : Fˣ) : F) = (GLnLocal.uniformizer F : F) ^ (l 0) * (GLnLocal.uniformizer F : F) ^ (l 1)`. Rewrite using `[GeneralLinearGroup.val_det_apply, Iwasawa.coe_torusPow, det_diagonal, Fin.prod_univ_two]`. Rewrite using `[map_mul, map_mul, hdu, one_mul, Units.val_mul, hdt, ord_mul (mul_ne_zero (unif_zpow_ne_zero _) (unif_zpow_ne_zero _)) (Units.ne_zero _), ord_mul (unif_zpow_ne_zero _) (unif_zpow_ne_zero _), ord_unif_zpow, ord_unif_zpow, GodementSectionLocal.ord_det_eq_zero hk, add_zero]`.
+-/
 theorem ord_det {u k : GL (Fin 2) F} (hu : u ∈ Iwasawa.unipotent F 2)
     (hk : k ∈ GLnLocal.integralGL F 2) (l : Fin 2 → ℤ) :
     ord ((GeneralLinearGroup.det (u * Iwasawa.torusPow F 2 l * k) : Fˣ) : F) = l 0 + l 1 := by
@@ -38,6 +49,11 @@ theorem ord_det {u k : GL (Fin 2) F} (hu : u ∈ Iwasawa.unipotent F 2)
     GodementSectionLocal.ord_det_eq_zero hk, add_zero]
 
 omit [MeasurableSpace F] [BorelSpace F] in
+/- English proof (translation)
+Establish `: y ∈ (𝒪[F] : Set F) ↔ 0 ≤ ord y`. Rewrite using `[SetLike.mem_coe, ← mem_valBall_zero_iff, mem_valBall_iff_le_ord hy]`. Distinguish the cases in `h : 0 ≤ ord y`. Rewrite using `[Set.indicator_of_mem (this.2 h), if_pos h]`. Both sides reduce to the same expression.
+
+Rewrite using `[Set.indicator_of_notMem (fun h' => h (this.1 h')), if_neg h]`.
+-/
 theorem indicator_integers_eq {y : F} (hy : y ≠ 0) :
     (𝒪[F] : Set F).indicator (1 : F → ℂ) y = if 0 ≤ ord y then 1 else 0 := by
   have : y ∈ (𝒪[F] : Set F) ↔ 0 ≤ ord y := by
@@ -46,6 +62,25 @@ theorem indicator_integers_eq {y : F} (hy : y ≠ 0) :
   · rw [Set.indicator_of_mem (this.2 h), if_pos h]; rfl
   · rw [Set.indicator_of_notMem (fun h' => h (this.1 h')), if_neg h]
 
+/- English proof (translation)
+Establish `hdet` using `ord_det hu hk l`. Use `set χ0 : ℂˣ := (μ₁ (unifUnit F))⁻¹ * μ₂ (unifUnit F) with hχ0`. Use `set q : ℂ := (residueCard F : ℂ) with hq`. Establish `hq0 : q ≠ 0` using `residueCard_ne_zero_complex`. Use `set C : ℂ := (ψ ((u : Matrix (Fin 2) (Fin 2) F) 0 1) : ℂ) * q ^ (l 1) with hC`.
+
+Establish `hpt : ∀ h : Fˣ, (((μ₁ h)⁻¹ * μ₂ h : ℂˣ) : ℂ) * mp h 1 * (∫ x, phi0 F (![(h : F), h * x] ᵥ* ((u * Iwasawa.torusPow F 2 l * k : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F)) * (ψ (-x) : ℂ) ∂selfDualMeasure ψ) = ∑ j ∈ Finset.Icc (-l 0) (-l 1), (ordShell F j).indicator (fun _ => C * (χ0 …` using `by classical`. Introduce `h`. Establish `hb0 : (h : F) * (GLnLocal.uniformizer F : F) ^ (l 1) ≠ 0` using `mul_ne_zero h.ne_zero (unif_zpow_ne_zero _)`. Establish `ha0 : (h : F) * (GLnLocal.uniformizer F : F) ^ (l 0) ≠ 0` using `mul_ne_zero h.ne_zero (unif_zpow_ne_zero _)`. Establish `hin : (∫ x, phi0 F (![(h : F), h * x] ᵥ* ((u * Iwasawa.torusPow F 2 l * k : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F)) * (ψ (-x) : ℂ) ∂selfDualMeasure ψ) = (𝒪[F] : Set F).indicator 1 ((h : F) * (GLnLocal.uniformizer F : F) ^ (l 0)) * ((ψ ((u : Matrix (Fin 2) (Fin 2) F) 0 1) : ℂ) …`.
+
+Repeatedly rewrite using `[vec_eq hu hk l]`. Rewrite using `[← inner_eq ψ hψ _ _ hb0, ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hin, indicator_integers_eq ha0, ord_mul h.ne_zero (unif_zpow_ne_zero _), ord_mul h.ne_zero (unif_zpow_ne_zero _), ord_unif_zpow, ord_unif_zpow]`. Establish `hmu : (((μ₁ h)⁻¹ * μ₂ h : ℂˣ) : ℂ) = (χ0 : ℂ) ^ ord (h : F)`. Rewrite using `[quasiChar_apply_of_isUnramified hr₁ h, quasiChar_apply_of_isUnramified hr₂ h, hχ0, ← _root_.inv_zpow, ← mul_zpow, Units.val_zpow_eq_zpow_val]`. Establish `hmp : mp h 1 = q ^ (-ord (h : F))`. Rewrite using `[mp, Complex.cpow_one, modulus_of_ne_zero h.ne_zero, hq]`.
+
+Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[hmu, hmp]`. Simplify using `only [Set.indicator_apply, mem_ordShell]`. Rewrite using `[Finset.sum_ite_eq]`.
+
+Simplify using `only [Finset.mem_Icc]`. Use `set o := ord (h : F)`. Apply the tactic sequence `by_cases h1 : 0 ≤ o + l 0 <;> by_cases h2 : o + l 1 ≤ 0`. Rewrite using `[if_pos h1, if_pos h2, if_pos ⟨by omega, by omega⟩, hC, zpow_add₀ hq0, _root_.zpow_neg]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[if_neg h2, if_neg (show ¬(-l 0 ≤ o ∧ o ≤ -l 1) by omega)]; simp`. Rewrite using `[if_neg h1, if_neg (show ¬(-l 0 ≤ o ∧ o ≤ -l 1) by omega)]; simp`. Rewrite using `[if_neg h1, if_neg (show ¬(-l 0 ≤ o ∧ o ≤ -l 1) by omega)]; simp`. Unfold `W2`. Rewrite using `[quasiChar_apply_of_isUnramified hr₂, hdet]`.
+
+Use `congr 1`. Rewrite using `[mp, modulus_of_ne_zero (Units.ne_zero _), hdet, Units.val_zpow_eq_zpow_val]`. Use `(integral_congr_ae (Filter.Eventually.of_forall hpt)).trans ?_` and prove the remaining obligations. Establish `hint : ∀ j : ℤ, Integrable ((ordShell F j).indicator (fun _ : Fˣ => C * (χ0 : ℂ) ^ j)) (multHaar F)` using `fun j => (integrableOn_const (by rw [multHaar_ordShell]; exact ENNReal.one_ne_top)).integrable_indicator (measurableSet_ordShell j)`. Rewrite using `[integral_finset_sum _ (fun j _ => hint j), Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[integral_indicator_const _ (measurableSet_ordShell j), measureReal_def, multHaar_ordShell, ENNReal.toReal_one, one_smul]`.
+-/
 theorem W_formula (ψ : AddChar F Circle) (hψ : IsStd ψ) (μ₁ μ₂ : Fˣ →* ℂˣ)
     (hr₁ : IsUnramifiedChar μ₁) (hr₂ : IsUnramifiedChar μ₂) {u k : GL (Fin 2) F}
     (hu : u ∈ Iwasawa.unipotent F 2) (hk : k ∈ GLnLocal.integralGL F 2) (l : Fin 2 → ℤ) :

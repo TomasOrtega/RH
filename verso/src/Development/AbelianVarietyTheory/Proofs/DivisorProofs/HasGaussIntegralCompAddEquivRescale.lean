@@ -8,6 +8,13 @@ open GlobalTheory.SplitWeil (SB nabs)
 
 namespace GlobalTheory.KSp
 
+/- English proof (translation)
+Introduce `K hK`. Take `⟨L, hLc, hLo, hKL, hint⟩` from `h (T '' K) (hK.image T.continuous)`. Establish `hme : MeasurableEmbedding (T : X → Y)` using `T.toHomeomorph.measurableEmbedding`. Establish `hset : ((L.comap (T.toAddEquiv.toAddMonoidHom) : AddSubgroup X) : Set X) = (T : X → Y) ⁻¹' (L : Set Y)` using `rfl`. Use `⟨L.comap T.toAddEquiv.toAddMonoidHom, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hset]`. Conclude with `T.toHomeomorph.isCompact_preimage.2 hLc`. Rewrite using `[hset]`. Conclude with `hLo.preimage T.continuous`. Rewrite using `[hset]`.
+
+Introduce `x hx`. Conclude with `hKL ⟨x, hx, rfl⟩`. Rewrite using `[hset, ← hme.setIntegral_map f (L : Set Y), hμ, Measure.restrict_smul, integral_smul_nnreal_measure, hint]`. Simplify using `[NNReal.smul_def]`.
+-/
 theorem hasGauss_comp_equiv (X Y : Type) [AddCommGroup X] [TopologicalSpace X] [MeasurableSpace X] [BorelSpace X]
     [AddCommGroup Y] [TopologicalSpace Y] [MeasurableSpace Y] [BorelSpace Y] (μ : Measure X) (μ' : Measure Y)
     (T : X ≃ₜ+ Y) (r : NNReal) (f : Y → ℂ) (γ : ℂ) (hμ : μ.map T = r • μ') (h : HasGauss μ' f γ) :

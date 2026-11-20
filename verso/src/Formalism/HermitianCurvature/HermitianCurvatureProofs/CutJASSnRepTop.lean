@@ -11,12 +11,18 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJASSEntry
 
 namespace Formalism.FourierDecayAlt.P.CutMP.JA.SSn.Rep
 
+/- English proof (translation)
+Break down `hPoly with h | h` into its components or cases. Conclude with `Core.TC.theta_constancy_assembly h hMC hLN Core.TC.polynomial_finish_holds`. Conclude with `Core.TC.theta_constancy_assembly_scalar h hMC hLN Core.TC.polynomial_finish_holds`.
+-/
 theorem thConst_of_open (hMC : Core.TC.ModConst) (hLN : Core.TC.LineNonzero)
     (hPoly : Core.TC.PolyRadial ∨ Core.TC.PolyRadialS) : Core.ThConst := by
   rcases hPoly with h | h
   · exact Core.TC.theta_constancy_assembly h hMC hLN Core.TC.polynomial_finish_holds
   · exact Core.TC.theta_constancy_assembly_scalar h hMC hLN Core.TC.polynomial_finish_holds
 
+/- English proof (translation)
+The claim follows from `second_shift_representation_assembly hPE Formalism.FourierDecayAlt.P.CutMP.JA.gauge_lines_holds hTF datum_unit_norm_holds (Core.theta_gauge_constancy_holds Formalism.FourierDecayAlt.P.CutMP.JA.quadratic_second_shift_form Formalism.FourierDecayAlt.P.CutMP.JA.second_shift_pointwise …`.
+-/
 theorem ssnRep_of_open (hPE : PRho.PRhoExists) (hTF : ThtFacts) (hMC : Core.TC.ModConst)
     (hLN : Core.TC.LineNonzero) (hPoly : Core.TC.PolyRadial ∨ Core.TC.PolyRadialS) : SSnRep :=
   second_shift_representation_assembly hPE Formalism.FourierDecayAlt.P.CutMP.JA.gauge_lines_holds hTF datum_unit_norm_holds

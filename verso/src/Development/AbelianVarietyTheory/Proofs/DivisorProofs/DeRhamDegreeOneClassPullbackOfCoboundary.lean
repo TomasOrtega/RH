@@ -10,6 +10,9 @@ open CategoryTheory AlgebraicGeometry KaehlerDifferential DividedPowers Reciproc
 
 namespace GlobalTheory.PDForm
 
+/- English proof (translation)
+Rewrite using `[SemiHom.oneFormMap_comp_oneFormMap _ _ (hd.comp he) (fun _ ↦ rfl), SemiHom.oneFormMap_comp_oneFormMap _ _ (ha.comp hb) (fun _ ↦ rfl)]`. Conclude with `SemiHom.oneFormMap_comp_oneFormMap _ _ (hd.comp he) h x`.
+-/
 theorem kaehlerDifferential_map_commutative_pentagon {R₁ R₂ A₁ A₂ A₃ A₄ A₅ : Type} [CommRing R₁] [CommRing R₂] [CommRing A₁] [CommRing A₂]
     [CommRing A₃] [CommRing A₄] [CommRing A₅] [Algebra R₁ A₁] [Algebra R₁ A₂] [Algebra R₁ A₃] [Algebra R₂ A₄]
     [Algebra R₂ A₅] {σ₁ σ₂ : R₁ →+* R₁} {σ₃ σ₄ : R₁ →+* R₂} {σ₅ : R₂ →+* R₂} {a : A₁ →+* A₂} {b : A₂ →+* A₃}
@@ -19,6 +22,19 @@ theorem kaehlerDifferential_map_commutative_pentagon {R₁ R₂ A₁ A₂ A₃ A
   rw [SemiHom.oneFormMap_comp_oneFormMap _ _ (hd.comp he) (fun _ ↦ rfl), SemiHom.oneFormMap_comp_oneFormMap _ _ (ha.comp hb) (fun _ ↦ rfl)]
   exact SemiHom.oneFormMap_comp_oneFormMap _ _ (hd.comp he) h x
 
+/- English proof (translation)
+Introduce `D D' Λ Λ' σ φ φ₀ hφ m θ hθ k k' w w' hw hw' g hg`. Unfold `IsPull1`. Rewrite using `[pullHyp1_mk, pullHyp1_mk, Hyp1.mk_eq_mk]`. Use `⟨fun p ↦ (Λ'.e (Opposite.op p.unop.1.1)).symm (g p), Tot1.ext (fun p q a ↦ ?_) fun p ↦ ?_⟩` and prove the remaining obligations. Set `B : Type` to `(Λ'.L.obj (Opposite.op q.unop.1.1)).B`.
+
+Establish `e : @HSub.hSub B B B _ (g q) ((Λ'.L.map ((pairFst φ).map a)).φ (g p)) = @HSub.hSub B B B _ ((θ.app q).φ (k.1.1 _ _ (Λ.L.map ((pairSnd φ).map a)))) (k'.1.1 _ _ (Λ'.L.map ((pairFst φ).map a)))` using `congrArg (fun c ↦ c.1 p q a) hg`. Establish `h1 : k.1.1 _ _ (Λ.L.map ((pairSnd φ).map a)) = Λ.e (Opposite.op q.unop.1.2) (w.1.1 _ _ ((pairSnd φ).map a))` using `hw.1 _ _ _`. Establish `h2 : k'.1.1 _ _ (Λ'.L.map ((pairFst φ).map a)) = Λ'.e (Opposite.op q.unop.1.1) (w'.1.1 _ _ ((pairFst φ).map a))` using `hw'.1 _ _ _`. Establish `h3` using `Λ'.nat ((pairFst φ).map a) ((Λ'.e (Opposite.op p.unop.1.1)).symm (g p))`. Establish `h4` using `hθ q (w.1.1 _ _ ((pairSnd φ).map a))`.
+
+Apply `(Λ'.e (Opposite.op q.unop.1.1)).injective` to reduce the goal to its premises. Use `((map_sub _ _ _).trans ?_).trans (map_sub _ _ _).symm` and prove the remaining obligations. Use `(congrArg₂ (fun x y : B ↦ x - y) (AlgEquiv.apply_symm_apply _ _) (h3.trans (congrArg _ (AlgEquiv.apply_symm_apply _ _)))).trans (e.trans ?_)` and prove the remaining obligations. Conclude with `congrArg₂ (fun x y : B ↦ x - y) ((congrArg (θ.app q).φ h1).trans h4) h2`. Set `B : Type` to `K1 D'.R (Λ'.L.obj (Opposite.op p.unop.1.1)).δ`.
+
+Establish `e : kd0 D'.R (Λ'.L.obj (Opposite.op p.unop.1.1)).δ (g p) = @HSub.hSub B B B _ (km1 (morSemi m (Λ'.L.obj (Opposite.op p.unop.1.1))) (morDP m _) (km1 (SemiHom.of_algHom (θ.app p).φ) (θ.app p).dp (k.1.2 (Λ.L.obj (Opposite.op p.unop.1.2))))) (k'.1.2 (Λ'.L.obj (Opposite.op p.unop.1.1) …` using `congrArg (fun c ↦ c.2 p) hg`. Establish `h1 : k.1.2 (Λ.L.obj (Opposite.op p.unop.1.2)) = Submodule.Quotient.mk ((Λ.semi _).m1 (w.1.2 (Opposite.op p.unop.1.2)))` using `hw.2 _`. Establish `h2 : k'.1.2 (Λ'.L.obj (Opposite.op p.unop.1.1)) = Submodule.Quotient.mk ((Λ'.semi _).m1 (w'.1.2 (Opposite.op p.unop.1.1)))` using `hw'.2 _`. Rewrite `e` using `[h1, h2]`. Apply `(GlobalTheory.T.liftForms_bijective_degree_one_two D' Λ' (Opposite.op p.unop.1.1)).1.1` to reduce the goal to its premises.
+
+Establish `h3 : (Λ'.semi (Opposite.op p.unop.1.1)).m1 (KaehlerDifferential.D D'.R _ ((Λ'.e (Opposite.op p.unop.1.1)).symm (g p))) = KaehlerDifferential.D D'.R _ (g p)` using `(SemiHom.m1_D _ _).trans (congrArg _ ((Λ'.e _).apply_symm_apply _))`. Establish `h4` using `kaehlerDifferential_map_commutative_pentagon (Λ.semi (Opposite.op p.unop.1.2)) (SemiHom.of_algHom (θ.app p).φ) (morSemi m (Λ'.L.obj (Opposite.op p.unop.1.1))) (semiHom_secPull hφ p.unop) (Λ'.semi (Opposite.op p.unop.1.1)) (hθ p) (w.1.2 (Opposite.op p.unop.1.2))`. Establish `h5 : q1 (pairRes φ D'.s) p (w'.1.2 (Opposite.op p.unop.1.1)) = w'.1.2 (Opposite.op p.unop.1.1)` using `cechDeRhamCoefMapOneForms_restrictAlongFunctor (OAff D'.s) (pairFst φ) p _`. Use `(congrArg Submodule.Quotient.mk h3).trans (e.trans ?_)` and prove the remaining obligations. Use `(Submodule.Quotient.mk_sub _).symm.trans (congrArg Submodule.Quotient.mk ?_)` and prove the remaining obligations.
+
+Use `Eq.trans ?_ (map_sub _ _ _).symm` and prove the remaining obligations. Conclude with `congrArg₂ (· - ·) h4 (congrArg (Λ'.semi (Opposite.op p.unop.1.1)).m1 h5.symm)`.
+-/
 theorem isPull1_of_pair_coboundary : ∀ (D D' : Data) (Λ : Lift D) (Λ' : Lift D') (σ : D.R →+* D'.R) (φ : D'.X ⟶ D.X) (φ₀ : D'.X₀ ⟶ D.X₀) (hφ : φ ≫ D.s = D'.s ≫ spMap σ) (m : IsMor D.κ D.t D'.κ D'.t σ φ₀) (θ : pairSnd φ ⋙ Λ.L ⟶ (pairB Λ' φ m).G), (∀ (p : (Pair φ)ᵒᵖ) a, (θ.app p).φ (Λ.e (Opposite.op p.unop.1.2) a) = Λ'.e (Opposite.op p.unop.1.1) (GlobalTheory.CechDR.secPull D.s D'.s p.unop a)) → ∀ (k : (KK D.κ D.t).Z1) (k' : (KK D'.κ D'.t).Z1) (w : cechDeRhamTotalCocyclesOne (OAff D.s)) (w' : cechDeRhamTotalCocyclesOne (OAff D'.s)), Λ.Res1 (((KK D.κ D.t).resMap Λ.L).p1 k.1) w.1 → Λ'.Res1 (((KK D'.κ D'.t).resMap Λ'.L).p1 k'.1) w'.1 → ∀ g, ((KK D'.κ D'.t).res (pairFst φ ⋙ Λ'.L)).D0 g = ((pairB Λ' φ m).pre θ).p1 k.1 - ((KK D'.κ D'.t).resMap (pairFst φ ⋙ Λ'.L)).p1 k'.1 → IsPull1 hφ (Hyp1.mk _ w) (Hyp1.mk _ w') := by
   intro D D' Λ Λ' σ φ φ₀ hφ m θ hθ k k' w w' hw hw' g hg
   unfold IsPull1

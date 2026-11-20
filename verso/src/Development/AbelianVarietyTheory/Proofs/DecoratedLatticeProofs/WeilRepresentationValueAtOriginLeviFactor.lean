@@ -38,6 +38,9 @@ def diagAt {R : Type*} [CommRing R] (ρ : ℕ) (i : Fin ρ) : R →* Matrix (Fin
 
 def dgU {R : Type*} [CommRing R] (ρ : ℕ) (i : Fin ρ) : Rˣ →* GL (Fin ρ) R := Units.map (diagAt ρ i)
 
+/- English proof (translation)
+Use `ext`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply]`. Use `show (Matrix.diagonal (Function.update (1 : Fin ρ → R) i (t : R))).det = t`. Rewrite using `[Matrix.det_diagonal, Finset.prod_update_of_mem (Finset.mem_univ i)]`. Simplify using the standard rewrite rules.
+-/
 theorem det_dgU {R : Type*} [CommRing R] (ρ : ℕ) (i : Fin ρ) (t : Rˣ) :
     Matrix.GeneralLinearGroup.det (dgU ρ i t) = t := by
   ext
@@ -46,12 +49,20 @@ theorem det_dgU {R : Type*} [CommRing R] (ρ : ℕ) (i : Fin ρ) (t : Rˣ) :
   rw [Matrix.det_diagonal, Finset.prod_update_of_mem (Finset.mem_univ i)]
   simp
 
+/- English proof (translation)
+Apply `Continuous.units_map` to reduce the goal to its premises. Use `show Continuous fun t : R => Matrix.diagonal (Function.update (1 : Fin ρ → R) i t)`. Conclude with `Continuous.matrix_diagonal (continuous_const.update i continuous_id)`.
+-/
 theorem continuous_dgU {R : Type*} [CommRing R] [TopologicalSpace R] (ρ : ℕ) (i : Fin ρ) :
     Continuous (dgU (R := R) ρ i) := by
   apply Continuous.units_map
   show Continuous fun t : R => Matrix.diagonal (Function.update (1 : Fin ρ → R) i t)
   exact Continuous.matrix_diagonal (continuous_const.update i continuous_id)
 
+/- English proof (translation)
+Use extensionality with `k l`. Use `show Matrix.diagonal (Function.update (1 : Fin ρ → S) i (f x)) k l = f (Matrix.diagonal (Function.update (1 : Fin ρ → R) i (x : R)) k l)`. Simplify using `only [Matrix.diagonal_apply]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+
+Distinguish the cases in `h' : k = i`. Substitute `h'` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne h']`. Simplify using the standard rewrite rules.
+-/
 theorem dgU_map {R S : Type*} [CommRing R] [CommRing S] (f : R →+* S) (ρ : ℕ) (i : Fin ρ) (x : Rˣ) :
     dgU ρ i (Units.map f.toMonoidHom x) = Matrix.GeneralLinearGroup.map f (dgU ρ i x) := by
   ext k l
@@ -65,6 +76,13 @@ theorem dgU_map {R S : Type*} [CommRing R] [CommRing S] (f : R →+* S) (ρ : �
     · simp [Function.update_of_ne h']
   · simp
 
+/- English proof (translation)
+Use `show Matrix.diagonal (Function.update (1 : Fin ρ → R) i (x : R)) k l - (1 : Matrix (Fin ρ) (Fin ρ) R) k l = _`. Simplify using `only [Matrix.diagonal_apply, Matrix.one_apply]`. Distinguish the cases in `h : k = l`. Substitute `h` using the available equality. Distinguish the cases in `h' : k = i`.
+
+Substitute `h'` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne h', h']`. Simplify using `[h]`. Introduce `hk hl`.
+
+Conclude with `absurd (hk.trans hl.symm) h`.
+-/
 theorem dgU_sub_one {R : Type*} [CommRing R] (ρ : ℕ) (i : Fin ρ) (x : Rˣ) (k l : Fin ρ) :
     ((dgU ρ i x).1 - 1) k l = if k = i ∧ l = i then (x : R) - 1 else 0 := by
   show Matrix.diagonal (Function.update (1 : Fin ρ → R) i (x : R)) k l - (1 : Matrix (Fin ρ) (Fin ρ) R) k l = _
@@ -79,6 +97,21 @@ theorem dgU_sub_one {R : Type*} [CommRing R] (ρ : ℕ) (i : Fin ρ) (x : Rˣ) (
 
 end GlobalTheory.LeviOrigin
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos ρ with h0 | hpos` into its components or cases. Introduce `a`. Establish `hd : Matrix.GeneralLinearGroup.det a = 1` using `by ext; rw [Matrix.GeneralLinearGroup.val_det_apply]; subst h0; simp`. Rewrite using `[hα1 a hd, hd, map_one, inv_one]`. Take `⟨i0⟩ : Nonempty (Fin ρ)` from `⟨⟨0, hpos⟩⟩`.
+
+Establish `hhec : IsHeckeChar D (α.comp (GlobalTheory.LeviOrigin.dgU ρ i0) * χT)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(hαc.comp (GlobalTheory.LeviOrigin.continuous_dgU ρ i0)).mul hχ.1`. Introduce `x`. Rewrite using `[MonoidHom.mul_apply, MonoidHom.comp_apply, hχ.2 x, mul_one, GlobalTheory.LeviOrigin.dgU_map (incA D) ρ i0 x]`.
+
+Conclude with `hαr _`. Establish `hν` using `GlobalTheory.T.heckeCharacter_eq_one_of_trivial_splitPlaces D _ hhec (by`. Introduce `e he x hx`. Establish `h2` using `hs e he (GlobalTheory.LeviOrigin.dgU ρ i0 x) (by`. Introduce `k l`.
+
+Rewrite using `[GlobalTheory.LeviOrigin.dgU_sub_one]`. Use `split_ifs`. Conclude with `hx`. Conclude with `mul_zero _)`. Rewrite using `[MonoidHom.mul_apply, MonoidHom.comp_apply, h2, GlobalTheory.LeviOrigin.det_dgU, inv_mul_cancel])`.
+
+Establish `hdg : ∀ t, α (GlobalTheory.LeviOrigin.dgU ρ i0 t) = (χT t)⁻¹`. Introduce `t`. Use `hν t` as an intermediate fact. Rewrite `this` using `[MonoidHom.mul_apply, MonoidHom.comp_apply]`. Conclude with `eq_inv_of_mul_eq_one_left this`.
+
+Introduce `a`. Establish `hb : Matrix.GeneralLinearGroup.det (a * (GlobalTheory.LeviOrigin.dgU ρ i0 (Matrix.GeneralLinearGroup.det a))⁻¹) = 1`. Rewrite using `[map_mul, map_inv, GlobalTheory.LeviOrigin.det_dgU, mul_inv_cancel]`. Establish `h1` using `hα1 _ hb`. Establish `h3 : α a = α (a * (GlobalTheory.LeviOrigin.dgU ρ i0 (Matrix.GeneralLinearGroup.det a))⁻¹) * α (GlobalTheory.LeviOrigin.dgU ρ i0 (Matrix.GeneralLinearGroup.det a))`.
+
+Rewrite using `[← map_mul, inv_mul_cancel_right]`. Rewrite using `[h3, h1, one_mul]`. Conclude with `hdg _`.
+-/
 theorem GlobalTheory.LeviOrigin.alpha_eq (D : D7) (ρ : ℕ) (α : GL (Fin ρ) (AE D) →* Circle) (χT : (AE D)ˣ →* Circle)
     (hαc : Continuous α) (hαr : ∀ a : GL (Fin ρ) D.host.E, α (Matrix.GeneralLinearGroup.map (incA D) a) = 1)
     (hα1 : ∀ a : GL (Fin ρ) (AE D), Matrix.GeneralLinearGroup.det a = 1 → α a = 1)
@@ -122,6 +155,19 @@ theorem GlobalTheory.LeviOrigin.alpha_eq (D : D7) (ρ : ℕ) (α : GL (Fin ρ) (
   rw [h3, h1, one_mul]
   exact hdg _
 
+/- English proof (translation)
+Introduce `D ψ S S₀ T ρ d χS χT om om₀ hW hW₀ μ 𝓕 hμ f hf`. Take `⟨α, ξ, hαc, hαr, hξc, hξr, hmain⟩` from `GlobalTheory.T.weilAction_levi_origin_eq_charScalar D ψ S S₀ T ρ d χS χT om om₀ hW hW₀ μ 𝓕 hμ`. Establish `hsp` using `GlobalTheory.T.leviFactor_characters_splitPlace D ψ S S₀ T ρ d χS χT om om₀ hW hW₀ μ 𝓕 hμ α ξ hmain`. Establish `hξ : ∀ g, ξ g = 1` using `GlobalTheory.SplitCharTrivial.eq_one_of_rat_of_split D S₀ ξ hξc hξr (fun e he => (hsp e he).1)`. Establish `hα1 : ∀ a : GL (Fin ρ) (AE D), Matrix.GeneralLinearGroup.det a = 1 → α a = 1` using `GlobalTheory.T.adelic_GL_circle_character_trivial_on_det_one D ρ α hαc`.
+
+Establish `hα` using `GlobalTheory.LeviOrigin.alpha_eq D ρ α χT hαc hαr hα1 hW.hecT (fun e he => (hsp e he).2)`. Establish `hhalf : ∀ a : GL (Fin ρ) (AE D), Matrix.GeneralLinearGroup.det a = 1 → GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.halfMod T.rank a = 1`. Introduce `a ha`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.halfMod`. Rewrite using `[ha, MonoidHom.map_one (GlobalTheory.Doubling.absE D.host.F D.host.E)]`.
+
+Simplify using the standard rewrite rules. Establish `hom₀ : ∀ x, om₀ (1, 1) x = x`. Introduce `x`. Rewrite using `[← Prod.one_eq_mk, map_one, Module.End.one_apply]`. Establish `key : ∀ a, d.mixS T ψ μ 𝓕 (om (d.levi a, 1) f) 0 = ((((χT (Matrix.GeneralLinearGroup.det a))⁻¹ : Circle) : ℂ) * (GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.halfMod T.rank a : ℂ)) • d.mixS T ψ μ 𝓕 (f) 0`.
+
+Introduce `a`. Use `hmain a 1 f hf` as an intermediate fact. Rewrite `this` using `[map_one, mul_one, hξ 1, hom₀, hα a]`. Simplify using `using this`. Use `⟨?_, ?_, key⟩` and prove the remaining obligations.
+
+Introduce `g`. Use `hmain 1 g f hf` as an intermediate fact. Rewrite `this` using `[map_one, one_mul, hξ g, map_one, hhalf 1 (map_one _)]`. Simplify using `using this`. Introduce `a ha`.
+
+Rewrite using `[key a, ha, map_one, inv_one, hhalf a ha]`. Simplify using the standard rewrite rules.
+-/
 theorem GlobalTheory.LeviOrigin.value_at_origin : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S S₀ T : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (χS χT : (AE D)ˣ →* Circle) (om : Om S T) (om₀ : Om S₀ T), IsWeilDatumO ψ S T χS χT om → IsWeilDatumO ψ S₀ T χS χT om₀ → ∀ (μ : Measure (Mx D T.rank ρ)) (𝓕 : Set (Mx D T.rank ρ)), IsCovolOne (ratMx D T.rank ρ) μ 𝓕 → ∀ f, IsThetaFunO ψ S T f → (∀ g, d.mixS T ψ μ 𝓕 (om (d.emb0 g, 1) f) 0 = om₀ (g, 1) (d.mixS T ψ μ 𝓕 (f) 0)) ∧ (∀ a : GL (Fin ρ) (AE D), Matrix.GeneralLinearGroup.det a = 1 → d.mixS T ψ μ 𝓕 (om (d.levi a, 1) f) 0 = d.mixS T ψ μ 𝓕 (f) 0) ∧ ∀ a : GL (Fin ρ) (AE D), d.mixS T ψ μ 𝓕 (om (d.levi a, 1) f) 0 = ((((χT (Matrix.GeneralLinearGroup.det a))⁻¹ : Circle) : ℂ) * (GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.halfMod T.rank a : ℂ)) • d.mixS T ψ μ 𝓕 (f) 0 := by
   intro D ψ S S₀ T ρ d χS χT om om₀ hW hW₀ μ 𝓕 hμ f hf
   obtain ⟨α, ξ, hαc, hαr, hξc, hξr, hmain⟩ := GlobalTheory.T.weilAction_levi_origin_eq_charScalar D ψ S S₀ T ρ d χS χT om om₀ hW hW₀ μ 𝓕 hμ

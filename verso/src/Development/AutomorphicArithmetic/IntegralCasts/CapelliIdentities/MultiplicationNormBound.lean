@@ -2,11 +2,17 @@ import Mathlib
 
 open MeasureTheory
 
+/- English proof (translation)
+Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) (hb x)`.
+-/
 private theorem UpperTheory.Reformulated.B.MultiplicationNormBound.norm_mul_le {X : Type*} (c : X → ℝ) (hb : ∀ x, |c x| ≤ 1)
     (x : X) (z : ℂ) : ‖(c x : ℂ) * z‖ ≤ ‖z‖ := by
   rw [norm_mul, Complex.norm_real, Real.norm_eq_abs]
   exact mul_le_of_le_one_left (norm_nonneg _) (hb x)
 
+/- English proof (translation)
+The claim follows from `(Lp.memLp f).of_le ((Complex.measurable_ofReal.comp hc).aestronglyMeasurable.mul (Lp.aestronglyMeasurable f)) (Filter.Eventually.of_forall fun x => UpperTheory.Reformulated.B.MultiplicationNormBound.norm_mul_le c hb x (f x))`.
+-/
 private theorem UpperTheory.Reformulated.B.MultiplicationNormBound.memLp_mul {X : Type*} [MeasurableSpace X] {ν : Measure X}
     (c : X → ℝ) (hc : Measurable c) (hb : ∀ x, |c x| ≤ 1) (f : Lp ℂ 2 ν) :
     MemLp (fun x => (c x : ℂ) * f x) 2 ν :=

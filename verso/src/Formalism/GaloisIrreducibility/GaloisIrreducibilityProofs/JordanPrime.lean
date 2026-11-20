@@ -8,6 +8,13 @@ namespace CycleCommutantPowers
 
 variable {α : Type} [Fintype α] [DecidableEq α]
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `key : x ^ n * g ^ u * (x ^ n)⁻¹ = (x ^ n * g * (x ^ n)⁻¹) ^ u`.
+
+Establish `h` using `map_zpow (MulAut.conj (x ^ n)) g u`. Simplify `h` using `only [MulAut.conj_apply]`. Combine the equalities or inequalities in the displayed calculation. Consider the case `(rw [pow_succ, mul_inv_rev]; simp only [mul_assoc])`. Consider the case `group`.
+
+Use `_ = x ^ n * g ^ u * (x ^ n)⁻¹ := by rw [hx]`. Use `_ = (x ^ n * g * (x ^ n)⁻¹) ^ u := key`. Use `_ = (g ^ (u ^ n)) ^ u := by rw [ih]`. Use `_ = g ^ (u ^ (n + 1)) := by rw [pow_succ, zpow_mul]`.
+-/
 theorem conj_pow_eq (x g : Perm α) (u : ℤ) (hx : x * g * x⁻¹ = g ^ u) :
     ∀ n : ℕ, x ^ n * g * (x ^ n)⁻¹ = g ^ (u ^ n) := by
   intro n
@@ -26,6 +33,11 @@ theorem conj_pow_eq (x g : Perm α) (u : ℤ) (hx : x * g * x⁻¹ = g ^ u) :
       _ = (g ^ (u ^ n)) ^ u := by rw [ih]
       _ = g ^ (u ^ (n + 1)) := by rw [pow_succ, zpow_mul]
 
+/- English proof (translation)
+Take `⟨k, hk⟩ : ∃ k : ℕ, x ^ (k + 1) = 1` from `⟨orderOf x - 1, by rw [Nat.sub_add_cancel (orderOf_pos x)]; exact pow_orderOf_eq_one x⟩`. Establish `hinv : x⁻¹ = x ^ k`. Rewrite `hk` using `[pow_succ]`. Conclude with `(eq_inv_of_mul_eq_one_left hk).symm`. Use `⟨u ^ k, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hinv]`. Conclude with `conj_pow_eq x g u hx k`.
+-/
 theorem conj_inv_exists (x g : Perm α) (u : ℤ) (hx : x * g * x⁻¹ = g ^ u) :
     ∃ v : ℤ, x⁻¹ * g * x⁻¹⁻¹ = g ^ v := by
   obtain ⟨k, hk⟩ : ∃ k : ℕ, x ^ (k + 1) = 1 :=
@@ -37,12 +49,24 @@ theorem conj_inv_exists (x g : Perm α) (u : ℤ) (hx : x * g * x⁻¹ = g ^ u) 
   rw [hinv]
   exact conj_pow_eq x g u hx k
 
+/- English proof (translation)
+Establish `h` using `map_zpow (MulAut.conj c) g m`. Simplify using `only [MulAut.conj_apply] at h`. Rewrite using `[h, hc, ← zpow_mul]`.
+-/
 theorem conj_key (c g : Perm α) (e : ℤ) (hc : c * g * c⁻¹ = g ^ e) (m : ℤ) :
     c * g ^ m * c⁻¹ = g ^ (e * m) := by
   have h := map_zpow (MulAut.conj c) g m
   simp only [MulAut.conj_apply] at h
   rw [h, hc, ← zpow_mul]
 
+/- English proof (translation)
+Take `⟨v, hv0⟩` from `conj_inv_exists x g u hx`. Take `⟨v', hw0⟩` from `conj_inv_exists y g w hy`. Establish `hv : x⁻¹ * g * x = g ^ v` using `by rw [inv_inv] at hv0; exact hv0`. Establish `hw : y⁻¹ * g * y = g ^ v'` using `by rw [inv_inv] at hw0; exact hw0`. Establish `huv : g ^ (u * v) = g`.
+
+Rewrite using `[← conj_key x g u hx v, ← hv]`. Apply the tactic sequence `first | group | simp [mul_assoc]`. Establish `hwv : g ^ (w * v') = g`. Rewrite using `[← conj_key y g w hy v', ← hw]`. Apply the tactic sequence `first | group | simp [mul_assoc]`.
+
+Establish `k1` using `conj_key x⁻¹ g v hv0 v'`. Rewrite `k1` using `[inv_inv]`. Apply the tactic sequence `have e1 : (x * y * x⁻¹ * y⁻¹) * g * (x * y * x⁻¹ * y⁻¹)⁻¹ = x * (y * (x⁻¹ * (y⁻¹ * g * y) * x) * y⁻¹) * x⁻¹ := by first | group | simp only [mul_inv_rev, inv_inv, mul_assoc]`. Rewrite using `[e1, hw, k1, conj_key y g w hy (v * v'), conj_key x g u hx (w * (v * v'))]`. Establish `he : u * (w * (v * v')) = (u * v) * (w * v')` using `by ring`.
+
+Rewrite using `[he, zpow_mul, huv, hwv]`.
+-/
 theorem comm_of_conj (x y g : Perm α) (u w : ℤ) (hx : x * g * x⁻¹ = g ^ u)
     (hy : y * g * y⁻¹ = g ^ w) :
     (x * y * x⁻¹ * y⁻¹) * g * (x * y * x⁻¹ * y⁻¹)⁻¹ = g := by
@@ -65,6 +89,13 @@ theorem comm_of_conj (x y g : Perm α) (u w : ℤ) (hx : x * g * x⁻¹ = g ^ u)
   have he : u * (w * (v * v')) = (u * v) * (w * v') := by ring
   rw [he, zpow_mul, huv, hwv]
 
+/- English proof (translation)
+Take `⟨a, ha, hcyc⟩` from `hg`. Establish `hza : g (z a) ≠ z a`. Introduce `h`. Apply `ha` to reduce the goal to its premises. Apply `z.injective` to reduce the goal to its premises.
+
+Establish `h2 : (z * g) a = (g * z) a` using `by rw [hz]`. Simplify using `only [Perm.mul_apply] at h2`. Rewrite using `[h2, h]`. Take `⟨j, hj⟩` from `hcyc hza`. Use `⟨j, fun d hd => ?_⟩` and prove the remaining obligations.
+
+Take `⟨i, rfl⟩` from `hcyc hd`. Establish `hcomm : z * g ^ i = g ^ i * z` using `((show Commute z g from hz).zpow_right i).eq`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem eq_zpow_on_support (g z : Perm α) (hg : g.IsCycle) (hz : z * g = g * z) :
     ∃ j : ℤ, ∀ d, g d ≠ d → z d = (g ^ j) d := by
   obtain ⟨a, ha, hcyc⟩ := hg
@@ -87,6 +118,13 @@ theorem eq_zpow_on_support (g z : Perm α) (hg : g.IsCycle) (hz : z * g = g * z)
     _ = (g ^ j * g ^ i) a := by rw [← zpow_add, ← zpow_add, add_comm]
     _ = (g ^ j) ((g ^ i) a) := rfl
 
+/- English proof (translation)
+Set `e : Fin Γ.card ↪ α` to `⟨fun i => ((Γ.equivFin.symm i : Γ) : α), fun i j h => Γ.equivFin.symm.injective (Subtype.ext h)⟩`. Set `e' : Fin Γ.card ↪ α` to `e.trans π.toEmbedding`. Establish `hpt : IsPretransitive G (Fin Γ.card ↪ α)` using `hG`. Take `⟨g, hg⟩` from `hpt.exists_smul_eq e e'`. Use `⟨g, g.2, fun γ hγ => ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `congrArg (fun f : Fin Γ.card ↪ α => f (Γ.equivFin ⟨γ, hγ⟩)) hg`. Establish `h2 : e (Γ.equivFin ⟨γ, hγ⟩) = γ` using `by show ((Γ.equivFin.symm (Γ.equivFin ⟨γ, hγ⟩) : Γ) : α) = γ`. Rewrite using `[Equiv.symm_apply_apply]`. Establish `h3 : (g : Perm α) (e (Γ.equivFin ⟨γ, hγ⟩)) = π (e (Γ.equivFin ⟨γ, hγ⟩))` using `by first`. Consider the case `exact h`.
+
+Consider the case `(simp only [Function.Embedding.smul_apply, Subgroup.smul_def, Perm.smul_def] at h; exact h)`. Rewrite `h3` using `[h2]`. Then use the resulting hypothesis.
+-/
 theorem exists_agree (G : Subgroup (Perm α)) (Γ : Finset α)
     (hG : IsMultiplyPretransitive G α Γ.card) (π : Perm α) :
     ∃ x ∈ G, ∀ γ ∈ Γ, x γ = π γ := by
@@ -107,6 +145,39 @@ theorem exists_agree (G : Subgroup (Perm α)) (Γ : Finset α)
       | (simp only [Function.Embedding.smul_apply, Subgroup.smul_def, Perm.smul_def] at h; exact h)
   rwa [h2] at h3
 
+/- English proof (translation)
+Use `Fact.mk hp` as an intermediate fact. Use `set Γ : Set α := {γ | g γ = γ} with hΓ`. Use `set F : Subgroup (Perm α) := G ⊓ fixingSubgroup (Perm α) Γ with hF`. Establish `memF : ∀ σ, σ ∈ F ↔ σ ∈ G ∧ ∀ γ, g γ = γ → σ γ = γ`. Introduce `σ`.
+
+Simplify using `[hF, mem_fixingSubgroup_iff, hΓ, Perm.smul_def]`. Establish `hgF : g ∈ F` using `(memF g).2 ⟨hgG, fun γ h => h⟩`. Establish `hcF : x * g * x⁻¹ ∈ F`. Use `(memF _).2 ⟨G.mul_mem (G.mul_mem hxG hgG) (G.inv_mem hxG), fun γ hγ => ?_⟩` and prove the remaining obligations. Rewrite using `[Perm.mul_apply, Perm.mul_apply, hxΓ γ hγ, ← Perm.mul_apply, mul_inv_cancel, Perm.one_apply]`.
+
+Establish `hcardF : Nat.card F ∣ p.factorial`. Establish `hle : F ≤ (Perm.ofSubtype : Perm {x // x ∈ g.support} →* Perm α).range`. Introduce `σ hσ`. Take `⟨-, hσΓ⟩` from `(memF σ).1 hσ`. Establish `h1 : ∀ t, σ t ∈ g.support ↔ t ∈ g.support`.
+
+Introduce `t`. Simplify using `only [Perm.mem_support, ne_eq, not_iff_not]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h2` using `hσΓ _ h`.
+
+Establish `h3 : σ t = t` using `σ.injective h2`. Rewrite `h` using `[h3]`. Conclude with `h`. Introduce `h`. Rewrite using `[hσΓ t h]`.
+
+Conclude with `h`. Use `MonoidHom.mem_range.2 ⟨σ.subtypePerm h1, ?_⟩` and prove the remaining obligations. Apply `Perm.ofSubtype_subtypePerm` to reduce the goal to its premises. Introduce `t ht`. Rewrite using `[Perm.mem_support]`.
+
+Introduce `h`. Conclude with `ht (hσΓ t h)`. Establish `h1` using `Subgroup.card_dvd_of_le hle`. Establish `h2` using `Nat.card_congr (MonoidHom.ofInjective (Perm.ofSubtype_injective (p := fun x => x ∈ g.support))).toEquiv`. Rewrite `h1` using `[← h2, Nat.card_perm, Nat.card_eq_finsetCard, hgp]`.
+
+Conclude with `h1`. Establish `hpF : p ∣ Nat.card F`. Use `orderOf_dvd_natCard (⟨g, hgF⟩ : F)` as an intermediate fact. Rewrite `this` using `[← orderOf_submonoid, hgc.orderOf, hgp]`. Then use the resulting hypothesis. Establish `hne : Nat.card F ≠ 0` using `Nat.card_pos.ne'`.
+
+Establish `hfact : (Nat.card F).factorization p = 1`. Apply `le_antisymm` to reduce the goal to its premises. Assume the negation of the conclusion as `h push Not at h`. Establish `h2 : p ^ 2 ∣ Nat.card F` using `(hp.pow_dvd_iff_le_factorization hne).2 h`. Establish `h3 : p ^ 2 ∣ p.factorial` using `h2.trans hcardF`.
+
+Rewrite `h3` using `[← Nat.mul_factorial_pred hp.ne_zero, pow_two]`. Establish `h4` using `Nat.dvd_of_mul_dvd_mul_left hp.pos h3`. Rewrite `h4` using `[hp.dvd_factorial]`. Use `hp.two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `(hp.pow_dvd_iff_le_factorization hne).1 (by simpa using hpF)`. Set `g' : F` to `⟨g, hgF⟩`. Set `c' : F` to `⟨x * g * x⁻¹, hcF⟩`. Establish `hc1 : Nat.card (Subgroup.zpowers g') = p ^ (Nat.card F).factorization p`. Rewrite using `[hfact, pow_one, Nat.card_zpowers, ← orderOf_submonoid, hgc.orderOf, hgp]`.
+
+Establish `hc2 : Nat.card (Subgroup.zpowers c') = p ^ (Nat.card F).factorization p`. Rewrite using `[hfact, pow_one, Nat.card_zpowers, ← orderOf_submonoid]`. Use `show orderOf (x * g * x⁻¹) = p`. Rewrite using `[(hgc.conj).orderOf, Perm.card_support_conj, hgp]`. Set `S1 : Sylow p F` to `Sylow.ofCard _ hc1`.
+
+Set `S2 : Sylow p F` to `Sylow.ofCard _ hc2`. Take `⟨f, hf⟩` from `MulAction.exists_smul_eq F S2 S1`. Establish `hmem : f * c' * f⁻¹ ∈ Subgroup.zpowers g'`. Establish `h1 : c' ∈ (S2 : Subgroup F)` using `Subgroup.mem_zpowers c'`. Establish `h2 : MulAut.conj f • c' ∈ ((f • S2 : Sylow p F) : Subgroup F)`.
+
+Rewrite using `[Sylow.coe_subgroup_smul]`. Conclude with `Subgroup.smul_mem_pointwise_smul _ _ _ h1`. Rewrite `h2` using `[hf]`. Establish `h3 : f * c' * f⁻¹ ∈ (S1 : Subgroup F)` using `by simpa using h2`. Conclude with `h3`.
+
+Take `⟨e, he⟩` from `Subgroup.mem_zpowers_iff.1 hmem`. Establish `hfF` using `(memF f).1 f.2`. Use `⟨f, hfF.1, hfF.2, e, ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val he` as an intermediate fact. Simplify using `only [SubgroupClass.coe_zpow, Subgroup.coe_mul, InvMemClass.coe_inv, g', c'] at this`.
+
+Rewrite using `[this]`. Use `group`.
+-/
 theorem sylow_adjust (G : Subgroup (Perm α)) (g : Perm α) (p : ℕ) (hp : p.Prime)
     (hgG : g ∈ G) (hgc : g.IsCycle) (hgp : g.support.card = p)
     (x : Perm α) (hxG : x ∈ G) (hxΓ : ∀ γ, g γ = γ → g (x⁻¹ γ) = x⁻¹ γ) :
@@ -185,6 +256,43 @@ theorem sylow_adjust (G : Subgroup (Perm α)) (g : Perm α) (p : ℕ) (hp : p.Pr
 
 end CycleCommutantPowers
 
+/- English proof (translation)
+Introduce `α _ _ G g p hp hgG hgc hgp hcard hG`. Use `set Γ : Finset α := g.supportᶜ with hΓdef`. Establish `hmemΓ : ∀ γ, γ ∈ Γ ↔ g γ = γ` using `by intro γ; simp [hΓdef]`. Establish `hΓcard : Γ.card + p = Fintype.card α`. Rewrite using `[hΓdef, Finset.card_compl, hgp]`.
+
+Use `Finset.card_le_univ g.support` as an intermediate fact. Rewrite `this` using `[hgp]`. Use linear arithmetic over natural numbers and integers. Establish `hk : 3 ≤ Γ.card` using `by omega`. Establish `hmt : IsMultiplyPretransitive G α Γ.card`.
+
+Take `⟨m, hm⟩ : ∃ m, Γ.card = m + 1` from `⟨Γ.card - 1, by omega⟩`. Establish `hsn : ((g.support : Set α)ᶜ).ncard = m + 1`. Apply `Nat.add_left_cancel` to reduce the goal to its premises. Rewrite using `[Set.ncard_add_ncard_compl, Set.ncard_coe_finset, hgp, Nat.card_eq_fintype_card]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hsn' : m + 2 < Nat.card α`. Rewrite using `[Nat.card_eq_fintype_card]`. Use `hp.two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hprim : IsPreprimitive (fixingSubgroup G ((g.support : Set α)ᶜ)) (SubMulAction.ofFixingSubgroup G ((g.support : Set α)ᶜ))`.
+
+Use `Equiv.Perm.isPretransitive_of_isCycle_mem hgc hgG` as an intermediate fact. Apply `IsPreprimitive.of_prime_card` to reduce the goal to its premises. Use `hp` and compare the differences between its conclusion and the goal. Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_subtype, ← hgp]`. Apply `congr_arg` to reduce the goal to its premises.
+
+Use extensionality with `x`. Simplify using `[SubMulAction.mem_ofFixingSubgroup_iff]`. Establish `h1` using `hG.isMultiplyPreprimitive hsn hsn' hprim`. Establish `h2 : IsMultiplyPretransitive G α (m + 2)` using `IsMultiplyPreprimitive.isMultiplyPretransitive ..`. Rewrite using `[hm]`.
+
+Conclude with `isMultiplyPretransitive_of_le (n := m + 2) (by omega) (by omega)`. Take `⟨a, b, c, ha, hb, hc, hab, hac, hbc⟩` from `Finset.two_lt_card_iff.1 (by omega : 2 < Γ.card)`. Rewrite `ha`, `hb`, `hc` using `[hmemΓ]`. Establish `build : ∀ π : Perm α, (∀ γ, g γ = γ → g (π γ) = π γ) → π * π = 1 → ∃ x ∈ G, (∀ γ, g γ = γ → x γ = π γ) ∧ (∀ γ, g γ = γ → x⁻¹ γ = π γ) ∧ ∃ e : ℤ, x * g * x⁻¹ = g ^ e`. Introduce `π hπ hπ2`.
+
+Establish `hinvOf : ∀ y : Perm α, (∀ γ, g γ = γ → y γ = π γ) → ∀ γ, g γ = γ → y⁻¹ γ = π γ`. Introduce `y hy γ hγ`. Rewrite using `[Perm.inv_eq_iff_eq, hy _ (hπ γ hγ), ← Perm.mul_apply, hπ2, Perm.one_apply]`. Take `⟨x0, hx0G, hx0⟩` from `CycleCommutantPowers.exists_agree G Γ hmt π`. Establish `hx0' : ∀ γ, g γ = γ → x0 γ = π γ` using `fun γ hγ => hx0 γ ((hmemΓ γ).2 hγ)`.
+
+Take `⟨f, hfG, hfΓ, e, he⟩` from `CycleCommutantPowers.sylow_adjust G g p hp hgG hgc hgp x0 hx0G (fun γ hγ => by rw [hinvOf x0 hx0' γ hγ]; exact hπ γ hγ)`. Establish `hfx : ∀ γ, g γ = γ → (f * x0) γ = π γ`. Introduce `γ hγ`. Rewrite using `[Perm.mul_apply, hx0' γ hγ, hfΓ _ (hπ γ hγ)]`. Conclude with `⟨f * x0, G.mul_mem hfG hx0G, hfx, hinvOf _ hfx, e, he⟩`.
+
+Establish `hswap : ∀ u v : α, g u = u → g v = v → ∀ γ, g γ = γ → g (swap u v γ) = swap u v γ`. Introduce `u v hu hv γ hγ`. Rewrite using `[swap_apply_def]`. Apply the tactic sequence `split_ifs <;> assumption`. Take `⟨x, hxG, hx, hxi, u, hu⟩` from `build (swap a b) (hswap a b ha hb) (swap_mul_self a b)`.
+
+Take `⟨y, hyG, hy, hyi, w, hw⟩` from `build (swap a c) (hswap a c ha hc) (swap_mul_self a c)`. Use `set z := x * y * x⁻¹ * y⁻¹ with hzdef`. Establish `hzG : z ∈ G` using `G.mul_mem (G.mul_mem (G.mul_mem hxG hyG) (G.inv_mem hxG)) (G.inv_mem hyG)`. Establish `hz : z * g * z⁻¹ = g` using `CycleCommutantPowers.comm_of_conj x y g u w hu hw`. Establish `hzc : z * g = g * z`.
+
+Combine the equalities or inequalities in the displayed calculation. Take `⟨j, hj⟩` from `CycleCommutantPowers.eq_zpow_on_support g z hgc hzc`. Use `set t := swap a b * swap a c with htdef`. Establish `h3 : IsThreeCycle t` using `isThreeCycle_swap_mul_swap_same hab hac hbc`. Establish `hwt : g ^ (-j) * z = t * t`.
+
+Use extensionality with `d`. Distinguish the cases in `hd : g d = d`. Establish `hzd : z d = swap a b (swap a c (swap a b (swap a c d)))`. Establish `e1` using `hswap a c ha hc d hd`. Establish `e2` using `hswap a b ha hb _ e1`.
+
+Establish `e3` using `hswap a c ha hc _ e2`. Simplify using `only [hzdef, Perm.mul_apply]`. Rewrite using `[hyi d hd, hxi _ e1, hy _ e2, hx _ e3]`. Establish `hzΓ : g (z d) = z d`. Rewrite using `[hzd]`.
+
+Conclude with `hswap a b ha hb _ (hswap a c ha hc _ (hswap a b ha hb _ (hswap a c ha hc d hd)))`. Rewrite using `[Perm.mul_apply, zpow_apply_eq_self_of_apply_eq_self hzΓ, hzd, htdef]`. Simplify using `only [Perm.mul_apply]`. Establish `hda : d ≠ a` using `fun h => hd (h ▸ ha)`. Establish `hdb : d ≠ b` using `fun h => hd (h ▸ hb)`.
+
+Establish `hdc : d ≠ c` using `fun h => hd (h ▸ hc)`. Rewrite using `[Perm.mul_apply, hj d hd, ← Perm.mul_apply, ← zpow_add, neg_add_cancel, zpow_zero, Perm.one_apply, htdef]`. Simplify using `only [Perm.mul_apply]`. Rewrite using `[swap_apply_of_ne_of_ne hda hdc, swap_apply_of_ne_of_ne hda hdb, swap_apply_of_ne_of_ne hda hdc, swap_apply_of_ne_of_ne hda hdb]`. Establish `htt : t * t = t⁻¹`.
+
+Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Establish `h` using `pow_orderOf_eq_one t`. Rewrite `h` using `[h3.isCycle.orderOf, h3.card_support]`. Rewrite using `[← h, pow_three', mul_assoc]`. Establish `hwG : g ^ (-j) * z ∈ G` using `G.mul_mem (G.zpow_mem hgG _) hzG`.
+
+Rewrite `hwG` using `[hwt, htt]`. Conclude with `Equiv.Perm.alternatingGroup_le_of_isPreprimitive_of_isThreeCycle_mem hG h3.inv hwG`.
+-/
 theorem jordan_prime_cycle_theorem : JordanPrime := by
   intro α _ _ G g p hp hgG hgc hgp hcard hG
   classical

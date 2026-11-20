@@ -15,16 +15,28 @@ namespace GlobalTheory.BotPairSmallTw
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts}
 
+/- English proof (translation)
+Unfold `modT`. Conclude with `mul_ne_zero (condE_ne_bot G.pl) (Finset.prod_ne_zero_iff.2 fun w _ => w.ne_bot)`.
+-/
 theorem modT_ne_bot (G : GridData L sc) (t : T) : modT G t ≠ ⊥ := by
   unfold modT
   exact mul_ne_zero (condE_ne_bot G.pl) (Finset.prod_ne_zero_iff.2 fun w _ => w.ne_bot)
 
+/- English proof (translation)
+Rewrite using `[modT, map_mul, map_prod, GlobalTheory.ModulusNorm.absNorm_condE, Qn]`.
+-/
 theorem absNorm_modT (G : GridData L sc) (t : T) : Ideal.absNorm (modT G t) = levQ G.pl * Qn G t := by
   rw [modT, map_mul, map_prod, GlobalTheory.ModulusNorm.absNorm_condE, Qn]
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.closure_mono fun _ ⟨b, hb, s, hs, e⟩ => ⟨b, h hb, s, hs, e⟩`.
+-/
 theorem hatId_mono {I J : Ideal (𝓞 D.host.E)} (h : I ≤ J) : hatId D I ≤ hatId D J :=
   AddSubgroup.closure_mono fun _ ⟨b, hb, s, hs, e⟩ => ⟨b, h hb, s, hs, e⟩
 
+/- English proof (translation)
+Establish `h : modT G t ≤ condE G.pl` using `by show condE G.pl * _ ≤ _`. Conclude with `Ideal.mul_le_inf.trans inf_le_left`. Conclude with `Ideal.mul_mono h (Ideal.map_mono h)`.
+-/
 theorem modT_mul_conj_le (G : GridData L sc) (t : T) :
     modT G t * D.host.conj • modT G t ≤ condE G.pl * D.host.conj • condE G.pl := by
   have h : modT G t ≤ condE G.pl := by

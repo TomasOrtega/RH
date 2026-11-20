@@ -34,6 +34,13 @@ section Mean
 open MeasureTheory
 open scoped Pointwise
 
+/- English proof (translation)
+Use `haveI : IsFiniteMeasure (μ.restrict 𝓕) := ⟨by rw [Measure.restrict_apply_univ, h𝓕]; exact ENNReal.one_lt_top⟩`. Use `haveI : IsFiniteMeasure (ν.restrict Fd) := ⟨by rw [Measure.restrict_apply_univ]; exact ht.lt_top⟩`. Establish `hc : Continuous (Function.uncurry fun (w : G) (z : V) => g (w + ι z))` using `hg.comp (continuous_fst.add (hι.comp continuous_snd))`. Establish `hint : Integrable (Function.uncurry fun (w : G) (z : V) => g (w + ι z)) ((μ.restrict 𝓕).prod (ν.restrict Fd))` using `Integrable.of_bound hc.measurable.aestronglyMeasurable M (Filter.Eventually.of_forall fun p => hM _)`. Establish `hs` using `integral_integral_swap hint`.
+
+Establish `hr : ν.real Fd ≠ 0` using `ENNReal.toReal_ne_zero.2 ⟨h0, ht⟩`. Establish `h3 : ∀ w, ∫ z in Fd, g (w + ι z) ∂ν = ν.real Fd * m` using `fun w => by`. Rewrite using `[← h2 w, setAverage_eq, smul_eq_mul, ← mul_assoc, mul_inv_cancel₀ hr, one_mul]`. Simplify using `only [h1, h3, setIntegral_const, smul_eq_mul] at hs`. Rewrite `hs` using `[show μ.real 𝓕 = 1 by rw [measureReal_def, h𝓕, ENNReal.toReal_one], one_mul]`.
+
+Conclude with `mul_left_cancel₀ hr hs`.
+-/
 theorem mean_eq_of_swap {G V : Type} [AddCommGroup G] [TopologicalSpace G] [ContinuousAdd G] [MeasurableSpace G] [BorelSpace G]
     [TopologicalSpace V] [SecondCountableTopology V] [MeasurableSpace V] [BorelSpace V]
     (μ : Measure G) (𝓕 : Set G) (h𝓕 : μ 𝓕 = 1) (ν : Measure V) (Fd : Set V) (h0 : ν Fd ≠ 0) (ht : ν Fd ≠ ⊤)
@@ -53,6 +60,13 @@ theorem mean_eq_of_swap {G V : Type} [AddCommGroup G] [TopologicalSpace G] [Cont
   rw [show μ.real 𝓕 = 1 by rw [measureReal_def, h𝓕, ENNReal.toReal_one], one_mul] at hs
   exact mul_left_cancel₀ hr hs
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Establish `: BorelSpace (WO S T)` using `⟨rfl⟩`. Establish `: Countable (ratL T S)` using `TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Take `⟨hμ, h𝓨, -⟩` from `h`. Establish `e1 : ∫ a in 𝓕, φ (a + b) ∂μ = ∫ a in b +ᵥ 𝓕, φ a ∂μ`.
+
+Rewrite using `[← Set.image_vadd]`. Simplify using `only [vadd_eq_add]`. Rewrite using `[(measurePreserving_add_left μ b).setIntegral_image_emb (MeasurableEquiv.addLeft b).measurableEmbedding]`. Simplify using `only [add_comm b]`. Rewrite using `[e1]`.
+
+Conclude with `(h𝓨.vadd_of_comm b).setIntegral_eq h𝓨 fun γ a => hφ γ γ.2 a`.
+-/
 theorem setIntegral_shift {D : D7} {S T : HSp D} {μ : Measure (WO S T)} {𝓕 : Set (WO S T)} (h : IsCovolOne (ratL T S) μ 𝓕)
     (φ : WO S T → ℝ) (hφ : ∀ γ ∈ ratL T S, ∀ a, φ (γ + a) = φ a) (b : WO S T) :
     ∫ a in 𝓕, φ (a + b) ∂μ = ∫ a in 𝓕, φ a ∂μ := by
@@ -68,6 +82,11 @@ theorem setIntegral_shift {D : D7} {S T : HSp D} {μ : Measure (WO S T)} {𝓕 :
   rw [e1]
   exact (h𝓨.vadd_of_comm b).setIntegral_eq h𝓨 fun γ a => hφ γ γ.2 a
 
+/- English proof (translation)
+Take `⟨f₁, s₁, d₁, -⟩` from `GlobalTheory.ThetaInter.klat_facts hC hA`. Establish `hH` using `GlobalTheory.ThetaInter.isHerm_sesqOf D (tor0 D D.host.ccK δ) N N'`. Establish `: (volume : Measure (Fin N' → Fin N → ℂ)).IsAddHaarMeasure` using `Measure.pi.isAddHaarMeasure _`. Establish `: (volume : Measure (VC D N N')).IsAddHaarMeasure` using `Measure.pi.isAddHaarMeasure _`. Take `⟨n, b, hb⟩` from `GlobalTheory.ThetaInter.exists_basis (GlobalTheory.ThetaInter.discrete_of_selfDual hH d₁ f₁) s₁`.
+
+Substitute `hb` using the available equality. Establish `h1` using `ZSpan.isAddFundamentalDomain' b (volume : Measure (VC D N N'))`. Establish `h2` using `Classical.epsilon_spec (p := fun Fd => IsAddFundamentalDomain (Submodule.span ℤ (Set.range b)).toAddSubgroup Fd (volume : Measure (VC D N N'))) ⟨_, h1⟩`. Rewrite using `[h2.measure_eq h1]`. Conclude with `⟨ZSpan.measure_fundamentalDomain_ne_zero b, (ZSpan.fundamentalDomain_isBounded b).measure_lt_top.ne⟩`.
+-/
 theorem vol_fd {D : D7} {δ : ℂ} (hC : Crv D D.host.ccK δ) {N N' : ℕ} {A : AddSubgroup (VC D N N')}
     (hA : KLat D (tor0 D D.host.ccK δ) A) :
     volume (Classical.epsilon (fun Fd : Set (VC D N N') => IsAddFundamentalDomain A Fd volume)) ≠ 0 ∧
@@ -84,6 +103,31 @@ theorem vol_fd {D : D7} {δ : ℂ} (hC : Crv D D.host.ccK δ) {N N' : ℕ} {A : 
   rw [h2.measure_eq h1]
   exact ⟨ZSpan.measure_fundamentalDomain_ne_zero b, (ZSpan.fundamentalDomain_isBounded b).measure_lt_top.ne⟩
 
+/- English proof (translation)
+Take `⟨i1, -⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Establish `: BorelSpace (WO S T)` using `⟨rfl⟩`. Take `⟨σ, hch⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Establish `hψ1 : ∀ x, ‖ψ x‖ = 1` using `hψ.1.2.1`. Establish `hH` using `GlobalTheory.ThetaInter.isHerm_sesqOf D (tor0 D D.host.ccK δ) S.rank T.rank`.
+
+Use `set Θ : VC D S.rank T.rank → ℂ := fun Y => Φ (δ⁻¹ • Y) with hΘ`. Use `set ι : VC D S.rank T.rank → WO S T := fun Y => GlobalTheory.FockCompare.iotaW σ T S (GlobalTheory.FockPos.frLin frS frT (δ⁻¹ • Y)) with hι`. Establish `hιc : Continuous ι` using `(hch.continuous_iota T S).comp ((GlobalTheory.FockPos.frLin frS frT).continuous.comp (continuous_const_smul _))`. Establish `hιadd : ∀ Y Z, ι (Y + Z) = ι Y + ι Z` using `fun Y Z => by`. Simplify using `only [hι, smul_add, map_add]`.
+
+Establish `hzι : ∀ Y, GlobalTheory.FockPos.zCo θ frS frT (ι Y) = δ⁻¹ • Y` using `fun Y => by`. Rewrite using `[hι]`. Simplify using `only`. Rewrite using `[GlobalTheory.ThetaLawOF.zCo_iota hch]`. Use function extensionality and compare the values at `τ`.
+
+Conclude with `GlobalTheory.ThetaLawOF.coord_back frS frT _ τ`. Establish `hιz : ∀ r : WO S T, r.map (finPart D) = 0 → ι (δ • GlobalTheory.FockPos.zCo θ frS frT r) = r` using `fun r hr => by`. Establish `e1 : GlobalTheory.FockPos.frLin frS frT (GlobalTheory.FockPos.zCo θ frS frT r) = GlobalTheory.FockCompare.piW θ T S r`. Use function extensionality and compare the values at `τ`. Rewrite using `[GlobalTheory.FockPos.frLin_apply]`.
+
+Express the relevant statement in the definitionally equal form `GlobalTheory.FockPos.frAt frT τ * ((GlobalTheory.FockPos.frAt frT τ)⁻¹ * compAt θ τ r * GlobalTheory.FockPos.frAt frS τ) * (GlobalTheory.FockPos.frAt frS τ)⁻¹ = _`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, (GlobalTheory.ThetaLawOF.frAt_inv frT τ).2, Matrix.one_mul, Matrix.mul_assoc, (GlobalTheory.ThetaLawOF.frAt_inv frS τ).2, Matrix.mul_one]`. Both sides reduce to the same expression. Rewrite using `[hι]`. Simplify using `only`.
+
+Rewrite using `[smul_smul, inv_mul_cancel₀ hδ, one_smul, e1, hch.iota_pi hr]`. Establish `hrho : ∀ Y, ‖f (ι Y)‖ ^ 2 = GlobalTheory.ThetaInter.rho (GlobalTheory.ThetaInter.sesqOf D (tor0 D D.host.ccK δ) S.rank T.rank) Θ Y`. Introduce `Y`. Take `⟨Z, rfl⟩ : ∃ Z, Y = δ • Z` from `⟨δ⁻¹ • Y, by rw [smul_smul, mul_inv_cancel₀ hδ, one_smul]⟩`. Rewrite using `[hreal _ (hch.real_iota T S _), GlobalTheory.FockPos.gaussO]`.
+
+Express the relevant statement in the definitionally equal form `‖_ * Φ (GlobalTheory.FockPos.zCo θ frS frT (ι (δ • Z)))‖ ^ 2 = ‖Φ (δ⁻¹ • δ • Z)‖ ^ 2 * Real.exp (-Real.pi * (Hf D (tor0 D D.host.ccK δ) (δ • Z) (δ • Z)).re)`. Establish `hz` using `hzι (δ • Z)`. Simplify using `only [hι] at hz ⊢`. Rewrite using `[hz, GlobalTheory.ThetaLawOF.torusHermitianForm_scaled_coordinate_eq hδ, smul_smul, inv_mul_cancel₀ hδ, one_smul, norm_mul, mul_pow, mul_comm, Complex.norm_exp, ← Real.exp_nat_mul]`. Use `congr 2`.
+
+Simplify using `only [Complex.mul_conj']`. Use `norm_cast`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨U, hUo, hU⟩` from `hf.level`.
+
+Establish `hper` using `(GlobalTheory.ThetaSqInt.thetaO_norm_fin D ψ hψ S T μ 𝓕 hμ f hf).1`. Take `⟨M, hM⟩` from `GlobalTheory.OrientedHeis.theta_bounded hψ hf`. Take `⟨v0, vt⟩` from `vol_fd hC hA`. Establish `huni` using `(GlobalTheory.theta_translation_intertwiner_unitary D D.host.ccK δ hC S.rank T.rank A A hA hA Θ hTh).1`. Use `mean_eq_of_swap μ 𝓕 hμ.2.2 volume _ v0 vt (fun w => ‖f w‖ ^ 2) (hf.cont.norm.pow 2) (M ^ 2) (fun w => by rw [norm_pow, norm_norm]; exact pow_le_pow_left₀ (norm_nonneg _) (hM w) 2) ι hιc 1 _ (fun x => ?_) (fun w => ?_)` and prove the remaining obligations.
+
+Rewrite using `[setIntegral_shift hμ (fun w => ‖f w‖ ^ 2) (fun γ hγ a => by simp only [hper γ hγ a]) x]`. Conclude with `hn`. Take `⟨γ, u, huU, hu0, r, hr0, rfl⟩` from `GlobalTheory.VacNonzeroReal.decomp_WO U hUo w`. Rewrite using `[← huni (δ • GlobalTheory.FockPos.zCo θ frS frT r)]`. Express the relevant statement in the definitionally equal form `_ = ⨍ z in _, GlobalTheory.ThetaInter.rho (GlobalTheory.ThetaInter.sesqOf D (tor0 D D.host.ccK δ) S.rank T.rank) (Formalism.L2.Th1.H.opU (GlobalTheory.ThetaInter.sesqOf D (tor0 D D.host.ccK δ) S.rank T.rank) (δ • GlobalTheory.FockPos.zCo θ frS frT r) Θ) z`.
+
+Use `congr 1`. Use function extensionality and compare the values at `z`. Rewrite using `[GlobalTheory.ThetaInter.rho_opU hH, ← hrho, hιadd, hιz r hr0, add_assoc, add_assoc, hper (ratW T S γ) ⟨γ, rfl⟩]`. Establish `h2` using `congrArg (fun F => ‖F (ι z + r)‖) (hU u huU hu0)`. Simplify using `only [heisO, norm_mul, hψ1, one_mul] at h2`.
+
+Rewrite using `[← h2]`. Use `congr 3`. Normalize the expressions using the abelian group laws.
+-/
 theorem normSq_real_form {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D)
     (frS : GL (Fin S.rank) D.host.E) (frT : GL (Fin T.rank) D.host.E) (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
     {δ : ℂ} (hC : Crv D D.host.ccK δ) (hδ : δ ≠ 0) {A : AddSubgroup (VC D S.rank T.rank)}
@@ -163,6 +207,15 @@ theorem normSq_real_form {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam 
 
 end Mean
 
+/- English proof (translation)
+Establish `hc` using `GlobalTheory.ColStd.colLat_comap_eq_stdLat B`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Establish `hy' : y ∈ Formalism.L2.Pj.stdLat D.host.E n` using `hy`.
+
+Rewrite `hy'` using `[← hc]`. Conclude with `hy'`. Introduce `hx`. Use `⟨(B⁻¹ : GL (Fin n) D.host.E).1.mulVec x, ?_, ?_⟩` and prove the remaining obligations. Use `show _ ∈ Formalism.L2.Pj.stdLat D.host.E n`.
+
+Rewrite using `[← hc, Submodule.mem_comap]`. Simplify using `only [LinearMap.restrictScalars_apply, Matrix.mulVecLin_apply, Matrix.mulVec_mulVec]`. Rewrite using `[show (B.1 * (B⁻¹).1) = 1 from B.mul_inv, Matrix.one_mulVec]`. Conclude with `hx`. Simplify using `only [Matrix.mulVec_mulVec]`.
+
+Rewrite using `[show (B.1 * (B⁻¹).1) = 1 from B.mul_inv, Matrix.one_mulVec]`.
+-/
 theorem inV_stdL {D : D7} {n : ℕ} (B : GL (Fin n) D.host.E) :
     GlobalTheory.MovedDict.inV B (Formalism.MainNotions.StandardLatticesGL3.stdL D n) = (Formalism.L2.DIV.colLat B : Set (Fin n → D.host.E)) := by
   have hc := GlobalTheory.ColStd.colLat_comap_eq_stdLat B
@@ -182,6 +235,9 @@ theorem inV_stdL {D : D7} {n : ℕ} (B : GL (Fin n) D.host.E) :
     · simp only [Matrix.mulVec_mulVec]
       rw [show (B.1 * (B⁻¹).1) = 1 from B.mul_inv, Matrix.one_mulVec]
 
+/- English proof (translation)
+Take `⟨α, hα⟩` from `GlobalTheory.NatFamily.exists_taylor_ne D hG hG0`. Establish `hJ : GL3Theta.applyAt0 D (MvPolynomial.monomial α 1) G ≠ 0`. Rewrite using `[GlobalTheory.FockPos.applyAt0_monomial']`. Conclude with `mul_ne_zero (Finsupp.prod_ne_zero_iff.2 fun _ _ => Nat.cast_ne_zero.2 (Nat.factorial_ne_zero _)) hα`. Conclude with `mul_right_cancel₀ (mul_ne_zero (hP α) hJ) (h α)`.
+-/
 theorem scal_eq {D : D7} {N N' : ℕ} {G : VC D N N' → ℂ} (hG : Differentiable ℂ G) (hG0 : G ≠ 0)
     (P : (GL3Theta.Idx D N N' →₀ ℕ) → ℂ) (hP : ∀ k, P k ≠ 0) {a b : ℂ}
     (h : ∀ k, a * (P k * GL3Theta.applyAt0 D (MvPolynomial.monomial k 1) G) =
@@ -192,6 +248,9 @@ theorem scal_eq {D : D7} {N N' : ℕ} {G : VC D N N' → ℂ} (hG : Differentiab
     exact mul_ne_zero (Finsupp.prod_ne_zero_iff.2 fun _ _ => Nat.cast_ne_zero.2 (Nat.factorial_ne_zero _)) hα
   exact mul_right_cancel₀ (mul_ne_zero (hP α) hJ) (h α)
 
+/- English proof (translation)
+Establish `k0 : KLat D (tor0 D D.host.ccK δ) (La0 D (tor0 D D.host.ccK δ) N N')` using `Or.inr ⟨_, _, GlobalTheory.MovedVacuum.sd_stdL D N, GlobalTheory.MovedVacuum.sd_stdL D N', rfl⟩`. Establish `k1 : KLat D (tor0 D D.host.ccK δ) (La D (tor0 D D.host.ccK δ) L L')` using `Or.inr ⟨_, _, hL, hL', rfl⟩`. Use `⟨(GlobalTheory.theta_translation_intertwiner_unitary D D.host.ccK δ hC N N' _ _ k0 k1 e0 he0.1).2.2.1, ?_⟩` and prove the remaining obligations. Rewrite using `[he0.2.2.1]`. Conclude with `pow_ne_zero _ (GlobalTheory.ConjJet.thetaZeroNormSq_ne_zero_cmLattice D (GlobalTheory.InducedType.induced_type D).1 D.host.ccK δ t0 hC ht)`.
+-/
 theorem normSq_intertwiner_image_vacuum_selfDual {D : D7} {δ t0 : ℂ} (hC : Crv D D.host.ccK δ) (ht : GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D D.host.ccK δ) t0)
     {N N' : ℕ} {e0 : VC D N N' → ℂ} (he0 : oddE0 D D.host.ccK δ t0 N N' e0)
     {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)} {L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)}
@@ -207,6 +266,27 @@ theorem normSq_intertwiner_image_vacuum_selfDual {D : D7} {δ t0 : ℂ} (hC : Cr
   rw [he0.2.2.1]
   exact pow_ne_zero _ (GlobalTheory.ConjJet.thetaZeroNormSq_ne_zero_cmLattice D (GlobalTheory.InducedType.induced_type D).1 D.host.ccK δ t0 hC ht)
 
+/- English proof (translation)
+Establish `hδ : δ ≠ 0` using `GlobalTheory.InertSign.delta_ne_zero hC`. Take `⟨Θ', hΘ', hΘ0', hjet'⟩` from `GlobalTheory.MovedKappa.fock_jets_moved ψ θ S T sS sT frS frT hS hT hcS hcT δ hC hδ Ls Lt hLs hLt f hf`. Take `⟨κ', hκ', hd⟩` from `GlobalTheory.MovedKappa.intertwining_mem_ne_zero hC ht he0 hLs hLt hΘ' hΘ0'`. Establish `hF0 : Iop D (tor0 D D.host.ccK δ) (La0 D (tor0 D D.host.ccK δ) S.rank T.rank) (La D (tor0 D D.host.ccK δ) Ls Lt) e0 ≠ 0`. Introduce `h`.
+
+Apply `hΘ0'` to reduce the goal to its premises. Rewrite using `[hκ', h]`. Use function extensionality and compare the values at `z`. Simplify using the standard rewrite rules. Establish `hsS` using `GlobalTheory.FockPos.cart_one frS hS hcS`.
+
+Establish `hsT` using `GlobalTheory.FockPos.cart_one frT hT hcT`. Substitute `hsS hsT` using the available equality. Take `⟨Φ, hΦd, hreal⟩` from `GlobalTheory.T.fockVacuum_real_restriction_gaussian_entire ψ θ S T frS frT _ _ hS hT f hf`. Establish `hTh` using `GlobalTheory.T.unitVacuumEntireFactor_isTheta_movedLattices ψ θ S T frS frT hS hT δ hC hδ Ls Lt hLs hLt f hf Φ hΦd hreal`. Take `⟨⟨μ, 𝓕⟩, hμ⟩` from `hf.2.norm.1`.
+
+Establish `k1 : KLat D (tor0 D D.host.ccK δ) (La D (tor0 D D.host.ccK δ) Ls Lt)` using `Or.inr ⟨_, _, hLs, hLt, rfl⟩`. Establish `hN` using `normSq_real_form ψ θ S T frS frT hf.1 hf.2.inf hC hδ k1 f hf.2.theta hμ (hf.2.norm.2 (μ, 𝓕) hμ) Φ hreal hTh`. Take `⟨Θ, hΘ⟩ : ∃ Θ : VC D S.rank T.rank → ℂ, Θ = fun Y => Φ (δ⁻¹ • Y)` from `⟨_, rfl⟩`. Rewrite `hTh`, `hN` using `[← hΘ]`. Establish `hΦeq : Φ = fun z => Θ (δ • z)`.
+
+Use function extensionality and compare the values at `z`. Simplify using `only [hΘ, smul_smul, inv_mul_cancel₀ hδ, one_smul]`. Establish `hΘ0 : Θ ≠ 0`. Introduce `h0`. Rewrite `hN` using `[h0]`.
+
+Simplify using `[Formalism.MainNotions.TaylorLogMetric.normSq] at hN`. Establish `hjet : ∀ k : FVar D T.rank S.rank →₀ ℕ, pureTensorO ψ θ S T (fun _ => 1) (fun _ => 1) (fun τ => frS.1.map (tauE D τ)) (fun τ => frT.1.map (tauE D τ)) f (MvPolynomial.monomial k 1) 0 = (k.prod fun v n => GlobalTheory.FunObj.period δ v.1 ^ n) * Formalism.MainNotions.GL3Theta.applyA …`. Introduce `k`. Establish `hdiff : Differentiable ℂ Θ` using `hTh.1`. Establish `hj` using `GlobalTheory.T.fockMonomial_at_origin_gaussian_entire_orthonormal ψ θ S T frS frT hf.1 hf.2.inf hS hT f Φ hΦd hreal k`.
+
+Express the relevant statement in the definitionally equal form `pureTensorO ψ θ S T (fun _ => 1) (fun _ => 1) (GlobalTheory.FockPos.frAt frS) (GlobalTheory.FockPos.frAt frT) f (MvPolynomial.monomial k 1) 0 = _`. Rewrite using `[hj, hΦeq, GlobalTheory.FockPos.applyAt0_monomial', GlobalTheory.FockPos.applyAt0_monomial', GlobalTheory.FockPos.taylor_comp_smul' D _ hdiff]`. Establish `hper : ∀ τ : D.what₂.Tau, GlobalTheory.FunObj.period δ τ = δ * (((Real.sqrt (2 * Real.pi * Formalism.L2.Pj.xiR D) : ℝ) : ℂ)⁻¹)`. Introduce `τ`. Rewrite using `[GlobalTheory.FunObj.period, GlobalTheory.AdTh.Fock.norm_embedding_hostFormConstant_eq, div_eq_mul_inv]`.
+
+Establish `hprod : (k.prod fun v n => GlobalTheory.FunObj.period δ v.1 ^ n) = (δ * (((Real.sqrt (2 * Real.pi * Formalism.L2.Pj.xiR D) : ℝ) : ℂ)⁻¹)) ^ (k.sum fun _ n => n)`. Simplify using `only [hper, Finsupp.prod, Finsupp.sum]`. Conclude with `Finset.prod_pow_eq_pow_sum _ _ _`. Rewrite using `[hprod, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨κ, hκ, -⟩` from `GlobalTheory.MovedKappa.intertwining_mem_ne_zero hC ht he0 hLs hLt hTh hΘ0`. Establish `hak : a = κ`. Use `scal_eq hd hF0 (fun k => k.prod fun v n => GlobalTheory.FunObj.period δ v.1 ^ n) (fun k => Finsupp.prod_ne_zero_iff.2 fun v _ => pow_ne_zero _ (GlobalTheory.FunObj.period_ne_zero hδ v.1)) fun k => ?_` and prove the remaining obligations. Rewrite using `[← ha k, hjet k, hκ, GlobalTheory.MovedKappa.applyAt0_const_mul D _ hd]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `hN` using `[hκ, Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.normSq_const_mul, (normSq_intertwiner_image_vacuum_selfDual hC ht he0 hLs hLt).1, ← hak]`. Conclude with `hN`.
+-/
 theorem normSq_scalar {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D)
     (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ)
     (frS : GL (Fin S.rank) D.host.E) (frT : GL (Fin T.rank) D.host.E)
@@ -278,6 +358,9 @@ theorem normSq_scalar {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) 
   rw [hκ, Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.normSq_const_mul, (normSq_intertwiner_image_vacuum_selfDual hC ht he0 hLs hLt).1, ← hak] at hN
   exact hN
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.ThetaTriple.klat_triples D D.host.ccK δ hC N N').2.2.1 _ (Or.inr ⟨_, _, GlobalTheory.MovedVacuum.sd_stdL D N, GlobalTheory.MovedVacuum.sd_stdL D N', rfl⟩) e0 he0.1`.
+-/
 theorem iop_self {D : D7} {δ t0 : ℂ} (hC : Crv D D.host.ccK δ) {N N' : ℕ} {e0 : VC D N N' → ℂ}
     (he0 : oddE0 D D.host.ccK δ t0 N N' e0) :
     Iop D (tor0 D D.host.ccK δ) (La0 D (tor0 D D.host.ccK δ) N N')
@@ -285,12 +368,32 @@ theorem iop_self {D : D7} {δ t0 : ℂ} (hC : Crv D D.host.ccK δ) {N N' : ℕ} 
   (GlobalTheory.ThetaTriple.klat_triples D D.host.ccK δ hC N N').2.2.1 _
     (Or.inr ⟨_, _, GlobalTheory.MovedVacuum.sd_stdL D N, GlobalTheory.MovedVacuum.sd_stdL D N', rfl⟩) e0 he0.1
 
+/- English proof (translation)
+Establish `h3 : ‖κ‖ ^ 2 = 1`. Rewrite `h2` using `[norm_mul, mul_pow]`. Take the linear combination `h2 - ‖κ‖ ^ 2 * h1`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg κ) two_ne_zero).1 h3`.
+-/
 theorem norm_eq_one_of_sq {c κ : ℂ} {n : ℝ} (h1 : ‖c‖ ^ 2 * n = 1) (h2 : ‖c * κ‖ ^ 2 * n = 1) : ‖κ‖ = 1 := by
   have h3 : ‖κ‖ ^ 2 = 1 := by
     rw [norm_mul, mul_pow] at h2
     linear_combination h2 - ‖κ‖ ^ 2 * h1
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg κ) two_ne_zero).1 h3
 
+/- English proof (translation)
+Introduce `hP hI D Γ _ _ Pl0 T A Ks _ _ _ R ch hch p hp x y κ hκ`. Establish `hC` using `ch.S.Z.crv`. Establish `he0` using `ch.S.Z.e0_is p hp`. Establish `hsd` using `GlobalTheory.T.lattices_self_dual_moved_pair hP hI ch hch p hp x y`. Establish `hvac` using `GlobalTheory.T.vacuum_vector_moved_pair hP hI ch hch p hp x y`.
+
+Establish `hvac0` using `ch.S.Z.vac_is p hp`. Establish `hc0` using `ch.S.Z.kernelNorm_constant_spec p hp`. Establish `hd` using `GlobalTheory.MovedDict.Entire.differentiable_intertwining_moved hP hI ch hch p hp x y`. Consider the cases of `p with`. Consider the case `chi i j`.
+
+Take `⟨hi, rfl⟩` from `hp`. Establish `h2` using `fun f k => GlobalTheory.T.fockVector_negHermitianSpace_conj_monomial ch.W.ψ ch.W.θ (ch.G.V (.grid (i + 1) D.R.m)) (ch.G.V (.grid i D.R.m)) (ch.W.cart (.grid (i + 1) D.R.m)) (ch.W.cart (.grid i D.R.m)) (ch.S.N.frC (.grid (i + 1) D.R.m)) (ch.S.N.frC (.grid i D.R.m)) f ch.W.ψ_std ch …`. Establish `key` using `fun Ls Lt => @normSq_scalar D ch.W.ψ ch.W.θ (ch.G.V (.grid (i + 1) D.R.m)) (ch.G.V (.grid i D.R.m)) (ch.W.cart (.grid (i + 1) D.R.m)) (ch.W.cart (.grid i D.R.m)) (ch.S.N.fr (.grid (i + 1) D.R.m)) (ch.S.N.fr (.grid i D.R.m)) (ch.S.N.fr_on _ ⟨hi, rfl⟩) (ch.S.N.fr_on _ ⟨by omega, rf …`. Establish `hconj` using `GlobalTheory.T.isVacuum_conj_of_negHermitianSpace ch.W.ψ ch.W.θ (ch.G.V (.grid (i + 1) D.R.m)) (ch.G.V (.grid i D.R.m)) (ch.W.cart (.grid (i + 1) D.R.m)) (ch.W.cart (.grid i D.R.m)) _ _ _ hvac`. Establish `hconj0` using `GlobalTheory.T.isVacuum_conj_of_negHermitianSpace ch.W.ψ ch.W.θ (ch.G.V (.grid (i + 1) D.R.m)) (ch.G.V (.grid i D.R.m)) (ch.W.cart (.grid (i + 1) D.R.m)) (ch.W.cart (.grid i D.R.m)) _ _ _ hvac0`.
+
+Use `norm_eq_one_of_sq (c := starRingEnd ℂ (ch.S.Z.c0 (.chi i D.R.m) : ℂ)) (key _ _ (GlobalTheory.MovedVacuum.sd_stdL D _) (GlobalTheory.MovedVacuum.sd_stdL D _) _ (by rw [inV_stdL, inV_stdL]; exact hconj0) _ fun k => ?_) (key _ _ hsd.1 hsd.2 _ hconj _ fun k => ?_)` and prove the remaining obligations. Rewrite using `[iop_self hC he0]`. Establish `h` using `congrArg (starRingEnd ℂ) ((h2 _ k).symm.trans (hc0 k))`. Rewrite `h` using `[Complex.conj_conj, map_mul]`. Use `h.trans ?_` and prove the remaining obligations.
+
+Use `show _ * starRingEnd ℂ (starRingEnd ℂ _) = _`. Rewrite using `[Complex.conj_conj]`. Establish `h` using `congrArg (starRingEnd ℂ) ((h2 _ k).symm.trans (hκ k))`. Rewrite `h` using `[Complex.conj_conj, map_mul, GlobalTheory.MovedKappa.applyAt0_const_mul D _ hd]`. Use `h.trans ?_` and prove the remaining obligations.
+
+Use `show _ * starRingEnd ℂ (starRingEnd ℂ _) = _`. Rewrite using `[Complex.conj_conj, mul_left_comm _ κ, mul_assoc]`. Consider the case `mu t i j => exact absurd hp id`. Consider the case `core i => exact absurd hp id`. Consider the case `top t j`.
+
+Establish `hj1 : j + 1 ≤ D.R.m` using `hp`. Establish `key` using `fun Ls Lt => @normSq_scalar D ch.W.ψ ch.W.θ (ch.G.V (.top j)) (ch.G.V (.top (j + 1))) (ch.W.cart (.top j)) (ch.W.cart (.top (j + 1))) (ch.S.N.fr (.top j)) (ch.S.N.fr (.top (j + 1))) (ch.S.N.fr_on (.top j) (by show j ≤ D.R.m; omega)) (ch.S.N.fr_on (.top (j + 1)) hj1) (ch.W.cart_is …`. Use `norm_eq_one_of_sq (c := (ch.S.Z.c0 (.top t j) : ℂ)) (key _ _ (GlobalTheory.MovedVacuum.sd_stdL D _) (GlobalTheory.MovedVacuum.sd_stdL D _) _ (by rw [inV_stdL, inV_stdL]; exact hvac0) _ fun k => ?_) (key _ _ hsd.1 hsd.2 _ hvac _ fun k => ?_)` and prove the remaining obligations. Rewrite using `[iop_self hC he0]`. Conclude with `hc0 k`.
+
+Establish `h` using `hκ k`. Rewrite `h` using `[GlobalTheory.MovedKappa.applyAt0_const_mul D _ hd]`. Use `h.trans ?_` and prove the remaining obligations. Use `show _ * RingHom.id ℂ _ = _`. Rewrite using `[RingHom.id_apply, mul_left_comm _ κ, mul_assoc]`.
+-/
 theorem norm_kappa : GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type}
     {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
     (ch : Choice R), ch.Is → ∀ (p : Pair T), DefPair D.R.m p → ∀ (x : FinPt ch.G p.small) (y : FinPt ch.G p.big) (κ : ℂ), GlobalTheory.MovedKappaEx.JetKap ch p x y κ → ‖κ‖ = 1 := by

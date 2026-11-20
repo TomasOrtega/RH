@@ -16,6 +16,13 @@ open Matrix
 
 variable {K : Type} [Field K] {ι : Type} [Fintype ι] [DecidableEq ι] {n : ℕ}
 
+/- English proof (translation)
+Establish `h1 : (M * adjugate (M.submatrix f₀ id)) i j = cramer (M.submatrix f₀ id)ᵀ (M i) j`. Rewrite using `[cramer_eq_adjugate_mulVec, ← adjugate_transpose]`. Simplify using `[mulVec, dotProduct, mul_apply, transpose_apply, mul_comm]`. Rewrite using `[h1, cramer_transpose_apply]`. Unfold `mnr`.
+
+Use `congr 1`. Use extensionality with `a b`. Distinguish the cases in `hab : a = j`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[updateRow_apply, hab, Function.update_apply]`.
+-/
 theorem mul_adjugate_submatrix (M : Matrix ι (Fin n) K) (f₀ : Fin n → ι) (i : ι) (j : Fin n) :
     (M * adjugate (M.submatrix f₀ id)) i j = mnr M (Function.update f₀ j i) := by
   have h1 : (M * adjugate (M.submatrix f₀ id)) i j = cramer (M.submatrix f₀ id)ᵀ (M i) j := by
@@ -29,6 +36,17 @@ theorem mul_adjugate_submatrix (M : Matrix ι (Fin n) K) (f₀ : Fin n → ι) (
   · subst hab; simp
   · simp [updateRow_apply, hab, Function.update_apply]
 
+/- English proof (translation)
+Use `set c := mnr M' f₀' / mnr M f₀ with hcdef`. Establish `hc : ∀ f, mnr M' f = c * mnr M f` using `fun f => by`. Combine the equalities or inequalities in the displayed calculation. Establish `hc0 : c ≠ 0` using `div_ne_zero h0' h0`. Use `set A := M.submatrix f₀ id with hA`.
+
+Use `set A' := M'.submatrix f₀ id with hA'`. Establish `hdA : A.det = mnr M f₀` using `rfl`. Establish `hdA' : A'.det = c * A.det` using `hc f₀`. Establish `hA0 : A.det ≠ 0` using `h0`. Establish `hdA'0 : A'.det ≠ 0` using `by rw [hdA']; exact mul_ne_zero hc0 h0`.
+
+Establish `key : M' * adjugate A' = c • (M * adjugate A)`. Use extensionality with `i j`. Rewrite using `[mul_adjugate_submatrix, Matrix.smul_apply, mul_adjugate_submatrix, hc, smul_eq_mul]`. Establish `e1 : M' * adjugate A' * A' = A'.det • M'`. Rewrite using `[Matrix.mul_assoc, adjugate_mul, Matrix.mul_smul, Matrix.mul_one]`.
+
+Establish `hP : (A⁻¹ * A').det ≠ 0`. Rewrite using `[det_mul, det_nonsing_inv, Ring.inverse_eq_inv']`. Conclude with `mul_ne_zero (inv_ne_zero h0) hdA'0`. Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero (A⁻¹ * A') hP, ?_⟩` and prove the remaining obligations. Use `show M' = M * (A⁻¹ * A')`.
+
+Rewrite using `[inv_def, Ring.inverse_eq_inv']`. Establish `e2 : M * ((A.det)⁻¹ • adjugate A * A') = ((A.det)⁻¹ * c⁻¹) • (M' * adjugate A' * A')`. Rewrite using `[key, Matrix.smul_mul, Matrix.smul_mul, Matrix.mul_smul, smul_smul, inv_mul_cancel_right₀ hc0, Matrix.mul_assoc]`. Rewrite using `[e2, e1, smul_smul, hdA']`. Rewrite using `[show A.det⁻¹ * c⁻¹ * (c * A.det) = 1 by field_simp, one_smul]`.
+-/
 theorem eq_mul_of_minor_ratio (M M' : Matrix ι (Fin n) K) (f₀ f₀' : Fin n → ι)
     (h0 : mnr M f₀ ≠ 0) (h0' : mnr M' f₀' ≠ 0)
     (h : ∀ f, mnr M f / mnr M f₀ = mnr M' f / mnr M' f₀') : ∃ c : GL (Fin n) K, M' = M * c.1 := by
@@ -62,6 +80,9 @@ theorem eq_mul_of_minor_ratio (M M' : Matrix ι (Fin n) K) (f₀ f₀' : Fin n �
 
 end GlobalTheory.CompanionTheory.GodementH.Cramer
 
+/- English proof (translation)
+Introduce `K _ ι _ _ n M M' f₀ f₀' h0 h0' h`. Conclude with `GlobalTheory.CompanionTheory.GodementH.Cramer.eq_mul_of_minor_ratio M M' f₀ f₀' h0 h0' h`.
+-/
 theorem GlobalTheory.CompanionTheory.GodementH.Cramer.main : ∀ (K : Type) [Field K] (ι : Type) [Fintype ι] [DecidableEq ι] (n : ℕ) (M M' : Matrix ι (Fin n) K) (f₀ f₀' : Fin n → ι),
     mnr M f₀ ≠ 0 → mnr M' f₀' ≠ 0 → (∀ f, mnr M f / mnr M f₀ = mnr M' f / mnr M' f₀') → ∃ c : GL (Fin n) K, M' = M * c.1 := by
   intro K _ ι _ _ n M M' f₀ f₀' h0 h0' h

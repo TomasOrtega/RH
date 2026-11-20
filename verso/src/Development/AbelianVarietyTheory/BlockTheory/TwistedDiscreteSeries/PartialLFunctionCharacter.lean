@@ -31,12 +31,21 @@ def HeckeRatioPos (D : D7) : Prop :=
       (∃ Λ : ℂ → ℂ, IsFiniteL (μ * μ'⁻¹) Λ ∧ PosUpTo t Λ) ∧
       ∀ S : Finset (HeightOneSpectrum (𝓞 D.host.F)), ∃ Λ : ℂ → ℂ, IsPartialL S (μ * μ'⁻¹) Λ ∧ PosUpTo t Λ
 
+/- English proof (translation)
+The claim follows from `(h.2 s hs).tprod_eq.symm`.
+-/
 theorem IsPartialL.eq_lPartial {S : Finset (HeightOneSpectrum (𝓞 D.host.F))} {χ : (AE D)ˣ →* Circle} {Λ : ℂ → ℂ}
     (h : IsPartialL S χ Λ) {s : ℂ} (hs : 1 < s.re) : Λ s = lPartial S χ s := (h.2 s hs).tprod_eq.symm
 
+/- English proof (translation)
+The claim follows from `(h.2 s hs).tprod_eq.symm`.
+-/
 theorem IsFiniteL.eq_lEuler {χ : (AE D)ˣ →* Circle} {Λ : ℂ → ℂ} (h : IsFiniteL χ Λ) {s : ℂ} (hs : 1 < s.re) :
     Λ s = Mi.lEuler χ s := (h.2 s hs).tprod_eq.symm
 
+/- English proof (translation)
+Use `AnalyticOnNhd.eq_of_eventuallyEq (𝕜 := ℂ) (z₀ := 2) (fun z _ => hf.analyticAt z) (fun z _ => hg.analyticAt z) ?_` and prove the remaining obligations. Establish `: {s : ℂ | 1 < s.re} ∈ nhds (2 : ℂ)` using `(isOpen_lt continuous_const Complex.continuous_re).mem_nhds (by simp)`. Conclude with `Filter.mem_of_superset this h`.
+-/
 theorem eq_of_eqOn_re {f g : ℂ → ℂ} (hf : Differentiable ℂ f) (hg : Differentiable ℂ g)
     (h : ∀ s : ℂ, 1 < s.re → f s = g s) : f = g := by
   refine AnalyticOnNhd.eq_of_eventuallyEq (𝕜 := ℂ) (z₀ := 2) (fun z _ => hf.analyticAt z) (fun z _ => hg.analyticAt z) ?_
@@ -44,13 +53,22 @@ theorem eq_of_eqOn_re {f g : ℂ → ℂ} (hf : Differentiable ℂ f) (hg : Diff
     (isOpen_lt continuous_const Complex.continuous_re).mem_nhds (by simp)
   exact Filter.mem_of_superset this h
 
+/- English proof (translation)
+The claim follows from `eq_of_eqOn_re h.1 h'.1 fun _ hs => (h.eq_lPartial hs).trans (h'.eq_lPartial hs).symm`.
+-/
 theorem IsPartialL.unique {S : Finset (HeightOneSpectrum (𝓞 D.host.F))} {χ : (AE D)ˣ →* Circle} {Λ Λ' : ℂ → ℂ}
     (h : IsPartialL S χ Λ) (h' : IsPartialL S χ Λ') : Λ = Λ' :=
   eq_of_eqOn_re h.1 h'.1 fun _ hs => (h.eq_lPartial hs).trans (h'.eq_lPartial hs).symm
 
+/- English proof (translation)
+The claim follows from `eq_of_eqOn_re h.1 h'.1 fun _ hs => (h.eq_lEuler hs).trans (h'.eq_lEuler hs).symm`.
+-/
 theorem IsFiniteL.unique {χ : (AE D)ˣ →* Circle} {Λ Λ' : ℂ → ℂ} (h : IsFiniteL χ Λ) (h' : IsFiniteL χ Λ') : Λ = Λ' :=
   eq_of_eqOn_re h.1 h'.1 fun _ hs => (h.eq_lEuler hs).trans (h'.eq_lEuler hs).symm
 
+/- English proof (translation)
+Introduce `_ h` and use `absurd h (Finset.notMem_empty _)`.
+-/
 example (P : HeightOneSpectrum (𝓞 D.host.E)) : OffS D ∅ P := fun _ h => absurd h (Finset.notMem_empty _)
 
 end GlobalTheory.IndefiniteRowSideFullHecke.PartialLFunctionCharacter

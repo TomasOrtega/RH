@@ -23,6 +23,11 @@ open GlobalTheory.UAut GlobalTheory.SiegelSet GlobalTheory.ThK.SquareIntegrabili
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Establish `hJ' : ∀ i j, σ c * J j i = c * σ (J i j)` using `fun i j => by`. Use `hJ i j` as an intermediate fact. Simplify using `only [Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, map_mul, hσ] at this`. Conclude with `this`. Simplify using `only [fm, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, Finset.mul_sum, AlgHom.coe_toRingHom]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `hJ' i j` as an intermediate fact. Take the linear combination `(p j * σ (q i)) * this`.
+-/
 theorem fm_swap {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {c : E}
     (hJ : ∀ i j, σ ((c • J.map σ) j i) = (c • J.map σ) i j) (p q : Fin n → E) :
     σ c * fm (σ : E →+* E) J p q = c * σ (fm (σ : E →+* E) J q p) := by
@@ -44,6 +49,9 @@ open GlobalTheory.UAut GlobalTheory.SiegelSet GlobalTheory.ThK.SquareIntegrabili
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Simplify using `only [fm]`. Rewrite using `[show (fun i => c ((ι *ᵥ u) i)) = ι.map c *ᵥ fun i => c (u i) from funext fun i => RingHom.map_mulVec c ι u i, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec w ιᵀ, Matrix.vecMul_transpose]`.
+-/
 theorem fm_mulVec_mulVec {R : Type} [CommRing R] (c : R →+* R) {n m : ℕ} (J : Matrix (Fin n) (Fin n) R)
     (ι : Matrix (Fin n) (Fin m) R) (w u : Fin m → R) :
     fm c J (ι *ᵥ w) (ι *ᵥ u) = fm c (ιᵀ * J * ι.map c) w u := by
@@ -51,11 +59,23 @@ theorem fm_mulVec_mulVec {R : Type} [CommRing R] (c : R →+* R) {n m : ℕ} (J 
   rw [show (fun i => c ((ι *ᵥ u) i)) = ι.map c *ᵥ fun i => c (u i) from funext fun i => RingHom.map_mulVec c ι u i,
     ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec w ιᵀ, Matrix.vecMul_transpose]
 
+/- English proof (translation)
+Establish `: (fun i => c ((0 : Fin n → R) i)) = 0` using `funext fun i => by simp`. Simplify using `only [fm, this, Matrix.mulVec_zero, dotProduct_zero]`.
+-/
 theorem fm_zero_right' {R : Type} [CommRing R] (c : R →+* R) {n : ℕ} (J : Matrix (Fin n) (Fin n) R) (u : Fin n → R) :
     fm c J u 0 = 0 := by
   have : (fun i => c ((0 : Fin n → R) i)) = 0 := funext fun i => by simp
   simp only [fm, this, Matrix.mulVec_zero, dotProduct_zero]
 
+/- English proof (translation)
+Introduce `h0`. Take `⟨v, hv, hJv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Set `w : InfinitePlace F` to `Classical.arbitrary _`. Set `τ : E →+* ℂ` to `(B.emb w).1`. Set `M : Matrix (Fin n) (Fin n) ℂ` to `Complex.I • Y.J.map τ`.
+
+Set `v' : Fin n → ℂ` to `fun i => τ (v i)`. Establish `hv' : v' ≠ 0` using `fun h => hv (funext fun i => τ.injective (by simpa [v'] using congrFun h i))`. Establish `hMv : M *ᵥ v' = 0`. Use extensionality with `i`. Use `congrArg τ (congrFun hJv i)` as an intermediate fact.
+
+Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, Pi.zero_apply, map_zero] at this`. Simplify using `only [M, v', Matrix.smul_mulVec, Matrix.mulVec, dotProduct, Matrix.map_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply, Matrix.smul_apply, mul_assoc, ← Finset.mul_sum, this, mul_zero]`. Establish `hx : star v' ≠ 0` using `fun h => hv' (by simpa using congrArg star h)`. Use `(h w).2.2 (star v') hx` as an intermediate fact. Rewrite `this` using `[star_star]`.
+
+Express the relevant statement in the definitionally equal form `0 < (_ ⬝ᵥ M *ᵥ v').re at this`. Rewrite `this` using `[hMv, dotProduct_zero, Complex.zero_re]`. Conclude with `lt_irrefl _ this`.
+-/
 theorem det_ne_zero_cartan (B : Base F E) {n : ℕ} (Y : Spc F E n)
     (h : ∀ w, IsCartan (Complex.I • Y.J.map (B.emb w).1) (Y.θ w)) : Y.J.det ≠ 0 := by
   intro h0
@@ -78,6 +98,25 @@ theorem det_ne_zero_cartan (B : Base F E) {n : ℕ} (Y : Spc F E n)
   rw [hMv, dotProduct_zero, Complex.zero_re] at this
   exact lt_irrefl _ this
 
+/- English proof (translation)
+Take `⟨hn, hxx, hyy, hxy, horth, hgram, -, hcart⟩` from `hP`. Establish `hdet : Y₁.J.det ≠ 0` using `det_ne_zero_cartan B Y₁ hcart`. Establish `hgram' : H.ιᵀ * Y.J * H.ι.map (σ : E →+* E) = Y₁.J` using `hgram`. Establish `hyy' : fm (σ : E →+* E) Y.J H.y H.y = 0` using `hyy`. Establish `hxy' : fm (σ : E →+* E) Y.J H.x H.y = 1` using `hxy`.
+
+Establish `horth' : ∀ u, fm (σ : E →+* E) Y.J (H.ι *ᵥ u) H.x = 0 ∧ fm (σ : E →+* E) Y.J (H.ι *ᵥ u) H.y = 0` using `horth`. Set `L : ((E × E) × (Fin n₁ → E)) →ₗ[E] (Fin n → E)` to `((LinearMap.fst E E E).smulRight H.x + (LinearMap.snd E E E).smulRight H.y).comp (LinearMap.fst E _ _) + (Matrix.mulVecLin H.ι).comp (LinearMap.snd E _ _)`. Establish `hL : ∀ p, L p = p.1.1 • H.x + p.1.2 • H.y + H.ι *ᵥ p.2` using `fun p => rfl`. Establish `hinj : Function.Injective L`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+
+Introduce and unpack `⟨⟨a, t⟩, u⟩ h0`. Rewrite `h0` using `[hL]`. Simplify using `only at h0`. Establish `ha : a = 0`. Use `congrArg (fun z => fm (σ : E →+* E) Y.J z H.y) h0` as an intermediate fact.
+
+Simplify using `only [fm_add_left, fm_smul_left, hxy', hyy', (horth' u).2] at this`. Simplify `this` using `[fm]`. Substitute `ha` using the available equality. Establish `hu : u = 0`. Establish `hj : ∀ j, (Y₁.J *ᵥ fun k => σ (u k)) j = 0` using `fun j => by`.
+
+Use `congrArg (fun z => fm (σ : E →+* E) Y.J (H.ι *ᵥ Pi.single j 1) z) h0` as an intermediate fact. Simplify using `only [zero_smul, zero_add, fm_add_right, fm_smul_right, (horth' _).2, mul_zero, fm_mulVec_mulVec] at this`. Rewrite `this` using `[hgram', fm_zero_right']`. Simplify `this` using `[fm]`. Establish `h2 : (fun k => σ (u k)) = 0` using `Matrix.eq_zero_of_mulVec_eq_zero hdet (funext hj)`.
+
+Use function extensionality and compare the values at `k`. Conclude with `(RingHom.injective (σ : E →+* E)) (by simpa using congrFun h2 k)`. Substitute `hu` using the available equality. Establish `hy : H.y ≠ 0` using `fun h => by rw [h, fm_zero_right'] at hxy'; exact zero_ne_one hxy'`. Establish `ht : t = 0`.
+
+Simplify using `only [zero_smul, zero_add, Matrix.mulVec_zero, add_zero] at h0`. Conclude with `(smul_eq_zero.1 h0).resolve_right hy`. Substitute `ht` using the available equality. Both sides reduce to the same expression. Establish `hfr : Module.finrank E ((E × E) × (Fin n₁ → E)) = Module.finrank E (Fin n → E)`.
+
+Simplify using `only [Module.finrank_prod, Module.finrank_self, Module.finrank_fin_fun, hn]`. Use linear arithmetic over natural numbers and integers. Take `⟨⟨⟨a, t⟩, u⟩, hp⟩` from `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hfr).1 hinj v`. Use `⟨a, t, u, ?_⟩` and prove the remaining obligations. Rewrite using `[← hp, hL]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem split_of_iso {σ : E →ₐ[F] E} {B : Base F E} {n n₁ : ℕ} {H : Plane E n n₁} {Y : Spc F E n} {Y₁ : Spc F E n₁}
     (hP : IsIsoPlane σ B H Y Y₁) (v : Fin n → E) :
     ∃ (a t : E) (u : Fin n₁ → E), v = a • H.x + H.ι *ᵥ u + t • H.y := by
@@ -133,6 +172,25 @@ open GlobalTheory.UAut GlobalTheory.SiegelSet GlobalTheory.ThK.SquareIntegrabili
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Establish `hcol : ∀ a : Fin 1 → AE F E, adMat F (Matrix.of fun i (_ : Fin 1) => H'.x i) *ᵥ a = a 0 • incV F H'.x` using `fun a => by`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, incV, mul_comm]`. Establish `h1 : (mat u - 1) * adMat F (Matrix.of fun i (_ : Fin 1) => H'.x i) = 0 ↔ mat u *ᵥ incV F H'.x = incV F H'.x`. Rewrite using `[← sub_eq_zero (a := mat u *ᵥ _), show mat u *ᵥ incV F H'.x - incV F H'.x = (mat u - 1) *ᵥ incV F H'.x by`.
+
+Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]]`. Conclude with `⟨fun h => funext fun i => congrFun (congrFun h i) 0, fun h => Matrix.ext fun i _ => congrFun h i⟩`. Establish `hrow : ∀ (v : Fin d → E) k, ((cT (σ : E →+* E) (Matrix.of fun i (_ : Fin 1) => H'.x i) * (c • W.J.map σ)) *ᵥ v) k = c * σ (fm (σ : E →+* E) W.J H'.x v)` using `fun v k => row_mulVec (s := (σ : E →+* E)) hσ W.J c H'.x v k`. Rewrite using `[h1]`. Use `and_congr_right fun hx => ⟨fun h => ⟨?_, fun v hv => ?_⟩, fun h z => ?_⟩` and prove the remaining obligations.
+
+Establish `e : adMat F (cT (σ : E →+* E) (Matrix.of fun i (_ : Fin 1) => H'.x i) * (c • W.J.map σ)) = cT (cA σ).toRingHom (Matrix.of fun i (_ : Fin 1) => incV F H'.x i) * (inclR (F` using `F) (AF F) c • (incM F W.J).map (cA σ).toRingHom) := by`. Use extensionality with `k j`. Simplify using `only [adMat, cT, Matrix.map_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul, map_sum, map_mul, incV, incM, cAr_inclR, RingHom.coe_coe]`. Establish `hu : (mat u)ᵀ * incM F W.J * (mat u).map (cA σ).toRingHom = incM F W.J` using `u.2`. Rewrite using `[e]`.
+
+Use `Matrix.ext_of_mulVec_single fun j => funext fun k => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, row_mulVec (cA_invol hσ), Matrix.sub_mulVec, Matrix.one_mulVec, fm_sub_right]`. Use `conv_lhs => enter [2, 2, 1]`. Rewrite using `[← hx, fm_mulVec hu]`. Simplify using the standard rewrite rules.
+
+Take `⟨a, t, w, rfl⟩` from `hsplit v`. Establish `ht` using `congrFun hv 0`. Rewrite `ht` using `[hrow, fm_add_right, fm_add_right, fm_smul_right, fm_smul_right, hxι, hxx, hxy]`. Establish `ht0 : t = 0` using `by simpa [hc] using ht`. Take `⟨b, hb⟩` from `h (incV F w)`.
+
+Use `⟨fun _ => b, ?_⟩` and prove the remaining obligations. Establish `e : incV F (a • H'.x + H'.ι *ᵥ w + t • H'.y) = inclR (F` using `F) (AF F) a • incV F H'.x + incM F H'.ι *ᵥ incV F w := by`. Rewrite using `[ht0, zero_smul, add_zero, ← incV_mulVec]`. Use function extensionality and compare the values at `i`. Simplify using `[incV]`.
+
+Rewrite using `[hcol, e, Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.mulVec_add, Matrix.mulVec_smul, hx, hb]`. Normalize the expressions using the abelian group laws. Establish `h3 : ∀ j : Fin d₁, ∃ a : AE F E, (mat u - 1) *ᵥ (incM F H'.ι *ᵥ Pi.single j 1) = a • incV F H'.x` using `fun j => by`. Take `⟨a, ha⟩` from `h.2 (H'.ι *ᵥ Pi.single j 1) (funext fun k => by rw [hrow, hxι]; simp)`. Use `⟨a 0, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hcol, ← ha, incV_mulVec]`. Use `congr 2`. Apply the tactic sequence `funext i; by_cases hij : i = j <;> simp [incV, Pi.single_apply, hij]`. Use `choose a ha using h3`. Use `⟨∑ j, z j * a j, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← sub_eq_iff_eq_add', show mat u *ᵥ (incM F H'.ι *ᵥ z) - incM F H'.ι *ᵥ z = (mat u - 1) *ᵥ (incM F H'.ι *ᵥ z) by`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]]`. Use `conv_lhs => rw [show z = ∑ j, z j • Pi.single j 1 from by funext i; simp [Finset.sum_apply, Pi.single_apply]]`. Simplify using `only [Matrix.mulVec_sum, Matrix.mulVec_smul, ha, smul_smul, Finset.sum_smul]`.
+-/
 theorem gen_iff' {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) {c : E} (hc : c ≠ 0) {d d₁ : ℕ} {W : Spc F E d}
     {H' : Plane E d d₁} (hxx : fm (σ : E →+* E) W.J H'.x H'.x = 0) (hxy : fm (σ : E →+* E) W.J H'.x H'.y = 1)
     (hxι : ∀ w, fm (σ : E →+* E) W.J H'.x (H'.ι *ᵥ w) = 0)
@@ -188,6 +246,11 @@ theorem gen_iff' {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) {c : E} (hc :
     conv_lhs => rw [show z = ∑ j, z j • Pi.single j 1 from by funext i; simp [Finset.sum_apply, Pi.single_apply]]
     simp only [Matrix.mulVec_sum, Matrix.mulVec_smul, ha, smul_smul, Finset.sum_smul]
 
+/- English proof (translation)
+Establish `e : (unip σ W H').map (toGAd hσ W.J hc).toMonoidHom = unipRad σ (c • W.J.map σ) (Matrix.of fun i (_ : Fin 1) => H'.x i)`. Rewrite using `[unip, MonoidHom.map_closure, unipRad]`. Use `congr 1`. Use extensionality with `k`. Take `⟨u, rfl⟩` from `(toGAd hσ W.J hc).surjective k`.
+
+Use `((toGAd hσ W.J hc).injective.mem_set_image).trans ?_` and prove the remaining obligations. Conclude with `gen_iff' hσ hc hxx hxy hxι hsplit u`. Rewrite using `[← e]`. Conclude with `(Subgroup.mem_map_iff_mem (f := (toGAd hσ W.J hc).toMonoidHom) (toGAd hσ W.J hc).injective).symm`.
+-/
 theorem mem_unip_iff' {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) {c : E} (hc : c ≠ 0) {d d₁ : ℕ} {W : Spc F E d}
     {H' : Plane E d d₁} (hxx : fm (σ : E →+* E) W.J H'.x H'.x = 0) (hxy : fm (σ : E →+* E) W.J H'.x H'.y = 1)
     (hxι : ∀ w, fm (σ : E →+* E) W.J H'.x (H'.ι *ᵥ w) = 0)
@@ -212,6 +275,29 @@ open GlobalTheory.UAut GlobalTheory.SiegelSet GlobalTheory.ThK.SquareIntegrabili
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Set `C : Matrix (Fin n) (Fin 1) E` to `Matrix.of fun i (_ : Fin 1) => H'.x i`. Introduce `μ 𝓕 hμ h𝓕 h1 g`. Set `e` to `toGAd hσ W.J hc`. Establish `hmem : ∀ u, u ∈ unip σ W H' ↔ e u ∈ unipRad σ (c • W.J.map σ) C` using `fun u => mem_unip_iff' hσ hc hxx hxy hxι hsplit u`. Set `e' : unipRad σ (c • W.J.map σ) C ≃* unip σ W H'` to `{ toFun := fun v => ⟨e.symm v.1, (hmem _).2 (by rw [e.apply_symm_apply]; exact v.2)⟩ invFun := fun u => ⟨e u.1, (hmem u.1).1 u.2⟩ left_inv := fun v => Subtype.ext (e.apply_symm_apply v.1) right_inv := fun u => Subtype.ext (e.symm_apply_apply u.1) map_mul' := fun u v => Subtype.ex …`.
+
+Establish `he : Continuous e`. Apply `Continuous.subtype_mk` to reduce the goal to its premises. Conclude with `continuous_subtype_val`. Establish `hes : Continuous e.symm`. Apply `Continuous.subtype_mk` to reduce the goal to its premises.
+
+Conclude with `continuous_subtype_val`. Establish `he' : Continuous e'` using `(hes.comp continuous_subtype_val).subtype_mk _`. Establish `hes' : Continuous e'.symm` using `(he.comp continuous_subtype_val).subtype_mk _`. Use `haveI : BorelSpace (UA σ W.J) := ⟨rfl⟩`. Use `haveI : ContinuousMul (UA σ W.J) := ⟨by`.
+
+Establish `h : (fun p : UA σ W.J × UA σ W.J => p.1 * p.2) = e.symm ∘ (fun q : GAd σ (c • W.J.map σ) × GAd σ (c • W.J.map σ) => q.1 * q.2) ∘ Prod.map e e`. Use function extensionality and compare the values at `p`. Simplify using the standard rewrite rules. Rewrite using `[h]`. Conclude with `hes.comp (continuous_mul.comp (he.prodMap he))⟩`.
+
+Use `haveI : ContinuousInv (UA σ W.J) := ⟨by`. Establish `h : (fun p : UA σ W.J => p⁻¹) = e.symm ∘ (fun q : GAd σ (c • W.J.map σ) => q⁻¹) ∘ e`. Use function extensionality and compare the values at `p`. Simplify using the standard rewrite rules. Rewrite using `[h]`.
+
+Conclude with `hes.comp (continuous_inv.comp he)⟩`. Use `haveI : IsTopologicalGroup (UA σ W.J) := {}`. Use `haveI : IsTopologicalGroup (unip σ W H') := inferInstance`. Set `t : unipRad σ (c • W.J.map σ) C ≃ₜ unip σ W H'` to `⟨e'.toEquiv, he', hes'⟩`. Set `me` to `t.toMeasurableEquiv`.
+
+Establish `hp : MeasurePreserving me μ (μ.map me)` using `⟨me.measurable, rfl⟩`. Establish `hHaar : (μ.map me).IsHaarMeasure` using `MulEquiv.isHaarMeasure_map μ e' he' hes'`. Establish `hps : MeasurePreserving me.symm (μ.map me) μ` using `hp.symm`. Establish `hmemU : ∀ γ : (GlobalTheory.AdelicU.ratPts σ (c • W.J.map σ)).subgroupOf (unipRad σ (c • W.J.map σ) C), e' γ.1 ∈ (ratU σ W.J).subgroupOf (unip σ W H')` using `fun γ => by`. Take `⟨u, -, hu2⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 (Subgroup.mem_subgroupOf.1 γ.2))`.
+
+Conclude with `Subgroup.mem_subgroupOf.2 (Subgroup.mem_subgroupOf.2 ⟨u, hu2⟩)`. Establish `hmemP : ∀ δ : (ratU σ W.J).subgroupOf (unip σ W H'), e'.symm δ.1 ∈ (GlobalTheory.AdelicU.ratPts σ (c • W.J.map σ)).subgroupOf (unipRad σ (c • W.J.map σ) C)` using `fun δ => by`. Take `⟨m, hm⟩` from `Subgroup.mem_subgroupOf.1 (Subgroup.mem_subgroupOf.1 δ.2)`. Establish `h2` using `(e δ.1.1).2`. Use `Subgroup.mem_subgroupOf.2 (Subgroup.mem_subgroupOf.2 (Subgroup.mem_map.2 ⟨m, ?_, hm⟩))` and prove the remaining obligations.
+
+Conclude with `unitary_of_map_inclR σ n _ m _ (by rw [hm]; rfl) h2`. Set `fm' : (GlobalTheory.AdelicU.ratPts σ (c • W.J.map σ)).subgroupOf (unipRad σ (c • W.J.map σ) C) → (ratU σ W.J).subgroupOf (unip σ W H')` to `fun γ => ⟨e' γ.1, hmemU γ⟩`. Establish `hfb : Function.Bijective fm'` using `⟨fun a b hab => Subtype.ext (e'.injective (congrArg Subtype.val hab)), fun δ => ⟨⟨e'.symm δ.1, hmemP δ⟩, Subtype.ext (e'.apply_symm_apply δ.1)⟩⟩`. Establish `hfd` using `h𝓕.preimage_of_equiv hps.quasiMeasurePreserving hfb fun γ x => by show e'.symm (e' γ.1 * x) = γ.1 * e'.symm x`. Rewrite using `[map_mul, e'.symm_apply_apply]`.
+
+Establish `hset : me ⁻¹' (me.symm ⁻¹' 𝓕) = 𝓕`. Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `hmass : (μ.map me) (me.symm ⁻¹' 𝓕) = 1`. Rewrite using `[me.map_apply, hset, h1]`.
+
+Establish `hc'` using `hf (μ.map me) (me.symm ⁻¹' 𝓕) hHaar hfd hmass (e.symm g)`. Rewrite `hc'` using `[← hp.setIntegral_preimage_emb me.measurableEmbedding, hset]`. Use `hc'.trans (integral_congr_ae (.of_forall fun u => ?_))` and prove the remaining obligations. Use `show f (e.symm u.1 * e.symm g) = f (e.symm (u.1 * g))`. Rewrite using `[map_mul]`.
+-/
 theorem isConstTerm_of_isCT {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) {c : E} (hc : c ≠ 0) {n d₁ : ℕ} {W : Spc F E n}
     {H' : Plane E n d₁} (hxx : fm (σ : E →+* E) W.J H'.x H'.x = 0) (hxy : fm (σ : E →+* E) W.J H'.x H'.y = 1)
     (hxι : ∀ w, fm (σ : E →+* E) W.J H'.x (H'.ι *ᵥ w) = 0)
@@ -291,6 +377,17 @@ end GlobalTheory.IsoLineCT
 
 namespace GlobalTheory.IsoLineCT
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B a a' G X om om' R Rf hM _ d₁ H' i₀ i₁ sp pl _ hP c _ _ i hi f _ hct c₀ hc₀ hherm φ' hφ'`. Establish `hσ : ∀ x, σ (σ x) = x` using `GlobalTheory.SiegelSet.sigma_sigma hM.triple.base.cm`. Establish `hPi` using `hP i hi`. Establish `hxx : GlobalTheory.LeviPlane.fm (σ : E →+* E) (sp i).J (pl i).x (pl i).x = 0` using `hPi.2.1`. Establish `hxy : GlobalTheory.LeviPlane.fm (σ : E →+* E) (sp i).J (pl i).x (pl i).y = 1` using `hPi.2.2.2.1`.
+
+Establish `hxι : ∀ w, GlobalTheory.LeviPlane.fm (σ : E →+* E) (sp i).J (pl i).x ((pl i).ι *ᵥ w) = 0` using `fun w => by`. Establish `h` using `fm_swap hσ hherm.1 (pl i).x ((pl i).ι *ᵥ w)`. Rewrite `h` using `[show GlobalTheory.LeviPlane.fm (σ : E →+* E) (sp i).J ((pl i).ι *ᵥ w) (pl i).x = 0 from (hPi.2.2.2.2.1 w).1, map_zero, mul_zero]`. Conclude with `(mul_eq_zero.1 h).resolve_left ((map_ne_zero σ).2 hc₀)`. Establish `hsplit` using `split_of_iso hPi`.
+
+Establish `hφ : φ' = fun x => f ((GlobalTheory.ThK.SquareIntegrability.toGAd hσ (sp i).J hc₀).symm x)`. Use function extensionality and compare the values at `fun x => hφ' _ x rfl`. Use `⟨fun h0 => ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hx : (pl i).x = 0` using `funext fun k => congrFun (congrFun h0 k) 0`. Rewrite `hxy` using `[hx]`.
+
+Simplify using `[GlobalTheory.LeviPlane.fm] at hxy`. Use extensionality with `k l`. Use `(GlobalTheory.UnipMem.row_mulVec (s := (σ : E →+* E)) hσ (sp i).J c₀ (pl i).x (pl i).x k).trans ?_` and prove the remaining obligations. Rewrite using `[hxx]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hφ]`. Conclude with `isConstTerm_of_isCT hσ hc₀ hxx hxy hxι hsplit f hct`.
+-/
 theorem isConstTerm_isoPlane : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ)
     (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'),
     IsMatched B G X om om' R Rf → 1 ≤ G.q →

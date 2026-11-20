@@ -35,6 +35,21 @@ namespace GlobalTheory.TfJl
 def lamDelta : InfinitePlace ℚ → DomWeight 2 := fun _ =>
   ⟨![5, -5], fun i j h => by fin_cases i <;> fin_cases j <;> simp_all⟩
 
+/- English proof (translation)
+Set `g` to `deltaNewform`. Set `f` to `g.f`. Establish `hM : 1 ≤ g.M` using `g.pos`. Take `⟨ω, hω⟩` from `dirChar g.M hM g.χ`. Take `⟨φ₀, hφ⟩` from `liftEx 12 g.M hM f fun δ hδ => SlashInvariantForm.slash_action_eqn f δ ⟨δ, hδ, rfl⟩`.
+
+Take `⟨hl, hr, hs⟩` from `liftSm 12 g.M hM f φ₀ hφ`. Set `φ : TR.Sm ℚ 2` to `⟨φ₀, hs f.holo'⟩`. Establish `hfix : ∀ u ∈ K1G g.M, TR.finRep ℚ 2 u φ = φ` using `fun u hu => Subtype.ext (funext (hr u hu))`. Establish `hlev : IsOpen {u | TR.finRep ℚ 2 u φ = φ}` using `isOpen_stab_of_mem_nhds _ _ (Filter.mem_of_superset ((kOpen g.M hM).1.mem_nhds (one_mem _)) hfix)`. Establish `hc` using `liftCent 12 g.M hM g.χ ω hω f g.char φ₀ hφ`.
+
+Establish `hlie` using `liftLie 12 g.M hM f f.holo' φ hφ`. Take `⟨C, hC⟩` from `archBd 12 g.M hM f`. Establish `hfin` using `(charVal g.M hM g.χ ω hω).1`. Establish `haut : TR.IsAutForm φ` using `⟨hl, hlev, liftK 12 g.M hM f φ hφ, zFin ℚ 12 ω hfin φ hc (fun v => (hlie v).1) (fun v => (hlie v).2), fun x => ⟨C, 0, fun y => by`. Take `⟨γ, h, u, hu, e⟩` from `decomp g.M hM (x * TR.infGL ℚ 2 y)`.
+
+Rewrite using `[pow_zero, mul_one, e]`. Express the relevant statement in the definitionally equal form `‖φ₀ _‖ ≤ C`. Rewrite using `[hφ γ h u hu]`. Conclude with `hC _ h.det_ne_zero⟩⟩`. Establish `hH : IsHol 12 (lev g.M) ω φ` using `⟨haut, fun w u hu => hfix _ (kLocal g.M hM w u hu), hc, fun v => (hlie v).1, fun v => (hlie v).2⟩`.
+
+Establish `hE` using `liftExp 12 g.M hM f φ.1 hφ`. Take `⟨-, hz, -⟩` from `Sd.holLin ℚ 12 (lev g.M) ω`. Use `⟨φ, fun e => ?_, ⟨⟨haut, cuspCrit φ hl hlev (liftCT 12 g.M hM f φ₀ hφ)⟩, fun v => ⟨?_, (hlie v).2, fun u => ?_⟩⟩, hfix⟩` and prove the remaining obligations. Rewrite `hE` using `[e]`. Use `(Sd.expUnique ℚ _ 12 _ _ _ _ hE hz).2 ⊤ top_ne_bot` as an intermediate fact.
+
+Rewrite `this` using `[icoef, Ideal.absNorm_top, g.one]`. Conclude with `one_ne_zero this`. Rewrite using `[(hlie v).1]`. Simplify using `[kw, lamDelta]`. Rewrite using `[(Sd.holCap ℚ 12 _ ω hfin φ hH).2 v u, GlobalTheory.UnitaryBC.infOfWeight, Multiset.map_map, Multiset.map_map, ← Finset.prod_eq_multiset_prod, Fin.prod_univ_two]`.
+
+Use `congr 1`. Simplify using `[lamDelta]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_isHolo_delta : ∃ φ : TR.Sm ℚ 2, φ ≠ 0 ∧ IsHolo lamDelta φ ∧ ∀ u ∈ K1G 1, TR.finRep ℚ 2 u φ = φ := by
   let g := deltaNewform
   let f := g.f

@@ -10,6 +10,9 @@ open scoped ContDiff Classical
 
 namespace GlobalTheory.CyclotomicPrimes
 
+/- English proof (translation)
+Establish `h1 : Summable (f ∘ ((↑) : ↥(A ∪ B) → ι))`. Rewrite using `[← Set.union_diff_self]`. Conclude with `(HasSum.add_disjoint Set.disjoint_sdiff_right hA.hasSum ((hB.subset Set.diff_subset).summable f).hasSum).summable`. Conclude with `h1.comp_injective (i := Set.inclusion h) (Set.inclusion_injective h)`.
+-/
 theorem summable_subset_union_finite {ι : Type} (f : ι → ℝ) (A B C : Set ι) (hB : B.Finite) (h : C ⊆ A ∪ B)
     (hA : Summable fun x : A => f x) : Summable fun x : C => f x := by
   have h1 : Summable (f ∘ ((↑) : ↥(A ∪ B) → ι)) := by
@@ -17,6 +20,19 @@ theorem summable_subset_union_finite {ι : Type} (f : ι → ℝ) (A B C : Set �
     exact (HasSum.add_disjoint Set.disjoint_sdiff_right hA.hasSum ((hB.subset Set.diff_subset).summable f).hasSum).summable
   exact h1.comp_injective (i := Set.inclusion h) (Set.inclusion_injective h)
 
+/- English proof (translation)
+Introduce `K _ _ m hm hirr τ S hS`. Establish `: Fact m.Prime` using `⟨hm⟩`. Set `cl : HeightOneSpectrum (𝓞 K) → (ZMod m)ˣ` to `fun P => if h : ((Ideal.absNorm P.asIdeal : ℕ) : ZMod m) = 0 then 1 else Units.mk0 _ h`. Establish `hcl : ∀ P, ¬ m ∣ Ideal.absNorm P.asIdeal → (cl P : ZMod m) = (Ideal.absNorm P.asIdeal : ℕ)`. Introduce `P hP`.
+
+Simplify using `only [cl]`. Rewrite using `[dif_neg (by rwa [ZMod.natCast_eq_zero_iff])]`. Both sides reduce to the same expression. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+
+Take `⟨Z, hZ, hZ1, hZs⟩` from `GlobalTheory.T.exists_entire_sub_one_mul_euler_exp_ne_zero_one K`. Use `GlobalTheory.Mem.RayPrimes.not_summable_class (fun P : HeightOneSpectrum (𝓞 K) => Ideal.absNorm P.asIdeal) GlobalTheory.Mem.RayPrimes.two_le_absNorm cl (fun s hs => ((GlobalTheory.countable_ideal_and_summable_absNorm_rpow K).2 s hs).2) ?_ Z hZ.continuous hZ1 ?_ τ ?_` and prove the remaining obligations. Introduce `χ hχ`. Take `⟨P, u, hu, hχu⟩` from `GlobalTheory.T.exists_prime_norm_cyclotomicChar_ne_one K m hm hirr χ hχ`. Establish `hP : ¬ m ∣ Ideal.absNorm P.asIdeal`.
+
+Rewrite using `[← ZMod.natCast_eq_zero_iff, ← hu]`. Conclude with `u.ne_zero`. Use `GlobalTheory.T.exists_continuous_normCharLFunction_ne_zero_one K m hm χ cl hcl ⟨P, hP, ?_⟩` and prove the remaining obligations. Rewrite using `[show cl P = u from Units.ext ((hcl P hP).trans hu.symm)]` and apply the resulting hypothesis. Introduce `s hs`.
+
+Simplify `hs)` using `using hZs s (by simpa`. Establish `hfin : (S ∪ {P : HeightOneSpectrum (𝓞 K) | Ideal.absNorm P.asIdeal ≤ m}).Finite` using `hS.union ((Ideal.finite_setOfPred_absNorm_le (S := 𝓞 K) m).preimage (f := fun P : HeightOneSpectrum (𝓞 K) => P.asIdeal) (fun a _ b _ h => HeightOneSpectrum.ext h))`. Use `summable_subset_union_finite (fun P : HeightOneSpectrum (𝓞 K) => ((Ideal.absNorm P.asIdeal : ℕ) : ℝ)⁻¹) {P | ¬ (Ideal.absNorm P.asIdeal).Prime} _ {P | cl P = τ} hfin ?_ (GlobalTheory.T.summable_inv_absNorm_primes_of_not_prime_norm K)` and prove the remaining obligations. Introduce `P hP`. Assume the negation of the conclusion as `hn`.
+
+Simplify using `only [Set.mem_union, Set.mem_ofPred_eq, not_or, not_le, not_not] at hn hP`. Establish `hd : ¬ m ∣ Ideal.absNorm P.asIdeal` using `fun h => hn.2.2.ne ((Nat.prime_dvd_prime_iff_eq hm hn.1).1 h)`. Conclude with `hcon P hn.2.1 hn.1 (by rw [← hcl P hd, hP])`.
+-/
 theorem exists_prime_absNorm_eq_of_irreducible_cyclotomic : ∀ (K : Type) [Field K] [NumberField K] (m : ℕ), m.Prime → Irreducible (cyclotomic m K) → ∀ (τ : (ZMod m)ˣ) (S : Set (HeightOneSpectrum (𝓞 K))), S.Finite → ∃ P : HeightOneSpectrum (𝓞 K), P ∉ S ∧ (Ideal.absNorm P.asIdeal).Prime ∧ ((Ideal.absNorm P.asIdeal : ℕ) : ZMod m) = (τ : ZMod m) := by
   classical
   intro K _ _ m hm hirr τ S hS

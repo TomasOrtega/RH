@@ -18,6 +18,15 @@ section Zero
 
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F] [Algebra (FractionRing R) F]
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `exists_zero_gt (D := D) (F := F)`. Establish `hz` using `(isZero_iff g).1 hg`. Establish `hadd : g.IsAdd g g`. Rewrite using `[isAdd_iff]`. Use `⟨by rw [hz.1, _root_.mul_one], fun χ y J hJ => ?_⟩` and prove the remaining obligations.
+
+Establish `hc` using `isCub_cubV (c := D.cub) hJ`. Rewrite using `[hz.2 χ y J hJ, hz.1, _root_.one_mul, _root_.one_mul]`. Conclude with `(hc.s01 _ _ _).trans (hc.face _ _)`. Establish `hiota : GtPtF.IsIota (0 : D.X) g`. Rewrite using `[isIota_iff]`.
+
+Use `⟨by rw [hz.1, cPoint_zero], fun χ y J hJ => ?_⟩` and prove the remaining obligations. Establish `hc` using `isCub_cubV (c := D.cub) hJ`. Establish `h1` using `tau_mul (σ := 𝟙 (TF (R := R) F)) (z := y) (J := J) hJ hB 0 0 χ`. Simplify using `only [th, add_zero, cPoint_zero, hc.face, _root_.mul_one, Over.id_left] at h1`. Rewrite `h1` using `[add_zero]`.
+
+Rewrite using `[hz.2 χ y J hJ]`. Conclude with `(mul_left_cancel (h1.symm.trans (_root_.mul_one _).symm)).symm`. Conclude with `⟨⟨0, g, ⟨g, ⟨fun _ => g, hg, fun _ => hadd, rfl⟩, hiota⟩⟩, rfl, hg, hadd⟩`.
+-/
 theorem exists_zero_qk (hB : D.TauBimult) (k : ℕ) :
     ∃ p0 : QkPt D F k, p0.y = 0 ∧ p0.g.IsZero ∧ p0.g.IsAdd p0.g p0.g := by
   obtain ⟨g, hg⟩ := exists_zero_gt (D := D) (F := F)
@@ -41,6 +50,17 @@ theorem exists_zero_qk (hB : D.TauBimult) (k : ℕ) :
 
 end Zero
 
+/- English proof (translation)
+Use `letI := H.starRing`. Establish `hαN' : α * star α = (N : 𝓞 E)` using `hαN`. Establish `hB : P.D.toPre.TauBimult` using `P.D.tau_bimult`. Take `⟨p0, hy0, hz0, hadd0⟩` from `exists_zero_qk (F := F) hB (1 * N)`. Take `⟨f, hf1, -, hf3, hf4, hf5, -⟩` from `hT F (1 * N) (by omega)`.
+
+Take `⟨p', hp'⟩` from `hQ E H V t P F (1 * N) α p`. Establish `hfp'` using `hf5 α p p' hp'`. Take `⟨q, hqy, hGt, hqe⟩` from `hp'`. Establish `hf0 : f p0 = 1`. Establish `h` using `hf4 p0 p0 p0 ⟨p0, by rw [hy0, add_zero], hadd0, qk_equiv_refl hB p0⟩`.
+
+Conclude with `(mul_left_cancel ((_root_.mul_one _).trans h)).symm`. Establish `hfq : f q = f p0`. Rewrite using `[(hf3 q p').2 hqe, hfp', ← (hf1 p x).1 hx, hxα, hf0]`. Take `⟨z, hz, h, hIota, hAdd⟩` from `(hf3 q p0).1 hfq`. Use `⟨z, q, h, p0.g, ?_, hGt, hIota, hAdd, hz0⟩` and prove the remaining obligations.
+
+Establish `e : α • p.y + (1 * N) • z = 0` using `by rw [← hqy, ← hz, hy0]`. Establish `e'` using `congrArg (fun w => star α • w) e`. Simplify using `only [smul_add, smul_zero, smul_smul] at e'`. Establish `key : ∀ w : P.D.toPre.X, (1 * N) • w = N • w` using `fun w => by rw [Nat.one_mul]`. Rewrite `e'` using `[smul_comm (star α) (1 * N) z, _root_.mul_comm (star α) α, hαN', Nat.cast_smul_eq_nsmul, ← key p.y, ← smul_add]`.
+
+Use `haveI : Module.Free ℤ P.D.toPre.X := P.D.toPre.freeX`. Rewrite `e'` using `[← Nat.cast_smul_eq_nsmul ℤ]`. Establish `e3 : p.y + star α • z = 0` using `(smul_eq_zero.1 e').resolve_left (by omega)`. Conclude with `eq_neg_of_add_eq_zero_left e3`.
+-/
 theorem alpha_unpack {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {V : Type} [CommRing V]
     [IsDomain V] [IsDiscreteValuationRing V] {t : SAB H (Sp V)} (P : PELUnif (maximalIdeal V) t)
     (hT : P.TorsionIso) (hQ : QkActExistsStatement) (α : 𝓞 E) (N : ℕ) (hN : 1 ≤ N)

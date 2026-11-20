@@ -12,6 +12,9 @@ namespace GlobalTheory.DbarExt
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [NormedSpace ℝ V]
   [IsScalarTower ℝ ℂ V]
 
+/- English proof (translation)
+Establish `hD : DifferentiableAt ℝ (fderiv ℝ f) z` using `(hf.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Conclude with `(ContinuousLinearMap.apply ℝ ℂ u).hasFDerivAt.comp z hD.hasFDerivAt`.
+-/
 theorem hasFDerivAt_fderiv_apply {f : V → ℂ} {z : V} (hf : ContDiffAt ℝ 2 f z) (u : V) :
     HasFDerivAt (fun x => fderiv ℝ f x u)
       ((ContinuousLinearMap.apply ℝ ℂ u).comp (fderiv ℝ (fderiv ℝ f) z)) z := by
@@ -19,6 +22,11 @@ theorem hasFDerivAt_fderiv_apply {f : V → ℂ} {z : V} (hf : ContDiffAt ℝ 2 
     (hf.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)
   exact (ContinuousLinearMap.apply ℝ ℂ u).hasFDerivAt.comp z hD.hasFDerivAt
 
+/- English proof (translation)
+Establish `hs : IsSymmSndFDerivAt ℝ f z` using `hf.isSymmSndFDerivAt (by simp)`. Establish `key : ∀ u : V, HasFDerivAt (fun x => dbar f x u) ((1 / 2 : ℂ) • ((ContinuousLinearMap.apply ℝ ℂ u).comp (fderiv ℝ (fderiv ℝ f) z) + I • (ContinuousLinearMap.apply ℝ ℂ (I • u)).comp (fderiv ℝ (fderiv ℝ f) z))) z`. Introduce `u`. Use `((hasFDerivAt_fderiv_apply hf u).add ((hasFDerivAt_fderiv_apply hf (I • u)).const_smul I)).const_smul (1 / 2 : ℂ)` as an intermediate fact. Conclude with `this`.
+
+Rewrite using `[dbar_eq_of_hasFDerivAt (key w), dbar_eq_of_hasFDerivAt (key v)]`. Simplify using `only [antilinPart_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.add_apply, ContinuousLinearMap.coe_comp', Function.comp_apply, ContinuousLinearMap.apply_apply]`. Rewrite using `[hs v w, hs v (I • w), hs (I • v) w, hs (I • v) (I • w)]`. Put the polynomial expressions in normal form.
+-/
 theorem dbar_dbar_comm {f : V → ℂ} {z : V} (hf : ContDiffAt ℝ 2 f z) (v w : V) :
     dbar (fun x => dbar f x w) z v = dbar (fun x => dbar f x v) z w := by
   have hs : IsSymmSndFDerivAt ℝ f z := hf.isSymmSndFDerivAt (by simp)
@@ -35,6 +43,13 @@ theorem dbar_dbar_comm {f : V → ℂ} {z : V} (hf : ContDiffAt ℝ 2 f z) (v w 
   rw [hs v w, hs v (I • w), hs (I • v) w, hs (I • v) (I • w)]
   ring_nf
 
+/- English proof (translation)
+Establish `hc : ∀ a b, ContDiffAt ℝ 2 (fun x => orthCoeff (H x) a b) z`. Introduce `a b`. Establish `h1` using `(GlobalTheory.IndefiniteRowSideFullHecke.CovariantSecondFundamentalForm.mContDiffAt_orthLift (h.mContDiffAt hz) (hs z hz)) (Sum.inl a) b`. Establish `h2 : (fun x => orthCoeff (H x) a b) = fun x => -orthLift (H x) (Sum.inl a) b`. Use function extensionality and compare the values at `x`.
+
+Simplify using `[orthLift]`. Rewrite using `[h2]`. Conclude with `(h1.neg).of_le (WithTop.coe_le_coe.2 (le_top : (2 : ℕ∞) ≤ ⊤))`. Simplify using `only [dbarAnti, extForm_eq_neg_mdbar]`. Use extensionality with `a b`.
+
+Simplify using `only [Matrix.sub_apply, mdbar_apply, Matrix.neg_apply, Matrix.zero_apply, dbar_neg, ContinuousLinearMap.neg_apply]`. Rewrite using `[dbar_dbar_comm (hc a b) η₁ η₂]`. Simplify using the standard rewrite rules.
+-/
 theorem dbarAnti_extForm_eq_zero {m l : Type} [Fintype m] [Fintype l] [DecidableEq m]
     [DecidableEq l] {U : Set V} {H : V → Matrix (m ⊕ l) (m ⊕ l) ℂ} {z : V} (h : IsHermFrame U H)
     (hs : ∀ x ∈ U, IsUnit (subGram (H x)).det) (hz : z ∈ U) (η₁ η₂ : V) :

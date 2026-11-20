@@ -3,6 +3,11 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ThetaIn
 
 open Matrix IsLocalRing ReciprocityTheory.Gal UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.UnitaryThreeInertia
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `a b`. Conclude with `Ideal.Quotient.eq.2 (h a b)`. Introduce `h a b`.
+
+Conclude with `Ideal.Quotient.eq.1 (congrFun (congrFun h a) b)`.
+-/
 private theorem entIn_sub_iff {C : Type} [CommRing C] (I : Ideal C) (X Y : Matrix (Fin 3) (Fin 3) C) :
     EntIn I (X - Y) ↔ X.map (Ideal.Quotient.mk I) = Y.map (Ideal.Quotient.mk I) := by
   constructor
@@ -12,6 +17,11 @@ private theorem entIn_sub_iff {C : Type} [CommRing C] (I : Ideal C) (X Y : Matri
   · intro h a b
     exact Ideal.Quotient.eq.1 (congrFun (congrFun h a) b)
 
+/- English proof (translation)
+Unfold `CongOne`. Rewrite using `[entIn_sub_iff, Matrix.map_one _ (map_zero _) (map_one _)]`. Prove the components needed by the constructor for the conclusion. Introduce `e`. Conclude with `Units.ext e`.
+
+Introduce `e`. Conclude with `congrArg Units.val e`.
+-/
 private theorem congOne_iff {C : Type} [CommRing C] (I : Ideal C) (h : GL (Fin 3) C) :
     CongOne I h ↔ GeneralLinearGroup.map (Ideal.Quotient.mk I) h = 1 := by
   unfold CongOne
@@ -22,16 +32,28 @@ private theorem congOne_iff {C : Type} [CommRing C] (I : Ideal C) (h : GL (Fin 3
   · intro e
     exact congrArg Units.val e
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem conjBy_app {C D : Type} [CommRing C] [Group D] (h : GL (Fin 3) C) (r : D →* GG 3 C) (g : D) :
     conjBy h r g = GG.ofGL h * r g * (GG.ofGL h)⁻¹ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem conjBy_comp {C D E : Type} [CommRing C] [Group D] [Group E] (h : GL (Fin 3) C) (r : D →* GG 3 C)
     (f : E →* D) : (conjBy h r).comp f = conjBy h (r.comp f) := rfl
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.ThetaInvolution.conjBy_conjBy h h' r`.
+-/
 private theorem conjBy_conjBy {C D : Type} [CommRing C] [Group D] (h h' : GL (Fin 3) C) (r : D →* GG 3 C) :
     conjBy (h * h')⁻¹ (conjBy h r) = conjBy h'⁻¹ r :=
   _root_.UpperTheory.Reformulated.B.ThetaInvolution.conjBy_conjBy h h' r
 
+/- English proof (translation)
+Establish `e : GG.map (Ideal.Quotient.mk I) (GG.ofGL h) = 1`. Unfold `GG.map`. Rewrite using `[SemidirectProduct.map_inl, (congOne_iff I h).1 hh, map_one]`. Simplify using `only [conjBy, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, map_mul, map_inv, e, one_mul, inv_one, mul_one]`.
+-/
 private theorem map_conjBy {C D : Type} [CommRing C] [Group D] (I : Ideal C) (h : GL (Fin 3) C)
     (hh : CongOne I h) (r : D →* GG 3 C) (g : D) :
     GG.map (Ideal.Quotient.mk I) (conjBy h r g) = GG.map (Ideal.Quotient.mk I) (r g) := by
@@ -41,6 +63,21 @@ private theorem map_conjBy {C D : Type} [CommRing C] [Group D] (I : Ideal C) (h 
   simp only [conjBy, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, map_mul, map_inv, e,
     one_mul, inv_one, mul_one]
 
+/- English proof (translation)
+Introduce `O _ _ G Γ ι _ _ F R _ _ _ h hh`. Establish `hmul : ∀ h' : GL (Fin 3) R, InHat h' → InHat (h * h')` using `fun h' hh' => by`. Use `(congOne_iff _ _).2 ?_` and prove the remaining obligations. Rewrite using `[map_mul, (congOne_iff _ _).1 hh, (congOne_iff _ _).1 hh', mul_one]`. Establish `hloc : ∀ v (r : F.D v →* GG 3 R), F.LocAt v r → F.LocAt v (conjBy h r)`.
+
+Introduce `v r ⟨ht, hd, hu⟩`. Use `⟨fun e => ?_, fun e => ?_, fun e s hs => ?_⟩` and prove the remaining obligations. Take `⟨h', h1, h2, h3⟩` from `ht e`. Use `⟨h * h', hmul h' h1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[conjBy_conjBy]`.
+
+Conclude with `h2`. Rewrite using `[conjBy_conjBy]`. Conclude with `h3`. Take `⟨h', h1, ⟨h2, h3⟩, h4⟩` from `hd e`. Use `⟨h * h', hmul h' h1, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[conjBy_conjBy]`. Conclude with `h2`. Rewrite using `[conjBy_conjBy]`. Conclude with `h3`. Rewrite using `[conjBy_conjBy]`.
+
+Conclude with `h4`. Rewrite using `[conjBy_app, hu e s hs, mul_one, mul_inv_cancel]`. Use `⟨hloc, fun r hr => ⟨⟨fun g => ?_, fun g => ?_⟩, fun v => ?_⟩⟩` and prove the remaining obligations. Establish `e` using `congrArg SemidirectProduct.right (map_conjBy _ h hh r g)`. Rewrite `e` using `[GG.map_right, GG.map_right]`.
+
+Conclude with `e.trans (hr.mult g)`. Establish `e` using `congrArg GG.mat (map_conjBy _ h hh r g)`. Rewrite `e` using `[GG.map_mat, GG.map_mat]`. Rewrite using `[entIn_sub_iff, e, ← entIn_sub_iff]`. Conclude with `hr.red g`.
+
+Rewrite using `[conjBy_comp]`. Conclude with `hloc v _ (hr.loc v)`.
+-/
 theorem UpperTheory.V.UnitaryThreeInertia.cond_conj :
     ∀ {O : Type} [CommRing O] [IsLocalRing O] {G Γ ι : Type} [Group G] [Group Γ] (F : Frame O G Γ ι) {R : Type} [CommRing R] [IsLocalRing R] [Algebra O R] (h : GL (Fin 3) R), InHat h →
       (∀ v (r : F.D v →* GG 3 R), F.LocAt v r → F.LocAt v (conjBy h r)) ∧ ∀ r : Γ →* GG 3 R, F.Cond r → F.Cond (conjBy h r) := by

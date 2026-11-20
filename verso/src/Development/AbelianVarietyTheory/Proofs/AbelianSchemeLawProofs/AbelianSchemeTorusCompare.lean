@@ -26,6 +26,15 @@ def torusExtOf {k : Type} [Field k] {T G B : Over (Spec (CommRingCat.of k))}
   i_hom := h.2.2.1
   isKernel := h.2.2.2.2.2.2.2
 
+/- English proof (translation)
+Establish `hw : A.hom = e.hom.left ≫ B.hom` using `(Over.w e.hom).symm`. Establish `hiso : IsIso e.hom.left` using `inferInstanceAs (IsIso ((Over.forget S).map e.hom))`. Use `hB.comm` as an intermediate fact. Use `hB.smooth` as an intermediate fact. Use `hB.proper` as an intermediate fact.
+
+Use `hB.geomConnected` as an intermediate fact. Use `⟨⟨?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono e.hom, Category.assoc, IsMonHom.mul_hom e.hom, ← BraidedCategory.braiding_naturality_assoc, IsCommMonObj.mul_comm]`. Rewrite using `[hw]`. Use `infer_instance`.
+
+Rewrite using `[hw]`. Use `infer_instance`. Rewrite using `[hw]`. Establish `hbc : MorphismProperty.IsStableUnderBaseChange (C` using `Scheme.{0}) @GeometricallyConnected := inferInstance`. Establish `hri : MorphismProperty.RespectsIso (C` using `Scheme.{0}) @GeometricallyConnected := MorphismProperty.IsStableUnderBaseChange.respectsIso`.
+
+Conclude with `(MorphismProperty.cancel_left_of_respectsIso @GeometricallyConnected _ _).2 this`.
+-/
 theorem isAbelianScheme_of_iso {S : Scheme.{0}} {A B : Over S} [GrpObj A] [GrpObj B]
     (e : A ≅ B) (he : IsMonHom e.hom) (hB : IsAbelianScheme B) : IsAbelianScheme A := by
   have hw : A.hom = e.hom.left ≫ B.hom := (Over.w e.hom).symm

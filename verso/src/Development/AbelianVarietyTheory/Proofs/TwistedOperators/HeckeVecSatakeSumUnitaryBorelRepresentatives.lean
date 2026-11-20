@@ -11,6 +11,27 @@ noncomputable section
 
 namespace GlobalTheory.SatBorel
 
+/- English proof (translation)
+Introduce `L _ _ _ ϖ σ q hU n h hh`. Establish `hK` using `P.isCommensurated_integral_unitary_of_unramified hU n`. Establish `hfin` using `P.finite_support_cosets hK hh.2`. Establish `hI : ∀ c : GU σ n ⧸ KU σ n, ∃ b : GU σ n, IsBorelU b ∧ (b : GU σ n ⧸ KU σ n) = c`. Introduce `c`.
+
+Take `⟨b, k, hb, hk, e⟩` from `P.fIwasawa_iwasawa σ hU.1 hU.2.1 c.out`. Use `⟨b, hb, ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [← QuotientGroup.out_eq' c, e]`. Conclude with `QuotientGroup.eq.2 (by simpa using hk)`. Use `choose s hsB hs using hI`.
+
+Establish `hhs : ∀ c, h (s c) = h c.out`. Introduce `c`. Establish `hk : (c.out)⁻¹ * s c ∈ KU σ n` using `QuotientGroup.eq.1 (c.out_eq'.trans (hs c).symm)`. Establish `e : s c = 1 * c.out * ((c.out)⁻¹ * s c)` using `by group`. Rewrite using `[e]`.
+
+Conclude with `hh.1 1 ⟨_, hk⟩ c.out`. Establish `c1 : ∀ (M : Type) [AddCommGroup M] [Module ℂ M] (π : Representation ℂ (GU σ n) M) (x : M), (∀ k ∈ KU σ n, π k x = x) → heckeVec π (KU σ n) h x = ∑ i : hfin.toFinset, h (s i.1) • π (s i.1) x`. Introduce `M _ _ π x hx`. Rewrite using `[GlobalTheory.LFun.heckeVec_eq_of_section hh.1 (GlobalTheory.LGrp.mem_fixed.2 hx) s hs, finsum_eq_sum_of_support_subset _ (s := hfin.toFinset) ?_, ← Finset.sum_coe_sort]`. Introduce `c hc`.
+
+Rewrite using `[Set.Finite.coe_toFinset, Set.mem_setOf_eq, ← hhs]`. Introduce `h0`. Conclude with `hc (by simp [h0])`. Use `⟨hfin.toFinset, inferInstance, fun i => s i.1, fun i => hsB _, c1, fun α => ?_⟩` and prove the remaining obligations. Take `⟨φ, hφ, h1, -⟩` from `Final.SphericalExistsU L ϖ σ q n (n / 2) hU (by omega) (by omega) (fun i => (α i : ℂ)) fun i => (α i).ne_zero`.
+
+Establish `e` using `congrFun (Final.SatakeInert L ϖ σ q n (n / 2) hU (by omega) (by omega) _ (fun i => (α i).ne_zero) h hh φ hφ) 1`. Establish `hfix : ∀ k ∈ KU σ n, GlobalTheory.PRep.rightReg ℂ (GU σ n) ℂ k φ = φ`. Introduce `k hk`. Use function extensionality and compare the values at `g`. Express the relevant statement in the definitionally equal form `φ (g * k) = φ g`.
+
+Simplify `hφ 1 g k GlobalTheory.LFun.isBorelU_one hk` using `[GlobalTheory.LFun.chiDeltaU_one]`. Rewrite `e` using `[← GlobalTheory.LFun.heckeVec_rightReg hK hh, c1 _ _ φ hfix]`. Establish `hχ : ∀ i : hfin.toFinset, φ (s i.1) = ∏ k : Fin (n / 2), ((α k : ℂ) * (q : ℂ) ^ (-((n : ℤ) - 1 - 2 * (k.1 : ℤ)))) ^ ordL ((s i.1).1.1 (lo n k) (lo n k))`. Introduce `i`. Use `hφ (s i.1) 1 1 (hsB _) (one_mem _)` as an intermediate fact.
+
+Simplify using `only [mul_one, h1] at this`. Rewrite using `[this]`. Unfold `chiDeltaU`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[dif_pos (by omega), mul_zpow, ← _root_.zpow_mul]`.
+
+Establish `hl : lo n k = ⟨k.1, by omega⟩` using `rfl`. Rewrite using `[hl]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, h1, mul_one] at e`.
+
+Rewrite using `[← e]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← hχ i]`. Conclude with `congrArg (h (s i.1) * ·) (congrArg φ (one_mul _))`.
+-/
 theorem heckeVec_satU_borel : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L) (σ : L →+* L) (q : ℕ), IsUnramInv ϖ σ q → ∀ (n : ℕ), ∀ h ∈ Hecke ℂ (KU σ n), ∃ (ι : Type) (_ : Fintype ι) (b : ι → GU σ n), (∀ i, IsBorelU (b i)) ∧ (∀ (M : Type) [AddCommGroup M] [Module ℂ M] (π : Representation ℂ (GU σ n) M) (s : M), (∀ k ∈ KU σ n, π k s = s) → heckeVec π (KU σ n) h s = ∑ i, h (b i) • π (b i) s) ∧ ∀ α : Fin (n / 2) → ℂˣ, SatU ϖ q h (fun i => (α i : ℂ)) = ∑ i, h (b i) * ∏ k : Fin (n / 2), ((α k : ℂ) * (q : ℂ) ^ (-((n : ℤ) - 1 - 2 * (k.1 : ℤ)))) ^ ordL ((b i).1.1 (lo n k) (lo n k)) := by
   intro L _ _ _ ϖ σ q hU n h hh
   have hK := P.isCommensurated_integral_unitary_of_unramified hU n

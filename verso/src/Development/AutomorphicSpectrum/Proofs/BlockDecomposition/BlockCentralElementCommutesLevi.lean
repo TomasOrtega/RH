@@ -6,6 +6,15 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Loc
 
 namespace GlobalTheory.CompanionTheory.ZjCentral
 
+/- English proof (translation)
+Use extensionality with `i l`. Take `⟨⟨a, i'⟩, rfl⟩` from `(stdBlocks d hd).surjective i`. Take `⟨⟨b, l'⟩, rfl⟩` from `(stdBlocks d hd).surjective l`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+
+Rewrite using `[leviEmb_apply_same]`. Distinguish the cases in `hil : i' = l'`. Substitute `hil` using the available equality. Distinguish the cases in `haj : a ≤ j`. Simplify using `[Zl.JC.zj, Zl.JC.blockIdx, haj, Matrix.GeneralLinearGroup.scalar]`.
+
+Simplify using `[Zl.JC.zj, Zl.JC.blockIdx, haj]`. Establish `hne : (stdBlocks d hd) ⟨a, i'⟩ ≠ (stdBlocks d hd) ⟨a, l'⟩` using `fun e => hil (by`. Simplify using `using (stdBlocks d hd).injective e)`. Rewrite using `[Matrix.diagonal_apply_ne _ hne]`. Distinguish the cases in `haj : a ≤ j`.
+
+Simplify using `[Zl.JC.zj, haj, Matrix.GeneralLinearGroup.scalar, hil]`. Simplify using `[Zl.JC.zj, haj, hil]`. Establish `hne : (stdBlocks d hd) ⟨a, i'⟩ ≠ (stdBlocks d hd) ⟨b, l'⟩` using `fun e => hab (by`. Simplify using `using congrArg Sigma.fst ((stdBlocks d hd).injective e))`. Rewrite using `[leviEmb_apply_ne k _ _ hab, Matrix.diagonal_apply_ne _ hne]`.
+-/
 theorem leviEmb_zj_eq_diagonal (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (h N : ℕ) (d : Fin h → ℕ) (hd : ∑ a, d a = N) (t : kˣ)
     (j : Fin h) :
@@ -32,6 +41,11 @@ theorem leviEmb_zj_eq_diagonal (k : Type) [Field k] [ValuativeRel k] [Topologica
       simpa using congrArg Sigma.fst ((stdBlocks d hd).injective e))
     rw [leviEmb_apply_ne k _ _ hab, Matrix.diagonal_apply_ne _ hne]
 
+/- English proof (translation)
+Introduce `k _ _ _ _ h N d hd t j y hy`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul, leviEmb_zj_eq_diagonal]`. Use extensionality with `i l`. Rewrite using `[Matrix.diagonal_mul, Matrix.mul_diagonal]`.
+
+Distinguish the cases in `hil : Zl.JC.blockIdx d hd i = Zl.JC.blockIdx d hd l`. Rewrite using `[hil]`. Conclude with `mul_comm _ _`. Establish `h0 : (y : Matrix (Fin N) (Fin N) k) i l = 0` using `GroundTheory.Automorphic.Parabolic.mem_levi.1 hy i l hil`. Rewrite using `[h0, mul_zero, zero_mul]`.
+-/
 theorem leviEmb_zj_comm : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k], ∀ (h N : ℕ) (d : Fin h → ℕ) (hd : ∑ a, d a = N) (t : kˣ)
     (j : Fin h), ∀ y ∈ GroundTheory.Automorphic.Parabolic.levi k N (Zl.JC.blockIdx d hd),

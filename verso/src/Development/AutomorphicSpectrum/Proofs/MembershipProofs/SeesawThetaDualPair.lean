@@ -22,19 +22,31 @@ abbrev inc : E →+* A ⊗[F] E := (Algebra.TensorProduct.includeRight : E →�
 
 abbrev cA (c : E →ₐ[F] E) : A ⊗[F] E →ₐ[A] A ⊗[F] E := Algebra.TensorProduct.map (AlgHom.id A A) c
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using the standard rewrite rules.
+-/
 theorem lmul_inc (z : E) :
     (Algebra.lmul A (A ⊗[F] E)) ((1 : A) ⊗ₜ[F] z) = ((Algebra.lmul F E) z).baseChange A := by
   ext x
   simp
 
+/- English proof (translation)
+Rewrite using `[Algebra.trace_apply, Algebra.trace_apply, lmul_inc, LinearMap.trace_baseChange]`.
+-/
 theorem trace_inc [Module.Finite F E] (z : E) :
     Algebra.trace A (A ⊗[F] E) ((1 : A) ⊗ₜ[F] z) = algebraMap F A (Algebra.trace F E z) := by
   rw [Algebra.trace_apply, Algebra.trace_apply, lmul_inc, LinearMap.trace_baseChange]
 
+/- English proof (translation)
+Rewrite using `[Algebra.norm_apply, Algebra.norm_apply, lmul_inc, LinearMap.det_baseChange]`.
+-/
 theorem norm_inc [Module.Finite F E] (z : E) :
     Algebra.norm A ((1 : A) ⊗ₜ[F] z : A ⊗[F] E) = algebraMap F A (Algebra.norm F z) := by
   rw [Algebra.norm_apply, Algebra.norm_apply, lmul_inc, LinearMap.det_baseChange]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 theorem map_cA (c : E →ₐ[F] E) {m n : Type} (x : Matrix m n E) :
     (x.map (inc (F := F) A)).map (cA A c) = (x.map c).map (inc (F := F) A) := by
   ext i j
@@ -43,6 +55,9 @@ theorem map_cA (c : E →ₐ[F] E) {m n : Type} (x : Matrix m n E) :
 variable {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β]
 
 omit [DecidableEq α] [DecidableEq β] in
+/- English proof (translation)
+Rewrite using `[symp, symp, ← trace_inc]`. Use `congr 1`. Simplify using `[hTens, TensorProduct.tmul_sum, Finset.mul_sum]`.
+-/
 theorem symp_inc [Module.Finite F E] (c : E →ₐ[F] E) (ξ : E) (JA : Matrix α α E) (JB : Matrix β β E)
     (x y : Matrix α β E) :
     symp (cA A c) ((1 : A) ⊗ₜ[F] ξ) (JA.map (inc (F := F) A)) (JB.map (inc (F := F) A)) (x.map (inc (F := F) A))
@@ -60,10 +75,20 @@ def ratPt (c : E →ₐ[F] E) (J : Matrix β β E) : UG c J →* UG (cA A c) (J.
   map_one' := Subtype.ext (map_one _)
   map_mul' g h := Subtype.ext (map_mul _ _ _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ratPt_val (c : E →ₐ[F] E) (J : Matrix β β E) (g : UG c J) :
     ((ratPt A c J g : GL β (A ⊗[F] E)) : Matrix β β (A ⊗[F] E)) =
       ((g : GL β E) : Matrix β β E).map (inc (F := F) A) := rfl
 
+/- English proof (translation)
+Establish `hi : Function.Injective (inc (F` using `F) (E := E) A) := Algebra.TensorProduct.includeRight_injective (algebraMap F A).injective`. Use `haveI : Nontrivial (A ⊗[F] E) := hi.nontrivial`. Establish `hd : γ.det ≠ 0`. Introduce `h0`. Establish `hu : IsUnit ((g : GL β (A ⊗[F] E)) : Matrix β β (A ⊗[F] E)).det` using `(Matrix.isUnit_iff_isUnit_det _).mp (Units.isUnit _)`.
+
+Rewrite `hu` using `[hg, show (γ.map (inc (F := F) A)).det = inc (F := F) A γ.det from (RingHom.map_det _ _).symm, h0, map_zero]`. Conclude with `not_isUnit_zero hu`. Use `⟨⟨Matrix.GeneralLinearGroup.mkOfDetNeZero γ hd, ?_⟩, Subtype.ext (Units.ext hg.symm)⟩` and prove the remaining obligations. Establish `h : ((g : GL β (A ⊗[F] E)) : Matrix β β (A ⊗[F] E))ᵀ * J.map (inc (F` using `F) A) * ((g : GL β (A ⊗[F] E)) : Matrix β β (A ⊗[F] E)).map (cA A c) = J.map (inc (F := F) A) := g.2`. Rewrite `h` using `[hg, map_cA, ← Matrix.transpose_map, ← Matrix.map_mul, ← Matrix.map_mul]`.
+
+Conclude with `Matrix.map_injective hi h`.
+-/
 theorem exists_ratPt [Nontrivial A] (c : E →ₐ[F] E) (J : Matrix β β E) (g : UG (cA A c) (J.map (inc (F := F) A)))
     (γ : Matrix β β E) (hg : ((g : GL β (A ⊗[F] E)) : Matrix β β (A ⊗[F] E)) = γ.map (inc (F := F) A)) :
     ∃ g₀, ratPt A c J g₀ = g := by
@@ -85,6 +110,15 @@ theorem exists_ratPt [Nontrivial A] (c : E →ₐ[F] E) (J : Matrix β β E) (g 
 
 omit [Fintype β] in
 
+/- English proof (translation)
+Proceed by induction on `z using Matrix.induction_on' with`. Consider the case `h_zero => exact zero_mem _`. Consider the case `h_add p q hp hq => exact add_mem hp hq`. Consider the case `h_std_basis i j x`. Proceed by induction on `x using TensorProduct.induction_on with`.
+
+Consider the case `zero => rw [Matrix.single_zero]`. Conclude with `zero_mem _`. Consider the case `add x y hx hy => rw [Matrix.single_add]`. Conclude with `add_mem hx hy`. Consider the case `tmul a e`.
+
+Establish `: Matrix.single i j (a ⊗ₜ[F] e : A ⊗[F] E) = a • (Matrix.single i j e).map (inc (F` using `F) A) := by`. Rewrite using `[Matrix.map_single, Matrix.smul_single]`. Use `congr 1`. Simplify using `[TensorProduct.smul_tmul']`. Rewrite using `[this]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`.
+-/
 theorem mem_span_inc (z : Matrix α β (A ⊗[F] E)) [Finite β] :
     z ∈ Submodule.span A (Set.range fun x : Matrix α β E => x.map (inc (F := F) A)) := by
   induction z using Matrix.induction_on' with
@@ -103,6 +137,11 @@ theorem mem_span_inc (z : Matrix α β (A ⊗[F] E)) [Finite β] :
       exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)
 
 omit [DecidableEq α] [DecidableEq β] in
+/- English proof (translation)
+Simplify using `only [hTens, Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_comm]`. Combine the equalities or inequalities in the displayed calculation. Use `_ = _ := by`.
+
+Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => by ring` and prove the remaining obligations.
+-/
 theorem hTens_eq (c : E →ₐ[F] E) (JA : Matrix α α E) (JB : Matrix β β E) (x y : Matrix α β E) :
     hTens c JA JB x y = Matrix.trace (JAᵀ * x * JB * (y.map c)ᵀ) := by
   simp only [hTens, Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply,
@@ -117,6 +156,27 @@ theorem hTens_eq (c : E →ₐ[F] E) (JA : Matrix α α E) (JB : Matrix β β E)
       refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun j _ =>
         Finset.sum_congr rfl fun i _ => by ring
 
+/- English proof (translation)
+Take `⟨h0, Cx, M, hx, h1, h2⟩` from `hL`. Establish `key : ∀ z : Matrix α ν E, hTens c JA JB x (z * Cyᵀ) = Matrix.trace (JAᵀ * (x * JB * Cy.map c) * (z.map c)ᵀ)` using `fun z => by`. Rewrite using `[hTens_eq, show (z * Cyᵀ).map c = z.map c * Cyᵀ.map c from Matrix.map_mul (f := c.toRingHom), Matrix.transpose_mul, Matrix.transpose_map, Matrix.transpose_transpose]`. Simplify using `only [Matrix.mul_assoc]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨u, rfl⟩ z`. Rewrite using `[symp, key, Matrix.mul_assoc u, Matrix.mul_assoc u, h0]`. Simplify using the standard rewrite rules. Introduce `h`. Take `⟨b, -, -⟩` from `hq.basis`.
+
+Use `haveI : Module.Finite F E := Module.Finite.of_basis b`. Establish `h3 : JAᵀ * (x * JB * Cy.map c) = 0`. Use extensionality with `i j`. Assume the negation of the conclusion as `hne`. Use `set e := (JAᵀ * (x * JB * Cy.map c)) i j with he`.
+
+Establish `hξ : ξ ≠ 0` using `hq.unit.ne_zero`. Establish `hne' : e ≠ 0` using `hne`. Use `h (Matrix.single i j (c (ξ * e)⁻¹))` as an intermediate fact. Rewrite `this` using `[symp, key, Matrix.map_single, hq.invol, Matrix.transpose_single, Matrix.trace_mul_single, ← he]`. Rewrite `this` using `[show ξ * (MulOpposite.op (ξ * e)⁻¹ • e) = algebraMap F E 1 by simp; field_simp, Algebra.trace_algebraMap, Module.finrank_eq_card_basis b]`.
+
+Simplify using `at this`. Establish `hAu : IsUnit JAᵀ` using `(Matrix.isUnit_iff_isUnit_det _).mpr (by rw [Matrix.det_transpose]; exact hA.2)`. Establish `hBu : IsUnit JB` using `(Matrix.isUnit_iff_isUnit_det _).mpr hB.2`. Establish `h4 : x * JB * Cy.map c = 0`. Take `⟨U, hU⟩` from `hAu`.
+
+Rewrite using `[← Matrix.one_mul (x * JB * Cy.map c), ← U.inv_mul, Matrix.mul_assoc, hU, h3, Matrix.mul_zero]`. Use `set u : Matrix α ν E := x * (M.toRows₁)ᵀ`. Use `set v : Matrix α ν E := x * (M.toRows₂)ᵀ`. Establish `hxx : x = u * Cyᵀ + v * Cxᵀ`. Rewrite `h1` using `[← Matrix.fromRows_toRows M, Matrix.fromCols_mul_fromRows]`.
+
+Simplify using `only [u, v, Matrix.mul_assoc, ← Matrix.mul_add, ← Matrix.transpose_mul, ← Matrix.transpose_add, h1, Matrix.transpose_one, Matrix.mul_one]`. Establish `h5 : v * Cxᵀ * JB * Cy.map c = 0`. Rewrite `h4` using `[hxx, Matrix.add_mul, Matrix.add_mul, Matrix.mul_assoc u, Matrix.mul_assoc u, h0]`. Simplify using `using h4`. Establish `h6 : v * Cxᵀ * JB * Cx.map c = 0`.
+
+Rewrite using `[Matrix.mul_assoc v, Matrix.mul_assoc v, hx, Matrix.mul_zero]`. Establish `h7 : v * Cxᵀ * JB * (Matrix.fromCols Cy Cx).map c = 0`. Rewrite using `[Matrix.fromCols_map, Matrix.mul_fromCols, h5, h6, Matrix.fromCols_zero]`. Establish `h8 : (Matrix.fromCols Cy Cx).map c * M.map c = 1`. Rewrite using `[← show (Matrix.fromCols Cy Cx * M).map c = (Matrix.fromCols Cy Cx).map c * M.map c from Matrix.map_mul (f := c.toRingHom), h1]`.
+
+Conclude with `Matrix.map_one _ (map_zero c) (map_one c)`. Establish `h9 : v * Cxᵀ * JB = 0`. Rewrite using `[← Matrix.mul_one (v * Cxᵀ * JB), ← h8, ← Matrix.mul_assoc, h7, Matrix.zero_mul]`. Establish `h10 : v * Cxᵀ = 0`. Take `⟨U, hU⟩` from `hBu`.
+
+Rewrite using `[← Matrix.mul_one (v * Cxᵀ), ← U.mul_inv, ← Matrix.mul_assoc, hU, h9, Matrix.zero_mul]`. Conclude with `⟨u, by rw [h10, add_zero] at hxx; exact hxx⟩`.
+-/
 theorem lagr_iff [CharZero F] {c : E →ₐ[F] E} {ξ : E} (hq : IsQuad c ξ) {JA : Matrix α α E} {JB : Matrix β β E}
     (hA : IsHerm c JA) (hB : IsHerm c JB) {ν : Type} [Fintype ν] [DecidableEq ν] {Cy : Matrix β ν E}
     (hL : IsLagr c JB Cy) (x : Matrix α β E) :
@@ -187,6 +247,55 @@ def rmul (R : Type) [CommRing R] {S : Type} [CommRing S] [Algebra R S] (α : Typ
   right_inv x := by
     simp only [Matrix.mul_assoc, ← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one, Matrix.mul_one]
 
+/- English proof (translation)
+Introduce `F _ _ _ _ E _ _ c ξ α β κ _ _ _ _ _ JA JB ψ hψc hψ1 hψF hq hA hB d d₀ hd χ ν _ _ Cy om hχ hL hS hR g ⟨γ, hγ⟩ Φ hΦ`. Use `haveI : Nontrivial (AdeleRing (𝓞 F) F) := (AdeleRing.algebraMap_injective (𝓞 F) F).nontrivial`. Use `haveI : Module.Finite F E := by`. Take `⟨b, -, -⟩` from `hq.basis`. Conclude with `Module.Finite.of_basis b`.
+
+Use `letI : Invertible (2 : F) := invertibleOfNonzero two_ne_zero`. Take `⟨g₀, rfl⟩` from `exists_ratPt (AdeleRing (𝓞 F) F) c JB g γ hγ`. Take `⟨-, ⟨l₀, hl₀, hl₀Θ⟩, Φ₀, hΦ₀, hΦ₀ne⟩` from `GlobalTheory.T.theta_distribution_nonzero_admissible F κ`. Take `⟨hpres, hrat⟩` from `GlobalTheory.T.theta_distribution_heisenberg_invariant F κ ψ hψc hψ1 hψF`. Establish `hact : ∀ (p : UG c JB) (x : Matrix α β E), actB (cA (AdeleRing (𝓞 F) F) c) (ratPt (AdeleRing (𝓞 F) F) c JB p) (x.map (inc (F` using `F) (AdeleRing (𝓞 F) F))) = (x * ((p : GL β E) : Matrix β β E)ᵀ).map (inc (F := F) (AdeleRing (𝓞 F) F)) := fun p x => by`.
+
+Rewrite using `[actB, ratPt_val, Matrix.map_mul, Matrix.transpose_map]`. Establish `hd' : ∀ x : Matrix α β E, d.e (x.map (inc (F` using `F) (AdeleRing (𝓞 F) F))) = (fun i => algebraMap F (AdeleRing (𝓞 F) F) ((d₀ x).1 i), fun i => algebraMap F (AdeleRing (𝓞 F) F) ((d₀ x).2 i)) := hd`. Establish `hex : ∀ p : UG c JB, ∃ a : ℂ, ∀ Φ ∈ schA F κ, thetaSum F (om (ratPt (AdeleRing (𝓞 F) F) c JB p) Φ) = a * thetaSum F Φ` using `fun p => by`. Take `⟨a, ha⟩` from `GlobalTheory.T.admissible_functional_rational_invariance F κ ψ hψc hψ1 hψF _ (hS.adm (ratPt (AdeleRing (𝓞 F) F) c JB p) l₀ hl₀) (by`. Introduce `w Φ hΦ`.
+
+Take `⟨x, rfl⟩` from `d₀.surjective w`. Establish `h1` using `hS.impl (ratPt (AdeleRing (𝓞 F) F) c JB p) (x.map (inc (F := F) (AdeleRing (𝓞 F) F))) Φ hΦ`. Rewrite `h1` using `[hact, Darboux.rho, Darboux.rho, hd', hd']`. Establish `h2 : om (ratPt (AdeleRing (𝓞 F) F) c JB p) Φ ∈ schA F κ` using `hS.pres _ _ hΦ`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, h1, hl₀Θ _ (hpres _ _ h2), hrat, hl₀Θ _ h2])`.
+
+Use `⟨a, fun Φ hΦ => ?_⟩` and prove the remaining obligations. Rewrite using `[← ha Φ hΦ, LinearMap.comp_apply, hl₀Θ _ (hS.pres _ _ hΦ)]`. Use `choose a ha using hex`. Set `lam : UG c JB →* ℂ` to `{ toFun := a map_one' := by`. Use `ha 1 Φ₀ hΦ₀` as an intermediate fact.
+
+Rewrite `this` using `[map_one, map_one, Module.End.one_apply]`. Conclude with `(mul_eq_right₀ hΦ₀ne).mp this.symm`. Use the proof step `map_mul' := fun p q => by`. Use `ha (p * q) Φ₀ hΦ₀` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, Module.End.mul_apply, ha p _ (hS.pres _ _ hΦ₀), ha q _ hΦ₀, ← mul_assoc]`.
+
+Conclude with `(mul_right_cancel₀ hΦ₀ne this).symm }`. Set `Y : Matrix α ν E →ₗ[F] Matrix α β E` to `{ toFun := fun z => z * Cyᵀ map_add' := fun x y => Matrix.add_mul _ _ _ map_smul' := fun a x => Matrix.smul_mul _ _ _ }`. Set `L : Submodule F ((κ → F) × (κ → F))` to `LinearMap.range (d₀.toLinearMap ∘ₗ Y)`. Establish `hmem : ∀ x : Matrix α β E, d₀ x ∈ L ↔ ∃ z : Matrix α ν E, x = z * Cyᵀ` using `fun x => by`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨z, hz⟩`. Conclude with `⟨z, (d₀.injective hz).symm⟩`. Introduce and unpack `⟨z, rfl⟩`. Conclude with `⟨z, rfl⟩`. Establish `hform : ∀ x y : Matrix α β E, symp c ξ JA JB x y = (d₀ x).1 ⬝ᵥ (d₀ y).2 - (d₀ y).1 ⬝ᵥ (d₀ x).2` using `fun x y => by`.
+
+Apply `AdeleRing.algebraMap_injective (𝓞 F) F` to reduce the goal to its premises. Establish `h1` using `d.form (x.map (inc (F := F) (AdeleRing (𝓞 F) F))) (y.map (inc (F := F) (AdeleRing (𝓞 F) F)))`. Rewrite `h1` using `[hd', hd']`. Rewrite using `[← symp_inc]`. Use `h1.trans ?_` and prove the remaining obligations.
+
+Simplify using `[dotProduct]`. Establish `hLag : ∀ w, w ∈ L ↔ ∀ w' ∈ L, w.1 ⬝ᵥ w'.2 = w'.1 ⬝ᵥ w.2` using `fun w => by`. Take `⟨x, rfl⟩` from `d₀.surjective w`. Rewrite using `[hmem, lagr_iff hq hA hB hL]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `h _ ⟨z, rfl⟩`. Use `h z` as an intermediate fact. Rewrite `this` using `[hform, sub_eq_zero]`. Conclude with `this`. Introduce `h z`.
+
+Rewrite using `[hform, sub_eq_zero]`. Conclude with `h _ ⟨z, rfl⟩`. Take `⟨l, hl, ⟨Φ₁, hΦ₁, hΦ₁ne⟩, hinv, heig⟩` from `GlobalTheory.T.lagrangian_invariant_functional_exists F κ ψ hψc hψ1 hψF L hLag`. Establish `hinv' : ∀ z : Matrix α ν (AdeleRing (𝓞 F) F ⊗[F] E), ∀ φ ∈ (adeleClass F).sp κ, l (d.rho ψ (z * (Cy.map (inc (F` using `F) (AdeleRing (𝓞 F) F)))ᵀ) φ) = l φ := fun z φ hφ => by`. Use `hinv _ ?_ φ hφ` and prove the remaining obligations.
+
+Establish `hz` using `mem_span_inc (F := F) (AdeleRing (𝓞 F) F) z`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨z₀, rfl⟩` from `hx`. Rewrite using `[← Matrix.transpose_map, ← Matrix.map_mul, hd']`.
+
+Conclude with `Submodule.subset_span ⟨_, ⟨z₀, rfl⟩, rfl⟩`. Consider the case `zero => rw [Matrix.zero_mul, map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [Matrix.add_mul, map_add]`. Conclude with `add_mem hx hy`.
+
+Consider the case `smul r x _ hx => rw [Matrix.smul_mul, map_smul]`. Conclude with `Submodule.smul_mem _ _ hx`. Establish `hlam` using `GlobalTheory.T.lagrangian_stabilizer_character_trivial F E c ξ β ν JB Cy hq hB hL lam.toHomUnits (by`. Introduce `p t hpt`. Establish `h1` using `hR l hl hinv' (ratPt (AdeleRing (𝓞 F) F) c JB p) (Matrix.GeneralLinearGroup.map (inc (F := F) (AdeleRing (𝓞 F) F)) t) (by`.
+
+Express the relevant statement in the definitionally equal form `((p : GL β E) : Matrix β β E).map (inc (F := F) (AdeleRing (𝓞 F) F)) * Cy.map (inc (F := F) (AdeleRing (𝓞 F) F)) = Cy.map (inc (F := F) (AdeleRing (𝓞 F) F)) * (t : Matrix ν ν E).map (inc (F := F) (AdeleRing (𝓞 F) F))`. Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, hpt]) Φ₁ hΦ₁`. Establish `hdet : ((Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.map (inc (F` using `F) (AdeleRing (𝓞 F) F)) t) : (AdeleRing (𝓞 F) F ⊗[F] E)ˣ) : AdeleRing (𝓞 F) F ⊗[F] E) = (1 : AdeleRing (𝓞 F) F) ⊗ₜ[F] (t : Matrix ν ν E).det := (RingHom.map_det (inc (F := F) (AdeleRing (𝓞 F) F)) (t : Matrix ν ν E)).symm`. Establish `hn : Units.map (Algebra.norm (AdeleRing (𝓞 F) F) : AdeleRing (𝓞 F) F ⊗[F] E →* AdeleRing (𝓞 F) F) (Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.map (inc (F` using `F) (AdeleRing (𝓞 F) F)) t)) = Units.map (algebraMap F (AdeleRing (𝓞 F) F) : F →* AdeleRing (𝓞 F) F) (Units.map (Algebra.norm F : E →* F) (Matrix.GeneralLinearGroup.det t)) := by`. Apply `Units.ext` to reduce the goal to its premises.
+
+Rewrite using `[Units.coe_map, hdet, norm_inc]`. Both sides reduce to the same expression. Establish `hm : (adeleClass F).modu = distribHaarChar (AdeleRing (𝓞 F) F)` using `rfl`. Rewrite `h1` using `[hχ _ _ hdet, hn, hm, GlobalTheory.T.rational_units_haar_character_one F]`. Establish `h2` using `heig ((d₀.symm.trans (rmul F α (p : GL β E))).trans d₀) ((d.e.symm.trans (rmul (AdeleRing (𝓞 F) F) α (ratPt (AdeleRing (𝓞 F) F) c JB p : GL β (AdeleRing (𝓞 F) F ⊗[F] E)))).trans d.e).toLinearMap (om (ratPt (AdeleRing (𝓞 F) F) c JB p)) (a p) (by`.
+
+Introduce `w`. Take `⟨x, rfl⟩` from `d₀.surjective w`. Rewrite using `[← hd']`. Simplify using `only [LinearEquiv.coe_coe, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply]`. Rewrite using `[← hd']`.
+
+Conclude with `congrArg d.e (hact p x)) (by`. Introduce `w`. Take `⟨x, rfl⟩` from `d₀.surjective w`. Simplify using `only [LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply]`. Rewrite using `[hmem, hmem]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩`. Use `⟨z * ((t⁻¹ : GL ν E) : Matrix ν ν E)ᵀ, (rmul F α (p : GL β E)).injective ?_⟩` and prove the remaining obligations. Rewrite using `[hz]`. Express the relevant statement in the definitionally equal form `_ = z * ((t⁻¹ : GL ν E) : Matrix ν ν E)ᵀ * Cyᵀ * ((p : GL β E) : Matrix β β E)ᵀ`.
+
+Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.transpose_mul, ← Matrix.transpose_mul, hpt, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Introduce and unpack `⟨z, rfl⟩`. Use `⟨z * (t : Matrix ν ν E)ᵀ, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `z * Cyᵀ * ((p : GL β E) : Matrix β β E)ᵀ = _`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.transpose_mul, ← Matrix.transpose_mul, hpt])`.
+
+Use the proof step `(hS.pres _) (by`. Introduce `w Φ hΦ`. Take `⟨x, rfl⟩` from `d.e.surjective w`. Simplify using `only [LinearEquiv.coe_coe, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply]`. Conclude with `hS.impl _ x Φ hΦ) (ha p) Φ₁ hΦ₁`.
+
+Rewrite `h1` using `[h2]`. Apply `Units.ext` to reduce the goal to its premises. Establish `h3 : a p * l Φ₁ = l Φ₁` using `by simpa using h1`. Conclude with `(mul_eq_right₀ hΦ₁ne).mp h3)`. Establish `h4 : a g₀ = 1` using `congrArg (fun f : UG c JB →* ℂˣ => (f g₀ : ℂ)) hlam`.
+
+Rewrite using `[ha g₀ Φ hΦ, h4, one_mul]`.
+-/
 theorem theta_split_inc : ∀ (F : Type) [Field F] [NumberField F] [LocallyCompactSpace (AdeleRing (𝓞 F) F)] [Invertible (2 : AdeleRing (𝓞 F) F)] (E : Type) [Field E] [Algebra F E] (c : E →ₐ[F] E) (ξ : E) (α β κ : Type) [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] [Fintype κ] (JA : Matrix α α E) (JB : Matrix β β E) (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ), Continuous ψ → ψ ≠ 1 → (∀ a : F, ψ (algebraMap F (AdeleRing (𝓞 F) F) a) = 1) → IsQuad c ξ → IsHerm c JA → IsHerm c JB → ∀ (d : Darboux (symp (Algebra.TensorProduct.map (AlgHom.id (AdeleRing (𝓞 F) F) (AdeleRing (𝓞 F) F)) c) ((1 : AdeleRing (𝓞 F) F) ⊗ₜ[F] ξ) (JA.map (inc (F := F) (AdeleRing (𝓞 F) F))) (JB.map (inc (F := F) (AdeleRing (𝓞 F) F)))) κ) (d₀ : Matrix α β E ≃ₗ[F] (κ → F) × (κ → F)), (∀ x, d.e (x.map (inc (F := F) (AdeleRing (𝓞 F) F))) = (fun i => algebraMap F (AdeleRing (𝓞 F) F) ((d₀ x).1 i), fun i => algebraMap F (AdeleRing (𝓞 F) F) ((d₀ x).2 i))) → ∀ (χ : (AdeleRing (𝓞 F) F ⊗[F] E)ˣ →* Circle) (ν : Type) [Fintype ν] [DecidableEq ν] (Cy : Matrix β ν E) (om : UG (Algebra.TensorProduct.map (AlgHom.id (AdeleRing (𝓞 F) F) (AdeleRing (𝓞 F) F)) c) (JB.map (inc (F := F) (AdeleRing (𝓞 F) F))) →* Module.End ℂ ((κ → AdeleRing (𝓞 F) F) → ℂ)), (∀ (z : E) (u : (AdeleRing (𝓞 F) F ⊗[F] E)ˣ), (u : AdeleRing (𝓞 F) F ⊗[F] E) = (1 : AdeleRing (𝓞 F) F) ⊗ₜ[F] z → χ u = 1) → IsLagr c JB Cy → IsSplitting (adeleClass F) ψ d (actB (Algebra.TensorProduct.map (AlgHom.id (AdeleRing (𝓞 F) F) (AdeleRing (𝓞 F) F)) c)) om → SiegelRule (Algebra.TensorProduct.map (AlgHom.id (AdeleRing (𝓞 F) F) (AdeleRing (𝓞 F) F)) c) (adeleClass F) ψ ((1 : AdeleRing (𝓞 F) F) ⊗ₜ[F] ξ) (JA.map (inc (F := F) (AdeleRing (𝓞 F) F))) (JB.map (inc (F := F) (AdeleRing (𝓞 F) F))) d χ (Cy.map (inc (F := F) (AdeleRing (𝓞 F) F))) om → ∀ g : UG (Algebra.TensorProduct.map (AlgHom.id (AdeleRing (𝓞 F) F) (AdeleRing (𝓞 F) F)) c) (JB.map (inc (F := F) (AdeleRing (𝓞 F) F))), (∃ γ : Matrix β β E, ((g : GL β (AdeleRing (𝓞 F) F ⊗[F] E)) : Matrix β β (AdeleRing (𝓞 F) F ⊗[F] E)) = γ.map (inc (F := F) (AdeleRing (𝓞 F) F))) → ∀ Φ ∈ schA F κ, thetaSum F (om g Φ) = thetaSum F Φ := by
   intro F _ _ _ _ E _ _ c ξ α β κ _ _ _ _ _ JA JB ψ hψc hψ1 hψF hq hA hB d d₀ hd χ ν _ _ Cy om hχ hL hS hR g
     ⟨γ, hγ⟩ Φ hΦ
@@ -328,6 +437,9 @@ theorem theta_split_inc : ∀ (F : Type) [Field F] [NumberField F] [LocallyCompa
   have h4 : a g₀ = 1 := congrArg (fun f : UG c JB →* ℂˣ => (f g₀ : ℂ)) hlam
   rw [ha g₀ Φ hΦ, h4, one_mul]
 
+/- English proof (translation)
+The claim follows from `theta_split_inc`.
+-/
 theorem theta_split : ∀ (F : Type) [Field F] [NumberField F] [LocallyCompactSpace (AdeleRing (𝓞 F) F)] [Invertible (2 : AdeleRing (𝓞 F) F)] (E : Type) [Field E] [Algebra F E] (c : E →ₐ[F] E) (ξ : E) (α β κ : Type) [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] [Fintype κ] (JA : Matrix α α E) (JB : Matrix β β E) (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ), Continuous ψ → ψ ≠ 1 → (∀ a : F, ψ (algebraMap F (AdeleRing (𝓞 F) F) a) = 1) → IsQuad c ξ → IsHerm c JA → IsHerm c JB → ∀ (d : Darboux (symp (Algebra.TensorProduct.map (AlgHom.id (AdeleRing (𝓞 F) F) (AdeleRing (𝓞 F) F)) c) ((1 : AdeleRing (𝓞 F) F) ⊗ₜ[F] ξ) (JA.map fun z => ((1 : AdeleRing (𝓞 F) F) ⊗ₜ[F] z : AdeleRing (𝓞 F) F ⊗[F] E)) (JB.map fun z => ((1 : AdeleRing (𝓞 F) F) ⊗ₜ[F] z : AdeleRing (𝓞 F) F ⊗[F] E))) κ) (d₀ : Matrix α β E ≃ₗ[F] (κ → F) × (κ → F)), (∀ x, d.e (x.map fun z => ((1 : AdeleRing (𝓞 F) F) ⊗ₜ[F] z : AdeleRing (𝓞 F) F ⊗[F] E)) = (fun i => algebraMap F (AdeleRing (𝓞 F) F) ((d₀ x).1 i), fun i => algebraMap F (AdeleRing (𝓞 F) F) ((d₀ x).2 i))) → ∀ (χ : (AdeleRing (𝓞 F) F ⊗[F] E)ˣ →* Circle) (ν : Type) [Fintype ν] [DecidableEq ν] (Cy : Matrix β ν E) (om : UG (Algebra.TensorProduct.map (AlgHom.id (AdeleRing (𝓞 F) F) (AdeleRing (𝓞 F) F)) c) (JB.map fun z => ((1 : AdeleRing (𝓞 F) F) ⊗ₜ[F] z : AdeleRing (𝓞 F) F ⊗[F] E)) →* Module.End ℂ ((κ → AdeleRing (𝓞 F) F) → ℂ)), (∀ (z : E) (u : (AdeleRing (𝓞 F) F ⊗[F] E)ˣ), (u : AdeleRing (𝓞 F) F ⊗[F] E) = (1 : AdeleRing (𝓞 F) F) ⊗ₜ[F] z → χ u = 1) → IsLagr c JB Cy → IsSplitting (adeleClass F) ψ d (actB (Algebra.TensorProduct.map (AlgHom.id (AdeleRing (𝓞 F) F) (AdeleRing (𝓞 F) F)) c)) om → SiegelRule (Algebra.TensorProduct.map (AlgHom.id (AdeleRing (𝓞 F) F) (AdeleRing (𝓞 F) F)) c) (adeleClass F) ψ ((1 : AdeleRing (𝓞 F) F) ⊗ₜ[F] ξ) (JA.map fun z => ((1 : AdeleRing (𝓞 F) F) ⊗ₜ[F] z : AdeleRing (𝓞 F) F ⊗[F] E)) (JB.map fun z => ((1 : AdeleRing (𝓞 F) F) ⊗ₜ[F] z : AdeleRing (𝓞 F) F ⊗[F] E)) d χ (Cy.map fun z => ((1 : AdeleRing (𝓞 F) F) ⊗ₜ[F] z : AdeleRing (𝓞 F) F ⊗[F] E)) om → ∀ g : UG (Algebra.TensorProduct.map (AlgHom.id (AdeleRing (𝓞 F) F) (AdeleRing (𝓞 F) F)) c) (JB.map fun z => ((1 : AdeleRing (𝓞 F) F) ⊗ₜ[F] z : AdeleRing (𝓞 F) F ⊗[F] E)), (∃ γ : Matrix β β E, ((g : GL β (AdeleRing (𝓞 F) F ⊗[F] E)) : Matrix β β (AdeleRing (𝓞 F) F ⊗[F] E)) = γ.map fun z => ((1 : AdeleRing (𝓞 F) F) ⊗ₜ[F] z : AdeleRing (𝓞 F) F ⊗[F] E)) → ∀ Φ ∈ schA F κ, thetaSum F (om g Φ) = thetaSum F Φ :=
   theta_split_inc
 

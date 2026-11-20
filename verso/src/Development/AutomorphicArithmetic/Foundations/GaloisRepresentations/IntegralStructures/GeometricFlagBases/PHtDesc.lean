@@ -18,6 +18,9 @@ variable (k Ω : Type) [Field k] [Field Ω] [Algebra k Ω]
 
 private abbrev FI : Type := {L : IntermediateField k Ω // FiniteDimensional k L}
 
+/- English proof (translation)
+Use `a.2` as an intermediate fact. Use `b.2` as an intermediate fact. Conclude with `⟨⟨a.1 ⊔ b.1, IntermediateField.finiteDimensional_sup _ _⟩, le_sup_left (a := a.1), le_sup_right (a := a.1)⟩`.
+-/
 private theorem dir (a b : FI k Ω) : ∃ c : FI k Ω, a ≤ c ∧ b ≤ c := by
   have := a.2; have := b.2
   exact ⟨⟨a.1 ⊔ b.1, IntermediateField.finiteDimensional_sup _ _⟩, le_sup_left (a := a.1), le_sup_right (a := a.1)⟩
@@ -39,6 +42,9 @@ private def cg : Cocone (Dg k Ω) where
   ι := { app := fun L => CommRingCat.ofHom (algebraMap L.1 Ω)
          naturality := fun L L' f => rfl }
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨IntermediateField.adjoin k {x}, IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral x)⟩, ⟨x, IntermediateField.mem_adjoin_simple_self k x⟩, rfl⟩`.
+-/
 private theorem exists_rep [Algebra.IsAlgebraic k Ω] (x : Ω) : ∃ (L : FI k Ω) (y : L.1), algebraMap L.1 Ω y = x :=
   ⟨⟨IntermediateField.adjoin k {x}, IntermediateField.adjoin.finiteDimensional
     (Algebra.IsIntegral.isIntegral x)⟩, ⟨x, IntermediateField.mem_adjoin_simple_self k x⟩, rfl⟩
@@ -65,21 +71,36 @@ private def tr {L L' : IntermediateField k Ω} (h : L ≤ L') : geom L' p ⟶ ge
     rw [Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, pullback.condition]
     congr 3)
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 private theorem tr_fst {L L' : IntermediateField k Ω} (h : L ≤ L') :
     tr p h ≫ pullback.fst _ _ = pullback.fst _ _ := pullback.lift_fst _ _ _
 
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 private theorem tr_snd {L L' : IntermediateField k Ω} (h : L ≤ L') :
     tr p h ≫ pullback.snd _ _ =
       pullback.snd _ _ ≫ Spec.map (CommRingCat.ofHom (IntermediateField.inclusion h).toRingHom) :=
   pullback.lift_snd _ _ _
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 private theorem pj_fst (L : IntermediateField k Ω) :
     LateralTheory.EWeil.StabPf.proj L p ≫ pullback.fst _ _ = pullback.fst _ _ := pullback.lift_fst _ _ _
 
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 private theorem pj_snd (L : IntermediateField k Ω) :
     LateralTheory.EWeil.StabPf.proj L p ≫ pullback.snd _ _ =
       pullback.snd _ _ ≫ Spec.map (CommRingCat.ofHom (algebraMap L Ω)) := pullback.lift_snd _ _ _
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, tr_fst, pj_fst, pj_fst]`. Rewrite using `[Category.assoc, tr_snd, ← Category.assoc, pj_snd, Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, pj_snd]`. Both sides reduce to the same expression.
+-/
 private theorem pj_tr {L L' : IntermediateField k Ω} (h : L ≤ L') :
     LateralTheory.EWeil.StabPf.proj L' p ≫ tr p h = LateralTheory.EWeil.StabPf.proj L p := by
   apply pullback.hom_ext
@@ -123,12 +144,18 @@ variable {T : Scheme.{0}} (a : ∀ L : FI k Ω, T ⟶ geom L.1 p)
   (ha : ∀ (L L' : FI k Ω) (h : L.1 ≤ L'.1), a L' ≫ tr p h = a L)
 
 include ha in
+/- English proof (translation)
+Rewrite using `[← ha L L' h, Category.assoc, tr_snd, Category.assoc]`.
+-/
 private theorem a_snd (L L' : FI k Ω) (h : L.1 ≤ L'.1) :
     a L ≫ pullback.snd _ _ = (a L' ≫ pullback.snd _ _) ≫
       Spec.map (CommRingCat.ofHom (IntermediateField.inclusion h).toRingHom) := by
   rw [← ha L L' h, Category.assoc, tr_snd, Category.assoc]
 
 include ha in
+/- English proof (translation)
+Establish `h : (bt : FI k Ω).1 ≤ L.1` using `bot_le`. Establish `e` using `tr_fst p h`. Rewrite using `[← ha bt L h, Category.assoc, e]`.
+-/
 private theorem a_fst (L : FI k Ω) : a L ≫ pullback.fst _ _ = a bt ≫ pullback.fst _ _ := by
   have h : (bt : FI k Ω).1 ≤ L.1 := bot_le
   have e := tr_fst p h
@@ -146,15 +173,24 @@ variable [Algebra.IsAlgebraic k Ω]
 
 private def lf : T ⟶ Spec (CommRingCat.of Ω) := (hl (k := k) (Ω := Ω)).lift (sc p a ha)
 
+/- English proof (translation)
+The claim follows from `(hl (k := k) (Ω := Ω)).fac (sc p a ha) (op L)`.
+-/
 private theorem lf_fac (L : FI k Ω) :
     lf p a ha ≫ Spec.map (CommRingCat.ofHom (algebraMap L.1 Ω)) = a L ≫ pullback.snd _ _ :=
   (hl (k := k) (Ω := Ω)).fac (sc p a ha) (op L)
 
+/- English proof (translation)
+The claim follows from `(hl (k := k) (Ω := Ω)).uniq (sc p a ha) m fun L => hm L.unop`.
+-/
 private theorem lf_uniq (m : T ⟶ Spec (CommRingCat.of Ω))
     (hm : ∀ L : FI k Ω, m ≫ Spec.map (CommRingCat.ofHom (algebraMap L.1 Ω)) = a L ≫ pullback.snd _ _) :
     m = lf p a ha :=
   (hl (k := k) (Ω := Ω)).uniq (sc p a ha) m fun L => hm L.unop
 
+/- English proof (translation)
+Establish `e : Spec.map (CommRingCat.ofHom (algebraMap k Ω)) = Spec.map (CommRingCat.ofHom (algebraMap (bt (k` using `k) (Ω := Ω)).1 Ω)) ≫ Spec.map (CommRingCat.ofHom (algebraMap k (bt (k := k) (Ω := Ω)).1)) := by`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression. Rewrite using `[e, ← Category.assoc, lf_fac, Category.assoc, Category.assoc, pullback.condition]`.
+-/
 private theorem lf_cond : (a bt ≫ pullback.fst _ _) ≫ p =
     lf p a ha ≫ Spec.map (CommRingCat.ofHom (algebraMap k Ω)) := by
   have e : Spec.map (CommRingCat.ofHom (algebraMap k Ω)) =
@@ -166,16 +202,28 @@ private theorem lf_cond : (a bt ≫ pullback.fst _ _) ≫ p =
 
 private def gl : T ⟶ geom Ω p := pullback.lift (a bt ≫ pullback.fst _ _) (lf p a ha) (lf_cond p a ha)
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 private theorem gl_fst : gl p a ha ≫ pullback.fst _ _ = a bt ≫ pullback.fst _ _ := pullback.lift_fst _ _ _
 
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 private theorem gl_snd : gl p a ha ≫ pullback.snd _ _ = lf p a ha := pullback.lift_snd _ _ _
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pj_fst, gl_fst]`. Conclude with `(a_fst p a ha L).symm`. Rewrite using `[Category.assoc, pj_snd, ← Category.assoc, gl_snd, lf_fac]`.
+-/
 private theorem gl_fac (L : FI k Ω) : gl p a ha ≫ LateralTheory.EWeil.StabPf.proj L.1 p = a L := by
   apply pullback.hom_ext
   · rw [Category.assoc, pj_fst, gl_fst]
     exact (a_fst p a ha L).symm
   · rw [Category.assoc, pj_snd, ← Category.assoc, gl_snd, lf_fac]
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[gl_fst, ← hm bt, Category.assoc, pj_fst]`. Rewrite using `[gl_snd]`. Use `lf_uniq p a ha _ fun L => ?_` and prove the remaining obligations. Rewrite using `[← hm L, Category.assoc, Category.assoc, pj_snd]`.
+-/
 private theorem gl_uniq (m : T ⟶ geom Ω p) (hm : ∀ L : FI k Ω, m ≫ LateralTheory.EWeil.StabPf.proj L.1 p = a L) :
     m = gl p a ha := by
   apply pullback.hom_ext
@@ -192,18 +240,29 @@ private def cnLim [Algebra.IsAlgebraic k Ω] : IsLimit (cn k Ω p) where
   uniq s m hm := gl_uniq p (fun L => s.π.app (op L)) (fun L L' h => s.w (homOfLE (show L ≤ L' from h)).op) m
     fun L => hm (op L)
 
+/- English proof (translation)
+Use `haveI : QuasiCompact (pullback.snd p (Spec.map (CommRingCat.ofHom (algebraMap k L)))) := MorphismProperty.of_isPullback (P := @QuasiCompact) (IsPullback.of_hasPullback _ _) hqc`. Conclude with `QuasiCompact.compactSpace_of_compactSpace (pullback.snd p (Spec.map (CommRingCat.ofHom (algebraMap k L))))`.
+-/
 private theorem gd_compact (hqc : QuasiCompact p) (L : IntermediateField k Ω) : CompactSpace (geom L p) := by
   haveI : QuasiCompact (pullback.snd p (Spec.map (CommRingCat.ofHom (algebraMap k L)))) :=
     MorphismProperty.of_isPullback (P := @QuasiCompact) (IsPullback.of_hasPullback _ _) hqc
   exact QuasiCompact.compactSpace_of_compactSpace
     (pullback.snd p (Spec.map (CommRingCat.ofHom (algebraMap k L))))
 
+/- English proof (translation)
+Use `haveI : QuasiSeparated (pullback.snd p (Spec.map (CommRingCat.ofHom (algebraMap k L)))) := MorphismProperty.of_isPullback (P := @QuasiSeparated) (IsPullback.of_hasPullback _ _) hqs`. Conclude with `quasiSeparatedSpace_of_quasiSeparated (pullback.snd p (Spec.map (CommRingCat.ofHom (algebraMap k L))))`.
+-/
 private theorem gd_qs (hqs : QuasiSeparated p) (L : IntermediateField k Ω) : QuasiSeparatedSpace (geom L p) := by
   haveI : QuasiSeparated (pullback.snd p (Spec.map (CommRingCat.ofHom (algebraMap k L)))) :=
     MorphismProperty.of_isPullback (P := @QuasiSeparated) (IsPullback.of_hasPullback _ _) hqs
   exact quasiSeparatedSpace_of_quasiSeparated
     (pullback.snd p (Spec.map (CommRingCat.ofHom (algebraMap k L))))
 
+/- English proof (translation)
+Establish `e : Spec.map (CommRingCat.ofHom (IntermediateField.inclusion h).toRingHom) ≫ Spec.map (CommRingCat.ofHom (algebraMap k L)) = Spec.map (CommRingCat.ofHom (algebraMap k L'))`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression. Establish `hsq : IsPullback (tr p h) (pullback.snd p (Spec.map (CommRingCat.ofHom (algebraMap k L')))) (pullback.snd p (Spec.map (CommRingCat.ofHom (algebraMap k L)))) (Spec.map (CommRingCat.ofHom (IntermediateField.inclusion h).toRingHom))`. Use `IsPullback.of_right (h₁₂ := pullback.fst p (Spec.map (CommRingCat.ofHom (algebraMap k L)))) (h₂₂ := Spec.map (CommRingCat.ofHom (algebraMap k L))) (v₁₃ := p) ?_ (tr_snd p h) (IsPullback.of_hasPullback _ _)` and prove the remaining obligations.
+
+Rewrite using `[tr_fst, e]`. Conclude with `IsPullback.of_hasPullback _ _`. Conclude with `MorphismProperty.of_isPullback (P := @IsAffineHom) hsq.flip (isAffineHom_of_isAffine _)`.
+-/
 private theorem tr_affine {L L' : IntermediateField k Ω} (h : L ≤ L') : IsAffineHom (tr p h) := by
   have e : Spec.map (CommRingCat.ofHom (IntermediateField.inclusion h).toRingHom) ≫
       Spec.map (CommRingCat.ofHom (algebraMap k L)) = Spec.map (CommRingCat.ofHom (algebraMap k L')) := by
@@ -224,6 +283,9 @@ end Geo
 end UpperTheory.Gal.Int.Geo.HeightDescentDirectedColimits
 
 open UpperTheory.Gal.Int.Geo.HeightDescentDirectedColimits in
+/- English proof (translation)
+Introduce `q k Ω _ _ _ _ X p hqc hqs n i y`. Take `⟨L, z, hz⟩` from `(GlobalTheory.T.contCone_of_isLimit_of_qcqs_affine_transitions (ZMod q) (tw q i) (GlobalTheory.T.tateTwist_finitary q i) _ (Gd k Ω p) (cn k Ω p) (cnLim p) (fun L => gd_compact p hqc L.unop.1) (fun L => gd_qs p hqs L.unop.1) (fun _ _ f => tr_affine p (leOfHom f.unop)) n).1 y`. Conclude with `⟨L.unop.1, L.unop.2, z, hz⟩`.
+-/
 theorem UpperTheory.Gal.Int.Geo.htDesc_of :
     HtDesc := by
   intro q k Ω _ _ _ _ X p hqc hqs n i y

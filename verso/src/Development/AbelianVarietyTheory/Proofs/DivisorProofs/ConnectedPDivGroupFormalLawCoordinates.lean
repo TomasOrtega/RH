@@ -9,6 +9,9 @@ open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv G
 
 namespace GlobalTheory.LawCoord
 
+/- English proof (translation)
+Establish `ha : HasSubst (fun i => (C (x i) : MvPowerSeries Empty A))` using `hasSubst_of_constantCoeff_nilpotent fun i => by simpa using hx i`. Express the relevant statement in the definitionally equal form `constantCoeff (substAlgHom (R := k) ha (X i : MvPowerSeries σ k)) = x i`. Rewrite using `[substAlgHom_apply, subst_X ha]`. Simplify using the standard rewrite rules.
+-/
 theorem evA_X {k : Type} [CommRing k] {σ : Type} [Finite σ] {A : Type} [CommRing A] [Algebra k A]
     (x : σ → A) (hx : ∀ i, IsNilpotent (x i)) (i : σ) : evA k x hx (X i) = x i := by
   have ha : HasSubst (fun i => (C (x i) : MvPowerSeries Empty A)) :=
@@ -17,6 +20,19 @@ theorem evA_X {k : Type} [CommRing k] {σ : Type} [Finite σ] {A : Type} [CommRi
   rw [substAlgHom_apply, subst_X ha]
   simp
 
+/- English proof (translation)
+Introduce `p k _ d G c`. Use `⟨?_, fun μ hμ => ?_⟩` and prove the remaining obligations. Establish `h` using `fun i => ((GlobalTheory.T.chart_square_coordinates_present_levels p k d G c).2 (fun n => Coalgebra.comul (R := k) (c.x n i)) (fun n => by rw [pullTwo_comul]; exact congrArg _ (c.res n i))).exists choose μ hμ using h`. Conclude with `⟨μ, fun n i => hμ i n⟩`. Establish `hconst : ∀ i, constantCoeff (μ i) = 0`.
+
+Introduce `i`. Establish `h` using `(GlobalTheory.T.connectedChart_evalSquare_variables_swap_constant p k d G c 0).2.2.2 (μ i)`. Rewrite using `[← h, hμ 0 i]`. Establish `key : ∀ t : G.A 0 ⊗[k] G.A 0, Algebra.TensorProduct.lift (Bialgebra.counitAlgHom k (G.A 0)) (Bialgebra.counitAlgHom k (G.A 0)) (fun _ _ => Commute.all _ _) t = Coalgebra.counit (R` using `k) (TensorProduct.lid k (G.A 0) (LinearMap.rTensor (G.A 0) (Coalgebra.counit (R := k) (A := G.A 0)) t)) := by`. Introduce `t`.
+
+Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [Algebra.TensorProduct.lift_tmul, Bialgebra.counitAlgHom_apply]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Rewrite using `[key, Coalgebra.rTensor_counit_comul, TensorProduct.lid_tmul, one_smul]`.
+
+Conclude with `c.aug 0 i`. Use `⟨hconst, fun n f => ?_⟩` and prove the remaining obligations. Establish `hs : c.ev₂ n (subst μ f) = Coalgebra.comul (R` using `k) (c.ev n f) := by`. Establish `hy : ∀ i, IsNilpotent (Coalgebra.comul (R` using `k) (c.x n i)) := fun i => (c.nil n i).map (Bialgebra.comulAlgHom k (G.A n))`. Establish `h1` using `(GlobalTheory.T.nilpotent_eval_commutes_subst_and_algebraMap k (Fin d) (G.A n ⊗[k] G.A n)).1 (Fin d ⊕ Fin d) (c.ev₂ n) (fun t => by rw [Chart.ev₂, evA_X]; exact c.nil₂ n t) μ hconst _ hy (fun i => hμ n i) f`.
+
+Establish `h2` using `(GlobalTheory.T.nilpotent_eval_commutes_subst_and_algebraMap k (Fin d) (G.A n)).2 (G.A n ⊗[k] G.A n) (Bialgebra.comulAlgHom k (G.A n)) (c.x n) (c.nil n) _ hy (fun i => rfl) f`. Rewrite using `[h1, ← h2]`. Both sides reduce to the same expression. Use `⟨hs, ?_⟩` and prove the remaining obligations. Establish `he` using `GlobalTheory.T.connectedChart_evalSquare_variables_swap_constant p k d G c n`.
+
+Rewrite using `[cob1, map_sub, map_sub, hs, he.1, he.2.1, cobOne_apply]`.
+-/
 theorem main : ∀ (p : ℕ) (k : Type) [CommRing k] (d : ℕ) (G : PDivGroup p k) (c : Chart G d),
     (∃ μ, c.IsLawOf μ) ∧ ∀ (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) k), c.IsLawOf μ →
       (∀ i, constantCoeff (μ i) = 0) ∧ ∀ n f, c.ev₂ n (subst μ f) = Coalgebra.comul (R := k) (c.ev n f) ∧

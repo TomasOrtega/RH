@@ -30,9 +30,15 @@ attribute [instance] FreeRankModel.grp FreeRankModel.finH FreeRankModel.finX Fre
 
 variable (A : ColumnsAtT R C)
 
+/- English proof (translation)
+The claim follows from `A.Mu0_stable v a (Submodule.mem_map_of_mem φ.2)`.
+-/
 theorem rho_mem_forms (v : A.vT) (a : (A.Fv v)ˣ) (φ : A.Mu0) : A.rhoT v a (φ : C.cls 0 → C.Y 0 → ℂ) ∈ A.Mu0 :=
   A.Mu0_stable v a (Submodule.mem_map_of_mem φ.2)
 
+/- English proof (translation)
+Unfold `ColumnsAtT.Nm`. Rewrite using `[LinearMap.sum_apply, Submodule.coe_sum]`.
+-/
 theorem norm_eq_sum_rho (v : A.vT) (φ : A.Mu0) :
     A.Nm v (φ : C.cls 0 → C.Y 0 → ℂ) =
       ((∑ a : (A.Fv v)ˣ, (⟨A.rhoT v a φ, rho_mem_forms A v a φ⟩ : A.Mu0)) : A.Mu0) := by
@@ -40,6 +46,13 @@ theorem norm_eq_sum_rho (v : A.vT) (φ : A.Mu0) :
   rw [LinearMap.sum_apply, Submodule.coe_sum]
 
 open Classical in
+/- English proof (translation)
+Establish `key : ∀ v, A.Nm v (φ : C.cls 0 → C.Y 0 → ℂ) = 0 ↔ ∀ x : M.X, ∑ c : M.H, M.E φ ((Pi.mulSingle v c : A.vT → M.H) • x) = 0`. Introduce `v`. Rewrite using `[norm_eq_sum_rho, Submodule.coe_eq_zero, ← M.E.map_eq_zero_iff, map_sum, funext_iff]`. Use `forall_congr' fun x => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_apply, Pi.zero_apply]`.
+
+Establish `: ∑ a : (A.Fv v)ˣ, M.E ⟨A.rhoT v a φ, rho_mem_forms A v a φ⟩ x = ∑ a : (A.Fv v)ˣ, M.E φ ((Pi.mulSingle v (M.e v a) : A.vT → M.H) • x)` using `Finset.sum_congr rfl fun a _ => M.intertw v a φ _ x`. Rewrite using `[this]`. Conclude with `iff_of_eq (congrArg (· = (0 : ℂ)) (Fintype.sum_equiv (M.e v).toEquiv _ _ fun a => rfl))`. Unfold `ColumnsAtT.Mram`. Simplify using `only [Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, SetLike.coe_mem, true_and]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h v x`. Conclude with `(key v).1 (h v) x`. Introduce `h v`. Conclude with `(key v).2 (h v)`.
+-/
 theorem mem_ramified_iff_model (M : FreeRankModel A) (φ : A.Mu0) :
     (φ : C.cls 0 → C.Y 0 → ℂ) ∈ A.Mram ↔ M.E φ ∈ Formalism.LogVandermondeBounds.product_first_zeroth_parts.ramSub A.vT M.H M.X ℂ := by
   have key : ∀ v, A.Nm v (φ : C.cls 0 → C.Y 0 → ℂ) = 0 ↔
@@ -61,6 +74,13 @@ theorem mem_ramified_iff_model (M : FreeRankModel A) (φ : A.Mu0) :
   · intro h v; exact (key v).2 (h v)
 
 open Classical in
+/- English proof (translation)
+Establish `hle : A.Mram ≤ A.Mu0` using `inf_le_left`. Unfold `ColumnsAtT.du`. Rewrite using `[← (Submodule.comapSubtypeEquivOfLe hle).finrank_eq]`. Establish `hmap : (A.Mram.comap A.Mu0.subtype).map (M.E : A.Mu0 →ₗ[ℂ] (M.X → ℂ)) = Formalism.LogVandermondeBounds.product_first_zeroth_parts.ramSub A.vT M.H M.X ℂ`. Use extensionality with `F`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨φ, hφ, rfl⟩`. Conclude with `(mem_ramified_iff_model A M φ).1 hφ`. Introduce `hF`. Use `⟨M.E.symm F, ?_, by simp⟩` and prove the remaining obligations.
+
+Use `show ((M.E.symm F : A.Mu0) : C.cls 0 → C.Y 0 → ℂ) ∈ A.Mram`. Rewrite using `[mem_ramified_iff_model A M]`. Simplify using `using hF`. Rewrite using `[← hmap, LinearEquiv.finrank_map_eq]`.
+-/
 theorem ramified_rank_eq_finrank (M : FreeRankModel A) :
     A.du = Module.finrank ℂ (Formalism.LogVandermondeBounds.product_first_zeroth_parts.ramSub A.vT M.H M.X ℂ) := by
   have hle : A.Mram ≤ A.Mu0 := inf_le_left
@@ -80,6 +100,9 @@ theorem ramified_rank_eq_finrank (M : FreeRankModel A) :
 
 open Classical in
 
+/- English proof (translation)
+The claim follows from `A.Mu0_fd A.du * (A.T - 1) ^ R.f = Module.finrank ℂ A.Mu0 * (A.T - 2) ^ R.f := by have := A.Mu0_fd have h := Formalism.LogVandermondeBounds.product_first_zeroth_parts.finrankFiberSumZero A.vT M.H M.X ℂ M.free rw [← ramified_rank_eq_finrank A M, A.card_vT] at h have hX : Module.fin …`.
+-/
 theorem ramified_rank_mul (M : FreeRankModel A) :
     haveI := A.Mu0_fd
     A.du * (A.T - 1) ^ R.f = Module.finrank ℂ A.Mu0 * (A.T - 2) ^ R.f := by
@@ -101,6 +124,9 @@ theorem ramified_rank_mul (M : FreeRankModel A) :
     rw [h2] at h
     exact h
 
+/- English proof (translation)
+The claim follows from `A.Mu0_fd (A.du : ℚ) = (Module.finrank ℂ A.Mu0 : ℚ) * (1 - 1 / ((A.T : ℚ) - 1)) ^ R.f := by have := A.Mu0_fd have h := ramified_rank_mul A M have h1 : ((A.T - 1 : ℕ) : ℚ) = (A.T : ℚ) - 1 := by rw [Nat.cast_sub (by omega)]; simp have h2 : ((A.T - 2 : ℕ) : ℚ) = (A.T : ℚ) - 2 := by r …`.
+-/
 theorem ramified_rank_of_model (M : FreeRankModel A) (hT : 3 ≤ A.T) :
     haveI := A.Mu0_fd
     (A.du : ℚ) = (Module.finrank ℂ A.Mu0 : ℚ) * (1 - 1 / ((A.T : ℚ) - 1)) ^ R.f := by
@@ -119,6 +145,13 @@ theorem ramified_rank_of_model (M : FreeRankModel A) (hT : 3 ≤ A.T) :
 
 end Model
 
+/- English proof (translation)
+Establish `hT : 3 ≤ (D.mem u).A.T`. Establish `h1 : 1 ≤ D.R.f`. Establish `h0 : 0 < D.R.n` using `D.R.ord_pos`. Use `show 1 ≤ 2 * D.R.n`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h2 : 1 ≤ D.R.N D.R.m` using `by unfold Ranks.N; have := D.R.m_add_three_le_k; omega`. Establish `h3 : 1 ≤ D.R.f * D.R.N D.R.m` using `Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero (by omega) (by omega))`. Use `hS.1` as an intermediate fact. Establish `h4 : 2 * D.R.f * D.R.N D.R.m = 2 * (D.R.f * D.R.N D.R.m)` using `by ring`. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `ramified_rank_of_model (D.mem u).A M hT`.
+-/
 theorem ramified_rank_formula (D : D7) (u : D.what₂.Word) (M : FreeRankModel (D.mem u).A) (hS : Formalism.MainNotions.product_first_zeroth_parts.HidaSetting D u) :
     ((D.mem u).A.du : ℚ) = (D.duS u : ℚ) * (1 - 1 / (((D.mem u).A.T : ℚ) - 1)) ^ D.R.f := by
   have hT : 3 ≤ (D.mem u).A.T := by

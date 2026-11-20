@@ -4,6 +4,9 @@ noncomputable section
 
 namespace Formalism.MainNotions.G.SymmetricFormBlocks
 
+/- English proof (translation)
+Introduce `h`. Establish `h2` using `congrArg Fin.val (Prod.mk.inj (Sum.inl.inj h)).1`. Simplify using `only [Formalism.GM.M.finPos] at h2`. Rewrite `h2` using `[min_eq_left ha.le, min_eq_left hb.le]`. Conclude with `hab h2`.
+-/
 theorem inl_ne {N r t : ℕ} (a b : ℕ) (ha : a < N) (hb : b < N) (hab : a ≠ b) (c c' : Fin r) :
     (Sum.inl (Formalism.GM.M.finPos N a, c) : Formalism.GM.M.BVar N r t) ≠ Sum.inl (Formalism.GM.M.finPos N b, c') := by
   intro h
@@ -12,6 +15,13 @@ theorem inl_ne {N r t : ℕ} (a b : ℕ) (ha : a < N) (hb : b < N) (hab : a ≠ 
   rw [min_eq_left ha.le, min_eq_left hb.le] at h2
   exact hab h2
 
+/- English proof (translation)
+Introduce `p _ N r _ G hG j jp i i' hii' x`. Take `⟨⟨hmono, hvec, -⟩, hlt, -, -⟩` from `hG`. Establish `hpN : ∀ k, G.T.pos k + 1 < N` using `fun k => (hlt k).trans G.uPos.isLt`. Establish `hne : G.T.pos i ≠ G.T.pos i'` using `hmono.injective.ne hii'`. Establish `hcross : ∀ a b : Fin G.T.t, G.T.pos a + 1 ≠ G.T.pos b`.
+
+Introduce `a b hab`. Take `⟨ha, -, ha2⟩` from `hvec a`. Take `⟨hb, hb1, -⟩` from `hvec b`. Establish `e : G.LL.vec ⟨G.T.pos a + 1, ha⟩ = G.LL.vec ⟨G.T.pos b, by omega⟩` using `congrArg G.LL.vec (Fin.ext hab)`. Rewrite `ha2` using `[e]`.
+
+Conclude with `absurd (hb1.symm.trans ha2) (by decide)`. Conclude with `commute_tiePhi _ _ _ _ (fun c c' => inl_ne _ _ (by have := hpN i; omega) (by have := hpN i'; omega) hne c c') (fun c c' => inl_ne _ _ (hpN i) (by have := hpN i'; omega) (hcross i i') c c') (fun c c' => inl_ne _ _ (by have := hpN i; omega) (hpN i') (hcross i' i).symm c c') (fun c …`.
+-/
 theorem commCondition : RestTieComm := by
   intro p _ N r _ G hG j jp i i' hii' x
   obtain ⟨⟨hmono, hvec, -⟩, hlt, -, -⟩ := hG
@@ -32,6 +42,9 @@ theorem commCondition : RestTieComm := by
     (fun c c' => inl_ne _ _ (hpN i) (hpN i') (fun h => hne (by omega)) c c')
     _ _ _ _ _ _ x
 
+/- English proof (translation)
+The claim follows from `restSymm_of commCondition C0 CE1 CE2 X`.
+-/
 theorem symmCondition (C0 CE1 CE2 : ℝ) (X : Formalism.MainNotions.flipOneThree.Inst) : RestSymm C0 CE1 CE2 X :=
   restSymm_of commCondition C0 CE1 CE2 X
 

@@ -7,6 +7,9 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ZKApply
 set_option backward.isDefEq.respectTransparency false
 open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris DividedPowers CrystallineSemistableComparison CrystallineSemistableComparison.Pb
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.BasisBase.sqC_zK | exact GlobalTheory.CompanionTheory.BasisBase.sqC_zK | (intros; apply GlobalTheory.CompanionTheory.BasisBase.sqC_zK <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.smooth_pull_basis_filtration : ∀ {O A : Type} [CommRing O] [CommRing A] [Algebra O A] {I : Ideal A} (γ : DividedPowers I) {X : Scheme.{0}}
     (q : X ⟶ Spec (CommRingCat.of O)) (l s : ℕ) (𝒱 : Set X.Opens) (a : A) (t u r : ℤ) (ht : t ≤ 0)
     (ha : (smO γ q l s 𝒱).LeC a (sFil _ t) (sFil _ 0)) (hb : (smO γ q l s 𝒱).LeC a (sFil _ u) (sFil _ r)) (j : ℕ)

@@ -18,6 +18,9 @@ namespace GlobalTheory.FlagCell
 open GlobalTheory.Twist (resM resM_resM resM_smul app_resM sec_ext_of_cover exists_sec_of_cover)
 open GlobalTheory.LB (exists_fun_of_cover)
 
+/- English proof (translation)
+Simplify using `only [pullCol, map_sum, resM_smul, Matrix.map_apply]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Conclude with `congrArg (resG Y h (M l j) • ·) (QCoh.res_pullbackSections π E hV h (e l))`.
+-/
 theorem pullCol_res {B Y : Scheme.{0}} (π : Y ⟶ B) {E : B.Modules} {U : B.Opens} {m : ℕ}
     (e : Fin m → Γ(E, U)) {V V' : Y.Opens} (hV : V ≤ π ⁻¹ᵁ U) (h : V' ≤ V)
     (M : Matrix (Fin m) (Fin m) Γ(Y, V)) (j : Fin m) :
@@ -26,6 +29,9 @@ theorem pullCol_res {B Y : Scheme.{0}} (π : Y ⟶ B) {E : B.Modules} {U : B.Ope
   refine Finset.sum_congr rfl fun l _ => ?_
   exact congrArg (resG Y h (M l j) • ·) (QCoh.res_pullbackSections π E hV h (e l))
 
+/- English proof (translation)
+Introduce `l` and use `by obtain ⟨s, hfr, hv⟩ := hs l exact ⟨fun j => resM _ h (s j), hfr.res h, fun j => by rw [app_resM, hv]⟩`.
+-/
 theorem Spans.res {X : Scheme.{0}} {F : X.Modules} {m : ℕ} {fl : Vert.Flag F m} {V V' : X.Opens}
     {v : Fin m → Γ(F, V)} (hs : Spans fl V v) (h : V' ≤ V) :
     Spans fl V' fun j => resM F h (v j) := fun l => by
@@ -38,6 +44,9 @@ def IsCellCoord {B Y : Scheme.{0}} (π : Y ⟶ B) {ι : Type} {r : ι → ℕ} {
     (n : (Σ a, Low (r a)) → Γ(Y, V)) : Prop :=
   ∀ a, Spans (fl a) V (pullCol π (eU a) hV (uniR fun s => n ⟨a, s⟩))
 
+/- English proof (translation)
+Introduce `a` and use `by have e : (fun j => resM _ h (pullCol π (eU a) hV (uniR fun s => n ⟨a, s⟩) j)) = pullCol π (eU a) (h.trans hV) (uniR fun s => resG Y h (n ⟨a, s⟩)) := funext fun j => by rw [pullCol_res, map_uniR] exact e ▸ (hn a).res h`.
+-/
 theorem IsCellCoord.res {B Y : Scheme.{0}} {π : Y ⟶ B} {ι : Type} {r : ι → ℕ} {E : ι → B.Modules}
     {fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)} {U : B.Opens}
     {eU : ∀ a, Fin (r a) → Γ(E a, U)} {V V' : Y.Opens} {hV : V ≤ π ⁻¹ᵁ U}
@@ -48,6 +57,23 @@ theorem IsCellCoord.res {B Y : Scheme.{0}} {π : Y ⟶ B} {ι : Type} {r : ι �
     funext fun j => by rw [pullCol_res, map_uniR]
   exact e ▸ (hn a).res h
 
+/- English proof (translation)
+Introduce `B Y π ι r E fl hE U eU heU`. Establish `uniq : ∀ (V : Y.Opens) (hV : V ≤ π ⁻¹ᵁ U) (n₁ n₂ : (Σ a, Low (r a)) → Γ(Y, V)), IsCellCoord π fl eU V hV n₁ → IsCellCoord π fl eU V hV n₂ → n₁ = n₂`. Introduce `V hV n₁ n₂ h₁ h₂`. Use function extensionality and compare the values at `⟨a, s⟩`. Conclude with `congrFun (GlobalTheory.T.pullback_unipotent_frame_unique Y B π (E a) (r a) (hE a) U (eU a) (heU a) (fl a) V hV _ _ (h₁ a) (h₂ a)) s`.
+
+Set `K` to `{V : Y.Opens // ∃ (hV : V ≤ π ⁻¹ᵁ U) (n : (Σ a, Low (r a)) → Γ(Y, V)), IsCellCoord π fl eU V hV n}`. Use `choose hK nK gK using fun k : K => k.2`. Establish `hWk : ∀ k : K, k.1 ≤ ⨆ k : K, k.1` using `fun k => le_iSup (fun k : K => k.1) k`. Establish `hW : (⨆ k : K, k.1) ≤ π ⁻¹ᵁ U` using `iSup_le hK`. Establish `compat : ∀ (k l : K) s, resG Y (inf_le_left : k.1 ⊓ l.1 ≤ k.1) (nK k s) = resG Y (inf_le_right : k.1 ⊓ l.1 ≤ l.1) (nK l s)` using `fun k l s => congrFun (uniq _ (inf_le_left.trans (hK k)) _ _ ((gK k).res inf_le_left) ((gK l).res inf_le_right)) s`.
+
+Use `choose N hN using fun s => exists_fun_of_cover (fun k : K => k.1) hWk le_rfl (fun k => nK k s) fun k l => compat k l s`. Establish `resN : ∀ k : K, (fun s => resG Y (hWk k) (N s)) = nK k` using `fun k => funext fun s => hN s k`. Establish `good : IsCellCoord π fl eU (⨆ k : K, k.1) hW N`. Introduce `a l`. Establish `hv : ∀ k : K, pullCol π (eU a) (hK k) (uniR fun s => nK k ⟨a, s⟩) = fun j => resM _ (hWk k) (pullCol π (eU a) hW (uniR fun s => N ⟨a, s⟩) j)`.
+
+Introduce `k`. Use function extensionality and compare the values at `j`. Rewrite using `[pullCol_res, map_uniR, ← resN k]`. Use `choose sK hsK hιK using fun k : K => gK k a l`. Establish `compS : ∀ (k k' : K) j, resM _ (inf_le_left : k.1 ⊓ k'.1 ≤ k.1) (sK k j) = resM _ (inf_le_right : k.1 ⊓ k'.1 ≤ k'.1) (sK k' j)`.
+
+Introduce `k k' j`. Apply `QCoh.injective_app_of_mono ((fl a).ι l)` to reduce the goal to its premises. Rewrite using `[app_resM, app_resM, hιK, hιK]`. Simplify using `only [hv, resM_resM]`. Use `choose t ht using fun j => exists_sec_of_cover (F := (fl a).F l) (fun k : K => k.1) hWk le_rfl (fun k => sK k j) fun k k' => compS k k' j`.
+
+Use `⟨t, ?_, fun j => ?_⟩` and prove the remaining obligations. Use `isFrame_of_forall_exists fun V' h y hy => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `Opens.mem_iSup.1 (show y ∈ ⨆ k : K, k.1 from h hy)`. Use `⟨V' ⊓ k.1, inf_le_left, ⟨hy, hk⟩, ?_⟩` and prove the remaining obligations. Establish `e : (fun j => resM _ ((inf_le_left : V' ⊓ k.1 ≤ V').trans h) (t j)) = fun j => resM _ (inf_le_right : V' ⊓ k.1 ≤ k.1) (sK k j)`.
+
+Use function extensionality and compare the values at `j`. Rewrite using `[← ht j k, resM_resM]`. Rewrite using `[e]`. Conclude with `hsK k _ inf_le_right`. Use `sec_ext_of_cover (fun k : K => k.1) hWk le_rfl fun k => ?_` and prove the remaining obligations.
+
+Rewrite using `[← app_resM, ht, hιK]`. Simplify using `only [hv]`. Use `⟨⨆ k : K, k.1, hW, N, good, fun V hV n' hn' => ⟨hWk ⟨V, hV, n', hn'⟩, fun s => ?_⟩⟩` and prove the remaining obligations. Conclude with `(hN s _).trans (congrFun (uniq V hV _ _ (gK ⟨V, hV, n', hn'⟩) hn') s)`.
+-/
 theorem exists_cellLocus : ∀ (B Y : Scheme.{0}) (π : Y ⟶ B) (ι : Type) (r : ι → ℕ) (E : ι → B.Modules) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)), (∀ a, IsVB (E a) (r a)) → ∀ (U : B.Opens) (eU : ∀ a, Fin (r a) → Γ(E a, U)), (∀ a, IsFrame (eU a)) → ∃ (W : Y.Opens) (hW : W ≤ π ⁻¹ᵁ U) (n : (Σ a, Low (r a)) → Γ(Y, W)), (∀ a, Spans (fl a) W (pullCol π (eU a) hW (uniR fun s => n ⟨a, s⟩))) ∧ ∀ (V : Y.Opens) (hV : V ≤ π ⁻¹ᵁ U) (n' : (Σ a, Low (r a)) → Γ(Y, V)), (∀ a, Spans (fl a) V (pullCol π (eU a) hV (uniR fun s => n' ⟨a, s⟩))) → ∃ hVW : V ≤ W, ∀ s, Y.presheaf.map (homOfLE hVW).op (n s) = n' s := by
   intro B Y π ι r E fl hE U eU heU
   have uniq : ∀ (V : Y.Opens) (hV : V ≤ π ⁻¹ᵁ U) (n₁ n₂ : (Σ a, Low (r a)) → Γ(Y, V)),

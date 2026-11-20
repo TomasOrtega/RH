@@ -19,6 +19,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.CompanionTheory.TrivLoc
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.affine_ideal_locus_criterion Y P stab loc (GlobalTheory.T.local_property_affine_ideal_criterion Y P stab loc near)`.
+-/
 theorem closed_of_functor (Y : Scheme.{0}) (P : ∀ T : Scheme.{0}, (T ⟶ Y) → Prop)
     (stab : ∀ (T T' : Scheme.{0}) (h : T' ⟶ T) (t : T ⟶ Y), P T t → P T' (h ≫ t))
     (loc : ∀ (T : Scheme.{0}) (t : T ⟶ Y), (∀ x : T, ∃ W : T.Opens, x ∈ W ∧ P W.toScheme (W.ι ≫ t)) → P T t)
@@ -28,6 +31,11 @@ theorem closed_of_functor (Y : Scheme.{0}) (P : ∀ T : Scheme.{0}, (T ⟶ Y) �
     ∃ (Z : Scheme.{0}) (i : Z ⟶ Y), IsClosedImmersion i ∧ ∀ (T : Scheme.{0}) (t : T ⟶ Y), P T t ↔ ∃ z : T ⟶ Z, z ≫ i = t :=
   GlobalTheory.T.affine_ideal_locus_criterion Y P stab loc (GlobalTheory.T.local_property_affine_ideal_criterion Y P stab loc near)
 
+/- English proof (translation)
+Take `⟨_, ⟨U, hU, rfl⟩, hy, -⟩` from `Y.left.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ y) isOpen_univ`. Take `⟨p, hp⟩` from `hU.range_fromSpec.ge hy`. Establish `: IsNoetherianRing Γ(Y.left, U)` using `IsLocallyNoetherian.component_noetherian ⟨U, hU⟩`. Take `⟨X, f, M, hM, h₁, h₂, h₃, h₄, h₅, h₆, H⟩` from `GlobalTheory.T.proper_integral_perfect_family_exists S A Y hA N hN Γ(Y.left, U) hU.fromSpec`. Take `⟨r, I, hr, H'⟩` from `GlobalTheory.T.geometrically_integral_global_functions_constant _ X f M hM h₁ h₂ h₃ h₄ h₅ h₆ p`.
+
+Use `⟨U, hU, r, I, ?_, fun R' _ g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[← hU.fromSpec_image_basicOpen]`. Conclude with `⟨p, hr, hp⟩`. Establish `hq` using `IsPullback.of_hasPullback f (Spec.map (CommRingCat.ofHom g))`. Conclude with `(H R' g _ _ _ hq).symm.trans (H' R' g _ _ _ hq hg)`.
+-/
 theorem locus_near {S : Scheme.{0}} {A Y : Over S} [GrpObj A] (hA : IsAbelianScheme A) [IsLocallyNoetherian Y.left]
     {N : LB (A ⊗ Y).left} (hN : N.IsLB) (y : Y.left) :
     ∃ (U : Y.left.Opens) (hU : IsAffineOpen U) (r : Γ(Y.left, U)) (I : Ideal Γ(Y.left, U)), y ∈ Y.left.basicOpen r ∧
@@ -44,6 +52,11 @@ theorem locus_near {S : Scheme.{0}} {A Y : Over S} [GrpObj A] (hA : IsAbelianSch
   · have hq := IsPullback.of_hasPullback f (Spec.map (CommRingCat.ofHom g))
     exact (H R' g _ _ _ hq).symm.trans (H' R' g _ _ _ hq hg)
 
+/- English proof (translation)
+Introduce `S A Y _ hA hY N hN h1`. Take `⟨Z, i, hi, H⟩` from `closed_of_functor Y.left (fun T t => Locus N t) (fun T T' h t ht => ht.comp h) (fun T t h => GlobalTheory.T.trivial_locus_local_to_global S A Y hA N hN h1 T t h) (locus_near hA hN)`. Use `⟨Over.mk (i ≫ Y.hom), Over.homMk i rfl, hi, fun T y => ?_⟩` and prove the remaining obligations. Use `(locus_left_iff y).symm.trans ((H _ y.left).trans ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce and unpack `⟨z, hz⟩`.
+
+Conclude with `⟨Over.homMk z (by simp [reassoc_of% hz]), by ext; simpa using hz⟩`. Introduce and unpack `⟨z, hz⟩`. Conclude with `⟨z.left, by simpa using congrArg (fun q => q.left) hz⟩`.
+-/
 theorem trivLocus : TrivLocus := by
   intro S A Y _ hA hY N hN h1
   obtain ⟨Z, i, hi, H⟩ := closed_of_functor Y.left (fun T t => Locus N t)

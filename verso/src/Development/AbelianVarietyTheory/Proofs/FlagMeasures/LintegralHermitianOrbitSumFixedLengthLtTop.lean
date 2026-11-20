@@ -15,6 +15,15 @@ noncomputable section
 
 namespace GlobalTheory.OrbitSumInt
 
+/- English proof (translation)
+Set `O` to `MulAction.orbit G x0`. Establish `: LocallyCompactSpace O` using `hcl.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Establish `: ContinuousSMul G O` using `⟨continuous_induced_rng.2 (continuous_smul.comp (continuous_fst.prodMk (continuous_subtype_val.comp continuous_snd)))⟩`. Set `o0 : O` to `⟨x0, MulAction.mem_orbit_self x0⟩`. Establish `hopen : IsOpenMap (fun g : G => g • o0)` using `isOpenMap_smul_of_sigmaCompact o0`.
+
+Establish `hK' : IsCompact (Subtype.val ⁻¹' K : Set O)` using `hcl.isClosedEmbedding_subtypeVal.isCompact_preimage hK`. Establish `key : ∃ C : Set G, IsCompact C ∧ (Subtype.val ⁻¹' K : Set O) ⊆ (fun g : G => g • o0) '' C`. Use `hK'.induction_on (p := fun s => ∃ C : Set G, IsCompact C ∧ s ⊆ (fun g : G => g • o0) '' C) ⟨∅, isCompact_empty, Set.empty_subset _⟩ (fun s t hst ⟨C, hC, h⟩ => ⟨C, hC, hst.trans h⟩) ?_ ?_` and prove the remaining obligations. Introduce and unpack `s t ⟨C, hC, h⟩ ⟨D, hD, h'⟩`. Conclude with `⟨C ∪ D, hC.union hD, by rw [Set.image_union]; exact Set.union_subset_union h h'⟩`.
+
+Introduce and unpack `⟨_, g, rfl⟩ -`. Take `⟨C, hC, hg⟩` from `exists_compact_mem_nhds g`. Conclude with `⟨_, mem_nhdsWithin_of_mem_nhds (hopen.image_mem_nhds hg), C, hC, subset_rfl⟩`. Take `⟨C, hC, h⟩` from `key`. Use `⟨C, hC, fun g hg => ?_⟩` and prove the remaining obligations.
+
+Take `⟨c, hc, e⟩` from `h (a := g • o0) hg`. Conclude with `⟨c, hc, congrArg Subtype.val e⟩`.
+-/
 theorem exists_compact_reach {G X : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [LocallyCompactSpace G] [SigmaCompactSpace G] [MulAction G X] [TopologicalSpace X] [T2Space X]
     [LocallyCompactSpace X] [ContinuousSMul G X] (x0 : X) (hcl : IsClosed (MulAction.orbit G x0))
@@ -41,6 +50,35 @@ theorem exists_compact_reach {G X : Type} [Group G] [TopologicalSpace G] [IsTopo
   obtain ⟨c, hc, e⟩ := h (a := g • o0) hg
   exact ⟨c, hc, congrArg Subtype.val e⟩
 
+/- English proof (translation)
+Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.measurableConstSMul_subgroup Γ` as an intermediate fact. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.smulInvariant_subgroup Γ μ` as an intermediate fact. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.measurableConstSMul_subgroup Δ` as an intermediate fact. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.smulInvariant_subgroup Δ ν` as an intermediate fact. Take `⟨U, hU, hU1⟩` from `exists_compact_mem_nhds (1 : H)`.
+
+Establish `hU0 : ν U ≠ 0` using `(Measure.measure_pos_of_mem_nhds ν hU1).ne'`. Use `set D : Set G := (φ '' U)⁻¹ * C⁻¹ with hD`. Establish `hDc : IsCompact D` using `(hU.image hφ).inv.mul hC.inv`. Set `f : G → ℝ≥0∞` to `D.indicator 1`. Establish `hf : Measurable f` using `measurable_one.indicator hDc.measurableSet`.
+
+Set `T : G → ℝ≥0∞` to `fun g => ∫⁻ k in 𝓖, f ((φ k)⁻¹ * g) ∂ν`. Establish `hm : Measurable fun p : G × H => f ((φ p.2)⁻¹ * p.1)` using `hf.comp ((hφ.comp continuous_snd).inv.mul continuous_fst).measurable`. Establish `hT : Measurable T` using `hm.lintegral_prod_right'`. Establish `hfix : ∀ k, φ k • x0 = x0` using `fun k => by`. Establish `: φ k ∈ MulAction.stabilizer G x0` using `hr ▸ ⟨k, rfl⟩`.
+
+Conclude with `this`. Set `j : S × Δ → Γ` to `fun p => γ p.1 * ⟨φ p.2, hΔ _ p.2.2⟩`. Establish `hj : Function.Injective j`. Introduce and unpack `⟨s, a⟩ ⟨t, b⟩ h`. Establish `h1 : (γ s : G) * φ a = γ t * φ b` using `congrArg Subtype.val h`.
+
+Establish `h2 : s = t` using `hι (by rw [← hγ, ← hγ, ← hfix a, ← mul_smul, h1, mul_smul, hfix, hfix])`. Substitute `h2` using the available equality. Rewrite using `[Subtype.ext (hinj (mul_left_cancel h1))]`. Establish `step : ∀ (h : G) (s : S), ν U * K.indicator (1 : X → ℝ≥0∞) (h⁻¹ • ι s) ≤ ∑' δ : Δ, T ((j (s, δ))⁻¹ • h)`. Introduce `h s`.
+
+Distinguish the cases in `hK : h⁻¹ • ι s ∈ K`. Use `swap`. Simplify using `[Set.indicator_of_notMem hK]`. Rewrite using `[Set.indicator_of_mem hK, Pi.one_apply, mul_one]`. Rewrite `hK` using `[← hγ, ← mul_smul]`.
+
+Take `⟨c, hc, e⟩` from `hKC _ hK`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : c⁻¹ * (h⁻¹ * γ s) ∈ φ.range := by`. Rewrite using `[hr, MulAction.mem_stabilizer_iff, mul_smul, ← e, inv_smul_smul]`. Establish `e1` using `hG.lintegral_eq_tsum'' fun k' => f ((φ k')⁻¹ * ((γ s : G)⁻¹ * h))`. Establish `e2 : ∀ δ : Δ, T ((j (s, δ))⁻¹ • h) = ∫⁻ k' in 𝓖, f ((φ (δ • k'))⁻¹ * ((γ s : G)⁻¹ * h)) ∂ν` using `fun δ => by`.
+
+Use `lintegral_congr fun k' => ?_` and prove the remaining obligations. Use `congr 1`. Simplify using `[j, Subgroup.smul_def, mul_assoc]`. Simplify using `only [e2]`. Rewrite using `[← e1, ← measure_preimage_mul ν k U, ← lintegral_indicator_one ((measurable_const_mul k) hU.measurableSet)]`.
+
+Use `lintegral_mono fun k' => ?_` and prove the remaining obligations. Distinguish the cases in `hk' : k' ∈ (fun x => k * x) ⁻¹' U`. Use `swap`. Simplify using `[Set.indicator_of_notMem hk']`. Establish `: (φ k')⁻¹ * ((γ s : G)⁻¹ * h) ∈ D`.
+
+Use `⟨(φ (k * k'))⁻¹, Set.inv_mem_inv.2 ⟨_, hk', rfl⟩, c⁻¹, Set.inv_mem_inv.2 hc, ?_⟩` and prove the remaining obligations. Simplify using `[hk, mul_assoc]`. Simplify using `[f, Set.indicator_of_mem hk', Set.indicator_of_mem this]`. Establish `main : ν U * ∫⁻ h in 𝓕, ∑' s, K.indicator (1 : X → ℝ≥0∞) (h⁻¹ • ι s) ∂μ ≤ μ D * ν 𝓖`. Rewrite using `[← lintegral_const_mul' _ _ hU.measure_lt_top.ne]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun h => ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.tsum_mul_left]`. Use `(ENNReal.tsum_le_tsum (step h)).trans ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.tsum_prod (f := fun s δ => T ((j (s, δ))⁻¹ • h))]`.
+
+Conclude with `ENNReal.tsum_comp_le_tsum_of_injective hj fun g => T (g⁻¹ • h)`. Use `_ = ∫⁻ g, T g ∂μ := by`. Rewrite using `[hF.lintegral_eq_tsum']`. Conclude with `lintegral_tsum fun g => (hT.comp (measurable_const_smul g⁻¹)).aemeasurable`. Use `_ = ∫⁻ k in 𝓖, μ D ∂ν := by`.
+
+Rewrite using `[lintegral_lintegral_swap hm.aemeasurable]`. Use `lintegral_congr fun k => ?_` and prove the remaining obligations. Rewrite using `[lintegral_mul_left_eq_self f, lintegral_indicator_one hDc.measurableSet]`. Use `_ = μ D * ν 𝓖 := by simp`. Assume the negation of the conclusion as `htop`.
+
+Rewrite `main` using `[not_lt_top_iff.1 htop, ENNReal.mul_top hU0]`. Conclude with `(ENNReal.mul_lt_top hDc.measure_lt_top hfin).not_ge main`.
+-/
 theorem lintegral_count_lt_top {G H X S : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [T2Space G] [SecondCountableTopology G] [LocallyCompactSpace G] [MeasurableSpace G] [BorelSpace G]
     [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [LocallyCompactSpace H] [T2Space H]
@@ -127,6 +165,41 @@ theorem lintegral_count_lt_top {G H X S : Type} [Group G] [TopologicalSpace G] [
 
 open GlobalTheory.GaugeEx in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ β hβ Φ hΦ hK μ 𝓕 hμ h𝓕`. Break down `isEmpty_or_nonempty {x : Fin 1 → Fin M → E | hE σ J (x 0) (x 0) = algebraMap F E β} with he | ⟨⟨x0, hx0⟩⟩` into its components or cases. Simplify using the standard rewrite rules. Establish `hx0 : hE σ J (x0 0) (x0 0) = algebraMap F E β` using `hx0`. Establish `hβ' : algebraMap F E β ≠ 0` using `by simpa using hβ`.
+
+Establish `hxx : hE σ J (x0 0) (x0 0) ≠ 0` using `hx0 ▸ hβ'`. Take `_ | M` from `M`. Conclude with `(hxx (by simp [hE, Formalism.UG.hform])).elim`. Establish `: FiniteDimensional F E` using `Module.Finite.of_restrictScalars_finite ℚ F E`. Establish `hσ : ∀ y, σ (σ y) = y`.
+
+Introduce `y`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hCM.2.2.2, hCM.2.2.2, star_star]`. Establish `hθ : ∃ θ : E, IsUnit (θ - (σ : E →+* E) θ)`.
+
+Assume the negation of the conclusion as `hc`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Use `hCM.2.1` as an intermediate fact. Use `IsTotallyComplex.complexEmbedding_not_isReal τ ?_` and prove the remaining obligations. Rewrite using `[ComplexEmbedding.isReal_iff]`.
+
+Use extensionality with `z`. Establish `hz : σ z = z`. Assume the negation of the conclusion as `hz`. Conclude with `hc ⟨z, (sub_ne_zero.2 (Ne.symm hz)).isUnit⟩`. Use `hCM.2.2.2 τ z` as an intermediate fact.
+
+Rewrite `this` using `[hz]`. Conclude with `this.symm`. Take `⟨a, B, J', -, -, -, hxB, hBB, hJ'⟩` from `GlobalTheory.AdelicStabUnimod.exists_stepData hCM hJ x0 hxx`. Take `⟨φ, hφ, hinj, hr, -, hrat⟩` from `GlobalTheory.StabiliserOfVector.exists_hom_range_stabiliser F E σ hCM (M + 1) M J J' B x0 rfl hJ hJ' hBB.symm hxB hxx`. Set `ν : Measure (HA (AF F) σ J')` to `Measure.haar`.
+
+Establish `hν : ν.IsHaarMeasure` using `inferInstance`. Take `⟨𝓖, h𝓖⟩` from `(GlobalTheory.Mem.Vol.fundamentalDomain_adelicUnitary F E σ M J' ν hν).1`. Establish `hfin : ν 𝓖 < ⊤` using `GlobalTheory.Mem.VolFin.finVol F E σ hCM M J' hJ' ν hν 𝓖 h𝓖`. Set `b : Module.Basis (Fin 2) F E` to `Module.finBasisOfFinrankEq F E hCM.2.2.1`. Establish `horb : MulAction.orbit (HA (AF F) σ J) (ratTup (F` using `F) (AF F) x0) = {y | qR (AF F) σ J (y 0) = algebraMap F (AF F) β} := by`.
+
+Use extensionality with `y`. Use `⟨?_, fun hy => GlobalTheory.AdelicWitt.witt_adelic F E σ hCM _ J x0 β hJ hβ hx0 y hy⟩` and prove the remaining obligations. Introduce and unpack `⟨g, rfl⟩`. Rewrite using `[Set.mem_setOf_eq, ← GlobalTheory.AdelicWitt.qR_ratTup b (AF F) σ J x0 β hx0]`. Conclude with `congrArg (fun z => algebraMap F (AF F) (1 / 2) * Algebra.trace (AF F) (AF F ⊗[F] E) z) (GlobalTheory.StabOrbit.hR_act (AF F) σ J g _ _)`.
+
+Establish `hcl : IsClosed (MulAction.orbit (HA (AF F) σ J) (ratTup (F` using `F) (AF F) x0)) := by`. Rewrite using `[horb]`. Use `isClosed_eq ?_ continuous_const` and prove the remaining obligations. Establish `h1 : Continuous (Algebra.trace (AF F) (AF F ⊗[F] E))` using `IsModuleTopology.continuous_of_linearMap _`. Establish `h2` using `GlobalTheory.AdelicUnitaryTop.continuous_sigR (AF F) σ`.
+
+Unfold `qR hR Formalism.UG.hform`. Use `continuous_const.mul (h1.comp ?_)` and prove the remaining obligations. Use `fun_prop`. Take `⟨C, hC, hKC⟩` from `exists_compact_reach _ hcl _ hK`. Set `Γ : Subgroup (HA (AF F) σ J)` to `HFinIn (AF F) σ J`.
+
+Set `Δ : Subgroup (HA (AF F) σ J')` to `HFinIn (AF F) σ J'`. Establish `: Countable Γ` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma σ J`. Establish `: Countable Δ` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma σ J'`. Establish `hγ : ∀ s : {x : Fin 1 → Fin (M + 1) → E | hE σ J (x 0) (x 0) = algebraMap F E β}, ∃ γ : Γ, (γ : HA (AF F) σ J) • ratTup (F` using `F) (AF F) x0 = ratTup (F := F) (AF F) s.1 := by`. Introduce and unpack `⟨x, hx⟩`.
+
+Take `⟨g, hg, e⟩` from `GlobalTheory.WittTransitivity.witt_transitive E (σ : E →+* E) hσ (fun a _ ha => ha.isUnit) two_ne_zero.isUnit three_ne_zero hθ _ J hJ.1 hJ.2.isUnit (x0 0) (x 0) (hx0.trans (Eq.symm hx)) hxx.isUnit`. Establish `hm : Formalism.UG.bc (inclR (F` using `F) (AF F)) g ∈ HR (AF F) σ J := by`. Establish `hg' : Formalism.UG.cT (σ : E →+* E) g.1 * J * g.1 = J` using `hg`. Establish `h1` using `congrArg (·.map (inclR (F := F) (AF F))) hg'`. Simplify using `only [Matrix.map_mul] at h1`.
+
+Conclude with `h1`. Use `⟨⟨(⟨_, hm⟩ : HR (AF F) σ J), ⟨g, hg, rfl⟩⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k i`. Take `rfl : k = 0` from `Subsingleton.elim _ _`. Express the relevant statement in the definitionally equal form `_ = inclR (F := F) (AF F) (x 0 i)`.
+
+Rewrite using `[← e, RingHom.map_mulVec]`. Both sides reduce to the same expression. Use `choose γ hγ using hγ`. Establish `: Nontrivial (AF F)` using `inferInstanceAs (Nontrivial (InfiniteAdeleRing F × _))`. Establish `hι : Function.Injective fun s : {x : Fin 1 → Fin (M + 1) → E | hE σ J (x 0) (x 0) = algebraMap F E β} => ratTup (F` using `F) (AF F) s.1 := fun s t h => Subtype.ext (funext fun k => funext fun i => (inclR (F := F) (E := E) (AF F)).injective (congrFun (congrFun h k) i))`.
+
+Establish `key` using `lintegral_count_lt_top μ ν Γ Δ 𝓕 𝓖 h𝓕 h𝓖 hfin φ hφ hinj (ratTup (F := F) (AF F) x0) hr (fun δ hδ => (hrat δ).2 hδ) _ hι γ hγ (tsupport Φ) C hC hKC`. Take `⟨A, hA⟩` from `hΦ.bounded_above_of_compact_support hK`. Use `lt_of_le_of_lt ?_ (ENNReal.mul_lt_top (ENNReal.ofReal_lt_top (r := A)) key)` and prove the remaining obligations. Rewrite using `[← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `lintegral_mono fun h => ?_` and prove the remaining obligations.
+
+Rewrite using `[← ENNReal.tsum_mul_left]`. Use `ENNReal.tsum_le_tsum fun s => ?_` and prove the remaining obligations. Distinguish the cases in `hs : h⁻¹ • ratTup (F := F) (AF F) s.1 ∈ tsupport Φ`. Rewrite using `[Set.indicator_of_mem hs, Pi.one_apply, mul_one, ← ofReal_norm_eq_enorm]`. Conclude with `ENNReal.ofReal_le_ofReal (hA _)`.
+
+Simplify using `[image_eq_zero_of_notMem_tsupport hs]`.
+-/
 theorem lintegral_orbitSum_lt_top : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (β : F), β ≠ 0 → ∀ Φ : (Fin 1 → Fin M → AF F ⊗[F] E) → ℂ, Continuous Φ → HasCompactSupport Φ → ∀ (μ : Measure (HA (AF F) σ J)) (𝓕 : Set (HA (AF F) σ J)), μ.IsHaarMeasure → IsFundamentalDomain (HFinIn (AF F) σ J) 𝓕 μ → ∫⁻ h in 𝓕, ∑' x : {x : Fin 1 → Fin M → E | hE σ J (x 0) (x 0) = algebraMap F E β}, ‖Φ (h⁻¹ • ratTup (F := F) (AF F) (x : Fin 1 → Fin M → E))‖ₑ ∂μ < ⊤ := by
   intro F E _ _ _ _ _ σ hCM M J hJ β hβ Φ hΦ hK μ 𝓕 hμ h𝓕
   rcases isEmpty_or_nonempty {x : Fin 1 → Fin M → E | hE σ J (x 0) (x 0) = algebraMap F E β} with he | ⟨⟨x0, hx0⟩⟩

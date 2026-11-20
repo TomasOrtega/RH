@@ -15,6 +15,11 @@ section Chain
 
 variable {C : Type} [AddCommGroup C]
 
+/- English proof (translation)
+Proceed by induction on `d with`. Consider the case `zero => exact ⟨1, by simp⟩`. Consider the case `succ d ih`. Take `⟨e, he⟩` from `ih`. Use `⟨e * (n + d + 1), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mul_nsmul', ← add_assoc, hc, ← he]`.
+-/
 theorem chain_shift (c : ℕ → C) (hc : ∀ n, (n + 1) • c (n + 1) = c n) (n d : ℕ) :
     ∃ e : ℕ, c n = e • c (n + d) := by
   induction d with
@@ -42,6 +47,9 @@ end Chain
 
 noncomputable def qzc (n : ℕ) : QZ := QuotientAddGroup.mk (1 / (n ! : ℚ))
 
+/- English proof (translation)
+Take `⟨q, rfl⟩` from `QuotientAddGroup.mk_surjective x`. Use `⟨q.den, q.den_pos, ?_⟩` and prove the remaining obligations. Rewrite using `[← QuotientAddGroup.mk_nsmul, QuotientAddGroup.eq_zero_iff]`. Conclude with `⟨q.num, by show (q.num : ℚ) = _`. Rewrite using `[nsmul_eq_mul, mul_comm, Rat.mul_den_eq_num]⟩`.
+-/
 theorem qz_torsion (x : QZ) : ∃ k : ℕ, 0 < k ∧ k • x = 0 := by
   obtain ⟨q, rfl⟩ := QuotientAddGroup.mk_surjective x
   refine ⟨q.den, q.den_pos, ?_⟩

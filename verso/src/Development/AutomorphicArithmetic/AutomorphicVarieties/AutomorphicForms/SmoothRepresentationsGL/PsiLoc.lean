@@ -9,12 +9,18 @@ open UpperTheory.V UpperTheory.V.Af.Smo
 open UpperTheory.V.TR (Rinf Lie chart infGL pInf sInf toL lmul oneL invSet CuspSub)
 open scoped SchwartzMap FourierTransform RealInnerProductSpace ContDiff Topology
 
+/- English proof (translation)
+Establish `h : psiL w x = (GroundTheory.Global.localAdelicChar E w x : ℂ)` using `rfl`. Rewrite using `[h]`. Conclude with `Circle.coe_eq_one`.
+-/
 private theorem psiL_eq_one_iff {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E))
     (x : w.adicCompletion E) : psiL w x = 1 ↔ GroundTheory.Global.localAdelicChar E w x = 1 := by
   have h : psiL w x = (GroundTheory.Global.localAdelicChar E w x : ℂ) := rfl
   rw [h]
   exact Circle.coe_eq_one
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Use `hz ((GroundTheory.Global.forall_localAdelicChar_mul_eq_one_iff w z).1 fun a ha => ?_)` and prove the remaining obligations. Rewrite using `[← psiL_eq_one_iff]`. Assume the negation of the conclusion as `h`. Conclude with `hc ⟨a, ha, h⟩`.
+-/
 private theorem exists_psiL_ne_one {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E))
     (z : w.adicCompletion E) (hz : z ∉ GroundTheory.Global.localInvDifferent w) :
     ∃ a ∈ w.adicCompletionIntegers E, psiL w (a * z) ≠ 1 := by
@@ -24,6 +30,17 @@ private theorem exists_psiL_ne_one {E : Type} [Field E] [NumberField E] (w : Hei
   by_contra h
   exact hc ⟨a, ha, h⟩
 
+/- English proof (translation)
+Introduce `E _ _`. Use `⟨fun w => ⟨?_, fun h => ?_⟩, ?_⟩` and prove the remaining obligations. Use `filter_upwards [(GroundTheory.Global.isOpen_localInvDifferent w).mem_nhds (zero_mem _)] with x hx`. Conclude with `(psiL_eq_one_iff w x).2 (GroundTheory.Global.localAdelicChar_eq_one_of_mem hx)`. Take `⟨z, hz⟩` from `HeightOneSpectrum.valuedAdicCompletion_surjective E w (WithZero.exp (FractionalIdeal.count E w ((differentIdeal ℤ (𝓞 E) : Ideal (𝓞 E)) : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) + 1))`.
+
+Take `⟨a, -, ha⟩` from `exists_psiL_ne_one w z (by`. Rewrite using `[GroundTheory.Global.mem_localInvDifferent_iff_valued, hz, WithZero.exp_le_exp]`. Use the proof step `omega)`. Conclude with `ha (by rw [h]; rfl)`. Use `filter_upwards [FractionalIdeal.finite_factors (K := E) ((differentIdeal ℤ (𝓞 E) : Ideal (𝓞 E)) : FractionalIdeal (nonZeroDivisors (𝓞 E)) E)] with w hw`.
+
+Use `⟨fun x hx => (psiL_eq_one_iff w x).2 (GroundTheory.Global.localAdelicChar_eq_one_of_mem (GroundTheory.Global.mem_localInvDifferent_of_mem hx)), fun ϖ hϖ => ?_⟩` and prove the remaining obligations. Establish `hv : Valued.v ϖ = WithZero.exp (-1 : ℤ)` using `hϖ`. Establish `h0 : ϖ ≠ 0`. Introduce and unpack `rfl`. Rewrite `hv` using `[map_zero]`.
+
+Conclude with `WithZero.exp_ne_zero hv.symm`. Take `⟨a, haO, ha⟩` from `exists_psiL_ne_one w ϖ⁻¹ (by`. Rewrite using `[GroundTheory.Global.mem_localInvDifferent_iff_valued, hw, map_inv₀, hv, ← WithZero.exp_neg, WithZero.exp_le_exp]`. Use the proof step `omega)`. Use `⟨a * ϖ⁻¹, ?_, ha⟩` and prove the remaining obligations.
+
+Rewrite using `[mul_left_comm, mul_inv_cancel₀ h0, mul_one]`. Conclude with `haO`.
+-/
 theorem UpperTheory.V.Af.Smo.psiLoc :
     UpperTheory.V.Af.Smo.PsiLoc := by
   intro E _ _

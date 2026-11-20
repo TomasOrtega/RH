@@ -23,6 +23,13 @@ namespace GlobalTheory.CompanionTheory.CuspFin
 
 open GlobalTheory.AutomorphicL2Unitary GlobalTheory.OpTrace GlobalTheory.Cusp GlobalTheory.AutMult GlobalTheory.DiscreteSum GlobalTheory.Orb GlobalTheory.AdelicU GlobalTheory.SplitWeil
 
+/- English proof (translation)
+Establish `hi` using `(hT u).1`. Establish `hin : Integrable (fun g => ⟪u, (φ g : ℂ) • π g u⟫_ℂ) μ` using `hi.const_inner u`. Establish `e : (⟪u, T u⟫_ℂ).re = ∫ g, (⟪u, (φ g : ℂ) • π g u⟫_ℂ).re ∂μ`. Rewrite using `[(hT u).2, ← integral_inner hi u]`. Conclude with `(integral_re hin).symm`.
+
+Rewrite using `[e, ← integral_const_mul]`. Use `integral_mono (hφ.const_mul c) hin.re fun g => ?_` and prove the remaining obligations. Simplify using `only [inner_smul_right, Complex.re_ofReal_mul]`. Distinguish the cases in `hg : φ g = 0`. Simplify using `[hg]`.
+
+Rewrite using `[mul_comm]`. Conclude with `mul_le_mul_of_nonneg_left (hc g (hs hg)) (h0 g)`.
+-/
 theorem le_re_inner_of_isRepOp {G H : Type} [Group G] [MeasurableSpace G] [TopologicalSpace G] [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] [CompleteSpace H] {π : G →* (H →L[ℂ] H)} {μ : Measure G} {φ : G → ℝ} {T : H →L[ℂ] H}
     (hT : IsRepOp π μ (fun g => (φ g : ℂ)) T) (hφ : Integrable φ μ) (h0 : 0 ≤ φ) {N : Set G}
@@ -43,6 +50,9 @@ theorem le_re_inner_of_isRepOp {G H : Type} [Group G] [MeasurableSpace G] [Topol
 
 variable {D : D7} {V : HSp D}
 
+/- English proof (translation)
+Take `⟨φ, hφ, h0, h1, hs⟩ : ∃ φ : GA D V → ℝ, (fun g => (φ g : ℂ)) ∈ CcGA V ∧ 0 ≤ φ ∧ φ 1 = 1 ∧ Function.support φ ⊆ N` from `GlobalTheory.CuspSpectrum.exists_bump_ccAd (isCMExt_host D) hN`. Establish `hc` using `continuous_of_mem_ccAd hφ`. Establish `hφc : Continuous φ` using `Complex.continuous_re.comp hc.1`. Establish `hφs : HasCompactSupport φ` using `hc.2.comp_left (g := Complex.re) rfl`. Conclude with `⟨φ, hφ, h0, hs, hφc.integrable_of_hasCompactSupport hφs, hφc.integral_pos_of_hasCompactSupport_nonneg_nonzero hφs h0 (x := 1) (by rw [h1]; exact one_ne_zero)⟩`.
+-/
 theorem exists_bump (μ : Measure (GA D V)) [μ.IsHaarMeasure] {N : Set (GA D V)} (hN : N ∈ 𝓝 (1 : GA D V)) :
     ∃ φ : GA D V → ℝ, (fun g => (φ g : ℂ)) ∈ CcGA V ∧ 0 ≤ φ ∧ Function.support φ ⊆ N ∧ Integrable φ μ ∧
       0 < ∫ g, φ g ∂μ := by
@@ -54,6 +64,9 @@ theorem exists_bump (μ : Measure (GA D V)) [μ.IsHaarMeasure] {N : Set (GA D V)
   exact ⟨φ, hφ, h0, hs, hφc.integrable_of_hasCompactSupport hφs,
     hφc.integral_pos_of_hasCompactSupport_nonneg_nonzero hφs h0 (x := 1) (by rw [h1]; exact one_ne_zero)⟩
 
+/- English proof (translation)
+Take `⟨φ, hf, h0, hs, hi, hpos⟩` from `exists_bump μ hN`. Establish `hrep` using `GlobalTheory.CuspSpectrum.isRepOp_RcuspOp (μ := μ) hf`. Use `GlobalTheory.T.finiteDimensional_of_isCompactOperator_coercive (L2cusp V μ) (RcuspOp V μ _) (isCompactOperator_of_isHilbertSchmidt (GlobalTheory.CuspHS.isHilbertSchmidt_RcuspOp hP hf)) Sb ((1 / 2) * ∫ g, φ g ∂μ) (by positivity) fun u hu => ?_` and prove the remaining obligations. Use `le_re_inner_of_isRepOp hrep hi h0 hs u ((1 / 2 : ℝ) * ‖u‖ ^ 2) fun g hg => h g hg u hu` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem finiteDimensional_of_coercive (hP : GlobalTheory.Published.CuspDecayBound) (μ : Measure (GA D V)) [μ.IsHaarMeasure]
     [μ.IsMulRightInvariant] (Sb : Submodule ℂ (L2cusp V μ)) {N : Set (GA D V)} (hN : N ∈ 𝓝 (1 : GA D V))
     (h : ∀ g ∈ N, ∀ u ∈ Sb, (1 / 2 : ℝ) * ‖u‖ ^ 2 ≤ (⟪u, Rcusp V μ g u⟫_ℂ).re) : FiniteDimensional ℂ Sb := by

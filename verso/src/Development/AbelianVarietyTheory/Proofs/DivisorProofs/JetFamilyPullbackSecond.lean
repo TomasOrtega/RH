@@ -20,6 +20,9 @@ section Coeff
 
 variable {R R' : Type} [CommRing R] [CommRing R'] {I : Type} [Fintype I] {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[Algebra.algebraMap_eq_smul_one, ← J.one, map_smul, J.b.repr_self, Finsupp.smul_apply, Finsupp.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem repr_algebraMap (J : JetRing R I n) (r : R) (ν : Idx I n) :
     J.b.repr (algebraMap R J.B r) ν = if (⟨0, by simp⟩ : Idx I n) = ν then r else 0 := by
   rw [Algebra.algebraMap_eq_smul_one, ← J.one, map_smul, J.b.repr_self, Finsupp.smul_apply,
@@ -28,6 +31,9 @@ theorem repr_algebraMap (J : JetRing R I n) (r : R) (ν : Idx I n) :
 
 open scoped Classical in
 
+/- English proof (translation)
+Rewrite using `[JetRing.t, J.b.repr_self, Finsupp.single_apply]`.
+-/
 theorem repr_t_eq_ite_single (J : JetRing R I n) (i : I) (ν : Idx I n) :
     J.b.repr (J.t i) ν = if (⟨Pi.single i 1, by simp⟩ : Idx I n) = ν then 1 else 0 := by
   rw [JetRing.t, J.b.repr_self, Finsupp.single_apply]
@@ -36,12 +42,21 @@ variable (σ : R →+* R') (J : JetRing R I n) (J' : JetRing R' I n) (τ : J.B �
   (hτ : ∀ x ν, J'.b.repr (τ x) ν = σ (J.b.repr x ν))
 include hτ
 
+/- English proof (translation)
+The claim follows from `J'.b.ext_elem fun ν ↦ by rw [hτ, repr_algebraMap, repr_algebraMap]; split_ifs <;> simp`.
+-/
 theorem map_algebraMap (r : R) : τ (algebraMap R J.B r) = algebraMap R' J'.B (σ r) :=
   J'.b.ext_elem fun ν ↦ by rw [hτ, repr_algebraMap, repr_algebraMap]; split_ifs <;> simp
 
+/- English proof (translation)
+The claim follows from `J'.b.ext_elem fun ν ↦ by rw [hτ, repr_t_eq_ite_single, repr_t_eq_ite_single]; split_ifs <;> simp`.
+-/
 theorem map_t (i : I) : τ (J.t i) = J'.t i :=
   J'.b.ext_elem fun ν ↦ by rw [hτ, repr_t_eq_ite_single, repr_t_eq_ite_single]; split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[J'.π_eq, J.π_eq, hτ]`.
+-/
 theorem map_π (x : J.B) : J'.π (τ x) = σ (J.π x) := by rw [J'.π_eq, J.π_eq, hτ]
 
 end Coeff
@@ -53,6 +68,11 @@ variable {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] {S S' : Scheme.
   {t' : S' ⟶ Sp R'} {A' : Over S'} [GrpObj A'] {b : S' ⟶ S} {φ : A'.left ⟶ A.left}
   {m : GrpMor κ t A κ' t' A' (algebraMap R R') b φ}
 
+/- English proof (translation)
+Use `LinearMap.ext fun c ↦ ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `hm.2 c`. Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+
+Consider the case `tmul x c => rw [liftSemi_tmul, map_smul, map_smul, h c]`.
+-/
 theorem ext_of_isBC (hm : m.IsBC) {d d' : Crys κ' t' A'} (h : ∀ c, d (m.pull c) = d' (m.pull c)) :
     d = d' := by
   refine LinearMap.ext fun c ↦ ?_
@@ -74,19 +94,31 @@ variable {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {R : Type} [Comm
 def jet (x : HdR X.A) : Crys J.κ (spMap J.π) X.A :=
   hm.bcMap x + ∑ i, J.t i • hm.bcMap (N i x)
 
+/- English proof (translation)
+The claim follows from `fun c ↦ by have e : ∀ y, hm.bcMap y (m.pull c) = algebraMap R J.B (y c) := fun y ↦ (hm.corr_iff.2 rfl) c simp only [jet, LinearMap.add_apply, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, e]`.
+-/
 theorem isJetElt_jet (x : HdR X.A) : IsJetElt J X N m x (jet J hm N x) := fun c ↦ by
   have e : ∀ y, hm.bcMap y (m.pull c) = algebraMap R J.B (y c) := fun y ↦ (hm.corr_iff.2 rfl) c
   simp only [jet, LinearMap.add_apply, LinearMap.sum_apply, LinearMap.smul_apply,
     smul_eq_mul, e]
 
+/- English proof (translation)
+The claim follows from `ext_of_isBC hm fun c ↦ (h c).trans (isJetElt_jet J hm N x c).symm`.
+-/
 theorem eq_jet_of_isJetElt {x : HdR X.A} {d : Crys J.κ (spMap J.π) X.A} (h : IsJetElt J X N m x d) :
     d = jet J hm N x :=
   ext_of_isBC hm fun c ↦ (h c).trans (isJetElt_jet J hm N x c).symm
 
+/- English proof (translation)
+Simplify using `only [jet, map_add, smul_add, Finset.sum_add_distrib]`. Normalize the expressions using the abelian group laws.
+-/
 theorem jet_add (x y : HdR X.A) : jet J hm N (x + y) = jet J hm N x + jet J hm N y := by
   simp only [jet, map_add, smul_add, Finset.sum_add_distrib]
   abel
 
+/- English proof (translation)
+Simplify using `only [jet, map_smul, LinearMap.map_smulₛₗ, smul_add, Finset.smul_sum]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun i _ ↦ smul_comm _ _ _`.
+-/
 theorem jet_smul (r : R) (x : HdR X.A) : jet J hm N (r • x) = algebraMap R J.B r • jet J hm N x := by
   simp only [jet, map_smul, LinearMap.map_smulₛₗ, smul_add, Finset.smul_sum]
   congr 1
@@ -112,6 +144,29 @@ end GlobalTheory.JetBCGen
 
 namespace GlobalTheory.JetBCGen
 
+/- English proof (translation)
+Introduce `H F _ _ 𝔠 R R' _ _ σ I _ n J J' X₀ δ₀ N Y X₁ N₁ p hp m hN τ hτ hτdp Z' q hq i' hi' hcomm mor' δ₁ hδ₁ δ' hδ' x d v v' hx`. Establish `hBC' : mor'.IsBC` using `GlobalTheory.T.jet_morphism_is_base_change H J' X₁ mor'`. Establish `hBC0 : Y.mor.IsBC` using `GlobalTheory.T.jet_morphism_is_base_change H J X₀ Y.mor`. Establish `L₁ : LieExact X₁.A` using `(H.2.1 R' X₁.A _ X₁.ab X₁.dim).1`. Establish `L₀ : LieExact X₀.A` using `(H.2.1 R X₀.A _ X₀.ab X₀.dim).1`.
+
+Establish `LY : LieExact Y.X'.A` using `(H.2.1 J.B Y.X'.A _ Y.X'.ab Y.X'.dim).1`. Establish `LZ : LieExact Z'.A` using `(H.2.1 J'.B Z'.A _ Z'.ab Z'.dim).1`. Establish `hτa` using `map_algebraMap σ J J' τ hτ`. Establish `hτt` using `map_t σ J J' τ hτ`. Establish `hbase : spMap σ ≫ spMap J.π = spMap J'.π ≫ spMap τ`.
+
+Rewrite using `[← GlobalTheory.Cris.spMap_comp, ← GlobalTheory.Cris.spMap_comp]`. Use `congr 1`. Use extensionality with `y`. Conclude with `(map_π σ J J' τ hτ y).symm`. Establish `M : GrpMor J.κ (spMap J.π) X₀.A J'.κ (spMap J'.π) X₁.A τ (spMap σ) p` using `GrpMor.of_isGrpPullback hτdp hbase hp.grp`.
+
+Establish `nq : GrpMor (dp0 J.B) (𝟙 _) Y.X'.A (dp0 J'.B) (𝟙 _) Z'.A τ (spMap τ) q` using `GrpMor.of_isGrpPullback (isDPMorphism_of_eq_bot _ rfl _ _) ((Category.comp_id _).trans (Category.id_comp _).symm) hq.grp`. Establish `K` using `Y.mor.comp M`. Establish `key : ∀ c₀, M.pull (Y.mor.pull c₀) = mor'.pull (m.pull c₀)` using `fun c₀ ↦ (GrpMor.pull_pull Y.mor M K (fun _ ↦ rfl) rfl c₀).trans (GrpMor.pull_pull m mor' K (fun r ↦ (hτa r).symm) (by simp) c₀).symm`. Establish `hM : ∀ x₀ y, m.Corr x₀ y → M.Corr (jet J hBC0 N x₀) (jet J' hBC' N₁ y)`. Introduce `x₀ y hy c`.
+
+Take `⟨z, rfl⟩` from `hBC0.2 c`. Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul b c₀`.
+
+Rewrite using `[liftSemi_tmul, LinearMap.map_smulₛₗ, map_smul, map_smul, smul_eq_mul, smul_eq_mul, map_mul, key, isJetElt_jet J' hBC' N₁ y (m.pull c₀), isJetElt_jet J hBC0 N x₀ c₀]`. Establish `e : ∀ i, N₁ i y (m.pull c₀) = σ (N i x₀ c₀)` using `fun i ↦ hN i x₀ y hy c₀`. Simplify using `only [e, hy c₀, map_add, map_sum, map_mul, hτa, hτt]`. Set `Λ : HdR X₁.A → Z'.Lie` to `fun y ↦ LZ.toLie Z'.rm (crysToDR J'.κ hi'.grp (jet J' hBC' N₁ y))`. Establish `hΛadd : ∀ a b, Λ (a + b) = Λ a + Λ b` using `fun a b ↦ by`.
+
+Simplify using `only [Λ, jet_add, map_add]`. Establish `hΛsmul : ∀ (r : R') a, Λ (r • a) = algebraMap R' J'.B r • Λ a` using `fun r a ↦ by`. Simplify using `only [Λ, jet_smul, map_smul]`. Set `Φ₁` to `compMulti δ'.1 Λ hΛadd hΛsmul`. Set `Φ₂ : MultilinearMap R' (fun _ : Fin (Module.finrank ℚ F) ↦ HdR X₁.A) J'.B` to `(Algebra.linearMap R' J'.B).compMultilinearMap (δ₁.1.toMultilinearMap.compLinearMap fun _ ↦ L₁.toLie X₁.rm)`.
+
+Establish `hΦ : Φ₁ = Φ₂`. Take `⟨hspan, -, -⟩` from `GlobalTheory.T.lie_filtration_spanned_correspondence H σ hp m`. Use `MultilinearMap.ext_of_span_eq_top (g := fun (_ : Fin (Module.finrank ℚ F)) (y : {y : HdR X₁.A // ∃ y₀, m.Corr y₀ y}) ↦ y.1) (fun _ ↦ ?_) fun s ↦ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Submodule.span R' (Set.range Subtype.val) = ⊤`. Rewrite using `[Subtype.range_coe_subtype]`.
+
+Conclude with `hspan`. Use `choose x₀ hx₀ using fun j ↦ (s j).2`. Set `v₀` to `fun j ↦ L₀.toLie X₀.rm (x₀ j)`. Set `w` to `fun j ↦ LY.toLie Y.X'.rm (crysToDR J.κ Y.pull.grp (jet J hBC0 N (x₀ j)))`. Establish `hgen` using `Y.gen x₀ (fun j ↦ jet J hBC0 N (x₀ j)) v₀ w fun j ↦ ⟨isJetElt_jet J hBC0 N (x₀ j), (L₀.toLie_eq_iff _).1 rfl, (LY.toLie_eq_iff _).1 rfl⟩`.
+
+Establish `hl₁ : ∀ j, Obj.LieCorr σ p (v₀ j) (L₁.toLie X₁.rm (s j).1)` using `fun j ↦ GlobalTheory.T.lie_image_correspondence H σ hp m (hx₀ j) ((L₀.toLie_eq_iff _).1 rfl) ((L₁.toLie_eq_iff _).1 rfl)`. Establish `hlZ : ∀ j, Obj.LieCorr τ q (w j) (Λ (s j).1)` using `fun j ↦ GlobalTheory.T.lie_image_correspondence H τ hq nq (crysToDR_corr J.κ Y.pull.grp hi'.grp M nq hcomm (hM _ _ (hx₀ j))) ((LY.toLie_eq_iff _).1 rfl) ((LZ.toLie_eq_iff _).1 rfl)`. Express the relevant statement in the definitionally equal form `δ'.1 (fun j ↦ Λ (s j).1) = algebraMap R' J'.B (δ₁.1 fun j ↦ L₁.toLie X₁.rm (s j).1)`. Rewrite using `[hδ' w _ hlZ, hgen, hτa, hδ₁ v₀ _ hl₁]`. Establish `hv' : v' = fun j ↦ Λ (x j)` using `funext fun j ↦ ((LZ.toLie_eq_iff Z'.rm).2 (by rw [← eq_jet_of_isJetElt J' hBC' N₁ (hx j).1]; exact (hx j).2.2)).symm`.
+
+Establish `hv : v = fun j ↦ L₁.toLie X₁.rm (x j)` using `funext fun j ↦ ((L₁.toLie_eq_iff X₁.rm).2 (hx j).2.1).symm`. Substitute `hv hv'` using the available equality. Conclude with `DFunLike.congr_fun hΦ x`.
+-/
 theorem detGen_baseChange : GlobalTheory.Published.AbelianDeRham → ∀ {F : Type} [Field F] [NumberField F] {𝔠 : FracId F}
     {R R' : Type} [CommRing R] [CommRing R'] (σ : R →+* R') {I : Type} [Fintype I] {n : ℕ}
     (J : JetRing R I n) (J' : JetRing R' I n) {X₀ : Obj F 𝔠 (Sp R)} {δ₀ : X₀.DetGen}

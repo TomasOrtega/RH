@@ -14,12 +14,31 @@ open PositivityTheory.Rg.Sw PositivityTheory.Rg.Sw.LVs PositivityTheory.Rg.Sw.Ab
 
 variable {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `Matrix.inv_eq_right_inv h`.
+-/
 theorem ks_inv_eq {U : Matrix (Fin n) (Fin n) ℂ} (h : U * Uᴴ = 1) : U⁻¹ = Uᴴ := Matrix.inv_eq_right_inv h
 
+/- English proof (translation)
+Rewrite using `[Matrix.trace_mul_single]`. Simplify using the standard rewrite rules.
+-/
 theorem ks_trace_single (X : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) : (X * Matrix.single a b 1).trace = X b a := by
   rw [Matrix.trace_mul_single]
   simp
 
+/- English proof (translation)
+Take `⟨kk, hkk, hmk⟩` from `Proj.kM_of_unitary (1 : Matrix (Fin n) (Fin n) ℂ) N (one_mem _) hN`. Establish `hu1 : u1 (ι (k * k1)) = u1 (ι k)`. Rewrite using `[map_mul, h1, ← hmk, first_block_mul_compact (ι k) hkk, hmk, Proj.first_unitary_block_of_pair, Matrix.mul_one]`. Establish `hu2 : u2 (ι (k * k1)) = u2 (ι k) * N`. Rewrite using `[map_mul, h1, ← hmk, second_block_mul_compact (ι k) hkk, hmk, Proj.second_unitary_block_of_pair]`.
+
+Establish `U1 : u1 (ι k) * (u1 (ι k))ᴴ = 1` using `first_cayley_block_unitary hk`. Establish `U2 : u2 (ι k) * (u2 (ι k))ᴴ = 1` using `second_cayley_block_unitary hk`. Establish `UN : N * Nᴴ = 1`. Use `Matrix.mem_unitaryGroup_iff.mp hN` as an intermediate fact. Rewrite `this` using `[Matrix.star_eq_conjTranspose]`. Then use the resulting hypothesis.
+
+Establish `hfz : fz m 0 0 (ι (k * k1)) = (u1 (ι k)).det ^ (-(m : ℤ))`. Simplify using `only [fz, zpow_zero, one_mul, neg_zero, Complex.cpow_zero, mul_one, hu1]`. Establish `hne : (u1 (ι k)).det ≠ 0` using `det_first_cayley_block_ne_zero hk.1`. Establish `hd : star (u1 (ι k)).det = ((u1 (ι k)).det)⁻¹`. Use `congrArg Matrix.det U1` as an intermediate fact.
+
+Rewrite `this` using `[det_mul, det_one, det_conjTranspose]`. Conclude with `eq_inv_of_mul_eq_one_right this`. Establish `hfV : fV (m : ℤ) 0 (ι k) = star ((u1 (ι k)).det ^ (-(m : ℤ)))`. Establish `h` using `scalar_section_mul_conjugate_section hk (m : ℤ) 0`. Establish `hf0 : f0 (m : ℤ) 0 (ι k) = (u1 (ι k)).det ^ (-(m : ℤ))` using `by simp [f0]`.
+
+Rewrite `h` using `[hf0]`. Rewrite using `[star_zpow₀, hd, eq_inv_of_mul_eq_one_right h]`. Rewrite using `[_root_.zpow_neg, _root_.zpow_neg, _root_.inv_zpow, inv_inv]`. Establish `htr : star ((u2 (ι (k * k1)))⁻¹ * 1 * u1 (ι (k * k1))).trace = ((u1 (ι k))⁻¹ * u2 (ι k) * N).trace`. Rewrite using `[hu1, hu2, Matrix.mul_one, Matrix.mul_inv_rev, ← Matrix.trace_conjTranspose, ks_inv_eq UN, ks_inv_eq U2, ks_inv_eq U1]`.
+
+Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, Matrix.mul_assoc]`. Unfold `rhoP`. Rewrite using `[star_mul', hfz, htr, hfV]`.
+-/
 theorem ks_rhoP {Kg : Type} [Group Kg] (ι : Kg →* M2 n) (m : ℕ) (k k1 : Kg) (hk : InK (ι k))
     (N : Matrix (Fin n) (Fin n) ℂ) (hN : N ∈ unitaryGroup (Fin n) ℂ) (h1 : ι k1 = Proj.kM 1 N) :
     rhoP ι m 0 1 (k * k1) = fV (m : ℤ) 0 (ι k) * ((u1 (ι k))⁻¹ * u2 (ι k) * N).trace := by
@@ -53,12 +72,18 @@ theorem ks_rhoP {Kg : Type} [Group Kg] (ι : Kg →* M2 n) (m : ℕ) (k k1 : Kg)
   unfold rhoP
   rw [star_mul', hfz, htr, hfV]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, conjTranspose_permMatrix, PEquiv.toMatrix_toPEquiv_mul]`. Use extensionality with `i j`. Simplify using `[PEquiv.toMatrix_apply, Matrix.one_apply]`.
+-/
 theorem ks_perm_unitary (a b : Fin n) : (Equiv.swap a b).permMatrix ℂ ∈ unitaryGroup (Fin n) ℂ := by
   rw [Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, conjTranspose_permMatrix,
     PEquiv.toMatrix_toPEquiv_mul]
   ext i j
   simp [PEquiv.toMatrix_apply, Matrix.one_apply]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `by_cases h : i = b <;> simp [h]`.
+-/
 theorem ks_diag_unitary (b : Fin n) :
     Matrix.diagonal (fun i => if i = b then (1 : ℂ) else -1) ∈ unitaryGroup (Fin n) ℂ := by
   rw [Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose,
@@ -67,6 +92,17 @@ theorem ks_diag_unitary (b : Fin n) :
   funext i
   by_cases h : i = b <;> simp [h]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.add_apply, Matrix.smul_apply, Matrix.smul_apply, Matrix.mul_diagonal, Matrix.single_apply]`. Simplify using `only [Equiv.Perm.permMatrix, PEquiv.toMatrix_apply, Equiv.toPEquiv_apply, Option.mem_def, Option.some.injEq, smul_eq_mul]`. Distinguish the cases in `hj : j = b`. Substitute `hj` using the available equality.
+
+Distinguish the cases in `hi : i = a`. Substitute `hi` using the available equality. Apply the tactic sequence `simp <;> norm_num`. Establish `: ¬ (Equiv.swap a j i = j)`. Rewrite using `[Equiv.swap_apply_eq_iff, Equiv.swap_apply_right]`.
+
+Conclude with `hi`. Simplify using `[this, Ne.symm hi]`. Simplify using `only [hj, if_false]`. Distinguish the cases in `h : Equiv.swap a b i = j`. Simplify using `only [h, if_true]`.
+
+Establish `: ¬ (a = i ∧ b = j)` using `fun h' => hj h'.2.symm`. Rewrite using `[if_neg this]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h, if_false]`. Establish `: ¬ (a = i ∧ b = j)` using `fun h' => hj h'.2.symm`.
+
+Rewrite using `[if_neg this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ks_single_eq (a b : Fin n) :
     Matrix.single a b (1 : ℂ) = (1 / 2 : ℂ) • (Equiv.swap a b).permMatrix ℂ +
       (1 / 2 : ℂ) • ((Equiv.swap a b).permMatrix ℂ * Matrix.diagonal (fun i => if i = b then (1 : ℂ) else -1)) := by
@@ -94,6 +130,17 @@ theorem ks_single_eq (a b : Fin n) :
       rw [if_neg this]
       ring
 
+/- English proof (translation)
+Introduce `n m a0 b0 Kg _ ι hK`. Use `set Pm : Matrix (Fin n) (Fin n) ℂ := (Equiv.swap a0 b0).permMatrix ℂ with hPmdef`. Use `set D : Matrix (Fin n) (Fin n) ℂ := Matrix.diagonal (fun i => if i = b0 then (1 : ℂ) else -1) with hDdef`. Establish `hPm : Pm ∈ unitaryGroup (Fin n) ℂ` using `ks_perm_unitary a0 b0`. Establish `hD : D ∈ unitaryGroup (Fin n) ℂ` using `ks_diag_unitary b0`.
+
+Use `set Nl : Fin 2 → Matrix (Fin n) (Fin n) ℂ := ![Pm, Pm * D] with hNldef`. Establish `hNl : ∀ l, Nl l ∈ unitaryGroup (Fin n) ℂ`. Introduce `l`. Use `fin_cases l`. Conclude with `hPm`.
+
+Conclude with `mul_mem hPm hD`. Establish `hex : ∀ l, ∃ k1 : Kg, ι k1 = Proj.kM 1 (Nl l)` using `fun l => by`. Take `⟨kk, hkk, hmk⟩` from `Proj.kM_of_unitary (1 : Matrix (Fin n) (Fin n) ℂ) (Nl l) (one_mem _) (hNl l)`. Establish `: InK (Proj.kM 1 (Nl l))` using `by rw [← hmk]; exact hkk`. Conclude with `(hK _).1 this`.
+
+Use `choose kl hkl using hex`. Use `⟨2, fun _ => 1 / 2, kl, fun k => ?_⟩` and prove the remaining obligations. Establish `hk : InK (ι k)` using `(hK _).2 ⟨k, rfl⟩`. Rewrite using `[Fin.sum_univ_two, ks_rhoP ι m k (kl 0) hk _ (hNl 0) (hkl 0), ks_rhoP ι m k (kl 1) hk _ (hNl 1) (hkl 1)]`. Rewrite using `[← ks_trace_single ((u1 (ι k))⁻¹ * u2 (ι k)) a0 b0, ks_single_eq a0 b0]`.
+
+Simplify using `only [hNldef, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.mul_add, Matrix.mul_smul, Matrix.trace_add, Matrix.trace_smul, smul_eq_mul, Matrix.mul_assoc]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem kSplit : KSplit := by
   intro n m a0 b0 Kg _ ι hK
   classical

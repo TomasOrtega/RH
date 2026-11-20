@@ -16,9 +16,17 @@ namespace GlobalTheory.InertHomLattice
 
 variable {D : D7}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem intL_iff {w : HeightOneSpectrum (𝓞 D.host.E)} (x : w.adicCompletion D.host.E) :
     x ∈ Formalism.UG.intL (w.adicCompletion D.host.E) ↔ x ∈ Formalism.UG.Ov D.host.E w := Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[compAt_apply, compAt_apply, finAdEquiv_apply hv, finAdEquiv_apply hv, hc]`. Use `congr 1`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul a m => rfl`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem compAt_sigR {v : HeightOneSpectrum (𝓞 D.host.F)} {w : HeightOneSpectrum (𝓞 D.host.E)}
     (hv : w.under (𝓞 D.host.F) = v) {c : w.adicCompletion D.host.E →+* w.adicCompletion D.host.E}
     (hc : IsConjAt D.sp.cm.sig hv c) (y : Af D.host.F ⊗[D.host.F] D.host.E) :
@@ -30,6 +38,23 @@ theorem compAt_sigR {v : HeightOneSpectrum (𝓞 D.host.F)} {w : HeightOneSpectr
   | tmul a m => rfl
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Establish `hfg : (D.host.AA : Submodule (𝓞 D.host.E) D.host.E).FG` using `FractionalIdeal.fg_of_isUnit _ (Ne.isUnit (GlobalTheory.SplitHomLattice.ideal_ne_zero D))`. Take `⟨s, hs⟩` from `hfg`. Establish `hne : s.Nonempty`. Rewrite using `[Finset.nonempty_iff_ne_empty]`. Introduce and unpack `rfl`.
+
+Rewrite `hs` using `[Finset.coe_empty, Submodule.span_empty]`. Conclude with `GlobalTheory.SplitHomLattice.ideal_ne_zero D (FractionalIdeal.coeToSubmodule_eq_bot.1 hs.symm)`. Set `π` to `algebraMap D.host.E (w.adicCompletion D.host.E)`. Take `⟨a₀, ha₀, hmax⟩` from `s.exists_max_image (fun a => Valued.v (π a)) hne`. Establish `hle : ∀ a ∈ (D.host.AA : Submodule (𝓞 D.host.E) D.host.E), Valued.v (π a) ≤ Valued.v (π a₀)`.
+
+Introduce `a ha`. Rewrite `ha` using `[← hs]`. Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem a ha => exact hmax a ha`. Consider the case `zero => simp only [map_zero, zero_le]`.
+
+Consider the case `add x y _ _ hx hy => rw [RingHom.map_add]`. Conclude with `(Valuation.map_add_le _ hx hy)`. Consider the case `smul o x _ hx`. Establish `ho : Valued.v (π (o : D.host.E)) ≤ 1`. Rewrite using `[Formalism.UG.P.levelaf_valued_algebraMap, show w.valuation D.host.E (o : D.host.E) = w.intValuation o from w.valuation_of_algebraMap o]`.
+
+Conclude with `w.intValuation_le_one o`. Rewrite using `[show o • x = (o : D.host.E) * x from rfl, RingHom.map_mul, Valuation.map_mul]`. Conclude with `(mul_le_of_le_one_left' ho).trans hx`. Establish `h0 : π a₀ ≠ 0`. Introduce `h`.
+
+Apply `GlobalTheory.SplitHomLattice.ideal_ne_zero D` to reduce the goal to its premises. Rewrite using `[FractionalIdeal.eq_zero_iff]`. Introduce `a ha`. Use `hle a ha` as an intermediate fact. Rewrite `this` using `[h, map_zero, le_zero_iff, map_eq_zero]`.
+
+Conclude with `(map_eq_zero π).1 this`. Use `⟨a₀, ?_, h0, fun a ha => ?_⟩` and prove the remaining obligations. Use `show a₀ ∈ (D.host.AA : Submodule (𝓞 D.host.E) D.host.E)`. Rewrite using `[← hs]`. Conclude with `Submodule.subset_span ha₀`.
+
+Use `show Valued.v ((π a₀)⁻¹ * π a) ≤ 1`. Rewrite using `[Valuation.map_mul, map_inv₀, inv_mul_le_one₀ (zero_lt_iff.2 ((map_ne_zero _).2 h0))]`. Conclude with `hle a ha`.
+-/
 theorem exists_gen (w : HeightOneSpectrum (𝓞 D.host.E)) :
     ∃ a₀ ∈ D.host.AA, algebraMap D.host.E (w.adicCompletion D.host.E) a₀ ≠ 0 ∧
       ∀ a ∈ D.host.AA, (algebraMap D.host.E (w.adicCompletion D.host.E) a₀)⁻¹ *
@@ -73,6 +98,9 @@ theorem exists_gen (w : HeightOneSpectrum (𝓞 D.host.E)) :
     rw [Valuation.map_mul, map_inv₀, inv_mul_le_one₀ (zero_lt_iff.2 ((map_ne_zero _).2 h0))]
     exact hle a ha
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_apply, Matrix.vecMulVec_apply, Matrix.mulVec, Matrix.vecMul, dotProduct, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mul_vecMulVec_mul_apply {K : Type} [CommRing K] {m n : ℕ} (A : Matrix (Fin m) (Fin m) K)
     (B : Matrix (Fin n) (Fin n) K) (t : Fin m → K) (r : Fin n → K) (p : Fin m) (q : Fin n) :
     (A * Matrix.vecMulVec t r * B) p q = (A *ᵥ t) p * (r ᵥ* B) q := by
@@ -81,10 +109,16 @@ theorem mul_vecMulVec_mul_apply {K : Type} [CommRing K] {m n : ℕ} (A : Matrix 
   refine Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_
   ring
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.InertHomIdx.compW, RingHom.comp_apply, GlobalTheory.SplitHomLattice.finPart_liftFin]`.
+-/
 theorem compW_liftFin (w : HeightOneSpectrum (𝓞 D.host.E)) (z : Af D.host.F ⊗[D.host.F] D.host.E) :
     GlobalTheory.InertHomIdx.compW D w (GlobalTheory.LatticeStable.liftFin D z) = compAt D.host.F w z := by
   rw [GlobalTheory.InertHomIdx.compW, RingHom.comp_apply, GlobalTheory.SplitHomLattice.finPart_liftFin]
 
+/- English proof (translation)
+Rewrite using `[compAt_tmul]`. Simplify using the standard rewrite rules.
+-/
 theorem compAt_one_tmul (w : HeightOneSpectrum (𝓞 D.host.E)) (y : D.host.E) :
     compAt D.host.F w ((1 : Af D.host.F) ⊗ₜ[D.host.F] y) = algebraMap D.host.E (w.adicCompletion D.host.E) y := by
   rw [compAt_tmul]
@@ -96,6 +130,11 @@ namespace GlobalTheory.InertHomLattice
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `Matrix.ext fun p q => ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_apply, Matrix.sum_apply, map_sum]`. Simplify using `only [Matrix.sum_apply, map_sum, Matrix.smul_apply, smul_eq_mul, map_mul, compW_liftFin, compAt_singleAt, GlobalTheory.SplitHomLattice.rk, Matrix.of_apply, compAt_sigR hv hc, compAt_one_tmul]`. Simplify using `only [Matrix.mul_apply, Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem map_compW_sum (S T : HSp D) {v : HeightOneSpectrum (𝓞 D.host.F)} {w : HeightOneSpectrum (𝓞 D.host.E)}
     (hv : w.under (𝓞 D.host.F) = v) {c : w.adicCompletion D.host.E →+* w.adicCompletion D.host.E}
     (hc : IsConjAt D.sp.cm.sig hv c) (a₀ : D.host.E)
@@ -121,6 +160,41 @@ end GlobalTheory.InertHomLattice
 
 namespace GlobalTheory.InertHomLattice
 
+/- English proof (translation)
+Introduce `D S T v w hv hw a ha`. Take `⟨c, hc, -⟩` from `InertChart.existsUnique_isConjAt D.sp.cm.sig hw hv`. Establish `hlat` using `GlobalTheory.HeckeDual.isLattice_frameLat S`. Take `⟨aS, haS⟩` from `InertChart.exists_isFrameAt (L := frameLat S) hw hlat.fg hlat.span_eq_top`. Take `⟨a₀, ha₀, h0, hgen⟩` from `exists_gen (D := D) w`.
+
+Use `set π := algebraMap D.host.E (w.adicCompletion D.host.E) with hπ`. Use `set G : Matrix (Fin S.rank) (Fin S.rank) (w.adicCompletion D.host.E) := S.gram.map π with hG`. Use `set B : Matrix (Fin S.rank) (Fin S.rank) (w.adicCompletion D.host.E) := Formalism.UG.cT c aS.1 * G with hB`. Establish `hBu : IsUnit B.det`. Rewrite using `[hB, Matrix.det_mul, isUnit_iff_ne_zero]`.
+
+Use `mul_ne_zero ?_ ?_` and prove the remaining obligations. Rewrite using `[Formalism.UG.cT, Matrix.det_transpose, show (aS.1.map c).det = c aS.1.det from (RingHom.map_det c aS.1).symm]`. Conclude with `(map_ne_zero c).2 (Matrix.det_ne_zero_of_left_inverse (B := (aS⁻¹).1) (by`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]))`. Rewrite using `[hG, show (S.gram.map π).det = π S.gram.det from (RingHom.map_det π S.gram).symm]`.
+
+Conclude with `((GlobalTheory.LatVac.gram_det_isUnit S).map π).ne_zero`. Use `⟨(π a₀)⁻¹, (Matrix.nonsingInvUnit B hBu)⁻¹, inv_ne_zero h0, fun X => ⟨fun h => ?_, fun h => ?_⟩⟩` and prove the remaining obligations. Take `⟨x, hx, rfl⟩` from `AddSubgroup.mem_map.1 h`. Rewrite using `[GlobalTheory.InertHomIdx.matW_apply]`. Establish `hx' : (x : WO S T) ∈ latO S T (frameLat S) (frameLat T) fun _ => True` using `hx`.
+
+Establish `hb : ((Matrix.nonsingInvUnit B hBu)⁻¹ : GL (Fin S.rank) (w.adicCompletion D.host.E)).1 = B⁻¹` using `rfl`. Set `Φ : WO S T →+ Matrix (Fin T.rank) (Fin S.rank) (w.adicCompletion D.host.E)` to `AddMonoidHom.mk' (fun u => (π a₀)⁻¹ • ((a⁻¹ : GL (Fin T.rank) (w.adicCompletion D.host.E)).1 * u.map (GlobalTheory.InertHomIdx.compW D w) * ((Matrix.nonsingInvUnit B hBu)⁻¹ : GL (Fin S.rank) (w.adicCompletion D.host.E)).1)) fun u u' => by simp only [Matrix.map_add _ (map_add _), …`. It suffices to establish `hle : latO S T (frameLat S) (frameLat T) (fun _ => True) ≤ (GlobalTheory.InertHomIdx.intMat (w.adicCompletion D.host.E) T.rank S.rank).comap Φ from hle hx'`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨α, hα, -, a1, ha1, s, hs, t, ht, rfl⟩`.
+
+Use `set lam := GlobalTheory.AdeleBaseChange.locMap D.host.F w (α (w.under (𝓞 D.host.F))) with hlam`. Establish `hlamO : lam ∈ Formalism.UG.Ov D.host.E w` using `GlobalTheory.AdeleBaseChange.locMap_int w _ (hα _)`. Establish `hmap : (Matrix.of fun i j => pairA D.host.F 0 α ⊗ₜ[D.host.F] (a1 * t i * ∑ k, star (s k) * S.gram k j) : WO S T).map (GlobalTheory.InertHomIdx.compW D w) = (lam * π a1) • Matrix.vecMulVec (fun i => π (t i)) ((fun k => c (π (s k))) ᵥ* G)`. Use extensionality with `i j`. Establish `e1 : GlobalTheory.InertHomIdx.compW D w (pairA D.host.F 0 α ⊗ₜ[D.host.F] (a1 * t i * ∑ k, star (s k) * S.gram k j)) = lam * π (a1 * t i * ∑ k, star (s k) * S.gram k j)` using `compAt_tmul w α _`.
+
+Rewrite using `[Matrix.map_apply, Matrix.of_apply, e1, Matrix.smul_apply, smul_eq_mul, Matrix.vecMulVec_apply]`. Establish `hconj : ∀ y, c (π y) = π (star y)` using `fun y => InertChart.conj_algebraMap hc y`. Simplify using `only [map_mul, map_sum, Matrix.vecMul, dotProduct, hG, Matrix.map_apply, hconj]`. Put the polynomial expressions in normal form. Establish `hy : ∀ p, ((a⁻¹ : GL (Fin T.rank) (w.adicCompletion D.host.E)).1 *ᵥ fun i => π (t i)) p ∈ Formalism.UG.Ov D.host.E w`.
+
+Use `(ha _).2 ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Conclude with `Submodule.subset_span ⟨t, ht, rfl⟩`. Use `set z := (aS⁻¹ : GL (Fin S.rank) (w.adicCompletion D.host.E)).1 *ᵥ fun k => π (s k) with hz`. Establish `hzO : ∀ k, z k ∈ Formalism.UG.Ov D.host.E w`.
+
+Use `(haS _).2 ?_` and prove the remaining obligations. Rewrite using `[hz, Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Conclude with `Submodule.subset_span ⟨s, hs, rfl⟩`. Establish `hsz : (fun k => π (s k)) = aS.1 *ᵥ z`. Rewrite using `[hz, Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`.
+
+Establish `hcs : (fun k => c (π (s k))) = (fun k => c (z k)) ᵥ* Formalism.UG.cT c aS.1`. Use function extensionality and compare the values at `k`. Rewrite using `[Formalism.UG.cT, Matrix.vecMul_transpose, show c (π (s k)) = c ((fun k => π (s k)) k) from rfl, hsz]`. Conclude with `RingHom.map_mulVec c aS.1 z k`. Establish `hr : ((fun k => c (π (s k))) ᵥ* G) ᵥ* ((Matrix.nonsingInvUnit B hBu)⁻¹ : GL (Fin S.rank) (w.adicCompletion D.host.E)).1 = fun k => c (z k)`.
+
+Rewrite using `[hb, hcs, Matrix.vecMul_vecMul, Matrix.vecMul_vecMul, ← Matrix.mul_assoc, ← hB, Matrix.mul_nonsing_inv B hBu, Matrix.vecMul_one]`. Introduce `p q`. Use `show ((π a₀)⁻¹ • ((a⁻¹ : GL (Fin T.rank) (w.adicCompletion D.host.E)).1 * (Matrix.of fun i j => pairA D.host.F 0 α ⊗ₜ[D.host.F] (a1 * t i * ∑ k, star (s k) * S.gram k j) : WO S T).map (GlobalTheory.InertHomIdx.compW D w) * ((Matrix.nonsingInvUnit B hBu)⁻¹ : GL (Fin S.rank) (w.adi …`. Rewrite using `[hmap, Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_apply, Matrix.smul_apply, smul_eq_mul, smul_eq_mul, mul_vecMulVec_mul_apply, hr]`. Establish `h1` using `hgen a1 ha1`.
+
+Establish `h2` using `InertChart.conj_mem hw hc (hzO q)`. Rewrite using `[intL_iff, show (π a₀)⁻¹ * (lam * π a1 * (((a⁻¹ : GL (Fin T.rank) (w.adicCompletion D.host.E)).1 *ᵥ fun i => π (t i)) p * c (z q))) = lam * ((π a₀)⁻¹ * π a1) * ((((a⁻¹ : GL (Fin T.rank) (w.adicCompletion D.host.E)).1 *ᵥ fun i => π (t i)) p) * c (z q)) by ring]`. Conclude with `mul_mem (mul_mem hlamO h1) (mul_mem (hy p) h2)`. Use `set Y := (π a₀)⁻¹ • ((a⁻¹ : GL (Fin T.rank) (w.adicCompletion D.host.E)).1 * X * ((Matrix.nonsingInvUnit B hBu)⁻¹ : GL (Fin S.rank) (w.adicCompletion D.host.E)).1) with hY`. Establish `hb : ((Matrix.nonsingInvUnit B hBu)⁻¹ : GL (Fin S.rank) (w.adicCompletion D.host.E)).1 = B⁻¹` using `rfl`.
+
+Establish `hX : X = π a₀ • (a.1 * Y * B)`. Rewrite using `[hY, hb, Matrix.mul_smul, Matrix.smul_mul, smul_smul, mul_inv_cancel₀ h0, one_smul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.nonsing_inv_mul B hBu, Matrix.mul_one, ← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]`. Establish `hsingle : ∀ {n : ℕ} (i : Fin n) (k : Fin n), (Pi.single i 1 : Fin n → w.adicCompletion D.host.E) k ∈ Formalism.UG.Ov D.host.E w`.
+
+Introduce `n i k`. Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+
+Establish `htI : ∀ i, (fun k => singleAt D.host.F w (a.1 k i)) ∈ Formalism.L2.NTheta.LamHat T` using `fun i => by`. Use `(ha (Pi.single i 1)).1 (hsingle i)` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_single_one]`. Conclude with `singleAt_mem_lamHat this`. Establish `hsJ : ∀ j, (fun k => singleAt D.host.F w (aS.1 k j)) ∈ Formalism.L2.NTheta.LamHat S` using `fun j => by`.
+
+Use `(haS (Pi.single j 1)).1 (hsingle j)` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_single_one]`. Conclude with `singleAt_mem_lamHat this`. Establish `hu : (∑ i, ∑ j, GlobalTheory.LatticeStable.liftFin D (singleAt D.host.F w (Y i j)) • GlobalTheory.SplitHomLattice.rk S T a₀ (fun k => singleAt D.host.F w (aS.1 k j)) (fun k => singleAt D.host.F w (a.1 k i)) : WO S T) ∈ latO S T (L0c D S) (L0c D T) fun _ => True` using `sum_mem fun i _ => sum_mem fun j _ => GlobalTheory.LatticeStable.smul_mem_latO D S T _ _ _ _ (by rw [GlobalTheory.SplitHomLattice.finPart_liftFin]; exact singleAt_mem_intAE (h i j)) _ (GlobalTheory.SplitHomLattice.rk_mem S T ha₀ (hsJ j) (htI i))`. Rewrite `hu` using `[hermitianSpaceBaseLattice_eq_frameLattice, hermitianSpaceBaseLattice_eq_frameLattice]`.
+
+Use `AddSubgroup.mem_map.2 ⟨GlobalTheory.FinWeilO.XF.mk _ (GlobalTheory.SplitScalar.latO_fin hu), hu, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.InertHomIdx.matW_apply, GlobalTheory.FinWeilO.XF.coe_mk]`. Conclude with `(map_compW_sum S T hv hc a₀ Y a.1 aS.1).trans hX.symm`.
+-/
 theorem mem_map_latF_iff : ∀ (D : D7) (S T : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E)), w.under (𝓞 D.host.F) = v → IsInertAt D.host.F D.host.E v w → ∀ a : GL (Fin T.rank) (w.adicCompletion D.host.E), IsFrameAt w (frameLat T) a → ∃ (c₀ : w.adicCompletion D.host.E) (b : GL (Fin S.rank) (w.adicCompletion D.host.E)), c₀ ≠ 0 ∧ ∀ X : Matrix (Fin T.rank) (Fin S.rank) (w.adicCompletion D.host.E), X ∈ (GlobalTheory.FinWeilO.latF S T (frameLat S) (frameLat T)).toAddSubgroup.map (GlobalTheory.InertHomIdx.matW S T w) ↔ c₀ • ((a⁻¹ : GL (Fin T.rank) (w.adicCompletion D.host.E)).1 * X * b.1) ∈ GlobalTheory.InertHomIdx.intMat (w.adicCompletion D.host.E) T.rank S.rank := by
   intro D S T v w hv hw a ha
   obtain ⟨c, hc, -⟩ := InertChart.existsUnique_isConjAt D.sp.cm.sig hw hv

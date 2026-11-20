@@ -14,6 +14,59 @@ namespace DiscreteGroups.sglob.DzType
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Establish `hq : normV w = g` using `normV_eq_of_padic w g i hi`. Establish `hq' : normV w' = normV w ^ n` using `by rw [hq, hN]`. Set `I : Subgroup (Weil h)` to `(Ine (F := E) A).comap (Weil h).subtype`. Use `haveI hInorm : I.Normal := ⟨fun t ht g0 => by show ((g0 * t * g0⁻¹ : Weil h) : G E Ω) ∈ Ine (F := E) A`. Conclude with `conj_mem_Ine (Weil_le_Dec h g0.2) ht⟩`.
+
+Establish `hgen : ∀ σ : Weil h, ∃ k : ℤ, ∃ t ∈ I, σ = frob h ^ k * t` using `fun σ => by`. Take `⟨τ, hτ⟩` from `exists_eq_zpow_mul (deg_frob (h := h)) σ`. Conclude with `⟨deg σ, ineIncl h τ, τ.2, hτ⟩`. Establish `hcomm : ∀ s ∈ I, ∀ t ∈ I, b.ρ s * b.ρ t = b.ρ t * b.ρ s`. Introduce `s hs t ht`.
+
+Set `s' : Ine (F` to `E) A := ⟨s, hs⟩`. Set `t' : Ine (F` to `E) A := ⟨t, ht⟩`. Establish `h1 : b.ρ (ineIncl h (s' * t' * s'⁻¹ * t'⁻¹)) = 1` using `htame _ (isWild_commutator s' t')`. Establish `h2 : ineIncl h (s' * t' * s'⁻¹ * t'⁻¹) = s * t * s⁻¹ * t⁻¹` using `Subtype.ext rfl`. Rewrite `h1` using `[h2]`.
+
+Establish `e : s * t = (s * t * s⁻¹ * t⁻¹) * (t * s)` using `by group`. Rewrite using `[← map_mul, ← map_mul, e, map_mul, h1, one_mul]`. Establish `hfrob : ∀ t ∈ I, b.ρ (frob h * t * (frob h)⁻¹) = b.ρ t ^ normV w`. Introduce `t ht`. Set `t' : Ine (F` to `E) A := ⟨t, ht⟩`.
+
+Set `c' : Ine (F` to `E) A := ⟨(frob h : G E Ω) * t' * (frob h : G E Ω)⁻¹, conj_mem_Ine (isFrob_frob (h := h)).1 t'.2⟩`. Establish `h1 : b.ρ (ineIncl h (c' * (t' ^ normV w)⁻¹)) = 1` using `htame _ (isWild_frob (isFrob_frob (h := h)) t')`. Establish `h2 : ineIncl h (c' * (t' ^ normV w)⁻¹) = frob h * t * (frob h)⁻¹ * (t ^ normV w)⁻¹` using `Subtype.ext rfl`. Rewrite `h1` using `[h2]`. Establish `e : frob h * t * (frob h)⁻¹ = (frob h * t * (frob h)⁻¹ * (t ^ normV w)⁻¹) * t ^ normV w` using `by group`.
+
+Rewrite using `[e, map_mul, h1, one_mul, map_pow]`. Take `⟨η, u, c, hu, huI, hφn, hchar, hper, hmin⟩` from `DzCliff.clifford b.ρ hb I (frob h) (normV w) n hm hn hgen hcomm hfrob`. Rewrite `hchar`, `hper` using `[hq]`. Establish `hc0 : c ≠ 0` using `fun h0 => DzCliff.rho_ne_zero b.ρ (frob h ^ n) hu (by rw [hφn, h0, zero_smul])`. Establish `hcinv : b.ρ (frob h ^ n)⁻¹ u = c⁻¹ • u`.
+
+Establish `h1` using `DzCliff.rho_inv_apply b.ρ (frob h ^ n) u`. Rewrite `h1` using `[hφn, map_smul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, inv_mul_cancel₀ hc0, one_smul]`. Use `_ = c⁻¹ • u := by rw [h1]`.
+
+Establish `hz : ∀ k : ℤ, b.ρ ((frob h ^ n) ^ k) u = c ^ k • u`. Introduce `k`. Proceed by induction on `k using Int.induction_on with`. Consider the case `zero => simp`. Consider the case `succ k ih`.
+
+Rewrite using `[zpow_add_one, map_mul, Module.End.mul_apply, hφn, map_smul, ih, smul_smul, zpow_add_one₀ hc0, mul_comm]`. Consider the case `pred k ih`. Rewrite using `[zpow_sub_one, map_mul, Module.End.mul_apply, hcinv, map_smul, ih, smul_smul, zpow_sub_one₀ hc0, mul_comm]`. Establish `huH : ∀ σ : Weil h, (n : ℤ) ∣ deg σ → ∃ e : ℂ, b.ρ σ u = e • u`. Introduce `σ hσ`.
+
+Take `⟨k, hk'⟩` from `hσ`. Take `⟨τ, hτ⟩` from `exists_eq_zpow_mul (deg_frob (h := h)) σ`. Rewrite using `[hτ, hk', map_mul, Module.End.mul_apply, huI (ineIncl h τ) τ.2, map_smul, show frob h ^ ((n : ℤ) * k) = (frob h ^ n) ^ k by rw [zpow_mul, zpow_natCast], hz, smul_smul]`. Conclude with `⟨_, rfl⟩`. Take `⟨R, hR⟩` from `exists_resHom (A := A) ha' hk`.
+
+Take `⟨β, hβ⟩` from `exists_eigenChar b.ρ ((ineIncl h).comp (resI (E := E) (E' := E') (Ω := Ω) (A := A))) hu (fun t => ⟨_, huI (ineIncl h (resI t)) (resI t).2⟩)`. Establish `hβη : ∀ t : Ine (F` using `E') A, ((β t : ℂˣ) : ℂ) = η (ineIncl h (resI t)) := fun t => DzCliff.eig_unique hu (hβ t) (huI (ineIncl h (resI t)) (resI t).2)`. Establish `hpos : 0 < g ^ n` using `pow_pos (Fact.out : g.Prime).pos n`. Establish `hzK : ∀ z : Kˣ, z ^ g ^ n = z` using `pow_card_units w' g n hN K red hr hk hpos`. Establish `hα : ∀ t, ((ξ.comp R) t) ^ (g ^ n - 1) = 1`.
+
+Introduce `t`. Rewrite using `[MonoidHom.comp_apply, ← map_pow]`. Establish `: R t ^ (g ^ n - 1) = 1`. Establish `h1` using `hzK (R t)`. Establish `h2 : R t ^ (g ^ n - 1) * R t = 1 * R t`.
+
+Rewrite using `[← pow_succ, Nat.sub_add_cancel (Nat.one_le_pow _ _ (Fact.out : g.Prime).pos), h1, one_mul]`. Conclude with `mul_right_cancel h2`. Rewrite using `[this, map_one]`. Establish `h1 : ∀ t, ∃ j : ℕ, β t = (ξ.comp R) t ^ g ^ j`. Introduce `t`.
+
+Take `⟨x, hx⟩` from `exists_int_approx_compl w' _ (val_artin_ine ha' t).le`. Establish `hRx : R t = Units.mk0 (red x) (red_ne_zero_of_approx ha' hk hx)` using `Units.ext (hR t x hx)`. Establish `hp` using `hξf t x (R t) (hR t x hx).symm hx`. Rewrite `hp` using `[WD.inePol_of_mem_Ine _ (res_mem_Ine t.2), WD.charPol_mk, show ineIncl h ⟨AlgEquiv.restrictScalars E (t : G E' Ω), res_mem_Ine t.2⟩ = ineIncl h (resI t) from rfl, hchar _ (resI t).2]`. Establish `hroot` using `congrArg (Polynomial.eval (η (ineIncl h (resI t)))) hp`.
+
+Rewrite `hroot` using `[Polynomial.eval_prod, Polynomial.eval_prod]`. Establish `hl : ∏ j ∈ Finset.range n, Polynomial.eval (η (ineIncl h (resI t))) (X - C (η (ineIncl h (resI t)) ^ g ^ j)) = 0` using `Finset.prod_eq_zero (Finset.mem_range.mpr hn) (by simp)`. Rewrite `hroot` using `[hl, eq_comm, Finset.prod_eq_zero_iff]`. Take `⟨j, -, hj⟩` from `hroot`. Simplify using `only [Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C, sub_eq_zero] at hj`.
+
+Use `⟨j, Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hβη, hj, MonoidHom.comp_apply, map_pow, Units.val_pow_eq_pow_val]`. Take `⟨j₀, hj₀⟩` from `char_orbit (ξ.comp R) β (g ^ n - 1) (Nat.sub_pos_of_lt (Nat.one_lt_pow hn.ne' (Fact.out : g.Prime).one_lt)) hα g h1`. Establish `hαn : ∀ k t, ((ξ.comp R) t) ^ g ^ (k * n) = (ξ.comp R) t`. Introduce `k t`.
+
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[Nat.succ_mul, pow_add, pow_mul, ih, MonoidHom.comp_apply, ← map_pow, hzK]`. Use `set j : ℕ := n - j₀ % n with hj`.
+
+Establish `hjn : j₀ + j = n * (j₀ / n + 1)`. Use `Nat.div_add_mod j₀ n` as an intermediate fact. Use `Nat.mod_lt j₀ hn` as an intermediate fact. Rewrite using `[hj]`. Rewrite using `[Nat.mul_add, Nat.mul_one]`.
+
+Use linear arithmetic over natural numbers and integers. Use `set v₀ := b.ρ (frob h ^ j)⁻¹ u with hv₀`. Establish `hv₀0 : v₀ ≠ 0` using `DzCliff.rho_ne_zero b.ρ _ hu`. Establish `hv₀I : ∀ t ∈ I, b.ρ t v₀ = η t ^ g ^ j • v₀` using `DzCliff.eig_translate b.ρ I (frob h) g (by rw [← hq]; exact hfrob) huI j`. Establish `hv₀H : ∀ σ : Weil h, ∃ e : ℂ, (n : ℤ) ∣ deg σ → b.ρ σ v₀ = e • v₀`.
+
+Introduce `σ`. Distinguish the cases in `hσ : (n : ℤ) ∣ deg σ`. Establish `hdeg : (n : ℤ) ∣ deg (frob h ^ j * σ * (frob h ^ j)⁻¹)` using `by simpa using hσ`. Take `⟨e, he⟩` from `huH _ hdeg`. Use `⟨e, fun _ => ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : σ * (frob h ^ j)⁻¹ = (frob h ^ j)⁻¹ * (frob h ^ j * σ * (frob h ^ j)⁻¹)` using `by group`. Rewrite using `[hv₀, ← Module.End.mul_apply, ← map_mul, e1, map_mul, Module.End.mul_apply, he, map_smul]`. Conclude with `⟨0, fun h0 => absurd h0 hσ⟩`. Use `choose χH hχH using hv₀H`. Use `⟨v₀, χH, hv₀0, fun σ hσ => hχH σ hσ, fun t x z hxz hx => ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hRz : R t = z` using `Units.ext (by rw [hR t x hx, hxz])`. Establish `e1` using `hχH (ineIncl h (resI t)) (by simp)`. Establish `e2` using `hv₀I (ineIncl h (resI t)) (resI t).2`. Rewrite using `[DzCliff.eig_unique hv₀0 e1 e2, ← hβη]`. Establish `h3` using `hj₀ t`.
+
+Establish `h4 : β t ^ g ^ j = (ξ.comp R) t`. Rewrite using `[h3, ← pow_mul, ← pow_add, hjn, mul_comm, hαn]`. Establish `h5` using `congrArg Units.val h4`. Rewrite `h5` using `[Units.val_pow_eq_pow_val]`. Rewrite using `[h5, MonoidHom.comp_apply, hRz]`.
+
+Apply `DzCliff.eq_top_of_stable b.ρ hb` to reduce the goal to its premises. Introduce `h0`. Establish `hmem : b.ρ 1 v₀ ∈ Submodule.span ℂ (Set.range fun σ => b.ρ σ v₀)` using `Submodule.subset_span ⟨1, rfl⟩`. Rewrite `hmem` using `[h0, map_one, Module.End.one_apply, Submodule.mem_bot]`. Conclude with `hv₀0 hmem`.
+
+Introduce `τ v hv`. Establish `hle : Submodule.span ℂ (Set.range fun σ => b.ρ σ v₀) ≤ (Submodule.span ℂ (Set.range fun σ => b.ρ σ v₀)).comap (b.ρ τ)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨σ, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, ← Module.End.mul_apply, ← map_mul]`.
+
+Conclude with `Submodule.subset_span ⟨τ * σ, rfl⟩`. Conclude with `hle hv`.
+-/
 theorem exists_H_eigen {E E' Ω : Type} [Field E] [NumberField E] [Field E'] [NumberField E'] [Field Ω] [Algebra E E']
     [Algebra E Ω] [Algebra E' Ω] [IsScalarTower E E' Ω] [IsAlgClosure E Ω] [IsAlgClosure E' Ω] (g : ℕ) [Fact g.Prime]
     (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w)

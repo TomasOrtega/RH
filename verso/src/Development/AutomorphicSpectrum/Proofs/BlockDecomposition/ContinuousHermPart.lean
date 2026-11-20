@@ -18,31 +18,56 @@ def hermPart (x : Mx D r r) : Mx D r r := half D • (x + adj x)
 
 variable {D r}
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `adj (hermPart D r x) = hermPart D r x`. Rewrite using `[hermPart, adj_smul, cA_half, adj_add, adj_adj, add_comm]`.
+-/
 theorem hermPart_mem (x : Mx D r r) : hermPart D r x ∈ hermA D r := by
   change adj (hermPart D r x) = hermPart D r x
   rw [hermPart, adj_smul, cA_half, adj_add, adj_adj, add_comm]
 
+/- English proof (translation)
+Establish `h : adj c = c` using `hc`. Rewrite using `[hermPart, h, smul_add, half_smul_add]`.
+-/
 theorem hermPart_of_mem {c : Mx D r r} (hc : c ∈ hermA D r) : hermPart D r c = c := by
   have h : adj c = c := hc
   rw [hermPart, h, smul_add, half_smul_add]
 
+/- English proof (translation)
+Rewrite using `[hermPart, hermPart, hermPart, adj_add, add_add_add_comm, smul_add]`.
+-/
 theorem hermPart_add (x y : Mx D r r) : hermPart D r (x + y) = hermPart D r x + hermPart D r y := by
   rw [hermPart, hermPart, hermPart, adj_add, add_add_add_comm, smul_add]
 
+/- English proof (translation)
+Take `⟨γ, rfl⟩` from `(mem_ratMx).1 hx`. Use `(mem_ratMx).2 ⟨(1 / 2 : D.host.E) • (γ + γᴴ), ?_⟩` and prove the remaining obligations. Rewrite using `[rat_smul, rat_add, rat_conjTranspose]`. Both sides reduce to the same expression.
+-/
 theorem hermPart_rat {x : Mx D r r} (hx : x ∈ ratMx D r r) : hermPart D r x ∈ ratMx D r r := by
   obtain ⟨γ, rfl⟩ := (mem_ratMx).1 hx
   refine (mem_ratMx).2 ⟨(1 / 2 : D.host.E) • (γ + γᴴ), ?_⟩
   rw [rat_smul, rat_add, rat_conjTranspose]; rfl
 
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+The claim follows from `haveI : IsTopologicalAddGroup (Mx D r r) := (lattice_Mx D r r).1 show Continuous fun x => half D • (x + adj x) from (continuous_id.add continuous_adj).const_smul (half D)`.
+-/
 theorem continuous_hermPart : Continuous (hermPart D r) :=
   haveI : IsTopologicalAddGroup (Mx D r r) := (lattice_Mx D r r).1
   show Continuous fun x => half D • (x + adj x) from (continuous_id.add continuous_adj).const_smul (half D)
 
+/- English proof (translation)
+The claim follows from `haveI : T2Space (Mx D r r) := (lattice_Mx D r r).2.2.2.1 isClosed_eq continuous_adj continuous_id`.
+-/
 theorem isClosed_hermA : IsClosed (hermA D r : Set (Mx D r r)) :=
   haveI : T2Space (Mx D r r) := (lattice_Mx D r r).2.2.2.1
   isClosed_eq continuous_adj continuous_id
 
+/- English proof (translation)
+Take `⟨-, -, -, -, i5, K, hK, hKc⟩` from `lattice_Mx D r r`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Set `φ : ratHerm D r → ratMx D r r` to `fun q => ⟨q.1.1, q.2⟩`. Establish `hinj : Function.Injective φ` using `fun a b h => Subtype.ext (Subtype.ext (by simpa [φ] using congrArg Subtype.val h))`. Establish `hcont : Continuous φ` using `((continuous_subtype_val.comp continuous_subtype_val)).subtype_mk _`.
+
+Conclude with `DiscreteTopology.of_continuous_injective hcont hinj`. Set `P : Mx D r r → hermA D r` to `fun x => ⟨hermPart D r x, hermPart_mem x⟩`. Establish `hP : Continuous P` using `continuous_hermPart.subtype_mk _`. Use `⟨P '' K, hK.image hP, fun x => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, hx⟩` from `hKc x.1`.
+
+Use `⟨P γ, AddSubgroup.mem_comap.2 (hermPart_rat hγ), γ + x.1, hx, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `hermPart D r (γ + x.1) = hermPart D r γ + x.1`. Rewrite using `[hermPart_add, hermPart_of_mem x.2]`.
+-/
 theorem isCoLat_herm : GlobalTheory.CuspGeneric.IsCoLat (ratHerm D r) := by
   obtain ⟨-, -, -, -, i5, K, hK, hKc⟩ := lattice_Mx D r r
   refine ⟨?_, ?_⟩
@@ -61,6 +86,13 @@ theorem isCoLat_herm : GlobalTheory.CuspGeneric.IsCoLat (ratHerm D r) := by
     change hermPart D r (γ + x.1) = hermPart D r γ + x.1
     rw [hermPart_add, hermPart_of_mem x.2]
 
+/- English proof (translation)
+Introduce `D r`. Take `⟨i1, i2, i3, i4, -, -⟩` from `lattice_Mx D r r`. Use `haveI : IsTopologicalAddGroup (Mx D r r) := i1`. Use `haveI : LocallyCompactSpace (Mx D r r) := i2`. Use `haveI : SecondCountableTopology (Mx D r r) := i3`.
+
+Use `haveI : T2Space (Mx D r r) := i4`. Use `haveI : SecondCountableTopology (hermA D r) := Topology.IsInducing.subtypeVal.secondCountableTopology`. Use `haveI : T2Space (hermA D r) := Topology.IsEmbedding.subtypeVal.t2Space`. Use `haveI : BorelSpace (Mx D r r) := ⟨rfl⟩`. Use `haveI : LocallyCompactSpace (hermA D r) := (isClosed_hermA (D := D) (r := r)).locallyCompactSpace`.
+
+Take `⟨μ, 𝓕, hμ, hF, h1⟩` from `GlobalTheory.CuspGeneric.exists_fundamentalDomain_mass_one (hermA D r) _ isCoLat_herm`. Conclude with `⟨μ, 𝓕, hμ, hF, h1⟩`.
+-/
 theorem exists_isCovolOneH : ∀ (D : Formalism.BasicNotions.D7) (r : ℕ), ∃ (lam : Measure (PositivityTheory.GramSchwartzFunctions.BC.hermA D r)) (𝓖 : Set (PositivityTheory.GramSchwartzFunctions.BC.hermA D r)), PositivityTheory.GramSchwartzFunctions.BC.IsCovolOneH lam 𝓖 := by
   intro D r
   obtain ⟨i1, i2, i3, i4, -, -⟩ := lattice_Mx D r r

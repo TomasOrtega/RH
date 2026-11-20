@@ -19,6 +19,17 @@ section Gen
 variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G]
   [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
 
+/- English proof (translation)
+Establish `he : MeasurableEmbedding (Subtype.val : S → G)` using `MeasurableEmbedding.subtype_coe hS.measurableSet`. Use `⟨⟨fun g => ?_⟩, ?_⟩` and prove the remaining obligations. Use `Measure.ext fun A hA => ?_` and prove the remaining obligations. Rewrite using `[Measure.map_apply (measurable_const_mul g) hA, he.comap_apply, he.comap_apply]`. Establish `hB : MeasurableSet (Subtype.val '' A : Set G)` using `he.measurableSet_image.2 hA`.
+
+Establish `eset : (Subtype.val : S → G) '' ((fun x => g * x) ⁻¹' A) = (fun x => (g : G) * x) ⁻¹' (Subtype.val '' A)`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨g * y, hy, rfl⟩`.
+
+Introduce and unpack `⟨a, ha, hax⟩`. Establish `hx : x ∈ S`. Establish `: x = (g : G)⁻¹ * (a : G)` using `by rw [hax]; group`. Rewrite using `[this]`. Conclude with `S.mul_mem (S.inv_mem g.2) a.2`.
+
+Use `⟨⟨x, hx⟩, ?_, rfl⟩` and prove the remaining obligations. Establish `: g * (⟨x, hx⟩ : S) = a` using `Subtype.ext (by simpa using hax.symm)`. Use `show g * (⟨x, hx⟩ : S) ∈ A`. Rewrite using `[this]`. Conclude with `ha`.
+
+Rewrite using `[eset, ← Measure.map_apply (measurable_const_mul _) hB, hνi g g.2]`. Rewrite using `[he.map_comap, Subtype.range_coe]`. Conclude with `Measure.restrict_eq_self_of_ae_mem (ae_iff.2 hνc)`.
+-/
 theorem comap_inv (S : Subgroup G) (hS : IsClosed (S : Set G)) (ν : Measure G) (hνc : ν (S : Set G)ᶜ = 0)
     (hνi : ∀ s ∈ S, ν.map (fun x => s * x) = ν) :
     (ν.comap (Subtype.val : S → G)).IsMulLeftInvariant ∧ (ν.comap (Subtype.val : S → G)).map Subtype.val = ν := by
@@ -45,6 +56,29 @@ theorem comap_inv (S : Subgroup G) (hS : IsClosed (S : Set G)) (ν : Measure G) 
   · rw [he.map_comap, Subtype.range_coe]
     exact Measure.restrict_eq_self_of_ae_mem (ae_iff.2 hνc)
 
+/- English proof (translation)
+Use `haveI : LocallyCompactSpace S := hS.locallyCompactSpace`. Use `haveI : SecondCountableTopology S := TopologicalSpace.Subtype.secondCountableTopology (S : Set G)`. Establish `he : MeasurableEmbedding (Subtype.val : S → G)` using `MeasurableEmbedding.subtype_coe hS.measurableSet`. Take `⟨hμ1, hμ3⟩` from `comap_inv S hS μ hμc hμi`. Take `⟨hm1, hm3⟩` from `comap_inv S hS m hmc hmi`.
+
+Use `set μ' := μ.comap (Subtype.val : S → G) with hμ'd`. Use `set m' := m.comap (Subtype.val : S → G) with hm'd`. Establish `: IsFiniteMeasureOnCompacts μ'` using `⟨fun K hK => by`. Rewrite using `[hμ'd, he.comap_apply]`. Conclude with `(hK.image continuous_subtype_val).measure_lt_top⟩`.
+
+Use `haveI : SigmaFinite μ' := inferInstance`. Use `haveI : SigmaFinite m' := SigmaFinite.of_map m' he.measurable.aemeasurable (by rw [hm3]; exact hmσ)`. Use `haveI := hμ1`. Use `haveI := hm1`. Establish `hμ'0 : μ' ≠ 0` using `fun h => hμ0 (by rw [← hμ3, h, Measure.map_zero])`.
+
+Establish `hm'0 : m' ≠ 0` using `fun h => hm0 (by rw [← hm3, h, Measure.map_zero])`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs0, hsT⟩ : ∃ s : Set S, μ' s ≠ 0 ∧ μ' s ≠ ∞ := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Apply `hμ'0` to reduce the goal to its premises.
+
+Establish `h0 : ∀ n, μ' (spanningSets μ' n) = 0` using `fun n => by`. Assume the negation of the conclusion as `h`. Conclude with `(measure_spanningSets_lt_top μ' n).ne (hcon _ h)`. Rewrite using `[← Measure.measure_univ_eq_zero, ← iUnion_spanningSets μ']`. Conclude with `measure_iUnion_null h0`.
+
+Establish `key : ∀ t : Set S, m' s * μ' t = μ' s * m' t` using `fun t => measure_mul_measure_eq m' μ' s t hs0 hsT`. Establish `hms0 : m' s ≠ 0`. Introduce `h`. Apply `hm'0` to reduce the goal to its premises. Use extensionality with `t _`.
+
+Establish `e` using `key t`. Rewrite `e` using `[h, zero_mul]`. Establish `h2` using `(mul_eq_zero.1 e.symm).resolve_left hs0`. Simplify using `[h2]`. Establish `hmsT : m' s ≠ ∞`.
+
+Introduce `h`. Apply `hμ'0` to reduce the goal to its premises. Establish `h0 : ∀ n, μ' (spanningSets m' n) = 0` using `fun n => by`. Establish `e` using `key (spanningSets m' n)`. Rewrite `e` using `[h]`.
+
+Establish `hf : μ' s * m' (spanningSets m' n) ≠ ∞` using `ENNReal.mul_ne_top hsT (measure_spanningSets_lt_top m' n).ne`. Rewrite `hf` using `[← e]`. Assume the negation of the conclusion as `h0`. Conclude with `hf (ENNReal.top_mul h0)`. Rewrite using `[← Measure.measure_univ_eq_zero, ← iUnion_spanningSets m']`.
+
+Conclude with `measure_iUnion_null h0`. Establish `hμ'eq : μ' = (μ' s / m' s) • m'`. Use extensionality with `t _`. Rewrite using `[Measure.smul_apply, smul_eq_mul, ENNReal.div_eq_inv_mul, mul_assoc, ← key t, ← mul_assoc, ENNReal.inv_mul_cancel hms0 hmsT, one_mul]`. Establish `hfin : μ = (μ' s / m' s) • m` using `by conv_lhs => rw [← hμ3, hμ'eq]`.
+
+Rewrite using `[Measure.map_smul, hm3]`. Conclude with `⟨μ' s / m' s, (ENNReal.div_pos_iff.2 ⟨hs0, hmsT⟩).ne', ENNReal.div_ne_top hsT hms0, hfin⟩`.
+-/
 theorem unique_sf (S : Subgroup G) (hS : IsClosed (S : Set G)) (μ m : Measure G) (hμ0 : μ ≠ 0)
     (hμc : μ (S : Set G)ᶜ = 0) (hμi : ∀ s ∈ S, μ.map (fun x => s * x) = μ) (hμf : IsFiniteMeasureOnCompacts μ)
     (hm0 : m ≠ 0) (hmσ : SigmaFinite m) (hmc : m (S : Set G)ᶜ = 0) (hmi : ∀ s ∈ S, m.map (fun x => s * x) = m) :
@@ -113,6 +147,15 @@ open Formalism.L2.SG.HidaSetting Formalism.MainNotions.S
 
 variable {n r : ℕ}
 
+/- English proof (translation)
+Introduce `y hy`. Establish `hle : spanLt e a ≤ (spanLt e a).comap (Matrix.mulVecLin g)`. Unfold `spanLt`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, hb, rfl⟩`.
+
+Establish `hb' : (b : ℕ) < a` using `hb`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, Matrix.mulVecLin_apply]`. Establish `e1 : g *ᵥ e b = e b + (g - 1) *ᵥ e b`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[e1]`. Use `Submodule.add_mem _ (Submodule.subset_span ⟨b, hb', rfl⟩) ?_` and prove the remaining obligations. Use `Submodule.span_mono ?_ (hg.1 b)` and prove the remaining obligations. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Conclude with `⟨c, lt_trans hc hb', rfl⟩`.
+
+Conclude with `hle hy`.
+-/
 theorem spanLt_pres (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) (g : Matrix (Fin n) (Fin n) ℂ) (hg : InS e z g)
     (a : ℕ) : ∀ y ∈ spanLt e a, g *ᵥ y ∈ spanLt e a := by
   intro y hy
@@ -131,6 +174,11 @@ theorem spanLt_pres (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) (g : Matri
     exact ⟨c, lt_trans hc hb', rfl⟩
   exact hle hy
 
+/- English proof (translation)
+Establish `key : ∀ y : Fin n → ℂ, (g * h - 1) *ᵥ y = g *ᵥ ((h - 1) *ᵥ y) + (g - 1) *ᵥ y` using `fun y => by`. Simplify using `only [Matrix.sub_mulVec, Matrix.mulVec_sub, Matrix.one_mulVec, Matrix.mulVec_mulVec]`. Normalize the expressions using the abelian group laws. Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[key]`.
+
+Conclude with `Submodule.add_mem _ (spanLt_pres e z g hg a.1 _ (hh.1 a)) (hg.1 a)`. Rewrite using `[key]`. Conclude with `Submodule.add_mem _ (spanLt_pres e z g hg r _ hh.2) hg.2`.
+-/
 theorem inS_mul (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) {g h : Matrix (Fin n) (Fin n) ℂ} (hg : InS e z g)
     (hh : InS e z h) : InS e z (g * h) := by
   have key : ∀ y : Fin n → ℂ, (g * h - 1) *ᵥ y = g *ᵥ ((h - 1) *ᵥ y) + (g - 1) *ᵥ y := fun y => by
@@ -140,9 +188,19 @@ theorem inS_mul (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) {g h : Matrix 
   · rw [key]; exact Submodule.add_mem _ (spanLt_pres e z g hg a.1 _ (hh.1 a)) (hg.1 a)
   · rw [key]; exact Submodule.add_mem _ (spanLt_pres e z g hg r _ hh.2) hg.2
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a => by simp, by simp⟩`.
+-/
 theorem inS_one (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) : InS e z (1 : Matrix (Fin n) (Fin n) ℂ) :=
   ⟨fun a => by simp, by simp⟩
 
+/- English proof (translation)
+Establish `hc : Continuous (fun g : Formalism.REAL.UJ ε => uMat g)` using `(Formalism.REAL.uJEmb n ε).1.continuous`. Establish `hcl : ∀ (W : Submodule ℂ (Fin n → ℂ)) (v : Fin n → ℂ), IsClosed {g : Formalism.REAL.UJ ε | (uMat g - 1) *ᵥ v ∈ W}`. Introduce `W v`. Establish `h1 : Continuous fun g : Formalism.REAL.UJ ε => (uMat g - 1) *ᵥ v` using `Continuous.matrix_mulVec (hc.sub continuous_const) continuous_const`. Conclude with `IsClosed.preimage h1 (Submodule.closed_of_finiteDimensional W)`.
+
+Establish `hset : SLoc ε e z = (⋂ a : Fin r, {g : Formalism.REAL.UJ ε | (uMat g - 1) *ᵥ e a ∈ spanLt e a.1}) ∩ {g | (uMat g - 1) *ᵥ z ∈ spanLt e r}`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Take `⟨h1, h2⟩` from `hg`.
+
+Conclude with `⟨Set.mem_iInter.2 h1, h2⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨Set.mem_iInter.1 h1, h2⟩`. Rewrite using `[hset]`. Conclude with `(isClosed_iInter fun a => hcl _ _).inter (hcl _ _)`.
+-/
 theorem isClosed_sLoc (ε : Fin n → Bool) (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) : IsClosed (SLoc ε e z) := by
   have hc : Continuous (fun g : Formalism.REAL.UJ ε => uMat g) := (Formalism.REAL.uJEmb n ε).1.continuous
   have hcl : ∀ (W : Submodule ℂ (Fin n → ℂ)) (v : Fin n → ℂ),
@@ -163,6 +221,13 @@ theorem isClosed_sLoc (ε : Fin n → Bool) (e : Fin r → Fin n → ℂ) (z : F
   rw [hset]
   exact (isClosed_iInter fun a => hcl _ _).inter (hcl _ _)
 
+/- English proof (translation)
+Use `show InS e z (uMat (1 : Formalism.REAL.UJ ε))`. Establish `: uMat (1 : Formalism.REAL.UJ ε) = 1` using `by simp [uMat]`. Rewrite using `[this]`. Conclude with `inS_one e z`. Use `mul_mem := by`.
+
+Introduce `x hx y hy`. Use `show InS e z (uMat (x * y))`. Establish `: uMat (x * y) = uMat x * uMat y` using `by simp [uMat]`. Rewrite using `[this]`. Conclude with `inS_mul e z hx hy`.
+
+Use `inv_mem := by`. Introduce `x hx`. Conclude with `Formalism.L2.SG.RealObj.InfCut.inS_inv e z (uMat x) (uMat x⁻¹) (Formalism.L2.SG.RealObj.InfCut.uMat_inv_mul' x) hx`. Use `closed := isClosed_sLoc ε e z`.
+-/
 theorem sLoc_clSub (ε : Fin n → Bool) (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) : IsClSub (SLoc ε e z) where
   one_mem := by
     show InS e z (uMat (1 : Formalism.REAL.UJ ε))
@@ -184,6 +249,11 @@ section Main
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Establish `h1 : (Formalism.QuantumDeterminants.Hpk k r).det ≠ 0`. Establish `h` using `congrArg Matrix.det (Formalism.QuantumDeterminants.hpkFacts k r).2.1`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_one]`. Introduce `h0`. Rewrite `h` using `[h0, zero_mul]`.
+
+Conclude with `zero_ne_one h`. Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`. Apply `h1` to reduce the goal to its premises. Rewrite using `[← hH, Matrix.det_mul, h0, mul_zero]`.
+-/
 theorem isUnit_det_of (ε : Fin (2 * r + k + 1) → Bool) (P : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)
     (hH : Pᴴ * Formalism.REAL.Jm ε * P = Formalism.QuantumDeterminants.Hpk k r) : IsUnit P.det := by
   have h1 : (Formalism.QuantumDeterminants.Hpk k r).det ≠ 0 := by
@@ -197,9 +267,15 @@ theorem isUnit_det_of (ε : Fin (2 * r + k + 1) → Bool) (P : Matrix (Fin (2 * 
   apply h1
   rw [← hH, Matrix.det_mul, h0, mul_zero]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem psiP_eq (ε : Fin (2 * r + k + 1) → Bool) (P : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     psiP (ε := ε) P = Formalism.FourierDecayAlt.P.HaarUniquenessConjugation.phi ε P := rfl
 
+/- English proof (translation)
+Establish `hP` using `isUnit_det_of ε P hH`. Establish `h` using `Formalism.FourierDecayAlt.P.HaarUniquenessConjugation.haar_map (ε := ε) Formalism.REAL.uJEmb Formalism.REAL.unimodular Formalism.QuantumDeterminants.uHConj hP hH`. Rewrite using `[psiP_eq]`. Use `haveI : IsFiniteMeasureOnCompacts ((Formalism.REAL.muG ε).map (Formalism.FourierDecayAlt.P.HaarUniquenessConjugation.phi ε P)) := ⟨h.finite_compact⟩`. Conclude with `⟨inferInstance, h.ne_zero, h.conc, h.left⟩`.
+-/
 theorem haarG (ε : Fin (2 * r + k + 1) → Bool) (P : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)
     (hH : Pᴴ * Formalism.REAL.Jm ε * P = Formalism.QuantumDeterminants.Hpk k r) :
     Formalism.MainNotions.S.IsHaarOn (Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) ((Formalism.REAL.muG ε).map (psiP P)) := by
@@ -217,6 +293,29 @@ namespace Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.JL
 
 open HC
 
+/- English proof (translation)
+Introduce `r k ε e z zH P hH hP he hzH hz hT _hk`. Use `⟨haarG ε P hH, ?_⟩` and prove the remaining obligations. Introduce `μW μN hW hN μS hS`. Establish `hSS` using `Formalism.MainNotions.BridgeCSB.haarS hzH hW hN`. Establish `eS : Formalism.MainNotions.S.muS μW μN = (μW.prod μN).map Formalism.MainNotions.BridgeCSB.mulP` using `rfl`.
+
+Rewrite `hSS` using `[← eS]`. Rewrite using `[psiP_eq]`. Use `set ν := Formalism.MainNotions.S.muS μW μN with hνd`. Use `set φ := Formalism.FourierDecayAlt.P.HaarUniquenessConjugation.phi ε P with hφd`. Establish `hce : Topology.IsClosedEmbedding φ` using `Formalism.FourierDecayAlt.P.HaarUniquenessConjugation.phi_closedEmbedding Formalism.REAL.uJEmb hP`.
+
+Establish `hme : MeasurableEmbedding φ` using `hce.measurableEmbedding`. Establish `hcorr : ∀ u : Formalism.REAL.UJ ε, u ∈ SLoc ε e z ↔ Matrix.of (φ u) ∈ Formalism.QuantumDeterminants.Sset k r zH` using `fun u => hSC r k ε e z zH P hH hP he hzH hz hT u`. Establish `hSsub : ∀ x : Formalism.QuantumDeterminants.Mt k r, Matrix.of x ∈ Formalism.QuantumDeterminants.Sset k r zH → x ∈ Set.range φ` using `fun x hx => (Formalism.FourierDecayAlt.P.HaarUniquenessConjugation.phi_range_iff Formalism.REAL.uJEmb Formalism.QuantumDeterminants.uHConj hP hH x).2 (Formalism.QuantumDeterminants.Sset_UH hx)`. Establish `hνc : ν (Set.range φ)ᶜ = 0` using `measure_mono_null (fun x hx hS' => hx (hSsub x hS')) hSS.2.2.1`. Establish `hmap : (ν.comap φ).map φ = ν`.
+
+Rewrite using `[hme.map_comap]`. Conclude with `Measure.restrict_eq_self_of_ae_mem (ae_iff.2 hνc)`. Establish `hmσ : SigmaFinite (ν.comap φ)` using `SigmaFinite.of_map _ hme.measurable.aemeasurable (by rw [hmap]; exact hSS.1)`. Establish `hm0 : ν.comap φ ≠ 0` using `fun h => hSS.2.1 (by rw [← hmap, h, Measure.map_zero])`. Establish `hmc : (ν.comap φ) (SLoc ε e z)ᶜ = 0`.
+
+Rewrite using `[hme.comap_apply]`. Use `measure_mono_null ?_ hSS.2.2.1` and prove the remaining obligations. Introduce and unpack `_ ⟨u, hu, rfl⟩ hS'`. Conclude with `hu ((hcorr u).2 hS')`. Establish `hmi : ∀ u ∈ SLoc ε e z, (ν.comap φ).map (fun x => u * x) = ν.comap φ`.
+
+Introduce `u hu`. Use extensionality with `A hA`. Rewrite using `[Measure.map_apply (measurable_const_mul u) hA, hme.comap_apply, hme.comap_apply]`. Establish `h1` using `hSS.2.2.2 _ ((hcorr u).1 hu)`. Establish `hs' : MeasurableSet (φ '' A)` using `hme.measurableSet_image.2 hA`.
+
+Use `conv_rhs => rw [← h1, Measure.map_apply (Formalism.MainNotions.BridgeCSB.continuous_lmulM _).measurable hs']`. Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩`.
+
+Conclude with `⟨u * w, hw, (Formalism.FourierDecayAlt.P.HaarUniquenessConjugation.lmul_phi hP u w).symm⟩`. Introduce and unpack `⟨v, hv, hx⟩`. Use `⟨u⁻¹ * v, by simpa using hv, ?_⟩` and prove the remaining obligations. Establish `h2 : Formalism.QuantumDeterminants.lmulM (φ u⁻¹) (Formalism.QuantumDeterminants.lmulM (φ u) x) = x`. Establish `h3 : (Matrix.of (φ u⁻¹) : Formalism.FourierDecayAlt.B.Mat k r) * Matrix.of (φ u) = 1`.
+
+Use `Formalism.FourierDecayAlt.P.HaarUniquenessConjugation.lmul_phi hP u⁻¹ u` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel]`. Use `Eq.trans this ?_` and prove the remaining obligations. Use `show P⁻¹ * (1 : Formalism.FourierDecayAlt.B.Mat k r) * P = 1`. Rewrite using `[Matrix.mul_one, Matrix.nonsing_inv_mul P hP]`.
+
+Use `show (Matrix.of (φ u⁻¹) : Formalism.FourierDecayAlt.B.Mat k r) * (Matrix.of (φ u) * Matrix.of x) = Matrix.of x`. Rewrite using `[← Matrix.mul_assoc, h3, Matrix.one_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hcl` using `sLoc_clSub ε e z`. Establish `hSg : IsClosed ((HaarCore.subOf _ hcl.one_mem hcl.mul_mem hcl.inv_mem : Subgroup (Formalism.REAL.UJ ε)) : Set (Formalism.REAL.UJ ε))` using `hcl.closed`.
+
+Take `⟨c, hc0, hcT, hμS⟩` from `unique_sf _ hSg μS (ν.comap φ) hS.1.2.1 hS.1.2.2.1 hS.1.2.2.2 hS.2 hm0 hmσ hmc hmi`. Use `⟨c.toReal, ENNReal.toReal_pos hc0 hcT, ?_⟩` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_toReal hcT, hμS, Measure.map_smul, hmap]`.
+-/
 theorem haarCorr_of (hSC : SetCorr) : HaarCorr := by
   intro r k ε e z zH P hH hP he hzH hz hT _hk
   refine ⟨haarG ε P hH, ?_⟩

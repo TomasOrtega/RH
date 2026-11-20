@@ -12,6 +12,11 @@ open GlobalTheory.AutomorphicL2Unitary GlobalTheory.UnitaryBC GlobalTheory.CuspR
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hO : IsCompact ((PIW.ClassFinD.Ohat F : Subring (FiniteAdeleRing (𝓞 F) F)) : Set (FiniteAdeleRing (𝓞 F) F))` using `PI.WAU.isCompact_Ohat (F := F)`. Establish `h` using `isCompact_univ_pi (fun _ : Fin n => isCompact_univ_pi (fun _ : Fin n => hO))`. Establish `he : {M : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 F) F) | PIW.ClassFinD.MatInt M} = Set.univ.pi (fun _ : Fin n => Set.univ.pi (fun _ : Fin n => ((PIW.ClassFinD.Ohat F : Subring (FiniteAdeleRing (𝓞 F) F)) : Set (FiniteAdeleRing (𝓞 F) F))))`. Use extensionality with `M`. Conclude with `⟨fun h i _ j _ => h i j, fun h i j => h i trivial j trivial⟩`.
+
+Rewrite using `[he]`. Conclude with `h`.
+-/
 theorem isCompact_matInt_set (F : Type) [Field F] [NumberField F] (n : ℕ) :
     IsCompact {M : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 F) F) | PIW.ClassFinD.MatInt M} := by
   have hO : IsCompact ((PIW.ClassFinD.Ohat F : Subring (FiniteAdeleRing (𝓞 F) F)) :
@@ -25,6 +30,11 @@ theorem isCompact_matInt_set (F : Type) [Field F] [NumberField F] (n : ℕ) :
   rw [he]
   exact h
 
+/- English proof (translation)
+Establish `hA` using `isCompact_matInt_set F n`. Establish `hA'` using `(MulOpposite.opHomeomorph (M := Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 F) F))).symm.isCompact_preimage.2 hA`. Establish `h` using `(Units.isClosedEmbedding_embedProduct (α := Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 F) F))).isCompact_preimage (hA.prod hA')`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`.
+
+Conclude with `Iff.rfl`.
+-/
 theorem isCompact_KGL (F : Type) [Field F] [NumberField F] (n : ℕ) :
     IsCompact (PIW.ClassFinD.KGL F n : Set (GL (Fin n) (FiniteAdeleRing (𝓞 F) F))) := by
   have hA := isCompact_matInt_set F n

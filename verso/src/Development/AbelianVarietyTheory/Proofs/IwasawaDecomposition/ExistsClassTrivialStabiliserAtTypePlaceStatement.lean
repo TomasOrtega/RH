@@ -12,5 +12,8 @@ open GlobalTheory.LevCmp
 open GlobalTheory.TwistChoice (Reading ReadsAt)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.NeatUni.exists_trivial_stabiliser | exact GlobalTheory.NeatUni.exists_trivial_stabiliser | (intros; apply GlobalTheory.NeatUni.exists_trivial_stabiliser <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_class_trivial_stabiliser_at_typePlace : ∀ (D : D7) (k : Fin 2) (s : SplitPlace D.host.E), s.w ∈ placesOver D.host.E (D.host.g k) → ∃ g : GAf D.host.E D.R.nV, ∀ γ ∈ GQ D.host.E D.R.nV, g⁻¹ * γ * g ∈ Umax D.host.E D.R.nV → NG.UniRT s D.R.r (s.loc _ (g⁻¹ * γ * g)) → γ = 1 := by
   first | exact @GlobalTheory.NeatUni.exists_trivial_stabiliser | exact GlobalTheory.NeatUni.exists_trivial_stabiliser | (intros; apply GlobalTheory.NeatUni.exists_trivial_stabiliser <;> assumption)

@@ -20,6 +20,15 @@ namespace GlobalTheory.CompHt
 
 open ReciprocityTheory.ChartRestriction.G.Out
 
+/- English proof (translation)
+Use `letI := H.starRing`. Take `⟨PP', cub, sym, adj, prim, m₁, -⟩` from `sabPull CubePf.cubePull y t`. Generalize the expression as in `(⟨(Over.pullback y).obj t.G, IsSemiAbelian.pullback _ t.G t.semi, Geo.Tor.OAct.pullback _ t.G t.act, PP', cub, sym, adj, prim⟩ : SAB H _) = t' at m₁`. Take `⟨n, hn⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ m m₁`. Take `⟨w, g, -⟩` from `n.lin`.
+
+Take `⟨U, hU, hc, -⟩` from `exists_isAffineOpen_mem_and_subset (X := X) (U := ⊤) (x := (y ≫ x) (IsLocalRing.closedPoint C)) trivial`. Establish `hy : ∀ z, (y ≫ x) z ∈ U` using `fun z => (congrArg (fun V => z ∈ V) (Scheme.preimage_eq_top_of_closedPoint_mem (y ≫ x) hc)).mpr trivial`. Establish `hp' : IsProper t'.G.hom` using `MorphismProperty.of_isPullback (P := @IsProper) n.cart.1 hp`. Establish `hA'` using `relAmple_pull n.cart.1 u.PP.isLB t'.PP.isLB ((isGen_iff w).1 g) U hU hy ha`. Establish `hK'` using `kTriv_pull n.cart u.PP.isLB t'.PP.isLB ((isGen_iff w).1 g) hk`.
+
+Use `t'.semi.smooth` as an intermediate fact. Use `t'.semi.geomConnected` as an intermediate fact. Establish `: ConnectedSpace ↥t'.G.left` using `GeometricallyConnected.geometrically_connectedSpace (f := t'.G.hom) (𝟙 _) (𝟙 _) t'.G.hom (IsPullback.of_horiz_isIso ⟨by simp⟩)`. Take `⟨d, hd⟩` from `exists_dim_of_preconnected t'.G.hom (Classical.arbitrary _)`. Establish `hL : LBIso t'.PP.L (u.PP.L.pull (m₁.φ ≫ m.φ))` using `hn ▸ ⟨w, g⟩`.
+
+Conclude with `⟨GenericPol.toPolAV t' d hd hp' hA' hK', ⟨t'.act.toRingAct, GenericPol.rosatiAdj t'⟩, m₁.φ, m₁.cart, m₁.act, hL⟩`.
+-/
 theorem exists_polAV_fibre {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {S X : Scheme.{0}} {t : SAB H S} {u : SAB H X} {x : S ⟶ X} (m : SABMap t u x) (hp : IsProper u.G.hom)
     (ha : RelAmple u.G u.PP.L) (hk : KTriv u.G u.PP.L) {C : Type} [Field C] (y : Sp C ⟶ S) :
@@ -49,6 +58,33 @@ theorem exists_polAV_fibre {E : Type} [Field E] [NumberField E] [IsCMField E] {H
   exact ⟨GenericPol.toPolAV t' d hd hp' hA' hK', ⟨t'.act.toRingAct, GenericPol.rosatiAdj t'⟩, m₁.φ, m₁.cart,
     m₁.act, hL⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c p _ C _ _ _ v O _ _ hpO _ _ _ _ inst hstar hv T io y₀ hy k kO hk`. Take `rfl : inst = H.starRing` from `GlobalTheory.PowGerm.starRing_ext_of_star inst H.starRing hstar`. Use `letI := H.starRing`. Use `letI := io.toAlgebra`. Take `⟨G, t', m₁, m₂, -⟩` from `y₀.2.2`.
+
+Use `haveI : IsDomain O := hv.hom_inj.isDomain _`. Use `haveI : ValuationRing O := ValuationRing.of_integers _ hv`. Establish `hinj : Function.Injective ((algebraMap O C).comp kO)` using `fun a b h => by`. Simplify using `only [RingHom.comp_apply, hk] at h`. Conclude with `IsFractionRing.injective T.V T.Fr (k.injective h)`.
+
+Establish `hp0 : ∀ {R : Type} [CommRing R] (f : R →+* O), (p : R) ≠ 0` using `fun f h => (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero : (p : C) ≠ 0) (by`. Rewrite using `[← map_natCast ((algebraMap O C).comp f), h, map_zero])`. Establish `hpu : ∀ {R : Type} [CommRing R] (f : R →+* O), ¬ IsUnit (p : R)` using `fun f h => hpO.out (by simpa using h.map f)`. Use `haveI : IsLocalHom kO := ⟨fun a ha => by`. Assume the negation of the conclusion as `hau`.
+
+Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `ha` using `[map_zero]`. Conclude with `not_isUnit_zero ha`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible T.V`.
+
+Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha0 hϖ`. Establish `hn : n ≠ 0`. Introduce and unpack `rfl`. Rewrite `hu` using `[pow_zero, _root_.mul_one]`. Conclude with `hau (hu ▸ u.isUnit)`.
+
+Rewrite `ha` using `[hu, map_mul, map_pow]`. Establish `h1 : IsUnit (kO ϖ)` using `(isUnit_pow_iff hn).1 (isUnit_of_mul_isUnit_right ha)`. Take `⟨n', u', hu'⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible (hp0 kO) hϖ`. Use `hpO.out ?_` and prove the remaining obligations. Rewrite using `[← map_natCast kO, hu', map_mul, map_pow]`.
+
+Conclude with `(u'.isUnit.map kO).mul (h1.pow _)⟩`. Take `⟨T', φ', G', m, hi, hf, -, -, U, -⟩` from `GlobalTheory.UnifAfterExt.exists_finite_ext_uniformised E H Dw l Xo T G t' m₂ _ m₁ hy`. Take `⟨f', -, hf'⟩` from `GlobalTheory.CharDepth.exists_local_extension_of_integral v hv φ' hi hf.to_isIntegral kO hinj`. Establish `hI : ∃ n : ℕ, ∀ a ∈ IsLocalRing.maximalIdeal T'.V ^ n, f' a ∈ Ideal.span {(p : O)}`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible T'.V`.
+
+Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible (hp0 f') hϖ`. Use `⟨n, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite `ha` using `[hϖ.maximalIdeal_eq, Ideal.span_singleton_pow]`. Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.1 ha`. Use `Ideal.mem_span_singleton'.2 ⟨f' (b * ↑u⁻¹), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← map_natCast f', ← map_mul, hu, _root_.mul_assoc, Units.inv_mul_cancel_left]`. Take `⟨A, oA, φ, hφ, hφa, hL⟩` from `exists_polAV_fibre m₁ Xo.univ.proper Xo.univ.ample Xo.univ.ktriv (spMap k)`. Establish `e1 : spMap f' ≫ spMap φ' = spMap kO` using `by rw [spMap_spMap, hf']`. Establish `e2 : spMap k ≫ spMap (algebraMap T.V T.Fr) = spMap ((algebraMap O C).comp f') ≫ spMap φ'`. Rewrite using `[spMap_spMap, spMap_spMap, RingHom.comp_assoc, hf']`.
+
+Conclude with `congrArg _ (RingHom.ext fun a => (hk a).symm)`. Establish `h2 : IsGrpPullback A.A G.G (spMap ((algebraMap O C).comp f') ≫ spMap φ') (φ ≫ m₂.φ)` using `(hφ.comp m₂.cart).congr e2 rfl`. Take `⟨j, hj1, hj2⟩ : ∃ j : A.A.left ⟶ G'.G.left, j ≫ m.φ = φ ≫ m₂.φ ∧ j ≫ G'.G.hom = A.A.hom ≫ spMap ((algebraMap O C).comp f')` from `⟨m.cart.1.lift _ _ (h2.1.w.trans (Category.assoc _ _ _).symm), m.cart.1.lift_fst _ _ _, m.cart.1.lift_snd _ _ _⟩`. Establish `hj : IsGrpPullback A.A G'.G (spMap ((algebraMap O C).comp f')) j` using `m.cart.cancel (h2.congr rfl hj1.symm) hj2`. Establish `hja : ∀ a, (oA.act a).left ≫ j = j ≫ (G'.act.toRingAct.act a).left` using `fun a => m.cart.1.hom_ext (by`.
+
+Express the relevant statement in the definitionally equal form `_ = (j ≫ (G'.act.act a).left) ≫ _`. Rewrite using `[Category.assoc, Category.assoc, m.act, hj1, reassoc_of% hj1, reassoc_of% (hφa a), m₂.act])`. Use the proof step `(by rw [Category.assoc, Category.assoc, Over.w, hj2, Over.w_assoc])`. Take `⟨ε⟩ : Nonempty (Eps p C)` from `inferInstance`. Take `⟨-, -, -, -, -, P, -, -, -, -, hA, -, -, -, -, π, -, hπ, -, -, -, hgen, hπa, -⟩` from `exists_point_of_unif U.U.toUnifPre G'.semi U.lin hv ε f' hI A oA j hj hja`.
+
+Use `clear hja hφa hj`. Use `clear oA`. Substitute `hA` using the available equality. Use `⟨P, φ ≫ m₁.φ, hk, G, t', m₁, m₂, π ≫ m.φ, φ, (hπ.comp m.cart).congr e1 rfl, fun a => ?_, hφ, ?_, rfl, hL⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, hπa, Category.assoc, Category.assoc]`.
+
+Conclude with `congrArg (π ≫ ·) (m.act a)`. Rewrite using `[← Category.assoc, eq_of_heq hgen, hj1]`.
+-/
 theorem exists_pointOver : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C ℝ≥0) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [Algebra ℤ_[p] O] [Algebra ℤ_[p] C] [IsScalarTower ℤ_[p] O C] [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → v.Integers O → ∀ (T : CDVR) (io : c.F →+* T.Fr) (y₀ : IntFr Xo c T io), y₀.IsAlg → ∀ (k : T.Fr →+* C) (kO : T.V →+* O), (∀ a, algebraMap O C (kO a) = k (algebraMap T.V T.Fr a)) → ∃ (P : Point p v O (𝓞 E)) (ψ : P.A.A.left ⟶ Xo.univ.t.G.left), (letI := io.toAlgebra; PointOver P y₀.1.x k kO ψ) := by
   intro E _ _ _ H Dw l Xo c p _ C _ _ _ v O _ _ hpO _ _ _ _ inst hstar hv T io y₀ hy k kO hk
   obtain rfl : inst = H.starRing := GlobalTheory.PowGerm.starRing_ext_of_star inst H.starRing hstar

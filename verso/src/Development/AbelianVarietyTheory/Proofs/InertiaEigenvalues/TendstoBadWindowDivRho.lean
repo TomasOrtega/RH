@@ -17,6 +17,13 @@ noncomputable def badWinBox {ι : Type} (S I : Finset ι) (L k : ℕ) (i₀ i : 
   else Finset.Icc (-(L : ℤ)) (2 * k + L)
 
 open Classical in
+/- English proof (translation)
+Unfold `badWinBox`. Distinguish the cases in `hS : i ∈ S`. Establish `: i ∈ insert i₀ S` using `Finset.mem_insert_of_mem hS`. Rewrite using `[if_pos hS, if_pos this]`. Apply the tactic sequence `split_ifs <;> simp [Int.card_Icc] <;> omega`.
+
+Rewrite using `[if_neg hS]`. Distinguish the cases in `h0 : i = i₀`. Substitute `h0` using the available equality. Rewrite using `[if_pos rfl, if_pos (Finset.mem_insert_self _ _)]`. Use `(Finset.card_union_le _ _).trans ?_` and prove the remaining obligations.
+
+Simplify using `[Int.card_Ico, Int.card_Ioc]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg h0, if_neg (by simp [h0, hS])]`. Simplify using `[Int.card_Icc]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem card_badWinBox_le {ι : Type} (S I : Finset ι) (L k : ℕ) (i₀ i : ι) :
     (badWinBox S I L k i₀ i).card ≤
       2 * (2 * L + 1) * (if i ∈ insert i₀ S then 1 else k + 1) := by
@@ -36,6 +43,11 @@ theorem card_badWinBox_le {ι : Type} (S I : Finset ι) (L k : ℕ) (i₀ i : ι
       nlinarith
 
 open Classical in
+/- English proof (translation)
+Rewrite using `[Fintype.card_piFinset]`. Use `(Finset.prod_le_prod (fun _ _ => Nat.zero_le _) fun i _ => card_badWinBox_le S I L k i₀ i).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Finset.prod_ite, Finset.prod_const_one, one_mul, Finset.prod_const]`. Establish `: (Finset.univ.filter fun i => i ∉ insert i₀ S).card = Fintype.card ι - S.card - 1`. Establish `h : (Finset.univ.filter fun i => i ∉ insert i₀ S) = (insert i₀ S)ᶜ` using `by ext; simp`.
+
+Rewrite using `[h, Finset.card_compl, Finset.card_insert_of_notMem h₀]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[this]`.
+-/
 theorem card_piFinset_badWinBox_le {ι : Type} [Fintype ι] (S I : Finset ι) (L k : ℕ) (i₀ : ι) (h₀ : i₀ ∉ S) :
     (Fintype.piFinset (badWinBox S I L k i₀)).card ≤
       (2 * (2 * L + 1)) ^ Fintype.card ι * (k + 1) ^ (Fintype.card ι - S.card - 1) := by
@@ -52,6 +64,51 @@ end GlobalTheory.UnitLemma.Desc
 
 namespace GlobalTheory.UnitLemma.Desc
 
+/- English proof (translation)
+Introduce `K B ι _ e π S a hsep ha hfr I I' hI N L D f hpos hD hsupp`. Take `⟨C, hC⟩` from `GlobalTheory.T.card_lattices_idempotent_position_bounded K B ι e π S a hsep ha hfr N`. Establish `hrho` using `GlobalTheory.T.rho_pow_lower_bound_swappedPairs K B ι e π S a hsep ha hfr`. Establish `hD0 : 0 ≤ D` using `le_trans (abs_nonneg _) (hD 0 ⊥)`. Use `set n := Fintype.card ι`.
+
+Use `set m := n - S.card`. Use `set A : ℕ := 2 * (2 * L + 1)`. Establish `key : ∀ k, L ≤ k → |∑ᶠ M ∈ B.Lin, f k M| ≤ D * ((m * A ^ n * (k + 1) ^ (m - 1) * C : ℕ) : ℚ)`. Introduce `k hk`. Set `W : Finset (ι → ℤ)` to `(Finset.univ.filter (· ∉ S)).biUnion fun i₀ => Fintype.piFinset (badWinBox S I L k i₀)`.
+
+Establish `hWcard : W.card ≤ m * A ^ n * (k + 1) ^ (m - 1)`. Use `Finset.card_biUnion_le.trans ?_` and prove the remaining obligations. Establish `h1 : ∀ i₀ ∈ Finset.univ.filter (· ∉ S), (Fintype.piFinset (badWinBox S I L k i₀)).card ≤ A ^ n * (k + 1) ^ (m - 1)`. Introduce `i₀ hi₀`. Conclude with `card_piFinset_badWinBox_le S I L k i₀ (Finset.mem_filter.1 hi₀).2`.
+
+Use `(Finset.sum_le_sum h1).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_const, smul_eq_mul]`. Establish `h2 : (Finset.univ.filter (· ∉ S)).card = m`. Establish `h : (Finset.univ.filter (· ∉ S)) = Sᶜ` using `by ext; simp`. Rewrite using `[h, Finset.card_compl]`.
+
+Rewrite using `[h2, mul_assoc]`. Establish `hmem : ∀ M ∈ B.Lin, f k M ≠ 0 → ∃ p ∈ W, Pos B a e N M p`. Introduce `M hM hf`. Take `⟨p, hp⟩` from `hpos M hM`. Take `⟨hw, hmid⟩` from `hsupp k hk M hM p hp hf`.
+
+Use `⟨p, ?_, hp⟩` and prove the remaining obligations. Simplify using `only [W, Finset.mem_biUnion, Finset.mem_filter, Finset.mem_univ, true_and, Fintype.mem_piFinset]`. Unfold `Mid at hmid`. Use `push_neg at hmid`. Take `⟨i₀, hi₀, h₀⟩` from `hmid`.
+
+Use `⟨i₀, hi₀, fun i => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, h3, h4⟩` from `hw i`. Unfold `badWinBox`. Distinguish the cases in `hS : i ∈ S`. Rewrite using `[if_pos hS]`.
+
+Distinguish the cases in `hiI : i ∈ I`. Rewrite using `[if_pos hiI]`. Simplify using `only [Finset.mem_Icc]`. Conclude with `⟨h3 hiI, h2⟩`. Rewrite using `[if_neg hiI]`.
+
+Use `(hI i hS).resolve_left hiI` as an intermediate fact. Simplify using `only [Finset.mem_Icc]`. Conclude with `⟨h1, h4 this⟩`. Rewrite using `[if_neg hS]`. Distinguish the cases in `h0 : i = i₀`.
+
+Substitute `h0` using the available equality. Rewrite using `[if_pos rfl]`. Simplify using `only [Finset.mem_union, Finset.mem_Ico, Finset.mem_Ioc]`. Distinguish the cases in `hl : (L : ℤ) ≤ p i`. Conclude with `Or.inr ⟨h₀ hl, h2⟩`.
+
+Conclude with `Or.inl ⟨h1, lt_of_not_ge hl⟩`. Rewrite using `[if_neg h0]`. Simplify using `only [Finset.mem_Icc]`. Conclude with `⟨h1, h2⟩`. Set `T : Finset (Submodule K.O B.A)` to `W.biUnion fun p => (hC p).1.toFinset`.
+
+Establish `hTcard : T.card ≤ W.card * C`. Use `Finset.card_biUnion_le.trans ?_` and prove the remaining obligations. Use `(Finset.sum_le_sum fun p _ => ?_).trans (by rw [Finset.sum_const, smul_eq_mul])` and prove the remaining obligations. Rewrite using `[← Set.ncard_eq_toFinset_card _ (hC p).1]`. Conclude with `(hC p).2`.
+
+Establish `hfs : ∑ᶠ M ∈ B.Lin, f k M = ∑ M ∈ T.filter (· ∈ B.Lin), f k M`. Apply `finsum_mem_eq_sum_of_inter_support_eq` to reduce the goal to its premises. Use extensionality with `M`. Simplify using `only [Set.mem_inter_iff, Function.mem_support, Finset.coe_filter, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨hM, hf⟩`. Use `⟨⟨?_, hM⟩, hf⟩` and prove the remaining obligations. Take `⟨p, hpW, hp⟩` from `hmem M hM hf`. Simplify using `only [T, Finset.mem_biUnion, Set.Finite.mem_toFinset, Set.mem_setOf_eq]`. Conclude with `⟨p, hpW, hp⟩`.
+
+Introduce and unpack `⟨⟨_, hM⟩, hf⟩`. Conclude with `⟨hM, hf⟩`. Rewrite using `[hfs]`. Use `(Finset.abs_sum_le_sum_abs _ _).trans ?_` and prove the remaining obligations. Use `(Finset.sum_le_sum fun M _ => hD k M).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_const, nsmul_eq_mul, mul_comm]`. Use `mul_le_mul_of_nonneg_left ?_ hD0` and prove the remaining obligations. Establish `: (T.filter (· ∈ B.Lin)).card ≤ m * A ^ n * (k + 1) ^ (m - 1) * C` using `(Finset.card_filter_le _ _).trans (hTcard.trans (Nat.mul_le_mul_right _ hWcard))`. Conclude with `this` after adjusting the coercions. Establish `hm : ∀ k : ℕ, m * (k + 1) ^ (m - 1) * (k + 1) = m * (k + 1) ^ m`.
+
+Introduce `k`. Break down `Nat.eq_zero_or_pos m with h | h` into its components or cases. Simplify using `[h]`. Rewrite using `[mul_assoc, ← pow_succ, Nat.sub_add_cancel h]`. Use `set c : ℝ := (D : ℝ) * (A : ℝ) ^ n * (m : ℝ) * (C : ℝ)`.
+
+Establish `hlim : Tendsto (fun k : ℕ => c * (1 / ((k : ℝ) + 1))) atTop (𝓝 0)`. Simplify using `using tendsto_one_div_add_atTop_nhds_zero_nat.const_mul c`. Use `squeeze_zero_norm' ?_ hlim` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop L] with k hk`. Establish `hr : ((k + 1 : ℕ) : ℝ) ^ m ≤ (B.rho (algebraMap K.O B.A a ^ k) : ℝ)` using `by exact_mod_cast hrho k`.
+
+Establish `hpos' : (0 : ℝ) < ((k + 1 : ℕ) : ℝ) ^ m` using `by positivity`. Establish `hk'` using `key k hk`. Establish `hk'' : |((∑ᶠ M ∈ B.Lin, f k M : ℚ) : ℝ)| ≤ (D : ℝ) * ((m * A ^ n * (k + 1) ^ (m - 1) * C : ℕ) : ℝ)`. Use `(Rat.cast_le (K := ℝ)).2 hk'` as an intermediate fact. Move the coercions through the operations in `at this ⊢`.
+
+Simplify `this` using `[Rat.cast_abs]`. Rewrite using `[Real.norm_eq_abs, abs_div, Nat.abs_cast]`. Rewrite using `[div_le_iff₀ (lt_of_lt_of_le hpos' hr)]`. Combine the equalities or inequalities in the displayed calculation. Establish `h` using `congrArg (fun x : ℕ => (x : ℝ)) (hm k)`.
+
+Move the coercions through the operations in `at h ⊢`. Clear the denominators using the available nonvanishing facts. Simplify using `only [c]`. Take the linear combination `(D : ℝ) * (A : ℝ) ^ n * (C : ℝ) * h`. Use `_ ≤ c * (1 / ((k : ℝ) + 1)) * (B.rho (algebraMap K.O B.A a ^ k) : ℝ) := by`.
+
+Use `mul_le_mul_of_nonneg_left hr ?_` and prove the remaining obligations. Simplify using `only [c]`. Check the signs of the components of the expression.
+-/
 theorem tendsto_badWindow_div_rho : ∀ (K : UQ) (B : InvAlg K) (ι : Type) [Fintype ι] (e π : ι → B.A) (S : Finset ι) (a : K.O), B.P.Separable → K.Small a → IsFrame B e π S → ∀ (I I' : Finset ι), (∀ i ∈ S, i ∈ I ∨ i ∈ I') → ∀ (N L : ℕ) (D : ℚ) (f : ℕ → Submodule K.O B.A → ℚ), (∀ M ∈ B.Lin, ∃ p, Pos B a e N M p) → (∀ k M, |f k M| ≤ D) → (∀ k, L ≤ k → ∀ M ∈ B.Lin, ∀ p, Pos B a e N M p → f k M ≠ 0 → Win I I' L k p ∧ ¬ Mid S L k p) → Tendsto (fun k : ℕ => ((∑ᶠ M ∈ B.Lin, f k M : ℚ) : ℝ) / (B.rho (algebraMap K.O B.A a ^ k) : ℝ)) atTop (𝓝 0) := by
   intro K B ι _ e π S a hsep ha hfr I I' hI N L D f hpos hD hsupp
   classical

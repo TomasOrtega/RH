@@ -8,6 +8,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af UpperTheory.V.AlgRepEndIrreducible UpperTheory.V.Lit UpperTheory.V.Lit.Bor
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `E _ _ _ a ha π Ξ r hone`. Take `⟨G, hG⟩` from `admEx E a Ξ`. Take `⟨H, hH⟩` from `petEx E a ha r`. Take `⟨hinj, hcmp, -, hlie, hadj⟩` from `inclFacts E a π Ξ r`. Establish `hpos` using `tformPos _ Ξ.d H _ G hH.pos hG.pos`.
+
+Establish `hmem : ∀ m, incl π Ξ m ∈ tens Ξ.d (sqSub E a r)` using `fun m => mem_tens.2 fun i => by`. Rewrite using `[hcmp]`. Conclude with `Submodule.subset_span (cuspSq E a ha π r hone _ (UpperTheory.V.Lit.Bor.cmp i m).2)`. Use `⟨((tform H G) ∘ₛₗ (incl π Ξ)).compl₂ (incl π Ξ), ⟨fun x y => ?_, fun x _ => ?_, fun x _ hx => ?_⟩, fun X x y => ?_⟩` and prove the remaining obligations. Conclude with `hpos.herm _ _`.
+
+Conclude with `hpos.nonneg _ (hmem x)`. Conclude with `hinj ((hpos.definite _ (hmem x) hx).trans (map_zero _).symm)`. Use `show tform H G (incl π Ξ x) (incl π Ξ _) = tform H G (incl π Ξ _) (incl π Ξ y)`. Rewrite using `[hlie, hadj]`. Conclude with `smForm E a Ξ r H G hH hG X _ (hmem x) _ (hmem y)`.
+-/
 theorem UpperTheory.V.Lit.Bor.piForm :
     UpperTheory.V.Lit.Bor.PiForm := by
   intro E _ _ _ a ha π Ξ r hone

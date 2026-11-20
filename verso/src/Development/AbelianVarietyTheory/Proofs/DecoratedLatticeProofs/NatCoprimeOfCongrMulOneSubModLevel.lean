@@ -15,6 +15,25 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.TorusCop
 
+/- English proof (translation)
+Introduce `I g T M hg hMg hz`. Take `⟨t, ht, hc⟩` from `hz`. Take `⟨-, hint, hu, -⟩` from `GlobalTheory.RowLev.intAf_approx_inter_unit_conj I g hg`. Establish `hg0 : (g : ℚ) ≠ 0` using `by exact_mod_cast (show g ≠ 0 by omega)`. Use `set q : ℚ := (((M : ℤ) * (1 - (T : ℤ)) : ℤ) : ℚ) / (g : ℚ) with hqdef`.
+
+Establish `hgq : (g : I.E) * (q : I.E) = (M : I.E) * (1 - (T : I.E))`. Establish `: (g : ℚ) * q = (M : ℚ) * (1 - (T : ℚ))`. Rewrite using `[hqdef]`. Clear the denominators using the available nonvanishing facts. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `congrArg (fun x : ℚ => (x : I.E)) this` as an intermediate fact. Simplify using `using this`. Establish `key : Formalism.UG.inclE (F` using `I.F) (Af I.F) (q : I.E) = t := by`. Apply `hu.mul_left_cancel` to reduce the goal to its premises.
+
+Rewrite using `[← hc]`. Combine the equalities or inequalities in the displayed calculation. Establish `hq : (q : I.E) ∈ (algebraMap (𝓞 I.E) I.E).range` using `(hint _).1 (key ▸ ht)`. Take `⟨b, hb⟩` from `hq`. Establish `h1 : IsIntegral ℤ (algebraMap ℚ I.E q)`.
+
+Rewrite using `[eq_ratCast, ← hb]`. Conclude with `RingOfIntegers.isIntegral_coe b`. Establish `h2 : IsIntegral ℤ q` using `(isIntegral_algebraMap_iff (algebraMap ℚ I.E).injective).1 h1`. Take `⟨n, hn⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h2`. Establish `h3 : (M : ℤ) * (1 - (T : ℤ)) = (g : ℤ) * n`.
+
+Establish `hn' : (n : ℚ) = q` using `by simpa using hn`. Establish `: (((M : ℤ) * (1 - (T : ℤ)) : ℤ) : ℚ) = (((g : ℤ) * n : ℤ) : ℚ)`. Rewrite `hn'` using `[hqdef]`. Use `push_cast`. Rewrite using `[hn']`.
+
+Clear the denominators using the available nonvanishing facts. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `this` after adjusting the coercions. Establish `h5 : (g : ℤ) ∣ 1 - (T : ℤ)`.
+
+Use `Int.dvd_of_dvd_mul_right_of_gcd_one ⟨n, h3⟩ ?_` and prove the remaining obligations. Rewrite using `[Int.gcd_natCast_natCast]`. Conclude with `hMg.symm`. Establish `hd1 : ((Nat.gcd T g : ℕ) : ℤ) ∣ 1`. Establish `a : ((Nat.gcd T g : ℕ) : ℤ) ∣ (T : ℤ)` using `Int.natCast_dvd_natCast.2 (Nat.gcd_dvd_left _ _)`.
+
+Establish `b : ((Nat.gcd T g : ℕ) : ℤ) ∣ 1 - (T : ℤ)` using `(Int.natCast_dvd_natCast.2 (Nat.gcd_dvd_right _ _)).trans h5`. Use `dvd_add b a` as an intermediate fact. Simplify using `using this`. Conclude with `Nat.dvd_one.1 (Int.natCast_dvd_natCast.1 (by simpa using hd1))`.
+-/
 theorem natCoprime_of_zmod_mul_one_sub : ∀ (I : AutInst) (g T M : ℕ), 1 ≤ g → Nat.Coprime M g →
     ZMod' I g ((M : I.E ⊗[I.F] Af I.F) * (1 - (T : I.E ⊗[I.F] Af I.F))) → Nat.Coprime T g := by
   intro I g T M hg hMg hz

@@ -38,6 +38,9 @@ set_option maxHeartbeats 1000000
 
 variable {D : D7}
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Consider the case `tmul a m => rfl`.
+-/
 theorem finPart_liftFin (y : Af D.host.F ⊗[D.host.F] D.host.E) :
     finPart D (GlobalTheory.LatticeStable.liftFin D y) = y := by
   induction y using TensorProduct.induction_on with
@@ -45,17 +48,43 @@ theorem finPart_liftFin (y : Af D.host.F ⊗[D.host.F] D.host.E) :
   | add x y hx hy => rw [map_add, map_add, hx, hy]
   | tmul a m => rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toEAf_apply (w : Formalism.L2.Theta.AE D) :
     Formalism.IndefR.Datum.toEAf D w = Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E (finPart D w) := rfl
 
+/- English proof (translation)
+Rewrite using `[toEAf_apply, finPart_liftFin]`.
+-/
 theorem toEAf_liftFin (y : Af D.host.F ⊗[D.host.F] D.host.E) :
     Formalism.IndefR.Datum.toEAf D (GlobalTheory.LatticeStable.liftFin D y) =
       Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E y := by
   rw [toEAf_apply, finPart_liftFin]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toEAf_incA' (e : D.host.E) :
     Formalism.IndefR.Datum.toEAf D (incA D e) = Formalism.UG.inclE (F := D.host.F) (Formalism.L2.Herm.Af D.host.F) e := rfl
 
+/- English proof (translation)
+Unfold `Formalism.L2.Herm.hatL Formalism.UG.latS at hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨c, hc, rfl⟩` from `hx`. Use `⟨1, fun _ => 1, fun _ => c, fun _ => ?_, fun _ => hc, fun i => ?_⟩` and prove the remaining obligations.
+
+Conclude with `(GlobalTheory.SplitDec.int_iff 1).2 (by rw [map_one]; exact one_mem _)`. Rewrite using `[Fin.sum_univ_one, one_mul, toEAf_incA']`. Consider the case `zero`. Use `⟨0, Fin.elim0, Fin.elim0, fun p => p.elim0, fun p => p.elim0, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.univ_eq_empty, Finset.sum_empty, map_zero]`.
+
+Both sides reduce to the same expression. Consider the case `add x y _ _ hx hy`. Take `⟨m, β, b, hβ, hb, he⟩` from `hx`. Take `⟨m', β', b', hβ', hb', he'⟩` from `hy`. Use `⟨m + m', Fin.append β β', Fin.append b b', fun p => ?_, fun p => ?_, fun i => ?_⟩` and prove the remaining obligations.
+
+Use `Fin.addCases (fun q => ?_) (fun q => ?_) p` and prove the remaining obligations. Rewrite using `[Fin.append_left]`. Conclude with `hβ q`. Rewrite using `[Fin.append_right]`. Conclude with `hβ' q`.
+
+Use `Fin.addCases (fun q => ?_) (fun q => ?_) p` and prove the remaining obligations. Rewrite using `[Fin.append_left]`. Conclude with `hb q`. Rewrite using `[Fin.append_right]`. Conclude with `hb' q`.
+
+Rewrite using `[Fin.sum_univ_add, map_add, Pi.add_apply, he i, he' i]`. Simplify using `only [Fin.append_left, Fin.append_right]`. Consider the case `smul r x _ hx`. Take `⟨m, β, b, hβ, hb, he⟩` from `hx`. Use `set y := (Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).symm (r : Formalism.IndefR.Datum.EAf D)`.
+
+Establish `hy : Formalism.IndefR.Datum.toEAf D (GlobalTheory.LatticeStable.liftFin D y) = r`. Rewrite using `[toEAf_liftFin, AlgEquiv.apply_symm_apply]`. Establish `hyi : finPart D (GlobalTheory.LatticeStable.liftFin D y) ∈ intAE D` using `(GlobalTheory.SplitDec.int_iff _).2 (by rw [hy]; exact r.2)`. Use `⟨m, fun p => GlobalTheory.LatticeStable.liftFin D y * β p, b, fun p => ?_, hb, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`.
+
+Conclude with `GlobalTheory.FinPl.FrameLat.mul_mem_intAE hyi (hβ p)`. Simplify using `only [mul_assoc, ← Finset.mul_sum, map_mul, hy]`. Rewrite using `[Pi.smul_apply, he i, Subring.smul_def, smul_eq_mul]`.
+-/
 theorem exists_integralCombination_of_mem_completedLattice {n : ℕ} (B : Submodule (𝓞 D.host.E) (Fin n → D.host.E))
     (z : Fin n → Formalism.IndefR.Datum.EAf D) (hz : z ∈ Formalism.L2.Herm.hatL (F := D.host.F) B) :
     ∃ (m : ℕ) (β : Fin m → Formalism.L2.Theta.AE D) (b : Fin m → Fin n → D.host.E),
@@ -95,6 +124,9 @@ theorem exists_integralCombination_of_mem_completedLattice {n : ℕ} (B : Submod
     · simp only [mul_assoc, ← Finset.mul_sum, map_mul, hy]
       rw [Pi.smul_apply, he i, Subring.smul_def, smul_eq_mul]
 
+/- English proof (translation)
+Take `⟨m, β, b, hβ, hb, he⟩` from `exists_integralCombination_of_mem_completedLattice B _ hY`. Use `⟨m, β, b, hβ, hb, fun i => ?_⟩` and prove the remaining obligations. Establish `h` using `he i`. Rewrite `h` using `[toEAf_apply, toEAf_apply]`. Conclude with `(Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).injective h`.
+-/
 theorem expand {n : ℕ} (B : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) (Y : Fin n → Formalism.L2.Theta.AE D)
     (hY : (fun i => Formalism.IndefR.Datum.toEAf D (Y i)) ∈ Formalism.L2.Herm.hatL (F := D.host.F) B) :
     ∃ (m : ℕ) (β : Fin m → Formalism.L2.Theta.AE D) (b : Fin m → Fin n → D.host.E),
@@ -106,6 +138,9 @@ theorem expand {n : ℕ} (B : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) (Y
   rw [toEAf_apply, toEAf_apply] at h
   exact (Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).injective h
 
+/- English proof (translation)
+Introduce `B Y hY` and use `expand B Y hY`.
+-/
 theorem finPart_eq_int_comb_of_mem_hatL : ∀ {D : D7} {n : ℕ} (B : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) (Y : Fin n → Formalism.L2.Theta.AE D),
     (fun i => Formalism.IndefR.Datum.toEAf D (Y i)) ∈ Formalism.L2.Herm.hatL (F := D.host.F) B →
     ∃ (m : ℕ) (β : Fin m → Formalism.L2.Theta.AE D) (b : Fin m → Fin n → D.host.E),

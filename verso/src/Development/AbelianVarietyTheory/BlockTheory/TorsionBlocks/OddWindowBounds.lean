@@ -11,6 +11,9 @@ def eFactor {L : Type} [Field L] (q : ℕ) (s : ℤ) (Y : Lˣ) : L :=
   (1 - (Y : L) * (q : L) ^ (-s)) * (1 - ((Y⁻¹ : Lˣ) : L) * (q : L) ^ (-s)) +
     ((q : L) - 1) * (q : L) ^ (-(2 * s))
 
+/- English proof (translation)
+Evaluate the numerical expressions using `[eFactor]`.
+-/
 example : eFactor (L := ℚ) 3 1 1 = 2 / 3 := by
   norm_num [eFactor]
 

@@ -8,5 +8,8 @@ open GlobalTheory.ChainFr GlobalTheory.SepRows GlobalTheory.SepPer Matrix
 open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.UnitaryEmbeddingOpenLevel.levOpen | exact GlobalTheory.UnitaryEmbeddingOpenLevel.levOpen | (intros; apply GlobalTheory.UnitaryEmbeddingOpenLevel.levOpen <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isOpen_congruence_embedding : ∀ (D : D7) (Y V : HSp D) (d : HermitianOrthogonalExtensionData Y V 1 1) (Λ : Lat Y) (𝔪 : Ideal (𝓞 D.host.E)), IsSelfDualC Y Λ → 𝔪 ≠ ⊥ → IsOpen {g : GA D V | Lev.finE V g ∈ congLev D.sp.cm V.gram (d.lat Λ fun _ => 1) 𝔪} := by
   first | exact @GlobalTheory.UnitaryEmbeddingOpenLevel.levOpen | exact GlobalTheory.UnitaryEmbeddingOpenLevel.levOpen | (intros; apply GlobalTheory.UnitaryEmbeddingOpenLevel.levOpen <;> assumption)

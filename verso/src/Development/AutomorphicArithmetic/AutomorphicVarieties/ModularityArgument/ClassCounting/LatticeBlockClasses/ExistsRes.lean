@@ -14,6 +14,15 @@ private def locS {L : Type} (F : Type) [Field L] [NumberField L] [Field F] [Numb
   add_mem' := fun {x y} hx hy P hP => Valuation.map_add_le _ (hx P hP) (hy P hP)
   neg_mem' := fun {x} hx P hP => by rw [Valuation.map_neg]; exact hx P hP
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `UpperTheory.V.ZK.Cl.cRes L F k r`. Take `⟨a1, a2, a3, a4, -⟩` from `UpperTheory.V.ZK.Cl.cAct L F`. Establish `hex : ∀ x : locS F b, ∃ u, ResF r (σ x) u`. Introduce `x`. Use `((h4 b hb).1 (σ x) fun P hP => ?_).2` and prove the remaining obligations.
+
+Establish `e : P = actP σ (actP σ⁻¹ P)` using `by rw [← a2, mul_inv_cancel, a3]`. Rewrite using `[e, a1]`. Conclude with `x.2 _ (by rwa [a4])`. Use `choose f hf using hex`. Use `⟨{ toFun := f, map_one' := ?_, map_mul' := ?_, map_zero' := ?_, map_add' := ?_ }, hf⟩` and prove the remaining obligations.
+
+Use `h1 _ _ _ (hf 1) ?_` and prove the remaining obligations. Simplify using `using h2 1`. Introduce `x y`. Use `h1 _ _ _ (hf (x * y)) ?_` and prove the remaining obligations. Simplify using `using (h3 _ _ _ _ (hf x) (hf y)).2`.
+
+Use `h1 _ _ _ (hf 0) ?_` and prove the remaining obligations. Simplify using `using h2 0`. Introduce `x y`. Use `h1 _ _ _ (hf (x + y)) ?_` and prove the remaining obligations. Simplify using `using (h3 _ _ _ _ (hf x) (hf y)).1`.
+-/
 private theorem exists_res {L F : Type} [Field L] [NumberField L] [Field F] [NumberField F] [Algebra L F]
     {k : Type} [Field k] (r : 𝓞 F →+* k) (b : 𝓞 L) (hb : r (algebraMap (𝓞 L) (𝓞 F) b) ≠ 0) (σ : F ≃ₐ[L] F) :
     ∃ ρ : locS F b →+* k, ∀ x : locS F b, ResF r (σ x) (ρ x) := by
@@ -38,6 +47,11 @@ private theorem exists_res {L F : Type} [Field L] [NumberField L] [Field F] [Num
     refine h1 _ _ _ (hf (x + y)) ?_
     simpa using (h3 _ _ _ _ (hf x) (hf y)).1
 
+/- English proof (translation)
+Use `⟨fun i j => ⟨g (Pi.single j 1) i, hg _ (fun i' P _ => ?_) i⟩, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : i' = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne h]`.
+
+Use extensionality with `i j`. Rewrite using `[LinearMap.toMatrix'_apply]`. Both sides reduce to the same expression.
+-/
 private theorem exists_mat {L F : Type} [Field L] [NumberField L] [Field F] [NumberField F] [Algebra L F]
     {I : Type} [Fintype I] [DecidableEq I] (b : 𝓞 L) (g : (I → F) →ₗ[F] (I → F))
     (hg : ∀ x, InLoc b x → InLoc b (g x)) :
@@ -50,6 +64,27 @@ private theorem exists_mat {L F : Type} [Field L] [NumberField L] [Field F] [Num
     rw [LinearMap.toMatrix'_apply]
     rfl
 
+/- English proof (translation)
+Introduce `L F _ _ _ _ _ I _ k _ r b hb g hg`. Take `⟨A, hA⟩` from `exists_mat b (g : (I → F) →ₗ[F] (I → F)) fun x hx => (hg x).1 hx`. Take `⟨B, hB⟩` from `exists_mat b (g.symm : (I → F) →ₗ[F] (I → F)) fun x hx => (hg _).2 (by simpa using hx)`. Establish `hinj : Function.Injective ((locS F b).subtype.mapMatrix : Matrix I I (locS F b) → Matrix I I F)`. Introduce `X Y h`.
+
+Use extensionality with `i j`. Conclude with `congrFun (congrFun h i) j`. Establish `hAB : A * B = 1`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_mul, hA, hB, ← LinearMap.toMatrix'_comp, map_one]`.
+
+Simplify using the standard rewrite rules. Establish `hBA : B * A = 1`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_mul, hA, hB, ← LinearMap.toMatrix'_comp, map_one]`. Simplify using the standard rewrite rules.
+
+Establish `hdet : ((LinearEquiv.det g : Fˣ) : F) = (A.det : locS F b)`. Rewrite using `[LinearEquiv.coe_det, ← LinearMap.det_toMatrix', ← hA, ← RingHom.map_det]`. Both sides reduce to the same expression. Use `⟨fun P hP => ?_, fun σ => ?_⟩` and prove the remaining obligations. Establish `h1 : ((A.det : locS F b) : F) * (B.det : locS F b) = 1`.
+
+Rewrite using `[← Subring.coe_mul, ← Matrix.det_mul, hAB]`. Simplify using the standard rewrite rules. Establish `h2` using `congrArg (P.valuation F) h1`. Rewrite `h2` using `[map_mul, map_one]`. Establish `h3 : P.valuation F ((A.det : locS F b) : F) = 1` using `le_antisymm (A.det.2 P hP) (h2.symm.le.trans (mul_le_of_le_one_right' (B.det.2 P hP)))`.
+
+Rewrite using `[ordP, hdet, h3]`. Simplify using the standard rewrite rules. Take `⟨ρ, hρ⟩` from `exists_res r b hb σ`. Take `⟨h1, h2, h3, h4⟩` from `UpperTheory.V.ZK.Cl.cRes L F k r`. Use `⟨Matrix.toLin'OfInv (M := ρ.mapMatrix B) (M' := ρ.mapMatrix A) (by rw [← map_mul, hBA, map_one]) (by rw [← map_mul, hAB, map_one]), ?_, fun w u hw hu i => ?_⟩` and prove the remaining obligations.
+
+Use `hρ A.det` as an intermediate fact. Rewrite `this` using `[← hdet, RingHom.map_det, ← LinearMap.det_toLin']`. Unfold `Res`. Rewrite using `[LinearEquiv.coe_det]`. Conclude with `this`.
+
+Set `w' : I → locS F b` to `fun i => ⟨w i, hw i⟩`. Establish `e1 : u = fun i => ρ (w' i)` using `funext fun i => h1 _ _ _ (hu i) (hρ (w' i))`. Establish `e2 : g w i = (A.mulVec w' i : locS F b)`. Establish `: g w = Matrix.mulVec (LinearMap.toMatrix' (g : (I → F) →ₗ[F] (I → F))) w`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this, ← hA]`. Conclude with `(RingHom.map_mulVec (locS F b).subtype A w' i).symm`. Use `hρ (A.mulVec w' i)` as an intermediate fact. Rewrite `this` using `[← e2, RingHom.map_mulVec]`. Rewrite using `[e1]`.
+
+Conclude with `this`.
+-/
 theorem UpperTheory.V.ZK.Cl.cMat :
     UpperTheory.V.ZK.Cl.CMat := by
   intro L F _ _ _ _ _ I _ k _ r b hb g hg

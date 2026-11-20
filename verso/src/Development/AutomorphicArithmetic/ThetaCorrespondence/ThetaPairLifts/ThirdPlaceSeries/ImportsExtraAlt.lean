@@ -15,6 +15,11 @@ set_option synthInstance.maxHeartbeats 200000
 section
 open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations GlobalTheory.NLink
 namespace GlobalTheory.ExtraFromFacts
+/- English proof (translation)
+Introduce `hP`. Take `⟨CT, hCT⟩` from `_root_.GlobalTheory.T.exists_bound_tieChi_of_prints hP`. Use `⟨8 * (CT : ℝ), CT, by positivity, ?_⟩` and prove the remaining obligations. Introduce `D nch hf h`. Use `⟨?_, hCT D nch hf h⟩` and prove the remaining obligations.
+
+Take `⟨hchi, ⟨Q, hDZ, hE⟩, hine, hser⟩` from `h`. Establish `hS` using `_root_.GlobalTheory.T.no_cut_passes_of_artin_reciprocity hP.artin`. Conclude with `_root_.GlobalTheory.T.commutingEndomorphismCondition_of_serLoc D Q hE (hS.2.1 hS.1 D Q) hser hf.Conclusion1.1 hf.what₂.a.tieLab hf.adm.1.1.1 hf.adm.1.1.2.2.1 hf.adm.1.1.2.2.2.2.2.2`.
+-/
 theorem main_alt_alt : Hypotheses₂ → ∃ (C : ℝ) (CT : ℕ), 0 ≤ C ∧ ∀ (D : D7) (nch : NChoice D), _root_.GlobalTheory.NFacts.NormChoiceFacts D nch → (PairedCharacterCondition.tieChi (D := D) ∧ (∃ Q : PairedCharacterCondition.Pend (D), PairedCharacterCondition.admDZ Q ∧ GlobalTheory.Pass.EigSpan Q) ∧ GlobalTheory.Pass.TieInePoly (D) ∧ GlobalTheory.TypeLeaf.SerLoc (D)) → _root_.GlobalTheory.NLink.ExtraAlt D C CT := by
   intro hP
   obtain ⟨CT, hCT⟩ := _root_.GlobalTheory.T.exists_bound_tieChi_of_prints hP

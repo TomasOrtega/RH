@@ -14,6 +14,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Mem.SRe
 
+/- English proof (translation)
+Consider the cases of `h`. Conclude with `hx`.
+-/
 theorem of_heq_cast {α β : Sort _} {y : β} {x : α} (P : α → Prop) (h : HEq y x) (hx : P x) :
     P (cast (type_eq_of_heq h) y) := by
   cases h
@@ -21,6 +24,13 @@ theorem of_heq_cast {α β : Sort _} {y : β} {x : α} (P : α → Prop) (h : HE
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `B C a G' _ _ Pl0 T A Ks _ _ iK R F F0 eE s N hh F₁ hS`. Establish `hF : FinX (reY (New.ofDiv a.D N hh) s.P.Y)` using `finX_reY a.D (New.ofDiv a.D N hh) s.P.X s.P.Y s.P.fin`. Establish `h : SameForms0LevelsAndValues (New.ofDiv a.D N hh) F0 ((by with_unfolding_all exact (F₁ :)))` using `hS`. Take `⟨S', hj⟩` from `SRest.exists_re_ofDiv N hh s.S h hF`. Establish `hsee` using `mvSee a (New.ofDiv a.D N hh) R F s.P.X s.P.inst s.t s.see`.
+
+Establish `hev` using `mvEv_holds a (New.ofDiv a.D N hh) R F s.P.X s.P.inst s.P.G s.t s.c s.ev`. Establish `hrow` using `mvRowJ a (New.ofDiv a.D N hh) R s.P.X s.P.inst s.P.G s.t eE s.S.j s.rowJ`. Use `letI := alg (reL a (New.ofDiv a.D N hh)) iK`. Establish `hrow'` using `of_heq_cast (fun j : a.D.what₂.EE ≃ₗᵢ[ℂ] EEC s.P.X s.P.G => RowJ (real (reL a (New.ofDiv a.D N hh)) R) (eL a (New.ofDiv a.D N hh) R eE) (XL a (New.ofDiv a.D N hh) s.P.X) (hL a (New.ofDiv a.D N hh) s.P.inst) (gdL a (New.ofDiv a.D N hh) s.P.G) (tL a (New.ofDiv a.D N hh) s.t) (jL a …`. Set `s' : SAt (real (reL a (New.ofDiv a.D N hh)) R) (face (reL a (New.ofDiv a.D N hh)) F) (eL a (New.ofDiv a.D N hh) R eE) F₁` to `{ P := (by with_unfolding_all exact (s.P.re (New.ofDiv a.D N hh) h hF :)) S := (by with_unfolding_all exact (S' :)) t := tL a (New.ofDiv a.D N hh) s.t c := s.c c_pos := s.c_pos see := (by with_unfolding_all exact (hsee :)) ev := (by with_unfolding_all exact (hev :)) rowJ := (by w …`.
+
+Conclude with `⟨s', (by with_unfolding_all exact (Eq.refl (tL a (New.ofDiv a.D N hh) s.t) :))⟩`.
+-/
 theorem sAtL_exists_ofDiv : ∀ (B : Base) (C : Cols B) (a : Late B C) (G' : Type) [Group G'] [Fintype G'] (Pl0 T : Type) (A : FamIn a.D.what₂.LL G' Pl0 T a.D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks a.D.what₂.LL] (R : RealDat a.D A Ks) (F : Face a.D A) (F0 : ∀ u, Forms0 a.D u) (eE : a.D.what₂.EE →ₗ[ℂ] R.HE.H) (s : SAt R F eE F0) (N : ∀ u, Submodule (𝓞 a.D.what₂.LL) (a.D.div.Nu u).V) (hh : a.D.what₂.Word → ℝ) (F₁ : ∀ u, Forms0 (reL a (New.ofDiv a.D N hh)).D u), SameL a (New.ofDiv a.D N hh) F0 F₁ → ∃ s' : SAtL a (New.ofDiv a.D N hh) R F eE F₁, SAtL.pt a (New.ofDiv a.D N hh) s' = tL a (New.ofDiv a.D N hh) s.t := by
   intro B C a G' _ _ Pl0 T A Ks _ _ iK R F F0 eE s N hh F₁ hS
   have hF : FinX (reY (New.ofDiv a.D N hh) s.P.Y) := finX_reY a.D (New.ofDiv a.D N hh) s.P.X s.P.Y s.P.fin

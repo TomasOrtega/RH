@@ -15,6 +15,15 @@ namespace GlobalTheory.UnramifiedH2Bound
 
 open GlobalTheory.ShapeNeg GlobalTheory.CyclotomicH2Bound
 
+/- English proof (translation)
+Establish `: NeZero (p ^ n)` using `⟨pow_ne_zero _ hp.ne_zero⟩`. Establish `hbx : b • x = 0` using `by rwa [zsmul_eq_mul]`. Establish `h1 : (addOrderOf x : ℤ) ∣ b` using `addOrderOf_dvd_iff_zsmul_eq_zero.mpr hbx`. Establish `h2 : addOrderOf x ∣ p ^ n`. Use `addOrderOf_dvd_card (x := x)` as an intermediate fact.
+
+Rewrite `this` using `[ZMod.card]`. Then use the resulting hypothesis. Take `⟨j, -, hjx⟩` from `(Nat.dvd_prime_pow hp).mp h2`. Establish `hjm : j < m`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+
+Apply `hb` to reduce the goal to its premises. Rewrite `h1` using `[hjx]`. Conclude with `(pow_dvd_pow (p : ℤ) hcon).trans (by exact_mod_cast h1)`. Establish `h3 : addOrderOf x ∣ p ^ m`. Rewrite using `[hjx]`.
+
+Conclude with `pow_dvd_pow _ hjm.le`. Establish `h4 : (p ^ m : ℕ) • x = 0` using `addOrderOf_dvd_iff_nsmul_eq_zero.mp h3`. Rewrite `h4` using `[nsmul_eq_mul]`. Then use the resulting hypothesis.
+-/
 theorem pow_mul_eq_zero_of_mul {p : ℕ} (hp : p.Prime) {n m : ℕ} {b : ℤ} (hb : ¬ ((p : ℤ) ^ m ∣ b))
     {x : ZMod (p ^ n)} (hx : (b : ZMod (p ^ n)) * x = 0) : ((p ^ m : ℕ) : ZMod (p ^ n)) * x = 0 := by
   have : NeZero (p ^ n) := ⟨pow_ne_zero _ hp.ne_zero⟩
@@ -36,6 +45,57 @@ theorem pow_mul_eq_zero_of_mul {p : ℕ} (hp : p.Prime) {n m : ℕ} {b : ℤ} (h
   have h4 : (p ^ m : ℕ) • x = 0 := addOrderOf_dvd_iff_nsmul_eq_zero.mp h3
   rwa [nsmul_eq_mul] at h4
 
+/- English proof (translation)
+Introduce `hTD p _ K hK O _ _ _ _ ϖ hϖ hpϖ hp0 M _ _ eM ρ hρ hcont`. Establish `hp : p.Prime` using `Fact.out`. Take `⟨σ, N, ζ', hζ'1, hσζ'⟩` from `GlobalTheory.ShapeNeg.exists_pow_ne_rootOfUnity (p := p) (K := K) hK 1 Nat.one_pos`. Rewrite `hσζ'` using `[pow_one]`. Take `⟨k, hk⟩` from `IsDiscreteValuationRing.ideal_eq_span_pow_irreducible (s := Ideal.span {(p : O) ^ N}) (by rw [Ne, Ideal.span_singleton_eq_bot]; exact pow_ne_zero N hp0) hϖ`.
+
+Establish `hfinQ : Finite (O ⧸ Ideal.span {(p : O) ^ N})`. Rewrite using `[hk]`. Conclude with `finite_quot hϖ k`. Use `⟨(p ^ N) ^ ((p ^ N) ^ Nat.card (O ⧸ Ideal.span {(p : O) ^ N})), ?_⟩` and prove the remaining obligations. Introduce `n hn h`.
+
+Use `letI := GlobalTheory.ShapeNeg.levZ (M := M) p n h`. Establish `htriv : ∀ (g : Formalism.GaloisCohomology.GK p K) (m : Lev M (ϖ ^ n)), levRepZ p n h ρ g m = m`. Introduce `g m`. Rewrite using `[levRepZ_apply]`. Conclude with `Lev.ext (by rw [levRep_val, hρ])`.
+
+Take `⟨x₀, hx₀⟩` from `lev_cyclic eM hϖ n`. Establish `hx₀k : (ϖ ^ n) • x₀ = 0` using `Lev.ext (by rw [Lev.val_smul, Lev.smul_val, Lev.val_zero])`. Establish `hfinL : Finite (Lev M (ϖ ^ n))`. Use `finite_quot hϖ n` as an intermediate fact. Use `Finite.of_surjective (fun q : O ⧸ Ideal.span {ϖ ^ n} => q.out • x₀) ?_` and prove the remaining obligations.
+
+Introduce `y`. Take `⟨t, rfl⟩` from `hx₀ y`. Conclude with `⟨Ideal.Quotient.mk _ t, out_smul n hx₀k t⟩`. Take `⟨⟨e⟩, -, -, -, hcup⟩` from `hTD p K hK n (Lev M (ϖ ^ n)) (levRepZ p n h ρ) hn (hcont n h)`. Establish `hkill : ∀ (φ : H0 ((twDual (Formalism.GaloisCohomology.cycK p K n) (levRepZ p n h ρ)).comp (MonoidHom.id (Formalism.GaloisCohomology.GK p K)))) (m : Lev M (ϖ ^ n)), ((p ^ N : ℕ) : ZMod (p ^ n)) * φ.1 m = 0`.
+
+Introduce `φ m`. Distinguish the cases in `hnN : n ≤ N`. Rewrite using `[(ZMod.natCast_eq_zero_iff _ _).mpr (pow_dvd_pow p hnN), zero_mul]`. Use `push Not at hnN`. Take `⟨ζ, hζ⟩` from `exists_prim p n`.
+
+Establish `hσζn : (σ ζ) ^ (p ^ n) = 1` using `by rw [← map_pow, hζ.pow_eq_one, map_one]`. Take `⟨a, -, ha⟩` from `hζ.eq_pow_of_pow_eq_one hσζn`. Establish `hcyc` using `cycK_eq_of_prim n σ hζ a ha.symm`. Establish `hfixm : ((Formalism.GaloisCohomology.cycK p K n σ : (ZMod (p ^ n))ˣ) : ZMod (p ^ n)) * φ.1 (levRepZ p n h ρ σ⁻¹ m) = φ.1 m`. Rewrite using `[← twDual_apply]`.
+
+Conclude with `DFunLike.congr_fun ((mem_riemannRochSpace_iff_regularAt_everywhere _ _).mp φ.2 σ) m`. Rewrite `hfixm` using `[htriv, hcyc]`. Establish `hnd : ¬ ((p : ℤ) ^ N ∣ (a : ℤ) - 1)`. Introduce and unpack `⟨d, hd⟩`. Apply `hσζ'` to reduce the goal to its premises.
+
+Establish `hζ'n : ζ' ^ (p ^ n) = 1`. Take `⟨c, hc⟩` from `pow_dvd_pow p hnN.le`. Rewrite using `[hc, pow_mul, hζ'1, one_pow]`. Take `⟨j, -, hj⟩` from `hζ.eq_pow_of_pow_eq_one hζ'n`. Establish `hσ' : σ ζ' = ζ' ^ a`.
+
+Rewrite using `[← hj, map_pow, ← ha, ← pow_mul, ← pow_mul, mul_comm]`. Establish `hne : ζ' ≠ 0`. Introduce and unpack `rfl`. Rewrite `hζ'1` using `[zero_pow (pow_ne_zero N hp.ne_zero)]`. Conclude with `zero_ne_one hζ'1`.
+
+Establish `ha' : (a : ℤ) = 1 + ((p ^ N : ℕ) : ℤ) * d` using `by push_cast; linarith`. Rewrite using `[hσ', ← zpow_natCast, ha', zpow_add₀ hne, zpow_one, zpow_mul, zpow_natCast, hζ'1, one_zpow, mul_one]`. Establish `hb : (((a : ℤ) - 1 : ℤ) : ZMod (p ^ n)) * φ.1 m = 0`. Use `push_cast`. Rewrite using `[sub_mul, one_mul, hfixm, sub_self]`.
+
+Conclude with `pow_mul_eq_zero_of_mul hp hnd hb`. Establish `hTcard : Nat.card {z : ZMod (p ^ n) // ((p ^ N : ℕ) : ZMod (p ^ n)) * z = 0} ≤ p ^ N`. Establish `key : ∀ z : {z : ZMod (p ^ n) // ((p ^ N : ℕ) : ZMod (p ^ n)) * z = 0}, z.1.val = p ^ (n - N) * (z.1.val / p ^ (n - N)) ∧ z.1.val / p ^ (n - N) < p ^ N`. Introduce `z`. Establish `hlt : z.1.val < p ^ (n - N) * p ^ N`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hdvd : p ^ (n - N) ∣ z.1.val`. Distinguish the cases in `hnN : n ≤ N`. Rewrite using `[Nat.sub_eq_zero_of_le hnN, pow_zero]`. Conclude with `one_dvd _`.
+
+Use `push Not at hnN`. Establish `h1 : ((p ^ N * z.1.val : ℕ) : ZMod (p ^ n)) = 0`. Rewrite using `[Nat.cast_mul, ZMod.natCast_zmod_val]`. Conclude with `z.2`. Rewrite `h1` using `[ZMod.natCast_eq_zero_iff]`.
+
+Establish `h2 : p ^ n = p ^ N * p ^ (n - N)` using `by rw [← pow_add]; congr 1; omega`. Establish `h1' : p ^ N * p ^ (n - N) ∣ p ^ N * z.1.val` using `by rw [← h2]; exact h1`. Conclude with `Nat.dvd_of_mul_dvd_mul_left (pow_pos hp.pos N) h1'`. Conclude with `⟨(Nat.mul_div_cancel' hdvd).symm, Nat.div_lt_of_lt_mul hlt⟩`. Establish `hinj : Function.Injective (fun z : {z : ZMod (p ^ n) // ((p ^ N : ℕ) : ZMod (p ^ n)) * z = 0} => ((z.1.val / p ^ (n - N) : ℕ) : ZMod (p ^ N)))`.
+
+Introduce `z w hzw`. Establish `hz` using `key z`. Establish `hw` using `key w`. Establish `hv` using `congrArg ZMod.val hzw`. Simplify using `only [ZMod.val_cast_of_lt hz.2, ZMod.val_cast_of_lt hw.2] at hv`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `ZMod.val_injective` to reduce the goal to its premises. Rewrite using `[hz.1, hw.1, hv]`. Establish `: NeZero (p ^ N)` using `⟨pow_ne_zero _ hp.ne_zero⟩`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hval : ∀ (φ : H0 ((twDual (Formalism.GaloisCohomology.cycK p K n) (levRepZ p n h ρ)).comp (MonoidHom.id (Formalism.GaloisCohomology.GK p K)))) (t : O), φ.1 (t • x₀) = φ.1 ((Ideal.Quotient.mk (Ideal.span {(p : O) ^ N}) t).out • x₀)`. Introduce `φ t`. Establish `hmem : (Ideal.Quotient.mk (Ideal.span {(p : O) ^ N}) t).out - t ∈ Ideal.span {(p : O) ^ N}` using `Ideal.Quotient.eq.mp (by rw [Ideal.Quotient.mk_out])`. Take `⟨s, hs⟩` from `Ideal.mem_span_singleton'.mp hmem`. Establish `hout : (Ideal.Quotient.mk (Ideal.span {(p : O) ^ N}) t).out = t + ((p ^ N : ℕ) : O) * s`.
+
+Rewrite using `[Nat.cast_pow]`. Take the linear combination `-hs`. Rewrite using `[hout, add_smul, mul_smul, Nat.cast_smul_eq_nsmul, td_add, td_nsmul, nsmul_eq_mul, hkill φ, add_zero]`. Establish `hΦ : Function.Injective (fun (φ : H0 ((twDual (Formalism.GaloisCohomology.cycK p K n) (levRepZ p n h ρ)).comp (MonoidHom.id (Formalism.GaloisCohomology.GK p K)))) (q : O ⧸ Ideal.span {(p : O) ^ N}) => (⟨φ.1 (q.out • x₀), hkill φ _⟩ : {z : ZMod (p ^ n) // ((p ^ N : ℕ) : ZMod (p ^ …`. Introduce `φ ψ hφψ`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `TDual.ext` to reduce the goal to its premises. Introduce `m`. Take `⟨t, rfl⟩` from `hx₀ m`. Rewrite using `[hval φ t, hval ψ t]`.
+
+Conclude with `congrArg Subtype.val (congrFun hφψ (Ideal.Quotient.mk _ t))`. Establish `hfinH0 : Finite (H0 ((twDual (Formalism.GaloisCohomology.cycK p K n) (levRepZ p n h ρ)).comp (MonoidHom.id (Formalism.GaloisCohomology.GK p K))))` using `Finite.of_injective _ hΦ`. Establish `hH0card : Nat.card (H0 ((twDual (Formalism.GaloisCohomology.cycK p K n) (levRepZ p n h ρ)).comp (MonoidHom.id (Formalism.GaloisCohomology.GK p K)))) ≤ (p ^ N) ^ Nat.card (O ⧸ Ideal.span {(p : O) ^ N})`. Combine the equalities or inequalities in the displayed calculation. Establish `hsmul0 : ∀ φ : H0 ((twDual (Formalism.GaloisCohomology.cycK p K n) (levRepZ p n h ρ)).comp (MonoidHom.id (Formalism.GaloisCohomology.GK p K))), ((p ^ N : ℕ) : ZMod (p ^ n)) • φ = 0`.
+
+Introduce `φ`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `TDual.ext` to reduce the goal to its premises. Introduce `m`. Rewrite using `[Submodule.coe_smul, TDual.smul_apply, hkill φ m]`.
+
+Both sides reduce to the same expression. Establish `hΨ : Function.Injective (fun (x : H2 ((levRepZ p n h ρ).comp (MonoidHom.id (Formalism.GaloisCohomology.GK p K)))) (φ : H0 ((twDual (Formalism.GaloisCohomology.cycK p K n) (levRepZ p n h ρ)).comp (MonoidHom.id (Formalism.GaloisCohomology.GK p K)))) => (⟨e (cup20 (Formalism.GaloisC …`. Establish `h0` using `congrArg e (congrArg (cup20 (Formalism.GaloisCohomology.cycK p K n) (levRepZ p n h ρ) (MonoidHom.id _) x) (hsmul0 φ))`. Rewrite `h0` using `[LinearMap.map_smul, LinearEquiv.map_smul, LinearMap.map_zero, LinearEquiv.map_zero, smul_eq_mul]`. Conclude with `h0⟩ : {z : ZMod (p ^ n) // ((p ^ N : ℕ) : ZMod (p ^ n)) * z = 0})) := by`.
+
+Introduce `x y hxy`. Apply `hcup.1` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `φ`. Apply `e.injective` to reduce the goal to its premises.
+
+Conclude with `congrArg Subtype.val (congrFun hxy φ)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem h2_bounded_of_trivial_action : Formalism.GaloisCohomology.LocalTateDualityK → ∀ {p : ℕ} [Fact p.Prime] {K : IntermediateField ℚ_[p] (PadicAlgCl p)},
     FiniteDimensional ℚ_[p] K → ∀ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [Finite (IsLocalRing.ResidueField O)] {ϖ : O}, Irreducible ϖ → (p : O) ∈ Ideal.span {ϖ} → (p : O) ≠ 0 →

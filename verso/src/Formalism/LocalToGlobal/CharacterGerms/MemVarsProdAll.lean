@@ -26,6 +26,9 @@ def prodAll (pl : (Σ i : Fin K, Fin (what₂ i)) → Fin N) (P : ∀ i, MvPolyn
     MvPolynomial (Fin N × WV I) C :=
   ∏ i, MvPolynomial.rename (fun x : Fin (what₂ i) × WV I => (pl ⟨i, x.1⟩, x.2)) (P i)
 
+/- English proof (translation)
+Unfold `kindAll`. Establish `hex : ∃ s', pl s' = pl s` using `⟨s, rfl⟩`. Rewrite using `[dif_pos hex]`. Establish `hc : hex.choose = s` using `hpl hex.choose_spec`. Rewrite using `[hc]`.
+-/
 theorem kindAll_pl {pl : (Σ i : Fin K, Fin (what₂ i)) → Fin N} (hpl : Function.Injective pl)
     (kind : ∀ i, Fin (what₂ i) → Knd d) (s : Σ i : Fin K, Fin (what₂ i)) : kindAll pl kind (pl s) = kind s.1 s.2 := by
   unfold kindAll
@@ -34,6 +37,11 @@ theorem kindAll_pl {pl : (Σ i : Fin K, Fin (what₂ i)) → Fin N} (hpl : Funct
   have hc : hex.choose = s := hpl hex.choose_spec
   rw [hc]
 
+/- English proof (translation)
+Unfold `prodAll at h`. Establish `h1` using `MvPolynomial.vars_prod _ h`. Rewrite `h1` using `[Finset.mem_biUnion]`. Take `⟨i, -, hi⟩` from `h1`. Establish `h2` using `MvPolynomial.vars_rename _ _ hi`.
+
+Rewrite `h2` using `[Finset.mem_image]`. Take `⟨⟨r, w'⟩, hw', heq⟩` from `h2`. Simplify using `only [Prod.mk.injEq] at heq`. Take `⟨rfl, rfl⟩` from `heq`. Conclude with `⟨⟨i, r⟩, rfl, hw'⟩`.
+-/
 theorem mem_vars_prodAll {pl : (Σ i : Fin K, Fin (what₂ i)) → Fin N} {P : ∀ i, MvPolynomial (Fin (what₂ i) × WV I) C}
     {ρ : Fin N} {w : WV I} (h : (ρ, w) ∈ (prodAll pl P).vars) :
     ∃ s : Σ i : Fin K, Fin (what₂ i), pl s = ρ ∧ (s.2, w) ∈ (P s.1).vars := by
@@ -55,6 +63,11 @@ section Rows
 variable {C : Type} [Field C] {V : VF C} {d : ℕ} {I J : Fin 2 → Type} [∀ g, Fintype (I g)] [∀ g, Fintype (J g)]
   {N K : ℕ} {what₂ : Fin K → ℕ}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `H w hw`. Take `⟨μ, hμ, hx⟩` from `(MvPolynomial.mem_vars _).1 hw`. Conclude with `H μ hμ w (Finsupp.mem_support_iff.1 hx)`. Introduce `H μ hμ w hx`.
+
+Conclude with `H w ((MvPolynomial.mem_vars _).2 ⟨μ, hμ, Finsupp.mem_support_iff.2 hx⟩)`.
+-/
 private lemma forall_support_ne_zero_iff_forall_mem_vars {R0 : Type} [Field R0] {α β : Type} (Q : MvPolynomial (α × β) R0)
     (ρ : α) (T : β → Prop) :
     (∀ μ ∈ Q.support, ∀ w, μ (ρ, w) ≠ 0 → T w) ↔ (∀ w, (ρ, w) ∈ Q.vars → T w) := by
@@ -65,6 +78,13 @@ private lemma forall_support_ne_zero_iff_forall_mem_vars {R0 : Type} [Field R0] 
   · intro H μ hμ w hx
     exact H w ((MvPolynomial.mem_vars _).2 ⟨μ, hμ, Finsupp.mem_support_iff.2 hx⟩)
 
+/- English proof (translation)
+Unfold `RowsOK`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun ρ g a a' hk => ?_, fun ρ hk => ?_⟩` and prove the remaining obligations. Take `⟨h1a, h1b, h1c⟩` from `h1 ρ g a a' hk`.
+
+Conclude with `⟨h1a, h1b, (forall_support_ne_zero_iff_forall_mem_vars P ρ (OnLeafV G g a a')).1 h1c⟩`. Take `⟨g, hg⟩` from `h2 ρ hk`. Conclude with `⟨g, (forall_support_ne_zero_iff_forall_mem_vars P ρ (fun w => w.1 = g)).1 hg⟩`. Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun ρ g a a' hk => ?_, fun ρ hk => ?_⟩` and prove the remaining obligations.
+
+Take `⟨h1a, h1b, h1c⟩` from `h1 ρ g a a' hk`. Conclude with `⟨h1a, h1b, (forall_support_ne_zero_iff_forall_mem_vars P ρ (OnLeafV G g a a')).2 h1c⟩`. Take `⟨g, hg⟩` from `h2 ρ hk`. Conclude with `⟨g, (forall_support_ne_zero_iff_forall_mem_vars P ρ (fun w => w.1 = g)).2 hg⟩`.
+-/
 theorem rowsOK_iff (G : ∀ g, Cart V d (I g) (J g)) (alt : Prop) {N : ℕ} (P : MvPolynomial (Fin N × WV I) C)
     (kind : Fin N → Knd d) : RowsOK G alt P kind ↔
       (∀ ρ g a a', kind ρ = some (g, a, a') → alt ∧ Odd (a' - a).val ∧
@@ -85,6 +105,19 @@ theorem rowsOK_iff (G : ∀ g, Cart V d (I g) (J g)) (alt : Prop) {N : ℕ} (P :
     · obtain ⟨g, hg⟩ := h2 ρ hk
       exact ⟨g, (forall_support_ne_zero_iff_forall_mem_vars P ρ (fun w => w.1 = g)).2 hg⟩
 
+/- English proof (translation)
+Rewrite using `[rowsOK_iff]`. Establish `h'` using `fun i => (rowsOK_iff G alt (P i) (kind i)).1 (h i)`. Use `⟨fun ρ g a a' hk => ?_, fun ρ hk => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hex : ∃ s, pl s = ρ`. Take `⟨s, rfl⟩` from `hex`.
+
+Rewrite `hk` using `[kindAll_pl hpl]`. Take `⟨h1, h2, h3⟩` from `(h' s.1).1 s.2 g a a' hk`. Use `⟨h1, h2, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨s', hs', hw'⟩` from `mem_vars_prodAll hw`. Establish `hss` using `hpl hs'`.
+
+Substitute `hss` using the available equality. Conclude with `h3 w hw'`. It suffices to derive a contradiction. Unfold `kindAll at hk`. Rewrite `hk` using `[dif_neg hex]`.
+
+Consider the cases of `hk`. Distinguish the cases in `hex : ∃ s, pl s = ρ`. Take `⟨s, rfl⟩` from `hex`. Rewrite `hk` using `[kindAll_pl hpl]`. Take `⟨g, hg⟩` from `(h' s.1).2 s.2 hk`.
+
+Use `⟨g, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨s', hs', hw'⟩` from `mem_vars_prodAll hw`. Establish `hss` using `hpl hs'`. Substitute `hss` using the available equality. Conclude with `hg w hw'`.
+
+Use `⟨0, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨s', hs', -⟩` from `mem_vars_prodAll hw`. Conclude with `absurd ⟨s', hs'⟩ hex`.
+-/
 theorem rowsOK_prodAll (G : ∀ g, Cart V d (I g) (J g)) (alt : Prop)
     {pl : (Σ i : Fin K, Fin (what₂ i)) → Fin N} (hpl : Function.Injective pl)
     (P : ∀ i, MvPolynomial (Fin (what₂ i) × WV I) C) (kind : ∀ i, Fin (what₂ i) → Knd d)

@@ -13,6 +13,9 @@ namespace CrystallineSemistableComparison.HT.Mul
 
 open Pb
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Conclude with `congrArg Submodule.Quotient.mk (Subtype.ext (funext fun s => h z.1 s))`.
+-/
 theorem pull_sqC {R₁ R₂ R₃ R₄ : Type} [CommRing R₁] [CommRing R₂] [CommRing R₃] [CommRing R₄] {C₁ C₂ C₃ C₄ : Type 1}
     [Category.{0} C₁] [Category.{0} C₂] [Category.{0} C₃] [Category.{0} C₄] {F₁ : C₁ ⥤ ModuleCat.{0} R₁} {F₂ : C₂ ⥤ ModuleCat.{0} R₂}
     {F₃ : C₃ ⥤ ModuleCat.{0} R₃} {F₄ : C₄ ⥤ ModuleCat.{0} R₄} {σa : R₁ →+* R₂} {σb : R₂ →+* R₄} {σc : R₁ →+* R₃} {σd : R₃ →+* R₄}
@@ -22,6 +25,9 @@ theorem pull_sqC {R₁ R₂ R₃ R₄ : Type} [CommRing R₁] [CommRing R₂] [C
   obtain ⟨z, rfl⟩ := Submodule.Quotient.mk_surjective _ x
   exact congrArg Submodule.Quotient.mk (Subtype.ext (funext fun s => h z.1 s))
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Conclude with `congrArg Submodule.Quotient.mk (Subtype.ext (funext fun s => h z.1 s))`.
+-/
 theorem pull_triC {R₁ R₂ R₄ : Type} [CommRing R₁] [CommRing R₂] [CommRing R₄] {C₁ C₂ C₄ : Type 1}
     [Category.{0} C₁] [Category.{0} C₂] [Category.{0} C₄] {F₁ : C₁ ⥤ ModuleCat.{0} R₁} {F₂ : C₂ ⥤ ModuleCat.{0} R₂}
     {F₄ : C₄ ⥤ ModuleCat.{0} R₄} {σa : R₁ →+* R₂} {σb : R₂ →+* R₄} {σc : R₁ →+* R₄}
@@ -31,6 +37,9 @@ theorem pull_triC {R₁ R₂ R₄ : Type} [CommRing R₁] [CommRing R₂] [CommR
   obtain ⟨z, rfl⟩ := Submodule.Quotient.mk_surjective _ x
   exact congrArg Submodule.Quotient.mk (Subtype.ext (funext fun s => h z.1 s))
 
+/- English proof (translation)
+Take `⟨B, hB⟩` from `CrystallineSemistableComparison.P.cup_bilin P h`. Rewrite using `[← hB, ← hB, map_smul, map_smul, LinearMap.smul_apply, smul_smul, mul_comm]`.
+-/
 theorem cup_smul {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {F₁ F₂ F₃ : C ⥤ ModuleCat.{0} R} (P : CH.Pairing F₁ F₂ F₃)
     {p q n : ℕ} (h : p + q = n) (a b : R) (x : CH.H F₁ p) (y : CH.H F₂ q) : P.cup h (a • x) (b • y) = (a * b) • P.cup h x y := by
   obtain ⟨B, hB⟩ := CrystallineSemistableComparison.P.cup_bilin P h
@@ -41,10 +50,18 @@ variable {R R' : Type} [CommRing R] [CommRing R'] {C C' : Type 1} [Category.{0} 
   {σ : R →+* R'} (m : SMor Φ Φ' σ) {a₁ b₁ a₂ b₂ a₃ b₃ : IdF Φ.A} {a₁' b₁' a₂' b₂' a₃' b₃' : IdF Φ'.A}
   (h : MulOk a₁ b₁ a₂ b₂ a₃ b₃) (h' : MulOk a₁' b₁' a₂' b₂' a₃' b₃')
 
+/- English proof (translation)
+The claim follows from `h.mul_mk x y hx hy`.
+-/
 theorem pair_mk {A : C ⥤ CommAlgCat.{0} R} {a b a' b' a'' b'' : IdF A} (h : MulOk a b a' b' a'' b'') (T : C) (x y : A.obj T)
     (hx : x ∈ a.S T) (hy : y ∈ a'.S T) : h.pair.μ T (sqMk a b x hx) (sqMk a' b' y hy) = sqMk a'' b'' (x * y) (h.aa T hx hy) :=
   h.mul_mk x y hx hy
 
+/- English proof (translation)
+Use `CrystallineSemistableComparison.P.cup_pull h.pair h'.pair m.G (m.sq h₁ k₁).τ (m.sq h₂ k₂).τ (m.sq h₃ k₃).τ (m.sq h₁ k₁).nat (m.sq h₂ k₂).nat (m.sq h₃ k₃).nat (fun T x y => ?_) e x y` and prove the remaining obligations. Take `⟨x, hx, rfl⟩` from `sq_surj a₁ b₁ x`. Take `⟨y, hy, rfl⟩` from `sq_surj a₂ b₂ y`. Use `(congrArg ((m.sq h₃ k₃).τ T) (pair_mk h _ x y hx hy)).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (pair_mk h' T (m.ρ T x) (m.ρ T y) (h₁ T x hx) (h₂ T y hy)).symm` and prove the remaining obligations.
+
+Conclude with `Subtype.ext (congrArg (Ideal.Quotient.mk _) (map_mul (m.ρ T) x y))`.
+-/
 theorem sq_cup (h₁ : m.Le a₁ a₁') (k₁ : m.Le b₁ b₁') (h₂ : m.Le a₂ a₂') (k₂ : m.Le b₂ b₂') (h₃ : m.Le a₃ a₃') (k₃ : m.Le b₃ b₃')
     {p q n : ℕ} (e : p + q = n) (x : CH.H (sq a₁ b₁) p) (y : CH.H (sq a₂ b₂) q) :
     (m.sq h₃ k₃).pull n (h.pair.cup e x y) = h'.pair.cup e ((m.sq h₁ k₁).pull p x) ((m.sq h₂ k₂).pull q y) := by
@@ -56,6 +73,11 @@ theorem sq_cup (h₁ : m.Le a₁ a₁') (k₁ : m.Le b₁ b₁') (h₂ : m.Le a�
   refine Eq.trans ?_ (pair_mk h' T (m.ρ T x) (m.ρ T y) (h₁ T x hx) (h₂ T y hy)).symm
   exact Subtype.ext (congrArg (Ideal.Quotient.mk _) (map_mul (m.ρ T) x y))
 
+/- English proof (translation)
+Use `CrystallineSemistableComparison.P.cup_pull h.pair h'.pair m.G (m.sqC c₁ h₁ k₁).τ (m.sqC c₂ h₂ k₂).τ (m.sqC c₃ h₃ k₃).τ (m.sqC c₁ h₁ k₁).nat (m.sqC c₂ h₂ k₂).nat (m.sqC c₃ h₃ k₃).nat (fun T x y => ?_) e x y` and prove the remaining obligations. Take `⟨x, hx, rfl⟩` from `sq_surj a₁ b₁ x`. Take `⟨y, hy, rfl⟩` from `sq_surj a₂ b₂ y`. Use `(congrArg ((m.sqC c₃ h₃ k₃).τ T) (pair_mk h _ x y hx hy)).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (pair_mk h' T _ _ (h₁ T x hx) (h₂ T y hy)).symm` and prove the remaining obligations.
+
+Use `Subtype.ext (congrArg (Ideal.Quotient.mk _) ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap R' _ c₃ * m.ρ T (x * y) = _`. Rewrite using `[hc, map_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sqC_cup (c₁ c₂ c₃ : R') (hc : c₃ = c₁ * c₂) (h₁ : m.LeC c₁ a₁ a₁') (k₁ : m.LeC c₁ b₁ b₁') (h₂ : m.LeC c₂ a₂ a₂')
     (k₂ : m.LeC c₂ b₂ b₂') (h₃ : m.LeC c₃ a₃ a₃') (k₃ : m.LeC c₃ b₃ b₃')
     {p q n : ℕ} (e : p + q = n) (x : CH.H (sq a₁ b₁) p) (y : CH.H (sq a₂ b₂) q) :
@@ -70,6 +92,9 @@ theorem sqC_cup (c₁ c₂ c₃ : R') (hc : c₃ = c₁ * c₂) (h₁ : m.LeC c�
   change algebraMap R' _ c₃ * m.ρ T (x * y) = _
   rw [hc, map_mul, map_mul]; ring
 
+/- English proof (translation)
+Use `CrystallineSemistableComparison.P.cup_pull h.pair h'.pair (𝟭 C) (sqLe h₁ k₁).τ (sqLe h₂ k₂).τ (sqLe h₃ k₃).τ (sqLe h₁ k₁).nat (sqLe h₂ k₂).nat (sqLe h₃ k₃).nat (fun T x y => ?_) e x y` and prove the remaining obligations. Take `⟨x, hx, rfl⟩` from `sq_surj a₁ b₁ x`. Take `⟨y, hy, rfl⟩` from `sq_surj a₂ b₂ y`. Use `(congrArg ((sqLe h₃ k₃).τ T) (pair_mk h _ x y hx hy)).trans ?_` and prove the remaining obligations. Conclude with `(pair_mk h' T x y (h₁ T hx) (h₂ T hy)).symm`.
+-/
 theorem le_cup {A : C ⥤ CommAlgCat.{0} R} {a₁ b₁ a₂ b₂ a₃ b₃ a₁' b₁' a₂' b₂' a₃' b₃' : IdF A}
     (h : MulOk a₁ b₁ a₂ b₂ a₃ b₃) (h' : MulOk a₁' b₁' a₂' b₂' a₃' b₃')
     (h₁ : ∀ T, a₁.S T ≤ a₁'.S T) (k₁ : ∀ T, b₁.S T ≤ b₁'.S T) (h₂ : ∀ T, a₂.S T ≤ a₂'.S T) (k₂ : ∀ T, b₂.S T ≤ b₂'.S T)
@@ -83,6 +108,11 @@ theorem le_cup {A : C ⥤ CommAlgCat.{0} R} {a₁ b₁ a₂ b₂ a₃ b₃ a₁'
   refine (congrArg ((sqLe h₃ k₃).τ T) (pair_mk h _ x y hx hy)).trans ?_
   exact (pair_mk h' T x y (h₁ T hx) (h₂ T hy)).symm
 
+/- English proof (translation)
+Establish `key : ∀ (T : C') (x : sqM a₁ b₁ (m.G.obj T)), (m.sq h₂ k₂).τ T (((idS Φ).sqC c h₁ k₁).τ (m.G.obj T) x) = ((idS Φ').sqC c' h₄ k₄).τ T ((m.sq h₃ k₃).τ T x)`. Introduce `T x`. Take `⟨x, hx, rfl⟩` from `sq_surj a₁ b₁ x`. Use `Subtype.ext (congrArg (Ideal.Quotient.mk _) ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `m.ρ T (algebraMap R _ c * x) = algebraMap R' _ c' * m.ρ T x`.
+
+Rewrite using `[map_mul, m.comm, hc]`. Conclude with `pull_sqC _ _ _ _ n (fun f s => key _ (f (s ⋙ m.G))) x`.
+-/
 theorem sq_sh (c : R) (c' : R') (hc : σ c = c') (h₁ : (idS Φ).LeC c a₁ a₂) (k₁ : (idS Φ).LeC c b₁ b₂) (h₂ : m.Le a₂ a₂')
     (k₂ : m.Le b₂ b₂') (h₃ : m.Le a₁ a₁') (k₃ : m.Le b₁ b₁') (h₄ : (idS Φ').LeC c' a₁' a₂') (k₄ : (idS Φ').LeC c' b₁' b₂')
     (n : ℕ) (x : CH.H (sq a₁ b₁) n) :
@@ -96,6 +126,11 @@ theorem sq_sh (c : R) (c' : R') (hc : σ c = c') (h₁ : (idS Φ).LeC c a₁ a�
     rw [map_mul, m.comm, hc]
   exact pull_sqC _ _ _ _ n (fun f s => key _ (f (s ⋙ m.G))) x
 
+/- English proof (translation)
+Establish `key : ∀ (T : C') (x : sqM a₁ b₁ (m.G.obj T)), ((idS Φ').sqC c' h₂ k₂).τ T ((m.sqC c h₁ k₁).τ T x) = (m.sqC c'' h₃ k₃).τ T x`. Introduce `T x`. Take `⟨x, hx, rfl⟩` from `sq_surj a₁ b₁ x`. Use `Subtype.ext (congrArg (Ideal.Quotient.mk _) ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap R' _ c' * (algebraMap R' _ c * m.ρ T x) = algebraMap R' _ c'' * m.ρ T x`.
+
+Rewrite using `[hc, map_mul, mul_assoc]`. Conclude with `pull_triC _ _ _ n (fun f s => key _ (f (s ⋙ m.G))) x`.
+-/
 theorem sqC_sh (c c' c'' : R') (hc : c'' = c' * c) (h₁ : m.LeC c a₁ a₁') (k₁ : m.LeC c b₁ b₁') (h₂ : (idS Φ').LeC c' a₁' a₂')
     (k₂ : (idS Φ').LeC c' b₁' b₂') (h₃ : m.LeC c'' a₁ a₂') (k₃ : m.LeC c'' b₁ b₂') (n : ℕ) (x : CH.H (sq a₁ b₁) n) :
     ((idS Φ').sqC c' h₂ k₂).pull n ((m.sqC c h₁ k₁).pull n x) = (m.sqC c'' h₃ k₃).pull n x := by
@@ -107,6 +142,9 @@ theorem sqC_sh (c c' c'' : R') (hc : c'' = c' * c) (h₁ : m.LeC c a₁ a₁') (
     rw [hc, map_mul, mul_assoc]
   exact pull_triC _ _ _ n (fun f s => key _ (f (s ⋙ m.G))) x
 
+/- English proof (translation)
+Establish `key : ∀ (T : C) (x : sqM a₁ b₁ T), (sqLe h₂ k₂).τ T (((idS Φ).sqC c h₁ k₁).τ T x) = ((idS Φ).sqC c h₄ k₄).τ T ((sqLe h₃ k₃).τ T x)`. Introduce `T x`. Take `⟨x, hx, rfl⟩` from `sq_surj a₁ b₁ x`. Both sides reduce to the same expression. Conclude with `pull_sqC _ _ _ _ n (fun f s => key _ (f s)) x`.
+-/
 theorem le_sh {a₁' b₁' a₂' b₂' : IdF Φ.A} (c : R) (h₁ : (idS Φ).LeC c a₁ a₂) (k₁ : (idS Φ).LeC c b₁ b₂) (h₂ : ∀ T, a₂.S T ≤ a₂'.S T)
     (k₂ : ∀ T, b₂.S T ≤ b₂'.S T) (h₃ : ∀ T, a₁.S T ≤ a₁'.S T) (k₃ : ∀ T, b₁.S T ≤ b₁'.S T) (h₄ : (idS Φ).LeC c a₁' a₂')
     (k₄ : (idS Φ).LeC c b₁' b₂') (n : ℕ) (x : CH.H (sq a₁ b₁) n) :
@@ -120,6 +158,9 @@ theorem le_sh {a₁' b₁' a₂' b₂' : IdF Φ.A} (c : R) (h₁ : (idS Φ).LeC 
 
 end SM
 
+/- English proof (translation)
+Take `⟨a, ha, n, hn, rfl⟩` from `Submodule.mem_sup.1 hx`. Take `⟨b, hb, n', hn', rfl⟩` from `Submodule.mem_sup.1 hy`. Establish `: (a + n) * (b + n') = a * b + (a * n' + n * (b + n'))` using `by ring`. Rewrite using `[this]`. Conclude with `Submodule.add_mem_sup (h a ha b hb) (add_mem (N.mul_mem_left _ hn') (N.mul_mem_right _ hn))`.
+-/
 theorem sup_mul {B : Type} [CommRing B] {I J P N : Ideal B} (h : ∀ x ∈ I, ∀ y ∈ J, x * y ∈ P) {x y : B} (hx : x ∈ I ⊔ N)
     (hy : y ∈ J ⊔ N) : x * y ∈ P ⊔ N := by
   obtain ⟨a, ha, n, hn, rfl⟩ := Submodule.mem_sup.1 hx
@@ -128,6 +169,9 @@ theorem sup_mul {B : Type} [CommRing B] {I J P N : Ideal B} (h : ∀ x ∈ I, �
   rw [this]
   exact Submodule.add_mem_sup (h a ha b hb) (add_mem (N.mul_mem_left _ hn') (N.mul_mem_right _ hn))
 
+/- English proof (translation)
+Take `⟨a, ha, n, hn, rfl⟩` from `Submodule.mem_sup.1 hx`. Rewrite using `[mul_add]`. Conclude with `Submodule.add_mem_sup (h a ha) (N.mul_mem_left _ hn)`.
+-/
 theorem mul_sup {B : Type} [CommRing B] {I P N : Ideal B} {c : B} (h : ∀ x ∈ I, c * x ∈ P) {x : B} (hx : x ∈ I ⊔ N) :
     c * x ∈ P ⊔ N := by
   obtain ⟨a, ha, n, hn, rfl⟩ := Submodule.mem_sup.1 hx
@@ -137,6 +181,9 @@ theorem mul_sup {B : Type} [CommRing B] {I P N : Ideal B} {c : B} (h : ∀ x ∈
 section Base
 variable {b : Base} {L : b.Fun} (Q : ObjectProperty (Thick L))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun T _ _ hx hy => sup_mul (fun _ hx _ hy => (grOkQ Q h).aa T hx hy) hx hy, fun T _ _ hx hy => sup_mul (fun _ hx _ hy => (grOkQ Q h).ab T hx hy) hx hy, fun T _ _ hx hy => sup_mul (fun _ hx _ hy => (grOkQ Q h).ba T hx hy) hx hy⟩`.
+-/
 theorem okm (c : b.R) {a a' s : ℕ} (h : a + a' = s) :
     MulOk (stdI Q (some (a : ℤ)) c) (stdI Q (some ((a : ℤ) + 1)) c) (stdI Q (some (a' : ℤ)) c) (stdI Q (some ((a' : ℤ) + 1)) c)
       (stdI Q (some (s : ℤ)) c) (stdI Q (some ((s : ℤ) + 1)) c) :=
@@ -144,6 +191,9 @@ theorem okm (c : b.R) {a a' s : ℕ} (h : a + a' = s) :
     fun T _ _ hx hy => sup_mul (fun _ hx _ hy => (grOkQ Q h).ab T hx hy) hx hy,
     fun T _ _ hx hy => sup_mul (fun _ hx _ hy => (grOkQ Q h).ba T hx hy) hx hy⟩
 
+/- English proof (translation)
+Introduce `T _ hx` and use `mul_sup (fun _ hx => fil_mul_le ht h T.obj hx) hx`.
+-/
 theorem lem {t : b.R} (ht : t ∈ b.I) (c : b.R) {r r' k : ℕ} (h : r' ≤ r + k) :
     (idS (sP Q)).LeC (t ^ k) (stdI Q (some (r : ℤ)) c) (stdI Q (some (r' : ℤ)) c) :=
   fun T _ hx => mul_sup (fun _ hx => fil_mul_le ht h T.obj hx) hx
@@ -153,10 +203,16 @@ def shm {t : b.R} (ht : t ∈ b.I) (c : b.R) {r r' : ℕ} (k : ℕ) (h : r + k =
       (RingHom.id _) :=
   (idS (sP Q)).sqC (t ^ k) (lem Q ht c (r := r) (r' := r') (by omega)) (lem Q ht c (r := r + 1) (r' := r' + 1) (by omega))
 
+/- English proof (translation)
+The claim follows from `le_sh (Φ := sP Q) (t ^ k) _ _ _ _ _ _ _ _ j z`.
+-/
 theorem red_sh {t : b.R} (ht : t ∈ b.I) (c : b.R) {r r' : ℕ} (k : ℕ) (h : r + k = r') (j : ℕ) (z : HG Q r j) :
     redG' Q c r' j (shG Q ht k h j z) = (shm Q ht c k h).pull j (redG' Q c r j z) :=
   le_sh (Φ := sP Q) (t ^ k) _ _ _ _ _ _ _ _ j z
 
+/- English proof (translation)
+The claim follows from `le_cup (grOkQ Q h) (okm Q c h) _ _ _ _ _ _ rfl z z'`.
+-/
 theorem red_cup (c : b.R) {r r' s i j : ℕ} (h : r + r' = s) (z : HG Q r i) (z' : HG Q r' j) :
     redG' Q c s (i + j) (cupG Q h z z') = (okm Q c h).pair.cup rfl (redG' Q c r i z) (redG' Q c r' j z') :=
   le_cup (grOkQ Q h) (okm Q c h) _ _ _ _ _ _ rfl z z'
@@ -172,6 +228,9 @@ variable {O : Type} [CommRing O] {A : Type} [CommRing A] [Algebra O A] {I : Idea
   {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of O)) (s : ℕ) (𝒱 : Set X.Opens) (d : RedIn γ' κ' γ l n)
   {Λ : Type} [CommRing Λ] (c : Λ →+* R) (lam : Λ →+* A) (hc : ∀ a, d.ρ (c a) = Ideal.Quotient.mk _ (lam a))
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `x`. Simplify using `only at hy`. Substitute `hy` using the available equality. Both sides reduce to the same expression.
+-/
 theorem redSub_val (r : ℕ) (T : (TS γ q l s 𝒱).FullSubcategory) (x : (B.pdS (nlFun γ' l X q κ') c r).S (redObj T.obj d T.property.1))
     (y : T.obj.B) (hy : x.1 = Ideal.Quotient.mk (lnT T.obj l n) y) :
     Subtype.val ((redSub q s 𝒱 d c lam hc r).τ T x) = Ideal.Quotient.mk _ y := by
@@ -180,6 +239,9 @@ theorem redSub_val (r : ℕ) (T : (TS γ q l s 𝒱).FullSubcategory) (x : (B.pd
   subst hy
   rfl
 
+/- English proof (translation)
+Take `⟨y, hy, e⟩` from `(Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).1 (dividedPowerFiltration_red T.obj.δ _ Ideal.Quotient.mk_surjective _ (redδ_dp T.obj T.property.1 n) r ((mem_pdS (T := redObj T.obj d T.property.1)).1 x.2))`. Conclude with `⟨y, hy, e.symm⟩`.
+-/
 theorem redSub_rep (r : ℕ) (T : (TS γ q l s 𝒱).FullSubcategory) (x : (B.pdS (nlFun γ' l X q κ') c r).S (redObj T.obj d T.property.1)) :
     ∃ y : T.obj.B, y ∈ T.obj.pdPow r ∧ x.1 = Ideal.Quotient.mk (lnT T.obj l n) y := by
   obtain ⟨y, hy, e⟩ := (Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).1
@@ -187,17 +249,28 @@ theorem redSub_rep (r : ℕ) (T : (TS γ q l s 𝒱).FullSubcategory) (x : (B.pd
       ((mem_pdS (T := redObj T.obj d T.property.1)).1 x.2))
   exact ⟨y, hy, e.symm⟩
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (redSub_val q s 𝒱 d c lam hc r T x y hy)`.
+-/
 theorem redSub_mk (r : ℕ) (T : (TS γ q l s 𝒱).FullSubcategory) (x : (B.pdS (nlFun γ' l X q κ') c r).S (redObj T.obj d T.property.1))
     (y : T.obj.B) (h : y ∈ (stdI (TS γ q l s 𝒱) (some (r : ℤ)) ((l : A) ^ n)).S T) (hy : x.1 = Ideal.Quotient.mk (lnT T.obj l n) y) :
     (redSub q s 𝒱 d c lam hc r).τ T x = sqMk _ (stdI (TS γ q l s 𝒱) (some ((r : ℤ) + 1)) ((l : A) ^ n)) y h :=
   Subtype.ext (redSub_val q s 𝒱 d c lam hc r T x y hy)
 
 include hc in
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `iBar T.obj l n (d.ρ (c a)) = _`. Rewrite using `[hc]`. Both sides reduce to the same expression.
+-/
 theorem i_c (T : (TS γ q l s 𝒱).FullSubcategory) (a : Λ) :
     (redObj T.obj d T.property.1).i (c a) = Ideal.Quotient.mk (lnT T.obj l n) (T.obj.i (lam a)) := by
   change iBar T.obj l n (d.ρ (c a)) = _
   rw [hc]; rfl
 
+/- English proof (translation)
+Establish `key : ∀ (T : (TS γ q l s 𝒱).FullSubcategory) (x : (B.pdS (nlFun γ' l X q κ') c r).S (redObj T.obj d T.property.1)), (redSub q s 𝒱 d c lam hc r').τ T ((pdSh (nlFun γ' l X q κ') c ht k h).τ (redObj T.obj d T.property.1) x) = (shm (TS γ q l s 𝒱) ht' ((l : A) ^ n) k h).τ T ((redSub q …`. Introduce `T x`. Take `⟨y, hy, e⟩` from `redSub_rep q s 𝒱 d c r T x`. Rewrite using `[redSub_mk q s 𝒱 d c lam hc r T x y (Ideal.mem_sup_left hy) e]`. Use `Subtype.ext ((redSub_val q s 𝒱 d c lam hc r' T _ (T.obj.i (lam t ^ k) * y) ?_).trans rfl)` and prove the remaining obligations.
+
+Use `Eq.trans (congrArg₂ (fun a b : T.obj.B ⧸ lnT T.obj l n => a * b) (i_c q s 𝒱 d c lam hc T (t ^ k)) e) ?_` and prove the remaining obligations. Rewrite using `[map_pow lam, map_mul]`. Conclude with `pull_sqC _ _ _ _ j (fun f s' => key _ (f (s' ⋙ redG q s d 𝒱))) x`.
+-/
 theorem redSub_sh {t : Λ} (ht : c t ∈ I') (ht' : lam t ∈ I) {r r' : ℕ} (k : ℕ) (h : r + k = r') (j : ℕ)
     (x : CH.H (B.pdS (nlFun γ' l X q κ') c r).fn j) :
     (redSub q s 𝒱 d c lam hc r').pull j ((pdSh (nlFun γ' l X q κ') c ht k h).pull j x) =
@@ -213,6 +286,11 @@ theorem redSub_sh {t : Λ} (ht : c t ∈ I') (ht' : lam t ∈ I) {r r' : ℕ} (k
     rw [map_pow lam, map_mul]
   exact pull_sqC _ _ _ _ j (fun f s' => key _ (f (s' ⋙ redG q s d 𝒱))) x
 
+/- English proof (translation)
+Use `CrystallineSemistableComparison.P.cup_pull (pdPair (nlFun γ' l X q κ') c h) (okm (TS γ q l s 𝒱) ((l : A) ^ n) h).pair (redG q s d 𝒱) (redSub q s 𝒱 d c lam hc r).τ (redSub q s 𝒱 d c lam hc r').τ (redSub q s 𝒱 d c lam hc u).τ (redSub q s 𝒱 d c lam hc r).nat (redSub q s 𝒱 d c lam hc …` and prove the remaining obligations. Take `⟨x', hx, e⟩` from `redSub_rep q s 𝒱 d c r T x`. Take `⟨y', hy, e'⟩` from `redSub_rep q s 𝒱 d c r' T y`. Use `Eq.trans ?_ (congrArg₂ (fun a b => (okm (TS γ q l s 𝒱) ((l : A) ^ n) h).pair.μ T a b) (redSub_mk q s 𝒱 d c lam hc r T x x' (Ideal.mem_sup_left hx) e) (redSub_mk q s 𝒱 d c lam hc r' T y y' (Ideal.mem_sup_left hy) e')).symm` and prove the remaining obligations. Use `Eq.trans ?_ (pair_mk (okm (TS γ q l s 𝒱) ((l : A) ^ n) h) T x' y' _ _).symm` and prove the remaining obligations.
+
+Use `redSub_mk q s 𝒱 d c lam hc u T _ (x' * y') _ ?_` and prove the remaining obligations. Conclude with `(congrArg₂ (fun a b : T.obj.B ⧸ lnT T.obj l n => a * b) e e').trans (map_mul _ _ _).symm`.
+-/
 theorem redSub_cup {r r' u i j : ℕ} (h : r + r' = u) (x : CH.H (B.pdS (nlFun γ' l X q κ') c r).fn i)
     (y : CH.H (B.pdS (nlFun γ' l X q κ') c r').fn j) :
     (redSub q s 𝒱 d c lam hc u).pull (i + j) ((pdPair (nlFun γ' l X q κ') c h).cup rfl x y) =
@@ -229,6 +307,9 @@ theorem redSub_cup {r r' u i j : ℕ} (h : r + r' = u) (x : CH.H (B.pdS (nlFun �
   refine redSub_mk q s 𝒱 d c lam hc u T _ (x' * y') _ ?_
   exact (congrArg₂ (fun a b : T.obj.B ⧸ lnT T.obj l n => a * b) e e').trans (map_mul _ _ _).symm
 
+/- English proof (translation)
+Use `congrArg Submodule.Quotient.mk (Subtype.ext (funext fun s' => Subtype.ext ?_))` and prove the remaining obligations. Use `(redSub_val q s 𝒱 d c lam hc 0 _ _ 1 ?_).trans rfl` and prove the remaining obligations. Conclude with `(one_smul Λ _).trans (map_one (Ideal.Quotient.mk (lnT (s'.obj (Fin.last 0)).obj l n))).symm`.
+-/
 theorem redSub_one : (redSub q s 𝒱 d c lam hc 0).pull 0 (pdOne (nlFun γ' l X q κ') c) =
     redG' (TS γ q l s 𝒱) ((l : A) ^ n) 0 0 (oneG (TS γ q l s 𝒱)) := by
   refine congrArg Submodule.Quotient.mk (Subtype.ext (funext fun s' => Subtype.ext ?_))

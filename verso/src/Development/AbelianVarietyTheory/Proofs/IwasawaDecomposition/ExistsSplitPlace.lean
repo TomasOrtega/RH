@@ -22,6 +22,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Mem.AntiChar
 
+/- English proof (translation)
+Take `⟨p, hp, hp2, hmod⟩` from `Nat.exists_prime_gt_modEq_one (k := H.QS * H.q * H.d) (Units.torsionOrder H.E + 1) H.condN_ne_zero`. Establish `hs` using `GlobalTheory.Mem.Chr.splitsC_of_modEq_one R H p hp hmod`. Establish `hne : {v : HeightOneSpectrum (𝓞 H.E) | ((p : ℕ) : 𝓞 H.E) ∈ v.asIdeal}.Nonempty`. Apply `Set.nonempty_of_ncard_ne_zero` to reduce the goal to its premises. Rewrite using `[hs]`.
+
+Conclude with `Module.finrank_pos.ne'`. Take `⟨w, hw⟩` from `hne`. Take `⟨-, -, ⟨x, hx, hx'⟩, -⟩` from `GlobalTheory.Mem.Chr.splitsC_main R H p hp hs w hw`. Use `⟨w, fun h => ?_, p, hp, hp2, hw⟩` and prove the remaining obligations. Establish `h'` using `(GlobalTheory.Mem.Chr.conjPl_main.2.1 R H w w).2 h`.
+
+Set `y : 𝓞 H.E` to `RingOfIntegers.mapRingEquiv H.conj.toRingEquiv x`. Conclude with `hx' y rfl ((h' x y rfl).1 hx)`.
+-/
 theorem exists_split_place (R : Ranks) (H : Formalism.BasicNotions.Host R) :
     ∃ w : HeightOneSpectrum (𝓞 H.E), ¬ GlobalTheory.Mem.Chr.ConjPl H.conj.toRingEquiv w w ∧
       ∃ p : ℕ, p.Prime ∧ Units.torsionOrder H.E + 1 < p ∧ (p : 𝓞 H.E) ∈ w.asIdeal := by
@@ -38,6 +45,17 @@ theorem exists_split_place (R : Ranks) (H : Formalism.BasicNotions.Host R) :
     let y : 𝓞 H.E := RingOfIntegers.mapRingEquiv H.conj.toRingEquiv x
     exact hx' y rfl ((h' x y rfl).1 hx)
 
+/- English proof (translation)
+Take `⟨c, hc, hcm, -⟩` from `GlobalTheory.Mem.HostCM.host_cm R H`. Establish `hce : c.toRingEquiv = H.conj.toRingEquiv` using `RingEquiv.ext hc`. Establish `hcm' : GlobalTheory.Mem.Chr.CMData H.F c (fun i => embPsi H (e i))` using `⟨hcm.real, hcm.cplx, hcm.rank, hcm.ne, hcm.bij.comp e.bijective⟩`. Take `⟨w, hw, p, hp, hp2, hpw⟩` from `exists_split_place R H`. Rewrite `hw` using `[← hce]`.
+
+Take `⟨ω, -, hω⟩` from `UpperTheory.Mu.tame_par w hp hp2 hpw (fun i => embPsi H (e i)) (fun i => -z i)`. Take `⟨w', -, hw'⟩` from `GlobalTheory.Mem.Chr.conjPl_main.1 H.E c.toRingEquiv w`. Set `θ0 : ∀ v : HeightOneSpectrum (𝓞 H.E), (𝓞 H.E ⧸ v.asIdeal)ˣ →* ℂˣ` to `Function.update (fun _ => 1) w ω`. Take `⟨χ, hu, ht, hi, -, hunr, -⟩` from `GlobalTheory.Mem.Chr.AntiExist.exists_hecke_trivOn H.F H.E c I _ hcm' z {w} θ0 (by`. Introduce `v hv v' h hv'`.
+
+Rewrite `hv`, `hv'` using `[Finset.mem_singleton]`. Substitute `hv hv'` using the available equality. Conclude with `hw h)`. Use the proof step `(fun ζ hζ => by`. Rewrite using `[Finset.prod_singleton]`.
+
+Simplify using `only [θ0, Function.update_self]`. Conclude with `hω ζ hζ)`. Use `⟨χ, hu, ht, hi, {w, w'}, fun v hv => hunr v ?_ ?_⟩` and prove the remaining obligations. Introduce `h`. Conclude with `hv (by rw [Finset.mem_singleton.1 h]; simp)`.
+
+Introduce `u hu' h`. Rewrite `h` using `[Finset.mem_singleton.1 hu']`. Conclude with `hv (by rw [hw' v h]; simp)`.
+-/
 theorem exists_hchar (R : Ranks) (H : Formalism.BasicNotions.Host R) (I : Type) [Fintype I] (e : I ≃ R.Psi) (z : I → ℤ) :
     ∃ χ : HChar H.E, χ.IsUnitary ∧ χ.TrivOn H.F ∧ χ.HasInf (fun i => embPsi H (e i)) (fun i => -2 * z i) ∧
       ∃ T : Finset (HeightOneSpectrum (𝓞 H.E)), ∀ v, v ∉ T → χ.UnrAt v := by
@@ -69,6 +87,15 @@ theorem exists_hchar (R : Ranks) (H : Formalism.BasicNotions.Host R) (I : Type) 
     rw [Finset.mem_singleton.1 hu'] at h
     exact hv (by rw [hw' v h]; simp)
 
+/- English proof (translation)
+Take `⟨ι, i1, i2, i3⟩` from `GlobalTheory.HostAdeleIso.exists_finiteAdele_equiv D`. Take `⟨N, hN, hprod⟩` from `GlobalTheory.CharLocProd.char_eq_prod_locK D ι i1 i2 (GlobalTheory.PlaceIdem.exists_isPlIdem D ι i1 i2 i3) c χ hc`. Take `⟨S, -, -, hS⟩` from `GlobalTheory.finiteIdele_exists_local_approx D.host.E N hN (Units.map (algebraMap D.host.E (FiniteAdeleRing (𝓞 D.host.E) D.host.E)).toMonoidHom k)`. Establish `hx : ∀ P, ι (finPart D (x : AE D)) P = algebraMap D.host.E (P.adicCompletion D.host.E) k` using `fun P => by`. Rewrite using `[h2]`.
+
+Conclude with `congrArg (fun y : FiniteAdeleRing (𝓞 D.host.E) D.host.E => y P) (i1 k)`. Establish `hS' : ∀ P, P ∉ S ∪ T → P.valuation D.host.E (k : D.host.E) = 1 ∧ (N : 𝓞 D.host.E) ∉ P.asIdeal` using `fun P hP => by`. Use `hS P fun h => hP (Finset.mem_union_left _ h)` as an intermediate fact. Conclude with `⟨(GlobalTheory.BaseIdeleTriv.val_algebraMap P (k : D.host.E)).symm.trans this.1, this.2⟩`. Establish `h3` using `hprod x h1 (S ∪ T) (fun _ => k) (fun P _ => ⟨by rw [hx, GlobalTheory.BaseIdeleTriv.val_algebraMap], by rw [hx, sub_self, map_zero]; exact zero_le⟩) (fun P hP => ⟨by rw [hx, GlobalTheory.BaseIdeleTriv.val_algebraMap]; exact (hS' P hP).1, (hS' P hP).2⟩)`.
+
+Establish `h4` using `GlobalTheory.HeckeProduct.hchar_productRule D.host.E χ (S ∪ T) (fun v hv => hT v fun h => hv (Finset.mem_union_right _ h)) k`. Establish `h5 : (∏ᶠ (v : HeightOneSpectrum (𝓞 D.host.E)) (_ : v ∉ S ∪ T), χ.val v ^ ordF v k) = 1` using `finprod_eq_one_of_forall_eq_one fun v => (finprod_congr fun hv => by show χ.val v ^ ordF v k = 1`. Rewrite using `[ordF, (hS' v hv).1]`. Use the proof step `simp).trans finprod_one`. Rewrite `h4` using `[h5, mul_one]`.
+
+Rewrite using `[h3, ← Units.coe_prod, ← Units.val_mul, h4, Units.val_one]`.
+-/
 theorem val_fin_principal (D : D7) (c : IdC D) (χ : HChar D.host.E) (hc : ChrEq c χ)
     (T : Finset (HeightOneSpectrum (𝓞 D.host.E))) (hT : ∀ v, v ∉ T → χ.UnrAt v) (k : D.host.Eˣ) (x : (AE D)ˣ)
     (h1 : infPart D (x : AE D) = 1) (h2 : finPart D (x : AE D) = finPart D (incA D k)) :
@@ -99,6 +126,27 @@ theorem val_fin_principal (D : D7) (c : IdC D) (χ : HChar D.host.E) (hc : ChrEq
 set_option maxHeartbeats 1000000 in
 open GlobalTheory.FockCompare in
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `GlobalTheory.FockCompare.exists_chart hθ`. Take `⟨-, a, b, -, -, hab, ha, hb⟩` from `GlobalTheory.IdeleParts.congr_open_and_parts D`. Use `haveI : Nonempty D.what₂.Tau := ⟨D.eTau.symm 1⟩`. Establish `ext : ∀ a b : AE D, finPart D a = finPart D b → (∀ τ, θ τ (infPart D a) = θ τ (infPart D b)) → a = b`. Introduce `a b h1 h2`.
+
+Rewrite using `[← sub_eq_zero]`. Conclude with `hs.ext _ (by rw [RingHom.map_sub, h1, sub_self]) fun τ => by`. Rewrite using `[RingHom.map_sub, RingHom.map_sub, h2, sub_self]`. Set `t : (D.what₂.Tau → ℂˣ) → AE D` to `fun z => s (fun τ => (z τ : ℂ)) + (1 - s 1)`. Establish `tf : ∀ z, finPart D (t z) = 1` using `fun z => by`.
+
+Simplify using `only [t, RingHom.map_add, RingHom.map_sub, RingHom.map_one, hs.fin, zero_add, sub_zero]`. Establish `ti : ∀ z τ, θ τ (infPart D (t z)) = z τ` using `fun z τ => by`. Simplify using `only [t, RingHom.map_add, RingHom.map_sub, RingHom.map_one, hs.comp, Pi.one_apply, sub_self, add_zero]`. Establish `tc : Continuous t` using `(hs.cont.comp (continuous_pi fun τ => Units.continuous_val.comp (continuous_apply τ))).add continuous_const`. Set `U : (D.what₂.Tau → ℂˣ) →* AE D` to `{ toFun := t map_one' := ext _ _ (by rw [tf, RingHom.map_one]) fun τ => by`.
+
+Rewrite using `[ti, RingHom.map_one, RingHom.map_one]`. Both sides reduce to the same expression. Use the proof step `map_mul' := fun x y => ext _ _ (by rw [RingHom.map_mul, tf, tf, tf, mul_one]) fun τ => by`. Rewrite using `[RingHom.map_mul, RingHom.map_mul, ti, ti, ti]`. Use `rfl }`.
+
+Establish `Uc : Continuous U.toHomUnits` using `Units.continuous_iff.2 ⟨tc, tc.comp continuous_inv⟩`. Establish `hU : ∀ y : (AE D)ˣ, finPart D (y : AE D) = 1 → y = U.toHomUnits fun τ => Units.map ((θ τ).comp (infPart D)).toMonoidHom y` using `fun y hy => Units.ext (ext _ _ (hy.trans (tf _).symm) fun τ => (ti (fun τ => Units.map ((θ τ).comp (infPart D)).toMonoidHom y) τ).symm)`. Establish `hd : DenseRange fun (k : D.host.E) τ => tauE D τ k`. Introduce `z`. Use `GlobalTheory.HeckeFinTrivial.mem_closure_range (tauE D) θ (fun τ => (hθ τ).1) (fun τ => (hθ τ).2) (infPart D (s z))` as an intermediate fact.
+
+Rewrite `this` using `[show (fun i => θ i (infPart D (s z))) = z from funext fun τ => hs.comp z τ]`. Then use the resulting hypothesis. Establish `key : ∀ z : D.what₂.Tau → ℂˣ, ((c (U.toHomUnits z) : Circle) : ℂ) = ∏ τ, ((z τ : ℂ) / (‖(z τ : ℂ)‖ : ℂ)) ^ n τ`. Introduce `z`. Use `(GlobalTheory.HeckeFinTrivial.denseRange_units (tauE D) hd).induction_on z (isClosed_eq (continuous_subtype_val.comp (hc.1.1.comp Uc)) ?_) fun k => ?_` and prove the remaining obligations. Use `continuous_finsetProd _ fun τ _ => ?_` and prove the remaining obligations.
+
+Establish `h1 : Continuous fun z : D.what₂.Tau → ℂˣ => (z τ : ℂ)` using `Units.continuous_val.comp (continuous_apply τ)`. Establish `h3 : ∀ z : D.what₂.Tau → ℂˣ, (‖(z τ : ℂ)‖ : ℂ) ≠ 0` using `fun z => by`. Conclude with `norm_ne_zero_iff.2 (z τ).ne_zero` after adjusting the coercions. Conclude with `(h1.div (Complex.continuous_ofReal.comp h1.norm) h3).zpow₀ _ fun z => Or.inl (div_ne_zero (z τ).ne_zero (h3 z))`. Set `y : (AE D)ˣ` to `Units.map (incA D).toMonoidHom k`.
+
+Establish `e1 : a y = U.toHomUnits fun τ => Units.map (tauE D τ).toMonoidHom k`. Rewrite using `[hU (a y) (ha y).2]`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Conclude with `Units.ext ((congrArg (θ τ) (ha y).1).trans ((hθ τ).1 k))`.
+
+Establish `e2` using `val_fin_principal D c χ hc T hT k (b y) (hb y).1 (hb y).2`. Establish `e3 : c (a y) * c (b y) = 1` using `by rw [← map_mul, ← hab y]; exact hc.1.2 k`. Establish `e4 : ((c (a y) : Circle) : ℂ) * ((c (b y) : Circle) : ℂ) = 1` using `by rw [← Circle.coe_mul, e3, Circle.coe_one]`. Rewrite using `[← e1]`. Conclude with `(mul_right_cancel₀ (Circle.coe_ne_zero _) (e4.trans e2.symm)).trans (hn k)`.
+
+Conclude with `(congrArg (fun y => ((c y : Circle) : ℂ)) (hU x hx)).trans (key _)`.
+-/
 theorem val_inf (D : D7) [Fintype D.what₂.Tau] (c : IdC D) (χ : HChar D.host.E) (hc : ChrEq c χ)
     (T : Finset (HeightOneSpectrum (𝓞 D.host.E))) (hT : ∀ v, v ∉ T → χ.UnrAt v) (n : D.what₂.Tau → ℤ)
     (hn : χ.HasInf (tauE D) n) (θ : InfF D) (hθ : IsInfFam θ) (x : (AE D)ˣ) (hx : finPart D (x : AE D) = 1) :
@@ -156,6 +204,9 @@ theorem val_inf (D : D7) [Fintype D.what₂.Tau] (c : IdC D) (χ : HChar D.host.
       exact (mul_right_cancel₀ (Circle.coe_ne_zero _) (e4.trans e2.symm)).trans (hn k)
   exact (congrArg (fun y => ((c y : Circle) : ℂ)) (hU x hx)).trans (key _)
 
+/- English proof (translation)
+Establish `h1 : (‖w‖ : ℂ) ≠ 0` using `by exact_mod_cast norm_ne_zero_iff.2 h0`. Establish `h2 : (w / (‖w‖ : ℂ)) ^ (2 : ℤ) = 1`. Rewrite using `[zpow_ofNat, div_pow, ← Complex.mul_conj', hw, sq]`. Conclude with `div_self (mul_ne_zero h0 h0)`. Rewrite using `[show -2 * m = 2 * -m by ring, _root_.zpow_mul, h2, _root_.one_zpow]`.
+-/
 theorem sign_zpow_even {w : ℂ} (hw : starRingEnd ℂ w = w) (h0 : w ≠ 0) (m : ℤ) : (w / (‖w‖ : ℂ)) ^ (-2 * m) = 1 := by
   have h1 : (‖w‖ : ℂ) ≠ 0 := by exact_mod_cast norm_ne_zero_iff.2 h0
   have h2 : (w / (‖w‖ : ℂ)) ^ (2 : ℤ) = 1 := by
@@ -165,6 +216,15 @@ theorem sign_zpow_even {w : ℂ} (hw : starRingEnd ℂ w = w) (h0 : w ≠ 0) (m 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D j`. Use `letI : Fintype D.what₂.Tau := Fintype.ofEquiv _ D.eTau.symm`. Use `choose z hz using fun τ => (D.hc τ).e_int j`. Take `⟨χ, hu, ht, hi, T, hT⟩` from `exists_hchar D.R D.host D.what₂.Tau D.eTau z`. Take `⟨c, hc⟩` from `GlobalTheory.T.exists_cmAdeleUnitCharacter_reading_heckeChar D χ hu`.
+
+Establish `hv` using `val_inf D c χ hc T hT _ hi`. Take `⟨θ₀, hθ₀⟩` from `GlobalTheory.Member.exists_isInfFam_family D`. Use `⟨c, hc.1, fun τ => ⟨-2 * z τ, by rw [hz]; push_cast; ring, ⟨θ₀, hθ₀⟩, fun θ hθ x h1 h2 => ?_⟩, GlobalTheory.VolHeckeCompare.exists_isEta D, fun η _ a => ?_⟩` and prove the remaining obligations. Rewrite using `[hv θ hθ x h1, Finset.prod_eq_single τ (fun τ' _ h => by rw [h2 τ' h]; simp) (by simp)]`. Set `p : AF D.host.F →* AF D.host.F` to `(MonoidHom.inl (Ainf D.host.F) (Af D.host.F)).comp (MonoidHom.fst (Ainf D.host.F) (Af D.host.F))`.
+
+Set `q : AF D.host.F →* AF D.host.F` to `(MonoidHom.inr (Ainf D.host.F) (Af D.host.F)).comp (MonoidHom.snd (Ainf D.host.F) (Af D.host.F))`. Establish `e : a = Units.map p a * Units.map q a` using `Units.ext (Prod.ext (mul_one _).symm (one_mul _).symm)`. Establish `e1 : c (idF D (Units.map q a)) = 1` using `GlobalTheory.BaseIdeleTriv.finite_idele_base_trivial D c χ hc ht _ rfl`. Establish `e2 : c (idF D (Units.map p a)) = 1`. Apply `Circle.ext` to reduce the goal to its premises.
+
+Rewrite using `[hv θ₀ hθ₀ _ rfl, Circle.coe_one]`. Use `Finset.prod_eq_one fun τ _ => sign_zpow_even (GlobalTheory.FockCompare.conj_tmul_one hθ₀ τ _) ?_ _` and prove the remaining obligations. Conclude with `(Units.map ((θ₀ τ).comp (infPart D)).toMonoidHom (idF D (Units.map p a))).ne_zero`. Rewrite using `[pow_zero, e, map_mul, map_mul, e1, e2, one_mul]`.
+-/
 theorem exists_char : ∀ (D : D7) (j : Fin D.R.m),
     ∃ χ : IdC D, IsHeckeChar D χ ∧ (∀ τ, HasInfExp D χ τ (-(D.hc τ).e j)) ∧ ResEta D χ 0 := by
   intro D j

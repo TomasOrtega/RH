@@ -5,6 +5,9 @@ import PositivityTheory.AutomorphicForms.PublishedInputs.JacquetLanglands.RealAr
 
 namespace UpperTheory.Esk
 
+/- English proof (translation)
+The claim follows from `holWC_of dAx dTwo' dGood' dReps (pf_GTerm s_GCh s_GUnit s_GMod)`.
+-/
 theorem holWC : HolWC := holWC_of dAx dTwo' dGood' dReps (pf_GTerm s_GCh s_GUnit s_GMod)
 
 end UpperTheory.Esk

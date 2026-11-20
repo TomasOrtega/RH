@@ -5,6 +5,11 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Po
 open Matrix IsLocalRing ReciprocityTheory.Gal UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.UnitaryThreeInertia Module
 
 open UpperTheory.V in
+/- English proof (translation)
+Unfold `eta4 Chr.dirG`. Rewrite using `[MonoidHom.comp_apply]`. Establish `hc` using `Chr.cls_spec (k := ℚ) (Ω := Ω) 4 σ ζ hζ.pow_eq_one`. Rewrite `hc` using `[h]`. Establish `hv : ((Chr.cls ℚ Ω 4 σ : (ZMod 4)ˣ) : ZMod 4).val = 1`.
+
+Establish `h1 : ζ ^ 1 = ζ ^ ((Chr.cls ℚ Ω 4 σ : (ZMod 4)ˣ) : ZMod 4).val` using `by rwa [pow_one]`. Establish `hlt` using `ZMod.val_lt ((Chr.cls ℚ Ω 4 σ : (ZMod 4)ˣ) : ZMod 4)`. Conclude with `(hζ.pow_inj (by norm_num) hlt h1).symm`. Establish `hu : Chr.cls ℚ Ω 4 σ = 1` using `Units.ext (ZMod.val_injective 4 (by rw [hv]; rfl))`. Rewrite using `[hu, map_one]`.
+-/
 private theorem quartic_character_eq_one (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (ζ : Ω) (hζ : IsPrimitiveRoot ζ 4)
     (σ : Formalism.ConjugateSelfDual.G ℚ Ω) (h : σ ζ = ζ) : eta4 Ω σ = 1 := by
   unfold eta4 Chr.dirG
@@ -18,6 +23,25 @@ private theorem quartic_character_eq_one (Ω : Type) [Field Ω] [CharZero Ω] [I
   have hu : Chr.cls ℚ Ω 4 σ = 1 := Units.ext (ZMod.val_injective 4 (by rw [hv]; rfl))
   rw [hu, map_one]
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ hl2`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Establish `hlp : l.Prime` using `Fact.out`. Use `haveI : NeZero l := ⟨hlp.ne_zero⟩`. Take `⟨m, hm⟩ : ∃ m, l = 2 * m + 1` from `hlp.eq_two_or_odd'.resolve_left hl2`.
+
+Establish `hm1 : 1 ≤ m` using `by have := hlp.two_le; omega`. Use `haveI : NeZero (4 * l) := ⟨by omega⟩`. Set `a : ZMod (4 * l)` to `((4 * m + 1 : ℕ) : ZMod (4 * l))`. Establish `ha : a * a = 1`. Establish `hnat : ((4 * m + 1) * (4 * m + 1) : ℕ) = 1 + (4 * l) * (2 * m)` using `by rw [hm]; ring`.
+
+Use `show ((4 * m + 1 : ℕ) : ZMod (4 * l)) * ((4 * m + 1 : ℕ) : ZMod (4 * l)) = 1`. Rewrite using `[← Nat.cast_mul, hnat, Nat.cast_add, Nat.cast_one, Nat.cast_mul (4 * l), ZMod.natCast_self, zero_mul, add_zero]`. Set `u : (ZMod (4 * l))ˣ` to `⟨a, a, ha, ha⟩`. Take `⟨σ, hσ⟩` from `(UpperTheory.V.Chr.clsOnto Ω (4 * l)).1 u`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω (4 * l)`.
+
+Establish `hval : ((u : ZMod (4 * l))).val = 4 * m + 1` using `by show (((4 * m + 1 : ℕ) : ZMod (4 * l))).val = 4 * m + 1`. Rewrite using `[ZMod.val_natCast, Nat.mod_eq_of_lt (by omega)]`. Establish `hspec : ∀ t : Ω, t ^ (4 * l) = 1 → σ t = t ^ (4 * m + 1)`. Introduce `t ht`. Rewrite using `[UpperTheory.V.Chr.cls_spec (4 * l) σ t ht, hσ, hval]`.
+
+Use `⟨σ, ?_, ?_⟩` and prove the remaining obligations. Establish `h4l : (ζ ^ l) ^ (4 * l) = 1`. Rewrite using `[← pow_mul, mul_comm l (4 * l), pow_mul, hζ.pow_eq_one, one_pow]`. Establish `h4 : (ζ ^ l) ^ 4 = 1` using `by rw [← pow_mul, mul_comm, hζ.pow_eq_one]`. Use `quartic_character_eq_one Ω (ζ ^ l) (hζ.pow (by omega) (mul_comm 4 l)) σ ?_` and prove the remaining obligations.
+
+Rewrite using `[hspec _ h4l, pow_succ, pow_mul, h4, one_pow, one_mul]`. Introduce `hcyc`. Establish `hprim : IsPrimitiveRoot (ζ ^ 4) l` using `hζ.pow (by omega) rfl`. Establish `h4l : (ζ ^ 4) ^ (4 * l) = 1`. Rewrite using `[← pow_mul, mul_comm 4 (4 * l), pow_mul, hζ.pow_eq_one, one_pow]`.
+
+Use `haveI : ∀ i, HasEnoughRootsOfUnity Ω (l ^ i) := fun i => inferInstance`. Unfold `cycMod cycZ at hcyc`. Establish `hz : PadicInt.toZModPow 1 ((cyclotomicCharacter Ω l (MulSemiringAction.toRingAut (Formalism.ConjugateSelfDual.G ℚ Ω) Ω σ) : ℤ_[l]ˣ) : ℤ_[l]) = 1`. Simplify using `using congrArg Units.val hcyc`. Establish `hs` using `cyclotomicCharacter.spec l (n := 1) (MulSemiringAction.toRingAut (Formalism.ConjugateSelfDual.G ℚ Ω) Ω σ) (ζ ^ 4) (by rw [pow_one]; exact hprim.pow_eq_one)`.
+
+Rewrite `hs` using `[hz, ZMod.val_one'' (by rw [pow_one]; exact hlp.one_lt.ne')]`. Establish `hs' : σ (ζ ^ 4) = (ζ ^ 4) ^ 1` using `hs`. Establish `heq` using `(hspec _ h4l).symm.trans hs'`. Establish `hred : (ζ ^ 4) ^ (4 * m + 1) = (ζ ^ 4) ^ (2 * m)`. Rewrite using `[show 4 * m + 1 = 2 * m + l by omega, pow_add, hprim.pow_eq_one, mul_one]`.
+
+Rewrite `heq` using `[hred]`. Use `hprim.pow_inj (by omega) (by omega) heq` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem UpperTheory.exists_absGalois_fixing_sqrt_neg_one_cyclotomic_ne_one :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime], l ≠ 2 → ∃ σ : Formalism.ConjugateSelfDual.G ℚ Ω, eta4 Ω σ = 1 ∧ cycMod ℚ Ω l 1 σ ≠ 1 := by
   intro Ω _ _ _ l _ hl2

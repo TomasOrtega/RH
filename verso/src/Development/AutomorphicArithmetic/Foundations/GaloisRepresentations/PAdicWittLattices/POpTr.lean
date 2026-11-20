@@ -4,6 +4,15 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC GlobalTheory.GalV 
 open UpperTheory.Gal.Int.Geo (FEt Cover gen piece IsHEig)
 universe u v
 
+/- English proof (translation)
+Introduce `B R _ T hT Z Y Z' p q p' s t hs ht tr htr A`. Establish `key : ∀ (W : Scheme) (c : W ⟶ Z) (J : Type) [Fintype J] (σ : J → (W ⟶ Y)) (hσ : ∀ j, σ j ≫ q = c ≫ p), Splits s c σ → ∀ x, T.pull c rfl ((tr ∘ₗ T.pull t ht) x) = ∑ j, T.pull (σ j ≫ t) (by rw [Category.assoc, ht]; exact hσ j) x`. Introduce `W c J _ σ hσ hspl x`. Rewrite using `[LinearMap.comp_apply, htr W (c ≫ p) c rfl J σ hσ hspl]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Conclude with `(T.pull_comp (σ j) t (hσ j) ht _ x).symm`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨W, c, G, _, _, a, J, _, σ, h, hgal, hspl, hA⟩`. Establish `hσ : ∀ j, σ j ≫ q = c ≫ p` using `fun j => by`. Rewrite using `[← ht, ← Category.assoc]`.
+
+Conclude with `h j`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Apply `hT.inj p (c ≫ p) c rfl G a hgal` to reduce the goal to its premises. Rewrite using `[hA x, key W c J σ hσ hspl x]`.
+
+Introduce and unpack `⟨W, c, G, _, _, a, J, _, σ, hgal, hspl⟩ rfl`. Establish `hσ : ∀ j, σ j ≫ q = c ≫ p` using `fun j => by`. Rewrite using `[← hs, ← Category.assoc, hspl.1 j]`. Use `⟨W, c, G, inferInstance, inferInstance, a, J, inferInstance, σ, fun j => by rw [Category.assoc, ht]; exact hσ j, hgal, hspl, fun x => ?_⟩` and prove the remaining obligations. Conclude with `key W c J σ hσ hspl x`.
+-/
 theorem UpperTheory.Gal.G3.pOpTr :
     OpTr.{u} := by
   intro B R _ T hT Z Y Z' p q p' s t hs ht tr htr A

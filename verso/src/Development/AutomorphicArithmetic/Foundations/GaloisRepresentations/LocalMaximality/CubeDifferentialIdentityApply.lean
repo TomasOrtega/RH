@@ -4,6 +4,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Local
 open KaehlerDifferential GlobalTheory.CechDR GlobalTheory.PD GlobalTheory.WH GlobalTheory.W1 UpperTheory.Gal.productCup_of_system
 open scoped TensorProduct
 
+/- English proof (translation)
+Establish `hc' : c ∈ Submodule.pi Set.univ (fun s : Finset σ => if (s.card : ℤ) = n then A s else ⊥)` using `hc`. Establish `h` using `(Submodule.mem_pi.1 hc') s (Set.mem_univ s)`. Rewrite `h` using `[if_neg hs]`. Simplify using `using h`.
+-/
 private theorem acx_off {σ E : Type} [LinearOrder σ] [AddCommGroup E] [Module ℂ E]
     (A : Finset σ → Submodule ℂ E) (w : σ → Module.End ℂ E) (n : ℤ) (c : Finset σ → E)
     (hc : c ∈ (acx A w).C n) (s : Finset σ) (hs : (s.card : ℤ) ≠ n) : c s = 0 := by
@@ -12,6 +15,9 @@ private theorem acx_off {σ E : Type} [LinearOrder σ] [AddCommGroup E] [Module 
   rw [if_neg hs] at h
   simpa using h
 
+/- English proof (translation)
+Establish `hc' : c ∈ Submodule.pi Set.univ (fun s : Finset σ => if (s.card : ℤ) = n then A s else ⊥)` using `hc`. Establish `h` using `(Submodule.mem_pi.1 hc') s (Set.mem_univ s)`. Rewrite `h` using `[if_pos hs]`. Then use the resulting hypothesis.
+-/
 private theorem acx_on {σ E : Type} [LinearOrder σ] [AddCommGroup E] [Module ℂ E]
     (A : Finset σ → Submodule ℂ E) (w : σ → Module.End ℂ E) (n : ℤ) (c : Finset σ → E)
     (hc : c ∈ (acx A w).C n) (s : Finset σ) (hs : (s.card : ℤ) = n) : c s ∈ A s := by
@@ -19,11 +25,17 @@ private theorem acx_on {σ E : Type} [LinearOrder σ] [AddCommGroup E] [Module �
   have h := (Submodule.mem_pi.1 hc') s (Set.mem_univ s)
   rwa [if_pos hs] at h
 
+/- English proof (translation)
+Simplify using `[wd, LinearMap.pi_apply, LinearMap.sum_apply, LinearMap.smul_apply]`.
+-/
 private theorem cubeDifferential_identity_apply {σ E : Type} [LinearOrder σ] [AddCommGroup E] [Module ℂ E]
     (c : Finset σ → E) (t : Finset σ) :
     wd (fun _ => (1 : Module.End ℂ E)) c t = ∑ i ∈ t, (GlobalTheory.cubeSign t i : ℤ) • c (t.erase i) := by
   simp [wd, LinearMap.pi_apply, LinearMap.sum_apply, LinearMap.smul_apply]
 
+/- English proof (translation)
+Unfold `pk`. Rewrite using `[dif_pos h]`. Conclude with `I.min'_mem h`.
+-/
 private theorem pk_mem {d : ℕ} {I : Finset (Fin (d + 1))} (h : I.Nonempty) : pk I ∈ I := by
   unfold pk
   rw [dif_pos h]
@@ -33,6 +45,9 @@ section
 variable {d : ℕ} {S E : Type} [CommRing S] [Algebra ℂ S] [AddCommGroup E] [Module ℂ E] (T : Sys d S E)
   {κ : Type} [LinearOrder κ] [Fintype κ] (n : κ → ℕ × ℕ) (z : κ → S)
 
+/- English proof (translation)
+Establish `hr` using `((hOk d S E T κ n z hG hAd).2.1 I J (pk I) (pk_mem hI) (pk J) (pk_mem hJ)).1`. Establish `hk` using `(hKS S E T.act κ (T.R I J) (T.M I J) (T.r n z (pk I) (pk J)) (hG.stab I J hI hJ) hr).1 d e h`. Introduce `m hm x hx`. Establish `hR` using `hRS S E T.act κ (T.M I J) (T.u n (pk I) (pk J)) (T.r n z (pk I) (pk J)) z (fun _ => rfl) m x`. Conclude with `hR.2.2.1.2 (hk m hm (hR.2.1.1 hx))`.
+-/
 private theorem col_KE (hRS : RS) (hKS : KSub) (hOk : SysOk) (hG : T.Good) (hAd : T.admitted n z)
     (I J : Finset (Fin (d + 1))) (hI : I.Nonempty) (hJ : J.Nonempty) (e : Fin d ↪o κ)
     (h : KE (kos T.act (T.M I J) fun l => T.r n z (pk I) (pk J) (e l)) d) :
@@ -43,6 +58,9 @@ private theorem col_KE (hRS : RS) (hKS : KSub) (hOk : SysOk) (hG : T.Good) (hAd 
   have hR := hRS S E T.act κ (T.M I J) (T.u n (pk I) (pk J)) (T.r n z (pk I) (pk J)) z (fun _ => rfl) m x
   exact hR.2.2.1.2 (hk m hm (hR.2.1.1 hx))
 
+/- English proof (translation)
+Establish `hr` using `((hOk d S E T κ n z hG hAd).2.1 I J (pk I) (pk_mem hI) (pk J) (pk_mem hJ)).1`. Establish `hR` using `hRS S E T.act κ (T.M I J) (T.u n (pk I) (pk J)) (T.r n z (pk I) (pk J)) z (fun _ => rfl) d x`. Conclude with `hR.2.2.1.2 (hK2 S E T.act κ (T.R I J) (T.M I J) (T.r n z (pk I) (pk J)) d e (hG.stab I J hI hJ) hr h _ (hR.2.1.1 hx) hm)`.
+-/
 private theorem col_B (hRS : RS) (hKS : KSub) (hK2 : KoszulBoundaryOfComponentMemIdeal) (hOk : SysOk) (hG : T.Good) (hAd : T.admitted n z)
     (I J : Finset (Fin (d + 1))) (hI : I.Nonempty) (hJ : J.Nonempty) (e : Fin d ↪o κ)
     (h : KE (kos T.act (T.M I J) fun l => T.r n z (pk I) (pk J) (e l)) d)
@@ -55,6 +73,45 @@ private theorem col_B (hRS : RS) (hKS : KSub) (hK2 : KoszulBoundaryOfComponentMe
   exact hR.2.2.1.2 (hK2 S E T.act κ (T.R I J) (T.M I J) (T.r n z (pk I) (pk J)) d e (hG.stab I J hI hJ) hr h _
     (hR.2.1.1 hx) hm)
 
+/- English proof (translation)
+Establish `hl : ∀ (b : Finset (Two d)) (L : Finset κ), lft (uni b L) = b` using `fun b L => (hU (Two d) κ E (fun _ => 0) (fun _ => 0) b L).2.1`. Establish `hr : ∀ (b : Finset (Two d)) (L : Finset κ), rgt (uni b L) = L` using `fun b L => (hU (Two d) κ E (fun _ => 0) (fun _ => 0) b L).2.2.1`. Establish `hl2 : ∀ I J : Finset (Fin (d + 1)), lft (uni I J) = I` using `fun I J => (hU (Fin (d + 1)) (Fin (d + 1)) E (fun _ => 0) (fun _ => 0) I J).2.1`. Establish `hr2 : ∀ I J : Finset (Fin (d + 1)), rgt (uni I J) = J` using `fun I J => (hU (Fin (d + 1)) (Fin (d + 1)) E (fun _ => 0) (fun _ => 0) I J).2.2.1`. Establish `hcard : ∀ I J : Finset (Fin (d + 1)), (uni I J).card = I.card + J.card` using `fun I J => (hU (Fin (d + 1)) (Fin (d + 1)) E (fun _ => 0) (fun _ => 0) I J).2.2.2.1`.
+
+Take `⟨N, hN⟩ : ∃ N : ℤ, N = (d : ℤ) + p + 2` from `⟨_, rfl⟩`. Rewrite `hc`, the goal using `[← hN]`. Set `y : Finset (Two d ⊕ₗ κ) → E` to `fun s => Y (lft s) (rgt s)`. Establish `hyu : ∀ b L, y (uni b L) = Y b L` using `fun b L => by simp only [y, hl, hr]`. Establish `hYs : ∀ b L, L.card ≠ d → Y b L = 0`.
+
+Introduce `b L hL`. Break down `hY b with h | ⟨_, _, _, h⟩` into its components or cases. Rewrite using `[h]`. Both sides reduce to the same expression. Conclude with `acx_off _ _ d (Y b) h.1 L (by exact_mod_cast hL)`.
+
+Establish `hYz : ∀ b, wd (fun l => T.wt z (inrE l)) (Y b) = 0`. Introduce `b`. Break down `hY b with h | ⟨_, _, _, h⟩` into its components or cases. Rewrite using `[h, map_zero]`. Conclude with `h.2`.
+
+Establish `hyC : y ∈ (T.cx n z).C (N - 1)`. Use `((hB d S E T κ n z (N - 1)).2.1 y).2 fun I J => ?_` and prove the remaining obligations. Establish `hcolE : col y (uni I J) = Y (uni I J)`. Use function extensionality and compare the values at `L`. Conclude with `hyu _ _`.
+
+Rewrite using `[hcolE]`. Break down `hY (uni I J) with h | ⟨h1, h2, h3, h4⟩` into its components or cases. Rewrite using `[h]`. Conclude with `Submodule.zero_mem _`. Rewrite `h1` using `[hl2]`.
+
+Rewrite `h2` using `[hr2]`. Rewrite `h4` using `[hl2, hr2]`. Rewrite `h3` using `[hcard]`. Rewrite using `[if_pos ⟨h1, h2⟩]`. Establish `e1 : N - 1 - (I.card : ℤ) - J.card = d`.
+
+Establish `: (I.card : ℤ) + J.card = p + 1` using `by exact_mod_cast h3`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e1]`. Conclude with `h4.1`. Establish `hIs` using `(hW _ E _ (T.wt z)).2.1 (hOk d S E T κ n z hG hAd).1 (N - 1) y hyC`.
+
+Establish `hDy : wd (T.wt z) y ∈ (T.cx n z).Z N`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `hIs.1` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Conclude with `hIs.2`.
+
+Establish `hval : ∀ b L, (c - wd (T.wt z) y) (uni b L) = c (uni b L) - wd (fun _ => (1 : Module.End ℂ E)) (fun b' => Y b' L) b`. Introduce `b L`. Establish `h1` using `(hU (Two d) κ E (T.wt z) y b L).1`. Establish `h2 : (fun L' => y (uni b L')) = Y b`. Use function extensionality and compare the values at `L'`.
+
+Conclude with `hyu _ _`. Establish `h3 : (fun b' => y (uni b' L)) = fun b' => Y b' L`. Use function extensionality and compare the values at `b'`. Conclude with `hyu _ _`. Rewrite `h1` using `[h2, h3, hYz b, Pi.zero_apply, smul_zero, add_zero]`.
+
+Rewrite using `[Pi.sub_apply, h1]`. Both sides reduce to the same expression. Establish `hc' : c - wd (T.wt z) y ∈ (T.cx n z).Z N` using `Submodule.sub_mem _ hc hDy`. Establish `hlev' : ∀ (b : Finset (Two d)) (L : Finset κ), d < L.card → (c - wd (T.wt z) y) (uni b L) = 0`. Introduce `b L hL`.
+
+Establish `h0 : (fun b' => Y b' L) = 0`. Use function extensionality and compare the values at `b'`. Conclude with `hYs b' L hL.ne'`. Rewrite using `[hval, hlev b L hL, h0, map_zero]`. Simplify using the standard rewrite rules.
+
+Establish `hcols : ∀ I J : Finset (Fin (d + 1)), I.Nonempty → J.Nonempty → ((I.card + J.card : ℕ) : ℤ) = N - d → col (c - wd (T.wt z) y) (uni I J) ∈ (T.colCx n z I J).B d`. Introduce `I J hI hJ hIJ`. Establish `hcard2 : I.card + J.card = p + 2`. Establish `: ((I.card + J.card : ℕ) : ℤ) = ((p + 2 : ℕ) : ℤ)`. Rewrite using `[hIJ, hN]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `this` after adjusting the coercions. Establish `hZ` using `(hB d S E T κ n z N).2.2.2.2.1 _ hc' I J hI hJ (fun I' J' L hlt => by`. Distinguish the cases in `hL : d < L.card`.
+
+Conclude with `hlev' _ L hL`. Use `(hB d S E T κ n z N).1 _ hc'.1 I' J' L (Or.inr (Or.inr ?_))` and prove the remaining obligations. Establish `h1 : ((I'.card + J'.card + L.card : ℕ) : ℤ) < ((d + p + 2 : ℕ) : ℤ)`. Establish `: I'.card + J'.card + L.card < d + p + 2` using `by omega`. Conclude with `this` after adjusting the coercions.
+
+Rewrite using `[hN]`. Move the coercions through the operations in `at h1 ⊢`. Use the proof step `omega)`. Establish `e1 : N - (I.card : ℤ) - J.card = d`. Move the coercions through the operations in `at hIJ`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite `hZ` using `[e1]`. Conclude with `hfin I J hI hJ hcard2 _ hZ fun L => hval _ L`. Establish `hfinal` using `hL1 d S E T κ n z N hG hAd hK _ hc' hlev' hcols`. Establish `hsum : c = (c - wd (T.wt z) y) + wd (T.wt z) y` using `by abel`.
+
+Rewrite using `[hsum]`. Conclude with `Submodule.add_mem _ hfinal (Submodule.mem_map_of_mem hyC)`.
+-/
 private theorem core (hU : WdUni) (hW : WdBasic) (hB : SysBasic) (hOk : SysOk) (hL1 : CechKoszulSystemBoundaryCriterion)
     (hG : T.Good) (hAd : T.admitted n z)
     (hK : ∀ I J, I.Nonempty → J.Nonempty → KE (T.colCx n z I J) d) (p : ℕ)
@@ -169,6 +226,25 @@ private theorem core (hU : WdUni) (hW : WdBasic) (hB : SysBasic) (hOk : SysOk) (
 
 end
 
+/- English proof (translation)
+Introduce `hLift hColP hL1 hB hOk hK2 hKS hRS hGood hThLat _ hAct hU F K _ _ _ _ _ _ d x hx a p c hc hlev γ hγ hval`. Take `⟨τ, hτ⟩` from `hx.exists_isTop`. Establish `hG : (sysP K x a).Good` using `(hGood F K d x hx a).2.1`. Establish `hAd` using `(hThLat d _ _ (sysP K x a) hG).1`. Take `⟨γ', hγ', rfl⟩` from `hγ`.
+
+Establish `hex : ∀ b : Finset (Two d), ∃ yb : Finset (Mi d) → F ⊗[ℂ] DR ℂ K, (yb = 0 ∨ ((lft b).Nonempty ∧ (rgt b).Nonempty ∧ b.card = p + 1 ∧ yb ∈ ((sysP K x a).colCx n11 (sysP K x a).mu (lft b) (rgt b)).Z d)) ∧ ∀ L : Finset (Mi d), L.card = d → mulP F K (yb L) = kap K x L • γ' b`. Introduce `b`. Distinguish the cases in `h : (lft b).Nonempty ∧ (rgt b).Nonempty ∧ b.card = p + 1`. Establish `hm` using `acx_on _ _ _ γ' hγ' b (by rw [h.2.2]; push_cast; ring)`. Establish `hm' : γ' b ∈ omB ℂ K (rB ℂ K (xv x) (lft b ∪ rgt b)) a`.
+
+Simplify `hm` using `only [mixF, if_pos (And.intro h.1 h.2.1)]`. Take `⟨yb, h1, h2⟩` from `hLift F K d x hx a (lft b) (rgt b) h.1 h.2.1 _ hm'`. Conclude with `⟨yb, Or.inr ⟨h.1, h.2.1, h.2.2, h1⟩, h2⟩`. Establish `h0 : γ' b = 0`. Distinguish the cases in `hb : b.card = p + 1`.
+
+Establish `hm` using `acx_on _ _ _ γ' hγ' b (by rw [hb]; push_cast; ring)`. Establish `hn : ¬ ((lft b).Nonempty ∧ (rgt b).Nonempty)` using `fun h' => h ⟨h'.1, h'.2, hb⟩`. Simplify `hm` using `only [mixF, if_neg hn, Submodule.mem_bot]`. Conclude with `acx_off _ _ _ γ' hγ' b (by`. Introduce `h'`.
+
+Apply `hb` to reduce the goal to its premises. Establish `: (b.card : ℤ) = ((p + 1 : ℕ) : ℤ)` using `by rw [h']; push_cast; ring`. Conclude with `this)` after adjusting the coercions. Use `⟨0, Or.inl rfl, fun L _ => ?_⟩` and prove the remaining obligations. Simplify using `[h0]`.
+
+Use `choose Y hY1 hY2 using hex`. Establish `hKE : ∀ I J, I.Nonempty → J.Nonempty → KE ((sysP K x a).colCx n11 (sysP K x a).mu I J) d` using `fun I J hI hJ => col_KE _ _ _ hRS hKS hOk hG hAd I J hI hJ (dj (pk J)) (hColP F K d x hx a I J (pk I) (pk_mem hI) (pk J) (pk_mem hJ)).1`. Use `core (sysP K x a) n11 (sysP K x a).mu hU wdBasic_of hB hOk hL1 hG hAd hKE p c hc hlev Y hY1 ?_` and prove the remaining obligations. Introduce `I J hI hJ _ e he heq`. Establish `hP` using `hColP F K d x hx a I J (pk I) (pk_mem hI) (pk J) (pk_mem hJ)`.
+
+Use `col_B _ _ _ hRS hKS hK2 hOk hG hAd I J hI hJ (dj (pk J)) hP.1 e he ?_` and prove the remaining obligations. Establish `hR` using `hRS _ _ (sysP K x a).act (Mi d) ((sysP K x a).M I J) ((sysP K x a).u n11 (pk I) (pk J)) ((sysP K x a).r n11 (sysP K x a).mu (pk I) (pk J)) (sysP K x a).mu (fun _ => rfl) d e`. Establish `hcardL : (img (dj (d` using `d) (pk J))).card = d := by simp [img]`. Use `hP.2 _ (acx_on _ _ _ _ (hR.2.1.1 he).1 _ (by rw [hcardL])) ?_` and prove the remaining obligations. Use `show mulP F K ((sysP K x a).act _ (e _)) = 0`.
+
+Rewrite using `[(hAct F K d x hx τ hτ a).2.2.2.2.1]`. Establish `h0 : mulP F K (e (img (dj (pk J)))) = 0`. Establish `hv : mulP F K (c (uni (uni I J) (img (dj (pk J))))) = kap K x (img (dj (pk J))) • wd (fun _ => (1 : Module.End ℂ (DR ℂ K))) γ' (uni I J)` using `hval _ _ hcardL`. Rewrite using `[heq, map_sub, hv, sub_eq_zero, cubeDifferential_identity_apply, cubeDifferential_identity_apply, map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_zsmul, hY2 _ _ hcardL, smul_comm]`. Rewrite using `[h0, smul_zero]`.
+-/
 theorem UpperTheory.Gal.productCup_of_system.pCmp_of :
     PLift → ColP → CechKoszulSystemBoundaryCriterion → SysBasic → SysOk → KoszulBoundaryOfComponentMemIdeal → KSub → RS → GoodZ → ThMuLat → MuSpan → ActsLin → WdUni → PCmp := by
   intro hLift hColP hL1 hB hOk hK2 hKS hRS hGood hThLat _ hAct hU F K _ _ _ _ _ _ d x hx a p c hc hlev γ hγ hval

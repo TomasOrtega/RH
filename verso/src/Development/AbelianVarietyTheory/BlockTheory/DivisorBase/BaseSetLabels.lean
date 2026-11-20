@@ -107,6 +107,9 @@ variable {R : RealDat D A Ks} {F : Face D A} {S : Finset (HeightOneSpectrum (�
   {eig : E.Pi → Eig D} {jE : D.what₂.EE →ₗ[ℂ] R.HE.H}
   {jW : ∀ i : Fin D.R.m, D.what₂.Mj ((i : ℕ) + 1) →ₗ[ℂ] (R.HW i (sg0 D A)).H}
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 example : dualLab (splitLab 3 1) = [1, 0, 0] := by decide
 
 end Basic₂

@@ -101,6 +101,9 @@ variable (a) in
 def CI (m : (E →+* ℂ) → Multiset ℂ) : Submodule ℂ (Sm E a) :=
   LinearMap.range (Cm.ofCusp E a) ⊓ ⨅ (t) (u), Module.End.eigenspace (cap t u) ((m t).map (u + ·)).prod
 
+/- English proof (translation)
+Simplify using `only [CI, Submodule.mem_inf, Cm.mem_range_ofCusp, Submodule.mem_iInf, Module.End.mem_eigenspace_iff]`.
+-/
 theorem mem_CI {m : (E →+* ℂ) → Multiset ℂ} {φ : Sm E a} :
     φ ∈ CI a m ↔ IsCuspForm φ ∧ ∀ t u, cap t u φ = ((m t).map (u + ·)).prod • φ := by
   simp only [CI, Submodule.mem_inf, Cm.mem_range_ofCusp, Submodule.mem_iInf, Module.End.mem_eigenspace_iff]

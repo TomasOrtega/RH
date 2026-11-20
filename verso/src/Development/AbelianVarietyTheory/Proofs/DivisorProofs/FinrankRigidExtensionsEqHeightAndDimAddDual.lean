@@ -8,12 +8,24 @@ open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.
 
 namespace GlobalTheory.PDivGroup
 
+/- English proof (translation)
+Use `haveI : Module.Finite K (Cot K (G.A 1)) := Module.Finite.of_surjective (AugCot.d (counitAlgHom K (G.A 1))) (AugCot.d_surjective _)`. Conclude with `Module.Finite.equiv (LinearEquiv.ofBijective _ (G.omegaLevel_one_bijective h)).symm`.
+-/
 theorem finite_omega_of_eq_zero {p : ℕ} {K : Type} [Field K] (h : (p : K) = 0)
     (G : PDivGroup p K) : Module.Finite K G.omega := by
   haveI : Module.Finite K (Cot K (G.A 1)) :=
     Module.Finite.of_surjective (AugCot.d (counitAlgHom K (G.A 1))) (AugCot.d_surjective _)
   exact Module.Finite.equiv (LinearEquiv.ofBijective _ (G.omegaLevel_one_bijective h)).symm
 
+/- English proof (translation)
+Establish `h1` using `finite_omega_of_eq_zero h G`. Establish `h2` using `finite_omega_of_eq_zero h G.dual`. Establish `e1 : Module.finrank K G.omega = Module.finrank K (Cot K (G.A 1))` using `(LinearEquiv.ofBijective _ (G.omegaLevel_one_bijective h)).finrank_eq`. Establish `e2 : Module.finrank K G.dual.omega = Module.finrank K (Cot K (G.dual.A 1))` using `(LinearEquiv.ofBijective _ (G.dual.omegaLevel_one_bijective h)).finrank_eq`. Establish `hsum : Module.finrank K G.omega + Module.finrank K G.dual.omega = G.height`.
+
+Rewrite using `[e1, e2]`. Conclude with `le_antisymm (GlobalTheory.T.cotangent_dim_add_dual_cotangent_dim_le_height p K h G) (GlobalTheory.T.height_le_cotangent_dim_add_dual_cotangent_dim p K h G)`. Establish `hr` using `(G.rigToLie h).rank_range_add_rank_ker`. Rewrite `hr` using `[LinearMap.range_eq_top.2 (G.rigToLie_surjective h), rank_top, LinearMap.exact_iff.1 (G.exact_rigOfOmega_rigToLie h), (LinearEquiv.ofInjective _ (G.rigOfOmega_injective_of_eq_zero h)).rank_eq.symm]`. Establish `hfin : Module.Finite K G.RigExt` using `by haveI : Module.Free K G.RigExt := Module.Free.of_divisionRing K _`.
+
+Rewrite using `[← Module.rank_lt_aleph0_iff, ← hr]`. Conclude with `Cardinal.add_lt_aleph0 (Module.rank_lt_aleph0 K _) (Module.rank_lt_aleph0 K _)`. Use `⟨h1, hfin, ?_, hsum⟩` and prove the remaining obligations. Establish `e` using `(G.rigToLie h).finrank_range_add_finrank_ker`. Rewrite `e` using `[LinearMap.range_eq_top.2 (G.rigToLie_surjective h), finrank_top, LinearMap.exact_iff.1 (G.exact_rigOfOmega_rigToLie h), LinearMap.finrank_range_of_inj (G.rigOfOmega_injective_of_eq_zero h)]`.
+
+Rewrite using `[← e, ← hsum, add_comm, Subspace.dual_finrank_eq]`.
+-/
 theorem finrank_rigExt_omega (p : ℕ) [Fact p.Prime] (K : Type) [Field K] (h : (p : K) = 0)
     (G : PDivGroup p K) :
     Module.Finite K G.omega ∧ Module.Finite K G.RigExt ∧ Module.finrank K G.RigExt = G.height ∧

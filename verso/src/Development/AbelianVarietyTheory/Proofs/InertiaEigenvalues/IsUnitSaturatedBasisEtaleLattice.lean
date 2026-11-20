@@ -12,6 +12,19 @@ noncomputable section
 
 namespace GlobalTheory.EtaleLattice
 
+/- English proof (translation)
+Establish `cancel : ∀ (n : ℕ) (M N : Matrix (Fin d) (Fin d) R), p ^ n • M = p ^ n • N → M = N`. Introduce `n M N h`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Conclude with `mul_left_cancel₀ (pow_ne_zero n hp) (congrFun (congrFun h i) j)`. Establish `h1 : p ^ m • Y'.map φ = Y.map φ * P.map φ`.
+
+Rewrite using `[← Matrix.map_mul, ← hY']`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `[hφp]`. Use `set V : Matrix (Fin d) (Fin d) R := u' • (A * P.map φ) with hV`. Establish `hVO : ∀ i j, V i j ∈ O`.
+
+Introduce `i j`. Rewrite using `[hV, Matrix.smul_apply, Matrix.mul_apply]`. Conclude with `O.mul_mem hu' (O.sum_mem fun c _ => O.mul_mem (hA i c) (hφO _ (hP c j)))`. Establish `h2 : Y * V = p ^ (k + m) • Y'.map φ`. Rewrite using `[hV, Matrix.mul_smul, ← Matrix.mul_assoc, ← hφ, Matrix.smul_mul, ← h1, smul_smul, smul_smul]`.
+
+Use `congr 1`. Take the linear combination `(p ^ k * p ^ m) * huu`. Establish `h3 : ∀ j, ∃ w : Fin d → R, (∀ i, w i ∈ O) ∧ p ^ m • (fun i => V i j) = p ^ (k + m) • (P *ᵥ w)`. Introduce `j`. Use `hlat _ (fun i => hVO i j) _ fun i => ⟨φ (Y' i j), ?_⟩` and prove the remaining obligations.
+
+Conclude with `congrFun (congrFun h2 i) j`. Use `choose w hwO hw using h3`. Use `⟨Matrix.of fun i j => w j i, fun i j => hwO j i, ?_⟩` and prove the remaining obligations. Establish `h4 : p ^ m • V = p ^ (k + m) • (P * Matrix.of fun i j => w j i)`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations.
+
+Conclude with `congrFun (hw j) i`. Apply `cancel (k + m)` to reduce the goal to its premises. Apply `cancel m` to reduce the goal to its premises. Rewrite using `[← h2, ← Matrix.mul_smul, h4, Matrix.mul_smul, ← Matrix.mul_assoc, ← hY', Matrix.smul_mul, smul_comm]`.
+-/
 theorem exists_frob_matrix {R : Type} [CommRing R] [IsDomain R] (O : Subring R) (φ : R →+* R) (p : R) (hp : p ≠ 0)
     (hφp : φ p = p) (hφO : ∀ w ∈ O, φ w ∈ O) {d : ℕ} (Y A P Y' : Matrix (Fin d) (Fin d) R) (k m : ℕ) (u u' : R)
     (hu' : u' ∈ O) (huu : u * u' = 1) (hA : ∀ i j, A i j ∈ O) (hP : ∀ i j, P i j ∈ O)
@@ -49,6 +62,31 @@ theorem exists_frob_matrix {R : Type} [CommRing R] [IsDomain R] (O : Subring R) 
   apply cancel m
   rw [← h2, ← Matrix.mul_smul, h4, Matrix.mul_smul, ← Matrix.mul_assoc, ← hY', Matrix.smul_mul, smul_comm]
 
+/- English proof (translation)
+Introduce `l hl K bk τ hτ d N ρ hρ Y1 δ A1 hdet hδ hφ hg m P Y' hP hPdet hY' hlat hsat`. Take `⟨-, -, h3, -, -, h6, h7⟩` from `GlobalTheory.T.integral_elements_unit_factorization l K bk`. Take `⟨ht1, -, -, ht4⟩` from `GlobalTheory.T.breuilKisin_period_isUnit_wittTilt_and_ne_zero l K bk τ hτ`. Use `haveI : PerfectRing (Cb l) l := by`. Use `PerfectRing.ofSurjective _ l fun x => ?_` and prove the remaining obligations.
+
+Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := OCb l) x`. Take `⟨a', rfl⟩` from `surjective_frobenius (OCb l) l a`. Take `⟨b', rfl⟩` from `surjective_frobenius (OCb l) l b`. Conclude with `⟨algebraMap (OCb l) (Cb l) a' / algebraMap (OCb l) (Cb l) b', by`. Simplify using `[frobenius_def, div_pow, map_pow]⟩`.
+
+Establish `hl0 : (l : WCb l) ≠ 0` using `WittVector.p_nonzero l (Cb l)`. Establish `hlu : ¬ IsUnit (l : bk.S)` using `fun h => by`. Use `h.map bk.evW` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Conclude with `(WittVector.irreducible l (k := Cb l)).not_isUnit this`.
+
+Establish `hev : ∀ s, bk.evW s ∈ bk.OE` using `fun s n => ⟨0, s, 0, by simp⟩`. Take `⟨k, δ', hnd, rfl⟩` from `WfDvdMonoid.max_power_factor' hδ hlu`. Take `⟨u', hu', huu⟩` from `h3 δ' hnd`. Establish `hφW : ((l : WCb l) ^ k * bk.evW δ') • (Y1.map (inclW l)).map (frobW l).toRingHom = Y1.map (inclW l) * A1.map bk.evW`. Use `congrArg (fun M => Matrix.map M (inclW l)) hφ` as an intermediate fact.
+
+Simplify using `only [Matrix.map_mul] at this`. Rewrite using `[show A1.map bk.evW = (A1.map bk.ev).map (inclW l) from rfl, ← this]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, map_mul, map_pow, map_natCast]`. Rewrite using `[BK.evW, RingHom.comp_apply, ← GlobalTheory.Prism.frobW_inclW]`.
+
+Both sides reduce to the same expression. Take `⟨B, hB, hBφ⟩` from `exists_frob_matrix bk.OE (frobW l).toRingHom (l : WCb l) hl0 (map_natCast _ _) h7 (Y1.map (inclW l)) (A1.map bk.evW) P Y' k m (bk.evW δ') u' hu' huu (fun i j => hev _) hP hφW hY' hlat`. Use `GlobalTheory.T.isUnit_of_saturated' l K bk d Y' B ?_ hB hBφ ?_ hsat` and prove the remaining obligations. Introduce `h0`. Use `congrArg Matrix.det hY'` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.det_smul, h0, mul_zero, Matrix.det_mul]`. Conclude with `mul_ne_zero hdet hPdet this.symm`. Introduce `g hfix`. Take `⟨t, ht⟩` from `ht1`. Take `⟨s, hs⟩` from `ht4 (g : GQ l)`.
+
+Use `set Z : Matrix (Fin d) (Fin d) (WCb l) := ((ρ g).map (algebraMap ℤ_[l] (Ainf l))).map (inclW l) with hZ`. Establish `hZu : IsUnit Z` using `((hρ g).map (algebraMap ℤ_[l] (Ainf l)).mapMatrix).map (inclW l).mapMatrix`. Establish `e1 : (t : WCb l) ^ N • (Z * (Y1.map (inclW l)).map (galW l (g : GQ l))) = (s : WCb l) ^ N • Y1.map (inclW l)`. Use `congrArg (fun M => Matrix.map M (inclW l)) (hg g hfix)` as an intermediate fact. Establish `e : (Y1.map (inclW l)).map (galW l (g : GQ l)) = (Y1.map (Per.σA (g : GQ l))).map (inclW l)`.
+
+Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Conclude with `GlobalTheory.Prism.galW_inclW _ _`. Rewrite using `[e, hZ, ← Matrix.map_mul, ht, hs]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `congrFun (congrFun this i) j` as an intermediate fact.
+
+Simplify `this` using `only [Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, map_mul, map_pow]`. Establish `e2 : (l : WCb l) ^ m • Y'.map (galW l (g : GQ l)) = (Y1.map (inclW l)).map (galW l (g : GQ l)) * P`. Establish `eP : P.map (galW l (g : GQ l)) = P`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Conclude with `h6 g hfix _ (hP i j)`.
+
+Rewrite using `[← eP, ← Matrix.map_mul, ← hY']`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, map_mul, map_pow, map_natCast]`. Use `⟨((s⁻¹ * t) ^ N : (WCb l)ˣ) • Z, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hZu.smul _`.
+
+Establish `e3 : (l : WCb l) ^ m • ((((s⁻¹ * t) ^ N : (WCb l)ˣ) • Z) * Y'.map (galW l (g : GQ l))) = (l : WCb l) ^ m • Y'`. Rewrite using `[← Matrix.mul_smul, e2, hY', ← Matrix.mul_assoc, Units.smul_def, Matrix.smul_mul, Units.val_pow_eq_pow_val, Units.val_mul, mul_pow, mul_smul, e1, smul_smul, ← mul_pow, Units.inv_mul, one_pow, one_smul]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Conclude with `mul_left_cancel₀ (pow_ne_zero m hl0) (congrFun (congrFun e3 i) j)`.
+-/
 theorem isUnit_saturated_basis : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (τ : Ainf l), bk.IsPer τ → ∀ (d N : ℕ) (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l]), (∀ g, IsUnit (ρ g)) → ∀ (Y1 : Matrix (Fin d) (Fin d) (Ainf l)) (δ : bk.S) (A1 : Matrix (Fin d) (Fin d) (bk.S)), (Y1.map (inclW l)).det ≠ 0 → δ ≠ 0 → bk.ev δ • Y1.map WittVector.frobenius = Y1 * A1.map bk.ev → (∀ g : ↥(GK K), bk.FixFlat g → τ ^ N • ((ρ g).map (algebraMap ℤ_[l] (Ainf l)) * Y1.map (Per.σA (g : GQ l))) = Per.σA (g : GQ l) τ ^ N • Y1) → ∀ (m : ℕ) (P Y' : Matrix (Fin d) (Fin d) (WCb l)), (∀ i j, P i j ∈ bk.OE) → P.det ≠ 0 → (l : WCb l) ^ m • Y' = Y1.map (inclW l) * P → (∀ v : Fin d → WCb l, (∀ i, v i ∈ bk.OE) → ∀ n : ℕ, (∀ i, (l : WCb l) ^ n ∣ (Y1.map (inclW l) *ᵥ v) i) → ∃ w : Fin d → WCb l, (∀ i, w i ∈ bk.OE) ∧ (l : WCb l) ^ m • v = (l : WCb l) ^ n • (P *ᵥ w)) → (∀ w : Fin d → WCb l, (∀ i, w i ∈ bk.OE) → (∀ i, (l : WCb l) ∣ (Y' *ᵥ w) i) → ∀ i, (l : WCb l) ∣ w i) → IsUnit Y' := by
   intro l hl K bk τ hτ d N ρ hρ Y1 δ A1 hdet hδ hφ hg m P Y' hP hPdet hY' hlat hsat
   obtain ⟨-, -, h3, -, -, h6, h7⟩ := GlobalTheory.T.integral_elements_unit_factorization l K bk

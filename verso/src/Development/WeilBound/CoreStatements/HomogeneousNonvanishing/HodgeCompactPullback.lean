@@ -38,6 +38,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.HcptPullK
 
+/- English proof (translation)
+Unfold `Lat.pull`. Use `congr 1`. Use extensionality with `e'`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, e, he, rfl⟩`.
+
+Conclude with `⟨e, he, rfl⟩`. Introduce and unpack `⟨e, he, rfl⟩`. Conclude with `⟨hq, e, he, rfl⟩`.
+-/
 theorem pull_eq {X X' : Scheme.{0}} {Ω Ω' : Type} [Field Ω] [Field Ω'] {ξ : Sp Ω ⟶ X} (ξ' : Sp Ω' ⟶ X') (f : X' ⟶ X)
     {E F : Type} [AddCommGroup E] [Module Ω E] [AddCommGroup F] [Module Ω' F] (L : Lat ξ E) (j : E →+ F)
     (p' : Cpt ξ') (hq : genPt ξ ⤳ f p'.1) :
@@ -51,6 +56,15 @@ theorem pull_eq {X X' : Scheme.{0}} {Ω Ω' : Type} [Field Ω] [Field Ω'] {ξ :
   · rintro ⟨e, he, rfl⟩
     exact ⟨hq, e, he, rfl⟩
 
+/- English proof (translation)
+Proceed by induction on `n using Nat.recOnMul with`. Consider the case `zero => exact absurd rfl hn`. Consider the case `one`. Simplify `(regAt ξ q).one_mem` using `[unitAt]`. Consider the case `prime p hp => exact h p hp dvd_rfl`.
+
+Consider the case `mul a b ha hb`. Establish `ha0 : a ≠ 0` using `fun e => hn (by simp [e])`. Establish `hb0 : b ≠ 0` using `fun e => hn (by simp [e])`. Take `⟨a1, a2, a3⟩` from `ha ha0 fun p hp hd => h p hp (hd.mul_right _)`. Take `⟨b1, b2, b3⟩` from `hb hb0 fun p hp hd => h p hp (hd.mul_left _)`.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_mul]`. Conclude with `mul_ne_zero a1 b1`. Rewrite using `[Nat.cast_mul]`. Conclude with `(regAt ξ q).mul_mem a2 b2`.
+
+Rewrite using `[Nat.cast_mul, mul_inv]`. Conclude with `(regAt ξ q).mul_mem a3 b3`.
+-/
 theorem unitAt_natCast {X : Scheme.{0}} {Ω : Type} [Field Ω] [CharZero Ω] {ξ : Sp Ω ⟶ X} (q : Cpt ξ) (n : ℕ) (hn : n ≠ 0)
     (h : ∀ p : ℕ, p.Prime → p ∣ n → unitAt ξ q (p : Ω)) : unitAt ξ q (n : Ω) := by
   induction n using Nat.recOnMul with
@@ -68,12 +82,68 @@ theorem unitAt_natCast {X : Scheme.{0}} {Ω : Type} [Field Ω] [CharZero Ω] {ξ
     · rw [Nat.cast_mul]; exact (regAt ξ q).mul_mem a2 b2
     · rw [Nat.cast_mul, mul_inv]; exact (regAt ξ q).mul_mem a3 b3
 
+/- English proof (translation)
+The claim follows from `isNoetherianRing_of_ringEquiv (regAt ξ q) (RingEquiv.ofBijective (genMap ξ q).rangeRestrict ⟨fun a b e => hg.inj q (congrArg Subtype.val e), (genMap ξ q).rangeRestrict_surjective⟩).symm`.
+-/
 theorem noeth_stalk {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} (hg : IsCptGen ξ) (q : Cpt ξ)
     (h : IsNoetherianRing (regAt ξ q)) : IsNoetherianRing (X.presheaf.stalk q.1) :=
   isNoetherianRing_of_ringEquiv (regAt ξ q) (RingEquiv.ofBijective (genMap ξ q).rangeRestrict
     ⟨fun a b e => hg.inj q (congrArg Subtype.val e), (genMap ξ q).rangeRestrict_surjective⟩).symm
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O _ β Y S Ω Ω' _ _ i K K' _ _ J J' _ _ y y' A x Z ξ' h hx hS hvb hall htie hnorm hdom`. Use `haveI : CharZero Ω := charZero_of_injective_ringHom A.cst.injective`. Use `haveI : CharZero Ω' := charZero_of_injective_ringHom i.injective`. Establish `hgen` using `A.tie.gen`. Establish `hgen'` using `htie.gen`.
+
+Take `⟨t', ⟨mh⟩⟩ : ∃ t' : SAB H Z, Nonempty (SABMap t' A.t h)` from `⟨_, ⟨ReciprocityTheory.ChartRestriction.G.PullbackSections.sabM Out.proved_CubePullSt h A.t⟩⟩`. Take `⟨mf, hmf⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ A.m mh`. Take `⟨Li', acg', mod', ⟨M'⟩⟩` from `GlobalTheory.CompanionTheory.Ar.lieModel_exists Z t'.G Ω' ξ'`. Take `⟨ρ', hρ', -⟩` from `GlobalTheory.CompanionTheory.Ar.lieModel_exists_unique_act Z t'.G Ω' ξ' Li' M' (𝓞 E) t'.act.act t'.act.hom t'.act.one t'.act.mul t'.act.add`. Take `⟨j, hj⟩` from `GlobalTheory.T.lie_model_pullback_map A.X Z Ω Ω' A.ξ ξ' h i A.t.G t'.G mh.φ A.Li Li' A.M M' hdom mh.cart`.
+
+Establish `hsm : Smooth A.t.G.hom` using `A.t.semi.smooth`. Take `⟨hext, hspan, hlat⟩` from `GlobalTheory.T.lie_lattice_dominant_compat A.X Z Ω Ω' A.ξ ξ' h i A.t.G t'.G mh.φ A.Li Li' A.M M' j hgen hgen' hdom mh.cart hsm hj`. Establish `hρj` using `GlobalTheory.T.lie_model_pullback_action A.X Z Ω Ω' A.ξ ξ' h i A.t.G t'.G mh.φ A.Li Li' A.M M' j (𝓞 E) A.t.act.act t'.act.act A.ρ ρ' hdom mh.cart hj A.act hρ' (fun a => mh.act a)`. Take `⟨jd, hjd⟩` from `GlobalTheory.T.dual_map_of_field_extension Ω Ω' i A.Li Li' j hext hspan`. Establish `hW : ∀ s, eigSp ρ' ((i.comp A.cst).comp (labelEmb c s)) = Submodule.span Ω' (j '' (A.Vgen s : Set A.Li))` using `fun s => GlobalTheory.T.eigenspace_field_extension E Ω Ω' i A.Li Li' j A.ρ ρ' (A.emb s) hext hspan hρj`.
+
+Establish `hdm` using `GlobalTheory.CompanionTheory.Ar.RegAtDom.regAt_dominates A.X Ω A.ξ Z Ω' ξ' h i hdom`. Establish `hsp : ∀ p' : Cpt ξ', genPt A.ξ ⤳ h p'.1` using `fun p' => (hdm p').choose`. Establish `hreg : ∀ (p' : Cpt ξ'), ∀ a ∈ regAt A.ξ ⟨h p'.1, hsp p'⟩, i a ∈ regAt ξ' p'` using `fun p' => (hdm p').choose_spec.1`. Establish `hun : ∀ (p' : Cpt ξ'), ∀ a ∈ regAt A.ξ ⟨h p'.1, hsp p'⟩, unitAt ξ' p' (i a) → unitAt A.ξ ⟨h p'.1, hsp p'⟩ a` using `fun p' => (hdm p').choose_spec.2 hgen'`. Establish `hfib : ∀ (p : ℕ) (p' : Cpt ξ'), InFibre ξ' p p' ↔ InFibre A.ξ p ⟨h p'.1, hsp p'⟩`.
+
+Introduce `p p'`. Use `not_congr ⟨fun hu => ?_, fun ⟨a, b, d⟩ => ?_⟩` and prove the remaining obligations. Establish `hr : (p : Ω) ∈ regAt A.ξ ⟨h p'.1, hsp p'⟩` using `natCast_mem _ p`. Conclude with `hun p' _ hr (by simpa using hu)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `e`. Apply `a` to reduce the goal to its premises. Apply `i.injective` to reduce the goal to its premises. Simplify using `using e`. Simplify using `using hreg p' _ b`.
+
+Simplify using `using hreg p' _ d`. Establish `hnoeth` using `(GlobalTheory.T.regAt_noetherian_model_noetherian A.X Ω A.ξ ℤ _ _ A.tie).1`. Establish `hnoeth'` using `(GlobalTheory.T.regAt_noetherian_model_noetherian Z Ω' ξ' ℤ _ _ htie).1`. Establish `hic : ∀ q : Cpt A.ξ, IsIntegrallyClosed (A.X.presheaf.stalk q.1)` using `fun q => (A.normal q.1).2`. Establish `hic' : ∀ q : Cpt ξ', IsIntegrallyClosed (Z.presheaf.stalk q.1)` using `fun q => (hnorm q.1).2`.
+
+Establish `htors : ∀ p ∈ S, FullTorsion t'.G ξ' (p ^ A.R p)` using `fun p hp => GlobalTheory.T.full_torsion_pullback A.X Z Ω Ω' A.ξ ξ' h i A.t.G t'.G mh.φ _ hdom mh.cart (A.tors p hp)`. Establish `hint : ∀ (s) (q : Cpt A.ξ) (a : 𝓞 E), A.emb s a ∈ regAt A.ξ q` using `fun s q a => GlobalTheory.T.integral_element_regular A.X Ω A.ξ q hgen (hic q) _ ((Algebra.IsIntegral.isIntegral (R := ℤ) a).map (A.emb s).toIntAlgHom)`. Establish `hω : ∀ p ∈ S, ∀ p' : Cpt ξ', 0 < D.p + D.q → M'.htOm t'.PP.L (p ^ A.R p) p' = Submodule.span (regAt ξ' p') (jd '' (A.M.htOm A.t.PP.L (p ^ A.R p) ⟨h p'.1, hsp p'⟩ : Set _))`. Introduce `p hp p' hpos`. Establish `hN : 0 < p ^ A.R p` using `pow_pos (A.S_prime p hp).pos _`.
+
+Take `⟨s0, o, ⟨m0⟩⟩` from `GlobalTheory.T.abelian_scheme_point_object E H D l Xo c O β Y A.X A.f A.t A.m Ω A.ξ x hx`. Take `⟨s0', o', ⟨m0'⟩⟩` from `GlobalTheory.T.abelian_scheme_point_object E H D l Xo c O β Y Z (h ≫ A.f) t' mf Ω' ξ' (spMap i ≫ x) (by`. Rewrite using `[← Category.assoc, hdom, Category.assoc, hx, Category.assoc])`. Establish `hc1 : IsIntegrallyClosed (A.X.presheaf.stalk (h p'.1))` using `hic ⟨h p'.1, hsp p'⟩`. Establish `hn1 : IsNoetherianRing (A.X.presheaf.stalk (h p'.1))` using `noeth_stalk hgen ⟨h p'.1, hsp p'⟩ (hnoeth _)`.
+
+Establish `h1` using `PositivityTheory.UnitarySelfGeneration.lattice_integrally_closed_torsion E H D l (KA l) (baseKA l) A.X Ω A.ξ s0 o A.t m0 A.Li A.M (p ^ A.R p) ⟨h p'.1, hsp p'⟩ hgen hN (A.tors p hp) hc1 hn1`. Establish `h1'` using `PositivityTheory.UnitarySelfGeneration.lattice_integrally_closed_torsion E H D l (KA l) (baseKA l) Z Ω' ξ' s0' o' t' m0' Li' M' (p ^ A.R p) p' hgen' hN (htors p hp) (hic' _) (noeth_stalk hgen' _ (hnoeth' _))`. Establish `h2` using `PositivityTheory.UnitarySelfGeneration.height_pullback_dominating_map A.X Z Ω Ω' A.ξ ξ' h i A.t.G t'.G mh.φ A.Li Li' A.M M' j hgen hgen' hdom mh.cart hsm hj jd hjd (p ^ A.R p) hN p' (hsp p') hc1 hn1 (h1.2.1 hpos) h1.1`. Rewrite using `[h1'.2.2, h2, pull_eq ξ' h _ jd p' (hsp p'), h1.2.2]`. Establish `hpos : ∀ s, 0 < labelRk D s → 0 < D.p + D.q`.
+
+Introduce `s hs`. Break down `s with τ | τ` into its components or cases. Establish `: 0 < D.p` using `hs`. Use linear arithmetic over natural numbers and integers. Establish `: 0 < D.q` using `hs`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hdual : ∀ p ∈ S, ∀ s, ∀ p' : Cpt ξ', InFibre ξ' p p' → M'.htDual t'.PP.L (p ^ A.R p) ρ' ((i.comp A.cst).comp (labelEmb c s)) p' = Submodule.span (regAt ξ' p') (j '' (A.M.htDual A.t.PP.L (p ^ A.R p) A.ρ (A.emb s) ⟨h p'.1, hsp p'⟩ : Set A.Li))`. Introduce `p hp s p' hf`. Establish `hq` using `(hfib p p').1 hf`. Take `⟨U, hU, b, hb, hfr⟩` from `hvb p hp s ⟨h p'.1, hsp p'⟩ hq`.
+
+Take `⟨hli, hbs⟩` from `hfr ⟨h p'.1, hsp p'⟩ hq hU`. Conclude with `GlobalTheory.T.dual_lattice_basis_extension Ω Ω' i (regAt A.ξ ⟨h p'.1, hsp p'⟩) (regAt ξ' p') A.Li Li' j jd (A.Vgen s) _ (A.M.htOm A.t.PP.L (p ^ A.R p) ⟨h p'.1, hsp p'⟩) (M'.htOm t'.PP.L (p ^ A.R p) p') (labelRk D s) b hext (hreg p') hjd (hW s) (fun hr => hω p hp p' (hpos s hr)) …`. Establish `hhtw : ∀ p ∈ S, ∀ s, ∀ p' : Cpt ξ', InFibre ξ' p p' → M'.htW t'.PP.L (p ^ A.R p) ρ' ((i.comp A.cst).comp (labelEmb c s)) (differentIdeal ℤ (𝓞 E)) p' = Submodule.span (regAt ξ' p') (j '' (A.M.htW A.t.PP.L (p ^ A.R p) A.ρ (A.emb s) (differentIdeal ℤ (𝓞 E)) ⟨h p'.1, hsp p'⟩ : Set A. …`. Introduce `p hp s p' hf`. Use `haveI := regAt_isLocalRing (ξ := A.ξ) ⟨h p'.1, hsp p'⟩`.
+
+Take `⟨d₀, hd₀, hne, hdv⟩` from `GlobalTheory.T.different_ideal_local_generator E Ω (regAt A.ξ ⟨h p'.1, hsp p'⟩) (A.emb s) (hint s _)`. Conclude with `GlobalTheory.T.different_scaled_lattice_extension Ω Ω' i (regAt A.ξ ⟨h p'.1, hsp p'⟩) (regAt ξ' p') A.Li Li' j (A.Vgen s) _ (𝓞 E) (A.emb s) (differentIdeal ℤ (𝓞 E)) d₀ (A.M.htDual A.t.PP.L (p ^ A.R p) A.ρ (A.emb s) ⟨h p'.1, hsp p'⟩) (M'.htDual t'.PP.L (p ^ A.R p) ρ' ((i.comp A.cs …`. Establish `hV : ∀ s, Lat.patch S (M'.eigLat ρ' ((i.comp A.cst).comp (labelEmb c s))) (fun p => htLabel M' t'.PP.L (p ^ A.R p) ρ' (fun s' => (i.comp A.cst).comp (labelEmb c s')) s) = (A.V s).pull ξ' h j`. Introduce `s`. Use function extensionality and compare the values at `p'`.
+
+Rewrite using `[pull_eq ξ' h _ j p' (hsp p')]`. Distinguish the cases in `hc : ∃ p ∈ S, InFibre ξ' p p'`. Take `⟨p, hp, hf⟩` from `hc`. Rewrite using `[Lat.patch_of_unique S _ _ hp hf fun p2 hp2 h2 => inFibre_unique (A.S_prime p hp) (A.S_prime p2 hp2) hf h2]`. Establish `e1 : A.V s ⟨h p'.1, hsp p'⟩ = A.HT p s ⟨h p'.1, hsp p'⟩` using `Lat.patch_of_unique S _ _ hp ((hfib p p').1 hf) fun p2 hp2 h2 => inFibre_unique (A.S_prime p hp) (A.S_prime p2 hp2) ((hfib p p').1 hf) h2`.
+
+Rewrite using `[e1]`. Break down `s with τ | τ` into its components or cases. Conclude with `hhtw p hp _ p' hf`. Conclude with `hdual p hp _ p' hf`. Establish `hc' : ∀ p ∈ S, ¬ InFibre ξ' p p'` using `fun p hp hf => hc ⟨p, hp, hf⟩`.
+
+Rewrite using `[Lat.patch_of_not S _ _ hc']`. Establish `hc'' : ∀ p ∈ S, ¬ InFibre A.ξ p ⟨h p'.1, hsp p'⟩` using `fun p hp hf => hc' p hp ((hfib p p').2 hf)`. Establish `e1 : A.V s ⟨h p'.1, hsp p'⟩ = A.dR s ⟨h p'.1, hsp p'⟩` using `Lat.patch_of_not S _ _ hc''`. Rewrite using `[e1]`. Establish `hdisc : (((NumberField.discr E : ℤ) : Ω))⁻¹ ∈ regAt A.ξ ⟨h p'.1, hsp p'⟩`.
+
+Establish `hn0 : (NumberField.discr E).natAbs ≠ 0` using `Int.natAbs_ne_zero.2 (NumberField.discr_ne_zero E)`. Take `⟨-, -, hu⟩` from `unitAt_natCast (ξ := A.ξ) ⟨h p'.1, hsp p'⟩ _ hn0 fun p hpp hd => by`. Establish `hin` using `hS p hpp (Int.natCast_dvd.2 hd)`. Conclude with `not_not.1 (hc'' p hin)`. Break down `Int.natAbs_eq (NumberField.discr E) with e | e` into its components or cases.
+
+Rewrite using `[e]`. Simplify using `using hu`. Rewrite using `[e]`. Simplify using `using (regAt A.ξ ⟨h p'.1, hsp p'⟩).neg_mem hu`. Use `show M'.lat p' ⊓ _ = _`.
+
+Rewrite using `[hlat, pull_eq ξ' h _ j p' (hsp p')]`. Conclude with `GlobalTheory.T.lattice_eigen_field_extension E Ω Ω' i A.Li Li' j A.ρ ρ' (A.emb s) _ _ (A.M.lat ⟨h p'.1, hsp p'⟩) hext hρj (hreg p') (fun a e he => GlobalTheory.T.lie_lattice_stable_under_action A.X Ω A.ξ A.t.G A.Li A.M (𝓞 E) A.t.act A.ρ A.act _ a e he) (hint s _) hdisc`. Establish `hvb' : ∀ s, (Lat.patch S (M'.eigLat ρ' ((i.comp A.cst).comp (labelEmb c s))) (fun p => htLabel M' t'.PP.L (p ^ A.R p) ρ' (fun s' => (i.comp A.cst).comp (labelEmb c s')) s)).IsVB (labelRk D s) (eigSp ρ' ((i.comp A.cst).comp (labelEmb c s)))`. Introduce `s`. Rewrite using `[hV s, hW s]`.
+
+Establish `h3` using `GlobalTheory.T.lattice_vector_bundle_pullback A.X Ω A.ξ A.Li Z Ω' ξ' h i Li' j (A.V s) Set.univ (labelRk D s) (A.Vgen s) hdom hext.1 hext.2 (A.vb s)`. Introduce `p' _`. Take `⟨U, hU, b, hb, hfr⟩` from `h3 p' ⟨hsp p', trivial⟩`. Conclude with `⟨U, hU, b, hb, fun q _ hq => hfr q ⟨hsp q, trivial⟩ hq⟩`. Establish `hvbt : ∀ p ∈ S, ∀ s, ((M'.htOm t'.PP.L (p ^ A.R p)).map (eigSp ρ' ((i.comp A.cst).comp (labelEmb c s))).dualRestrict).IsVBOn {q | InFibre ξ' p q} (labelRk D s) ⊤`.
+
+Introduce `p hp s`. Conclude with `GlobalTheory.T.lattice_flag_field_extension A.X Z Ω Ω' A.ξ ξ' h i A.Li Li' j jd (A.Vgen s) _ (A.M.htOm A.t.PP.L (p ^ A.R p)) (M'.htOm t'.PP.L (p ^ A.R p)) {q | InFibre A.ξ p q} {q | InFibre ξ' p q} (labelRk D s) hdom hgen' hext hjd (hW s) (hvb p hp s) fun p' hf => ⟨hsp p', (hfib …`. Set `m' : SABMap t' A.t ((Iso.refl Z).hom ≫ h)` to `{ cm := mh.cm cart := by simpa using mh.cart base := by simpa using mh.base act := mh.act lin := mh.lin }`. Use `⟨{ X := Z, ξ := ξ', all := hall, tie := htie, normal := hnorm, f := h ≫ A.f, Ω₀ := A.Ω₀, ξ₀ := A.ξ₀, gen₀ := A.gen₀, cst := i.comp A.cst, cst_over := ?_, fn := i.comp A.fn, fn_over := ?_, t := t', m := mf, Li := Li', M := M', ρ := ρ', act := hρ', S_prime := A.S_prime, R := A.R, R …` and prove the remaining obligations. Establish `e : ξ' ≫ h = spMap i ≫ A.ξ` using `hdom`.
+
+Establish `e2 : ξ' ≫ h ≫ A.f ≫ Y.s = spMap i ≫ A.ξ ≫ A.f ≫ Y.s`. Rewrite using `[← Category.assoc, e, Category.assoc]`. Simplify using `only [Category.assoc]`. Rewrite using `[e2, A.cst_over]`. Use `show Spec.map _ ≫ Spec.map _ = Spec.map _`.
+
+Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `A.fn_over` as an intermediate fact. Unfold `GlobalTheory.CompanionTheory.Ar.Dominates at this ⊢`. Rewrite using `[← Category.assoc, hdom, Category.assoc, this, ← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Simplify using the standard rewrite rules.
+
+Simplify using the standard rewrite rules. Conclude with `hmf`. Introduce `s`. Establish `e : (Iso.refl Z).hom ≫ h = h` using `Category.id_comp h`. Use `(hV s).trans ?_` and prove the remaining obligations.
+
+Conclude with `congrArg (fun g => (A.V s).pull ξ' g j) e.symm`.
+-/
 theorem hodgeCpt_pull : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (Ω Ω' : Type) [Field Ω] [Field Ω'] (i : Ω →+* Ω') (K K' : Type) [Fintype K] [Fintype K'] (J : K → Type) (J' : K' → Type) [∀ k, Fintype (J k)] [∀ k, Fintype (J' k)] (y : (Σ k, J k) → Ω) (y' : (Σ k, J' k) → Ω') (A : HodgeCpt Y S y) (x : Sp Ω ⟶ Xo.XF c) (Z : Scheme.{0}) (ξ' : Sp Ω' ⟶ Z) (h : Z ⟶ A.X), A.ξ ≫ A.f = x ≫ Y.j → (∀ p : ℕ, p.Prime → (p : ℤ) ∣ NumberField.discr E → p ∈ S) → (∀ p ∈ S, ∀ s, ((A.M.htOm A.t.PP.L (p ^ A.R p)).map (A.Vgen s).dualRestrict).IsVBOn {q | InFibre A.ξ p q} (labelRk D s) ⊤) → (∀ q : Z, genPt ξ' ⤳ q) → CoordTie ℤ ξ' (fun c' : (k : K') → J' k => ∏ k, y' ⟨k, c' k⟩) → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Z → GlobalTheory.CompanionTheory.Ar.Dominates ξ' A.ξ h i → ∃ (A' : HodgeCpt Y S y') (e : A'.X ≅ Z) (j : A.Li →+ A'.Li) (m : SABMap A'.t A.t (e.hom ≫ h)), A'.ξ ≫ e.hom = ξ' ∧ A'.f = e.hom ≫ h ≫ A.f ∧ A'.m.φ = m.φ ≫ A.m.φ ∧ A'.cst = i.comp A.cst ∧ A'.R = A.R ∧ IsExtOver i j ∧ (∀ v, (A'.M.pt (j v)).left ≫ m.φ = spMap (dualMap i) ≫ (A.M.pt v).left) ∧ (∀ p ∈ S, ∀ s, ((A'.M.htOm A'.t.PP.L (p ^ A'.R p)).map (A'.Vgen s).dualRestrict).IsVBOn {q | InFibre A'.ξ p q} (labelRk D s) ⊤) ∧ ∀ s, A'.V s = (A.V s).pull A'.ξ (e.hom ≫ h) j := by
   intro E _ _ _ H D l Xo c O _ β Y S Ω Ω' _ _ i K K' _ _ J J' _ _ y y' A x Z ξ' h hx hS hvb hall htie hnorm hdom
   haveI : CharZero Ω := charZero_of_injective_ringHom A.cst.injective
@@ -248,6 +318,9 @@ namespace PositivityTheory.UnitarySelfGeneration
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar
 
+/- English proof (translation)
+The claim follows from `@GlobalTheory.CompanionTheory.Ar.HcptPullK.hodgeCpt_pull`.
+-/
 theorem hodge_compact_pullback : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (Ω Ω' : Type) [Field Ω] [Field Ω'] (i : Ω →+* Ω') (K K' : Type) [Fintype K] [Fintype K'] (J : K → Type) (J' : K' → Type) [∀ k, Fintype (J k)] [∀ k, Fintype (J' k)] (y : (Σ k, J k) → Ω) (y' : (Σ k, J' k) → Ω') (A : HodgeCpt Y S y) (x : Sp Ω ⟶ Xo.XF c) (Z : Scheme.{0}) (ξ' : Sp Ω' ⟶ Z) (h : Z ⟶ A.X), A.ξ ≫ A.f = x ≫ Y.j → (∀ p : ℕ, p.Prime → (p : ℤ) ∣ NumberField.discr E → p ∈ S) → (∀ p ∈ S, ∀ s, ((A.M.htOm A.t.PP.L (p ^ A.R p)).map (A.Vgen s).dualRestrict).IsVBOn {q | InFibre A.ξ p q} (labelRk D s) ⊤) → (∀ q : Z, genPt ξ' ⤳ q) → CoordTie ℤ ξ' (fun c' : (k : K') → J' k => ∏ k, y' ⟨k, c' k⟩) → IsNormalScheme Z → GlobalTheory.CompanionTheory.Ar.Dominates ξ' A.ξ h i → ∃ (A' : HodgeCpt Y S y') (e : A'.X ≅ Z) (j : A.Li →+ A'.Li) (m : SABMap A'.t A.t (e.hom ≫ h)), A'.ξ ≫ e.hom = ξ' ∧ A'.f = e.hom ≫ h ≫ A.f ∧ A'.m.φ = m.φ ≫ A.m.φ ∧ A'.cst = i.comp A.cst ∧ A'.R = A.R ∧ IsExtOver i j ∧ (∀ v, (A'.M.pt (j v)).left ≫ m.φ = spMap (dualMap i) ≫ (A.M.pt v).left) ∧ (∀ p ∈ S, ∀ s, ((A'.M.htOm A'.t.PP.L (p ^ A'.R p)).map (A'.Vgen s).dualRestrict).IsVBOn {q | InFibre A'.ξ p q} (labelRk D s) ⊤) ∧ ∀ s, A'.V s = (A.V s).pull A'.ξ (e.hom ≫ h) j :=
   @GlobalTheory.CompanionTheory.Ar.HcptPullK.hodgeCpt_pull
 

@@ -15,9 +15,17 @@ variable {n : ℕ} {J : Matrix (Fin n) (Fin n) ℂ} {W : Submodule ℂ (Fin n �
 def Sc (J : Matrix (Fin n) (Fin n) ℂ) (W : Submodule ℂ (Fin n → ℂ)) (l m : ℂ) (g : Matrix (Fin n) (Fin n) ℂ) : Prop :=
   (∀ w ∈ W, g *ᵥ w = l • w) ∧ (∀ z ∈ perp J W, g *ᵥ z - z ∈ W) ∧ ∀ z, g *ᵥ z - m • z ∈ perp J W
 
+/- English proof (translation)
+Simplify using `only [Lowers, Sc, sub_mulVec, one_mulVec, one_smul, sub_eq_zero]`.
+-/
 theorem lowers_iff {g : Matrix (Fin n) (Fin n) ℂ} : Lowers J W (g - 1) ↔ Sc J W 1 1 g := by
   simp only [Lowers, Sc, sub_mulVec, one_mulVec, one_smul, sub_eq_zero]
 
+/- English proof (translation)
+Establish `gW : ∀ w ∈ W, g *ᵥ w ∈ W` using `fun w hw => by rw [hg.1 w hw]; exact W.smul_mem _ hw`. Establish `gP : ∀ z ∈ perp J W, g *ᵥ z ∈ perp J W` using `fun z hz => by`. Simplify using `using (perp J W).add_mem (hW (hg.2.1 z hz)) hz`. Use `⟨fun w hw => ?_, fun z hz => ?_, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[← mulVec_mulVec, hh.1 w hw, mulVec_smul, hg.1 w hw, smul_smul, mul_comm]`.
+
+Use `W.add_mem (gW _ (hh.2.1 z hz)) (hg.2.1 z hz)` as an intermediate fact. Rewrite `this` using `[mulVec_sub, sub_add_sub_cancel, mulVec_mulVec]`. Then use the resulting hypothesis. Use `(perp J W).add_mem (gP _ (hh.2.2 z)) ((perp J W).smul_mem m' (hg.2.2 z))` as an intermediate fact. Rewrite `this` using `[mulVec_sub, mulVec_smul, smul_sub, sub_add_sub_cancel, mulVec_mulVec, smul_smul, mul_comm m']`. Then use the resulting hypothesis.
+-/
 theorem Sc.mul (hW : Isot J W) {l m l' m' : ℂ} {g h : Matrix (Fin n) (Fin n) ℂ} (hg : Sc J W l m g)
     (hh : Sc J W l' m' h) : Sc J W (l * l') (m * m') (g * h) := by
   have gW : ∀ w ∈ W, g *ᵥ w ∈ W := fun w hw => by rw [hg.1 w hw]; exact W.smul_mem _ hw
@@ -30,6 +38,13 @@ theorem Sc.mul (hW : Isot J W) {l m l' m' : ℂ} {g h : Matrix (Fin n) (Fin n) �
   · have := (perp J W).add_mem (gP _ (hh.2.2 z)) ((perp J W).smul_mem m' (hg.2.2 z))
     rwa [mulVec_sub, mulVec_smul, smul_sub, sub_add_sub_cancel, mulVec_mulVec, smul_smul, mul_comm m'] at this
 
+/- English proof (translation)
+Establish `e' : ∀ z, h *ᵥ (g *ᵥ z) = z` using `fun z => by rw [mulVec_mulVec, e, one_mulVec]`. Establish `h1 : ∀ w ∈ W, h *ᵥ w = w` using `fun w hw => by`. Use `e' w` as an intermediate fact. Rewrite `this` using `[hg.1 w hw, one_smul]`. Then use the resulting hypothesis. Establish `h0 : ∀ z, h *ᵥ z - z = -(h *ᵥ (g *ᵥ z - z))` using `fun z => by rw [mulVec_sub, e', neg_sub]`.
+
+Establish `h2 : ∀ z ∈ perp J W, h *ᵥ z - z ∈ W` using `fun z hz => by`. Rewrite using `[h0, h1 _ (hg.2.1 z hz)]`. Conclude with `W.neg_mem (hg.2.1 z hz)`. Use `⟨fun w hw => by rw [h1 w hw, one_smul], h2, fun z => ?_⟩` and prove the remaining obligations. Establish `h3` using `hg.2.2 z`.
+
+Rewrite `h3`, the goal using `[one_smul]`. Rewrite using `[h0]`. Simplify using `using (perp J W).neg_mem ((perp J W).add_mem (hW (h2 _ h3)) h3)`.
+-/
 theorem Sc.inv (hW : Isot J W) {g h : Matrix (Fin n) (Fin n) ℂ} (hg : Sc J W 1 1 g) (e : h * g = 1) :
     Sc J W 1 1 h := by
   have e' : ∀ z, h *ᵥ (g *ᵥ z) = z := fun z => by rw [mulVec_mulVec, e, one_mulVec]
@@ -45,16 +60,35 @@ theorem Sc.inv (hW : Isot J W) {g h : Matrix (Fin n) (Fin n) ℂ} (hg : Sc J W 1
   rw [h0]
   simpa using (perp J W).neg_mem ((perp J W).add_mem (hW (h2 _ h3)) h3)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem uMat_mul {ε : Fin n → Bool} (g h : UJ ε) : uMat (g * h) = uMat g * uMat h := rfl
 
+/- English proof (translation)
+Rewrite using `[← uMat_mul, inv_mul_cancel]`. Both sides reduce to the same expression.
+-/
 theorem uMat_inv_mulF {ε : Fin n → Bool} (g : UJ ε) : uMat g⁻¹ * uMat g = 1 := by
   rw [← uMat_mul, inv_mul_cancel]; rfl
 
+/- English proof (translation)
+Rewrite using `[← uMat_mul, mul_inv_cancel]`. Both sides reduce to the same expression.
+-/
 theorem uMat_mul_invF {ε : Fin n → Bool} (g : UJ ε) : uMat g * uMat g⁻¹ = 1 := by
   rw [← uMat_mul, mul_inv_cancel]; rfl
 
+/- English proof (translation)
+The claim follows from `(isClosedEmbeddingMatrix n ε).1.continuous`.
+-/
 theorem continuous_uMat {ε : Fin n → Bool} : Continuous (uMat : UJ ε → _) := (isClosedEmbeddingMatrix n ε).1.continuous
 
+/- English proof (translation)
+Introduce `n ε W hW`. Prove the components needed by the constructor for the conclusion. Establish `hc : ∀ z, Continuous fun g : UJ ε => (uMat g - 1) *ᵥ z` using `fun z => (continuous_uMat.sub continuous_const).matrix_mulVec continuous_const`. Establish `: NWset ε W = (⋂ w ∈ W, {g | (uMat g - 1) *ᵥ w = 0}) ∩ ((⋂ z ∈ perp (Jm ε) W, (fun g : UJ ε => (uMat g - 1) *ᵥ z) ⁻¹' (W : Set _)) ∩ ⋂ z, (fun g : UJ ε => (uMat g - 1) *ᵥ z) ⁻¹' (perp (Jm ε) W : Set _))`. Use extensionality with `g`.
+
+Simplify using `[NWset, Lowers]`. Rewrite using `[this]`. Conclude with `(isClosed_biInter fun w _ => isClosed_eq (hc w) continuous_const).inter ((isClosed_biInter fun z _ => W.closed_of_finiteDimensional.preimage (hc z)).inter (isClosed_iInter fun z => (perp (Jm ε) W).closed_of_finiteDimensional.preimage (hc z)))`. Conclude with `⟨{ carrier := NWset ε W mul_mem' := fun {a b} ha hb => lowers_iff.2 (by`. Simplify `(lowers_iff.1 ha).mul hW (lowers_iff.1 hb))` using `[uMat_mul]`.
+
+Use the proof step `one_mem' := by show Lowers _ _ ((1 : Matrix (Fin n) (Fin n) ℂ) - 1)`. Rewrite using `[sub_self]`. Conclude with `⟨fun _ _ => zero_mulVec _, fun _ _ => by rw [zero_mulVec]; exact W.zero_mem, fun _ => by rw [zero_mulVec]; exact Submodule.zero_mem _⟩`. Use the proof step `inv_mem' := fun {a} ha => lowers_iff.2 ((lowers_iff.1 ha).inv hW (uMat_inv_mulF a)) }, rfl⟩`.
+-/
 theorem unipotent_radical_subgroup : NWSub := by
   intro n ε W hW
   constructor
@@ -81,6 +115,13 @@ theorem unipotent_radical_subgroup : NWSub := by
 def IsPr (W : Submodule ℂ (Fin n → ℂ)) (p : Matrix (Fin n) (Fin n) ℂ) : Prop :=
   pᴴ = p ∧ (∀ z, p *ᵥ z ∈ W) ∧ ∀ w ∈ W, p *ᵥ w = w
 
+/- English proof (translation)
+Set `e` to `WithLp.linearEquiv 2 ℂ (Fin n → ℂ)`. Set `K : Submodule ℂ (EuclideanSpace ℂ (Fin n))` to `W.comap (e : EuclideanSpace ℂ (Fin n) →ₗ[ℂ] (Fin n → ℂ))`. Set `P : EuclideanSpace ℂ (Fin n) →ₗ[ℂ] EuclideanSpace ℂ (Fin n)` to `K.starProjection`. Establish `hP : ∀ z, Matrix.toEuclideanLin.symm P *ᵥ z = (P (WithLp.toLp 2 z)).ofLp` using `fun z => by conv_rhs => rw [← Matrix.toEuclideanLin.apply_symm_apply P]`. Both sides reduce to the same expression.
+
+Use `⟨Matrix.toEuclideanLin.symm P, ?_, fun z => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Use `Matrix.isHermitian_iff_isSymmetric.2 ?_` and prove the remaining obligations. Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `K.starProjection_isSymmetric`. Rewrite using `[hP]`.
+
+Conclude with `K.starProjection_apply_mem _`. Rewrite using `[hP]`. Conclude with `congrArg WithLp.ofLp (Submodule.starProjection_eq_self_iff.2 (show WithLp.toLp 2 w ∈ K from hw))`.
+-/
 theorem exists_isPr (W : Submodule ℂ (Fin n → ℂ)) : ∃ p, IsPr W p := by
   let e := WithLp.linearEquiv 2 ℂ (Fin n → ℂ)
   let K : Submodule ℂ (EuclideanSpace ℂ (Fin n)) := W.comap (e : EuclideanSpace ℂ (Fin n) →ₗ[ℂ] (Fin n → ℂ))
@@ -96,22 +137,39 @@ theorem exists_isPr (W : Submodule ℂ (Fin n → ℂ)) : ∃ p, IsPr W p := by
   · rw [hP]
     exact congrArg WithLp.ofLp (Submodule.starProjection_eq_self_iff.2 (show WithLp.toLp 2 w ∈ K from hw))
 
+/- English proof (translation)
+The claim follows from `Matrix.toLin'.injective (LinearMap.ext h)`.
+-/
 theorem mat_extF {A B : Matrix (Fin n) (Fin n) ℂ} (h : ∀ z, A *ᵥ z = B *ᵥ z) : A = B :=
   Matrix.toLin'.injective (LinearMap.ext h)
 
+/- English proof (translation)
+The claim follows from `mat_extF fun z => by rw [← mulVec_mulVec, hp.2.2 _ (hp.2.1 z)]`.
+-/
 theorem IsPr.sq {p : Matrix (Fin n) (Fin n) ℂ} (hp : IsPr W p) : p * p = p :=
   mat_extF fun z => by rw [← mulVec_mulVec, hp.2.2 _ (hp.2.1 z)]
 
+/- English proof (translation)
+Rewrite using `[star_mulVec, hp.1, dotProduct_mulVec]`.
+-/
 theorem IsPr.dot {p : Matrix (Fin n) (Fin n) ℂ} (hp : IsPr W p) (y z : Fin n → ℂ) :
     star y ⬝ᵥ (p *ᵥ z) = star (p *ᵥ y) ⬝ᵥ z := by
   rw [star_mulVec, hp.1, dotProduct_mulVec]
 
+/- English proof (translation)
+Use `dotProduct_star_self_eq_zero.1 ?_` and prove the remaining obligations. Rewrite using `[hp.dot]`. Conclude with `hz _ (hp.2.1 _)`.
+-/
 theorem IsPr.kill {p : Matrix (Fin n) (Fin n) ℂ} (hp : IsPr W p) {z : Fin n → ℂ} (hz : z ∈ perp J W) :
     p *ᵥ (J *ᵥ z) = 0 := by
   refine dotProduct_star_self_eq_zero.1 ?_
   rw [hp.dot]
   exact hz _ (hp.2.1 _)
 
+/- English proof (translation)
+Establish `h : ∀ j, ((∑ k, ‖p k j‖ ^ 2 : ℝ) : ℂ) = p j j` using `fun j => by conv_rhs => rw [← hp.sq, ← hp.1]`. Rewrite using `[hp.1]`. Use `conv_rhs => rw [show p * p = pᴴ * p by rw [hp.1]]`. Simplify using `only [mul_apply, conjTranspose_apply, Complex.ofReal_sum, Complex.ofReal_pow, Complex.star_def, Complex.conj_mul']`. Establish `h1 : ∀ k, ‖p k j‖ ^ 2 ≤ ‖p j j‖` using `fun k => by`.
+
+Rewrite using `[← h j, Complex.norm_real, Real.norm_of_nonneg (Finset.sum_nonneg fun _ _ => sq_nonneg _)]`. Conclude with `Finset.single_le_sum (f := fun k => ‖p k j‖ ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ k)`. Establish `h2 : ‖p j j‖ ≤ 1` using `by nlinarith [h1 j, norm_nonneg (p j j)]`. Use polynomial arithmetic with `[h1 i, norm_nonneg (p i j)]`.
+-/
 theorem IsPr.entry {p : Matrix (Fin n) (Fin n) ℂ} (hp : IsPr W p) (i j : Fin n) : ‖p i j‖ ≤ 1 := by
   have h : ∀ j, ((∑ k, ‖p k j‖ ^ 2 : ℝ) : ℂ) = p j j := fun j => by
     conv_rhs => rw [← hp.sq, ← hp.1]
@@ -128,6 +186,9 @@ theorem IsPr.entry {p : Matrix (Fin n) (Fin n) ℂ} (hp : IsPr W p) (i j : Fin n
 def am (J p : Matrix (Fin n) (Fin n) ℂ) (t : ℝ) : Matrix (Fin n) (Fin n) ℂ :=
   1 + ((Real.exp t - 1 : ℝ) : ℂ) • p + ((Real.exp (-t) - 1 : ℝ) : ℂ) • (J * p * J)
 
+/- English proof (translation)
+Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, Matrix.smul_mul, Matrix.mul_smul, hp, hq, hpq, hqp, smul_zero, add_smul]`. Use `module`.
+-/
 theorem expand {p q : Matrix (Fin n) (Fin n) ℂ} (hp : p * p = p) (hq : q * q = q) (hpq : p * q = 0) (hqp : q * p = 0)
     (a b c d : ℂ) : (1 + a • p + b • q) * (1 + c • p + d • q) =
       1 + (a + c + a * c) • p + (b + d + b * d) • q := by
@@ -139,17 +200,29 @@ section Am
 
 variable {ε : Fin n → Bool} {p : Matrix (Fin n) (Fin n) ℂ}
 
+/- English proof (translation)
+Rewrite using `[Jm, diagonal_mul_diagonal, ← diagonal_one]`. Apply the tactic sequence `congr 1; funext a; split_ifs <;> simp`.
+-/
 theorem Jm_sq (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
   rw [Jm, diagonal_mul_diagonal, ← diagonal_one]
   congr 1; funext a; split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[Jm, diagonal_conjTranspose]`. Apply the tactic sequence `congr 1; funext a; by_cases h : ε a <;> simp [h]`.
+-/
 theorem Jm_hermF (ε : Fin n → Bool) : (Jm ε)ᴴ = Jm ε := by
   rw [Jm, diagonal_conjTranspose]
   congr 1; funext a; by_cases h : ε a <;> simp [h]
 
+/- English proof (translation)
+The claim follows from `mat_extF fun z => by rw [← mulVec_mulVec, ← mulVec_mulVec, hp.kill (hW (hp.2.1 z)), zero_mulVec]`.
+-/
 theorem pJp (hW : Isot (Jm ε) W) (hp : IsPr W p) : p * Jm ε * p = 0 :=
   mat_extF fun z => by rw [← mulVec_mulVec, ← mulVec_mulVec, hp.kill (hW (hp.2.1 z)), zero_mulVec]
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, pJp hW hp, Matrix.zero_mul]`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc p, pJp hW hp, Matrix.mul_zero]`.
+-/
 theorem q_facts (hW : Isot (Jm ε) W) (hp : IsPr W p) :
     (Jm ε * p * Jm ε) * (Jm ε * p * Jm ε) = Jm ε * p * Jm ε ∧ p * (Jm ε * p * Jm ε) = 0 ∧
       (Jm ε * p * Jm ε) * p = 0 := by
@@ -159,6 +232,11 @@ theorem q_facts (hW : Isot (Jm ε) W) (hp : IsPr W p) :
   · rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, pJp hW hp, Matrix.zero_mul]
   · rw [Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc p, pJp hW hp, Matrix.mul_zero]
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `q_facts hW hp`. Rewrite using `[am, am, am, expand hp.sq h1 h2 h3, neg_add, Real.exp_add, Real.exp_add]`. Use `congr 2`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem am_add (hW : Isot (Jm ε) W) (hp : IsPr W p) (s t : ℝ) : am (Jm ε) p (s + t) = am (Jm ε) p s * am (Jm ε) p t := by
   obtain ⟨h1, h2, h3⟩ := q_facts hW hp
   rw [am, am, am, expand hp.sq h1 h2 h3, neg_add, Real.exp_add, Real.exp_add]
@@ -166,6 +244,11 @@ theorem am_add (hW : Isot (Jm ε) W) (hp : IsPr W p) (s t : ℝ) : am (Jm ε) p 
   · congr 1; push_cast; ring
   · push_cast; ring
 
+/- English proof (translation)
+Establish `hH : (am (Jm ε) p t)ᴴ = am (Jm ε) p t`. Simplify using `only [am, conjTranspose_add, conjTranspose_one, conjTranspose_smul, conjTranspose_mul, hp.1, Jm_hermF, Complex.star_def, Complex.conj_ofReal, Matrix.mul_assoc]`. Establish `hJ : am (Jm ε) p t * Jm ε = Jm ε * am (Jm ε) p (-t)`. Simplify using `only [am, neg_neg, Matrix.add_mul, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_assoc, Jm_sq]`. Rewrite using `[← Matrix.mul_assoc (Jm ε) (Jm ε), Jm_sq, Matrix.one_mul]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[inUJ, hH, hJ, Matrix.mul_assoc, ← am_add hW hp, neg_add_cancel]`. Simplify using `[am]`.
+-/
 theorem am_mem (hW : Isot (Jm ε) W) (hp : IsPr W p) (t : ℝ) : inUJ ε (am (Jm ε) p t) := by
   have hH : (am (Jm ε) p t)ᴴ = am (Jm ε) p t := by
     simp only [am, conjTranspose_add, conjTranspose_one, conjTranspose_smul, conjTranspose_mul, hp.1, Jm_hermF,
@@ -178,6 +261,13 @@ theorem am_mem (hW : Isot (Jm ε) W) (hp : IsPr W p) (t : ℝ) : inUJ ε (am (Jm
   rw [inUJ, hH, hJ, Matrix.mul_assoc, ← am_add hW hp, neg_add_cancel]
   simp [am]
 
+/- English proof (translation)
+Establish `hv : ∀ z, am (Jm ε) p t *ᵥ z = z + ((Real.exp t - 1 : ℝ) : ℂ) • p *ᵥ z + ((Real.exp (-t) - 1 : ℝ) : ℂ) • Jm ε *ᵥ (p *ᵥ (Jm ε *ᵥ z))` using `fun z => by`. Simplify using `only [am, add_mulVec, one_mulVec, smul_mulVec, mulVec_mulVec, Matrix.mul_assoc]`. Use `⟨fun w hw => ?_, fun z hz => ?_, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[hv, hp.kill (hW hw), hp.2.2 w hw, mulVec_zero]`. Use `push_cast`.
+
+Use `module`. Rewrite using `[hv, hp.kill hz, mulVec_zero, smul_zero, add_zero, add_sub_cancel_left]`. Conclude with `W.smul_mem _ (hp.2.1 z)`. Establish `h1 : Jm ε *ᵥ (p *ᵥ (Jm ε *ᵥ z)) - z ∈ perp (Jm ε) W` using `fun w hw => by`. Rewrite using `[hf, mulVec_sub, mulVec_mulVec, Jm_sq, one_mulVec, dotProduct_sub, hp.dot, hp.2.2 w hw, sub_self]`.
+
+Use `(perp (Jm ε) W).add_mem ((perp (Jm ε) W).smul_mem ((Real.exp t - 1 : ℝ) : ℂ) (hW (hp.2.1 z))) ((perp (Jm ε) W).smul_mem ((Real.exp (-t) - 1 : ℝ) : ℂ) h1)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hv]`. Use `push_cast`. Use `module`.
+-/
 theorem am_sc (hW : Isot (Jm ε) W) (hp : IsPr W p) (t : ℝ) :
     Sc (Jm ε) W (Real.exp t) (Real.exp (-t)) (am (Jm ε) p t) := by
   have hv : ∀ z, am (Jm ε) p t *ᵥ z = z + ((Real.exp t - 1 : ℝ) : ℂ) • p *ᵥ z +
@@ -198,12 +288,20 @@ theorem am_sc (hW : Isot (Jm ε) W) (hp : IsPr W p) (t : ℝ) :
     push_cast
     module
 
+/- English proof (translation)
+Establish `hx : (uMat x)ᴴ * Jm ε * uMat x = Jm ε` using `x.2`. Rewrite using `[hf, hf, star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, hx]`.
+-/
 theorem hf_uMatF (x : UJ ε) (y z : Fin n → ℂ) : hf (Jm ε) (uMat x *ᵥ y) (uMat x *ᵥ z) = hf (Jm ε) y z := by
   have hx : (uMat x)ᴴ * Jm ε * uMat x = Jm ε := x.2
   rw [hf, hf, star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, hx]
 
 end Am
 
+/- English proof (translation)
+Establish `h0 : 0 ≤ ∑ i, ∑ j, ‖M i j‖` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _`. Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun i => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (norm_le_pi_norm v j) (norm_nonneg _))`.
+
+Use `_ ≤ _ := by`. Rewrite using `[← Finset.sum_mul]`. Use `mul_le_mul_of_nonneg_right (le_add_of_nonneg_of_le zero_le_one ?_) (norm_nonneg _)` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun i => ∑ j, ‖M i j‖) (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ i)`.
+-/
 theorem norm_mulVec_le (M : Matrix (Fin n) (Fin n) ℂ) (v : Fin n → ℂ) :
     ‖M *ᵥ v‖ ≤ (1 + ∑ i, ∑ j, ‖M i j‖) * ‖v‖ := by
   have h0 : 0 ≤ ∑ i, ∑ j, ‖M i j‖ := Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _
@@ -217,6 +315,39 @@ theorem norm_mulVec_le (M : Matrix (Fin n) (Fin n) ℂ) (v : Fin n → ℂ) :
         exact Finset.single_le_sum (f := fun i => ∑ j, ‖M i j‖)
           (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ i)
 
+/- English proof (translation)
+Introduce `n ε W hW0 hW N hN`. Establish `hmem : ∀ g, g ∈ N ↔ Sc (Jm ε) W 1 1 (uMat g)` using `fun g => by`. Rewrite using `[← lowers_iff, ← SetLike.mem_coe, hN]`. Both sides reduce to the same expression. Take `⟨w₀, hw₀, hw0⟩` from `(Submodule.ne_bot_iff W).1 hW0`.
+
+Take `⟨p, hp⟩` from `exists_isPr W`. Set `a : ℝ → UJ ε` to `fun t => indefiniteUnitaryMk ε _ (am_mem hW hp t)`. Establish `hadd : ∀ s t, a (s + t) = a s * a t` using `fun s t => indefinite_unitary_ext (am_add hW hp s t)`. Establish `ha0 : a 0 = 1` using `indefinite_unitary_ext (by show am _ _ 0 = 1; simp [am])`. Establish `hinv : ∀ t, (a t)⁻¹ = a (-t)` using `fun t => inv_eq_of_mul_eq_one_right (by rw [← hadd, add_neg_cancel, ha0])`.
+
+Establish `hee : ∀ t : ℝ, ((Real.exp t : ℝ) : ℂ) * (Real.exp (-t) : ℝ) = 1` using `fun t => by`. Rewrite using `[← Complex.ofReal_mul, ← Real.exp_add, add_neg_cancel, Real.exp_zero, Complex.ofReal_one]`. Establish `hne : ∀ g : UJ ε, uMat g⁻¹ *ᵥ w₀ ≠ 0` using `fun g h => hw0 (by`. Rewrite using `[← one_mulVec w₀, ← uMat_mul_invF g, ← mulVec_mulVec, h, mulVec_zero])`. Establish `hamc : Continuous fun q : ℝ × Matrix (Fin n) (Fin n) ℂ => am (Jm ε) q.2 q.1`.
+
+Unfold `am`. Establish `c1 : Continuous fun q : ℝ × Matrix (Fin n) (Fin n) ℂ => ((Real.exp q.1 - 1 : ℝ) : ℂ)` using `by fun_prop`. Establish `c2 : Continuous fun q : ℝ × Matrix (Fin n) (Fin n) ℂ => ((Real.exp (-q.1) - 1 : ℝ) : ℂ)` using `by fun_prop`. Conclude with `(continuous_const.add (c1.smul continuous_snd)).add (c2.smul ((continuous_const.matrix_mul continuous_snd).matrix_mul continuous_const))`. Set `S : UJ ε → ℝ` to `fun g => 1 + ∑ i, ∑ j, ‖uMat g i j‖`.
+
+Establish `hS1 : ∀ g, 1 ≤ S g` using `fun g => le_add_of_nonneg_right (Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _)`. Establish `hSc : Continuous fun g => Real.log (S g)` using `(continuous_const.add (continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ => (continuous_uMat.matrix_elem i j).norm)).log fun g => (one_pos.trans_le (hS1 g)).ne'`. Use `⟨a, fun g => -Real.log ‖uMat g⁻¹ *ᵥ w₀‖, ?_, hadd, fun t m hm => ?_, ?_, fun m hm g => ?_, fun t g => ?_, ⟨fun y => Real.log (S y) + Real.log (S y⁻¹), hSc.add (hSc.comp continuous_inv), fun x y => ?_⟩, fun U hU => ?_⟩` and prove the remaining obligations. Conclude with `(isClosedEmbeddingMatrix n ε).1.isInducing.continuous_iff.2 (hamc.comp (continuous_id.prodMk continuous_const))`. Rewrite using `[hmem, hinv]`.
+
+Use `((am_sc hW hp t).mul hW ((hmem m).1 hm)).mul hW (am_sc hW hp (-t))` as an intermediate fact. Rewrite `this` using `[mul_one, mul_one, neg_neg, hee, mul_comm, hee]`. Then use the resulting hypothesis. Conclude with `(((continuous_uMat.comp continuous_inv).matrix_mulVec continuous_const).norm.log fun g => norm_ne_zero_iff.2 (hne g)).neg`. Rewrite using `[_root_.mul_inv_rev, uMat_mul, ← mulVec_mulVec, ((hmem _).1 (N.inv_mem hm)).1 w₀ hw₀, one_smul]`. Rewrite using `[_root_.mul_inv_rev, uMat_mul, ← mulVec_mulVec, hinv]`.
+
+Establish `: uMat (a (-t)) *ᵥ w₀ = ((Real.exp (-t) : ℝ) : ℂ) • w₀` using `(am_sc hW hp (-t)).1 w₀ hw₀`. Rewrite using `[this, mulVec_smul, norm_smul, Complex.norm_real, Real.norm_of_nonneg (Real.exp_pos _).le, Real.log_mul (Real.exp_pos _).ne' (norm_ne_zero_iff.2 (hne g)), Real.log_exp]`. Expand and normalize the polynomial expressions, which then agree. Establish `p1` using `norm_pos_iff.2 (hne x)`. Establish `p2` using `norm_pos_iff.2 (hne (x * y))`.
+
+Establish `e1 : uMat (x * y)⁻¹ *ᵥ w₀ = uMat y⁻¹ *ᵥ (uMat x⁻¹ *ᵥ w₀)`. Rewrite using `[_root_.mul_inv_rev, uMat_mul, mulVec_mulVec]`. Establish `e2 : uMat x⁻¹ *ᵥ w₀ = uMat y *ᵥ (uMat (x * y)⁻¹ *ᵥ w₀)`. Rewrite using `[e1, mulVec_mulVec _ (uMat y), uMat_mul_invF, one_mulVec]`. Establish `b1 : Real.log ‖uMat (x * y)⁻¹ *ᵥ w₀‖ ≤ Real.log (S y⁻¹) + Real.log ‖uMat x⁻¹ *ᵥ w₀‖`.
+
+Rewrite using `[← Real.log_mul (one_pos.trans_le (hS1 _)).ne' p1.ne']`. Conclude with `Real.log_le_log p2 (by rw [e1]; exact norm_mulVec_le _ _)`. Establish `b2 : Real.log ‖uMat x⁻¹ *ᵥ w₀‖ ≤ Real.log (S y) + Real.log ‖uMat (x * y)⁻¹ *ᵥ w₀‖`. Rewrite using `[← Real.log_mul (one_pos.trans_le (hS1 _)).ne' p2.ne']`. Conclude with `Real.log_le_log p1 (by nth_rewrite 1 [e2]; exact norm_mulVec_le _ _)`.
+
+Establish `c1` using `Real.log_nonneg (hS1 y)`. Establish `c2` using `Real.log_nonneg (hS1 y⁻¹)`. Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith`. Rewrite `hU` using `[(isClosedEmbeddingMatrix n ε).1.isInducing.nhds_eq_comap, mem_comap]`.
+
+Take `⟨V, hV, hVU⟩` from `hU`. Establish `hK : IsCompact (Set.univ.pi fun _ : Fin n => Set.univ.pi fun _ : Fin n => Metric.closedBall (0 : ℂ) 1)` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall _ _`. Establish `hev` using `hK.eventually_forall_of_forall_eventually (x₀ := (0 : ℝ)) (P := fun t q => am (Jm ε) (Matrix.of q) t ∈ V) fun q _ => hamc.continuousAt (x := (0, Matrix.of q)) (by show V ∈ 𝓝 (am (Jm ε) (Matrix.of q) 0)`. Simplify `hV)` using `[am]`. Take `⟨τ, hτ, hb⟩` from `Metric.eventually_nhds_iff.1 hev`.
+
+Use `⟨τ, hτ, fun t ht x => ?_⟩` and prove the remaining obligations. Set `W' : Submodule ℂ (Fin n → ℂ)` to `W.comap (Matrix.toLin' (uMat x))`. Establish `hxx : ∀ z, uMat x *ᵥ (uMat x⁻¹ *ᵥ z) = z` using `fun z => by rw [mulVec_mulVec, uMat_mul_invF, one_mulVec]`. Establish `hP' : ∀ z, z ∈ perp (Jm ε) W' ↔ uMat x *ᵥ z ∈ perp (Jm ε) W` using `fun z => ⟨fun h w hw => by`. Rewrite using `[← hxx w, hf_uMatF]`.
+
+Conclude with `h _ (show uMat x *ᵥ _ ∈ W by rwa [hxx]),`. Use `fun h w hw => by rw [← hf_uMatF x]; exact h _ hw⟩`. Establish `hW' : Isot (Jm ε) W'` using `fun z hz => (hP' z).2 (hW hz)`. Take `⟨p', hp'⟩` from `exists_isPr W'`. Set `a' : UJ ε` to `indefiniteUnitaryMk ε _ (am_mem hW' hp' t)`.
+
+Establish `hs' : Sc (Jm ε) W' (Real.exp t) (Real.exp (-t)) (uMat a')` using `am_sc hW' hp' t`. Establish `hs : Sc (Jm ε) W (Real.exp t) (Real.exp (-t)) (uMat (x * a' * x⁻¹))`. Establish `hv : ∀ z, uMat (x * a' * x⁻¹) *ᵥ z = uMat x *ᵥ (uMat a' *ᵥ (uMat x⁻¹ *ᵥ z))` using `fun z => by`. Rewrite using `[uMat_mul, uMat_mul, mulVec_mulVec, mulVec_mulVec]`. Use `⟨fun w hw => ?_, fun z hz => ?_, fun z => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hv, hs'.1 _ (show uMat x *ᵥ _ ∈ W by rwa [hxx]), mulVec_smul, hxx]`. Establish `: uMat x *ᵥ _ ∈ W` using `hs'.2.1 (uMat x⁻¹ *ᵥ z) ((hP' _).2 (by rwa [hxx]))`. Rewrite `this` using `[mulVec_sub, hxx, ← hv]`. Then use the resulting hypothesis. Use `(hP' _).1 (hs'.2.2 (uMat x⁻¹ *ᵥ z))` as an intermediate fact. Rewrite `this` using `[mulVec_sub, mulVec_smul, hxx, ← hv]`. Then use the resulting hypothesis.
+
+Use `⟨x * a' * x⁻¹ * a (-t), (hmem _).2 ?_, ?_⟩` and prove the remaining obligations. Use `hs.mul hW (am_sc hW hp (-t))` as an intermediate fact. Rewrite `this` using `[neg_neg, hee, mul_comm, hee]`. Then use the resulting hypothesis. Rewrite using `[← hinv, inv_mul_cancel_right, show x⁻¹ * (x * a' * x⁻¹) * x = a' by group]`. Apply the tactic sequence `exact hVU (hb (by simpa using ht) (fun i j => p' i j) fun i _ j _ => by simpa using hp'.entry i j)`.
+-/
 theorem real_parabolic_decomposition : RealPar := by
   intro n ε W hW0 hW N hN
   have hmem : ∀ g, g ∈ N ↔ Sc (Jm ε) W 1 1 (uMat g) := fun g => by

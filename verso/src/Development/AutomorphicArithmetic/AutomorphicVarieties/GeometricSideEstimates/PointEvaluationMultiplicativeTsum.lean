@@ -4,6 +4,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GeometricSideEstim
 open UpperTheory.V.Lit.Geo
 open NumberField Matrix GlobalTheory.CuspRep
 
+/- English proof (translation)
+Rewrite using `[← (e.subtypeEquiv he : S ≃ T).tsum_eq (fun v : T => f' v.1)]`. Conclude with `tsum_congr fun v => hf v.1`.
+-/
 private theorem tsum_reindex {α M : Type} [AddCommGroup α] [AddCommMonoid M] [TopologicalSpace M]
     (S T : AddSubgroup α) (e : α ≃ α) (he : ∀ v, v ∈ S ↔ e v ∈ T) (f f' : α → M) (hf : ∀ v, f v = f' (e v)) :
     ∑' v : S, f v.1 = ∑' v : T, f' v.1 := by
@@ -24,6 +27,9 @@ section
 
 variable {E : Type} [Field E] [NumberField E] {a : ℕ}
 
+/- English proof (translation)
+Use `show vFin v ᵥ* (GeneralLinearGroup.map (pFin E) (g * k)).val = (vFin v ᵥ* (GeneralLinearGroup.map (pFin E) g).val) ᵥ* _`. Rewrite using `[map_mul, Units.val_mul, Matrix.vecMul_vecMul]`.
+-/
 private theorem ptF_mul (g k : GA E a) (v : Fin a → E) :
     ptF (g * k) v = ptF g v ᵥ* (GeneralLinearGroup.map (pFin E) k).val := by
   show vFin v ᵥ* (GeneralLinearGroup.map (pFin E) (g * k)).val = (vFin v ᵥ* (GeneralLinearGroup.map (pFin E) g).val) ᵥ* _
@@ -31,6 +37,9 @@ private theorem ptF_mul (g k : GA E a) (v : Fin a → E) :
 
 variable [IsTotallyComplex E]
 
+/- English proof (translation)
+Use `show vInf v ᵥ* (GeneralLinearGroup.map (pInf E) (g * k)).val = (vInf v ᵥ* (GeneralLinearGroup.map (pInf E) g).val) ᵥ* _`. Rewrite using `[map_mul, Units.val_mul, Matrix.vecMul_vecMul]`.
+-/
 private theorem pt_mul (g k : GA E a) (v : Fin a → E) :
     pt (g * k) v = pt g v ᵥ* (GeneralLinearGroup.map (pInf E) k).val := by
   show vInf v ᵥ* (GeneralLinearGroup.map (pInf E) (g * k)).val = (vInf v ᵥ* (GeneralLinearGroup.map (pInf E) g).val) ᵥ* _
@@ -38,6 +47,17 @@ private theorem pt_mul (g k : GA E a) (v : Fin a → E) :
 
 end
 
+/- English proof (translation)
+Introduce `E _ _ _ a ha L M _ _ F`. Take `⟨h1, h2, h3, h4⟩` from `UpperTheory.rationalPoint_retraction_exists_cmDatum E a ha`. Establish `h5` using `UpperTheory.cmDatum_infinitePlaces_complex_split E a ha`. Use `⟨fun γ t g => ?_, fun g h => ?_, fun U hU hL u hu g => ?_⟩` and prove the remaining obligations. Use `tsum_reindex _ _ (mulEquivRow γ) (fun v => ?_) (fun v => F (pt (rt _) v)) (fun v => F (pt (rt g) v)) (fun v => ?_)` and prove the remaining obligations.
+
+Use `show ptF _ v ∈ L ↔ ptF g (v ᵥ* γ.val) ∈ L`. Rewrite using `[← (h2 _).2.2, h1, (h3 γ (rt g) v).1, (h2 g).2.2]`. Use `show F (pt (rt _) v) = F (pt (rt g) (v ᵥ* γ.val))`. Rewrite using `[h1, (h3 γ (rt g) v).2]`. Use `tsum_reindex _ _ (Equiv.refl _) (fun v => ?_) (fun v => F (pt (rt _) v)) (fun v => F (sc h.val • (pt (rt g) v ᵥ* h.val))) (fun v => ?_)` and prove the remaining obligations.
+
+Use `show ptF _ v ∈ L ↔ ptF g v ∈ L`. Rewrite using `[ptF_mul, pFin_infGL, Units.val_one, Matrix.vecMul_one]`. Use `show F (pt (rt _) v) = F (sc h.val • (pt (rt g) v ᵥ* h.val))`. Rewrite using `[h5]`. Use `tsum_reindex _ _ (Equiv.refl _) (fun v => ?_) (fun v => F (pt (rt _) v)) (fun v => F (pt (rt g) v)) (fun v => ?_)` and prove the remaining obligations.
+
+Use `show ptF _ v ∈ L ↔ ptF g v ∈ L`. Rewrite using `[ptF_mul, pFin_finGL]`. Use `⟨fun hv => ?_, hL u hu _⟩` and prove the remaining obligations. Establish `h6` using `hL u⁻¹ (U.inv_mem hu) _ hv`. Rewrite `h6` using `[Matrix.vecMul_vecMul, Units.mul_inv, Matrix.vecMul_one]`. Then use the resulting hypothesis.
+
+Use `show F (pt (rt _) v) = F (pt (rt g) v)`. Rewrite using `[h4 U hU u hu, pt_mul, pInf_finGL, Units.val_one, Matrix.vecMul_one]`.
+-/
 theorem UpperTheory.point_evaluation_multiplicative_tsum :
     SumInv := by
   intro E _ _ _ a ha L M _ _ F

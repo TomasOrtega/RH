@@ -34,16 +34,37 @@ section Lift
 variable (S : Sit) (E : S.Comparison₂) (T : LocLat S.G S.Qp S.LL S.O)
   (N : Submodule (LetA S.O S.n) (S.W.DD T))
 
+/- English proof (translation)
+Rewrite using `[← E.ioE_ext, ← E.jD_smul, algebraMap_smul]`.
+-/
 theorem jD_smulA (a : LetA S.O S.n) (y : S.W.DD T) :
     E.jD T (a • y) = S.inclR (E.io a) • E.jD T y := by
   rw [← E.ioE_ext, ← E.jD_smul, algebraMap_smul]
 
+/- English proof (translation)
+Use `S.W.γD_smul T g (algebraMap (LetA S.O S.n) S.W.EE a) y` as an intermediate fact. Rewrite `this` using `[algebraMap_smul, S.W.γE_ext, algebraMap_smul]`. Conclude with `this`.
+-/
 theorem γD_smulA (g : S.W.Gam) (a : LetA S.O S.n) (y : S.W.DD T) :
     S.W.γD T g (a • y) = S.W.γA g a • S.W.γD T g y := by
   have := S.W.γD_smul T g (algebraMap (LetA S.O S.n) S.W.EE a) y
   rw [algebraMap_smul, S.W.γE_ext, algebraMap_smul] at this
   exact this
 
+/- English proof (translation)
+Establish `hi` using `TWincl_injective S.inclR hinj T`. Use `choose z hz using fun y : ↥N => LinearMap.mem_range.1 (h1 y y.2)`. Use `⟨AddMonoidHom.mk' z (fun y y' => hi ?_), fun a y => hi ?_, fun g u hu y y' hy => hi ?_, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, hz, hz, hz, Submodule.coe_add, map_add, smul_add]`. Rewrite using `[AddMonoidHom.mk'_apply, TWincl_smul, hz, hz, Submodule.coe_smul, jD_smulA, smul_comm]`.
+
+Rewrite using `[AddMonoidHom.mk'_apply, TWincl_smul, TWincl_smul, TWincl_act S.inclR u (S.gR g) hu, hz, hz, TWact_smul, hy, E.jD_act, map_pow, map_pow, map_pow, hu, smul_comm]`. Establish `key : ∀ v ∈ Submodule.span S.O {z : TW S.RW T | ∃ (a : S.RA), ∃ y ∈ N, z = S.inclR a • E.jD T y}, ∀ r : S.RA, ∃ w ∈ AddSubgroup.closure {w : TW S.RA T | ∃ (r : S.RA) (y : ↥N), w = r • z y}, TWincl S.inclR T w = S.inclR r • S.inclR x ^ M0 • v`. Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv`.
+
+Take `⟨a, y, hy, rfl⟩` from `hv`. Introduce `r`. Use `⟨(r * a) • z ⟨y, hy⟩, AddSubgroup.subset_closure ⟨_, _, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[TWincl_smul, hz, map_mul, mul_smul, smul_comm (S.inclR a)]`. Consider the case `zero => intro r; exact ⟨0, zero_mem _, by simp⟩`.
+
+Consider the case `add v v' _ _ ih ih'`. Introduce `r`. Take `⟨w, hw, e⟩` from `ih r`. Take `⟨w', hw', e'⟩` from `ih' r`. Conclude with `⟨w + w', add_mem hw hw', by rw [map_add, e, e', smul_add, smul_add]⟩`.
+
+Consider the case `smul c v _ ih`. Introduce `r`. Take `⟨w, hw, e⟩` from `ih (r * algebraMap S.O S.RA c)`. Use `⟨w, hw, ?_⟩` and prove the remaining obligations. Rewrite using `[e, map_mul, AlgHom.commutes, mul_smul, ← algebraMap_smul S.RW c v, smul_comm (S.inclR x ^ M0)]`.
+
+Take `⟨w, hw, e⟩` from `key _ (h2 t) 1`. Establish `: x ^ (M0 + h0) • ((1 : S.RA) ⊗ₜ[S.O] t) = w`. Apply `hi` to reduce the goal to its premises. Rewrite using `[e, TWincl_smul, TWincl_one_tmul, map_one, one_smul, map_pow, pow_add, mul_smul]`. Rewrite using `[this]`.
+
+Conclude with `hw`.
+-/
 theorem exists_lift (x : S.RA) (M0 h0 : ℕ) (hinj : Function.Injective S.inclR)
     (h1 : ∀ y ∈ N, (S.inclR x) ^ M0 • E.jD T y ∈ LinearMap.range (TWincl S.inclR T))
     (h2 : ∀ t : ↥T.L.T, (S.inclR x) ^ h0 • ((1 : S.RW) ⊗ₜ[S.O] t) ∈
@@ -94,12 +115,22 @@ theorem exists_lift (x : S.RA) (M0 h0 : ℕ) (hinj : Function.Injective S.inclR)
     rw [this]
     exact hw
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp [S.W.γD_one]`. Consider the case `succ k ih => rw [Function.iterate_succ_apply', ih, pow_succ', S.W.γD_mul]`.
+-/
 theorem γD_iterate (g : S.W.Gam) (k : ℕ) (y : S.W.DD T) :
     (S.W.γD T g)^[k] y = S.W.γD T (g ^ k) y := by
   induction k with
   | zero => simp [S.W.γD_one]
   | succ k ih => rw [Function.iterate_succ_apply', ih, pow_succ', S.W.γD_mul]
 
+/- English proof (translation)
+Set `Y : ↥N →+ ↥N` to `AddMonoidHom.mk' (fun x => ⟨S.W.γD T g x, hN x x.2⟩) (fun x x' => Subtype.ext (by simp))`. Establish `hY : ∀ k (x : ↥N), ((Y^[k] x : ↥N) : S.W.DD T) = (S.W.γD T g)^[k] x`. Introduce `k x`. Proceed by induction on `k with`. Consider the case `zero => rfl`.
+
+Consider the case `succ k ih => rw [Function.iterate_succ_apply', Function.iterate_succ_apply', ← ih]`. Both sides reduce to the same expression. Use `⟨Y^[l ^ (j + 1)] y, by rw [hY, γD_iterate], ?_⟩` and prove the remaining obligations. Use `GlobalTheory.T.semilinear_iterate_prime_pow_sub_mem_filtration l (LetA S.O S.n) ↥N _ (S.W.γA g).toRingHom Y (fun a x => Subtype.ext (γD_smulA S T g a x)) hA (fun x => ?_) (j + 1) (by omega) y` and prove the remaining obligations. Rewrite using `[Submodule.mem_smul_top_iff]`.
+
+Conclude with `Submodule.smul_mono_left (Ideal.span_mono (by simp)) (hπ x x.2)`.
+-/
 theorem γD_pow_sub (l : ℕ) [Fact l.Prime] (g : S.W.Gam)
     (hN : ∀ x ∈ N, S.W.γD T g x ∈ N)
     (hπ : ∀ x ∈ N, S.W.γD T g x - x ∈ (Ideal.span {(letπ : LetA S.O S.n)}) • N)
@@ -122,6 +153,13 @@ theorem γD_pow_sub (l : ℕ) [Fact l.Prime] (g : S.W.Gam)
   rw [Submodule.mem_smul_top_iff]
   exact Submodule.smul_mono_left (Ideal.span_mono (by simp)) (hπ x x.2)
 
+/- English proof (translation)
+Establish `h1 : S.W.φA (1 + letπ) = (1 + letπ) ^ S.PD.p`. Rewrite using `[map_add, map_one, S.W.φA_π]`. Use function extensionality and compare the values at `i`. Simplify using `[letπ, LocWach.q, S.W.q₀_def]`. Establish `h2 : ∀ k, (S.W.φA ^ k) (1 + letπ) = (1 + letπ) ^ (S.PD.p ^ k)`.
+
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ, AlgHom.mul_apply, h1, map_pow, ih, ← pow_mul, pow_succ]`. Rewrite using `[← h2, map_add, map_one]`.
+
+Both sides reduce to the same expression.
+-/
 theorem one_add_X : 1 + S.W.X = (1 + letπ) ^ (S.PD.p ^ (S.W.s - 1)) := by
   have h1 : S.W.φA (1 + letπ) = (1 + letπ) ^ S.PD.p := by
     rw [map_add, map_one, S.W.φA_π]
@@ -135,6 +173,11 @@ theorem one_add_X : 1 + S.W.X = (1 + letπ) ^ (S.PD.p ^ (S.W.s - 1)) := by
   rw [← h2, map_add, map_one]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Express the relevant statement in the definitionally equal form `S.W.γ₀ g (letE (O := S.O) i j) = letE (O := S.O) i j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `[letE]`.
+
+Simplify using `[letE, h]`.
+-/
 theorem γA_letE (g : S.W.Gam) (i : ZMod S.n) : S.W.γA g (letE i) = letE i := by
   funext j
   change S.W.γ₀ g (letE (O := S.O) i j) = letE (O := S.O) i j
@@ -148,6 +191,35 @@ section Assemble
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Set `y₀ : Fin d → N` to `fun j => α (o (e j).1) • b (e j).2`. Set `D : Matrix (Fin d) (Fin d) (PadicComplex l)` to `Matrix.of fun i j => Ψ (y₀ j) i`. Set `co : N → Fin d → PadicComplex l` to `fun y j => kap o (φ (b.repr y (e j).2)) (e j).1`. Establish `hA : ∀ a y, Ψ (α a • y) = (A a).mulVec (Ψ y)` using `fun a y => by rw [hΨ, hα]`. Establish `core : ∀ y, Ψ y = D.mulVec (co y)`.
+
+Introduce `y`. Use `conv_lhs => rw [← b.sum_repr y, map_sum]`. Establish `h1 : D.mulVec (co y) = ∑ j, co y j • Ψ (y₀ j)`. Use function extensionality and compare the values at `i`. Simplify using `[D, Matrix.mulVec, dotProduct, mul_comm]`.
+
+Establish `h2 : ∑ j, co y j • Ψ (y₀ j) = ∑ p : Fin f × ι, kap o (φ (b.repr y p.2)) p.1 • Ψ (α (o p.1) • b p.2)` using `Equiv.sum_comp e (fun p : Fin f × ι => kap o (φ (b.repr y p.2)) p.1 • Ψ (α (o p.1) • b p.2))`. Rewrite using `[h1, h2, Fintype.sum_prod_type_right]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hΨ, lam, Matrix.sum_mulVec]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hA, Matrix.smul_mulVec]`. Establish `cols : ∀ (B : Matrix (Fin d) (Fin d) (PadicComplex l)) (v : Fin d → Fin d → PadicComplex l), (∀ j, (fun i => B i j) = D.mulVec (v j)) → B = D * Matrix.of fun i j => v j i`. Introduce `B v h`. Use extensionality with `i j`. Conclude with `congrFun (h j) i`.
+
+Establish `hball : ∀ v ∈ AddSubgroup.closure {v | ∃ (x : OCO LL) (y : N), v = (lam o A x).mulVec (Ψ y)}, ∃ w : Fin d → PadicComplex l, (∀ i, ‖w i‖ ≤ 1) ∧ v = D.mulVec w`. Introduce `v hv`. Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem v hv`. Take `⟨x, y, rfl⟩` from `hv`.
+
+Use `⟨∑ k, kap o x k • co (α (o k) • y), fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_apply]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, norm_mul]`. Conclude with `mul_le_one₀ (norm_kap_le _ _ _) (norm_nonneg _) (norm_kap_le _ _ _)`.
+
+Rewrite using `[lam, Matrix.sum_mulVec, Matrix.mulVec_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_mulVec, Matrix.mulVec_smul, ← core, hA]`. Consider the case `zero => exact ⟨0, by simp, by simp⟩`. Consider the case `add v v' _ _ ih ih'`.
+
+Take `⟨w, hw, rfl⟩` from `ih`. Take `⟨w', hw', rfl⟩` from `ih'`. Conclude with `⟨w + w', fun i => (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hw i) (hw' i)), (Matrix.mulVec_add _ _ _).symm⟩`. Consider the case `neg v _ ih`. Take `⟨w, hw, rfl⟩` from `ih`.
+
+Conclude with `⟨-w, fun i => by simpa using hw i, (Matrix.mulVec_neg _ _).symm⟩`. Establish `hcol : ∀ σ j, (fun i => (M σ * D.map (act σ)) i j) = (M σ).mulVec (fun i => act σ (Ψ (y₀ j) i))` using `fun σ j => rfl`. Take `⟨U, hU⟩` from `GlobalTheory.T.decompletion_frame_of_matrix_form l act χ K m d M D g hact hgen hM1 hM2 hM3 (fun i j => hn _ _) (by choose w hw hw' using fun j => hball _ (hl j)`. Use `⟨Matrix.of fun i j => (u • w j) i, fun i j => ?_, (cols _ _ fun j => ?_).symm⟩` and prove the remaining obligations. Rewrite using `[Matrix.of_apply, Pi.smul_apply, smul_eq_mul, norm_mul]`.
+
+Conclude with `mul_le_one₀ hu (norm_nonneg _) (hw j i)`. Rewrite using `[Matrix.mulVec_smul, ← hw', smul_smul, ← hcu]`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.one_apply, Pi.single_apply])`. Use the proof step `(fun σ hσ' => by choose y' hy' using fun j => hσ σ hσ' (y₀ j)`.
+
+Conclude with `⟨Matrix.of fun i j => co (y' j) i, fun i j => hc _ _, cols _ _ fun j => by rw [hcol, ← hy', core]⟩)`. Use the proof step `(fun σ hσ' => by`. Use extensionality with `i j`. Conclude with `(congrFun (hcol σ j) i).trans (congrFun (hH σ hσ' (y₀ j)).symm i))`. Use the proof step `(by choose y' hy hy' using fun j => hg (y₀ j)`.
+
+Use `⟨Matrix.of fun i j => co (y' j - y₀ j) i, fun i j => hs _ ?_ _, cols _ _ fun j => ?_⟩` and prove the remaining obligations. Use `hy j` as an intermediate fact. Generalize the expression as in `y' j - y₀ j = x at this`. Use `Submodule.smul_induction_on this (fun r hr n _ => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul]`.
+
+Conclude with `J.mul_mem_right _ hr`. Rewrite using `[map_add, Finsupp.add_apply]`. Conclude with `J.add_mem hx hy`. Rewrite using `[← core, map_sub, hy', ← hcol] rfl)`. Use `⟨D, U, g, hU, fun a i j => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : A a * D = D * Matrix.of fun i j => co (α a • y₀ j) i` using `cols _ _ fun j => by rw [← core, hA]; rfl`. Rewrite using `[Matrix.mul_assoc, h1, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hU.1, Matrix.one_mul]`. Conclude with `hc _ _`.
+-/
 theorem assemble (act : GQ l →* (PadicComplex l ≃+* PadicComplex l)) (χ : GQ l →* ℚ_[l]ˣ)
     (K LL : FinExt l) (m d f : ℕ) (M : GQ l → Matrix (Fin d) (Fin d) (PadicComplex l))
     (A : ↥(OL LL) → Matrix (Fin d) (Fin d) (PadicComplex l))
@@ -263,11 +335,19 @@ section Roots
 
 variable {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P)
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ', pow_mul, ← add_assoc, AI.ζ_succ, ih]`.
+-/
 theorem zeta_pow (j k : ℕ) : AI.ζ (j + k) ^ l ^ k = AI.ζ j := by
   induction k with
   | zero => simp
   | succ k ih => rw [pow_succ', pow_mul, ← add_assoc, AI.ζ_succ, ih]
 
+/- English proof (translation)
+Take `⟨i, rfl⟩` from `Nat.exists_eq_add_of_le hj`. Establish `hnot : ¬ AI.ζ (1 + i) ^ l ^ i = 1` using `by rw [zeta_pow]; exact AI.ζ_one`. Establish `hfin : AI.ζ (1 + i) ^ l ^ (i + 1) = 1`. Rewrite using `[pow_succ, pow_mul, zeta_pow, AI.ζ_succ 0, AI.ζ_zero]`. Establish `h` using `IsPrimitiveRoot.orderOf (AI.ζ (1 + i))`.
+
+Rewrite `h` using `[orderOf_eq_prime_pow hnot hfin, add_comm i 1]`. Conclude with `h.map_of_injective (f := (PadicComplexInt l).subtype) Subtype.val_injective`.
+-/
 theorem zeta_prim (j : ℕ) (hj : 1 ≤ j) :
     IsPrimitiveRoot ((AI.ζ j : OC l) : PadicComplex l) (l ^ j) := by
   obtain ⟨i, rfl⟩ := Nat.exists_eq_add_of_le hj
@@ -279,6 +359,11 @@ theorem zeta_prim (j : ℕ) (hj : 1 ≤ j) :
   exact h.map_of_injective (f := (PadicComplexInt l).subtype) Subtype.val_injective
 
 include AI in
+/- English proof (translation)
+Use `AlmostTrace.Ks_mono K hj ?_` and prove the remaining obligations. Use `(le_sup_right : _ ≤ Ks K j) (IntermediateField.subset_adjoin _ _ ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `P.ζQ j ^ l ^ j = 1`. Apply `(algebraMap (Om l) (PadicComplex l)).injective` to reduce the goal to its premises. Establish `h` using `congrArg (fun x : OC l => (x : PadicComplex l)) (zeta_pow AI 0 j)`.
+
+Rewrite using `[map_pow, map_one, ← PadicComplex.coe_eq, ← AI.ζ_eq]`. Simplify `h` using `[AI.ζ_zero]`.
+-/
 theorem zetaQ_mem (K : FinExt l) {j m : ℕ} (hj : j ≤ m) : P.ζQ j ∈ Ks K m := by
   refine AlmostTrace.Ks_mono K hj ?_
   refine (le_sup_right : _ ≤ Ks K j) (IntermediateField.subset_adjoin _ _ ?_)
@@ -288,11 +373,17 @@ theorem zetaQ_mem (K : FinExt l) {j m : ℕ} (hj : j ≤ m) : P.ζQ j ∈ Ks K m
   rw [map_pow, map_one, ← PadicComplex.coe_eq, ← AI.ζ_eq]
   simpa [AI.ζ_zero] using h
 
+/- English proof (translation)
+Rewrite using `[AI.ζ_eq, AI.actC_ext]`. Conclude with `congrArg _ (hσ ⟨_, zetaQ_mem AI K hj⟩)`.
+-/
 theorem act_zeta (K : FinExt l) {j m : ℕ} (hj : j ≤ m) (σ : GQ l) (hσ : σ ∈ Gj K m) :
     AI.actC σ ((AI.ζ j : OC l) : PadicComplex l) = ((AI.ζ j : OC l) : PadicComplex l) := by
   rw [AI.ζ_eq, AI.actC_ext]
   exact congrArg _ (hσ ⟨_, zetaQ_mem AI K hj⟩)
 
+/- English proof (translation)
+Use `⟨P.ζQ j - 1, sub_mem (zetaQ_mem AI K hj) (one_mem _), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap (Om l) (PadicComplex l) (P.ζQ j - 1) = ((AI.ζ j : OC l) : PadicComplex l) - 1`. Rewrite using `[map_sub, map_one, AI.ζ_eq]`. Both sides reduce to the same expression.
+-/
 theorem zeta_sub_one_mem (K : FinExt l) {j m : ℕ} (hj : j ≤ m) :
     ((AI.ζ j - 1 : OC l) : PadicComplex l) ∈ inC (Ks K m) := by
   refine ⟨P.ζQ j - 1, sub_mem (zetaQ_mem AI K hj) (one_mem _), ?_⟩
@@ -300,6 +391,11 @@ theorem zeta_sub_one_mem (K : FinExt l) {j m : ℕ} (hj : j ≤ m) :
   rw [map_sub, map_one, AI.ζ_eq]
   rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `‖((AI.ζ j : OC l) : PadicComplex l) - 1‖ < 1`. Rewrite using `[GlobalTheory.T.norm_primitiveRoot_primePow_sub_one_padicComplex l j hj _ (zeta_prim AI j hj)]`. Establish `hl : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Apply `Real.rpow_lt_one_of_one_lt_of_neg hl` to reduce the goal to its premises. Apply `div_neg_of_neg_of_pos (by norm_num)` to reduce the goal to its premises.
+
+Conclude with `mul_pos (pow_pos (by linarith) _) (by linarith)`.
+-/
 theorem norm_zeta_sub_one_lt (j : ℕ) (hj : 1 ≤ j) :
     ‖((AI.ζ j - 1 : OC l) : PadicComplex l)‖ < 1 := by
   change ‖((AI.ζ j : OC l) : PadicComplex l) - 1‖ < 1
@@ -309,10 +405,16 @@ theorem norm_zeta_sub_one_lt (j : ℕ) (hj : 1 ≤ j) :
   apply div_neg_of_neg_of_pos (by norm_num)
   exact mul_pos (pow_pos (by linarith) _) (by linarith)
 
+/- English proof (translation)
+Rewrite using `[Algebra.TensorProduct.tmul_pow, one_pow]`.
+-/
 theorem tmul_one_pow (LL : FinExt l) (c : OC l) (k : ℕ) :
     (c ⊗ₜ[ℤ_[l]] (1 : ↥(OL LL)) : OCO LL) ^ k = (c ^ k) ⊗ₜ[ℤ_[l]] (1 : ↥(OL LL)) := by
   rw [Algebra.TensorProduct.tmul_pow, one_pow]
 
+/- English proof (translation)
+Establish `h : ∀ v : Ainf l, (1 + ((1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] (v - 1) : RA LL)) = (1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] v` using `fun v => by`. Rewrite using `[Algebra.TensorProduct.one_def, ← TensorProduct.tmul_add, add_sub_cancel]`. Rewrite using `[h, h, Algebra.TensorProduct.tmul_pow, one_pow]`.
+-/
 theorem one_add_pow_sub (LL : FinExt l) (w : Ainf l) (k : ℕ) :
     (1 + ((1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] (w - 1) : RA LL)) ^ k =
       1 + (1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] (w ^ k - 1) := by
@@ -326,6 +428,53 @@ end Roots
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `D HW F l _ K s LL h S E T M0 h0 hW d M A hM`. Take `⟨-, -, N, hN⟩` from `hW`. Take `⟨hsw1, hsw2⟩` from `GlobalTheory.T.wach_lattice_sandwich_Ainf D HW F l K s LL h T M0 h0 N hN`. Take `⟨⟨ι, _, b, hli, hsp⟩, -, -, hW2, hW3, -⟩` from `hN`. Take `⟨f, o, ⟨e⟩⟩` from `GlobalTheory.T.exists_basis_and_equiv_fin_prod_of_basis l K LL T d M A ι _ hM hli hsp`.
+
+Generalize the expression as in `hn : n0 l (M0 + h0) = n`. Establish `hm : mN l s (M0 + h0) = s + (s + n + 1)` using `by rw [mN, hn]; ring`. Generalize the expression as in `mN l s (M0 + h0) = m at hm ⊢`. Establish `hs1 : 1 ≤ s` using `h.1`. Set `AI` to `D.locA l`.
+
+Establish `hact : IsActC AI.actC` using `⟨AI.actC_ext, AI.actC_norm⟩`. Establish `hcyc : IsCyc (D.loc l).χQ` using `(D.loc l).χQ_cyc`. Take `⟨θ, hθ⟩` from `GlobalTheory.T.exists_fontaineTheta_frobeniusInverse_shift l (D.loc l) AI n`. Take `⟨Φ, hΦ1, hΦ2, hΦ3, hΦ4⟩` from `GlobalTheory.T.exists_ainf_tensor_lattice_specialisation l (D.loc l) AI K LL T d f n M A o θ hM hθ`. Take `⟨hl1, hA1, -, -⟩` from `GlobalTheory.T.ocTensorCoeffActionMatrix_multiplicative l K LL T d f M A o hM`.
+
+Take `⟨hM1, hM2, -, -⟩` from `(GlobalTheory.T.exists_continuous_galoisLatticeMatrix_integral l K LL T).2 d M A hM`. Take `⟨z, hz1, hz2, hz3⟩` from `exists_lift S E T N (E.io S.W.X) M0 h0 (inclR_injective LL) hsw1 hsw2`. Establish `hgrp` using `GlobalTheory.T.cyclotomicLevelSubgroup_mem_wachSubgroups l (D.loc l) AI K s LL h ((HW l).W K s LL h) ((HW l).W_s K s LL h)`. Establish `hGs : Gj K s ≤ GK K` using `IntermediateField.fixingSubgroup_antitone h.2.2.1`. Establish `hms : Gj K m ≤ Gj K s` using `IntermediateField.fixingSubgroup_antitone (AlmostTrace.Ks_mono K (by omega))`.
+
+Take `⟨⟨g₀, hg₀⟩, hgen⟩` from `GlobalTheory.T.exists_cyclotomicTowerLevelGenerator_properties l AI.actC (D.loc l).χQ hact hcyc K s ⟨h.1, h.2.1⟩`. Establish `hg` using `(hgen g₀ hg₀).1 (s + n + 1)`. Rewrite `hg` using `[← hm]`. Set `φ : LetA S.O S.n →+* OCO LL` to `(thR LL θ).comp E.io.toRingHom`. Establish `hφ : ∀ a, φ a = thR LL θ (E.io a)` using `fun a => rfl`.
+
+Establish `hφa : ∀ a : ↥(OL LL), φ (algebraMap S.O (LetA S.O S.n) a) = (1 : OC l) ⊗ₜ[ℤ_[l]] a`. Introduce `a`. Conclude with `(congrArg (thR LL θ) (E.io.commutes a)).trans ((thR_tmul LL θ a 1).trans (by rw [map_one]))`. Establish `hφπ : φ letπ = (AI.ζ (s + n) - 1) ⊗ₜ[ℤ_[l]] (1 : ↥(OL LL))`. Rewrite using `[hφ, E.io_π]`.
+
+Conclude with `(thR_tmul LL θ 1 _).trans (by rw [map_sub, map_one, hθ.2])`. Set `w : Ainf l` to `WittVector.teichmuller l (AI.εroot s) ^ l ^ (s - 1) - 1`. Establish `hx : E.io S.W.X = ((1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] w : RA LL)`. Establish `h1` using `congrArg E.io (one_add_X S)`. Establish `h2 : S.PD.p = l` using `(D.loc l).PD_p K`.
+
+Establish `h3 : S.W.s = s` using `(HW l).W_s K s LL h`. Rewrite `h1` using `[map_add, map_one, map_pow, map_add, map_one, E.io_π, h2, h3]`. Conclude with `add_left_cancel (h1.trans (one_add_pow_sub LL _ _))`. Establish `hθw : θ w = AI.ζ (1 + n) - 1`. Rewrite using `[map_sub, map_one, map_pow, hθ.2, show s + n = (1 + n) + (s - 1) by omega, zeta_pow]`.
+
+Set `c : PadicComplex l` to `((AI.ζ (1 + n) : OC l) : PadicComplex l) - 1`. Establish `hprim` using `zeta_prim AI (1 + n) (by omega)`. Take `⟨u, hu, hlu⟩` from `GlobalTheory.T.exists_prime_eq_mul_primitiveRoot_sub_one_pow' l (M0 + h0) _ (by rw [hn]; exact hprim)`. Establish `hc0 : c ≠ 0` using `sub_ne_zero.2 (hprim.ne_one (Nat.one_lt_pow (by omega) (Fact.out : l.Prime).one_lt))`. Establish `hsc : ∀ (r : RA LL) (k : ℕ) (v : TW (RA LL) (show LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL) from T)), thR LL θ r = (AI.ζ (1 + n) - 1) ⊗ₜ[ℤ_[l]] (1 : ↥(OL LL)) → Φ (r ^ k • v) = c ^ k • Φ v`.
+
+Introduce `r k v hr`. Rewrite using `[hΦ1, map_pow, hr, tmul_one_pow, hl1, hA1, Matrix.smul_mulVec, Matrix.one_mulVec]`. Both sides reduce to the same expression. Set `x : RA LL` to `E.io S.W.X`. Establish `hx' : x = (1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] w` using `hx`.
+
+Establish `hx1 : thR LL θ x = (AI.ζ (1 + n) - 1) ⊗ₜ[ℤ_[l]] (1 : ↥(OL LL))`. Rewrite using `[hx', thR_tmul, hθw]`. Establish `hx2 : ∀ σ ∈ Gj K m, thR LL θ (gRA AI LL σ x) = (AI.ζ (1 + n) - 1) ⊗ₜ[ℤ_[l]] (1 : ↥(OL LL))`. Introduce `σ hσ`. Establish `h1 : θ (AI.actWHom σ w) = AI.ζ (1 + n) - 1`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hθ.1, hθw]`. Express the relevant statement in the definitionally equal form `AI.actC σ (((AI.ζ (1 + n) : OC l) : PadicComplex l) - 1) = ((AI.ζ (1 + n) : OC l) : PadicComplex l) - 1`. Rewrite using `[map_sub, map_one, act_zeta AI K (by omega) σ hσ]`. Rewrite using `[hx', ← h1]`.
+
+Both sides reduce to the same expression. Set `Ψ : ↥N →+ (Fin d → PadicComplex l)` to `Φ.comp z`. Establish `hΨ : ∀ y, Ψ y = Φ (z y)` using `fun y => rfl`. Establish `hmain : ∀ (σ : ↥(GK K)), (σ : GQ l) ∈ Gj K m → ∀ y y' : ↥N, (y' : S.W.DD T) = S.W.γD T (S.W.resΓ σ) y → Ψ y' = (M σ).mulVec (fun i => AI.actC σ (Ψ y i))`. Introduce `σ hσ y y' hy`.
+
+Establish `h1` using `congrArg Φ (hz2 σ (gRA AI LL σ) (inclR_gRA AI LL σ) y y' hy)`. Establish `h2` using `(hsc _ M0 _ hx1).symm.trans (h1.trans (hsc _ M0 _ (hx2 σ hσ)))`. Establish `h3` using `smul_right_injective (Fin d → PadicComplex l) (pow_ne_zero M0 hc0) h2`. Conclude with `h3.symm.trans (hΦ3 σ (z y))`. Use `haveI : FiniteDimensional ℚ_[l] ↥(K0 K) := haveI := K.2 FiniteDimensional.of_injective (IntermediateField.inclusion (inf_le_left : K0 K ≤ K.1)).toLinearMap (IntermediateField.inclusion_injective (inf_le_left : K0 K ≤ K.1))`.
+
+Use `haveI : NeZero (Module.finrank ℚ_[l] ↥(K0 K)) := ⟨Module.finrank_pos.ne'⟩`. Establish `hidem : ∀ i k, kap o (φ (letE i)) k ∈ inC (Ks K m)`. Introduce `i k`. Establish `h1 : IsIdempotentElem (letE i : LetA S.O S.n)`. Express the relevant statement in the definitionally equal form `letE i * letE i = letE i`.
+
+Rewrite using `[letE, ← Pi.single_mul, mul_one]`. Establish `h2` using `GlobalTheory.T.kap_mem_inC_of_invariant l AI.actC K LL f o (φ (letE i)) hact (h1.map φ) (fun σ hσ k => by`. Establish `h3` using `GlobalTheory.T.io_equivariant_alt l (D.loc l) AI K s LL h _ ((F l).E K s LL h) ⟨σ, hσ⟩ (letE i)`. Set `r : RA LL` to `E.io (letE i)`. Establish `h4 : gRA AI LL σ r = r`.
+
+Apply `inclR_injective LL` to reduce the goal to its premises. Rewrite using `[inclR_gRA]`. Conclude with `h3.symm.trans (congrArg (fun a => inclR LL (E.io a)) (γA_letE S _ i))`. Conclude with `(kap_thR_gRA AI o hθ σ _ k).symm.trans (congrArg (fun r => kap o (thR LL θ r) k) h4)) k`. Conclude with `Set.image_mono (h.2.2.1.trans (AlmostTrace.Ks_mono K (show s ≤ m by omega))) h2`.
+
+Use `assemble AI.actC (D.loc l).χQ K LL m d f M A o (LetA S.O S.n) ↥N ι b e (algebraMap S.O (LetA S.O S.n)) φ Ψ (Ideal.span {((l : ℕ) : LetA S.O S.n) ^ 2} ⊔ (Ideal.span {((l : ℕ) : LetA S.O S.n), letπ}) ^ (l ^ (s + n))) (g₀ ^ l ^ (s + n + 1)) hact hg (fun i j => (hM1 i j).mono fun σ h …` and prove the remaining obligations. Take `⟨b', hb', -⟩` from `hM`. Use extensionality with `i j`. Use `hb' ⟨τ, hGs (hms hτ)⟩ i j` as an intermediate fact. Rewrite using `[Matrix.map_apply]`.
+
+Conclude with `(congrArg _ this).trans ((act_zC hact σ _).trans this.symm)`. Conclude with `(congrArg Φ (hz1 a y)).trans (hΦ1 _ _)`. Rewrite using `[hφa, hl1]`. Conclude with `one_smul _ _`. Conclude with `⟨⟨_, hW2 ⟨σ, hGs (hms hσ)⟩ ((hgrp _).1 (hms hσ)) y y.2⟩, hmain ⟨σ, hGs (hms hσ)⟩ hσ y _ rfl⟩`.
+
+Establish `hσ'` using `AlmostTrace.Hinf_le_Gj K m hσ`. Use `hmain ⟨σ, hGs (hms hσ')⟩ hσ' y y ?_` and prove the remaining obligations. Establish `h1 : S.W.resΓ ⟨σ, hGs (hms hσ')⟩ = 1` using `(hgrp _).2 hσ`. Rewrite using `[h1, S.W.γD_one]`. Establish `h1 : (⟨g₀, hGs hg₀.1⟩ : ↥(GK K)) ∈ S.W.GKs` using `(hgrp _).1 hg₀.1`.
+
+Take `⟨y', hy', hy''⟩` from `γD_pow_sub S T N l (S.W.resΓ ⟨g₀, hGs hg₀.1⟩) (hW2 _ h1) (hW3 _ h1) (GlobalTheory.T.gammaAction_sub_mem_span_pow_succ D HW l K s LL h _ h1) (s + n) y`. Use `⟨y', hy'', hmain ((⟨g₀, hGs hg₀.1⟩ : ↥(GK K)) ^ l ^ (s + n + 1)) hg.1 y y' ?_⟩` and prove the remaining obligations. Conclude with `hy'.trans (congrArg (fun γ => S.W.γD T γ y) (S.W.resΓ.map_pow _ _).symm)`. Take `⟨t, ht⟩` from `hΦ4 j`. Rewrite using `[← ht, ← hsc _ _ _ hx1]`.
+
+Establish `h1 : ∀ v ∈ AddSubgroup.closure {w : TW S.RA T | ∃ (r : S.RA) (y : ↥N), w = r • z y}, Φ v ∈ AddSubgroup.closure {v | ∃ (x : OCO LL) (y : ↥N), v = (lam o A x).mulVec (Ψ y)}`. Introduce `v hv`. Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem v hv`. Take `⟨r, y, rfl⟩` from `hv`.
+
+Conclude with `AddSubgroup.subset_closure ⟨thR LL θ r, y, hΦ1 r (z y)⟩`. Consider the case `zero => exact (Φ.map_zero).symm ▸ zero_mem _`. Consider the case `add v v' _ _ ih ih' => exact (Φ.map_add v v').symm ▸ add_mem ih ih'`. Consider the case `neg v _ ih => exact (Φ.map_neg v).symm ▸ neg_mem ih`. Conclude with `h1 _ (hz3 t)`.
+-/
 theorem exists_decompletion : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW), ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), let S := sit D.loc HW l (D.locA l) K s LL h; let E : S.Comparison₂ := ((F l).E K s LL h).tie; ∀ (T : LocLat S.G S.Qp S.LL S.O) (M0 h0 : ℕ), HypW S E T M0 h0 → ∀ (d : ℕ) (M : GQ l → Matrix (Fin d) (Fin d) (PadicComplex l)) (A : ↥(OL LL) → Matrix (Fin d) (Fin d) (PadicComplex l)), IsMat K LL T M A → ∃ (Dm : Matrix (Fin d) (Fin d) (PadicComplex l)) (U : GQ l → Matrix (Fin d) (Fin d) (PadicComplex l)) (g : GQ l), IsDec (D.locA l).actC (D.loc l).χQ K (mN l s (M0 + h0)) M Dm U g ∧ ∀ a i j, (Dm⁻¹ * A a * Dm) i j ∈ intC (Ks K (mN l s (M0 + h0))) := by
   intro D HW F l _ K s LL h S E T M0 h0 hW d M A hM
   obtain ⟨-, -, N, hN⟩ := hW

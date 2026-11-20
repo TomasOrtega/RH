@@ -22,6 +22,9 @@ variable {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)
 
 def zeta (ε : PreTilt O p) (n : ℕ) : O := PreTilt.untilt (root^[n] ε)
 
+/- English proof (translation)
+Unfold `zeta`. Rewrite using `[← map_pow, Function.iterate_succ_apply']`. Use `congr 1`. Conclude with `(_root_.frobeniusEquiv (PreTilt O p) p).apply_symm_apply _`.
+-/
 theorem zeta_succ_pow (ε : PreTilt O p) (n : ℕ) : zeta ε (n + 1) ^ p = zeta ε n := by
   unfold zeta
   rw [← map_pow, Function.iterate_succ_apply']
@@ -30,6 +33,9 @@ theorem zeta_succ_pow (ε : PreTilt O p) (n : ℕ) : zeta ε (n + 1) ^ p = zeta 
 
 def IsPrimitiveSystem (ε : PreTilt O p) : Prop := ∀ n, IsPrimitiveRoot (zeta ε n) (p ^ n)
 
+/- English proof (translation)
+Simplify using `using (hε 0).pow_eq_one`.
+-/
 theorem IsPrimitiveSystem.zeta_zero {ε : PreTilt O p} (hε : IsPrimitiveSystem ε) :
     zeta ε 0 = 1 := by simpa using (hε 0).pow_eq_one
 
@@ -45,6 +51,9 @@ def epsPairing [IsDomain O] {ε : PreTilt O p} (hε : IsPrimitiveSystem ε) (G :
     (t : G.Tate) (χ : G.dual.Tate) : ℤ_[p] :=
   (epsEquiv hε).symm (pairing G O t χ)
 
+/- English proof (translation)
+The claim follows from `(epsEquiv hε).apply_symm_apply _`.
+-/
 theorem epsPairing_smul [IsDomain O] {ε : PreTilt O p} (hε : IsPrimitiveSystem ε)
     (G : PDivGroup p O) (t : G.Tate) (χ : G.dual.Tate) :
     epsPairing hε G t χ • epsTate hε = pairing G O t χ :=
@@ -57,6 +66,11 @@ def pairingO [IsDomain O] {ε : PreTilt O p} (hε : IsPrimitiveSystem ε) {G : P
     {h : ℕ} (e : G.Tate ≃ₗ[ℤ_[p]] (Fin h → ℤ_[p])) (y : Fin h → O) (χ : G.dual.Tate) : O :=
   ∑ i, y i * padicToO p O (epsPairing hε G (e.symm (Pi.single i 1)) χ)
 
+/- English proof (translation)
+Establish `ht : t = ∑ i, e t i • e.symm (Pi.single i 1)`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_sum]`. Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+
+Use `conv_rhs => rw [ht]`. Simplify using `only [pairingO, toO, epsPairing, map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, map_mul]`.
+-/
 theorem pairingO_toO [IsDomain O] {ε : PreTilt O p} (hε : IsPrimitiveSystem ε)
     {G : PDivGroup p O} {h : ℕ} (e : G.Tate ≃ₗ[ℤ_[p]] (Fin h → ℤ_[p])) (t : G.Tate)
     (χ : G.dual.Tate) : pairingO hε e (toO e t) χ = padicToO p O (epsPairing hε G t χ) := by
@@ -117,10 +131,16 @@ section Inhabitant
 variable [IsDomain O] {ε : PreTilt O p} (hε : IsPrimitiveSystem ε)
 
 omit [IsDomain O] in
+/- English proof (translation)
+Simplify using `[Datum.bb, mult]`.
+-/
 theorem mult_bb (y : Fin 1 → O) : (mult ε).bb y = y := by
   simp [Datum.bb, mult]
 
 omit [IsDomain O] in
+/- English proof (translation)
+The claim follows from `LinearMap.ker_eq_bot'.2 fun y hy => (mult_bb y).symm.trans hy`.
+-/
 theorem mult_Fil : (mult ε).Fil = ⊥ :=
   LinearMap.ker_eq_bot'.2 fun y hy => (mult_bb y).symm.trans hy
 
@@ -134,6 +154,9 @@ def muLie : ((Fin 1 → O) ⧸ (mult ε).Fil) ≃ₗ[O] (PDivGroup.mu p O).Lie :
     (LinearMap.ringLmapEquivSelf O O O).symm ≪≫ₗ (muOmegaEquiv p O).symm.dualMap
 
 omit [IsDomain O] in
+/- English proof (translation)
+Establish `h : (muOmegaEquiv p O).symm (dlogT p O) = 1` using `muLieGen_dlogT p O`. Simplify using `[muLie, h]`.
+-/
 theorem muLie_mk (m : Fin 1 → O) : muLie ε ((mult ε).Fil.mkQ m) (dlogT p O) = m 0 := by
   have h : (muOmegaEquiv p O).symm (dlogT p O) = 1 := muLieGen_dlogT p O
   simp [muLie, h]
@@ -141,6 +164,25 @@ theorem muLie_mk (m : Fin 1 → O) : muLie ε ((mult ε).Fil.mkQ m) (dlogT p O) 
 omit [IsDomain O] in
 instance : Subsingleton (mult ε).Fil := by rw [mult_Fil]; infer_instance
 
+/- English proof (translation)
+Establish `h : (padicAction (PDivGroup.mu p O)).onTate O a t = a • t`. Express the relevant statement in the definitionally equal form `tateMap _ _ O (algebraMap ℤ_[p] (CategoryTheory.End (PDivGroup.mu p O)) a) t = _`. Rewrite using `[Algebra.algebraMap_eq_smul_one]`. Conclude with `(LinearMap.congr_fun (map_smul (tateMap _ _ O) a (CategoryTheory.CategoryStruct.id _)) t)`. Rewrite using `[h, map_smul]`.
+
+Simplify using `[mult, Algebra.ofId_apply, Algebra.algebraMap_eq_smul_one, Matrix.smul_mulVec]`. Use `fil_act a w := by`. Rewrite using `[Subsingleton.elim (LinearEquiv.ofSubsingleton _ _ _ : (mult ε).Fil) 0, Subsingleton.elim (LinearEquiv.ofSubsingleton _ _ _ : (mult ε).Fil) 0]`. Simplify using the standard rewrite rules. Use `lie_act a m := by`.
+
+Establish `h : ∀ x, (padicAction (PDivGroup.mu p O)).onLie a x = padicToO p O a • x` using `fun x => by`. Express the relevant statement in the definitionally equal form `lieMap _ _ (algebraMap ℤ_[p] (CategoryTheory.End (PDivGroup.mu p O)) a) x = _`. Rewrite using `[Algebra.algebraMap_eq_smul_one]`. Conclude with `(LinearMap.congr_fun (lieMap_smul (padicToO p O) a (CategoryTheory.CategoryStruct.id _)) x).trans (by simp)`. Rewrite using `[h, ← map_smul, ← map_smul]`.
+
+Use `congr 2`. Use extensionality with `i`. Simplify using `[actH, mult, Matrix.mulVec, dotProduct, Subsingleton.elim i 0, padicToO, Matrix.algebraMap_matrix_apply]`. Use `al_eq t := by`. Establish `h : fontaineTheta O p (Sandwich.mu ε) = 0`.
+
+Rewrite using `[Sandwich.mu, map_sub, fontaineTheta_teichmuller, map_one, sub_eq_zero]`. Conclude with `hε.zeta_zero`. Rewrite using `[Subsingleton.elim (LinearEquiv.ofSubsingleton _ _ _ : (mult ε).Fil) 0]`. Use extensionality with `i`. Simplify using `[Datum.al, mult, Matrix.mulVec, dotProduct, h]`.
+
+Use `b_eq x χ := by`. Take `⟨q, rfl⟩` from `(muLie ε).surjective x`. Take `⟨m, rfl⟩` from `(mult ε).Fil.mkQ_surjective q`. Establish `he : (muBasis hε).symm (Pi.single 0 1) = epsTate hε`. Simplify using `only [muBasis, LinearEquiv.symm_trans_apply, LinearEquiv.symm_symm]`.
+
+Conclude with `one_smul ℤ_[p] (epsTate hε)`. Use `set a := epsPairing hε (PDivGroup.mu p O) (epsTate hε) χ with ha`. Establish `hχ : χ = a • constGen p O`. Use `((PDivGroup.mu p O).pairing_flip_bijective C).1 (LinearMap.ext fun t => ?_)` and prove the remaining obligations. Take `⟨c, rfl⟩` from `(epsEquiv hε).surjective t`.
+
+Express the relevant statement in the definitionally equal form `pairing _ O (c • epsTate hε) χ = pairing _ O (c • epsTate hε) (a • constGen p O)`. Rewrite using `[map_smul, LinearMap.smul_apply, LinearMap.smul_apply, map_smul, ← epsPairing_smul hε, pairing_apply _ (constGen p O), charHom_constGen, tateMap_id]`. Rewrite using `[LinearEquiv.symm_apply_apply, ← dlog_eq_omegaMap]`. Use `conv_rhs => rw [hχ, dlog_smul (padicToO p O), dlog_constGen, map_smul, muLie_mk]`. Establish `hb : bQuot (mult ε) ((mult ε).Fil.mkQ m) = m` using `mult_bb m`.
+
+Rewrite using `[hb, pairingO, Fin.sum_univ_one, he, ← ha]`. Simplify using `[mul_comm]`.
+-/
 theorem realizes_mu (C : Type) [Field C] [Algebra O C] [IsIntegrallyClosedIn O C] [IsAlgClosed C]
     [CharZero C] : Realizes hε 1 1 (PDivGroup.mu p O) (padicAction _) (mult ε) (muBasis hε)
       (LinearEquiv.ofSubsingleton _ _) (muLie ε) where
@@ -199,9 +241,19 @@ section Guards
 variable {p : ℕ} [Fact p.Prime] {C : Type} [NormedField C] [NormedAlgebra ℚ_[p] C]
   {O : Type} [CommRing O] [Algebra O C]
 
+/- English proof (translation)
+Rewrite using `[← map_natCast (algebraMap ℚ_[p] C), norm_algebraMap', Padic.norm_p]`.
+-/
 theorem norm_p : ‖(p : C)‖ = (p : ℝ)⁻¹ := by
   rw [← map_natCast (algebraMap ℚ_[p] C), norm_algebraMap', Padic.norm_p]
 
+/- English proof (translation)
+Establish `hp : (0 : ℝ) < (p : ℝ)⁻¹ ^ n` using `by have := (Fact.out : p.Prime).pos; positivity`. Establish `hn : ‖(p : C) ^ n‖ = (p : ℝ)⁻¹ ^ n` using `by rw [norm_pow, norm_p]`. Establish `h0 : (p : C) ^ n ≠ 0` using `by rw [← norm_pos_iff, hn]; exact hp`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, rfl⟩`.
+
+Rewrite using `[map_mul, map_pow, map_natCast, norm_mul, hn]`. Conclude with `mul_le_of_le_one_right hp.le ((H.mem_iff _).1 ⟨b, rfl⟩)`. Introduce `h`. Take `⟨b, hb⟩` from `(H.mem_iff (algebraMap O C a / (p : C) ^ n)).2 (by rw [norm_div, hn, div_le_one hp]; exact h)`. Use `⟨b, H.inj ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_mul, map_pow, map_natCast, hb, mul_div_cancel₀ _ h0]`.
+-/
 theorem IsIntegers.pow_dvd_iff (H : IsIntegers O C) (n : ℕ) (a : O) :
     (p : O) ^ n ∣ a ↔ ‖algebraMap O C a‖ ≤ (p : ℝ)⁻¹ ^ n := by
   have hp : (0 : ℝ) < (p : ℝ)⁻¹ ^ n := by have := (Fact.out : p.Prime).pos; positivity
@@ -217,12 +269,22 @@ theorem IsIntegers.pow_dvd_iff (H : IsIntegers O C) (n : ℕ) (a : O) :
     refine ⟨b, H.inj ?_⟩
     rw [map_mul, map_pow, map_natCast, hb, mul_div_cancel₀ _ h0]
 
+/- English proof (translation)
+Introduce `h` and use `by have h1 := (H.pow_dvd_iff (p := p) 1 1).1 (by rw [pow_one]; exact h.dvd) rw [map_one, norm_one, pow_one] at h1 have : (1 : ℝ) < p := by exact_mod_cast (Fact.out : p.Prime).one_lt exact absurd (inv_lt_one_of_one_lt₀ this) (not_lt.2 h1)`.
+-/
 theorem IsIntegers.not_isUnit (H : IsIntegers O C) : ¬IsUnit (p : O) := fun h => by
   have h1 := (H.pow_dvd_iff (p := p) 1 1).1 (by rw [pow_one]; exact h.dvd)
   rw [map_one, norm_one, pow_one] at h1
   have : (1 : ℝ) < p := by exact_mod_cast (Fact.out : p.Prime).one_lt
   exact absurd (inv_lt_one_of_one_lt₀ this) (not_lt.2 h1)
 
+/- English proof (translation)
+Establish `hm : ∀ (n : ℕ) (a b : O), a ≡ b [SMOD (span {(p : O)} ^ n • ⊤ : Submodule O O)] ↔ ‖algebraMap O C a - algebraMap O C b‖ ≤ (p : ℝ)⁻¹ ^ n` using `fun n a b => by`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton, H.pow_dvd_iff, map_sub]`. Establish `h1 : (1 : ℝ) < p` using `by exact_mod_cast (Fact.out : p.Prime).one_lt`. Establish `ht : Filter.Tendsto (fun n : ℕ => (p : ℝ)⁻¹ ^ n) Filter.atTop (nhds 0)` using `tendsto_pow_atTop_nhds_zero_of_lt_one (by positivity) (inv_lt_one_of_one_lt₀ h1)`. Use `{ haus' := fun x hx => ?_, prec' := fun f hf => ?_ }` and prove the remaining obligations.
+
+Establish `h2 : ‖algebraMap O C x - algebraMap O C 0‖ ≤ 0` using `ge_of_tendsto' ht fun n => (hm n x 0).1 (hx n)`. Conclude with `H.inj (sub_eq_zero.1 (norm_le_zero_iff.1 h2))`. Establish `hc : CauchySeq fun n => algebraMap O C (f n)` using `cauchySeq_of_le_tendsto_0' _ (fun n m hnm => by`. Rewrite using `[dist_eq_norm]`. Conclude with `(hm n _ _).1 (hf hnm)) ht`.
+
+Take `⟨L, hL⟩` from `cauchySeq_tendsto_of_complete hc`. Take `⟨l, rfl⟩` from `(H.mem_iff L).2 (le_of_tendsto' hL.norm fun n => (H.mem_iff _).1 ⟨f n, rfl⟩)`. Use `⟨l, fun n => (hm n _ _).2 ?_⟩` and prove the remaining obligations. Use `le_of_tendsto (hL.const_sub (algebraMap O C (f n))).norm ?_` and prove the remaining obligations. Use `filter_upwards [Filter.eventually_ge_atTop n] with m hm' using (hm n _ _).1 (hf hm')`.
+-/
 theorem IsIntegers.isAdicComplete [CompleteSpace C] (H : IsIntegers O C) :
     IsAdicComplete (span {(p : O)}) O := by
   have hm : ∀ (n : ℕ) (a b : O), a ≡ b [SMOD (span {(p : O)} ^ n • ⊤ : Submodule O O)] ↔
@@ -248,6 +310,9 @@ theorem IsIntegers.isAdicComplete [CompleteSpace C] (H : IsIntegers O C) :
 
 end Guards
 
+/- English proof (translation)
+The claim follows from `have key : ∀ x : ℂ_[p], x ∈ 𝓞_ℂ_[p] ↔ ‖x‖ ≤ 1 := fun x => by rw [PadicComplexInt, Valuation.mem_valuationSubring_iff, PadicComplex.norm_eq_norm] exact (Valued.toNormedField.norm_le_one_iff).symm ⟨Subtype.val_injective, fun x => ⟨fun ⟨a, ha⟩ => ha ▸ (key _).1 a.2, fun h => ⟨⟨x, (k …`.
+-/
 example (p : ℕ) [Fact p.Prime] : IsIntegers 𝓞_ℂ_[p] ℂ_[p] :=
   have key : ∀ x : ℂ_[p], x ∈ 𝓞_ℂ_[p] ↔ ‖x‖ ≤ 1 := fun x => by
     rw [PadicComplexInt, Valuation.mem_valuationSubring_iff, PadicComplex.norm_eq_norm]
@@ -255,6 +320,9 @@ example (p : ℕ) [Fact p.Prime] : IsIntegers 𝓞_ℂ_[p] ℂ_[p] :=
   ⟨Subtype.val_injective, fun x => ⟨fun ⟨a, ha⟩ => ha ▸ (key _).1 a.2,
     fun h => ⟨⟨x, (key x).2 h⟩, rfl⟩⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, inferInstance, ⟨inferInstance⟩⟩`.
+-/
 example (p : ℕ) [Fact p.Prime] : CompleteSpace ℂ_[p] ∧ IsAlgClosed ℂ_[p] ∧
     Nonempty (NormedAlgebra ℚ_[p] ℂ_[p]) := ⟨inferInstance, inferInstance, ⟨inferInstance⟩⟩
 

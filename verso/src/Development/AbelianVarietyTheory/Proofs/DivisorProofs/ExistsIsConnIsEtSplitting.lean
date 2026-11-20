@@ -12,6 +12,17 @@ namespace GlobalTheory
 
 namespace PDivGroup
 
+/- English proof (translation)
+Introduce `p _ k _ _ _ G`. Take `⟨e, he, hnil, hred⟩` from `GlobalTheory.T.exists_idempotent_nilpotent_complement_of_perfect p k G`. Establish `h1 : e + (𝟙 G - e) = 𝟙 G` using `add_sub_cancel _ _`. Establish `h1' : (𝟙 G - e) + e = 𝟙 G` using `sub_add_cancel _ _`. Establish `h2 : e ≫ (𝟙 G - e) = 0` using `by rw [Preadditive.comp_sub, Category.comp_id, he, sub_self]`.
+
+Establish `h3 : (𝟙 G - e) ≫ e = 0` using `by rw [Preadditive.sub_comp, Category.id_comp, he, sub_self]`. Take `⟨G₀, i₀, q₀, a₀, b₀, c₀⟩` from `GlobalTheory.T.pDivGroup_idempotent_split_field p k G e (𝟙 G - e) h1 h2 h3`. Take `⟨G₁, i₁, q₁, a₁, b₁, c₁⟩` from `GlobalTheory.T.pDivGroup_idempotent_split_field p k G (𝟙 G - e) e h1' h3 h2`. Use `⟨G₀, G₁, i₀, q₀, i₁, q₁, fun n x hx => ?_, fun n => ⟨fun x hx => ?_⟩, a₀, a₁, by rw [b₀, b₁, h1']⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `(c₀ n).1 x`.
+
+Establish `ha : a ∈ augIdeal k (G.A n)`. Establish `hx' : counit (R` using `k) (i₀.app n a) = 0 := hx`. Rewrite `hx'` using `[CoalgHomClass.counit_comp_apply]`. Conclude with `hx'`. Establish `hk : e.app n a ∈ RingHom.ker (i₀.app n)`.
+
+Rewrite using `[(c₀ n).2]`. Conclude with `Ideal.mem_map_of_mem (e.app n : G.A n →ₐ[k] G.A n) ha`. Use `(hnil n a).map (i₀.app n)` as an intermediate fact. Rewrite `this` using `[map_sub, RingHom.mem_ker.1 hk, sub_zero]`. Then use the resulting hypothesis. Take `⟨a, rfl⟩` from `(c₁ n).1 x`.
+
+Establish `hq : q₁.app n (i₁.app n a) = e.app n a` using `congrArg (fun g : G ⟶ G => g.app n a) b₁`. Establish `hi : i₁.app n (q₁.app n (i₁.app n a)) = i₁.app n a` using `congrArg (fun g : G₁ ⟶ G₁ => g.app n (i₁.app n a)) a₁`. Establish `h0 : e.app n a = 0` using `hred n a (hq ▸ hx.map (q₁.app n))`. Rewrite using `[← hi, hq, h0, map_zero]`.
+-/
 theorem exists_isConn_isEt_splitting :
     ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p] [PerfectRing k p] (G : PDivGroup p k),
       ∃ (G₀ G₁ : PDivGroup p k) (i₀ : G₀ ⟶ G) (q₀ : G ⟶ G₀) (i₁ : G₁ ⟶ G) (q₁ : G ⟶ G₁),

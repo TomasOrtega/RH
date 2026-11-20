@@ -25,6 +25,15 @@ section Translate
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n']
 
+/- English proof (translation)
+Establish `hcol : (fun i => ((g⁻¹ : GL n k).val * x) i (Sum.inr 0)) = (g⁻¹ : GL n k) • (fun i => x i (Sum.inr 0))` using `rfl`. Establish `hsub : ((g⁻¹ : GL n k).val * x).submatrix id Sum.inl = (g⁻¹ : GL n k).val * x.submatrix id Sum.inl` using `rfl`. Establish `hphi : ∀ z : Matrix n n' k, phiOne P₁ (g • Q) z = phiOne P₁ Q ((g⁻¹ : GL n k).val * z)`. Introduce `z`. Establish `h` using `phiOne_smul (P := P₁) (Q := Q) (x := z) (1 : GL n' k) g`.
+
+Rewrite `h` using `[one_smul]`. Rewrite using `[h, Units.val_one, Matrix.mul_one]`. Establish `hchi : ∀ y : n → k, charInd χ (g • Q) y = charInd χ Q ((g⁻¹ : GL n k) • y)`. Introduce `y`. Unfold `charInd vecInd`.
+
+Rewrite using `[Pair.smul_lat, mem_smul_iff]`. Use `split_ifs with hy`. Establish `hv` using `Pair.hasVal_ev (P := g • Q) (x := y) (by rw [Pair.smul_lat, mem_smul_iff]; exact hy)`. Rewrite `hv` using `[Pair.smul_hasVal]`. Rewrite using `[hv.ev_eq]`.
+
+Simplify using the standard rewrite rules. Unfold `tensCol`. Rewrite using `[hsub, hcol, hphi, hchi]`.
+-/
 theorem tensCol_phiOne_charInd_smul (χ : AddChar 𝓀[k] ℂ) (P₁ : Pair k n') (Q : Pair k n) (g : GL n k)
     (x : Matrix n (n' ⊕ Fin 1) k) :
     tensCol (phiOne P₁ Q) (charInd χ Q) ((g⁻¹ : GL n k).val * x) =

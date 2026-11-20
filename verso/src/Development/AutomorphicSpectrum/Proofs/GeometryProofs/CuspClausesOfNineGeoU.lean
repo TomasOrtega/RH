@@ -47,6 +47,9 @@ open Classical in
 
 abbrev numQ : IFamily ℚ ι := fun V _ L => NumbersDVR.intNum ℚ V L
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.CompanionTheory.Ar.Giv.degreeGeneric_of_degree hD K ι W d (fun _ => A) hW (fun _ => hA)`. Establish `hpot : pot (fun _ : Fin d => A) = fun (_ : Fin d) z => Real.log (A.h z)` using `rfl`. Rewrite `h` using `[hpot]`. Unfold `geomDeg genDeg`. Rewrite using `[h]`.
+-/
 theorem geomDeg_eq (hD : DegreeStatement) {W : Ideal (MRing ι)} {d : ℕ} (hW : IsArithVar W (d + 1))
     {A : ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι} (hA : IsSmoothHerm A) : geomDeg W A d = genDeg W d A.a := by
   classical
@@ -64,6 +67,11 @@ def ChartVal (y : (Σ k, ι k) → Ω) (z : (Σ k, ι k) → L) (c : ∀ k, ι k
   ∃ (e : K → ℕ) (G : MRing ι), IsMultiHomog G e ∧ aeval y G = s * aeval y (GenOnFibres.cmon c e) ∧
     aeval z G = v * aeval z (GenOnFibres.cmon c e)
 
+/- English proof (translation)
+Take `⟨e, G, hG, h1, h2⟩` from `h`. Take `⟨e', G', hG', h1', h2'⟩` from `h'`. Use `⟨e + e', G * GenOnFibres.cmon c e' + GenOnFibres.cmon c e * G', GenOnFibres.homog_add (GenOnFibres.homog_mul hG (GenOnFibres.homog_cmon c e')) (GenOnFibres.homog_mul (GenOnFibres.homog_cmon c e) hG'), ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [GenOnFibres.cmon_add, map_add, map_mul, h1, h1']`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [GenOnFibres.cmon_add, map_add, map_mul, h2, h2']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ChartVal.add {s s' : Ω} {v v' : L} (h : ChartVal y z c s v) (h' : ChartVal y z c s' v') :
     ChartVal y z c (s + s') (v + v') := by
   obtain ⟨e, G, hG, h1, h2⟩ := h
@@ -74,6 +82,11 @@ theorem ChartVal.add {s s' : Ω} {v v' : L} (h : ChartVal y z c s v) (h' : Chart
   · simp only [GenOnFibres.cmon_add, map_add, map_mul, h1, h1']; ring
   · simp only [GenOnFibres.cmon_add, map_add, map_mul, h2, h2']; ring
 
+/- English proof (translation)
+Take `⟨e, G, hG, h1, h2⟩` from `h`. Take `⟨e', G', hG', h1', h2'⟩` from `h'`. Use `⟨e + e', G * G', GenOnFibres.homog_mul hG hG', ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [GenOnFibres.cmon_add, map_mul, h1, h1']`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [GenOnFibres.cmon_add, map_mul, h2, h2']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ChartVal.mul {s s' : Ω} {v v' : L} (h : ChartVal y z c s v) (h' : ChartVal y z c s' v') :
     ChartVal y z c (s * s') (v * v') := by
   obtain ⟨e, G, hG, h1, h2⟩ := h

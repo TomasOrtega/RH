@@ -25,6 +25,9 @@ noncomputable def coindEvalOne (B : Rep.{u} k U) :
       simpa using f.2 u 1⟩
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coindEvalOne_hom_apply (B : Rep.{u} k U) (f : Rep.coind U.subtype B) :
     (coindEvalOne U B).hom f = f.1 1 :=
   rfl
@@ -34,10 +37,16 @@ noncomputable def coindUnit (A : Rep.{u} k G) :
   Rep.resCoindToHom U.subtype A (Rep.res U.subtype A) (𝟙 _)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coindUnit_hom_apply (A : Rep.{u} k G) (a : A) (x : G) :
     ((coindUnit U A).hom a).1 x = A.ρ x a :=
   rfl
 
+/- English proof (translation)
+Use extensionality with `a`. Express the relevant statement in the definitionally equal form `A.ρ 1 a = a`. Simplify using the standard rewrite rules.
+-/
 theorem coindUnit_comp_coindEvalOne (A : Rep.{u} k G) :
     (Rep.resFunctor U.subtype).map (coindUnit U A) ≫ coindEvalOne U (Rep.res U.subtype A) =
       𝟙 _ := by
@@ -54,6 +63,13 @@ noncomputable def coindTraceTerm (c : G ⧸ U) :
   A.ρ c.out ∘ₗ (LinearMap.proj c.out⁻¹).comp
     (Representation.coindV U.subtype (Rep.res U.subtype A).ρ).subtype
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `A.ρ (x : G ⧸ U).out (f.1 (x : G ⧸ U).out⁻¹) = A.ρ x (f.1 x⁻¹)`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : ∃ u : U, (x : G ⧸ U).out = x * u := by`. Establish `h` using `QuotientGroup.mk_out_eq_mul U x`. Take `⟨u, hu⟩` from `h`. Conclude with `⟨u, hu⟩`.
+
+Rewrite using `[hu]`. Establish `h1 : (x * (u : G))⁻¹ = U.subtype u⁻¹ * x⁻¹` using `by simp`. Rewrite using `[h1, f.2 u⁻¹ x⁻¹]`. Express the relevant statement in the definitionally equal form `A.ρ (x * u) (A.ρ (u⁻¹ : U) (f.1 x⁻¹)) = _`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem coindTraceTerm_apply (f : Rep.coind U.subtype (Rep.res U.subtype A)) (x : G) :
     coindTraceTerm U A (x : G ⧸ U) f = A.ρ x (f.1 x⁻¹) := by
   change A.ρ (x : G ⧸ U).out (f.1 (x : G ⧸ U).out⁻¹) = A.ρ x (f.1 x⁻¹)
@@ -87,10 +103,20 @@ noncomputable def coindTrace : Rep.coind U.subtype (Rep.res U.subtype A) ⟶ A :
       rw [← Module.End.mul_apply, ← map_mul]
       simp [mul_inv_rev, mul_assoc]⟩
 
+/- English proof (translation)
+Simplify using `[coindTrace]`.
+-/
 theorem coindTrace_hom_apply (f : Rep.coind U.subtype (Rep.res U.subtype A)) :
     (coindTrace U A).hom f = ∑ c : G ⧸ U, coindTraceTerm U A c f := by
   simp [coindTrace]
 
+/- English proof (translation)
+Use extensionality with `a`. Express the relevant statement in the definitionally equal form `(coindTrace U A).hom ((coindUnit U A).hom a) = (U.index • 𝟙 A : A ⟶ A).hom a`. Rewrite using `[coindTrace_hom_apply]`. Establish `h : ∀ c : G ⧸ U, coindTraceTerm U A c ((coindUnit U A).hom a) = a` using `fun c => by`. Proceed by induction on `c using QuotientGroup.induction_on with`.
+
+Consider the case `H x`. Rewrite using `[coindTraceTerm_apply, coindUnit_hom_apply, ← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules. Simplify using `only [h, Finset.sum_const, Finset.card_univ]`. Rewrite using `[Subgroup.index_eq_card, Nat.card_eq_fintype_card, Rep.nsmul_hom]`.
+
+Both sides reduce to the same expression.
+-/
 theorem coindUnit_comp_coindTrace : coindUnit U A ≫ coindTrace U A = U.index • 𝟙 A := by
   ext a
   change (coindTrace U A).hom ((coindUnit U A).hom a) = (U.index • 𝟙 A : A ⟶ A).hom a
@@ -114,6 +140,13 @@ section Discrete
 
 variable (U : OpenSubgroup G) (B : Rep.{u} k (U : Subgroup G)) [IsDiscreteRep B]
 
+/- English proof (translation)
+Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Use `set S : Set G := Subtype.val '' (stabilizer B.ρ (f.1 x) : Set (U : Subgroup G))`. Establish `hS : IsOpen S` using `IsOpen.isOpenMap_subtype_val (s := (U : Set G)) U.isOpen _ (isOpen_stabilizer B (f.1 x))`. Establish `h1 : S ∈ 𝓝 (1 : G)` using `hS.mem_nhds ⟨1, (stabilizer B.ρ (f.1 x)).one_mem, rfl⟩`.
+
+Establish `hc : Continuous fun y : G => y * x⁻¹` using `continuous_id.mul continuous_const`. Establish `h2 : ∀ᶠ y in 𝓝 x, y * x⁻¹ ∈ S` using `hc.continuousAt.preimage_mem_nhds (by simpa using h1)`. Use `filter_upwards [h2] with y hy`. Take `⟨u, hu, huy⟩` from `hy`. Establish `hy' : y = (U : Subgroup G).subtype u * x`.
+
+Simplify using `only [Subgroup.subtype_apply, huy, inv_mul_cancel_right]`. Rewrite using `[hy', f.2 u x]`. Conclude with `(mem_stabilizer _ _ _).1 hu`.
+-/
 theorem isLocallyConstant_coind (f : Rep.coind (U : Subgroup G).subtype B) :
     IsLocallyConstant (f.1 : G → B) := by
   rw [IsLocallyConstant.iff_eventually_eq]
@@ -160,6 +193,9 @@ noncomputable def shapiroMap (n : ℕ) :
   cohomologyMapAlong (U : Subgroup G).subtype (continuous_subgroup_subtype _)
     (coindEvalOne (U : Subgroup G) B) n
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem shapiroMap_eq (n : ℕ) :
     shapiroMap U B n = cohomologyMapAlong (U : Subgroup G).subtype
       (continuous_subgroup_subtype _) (coindEvalOne (U : Subgroup G) B) n :=

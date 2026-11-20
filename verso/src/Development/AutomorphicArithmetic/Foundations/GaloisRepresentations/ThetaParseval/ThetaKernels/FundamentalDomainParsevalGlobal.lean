@@ -16,6 +16,21 @@ noncomputable section
 namespace GlobalTheory.SplitLagrF
 end GlobalTheory.SplitLagrF
 open GlobalTheory.SplitLagrF in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hσ ν 𝓕 hν h𝓕 χS ωd hωd α hlaw f₀ hf₀ hne e he t ht`. Take `⟨h, hhC, hsupp, ⟨M, hM, hMy⟩, x, hx, hχx⟩` from `_root_.GlobalTheory.SplitLagrF.exists_levi_k F E σ B hB nT JT hT e he t ht`. Take `⟨ℓ, hinv, ⟨f, hf, hℓf⟩, hcmp⟩` from `_root_.GlobalTheory.SplitLagrF.exists_form_k F E σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hσ ν 𝓕 hν h𝓕 e he f₀ hf₀ hne`. Take `⟨R, hR, hRk⟩` from `hcmp M hM`. Take `⟨r, hr, hsp⟩` from `hωd.om_split e he 1 h (suppAtF_one σ e JS) hsupp 1 x (isDetAtF_one σ e JS) hx`.
+
+Use `set m : ℝ := (((adeleClass F).modu (Units.map (Algebra.norm (AF F) : AF F ⊗[F] E →* AF F) (Matrix.GeneralLinearGroup.det t)) : ℝ) ^ ((Fintype.card (Fin nS) : ℝ) / 2) : ℝ) with hm_def`. Establish `hm : 0 < m` using `Real.rpow_pos_of_pos (modu_pos _) _`. Establish `h1` using `hsp ℓ hinv f hf`. Establish `h2 : ℓ (ωd (1, h) f) = (R : ℂ) * ((α t : ℂ) * (m : ℂ)) * ℓ f`. Use `hRk f (ωd (1, h) f) _ hf (hωd.om_pres _ f hf) (fun y _ => ?_)` and prove the remaining obligations.
+
+Establish `hth : IsThetaFunOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) ξ₀ B.ψ (heisOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) ξ₀ B.ψ (aC F E nT * (M * y)) f)` using `_root_.GlobalTheory.HeisThetaF.isThetaFunOF_heisOF_k F E σ B hB nS (nT + nT) JS _ ξ₀ _ f hf`. Establish `hh` using `hωd.om_heis 1 h (aC F E nT * (M * y)) f hf`. Establish `hact : actOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) 1 h (aC F E nT * (M * y)) = aC F E nT * y`. Unfold `actOF`. Rewrite using `[← hMy nS y, ← Matrix.mul_assoc, ← GlobalTheory.WeilPartsF.mtF_mul, mul_inv_cancel, inv_one]`.
+
+Simplify using `only [mtF_one', Matrix.one_mul, Matrix.mul_one]`. Unfold `prof`. Rewrite using `[← hact, ← hh]`. Conclude with `hlaw h t hhC _ hth`. Establish `h3 : (R : ℂ) * ((α t : ℂ) * (m : ℂ)) = (r : ℂ) * (χS x : ℂ)`.
+
+Use `h2.symm.trans h1` as an intermediate fact. Simplify using `only [splitFacOF, MonoidHom.one_apply, inv_one, one_mul] at this`. Conclude with `mul_right_cancel₀ hℓf this`. Establish `hu : α t * (χS x)⁻¹ = 1`. Apply `circle_eq_one_of_pos (t := r / (R * m)) (div_pos hr (mul_pos hR hm))` to reduce the goal to its premises.
+
+Establish `hx0 : ((χS x : Circle) : ℂ) ≠ 0` using `Circle.coe_ne_zero _`. Establish `hR0 : (R : ℂ) ≠ 0` using `by exact_mod_cast hR.ne'`. Establish `hm0 : (m : ℂ) ≠ 0` using `by exact_mod_cast hm.ne'`. Rewrite using `[Circle.coe_mul, Circle.coe_inv]`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts. Take the linear combination `h3`. Rewrite using `[← hχx χS nS hωd.resS]`. Conclude with `mul_inv_eq_one.mp hu`.
+-/
 theorem PositivityTheory.ThKW.fundamental_domain_parseval_global : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
       IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ →

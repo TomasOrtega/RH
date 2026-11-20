@@ -4,6 +4,17 @@ open scoped TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `O V B _ _ _ _ _ _ _ _ _ _ _ e t T he hs`. Use `⟨(LinearMap.charpoly t).map (algebraMap O (FractionRing O)), ?_, hs, ?_⟩` and prove the remaining obligations. Conclude with `((LinearMap.charpoly_monic t).map _).ne_zero`. Establish `hpow : ∀ (n : ℕ) (b : B), (T ^ n) (e b) = e ((t ^ n) b)`. Introduce `n`.
+
+Proceed by induction on `n with`. Consider the case `zero => intro b`. Simplify using the standard rewrite rules. Consider the case `succ n ih => intro b`. Rewrite using `[pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ← he, ih]`.
+
+Establish `key : ∀ (q : O[X]) (b : B), Polynomial.aeval T (q.map (algebraMap O (FractionRing O))) (e b) = e (Polynomial.aeval t q b)`. Introduce `q b`. Proceed by induction on `q using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simp only [Polynomial.map_add, map_add, LinearMap.add_apply, hp, hq]`. Consider the case `monomial n a`.
+
+Simplify using `only [Polynomial.map_monomial, Polynomial.aeval_monomial, Module.End.mul_apply, Module.algebraMap_end_apply, hpow, LinearMap.map_smul_of_tower]`. Rewrite using `[algebraMap_smul]`. Establish `hle : Submodule.span (FractionRing O) (Set.range e) ≤ LinearMap.ker (Polynomial.aeval T ((LinearMap.charpoly t).map (algebraMap O (FractionRing O))))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, rfl⟩`.
+
+Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, key, LinearMap.aeval_self_charpoly, LinearMap.zero_apply, map_zero]`. Introduce `x hx`. Conclude with `hle hx`.
+-/
 theorem charpoly_split_kills_span : ∀ (O V B : Type) [CommRing O] [IsDomain O] [AddCommGroup V] [Module (FractionRing O) V] [Module O V] [IsScalarTower O (FractionRing O) V] [FiniteDimensional (FractionRing O) V] [AddCommGroup B] [Module O B] [Module.Free O B] [Module.Finite O B] (e : B →ₗ[O] V) (t : Module.End O B) (T : Module.End (FractionRing O) V), (∀ x, e (t x) = T (e x)) → ((LinearMap.charpoly t).map (algebraMap O (FractionRing O))).Splits → ∃ p : (FractionRing O)[X], p ≠ 0 ∧ p.Splits ∧ ∀ x ∈ Submodule.span (FractionRing O) (Set.range e), Polynomial.aeval T p x = 0 := by
   intro O V B _ _ _ _ _ _ _ _ _ _ _ e t T he hs
   refine ⟨(LinearMap.charpoly t).map (algebraMap O (FractionRing O)), ?_, hs, ?_⟩

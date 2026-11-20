@@ -7,6 +7,29 @@ namespace UpperTheory.Gal.ClosedPhiFromClosedTrace
 
 open Formalism Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N GlobalTheory.Per
 
+/- English proof (translation)
+Introduce `hB l _ F I _ x z hx hz`. Use `letI : Fintype I := Fintype.ofFinite I`. Set `eqv` to `Fintype.equivFin (Option I)`. Set `y : Fin (Fintype.card (Option I)) → Om l` to `fun k => (eqv.symm k).elim z x`. Establish `hy : ∀ k, ‖y k‖ ≤ 1`.
+
+Introduce `k`. Simplify using `only [y]`. Consider the cases of `eqv.symm k with`. Consider the case `none => simpa using hz`. Consider the case `some i => simpa using hx i`.
+
+Take `⟨m, e, hli, he, hc⟩` from `hB l F _ y hy`. Use `choose c hc1 hc2 using hc`. Establish `hyz : y (eqv none) = z` using `by simp [y]`. Establish `hyx : ∀ i, y (eqv (some i)) = x i` using `by intro i; simp [y]`. Distinguish the cases in `hz0 : z = 0`.
+
+Apply the tactic sequence `refine ⟨0, ?_, ?_, ?_⟩ <;> simp [hz0]`. Establish `hm : (Finset.univ : Finset (Fin m)).Nonempty`. Assume the negation of the conclusion as `hne`. Rewrite `hne` using `[Finset.not_nonempty_iff_eq_empty]`. Apply `hz0` to reduce the goal to its premises.
+
+Rewrite using `[← hyz, hc2, hne, Finset.sum_empty]`. Take `⟨j₀, -, hj₀⟩` from `Finset.exists_max_image Finset.univ (fun j => ‖((c (eqv none) j : ↥F) : Om l)‖) hm`. Set `f : (Fin m → ↥F) →ₗ[↥F] Om l` to `Fintype.linearCombination ↥F e`. Establish `hker : LinearMap.ker f = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`.
+
+Introduce `a ha`. Use function extensionality and compare the values at `j`. Conclude with `Fintype.linearIndependent_iff.1 hli a (by simpa [f, Fintype.linearCombination_apply] using ha) j`. Take `⟨G, hG⟩` from `LinearMap.exists_leftInverse_of_injective f hker`. Set `lam : Om l →ₗ[↥F] ↥F` to `LinearMap.proj j₀ ∘ₗ G`.
+
+Establish `key : ∀ a : Fin m → ↥F, lam (∑ j, (a j : Om l) * e j) = a j₀`. Introduce `a`. Establish `h1 : (∑ j, (a j : Om l) * e j) = f a`. Simplify using `only [f, Fintype.linearCombination_apply]`. Both sides reduce to the same expression.
+
+Establish `h2 : G (f a) = a`. Use `LinearMap.congr_fun hG a` as an intermediate fact. Simplify using `using this`. Rewrite using `[h1]`. Simplify using `only [lam, LinearMap.comp_apply, h2, LinearMap.proj_apply]`.
+
+Establish `hlz : lam z = c (eqv none) j₀`. Rewrite using `[← hyz, hc2, key]`. Use `⟨lam, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Rewrite using `[← hyx i, hc2, key]`.
+
+Conclude with `hc1 _ _`. Rewrite using `[hlz]`. Rewrite using `[← hyz, hc2]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _) ?_` and prove the remaining obligations. Introduce `j _`.
+
+Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hlz]`. Conclude with `hc1 _ _`.
+-/
 theorem func_holds : IntBasis → Func := by
   intro hB l _ F I _ x z hx hz
   classical

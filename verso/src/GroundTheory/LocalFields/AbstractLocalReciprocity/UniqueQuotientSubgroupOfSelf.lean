@@ -20,6 +20,9 @@ instance uniqueQuotientSubgroupOfSelf : Unique (K ⧸ K.subgroupOf K) where
 instance finiteIndex_subgroupOf_self : (K.subgroupOf K).FiniteIndex :=
   ⟨by simp [Subgroup.subgroupOf_self]⟩
 
+/- English proof (translation)
+Use `MonoidHom.ext fun a => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[coe_norm, finprod_unique]`. Use `show ((1 : K) : G) • (a : A) = a`. Simplify using the standard rewrite rules.
+-/
 theorem norm_self : norm A K K = MonoidHom.id (fixedModule A K) := by
   refine MonoidHom.ext fun a => Subtype.ext ?_
   rw [coe_norm, finprod_unique]
@@ -32,6 +35,11 @@ section Pow
 
 variable {K L : Subgroup G} [(L.subgroupOf K).FiniteIndex]
 
+/- English proof (translation)
+Set `_` to `Fintype.ofFinite (K ⧸ L.subgroupOf K)`. Rewrite using `[coe_norm, finprod_eq_prod_of_fintype]`. Establish `h : ∀ q : K ⧸ L.subgroupOf K, cosetSMul A K L ⟨a, fixedModule_anti hLK ha⟩ q = a`. Introduce `q`. Proceed by induction on `q using QuotientGroup.induction_on with`.
+
+Consider the case `H σ => exact ha σ σ.2`. Repeatedly rewrite using `[h]`. Rewrite using `[Finset.prod_const, Finset.card_univ, ← Nat.card_eq_fintype_card, Subgroup.relIndex, Subgroup.index_eq_card]`.
+-/
 theorem coe_norm_of_mem (hLK : L ≤ K) {a : A} (ha : a ∈ fixedModule A K) :
     (norm A K L ⟨a, fixedModule_anti hLK ha⟩ : A) = a ^ L.relIndex K := by
   classical
@@ -56,11 +64,35 @@ def cosetShift (hLK : L ≤ K) (σ : K) : L ⧸ M.subgroupOf L → K ⧸ M.subgr
     rw [QuotientGroup.leftRel_apply] at h ⊢
     simpa [Subgroup.mem_subgroupOf, mul_assoc] using h
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem cosetShift_mk (hLK : L ≤ K) (σ : K) (τ : L) :
     cosetShift (M := M) hLK σ (τ : L ⧸ M.subgroupOf L) =
       ((σ * (⟨τ, hLK τ.2⟩ : K) : K) : K ⧸ M.subgroupOf K) :=
   rfl
 
+/- English proof (translation)
+Set `_` to `Fintype.ofFinite (K ⧸ M.subgroupOf K)`. Set `_` to `Fintype.ofFinite (K ⧸ L.subgroupOf K)`. Set `_` to `Fintype.ofFinite (L ⧸ M.subgroupOf L)`. Establish `hle : M.subgroupOf K ≤ L.subgroupOf K` using `fun x hx => hML hx`. Use `ext`.
+
+Simplify using `only [coe_norm, finprod_eq_prod_of_fintype]`. Rewrite using `[← Finset.prod_fiberwise_of_maps_to (s := Finset.univ) (t := Finset.univ) (g := Subgroup.quotientMapOfLE hle) (fun _ _ => Finset.mem_univ _)]`. Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations. Proceed by induction on `p using QuotientGroup.induction_on with`. Consider the case `H σ`.
+
+Rewrite using `[cosetSMul_mk, coe_norm, finprod_eq_prod_of_fintype, Finset.smul_prod']`. Use `Finset.prod_bij (fun t _ => cosetShift hLK σ t) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `t _`. Rewrite using `[Finset.mem_filter]`. Use `⟨Finset.mem_univ _, ?_⟩` and prove the remaining obligations.
+
+Proceed by induction on `t using QuotientGroup.induction_on with`. Consider the case `H τ`. Rewrite using `[cosetShift_mk, Subgroup.quotientMapOfLE_apply_mk, QuotientGroup.eq]`. Simplify using `[Subgroup.mem_subgroupOf, mul_assoc]`. Introduce `t _ t' _ h`.
+
+Proceed by induction on `t using QuotientGroup.induction_on with`. Consider the case `H τ`. Proceed by induction on `t' using QuotientGroup.induction_on with`. Consider the case `H τ'`. Rewrite `h` using `[cosetShift_mk, cosetShift_mk, QuotientGroup.eq]`.
+
+Rewrite using `[QuotientGroup.eq]`. Simplify `h` using `[Subgroup.mem_subgroupOf, mul_assoc]`. Introduce `q hq`. Rewrite `hq` using `[Finset.mem_filter]`. Proceed by induction on `q using QuotientGroup.induction_on with`.
+
+Consider the case `H ρ`. Establish `h` using `hq.2`. Rewrite `h` using `[Subgroup.quotientMapOfLE_apply_mk, QuotientGroup.eq]`. Establish `hmem : (σ : G)⁻¹ * ρ ∈ L`. Use `L.inv_mem h` as an intermediate fact.
+
+Simplify `this` using `[Subgroup.mem_subgroupOf, mul_inv_rev]`. Use `⟨((⟨(σ : G)⁻¹ * ρ, hmem⟩ : L) : L ⧸ M.subgroupOf L), Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Rewrite using `[cosetShift_mk]`. Use `congr 1`. Use `ext`.
+
+Simplify using the standard rewrite rules. Introduce `t _`. Proceed by induction on `t using QuotientGroup.induction_on with`. Consider the case `H τ`. Rewrite using `[cosetShift_mk, cosetSMul_mk, cosetSMul_mk, smul_smul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem norm_norm (hML : M ≤ L) (hLK : L ≤ K) [(L.subgroupOf K).FiniteIndex]
     [(M.subgroupOf L).FiniteIndex] [(M.subgroupOf K).FiniteIndex] (a : fixedModule A M) :
     norm A K L (norm A L M a) = norm A K M a := by
@@ -113,6 +145,9 @@ theorem norm_norm (hML : M ≤ L) (hLK : L ≤ K) [(L.subgroupOf K).FiniteIndex]
         rw [cosetShift_mk, cosetSMul_mk, cosetSMul_mk, smul_smul]
         rfl
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `⟨norm A L M a, norm_norm hML hLK a⟩`.
+-/
 theorem range_norm_le_range_norm (hML : M ≤ L) (hLK : L ≤ K) [(L.subgroupOf K).FiniteIndex]
     [(M.subgroupOf L).FiniteIndex] [(M.subgroupOf K).FiniteIndex] :
     (norm A K M).range ≤ (norm A K L).range := by
@@ -137,11 +172,29 @@ def cosetConj (σ : G) :
       simp only [Subgroup.coe_mul, InvMemClass.coe_inv, MulEquiv.coe_toMonoidHom, MulAut.conj_apply]
       group
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem cosetConj_mk (σ : G) (τ : K) :
     cosetConj (L := L) σ (τ : K ⧸ L.subgroupOf K) =
       ((⟨σ * τ * σ⁻¹, τ, τ.2, rfl⟩ : K.map (MulAut.conj σ).toMonoidHom) : _ ⧸ _) :=
   rfl
 
+/- English proof (translation)
+Set `_` to `Fintype.ofFinite (K ⧸ L.subgroupOf K)`. Set `_` to `Fintype.ofFinite (K.map (MulAut.conj σ).toMonoidHom ⧸ (L.map (MulAut.conj σ).toMonoidHom).subgroupOf (K.map (MulAut.conj σ).toMonoidHom))`. Rewrite using `[coe_norm, coe_norm, finprod_eq_prod_of_fintype, finprod_eq_prod_of_fintype, Finset.smul_prod']`. Use `Finset.prod_bij (fun t _ => cosetConj σ t) (fun _ _ => Finset.mem_univ _) ?_ ?_ ?_` and prove the remaining obligations. Introduce `t _ t' _ h`.
+
+Proceed by induction on `t using QuotientGroup.induction_on with`. Consider the case `H τ`. Proceed by induction on `t' using QuotientGroup.induction_on with`. Consider the case `H τ'`. Rewrite `h` using `[cosetConj_mk, cosetConj_mk, QuotientGroup.eq, Subgroup.mem_subgroupOf]`.
+
+Rewrite using `[QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Take `⟨x, hx, hx'⟩` from `h`. Establish `: x = (τ : G)⁻¹ * τ'`. Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply, Subgroup.coe_mul, InvMemClass.coe_inv, mul_inv_rev, inv_inv] at hx'`. Use `congrArg (fun y => σ⁻¹ * y * σ) hx'` as an intermediate fact.
+
+Simplify `this` using `[mul_assoc]`. Simplify `hx` using `[this]`. Introduce `q _`. Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H ρ`.
+
+Take `⟨κ, hκ, hκρ⟩` from `Subgroup.mem_map.1 ρ.2`. Use `⟨((⟨κ, hκ⟩ : K) : K ⧸ L.subgroupOf K), Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Rewrite using `[cosetConj_mk]`. Use `congr 1`. Use `ext`.
+
+Simplify using `using hκρ`. Introduce `t _`. Proceed by induction on `t using QuotientGroup.induction_on with`. Consider the case `H τ`. Rewrite using `[cosetConj_mk, cosetSMul_mk, cosetSMul_mk, smul_smul, smul_smul]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem smul_norm (σ : G) [(L.subgroupOf K).FiniteIndex]
     [((L.map (MulAut.conj σ).toMonoidHom).subgroupOf (K.map (MulAut.conj σ).toMonoidHom)).FiniteIndex]
     (a : fixedModule A L) :

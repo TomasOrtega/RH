@@ -10,6 +10,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.ThetaOverField
 
+/- English proof (translation)
+Use `D₀.P.isAb.smooth` as an intermediate fact. Establish `: IsReduced D₀.P.A.left` using `isReduced_scheme_of_smooth_of_isIntegrallyClosed K D₀.P.A.hom`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, hj⟩ y`. Assume the negation of the conclusion as `hn`.
+
+Use `hj ((basicOpen_eq_bot_iff _).1 (eq_bot_iff.2 fun z hz => hn ⟨z, ?_, ?_⟩))` and prove the remaining obligations. Conclude with `Subsingleton.elim (α := PrimeSpectrum K) _ _`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨j, hz⟩`. Introduce `h`. Take `⟨x, -, hx⟩` from `h (IsLocalRing.closedPoint K)`.
+
+Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`. Use `⟨j, fun e => ?_⟩` and prove the remaining obligations. Rewrite `hj` using `[e, Scheme.basicOpen_zero]`. Conclude with `hj`.
+-/
 theorem exists_ne_zero_iff {K : Type} [Field K] (D₀ : Out.DegPre K) (th : D₀.P.L.Sec) :
     (∃ j, th.f j ≠ 0) ↔ ThNZ th := by
   have := D₀.P.isAb.smooth
@@ -27,6 +34,11 @@ theorem exists_ne_zero_iff {K : Type} [Field K] (D₀ : Out.DegPre K) (th : D₀
     rw [e, Scheme.basicOpen_zero] at hj
     exact hj
 
+/- English proof (translation)
+Introduce `hL _ K _ D₀ th`. Use `⟨exists_ne_zero_iff D₀ th, fun h th' => ?_, ?_⟩` and prove the remaining obligations. Establish `refl : LBIso D₀.P.L (D₀.P.L.pull (𝟙 _))` using `LBIso.chartPull (chartPullUnpull D₀.P.L _ rfl) (chartPullId _) (exists_iso_linComb (F := 𝟙 D₀.P.A.left) D₀.P.isLB (fun _ : PUnit => 𝟙 _) (fun _ => 1) fun _ _ _ => rfl)`. Conclude with `GlobalTheory.SectionBaseChange.generates hL.secBaseChange D₀.P (t := 𝟙 _) (φ := 𝟙 _) (IsPullback.of_horiz_isIso ⟨by simp⟩) D₀.P.isLB refl th h th'`. Take `⟨b, hb, -⟩` from `GlobalTheory.KeyOnPol.exists_generator hL.secBaseChange D₀.P`.
+
+Conclude with `⟨b, hb⟩`.
+-/
 theorem nonzero_generates : Out.Laws → Out.Laws2 → ∀ (K : Type) [Field K] (D₀ : Out.DegPre K) (th : D₀.P.L.Sec), ((∃ j, th.f j ≠ 0) ↔ ThNZ th) ∧ (ThNZ th → ∀ th' : D₀.P.L.Sec, ∃! r : K, ThMul r th th') ∧ ∃ th₀ : D₀.P.L.Sec, ThNZ th₀ := by
   intro hL _ K _ D₀ th
   refine ⟨exists_ne_zero_iff D₀ th, fun h th' => ?_, ?_⟩

@@ -12,12 +12,18 @@ open MvPolynomial Finset
 
 noncomputable section
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_vandermonde, vandermondeOf]`. Use `Finset.prod_congr rfl (fun i _ => Finset.prod_congr rfl (fun j _ => ?_))` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vandermondeOf_eq_det {R : Type*} [CommRing R] {m : ℕ} (v : Fin m → R) :
     vandermondeOf v = (Matrix.vandermonde (fun i => -v i)).det := by
   rw [Matrix.det_vandermonde, vandermondeOf]
   refine Finset.prod_congr rfl (fun i _ => Finset.prod_congr rfl (fun j _ => ?_))
   ring
 
+/- English proof (translation)
+Rewrite using `[vandermondeOf_eq_det, vandermondeOf_eq_det]`. Establish `: Matrix.vandermonde (fun i => -v (σ i)) = (Matrix.vandermonde (fun i => -v i)).submatrix σ id`. Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite using `[this, Matrix.det_permute]`.
+-/
 theorem vandermondeOf_perm {R : Type*} [CommRing R] {m : ℕ} (v : Fin m → R)
     (σ : Equiv.Perm (Fin m)) :
     vandermondeOf (fun i => v (σ i)) = (((Equiv.Perm.sign σ : ℤˣ) : ℤ) : R) * vandermondeOf v := by
@@ -27,6 +33,9 @@ theorem vandermondeOf_perm {R : Type*} [CommRing R] {m : ℕ} (v : Fin m → R)
     ext i j; rfl
   rw [this, Matrix.det_permute]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Derivation.leibniz, hg a (Finset.mem_insert_self a s), ih (fun i hi => hg i (Finset.mem_insert_of_mem hi)), smul_zero, smul_zero, add_zero]`.
+-/
 theorem derivation_prod_eq_zero {R A M : Type*} [CommSemiring R] [CommRing A] [Algebra R A]
     [AddCommGroup M] [Module A M] [Module R M] (D : Derivation R A M) {ι : Type*} (s : Finset ι) (g : ι → A) (hg : ∀ i ∈ s, D (g i) = 0) :
     D (∏ i ∈ s, g i) = 0 := by
@@ -37,6 +46,9 @@ theorem derivation_prod_eq_zero {R A M : Type*} [CommSemiring R] [CommRing A] [A
     rw [Finset.prod_insert ha, Derivation.leibniz, hg a (Finset.mem_insert_self a s),
       ih (fun i hi => hg i (Finset.mem_insert_of_mem hi)), smul_zero, smul_zero, add_zero]
 
+/- English proof (translation)
+Unfold `vandermondeOf`. Use `derivation_prod_eq_zero D _ _ (fun i _ => derivation_prod_eq_zero D _ _ (fun j _ => ?_))` and prove the remaining obligations. Rewrite using `[map_sub, hv i j, sub_self]`.
+-/
 theorem derivation_vandermondeOf_eq_zero {R A M : Type*} [CommSemiring R] [CommRing A] [Algebra R A]
     [AddCommGroup M] [Module A M] [Module R M] (D : Derivation R A M) {m : ℕ} (v : Fin m → A) (hv : ∀ i j, D (v i) = D (v j)) :
     D (vandermondeOf v) = 0 := by
@@ -44,26 +56,43 @@ theorem derivation_vandermondeOf_eq_zero {R A M : Type*} [CommSemiring R] [CommR
   refine derivation_prod_eq_zero D _ _ (fun i _ => derivation_prod_eq_zero D _ _ (fun j _ => ?_))
   rw [map_sub, hv i j, sub_self]
 
+/- English proof (translation)
+Simplify using `only [blockPermute, rename_rename]`. Both sides reduce to the same expression.
+-/
 theorem blockPermute_blockPermute (f N : ℕ) (v w : Fin f → Equiv.Perm (Fin N)) (H : RootRing f N) :
     blockPermute f N v (blockPermute f N w H) = blockPermute f N (v * w) H := by
   simp only [blockPermute, rename_rename]
   rfl
 
+/- English proof (translation)
+Simplify using `only [blockSign, ← Finset.prod_mul_distrib, Pi.mul_apply, Equiv.Perm.sign_mul, Units.val_mul, Int.cast_mul]`.
+-/
 theorem blockSign_mul (f N : ℕ) (v w : Fin f → Equiv.Perm (Fin N)) :
     blockSign f N (v * w) = blockSign f N v * blockSign f N w := by
   simp only [blockSign, ← Finset.prod_mul_distrib, Pi.mul_apply, Equiv.Perm.sign_mul, Units.val_mul,
     Int.cast_mul]
 
+/- English proof (translation)
+Simplify using `only [blockSign, ← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one (fun τ _ => ?_)` and prove the remaining obligations. Rewrite using `[← Int.cast_mul, ← Units.val_mul, Int.units_mul_self, Units.val_one, Int.cast_one]`.
+-/
 theorem blockSign_mul_self (f N : ℕ) (w : Fin f → Equiv.Perm (Fin N)) :
     blockSign f N w * blockSign f N w = 1 := by
   simp only [blockSign, ← Finset.prod_mul_distrib]
   refine Finset.prod_eq_one (fun τ _ => ?_)
   rw [← Int.cast_mul, ← Units.val_mul, Int.units_mul_self, Units.val_one, Int.cast_one]
 
+/- English proof (translation)
+Simplify using `[blockPermute]`.
+-/
 theorem blockPermute_X (f N : ℕ) (w : Fin f → Equiv.Perm (Fin N)) (τ : Fin f) (i : Fin N) :
     blockPermute f N w (X (τ, i)) = X (τ, w τ i) := by
   simp [blockPermute]
 
+/- English proof (translation)
+Simplify using `only [blockVandermonde, map_prod]`. Establish `h1 : ∀ τ : Fin f, blockPermute f N w (vandermondeOf fun i : Fin N => (X (τ, i) : RootRing f N)) = (((Equiv.Perm.sign (w τ) : ℤˣ) : ℤ) : RootRing f N) * vandermondeOf fun i : Fin N => (X (τ, i) : RootRing f N)`. Introduce `τ`. Establish `: blockPermute f N w (vandermondeOf fun i : Fin N => (X (τ, i) : RootRing f N)) = vandermondeOf fun i : Fin N => (X (τ, w τ i) : RootRing f N)`. Simplify using `only [vandermondeOf, map_prod, map_sub, blockPermute_X]`.
+
+Rewrite using `[this]`. Conclude with `vandermondeOf_perm (fun i : Fin N => (X (τ, i) : RootRing f N)) (w τ)`. Rewrite using `[Finset.prod_congr rfl (fun τ _ => h1 τ), Finset.prod_mul_distrib, Algebra.smul_def, blockSign, map_prod]`. Simplify using the standard rewrite rules.
+-/
 theorem blockPermute_blockVandermonde (f N : ℕ) (w : Fin f → Equiv.Perm (Fin N)) :
     blockPermute f N w (blockVandermonde f N) = blockSign f N w • blockVandermonde f N := by
   simp only [blockVandermonde, map_prod]
@@ -80,6 +109,11 @@ theorem blockPermute_blockVandermonde (f N : ℕ) (w : Fin f → Equiv.Perm (Fin
     blockSign, map_prod]
   simp
 
+/- English proof (translation)
+Simplify using `only [blockVandermonde, vandermondeOf]`. Use `Finset.prod_ne_zero_iff.mpr (fun τ _ => Finset.prod_ne_zero_iff.mpr (fun i _ => Finset.prod_ne_zero_iff.mpr (fun j hj => ?_)))` and prove the remaining obligations. Rewrite using `[sub_ne_zero]`. Introduce `h`. Use `X_injective h` as an intermediate fact.
+
+Simplify using `only [Prod.mk.injEq, true_and] at this`. Rewrite `hj` using `[Finset.mem_Ioi]`. Conclude with `(ne_of_lt hj) this`.
+-/
 theorem blockVandermonde_ne_zero (f N : ℕ) : blockVandermonde f N ≠ 0 := by
   simp only [blockVandermonde, vandermondeOf]
   refine Finset.prod_ne_zero_iff.mpr (fun τ _ => Finset.prod_ne_zero_iff.mpr
@@ -91,6 +125,9 @@ theorem blockVandermonde_ne_zero (f N : ℕ) : blockVandermonde f N ≠ 0 := by
   rw [Finset.mem_Ioi] at hj
   exact (ne_of_lt hj) this
 
+/- English proof (translation)
+Simplify using `only [antisymmetrize, map_sum, map_smul, blockPermute_blockPermute, Finset.smul_sum, smul_smul]`. Use `Fintype.sum_equiv (Equiv.mulLeft v) _ _ (fun w => ?_)` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulLeft]`. Use `congr 1`. Rewrite using `[blockSign_mul, ← mul_assoc, blockSign_mul_self, one_mul]`.
+-/
 theorem blockPermute_antisymmetrize (f N : ℕ) (v : Fin f → Equiv.Perm (Fin N)) (H : RootRing f N) :
     blockPermute f N v (antisymmetrize f N H) = blockSign f N v • antisymmetrize f N H := by
   simp only [antisymmetrize, map_sum, map_smul, blockPermute_blockPermute, Finset.smul_sum, smul_smul]
@@ -99,9 +136,15 @@ theorem blockPermute_antisymmetrize (f N : ℕ) (v : Fin f → Equiv.Perm (Fin N
   congr 1
   rw [blockSign_mul, ← mul_assoc, blockSign_mul_self, one_mul]
 
+/- English proof (translation)
+Simplify using `[Fintype.card_perm]`.
+-/
 theorem card_blockPerm (f N : ℕ) : Fintype.card (Fin f → Equiv.Perm (Fin N)) = N.factorial ^ f := by
   simp [Fintype.card_perm]
 
+/- English proof (translation)
+Simplify using `only [antisymmetrize, blockPermute_blockVandermonde, smul_smul, blockSign_mul_self, one_smul, Finset.sum_const, Finset.card_univ, card_blockPerm]`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℚ]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem antisymmetrize_blockVandermonde (f N : ℕ) :
     antisymmetrize f N (blockVandermonde f N) =
       ((N.factorial : ℚ) ^ f) • blockVandermonde f N := by
@@ -115,6 +158,9 @@ end
 
 end Flag
 
+/- English proof (translation)
+Introduce `f N`. Rewrite using `[dividedDifference, Flag.antisymmetrize_blockVandermonde, Algebra.smul_def, map_mul, mul_div_assoc, div_self, mul_one]`. Conclude with `(IsScalarTower.algebraMap_apply ℚ (RootRing f N) _ _).symm`. Introduce `h`. Conclude with `Flag.blockVandermonde_ne_zero f N ((IsFractionRing.injective (RootRing f N) (FractionRing (RootRing f N))) (by simpa using h))`.
+-/
 theorem DividedDifferenceOfVandermonde.intersectionNumber_baseChange : DividedDifferenceOfVandermonde.Statement := by
   intro f N
   rw [dividedDifference, Flag.antisymmetrize_blockVandermonde, Algebra.smul_def, map_mul,
@@ -137,6 +183,9 @@ variable {σ ι : Type*}
 def sumPderiv (s : Finset ι) (g : ι → σ) : Derivation ℚ (MvPolynomial σ ℚ) (MvPolynomial σ ℚ) :=
   ∑ l ∈ s, pderiv (g l)
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [sumPderiv]`. Consider the case `insert b s hb ih`. Rewrite using `[Finset.sum_insert hb, ← ih]`. Simplify using `[sumPderiv, Finset.sum_insert hb]`.
+-/
 theorem sumPderiv_apply (s : Finset ι) (g : ι → σ) (P : MvPolynomial σ ℚ) :
     sumPderiv s g P = ∑ l ∈ s, pderiv (g l) P := by
   classical
@@ -146,6 +195,9 @@ theorem sumPderiv_apply (s : Finset ι) (g : ι → σ) (P : MvPolynomial σ ℚ
     rw [Finset.sum_insert hb, ← ih]
     simp [sumPderiv, Finset.sum_insert hb]
 
+/- English proof (translation)
+Rewrite using `[sumPderiv_apply, map_natCast]`. Simplify using `only [pderiv_X, Pi.single_apply]`. Rewrite using `[Finset.sum_boole]`. Simplify using `only [eq_comm]`.
+-/
 theorem sumPderiv_X [DecidableEq σ] (s : Finset ι) (g : ι → σ) (v : σ) :
     sumPderiv s g (X v) = C (((s.filter fun l => g l = v).card : ℕ) : ℚ) := by
   rw [sumPderiv_apply, map_natCast]
@@ -159,14 +211,23 @@ section Indices
 
 variable {f r a : ℕ}
 
+/- English proof (translation)
+Apply the tactic sequence `cases c <;> simp only [yIndex, Prod.mk.injEq, Fin.mk.injEq, Fin.ext_iff] <;> omega`.
+-/
 theorem yIndex_eq_yIndex_iff (c : SmallBlock) (τ σ : Fin f) (l i : Fin r) :
     yIndex f r a c τ l = yIndex f r a c σ i ↔ τ = σ ∧ l = i := by
   cases c <;> simp only [yIndex, Prod.mk.injEq, Fin.mk.injEq, Fin.ext_iff] <;> omega
 
+/- English proof (translation)
+Apply the tactic sequence `cases c <;> simp only [zIndex, Prod.mk.injEq, Fin.mk.injEq, Fin.ext_iff] <;> omega`.
+-/
 theorem zIndex_eq_zIndex_iff (c : SmallBlock) (τ σ : Fin f) (l i : Fin a) :
     zIndex f r a c τ l = zIndex f r a c σ i ↔ τ = σ ∧ l = i := by
   cases c <;> simp only [zIndex, Prod.mk.injEq, Fin.mk.injEq, Fin.ext_iff] <;> omega
 
+/- English proof (translation)
+Apply the tactic sequence `cases c <;> simp only [yIndex, zIndex, ne_eq, Prod.mk.injEq, Fin.mk.injEq, not_and] <;>`. Apply the tactic sequence `intro _ <;> omega`.
+-/
 theorem yIndex_ne_zIndex (c : SmallBlock) (τ σ : Fin f) (l : Fin r) (i : Fin a) :
     yIndex f r a c τ l ≠ zIndex f r a c σ i := by
   cases c <;> simp only [yIndex, zIndex, ne_eq, Prod.mk.injEq, Fin.mk.injEq, not_and] <;>
@@ -178,6 +239,17 @@ section Rest
 
 variable (f r a : ℕ) (c : SmallBlock)
 
+/- English proof (translation)
+Establish `hyr : ∀ σ i, D (yRoot f r a c σ i) = C (c.sign * α σ)`. Introduce `σ i`. Rewrite using `[yRoot, C_mul', D.map_smul, hy, smul_eq_C_mul, ← C_mul]`. Establish `hzr : ∀ σ i, D (zRoot f r a c σ i) = C (β σ)` using `fun σ i => hz σ i`. Establish `hfib : D (fibreClass f r a c) = 0`.
+
+Unfold `fibreClass`. Use `derivation_prod_eq_zero D _ _ (fun σ _ => ?_)` and prove the remaining obligations. Rewrite using `[Derivation.leibniz, derivation_vandermondeOf_eq_zero D _ (fun i j => by rw [hzr, hzr]), derivation_vandermondeOf_eq_zero D _ (fun i j => by rw [hyr, hyr]), smul_zero, smul_zero, add_zero]`. Use `⟨hfib, ?_⟩` and prove the remaining obligations. Establish `hmu : D (smallBlockMu f r a c) = C (c.sign * r * ∑ σ, α σ)`.
+
+Simplify using `only [smallBlockMu, map_sum, hyr, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Rewrite using `[show (r : RootRing f (r + a)) = C (r : ℚ) from (map_natCast C r).symm]`. Repeatedly rewrite using `[← C_mul, ← map_sum]`. Use `congr 1`. Rewrite using `[Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl (fun σ _ => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[restPolynomial, Derivation.leibniz, hfib, smul_zero, zero_add, Derivation.leibniz_pow, hmu]`. Simplify using `only [smul_eq_mul, nsmul_eq_mul, Nat.add_sub_cancel]`. Simplify using `only [map_mul, map_natCast, map_add, map_one]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem derivation_restPolynomial (D : Derivation ℚ (RootRing f (r + a)) (RootRing f (r + a)))
     (α β : Fin f → ℚ) (hy : ∀ σ i, D (X (yIndex f r a c σ i)) = C (α σ))
     (hz : ∀ σ i, D (X (zIndex f r a c σ i)) = C (β σ)) :
@@ -212,16 +284,25 @@ theorem derivation_restPolynomial (D : Derivation ℚ (RootRing f (r + a)) (Root
   push_cast
   ring
 
+/- English proof (translation)
+Simplify using `only [flagIntegral, coeff_C_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun _ _ => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem flagIntegral_C_mul (f N : ℕ) (x : ℚ) (Φ : RootRing f N) :
     flagIntegral f N (C x * Φ) = x * flagIntegral f N Φ := by
   simp only [flagIntegral, coeff_C_mul, Finset.mul_sum]
   refine Finset.sum_congr rfl (fun _ _ => ?_)
   ring
 
+/- English proof (translation)
+Simplify using `only [flagIntegral, coeff_add, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem flagIntegral_add (f N : ℕ) (Φ Ψ : RootRing f N) :
     flagIntegral f N (Φ + Ψ) = flagIntegral f N Φ + flagIntegral f N Ψ := by
   simp only [flagIntegral, coeff_add, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `[flagIntegral]`.
+-/
 theorem flagIntegral_zero (f N : ℕ) : flagIntegral f N 0 = 0 := by
   simp [flagIntegral]
 
@@ -233,6 +314,25 @@ end Flag
 
 open MvPolynomial
 
+/- English proof (translation)
+Introduce `f r a c τ`. Prove the components needed by the constructor for the conclusion. Establish `h` using `(Flag.derivation_restPolynomial f r a c (Flag.sumPderiv Finset.univ (yIndex f r a c τ)) (fun σ => if σ = τ then 1 else 0) (fun _ => 0) (fun σ i => by`. Rewrite using `[Flag.sumPderiv_X]`. Distinguish the cases in `h : σ = τ`.
+
+Substitute `h` using the available equality. Rewrite using `[show (Finset.univ.filter fun l => yIndex f r a c σ l = yIndex f r a c σ i) = {i} by`. Use extensionality with `l`. Simplify using `[Flag.yIndex_eq_yIndex_iff]]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[show (Finset.univ.filter fun l => yIndex f r a c τ l = yIndex f r a c σ i) = ∅ by`. Use extensionality with `l`. Simplify using `[Flag.yIndex_eq_yIndex_iff, Ne.symm h]]`. Simplify using `[h])`. Use the proof step `(fun σ i => by`.
+
+Rewrite using `[Flag.sumPderiv_X]`. Rewrite using `[show (Finset.univ.filter fun l => yIndex f r a c τ l = zIndex f r a c σ i) = ∅ by`. Use extensionality with `l`. Simplify using `[Flag.yIndex_ne_zIndex]]`. Use the proof step `simp)).1`.
+
+Rewrite `h` using `[Flag.sumPderiv_apply]`. Conclude with `h`. Establish `h` using `(Flag.derivation_restPolynomial f r a c (Flag.sumPderiv Finset.univ (zIndex f r a c τ)) (fun _ => 0) (fun σ => if σ = τ then 1 else 0) (fun σ i => by`. Rewrite using `[Flag.sumPderiv_X]`. Rewrite using `[show (Finset.univ.filter fun l => zIndex f r a c τ l = yIndex f r a c σ i) = ∅ by`.
+
+Use extensionality with `l`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.notMem_empty, iff_false]`. Conclude with `fun h => Flag.yIndex_ne_zIndex c σ τ i l h.symm]`. Use the proof step `simp)`. Use the proof step `(fun σ i => by`.
+
+Rewrite using `[Flag.sumPderiv_X]`. Distinguish the cases in `h : σ = τ`. Substitute `h` using the available equality. Rewrite using `[show (Finset.univ.filter fun l => zIndex f r a c σ l = zIndex f r a c σ i) = {i} by`. Use extensionality with `l`.
+
+Simplify using `[Flag.zIndex_eq_zIndex_iff]]`. Simplify using the standard rewrite rules. Rewrite using `[show (Finset.univ.filter fun l => zIndex f r a c τ l = zIndex f r a c σ i) = ∅ by`. Use extensionality with `l`. Simplify using `[Flag.zIndex_eq_zIndex_iff, Ne.symm h]]`.
+
+Simplify using `[h])).1`. Rewrite `h` using `[Flag.sumPderiv_apply]`. Conclude with `h`.
+-/
 theorem FibreTranslationInvariance.intersectionNumber_baseChange : FibreTranslationInvariance.Statement := by
   classical
   intro f r a c τ
@@ -282,6 +382,15 @@ namespace Flag
 
 open MvPolynomial Finset
 
+/- English proof (translation)
+Break down `v with ⟨σ, j⟩` into its components or cases. Distinguish the cases in `h : σ = τ ∧ j ∈ s`. Take `⟨rfl, hj⟩` from `h`. Rewrite using `[if_pos ⟨rfl, hj⟩, Finset.card_eq_one]`. Use `⟨j, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `i`. Simplify using `only [Finset.mem_filter, Prod.mk.injEq, true_and, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, h⟩`. Conclude with `h`.
+
+Introduce and unpack `rfl`. Conclude with `⟨hj, rfl⟩`. Rewrite using `[if_neg h, Finset.card_eq_zero, Finset.filter_eq_empty_iff]`. Introduce `i hi heq`. Simplify using `only [Prod.mk.injEq] at heq`.
+
+Conclude with `h ⟨heq.1.symm, heq.2 ▸ hi⟩`.
+-/
 theorem card_filter_pair {f N : ℕ} (s : Finset (Fin N)) (τ : Fin f) (v : Fin f × Fin N) :
     (s.filter fun i => ((τ, i) : Fin f × Fin N) = v).card = if v.1 = τ ∧ v.2 ∈ s then 1 else 0 := by
   rcases v with ⟨σ, j⟩
@@ -299,6 +408,9 @@ theorem card_filter_pair {f N : ℕ} (s : Finset (Fin N)) (τ : Fin f) (v : Fin 
     simp only [Prod.mk.injEq] at heq
     exact h ⟨heq.1.symm, heq.2 ▸ hi⟩
 
+/- English proof (translation)
+Rewrite using `[← sumPderiv_apply s (fun i => ((τ, i) : Fin f × Fin (r + a)))]`. Use `(derivation_restPolynomial f r a c _ α β (fun σ i => ?_) (fun σ i => ?_)).2` and prove the remaining obligations. Rewrite using `[sumPderiv_X, card_filter_pair, ← hy σ i]`. Rewrite using `[sumPderiv_X, card_filter_pair, ← hz σ i]`.
+-/
 theorem sumPderiv_restPolynomial (f r a : ℕ) (c : SmallBlock) (τ : Fin f) (s : Finset (Fin (r + a)))
     (α β : Fin f → ℚ)
     (hy : ∀ σ i, (if (yIndex f r a c σ i).1 = τ ∧ (yIndex f r a c σ i).2 ∈ s then 1 else 0 : ℕ) =
@@ -316,6 +428,15 @@ theorem sumPderiv_restPolynomial (f r a : ℕ) (c : SmallBlock) (τ : Fin f) (s 
 
 end Flag
 
+/- English proof (translation)
+Introduce `f r a τ`. Establish `hsum : ∑ σ : Fin f, (if σ = τ then (1 : ℚ) else 0) = 1` using `by simp`. Use `⟨⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[shiftFunctional, Flag.sumPderiv_restPolynomial f r a .last τ _ (fun _ => 0) (fun σ => if σ = τ then 1 else 0) (fun σ i => ?_) (fun σ i => ?_), Flag.flagIntegral_C_mul]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[if_neg (by rintro ⟨-, hh⟩; have hh2 := (Finset.mem_filter.mp hh).2; simp [yIndex, SmallBlock.jIndex] at hh2)]; simp`. Apply the tactic sequence `by_cases h : σ = τ <;> simp [zIndex, SmallBlock.jIndex, Finset.mem_filter, h] <;> (try exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, by simp [SmallBlock.jIndex]⟩) <;> (try (rw [if_neg]; intro hh; have hh2 := (Finset.mem_filter.mp hh.2).2; simp [SmallBlock.jIndex] at hh2))`. Rewrite using `[totalFunctional, Flag.sumPderiv_restPolynomial f r a .last τ _ (fun σ => if σ = τ then 1 else 0) (fun σ => if σ = τ then 1 else 0) (fun σ i => ?_) (fun σ i => ?_), Flag.flagIntegral_C_mul, hsum, fibreDegree]`. Simplify using `[SmallBlock.sign]`. Apply the tactic sequence `by_cases h : σ = τ <;> simp [yIndex, h]`.
+
+Apply the tactic sequence `by_cases h : σ = τ <;> simp [zIndex, h]`. Rewrite using `[shiftFunctional, Flag.sumPderiv_restPolynomial f r a .first τ _ (fun σ => if σ = τ then 1 else 0) (fun _ => 0) (fun σ i => ?_) (fun σ i => ?_), Flag.flagIntegral_C_mul, hsum, fibreDegree]`. Simplify using `[SmallBlock.sign]`. Apply the tactic sequence `by_cases h : σ = τ <;> simp [yIndex, SmallBlock.jIndex, Finset.mem_filter, h] <;> (try exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, by simp [SmallBlock.jIndex]⟩) <;> (try (rw [if_neg]; intro hh; have hh2 := (Finset.mem_filter.mp hh.2).2; simp [SmallBlock.jIndex] at hh2))`. Rewrite using `[if_neg (by rintro ⟨-, hh⟩; have hh2 := (Finset.mem_filter.mp hh).2; simp [zIndex, SmallBlock.jIndex] at hh2)]; simp`.
+
+Rewrite using `[totalFunctional, Flag.sumPderiv_restPolynomial f r a .first τ _ (fun σ => if σ = τ then 1 else 0) (fun σ => if σ = τ then 1 else 0) (fun σ i => ?_) (fun σ i => ?_), Flag.flagIntegral_C_mul, hsum, fibreDegree]`. Simplify using `[SmallBlock.sign]`. Apply the tactic sequence `by_cases h : σ = τ <;> simp [yIndex, h]`. Apply the tactic sequence `by_cases h : σ = τ <;> simp [zIndex, h]`.
+-/
 theorem ShiftTotalValues.intersectionNumber_baseChange : ShiftTotalValues.Statement := by
   classical
   intro f r a τ

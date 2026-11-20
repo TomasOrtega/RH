@@ -22,6 +22,13 @@ namespace GlobalTheory
 
 open scoped CategoryTheory.Obj in
 
+/- English proof (translation)
+Introduce `S _ _ R₀ _ P A₀ _ φ L₀ hA hL hamp hφ e`. Set `r : S →+* IsLocalRing.ResidueField S` to `IsLocalRing.residue S`. Establish `h₁` using `isGrpPullback_pullback P.A (spMap r)`. Establish `hc : spMap r ≫ spMap R₀.subtype = spMap (r.comp R₀.subtype)`. Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`.
+
+Establish `h₂` using `h₁.comp hφ`. Rewrite `h₂` using `[hc]`. Take `⟨w, hw⟩ : LBIso (L₀.pull (pullback.fst P.A.hom (spMap r) ≫ φ)) (P.L.pull (pullback.fst P.A.hom (spMap r)))` from `LBIso.symm (LBIso.chartPull (chartPullPull P.L _) (chartPullSame L₀ (fun _ : PUnit => pullback.fst P.A.hom (spMap r) ≫ φ) (fun _ => φ) (fun _ => 1) _ fun _ => rfl) e)`. Establish `hK` using `kTriv_pull h₁ P.isLB (pull_isLB hL _) ((isGen_iff w).1 hw) P.ktriv`. Take `⟨f, hf, H⟩` from `GlobalTheory.KTrivSpread.exists_kTriv_of_isUnit R₀ A₀ L₀ _ (r.comp R₀.subtype) _ _ hA hL hamp h₂ hK`.
+
+Establish `hu : IsUnit (f : S)` using `(IsLocalRing.residue_ne_zero_iff_isUnit _).1 hf`. Take `⟨g, hg⟩` from `hu.exists_right_inv`. Use `⟨{g}, fun R₁ h hF A₁ _ π hπ => H R₁ (Subring.inclusion h) A₁ π ?_ hπ⟩` and prove the remaining obligations. Establish `hg₁ : g ∈ R₁` using `hF (by simp)`. Conclude with `IsUnit.of_mul_eq_one (⟨g, hg₁⟩ : R₁) (Subtype.ext hg)`.
+-/
 theorem exists_finset_kTriv_of_subring :
     ∀ (S : Type) [CommRing S] [IsLocalRing S] (R₀ : Subring S) [IsNoetherianRing R₀] (P : Out.PolAV (Sp S)) (A₀ : Over (Sp R₀)) [GrpObj A₀] (φ : P.A.left ⟶ A₀.left) (L₀ : LB A₀.left), IsAbelianScheme A₀ → L₀.IsLB → Out.RelAmple A₀ L₀ → IsGrpPullback P.A A₀ (spMap R₀.subtype) φ → LBIso P.L (L₀.pull φ) → ∃ F : Finset S, ∀ (R₁ : Subring S) (h : R₀ ≤ R₁), (F : Set S) ⊆ R₁ → ∀ (A₁ : Over (Sp R₁)) [GrpObj A₁] (π : A₁.left ⟶ A₀.left), IsGrpPullback A₁ A₀ (spMap (Subring.inclusion h)) π → Out.KTriv A₁ (L₀.pull π) := by
   intro S _ _ R₀ _ P A₀ _ φ L₀ hA hL hamp hφ e

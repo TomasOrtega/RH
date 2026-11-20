@@ -13,6 +13,15 @@ namespace GlobalTheory.Pdv
 
 open Classical in
 
+/- English proof (translation)
+Consider the cases of `j with`. Consider the case `zero => rfl`. Consider the case `succ i`. Distinguish the cases in `h1 : i + 1 ≤ m2`. Use `revert b`.
+
+Rewrite using `[show twSt Ch sel mu cst m2 (i+1) = twNext Ch sel mu cst (twSt Ch sel mu cst m2 i) by simp [twSt, h1]]`. Introduce `b`. Establish `hq : P.1 ∉ twQOff (Pr` using `Pr) sel mu := fun hq => (Finset.mem_sdiff.1 hq).2 hP`. Simplify using `only [twNext, hq, dif_neg, not_false_eq_true]`. Distinguish the cases in `h2 : i + 1 = m2 + 1`.
+
+Use `revert b`. Rewrite using `[show twSt Ch sel mu cst m2 (i+1) = twUnitSt _ (i+1) by simp [twSt, h1, h2]]`. Introduce `b`. Both sides reduce to the same expression. Use `revert b`.
+
+Rewrite using `[show twSt Ch sel mu cst m2 (i+1) = twEmptySt _ (i+1) by simp only [twSt, if_neg h1, if_neg h2]]`. Introduce `b`. Conclude with `b.elim`.
+-/
 theorem stepRep_eq_one_at_typePrimes {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
     (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ}
     (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) (m2 j : ℕ)
@@ -35,6 +44,13 @@ theorem stepRep_eq_one_at_typePrimes {X : Fields} {Pr : Primes X} {R : Ranks} (C
         rw [show twSt Ch sel mu cst m2 (i+1) = twEmptySt _ (i+1) by simp only [twSt, if_neg h1, if_neg h2]]
         intro b; exact b.elim
 
+/- English proof (translation)
+Introduce `B X I H a`. Take `⟨hc, hi⟩` from `H a`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hc]`. Use `show B.R.m ≤ B.R.m + 1`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[hc]`. Use `show B.R.m ≤ B.R.m`. Conclude with `le_rfl`. Rewrite using `[hi]`.
+
+Introduce `j _ b P hP`. Conclude with `stepRep_eq_one_at_typePrimes _ _ _ _ _ _ b P hP`.
+-/
 theorem colNorm_of_tw : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), (∀ a, I.cst a = twCst I.Ch I.sel (I.tup a) I.glob ∧ I.idx a = twIdx I.Ch I.sel (I.tup a) (I.cst a) (B.R.m - 2)) → GlobalTheory.Pdv.ColNorm I := by
   intro B X I H a
   obtain ⟨hc, hi⟩ := H a

@@ -13,6 +13,13 @@ namespace GlobalTheory.WhitCollapse
 
 variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
 
+/- English proof (translation)
+Set `b` to `Module.finBasis F A.K`. Establish `h : (fun t : A.K => Algebra.norm F t) = fun t => (Algebra.leftMulMatrix b t).det`. Use function extensionality and compare the values at `t`. Conclude with `Algebra.norm_eq_matrix_det b t`. Rewrite using `[h]`.
+
+Use `Continuous.matrix_det ?_` and prove the remaining obligations. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Establish `: (fun t : A.K => Algebra.leftMulMatrix b t i j) = fun t => (b.coord i) (LinearMap.mulRight F (b j) t)`. Use function extensionality and compare the values at `t`. Simplify using `[Algebra.leftMulMatrix_eq_repr_mul]`.
+
+Rewrite using `[this]`. Conclude with `IsModuleTopology.continuous_of_linearMap ((b.coord i).comp (LinearMap.mulRight F (b j)))`.
+-/
 theorem continuous_normF (A : Et F E) : Continuous (fun t : A.K => Algebra.norm F t) := by
   classical
   let b := Module.finBasis F A.K
@@ -27,9 +34,17 @@ theorem continuous_normF (A : Et F E) : Continuous (fun t : A.K => Algebra.norm 
   rw [this]
   exact IsModuleTopology.continuous_of_linearMap ((b.coord i).comp (LinearMap.mulRight F (b j)))
 
+/- English proof (translation)
+Apply the tactic sequence `unfold eta; split_ifs <;> simp`.
+-/
 theorem norm_eta (x : F) : ‖eta x‖ = 1 := by
   unfold eta; split_ifs <;> simp
 
+/- English proof (translation)
+Use `letI : MeasurableSpace F := borel F`. Use `haveI : BorelSpace F := ⟨rfl⟩`. Take `⟨-, -, -, hlc⟩` from `GlobalTheory.T.unramifiedValuationParitySign_character_kernel_norms F E`. Establish `hc : ContinuousOn (eta : F → ℂ) {0}ᶜ`. Rewrite using `[continuousOn_iff_continuous_restrict]`.
+
+Conclude with `hlc.continuous`. Establish `hm : Measurable (eta : F → ℂ)` using `measurable_of_continuousOn_compl_singleton 0 hc`. Conclude with `hm.comp (continuous_normF A).measurable`.
+-/
 theorem measurable_etaK [Unram F E] (A : Et F E) : Measurable A.etaK := by
   letI : MeasurableSpace F := borel F
   haveI : BorelSpace F := ⟨rfl⟩
@@ -40,6 +55,45 @@ theorem measurable_etaK [Unram F E] (A : Et F E) : Measurable A.etaK := by
   have hm : Measurable (eta : F → ℂ) := measurable_of_continuousOn_compl_singleton 0 hc
   exact hm.comp (continuous_normF A).measurable
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ U A ψ hψ μK hμ φ' hφ a c hc`. Use `U.charZero` as an intermediate fact. Use `U.ultraF` as an intermediate fact. Use `U.lcF` as an intermediate fact. Use `haveI := GlobalTheory.FourKFub.secondCountableK A`.
+
+Take `⟨_, _, _, _, -⟩` from `GlobalTheory.JR.EtMeas.top_facts F A.K`. Take `⟨-, -, hnd, -, -, -, -, -, -, hOKo, hOKc, R, hR⟩` from `GlobalTheory.T.etaleHermitianPair_structure_facts F E A`. Establish `hψc` using `GlobalTheory.FourKFub.psiK_continuous A ψ hψ`. Establish `hηm` using `measurable_etaK A`. Establish `hφc : Continuous φ'` using `hφ.1.continuous`.
+
+Set `M : AddSubgroup A.K` to `R.toAddSubgroup.comap (DistribMulAction.toAddMonoidHom A.K c)`. Establish `hMset : (M : Set A.K) = {z : A.K | c • z ∈ A.OK}`. Use extensionality with `z`. Use `show c • z ∈ (R : Set A.K) ↔ c • z ∈ A.OK`. Rewrite using `[hR]`.
+
+Establish `hMo : IsOpen (M : Set A.K)` using `by rw [hMset]; exact hOKo.preimage (continuous_const_smul c)`. Establish `hMc : IsCompact (M : Set A.K)`. Rewrite using `[hMset]`. Establish `: {z : A.K | c • z ∈ A.OK} = (fun z : A.K => c⁻¹ • z) '' A.OK`. Use extensionality with `z`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h; exact ⟨c • z, h, by simp [smul_smul, inv_mul_cancel₀ hc]⟩`. Introduce and unpack `⟨w, hw, rfl⟩ show c • c⁻¹ • w ∈ A.OK`. Simplify `hw` using `[smul_smul, mul_inv_cancel₀ hc]`. Rewrite using `[this]`.
+
+Conclude with `hOKc.image (continuous_const_smul _)`. Establish `hMm : MeasurableSet (M : Set A.K)` using `hMo.measurableSet`. Establish `hMcl : IsClosed (M : Set A.K)` using `hMc.isClosed`. Use `set χ : A.K → ℂ := (M : Set A.K).indicator (fun _ => 1) with hχdef`. Establish `hχc : Continuous χ` using `IsClopen.continuous_indicator ⟨hMcl, hMo⟩ continuous_const`.
+
+Set `K0 : A.K × (A.K × A.K) → ℂ` to `fun q => χ q.1 * φ' (q.2.2, q.2.1) * A.psiK ψ (q.2.1 * q.1 * q.2.2) * A.psiK ψ (-(a * q.1))`. Establish `hK0c : Continuous K0` using `by fun_prop`. Establish `hK0s : HasCompactSupport K0`. Use `HasCompactSupport.intro (hMc.prod (hφ.2.isCompact.image continuous_swap)) ?_` and prove the remaining obligations. Introduce and unpack `⟨z, t, b⟩ hq`.
+
+Simplify using `only [Set.mem_prod, not_and_or] at hq`. Break down `hq with hz | hp` into its components or cases. Simplify using `[K0, χ, hz]`. Establish `: φ' (b, t) = 0` using `image_eq_zero_of_notMem_tsupport (fun h => hp ⟨(b, t), h, rfl⟩)`. Simplify using `[K0, this]`.
+
+Establish `hK0i : Integrable K0 (μK.prod (μK.prod μK))` using `hK0c.integrable_of_hasCompactSupport hK0s`. Set `H : A.K × (A.K × A.K) → ℂ` to `fun q => K0 q * A.etaK q.2.1`. Establish `hH : Integrable H (μK.prod (μK.prod μK))` using `hK0i.mul_bdd (c := 1) (hηm.comp (measurable_fst.comp measurable_snd)).aestronglyMeasurable (Eventually.of_forall fun q => (norm_eta _).le)`. Establish `hsymm : (Algebra.traceForm F A.K).IsSymm` using `⟨fun x y => by simp [mul_comm]⟩`. Establish `hI` using `fun y => ((GlobalTheory.T.selfDual_iff_lattice_volume_and_plancherel_alt F E ψ hψ A.K (Algebra.traceForm F A.K) hsymm hnd μK hμ).1 M hMo hMc).2 y`.
+
+Use `set N : Set A.K := {y : A.K | ∀ x : A.K, c • x ∈ A.OK → A.psiK ψ (x * y) = 1} with hNdef`. Establish `hN : {y | ∀ x ∈ M, ψ (Algebra.traceForm F A.K x y) = 1} = N`. Use extensionality with `y`. Simplify using `only [Set.mem_setOf_eq, N, Algebra.traceForm_apply]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h x hx; exact h x (by rw [← SetLike.mem_coe, hMset]; exact hx)`. Introduce `h x hx; exact h x (by rw [← SetLike.mem_coe, hMset] at hx; exact hx)`. Use `set vol : ℂ := (((μK (M : Set A.K)).toReal : ℝ) : ℂ) with hvol`. Set `Q : A.K × A.K → ℂ` to `fun p => vol * (φ' (p.2, p.1) * N.indicator (fun _ => (1 : ℂ)) (p.1 * p.2 - a) * A.etaK p.1)`. Establish `h3 : ∀ p : A.K × A.K, ∫ z, H (z, p) ∂μK = Q p`.
+
+Introduce and unpack `⟨t, b⟩`. Establish `e1 : ∀ z, H (z, (t, b)) = (φ' (b, t) * A.etaK t) * (M : Set A.K).indicator (fun z => ψ (Algebra.traceForm F A.K z (t * b - a))) z`. Introduce `z`. Distinguish the cases in `hz : z ∈ (M : Set A.K)`. Rewrite using `[Set.indicator_of_mem hz]`.
+
+Simplify using `only [H, K0, χ, Set.indicator_of_mem hz, Algebra.traceForm_apply]`. Establish `: A.psiK ψ (t * z * b) * A.psiK ψ (-(a * z)) = ψ (Algebra.trace F A.K (z * (t * b - a)))`. Rewrite using `[← GlobalTheory.FourKFub.psiK_add]`. Simplify using `only [Et.psiK]`. Use `congr 2`.
+
+Expand and normalize the polynomial expressions, which then agree. Take the linear combination `(φ' (b, t) * A.etaK t) * this`. Simplify using `[H, K0, χ, hz]`. Repeatedly rewrite using `[e1]`. Rewrite using `[integral_const_mul, integral_indicator hMm, hI, hN]`.
+
+Simplify using `only [Q]`. Distinguish the cases in `hy : t * b - a ∈ N`. Simplify using `[Set.indicator_of_mem hy, vol]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[Set.indicator_of_notMem hy]`.
+
+Establish `hQi : Integrable Q (μK.prod μK)` using `(hH.integral_prod_right (f := H)).congr (Eventually.of_forall h3)`. Rewrite using `[← hMset, ← integral_indicator hMm]`. Use `trans ∫ z, ∫ p, H (z, p) ∂(μK.prod μK) ∂μK`. Use `integral_congr_ae ?_ filter_upwards [hH.prod_right_ae] with z hz` and prove the remaining obligations. Rewrite using `[integral_prod _ hz]`.
+
+Distinguish the cases in `hzM : z ∈ (M : Set A.K)`. Rewrite using `[Set.indicator_of_mem hzM, ← integral_mul_const]`. Use `integral_congr_ae (Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `only [H, K0, χ, Set.indicator_of_mem hzM]`. Rewrite using `[← integral_mul_const, ← integral_mul_const]`.
+
+Use `integral_congr_ae (Eventually.of_forall fun b => ?_)` and prove the remaining obligations. Simplify using `only`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[Set.indicator_of_notMem hzM, H, K0, χ]`. Rewrite using `[integral_integral_swap (f := fun z p => H (z, p)) hH]`.
+
+Repeatedly rewrite using `[h3]`. Rewrite using `[integral_prod Q hQi, ← integral_const_mul]`. Use `integral_congr_ae (Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `only [Q, vol]`. Rewrite using `[← integral_mul_const, ← integral_const_mul]`.
+-/
 theorem collapse : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (ψ : AddChar F ℂ), IsStdChar ψ → ∀ (μK : Measure A.K), μK.IsAddHaarMeasure → ∀ (φ' : A.K × A.K → ℂ), IsTest φ' → ∀ (a : A.K) (c : F), c ≠ 0 → ∫ z in {z : A.K | c • z ∈ A.OK}, (∫ t, (∫ b, φ' (b, t) * A.psiK ψ (t * z * b) ∂μK) * A.etaK t ∂μK) * A.psiK ψ (-(a * z)) ∂μK = (((μK {z : A.K | c • z ∈ A.OK}).toReal : ℝ) : ℂ) * ∫ t, (∫ b, φ' (b, t) * Set.indicator {y : A.K | ∀ x : A.K, c • x ∈ A.OK → A.psiK ψ (x * y) = 1} (fun _ => (1 : ℂ)) (t * b - a) ∂μK) * A.etaK t ∂μK := by
   intro F E _ _ _ _ U A ψ hψ μK hμ φ' hφ a c hc
   have := U.charZero; have := U.ultraF; have := U.lcF

@@ -21,6 +21,11 @@ open scoped TensorProduct
 
 variable {D : D7} {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)} {V : HSp D}
 
+/- English proof (translation)
+Establish `R` using `(GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ V`. Establish `a` using `GlobalTheory.PointAtPlaceHom.atTau_spec hθ V τ hg`. Establish `b` using `GlobalTheory.PointAtPlaceHom.atTau_spec hθ V τ' hh`. Use `R.2.2.1 _ (mul_mem a.1 b.1) _ (mul_mem b.1 a.1) fun ρ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.PointAtPlaceHom.infMat_mul, GlobalTheory.PointAtPlaceHom.infMat_mul]`.
+
+Distinguish the cases in `c : ρ = τ`. Substitute `c` using the available equality. Rewrite using `[a.2.1, b.2.2 ρ (Ne.symm hne), Matrix.mul_one, Matrix.one_mul]`. Rewrite using `[a.2.2 ρ c, Matrix.mul_one, Matrix.one_mul]`.
+-/
 theorem atTau_comm (hθ : IsInfFam θ) {τ τ' : D.what₂.Tau} (hne : τ' ≠ τ) {g h : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hg : g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) (hh : h ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ')) :
     atTau θ V τ g * atTau θ V τ' h = atTau θ V τ' h * atTau θ V τ g := by
@@ -34,6 +39,9 @@ theorem atTau_comm (hθ : IsInfFam θ) {τ τ' : D.what₂.Tau} (hne : τ' ≠ �
     rw [a.2.1, b.2.2 ρ (Ne.symm hne), Matrix.mul_one, Matrix.one_mul]
   · rw [a.2.2 ρ c, Matrix.mul_one, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `a` using `GlobalTheory.PointAtPlaceHom.atTau_spec hθ V τ hg`. Establish `b` using `GlobalTheory.PointAtPlaceHom.isAtTau_inv V τ hg a`. Rewrite using `[adAt, a.2.2 τ' hne, b.2.2 τ' hne, Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem adAt_atTau_of_ne (hθ : IsInfFam θ) {τ τ' : D.what₂.Tau} (hne : τ' ≠ τ) {g : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hg : g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) (X : Matrix (Fin V.rank) (Fin V.rank) ℂ) :
     adAt θ (atTau θ V τ g) τ' X = X := by
@@ -51,10 +59,16 @@ variable (θ V) in
 def avgF (τ : D.what₂.Tau) (κ : K → Matrix (Fin V.rank) (Fin V.rank) ℂ) (e : K → ℂ) (φ : GA D V → ℂ) : GA D V → ℂ :=
   fun x => ∫ k, e k * φ (x * atTau θ V τ (κ k)) ∂μ
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[avgF]`.
+-/
 theorem avgF_zero : avgF θ V μ τ κ e 0 = 0 := by
   funext x
   simp [avgF]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [avgF, Pi.add_apply, mul_add]`. Conclude with `integral_add (GlobalTheory.RealAverage.integrable_avg μ hθ hκ hU he hf x) (GlobalTheory.RealAverage.integrable_avg μ hθ hκ hU he hg x)`.
+-/
 theorem avgF_add (hθ : IsInfFam θ) (hκ : Continuous κ) (hU : ∀ k, κ k ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ))
     (he : Continuous e) {f g : GA D V → ℂ} (hf : Continuous f) (hg : Continuous g) :
     avgF θ V μ τ κ e (f + g) = avgF θ V μ τ κ e f + avgF θ V μ τ κ e g := by
@@ -63,11 +77,21 @@ theorem avgF_add (hθ : IsInfFam θ) (hκ : Continuous κ) (hU : ∀ k, κ k ∈
   exact integral_add (GlobalTheory.RealAverage.integrable_avg μ hθ hκ hU he hf x)
     (GlobalTheory.RealAverage.integrable_avg μ hθ hκ hU he hg x)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [avgF, Pi.smul_apply, smul_eq_mul, mul_left_comm _ c]`. Conclude with `integral_const_mul c _`.
+-/
 theorem avgF_smul (c : ℂ) (f : GA D V → ℂ) : avgF θ V μ τ κ e (c • f) = c • avgF θ V μ τ κ e f := by
   funext x
   simp only [avgF, Pi.smul_apply, smul_eq_mul, mul_left_comm _ c]
   exact integral_const_mul c _
 
+/- English proof (translation)
+Use `set 𝒟 : Set (GA D V → ℂ) := {ψ | IsAutFunSm θ V ψ}`. Establish `h𝒟 : ∀ ψ ∈ 𝒟, IsAutFunSm θ V ψ` using `fun _ h => h`. Establish `hR : ∀ ψ ∈ 𝒟, ∀ τ'' X, X ∈ lieAt V τ'' → Rder θ V τ'' X ψ ∈ 𝒟` using `fun _ h _ _ hX => GlobalTheory.CuspLie.isAutFunSm_Rder hθ hX h`. Establish `F` using `GlobalTheory.T.compactAverage_smoothFamily_closedUnderDerivatives D θ hθ V K μ (GlobalTheory.RealAverage.famSpan θ V τ κ 𝒟) (GlobalTheory.RealAverage.famSpan_cont hθ hκ hU h𝒟) (GlobalTheory.RealAverage.famSpan_sm hθ hU h𝒟) (GlobalTheory.RealAverage.famSpan_Rder hθ hκ hU h𝒟 hR) (f …`. Establish `h1` using `F.2.2.1 [(τ', X)] (by simpa using hX)`.
+
+Simplify using `only [List.foldr_cons, List.foldr_nil] at h1`. Use `show Rder θ V τ' X (fun x => ∫ k, e k * ψ (x * atTau θ V τ (κ k)) ∂μ) = _`. Rewrite using `[h1]`. Use function extensionality and compare the values at `x`. Simplify using `only [avgF]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `k`. Establish `e1 : (fun x => e k * ψ (x * atTau θ V τ (κ k))) = e k • rTr V (atTau θ V τ (κ k)) ψ` using `rfl`. Rewrite using `[e1, Rder_smul, Rder_rTr hθ (isRealPt_atTau hθ τ (hU k)) hX, adAt_atTau_of_ne hθ hne (hU k)]`. Both sides reduce to the same expression.
+-/
 theorem avgF_Rder (hθ : IsInfFam θ) (hne : τ' ≠ τ) (hκ : Continuous κ)
     (hU : ∀ k, κ k ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) (he : Continuous e) {ψ : GA D V → ℂ} (hψ : IsAutFunSm θ V ψ)
     {X : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hX : X ∈ lieAt V τ') :
@@ -92,6 +116,15 @@ theorem avgF_Rder (hθ : IsInfFam θ) (hne : τ' ≠ τ) (hκ : Continuous κ)
   rw [e1, Rder_smul, Rder_rTr hθ (isRealPt_atTau hθ τ (hU k)) hX, adAt_atTau_of_ne hθ hne (hU k)]
   rfl
 
+/- English proof (translation)
+Set `T' : kFin ε σ →ₗ[ℂ] (GA D V → ℂ)` to `{ toFun := fun v => avgF θ V μ τ κ e (T v) map_add' := fun a b => by`. Rewrite using `[map_add]`. Conclude with `avgF_add μ hθ hκ hU he (hT.aut a).cont (hT.aut b).cont`. Use the proof step `map_smul' := fun c a => by`. Rewrite using `[map_smul]`.
+
+Conclude with `avgF_smul μ c (T a) }`. Use `⟨T', ⟨fun v => ?_, fun g hg hgK v w hw => ?_, fun X hX v w hd => ?_⟩, fun v => rfl⟩` and prove the remaining obligations. Conclude with `GlobalTheory.RealAverage.isAutFunSm_average D θ hθ V τ K μ κ hκ hU e he _ (hT.aut v)`. Use `show avgF θ V μ τ κ e (T w) = rTr V (atTau θ V τ' g) (avgF θ V μ τ κ e (T v))`. Rewrite using `[hT.mapK g hg hgK v w hw]`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [avgF, rTr]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[mul_assoc, mul_assoc, atTau_comm hθ hne (hU k) hg]`.
+
+Use `show avgF θ V μ τ κ e (T w) = Rder θ V τ' X (avgF θ V μ τ κ e (T v))`. Rewrite using `[hT.mapLie X hX v w hd, avgF_Rder μ hθ hne hκ hU he (hT.aut v) hX]`.
+-/
 theorem isGKMap_avgF (hθ : IsInfFam θ) (hne : τ' ≠ τ) (hκ : Continuous κ)
     (hU : ∀ k, κ k ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) (he : Continuous e) {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] {ε : Fin V.rank → Bool} {σ : Matrix (Fin V.rank) (Fin V.rank) ℂ → (H →L[ℂ] H)}
@@ -124,6 +157,21 @@ section Closure
 variable {K : Type} [TopologicalSpace K] [CompactSpace K] [MeasurableSpace K] [BorelSpace K] (μ : Measure K)
   [IsFiniteMeasure μ] {τ τ' : D.what₂.Tau} {κ : K → Matrix (Fin V.rank) (Fin V.rank) ℂ} {e : K → ℂ}
 
+/- English proof (translation)
+Use `haveI : IsTopologicalGroup (GA D V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Establish `hk : Continuous fun k => atTau θ V τ (κ k)` using `GlobalTheory.RealAverage.continuous_atTau hθ hκ hU`. Set `W' : Submodule ℂ (GA D V → ℂ)` to `{ carrier := {f | Continuous f ∧ avgF θ V μ τ κ e f ∈ finPartOfType θ V τ' S} zero_mem' := ⟨continuous_const, by rw [avgF_zero]; exact zero_mem _⟩ add_mem' := fun {a b} ha hb => ⟨ha.1.add hb.1, by`. Rewrite using `[avgF_add μ hθ hκ hU he ha.1 hb.1]`. Conclude with `add_mem ha.2 hb.2⟩`.
+
+Use the proof step `smul_mem' := fun c a ha => ⟨ha.1.const_smul c, by`. Rewrite using `[avgF_smul]`. Conclude with `Submodule.smul_mem _ c ha.2⟩ }`. Establish `hle : finPartOfType θ V τ' S ≤ W'`. Use `sSup_le ?_` and prove the remaining obligations.
+
+Introduce and unpack `W ⟨H, _, _, σ, lam, ε, P, T, hE, hlam, hD, hP, hJ, hT, rfl⟩ f ⟨v, rfl⟩`. Take `⟨T', hT', hv⟩` from `isGKMap_avgF μ hθ hne hκ hU he hT`. Use `⟨(hT.aut v).cont, ?_⟩` and prove the remaining obligations. Rewrite using `[← hv]`. Conclude with `(le_sSup (a := LinearMap.range T') ⟨H, _, _, σ, lam, ε, P, T', hE, hlam, hD, hP, hJ, hT', rfl⟩ : _ ≤ finPartOfType θ V τ' S) ⟨v, rfl⟩`.
+
+Introduce `C hC δ hδ`. Establish `hI0 : 0 ≤ ∫ k, ‖e k‖ ∂μ` using `integral_nonneg fun _ => norm_nonneg _`. Use `set M : ℝ := (∫ k, ‖e k‖ ∂μ) + 1 with hMdef`. Establish `hM : 0 < M` using `by linarith`. Establish `hC' : IsCompact ((fun p : GA D V × K => p.1 * atTau θ V τ (κ p.2)) '' (C ×ˢ Set.univ))` using `(hC.prod isCompact_univ).image (continuous_fst.mul (hk.comp continuous_snd))`.
+
+Take `⟨ψ, hψ, hap⟩` from `h _ hC' (δ / M) (div_pos hδ hM)`. Establish `hψ'` using `hle hψ`. Use `⟨_, hψ'.2, fun x hx => ?_⟩` and prove the remaining obligations. Establish `i1` using `GlobalTheory.RealAverage.integrable_avg μ hθ hκ hU he hφc x`. Establish `i2` using `GlobalTheory.RealAverage.integrable_avg μ hθ hκ hU he hψ'.1 x`.
+
+Simplify using `only [avgF]`. Rewrite using `[← integral_sub i1 i2]`. Establish `hb : ∀ k, ‖e k * φ (x * atTau θ V τ (κ k)) - e k * ψ (x * atTau θ V τ (κ k))‖ ≤ ‖e k‖ * (δ / M)` using `fun k => by`. Rewrite using `[← mul_sub, norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hap _ ⟨(x, k), ⟨hx, Set.mem_univ _⟩, rfl⟩).le (norm_nonneg _)`.
+
+Establish `hie : Integrable (fun k => ‖e k‖) μ` using `he.norm.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`. Use `lt_of_le_of_lt (norm_integral_le_of_norm_le (hie.mul_const _) (Filter.Eventually.of_forall hb)) ?_` and prove the remaining obligations. Rewrite using `[integral_mul_const]`. Establish `hlt : (∫ k, ‖e k‖ ∂μ) < M` using `by linarith`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem hasTypeAt_avgF (hθ : IsInfFam θ) (hne : τ' ≠ τ) (hκ : Continuous κ)
     (hU : ∀ k, κ k ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) (he : Continuous e) {S : SPar} {φ : GA D V → ℂ}
     (hφc : Continuous φ) (h : HasTypeAt θ V τ' S φ) : HasTypeAt θ V τ' S (avgF θ V μ τ κ e φ) := by
@@ -171,6 +219,13 @@ theorem hasTypeAt_avgF (hθ : IsInfFam θ) (hne : τ' ≠ τ) (hκ : Continuous 
 
 end Closure
 
+/- English proof (translation)
+Introduce `hPr D θ hθ N hN τ τ' hne e he _ φ hφ`. Establish `hP` using `N.M.fr_unit τ`. Establish `hJ` using `N.M.fr_gram τ`. Establish `hU : ∀ k, (N.M.fr τ)⁻¹ * toMK k * N.M.fr τ ∈ Formalism.QuantumDeterminants.UH (gramAt D N.V τ)` using `fun k => conj_inv_mem hP hJ (K_le_UJ (toMK_mem_K k))`. Establish `hκ` using `GlobalTheory.SeriesToClosure.continuous_conjK (ε := N.M.ε τ) (P := N.M.fr τ)`.
+
+Establish `p1` using `hPr.discreteSeriesUpqExists`. Establish `p2` using `GlobalTheory.Published.discreteSeriesHermitianUnique_iff.1 hPr.discreteSeriesHermitianUnique`. Establish `p3` using `hPr.harishChandraModules`. Establish `p4` using `hPr.casselmanWallach`. Establish `hT` using `GlobalTheory.SeriesToClosure.hasTypeAt_of_isTypeAt θ N.V τ' (N.S τ') φ p1 p2 p3 p4 hθ hN (GlobalTheory.NodePar.goodPar_of_sigOK N hN τ') hφ.1 (hφ.2.2 τ')`.
+
+Establish `hA` using `GlobalTheory.RealAverage.isAutFunSm_average D θ hθ N.V τ (KG (N.M.ε τ)) (muK (N.M.ε τ)) _ hκ hU e he φ hφ.1`. Conclude with `GlobalTheory.T.automorphicForm_uniformLimit_discreteSeries_series θ N.V τ' (N.S τ') _ p1 p2 p3 p4 hθ hN (GlobalTheory.NodePar.goodPar_of_sigOK N hN τ') hA (hasTypeAt_avgF (muK (N.M.ε τ)) hθ hne hκ hU he hφ.1.cont hT)`.
+-/
 theorem isTypeAt_avgN : GlobalTheory.FunPr.Hypotheses₂ → ∀ {D : D7} (θ : InfFam D), IsInfFam θ → ∀ N : GlobalTheory.Grid.Node D, N.V.SigOK →
     ∀ (τ τ' : D.what₂.Tau), τ' ≠ τ → ∀ e : Formalism.REAL.KG (N.M.ε τ) → ℂ, Continuous e → GlobalTheory.TypeSum.KFinFun (N.M.ε τ) e →
     ∀ φ : GA D N.V → ℂ, GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.IsCuspOfType θ N φ →

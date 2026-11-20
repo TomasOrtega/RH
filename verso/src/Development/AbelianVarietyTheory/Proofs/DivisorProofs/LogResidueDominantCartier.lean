@@ -18,16 +18,25 @@ noncomputable section
 
 namespace GlobalTheory.FieldPair.AdjUp
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `h`. Conclude with `⟨s.stalkMap z a, (functionFieldMap_algebraMap s z a).symm⟩`.
+-/
 theorem regAt_map {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] (s : Y ⟶ X) [IsDominant s]
     (z : Y) {f : X.functionField} (h : RegAt (s z) f) : RegAt z (functionFieldMap s f) := by
   obtain ⟨a, rfl⟩ := h
   exact ⟨s.stalkMap z a, (functionFieldMap_algebraMap s z a).symm⟩
 
+/- English proof (translation)
+Unfold `Scheme.ord`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem scheme_ord_zero {Y : Scheme.{0}} [IsIntegral Y] [IsLocallyNoetherian Y] (z : Y) :
     Scheme.ord (0 : Y.functionField) z = 0 := by
   unfold Scheme.ord
   split_ifs <;> simp
 
+/- English proof (translation)
+Distinguish the cases in `hf : f = 0`. Substitute `hf` using the available equality. Rewrite using `[scheme_ord_zero]`. Simplify using `[Place.ord]`. Conclude with `h.ord_eq (Units.mk0 f hf)`.
+-/
 theorem place_ord_eq {k : Type} [Field k] {Y : Scheme.{0}} [IsIntegral Y] [IsLocallyNoetherian Y]
     {q : Y ⟶ Sp k} {E : DivOver q} {z : Y} (h : E.IsAt z) (f : Y.functionField) :
     (placeEquiv q E).ord f = Scheme.ord f z := by
@@ -37,6 +46,9 @@ theorem place_ord_eq {k : Type} [Field k] {Y : Scheme.{0}} [IsIntegral Y] [IsLoc
     simp [Place.ord]
   · exact h.ord_eq (Units.mk0 f hf)
 
+/- English proof (translation)
+The claim follows from `SetLike.ext fun f => (hE f).trans (hF f).symm`.
+-/
 theorem ring_eq_of_isAt {k : Type} [Field k] {Y : Scheme.{0}} [IsIntegral Y] {q : Y ⟶ Sp k}
     {E F : DivOver q} {z : Y} (hE : E.IsAt z) (hF : F.IsAt z) :
     (placeEquiv q E).ring = (placeEquiv q F).ring :=
@@ -47,9 +59,19 @@ def stalkEquiv {Y : Scheme.{0}} [IsIntegral Y] (w : Y) : Y.presheaf.stalk w ≃+
     ⟨fun _ _ e => IsFractionRing.injective _ Y.functionField (congrArg Subtype.val e),
       RingHom.rangeRestrict_surjective _⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem stalkEquiv_apply {Y : Scheme.{0}} [IsIntegral Y] (w : Y) (a : Y.presheaf.stalk w) :
     ((stalkEquiv w a : locRing w) : Y.functionField) = algebraMap _ Y.functionField a := rfl
 
+/- English proof (translation)
+Use extensionality with `a`. Rewrite using `[Ideal.mem_map_of_equiv, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb, rfl⟩ h`. Rewrite `hb` using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`.
+
+Conclude with `hb ((isUnit_map_iff φ b).1 h)`. Introduce `ha`. Use `⟨φ.symm a, ?_, by simp⟩` and prove the remaining obligations. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `h`.
+
+Conclude with `ha (by simpa using h.map φ)`.
+-/
 theorem map_maximalIdeal_equiv {R R' : Type*} [CommRing R] [CommRing R'] [IsLocalRing R]
     [IsLocalRing R'] (φ : R ≃+* R') :
     (IsLocalRing.maximalIdeal R).map φ = IsLocalRing.maximalIdeal R' := by
@@ -69,6 +91,33 @@ end GlobalTheory.FieldPair.AdjUp
 
 open GlobalTheory.FieldPair.AdjUp in
 
+/- English proof (translation)
+Introduce `X _ _ p n _ _ x m g Y _ _ s _ K B y σ S S' hx hm hres hover hσ hmσ hadj v w hvσ hvw hσw hwy`. Distinguish the cases in `hv0 : (pullCart s (CartierDiv.principal g) - m • K).mult v ≤ 0`. Conclude with `lt_of_le_of_lt hv0 (by exact_mod_cast hm)`. Establish `hv0' : (pullCart s (CartierDiv.principal g) - m • K).mult v ≠ 0` using `by omega`. Use `haveI := hres.smooth`.
+
+Use `haveI := SmoothOfRelativeDimension.smooth n (s ≫ p)`. Use `haveI : GlobalTheory.IsNormalScheme Y := Discrepancy.CanonIso.isNormalScheme_of_smooth' (s ≫ p)`. Establish `hmσ0 : (pullCart s (CartierDiv.principal g) - m • K).mult σ ≠ 0`. Rewrite using `[hmσ]`. Conclude with `hm.ne'` after adjusting the coercions.
+
+Establish `hvB : v ∈ B` using `hres.supp (CartierDiv.mem_supp_of_mult_ne_zero hv0')`. Establish `hσB : σ ∈ B` using `hres.supp (CartierDiv.mem_supp_of_mult_ne_zero hmσ0)`. Establish `hv1` using `CartierDiv.coheight_eq_one_of_mult_ne_zero hv0'`. Establish `hσ1` using `hσ.coheight_eq_one`. Take `⟨w', t, u, hw'w, hvw', hσw', hdim, hspan, htσ, huv, hB⟩` from `GlobalTheory.SncMeet.exists_meet_point Y (s ≫ p) n B hres.snc v σ w hvB hσB hv1 hσ1 hvσ hvw hσw`.
+
+Take `⟨Ev, hEv⟩` from `DivOver.exists_isAt_of_coheight_eq_one (p := s ≫ p) hv1`. Set `e : X.functionField ≃+* Y.functionField` to `RingEquiv.ofBijective (functionFieldMap s) hres.bir`. Establish `hc : ∀ a, e (Cartier.constFn p a) = Cartier.constFn (s ≫ p) a` using `fun a => RingHom.congr_fun (EtaleKlt.functionFieldMap_comp_constFn p s) a`. Establish `hadj'` using `GlobalTheory.FieldPair.adjKlt_ringEquiv (Cartier.constFn p) (Cartier.constFn (s ≫ p)) e hc n x (locRing y) (Finsupp.single (g : X.functionField) (1 / (m : ℚ))) (placeEquiv p S) (placeEquiv (s ≫ p) S') hx (fun a => (hover a).symm) hadj`. Rewrite `hadj'` using `[Finsupp.mapDomain_single]`.
+
+Establish `hη : dForm (Cartier.constFn (s ≫ p)) (e ∘ x) = EtaleKlt.ratPull p s n (dForm (Cartier.constFn p) x)`. Rewrite using `[EtaleKlt.ratPull, formMap_dForm]`. Both sides reduce to the same expression. Establish `hη0 : EtaleKlt.ratPull p s n (dForm (Cartier.constFn p) x) ≠ 0` using `fun h0 => hadj.form_ne_zero ((EtaleKlt.ratPull_bijective_of_birational ℂ X Y p s hres.bir n).1 (h0.trans (map_zero _).symm))`. Rewrite `hadj'` using `[hη]`.
+
+Unfold `AdjKlt at hadj'`. Establish `hdisc : ∀ (P : DivOver (s ≫ p)) (z : Y), P.IsAt z → (placeEquiv (s ≫ p) P).disc (EtaleKlt.ratPull p s n (dForm (Cartier.constFn p) x)) (Finsupp.single (e g) (1 / (m : ℚ))) = -((pullCart s (CartierDiv.principal g) - m • K).mult z : ℚ) / m`. Introduce `P z hP`. Establish `h1` using `disc_placeEquiv P (EtaleKlt.ratPull p s n (dForm (Cartier.constFn p) x)) m (fnPull s g)`. Conclude with `h1.trans (discrep_isAt_eq_neg_mult ℂ Y (s ≫ p) n _ hη0 K _ m hm hres.div P z (fnPull s g) hP (isEqn_pullCart s (CartierDiv.isEqn_principal g (s z))))`.
+
+Establish `hTQ : (locRing y).map e.toRingHom ≤ locRing w'`. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Establish `h1 : s w' ⤳ y` using `(hw'w.map s.continuous).trans hwy`. Conclude with `regAt_map s w' (regAt_of_specializes h1 ha)`. Establish `hQ` using `isLocModel_locRing (p := s ≫ p) w'`.
+
+Establish `key` using `hadj'.2.2 (locRing w') hQ (stalkEquiv w' t) (stalkEquiv w' u) (placeEquiv (s ≫ p) Ev) hTQ ?_ ?_ ((isPrimeOf_placeEquiv S' w').2 ⟨σ, hσw', hσ⟩) ((isPrimeOf_placeEquiv Ev w').2 ⟨v, hvw', hEv⟩) (by rw [stalkEquiv_apply, place_ord_eq hσ]; exact htσ) (by rw [stalkEquiv_apply, place_or …`. Rewrite `key` using `[hdisc Ev v hEv]`. Establish `hm' : (0 : ℚ) < m` using `by exact_mod_cast hm`. Rewrite `key` using `[lt_div_iff₀ hm']`. Establish `: ((pullCart s (CartierDiv.principal g) - m • K).mult v : ℚ) < m` using `by linarith`.
+
+Conclude with `this` after adjusting the coercions. Establish `h1 : Ideal.span {stalkEquiv w' t, stalkEquiv w' u} = (Ideal.span {t, u}).map (stalkEquiv w')`. Rewrite using `[Ideal.map_span]`. Simplify using `[Set.image_insert_eq]`. Rewrite using `[h1, hspan]`.
+
+Use `haveI := hQ.isLocalRing`. Conclude with `map_maximalIdeal_equiv _`. Conclude with `(ringKrullDim_eq_of_ringEquiv (stalkEquiv w')).symm.trans hdim`. Introduce `P hP h1 h2`. Take `⟨P₀, rfl⟩` from `(placeEquiv (s ≫ p)).surjective P`.
+
+Take `⟨z, hzw', hz⟩` from `(isPrimeOf_placeEquiv P₀ w').1 hP`. Rewrite using `[hdisc P₀ z hz]`. Establish `hz1` using `hz.coheight_eq_one`. Establish `hzσ : z ≠ σ` using `by rintro rfl; exact h1 (ring_eq_of_isAt hz hσ)`. Establish `hzv : z ≠ v` using `by rintro rfl; exact h2 (ring_eq_of_isAt hz hEv)`.
+
+Establish `hzB : z ∉ B` using `fun hzB => (hB z hzB hz1 hzw').elim hzv hzσ`. Establish `h0 : (pullCart s (CartierDiv.principal g) - m • K).mult z = 0`. Assume the negation of the conclusion as `h0`. Conclude with `hzB (hres.supp (CartierDiv.mem_supp_of_mult_ne_zero h0))`. Rewrite using `[h0]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem GlobalTheory.FieldPair.mult_lt_of_adjKlt : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp ℂ) (n : ℕ), IsProjOver p → topologicalKrullDim X = n → ∀ (x : Fin n → X.functionField) (m : ℕ) (g : X.functionFieldˣ) (Y : Scheme.{0}) [IsIntegral Y] [IsLocallyNoetherian Y] (s : Y ⟶ X) [IsDominant s] (K : CartierDiv Y) (B : Closeds Y) (y : X) (σ : Y) (S : DivOver p) (S' : DivOver (s ≫ p)), TrBasis (Cartier.constFn p) x → 0 < m → IsLogRes p n (dForm (Cartier.constFn p) x) m (CartierDiv.principal g) s K B → DivOver.Over s S' S → S'.IsAt σ → (pullCart s (CartierDiv.principal g) - m • K).mult σ = m → AdjKlt (Cartier.constFn p) n (locRing y) (placeEquiv p S) (dForm (Cartier.constFn p) x) (Finsupp.single (g : X.functionField) (1 / (m : ℚ))) → ∀ v w : Y, v ≠ σ → v ⤳ w → σ ⤳ w → s w ⤳ y → (pullCart s (CartierDiv.principal g) - m • K).mult v < m := by
   intro X _ _ p n _ _ x m g Y _ _ s _ K B y σ S S' hx hm hres hover hσ hmσ hadj v w hvσ hvw hσw hwy
   by_cases hv0 : (pullCart s (CartierDiv.principal g) - m • K).mult v ≤ 0

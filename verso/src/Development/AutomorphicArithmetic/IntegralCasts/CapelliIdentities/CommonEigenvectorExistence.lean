@@ -1,6 +1,23 @@
 import Mathlib
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.CommonEigenvalue
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `W hn hW hinv`. Distinguish the cases in `hs : ∀ t, ∃ c : ℂ, ∀ x ∈ W, φ t x = c • x`.
+
+Use `choose a ha using hs`. Take `⟨l, hlW, hl⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hW`. Conclude with `⟨l, a, hl, fun t => ha t l hlW⟩`. Use `push Not at hs`. Take `⟨t, ht⟩` from `hs`.
+
+Use `haveI : Nontrivial W := Submodule.nontrivial_iff_ne_bot.mpr hW`. Take `⟨c, hcv⟩` from `_root_.Module.End.exists_eigenvalue ((φ t).restrict (hinv t))`. Take `⟨v, hv⟩` from `hcv.exists_hasEigenvector`. Establish `hv0 : (v : D) ≠ 0` using `fun h => hv.2 (Subtype.ext h)`. Establish `hv1 : φ t (v : D) = c • (v : D)`.
+
+Use `congrArg Subtype.val hv.apply_eq_smul` as an intermediate fact. Simplify using `using this`. Set `E : Submodule ℂ D` to `W ⊓ _root_.Module.End.eigenspace (φ t) c`. Establish `hE : ∀ y, y ∈ E ↔ y ∈ W ∧ φ t y = c • y`. Introduce `y`.
+
+Simplify using `[E, Submodule.mem_inf, _root_.Module.End.mem_eigenspace_iff]`. Establish `hEbot : E ≠ ⊥`. Introduce `h`. Establish `: (v : D) ∈ E` using `(hE _).2 ⟨v.2, hv1⟩`. Rewrite `this` using `[h]`.
+
+Conclude with `hv0 (by simpa using this)`. Establish `hlt : E < W`. Use `lt_of_le_of_ne inf_le_left ?_` and prove the remaining obligations. Introduce `h`. Take `⟨x, hxW, hx⟩` from `ht c`.
+
+Conclude with `hx ((hE x).1 (h ▸ hxW)).2`. Establish `hfr : _root_.Module.finrank ℂ E < n` using `hn ▸ Submodule.finrank_lt_finrank_of_lt hlt`. Use `ih _ hfr E rfl hEbot ?_` and prove the remaining obligations. Introduce `s y hy`. Take `⟨hyW, hyc⟩` from `(hE y).1 hy`.
+
+Use `(hE _).2 ⟨hinv s y hyW, ?_⟩` and prove the remaining obligations. Establish `h1 : φ t (φ s y) = φ s (φ t y)`. Use `(hc t s).eq` as an intermediate fact. Conclude with `congrArg (fun f : _root_.Module.End ℂ D => f y) this`. Rewrite using `[h1, hyc, map_smul]`.
+-/
 private theorem common_eigenvector_commuting_family {T D : Type}
     [AddCommGroup D] [_root_.Module ℂ D] [FiniteDimensional ℂ D] (φ : T → _root_.Module.End ℂ D)
     (hc : ∀ (s t : T), Commute (φ s) (φ t)) :
@@ -48,6 +65,9 @@ private theorem common_eigenvector_commuting_family {T D : Type}
         exact congrArg (fun f : _root_.Module.End ℂ D => f y) this
       rw [h1, hyc, map_smul]
 
+/- English proof (translation)
+Introduce `T D _ _ _ _ φ hc`. Conclude with `common_eigenvector_commuting_family φ hc _ ⊤ rfl top_ne_bot (fun _ _ _ => Submodule.mem_top)`.
+-/
 theorem UpperTheory.Reformulated.B.CommonEigenvectorExistence.common_eigenvector :
     ∀ {T D : Type}
     [inst : AddCommGroup D] [inst_1 : _root_.Module ℂ D] [FiniteDimensional ℂ D] [Nontrivial D] (φ : T → Module.End ℂ D),

@@ -19,9 +19,15 @@ def spH (S : HSpace E) : Formalism.HermitianLatticeCounting.S6.HermSpace E S.V w
   herm x y := (a_herm y x).symm
   nondeg x h := S.nondeg.2 x h
 
+/- English proof (translation)
+Rewrite using `[FlagG.fvec, Fin.snoc_castSucc]`.
+-/
 theorem fv_cast (F : FlagG S r T) (a : Fin r) : F.fvec a.castSucc = F.e a := by
   rw [FlagG.fvec, Fin.snoc_castSucc]
 
+/- English proof (translation)
+Rewrite using `[FlagG.fvec, Fin.snoc_last]`.
+-/
 theorem fv_last (F : FlagG S r T) : F.fvec (Fin.last r) = F.z := by
   rw [FlagG.fvec, Fin.snoc_last]
 
@@ -37,6 +43,9 @@ def frF (F : FlagG S r T) (hT : T ≠ 0) : Formalism.HermitianLatticeCounting.S6
   hT := hT
 end Gen
 
+/- English proof (translation)
+The claim follows from `Nat.cast_ne_zero.2 (D.mem u).A.T_prime.ne_zero`.
+-/
 theorem tu_ne (D : D7) (u : D.what₂.Word) : ((Tu D u : ℕ) : D.host.E) ≠ 0 :=
   Nat.cast_ne_zero.2 (D.mem u).A.T_prime.ne_zero
 section Obj

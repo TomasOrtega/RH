@@ -21,6 +21,11 @@ namespace LevelTowerAlt.Ample
 
 variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)]
 
+/- English proof (translation)
+Introduce `f hf`. Use `set F := MvPolynomial.map (Int.castRingHom ℂ) f`. Establish `h0 : (fun y' => MvPolynomial.eval (τ y') F) =ᶠ[𝓝 y] fun _ => (0 : ℂ)` using `by filter_upwards [hm] with y' hy'`. Conclude with `hy'.2 f hf`. Establish `hD` using `(ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.adens_hasFDerivAt_eval F (τ y)).comp y hτ.hasFDerivAt`.
+
+Establish `hD0 : HasFDerivAt (fun y' => MvPolynomial.eval (τ y') F) (0 : (Fin e → ℂ) →L[ℂ] ℂ) y` using `(hasFDerivAt_const (0 : ℂ) y).congr_of_eventuallyEq h0`. Establish `h1` using `congrArg (fun L => L w) (hD.unique hD0)`. Simplify `h1` using `[smul_eq_mul, mul_comm]`.
+-/
 theorem coneTangent {P : Ideal (MRing J)} {e : ℕ}
     {τ : (Fin e → ℂ) → (Σ k, J k) → ℂ} {y : Fin e → ℂ} (hτ : DifferentiableAt ℂ τ y)
     (hm : ∀ᶠ y' in 𝓝 y, τ y' ∈ mcPts P) (w : Fin e → ℂ) :
@@ -36,6 +41,13 @@ theorem coneTangent {P : Ideal (MRing J)} {e : ℕ}
   have h1 := congrArg (fun L => L w) (hD.unique hD0)
   simpa [smul_eq_mul, mul_comm] using h1
 
+/- English proof (translation)
+Establish `hU : (Finset.univ : Finset (Finset (Fin 1))) = {∅, {0}}` using `by decide`. Establish `hne : (∅ : Finset (Fin 1)) ≠ {0}` using `by decide`. Establish `key : (cxHessian f y 0 0).re = levi f y (Pi.single 0 1)`. Simplify using `only [cxHessian, levi]`. Generalize the expression as in `fderiv ℝ (fderiv ℝ f) y = H`.
+
+Generalize the expression as in `H (Pi.single 0 1) (Pi.single 0 1) + H (Complex.I • Pi.single 0 1) (Complex.I • Pi.single 0 1) = u`. Simplify using the standard rewrite rules. Establish `hm : mixedDisc (fun _ : Fin 1 => cxHessian f y) = cxHessian f y 0 0`. Unfold `mixedDisc`. Rewrite using `[hU, Finset.sum_pair hne]`.
+
+Simplify using `[Matrix.det_unique]`. Unfold `maDensity`. Rewrite using `[hm, key]`. Simplify using the standard rewrite rules.
+-/
 theorem maDensity_one (f : (Fin 1 → ℂ) → ℝ) (y : Fin 1 → ℂ) :
     maDensity (fun _ : Fin 1 => f) y = 2 / Real.pi * levi f y (Pi.single 0 1) := by
   have hU : (Finset.univ : Finset (Finset (Fin 1))) = {∅, {0}} := by decide
@@ -53,6 +65,15 @@ theorem maDensity_one (f : (Fin 1 → ℂ) → ℝ) (y : Fin 1 → ℂ) :
   rw [hm, key]
   simp
 
+/- English proof (translation)
+Unfold `geomDeg ptsIntegral`. Use `split_ifs with hΨ`. Use `MeasureTheory.integral_nonneg fun y => finsum_nonneg fun w => finsum_nonneg fun _ => ?_` and prove the remaining obligations. Unfold `sheetDensity`. Use `split_ifs with hg`.
+
+Establish `hev` using `hg.choose_spec.2 set gm := hg.choose`. Establish `hP : ∀ᶠ y' in 𝓝 y, gm y' ∈ mcPts P` using `hev.mono fun y' h => ⟨h.2.1.1, fun f hf => h.2.1.2 f (hW hf)⟩`. Establish `hz` using `hP.self_of_nhds`. Establish `han : AnalyticAt ℂ gm y` using `GroundTheory.Heights₂.Heights.Inter.analyticAt_of_eventually_differentiableAt (hev.mono fun _ h => h.1)`. Establish `hlog : ContDiffAt ℝ 2 (fun z => Real.log (N.h z)) (gm y)` using `((hN.1.contDiffAt (StokesStep.isOpen_multicone.mem_nhds hz.1)).of_le (WithTop.coe_le_coe.2 le_top)).log (N.pos _ hz.1).ne'`.
+
+Establish `h1` using `ReciprocityTheory.AnForm.levi_comp (Pi.single 0 1) han hlog`. Establish `h2` using `hN.2 _ hz _ (coneTangent han.differentiableAt hP (Pi.single 0 1))`. Establish `h3` using `maDensity_one ((fun z => Real.log (N.h z)) ∘ gm) y`. Rewrite `h3` using `[h1]`. Rewrite using `[_root_.one_mul]`.
+
+Conclude with `le_of_le_of_eq (mul_nonneg (by positivity) h2) h3.symm`. Conclude with `le_rfl`. Conclude with `le_rfl`.
+-/
 theorem geomDeg_nonneg {P W : Ideal (MRing J)} {N : HermLine J} (hN : IsSemipositiveH P N) (hW : P ≤ W) :
     0 ≤ geomDeg W N 1 := by
   classical
@@ -81,6 +102,27 @@ theorem geomDeg_nonneg {P W : Ideal (MRing J)} {N : HermLine J} (hN : IsSemiposi
 
 end LevelTowerAlt.Ample
 
+/- English proof (translation)
+Introduce `hI II hII K _ J _ P N A a' m p hN hA ha' hm hp heq W d hd hW hPW`. Establish `hK : Nonempty K` using `hW.1`. Establish `hDG` using `GlobalTheory.CompanionTheory.Ar.Giv.degreeGeneric_of_degree (GlobalTheory.CompanionTheory.Ar.Giv.degree_of_system ⟨II, hII⟩)`. Establish `hF` using `GroundTheory.Heights₂.Heights.NumbersDVR.IntNumIsFieldIntersection.full ℚ K J`. Establish `hPos` using `GroundTheory.Heights₂.Heights.Targets.Positivity.full ℚ J _ hF`.
+
+Set `fs : (K → ℤ) → HermLine J` to `fun b => HermLine.ofMetrics (fun k => fsMetric (J k)) b`. Establish `hfs : ∀ b, IsSmoothHerm (fs b)` using `fun b => GroundTheory.Heights₂.Heights.Inter.isSmoothHerm_ofMetrics_fs b`. Establish `hfsn : ∀ b : K → ℤ, (∀ k, 0 ≤ b k) → ∀ W', IsArithVar W' 2 → 0 ≤ geomDeg W' (fs b) 1`. Introduce `b hb W' hW'`. Establish `h1` using `hDG K J W' 1 (fun _ => fs b) hW' fun _ => hfs b`.
+
+Establish `h2` using `(hPos _ 1 (GroundTheory.Heights₂.Heights.HilbertSamuel.isProjVarF_map_of_isArithVar hW')).1 (fun _ => b) fun _ k => hb k`. Use `show 0 ≤ ptsIntegral W' (pot fun _ : Fin 1 => fs b) (fun _ => 1)`. Rewrite using `[h1]`. Conclude with `h2` after adjusting the coercions. Set `ℓ : Fin 3 → HermLine J` to `![N, fs ((p : ℤ) • a' - 1), fs 1]`.
+
+Establish `hℓ : ∀ j, IsSmoothHerm (ℓ j)` using `fun j => by fin_cases j`. Conclude with `hN.1`. Conclude with `hfs _`. Conclude with `hfs _`. Establish `hnef : ∀ j W', IsArithVar W' 2 → W ≤ W' → 0 ≤ geomDeg W' (ℓ j) 1` using `fun j W' h1 h2 => by fin_cases j`.
+
+Conclude with `LevelTowerAlt.Ample.geomDeg_nonneg hN (hPW.trans h2)`. Use `hfsn _ (fun k => ?_) W' h1` and prove the remaining obligations. Establish `h3` using `ha' k`. Establish `h4 : (1 : ℤ) ≤ p` using `by exact_mod_cast hp`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul, Pi.one_apply]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Conclude with `hfsn _ (fun _ => zero_le_one) W' h1`. Establish `e1` using `(GlobalTheory.T.log_integral_multilinear II hII K J W d (Fin 3) ℓ (fun _ _ => 1) hW hℓ).1`. Establish `e2` using `(GlobalTheory.T.log_integral_multilinear II hII K J W d Unit (fun _ => A) (fun _ _ => (m : ℤ)) hW fun _ => hA).1`. Establish `e3` using `(GlobalTheory.T.log_integral_multilinear II hII K J W d Unit (fun _ => A) (fun _ _ => (m : ℤ)) hW fun _ => hA).2 (fun _ => Top.combLine ℓ fun _ => 1) (fun _ => Top.combLine (fun _ : Unit => A) fun _ => (m : ℤ)) (Equiv.refl _) (fun _ => (GlobalTheory.T.hermitian_combination_smooth …`.
+
+Rewrite using `[Fin.sum_univ_three]`. Simplify using `only [Finset.univ_unique, Finset.sum_singleton, one_smul, heq]`. Use `show _ = N.a + ((p : ℤ) • a' - 1) + 1`. Normalize the expressions using the abelian group laws. Rewrite `e3` using `[e1, e2]`.
+
+Establish `hpos : 0 < ∑ w : Fin d → Fin 3, (∏ k : Fin d, ((1 : ℤ) : ℝ)) * ptsIntegral W (fun k z => Real.log ((ℓ (w k)).h z)) (fun _ => 1)`. Simplify using `only [Int.cast_one, Finset.prod_const_one, _root_.one_mul]`. Use `Finset.sum_pos' (fun w _ => ?_) ⟨fun _ => 2, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.ptsIntegral_log_nonneg hI.kleimanNefF (fun K _ J _ => (PB.Known.fieldNumbers ℚ K J).1) PB.Known.divSuppArith II hII K J W d (fun k => ℓ (w k)) hW (fun k => hℓ _) fun k => hnef _`. Establish `h1` using `hDG K J W d (fun _ => fs 1) hW fun _ => hfs _`.
+
+Establish `h2` using `(hPos _ d (GroundTheory.Heights₂.Heights.HilbertSamuel.isProjVarF_map_of_isArithVar hW)).2`. Use `show 0 < ptsIntegral W (pot fun _ : Fin d => fs 1) (fun _ => 1)`. Rewrite using `[h1]`. Conclude with `h2` after adjusting the coercions. Rewrite `hpos` using `[← e3, Fintype.sum_unique]`.
+
+Establish `hc : (0 : ℝ) ≤ ∏ k : Fin d, ((m : ℤ) : ℝ)` using `Finset.prod_nonneg fun _ _ => by positivity`. Conclude with `(pos_iff_pos_of_mul_pos hpos).1 (lt_of_le_of_ne hc fun h => by`. Rewrite `hpos` using `[← h, zero_mul]`. Conclude with `lt_irrefl _ hpos)`.
+-/
 theorem LevelTowerAlt.ample_generic_fibre_of_combination : PB.Inputs → ∀ II : IntersectionSystem, IsFullIntersectionSystem II → ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (P : Ideal (MRing J)) (N A : HermLine J) (a' : K → ℤ) (m p : ℕ), IsSemipositiveH P N → IsSmoothHerm A → (∀ k, 0 < a' k) → 1 ≤ m → 1 ≤ p → (m : ℤ) • A.a = N.a + (p : ℤ) • a' → AmpleOnGenericFibre P A := by
   intro hI II hII K _ J _ P N A a' m p hN hA ha' hm hp heq W d hd hW hPW
   classical

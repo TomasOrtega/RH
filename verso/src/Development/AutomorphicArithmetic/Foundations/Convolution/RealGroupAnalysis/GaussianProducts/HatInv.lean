@@ -10,10 +10,18 @@ namespace UpperTheory.ConvolutionTheory.R2.G.FourierHatInvariance
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+The claim follows from `((measurePreserving_funUnique (adeleMeasure F) (Fin 1)).symm.integral_comp' h).symm`.
+-/
 private theorem one_int (h : (Fin 1 → A F) → ℂ) :
     ∫ a, h a ∂(adeleMeasurePi F) = ∫ s : A F, h (fun _ => s) ∂(adeleMeasure F) :=
   ((measurePreserving_funUnique (adeleMeasure F) (Fin 1)).symm.integral_comp' h).symm
 
+/- English proof (translation)
+Establish `h` using `GroundTheory.Heights₂.Theta.comp_mulVec_mem_schwartzBruhatPi ((1 : Matrix ι ι F).submatrix e id) ((1 : Matrix ι ι F).submatrix id e) (by rw [Matrix.submatrix_mul_equiv]; simp) (by`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Matrix.one_apply]) hf`. Use `h using 2` and compare the differences between its conclusion and the goal. Name the introduced variables `x`.
+
+Use `congr 1`. Use extensionality with `k`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.one_apply]`.
+-/
 private theorem reindex_mem {ι κ : Type} [Fintype ι] [Fintype κ] (e : κ ≃ ι)
     {f : (κ → A F) → ℂ} (hf : f ∈ schwartzBruhatPi F κ) :
     (fun x : ι → A F => f (x ∘ e)) ∈ schwartzBruhatPi F ι := by
@@ -39,6 +47,11 @@ private def eS : Fin 4 ≃ Fin 3 ⊕ Fin 1 where
     · fin_cases i <;> rfl
     · fin_cases i; rfl
 
+/- English proof (translation)
+Establish `h1` using `reindex_mem (F := F) eS hφ`. Establish `h2` using `GroundTheory.Heights₂.Theta.schwartzBruhatPi_sumElim_mem h1 ![v 0, v 2, v 3]`. Use `h2 using 2` and compare the differences between its conclusion and the goal. Name the introduced variables `y`. Use `congr 1`.
+
+Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [eS, Function.update]`.
+-/
 private theorem slice_mem {φ : V4 F → ℂ} (hφ : φ ∈ schwartzBruhatPi F (Fin 4)) (v : V4 F) :
     (fun y : Fin 1 → A F => φ (Function.update v 1 (y 0))) ∈ schwartzBruhatPi F (Fin 1) := by
   have h1 := reindex_mem (F := F) eS hφ
@@ -52,6 +65,13 @@ private theorem slice_mem {φ : V4 F → ℂ} (hφ : φ ∈ schwartzBruhatPi F (
 end UpperTheory.ConvolutionTheory.R2.G.FourierHatInvariance
 
 open UpperTheory.ConvolutionTheory.R2.G.FourierHatInvariance in
+/- English proof (translation)
+Introduce `F _ _ φ v`. Establish `hg` using `slice_mem φ.2 v`. Establish `inv` using `congrFun (adelicFourierPi_adelicFourierPi hg) (fun _ => v 1)`. Rewrite `inv` using `[adelicFourierPi, one_int]`. Establish `key : ∀ s : A F, hat φ.1 (Function.update v 1 (-s)) = adelicFourierPi F (fun y : Fin 1 → A F => φ.1 (Function.update v 1 (y 0))) (fun _ => s)`.
+
+Introduce `s`. Rewrite using `[hat, adelicFourierPi, one_int]`. Use `integral_congr_ae (Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `[ψ]`. Rewrite using `[hat, ← integral_neg_eq_self]`.
+
+Use `Eq.trans ?_ (inv.trans ?_)` and prove the remaining obligations. Use `integral_congr_ae (Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Simplify using `only [key]`. Simplify using `[ψ]`. Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.G.hatInv :
     ∀ (F : Type) [Field F] [NumberField F] (φ : S4 F) (v : V4 F), hat (hat φ.1) v = φ.1 (Function.update v 1 (-v 1)) := by
   intro F _ _ φ v

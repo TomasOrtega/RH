@@ -10,6 +10,15 @@ open scoped TensorProduct Classical
 
 namespace UpperTheory.Gal.LocalSmoothExtension
 
+/- English proof (translation)
+Establish `hinj : ∀ a, Set.InjOn (Sigma.mk a : δ a → Σ a, δ a) (Sigma.mk a ⁻¹' (S : Set (Σ a, δ a)))` using `fun a => sigma_mk_injective.injOn`. Set `U : ∀ a, Finset (δ a)` to `fun a => S.preimage (Sigma.mk a) (hinj a)`. Establish `h1 : ∀ a, ∑ᶠ d, F ⟨a, d⟩ = ∑ d ∈ U a, F ⟨a, d⟩` using `fun a => finsum_eq_sum_of_support_subset _ (fun d hd => by`. Simplify `hS _ hd)` using `[U]`. Establish `hT : Function.support (fun a => ∑ᶠ d, F ⟨a, d⟩) ⊆ ((S.image Sigma.fst : Finset α) : Set α)`.
+
+Introduce `a ha`. Establish `ha' : ∑ d ∈ U a, F ⟨a, d⟩ ≠ 0`. Rewrite using `[← h1 a]`. Conclude with `ha`. Take `⟨d, hd, -⟩` from `Finset.exists_ne_zero_of_sum_ne_zero ha'`.
+
+Establish `hd' : (⟨a, d⟩ : Σ a, δ a) ∈ S` using `by simpa [U] using hd`. Conclude with `Finset.mem_coe.2 (Finset.mem_image.2 ⟨_, hd', rfl⟩)`. Rewrite using `[finsum_eq_sum_of_support_subset _ hT]`. Repeatedly rewrite using `[h1]`. Rewrite using `[← Finset.sum_sigma (S.image Sigma.fst) U F]`.
+
+Use `Finset.sum_congr ?_ (fun _ _ => rfl)` and prove the remaining obligations. Use extensionality with `⟨a, d⟩`. Simplify using `only [Finset.mem_sigma, Finset.mem_image, U, Finset.mem_preimage]`. Conclude with `⟨fun h => h.2, fun h => ⟨⟨_, h, rfl⟩, h⟩⟩`.
+-/
 private theorem sigma_finsum {α : Type} {δ : α → Type} (F : (Σ a, δ a) → ℂ) (S : Finset (Σ a, δ a))
     (hS : ∀ z, F z ≠ 0 → z ∈ S) : ∑ᶠ a, ∑ᶠ d, F ⟨a, d⟩ = ∑ z ∈ S, F z := by
   have hinj : ∀ a, Set.InjOn (Sigma.mk a : δ a → Σ a, δ a) (Sigma.mk a ⁻¹' (S : Set (Σ a, δ a))) :=
@@ -33,6 +42,13 @@ private theorem sigma_finsum {α : Type} {δ : α → Type} (F : (Σ a, δ a) �
   simp only [Finset.mem_sigma, Finset.mem_image, U, Finset.mem_preimage]
   exact ⟨fun h => h.2, fun h => ⟨⟨_, h, rfl⟩, h⟩⟩
 
+/- English proof (translation)
+Rewrite using `[← sigma_finsum (fun z : Σ a, β a × γ a => n z.1 z.2.1 * t z.1 z.2.1 z.2.2) S (fun z hz => hS z (right_ne_zero_of_mul hz))]`. Use `finsum_congr fun a => ?_` and prove the remaining obligations. Establish `hfin : (Function.support fun d : β a × γ a => n a d.1 * t a d.1 d.2).Finite`. Establish `hinj : Set.InjOn (fun d : β a × γ a => (⟨a, d⟩ : Σ a, β a × γ a)) ((fun d : β a × γ a => (⟨a, d⟩ : Σ a, β a × γ a)) ⁻¹' (S : Set (Σ a, β a × γ a)))`. Introduce `d _ d' _ h`.
+
+Simplify using `using h`. Use `(S.finite_toSet.preimage hinj).subset ?_` and prove the remaining obligations. Introduce `d hd`. Conclude with `hS ⟨a, d⟩ (right_ne_zero_of_mul hd)`. Rewrite using `[finsum_curry _ hfin]`.
+
+Use `finsum_congr fun b => ?_` and prove the remaining obligations. Conclude with `mul_finsum _ _`.
+-/
 private theorem flat_finsum {α : Type} {β γ : α → Type} (n : ∀ a, β a → ℂ) (t : ∀ a, β a → γ a → ℂ)
     (S : Finset (Σ a, β a × γ a)) (hS : ∀ z, t z.1 z.2.1 z.2.2 ≠ 0 → z ∈ S) :
     ∑ᶠ a, ∑ᶠ b, n a b * ∑ᶠ y, t a b y = ∑ z ∈ S, n z.1 z.2.1 * t z.1 z.2.1 z.2.2 := by
@@ -51,6 +67,11 @@ private theorem flat_finsum {α : Type} {β γ : α → Type} (n : ∀ a, β a �
   refine finsum_congr fun b => ?_
   exact mul_finsum _ _
 
+/- English proof (translation)
+Introduce `p _ G v c K f S hS`. Unfold `cxTotalM cxSumM cxSumAtM`. Use `flat_finsum (α := FCls G) (β := fun q => PtsOf G v K q) (γ := fun q => grp G (Quot.out q).β) (fun q a => ((Nat.card (Stab G v (Quot.out q).β (Quot.out q).trivAf.choose (Quot.out q).trivAf.choose_spec.choose (Quot.out q).trivAf.choose_spec.choose_spec K (Kp G) (Quot.out a)) : ℕ) : …` and prove the remaining obligations. Introduce `z hz`. Use `hS z ?_` and prove the remaining obligations.
+
+Use `beta_reduce at hz`. Use `split_ifs at hz with hfix`. Establish `h12` using `left_ne_zero_of_mul hz`. Conclude with `⟨hfix, left_ne_zero_of_mul h12, right_ne_zero_of_mul h12⟩`. Conclude with `(hz rfl).elim`.
+-/
 theorem cxFlat_of : CxFlat := by
   intro p _ G v c K f S hS
   unfold cxTotalM cxSumM cxSumAtM

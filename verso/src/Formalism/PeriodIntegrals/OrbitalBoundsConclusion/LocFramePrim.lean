@@ -4,6 +4,9 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalPrimitiveFrame.Dif
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalPrimitiveFrame.DualFunctionalsExist
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalPrimitiveFrame.Assemble
 
+/- English proof (translation)
+The claim follows from `PI.LocFramePrimWork.Steps_top PI.LocFramePrimWork.localDifferentPowerSpan PI.LocFramePrimWork.dualFunctionalsExist PI.LocFramePrimWork.primitiveOfDualFunctionals`.
+-/
 theorem locFramePrim : PI.LocFramePrim.Statement :=
   PI.LocFramePrimWork.Steps_top PI.LocFramePrimWork.localDifferentPowerSpan PI.LocFramePrimWork.dualFunctionalsExist
     PI.LocFramePrimWork.primitiveOfDualFunctionals

@@ -23,9 +23,15 @@ open ReciprocityTheory.ChartRestriction.DS.S7
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Conclude with `inv_pos.mpr (Real.sqrt_pos.mpr (Nat.cast_pos.mpr ht))`.
+-/
 theorem fdU_s_pos {t : ℕ} (ht : 1 ≤ t) : 0 < (Real.sqrt (t : ℝ))⁻¹ := by
   exact inv_pos.mpr (Real.sqrt_pos.mpr (Nat.cast_pos.mpr ht))
 
+/- English proof (translation)
+Establish `ht0 : (t : ℝ) ≠ 0`. Establish `: (0 : ℝ) < t` using `by exact_mod_cast ht`. Conclude with `this.ne'`. Rewrite using `[inv_pow, Real.sq_sqrt (Nat.cast_nonneg _)]`. Conclude with `inv_mul_cancel₀ ht0`.
+-/
 theorem fdU_s_sq {t : ℕ} (ht : 1 ≤ t) : (Real.sqrt (t : ℝ))⁻¹ ^ 2 * t = 1 := by
   have ht0 : (t : ℝ) ≠ 0 := by
     have : (0 : ℝ) < t := by exact_mod_cast ht
@@ -33,6 +39,21 @@ theorem fdU_s_sq {t : ℕ} (ht : 1 ≤ t) : (Real.sqrt (t : ℝ))⁻¹ ^ 2 * t =
   rw [inv_pow, Real.sq_sqrt (Nat.cast_nonneg _)]
   exact inv_mul_cancel₀ ht0
 
+/- English proof (translation)
+Establish `h0 : 1 ≤ 16 * n * q0 ε + 1` using `by omega`. Establish `ht1 : 1 ≤ t` using `le_trans h0 ht`. Establish `htpos : (0 : ℝ) < t` using `by exact_mod_cast ht1`. Establish `hs0 : 0 < (Real.sqrt (t : ℝ))⁻¹` using `inv_pos.mpr (Real.sqrt_pos.mpr htpos)`. Establish `hst : (Real.sqrt (t : ℝ))⁻¹ ^ 2 * t = 1` using `fdU_s_sq ht1`.
+
+Establish `hfar` using `fdU_far hlam h0 ht hs0 hst y`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Use `hfar.trans ?_` and prove the remaining obligations. Rewrite using `[sub_eq_add_neg, Real.exp_add]`. Apply `mul_le_mul_of_nonneg_left _ (Real.exp_pos _).le` to reduce the goal to its premises.
+
+Rewrite using `[← neg_mul]`. Distinguish the cases in `hn : n = 0`. Establish `hE : IsEmpty (PCoord ε)` using `⟨fun ab => by have := ab.1.1.2; omega⟩`. Establish `hh : hs (pmat y) = 0` using `by rw [hs_pmat]; simp`. Rewrite using `[hh, Real.sqrt_zero, mul_zero, Real.exp_zero]`.
+
+Simplify using the standard rewrite rules. Apply `fdU_exp_le_prod` to reduce the goal to its premises. Establish `hn1 : (1 : ℝ) ≤ n` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr hn`. Establish `hm : |(n : ℝ) - 1| ≤ n` using `by rw [abs_of_nonneg (by linarith)]; linarith`. Establish `hq : (0 : ℝ) ≤ q0 ε` using `Nat.cast_nonneg _`.
+
+Establish `ha : 0 < Real.sqrt ((16 * n * q0 ε + 1 : ℕ) : ℝ)` using `Real.sqrt_pos.mpr (by exact_mod_cast Nat.succ_pos _)`. Establish `haa : Real.sqrt ((16 * n * q0 ε + 1 : ℕ) : ℝ) * Real.sqrt ((16 * n * q0 ε + 1 : ℕ) : ℝ) = 16 * n * q0 ε + 1`. Rewrite using `[Real.mul_self_sqrt (Nat.cast_nonneg _)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Break down `(Real.sqrt_nonneg (2 * (q0 ε : ℝ))).eq_or_lt with hb | hb` into its components or cases. Rewrite using `[← hb]`. Simplify using the standard rewrite rules. Establish `hbb : Real.sqrt (2 * (q0 ε : ℝ)) * Real.sqrt (2 * (q0 ε : ℝ)) = 2 * q0 ε` using `Real.mul_self_sqrt (by positivity)`. Rewrite using `[sub_nonneg, div_div, div_le_div_iff₀ ha (by positivity)]`.
+
+Establish `key : |(n : ℝ) - 1| * (Real.sqrt (2 * (q0 ε : ℝ)) * Real.sqrt (2 * (q0 ε : ℝ))) * 8 ≤ Real.sqrt ((16 * n * q0 ε + 1 : ℕ) : ℝ) * Real.sqrt ((16 * n * q0 ε + 1 : ℕ) : ℝ)`. Rewrite using `[hbb, haa]`. Use the polynomial consequences of the given equalities and inequalities. Use polynomial arithmetic with `[key]`.
+-/
 theorem fdU_major {ε : Fin n → Bool} {lam : Fin n → ℝ} (hlam : Antitone lam) (t : ℕ)
     (ht : 16 * n * q0 ε + 1 ≤ t) (y : PCoord ε → ℂ) :
     ENNReal.ofReal (Real.exp (-2 * Ph (lamT lam t) (pmat ((((Real.sqrt t)⁻¹ : ℝ) : ℂ) • y))) *
@@ -76,6 +97,15 @@ theorem fdU_major {ε : Fin n → Bool} {lam : Fin n → ℝ} (hlam : Antitone l
         rw [hbb, haa]; nlinarith
       nlinarith [key]
 
+/- English proof (translation)
+Establish `hs_tend : Filter.Tendsto (fun t : ℕ => (Real.sqrt ((t + T : ℕ) : ℝ))⁻¹) atTop (𝓝 0)`. Establish `h1 : Filter.Tendsto (fun t : ℕ => ((t + T : ℕ) : ℝ)) atTop atTop` using `tendsto_natCast_atTop_atTop.comp (tendsto_add_atTop_nat T)`. Conclude with `tendsto_inv_atTop_zero.comp (Real.tendsto_sqrt_atTop.comp h1)`. Establish `hc : Continuous (fun u : ℝ => ENNReal.ofReal (Real.exp (-(1 - u * rhoP y) * Qf (0 : Fin n → ℝ) y + ((n : ℝ) - 1) * Real.sqrt (2 * (q0 ε : ℝ)) * (u * Real.sqrt (hs (pmat y))))))` using `ENNReal.continuous_ofReal.comp (Real.continuous_exp.comp (by fun_prop))`. Establish `hg` using `((hc.tendsto 0).comp hs_tend).limsup_eq`.
+
+Simplify using `only [Function.comp_def] at hg`. Establish `hev : ∀ᶠ t : ℕ in atTop, (Real.sqrt ((t + T : ℕ) : ℝ))⁻¹ * rhoP y ≤ 1`. Establish `h` using `hs_tend.mul_const (rhoP y)`. Rewrite `h` using `[zero_mul]`. Conclude with `h (Iic_mem_nhds one_pos)`.
+
+Use `(Filter.limsup_le_limsup (v := fun t : ℕ => ENNReal.ofReal (Real.exp (-(1 - (Real.sqrt ((t + T : ℕ) : ℝ))⁻¹ * rhoP y) * Qf (0 : Fin n → ℝ) y + ((n : ℝ) - 1) * Real.sqrt (2 * (q0 ε : ℝ)) * ((Real.sqrt ((t + T : ℕ) : ℝ))⁻¹ * Real.sqrt (hs (pmat y)))))) (hev.mono fun t ht => ?_)).tr …` and prove the remaining obligations. Establish `hT1 : 1 ≤ t + T` using `by omega`. Establish `hpos : (0 : ℝ) < ((t + T : ℕ) : ℝ)` using `by exact_mod_cast hT1`. Establish `hs0 : 0 < (Real.sqrt ((t + T : ℕ) : ℝ))⁻¹` using `inv_pos.mpr (Real.sqrt_pos.mpr hpos)`. Establish `hst` using `fdU_s_sq hT1`.
+
+Establish `h` using `fdU_near hlam hs0 hst y ht`. Conclude with `ENNReal.ofReal_le_ofReal h`. Rewrite using `[hg]`. Simplify using the standard rewrite rules.
+-/
 theorem fdU_pointwise {ε : Fin n → Bool} {lam : Fin n → ℝ} (hlam : Antitone lam) (T : ℕ) (hT : 1 ≤ T)
     (y : PCoord ε → ℂ) :
     limsup (fun t : ℕ => ENNReal.ofReal (Real.exp (-2 * Ph (lamT lam (t + T))
@@ -109,6 +139,15 @@ theorem fdU_pointwise {ε : Fin n → Bool} {lam : Fin n → ℝ} (hlam : Antito
   · rw [hg]
     simp
 
+/- English proof (translation)
+Establish `hscale : ∀ t : ℕ, 1 ≤ t → ENNReal.ofReal ((t : ℝ) ^ (pOf ε * qOf ε)) * ∫⁻ z : PCoord ε → ℂ, ENNReal.ofReal (Real.exp (-2 * Ph (lamT lam t) (pmat z)) * Jac z) = ∫⁻ y : PCoord ε → ℂ, ENNReal.ofReal (Real.exp (-2 * Ph (lamT lam t) (pmat ((((Real.sqrt t)⁻¹ : ℝ) : ℂ) • y))) * Jac (((( …`. Introduce `t ht`. Establish `htpos : (0 : ℝ) < t` using `by exact_mod_cast ht`. Rewrite using `[lintegral_pcoord_smul _ (fdU_s_pos ht), ← mul_assoc, ← ENNReal.ofReal_mul (by positivity)]`. Establish `e : (t : ℝ) ^ (pOf ε * qOf ε) * ((Real.sqrt t)⁻¹) ^ (2 * (pOf ε * qOf ε)) = 1`.
+
+Rewrite using `[inv_pow, pow_mul (Real.sqrt (t : ℝ)) 2, Real.sq_sqrt htpos.le, mul_inv_cancel₀ (pow_ne_zero _ htpos.ne')]`. Rewrite using `[e, ENNReal.ofReal_one, one_mul]`. Use `set T : ℕ := 16 * n * q0 ε + 1 with hT`. Rewrite using `[← Filter.limsup_nat_add _ T]`. Use `le_trans (le_of_eq (Filter.limsup_congr (Filter.Eventually.of_forall fun i => hscale (i + T) (by omega)))) ?_` and prove the remaining obligations.
+
+Establish `hmeas : ∀ t : ℕ, Measurable (fun y : PCoord ε → ℂ => ENNReal.ofReal (Real.exp (-2 * Ph (lamT lam (t + T)) (pmat ((((Real.sqrt ((t + T : ℕ) : ℝ))⁻¹ : ℝ) : ℂ) • y))) * Jac ((((Real.sqrt ((t + T : ℕ) : ℝ))⁻¹ : ℝ) : ℂ) • y)))`. Introduce `t`. Apply `ENNReal.measurable_ofReal.comp` to reduce the goal to its premises. Apply `Continuous.measurable` to reduce the goal to its premises. Establish `hc : Continuous (fun y : PCoord ε → ℂ => (((Real.sqrt ((t + T : ℕ) : ℝ))⁻¹ : ℝ) : ℂ) • y)` using `continuous_const_smul _`.
+
+Conclude with `(Real.continuous_exp.comp (continuous_const.mul ((continuous_potential_pmat _).comp hc))).mul ((jac_continuous ε).comp hc)`. Establish `hint` using `((fdU_integrable_prod_exp (ε := ε) (c := (Real.sqrt ((16 * n * q0 ε + 1 : ℕ) : ℝ) / Real.sqrt (2 * (q0 ε : ℝ)) / 8 - |(n : ℝ) - 1| * Real.sqrt (2 * (q0 ε : ℝ)) / Real.sqrt ((16 * n * q0 ε + 1 : ℕ) : ℝ)) / ((Fintype.card (PCoord ε) : ℝ) + 1)) (fun ab => div_pos (fdU_c_pos ab) (by …`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem formal_degree_limsup_upper_bound {ε : Fin n → Bool} {lam : Fin n → ℝ} (hlam : Antitone lam) :
     Filter.limsup (fun t : ℕ => ENNReal.ofReal ((t : ℝ) ^ (pOf ε * qOf ε)) *
       ∫⁻ z : PCoord ε → ℂ, ENNReal.ofReal (Real.exp (-2 * Ph (lamT lam t) (pmat z)) * Jac z)) Filter.atTop ≤

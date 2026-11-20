@@ -1,6 +1,9 @@
 import Mathlib
 
 open Polynomial in
+/- English proof (translation)
+Proceed by induction on `m using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a s ih`. Simplify using `only [Multiset.map_cons, Multiset.prod_cons, eval_mul, ih, eval_sub, eval_X, eval_C]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma eval_prod_add (m : Multiset ℂ) (u : ℂ) :
     (((m.map (fun x : ℂ ↦ -x)).map (fun x : ℂ ↦ X - C x)).prod).eval u
       = (m.map (fun x : ℂ ↦ u + x)).prod := by
@@ -10,6 +13,11 @@ private lemma eval_prod_add (m : Multiset ℂ) (u : ℂ) :
     simp only [Multiset.map_cons, Multiset.prod_cons, eval_mul, ih, eval_sub, eval_X, eval_C]
     ring
 
+/- English proof (translation)
+Introduce `m m' h`. Establish `hp : ((m.map (fun x : ℂ ↦ -x)).map (fun x : ℂ ↦ Polynomial.X - Polynomial.C x)).prod = ((m'.map (fun x : ℂ ↦ -x)).map (fun x : ℂ ↦ Polynomial.X - Polynomial.C x)).prod`. Apply `Polynomial.funext` to reduce the goal to its premises. Introduce `u`. Rewrite using `[eval_prod_add, eval_prod_add, h u]`.
+
+Establish `hr` using `congrArg Polynomial.roots hp`. Rewrite `hr` using `[Polynomial.roots_multiset_prod_X_sub_C, Polynomial.roots_multiset_prod_X_sub_C]`. Conclude with `Multiset.map_injective neg_injective hr`.
+-/
 theorem UpperTheory.Reformulated.B.MultisetSeparation.msetSep :
     ∀ (m m' : Multiset ℂ),
     (∀ (u : ℂ), (Multiset.map (fun (x : ℂ) ↦ u + x) m).prod = (Multiset.map (fun (x : ℂ) ↦ u + x) m').prod) → m = m' := by

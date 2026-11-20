@@ -18,6 +18,11 @@ section General
 variable {G V : Type} [CommGroup G] [TopologicalSpace G] [IsTopologicalGroup G]
   [TopologicalSpace.SeparableSpace G] [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Use `nontrivial_of_irreducible hi` as an intermediate fact. Take `⟨v, hv⟩` from `exists_ne (0 : V)`. Establish `h : ∀ g, ∃ c : ℂ, ∀ w, σ g w = c • w` using `fun g => LocGL.exists_eq_smul_of_isSmooth hs hi ⟨σ g, fun a => by rw [← Module.End.mul_eq_comp, ← Module.End.mul_eq_comp, ← map_mul, ← map_mul, mul_comm]⟩`. Use `choose c hc using h`. Set `m : G →* ℂ` to `{ toFun := c map_one' := smul_left_injective ℂ hv (by simp [← hc]) map_mul' := fun a b => smul_left_injective ℂ hv (by show c (a * b) • v = (c a * c b) • v`.
+
+Rewrite using `[← hc, map_mul, Module.End.mul_apply, hc b, hc a, smul_smul]) }`. Conclude with `⟨m.toHomUnits, fun g w => hc g w⟩`.
+-/
 theorem exists_char_of_isIrreducible {σ : Representation ℂ G V} (hs : IsSmooth σ) (hi : σ.IsIrreducible) :
     ∃ μ : G →* ℂˣ, ∀ g w, σ g w = (μ g : ℂ) • w := by
   have := nontrivial_of_irreducible hi
@@ -34,6 +39,23 @@ theorem exists_char_of_isIrreducible {σ : Representation ℂ G V} (hs : IsSmoot
         rw [← hc, map_mul, Module.End.mul_apply, hc b, hc a, smul_smul]) }
   exact ⟨m.toHomUnits, fun g w => hc g w⟩
 
+/- English proof (translation)
+Set `ρ'` to `twist ρ χ⁻¹`. Establish `hρ' : ∀ g v, ρ' g v = ((χ g)⁻¹ : ℂˣ) • ρ g v` using `fun _ _ => rfl`. Establish `hc` using `LocGL.isCompl_fixed_twKer (isSmooth_twist hρ hχ.inv) hH`. Set `T : Subrepresentation ρ` to `⟨twKer ρ' H 1, fun g v hv => by`. Establish `h1 : ρ' g v ∈ twKer ρ' H 1` using `twKer_le_comap ρ' H g (by rw [Subgroup.normalizer_eq_top]; trivial) hv`.
+
+Establish `h2` using `(twKer ρ' H 1).smul_mem (χ g : ℂ) h1`. Rewrite using `[hρ', ← Units.smul_def, smul_inv_smul] at h2⟩` and apply the resulting hypothesis. Establish `hT : T ≠ ⊤` using `fun h => by`. Establish `h1 : x ∈ T.toSubmodule` using `by rw [h]; trivial`. Establish `h2 : x ∈ fixed ρ' H` using `fun t => by`.
+
+Rewrite using `[hρ', hxH t t.2, ← Units.smul_def, inv_smul_smul]`. Simplify using the standard rewrite rules. Conclude with `hx ((Submodule.disjoint_def.1 hc.disjoint) x h2 h1)`. Use `haveI := ((hasFiniteLength_iff_wellFounded ρ).1 hl).1`. Take `⟨M, hM, hTM⟩` from `(eq_top_or_exists_le_coatom T).resolve_left hT`.
+
+Establish `hi` using `isIrreducible_subQuot hM.covBy_top`. Set `p : (⊤ : Subrepresentation ρ).toRepresentation.IntertwiningMap (subQuot ⊤ M)` to `⟨Submodule.mkQ _, fun _ => rfl⟩`. Establish `hs : IsSmooth (subQuot ⊤ M)` using `IsSubquotient.isSmooth ⟨⊤, p, Submodule.Quotient.mk_surjective _⟩ hρ`. Take `⟨μ, hμ⟩` from `exists_char_of_isIrreducible hs hi`. Establish `hμM : ∀ g v, ρ g v - (μ g : ℂ) • v ∈ M.toSubmodule` using `fun g v => by`.
+
+Use `hμ g (Submodule.Quotient.mk ⟨v, trivial⟩)` as an intermediate fact. Conclude with `(Submodule.Quotient.eq (M.toSubmodule.comap (⊤ : Subrepresentation ρ).toSubmodule.subtype) (x := ⟨ρ g v, trivial⟩) (y := ⟨(μ g : ℂ) • v, trivial⟩)).1 this`. Establish `hM' : M.toSubmodule < ⊤` using `lt_top_iff_ne_top.2 fun h => hM.1 (Subrepresentation.toSubmodule_injective h)`. Take `⟨l, hl0, hlM⟩` from `Submodule.exists_le_ker_of_lt_top _ hM'`. Establish `hle : ∀ g v, l (ρ g v) = (μ g : ℂ) * l v` using `fun g v => by`.
+
+Use `hlM (hμM g v)` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, map_sub, map_smul, sub_eq_zero]`. Then use the resulting hypothesis. Use `⟨μ, l, hl0, hle, fun h hh => ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v, l v ≠ 0 := by`. Assume the negation of the conclusion as `hn`.
+
+Use `push_neg at hn`. Conclude with `hl0 (LinearMap.ext hn)`. Establish `h1 : ρ' h v - v ∈ T.toSubmodule` using `Submodule.subset_span ⟨⟨h, hh⟩, v, by simp⟩`. Establish `h2` using `hlM (hTM h1)`. Rewrite `h2` using `[LinearMap.mem_ker, map_sub, hρ', Units.smul_def, map_smul, hle, sub_eq_zero, smul_eq_mul, ← mul_assoc]`.
+
+Establish `h3` using `mul_right_cancel₀ hv (h2.trans (one_mul _).symm)`. Rewrite `h3` using `[← Units.val_mul, Units.val_eq_one, inv_mul_eq_one]`. Conclude with `h3.symm`.
+-/
 theorem exists_eigenform {ρ : Representation ℂ G V} (hρ : IsSmooth ρ) (hl : HasFiniteLength ρ) {H : Subgroup G}
     (hH : IsCompact (H : Set G)) {χ : G →* ℂˣ} (hχ : IsSmoothChar χ) {x : V} (hx : x ≠ 0)
     (hxH : ∀ t ∈ H, ρ t x = (χ t : ℂ) • x) :
@@ -86,6 +108,11 @@ end General
 
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `: SecondCountableTopology k`. Use `letI := IsTopologicalAddGroup.rightUniformSpace k`. Use `haveI := isUniformAddGroup_of_addCommGroup (G := k)`. Use `letI : (Valued.v (R := k)).RankOne := { hom' := IsRankLeOne.nonempty.some.emb (R := k).comp MonoidWithZeroHom.ValueGroup₀.embedding strictMono' := IsRankLeOne.nonempty.some.strictMono.comp MonoidWithZeroHom.ValueGroup₀.embedding_strictMono }`. Use `open scoped Valued in`.
+
+Establish `: ProperSpace k` using `.of_nontriviallyNormedField_of_weaklyLocallyCompactSpace k`. Use `infer_instance`. Conclude with `Units.isEmbedding_val₀.secondCountableTopology`.
+-/
 theorem secondCountableTopology_units : SecondCountableTopology kˣ := by
   have : SecondCountableTopology k := by
     letI := IsTopologicalAddGroup.rightUniformSpace k
@@ -100,6 +127,9 @@ theorem secondCountableTopology_units : SecondCountableTopology kˣ := by
 
 variable {k} in
 
+/- English proof (translation)
+The claim follows from `Finset.prod_induction _ IsSmoothChar (fun _ _ => IsSmoothChar.mul) (by show IsOpen _ rw [MonoidHom.ker_one] exact isOpen_univ) fun i _ => (hθ i).comp _ (continuous_apply i)`.
+-/
 theorem isSmoothChar_torusChar {n : ℕ} {θ : Fin n → kˣ →* ℂˣ} (hθ : ∀ i, IsSmoothChar (θ i)) :
     IsSmoothChar (torusChar θ) :=
   Finset.prod_induction _ IsSmoothChar (fun _ _ => IsSmoothChar.mul) (by
@@ -107,6 +137,13 @@ theorem isSmoothChar_torusChar {n : ℕ} {θ : Fin n → kˣ →* ℂˣ} (hθ : 
     rw [MonoidHom.ker_one]
     exact isOpen_univ) fun i _ => (hθ i).comp _ (continuous_apply i)
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n V _ _ ρ x θ hρ hl hθ hx hxH`. Use `haveI := secondCountableTopology_units k`. Take `⟨μ, l, hl0, hle, hμ⟩` from `exists_eigenform hρ hl (SmGL.UnramFixed.isCompact_torusO k (Fin n)) (isSmoothChar_torusChar hθ) hx hxH`. Use `⟨fun i => μ.comp (MonoidHom.mulSingle (fun _ => kˣ) i), l, hl0, fun t y => ?_, fun i u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[hle, torusChar_apply] conv_lhs => rw [← Finset.univ_prod_mulSingle t, map_prod]`.
+
+Both sides reduce to the same expression. Establish `h` using `hμ (Pi.mulSingle i u) fun j => by`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `using hu`.
+
+Simplify using `[Pi.mulSingle_eq_of_ne h]`. Rewrite `h` using `[torusChar_apply, Finset.prod_eq_single i (fun j _ hj => by simp [Pi.mulSingle_eq_of_ne hj]) (by simp), Pi.mulSingle_eq_same]`. Conclude with `h`.
+-/
 theorem main : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (Fin n → kˣ) V) (x : V) (θ : Fin n → kˣ →* ℂˣ), IsSmooth ρ → HasFiniteLength ρ → (∀ i, IsSmoothChar (θ i)) → x ≠ 0 → (∀ t ∈ torusO k (Fin n), ρ t x = (torusChar θ t : ℂ) • x) → ∃ (ψ : Fin n → kˣ →* ℂˣ) (l : V →ₗ[ℂ] ℂ), l ≠ 0 ∧ (∀ t y, l (ρ t y) = (torusChar ψ t : ℂ) * l y) ∧ ∀ i (u : kˣ), valuation k (u : k) = 1 → ψ i u = θ i u := by
   intro k _ _ _ _ n V _ _ ρ x θ hρ hl hθ hx hxH
   haveI := secondCountableTopology_units k

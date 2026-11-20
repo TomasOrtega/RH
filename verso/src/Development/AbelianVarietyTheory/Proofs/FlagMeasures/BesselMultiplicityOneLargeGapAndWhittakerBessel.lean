@@ -6,6 +6,9 @@ import CompanionTheory.AutomorphicTheory.LocalBesselUniqueness.BesselModels.Doub
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨CompanionTheory.Lime.BM.uniqGap_holds, Formalism.MainNotions.BridgeCS3dBOW.besselOfW_holds⟩`.
+-/
 theorem uniqGap_and_besselOfW : GlobalTheory.GapIn.UniqGap ∧ Formalism.L2.SG.LocWSOf.BesselOfW :=
   ⟨CompanionTheory.Lime.BM.uniqGap_holds, Formalism.MainNotions.BridgeCS3dBOW.besselOfW_holds⟩
 

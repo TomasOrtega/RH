@@ -12,6 +12,19 @@ noncomputable section
 
 namespace GlobalTheory.EvLevi
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hA hP₁ e he t m hL`. Establish `hs` using `IsUWeilPair.isUSplitting hP.weil`. Establish `hm1 : ∀ Φ ∈ schA F (Fin n × Fin d), om (1, m) Φ ∈ schA F (Fin n × Fin d)` using `fun Φ hΦ => hs.pres _ _ hΦ`. Establish `hIm : incM F (1 : Matrix (Fin n) (Fin n) E) = 1`. Simplify using `[incM]`.
+
+Establish `hmat1 : mat (1 : UA σ W₁.J) = 1` using `by simp [mat]`. Establish `vmv : ∀ (y : Fin n → AE F E) (v : Fin d → AE F E) (A : Matrix (Fin d) (Fin d) (AE F E)), Matrix.vecMulVec y v * Aᵀ = Matrix.vecMulVec y (A *ᵥ v)`. Introduce `y v A`. Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec_apply, Matrix.mul_apply, Matrix.mulVec, dotProduct, Finset.mul_sum, mul_comm, mul_left_comm]`.
+
+Use `⟨fun Φ hΦ => ?_, fun z Φ hΦ => ?_, fun u hu Φ hΦ => ?_, fun l hl => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply]`. Conclude with `he.maps _ (hm1 Φ hΦ)`. Simplify using `only [LinearMap.comp_apply]`. Establish `h2 : actAB (cA σ) ((1 : UA σ X.J), m) (incM F (1 : Matrix (Fin n) (Fin n) E) * z * (incM F H'.ι)ᵀ) = incM F (1 : Matrix (Fin n) (Fin n) E) * z * (incM F H'.ι)ᵀ`.
+
+Simplify using `only [actAB, OneMemClass.coe_one, Units.val_one, hIm, Matrix.one_mul]`. Express the relevant statement in the definitionally equal form `z * (incM F H'.ι)ᵀ * (mat m)ᵀ = _`. Rewrite using `[Matrix.mul_assoc, ← Matrix.transpose_mul, hL.2.2, hmat1, Matrix.mul_one]`. Rewrite using `[hs.impl _ _ _ hΦ, h2, he.Heisenberg₂ _ _ (hm1 Φ hΦ)]`. Take `⟨y, rfl⟩` from `hu`.
+
+Simplify using `only [LinearMap.comp_apply]`. Establish `h4 : actAB (cA σ) ((1 : UA σ X.J), m) (Matrix.vecMulVec y (incV F H'.x)) = Matrix.vecMulVec ((t : AE F E) • y) (incV F H'.x)`. Simplify using `only [actAB, OneMemClass.coe_one, Units.val_one, Matrix.one_mul]`. Express the relevant statement in the definitionally equal form `Matrix.vecMulVec y (incV F H'.x) * (mat m)ᵀ = _`. Rewrite using `[vmv, hL.1]`.
+
+Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec_apply, mul_comm, mul_left_comm, mul_assoc]`. Rewrite using `[hs.impl _ _ _ hΦ, h4, he.inv _ ⟨(t : AE F E) • y, rfl⟩ _ (hm1 Φ hΦ)]`. Establish `h1` using `GlobalTheory.T.eigen_intertwiner_good_models F E σ B n d n d₁ X W X W₁ M M₁ 1 H'.ι (iso0 n H') e hP.good hP₁.good he l hl`. Conclude with `hs.adm (1, m) _ h1`.
+-/
 theorem ev_levi : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
     ∀ (d₁ : ℕ) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ) (M₁ : Model σ X W₁) (om₁ : Rep σ X W₁) (r₁ s₁ : ℕ),

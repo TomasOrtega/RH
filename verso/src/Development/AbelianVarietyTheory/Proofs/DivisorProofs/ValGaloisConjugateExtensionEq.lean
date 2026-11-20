@@ -15,6 +15,17 @@ noncomputable section
 namespace GlobalTheory.GSep
 open GlobalTheory.Points GlobalTheory.ZH GlobalTheory.Poinc.Sep.GalVal
 
+/- English proof (translation)
+Introduce `I X₁ act 𝔗 z₂ V' _ _ ev₂ ev₂' σ h1 h2 hr hr' a`. Establish `ha` using `hr' a a.2`. Take `⟨x, d, hxd, hd, hu⟩` from `exists_mul_eq_stalkHom (specializes_jK ev₂' _) ha`. Take `⟨x', hx'⟩` from `h2 x`. Take `⟨d', hd'⟩` from `h2 d`.
+
+Establish `ex` using `h1 x x' hx'`. Establish `ed` using `h1 d d' hd'`. Establish `hsp'` using `RatModel.specializes_of_range_eq (RatModel.range_eq_singleton (jK V' ≫ spMap ev₂' ≫ 𝔗.X₂.M.Z.fromSpecStalk z₂) (IsLocalRing.closedPoint _))`. Establish `hsp` using `RatModel.specializes_of_range_eq (RatModel.range_eq_singleton (jK V' ≫ spMap ev₂ ≫ 𝔗.X₂.M.Z.fromSpecStalk z₂) (IsLocalRing.closedPoint _))`. Establish `e1` using `RatModel.val_mul hsp' ha hd`.
+
+Rewrite `e1` using `[hxd, val_stalkHom, val_stalkHom]`. Establish `hne` using `(RatModel.val_ne_zero_iff (RatModel.range_eq_singleton _ _) ⟨_, hd⟩).2 hu`. Rewrite `hne` using `[val_stalkHom]`. Establish `hb` using `hr _ (𝔗.sR σ a).2`. Establish `hd''` using `RatModel.O_le_of_specializes (specializes_jK ev₂ (IsLocalRing.closedPoint _)) (𝔗.X₂.M.stalkEquiv z₂ d').2`.
+
+Establish `e2` using `RatModel.val_mul hsp hb hd''`. Establish `key : σ (a : 𝔗.X₂.Ω₁) * 𝔗.X₂.M.stalkHom z₂ d' = 𝔗.X₂.M.stalkHom z₂ x'`. Rewrite using `[hd', hx', ← map_mul, hxd]`. Rewrite `e2` using `[RatModel.coe_stalkEquiv, 𝔗.sR_eq, key, val_stalkHom, val_stalkHom, ← ed, ← ex]`. Rewrite using `[𝔗.sR_eq]`.
+
+Conclude with `mul_right_cancel₀ hne (e1.symm.trans e2)`.
+-/
 theorem val_galois_conj : ∀ {I : Type} {X₁ : GlobalTheory.GSep.GSet} {act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)} (𝔗 : GlobalTheory.GSep.Tower X₁ act) {z₂ : 𝔗.X₂.M.Z} {V' : Type} [CommRing V'] [IsDomain V'] (ev₂ ev₂' : 𝔗.X₂.M.Z.presheaf.stalk z₂ →+* V') (σ : 𝔗.X₂.Ω₁ ≃ₐ[X₁.Ω₁] 𝔗.X₂.Ω₁), (∀ x x', 𝔗.X₂.M.stalkHom z₂ x' = σ (𝔗.X₂.M.stalkHom z₂ x) → ev₂' x = ev₂ x') → (∀ x, ∃ x', 𝔗.X₂.M.stalkHom z₂ x' = σ (𝔗.X₂.M.stalkHom z₂ x)) → GlobalTheory.GSep.RegAt 𝔗.X₂ z₂ ev₂ → GlobalTheory.GSep.RegAt 𝔗.X₂ z₂ ev₂' → ∀ a : 𝔗.X₂.S.R, 𝔗.X₂.M.val (jK V' ≫ spMap ev₂' ≫ 𝔗.X₂.M.Z.fromSpecStalk z₂) a = 𝔗.X₂.M.val (jK V' ≫ spMap ev₂ ≫ 𝔗.X₂.M.Z.fromSpecStalk z₂) (𝔗.sR σ a) := by
 
   intro I X₁ act 𝔗 z₂ V' _ _ ev₂ ev₂' σ h1 h2 hr hr' a

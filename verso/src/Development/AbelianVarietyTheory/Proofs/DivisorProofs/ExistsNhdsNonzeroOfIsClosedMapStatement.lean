@@ -7,5 +7,8 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Mum.exists_nhds_nonzero_of_isClosedMap | exact GlobalTheory.Mum.exists_nhds_nonzero_of_isClosedMap | (intros; apply GlobalTheory.Mum.exists_nhds_nonzero_of_isClosedMap <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_nhds_subset_nonzeroLocus_of_isClosedMap : ∀ (Z Y : Scheme.{0}) (p : Z ⟶ Y), IsClosedMap p.base → ∀ (L : LB Z) (V : Y.Opens) (u : LB.Sec (L.pull (p ⁻¹ᵁ V).ι)) (y : Y), y ∈ V → (∀ z : (p ⁻¹ᵁ V).toScheme, p ((p ⁻¹ᵁ V).ι z) = y → z ∈ nonzeroLocus u) → ∃ V₁ : Y.Opens, y ∈ V₁ ∧ V₁ ≤ V ∧ ∀ z : (p ⁻¹ᵁ V).toScheme, p ((p ⁻¹ᵁ V).ι z) ∈ V₁ → z ∈ nonzeroLocus u := by
   first | exact @GlobalTheory.Mum.exists_nhds_nonzero_of_isClosedMap | exact GlobalTheory.Mum.exists_nhds_nonzero_of_isClosedMap | (intros; apply GlobalTheory.Mum.exists_nhds_nonzero_of_isClosedMap <;> assumption)

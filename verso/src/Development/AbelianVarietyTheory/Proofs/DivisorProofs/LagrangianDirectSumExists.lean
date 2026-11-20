@@ -14,6 +14,11 @@ def lagrangianDoublingMap (F : Type) [Field F] (κ : Type) :
   map_smul' c p := by
     refine Prod.ext (funext fun i => ?_) (funext fun i => ?_) <;> cases i <;> simp
 
+/- English proof (translation)
+Introduce `p q h`. Simplify using `only [lagrangianDoublingMap, LinearMap.coe_mk, AddHom.coe_mk, Prod.mk.injEq] at h`. Take `⟨h1, h2⟩` from `h`. Establish `a1 : p.1.1 = q.1.1` using `funext fun i => by simpa using congrFun h1 (Sum.inl i)`. Establish `b1 : p.2.1 = q.2.1` using `funext fun i => by simpa using congrFun h1 (Sum.inr i)`.
+
+Establish `a2 : p.1.2 = q.1.2` using `funext fun i => by simpa using congrFun h2 (Sum.inl i)`. Establish `b2 : p.2.2 = q.2.2` using `funext fun i => by simpa using congrFun h2 (Sum.inr i)`. Conclude with `Prod.ext (Prod.ext a1 a2) (Prod.ext b1 b2)`.
+-/
 theorem lagrangianDoublingMap_injective (F : Type) [Field F] (κ : Type) :
     Function.Injective (lagrangianDoublingMap F κ) := by
   intro p q h
@@ -25,6 +30,15 @@ theorem lagrangianDoublingMap_injective (F : Type) [Field F] (κ : Type) :
   have b2 : p.2.2 = q.2.2 := funext fun i => by simpa using congrFun h2 (Sum.inr i)
   exact Prod.ext (Prod.ext a1 a2) (Prod.ext b1 b2)
 
+/- English proof (translation)
+Introduce `hiso hrk`. Set `g : (L₀ × L₀) →ₗ[F] (κ ⊕ κ → F) × (κ ⊕ κ → F)` to `(lagrangianDoublingMap F κ).comp (L₀.subtype.prodMap L₀.subtype)`. Establish `hg : ∀ p : L₀ × L₀, g p = (Sum.elim (p.1 : (κ → F) × (κ → F)).1 (p.2 : (κ → F) × (κ → F)).1, Sum.elim (p.1 : (κ → F) × (κ → F)).2 (-(p.2 : (κ → F) × (κ → F)).2))` using `fun p => rfl`. Establish `ginj : Function.Injective g`. Introduce `p q h`.
+
+Use `lagrangianDoublingMap_injective F κ h` as an intermediate fact. Simplify using `only [LinearMap.prodMap_apply, Submodule.coe_subtype, Prod.mk.injEq] at this`. Conclude with `Prod.ext (Subtype.ext this.1) (Subtype.ext this.2)`. Use `⟨LinearMap.range g, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩ _ ⟨q, rfl⟩`.
+
+Rewrite using `[hg, hg]`. Simplify using `only [dotProduct, Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, Pi.neg_apply, mul_neg, Finset.sum_neg_distrib]`. Establish `h1` using `hiso _ p.1.2 _ q.1.2`. Establish `h2` using `hiso _ p.2.2 _ q.2.2`. Simplify using `only [dotProduct] at h1 h2`.
+
+Rewrite using `[h1, h2]`. Rewrite using `[LinearMap.finrank_range_of_inj ginj, Module.finrank_prod, hrk, Fintype.card_sum]`. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `⟨p.1, p.1.2, p.2, p.2.2, hg p⟩`.
+-/
 theorem lagrangian_doubling_exists {F : Type} [Field F] {κ : Type} [Fintype κ]
     (L₀ : Submodule F ((κ → F) × (κ → F))) :
     (∀ a ∈ L₀, ∀ b ∈ L₀, a.1 ⬝ᵥ b.2 = b.1 ⬝ᵥ a.2) → Module.finrank F L₀ = Fintype.card κ →

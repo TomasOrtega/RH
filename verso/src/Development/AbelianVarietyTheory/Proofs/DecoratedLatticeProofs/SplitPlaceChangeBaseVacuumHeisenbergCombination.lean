@@ -10,6 +10,19 @@ noncomputable section
 
 namespace GlobalTheory.FinPl.Rebase
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ p n n' _ _ _ _ ψ hψ hU S T α β LS MS LT MT hLS hLT hMS hMT`. Establish `hOB` using `GlobalTheory.T.splitPlace_baseVacuum_datum_exists_unique D k p n n' ψ hψ S T α β`. Use `⟨fun ΛS ΛT hΛS hΛT f₀ g hg => ?_, fun Ψ hΨ => ?_⟩` and prove the remaining obligations. Take `⟨-, -, hvac0, -, ⟨Tm, hTm⟩, hall⟩` from `id hg`. Establish `hE` using `GlobalTheory.T.homLatticeIndicator_on_split_half_eq_half_indicator D k p n n' S T α β MS MT hMS hMT hU ΛS ΛT hΛS hΛT`.
+
+Establish `hgT : g = Tm (halfInd p.e (latO S T (MS : Set (Fin S.rank → D.host.E)) (MT : Set (Fin T.rank → D.host.E)) (· = p.v)))`. Rewrite using `[← hE]`. Conclude with `hall Tm hTm`. Establish `hmono` using `sbHalf_mono D k p S T LS MS LT MT hLS hLT hMS hMT`. Establish `hTm' : IsPlaceModel ψ (symplO S T) (heisO ψ S T) p.e (latO S T (MS : Set (Fin S.rank → D.host.E)) (MT : Set (Fin T.rank → D.host.E)) (· = p.v)) 1 g Tm`.
+
+Use `⟨fun Φ hΦ x hx => hTm.trans Φ (hmono Φ hΦ) x hx, fun Φ hΦ y hy => hTm.modul Φ (hmono Φ hΦ) y hy, ?_⟩` and prove the remaining obligations. Rewrite using `[one_smul, hgT]`. Establish `hth : IsThetaFunO ψ S T g` using `((hOB LS LT hLS hLT f₀ hvac0).2.1 _ g hg).1`. Establish `hvacg : Vac ψ S T MS MT (· = p.v) g`. Use `⟨hth, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hgT]`. Conclude with `latVac_image D k p ψ hψ S T LS MS LT MT hLS hLT hMS hMT f₀ Tm hTm`. Use `⟨hvacg, fun Ψ f hf => ?_⟩` and prove the remaining obligations. Take `⟨f', hf', -⟩` from `(hOB MS MT hMS hMT g hvacg).1 Ψ hf.2.2.2.1`. Establish `e1 : f' = Tm (extFun α β Ψ)` using `hf'.2.2.2.2.2 Tm hTm'`.
+
+Establish `e2 : f = Tm (extFun α β Ψ)` using `hf.2.2.2.2.2 Tm hTm`. Use `⟨hMS, hMT, hvacg, hf.2.2.2.1, ⟨Tm, hTm'⟩, fun T' hT' => ?_⟩` and prove the remaining obligations. Rewrite using `[e2, ← e1]`. Conclude with `hf'.2.2.2.2.2 T' hT'`. Take `⟨c, hc, hcomb⟩` from `GlobalTheory.T.splitPlaceSchwartzBruhat_acts_as_supported_combination D k p n n' ψ hψ S T α β LS LT hLS hLT Ψ hΨ`.
+
+Use `⟨c, hc, fun f₀ hvac => ?_⟩` and prove the remaining obligations. Take `⟨f, hf, -⟩` from `(hOB LS LT hLS hLT f₀ hvac).1 Ψ hΨ`. Conclude with `⟨hLS, hLT, hvac, hΨ, hf.2.2.2.2.1, fun T' hT' => (hcomb f₀ T' hT').symm⟩`.
+-/
 theorem rebase : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : SplitPt D k) (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → p.UnitAA → ∀ (S T : HSp D) (α : Frame p S n') (β : Frame p T n) (LS MS : Lat S) (LT MT : Lat T), IsSelfDualC S LS → IsSelfDualC T LT → IsSelfDualC S MS → IsSelfDualC T MT → (∀ (ΛS : Submodule 𝒪[k] (n' → k)) (ΛT : Submodule 𝒪[k] (n → k)), α.IsLat MS ΛS → β.IsLat MT ΛT → ∀ f₀ g, Over ψ α β LS LT f₀ (latInd ΛS ΛT) g → Vac ψ S T MS MT (· = p.v) g ∧ ∀ Ψ f, Over ψ α β LS LT f₀ Ψ f → Over ψ α β MS MT g Ψ f) ∧ ∀ Ψ ∈ SB (Matrix n n' k), ∃ c : WO S T →₀ ℂ, CombAt (· = p.v) c ∧ ∀ f₀, Vac ψ S T LS LT (· = p.v) f₀ → Over ψ α β LS LT f₀ Ψ (comb ψ S T c f₀) := by
   intro D k _ _ _ _ p n n' _ _ _ _ ψ hψ hU S T α β LS MS LT MT hLS hLT hMS hMT
   have hOB := GlobalTheory.T.splitPlace_baseVacuum_datum_exists_unique D k p n n' ψ hψ S T α β

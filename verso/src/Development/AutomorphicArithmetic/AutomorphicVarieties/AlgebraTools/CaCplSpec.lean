@@ -4,6 +4,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.CaCpl
 
 open IsLocalRing UpperTheory.V.AlgebraTools
 
+/- English proof (translation)
+Introduce `R _ _ p B _ _ _ h`. Use `haveI := h.isPrime`. Use `haveI := IsCplAt.flat R p B h`. Use `⟨fun q hq hqp => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Use `haveI := hq haveI : (maximalIdeal B).LiesOver p := ⟨h.comap_eq.symm⟩`.
+
+Take `⟨P, -, hP, hlo⟩` from `Ideal.exists_ideal_le_liesOver_of_le (maximalIdeal B) hqp`. Conclude with `⟨P, hP, hlo.over.symm⟩`. Set `Rp` to `Localization.AtPrime p haveI : IsNoetherianRing Rp := IsLocalization.isNoetherianRing p.primeCompl Rp inferInstance`. Establish `hmem : ∀ n : ℕ, algebraMap R Rp a ∈ (maximalIdeal Rp) ^ n`. Introduce `n`.
+
+Take `⟨s, hs, hsa⟩` from `h.strict n a (by rw [ha]; exact zero_mem _)`. Establish `hu : IsUnit (algebraMap R Rp s)` using `IsLocalization.map_units Rp (⟨s, hs⟩ : p.primeCompl)`. Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal, ← Ideal.map_pow]`. Use `Ideal.mem_map_of_mem (algebraMap R Rp) hsa` as an intermediate fact. Rewrite `this` using `[map_mul]`.
+
+Conclude with `(Ideal.unit_mul_mem_iff_mem _ hu).mp this`. Establish `hbot` using `Ideal.iInf_pow_eq_bot_of_isLocalRing (maximalIdeal Rp) (IsLocalRing.maximalIdeal.isMaximal Rp).ne_top`. Establish `h0 : algebraMap R Rp a = 0`. Establish `: algebraMap R Rp a ∈ ⨅ i, (maximalIdeal Rp) ^ i` using `Ideal.mem_iInf.mpr hmem`. Rewrite `this` using `[hbot]`.
+
+Conclude with `(Ideal.mem_bot).mp this`. Take `⟨⟨s, hs⟩, hsa⟩` from `(IsLocalization.map_eq_zero_iff p.primeCompl Rp a).mp h0`. Conclude with `⟨s, hs, hsa⟩`.
+-/
 theorem UpperTheory.V.AlgebraTools.IsCplAt.exists_prime_over :
     ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (p : Ideal R) (B : Type) [CommRing B] [IsLocalRing B] [Algebra R B], IsCplAt R p B →
       (∀ q : Ideal R, q.IsPrime → q ≤ p → ∃ Q : Ideal B, Q.IsPrime ∧ Q.comap (algebraMap R B) = q) ∧

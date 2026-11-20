@@ -16,10 +16,18 @@ section Alg
 
 variable {K : Type} [Field K] [CharZero K] {ι : Type}
 
+/- English proof (translation)
+The claim follows from `PowerSeries.HasSubst.of_constantCoeff_zero hU`.
+-/
 theorem hsU {U : MvPowerSeries ι K} (hU : MvPowerSeries.constantCoeff U = 0) :
     PowerSeries.HasSubst U :=
   PowerSeries.HasSubst.of_constantCoeff_zero hU
 
+/- English proof (translation)
+Establish `ha : PowerSeries.HasSubst U` using `hsU hU`. Establish `hC : PowerSeries.subst U (PowerSeries.C (s2 / 2)) = MvPowerSeries.C (s2 / 2)`. Establish `h` using `(PowerSeries.substAlgHom ha).commutes (s2 / 2)`. Rewrite `h` using `[PowerSeries.coe_substAlgHom]`. Simplify `h` using `[MvPowerSeries.algebraMap_apply, PowerSeries.algebraMap_apply]`.
+
+Unfold `phE`. Rewrite using `[← PowerSeries.coe_substAlgHom ha]`. Simplify using `only [map_add, map_neg, map_mul, map_pow]`. Rewrite using `[PowerSeries.coe_substAlgHom ha, hC, PowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero hl) ha]`.
+-/
 theorem subst_phE (s2 e1 kap : K) (w : PowerSeries K) {l : PowerSeries K}
     (hl : PowerSeries.constantCoeff l = 0) {U : MvPowerSeries ι K}
     (hU : MvPowerSeries.constantCoeff U = 0) :
@@ -37,6 +45,9 @@ theorem subst_phE (s2 e1 kap : K) (w : PowerSeries K) {l : PowerSeries K}
   rw [PowerSeries.coe_substAlgHom ha, hC,
     PowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero hl) ha]
 
+/- English proof (translation)
+Unfold `at1`. Conclude with `PowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero hl) (PowerSeries.HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X x)) f`.
+-/
 theorem subst_inVar (x : ι) (f : PowerSeries K) {l : PowerSeries K}
     (hl : PowerSeries.constantCoeff l = 0) :
     at1 x (PowerSeries.subst l f) = PowerSeries.subst (at1 x l) f := by
@@ -44,6 +55,11 @@ theorem subst_inVar (x : ι) (f : PowerSeries K) {l : PowerSeries K}
   exact PowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero hl)
     (PowerSeries.HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X x)) f
 
+/- English proof (translation)
+Apply the tactic sequence `have hb : MvPowerSeries.HasSubst ![U, V] := ⟨fun s => by fin_cases s <;> simp [hU, hV, IsNilpotent.zero], fun _ => Set.toFinite _⟩`. Establish `key : ∀ a : MvPowerSeries (Fin 2) K, MvPowerSeries.constantCoeff a = 0 → MvPowerSeries.subst ![U, V] (PowerSeries.subst a f) = PowerSeries.subst (MvPowerSeries.subst ![U, V] a) f` using `fun a ha => MvPowerSeries.subst_comp_subst_apply (⟨fun _ => by simp [ha, IsNilpotent.zero], fun _ => Set.toFinite _⟩ : MvPowerSeries.HasSubst (fun _ : Unit => a)) hb f`. Establish `hX : ∀ s : Fin 2, MvPowerSeries.subst ![U, V] (MvPowerSeries.X s : MvPowerSeries (Fin 2) K) = ![U, V] s` using `fun s => MvPowerSeries.subst_X hb s`. Unfold `par0 atS atD at1`. Rewrite using `[← MvPowerSeries.coe_substAlgHom hb]`.
+
+Simplify using `only [map_add, map_sub, map_mul, map_ofNat]`. Rewrite using `[MvPowerSeries.coe_substAlgHom hb, key _ (by simp), key _ (by simp), key _ (by simp), key _ (by simp), ← MvPowerSeries.coe_substAlgHom hb]`. Simplify using `only [map_add, map_sub]`. Rewrite using `[MvPowerSeries.coe_substAlgHom hb, hX 0, hX 1]`. Simplify using the standard rewrite rules.
+-/
 theorem subst_parallelogram_defect (f : PowerSeries K) {U V : MvPowerSeries ι K}
     (hU : MvPowerSeries.constantCoeff U = 0) (hV : MvPowerSeries.constantCoeff V = 0) :
     MvPowerSeries.subst ![U, V] (par0 f) =
@@ -70,6 +86,9 @@ theorem subst_parallelogram_defect (f : PowerSeries K) {U V : MvPowerSeries ι K
 
 end Alg
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `PowerSeries.X_dvd_iff.mpr hf`. Rewrite using `[PowerSeries.subst_mul (PowerSeries.HasSubst.of_constantCoeff_zero ha), PowerSeries.subst_X (PowerSeries.HasSubst.of_constantCoeff_zero ha), map_mul, ha, zero_mul]`.
+-/
 private theorem cc_subst_lemma {R : Type*} [CommRing R] {τ : Type*} {a : MvPowerSeries τ R}
     (ha : MvPowerSeries.constantCoeff a = 0) {f : PowerSeries R} (hf : PowerSeries.constantCoeff f = 0) :
     MvPowerSeries.constantCoeff (PowerSeries.subst a f) = 0 := by
@@ -77,6 +96,9 @@ private theorem cc_subst_lemma {R : Type*} [CommRing R] {τ : Type*} {a : MvPowe
   rw [PowerSeries.subst_mul (PowerSeries.HasSubst.of_constantCoeff_zero ha),
     PowerSeries.subst_X (PowerSeries.HasSubst.of_constantCoeff_zero ha), map_mul, ha, zero_mul]
 
+/- English proof (translation)
+The claim follows from `MvPowerSeries.subst_comp_subst_apply (⟨fun _ => by simp [ha, IsNilpotent.zero], fun _ => Set.toFinite _⟩ : MvPowerSeries.HasSubst (fun _ : Unit => a)) hc f`.
+-/
 private theorem mvSubst_powerSeries_subst_eq_subst_mvSubst {R : Type*} [CommRing R] {σ τ : Type*} {c : σ → MvPowerSeries τ R}
     (hc : MvPowerSeries.HasSubst c) {a : MvPowerSeries σ R} (ha : MvPowerSeries.constantCoeff a = 0)
     (f : PowerSeries R) :
@@ -85,6 +107,27 @@ private theorem mvSubst_powerSeries_subst_eq_subst_mvSubst {R : Type*} [CommRing
     (⟨fun _ => by simp [ha, IsNilpotent.zero], fun _ => Set.toFinite _⟩ :
       MvPowerSeries.HasSubst (fun _ : Unit => a)) hc f
 
+/- English proof (translation)
+Introduce `K _ _ _ A kap e1 s2 w l i F hW hLL hI`. Establish `hat : ∀ (x : Fin 2) (f : PowerSeries K), at1 x f = PowerSeries.subst (MvPowerSeries.X x) f` using `fun _ _ => rfl`. Establish `hl0 : PowerSeries.constantCoeff l = 0` using `hLL.2.2.1`. Establish `hx0 : ∀ x : Fin 2, MvPowerSeries.constantCoeff (at1 x l) = 0` using `fun x => by`. Rewrite using `[hat]`.
+
+Conclude with `cc_subst_lemma (MvPowerSeries.constantCoeff_X x) hl0`. Establish `L1 : PowerSeries.subst F l = at1 (0 : Fin 2) l + at1 (1 : Fin 2) l`. Establish `h` using `hLL.2.2.2.2`. Unfold `cob at h`. Take the linear combination `h`.
+
+Establish `L2 : PowerSeries.subst (FI F i) l = at1 (0 : Fin 2) l - at1 (1 : Fin 2) l`. Establish `hci : MvPowerSeries.constantCoeff (at1 (1 : Fin 2) i) = 0`. Rewrite using `[hat]`. Conclude with `cc_subst_lemma (MvPowerSeries.constantCoeff_X 1) hI.1`. Apply the tactic sequence `have hc : MvPowerSeries.HasSubst ![(MvPowerSeries.X (0 : Fin 2) : MvPowerSeries (Fin 2) K), at1 (1 : Fin 2) i] := ⟨fun s => by fin_cases s <;> simp [hci, IsNilpotent.zero], fun _ => Set.toFinite _⟩`.
+
+Establish `hneg : at1 (1 : Fin 2) (-l) = -at1 (1 : Fin 2) l`. Rewrite using `[hat, hat, ← PowerSeries.coe_substAlgHom (PowerSeries.HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X (1 : Fin 2))), map_neg]`. Unfold `FI`. Rewrite using `[← mvSubst_powerSeries_subst_eq_subst_mvSubst hc hLL.1 l, L1, ← MvPowerSeries.coe_substAlgHom hc, map_add, MvPowerSeries.coe_substAlgHom hc, hat 0 l, hat 1 l, mvSubst_powerSeries_subst_eq_subst_mvSubst hc (MvPowerSeries.constantCoeff_X 0) l, mvSubst_powerSeries_subst_eq_subst_mvS …`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]`.
+
+Rewrite using `[← subst_inVar (1 : Fin 2) l hI.1, hI.2.2, hneg, hat 1 l]`. Expand and normalize the polynomial expressions, which then agree. Establish `hP : PowerSeries.subst (at1 (0 : Fin 2) l + at1 (1 : Fin 2) l) (sigmaOneSeries e1 kap w) + PowerSeries.subst (at1 (0 : Fin 2) l - at1 (1 : Fin 2) l) (sigmaOneSeries e1 kap w) - 2 * PowerSeries.subst (at1 (0 : Fin 2) l) (sigmaOneSeries e1 kap w) - 2 * PowerSeries.subst (at1 (1 : F …`. Rewrite using `[← hA K A kap e1 w hW, subst_parallelogram_defect _ (hx0 0) (hx0 1)]`. Establish `hFL : MvPowerSeries.subst ![at1 (0 : Fin 2) l, at1 (1 : Fin 2) l] (fLog (1 - MvPowerSeries.C kap * at1 (0 : Fin 2) w * at1 (1 : Fin 2) w)) = fLog (1 - MvPowerSeries.C kap * at1 (0 : Fin 2) (PowerSeries.subst l w) * at1 (1 : Fin 2) (PowerSeries.subst l w))`.
+
+Apply the tactic sequence `have hab : MvPowerSeries.HasSubst ![at1 (0 : Fin 2) l, at1 (1 : Fin 2) l] := ⟨fun s => by fin_cases s <;> simp [hx0, IsNilpotent.zero], fun _ => Set.toFinite _⟩`. Establish `hw0 : ∀ x : Fin 2, MvPowerSeries.constantCoeff (at1 x w) = 0` using `fun x => by`. Rewrite using `[hat]`. Conclude with `cc_subst_lemma (MvPowerSeries.constantCoeff_X x) hW.1`. Establish `hg : MvPowerSeries.constantCoeff ((1 : MvPowerSeries (Fin 2) K) - MvPowerSeries.C kap * at1 (0 : Fin 2) w * at1 (1 : Fin 2) w - 1) = 0`.
+
+Rewrite using `[map_sub, map_sub, map_one, map_mul, map_mul, hw0 0, hw0 1]`. Simplify using the standard rewrite rules. Establish `hCk : MvPowerSeries.subst ![at1 (0 : Fin 2) l, at1 (1 : Fin 2) l] (MvPowerSeries.C kap : MvPowerSeries (Fin 2) K) = MvPowerSeries.C kap`. Establish `h` using `(MvPowerSeries.substAlgHom hab).commutes kap`. Rewrite `h` using `[MvPowerSeries.coe_substAlgHom]`.
+
+Simplify `h` using `[MvPowerSeries.algebraMap_apply]`. Establish `hw : ∀ x : Fin 2, MvPowerSeries.subst ![at1 (0 : Fin 2) l, at1 (1 : Fin 2) l] (at1 x w) = at1 x (PowerSeries.subst l w)`. Introduce `x`. Rewrite using `[hat x w, mvSubst_powerSeries_subst_eq_subst_mvSubst hab (MvPowerSeries.constantCoeff_X x) w, MvPowerSeries.subst_X hab, subst_inVar x w hl0]`. Apply the tactic sequence `fin_cases x <;> simp`.
+
+Unfold `fLog`. Rewrite using `[mvSubst_powerSeries_subst_eq_subst_mvSubst hab hg, ← MvPowerSeries.coe_substAlgHom hab]`. Simplify using `only [map_sub, map_one, map_mul]`. Rewrite using `[MvPowerSeries.coe_substAlgHom hab, hCk, hw 0, hw 1]`. Unfold `par`.
+
+Rewrite using `[subst_phE s2 e1 kap w hl0 hLL.1, L1, subst_phE s2 e1 kap w hl0 (law_constantCoeff_FI hLL hI), L2, hat 0 (phE s2 e1 kap w l), hat 1 (phE s2 e1 kap w l), subst_phE s2 e1 kap w hl0 (MvPowerSeries.constantCoeff_X (0 : Fin 2)), subst_phE s2 e1 kap w hl0 (MvPowerSeries.constantCoeff_X …`. Take the linear combination `-hP - hFL`.
+-/
 theorem ParEFormula_of (hA : AddSigma1Log) : ParEFormula := by
   intro K _ _ _ A kap e1 s2 w l i F hW hLL hI
   have hat : ∀ (x : Fin 2) (f : PowerSeries K), at1 x f = PowerSeries.subst (MvPowerSeries.X x) f :=
@@ -155,6 +198,9 @@ section Norm
 
 variable {K : Type} [NormedField K] [IsUltrametricDist K] {ι : Type}
 
+/- English proof (translation)
+Introduce `n`. Rewrite using `[map_sub, sub_eq_add_neg]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hf n) ?_)` and prove the remaining obligations. Rewrite using `[norm_neg]`. Conclude with `hg n`.
+-/
 theorem integral_sub' {f g : MvPowerSeries ι K} (hf : Integral f) (hg : Integral g) :
     Integral (f - g) := by
   intro n
@@ -163,12 +209,18 @@ theorem integral_sub' {f g : MvPowerSeries ι K} (hf : Integral f) (hg : Integra
   rw [norm_neg]
   exact hg n
 
+/- English proof (translation)
+Introduce `n`. Rewrite using `[map_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hf n) (hg n))`.
+-/
 theorem integral_add' {f g : MvPowerSeries ι K} (hf : Integral f) (hg : Integral g) :
     Integral (f + g) := by
   intro n
   rw [map_add]
   exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hf n) (hg n))
 
+/- English proof (translation)
+Introduce `n`. Rewrite using `[MvPowerSeries.coeff_C]`. Use `split_ifs`. Conclude with `hc`. Simplify using the standard rewrite rules.
+-/
 theorem integral_C' {c : K} (hc : ‖c‖ ≤ 1) : Integral (MvPowerSeries.C c : MvPowerSeries ι K) := by
   classical
   intro n
@@ -179,6 +231,13 @@ theorem integral_C' {c : K} (hc : ‖c‖ ≤ 1) : Integral (MvPowerSeries.C c :
 
 end Norm
 
+/- English proof (translation)
+Introduce `K _ _ _ A kap e1 s2 w l i F hW hLL hI hk hInt`. Rewrite using `[hF K A kap e1 s2 w l i F hW hLL hI]`. Use `(hL K (Fin 2) _ ?_ ?_).2` and prove the remaining obligations. Establish `hs : MvPowerSeries.constantCoeff (PowerSeries.subst l w) = 0` using `cc_subst_lemma hLL.2.2.1 hW.1`. Establish `h0 : ∀ x : Fin 2, MvPowerSeries.constantCoeff (at1 x (PowerSeries.subst l w)) = 0`.
+
+Introduce `x`. Unfold `at1`. Conclude with `cc_subst_lemma (MvPowerSeries.constantCoeff_X x) hs`. Rewrite using `[map_sub, map_one, map_mul, map_mul, h0 0, h0 1]`. Simplify using the standard rewrite rules.
+
+Conclude with `integral_sub' integral_one' (integral_mul' (integral_mul' (integral_C' hk) (integral_series_at_variable 0 _ hInt)) (integral_series_at_variable 1 _ hInt))`.
+-/
 theorem ParE_of (hF : ParEFormula) (hL : SimeqLog) : ParE := by
   intro K _ _ _ A kap e1 s2 w l i F hW hLL hI hk hInt
   rw [hF K A kap e1 s2 w l i F hW hLL hI]
@@ -194,6 +253,27 @@ theorem ParE_of (hF : ParEFormula) (hL : SimeqLog) : ParE := by
   · exact integral_sub' integral_one' (integral_mul' (integral_mul' (integral_C' hk)
       (integral_series_at_variable 0 _ hInt)) (integral_series_at_variable 1 _ hInt))
 
+/- English proof (translation)
+Introduce `K _ _ _ c0 e1 P l i ep F hLL hCH hce`. Take `⟨hepI, hep1, hcurve, -⟩` from `hCH`. Establish `hl0 : PowerSeries.constantCoeff l = 0` using `hLL.2.2.1`. Establish `hl1 : PowerSeries.coeff 1 l = 1` using `hLL.2.2.2.1`. Establish `ha : PowerSeries.HasSubst l` using `PowerSeries.HasSubst.of_constantCoeff_zero hl0`.
+
+Establish `hlne : l ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hl1`. Establish `hD0c : PowerSeries.constantCoeff (1 + PowerSeries.X ^ 2 * P - PowerSeries.C e1 * PowerSeries.X ^ 2 : PowerSeries K) ≠ 0`. Simplify using the standard rewrite rules.
+
+Establish `hCe : PowerSeries.subst l (PowerSeries.C e1 : PowerSeries K) = (PowerSeries.C e1 : PowerSeries K)`. Establish `h` using `(PowerSeries.substAlgHom ha).commutes e1`. Rewrite `h` using `[PowerSeries.coe_substAlgHom]`. Simplify `h` using `[MvPowerSeries.algebraMap_apply, PowerSeries.algebraMap_apply]`. Establish `hw : wOf e1 P * (1 + PowerSeries.X ^ 2 * P - PowerSeries.C e1 * PowerSeries.X ^ 2) = PowerSeries.X ^ 2`.
+
+Unfold `wOf`. Rewrite using `[mul_assoc, PowerSeries.inv_mul_cancel _ hD0c, mul_one]`. Establish `hWD : PowerSeries.subst l (wOf e1 P) * (1 + l ^ 2 * PowerSeries.subst l P - PowerSeries.C e1 * l ^ 2) = l ^ 2`. Establish `h` using `congrArg (PowerSeries.subst l) hw`. Rewrite `h` using `[← PowerSeries.coe_substAlgHom ha]`.
+
+Simplify using `only [map_add, map_sub, map_one, map_mul, map_pow] at h`. Rewrite `h` using `[PowerSeries.coe_substAlgHom ha, PowerSeries.subst_X ha, hCe]`. Conclude with `h`. Establish `hkey : PowerSeries.subst l (wOf e1 P) * (ep + PowerSeries.C (c0 - e1) * PowerSeries.X ^ 2) * l ^ 2 = PowerSeries.X ^ 2 * l ^ 2`. Rewrite using `[map_sub]`.
+
+Take the linear combination `(-PowerSeries.subst l (wOf e1 P)) * hcurve + PowerSeries.X ^ 2 * hWD`. Establish `h1 : PowerSeries.subst l (wOf e1 P) * (ep + PowerSeries.C (c0 - e1) * PowerSeries.X ^ 2) = PowerSeries.X ^ 2` using `mul_right_cancel₀ (pow_ne_zero 2 hlne) hkey`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `hX : Integral (ι` using `Unit) (PowerSeries.X : PowerSeries K) := law_integral_X ()`. Establish `hX2 : Integral (ι` using `Unit) (PowerSeries.X ^ 2 : PowerSeries K) := by`.
+
+Rewrite using `[pow_two]`. Conclude with `integral_mul' hX hX`. Establish `hEI : Integral (ι` using `Unit) (ep + PowerSeries.C (c0 - e1) * PowerSeries.X ^ 2) := integral_add' hepI (integral_mul' (integral_C' hce) hX2)`. Establish `hEc : MvPowerSeries.constantCoeff (ep + PowerSeries.C (c0 - e1) * PowerSeries.X ^ 2 : PowerSeries K) = 1`. Establish `h : PowerSeries.constantCoeff (ep + PowerSeries.C (c0 - e1) * PowerSeries.X ^ 2) = 1`.
+
+Simplify using `[hep1]`. Conclude with `h`. Establish `hEc' : PowerSeries.constantCoeff (ep + PowerSeries.C (c0 - e1) * PowerSeries.X ^ 2) ≠ 0`. Simplify using `[hep1]`. Establish `hVI : Integral (ι` using `Unit) (ep + PowerSeries.C (c0 - e1) * PowerSeries.X ^ 2)⁻¹ := integral_of_mul_eq_one hEI hEc (PowerSeries.inv_mul_cancel _ hEc')`.
+
+Establish `hWe : PowerSeries.subst l (wOf e1 P) = PowerSeries.X ^ 2 * (ep + PowerSeries.C (c0 - e1) * PowerSeries.X ^ 2)⁻¹`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[PowerSeries.mul_inv_cancel _ hEc', mul_one]`. Use `_ = (PowerSeries.subst l (wOf e1 P) * (ep + PowerSeries.C (c0 - e1) * PowerSeries.X ^ 2)) * (ep + PowerSeries.C (c0 - e1) * PowerSeries.X ^ 2)⁻¹ := by`. Rewrite using `[mul_assoc]`.
+
+Use `_ = _ := by rw [h1]`. Rewrite using `[hWe]`. Conclude with `integral_mul' hX2 hVI`.
+-/
 theorem weierstrass_series_integral : WIntegral := by
   intro K _ _ _ c0 e1 P l i ep F hLL hCH hce
   obtain ⟨hepI, hep1, hcurve, -⟩ := hCH

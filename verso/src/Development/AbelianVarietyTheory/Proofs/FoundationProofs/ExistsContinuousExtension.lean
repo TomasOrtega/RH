@@ -4,6 +4,13 @@ open IsDedekindDomain IsDedekindDomain.HeightOneSpectrum NumberField
 
 namespace GlobalTheory.ContinuousValuationExtension
 
+/- English proof (translation)
+Use `continuous_of_continuousAt_zero g ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_zero, (Valued.hasBasis_nhds_zero A Γ).tendsto_iff (Valued.hasBasis_nhds_zero B Γ)]`. Introduce `γ _`. Take `⟨a, ha⟩` from `hs (MonoidWithZeroHom.ValueGroup₀.embedding γ.1)`. Establish `ha0 : (Valued.v : Valuation A Γ).restrict a ≠ 0`.
+
+Rewrite using `[Ne, Valuation.restrict_eq_zero_iff, ha]`. Introduce `h0`. Apply `γ.ne_zero` to reduce the goal to its premises. Apply `MonoidWithZeroHom.ValueGroup₀.embedding_strictMono.injective` to reduce the goal to its premises. Rewrite using `[h0, map_zero]`.
+
+Use `⟨Units.mk0 _ ha0, trivial, fun x hx => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_ofPred_eq, Units.val_mk0, Valuation.restrict_lt_iff, ha] at hx`. Use `show (Valued.v : Valuation B Γ).restrict (g x) < γ.1`. Rewrite using `[Valuation.restrict_lt_iff_lt_embedding, hg]`. Conclude with `hx`.
+-/
 theorem continuous_of_valuation_eq {A B Γ : Type} [Field A] [Field B]
     [LinearOrderedCommGroupWithZero Γ] [Valued A Γ] [Valued B Γ] (g : A →+* B)
     (hs : Function.Surjective (Valued.v : A → Γ))
@@ -26,6 +33,11 @@ theorem continuous_of_valuation_eq {A B Γ : Type} [Field A] [Field B]
   rw [Valuation.restrict_lt_iff_lt_embedding, hg]
   exact hx
 
+/- English proof (translation)
+Break down `eq_or_ne y 0 with rfl | hy` into its components or cases. Simplify using the standard rewrite rules. Establish `hφy : φ y ≠ 0` using `(map_ne_zero φ).2 hy`. Establish `h1 : {z : A | (Valued.v z : Γ) = Valued.v y} ∈ nhds y` using `Valued.locally_const ((Valuation.ne_zero_iff _).2 hy)`. Establish `h2 : {z : A | (Valued.v (φ z) : Γ) = Valued.v (φ y)} ∈ nhds y` using `hφ.continuousAt.preimage_mem_nhds (Valued.locally_const ((Valuation.ne_zero_iff _).2 hφy))`.
+
+Take `⟨_, ⟨x, rfl⟩, hx1, hx2⟩` from `hj.inter_nhds_nonempty (Filter.inter_mem h1 h2)`. Establish `e1 : (Valued.v (j x) : Γ) = Valued.v y` using `hx1`. Establish `e2 : (Valued.v (φ (j x)) : Γ) = Valued.v (φ y)` using `hx2`. Rewrite using `[← e2, h x, e1]`.
+-/
 theorem valuation_eq_of_denseRange {A B Γ ι : Type} [Field A] [Field B]
     [LinearOrderedCommGroupWithZero Γ] [Valued A Γ] [Valued B Γ] (φ : A →+* B)
     (hφ : Continuous φ) (j : ι → A) (hj : DenseRange j)
@@ -44,6 +56,13 @@ theorem valuation_eq_of_denseRange {A B Γ ι : Type} [Field A] [Field B]
   have e2 : (Valued.v (φ (j x)) : Γ) = Valued.v (φ y) := hx2
   rw [← e2, h x, e1]
 
+/- English proof (translation)
+Set `g : WithVal (w.valuation K) →+* adicCompletion L u` to `f.comp (WithVal.equiv (w.valuation K)).toRingHom`. Establish `hgv : ∀ x : WithVal (w.valuation K), (Valued.v (g x) : WithZero (Multiplicative ℤ)) = Valued.v x` using `fun x => hf x.ofVal`. Establish `hsurj : Function.Surjective (Valued.v : WithVal (w.valuation K) → WithZero (Multiplicative ℤ))` using `fun γ => by`. Take `⟨a, ha⟩` from `w.valuation_surjective K γ`. Conclude with `⟨WithVal.toVal _ a, ha⟩`.
+
+Establish `hgc : Continuous g` using `continuous_of_valuation_eq g hsurj hgv`. Set `φ : adicCompletion K w →+* adicCompletion L u` to `(UniformSpace.Completion.extensionHom g hgc).comp (adicCompletion.equiv K w).toRingHom`. Establish `hφc : Continuous φ` using `UniformSpace.Completion.continuous_extension.comp (adicCompletion.continuous_toCompletion K w)`. Establish `hφf : ∀ x : K, φ (algebraMap K (adicCompletion K w) x) = f x` using `fun x => UniformSpace.Completion.extensionHom_coe g hgc (WithVal.toVal _ x)`. Use `⟨φ, hφc, hφf, fun y => ?_⟩` and prove the remaining obligations.
+
+Use `valuation_eq_of_denseRange φ hφc (algebraMap K (adicCompletion K w)) (denseRange_algebraMap (K := K) (v := w)) (fun x => ?_) y` and prove the remaining obligations. Rewrite using `[hφf x, hf x]`. Conclude with `(adicCompletion.valued_coe K w x).symm`.
+-/
 theorem exists_continuous_extension {K L : Type} [Field K] [NumberField K] [Field L]
     [NumberField L] (w : HeightOneSpectrum (RingOfIntegers K))
     (u : HeightOneSpectrum (RingOfIntegers L)) (f : K →+* adicCompletion L u)

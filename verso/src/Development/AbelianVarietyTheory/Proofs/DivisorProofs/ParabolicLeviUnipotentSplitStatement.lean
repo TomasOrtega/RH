@@ -8,6 +8,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.StabLineLevi.stab_line_eq_unip_mul_levi | exact GlobalTheory.StabLineLevi.stab_line_eq_unip_mul_levi | (intros; apply GlobalTheory.StabLineLevi.stab_line_eq_unip_mul_levi <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.parabolic_levi_unipotent_split : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) {n d₁ : ℕ} (W : Spc F E n) (W₁ : Spc F E d₁) (H' : Plane E n d₁) (r s i₀ i₁ : ℕ), IsCMExt F E σ →
     W.IsSkew σ B r s → H'.IsAdapted σ B W W₁ i₀ i₁ → ∀ (p : UA σ W.J) (t : (AE F E)ˣ), mat p *ᵥ incV F H'.x = t.1 • incV F H'.x →

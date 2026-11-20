@@ -20,12 +20,22 @@ def varMono (v : ∀ k, ι k) (e : K →₀ ℕ) : MRing ι :=
   ∏ k, (X ⟨k, v k⟩ : MRing ι) ^ e k
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_algebraMap_cone (hPW : P ≤ W) (a : MRing ι ⧸ P) :
     ((algebraMap (MRing ι ⧸ P) (coneLocRing P W hPW) a : coneLocRing P W hPW) : FractionRing (MRing ι ⧸ P)) =
       algebraMap (MRing ι ⧸ P) (FractionRing (MRing ι ⧸ P)) a :=
   rfl
 
 variable {P W} in
+/- English proof (translation)
+Establish `h : ∀ s : Finset K, IsMultiHomog (∏ k ∈ s, (X ⟨k, v k⟩ : MRing ι) ^ e k) (∑ k ∈ s, e k • (Pi.single k 1 : K → ℕ))`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (homog_one (ι := ι))`. Consider the case `insert k s hk ih`.
+
+Rewrite using `[Finset.prod_insert hk, Finset.sum_insert hk]`. Conclude with `homog_mul (homog_pow (homog_X k (v k)) (e k)) ih`. Establish `e' : (∑ k, e k • (Pi.single k 1 : K → ℕ)) = ⇑e`. Use function extensionality and compare the values at `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+
+Use `h Finset.univ` as an intermediate fact. Rewrite `this` using `[e']`. Then use the resulting hypothesis.
+-/
 theorem homog_varMono (v : ∀ k, ι k) (e : K →₀ ℕ) : IsMultiHomog (varMono v e : MRing ι) ⇑e := by
   classical
   have h : ∀ s : Finset K, IsMultiHomog (∏ k ∈ s, (X ⟨k, v k⟩ : MRing ι) ^ e k)
@@ -43,12 +53,20 @@ theorem homog_varMono (v : ∀ k, ι k) (e : K →₀ ℕ) : IsMultiHomog (varMo
   rwa [e'] at this
 
 omit [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Introduce `h`. Take `⟨k, -, hk⟩` from `Ideal.IsPrime.prod_mem_iff.mp h`. Conclude with `hv k (Ideal.IsPrime.mem_of_pow_mem ‹_› _ hk)`.
+-/
 theorem varMono_notMem {I : Ideal (MRing ι)} [I.IsPrime] {v : ∀ k, ι k}
     (hv : ∀ k, (X ⟨k, v k⟩ : MRing ι) ∉ I) (e : K →₀ ℕ) : varMono v e ∉ I := by
   intro h
   obtain ⟨k, -, hk⟩ := Ideal.IsPrime.prod_mem_iff.mp h
   exact hv k (Ideal.IsPrime.mem_of_pow_mem ‹_› _ hk)
 
+/- English proof (translation)
+Rewrite using `[coneVarMap, aeval_def, eval₂_eq']`. Express the relevant statement in the definitionally equal form `(coneLocRing P W hPW).val _ = _`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_prod, varMono, map_prod]`.
+
+Simplify using `only [map_pow]`. Both sides reduce to the same expression.
+-/
 theorem coneVarMap_coe (hPW : P ≤ W) (v : ∀ k, ι k) (G : MvPolynomial K (locRing P W)) :
     ((coneVarMap P W hPW v G : coneLocRing P W hPW) : FractionRing (MRing ι ⧸ P)) =
       ∑ e ∈ G.support, ((coeff e G : locRing P W) : FractionRing (MRing ι ⧸ P)) * fracHom P (varMono v e) := by
@@ -62,6 +80,17 @@ theorem coneVarMap_coe (hPW : P ≤ W) (v : ∀ k, ι k) (G : MvPolynomial K (lo
 
 variable {P W} in
 
+/- English proof (translation)
+Proceed by induction on `G using MvPolynomial.induction_on' with`. Consider the case `monomial e c`. Take `⟨u, w, a, hu, hw, hwW, hc⟩` from `(mem_locRing_iff hPW).mp c.2`. Use `⟨w, a, fun e' => if e = e' then u else 0, hw, hwW, fun e' => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Simplify using `only split_ifs`.
+
+Conclude with `hu`. Conclude with `homog_zero a`. Rewrite using `[coeff_monomial] dsimp only split_ifs`. Conclude with `hc`. Simplify using the standard rewrite rules.
+
+Consider the case `add G1 G2 h1 h2`. Take `⟨V1, b1, N1, hV1, hV1W, hN1⟩` from `h1`. Take `⟨V2, b2, N2, hV2, hV2W, hN2⟩` from `h2`. Use `⟨V1 * V2, b1 + b2, fun e => N1 e * V2 + N2 e * V1, homog_mul hV1 hV2, fun h => (Ideal.IsPrime.mem_or_mem ‹_› h).elim hV1W hV2W, fun e => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `homog_add (homog_mul (hN1 e).1 hV2) ?_` and prove the remaining obligations.
+
+Rewrite using `[add_comm b1 b2]`. Conclude with `homog_mul (hN2 e).1 hV1`. Rewrite using `[coeff_add]`. Express the relevant statement in the definitionally equal form `(((coeff e G1 : locRing P W) : FractionRing (MRing ι ⧸ P)) + (coeff e G2 : locRing P W)) * _ = _`. Simplify using `only [map_add, map_mul]`.
+
+Rewrite using `[← (hN1 e).2, ← (hN2 e).2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_clear (hPW : P ≤ W) (G : MvPolynomial K (locRing P W)) :
     ∃ (V : MRing ι) (b : K → ℕ) (N : (K →₀ ℕ) → MRing ι), IsMultiHomog V b ∧ V ∉ W ∧
       ∀ e, IsMultiHomog (N e) b ∧
@@ -96,6 +125,9 @@ theorem exists_clear (hPW : P ≤ W) (G : MvPolynomial K (locRing P W)) :
 
 variable {P W} in
 
+/- English proof (translation)
+Rewrite using `[coneVarMap_coe, Finset.sum_mul, map_sum]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← (hN e).2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coneVarMap_mul_clear (hPW : P ≤ W) (v : ∀ k, ι k) (G : MvPolynomial K (locRing P W))
     {V : MRing ι} {b : K → ℕ} {N : (K →₀ ℕ) → MRing ι}
     (hN : ∀ e, IsMultiHomog (N e) b ∧
@@ -107,6 +139,9 @@ theorem coneVarMap_mul_clear (hPW : P ≤ W) (v : ∀ k, ι k) (G : MvPolynomial
   rw [map_mul, ← (hN e).2]
   ring
 
+/- English proof (translation)
+Introduce `e he`. Use `mem_of_sum_mem hI s (fun e => N e * varMono v e) (fun e => b + ⇑e) ?_ (fun e _ => homog_mul (hN e) (homog_varMono v e)) h e he` as an intermediate fact. Conclude with `(Ideal.IsPrime.mem_or_mem ‹_› this).resolve_right (varMono_notMem hvI e)`. Introduce `e1 _ e2 _ h12`. Conclude with `DFunLike.coe_injective (add_left_cancel h12)`.
+-/
 theorem mem_of_clear_mem {I : Ideal (MRing ι)} [I.IsPrime] (hI : IsMultiHomogIdeal I) {v : ∀ k, ι k}
     (hvI : ∀ k, (X ⟨k, v k⟩ : MRing ι) ∉ I) (s : Finset (K →₀ ℕ)) {b : K → ℕ} {N : (K →₀ ℕ) → MRing ι}
     (hN : ∀ e, IsMultiHomog (N e) b) (h : ∑ e ∈ s, N e * varMono v e ∈ I) : ∀ e ∈ s, N e ∈ I := by
@@ -119,6 +154,17 @@ theorem mem_of_clear_mem {I : Ideal (MRing ι)} [I.IsPrime] (hI : IsMultiHomogId
 
 variable {P W} in
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `G hG`. Take `⟨V, b, N, -, hVW, hN⟩` from `exists_clear hPW G`. Establish `hV0 : fracHom P V ≠ 0`. Rewrite using `[Ne, fracHom_eq_zero_iff]`.
+
+Conclude with `fun h => hVW (hPW h)`. Establish `hsum` using `coneVarMap_mul_clear hPW v G hN`. Rewrite `hsum` using `[hG]`. Establish `hNum : ∑ e ∈ G.support, N e * varMono v e ∈ P`. Rewrite using `[← fracHom_eq_zero_iff, ← hsum]`.
+
+Simplify using the standard rewrite rules. Establish `hvP : ∀ k, (X ⟨k, v k⟩ : MRing ι) ∉ P` using `fun k h => hv k (hPW h)`. Establish `hNP : ∀ e ∈ G.support, N e ∈ P` using `mem_of_clear_mem hPh hvP G.support (fun e => (hN e).1) hNum`. Use `MvPolynomial.ext _ _ fun e => ?_` and prove the remaining obligations. Rewrite using `[coeff_zero]`.
+
+Assume the negation of the conclusion as `hne`. Establish `he : e ∈ G.support` using `mem_support_iff.mpr hne`. Establish `h1` using `(hN e).2`. Rewrite `h1` using `[fracHom_eq_zero_iff.mpr (hNP e he)]`. Establish `h2 : ((coeff e G : locRing P W) : FractionRing (MRing ι ⧸ P)) = 0` using `(mul_eq_zero.mp h1).resolve_right hV0`.
+
+Conclude with `hne (Subtype.ext h2)`.
+-/
 theorem coneVarMap_injective (hPW : P ≤ W) (hPh : IsMultiHomogIdeal P) {v : ∀ k, ι k}
     (hv : ∀ k, (X ⟨k, v k⟩ : MRing ι) ∉ W) : Function.Injective (coneVarMap P W hPW v) := by
   rw [injective_iff_map_eq_zero]
@@ -146,6 +192,9 @@ theorem coneVarMap_injective (hPW : P ≤ W) (hPh : IsMultiHomogIdeal P) {v : �
 
 variable {P W} in
 
+/- English proof (translation)
+The claim follows from `IsLocalization.map_units (coneLocRing P W hPW) (⟨_, ⟨g, hg, rfl⟩⟩ : W.primeCompl.map (Ideal.Quotient.mk P))`.
+-/
 theorem isUnit_algebraMap_cone (hPW : P ≤ W) {g : MRing ι} (hg : g ∉ W) :
     IsUnit (algebraMap (MRing ι ⧸ P) (coneLocRing P W hPW) (Ideal.Quotient.mk P g)) :=
   IsLocalization.map_units (coneLocRing P W hPW)
@@ -153,6 +202,11 @@ theorem isUnit_algebraMap_cone (hPW : P ≤ W) {g : MRing ι} (hg : g ∉ W) :
 
 variable {P W} in
 
+/- English proof (translation)
+Take `⟨V, b, N, hV, hVW, hN⟩` from `exists_clear hPW G`. Establish `hNe : N e ∉ W` using `(isUnit_iff hPW (coeff e G) (hN e).1 hV hVW (hN e).2).mp he`. Establish `hesupp : e ∈ G.support` using `mem_support_iff.mpr he.ne_zero`. Establish `hNum : ∑ e ∈ G.support, N e * varMono v e ∉ W` using `fun h => hNe (mem_of_clear_mem hWh hv G.support (fun e => (hN e).1) h e hesupp)`. Establish `heq : coneVarMap P W hPW v G * algebraMap (MRing ι ⧸ P) (coneLocRing P W hPW) (Ideal.Quotient.mk P V) = algebraMap (MRing ι ⧸ P) (coneLocRing P W hPW) (Ideal.Quotient.mk P (∑ e ∈ G.support, N e * varMono v e))` using `Subtype.ext (coneVarMap_mul_clear hPW v G hN)`.
+
+Conclude with `isUnit_of_mul_isUnit_left (heq ▸ isUnit_algebraMap_cone hPW hNum)`.
+-/
 theorem isUnit_coneVarMap (hPW : P ≤ W) (hWh : IsMultiHomogIdeal W) {v : ∀ k, ι k}
     (hv : ∀ k, (X ⟨k, v k⟩ : MRing ι) ∉ W) (G : MvPolynomial K (locRing P W)) {e : K →₀ ℕ}
     (he : IsUnit (coeff e G)) : IsUnit (coneVarMap P W hPW v G) := by
@@ -170,6 +224,17 @@ theorem isUnit_coneVarMap (hPW : P ≤ W) (hWh : IsMultiHomogIdeal W) {v : ∀ k
 
 variable {P W} in
 
+/- English proof (translation)
+Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C c`. Use `⟨(c : MvPolynomial K (locRing P W)), ?_⟩` and prove the remaining obligations. Rewrite using `[map_intCast, eq_intCast (MvPolynomial.C) c, map_intCast, map_intCast]`. Consider the case `add p q hp hq`.
+
+Take `⟨F, hF⟩` from `hp`. Take `⟨G, hG⟩` from `hq`. Conclude with `⟨F + G, by rw [map_add, hF, hG, map_add, map_add]⟩`. Consider the case `mul_X p n hp`. Take `⟨F, hF⟩` from `hp`.
+
+Take `⟨k, i⟩` from `n`. Establish `hX0 : fracHom P (X ⟨k, v k⟩) ≠ 0`. Rewrite using `[Ne, fracHom_eq_zero_iff]`. Conclude with `fun h => hv k (hPW h)`. Establish `hr : fracHom P (X ⟨k, i⟩) / fracHom P (X ⟨k, v k⟩) ∈ locRing P W` using `div_mem_locRing hPW (homog_X k i) (homog_X k (v k)) (hv k)`.
+
+Use `⟨F * (MvPolynomial.C (⟨_, hr⟩ : locRing P W) * X k), ?_⟩` and prove the remaining obligations. Establish `hX : coneVarMap P W hPW v (X k) = algebraMap (MRing ι ⧸ P) (coneLocRing P W hPW) (Ideal.Quotient.mk P (X ⟨k, v k⟩))` using `aeval_X _ _`. Rewrite using `[map_mul, map_mul, hF, algHom_C, hX]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Subalgebra.coe_mul, Subalgebra.coe_mul, coe_algebraMap_cone, coe_algebraMap_cone, coe_algebraMap_cone, locRing.algebraMap_cone_coe, ← fracHom_apply, ← fracHom_apply, ← fracHom_apply, map_mul]`.
+
+Rewrite using `[div_mul_cancel₀ _ hX0]`.
+-/
 theorem exists_lift (hPW : P ≤ W) {v : ∀ k, ι k} (hv : ∀ k, (X ⟨k, v k⟩ : MRing ι) ∉ W) (f : MRing ι) :
     ∃ F, coneVarMap P W hPW v F =
       algebraMap (MRing ι ⧸ P) (coneLocRing P W hPW) (Ideal.Quotient.mk P f) := by
@@ -202,6 +267,15 @@ theorem exists_lift (hPW : P ≤ W) {v : ∀ k, ι k} (hv : ∀ k, (X ⟨k, v k�
 
 variable {P W} in
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Take `⟨V, b, N, hV, hVW, hN⟩` from `exists_clear hPW G`. Establish `hNW : ∀ e, N e ∈ W` using `fun e => by`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hcon e ((isUnit_iff hPW _ (hN e).1 hV hVW (hN e).2).mpr h)`. Establish `hsum` using `coneVarMap_mul_clear hPW v G hN`. Rewrite `hsum` using `[hG]`. Establish `h1 : fracHom P (∑ e ∈ G.support, N e * varMono v e - g * V) = 0`. Rewrite using `[map_sub, ← hsum, map_mul]`.
+
+Conclude with `sub_self _`. Rewrite `h1` using `[fracHom_eq_zero_iff]`. Establish `h2 : g * V ∈ W`. Use `W.sub_mem (W.sum_mem (t := G.support) fun e _ => W.mul_mem_right (varMono v e) (hNW e)) (hPW h1)` as an intermediate fact. Simplify using `using this`.
+
+Conclude with `(Ideal.IsPrime.mem_or_mem ‹_› h2).elim hg hVW`.
+-/
 theorem exists_isUnit_coeff (hPW : P ≤ W) {v : ∀ k, ι k} (G : MvPolynomial K (locRing P W))
     {g : MRing ι} (hg : g ∉ W)
     (hG : coneVarMap P W hPW v G =
@@ -224,6 +298,9 @@ theorem exists_isUnit_coeff (hPW : P ≤ W) {v : ∀ k, ι k} (G : MvPolynomial 
     simpa using this
   exact (Ideal.IsPrime.mem_or_mem ‹_› h2).elim hg hVW
 
+/- English proof (translation)
+Rewrite using `[← Ideal.mk_ker (I := p), ← MvPolynomial.ker_map]`. Conclude with `RingHom.ker_isPrime _`.
+-/
 theorem isPrime_map_C {A : Type*} [CommRing A] (σ : Type*) (p : Ideal A) [p.IsPrime] :
     (p.map (C : A →+* MvPolynomial σ A)).IsPrime := by
   rw [← Ideal.mk_ker (I := p), ← MvPolynomial.ker_map]
@@ -231,6 +308,9 @@ theorem isPrime_map_C {A : Type*} [CommRing A] (σ : Type*) (p : Ideal A) [p.IsP
 
 variable {P W} in
 
+/- English proof (translation)
+The claim follows from `isLocalRing hPW letI := (coneVarMap P W hPW v).toRingHom.toAlgebra haveI := isPrime_map_C K (maximalIdeal (locRing P W)) IsLocalization ((maximalIdeal (locRing P W)).map (C : locRing P W →+* MvPolynomial K (locRing P W))).primeCompl (coneLocRing P W hPW) := by have := isLocalRing …`.
+-/
 theorem isLocalization_coneVarMap (hPW : P ≤ W) (hPh : IsMultiHomogIdeal P) (hWh : IsMultiHomogIdeal W)
     (v : ∀ k, ι k) (hv : ∀ k, (X ⟨k, v k⟩ : MRing ι) ∉ W) :
     haveI := isLocalRing hPW

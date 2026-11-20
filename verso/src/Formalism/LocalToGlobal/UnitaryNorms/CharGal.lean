@@ -19,6 +19,11 @@ def IsGalOf (D : D7) (i : D.nd.Loc) (U : Set (PlE D.host)) (r : Formalism.Conjug
       IsFrob (F := D.host.E) B (normV w) σ →
       toC D i ((r σ : (D.nd.O i)ˣ) : D.nd.O i) = ((χ.val w)⁻¹ : ℂˣ).1 * ((normV w : ℕ) : ℂ) ^ ((s : ℝ) : ℂ)
 
+/- English proof (translation)
+Introduce `w hw _ hU B σ hB hσ`. Establish `hπ : (T.e1 (D.naut.tw (D.naut.muC i) D.naut.etaTinv)).1 = Tp.tup (D.nd.mu i) j * C.eta⁻¹`. Rewrite using `[T.tw, T.muC i j hj, T.etaTinv]`. Establish `hU' : (T.e1 (D.naut.tw (D.naut.muC i) D.naut.etaTinv)).1.UnrAt w`. Rewrite using `[hπ]`.
+
+Conclude with `hU`. Establish `hunr : D.naut.unr (D.naut.locG (D.naut.tw (D.naut.muC i) D.naut.etaTinv) w)` using `(T.unr_iff _ w).2 hU'`. Establish `hc` using `(D.naut.chi_mu i w hw).2 B σ hB hσ`. Rewrite `hc` using `[D.naut.frobEig_tw _ _ hunr, T.frob _ w hU', Multiset.map_singleton, hπ]`. Conclude with `(Multiset.singleton_inj.1 hc).symm`.
+-/
 theorem NCharTied.chi_one {D : D7} {C : CharFrame D} {nch : NChoice D} {Tp : TupTied D C nch} (T : NCharTied D C nch Tp)
     (i : D.nd.Loc) (j : Fin D.R.m) (hj : j.1 + 1 = D.nd.j i) :
     IsGalOf D i {w | SplitOut D.nd i w} (D.nd.chi i 1) (Tp.tup (D.nd.mu i) j * C.eta⁻¹)
@@ -35,6 +40,11 @@ theorem NCharTied.chi_one {D : D7} {C : CharFrame D} {nch : NChoice D} {Tp : Tup
   rw [D.naut.frobEig_tw _ _ hunr, T.frob _ w hU', Multiset.map_singleton, hπ] at hc
   exact (Multiset.singleton_inj.1 hc).symm
 
+/- English proof (translation)
+Distinguish the cases in `hs : D.ntw.twSide a = true`. Rewrite using `[if_pos hs]`. Establish `he` using `D.ntw.twO_emb a x _ (by rw [if_pos hs]; exact h)`. Conclude with `(congrArg (fun t => D.naut.iotaQC a (D.naut.iotaQ a t)) he.symm).trans (D.naut.iota_LL a x)`. Rewrite using `[if_neg hs]`.
+
+Establish `he` using `D.ntw.twO_emb a x' _ (by`. Rewrite using `[if_neg hs, h]`. Conclude with `(D.ntw.restX_coefficientEmbedding_conj _ x' x (by rw [hx', star_star])).symm)`. Conclude with `(congrArg (fun t => D.naut.iotaQC a (D.naut.iotaQ a t)) he.symm).trans (D.naut.iota_LL a x')`.
+-/
 theorem delta_side (D : D7) (a : D.nd.Loc) (σ : Formalism.ConjugateSelfDual.G D.host.E D.nd.Om) (x x' : D.LL0)
     (hx' : (x' : D.what₂.LL) = star (x : D.what₂.LL))
     (h : algebraMap (D.ntw.O0 (D.ntw.twOf a)) (FractionRing (D.ntw.O0 (D.ntw.twOf a)))
@@ -59,6 +69,13 @@ def DeltaRead (D : D7) (C : CharFrame D) : Prop :=
       ∃ x : D.LL0, D.what₂.embLL (x : D.what₂.LL) = (((C.delAt (D.ntw.l s)).val w)⁻¹ : ℂˣ).1 ∧
         algebraMap (D.ntw.O0 s) (FractionRing (D.ntw.O0 s)) ((D.ntw.delta s σ : (D.ntw.O0 s)ˣ) : D.ntw.O0 s) = D.ntw.emb0 s x
 
+/- English proof (translation)
+Establish `key : ∀ χ : HChar D.host.E, (∃ n : ℕ, 0 < n ∧ χ.OrderDvd n) → χ.IsUnitary`. Introduce and unpack `χ ⟨n, hn, hχ⟩ x`. Establish `hχ' : χ ^ n = 1` using `hχ`. Establish `h1 : (χ.1 x) ^ n = 1`. Use `congrArg (fun ψ : HChar D.host.E => ψ.1 x) hχ'` as an intermediate fact.
+
+Conclude with `this`. Establish `h2 : ‖((χ.1 x : ℂˣ) : ℂ)‖ ^ n = 1`. Rewrite using `[← norm_pow, ← Units.val_pow_eq_pow_val, h1, Units.val_one, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 h2`. Unfold `CharFrame.delAt`.
+
+Use `split`. Conclude with `key _ C.isDel'.fin`. Conclude with `key _ C.isDel.fin`.
+-/
 theorem CharFrame.delAt_unitary {D : D7} (C : CharFrame D) (l : ℕ) : (C.delAt l).IsUnitary := by
 
   have key : ∀ χ : HChar D.host.E, (∃ n : ℕ, 0 < n ∧ χ.OrderDvd n) → χ.IsUnitary := by
@@ -75,6 +92,19 @@ theorem CharFrame.delAt_unitary {D : D7} (C : CharFrame D) (l : ℕ) : (C.delAt 
   · exact key _ C.isDel'.fin
   · exact key _ C.isDel.fin
 
+/- English proof (translation)
+Introduce `w _ hw hU B σ hB hσ`. Establish `hl : D.ntw.l (D.ntw.twOf a) = D.nd.l a` using `D.ntw.twOf_l a`. Establish `conj_inv : ∀ u : ℂˣ, ‖(u : ℂ)‖ = 1 → starRingEnd ℂ ((u⁻¹ : ℂˣ) : ℂ) = (u : ℂ)`. Introduce `u hu`. Establish `hn : Complex.normSq (u : ℂ) = 1`.
+
+Rewrite using `[Complex.normSq_eq_norm_sq, hu, one_pow]`. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, Complex.inv_def, Complex.normSq_conj, hn]`. Simplify using the standard rewrite rules. Establish `hinv : ((C.delAt (D.nd.l a))⁻¹).val w = ((C.delAt (D.nd.l a)).val w)⁻¹` using `rfl`. Establish `hU' : (C.delAt (D.nd.l a)).UnrAt w`.
+
+Distinguish the cases in `hs : D.ntw.twSide a = true`. Rewrite `hU` using `[if_pos hs]`. Conclude with `hU`. Rewrite `hU` using `[if_neg hs]`. Introduce `y hy`.
+
+Establish `h1 : (((C.delAt (D.nd.l a)).loc w) y)⁻¹ = 1` using `hU y hy`. Conclude with `inv_eq_one.1 h1`. Take `⟨x, hxv, hxd⟩` from `hrd (D.ntw.twOf a) w (by rw [hl]; exact hw) (by rw [hl]; exact hU') B σ hB hσ`. Rewrite `hxv` using `[hl]`. Establish `hd` using `delta_side D a σ x ⟨star (x : D.what₂.LL), hstar x⟩ rfl hxd`.
+
+Use `show toC D a (D.ntw.twist₂ a ((D.ntw.delta (D.ntw.twOf a) σ : (D.ntw.O0 (D.ntw.twOf a))ˣ) : D.ntw.O0 (D.ntw.twOf a))) = _`. Rewrite using `[hd, Complex.ofReal_zero, Complex.cpow_zero, mul_one]`. Distinguish the cases in `hs : D.ntw.twSide a = true`. Rewrite using `[if_pos hs, if_pos hs]`. Conclude with `hxv`.
+
+Rewrite using `[if_neg hs, if_neg hs] show D.what₂.embLL (star (x : D.what₂.LL)) = _`. Rewrite using `[D.starLL_cx, hxv, hinv, inv_inv]`. Apply `conj_inv` to reduce the goal to its premises. Conclude with `C.delAt_unitary _ _`.
+-/
 theorem isGalOf_delta_of_deltaRead (D : D7) (C : CharFrame D) (hstar : ∀ x : D.LL0, star (x : D.what₂.LL) ∈ D.LL0)
     (hrd : DeltaRead D C) (a : D.nd.Loc) :
     IsGalOf D a Set.univ ((Units.map (D.ntw.twist₂ a).toMonoidHom).comp (D.ntw.delta (D.ntw.twOf a)))
@@ -120,6 +150,9 @@ structure NGalChrTied (D : D7) (C : CharFrame D) (nch : NChoice D) (Tp : TupTied
 
   deltaRead : DeltaRead D C
 
+/- English proof (translation)
+The claim follows from `isGalOf_delta_of_deltaRead D C hstar T.deltaRead a`.
+-/
 theorem NGalChrTied.delta {D : D7} {C : CharFrame D} {nch : NChoice D} {Tp : TupTied D C nch} (T : NGalChrTied D C nch Tp)
     (hstar : ∀ x : D.LL0, star (x : D.what₂.LL) ∈ D.LL0) (a : D.nd.Loc) :
     IsGalOf D a Set.univ ((Units.map (D.ntw.twist₂ a).toMonoidHom).comp (D.ntw.delta (D.ntw.twOf a)))
@@ -133,6 +166,13 @@ def PsiChoiceCompatible (D : D7) (C : CharFrame D) (nch : NChoice D) (Tp : TupTi
       nch.embW w y = algebraMap (nch.Oe w) (FractionRing (nch.Oe w)) (algebraMap (D.ntw.Ok (nch.twI w) (nch.k' w)) (nch.Oe w)
         ((nch.psi' w (D.ntw.art (nch.twI w) (nch.Q w) σ) : (D.ntw.Ok (nch.twI w) (nch.k' w))ˣ) : D.ntw.Ok (nch.twI w) (nch.k' w)))
 
+/- English proof (translation)
+Take `⟨ψ0, -, hW, hK⟩` from `h.psi_eq`. Establish `hU : (Tp.psi (D.nd.w a)).UnrAt v`. Rewrite using `[(T.psi_is a).ram, h.Q_eq a]`. Conclude with `hQ`. Establish `hl' : v ∉ placesOver D.host.E (D.nd.l a)`.
+
+Rewrite using `[← D.nd.w_l a]`. Conclude with `hl`. Establish `hg` using `T.psiL a v (Set.mem_univ v) hl' hU B σ hB hσ`. Establish `hg' : D.what₂.embLL ((ψ0 (D.nd.w a) σ : (D.what₂.LL)ˣ) : D.what₂.LL) = (((Tp.psi (D.nd.w a)).val v)⁻¹ : ℂˣ).1`. Rewrite using `[← D.naut.iota_LL a, hK a σ]`.
+
+Simplify `hg` using `[toC]`. Establish `hyy : y = ((ψ0 (D.nd.w a) σ : (D.what₂.LL)ˣ) : D.what₂.LL)` using `D.what₂.embLL.injective (hy.trans hg'.symm)`. Rewrite using `[hyy]`. Conclude with `hW (D.nd.w a) σ`.
+-/
 theorem NGalChrTied.psiChoice {D : D7} {C : CharFrame D} {nch : NChoice D} {Tp : TupTied D C nch} (T : NGalChrTied D C nch Tp)
     (h : NChTie D nch) (a : D.nd.Loc) (v : PlE D.host) (hQ : v ∉ nch.Q (D.nd.w a))
     (hl : v ∉ placesOver D.host.E (D.what₂.places.resChar (D.nd.w a)))
@@ -170,6 +210,9 @@ structure CharacterChoiceData' (D : D7) (nch : NChoice D) where
   gal : NGalChrTied D C nch tp
   psi' : PsiChoiceCompatible D C nch tp
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `h v hv`. Conclude with `⟨y, by rw [T.embLL, hy]⟩`.
+-/
 theorem HChar.ValuesIn.qb {D : D7} (T : HostTied D) {χ : HChar D.host.E} {s : ℝ} (h : χ.ValuesIn s D.what₂.embLL)
     (v : HeightOneSpectrum (𝓞 D.host.E)) (hv : χ.UnrAt v) : ∃ y : D.what₂.LL, T.fr.ι (T.jLL y) = χ.valTw s v := by
   obtain ⟨y, hy⟩ := h v hv

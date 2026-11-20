@@ -14,6 +14,9 @@ section Gen
 
 variable {n m : Type*} [Fintype n] [DecidableEq n] [Fintype m] [DecidableEq m]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem frame_inv {s : Matrix n n ℂ} {x : Matrix m m ℂ} {F : Matrix n m ℂ}
     (hs : IsUnit s.det) (hx : IsUnit x.det) (h : s * F = F * x) : s⁻¹ * F = F * x⁻¹ := by
   calc s⁻¹ * F = s⁻¹ * (F * x * x⁻¹) := by rw [Matrix.mul_assoc F, mul_nonsing_inv x hx, Matrix.mul_one]
@@ -24,6 +27,11 @@ end Gen
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Establish `hfix : ∀ b, h *ᵥ fvec k r z b = fvec k r z b`. Introduce `b`. Unfold `fvec`. Use `split_ifs with ha`. Conclude with `(hh.2.1 ⟨b.val, ha⟩).1`.
+
+Conclude with `hh.2.2`. Use `mul_of_col z h 1 (fun b => by` as an intermediate fact. Rewrite using `[hfix b]`. Simplify using `[Matrix.one_apply])`. Rewrite `this` using `[Matrix.mul_one]`. Then use the resulting hypothesis.
+-/
 theorem uw_frame {z : Fin (2 * r + k + 1) → ℂ} {h : B.Mat k r} (hh : h ∈ UWset k r z) :
     h * Ff k r z = Ff k r z := by
   have hfix : ∀ b, h *ᵥ fvec k r z b = fvec k r z b := by
@@ -37,6 +45,11 @@ theorem uw_frame {z : Fin (2 * r + k + 1) → ℂ} {h : B.Mat k r} (hh : h ∈ U
     simp [Matrix.one_apply])
   rwa [Matrix.mul_one] at this
 
+/- English proof (translation)
+Establish `iL` using `lt_inv (ut_conjTranspose hb)`. Establish `e : P * u' * P⁻¹ = (bᴴ)⁻¹`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show (bᴴ)⁻¹ * (bᴴ * P * u') = ((bᴴ)⁻¹ * bᴴ) * P * u' by simp only [Matrix.mul_assoc], iL.2.1, Matrix.one_mul]`. Use `_ = (bᴴ)⁻¹ := by rw [h, Matrix.mul_assoc, mul_nonsing_inv P hP, Matrix.mul_one]`.
+
+Rewrite using `[e]`. Conclude with `iL.2.2`.
+-/
 theorem pair_lt {m : ℕ} {P b u' : Matrix (Fin m) (Fin m) ℂ} (hb : b ∈ UTset m) (h : bᴴ * P * u' = P)
     (hP : IsUnit P.det) : P * u' * P⁻¹ ∈ LTset m := by
   have iL := lt_inv (ut_conjTranspose hb)
@@ -47,6 +60,11 @@ theorem pair_lt {m : ℕ} {P b u' : Matrix (Fin m) (Fin m) ℂ} (hb : b ∈ UTse
       _ = (bᴴ)⁻¹ := by rw [h, Matrix.mul_assoc, mul_nonsing_inv P hP, Matrix.mul_one]
   rw [e]; exact iL.2.2
 
+/- English proof (translation)
+Establish `iA` using `lt_inv ha`. Use `⟨((P * a * P⁻¹)⁻¹)ᴴ, lt_conjTranspose iA.2.2, ?_⟩` and prove the remaining obligations. Rewrite using `[conjTranspose_conjTranspose]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[nonsing_inv_mul P hP, Matrix.mul_one]`. Use `_ = P := by rw [iA.2.1, Matrix.one_mul]`.
+-/
 theorem pair_of_lt {m : ℕ} {P a : Matrix (Fin m) (Fin m) ℂ} (hP : IsUnit P.det) (ha : P * a * P⁻¹ ∈ LTset m) :
     ∃ b, b ∈ UTset m ∧ bᴴ * P * a = P := by
   have iA := lt_inv ha
@@ -56,6 +74,47 @@ theorem pair_of_lt {m : ℕ} {P a : Matrix (Fin m) (Fin m) ℂ} (hP : IsUnit P.d
         simp only [Matrix.mul_assoc]; rw [nonsing_inv_mul P hP, Matrix.mul_one]
     _ = P := by rw [iA.2.1, Matrix.one_mul]
 
+/- English proof (translation)
+Introduce `k r z z' γ hS hP hmono s' hs'`. Establish `hz' : StdZ k r z'` using `hS.2.2`. Establish `hγ : γ ∈ B.GV k r` using `hP.1`. Establish `hPd : IsUnit (Zhat k r z z' γ).det` using `isUnit_iff_ne_zero.mpr (det_Zhat_ne z z' hS γ hP)`. Take `⟨hbij, -, hinj⟩` from `hC k r z z' γ hS hP`.
+
+Establish `hRS : ∀ ρ ∈ Rst k r z z' γ, γ⁻¹ * ρ * γ ∈ Sset k r z'`. Introduce `ρ hρ`. Take `⟨s0, hs0, he⟩` from `hρ.1.2`. Rewrite using `[(rho_conj γ hγ ρ s0 he).1]`. Conclude with `hs0`.
+
+Establish `hRL : ∀ ρ ∈ Rst k r z z' γ, Zhat k r z z' γ * uMap k r z' (γ⁻¹ * ρ * γ) * (Zhat k r z z' γ)⁻¹ ∈ LTset (r + 1)`. Introduce `ρ hρ`. Take `⟨hb, -, he⟩` from `hbij.1 hρ`. Conclude with `pair_lt hb he hPd`. Establish `hSgF : ∀ σ ∈ Sg' k r z z' γ, ∃ v, v ∈ UTset (r + 1) ∧ Zhat k r z z' γ * v * (Zhat k r z z' γ)⁻¹ ∈ UTset (r + 1) ∧ σ * Ff k r z' = Ff k r z' * v`.
+
+Introduce and unpack `σ ⟨n0, hn0, v, hv, hvP, h, hh, rfl⟩`. Take `⟨-, hn0F, -⟩` from `Sset_frame z' hz' n0 ⟨1, ⟨by show (1 : B.Mat k r)ᴴ * Hpk k r * 1 = Hpk k r; simp, fun a => ⟨by simp, by simp⟩, by simp⟩, n0, hn0.1, (Matrix.one_mul _).symm⟩`. Rewrite `hn0F` using `[hn0.2, Matrix.mul_one]`. Establish `hτ` using `hT k r z' hz' v hv`. Establish `hτF : tauM k r z' v * Ff k r z' = Ff k r z' * v` using `mul_of_col z' _ v hτ.2.1`.
+
+Use `⟨v, hv, hvP, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Ff k r z' * v := by rw [uw_frame hh, hτF, ← Matrix.mul_assoc, hn0F]`. Establish `hdata : ∀ ρ σ, ρ ∈ Rst k r z z' γ → σ ∈ Sg' k r z z' γ → s' = γ⁻¹ * ρ * γ * σ → ∃ v, Zhat k r z z' γ * v * (Zhat k r z z' γ)⁻¹ ∈ UTset (r + 1) ∧ uMap k r z' s' = uMap k r z' (γ⁻¹ * ρ * γ) * v`.
+
+Introduce `ρ σ hρ hσ he`. Take `⟨v, -, hvP, hσF⟩` from `hSgF σ hσ`. Take `⟨-, hxF, -⟩` from `Sset_frame z' hz' _ (hRS ρ hρ)`. Use `⟨v, hvP, uMap_eq z' hz' s' _ ?_⟩` and prove the remaining obligations. Rewrite using `[he]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hσF, ← Matrix.mul_assoc, hxF, Matrix.mul_assoc]`. Establish `huniq : ∀ ρ₁ σ₁ ρ₂ σ₂, ρ₁ ∈ Rst k r z z' γ → σ₁ ∈ Sg' k r z z' γ → s' = γ⁻¹ * ρ₁ * γ * σ₁ → ρ₂ ∈ Rst k r z z' γ → σ₂ ∈ Sg' k r z z' γ → s' = γ⁻¹ * ρ₂ * γ * σ₂ → ρ₁ = ρ₂ ∧ σ₁ = σ₂`. Introduce `ρ₁ σ₁ ρ₂ σ₂ h1 h1' e1 h2 h2' e2`. Take `⟨v₁, hv₁, hu₁⟩` from `hdata ρ₁ σ₁ h1 h1' e1`.
+
+Take `⟨v₂, hv₂, hu₂⟩` from `hdata ρ₂ σ₂ h2 h2' e2`. Establish `ha` using `split_unique hPd (hRL ρ₁ h1) (hRL ρ₂ h2) hv₁ hv₂ (hu₁.symm.trans hu₂)`. Establish `hρ : ρ₁ = ρ₂` using `hinj h1 h2 ha`. Substitute `hρ` using the available equality. Use `⟨rfl, ?_⟩` and prove the remaining obligations.
+
+Establish `hx : IsUnit (γ⁻¹ * ρ₁ * γ).det` using `isUnit_det_of_mem_GV (Sset_frame z' hz' _ (hRS ρ₁ h1)).1`. Establish `e3` using `e1.symm.trans e2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc, nonsing_inv_mul _ hx, Matrix.one_mul]`. Use `_ = (γ⁻¹ * ρ₁ * γ)⁻¹ * (γ⁻¹ * ρ₁ * γ * σ₂) := by rw [e3]`.
+
+Use `_ = σ₂ := by rw [← Matrix.mul_assoc, nonsing_inv_mul _ hx, Matrix.one_mul]`. Take `⟨h, hh, m, hm, hsm⟩` from `hs'`. Take `⟨-, hs'F, huUT⟩` from `Sset_frame z' hz' s' ⟨h, hh, m, hm, hsm⟩`. Take `⟨a, v, haU, hvU, haL, hvP, hsplit⟩` from `split_exists hLS hmono hPd huUT`. Take `⟨b, hbU, hbP⟩` from `pair_of_lt hPd haL`.
+
+Establish `hmem : ((b, a) : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ × Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) ∈ {p : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ × Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ | p.1 ∈ UTset (r + 1) ∧ p.2 ∈ UTset (r + 1) ∧ p.1ᴴ * Zhat k r z z' γ * p.2 = Zhat k r z z' γ}` using `⟨hbU, haU, hbP⟩`. Take `⟨ρ, hρ, hρe⟩` from `hbij.2.2 hmem`. Establish `hxa : uMap k r z' (γ⁻¹ * ρ * γ) = a` using `(Prod.ext_iff.mp hρe).2`. Take `⟨x, hxdef⟩ : ∃ x, x = γ⁻¹ * ρ * γ` from `⟨_, rfl⟩`. Establish `hxS : x ∈ Sset k r z'` using `by rw [hxdef]; exact hRS ρ hρ`.
+
+Take `⟨h₂, hh₂, m₂, hm₂, hx2⟩` from `id hxS`. Take `⟨hxG, hxF, -⟩` from `Sset_frame z' hz' x hxS`. Rewrite `hxF` using `[hxdef, hxa, ← hxdef]`. Establish `hxU` using `isUnit_det_of_mem_GV hxG`. Establish `iA` using `ut_inv haU`.
+
+Establish `hxiF : x⁻¹ * Ff k r z' = Ff k r z' * a⁻¹` using `frame_inv hxU (by rw [det_ut haU]; exact isUnit_one) hxF`. Take `⟨h₃, hh3def⟩ : ∃ h₃, h₃ = h₂⁻¹ * h` from `⟨_, rfl⟩`. Establish `hh₃ : h₃ ∈ UWset k r z'` using `by rw [hh3def]; exact uw_mul (uw_inv hh₂) hh`. Establish `ih₃` using `uh_inv hh₃.1`. Establish `hcm : h₃ * m * h₃⁻¹ ∈ Nset k r`.
+
+Use `conj_n (uw_inv hh₃) hm` as an intermediate fact. Rewrite `this` using `[Matrix.nonsing_inv_nonsing_inv _ (isUnit_det_of_mem_GV hh₃.1)]`. Then use the resulting hypothesis. Take `⟨n, hndef⟩ : ∃ n, n = m₂⁻¹ * (h₃ * m * h₃⁻¹)` from `⟨_, rfl⟩`. Establish `hn : n ∈ Nset k r` using `by rw [hndef]; exact n_mul (n_inv hm₂) hcm`. Establish `hσ_eq : x⁻¹ * s' = n * h₃`.
+
+Establish `e1 : x⁻¹ * s' = m₂⁻¹ * (h₃ * m)`. Rewrite using `[hx2, hsm, Matrix.mul_inv_rev, hh3def]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e1, hndef]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[ih₃.2.1, Matrix.mul_one]`. Establish `hσF : x⁻¹ * s' * Ff k r z' = Ff k r z' * v`. Rewrite using `[Matrix.mul_assoc, hs'F, hsplit, ← Matrix.mul_assoc, hxiF, Matrix.mul_assoc, ← Matrix.mul_assoc a⁻¹, iA.2.1, Matrix.one_mul]`. Establish `hnF : n * Ff k r z' = Ff k r z' * v`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hτ` using `hT k r z' hz' v hvU`. Establish `hτF : tauM k r z' v * Ff k r z' = Ff k r z' * v` using `mul_of_col z' _ v hτ.2.1`. Establish `iτ` using `uh_inv hτ.1.1`. Establish `hvd : IsUnit v.det` using `by rw [det_ut hvU]; exact isUnit_one`. Establish `hτiF : (tauM k r z' v)⁻¹ * Ff k r z' = Ff k r z' * v⁻¹` using `frame_inv (isUnit_det_of_mem_GV hτ.1.1) hvd hτF`.
+
+Establish `hn0 : n * (tauM k r z' v)⁻¹ ∈ Nset k r` using `n_mul hn (n_inv hτ.1)`. Establish `hn0F : n * (tauM k r z' v)⁻¹ * Ff k r z' = Ff k r z' * (1 : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ)`. Rewrite using `[Matrix.mul_assoc, hτiF, ← Matrix.mul_assoc, hnF, Matrix.mul_assoc, (ut_inv hvU).1]`. Establish `hn0u : uMap k r z' (n * (tauM k r z' v)⁻¹) = 1` using `uMap_eq z' hz' _ _ hn0F`. Establish `hσmem : x⁻¹ * s' ∈ Sg' k r z z' γ`.
+
+Use `⟨n * (tauM k r z' v)⁻¹, ⟨hn0, hn0u⟩, v, hvU, hvP, h₃, hh₃, ?_⟩` and prove the remaining obligations. Rewrite using `[hσ_eq, Matrix.mul_assoc n, iτ.2.1, Matrix.mul_one]`. Establish `heq : s' = γ⁻¹ * ρ * γ * (x⁻¹ * s')`. Rewrite using `[← hxdef, ← Matrix.mul_assoc, mul_nonsing_inv _ hxU, Matrix.one_mul]`. Use `⟨(ρ, x⁻¹ * s'), ⟨hρ, hσmem, heq⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨ρ', σ'⟩ ⟨h1, h2, h3⟩`. Take `⟨e1, e2⟩` from `huniq ρ' σ' ρ _ h1 h2 h3 hρ hσmem heq`. Conclude with `Prod.ext e1 e2`.
+-/
 theorem mirrorDecomp_of (hC : CurvatureConditionOneClauseThree) (hT : TauMem) (hLS : LowSplit) : MirrorDecomp := by
   intro k r z z' γ hS hP hmono s' hs'
   have hz' : StdZ k r z' := hS.2.2

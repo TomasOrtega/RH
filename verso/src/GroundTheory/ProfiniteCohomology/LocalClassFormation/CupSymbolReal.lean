@@ -14,6 +14,13 @@ section Comparison
 
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Fintype G]
 
+/- English proof (translation)
+Take `⟨w, hw, hwc⟩` from `exists_cocycle_cupCharClassProf A χ a`. Rewrite using `[← hw, cupCharClass_apply_charCocycle]`. Establish `e` using `ConcreteCategory.congr_hom (HomologicalComplex.homologyπ_naturality (cochainsComplexι A) 2) w`. Use `e.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(groupCohomology.π A 2).hom _ = (groupCohomology.π A 2).hom ((isoCocycles₂ A).inv.hom _)`.
+
+Use `congr 1`. Apply `(ModuleCat.mono_iff_injective ((inhomogeneousCochains A).iCycles 2)).1 inferInstance` to reduce the goal to its premises. Establish `e1` using `ConcreteCategory.congr_hom (HomologicalComplex.cyclesMap_i (cochainsComplexι A) 2) w`. Use `e1.trans ?_` and prove the remaining obligations. Rewrite using `[isoCocycles₂_inv_comp_iCocycles_apply]`.
+
+Use function extensionality and compare the values at `v`. Conclude with `hwc v`.
+-/
 theorem cohomologyToGroupCohomology_cupCharClassProf (A : Rep ℤ G) [IsDiscreteRep A]
     (χ : Additive G →ₜ+ QZ) (a : A.ρ.invariants) :
     (cohomologyToGroupCohomology A 2).hom ((cupCharClassProf A χ).hom a) =
@@ -34,6 +41,11 @@ theorem cohomologyToGroupCohomology_cupCharClassProf (A : Rep ℤ G) [IsDiscrete
 
 variable [DiscreteTopology G] [IsCyclic G]
 
+/- English proof (translation)
+Introduce `x`. Establish `hinj : Function.Injective (cohomologyToGroupCohomology A 2).hom`. Rewrite using `[← cohomologyIsoGroupCohomology_hom]`. Conclude with `(ModuleCat.mono_iff_injective _).1 inferInstance`. Establish `hχ' : Function.Injective (charAdd χ)` using `QZ.toAddCircle.injective.comp hχ`.
+
+Take `⟨a, ha⟩` from `cupCharClass_surjective (A := A) (charAdd χ) hχ' ((cohomologyToGroupCohomology A 2).hom x)`. Conclude with `⟨a, hinj (by rw [cohomologyToGroupCohomology_cupCharClassProf, ha])⟩`.
+-/
 theorem cupCharClassProf_surjective (A : Rep ℤ G) [IsDiscreteRep A] (χ : Additive G →ₜ+ QZ)
     (hχ : Function.Injective χ) : Function.Surjective (cupCharClassProf A χ).hom := by
   intro x
@@ -51,6 +63,11 @@ section OrderTwo
 
 variable {G : Type} [Group G] [Fintype G]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `h3 : ({1, g, g'} : Finset G).card = 3`. Rewrite using `[Finset.card_insert_of_notMem, Finset.card_pair hne]`. Simplify using `[Ne.symm hg, Ne.symm hg']`. Use `Finset.card_le_univ ({1, g, g'} : Finset G)` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem eq_of_ne_one_of_card_eq_two (h : Fintype.card G = 2) {g g' : G} (hg : g ≠ 1) (hg' : g' ≠ 1) :
     g = g' := by
   classical
@@ -61,6 +78,13 @@ theorem eq_of_ne_one_of_card_eq_two (h : Fintype.card G = 2) {g g' : G} (hg : g 
   have := Finset.card_le_univ ({1, g, g'} : Finset G)
   omega
 
+/- English proof (translation)
+Establish `h2 : (2 : ℕ) • χ (Additive.ofMul g) = 0`. Rewrite using `[← map_nsmul, ← ofMul_pow, ← h, pow_card_eq_one, ofMul_one, map_zero]`. Take `⟨m, hm⟩` from `QZ.exists_eq_nsmul_mk_one_div (by norm_num) h2`. Rewrite `hg`, the goal using `[hm]`. Take `⟨k, rfl | rfl⟩` from `Nat.even_or_odd' m`.
+
+It suffices to derive a contradiction. Apply `hg` to reduce the goal to its premises. Rewrite using `[mul_nsmul]`. Use `QZ.nsmul_mk_one_div 2` as an intermediate fact. Rewrite using `[this, nsmul_zero]`.
+
+Rewrite using `[add_nsmul, one_nsmul, mul_nsmul]`. Use `QZ.nsmul_mk_one_div 2` as an intermediate fact. Rewrite using `[this, nsmul_zero, zero_add]`. Evaluate the numerical expressions.
+-/
 theorem char_eq_half_of_card_eq_two (h : Fintype.card G = 2) (χ : Additive G →+ QZ) {g : G}
     (hg : χ (Additive.ofMul g) ≠ 0) : χ (Additive.ofMul g) = QZ.mk (1 / 2) := by
   have h2 : (2 : ℕ) • χ (Additive.ofMul g) = 0 := by
@@ -84,6 +108,9 @@ section Quadratic
 
 variable (F Ω : Type) [Field F] [Field Ω] [Algebra F Ω] [FiniteDimensional F Ω] [IsGalois F Ω]
 
+/- English proof (translation)
+Rewrite using `[Algebra.norm_eq_prod_automorphisms, Representation.norm, LinearMap.sum_apply, toMul_sum, Units.coe_prod]`. Conclude with `Finset.prod_congr rfl fun σ _ => coe_galUnitsHom_apply F Ω σ _`.
+-/
 theorem coe_toMul_norm_galUnitsZ (m : Additive Ωˣ) :
     (((Additive.toMul ((galUnitsZ F Ω).ρ.norm m) : Ωˣ) : Ω)) =
       algebraMap F Ω (Algebra.norm F ((Additive.toMul m : Ωˣ) : Ω)) := by
@@ -91,6 +118,15 @@ theorem coe_toMul_norm_galUnitsZ (m : Additive Ωˣ) :
     Units.coe_prod]
   exact Finset.prod_congr rfl fun σ _ => coe_galUnitsHom_apply F Ω σ _
 
+/- English proof (translation)
+Rewrite using `[mem_normRangeInvariants_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm⟩`. Use `⟨((Additive.toMul m : Ωˣ) : Ω), (algebraMap F Ω).injective ?_⟩` and prove the remaining obligations. Rewrite using `[← coe_toMul_norm_galUnitsZ, hm]`.
+
+Both sides reduce to the same expression. Introduce and unpack `⟨z, hz⟩`. Establish `hz0 : z ≠ 0`. Introduce and unpack `rfl`. Rewrite `hz` using `[Algebra.norm_zero]`.
+
+Conclude with `a.ne_zero hz.symm`. Use `⟨Additive.ofMul (Units.mk0 z hz0), ?_⟩` and prove the remaining obligations. Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use `(coe_toMul_norm_galUnitsZ F Ω _).trans ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `algebraMap F Ω (Algebra.norm F z) = algebraMap F Ω a`. Rewrite using `[hz]`.
+-/
 theorem unitsInvariant_mem_normRangeInvariants_iff (a : Fˣ) :
     unitsInvariant F Ω a ∈ normRangeInvariants (galUnitsZ F Ω) ↔
       (a : F) ∈ Set.range (Algebra.norm F : Ω → F) := by
@@ -112,6 +148,13 @@ theorem unitsInvariant_mem_normRangeInvariants_iff (a : Fˣ) :
     change algebraMap F Ω (Algebra.norm F z) = algebraMap F Ω a
     rw [hz]
 
+/- English proof (translation)
+Establish `hfix : ∀ σ : Gal(Ω/F), σ ((Additive.toMul (u : Additive Ωˣ) : Ωˣ) : Ω) = ((Additive.toMul (u : Additive Ωˣ) : Ωˣ) : Ω)` using `fun σ => by`. Use `congrArg (fun v : Additive Ωˣ => ((Additive.toMul v : Ωˣ) : Ω)) (u.2 σ)` as an intermediate fact. Conclude with `(coe_galUnitsHom_apply F Ω σ _).symm.trans this`. Establish `hfix' : ∀ σ : Gal(Ω/F), σ (((Additive.toMul (u : Additive Ωˣ) : Ωˣ)⁻¹ : Ωˣ) : Ω) = (((Additive.toMul (u : Additive Ωˣ) : Ωˣ)⁻¹ : Ωˣ) : Ω)` using `fun σ => by`. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, hfix]`.
+
+Take `⟨x, hx⟩` from `(IsGalois.mem_range_algebraMap_iff_fixed _).2 hfix`. Take `⟨y, hy⟩` from `(IsGalois.mem_range_algebraMap_iff_fixed _).2 hfix'`. Use `⟨⟨x, y, (algebraMap F Ω).injective ?_, (algebraMap F Ω).injective ?_⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hx, hy, map_one, Units.mul_inv]`. Rewrite using `[map_mul, hx, hy, map_one, Units.inv_mul]`.
+
+Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Conclude with `hx`.
+-/
 theorem exists_unitsInvariant_eq (u : (galUnitsZ F Ω).ρ.invariants) : ∃ a : Fˣ, unitsInvariant F Ω a = u := by
   have hfix : ∀ σ : Gal(Ω/F), σ ((Additive.toMul (u : Additive Ωˣ) : Ωˣ) : Ω) =
       ((Additive.toMul (u : Additive Ωˣ) : Ωˣ) : Ω) := fun σ => by
@@ -130,6 +173,9 @@ theorem exists_unitsInvariant_eq (u : (galUnitsZ F Ω).ρ.invariants) : ∃ a : 
     exact hx
 
 omit [FiniteDimensional F Ω] [IsGalois F Ω] in
+/- English proof (translation)
+Conclude with `Subtype.ext (congrArg Additive.ofMul (map_mul (Units.map (algebraMap F Ω : F →* Ω)) a b))`.
+-/
 theorem unitsInvariant_mul (a b : Fˣ) :
     unitsInvariant F Ω (a * b) = unitsInvariant F Ω a + unitsInvariant F Ω b := by
   exact Subtype.ext (congrArg Additive.ofMul (map_mul (Units.map (algebraMap F Ω : F →* Ω)) a b))
@@ -140,6 +186,11 @@ section QuadraticInv
 
 variable (F Ω : Type) [Field F] [Field Ω] [Algebra F Ω] [FiniteDimensional F Ω] [IsGalois F Ω]
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (cohomologyToGroupCohomology (galUnitsZ F Ω) 2).hom`. Rewrite using `[← cohomologyIsoGroupCohomology_hom]`. Conclude with `(ModuleCat.mono_iff_injective _).1 inferInstance`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_zero, galCupClass, cohomologyToGroupCohomology_cupCharClassProf]`.
+
+Conclude with `cupCharClass_eq_zero_of_mem _ _ ((unitsInvariant_mem_normRangeInvariants_iff F Ω a).2 ha)`.
+-/
 theorem galCupClass_eq_zero_of_mem_range_norm (χ : Additive Gal(Ω/F) →ₜ+ QZ) {a : Fˣ}
     (ha : (a : F) ∈ Set.range (Algebra.norm F : Ω → F)) : galCupClass F Ω χ a = 0 := by
   have hinj : Function.Injective (cohomologyToGroupCohomology (galUnitsZ F Ω) 2).hom := by
@@ -149,6 +200,11 @@ theorem galCupClass_eq_zero_of_mem_range_norm (χ : Additive Gal(Ω/F) →ₜ+ Q
   rw [map_zero, galCupClass, cohomologyToGroupCohomology_cupCharClassProf]
   exact cupCharClass_eq_zero_of_mem _ _ ((unitsInvariant_mem_normRangeInvariants_iff F Ω a).2 ha)
 
+/- English proof (translation)
+Establish `hχ' : Function.Injective (charAdd χ)` using `QZ.toAddCircle.injective.comp hχ`. Use `isCyclic_of_injective_char (charAdd χ) hχ'` as an intermediate fact. Establish `hinj : Function.Injective (cohomologyToGroupCohomology (galUnitsZ F Ω) 2).hom`. Rewrite using `[← cohomologyIsoGroupCohomology_hom]`. Conclude with `(ModuleCat.mono_iff_injective _).1 inferInstance`.
+
+Rewrite using `[← unitsInvariant_mem_normRangeInvariants_iff, ← cupCharClass_eq_zero_iff (charAdd χ) hχ', ← cohomologyToGroupCohomology_cupCharClassProf, ← map_zero (cohomologyToGroupCohomology _ 2).hom, hinj.eq_iff]`. Both sides reduce to the same expression.
+-/
 theorem galCupClass_eq_zero_iff_of_injective (χ : Additive Gal(Ω/F) →ₜ+ QZ)
     (hχ : Function.Injective χ) (a : Fˣ) :
     galCupClass F Ω χ a = 0 ↔ (a : F) ∈ Set.range (Algebra.norm F : Ω → F) := by
@@ -168,14 +224,33 @@ noncomputable def quadraticInvFun (x : cohomology (galUnitsZ F Ω) 2) : QZ :=
   if x = 0 then 0 else QZ.mk (1 / 2)
 
 omit [FiniteDimensional F Ω] in
+/- English proof (translation)
+Simplify using `[quadraticInvFun]`.
+-/
 theorem quadraticInvFun_zero : quadraticInvFun F Ω 0 = 0 := by
   simp [quadraticInvFun]
 
 omit [FiniteDimensional F Ω] in
+/- English proof (translation)
+Simplify using `[quadraticInvFun, hx]`.
+-/
 theorem quadraticInvFun_of_ne_zero {x : cohomology (galUnitsZ F Ω) 2} (hx : x ≠ 0) :
     quadraticInvFun F Ω x = QZ.mk (1 / 2) := by
   simp [quadraticInvFun, hx]
 
+/- English proof (translation)
+Distinguish the cases in `ha : (a : F) ∈ Set.range (Algebra.norm F : Ω → F)`. Rewrite using `[hg.2 ha, ofMul_one, map_zero, galCupClass_eq_zero_of_mem_range_norm F Ω χ ha, quadraticInvFun_zero]`. Establish `hg1 : g ≠ 1` using `fun h => ha (hg.1 h)`. Establish `hcard : Fintype.card Gal(Ω/F) = 2`. Establish `h1 : Fintype.card Gal(Ω/F) = Module.finrank F Ω`.
+
+Rewrite using `[← Nat.card_eq_fintype_card]`. Conclude with `IsGalois.card_aut_eq_finrank F Ω`. Establish `h3 : 1 < Fintype.card Gal(Ω/F)` using `Fintype.one_lt_card_iff.2 ⟨g, 1, hg1⟩`. Use linear arithmetic over natural numbers and integers. Distinguish the cases in `hχg : χ (Additive.ofMul g) = 0`.
+
+Establish `hχ0 : χ = 0`. Use extensionality with `x`. Distinguish the cases in `hx : Additive.toMul x = 1`. Rewrite using `[show x = Additive.ofMul 1 from hx ▸ rfl, ofMul_one, map_zero]`. Both sides reduce to the same expression.
+
+Rewrite using `[show x = Additive.ofMul g from eq_of_ne_one_of_card_eq_two hcard hx hg1 ▸ rfl, hχg]`. Both sides reduce to the same expression. Rewrite using `[hχg, hχ0]`. Express the relevant statement in the definitionally equal form `quadraticInvFun F Ω ((cupCharClassProf (galUnitsZ F Ω) 0).hom _) = 0`. Rewrite using `[cupCharClassProf_zero, quadraticInvFun_zero]`.
+
+Establish `hχinj : Function.Injective χ` using `(injective_iff_map_eq_zero χ).2 fun x hx => by`. Assume the negation of the conclusion as `hne`. Establish `hx1 : Additive.toMul x ≠ 1` using `fun h => hne (by rw [show x = Additive.ofMul 1 from h ▸ rfl, ofMul_one])`. Conclude with `hχg (by rw [← eq_of_ne_one_of_card_eq_two hcard hx1 hg1]; exact hx)`. Rewrite using `[quadraticInvFun_of_ne_zero F Ω (fun h => ha ((galCupClass_eq_zero_iff_of_injective F Ω χ hχinj a).1 h))]`.
+
+Conclude with `(char_eq_half_of_card_eq_two hcard χ.toAddMonoidHom hχg).symm`.
+-/
 theorem quadraticInvFun_galCupClass (h2 : Module.finrank F Ω ≤ 2) (χ : Additive Gal(Ω/F) →ₜ+ QZ)
     (a : Fˣ) (g : Gal(Ω/F)) (hg : g = 1 ↔ (a : F) ∈ Set.range (Algebra.norm F : Ω → F)) :
     quadraticInvFun F Ω (galCupClass F Ω χ a) = χ (Additive.ofMul g) := by
@@ -213,6 +288,9 @@ end QuadraticInv
 
 section QuadraticHom
 
+/- English proof (translation)
+Rewrite using `[Ne, QZ.mk_eq_zero_iff]`. Introduce and unpack `⟨n, hn⟩`. Establish `h2 : (2 * n : ℚ) = 1` using `by rw [hn]; norm_num`. Establish `h3 : (2 * n : ℤ) = 1` using `by exact_mod_cast h2`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem QZ.mk_half_ne_zero : QZ.mk (1 / 2) ≠ 0 := by
   rw [Ne, QZ.mk_eq_zero_iff]
   rintro ⟨n, hn⟩
@@ -220,6 +298,9 @@ theorem QZ.mk_half_ne_zero : QZ.mk (1 / 2) ≠ 0 := by
   have h3 : (2 * n : ℤ) = 1 := by exact_mod_cast h2
   omega
 
+/- English proof (translation)
+Rewrite using `[← two_nsmul]`. Use `QZ.nsmul_mk_one_div 2` as an intermediate fact. Evaluate the numerical expressions using `at this`. Conclude with `this`.
+-/
 theorem QZ.mk_half_add_mk_half : QZ.mk (1 / 2) + QZ.mk (1 / 2) = 0 := by
   rw [← two_nsmul]
   have := QZ.nsmul_mk_one_div 2
@@ -229,6 +310,9 @@ theorem QZ.mk_half_add_mk_half : QZ.mk (1 / 2) + QZ.mk (1 / 2) = 0 := by
 variable (F Ω : Type) [Field F] [Field Ω] [Algebra F Ω] [FiniteDimensional F Ω] [IsGalois F Ω]
 
 omit [IsGalois F Ω] in
+/- English proof (translation)
+Conclude with `(AlgEquiv.card_le (F := F) (K := Ω)).trans h2`.
+-/
 theorem card_gal_le_two (h2 : Module.finrank F Ω ≤ 2) : Fintype.card Gal(Ω/F) ≤ 2 := by
   exact (AlgEquiv.card_le (F := F) (K := Ω)).trans h2
 
@@ -256,6 +340,11 @@ noncomputable def quadraticChar (h2 : Module.finrank F Ω ≤ 2) : Additive Gal(
 
 omit [IsGalois F Ω] in
 open Classical in
+/- English proof (translation)
+Use `(injective_iff_map_eq_zero (quadraticChar F Ω h2)).2 fun x hx => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `h1 : Additive.toMul x ≠ 1` using `fun h => hne (by rw [show x = Additive.ofMul 1 from h ▸ rfl, ofMul_one])`. Express the relevant statement in the definitionally equal form `(if Additive.toMul x = 1 then 0 else QZ.mk (1 / 2)) = 0 at hx`. Rewrite `hx` using `[if_neg h1]`.
+
+Conclude with `QZ.mk_half_ne_zero hx`.
+-/
 theorem quadraticChar_injective (h2 : Module.finrank F Ω ≤ 2) :
     Function.Injective (quadraticChar F Ω h2) := by
   refine (injective_iff_map_eq_zero (quadraticChar F Ω h2)).2 fun x hx => ?_
@@ -294,10 +383,16 @@ noncomputable def quadraticInv (h2 : Module.finrank F Ω ≤ 2)
     rw [hab, quadraticInvFun_zero, quadraticInvFun_of_ne_zero F Ω hx,
       quadraticInvFun_of_ne_zero F Ω hy, QZ.mk_half_add_mk_half]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem quadraticInv_apply (h2 : Module.finrank F Ω ≤ 2) (hN) (x : cohomology (galUnitsZ F Ω) 2) :
     quadraticInv F Ω h2 hN x = quadraticInvFun F Ω x :=
   rfl
 
+/- English proof (translation)
+Use `(injective_iff_map_eq_zero _).2 fun x hx => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Rewrite `hx` using `[quadraticInv_apply, quadraticInvFun_of_ne_zero F Ω hne]`. Conclude with `QZ.mk_half_ne_zero hx`.
+-/
 theorem quadraticInv_injective (h2 : Module.finrank F Ω ≤ 2) (hN) :
     Function.Injective (quadraticInv F Ω h2 hN) := by
   refine (injective_iff_map_eq_zero _).2 fun x hx => ?_
@@ -305,6 +400,9 @@ theorem quadraticInv_injective (h2 : Module.finrank F Ω ≤ 2) (hN) :
   rw [quadraticInv_apply, quadraticInvFun_of_ne_zero F Ω hne] at hx
   exact QZ.mk_half_ne_zero hx
 
+/- English proof (translation)
+The claim follows from `quadraticInvFun_galCupClass F Ω h2 χ a g hg`.
+-/
 theorem quadraticInv_galCupClass (h2 : Module.finrank F Ω ≤ 2) (hN) (χ : Additive Gal(Ω/F) →ₜ+ QZ)
     (a : Fˣ) (g : Gal(Ω/F)) (hg : g = 1 ↔ (a : F) ∈ Set.range (Algebra.norm F : Ω → F)) :
     quadraticInv F Ω h2 hN (galCupClass F Ω χ a) = χ (Additive.ofMul g) :=

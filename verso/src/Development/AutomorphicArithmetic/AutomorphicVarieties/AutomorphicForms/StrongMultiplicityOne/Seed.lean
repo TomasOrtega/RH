@@ -10,6 +10,15 @@ open GlobalTheory.CuspRep (Cinf Lie chart infGL pInf sInf toL lmul invSet)
 open scoped SchwartzMap FourierTransform RealInnerProductSpace ContDiff Topology
 open UpperTheory.V UpperTheory.V.Af.StrongMultiplicityOne
 
+/- English proof (translation)
+Introduce `hW hS hN E _ _ _ n U hU l sU`. Establish `nice : ∀ φ ∈ U, Nice φ.1` using `fun φ hφ => (hN E n φ).2 (l hφ)`. Take `⟨φ, hφ, h0⟩` from `(Submodule.ne_bot_iff _).1 hU`. Establish `N` using `nice φ hφ`. Establish `hg : ∃ g, whittaker φ.1 g ≠ 0`.
+
+Assume the negation of the conclusion as `h`. Use `h0 (Subtype.ext (MultiplicityOne.eq_zero_of_whittaker_eq_zero N.cont N.left N.cusp ?_ fun g => not_not.1 fun h' => h ⟨g, h'⟩))` and prove the remaining obligations. Rewrite using `[Fb.finEmb_eq]`. Conclude with `N.level`. Take `⟨g, hg⟩` from `hg`.
+
+Rewrite `hg` using `[← GlobalTheory.CuspRep.infGL_mul_finGL g]`. Generalize the expression as in `GeneralLinearGroup.map (pInf E) g = y at hg`. Generalize the expression as in `GeneralLinearGroup.map (pFin E) g = k at hg`. Establish `hφ'` using `sU.τ k φ hφ`. Use `⟨_, hφ', hS E n _ (hW E n _ (nice _ hφ')).1 y ?_⟩` and prove the remaining obligations.
+
+Establish `e : (finRepCusp E n k φ).1 = fun x => φ.1 (x * finGL E n k)`. Rewrite using `[← Fb.finEmb_eq]`. Both sides reduce to the same expression. Rewrite using `[e]`. Simplify `hg` using `only [whittaker, mul_assoc]`.
+-/
 theorem UpperTheory.V.Af.StrongMultiplicityOne.seed :
     UpperTheory.V.Af.Smo.WhBasic → UpperTheory.V.Af.StrongMultiplicityOne.SeedConv → UpperTheory.V.Af.StrongMultiplicityOne.NiceOf → UpperTheory.V.Af.StrongMultiplicityOne.Seed := by
   intro hW hS hN E _ _ _ n U hU l sU

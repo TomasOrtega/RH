@@ -2,6 +2,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Weyl
 
 open Matrix UpperTheory.V.Weyl
 
+/- English proof (translation)
+Introduce `n f`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a`. Introduce `φ`. Use `⟨MvPolynomial.C (φ (MvPolynomial.C a)), fun g => ?_⟩` and prove the remaining obligations.
+
+Establish `hc` using `(rtr g).commutes a`. Rewrite `hc` using `[MvPolynomial.algebraMap_eq]`. Rewrite using `[hc, MvPolynomial.eval_C]`. Consider the case `add p q hp hq`. Introduce `φ`.
+
+Take `⟨p1, h1⟩` from `hp φ`. Take `⟨p2, h2⟩` from `hq φ`. Conclude with `⟨p1 + p2, fun g => by rw [map_add, map_add, h1, h2, map_add]⟩`. Consider the case `mul_X p ij hp`. Introduce `φ`.
+
+Use `choose P hP using fun k : Fin n => hp (φ.comp (LinearMap.mulRight ℂ (MvPolynomial.X (ij.1, k) : Pol n)))`. Use `⟨∑ k, MvPolynomial.X (k, ij.2) * P k, fun g => ?_⟩` and prove the remaining obligations. Establish `hX : rtr g (MvPolynomial.X ij : Pol n) = ∑ k, (MvPolynomial.X (ij.1, k) : Pol n) * MvPolynomial.C (g k ij.2)`. Simplify using `[rtr, MvPolynomial.aeval_X]`. Rewrite using `[map_mul, hX, Finset.mul_sum, map_sum, map_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hk` using `hP k g`. Simplify using `only [LinearMap.comp_apply, LinearMap.mulRight_apply] at hk`. Rewrite using `[show rtr g p * ((MvPolynomial.X (ij.1, k) : Pol n) * MvPolynomial.C (g k ij.2)) = MvPolynomial.C (g k ij.2) * (rtr g p * MvPolynomial.X (ij.1, k)) by ring, MvPolynomial.C_mul', map_smul, smul_eq_mul, hk, MvPolynomial.eval_mul, MvPolynomial.eval_X]`.
+-/
 theorem UpperTheory.V.Weyl.rtrPoly :
     ∀ (n : ℕ) (f : Pol n) (φ : Pol n →ₗ[ℂ] ℂ), ∃ p : Pol n, ∀ g : Matrix (Fin n) (Fin n) ℂ,
       φ (rtr g f) = MvPolynomial.eval (fun ab => g ab.1 ab.2) p := by

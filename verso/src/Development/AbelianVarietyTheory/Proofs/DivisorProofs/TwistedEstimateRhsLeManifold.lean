@@ -7,6 +7,21 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExtendByZeroOnSubse
 open MeasureTheory Filter Topology Metric ReciprocityTheory.L2DbarEstimates ReciprocityTheory.L2DbarEstimates.Y GlobalTheory.OTY GlobalTheory.Published.L2Extension
 open scoped ENNReal ContDiff
 
+/- English proof (translation)
+Introduce `n Y _ _ _ _ _ ι La _ A E L s U z β h hU htr hq hm hpsi δ T`. Use `set S : Set Y := {y | -T - 1 ≤ δ * psi A L s y ∧ δ * psi A L s y ≤ -T + 1} with hS`. Establish `hδ : Measurable fun y => δ * psi A L s y` using `hpsi.const_mul δ`. Establish `hSm : MeasurableSet S` using `(measurableSet_le measurable_const hδ).inter (measurableSet_le hδ measurable_const)`. Establish `hw : Measurable (S.indicator fun y => Real.exp (-psi A L s y))` using `(Real.measurable_exp.comp hpsi.neg).indicator hSm`.
+
+Establish `key` using `htr _ _ hm hw (fun y _ => Set.indicator_nonneg (fun _ _ => (Real.exp_pos _).le) y)`. Establish `hS' : MeasurableSet {x : U | -T - 1 ≤ δ * psi A L s x ∧ δ * psi A L s x ≤ -T + 1}` using `measurable_subtype_coe hSm`. Rewrite using `[← lintegral_indicator hS']`. Use `le_trans (le_of_eq ?_) (le_trans key.ge ?_)` and prove the remaining obligations. Use `lintegral_congr fun x => ?_` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.OTY.TwEst.extendByZeroOnSubset_apply_coe]`. Distinguish the cases in `hx : (x : Y) ∈ S`. Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem (show x ∈ {x : U | -T - 1 ≤ δ * psi A L s x ∧ δ * psi A L s x ≤ -T + 1} from hx), ← Real.exp_add]`. Use `congr 3`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem (show x ∉ {x : U | -T - 1 ≤ δ * psi A L s x ∧ δ * psi A L s x ≤ -T + 1} from hx)]`. Simplify using the standard rewrite rules. Rewrite using `[← lintegral_indicator hSm, ← lintegral_indicator hU.measurableSet]`. Use `lintegral_mono fun y => ?_` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ U`.
+
+Rewrite using `[Set.indicator_of_mem hy]`. Distinguish the cases in `hx : y ∈ S`. Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem hx]`. Establish `h0` using `GlobalTheory.OTY.TwEst.extendByZeroOnSubset_apply_coe U (fun y : U => GlobalTheory.OTY.TwEst.quot A h β y) ⟨y, hy⟩`. Simplify using `only at h0`.
+
+Rewrite using `[h0]`. Apply `le_of_eq` to reduce the goal to its premises. Use `congr 2`. Unfold `WeightedAtlas.nsq`. Rewrite using `[hq y hy, norm_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Set.indicator_of_notMem hx]`. Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem hy]`. Conclude with `zero_le`.
+-/
 theorem GlobalTheory.OTY.TwEst.rhs_le_manifold : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] (ι La : Type) [AddCommGroup La] (A : WeightedAtlas n Y ι La), ∀ (E L : La) (s : Fin n → ι → Y → ℂ) (U : Set Y) (z : Y → V n) (β h : ι → Y → ℂ), IsOpen U → (∀ (a : Y → ℂ) (w : Y → ℝ), Measurable a → Measurable w → (∀ y ∈ U, 0 ≤ w y) → ∫⁻ y in U, ENNReal.ofReal (A.nsq (A.kap + E) β y * ‖a y‖ ^ 2 * w y) ∂A.mu = ∫⁻ x : U, ENNReal.ofReal (‖a x‖ ^ 2 * (w x * Real.exp (-GlobalTheory.OTY.TwEst.wt A E β z x))) ∂vol n (fun y : U => z y)) → (∀ y ∈ U, h (A.pick y) y = β (A.pick y) y * GlobalTheory.OTY.TwEst.quot A h β y) → Measurable (GlobalTheory.OTY.TwEst.ext0 U (fun y : U => GlobalTheory.OTY.TwEst.quot A h β y)) → Measurable (psi A L s) → ∀ δ T : ℝ, ∫⁻ x in {x : U | -T - 1 ≤ δ * psi A L s x ∧ δ * psi A L s x ≤ -T + 1}, ENNReal.ofReal (‖GlobalTheory.OTY.TwEst.quot A h β x‖ ^ 2 * Real.exp (-(GlobalTheory.OTY.TwEst.wt A E β z x + psi A L s x))) ∂vol n (fun y : U => z y) ≤ ∫⁻ y in {y | -T - 1 ≤ δ * psi A L s y ∧ δ * psi A L s y ≤ -T + 1}, ENNReal.ofReal (A.nsq (A.kap + E) h y * Real.exp (-psi A L s y)) ∂A.mu := by
   intro n Y _ _ _ _ _ ι La _ A E L s U z β h hU htr hq hm hpsi δ T
   set S : Set Y := {y | -T - 1 ≤ δ * psi A L s y ∧ δ * psi A L s y ≤ -T + 1} with hS

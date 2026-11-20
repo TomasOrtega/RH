@@ -9,6 +9,11 @@ set_option linter.unusedSectionVars false
 
 variable {𝕜 : Type*} [RCLike 𝕜] {n : Type*} [Fintype n] [LinearOrder n]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h i j hij`. Use `h (i := j) (j := i) (OrderDual.toDual_lt_toDual.1 hij)` as an intermediate fact. Simplify `this` using `[conjTranspose_apply]`. Introduce `h i j hij`.
+
+Use `h (show OrderDual.toDual i < OrderDual.toDual j from hij)` as an intermediate fact. Simplify using `[conjTranspose_apply, this]`.
+-/
 theorem isUpperTriangular_conjTranspose_iff {A : Matrix n n 𝕜} :
     Aᴴ.IsUpperTriangular ↔ A.IsLowerTriangular := by
   constructor
@@ -23,6 +28,17 @@ section Existence
 
 variable [WellFoundedLT n] [LocallyFiniteOrderBot n]
 
+/- English proof (translation)
+Establish `hLi : (LDL.lowerInv hS).IsLowerTriangular` using `fun i j hij => LDL.lowerInv_triangular hS (OrderDual.toDual_lt_toDual.1 hij)`. Establish `hL : (LDL.lower hS).IsLowerTriangular` using `blockTriangular_inv_of_blockTriangular hLi`. Establish `hD : (LDL.diag hS).PosDef`. Rewrite using `[LDL.diag_eq_lowerInv_conj]`. Conclude with `hS.mul_mul_conjTranspose_same (vecMul_injective_iff_isUnit.2 (isUnit_of_invertible (LDL.lowerInv hS)))`.
+
+Establish `hpos : ∀ i, 0 < LDL.diagEntries hS i` using `fun i => by`. Simplify `hD.diag_pos (i := i)` using `[LDL.diag]`. Use `set d : n → ℝ := fun i => RCLike.re (LDL.diagEntries hS i)`. Establish `hd : ∀ i, LDL.diagEntries hS i = (d i : 𝕜)` using `fun i => by`. Take `⟨_, him⟩` from `RCLike.pos_iff.1 (hpos i)`.
+
+Rewrite using `[← RCLike.re_add_im (LDL.diagEntries hS i), him]`. Simplify using `[d]`. Establish `hd0 : ∀ i, 0 ≤ d i` using `fun i => (RCLike.pos_iff.1 (hpos i)).1.le`. Use `⟨diagonal (fun i => (Real.sqrt (d i) : 𝕜)) * (LDL.lower hS)ᴴ, (blockTriangular_diagonal _).mul (isUpperTriangular_conjTranspose_iff.2 hL), ?_⟩` and prove the remaining obligations. Establish `hsq : (diagonal (fun i => (Real.sqrt (d i) : 𝕜)))ᴴ * diagonal (fun i => (Real.sqrt (d i) : 𝕜)) = LDL.diag hS`.
+
+Rewrite using `[diagonal_conjTranspose, diagonal_mul_diagonal, LDL.diag]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[hd i, Pi.star_apply, RCLike.star_def, RCLike.conj_ofReal, ← RCLike.ofReal_mul, Real.mul_self_sqrt (hd0 i)]`. Rewrite using `[conjTranspose_mul, conjTranspose_conjTranspose]`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = S := by rw [hsq, LDL.lower_conj_diag]`.
+-/
 theorem exists_isUpperTriangular_conjTranspose_mul_self {S : Matrix n n 𝕜} (hS : S.PosDef) :
     ∃ R : Matrix n n 𝕜, R.IsUpperTriangular ∧ Rᴴ * R = S := by
   have hLi : (LDL.lowerInv hS).IsLowerTriangular := fun i j hij =>
@@ -61,11 +77,21 @@ section Existence2
 
 variable [WellFoundedLT n] [LocallyFiniteOrderBot n]
 
+/- English proof (translation)
+Rewrite using `[star_div₀, RCLike.star_def, RCLike.conj_ofReal, div_mul_div_comm, RCLike.conj_mul, ← sq]`. Conclude with `div_self (pow_ne_zero 2 (by simpa using hx))`.
+-/
 theorem star_mul_self_norm_div {x : 𝕜} (hx : x ≠ 0) :
     star ((‖x‖ : 𝕜) / x) * ((‖x‖ : 𝕜) / x) = 1 := by
   rw [star_div₀, RCLike.star_def, RCLike.conj_ofReal, div_mul_div_comm, RCLike.conj_mul, ← sq]
   exact div_self (pow_ne_zero 2 (by simpa using hx))
 
+/- English proof (translation)
+Take `⟨R, hR, hRS⟩` from `exists_isUpperTriangular_conjTranspose_mul_self hS`. Establish `hdet : S.det ≠ 0` using `(isUnit_iff_isUnit_det S).1 hS.isUnit |>.ne_zero`. Establish `hRi : ∀ i, R i i ≠ 0`. Establish `: R.det ≠ 0`. Introduce `h`.
+
+Apply `hdet` to reduce the goal to its premises. Rewrite using `[← hRS, det_mul, h, mul_zero]`. Rewrite `this` using `[det_of_isUpperTriangular hR]`. Conclude with `fun i => Finset.prod_ne_zero_iff.1 this i (Finset.mem_univ i)`. Use `⟨diagonal (fun i => (‖R i i‖ : 𝕜) / R i i) * R, fun i => ‖R i i‖, (blockTriangular_diagonal _).mul hR, fun i => norm_pos_iff.2 (hRi i), fun i => ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[diagonal_mul, div_mul_cancel₀ _ (hRi i)]`. Rewrite using `[conjTranspose_mul, Matrix.mul_assoc, ← Matrix.mul_assoc (diagonal _)ᴴ, diagonal_conjTranspose, diagonal_mul_diagonal]`. Establish `: (fun i => (star (fun i => (‖R i i‖ : 𝕜) / R i i)) i * ((‖R i i‖ : 𝕜) / R i i)) = fun _ => 1` using `funext fun i => star_mul_self_norm_div (hRi i)`. Rewrite using `[this, diagonal_one, Matrix.one_mul, hRS]`.
+-/
 theorem exists_cholesky {S : Matrix n n 𝕜} (hS : S.PosDef) :
     ∃ B : Matrix n n 𝕜, ∃ a : n → ℝ, B.IsUpperTriangular ∧ (∀ i, 0 < a i) ∧
       (∀ i, B i i = a i) ∧ Bᴴ * B = S := by

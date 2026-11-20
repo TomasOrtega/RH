@@ -29,6 +29,9 @@ def embPlace : (F →+* ℝ) ≃ {w : InfinitePlace F // IsReal w} where
       ext x; simp
     simp only [this, mk_embedding]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem embPlace_symm_apply (w : {w : InfinitePlace F // IsReal w}) :
     (embPlace.symm w : F →+* ℝ) = embedding_of_isReal w.2 := rfl
 
@@ -45,10 +48,20 @@ def toMixed : RSp F ≃ₗ[ℝ] mixedSpace F where
     refine Prod.ext (funext fun w => ?_) (Subsingleton.elim _ _)
     simp
 
+/- English proof (translation)
+Use `Prod.ext (funext fun w => ?_) (Subsingleton.elim _ _)` and prove the remaining obligations. Simplify using `[toMixed, embPlace_symm_apply]`.
+-/
 theorem toMixed_remb (a : F) : toMixed (remb F a) = mixedEmbedding F a := by
   refine Prod.ext (funext fun w => ?_) (Subsingleton.elim _ _)
   simp [toMixed, embPlace_symm_apply]
 
+/- English proof (translation)
+Establish `h1` using `PiLp.volume_preserving_ofLp (F →+* ℝ)`. Establish `h2` using `volume_measurePreserving_piCongrLeft (fun _ : {w : InfinitePlace F // IsReal w} => ℝ) (embPlace (F := F))`. Establish `h3 : MeasurePreserving (fun y : {w : InfinitePlace F // IsReal w} → ℝ => (y, (0 : {w : InfinitePlace F // IsComplex w} → ℂ))) volume volume`. Use `⟨measurable_id.prodMk measurable_const, ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.volume_eq_prod, show (volume : Measure ({w : InfinitePlace F // IsComplex w} → ℂ)) = Measure.dirac 0 from Measure.volume_pi_eq_dirac 0, Measure.prod_dirac]`.
+
+Establish `h` using `h3.comp (h2.comp h1)`. Establish `he : ⇑(toMixed (F` using `F)).toContinuousLinearEquiv = (fun y : {w : InfinitePlace F // IsReal w} → ℝ => (y, (0 : {w : InfinitePlace F // IsComplex w} → ℂ))) ∘ ⇑(MeasurableEquiv.piCongrLeft (fun _ : {w : InfinitePlace F // IsReal w} => ℝ) (embPlace (F := F))) ∘ WithLp.ofLp := by`. Use function extensionality and compare the values at `x`. Use `Prod.ext (funext fun w => ?_) rfl` and prove the remaining obligations. Simplify using `[toMixed, MeasurableEquiv.coe_piCongrLeft, Equiv.piCongrLeft_apply_eq_cast]`.
+
+Rewrite using `[he]`. Conclude with `h`.
+-/
 theorem measurePreserving_toMixed :
     MeasurePreserving (toMixed (F := F)).toContinuousLinearEquiv volume volume := by
   have h1 := PiLp.volume_preserving_ofLp (F →+* ℝ)
@@ -75,6 +88,15 @@ end GlobalTheory.LipschitzCovol
 
 open scoped Classical in
 open GlobalTheory.LipschitzCovol in
+/- English proof (translation)
+Introduce `F _ _ _ N hN _ _`. Establish `hmem : ∀ x : RSp F, x ∈ latOf N ↔ toMixed x ∈ mixedEmbedding.idealLattice F (Units.mk0 N hN)`. Introduce `x`. Rewrite using `[mem_latOf, mixedEmbedding.mem_idealLattice]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨a, ha, rfl⟩`. Conclude with `⟨a, by simpa using ha, (toMixed_remb a).symm⟩`. Introduce and unpack `⟨a, ha, h⟩`. Use `⟨a, by simpa using ha, toMixed.injective ?_⟩` and prove the remaining obligations. Rewrite using `[toMixed_remb, h]`.
+
+Establish `hL : latOf N = ZLattice.comap ℝ (mixedEmbedding.idealLattice F (Units.mk0 N hN)) (toMixed (F` using `F)).toContinuousLinearEquiv.toLinearMap := Submodule.ext fun x => hmem x`. Establish `key` using `ZLattice.covolume_comap (mixedEmbedding.idealLattice F (Units.mk0 N hN)) volume volume (measurePreserving_toMixed (F := F))`. Establish `hc` using `covol_eq_covolume (Units.mk0 N hN)`. Rewrite `hc` using `[Units.val_mk0]`. Rewrite using `[hc, ← key]`.
+
+Use `congr 1`.
+-/
 theorem GlobalTheory.LipschitzCovol.covolume_latOf : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F]
     (N : FractionalIdeal (𝓞 F)⁰ F), N ≠ 0 → ∀ [DiscreteTopology (latOf N)] [IsZLattice ℝ (latOf N)],
     ZLattice.covolume (latOf N) = covol N := by

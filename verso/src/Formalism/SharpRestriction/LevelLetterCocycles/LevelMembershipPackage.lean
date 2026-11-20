@@ -18,6 +18,15 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL] [TopologicalSpace LL]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
 
+/- English proof (translation)
+Take `⟨Zex, -, Zlin, Zvan⟩` from `hZ hA hp 1 M η σ hTC T hc c`. Establish `hζw : DL W T c (W.γ T w - w)` using `invariantLetter_sub' W T (invariantLetter_gamma W T hw.1) hw.1`. Take `⟨tw, htw⟩` from `Zex _ hζw hw.2.2`. Establish `htr : IsTrunc W T c 1 M η σ w (((PD.p : ℕ) : O) ^ σ • ((W.φD T) ^ 1) w - tw)` using `(isTrunc_iff W T c 1 M η σ _ _).2 ⟨tw, htw, rfl⟩`. Take `⟨xc, hxc1, hxc2⟩` from `h5 w _ hw htr`.
+
+Take `⟨pκ, hpκ⟩` from `Submodule.Quotient.mk_surjective _ (W.clK T xc)`. Establish `hφPN1` using `uniformizerLattice_antitone W T hM1 hπ hφ.2`. Take `⟨t₁, ht₁⟩` from `Zex _ hφ.1 hφPN1`. Take `⟨p₂, hp₂, e₂⟩` from `Zvan _ t₁ hφ.1 hφ.2 rfl hηM ht₁`. Take `⟨t', ht', p₃, hp₃, e₃⟩` from `ht`.
+
+Take `⟨p₁, hp₁, e₁⟩` from `Zlin 1 (-(((PD.p : ℕ) : O) ^ σ)) _ _ t₁ t' tw hφ.1 hφPN1 hζc.1 hζc.2 ht₁ ht' (by rw [← hgw]; exact htw)`. Establish `hp' : -(p₁ + p₂ + ((PD.p : ℕ) : O) ^ σ • p₃) ∈ pullJ W T c 1` using `Submodule.neg_mem _ (Submodule.add_mem _ (Submodule.add_mem _ hp₁ hp₂) (Submodule.smul_of_tower_mem _ _ hp₃))`. Establish `hdiff : (xc : W.DD T × W.DD T).1 - ((PD.p : ℕ) : O) ^ σ • Y = fMX W M η • (-(p₁ + p₂ + ((PD.p : ℕ) : O) ^ σ • p₃))`. Rewrite using `[hxc1, hY, pow_one]`. Conclude with `Step2A.difference_of_factorisations _ _ _ _ _ _ _ _ _ _ e₁ e₂ e₃`.
+
+Establish `hΔd : ∀ δ ∈ W.DelF, W.γD T δ ((xc : W.DD T × W.DD T).1 - ((PD.p : ℕ) : O) ^ σ • Y) = (xc : W.DD T × W.DD T).1 - ((PD.p : ℕ) : O) ^ σ • Y`. Introduce `δ hδ`. Rewrite using `[map_sub, map_smul, ((RL.mem_Z1DΔ_iff W T _).1 xc.2).2 δ hδ |>.1, hYΔ δ hδ]`. Use `⟨xc, pκ.1, pκ.2, ⟨hw, pκ.2, _, xc, htr, hxc1, hxc2, hpκ.symm⟩, hpκ.symm, ⟨?_, hΔd⟩, frobeniusPoly_smul_mem_lattice W T hu hΔπ c M η h4 hp' hdiff hΔd, hxc2⟩` and prove the remaining obligations. Rewrite using `[hdiff, smul_comm, RL.pullJ_letter W T c hp']`.
+-/
 theorem level_membership_package [NeZero n] (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (c : ZMod n)
     (M η σ : ℕ) (hu : ∃ u : (LetA O n)ˣ, W.π₀ = (u : LetA O n) * letπ ^ (PD.p - 1))
     (hΔπ : ∀ δ ∈ W.DelF, W.γA δ W.π₀ = W.π₀) (hπ : W.π₀ ∈ W.AΔ) (hM1 : 1 ≤ M)

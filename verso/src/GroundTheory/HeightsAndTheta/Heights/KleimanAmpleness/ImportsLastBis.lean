@@ -17,6 +17,9 @@ def SpecialModelPoint.Statement : Prop :=
       NumbersDVR.specialIdeal (mIdealOver O y) ≤ mIdealOver (IsLocalRing.ResidueField O) y' →
       IndefiniteRowSideFullHecke.Kleiman2.IsModelWithBase (IsLocalRing.ResidueField O) y' k₀
 
+/- English proof (translation)
+Use `⟨isModelWithBase_exO_pnPt, fun _ => ⟨0, IndefiniteRowSideFullHecke.Kleiman2.pnPt_ne_zero _ 1 _⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[specialIdeal_exO_pnPt]`. Conclude with `bot_le`.
+-/
 theorem SpecialModelPoint.hyps :
     IndefiniteRowSideFullHecke.Kleiman2.IsModelWithBase exO (IndefiniteRowSideFullHecke.Kleiman2.pnPt exF 1) () ∧
       (∀ k, ∃ i, IndefiniteRowSideFullHecke.Kleiman2.pnPt (IsLocalRing.ResidueField exO) 1 ⟨k, i⟩ ≠ 0) ∧
@@ -26,6 +29,9 @@ theorem SpecialModelPoint.hyps :
   rw [specialIdeal_exO_pnPt]
   exact bot_le
 
+/- English proof (translation)
+The claim follows from `h exO (IndefiniteRowSideFullHecke.Kleiman2.pnField exF 1) Unit (IndefiniteRowSideFullHecke.Kleiman2.pnIdx 1) (IndefiniteRowSideFullHecke.Kleiman2.pnPt exF 1) () SpecialModelPoint.hyps.1 _ (IndefiniteRowSideFullHecke.Kleiman2.pnPt (IsLocalRing.ResidueField exO) 1) SpecialModelPoin …`.
+-/
 example (h : SpecialModelPoint.Statement) :=
   h exO (IndefiniteRowSideFullHecke.Kleiman2.pnField exF 1) Unit (IndefiniteRowSideFullHecke.Kleiman2.pnIdx 1) (IndefiniteRowSideFullHecke.Kleiman2.pnPt exF 1) ()
     SpecialModelPoint.hyps.1 _ (IndefiniteRowSideFullHecke.Kleiman2.pnPt (IsLocalRing.ResidueField exO) 1) SpecialModelPoint.hyps.2.1

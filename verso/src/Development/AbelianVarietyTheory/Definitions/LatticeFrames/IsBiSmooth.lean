@@ -73,6 +73,9 @@ section Examples
 
 variable {ψ : AddChar (AF D.host.F) ℂ} {A S A' : HSp D}
 
+/- English proof (translation)
+The claim follows from `(hf.cont.comp continuous_fst).mul (hg.cont.comp continuous_snd) smooth := fun n L L' hL hL' h0 h0' u v => (hf.smooth n L hL h0 u).mul (hg.smooth n L' hL' h0' v) quasiL := fun γ u v => by rw [hf.quasi, mul_assoc] quasiR := fun γ u v => by rw [hg.quasi, mul_left_comm] levL := by ob …`.
+-/
 example {f : WO A S → ℂ} {g : WO S A' → ℂ} (hf : IsThetaFunO ψ A S f) (hg : IsThetaFunO ψ S A' g) :
     IsBiTheta ψ A S A' fun u v => f u * g v where
   cont := (hf.cont.comp continuous_fst).mul (hg.cont.comp continuous_snd)
@@ -92,6 +95,9 @@ example {f : WO A S → ℂ} {g : WO S A' → ℂ} (hf : IsThetaFunO ψ A S f) (
     simp only [heisO] at e ⊢
     rw [mul_left_comm, e]
 
+/- English proof (translation)
+Introduce `γ u` and use `h.quasiL γ u v level := by obtain ⟨U, hU, hl⟩ := h.levL exact ⟨U, hU, fun a ha h0 => hl a ha h0 v⟩ cont := h.cont.comp (continuous_id.prodMk continuous_const) smooth := fun n L hL h0 u => by have := h.smooth n L 0 hL continuous_const h0 (fun _ => Matrix.map_zero _ (map_zero (finP …`.
+-/
 example {C : WO A S → WO S A' → ℂ} (h : IsBiTheta ψ A S A' C) (v : WO S A') : IsThetaFunO ψ A S fun u => C u v where
   quasi := fun γ u => h.quasiL γ u v
   level := by
@@ -102,6 +108,9 @@ example {C : WO A S → WO S A' → ℂ} (h : IsBiTheta ψ A S A' C) (v : WO S A
     have := h.smooth n L 0 hL continuous_const h0 (fun _ => Matrix.map_zero _ (map_zero (finPart D))) u v
     simpa using this
 
+/- English proof (translation)
+Introduce `γ v` and use `h.quasiR γ u v level := by obtain ⟨U, hU, hl⟩ := h.levR exact ⟨U, hU, fun a ha h0 => hl a ha h0 u⟩ cont := h.cont.comp (continuous_const.prodMk continuous_id) smooth := fun n L hL h0 v => by have := h.smooth n 0 L continuous_const hL (fun _ => Matrix.map_zero _ (map_zero (finPart …`.
+-/
 example {C : WO A S → WO S A' → ℂ} (h : IsBiTheta ψ A S A' C) (u : WO A S) : IsThetaFunO ψ S A' (C u) where
   quasi := fun γ v => h.quasiR γ u v
   level := by
@@ -112,6 +121,9 @@ example {C : WO A S → WO S A' → ℂ} (h : IsBiTheta ψ A S A' C) (u : WO A S
     have := h.smooth n 0 L continuous_const hL (fun _ => Matrix.map_zero _ (map_zero (finPart D))) h0 u v
     simpa using this
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Iff.rfl, Iff.rfl, Iff.rfl, Iff.rfl⟩`.
+-/
 example {u : D.what₂.Word} (d : Dat D u) (C : WO A S → WO S A' → ℂ) :
     (IsBiSmooth C ↔ JointSmooth C) ∧ (d.ValS ↔ d.Val) ∧ (d.ValLastS ↔ d.ValLast) ∧ (FockRed D ↔ FockReduce D) :=
   ⟨Iff.rfl, Iff.rfl, Iff.rfl, Iff.rfl⟩

@@ -20,6 +20,11 @@ private def fac {κ : Pl E → Type} {a b : ℕ} (P : Finset (Pl E)) (L : LM κ 
     (w : Pl E) : ℂ :=
   L.ent P x y w (atW w h) * if IsSplitAt w then L.t w (atW w (thP E a b h)) else 1
 
+/- English proof (translation)
+Use `Filter.eventually_cofinite.2 ((d.T ∪ d.S₀ ∪ d.Bad).finite_toSet.subset fun w hw => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Simplify using `only [Finset.coe_union, Set.mem_union, Finset.mem_coe, not_or] at hc`. Apply `hw` to reduce the goal to its premises. Unfold `LocData.lev LocData.lev₂`.
+
+Simplify using `[hc.1.1, hc.1.2, hc.2]`.
+-/
 theorem levCof {n : ℕ} (d : LocData E n) (a : ℕ) :
     ∀ᶠ w : Pl E in cofinite, d.lev a w = K2 a (n - a) w ∧ d.lev₂ a w = K2 a (n - a) w := by
   refine Filter.eventually_cofinite.2 ((d.T ∪ d.S₀ ∪ d.Bad).finite_toSet.subset fun w hw => ?_)

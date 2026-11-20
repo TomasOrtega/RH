@@ -12,9 +12,15 @@ noncomputable section
 
 variable {e : ℕ} {X : Type} [TopologicalSpace X]
 
+/- English proof (translation)
+Introduce `k` and use `⟨A.holo k j, A.holo j k⟩`.
+-/
 theorem compat_self (A : FinHolAtlas e X) (j : Fin A.n) : IsCompatChart A (A.chart j) :=
   fun k => ⟨A.holo k j, A.holo j k⟩
 
+/- English proof (translation)
+The claim follows from `((ReciprocityTheory.AnForm.M.PLAux.contDiffOn_compat hψ (P.isOpen_U x) (hP.1 x)).contDiffAt ((ψ.isOpen_inter_preimage_symm (P.isOpen_U x)).mem_nhds ⟨hz, hx⟩)).of_le (WithTop.coe_le_coe.2 le_top)`.
+-/
 theorem pot_contDiffAt {A : FinHolAtlas e X} {P : LocPot X} (hP : IsPotential A P)
     {ψ : OpenPartialHomeomorph X (Fin e → ℂ)} (hψ : IsCompatChart A ψ) (x : X) {z : Fin e → ℂ}
     (hz : z ∈ ψ.target) (hx : ψ.symm z ∈ P.U x) : ContDiffAt ℝ 2 (P.φ x ∘ ψ.symm) z :=
@@ -22,6 +28,13 @@ theorem pot_contDiffAt {A : FinHolAtlas e X} {P : LocPot X} (hP : IsPotential A 
     ((ψ.isOpen_inter_preimage_symm (P.isOpen_U x)).mem_nhds ⟨hz, hx⟩)).of_le
     (WithTop.coe_le_coe.2 le_top)
 
+/- English proof (translation)
+Take `⟨W, hWo, hyW, G, hG, hGeq⟩` from `hP.2 (ψ.symm z) x (ψ.symm z) ⟨P.mem_U _, hx⟩`. Establish `hVo : IsOpen (ψ.target ∩ ψ.symm ⁻¹' (W ∩ P.U (ψ.symm z) ∩ P.U x))` using `ψ.isOpen_inter_preimage_symm ((hWo.inter (P.isOpen_U _)).inter (P.isOpen_U x))`. Establish `hyV : z ∈ ψ.target ∩ ψ.symm ⁻¹' (W ∩ P.U (ψ.symm z) ∩ P.U x)` using `⟨hz, ⟨⟨hyW, P.mem_U _⟩, hx⟩⟩`. Establish `hGa : AnalyticAt ℂ (G ∘ ψ.symm) z` using `ReciprocityTheory.AnForm.M.PLAux.analyticAt_compat_fun hψ hG hz hyW`. Establish `hRe : ContDiffAt ℝ 2 (fun u => ((G ∘ ψ.symm) u).re) z`.
+
+Use `(Complex.reCLM.contDiff (n := 2)).contDiffAt.comp z (hGa.restrictScalars (𝕜 := ℝ)).contDiffAt` as an intermediate fact. Simplify `this` using `[Function.comp_def]`. Establish `h1 : (P.φ (ψ.symm z) ∘ ψ.symm) =ᶠ[𝓝 z] (fun u => (P.φ x ∘ ψ.symm) u + 1 * ((G ∘ ψ.symm) u).re)` using `by filter_upwards [hVo.mem_nhds hyV] with u hu`. Use `hGeq (ψ.symm u) hu.2` as an intermediate fact. Simplify using `only [Function.comp_apply]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[levi_congr h1, levi_add_smul 1 (pot_contDiffAt hP hψ x hz hx) hRe, levi_re_analytic hGa]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem levi_base_compat {A : FinHolAtlas e X} {P : LocPot X} (hP : IsPotential A P)
     {ψ : OpenPartialHomeomorph X (Fin e → ℂ)} (hψ : IsCompatChart A ψ) (x : X) {z : Fin e → ℂ}
     (hz : z ∈ ψ.target) (hx : ψ.symm z ∈ P.U x) (w : Fin e → ℂ) :
@@ -46,6 +59,13 @@ theorem levi_base_compat {A : FinHolAtlas e X} {P : LocPot X} (hP : IsPotential 
   rw [levi_congr h1, levi_add_smul 1 (pot_contDiffAt hP hψ x hz hx) hRe, levi_re_analytic hGa]
   ring
 
+/- English proof (translation)
+Establish `hT : AnalyticAt ℂ (A.chart j ∘ ψ.symm) z` using `(hψ j).2 z ⟨hz, hj⟩`. Establish `hl : (A.chart j).symm (A.chart j (ψ.symm z)) = ψ.symm z` using `(A.chart j).left_inv hj`. Establish `hφ : ContDiffAt ℝ 2 (P.φ (ψ.symm z) ∘ (A.chart j).symm) ((A.chart j ∘ ψ.symm) z)`. Use `pot_contDiffAt hP (compat_self A j) _ ((A.chart j).map_source hj) ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`.
+
+Rewrite using `[hl]`. Conclude with `P.mem_U _`. Establish `hev : (P.φ (ψ.symm z) ∘ ψ.symm) =ᶠ[𝓝 z] ((P.φ (ψ.symm z) ∘ (A.chart j).symm) ∘ (A.chart j ∘ ψ.symm))` using `by filter_upwards [(ψ.isOpen_inter_preimage_symm (A.chart j).open_source).mem_nhds ⟨hz, hj⟩] with u hu`. Simplify using `[(A.chart j).left_inv hu.2]`. Unfold `formAt`.
+
+Rewrite using `[hl, levi_congr hev, levi_comp w hT hφ]`. Both sides reduce to the same expression.
+-/
 theorem formAt_chart {A : FinHolAtlas e X} (P : LocPot X) (hP : IsPotential A P)
     {ψ : OpenPartialHomeomorph X (Fin e → ℂ)} (hψ : IsCompatChart A ψ) (j : Fin A.n)
     {z : Fin e → ℂ} (hz : z ∈ ψ.target) (hj : ψ.symm z ∈ (A.chart j).source) (w : Fin e → ℂ) :
@@ -67,6 +87,35 @@ theorem formAt_chart {A : FinHolAtlas e X} (P : LocPot X) (hP : IsPotential A P)
   rw [hl, levi_congr hev, levi_comp w hT hφ]
   rfl
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `A.cover y0`. Use `set c := A.chart j with hc`. Use `set V := c.target ∩ c.symm ⁻¹' (P.U y0 ∩ Q.U y0) with hV`. Establish `hVo : IsOpen V` using `c.isOpen_inter_preimage_symm ((P.isOpen_U y0).inter (Q.isOpen_U y0))`. Establish `hu0 : c y0 ∈ V` using `⟨c.map_source hj, by`.
+
+Simplify using `only [Set.mem_preimage, c.left_inv hj]`. Conclude with `⟨P.mem_U _, Q.mem_U _⟩⟩`. Take `⟨r, hr, hrV⟩` from `Metric.isOpen_iff.1 hVo (c y0) hu0`. Use `set B := Metric.closedBall (c y0) (r / 2) with hB`. Establish `hBV : B ⊆ V` using `(Metric.closedBall_subset_ball (by linarith)).trans hrV`.
+
+Use `set S := Metric.sphere (0 : Fin e → ℂ) 1 with hS`. Establish `hK : IsCompact (B ×ˢ S)` using `(isCompact_closedBall _ _).prod (isCompact_sphere _ _)`. Establish `hsub : B ×ˢ S ⊆ V ×ˢ Set.univ` using `Set.prod_mono hBV (Set.subset_univ _)`. Establish `hsP : ContDiffOn ℝ 2 (P.φ y0 ∘ c.symm) V` using `(potSmoothOn A P hP y0 j).mono fun u hu => ⟨hu.1, hu.2.1⟩`. Establish `hsQ : ContDiffOn ℝ 2 (Q.φ y0 ∘ c.symm) V` using `(potSmoothOn A Q hQ y0 j).mono fun u hu => ⟨hu.1, hu.2.2⟩`.
+
+Establish `hcP` using `(continuousOn_levi hVo hsP).mono hsub`. Establish `hcQ` using `(continuousOn_levi hVo hsQ).mono hsub`. Take `⟨M, hM⟩` from `hK.exists_bound_of_continuousOn hcP`. Establish `hm : ∃ m : ℝ, 0 < m ∧ ∀ p ∈ B ×ˢ S, m ≤ levi (Q.φ y0 ∘ c.symm) p.1 p.2`. Break down `(B ×ˢ S).eq_empty_or_nonempty with he | hne` into its components or cases.
+
+Conclude with `⟨1, one_pos, fun p hp => by rw [he] at hp; exact hp.elim⟩`. Take `⟨p0, hp0, hmin⟩` from `hK.exists_isMinOn hne hcQ`. Use `⟨_, ?_, fun p hp => hmin hp⟩` and prove the remaining obligations. Establish `h1 : p0.2 ≠ 0` using `fun h => by`. Use `hp0.2` as an intermediate fact.
+
+Rewrite `this` using `[h, hS, Metric.mem_sphere, dist_self]`. Conclude with `zero_ne_one this`. Conclude with `hQp y0 j p0.1 ⟨(hBV hp0.1).1, (hBV hp0.1).2.2⟩ p0.2 h1`. Take `⟨m, hm0, hmQ⟩` from `hm`. Use `set M' := max M 0 with hM'`.
+
+Establish `hM'0 : 0 ≤ M'` using `le_max_right _ _`. Use `⟨j, c.source ∩ c ⁻¹' Metric.ball (c y0) (r / 2), c.isOpen_inter_preimage Metric.isOpen_ball, ⟨hj, Metric.mem_ball_self (by linarith)⟩, Set.inter_subset_left, M' / m + 1, by positivity, fun y hy v => ?_⟩` and prove the remaining obligations. Establish `huB : c y ∈ B` using `Metric.ball_subset_closedBall hy.2`. Establish `hyc : c.symm (c y) = y` using `c.left_inv hy.1`. Establish `key : |levi (P.φ y0 ∘ c.symm) (c y) v| ≤ (M' / m + 1) * levi (Q.φ y0 ∘ c.symm) (c y) v`.
+
+Break down `eq_or_ne v 0 with rfl | hv` into its components or cases. Simplify using `[levi_zero]`. Take `⟨t, ht⟩ : ∃ t : ℝ, t = ‖v‖` from `⟨_, rfl⟩`. Establish `ht0 : 0 < t` using `ht ▸ norm_pos_iff.2 hv`. Take `⟨v1, hv1⟩ : ∃ v1 : Fin e → ℂ, v1 = t⁻¹ • v` from `⟨_, rfl⟩`.
+
+Establish `hvv : v = t • v1` using `by rw [hv1, smul_smul, mul_inv_cancel₀ ht0.ne', one_smul]`. Establish `hv1S : v1 ∈ S`. Rewrite using `[hS, mem_sphere_zero_iff_norm, hv1, norm_smul, Real.norm_eq_abs, abs_inv, abs_of_pos ht0, ← ht, inv_mul_cancel₀ ht0.ne']`. Establish `hp : (c y, v1) ∈ B ×ˢ S` using `⟨huB, hv1S⟩`. Establish `a1 : |levi (P.φ y0 ∘ c.symm) (c y) v1| ≤ M'`.
+
+Use `hM _ hp` as an intermediate fact. Rewrite `this` using `[Real.norm_eq_abs]`. Conclude with `this.trans (le_max_left _ _)`. Establish `a2 : m ≤ levi (Q.φ y0 ∘ c.symm) (c y) v1` using `hmQ _ hp`. Establish `a3 : |levi (P.φ y0 ∘ c.symm) (c y) v1| ≤ (M' / m + 1) * levi (Q.φ y0 ∘ c.symm) (c y) v1`.
+
+Establish `e1 : M' = M' / m * m` using `by field_simp`. Establish `b1 : M' / m * m ≤ M' / m * levi (Q.φ y0 ∘ c.symm) (c y) v1` using `mul_le_mul_of_nonneg_left a2 (by positivity)`. Establish `b2 : 0 ≤ levi (Q.φ y0 ∘ c.symm) (c y) v1` using `hm0.le.trans a2`. Rewrite using `[add_mul, one_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `eP : levi (P.φ y0 ∘ c.symm) (c y) v = t ^ 2 * levi (P.φ y0 ∘ c.symm) (c y) v1`. Rewrite using `[← levi_smul_dir, ← hvv]`. Establish `eQ : levi (Q.φ y0 ∘ c.symm) (c y) v = t ^ 2 * levi (Q.φ y0 ∘ c.symm) (c y) v1`. Rewrite using `[← levi_smul_dir, ← hvv]`. Rewrite using `[eP, eQ, abs_mul, abs_of_nonneg (sq_nonneg t)]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hbP : formAt c P (c y) v = 2 / Real.pi * levi (P.φ y0 ∘ c.symm) (c y) v`. Unfold `formAt`. Rewrite using `[levi_base_compat hP (compat_self A j) y0 (c.map_source hy.1) (by rw [hyc]; exact (hyc ▸ (hBV huB).2.1 : y ∈ P.U y0))]`. Establish `hbQ : formAt c Q (c y) v = 2 / Real.pi * levi (Q.φ y0 ∘ c.symm) (c y) v`.
+
+Unfold `formAt`. Rewrite using `[levi_base_compat hQ (compat_self A j) y0 (c.map_source hy.1) (by rw [hyc]; exact (hyc ▸ (hBV huB).2.2 : y ∈ Q.U y0))]`. Rewrite using `[hbP, hbQ, abs_mul, abs_of_pos (by positivity : (0 : ℝ) < 2 / Real.pi)]`. Use `mul_le_mul_of_nonneg_left key (by positivity : (0 : ℝ) ≤ 2 / Real.pi)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem local_bound {A : FinHolAtlas e X} {P Q : LocPot X} (hP : IsPotential A P)
     (hQ : IsPotential A Q) (hQp : IsPosPot A Q) (y0 : X) :
     ∃ j : Fin A.n, ∃ N : Set X, IsOpen N ∧ y0 ∈ N ∧ N ⊆ (A.chart j).source ∧ ∃ C : ℝ, 0 < C ∧
@@ -155,6 +204,13 @@ theorem local_bound {A : FinHolAtlas e X} {P Q : LocPot X} (hP : IsPotential A P
   have := mul_le_mul_of_nonneg_left key (by positivity : (0 : ℝ) ≤ 2 / Real.pi)
   linarith
 
+/- English proof (translation)
+Introduce `e X _ _ _ A P Q hP hQ hQp`. Use `choose j N hNo hyN hNs C hC hb using fun y => local_bound hP hQ hQp y`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover N hNo (fun y _ => Set.mem_iUnion.2 ⟨y, hyN y⟩)`. Use `⟨∑ y ∈ t, C y + 1, add_pos_of_nonneg_of_pos (Finset.sum_nonneg fun y _ => (hC y).le) one_pos, ?_⟩` and prove the remaining obligations. Introduce `ψ hψ z hz w`.
+
+Take `⟨y0, hy0t, hy0⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ (ψ.symm z)))`. Establish `hs` using `hNs y0 hy0`. Rewrite using `[formAt_chart P hP hψ (j y0) hz hs, formAt_chart Q hQ hψ (j y0) hz hs]`. Establish `h1` using `hb y0 (ψ.symm z) hy0 (fderiv ℂ (A.chart (j y0) ∘ ψ.symm) z w)`. Establish `hQ0 : 0 ≤ formAt (A.chart (j y0)) Q (A.chart (j y0) (ψ.symm z)) (fderiv ℂ (A.chart (j y0) ∘ ψ.symm) z w)`.
+
+Use `(abs_nonneg _).trans h1` as an intermediate fact. Conclude with `(mul_nonneg_iff_of_pos_left (hC y0)).1 this`. Establish `hle : C y0 ≤ ∑ y ∈ t, C y + 1` using `(Finset.single_le_sum (fun y _ => (hC y).le) hy0t).trans (le_add_of_nonneg_right zero_le_one)`. Conclude with `h1.trans (mul_le_mul_of_nonneg_right hle hQ0)`.
+-/
 theorem chern_le_kahler : ∀ {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X] [T2Space X]
     (A : FinHolAtlas e X) (P Q : LocPot X), IsPotential A P → IsPotential A Q → IsPosPot A Q →
     ∃ C : ℝ, 0 < C ∧ ∀ ψ : OpenPartialHomeomorph X (Fin e → ℂ), IsCompatChart A ψ →

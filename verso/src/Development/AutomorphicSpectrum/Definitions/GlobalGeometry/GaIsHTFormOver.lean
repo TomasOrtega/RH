@@ -13,6 +13,15 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {G : Over X} [GrpObj G] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
   {E : Type} [AddCommGroup E] [Module Ω E]
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨_, T, _, Γ, i, L, _, _, M₀, j, χ, w₀, -, hj, -, hw⟩ e he`. Use `Submodule.span_induction (p := fun e _ => w e ∈ regAt ξ p) ?_ ?_ ?_ ?_ he` and prove the remaining obligations. Introduce and unpack `e ⟨v, hv, hev⟩`. Take `⟨l, rfl⟩` from `M₀.onto v hv`.
+
+Establish `: e = j l` using `M.inj (Over.OverMorphism.ext (hev.trans (hj l).symm))`. Rewrite using `[this, hw]`. Conclude with `⟨_, rfl⟩`. Simplify using the standard rewrite rules. Introduce `a b _ _ ha hb`.
+
+Simplify using `using add_mem ha hb`. Introduce `c a _ ha`. Establish `: w (c • a) = (c : Ω) * w a`. Rewrite using `[Subring.smul_def, map_smul, smul_eq_mul]`. Rewrite using `[this]`.
+
+Conclude with `mul_mem c.2 ha`.
+-/
 theorem htLat_le_omLat (M : LieModel G ξ E) (N : ℕ) (p : Cpt ξ) : M.htLat N p ≤ M.omLat p := by
   refine Submodule.span_le.2 ?_
   rintro w ⟨_, T, _, Γ, i, L, _, _, M₀, j, χ, w₀, -, hj, -, hw⟩ e he
@@ -55,6 +64,15 @@ def triv (R : Type) [CommRing R] [IsDomain R] : BT.QFGroup R Unit where
     have : IsReduced (BT.genPt R).left := inferInstanceAs (IsReduced (Spec (CommRingCat.of (FractionRing R))))
     exact isReduced_of_isOpenImmersion (pullback.snd _ (BT.genPt R).hom)
 
+/- English proof (translation)
+Establish `key : ∀ (Y : Over (Spec (CommRingCat.of R))) (y : Y ⟶ (triv R).G), y.left ≫ (1 : Over.mk x ⟶ G).left = (1 : Over.mk (Y.hom ≫ x) ⟶ G).left`. Introduce `Y y`. Establish `hy : y.left = Y.hom` using `(Category.comp_id _).symm.trans (Over.w y)`. Use `MonObj.comp_one (M := G) (Over.homMk Y.hom rfl : Over.mk (Y.hom ≫ x) ⟶ Over.mk x)` as an intermediate fact. Rewrite using `[hy]`.
+
+Conclude with `congrArg (fun q => q.left) this`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Over.w (1 : Over.mk x ⟶ G)).trans (Category.id_comp _).symm`. Introduce `Y y z y₀ z₀ hy hz`. Rewrite `hy`, `hz`, the goal using `[key]`.
+
+Rewrite using `[Over.OverMorphism.ext hy, Over.OverMorphism.ext hz, _root_.mul_one]`. Introduce `Y y z _`. Conclude with `toUnit_unique _ _`. Introduce `Y g`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hg`. Conclude with `⟨toUnit _, by rw [key, h Y g hg]⟩`. Introduce and unpack `⟨y, hy⟩`. Rewrite `hy` using `[key]`. Rewrite using `[← Over.OverMorphism.ext hy, one_pow]`.
+-/
 theorem triv_torsion {R : Type} [CommRing R] [IsDomain R] (x : Spec (CommRingCat.of R) ⟶ X) (N : ℕ)
     (h : ∀ (Y : Over (Spec (CommRingCat.of R))) (g : Over.mk (Y.hom ≫ x) ⟶ G), g ^ N = 1 → g = 1) :
     (triv R).IsTorsionAlong G x N (1 : Over.mk x ⟶ G).left := by
@@ -80,6 +98,13 @@ theorem triv_torsion {R : Type} [CommRing R] [IsDomain R] (x : Spec (CommRingCat
       rw [key] at hy
       rw [← Over.OverMorphism.ext hy, one_pow]
 
+/- English proof (translation)
+Set `φ : (Over.mk (Y.hom ≫ x) ⟶ LieInh.gaObj X) →* Multiplicative Γ(Y.left, ⊤)` to `⟨⟨LieInh.gaEquiv _, LieInh.gaEquiv_one⟩, LieInh.gaEquiv_mul⟩`. Apply `(LieInh.gaEquiv _).injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `φ g = φ 1`. Establish `h1 : φ g ^ N = 1` using `by rw [← map_pow, hg, map_one]`. Establish `h2 : (N : Γ(Y.left, ⊤)) * (φ g).toAdd = 0`.
+
+Use `congrArg Multiplicative.toAdd h1` as an intermediate fact. Simplify `this` using `[nsmul_eq_mul]`. Establish `h3 : IsUnit (N : Γ(Y.left, ⊤))`. Use `hN.map ((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ Y.hom.appTop).hom` as an intermediate fact. Simplify using `using this`.
+
+Rewrite using `[map_one]`. Conclude with `h3.mul_right_eq_zero.1 h2`.
+-/
 theorem ga_torsion {R : Type} [CommRing R] (x : Spec (CommRingCat.of R) ⟶ X) (N : ℕ) (hN : IsUnit (N : R))
     (Y : Over (Spec (CommRingCat.of R))) (g : Over.mk (Y.hom ≫ x) ⟶ LieInh.gaObj X) (hg : g ^ N = 1) : g = 1 := by
   let φ : (Over.mk (Y.hom ≫ x) ⟶ LieInh.gaObj X) →* Multiplicative Γ(Y.left, ⊤) :=
@@ -96,6 +121,13 @@ theorem ga_torsion {R : Type} [CommRing R] (x : Spec (CommRingCat.of R) ⟶ X) (
   rw [map_one]
   exact h3.mul_right_eq_zero.1 h2
 
+/- English proof (translation)
+Establish `hs : Subsingleton (R ⧸ Ideal.span {(N : R)})` using `Ideal.Quotient.subsingleton_iff.2 (Ideal.span_singleton_eq_top.2 hN)`. Establish `hs' : Subsingleton (DualNumber (R ⧸ Ideal.span {(N : R)}))` using `⟨fun a b => TrivSqZeroExt.ext (Subsingleton.elim _ _) (Subsingleton.elim _ _)⟩`. Establish `he : IsEmpty (Spec (CommRingCat.of (DualNumber (R ⧸ Ideal.span {(N : R)}))))` using `inferInstanceAs (IsEmpty (PrimeSpectrum _))`. Use `⟨inferInstance, Unit, inferInstance, triv R, _, R, inferInstance, inferInstance, LieInh.gaLie x, k, 1, LinearMap.id, triv_torsion x N (ga_torsion x N hN), fun e => ?_, ⟨1, fun t => ?_, fun e => ?_⟩, fun _ => rfl⟩` and prove the remaining obligations. Use `symm`.
+
+Use `(LieInh.map_gaPt (dualMap k) _ (Spec.map (CommRingCat.ofHom (algebraMap Ω (DualNumber Ω))) ≫ ξ) ?_ _).trans ?_` and prove the remaining obligations. Rewrite using `[← hk, ← Spec.map_comp_assoc, ← Spec.map_comp_assoc]`. Use `congr 2`. Apply the tactic sequence `ext <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`. Apply the tactic sequence `have : dualMap k (TrivSqZeroExt.inr e) = TrivSqZeroExt.inr (k e) := by ext <;> simp [dualMap]`.
+
+Rewrite using `[this]`. Both sides reduce to the same expression. Simplify using `[BT.valAt]`. Conclude with `⟨isInitialOfIsEmpty.to _, isInitialOfIsEmpty.hom_ext _ _, isInitialOfIsEmpty.hom_ext _ _, Subsingleton.elim _ _⟩`.
+-/
 theorem ga_isHTFormOver {R : Type} [CommRing R] [IsDomain R] (x : Spec (CommRingCat.of R) ⟶ X) (k : R →+* Ω)
     (hk : Spec.map (CommRingCat.ofHom k) ≫ x = ξ) (N : ℕ) (hN : IsUnit (N : R)) :
     (LieInh.gaLie ξ).IsHTFormOver N x k LinearMap.id := by
@@ -119,6 +151,9 @@ theorem ga_isHTFormOver {R : Type} [CommRing R] [IsDomain R] (x : Spec (CommRing
   · exact ⟨isInitialOfIsEmpty.to _, isInitialOfIsEmpty.hom_ext _ _, isInitialOfIsEmpty.hom_ext _ _,
       Subsingleton.elim _ _⟩
 
+/- English proof (translation)
+Use `Submodule.subset_span (ga_isHTFormOver (R := X.presheaf.stalk p.1) _ _ ?_ N hN)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Spec.map (X.presheaf.stalkSpecializes p.2 ≫ Scheme.stalkClosedPointTo ξ) ≫ _ = _`. Rewrite using `[Spec.map_comp_assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk]`. Conclude with `Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ`.
+-/
 theorem ga_id_mem_htLat (p : Cpt ξ) [IsDomain (X.presheaf.stalk p.1)] (N : ℕ)
     (hN : IsUnit (N : X.presheaf.stalk p.1)) :
     (LinearMap.id : Module.Dual Ω Ω) ∈ (LieInh.gaLie ξ).htLat N p := by
@@ -127,12 +162,20 @@ theorem ga_id_mem_htLat (p : Cpt ξ) [IsDomain (X.presheaf.stalk p.1)] (N : ℕ)
   rw [Spec.map_comp_assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk]
   exact Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ
 
+/- English proof (translation)
+Introduce `h` and use `by have := ga_id_mem_htLat p N hN rw [h, Submodule.mem_bot] at this exact one_ne_zero (LinearMap.congr_fun this (1 : Ω))`.
+-/
 theorem ga_htLat_ne_bot [IsIntegral X] (p : Cpt ξ) (N : ℕ) (hN : IsUnit (N : X.presheaf.stalk p.1)) :
     (LieInh.gaLie ξ).htLat N p ≠ ⊥ := fun h => by
   have := ga_id_mem_htLat p N hN
   rw [h, Submodule.mem_bot] at this
   exact one_ne_zero (LinearMap.congr_fun this (1 : Ω))
 
+/- English proof (translation)
+Take `⟨s, hs, h⟩` from `h`. Use `⟨s, hs, fun e => ?_⟩` and prove the remaining obligations. Take `⟨v, h1, h2, h3⟩` from `h e`. Use `⟨v, h1, h2, h3.trans ?_⟩` and prove the remaining obligations. Use `congr 2`.
+
+Rewrite using `[Ideal.Quotient.eq]`. Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul, sub_add_cancel_left, neg_mem_iff]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span rfl)`.
+-/
 theorem isHT_add_nsmul {R : Type} [CommRing R] [IsDomain R] {T : Type} [CommGroup T] (Γ : BT.QFGroup R T)
     {x : Spec (CommRingCat.of R) ⟶ X} (i : Γ.G.left ⟶ G.left) {L : Type} [AddCommGroup L] [Module R L]
     (M : LieModel G x L) (N : ℕ) (χ : T →* Rˣ) (w w' : Module.Dual R L) (h : Γ.IsHT i M N χ w) :

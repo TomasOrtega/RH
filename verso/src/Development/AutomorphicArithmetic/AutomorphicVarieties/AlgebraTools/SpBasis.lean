@@ -18,6 +18,9 @@ private def UpperTheory.V.AlgebraTools.spIdx (n d : ℕ) (hd : d = n + 1) :
     funext i
     refine Fin.cases ?_ (fun j => ?_) i <;> rfl
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[← Fintype.card_congr (UpperTheory.V.AlgebraTools.spIdx n (n + 1) rfl), Fintype.card_prod, Fintype.card_fin, ih, Nat.factorial_succ]`.
+-/
 private theorem UpperTheory.V.AlgebraTools.spCard (n : ℕ) :
     Fintype.card (∀ i : Fin n, Fin (n - i)) = n.factorial := by
   induction n with
@@ -26,6 +29,27 @@ private theorem UpperTheory.V.AlgebraTools.spCard (n : ℕ) :
     rw [← Fintype.card_congr (UpperTheory.V.AlgebraTools.spIdx n (n + 1) rfl), Fintype.card_prod,
       Fintype.card_fin, ih, Nat.factorial_succ]
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `R _ P hm hd`. Use `⟨?_, UpperTheory.V.AlgebraTools.spCard 0⟩` and prove the remaining obligations.
+
+Establish `hP : P = 1` using `Polynomial.eq_one_of_monic_natDegree_zero hm hd`. Set `f : SplitAlg P 0 →ₐ[R] R` to `SplitAlg.lift P 0 (A := R) (fun i => i.elim0) (by simp [hP])`. Establish `hfg : (Algebra.ofId R (SplitAlg P 0)).comp f = AlgHom.id R _` using `SplitAlg.hom_ext P 0 (fun i => i.elim0)`. Establish `hgf : f.comp (Algebra.ofId R (SplitAlg P 0)) = AlgHom.id R R` using `Algebra.ext_id _ _ _`. Set `e : R ≃ₐ[R] SplitAlg P 0` to `AlgEquiv.ofAlgHom (Algebra.ofId R _) f hfg hgf`.
+
+Use `⟨(Module.Basis.singleton (∀ i : Fin 0, Fin (0 - i)) R).map e.toLinearEquiv, fun c => ?_⟩` and prove the remaining obligations. Simplify using `[Module.Basis.singleton_apply]`. Consider the case `succ n ih`. Introduce `R _ P hm hd`. Use `⟨?_, UpperTheory.V.AlgebraTools.spCard (n + 1)⟩` and prove the remaining obligations.
+
+Take `⟨inst1, inst2, h3, e, he⟩` from `splitAlg_succ_equiv R n P hm hd`. Establish `hroot : (Polynomial.map (algebraMap R (AdjoinRoot P)) P).IsRoot (AdjoinRoot.root P)`. Rewrite using `[AdjoinRoot.algebraMap_eq]`. Conclude with `AdjoinRoot.isRoot_root P`. Establish `hmul` using `(Polynomial.mul_divByMonic_eq_iff_isRoot).2 hroot`.
+
+Establish `hQm : (Polynomial.map (algebraMap R (AdjoinRoot P)) P /ₘ (Polynomial.X - Polynomial.C (AdjoinRoot.root P))).Monic`. Use `Polynomial.Monic.of_mul_monic_left (Polynomial.monic_X_sub_C (AdjoinRoot.root P)) ?_` and prove the remaining obligations. Rewrite using `[hmul]`. Conclude with `hm.map _`. Establish `hQd : (Polynomial.map (algebraMap R (AdjoinRoot P)) P /ₘ (Polynomial.X - Polynomial.C (AdjoinRoot.root P))).natDegree = n`.
+
+Break down `subsingleton_or_nontrivial (AdjoinRoot P) with hs | hs` into its components or cases. It suffices to derive a contradiction. Establish `hR : Nontrivial R`. Break down `subsingleton_or_nontrivial R with hR | hR` into its components or cases. Rewrite `hd` using `[Subsingleton.elim P 0, Polynomial.natDegree_zero]`.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `hR`. Establish `hne` using `(AdjoinRoot.powerBasis' hm).basis.ne_zero ⟨0, by rw [AdjoinRoot.powerBasis'_dim, hd]; omega⟩`. Conclude with `hne (Subsingleton.elim _ _)`. Rewrite using `[Polynomial.natDegree_divByMonic _ (Polynomial.monic_X_sub_C _), hm.natDegree_map, hd, Polynomial.natDegree_X_sub_C]`.
+
+Both sides reduce to the same expression. Take `⟨c, hc⟩` from `(ih (AdjoinRoot P) _ hQm hQd).1`. Set `b` to `(AdjoinRoot.powerBasis' hm).basis.reindex (finCongr (by rw [AdjoinRoot.powerBasis'_dim, hd]))`. Set `c'` to `c.map e.symm.toLinearEquiv`. Use `⟨(b.smulTower c').reindex (UpperTheory.V.AlgebraTools.spIdx n (n + 1) rfl), fun k => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Module.Basis.reindex_apply, Module.Basis.smulTower_apply, Fin.prod_univ_succ]`. Establish `hb : ∀ j, b j = AdjoinRoot.root P ^ (j : ℕ)`. Introduce `j`. Simplify using `only [b, Module.Basis.reindex_apply, PowerBasis.basis_eq_pow, AdjoinRoot.powerBasis'_gen]`. Both sides reduce to the same expression.
+
+Establish `hinv : ∀ i : Fin n, e.symm (SplitAlg.root _ n i) = SplitAlg.root P (n + 1) i.succ`. Introduce `i`. Rewrite using `[AlgEquiv.symm_apply_eq, he]`. Simplify using `only [c', Module.Basis.map_apply, hb, hc, Algebra.smul_def, map_pow, h3, map_prod, AlgEquiv.toLinearEquiv_apply, hinv]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.AlgebraTools.splitAlg_basis :
     ∀ (n : ℕ) (R : Type) [CommRing R] (P : Polynomial R), P.Monic → P.natDegree = n →
       (∃ b : Module.Basis (∀ i : Fin n, Fin (n - i)) R (SplitAlg P n), ∀ c, b c = ∏ i, SplitAlg.root P n i ^ (c i : ℕ)) ∧

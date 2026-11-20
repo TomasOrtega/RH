@@ -15,6 +15,19 @@ section Minor
 
 variable {N : ℕ}
 
+/- English proof (translation)
+Establish `hne : ∀ x, ¬ (x = cb ∧ x = ca)` using `fun x hx => hlt.ne (hx.2.symm.trans hx.1)`. Establish `hent : ∀ x y, (1 + Matrix.single cb ca t : Matrix (Fin N) (Fin N) ℂ) x y = (if x = y then 1 else 0) + (if x = cb ∧ y = ca then t else 0)`. Introduce `x y`. Simplify using `[Matrix.add_apply, Matrix.one_apply, Matrix.single_apply, eq_comm]`. Rewrite using `[minorIJ_mul_of_support H _ I C]`.
+
+Establish `h1 : minorIJ (1 + Matrix.single cb ca t : Matrix (Fin N) (Fin N) ℂ) C C = 1`. Rewrite using `[minorIJ_eq_det _ C C _ rfl rfl, Matrix.det_of_lowerTriangular]`. Use `Finset.prod_eq_one fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.submatrix_apply, hent, if_pos rfl, if_neg, add_zero]`. Introduce and unpack `⟨e1, e2⟩`.
+
+Conclude with `hne _ ⟨e1, e2⟩`. Introduce `x y hxy`. Establish `hxy' : x < y` using `hxy`. Establish `hs` using `(C.orderEmbOfFin rfl).strictMono hxy'`. Rewrite using `[Matrix.submatrix_apply, hent, if_neg hs.ne, if_neg, add_zero]`.
+
+Introduce and unpack `⟨e1, e2⟩`. Rewrite `hs` using `[e1, e2]`. Conclude with `absurd hs (not_lt.mpr hlt.le)`. Rewrite using `[h1, mul_one]`. Introduce `k c hc hk`.
+
+Establish `hkc : k ≠ c`. Introduce and unpack `rfl`. Conclude with `hk hc`. Rewrite using `[hent, if_neg hkc, if_neg, add_zero]`. Introduce and unpack `⟨e1, e2⟩`.
+
+Rewrite `hk` using `[e1]`. Rewrite `hc` using `[e2]`. Conclude with `hk (hiff.mp hc)`.
+-/
 theorem minorIJ_mul_one_add_single (H : Matrix (Fin N) (Fin N) ℂ) (I C : Finset (Fin N)) {ca cb : Fin N} (hlt : ca < cb)
     (hiff : ca ∈ C ↔ cb ∈ C) (t : ℂ) :
     minorIJ (H * (1 + Matrix.single cb ca t)) I C = minorIJ H I C := by
@@ -48,6 +61,11 @@ theorem minorIJ_mul_one_add_single (H : Matrix (Fin N) (Fin N) ℂ) (I C : Finse
     rw [e2] at hc
     exact hk (hiff.mp hc)
 
+/- English proof (translation)
+Establish `h3` using `i.2`. Establish `h4` using `b.2`. Establish `h5` using `ca.2`. Establish `h6` using `cb.2`. Establish `hi' : (i : ℕ) ≠ a` using `fun e => hi (Fin.ext e)`.
+
+Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and]`. Unfold `lastCol at hca`. Apply the tactic sequence `split_ifs at hca ⊢ <;> omega`.
+-/
 theorem mem_stepCols_iff {j : ℕ} {a b ca cb i : Fin N} (hb : (b : ℕ) = a + 1) (h2 : (b : ℕ) < j ∨ j ≤ (a : ℕ))
     (hca : (ca : ℕ) = lastCol N j a) (hcb : (cb : ℕ) = ca + 1) (hi : i ≠ a) :
     ca ∈ stepCols N j i ↔ cb ∈ stepCols N j i := by
@@ -66,6 +84,9 @@ section Low
 
 variable {Ψ : Type} {N j : ℕ}
 
+/- English proof (translation)
+Introduce `x y hxy`. Unfold `lowMat`. Rewrite using `[dif_neg (fun e => hxy e.2), if_neg]`. Introduce and unpack `rfl`. Conclude with `hxy Iff.rfl`.
+-/
 theorem lowMat_isBlockDiag (c : LowIdx Ψ N j → ℂ) (τ : Ψ) : IsBlockDiag j (lowMat c τ) := by
   intro x y hxy
   unfold lowMat
@@ -73,6 +94,11 @@ theorem lowMat_isBlockDiag (c : LowIdx Ψ N j → ℂ) (τ : Ψ) : IsBlockDiag j
   rintro rfl
   exact hxy Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_of_lowerTriangular]`. Use `Finset.prod_eq_one fun x _ => ?_` and prove the remaining obligations. Unfold `lowMat`. Rewrite using `[dif_neg (fun e => lt_irrefl _ e.1), if_pos rfl]`. Introduce `x y hxy`.
+
+Establish `hxy' : x < y` using `hxy`. Unfold `lowMat`. Rewrite using `[dif_neg (fun e => lt_asymm hxy' e.1), if_neg hxy'.ne]`.
+-/
 theorem lowMat_det (c : LowIdx Ψ N j → ℂ) (τ : Ψ) : (lowMat c τ).det = 1 := by
   rw [Matrix.det_of_lowerTriangular]
   · refine Finset.prod_eq_one fun x _ => ?_
@@ -83,6 +109,13 @@ theorem lowMat_det (c : LowIdx Ψ N j → ℂ) (τ : Ψ) : (lowMat c τ).det = 1
     unfold lowMat
     rw [dif_neg (fun e => lt_asymm hxy' e.1), if_neg hxy'.ne]
 
+/- English proof (translation)
+Establish `hl : ∀ x, AnalyticOnNhd ℂ (fun w => lowMat (wL ε w) τ' x s) S`. Introduce `x`. Unfold `lowMat`. Distinguish the cases in `hh : s < x ∧ ((x : ℕ) < N - j ↔ (s : ℕ) < N - j)`. Simplify using `only [dif_pos hh, wL]`.
+
+Conclude with `(ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin e => ℂ) (ε (Sum.inr (Sum.inl ⟨(τ', x, s), hh⟩)))).analyticOnNhd _`. Simplify using `only [dif_neg hh]`. Conclude with `analyticOnNhd_const`. Establish `: (fun w => wH h ε τ' w r s) = fun w => ∑ x, h τ' r x * lowMat (wL ε w) τ' x s`. Use function extensionality and compare the values at `w`.
+
+Simplify using `only [wH, Matrix.mul_apply]`. Rewrite using `[this]`. Conclude with `Finset.analyticOnNhd_fun_sum _ fun x _ => analyticOnNhd_const.mul (hl x)`.
+-/
 theorem analytic_wH {n e : ℕ} (h : Ψ → Matrix (Fin N) (Fin N) ℂ) (ε : Fin n ⊕ LowIdx Ψ N j ⊕ Unit ≃ Fin e) (τ' : Ψ)
     (r s : Fin N) (S : Set (Fin e → ℂ)) : AnalyticOnNhd ℂ (fun w => wH h ε τ' w r s) S := by
   have hl : ∀ x, AnalyticOnNhd ℂ (fun w => lowMat (wL ε w) τ' x s) S := by
@@ -108,10 +141,16 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : 
   {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N j : ℕ} {M : FlagModel y Ψ N j} {F : FrameData ι Ψ N M.Ω M.blk}
   {zb : (Σ k, baseIdx ι M.blk k) → ℂ} {H : Ψ → Matrix (Fin N) (Fin N) ℂ}
 
+/- English proof (translation)
+Unfold `flagZ`. Rewrite using `[dif_neg (fun e => by obtain ⟨p, hp⟩ := e; exact k.2 p hp)]`.
+-/
 theorem flagZ_base (k : NonPluckerBlocks M.blk) (m : ι k.1) : flagZ M F zb H ⟨k.1, m⟩ = zb ⟨k, m⟩ := by
   unfold flagZ
   rw [dif_neg (fun e => by obtain ⟨p, hp⟩ := e; exact k.2 p hp)]
 
+/- English proof (translation)
+Establish `e : ∃ p, M.blk p = some k` using `⟨p, hp⟩`. Establish `hc : e.choose = p` using `M.blk_inj _ _ _ e.choose_spec hp`. Unfold `flagZ`. Simplify using `only [dif_pos e, hc]`.
+-/
 theorem flagZ_step {p : Ψ × Fin N} {k : K} (hp : M.blk p = some k) (m : ι k) :
     flagZ M F zb H ⟨k, m⟩ = ∑ I, valAt M.x (F.u ⟨k, m⟩ I) zb * minorIJ (H p.1) I (stepCols N j p.2) := by
   have e : ∃ p, M.blk p = some k := ⟨p, hp⟩
@@ -121,15 +160,24 @@ theorem flagZ_step {p : Ψ × Fin N} {k : K} (hp : M.blk p = some k) (m : ι k) 
 
 variable {k₀ : K} {τ : Ψ} {ca cb : Fin N} {t : ℂ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fst_sqZ (k : K) (m : ι k) :
     fstPt k₀ (sqZ M F zb H k₀ τ ca cb t) ⟨k, m⟩ = flagZ M F zb H ⟨k, m⟩ := rfl
 
+/- English proof (translation)
+Use `show sqZ M F zb H k₀ τ ca cb t (v₁ k₀ ⟨k, m⟩) = _`. Rewrite using `[v₁_ne (p := ⟨k, m⟩) hk]`. Both sides reduce to the same expression.
+-/
 theorem snd_sqZ_ne {k : K} (hk : k ≠ k₀) (m : ι k) :
     sndPt k₀ (sqZ M F zb H k₀ τ ca cb t) ⟨k, m⟩ = flagZ M F zb H ⟨k, m⟩ := by
   show sqZ M F zb H k₀ τ ca cb t (v₁ k₀ ⟨k, m⟩) = _
   rw [v₁_ne (p := ⟨k, m⟩) hk]
   rfl
 
+/- English proof (translation)
+Use `show sqZ M F zb H k₀ τ ca cb t (v₁ k₀ ⟨k₀, m⟩) = _`. Rewrite using `[v₁_self]`. Both sides reduce to the same expression.
+-/
 theorem snd_sqZ_self (m : ι k₀) :
     sndPt k₀ (sqZ M F zb H k₀ τ ca cb t) ⟨k₀, m⟩ =
       flagZ M F zb (Function.update H τ (H τ * (1 + Matrix.single cb ca t))) ⟨k₀, m⟩ := by
@@ -137,11 +185,19 @@ theorem snd_sqZ_self (m : ι k₀) :
   rw [v₁_self]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `q`. Take `⟨k, m⟩` from `q`. Conclude with `flagZ_base k m`.
+-/
 theorem basePart_fst : basePart M.blk (fstPt k₀ (sqZ M F zb H k₀ τ ca cb t)) = zb := by
   funext q
   obtain ⟨k, m⟩ := q
   exact flagZ_base k m
 
+/- English proof (translation)
+Use function extensionality and compare the values at `q`. Take `⟨k, m⟩` from `q`. Establish `hne : k.1 ≠ k₀` using `fun e => k.2 (τ, a) (by rw [hk₀, e])`. Use `show sndPt k₀ (sqZ M F zb H k₀ τ ca cb t) ⟨k.1, m⟩ = _`. Rewrite using `[snd_sqZ_ne hne]`.
+
+Conclude with `flagZ_base k m`.
+-/
 theorem basePart_snd {a : Fin N} (hk₀ : M.blk (τ, a) = some k₀) :
     basePart M.blk (sndPt k₀ (sqZ M F zb H k₀ τ ca cb t)) = zb := by
   funext q
@@ -151,11 +207,23 @@ theorem basePart_snd {a : Fin N} (hk₀ : M.blk (τ, a) = some k₀) :
   rw [snd_sqZ_ne hne]
   exact flagZ_base k m
 
+/- English proof (translation)
+Use `⟨fun k => by rw [basePart_fst]; exact hn k, fun k hk m => ?_⟩` and prove the remaining obligations. Rewrite using `[fst_sqZ, flagZ_step hk, basePart_fst]`.
+-/
 theorem exact_fst (hn : ∀ k, zb ⟨k, F.c k⟩ = 1) (p : Ψ × Fin N) :
     M.ExactAt F p (fstPt k₀ (sqZ M F zb H k₀ τ ca cb t)) (H p.1) := by
   refine ⟨fun k => by rw [basePart_fst]; exact hn k, fun k hk m => ?_⟩
   rw [fst_sqZ, flagZ_step hk, basePart_fst]
 
+/- English proof (translation)
+Use `⟨fun k => by rw [basePart_snd hk₀]; exact hn k, fun k hk m => ?_⟩` and prove the remaining obligations. Rewrite using `[basePart_snd hk₀]`. Distinguish the cases in `hkk : k = k₀`. Substitute `hkk` using the available equality. Establish `hp : (τ', i) = (τ, a)` using `M.blk_inj _ _ _ hk hk₀`.
+
+Take `⟨rfl, rfl⟩` from `Prod.mk.inj hp`. Rewrite using `[snd_sqZ_self, flagZ_step hk₀, if_pos rfl, Function.update_self]`. Rewrite using `[snd_sqZ_ne hkk, flagZ_step hk]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Distinguish the cases in `hτ : τ' = τ`.
+
+Substitute `hτ` using the available equality. Establish `hia : i ≠ a`. Introduce and unpack `rfl`. Conclude with `hkk (Option.some_injective _ (hk.symm.trans hk₀))`. Rewrite using `[if_pos rfl, minorIJ_mul_one_add_single _ _ _ hlt (hiff i hia)]`.
+
+Rewrite using `[if_neg hτ]`.
+-/
 theorem exact_snd {a : Fin N} (hk₀ : M.blk (τ, a) = some k₀) (hlt : ca < cb)
     (hiff : ∀ i, i ≠ a → (ca ∈ stepCols N j i ↔ cb ∈ stepCols N j i))
     (hn : ∀ k, zb ⟨k, F.c k⟩ = 1) (τ' : Ψ) (i : Fin N) :
@@ -180,6 +248,13 @@ theorem exact_snd {a : Fin N} (hk₀ : M.blk (τ, a) = some k₀) (hlt : ca < cb
 
 end Flag
 
+/- English proof (translation)
+Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n d Rb τ a b k₀ ca cb F kb V bl r h ε hW`. Take `⟨hb, h2, hk₀, hca, hcb, -, -, hB, -, -, hh⟩` from `hW`. Establish `hlt : ca < cb`. Rewrite using `[Fin.lt_def]`. Use linear arithmetic over natural numbers and integers.
+
+Use `⟨fun τ' r s => analytic_wH h ε τ' r s _, fun w hw => ⟨fun τ' => ⟨?_, ?_⟩, ?_, fun τ' i => ⟨?_, ?_⟩⟩⟩` and prove the remaining obligations. Conclude with `isBlockDiag_mul (hh τ').1 (lowMat_isBlockDiag _ _)`. Rewrite using `[wH, Matrix.det_mul, lowMat_det, mul_one]`. Conclude with `(hh τ').2`. Conclude with `basePart_fst`.
+
+Conclude with `exact_fst (H := fun τ' => wH h ε τ' w) ((hB.2.2.2.2 _ hw).2.1) (τ', i)`. Conclude with `exact_snd (H := fun τ' => wH h ε τ' w) hk₀ hlt (fun i hi => mem_stepCols_iff hb h2 hca hcb hi) ((hB.2.2.2.2 _ hw).2.1) τ' i`.
+-/
 theorem chart_exact : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n d : ℕ) (Rb : AnLogRes (mCoordIdeal M.x) ⊤ n) (τ : Ψ) (a b : Fin N) (k₀ : K) (ca cb : Fin N) (F : FrameData ι Ψ N M.Ω M.blk) (kb : Fin Rb.A.n) (V : Set (Fin n → ℂ)) (bl : (Fin n → ℂ) → (Σ k, baseIdx ι M.blk k) → ℂ) (r : ((Σ k, baseIdx ι M.blk k) → ℂ) → Rb.X) (h : Ψ → Matrix (Fin N) (Fin N) ℂ) (ε : Fin n ⊕ LowIdx Ψ N j ⊕ Unit ≃ Fin (d + 2)), IsWCtx M Rb τ a b k₀ ca cb d F kb V bl r h → (∀ τ' r s, AnalyticOnNhd ℂ (fun w => wH h ε τ' w r s) (wD ε V)) ∧ ∀ w ∈ wD ε V, (∀ τ', IsBlockDiag j (wH h ε τ' w) ∧ (wH h ε τ' w).det ≠ 0) ∧ baseOf M k₀ (wPhi M F bl h ε k₀ τ ca cb w) = bl (wB ε w) ∧ ∀ τ' i, M.ExactAt F (τ', i) (fstPt k₀ (wPhi M F bl h ε k₀ τ ca cb w)) (wH h ε τ' w) ∧ M.ExactAt F (τ', i) (sndPt k₀ (wPhi M F bl h ε k₀ τ ca cb w)) (if τ' = τ then wH h ε τ w * (1 + Matrix.single cb ca (wT ε w)) else wH h ε τ' w) := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n d Rb τ a b k₀ ca cb F kb V bl r h ε hW
   obtain ⟨hb, h2, hk₀, hca, hcb, -, -, hB, -, -, hh⟩ := hW

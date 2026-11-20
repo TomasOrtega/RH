@@ -13,6 +13,9 @@ namespace GlobalTheory.NL.TransitionThirdCase
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Establish `hQ` using `(GlobalTheory.NL.IoXQ.main D HW F l K s LL h).2.1`. Rewrite using `[← algebraMap_smul ((HW l).W K s LL h).EE (((HW l).W K s LL h).Q ^ m) x, ((F l).E K s LL h).tie.jD_smul, ((F l).E K s LL h).tie.ioE_ext, map_pow, hQ, map_pow]`.
+-/
 theorem jD_Qpow (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (l : ℕ) [Fact l.Prime]
     (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL) (T : Lt K LL) (m : ℕ)
     (x : ((HW l).W K s LL h).DD T) :
@@ -25,6 +28,15 @@ theorem jD_Qpow (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.l
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `D HW F l _ K s LL h K' h' hle hK0 T hT m y' hy'`. Establish `hB` using `GlobalTheory.NL.BaseField.base_indep D HW F l K s LL h K' h' hle hK0`. Establish `hB3` using `hB.2.2 T (resLt (K := K) (K' := K') (LL := LL) hle T) (LinearEquiv.refl (↥(OL LL)) ↥T.L.T) (fun g t => rfl)`. Establish `hid : (TensorProduct.map (LinearMap.id : RW LL →ₗ[↥(OL LL)] RW LL) (LinearEquiv.refl (↥(OL LL)) ↥T.L.T).toLinearMap) = LinearMap.id` using `TensorProduct.map_id`. Establish `hR` using `hB3.1`.
+
+Establish `hN` using `hB3.2 hT (restrict_crys D hle T hT)`. Establish `hy1 : TensorProduct.map (LinearMap.id : RW LL →ₗ[↥(OL LL)] RW LL) (LinearEquiv.refl (↥(OL LL)) ↥T.L.T).toLinearMap (((F l).E K' s LL h').tie.jD (resLt (K` using `K) (K' := K') (LL := LL) hle T) y') ∈ Set.range (((F l).E K s LL h).tie.jD T) := hR ▸ ⟨_, ⟨y', rfl⟩, rfl⟩`. Establish `hy2 : TensorProduct.map (LinearMap.id : RW LL →ₗ[↥(OL LL)] RW LL) (LinearEquiv.refl (↥(OL LL)) ↥T.L.T).toLinearMap (((F l).E K' s LL h').tie.jD (resLt (K` using `K) (K' := K') (LL := LL) hle T) (((HW l).W K' s LL h').Q ^ m • y')) ∈ ((F l).E K s LL h).tie.jD T '' (((HW l).W K s LL h).N T : Set (((HW l).W K s LL h).DD T)) := hN ▸ ⟨_, ⟨_, hy', rfl⟩, rfl⟩`. Establish `hm1` using `LinearMap.congr_fun hid (((F l).E K' s LL h').tie.jD (resLt (K := K) (K' := K') (LL := LL) hle T) y')`. Establish `hm2` using `LinearMap.congr_fun hid (((F l).E K' s LL h').tie.jD (resLt (K := K) (K' := K') (LL := LL) hle T) (((HW l).W K' s LL h').Q ^ m • y'))`.
+
+Use `hy1.elim fun y hy => hy2.elim fun z hz => ⟨y, ?_, hy.trans hm1⟩` and prove the remaining obligations. Use `show ((HW l).W K s LL h).Q ^ m • y ∈ ((HW l).W K s LL h).N T`. Establish `e : z = ((HW l).W K s LL h).Q ^ m • y`. Apply `((F l).E K s LL h).tie.jD_inj T` to reduce the goal to its premises. Rewrite using `[hz.2, hm2, jD_Qpow, jD_Qpow, hy, hm1]`.
+
+Both sides reduce to the same expression. Conclude with `e ▸ hz.1`.
+-/
 theorem main : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL) (K' : FinExt l) (h' : Good K' s LL) (hle : K.1 ≤ K'.1), K0 K' = K0 K → ∀ T : Lt K LL, IsCrys ((D.loc l).PD K) T.ρ → ∀ (m : ℕ) (y' : ((HW l).W K' s LL h').DD (resLt (K := K) (K' := K') (LL := LL) hle T)), y' ∈ invN ((HW l).W K' s LL h') (resLt (K := K) (K' := K') (LL := LL) hle T) (((HW l).W K' s LL h').Q ^ m) → ∃ y ∈ invN ((HW l).W K s LL h) T (((HW l).W K s LL h).Q ^ m), ((F l).E K s LL h).tie.jD T y = toTW hle T (((F l).E K' s LL h').tie.jD (resLt (K := K) (K' := K') (LL := LL) hle T) y') := by
   intro D HW F l _ K s LL h K' h' hle hK0 T hT m y' hy'
   have hB := GlobalTheory.NL.BaseField.base_indep D HW F l K s LL h K' h' hle hK0

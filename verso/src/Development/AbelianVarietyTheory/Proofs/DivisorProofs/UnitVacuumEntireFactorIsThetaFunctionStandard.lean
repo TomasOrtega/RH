@@ -12,6 +12,35 @@ noncomputable section
 
 namespace GlobalTheory.ThetaLawOF
 
+/- English proof (translation)
+Introduce `D ψ θ S T frS frT hS hT δ hC hδ f hf Φ hΦd hΦ`. Establish `hψ` using `hf.1`. Establish `hθ` using `hf.2.inf`. Take `⟨σ, hch⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Establish `hSd` using `GlobalTheory.FunObj.VecEx.isSelfDualC_colLat S frS hS`.
+
+Establish `hTd` using `GlobalTheory.FunObj.VecEx.isSelfDualC_colLat T frT hT`. Take `⟨-, -, h3⟩` from `GlobalTheory.T.self_dual_lattice_pairing_dual D ψ S T (colLat frS) (colLat frT) hψ hSd hTd`. Use `⟨hΦd.comp ((differentiable_id).const_smul δ⁻¹), ?_⟩` and prove the remaining obligations. Introduce `x hx Y`. Take `⟨v, hv, rfl⟩` from `GlobalTheory.T.exists_rational_frameCoords_of_mem_torusLattice S T frS frT hS hT δ x hx`.
+
+Establish `hv' : GlobalTheory.VacUnique.finRat S T (-v) ∈ latO S T (colLat frS : Set _) (colLat frT : Set _) (fun _ => True)`. Rewrite using `[AddMonoidHom.map_neg]`. Conclude with `neg_mem hv`. Take `⟨ε, -, hε⟩` from `h3 f hf.2.lat _ hv'`. Establish `hsign` using `GlobalTheory.T.latticePoint_sign_eq_thetaLaw_semicharacter ψ S T frS frT hS hT hψ δ hδ v hv ε (fun g hg => hε g hg)`.
+
+Establish `hlaw` using `GlobalTheory.VacUnique.apply_add_infRat hch hψ hf.2.theta v (hε f hf.2.lat)`. Use `set X : Formalism.MainNotions.TaylorLogMetric.VC D S.rank T.rank := fun τ a b => ((GlobalTheory.FockPos.frAt frT τ)⁻¹ * Matrix.of (GlobalTheory.VacUnique.infRat S T v τ) * GlobalTheory.FockPos.frAt frS τ) a b with hX`. Use `set Z : Formalism.MainNotions.TaylorLogMetric.VC D S.rank T.rank := δ⁻¹ • Y with hZ`. Establish `hZY : Y = δ • Z` using `by rw [hZ, smul_smul, mul_inv_cancel₀ hδ, one_smul]`. Use `set z : GlobalTheory.FockCompare.RW T S := fun τ => GlobalTheory.FockPos.frAt frT τ * Matrix.of (Z τ) * (GlobalTheory.FockPos.frAt frS τ)⁻¹ with hz`.
+
+Establish `hzτ : ∀ τ, (GlobalTheory.FockPos.frAt frT τ)⁻¹ * Matrix.of (z τ) * GlobalTheory.FockPos.frAt frS τ = Matrix.of (Z τ)` using `fun τ => coord_back frS frT Z τ`. Establish `hz1 : GlobalTheory.FockPos.zCo θ frS frT (GlobalTheory.FockCompare.iotaW σ T S z) = Z`. Rewrite using `[zCo_iota hch]`. Use function extensionality and compare the values at `τ`. Conclude with `coord_back frS frT Z τ`.
+
+Establish `hz2 : GlobalTheory.FockPos.zCo θ frS frT (GlobalTheory.FockCompare.iotaW σ T S (z + GlobalTheory.VacUnique.infRat S T v)) = Z + X`. Rewrite using `[zCo_iota hch]`. Use function extensionality and compare the values at `τ`. Use `show (GlobalTheory.FockPos.frAt frT τ)⁻¹ * (Matrix.of (z τ) + Matrix.of (GlobalTheory.VacUnique.infRat S T v τ)) * GlobalTheory.FockPos.frAt frS τ = Z τ + X τ`. Rewrite using `[Matrix.mul_add, Matrix.add_mul, hzτ τ]`.
+
+Both sides reduce to the same expression. Establish `hom : GlobalTheory.VacUnique.omO S T (GlobalTheory.VacUnique.infRat S T v) z = ∑ τ, ∑ a, ∑ b, 2 * (Complex.I * ((Formalism.L2.Pj.xiR D : ℝ) : ℂ) * (starRingEnd ℂ (Z τ a b) * X τ a b)).re`. Rewrite using `[omO_frame frS frT hS hT]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[hzτ τ]`.
+
+Both sides reduce to the same expression. Establish `hl` using `hlaw z`. Rewrite `hl` using `[hΦ _ (hch.real_iota T S _), hΦ _ (hch.real_iota T S _), GlobalTheory.FockPos.gaussO, GlobalTheory.FockPos.gaussO, hz1, hz2, hom, hsign]`. Simplify using `only [Formalism.MainNotions.TaylorLogMetric.U]`. Establish `e1 : δ⁻¹ • (Y + δ • X) = Z + X` using `by rw [smul_add, smul_smul, inv_mul_cancel₀ hδ, one_smul]`.
+
+Rewrite using `[e1, hZY, torusHermitianForm_scaled_coordinate_eq hδ, torusHermitianForm_scaled_coordinate_eq hδ]`. Establish `hZZ : δ⁻¹ • δ • Z = Z` using `by rw [smul_smul, inv_mul_cancel₀ hδ, one_smul]`. Rewrite using `[hZZ]`. Use `set a := Formalism.MainNotions.TaylorLogMetric.al D (Formalism.MainNotions.TaylorLogMetric.tor0 D D.host.ccK δ) (δ • X) with ha`. Establish `kE : Complex.exp (-(Real.pi * Complex.I) * ((-∑ τ, ∑ a, ∑ b, 2 * (Complex.I * ((Formalism.L2.Pj.xiR D : ℝ) : ℂ) * (starRingEnd ℂ (Z τ a b) * X τ a b)).re : ℝ) : ℂ)) * Complex.exp (-((Real.pi * Formalism.L2.Pj.xiR D : ℝ) : ℂ) * ∑ τ, ∑ a, ∑ b, ((‖Z τ a b‖ ^ 2 : ℝ) : ℂ)) * Complex.e …`.
+
+Rewrite using `[← Complex.exp_add, ← Complex.exp_add]`. Use `congr 1`. Simplify using `only [Pi.add_apply]`. Use `push_cast`. Simplify using `only [Finset.mul_sum, Finset.sum_div, ← Finset.sum_neg_distrib, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]`.
+
+Use `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Apply the tactic sequence `have h := entry (Z τ i j) (X τ i j) (Formalism.L2.Pj.xiR D)`. Move the coercions through the operations in `at h ⊢`. Take the linear combination `h`. Apply `mul_left_cancel₀ (Complex.exp_ne_zero (-((Real.pi * Formalism.L2.Pj.xiR D : ℝ) : ℂ) * ∑ τ, ∑ a, ∑ b, ((‖(Z + X) τ a b‖ ^ 2 : ℝ) : ℂ)))` to reduce the goal to its premises.
+
+Rewrite using `[← kE]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[kE]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by`.
+
+Rewrite using `[hl]`. Use `al_mul_self (Formalism.MainNotions.TaylorLogMetric.tor0 D D.host.ccK δ) (δ • X)` as an intermediate fact. Rewrite `this` using `[← ha]`. Take the linear combination `(Complex.exp (-(Real.pi * Complex.I) * ((-∑ τ, ∑ a, ∑ b, 2 * (Complex.I * ((Formalism.L2.Pj.xiR D : ℝ) : ℂ) *`. Use the proof step `(starRingEnd ℂ (Z τ a b) * X τ a b)).re : ℝ) : ℂ)) *`.
+
+Use the proof step `Complex.exp (-((Real.pi * Formalism.L2.Pj.xiR D : ℝ) : ℂ) * ∑ τ, ∑ a, ∑ b, ((‖Z τ a b‖ ^ 2 : ℝ) : ℂ)) *`. Use the proof step `Complex.exp (-(Real.pi : ℂ) * (2 * ((Formalism.L2.Pj.xiR D : ℝ) : ℂ) * ∑ τ, ∑ a, ∑ b, Z τ a b * starRingEnd ℂ (X τ a b)) - (Real.pi : ℂ) * (2 * ((Formalism.L2.Pj.xiR D : ℝ) : ℂ) * ∑ τ, ∑ a, ∑ b, X τ a b * starRingEnd ℂ (X τ a b)) / 2) * Φ Z) * this`.
+-/
 theorem theta_of_vacuum_real : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (frS : GL (Fin S.rank) D.host.E) (frT : GL (Fin T.rank) D.host.E), Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) frS.1 * S.gram * frS.1 = 1 → Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) frT.1 * T.gram * frT.1 = 1 → ∀ δ : ℂ, Formalism.MainNotions.StandardLatticesGL3.Crv D D.host.ccK δ → δ ≠ 0 → ∀ f : WO S T → ℂ, IsVacO ψ θ S T (fun _ => 1) (fun _ => 1) (colLat frS : Set _) (colLat frT : Set _) f → ∀ Φ : Formalism.MainNotions.TaylorLogMetric.VC D S.rank T.rank → ℂ, Differentiable ℂ Φ → (∀ w : WO S T, w.map (finPart D) = 0 → f w = GlobalTheory.FockPos.gaussO θ frS frT w * Φ (GlobalTheory.FockPos.zCo θ frS frT w)) → (fun Y => Φ (δ⁻¹ • Y)) ∈ Formalism.MainNotions.TaylorLogMetric.Th D (Formalism.MainNotions.TaylorLogMetric.tor0 D D.host.ccK δ) (Formalism.MainNotions.StandardLatticesGL3.stdL D S.rank) (Formalism.MainNotions.StandardLatticesGL3.stdL D T.rank) := by
   intro D ψ θ S T frS frT hS hT δ hC hδ f hf Φ hΦd hΦ
   have hψ := hf.1

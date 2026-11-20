@@ -21,6 +21,13 @@ open GlobalTheory.AnyLevel
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Take `⟨k, rfl⟩` from `h`. Use `⟨hC.1, fun a => ?_⟩` and prove the remaining obligations. Establish `hk : (k : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (right_ne_zero_of_mul hn)`. Establish `hm : (m : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (left_ne_zero_of_mul hn)`. Establish `e : wC H (k * a.1, k * a.2) = k * wC H a`.
+
+Simplify using `only [wC]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `hC.2 (k * a.1, k * a.2)` as an intermediate fact. Rewrite `this` using `[e]`.
+
+Use `this using 3` and compare the differences between its conclusion and the goal. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem actsBy_of_dvd {C : Curve H} {τ : ℂ ≃+* ℂ} {io : C.P.A.left ⟶ C.P.A.left} {m n : ℕ} (hn : n ≠ 0) (h : m ∣ n)
     {s : ℤ × ℤ} (hC : C.ActsBy τ io n s) : C.ActsBy τ io m s := by
   obtain ⟨k, rfl⟩ := h
@@ -39,6 +46,9 @@ theorem actsBy_of_dvd {C : Curve H} {τ : ℂ ≃+* ℂ} {io : C.P.A.left ⟶ C.
   · push_cast
     field_simp
 
+/- English proof (translation)
+Distinguish the cases in `h0 : D.p = 0 ∨ D.q = 0`. Conclude with `GlobalTheory.CompRat.splitLat_of_definite E H D h0`. Distinguish the cases in `h3 : 3 ≤ D.p + D.q`. Conclude with `GlobalTheory.SplitGenus.splitLat_of_indefinite E H D h1 h3 (by omega) (by omega)`. Conclude with `splitLat_of_one_one E H D h1 (by omega) (by omega)`.
+-/
 theorem splitLat_all (h1 : ∃ D₁ : Datum H, D₁.p = 1 ∧ D₁.q = 0) (D : Datum H) : SplitLat D := by
   by_cases h0 : D.p = 0 ∨ D.q = 0
   · exact GlobalTheory.CompRat.splitLat_of_definite E H D h0
@@ -48,6 +58,13 @@ theorem splitLat_all (h1 : ∃ D₁ : Datum H, D₁.p = 1 ∧ D₁.q = 0) (D : D
 
 variable {D : Datum H} {l : Level H} {Xo : Moduli D l} {σ : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (E →+* ℂ)}
 
+/- English proof (translation)
+Establish `hM' : (n : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hn.ne'`. Establish `tu : ∀ y : Sp ℂ ⟶ Xo.X, (toUnit (Over.mk y) ≫ s).left = y ≫ s.left`. Introduce `y`. Rewrite using `[Over.comp_left]`. Use `congr 1`.
+
+Rewrite `key` using `[← h1, tu, ← Category.assoc, hu, ← tu, h2]`. Establish `e : F.ex i' P' ((n : ℂ)⁻¹ • P' x') = F.ex i' P' ((n : ℂ)⁻¹ • P' w)` using `Over.OverMorphism.ext key`. Establish `e'` using `F.ex_add i' P' hP' ((n : ℂ)⁻¹ • P' (w - x')) ((n : ℂ)⁻¹ • P' x')`. Rewrite `e'` using `[← smul_add, ← map_add, sub_add_cancel, e]`. Take `⟨y, hy⟩` from `(F.ex_ker i' P' hP' _).1 (mul_eq_right.1 e'.symm)`.
+
+Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_iff_eq_add']`. Apply `hP'.2.1` to reduce the goal to its premises. Rewrite using `[map_nsmul, hy, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, mul_inv_cancel₀ hM', one_smul]`.
+-/
 theorem congr_of_section (F : FamilyUnif Xo σ ty) (τ : ℂ ≃+* ℂ) {i i' : Fin F.n} {P : (F.Di i).La →+ (Fin g → ℂ)}
     {P' : (F.Di i').La →+ (Fin g → ℂ)} (hP' : IsPeriod (F.Di i') ty P')
     (hu : spMap (τ : ℂ →+* ℂ) ≫ F.u i P = F.u i' P') {n : ℕ} (hn : 0 < n) (s : 𝟙_ (Over Xo.X) ⟶ Xo.univ.t.G)
@@ -70,6 +87,15 @@ theorem congr_of_section (F : FamilyUnif Xo σ ty) (τ : ℂ ≃+* ℂ) {i i' : 
   apply hP'.2.1
   rw [map_nsmul, hy, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, mul_inv_cancel₀ hM', one_smul]
 
+/- English proof (translation)
+Take `⟨C, io, hC⟩` from `hfix`. Establish `hτ : τ H.rt0 = H.rt0`. Rewrite using `[← hσ]`. Conclude with `RingHom.congr_fun hτσ _`. Establish `hM : 0 < l.M` using `lt_of_lt_of_le (by norm_num) l.three_le`.
+
+Establish `hM' : l.M' ≠ 0` using `Nat.lcm_ne_zero hM.ne' l.A_pos.ne'`. Take `⟨i', P', hP', hu⟩` from `F.onto (spMap (τ : ℂ →+* ℂ) ≫ F.u i P) (by rw [Category.assoc, F.over_σ i P hP, GlobalTheory.ConjPermutes.spMap_comp, hτσ])`. Take `⟨Φ, hE, hp, hm, hact⟩` from `exists_isometry_of_conj_split E H D l Xo σ g ty F hD hσ hty τ hτ C io hC.1 i P hP i' P' hP' hs hu.symm`. Take `⟨L, hL⟩` from `GlobalTheory.CompRat.exists_complex_linear_of_pure_types E H _ _ g ty P P' hP hP' Φ hs (fun a ha => (hp a).2 ha) (fun a ha => (hm a).2 ha)`. Establish `hw : wE H (1, 0) = 1` using `by simp [wE]`.
+
+Establish `key : ∀ n : ℕ, 0 < n → n ∣ l.M' → ∀ x, spMap (τ : ℂ →+* ℂ) ≫ (F.ex i P ((n : ℂ)⁻¹ • P x)).left = (F.ex i' P' ((n : ℂ)⁻¹ • P' (Φ x))).left`. Introduce `n hn hd x`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 (hs.ge (Submodule.mem_top (x := x)))`. Use `hact n (1, 0) hn (actsBy_of_dvd hM' hd hC) a ha b hb` as an intermediate fact. Rewrite `this` using `[hw, map_one, one_smul, one_smul]`. Then use the resulting hypothesis.
+
+Conclude with `hu.symm.trans ((GlobalTheory.UnifPoint.point_eq_iff_isometry_closed GlobalTheory.thetaUnifAV_all GlobalTheory.firstFiveLaws.1 E H D l Xo σ g ty hD hσ hty (F.Di i) (F.Di i') (F.t i) (F.t i') P P' (F.u i P) (F.u i' P') (F.ex i P) (F.ex i' P') ⟨F.over_σ i P hP, hP, ⟨F.ex_add i P hP, …`.
+-/
 theorem conj_point_eq (F : FamilyUnif Xo σ ty) (hD : 1 ≤ D.p + D.q) (hσ : σ (baseKA l).ρ = H.rt0)
     (hty : IsTypeFn H D.p D.q ty) (τ : ℂ ≃+* ℂ) (hτσ : (τ : ℂ →+* ℂ).comp σ = σ) (hfix : FixesCurve H τ l.M')
     (i : Fin F.n) (P : (F.Di i).La →+ (Fin g → ℂ)) (hP : IsPeriod (F.Di i) ty P) (hs : IsSplit hP) :
@@ -109,6 +135,33 @@ theorem conj_point_eq (F : FamilyUnif Xo σ ty) (hD : 1 ≤ D.p + D.q) (hσ : σ
 
 open Polynomial GlobalTheory.CompRat.FixedConst in
 
+/- English proof (translation)
+Introduce `Z a ha`. Take `⟨r, rfl⟩` from `GlobalTheory.GeomIrr.mem_range_of_isAlgebraic_ratFun a (ha.tower_top (kap Z))`. Establish `hr : IsIntegral c.F r` using `(isIntegral_algebraMap_iff (algebraMap (kap Z) (Om Z)).injective).1 ha.isIntegral`. It suffices to establish `h : r ∈ (algebraMap c.F (kap Z)).range by`. Take `⟨k, hk⟩` from `h`.
+
+Conclude with `⟨k, by rw [← hk, ← IsScalarTower.algebraMap_apply]⟩`. Establish `hfin : FiniteDimensional ℚ c.F` using `c.fin`. Establish `hcF : Countable c.F` using `Cardinal.mk_le_aleph0_iff.1 (by`. Simplify `Algebra.IsAlgebraic.cardinalMk_le_max ℚ c.F)` using `[Cardinal.mkRat]`. Establish `hk : Countable (kap Z)` using `GlobalTheory.GenericReading.countable_of_fg_top ((GlobalTheory.Reg.kap_fg_trdeg E H D l Xo c).1 Z)`.
+
+Take `⟨φ⟩ : Nonempty (kap Z →ₐ[c.F] ℂ)` from `GlobalTheory.nonempty_algHom_complex_of_countable c.F (kap Z)`. Use `mem_range_of_fixed φ hr fun τ hτ => ?_` and prove the remaining obligations. Use `Xo.smooth` as an intermediate fact. Establish `: Smooth Xo.s` using `SmoothOfRelativeDimension.smooth D.dim Xo.s`. Use `CompFin.isNoetherian_XF Xo c` as an intermediate fact.
+
+Establish `: GlobalTheory.IsNormalScheme (Xo.XF c)` using `(GlobalTheory.isNormalScheme_iff _).2 (GlobalTheory.forall_isDomain_and_isIntegrallyClosed_stalk_of_smooth (strK (Xo := Xo) (c := c)) ((GlobalTheory.isNormalScheme_iff _).1 inferInstance))`. Set `κ : c.F →+* Γ(Xo.XF c, ⊤)` to `((Scheme.ΓSpecIso (CommRingCat.of c.F)).inv ≫ (strK (Xo := Xo) (c := c)).appTop).hom`. Set `j : c.F →+* ℂ` to `algebraMap c.F ℂ`. Establish `hκ : ∀ (x : Sp ℂ ⟶ Xo.XF c) (i : c.F →+* ℂ), x ≫ strK = spMap i → (ev x).comp κ = i`. Introduce `x i hx`.
+
+Use extensionality with `k`. Express the relevant statement in the definitionally equal form `ev x ((strK (Xo := Xo) (c := c)).appTop.hom _) = _`. Rewrite using `[← ev_comp, hx, ev_spec]`. Conclude with `congrArg i ((Scheme.ΓSpecIso (CommRingCat.of c.F)).inv_hom_id_apply k)`. Set `x : Sp ℂ ⟶ Xo.XF c` to `Spec.map (CommRingCat.ofHom φ.toRingHom) ≫ genSp Z`.
+
+Establish `hx : x ≫ strK = spMap j`. Rewrite using `[Category.assoc, ← Spec.map_preimage (genSp Z ≫ strK), ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `k`. Conclude with `φ.commutes k`.
+
+Establish `hev : ∀ f, ev x f = φ (((Xo.XF c).evaluation ⊤ (genPt Z) trivial).hom f)` using `ev_residue _ φ.toRingHom`. Establish `hm` using `minpoly.monic hr`. Take `⟨f, hf, hf0⟩` from `exists_section Z (genPt Z) ((Z.2.1 : IsIrreducible (Z : Set (Xo.XF c))).isGenericPoint_genericPoint (isClosed_of_mem_irreducibleComponents _ Z.2)) ((minpoly c.F r).map κ) (hm.map _) r (by`. Apply `φ.toRingHom.injective` to reduce the goal to its premises. Rewrite using `[hom_eval₂, ← (RingHom.ext hev : ev x = φ.toRingHom.comp _), eval₂_map, hκ x j hx, map_zero]`.
+
+Conclude with `(aeval_algHom_apply φ r _).trans (by rw [minpoly.aeval, map_zero]))`. Establish `hS : ∀ y : Sp ℂ ⟶ Xo.XF c, y ≫ pullback.snd _ _ = spMap j → valAt' y ⊤ f ∈ insert 0 ((minpoly c.F r).rootSet ℂ)`. Introduce `y hy`. Establish `h` using `congrArg (ev y) hf0`. Rewrite `h` using `[map_mul, ← eval₂_at_apply, eval₂_map, hκ y j hy, map_zero, mul_eq_zero]`.
+
+Rewrite using `[valAt'_top]`. Conclude with `h.imp id fun h => mem_rootSet.2 ⟨hm.ne_zero, h⟩`. Establish `hs : spMap j ≫ spMap (IntermediateField.inclusion c.le).toRingHom = spMap (algebraMap (KA l) ℂ)`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+
+Take `⟨i, P, hP, hu⟩` from `F.onto (x ≫ pullback.fst _ _) (by`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hx, hs])`. Take `⟨P', hP', hu'⟩` from `hfix τ (fun z hz => hτ ⟨z, hz⟩) i`. Set `x' : Sp ℂ ⟶ Xo.XF c` to `pullback.lift (F.u i P') (spMap j) ((F.over_σ i P' hP').trans hs.symm)`. Establish `hx1 : x' ≫ pullback.fst _ _ = F.u i P'` using `pullback.lift_fst _ _ _`.
+
+Establish `hx2 : x' ≫ pullback.snd _ _ = spMap j` using `pullback.lift_snd _ _ _`. Establish `hx' : spMap (τ : ℂ →+* ℂ) ≫ x' = x'`. Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hx1, hu']`. Rewrite using `[Category.assoc, hx2, ← Spec.map_comp]`.
+
+Use `congr 1`. Use extensionality with `k`. Conclude with `hτ k`. Establish `key` using `valAt_eq_of_finite_values E H D l Xo _ g ty F h1 rfl hty c j f _ ((rootSet_finite _ _).insert 0) hS i P' P hP' hP x' x hx1 hx2 hu.symm hx`. Rewrite `key` using `[valAt'_top, valAt'_top, hev, hf]`.
+
+Rewrite using `[← key]`. Conclude with `(ev_conj x' (τ : ℂ →+* ℂ) f).symm.trans (by rw [hx'])`.
+-/
 theorem fnAlgClosed_of_fixed_points (F : FamilyUnif Xo (algebraMap (KA l) ℂ) ty) (h1 : 1 ≤ D.p + D.q)
     (hty : IsTypeFn H D.p D.q ty) (c : Coeff l)
     (hfix : ∀ τ : ℂ ≃+* ℂ, (∀ x ∈ c.F, τ x = x) → ∀ i, ∃ P, IsPeriod (F.Di i) ty P ∧
@@ -184,6 +237,13 @@ theorem fnAlgClosed_of_fixed_points (F : FamilyUnif Xo (algebraMap (KA l) ℂ) t
   rw [← key]
   exact (ev_conj x' (τ : ℂ →+* ℂ) f).symm.trans (by rw [hx'])
 
+/- English proof (translation)
+Establish `hex : ∃ (g : ℕ) (ty : Fin g → (E →+* ℂ)), IsTypeFn H D.p D.q ty` using `by classical`. Set `m : (E →+* ℂ) → ℕ` to `fun τ => if τ (H.rt : E) = H.rt0 then D.p else D.q`. Set `e` to `(Fintype.equivFin (Σ τ : E →+* ℂ, Fin (m τ))).symm`. Establish `h : ∀ τ, Nat.card {i // (e i).1 = τ} = m τ` using `fun τ => by`. Rewrite using `[Nat.card_congr ((e.subtypeEquiv (q := fun x => x.1 = τ) fun _ => Iff.rfl).trans (Equiv.sigmaSubtype τ))]`.
+
+Simplify using the standard rewrite rules. Conclude with `⟨_, fun i => (e i).1, fun τ => ⟨fun hτ => by rw [h]; simp [m, hτ], fun hτ => by rw [h]; simp [m, hτ]⟩⟩`. Take `⟨g, ty, hty⟩` from `hex`. Take `⟨F⟩` from `GlobalTheory.closing_of_abelianSchemeLaws E H D l Xo (algebraMap (KA l) ℂ) g ty hD rfl hty`. Use `fnAlgClosed_of_fixed_points F hD hty c fun τ hτ i => ?_` and prove the remaining obligations.
+
+Take `⟨P, hP, hs⟩` from `GlobalTheory.CompRat.exists_isSplit_of_splitLat E H (F.Di i) g ty (by rw [(F.sig i).1, (F.sig i).2]; exact hty) (splitLat_all h1 _)`. Conclude with `⟨P, hP, conj_point_eq F hD rfl hty τ (RingHom.ext fun x => hτ _ (c.le x.2)) (hC τ hτ) i P hP hs⟩`.
+-/
 theorem fnAlgClosed_of_curveOver (Xo : Moduli D l) (c : Coeff l) (hD : 1 ≤ D.p + D.q)
     (h1 : ∃ D₁ : Datum H, D₁.p = 1 ∧ D₁.q = 0) (hC : CurveOver H c.F l.M') : FnAlgClosed Xo c := by
   have hex : ∃ (g : ℕ) (ty : Fin g → (E →+* ℂ)), IsTypeFn H D.p D.q ty := by

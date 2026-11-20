@@ -24,6 +24,9 @@ open GlobalTheory.LB (resG_resG resG_self)
 
 variable {X : Scheme.{0}}
 
+/- English proof (translation)
+Use extensionality with `V ψ : 3`. Use `VB.hom_ext fun W h s => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `homApp ψ h ((S.f ≫ S.g).app W s) = 0`. Rewrite using `[S.zero]`. Conclude with `map_zero (homApp ψ h)`.
+-/
 theorem homMap_comp_zero (S : ShortComplex X.Modules) (G : X.Modules) :
     homMap S.g (𝟙 G) ≫ homMap S.f (𝟙 G) = 0 := by
   ext V ψ : 3
@@ -32,6 +35,21 @@ theorem homMap_comp_zero (S : ShortComplex X.Modules) (G : X.Modules) :
   rw [S.zero]
   exact map_zero (homApp ψ h)
 
+/- English proof (translation)
+Use `hS.mono_f` as an intermediate fact. Use `hS.epi_g` as an intermediate fact. Establish `hex (W : X.Opens) (t : Γ(S.X₂, W)) (ht : S.g.app W t = 0) : ∃ u, S.f.app W u = t` using `(QCoh.exact_app_of_exact_of_mono hS.exact W t).1 ht`. Establish `hz (W : X.Opens) (u : Γ(S.X₁, W)) : S.g.app W (S.f.app W u) = 0` using `(QCoh.exact_app_of_exact_of_mono hS.exact W _).2 ⟨u, rfl⟩`. Establish `hinj (W : X.Opens) : Function.Injective (appLinear S.f W)` using `QCoh.injective_app_of_mono S.f W`.
+
+Use `ShortComplex.ShortExact.mk' (DualExact.exact_of_locally _ fun V x hx => ?_) (QCoh.mono_of_locally_app_injective _ fun V x hx => ?_) (QCoh.epi_of_locally_app_surjective _ fun V x hx => ?_)` and prove the remaining obligations. Take `⟨U, hU, hxU, σ, hσ, hg⟩` from `DualExact.exists_local_section S.g h₃ hx`. Use `⟨U, hU, hxU, fun (l : Γ(homMod S.X₂ G, U)) (hl : (homMap S.f (𝟙 G)).app U l = 0) => ⟨homMk (fun W h => homApp l h ∘ₗ σ W h) fun W W' h h' t => ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, hσ W W' h h', homApp_resM]`. Use `VB.hom_ext fun W h t => ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `homApp l h (σ W h (S.g.app W t)) = _`. Take `⟨u, hu⟩` from `hex W (t - σ W h (S.g.app W t)) (by rw [map_sub, hg, sub_self])`. Establish `: homApp ((homMap S.f (𝟙 G)).app U l) h u = homApp l h (S.f.app W u)` using `rfl`. Rewrite `this` using `[hl, hu, map_sub, VB.homApp_zero, LinearMap.zero_apply, eq_comm, sub_eq_zero]`. Conclude with `this.symm`.
+
+Take `⟨U, hU, hxU, σ, hσ, hg⟩` from `DualExact.exists_local_section S.g h₃ hx`. Use `⟨U, hxU, hU, fun (a b : Γ(homMod S.X₃ G, U)) hab => VB.hom_ext fun W h t => ?_⟩` and prove the remaining obligations. Rewrite using `[← hg W h t]`. Conclude with `congrArg (fun ψ : Γ(homMod S.X₂ G, U) => homApp ψ h (σ W h t)) hab`. Take `⟨U, hU, hxU, σ, hσ, hg⟩` from `DualExact.exists_local_section S.g h₃ hx`.
+
+Set `ρ (W : X.Opens) (h : W ≤ U) : Γ(S.X₂, W) →ₗ[Γ(X, W)] Γ(S.X₁, W)` to `LinearMap.codRestrictOfInjective (LinearMap.id - σ W h ∘ₗ appLinear S.g W) (appLinear S.f W) (hinj W) fun t => hex W _ (by`. Express the relevant statement in the definitionally equal form `S.g.app W (t - σ W h (S.g.app W t)) = 0`. Rewrite using `[map_sub, hg, sub_self])`. Establish `hρ (W : X.Opens) (h : W ≤ U) (t : Γ(S.X₂, W)) : S.f.app W (ρ W h t) = t - σ W h (S.g.app W t)` using `LinearMap.codRestrictOfInjective_comp_apply _ (appLinear S.f W) _ _ t`. Use `⟨U, hxU, hU, fun (l : Γ(homMod S.X₁ G, U)) => ⟨homMk (fun W h => homApp l h ∘ₗ ρ W h) fun W W' h h' t => ?_, ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, ← homApp_resM]`. Use `congr 1`. Apply `hinj W'` to reduce the goal to its premises. Rewrite using `[appLinear_apply, appLinear_apply, app_resM, hρ, hρ, map_sub, app_resM, hσ W W' h h']`. Use `VB.hom_ext fun W h u => ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `homApp l h (ρ W h (S.f.app W u)) = _`. Use `congr 1`. Apply `hinj W` to reduce the goal to its premises. Rewrite using `[appLinear_apply, appLinear_apply, hρ, hz, map_zero, sub_zero]`.
+-/
 theorem shortExact_homMod (S : ShortComplex X.Modules) {s : ℕ} (hS : S.ShortExact)
     (h₃ : IsVB S.X₃ s) (G : X.Modules) :
     (ShortComplex.mk (homMap S.g (𝟙 G)) (homMap S.f (𝟙 G)) (homMap_comp_zero S G)).ShortExact := by
@@ -81,6 +99,11 @@ theorem shortExact_homMod (S : ShortComplex X.Modules) {s : ℕ} (hS : S.ShortEx
       apply hinj W
       rw [appLinear_apply, appLinear_apply, hρ, hz, map_zero, sub_zero]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `_ = (d.isFrame.basis hd).det (c.isFrame.basis hc) • _`. Rewrite using `[Module.Basis.det_apply, Matrix.det_unique, Module.Basis.toMatrix_apply]`. Use `(d.isFrame.basis hd).sum_repr (c.isFrame.basis hc 0)` as an intermediate fact. Rewrite `this` using `[Fin.sum_univ_one]`. Simplify using `only [IsFrame.basis_apply] at this ⊢`.
+
+Conclude with `this.symm`.
+-/
 theorem resM_frame_eq {A : X.Modules} (c d : VB.Chart A 1) {W : X.Opens} (hc : W ≤ c.U)
     (hd : W ≤ d.U) : resM A hc (c.e 0) =
       (((c.isFrame.detUnit d.isFrame hc hd)⁻¹ : Γ(X, W)ˣ) : Γ(X, W)) • resM A hd (d.e 0) := by
@@ -91,11 +114,17 @@ theorem resM_frame_eq {A : X.Modules} (c d : VB.Chart A 1) {W : X.Opens} (hc : W
   simp only [IsFrame.basis_apply] at this ⊢
   exact this.symm
 
+/- English proof (translation)
+Rewrite using `[← homApp_resM, resM_resM]`.
+-/
 theorem resM_homApp_resM {A G : X.Modules} {U V W T : X.Opens} (φ : Γ(homMod A G, V))
     (e : Γ(A, U)) (hV : W ≤ V) (hU : W ≤ U) (h : T ≤ W) :
     resM G h (homApp φ hV (resM A hU e)) = homApp φ (h.trans hV) (resM A (h.trans hU) e) := by
   rw [← homApp_resM, resM_resM]
 
+/- English proof (translation)
+Rewrite using `[resM_frame_eq c d hc hd, map_smul, ← IsFrame.res_detUnit c.isFrame d.isFrame inf_le_left inf_le_right (le_inf hc hd), ← map_inv]`. Both sides reduce to the same expression.
+-/
 theorem homApp_frame_eq {A G : X.Modules} {V W : X.Opens} (φ : Γ(homMod A G, V))
     (c d : VB.Chart A 1) (hV : W ≤ V) (hc : W ≤ c.U) (hd : W ≤ d.U) :
     homApp φ hV (resM A hc (c.e 0)) = resG X (le_inf hc hd)
@@ -117,6 +146,11 @@ def evalHom (A G : X.Modules) : homMod A G ⟶ twist G (CechPic.dual (VB.det A 1
     fun h φ => Twist.sec_ext fun c : VB.Chart A 1 =>
       (resM_homApp_resM φ (c.e 0) inf_le_left inf_le_right (inf_le_inf_right _ h)).symm
 
+/- English proof (translation)
+Use `⟨fun φ ψ e => VB.hom_ext fun T h s => ?_, fun t => ⟨homMk (fun T h => ((c.isFrame.basis (h.trans hW)).coord 0).smulRight (resM G h t)) fun T T' h h' s => ?_, ?_⟩⟩` and prove the remaining obligations. Establish `e'` using `congrArg (resM G h) e`. Simplify using `only [← homApp_resM, resM_resM] at e'`. Rewrite using `[← (c.isFrame.basis (h.trans hW)).sum_repr s, Fin.sum_univ_one, map_smul, map_smul, IsFrame.basis_apply]`. Conclude with `congrArg _ e'`.
+
+Simplify using `only [LinearMap.smulRight_apply, Module.Basis.coord_apply, resM_smul, resM_resM]`. Rewrite using `[← IsFrame.repr_resM]`. Simplify using `only [VB.homApp_homMk, LinearMap.smulRight_apply, Module.Basis.coord_apply, resM_self]`. Rewrite using `[← c.isFrame.basis_apply hW, Module.Basis.repr_self, Finsupp.single_eq_same, one_smul]`.
+-/
 theorem bijective_eval {A : X.Modules} (G : X.Modules) (c : VB.Chart A 1) {W : X.Opens}
     (hW : W ≤ c.U) : Function.Bijective fun φ : Γ(homMod A G, W) =>
       homApp φ le_rfl (resM A hW (c.e 0)) := by
@@ -132,6 +166,9 @@ theorem bijective_eval {A : X.Modules} (G : X.Modules) (c : VB.Chart A 1) {W : X
   · simp only [VB.homApp_homMk, LinearMap.smulRight_apply, Module.Basis.coord_apply, resM_self]
     rw [← c.isFrame.basis_apply hW, Module.Basis.repr_self, Finsupp.single_eq_same, one_smul]
 
+/- English proof (translation)
+Use `Twist.isIso_of_cover _ (U := fun c : VB.Chart A 1 => c.U) h.isLB_det.cover fun c W hW => ?_` and prove the remaining obligations. Rewrite using `[← (Twist.chartEquiv (F := G) (isLB_dual h.isLB_det) c hW).bijective.of_comp_iff']`. Use `bijective_eval G c hW using 2 with φ` and compare the differences between its conclusion and the goal. Conclude with `resM_homApp_resM φ (c.e 0) inf_le_left inf_le_right (le_inf le_rfl hW)`.
+-/
 theorem isIso_evalHom {A : X.Modules} (h : IsVB A 1) (G : X.Modules) : IsIso (evalHom A G) := by
   refine Twist.isIso_of_cover _ (U := fun c : VB.Chart A 1 => c.U) h.isLB_det.cover
     fun c W hW => ?_
@@ -141,6 +178,11 @@ theorem isIso_evalHom {A : X.Modules} (h : IsVB A 1) (G : X.Modules) : IsIso (ev
 
 variable {R : Type} [CommRing R] [Algebra R Γ(X, ⊤)] {F : X.Modules}
 
+/- English proof (translation)
+Use `isIso_evalHom h₁ F` as an intermediate fact. Use `isIso_evalHom h₃ F` as an intermediate fact. Establish `e` using `congrFun (chiLenPic_shortExact (shortExact_homMod S hS h₃ F) ((hF.twist (isLB_dual h₃.isLB_det)).of_iso (asIso (evalHom S.X₃ F)).symm) ((hF.twist (isLB_dual h₁.isLB_det)).of_iso (asIso (evalHom S.X₁ F)).symm)) c`. Use `e.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `chiLenPic R (homMod S.X₃ F) c + chiLenPic R (homMod S.X₁ F) c = _`.
+
+Rewrite using `[chiLenPic_congr R (asIso (evalHom S.X₃ F)), chiLenPic_congr R (asIso (evalHom S.X₁ F)), chiLenPic_twist R F (isLB_dual h₃.isLB_det), chiLenPic_twist R F (isLB_dual h₁.isLB_det), eq_neg_of_add_eq_zero_left (cls_dual_add h₃.isLB_det), eq_neg_of_add_eq_zero_left (cls_dual_add h₁.is …`.
+-/
 theorem chiLenPic_homMod (S : ShortComplex X.Modules) (hS : S.ShortExact) (h₁ : IsVB S.X₁ 1)
     (h₃ : IsVB S.X₃ 1) (hF : FiniteLenTwists R F) (c : Pic X) :
     chiLenPic R (homMod S.X₂ F) c =
@@ -157,6 +199,13 @@ theorem chiLenPic_homMod (S : ShortComplex X.Modules) (hS : S.ShortExact) (h₁ 
     eq_neg_of_add_eq_zero_left (cls_dual_add h₃.isLB_det),
     eq_neg_of_add_eq_zero_left (cls_dual_add h₁.isLB_det), neg_add_eq_sub, neg_add_eq_sub]
 
+/- English proof (translation)
+Establish `h₁ : IsVB (fl.F (0 : Fin 2).succ) 1` using `fl.isVB _`. Establish `h₃ : IsVB (cokernel (fl.ι (0 : Fin 2).succ)) 1` using `fl.isVB_cokernel _`. Establish `hS : (ShortComplex.mk (fl.ι (0 : Fin 2).succ) (cokernel.π _) (cokernel.condition _)).ShortExact` using `{ exact := ShortComplex.exact_cokernel _ }`. Establish `h0 : IsZero (fl.F (0 : Fin 2).castSucc)` using `VB.isVB_zero_iff.1 (fl.isVB _)`. Establish `e₁ : cls _ h₁.isLB_det = cls _ (fl.isLB_root 0)` using `((cls_eq_iff (fl.isLB_root 0) h₁.isLB_det).2 ((fl.isVB_gr 0).lbIso_det_of_iso (cokernelIsoOfEq (h0.eq_of_src _ 0) ≪≫ cokernelZeroIsoTarget))).symm`.
+
+Establish `e₃ : cls _ h₃.isLB_det = cls _ (fl.isLB_root 1)`. Take `⟨h, e⟩` from `VBExt.isVB_and_cls_det_of_shortExact X _ 1 1 hS h₁ h₃`. Establish `e'` using `fl.cls_det`. Rewrite `e'` using `[Fin.sum_univ_two, ← e₁]`. Conclude with `add_left_cancel (e.symm.trans e')`.
+
+Rewrite using `[← e₁, ← e₃]`. Conclude with `chiLenPic_homMod _ hS h₁ h₃ hF c`.
+-/
 theorem chiLenPic_homMod_flag {E : X.Modules} (fl : GlobalTheory.Vert.Flag E 2) (hF : FiniteLenTwists R F)
     (c : Pic X) : chiLenPic R (homMod E F) c =
       chiLenPic R F (c - cls _ (fl.isLB_root 1)) + chiLenPic R F (c - cls _ (fl.isLB_root 0)) := by
@@ -176,6 +225,13 @@ theorem chiLenPic_homMod_flag {E : X.Modules} (fl : GlobalTheory.Vert.Flag E 2) 
   rw [← e₁, ← e₃]
   exact chiLenPic_homMod _ hS h₁ h₃ hF c
 
+/- English proof (translation)
+Use function extensionality and compare the values at `c`. Establish `e` using `f.cls_det.symm.trans g.cls_det`. Rewrite `e` using `[Fin.sum_univ_two, Fin.sum_univ_two]`. Establish `h` using `(chiLenPic_homMod_flag f hF (c + cls _ (g.isLB_root 0))).symm.trans (chiLenPic_homMod_flag g hF _)`. Generalize the expression as in `cls _ (f.isLB_root 0) = l at *`.
+
+Generalize the expression as in `cls _ (f.isLB_root 1) = l' at *`. Generalize the expression as in `cls _ (g.isLB_root 0) = m at *`. Generalize the expression as in `cls _ (g.isLB_root 1) = m' at *`. Take `rfl : l' = m + m' - l` from `by rw [← e]; abel`. Rewrite `h` using `[show c + m - (m + m' - l) = c - (m' - l) by abel, show c + m - l = c - (l - m) by abel, show c + m - m' = c - (l - m) - (m' - l) by abel, add_sub_cancel_right]`.
+
+Simplify using `only [bwdDiff_apply, Pi.zero_apply]`. Take the linear combination `-h`.
+-/
 theorem bwdDiff_bwdDiff_eq_zero {E : X.Modules} (f g : GlobalTheory.Vert.Flag E 2)
     (hF : FiniteLenTwists R F) :
     bwdDiff (cls _ (f.isLB_root 0) - cls _ (g.isLB_root 0))
@@ -197,6 +253,15 @@ theorem bwdDiff_bwdDiff_eq_zero {E : X.Modules} (f g : GlobalTheory.Vert.Flag E 
 
 end Hom
 
+/- English proof (translation)
+Introduce `O _ _ _ p _ _ _ B _ W W' ψ R R' D y`. Rewrite using `[← firstChernPic_class, ← firstChernPic_class, ← firstChernPic_class, ← map_sub, ← map_sub]`. Establish `key (I : B.effVert)` using `bwdDiff_bwdDiff_eq_zero R.fl' R'.fl' (Vert.Model.isVertical_divMod I).finiteLenTwists`. Generalize the expression as in `cls _ (R'.fl'.isLB_root 1) - cls _ (R.fl'.isLB_root 0) = a at *`. Generalize the expression as in `cls _ (R.fl'.isLB_root 0) - cls _ (R'.fl'.isLB_root 0) = b at *`.
+
+Establish `heff (I : B.effVert) : Vert.Model.effDeg I (firstChernPic a * firstChernPic b * y) = 0`. Use `LinearMap.congr_fun (picSym_linearMap_ext (l := Vert.Model.effDeg I ∘ₗ LinearMap.mulLeft ℚ (firstChernPic a * firstChernPic b)) (l' := 0) fun n g => ?_) y` and prove the remaining obligations. Establish `h` using `picForm_prod (Vert.Model.isVertical_divMod I).diffVanish (Fin.cons a (Fin.cons b g : Fin (n + 1) → _) : Fin (n + 1 + 1) → _)`. Rewrite `h` using `[multiDiff_cons', multiDiff_cons', key I, multiDiff_eq_shiftAct, map_zero]`. Simplify using `only [Fin.prod_univ_succ, Fin.cons_zero, Fin.cons_succ, Pi.zero_apply, Int.cast_zero, ite_self] at h`.
+
+Rewrite using `[LinearMap.comp_apply, LinearMap.mulLeft_apply, mul_assoc]`. Conclude with `h`. Proceed by induction on `D using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul q D`.
+
+Take `⟨I, J, rfl⟩` from `Vert.Model.exists_eq_ofEff_sub D`. Simplify using `[Vert.Model.capDeg_vp, Vert.Model.vDegQ, heff]`. Consider the case `add D D' h h' => rw [map_add, LinearMap.add_apply, h, h', add_zero]`.
+-/
 theorem capDeg_vp_eq_zero : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] (B : GlobalTheory.Vert.Model O), GlobalTheory.IsNormalScheme B.X → ∀ (W W' : B.X.Modules) (ψ : B.GenIso W W') (R R' : GlobalTheory.Vert.Model.FlagPair ψ 2) (D : B.VDivQ) (y : PicSym B.X), B.capDeg_vp p D ((c1 (R'.fl'.root 1) (R'.fl'.isLB_root 1) - c1 (R.fl'.root 0) (R.fl'.isLB_root 0)) * (c1 (R.fl'.root 0) (R.fl'.isLB_root 0) - c1 (R'.fl'.root 0) (R'.fl'.isLB_root 0)) * y) = 0 := by
   intro O _ _ _ p _ _ _ B _ W W' ψ R R' D y
   rw [← firstChernPic_class, ← firstChernPic_class, ← firstChernPic_class, ← map_sub, ← map_sub]
@@ -224,5 +289,8 @@ theorem capDeg_vp_eq_zero : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscrete
 
 end GlobalTheory.RankTwoChern
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.RankTwoChern.capDeg_vp_eq_zero`.
+-/
 theorem _root_.GlobalTheory.T.flag_pair_capDeg_difference_zero : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] (B : GlobalTheory.Vert.Model O), GlobalTheory.IsNormalScheme B.X → ∀ (W W' : B.X.Modules) (ψ : B.GenIso W W') (R R' : GlobalTheory.Vert.Model.FlagPair ψ 2) (D : B.VDivQ) (y : PicSym B.X), B.capDeg_vp p D ((c1 (R'.fl'.root 1) (R'.fl'.isLB_root 1) - c1 (R.fl'.root 0) (R.fl'.isLB_root 0)) * (c1 (R.fl'.root 0) (R.fl'.isLB_root 0) - c1 (R'.fl'.root 0) (R'.fl'.isLB_root 0)) * y) = 0 :=
   GlobalTheory.RankTwoChern.capDeg_vp_eq_zero

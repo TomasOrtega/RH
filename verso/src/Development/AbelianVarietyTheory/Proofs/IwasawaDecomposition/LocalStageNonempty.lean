@@ -8,6 +8,9 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.Mem
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.T.exists_local_prime_ainf`. Use `choose P AI hT using h`. Conclude with `⟨{ loc := fun l _ => P l, locA := fun l _ => AI l, locT := fun l _ => (hT l).some }⟩`.
+-/
 theorem nonempty_locStage : Nonempty GlobalTheory.Mem.LocStage := by
   classical
   have h := GlobalTheory.T.exists_local_prime_ainf

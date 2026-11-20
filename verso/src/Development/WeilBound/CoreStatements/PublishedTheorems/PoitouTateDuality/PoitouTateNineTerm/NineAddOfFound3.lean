@@ -10,6 +10,11 @@ namespace PositivityTheory.Lit1.PTN
 attribute [local instance 2000] Rep.hV2
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Take `⟨E0, Ev0, sq0, -, c0⟩` from `hM0`. Take `⟨E1, Ev1, sq1, -, c1⟩` from `hM1`. Take `⟨E2, Ev2, sq2, -, c2⟩` from `hM2`. Take `⟨F0, Fv0, tq0, -, d0⟩` from `hD0`. Take `⟨F1, Fv1, tq1, -, d1⟩` from `hD1`.
+
+Take `⟨F2, Fv2, tq2, -, d2⟩` from `hD2`. Conclude with `nineAdd_of_found2 φ (finsetCoeEquiv S) D M inv δ₁ δ₂ hx res0 res1 res2 rs0 rs1 rs2 P0 P1 P2 f0 f1 f3 f4 f6 f7 hf0 hf3 hf6 hf1 hf4 hf7 E0 E1 E2 Ev0 Ev1 Ev2 F0 F1 F2 Fv0 Fv1 Fv2 sq0 sq1 sq2 tq0 tq1 tq2 (hQ0 Ev0 Fv2 c0 d2) (hQ1 Ev1 Fv1 c1 d1) (hQ2 Ev2 Fv0 c2 d0)`.
+-/
 theorem nineAdd_of_found3 {N : ℕ} [NeZero N]
     {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     {α : Type} (S : Finset α) [Fintype ↥(↑S : Set α)] {Hv : ↥(↑S : Set α) → Type} [∀ v, Group (Hv v)] [∀ v, TopologicalSpace (Hv v)]

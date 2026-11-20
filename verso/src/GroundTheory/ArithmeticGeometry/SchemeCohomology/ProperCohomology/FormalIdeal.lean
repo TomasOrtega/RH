@@ -12,6 +12,9 @@ noncomputable section
 
 variable {X : Scheme.{u}}
 
+/- English proof (translation)
+Use extensionality with `U x`. Simplify using `only [Scheme.Modules.Hom.comp_app, ConcreteCategory.comp_apply, smulHom_app_apply, map_mul, mul_smul]`. Rewrite using `[smul_comm]`.
+-/
 lemma smulHom_comp_smulHom (F : X.Modules) (r s : Γ(X, ⊤)) :
     smulHom F r ≫ smulHom F s = smulHom F (r * s) := by
   ext U x
@@ -19,10 +22,16 @@ lemma smulHom_comp_smulHom (F : X.Modules) (r s : Γ(X, ⊤)) :
     mul_smul]
   rw [smul_comm]
 
+/- English proof (translation)
+The claim follows from `map_sum (smulRingHom F) r s`.
+-/
 lemma smulHom_sum (F : X.Modules) {ι : Type*} (s : Finset ι) (r : ι → Γ(X, ⊤)) :
     smulHom F (∑ i ∈ s, r i) = ∑ i ∈ s, smulHom F (r i) :=
   map_sum (smulRingHom F) r s
 
+/- English proof (translation)
+The claim follows from `map_one (smulRingHom F)`.
+-/
 lemma smulHom_one (F : X.Modules) : smulHom F 1 = 𝟙 F := map_one (smulRingHom F)
 
 def imageMapOf {P₁ P₂ G : X.Modules} (f₁ : P₁ ⟶ G) (f₂ : P₂ ⟶ G) (φ : G ⟶ G) (h : P₁ ⟶ P₂)
@@ -35,6 +44,9 @@ def imageMapOf {P₁ P₂ G : X.Modules} (f₁ : P₁ ⟶ G) (f₂ : P₂ ⟶ G)
     rw [hfac, w, Category.assoc, cokernel.condition, comp_zero])
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+The claim follows from `kernel.lift_ι _ _ _`.
+-/
 lemma imageMapOf_ι {P₁ P₂ G : X.Modules} (f₁ : P₁ ⟶ G) (f₂ : P₂ ⟶ G) (φ : G ⟶ G) (h : P₁ ⟶ P₂)
     (w : f₁ ≫ φ = h ≫ f₂) : imageMapOf f₁ f₂ φ h w ≫ kernel.ι _ = kernel.ι _ ≫ φ :=
   kernel.lift_ι _ _ _
@@ -45,6 +57,9 @@ attribute [local instance] algebraOfOver
 
 section Generators
 
+/- English proof (translation)
+The claim follows from `Submodule.fg_iff_exists_fin_generating_family.1 (IsNoetherian.noetherian J)`.
+-/
 lemma exists_fin_generators (J : Ideal A) :
     ∃ (k : ℕ) (g : Fin k → A), Ideal.span (Set.range g) = J :=
   Submodule.fg_iff_exists_fin_generating_family.1 (IsNoetherian.noetherian J)
@@ -53,9 +68,15 @@ def idealGenNum (J : Ideal A) : ℕ := (exists_fin_generators J).choose
 
 def idealGen (J : Ideal A) : Fin (idealGenNum J) → A := (exists_fin_generators J).choose_spec.choose
 
+/- English proof (translation)
+The claim follows from `(exists_fin_generators J).choose_spec.choose_spec`.
+-/
 lemma span_idealGen (J : Ideal A) : Ideal.span (Set.range (idealGen J)) = J :=
   (exists_fin_generators J).choose_spec.choose_spec
 
+/- English proof (translation)
+The claim follows from `(span_idealGen J).le (Ideal.subset_span ⟨i, rfl⟩)`.
+-/
 lemma idealGen_mem (J : Ideal A) (i : Fin (idealGenNum J)) : idealGen J i ∈ J :=
   (span_idealGen J).le (Ideal.subset_span ⟨i, rfl⟩)
 
@@ -64,6 +85,11 @@ variable (F : X.Modules)
 def idealSumMap (J : Ideal A) : (⨁ fun _ : Fin (idealGenNum J) => F) ⟶ F :=
   biproduct.desc fun k => smulHom F (algebraMap A Γ(X, ⊤) (idealGen J k))
 
+/- English proof (translation)
+Establish `key : ∀ i, ∃ c : Fin (idealGenNum J₂) → A, ∑ j, c j * idealGen J₂ j = a * idealGen J₁ i` using `fun i => by`. Use `ha i` as an intermediate fact. Rewrite `this` using `[← span_idealGen J₂]`. Conclude with `(Ideal.mem_span_range_iff_exists_fun).1 this`. Use `choose c hc using key`.
+
+Use `⟨biproduct.desc fun i => biproduct.lift fun j => smulHom F (algebraMap A Γ(X, ⊤) (c i j)), ?_⟩` and prove the remaining obligations. Apply `biproduct.hom_ext'` to reduce the goal to its premises. Introduce `i`. Simplify using `only [idealSumMap, biproduct.ι_desc_assoc, biproduct.lift_desc, smulHom_comp_smulHom, ← map_mul, ← smulHom_sum, ← map_sum]`. Rewrite using `[hc i, mul_comm]`.
+-/
 lemma exists_idealSumMap_smulHom (J₁ J₂ : Ideal A) (a : A)
     (ha : ∀ i, a * idealGen J₁ i ∈ J₂) :
     ∃ h : (⨁ fun _ : Fin (idealGenNum J₁) => F) ⟶ (⨁ fun _ : Fin (idealGenNum J₂) => F),
@@ -100,6 +126,9 @@ def idealPowSucc (n : ℕ) : idealPow I F (n + 1) ⟶ idealPow I F n :=
       exact Ideal.pow_le_pow_right (Nat.le_succ n) (idealGen_mem _ i)).choose_spec
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+Rewrite using `[idealPowSucc, imageMapOf_ι, map_one, smulHom_one, Category.comp_id]`.
+-/
 lemma idealPowSucc_ι (n : ℕ) : idealPowSucc I F n ≫ idealPowι I F n = idealPowι I F (n + 1) := by
   rw [idealPowSucc, imageMapOf_ι, map_one, smulHom_one, Category.comp_id]
 
@@ -113,6 +142,9 @@ def idealPowMul {k n : ℕ} (a : A) (ha : a ∈ I ^ k) : idealPow I F n ⟶ idea
       rwa [← pow_add, add_comm] at this).choose_spec
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+The claim follows from `imageMapOf_ι _ _ _ _ _`.
+-/
 lemma idealPowMul_ι {k n : ℕ} (a : A) (ha : a ∈ I ^ k) :
     idealPowMul I F a ha ≫ idealPowι I F (n + k) =
       idealPowι I F n ≫ smulHom F (algebraMap A Γ(X, ⊤) a) :=
@@ -127,12 +159,18 @@ def quotPowMap (n : ℕ) : quotPow I F (n + 1) ⟶ quotPow I F n :=
     rw [← idealPowSucc_ι, Category.assoc, cokernel.condition, comp_zero])
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+The claim follows from `cokernel.π_desc _ _ _`.
+-/
 lemma quotPowπ_map (n : ℕ) : quotPowπ I F (n + 1) ≫ quotPowMap I F n = quotPowπ I F n :=
   cokernel.π_desc _ _ _
 
 def quotPowSC (n : ℕ) : ShortComplex X.Modules :=
   ShortComplex.mk (idealPowι I F (n + 1)) (quotPowπ I F n) (cokernel.condition _)
 
+/- English proof (translation)
+The claim follows from `ShortComplex.exact_cokernel _ mono_f := by change Mono (idealPowι I F (n + 1)); infer_instance epi_g := by change Epi (quotPowπ I F n); infer_instance`.
+-/
 lemma quotPowSC_shortExact (n : ℕ) : (quotPowSC I F n).ShortExact where
   exact := ShortComplex.exact_cokernel _
   mono_f := by change Mono (idealPowι I F (n + 1)); infer_instance
@@ -151,6 +189,23 @@ instance (n : ℕ) : (quotPow I F n).IsQuasicoherent := inferInstance
 
 abbrev toFunctions (V : X.Opens) : A →+* Γ(X, V) := (restrictTop V).comp (algebraMap A Γ(X, ⊤))
 
+/- English proof (translation)
+Rewrite using `[range_kernel_ι_cokernel_π_app _ hV]`. Use `set g := idealGen (I ^ n)`. Set `L : (Fin (idealGenNum (I ^ n)) → Γ(F, V)) →ₗ[Γ(X, V)] Γ(F, V)` to `{ toFun := fun x => ∑ k, toFunctions V (g k) • x k map_add' := fun x y => by simp [smul_add, Finset.sum_add_distrib] map_smul' := fun r x => by simp [Finset.smul_sum, smul_comm r] }`. Establish `h1 : Set.range ((idealSumMap F (I ^ n)).app V) = Set.range L`. Use extensionality with `m`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, rfl⟩`. Use `⟨fun k => (biproduct.π (fun _ : Fin (idealGenNum (I ^ n)) => F) k).app V p, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(∑ k, toFunctions V (g k) • (biproduct.π (fun _ : Fin (idealGenNum (I ^ n)) => F) k).app V p) = _`. Use `conv_rhs => rw [biproduct_app_eq_sum _ V p]`.
+
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← ConcreteCategory.comp_apply, ← Scheme.Modules.Hom.comp_app, idealSumMap, biproduct.ι_desc, smulHom_app_apply]`. Both sides reduce to the same expression. Introduce and unpack `⟨x, rfl⟩`.
+
+Use `⟨∑ k, (biproduct.ι (fun _ : Fin (idealGenNum (I ^ n)) => F) k).app V (x k), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = ∑ k, toFunctions V (g k) • x k`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← ConcreteCategory.comp_apply, ← Scheme.Modules.Hom.comp_app, idealSumMap, biproduct.ι_desc, smulHom_app_apply]`.
+
+Both sides reduce to the same expression. Rewrite using `[h1]`. Establish `h2 : (LinearMap.range L) = Ideal.map (toFunctions V) (I ^ n) • ⊤`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, rfl⟩`.
+
+Express the relevant statement in the definitionally equal form `∑ k, toFunctions V (g k) • x k ∈ _`. Use `Submodule.sum_mem _ fun k _ => Submodule.smul_mem_smul ?_ Submodule.mem_top` and prove the remaining obligations. Conclude with `Ideal.mem_map_of_mem _ (idealGen_mem _ k)`. Use `Submodule.smul_le.2 fun r hr m _ => ?_` and prove the remaining obligations. Rewrite `hr` using `[← span_idealGen (I ^ n), Ideal.map_span, ← Set.range_comp]`.
+
+Take `⟨c, rfl⟩` from `(Ideal.mem_span_range_iff_exists_fun).1 hr`. Use `⟨fun k => c k • m, ?_⟩` and prove the remaining obligations. Simplify using `only [L, LinearMap.coe_mk, AddHom.coe_mk, Finset.sum_smul, Function.comp_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, mul_comm]`.
+
+Rewrite using `[← h2]`. Both sides reduce to the same expression.
+-/
 theorem range_idealPowι_app {V : X.Opens} (hV : IsAffineOpen V) (n : ℕ) :
     Set.range ((idealPowι I F n).app V) =
       ((Ideal.map (toFunctions V) (I ^ n) • ⊤ : Submodule Γ(X, V) Γ(F, V)) : Set Γ(F, V)) := by
@@ -198,10 +253,16 @@ theorem range_idealPowι_app {V : X.Opens} (hV : IsAffineOpen V) (n : ℕ) :
   rw [← h2]
   rfl
 
+/- English proof (translation)
+The claim follows from `surjective_cokernel_π_app _ hV`.
+-/
 theorem surjective_quotPowπ_app {V : X.Opens} (hV : IsAffineOpen V) (n : ℕ) :
     Function.Surjective ((quotPowπ I F n).app V) :=
   surjective_cokernel_π_app _ hV
 
+/- English proof (translation)
+Rewrite using `[← mem_range_app_iff _ hV, range_idealPowι_app I F hV]`. Both sides reduce to the same expression.
+-/
 theorem quotPowπ_app_eq_zero_iff {V : X.Opens} (hV : IsAffineOpen V) (n : ℕ) (m : Γ(F, V)) :
     (quotPowπ I F n).app V m = 0 ↔
       m ∈ (Ideal.map (toFunctions V) (I ^ (n + 1)) • ⊤ : Submodule Γ(X, V) Γ(F, V)) := by

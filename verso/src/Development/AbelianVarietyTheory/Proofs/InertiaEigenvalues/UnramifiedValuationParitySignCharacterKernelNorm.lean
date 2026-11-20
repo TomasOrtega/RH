@@ -5,6 +5,19 @@ open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 
 namespace GlobalTheory.EtaChar
 
+/- English proof (translation)
+Use `haveI : ProperSpace F := ProperSpace.of_locallyCompactSpace F`. Establish `hc : IsCompact (Metric.ball (0 : F) 1)` using `(isCompact_closedBall (0 : F) 1).of_isClosed_subset (IsUltrametricDist.isClosed_ball _ _) Metric.ball_subset_closedBall`. Take `⟨π, hπm, hmax⟩` from `hc.exists_isMaxOn ⟨0, Metric.mem_ball_self one_pos⟩ continuous_norm.continuousOn`. Establish `hπ1 : ‖π‖ < 1` using `by simpa using hπm`. Establish `hle : ∀ y : F, ‖y‖ < 1 → ‖y‖ ≤ ‖π‖` using `fun y hy => hmax (by simpa using hy)`.
+
+Take `⟨x0, hx0, hx01⟩` from `NormedField.exists_norm_lt_one F`. Establish `hπ0 : 0 < ‖π‖` using `lt_of_lt_of_le hx0 (hle x0 hx01)`. Use `⟨π, hπ0, hπ1, fun x hx => ?_⟩` and prove the remaining obligations. Use `set q := ‖π‖ with hq`. Establish `hxp : 0 < ‖x‖` using `norm_pos_iff.2 hx`.
+
+Establish `hqi : 1 < q⁻¹` using `one_lt_inv₀ hπ0 |>.2 hπ1`. Take `⟨n, hn1, hn2⟩` from `exists_mem_Ioc_zpow hxp hqi`. Establish `hqn : 0 < q ^ (n + 1)` using `zpow_pos hπ0 _`. Establish `hz : ‖x * π ^ (n + 1)‖ = ‖x‖ * q ^ (n + 1)` using `by rw [norm_mul, norm_zpow]`. Establish `hup : ‖x‖ * q ^ (n + 1) ≤ 1`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hlo : q < ‖x‖ * q ^ (n + 1)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[_root_.inv_zpow, zpow_add_one₀ hπ0.ne', ← mul_assoc, inv_mul_cancel₀ (zpow_pos hπ0 n).ne', one_mul]`. Use `_ < ‖x‖ * q ^ (n + 1) := mul_lt_mul_of_pos_right hn1 hqn`.
+
+Establish `heq : ‖x‖ * q ^ (n + 1) = 1`. Assume the negation of the conclusion as `hne`. Use `hle (x * π ^ (n + 1)) (by rw [hz]; exact lt_of_le_of_ne hup hne)` as an intermediate fact. Rewrite `this` using `[hz]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `⟨-(n + 1), ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.zpow_neg]`. Conclude with `eq_inv_of_mul_eq_one_left heq`.
+-/
 theorem exists_unif (F : Type) [NontriviallyNormedField F] [IsUltrametricDist F] [LocallyCompactSpace F] :
     ∃ π : F, 0 < ‖π‖ ∧ ‖π‖ < 1 ∧ ∀ x : F, x ≠ 0 → ∃ k : ℤ, ‖x‖ = ‖π‖ ^ k := by
   haveI : ProperSpace F := ProperSpace.of_locallyCompactSpace F
@@ -38,6 +51,9 @@ theorem exists_unif (F : Type) [NontriviallyNormedField F] [IsUltrametricDist F]
   refine ⟨-(n + 1), ?_⟩
   rw [_root_.zpow_neg]; exact eq_inv_of_mul_eq_one_left heq
 
+/- English proof (translation)
+Unfold `eta`. Use `split_ifs with h`. Simplify using `[h]`. Simplify using `only [h, iff_false]`. Evaluate the numerical expressions.
+-/
 theorem eta_eq_one_iff {F : Type} [NormedField F] (x : F) : eta x = 1 ↔ ∃ y : F, ‖x‖ = ‖y‖ ^ 2 := by
   unfold eta
   split_ifs with h
@@ -45,6 +61,9 @@ theorem eta_eq_one_iff {F : Type} [NormedField F] (x : F) : eta x = 1 ↔ ∃ y 
   · simp only [h, iff_false]
     norm_num
 
+/- English proof (translation)
+Unfold `eta`. Use `split_ifs with h`. Simplify using `only [h, not_true_eq_false, iff_false]`. Evaluate the numerical expressions. Simplify using `[h]`.
+-/
 theorem eta_eq_neg_one_iff {F : Type} [NormedField F] (x : F) : eta x = -1 ↔ ¬ ∃ y : F, ‖x‖ = ‖y‖ ^ 2 := by
   unfold eta
   split_ifs with h
@@ -52,6 +71,15 @@ theorem eta_eq_neg_one_iff {F : Type} [NormedField F] (x : F) : eta x = -1 ↔ �
     norm_num
   · simp [h]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Establish `: ‖x‖ = 0` using `by simpa using hy`.
+
+Rewrite `this` using `[hk]`. Conclude with `(zpow_pos h0 k).ne' this`. Take `⟨j, hj⟩` from `hall y hy0`. Rewrite `hy` using `[hk, hj, ← zpow_natCast, ← _root_.zpow_mul]`. Use `zpow_right_injective₀ h0 h1.ne hy` as an intermediate fact.
+
+Conclude with `⟨j, by rw [this]; push_cast; ring⟩`. Introduce and unpack `⟨j, rfl⟩`. Use `⟨π ^ j, ?_⟩` and prove the remaining obligations. Rewrite using `[hk, norm_zpow, ← zpow_natCast, ← _root_.zpow_mul]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sq_iff_even {F : Type} [NormedField F] {π : F} (h0 : 0 < ‖π‖) (h1 : ‖π‖ < 1)
     (hall : ∀ x : F, x ≠ 0 → ∃ k : ℤ, ‖x‖ = ‖π‖ ^ k) {x : F} {k : ℤ} (hk : ‖x‖ = ‖π‖ ^ k) :
     (∃ y : F, ‖x‖ = ‖y‖ ^ 2) ↔ Even k := by
@@ -72,6 +100,11 @@ theorem sq_iff_even {F : Type} [NormedField F] {π : F} (h0 : 0 < ‖π‖) (h1 
     congr 1
     push_cast; ring
 
+/- English proof (translation)
+Use `sq_iff_even h0 h1 hall hk` as an intermediate fact. Distinguish the cases in `h : Even k`. Rewrite using `[(eta_eq_one_iff x).2 (this.2 h)]`. Simplify using `[h]`. Rewrite using `[(eta_eq_neg_one_iff x).2 (fun h' => h (this.1 h'))]`.
+
+Simplify using `[h]`.
+-/
 theorem eta_of_exp {F : Type} [NormedField F] {π : F} (h0 : 0 < ‖π‖) (h1 : ‖π‖ < 1)
     (hall : ∀ x : F, x ≠ 0 → ∃ k : ℤ, ‖x‖ = ‖π‖ ^ k) {x : F} {k : ℤ} (hk : ‖x‖ = ‖π‖ ^ k) :
     eta x = if Even k then 1 else -1 := by
@@ -80,6 +113,11 @@ theorem eta_of_exp {F : Type} [NormedField F] {π : F} (h0 : 0 < ‖π‖) (h1 :
   · rw [(eta_eq_one_iff x).2 (this.2 h)]; simp [h]
   · rw [(eta_eq_neg_one_iff x).2 (fun h' => h (this.1 h'))]; simp [h]
 
+/- English proof (translation)
+Take `⟨π, h0, h1, hall⟩` from `exists_unif F`. Take `⟨k, hk⟩` from `hall x hx`. Take `⟨l, hl⟩` from `hall y hy`. Establish `hkl : ‖x * y‖ = ‖π‖ ^ (k + l)` using `by rw [norm_mul, hk, hl, zpow_add₀ h0.ne']`. Rewrite using `[eta_of_exp h0 h1 hall hk, eta_of_exp h0 h1 hall hl, eta_of_exp h0 h1 hall hkl]`.
+
+Apply the tactic sequence `by_cases ek : Even k <;> by_cases el : Even l <;> simp [ek, el, Int.even_add]`.
+-/
 theorem eta_mul (F : Type) [NontriviallyNormedField F] [IsUltrametricDist F] [LocallyCompactSpace F] (x y : F)
     (hx : x ≠ 0) (hy : y ≠ 0) : eta (x * y) = eta x * eta y := by
   obtain ⟨π, h0, h1, hall⟩ := exists_unif F
@@ -89,12 +127,30 @@ theorem eta_mul (F : Type) [NontriviallyNormedField F] [IsUltrametricDist F] [Lo
   rw [eta_of_exp h0 h1 hall hk, eta_of_exp h0 h1 hall hl, eta_of_exp h0 h1 hall hkl]
   by_cases ek : Even k <;> by_cases el : Even l <;> simp [ek, el, Int.even_add]
 
+/- English proof (translation)
+Establish `e : (∃ z : F, ‖x‖ = ‖z‖ ^ 2) ↔ (∃ z : F, ‖y‖ = ‖z‖ ^ 2)` using `by rw [h]`. Distinguish the cases in `hh : ∃ z : F, ‖x‖ = ‖z‖ ^ 2`. Rewrite using `[(eta_eq_one_iff x).2 hh, (eta_eq_one_iff y).2 (e.1 hh)]`. Rewrite using `[(eta_eq_neg_one_iff x).2 hh, (eta_eq_neg_one_iff y).2 (fun h' => hh (e.2 h'))]`.
+-/
 theorem eta_of_norm_eq {F : Type} [NormedField F] {x y : F} (h : ‖x‖ = ‖y‖) : eta x = eta y := by
   have e : (∃ z : F, ‖x‖ = ‖z‖ ^ 2) ↔ (∃ z : F, ‖y‖ = ‖z‖ ^ 2) := by rw [h]
   by_cases hh : ∃ z : F, ‖x‖ = ‖z‖ ^ 2
   · rw [(eta_eq_one_iff x).2 hh, (eta_eq_one_iff y).2 (e.1 hh)]
   · rw [(eta_eq_neg_one_iff x).2 hh, (eta_eq_neg_one_iff y).2 (fun h' => hh (e.2 h'))]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ hU`. Use `haveI : IsUltrametricDist F := hU.ultraF`. Use `haveI : LocallyCompactSpace F := hU.lcF`. Use `⟨fun x y hx hy => eta_mul F x y hx hy, fun x hx => ?_, fun x hx => ?_, ?_⟩` and prove the remaining obligations. Conclude with `(eta_eq_one_iff x).2 ⟨1, by rw [hx, norm_one, one_pow]⟩`.
+
+Rewrite using `[eta_eq_one_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`.
+
+Conclude with `hx (norm_eq_zero.1 (by simpa using hy))`. Take `⟨v, hv⟩` from `GlobalTheory.T.exists_mul_star_eq_of_norm_one_unramifiedQuadratic F E (x / y ^ 2) (by rw [norm_div, norm_pow, hy, div_self (by positivity)])`. Use `⟨v * algebraMap F E y, ?_⟩` and prove the remaining obligations. Rewrite using `[star_mul', hU.star_fix y]`. Combine the equalities or inequalities in the displayed calculation.
+
+Introduce and unpack `⟨v, hv⟩`. Take `⟨z, hz⟩` from `hU.unram v`. Use `⟨z, ?_⟩` and prove the remaining obligations. Use `congrArg norm hv` as an intermediate fact. Rewrite `this` using `[norm_algebraMap', norm_mul, hU.norm_star, hz]`.
+
+Rewrite using `[← this, sq]`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Establish `hx : 0 < ‖x.1‖` using `norm_pos_iff.2 x.2`. Establish `hmem : {y : {x : F // x ≠ 0} | ‖y.1 - x.1‖ < ‖x.1‖} ∈ 𝓝 x`.
+
+Establish `: IsOpen {y : {x : F // x ≠ 0} | ‖y.1 - x.1‖ < ‖x.1‖}` using `isOpen_lt (continuous_norm.comp (continuous_subtype_val.sub continuous_const)) continuous_const`. Conclude with `this.mem_nhds (by simpa using hx)`. Use `filter_upwards [hmem] with y hy`. Apply `eta_of_norm_eq` to reduce the goal to its premises. Establish `h2 : y.1 = x.1 + (y.1 - x.1)` using `by ring`.
+
+Rewrite using `[h2, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (ne_of_gt hy), max_eq_left hy.le]`.
+-/
 theorem main : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E], (∀ x y : F, x ≠ 0 → y ≠ 0 → eta (x * y) = eta x * eta y) ∧ (∀ x : F, ‖x‖ = 1 → eta x = 1) ∧ (∀ x : F, x ≠ 0 → (eta x = 1 ↔ ∃ v : E, v * star v = algebraMap F E x)) ∧ IsLocallyConstant (fun x : {x : F // x ≠ 0} => eta x.1) := by
   intro F E _ _ _ _ hU
   haveI : IsUltrametricDist F := hU.ultraF

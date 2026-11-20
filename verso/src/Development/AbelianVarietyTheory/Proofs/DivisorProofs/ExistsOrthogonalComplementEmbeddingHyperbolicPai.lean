@@ -6,6 +6,35 @@ open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHeck
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n n₁ J x y hn hJ hxx hyy hxy`. Use `set a : Fin n → E := J *ᵥ fun i => σ (x i) with ha_def`. Use `set b : Fin n → E := J *ᵥ fun i => σ (y i) with hb_def`. Establish `hfa : ∀ z, form σ J z x = z ⬝ᵥ a` using `fun z => rfl`. Establish `hfb : ∀ z, form σ J z y = z ⬝ᵥ b` using `fun z => rfl`.
+
+Establish `hxa : x ⬝ᵥ a = 0` using `hxx`. Establish `hxb : x ⬝ᵥ b = 1` using `hxy`. Establish `ha : a ≠ 0`. Introduce `h0`. Establish `hv : x ᵥ* J = 0`.
+
+Use function extensionality and compare the values at `j`. Apply `σ.toRingHom.injective` to reduce the goal to its premises. Establish `h1` using `congrFun h0 j`. Simplify using `only [ha_def, Matrix.mulVec, dotProduct, Pi.zero_apply] at h1`. Simplify using `only [Matrix.vecMul, dotProduct, Pi.zero_apply, map_zero, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, map_sum, map_mul]`.
+
+Rewrite using `[← h1]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hJ j i, mul_comm]`. Apply `one_ne_zero (α := E)` to reduce the goal to its premises. Rewrite using `[← hxb, hb_def, Matrix.dotProduct_mulVec, hv, zero_dotProduct]`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, a i ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `ha (funext h)`. Use `set w : Fin n → E := (a i)⁻¹ • (Pi.single i 1 - (b i) • x) with hw`.
+
+Establish `hwa : w ⬝ᵥ a = 1`. Rewrite using `[hw, smul_dotProduct, sub_dotProduct, smul_dotProduct, hxa, single_dotProduct]`. Simplify using `[hi]`. Establish `hwb : w ⬝ᵥ b = 0`. Rewrite using `[hw, smul_dotProduct, sub_dotProduct, smul_dotProduct, hxb, single_dotProduct]`.
+
+Simplify using the standard rewrite rules. Set `M : Matrix (Fin 2) (Fin n) E` to `Matrix.of ![a, b]`. Establish `hM : ∀ z, M *ᵥ z = ![z ⬝ᵥ a, z ⬝ᵥ b]`. Apply the tactic sequence `intro z; funext k; fin_cases k <;> simp [M, Matrix.mulVec, dotProduct_comm]`. Establish `hsurj : LinearMap.range (Matrix.mulVecLin M) = ⊤`.
+
+Rewrite using `[LinearMap.range_eq_top]`. Introduce `v`. Use `⟨v 0 • w + v 1 • x, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVecLin_apply, hM]`. Apply the tactic sequence `funext k; fin_cases k <;> simp [add_dotProduct, smul_dotProduct, hwa, hwb, hxa, hxb]`.
+
+Establish `hrank : Module.finrank E (LinearMap.ker (Matrix.mulVecLin M)) = n₁`. Establish `h` using `LinearMap.finrank_range_add_finrank_ker (Matrix.mulVecLin M)`. Rewrite `h` using `[hsurj, finrank_top, Module.finrank_fin_fun, Module.finrank_fin_fun]`. Use linear arithmetic over natural numbers and integers. Use `set K := LinearMap.ker (Matrix.mulVecLin M) with hK`.
+
+Establish `hmemK : ∀ z, z ∈ K ↔ z ⬝ᵥ a = 0 ∧ z ⬝ᵥ b = 0`. Introduce `z`. Rewrite using `[hK, LinearMap.mem_ker, Matrix.mulVecLin_apply, hM]`. Prove the components needed by the constructor for the conclusion. Introduce `h; exact ⟨by simpa using congrFun h 0, by simpa using congrFun h 1⟩`.
+
+Apply the tactic sequence `rintro ⟨h1, h2⟩; funext k; fin_cases k <;> simp [h1, h2]`. Set `bK : Module.Basis (Fin n₁) E K` to `Module.finBasisOfFinrankEq E K hrank`. Set `f : (Fin n₁ → E) →ₗ[E] (Fin n → E)` to `K.subtype ∘ₗ bK.equivFun.symm.toLinearMap`. Establish `hfinj : LinearMap.ker f = ⊥`. Rewrite using `[LinearMap.ker_eq_bot]`.
+
+Conclude with `Subtype.val_injective.comp bK.equivFun.symm.injective`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective f hfinj`. Use `⟨LinearMap.toMatrix' f, LinearMap.toMatrix' g, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.toMatrix'_comp, hg, LinearMap.toMatrix'_id]`. Introduce `u`.
+
+Rewrite using `[LinearMap.toMatrix'_mulVec, hfa, hfb]`. Conclude with `(hmemK _).1 (bK.equivFun.symm u).2`. Introduce `z h1 h2`. Establish `hz : z ∈ K` using `(hmemK z).2 ⟨h1, h2⟩`. Use `⟨bK.equivFun ⟨z, hz⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.toMatrix'_mulVec]`. Simplify using `[f]`.
+-/
 theorem exists_orthCompl_hypPair : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (n n₁ : ℕ) (J : Matrix (Fin n) (Fin n) E) (x y : Fin n → E),
     n = n₁ + 2 → (∀ i j, σ (J j i) = J i j) → form σ J x x = 0 → form σ J y y = 0 → form σ J x y = 1 →

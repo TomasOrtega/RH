@@ -9,6 +9,15 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 noncomputable section
 namespace GlobalTheory.TeichPlace
 
+/- English proof (translation)
+Introduce `g _ t ht`. Take `⟨ι⟩` from `GlobalTheory.nonempty_padicAlgCl_ringEquiv_complex g`. Take `⟨κ₀⟩` from `GlobalTheory.HeightCounting.nonempty_residueField_unitBall_equiv ι`. Take `⟨t₀, ht₀, hinj₀⟩` from `GlobalTheory.T.exists_teichmuller_reindex_complexPlace g (GlobalTheory.HeightCounting.unitBall ι) κ₀ t ht`. Take `⟨σ, hσ⟩` from `GlobalTheory.T.fbar_exists_complexAut_comp_eq g t t₀ ht hinj₀`.
+
+Set `A : ValuationSubring ℂ` to `(GlobalTheory.HeightCounting.unitBall ι).comap (σ.symm : ℂ →+* ℂ)`. Establish `hmem : ∀ z : ℂ, z ∈ A ↔ σ.symm z ∈ GlobalTheory.HeightCounting.unitBall ι` using `fun z => ValuationSubring.mem_comap`. Set `e : A ≃+* GlobalTheory.HeightCounting.unitBall ι` to `{ toFun := fun a => ⟨σ.symm a, (hmem a).1 a.2⟩ invFun := fun b => ⟨σ b, (hmem _).2 (by simpa using b.2)⟩ left_inv := fun a => Subtype.ext (by simp) right_inv := fun b => Subtype.ext (by simp) map_mul' := fun a b => Subtype.ext (by simp) map_add' := fun a b => Subtype.ext (by simp …`. Use `⟨A, (IsLocalRing.ResidueField.mapEquiv e).trans κ₀, fun x => ?_⟩` and prove the remaining obligations. Establish `hx : σ.symm (t x) = t₀ x` using `by rw [← hσ x, RingEquiv.symm_apply_apply]`.
+
+Take `⟨h₀, e₀⟩` from `ht₀ x`. Use `⟨(hmem _).2 (hx ▸ h₀), ?_⟩` and prove the remaining obligations. Use `Eq.trans ?_ e₀` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `κ₀ (IsLocalRing.ResidueField.map (e : A →+* GlobalTheory.HeightCounting.unitBall ι) (IsLocalRing.residue A _)) = _`. Rewrite using `[IsLocalRing.ResidueField.map_residue]`.
+
+Use `congr 2`. Conclude with `Subtype.ext hx`.
+-/
 theorem exists_place_isTeich : ∀ (g : ℕ) [Fact g.Prime] (t : Formalism.CyclotomicNorms.Fbar g →* ℂ), (∀ x y : Formalism.CyclotomicNorms.Fbar g, x ≠ 0 → y ≠ 0 → t x = t y → x = y) → ∃ (A : ValuationSubring ℂ) (κ : IsLocalRing.ResidueField A ≃+* Formalism.CyclotomicNorms.Fbar g), IsTeich A κ t := by
   intro g _ t ht
   obtain ⟨ι⟩ := GlobalTheory.nonempty_padicAlgCl_ringEquiv_complex g

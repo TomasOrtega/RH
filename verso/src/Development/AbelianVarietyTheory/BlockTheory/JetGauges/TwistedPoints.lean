@@ -76,9 +76,15 @@ def TwistedSectionsBaseChange : Prop :=
     IsAbelianOfDim B g → IsSymmetric B M.L → IsAmple M.L → HasTrivialKernel B M.L →
     ∀ (c : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ B) (k : ℕ), 1 ≤ k → HasStableBasis B M.L c k (k ^ g)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example {S : Scheme.{0}} (B : Over S) [GrpObj B] [IsCommMonObj B] (M : LB B.left) (c : 𝟙_ (Over S) ⟶ B) (k : ℕ) :
     LB.LinComb M (fun I => twMap B c (Sum.inr I)) (fun I => twExp k (Sum.inr I)) = cubeLB B (twPts B c) M := rfl
 
+/- English proof (translation)
+Take `⟨s, -, hs⟩` from `H`. Take `⟨a, ha, -⟩` from `hs R' f B' h p sq t`. Conclude with `⟨s, a, ha⟩`.
+-/
 example {R : Type} [CommRing R] (B : Over (Spec (CommRingCat.of R))) [GrpObj B] [IsCommMonObj B]
     (M : LB B.left) (c : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ B) (k n : ℕ) (H : HasStableBasis B M c k n)
     (R' : Type) [CommRing R'] (f : R →+* R') (B' : Scheme.{0}) (h : B' ⟶ B.left)

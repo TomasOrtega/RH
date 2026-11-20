@@ -41,9 +41,17 @@ def conjK (PP : Pl D.host.E) : kP PP →+* kP (conjPl PP) :=
     show starO (starO a) ∈ PP.asIdeal
     rwa [starO_starO]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjK_mk (PP : Pl D.host.E) (a : 𝓞 D.host.E) :
     conjK PP (Ideal.Quotient.mk PP.asIdeal a) = Ideal.Quotient.mk (conjPl PP).asIdeal (starO a) := rfl
 
+/- English proof (translation)
+Establish `e : s' = sigS D.sp.cm s` using `Subtype.ext (h.trans (sigS_coe _ _).symm)`. Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (resS D.host.F PP s)`. Establish `h0 : resS D.host.F PP (s - oToS D.host.F D.host.E a) = 0` using `by rw [map_sub, resS_oToS, ha, sub_self]`. Establish `h1` using `(resS_sigS_eq_zero_iff D.sp.cm (isConjPl_conjPl PP) _).2 h0`. Rewrite `h1` using `[map_sub, map_sub, sigS_oToS, resS_oToS, sub_eq_zero]`.
+
+Rewrite using `[e, h1, ← ha, conjK_mk]`.
+-/
 theorem resS_conj (PP : Pl D.host.E) (s s' : Formalism.L2.Herm.intAf D.host.F D.host.E)
     (h : (s' : Datum.EAf D) = GlobalTheory.AdelicLatMove.cF D (s : Datum.EAf D)) :
     resS D.host.F (conjPl PP) s' = conjK PP (resS D.host.F PP s) := by
@@ -54,6 +62,11 @@ theorem resS_conj (PP : Pl D.host.E) (s s' : Formalism.L2.Herm.intAf D.host.F D.
   rw [map_sub, map_sub, sigS_oToS, resS_oToS, sub_eq_zero] at h1
   rw [e, h1, ← ha, conjK_mk]
 
+/- English proof (translation)
+Establish `h1 : ct β.val * ct (β⁻¹).val = 1`. Rewrite using `[← GlobalTheory.ExportSeries.Model.ct_mul, Units.inv_mul]`. Simplify using `[ct]`. Unfold `gramFr gramFrInv`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [Units.mul_inv, Matrix.mul_one, GlobalTheory.PlaceVec.gram_map_mul_inv, Matrix.mul_one, h1]`.
+-/
 theorem gramFr_mul_inv (V : HSp D) (β : GL (Fin V.rank) (Datum.EAf D)) : gramFr V β * gramFrInv V β = 1 := by
   have h1 : ct β.val * ct (β⁻¹).val = 1 := by
     rw [← GlobalTheory.ExportSeries.Model.ct_mul, Units.inv_mul]
@@ -63,10 +76,18 @@ theorem gramFr_mul_inv (V : HSp D) (β : GL (Fin V.rank) (Datum.EAf D)) : gramFr
         simp only [Matrix.mul_assoc]
     _ = 1 := by rw [Units.mul_inv, Matrix.mul_one, GlobalTheory.PlaceVec.gram_map_mul_inv, Matrix.mul_one, h1]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.ExportSeries.Model.gram_frame_int V hV f`.
+-/
 theorem gramFr_int {V : HSp D} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)} {β : GL (Fin V.rank) (Datum.EAf D)}
     (hV : IsSelfDualC V Λ) (f : Formalism.L2.DIV.IsFrame β Λ) : IsIntM (gramFr V β) ∧ IsIntM (gramFrInv V β) :=
   GlobalTheory.ExportSeries.Model.gram_frame_int V hV f
 
+/- English proof (translation)
+Unfold `diagW`. Rewrite using `[Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Use `split_ifs`.
+
+Rewrite using `[one_mul]`. Rewrite using `[map_mul]`.
+-/
 theorem diagW_mul (n r : ℕ) (a b : D.host.E) : diagW D n r a * diagW D n r b = diagW D n r (a * b) := by
   unfold diagW
   rw [Matrix.diagonal_mul_diagonal]
@@ -76,10 +97,18 @@ theorem diagW_mul (n r : ℕ) (a b : D.host.E) : diagW D n r a * diagW D n r b =
   · rw [one_mul]
   · rw [map_mul]
 
+/- English proof (translation)
+Unfold `diagW`. Simplify using `only [map_one, ite_self, Matrix.diagonal_one]`.
+-/
 theorem diagW_one (n r : ℕ) : diagW D n r 1 = 1 := by
   unfold diagW
   simp only [map_one, ite_self, Matrix.diagonal_one]
 
+/- English proof (translation)
+Introduce `i j`. Unfold `diagW`. Rewrite using `[Matrix.diagonal_apply]`. Use `split_ifs`. Conclude with `one_mem _`.
+
+Conclude with `Subring.subset_closure (Or.inl ⟨⟨(a : D.host.E), ⟨a, rfl⟩⟩, rfl⟩)`. Conclude with `zero_mem _`.
+-/
 theorem diagW_int (n r : ℕ) (a : 𝓞 D.host.E) : IsIntM (diagW D n r (a : D.host.E)) := by
   intro i j
   unfold diagW

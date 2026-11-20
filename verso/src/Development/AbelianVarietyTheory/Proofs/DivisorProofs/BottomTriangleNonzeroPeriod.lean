@@ -21,6 +21,11 @@ noncomputable section
 
 namespace GlobalTheory.KerFin
 
+/- English proof (translation)
+Take `⟨A1, h1⟩` from `h1`. Take `⟨A2, h2⟩` from `h2`. Use `⟨max A1 A2, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C1, x1, h1⟩` from `h1 ε CF (le_of_max_le_left hCF)`. Take `⟨C2, x2, h2⟩` from `h2 ε CF (le_of_max_le_right hCF)`.
+
+Use `⟨max C1 C2, max x1 x2, fun C hC D large₂ he hx hR T Lc μ₀ hL G => h G μ₀ C _ _ (h1 C (le_of_max_le_left hC) D large₂ he (le_of_max_le_left hx) hR T Lc μ₀ hL G) (h2 C (le_of_max_le_right hC) D large₂ he (le_of_max_le_right hx) hR T Lc μ₀ hL G)⟩` and prove the remaining obligations.
+-/
 theorem gbig_comb {Q1 Q2 Q : GlobalTheory.SqTop.GP} (h1 : GlobalTheory.SqTop.GBig Q1) (h2 : GlobalTheory.SqTop.GBig Q2)
     (h : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} (G : GridData Lc sc) (μ₀ : T) (C x b : ℝ),
       Q1 G μ₀ C x b → Q2 G μ₀ C x b → Q G μ₀ C x b) : GlobalTheory.SqTop.GBig Q := by
@@ -33,6 +38,13 @@ theorem gbig_comb {Q1 Q2 Q : GlobalTheory.SqTop.GP} (h1 : GlobalTheory.SqTop.GBi
     (h1 C (le_of_max_le_left hC) D large₂ he (le_of_max_le_left hx) hR T Lc μ₀ hL G)
     (h2 C (le_of_max_le_right hC) D large₂ he (le_of_max_le_right hx) hR T Lc μ₀ hL G)⟩
 
+/- English proof (translation)
+Introduce `hPr hTI hLM hInp hBS`. Use `gbig_comb (GlobalTheory.T.bottom_triangle_archimedean_constant hPr hTI hLM hInp hBS) GlobalTheory.BotWeights.weights_const ?_` and prove the remaining obligations. Introduce `D T Lc sc G μ₀ C x b q2 q3 W hW i j A A' WW X δ t0 hX hβ`. Take `⟨r, rc, κ, hr, hrc, hκ, H2⟩` from `q2 W hW i j A A' WW X δ t0 hX hβ`. Take `⟨n₀, H3⟩` from `q3 i j δ t0`.
+
+Take `⟨Ω, hΩ, H1⟩` from `GlobalTheory.T.bottomTriple_thetaKernel_minors_eq_const_conjJet G W hW i j A A' WW X hX r rc hr hrc n₀`. Use `⟨Ω * starRingEnd ℂ κ, mul_ne_zero hΩ ((map_ne_zero _).2 hκ), fun s Q P P' hB => ?_⟩` and prove the remaining obligations. Take `⟨u, hu0, huQ, huU, hEq⟩` from `H2 s Q P P' hB`. Use `⟨u, hu0, huQ, huU, fun ea ed h g x y hg hy Tu => ?_⟩` and prove the remaining obligations. Establish `hne : κ * starRingEnd ℂ u ≠ 0` using `mul_ne_zero hκ ((map_ne_zero _).2 hu0)`.
+
+Rewrite using `[H1 P.a P.d P.n ea ed (H3 s Q P P' hB) s g y hg.1 hy.1 Tu, hEq ea ed h g x y hg hy, GlobalTheory.FunObj.NormUniq.applyAt0_smul _ hne]`. Simplify using `only [GlobalTheory.NormSum.Pair.term, map_mul, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem bottom_kernel : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     (∀ D, GlobalTheory.NormSum.Inp D) → GlobalTheory.SqTop.BotSmall →
     GlobalTheory.SqTop.GBig fun {D} T _ _ G _ _ _ _ => ∀ (W : G.Weil), IsStdChar D W.ψ (-1) → ∀ (i j : Fin D.R.m) (A A' WW : HSp D)

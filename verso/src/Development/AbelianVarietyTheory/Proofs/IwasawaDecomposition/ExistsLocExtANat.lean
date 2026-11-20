@@ -6,6 +6,9 @@ open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.Chart
 
 namespace GlobalTheory.LocM
 
+/- English proof (translation)
+Introduce `D N j p` and use `⟨Formalism.MainNotions.DIV.Inh.LocalProvisionModel.locM D N j p (Formalism.MainNotions.DIV.Inh.LocalProvisionModel.mpTrivialAb D p (Formalism.MainNotions.DIV.Inh.nonempty_coefficient_field p).some), ⟨Formalism.MainNotions.DIV.Inh.LocalProvisionModel.extM D N j p (Formalism.MainNo …`.
+-/
 theorem exists_loc_extA_nat :
     ∀ (D : D7) (N j p : ℕ), ∃ L : ModuliIntegralCharts.Loc D N j p, Nonempty (ModuliIntegralCharts.ExtA D L) :=
   fun D N j p =>

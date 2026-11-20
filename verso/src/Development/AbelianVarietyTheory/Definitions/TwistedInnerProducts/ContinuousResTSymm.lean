@@ -19,18 +19,30 @@ namespace GlobalTheory.MixModel
 
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite using `[← h, Matrix.mul_assoc]`.
+-/
 theorem cancel₂ {k l m n : ℕ} {a : Mx D k l} {b : Mx D l m} {c : Mx D k m} (h : a ⬝ b = c) (x : Mx D m n) :
     a ⬝ (b ⬝ x) = c ⬝ x := by
   rw [← h, Matrix.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[← h, Matrix.mul_assoc, Matrix.mul_assoc]`.
+-/
 theorem cancel₃ {j k l m n : ℕ} {a : Mx D j k} {b : Mx D k l} {c : Mx D l m} {e : Mx D j m} (h : a ⬝ (b ⬝ c) = e)
     (x : Mx D m n) : a ⬝ (b ⬝ (c ⬝ x)) = e ⬝ x := by
   rw [← h, Matrix.mul_assoc, Matrix.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[← h, adj_mul, adj_mul, adj_adj, adj_gA, Matrix.mul_assoc]`.
+-/
 theorem gram_swap (S : HSp D) {k l : ℕ} {a : Mx D S.rank k} {b : Mx D S.rank l} {c : Mx D k l}
     (h : adj a ⬝ (gA S ⬝ b) = c) : adj b ⬝ (gA S ⬝ a) = adj c := by
   rw [← h, adj_mul, adj_mul, adj_adj, adj_gA, Matrix.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[← h, rat_mul, rat_mul, rat_conjTranspose, Matrix.mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem gram_rat (S : HSp D) {k l : ℕ} {a : Matrix (Fin S.rank) (Fin k) D.host.E} {b : Matrix (Fin S.rank) (Fin l) D.host.E}
     {c : Matrix (Fin k) (Fin l) D.host.E} (h : aᴴ * S.gram * b = c) : adj (rat a) ⬝ (gA S ⬝ rat b) = rat c := by
   rw [← h, rat_mul, rat_mul, rat_conjTranspose, Matrix.mul_assoc]; rfl
@@ -49,6 +61,9 @@ namespace OrthDec
 
 variable {S A B : HSp D} (d : OrthDec S A B)
 
+/- English proof (translation)
+Use `congrArg Matrix.conjTranspose d.orth` as an intermediate fact. Rewrite `this` using `[conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, gram_conjTranspose, conjTranspose_zero, ← Matrix.mul_assoc]`. Then use the resulting hypothesis.
+-/
 theorem orth' : d.iAᴴ * S.gram * d.iB = 0 := by
   have := congrArg Matrix.conjTranspose d.orth
   rwa [conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, gram_conjTranspose, conjTranspose_zero,
@@ -74,45 +89,96 @@ def pA : Mx D A.rank S.rank := rat d.qA
 
 def pB : Mx D B.rank S.rank := rat d.qB
 
+/- English proof (translation)
+Rewrite using `[qA, Matrix.mul_assoc, d.isoA, Matrix.nonsing_inv_mul _ (gram_isUnit_det A)]`.
+-/
 theorem qA_iA : d.qA * d.iA = 1 := by
   rw [qA, Matrix.mul_assoc, d.isoA, Matrix.nonsing_inv_mul _ (gram_isUnit_det A)]
 
+/- English proof (translation)
+Rewrite using `[qA, Matrix.mul_assoc, d.orth', Matrix.mul_zero]`.
+-/
 theorem qA_iB : d.qA * d.iB = 0 := by rw [qA, Matrix.mul_assoc, d.orth', Matrix.mul_zero]
 
+/- English proof (translation)
+The claim follows from `d.symm.qA_iA`.
+-/
 theorem qB_iB : d.qB * d.iB = 1 := d.symm.qA_iA
 
+/- English proof (translation)
+The claim follows from `d.symm.qA_iB`.
+-/
 theorem qB_iA : d.qB * d.iA = 0 := d.symm.qA_iB
 
+/- English proof (translation)
+Establish `h : fromRows d.qA d.qB * fromCols d.iA d.iB = 1`. Rewrite using `[fromRows_mul_fromCols, qA_iA, qA_iB, qB_iA, qB_iB, fromBlocks_one]`. Rewrite using `[← fromCols_mul_fromRows]`. Conclude with `(Matrix.mul_eq_one_comm_of_card_eq _ _ _ (by simp [d.rank_add])).1 h`.
+-/
 theorem iA_qA_add : d.iA * d.qA + d.iB * d.qB = 1 := by
   have h : fromRows d.qA d.qB * fromCols d.iA d.iB = 1 := by
     rw [fromRows_mul_fromCols, qA_iA, qA_iB, qB_iA, qB_iB, fromBlocks_one]
   rw [← fromCols_mul_fromRows]
   exact (Matrix.mul_eq_one_comm_of_card_eq _ _ _ (by simp [d.rank_add])).1 h
 
+/- English proof (translation)
+Rewrite using `[pA, qA, rat_mul, rat_mul, rat_conjTranspose]`. Both sides reduce to the same expression.
+-/
 theorem pA_eq : d.pA = giA A ⬝ (adj d.jA ⬝ gA S) := by
   rw [pA, qA, rat_mul, rat_mul, rat_conjTranspose]; rfl
 
+/- English proof (translation)
+The claim follows from `d.symm.pA_eq`.
+-/
 theorem pB_eq : d.pB = giA B ⬝ (adj d.jB ⬝ gA S) := d.symm.pA_eq
 
+/- English proof (translation)
+The claim follows from `gram_rat S d.isoA`.
+-/
 theorem gram_AA : adj d.jA ⬝ (gA S ⬝ d.jA) = gA A := gram_rat S d.isoA
 
+/- English proof (translation)
+The claim follows from `gram_rat S d.isoB`.
+-/
 theorem gram_BB : adj d.jB ⬝ (gA S ⬝ d.jB) = gA B := gram_rat S d.isoB
 
+/- English proof (translation)
+The claim follows from `(gram_rat S d.orth).trans rat_zero`.
+-/
 theorem gram_BA : adj d.jB ⬝ (gA S ⬝ d.jA) = 0 := (gram_rat S d.orth).trans rat_zero
 
+/- English proof (translation)
+The claim follows from `d.symm.gram_BA`.
+-/
 theorem gram_AB : adj d.jA ⬝ (gA S ⬝ d.jB) = 0 := d.symm.gram_BA
 
+/- English proof (translation)
+Rewrite using `[pA, jA, ← rat_mul, qA_iA, rat_one]`.
+-/
 @[simp] theorem pA_jA : d.pA ⬝ d.jA = 1 := by rw [pA, jA, ← rat_mul, qA_iA, rat_one]
 
+/- English proof (translation)
+Rewrite using `[pA, jB, ← rat_mul, qA_iB, rat_zero]`.
+-/
 @[simp] theorem pA_jB : d.pA ⬝ d.jB = 0 := by rw [pA, jB, ← rat_mul, qA_iB, rat_zero]
 
+/- English proof (translation)
+The claim follows from `d.symm.pA_jA`.
+-/
 @[simp] theorem pB_jB : d.pB ⬝ d.jB = 1 := d.symm.pA_jA
 
+/- English proof (translation)
+The claim follows from `d.symm.pA_jB`.
+-/
 @[simp] theorem pB_jA : d.pB ⬝ d.jA = 0 := d.symm.pA_jB
 
+/- English proof (translation)
+Rewrite using `[jA, jB, pA, pB, ← rat_mul, ← rat_mul, ← rat_add, iA_qA_add, rat_one]`.
+-/
 theorem sum_eq_one : d.jA ⬝ d.pA + d.jB ⬝ d.pB = 1 := by
   rw [jA, jB, pA, pB, ← rat_mul, ← rat_mul, ← rat_add, iA_qA_add, rat_one]
 
+/- English proof (translation)
+Establish `hIJ` using `gram_swap S hJI`. Simplify using `only [adj_add, adj_mul, Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc, cancel₃ hI, cancel₃ hJ, cancel₃ hJI, cancel₃ hIJ, adj_zero, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add]`.
+-/
 theorem gram_images {I : Mx D S.rank A.rank} {J : Mx D S.rank B.rank} (hI : adj I ⬝ (gA S ⬝ I) = gA A)
     (hJ : adj J ⬝ (gA S ⬝ J) = gA B) (hJI : adj J ⬝ (gA S ⬝ I) = 0) :
     adj (I ⬝ d.pA + J ⬝ d.pB) ⬝ (gA S ⬝ (I ⬝ d.pA + J ⬝ d.pB)) =
@@ -121,9 +187,15 @@ theorem gram_images {I : Mx D S.rank A.rank} {J : Mx D S.rank B.rank} (hI : adj 
   simp only [adj_add, adj_mul, Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc, cancel₃ hI, cancel₃ hJ, cancel₃ hJI,
     cancel₃ hIJ, adj_zero, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add]
 
+/- English proof (translation)
+Rewrite using `[← d.gram_images d.gram_AA d.gram_BB d.gram_BA, sum_eq_one, adj_one, Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem gA_eq : gA S = adj d.pA ⬝ (gA A ⬝ d.pA) + adj d.pB ⬝ (gA B ⬝ d.pB) := by
   rw [← d.gram_images d.gram_AA d.gram_BB d.gram_BA, sum_eq_one, adj_one, Matrix.one_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.one_mul (giA S), ← d.sum_eq_one, pA_eq, pB_eq]`. Simplify using `only [Matrix.add_mul, Matrix.mul_assoc, gA_mul_giA, Matrix.mul_one]`.
+-/
 theorem giA_eq : giA S = d.jA ⬝ (giA A ⬝ adj d.jA) + d.jB ⬝ (giA B ⬝ adj d.jB) := by
   rw [← Matrix.one_mul (giA S), ← d.sum_eq_one, pA_eq, pB_eq]
   simp only [Matrix.add_mul, Matrix.mul_assoc, gA_mul_giA, Matrix.mul_one]
@@ -141,26 +213,49 @@ def emb : GA D A × GA D B →* GA D S where
       cancel₂ d.pA_jA, cancel₂ d.pA_jB, cancel₂ d.pB_jA, cancel₂ d.pB_jB, Matrix.one_mul, Matrix.zero_mul,
       Matrix.mul_zero, add_zero, zero_add])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mt_emb (a : GA D A) (b : GA D B) :
     mt S (d.emb (a, b)) = d.jA ⬝ mt A a ⬝ d.pA + d.jB ⬝ mt B b ⬝ d.pB := rfl
 
+/- English proof (translation)
+Simplify using `only [mt_emb, Matrix.add_mul, Matrix.mul_assoc, pA_jA, pB_jA, Matrix.mul_one, Matrix.mul_zero, add_zero]`.
+-/
 theorem emb_jA (a : GA D A) (b : GA D B) : mt S (d.emb (a, b)) ⬝ d.jA = d.jA ⬝ mt A a := by
   simp only [mt_emb, Matrix.add_mul, Matrix.mul_assoc, pA_jA, pB_jA, Matrix.mul_one, Matrix.mul_zero, add_zero]
 
+/- English proof (translation)
+Simplify using `only [mt_emb, Matrix.add_mul, Matrix.mul_assoc, pA_jB, pB_jB, Matrix.mul_one, Matrix.mul_zero, zero_add]`.
+-/
 theorem emb_jB (a : GA D A) (b : GA D B) : mt S (d.emb (a, b)) ⬝ d.jB = d.jB ⬝ mt B b := by
   simp only [mt_emb, Matrix.add_mul, Matrix.mul_assoc, pA_jB, pB_jB, Matrix.mul_one, Matrix.mul_zero, zero_add]
 
+/- English proof (translation)
+Simplify using `only [mt_emb, Matrix.mul_add, Matrix.mul_assoc, cancel₂ d.pA_jA, cancel₂ d.pA_jB, Matrix.one_mul, Matrix.zero_mul, add_zero]`.
+-/
 theorem pA_emb (a : GA D A) (b : GA D B) : d.pA ⬝ mt S (d.emb (a, b)) = mt A a ⬝ d.pA := by
   simp only [mt_emb, Matrix.mul_add, Matrix.mul_assoc, cancel₂ d.pA_jA, cancel₂ d.pA_jB, Matrix.one_mul,
     Matrix.zero_mul, add_zero]
 
+/- English proof (translation)
+Simplify using `only [mt_emb, Matrix.mul_add, Matrix.mul_assoc, cancel₂ d.pB_jA, cancel₂ d.pB_jB, Matrix.one_mul, Matrix.zero_mul, zero_add]`.
+-/
 theorem pB_emb (a : GA D A) (b : GA D B) : d.pB ⬝ mt S (d.emb (a, b)) = mt B b ⬝ d.pB := by
   simp only [mt_emb, Matrix.mul_add, Matrix.mul_assoc, cancel₂ d.pB_jA, cancel₂ d.pB_jB, Matrix.one_mul,
     Matrix.zero_mul, zero_add]
 
+/- English proof (translation)
+The claim follows from `mt_injective S (add_comm _ _)`.
+-/
 theorem emb_symm (a : GA D A) (b : GA D B) : d.symm.emb (b, a) = d.emb (a, b) :=
   mt_injective S (add_comm _ _)
 
+/- English proof (translation)
+Introduce and unpack `⟨a, b⟩ ⟨a', b'⟩ h`. Establish `h1 : d.pA ⬝ (mt S (d.emb (a, b)) ⬝ d.jA) = d.pA ⬝ (mt S (d.emb (a', b')) ⬝ d.jA)` using `by rw [h]`. Establish `h2 : d.pB ⬝ (mt S (d.emb (a, b)) ⬝ d.jB) = d.pB ⬝ (mt S (d.emb (a', b')) ⬝ d.jB)` using `by rw [h]`. Rewrite `h1` using `[emb_jA, emb_jA, cancel₂ d.pA_jA, cancel₂ d.pA_jA, Matrix.one_mul, Matrix.one_mul]`. Rewrite `h2` using `[emb_jB, emb_jB, cancel₂ d.pB_jB, cancel₂ d.pB_jB, Matrix.one_mul, Matrix.one_mul]`.
+
+Conclude with `Prod.ext (mt_injective A h1) (mt_injective B h2)`.
+-/
 theorem emb_injective : Function.Injective d.emb := by
   rintro ⟨a, b⟩ ⟨a', b'⟩ h
   have h1 : d.pA ⬝ (mt S (d.emb (a, b)) ⬝ d.jA) = d.pA ⬝ (mt S (d.emb (a', b')) ⬝ d.jA) := by rw [h]
@@ -169,15 +264,28 @@ theorem emb_injective : Function.Injective d.emb := by
   rw [emb_jB, emb_jB, cancel₂ d.pB_jB, cancel₂ d.pB_jB, Matrix.one_mul, Matrix.one_mul] at h2
   exact Prod.ext (mt_injective A h1) (mt_injective B h2)
 
+/- English proof (translation)
+The claim follows from `continuous_of_mt S (((continuous_const.matrix_mul ((continuous_mt A).comp continuous_fst)).matrix_mul continuous_const).add ((continuous_const.matrix_mul ((continuous_mt B).comp continuous_snd)).matrix_mul continuous_const))`.
+-/
 theorem continuous_emb : Continuous d.emb :=
   continuous_of_mt S (((continuous_const.matrix_mul ((continuous_mt A).comp continuous_fst)).matrix_mul
     continuous_const).add ((continuous_const.matrix_mul ((continuous_mt B).comp continuous_snd)).matrix_mul
       continuous_const))
 
+/- English proof (translation)
+Rewrite `ha`, `hb`, the goal using `[mem_GQ_iff]`. Conclude with `add_mem (ratMx_mul (ratMx_mul (rat_mem _) ha) (rat_mem _)) (ratMx_mul (ratMx_mul (rat_mem _) hb) (rat_mem _))`.
+-/
 theorem emb_mem_GQ {a : GA D A} {b : GA D B} (ha : a ∈ GQ A) (hb : b ∈ GQ B) : d.emb (a, b) ∈ GQ S := by
   rw [mem_GQ_iff] at ha hb ⊢
   exact add_mem (ratMx_mul (ratMx_mul (rat_mem _) ha) (rat_mem _)) (ratMx_mul (ratMx_mul (rat_mem _) hb) (rat_mem _))
 
+/- English proof (translation)
+Rewrite using `[EmbRel, hι]`. Use `⟨d.emb_jA a 1, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1 : d.qA *ᵥ x = 0`. Rewrite using `[qA, ← Matrix.mulVec_mulVec]`. Conclude with `(congrArg (A.gram⁻¹ *ᵥ ·) hx).trans (Matrix.mulVec_zero _)`.
+
+Establish `h2 : d.pA *ᵥ (fun i => incA D (x i)) = 0`. Use function extensionality and compare the values at `i`. Use `RingHom.map_mulVec (incA D) d.qA x i` as an intermediate fact. Rewrite `this` using `[h1, Pi.zero_apply, map_zero]`. Conclude with `this.symm`.
+
+Establish `h3` using `congrArg (· *ᵥ fun i => incA D (x i)) d.sum_eq_one`. Express the relevant statement in the definitionally equal form `mt S (d.emb (a, 1)) *ᵥ _ = _`. Simplify using `only [Matrix.add_mulVec, ← Matrix.mulVec_mulVec, h2, Matrix.mulVec_zero, Matrix.one_mulVec] at h3`. Rewrite using `[mt_emb, mt_one, Matrix.mul_one, Matrix.add_mulVec, ← Matrix.mulVec_mulVec, h2, Matrix.mulVec_zero, ← Matrix.mulVec_mulVec, h3]`.
+-/
 theorem embRel_left (ι : A.V →ₗ[D.host.E] S.V) (hι : frameMat S A ι = d.iA) (a : GA D A) :
     EmbRel S A ι (d.emb (a, 1)) a := by
   rw [EmbRel, hι]
@@ -196,6 +304,9 @@ theorem embRel_left (ι : A.V →ₗ[D.host.E] S.V) (hι : frameMat S A ι = d.i
   rw [mt_emb, mt_one, Matrix.mul_one, Matrix.add_mulVec, ← Matrix.mulVec_mulVec, h2, Matrix.mulVec_zero,
     ← Matrix.mulVec_mulVec, h3]
 
+/- English proof (translation)
+Rewrite using `[← emb_symm]`. Conclude with `d.symm.embRel_left ι hι b`.
+-/
 theorem embRel_right (ι : B.V →ₗ[D.host.E] S.V) (hι : frameMat S B ι = d.iB) (b : GA D B) :
     EmbRel S B ι (d.emb (1, b)) b := by
   rw [← emb_symm]; exact d.symm.embRel_left ι hι b
@@ -211,11 +322,20 @@ def resS (T : HSp D) : WO S T ≃+ WO A T × WO B T where
       zero_add]
   map_add' x y := Prod.ext (Matrix.add_mul _ _ _) (Matrix.add_mul _ _ _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem resS_apply (T : HSp D) (x : WO S T) : d.resS T x = (x ⬝ d.jA, x ⬝ d.jB) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem resS_symm_apply (T : HSp D) (u : WO A T) (v : WO B T) :
     (d.resS T).symm (u, v) = u ⬝ d.pA + v ⬝ d.pB := rfl
 
+/- English proof (translation)
+Simplify using `only [hO_eq_trace, resS_apply, adj_mul]`. Rewrite using `[d.giA_eq, Matrix.add_mul, trace_add, Matrix.mul_assoc, trace_mul_comm, Matrix.mul_assoc d.jB, trace_mul_comm d.jB]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem hO_resS (T : HSp D) (x y : WO S T) :
     hO S T x y = hO A T (d.resS T x).1 (d.resS T y).1 + hO B T (d.resS T x).2 (d.resS T y).2 := by
   simp only [hO_eq_trace, resS_apply, adj_mul]
@@ -223,36 +343,60 @@ theorem hO_resS (T : HSp D) (x y : WO S T) :
     trace_mul_comm d.jB]
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[symplOH_eq, hO_resS d, map_add]`. Both sides reduce to the same expression.
+-/
 theorem symplOH_resS (T : HSp D) (x y : WO S T) :
     symplOH S T x y = symplOH A T (d.resS T x).1 (d.resS T y).1 + symplOH B T (d.resS T x).2 (d.resS T y).2 := by
   rw [symplOH_eq, hO_resS d, map_add]; rfl
 
+/- English proof (translation)
+Rewrite using `[symplO_eq, hO_resS d, mul_add, map_add]`. Both sides reduce to the same expression.
+-/
 theorem symplO_resS (T : HSp D) (x y : WO S T) :
     symplO S T x y = symplO A T (d.resS T x).1 (d.resS T y).1 + symplO B T (d.resS T x).2 (d.resS T y).2 := by
   rw [symplO_eq, hO_resS d, mul_add, map_add]; rfl
 
+/- English proof (translation)
+Simplify using `only [resS_apply, actO_eq, ← map_inv, Prod.inv_mk, Matrix.mul_assoc, emb_jA, emb_jB]`.
+-/
 theorem resS_actO (T : HSp D) (a : GA D A) (b : GA D B) (h : GA D T) (x : WO S T) :
     d.resS T (actO S T (d.emb (a, b)) h x) = (actO A T a h (d.resS T x).1, actO B T b h (d.resS T x).2) := by
   simp only [resS_apply, actO_eq, ← map_inv, Prod.inv_mk, Matrix.mul_assoc, emb_jA, emb_jB]
 
+/- English proof (translation)
+Use `⟨fun h => ⟨ratMx_mul h (rat_mem _), ratMx_mul h (rat_mem _)⟩, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[← (d.resS T).symm_apply_apply x]`. Conclude with `add_mem (ratMx_mul h.1 (rat_mem _)) (ratMx_mul h.2 (rat_mem _))`.
+-/
 theorem mem_ratL_resS (T : HSp D) (x : WO S T) :
     x ∈ ratL T S ↔ (d.resS T x).1 ∈ ratL T A ∧ (d.resS T x).2 ∈ ratL T B := by
   refine ⟨fun h => ⟨ratMx_mul h (rat_mem _), ratMx_mul h (rat_mem _)⟩, fun h => ?_⟩
   rw [← (d.resS T).symm_apply_apply x]
   exact add_mem (ratMx_mul h.1 (rat_mem _)) (ratMx_mul h.2 (rat_mem _))
 
+/- English proof (translation)
+The claim follows from `(continuous_id.matrix_mul continuous_const).prodMk (continuous_id.matrix_mul continuous_const)`.
+-/
 theorem continuous_resS (T : HSp D) : Continuous (d.resS T) :=
   (continuous_id.matrix_mul continuous_const).prodMk (continuous_id.matrix_mul continuous_const)
 
+/- English proof (translation)
+The claim follows from `(continuous_fst.matrix_mul continuous_const).add (continuous_snd.matrix_mul continuous_const)`.
+-/
 theorem continuous_resS_symm (T : HSp D) : Continuous (d.resS T).symm :=
   (continuous_fst.matrix_mul continuous_const).add (continuous_snd.matrix_mul continuous_const)
 
 def boxS (T : HSp D) (fA : WO A T → ℂ) (fB : WO B T → ℂ) : WO S T → ℂ :=
   fun w => fA (d.resS T w).1 * fB (d.resS T w).2
 
+/- English proof (translation)
+Rewrite using `[boxS, map_zero]`. Both sides reduce to the same expression.
+-/
 theorem boxS_zero (T : HSp D) (fA : WO A T → ℂ) (fB : WO B T → ℂ) : d.boxS T fA fB 0 = fA 0 * fB 0 := by
   rw [boxS, map_zero]; rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Simplify using `only [heisO, boxS]`. Rewrite using `[d.symplOH_resS, AddChar.map_add_eq_mul, map_add, Prod.fst_add, Prod.snd_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem heisO_boxS (ψ : AddChar (AF D.host.F) ℂ) (T : HSp D) (fA : WO A T → ℂ) (fB : WO B T → ℂ) (u : WO S T) :
     heisO ψ S T u (d.boxS T fA fB) = d.boxS T (heisO ψ A T (d.resS T u).1 fA) (heisO ψ B T (d.resS T u).2 fB) := by
   funext w
@@ -260,6 +404,9 @@ theorem heisO_boxS (ψ : AddChar (AF D.host.F) ℂ) (T : HSp D) (fA : WO A T →
   rw [d.symplOH_resS, AddChar.map_add_eq_mul, map_add, Prod.fst_add, Prod.snd_add]
   ring
 
+/- English proof (translation)
+Establish `h` using `isThetaFunO_prod (S := S) (T := T) 1 d.iA 1 d.iB (fun x y => by`. Simplify using `only [sandwich_apply, rat_one, Matrix.one_mul]`. Conclude with `d.symplOH_resS T x y) hA hB`. Simplify using `only [sandwich_apply, rat_one, Matrix.one_mul] at h`. Conclude with `h`.
+-/
 theorem isThetaFunO_boxS {ψ : AddChar (AF D.host.F) ℂ} {T : HSp D} {fA : WO A T → ℂ} {fB : WO B T → ℂ}
     (hA : IsThetaFunO ψ A T fA) (hB : IsThetaFunO ψ B T fB) : IsThetaFunO ψ S T (d.boxS T fA fB) := by
   have h := isThetaFunO_prod (S := S) (T := T) 1 d.iA 1 d.iB (fun x y => by
@@ -285,47 +432,80 @@ def resT (S : HSp D) : WO S T ≃+ WO S A × WO S B where
       add_zero, zero_add]
   map_add' x y := Prod.ext (Matrix.mul_add _ _ _) (Matrix.mul_add _ _ _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem resT_apply (S : HSp D) (x : WO S T) : d.resT S x = (d.pA ⬝ x, d.pB ⬝ x) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem resT_symm_apply (S : HSp D) (u : WO S A) (v : WO S B) :
     (d.resT S).symm (u, v) = d.jA ⬝ u + d.jB ⬝ v := rfl
 
+/- English proof (translation)
+Simplify using `only [hO_eq_trace, resT_apply, adj_mul]`. Rewrite using `[d.gA_eq]`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, trace_add, Matrix.mul_assoc]`.
+-/
 theorem hO_resT (S : HSp D) (x y : WO S T) :
     hO S T x y = hO S A (d.resT S x).1 (d.resT S y).1 + hO S B (d.resT S x).2 (d.resT S y).2 := by
   simp only [hO_eq_trace, resT_apply, adj_mul]
   rw [d.gA_eq]
   simp only [Matrix.add_mul, Matrix.mul_add, trace_add, Matrix.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[symplOH_eq, hO_resT d, map_add]`. Both sides reduce to the same expression.
+-/
 theorem symplOH_resT (S : HSp D) (x y : WO S T) :
     symplOH S T x y = symplOH S A (d.resT S x).1 (d.resT S y).1 + symplOH S B (d.resT S x).2 (d.resT S y).2 := by
   rw [symplOH_eq, hO_resT d, map_add]; rfl
 
+/- English proof (translation)
+Rewrite using `[symplO_eq, hO_resT d, mul_add, map_add]`. Both sides reduce to the same expression.
+-/
 theorem symplO_resT (S : HSp D) (x y : WO S T) :
     symplO S T x y = symplO S A (d.resT S x).1 (d.resT S y).1 + symplO S B (d.resT S x).2 (d.resT S y).2 := by
   rw [symplO_eq, hO_resT d, mul_add, map_add]; rfl
 
+/- English proof (translation)
+Simplify using `only [resT_apply, actO_eq, ← Matrix.mul_assoc, pA_emb, pB_emb]`.
+-/
 theorem resT_actO (S : HSp D) (g : GA D S) (a : GA D A) (b : GA D B) (x : WO S T) :
     d.resT S (actO S T g (d.emb (a, b)) x) = (actO S A g a (d.resT S x).1, actO S B g b (d.resT S x).2) := by
   simp only [resT_apply, actO_eq, ← Matrix.mul_assoc, pA_emb, pB_emb]
 
+/- English proof (translation)
+Use `⟨fun h => ⟨ratMx_mul (rat_mem _) h, ratMx_mul (rat_mem _) h⟩, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[← (d.resT S).symm_apply_apply x]`. Conclude with `add_mem (ratMx_mul (rat_mem _) h.1) (ratMx_mul (rat_mem _) h.2)`.
+-/
 theorem mem_ratL_resT (S : HSp D) (x : WO S T) :
     x ∈ ratL T S ↔ (d.resT S x).1 ∈ ratL A S ∧ (d.resT S x).2 ∈ ratL B S := by
   refine ⟨fun h => ⟨ratMx_mul (rat_mem _) h, ratMx_mul (rat_mem _) h⟩, fun h => ?_⟩
   rw [← (d.resT S).symm_apply_apply x]
   exact add_mem (ratMx_mul (rat_mem _) h.1) (ratMx_mul (rat_mem _) h.2)
 
+/- English proof (translation)
+The claim follows from `(continuous_const.matrix_mul continuous_id).prodMk (continuous_const.matrix_mul continuous_id)`.
+-/
 theorem continuous_resT (S : HSp D) : Continuous (d.resT S) :=
   (continuous_const.matrix_mul continuous_id).prodMk (continuous_const.matrix_mul continuous_id)
 
+/- English proof (translation)
+The claim follows from `(continuous_const.matrix_mul continuous_fst).add (continuous_const.matrix_mul continuous_snd)`.
+-/
 theorem continuous_resT_symm (S : HSp D) : Continuous (d.resT S).symm :=
   (continuous_const.matrix_mul continuous_fst).add (continuous_const.matrix_mul continuous_snd)
 
 def boxT (S : HSp D) (fA : WO S A → ℂ) (fB : WO S B → ℂ) : WO S T → ℂ :=
   fun w => fA (d.resT S w).1 * fB (d.resT S w).2
 
+/- English proof (translation)
+Rewrite using `[boxT, map_zero]`. Both sides reduce to the same expression.
+-/
 theorem boxT_zero (S : HSp D) (fA : WO S A → ℂ) (fB : WO S B → ℂ) : d.boxT S fA fB 0 = fA 0 * fB 0 := by
   rw [boxT, map_zero]; rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Simplify using `only [heisO, boxT]`. Rewrite using `[d.symplOH_resT, AddChar.map_add_eq_mul, map_add, Prod.fst_add, Prod.snd_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem heisO_boxT (ψ : AddChar (AF D.host.F) ℂ) (S : HSp D) (fA : WO S A → ℂ) (fB : WO S B → ℂ) (u : WO S T) :
     heisO ψ S T u (d.boxT S fA fB) = d.boxT S (heisO ψ S A (d.resT S u).1 fA) (heisO ψ S B (d.resT S u).2 fB) := by
   funext w
@@ -333,6 +513,9 @@ theorem heisO_boxT (ψ : AddChar (AF D.host.F) ℂ) (S : HSp D) (fA : WO S A →
   rw [d.symplOH_resT, AddChar.map_add_eq_mul, map_add, Prod.fst_add, Prod.snd_add]
   ring
 
+/- English proof (translation)
+Establish `h` using `isThetaFunO_prod (S := S) (T := T) d.qA 1 d.qB 1 (fun x y => by`. Simplify using `only [sandwich_apply, rat_one, Matrix.mul_one]`. Conclude with `d.symplOH_resT S x y) hA hB`. Simplify using `only [sandwich_apply, rat_one, Matrix.mul_one] at h`. Conclude with `h`.
+-/
 theorem isThetaFunO_boxT {ψ : AddChar (AF D.host.F) ℂ} {S : HSp D} {fA : WO S A → ℂ} {fB : WO S B → ℂ}
     (hA : IsThetaFunO ψ S A fA) (hB : IsThetaFunO ψ S B fB) : IsThetaFunO ψ S T (d.boxT S fA fB) := by
   have h := isThetaFunO_prod (S := S) (T := T) d.qA 1 d.qB 1 (fun x y => by

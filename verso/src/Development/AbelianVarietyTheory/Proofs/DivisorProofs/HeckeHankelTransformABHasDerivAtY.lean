@@ -19,21 +19,41 @@ def igE (a b : ℕ) (σ : ℂ) (ν y t : ℝ) : ℂ :=
   (wt t y)⁻¹ ^ a * ((starRingEnd ℂ) (wt t y))⁻¹ ^ b *
     Complex.exp ((Real.log (t ^ 2 + y ^ 2) : ℂ) * (-σ)) * Complex.exp (-(2 * (Real.pi : ℂ) * I * (ν : ℂ) * (t : ℂ)))
 
+/- English proof (translation)
+Establish `: 0 < y ^ 2` using `by positivity`. Use polynomial arithmetic with `[sq_nonneg t]`.
+-/
 theorem q_pos {t y : ℝ} (hy : y ≠ 0) : 0 < t ^ 2 + y ^ 2 := by
   have : 0 < y ^ 2 := by positivity
   nlinarith [sq_nonneg t]
 
+/- English proof (translation)
+Introduce `h`. Use `congrArg Complex.im h` as an intermediate fact. Simplify using `[wt] at this`. Conclude with `hy this`.
+-/
 theorem wt_ne {t y : ℝ} (hy : y ≠ 0) : wt t y ≠ 0 := by
   intro h; have := congrArg Complex.im h; simp [wt] at this; exact hy this
 
+/- English proof (translation)
+Simplify using `[wt, map_add, map_mul, Complex.conj_ofReal, Complex.conj_I]`.
+-/
 theorem conj_wt (t y : ℝ) : (starRingEnd ℂ) (wt t y) = (t : ℂ) + (y : ℂ) * (-I) := by
   simp [wt, map_add, map_mul, Complex.conj_ofReal, Complex.conj_I]
 
+/- English proof (translation)
+Rewrite using `[map_ne_zero]`. Conclude with `wt_ne hy`.
+-/
 theorem conj_wt_ne {t y : ℝ} (hy : y ≠ 0) : (starRingEnd ℂ) (wt t y) ≠ 0 := by
   rw [map_ne_zero]; exact wt_ne hy
 
+/- English proof (translation)
+The claim follows from `Complex.norm_add_mul_I t y`.
+-/
 theorem norm_wt (t y : ℝ) : ‖wt t y‖ = √(t ^ 2 + y ^ 2) := Complex.norm_add_mul_I t y
 
+/- English proof (translation)
+Establish `hq` using `q_pos (t := t) hy`. Establish `hn : (0 : ℝ) < ‖wt t y‖` using `norm_pos_iff.2 (wt_ne hy)`. Rewrite using `[Complex.cpow_def_of_ne_zero (by exact_mod_cast hn.ne'), ← Complex.ofReal_log hn.le]`. Use `congr 1`. Establish `: Real.log (t ^ 2 + y ^ 2) = 2 * Real.log ‖wt t y‖`.
+
+Rewrite using `[norm_wt, Real.log_sqrt hq.le]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cpow_eq {t y : ℝ} (hy : y ≠ 0) (σ : ℂ) :
     ((‖wt t y‖ : ℝ) : ℂ) ^ (-2 * σ) = Complex.exp ((Real.log (t ^ 2 + y ^ 2) : ℂ) * (-σ)) := by
   have hq := q_pos (t := t) hy
@@ -44,11 +64,21 @@ theorem cpow_eq {t y : ℝ} (hy : y ≠ 0) (σ : ℂ) :
     rw [norm_wt, Real.log_sqrt hq.le]; ring
   rw [this]; push_cast; ring
 
+/- English proof (translation)
+Unfold `hTransAB igE`. Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[← cpow_eq hy σ]`. Both sides reduce to the same expression.
+-/
 theorem hTransAB_eq {a b : ℕ} {σ : ℂ} {ν y : ℝ} (hy : y ≠ 0) : hTransAB a b σ ν y = ∫ t, igE a b σ ν y t := by
   unfold hTransAB igE
   congr 1; funext t
   rw [← cpow_eq hy σ]; rfl
 
+/- English proof (translation)
+Establish `hq` using `q_pos (t := t) hy`. Establish `hs : √(t ^ 2 + y ^ 2) = Real.exp (Real.log (t ^ 2 + y ^ 2) / 2)`. Rewrite using `[Real.sqrt_eq_rpow, Real.rpow_def_of_pos hq]`. Put the polynomial expressions in normal form. Unfold `igE`.
+
+Rewrite using `[norm_mul, norm_mul, norm_mul, norm_pow, norm_pow, norm_inv, norm_inv, Complex.norm_conj, norm_wt, hs, Complex.norm_exp, Complex.norm_exp]`. Establish `h0 : (-(2 * (Real.pi : ℂ) * I * (ν : ℂ) * (t : ℂ))).re = 0` using `by simp`. Rewrite using `[h0, Real.exp_zero, mul_one, ← Real.exp_neg, ← Real.exp_nat_mul, ← Real.exp_nat_mul, ← Real.exp_add, ← Real.exp_add]`. Use `congr 1`. Simplify using `[Complex.mul_re]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_igE {a b : ℕ} {σ : ℂ} {ν y : ℝ} (hy : y ≠ 0) (t : ℝ) :
     ‖igE a b σ ν y t‖ = Real.exp (-(((a : ℝ) + b + 2 * σ.re) / 2) * Real.log (t ^ 2 + y ^ 2)) := by
   have hq := q_pos (t := t) hy
@@ -69,16 +99,27 @@ noncomputable section
 namespace GlobalTheory.HeckeTwoDY
 open MeasureTheory
 
+/- English proof (translation)
+Unfold `wt`. Simplify using `using ((hasDerivAt_id y).ofReal_comp.mul_const I).const_add (t : ℂ)`.
+-/
 theorem hasDerivAt_wt (t y : ℝ) : HasDerivAt (fun y' : ℝ => wt t y') I y := by
   unfold wt
   simpa using ((hasDerivAt_id y).ofReal_comp.mul_const I).const_add (t : ℂ)
 
+/- English proof (translation)
+Establish `: (fun y' : ℝ => (starRingEnd ℂ) (wt t y')) = fun y' : ℝ => (t : ℂ) + (y' : ℂ) * (-I)`. Use function extensionality and compare the values at `y'`. Conclude with `conj_wt t y'`. Rewrite using `[this]`. Simplify using `using ((hasDerivAt_id y).ofReal_comp.mul_const (-I)).const_add (t : ℂ)`.
+-/
 theorem hasDerivAt_cwt (t y : ℝ) : HasDerivAt (fun y' : ℝ => (starRingEnd ℂ) (wt t y')) (-I) y := by
   have : (fun y' : ℝ => (starRingEnd ℂ) (wt t y')) = fun y' : ℝ => (t : ℂ) + (y' : ℂ) * (-I) := by
     funext y'; exact conj_wt t y'
   rw [this]
   simpa using ((hasDerivAt_id y).ofReal_comp.mul_const (-I)).const_add (t : ℂ)
 
+/- English proof (translation)
+Establish `hz` using `(hasDerivAt_zpow (-(n : ℤ)) (f y) (Or.inl hne)).comp y hf`. Establish `hfun : (fun y' => (f y')⁻¹ ^ n) = (fun x : ℂ => x ^ (-(n : ℤ))) ∘ f`. Use function extensionality and compare the values at `y'`. Simplify using `[Function.comp, zpow_neg, inv_pow]`. Rewrite using `[hfun]`.
+
+Use `hz.congr_deriv ?_` and prove the remaining obligations. Establish `: (-(n : ℤ) - 1) = -((n + 1 : ℕ) : ℤ)` using `by push_cast; ring`. Rewrite using `[this, zpow_neg, zpow_natCast, inv_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hasDerivAt_invpow {f : ℝ → ℂ} {c : ℂ} {y : ℝ} (hf : HasDerivAt f c y) (hne : f y ≠ 0) (n : ℕ) :
     HasDerivAt (fun y' => (f y')⁻¹ ^ n) (-(n : ℂ) * c * (f y)⁻¹ ^ (n + 1)) y := by
   have hz := (hasDerivAt_zpow (-(n : ℤ)) (f y) (Or.inl hne)).comp y hf
@@ -89,6 +130,15 @@ theorem hasDerivAt_invpow {f : ℝ → ℂ} {c : ℂ} {y : ℝ} (hf : HasDerivAt
   have : (-(n : ℤ) - 1) = -((n + 1 : ℕ) : ℤ) := by push_cast; ring
   rw [this, zpow_neg, zpow_natCast, inv_pow]; push_cast; ring
 
+/- English proof (translation)
+Establish `hq` using `q_pos (t := t) hy`. Establish `hw` using `wt_ne (t := t) hy`. Establish `hc` using `conj_wt_ne (t := t) hy`. Establish `hprod : wt t y * (starRingEnd ℂ) (wt t y) = ((t ^ 2 + y ^ 2 : ℝ) : ℂ)`. Rewrite using `[conj_wt]`.
+
+Unfold `wt`. Use `push_cast`. Put the polynomial expressions in normal form. Rewrite using `[I_sq]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hq' : ((t ^ 2 + y ^ 2 : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hq.ne'`. Rewrite using `[inv_sub_inv hw hc, hprod, conj_wt]`. Unfold `wt`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Put the polynomial expressions in normal form. Rewrite using `[I_sq]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem two_y_div {t y : ℝ} (hy : y ≠ 0) :
     (((2 * y / (t ^ 2 + y ^ 2) : ℝ)) : ℂ) = I * ((wt t y)⁻¹ - ((starRingEnd ℂ) (wt t y))⁻¹) := by
   have hq := q_pos (t := t) hy
@@ -103,6 +153,13 @@ theorem two_y_div {t y : ℝ} (hy : y ≠ 0) :
   field_simp
   ring_nf; rw [I_sq]; ring
 
+/- English proof (translation)
+Establish `hA` using `hasDerivAt_invpow (hasDerivAt_wt t y) (wt_ne hy) a`. Establish `hB` using `hasDerivAt_invpow (hasDerivAt_cwt t y) (conj_wt_ne hy) b`. Establish `hq : HasDerivAt (fun y' : ℝ => t ^ 2 + y' ^ 2) (2 * y) y`. Simplify using `using (hasDerivAt_pow 2 y).const_add (t ^ 2)`. Establish `hL` using `(((hq.log (q_pos hy).ne').ofReal_comp).mul_const (-σ)).cexp`.
+
+Establish `h` using `((hA.mul hB).mul hL).mul_const (Complex.exp (-(2 * (Real.pi : ℂ) * I * (ν : ℂ) * (t : ℂ))))`. Unfold `igE`. Use `h.congr_deriv ?_` and prove the remaining obligations. Simplify using `only [Pi.mul_apply]`. Rewrite using `[two_y_div hy]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hasDerivAt_igE (a b : ℕ) (σ : ℂ) (ν t : ℝ) {y : ℝ} (hy : y ≠ 0) :
     HasDerivAt (fun y' => igE a b σ ν y' t)
       (I * (-(a : ℂ) - σ) * igE (a + 1) b σ ν y t + I * ((b : ℂ) + σ) * igE a (b + 1) σ ν y t) y := by
@@ -124,6 +181,13 @@ noncomputable section
 namespace GlobalTheory.HeckeTwoDY
 open MeasureTheory
 
+/- English proof (translation)
+Establish `h` using `(integrable_rpow_neg_one_add_norm_sq (E := ℝ) (μ := volume) (r := k) (by simp; linarith)).comp_div hc`. Establish `h2` using `h.const_mul ((c ^ 2) ^ (-k / 2))`. Use `h2.congr (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Establish `hc2 : 0 < c ^ 2` using `by positivity`. Establish `he : c ^ 2 * (1 + ‖t / c‖ ^ 2) = t ^ 2 + c ^ 2`.
+
+Rewrite using `[Real.norm_eq_abs, sq_abs, div_pow]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using `only`. Rewrite using `[← Real.mul_rpow hc2.le (by positivity), he, Real.rpow_def_of_pos (by positivity)]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem integrable_bd {k c : ℝ} (hk : 1 < k) (hc : c ≠ 0) :
     Integrable (fun t : ℝ => Real.exp (-(k / 2) * Real.log (t ^ 2 + c ^ 2))) := by
   have h := (integrable_rpow_neg_one_add_norm_sq (E := ℝ) (μ := volume) (r := k) (by simp; linarith)).comp_div hc
@@ -136,6 +200,11 @@ theorem integrable_bd {k c : ℝ} (hk : 1 < k) (hc : c ≠ 0) :
   rw [← Real.mul_rpow hc2.le (by positivity), he, Real.rpow_def_of_pos (by positivity)]
   congr 1; ring
 
+/- English proof (translation)
+Unfold `igE`. Establish `hw : Continuous fun t : ℝ => wt t y` using `by unfold wt; fun_prop`. Establish `h1 : Continuous fun t : ℝ => (wt t y)⁻¹` using `hw.inv₀ (fun t => wt_ne hy)`. Establish `h2 : Continuous fun t : ℝ => ((starRingEnd ℂ) (wt t y))⁻¹` using `(Complex.continuous_conj.comp hw).inv₀ (fun t => conj_wt_ne hy)`. Establish `h3 : Continuous fun t : ℝ => Real.log (t ^ 2 + y ^ 2)` using `(by fun_prop : Continuous fun t : ℝ => t ^ 2 + y ^ 2).log (fun t => (q_pos hy).ne')`.
+
+Conclude with `(((h1.pow a).mul (h2.pow b)).mul (Complex.continuous_exp.comp ((Complex.continuous_ofReal.comp h3).mul continuous_const))).mul (by fun_prop)`.
+-/
 theorem continuous_igE (a b : ℕ) (σ : ℂ) (ν : ℝ) {y : ℝ} (hy : y ≠ 0) : Continuous (fun t => igE a b σ ν y t) := by
   unfold igE
   have hw : Continuous fun t : ℝ => wt t y := by unfold wt; fun_prop
@@ -147,6 +216,9 @@ theorem continuous_igE (a b : ℕ) (σ : ℂ) (ν : ℝ) {y : ℝ} (hy : y ≠ 0
   exact (((h1.pow a).mul (h2.pow b)).mul
     (Complex.continuous_exp.comp ((Complex.continuous_ofReal.comp h3).mul continuous_const))).mul (by fun_prop)
 
+/- English proof (translation)
+Establish `hab' : (2 : ℝ) ≤ a + b` using `by exact_mod_cast hab`. Conclude with `(integrable_bd (k := (a : ℝ) + b + 2 * σ.re) (by linarith) hy).mono' (continuous_igE a b σ ν hy).aestronglyMeasurable (Filter.Eventually.of_forall fun t => (norm_igE hy t).le)`.
+-/
 theorem integrable_igE {a b : ℕ} {σ : ℂ} (ν : ℝ) {y : ℝ} (hab : 2 ≤ a + b) (hσ : -1 / 2 < σ.re) (hy : y ≠ 0) :
     Integrable (fun t => igE a b σ ν y t) := by
   have hab' : (2 : ℝ) ≤ a + b := by exact_mod_cast hab
@@ -154,6 +226,15 @@ theorem integrable_igE {a b : ℕ} {σ : ℂ} (ν : ℝ) {y : ℝ} (hab : 2 ≤ 
     (continuous_igE a b σ ν hy).aestronglyMeasurable
     (Filter.Eventually.of_forall fun t => (norm_igE hy t).le)
 
+/- English proof (translation)
+Establish `h1 : |y| / 2 < |y'|`. Use `abs_sub_abs_le_abs_sub y y'` as an intermediate fact. Rewrite `this` using `[abs_sub_comm]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hypos : 0 < |y|` using `abs_pos.2 hy`.
+
+Establish `hy'0 : y' ≠ 0`. Introduce `h`. Rewrite `h1` using `[h, abs_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : (y / 2) ^ 2 ≤ y' ^ 2`.
+
+Rewrite using `[← sq_abs y', show (y / 2) ^ 2 = (|y| / 2) ^ 2 by rw [div_pow, div_pow, sq_abs]]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hq0 : 0 < t ^ 2 + (y / 2) ^ 2` using `q_pos (div_ne_zero hy two_ne_zero)`. Establish `hlog : Real.log (t ^ 2 + (y / 2) ^ 2) ≤ Real.log (t ^ 2 + y' ^ 2)` using `Real.log_le_log hq0 (by linarith)`. Rewrite using `[norm_igE hy'0]`.
+
+Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hlog hk]`.
+-/
 theorem norm_igE_le {a b : ℕ} {σ : ℂ} {ν y y' : ℝ} (hk : 0 ≤ (a : ℝ) + b + 2 * σ.re) (hy : y ≠ 0)
     (hy' : |y' - y| < |y| / 2) (t : ℝ) :
     ‖igE a b σ ν y' t‖ ≤ Real.exp (-(((a : ℝ) + b + 2 * σ.re) / 2) * Real.log (t ^ 2 + (y / 2) ^ 2)) := by
@@ -178,6 +259,21 @@ namespace GlobalTheory.HeckeTwo
 
 open MeasureTheory GlobalTheory.HeckeTwoDY
 
+/- English proof (translation)
+Introduce `a b σ ν y hab hσ hy`. Establish `hre : -1 / 2 < σ.re` using `hσ`. Establish `hab' : (2 : ℝ) ≤ a + b` using `by exact_mod_cast hab`. Establish `hypos : 0 < |y|` using `abs_pos.2 hy`. Establish `hε : 0 < |y| / 2` using `by linarith`.
+
+Establish `hball : ∀ y' ∈ Metric.ball y (|y| / 2), |y' - y| < |y| / 2` using `fun y' h => by`. Simplify `h` using `[Metric.mem_ball, Real.dist_eq]`. Establish `hne : ∀ y' ∈ Metric.ball y (|y| / 2), y' ≠ 0` using `fun y' h => by`. Establish `h0` using `hball y' h`. Introduce `e`.
+
+Rewrite `h0` using `[e, zero_sub, abs_neg]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hy2 : y / 2 ≠ 0` using `div_ne_zero hy two_ne_zero`. Establish `hk : 0 ≤ ((a + 1 : ℕ) : ℝ) + b + 2 * σ.re` using `by push_cast; linarith`. Establish `hk' : 0 ≤ (a : ℝ) + ((b + 1 : ℕ) : ℝ) + 2 * σ.re` using `by push_cast; linarith`.
+
+Establish `e1 : ((a + 1 : ℕ) : ℝ) + b + 2 * σ.re = (a : ℝ) + b + 2 * σ.re + 1` using `by push_cast; ring`. Establish `e2 : (a : ℝ) + ((b + 1 : ℕ) : ℝ) + 2 * σ.re = (a : ℝ) + b + 2 * σ.re + 1` using `by push_cast; ring`. Use `set k := (a : ℝ) + b + 2 * σ.re with hk_def`. Establish `hint1` using `integrable_igE ν (a := a + 1) (b := b) (by omega) hre hy`. Establish `hint2` using `integrable_igE ν (a := a) (b := b + 1) (by omega) hre hy`.
+
+Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := volume) (F := fun y' t => igE a b σ ν y' t) (F' := fun y' t => I * (-(a : ℂ) - σ) * igE (a + 1) b σ ν y' t + I * ((b : ℂ) + σ) * igE a (b + 1) σ ν y' t) (x₀ := y) (bound := fun t => (‖-(a : ℂ) - σ‖ + ‖(b : ℂ) + σ‖) * Real.exp …`. Establish `b1` using `norm_igE_le (ν := ν) hk hy (hball y' hy') t`. Establish `b2` using `norm_igE_le (ν := ν) hk' hy (hball y' hy') t`. Rewrite `b1` using `[e1]`. Rewrite `b2` using `[e2]`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [norm_mul, Complex.norm_I, one_mul]`. Use `_ ≤ _ := by`. Rewrite using `[add_mul]`. Conclude with `add_le_add (mul_le_mul_of_nonneg_left b1 (norm_nonneg _)) (mul_le_mul_of_nonneg_left b2 (norm_nonneg _)))`.
+
+Use the proof step `((integrable_bd (k := k + 1) (by linarith) hy2).const_mul _)`. Use the proof step `(Filter.Eventually.of_forall fun t y' hy' => hasDerivAt_igE a b σ ν t (hne y' hy'))`. Establish `hfun : (fun y' : ℝ => hTransAB a b σ ν y') =ᶠ[nhds y] fun y' => ∫ t, igE a b σ ν y' t` using `Filter.eventually_of_mem (Metric.ball_mem_nhds y hε) fun y' h => hTransAB_eq (hne y' h)`. Use `(key.2.congr_of_eventuallyEq hfun).congr_deriv ?_` and prove the remaining obligations. Rewrite using `[integral_add (hint1.const_mul _) (hint2.const_mul _), integral_const_mul, integral_const_mul, hTransAB_eq hy, hTransAB_eq hy]`.
+-/
 theorem hTransAB_hasDerivAt : ∀ (a b : ℕ) (σ : ℂ) (ν y : ℝ), 2 ≤ a + b → σ ∈ halfPlane → y ≠ 0 →
     HasDerivAt (fun y' : ℝ => hTransAB a b σ ν y')
       (I * (-(a : ℂ) - σ) * hTransAB (a + 1) b σ ν y + I * ((b : ℂ) + σ) * hTransAB a (b + 1) σ ν y) y := by

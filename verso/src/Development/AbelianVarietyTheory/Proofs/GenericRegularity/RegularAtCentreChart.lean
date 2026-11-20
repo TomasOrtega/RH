@@ -10,6 +10,9 @@ open IsLocalRing NumberField IsDedekindDomain Formalism.L2.Pj Formalism.L2.PjFre
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Use `RegC.key_centre g x hx0 (fun V _ _ _ _ _ φ a b hab hb hφx => ?_) qq hqq` and prove the remaining obligations. Take `⟨e, r, he, hr, hr0⟩` from `hpts V φ hφx`. Conclude with `chval_div φ.toRingHom e he g r hr hr0 a b hab hb`.
+-/
 theorem regular_at_centre_chart {la : HeightOneSpectrum (𝓞 c.F)}
     (S : SCharts Xo c la) (j : S.J) (g : FractionRing (S.A j)) (x : S.A j) (hx0 : x ≠ 0)
     (hpts : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Algebra S.O V]
@@ -23,6 +26,9 @@ theorem regular_at_centre_chart {la : HeightOneSpectrum (𝓞 c.F)}
   obtain ⟨e, r, he, hr, hr0⟩ := hpts V φ hφx
   exact chval_div φ.toRingHom e he g r hr hr0 a b hab hb
 
+/- English proof (translation)
+Take `⟨a', s', hs', hfs'⟩` from `regular_at_centre_chart S j (S.ch j F) x hx0 (fun V _ _ _ _ _ φ hφx => by`. Take `⟨ioV, e', hov, -, v, hv, hChV⟩` from `S.pts j V φ ⟨x, hxE, hφx⟩`. Conclude with `⟨e', v F, hov.1, hChV a n F hF, h0 v hv⟩) ((maximalIdeal V).comap φ.toRingHom) hqq`. Conclude with `chval_nonneg φ.toRingHom e (S.ch j F) rr hch a' s' hfs' hs'`.
+-/
 theorem nonneg_at {la : HeightOneSpectrum (𝓞 c.F)}
     (S : SCharts Xo c la) {a n} {F : Rul Xo c} (hF : F ∈ sec Xo c a n)
     (h0 : ∀ v ∈ valSet Xo c (algCls Xo c) la, 0 ≤ v F) (j : S.J) (x : S.A j) (hxE : x ∈ S.Eb j)
@@ -35,6 +41,11 @@ theorem nonneg_at {la : HeightOneSpectrum (𝓞 c.F)}
     exact ⟨e', v F, hov.1, hChV a n F hF, h0 v hv⟩) ((maximalIdeal V).comap φ.toRingHom) hqq
   exact chval_nonneg φ.toRingHom e (S.ch j F) rr hch a' s' hfs' hs'
 
+/- English proof (translation)
+Introduce `v hv`. Take `⟨j, V, _, _, _, _, φ, ioV, e, hov, ⟨x, hxE, hφx⟩, -, hmap, hChV⟩` from `S.cover v hv`. Establish `hx0 : x ≠ 0` using `fun h => hφx (by rw [h, map_zero])`. Use `nonneg_at S hF h0 j x hxE hx0 V φ e (v F) (hChV a n F hF) ?_` and prove the remaining obligations. Rewrite using `[sup_eq_left.2 hmap]`.
+
+Conclude with `(Ideal.IsPrime.ne_top inferInstance)`.
+-/
 theorem integral_place {la : HeightOneSpectrum (𝓞 c.F)}
     (S : SCharts Xo c la) {a n} {F : Rul Xo c} (hF : F ∈ sec Xo c a n)
     (h0 : ∀ v ∈ valSet Xo c (algCls Xo c) la, 0 ≤ v F) : ∀ v ∈ valSet Xo c (trivialClassCondition Xo c) la, 0 ≤ v F := by
@@ -45,6 +56,11 @@ theorem integral_place {la : HeightOneSpectrum (𝓞 c.F)}
   rw [sup_eq_left.2 hmap]
   exact (Ideal.IsPrime.ne_top inferInstance)
 
+/- English proof (translation)
+Introduce `q hq`. Take `⟨j, V, _, _, _, _, φ, hcen, -, ⟨x, hxE, hφx⟩, hChV⟩` from `hQ q hq`. Establish `hx0 : x ≠ 0` using `fun h => hφx (by rw [h, map_zero])`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible S.O`. Use `nonneg_at S hF h0 j x hxE hx0 V φ 1 (q F) (hChV a n F hF) ?_` and prove the remaining obligations.
+
+Establish `hm : maximalIdeal S.O = Ideal.span {ϖ}` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ`. Rewrite using `[hm, Ideal.map_span, Set.image_singleton, sup_comm]`. Conclude with `hcen ϖ hϖ`.
+-/
 theorem integral_trivial {la : HeightOneSpectrum (𝓞 c.F)}
     (S : SCharts Xo c la) (hQ : S.CovQ) {a n} {F : Rul Xo c} (hF : F ∈ sec Xo c a n)
     (h0 : ∀ v ∈ valSet Xo c (algCls Xo c) la, 0 ≤ v F) : ∀ q ∈ trivSet Xo c, 0 ≤ q F := by
@@ -57,6 +73,11 @@ theorem integral_trivial {la : HeightOneSpectrum (𝓞 c.F)}
   rw [hm, Ideal.map_span, Set.image_singleton, sup_comm]
   exact hcen ϖ hϖ
 
+/- English proof (translation)
+Unfold `vr`. Establish `hv : ((vV (K'` using `FractionRing V) V (algebraMap V (FractionRing V) y) : ℤ) : ℝ) * eO = e := by exact_mod_cast hy`. Establish `heOr : (0 : ℝ) < eO` using `by exact_mod_cast heO`. Establish `her : (0 : ℝ) < e` using `by exact_mod_cast he`. Clear the denominators using the available nonvanishing facts.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem vr_of_over {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (eO e : ℕ) (heO : 0 < eO)
     (he : 0 < e) (y : V) (hy : vV (K' := FractionRing V) V (algebraMap V (FractionRing V) y) * (eO : ℤ) = e) :
     vr e y = 1 / eO := by
@@ -68,6 +89,29 @@ theorem vr_of_over {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing
   linarith
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `v hv hT`. Take `⟨kj, hkj⟩` from `hF`. Take `⟨j, V, _, _, _, _, φ, ioV, e, hov, ⟨x, hxE, hφx⟩, hϖv, hmap, hChV⟩` from `S.cover v hv`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible S.O`. Establish `he : 0 < e` using `hov.1`.
+
+Establish `heO : 0 < S.eO` using `S.overO.1`. Establish `hx0 : x ≠ 0` using `fun h => hφx (by rw [h, map_zero])`. Establish `hϖ0 : algebraMap S.O V ϖ ≠ 0`. Introduce `h0`. Use `hϖv ϖ hϖ` as an intermediate fact.
+
+Rewrite `this` using `[h0, map_zero, vV_zero', zero_mul]`. Use linear arithmetic over natural numbers and integers. Take `⟨hfw0, hrat, hinv⟩` from `hkj j`. Take `⟨yw, tw, hyw⟩` from `hinv x hxE ϖ hϖ`. Take `⟨ye, te, hye⟩` from `S.reg j aE nE et het x hxE ϖ hϖ`.
+
+Establish `hP : ∀ k : ℕ, φ ((algebraMap S.O (S.A j) ϖ * x) ^ k) ≠ 0` using `fun k => by`. Rewrite using `[map_pow, map_mul, AlgHom.commutes]`. Conclude with `pow_ne_zero _ (mul_ne_zero hϖ0 hφx)`. Establish `hWc` using `hChV aL nL (ws (kj j)) (hws _)`. Establish `hTc` using `hChV aE nE et het`.
+
+Take `⟨w, hw⟩` from `w_fin hWc _ yw hyw hfw0 (hP tw)`. Take `⟨t, ht⟩` from `fin_of_ne_top hT (chval_ne_bot hTc)`. Establish `hye0 : ye ≠ 0`. Introduce and unpack `rfl`. Rewrite `hye` using `[map_zero]`.
+
+Establish `hPK : algebraMap (S.A j) (FractionRing (S.A j)) ((algebraMap S.O (S.A j) ϖ * x) ^ te) ≠ 0`. Introduce `h0`. Apply `hP te` to reduce the goal to its premises. Rewrite using `[IsFractionRing.injective (S.A j) (FractionRing (S.A j)) (h0.trans (map_zero _).symm), map_zero]`. Establish `hfe0 : S.ch j et = 0` using `(mul_eq_zero.1 hye).resolve_right hPK`.
+
+Rewrite `hTc` using `[hfe0]`. Conclude with `hT (chval_zero hTc)`. Establish `ht0 : 0 ≤ t`. Use `integral_place S het (fun v' hv' => (hyp v' hv').1) v hv` as an intermediate fact. Rewrite `this` using `[ht]`.
+
+Conclude with `this` after adjusting the coercions. Establish `hκ : vr e (algebraMap S.O V ϖ) = 1 / S.eO` using `vr_of_over S.eO e heO he _ (hϖv ϖ hϖ)`. Establish `hqq : (maximalIdeal V).comap φ.toRingHom ⊔ Ideal.map (algebraMap S.O (S.A j)) (maximalIdeal S.O) ≠ ⊤`. Rewrite using `[sup_eq_left.2 hmap]`. Conclude with `Ideal.IsPrime.ne_top inferInstance`.
+
+Establish `key : ∀ N : ℕ, 0 < N → (N : ℝ) * w ≤ (⌈(S.eO : ℝ) * N * nu⌉ : ℝ) * (1 / S.eO) + (⌈(N : ℝ) * c'⌉₊ : ℝ) * t`. Introduce `N _`. Rewrite using `[← hκ]`. Conclude with `comb_core ϖ S.eO heO (S.ch j (ws (kj j))) (S.ch j et) hfw0 x hx0 ye hye0 te hye yw tw hyw nu c' N ⌈(S.eO : ℝ) * N * nu⌉ ⌈(N : ℝ) * c'⌉₊ (Int.le_ceil _) (Nat.le_ceil _) (fun V' _ _ _ _ _ φ' hφ'x => by`. Take `⟨ioV', e', hov', hϖ', v', hv', hch'⟩` from `S.pts j V' φ' ⟨x, hxE, hφ'x⟩`.
+
+Use `⟨e', v' (ws (kj j)), v' et, hov'.1, hϖ' ϖ hϖ, hch' aL nL _ (hws _), hch' aE nE et het, (hyp v' hv').1, fun hT' => ?_⟩` and prove the remaining obligations. Use `le_trans (le_iInf fun k => ?_) ((hyp v' hv').2 hT')` and prove the remaining obligations. Take `⟨xk, hxk⟩` from `hrat k`. Establish `h2` using `hch' aL nL (ws k) (hws k)`. Rewrite `h2` using `[hxk]`.
+
+Conclude with `ratio_ge (hch' aL nL _ (hws _)) h2)`. Use `V φ hφx hϖ0 hqq e w t (hw ▸ hWc) (ht ▸ hTc)`. Establish `hlim` using `limit_lam w t nu c' S.eO heO ht0 hc' key`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem combined_place {la : HeightOneSpectrum (𝓞 c.F)}
     (S : SCharts Xo c la) {m : ℕ} (ws : Fin m → Rul Xo c) (hF : S.FamW ws)
     {aL nL} (hws : ∀ k, ws k ∈ sec Xo c aL nL)
@@ -138,6 +182,29 @@ theorem combined_place {la : HeightOneSpectrum (𝓞 c.F)}
     _ = (nu : EReal) + (c' : EReal) * v et := by rw [ht, EReal.coe_add, EReal.coe_mul]
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `q hq hT`. Take `⟨kj, hkj⟩` from `hF`. Take `⟨j, V, _, _, _, _, φ, hcen, hunit, ⟨x, hxE, hφx⟩, hChV⟩` from `hQ q hq`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible S.O`. Establish `heO : 0 < S.eO` using `S.overO.1`.
+
+Establish `hx0 : x ≠ 0` using `fun h => hφx (by rw [h, map_zero])`. Establish `hu` using `hunit ϖ hϖ`. Establish `hϖ0 : algebraMap S.O V ϖ ≠ 0` using `hu.ne_zero`. Take `⟨hfw0, hrat, hinv⟩` from `hkj j`. Take `⟨yw, tw, hyw⟩` from `hinv x hxE ϖ hϖ`.
+
+Take `⟨ye, te, hye⟩` from `S.reg j aE nE et het x hxE ϖ hϖ`. Establish `hP : ∀ k : ℕ, φ ((algebraMap S.O (S.A j) ϖ * x) ^ k) ≠ 0` using `fun k => by`. Rewrite using `[map_pow, map_mul, AlgHom.commutes]`. Conclude with `pow_ne_zero _ (mul_ne_zero hϖ0 hφx)`. Establish `hWc` using `hChV aL nL (ws (kj j)) (hws _)`.
+
+Establish `hTc` using `hChV aE nE et het`. Take `⟨w, hw⟩` from `w_fin hWc _ yw hyw hfw0 (hP tw)`. Take `⟨t, ht⟩` from `fin_of_ne_top hT (chval_ne_bot hTc)`. Establish `hye0 : ye ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `hye` using `[map_zero]`. Establish `hPK : algebraMap (S.A j) (FractionRing (S.A j)) ((algebraMap S.O (S.A j) ϖ * x) ^ te) ≠ 0`. Introduce `h0`. Apply `hP te` to reduce the goal to its premises. Rewrite using `[IsFractionRing.injective (S.A j) (FractionRing (S.A j)) (h0.trans (map_zero _).symm), map_zero]`.
+
+Establish `hfe0 : S.ch j et = 0` using `(mul_eq_zero.1 hye).resolve_right hPK`. Rewrite `hTc` using `[hfe0]`. Conclude with `hT (chval_zero hTc)`. Establish `ht0 : 0 ≤ t`. Use `integral_trivial S hQ het (fun v' hv' => (hyp v' hv').1) q hq` as an intermediate fact.
+
+Rewrite `this` using `[ht]`. Conclude with `this` after adjusting the coercions. Establish `hκ : vr 1 (algebraMap S.O V ϖ) = 0`. Unfold `vr`. Rewrite using `[vV_unit _ (fun h => (IsLocalRing.mem_maximalIdeal _).1 h hu)]`.
+
+Simplify using the standard rewrite rules. Establish `hqq : (maximalIdeal V).comap φ.toRingHom ⊔ Ideal.map (algebraMap S.O (S.A j)) (maximalIdeal S.O) ≠ ⊤`. Establish `hm : maximalIdeal S.O = Ideal.span {ϖ}` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ`. Rewrite using `[hm, Ideal.map_span, Set.image_singleton, sup_comm]`. Conclude with `hcen ϖ hϖ`.
+
+Establish `key : ∀ N : ℕ, 0 < N → (N : ℝ) * w ≤ (⌈(N : ℝ) * c'⌉₊ : ℝ) * t`. Introduce `N _`. Use `comb_core ϖ S.eO heO (S.ch j (ws (kj j))) (S.ch j et) hfw0 x hx0 ye hye0 te hye yw tw hyw nu c' N ⌈(S.eO : ℝ) * N * nu⌉ ⌈(N : ℝ) * c'⌉₊ (Int.le_ceil _) (Nat.le_ceil _) (fun V' _ _ _ _ _ φ' hφ'x => by` as an intermediate fact. Take `⟨ioV', e', hov', hϖ', v', hv', hch'⟩` from `S.pts j V' φ' ⟨x, hxE, hφ'x⟩`. Use `⟨e', v' (ws (kj j)), v' et, hov'.1, hϖ' ϖ hϖ, hch' aL nL _ (hws _), hch' aE nE et het, (hyp v' hv').1, fun hT' => ?_⟩` and prove the remaining obligations.
+
+Use `le_trans (le_iInf fun k => ?_) ((hyp v' hv').2 hT')` and prove the remaining obligations. Take `⟨xk, hxk⟩` from `hrat k`. Establish `h2` using `hch' aL nL (ws k) (hws k)`. Rewrite `h2` using `[hxk]`. Conclude with `ratio_ge (hch' aL nL _ (hws _)) h2)`.
+
+Use `V φ hφx hϖ0 hqq 1 w t (hw ▸ hWc) (ht ▸ hTc)`. Rewrite `this` using `[hκ, mul_zero, zero_add]`. Conclude with `this`. Establish `hlim` using `limit_triv w t c' ht0 hc' key`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem combined_trivial {la : HeightOneSpectrum (𝓞 c.F)}
     (S : SCharts Xo c la) (hQ : S.CovQ) {m : ℕ} (ws : Fin m → Rul Xo c) (hF : S.FamW ws)
     {aL nL} (hws : ∀ k, ws k ∈ sec Xo c aL nL)
@@ -210,6 +277,25 @@ theorem combined_trivial {la : HeightOneSpectrum (𝓞 c.F)}
     _ = (c' : EReal) * q et := by rw [ht, EReal.coe_mul]
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `v hv`. Take `⟨kj, hkj⟩` from `hF`. Take `⟨j, V, _, _, _, _, φ, ioV, e, hov, ⟨x, hxE, hφx⟩, hϖv, hmap, hChV⟩` from `S.cover v hv`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible S.O`. Establish `he : 0 < e` using `hov.1`.
+
+Establish `heO : 0 < S.eO` using `S.overO.1`. Establish `hx0 : x ≠ 0` using `fun h => hφx (by rw [h, map_zero])`. Establish `hϖ0 : algebraMap S.O V ϖ ≠ 0`. Introduce `h0`. Use `hϖv ϖ hϖ` as an intermediate fact.
+
+Rewrite `this` using `[h0, map_zero, vV_zero', zero_mul]`. Use linear arithmetic over natural numbers and integers. Take `⟨hfw0, hrat, hinv⟩` from `hkj j`. Take `⟨yw, tw, hyw⟩` from `hinv x hxE ϖ hϖ`. Establish `hP : ∀ k : ℕ, φ ((algebraMap S.O (S.A j) ϖ * x) ^ k) ≠ 0` using `fun k => by`.
+
+Rewrite using `[map_pow, map_mul, AlgHom.commutes]`. Conclude with `pow_ne_zero _ (mul_ne_zero hϖ0 hφx)`. Establish `hWc` using `hChV aL nL (ws (kj j)) (hws _)`. Take `⟨w, hw⟩` from `w_fin hWc _ yw hyw hfw0 (hP tw)`. Establish `hκ : vr e (algebraMap S.O V ϖ) = 1 / S.eO` using `vr_of_over S.eO e heO he _ (hϖv ϖ hϖ)`.
+
+Establish `hqq : (maximalIdeal V).comap φ.toRingHom ⊔ Ideal.map (algebraMap S.O (S.A j)) (maximalIdeal S.O) ≠ ⊤`. Rewrite using `[sup_eq_left.2 hmap]`. Conclude with `Ideal.IsPrime.ne_top inferInstance`. Establish `h1fe : (1 : FractionRing (S.A j)) * algebraMap (S.A j) (FractionRing (S.A j)) ((algebraMap S.O (S.A j) ϖ * x) ^ 0) = algebraMap (S.A j) (FractionRing (S.A j)) 1`. Rewrite using `[pow_zero, one_mul]`.
+
+Establish `h0 : ((0 : ℝ) : EReal) = 0` using `rfl`. Establish `key : ∀ N : ℕ, 0 < N → (N : ℝ) * w ≤ (⌈(S.eO : ℝ) * N * nu⌉ : ℝ) * (1 / S.eO) + (⌈(N : ℝ) * 0⌉₊ : ℝ) * 0`. Introduce `N _`. Rewrite using `[← hκ]`. Conclude with `comb_core ϖ S.eO heO (S.ch j (ws (kj j))) 1 hfw0 x hx0 1 one_ne_zero 0 h1fe yw tw hyw nu 0 N ⌈(S.eO : ℝ) * N * nu⌉ ⌈(N : ℝ) * 0⌉₊ (Int.le_ceil _) (Nat.le_ceil _) (fun V' _ _ _ _ _ φ' hφ'x => by`.
+
+Take `⟨ioV', e', hov', hϖ', v', hv', hch'⟩` from `S.pts j V' φ' ⟨x, hxE, hφ'x⟩`. Use `⟨e', v' (ws (kj j)), 0, hov'.1, hϖ' ϖ hϖ, hch' aL nL _ (hws _), by simpa using chval_fin_one φ'.toRingHom e', le_rfl, fun _ => ?_⟩` and prove the remaining obligations. Rewrite using `[EReal.coe_zero, zero_mul, add_zero]`. Use `le_trans (le_iInf fun k => ?_) (hyp v' hv')` and prove the remaining obligations. Take `⟨xk, hxk⟩` from `hrat k`.
+
+Establish `h2` using `hch' aL nL (ws k) (hws k)`. Rewrite `h2` using `[hxk]`. Conclude with `ratio_ge (hch' aL nL _ (hws _)) h2)`. Use `V φ hφx hϖ0 hqq e w 0 (hw ▸ hWc) (by simpa using chval_fin_one φ.toRingHom e)`. Establish `hlim` using `limit_lam w 0 nu 0 S.eO heO le_rfl le_rfl key`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem family_place {la : HeightOneSpectrum (𝓞 c.F)}
     (S : SCharts Xo c la) {m : ℕ} (ws : Fin m → Rul Xo c) (hF : S.FamW ws)
     {aL nL} (hws : ∀ k, ws k ∈ sec Xo c aL nL) (nu : ℝ)

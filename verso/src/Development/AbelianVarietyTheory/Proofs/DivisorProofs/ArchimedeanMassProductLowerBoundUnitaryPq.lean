@@ -15,11 +15,21 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CovTop.VolUp.MassLow
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, permM]`.
+-/
 theorem perm_conj' {ι : Type} [Fintype ι] [DecidableEq ι] {r : ℕ} (e : ι ≃ Fin r) (M : Matrix (Fin r) (Fin r) ℂ) :
     permM e * M * (permM e)ᵀ = M.submatrix e e := by
   ext i j
   simp [Matrix.mul_apply, permM]
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, -⟩` from `MassUp.inv_facts hI ρ`. Use `set S := ((s.1 (σ ρ) : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ)`. Use `set P := permM (e ρ)`. Establish `hS : S.det = 1` using `(s.2 (σ ρ)).1`. Use `set M := (Pᵀ * A ρ) * S * mat x (σ ρ) with hM`.
+
+Establish `hx : mat x (σ ρ) * M = S * mat x (σ ρ)`. Rewrite using `[hM, ← Matrix.mul_assoc, ← Matrix.mul_assoc, h2, Matrix.one_mul]`. Establish `hu' : UpqT.mat u = P * M * Pᵀ`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc, hu]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = P * M * Pᵀ := by`. Rewrite using `[← hx, ← Matrix.mul_assoc, (hI ρ).2]`. Rewrite using `[hu', perm_conj', Matrix.det_submatrix_equiv_self, hM, Matrix.det_mul, Matrix.det_mul, hS, mul_one, ← Matrix.det_mul, h1, Matrix.det_one]`.
+-/
 theorem det_lift {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {κ : Type} {p q : κ → ℕ}
     {Ψ : Finset (E →+* ℂ)} {G : Matrix (Fin r) (Fin r) E} {x : Frame Ψ r} {σ : κ ≃ Ψ}
     {A : ∀ ρ, Matrix (Fin (p ρ) ⊕ Fin (q ρ)) (Fin r) ℂ} {e : ∀ ρ, Fin (p ρ) ⊕ Fin (q ρ) ≃ Fin r}
@@ -42,6 +52,13 @@ theorem det_lift {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {�
   rw [hu', perm_conj', Matrix.det_submatrix_equiv_self, hM, Matrix.det_mul, Matrix.det_mul, hS, mul_one,
     ← Matrix.det_mul, h1, Matrix.det_one]
 
+/- English proof (translation)
+Establish `hr0 : (0 : ℝ) < r` using `by exact_mod_cast hr`. Establish `key : (1 / 16 : ℝ) ^ (r ^ 2) * (8 * ε) ^ (r ^ 2 - 1) ≤ ε ^ (r ^ 2 - 1) / (r : ℝ) ^ (r - 1)`. Establish `hrp : (r : ℝ) ^ (r - 1) ≤ 2 ^ (r ^ 2)`. Establish `h1 : (r : ℝ) ≤ 2 ^ r` using `by exact_mod_cast (Nat.lt_two_pow_self).le`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h8 : (8 : ℝ) ^ (r ^ 2 - 1) ≤ 8 ^ (r ^ 2)` using `pow_le_pow_right₀ (by norm_num) (Nat.sub_le _ _)`. Rewrite using `[le_div_iff₀ (pow_pos hr0 _), mul_pow]`. Establish `hε' : 0 ≤ ε ^ (r ^ 2 - 1)` using `pow_nonneg hε.le _`. Combine the equalities or inequalities in the displayed calculation. Establish `e1 : (1 / 16 : ℝ) ^ (f * r ^ 2) = ((1 / 16 : ℝ) ^ (r ^ 2)) ^ f` using `by rw [← pow_mul, mul_comm f]`.
+
+Establish `e2 : (8 * ε) ^ (f * (r ^ 2 - 1)) = ((8 * ε) ^ (r ^ 2 - 1)) ^ f` using `by rw [← pow_mul, mul_comm f]`. Rewrite using `[e1, e2, ← mul_pow]`. Conclude with `pow_le_pow_left₀ (by positivity) key f`.
+-/
 theorem arith (f r : ℕ) (ε : ℝ) (hr : 1 ≤ r) (hε : 0 < ε) :
     (1 / 16 : ℝ) ^ (f * r ^ 2) * (8 * ε) ^ (f * (r ^ 2 - 1)) ≤ (ε ^ (r ^ 2 - 1) / (r : ℝ) ^ (r - 1)) ^ f := by
   have hr0 : (0 : ℝ) < r := by exact_mod_cast hr
@@ -63,6 +80,49 @@ theorem arith (f r : ℕ) (ε : ℝ) (hr : 1 ≤ r) (hε : 0 < ε) :
   rw [e1, e2, ← mul_pow]
   exact pow_le_pow_left₀ (by positivity) key f
 
+/- English proof (translation)
+Introduce `E _ _ _ r κ _ p q Ψ G x σ A e a₀ π m ρ₀ hr hI hπc hP hT hm S hS`. Use `haveI : ∀ ρ, IsTopologicalGroup (UpqT (p ρ) (q ρ)) := fun ρ => (GlobalTheory.UpqTopology.upq_lcsc _ _).1`. Use `haveI : ∀ ρ, LocallyCompactSpace (UpqT (p ρ) (q ρ)) := fun ρ => (GlobalTheory.UpqTopology.upq_lcsc _ _).2.2.1`. Use `haveI : ∀ ρ, SecondCountableTopology (UpqT (p ρ) (q ρ)) := fun ρ => (GlobalTheory.UpqTopology.upq_lcsc _ _).2.2.2.1`. Use `haveI : ∀ ρ, BorelSpace (UpqT (p ρ) (q ρ)) := fun ρ => (GlobalTheory.UpqTopology.upq_lcsc _ _).2.2.2.2.1`.
+
+Use `haveI : ∀ ρ, (m ρ).IsHaarMeasure := fun ρ => (hm ρ).1`. Establish `hcard : Fintype.card κ = Ψ.card`. Rewrite using `[Fintype.card_congr σ]`. Simplify using the standard rewrite rules. Establish `hΨ : 1 ≤ Ψ.card`.
+
+Rewrite using `[← hcard]`. Conclude with `Fintype.card_pos_iff.2 ⟨ρ₀⟩`. Establish `hG : G.det ≠ 0` using `MassUp.det_ne hI ρ₀`. Establish `hx : ∀ τ, (mat x τ).det ≠ 0`. Introduce `τ`.
+
+Take `⟨ρ, rfl⟩` from `σ.surjective τ`. Conclude with `Matrix.det_ne_zero_of_right_inverse (MassUp.inv_facts hI ρ).2.1`. Establish `hpq : ∀ ρ, p ρ + q ρ = r`. Introduce `ρ`. Simplify using `using Fintype.card_congr (e ρ)`.
+
+Establish `hπm : Measurable π` using `hπc.measurable`. Use `set μ := Measure.pi m with hμ`. Use `set T : Set (∀ ρ, UpqT (p ρ) (q ρ)) := {b | 0 < (UpqT.mat (b ρ₀)).det.im} with hTdef`. Establish `hTo : IsOpen T` using `isOpen_lt continuous_const (Complex.continuous_im.comp ((GlobalTheory.UpqTopology.continuous_mat.comp (continuous_apply ρ₀)).matrix_det))`. Establish `hTm : MeasurableSet T` using `hTo.measurableSet`.
+
+Use `set ν := (μ.restrict T).map π with hν`. Use `haveI hinv : ν.IsMulLeftInvariant := by`. Prove the components needed by the constructor for the conclusion. Introduce `s`. Take `⟨b₀, hb₀⟩` from `MassUp.exists_lift E r κ p q Ψ G x σ A e hI s`.
+
+Establish `hd : (UpqT.mat (b₀ ρ₀)).det = 1` using `det_lift hI ρ₀ s (b₀ ρ₀) (hb₀ ρ₀)`. Establish `hpre : (fun b => b₀ * b) ⁻¹' T = T`. Use extensionality with `b`. Simplify using `only [Set.mem_preimage, hTdef, Set.mem_setOf_eq, Pi.mul_apply]`. Rewrite using `[show UpqT.mat (b₀ ρ₀ * b ρ₀) = UpqT.mat (b₀ ρ₀) * UpqT.mat (b ρ₀) from rfl, Matrix.det_mul, hd, one_mul]`.
+
+Rewrite using `[hν, Measure.map_map (measurable_const_mul s) hπm]`. Establish `h : (fun y => s * y) ∘ π = π ∘ (fun b => b₀ * b)` using `funext fun b => (hT s b₀ hb₀ b).symm`. Rewrite using `[h, ← Measure.map_map hπm (measurable_const_mul b₀)]`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `haveI hH : (riemHaar Ψ G x).IsHaarMeasure := (GlobalTheory.SUVol.DensOne.tangentHaar_riemLie (Ψ := Ψ) (G := G) (hG := hG) (x := x) (hx := hx)).1`. Establish `hup` using `MassUp.massUp E r κ p q Ψ G x σ A e a₀ π m hr hΨ hI hπc hP hT hm`. Use `haveI : IsFiniteMeasureOnCompacts ν := by`. Prove the components needed by the constructor for the conclusion. Introduce `K hK`.
+
+Establish `hKm : MeasurableSet K` using `hK.isClosed.measurableSet`. Rewrite using `[hν, Measure.map_apply hπm hKm]`. Combine the equalities or inequalities in the displayed calculation. Establish `hc` using `Measure.isMulLeftInvariant_eq_smul ν (riemHaar Ψ G x)`. Use `set c := ν.haarScalarFactor (riemHaar Ψ G x) with hcdef`.
+
+Establish `hplace` using `fun ρ => GlobalTheory.T.le_measure_unitaryDetOneFactor_near_identity (p ρ) (q ρ) (a₀ ρ) (m ρ) (hm ρ)`. Use `choose εp hεp hbp using hplace`. Take `⟨εu, hεu, hbu⟩` from `GlobalTheory.T.riemannianHaar_frameBall_le E r κ p q Ψ G x σ A e hr hI`. Use `set δ := Finset.univ.inf' ⟨ρ₀, Finset.mem_univ _⟩ εp with hδdef`. Establish `hδ : 0 < δ` using `(Finset.lt_inf'_iff _).2 fun ρ _ => hεp ρ`.
+
+Use `set ε := min δ εu / 2 with hεdef`. Establish `hεm : ε < min δ εu` using `half_lt_self (lt_min hδ hεu)`. Establish `hε : 0 < ε` using `half_pos (lt_min hδ hεu)`. Establish `hεδ : ∀ ρ, ε < εp ρ` using `fun ρ => lt_of_lt_of_le (lt_of_lt_of_le hεm (min_le_left _ _)) (Finset.inf'_le _ (Finset.mem_univ ρ))`. Establish `hεu' : ε < εu` using `lt_of_lt_of_le hεm (min_le_right _ _)`.
+
+Establish `hopen : IsOpen (frBall Ψ G x ε)`. Establish `hc' : ∀ τ a b, Continuous fun s : realSU Ψ G => ‖((mat x τ)⁻¹ * ((s.1 τ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) * mat x τ - 1) a b‖`. Introduce `τ a b`. Establish `h1 : Continuous fun s : realSU Ψ G => ((s.1 τ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ)` using `Units.continuous_val.comp ((continuous_apply τ).comp continuous_subtype_val)`. Conclude with `((((continuous_const.matrix_mul h1).matrix_mul continuous_const).sub continuous_const).matrix_elem a b).norm`.
+
+Establish `: frBall Ψ G x ε = ⋂ τ, ⋂ a, ⋂ b, {s : realSU Ψ G | ‖((mat x τ)⁻¹ * ((s.1 τ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) * mat x τ - 1) a b‖ < ε}`. Use extensionality with `s`. Simplify using `[frBall]`. Rewrite using `[this]`. Conclude with `isOpen_iInter_of_finite fun τ => isOpen_iInter_of_finite fun a => isOpen_iInter_of_finite fun b => isOpen_lt (hc' τ a b) continuous_const`.
+
+Use `set L := ε ^ (r ^ 2 - 1) / (r : ℝ) ^ (r - 1) with hL`. Establish `hlow : ENNReal.ofReal (L ^ Ψ.card) ≤ ν (frBall Ψ G x ε)`. Rewrite using `[hν, Measure.map_apply hπm hopen.measurableSet, Measure.restrict_apply (hπm hopen.measurableSet), MassUp.preimage_frBall E r κ p q Ψ G x σ A e a₀ π hI hP ε]`. Establish `hsub : Set.univ.pi (fun ρ => {u : UpqT (p ρ) (q ρ) | (∀ a b, ‖(sMat (a₀ ρ) u - 1) a b‖ < ε) ∧ 0 < (UpqT.mat u).det.im}) ⊆ Set.univ.pi (fun ρ => {u : UpqT (p ρ) (q ρ) | ∀ a b, ‖(sMat (a₀ ρ) u - 1) a b‖ < ε}) ∩ T`. Introduce `b hb`.
+
+Simplify using `only [Set.mem_univ_pi, Set.mem_setOf_eq] at hb`. Conclude with `⟨fun ρ _ => (hb ρ).1, (hb ρ₀).2⟩`. Use `le_trans ?_ (measure_mono hsub)` and prove the remaining obligations. Rewrite using `[hμ, Measure.pi_pi]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.prod_const, Finset.card_univ, hcard, ENNReal.ofReal_pow (by positivity)]`. Use `_ ≤ _ := Finset.prod_le_prod' fun ρ _ => by`. Use `hbp ρ ε hε (hεδ ρ)` as an intermediate fact. Rewrite `this` using `[hpq ρ]`. Conclude with `this`.
+
+Establish `hupB` using `hbu ε hε hεu'`. Use `set U := (8 * ε) ^ (Ψ.card * (r ^ 2 - 1)) with hU`. Establish `hcU : L ^ Ψ.card ≤ (c : ℝ) * U`. Establish `h1 : ENNReal.ofReal (L ^ Ψ.card) ≤ ENNReal.ofReal ((c : ℝ) * U)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Use `_ ≤ (c : ℝ≥0∞) * ENNReal.ofReal U := mul_le_mul_of_nonneg_left hupB (zero_le)`. Use `_ = ENNReal.ofReal ((c : ℝ) * U) := by`. Rewrite using `[ENNReal.ofReal_mul (NNReal.coe_nonneg _), ENNReal.ofReal_coe_nnreal]`. Conclude with `(ENNReal.ofReal_le_ofReal_iff (mul_nonneg (NNReal.coe_nonneg _) (by positivity))).1 h1`.
+
+Establish `hK` using `arith Ψ.card r ε hr hε`. Establish `hUpos : 0 < U` using `by positivity`. Establish `hcK : (1 / 16 : ℝ) ^ (Ψ.card * r ^ 2) ≤ c` using `le_of_mul_le_mul_right (hK.trans hcU) hUpos`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← ENNReal.ofReal_coe_nnreal]`.
+
+Conclude with `ENNReal.ofReal_le_ofReal hcK`. Use `_ = ν S := by conv_rhs => rw [hc]`. Rewrite using `[Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Use `_ = μ (π ⁻¹' S ∩ T) := by`. Rewrite using `[hν, Measure.map_apply hπm hS, Measure.restrict_apply (hπm hS)]`.
+-/
 theorem massLow : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (κ : Type) [Fintype κ] (p q : κ → ℕ) (Ψ : Finset (E →+* ℂ)) (G : Matrix (Fin r) (Fin r) E) (x : Frame Ψ r) (σ : κ ≃ Ψ) (A : ∀ ρ, Matrix (Fin (p ρ) ⊕ Fin (q ρ)) (Fin r) ℂ) (e : ∀ ρ, Fin (p ρ) ⊕ Fin (q ρ) ≃ Fin r) (a₀ : ∀ ρ, Fin (p ρ) ⊕ Fin (q ρ)) (π : (∀ ρ, UpqT (p ρ) (q ρ)) → realSU Ψ G) (m : ∀ ρ, Measure (UpqT (p ρ) (q ρ))) (ρ₀ : κ), 1 ≤ r → IsIdent p q Ψ G x σ A e → Continuous π → IsProj p q Ψ G σ A a₀ π → (∀ (s : realSU Ψ G) (b₀ : ∀ ρ, UpqT (p ρ) (q ρ)), (∀ ρ, UpqT.mat (b₀ ρ) * A ρ = A ρ * ((s.1 (σ ρ) : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ)) → ∀ b, π (b₀ * b) = s * π b) → (∀ ρ, IsMinf (m ρ)) → ∀ S : Set (realSU Ψ G), MeasurableSet S → ENNReal.ofReal ((1 / 16 : ℝ) ^ (Ψ.card * r ^ 2)) * riemHaar Ψ G x S ≤ Measure.pi m (π ⁻¹' S ∩ {b | 0 < (UpqT.mat (b ρ₀)).det.im}) := by
   intro E _ _ _ r κ _ p q Ψ G x σ A e a₀ π m ρ₀ hr hI hπc hP hT hm S hS
   classical

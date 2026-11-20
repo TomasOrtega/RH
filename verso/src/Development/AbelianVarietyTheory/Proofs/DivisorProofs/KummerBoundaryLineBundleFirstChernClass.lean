@@ -17,6 +17,25 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace GlobalTheory.EtC.KumPic
 
+/- English proof (translation)
+Introduce `q _ κ h0 _ h2 _ _ h5 z s hz E L hE y hy`. Take `⟨a, ha⟩` from `GlobalTheory.T.exists_cocycle_lifting_lineBundle_transition_units q (cokernel κ) _ E L hE h5`. Establish `hy' : y = CohomologyClass.mk (zcomp a (Cocycle.ofHom (resAug (cokernel κ))) (add_zero 1))` using `(GlobalTheory.T.etaleCohomology_bijective_of_support_bijective ℤ E _ (fun U hU => h5 U (hE U hU)) 1).1 (hy.trans (GlobalTheory.T.kummerLiftedCocycle_image_eq_picardClass _ _ E L a ha).symm)`. Use `haveI : Injective ((res ℤ (twZ q)).X 0) := inferInstanceAs (Injective ((injectiveResolution (twZ q)).cochainComplex.X 0))`. Set `φ : Gm ⟶ (res ℤ (twZ q)).X 0` to `Injective.factorThru (resι ℤ (twZ q)) κ`.
+
+Establish `hφ : κ ≫ φ = resι ℤ (twZ q)` using `Injective.comp_factorThru _ _`. Establish `hd : κ ≫ (φ ≫ (res ℤ (twZ q)).d 0 1) = 0`. Rewrite using `[← Category.assoc, hφ, PicSpec.resι_d]`. Set `ψ : cokernel κ ⟶ (res ℤ (twZ q)).X 1` to `cokernel.desc κ (φ ≫ (res ℤ (twZ q)).d 0 1) hd`. Establish `hψ : cokernel.π κ ≫ ψ = φ ≫ (res ℤ (twZ q)).d 0 1` using `cokernel.π_desc _ _ _`.
+
+Establish `hψd : ψ ≫ (res ℤ (twZ q)).d 1 2 = 0`. Rewrite using `[← cancel_epi (cokernel.π κ), ← Category.assoc, hψ, Category.assoc, HomologicalComplex.d_comp_d, comp_zero, comp_zero]`. Take `⟨w, hw⟩` from `GlobalTheory.T.exists_cocycle_of_map_to_degreeOne_term (cokernel κ) (res ℤ (twZ q)) ψ hψd`. Establish `hzw` using `hz φ ψ hφ hψ w hw`. Establish `hext : HK.ext ℤ _ z 1 (1 + 1) rfl y = s • CohomologyClass.mk (zcomp a w rfl)`.
+
+Rewrite using `[hy']`. Express the relevant statement in the definitionally equal form `CohomologyClass.mk (zcomp (zcomp a (Cocycle.ofHom (resAug _)) (add_zero 1)) z rfl) = _`. Establish `hc : zcomp (zcomp a (Cocycle.ofHom (resAug (cokernel κ))) (add_zero 1)) z rfl = zcomp a (zcomp (Cocycle.ofHom (resAug _)) z (zero_add 1)) rfl` using `Cocycle.ext (Cochain.comp_assoc _ _ _ (add_zero 1) (zero_add 1) (by omega))`. Rewrite using `[hc, ← cpre_mk, hzw]`. Rewrite using `[Units.smul_def, Units.smul_def, map_zsmul]`.
+
+Both sides reduce to the same expression. Rewrite using `[hext]`. Use `congr 1`. Use `GlobalTheory.T.kummerCocycle_sub_chernClass_coboundary q E L hE φ (GlobalTheory.T.kummerSplittingDefect_glue_qthRoots q φ (GlobalTheory.T.kummerSplittingDefect_eq_of_pow_eq q κ h2 φ hφ)) (cokernel κ) a w (fun U x v hv => ?_)` and prove the remaining obligations. Take `⟨c, hc, hac⟩` from `ha U x`.
+
+Establish `hU : IsUnit (q : Γ(U, ⊤))` using `hE U ⟨x.face 0⟩`. Establish `hpow : ∀ n : ℕ, unitSec (v ^ n) = (n : ℤ) • unitSec v`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`.
+
+Use `PicSpec.unitSec_mul (1 : (Γ(U, ⊤))ˣ) 1` as an intermediate fact. Rewrite `this` using `[mul_one]`. Simplify using `using this`. Consider the case `succ n ih => rw [pow_succ, PicSpec.unitSec_mul, ih]`. Use `push_cast`.
+
+Rewrite using `[add_smul, one_smul]`. Establish `hcv : c = Sec.map (cokernel.π κ) (unitSec v)`. Use `(h5 U hU).1 (hc.trans ?_)` and prove the remaining obligations. Rewrite using `[PicSpec.sec_map_comp, cokernel.π_desc, ← hv, hpow]`. Conclude with `(map_zsmul (CupSpec.mapHom Gm Gm (unitSec v)) (q : ℤ) (𝟙 Gm)).symm`.
+
+Rewrite using `[hac, PicSpec.sec_map_comp, hw, hcv, PicSpec.sec_map_comp, hψ]`. Both sides reduce to the same expression.
+-/
 theorem kummer_boundary_picClass : ∀ (q : ℕ) [NeZero q] (κ : (restr (Int.castRingHom (ZMod q))).obj (tw q 1) ⟶ Gm) (h0 : κ ≫ ((q : ℤ) • 𝟙 Gm) = 0), Mono κ →
   (∀ (U : Scheme.{0}) (ζ : Prim q Γ(U, ⊤)) (u : (Γ(U, ⊤))ˣ), (u : Γ(U, ⊤)) = ζ.1 → Sec.map κ (show Sec ((restr (Int.castRingHom (ZMod q))).obj (tw q 1)) U from twGen 1 ζ) = unitSec u) →
   (∀ (U : Scheme.{0}), IsUnit (q : Γ(U, ⊤)) → ∀ b : Sec Gm U, Sec.map ((q : ℤ) • 𝟙 Gm) b = 0 → ∃ a, Sec.map κ a = b) →

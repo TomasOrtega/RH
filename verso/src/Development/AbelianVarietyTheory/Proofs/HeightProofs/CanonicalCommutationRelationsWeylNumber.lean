@@ -8,6 +8,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.WeylNumber
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.PolynomialCoeffEq.main`. Consider the case `exact _root_.GlobalTheory.PolynomialCoeffEq.main`. Consider the case `(apply _root_.GlobalTheory.PolynomialCoeffEq.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.PolynomialCoeffEq.main <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.PolynomialCoeffEq.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.PolynomialCoeffEq.main ..)`.
+-/
 theorem exists_parseval_family {R : Type} [AddCommGroup R] [Module ℝ R] [FiniteDimensional ℝ R]
     (g : R →ₗ[ℝ] R →ₗ[ℝ] ℝ) (hs : ∀ u v, g u v = g v u) (hp : ∀ u, u ≠ 0 → 0 < g u u) :
     ∃ (n : ℕ) (e : Fin n → R), ∀ x, ∑ k, g x (e k) • e k = x := by
@@ -19,6 +24,25 @@ theorem exists_parseval_family {R : Type} [AddCommGroup R] [Module ℝ R] [Finit
   | (intros; apply @_root_.GlobalTheory.PolynomialCoeffEq.main <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.PolynomialCoeffEq.main ..)
 
+/- English proof (translation)
+Introduce `M R _ _ _ _ _ Dop om κ j hadd hsmul hκ hcomm hanti hjj hom hpos`. Establish `h1 : ∀ u v, om (j u) v = -om u (j v)` using `fun u v => by`. Rewrite using `[← hom (j u) v, hjj]`. Simplify using the standard rewrite rules. Establish `hc : ∀ u v, Dop u * Dop v = Dop v * Dop u + (κ * (om u v : ℝ)) • (1 : Module.End ℂ M)` using `fun u v => by rw [← hcomm]; abel`.
+
+Establish `hneg : ∀ u, Dop (-u) = -Dop u` using `fun u => by`. Use `hsmul (-1) u` as an intermediate fact. Simplify using `using this`. Establish `hac : ∀ u v, (Dop u + Complex.I • Dop (j u)) * (Dop v - Complex.I • Dop (j v)) = (Dop v - Complex.I • Dop (j v)) * (Dop u + Complex.I • Dop (j u)) + (2 * κ * ((om u v : ℝ) - Complex.I * (om u (j v) : ℝ))) • (1 : Module.End ℂ M)`. Introduce `u v`.
+
+Simplify using `only [add_mul, mul_add, sub_mul, mul_sub, smul_mul_assoc, mul_smul_comm, smul_smul, Complex.I_mul_I]`. Rewrite using `[hc u v, hc u (j v), hc (j u) v, hc (j u) (j v), hom, h1]`. Use `push_cast`. Apply the tactic sequence `match_scalars <;> (try ring_nf) <;> (try simp) <;> (try ring)`. Establish `haa : ∀ u v, (Dop u + Complex.I • Dop (j u)) * (Dop v + Complex.I • Dop (j v)) = (Dop v + Complex.I • Dop (j v)) * (Dop u + Complex.I • Dop (j u))`.
+
+Introduce `u v`. Simplify using `only [add_mul, mul_add, smul_mul_assoc, mul_smul_comm, smul_smul, Complex.I_mul_I]`. Rewrite using `[hc u v, hc u (j v), hc (j u) v, hc (j u) (j v), hom, h1]`. Use `push_cast`. Apply the tactic sequence `match_scalars <;> (try ring_nf) <;> (try simp) <;> (try ring)`.
+
+Use `⟨fun u v => ⟨_, by rw [hac u v, add_sub_cancel_left]⟩, ?_⟩` and prove the remaining obligations. Take `⟨n, e, he⟩` from `exists_parseval_family (om.compl₂ j) (fun u v => by`. Simplify using `only [LinearMap.compl₂_apply]`. Rewrite using `[hanti (j u) v, h1, neg_neg])`. Use the proof step `(fun u hu => by simpa using hpos u hu)`.
+
+Simplify using `only [LinearMap.compl₂_apply] at he`. Set `A : R →+ Module.End ℂ M` to `AddMonoidHom.mk' (fun u => Dop u + Complex.I • Dop (j u)) (fun u v => by simp only [map_add, hadd, smul_add]; abel)`. Establish `hA : ∀ u, A u = Dop u + Complex.I • Dop (j u)` using `fun _ => rfl`. Establish `hAs : ∀ (c : ℝ) u, A (c • u) = (c : ℂ) • A u` using `fun c u => by`. Simplify using `only [hA, map_smul, hsmul]`.
+
+Use `module`. Establish `hAj : ∀ u, A (j u) = (-Complex.I) • A u` using `fun u => by`. Simplify using `only [hA, hjj, hneg, smul_add, smul_smul, neg_mul, Complex.I_mul_I]`. Use `module`. Establish `hsum : ∀ x, ∑ k, ((om x (j (e k)) : ℝ) : ℂ) • A (e k) = A x` using `fun x => by conv_rhs => rw [← he x, map_sum]`.
+
+Simplify using `only [hAs]`. Use `⟨n, e, -4 * Complex.I * κ, by simp [hκ], fun u => ?_⟩` and prove the remaining obligations. Establish `key : ∀ k, A u * ((Dop (e k) - Complex.I • Dop (j (e k))) * A (e k)) = ((Dop (e k) - Complex.I • Dop (j (e k))) * A (e k)) * A u + ((2 * κ) • (((om (j u) (j (e k)) : ℝ) : ℂ) • A (e k)) - (2 * κ * Complex.I) • (((om u (j (e k)) : ℝ) : ℂ) • A (e k)))` using `fun k => by`. Rewrite using `[← mul_assoc, hA u, hac, add_mul, mul_assoc, mul_assoc, hA (e k), haa u, hom, smul_mul_assoc, one_mul]`. Use `module`.
+
+Simplify using `only [← hA]`. Rewrite using `[Finset.mul_sum, add_mul, Finset.sum_mul, Finset.sum_congr rfl fun k _ => key k, Finset.sum_add_distrib, Finset.sum_sub_distrib, ← Finset.smul_sum, ← Finset.smul_sum, hsum, hsum, hAj, smul_mul_assoc, one_mul]`. Use `module`.
+-/
 theorem weyl_number : ∀ (M R : Type) [AddCommGroup M] [Module ℂ M] [AddCommGroup R] [Module ℝ R] [FiniteDimensional ℝ R] (Dop : R → Module.End ℂ M) (om : R →ₗ[ℝ] R →ₗ[ℝ] ℝ) (κ : ℂ) (j : R →ₗ[ℝ] R), (∀ u v, Dop (u + v) = Dop u + Dop v) → (∀ (c : ℝ) u, Dop (c • u) = (c : ℂ) • Dop u) → κ ≠ 0 → (∀ u v, Dop u * Dop v - Dop v * Dop u = (κ * (om u v : ℝ)) • (1 : Module.End ℂ M)) → (∀ u v, om v u = -om u v) → (∀ u, j (j u) = -u) → (∀ u v, om (j u) (j v) = om u v) → (∀ u, u ≠ 0 → 0 < om u (j u)) → (∀ u v, ∃ β : ℂ, (Dop u + Complex.I • Dop (j u)) * (Dop v - Complex.I • Dop (j v)) - (Dop v - Complex.I • Dop (j v)) * (Dop u + Complex.I • Dop (j u)) = β • (1 : Module.End ℂ M)) ∧ ∃ (n : ℕ) (e : Fin n → R) (lam : ℂ), lam ≠ 0 ∧ ∀ u, (Dop u + Complex.I • Dop (j u)) * (∑ k, (Dop (e k) - Complex.I • Dop (j (e k))) * (Dop (e k) + Complex.I • Dop (j (e k)))) = ((∑ k, (Dop (e k) - Complex.I • Dop (j (e k))) * (Dop (e k) + Complex.I • Dop (j (e k)))) + lam • (1 : Module.End ℂ M)) * (Dop u + Complex.I • Dop (j u)) := by
   intro M R _ _ _ _ _ Dop om κ j hadd hsmul hκ hcomm hanti hjj hom hpos
   have h1 : ∀ u v, om (j u) v = -om u (j v) := fun u v => by

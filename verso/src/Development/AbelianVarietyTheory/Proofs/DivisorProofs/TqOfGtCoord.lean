@@ -83,6 +83,17 @@ def tqOfGtCoord {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegPre R
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `R _ _ _ _ D A G _ _ hS U`. Take `⟨hL, -, -, -, -⟩` from `GlobalTheory.firstFiveLaws`. Take `⟨w, hw⟩` from `U.ext`. Set `U'` to `GlobalTheory.ValueForm.toPreU U.toUnifPre hL.globalFns hS w hw`. Use `⟨U'.P, rfl, ?_⟩` and prove the remaining obligations.
+
+Take `⟨P₀, w₀, h₀⟩` from `exists_isLevelCP (maximalIdeal R) 0 U'.P`. Take `⟨rig, hr, c, σ, h₁, h₂, h₃, H⟩` from `exists_isCPMap U'.P (toBase_mul_pullback G (thick R (maximalIdeal R) 0)) _ (pull_isLB U'.P.L.isLB _) _ (pullIso_isGen U'.P.L.isLB (pullback.fst G.hom (thick R (maximalIdeal R) 0)))`. Take `⟨w₁, k₁⟩` from `GlobalTheory.ClosedPol.cpMap_congr (Category.id_comp _).symm (Category.id_comp _).symm h₀ (by rw [Category.id_comp, Category.id_comp]; exact pullback.condition)`. Take `⟨w₂, k₂, -⟩` from `(isCPMap_comp_cancel _ _ _ _ _ _ _ _ _ _ P₀ _ _ _ (𝟙 _) (by simp) _ H).2 (toBase_mul_of_isMonHom (𝟙 _) _) w₁ k₁`. Establish `H'` using `GlobalTheory.ClosedPol.isCPMap_w hL.globalFns U' 0 H`.
+
+Take `⟨w₃, -, k₃⟩` from `H'.exists_comp k₂ (by rw [Category.id_comp, Category.id_comp]; exact Over.w (U'.gt 0).pG)`. Take `⟨w₄, k₄⟩` from `GlobalTheory.ClosedPol.cpMap_congr (Category.id_comp _) (Category.id_comp _) k₃ (Over.w (U'.gt 0).pG)`. Establish `hB : IsAbelianScheme (thickObj R (maximalIdeal R) 0 D.toPre.P.A)` using `GlobalTheory.isAbelianScheme_pullback_obj _ _ D.toPre.P.isAb`. Set `g` to `U'.gt 0`. Use `g.q_hom` as an intermediate fact.
+
+Set `Q₀` to `tqOfGtCoord g hB`. Take `⟨M₀, v, hv⟩` from `exists_isLevelCP (maximalIdeal R) 0 (CP.ofDegPre hL.globalFns D.toPre)`. Establish `hw' : g.q.left ≫ (thickObj R (maximalIdeal R) 0 D.toPre.P.A).hom = (thickObj R (maximalIdeal R) 0 G).hom ≫ 𝟙 _` using `(Over.w g.q).trans (Category.comp_id _).symm`. Establish `hw'' : (g.q.left ≫ pullback.fst D.toPre.P.A.hom (thick R (maximalIdeal R) 0)) ≫ D.toPre.P.A.hom = (thickObj R (maximalIdeal R) 0 G).hom ≫ 𝟙 _ ≫ thick R (maximalIdeal R) 0`. Conclude with `(Over.w g.pG).trans (congrArg (_ ≫ ·) (Category.id_comp _).symm)`.
+
+Take `⟨w₅, k₅⟩` from `GlobalTheory.ClosedPol.cpMap_congr (Category.id_comp _).symm rfl k₄ hw''`. Take `⟨w₆, k₆, -⟩` from `(isCPMap_comp_cancel _ _ _ _ _ _ _ _ _ M₀ P₀ _ _ _ g.q.left hw' hw'' hv).2 (toBase_mul_of_isMonHom g.q hw') w₅ k₅`. Set `Dsc : Q₀.Desc P₀` to `⟨M₀, w₆, k₆⟩`. Take `⟨τ, hτ⟩` from `Dsc.exists_even`. Conclude with `⟨D.toPre.X, D.toPre.addX, D.toPre.freeX, D.toPre.finX, Q₀, P₀, ⟨w₀, h₀⟩, τ, hτ⟩`.
+-/
 theorem unif_evenOn : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) →
     ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G],
     IsSemiAbelian G → ∀ U : Unif (maximalIdeal R) D A G, ∃ P : GlobalTheory.UU.CP G, P.L = U.LG ∧ EvenOn P := by

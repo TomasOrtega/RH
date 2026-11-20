@@ -8,6 +8,11 @@ namespace Formalism.L2.SG.LocalCountModules.LocCnt0LAlg
 
 variable {E : Type} [CommRing E] (O : Subring E) (cj : E →+* E) {r : ℕ}
 
+/- English proof (translation)
+Unfold `bRaw`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Simplify using `only [Pi.sub_apply]`. Use `push_cast`.
+
+Rewrite using `[map_sub, sub_mul]`.
+-/
 theorem bRaw_sub_right (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (y a c : Fin (r + 1) → O) :
     bRaw O cj Z y (a - c) = bRaw O cj Z y a - bRaw O cj Z y c := by
   unfold bRaw
@@ -17,6 +22,11 @@ theorem bRaw_sub_right (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (y a c : Fin (
   push_cast
   rw [map_sub, sub_mul]
 
+/- English proof (translation)
+Unfold `lamS`. Establish `h` using `lamStarC_add cj (Z.map O.subtype) (fun b => (((a - c) b : O) : E)) (fun b => ((c b : O) : E))`. Establish `e : ((fun b => (((a - c) b : O) : E)) + fun b => ((c b : O) : E)) = fun b => ((a b : O) : E)`. Use function extensionality and compare the values at `b`. Simplify using the standard rewrite rules.
+
+Rewrite `h` using `[e]`. Conclude with `eq_sub_of_add_eq h.symm`.
+-/
 theorem lamS_sub (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (a c : Fin (r + 1) → O) :
     lamS O cj Z (a - c) = lamS O cj Z a - lamS O cj Z c := by
   unfold lamS
@@ -27,6 +37,9 @@ theorem lamS_sub (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (a c : Fin (r + 1) �
   rw [e] at h
   exact eq_sub_of_add_eq h.symm
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = a`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`.
+-/
 theorem coe_single (a : Fin (r + 1)) :
     (fun j => (((Pi.single a (1 : O) : Fin (r + 1) → O) j : O) : E)) = Pi.single a 1 := by
   funext j
@@ -35,6 +48,23 @@ theorem coe_single (a : Fin (r + 1)) :
     simp
   · simp [Pi.single_apply, h]
 
+/- English proof (translation)
+Use `set Ze := Z.map O.subtype with hZe`. Set `w' : Fin (r + 1) → E` to `fun a => ∑ j, cj (Ze⁻¹ j a) * (y' j : E)`. Establish `hB1 : ∀ a, bRaw O cj Z (Pi.single a 1) y' = cj (w' a)`. Introduce `a`. Simplify using `only [bRaw, w', map_sum, map_mul, hcj]`.
+
+Rewrite using `[coe_single, Matrix.mulVec_single_one]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Both sides reduce to the same expression. Establish `hw : ∀ a, w' a ∈ O`.
+
+Introduce `a`. Use `hO _ (hB1 a ▸ hB (Pi.single a 1))` as an intermediate fact. Rewrite `this` using `[hcj]`. Then use the resulting hypothesis. Establish `hlast : w' (Fin.last r) = 0` using `hl`. Establish `hinv : Ze⁻¹ * Ze = 1` using `Matrix.nonsing_inv_mul _ hu`.
+
+Establish `key : ∀ b, (y' b : E) = ∑ a, cj (Ze a b) * w' a`. Introduce `b`. Simplify using `only [w', Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Establish `h2 : ∀ j, ∑ a, cj (Ze a b) * (cj (Ze⁻¹ j a) * (y' j : E)) = cj ((Ze⁻¹ * Ze) j b) * (y' j : E)`.
+
+Introduce `j`. Rewrite using `[Matrix.mul_apply, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [h2, hinv, Matrix.one_apply]`. Simplify using the standard rewrite rules. Set `wO : Fin (r + 1) → O` to `fun a => ⟨w' a, hw a⟩`. Establish `hwO : wO (Fin.last r) = 0` using `Subtype.ext hlast`. Establish `hy : y' = (cjT O cj hO Z).mulVec wO`.
+
+Use function extensionality and compare the values at `b`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[key b]`. Simplify using `[Matrix.mulVec, dotProduct, cjT, wO, Ze]`. Rewrite using `[Submodule.Quotient.mk_eq_zero, hy]`.
+
+Conclude with `mulVec_mem_headCols _ _ hwO`.
+-/
 theorem mk_eq_zero_of (hcj : ∀ x, cj (cj x) = x) (hO : ∀ x ∈ O, cj x ∈ O)
     (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (hu : IsUnit (Z.map O.subtype).det)
     (y' : Fin (r + 1) → O) (hB : ∀ y, bRaw O cj Z y y' ∈ O) (hl : lamS O cj Z y' = 0) :
@@ -75,6 +105,19 @@ theorem mk_eq_zero_of (hcj : ∀ x, cj (cj x) = x) (hO : ∀ x ∈ O, cj x ∈ O
   rw [Submodule.Quotient.mk_eq_zero, hy]
   exact mulVec_mem_headCols _ _ hwO
 
+/- English proof (translation)
+Introduce `E _ O cj hcj hO r Z₁ Z₂ hu₁ hu₂ p q hpq`. Take `⟨⟨γ, γs⟩, hp⟩` from `p`. Take `⟨⟨γ', γs'⟩, hq⟩` from `q`. Establish `h1 : γ = γ'` using `congrArg (fun x : IsoMbe Z₁ Z₂ => x.1) hpq`. Substitute `h1` using the available equality.
+
+Establish `hs : γs = γs'`. Apply `LinearEquiv.ext` to reduce the goal to its premises. Introduce `ms`. Take `⟨y', rfl⟩` from `Submodule.Quotient.mk_surjective _ ms`. Take `⟨a, ha⟩` from `Submodule.Quotient.mk_surjective _ (γs (Submodule.Quotient.mk y'))`.
+
+Take `⟨c, hc⟩` from `Submodule.Quotient.mk_surjective _ (γs' (Submodule.Quotient.mk y'))`. Rewrite using `[← ha, ← hc, ← sub_eq_zero, ← Submodule.Quotient.mk_sub]`. Apply `mk_eq_zero_of O cj hcj hO Z₂ hu₂` to reduce the goal to its premises. Introduce `y`. Take `⟨y₁, hy₁⟩` from `Submodule.Quotient.mk_surjective _ (γ.symm (Submodule.Quotient.mk y))`.
+
+Establish `e1 : γ (Submodule.Quotient.mk y₁) = Submodule.Quotient.mk y`. Rewrite using `[hy₁]`. Conclude with `γ.apply_symm_apply _`. Establish `A` using `hp.2.2 y₁ y' y a e1 ha.symm`. Establish `B` using `hq.2.2 y₁ y' y c e1 hc.symm`.
+
+Use `O.sub_mem A B` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_right]`. Rewrite using `[bRaw_sub_right]`. Conclude with `this`. Rewrite using `[lamS_sub, hp.2.1 y' a ha.symm, hq.2.1 y' c hc.symm, sub_self]`.
+
+Substitute `hs` using the available equality. Both sides reduce to the same expression.
+-/
 theorem stepInj : StepInj := by
   intro E _ O cj hcj hO r Z₁ Z₂ hu₁ hu₂ p q hpq
   obtain ⟨⟨γ, γs⟩, hp⟩ := p

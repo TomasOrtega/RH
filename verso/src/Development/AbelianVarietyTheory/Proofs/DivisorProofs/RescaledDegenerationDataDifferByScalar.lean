@@ -22,6 +22,9 @@ noncomputable section
 
 namespace GlobalTheory.RatioScalar
 
+/- English proof (translation)
+Introduce `O _ _ V _ _ Q _ oQ g o' ho hB hB' w0 hW hW'`. Take `⟨hs, hd⟩` from `GlobalTheory.RescaleForm.main Q oQ w0 g hB hW hB' o' ho hW'`. Conclude with `⟨fun a b => (g (a + b) * (g a)⁻¹ * (g b)⁻¹)⁻¹, hs.inv.symm, hs.inv.add_left, hs.inv.bal, fun y => congrArg (·⁻¹) (hd y)⟩`.
+-/
 theorem scalar : ∀ {O : Type} [CommRing O] [StarRing O] {V : Type} [CommRing V] [IsDomain V] (Q : DegPre V) [Module O Q.X] (oQ : Q.OAct O) (g : Q.X → (FractionRing V)ˣ) (o' : letI : Module O (GlobalTheory.PolDeg.rescale Q g).X := ‹Module O Q.X›; (GlobalTheory.PolDeg.rescale Q g).OAct O), (letI : Module O (GlobalTheory.PolDeg.rescale Q g).X := ‹Module O Q.X›; o'.onB = oQ.onB) → Q.TauBimult → (GlobalTheory.PolDeg.rescale Q g).TauBimult → ∀ w0 : O, TraceFormTwistIso Q oQ w0 → (letI : Module O (GlobalTheory.PolDeg.rescale Q g).X := ‹Module O Q.X›; TraceFormTwistIso (GlobalTheory.PolDeg.rescale Q g) o' w0) → ∃ q : Q.X → Q.X → (FractionRing V)ˣ, (∀ a b, q a b = q b a) ∧ (∀ a a' b, q (a + a') b = q a b * q a' b) ∧ (∀ (x : O) a b, q (x • a) b = q a (star x • b)) ∧ ∀ y, (g y)⁻¹ = q y (w0 • y) := by
   intro O _ _ V _ _ Q _ oQ g o' ho hB hB' w0 hW hW'
   obtain ⟨hs, hd⟩ := GlobalTheory.RescaleForm.main Q oQ w0 g hB hW hB' o' ho hW'

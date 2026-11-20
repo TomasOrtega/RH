@@ -59,6 +59,9 @@ def IsConjChr (s : ℂ →+* ℂ) (half : Bool) (c c' : (AE D)ˣ →* Circle) : 
 def conjRes (s : ℂ →+* ℂ) (χ : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ :=
   fun PP => (Units.map s.toMonoidHom).comp (χ PP)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `PP`. Use extensionality with `u`. Both sides reduce to the same expression.
+-/
 theorem conjRes_id (χ : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) : conjRes (RingHom.id ℂ) χ = χ := by
   funext PP; ext u; rfl
 
@@ -72,6 +75,13 @@ def omegaP {a b : ℕ} {Pg : Finset (Pl D.host.E)} {r : ℕ} (P : LevelP Pg r �
       ∏ PP : Pg, ((χ PP.1 (Matrix.GeneralLinearGroup.det (h.2.choose.1 PP)) : ℂˣ) : ℂ)
   else 0
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Unfold `omegaP omegaK`. Establish `key : ∀ g : (LevelP.triv Pg a ℂ).H, g.1 = 1` using `fun g => Subgroup.mem_bot.1 g.2`. Distinguish the cases in `h : ∀ PP ∈ Pg, LowZero a (y PP) ∧ topL a (y PP) = 1`. Establish `h' : (∀ PP ∈ Pg, LowZero a (y PP)) ∧ ∃ g : (LevelP.triv Pg a ℂ).H, ∀ PP : Pg, ((g.1 PP : GL (Fin a) (kP PP.1)) : Matrix (Fin a) (Fin a) (kP PP.1)) = topL a (y PP.1)` using `⟨fun PP hP => (h PP hP).1, 1, fun PP => by rw [(h PP.1 PP.2).2]; rfl⟩`.
+
+Rewrite using `[dif_pos h', if_pos h, key]`. Simplify using `[LevelP.triv]`. Both sides reduce to the same expression. Rewrite using `[if_neg h, dif_neg]`. Introduce and unpack `⟨h1, g, hg⟩`.
+
+Conclude with `h fun PP hP => ⟨h1 PP hP, by rw [← hg ⟨PP, hP⟩, key]; rfl⟩`.
+-/
 theorem omegaP_triv {a b : ℕ} (Pg : Finset (Pl D.host.E)) {r : ℕ} (hr : a = r) (χ : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ)
     (y : ∀ PP : Pl D.host.E, Matrix (Fin b) (Fin a) (kP PP)) :
     omegaP (LevelP.triv Pg r ℂ) χ y = omegaK Pg y := by
@@ -252,13 +262,28 @@ def ofReal (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) : LiftInput R i (sg0 D A
   ν := R.νV i t
   fd := R.fdV i t
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hc, fun _ _ _ _ _ _ => rfl⟩`.
+-/
 theorem isConjChr_id (half : Bool) {c : (AE D)ˣ →* Circle} (hc : IsHeckeChar D c) : IsConjChr (RingHom.id ℂ) half c c :=
   ⟨hc, fun _ _ _ _ _ _ => rfl⟩
 
+/- English proof (translation)
+Use extensionality with `x`. Conclude with `DFunLike.congr_fun D.embE_φ₀ (D.host.sigmaOf (D.eTau τ).1 x)`.
+-/
 theorem labE_base (τ : D.what₂.Tau) : labE D.what₂.embLL τ = tauE D τ := by
   ext x
   exact DFunLike.congr_fun D.embE_φ₀ (D.host.sigmaOf (D.eTau τ).1 x)
 
+/- English proof (translation)
+Establish `h : ∃ τ, labE D.what₂.embLL τ = tauE D ρ ∨ labE D.what₂.embLL τ = (starRingEnd ℂ).comp (tauE D ρ)` using `⟨ρ, Or.inl (labE_base ρ)⟩`. Unfold `lab`. Rewrite using `[dif_pos h]`. Establish `hs` using `h.choose_spec`. Generalize the expression as in `h.choose = τ at hs`.
+
+Rewrite `hs` using `[labE_base]`. Break down `hs with hs | hs` into its components or cases. Establish `h1 : D.host.sigmaOf (D.eTau τ).1 = D.host.sigmaOf (D.eTau ρ).1` using `AlgEquiv.ext fun x => D.host.φ₀.injective (DFunLike.congr_fun hs x)`. Apply `D.eTau.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Conclude with `(by unfold Host.sigmaOf at h1; exact (EquivLike.injective _) h1)`. It suffices to derive a contradiction. Establish `a` using `xi_zero_im_pos D τ`. Establish `b` using `xi_zero_im_pos D ρ`. Rewrite `a` using `[hs]`.
+
+Simplify using `at a`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem lab_base (ρ : D.what₂.Tau) : lab D.what₂.embLL ρ = ρ := by
   have h : ∃ τ, labE D.what₂.embLL τ = tauE D ρ ∨ labE D.what₂.embLL τ = (starRingEnd ℂ).comp (tauE D ρ) :=
     ⟨ρ, Or.inl (labE_base ρ)⟩
@@ -280,6 +305,15 @@ theorem lab_base (ρ : D.what₂.Tau) : lab D.what₂.embLL ρ = ρ := by
     simp at a
     linarith
 
+/- English proof (translation)
+Establish `hu : IsUnit (M.fr τ).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)`. Establish `h1 : M.fr τ * (M.fr τ)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hu`. Establish `hJ : (Matrix.diagonal fun a => (((if M.ε τ a = true then 1 else -1 : ℝ)) : ℂ)) = Formalism.REAL.Jm (M.ε τ)`. Unfold `Formalism.REAL.Jm`. Use `congr 1`.
+
+Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> simp`. Use `⟨fun a => if M.ε τ a = true then 1 else -1, fun a => ?_, ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `ha : (a : ℕ) < p`. Use `left`.
+
+Simplify using `[h a, ha]`. Use `right`. Simplify using `[h a, ha, Nat.le_of_not_lt ha]`. Rewrite using `[hJ, ← M.fr_gram τ, onb]`. Establish `h2 : ((M.fr τ)⁻¹)ᴴ * (M.fr τ)ᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, h1, Matrix.conjTranspose_one]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hJ, cart, onb, Matrix.mul_assoc, h1, Matrix.mul_one]`.
+-/
 theorem isONBasis_onb {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (τ : D.what₂.Tau) (p : ℕ)
     (h : ∀ a, M.ε τ a = decide ((a : ℕ) < p)) : IsONBasis (gramAt D V τ) (cart M τ) (onb M τ) p := by
   have hu : IsUnit (M.fr τ).det := (Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)
@@ -300,6 +334,9 @@ theorem isONBasis_onb {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S)
       _ = _ := by rw [h1, h2, Matrix.one_mul, Matrix.mul_one]
   · rw [hJ, cart, onb, Matrix.mul_assoc, h1, Matrix.mul_one]
 
+/- English proof (translation)
+The claim follows from `isConjChr_id _ (h.thP.ωP i t).hecS eta := isConjChr_id _ h.lev.eta.1 om := h.thP.ωP i t BV := h.models.BV i BW := fun τ => isONBasis_onb _ τ _ (h.models.order i τ) vec := by have h1 := h.thP.vP i t unfold IsThPVecOf at h1 unfold IsLevelVec simp only [conjRes_id, omegaP_triv R.Pg …`.
+-/
 theorem ofReal_is {R : RealDat D A Ks} {F : Face D A} (h : R.Char F) (i : Fin D.R.m) (t : T) :
     (ofReal R i t).Is t (RingHom.id ℂ) R.triv where
   mu := isConjChr_id _ (h.thP.ωP i t).hecS

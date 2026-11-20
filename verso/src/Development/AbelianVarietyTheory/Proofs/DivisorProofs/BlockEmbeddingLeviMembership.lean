@@ -19,6 +19,13 @@ variable (A) in
 
 def incl (m : ℕ) : Matrix (Fin m) (Fin 2) A := fun a b => if a.val = b.val then 1 else 0
 
+/- English proof (translation)
+Use extensionality with `c d`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single ⟨c.val, by omega⟩]`. Distinguish the cases in `h : c = d`. Substitute `h` using the available equality. Simplify using `[incl]`.
+
+Establish `: c.val ≠ d.val` using `fun e => h (Fin.ext e)`. Simplify using `[incl, this, Matrix.one_apply_ne h]`. Introduce `a _ ha`. Establish `: a.val ≠ c.val` using `fun e => ha (Fin.ext e)`. Simplify using `[incl, this]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem inclT_incl {m : ℕ} (hm : 2 ≤ m) : (incl A m)ᵀ * incl A m = 1 := by
   ext c d
   rw [Matrix.mul_apply, Finset.sum_eq_single ⟨c.val, by omega⟩]
@@ -34,6 +41,11 @@ theorem inclT_incl {m : ℕ} (hm : 2 ≤ m) : (incl A m)ᵀ * incl A m = 1 := by
 def blk (m : ℕ) (H : Matrix (Fin 2) (Fin 2) A) : Matrix (Fin m) (Fin m) A :=
   1 + incl A m * (H - 1) * (incl A m)ᵀ
 
+/- English proof (translation)
+Establish `hi` using `inclT_incl (A := A) hm`. Establish `e : H * H' - 1 = (H - 1) + (H' - 1) + (H - 1) * (H' - 1)` using `by noncomm_ring`. Establish `p : incl A m * (H - 1) * (incl A m)ᵀ * (incl A m * (H' - 1) * (incl A m)ᵀ) = incl A m * ((H - 1) * (H' - 1)) * (incl A m)ᵀ`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (incl A m)ᵀ (incl A m), hi, Matrix.one_mul]`.
+
+Simplify using `only [blk]`. Rewrite using `[Matrix.add_mul, Matrix.mul_add, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, Matrix.one_mul, p, e, Matrix.mul_add, Matrix.mul_add, Matrix.add_mul, Matrix.add_mul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem blk_mul {m : ℕ} (hm : 2 ≤ m) (H H' : Matrix (Fin 2) (Fin 2) A) : blk m H * blk m H' = blk m (H * H') := by
   have hi := inclT_incl (A := A) hm
   have e : H * H' - 1 = (H - 1) + (H' - 1) + (H - 1) * (H' - 1) := by noncomm_ring
@@ -53,6 +65,9 @@ def blkHom {m : ℕ} (hm : 2 ≤ m) : Matrix (Fin 2) (Fin 2) A →* Matrix (Fin 
 
 def blkGL {m : ℕ} (hm : 2 ≤ m) : GL (Fin 2) A →* GL (Fin m) A := Units.map (blkHom hm)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem blkGL_val {m : ℕ} (hm : 2 ≤ m) (h : GL (Fin 2) A) : (blkGL hm h).1 = blk m h.1 := rfl
 
 end Mat

@@ -19,11 +19,17 @@ variable (S : Thick (dp0 R) s) {A : Type} [CommRing A] (a : S.B →+* A) {JA : I
   (ha : IsDPMorphism S.δ θ a)
 
 include ha in
+/- English proof (translation)
+The claim follows from `fun b hb ↦ Ideal.Quotient.eq_zero_iff_mem.2 (ha.1 (Ideal.mem_map_of_mem _ ((S.ker b).1 hb)))`.
+-/
 theorem push_ker : RingHom.ker S.π ≤ RingHom.ker ((Ideal.Quotient.mk JA).comp a) := fun b hb ↦
   Ideal.Quotient.eq_zero_iff_mem.2 (ha.1 (Ideal.mem_map_of_mem _ ((S.ker b).1 hb)))
 
 def pushRed : S.B₀ →+* A ⧸ JA := RingHom.liftOfSurjective S.π S.surj ⟨_, push_ker S a θ ha⟩
 
+/- English proof (translation)
+The claim follows from `RingHom.liftOfSurjective_comp_apply S.π S.surj ⟨_, push_ker S a θ ha⟩ b`.
+-/
 theorem pushRed_π (b : S.B) : pushRed S a θ ha (S.π b) = Ideal.Quotient.mk JA (a b) :=
   RingHom.liftOfSurjective_comp_apply S.π S.surj ⟨_, push_ker S a θ ha⟩ b
 
@@ -70,6 +76,15 @@ def pushDesc {V : Thick (dp0 R) s} (φ : S ⟶ V) (G : A →+* V.B) (hG : IsDPMo
 
 end Push
 
+/- English proof (translation)
+Take `⟨A, _, a, JA, θ, ha, hlev, hext, hsurj, huniv⟩` from `ring_trunc κ (algebraMap R S.B) S.δ hS n hn`. Establish `hnil : IsNilDP θ` using `Fil.nil_of_lev hlev`. Use `⟨push S a θ ha hnil, pushHom S a θ ha hnil, hext, hlev, ?_⟩` and prove the remaining obligations. Introduce `V hV φ`. Take `⟨G, hG, hGa⟩` from `huniv V.B V.J V.δ hV (φ.φ : S.B →+* V.B) φ.dp`.
+
+Use `⟨pushDesc S a θ ha hnil φ G hG hGa, ?_, ?_⟩` and prove the remaining obligations. Use `Thick.hom_ext fun b ↦ ?_` and prove the remaining obligations. Rewrite using `[Thick.comp_φ]`. Conclude with `DFunLike.congr_fun hGa b`. Introduce `ψ hψ`.
+
+Use `Thick.hom_ext fun x ↦ ?_` and prove the remaining obligations. Take `⟨b, rfl⟩` from `hsurj x`. Establish `h1` using `Thick.comp_φ (pushHom S a θ ha hnil) ψ b`. Rewrite `h1` using `[hψ]`. Establish `h2 : G (a b) = φ.φ b` using `DFunLike.congr_fun hGa b`.
+
+Conclude with `h1.symm.trans h2.symm`.
+-/
 theorem exists_trunc (S : Thick (dp0 R) s) (hS : InN κ S) (n : ℕ) (hn : 1 ≤ n) :
     ∃ (P : Thick (dp0 R) s) (i : S ⟶ P), InN κ P ∧ IsLev P.δ n ∧
       ∀ (V : Thick (dp0 R) s), IsLev V.δ n → ∀ (φ : S ⟶ V), ∃! ψ : P ⟶ V, i ≫ ψ = φ := by
@@ -90,6 +105,15 @@ theorem exists_trunc (S : Thick (dp0 R) s) (hS : InN κ S) (n : ℕ) (hn : 1 ≤
     have h2 : G (a b) = φ.φ b := DFunLike.congr_fun hGa b
     exact h1.symm.trans h2.symm
 
+/- English proof (translation)
+Take `⟨A, _, a, JA, θ, y, ha, hlev, hext, hy, huniv⟩` from `ring_adj κ (algebraMap R S.B) S.δ hS n hn`. Establish `hnil : IsNilDP θ` using `Fil.nil_of_lev hlev`. Use `⟨push S a θ ha hnil, pushHom S a θ ha hnil, y, hext, hlev, hy, ?_⟩` and prove the remaining obligations. Introduce `V hV φ z hz`. Take `⟨G, ⟨hG, hGa, hGy⟩, huniq⟩` from `huniv V.B V.J V.δ hV (φ.φ : S.B →+* V.B) φ.dp z hz`.
+
+Use `⟨pushDesc S a θ ha hnil φ G hG hGa, ⟨?_, hGy⟩, ?_⟩` and prove the remaining obligations. Use `Thick.hom_ext fun b ↦ ?_` and prove the remaining obligations. Rewrite using `[Thick.comp_φ]`. Conclude with `DFunLike.congr_fun hGa b`. Introduce and unpack `ψ ⟨hψ, hψy⟩`.
+
+Set `g : A →+* V.B` to `ψ.φ.toRingHom`. Establish `hcomp : g.comp a = (φ.φ : S.B →+* V.B)`. Use `RingHom.ext fun b ↦ ?_` and prove the remaining obligations. Establish `h1` using `Thick.comp_φ (pushHom S a θ ha hnil) ψ b`. Rewrite `h1` using `[hψ]`.
+
+Conclude with `h1.symm`. Establish `heq : g = G` using `huniq g ⟨ψ.dp, hcomp, hψy⟩`. Use `Thick.hom_ext fun x ↦ ?_` and prove the remaining obligations. Conclude with `DFunLike.congr_fun heq x`.
+-/
 theorem exists_adj_one (S : Thick (dp0 R) s) (hS : InN κ S) (n : ℕ) (hn : 1 ≤ n) :
     ∃ (P : Thick (dp0 R) s) (i : S ⟶ P) (y : P.B), InN κ P ∧ IsLev P.δ n ∧ y ∈ P.J ∧
       ∀ (V : Thick (dp0 R) s), IsLev V.δ n → ∀ (φ : S ⟶ V) (z : V.B), z ∈ V.J →
@@ -114,6 +138,23 @@ theorem exists_adj_one (S : Thick (dp0 R) s) (hS : InN κ S) (n : ℕ) (hn : 1 �
     refine Thick.hom_ext fun x ↦ ?_
     exact DFunLike.congr_fun heq x
 
+/- English proof (translation)
+Proceed by induction on `d with`. Consider the case `zero`. Take `⟨P, i, hP, hlev, huniv⟩` from `exists_trunc S hS n hn`. Use `⟨P, i, Fin.elim0, hP, hlev, fun k ↦ Fin.elim0 k, ?_⟩` and prove the remaining obligations. Introduce `V hV φ z _`.
+
+Take `⟨ψ, hψ, huniq⟩` from `huniv V hV φ`. Conclude with `⟨ψ, ⟨hψ, fun k ↦ Fin.elim0 k⟩, fun ψ' h ↦ huniq ψ' h.1⟩`. Consider the case `succ d ih`. Take `⟨P, i, y, hP, hlev, hy, huniv⟩` from `ih`. Take `⟨Q, j, w, hQ, hlevQ, hw, hunivQ⟩` from `exists_adj_one P hP n hn`.
+
+Use `⟨Q, i ≫ j, Fin.cons w (fun k ↦ j.φ (y k)), hQ, hlevQ, ?_, ?_⟩` and prove the remaining obligations. Introduce `k`. Use `Fin.cases ?_ (fun k ↦ ?_) k` and prove the remaining obligations. Simplify using `using hw`. Simplify using `only [Fin.cons_succ]`.
+
+Conclude with `j.dp.ideal_comp (Ideal.mem_map_of_mem _ (hy k))`. Introduce `V hV φ z hz`. Take `⟨ψ₁, ⟨hψ₁, hψ₁y⟩, huniq₁⟩` from `huniv V hV φ (fun k ↦ z k.succ) (fun k ↦ hz k.succ)`. Take `⟨ψ, ⟨hψ, hψw⟩, huniq⟩` from `hunivQ V hV ψ₁ (z 0) (hz 0)`. Use `⟨ψ, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, hψ, hψ₁]`. Introduce `k`. Use `Fin.cases ?_ (fun k ↦ ?_) k` and prove the remaining obligations. Simplify using `using hψw`. Simplify using `only [Fin.cons_succ]`.
+
+Rewrite using `[← Thick.comp_φ, hψ]`. Conclude with `hψ₁y k`. Introduce and unpack `ψ' ⟨hψ', hψ'y⟩`. Establish `h1 : j ≫ ψ' = ψ₁`. Use `huniq₁ (j ≫ ψ') ⟨?_, fun k ↦ ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Category.assoc]`. Conclude with `hψ'`. Rewrite using `[Thick.comp_φ]`. Use `hψ'y k.succ` as an intermediate fact. Simplify `this` using `only [Fin.cons_succ]`.
+
+Use `huniq ψ' ⟨h1, ?_⟩` and prove the remaining obligations. Use `hψ'y 0` as an intermediate fact. Simplify `this` using `only [Fin.cons_zero]`.
+-/
 theorem exists_adj' (S : Thick (dp0 R) s) (hS : InN κ S) (d n : ℕ) (hn : 1 ≤ n) :
     ∃ (P : Thick (dp0 R) s) (i : S ⟶ P) (y : Fin d → P.B), InN κ P ∧ IsLev P.δ n ∧ (∀ k, y k ∈ P.J) ∧
       ∀ (V : Thick (dp0 R) s), IsLev V.δ n → ∀ (φ : S ⟶ V) (z : Fin d → V.B), (∀ k, z k ∈ V.J) →

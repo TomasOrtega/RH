@@ -13,6 +13,21 @@ namespace GlobalTheory.CompanionTheory.RedCov
 
 open GroundTheory.Automorphic GroundTheory.Heights₂.Heights.FiniteCovolume Module in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ n J hJ r X Y hW v hv hvv`. Take `⟨hF, hEc, h2, hc⟩` from `hσ`. Establish `: Algebra.IsQuadraticExtension F E` using `⟨h2⟩`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Take `rfl : σ = (conj F E).toAlgHom` from `AlgHom.ext fun x => τ.injective ((hc τ x).trans (embedding_conj τ x).symm)`.
+
+Establish `hu : IsUnit J.det` using `isUnit_iff_ne_zero.2 hJ.2`. Establish `hH : IsHermitianFor (conjHom F E) J` using `Matrix.ext fun i j => hJ.1 i j`. Take `⟨h, hg, hform⟩ : ∃ h : HermitianForm F E (Fin n → E), gram h.toSesq (Pi.basisFun E (Fin n)) = J ∧ ∀ x y, h.toSesq x y = hE (conj F E).toAlgHom J x y` from `⟨HermitianForm.ofGram J hH hu, gram_ofGram J hH hu, fun x y => rfl⟩`. Establish `key : ∀ A B : Matrix (Fin n) (Fin (r + 1)) E, h.toSesq (Aᵀ 0) (Bᵀ 0) = (cT (((conj F E).toAlgHom : E →ₐ[F] E) : E →+* E) A * J * B) 0 0`. Introduce `A B`.
+
+Rewrite using `[hform]`. Simplify using `only [hE, Formalism.UG.hform, Matrix.mul_apply, Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Conclude with `Finset.sum_comm`. Establish `hxx : h.toSesq (Xᵀ 0) (Xᵀ 0) = 0` using `by rw [key, hW.xx]; rfl`. Establish `hyy : h.toSesq (Yᵀ 0) (Yᵀ 0) = 0` using `by rw [key, hW.yy]; rfl`.
+
+Establish `hxy : h.toSesq (Xᵀ 0) (Yᵀ 0) = 1` using `by rw [key, hW.xy]; simp`. Take `⟨w, hvw, hww⟩` from `WittPartner.full h v hv (by rw [hform]; exact hvv)`. Take `⟨g, hgv, -⟩` from `HyperbolicPairTransitive.full h (Xᵀ 0) (Yᵀ 0) v w ⟨hxx, hyy, hxy⟩ ⟨by rw [hform]; exact hvv, hww, hvw⟩`. Choose the witnesses or unpack the hypotheses as in `⟨M, hM, hact⟩ : ∃ M : GL (Fin n) E, M ∈ Formalism.UG.UJ (((conj F E).toAlgHom : E →ₐ[F] E) : E →+* E) J ∧ (M : Matrix (Fin n) (Fin n) E) *ᵥ (Xᵀ 0) = v := by`. Establish `h3 : ∀ N : GL (Fin n) E, N ∈ unitaryGroupMatrix (conjHom F E) (gram h.toSesq (Pi.basisFun E (Fin n))) → N ∈ Formalism.UG.UJ (((conj F E).toAlgHom : E →ₐ[F] E) : E →+* E) J`.
+
+Rewrite using `[hg]`. Conclude with `fun N hN => hN`. Use `⟨_, h3 _ (unitaryGroupEquivMatrix h (Pi.basisFun E (Fin n)) g).2, ?_⟩` and prove the remaining obligations. Rewrite using `[unitaryGroupEquivMatrix_apply, LinearMap.toMatrix_eq_toMatrix', LinearMap.toMatrix'_mulVec]`. Conclude with `hgv`.
+
+Use `⟨ratEmb _ J ⟨M, hM⟩, by rw [← range_ratEmb]; exact ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations. Unfold `Sends`. Use function extensionality and compare the values at `i`. Rewrite using `[← hact]`. Establish `e : (matHom _ _ J (ratEmb _ J ⟨M, hM⟩)).1 = (M : Matrix (Fin n) (Fin n) E).map (inclR (F` using `F) (AF F)) := rfl`.
+
+Rewrite using `[e]`. Conclude with `(RingHom.map_mulVec (inclR (F := F) (AF F)) _ _ i).symm`.
+-/
 theorem exists_ratPts_sends_isotropic : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E), IsWittFrame σ J X Y → ∀ v : Fin n → E, v ≠ 0 → hE σ J v v = 0 → ∃ γ ∈ ratPts σ J, Sends σ J γ (Xᵀ 0) v := by
   intro F E _ _ _ _ _ σ hσ n J hJ r X Y hW v hv hvv
   obtain ⟨hF, hEc, h2, hc⟩ := hσ

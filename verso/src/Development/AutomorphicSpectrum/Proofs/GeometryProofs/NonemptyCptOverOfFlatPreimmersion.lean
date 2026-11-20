@@ -11,6 +11,11 @@ namespace GlobalTheory.CompanionTheory.Ar.Flat
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl GlobalTheory.CompanionTheory.Ar.Flat
 
+/- English proof (translation)
+Establish `e : genPt (Ω` using `A.residueField w) (A.fromSpecResidueField w ≫ j) = j w := congrArg j (A.fromSpecResidueField_apply w _)`. Use `isCptGen_of_maximal_of_surjective hX _ ?_ ?_` and prove the remaining obligations. Rewrite using `[e]`. Introduce `y hy`. Take `⟨a, ha, rfl⟩` from `AlgebraicGeometry.Flat.generalizingMap j hy`.
+
+Rewrite using `[hw a ha]`. Unfold `Scheme.stalkClosedPointTo`. Rewrite using `[CommRingCat.hom_comp, RingHom.coe_comp]`. Conclude with `(ConcreteCategory.bijective_of_isIso (stalkClosedPointIso _).hom).2.comp ((A.fromSpecResidueField w ≫ j).stalkMap_surjective _)`.
+-/
 theorem isCptGen_comp_of_flat_preimmersion {A X : Scheme.{0}} (j : A ⟶ X) [IsPreimmersion j] [Flat j]
     (hX : ∀ x : X, IsDomain (X.presheaf.stalk x)) (w : A) (hw : ∀ y : A, y ⤳ w → y = w) :
     IsCptGen (Ω := A.residueField w) (A.fromSpecResidueField w ≫ j) := by
@@ -26,6 +31,11 @@ theorem isCptGen_comp_of_flat_preimmersion {A X : Scheme.{0}} (j : A ⟶ X) [IsP
     exact (ConcreteCategory.bijective_of_isIso (stalkClosedPointIso _).hom).2.comp
       ((A.fromSpecResidueField w ≫ j).stalkMap_surjective _)
 
+/- English proof (translation)
+Establish `h1 : U ⊆ closure {y}`. Rewrite using `[← hw.def]`. Conclude with `closure_minimal (Set.singleton_subset_iff.2 (specializes_iff_mem_closure.1 hy)) isClosed_closure`. Establish `h2 : closure {y} ⊆ U` using `hU.2 isIrreducible_singleton.closure h1`. Establish `h3 : w ⤳ y` using `hw.specializes (h2 (subset_closure rfl))`.
+
+Conclude with `(hy.antisymm h3).eq`.
+-/
 theorem eq_genericPoint_of_specializes {A : Type*} [TopologicalSpace A] [T0Space A] {U : Set A}
     (hU : U ∈ irreducibleComponents A) {w : A} (hw : IsGenericPoint w U) (y : A) (hy : y ⤳ w) : y = w := by
   have h1 : U ⊆ closure {y} := by
@@ -38,6 +48,11 @@ theorem eq_genericPoint_of_specializes {A : Type*} [TopologicalSpace A] [T0Space
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
   {Xo : Moduli D l} {c : Coeff l}
 
+/- English proof (translation)
+Use `Y.jQ_open` as an intermediate fact. Establish `: IsPreimmersion Y.j` using `by unfold Model.j; infer_instance`. Establish `: Flat Y.j` using `by unfold Model.j; infer_instance`. Take `⟨w, hw⟩` from `QuasiSober.sober hU.1 (isClosed_of_mem_irreducibleComponents U hU)`. Set `Ω : Type` to `(Xo.XF c).residueField w`.
+
+Set `ξ₀ : Sp Ω ⟶ Xo.XF c` to `(Xo.XF c).fromSpecResidueField w`. Establish `e : genPt ξ₀ = w` using `(Xo.XF c).fromSpecResidueField_apply w _`. Take `⟨V, _, _, ⟨M⟩⟩` from `lieModel_exists Y.X Y.t.G Ω (ξ₀ ≫ Y.j)`. Take `⟨ρ, hρ, -⟩` from `lieModel_exists_unique_act Y.X Y.t.G Ω (ξ₀ ≫ Y.j) V M (𝓞 E) Y.t.act.act Y.t.act.hom Y.t.act.one Y.t.act.mul Y.t.act.add`. Conclude with `⟨{ Ω := Ω ξ₀ := ξ₀ inc := (Spec.preimage (ξ₀ ≫ pullback.snd _ _)).hom over_inc := (Spec.map_preimage _).symm gen := isCptGen_comp_of_flat_preimmersion Y.j (fun x => (Y.normal x).1) w (eq_genericPoint_of_specializes hU hw) closure := fun u => by rw [e]; exact hw.specializes_iff_me …`.
+-/
 theorem nonempty_cptOver_of_flat_preimmersion {O : Type} [CommRing O] {β : O →+* c.F} [IsPreimmersion (spMap β)]
     [Flat (spMap β)] (Y : Model Xo c β) (U : Set (Xo.XF c)) (hU : U ∈ irreducibleComponents (Xo.XF c)) :
     Nonempty (CptOver Y U) := by
@@ -64,6 +79,13 @@ theorem nonempty_cptOver_of_flat_preimmersion {O : Type} [CommRing O] {β : O �
     ρ := ρ
     act := hρ }⟩
 
+/- English proof (translation)
+Use `letI : Algebra O c.F := β.toAlgebra`. Use `haveI : IsDomain O := hβ.isDomain β`. Use `haveI : FaithfulSMul O c.F := (faithfulSMul_iff_algebraMap_injective O c.F).2 hβ`. Use `haveI : IsFractionRing O c.F := IsFractionRing.of_field O c.F fun x => by`. Take `⟨a, b, hb, h⟩` from `hfr x`.
+
+Conclude with `⟨a, b, (eq_div_iff hb).2 h⟩`. Use `haveI : IsPreimmersion (spMap β) := IsPreimmersion.of_isLocalization (nonZeroDivisors O)`. Use `haveI : Flat (spMap β) := by`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`. Conclude with `IsLocalization.flat c.F (nonZeroDivisors O)`.
+
+Conclude with `nonempty_cptOver_of_flat_preimmersion Y U hU`.
+-/
 theorem nonempty_cptOver_of_fraction {O : Type} [CommRing O] {β : O →+* c.F} (hβ : Function.Injective β)
     (hfr : ∀ x : c.F, ∃ a b : O, β b ≠ 0 ∧ x * β b = β a) (Y : Model Xo c β) (U : Set (Xo.XF c))
     (hU : U ∈ irreducibleComponents (Xo.XF c)) : Nonempty (CptOver Y U) := by

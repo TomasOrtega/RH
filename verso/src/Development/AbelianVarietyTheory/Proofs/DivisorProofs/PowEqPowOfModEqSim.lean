@@ -80,14 +80,23 @@ section Tate
 
 variable {k : Type} [Field k] {Q : Type} [Group Q] {act : D.O → Q → Q} {e : ℕ → Q → Q → kˣ → Prop}
 
+/- English proof (translation)
+The claim follows from `(I.ker n hn hc _).2 ⟨z, rfl⟩`.
+-/
 theorem TateIsoO.ev_nsmul_self (I : TateIsoO D k Q act e) {n : ℕ} (hn : 0 < n) (hc : n.Coprime p) (z : D.La) :
     I.ev n (n • z) = 1 :=
   (I.ker n hn hc _).2 ⟨z, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[I.add, I.ev_nsmul_self hn hc, _root_.mul_one]`.
+-/
 theorem TateIsoO.ev_add_nsmul (I : TateIsoO D k Q act e) {n : ℕ} (hn : 0 < n) (hc : n.Coprime p) (x z : D.La) :
     I.ev n (x + n • z) = I.ev n x := by
   rw [I.add, I.ev_nsmul_self hn hc, _root_.mul_one]
 
+/- English proof (translation)
+Rewrite using `[← Nat.mod_add_div a n, ← Nat.mod_add_div b n, pow_add, pow_add, pow_mul, pow_mul, h, one_pow, one_pow, show a % n = b % n from hab]`.
+-/
 theorem pow_eq_pow_of_modEq_sim {M : Type} [Monoid M] {x : M} {n a b : ℕ} (h : x ^ n = 1) (hab : a ≡ b [MOD n]) :
     x ^ a = x ^ b := by
   rw [← Nat.mod_add_div a n, ← Nat.mod_add_div b n, pow_add, pow_add, pow_mul, pow_mul, h, one_pow, one_pow,
@@ -144,6 +153,9 @@ def TateIsoO.resim (I : TateIsoO D k Q act e) (t : SimSys D N K) : TateIsoO D k 
     rw [e']
     exact h
 
+/- English proof (translation)
+The claim follows from `if_pos ⟨hn, hc⟩`.
+-/
 theorem TateIsoO.resim_ev (I : TateIsoO D k Q act e) (t : SimSys D N K) {n : ℕ} (hn : 0 < n) (hc : n.Coprime p)
     (y : D.La) : (I.resim t).ev n y = I.ev n (t.g n y) := if_pos ⟨hn, hc⟩
 
@@ -151,6 +163,9 @@ end Tate
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Rewrite using `[o.eta_add, o.eta_ker, _root_.mul_one]`.
+-/
 theorem Obj.eta_add_nsmul {b : Base D R} {S : Scheme.{0}} {s : S ⟶ Sp R} (o : Obj b K s) (x z : D.La) :
     o.eta (x + K • z) = o.eta x := by
   rw [o.eta_add, o.eta_ker, _root_.mul_one]
@@ -168,6 +183,9 @@ def Obj.resim {b : Base D R} {S : Scheme.{0}} {s : S ⟶ Sp R} (o : Obj b K s) (
       obtain ⟨I, hI⟩ := o.geom k x β hx
       exact ⟨I.resim t, fun y => by rw [I.resim_ev t hK hKp]; exact hI _⟩ }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Obj.resim_eta {b : Base D R} {S : Scheme.{0}} {s : S ⟶ Sp R} (o : Obj b K s) (hK : 0 < K)
     (hKp : K.Coprime p) (t : SimSys D N K) (y : D.La) : (o.resim hK hKp t).eta y = o.eta (t.g K y) := rfl
 
@@ -192,6 +210,11 @@ variable (D K) in
 
 abbrev LQ := D.La ⧸ multSub D K
 
+/- English proof (translation)
+Rewrite using `[QuotientAddGroup.eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩`. Conclude with `⟨-z, by rw [smul_neg, ← hz]; abel⟩`. Introduce and unpack `⟨z, rfl⟩`.
+
+Conclude with `⟨-z, by rw [smul_neg]; abel⟩`.
+-/
 theorem LQ.mk_eq_mk {x y : D.La} : (QuotientAddGroup.mk x : LQ D K) = QuotientAddGroup.mk y ↔ ∃ z, x = y + K • z := by
   rw [QuotientAddGroup.eq]
   constructor
@@ -200,6 +223,11 @@ theorem LQ.mk_eq_mk {x y : D.La} : (QuotientAddGroup.mk x : LQ D K) = QuotientAd
   · rintro ⟨z, rfl⟩
     exact ⟨-z, by rw [smul_neg]; abel⟩
 
+/- English proof (translation)
+Use `D.finLa` as an intermediate fact. Establish `: Module.Finite ℤ (LQ D K)` using `Module.Finite.of_surjective (QuotientAddGroup.mk' (multSub D K)).toIntLinearMap (QuotientAddGroup.mk'_surjective _)`. Use `Module.finite_of_fg_torsion _ fun x => ?_` and prove the remaining obligations. Use `⟨⟨(K : ℤ), mem_nonZeroDivisors_of_ne_zero (by exact_mod_cast hK.ne')⟩, ?_⟩` and prove the remaining obligations. Proceed by induction on `x using QuotientAddGroup.induction_on with`.
+
+Consider the case `H y => show ((K : ℤ)) • (QuotientAddGroup.mk y : LQ D K) = 0`. Rewrite using `[natCast_zsmul, ← QuotientAddGroup.mk_nsmul, QuotientAddGroup.eq_zero_iff]`. Conclude with `⟨y, rfl⟩`.
+-/
 theorem LQ.finite (hK : 0 < K) : Finite (LQ D K) := by
   have := D.finLa
   have : Module.Finite ℤ (LQ D K) :=
@@ -213,6 +241,9 @@ theorem LQ.finite (hK : 0 < K) : Finite (LQ D K) := by
     rw [natCast_zsmul, ← QuotientAddGroup.mk_nsmul, QuotientAddGroup.eq_zero_iff]
     exact ⟨y, rfl⟩
 
+/- English proof (translation)
+Use `LQ.finite (D := D) hK` as an intermediate fact. Use `infer_instance`.
+-/
 theorem LQ.finite_aut (hK : 0 < K) : Finite (Equiv.Perm (LQ D K)) := by
   have := LQ.finite (D := D) hK
   infer_instance
@@ -220,8 +251,14 @@ theorem LQ.finite_aut (hK : 0 < K) : Finite (Equiv.Perm (LQ D K)) := by
 def SimSys.Lifts (t : SimSys D N K) (a : Equiv.Perm (LQ D K)) : Prop :=
   ∀ y, a (QuotientAddGroup.mk y) = QuotientAddGroup.mk (t.g K y)
 
+/- English proof (translation)
+Introduce `_` and use `rfl`.
+-/
 theorem SimSys.lifts_one : (SimSys.id : SimSys D N K).Lifts 1 := fun _ => rfl
 
+/- English proof (translation)
+Introduce `y` and use `by rw [Equiv.Perm.mul_apply, ht, hs]; rfl`.
+-/
 theorem SimSys.Lifts.comp {s t : SimSys D N K} {a c : Equiv.Perm (LQ D K)} (hs : s.Lifts a) (ht : t.Lifts c) :
     (s.comp t).Lifts (a * c) := fun y => by rw [Equiv.Perm.mul_apply, ht, hs]; rfl
 
@@ -237,9 +274,21 @@ def levelGrp : Subgroup (Equiv.Perm (LQ D K)) where
     rintro a ⟨h₁, h₂⟩
     exact ⟨h₂, by rw [inv_inv]; exact h₁⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_levelGrp {a : Equiv.Perm (LQ D K)} :
     a ∈ levelGrp D N K ↔ (∃ t : SimSys D N K, t.Lifts a) ∧ ∃ t : SimSys D N K, t.Lifts a⁻¹ := Iff.rfl
 
+/- English proof (translation)
+Use `⟨⟨t, ht⟩, ?_⟩` and prove the remaining obligations. Establish `hpow : ∀ j : ℕ, ∃ s : SimSys D N K, s.Lifts (a ^ j)`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => exact ⟨SimSys.id, SimSys.lifts_one⟩`.
+
+Consider the case `succ j ih`. Take `⟨s, hs⟩` from `ih`. Rewrite using `[pow_succ]`. Conclude with `⟨s.comp t, hs.comp ht⟩`. Use `LQ.finite_aut (D := D) hK` as an intermediate fact.
+
+Establish `ho` using `(isOfFinOrder_of_finite a).orderOf_pos`. Establish `e : a⁻¹ = a ^ (orderOf a - 1)`. Use `(eq_inv_of_mul_eq_one_left ?_).symm` and prove the remaining obligations. Rewrite using `[← pow_succ, Nat.sub_add_cancel ho, pow_orderOf_eq_one]`. Rewrite using `[e]`.
+
+Conclude with `hpow _`.
+-/
 theorem mem_levelGrp_of_lifts (hK : 0 < K) {a : Equiv.Perm (LQ D K)} {t : SimSys D N K} (ht : t.Lifts a) :
     a ∈ levelGrp D N K := by
   refine ⟨⟨t, ht⟩, ?_⟩
@@ -259,15 +308,24 @@ theorem mem_levelGrp_of_lifts (hK : 0 < K) {a : Equiv.Perm (LQ D K)} {t : SimSys
   rw [e]
   exact hpow _
 
+/- English proof (translation)
+Use `LQ.finite_aut (D := D) hK` as an intermediate fact. Use `infer_instance`.
+-/
 theorem levelGrp.finite (hK : 0 < K) : Finite (levelGrp D N K) := by
   have := LQ.finite_aut (D := D) hK
   infer_instance
 
 def levelGrp.sys (a : levelGrp D N K) : SimSys D N K := Classical.choose (mem_levelGrp.1 a.2).1
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec (mem_levelGrp.1 a.2).1`.
+-/
 theorem levelGrp.sys_lifts (a : levelGrp D N K) : (levelGrp.sys a).Lifts a :=
   Classical.choose_spec (mem_levelGrp.1 a.2).1
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `LQ.mk_eq_mk.1 h`. Conclude with `o.eta_add_nsmul _ _`.
+-/
 theorem Obj.eta_congr {b : Base D R} {S : Scheme.{0}} {s : S ⟶ Sp R} (o : Obj b K s) {x y : D.La}
     (h : (QuotientAddGroup.mk x : LQ D K) = QuotientAddGroup.mk y) : o.eta x = o.eta y := by
   obtain ⟨z, rfl⟩ := LQ.mk_eq_mk.1 h
@@ -286,22 +344,34 @@ def ObjMap.congrLift {b : Base D R} {S S' : Scheme.{0}} {s : S ⟶ Sp R} {s' : S
 def relMap {b : Base D R} (hK : 0 < K) (hKp : K.Coprime p) (F : RepFam b K) (a : levelGrp D N K) : F.X ⟶ F.X :=
   Classical.choose (F.rep F.X F.s (F.univ.resim hK hKp (levelGrp.sys a))).exists
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec (F.rep F.X F.s (F.univ.resim hK hKp (levelGrp.sys a))).exists`.
+-/
 theorem relMap_spec {b : Base D R} (hK : 0 < K) (hKp : K.Coprime p) (F : RepFam b K) (a : levelGrp D N K) :
     relMap hK hKp F a ≫ F.s = F.s ∧
       Nonempty (ObjMap (F.univ.resim hK hKp (levelGrp.sys a)) F.univ (relMap hK hKp F a)) :=
   Classical.choose_spec (F.rep F.X F.s (F.univ.resim hK hKp (levelGrp.sys a))).exists
 
+/- English proof (translation)
+The claim follows from `(F.rep F.X F.s (F.univ.resim hK hKp (levelGrp.sys a))).unique ⟨hf, ⟨m.congrLift hK hKp ht (levelGrp.sys_lifts a)⟩⟩ (relMap_spec hK hKp F a)`.
+-/
 theorem relMap_eq {b : Base D R} (hK : 0 < K) (hKp : K.Coprime p) (F : RepFam b K) (a : levelGrp D N K)
     (t : SimSys D N K) (ht : t.Lifts a) (f : F.X ⟶ F.X) (hf : f ≫ F.s = F.s)
     (m : ObjMap (F.univ.resim hK hKp t) F.univ f) : f = relMap hK hKp F a :=
   (F.rep F.X F.s (F.univ.resim hK hKp (levelGrp.sys a))).unique
     ⟨hf, ⟨m.congrLift hK hKp ht (levelGrp.sys_lifts a)⟩⟩ (relMap_spec hK hKp F a)
 
+/- English proof (translation)
+The claim follows from `(relMap_eq hK hKp F 1 SimSys.id SimSys.lifts_one (𝟙 _) (by simp) (Classical.choice (RepFamModel.objMap_refl F.univ))).symm`.
+-/
 theorem relMap_one {b : Base D R} (hK : 0 < K) (hKp : K.Coprime p) (F : RepFam b K) :
     relMap hK hKp F (1 : levelGrp D N K) = 𝟙 _ :=
   (relMap_eq hK hKp F 1 SimSys.id SimSys.lifts_one (𝟙 _) (by simp)
     (Classical.choice (RepFamModel.objMap_refl F.univ))).symm
 
+/- English proof (translation)
+Take `⟨ha, ⟨ma⟩⟩` from `relMap_spec hK hKp F a`. Take `⟨hc, ⟨mc⟩⟩` from `relMap_spec hK hKp F c`. Conclude with `(relMap_eq hK hKp F (a * c) ((levelGrp.sys a).comp (levelGrp.sys c)) ((levelGrp.sys_lifts a).comp (levelGrp.sys_lifts c)) _ (by rw [Category.assoc, hc, ha]) (MapComp.comp (ma.resim hK hKp (levelGrp.sys c)) mc)).symm`.
+-/
 theorem relMap_mul {b : Base D R} (hK : 0 < K) (hKp : K.Coprime p) (F : RepFam b K) (a c : levelGrp D N K) :
     relMap hK hKp F (a * c) = relMap hK hKp F a ≫ relMap hK hKp F c := by
   obtain ⟨ha, ⟨ma⟩⟩ := relMap_spec hK hKp F a
@@ -310,6 +380,11 @@ theorem relMap_mul {b : Base D R} (hK : 0 < K) (hKp : K.Coprime p) (F : RepFam b
     ((levelGrp.sys_lifts a).comp (levelGrp.sys_lifts c)) _ (by rw [Category.assoc, hc, ha])
     (MapComp.comp (ma.resim hK hKp (levelGrp.sys c)) mc)).symm
 
+/- English proof (translation)
+Take `⟨-, ⟨m⟩⟩` from `relMap_spec (Nat.mul_pos hN hM) hc F a`. Use `⟨{ m with eta := fun y => ?_ }⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `(levelGrp.sys a).one y`. Establish `e : F.univ.eta ((levelGrp.sys a).g (N * M₁) (M₁ • y)) = F.univ.eta (M₁ • y)`. Use `F.univ.eta_congr (LQ.mk_eq_mk.2 ⟨z, ?_⟩)` and prove the remaining obligations.
+
+Rewrite using `[map_nsmul, hz, smul_add, smul_smul, Nat.mul_comm M₁ N]`. Establish `h` using `m.eta (M₁ • y)`. Rewrite `h` using `[Obj.resim_eta, e]`. Conclude with `h`.
+-/
 theorem relMap_lower {b : Base D R} {M₁ : ℕ} (hN : 0 < N) (hM : 0 < M₁) (hc : (N * M₁).Coprime p)
     (F : RepFam b (N * M₁)) (a : levelGrp D N (N * M₁)) :
     Nonempty (ObjMap (F.univ.lower hN hM hc) (F.univ.lower hN hM hc) (relMap (Nat.mul_pos hN hM) hc F a)) := by

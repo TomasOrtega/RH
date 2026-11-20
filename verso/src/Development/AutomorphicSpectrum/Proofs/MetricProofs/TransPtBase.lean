@@ -24,15 +24,24 @@ def pairV {R : Type} (a : (Σ k, ι k) → R) (b : (Σ k, ι' k) → R) : (Σ k,
   | ⟨.inl k, i⟩ => a ⟨k, i⟩
   | ⟨.inr k, i⟩ => b ⟨k, i⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pairV_inl {R : Type} (a : (Σ k, ι k) → R) (b : (Σ k, ι' k) → R) (p : Σ k, ι k) :
     pairV a b (inlV p) = a p := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pairV_inr {R : Type} (a : (Σ k, ι k) → R) (b : (Σ k, ι' k) → R) (p : Σ k, ι' k) :
     pairV a b (inrV p) = b p := rfl
 
 def stepOf (M : FlagModel y Ψ N j) (k : K) (h : ¬ ∀ p, M.blk p ≠ some k) : Ψ × Fin N :=
   Classical.choose (not_forall_not.1 (by simpa using h) : ∃ p, M.blk p = some k)
 
+/- English proof (translation)
+Unfold `stepOf`. Conclude with `Classical.choose_spec (p := fun p => M.blk p = some k) _`.
+-/
 theorem blk_stepOf (M : FlagModel y Ψ N j) (k : K) (h : ¬ ∀ p, M.blk p ≠ some k) :
     M.blk (stepOf M k h) = some k := by
   unfold stepOf
@@ -43,11 +52,17 @@ def transPt {M : FlagModel y Ψ N j} {M' : FlagModel y' Ψ N j} (Cv : FlagCover 
   else ∑ I, algebraMap M'.Ω Φ' (Cv.φ (M.coef q I)) *
     minorIJ (M'.g (stepOf M q.1 h).1) I (stepCols N j (stepOf M q.1 h).2)
 
+/- English proof (translation)
+The claim follows from `dif_pos q.1.2`.
+-/
 theorem transPt_base {M : FlagModel y Ψ N j} {M' : FlagModel y' Ψ N j} (Cv : FlagCover M' M)
     (q : Σ k, baseIdx ι M.blk k) :
     transPt Cv ⟨q.1.1, q.2⟩ = algebraMap M'.Ω Φ' (Cv.φ (M.x q)) :=
   dif_pos q.1.2
 
+/- English proof (translation)
+Establish `h : ¬ ∀ p, M.blk p ≠ some k` using `fun H => H p hp`. Establish `e : stepOf M k h = p` using `M.blk_inj _ _ k (blk_stepOf M k h) hp`. Rewrite using `[transPt, dif_neg h, e]`.
+-/
 theorem transPt_step {M : FlagModel y Ψ N j} {M' : FlagModel y' Ψ N j} (Cv : FlagCover M' M)
     (p : Ψ × Fin N) (k : K) (hp : M.blk p = some k) (m : ι k) :
     transPt Cv ⟨k, m⟩ = ∑ I, algebraMap M'.Ω Φ' (Cv.φ (M.coef ⟨k, m⟩ I)) * minorIJ (M'.g p.1) I (stepCols N j p.2) := by

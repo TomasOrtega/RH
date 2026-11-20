@@ -6,6 +6,11 @@ open Formalism.UG GlobalTheory.SatakeWeyl
 
 namespace GlobalTheory.SatakeWeyl
 
+/- English proof (translation)
+Rewrite using `[mat_mul, Matrix.mul_apply]`. Establish `key : ∀ k, mat m i k * mat u k l = mat m i k * (1 : Matrix (Fin n) (Fin n) L) k l`. Introduce `k`. Distinguish the cases in `hk : β i = β k`. Rewrite using `[hu k l (by rw [← hk]; exact h)]`.
+
+Rewrite using `[hm i k hk, zero_mul, zero_mul]`. Repeatedly rewrite using `[key]`. Rewrite using `[← Matrix.mul_apply, Matrix.mul_one]`.
+-/
 theorem levi_mul_rad_apply {L : Type} [Field L] {σ : L →+* L} {n : ℕ} {β : Fin n → ℕ} {m u : GU σ n}
     (hm : ∀ i j, β i ≠ β j → mat m i j = 0)
     (hu : ∀ i j, β j ≤ β i → mat u i j = (1 : Matrix (Fin n) (Fin n) L) i j) {i l : Fin n} (h : β l ≤ β i) :
@@ -19,6 +24,15 @@ theorem levi_mul_rad_apply {L : Type} [Field L] {σ : L →+* L} {n : ℕ} {β :
   simp_rw [key]
   rw [← Matrix.mul_apply, Matrix.mul_one]
 
+/- English proof (translation)
+Introduce `L _ _ σ n β hσ m hm u hu`. Use `⟨?_, fun hmu => ?_⟩` and prove the remaining obligations. Use `show ∀ i j, β j ≤ β i → mat (m * u * m⁻¹) i j = (1 : Matrix (Fin n) (Fin n) L) i j`. Introduce `i l h`. Establish `hmi : m⁻¹ ∈ leviU σ β` using `inv_mem hm`.
+
+Rewrite using `[mat_mul, Matrix.mul_apply]`. Establish `key : ∀ k, mat (m * u) i k * mat m⁻¹ k l = mat m i k * mat m⁻¹ k l`. Introduce `k`. Distinguish the cases in `hk : β k = β l`. Rewrite using `[levi_mul_rad_apply hm hu (by rw [hk]; exact h)]`.
+
+Rewrite using `[hmi k l hk, mul_zero, mul_zero]`. Repeatedly rewrite using `[key]`. Rewrite using `[← Matrix.mul_apply, ← mat_mul, mul_inv_cancel, mat_one]`. Rewrite `hmu`, the goal using `[mem_KU_iff hσ]`. Introduce `i l`.
+
+Distinguish the cases in `hk : β i = β l`. Rewrite using `[← levi_mul_rad_apply hm hu (le_of_eq hk.symm)]`. Conclude with `hmu i l`. Rewrite using `[hm i l hk]`. Conclude with `zero_mem _`.
+-/
 theorem leviRad : LeviRad := by
   intro L _ _ σ n β hσ m hm u hu
   refine ⟨?_, fun hmu => ?_⟩

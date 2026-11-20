@@ -10,6 +10,9 @@ namespace GlobalTheory.CuspRep.JointCont
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a r : ℕ}
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `f ((1 + nilM x : Matrix (Fin a) (Fin a) R) i j) = (1 + nilM fun p => f (x p) : Matrix (Fin a) (Fin a) S) i j`. Simplify using `only [nilM, Matrix.add_apply, Matrix.of_apply, Matrix.one_apply, map_add]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem map_unip {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (x : BlockIx a r → R) :
     Matrix.GeneralLinearGroup.map f (unip x) = unip (fun p => f (x p)) := by
   apply Units.ext
@@ -18,6 +21,9 @@ theorem map_unip {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (x : Blo
   simp only [nilM, Matrix.add_apply, Matrix.of_apply, Matrix.one_apply, map_add]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Simplify using `only [nilM, Matrix.of_apply]`. Use `split_ifs`. Conclude with `continuous_apply _`. Conclude with `continuous_const`.
+-/
 theorem continuous_nilM {R : Type} [CommRing R] [TopologicalSpace R] :
     Continuous (fun x : BlockIx a r → R => (nilM x : Matrix (Fin a) (Fin a) R)) := by
   refine continuous_matrix fun i j => ?_
@@ -26,17 +32,29 @@ theorem continuous_nilM {R : Type} [CommRing R] [TopologicalSpace R] :
   · exact continuous_apply _
   · exact continuous_const
 
+/- English proof (translation)
+The claim follows from `Units.continuous_iff.2 ⟨continuous_const.add continuous_nilM, continuous_const.sub continuous_nilM⟩`.
+-/
 theorem continuous_unip {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] :
     Continuous (fun x : BlockIx a r → R => unip x) :=
   Units.continuous_iff.2 ⟨continuous_const.add continuous_nilM, continuous_const.sub continuous_nilM⟩
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun w => (InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp ((continuous_apply w).comp continuous_fst)`.
+-/
 theorem continuous_pInf : Continuous (pInf E) :=
   continuous_pi fun w =>
     (InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp
       ((continuous_apply w).comp continuous_fst)
 
+/- English proof (translation)
+The claim follows from `continuous_snd`.
+-/
 theorem continuous_pFin : Continuous (pFin E) := continuous_snd
 
+/- English proof (translation)
+Rewrite using `[← chart_rt_fin]`. Use `congr 1`. Use function extensionality and compare the values at `z`. Conclude with `congrArg (fun ψ : Sm E a => ψ.1 z) hk`.
+-/
 theorem chart_mul_finGL_of_fix (φ : Sm E a) (h : GA E a) (k : GL (Fin a) (Af E)) (hk : finRep E a k φ = φ) :
     chart φ.1 (h * finGL E a k) = chart φ.1 h := by
   rw [← chart_rt_fin]
@@ -50,11 +68,17 @@ def infPart (g : GA E a) (x : BlockIx a r → Ad E) : GL (Fin a) (Cinf E) :=
 def finPart (g : GA E a) (x : BlockIx a r → Ad E) : GL (Fin a) (Af E) :=
   unip (fun p => pFin E (x p)) * Matrix.GeneralLinearGroup.map (pFin E) g
 
+/- English proof (translation)
+Apply the tactic sequence `refine ga_ext ?_ ?_ <;>`. Simplify using `only [finPart, infPart, map_mul, map_unip, pInf_finGL, pInf_infGL, pFin_finGL, pFin_infGL, one_mul, mul_one]`.
+-/
 theorem unip_mul_eq (g : GA E a) (x : BlockIx a r → Ad E) :
     unip x * g = finGL E a (finPart g x) * infGL E a (infPart g x) := by
   refine ga_ext ?_ ?_ <;>
     simp only [finPart, infPart, map_mul, map_unip, pInf_finGL, pInf_infGL, pFin_finGL, pFin_infGL, one_mul, mul_one]
 
+/- English proof (translation)
+Establish `h1 : Continuous (fun x : BlockIx a r → Ad E => fun p => pInf E (x p))` using `continuous_pi fun p => continuous_pInf.comp (continuous_apply p)`. Establish `h2 : Continuous (fun x : BlockIx a r → Ad E => ((infPart g x : GL (Fin a) (Cinf E)) : Matrix (Fin a) (Fin a) (Cinf E)))` using `Units.continuous_val.comp ((continuous_unip.comp h1).mul continuous_const)`. Conclude with `h2`.
+-/
 theorem continuous_infPart (g : GA E a) : Continuous (fun x : BlockIx a r → Ad E => toL (infPart g x).val) := by
   have h1 : Continuous (fun x : BlockIx a r → Ad E => fun p => pInf E (x p)) :=
     continuous_pi fun p => continuous_pInf.comp (continuous_apply p)
@@ -63,11 +87,17 @@ theorem continuous_infPart (g : GA E a) : Continuous (fun x : BlockIx a r → Ad
     Units.continuous_val.comp ((continuous_unip.comp h1).mul continuous_const)
   exact h2
 
+/- English proof (translation)
+Establish `h1 : Continuous (fun x : BlockIx a r → Ad E => fun p => pFin E (x p))` using `continuous_pi fun p => continuous_pFin.comp (continuous_apply p)`. Conclude with `(continuous_unip.comp h1).mul continuous_const`.
+-/
 theorem continuous_finPart (g : GA E a) : Continuous (fun x : BlockIx a r → Ad E => finPart g x) := by
   have h1 : Continuous (fun x : BlockIx a r → Ad E => fun p => pFin E (x p)) :=
     continuous_pi fun p => continuous_pFin.comp (continuous_apply p)
   exact (continuous_unip.comp h1).mul continuous_const
 
+/- English proof (translation)
+Establish `hc : Continuous (fun x : BlockIx a r → Ad E => (finPart g x₀)⁻¹ * finPart g x)` using `continuous_const.mul (continuous_finPart g)`. Establish `h1 : finRep E a ((finPart g x₀)⁻¹ * finPart g x₀) φ = φ` using `by rw [inv_mul_cancel]; simp`. Use `filter_upwards [hc.continuousAt.preimage_mem_nhds (hφ.level.mem_nhds h1)] with x hx`. Establish `hx' : finRep E a ((finPart g x₀)⁻¹ * finPart g x) φ = φ` using `hx`. Rewrite using `[unip_mul_eq, ← mul_inv_cancel_left (finPart g x₀) (finPart g x), map_mul, mul_assoc, ← infGL_comm, ← mul_assoc, chart_mul_finGL_of_fix φ _ _ hx', chart_mul]`.
+-/
 theorem eventually_chart_eq (φ : Sm E a) (hφ : IsAutForm φ) (g : GA E a) (x₀ : BlockIx a r → Ad E) :
     ∀ᶠ x in 𝓝 x₀, chart φ.1 (unip x * g) =
       chart φ.1 (finGL E a (finPart g x₀)) ∘ lmul (toL (infPart g x).val) := by
@@ -78,6 +108,19 @@ theorem eventually_chart_eq (φ : Sm E a) (hφ : IsAutForm φ) (g : GA E a) (x�
   rw [unip_mul_eq, ← mul_inv_cancel_left (finPart g x₀) (finPart g x), map_mul, mul_assoc, ← infGL_comm,
     ← mul_assoc, chart_mul_finGL_of_fix φ _ _ hx', chart_mul]
 
+/- English proof (translation)
+Establish `hP : Continuous (fun p : (BlockIx a r → Ad E) × Lie E a => lmul (toL (infPart g p.1).val) p.2)`. Use `((continuous_infPart g).comp continuous_fst).matrix_mul (continuous_snd : Continuous fun p : (BlockIx a r → Ad E) × Matrix (Fin a) (Fin a) (Cinf E) => p.2)` as an intermediate fact. Conclude with `this`. Establish `hQ : Continuous (fun p : (BlockIx a r → Ad E) × Lie E a => lmul (toL (infPart g p.1).val) X)`. Use `((continuous_infPart g).comp continuous_fst).matrix_mul (continuous_const : Continuous fun _ : (BlockIx a r → Ad E) × Lie E a => (Matrix.of X))` as an intermediate fact.
+
+Conclude with `this`. Establish `hinv : ∀ p : (BlockIx a r → Ad E) × Lie E a, p.2 ∈ invSet E a → lmul (toL (infPart g p.1).val) p.2 ∈ invSet E a` using `fun p hp => (infPart g p.1).isUnit.mul hp`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x₀, y₀⟩ ⟨-, hy₀⟩ set f₀ := chart φ.1 (finGL E a (finPart g x₀))`. Establish `hf₀ : ContDiffOn ℝ ∞ f₀ (invSet E a)` using `φ.2 _`.
+
+Establish `hA : ContinuousAt (fun p : (BlockIx a r → Ad E) × Lie E a => f₀ (lmul (toL (infPart g p.1).val) p.2)) (x₀, y₀)` using `ContinuousAt.comp (g := f₀) (hf₀.continuousOn.continuousAt (isOpen_invSet.mem_nhds (hinv (x₀, y₀) hy₀))) hP.continuousAt`. Use `(hA.congr ?_).continuousWithinAt` and prove the remaining obligations. Use `filter_upwards [(continuous_fst.tendsto (x₀, y₀)).eventually (eventually_chart_eq φ hφ g x₀)] with p hp`. Rewrite using `[hp]`. Both sides reduce to the same expression.
+
+Introduce and unpack `⟨x₀, y₀⟩ ⟨-, hy₀⟩ set f₀ := chart φ.1 (finGL E a (finPart g x₀))`. Establish `hf₀ : ContDiffOn ℝ ∞ f₀ (invSet E a)` using `φ.2 _`. Establish `hD : ContinuousOn (fun z => fderiv ℝ f₀ z) (invSet E a)` using `hf₀.continuousOn_fderiv_of_isOpen isOpen_invSet (by simp)`. Establish `hA : ContinuousAt (fun p : (BlockIx a r → Ad E) × Lie E a => fderiv ℝ f₀ (lmul (toL (infPart g p.1).val) p.2) (lmul (toL (infPart g p.1).val) X)) (x₀, y₀)` using `ContinuousAt.clm_apply (ContinuousAt.comp (g := fun z => fderiv ℝ f₀ z) (hD.continuousAt (isOpen_invSet.mem_nhds (hinv (x₀, y₀) hy₀))) hP.continuousAt) hQ.continuousAt`. Use `(hA.congr ?_).continuousWithinAt` and prove the remaining obligations.
+
+Establish `hy : ∀ᶠ p : (BlockIx a r → Ad E) × Lie E a in 𝓝 (x₀, y₀), p.2 ∈ invSet E a` using `(continuous_snd.tendsto (x₀, y₀)).eventually (isOpen_invSet.mem_nhds hy₀)`. Use `filter_upwards [(continuous_fst.tendsto (x₀, y₀)).eventually (eventually_chart_eq φ hφ g x₀), hy] with p hp hp2`. Establish `hd : DifferentiableAt ℝ f₀ (lmul (toL (infPart g p.1).val) p.2)` using `(hf₀.contDiffAt (isOpen_invSet.mem_nhds (hinv p hp2))).differentiableAt (by simp)`. Express the relevant statement in the definitionally equal form `_ = fderiv ℝ (chart φ.1 (unip p.1 * g)) p.2 X`. Rewrite using `[hp, fderiv_comp _ hd (lmul _).differentiableAt, ContinuousLinearMap.fderiv]`.
+
+Both sides reduce to the same expression.
+-/
 theorem chart_unipotent_translate_continuousOn (φ : Sm E a) (hφ : IsAutForm φ) (g : GA E a) (X : Lie E a) :
     ContinuousOn (fun p : (BlockIx a r → Ad E) × Lie E a => chart φ.1 (unip p.1 * g) p.2)
         (Set.univ ×ˢ invSet E a) ∧
@@ -126,6 +169,9 @@ theorem chart_unipotent_translate_continuousOn (φ : Sm E a) (hφ : IsAutForm φ
     rw [hp, fderiv_comp _ hd (lmul _).differentiableAt, ContinuousLinearMap.fderiv]
     rfl
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ φ hφ g X` and use `chart_unipotent_translate_continuousOn φ hφ g X`.
+-/
 theorem chart_jointCont : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a r : ℕ) (φ : GlobalTheory.CuspRep.Sm E a), GlobalTheory.CuspRep.IsAutForm φ → ∀ (g : GlobalTheory.CuspRep.GA E a) (X : GlobalTheory.CuspRep.Lie E a), ContinuousOn (fun p : (GlobalTheory.CuspRep.BlockIx a r → GlobalTheory.CuspRep.Ad E) × GlobalTheory.CuspRep.Lie E a => GlobalTheory.CuspRep.chart φ.1 (GlobalTheory.CuspRep.unip p.1 * g) p.2) (Set.univ ×ˢ GlobalTheory.CuspRep.invSet E a) ∧ ContinuousOn (fun p : (GlobalTheory.CuspRep.BlockIx a r → GlobalTheory.CuspRep.Ad E) × GlobalTheory.CuspRep.Lie E a => fderiv ℝ (GlobalTheory.CuspRep.chart φ.1 (GlobalTheory.CuspRep.unip p.1 * g)) p.2 X) (Set.univ ×ˢ GlobalTheory.CuspRep.invSet E a) :=
   fun _ _ _ _ _ _ φ hφ g X => chart_unipotent_translate_continuousOn φ hφ g X
 

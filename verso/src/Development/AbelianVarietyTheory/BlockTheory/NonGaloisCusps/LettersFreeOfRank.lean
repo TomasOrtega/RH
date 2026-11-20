@@ -38,6 +38,13 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (W : _root_.Formalism.BasicNotions.LocWach PD LL O v n) (T : _root_.Formalism.BasicNotions.LocLat G Qp LL O) in
 attribute [local instance] _root_.GlobalTheory.IndefiniteRowSideFullHecke.LetterBasisDecomposition.letterModule in
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `x`. Establish `hx' : x ∈ Submodule.map (_root_.Formalism.BasicNotions.letE i • LinearMap.id) (W.N T)` using `hx`. Take `⟨y, -, rfl⟩` from `Submodule.mem_map.mp hx'`. Express the relevant statement in the definitionally equal form `(Pi.constRingHom (ZMod n) (PowerSeries O) c : _root_.Formalism.BasicNotions.LetA O n) • ((_root_.Formalism.BasicNotions.letE i : _root_.Formalism.BasicNotions.LetA O n) • y) = (Pi.single i c : _root_.Formalism.BasicNotions.LetA O n) • ((_root_.Formalism.BasicNotions.letE i : _roo …`. Rewrite using `[smul_smul, smul_smul]`.
+
+Use `congr 1`. Unfold `_root_.Formalism.BasicNotions.letE`. Use extensionality with `j : 1`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.LetterBasisDecomposition.letter_smul (i : ZMod n) (c : PowerSeries O)
     (x : ↥(W.Nl T i)) :
     ((c • x : ↥(W.Nl T i)) : W.DD T) = (Pi.single i c : _root_.Formalism.BasicNotions.LetA O n) • (x : W.DD T) := by
@@ -103,6 +110,11 @@ def FreeAt : Prop :=
   LettersDecompose W T ∧ LettersFree W T ∧ GlobalBasis W T ∧
     (∃ M₀ h₀, Sandwich W T M₀ h₀) ∧ Matrices W T
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `[LocWach.φA, letφ, letE]`. Establish `h' : j - 1 ≠ i - 1` using `fun e => h (sub_left_injective e)`.
+
+Simplify using `[LocWach.φA, letφ, letE, h, h']`.
+-/
 theorem phi_letE (i : ZMod n) : W.φA (letE (i - 1)) = letE i := by
   funext j
   by_cases h : j = i

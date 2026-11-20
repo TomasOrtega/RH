@@ -8,6 +8,9 @@ noncomputable section
 
 namespace GlobalTheory.RealTranslCob
 
+/- English proof (translation)
+Use extensionality with `k`. Distinguish the cases in `h : k = i`. Substitute `h` using the available equality. Simplify using `[per, Matrix.vecMul, dotProduct]`. Simplify using `[per, Matrix.vecMul, dotProduct, h, Pi.single_apply]`.
+-/
 theorem per_single_inr {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (i : Fin g) :
     per τ (Pi.single (Sum.inr i) (1 : ℝ)) = Pi.single i 1 := by
   ext k
@@ -15,11 +18,21 @@ theorem per_single_inr {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (i : Fin g) :
   · subst h; simp [per, Matrix.vecMul, dotProduct]
   · simp [per, Matrix.vecMul, dotProduct, h, Pi.single_apply]
 
+/- English proof (translation)
+Use `Submodule.subset_span ⟨Sum.inr i, ?_⟩` and prove the remaining obligations. Simplify using `[Pi.basisFun_apply]`.
+-/
 theorem single_inr_mem_stdLat {g : ℕ} (i : Fin g) :
     Pi.single (Sum.inr i) (1 : ℝ) ∈ stdLat g := by
   refine Submodule.subset_span ⟨Sum.inr i, ?_⟩
   simp [Pi.basisFun_apply]
 
+/- English proof (translation)
+Introduce `b hb`. Establish `htr : ∀ (i : Fin g) (P : Pt E g), transl τ (Pi.single (Sum.inr i) (1 : ℝ)) P = (P.1, P.2 + Pi.single i 1)`. Introduce `i P`. Simplify using `only [transl, per_single_inr]`. Take `⟨r, hr, hball, ψ, hψ, hψeq⟩` from `GlobalTheory.RealPeriodCocycle.main hτ.1 (fun k => H (Pi.single (Sum.inr k) (1 : ℝ))) (fun k => hH _ (single_inr_mem_stdLat k)) (by`.
+
+Introduce `k j P hP`. Establish `h1` using `hc _ (single_inr_mem_stdLat k) _ (single_inr_mem_stdLat j) P hP`. Establish `h2` using `hc _ (single_inr_mem_stdLat j) _ (single_inr_mem_stdLat k) P hP`. Rewrite `h1` using `[add_comm, h2, htr, htr]`. Simplify using `using h1.symm)`.
+
+Use `b hb`. Use `⟨Metric.ball b r, Metric.isOpen_ball, Metric.mem_ball_self hr, hball, ψ, hψ, ?_⟩` and prove the remaining obligations. Introduce `i P hP`. Rewrite using `[htr, hψeq i P hP]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_cob_real {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [FiniteDimensional ℂ E] {U : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}
     (hτ : IsPeriodMap U τ) (H : Fl g → Pt E g → ℂ)
@@ -52,6 +65,9 @@ theorem exists_cob_real {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace
 
 end GlobalTheory.RealTranslCob
 
+/- English proof (translation)
+Introduce `hτ H hH hc` and use `GlobalTheory.RealTranslCob.exists_cob_real hτ H hH hc`.
+-/
 theorem GlobalTheory.RealTranslCob.main : ∀ {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [FiniteDimensional ℂ E] {U : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}, IsPeriodMap U τ →
     ∀ H : Fl g → Pt E g → ℂ, (∀ l ∈ stdLat g, DifferentiableOn ℂ (H l) (cov U g)) →

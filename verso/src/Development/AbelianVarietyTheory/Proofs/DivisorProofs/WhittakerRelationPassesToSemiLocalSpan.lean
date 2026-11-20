@@ -14,19 +14,31 @@ namespace GlobalTheory.JSW.MirSemi
 
 open GlobalTheory.JSW
 
+/- English proof (translation)
+Simplify using `only [whit, GroundTheory.Automorphic.FourierWhittaker.whittaker, mul_assoc]`.
+-/
 theorem whit_rt_apply {E : Type} [Field E] [NumberField E] {a : ℕ} (F : GA E a → ℂ) (h g : GA E a) :
     whit (fun x => F (x * h)) g = whit F (g * h) := by
   simp only [whit, GroundTheory.Automorphic.FourierWhittaker.whittaker, mul_assoc]
 
+/- English proof (translation)
+Simplify using `[whit, GroundTheory.Automorphic.FourierWhittaker.whittaker]`.
+-/
 theorem whit_zero_apply {E : Type} [Field E] [NumberField E] {a : ℕ} (g : GA E a) :
     whit (0 : GA E a → ℂ) g = 0 := by
   simp [whit, GroundTheory.Automorphic.FourierWhittaker.whittaker]
 
+/- English proof (translation)
+Introduce `w hw`. Rewrite using `[map_mul, hx w hw, hh w hw, one_mul]`.
+-/
 theorem mul_mem_supS' {E : Type} [Field E] [NumberField E] {a : ℕ} {S : Finset (HeightOneSpectrum (𝓞 E))}
     {x h : GA E a} (hx : x ∈ supS E a S) (hh : h ∈ supS E a S) : x * h ∈ supS E a S := by
   intro w hw
   rw [map_mul, hx w hw, hh w hw, one_mul]
 
+/- English proof (translation)
+Introduce `w _`. Establish `h1 : GeneralLinearGroup.map ((pLoc E w).comp (pFin E)) (infGL E a y) = GeneralLinearGroup.map (pLoc E w) (GeneralLinearGroup.map (pFin E) (infGL E a y))`. Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite using `[h1, pFin_infGL, map_one]`.
+-/
 theorem infGL_mem_supS' {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} (S : Finset (HeightOneSpectrum (𝓞 E)))
     (y : GL (Fin a) (Cinf E)) : infGL E a y ∈ supS E a S := by
   intro w _
@@ -35,6 +47,21 @@ theorem infGL_mem_supS' {E : Type} [Field E] [NumberField E] [IsTotallyComplex E
     ext i j; rfl
   rw [h1, pFin_infGL, map_one]
 
+/- English proof (translation)
+Introduce `E _ _ _ a S π φ hφ t c htInf htS hrel`. Establish `hreg` using `GlobalTheory.T.cusp_form_moderate_growth_compact E a S π φ hφ`. Establish `hlin : ∀ F ∈ locSpan S φ.1, ∀ G ∈ locSpan S φ.1, ∀ (c' : ℂ) (g : GA E a), whit (fun x => F x + c' * G x) g = whit F g + c' * whit G g` using `fun F hF G hG => (GlobalTheory.T.globalWhittakerCoefficient_linear_archimedeanKernel E a F G (hreg F hF).1 (hreg G hG).1 (hreg F hF).2 (hreg G hG).2).1`. Set `V : Submodule ℂ (GA E a → ℂ)` to `{ carrier := {F | F ∈ locSpan S φ.1 ∧ ∀ x ∈ supS E a S, whit F (x * t) = c * whit F x} add_mem' := by`. Introduce and unpack `F G ⟨hF, hF'⟩ ⟨hG, hG'⟩`.
+
+Use `⟨add_mem hF hG, fun x hx => ?_⟩` and prove the remaining obligations. Establish `e : (F + G) = fun y => F y + 1 * G y` using `by funext y; simp`. Rewrite using `[e, hlin F hF G hG, hlin F hF G hG, hF' x hx, hG' x hx]`. Expand and normalize the polynomial expressions, which then agree. Use the proof step `zero_mem' := ⟨zero_mem _, fun x _ => by rw [whit_zero_apply, whit_zero_apply, mul_zero]⟩`.
+
+Use the proof step `smul_mem' := by`. Introduce and unpack `c' F ⟨hF, hF'⟩`. Use `⟨Submodule.smul_mem _ c' hF, fun x hx => ?_⟩` and prove the remaining obligations. Establish `e : (c' • F) = fun y => (0 : GA E a → ℂ) y + c' * F y` using `by funext y; simp`. Rewrite using `[e, hlin 0 (zero_mem _) F hF, hlin 0 (zero_mem _) F hF, whit_zero_apply, whit_zero_apply, hF' x hx]`.
+
+Use `ring }`. Establish `hV : locSpan S φ.1 ≤ V`. Use `locSpan_le ⟨self_mem_locSpan, hrel⟩ ?_ ?_` and prove the remaining obligations. Introduce and unpack `F ⟨hF, hF'⟩ h hh`. Use `⟨rt_mem_locSpan hF hh, fun x hx => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[whit_rt_apply, whit_rt_apply, mul_assoc, ← GlobalTheory.T.adelicGL_complementary_supports_commute E a S h t hh htInf htS, ← mul_assoc]`. Conclude with `hF' (x * h) (mul_mem_supS' hx hh)`. Introduce and unpack `F ⟨hF, hF'⟩ X _ ν _ k γ hk`. Use `⟨kerInf_mem_locSpan hF ν hk, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hker` using `(GlobalTheory.T.globalWhittakerCoefficient_linear_archimedeanKernel E a F F (hreg F hF).1 (hreg F hF).1 (hreg F hF).2 (hreg F hF).2).2 X ν k γ hk`.
+
+Rewrite using `[hker, hker, ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Establish `hc` using `GlobalTheory.T.adelicGL_complementary_supports_commute E a S (infGL E a (γ y)) t (infGL_mem_supS' S (γ y)) htInf htS`. Rewrite using `[mul_assoc x t, ← hc, ← mul_assoc, hF' _ (mul_mem_supS' hx (infGL_mem_supS' S (γ y)))]`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `F hF x hx`. Conclude with `(hV hF).2 x hx`.
+-/
 theorem whit_rel_locSpan : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E))) (π : CuspSub E a) (φ : Sm E a), φ ∈ π.V → ∀ (t : GA E a) (c : ℂ), GeneralLinearGroup.map (pInf E) t = 1 → (∀ w ∈ S, GeneralLinearGroup.map ((pLoc E w).comp (pFin E)) t = 1) → (∀ x ∈ GlobalTheory.JSW.supS E a S, GlobalTheory.JSW.whit φ.1 (x * t) = c * GlobalTheory.JSW.whit φ.1 x) → ∀ F ∈ GlobalTheory.JSW.MirSemi.locSpan S φ.1, ∀ x ∈ GlobalTheory.JSW.supS E a S, GlobalTheory.JSW.whit F (x * t) = c * GlobalTheory.JSW.whit F x := by
   intro E _ _ _ a S π φ hφ t c htInf htS hrel
   have hreg := GlobalTheory.T.cusp_form_moderate_growth_compact E a S π φ hφ

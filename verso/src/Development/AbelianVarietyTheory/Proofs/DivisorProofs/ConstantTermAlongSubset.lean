@@ -19,18 +19,38 @@ noncomputable section
 namespace GlobalTheory.ConstTrans
 open GlobalTheory.StdPar GlobalTheory.Cusp
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ h n J hJ r X Y hW S m hm hm'` and use `le_antisymm (GlobalTheory.T.standardParabolicUnipotent_le_flagUnipotentRadical F E σ h n J hJ r X Y hW S m hm hm') (GlobalTheory.T.flagUnipotentRadical_le_standardParabolicUnipotent F E σ h n J hJ r X Y hW S m hm hm')`.
+-/
 theorem unip_eq_unipFlag : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (X Y : Matrix (Fin n) (Fin r) E), IsWittFrame σ J X Y →
       ∀ (S : Finset (Fin r)) (m : Fin r), m ∈ S → (∀ k ∈ S, k ≤ m) →
         GlobalTheory.StdPar.unip σ J X S = GlobalTheory.UAut.unipFlag σ J (GlobalTheory.StdPar.initCols X m) (fun i => (S.filter fun k => k.val < i.val).card) := fun F E _ _ _ _ _ σ h n J hJ r X Y hW S m hm hm' => le_antisymm (GlobalTheory.T.standardParabolicUnipotent_le_flagUnipotentRadical F E σ h n J hJ r X Y hW S m hm hm') (GlobalTheory.T.flagUnipotentRadical_le_standardParabolicUnipotent F E σ h n J hJ r X Y hW S m hm hm')
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.standardParabolicUnipotent_mono`.
+-/
 theorem unip_mono : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (X Y : Matrix (Fin n) (Fin r) E), IsWittFrame σ J X Y →
       ∀ (S T : Finset (Fin r)), T ⊆ S → GlobalTheory.StdPar.unip σ J X T ≤ GlobalTheory.StdPar.unip σ J X S := GlobalTheory.T.standardParabolicUnipotent_mono
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.standardParabolicUnipotent_le_isotropicFlagStabiliser`.
+-/
 theorem unip_le_parFlag : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (X Y : Matrix (Fin n) (Fin r) E), IsWittFrame σ J X Y →
       ∀ (S T : Finset (Fin r)) (m : Fin r), T ⊆ S → m ∈ T → (∀ k ∈ T, k ≤ m) →
         GlobalTheory.StdPar.unip σ J X S ≤ GlobalTheory.UAut.parFlag σ J (GlobalTheory.StdPar.initCols X m) (fun i => (T.filter fun k => k.val < i.val).card) := GlobalTheory.T.standardParabolicUnipotent_le_isotropicFlagStabiliser
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ h n J hJ r X Y hW φ hφc hφ S T hTS hT`. Distinguish the cases in `hT0 : T = ∅`. Substitute `hT0` using the available equality. Establish `e` using `isConstAlong_empty hT`. Rewrite using `[← e]`.
+
+Conclude with `isConstAlong_const σ J X S 0`. Take `⟨mT, hmT, hmT'⟩ : ∃ m ∈ T, ∀ k ∈ T, k ≤ m` from `⟨T.max' (Finset.nonempty_iff_ne_empty.2 hT0), T.max'_mem _, fun k hk => T.le_max' k hk⟩`. Take `⟨mS, hmS, hmS'⟩ : ∃ m ∈ S, ∀ k ∈ S, k ≤ m` from `⟨S.max' ⟨mT, hTS hmT⟩, S.max'_mem _, fun k hk => S.le_max' k hk⟩`. Establish `hσ` using `sigma_sigma h`. Establish `eS` using `unip_eq_unipFlag F E σ h n J hJ r X Y hW S mS hmS hmS'`.
+
+Establish `eT` using `unip_eq_unipFlag F E σ h n J hJ r X Y hW T mT hmT hmT'`. Establish `hCS : IsIsoCols σ J (initCols X mS)` using `isIsoCols_of_isWittFrame hW hσ hJ mS.2`. Establish `hCT : IsIsoCols σ J (initCols X mT)` using `isIsoCols_of_isWittFrame hW hσ hJ mT.2`. Use `haveI : LocallyCompactSpace (unip σ J X S) := (isClosed_unip S h hJ hW).isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : LocallyCompactSpace (unip σ J X T) := (isClosed_unip T h hJ hW).isClosedEmbedding_subtypeVal.locallyCompactSpace`.
+
+Establish `hcS : Cocompact (ratPts σ J) (unip σ J X S)` using `eS ▸ cocompact_unipFlag hJ hσ hCS _`. Establish `hcT : Cocompact (ratPts σ J) (unip σ J X T)` using `eT ▸ cocompact_unipFlag hJ hσ hCT _`. Establish `hφ' : GlobalTheory.AutomorphicL2Unitary.LeftInv (ratPts σ J) φ` using `hφ`. Establish `hnorm : ∀ p ∈ unip σ J X S, ∀ u ∈ unip σ J X T, p * u * p⁻¹ ∈ unip σ J X T` using `fun p hp u hu => by`. Rewrite `hu`, the goal using `[eT]`.
+
+Conclude with `conj_mem_unipFlag hJ hσ hCT _ (unip_le_parFlag F E σ h n J hJ r X Y hW S T mT hTS hmT hmT' hp) hu`. Establish `h0 : (0 : GAd σ J → ℂ) = constTermOn (ratPts σ J) (unip σ J X T) φ` using `(isConstTermOn_iff hcT fun γ hγ => hφ γ hγ.1).1 hT`. Use `(isConstTermOn_iff hcS fun γ hγ => hφ γ hγ.1).2 (funext fun x => ?_)` and prove the remaining obligations. Rewrite using `[Stages.constTermOn_stages (GAd σ J) (ratPts σ J) (unip σ J X S) (unip σ J X T) (unip_mono F E σ h n J hJ r X Y hW S T hTS) hnorm hcS hcT φ hφ' hφc x, ← h0]`. Simplify using `[constTermOn]`.
+-/
 theorem isConstAlong_zero_of_subset : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (X Y : Matrix (Fin n) (Fin r) E), IsWittFrame σ J X Y →
       ∀ φ : GAd σ J → ℂ, Continuous φ → (∀ γ ∈ ratPts σ J, ∀ g, φ (γ * g) = φ g) → ∀ S T : Finset (Fin r), T ⊆ S →

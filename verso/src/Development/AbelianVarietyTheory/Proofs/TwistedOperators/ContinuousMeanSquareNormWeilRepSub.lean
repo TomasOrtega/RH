@@ -10,6 +10,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.WeilNormCont
 
+/- English proof (translation)
+Introduce `D ψ S T χS χT om μ 𝓕 hom hμ f₁ f₂ h₁ h₂`. Use `haveI : BorelSpace (WO S T) := ⟨rfl⟩`. Use `haveI : IsFiniteMeasure (μ.restrict 𝓕) := ⟨by rw [Measure.restrict_apply_univ, hμ.2.2]; exact ENNReal.one_lt_top⟩`. Take `⟨b, hb⟩` from `GlobalTheory.WeilSupBound.exists_sup_bound D ψ S T χS χT om hom f₂ h₂ {1} isCompact_singleton`. Establish `hb' : ∀ w, ‖f₂ w‖ ≤ b` using `fun w => by simpa using hb 1 rfl w`.
+
+Use `continuous_iff_continuousAt.2 fun p₀ => ?_` and prove the remaining obligations. Take `⟨K, hK, hK0⟩` from `exists_compact_mem_nhds p₀`. Take `⟨c, hc⟩` from `GlobalTheory.WeilSupBound.exists_sup_bound D ψ S T χS χT om hom f₁ h₁ K hK`. Unfold `nrm2`. Use `continuousAt_of_dominated (bound := fun _ => (c + b) ^ 2) ?_ ?_ (integrable_const _) ?_` and prove the remaining obligations.
+
+Use `Filter.Eventually.of_forall fun p => ?_` and prove the remaining obligations. Conclude with `((((hom.om_pres p f₁ h₁).cont.sub h₂.cont).norm.pow 2).measurable).aestronglyMeasurable`. Use `filter_upwards [hK0] with p hp`. Use `Filter.Eventually.of_forall fun w => ?_` and prove the remaining obligations. Rewrite using `[Real.norm_of_nonneg (sq_nonneg _)]`.
+
+Conclude with `pow_le_pow_left₀ (norm_nonneg _) ((norm_sub_le _ _).trans (add_le_add (hc p hp w) (hb' w))) 2`. Use `Filter.Eventually.of_forall fun w => ?_` and prove the remaining obligations. Conclude with `(((hom.om_cont f₁ h₁ w).sub continuous_const).norm.pow 2).continuousAt`.
+-/
 theorem continuous_meanSquareNorm_weilRep_sub : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : OmT S T) (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsWeilDatumO ψ S T χS χT om → IsCovolOne (ratL T S) μ 𝓕 → ∀ f₁ f₂ : WO S T → ℂ, IsThetaFunO ψ S T f₁ → IsThetaFunO ψ S T f₂ → Continuous fun p : GA D S × GA D T => nrm2 μ 𝓕 (om p f₁ - f₂) := by
   intro D ψ S T χS χT om μ 𝓕 hom hμ f₁ f₂ h₁ h₂
   haveI : BorelSpace (WO S T) := ⟨rfl⟩

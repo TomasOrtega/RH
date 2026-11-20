@@ -22,6 +22,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.VacMoveFin
 
+/- English proof (translation)
+Introduce `D ψ θ S T a d hS hT cc δ r hSet e0 W χS χT om hW hInp t0 ht0 hev hodd hfS hfT f₀ hf₀ x₁ y₁ g₁ h₁ x₂ y₂ g₂ h₂ c₁ c₂ hg₁ hh₁ hg₂ hh₂ hr₁ hr₂`. Establish `he` using `GlobalTheory.NormSum.Model.vac_mem_TT hSet.crv hodd.1`. Establish `hG` using `GlobalTheory.NormSum.RatExtend.TT_smul c₂ (W.maps x₂ y₂ e0 he)`. Establish `key` using `GlobalTheory.T.movedThetaFunctions_read_of_movedVacuum_reads ψ θ S T hS hT cc δ r hSet e0 W χS χT om hW hodd.1 x₁ y₁ g₁ h₁ hg₁ hh₁ c₁ f₀ hf₀ hr₁ _ hG _ hr₂`. Establish `h1 : om (g₁ * g₂, h₁ * h₂) f₀ = om (g₁, h₁) (om (g₂, h₂) f₀)`.
+
+Rewrite using `[← Prod.mk_mul_mk, map_mul, Module.End.mul_apply]`. Establish `h2 : (c₁ * c₂) • W.Om (x₁ * x₂) (y₁ * y₂) e0 = c₁ • W.Om x₁ y₁ (c₂ • W.Om x₂ y₂ e0)`. Rewrite using `[W.smul _ _ _ _ (W.maps x₂ y₂ e0 he), ← W.mul _ _ _ _ _ he, smul_smul]`. Rewrite using `[h1, h2]`. Conclude with `key`.
+-/
 theorem mulStep : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) {a d : ℕ} (hS : S.rank = a) (hT : T.rank = d)
   (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (r : D.host.E), Setup ψ θ S T cc δ r →
   ∀ (e0 : VC D a d → ℂ) (W : WeilO D cc δ a d e0) (χS χT : (AE D)ˣ →* Circle)
@@ -44,6 +49,9 @@ theorem mulStep : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) 
     rw [W.smul _ _ _ _ (W.maps x₂ y₂ e0 he), ← W.mul _ _ _ _ _ he, smul_smul]
   rw [h1, h2]; exact key
 
+/- English proof (translation)
+Introduce `D ψ θ S T a d hS hT cc δ r hSet e0 W χS χT om hW hInp t0 ht0 hev hodd hfS hfT x y g h hg hh f₀ hf₀`. Conclude with `GlobalTheory.T.movedVacuum_constant_trivial_finite_pairs ψ θ S T hS hT cc δ r hSet e0 W χS χT om hW hInp t0 ht0 hev hodd hfS hfT f₀ hf₀ (GlobalTheory.VacLine.moved_vacuum_reads ψ θ S T hS hT cc δ r hSet e0 W χS χT om hW hInp t0 ht0 hev hodd hfS hfT f₀ hf₀) (mulStep ψ θ S T hS hT …`.
+-/
 theorem vacuum_move_reads : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) {a d : ℕ} (hS : S.rank = a) (hT : T.rank = d)
   (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (r : D.host.E), Setup ψ θ S T cc δ r →
   ∀ (e0 : VC D a d → ℂ) (W : WeilO D cc δ a d e0) (χS χT : (AE D)ˣ →* Circle)

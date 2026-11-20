@@ -19,6 +19,17 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThK.LemF
 open GlobalTheory.Doubling (absE)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' hC X om om' om₁ om₁' hT hT₁ v m₀ hL hn μ hμ t`. Establish `hσ : ∀ e, σ (σ e) = e`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Introduce `e`. Apply `τ.injective` to reduce the goal to its premises.
+
+Rewrite using `[hT.base.cm.2.2.2, hT.base.cm.2.2.2, star_star]`. Take `⟨Φ, hR, hM⟩` from `GlobalTheory.T.config_a_local_measure_preserving F E σ B b a' G G₁ H H' hC X om om' om₁ om₁' hT hT₁ hσ v`. Take `⟨⟨i1, i2, i3, i4⟩, ⟨j1, j2, j3, j4⟩⟩` from `GlobalTheory.T.local_spaces_borel_polish F E σ b v`. Take `⟨k1, k2, k3, -⟩` from `GlobalTheory.T.local_stabilizer_locally_compact F E σ B b a' G G₁ H H' hC X om om' om₁ om₁' hT hT₁ v`. Establish `hcl` using `(GlobalTheory.T.levi_embedding_local_measurable F E σ B b a' G G₁ H H' hC X om om' om₁ om₁' hT hT₁ v m₀ hL).1`.
+
+Use `haveI : BorelSpace (UA σ G.V.J) := ⟨rfl⟩`. Use `haveI : LocallyCompactSpace (stabAt σ G.V (evFin F v) H.x) := hcl.locallyCompactSpace`. Establish `hLcl : IsClosed ((stabAtPair σ G.V (evFin F v) H.x H.y : Subgroup _) : Set (stabAt σ G.V (evFin F v) H.x))`. Establish `hm : Continuous fun q : stabAt σ G.V (evFin F v) H.x => mat q.1.1` using `Units.continuous_val.comp (continuous_subtype_val.comp (continuous_subtype_val.comp continuous_subtype_val))`. Conclude with `isClosed_eq (hm.matrix_mulVec continuous_const) continuous_const`.
+
+Use `haveI := hLcl.locallyCompactSpace`. Set `α : stabAt σ G.V (evFin F v) H.x →* stabAt σ G.V (evFin F v) H.x` to `{ toFun := fun q => ⟨(m₀ t)⁻¹ * q * m₀ t, hn t q q.2⟩ map_one' := Subtype.ext (by simp) map_mul' := fun p q => Subtype.ext (by simp [mul_assoc]) }`. Establish `hαc : Continuous α` using `((continuous_const.mul continuous_subtype_val).mul continuous_const).subtype_mk _`. Establish `hsA : Continuous (vecAtSmul (ev` using `evFin F v) (m := b) (cA σ (t.1⁻¹ : (AE F E)ˣ).1)) := ((continuous_const_smul _).comp continuous_subtype_val).subtype_mk _`. Establish `hsC : Continuous (normSmul (ev` using `evFin F v) hσ (t.1⁻¹ : (AE F E)ˣ).1) := (continuous_const.mul continuous_subtype_val).subtype_mk _`.
+
+Establish `hconj : ∀ l a c, α (Φ (l, (a, c))) = Φ (l, (vecAtSmul (cA σ (t.1⁻¹ : (AE F E)ˣ).1) a, normSmul hσ (t.1⁻¹ : (AE F E)ˣ).1 c))` using `fun l a c => Subtype.ext (Subtype.ext (hM t.1 (m₀ t).1 (hL t) l a c).symm)`. Establish `key` using `GlobalTheory.T.semidirect_haar_measure_product _ _ _ _ Φ hR α _ _ (absE F E t.1 ^ b) (absE F E t.1) hαc hsA hsC hconj (GlobalTheory.T.haar_vector_scaling_idele F E σ b v t.1 t.2) (GlobalTheory.T.haar_skew_scaling_idele F E σ hT.base.cm hσ v t.1 t.2) μ hμ`. Rewrite using `[absPow_apply, pow_succ]`. Conclude with `key`.
+-/
 theorem modulus_levi : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ)
     (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →
     ∀ X om om' om₁ om₁', IsTriple B G X om om' → IsTriple B G₁ X om₁ om₁' → ∀ (v : Pl F),

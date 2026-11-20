@@ -23,15 +23,24 @@ section Units
 
 variable {S : Type} [CommRing S] (J : Ideal S)
 
+/- English proof (translation)
+The claim follows from `congrArg (fun q => q.hom a) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom f))`.
+-/
 theorem appTop_specMap {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (a : Γ(Spec (CommRingCat.of A), ⊤)) :
     (Scheme.ΓSpecIso (CommRingCat.of B)).hom.hom ((Spec.map (CommRingCat.ofHom f)).appTop.hom a) =
       f ((Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom a) :=
   congrArg (fun q => q.hom a) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom f))
 
+/- English proof (translation)
+The claim follows from `(Scheme.ΓSpecIso (CommRingCat.of A)).commRingCatIsoToRingEquiv.injective`.
+-/
 theorem ΓSpecIso_injective (A : Type) [CommRing A] :
     Function.Injective (Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom :=
   (Scheme.ΓSpecIso (CommRingCat.of A)).commRingCatIsoToRingEquiv.injective
 
+/- English proof (translation)
+Apply `ΓSpecIso_injective` to reduce the goal to its premises. Use `IsHausdorff.StrictMono.funext' J (a := fun n => n + 1) (strictMono_id.add_const 1) (f := fun _ : Unit => (Scheme.ΓSpecIso (CommRingCat.of S)).hom.hom a) (g := fun _ : Unit => (Scheme.ΓSpecIso (CommRingCat.of S)).hom.hom b) fun n _ => (appTop_specMap _ a).symm.trans ((congrArg _ ( …` as an intermediate fact. Conclude with `congrFun this ()`.
+-/
 theorem fn_ext_levels [IsHausdorff J S] {a b : Γ(Spec (CommRingCat.of S), ⊤)}
     (h : ∀ e, (adicLevelι J (e + 1)).appTop.hom a = (adicLevelι J (e + 1)).appTop.hom b) : a = b := by
   apply ΓSpecIso_injective
@@ -41,6 +50,13 @@ theorem fn_ext_levels [IsHausdorff J S] {a b : Γ(Spec (CommRingCat.of S), ⊤)}
       (appTop_specMap _ a).symm.trans ((congrArg _ (h n)).trans (appTop_specMap _ b))
   exact congrFun this ()
 
+/- English proof (translation)
+Establish `ha : StrictMono fun n : ℕ => n + 1` using `strictMono_id.add_const 1`. Set `f : ∀ n : ℕ, Polynomial ℤ →+* S ⧸ J ^ (n + 1)` to `fun n => Polynomial.eval₂RingHom (Int.castRingHom _) ((Scheme.ΓSpecIso (CommRingCat.of _)).hom.hom (ρ n))`. Establish `hf : ∀ n, f n Polynomial.X = (Scheme.ΓSpecIso (CommRingCat.of _)).hom.hom (ρ n)` using `fun n => Polynomial.eval₂_X _ _`. Establish `hc : ∀ {m : ℕ}, (Ideal.Quotient.factorPow J (ha.monotone m.le_succ)).comp (f (m + 1)) = f m`. Introduce `m`.
+
+Use `Polynomial.ringHom_ext' (RingHom.ext_int _ _) ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, hf, hf, ← h m]`. Conclude with `(appTop_specMap _ _).symm`. Use `⟨(Scheme.ΓSpecIso (CommRingCat.of S)).inv.hom (IsAdicComplete.StrictMono.liftRingHom J ha f hc Polynomial.X), fun e => ΓSpecIso_injective _ ?_⟩` and prove the remaining obligations. Rewrite using `[appTop_specMap, Iso.inv_hom_id_apply, ← hf]`.
+
+Conclude with `congrArg (fun q => q Polynomial.X) (IsAdicComplete.StrictMono.mk_comp_liftRingHom J ha f hc (n := e))`.
+-/
 theorem exists_fn_levels [IsAdicComplete J S] (ρ : ∀ e : ℕ, Γ(Spec (CommRingCat.of (S ⧸ J ^ (e + 1))), ⊤))
     (h : ∀ e, (adicLevelMap J (Nat.le_succ (e + 1))).appTop.hom (ρ (e + 1)) = ρ e) :
     ∃ a : Γ(Spec (CommRingCat.of S), ⊤), ∀ e, (adicLevelι J (e + 1)).appTop.hom a = ρ e := by
@@ -59,6 +75,11 @@ theorem exists_fn_levels [IsAdicComplete J S] (ρ : ∀ e : ℕ, Γ(Spec (CommRi
   rw [appTop_specMap, Iso.inv_hom_id_apply, ← hf]
   exact congrArg (fun q => q Polynomial.X) (IsAdicComplete.StrictMono.mk_comp_liftRingHom J ha f hc (n := e))
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `exists_fn_levels J (fun e => (ρ e).val) h`. Take `⟨b, hb⟩` from `exists_fn_levels J (fun e => ((ρ e)⁻¹).val) fun e => by`. Establish `: Units.map (adicLevelMap J (Nat.le_succ (e + 1))).appTop.hom.toMonoidHom (ρ (e + 1)) = ρ e` using `Units.ext (h e)`. Rewrite using `[← this]`. Both sides reduce to the same expression.
+
+Establish `hab : a * b = 1` using `fn_ext_levels J fun e => by`. Rewrite using `[map_mul, ha, hb, map_one, Units.mul_inv]`. Conclude with `⟨⟨a, b, hab, (mul_comm _ _).trans hab⟩, fun e => Units.ext (ha e)⟩`.
+-/
 theorem exists_unit_levels [IsAdicComplete J S] (ρ : ∀ e : ℕ, Γ(Spec (CommRingCat.of (S ⧸ J ^ (e + 1))), ⊤)ˣ)
     (h : ∀ e, (adicLevelMap J (Nat.le_succ (e + 1))).appTop.hom (ρ (e + 1)).val = (ρ e).val) :
     ∃ a : Γ(Spec (CommRingCat.of S), ⊤)ˣ, ∀ e, pullU (adicLevelι J (e + 1)) ⊤ a = ρ e := by
@@ -77,6 +98,9 @@ section Gens
 
 variable {S : Type} [CommRing S] (J : Ideal S) {X : Scheme.{0}} {L : LB X} {K K' : Type} [Fintype K] [Fintype K']
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `TorusCoord.exists_ratio hL h u hu u' hu'`. Establish `h2 : a = 1` using `Units.ext (fn_ext_levels J fun e => (FormalPoint.appTop_eq_one_of_gm _ a fun z => by`. Take `⟨C, hC⟩` from `exists_good_pt hL z`. Conclude with `mul_eq_right.1 ((ha _ _ z C hC).symm.trans (hv e z C hC))).trans (map_one _).symm)`. Conclude with `corr_of_val hL fun y C hC => by rw [ha _ _ y C hC, h2, map_one, _root_.one_mul]`.
+-/
 theorem corr_of_levels [IsHausdorff J S] (hL : L.IsLB) {φ : K → (Spec (CommRingCat.of S) ⟶ X)} {ε : K → ℤ}
     {φ' : K' → (Spec (CommRingCat.of S) ⟶ X)} {ε' : K' → ℤ} (h : FormEq φ ε φ' ε')
     {u : LB.Gen (LB.LinComb L φ ε)} (hu : u.IsGen) {u' : LB.Gen (LB.LinComb L φ' ε')} (hu' : u'.IsGen)
@@ -89,6 +113,13 @@ theorem corr_of_levels [IsHausdorff J S] (hL : L.IsLB) {φ : K → (Spec (CommRi
       exact mul_eq_right.1 ((ha _ _ z C hC).symm.trans (hv e z C hC))).trans (map_one _).symm)
   exact corr_of_val hL fun y C hC => by rw [ha _ _ y C hC, h2, map_one, _root_.one_mul]
 
+/- English proof (translation)
+Take `⟨s₀, hs₀⟩` from `DVR.exists_gen_of_local L hL φ ε`. Use `choose ρ hρ using fun e => TorusCoord.exists_ratio hL (fun U _ f => (h e U f).symm) (LB.pullGen L _ _ (u e) (y e)) (DVR.pullGen_isGen _ _ _ _ (hu e) _) (LB.pullGen L _ _ s₀ (adicLevelι J (e + 1))) (DVR.pullGen_isGen _ _ _ _ hs₀ _)`. Establish `hρ' : ∀ e (Z : Scheme.{0}) (k : Z ⟶ _) z C, Good L z C → val (u e) (k ≫ y e) z C = gm k z ⊤ (ρ e) * val s₀ (k ≫ adicLevelι J (e + 1)) z C` using `fun e Z k z C hC => (val_pull hC _ _ _).symm.trans ((hρ e Z k z C hC).trans (congrArg₂ (· * ·) rfl (val_pull hC _ _ _)))`. Take `⟨a, ha⟩` from `exists_unit_levels J ρ fun e => by`. Use `(FormalPoint.appTop_eq_of_gm _ (𝟙 _) (ρ (e + 1)) (ρ e) fun z => ?_).trans (by simp)` and prove the remaining obligations.
+
+Take `⟨C, hC⟩` from `exists_good_pt hL z`. Establish `e₁` using `hρ' (e + 1) _ (adicLevelMap J (Nat.le_succ (e + 1))) z C hC`. Establish `e₂` using `hρ' e _ (𝟙 _) z C hC`. Rewrite `e₂` using `[Category.id_comp, Category.id_comp]`. Rewrite `e₁` using `[hc e z C hC, adicLevelMap_ι, e₂]`.
+
+Conclude with `(mul_right_cancel e₁).symm`. Use `⟨scaleGen a s₀, scaleGen_isGen a hs₀, fun e Z k z C hC => ?_⟩` and prove the remaining obligations. Rewrite using `[val_scaleGen a s₀ _ hC, hρ' e Z k z C hC, ← ha e]`. Conclude with `congrArg (· * _) (gm_pull k _ z ⊤ trivial a)`.
+-/
 theorem exists_gen_levels [IsLocalRing S] [IsAdicComplete J S] (hL : L.IsLB)
     (φ : K → (Spec (CommRingCat.of S) ⟶ X)) (ε : K → ℤ) {Y : ℕ → Scheme.{0}} {ψ : ∀ e, K' → (Y e ⟶ X)}
     {ε' : K' → ℤ} (u : ∀ e, LB.Gen (LB.LinComb L (ψ e) ε')) (hu : ∀ e, (u e).IsGen)
@@ -123,6 +154,13 @@ section Main
 
 variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegPre R}
 
+/- English proof (translation)
+Introduce `U _ f`. Establish `p : ∀ α, ∏ k, f (DegPre.gtφT D T b α k) ^ DegPre.gtε k = (f (DVR.cP D T α * b).left)⁻¹ * f (DVR.cP D T α).left * f b.left * (f (1 : T ⟶ D.P.A).left)⁻¹` using `fun α => by`. Use `FormalPoint.prod_gtφT (𝟙 T) b α f` as an intermediate fact. Simplify `this` using `only [Over.id_left, Category.id_comp]`. Establish `q` using `prod_cub (DVR.cP D T χ) (DVR.cP D T χ') b f`.
+
+Rewrite using `[Fintype.prod_sum_type, Fintype.prod_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr]`. Rewrite using `[p, p, p]`. Use `(congrArg (_ * ·) q).trans ?_` and prove the remaining obligations. Rewrite using `[DVR.cPoint_add]`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 theorem formEq_mult {T : Over (Spec (CommRingCat.of R))} (b : T ⟶ D.P.A) (χ χ' : D.X) :
     FormEq (Sum.elim (DegPre.gtφT D T b (χ + χ'))
         (fun k => (lift (DegPre.cT D T χ) (lift (DegPre.cT D T χ') b)).left ≫ thφ D.P.A (x3 D.P.A) k))
@@ -148,6 +186,11 @@ variable {A : PolAV (Spec (CommRingCat.of (FractionRing R)))} {G : Over (Spec (C
 
 open FormalPoint in
 
+/- English proof (translation)
+Introduce `e Z r y hy`. Establish `w : r ≫ (Over.mk (spMap φ)).hom = (y ≫ (thickObj R I e G).hom) ≫ thick R I e`. Rewrite using `[← Over.w x, ← Category.assoc, ← hy, Category.assoc, Over.w (fstG I e G), Category.assoc]`. Both sides reduce to the same expression. Take `⟨l, rfl⟩` from `exists_factor_level I φ r _ w`.
+
+Choose the witnesses or unpack the hypotheses as in `rfl : y = l ≫ reduction I x e := by`. Rewrite using `[← cancel_mono (fstG I e G).left, Category.assoc, reduction_fstG]`. Conclude with `hy.trans (Category.assoc _ _ _)`. Conclude with `⟨(Category.assoc _ _ _).trans ((congrArg (l ≫ ·) (h₁ e)).trans (Category.assoc _ _ _).symm), fun χ z C hC => h₂ e χ Z l z C hC⟩`.
+-/
 theorem red_of_reduction (x : Over.mk (spMap φ) ⟶ G) (g : GtPt D (Over.mk (spMap φ)))
     (h₁ : ∀ e, reduction I x e ≫ (U.gt e).pG.left = adicLevelι (I.map φ) (e + 1) ≫ g.b.left)
     (h₂ : ∀ e χ (Z : Scheme.{0}) (k : Z ⟶ _) z C, Good D.P.L z C →
@@ -166,6 +209,9 @@ theorem red_of_reduction (x : Over.mk (spMap φ) ⟶ G) (g : GtPt D (Over.mk (sp
 omit [IsDomain R] [GrpObj G] [IsCommMonObj G] in
 open FormalPoint in
 
+/- English proof (translation)
+Establish `h₄ : thickMap R I e G ≫ (fstG I (e + 1) G).left = (fstG I e G).left` using `(pullback.lift_fst _ _ _).trans (Category.comp_id _)`. Rewrite using `[← cancel_mono (fstG I (e + 1) G).left, Category.assoc, Category.assoc, h₄, reduction_fstG, reduction_fstG]`. Conclude with `adicLevelMap_ι_assoc _ _ _`.
+-/
 theorem reduction_succ (x : Over.mk (spMap φ) ⟶ G) (e : ℕ) :
     adicLevelMap (I.map φ) (Nat.le_succ (e + 1)) ≫ reduction I x (e + 1) = reduction I x e ≫ thickMap R I e G := by
   have h₄ : thickMap R I e G ≫ (fstG I (e + 1) G).left = (fstG I e G).left :=
@@ -177,6 +223,11 @@ variable [IsLocalRing S]
 
 open FormalPoint in
 
+/- English proof (translation)
+Establish `H` using `fun e => h e _ _ _ (reduction_fstG I x e)`. Establish `H'` using `fun e => h' e _ _ _ (reduction_fstG I x e)`. Take `⟨b, s, hs, _, _⟩` from `g`. Take `⟨b', s', hs', _, _⟩` from `g'`. Take `rfl : b = b'` from `Over.OverMorphism.ext (hom_ext_of_isHausdorff (I.map φ) fun e => (H e).1.symm.trans (H' e).1)`.
+
+Take `rfl : s = s'` from `funext fun χ => TorusCoord.gen_eq_of_corr D.P.isLB (hs χ) (hs' χ) (corr_of_levels (I.map φ) D.P.isLB (fun _ _ _ => rfl) (hs χ) (hs' χ) fun e z C hC => ((H e).2 χ z C hC).symm.trans ((H' e).2 χ z C hC))`. Both sides reduce to the same expression.
+-/
 theorem red_unique [IsHausdorff (I.map φ) S] {x : Over.mk (spMap φ) ⟶ G} {g g' : GtPt D (Over.mk (spMap φ))}
     (h : U.Red x g) (h' : U.Red x g') : g = g' := by
   have H := fun e => h e _ _ _ (reduction_fstG I x e)
@@ -192,6 +243,19 @@ theorem red_unique [IsHausdorff (I.map φ) S] {x : Over.mk (spMap φ) ⟶ G} {g 
 
 open FormalPoint in
 
+/- English proof (translation)
+Establish `hf : IsAdicFamily (I.map φ) fun e => reduction I x e ≫ (U.gt e).pG.left` using `fun e => by`. Use `(Category.assoc _ _ _).symm.trans ?_` and prove the remaining obligations. Rewrite using `[reduction_succ, Category.assoc, U.gt_q]`. Take `⟨b₀, ⟨hb₁, hb₂⟩, -⟩` from `existsUnique_over_of_isAdicFamily (spMap φ) D.P.A.hom hf fun e => by`. Establish `h₁ : (U.gt e).pG.left ≫ D.P.A.hom = (thickObj R I e G).hom ≫ thick R I e` using `Over.w (U.gt e).pG`.
+
+Rewrite using `[Category.assoc, h₁, ← Category.assoc, reduction_hom, levelMap_thick]`. Set `T : Over (Spec (CommRingCat.of R))` to `Over.mk (spMap φ)`. Set `b : T ⟶ D.P.A` to `Over.homMk b₀ hb₁`. Establish `hb : ∀ e, adicLevelι (I.map φ) (e + 1) ≫ b.left = reduction I x e ≫ (U.gt e).pG.left` using `hb₂`. Use `choose s hs vs using fun χ => exists_gen_levels (I.map φ) D.P.isLB (DegPre.gtφT D T b χ) DegPre.gtε (fun e => (U.gt e).t χ) (fun e => (U.gt e).t_gen χ) (reduction I x) (fun e => TorusCoord.formEq_of_left b (U.gt e).pG _ _ (hb e) χ) fun e z C hC => by`.
+
+Rewrite using `[reduction_succ]`. Conclude with `(val_pull hC _ _ _).symm.trans (val_corr hC (U.gt_t e χ) _)`. Establish `hm : ∀ χ χ' : D.X, LB.Gen.Corr D.P.L _ _ _ _ (LB.mulGen D.P.L _ _ _ _ (s (χ + χ')) (DegPre.cubAtT D T (DegPre.cT D T χ) (DegPre.cT D T χ') b)) (LB.mulGen D.P.L _ _ _ _ (s χ) (s χ'))` using `fun χ χ' => by`. Use `corr_of_levels (I.map φ) D.P.isLB (formEq_mult b χ χ') (DVR.mulGen_isGen _ _ _ _ _ _ _ (hs _) (DVR.pullGen_isGen _ _ _ _ D.cub.isGen _)) (DVR.mulGen_isGen _ _ _ _ _ _ _ (hs _) (hs _)) fun e z C hC => ?_` and prove the remaining obligations. Establish `v : ∀ α, val ((U.gt e).t α) (reduction I x e) z C = val (s α) (adicLevelι (I.map φ) (e + 1)) z C` using `fun α => by simpa only [Category.id_comp] using vs α e _ (𝟙 _) z C hC`.
+
+Establish `m` using `TorusCoord.val_t_mul (U.gt e) (reduction I x e) χ χ' z C hC`. Rewrite `m` using `[v, v, v, ← (TorusCoord.comp_eq_of_left b (U.gt e).pG _ _ (hb e)).2 χ χ']`. Conclude with `(val_mul hC _ _ _).trans ((congrArg₂ (· * ·) rfl (val_pull hC _ _ _)).trans (m.trans (val_mul hC _ _ _).symm))`. Use `⟨⟨b, s, hs, corr_of_val D.P.isLB fun y C hC => ?_, hm⟩, red_of_reduction U x _ (fun e => (hb e).symm) fun e χ => vs χ e⟩` and prove the remaining obligations. Establish `h` using `((val_mul hC _ _ _).trans (congrArg₂ (· * ·) rfl (val_pull hC _ _ _))).symm.trans ((val_corr hC (hm 0 0) (𝟙 _)).trans (val_mul hC _ _ _))`.
+
+Establish `c0 : DegPre.cT D T 0 = 1` using `cPoint_zero T`. Establish `c1 : TorusCoord.cubVal (𝟙 _ ≫ (lift (DegPre.cT D T 0) (lift (DegPre.cT D T 0) b)).left) y C = 1`. Rewrite using `[c0, Category.id_comp]`. Conclude with `(isCub_cubV D.cub hC).face 1 b`. Establish `h'` using `(congrArg (_ * ·) c1).symm.trans h`.
+
+Rewrite `h'` using `[add_zero, _root_.mul_one]`. Conclude with `(mul_eq_left.1 h'.symm).trans (val_one _).symm`.
+-/
 theorem exists_red [IsAdicComplete (I.map φ) S] (x : Over.mk (spMap φ) ⟶ G) :
     ∃ g : GtPt D (Over.mk (spMap φ)), U.Red x g := by
   have hf : IsAdicFamily (I.map φ) fun e => reduction I x e ≫ (U.gt e).pG.left := fun e => by
@@ -232,12 +296,18 @@ theorem exists_red [IsAdicComplete (I.map φ) S] (x : Over.mk (spMap φ) ⟶ G) 
   rw [add_zero, _root_.mul_one] at h'
   exact (mul_eq_left.1 h'.symm).trans (val_one _).symm
 
+/- English proof (translation)
+The claim follows from `existsUnique_of_exists_of_unique (exists_red U x) fun _ _ h h' => red_unique U h h'`.
+-/
 theorem existsUnique_red [IsAdicComplete (I.map φ) S] (x : Over.mk (spMap φ) ⟶ G) :
     ∃! g : GtPt D (Over.mk (spMap φ)), U.Red x g :=
   existsUnique_of_exists_of_unique (exists_red U x) fun _ _ h h' => red_unique U h h'
 
 end Main
 
+/- English proof (translation)
+Introduce `V _ _ _ _ D A G _ _ U W _ _ _ hW x`. Use `hW.2.2.2.2` as an intermediate fact. Conclude with `existsUnique_red U (φ := algebraMap V W) x`.
+-/
 theorem main : AllPre fun {V} _ _ _ {D} {_} {G} _ _ U => ∀ (W : Type) [CommRing W] [IsLocalRing W] [Algebra V W],
     FinExt V W → ∀ x : TA V W ⟶ G, ∃! g : GtPt D (TA V W), U.Red x g := by
   intro V _ _ _ _ D A G _ _ U W _ _ _ hW x

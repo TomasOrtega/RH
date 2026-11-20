@@ -7,6 +7,15 @@ set_option synthInstance.maxHeartbeats 200000
 
 section
 open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.AlgRepEndIrreducible
+/- English proof (translation)
+Introduce `lit E _ _ _ a ha π Ξ h`. Use `choose m h1 h2 using h`. Establish `hd : ∀ τ, GlobalTheory.WignerGL.HasDualInfChar Ξ τ (m τ)` using `fun τ => (dualIff E a Ξ τ _).1 (h2 τ)`. Establish `hreg : (CG.mk π).IsRegAlg` using `(GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => by`. Take `⟨m', e1, e2, e3⟩` from `GlobalTheory.AlgInfChar.exists_dualInfChar E a Ξ τ`.
+
+Establish `e : m τ = m'` using `msetSep _ _ fun u => by haveI : Nonempty (Fin Ξ.d) := ⟨⟨0, Ξ.pos⟩⟩`. Conclude with `smul_left_injective ℂ one_ne_zero (((hd τ).2 u).symm.trans (e1.2 u))`. Establish `h3 : (CG.mk π).HasInfChar τ (m τ)` using `h1 τ`. Rewrite using `[h3.infChar_eq, e]`. Conclude with `⟨e2, e3⟩`.
+
+Take `⟨Ξ', hΞ'⟩` from `lit.aut.coh E a ha π hreg`. Use `choose m' g1 g2 g3 using GlobalTheory.AlgInfChar.exists_dualInfChar E a Ξ'`. Establish `e : m = m'`. Assume the negation of the conclusion as `hne`. Conclude with `wigner E a π Ξ' m m' h1 g1 hne hΞ'`.
+
+Substitute `e` using the available equality. Take `⟨T, hT⟩` from `algIso E a Ξ' Ξ (fun τ => (m τ).map Neg.neg) (fun τ => (dualIff E a Ξ' τ _).2 (g1 τ)) h2`. Conclude with `cohTransport E a π Ξ' Ξ T hT hΞ'`.
+-/
 theorem UpperTheory.V.Af.clozelCohC_alt :
     _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis → UpperTheory.V.Published.ClozelCohC := by
   intro lit E _ _ _ a ha π Ξ h

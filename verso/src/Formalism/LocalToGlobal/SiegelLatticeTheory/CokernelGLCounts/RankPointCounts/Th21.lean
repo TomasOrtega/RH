@@ -16,6 +16,21 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} {X : HidaSetting D} (Y : Full X) {u u' : D.what₂.Word}
 
+/- English proof (translation)
+Establish `hdim` using `Formalism.L2.SG.Corank.finrank_VS D`. Take `⟨hrow1, hs01⟩` from `hR1`. Take `⟨hrow2, hs02⟩` from `hR2`. Establish `hl1 : t1.lam = t0.lam` using `congrArg (fun r => (r.1 : Submodule (𝓞 D.host.E) (VS D).V)) hrow1`. Establish `hl1' : t1.lam' = t0.lam'` using `congrArg (fun r => (r.2.1 : Submodule (𝓞 D.host.E) (VS D).V)) hrow1`.
+
+Establish `hl2 : t2.lam = t0.lam` using `congrArg (fun r => (r.1 : Submodule (𝓞 D.host.E) (VS D).V)) hrow2`. Establish `hl2' : t2.lam' = t0.lam'` using `congrArg (fun r => (r.2.1 : Submodule (𝓞 D.host.E) (VS D).V)) hrow2`. Establish `hlat : Submodule.IsLattice D.host.E t0.lam` using `((Y.rowsOK u).1 t0.lam t0.mem).2.1.1`. Establish `hLF : IsLift t0.lam (lf D (X.Fu u))` using `((Y.rowsOK u).1 t0.lam t0.mem).2.1.2.2.1`. Establish `hL0 : IsLift t0.lam t0.frame` using `t0.rep.2.2.2.2.1`.
+
+Establish `hL1 : IsLift t0.lam t1.frame` using `by rw [← hl1]; exact t1.rep.2.2.2.2.1`. Establish `hL2 : IsLift t0.lam t2.frame` using `by rw [← hl2]; exact t2.rep.2.2.2.2.1`. Establish `hG0` using `G_ne_of_Gt Y h0`. Establish `hG1` using `G_ne_of_Gt Y h1`. Establish `hG2` using `G_ne_of_Gt Y h2`.
+
+Establish `hTh1 : Th t0.lam (lf D (X.Fu u)) t0.frame t1.frame (t1.lin * t0.lin⁻¹) = Hp t0.lam (lf D (X.Fu u)) t0.frame`. Establish `h : Formalism.L2.SG.TermOp.s0T t0 t1 = 1` using `hs01`. Unfold `Formalism.L2.SG.TermOp.s0T at h`. Rewrite `h` using `[if_pos ⟨hl1.symm, hl1'.symm⟩]`. Conclude with `(CorankRelation.s0_eq_one_iff_Th_eq_Hp D.R.k hdim t0.lam hlat _ t0.frame t1.frame _ hLF hL0 hG0).1 h`.
+
+Establish `hTh2 : Th t0.lam (lf D (X.Fu u)) t0.frame t2.frame (t2.lin * t0.lin⁻¹) = Hp t0.lam (lf D (X.Fu u)) t0.frame`. Establish `h : Formalism.L2.SG.TermOp.s0T t0 t2 = 1` using `hs02`. Unfold `Formalism.L2.SG.TermOp.s0T at h`. Rewrite `h` using `[if_pos ⟨hl2.symm, hl2'.symm⟩]`. Conclude with `(CorankRelation.s0_eq_one_iff_Th_eq_Hp D.R.k hdim t0.lam hlat _ t0.frame t2.frame _ hLF hL0 hG0).1 h`.
+
+Establish `hsym1` using `CorankRelation.Th_symm D.R.k hdim t0.lam hlat _ t0.frame t1.frame (t1.lin * t0.lin⁻¹) hLF hL0 hL1 hG0 hG1 (CorankRelation.frame_mem_iff t0 t1) hTh1`. Rewrite `hsym1` using `[show (t1.lin * t0.lin⁻¹)⁻¹ = t0.lin * t1.lin⁻¹ by group]`. Establish `htr` using `CorankRelation.Th_trans t0.lam _ t1.frame t0.frame t2.frame (t0.lin * t1.lin⁻¹) (t2.lin * t0.lin⁻¹) (fun x hx => (CorankRelation.frame_mem_iff t0 t2 x).1 hx) hsym1 hTh2`. Rewrite `htr` using `[show (t2.lin * t0.lin⁻¹) * (t0.lin * t1.lin⁻¹) = t2.lin * t1.lin⁻¹ by group]`. Establish `hsym2` using `CorankRelation.Th_symm D.R.k hdim t0.lam hlat _ t1.frame t2.frame (t2.lin * t1.lin⁻¹) hLF hL1 hL2 hG1 hG2 (CorankRelation.frame_mem_iff t1 t2) htr`.
+
+Rewrite `hsym2` using `[show (t2.lin * t1.lin⁻¹)⁻¹ = t1.lin * t2.lin⁻¹ by group]`. Conclude with `⟨hl1, hl2, hsym2⟩`.
+-/
 theorem th21 (t0 t1 t2 : TauC Y u u') (h0 : Gt t0 ≠ 0) (h1 : Gt t1 ≠ 0) (h2 : Gt t2 ≠ 0)
     (hR1 : RelC Y u u' t0 t1) (hR2 : RelC Y u u' t0 t2) :
     t1.lam = t0.lam ∧ t2.lam = t0.lam ∧

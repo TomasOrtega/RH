@@ -17,12 +17,18 @@ section SplitLineAux
 
 variable {Γ k : Type} [Group Γ] [Field k] {m : ℕ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private lemma sumRep_val (s : Γ →* GL (Fin m) k) (c : Γ →* kˣ) (g : Γ) :
     ((sumRep s (rk1 c) g : GL (Fin (m + 1)) k) : Matrix (Fin (m + 1)) (Fin (m + 1)) k) =
       (Matrix.fromBlocks (s g : Matrix (Fin m) (Fin m) k) 0 0
         ((rk1 c g : GL (Fin 1) k) : Matrix (Fin 1) (Fin 1) k)).submatrix
           finSumFinEquiv.symm finSumFinEquiv.symm := rfl
 
+/- English proof (translation)
+Simplify using `[rk1, Subsingleton.elim i j]`.
+-/
 private lemma rankOneRep_val (c : Γ →* kˣ) (g : Γ) (i j : Fin 1) :
     ((rk1 c g : GL (Fin 1) k) : Matrix (Fin 1) (Fin 1) k) i j = (c g : k) := by
   simp [rk1, Subsingleton.elim i j]
@@ -46,6 +52,9 @@ private def subRep (r : Γ →* GL (Fin (m + 1)) k) {W' : Submodule k (Fin (m + 
       map_mul' := fun g h => by
         rw [map_mul, Module.End.mul_eq_comp, LinearMap.toMatrix_comp b b b] }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private lemma subRep_val (r : Γ →* GL (Fin (m + 1)) k) {W' : Submodule k (Fin (m + 1) → k)}
     (hinv : IsInv r W') (b : Module.Basis (Fin m) k W') (g : Γ) :
     ((subRep r hinv b g : GL (Fin m) k) : Matrix (Fin m) (Fin m) k) =
@@ -55,6 +64,13 @@ private def colM {W' : Submodule k (Fin (m + 1) → k)} (b : Module.Basis (Fin m
     (v : Fin (m + 1) → k) : Matrix (Fin (m + 1)) (Fin m ⊕ Fin 1) k :=
   Matrix.of fun i => Sum.elim (fun j => (b j : Fin (m + 1) → k) i) (fun _ => v i)
 
+/- English proof (translation)
+Use extensionality with `i j`. Break down `j with j | j` into its components or cases. Establish `h1 : ((r g : Matrix (Fin (m + 1)) (Fin (m + 1)) k) * colM b v) i (Sum.inl j) = ((r g : Matrix (Fin (m + 1)) (Fin (m + 1)) k).mulVec (b j : Fin (m + 1) → k)) i` using `rfl`. Establish `h2` using `b.sum_repr (resHom r hinv g (b j))`. Establish `h4 : ((resHom r hinv g (b j) : W') : Fin (m + 1) → k) = (r g : Matrix (Fin (m + 1)) (Fin (m + 1)) k).mulVec (b j : Fin (m + 1) → k)` using `rfl`.
+
+Establish `h3 : ((r g : Matrix (Fin (m + 1)) (Fin (m + 1)) k).mulVec (b j : Fin (m + 1) → k)) i = ∑ a, (b.repr (resHom r hinv g (b j))) a * (b a : Fin (m + 1) → k) i`. Establish `h5` using `congrArg (fun u : W' => (u : Fin (m + 1) → k) i) h2`. Simplify using `only [AddSubmonoidClass.coe_finset_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at h5`. Rewrite using `[← h4, h5]`. Rewrite using `[h1, h3, Matrix.mul_apply, Fintype.sum_sum_type]`.
+
+Simplify using `[subRep_val, colM, LinearMap.toMatrix_apply, mul_comm]`. Establish `h1 : ((r g : Matrix (Fin (m + 1)) (Fin (m + 1)) k) * colM b v) i (Sum.inr j) = ((r g : Matrix (Fin (m + 1)) (Fin (m + 1)) k).mulVec v) i` using `rfl`. Rewrite using `[h1, hv g, Matrix.mul_apply, Fintype.sum_sum_type]`. Simplify using `[colM, rankOneRep_val, mul_comm]`.
+-/
 private lemma intertw (r : Γ →* GL (Fin (m + 1)) k) {W' : Submodule k (Fin (m + 1) → k)}
     (hinv : IsInv r W') (b : Module.Basis (Fin m) k W') (c : Γ →* kˣ) (v : Fin (m + 1) → k)
     (hv : ∀ g, (r g : Matrix (Fin (m + 1)) (Fin (m + 1)) k).mulVec v = (c g : k) • v) (g : Γ) :
@@ -81,6 +97,11 @@ private lemma intertw (r : Γ →* GL (Fin (m + 1)) k) {W' : Submodule k (Fin (m
     rw [h1, hv g, Matrix.mul_apply, Fintype.sum_sum_type]
     simp [colM, rankOneRep_val, mul_comm]
 
+/- English proof (translation)
+Use `LinearIndependent.sum_type (b.linearIndependent.map' W'.subtype (Submodule.ker_subtype W')) (LinearIndependent.of_subsingleton (0 : Fin 1) hv0) ?_` and prove the remaining obligations. Use `Disjoint.mono ?_ ?_ hc.disjoint.symm` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `(b j).2`.
+
+Rewrite using `[Set.range_const]`.
+-/
 private lemma col_indep {W' : Submodule k (Fin (m + 1) → k)} (b : Module.Basis (Fin m) k W')
     {v : Fin (m + 1) → k} (hv0 : v ≠ 0) (hc : IsCompl (Submodule.span k {v}) W') :
     LinearIndependent k (Sum.elim (fun j => (b j : Fin (m + 1) → k)) (fun _ : Fin 1 => v)) := by
@@ -97,6 +118,19 @@ end SplitLineAux
 
 end UpperTheory.Gal.TP.Sub
 
+/- English proof (translation)
+Introduce `Γ k _ _ m r hss c ⟨v, hv0, hv⟩`. Establish `hW : IsInv r (Submodule.span k {v})`. Introduce `g x hx`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hx`. Rewrite using `[Matrix.mulVec_smul, hv g, smul_comm]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self v))`. Take `⟨W', hinv, hc⟩` from `hss _ hW`. Establish `hfr : Module.finrank k W' = m`. Establish `h` using `Submodule.finrank_add_eq_of_isCompl hc`. Rewrite `h` using `[finrank_span_singleton hv0, Module.finrank_fin_fun]`.
+
+Use linear arithmetic over natural numbers and integers. Set `b : Module.Basis (Fin m) k W'` to `Module.finBasisOfFinrankEq k W' hfr`. Set `Q : Matrix (Fin (m + 1)) (Fin (m + 1)) k` to `(colM b v).submatrix id finSumFinEquiv.symm`. Establish `hQ : IsUnit Q`. Rewrite using `[← Matrix.linearIndependent_cols_iff_isUnit]`.
+
+Use `(col_indep b hv0 hc).comp finSumFinEquiv.symm finSumFinEquiv.symm.injective` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `j i`. Apply the tactic sequence `rcases h : finSumFinEquiv.symm j with j' | j' <;> simp [Q, colM, Matrix.col, h]`. Take `⟨q, hq⟩` from `hQ`.
+
+Use `⟨subRep r hinv b, q⁻¹, fun g => ?_⟩` and prove the remaining obligations. Establish `key : (r g : Matrix (Fin (m + 1)) (Fin (m + 1)) k) * Q = Q * (sumRep (subRep r hinv b) (rk1 c) g : GL (Fin (m + 1)) k)`. Rewrite using `[sumRep_val]`. Express the relevant statement in the definitionally equal form `_ * (colM b v).submatrix id finSumFinEquiv.symm = (colM b v).submatrix id finSumFinEquiv.symm * _`. Rewrite using `[Matrix.submatrix_mul_equiv, ← intertw r hinv b c v hv g]`.
+
+Use extensionality with `i j`. Both sides reduce to the same expression. Establish `key2 : r g * q = q * sumRep (subRep r hinv b) (rk1 c) g` using `Units.ext (by`. Simplify `key)` using `[hq]`. Rewrite using `[inv_inv, mul_assoc, key2, ← mul_assoc, inv_mul_cancel, one_mul]`.
+-/
 theorem UpperTheory.Gal.TP.Sub.splitLine_holds : SplitLine := by
   intro Γ k _ _ m r hss c ⟨v, hv0, hv⟩
   have hW : IsInv r (Submodule.span k {v}) := by

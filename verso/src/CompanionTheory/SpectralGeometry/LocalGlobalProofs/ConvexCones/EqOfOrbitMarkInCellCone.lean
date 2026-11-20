@@ -8,6 +8,21 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 
 namespace GlobalTheory.CompanionTheory.Ar.Fan.OrbitMarkUniqueInCell
 
+/- English proof (translation)
+Introduce `O _ _ _ _ bar w0 hb q φ lab hφ hlab hS X₀ _ _ _ m₀ δ₀ h₀ hli₀ hprim₀ v t hv ht hvt X _ _ _ _ hX m γ hγ β hβ hβn β' hβ' hβ'n hm hm' hin hin'`. Take `⟨m', δ, hδ, hδli, hδinj, hγδ⟩` from `hS.2 X hX m γ hγ`. Establish `hcδ : ∀ j, InRCone δ (γ j)` using `hγδ`. Take `⟨c, hc, hβc⟩` from `inRCone_trans hcδ hin`. Take `⟨c', hc', hβc'⟩` from `inRCone_trans hcδ hin'`.
+
+Take `⟨p, hp, hpi, hpc⟩` from `GlobalTheory.T.exists_matching_pieces_of_cell O bar w0 hb φ hφ δ₀ h₀ hli₀ hprim₀ v t hv ht hvt β hm`. Take `⟨p', hp', hpi', hpc'⟩` from `GlobalTheory.T.exists_matching_pieces_of_cell O bar w0 hb φ hφ δ₀ h₀ hli₀ hprim₀ v t hv ht hvt β' hm'`. Establish `hlabray : ∀ (x : LinearMap.BilinForm ℤ X) (j : Fin m') (d : ℝ), 0 < d → x ∈ balForms bar X → (∀ y, 0 ≤ x y y) → toReal x = d • toReal (δ j) → lab.evalZ x = lab.evalZ (δ j)`. Introduce `x j d hd hxb hxn hx`. Take `⟨a, b, ha, hb', hab⟩` from `GlobalTheory.T.exists_pos_rat_multiple_of_pos_real_multiple_intForm x (δ j) d hd (hδli.ne_zero j) hx`.
+
+Establish `h1` using `hS.1 X hX x hxb hxn a ha`. Establish `h2` using `hS.1 X hX (δ j) (hδ.mem j) (hδ.nonneg j) b hb'`. Rewrite using `[← h1, ← h2, hab]`. Establish `hpeq : ∀ i, 0 < t i → p i = p' i`. Introduce `i hti`.
+
+Take `⟨hpb, hpn, hpp, hpl⟩` from `hpi i hti`. Take `⟨hpb', hpn', hpp', hpl'⟩` from `hpi' i hti`. Take `⟨j, -, d, hd, hpd⟩` from `(hpc m' δ hδ hδli c hc hβc).1 i hti`. Take `⟨j', -, d', hd', hpd'⟩` from `(hpc' m' δ hδ hδli c' hc' hβc').1 i hti`. Establish `hjj : j = j'` using `hδinj (by show lab.evalZ (δ j) = lab.evalZ (δ j')`.
+
+Rewrite using `[← hlabray _ j d hd hpb hpn hpd, ← hlabray _ j' d' hd' hpb' hpn' hpd', hpl lab hlab, hpl' lab hlab])`. Substitute `hjj` using the available equality. Establish `: toReal (p i) = (d / d') • toReal (p' i)`. Rewrite using `[hpd, hpd', smul_smul, div_mul_cancel₀ _ hd'.ne']`. Conclude with `(GlobalTheory.T.primitive_intBilinForm_eq_of_positive_real_ray (p i) (p' i) (d / d') (div_pos hd hd') hpp hpp' this).1`.
+
+Apply `toReal_injective` to reduce the goal to its premises. Rewrite using `[hp, hp']`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Break down `(ht i).lt_or_eq with h | h` into its components or cases. Rewrite using `[hpeq i h]`.
+
+Rewrite using `[← h, zero_smul, zero_smul]`.
+-/
 theorem eq_of_orbMark_of_inRCone_cell : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O) (w0 : O), CMOrd O bar → ∀ (q : ℕ) (φ lab : InvFun O), IsTwG w0 φ → IsTwG w0 lab →
   SimpLab bar q φ lab →
   ∀ {X₀ : Type} [AddCommGroup X₀] [Module O X₀] [Module.Finite O X₀] {m₀ : ℕ} (δ₀ : Fin m₀ → LinearMap.BilinForm ℤ X₀) (h₀ : IsCell bar φ δ₀),

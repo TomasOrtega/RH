@@ -11,6 +11,19 @@ open NumberField IsDedekindDomain Formalism Formalism.BasicNotions Formalism.Bas
 
 namespace GlobalTheory.BlockWindow
 
+/- English proof (translation)
+Introduce `D HW F i r π h₁ hsm hq hd ht hJ`. Establish `h2 : D.nd.l i ≠ 2` using `fun e => hsm (e ▸ D.host.toHostRaw.two_mem_small)`. Use `⟨h2, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨hK0, hK1, -⟩` from `GlobalTheory.HubLoc.localField_unramified D i hsm hq hd w hw`. Establish `hKur : (D.nbr i w hw).Kw.1 ≤ MaximalUnramifiedExtension (D.nd.l i)`.
+
+Rewrite using `[← hK0]`. Conclude with `inf_le_right`. Use `⟨GlobalTheory.BridgeInertia.inertEq D i w hw, hK1, fun CL h hs Y hc hY => ?_⟩` and prove the remaining obligations. Establish `hs1 : (LocalSituation.sit D.loc HW (D.nd.l i) (D.locA (D.nd.l i)) (D.nbr i w hw).Kw 1 CL hs).W.s = 1` using `(HW (D.nd.l i)).W_s _ 1 _ hs`. Establish `hell : LocalSituation.ell (LocalSituation.sit D.loc HW (D.nd.l i) (D.locA (D.nd.l i)) (D.nbr i w hw).Kw 1 CL hs) = D.nd.l i` using `(D.loc (D.nd.l i)).PD_p _`.
+
+Use `haveI : CharZero (LocalSituation.sit D.loc HW (D.nd.l i) (D.locA (D.nd.l i)) (D.nbr i w hw).Kw 1 CL hs).Qp := inferInstanceAs (CharZero ℚ_[D.nd.l i])`. Use `haveI : FiniteDimensional (LocalSituation.sit D.loc HW (D.nd.l i) (D.locA (D.nd.l i)) (D.nbr i w hw).Kw 1 CL hs).Qp (LocalSituation.sit D.loc HW (D.nd.l i) (D.locA (D.nd.l i)) (D.nbr i w hw).Kw 1 CL hs).K := (D.nbr i w hw).Kw.2`. Establish `hcard : Nat.card (↥(D.nbr i w hw).Kw.1 →ₐ[ℚ_[D.nd.l i]] ↥CL.1) = Module.finrank ℚ_[D.nd.l i] ↥(D.nbr i w hw).Kw.1` using `GlobalTheory.HubLoc.card_emb _ _ fun τ x => h ((D.nbr i w hw).LL_split τ x)`. Establish `hdeg` using `GlobalTheory.bridge_finrank_le D i w hw`. Take `⟨hv1, hv2⟩` from `GlobalTheory.HubLoc.padicValNat_finrank_Ks (D.nd.l i) (D.nbr i w hw).Kw`.
+
+Establish `hgK : LocalSituation.gK (LocalSituation.sit D.loc HW (D.nd.l i) (D.locA (D.nd.l i)) (D.nbr i w hw).Kw 1 CL hs) = 0`. Unfold `LocalSituation.gK`. Rewrite using `[hs1, hell]`. Conclude with `hv2 hKur`. Establish `hvd : ∀ m : ℕ, 0 < m → LocalSituation.vdegMs (LocalSituation.sit D.loc HW (D.nd.l i) (D.locA (D.nd.l i)) (D.nbr i w hw).Kw 1 CL hs) m = m - 1`.
+
+Introduce `m hm`. Unfold `LocalSituation.vdegMs`. Rewrite using `[hs1, hell]`. Conclude with `hv1 m hm`. Establish `key` using `GlobalTheory.T.jumpWindow_and_blockExponent_of_embeddings (LocalSituation.sit D.loc HW (D.nd.l i) (D.locA (D.nd.l i)) (D.nbr i w hw).Kw 1 CL hs) Y h₁ D.R.nV (4 * D.R.n) D.R.t hs1 hcard hdeg hgK (hvd _ (by unfold LocalSituation.mN; omega)) ht (fun τ => by`.
+
+Take `⟨U, hU1, hU2, hU3⟩` from `hJ w hw CL h τ`. Conclude with `⟨U, hU1, hU2, fun a ha => hU3 a (hY τ a ha)⟩)`. Use `⟨key.1, fun e he => (key.2 e he).trans (le_of_eq ?_)⟩` and prove the remaining obligations. Rewrite using `[hell]`.
+-/
 theorem jointTB_of_jumpWindow : ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (π : D.nd.X i) (h₁ : ℕ), D.nd.l i ∉ D.host.small → D.nd.l i ≠ D.host.q → D.nd.l i ≠ D.host.d → D.R.t ≤ h₁ → GlobalTheory.BlockWindow.JumpWindow D i r π h₁ → GlobalTheory.BlockWindow.JointTB D HW F i r π h₁ h₁ (GlobalTheory.HubLoc.cBnum (D.nd.l i) h₁ D.R.t (4 * D.R.n * D.R.nV)) := by
   intro D HW F i r π h₁ hsm hq hd ht hJ
   have h2 : D.nd.l i ≠ 2 := fun e => hsm (e ▸ D.host.toHostRaw.two_mem_small)

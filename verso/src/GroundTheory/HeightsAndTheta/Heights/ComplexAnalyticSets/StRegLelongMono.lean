@@ -12,11 +12,17 @@ noncomputable section
 def euclBall {n : ℕ} (x : Fin n → ℂ) (ρ : ℝ) : Set (Fin n → ℂ) :=
   {y | Real.sqrt (euclPot (y - x)) < ρ}
 
+/- English proof (translation)
+Rewrite using `[EuclideanSpace.dist_eq]`. Simplify using `[euclBall, euclPot, dist_eq_norm]`.
+-/
 theorem mem_euclBall_iff {n : ℕ} (x y : Fin n → ℂ) (ρ : ℝ) :
     y ∈ euclBall x ρ ↔ dist (WithLp.toLp 2 y : EuclideanSpace ℂ (Fin n)) (WithLp.toLp 2 x) < ρ := by
   rw [EuclideanSpace.dist_eq]
   simp [euclBall, euclPot, dist_eq_norm]
 
+/- English proof (translation)
+Simplify using `[euclBall, euclPot, hρ]`.
+-/
 theorem mem_euclBall_self {n : ℕ} (x : Fin n → ℂ) {ρ : ℝ} (hρ : 0 < ρ) : x ∈ euclBall x ρ := by
   simp [euclBall, euclPot, hρ]
 

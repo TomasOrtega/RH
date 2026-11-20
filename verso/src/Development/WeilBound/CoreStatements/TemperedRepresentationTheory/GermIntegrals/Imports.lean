@@ -5,6 +5,9 @@ open MeasureTheory GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil Gl
 
 namespace PositivityTheory.Tls2.Ming3
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ ν hν n r h g Φ`. Use `haveI : ν.IsAddHaarMeasure := hν.1`. Rewrite using `[GlobalTheory.SplitWeil.integral_comp_mul_mul_volM ν g h Φ]`. Simplify using `only [Fintype.card_fin, Complex.real_smul]`.
+-/
 theorem cov : CovSt := by
   intro k _ _ _ _ _ _ ν hν n r h g Φ
   haveI : ν.IsAddHaarMeasure := hν.1

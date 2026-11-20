@@ -12,6 +12,11 @@ section Transport
 
 variable {R : Type} [CommRing R] {ι ι' : Type} {n : ℕ}
 
+/- English proof (translation)
+Establish `h : (twistSub (R` using `R) LL' S' jj).comp (rename (fun v : ι × Fin n => (e v.1, v.2))).toRingHom = (rename (fun v : ι × Fin n => (e v.1, v.2)) : MvPolynomial (ι × Fin n) (GLLaurent R n) →ₐ[GLLaurent R n] _).toRingHom.comp (twistSub (R := R) LL S jj) := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `x`. Simplify using `[twistSub]`. Introduce `v`.
+
+Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, rename_X, twistSub, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_X, hv, hS]`. Apply the tactic sequence `split_ifs <;> simp`. Conclude with `RingHom.congr_fun h G`.
+-/
 theorem md_twist_rename (e : ι → ι') (LL : Letters ι) (LL' : Letters ι') (S : Set ι) (S' : Set ι')
     (hv : ∀ i, LL'.vec (e i) = LL.vec i) (hS : ∀ i, e i ∈ S' ↔ i ∈ S) (jj : Fin n) (G : MvPolynomial (ι × Fin n) R) :
     twistSub LL' S' jj (rename (fun v : ι × Fin n => (e v.1, v.2)) G) =
@@ -28,6 +33,11 @@ theorem md_twist_rename (e : ι → ι') (LL : Letters ι) (LL' : Letters ι') (
       split_ifs <;> simp
   exact RingHom.congr_fun h G
 
+/- English proof (translation)
+Establish `hf : Function.Injective (fun v : ι × Fin n => (e v.1, v.2))`. Introduce and unpack `⟨a, b⟩ ⟨c, d⟩ h`. Simplify using `only [Prod.mk.injEq] at h`. Conclude with `Prod.ext (he h.1) h.2`. Unfold `sDegs`.
+
+Rewrite using `[md_twist_rename e LL LL' S S' hv hS, support_rename_of_injective hf, Finset.image_biUnion]`. Use `Finset.biUnion_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_rename_mapDomain _ hf]`.
+-/
 theorem md_sDegs_rename (e : ι → ι') (he : Function.Injective e) (LL : Letters ι) (LL' : Letters ι') (S : Set ι)
     (S' : Set ι') (hv : ∀ i, LL'.vec (e i) = LL.vec i) (hS : ∀ i, e i ∈ S' ↔ i ∈ S) (jj : Fin n)
     (G : MvPolynomial (ι × Fin n) R) :
@@ -41,6 +51,19 @@ theorem md_sDegs_rename (e : ι → ι') (he : Function.Injective e) (LL : Lette
   refine Finset.biUnion_congr rfl fun m _ => ?_
   rw [coeff_rename_mapDomain _ hf]
 
+/- English proof (translation)
+Introduce `z hz`. Unfold `sDegs at hz ⊢`. Rewrite `hz`, the goal using `[Finset.mem_biUnion]`. Take `⟨m', hm', hz'⟩` from `hz`. Establish `hWH : IsWeightedHomogeneous letterWeight (twistSub LL S jj (multidegreeComponent d G)) d`.
+
+Unfold `multidegreeComponent`. Rewrite using `[map_sum]`. Apply `IsWeightedHomogeneous.sum` to reduce the goal to its premises. Introduce `m hm`. Establish `h` using `twist_substitution_weighted_homog LL S jj m (G.coeff m)`.
+
+Rewrite `h` using `[weight_eq_multidegree_fun, mem_multidegree_filter G d m hm]`. Then use the resulting hypothesis. Establish `hwt : Finsupp.weight letterWeight m' = d` using `hWH (mem_support_iff.1 hm')`. Establish `hsplit : G = multidegreeComponent d G + ∑ m ∈ G.support.filter (fun m => ¬ (fun i => multideg m i) = d), monomial m (G.coeff m)`. Unfold `multidegreeComponent`. Rewrite using `[Finset.sum_filter_add_sum_filter_not]`.
+
+Conclude with `G.support_sum_monomial_coeff.symm`. Establish `key : (twistSub LL S jj (multidegreeComponent d G)).coeff m' = (twistSub LL S jj G).coeff m'` using `by conv_rhs => rw [hsplit]`. Rewrite using `[map_add, coeff_add, map_sum, coeff_sum, Finset.sum_eq_zero, add_zero]`. Introduce `m hm`. Apply `(twist_substitution_weighted_homog LL S jj m (G.coeff m)).coeff_eq_zero` to reduce the goal to its premises.
+
+Introduce `h`. Apply `(Finset.mem_filter.1 hm).2` to reduce the goal to its premises. Rewrite using `[← weight_eq_multidegree_fun, ← h, hwt]`. Use `⟨m', ?_, key ▸ hz'⟩` and prove the remaining obligations. Rewrite `hm'`, the goal using `[mem_support_iff]`.
+
+Rewrite using `[← key]` and apply the resulting hypothesis.
+-/
 theorem md_sDegs_comp [Fintype ι] (LL : Letters ι) (S : Set ι) (jj : Fin n) (G : MvPolynomial (ι × Fin n) R)
     (d : ι → ℕ) : sDegs LL S jj (multidegreeComponent d G) ⊆ sDegs LL S jj G := by
   intro z hz
@@ -72,17 +95,31 @@ theorem md_sDegs_comp [Fintype ι] (LL : Letters ι) (S : Set ι) (jj : Fin n) (
   rw [mem_support_iff] at hm' ⊢
   rwa [← key]
 
+/- English proof (translation)
+The claim follows from `Finset.inf_mono (md_sDegs_comp LL S _ G d)`.
+-/
 theorem md_val_comp [Fintype ι] [NeZero n] (LL : Letters ι) (S : Set ι) (G : MvPolynomial (ι × Fin n) R) (d : ι → ℕ) :
     valS LL S G ≤ valS LL S (multidegreeComponent d G) := Finset.inf_mono (md_sDegs_comp LL S _ G d)
 
+/- English proof (translation)
+The claim follows from `Finset.sup_mono (md_sDegs_comp LL S _ G d)`.
+-/
 theorem md_lam_comp [Fintype ι] [NeZero n] (LL : Letters ι) (S : Set ι) (G : MvPolynomial (ι × Fin n) R) (d : ι → ℕ) :
     lam1S LL S (multidegreeComponent d G) ≤ lam1S LL S G := Finset.sup_mono (md_sDegs_comp LL S _ G d)
 
+/- English proof (translation)
+Rewrite using `[Finsupp.weight_apply, Finsupp.weight_apply, Finsupp.sum_mapDomain_index (by simp) (by intros; rw [add_smul])]`. Both sides reduce to the same expression.
+-/
 theorem md_weight_mapDomain {σ τ M : Type*} [AddCommMonoid M] (f : σ → τ) (w : τ → M) (m : σ →₀ ℕ) :
     Finsupp.weight w (Finsupp.mapDomain f m) = Finsupp.weight (w ∘ f) m := by
   rw [Finsupp.weight_apply, Finsupp.weight_apply, Finsupp.sum_mapDomain_index (by simp) (by intros; rw [add_smul])]
   rfl
 
+/- English proof (translation)
+Rewrite using `[P.as_sum, map_sum]`. Apply `IsWeightedHomogeneous.sum` to reduce the goal to its premises. Introduce `m hm`. Rewrite using `[rename_monomial]`. Apply `isWeightedHomogeneous_monomial` to reduce the goal to its premises.
+
+Rewrite using `[md_weight_mapDomain]`. Conclude with `h (mem_support_iff.1 hm)`.
+-/
 theorem md_wh_rename {σ τ M : Type*} [AddCommMonoid M] (f : σ → τ) (w : τ → M) {P : MvPolynomial σ R} {d : M}
     (h : IsWeightedHomogeneous (w ∘ f) P d) : IsWeightedHomogeneous w (rename f P) d := by
   rw [P.as_sum, map_sum]
@@ -93,6 +130,13 @@ theorem md_wh_rename {σ τ M : Type*} [AddCommMonoid M] (f : σ → τ) (w : τ
   rw [md_weight_mapDomain]
   exact h (mem_support_iff.1 hm)
 
+/- English proof (translation)
+Unfold `Pol`. Rewrite using `[mem_restrictSupport_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h m hm`. Rewrite using `[weight_eq_multidegree_fun]`.
+
+Use function extensionality and compare the values at `i`. Conclude with `h (Finset.mem_coe.2 (mem_support_iff.2 hm)) i`. Introduce `h m hm i`. Use `h (mem_support_iff.1 (Finset.mem_coe.1 hm))` as an intermediate fact. Rewrite `this` using `[weight_eq_multidegree_fun]`.
+
+Conclude with `congrFun this i`.
+-/
 theorem md_pol_iff [Fintype ι] (P : MvPolynomial (ι × Fin n) R) (d : ι → ℕ) :
     P ∈ Pol R n d ↔ IsWeightedHomogeneous letterWeight P d := by
   unfold Pol
@@ -113,26 +157,50 @@ section Main
 
 variable {O : Type} [CommRing O] [IsDomain O] {n' r K : ℕ} [NeZero n'] [NeZero r] [NeZero K] (F : Frames n' r) (j : ℤ)
 
+/- English proof (translation)
+Introduce `_ _ h` and use `((F.letters j).orderEmbOfFin rfl).injective h`.
+-/
 theorem md_eL_inj : Function.Injective (eL F j) := fun _ _ h => ((F.letters j).orderEmbOfFin rfl).injective h
+/- English proof (translation)
+The claim follows from `((F.letters j).orderEmbOfFin rfl).le_iff_le`.
+-/
 theorem md_eL_le (a b : Fin (Mj F j)) : eL F j a ≤ eL F j b ↔ a ≤ b := ((F.letters j).orderEmbOfFin rfl).le_iff_le
+/- English proof (translation)
+The claim follows from `((F.letters j).orderEmbOfFin rfl).lt_iff_lt`.
+-/
 theorem md_eL_lt (a b : Fin (Mj F j)) : eL F j a < eL F j b ↔ a < b := ((F.letters j).orderEmbOfFin rfl).lt_iff_lt
+/- English proof (translation)
+The claim follows from `Finset.orderEmbOfFin_mem _ _ _`.
+-/
 theorem md_eL_mem (a : Fin (Mj F j)) : eL F j a ∈ F.letters j := Finset.orderEmbOfFin_mem _ _ _
+/- English proof (translation)
+Establish `h` using `Finset.range_orderEmbOfFin (F.letters j) rfl`. Establish `hx' : x ∈ Set.range ((F.letters j).orderEmbOfFin rfl)` using `by rw [h]; exact hx`. Conclude with `hx'`.
+-/
 theorem md_eL_surj {x : ℤ} (hx : x ∈ F.letters j) : ∃ i, eL F j i = x := by
   have h := Finset.range_orderEmbOfFin (F.letters j) rfl
   have hx' : x ∈ Set.range ((F.letters j).orderEmbOfFin rfl) := by rw [h]; exact hx
   exact hx'
 
+/- English proof (translation)
+Introduce and unpack `⟨a, b⟩ ⟨c, d⟩ h`. Simplify using `only [Prod.mk.injEq] at h`. Conclude with `Prod.ext (md_eL_inj F j h.1) h.2`.
+-/
 theorem md_f_inj (n : ℕ) : Function.Injective (fun v : Fin (Mj F j) × Fin n => (eL F j v.1, v.2)) := by
   rintro ⟨a, b⟩ ⟨c, d⟩ h
   simp only [Prod.mk.injEq] at h
   exact Prod.ext (md_eL_inj F j h.1) h.2
 
+/- English proof (translation)
+Unfold `valS`. Rewrite using `[md_sDegs_rename (eL F j) (md_eL_inj F j) (LLs F j).toLetters LZ S S' (fun i => rfl) hS]`.
+-/
 theorem md_val_tr {n : ℕ} [NeZero n] (S' : Set ℤ) (S : Set (Fin (Mj F j))) (hS : ∀ i, eL F j i ∈ S' ↔ i ∈ S)
     (A0 : MvPolynomial (Fin (Mj F j) × Fin n) O) :
     valS LZ S' (rename (fun v : Fin (Mj F j) × Fin n => (eL F j v.1, v.2)) A0) = valS (LLs F j).toLetters S A0 := by
   unfold valS
   rw [md_sDegs_rename (eL F j) (md_eL_inj F j) (LLs F j).toLetters LZ S S' (fun i => rfl) hS]
 
+/- English proof (translation)
+Unfold `lam1S`. Rewrite using `[md_sDegs_rename (eL F j) (md_eL_inj F j) (LLs F j).toLetters LZ S S' (fun i => rfl) hS]`.
+-/
 theorem md_lam_tr {n : ℕ} [NeZero n] (S' : Set ℤ) (S : Set (Fin (Mj F j))) (hS : ∀ i, eL F j i ∈ S' ↔ i ∈ S)
     (A0 : MvPolynomial (Fin (Mj F j) × Fin n) O) :
     lam1S LZ S' (rename (fun v : Fin (Mj F j) × Fin n => (eL F j v.1, v.2)) A0) = lam1S (LLs F j).toLetters S A0 := by
@@ -154,6 +222,13 @@ def MGenM (m : ℤ) (th : ℤ → ℝ) (D : Fin (Mj F j) → ℕ) : Set (MvPolyn
       (∀ i, ¬ F.IsW j (eL F j i) → geR (valS (LLs F j).toLetters {y | y < i} A) (th (eL F j i))) ∧
       P = rename (plVar (K := K)) A * rename (tanVar (r := r)) G}
 
+/- English proof (translation)
+Introduce `z hz`. Substitute `hz` using the available equality. Consider the cases of `hv' : v with`. Consider the case `top => rw [hv'] at h`. Simplify using `at h`.
+
+Consider the case `coe z'`. Rewrite `h` using `[hv']`. Establish `h1 : z' ≤ z` using `by exact_mod_cast h`. Establish `h2` using `hv z' hv'`. Establish `h3 : (z' : ℝ) ≤ z` using `by exact_mod_cast h1`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem md_geR_mono {v v' : WithTop ℤ} (h : v ≤ v') {t : ℝ} (hv : geR v t) : geR v' t := by
   intro z hz
   subst hz
@@ -166,6 +241,23 @@ theorem md_geR_mono {v v' : WithTop ℤ} (h : v ≤ v') {t : ℝ} (hv : geR v t)
     have h3 : (z' : ℝ) ≤ z := by exact_mod_cast h1
     linarith
 
+/- English proof (translation)
+Proceed by induction on `hζ using Submodule.span_induction with`. Consider the case `mem x h`. Take `⟨A, G, Mx, hW, hC, hR, rfl⟩` from `h`. Take `⟨IA, hIA⟩ : ∃ IA : Finset (Fin (Mj F j) → ℕ), A = ∑ d ∈ IA, multidegreeComponent d A` from `⟨_, eq_sum_multidegree_components A⟩`. Take `⟨IG, hIG, hIGm⟩ : ∃ IG : Finset (Fin (Mj F j) → ℕ), G = ∑ d ∈ IG, multidegreeComponent d G ∧ ∀ d ∈ IG, ∃ m0 ∈ G.support, (fun i => multideg m0 i) = d` from `⟨_, eq_sum_multidegree_components G, fun d hd => by`.
+
+Conclude with `(@Finset.mem_image _ _ (fun a b => Classical.propDecidable (a = b)) _ _ _).1 hd⟩`. Establish `e : rename (plVar (K` using `K)) A * rename (tanVar (r := r)) G = ∑ d' ∈ IA, ∑ d'' ∈ IG, rename (plVar (K := K)) (multidegreeComponent d' A) * rename (tanVar (r := r)) (multidegreeComponent d'' G) := by`. Rewrite using `[← Finset.sum_mul_sum, ← map_sum, ← map_sum, ← hIA, ← hIG]`. Rewrite using `[e, map_sum]`. Use `Submodule.sum_mem _ fun d' _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_sum]`. Use `Submodule.sum_mem _ fun d'' hd'' => ?_` and prove the remaining obligations. Establish `h1 : IsWeightedHomogeneous letterWeight (rename (plVar (K` using `K)) (multidegreeComponent d' A)) d' := md_wh_rename (plVar (K := K)) letterWeight ((md_pol_iff _ _).1 (homogeneous_component_mem d' A))`. Establish `h2 : IsWeightedHomogeneous letterWeight (rename (tanVar (r` using `r)) (multidegreeComponent d'' G)) d'' := md_wh_rename (tanVar (r := r)) letterWeight ((md_pol_iff _ _).1 (homogeneous_component_mem d'' G))`. Establish `hwh` using `h1.mul h2`.
+
+Distinguish the cases in `hD : D = d' + d''`. Substitute `hD` using the available equality. Rewrite using `[hwh.weightedHomogeneousComponent_same]`. Use `Submodule.subset_span ⟨d', d'', multidegreeComponent d' A, multidegreeComponent d'' G, Mx, homogeneous_component_mem _ _, homogeneous_component_mem _ _, fun i => rfl, ?_, ?_, ?_, rfl⟩` and prove the remaining obligations. Introduce `i hi`.
+
+Take `⟨m0, hm0, rfl⟩` from `hIGm d'' hd''`. Use `show multideg m0 i = 0`. Unfold `multideg`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+
+Conclude with `hW (i, c) ((mem_vars_iff_mem_support _).2 ⟨m0, hm0, Finsupp.mem_support_iff.2 hne⟩) hi`. Introduce `i hi`. Use `⟨fun hE => ⟨le_trans (md_lam_comp _ _ _ _) ((hC i hi).1 hE).1, le_trans ((hC i hi).1 hE).2 (md_val_comp _ _ _ _)⟩, fun hE => ⟨le_trans (md_lam_comp _ _ _ _) ((hC i hi).2 hE).1, le_trans ((hC i hi).2 hE).2 (md_val_comp _ _ _ _)⟩⟩` and prove the remaining obligations. Introduce `i hi`. Conclude with `md_geR_mono (md_val_comp _ _ _ _) (hR i hi)`.
+
+Rewrite using `[hwh.weightedHomogeneousComponent_ne D hD]`. Conclude with `zero_mem _`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+
+Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem md_comp_gen (m : ℤ) (th : ℤ → ℝ) (D : Fin (Mj F j) → ℕ) {ζ : MvPolynomial (Fin (Mj F j) × Fin (r + K)) O}
     (hζ : ζ ∈ Submodule.span O (GenM (O := O) (K := K) F j m th)) :
     weightedHomogeneousComponent letterWeight D ζ ∈ Submodule.span O (MGenM (O := O) (K := K) F j m th D) := by
@@ -217,6 +309,31 @@ theorem md_comp_gen (m : ℤ) (th : ℤ → ℝ) (D : Fin (Mj F j) → ℕ) {ζ 
 
 end Main
 
+/- English proof (translation)
+Introduce `O _ _ n' r K _ _ _ F j m th o dd xi hxi hhom`. Unfold `XX' at hxi`. Establish `h1` using `(Submodule.mem_inf.1 hxi).1`. Establish `h2 : xi ∈ Submodule.map (plnm F j O K).toLinearMap (Submodule.span O (GenM (O` using `O) (K := K) F j m th)) := by`. Rewrite using `[Submodule.map_span]`.
+
+Use `Submodule.span_mono ?_ h1` and prove the remaining obligations. Introduce and unpack `_ ⟨A, G, M, hA, hG, hC, rfl⟩`. Take `⟨A0, rfl⟩` from `exists_rename_eq_of_vars_subset_range A _ (md_f_inj F j r) (by`. Introduce `v hv`. Take `⟨i, hi⟩` from `md_eL_surj F j ((mem_supported.1 hA) hv)`.
+
+Conclude with `⟨(i, v.2), by simp [hi]⟩)`. Take `⟨G0, rfl⟩` from `exists_rename_eq_of_vars_subset_range G _ (md_f_inj F j K) (by`. Introduce `v hv`. Take `⟨i, hi⟩` from `md_eL_surj F j ((mem_supported.1 hG) hv).1`. Conclude with `⟨(i, v.2), by simp [hi]⟩)`.
+
+Use `⟨rename (plVar (K := K)) A0 * rename (tanVar (r := r)) G0, ⟨A0, G0, fun i => M (eL F j i), ?_, ?_, ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `v hv`. Take `⟨m0, hm0, hvm⟩` from `(mem_vars_iff_mem_support _).1 hv`. Establish `h3 : (eL F j v.1, v.2) ∈ (rename (fun v : Fin (Mj F j) × Fin K => (eL F j v.1, v.2)) G0).vars`. Use `(mem_vars_iff_mem_support _).2 ⟨Finsupp.mapDomain (fun v : Fin (Mj F j) × Fin K => (eL F j v.1, v.2)) m0, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[support_rename_of_injective (md_f_inj F j K)]`. Conclude with `Finset.mem_image_of_mem _ hm0`. Rewrite using `[Finsupp.mem_support_iff]`. Use `Finsupp.mapDomain_apply (md_f_inj F j K) m0 v` as an intermediate fact. Rewrite using `[this]`.
+
+Conclude with `Finsupp.mem_support_iff.1 hvm`. Conclude with `((mem_supported.1 hG) h3).2`. Introduce `i hi`. Establish `hc` using `hC (eL F j i) (md_eL_mem F j i) hi`. Rewrite `hc` using `[md_lam_tr F j {y | y ≤ eL F j i} {y | y ≤ i} (fun i' => md_eL_le F j i' i), md_lam_tr F j {y | y < eL F j i} {y | y < i} (fun i' => md_eL_lt F j i' i), md_val_tr F j {y | y ≤ eL F j i} {y | y ≤ i} (fun i' => md_eL_le F j i' i), md_val_tr F j {y | y < eL F j i} {y | y < i} (fun i …`.
+
+Conclude with `⟨hc.1, hc.2.1⟩`. Introduce `i hi`. Establish `hc` using `(hC (eL F j i) (md_eL_mem F j i) hi).2.2`. Rewrite `hc` using `[md_val_tr F j {y | y < eL F j i} {y | y < i} (fun i' => md_eL_lt F j i' i)]`. Conclude with `hc`.
+
+Use `show plnm F j O K _ = _`. Unfold `plnm plEmb nmEmb`. Rewrite using `[map_mul, rename_rename, rename_rename, rename_rename, rename_rename]`. Both sides reduce to the same expression. Take `⟨ξ0, hξ0, rfl⟩` from `h2`.
+
+Establish `hwh : IsWeightedHomogeneous letterWeight ξ0 (fun i => dd (eL F j i))`. Introduce `m0 hm0`. Rewrite using `[weight_eq_multidegree_fun]`. Use function extensionality and compare the values at `i`. Rewrite `hhom` using `[mem_restrictSupport_iff]`.
+
+Establish `h3 : Finsupp.mapDomain (fun v : Fin (Mj F j) × Fin (r + K) => (eL F j v.1, v.2)) m0 ∈ ((plnm F j O K).toLinearMap ξ0).support` using `by show _ ∈ (rename _ ξ0).support`. Rewrite using `[support_rename_of_injective (md_f_inj F j (r + K))]`. Conclude with `Finset.mem_image_of_mem _ (mem_support_iff.2 hm0)`. Establish `h4` using `hhom (Finset.mem_coe.2 h3) (eL F j i) (md_eL_mem F j i)`. Rewrite using `[← h4]`.
+
+Unfold `multideg`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Conclude with `(Finsupp.mapDomain_apply (md_f_inj F j (r + K)) m0 (i, c)).symm`. Establish `h5` using `md_comp_gen F j m th (fun i => dd (eL F j i)) hξ0`. Rewrite `h5` using `[hwh.weightedHomogeneousComponent_same]`.
+
+Establish `h6` using `Submodule.mem_map_of_mem (f := (plnm F j O K).toLinearMap) h5`. Rewrite `h6` using `[Submodule.map_span]`. Use `Submodule.span_mono ?_ h6` and prove the remaining obligations. Introduce and unpack `_ ⟨P0, ⟨d', d'', A, G, Mx, a1, a2, a3, a4, a5, a6, rfl⟩, rfl⟩`. Conclude with `⟨d', d'', A, G, Mx, a1, a2, a3, a4, a5, a6, rfl⟩`.
+-/
 theorem restModel : RestModel := by
   intro O _ _ n' r K _ _ _ F j m th o dd xi hxi hhom
   unfold XX' at hxi

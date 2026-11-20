@@ -8,6 +8,21 @@ noncomputable section
 
 namespace Formalism.GradedWeylDivisibility
 
+/- English proof (translation)
+Introduce `K _ _ r n hn ν hν f hf hraise`. Establish `hfP` using `(dualWeylPoint K r n ν f).mp hf`. Establish `hhP` using `(dualWeylPoint K r n ν (hw K hn ν)).mp (hwMem K r n hn ν hν)`. Establish `hid : ∀ (a : Fin r) (j : Fin n), a.val ≠ j.val → idPoint K r n (a, j) = 0`. Introduce `a j h`.
+
+Simplify using `[idPoint, h]`. Establish `hP1 : ∏ v, idPoint K r n v ^ (lhwline_mnu hn ν) v = 1`. Use `Finset.prod_eq_one fun v _ => ?_` and prove the remaining obligations. Take `⟨a, j⟩` from `v`. Rewrite using `[lhwline_mnu_apply]`.
+
+Apply the tactic sequence `by_cases h : a.val = j.val <;> simp [idPoint, h]`. Establish `hcf : eval (idPoint K r n) f = coeff (lhwline_mnu hn ν) f`. Rewrite using `[lhwline_diag hn ν f hfP.1 _ hid, hP1, mul_one]`. Establish `hch : coeff (lhwline_mnu hn ν) (hw K hn ν) = 1`. Establish `h1` using `lhwline_diag hn ν (hw K hn ν) hhP.1 _ hid`.
+
+Rewrite `h1` using `[hP1, mul_one]`. Rewrite using `[← h1]`. Simplify using `[hw, eval_idPoint_lpMinor]`. Use `set c := eval (idPoint K r n) f with hc`. Use `⟨c, ?_⟩` and prove the remaining obligations.
+
+Establish `hgw : IsWeightedHomogeneous (colW r n) (f - c • hw K hn ν) ν`. Establish `h1 : f ∈ weightedHomogeneousSubmodule K (colW r n) ν` using `(mem_weightedHomogeneousSubmodule _ _ _ _).mpr hfP.1`. Establish `h2 : hw K hn ν ∈ weightedHomogeneousSubmodule K (colW r n) ν` using `(mem_weightedHomogeneousSubmodule _ _ _ _).mpr hhP.1`. Conclude with `(mem_weightedHomogeneousSubmodule _ _ _ _).mp (Submodule.sub_mem _ h1 (Submodule.smul_mem _ c h2))`. Establish `hg0 : f - c • hw K hn ν = 0`.
+
+Apply `lhwline_vanish` to reduce the goal to its premises. Introduce `a b hab`. Rewrite using `[map_sub, map_smul, lhwline_rowGen_eq a b f (hraise a b hab), lhwline_rowGen_eq a b (hw K hn ν) (fun k hk => hwRaise K r n hn ν a b k hab hk)]`. Simplify using `[Polynomial.smul_C]`. Introduce `l j hlj c'`.
+
+Rewrite using `[map_sub, map_smul, hfP.2 l j hlj c', hhP.2 l j hlj c']`. Introduce `D hD`. Rewrite using `[lhwline_diag hn ν _ hgw D hD, coeff_sub, coeff_smul, hch, ← hcf]`. Simplify using the standard rewrite rules. Conclude with `sub_eq_zero.mp hg0`.
+-/
 theorem highest_weight_line : HWLine := by
   intro K _ _ r n hn ν hν f hf hraise
   have hfP := (dualWeylPoint K r n ν f).mp hf

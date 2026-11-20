@@ -36,12 +36,23 @@ def flat (S : Type) [AddCommGroup S] [TopologicalSpace S] (n M : ℕ) :
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem projInf_flat_symm {n M : ℕ} (Y : Fin 1 → Fin (n * M) → AF F ⊗[F] E) :
     projInf ((flat _ n M).symm Y) = (flat _ n M).symm (projInf Y) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem projFin_flat_symm {n M : ℕ} (Y : Fin 1 → Fin (n * M) → AF F ⊗[F] E) :
     projFin ((flat _ n M).symm Y) = (flat _ n M).symm (projFin Y) := rfl
 
+/- English proof (translation)
+Take `⟨k, P, Q, hP, hQ, hs⟩` from `hΦ`. Use `⟨k, fun i => P i ∘ (flat _ n M).symm, fun i => Q i ∘ (flat _ n M).symm, fun i => ?_, fun i => ⟨(hQ i).1.comp_continuous (flat _ n M).symm.continuous, (hQ i).2.comp_homeomorph (flat _ n M).symm.toHomeomorph⟩, fun Y => ?_⟩` and prove the remaining obligations. Take `⟨N, e, c1, c2, f, hf⟩` from `hP i`. Use `⟨N, (flat (Ainf F ⊗[F] E) n M).symm.toAddEquiv.trans e, c1.comp (flat _ n M).symm.continuous, (flat _ n M).continuous.comp c2, f, fun X => ?_⟩` and prove the remaining obligations. Conclude with `hf _`.
+
+Simplify using `only [Function.comp_apply, hs, projInf_flat_symm, projFin_flat_symm]`.
+-/
 theorem isSchwartzBruhat_flat {n M : ℕ} {Φ : (Fin n → Fin M → AF F ⊗[F] E) → ℂ}
     (hΦ : GlobalTheory.Published.SiegelOneVector.IsSchwartzBruhat Φ) :
     GlobalTheory.Published.SiegelOneVector.IsSchwartzBruhat (Φ ∘ (flat _ n M).symm) := by
@@ -55,6 +66,13 @@ theorem isSchwartzBruhat_flat {n M : ℕ} {Φ : (Fin n → Fin M → AF F ⊗[F]
     exact hf _
   · simp only [Function.comp_apply, hs, projInf_flat_symm, projFin_flat_symm]
 
+/- English proof (translation)
+Take `⟨h1, -, -, -, -, -, -, hBor, -, -⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM (AF F)`. Use `haveI := h1`. Use `haveI := hBor n M`. Use `haveI := hBor 1 (n * M)`. Set `e` to `flat (AF F ⊗[F] E) n M`.
+
+Use `haveI : (dx.map e).IsAddHaarMeasure := Measure.isAddHaarMeasure_map _ e.toAddEquiv.toAddMonoidHom e.continuous e.surjective e.toHomeomorph.isClosedEmbedding.tendsto_cocompact`. Take `⟨c, hi⟩` from `GlobalTheory.CompanionTheory.Hypotheses₂.OneV.PoiInt.continuous_integrable_of_isSchwartzBruhat F E σ hCM (n * M) (dx.map e) inferInstance _ (isSchwartzBruhat_flat hΦ)`. Establish `hcomp : (Φ ∘ e.symm) ∘ e = Φ`. Use function extensionality and compare the values at `X`. Simplify using the standard rewrite rules.
+
+Use `⟨hcomp ▸ c.comp e.continuous, ?_⟩` and prove the remaining obligations. Use `(e.toHomeomorph.measurableEmbedding.integrable_map_iff).1 hi` as an intermediate fact. Rewrite `this` using `[show (Φ ∘ (flat _ n M).symm) ∘ e.toHomeomorph = Φ from hcomp]`. Then use the resulting hypothesis.
+-/
 theorem continuous_integrable [NumberField E] (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) {n M : ℕ}
     (dx : Measure (Fin n → Fin M → AF F ⊗[F] E)) (hdx : dx.IsAddHaarMeasure)
     {Φ : (Fin n → Fin M → AF F ⊗[F] E) → ℂ} (hΦ : GlobalTheory.Published.SiegelOneVector.IsSchwartzBruhat Φ) :
@@ -76,6 +94,11 @@ theorem continuous_integrable [NumberField E] (σ : E →ₐ[F] E) (hCM : IsCMEx
   have := (e.toHomeomorph.measurableEmbedding.integrable_map_iff).1 hi
   rwa [show (Φ ∘ (flat _ n M).symm) ∘ e.toHomeomorph = Φ from hcomp] at this
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J n ψ hψ dx hdx Φ hΦ b`. Take `⟨h1, -, -, -, -, htr, -, hBor, -, hgram⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM (AF F)`. Use `haveI := h1`. Use `haveI := hBor n M`. Take `⟨hc, hi⟩` from `continuous_integrable σ hCM dx hdx hΦ`.
+
+Establish `hph : Continuous fun X : Fin n → Fin M → AF F ⊗[F] E => ψ (algebraMap F (AF F) (1 / 2) * Algebra.trace (AF F) (AF F ⊗[F] E) (Matrix.trace ((b : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)) * gramR (AF F) σ J X)))`. Use `hψ.1.comp (continuous_const.mul (htr.comp ?_))` and prove the remaining obligations. Conclude with `(continuous_const.matrix_mul (hgram n M J)).matrix_trace`. Use `hi.mono (hc.mul hph).aestronglyMeasurable (Filter.Eventually.of_forall fun X => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, hψ.2.1, mul_one]`.
+-/
 theorem integrable_mul_phase : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
   IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (n : ℕ) (ψ : AddChar (AF F) ℂ), IsCharAF F ψ →
   ∀ dx : Measure (Fin n → Fin M → AF F ⊗[F] E), dx.IsAddHaarMeasure →

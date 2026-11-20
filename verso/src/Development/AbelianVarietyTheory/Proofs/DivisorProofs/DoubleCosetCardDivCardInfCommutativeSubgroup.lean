@@ -5,15 +5,28 @@ namespace GlobalTheory.DCIndex
 
 variable {A : Type} [Group A]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun n hn g => by rw [hc g n, mul_inv_cancel_right]; exact hn⟩`.
+-/
 theorem normal_of_comm (hc : ∀ a b : A, a * b = b * a) (V : Subgroup A) : V.Normal :=
   ⟨fun n hn g => by rw [hc g n, mul_inv_cancel_right]; exact hn⟩
 
+/- English proof (translation)
+Use `haveI : Q.Normal := normal_of_comm hc Q`. Rewrite using `[← SetLike.mem_coe, Subgroup.mul_normal, Set.mem_mul]`. Simplify using `only [SetLike.mem_coe]`.
+-/
 theorem mem_sup_iff (hc : ∀ a b : A, a * b = b * a) (P Q : Subgroup A) {x : A} :
     x ∈ P ⊔ Q ↔ ∃ p ∈ P, ∃ q ∈ Q, p * q = x := by
   haveI : Q.Normal := normal_of_comm hc Q
   rw [← SetLike.mem_coe, Subgroup.mul_normal, Set.mem_mul]
   simp only [SetLike.mem_coe]
 
+/- English proof (translation)
+Rewrite using `[Subgroup.index]`. Apply `Nat.card_congr` to reduce the goal to its premises. Use `Quotient.congr (Equiv.refl A) ?_` and prove the remaining obligations. Introduce `x y`. Simplify using `only [Equiv.refl_apply]`.
+
+Rewrite using `[DoubleCoset.rel_iff, QuotientGroup.leftRel_apply, mem_sup_iff hc]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Use `⟨a, ha, b, hb, ?_⟩` and prove the remaining obligations. Rewrite using `[hc a x, mul_assoc, inv_mul_cancel_left]`.
+
+Introduce and unpack `⟨a, ha, b, hb, h⟩`. Use `⟨a, ha, b, hb, ?_⟩` and prove the remaining obligations. Rewrite using `[hc a x, mul_assoc, h, mul_inv_cancel_left]`.
+-/
 theorem card_quot_eq_index (hc : ∀ a b : A, a * b = b * a) (P V : Subgroup A) :
     Nat.card (DoubleCoset.Quotient (P : Set A) (V : Set A)) = (P ⊔ V).index := by
   rw [Subgroup.index]
@@ -30,6 +43,19 @@ theorem card_quot_eq_index (hc : ∀ a b : A, a * b = b * a) (P V : Subgroup A) 
     refine ⟨a, ha, b, hb, ?_⟩
     rw [hc a x, mul_assoc, h, mul_inv_cancel_left]
 
+/- English proof (translation)
+Use `haveI : u.Normal := normal_of_comm hc u`. Use `haveI : (h ⊔ u).Normal := normal_of_comm hc (h ⊔ u)`. Establish `hM : (h ⊔ u) ⊓ c = (h ⊓ c) ⊔ u`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`.
+
+Take `⟨hx1, hx2⟩` from `Subgroup.mem_inf.1 hx`. Take `⟨p, hp, q, hq, rfl⟩` from `(mem_sup_iff hc h u).1 hx1`. Establish `hpc : p ∈ c`. Use `c.mul_mem hx2 (c.inv_mem (huc hq))` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_right]`. Then use the resulting hypothesis.
+
+Conclude with `(mem_sup_iff hc _ _).2 ⟨p, Subgroup.mem_inf.2 ⟨hp, hpc⟩, q, hq, rfl⟩`. Conclude with `sup_le (inf_le_inf_right c le_sup_left) (le_inf le_sup_right huc)`. Establish `e1` using `Subgroup.relIndex_mul_relIndex (H := u) (K := (h ⊔ u) ⊓ c) (L := c) (le_inf le_sup_right huc) inf_le_right`. Establish `e2 : ((h ⊔ u) ⊓ c).relIndex c = (h ⊔ u).relIndex (h ⊔ c)`. Rewrite using `[Subgroup.inf_relIndex_right, ← Subgroup.relIndex_sup_right (H := c) (K := h ⊔ u)]`.
+
+Use `congr 1`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `sup_le le_sup_right (sup_le le_sup_left (huc.trans le_sup_right))`. Conclude with `sup_le (le_sup_left.trans le_sup_right) le_sup_left`. Establish `e3 : u.relIndex ((h ⊔ u) ⊓ c) = (h ⊓ u).relIndex (h ⊓ c)`.
+
+Rewrite using `[hM, Subgroup.relIndex_sup_right, ← Subgroup.inf_relIndex_right (H := u) (K := h ⊓ c)]`. Use `congr 1`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `le_inf (inf_le_right.trans inf_le_left) inf_le_left`. Conclude with `le_inf inf_le_right (inf_le_inf_left h huc)`.
+
+Rewrite using `[← e1, e2, e3]`.
+-/
 theorem relIndex_split (hc : ∀ a b : A, a * b = b * a) (h u c : Subgroup A) (huc : u ≤ c) :
     u.relIndex c = (h ⊓ u).relIndex (h ⊓ c) * (h ⊔ u).relIndex (h ⊔ c) := by
   haveI : u.Normal := normal_of_comm hc u
@@ -60,6 +86,9 @@ theorem relIndex_split (hc : ∀ a b : A, a * b = b * a) (h u c : Subgroup A) (h
     · exact le_inf inf_le_right (inf_le_inf_left h huc)
   rw [← e1, e2, e3]
 
+/- English proof (translation)
+Establish `hle : h ⊓ u ≤ h ⊓ c` using `inf_le_inf_left h huc`. Use `Subgroup.card_mul_index ((h ⊓ u).subgroupOf (h ⊓ c))` as an intermediate fact. Rewrite `this` using `[Nat.card_congr (Subgroup.subgroupOfEquivOfLe hle).toEquiv]`. Rewrite using `[Subgroup.relIndex, mul_comm, this]`.
+-/
 theorem card_split (h u c : Subgroup A) (huc : u ≤ c) :
     (h ⊓ u).relIndex (h ⊓ c) * Nat.card (h ⊓ u : Subgroup A) = Nat.card (h ⊓ c : Subgroup A) := by
   have hle : h ⊓ u ≤ h ⊓ c := inf_le_inf_left h huc
@@ -71,6 +100,9 @@ end GlobalTheory.DCIndex
 
 namespace GlobalTheory.DCIndex
 
+/- English proof (translation)
+Establish `he : H.subgroupOf T ⊓ U.subgroupOf T = (H ⊓ U).subgroupOf T`. Use extensionality with `x`. Simplify using `[Subgroup.mem_subgroupOf, Subgroup.mem_inf]`. Rewrite using `[he]`. Conclude with `Nat.card_congr (Subgroup.subgroupOfEquivOfLe (inf_le_right.trans hUT)).toEquiv`.
+-/
 theorem card_inf_subgroupOf {G : Type} [Group G] (T H U : Subgroup G) (hUT : U ≤ T) :
     Nat.card (H.subgroupOf T ⊓ U.subgroupOf T : Subgroup T) = Nat.card (H ⊓ U : Subgroup G) := by
   have he : H.subgroupOf T ⊓ U.subgroupOf T = (H ⊓ U).subgroupOf T := by
@@ -78,6 +110,15 @@ theorem card_inf_subgroupOf {G : Type} [Group G] (T H U : Subgroup G) (hUT : U �
   rw [he]
   exact Nat.card_congr (Subgroup.subgroupOfEquivOfLe (inf_le_right.trans hUT)).toEquiv
 
+/- English proof (translation)
+Introduce `G _ T H U C hcomm hUC hCT hne`. Establish `hc : ∀ a b : T, a * b = b * a` using `fun a b => Subtype.ext (hcomm a a.2 b b.2)`. Establish `hu'c' : U.subgroupOf T ≤ C.subgroupOf T`. Introduce `x hx`. Rewrite `hx`, the goal using `[Subgroup.mem_subgroupOf]`.
+
+Conclude with `hUC hx`. Establish `hrel : (U.subgroupOf T).relIndex (C.subgroupOf T) = U.relIndex C` using `Subgroup.relIndex_subgroupOf hCT`. Rewrite using `[card_quot_eq_index hc, card_quot_eq_index hc, ← card_inf_subgroupOf T H U (hUC.trans hCT), ← card_inf_subgroupOf T H C hCT, ← hrel]`. Rewrite `hne` using `[← hrel]`. Establish `hU` using `(Subgroup.relIndex_mul_index (sup_le_sup_left hu'c' (H.subgroupOf T))).symm`.
+
+Establish `hsplit` using `relIndex_split hc (H.subgroupOf T) _ _ hu'c'`. Establish `hcard` using `card_split (H.subgroupOf T) _ _ hu'c'`. Rewrite using `[hU, hsplit, ← hcard]`. Rewrite `hne` using `[hsplit]`. Establish `hs : (((H.subgroupOf T ⊓ U.subgroupOf T).relIndex (H.subgroupOf T ⊓ C.subgroupOf T) : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (left_ne_zero_of_mul hne)`.
+
+Use `push_cast`. Rewrite using `[mul_assoc, mul_div_mul_left _ _ hs]`.
+-/
 theorem index_identity : ∀ {G : Type} [Group G] (T H U C : Subgroup G), (∀ a ∈ T, ∀ b ∈ T, a * b = b * a) → U ≤ C → C ≤ T → U.relIndex C ≠ 0 → (Nat.card (DoubleCoset.Quotient ((H.subgroupOf T : Subgroup T) : Set T) ((U.subgroupOf T : Subgroup T) : Set T)) : ℂ) / (Nat.card (H ⊓ U : Subgroup G) : ℂ) = (U.relIndex C : ℂ) * (Nat.card (DoubleCoset.Quotient ((H.subgroupOf T : Subgroup T) : Set T) ((C.subgroupOf T : Subgroup T) : Set T)) : ℂ) / (Nat.card (H ⊓ C : Subgroup G) : ℂ) := by
   intro G _ T H U C hcomm hUC hCT hne
   have hc : ∀ a b : T, a * b = b * a := fun a b => Subtype.ext (hcomm a a.2 b b.2)

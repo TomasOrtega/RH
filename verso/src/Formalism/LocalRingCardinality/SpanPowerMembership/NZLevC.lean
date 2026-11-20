@@ -16,6 +16,15 @@ section Weyl
 
 variable {O Kf : Type} [CommRing O] [IsDomain O] [Field Kf] [Algebra O Kf] [CharZero Kf]
 
+/- English proof (translation)
+Unfold `Dl0`. Use `split_ifs with hanti`. Take `⟨g, hg, rfl⟩` from `hΛ`. Use `(iInf_le _ g).trans ((iInf_le _ ⟨hg, rfl⟩).trans ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+
+Take `⟨w0, hw0, hw0x⟩` from `hx`. Establish `hnu : Antitone (nuOf lam)` using `toNat_antitone lam hanti`. Establish `h1 : (mapAlgHom (Algebra.ofId O Kf)).toLinearMap w0 ∈ dualWeyl Kf (m + 1) (m + 1) (nuOf lam)` using `dualWeylMap O Kf (algebraMap O Kf) _ _ _ w0 (weylLeDual O _ _ le_rfl _ hnu hw0)`. Establish `h2 : x = rowAct Kf g⁻¹ (rowAct Kf g x)`. Rewrite using `[rowAct_inv_left Kf _ _ g hg]`.
+
+Establish `h3 : x ∈ dualWeyl Kf (m + 1) (m + 1) (nuOf lam)`. Rewrite using `[h2]`. Use `dualWeylRowStable Kf _ _ _ g⁻¹ _ ?_` and prove the remaining obligations. Establish `: rowAct Kf g x = (mapAlgHom (Algebra.ofId O Kf)).toLinearMap w0` using `hw0x.symm`. Rewrite using `[this]`.
+
+Conclude with `h1`. Conclude with `(dualWeyl Kf (m + 1) (m + 1) (nuOf lam)).smul_mem _ h3`. Conclude with `bot_le`.
+-/
 theorem Dl0_le (m : ℕ) (lam : Fin (m + 1) → ℤ) (Λ : Submodule O (Fin (m + 1) → Kf)) (hΛ : IsLattice O Λ) :
     Dl0 O m lam Λ ≤ (dualWeyl Kf (m + 1) (m + 1) (nuOf lam)).restrictScalars O := by
   unfold Dl0
@@ -44,6 +53,9 @@ variable {p : ℕ} {O Kf : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationR
 
 abbrev nuV (v : Fin P.nV) (s : Fin (P.n' v)) : Fin (P.m + 1) → ℕ := nuOf (lamAt (P.lam0 v) s)
 
+/- English proof (translation)
+The claim follows from `toNat_antitone _ (lamAt_antitone' _ (P.dom v) s)`.
+-/
 theorem nuV_anti (v : Fin P.nV) (s : Fin (P.n' v)) : Antitone (nuV P v s) :=
   toNat_antitone _ (lamAt_antitone' _ (P.dom v) s)
 
@@ -54,6 +66,9 @@ instance (v : Fin P.nV) (s : Fin (P.n' v)) : Finite (IdxV P v s) := (sSIdxFinite
 def bV (v : Fin P.nV) (s : Fin (P.n' v)) : IdxV P v s → MvPolynomial (Fin (P.m + 1) × Fin (P.m + 1)) Kf :=
   (sSBasis Kf (P.m + 1) (P.m + 1) (nuV P v s)).choose
 
+/- English proof (translation)
+The claim follows from `(sSBasis Kf (P.m + 1) (P.m + 1) (nuV P v s)).choose_spec.1`.
+-/
 theorem bV_spec (v : Fin P.nV) (s : Fin (P.n' v)) :
     IsWeightBasis Kf (P.m + 1) (P.m + 1) (nuV P v s) (bV P v s) (fun i => rowWt i.1) :=
   (sSBasis Kf (P.m + 1) (P.m + 1) (nuV P v s)).choose_spec.1
@@ -65,6 +80,15 @@ def BI (I : ∀ v s, IdxV P v s) : P.Xsp := prodF P fun v s => bV P v s (I v s)
 
 def EV : P.Xsp := prodF P fun v s => hw Kf le_rfl (nuV P v s)
 
+/- English proof (translation)
+Set `Tv : ∀ v, Submodule Kf (MvPolynomial (Fin (P.n' v) × (Fin (P.m + 1) × Fin (P.m + 1))) Kf)` to `fun v => Submodule.span Kf {X | ∃ I : ∀ s, IdxV P v s, X = ∏ s, blockEmb Kf s (bV P v s (I s))}`. Establish `hv : ∀ v, HtenW O (P.lam0 v) (fun s => extO O (P.ι v) (P.σ v) s.val (L v)) ≤ (Tv v).restrictScalars O`. Introduce `v`. Unfold `HtenW tensorLat`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨F, hF, rfl⟩`. Use `prod_mem_of_span (R := Kf) (fun s => (blockEmb Kf s).toLinearMap) (fun s => Set.range (bV P v s)) (Tv v) (fun f hf => ?_) F (fun s => ?_)` and prove the remaining obligations. Use `choose I hI using hf`. Conclude with `Submodule.subset_span ⟨I, by simp only [AlgHom.toLinearMap_apply, hI]⟩`. Rewrite using `[(bV_spec P v s).2.1]`.
+
+Conclude with `Dl0_le _ _ _ (hL v s) (hF s)`. Unfold `Places.HtupW Places.tenV`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨F, hF, rfl⟩`. Use `prod_mem_of_span (R := Kf) (fun v => (P.vEmb v).toLinearMap) (fun v => {X | ∃ I : ∀ s, IdxV P v s, X = ∏ s, blockEmb Kf s (bV P v s (I s))}) _ (fun f hf => ?_) F (fun v => hv v (hF v))` and prove the remaining obligations.
+
+Use `choose I hI using hf`. Conclude with `Submodule.subset_span ⟨fun v s => I v s, by simp only [AlgHom.toLinearMap_apply, hI]; rfl⟩`.
+-/
 theorem htupW_le (L : P.Tup) (hL : ∀ v (s : Fin (P.n' v)), IsLattice O (extO O (P.ι v) (P.σ v) s.val (L v))) :
     P.HtupW L ≤ (Submodule.span Kf (Set.range (BI P))).restrictScalars O := by
   classical

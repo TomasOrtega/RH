@@ -14,10 +14,18 @@ def initialCoordSubspace {K : Type*} [Field K] {n : ℕ} (k : ℕ) : Submodule K
     intro c a ha i hi
     simp [ha i hi]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_initialCoordSubspace {K : Type*} [Field K] {n k : ℕ} (v : Fin n → K) :
     v ∈ (initialCoordSubspace k : Submodule K (Fin n → K)) ↔ ∀ i : Fin n, k ≤ (i : ℕ) → v i = 0 :=
   Iff.rfl
 
+/- English proof (translation)
+Introduce `i hi`. Establish `: i ≠ j`. Introduce `h`. Substitute `h` using the available equality. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `[this]`.
+-/
 theorem single_mem_initialCoordSubspace {K : Type*} [Field K] {n k : ℕ} {j : Fin n} (hj : (j : ℕ) < k)
     (c : K) : Pi.single j c ∈ (initialCoordSubspace k : Submodule K (Fin n → K)) := by
   intro i hi
@@ -25,6 +33,19 @@ theorem single_mem_initialCoordSubspace {K : Type*} [Field K] {n k : ℕ} {j : F
     intro h; subst h; omega
   simp [this]
 
+/- English proof (translation)
+Set `P : (Fin n → K) →ₗ[K] ({i : Fin n // k ≤ (i : ℕ)} → K)` to `LinearMap.pi (fun i => LinearMap.proj i.1)`. Establish `hker : LinearMap.ker P = initialCoordSubspace k`. Use extensionality with `v`. Simplify using `only [LinearMap.mem_ker, mem_initialCoordSubspace]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hv i hi`. Conclude with `congrFun hv ⟨i, hi⟩`. Introduce `hv`. Use function extensionality and compare the values at `i`. Conclude with `hv i.1 i.2`.
+
+Establish `hsurj : Function.Surjective P`. Introduce `f`. Use `⟨fun i => if hi : k ≤ (i : ℕ) then f ⟨i, hi⟩ else 0, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[P, i.2]`.
+
+Establish `hrange : LinearMap.range P = ⊤` using `LinearMap.range_eq_top.mpr hsurj`. Establish `key` using `LinearMap.finrank_range_add_finrank_ker P`. Rewrite `key` using `[hrange, finrank_top, hker, Module.finrank_fin_fun, Module.finrank_fintype_fun_eq_card]`. Establish `e : {i : Fin n // (i : ℕ) < k} ≃ Fin k` using `{ toFun := fun i => ⟨i.1, i.2⟩ invFun := fun j => ⟨⟨j, lt_of_lt_of_le j.2 h⟩, j.2⟩ left_inv := fun i => rfl right_inv := fun j => rfl }`. Establish `hc1 : Fintype.card {i : Fin n // (i : ℕ) < k} = k`.
+
+Rewrite using `[Fintype.card_congr e, Fintype.card_fin]`. Establish `hc2 : Fintype.card {i : Fin n // k ≤ (i : ℕ)} = Fintype.card {i : Fin n // ¬ ((i : ℕ) < k)}` using `Fintype.card_congr (Equiv.subtypeEquivRight (fun i => not_lt.symm))`. Establish `hc3` using `Fintype.card_subtype_compl (fun i : Fin n => (i : ℕ) < k)`. Rewrite `hc3` using `[Fintype.card_fin]`. Establish `hle : Fintype.card {i : Fin n // (i : ℕ) < k} ≤ n` using `by omega`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_initialCoordSubspace {K : Type*} [Field K] {n k : ℕ} (h : k ≤ n) :
     Module.finrank K (initialCoordSubspace k : Submodule K (Fin n → K)) = k := by
   let P : (Fin n → K) →ₗ[K] ({i : Fin n // k ≤ (i : ℕ)} → K) :=

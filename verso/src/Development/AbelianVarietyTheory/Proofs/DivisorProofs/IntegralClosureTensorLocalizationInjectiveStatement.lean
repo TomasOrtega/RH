@@ -6,6 +6,9 @@ open IsLocalRing
 set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 1000000
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | (exact @GlobalTheory.integralClosure_tensor_localization_injective) | (exact GlobalTheory.integralClosure_tensor_localization_injective) | (intros; apply GlobalTheory.integralClosure_tensor_localization_injective <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.integralClosure_tensor_localization_injective' : ∀ (S K L : Type) [CommRing S] [IsDomain S] [IsDiscreteValuationRing S]
     [Field K] [Algebra S K] [IsFractionRing S K] [Field L] [Algebra K L] [Algebra S L] [IsScalarTower S K L]
     [FiniteDimensional K L] [Algebra.IsSeparable K L] (π : S) (e : ℕ) (D : Type) [CommRing D] [Algebra S D],

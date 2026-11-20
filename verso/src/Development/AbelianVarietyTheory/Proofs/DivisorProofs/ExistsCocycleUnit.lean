@@ -16,6 +16,15 @@ open GlobalTheory.Mum GlobalTheory.TorusModel GlobalTheory.TorusCoordPull
 
 namespace GlobalTheory.FormalModel
 
+/- English proof (translation)
+Set `W : L.ι × L'.ι × L'.ι → X'.Opens` to `fun p => c ⁻¹ᵁ ((L.pull F).U (fun _ => p.1) ⊓ L'.U p.2.1) ⊓ ((L'.pull c).U (fun _ => p.2.1) ⊓ L'.U p.2.2) ⊓ ((L.pull F).U (fun _ => p.1) ⊓ L'.U p.2.2)`. Set `u : ∀ p, Γ(X', W p)ˣ` to `fun p => res (inf_le_left.trans inf_le_left) (pullU c _ (w.s (fun _ => p.1, p.2.1))) * res (inf_le_left.trans inf_le_right) (v.s (fun _ => p.2.1, p.2.2)) * (res inf_le_right (w.s (fun _ => p.1, p.2.2)))⁻¹`. Establish `hu : ∀ (Z : Scheme.{0}) (q : Z ⟶ X') (z : Z) p, q z ∈ W p → gm q z (W p) (u p) = gw w (q ≫ c) z p.1 p.2.1 * gw v q z p.2.1 p.2.2 * (gw w q z p.1 p.2.2)⁻¹` using `fun Z q z p h => (map_mul _ _ _).trans (congrArg₂ (· * ·) ((map_mul _ _ _).trans (congrArg₂ (· * ·) ((gm_res q z _ h _).trans (gm_pull q c z _ h.1.1 _)) (gm_res q z _ h _))) ((map_inv _ _).trans (congrArg (·⁻¹) (gm_res q z _ h _))))`. Establish `hF : ∀ x : X', F (c x) = F x` using `fun x => by rw [← Scheme.Hom.comp_apply, hc]`. Establish `mem : ∀ (x : X') p, F x ∈ L.U p.1 → c x ∈ L'.U p.2.1 → x ∈ L'.U p.2.2 → x ∈ W p` using `fun x p h₁ h₂ h₃ => ⟨⟨⟨mem_pull.2 (by rw [hF]; exact h₁), h₂⟩, mem_pull.2 h₂, h₃⟩, mem_pull.2 h₁, h₃⟩`.
+
+Take `⟨s, hs⟩` from `glue_unit ⊤ W (fun _ => le_top) (fun x _ => by`. Take `⟨a, ha⟩` from `exists_chart hL (F x)`. Take `⟨b, hb⟩` from `exists_chart hL' (c x)`. Take `⟨d, hd⟩` from `exists_chart hL' x`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨(a, b, d), mem x _ ha hb hd⟩) u (fun p p' x hx => by`.
+
+Rewrite using `[hu _ _ x p hx.1, hu _ _ x p' hx.2, hw _ (𝟙 _ ≫ c) x p.1 p'.1 p.2.1 p'.2.1 (mem_pull.1 hx.1.1.1.1) (mem_pull.1 hx.2.1.1.1) hx.1.1.1.2 hx.2.1.1.2, hv _ (𝟙 _) x p.2.1 p'.2.1 p.2.2 p'.2.2 hx.1.1.1.2 hx.2.1.1.2 hx.1.2.2 hx.2.2.2, hw _ (𝟙 _) x p.1 p'.1 p.2.2 p'.2.2 (mem_pull.1 hx.1.2. …`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Use the proof step `abel)`. Use `⟨s, fun Z q z J J' hJ hJ' => ?_⟩` and prove the remaining obligations.
+
+Establish `m` using `mem (q z) (J (q ≫ F), J' (q ≫ c), J' q) (hJ (q ≫ F)) (hJ' (q ≫ c)) (hJ' q)`. Establish `e` using `(gm_res q z le_top m s).symm.trans ((congrArg (gm q z _) (hs _)).trans (hu Z q z _ m))`. Rewrite using `[e, om, om, om, Category.assoc, hc, inv_mul_cancel_right]`.
+-/
 theorem exists_cocycle_unit {X X' : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X} {c : X' ⟶ X'} (hc : c ≫ F = F)
     (hL : L.IsLB) (hL' : L'.IsLB) {w : LB.Iso L' (L.pull F)} {v : LB.Iso L' (L'.pull c)} (hw : PGen w) (hv : PGen v) :
     ∃ u : Γ(X', ⊤)ˣ, ∀ (Z : Scheme.{0}) (q : Z ⟶ X') (z : Z) J J', Good L z J → Good L' z J' →
@@ -50,6 +59,15 @@ theorem exists_cocycle_unit {X X' : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' 
   have e := (gm_res q z le_top m s).symm.trans ((congrArg (gm q z _) (hs _)).trans (hu Z q z _ m))
   rw [e, om, om, om, Category.assoc, hc, inv_mul_cancel_right]
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `exists_cocycle_unit hc hL hL' hw hv`. Take `⟨u₀, hu₀⟩` from `(globalFns_holds _ _ hB).2 u.val`. Establish `cst : ∀ k, gm (q k) z ⊤ u = gm (q 2) z ⊤ u` using `fun k => by`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[← gs_unit (q k) z ⊤ trivial, ← gs_unit (q 2) z ⊤ trivial, ← hu₀]`.
+
+Conclude with `(gs_pull _ B.hom z ⊤ trivial u₀).trans ((congrArg (fun q => gs q z ⊤ u₀) (hq k)).trans (gs_pull _ B.hom z ⊤ trivial u₀).symm)`. Establish `key : ∀ k, om w z J J' (q' k) * om v z J' J' (q k) = gm (q 2) z ⊤ u * om w z J J' (q k)` using `fun k => by`. Rewrite using `[← hq' k, ← cst k]`. Conclude with `hu _ _ z J J' hJ hJ'`. Rewrite using `[← Finset.prod_mul_distrib]`.
+
+Simplify using `only [← mul_zpow, key]`. Simplify using `only [mul_zpow, Finset.prod_mul_distrib]`. Use `mul_eq_right.2 ?_` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_four]`. Use `show _ ^ (-1 : ℤ) * _ ^ (1 : ℤ) * _ ^ (1 : ℤ) * _ ^ (-1 : ℤ) = 1`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem prod_cocycle {X S : Scheme.{0}} {B : Over S} [GrpObj B] (hB : IsAbelianScheme B) {L : LB X} {L' : LB B.left}
     {F : B.left ⟶ X} {c : B.left ⟶ B.left} (hc : c ≫ F = F) (hL : L.IsLB) (hL' : L'.IsLB) {w : LB.Iso L' (L.pull F)}
     {v : LB.Iso L' (L'.pull c)} (hw : PGen w) (hv : PGen v) {Z : Scheme.{0}} (q q' : Fin 4 → (Z ⟶ B.left))
@@ -77,6 +95,27 @@ theorem prod_cocycle {X S : Scheme.{0}} {B : Over S} [GrpObj B] (hB : IsAbelianS
 variable {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] {ρ : R →+* R'} {D : DegPre R}
   {D' : DegPre R'} (hD : IsPullDeg ρ D D')
 
+/- English proof (translation)
+Establish `gp` using `pull_grp hD`. Establish `hw` using `(isGen_iff hD.w).1 hD.w_gen`. Set `b` to `pushPt gp.1.w g'.b`. Establish `hψ : ∀ χ k, DegPre.gtφT D' T' g'.b (hD.xe.symm χ) k ≫ hD.e.hom.left ≫ pullback.fst D.P.A.hom (specOf ρ) = 𝟙 _ ≫ DegPre.gtφT D _ b χ k` using `fun χ k => by`. Rewrite using `[TorusCoord.gtφT_eq, TorusCoord.gtφT_eq]`.
+
+Use `Oφ_pull hD b g'.b (𝟙 _) (Category.id_comp _).symm (hD.xe.symm χ) k` as an intermediate fact. Rewrite `this` using `[AddEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Establish `ex : ∀ χ, ∃ t : LB.Gen (LB.LinComb D.P.L (DegPre.gtφT D _ b χ) DegPre.gtε), t.IsGen ∧ PMaps hD.w (DegPre.gtφT D' T' g'.b (hD.xe.symm χ)) (DegPre.gtφT D _ b χ) DegPre.gtε (g'.s _) t (𝟙 _)` using `fun χ => by`. Establish `e : DegPre.gtφT D _ b χ = fun k => DegPre.gtφT D' T' g'.b (hD.xe.symm χ) k ≫ hD.e.hom.left ≫ pullback.fst D.P.A.hom (specOf ρ)` using `funext fun k => ((hψ χ k).trans (Category.id_comp _)).symm`. Rewrite using `[e]`.
+
+Take `⟨t, ht, h⟩` from `exists_up hw D.P.isLB D'.P.isLB (g'.s (hD.xe.symm χ)) (g'.isGen _)`. Use `⟨t, ht, fun Z r z p q hp hq => ?_⟩` and prove the remaining obligations. Conclude with `(congrArg (fun r => gm r z _ _) (Category.comp_id r)).trans (h Z r z p q (Set.mem_iInter.2 hp) (Set.mem_iInter.2 hq))`. Use `choose t ht H using ex`. Establish `vt : ∀ y (Z : Scheme.{0}) (r : Z ⟶ T'.left) (z : Z) J J', Good D.P.L z J → Good D'.P.L z J' → val (t (hD.xe y)) r z J = (∏ k, om hD.w z J J' (r ≫ DegPre.gtφT D' T' g'.b y k) ^ DegPre.gtε k) * val (g'.s y) r z J'`.
+
+Introduce `y Z r z J J' hJ hJ'`. Use `val_of_pmaps (hψ _) (H (hD.xe y)) r hJ hJ'` as an intermediate fact. Rewrite `this` using `[AddEquiv.symm_apply_apply]`. Conclude with `(congrArg (fun r => val (t (hD.xe y)) r z J) (Category.comp_id r)).symm.trans this`. Establish `vt' : ∀ y (z : T'.left) J J', Good D.P.L z J → Good D'.P.L z J' → val (t (hD.xe y)) (𝟙 T'.left) z J = (ConstFam.wVal hD.w z J J' (cP D' T' y * g'.b).left)⁻¹ * ConstFam.wVal hD.w z J J' (cP D' T' y).left * ConstFam.wVal hD.w z J J' g'.b.left * (ConstFam.wVal hD.w z J J' (1 : T' ⟶ …` using `fun y z J J' hJ hJ' => by`.
+
+Establish `v` using `vt y _ (𝟙 _) z J J' hJ hJ'`. Establish `p` using `FormalPoint.prod_gtφT (𝟙 T') g'.b y (ConstFam.wVal hD.w z J J')`. Rewrite `p` using `[Category.id_comp]`. Conclude with `v.trans (congrArg (· * _) p)`. Take `⟨g, hg, hv⟩` from `exists_pt b t ht (fun χ _ _ _ => rfl) (fun z J hJ => by`.
+
+Take `⟨J', hJ'⟩` from `exists_good' D'.P.isLB z`. Establish `v` using `vt' 0 z J J' hJ hJ'`. Rewrite `v` using `[map_zero, cv_zero g' hJ', cPoint_zero, _root_.one_mul]`. Use `v.trans ?_` and prove the remaining obligations. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Simplify using `only [ofMul_mul, ofMul_inv, ofMul_one]`. Use the proof step `abel) (fun χ χ' z J hJ => by`. Take `⟨y, rfl⟩` from `hD.xe.surjective χ`. Take `⟨y', rfl⟩` from `hD.xe.surjective χ'`. Take `⟨J', hJ'⟩` from `exists_good' D'.P.isLB z`.
+
+Establish `c` using `ConstPoint.th_pushPt globalFns_holds gp hw (T' := T') hJ hJ' (cP D' T' y) (cP D' T' y') g'.b`. Rewrite `c` using `[push_cP, push_cP]`. Establish `v₁` using `vt' y z J J' hJ hJ'`. Establish `v₂` using `vt' y' z J J' hJ hJ'`. Establish `v₃` using `vt' (y + y') z J J' hJ hJ'`.
+
+Rewrite `v₃` using `[cPoint_add, map_add]`. Establish `e` using `cv_add g' hJ' y y'`. Use `(congrArg₂ (fun a b : (T'.left.presheaf.stalk z)ˣ => a * b) v₃ c).trans (Eq.trans ?_ (congrArg₂ (· * ·) v₁ v₂).symm)` and prove the remaining obligations. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `a₁` using `congrArg Additive.ofMul e`.
+
+Simplify using `only [ofMul_mul, ofMul_inv] at a₁ ⊢`. Take the linear combination `(norm := abel) a₁)`. Conclude with `⟨g, congrArg (·.left) hg, fun y Z r z J J' hJ hJ' => (hv _ Z r z J hJ).trans (vt y Z r z J J' hJ hJ')⟩`.
+-/
 theorem exists_gtPt_up {T' : Over (Sp R')} (g' : GtPt D' T') : ∃ g : GtPt D (Over.mk (T'.hom ≫ spMap ρ)),
     g.b.left = g'.b.left ≫ hD.e.hom.left ≫ pullback.fst D.P.A.hom (specOf ρ) ∧
     ∀ y (Z : Scheme.{0}) (r : Z ⟶ T'.left) (z : Z) J J', Good D.P.L z J → Good D'.P.L z J' →
@@ -145,6 +184,11 @@ section Model
 variable {I : Ideal R'} {E : DegData R' I} {hE : IsPullDeg ρ D E.toPre} {A' : PolAV (Sp (FractionRing R'))}
   {G' : Over (Sp R')} [GrpObj G'] [IsCommMonObj G'] {Y : Over (Sp R)} [GrpObj Y] {Φ : ∀ T, (T ⟶ Y) ≃ GtPt D T}
 
+/- English proof (translation)
+Establish `w : r' ≫ Y.hom = r ≫ Y.hom` using `by rw [← Over.w (Φ Y (𝟙 Y)).b, ← Category.assoc, ← hb, Category.assoc]`. Set `k : Over.mk (r ≫ Y.hom) ⟶ Y` to `Over.homMk r rfl`. Set `k' : Over.mk (r ≫ Y.hom) ⟶ Y` to `Over.homMk r' w`. Establish `h₁` using `hΦ.1 _ _ k (𝟙 Y)`. Establish `h₂` using `hΦ.1 _ _ k' (𝟙 Y)`.
+
+Rewrite `h₁`, `h₂` using `[Category.comp_id, isPull_iff]`. Conclude with `congrArg (·.left) ((Φ _).injective (pt_ext (h₁.1.trans ((Over.OverMorphism.ext hb).trans h₂.1.symm)) fun χ z J hJ => (h₁.2 χ z J hJ).trans ((hv χ z J hJ).trans (h₂.2 χ z J hJ).symm)) : k = k')`.
+-/
 theorem hom_ext (hΦ : Represents Φ) {Z : Scheme.{0}} {r r' : Z ⟶ Y.left}
     (hb : r ≫ (Φ Y (𝟙 Y)).b.left = r' ≫ (Φ Y (𝟙 Y)).b.left)
     (hv : ∀ χ z J, Good D.P.L z J → val ((Φ Y (𝟙 Y)).s χ) r z J = val ((Φ Y (𝟙 Y)).s χ) r' z J) : r = r' := by
@@ -166,6 +210,11 @@ def Carries {e : ℕ} (c : GtCoord I E.toPre e G') (g : GtPt D Y) (φ : (thickOb
         (∏ k, om hE.w z J J' (r ≫ E.toPre.Oφ c.pG y k) ^ Oinvε k) * val (c.t y) r z J'
 
 variable (hE) in
+/- English proof (translation)
+Take `⟨ξ, hξ⟩` from `TorusCoord.exists_isPointOf c (T := (Over.map (thick R' I e)).obj (thickObj R' I e G')) (𝟙 _) (Category.id_comp _)`. Take `⟨g, hb, hv⟩` from `exists_gtPt_up hE ξ`. Establish `hp : ξ.b = c.pG` using `Over.OverMorphism.ext (hξ.1.trans (Category.id_comp _))`. Establish `h` using `hΦ.1 _ _ ((Φ _).symm g) (𝟙 Y)`. Rewrite `h` using `[Category.comp_id, Equiv.apply_symm_apply]`.
+
+Use `⟨((Φ _).symm g).left, by rw [← hp]; exact hb.symm.trans h.1, fun y Z r z J J' hJ hJ' => ?_⟩` and prove the remaining obligations. Use `((val_corr hJ (h.2 _) r).trans (val_pull hJ _ _ _)).symm.trans ((hv y Z r z J J' hJ hJ').trans (congrArg₂ (· * ·) (by rw [TorusCoord.gtφT_eq, hp]; rfl) ?_))` and prove the remaining obligations. Conclude with `(val_corr hJ' (hξ.2 y) r).trans ((val_pull hJ' _ _ _).trans (by rw [Category.comp_id]))`.
+-/
 theorem exists_carries (hΦ : Represents Φ) {e : ℕ} (c : GtCoord I E.toPre e G') :
     ∃ φ, Carries hE c (Φ Y (𝟙 Y)) φ := by
   obtain ⟨ξ, hξ⟩ := TorusCoord.exists_isPointOf c (T := (Over.map (thick R' I e)).obj (thickObj R' I e G')) (𝟙 _)
@@ -180,11 +229,21 @@ theorem exists_carries (hΦ : Represents Φ) {e : ℕ} (c : GtCoord I E.toPre e 
   exact (val_corr hJ' (hξ.2 y) r).trans ((val_pull hJ' _ _ _).trans (by rw [Category.comp_id]))
 
 omit [GrpObj Y] in
+/- English proof (translation)
+The claim follows from `(over_base hE g.b c.pG φ h.1).trans (Category.assoc _ _ _)`.
+-/
 theorem Carries.w {e : ℕ} {c : GtCoord I E.toPre e G'} {g : GtPt D Y} {φ} (h : Carries hE c g φ) :
     φ ≫ Y.hom = (thickObj R' I e G').hom ≫ thick R' I e ≫ spMap ρ :=
   (over_base hE g.b c.pG φ h.1).trans (Category.assoc _ _ _)
 
 omit [GrpObj Y] in
+/- English proof (translation)
+Establish `pw : c.pG.left ≫ E.toPre.P.A.hom = (thickObj R' I e G').hom ≫ thick R' I e` using `Over.w c.pG`. Establish `hp : y ≫ c.pG.left = y' ≫ c.pG.left` using `(pull_grp hE).1.hom_ext (by rw [Category.assoc, Category.assoc, h.1, reassoc_of% h₁]) (by rw [Category.assoc, Category.assoc, pw, reassoc_of% h₂])`. Use `TorusCoord.ext_of_val c y y' hp fun χ z J' hJ' => ?_` and prove the remaining obligations. Take `⟨J, hJ⟩` from `exists_good' D.P.isLB z`. Establish `a` using `h.2 χ Z y z J J' hJ hJ'`.
+
+Establish `b` using `h.2 χ Z y' z J J' hJ hJ'`. Establish `o` using `(TorusCoord.comp_eq_of_left c.pG c.pG y y' hp).1 χ`. Rewrite `o` using `[TorusCoord.gtφT_eq]`. Rewrite `a` using `[h₁, b]`. Simplify using `only [o] at a`.
+
+Conclude with `(mul_left_cancel a).symm`.
+-/
 theorem Carries.ext {e : ℕ} {c : GtCoord I E.toPre e G'} {g : GtPt D Y} {φ} (h : Carries hE c g φ) {Z : Scheme.{0}}
     {y y' : Z ⟶ (thickObj R' I e G').left} (h₁ : y ≫ φ = y' ≫ φ)
     (h₂ : y ≫ (thickObj R' I e G').hom = y' ≫ (thickObj R' I e G').hom) : y = y' := by
@@ -201,6 +260,15 @@ theorem Carries.ext {e : ℕ} {c : GtCoord I E.toPre e G'} {g : GtPt D Y} {φ} (
   simp only [o] at a
   exact (mul_left_cancel a).symm
 
+/- English proof (translation)
+Use `mono_thick I e` as an intermediate fact. Establish `pw : (U.gt e).pG.left ≫ E.toPre.P.A.hom = (thickObj R' I e G').hom ≫ thick R' I e` using `Over.w (U.gt e).pG`. Take `⟨g', hg'⟩` from `ConstPoint.exists_gtPt_through globalFns_holds (pull_grp hE) hE.w_gen hE.xe.toAddMonoidHom hE.c_pr (T' := Over.mk (s ≫ thick R' I e)) r (w.trans (Category.assoc _ _ _).symm) (Φ Y (𝟙 Y))`. Take `⟨y, hy⟩` from `FormalPoint.exists_hasCoords U e g' (𝟙 _) s (Category.id_comp _).symm`. Rewrite `hy` using `[FormalPoint.hasCoords_iff]`.
+
+Use `⟨y, hom_ext hΦ ?_ fun χ z J hJ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ← h.1, reassoc_of% hy.1]`. Conclude with `(hg' 0).1 2`. Take `⟨χ, rfl⟩` from `hE.xe.surjective χ`. Take `⟨J', hJ'⟩` from `exists_good' E.toPre.P.isLB z`.
+
+Establish `a` using `(hg' χ).2 Z (𝟙 _) z J J' hJ hJ'`. Establish `o` using `(TorusCoord.comp_eq_of_left g'.b (U.gt e).pG (𝟙 _) y hy.1.symm).1 χ`. Use `(h.2 χ Z y z J J' hJ hJ').trans (Eq.trans ?_ (a.symm.trans (congrArg (fun r => val ((Φ Y (𝟙 Y)).s (hE.xe χ)) r z J) (Category.id_comp r))))` and prove the remaining obligations. Conclude with `congrArg₂ (· * ·) (Finset.prod_congr rfl fun k _ => congrArg (fun q => om hE.w z J J' q ^ Oinvε k) (o k).symm) (hy.2 χ z J' hJ')`. Rewrite using `[← cancel_mono (thick R' I e), Category.assoc, ← pw, reassoc_of% hy.1]`.
+
+Conclude with `Over.w g'.b`.
+-/
 theorem Carries.exists_lift (hΦ : Represents Φ) (U : UnifPre I E A' G') {e : ℕ} {φ}
     (h : Carries hE (U.gt e) (Φ Y (𝟙 Y)) φ) {Z : Scheme.{0}} (r : Z ⟶ Y.left) (s : Z ⟶ Sp (R' ⧸ I ^ (e + 1)))
     (w : r ≫ Y.hom = s ≫ thick R' I e ≫ spMap ρ) : ∃ y, y ≫ φ = r ∧ y ≫ (thickObj R' I e G').hom = s := by
@@ -224,6 +292,9 @@ theorem Carries.exists_lift (hΦ : Represents Φ) (U : UnifPre I E A' G') {e : �
   · rw [← cancel_mono (thick R' I e), Category.assoc, ← pw, reassoc_of% hy.1]
     exact Over.w g'.b
 
+/- English proof (translation)
+Use `choose l h₁ h₂ using fun s : PullbackCone Y.hom (thick R' I e ≫ spMap ρ) => h.exists_lift hΦ U s.fst s.snd s.condition`. Conclude with `⟨⟨h.w⟩, ⟨PullbackCone.IsLimit.mk _ l h₁ h₂ fun s m a b => h.ext (a.trans (h₁ s).symm) (b.trans (h₂ s).symm)⟩⟩`.
+-/
 theorem Carries.isPullback (hΦ : Represents Φ) (U : UnifPre I E A' G') {e : ℕ} {φ}
     (h : Carries hE (U.gt e) (Φ Y (𝟙 Y)) φ) :
     IsPullback φ (thickObj R' I e G').hom Y.hom (thick R' I e ≫ spMap ρ) := by
@@ -231,6 +302,11 @@ theorem Carries.isPullback (hΦ : Represents Φ) (U : UnifPre I E A' G') {e : �
     h.exists_lift hΦ U s.fst s.snd s.condition
   exact ⟨⟨h.w⟩, ⟨PullbackCone.IsLimit.mk _ l h₁ h₂ fun s m a b => h.ext (a.trans (h₁ s).symm) (b.trans (h₂ s).symm)⟩⟩
 
+/- English proof (translation)
+Use `hom_ext hΦ (by rw [Category.assoc, ← h'.1, ← h.1, reassoc_of% U.gt_q e]) fun χ z J hJ => ?_` and prove the remaining obligations. Take `⟨χ, rfl⟩` from `hE.xe.surjective χ`. Take `⟨J', hJ'⟩` from `exists_good' E.toPre.P.isLB z`. Establish `a` using `h.2 χ _ (𝟙 _) z J J' hJ hJ'`. Establish `o` using `(TorusCoord.comp_eq_of_left (U.gt (e + 1)).pG (U.gt e).pG (thickMap R' I e G') (𝟙 _) ((U.gt_q e).trans (Category.id_comp _).symm)).1 χ`.
+
+Rewrite `o` using `[TorusCoord.gtφT_eq]`. Use `(h'.2 χ _ _ z J J' hJ hJ').trans (Eq.trans ?_ (a.symm.trans (congrArg (fun r => val ((Φ Y (𝟙 Y)).s (hE.xe χ)) r z J) (Category.id_comp φ))))` and prove the remaining obligations. Use `congrArg₂ (· * ·) (Finset.prod_congr rfl fun k _ => congrArg (fun q => om hE.w z J J' q ^ Oinvε k) (o k)) ?_` and prove the remaining obligations. Conclude with `((val_pull hJ' _ _ _).trans (by rw [Category.id_comp])).symm.trans (val_corr hJ' (U.gt_t e χ) (𝟙 _))`.
+-/
 theorem Carries.succ (hΦ : Represents Φ) (U : UnifPre I E A' G') {e : ℕ} {φ φ'}
     (h : Carries hE (U.gt e) (Φ Y (𝟙 Y)) φ) (h' : Carries hE (U.gt (e + 1)) (Φ Y (𝟙 Y)) φ') :
     thickMap R' I e G' ≫ φ' = φ := by
@@ -246,6 +322,13 @@ theorem Carries.succ (hΦ : Represents Φ) (U : UnifPre I E A' G') {e : ℕ} {φ
   refine congrArg₂ (· * ·) (Finset.prod_congr rfl fun k _ => congrArg (fun q => om hE.w z J J' q ^ Oinvε k) (o k)) ?_
   exact ((val_pull hJ' _ _ _).trans (by rw [Category.id_comp])).symm.trans (val_corr hJ' (U.gt_t e χ) (𝟙 _))
 
+/- English proof (translation)
+Establish `hc` using `hp.2 _ _ rfl rfl`. Use `hom_ext hΦ (by rw [Category.assoc, ← h.1, ← reassoc_of% hm]; exact congrArg (_ ≫ ·) ((Category.assoc _ _ _).symm.trans hc)) fun χ z J hJ => ?_` and prove the remaining obligations. Take `⟨χ, rfl⟩` from `hE.xe.surjective χ`. Take `⟨J', hJ'⟩` from `exists_good' E.toPre.P.isLB z`. Establish `o` using `Oφ_pull p c.pG c.pG m hm χ`.
+
+Establish `a` using `h.2 χ _ (𝟙 _) z J J' hJ hJ'`. Establish `b` using `h.2 (p.xe χ) _ m z J J' hJ hJ'`. Establish `d` using `val_of_pmaps o (ht χ) (𝟙 _) hJ' hJ'`. Rewrite `a`, `d` using `[Category.id_comp]`. Rewrite `b` using `[d]`.
+
+Use `(congrArg (fun x => val ((Φ Y (𝟙 Y)).s (hE.xe x)) (m ≫ φ) z J) (hp.1 χ)).symm.trans (b.trans (Eq.trans ?_ a.symm))` and prove the remaining obligations. Use `(_root_.mul_assoc _ _ _).symm.trans (congrArg₂ (· * ·) (prod_cocycle E.toPre.P.isAb hc D.P.isLB E.toPre.P.isLB ((isGen_iff _).1 hE.w_gen) ((isGen_iff _).1 p.w_gen) (fun k => 𝟙 _ ≫ E.toPre.Oφ c.pG χ k) _ (fun k => ?_) (fun k => (Category.assoc _ _ _).trans ((Category.id_comp _).tr …` and prove the remaining obligations. Use `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) ?_).trans (Category.assoc _ _ _).symm)` and prove the remaining obligations. Use `fin_cases k`. Use `exacts [(Over.w _).trans (Over.w c.pG).symm, (Over.w _).trans (Over.w c.pG).symm, rfl, (Over.w _).trans (Over.w c.pG).symm]`.
+-/
 theorem Carries.invariant (hΦ : Represents Φ) {e : ℕ} {c : GtCoord I E.toPre e G'} {φ}
     (h : Carries hE c (Φ Y (𝟙 Y)) φ) {s : R' →+* R'} (p : IsPullDeg s E.toPre E.toPre) (hp : PullOver hE p)
     {m : (thickObj R' I e G').left ⟶ (thickObj R' I e G').left}
@@ -274,6 +357,11 @@ theorem Carries.invariant (hΦ : Represents Φ) {e : ℕ} {c : GtCoord I E.toPre
 
 end Model
 
+/- English proof (translation)
+Introduce `R _ _ _ hR R' _ _ _ ρ D D' hD A' G' _ _ U' a`. Establish `: IsNoetherianRing R` using `hR.1.1`. Take `⟨Y, _, _, Φ, hΦ, hY, -⟩` from `GlobalTheory.ExtensionMul.exists_represents_pow R D.toPre`. Use `choose φ hφ using fun e => exists_carries hD hΦ (U'.gt e)`. Use `⟨Y, φ, hY, fun e => (hφ e).isPullback hΦ U'.toUnifPre, fun e => (hφ e).succ hΦ U'.toUnifPre (hφ (e + 1)), fun e σ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨p, bc, hbc, ⟨_, -, _, -, hl⟩, hp⟩` from `a.unif σ`. Take `⟨m, h₁, h₂, h₃, -⟩` from `hl e`. Use `⟨m, by rw [← hbc]; exact h₁, (hφ e).invariant hΦ p hp h₂ fun x => ?_⟩` and prove the remaining obligations. Take `⟨hψ, H⟩` from `h₃ x`. Conclude with `(maps_iff p.w _ _ _ _ _ m _ (GeneratorPullback.pullAlong_le _ _ _ _ _ hψ) (fun _ => rfl)).1 H`.
+-/
 theorem exists_model : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (R' : Type) [CommRing R'] [IsDomain R'] [IsLocalRing R'] (ρ : R →+* R') (D : DegData R (maximalIdeal R)) (D' : DegData R' (maximalIdeal R')) (hD : IsPullDeg ρ D.toPre D'.toPre) (A' : PolAV (Sp (FractionRing R'))) (G' : Over (Sp R')) [GrpObj G'] [IsCommMonObj G'] (U' : Unif (maximalIdeal R') D' A' G') (a : GalAct ρ hD U'), ∃ (Y : Over (Sp R)) (φ : ∀ e : ℕ, (thickObj R' (maximalIdeal R') e G').left ⟶ Y.left), Smooth Y.hom ∧ (∀ e, IsPullback (φ e) (thickObj R' (maximalIdeal R') e G').hom Y.hom (thick R' (maximalIdeal R') e ≫ spMap ρ)) ∧ (∀ e, thickMap R' (maximalIdeal R') e G' ≫ φ (e + 1) = φ e) ∧ (∀ e σ, ∃ h : (thickObj R' (maximalIdeal R') e G').left ⟶ (thickObj R' (maximalIdeal R') e G').left, h ≫ (pullback.fst G'.hom (thick R' (maximalIdeal R') e)) = (pullback.fst G'.hom (thick R' (maximalIdeal R') e)) ≫ a.act σ ∧ h ≫ φ e = φ e) := by
   intro R _ _ _ hR R' _ _ _ ρ D D' hD A' G' _ _ U' a
   have : IsNoetherianRing R := hR.1.1

@@ -10,6 +10,17 @@ noncomputable section
 
 namespace GlobalTheory.Mem.R3
 
+/- English proof (translation)
+Introduce `X px I U L hI hG hL`. Take `⟨plg0, hplg0⟩` from `hG.pl`. Establish `hPr` using `(base_fields_primes_ok X.B px).2.1`. Establish `h1 : ∀ P, P ∈ L.Pg ↔ P ∈ (X.B.primes px).vGs` using `fun P => by rw [hL.Pg]; exact Iff.rfl`. Set `eG : Gc X.B px ≃* G0 L.Pg X.toD7.R.r` to `{ toFun := fun g PP => g ⟨PP.1, (h1 _).1 PP.2⟩ invFun := fun h PP => h ⟨PP.1, (h1 _).2 PP.2⟩ left_inv := fun g => rfl right_inv := fun h => rfl map_mul' := fun _ _ => rfl }`.
+
+Set `plg : (Σ k : Fin 2, X.toD7.nd.PlG k) ≃ L.Pg` to `plg0.trans (Equiv.subtypeEquivRight fun P => (h1 P).symm)`. Establish `hmem : ∀ kv : (Σ k : Fin 2, X.toD7.nd.PlG k), ((plg kv : L.Pg) : Pl X.toD7.host.E) ∈ (X.B.primes px).vG kv.1` using `fun kv => (hI.pibar kv.1 _).2 (hplg0 kv).2`. Establish `hiso : ∀ kv : (Σ k : Fin 2, X.toD7.nd.PlG k), Nonempty (ZMod (X.toD7.host.g kv.1) ≃+* kP (plg kv).1)`. Introduce `kv`. Use `haveI : Fact (X.toD7.host.g kv.1).Prime := ⟨hPr.g_prime kv.1⟩`.
+
+Take `⟨e⟩` from `Formalism.L2.Col.residueField_equiv_zmod (X := X.B.fields) (plg kv).1 (X.toD7.host.g kv.1) (hPr.vG_norm kv.1 _ (hmem kv))`. Conclude with `⟨e.symm⟩`. Set `iso : ∀ kv : (Σ k : Fin 2, X.toD7.nd.PlG k), ZMod (X.toD7.host.g kv.1) ≃+* kP (plg kv).1` to `fun kv => Classical.choice (hiso kv)`. Set `cG : G0 L.Pg X.toD7.R.r ≃* G0g X.toD7.nd` to `{ toEquiv := (Equiv.piCongrLeft (fun PP : L.Pg => GL (Fin X.toD7.R.r) (kP PP.1)) plg).symm.trans (Equiv.piCongrRight fun kv => (Formalism.L2.Col.generalLinearEquivOfRingEquiv X.toD7.R.r (iso kv).symm).toEquiv) map_mul' := fun f f' => by`. Use function extensionality and compare the values at `kv`.
+
+Conclude with `map_mul (Formalism.L2.Col.generalLinearEquivOfRingEquiv X.toD7.R.r (iso kv).symm) (f (plg kv)) (f' (plg kv)) }`. Use `⟨eG, cG, plg, iso, fun g P h h' => rfl, fun kv => (hplg0 kv).1, fun kv => ?_, fun g kv => ?_⟩` and prove the remaining obligations. Rewrite using `[hL.C]`. Conclude with `(hplg0 kv).2`. Use `show _ = Formalism.UG.bc (iso kv : ZMod (X.toD7.host.g kv.1) →+* kP (plg kv).1) (Formalism.L2.Col.generalLinearEquivOfRingEquiv X.toD7.R.r (iso kv).symm (eG g (plg kv)))`.
+
+Use extensionality with `i j`. Simplify using `[Formalism.UG.bc, Formalism.L2.Col.generalLinearEquivOfRingEquiv]`.
+-/
 theorem exists_grpIdent : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (U : Set I.ι) (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)), I.Ok → GrpAt X I → LevOf X I U L → ∃ (eG : Gc X.B px ≃* G0 L.Pg X.toD7.R.r) (cG : G0 L.Pg X.toD7.R.r ≃* G0g X.toD7.nd) (plg : (Σ k : Fin 2, X.toD7.nd.PlG k) ≃ L.Pg) (iso : ∀ kv : (Σ k : Fin 2, X.toD7.nd.PlG k), ZMod (X.toD7.host.g kv.1) ≃+* kP (plg kv).1), IsPlacewiseIdentity X (px := px) eG ∧ (∀ kv, ((plg kv : L.Pg) : Pl X.toD7.host.E) = X.toD7.naut.plGw kv.1 kv.2) ∧ (∀ kv, L.C.P.Div kv.1 (plg kv).1) ∧ ∀ g kv, eG g (plg kv) = Formalism.UG.bc (iso kv : ZMod (X.toD7.host.g kv.1) →+* kP (plg kv).1) ((eG.trans cG) g kv) := by
   intro X px I U L hI hG hL
   obtain ⟨plg0, hplg0⟩ := hG.pl

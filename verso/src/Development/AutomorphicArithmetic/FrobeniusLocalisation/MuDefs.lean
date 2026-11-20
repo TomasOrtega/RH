@@ -19,8 +19,16 @@ instance muW_neZero : NeZero H.w := ⟨H.w_pos.ne'⟩
 
 def muGen : H.E := H.exists_primitiveRoot_w.choose
 
+/- English proof (translation)
+The claim follows from `H.exists_primitiveRoot_w.choose_spec`.
+-/
 theorem muGen_prim : IsPrimitiveRoot H.muGen H.w := H.exists_primitiveRoot_w.choose_spec
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk⟩`. Conclude with `⟨_, H.muGen_prim.pow H.w_pos (hk.trans (mul_comm _ _))⟩`. Introduce and unpack `⟨ζ, hζ⟩`. Establish `: NeZero m` using `⟨hm.ne'⟩`.
+
+Conclude with `NumberField.Units.dvd_torsionOrder_of_isPrimitiveRoot hζ`.
+-/
 theorem dvd_w_iff {m : ℕ} (hm : 0 < m) : m ∣ H.w ↔ ∃ ζ : H.E, IsPrimitiveRoot ζ m := by
   constructor
   · rintro ⟨k, hk⟩
@@ -29,6 +37,11 @@ theorem dvd_w_iff {m : ℕ} (hm : 0 < m) : m ∣ H.w ↔ ∃ ζ : H.E, IsPrimiti
     have : NeZero m := ⟨hm.ne'⟩
     exact NumberField.Units.dvd_torsionOrder_of_isPrimitiveRoot hζ
 
+/- English proof (translation)
+Rewrite using `[isMu_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨k, -, hk⟩` from `H.muGen_prim.eq_pow_of_pow_eq_one h`. Conclude with `⟨k, hk.symm⟩`.
+
+Introduce and unpack `⟨k, rfl⟩`. Rewrite using `[← pow_mul, mul_comm, pow_mul, H.muGen_prim.pow_eq_one, one_pow]`.
+-/
 theorem isMu_iff_pow (x : H.E) : H.IsMu x ↔ ∃ k : ℕ, x = H.muGen ^ k := by
   rw [isMu_iff]
   constructor
@@ -48,10 +61,19 @@ abbrev IsRt (x : H.E) : Prop := H.IsMu x
 
 abbrev muW : ℕ := H.w
 
+/- English proof (translation)
+The claim follows from `H.dvd_w_iff hm`.
+-/
 theorem dvd_muW_iff {m : ℕ} (hm : 0 < m) : m ∣ H.muW ↔ ∃ ζ : H.E, IsPrimitiveRoot ζ m := H.dvd_w_iff hm
 
+/- English proof (translation)
+The claim follows from `H.isMu_iff x`.
+-/
 theorem isRt_iff (x : H.E) : H.IsRt x ↔ x ^ H.muW = 1 := H.isMu_iff x
 
+/- English proof (translation)
+The claim follows from `H.isMu_iff_pow x`.
+-/
 theorem isRt_iff_pow (x : H.E) : H.IsRt x ↔ ∃ k : ℕ, x = H.muGen ^ k := H.isMu_iff_pow x
 
 end UpperTheory.HF.Formalism.HC.HostRaw

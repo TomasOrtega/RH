@@ -25,18 +25,36 @@ def top (l₁ l₂ : Level H) : Level H :=
 
 def side (l₁ l₂ : Level H) : Level H := { l₂ with A := (top l₁ l₂).A, A_pos := (top l₁ l₂).A_pos }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem top_A (l₁ l₂ : Level H) : (top l₁ l₂).A = l₁.A * l₁.M * l₂.M * l₂.A := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem side_A (l₁ l₂ : Level H) : (side l₁ l₂).A = (top l₁ l₂).A := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨dvd_rfl, le_rfl, ⟨l₁.M * l₂.M * l₂.A, by rw [top_A]; ring⟩⟩`.
+-/
 theorem dvd_top (l₁ l₂ : Level H) : l₁.Dvd (top l₁ l₂) :=
   ⟨dvd_rfl, le_rfl, ⟨l₁.M * l₂.M * l₂.A, by rw [top_A]; ring⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨dvd_rfl, le_rfl, ⟨l₁.A * l₁.M * l₂.M, by rw [side_A, top_A]; ring⟩⟩`.
+-/
 theorem dvd_side (l₁ l₂ : Level H) : l₂.Dvd (side l₁ l₂) :=
   ⟨dvd_rfl, le_rfl, ⟨l₁.A * l₁.M * l₂.M, by rw [side_A, top_A]; ring⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨l₁.A * l₂.M * l₂.A, by rw [top_A]; ring⟩`.
+-/
 theorem M_dvd_top (l₁ l₂ : Level H) : l₁.M ∣ (top l₁ l₂).A := ⟨l₁.A * l₂.M * l₂.A, by rw [top_A]; ring⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨l₁.A * l₁.M * l₂.A, by rw [side_A, top_A]; ring⟩`.
+-/
 theorem M_dvd_side (l₁ l₂ : Level H) : l₂.M ∣ (side l₁ l₂).A := ⟨l₁.A * l₁.M * l₂.A, by rw [side_A, top_A]; ring⟩
 
 end GlobalTheory.LvCover
@@ -48,16 +66,25 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+The claim follows from `IsIntegral.of_pow hn (by rw [show zeta n ^ n = 1 from (Complex.isPrimitiveRoot_exp n hn.ne').pow_eq_one] exact isIntegral_one)`.
+-/
 theorem zeta_integral {n : ℕ} (hn : 0 < n) : IsIntegral ℚ (zeta n) :=
   IsIntegral.of_pow hn (by
     rw [show zeta n ^ n = 1 from (Complex.isPrimitiveRoot_exp n hn.ne').pow_eq_one]
     exact isIntegral_one)
 
+/- English proof (translation)
+The claim follows from `Nat.lcm_pos (by have := l.three_le; omega) l.A_pos`.
+-/
 theorem M'_pos (l : Level H) : 0 < l.M' := Nat.lcm_pos (by have := l.three_le; omega) l.A_pos
 
 def coeffF {l₁ l₂ : Level H} (c₁ : Coeff l₁) (c₂ : Coeff l₂) : IntermediateField ℚ ℂ :=
   c₁.F ⊔ c₂.F ⊔ IntermediateField.adjoin ℚ {zeta (top l₁ l₂).M'}
 
+/- English proof (translation)
+Use `haveI := c₁.fin`. Use `haveI := c₂.fin`. Use `haveI : FiniteDimensional ℚ (IntermediateField.adjoin ℚ {zeta (top l₁ l₂).M'}) := IntermediateField.adjoin.finiteDimensional (zeta_integral (M'_pos _))`. Unfold `coeffF`. Use `infer_instance`.
+-/
 theorem finiteDimensional_coeffF {l₁ l₂ : Level H} (c₁ : Coeff l₁) (c₂ : Coeff l₂) :
     FiniteDimensional ℚ (coeffF c₁ c₂) := by
   haveI := c₁.fin
@@ -67,15 +94,27 @@ theorem finiteDimensional_coeffF {l₁ l₂ : Level H} (c₁ : Coeff l₁) (c₂
   unfold coeffF
   infer_instance
 
+/- English proof (translation)
+The claim follows from `(le_sup_right : _ ≤ coeffF c₁ c₂) (IntermediateField.subset_adjoin _ _ rfl)`.
+-/
 theorem zeta_mem_coeffF {l₁ l₂ : Level H} (c₁ : Coeff l₁) (c₂ : Coeff l₂) : zeta (top l₁ l₂).M' ∈ coeffF c₁ c₂ :=
   (le_sup_right : _ ≤ coeffF c₁ c₂) (IntermediateField.subset_adjoin _ _ rfl)
 
+/- English proof (translation)
+The claim follows from `le_sup_left.trans le_sup_left`.
+-/
 theorem le_coeffF₁ {l₁ l₂ : Level H} (c₁ : Coeff l₁) (c₂ : Coeff l₂) : c₁.F ≤ coeffF c₁ c₂ :=
   le_sup_left.trans le_sup_left
 
+/- English proof (translation)
+The claim follows from `le_sup_right.trans le_sup_left`.
+-/
 theorem le_coeffF₂ {l₁ l₂ : Level H} (c₁ : Coeff l₁) (c₂ : Coeff l₂) : c₂.F ≤ coeffF c₁ c₂ :=
   le_sup_right.trans le_sup_left
 
+/- English proof (translation)
+Rewrite using `[KA, IntermediateField.adjoin_le_iff, Set.insert_subset_iff, Set.singleton_subset_iff]`. Use `⟨le_coeffF₁ c₁ c₂ (c₁.le (IntermediateField.subset_adjoin _ _ (by simp))), ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.LevelCover.zeta_dvd (M'_pos _) (Nat.dvd_lcm_right _ _)]`. Conclude with `pow_mem (zeta_mem_coeffF c₁ c₂) _`.
+-/
 theorem KA_le_coeffF {l₁ l₂ : Level H} (c₁ : Coeff l₁) (c₂ : Coeff l₂) : KA (top l₁ l₂) ≤ coeffF c₁ c₂ := by
   rw [KA, IntermediateField.adjoin_le_iff, Set.insert_subset_iff, Set.singleton_subset_iff]
   refine ⟨le_coeffF₁ c₁ c₂ (c₁.le (IntermediateField.subset_adjoin _ _ (by simp))), ?_⟩
@@ -123,6 +162,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+The claim follows from `Submodule.mem_sup.1 (show (1 : 𝓞 E) ∈ l.Mb ⊔ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) from l.coprime ▸ Submodule.mem_top)`.
+-/
 theorem exists_split (l : Level H) :
     ∃ u ∈ l.Mb, ∃ v ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E), u + v = 1 :=
   Submodule.mem_sup.1 (show (1 : 𝓞 E) ∈ l.Mb ⊔ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) from l.coprime ▸ Submodule.mem_top)
@@ -131,15 +173,29 @@ def uOf (l : Level H) : 𝓞 E := (exists_split l).choose
 
 def vOf (l : Level H) : 𝓞 E := (exists_split l).choose_spec.2.choose
 
+/- English proof (translation)
+The claim follows from `(exists_split l).choose_spec.1`.
+-/
 theorem uOf_mem (l : Level H) : uOf l ∈ l.Mb := (exists_split l).choose_spec.1
 
+/- English proof (translation)
+The claim follows from `(exists_split l).choose_spec.2.choose_spec.1`.
+-/
 theorem vOf_mem (l : Level H) : vOf l ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) :=
   (exists_split l).choose_spec.2.choose_spec.1
 
+/- English proof (translation)
+The claim follows from `(exists_split l).choose_spec.2.choose_spec.2`.
+-/
 theorem uOf_add_vOf (l : Level H) : uOf l + vOf l = 1 := (exists_split l).choose_spec.2.choose_spec.2
 
 variable {D : Datum H}
 
+/- English proof (translation)
+Use `Submodule.smul_induction_on ha (fun r hr m _ => ?_) (fun y z hy hz => ?_)` and prove the remaining obligations. Take `⟨q, hq⟩` from `hIJ x hx r hr`. Conclude with `⟨q • m, by rw [smul_smul, hq, mul_smul, Nat.cast_smul_eq_nsmul]⟩`. Take `⟨b, hb⟩` from `hy`. Take `⟨b', hb'⟩` from `hz`.
+
+Conclude with `⟨b + b', by rw [smul_add, hb, hb', smul_add]⟩`.
+-/
 theorem smul_eq_nsmul_of_mem {I J : Ideal (𝓞 E)} {M : ℕ} (hIJ : ∀ x ∈ I, ∀ y ∈ J, ∃ q : 𝓞 E, x * y = M * q)
     {x : 𝓞 E} (hx : x ∈ I) {a : D.La} (ha : a ∈ J • (⊤ : Submodule (𝓞 E) D.La)) : ∃ b : D.La, x • a = M • b := by
   refine Submodule.smul_induction_on ha (fun r hr m _ => ?_) (fun y z hy hz => ?_)
@@ -149,6 +205,9 @@ theorem smul_eq_nsmul_of_mem {I J : Ideal (𝓞 E)} {M : ℕ} (hIJ : ∀ x ∈ I
     obtain ⟨b', hb'⟩ := hz
     exact ⟨b + b', by rw [smul_add, hb, hb', smul_add]⟩
 
+/- English proof (translation)
+Use `l.prod ▸ Ideal.mul_mem_mul hx hy` as an intermediate fact. Take `⟨q, hq⟩` from `Ideal.mem_span_singleton'.1 this`. Conclude with `⟨q, by rw [← hq, mul_comm]⟩`.
+-/
 theorem mul_mem_M (l : Level H) {x y : 𝓞 E} (hx : x ∈ l.Mb) (hy : y ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)) :
     ∃ q : 𝓞 E, x * y = l.M * q := by
   have := l.prod ▸ Ideal.mul_mem_mul hx hy
@@ -208,16 +267,25 @@ namespace GlobalTheory.LvCover
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
 
+/- English proof (translation)
+Use `haveI : NumberField L := {}`. Use `letI := (intMap h).toAlgebra`. Use `show Module.Finite (𝓞 K) (𝓞 L)`. Conclude with `Module.Finite.of_restrictScalars_finite ℤ (𝓞 K) (𝓞 L)`.
+-/
 theorem intMap_finite {K L : IntermediateField ℚ ℂ} (h : K ≤ L) [FiniteDimensional ℚ L] : (intMap h).Finite := by
   haveI : NumberField L := {}
   letI := (intMap h).toAlgebra
   show Module.Finite (𝓞 K) (𝓞 L)
   exact Module.Finite.of_restrictScalars_finite ℤ (𝓞 K) (𝓞 L)
 
+/- English proof (translation)
+Rewrite using `[Model.j, Category.assoc, pullback.condition, ← Category.assoc, Y.jQ_over]`.
+-/
 theorem j_s_eq {l : Level H} {Xo : Moduli D l} {c : Coeff l} (Y : GMod Xo c) :
     Y.j ≫ Y.s = pullback.snd _ _ ≫ spMap (algebraMap (𝓞 c.F) c.F) := by
   rw [Model.j, Category.assoc, pullback.condition, ← Category.assoc, Y.jQ_over]
 
+/- English proof (translation)
+Rewrite using `[j_s_eq Y', ← Category.assoc, hr, ← Category.assoc Y.j Y.s, j_s_eq Y, Category.assoc, Category.assoc, GlobalTheory.Models.RankZero.spMap_comp, GlobalTheory.Models.RankZero.spMap_comp]`. Use `congr 2`.
+-/
 theorem j_s_of_snd {l l' : Level H} {Xo : Moduli D l} {Xo' : Moduli D l'} {c : Coeff l} {c' : Coeff l'} (h : c'.F ≤ c.F)
     (Y : GMod Xo c) (Y' : GMod Xo' c') (r : Xo.XF c ⟶ Xo'.XF c')
     (hr : r ≫ pullback.snd _ _ = pullback.snd _ _ ≫ spMap (IntermediateField.inclusion h).toRingHom) :
@@ -226,6 +294,11 @@ theorem j_s_of_snd {l l' : Level H} {Xo : Moduli D l} {Xo' : Moduli D l'} {c : C
     GlobalTheory.Models.RankZero.spMap_comp, GlobalTheory.Models.RankZero.spMap_comp]
   congr 2
 
+/- English proof (translation)
+Take `⟨⟨m⟩, s, e⟩` from `hr`. Take `⟨⟨m'⟩, s', e'⟩` from `hr'`. Take `⟨n, -⟩` from `GlobalTheory.LevelCover.sab_comp (GlobalTheory.ShFam.TwMap.reflEquiv _ _ _ m) (GlobalTheory.ShFam.TwMap.reflEquiv _ _ _ m') rfl`. Use `⟨⟨(GlobalTheory.ShFam.TwMap.reflEquiv _ _ _).symm n⟩, fun z => ?_, ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `s' z`.
+
+Take `⟨x, rfl⟩` from `s y`. Conclude with `⟨x, rfl⟩`. Rewrite using `[Category.assoc, e', ← Category.assoc, e, Category.assoc, GlobalTheory.IndefiniteRowSideFullHecke.RelativeGroupHatForm.spMap_inclusion_comp]`.
+-/
 theorem GoodMap.comp {l l' l'' : Level H} {Xo : Moduli D l} {Xo' : Moduli D l'} {Xo'' : Moduli D l''} {c : Coeff l}
     {c' : Coeff l'} {c'' : Coeff l''} {h : c'.F ≤ c.F} {h' : c''.F ≤ c'.F} {Y : GMod Xo c} {Y' : GMod Xo' c'}
     {Y'' : GMod Xo'' c''} {r : Xo.XF c ⟶ Xo'.XF c'} {r' : Xo'.XF c' ⟶ Xo''.XF c''} (hr : GoodMap h Y Y' r)

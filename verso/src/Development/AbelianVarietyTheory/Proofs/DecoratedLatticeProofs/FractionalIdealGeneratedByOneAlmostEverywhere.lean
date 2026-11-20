@@ -4,6 +4,27 @@ open Formalism.BasicNotions IsDedekindDomain NumberField
 
 namespace GlobalTheory.IdeleGen
 
+/- English proof (translation)
+Take `⟨a, ha, hint⟩` from `I.isFractional`. Establish `ha0 : a ≠ 0` using `nonZeroDivisors.ne_zero ha`. Establish `hbot : (I : Submodule (𝓞 E) E) ≠ ⊥`. Introduce `h`. Apply `hI` to reduce the goal to its premises.
+
+Conclude with `FractionalIdeal.coeToSubmodule_injective (h.trans FractionalIdeal.coe_zero.symm)`. Take `⟨x, hxI, hx0⟩` from `(Submodule.ne_bot_iff _).1 hbot`. Take `⟨j, hj⟩` from `hint x hxI`. Establish `hj' : (j : E) = (a : E) * x`. Simplify `hj` using `[Algebra.smul_def]`.
+
+Establish `haE : (a : E) ≠ 0` using `by exact_mod_cast ha0`. Establish `hj0 : j ≠ 0`. Introduce `h`. Rewrite `hj'` using `[h]`. Simplify using `at hj'`.
+
+Break down `hj' with h1 | h1` into its components or cases. Apply the tactic sequence `first | exact ha0 h1 | exact ha0 h1.symm | exact haE h1 | exact haE h1.symm`. Apply the tactic sequence `first | exact hx0 h1 | exact hx0 h1.symm`. Use `set Nd := Ideal.absNorm (Ideal.span {a}) with hNd`. Use `set Nj := Ideal.absNorm (Ideal.span {j}) with hNj`.
+
+Establish `hNd0 : Nd ≠ 0`. Rewrite using `[hNd, Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `ha0`. Establish `hNj0 : Nj ≠ 0`. Rewrite using `[hNj, Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`.
+
+Conclude with `hj0`. Take `⟨o₁, ho₁⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {a}))`. Take `⟨o₂, ho₂⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {j}))`. Establish `ho₁E : ((Nd : 𝓞 E) : E) = (o₁ : E) * (a : E)` using `by rw [← ho₁]; push_cast; ring`. Establish `ho₂E : ((Nj : 𝓞 E) : E) = (o₂ : E) * (j : E)` using `by rw [← ho₂]; push_cast; ring`.
+
+Use `⟨Nd * Nj, mul_ne_zero hNd0 hNj0, ?_, ?_⟩` and prove the remaining obligations. Establish `: ((Nd * Nj : ℕ) : E) = ((Nd : 𝓞 E) * o₂ * a : 𝓞 E) • x`. Rewrite using `[Algebra.smul_def]`. Establish `e1 : ((Nd * Nj : ℕ) : E) = ((Nd : 𝓞 E) : E) * ((Nj : 𝓞 E) : E)` using `by push_cast; ring`. Rewrite using `[e1, ho₂E]`.
+
+Establish `hal : ∀ z : 𝓞 E, algebraMap (𝓞 E) E z = (z : E)` using `fun _ => rfl`. Rewrite using `[hal]`. Use `push_cast`. Take the linear combination `((Nd : E) * (o₂ : E)) * hj'`. Rewrite using `[this]`.
+
+Conclude with `Submodule.smul_mem _ _ hxI`. Introduce `b hb`. Take `⟨y, hy⟩` from `hint b hb`. Establish `hy' : (y : E) = (a : E) * b` using `by simpa [Algebra.smul_def] using hy`. Use `⟨(Nj : 𝓞 E) * o₁ * y, ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : ((Nd * Nj : ℕ) : E) = ((Nd : 𝓞 E) : E) * ((Nj : 𝓞 E) : E)` using `by push_cast; ring`. Rewrite using `[e1, ho₁E]`. Use `push_cast`. Take the linear combination `(-((Nj : E) * (o₁ : E))) * hy'`.
+-/
 theorem exists_nat_mem_mul_integral {E : Type} [Field E] [NumberField E]
     (I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) (hI : I ≠ 0) :
     ∃ N : ℕ, N ≠ 0 ∧ (N : E) ∈ I ∧ ∀ b ∈ I, ∃ o : 𝓞 E, (N : E) * b = (o : E) := by
@@ -53,6 +74,15 @@ theorem exists_nat_mem_mul_integral {E : Type} [Field E] [NumberField E]
     push_cast
     linear_combination (-((Nj : E) * (o₁ : E))) * hy'
 
+/- English proof (translation)
+Introduce `D I hI`. Take `⟨N, hN0, hNI, hNb⟩` from `exists_nat_mem_mul_integral I hI`. Establish `hc0 : Ideal.span {(N : 𝓞 D.host.F)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hN0` after adjusting the coercions.
+
+Establish `hfin` using `Ideal.finite_factors hc0`. Use `⟨hfin.toFinset, fun v hv => ⟨(N : 𝓞 D.host.F), ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `hmem`. Apply `hv` to reduce the goal to its premises. Rewrite using `[Set.Finite.mem_toFinset, Set.mem_setOf_eq, Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`.
+
+Conclude with `hmem`. Establish `: (((N : 𝓞 D.host.F) : D.host.F) : D.host.E) = (N : D.host.E)` using `by push_cast; rfl`. Rewrite using `[this]`. Conclude with `hNI`. Establish `: (((N : 𝓞 D.host.F) : D.host.F) : D.host.E) = (N : D.host.E)` using `by push_cast; rfl`.
+
+Rewrite using `[this]`. Conclude with `hNb`.
+-/
 theorem aeGen : ∀ (D : D7) (I : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E), I ≠ 0 →
     ∃ S : Finset (HeightOneSpectrum (𝓞 D.host.F)), ∀ v ∉ S, ∃ c : 𝓞 D.host.F, c ∉ v.asIdeal ∧
       ((c : D.host.F) : D.host.E) ∈ I ∧ ∀ b ∈ I, ∃ o : 𝓞 D.host.E, ((c : D.host.F) : D.host.E) * b = (o : D.host.E) := by

@@ -12,6 +12,11 @@ open GlobalTheory.CatH (face toLast)
 noncomputable section
 namespace GlobalTheory.CompanionTheory.ConeLocal.DlogApprox
 
+/- English proof (translation)
+Use `set C := W * Y0 with hCdef`. Establish `hC : C * (1 + H0) = 1` using `by rw [hCdef]; linear_combination hW`. Establish `hWC : W = C * I0` using `by rw [hCdef]; linear_combination (-W) * hI`. Use `set A := H + D * I0 + H * (D * I0) with hA`. Establish `hAJ : A ∈ J` using `J.add_mem (J.add_mem hH (J.mul_mem_right _ hD)) (J.mul_mem_left _ (J.mul_mem_right _ hD))`.
+
+Establish `e : (1 + H) * (Y0 + D) * W - 1 - (D * I0 + H - H0) = (C * H0) * H0 - (A * C) * H0 + H * (D * I0)`. Rewrite using `[hWC, hA]`. Take the linear combination `(1 + H) * C * hI + (1 - H0 + (H + D * I0 + H * (D * I0))) * hC`. Rewrite using `[e]`. Conclude with `F.add_mem (F.sub_mem (hJF _ (J.mul_mem_left _ hH0) _ hH0) (hJF _ (J.mul_mem_right _ hAJ) _ hH0)) (hJF _ hH _ (J.mul_mem_right _ hD))`.
+-/
 theorem alg_core {B : Type} [CommRing B] (J F : Ideal B) (hJF : ∀ a ∈ J, ∀ b ∈ J, a * b ∈ F)
     {H H0 D Y0 I0 W : B} (hH : H ∈ J) (hH0 : H0 ∈ J) (hD : D ∈ J) (hI : Y0 * I0 = 1)
     (hW : W * ((1 + H0) * Y0) = 1) :
@@ -29,6 +34,11 @@ theorem alg_core {B : Type} [CommRing B] (J F : Ideal B) (hJF : ∀ a ∈ J, ∀
   exact F.add_mem (F.sub_mem (hJF _ (J.mul_mem_left _ hH0) _ hH0) (hJF _ (J.mul_mem_right _ hAJ) _ hH0))
     (hJF _ hH _ (J.mul_mem_right _ hD))
 
+/- English proof (translation)
+Take `⟨n, rfl⟩ : ∃ n, s = n + 1` from `⟨s - 1, by omega⟩`. Unfold `plogK`. Rewrite using `[Finset.sum_range_succ']`. Establish `e : (-1 : B) ^ 0 * ((Nat.factorial 0 : ℕ) : B) * δ.dpow (0 + 1) x = x`. Simplify using `[δ.dpow_one hx]`.
+
+Rewrite using `[e, add_sub_cancel_right]`. Conclude with `F.sum_mem fun k _ => F.mul_mem_left _ (h _ (by omega))`.
+-/
 theorem plogK_sub_mem {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) (F : Ideal B) {s : ℕ} (hs : 1 ≤ s)
     {x : B} (hx : x ∈ J) (h : ∀ k, 2 ≤ k → δ.dpow k x ∈ F) : plogK δ s x - x ∈ F := by
   obtain ⟨n, rfl⟩ : ∃ n, s = n + 1 := ⟨s - 1, by omega⟩
@@ -42,6 +52,13 @@ theorem plogK_sub_mem {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers 
 section Fr
 variable {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {Φ : PDF R C}
 
+/- English proof (translation)
+Unfold `Frame.form`. Rewrite using `[Fin.prod_univ_one]`. Use `congr 1`. Establish `e : ∀ (h : (Fin.succ (0 : Fin 1)) ⟶ Fin.last 1) (z : Φ.A.obj (u.obj (Fin.last 1))), (Φ.A.map (u.map h)).hom z = z`. Introduce `h z`.
+
+Establish `: h = 𝟙 (Fin.last 1)` using `Subsingleton.elim _ _`. Establish `e2 : u.map h = 𝟙 (u.obj (Fin.last 1))` using `(congrArg u.map this).trans (u.map_id _)`. Establish `e3 : Φ.A.map (u.map h) = 𝟙 (Φ.A.obj (u.obj (Fin.last 1)))` using `(congrArg Φ.A.map e2).trans (Φ.A.map_id _)`. Rewrite using `[e3]`. Both sides reduce to the same expression.
+
+Conclude with `e _ _`.
+-/
 theorem form_one {d : ℕ} (E : Frame Φ d) (σ : ∀ T : C, E.D ⟶ T) (i : Fin d) (x : Φ.A.obj E.D)
     (u : ComposableArrows C 1) :
     E.form σ ![i] x u = E.a σ i (u.map (homOfLE (Fin.zero_le (Fin.last 1)))) * (Φ.A.map (σ _)).hom x := by
@@ -58,18 +75,35 @@ theorem form_one {d : ℕ} (E : Frame Φ d) (σ : ∀ T : C, E.D ⟶ T) (i : Fin
     rfl
   exact e _ _
 
+/- English proof (translation)
+Introduce `a ha b hb`. Establish `h1 : ∀ z ∈ Φ.J.S T, z ∈ (Fil ((1 : ℕ) : ℤ)).S T` using `fun z hz => by`. Rewrite using `[Nat.cast_one, hF.one]`. Conclude with `hz`. Conclude with `hF.mul 1 1 T (h1 a ha) (h1 b hb)`.
+-/
 theorem mul2 {Fil : ℤ → IdF Φ.A} (hF : IsFil Φ Fil) (T : C) : ∀ a ∈ Φ.J.S T, ∀ b ∈ Φ.J.S T, a * b ∈ (Fil 2).S T := by
   intro a ha b hb
   have h1 : ∀ z ∈ Φ.J.S T, z ∈ (Fil ((1 : ℕ) : ℤ)).S T := fun z hz => by
     rw [Nat.cast_one, hF.one]; exact hz
   exact hF.mul 1 1 T (h1 a ha) (h1 b hb)
 
+/- English proof (translation)
+Establish `h` using `hc 0 a b (x := x) (by rw [Nat.cast_zero, hF.top 0 le_rfl E.D]; trivial)`. Rewrite `h` using `[Nat.cast_zero, zero_add, hF.one]`. Conclude with `h`.
+-/
 theorem const1 {Fil : ℤ → IdF Φ.A} (hF : IsFil Φ Fil) {d : ℕ} {E : Frame Φ d} (hc : E.GrConst Fil) {T : C}
     (a b : E.D ⟶ T) (x : Φ.A.obj E.D) : (Φ.A.map a).hom x - (Φ.A.map b).hom x ∈ Φ.J.S T := by
   have h := hc 0 a b (x := x) (by rw [Nat.cast_zero, hF.top 0 le_rfl E.D]; trivial)
   rw [Nat.cast_zero, zero_add, hF.one] at h
   exact h
 
+/- English proof (translation)
+Use `set v := (Φ.A.map (σ T ≫ φ)).hom with hv`. Use `set w := (Φ.A.map (σ T')).hom with hw`. Establish `hI : v G * v (Ring.inverse G) = 1`. Rewrite using `[← map_mul, Ring.mul_inverse_cancel _ hG, map_one]`. Establish `hD : w G - v G ∈ Φ.J.S T'` using `const1 hF hc _ _ G`.
+
+Establish `h1` using `alg_core (Φ.J.S T') ((Fil 2).S T') (mul2 hF T') hH hH0 hD hI hW`. Establish `h2` using `((Fil 2).S T').mul_mem_left (v (Ring.inverse G)) (ht T' (σ T') (σ T ≫ φ) G)`. Establish `h3 : ∑ i, E.a σ i φ * (v (Ring.inverse G * p i G) - w (Ring.inverse G * p i G)) ∈ (Fil 2).S T'` using `((Fil 2).S T').sum_mem fun i _ => mul2 hF T' _ (E.mem i _ _) _ (const1 hF hc _ _ _)`. Establish `h4 : ∑ i, E.a σ i φ * (v (Ring.inverse G * p i G) - w (Ring.inverse G * p i G)) = v (Ring.inverse G) * ∑ i, E.a σ i φ * v (p i G) - ∑ i, E.a σ i φ * w (Ring.inverse G * p i G)`. Rewrite using `[Finset.mul_sum, ← Finset.sum_sub_distrib]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul v]`. Expand and normalize the polynomial expressions, which then agree. Establish `h5 : (∑ k, E.τ k (σ T ≫ φ) (σ T') * v (p k G)) = ∑ i, E.a σ i φ * v (p i G)` using `rfl`. Rewrite `h3` using `[h4]`.
+
+Express the relevant statement in the definitionally equal form `v (Ring.inverse G) * (w G - v G - ∑ k, E.τ k (σ T ≫ φ) (σ T') * v (p k G)) ∈ _ at h2`. Rewrite `h2` using `[h5]`. Establish `e : (1 + H) * w G * W - 1 - (∑ i, E.a σ i φ * w (Ring.inverse G * p i G) + (H - H0)) = ((1 + H) * (v G + (w G - v G)) * W - 1 - ((w G - v G) * v (Ring.inverse G) + H - H0)) + v (Ring.inverse G) * (w G - v G - ∑ i, E.a σ i φ * v (p i G)) + (v (Ring.inverse G) * (∑ i, E.a σ i φ * v …`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Conclude with `((Fil 2).S T').add_mem (((Fil 2).S T').add_mem h1 h2) h3`.
+-/
 theorem frame_core {Fil : ℤ → IdF Φ.A} (hF : IsFil Φ Fil) {d : ℕ} (E : Frame Φ d) (hc : E.GrConst Fil)
     (p : Fin d → Φ.A.obj E.D → Φ.A.obj E.D) (ht : Taylor Fil E p) (σ : ∀ T : C, E.D ⟶ T)
     (G : Φ.A.obj E.D) (hG : IsUnit G) {T T' : C} (φ : T ⟶ T') {H H0 W : Φ.A.obj T'}
@@ -109,6 +143,23 @@ end Fr
 section Fr2
 variable {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {Φ : PDF R C}
 
+/- English proof (translation)
+Establish `hy : ∀ T, IsUnit ((Φ.A.map (σ T)).hom G)` using `fun T => hG.map (Φ.A.map (σ T)).hom`. Establish `hyi : ∀ T, (Φ.A.map (σ T)).hom G * Ring.inverse ((Φ.A.map (σ T)).hom G) = 1` using `fun T => Ring.mul_inverse_cancel _ (hy T)`. Establish `hh : ∀ T, gh T * Ring.inverse ((Φ.A.map (σ T)).hom G) - 1 ∈ Φ.J.S T`. Introduce `T`. Establish `e : gh T * Ring.inverse ((Φ.A.map (σ T)).hom G) - 1 = (gh T - (Φ.A.map (σ T)).hom G) * Ring.inverse ((Φ.A.map (σ T)).hom G)`.
+
+Take the linear combination `hyi T`. Rewrite using `[e]`. Conclude with `(Φ.J.S T).mul_mem_right _ (hg T)`. Use `⟨hh, ?_⟩` and prove the remaining obligations. Introduce `T T' φ`.
+
+Use `set H := gh T' * Ring.inverse ((Φ.A.map (σ T')).hom G) - 1 with hHd`. Use `set h0 := gh T * Ring.inverse ((Φ.A.map (σ T)).hom G) - 1 with hh0`. Use `set H0 := (Φ.A.map φ).hom h0 with hH0d`. Establish `hHm : H ∈ Φ.J.S T'` using `hh T'`. Establish `hH0m : H0 ∈ Φ.J.S T'` using `Φ.J.map_mem φ (hh T)`.
+
+Establish `e1 : gh T = (1 + h0) * (Φ.A.map (σ T)).hom G`. Rewrite using `[hh0]`. Take the linear combination `(-gh T) * hyi T`. Establish `e2 : gh T' = (1 + H) * (Φ.A.map (σ T')).hom G`. Rewrite using `[hHd]`.
+
+Take the linear combination `(-gh T') * hyi T'`. Establish `hU : IsUnit (gh T)`. Rewrite using `[e1]`. Conclude with `(hun T _ (hh T)).mul (hy T)`. Establish `e3 : (Φ.A.map φ).hom (gh T) = (1 + H0) * (Φ.A.map (σ T ≫ φ)).hom G`.
+
+Rewrite using `[e1, map_mul, map_add, map_one, Φ.A.map_comp]`. Both sides reduce to the same expression. Establish `hW : Ring.inverse ((Φ.A.map φ).hom (gh T)) * ((1 + H0) * (Φ.A.map (σ T ≫ φ)).hom G) = 1`. Rewrite using `[← e3]`. Conclude with `Ring.inverse_mul_cancel _ (hU.map (Φ.A.map φ).hom)`.
+
+Establish `key` using `frame_core hF E hc p ht σ G hG φ hHm hH0m hW`. Rewrite `key` using `[← e2]`. Use `⟨?_, key⟩` and prove the remaining obligations. Establish `hle : (Fil 2).S T' ≤ Φ.J.S T'`. Rewrite using `[← hF.one]; exact hF.anti (by norm_num) T'`.
+
+Establish `hs : ∑ i, E.a σ i φ * (Φ.A.map (σ T')).hom (Ring.inverse G * p i G) + (H - H0) ∈ Φ.J.S T'` using `(Φ.J.S T').add_mem ((Φ.J.S T').sum_mem fun i _ => (Φ.J.S T').mul_mem_right ((Φ.A.map (σ T')).hom (Ring.inverse G * p i G)) (E.mem i (σ T ≫ φ) (σ T'))) ((Φ.J.S T').sub_mem hHm hH0m)`. Establish `h6` using `(Φ.J.S T').add_mem (hle key) hs`. Rewrite `h6` using `[sub_add_cancel]`. Conclude with `h6`.
+-/
 theorem frame_main {Fil : ℤ → IdF Φ.A} (hF : IsFil Φ Fil) {d : ℕ} (E : Frame Φ d) (hc : E.GrConst Fil)
     (p : Fin d → Φ.A.obj E.D → Φ.A.obj E.D) (ht : Taylor Fil E p) (σ : ∀ T : C, E.D ⟶ T)
     (G : Φ.A.obj E.D) (hG : IsUnit G) (gh : ∀ T, Φ.A.obj T)
@@ -164,6 +215,19 @@ theorem frame_main {Fil : ℤ → IdF Φ.A} (hF : IsFil Φ Fil) {d : ℕ} (E : F
 
 end Fr2
 
+/- English proof (translation)
+Introduce `K _ _ X q s hs V V' hVV d t E ε hL p ht σ g hg ĝ hĝ`. Establish `hF` using `GlobalTheory.CompanionTheory.DPFil.isFil_sFil (KS q s {V})`. Take `⟨hc, -, -, h4, -⟩` from `hL`. Establish `hG : IsUnit (ε (rs hVV g))` using `(hg.map (rs hVV)).map ε`. Set `gh : ∀ T : (KS q s {V}).FullSubcategory, (sP (KS q s {V})).A.obj T` to `fun T => ĝ ((ObjectProperty.ιOfLE (ks_le q s hVV)).obj T)`.
+
+Establish `hgl : ∀ T, gh T - ((sP (KS q s {V})).A.map (σ T)).hom (ε (rs hVV g)) ∈ (sP (KS q s {V})).J.S T`. Introduce `T`. Establish `a1` using `hĝ ((ObjectProperty.ιOfLE (ks_le q s hVV)).obj T)`. Establish `a2` using `h4 T (σ T) (rs hVV g)`. Establish `a3` using `GlobalTheory.CompanionTheory.GrForm.ev_res hVV T.obj (ks_in q s V' _ ((ObjectProperty.ιOfLE (ks_le q s hVV)).obj T).property) (ks_in q s V _ T.property) g`.
+
+Conclude with `Ideal.Quotient.eq.1 (a1.trans (a3.symm.trans a2))`. Establish `hun : ∀ T, ∀ x ∈ (sP (KS q s {V})).J.S T, IsUnit (1 + x)`. Introduce `T x hx`. Establish `hn : IsNilpotent (show T.obj.B from x)`. Take `⟨n, hn⟩` from `GlobalTheory.CompanionTheory.ConeZcls.J_nil T.obj`.
+
+Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `h1 : (show T.obj.B from x) ^ n ∈ T.obj.J ^ n` using `Ideal.pow_mem_pow hx n`. Rewrite `h1` using `[hn]`. Simplify using `using h1`. Conclude with `hn.isUnit_one_add`.
+
+Take `⟨m1, m2⟩` from `frame_main hF E hc p ht σ (ε (rs hVV g)) hG gh hgl hun`. Use `⟨fun T => gh T * Ring.inverse (((sP (KS q s {V})).A.map (σ T)).hom (ε (rs hVV g))) - 1, m1, fun u => ?_⟩` and prove the remaining obligations. Take `⟨b1, b2⟩` from `m2 (u.map (homOfLE (Fin.zero_le (Fin.last 1))))`. Establish `b3` using `plogK_sub_mem (u.obj (Fin.last 1)).obj.δ (show Ideal (u.obj (Fin.last 1)).obj.B from (sFil (KS q s {V}) 2).S (u.obj (Fin.last 1))) (s := s) (by omega) b1 (fun k hk => hF.anti (by exact_mod_cast hk) _ (hF.dp_mem k _ b1))`. Establish `b4` using `((sFil (KS q s {V}) 2).S (u.obj (Fin.last 1))).add_mem b3 b2`.
+
+Rewrite `b4` using `[sub_add_sub_cancel]`. Simplify using `only [form_one]`. Conclude with `b4`.
+-/
 theorem main : ∀ {K : Type} [Field K] [CharZero K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) (s : ℕ), 2 ≤ s → ∀ {V V' : X.Opens} (hVV : V ≤ V') {d : ℕ} (t : Fin d → Γ(X, V)) (E : Frame (sP (KS q s {V})) d)
     (ε : Γ(X, V) ≃+* (sP (KS q s {V})).A.obj E.D), IsLoc q s t E ε →
     ∀ (p : Fin d → (sP (KS q s {V})).A.obj E.D → (sP (KS q s {V})).A.obj E.D), Taylor (sFil (KS q s {V})) E p →

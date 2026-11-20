@@ -8,16 +8,47 @@ open UpperTheory.V.Af.Smo (Eig EigAt)
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.H
 open scoped Classical
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show (!![1, b; 0, 1] : Matrix (Fin 2) (Fin 2) (A F)) * !![1, -b; 0, 1] = 1`. Simplify using `[Matrix.mul_fin_two, Matrix.one_fin_two]`.
+-/
 private theorem nU_mul_neg {F : Type} [Field F] [NumberField F] (b : A F) : nU b * nU (-b) = 1 := by
   apply Subtype.ext
   show (!![1, b; 0, 1] : Matrix (Fin 2) (Fin 2) (A F)) * !![1, -b; 0, 1] = 1
   simp [Matrix.mul_fin_two, Matrix.one_fin_two]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show (!![0, 1; -1, 0] : Matrix (Fin 2) (Fin 2) (A F)) * (!![0, 1; -1, 0] * (!![0, 1; -1, 0] * !![0, 1; -1, 0])) = 1`. Simplify using `[Matrix.mul_fin_two, Matrix.one_fin_two]`.
+-/
 private theorem wW_mul_cube (F : Type) [Field F] [NumberField F] : wW F * (wW F * (wW F * wW F)) = 1 := by
   apply Subtype.ext
   show (!![0, 1; -1, 0] : Matrix (Fin 2) (Fin 2) (A F)) * (!![0, 1; -1, 0] * (!![0, 1; -1, 0] * !![0, 1; -1, 0])) = 1
   simp [Matrix.mul_fin_two, Matrix.one_fin_two]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W φ hφ g`. Establish `hH : St.Hat W` using `hatSt F E D W`. Set `P : G1 F → Prop` to `fun g => ∀ χ : S4 F, Sl0 χ.1 → Sl0 (W.Om g χ).1`. Establish `hmul : ∀ a b, P a → P b → P (a * b)`. Introduce `a b ha hb χ h`.
+
+Establish `e : W.Om (a * b) χ = W.Om a (W.Om b χ)`. Rewrite using `[map_mul]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `ha _ (hb _ h)`.
+
+Establish `hone : P 1`. Introduce `χ h`. Rewrite using `[map_one]`. Conclude with `h`. Establish `hn : ∀ b, P (nU b)`.
+
+Introduce `b χ h u t`. Rewrite using `[hH.n]`. Establish `e : Function.update (![0, 0, u, t] : V4 F) 1 ((![0, 0, u, t] : V4 F) 1 + b * (![0, 0, u, t] : V4 F) 0) = ![0, 0, u, t]`. Apply `Function.update_eq_self_iff.mpr` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+
+Rewrite using `[e, h u t, mul_zero]`. Establish `hw : P (wW F)`. Introduce `χ h u t`. Rewrite using `[hH.w]`. Establish `e : ∀ z : Fin 2 → A F, hat χ.1 ![-(![0, 0, u, t] : V4 F) 1, (![0, 0, u, t] : V4 F) 0, z 0, z 1] = 0`.
+
+Introduce `z`. Use `h (z 0) (z 1)` as an intermediate fact. Simplify using `using this`. Simplify using `only [e, zero_mul, MeasureTheory.integral_zero]`. Establish `hw3 : P (wW F)⁻¹`.
+
+Rewrite using `[inv_eq_of_mul_eq_one_right (wW_mul_cube F)]`. Conclude with `hmul _ _ hw (hmul _ _ hw hw)`. Establish `hall : ∀ g : G1 F, P g ∧ P g⁻¹`. Introduce `g`. Establish `hg : g ∈ Subgroup.closure (Set.range (nU (F` using `F)) ∪ {wW F}) := by`.
+
+Rewrite using `[(gen F).1]`. Conclude with `Subgroup.mem_top g`. Proceed by induction on `hg using Subgroup.closure_induction with`. Consider the case `mem x hx`. Break down `hx with ⟨b, rfl⟩ | hx` into its components or cases.
+
+Use `⟨hn b, ?_⟩` and prove the remaining obligations. Rewrite using `[inv_eq_of_mul_eq_one_right (nU_mul_neg b)]`. Conclude with `hn _`. Rewrite using `[Set.mem_singleton_iff.mp hx]`. Conclude with `⟨hw, hw3⟩`.
+
+Consider the case `one => simpa using hone`. Consider the case `mul x y _ _ hx hy`. Use `⟨hmul _ _ hx.1 hy.1, ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.mul_inv_rev]`. Conclude with `hmul _ _ hy.2 hx.2`.
+
+Consider the case `inv x _ hx`. Rewrite using `[inv_inv]`. Conclude with `⟨hx.2, hx.1⟩`. Establish `hs : Sl0 (W.Om g φ).1` using `(hall g).1 φ hφ`. Unfold `ThRow`.
+
+Simplify using `only [hs _ _, tsum_zero]`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.H.slKer :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (φ : S4 F), Sl0 φ.1 → ∀ g, ThRow 0 0 (W.Om g φ).1 = 0 := by
   intro F E _ _ _ _ _ _ _ D W φ hφ g

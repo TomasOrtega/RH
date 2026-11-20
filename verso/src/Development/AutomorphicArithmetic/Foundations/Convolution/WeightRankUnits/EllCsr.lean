@@ -5,6 +5,11 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `E _ _ _ _ n P hP`. Establish `hcsr` using `GlobalTheory.CompanionTheory.EllLoc.csr_global hP`. Use `⟨fun h0 => ?_, hcsr, fun w => GlobalTheory.CompanionTheory.EllLoc.csr_at hP w⟩` and prove the remaining obligations. Rewrite `hcsr` using `[h0, map_zero, C_0, zero_mul]`. Establish `hm : (P.map (IsCMField.complexConj E).toRingEquiv.toRingHom).Monic` using `hP.1.map _`.
+
+Conclude with `hm.ne_zero (Polynomial.reverse_eq_zero.mp hcsr.symm)`.
+-/
 theorem UpperTheory.ConvolutionTheory.G2.ellCsr :
     UpperTheory.ConvolutionTheory.G2.EllCsr := by
   intro E _ _ _ _ n P hP

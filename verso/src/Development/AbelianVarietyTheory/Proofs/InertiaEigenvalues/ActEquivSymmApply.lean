@@ -18,26 +18,50 @@ open GlobalTheory.MixModel
 
 variable {D : D7} (W : HSp D)
 
+/- English proof (translation)
+The claim follows from `mem_ratMx.1 ((mem_GQ_iff W γ).1 γ.2)`.
+-/
 theorem exists_gqMat (γ : GQ W) : ∃ c : Matrix (Fin W.rank) (Fin W.rank) D.host.E, rat c = mt W γ :=
   mem_ratMx.1 ((mem_GQ_iff W γ).1 γ.2)
 
 def gqMat (γ : GQ W) : Matrix (Fin W.rank) (Fin W.rank) D.host.E := Classical.choose (exists_gqMat W γ)
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec (exists_gqMat W γ)`.
+-/
 theorem rat_gqMat (γ : GQ W) : rat (gqMat W γ) = mt W γ := Classical.choose_spec (exists_gqMat W γ)
 
+/- English proof (translation)
+The claim follows from `rat_gqMat W γ`.
+-/
 theorem gqMat_map (γ : GQ W) : (gqMat W γ).map (incA D) = mt W γ := rat_gqMat W γ
 
+/- English proof (translation)
+The claim follows from `rat_injective (by rw [rat_mul, rat_gqMat, rat_gqMat, rat_gqMat]; rfl)`.
+-/
 theorem gqMat_mul (γ δ : GQ W) : gqMat W (γ * δ) = gqMat W γ * gqMat W δ :=
   rat_injective (by rw [rat_mul, rat_gqMat, rat_gqMat, rat_gqMat]; rfl)
 
+/- English proof (translation)
+The claim follows from `rat_injective (by rw [rat_gqMat, rat_one]; rfl)`.
+-/
 theorem gqMat_one : gqMat W 1 = 1 := rat_injective (by rw [rat_gqMat, rat_one]; rfl)
 
+/- English proof (translation)
+Rewrite using `[← gqMat_mul, inv_mul_cancel, gqMat_one]`.
+-/
 theorem gqMat_inv_mul (γ : GQ W) : gqMat W γ⁻¹ * gqMat W γ = 1 := by
   rw [← gqMat_mul, inv_mul_cancel, gqMat_one]
 
+/- English proof (translation)
+Rewrite using `[← gqMat_mul, mul_inv_cancel, gqMat_one]`.
+-/
 theorem gqMat_mul_inv (γ : GQ W) : gqMat W γ * gqMat W γ⁻¹ = 1 := by
   rw [← gqMat_mul, mul_inv_cancel, gqMat_one]
 
+/- English proof (translation)
+Apply `rat_injective` to reduce the goal to its premises. Rewrite using `[rat_mul, rat_mul, rat_conjTranspose, rat_gqMat]`. Conclude with `mt_rel W γ`.
+-/
 theorem gqMat_unitary (γ : GQ W) : (gqMat W γ)ᴴ * W.gram * gqMat W γ = W.gram := by
   apply rat_injective
   rw [rat_mul, rat_mul, rat_conjTranspose, rat_gqMat]
@@ -51,9 +75,15 @@ def actEquiv (γ : GQ W) :
       (by rw [← Matrix.toLin'_mul, gqMat_inv_mul, Matrix.toLin'_one]))
     (LinearEquiv.refl _ _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem actEquiv_apply (γ : GQ W) (y : (Fin W.rank → D.host.E) × (Fin W.rank → D.host.E)) :
     actEquiv W γ y = (gqMat W γ *ᵥ y.1, y.2) := rfl
 
+/- English proof (translation)
+Rewrite using `[Matrix.star_mulVec, Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, ← Matrix.dotProduct_mulVec, ← Matrix.mul_assoc, gqMat_unitary]`.
+-/
 theorem isotropic_mulVec (γ : GQ W) (x x' : Fin W.rank → D.host.E) :
     star (gqMat W γ *ᵥ x) ⬝ᵥ W.gram *ᵥ (gqMat W γ *ᵥ x') = star x ⬝ᵥ W.gram *ᵥ x' := by
   rw [Matrix.star_mulVec, Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul,
@@ -66,23 +96,35 @@ def lagAct (γ : GQ W) (Y : Lag W) : Lag W :=
     rw [isotropic_mulVec]
     exact Y.2.2 y hy y' hy'⟩
 
+/- English proof (translation)
+Use `show y ∈ Y.1.map (actEquiv W γ : _ →ₗ[D.host.E] _) ↔ _`. Rewrite using `[Submodule.mem_map_equiv]`. Both sides reduce to the same expression.
+-/
 theorem mem_lagAct (γ : GQ W) (Y : Lag W) (y : (Fin W.rank → D.host.E) × (Fin W.rank → D.host.E)) :
     y ∈ (lagAct W γ Y).1 ↔ (gqMat W γ⁻¹ *ᵥ y.1, y.2) ∈ Y.1 := by
   show y ∈ Y.1.map (actEquiv W γ : _ →ₗ[D.host.E] _) ↔ _
   rw [Submodule.mem_map_equiv]
   rfl
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `y`. Rewrite using `[mem_lagAct, inv_one, gqMat_one, Matrix.one_mulVec]`.
+-/
 theorem lagAct_one (Y : Lag W) : lagAct W 1 Y = Y := by
   apply Subtype.ext
   ext y
   rw [mem_lagAct, inv_one, gqMat_one, Matrix.one_mulVec]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `y`. Rewrite using `[mem_lagAct, mem_lagAct, mem_lagAct, _root_.mul_inv_rev, gqMat_mul]`. Simplify using `only [Matrix.mulVec_mulVec]`.
+-/
 theorem lagAct_mul (γ δ : GQ W) (Y : Lag W) : lagAct W (γ * δ) Y = lagAct W γ (lagAct W δ Y) := by
   apply Subtype.ext
   ext y
   rw [mem_lagAct, mem_lagAct, mem_lagAct, _root_.mul_inv_rev, gqMat_mul]
   simp only [Matrix.mulVec_mulVec]
 
+/- English proof (translation)
+Unfold `IsLagFrame at h ⊢`. Express the relevant statement in the definitionally equal form `_ = Submodule.map (actEquiv W γ).toLinearMap Y.1`. Rewrite using `[← h, Submodule.map_span, ← Set.range_comp]`. Use `congr 2`.
+-/
 theorem isLagFrame_lagAct (γ : GQ W) (Y : Lag W) (C : Matrix (Fin W.rank) (Fin W.rank) D.host.E ×
     Matrix (Fin W.rank) (Fin W.rank) D.host.E) (h : IsLagFrame W Y C) :
     IsLagFrame W (lagAct W γ Y) (gqMat W γ * C.1, C.2) := by
@@ -93,6 +135,11 @@ theorem isLagFrame_lagAct (γ : GQ W) (Y : Lag W) (C : Matrix (Fin W.rank) (Fin 
 
 abbrev NGLag (W : HSp D) : Type := {Y : Lag W // Y.1.comap (LinearMap.inl D.host.E _ _) ≠ ⊥}
 
+/- English proof (translation)
+Take `⟨x, hx, hx0⟩` from `Submodule.ne_bot_iff _ |>.1 h`. Use `(Submodule.ne_bot_iff _).2 ⟨gqMat W γ *ᵥ x, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap, LinearMap.inl_apply, mem_lagAct, Matrix.mulVec_mulVec, gqMat_inv_mul, Matrix.one_mulVec]`. Conclude with `hx`. Introduce `h0`.
+
+Apply `hx0` to reduce the goal to its premises. Use `congrArg (fun v => gqMat W γ⁻¹ *ᵥ v) h0` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_mulVec, gqMat_inv_mul]`.
+-/
 theorem lagAct_ne_bot (γ : GQ W) (Y : Lag W) (h : Y.1.comap (LinearMap.inl D.host.E _ _) ≠ ⊥) :
     (lagAct W γ Y).1.comap (LinearMap.inl D.host.E _ _) ≠ ⊥ := by
   obtain ⟨x, hx, hx0⟩ := Submodule.ne_bot_iff _ |>.1 h
@@ -106,8 +153,14 @@ theorem lagAct_ne_bot (γ : GQ W) (Y : Lag W) (h : Y.1.comap (LinearMap.inl D.ho
 
 def ngAct (γ : GQ W) (Y : NGLag W) : NGLag W := ⟨lagAct W γ Y.1, lagAct_ne_bot W γ Y.1 Y.2⟩
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (lagAct_one W Y.1)`.
+-/
 theorem ngAct_one (Y : NGLag W) : ngAct W 1 Y = Y := Subtype.ext (lagAct_one W Y.1)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (lagAct_mul W γ δ Y.1)`.
+-/
 theorem ngAct_mul (γ δ : GQ W) (Y : NGLag W) : ngAct W (γ * δ) Y = ngAct W γ (ngAct W δ Y) :=
   Subtype.ext (lagAct_mul W γ δ Y.1)
 

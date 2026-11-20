@@ -9,6 +9,9 @@ open scoped InnerProductSpace
 
 namespace GlobalTheory.TraceCycWord
 
+/- English proof (translation)
+Introduce `A _ n E m`. Rewrite using `[GlobalTheory.PhiEigenfun.sum_cycWord, Formalism.REAL.etr]`. Conclude with `Finset.sum_congr rfl fun c _ => GlobalTheory.PhiEigenfun.epow_eq E (m + 1) c c`.
+-/
 theorem etr_succ_eq_sum_cycWord : ∀ {A : Type} [Ring A] {n : ℕ} (E : Fin n → Fin n → A) (m : ℕ),
     Formalism.REAL.etr E (m + 1) = ∑ a : Fin (m + 1) → Fin n, ((GlobalTheory.Dec.cycWord a).map fun p => E p.1 p.2).prod := by
   intro A _ n E m

@@ -10,17 +10,28 @@ namespace GlobalTheory.FlatKernel
 
 variable {g : ℕ}
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[per, Matrix.vecMul, dotProduct, Complex.im_sum]`.
+-/
 lemma per_im (τ : Matrix (Fin g) (Fin g) ℂ) (x : Fl g) :
     (fun i => (per τ x i).im) = (fun i => x (Sum.inl i)) ᵥ* τ.map Complex.im := by
   ext i
   simp [per, Matrix.vecMul, dotProduct, Complex.im_sum]
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[per, Matrix.vecMul, dotProduct, Complex.re_sum]`.
+-/
 lemma per_re (τ : Matrix (Fin g) (Fin g) ℂ) (x : Fl g) :
     (fun i => (per τ x i).re) =
       (fun i => x (Sum.inl i)) ᵥ* τ.map Complex.re + fun i => x (Sum.inr i) := by
   ext i
   simp [per, Matrix.vecMul, dotProduct, Complex.re_sum]
 
+/- English proof (translation)
+Establish `hi : (fun i => (per τ x i).im) ᵥ* (τ.map Complex.im)⁻¹ = fun i => x (Sum.inl i)`. Rewrite using `[per_im, Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ h, Matrix.vecMul_one]`. Use extensionality with `(i | i)`. Conclude with `congrFun hi i`. Simplify using `only [flatOf, Sum.elim_inr]`.
+
+Rewrite using `[hi, per_re]`. Simplify using the standard rewrite rules.
+-/
 lemma flatOf_per {τ : Matrix (Fin g) (Fin g) ℂ} (h : IsUnit (τ.map Complex.im).det) (x : Fl g) :
     flatOf τ (per τ x) = x := by
   have hi : (fun i => (per τ x i).im) ᵥ* (τ.map Complex.im)⁻¹ = fun i => x (Sum.inl i) := by
@@ -31,6 +42,11 @@ lemma flatOf_per {τ : Matrix (Fin g) (Fin g) ℂ} (h : IsUnit (τ.map Complex.i
     rw [hi, per_re]
     simp
 
+/- English proof (translation)
+Establish `hp : (fun i => flatOf τ z (Sum.inl i)) = (fun i => (z i).im) ᵥ* (τ.map Complex.im)⁻¹` using `rfl`. Establish `hq : (fun i => flatOf τ z (Sum.inr i)) = (fun i => (z i).re) - ((fun i => (z i).im) ᵥ* (τ.map Complex.im)⁻¹) ᵥ* τ.map Complex.re` using `rfl`. Use extensionality with `i`. Apply `Complex.ext` to reduce the goal to its premises. Rewrite using `[show (per τ (flatOf τ z) i).re = _ from congrFun (per_re τ (flatOf τ z)) i, hp, hq]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[show (per τ (flatOf τ z) i).im = _ from congrFun (per_im τ (flatOf τ z)) i, hp, Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ h, Matrix.vecMul_one]`.
+-/
 lemma per_flatOf {τ : Matrix (Fin g) (Fin g) ℂ} (h : IsUnit (τ.map Complex.im).det)
     (z : Fin g → ℂ) : per τ (flatOf τ z) = z := by
   have hp : (fun i => flatOf τ z (Sum.inl i)) =
@@ -57,9 +73,15 @@ def flatL (τ : Matrix (Fin g) (Fin g) ℂ) : (Fin g → ℂ) →ₗ[ℝ] Fl g w
       rw [Finset.sum_mul, Finset.sum_mul, Finset.mul_sum]
       exact Finset.sum_congr rfl fun l _ => by simp only [RingHom.id_apply]; ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma flatL_apply (τ : Matrix (Fin g) (Fin g) ℂ) (z : Fin g → ℂ) :
     flatL τ z = flatOf τ z := rfl
 
+/- English proof (translation)
+Simplify using `only [Matrix.det_apply']`. Use `fun_prop`.
+-/
 lemma diffAt_det {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {n : ℕ}
     {M : E → Matrix (Fin n) (Fin n) ℝ} {x : E}
     (h : ∀ a c, DifferentiableAt ℝ (fun b => M b a c) x) :
@@ -67,6 +89,11 @@ lemma diffAt_det {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {n : ℕ}
   simp only [Matrix.det_apply']
   fun_prop
 
+/- English proof (translation)
+Establish `e : (fun b => (M b)⁻¹ k i) = fun b => ((M b).det)⁻¹ * ((M b).updateRow i (Pi.single k 1)).det`. Use extensionality with `b`. Rewrite using `[Matrix.inv_def, Matrix.smul_apply, Matrix.adjugate_apply, Ring.inverse_eq_inv', smul_eq_mul]`. Rewrite using `[e]`. Use `((diffAt_det h).inv hx).mul (diffAt_det fun a c => ?_)` and prove the remaining obligations.
+
+Distinguish the cases in `hai : a = i`. Substitute `hai` using the available equality. Simplify using the standard rewrite rules. Simplify `h a c` using `[Matrix.updateRow_ne hai]`.
+-/
 lemma diffAt_inv {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {n : ℕ}
     {M : E → Matrix (Fin n) (Fin n) ℝ} {x : E}
     (h : ∀ a c, DifferentiableAt ℝ (fun b => M b a c) x) (hx : (M x).det ≠ 0) (k i : Fin n) :
@@ -82,6 +109,41 @@ lemma diffAt_inv {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {n : ℕ}
     simp
   · simpa [Matrix.updateRow_ne hai] using h a c
 
+/- English proof (translation)
+Establish `key : ∀ P ∈ cov B g, (∀ w, dflat τ P (0, w) = flatOf (τ P.1) w) ∧ (∀ x, flatOf (τ P.1) (per (τ P.1) x) = x) ∧ (∀ z, per (τ P.1) (flatOf (τ P.1) z) = z) ∧ ∃ γ' : E →L[ℂ] (Fin g → ℂ), ∀ u, dflat τ P (u, γ' u) = 0`. Introduce and unpack `⟨b0, z0⟩ hP`. Establish `hb : b0 ∈ B` using `hP.1`. Establish `hunit : ∀ b ∈ B, IsUnit ((τ b).map Complex.im).det` using `fun b hb' => isUnit_iff_ne_zero.2 (hτ.2.2 b hb').2.det_pos.ne'`. Establish `hτd : ∀ i j, DifferentiableAt ℂ (fun b => τ b i j) b0` using `fun i j => (hτ.2.1 i j).differentiableAt (hτ.1.mem_nhds hb)`.
+
+Establish `hY : ∀ i j, DifferentiableAt ℝ (fun b => ((τ b).map Complex.im) i j) b0` using `fun i j => Complex.imCLM.differentiableAt.comp b0 ((hτd i j).restrictScalars ℝ)`. Establish `hX : ∀ i j, DifferentiableAt ℝ (fun b => ((τ b).map Complex.re) i j) b0` using `fun i j => Complex.reCLM.differentiableAt.comp b0 ((hτd i j).restrictScalars ℝ)`. Establish `hYi : ∀ i j, DifferentiableAt ℝ (fun b => ((τ b).map Complex.im)⁻¹ i j) b0` using `diffAt_inv hY (hunit b0 hb).ne_zero`. Establish `hflat : DifferentiableAt ℝ (flat τ) (b0, z0)`. Establish `hYi' : ∀ i j, DifferentiableAt ℝ (fun Q : Pt E g => ((τ Q.1).map Complex.im)⁻¹ i j) (b0, z0)` using `fun i j => DifferentiableAt.comp (g := fun b => ((τ b).map Complex.im)⁻¹ i j) (f := Prod.fst) (b0, z0) (hYi i j) differentiableAt_fst`.
+
+Establish `hX' : ∀ i j, DifferentiableAt ℝ (fun Q : Pt E g => ((τ Q.1).map Complex.re) i j) (b0, z0)` using `fun i j => DifferentiableAt.comp (g := fun b => ((τ b).map Complex.re) i j) (f := Prod.fst) (b0, z0) (hX i j) differentiableAt_fst`. Establish `hzi : ∀ i, DifferentiableAt ℝ (fun Q : Pt E g => (Q.2 i).im) (b0, z0)` using `fun i => Complex.imCLM.differentiableAt.comp _ (by fun_prop)`. Establish `hzr : ∀ i, DifferentiableAt ℝ (fun Q : Pt E g => (Q.2 i).re) (b0, z0)` using `fun i => Complex.reCLM.differentiableAt.comp _ (by fun_prop)`. Rewrite using `[differentiableAt_pi]`. Introduce and unpack `(i | i)`.
+
+Use `show DifferentiableAt ℝ (fun Q : Pt E g => ∑ k, (Q.2 k).im * ((τ Q.1).map Complex.im)⁻¹ k i) (b0, z0)`. Conclude with `DifferentiableAt.fun_sum fun k _ => (hzi k).mul (hYi' k i)`. Use `show DifferentiableAt ℝ (fun Q : Pt E g => (Q.2 i).re - ∑ k, (∑ l, (Q.2 l).im * ((τ Q.1).map Complex.im)⁻¹ l k) * ((τ Q.1).map Complex.re) k i) (b0, z0)`. Conclude with `(hzr i).sub (DifferentiableAt.fun_sum fun k _ => (DifferentiableAt.fun_sum fun l _ => (hzi l).mul (hYi' l k)).mul (hX' k i))`. Establish `hlin : ∀ w, dflat τ (b0, z0) (0, w) = flatOf (τ b0) w`.
+
+Introduce `w`. Establish `h1 : HasFDerivAt (fun z : Fin g → ℂ => ((b0, z) : Pt E g)) (ContinuousLinearMap.inr ℝ E (Fin g → ℂ)) z0` using `hasFDerivAt_prodMk_right b0 z0`. Establish `h2` using `hflat.hasFDerivAt.comp z0 h1`. Establish `h3 : HasFDerivAt (fun z : Fin g → ℂ => flat τ (b0, z)) (LinearMap.toContinuousLinearMap (flatL (τ b0))) z0` using `(LinearMap.toContinuousLinearMap (flatL (τ b0))).hasFDerivAt`. Use `congrArg (fun f => f w) (h2.unique h3)` as an intermediate fact.
+
+Simplify `this` using `[dflat]`. Take `⟨γ, hγ⟩ : ∃ γ : E → (Fin g → ℂ), γ = fun b => per (τ b) (flatOf (τ b0) z0)` from `⟨_, rfl⟩`. Establish `hγd : DifferentiableAt ℂ γ b0`. Rewrite using `[hγ, differentiableAt_pi]`. Introduce `i`.
+
+Use `show DifferentiableAt ℂ (fun b => ∑ k, ((flatOf (τ b0) z0 (Sum.inl k) : ℝ) : ℂ) * τ b k i + ((flatOf (τ b0) z0 (Sum.inr i) : ℝ) : ℂ)) b0`. Conclude with `(DifferentiableAt.fun_sum fun k _ => (hτd k i).const_mul _).add_const _`. Establish `hγ0 : γ b0 = z0` using `by rw [hγ]; exact per_flatOf (hunit b0 hb) z0`. Use `⟨hlin, flatOf_per (hunit b0 hb), per_flatOf (hunit b0 hb), fderiv ℂ γ b0, fun u => ?_⟩` and prove the remaining obligations. Establish `hΦ : HasFDerivAt (fun b => ((b, γ b) : Pt E g)) ((ContinuousLinearMap.id ℝ E).prod ((fderiv ℂ γ b0).restrictScalars ℝ)) b0` using `(hasFDerivAt_id b0).prodMk (hγd.hasFDerivAt.restrictScalars ℝ)`.
+
+Establish `hcomp : HasFDerivAt (fun b => flat τ (b, γ b)) ((dflat τ (b0, z0)).comp ((ContinuousLinearMap.id ℝ E).prod ((fderiv ℂ γ b0).restrictScalars ℝ))) b0`. Establish `: HasFDerivAt (flat τ) (dflat τ (b0, z0)) (b0, γ b0)`. Rewrite using `[hγ0]`. Conclude with `hflat.hasFDerivAt`. Conclude with `this.comp b0 hΦ`.
+
+Establish `hconst : HasFDerivAt (fun b => flat τ (b, γ b)) (0 : E →L[ℝ] Fl g) b0`. Use `(hasFDerivAt_const (flatOf (τ b0) z0) b0).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hτ.1.mem_nhds hb] with b hb'`. Rewrite using `[hγ]`. Conclude with `flatOf_per (hunit b hb') _`.
+
+Use `congrArg (fun f => f u) (hcomp.unique hconst)` as an intermediate fact. Simplify using `using this`. Use `⟨fun P hP v => ?_, fun P hP => ?_⟩` and prove the remaining obligations. Take `⟨hlin, hsurj, -, -⟩` from `key P hP`. Establish `hom : ∀ w, om0 τ P ![v, (0, w)] = riem (dflat τ P v) (flatOf (τ P.1) w)` using `fun w => by`.
+
+Rewrite using `[← hlin w]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hr : ∀ y, riem (dflat τ P v) y = 0` using `fun y => by`.
+
+Use `h (per (τ P.1) y)` as an intermediate fact. Rewrite `this` using `[hom, hsurj]`. Then use the resulting hypothesis. Use extensionality with `(i | i)`. Use `hr (Pi.single (Sum.inr i) 1)` as an intermediate fact. Simplify `this` using `[riem, Pi.single_apply]`.
+
+Use `hr (Pi.single (Sum.inl i) 1)` as an intermediate fact. Simplify `this` using `[riem, Pi.single_apply]`. Introduce `h w`. Rewrite using `[hom, h]`. Simplify using `[riem]`.
+
+Take `⟨hlin, -, hinj, γ', hγ'⟩` from `key P hP`. Establish `hsplit : ∀ u w, dflat τ P (u, w) = dflat τ P (u, 0) + flatOf (τ P.1) w` using `fun u w => by`. Rewrite using `[← hlin, ← map_add]`. Simplify using the standard rewrite rules. Establish `huniq : ∀ u w, dflat τ P (u, w) = 0 → w = γ' u` using `fun u w h => by`.
+
+Establish `h2` using `hγ' u`. Rewrite `h`, `h2` using `[hsplit]`. Establish `e : flatOf (τ P.1) w = flatOf (τ P.1) (γ' u)` using `add_left_cancel (h.trans h2.symm)`. Rewrite using `[← hinj w, e, hinj]`. Use `⟨fun v hv => ?_, fun u => ⟨γ' u, hγ' u, fun w hw => huniq u w hw⟩⟩` and prove the remaining obligations.
+
+Take `⟨u, w⟩` from `v`. Take `rfl` from `huniq u w hv`. Establish `e : Complex.I • ((u, γ' u) : Pt E g) = (Complex.I • u, γ' (Complex.I • u))`. Rewrite using `[Prod.smul_mk, map_smul]`. Rewrite using `[e]`.
+
+Conclude with `hγ' _`.
+-/
 theorem orth {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E]
     {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ} (hτ : IsPeriodMap B τ) :
     (∀ P ∈ cov B g, ∀ v : Pt E g, (∀ w : Fin g → ℂ, om0 τ P ![v, (0, w)] = 0) ↔

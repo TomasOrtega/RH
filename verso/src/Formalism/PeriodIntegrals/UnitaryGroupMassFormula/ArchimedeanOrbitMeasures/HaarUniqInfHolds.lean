@@ -12,6 +12,11 @@ open MeasureTheory Formalism.BasicNotions Formalism.L2.SG.HidaSetting Formalism.
   Formalism.L2.SG.TypedSets Formalism.L2.SG.Pf.NcReal
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `D X u' ψ hT μinf νinf fibInf hP m hinv hfin`. Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X`. Use `haveI : SecondCountableTopology (GI X) := PI.AprimeInfT.secondCountable_HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J`. Use `haveI : X.measG.μGinf.IsHaarMeasure := X.measG_norm.2.1`. Use `haveI : IsFiniteMeasureOnCompacts m := ⟨fun K hK => hfin K hK⟩`.
+
+Use `haveI : m.IsMulLeftInvariant := ⟨fun g => hinv g⟩`. Use `⟨(Measure.haarScalarFactor m X.measG.μGinf : ENNReal), ENNReal.coe_ne_top, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [Measure.isMulLeftInvariant_eq_smul m X.measG.μGinf]`. Use extensionality with `s hs`. Simplify using `[Measure.smul_apply]`.
+-/
 theorem haarUniqInf_holds : HaarUniqInf := by
   intro D X u' ψ hT μinf νinf fibInf hP m hinv hfin
   haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X
@@ -28,6 +33,13 @@ theorem haarUniqInf_holds : HaarUniqInf := by
 def WittInf : Prop := ∀ {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (ψ : AddChar (AF X.B.I.F) ℂ) hT μinf νinf fibInf,
     PushHyp X u' ψ hT μinf νinf fibInf → FbI X u' hT ⊆ Set.range (orbM X u')
 
+/- English proof (translation)
+Introduce `D X u' ψ hT μinf νinf fibInf hP`. Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X`. Use `haveI : SecondCountableTopology (GI X) := PI.AprimeInfT.secondCountable_HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J`. Use `haveI : BorelSpace (TupI X) := PI.AprimeInfT.borelSpace_tup (F := X.B.I.F) (E := X.B.I.E) (Ainf X.B.I.F) (D.R.rS + 1 + D.R.rS)`. Establish `hc : Continuous (orbM X u')` using `PI.AprimeInfT.continuous_orbit (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J _`.
+
+Establish `hd` using `detNZ_holds X u' ψ hT μinf νinf fibInf hP`. Use `⟨hc.measurable, fun g => ?_, fun g => (continuous_mul_left g).measurable, fun t => ((continuous_mul_left t).comp continuous_subtype_val).measurable, fun C hC => ⟨hC.isClosed.measurableSet, hC.image hc, (hC.image hc).isClosed.measurableSet⟩, hW X u' ψ hT μinf νinf fibInf hP, ?_⟩` and prove the remaining obligations. Establish `hmat : Continuous (fun _ : TupI X => ((HA.mat (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J g : GL (Fin X.B.I.n) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E)) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E)))` using `continuous_const`. Establish `: Continuous (fun y : TupI X => g • y)` using `by show Continuous (fun y : TupI X => actTup (Ainf X.B.I.F) (HA.mat (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J g) y)`. Unfold `actTup`.
+
+Conclude with `continuous_pi fun i => hmat.matrix_mulVec ((continuous_apply i))`. Conclude with `this.measurable`. Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `(orbM_mem X u' hT hd g).2`.
+-/
 theorem regI_of (hW : WittInf) : RegI := by
   intro D X u' ψ hT μinf νinf fibInf hP
   haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X

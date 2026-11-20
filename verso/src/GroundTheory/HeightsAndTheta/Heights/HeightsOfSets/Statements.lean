@@ -64,11 +64,23 @@ section Inhabitants
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {n : ι → ℕ}
 
 omit [DecidableEq ι] in
+/- English proof (translation)
+Simplify using `[evalCone, chartMonomial, eval₂_prod]`.
+-/
 theorem evalCone_chartMonomial {F : Type*} [CommRing F] (z : Cone n F)
     (c : (k : ι) → Fin (n k + 1)) (d : ι → ℕ) :
     evalCone z (chartMonomial c d) = ∏ k, z k (c k) ^ d k := by
   simp [evalCone, chartMonomial, eval₂_prod]
 
+/- English proof (translation)
+Introduce `z hz c d e he hc`. Establish `hpos : 0 < ∏ k, l2Norm (z k)` using `Finset.prod_pos fun k _ ↦ vectorL2Norm_pos (hz.1 k)`. Establish `h0 : evalCone z (1 * e - chartMonomial c0 1 * chartMonomial c d) = 0` using `hz.2 _ he.2`. Simplify using `only [evalCone, eval₂_sub, eval₂_mul, one_mul, sub_eq_zero] at h0`. Establish `hm : evalCone z (chartMonomial c d) ≠ 0`.
+
+Rewrite using `[evalCone_chartMonomial]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ ↦ pow_ne_zero _ (hc k)`. Establish `hmn : 0 < ‖evalCone z (chartMonomial c d)‖` using `norm_pos_iff.mpr hm`. Express the relevant statement in the definitionally equal form `‖evalCone z e‖ / (‖evalCone z (chartMonomial c d)‖ * ∏ k, l2Norm (z k)) ≤ Real.exp 0`. Establish `h1 : evalCone z e = evalCone z (chartMonomial c0 1) * evalCone z (chartMonomial c d)`.
+
+Simplify using `only [evalCone]`. Conclude with `h0`. Rewrite using `[h1, norm_mul, Real.exp_zero, div_le_one (mul_pos hmn hpos), mul_comm]`. Use `mul_le_mul_of_nonneg_left ?_ hmn.le` and prove the remaining obligations. Rewrite using `[evalCone_chartMonomial, norm_prod]`.
+
+Use `Finset.prod_le_prod (fun k _ ↦ norm_nonneg _) (fun k _ ↦ ?_)` and prove the remaining obligations. Simplify using `using norm_le_l2Norm (z k) (c0 k)`.
+-/
 theorem chartSection_supNormLE (P : ArithVariety n) (c0 : (k : ι) → Fin (n k + 1)) :
     (IntegralSection.chartSection P c0).SupNormLE (HermLine.standard n) 0 := by
   intro z hz c d e he hc

@@ -22,6 +22,11 @@ def SemilocalQuotCard.Statement : Prop :=
     ∀ t : integralAtPlaces S, t ≠ 0 →
       (Nat.card (integralAtPlaces S ⧸ Ideal.span {t}) : ℝ) = ∏ᶠ w ∈ S, (w (t : L))⁻¹
 
+/- English proof (translation)
+Take `⟨P, hP⟩` from `Ideal.exists_maximal (𝓞 ℚ)`. Establish `hne : P ≠ ⊥` using `fun h ↦ RingOfIntegers.not_isField ℚ (Ring.isField_iff_maximal_bot.mpr (h ▸ hP))`. Set `v : IsDedekindDomain.HeightOneSpectrum (𝓞 ℚ)` to `⟨P, hP.isPrime, hne⟩`. Use `⟨{FinitePlace.mk v}, 2, Set.finite_singleton _, Set.singleton_nonempty _, ?_⟩` and prove the remaining obligations. Introduce `h`.
+
+Use `congrArg (fun y : integralAtPlaces ({FinitePlace.mk v} : Set (FinitePlace ℚ)) ↦ (y : ℚ)) h` as an intermediate fact. Evaluate the numerical expressions using `at this`.
+-/
 example : ∃ (S : Set (FinitePlace ℚ)) (t : integralAtPlaces S), S.Finite ∧ S.Nonempty ∧ t ≠ 0 := by
   obtain ⟨P, hP⟩ := Ideal.exists_maximal (𝓞 ℚ)
   have hne : P ≠ ⊥ := fun h ↦

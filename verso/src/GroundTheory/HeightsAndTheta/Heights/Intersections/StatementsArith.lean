@@ -125,6 +125,11 @@ end PF
 
 section Inhabitants
 
+/- English proof (translation)
+Use `⟨inferInstance, ⟨Ideal.isPrime_bot, ⟨∅, fun f hf => absurd hf (Set.notMem_empty f), Ideal.span_empty.symm⟩, fun _ => ⟨0, by rw [Submodule.mem_bot]; exact X_ne_zero _⟩⟩, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Simplify using `[Ideal.mem_comap]`. Rewrite using `[ringKrullDim_eq_of_ringEquiv (RingEquiv.quotientBot _), MvPolynomial.ringKrullDim_of_isNoetherianRing, IsPrincipalIdealRing.ringKrullDim_eq_one ℤ Int.not_isField]`. Establish `hc : Nat.card ((_ : Unit) × PBlk 1 ()) = 1`.
+
+Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_sigma]`. Simplify using the standard rewrite rules. Rewrite using `[hc, Fintype.card_unit]`. Both sides reduce to the same expression.
+-/
 theorem isArithVar_specZ : IsArithVar (⊥ : Ideal (MRing (PBlk 1))) 1 := by
   refine ⟨inferInstance, ⟨Ideal.isPrime_bot,
     ⟨∅, fun f hf => absurd hf (Set.notMem_empty f), Ideal.span_empty.symm⟩,
@@ -140,6 +145,13 @@ theorem isArithVar_specZ : IsArithVar (⊥ : Ideal (MRing (PBlk 1))) 1 := by
     rw [hc, Fintype.card_unit]
     rfl
 
+/- English proof (translation)
+Introduce `m hm k`. Take `⟨⟩` from `k`. Establish `hm' : m ∈ (X (⟨(), i⟩ : (_ : Unit) × Fin n) : MRing (PBlk n)).support` using `hm`. Rewrite `hm'` using `[support_X, Finset.mem_singleton]`. Substitute `hm'` using the available equality.
+
+Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[Finsupp.single_apply, if_neg]`. Introduce `h`.
+
+Conclude with `hb (sigma_mk_injective h).symm`. Simplify using the standard rewrite rules.
+-/
 theorem isMultiHomog_Xc (n : ℕ) (i : Fin n) : IsMultiHomog (Xc n i) (fun _ => 1) := by
   intro m hm k
   obtain ⟨⟩ := k
@@ -154,16 +166,27 @@ theorem isMultiHomog_Xc (n : ℕ) (i : Fin n) : IsMultiHomog (Xc n i) (fun _ => 
     exact hb (sigma_mk_injective h).symm
   · simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => 1, fun _ => rfl, isMultiHomog_Xc n i, by rw [Submodule.mem_bot] exact X_ne_zero _⟩`.
+-/
 theorem isSectionOn_Xc (n : ℕ) (i : Fin n) : IsSectionOn ⊥ (fsLine n) (Xc n i) :=
   ⟨fun _ => 1, fun _ => rfl, isMultiHomog_Xc n i, by
     rw [Submodule.mem_bot]
     exact X_ne_zero _⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isArithVar_specZ, isSmoothHerm_fsLine 1, isSectionOn_Xc 1 0⟩`.
+-/
 theorem R1.hyps_inhabited :
     IsArithVar (⊥ : Ideal (MRing (PBlk 1))) 1 ∧ IsSmoothHerm (fsLine 1) ∧
       IsSectionOn ⊥ (fsLine 1) (Xc 1 0) :=
   ⟨isArithVar_specZ, isSmoothHerm_fsLine 1, isSectionOn_Xc 1 0⟩
 
+/- English proof (translation)
+Introduce `W h0 h1`. Establish `m0 : Xc 2 0 ∈ W` using `h0.1.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`. Establish `m1 : Xc 2 1 ∈ W` using `h1.1.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`. Take `⟨i, hi⟩` from `h0.2 ()`. Use `fin_cases i`.
+
+Use `exacts [hi m0, hi m1]`.
+-/
 theorem divSupp_X_disjoint :
     ∀ W, W ∈ divSupp (⊥ : Ideal (MRing (PBlk 2))) (Xc 2 0) → W ∉ divSupp ⊥ (Xc 2 1) := by
   intro W h0 h1
@@ -173,6 +196,9 @@ theorem divSupp_X_disjoint :
   fin_cases i
   exacts [hi m0, hi m1]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isArithVar_projLine, isSmoothHerm_fsLine 2, isSectionOn_Xc 2 0, isSectionOn_Xc 2 1, divSupp_X_disjoint⟩`.
+-/
 theorem Swap.hyps_inhabited :
     IsArithVar (⊥ : Ideal (MRing (PBlk 2))) (0 + 2) ∧ IsSmoothHerm (fsLine 2) ∧
       IsSectionOn ⊥ (fsLine 2) (Xc 2 0) ∧ IsSectionOn ⊥ (fsLine 2) (Xc 2 1) ∧
@@ -184,9 +210,15 @@ def ptTwo : Ideal (MRing (PBlk 2)) := Ideal.span {C 2, Xc 2 1}
 abbrev redTwo : MRing (PBlk 2) →+* MvPolynomial ((_ : Unit) × Fin 2) (ZMod 2) :=
   MvPolynomial.map (Int.castRingHom (ZMod 2))
 
+/- English proof (translation)
+The claim follows from `MvPolynomial.map_surjective _ (ZMod.intCast_surjective)`.
+-/
 theorem redTwo_surjective : Function.Surjective redTwo :=
   MvPolynomial.map_surjective _ (ZMod.intCast_surjective)
 
+/- English proof (translation)
+Establish `h1 : inhV (ZMod 2) ({⟨(), 1⟩} : Finset ((_ : Unit) × Fin 2)) = Ideal.map redTwo (Ideal.span {Xc 2 1})`. Rewrite using `[inhV_singleton, Ideal.map_span, Set.image_singleton]`. Simplify using `[Xc]`. Rewrite using `[h1, Ideal.comap_map_of_surjective _ redTwo_surjective, ← RingHom.ker_eq_comap_bot, MvPolynomial.ker_map, ZMod.ker_intCastRingHom, Ideal.map_span, Set.image_singleton, ptTwo, Ideal.span_insert, sup_comm]`. Simplify using the standard rewrite rules.
+-/
 theorem ptTwo_eq_comap :
     ptTwo = (inhV (ZMod 2) ({⟨(), 1⟩} : Finset ((_ : Unit) × Fin 2))).comap redTwo := by
   have h1 : inhV (ZMod 2) ({⟨(), 1⟩} : Finset ((_ : Unit) × Fin 2)) =
@@ -198,6 +230,17 @@ theorem ptTwo_eq_comap :
     Ideal.span_insert, sup_comm]
   simp
 
+/- English proof (translation)
+Establish `hprime : ptTwo.IsPrime`. Rewrite using `[ptTwo_eq_comap]`. Conclude with `Ideal.comap_isPrime _ _`. Use `⟨⟨hprime, ⟨{C 2, Xc 2 1}, ?_, rfl⟩, fun _ => ⟨0, ?_⟩⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `f (rfl | rfl)`.
+
+Use `⟨fun _ => 0, fun m hm k => ?_⟩` and prove the remaining obligations. Rewrite `hm` using `[mem_support_iff, coeff_C]`. Use `split_ifs at hm with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Conclude with `absurd rfl hm`. Conclude with `⟨_, isMultiHomog_Xc 2 1⟩`. Rewrite using `[ptTwo_eq_comap, Ideal.mem_comap]`. Establish `: redTwo (X ⟨(), 0⟩) = X ⟨(), 0⟩` using `map_X _ _`. Rewrite using `[this]`.
+
+Conclude with `inhV_X_nmem (ZMod 2) _ (by decide)`. Establish `hsurj : Function.Surjective ((Ideal.Quotient.mk (inhV (ZMod 2) ({⟨(), 1⟩} : Finset ((_ : Unit) × Fin 2)))).comp redTwo)` using `Ideal.Quotient.mk_surjective.comp redTwo_surjective`. Establish `hker : RingHom.ker ((Ideal.Quotient.mk (inhV (ZMod 2) ({⟨(), 1⟩} : Finset ((_ : Unit) × Fin 2)))).comp redTwo) = ptTwo`. Rewrite using `[ptTwo_eq_comap, ← RingHom.comap_ker, Ideal.mk_ker]`. Rewrite using `[← hker, ringKrullDim_eq_of_ringEquiv (RingHom.quotientKerEquivOfSurjective hsurj), inhV_dim]`.
+
+Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_unit]`. Both sides reduce to the same expression.
+-/
 theorem isClosedPt_two : IsClosedPt ptTwo := by
   have hprime : ptTwo.IsPrime := by
     rw [ptTwo_eq_comap]
@@ -226,6 +269,9 @@ theorem isClosedPt_two : IsClosedPt ptTwo := by
     rw [Nat.card_eq_fintype_card, Fintype.card_unit]
     rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isArithVar_projLine, fun _ => ⟨isArithVar_projLine.2.1, le_rfl, bot_le, isClosedPt_two⟩⟩`.
+-/
 theorem Choice.hyps_inhabited :
     IsArithVar (⊥ : Ideal (MRing (PBlk 2))) 2 ∧
       ∀ i : Fin 1, IsMultiProjPrime ((fun _ => ⊥ : Fin 1 → Ideal (MRing (PBlk 2))) i) ∧

@@ -4,6 +4,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Crys
 open private normV_inj normV_surj from Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.CrystallineBaseChange.CharEq
 
 open Formalism.ConjugateSelfDual UpperTheory.V.Af UpperTheory.V.Af.Nf UpperTheory.V.Sd UpperTheory.V.Br.CharacterEquality in
+/- English proof (translation)
+Use `⟨fun P => ⟨fun h => ?_, fun h => ?_⟩, fun M hM => ?_⟩` and prove the remaining obligations. Use `Filter.eventually_cofinite.2 (((Filter.eventually_cofinite.1 h).image fun w => normV w).subset fun p hp => ?_)` and prove the remaining obligations. Take `⟨hp, hne⟩` from `Classical.not_imp.1 hp`. Take `⟨w, rfl⟩` from `normV_surj hp`. Conclude with `⟨w, hne, rfl⟩`.
+
+Use `filter_upwards [normV_inj.tendsto_cofinite.eventually h] with w hw`. Conclude with `hw (places w).1`. Use `filter_upwards [normV_inj.tendsto_cofinite.eventually (Set.finite_le_nat M).eventually_cofinite_notMem] with w hw`. Conclude with `fun h => hw (Nat.le_of_dvd hM h)`.
+-/
 theorem UpperTheory.V.Af.Rn.evPl :
     UpperTheory.V.Af.Rn.EvPl := by
   refine ⟨fun P => ⟨fun h => ?_, fun h => ?_⟩, fun M hM => ?_⟩

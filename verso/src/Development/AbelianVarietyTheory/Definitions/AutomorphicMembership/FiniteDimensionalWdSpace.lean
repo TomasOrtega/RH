@@ -30,30 +30,54 @@ def wdMap (T : End ↥LL.1 ↥(Dpst P ρ)) (hT : ∀ c, T * mulD P ρ c = mulD P
     End ℂ (WDSpace P ι ρ) :=
   @letterMap ↥LL.1 ↥(MaximalUnramifiedExtension l) ↥(Dpst P ρ) _ _ _ _ (mulD P ρ) ℂ _ (algC ι LL) (urC ι) T hT
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem wdMap_mk (T : End ↥LL.1 ↥(Dpst P ρ)) (hT : ∀ c, T * mulD P ρ c = mulD P ρ c * T)
     (x : ↥(Dpst P ρ)) : wdMap P ι ρ T hT (wdMk P ι ρ x) = wdMk P ι ρ (T x) := rfl
 
+/- English proof (translation)
+The claim follows from `letI := algC ι LL; letterMk_zero _ _ _`.
+-/
 @[simp] theorem wdMk_zero : wdMk P ι ρ 0 = 0 := letI := algC ι LL; letterMk_zero _ _ _
 
+/- English proof (translation)
+The claim follows from `letI := algC ι LL; letterMk_add _ _ _ x y`.
+-/
 theorem wdMk_add (x y : ↥(Dpst P ρ)) : wdMk P ι ρ (x + y) = wdMk P ι ρ x + wdMk P ι ρ y :=
   letI := algC ι LL; letterMk_add _ _ _ x y
 
+/- English proof (translation)
+The claim follows from `letI := algC ι LL; letterMk_smul _ _ _ a x`.
+-/
 theorem wdMk_smul (a : ↥LL.1) (x : ↥(Dpst P ρ)) :
     wdMk P ι ρ (a • x) = ι (a : Om l) • wdMk P ι ρ x :=
   letI := algC ι LL; letterMk_smul _ _ _ a x
 
+/- English proof (translation)
+The claim follows from `letI := algC ι LL; letterMk_mul _ _ _ c x`.
+-/
 theorem wdMk_mul (c : ↥(MaximalUnramifiedExtension l)) (x : ↥(Dpst P ρ)) :
     wdMk P ι ρ (mulD P ρ c x) = ι (c : Om l) • wdMk P ι ρ x :=
   letI := algC ι LL; letterMk_mul _ _ _ c x
 
+/- English proof (translation)
+The claim follows from `letI := algC ι LL; span_letterMk _ _ _`.
+-/
 theorem span_wdMk : Submodule.span ℂ (Set.range (wdMk P ι ρ)) = ⊤ :=
   letI := algC ι LL; span_letterMk _ _ _
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext_on_range (span_wdMk P ι ρ) h`.
+-/
 theorem wd_ext {f g : End ℂ (WDSpace P ι ρ)} (h : ∀ x, f (wdMk P ι ρ x) = g (wdMk P ι ρ x)) : f = g :=
   LinearMap.ext_on_range (span_wdMk P ι ρ) h
 
 def wdN : End ℂ (WDSpace P ι ρ) := wdMap P ι ρ (monD P ρ) (monD_mulD P ρ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem wdN_mk (x : ↥(Dpst P ρ)) : wdN P ι ρ (wdMk P ι ρ x) = wdMk P ι ρ (monD P ρ x) := rfl
 
 instance finiteDimensional_wdSpace [FiniteDimensional ↥(MaximalUnramifiedExtension l) (DpstUr P ρ)] :
@@ -63,6 +87,11 @@ instance finiteDimensional_wdSpace [FiniteDimensional ↥(MaximalUnramifiedExten
     (fun i => (toUr P ρ).symm (finBasis ↥(MaximalUnramifiedExtension l) (DpstUr P ρ) i)) fun x =>
       ⟨_, ((finBasis ↥(MaximalUnramifiedExtension l) (DpstUr P ρ)).sum_repr (toUr P ρ x)).symm⟩
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `isNilpotent_monD (P := P) (ρ := ρ)`. Establish `hp : ∀ (k : ℕ) x, (wdN P ι ρ ^ k) (wdMk P ι ρ x) = wdMk P ι ρ ((monD P ρ ^ k) x)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro x`.
+
+Both sides reduce to the same expression. Consider the case `succ k ih => intro x`. Rewrite using `[pow_succ, pow_succ, End.mul_apply, End.mul_apply, wdN_mk, ih]`. Conclude with `⟨n, wd_ext P ι ρ fun x => by rw [hp, hn]; simp⟩`.
+-/
 theorem isNilpotent_wdN [FiniteDimensional ↥(MaximalUnramifiedExtension l) (DpstUr P ρ)] : IsNilpotent (wdN P ι ρ) := by
   obtain ⟨n, hn⟩ := isNilpotent_monD (P := P) (ρ := ρ)
   have hp : ∀ (k : ℕ) x, (wdN P ι ρ ^ k) (wdMk P ι ρ x) = wdMk P ι ρ ((monD P ρ ^ k) x) := by
@@ -74,6 +103,9 @@ theorem isNilpotent_wdN [FiniteDimensional ↥(MaximalUnramifiedExtension l) (Dp
 
 variable {P ρ} in
 
+/- English proof (translation)
+The claim follows from `haveI := LL.2 haveI : FiniteDimensional ℚ_[l] V := Module.Finite.trans ↥LL.1 V hV.finiteDimensional`.
+-/
 theorem IsPst.finite [FiniteDimensional ↥LL.1 V] (hV : IsPst P ρ) :
     FiniteDimensional ↥(MaximalUnramifiedExtension l) (DpstUr P ρ) :=
   haveI := LL.2
@@ -94,6 +126,9 @@ variable [IsAlgClosure E Ω] {A : ValuationSubring Ω} {w : HeightOneSpectrum (�
 
 def trivWD (a : ℕ) : WD h := WD.mk (WDRep.diag h fun _ : Fin a => 1)
 
+/- English proof (translation)
+Simplify using `[trivWD]`.
+-/
 @[simp] theorem lpDim_trivWD (a : ℕ) : (trivWD h a).lpDim = a := by simp [trivWD]
 
 section Fin
@@ -105,12 +140,21 @@ def wdRho : Representation ℂ ↥(Weil h) (WDSpace P ι ρ) where
   map_one' := wd_ext P ι ρ fun x => by simp
   map_mul' σ τ := wd_ext P ι ρ fun x => by simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem wdRho_mk (σ : ↥(Weil h)) (x : ↥(Dpst P ρ)) :
     wdRho P ι Bw h hj ρ σ (wdMk P ι ρ x) = wdMk P ι ρ (weilD Bw h P ρ σ x) := rfl
 
+/- English proof (translation)
+The claim follows from `(isSmooth_weilD Bw h P ρ hj).of_le fun σ hσ => wd_ext P ι ρ fun x => by simp [hσ]`.
+-/
 theorem isSmooth_wdRho : IsSmooth (wdRho P ι Bw h hj ρ) :=
   (isSmooth_weilD Bw h P ρ hj).of_le fun σ hσ => wd_ext P ι ρ fun x => by simp [hσ]
 
+/- English proof (translation)
+The claim follows from `wd_ext P ι ρ fun x => by have h1 := LinearMap.congr_fun (weilD_monD Bw h P ρ hj σ) x rw [End.mul_apply, LinearMap.smul_apply, End.mul_apply] at h1 have e : ι (((((normV w : ℕ) : ↥LL.1) ^ deg σ : ↥LL.1)) : Om l) = ((normV w : ℕ) : ℂ) ^ deg σ := (map_zpow₀ (ι.toRingHom.comp (algebr …`.
+-/
 theorem wdRho_wdN (σ : ↥(Weil h)) : wdRho P ι Bw h hj ρ σ * wdN P ι ρ =
     ((normV w : ℕ) : ℂ) ^ deg σ • (wdN P ι ρ * wdRho P ι Bw h hj ρ σ) :=
   wd_ext P ι ρ fun x => by
@@ -127,6 +171,9 @@ def wdRep : WDRep h (WDSpace P ι ρ) :=
   (exists_frobenius_semisimplification E Ω A w h _ (wdRho P ι Bw h hj ρ) (wdN P ι ρ)
     (isSmooth_wdRho P ι Bw h hj ρ) (isNilpotent_wdN P ι ρ) (wdRho_wdN P ι Bw h hj ρ)).choose
 
+/- English proof (translation)
+The claim follows from `(exists_frobenius_semisimplification E Ω A w h _ (wdRho P ι Bw h hj ρ) (wdN P ι ρ) (isSmooth_wdRho P ι Bw h hj ρ) (isNilpotent_wdN P ι ρ) (wdRho_wdN P ι Bw h hj ρ)).choose_spec`.
+-/
 theorem wdRep_spec : ∃ u : (End ℂ (WDSpace P ι ρ))ˣ, (wdRep P ι Bw h hj ρ).N = wdN P ι ρ ∧
     IsNilpotent ((u : End ℂ (WDSpace P ι ρ)) - 1) ∧ Commute (u : End ℂ (WDSpace P ι ρ)) (wdN P ι ρ) ∧
     (∀ σ, Commute (u : End ℂ (WDSpace P ι ρ)) (wdRho P ι Bw h hj ρ σ)) ∧
@@ -135,9 +182,15 @@ theorem wdRep_spec : ∃ u : (End ℂ (WDSpace P ι ρ))ˣ, (wdRep P ι Bw h hj 
   (exists_frobenius_semisimplification E Ω A w h _ (wdRho P ι Bw h hj ρ) (wdN P ι ρ)
     (isSmooth_wdRho P ι Bw h hj ρ) (isNilpotent_wdN P ι ρ) (wdRho_wdN P ι Bw h hj ρ)).choose_spec
 
+/- English proof (translation)
+The claim follows from `(wdRep_spec P ι Bw h hj ρ).choose_spec.1`.
+-/
 @[simp] theorem wdRep_N : (wdRep P ι Bw h hj ρ).N = wdN P ι ρ :=
   (wdRep_spec P ι Bw h hj ρ).choose_spec.1
 
+/- English proof (translation)
+Take `⟨u, -, -, -, -, hu⟩` from `wdRep_spec P ι Bw h hj ρ`. Rewrite using `[hu]`. Simplify using the standard rewrite rules.
+-/
 theorem wdRep_ineIncl (σ : ↥(Ine (F := E) A)) :
     (wdRep P ι Bw h hj ρ).ρ (ineIncl h σ) = wdRho P ι Bw h hj ρ (ineIncl h σ) := by
   obtain ⟨u, -, -, -, -, hu⟩ := wdRep_spec P ι Bw h hj ρ
@@ -154,20 +207,35 @@ def wdPst : WD h :=
 
 variable {P ρ}
 
+/- English proof (translation)
+The claim follows from `hV.finite; WD.mk (wdRep P ι Bw h hj ρ) := dif_pos hV`.
+-/
 theorem wdPst_of_isPst (hV : IsPst P ρ) :
     wdPst P ι Bw h hj ρ = haveI := hV.finite; WD.mk (wdRep P ι Bw h hj ρ) := dif_pos hV
 
+/- English proof (translation)
+The claim follows from `dif_neg hV`.
+-/
 theorem wdPst_of_not_isPst (hV : ¬ IsPst P ρ) : wdPst P ι Bw h hj ρ = trivWD h (finrank ↥LL.1 V) :=
   dif_neg hV
 
+/- English proof (translation)
+Use `hV.finite` as an intermediate fact. Rewrite using `[wdPst_of_isPst ι Bw h hj hV, WD.lpDim_mk]`.
+-/
 theorem lpDim_wdPst (hV : IsPst P ρ) : (wdPst P ι Bw h hj ρ).lpDim = finrank ℂ (WDSpace P ι ρ) := by
   have := hV.finite
   rw [wdPst_of_isPst ι Bw h hj hV, WD.lpDim_mk]
 
+/- English proof (translation)
+Use `hV.finite` as an intermediate fact. Rewrite using `[wdPst_of_isPst ι Bw h hj hV, WD.monodromyZero_ofWeilDeligneRepClass_iff, wdRep_N]`.
+-/
 theorem mono0_wdPst (hV : IsPst P ρ) : (wdPst P ι Bw h hj ρ).mono0 ↔ wdN P ι ρ = 0 := by
   have := hV.finite
   rw [wdPst_of_isPst ι Bw h hj hV, WD.monodromyZero_ofWeilDeligneRepClass_iff, wdRep_N]
 
+/- English proof (translation)
+Use `hV.finite` as an intermediate fact. Rewrite using `[wdPst_of_isPst ι Bw h hj hV, WD.unr_mk, WDRep.Unr, wdRep_N]`. Use `and_congr_right fun _ => forall_congr' fun σ => ?_` and prove the remaining obligations. Rewrite using `[wdRep_ineIncl, ← weilD_ineIncl]`. Conclude with `⟨fun h1 x => by rw [← wdRho_mk P ι Bw h hj, h1]; rfl, fun h1 => wd_ext P ι ρ h1⟩`.
+-/
 theorem unr_wdPst (hV : IsPst P ρ) : (wdPst P ι Bw h hj ρ).unr ↔ wdN P ι ρ = 0 ∧
     ∀ (σ : ↥(Ine (F := E) A)) (x : ↥(Dpst P ρ)),
       wdMk P ι ρ (actD P ρ (weilToGK Bw h (ineIncl h σ)) x) = wdMk P ι ρ x := by
@@ -204,12 +272,18 @@ def IsJumpsAt (τ : E →+* Om l) (J : Multiset ℤ) : Prop :=
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Take `⟨LL', r', h1, h2⟩` from `hr`. Conclude with `⟨LL', r', h1, Bw.Kw, le_rfl, h2⟩`.
+-/
 theorem IsCrysAt.isPotCrysAt (hr : IsCrysAt P Bw r) : IsPotCrysAt P Bw r := by
   obtain ⟨LL', r', h1, h2⟩ := hr
   exact ⟨LL', r', h1, Bw.Kw, le_rfl, h2⟩
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Use extensionality with `g i j`. Conclude with `congrArg (fun f : ↥Gw →* GL (Fin a) (Om l) => (f g : Matrix (Fin a) (Fin a) (Om l)) i j) (h₁.2.trans h₂.2.symm)`.
+-/
 theorem IsModel.unique {LL' : FinExt l} {r₁ r₂ : ↥Gw →* GL (Fin a) ↥LL'.1} (h₁ : IsModel Bw r LL' r₁)
     (h₂ : IsModel Bw r LL' r₂) : r₁ = r₂ := by
   ext g i j
@@ -218,6 +292,9 @@ theorem IsModel.unique {LL' : FinExt l} {r₁ r₂ : ↥Gw →* GL (Fin a) ↥LL
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨le_rfl, MonoidHom.ext fun _ => by simp [Formalism.MainNotions.N.mapRep]⟩`.
+-/
 theorem isModel_one : IsModel Bw (1 : ↥Gw →* GL (Fin a) (Om l)) Bw.LL 1 :=
   ⟨le_rfl, MonoidHom.ext fun _ => by simp [Formalism.MainNotions.N.mapRep]⟩
 
@@ -236,10 +313,16 @@ def wdAt : WD h :=
 
 variable {P r}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, _, hr.choose_spec.choose_spec.1, hr.choose_spec.choose_spec.2, dif_pos hr⟩`.
+-/
 theorem wdAt_of_isPstAt (hr : IsPstAt P Bw r) : ∃ LL' r', IsModel Bw r LL' r' ∧ IsPst P (Bw.repE LL' r') ∧
     wdAt P ι Bw h hj r = wdPst P ι Bw h hj (Bw.repE LL' r') :=
   ⟨_, _, hr.choose_spec.choose_spec.1, hr.choose_spec.choose_spec.2, dif_pos hr⟩
 
+/- English proof (translation)
+The claim follows from `dif_neg hr`.
+-/
 theorem wdAt_of_not_isPstAt (hr : ¬ IsPstAt P Bw r) : wdAt P ι Bw h hj r = trivWD h a := dif_neg hr
 
 end At
@@ -267,16 +350,28 @@ open Classical in
 def jumpsW (τ : E →+* Om l) : Multiset ℤ :=
   if hJ : ∃ J, IsJumpsW P pl br r τ J then hJ.choose else 0
 
+/- English proof (translation)
+Rewrite using `[jumpsW, dif_pos hJ]`. Conclude with `hJ.choose_spec`.
+-/
 theorem isJumpsW_jumpsW {τ : E →+* Om l} (hJ : ∃ J, IsJumpsW P pl br r τ J) :
     IsJumpsW P pl br r τ (jumpsW P pl br r τ) := by
   rw [jumpsW, dif_pos hJ]; exact hJ.choose_spec
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨_, h⟩ => h, fun h => ⟨hw, h⟩⟩`.
+-/
 theorem isCrysW_iff {w : HeightOneSpectrum (𝓞 E)} (hw : w ∈ placesOver E l) :
     IsCrysW P pl br r w ↔ IsCrysAt P (br w hw) (resDec pl r w) := ⟨fun ⟨_, h⟩ => h, fun h => ⟨hw, h⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨_, h⟩ => h, fun h => ⟨hw, h⟩⟩`.
+-/
 theorem isPotCrysW_iff {w : HeightOneSpectrum (𝓞 E)} (hw : w ∈ placesOver E l) :
     IsPotCrysW P pl br r w ↔ IsPotCrysAt P (br w hw) (resDec pl r w) := ⟨fun ⟨_, h⟩ => h, fun h => ⟨hw, h⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨_, h⟩ => h, fun h => ⟨hw, h⟩⟩`.
+-/
 theorem isdRW_iff {w : HeightOneSpectrum (𝓞 E)} (hw : w ∈ placesOver E l) :
     IsdRW P pl br r w ↔ IsdRAt P (br w hw) (resDec pl r w) := ⟨fun ⟨_, h⟩ => h, fun h => ⟨hw, h⟩⟩
 
@@ -292,13 +387,22 @@ variable (K : FinExt l)
 
 def tInv : P.R.B := ((isUnit_tB P).unit⁻¹ : P.R.Bˣ)
 
+/- English proof (translation)
+The claim follows from `(isUnit_tB P).val_inv_mul`.
+-/
 theorem tInv_mul : tInv P * P.tB = 1 := (isUnit_tB P).val_inv_mul
 
+/- English proof (translation)
+Establish `h` using `congrArg (P.actQ g) (tInv_mul P)`. Rewrite `h` using `[map_mul, map_one, localPrime_galoisAction_periodT, mul_smul_comm, ← smul_mul_assoc]`. Conclude with `(isUnit_tB P).mul_right_cancel (h.trans (tInv_mul P).symm)`.
+-/
 theorem smul_actQ_tInv (g : GQ l) : (P.χQ g : ℚ_[l]) • P.actQ g (tInv P) = tInv P := by
   have h := congrArg (P.actQ g) (tInv_mul P)
   rw [map_mul, map_one, localPrime_galoisAction_periodT, mul_smul_comm, ← smul_mul_assoc] at h
   exact (isUnit_tB P).mul_right_cancel (h.trans (tInv_mul P).symm)
 
+/- English proof (translation)
+Establish `h` using `congrArg P.φB (tInv_mul P)`. Rewrite `h` using `[map_mul, map_one, localPrime_frobenius_periodT, mul_smul_comm, ← smul_mul_assoc]`. Conclude with `(isUnit_tB P).mul_right_cancel (h.trans (tInv_mul P).symm)`.
+-/
 theorem smul_phiB_tInv : (l : ℚ_[l]) • P.φB (tInv P) = tInv P := by
   have h := congrArg P.φB (tInv_mul P)
   rw [map_mul, map_one, localPrime_frobenius_periodT, mul_smul_comm, ← smul_mul_assoc] at h
@@ -314,6 +418,9 @@ def tateX : (ℚ_[l] × ℚ_[l]) ⊗[ℚ_[l]] Bst P := (1, 0) ⊗ₜ C (tInv P)
 
 def tateY : (ℚ_[l] × ℚ_[l]) ⊗[ℚ_[l]] Bst P := (0, 1) ⊗ₜ 1 - (1, 0) ⊗ₜ (C (tInv P) * X)
 
+/- English proof (translation)
+Establish `: Subsingleton (DpstUr P ρ)` using `inferInstanceAs (Subsingleton ↥(Dpst P ρ))`. Rewrite using `[IsPst, rank_subsingleton', rank_subsingleton']`.
+-/
 example (ρ : Representation ℚ_[l] ↥(GK K) (Fin 0 → ℚ_[l])) : IsPst P ρ := by
   have : Subsingleton (DpstUr P ρ) := inferInstanceAs (Subsingleton ↥(Dpst P ρ))
   rw [IsPst, rank_subsingleton', rank_subsingleton']

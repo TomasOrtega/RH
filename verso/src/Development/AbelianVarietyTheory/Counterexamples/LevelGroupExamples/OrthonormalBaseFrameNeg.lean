@@ -11,11 +11,21 @@ namespace GlobalTheory.LettersCheck
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open scoped TensorProduct
 
+/- English proof (translation)
+Apply the tactic sequence `apply _root_.UpperTheory.Reformulated.B.Qh26.isInfEmb_unique <;> assumption`.
+-/
 theorem isInfEmb_unique {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (τ : E →+* ℂ) (θ θ' : Ainf F ⊗[F] E →+* ℂ) (h : Formalism.MainNotions.StandardLattice.IsInfEmb τ θ) (h' : Formalism.MainNotions.StandardLattice.IsInfEmb τ θ') :
     θ = θ' :=
   by apply _root_.UpperTheory.Reformulated.B.Qh26.isInfEmb_unique <;> assumption
 
+/- English proof (translation)
+Unfold `xiR`. Use `norm_pos_iff.2 ((map_ne_zero _).2 ?_)` and prove the remaining obligations. Establish `hs : D.host.sqrtMinusD ≠ 0`. Introduce `h`. Establish `h1` using `sq_emb D D.host.φ₀`.
+
+Rewrite `h1` using `[h, map_zero]`. Establish `h2 : (D.host.d : ℂ) = 0` using `by linear_combination h1`. Establish `h3` using `D.host.qd_big.2`. Establish `h4 : D.host.d = 0` using `by exact_mod_cast h2`. Use linear arithmetic over natural numbers and integers.
+
+Use `show -1 / ((Ideal.absNorm D.host.ccK : D.host.E) * D.host.sqrtMinusD) ≠ 0`. Conclude with `div_ne_zero (by simp) (mul_ne_zero (normK_ne_zero D) hs)`.
+-/
 theorem xiR_pos (D : D7) : 0 < xiR D := by
   unfold xiR
   refine norm_pos_iff.2 ((map_ne_zero _).2 ?_)
@@ -32,6 +42,9 @@ theorem xiR_pos (D : D7) : 0 < xiR D := by
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Unfold `lminor psgn`. Rewrite using `[Matrix.submatrix_diagonal _ _ (Fin.castLE_injective _), Matrix.det_diagonal, Complex.ofReal_prod, ← Fin.prod_univ_eq_prod_range (fun a => ((sgn p0 a : ℝ) : ℂ))]`. Both sides reduce to the same expression.
+-/
 theorem lminor_sgn (p0 : ℕ) (i : Fin (r + 1)) :
     lminor (Matrix.diagonal fun a : Fin r => ((sgn p0 (a : ℕ) : ℝ) : ℂ)) i = ((psgn p0 i : ℝ) : ℂ) := by
   unfold lminor psgn
@@ -39,6 +52,9 @@ theorem lminor_sgn (p0 : ℕ) (i : Fin (r + 1)) :
     ← Fin.prod_univ_eq_prod_range (fun a => ((sgn p0 a : ℝ) : ℂ))]
   rfl
 
+/- English proof (translation)
+Unfold `psgn`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Unfold `sgn`. Apply the tactic sequence `split_ifs <;> norm_num`.
+-/
 theorem psgn_sq (p0 i : ℕ) : psgn p0 i * psgn p0 i = 1 := by
   unfold psgn
   rw [← Finset.prod_mul_distrib]
@@ -46,11 +62,23 @@ theorem psgn_sq (p0 i : ℕ) : psgn p0 i * psgn p0 i = 1 := by
   unfold sgn
   split_ifs <;> norm_num
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[gram, hermC, col, Matrix.mul_apply, Finset.mul_sum, mul_assoc]`.
+-/
 theorem gram_eq (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (P : Matrix (Fin r) (Fin r) ℂ) :
     gram τ G P = P.transpose * (G.map τ * P.map (starRingEnd ℂ)) := by
   ext a b
   simp [gram, hermC, col, Matrix.mul_apply, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Establish `hd : ∀ (τ : X.Ψ) i, dmin X.Gm (fun τ : X.Ψ => (x₀ τ.1 : Fin r → Fin r → ℂ)) τ i = ((psgn X.p0 i : ℝ) : ℂ)` using `fun τ i => by`. Rewrite using `[← lminor_sgn, ← h τ.1 τ.2]`. Both sides reduce to the same expression. Use `⟨fun τ => ⟨?_, fun i => ?_⟩, fun τ i => ?_⟩` and prove the remaining obligations. Use `show (x₀ τ.1).det ≠ 0`.
+
+Introduce `h0`. Establish `h1` using `congrArg Matrix.det (h τ.1 τ.2)`. Rewrite `h1` using `[gram_eq, Matrix.det_mul, Matrix.det_transpose, h0, zero_mul, Matrix.det_diagonal]`. Use `Finset.prod_ne_zero_iff.2 (fun a _ => ?_) h1.symm` and prove the remaining obligations. Unfold `sgn`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[hd, Complex.ofReal_re, psgn_sq]`. Conclude with `one_pos`. Rewrite using `[hd, Complex.norm_real]`. Establish `h` using `congrArg abs (psgn_sq X.p0 i)`.
+
+Rewrite `h` using `[abs_mul, abs_one]`. Establish `h0` using `abs_nonneg (psgn X.p0 i)`. Rewrite using `[Real.norm_eq_abs]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem unit_of_x0Orth (X : Data E r) (x₀ : (E →+* ℂ) → Matrix (Fin r) (Fin r) ℂ) (h : IsOrthogonalFrame X x₀) :
     (fun τ : X.Ψ => (x₀ τ.1 : Fin r → Fin r → ℂ)) ∈ X.dom ∧
       ∀ τ i, ‖dmin X.Gm (fun τ : X.Ψ => (x₀ τ.1 : Fin r → Fin r → ℂ)) τ i‖ = 1 := by
@@ -77,6 +105,9 @@ theorem unit_of_x0Orth (X : Data E r) (x₀ : (E →+* ℂ) → Matrix (Fin r) (
 
 variable {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {l : Level H}
 
+/- English proof (translation)
+Use extensionality with `a`. Both sides reduce to the same expression.
+-/
 theorem relab_val (c : Coeff l) (τ : E →+* ℂ) : relab c c.F.val.toRingHom τ = τ := by
   ext a
   rfl

@@ -11,6 +11,11 @@ namespace Formalism.L2.SG.NGVanish
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `hi : ∀ i, A (stdOrthonormalBasis ℂ Wq i) = 0`. Introduce `i`. Use `congrArg (fun v : Formalism.L2.SG.PackageTie.HS Wq Wp => WithLp.ofLp v i) h` as an intermediate fact. Simplify `this` using `[Formalism.L2.SG.PackageTie.hsEmb]`. Establish `hA : (A : Wq →ₗ[ℂ] Wp) = 0` using `(stdOrthonormalBasis ℂ Wq).toBasis.ext (fun i => by simpa using hi i)`.
+
+Use extensionality with `x`. Simplify using `using congrArg (fun f : Wq →ₗ[ℂ] Wp => f x) hA`.
+-/
 theorem hsEmb_eq_zero {Wq Wp : Type} [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
     [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] (A : Wq →L[ℂ] Wp)
     (h : Formalism.L2.SG.PackageTie.hsEmb A = 0) : A = 0 := by
@@ -35,6 +40,19 @@ def FormNGC : Prop :=
               OO (ν (Formalism.L2.SG.RealObj.gamW X u u' w)) Set.univ (X.Wu u) (X.Wu u')
                 (Formalism.L2.SG.RealObj.gamW X u u' w)).comp B)
 
+/- English proof (translation)
+Introduce `Cg cb Cw cT CT C0`. Take `⟨a₀, b₀, h2⟩` from `h Cg cb Cw cT CT C0`. Use `⟨a₀, b₀, fun C' Cl e1 e2 D large₂ X Y u u' hc ν hν t ht hJ => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hv`. Take `⟨⟨w, hw, hrep⟩, hform⟩` from `h2 C' Cl e1 e2 D large₂ X Y u u' hc ν hν t ht hv`.
+
+Establish `hex : ∃ w' : Point D.host.E (D.R.rS + 1), toPts w' = ptPN t ∧ ∃ g, Formalism.L2.SG.RealObj.IsPtRep X u u' w' g` using `⟨w, hw, hrep⟩`. Unfold `J2of at hJ`. Rewrite `hJ` using `[dif_pos hex]`. Establish `hJw : Jw Y u u' ν hex.choose = 0` using `hsEmb_eq_zero _ (norm_eq_zero.1 (pow_eq_zero_iff two_ne_zero |>.1 hJ))`. Take `⟨c, A, B, hO⟩` from `hform hex.choose hex.choose_spec.1 hex.choose_spec.2`.
+
+Establish `key : ∀ (k χ c : ℂ) (A : X.Vpi u →L[ℂ] X.Vpi u) (Z : X.Vpi u' →L[ℂ] X.Vpi u) (B : X.Vpi u' →L[ℂ] X.Vpi u'), k • Z = 0 → k • (χ • (c • A.comp (Z.comp B))) = 0`. Introduce `k χ c A Z B hZ`. Establish `hy : ∀ y, k • Z y = 0` using `fun y => by simpa using congrArg (fun T => T y) hZ`. Use extensionality with `x`. Simplify using `only [smul_apply, ContinuousLinearMap.comp_apply, zero_apply]`.
+
+Rewrite using `[smul_comm k χ, smul_comm k c, ← map_smul A k, hy]`. Simplify using the standard rewrite rules. Establish `hamp : ampN (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') t = 0`. Unfold `ampN`. Rewrite using `[hO]`.
+
+Unfold `Jw at hJw`. Conclude with `key _ _ _ _ _ _ hJw`. Apply `hv` to reduce the goal to its premises. Use `show vec (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') t = 0`. Unfold `vec`.
+
+Rewrite using `[hamp]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+-/
 theorem stepTermVanish_of_form (h : FormNGC) : StepTermVanish := by
   intro Cg cb Cw cT CT C0
   obtain ⟨a₀, b₀, h2⟩ := h Cg cb Cw cT CT C0
@@ -80,12 +98,18 @@ def FormRelC : Prop :=
               OO (ν (Formalism.L2.SG.RealObj.gamW X u u' w)) Set.univ (X.Wu u) (X.Wu u')
                 (Formalism.L2.SG.RealObj.gamW X u u' w)).comp B)
 
+/- English proof (translation)
+Introduce `Cg cb Cw cT CT C0`. Take `⟨a, b, hh⟩` from `h Cg cb Cw cT CT C0`. Conclude with `⟨a, b, fun C' Cl h1 h2 D large₂ X Y u u' hc ν hν t ht hv => hh C' Cl h1 h2 D large₂ X Y u u' hc ν hν t (Set.mem_union_left _ ht) hv⟩`.
+-/
 theorem formNGC_of_rel (h : FormRelC) : FormNGC := by
   intro Cg cb Cw cT CT C0
   obtain ⟨a, b, hh⟩ := h Cg cb Cw cT CT C0
   exact ⟨a, b, fun C' Cl h1 h2 D large₂ X Y u u' hc ν hν t ht hv =>
     hh C' Cl h1 h2 D large₂ X Y u u' hc ν hν t (Set.mem_union_left _ ht) hv⟩
 
+/- English proof (translation)
+The claim follows from `stepTermVanish_of_form (formNGC_of_rel h)`.
+-/
 theorem stepTermVanish_of_rel (h : FormRelC) : StepTermVanish :=
   stepTermVanish_of_form (formNGC_of_rel h)
 

@@ -24,6 +24,11 @@ namespace GlobalTheory.LiftTame
 
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D}
 
+/- English proof (translation)
+Establish `hh : ∀ f, IsThetaFunO ψ S T f → ∀ w, ℓ' (heisO ψ S T w f) = ℓ (heisO ψ S T w f)` using `fun f hf w => e _ (GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hf w)`. Use `⟨fun f f' hf hf' => ?_, fun c f hf => ?_, fun f hf => ?_, fun f hf => ?_, fun f hf m _ α hα hI => ?_⟩` and prove the remaining obligations. Rewrite using `[e _ (GlobalTheory.WeilVacMove.isTheta_add hf hf'), e _ hf, e _ hf', h.add f f' hf hf']`. Rewrite using `[e _ (GlobalTheory.WeilVacMove.isTheta_smul c hf), e _ hf, h.smul c f hf]`. Simplify `h.cont f hf` using `only [hh f hf]`.
+
+Simplify `h.bdd f hf` using `only [hh f hf]`. Rewrite using `[e _ hI, h.sup f hf m α hα hI]`. Simplify using `only [hh f hf]`.
+-/
 theorem tame_congr (hψ : IsStdChar D ψ (-1)) {ℓ ℓ' : (WO S T → ℂ) → ℂ} (h : Tame ψ S T ℓ)
     (e : ∀ f, IsThetaFunO ψ S T f → ℓ' f = ℓ f) : Tame ψ S T ℓ' := by
   have hh : ∀ f, IsThetaFunO ψ S T f → ∀ w, ℓ' (heisO ψ S T w f) = ℓ (heisO ψ S T w f) := fun f hf w =>
@@ -36,6 +41,9 @@ theorem tame_congr (hψ : IsStdChar D ψ (-1)) {ℓ ℓ' : (WO S T → ℂ) → 
   · rw [e _ hI, h.sup f hf m α hα hI]
     simp only [hh f hf]
 
+/- English proof (translation)
+Establish `h : IntegrableOn (fun _ => (1 : ℝ)) v.𝓕 v.μ`. Simplify using `using GlobalTheory.Size.integrableOn_inv_quotHeight_pow (V := V) 0 v.haar v.fund`. Break down `(integrableOn_const_iff (by simp)).1 h with h | h` into its components or cases. Simplify using `at h`. Conclude with `isFiniteMeasure_restrict.2 h.ne`.
+-/
 theorem finite_vol {V : HSp D} (v : GlobalTheory.Unf.Vol V) : IsFiniteMeasure (v.μ.restrict v.𝓕) := by
   have h : IntegrableOn (fun _ => (1 : ℝ)) v.𝓕 v.μ := by
     simpa using GlobalTheory.Size.integrableOn_inv_quotHeight_pow (V := V) 0 v.haar v.fund
@@ -43,6 +51,19 @@ theorem finite_vol {V : HSp D} (v : GlobalTheory.Unf.Vol V) : IsFiniteMeasure (v
   · simp at h
   · exact isFiniteMeasure_restrict.2 h.ne
 
+/- English proof (translation)
+Take `⟨-, h2A, -, hbA, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D A`. Take `⟨-, h2T, -, hbT, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D T`. Use `haveI := finite_vol vA`. Use `haveI := finite_vol vT`. Establish `hc : Continuous fun y : (GA D A × N) × GA D T => K y.1.1 y.1.2 * G y.2` using `(hK.comp continuous_fst).mul (hG.continuous.comp continuous_snd)`.
+
+Establish `hg' : Continuous fun y : (GA D A × N) × GA D T => g y.1.1 y.1.2` using `hg.comp continuous_fst`. Take `⟨hI, hT⟩` from `GlobalTheory.T.weilKernelFunctional_superposition_isTame D ψ S T χS χT om hom ((GA D A × N) × GA D T) (((vA.μ.restrict vA.𝓕).prod ν).prod (vT.μ.restrict vT.𝓕)) (fun y => K y.1.1 y.1.2 * G y.2) (fun y => g y.1.1 y.1.2) (fun y => y.2) (fun _ => 0) hc.measurable hg' continuous_snd c …`. Take `⟨M, hM⟩` from `hφ.decay (a + a' * k)`. Take `⟨M', hM'⟩` from `hG.decay k`. Use `Integrable.of_bound (hc.norm.mul ((((continuous_quotHeight S).comp hg').mul ((continuous_quotHeight T).comp continuous_snd)).pow k)).aestronglyMeasurable (|C| * |C'| ^ k * M * M') (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+
+Take `⟨⟨h, n⟩, t⟩` from `y`. Establish `p1` using `(quotHeight_pos A h).le`. Establish `p2` using `(quotHeight_pos T t).le`. Establish `p3` using `(quotHeight_pos S (g h n)).le`. Establish `b1 : ‖K h n‖ ≤ |C| * (‖φ h‖ * quotHeight A h ^ a)` using `(hKb h n).trans (mul_le_mul_of_nonneg_right (le_abs_self C) (by positivity))`.
+
+Establish `b2 : quotHeight S (g h n) ≤ |C'| * quotHeight A h ^ a'` using `(hgb h n).trans (mul_le_mul_of_nonneg_right (le_abs_self C') (by positivity))`. Establish `hM0 : 0 ≤ M` using `le_trans (by positivity) (hM h)`. Use `show ‖‖K h n * G t‖ * (quotHeight S (g h n) * quotHeight T t) ^ k‖ ≤ _`. Rewrite using `[Real.norm_of_nonneg (by positivity), norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `tame_congr hom.std hT fun f hf => ?_` and prove the remaining obligations. Establish `h1` using `hI f hf`. Rewrite using `[integral_prod _ h1, integral_prod _ h1.integral_prod_left]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Use `integral_congr_ae (Filter.Eventually.of_forall fun n => ?_)` and prove the remaining obligations.
+
+Simplify using `only [liftS_apply]`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `only`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tame_double {χS χT : (AE D)ˣ →* Circle} {om : Om S T} (hom : IsWeilDatumO ψ S T χS χT om) (vT : GlobalTheory.Unf.Vol T)
     {G : GA D T → ℂ} (hG : RapidDec T G) {A : HSp D} (vA : GlobalTheory.Unf.Vol A) {φ : GA D A → ℂ} (hφ : RapidDec A φ)
     {N : Type} [TopologicalSpace N] [SecondCountableTopology N] [MeasurableSpace N] [BorelSpace N] (ν : Measure N)
@@ -92,6 +113,25 @@ theorem tame_double {χS χT : (AE D)ˣ →* Circle} {om : Om S T} (hom : IsWeil
   simp only
   ring
 
+/- English proof (translation)
+Introduce `D ψ W vW G hG`. Use `⟨fun ρ B χ χ' om hom φ hφ => ?_, fun ρ J χ χ' om hom L' ζ' χ₁ χ₂ omz homz φ Φ₀ hφ hΦ₀ => ?_⟩` and prove the remaining obligations. Take `⟨-, h2, -, hb, ht, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D B.V haveI : SecondCountableTopology (flagN B.d) := TopologicalSpace.Subtype.secondCountableTopology (flagN B.d : Set (GA D B.V)) haveI : IsFiniteMeasure (B.vN.ν.restrict B.vN.𝓝) := isFiniteMeasure_restrict.2 (by rw [B.vN.u …`. Take `⟨C₁, a₁, h₁⟩` from `GlobalTheory.T.unitaryQuotientHeight_comparable_wittDecomposition D B.V B.V₀ ρ B.d`. Take `⟨C₂, a₂, h₂⟩` from `GlobalTheory.T.unitaryQuotientHeight_orthogonalSum_comparable D B.V₀ B.A B.L B.o`.
+
+Establish `hn : Continuous fun p : GA D B.A × flagN B.d => p.2.1` using `continuous_subtype_val.comp continuous_snd`. Use `tame_double hom vW hG B.vA hφ (B.vN.ν.restrict B.vN.𝓝) (fun h (n : flagN B.d) => φ h * star (psiBes ψ B.d 1 (vecB B.o B.ζ) n.1)) (fun h n => n.1 * embA B.d B.o h) ((hφ.continuous.comp continuous_fst).mul ((GlobalTheory.CharLaws.continuous_psiBes ψ B.d hom.std.1.1 1 (vecB B.o B.ζ) …` as an intermediate fact. Establish `e : ‖psiBes ψ B.d 1 (vecB B.o B.ζ) n.1‖ = 1` using `hom.std.1.2.1 _`. Simplify using `[e]) (fun h n => by`. Establish `p1` using `(quotHeight_pos B.A h).le`.
+
+Establish `p2` using `(quotHeight_pos B.V₀ (B.o.emb (h, 1))).le`. Establish `b : quotHeight B.V₀ (B.o.emb (h, 1)) ≤ |C₂| * quotHeight B.A h ^ a₂` using `(h₂ h).2.trans (mul_le_mul_of_nonneg_right (le_abs_self _) (by positivity))`. Combine the equalities or inequalities in the displayed calculation. Use `this using 2 with Φ` and compare the differences between its conclusion and the goal. Unfold `BesL.per besPer besFun`.
+
+Use `congr 1`. Use function extensionality and compare the values at `h`. Use `congr 1`. Use function extensionality and compare the values at `n`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨-, h2, -, hb, ht, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D J.W haveI : SecondCountableTopology (flagN J.d) := TopologicalSpace.Subtype.secondCountableTopology (flagN J.d : Set (GA D J.W)) haveI : IsFiniteMeasure (J.vN.ν.restrict J.vN.𝓝) := isFiniteMeasure_restrict.2 (by rw [J.vN.u …`. Take `⟨C₁, a₁, h₁⟩` from `GlobalTheory.T.unitaryQuotientHeight_comparable_wittDecomposition D J.W J.W₀ ρ J.d`. Take `⟨C₂, a₂, h₂⟩` from `GlobalTheory.SupThetaGrowth.om_sup_quotHeight D ψ J.W₀ L' χ₁ χ₂ omz homz Φ₀ hΦ₀`. Establish `hn : Continuous fun p : GA D J.W₀ × flagN J.d => p.2.1` using `continuous_subtype_val.comp continuous_snd`. Establish `hth : ∀ n h, thetaJS ψ J.d ζ' omz Φ₀ n h = ψ (cenS J.d L' (zEll L' ρ ζ') n) * omz (h, 1) Φ₀ (ptS J.d L' (zEll L' ρ ζ') n)` using `fun n h => by`.
+
+Rewrite using `[thetaJS, GlobalTheory.Unf.FB.ThLaws.jacS_zero_apply]`. Establish `hJ : Continuous fun p : (GA D J.W₀ × GA D L') × WO J.W₀ L' => omz p.1 Φ₀ p.2` using `(@GlobalTheory.Unf.jointCont_all D) ψ J.W₀ L' χ₁ χ₂ omz homz Φ₀ hΦ₀`. Establish `hthc : Continuous fun p : GA D J.W₀ × flagN J.d => thetaJS ψ J.d ζ' omz Φ₀ p.2.1 p.1`. Simplify using `only [hth]`. Conclude with `(hom.std.1.1.comp ((GlobalTheory.Unf.FB.ThLaws.continuous_cenS _ _ _).comp hn)).mul (hJ.comp ((continuous_fst.prodMk continuous_const).prodMk ((GlobalTheory.Unf.FB.ThLaws.continuous_ptS _ _ _).comp hn)))`.
+
+Use `tame_double hom vW hG J.v0 hφ (J.vN.ν.restrict J.vN.𝓝) (fun h (n : flagN J.d) => φ h * star (thetaJS ψ J.d ζ' omz Φ₀ n.1 h) * star (psiFlag ψ J.d n.1)) (fun h n => n.1 * J.d.emb0 h) (((hφ.continuous.comp continuous_fst).mul hthc.star).mul ((GlobalTheory.Unf.FB.ThLaws.continuous_p …` as an intermediate fact. Establish `e : ‖psiFlag ψ J.d n.1‖ = 1` using `hom.std.1.2.1 _`. Rewrite using `[norm_mul, norm_mul, norm_star, norm_star, e, hth, norm_mul, hom.std.1.2.1, one_mul, mul_one]`. Use `(mul_le_mul_of_nonneg_left (h₂ h 1 _) (norm_nonneg _)).trans (le_of_eq ?_)` and prove the remaining obligations. Use the proof step `ring) (fun h n => (h₁ n.1 n.2 _).2)`.
+
+Use `this using 2 with Φ` and compare the differences between its conclusion and the goal. Unfold `JacL.per fjSrc fjSrcFun`. Use `congr 1`. Use function extensionality and compare the values at `h`. Use `congr 1`.
+
+Use function extensionality and compare the values at `n`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lift_periods_tame : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (W : HSp D) (vW : GlobalTheory.Unf.Vol W) (G : GA D W → ℂ), RapidDec W G → (∀ (ρ : ℕ) (B : BesL D ρ) (χ χ' : (AE D)ˣ →* Circle) (om : Om B.V W), IsWeilDatumO ψ B.V W χ χ' om → ∀ φ, RapidDec B.A φ → Tame ψ B.V W fun Φ => B.per ψ φ (liftS om vW.μ vW.𝓕 G Φ)) ∧ ∀ (ρ : ℕ) (J : JacL D ρ) (χ χ' : (AE D)ˣ →* Circle) (om : Om J.W W), IsWeilDatumO ψ J.W W χ χ' om → ∀ (L' : HSp D) (ζ' : Fin L'.rank → D.host.E) (χ₁ χ₂ : (AE D)ˣ →* Circle) (omz : Om J.W₀ L'), IsWeilDatumO ψ J.W₀ L' χ₁ χ₂ omz → ∀ φ Φ₀, RapidDec J.W₀ φ → IsThetaFunO ψ J.W₀ L' Φ₀ → Tame ψ J.W W fun Φ => J.per ψ ζ' omz φ (liftS om vW.μ vW.𝓕 G Φ) Φ₀ := by
   intro D ψ W vW G hG
   refine ⟨fun ρ B χ χ' om hom φ hφ => ?_, fun ρ J χ χ' om hom L' ζ' χ₁ χ₂ omz homz φ Φ₀ hφ hΦ₀ => ?_⟩

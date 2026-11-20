@@ -13,6 +13,23 @@ namespace GlobalTheory.CompanionTheory.BZPhiPG.Onto
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `e1 : ∀ a b : Fin m, glEmbMat k m A (Fin.castSucc a) (Fin.castSucc b) = A a b`. Introduce `a b`. Simplify using `[glEmbMat]`. Establish `e2 : ∀ a b : Fin m, (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) k) (Fin.castSucc a) (Fin.castSucc b) = (1 : Matrix (Fin m) (Fin m) k) a b`. Introduce `a b`.
+
+Simplify using `[Matrix.one_apply, Fin.castSucc_inj]`. Establish `z : (0 : k) ∈ (ballSub s : Set k)` using `(ballSub s).zero_mem`. Prove the components needed by the constructor for the conclusion. Introduce `h a b`. Establish `h1` using `h (Fin.castSucc a) (Fin.castSucc b)`.
+
+Rewrite `h1` using `[e1, e2]`. Then use the resulting hypothesis. Introduce `h a b`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`. Proceed by induction on `b using Fin.lastCases with`.
+
+Consider the case `last`. Establish `e : glEmbMat k m A (Fin.last m) (Fin.last m) - (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) k) (Fin.last m) (Fin.last m) = 0`. Simplify using `[glEmbMat]`. Rewrite using `[e]`. Conclude with `z`.
+
+Consider the case `cast j`. Establish `e : glEmbMat k m A (Fin.last m) (Fin.castSucc j) - (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) k) (Fin.last m) (Fin.castSucc j) = 0`. Rewrite using `[Matrix.one_apply_ne (Fin.castSucc_lt_last j).ne', sub_zero]`. Simplify using `[glEmbMat]`. Rewrite using `[e]`.
+
+Conclude with `z`. Consider the case `cast i`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last`. Establish `e : glEmbMat k m A (Fin.castSucc i) (Fin.last m) - (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) k) (Fin.castSucc i) (Fin.last m) = 0`.
+
+Rewrite using `[Matrix.one_apply_ne (Fin.castSucc_lt_last i).ne, sub_zero]`. Simplify using `[glEmbMat]`. Rewrite using `[e]`. Conclude with `z`. Consider the case `cast j`.
+
+Rewrite using `[e1, e2]`. Conclude with `h i j`.
+-/
 theorem nearOne_glEmbMat_iff (s : kˣ) (m : ℕ) (A : Matrix (Fin m) (Fin m) k) :
     NearOne s (glEmbMat k m A) ↔ NearOne s A := by
   have e1 : ∀ a b : Fin m, glEmbMat k m A (Fin.castSucc a) (Fin.castSucc b) = A a b := by
@@ -54,6 +71,11 @@ theorem nearOne_glEmbMat_iff (s : kˣ) (m : ℕ) (A : Matrix (Fin m) (Fin m) k) 
         rw [e1, e2]
         exact h i j
 
+/- English proof (translation)
+Establish `e1 : (((sEmb k n x : Mir k (n + 1)) : GL (Fin (n + 1 + 1)) k) : Matrix (Fin (n + 1 + 1)) (Fin (n + 1 + 1)) k) = glEmbMat k (n + 1) ((x : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k)` using `rfl`. Establish `e2 : ((((sEmb k n x : Mir k (n + 1)) : GL (Fin (n + 1 + 1)) k)⁻¹ : GL (Fin (n + 1 + 1)) k) : Matrix (Fin (n + 1 + 1)) (Fin (n + 1 + 1)) k) = glEmbMat k (n + 1) (((x : GL (Fin (n + 1)) k)⁻¹ : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k)`. Establish `: ((sEmb k n x : Mir k (n + 1)) : GL (Fin (n + 1 + 1)) k)⁻¹ = ((sEmb k n x⁻¹ : Mir k (n + 1)) : GL (Fin (n + 1 + 1)) k)`. Rewrite using `[map_inv]`. Both sides reduce to the same expression.
+
+Rewrite using `[this]`. Both sides reduce to the same expression. Use `show (NearOne s (((sEmb k n x : Mir k (n + 1)) : GL (Fin (n + 1 + 1)) k) : Matrix (Fin (n + 1 + 1)) (Fin (n + 1 + 1)) k) ∧ NearOne s ((((sEmb k n x : Mir k (n + 1)) : GL (Fin (n + 1 + 1)) k)⁻¹ : GL (Fin (n + 1 + 1)) k) : Matrix (Fin (n + 1 + 1)) (Fin (n + 1 + 1)) k)) ↔ (NearOne s …`. Rewrite using `[e1, e2, nearOne_glEmbMat_iff, nearOne_glEmbMat_iff]`.
+-/
 theorem sEmb_mem_congM_iff (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n : ℕ) (s : kˣ) (hs : ValuativeRel.valuation k (s : k) ≤ 1) (x : Mir k n) :
     sEmb k n x ∈ GlobalTheory.CompanionTheory.BZPhiPG.Onto.congM k s hs (n + 1) ↔ x ∈ GlobalTheory.CompanionTheory.BZPhiPG.Onto.congM k s hs n := by

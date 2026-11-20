@@ -15,10 +15,16 @@ noncomputable def dg (d : Fin n → ℂˣ) : GL (Fin n) ℂ where
   val_inv := by simp [diagonal_mul_diagonal, diagonal_one]
   inv_val := by simp [diagonal_mul_diagonal, diagonal_one]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Simplify using `[dg, diagonal_mul_diagonal]`.
+-/
 theorem dg_mul (d e : Fin n → ℂˣ) : dg (d * e) = dg d * dg e := by
   apply Units.ext
   simp [dg, diagonal_mul_diagonal]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Simplify using `[dg, diagonal_one]`.
+-/
 theorem dg_one : dg (1 : Fin n → ℂˣ) = 1 := by
   apply Units.ext
   simp [dg, diagonal_one]
@@ -29,6 +35,11 @@ noncomputable def pm (σ : Equiv.Perm (Fin n)) : GL (Fin n) ℂ where
   val_inv := by rw [PEquiv.toMatrix_toPEquiv_mul]; ext i j; simp [one_apply, eq_comm]
   inv_val := by rw [PEquiv.toMatrix_toPEquiv_mul]; ext i j; simp [one_apply, eq_comm]
 
+/- English proof (translation)
+Use `ext1`. Use extensionality with `i j`. Simplify using `only [pm, dg, Units.val_mul, mul_diagonal, diagonal_mul, PEquiv.toMatrix_apply, Equiv.toPEquiv_apply, Option.mem_def, Option.some.injEq, Function.comp_apply]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+
+Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pm_mul_dg (σ : Equiv.Perm (Fin n)) (d : Fin n → ℂˣ) :
     pm σ * dg d = dg (d ∘ σ) * pm σ := by
   ext1
@@ -46,11 +57,21 @@ noncomputable def tv {i j : Fin n} (hij : i ≠ j) (c : ℂ) : GL (Fin n) ℂ wh
   val_inv := by rw [transvection_mul_transvection_same _ _ hij]; simp
   inv_val := by rw [transvection_mul_transvection_same _ _ hij]; simp
 
+/- English proof (translation)
+Use `ext1`. Simplify using `only [tv, Units.val_mul]`. Rewrite using `[transvection_mul_transvection_same _ _ hij, two_mul]`.
+-/
 theorem tv_mul {i j : Fin n} (hij : i ≠ j) (c : ℂ) : tv hij c * tv hij c = tv hij (2 * c) := by
   ext1
   simp only [tv, Units.val_mul]
   rw [transvection_mul_transvection_same _ _ hij, two_mul]
 
+/- English proof (translation)
+Use `ext1`. Use extensionality with `k l`. Simplify using `only [dg, tv, Units.val_mul, transvection, diagonal_mul, mul_diagonal, Matrix.add_apply, Matrix.one_apply, Matrix.single_apply]`. Apply the tactic sequence `by_cases hk : i = k <;> by_cases hl : j = l`. Substitute `hk hl` using the available equality.
+
+Simplify using `[hij, hi, hj]`. Substitute `hk` using the available equality. Simplify using `[hl]`. Apply the tactic sequence `split_ifs with h <;> simp only [h]`. Substitute `hl` using the available equality.
+
+Simplify using `[hk]`. Apply the tactic sequence `split_ifs with h <;> simp only [h]`. Apply the tactic sequence `simp [hk, hl] split_ifs with h <;> simp only [h]`.
+-/
 theorem dg_mul_tv {i j : Fin n} (hij : i ≠ j) (c : ℂ) (d : Fin n → ℂˣ) (hi : (d i : ℂ) = 2)
     (hj : (d j : ℂ) = 1) : dg d * tv hij c = tv hij (2 * c) * dg d := by
   ext1
@@ -69,12 +90,22 @@ theorem dg_mul_tv {i j : Fin n} (hij : i ≠ j) (c : ℂ) (d : Fin n → ℂˣ) 
   · simp [hk, hl]
     split_ifs with h <;> simp only [h]
 
+/- English proof (translation)
+Introduce `h`. Establish `h1 : χ g * χ g⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Rewrite `h1` using `[h, zero_mul]`. Conclude with `zero_ne_one h1`.
+-/
 theorem char_ne_zero {H : Type*} [Group H] (χ : H →* ℝ≥0) (g : H) : χ g ≠ 0 := by
   intro h
   have h1 : χ g * χ g⁻¹ = 1 := by rw [← map_mul, mul_inv_cancel, map_one]
   rw [h, zero_mul] at h1
   exact zero_ne_one h1
 
+/- English proof (translation)
+Establish `h1 : χ (tv hij c) * χ (tv hij c) = χ (tv hij (2 * c))` using `by rw [← map_mul, tv_mul]`. Set `d : Fin n → ℂˣ` to `fun k => if k = i then Units.mk0 2 two_ne_zero else 1`. Establish `hi : (d i : ℂ) = 2` using `by simp [d]`. Establish `hj : (d j : ℂ) = 1` using `by simp [d, hij.symm]`. Establish `h2 : χ (dg d) * χ (tv hij c) = χ (tv hij (2 * c)) * χ (dg d)`.
+
+Rewrite using `[← map_mul, ← map_mul, dg_mul_tv hij c d hi hj]`. Establish `h3 : χ (tv hij c) = χ (tv hij (2 * c))`. Rewrite `h2` using `[mul_comm (χ (tv hij (2 * c)))]`. Conclude with `mul_left_cancel₀ (char_ne_zero χ _) h2`. Establish `h4 : χ (tv hij c) * χ (tv hij c) = χ (tv hij c) * 1` using `by rw [mul_one, h1, h3]`.
+
+Conclude with `mul_left_cancel₀ (char_ne_zero χ _) h4`.
+-/
 theorem char_tv (χ : GL (Fin n) ℂ →* ℝ≥0) {i j : Fin n} (hij : i ≠ j) (c : ℂ) :
     χ (tv hij c) = 1 := by
   have h1 : χ (tv hij c) * χ (tv hij c) = χ (tv hij (2 * c)) := by rw [← map_mul, tv_mul]
@@ -89,6 +120,19 @@ theorem char_tv (χ : GL (Fin n) ℂ →* ℝ≥0) {i j : Fin n} (hij : i ≠ j)
   have h4 : χ (tv hij c) * χ (tv hij c) = χ (tv hij c) * 1 := by rw [mul_one, h1, h3]
   exact mul_left_cancel₀ (char_ne_zero χ _) h4
 
+/- English proof (translation)
+Set `D : (Fin n → ℂˣ) →* GL (Fin n) ℂ` to `{ toFun := dg, map_one' := dg_one, map_mul' := dg_mul }`. Establish `hperm : ∀ σ : Equiv.Perm (Fin n), χ (dg (d ∘ σ)) = χ (dg d)`. Introduce `σ`. Establish `h` using `congrArg χ (pm_mul_dg σ d)`. Rewrite `h` using `[map_mul, map_mul, mul_comm (χ (pm σ))]`.
+
+Conclude with `(mul_right_cancel₀ (char_ne_zero χ (pm σ)) h).symm`. Take `⟨v, hv_def⟩ : ∃ v : Fin n → ℂˣ, v = ∏ σ : Equiv.Perm (Fin n), d ∘ σ` from `⟨_, rfl⟩`. Establish `hv : ∀ k l, v k = v l`. Introduce `k l`. Rewrite using `[hv_def, Finset.prod_apply, Finset.prod_apply]`.
+
+Conclude with `Fintype.prod_equiv (Equiv.mulRight (Equiv.swap k l)) _ _ (fun σ => by simp [Equiv.Perm.mul_apply, Equiv.swap_apply_right])`. Establish `hcent : ∀ g, dg v * g = g * dg v`. Introduce `g`. Use `ext1`. Use extensionality with `k l`.
+
+Simplify using `only [dg, Units.val_mul, diagonal_mul, mul_diagonal]`. Rewrite using `[hv k l, mul_comm]`. Establish `h1 : χ (dg v) = 1` using `hz _ hcent`. Establish `h2 : χ (dg v) = χ (dg d) ^ (Fintype.card (Equiv.Perm (Fin n)))`. Establish `e : χ (dg v) = (χ.comp D) v` using `rfl`.
+
+Rewrite using `[e, hv_def, map_prod]`. Simplify using `only [MonoidHom.comp_apply, D, MonoidHom.coe_mk, OneHom.coe_mk, hperm]`. Rewrite using `[Finset.prod_const, Finset.card_univ]`. Establish `hm : Fintype.card (Equiv.Perm (Fin n)) ≠ 0` using `Fintype.card_ne_zero`. Rewrite `h2` using `[h1]`.
+
+Conclude with `(pow_eq_one_iff_of_nonneg (by simp) hm).1 h2.symm`.
+-/
 theorem char_dg (χ : GL (Fin n) ℂ →* ℝ≥0) (hz : ∀ z : GL (Fin n) ℂ, (∀ g, z * g = g * z) → χ z = 1)
     (d : Fin n → ℂˣ) : χ (dg d) = 1 := by
   let D : (Fin n → ℂˣ) →* GL (Fin n) ℂ :=
@@ -120,6 +164,15 @@ theorem char_dg (χ : GL (Fin n) ℂ →* ℝ≥0) (hz : ∀ z : GL (Fin n) ℂ,
   rw [h1] at h2
   exact (pow_eq_one_iff_of_nonneg (by simp) hm).1 h2.symm
 
+/- English proof (translation)
+Use `Matrix.diagonal_transvection_induction_of_det_ne_zero (fun M => ∀ u : GL (Fin n) ℂ, (u : Matrix (Fin n) (Fin n) ℂ) = M → χ u = 1) (g : Matrix (Fin n) (Fin n) ℂ) ?_ ?_ ?_ ?_ g rfl` and prove the remaining obligations. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 g.isUnit).ne_zero`. Introduce `D hD u hu`. Rewrite `hD` using `[det_diagonal]`. Establish `hD' : ∀ i, D i ≠ 0` using `fun i => Finset.prod_ne_zero_iff.1 hD i (Finset.mem_univ i)`.
+
+Establish `hu' : u = dg (fun i => Units.mk0 (D i) (hD' i))` using `by ext1`. Simplify using `[hu, dg]`. Rewrite using `[hu']`. Conclude with `char_dg χ hz _`. Introduce `t u hu`.
+
+Establish `hu' : u = tv t.hij t.c` using `by ext1`. Simplify using `[hu, tv, Matrix.TransvectionStruct.toMatrix]`. Rewrite using `[hu']`. Conclude with `char_tv χ t.hij t.c`. Introduce `A B hA hB hPA hPB u hu`.
+
+Take `⟨a, rfl⟩ : IsUnit A` from `(Matrix.isUnit_iff_isUnit_det A).2 (isUnit_iff_ne_zero.2 hA)`. Take `⟨b, rfl⟩ : IsUnit B` from `(Matrix.isUnit_iff_isUnit_det B).2 (isUnit_iff_ne_zero.2 hB)`. Establish `hu' : u = a * b` using `by ext1`. Simplify using `[hu]`. Rewrite using `[hu', map_mul, hPA a rfl, hPB b rfl, one_mul]`.
+-/
 theorem char_eq_one (χ : GL (Fin n) ℂ →* ℝ≥0)
     (hz : ∀ z : GL (Fin n) ℂ, (∀ g, z * g = g * z) → χ z = 1) (g : GL (Fin n) ℂ) : χ g = 1 := by
   refine Matrix.diagonal_transvection_induction_of_det_ne_zero
@@ -148,6 +201,17 @@ theorem char_eq_one (χ : GL (Fin n) ℂ →* ℝ≥0)
       simp [hu]
     rw [hu', map_mul, hPA a rfl, hPB b rfl, one_mul]
 
+/- English proof (translation)
+Introduce `n _ _ μ _`. Use `haveI : T2Space (Matrix (Fin n) (Fin n) ℂ) := inferInstanceAs (T2Space (Fin n → Fin n → ℂ))`. Use `haveI : LocallyCompactSpace (Matrix (Fin n) (Fin n) ℂ) := inferInstanceAs (LocallyCompactSpace (Fin n → Fin n → ℂ))`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) ℂ) := inferInstanceAs (SecondCountableTopology (Fin n → Fin n → ℂ))`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) ℂ)ᵐᵒᵖ := (MulOpposite.opHomeomorph (M := Matrix (Fin n) (Fin n) ℂ)).symm.isEmbedding.secondCountableTopology`.
+
+Use `haveI : LocallyCompactSpace (PositivityTheory.RgTw.G n) := (Units.isClosedEmbedding_embedProduct : Topology.IsClosedEmbedding (Units.embedProduct (Matrix (Fin n) (Fin n) ℂ))).locallyCompactSpace`. Use `haveI : SecondCountableTopology (PositivityTheory.RgTw.G n) := (Units.isEmbedding_embedProduct : Topology.IsEmbedding (Units.embedProduct (Matrix (Fin n) (Fin n) ℂ))).secondCountableTopology`. Establish `hmap : ∀ g : PositivityTheory.RgTw.G n, Measure.map (· * g) μ = Measure.modularCharacter g • μ`. Introduce `g`. Establish `e1` using `Measure.isMulLeftInvariant_eq_smul (Measure.map (· * g) μ) μ`.
+
+Establish `e2` using `Measure.modularCharacterFun_eq_haarScalarFactor μ g`. Rewrite `e1` using `[← e2]`. Conclude with `e1`. Establish `hχ : ∀ g : PositivityTheory.RgTw.G n, Measure.modularCharacter g = 1`. Use `char_eq_one Measure.modularCharacter ?_` and prove the remaining obligations.
+
+Introduce `z hz`. Establish `hc : Measure.map (· * z) μ = μ`. Establish `h : (fun x => x * z) = (fun x => z * x)` using `funext fun x => (hz x).symm`. Rewrite using `[h, map_mul_left_eq_self]`. Establish `e2` using `Measure.modularCharacterFun_eq_haarScalarFactor μ z`.
+
+Simplify using `only [hc, Measure.haarScalarFactor_self] at e2`. Conclude with `e2`. Establish `hR : μ.IsMulRightInvariant` using `⟨fun g => by rw [hmap, hχ g, one_smul]⟩`. Conclude with `⟨hR, GlobalTheory.QuotDiscrete.isInvInvariant_of_isMulRightInvariant μ⟩`.
+-/
 theorem unimod : PositivityTheory.RgBcC.Unimod := by
   intro n _ _ μ _
   haveI : T2Space (Matrix (Fin n) (Fin n) ℂ) := inferInstanceAs (T2Space (Fin n → Fin n → ℂ))

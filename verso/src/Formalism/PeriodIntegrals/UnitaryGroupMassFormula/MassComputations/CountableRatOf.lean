@@ -12,6 +12,9 @@ open Formalism.BasicNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVo
 
 namespace MassDataMassesW
 
+/- English proof (translation)
+Use `haveI := PI.VolStabSW.um_countable_HFinIn F E σ M J`. Use `Function.Injective.countable (f := fun x : ratOf (K := K) => (⟨((x : K) : HA (AF F) σ J), Subgroup.mem_comap.1 x.2⟩ : HFinIn (AF F) σ J)) ?_` and prove the remaining obligations. Introduce `x y hxy`. Establish `e` using `congrArg Subtype.val hxy`. Conclude with `Subtype.ext (Subtype.ext e)`.
+-/
 theorem countable_ratOf {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (K : Subgroup (HA (AF F) σ J)) :
     Countable (ratOf (K := K)) := by
@@ -22,6 +25,9 @@ theorem countable_ratOf {F E : Type} [Field F] [NumberField F] [Field E] [Number
   have e := congrArg Subtype.val hxy
   exact Subtype.ext (Subtype.ext e)
 
+/- English proof (translation)
+Use `first`. Consider the case `exact inferInstance`. Consider the case `exact ⟨fun c s _ => by show μ ((fun x : K => (c : K) * x) ⁻¹' s) = μ s`. Conclude with `measure_preimage_mul μ (c : K) s⟩`.
+-/
 theorem smulInv_ratOf {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul G] (K : Subgroup G)
     (Γ : Subgroup K) (μ : Measure K) [μ.IsMulLeftInvariant] : SMulInvariantMeasure Γ K μ := by
   first
@@ -30,6 +36,11 @@ theorem smulInv_ratOf {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul G]
       show μ ((fun x : K => (c : K) * x) ⁻¹' s) = μ s
       exact measure_preimage_mul μ (c : K) s⟩
 
+/- English proof (translation)
+Use `haveI := hμ`. Use `haveI := countable_ratOf σ J K`. Use `haveI := smulInv_ratOf K (ratOf (K := K)) μ`. Unfold `covol`. Use `split_ifs with h`.
+
+Use `congr 1`. Conclude with `h.choose_spec.measure_eq h𝓕`. Conclude with `absurd ⟨𝓕, h𝓕⟩ h`.
+-/
 theorem covol_eq_of_fd {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) [MeasurableMul (HA (AF F) σ J)]
     (K : Subgroup (HA (AF F) σ J)) (μ : Measure K) (hμ : μ.IsMulLeftInvariant) (𝓕 : Set K)
@@ -43,6 +54,9 @@ theorem covol_eq_of_fd {F E : Type} [Field F] [NumberField F] [Field E] [NumberF
     exact h.choose_spec.measure_eq h𝓕
   · exact absurd ⟨𝓕, h𝓕⟩ h
 
+/- English proof (translation)
+Introduce `D X u 𝓕 hN h𝓕`. Conclude with `covol_eq_of_fd _ _ _ _ hN.2.2.2.1.toIsMulLeftInvariant 𝓕 h𝓕`.
+-/
 theorem n4cov_holds : UnipotentCoveringCount := by
   intro D X u 𝓕 hN h𝓕
   exact covol_eq_of_fd _ _ _ _ hN.2.2.2.1.toIsMulLeftInvariant 𝓕 h𝓕

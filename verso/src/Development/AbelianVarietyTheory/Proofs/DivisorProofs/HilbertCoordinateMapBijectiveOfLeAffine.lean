@@ -5,6 +5,15 @@ open AlgebraicGeometry CategoryTheory CategoryTheory.Limits Opposite
 
 namespace GlobalTheory.HilbAff
 
+/- English proof (translation)
+Introduce `A B _ _ _ N r e σ Z y W W' hle hW`. Establish `hbas : ∀ f : Γ(Z, W), Function.Bijective (coord A B e σ y (Z.basicOpen f))`. Introduce `f`. Rewrite using `[GlobalTheory.T.affineHilbertCoordinateMap_basicOpen_bijective A B N r e σ Z y W f]`. Conclude with `⟨LocalizedModule.map_injective _ _ hW.1, LocalizedModule.map_surjective _ _ hW.2⟩`.
+
+Set `s : Set Γ(Z, W')` to `{g | Function.Bijective (coord A B e σ y (Z.basicOpen g))}`. Establish `hspan : Ideal.span s = ⊤`. Rewrite using `[← W'.2.self_le_iSup_basicOpen_iff]`. Introduce `x hx`. Take `⟨f, g, hfg, hxf⟩` from `exists_basicOpen_le_affine_inter W.2 W'.2 x ⟨hle hx, hx⟩`.
+
+Use `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨g, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show Function.Bijective _`. Rewrite using `[← hfg]`. Conclude with `hbas f`. Use `show x ∈ Z.basicOpen g`.
+
+Rewrite using `[← hfg]`. Conclude with `hxf`. Conclude with `bijective_of_localized_span s hspan _ fun g => (GlobalTheory.T.affineHilbertCoordinateMap_basicOpen_bijective A B N r e σ Z y W' g.1).1 g.2`.
+-/
 theorem coord_bijective_of_le_affine : ∀ (A B : Type) [CommRing A] [CommRing B] [Algebra A B] (N r : ℕ) (e : Module.Basis (Fin N) A B) (σ : Fin r ↪ Fin N) (Z : Scheme.{0}) (y : (GlobalTheory.HilbAff.functor A B r).obj (op Z)) (W W' : Z.affineOpens), (W' : Z.Opens) ≤ W → Function.Bijective (GlobalTheory.HilbAff.coord A B e σ y W) → Function.Bijective (GlobalTheory.HilbAff.coord A B e σ y W') := by
   intro A B _ _ _ N r e σ Z y W W' hle hW
   have hbas : ∀ f : Γ(Z, W), Function.Bijective (coord A B e σ y (Z.basicOpen f)) := by

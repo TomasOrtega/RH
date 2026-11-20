@@ -18,6 +18,21 @@ namespace PositivityTheory.Rg.Rsw.L.LThBdd
 
 variable {D : D7} {n : ℕ} {W : HSp D} {θ : InfFam D} {ω : G D n →* Module.End ℂ (schwartzA θ W.rank n)}
 
+/- English proof (translation)
+Establish `hred : ∀ γ ∈ GF D n, ∀ g' k, k ∈ U → k ∈ atPts D.sp.cm.sig (Jst D n) {v} → ∀ h, theta ω Φ (γ * g' * k) h = theta ω Φ g' h`. Introduce `γ hγ g' k hk hkv h`. Rewrite using `[mul_assoc, hrat γ hγ]`. Unfold `theta`. Rewrite using `[map_mul, Module.End.mul_apply, hfix k hk hkv]`.
+
+Use `choose γf hγf g'f hg'f kf hkf hkvf hgf using hdec`. Take `⟨W₀, hW₀c, hW₀1, hW₀U⟩` from `exists_compact_subset hUo (one_mem U)`. Establish `hW₀n : W₀ ∈ 𝓝 (1 : G D n)` using `mem_interior_iff_mem_nhds.1 hW₀1`. Establish `hN : ∀ g₀ : G D n, {g | g₀⁻¹ * g ∈ W₀} ∈ 𝓝 g₀` using `fun g₀ => (continuous_const.mul continuous_id).continuousAt.preimage_mem_nhds (by simpa using hW₀n)`. Take `⟨t, -, hcov⟩` from `hK₀.elim_nhds_subcover (fun g₀ => {g | g₀⁻¹ * g ∈ W₀}) fun g₀ _ => hN g₀`.
+
+Set `τ : G D n → G D n` to `fun ε => ε * (locPart v ε)⁻¹`. Establish `hτ : Continuous τ` using `continuous_id.mul ((continuous_locPart v).inv)`. Set `Q : Set (G D n)` to `⋃ g₀ ∈ t, (fun ε => g'f g₀ * τ ε) '' W₀`. Establish `hQ : IsCompact Q` using `t.isCompact_biUnion fun g₀ _ => hW₀c.image (continuous_const.mul hτ)`. Take `⟨b, hb'⟩` from `hb Q hQ`.
+
+Use `⟨b, fun g hg h => ?_⟩` and prove the remaining obligations. Take `⟨g₀, hg₀t, hgg₀⟩` from `Set.mem_iUnion₂.1 (hcov hg)`. Use `set ε := g₀⁻¹ * g with hε`. Establish `hεW : ε ∈ W₀` using `hgg₀`. Use `set εv := locPart v ε with hεv`.
+
+Use `set ε' := τ ε with hε'`. Establish `hpv : GlobalTheory.AdelicU.proj D.sp.cm.sig (Jst D n) v ε' = 1` using `by show GlobalTheory.AdelicU.proj D.sp.cm.sig (Jst D n) v (ε * (locPart v ε)⁻¹) = 1`. Rewrite using `[map_mul, map_inv, proj_locPart, mul_inv_cancel]`. Establish `hc : kf g₀ * ε' = ε' * kf g₀` using `commute_of_atPts (hkvf g₀) hpv`. Establish `hsplit : ε' * εv = ε` using `by show ε * (locPart v ε)⁻¹ * locPart v ε = ε group`.
+
+Establish `hkU : kf g₀ * εv ∈ U` using `mul_mem (hkf g₀) (hU ε εv (proj_locPart v ε).symm (hW₀U hεW))`. Establish `hkv : kf g₀ * εv ∈ atPts D.sp.cm.sig (Jst D n) {v}` using `mul_mem (hkvf g₀) (locPart_mem_atPts v ε)`. Establish `heq : g = γf g₀ * (g'f g₀ * ε') * (kf g₀ * εv)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[heq, hred _ (hγf g₀) _ _ hkU hkv]`.
+
+Use `hb' _ (Set.mem_iUnion₂.2 ⟨g₀, hg₀t, ε, hεW, rfl⟩) ?_ h` and prove the remaining obligations. Rewrite using `[map_mul, hg'f g₀, hpv, one_mul]`.
+-/
 theorem bound_all {v : Pl D} (U : Subgroup (G D n)) (hUo : IsOpen (U : Set (G D n))) (Φ : schwartzA θ W.rank n)
     (hrat : ∀ γ ∈ GF D n, ∀ g h, theta ω Φ (γ * g) h = theta ω Φ g h)
     (hfix : ∀ k ∈ U, k ∈ atPts D.sp.cm.sig (Jst D n) {v} → ω k Φ = Φ)
@@ -75,6 +90,11 @@ end PositivityTheory.Rg.Rsw.L.LThBdd
 namespace PositivityTheory.Rg.Rsw.L
 
 open LThBdd in
+/- English proof (translation)
+Introduce `hWM hLB hWA D n W ψ hψ χ hχ hη θ hθ μ hμ ω hω nb hnb v C hC Ψ Ψ' hΨ hΨ'`. Take `⟨𝓕, hμ'⟩` from `hμ`. Establish `hW` using `hWM D n W ψ hψ χ hχ hη θ hθ μ ⟨𝓕, hμ'⟩ ω hω Ψ'`. Establish `hrat : ∀ γ ∈ GF D n, ∀ g h, theta ω Ψ' (γ * g) h = theta ω Ψ' g h` using `fun γ hγ g h => theta_rat hψ hχ hθ hμ' hω Ψ' hγ g h`. Establish `hfix : ∀ k ∈ Ucut nb v C.s, k ∈ atPts D.sp.cm.sig (Jst D n) {v} → ω k Ψ' = Ψ'` using `fun k hk hkv => fix_open hnb C Ψ Ψ' hΨ hΨ' hk hkv`.
+
+Use `⟨theta_cont hθ Ψ' hW.1 hW.2, hrat, ⟨Ucut nb v C.s, isOpen_Ucut _ _ _, hfix⟩, fun K₀ hK₀ => ?_, fun x g hg => ⟨omega_cut hω hnb C Ψ Ψ' hΨ' hg, theta_nb hω hnb C hC Ψ Ψ' hΨ hΨ' x hg⟩⟩` and prove the remaining obligations. Conclude with `bound_all (Ucut nb v C.s) (isOpen_Ucut _ _ _) Ψ' hrat hfix (fun k k' e hk => mem_Ucut_of_proj e hk) (fun g => hWA D n v (Ucut nb v C.s) (isOpen_Ucut _ _ _) g) (bound_triv hω hnb C hC Ψ Ψ' hΨ hΨ' hLB hθ hW.2) K₀ hK₀`.
+-/
 theorem thBdd : WMaj → LatBound → WeakApproximationFinitePlace → ThBdd := by
   intro hWM hLB hWA D n W ψ hψ χ hχ hη θ hθ μ hμ ω hω nb hnb v C hC Ψ Ψ' hΨ hΨ'
   obtain ⟨𝓕, hμ'⟩ := hμ

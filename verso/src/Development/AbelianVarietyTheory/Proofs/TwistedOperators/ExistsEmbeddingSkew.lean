@@ -14,6 +14,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Chain.CuspL2
 
+/- English proof (translation)
+Set `S : Submodule ℂ (G → ℂ)` to `{ carrier := {φ | MemLp φ 2 ν} add_mem' := fun ha hb => ha.add hb zero_mem' := by first`. Consider the case `exact MemLp.zero`. Consider the case `exact MemLp.zero'`. Consider the case `exact zero_memLp`. Consider the case `simp`.
+
+Use the proof step `smul_mem' := fun c _ h => h.const_smul c }`. Set `f : S →ₗ[ℂ] Lp ℂ 2 ν` to `{ toFun := fun φ => MemLp.toLp (φ : G → ℂ) φ.2 map_add' := fun φ ψ => MemLp.toLp_add φ.2 ψ.2 map_smul' := fun c φ => MemLp.toLp_const_smul c φ.2 }`. Take `⟨E, hE⟩` from `LinearMap.exists_extend f`. Use `⟨E, fun φ hφ => ?_⟩` and prove the remaining obligations. Establish `hval : E φ = f ⟨φ, hφ⟩` using `LinearMap.congr_fun hE ⟨φ, hφ⟩`.
+
+Rewrite using `[hval]`. Conclude with `MemLp.coeFn_toLp hφ`.
+-/
 theorem exists_toLp_ext {G : Type} [MeasurableSpace G] (ν : Measure G) :
     ∃ E : (G → ℂ) →ₗ[ℂ] Lp ℂ 2 ν, ∀ φ, MemLp φ 2 ν → E φ =ᵐ[ν] φ := by
   classical
@@ -37,6 +44,11 @@ theorem exists_toLp_ext {G : Type} [MeasurableSpace G] (ν : Measure G) :
   rw [hval]
   exact MemLp.coeFn_toLp hφ
 
+/- English proof (translation)
+Rewrite using `[MeasureTheory.L2.inner_def]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [h, h'] with g hg hg'`. Rewrite using `[hg, hg']`. Use `first`.
+
+Consider the case `(rw [RCLike.inner_apply]; try ring)`. Consider the case `simp [mul_comm]`.
+-/
 theorem inner_eq {G : Type} [MeasurableSpace G] {ν : Measure G} {f f' : Lp ℂ 2 ν} {φ φ' : G → ℂ}
     (h : f =ᵐ[ν] φ) (h' : f' =ᵐ[ν] φ') : ⟪f, f'⟫_ℂ = ∫ g, (starRingEnd ℂ) (φ g) * φ' g ∂ν := by
   rw [MeasureTheory.L2.inner_def]
@@ -49,6 +61,9 @@ theorem inner_eq {G : Type} [MeasurableSpace G] {ν : Measure G} {f f' : Lp ℂ 
 
 variable {D : D7} {θ : InfFam D} {V : HSp D}
 
+/- English proof (translation)
+Take `⟨ha, hs, hc, hg⟩` from `h`. Take `⟨-, -, hd⟩` from `GlobalTheory.Size.rapidDec_of_cuspDecaySobolev hP hθ ha hs hg hc`. Take `⟨C, hC⟩` from `hd 0`. Conclude with `⟨C, fun g => by simpa using hC g⟩`.
+-/
 theorem bounded (hP : GlobalTheory.Published.CuspDecaySobolev) (hθ : IsInfFam θ) {φ : GA D V → ℂ} (h : IsCuspGrow θ V φ) :
     ∃ B : ℝ, ∀ g, ‖φ g‖ ≤ B := by
   obtain ⟨ha, hs, hc, hg⟩ := h
@@ -56,6 +71,9 @@ theorem bounded (hP : GlobalTheory.Published.CuspDecaySobolev) (hθ : IsInfFam �
   obtain ⟨C, hC⟩ := hd 0
   exact ⟨C, fun g => by simpa using hC g⟩
 
+/- English proof (translation)
+Take `⟨B, hB⟩` from `b`. Take `⟨B', hB'⟩` from `b'`. Use `⟨(Complex.continuous_conj.comp c).mul c', max B 0 * max B' 0, fun g => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem conj_mul {G : Type} [TopologicalSpace G] {φ φ' : G → ℂ} (c : Continuous φ) (c' : Continuous φ')
     (b : ∃ B : ℝ, ∀ g, ‖φ g‖ ≤ B) (b' : ∃ B : ℝ, ∀ g, ‖φ' g‖ ≤ B) :
     Continuous (fun g => (starRingEnd ℂ) (φ g) * φ' g) ∧ ∃ B : ℝ, ∀ g, ‖(starRingEnd ℂ) (φ g) * φ' g‖ ≤ B := by
@@ -67,6 +85,35 @@ theorem conj_mul {G : Type} [TopologicalSpace G] {φ φ' : G → ℂ} (c : Conti
       mul_le_mul ((hB g).trans (le_max_left _ _)) ((hB' g).trans (le_max_left _ _)) (norm_nonneg _)
         (le_max_right _ _)
 
+/- English proof (translation)
+Introduce `hP D θ V μ 𝓕 hθ hμ h𝓕`. Use `haveI := hμ`. Take `⟨-, -, -, iB, iT, -, iC⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Use `haveI := iB`. Use `haveI := iT`.
+
+Use `haveI := iC`. Use `haveI := (GlobalTheory.Mem.AdelicGroupFund.rightInvariant_and_exists_fundamentalDomain D V μ hμ).1`. Establish `hfin : μ 𝓕 ≠ ⊤` using `(GlobalTheory.Mem.QuotVol.quot_volume_ne_zero_ne_top D V μ 𝓕 (And.intro hμ h𝓕)).2`. Use `haveI : IsFiniteMeasure (μ.restrict 𝓕) := ⟨by rw [Measure.restrict_apply_univ]; exact hfin.lt_top⟩`. Establish `hmem : ∀ φ, IsCuspGrow θ V φ → MemLp φ 2 (μ.restrict 𝓕)`.
+
+Introduce `φ hφ`. Take `⟨B, hB⟩` from `bounded hP hθ hφ`. Conclude with `MemLp.of_bound hφ.1.cont.aestronglyMeasurable B (Filter.Eventually.of_forall hB)`. Establish `hint : ∀ F : GA D V → ℂ, Continuous F → (∃ B : ℝ, ∀ g, ‖F g‖ ≤ B) → Integrable F (μ.restrict 𝓕)`. Introduce and unpack `F hF ⟨B, hB⟩`.
+
+Conclude with `memLp_one_iff_integrable.1 (MemLp.of_bound hF.aestronglyMeasurable B (Filter.Eventually.of_forall hB))`. Take `⟨E, hE⟩` from `exists_toLp_ext (μ.restrict 𝓕)`. Use `⟨E, fun φ hφ => ⟨hmem φ hφ, fun h0 => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `h1` using `hE φ (hmem φ hφ)`. Rewrite `h1` using `[h0]`.
+
+Establish `hz : ⇑(0 : Lp ℂ 2 (μ.restrict 𝓕)) =ᵐ[μ.restrict 𝓕] (0 : GA D V → ℂ)` using `Lp.coeFn_zero ..`. Establish `hae : ∀ᵐ g ∂(μ.restrict 𝓕), φ g = 0` using `by filter_upwards [h1, hz] with g a b`. Rewrite using `[← a, b]`. Both sides reduce to the same expression. Establish `hopen : IsOpen {g | φ g ≠ 0}` using `isOpen_ne_fun hφ.1.cont continuous_const`.
+
+Use `haveI : SMulInvariantMeasure (GQ V) (GA D V) μ := by first`. Consider the case `exact inferInstance`. Consider the case `exact ⟨fun γ s _ => measure_preimage_mul μ (γ : GA D V) s⟩`. Use `open Pointwise in`. Establish `hinv : ∀ γ : GQ V, γ • {g | φ g ≠ 0} = {g | φ g ≠ 0}`.
+
+Introduce `γ`. Use extensionality with `x`. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem]`. Use `show φ ((γ⁻¹ : GQ V) * x) ≠ 0 ↔ φ x ≠ 0`. Rewrite using `[hφ.1.left _ (γ⁻¹).2 x]`.
+
+Establish `hnull : μ {g | φ g ≠ 0} = 0`. Use `h𝓕.measure_zero_of_invariant _ hinv ?_` and prove the remaining obligations. Rewrite using `[← Measure.restrict_apply hopen.measurableSet]`. Conclude with `ae_iff.1 hae`. Establish `hempty` using `(hopen.measure_eq_zero_iff μ).1 hnull`.
+
+Use function extensionality and compare the values at `g`. Assume the negation of the conclusion as `hne`. Establish `hg : g ∈ {g | φ g ≠ 0}` using `hne`. Rewrite `hg` using `[hempty]`. Conclude with `hg`.
+
+Introduce `τ X hX φ φ' h1 h2 h3 h4`. Rewrite using `[inner_eq (hE _ (hmem _ h3)) (hE _ (hmem _ h2)), inner_eq (hE _ (hmem _ h1)) (hE _ (hmem _ h4))]`. Take `⟨c1, B1, b1⟩` from `conj_mul h3.1.cont h2.1.cont (bounded hP hθ h3) (bounded hP hθ h2)`. Take `⟨c2, B2, b2⟩` from `conj_mul h1.1.cont h4.1.cont (bounded hP hθ h1) (bounded hP hθ h4)`. Take `⟨c0, B0, b0⟩` from `conj_mul h1.1.cont h2.1.cont (bounded hP hθ h1) (bounded hP hθ h2)`.
+
+Rewrite using `[← integral_add (hint _ c1 ⟨B1, b1⟩) (hint _ c2 ⟨B2, b2⟩)]`. Establish `key : ∀ ψ : GA D V → ℂ, ψ ∈ GlobalTheory.Mem.AutSpace.SmFun θ V → ∀ g t, HasDerivAt (fun s : ℝ => ψ (g * oneP θ V τ X s)) (Rder θ V τ X ψ (g * oneP θ V τ X t)) t`. Introduce `ψ hψ g t`. Establish `d0 : HasDerivAt (fun u : ℝ => ψ (g * oneP θ V τ X t * oneP θ V τ X u)) (Rder θ V τ X ψ (g * oneP θ V τ X t)) 0` using `((GlobalTheory.Mem.AutSpace.differentiable_oneP hψ hX (g * oneP θ V τ X t)) 0).hasDerivAt`. Establish `d1 : HasDerivAt (fun s : ℝ => ψ (g * oneP θ V τ X t * oneP θ V τ X (s - t))) (Rder θ V τ X ψ (g * oneP θ V τ X t)) t` using `HasDerivAt.comp_sub_const (f := fun u : ℝ => ψ (g * oneP θ V τ X t * oneP θ V τ X u)) t t (by rw [sub_self]; exact d0)`.
+
+Use `d1.congr_of_eventuallyEq (Filter.Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Use `show ψ (g * oneP θ V τ X s) = ψ (g * oneP θ V τ X t * oneP θ V τ X (s - t))`. Rewrite using `[mul_assoc, ← GlobalTheory.Mem.Lift.oneP_add hθ hX, show t + (s - t) = s by ring]`. Establish `hd : ∀ g t, HasDerivAt (fun s : ℝ => (starRingEnd ℂ) (φ (g * oneP θ V τ X s)) * φ' (g * oneP θ V τ X s)) ((starRingEnd ℂ) (Rder θ V τ X φ (g * oneP θ V τ X t)) * φ' (g * oneP θ V τ X t) + (starRingEnd ℂ) (φ (g * oneP θ V τ X t)) * Rder θ V τ X φ' (g * oneP θ V τ X t)) t`. Introduce `g t`.
+
+Conclude with `((key φ h1.2.1 g t).star).mul (key φ' h2.2.1 g t)`. Conclude with `GlobalTheory.Mem.IntByParts.setIntegral_deriv_eq_zero (GQ V) μ h𝓕 hfin (Φ := fun g => (starRingEnd ℂ) (φ g) * φ' g) (Φ' := fun g => (starRingEnd ℂ) (Rder θ V τ X φ g) * φ' g + (starRingEnd ℂ) (φ g) * Rder θ V τ X φ' g) (fun γ hγ g => by show (starRingEnd ℂ) (φ (γ * g)) * φ' (γ * …`. Rewrite using `[h1.1.left γ hγ g, h2.1.left γ hγ g])`. Use `c0 (c1.add c2) b0`. Use the proof step `(fun g => (norm_add_le _ _).trans (add_le_add (b1 g) (b2 g)))`.
+
+Use the proof step `(GlobalTheory.Mem.Lift.oneP_zero hθ) hd`.
+-/
 theorem exists_embedding_skew : GlobalTheory.Published.CuspDecaySobolev → ∀ (D : D7) (θ : InfFam D) (V : HSp D) (μ : Measure (GA D V)) (𝓕 : Set (GA D V)), IsInfFam θ → μ.IsHaarMeasure → IsFundamentalDomain (GQ V) 𝓕 μ → ∃ E : (GA D V → ℂ) →ₗ[ℂ] Lp ℂ 2 (μ.restrict 𝓕), (∀ φ, IsCuspGrow θ V φ → MemLp φ 2 (μ.restrict 𝓕) ∧ (E φ = 0 → φ = 0)) ∧ ∀ τ, ∀ X ∈ lieAt V τ, ∀ φ φ', IsCuspGrow θ V φ → IsCuspGrow θ V φ' → IsCuspGrow θ V (Rder θ V τ X φ) → IsCuspGrow θ V (Rder θ V τ X φ') → ⟪E (Rder θ V τ X φ), E φ'⟫_ℂ + ⟪E φ, E (Rder θ V τ X φ')⟫_ℂ = 0 := by
   intro hP D θ V μ 𝓕 hθ hμ h𝓕
   haveI := hμ

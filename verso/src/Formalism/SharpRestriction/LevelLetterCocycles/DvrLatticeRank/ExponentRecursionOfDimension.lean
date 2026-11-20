@@ -8,6 +8,13 @@ namespace Formalism.MainNotions.N.Ln34.CrystallineExponents
 
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Module Formalism.MainNotions.ElementDenominator Formalism.MainNotions.ElementDenominator.CongruenceModules
 
+/- English proof (translation)
+Introduce `l _ hl K LL hG T h' hh' hT hJ c y _ hyc hk hexp`. Take `⟨p1, -, p3, p4, p5, -⟩` from `h1 l K 1 LL hG`. Take `⟨⟨hfc, -⟩, hfd⟩` from `h8 l K LL T`. Establish `hFr : IsFractionRing ↥(OL LL) ↥LL.1` using `by haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2`. Conclude with `integralClosure.isFractionRing_of_finite_extension ℚ_[l] ↥LL.1`.
+
+Use `haveI : FiniteDimensional ↥LL.1 ↥(DcrisL ((D.loc l).PD K) T.ρ (((HW l).W K 1 LL hG).emb c)) := Submodule.finiteDimensional_of_le (inf_le_left : _ ≤ Dcris ((D.loc l).PD K) T.ρ)`. Use `haveI : FiniteDimensional ↥LL.1 ↥(Formalism.MainNotions.DeltaInvariantLattices.ιDi ((HW l).W K 1 LL hG) T c) := by`. Unfold `Formalism.MainNotions.DeltaInvariantLattices.ιDi`. Use `infer_instance`. Establish `hyc' : (letE c : LetA ↥(OL LL) (finrank ℚ_[l] ↥(K0 K))) • y = y`.
+
+Establish `h` using `LinearMap.mem_ker.1 hyc`. Simplify `h` using `only [LinearMap.restrictScalars_apply, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`. Use `mem_N_of_exp ((HW l).W K 1 LL hG) hFr ((HW l).W_s K 1 LL hG) T (Formalism.MainNotions.DeltaInvariantLattices.ptK D.loc HW hG) (M := fun _ => h') (h := fun _ => h') (p1 T hT) (p3 T hT) (p4 T hT) (p5 T _ _ hT fun τ _ _ => hJ τ) c (fun ζ hζ => ?_) (fun τ => (hfd τ).1) (hdim l K LL h …` and prove the remaining obligations. Rewrite `hζ` using `[(D.loc l).PD_p]`. Conclude with `exists_pt D HW hG c ζ hζ`.
+-/
 theorem exponent_recursion_of_dimension (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) (h1 : Formalism.MainNotions.ElementDenominator.adm1 D HW F Cm) (h8 : Formalism.MainNotions.ElementDenominator.adm8 D)
     (hdim : ∀ (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (hG : Good K 1 LL)

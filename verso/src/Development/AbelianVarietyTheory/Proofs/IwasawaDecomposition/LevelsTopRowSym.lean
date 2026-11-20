@@ -17,9 +17,15 @@ variable {B : Base} {X : PreX B.toPre} (I : TC B X)
 def badB (B : Base) : Set (HeightOneSpectrum (𝓞 B.host.F)) :=
   {v | (B.host.g 0 : 𝓞 B.host.F) ∈ v.asIdeal ∨ (B.host.g 1 : 𝓞 B.host.F) ∈ v.asIdeal}
 
+/- English proof (translation)
+Rewrite using `[Fin.exists_fin_two]`. Both sides reduce to the same expression.
+-/
 theorem mem_badB {v : HeightOneSpectrum (𝓞 B.host.F)} : v ∈ badB B ↔ ∃ j, (B.host.g j : 𝓞 B.host.F) ∈ v.asIdeal := by
   rw [Fin.exists_fin_two]; rfl
 
+/- English proof (translation)
+Take `⟨x, y, e⟩` from `(Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes hp hq).2 h)).map (Int.castRingHom A)`. Use `hP.ne_top ((Ideal.eq_top_iff_one _).2 ?_)` and prove the remaining obligations. Rewrite using `[← e]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ (by simpa using a)) (Ideal.mul_mem_left _ _ (by simpa using b))`.
+-/
 theorem not_mem_both {A : Type} [CommRing A] {P : Ideal A} (hP : P.IsPrime) {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (h : p ≠ q)
     (a : (p : A) ∈ P) (b : (q : A) ∈ P) : False := by
   obtain ⟨x, y, e⟩ := (Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes hp hq).2 h)).map (Int.castRingHom A)
@@ -27,16 +33,25 @@ theorem not_mem_both {A : Type} [CommRing A] {P : Ideal A} (hP : P.IsPrime) {p q
   rw [← e]
   exact Ideal.add_mem _ (Ideal.mul_mem_left _ _ (by simpa using a)) (Ideal.mul_mem_left _ _ (by simpa using b))
 
+/- English proof (translation)
+Introduce `h` and use `by obtain ⟨j, hj⟩ := mem_badB.1 hv exact not_mem_both v.isPrime (hPr.T_prime u) (hPr.g_prime j) (hPr.T_ne_g u j) h hj`.
+-/
 theorem T_notMem (hPr : (B.primes X).Ok) (u : B.Word) {v : HeightOneSpectrum (𝓞 B.host.F)} (hv : v ∈ badB B) :
     (B.T u : 𝓞 B.host.F) ∉ v.asIdeal := fun h => by
   obtain ⟨j, hj⟩ := mem_badB.1 hv
   exact not_mem_both v.isPrime (hPr.T_prime u) (hPr.g_prime j) (hPr.T_ne_g u j) h hj
 
+/- English proof (translation)
+Rewrite using `[map_natCast]`. Conclude with `⟨_, (hPr.piT_norm u).symm⟩`.
+-/
 theorem piT_dvd (hPr : (B.primes X).Ok) (u : B.Word) :
     X.piT u ∣ algebraMap (𝓞 B.host.F) (𝓞 B.host.E) (B.T u : 𝓞 B.host.F) := by
   rw [map_natCast]
   exact ⟨_, (hPr.piT_norm u).symm⟩
 
+/- English proof (translation)
+Introduce `hv` and use `T_notMem hPr u hv (Ideal.mem_comap.2 (Ideal.mem_of_dvd _ (piT_dvd hPr u) h))`.
+-/
 theorem under_notMem (hPr : (B.primes X).Ok) (u : B.Word) {P : HeightOneSpectrum (𝓞 B.host.E)} (h : X.piT u ∈ P.asIdeal) :
     underPl B.host.F P ∉ badB B := fun hv =>
   T_notMem hPr u hv (Ideal.mem_comap.2 (Ideal.mem_of_dvd _ (piT_dvd hPr u) h))
@@ -49,6 +64,13 @@ local instance neZero_rankPred (R : Ranks) : NeZero (R.N R.m - 1) := ⟨by have 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hd : Disjoint (B.primes X).vGs (I.Q I.mu0)` using `by rw [I.twistPrimes_reference_tuple_eq_empty]; exact Finset.disjoint_empty_right _`. Establish `h0 : ∀ q : (I.stp u I.mu0 B.R.m).D c.1, cosetIn q = fun _ => ∅` using `fun q => by`. Establish `h1` using `q.2`. Rewrite `h1` using `[ysAt_ys_of_ne I.sel (I.tup I.mu0) (I.cst I.mu0) (by omega)]`. Use function extensionality and compare the values at `P`.
+
+Unfold `cosetIn`. Rewrite using `[Set.mem_singleton_iff.1 h1]`. Simplify using the standard rewrite rules. Use `rdLev_of_reads (X := B.fields) (hc := B.sp.cm) (bad := badB B) (levGAt I.sel (I.tup I.mu0) (I.idx I.mu0) (I.Tp I.mu0) B.R.m c.1) (levQAt I.sel (I.tup I.mu0) (I.idx I.mu0) (I.Tp I.mu0) B.R.m c.1) B.embLL (U := U) (chi := chi) (IsPtOf.of_extTo (I.Q_subset_SQ _) hd (h.pt c)) (fun v …` as an intermediate fact. Use `hPr.piT_norm u` as an intermediate fact.
+
+Rewrite `this` using `[show (B.primes X).piT u = 0 from e, zero_mul]`. Conclude with `Nat.cast_eq_zero.1 this.symm)) P).1 hP))`. Use the proof step `(fun x q hq => (h.lev c x q hq).trans (exists_congr fun κ => and_congr_right fun _ => and_iff_left ((h0 _).trans (h0 _).symm)))`. Use the proof step `(fun x κ h1 h2 => h.chr c x κ h1 h2)`. Rewrite `this` using `[levGAt_of_le _ _ _ _ le_rfl, topLev_levG_m]`. Then use the resulting hypothesis.
+-/
 theorem rdM (hPr : (B.primes X).Ok) (u : B.Word) {Lb U chi y st k}
     (h : I.Reads u I.mu0 B.R.m (fun _ => ()) (fun _ => Lb) (fun _ => U) (fun _ => chi) y st k) (c : (I.stp u I.mu0 B.R.m).Cl) :
     RdLev (E := B.fields.E) B.sp.cm U chi (badB B) (levGTop I.Ch I.Ps) B.embLL := by
@@ -74,6 +96,9 @@ theorem rdM (hPr : (B.primes X).Ok) (u : B.Word) {Lb U chi y st k}
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+The claim follows from `rdLev_of_reads (X := B.fields) (hc := B.sp.cm) (bad := badB B) (rowTyG I.Ch I.Ps) (levQX B.R I.sel (I.tup I.mu0)) B.embLL (U := U) (chi := chi) (y := y c) (k := 1) (p := ((I.stX I.mu0).rep c).1.1) (by rw [mul_one]; exact h.pt c) (fun v _ => map_one _) (fun P hP => absurd hP (Fins …`.
+-/
 theorem rdP {Lb U chi y lat st} (h : I.ReadsP I.mu0 Lb U chi y lat st) (c : (I.stX I.mu0).Cl) :
     RdLev (E := B.fields.E) B.sp.cm U chi (badB B) (rowTyG I.Ch I.Ps) B.embLL :=
   rdLev_of_reads (X := B.fields) (hc := B.sp.cm) (bad := badB B) (rowTyG I.Ch I.Ps) (levQX B.R I.sel (I.tup I.mu0))
@@ -82,6 +107,13 @@ theorem rdP {Lb U chi y lat st} (h : I.ReadsP I.mu0 Lb U chi y lat st) (c : (I.s
     (fun x q hq => h.lev c x q (by rwa [mul_one] at hq))
     (fun x κ h1 h2 => h.chr c x κ h1 (by rwa [mul_one] at h2))
 
+/- English proof (translation)
+Establish `h0 : ∀ i, B.fields.conjO ((B.primes X).piG i) ≠ 0` using `fun i h => by`. Use `hPr.piG_norm i` as an intermediate fact. Rewrite `this` using `[h, mul_zero]`. Conclude with `(hPr.g_prime i).ne_zero (Nat.cast_eq_zero.1 this.symm)`. Establish `hm : ∀ w, w ∈ (B.primes X).vGs ↔ ∃ i, B.fields.conjO ((B.primes X).piG i) ∈ w.asIdeal` using `fun w => by`.
+
+Unfold `Primes.vGs Primes.vG`. Simplify using `only [Finset.mem_union, mem_divs (h0 _), Fin.exists_fin_two]`. Use `nonempty_cmp B.host B.sp.cm (levOk_base B X) G hPr.g_ne (fun w hw => ?_) fun j w hw => (hm w).2 ⟨j, ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `(hm w).1 hw`. Conclude with `⟨i, (hPr.piG_norm i) ▸ Ideal.mul_mem_left _ _ hi⟩`.
+
+Rewrite `hw` using `[hG]`. Conclude with `hw`.
+-/
 theorem cmp_base (hPr : (B.primes X).Ok) (G : GLoc B.host.F B.host.E B.sp.cm.sig B.host.g) (hG : G.piG = X.piG) :
     Nonempty (Cmp G (B.primes X).vGs) := by
   classical
@@ -98,6 +130,13 @@ theorem cmp_base (hPr : (B.primes X).Ok) (G : GLoc B.host.F B.host.E B.sp.cm.sig
   · rw [hG] at hw
     exact hw
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, w.1 ∈ (B.primes X).vG i := by`. Rewrite using `[Fin.exists_fin_two]`. Conclude with `Finset.mem_union.1 w.2`. Establish `hc : Nat.card (𝓞 B.fields.E ⧸ w.1.asIdeal) = (B.primes X).g i`. Rewrite using `[← hPr.vG_norm i _ hi, Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+
+Use `Fact.mk (hPr.g_prime i)` as an intermediate fact. Establish `: Nontrivial (𝓞 B.fields.E ⧸ w.1.asIdeal)` using `Ideal.Quotient.nontrivial_iff.2 w.1.isPrime.ne_top`. Establish `: Finite (𝓞 B.fields.E ⧸ w.1.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot _ w.1.ne_bot`. Establish `h` using `zmultiples_eq_top_of_prime_card hc (one_ne_zero (α := 𝓞 B.fields.E ⧸ w.1.asIdeal))`. Take `⟨n, hn⟩` from `mem_multiples_iff_mem_zmultiples.2 (h ▸ AddSubgroup.mem_top c : c ∈ AddSubgroup.zmultiples (1 : 𝓞 B.fields.E ⧸ w.1.asIdeal))`.
+
+Conclude with `⟨n, by simpa using hn.symm⟩`.
+-/
 theorem exists_nat (hPr : (B.primes X).Ok) (w : (B.primes X).vGs) (c : 𝓞 B.fields.E ⧸ w.1.asIdeal) : ∃ n : ℕ, c = n := by
   classical
   obtain ⟨i, hi⟩ : ∃ i, w.1 ∈ (B.primes X).vG i := by
@@ -114,6 +153,23 @@ theorem exists_nat (hPr : (B.primes X).Ok) (w : (B.primes X).vGs) (c : 𝓞 B.fi
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨C⟩` from `cmp_base hPr G hG`. Establish `hr : B.R.r = B.R.k + 2 * B.R.rS + 1` using `(rSym_rSD B.R).symm`. Establish `ht : 0 < B.R.t` using `B.R.t_odd.pos`. Establish `hn` using `rank_X'_eq B.R`. Establish `hN` using `N_m_succ B.R`.
+
+Establish `e1 : ∀ j v h x, G.psi0 j v h ((C.e j v h).toRingHom x) = B.embLL (I.Ch.psi0 (C.W j v h) x)` using `fun j v h x => by`. Take `⟨n, rfl⟩` from `exists_nat hPr _ x`. Rewrite using `[map_natCast]`. Conclude with `hψ j v h _ (C.ov j v h) n`. Establish `e2 : ∀ j v h s, s < B.R.m → ∀ c : (𝓞 B.fields.E ⧸ (C.W j v h).1.asIdeal)ˣ, G.chiB j v h s ((C.e j v h).toRingHom c) = B.embLL ((chiAt I.Ch (C.W j v h) s c : B.LLˣ) : B.LL)` using `fun j v h s hs c => by`.
+
+Take `⟨n, hn⟩` from `exists_nat hPr _ c.1`. Rewrite using `[hn, map_natCast, show chiAt I.Ch (C.W j v h) s = I.Ch.chi ⟨s, hs⟩ (C.W j v h) from dif_pos hs]`. Conclude with `hχ j v h _ (C.ov j v h) ⟨s, hs⟩ n c hn`. Establish `hM` using `fun j v h => by`. Use `letI := (C.W j v h).1.isMaximal`.
+
+Use `letI := Ideal.Quotient.field (C.W j v h).1.asIdeal`. Conclude with `exists_lam (k := B.R.k) (rS := rSD B.R) (t := B.R.t) (zl := true) (C.e j v h) B.embLL (levGTop I.Ch I.Ps (C.W j v h)) (lamSym (G.psi0 j v h) (G.chiB j v h) B.R.k (rSD B.R) B.R.t B.R.m) (by rw [levGTop_PsymF]; exact GlobalTheory.MemXSym.memX _ _ _ _ _ _ _ _ hr ht (by omega)) (by`. Rewrite using `[levGTop_PsymF]`. Conclude with `fun M => GlobalTheory.LamRead.lamJsym_read _ _ _ (C.e j v h).toRingHom B.embLL _ _ _ _ _ _ _ _ _ _ _ hr ht (by omega) (e1 j v h) (e2 j v h) ⟨M.1, M.2.1⟩)`. Establish `hP` using `fun j v h => by`.
+
+Use `letI := (C.W j v h).1.isMaximal`. Use `letI := Ideal.Quotient.field (C.W j v h).1.asIdeal`. Conclude with `exists_lam (k := B.R.k) (rS := rSD B.R) (t := B.R.t) (zl := false) (C.e j v h) B.embLL (rowTyG I.Ch I.Ps (C.W j v h)) (lamSym (G.psi0 j v h) (G.chiB j v h) B.R.k (rSD B.R) B.R.t B.R.m) (GlobalTheory.mem_HJsym_iff_JSymG _ _ _ _ _ _ _ _ hr ht hn) (fun M => GlobalTheory.LamRead.lamJ …`. Use `choose lamM m1 m2 m3 using hM`. Use `choose lamP p1 p2 p3 using hP`.
+
+Establish `hu : ∀ j v h, IsUnit (C.ρ j v h (oToS B.host.F B.host.E (X.piT u)))` using `fun j v h => by`. Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, C.e_eq, resS_oToS, map_ne_zero_iff _ (C.e j v h).injective, Ne, Ideal.Quotient.eq_zero_iff_mem]`. Introduce `h'`. Use `under_notMem hPr u h' ?_` and prove the remaining obligations. Rewrite using `[C.ov]`.
+
+Conclude with `mem_badB.2 ⟨j, h⟩`. Take `⟨VM, hVM⟩` from `exists_gLevH hJ S C (fun _ => mem_badB) (fun v hv => locL_eq v hL (T_notMem hPr u hv) (piT_dvd hPr u)) hR _ lamM (fun j v h => lastDiag _ (hu j v h).unit) m2 m3 fun j v h M hM => lastDiag_commute _ _ hM`. Take `⟨VP, hVP⟩` from `exists_gLevH hJ' S' C (fun _ => mem_badB) (fun v hv => locL_eq v hL' (T_notMem hPr u hv) (one_dvd _)) hR' _ lamP (fun j v h => 1) p2 p3 fun j v h M hM => by rw [map_one]; exact Commute.one_left _`. Use `⟨lamM, lamP, VM, VP, m1, p1, fun j v h => by rw [hVP, map_one], fun j v h => ?_⟩` and prove the remaining obligations. Rewrite using `[hVM]`.
+
+Use `(Matrix.diagonal_map (map_zero _)).trans (congrArg diagonal (funext fun i => ?_))` and prove the remaining obligations. Use `split_ifs`. Use `(C.ρ_eq j v h _).trans (congrArg _ ?_)` and prove the remaining obligations. Conclude with `Formalism.UG.P.afsplit_prV_inclE v _`. Conclude with `map_one _`.
+-/
 theorem main_base (hPr : (B.primes X).Ok) (u : B.Word) (G : GLoc B.host.F B.host.E B.sp.cm.sig B.host.g) (hG : G.piG = X.piG)
     (hψ : ∀ j v h (w : {w // w ∈ (B.primes X).vGs}), w.1.under (𝓞 B.host.F) = v → ∀ n : ℕ,
       G.psi0 j v h (n : kv B.host.F v) = B.embLL (I.Ch.psi0 w (n : 𝓞 B.fields.E ⧸ w.1.asIdeal)))
@@ -186,6 +242,13 @@ theorem main_base (hPr : (B.primes X).Ok) (u : B.Word) (G : GLoc B.host.F B.host
     exact Formalism.UG.P.afsplit_prV_inclE v _
   · exact map_one _
 
+/- English proof (translation)
+Use `fun j v h => ⟨fun x b b' hb => ?_, fun x t ht => ?_⟩` and prove the remaining obligations. Establish `hb2` using `b.2`. Rewrite using `[h3, h4, Units.val_one, Matrix.mul_one, Matrix.map_apply, iXm, LinearMap.toMatrix'_apply, hiX, diagonal_apply]`. Distinguish the cases in `hx : x = b'`. Substitute `hx` using the available equality.
+
+Rewrite using `[if_pos rfl, if_neg (by omega), dif_pos (hb ▸ hb2), Pi.single_apply, if_pos (Fin.ext hb.symm), map_one]`. Rewrite using `[if_neg hx] split_ifs with h5`. Rewrite using `[Pi.single_apply, if_neg (fun e : (⟨x.1, h5⟩ : Fin _) = b => hx (Fin.ext ((congrArg Fin.val e).trans hb))), map_zero]`. Rewrite using `[map_zero]`. Rewrite using `[h4, diagonal_apply] beta_reduce`.
+
+Distinguish the cases in `hx : x = t`. Substitute `hx` using the available equality. Rewrite using `[if_pos rfl, if_pos ht, if_pos ht]`. Rewrite using `[if_neg hx, if_neg fun e => hx (Fin.ext (by omega)), map_zero, map_zero]`.
+-/
 theorem frExt_of {D : D7} (hiX : ∀ x j, iXc D x j = if h : j.1 < D.R.N D.R.m - 1 then x ⟨j.1, h⟩ else 0) (p : D.host.E)
     (G : GLoc D.host.F D.host.E (sigD D) D.host.g) {frm frp} (h3 : ∀ j v h, frp j v h = 1)
     (h4 : ∀ j v h, Units.val (frm j v h) = diagonal fun i : Fin (D.R.N D.R.m) => if i.1 + 1 = D.R.N D.R.m then
@@ -214,6 +277,11 @@ end
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `B X I hI hP l Z u G K KP hG ⟨k, hK⟩ hKP`. Take `⟨-, gP, hiX, hN⟩` from `GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I hI hP l Z`. Take `⟨c, -⟩` from `K.y_bij.2 (Quotient.mk'' 1)`. Take `⟨c', -⟩` from `KP.y_bij.2 (Quotient.mk'' 1)`. Take `⟨lamM, lamP, VM, VP, h1, h2, h3, h4⟩` from `TypeLev.main_base I l.pr u G hG.piG hG.psi hG.chi (hN _ le_rfl).1 gP K.lev KP.lev (hK.lb ()) hKP.lb (TypeLev.rdM I l.pr u hK c) (TypeLev.rdP I hKP c')`.
+
+Conclude with `⟨lamM, lamP, VM, VP, h1, h2, h3, TypeLev.frExt_of (D := I.rec7 l Z) hiX _ G h3 h4⟩`.
+-/
 theorem GlobalTheory.Mem.Col2.TC.levels_top_row_sym : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (u : B.Word) (G : GLoc (I.rec7 l Z).host.F (I.rec7 l Z).host.E (sigD (I.rec7 l Z)) (I.rec7 l Z).host.g) (K : ClsTied (D := (I.rec7 l Z)) u B.R.m le_rfl) (KP : ClsPTied (D := (I.rec7 l Z)) u), I.IdG l Z G → (∃ k, I.Reads u I.mu0 B.R.m (fun _ => ()) (fun _ => K.lev.Lb) (fun _ => K.lev.U) (fun _ => K.lev.chi) (fun c => (K.y c).1) (fun c s => (K.stabI c s).1) k) → I.ReadsP I.mu0 KP.lev.Lb KP.lev.U KP.lev.chi (fun c => (KP.y c).1) KP.lat (fun c s => (KP.stabI c s).1) → ∃ (lamM : ∀ (j : Fin 2) (v : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F)), ((I.rec7 l Z).host.g j : 𝓞 (I.rec7 l Z).host.F) ∈ v.asIdeal → HSym (I.rec7 l Z) (B.R.N B.R.m) true v →* ℂˣ) (lamP : ∀ (j : Fin 2) (v : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F)), ((I.rec7 l Z).host.g j : 𝓞 (I.rec7 l Z).host.F) ∈ v.asIdeal → HSym (I.rec7 l Z) (B.R.N B.R.m - 1) false v →* ℂˣ) (VM : GLevH K.lev G (fun _ v _ => HSym (I.rec7 l Z) (B.R.N B.R.m) true v) lamM) (VP : GLevH KP.lev G (fun _ v _ => HSym (I.rec7 l Z) (B.R.N B.R.m - 1) false v) lamP), (∀ j v h M, ((lamM j v h M : ℂˣ) : ℂ) = lamSym (G.psi0 j v h) (G.chiB j v h) B.R.k (rSD B.R) B.R.t B.R.m M.1.1) ∧ (∀ j v h M, ((lamP j v h M : ℂˣ) : ℂ) = lamSym (G.psi0 j v h) (G.chiB j v h) B.R.k (rSD B.R) B.R.t B.R.m M.1.1) ∧ (∀ j v h, VP.fr j v h = 1) ∧ FrExtFr (D := (I.rec7 l Z)) (fun j => if j.1 + 1 = B.R.N B.R.m then ((X.piT u : 𝓞 B.host.E) : B.host.E) else 0) G VM.fr VP.fr := by
   intro B X I hI hP l Z u G K KP hG ⟨k, hK⟩ hKP
   obtain ⟨-, gP, hiX, hN⟩ := GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I hI hP l Z

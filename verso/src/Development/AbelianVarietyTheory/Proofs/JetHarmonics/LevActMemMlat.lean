@@ -15,6 +15,9 @@ open scoped TensorProduct
 
 namespace GlobalTheory.FormTies
 
+/- English proof (translation)
+Take `⟨p, φ, z, hz⟩` from `hy`. Conclude with `⟨p, φ, _, hL.nat g _ S φ z _ y _ hz (mvPt_spec hL.total g z) (mvPt_spec hL.total g y)⟩`.
+-/
 theorem fromTest_mvPt {K : Type} [Field K] {ιB : Type}
     {pts : ∀ (S : Type) [CommRing S] [Algebra K S], Type}
     {mapR : ∀ {S T : Type} [CommRing S] [Algebra K S] [CommRing T] [Algebra K T],
@@ -26,6 +29,17 @@ theorem fromTest_mvPt {K : Type} [Field K] {ιB : Type}
   obtain ⟨p, φ, z, hz⟩ := hy
   exact ⟨p, φ, _, hL.nat g _ S φ z _ y _ hz (mvPt_spec hL.total g z) (mvPt_spec hL.total g y)⟩
 
+/- English proof (translation)
+Introduce `D T h j hj w P ℓ act hact g F hF`. Establish `hp` using `h.pins`. Establish `hpq : 1 ≤ (T.Q.Dw j).p + (T.Q.Dw j).q`. Rewrite using `[(hp.2.2.2 j hj).1, (hp.2.2.2 j hj).2.1]`. Use `hj.1` as an intermediate fact.
+
+Use `hj.2` as an intermediate fact. Use `D.R.m_add_three_le_k` as an intermediate fact. Simplify using `only [Ranks.sigW]`. Use linear arithmetic over natural numbers and integers. Establish `hL` using `GlobalTheory.T.actLev_full_level_group_framedPoints D T.Q j hpq hp.2.1.2`.
+
+Establish `hc : (F.1 : T.R j) ∈ T.C j w` using `cutR_le T.C j w F.2`. Establish `hnat` using `((mem_cusp _ _ _ _ _ _).1 hc).1.1`. Introduce and unpack `la _ ⟨⟨q, S, io, e, ho, y, hy, η, hη, rfl⟩, rfl⟩`. Set `` to `io.toAlgebra`. Establish `hmv` using `mvPt_spec hL.total (ℓ g) y.1`.
+
+Set `y' : IntFr (T.Q.Xo j) T.Q.c S io` to `⟨_, fromTest_mvPt hL (ℓ g) y.2.1, GlobalTheory.T.integral_framedPoint_of_level_move _ _ _ _ _ _ (levFull (T.Q.Dw j) T.Q.l (ℓ g)) S io y.1 _ hmv y.2.2⟩`. Establish `h0 : 0 ≤ nval S.V e (evI y' F.1)` using `hF la _ ⟨PtV.mk la ho y' hy () trivial, rfl⟩`. Establish `e1 : evI y (act g F).1 = evI y' F.1`. Rewrite using `[hact g F]`. Conclude with `evalAt_actL hL (h.evalWD j hj) frMap_trans_id (ℓ g) hnat y.1`.
+
+Use `show 0 ≤ nval S.V e (evI y (act g F).1)`. Rewrite using `[e1]`. Conclude with `h0`.
+-/
 theorem levAct_mem_Mlat : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (w : WeightFamilies.Wt D j) (P : Type) (ℓ : P → (LaMod (T.Q.Dw j) T.Q.l ≃ₗ[𝓞 D.host.E] LaMod (T.Q.Dw j) T.Q.l)) (act : P → (recB h.toLawsCore).Cusp j w → (recB h.toLawsCore).Cusp j w), IsLevAct T h j w ℓ act → ∀ g, ∀ F ∈ (recB h.toLawsCore).Mlat j w, act g F ∈ (recB h.toLawsCore).Mlat j w := by
   intro D T h j hj w P ℓ act hact g F hF
   have hp := h.pins

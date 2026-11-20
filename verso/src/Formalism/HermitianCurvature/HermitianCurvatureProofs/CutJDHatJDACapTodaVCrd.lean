@@ -14,6 +14,9 @@ open TVCrdAlg TVCrdLoc TVCrdGerm
 
 variable {X : Type} [NormedAddCommGroup X] [NormedSpace ℂ X] {r : ℕ}
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem memW {f : (Fin r → ℂ) → X} (h : f ∈ WSm r X) :
     ContDiffOn ℝ ∞ f (OmX r) ∧ ∀ x, x ∉ OmX r → f x = 0 := h
 
@@ -22,11 +25,23 @@ def opE (l : Fin r) (i : Fin 6) : Module.End ℂ (WSm r X) where
   map_add' f g := Subtype.ext (linear_operators_holds r X l i f g 1 f.2 g.2).1
   map_smul' a f := Subtype.ext (linear_operators_holds r X l i f f a f.2 f.2).2
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem opE_coe (l : Fin r) (i : Fin 6) (f : WSm r X) :
     ((opE l i f : WSm r X) : (Fin r → ℂ) → X) = opL l i f := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem opL_three (l : Fin r) : opL (E := X) l 3 = pbOp l := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem opL_four (l : Fin r) : opL (E := X) l 4 = cbOp l := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem opL_five (l : Fin r) : opL (E := X) l 5 = cbiOp l := rfl
 
 def mulE (a : (Fin r → ℂ) → ℂ) (ha : ContDiffOn ℝ ∞ a (OmX r)) : Module.End ℂ (WSm r X) where
@@ -35,9 +50,15 @@ def mulE (a : (Fin r → ℂ) → ℂ) (ha : ContDiffOn ℝ ∞ a (OmX r)) : Mod
   map_add' f g := Subtype.ext (funext fun x => by simp [smul_add])
   map_smul' s f := Subtype.ext (funext fun x => by simp [smul_comm (a x) s])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem mulE_coe (a : (Fin r → ℂ) → ℂ) (ha : ContDiffOn ℝ ∞ a (OmX r)) (f : WSm r X) :
     ((mulE a ha f : WSm r X) : (Fin r → ℂ) → X) = fun x => a x • (f : (Fin r → ℂ) → X) x := rfl
 
+/- English proof (translation)
+Use `LinearMap.ext fun f => Subtype.ext (funext fun x => ?_)` and prove the remaining obligations. Use `show (A (B f) : (Fin r → ℂ) → X) x = (B (A f) : (Fin r → ℂ) → X) x`. Rewrite using `[hA, hB, hB, hA, smul_smul, smul_smul, mul_comm]`.
+-/
 theorem comm_of_mul (A B : Module.End ℂ (WSm r X)) (a b : (Fin r → ℂ) → ℂ)
     (hA : ∀ (f : WSm r X) x, (A f : (Fin r → ℂ) → X) x = a x • (f : (Fin r → ℂ) → X) x)
     (hB : ∀ (f : WSm r X) x, (B f : (Fin r → ℂ) → X) x = b x • (f : (Fin r → ℂ) → X) x) : Commute A B := by
@@ -52,27 +73,48 @@ def CbN (r : ℕ) (X : Type) [NormedAddCommGroup X] [NormedSpace ℂ X] (i : ℕ
 def CbiN (r : ℕ) (X : Type) [NormedAddCommGroup X] [NormedSpace ℂ X] (i : ℕ) : Module.End ℂ (WSm r X) :=
   if h : i < r then opE ⟨i, h⟩ 5 else 0
 
+/- English proof (translation)
+Apply the tactic sequence `unfold PN pbN; split_ifs <;> rfl`.
+-/
 theorem PN_coe (i : ℕ) (f : WSm r X) : ((PN r X i f : WSm r X) : (Fin r → ℂ) → X) = pbN r i f := by
   unfold PN pbN; split_ifs <;> rfl
+/- English proof (translation)
+Apply the tactic sequence `unfold CbN cbN; split_ifs <;> rfl`.
+-/
 theorem CbN_coe (i : ℕ) (f : WSm r X) : ((CbN r X i f : WSm r X) : (Fin r → ℂ) → X) = cbN r i f := by
   unfold CbN cbN; split_ifs <;> rfl
+/- English proof (translation)
+Apply the tactic sequence `unfold CbiN cbiN; split_ifs <;> rfl`.
+-/
 theorem CbiN_coe (i : ℕ) (f : WSm r X) : ((CbiN r X i f : WSm r X) : (Fin r → ℂ) → X) = cbiN r i f := by
   unfold CbiN cbiN; split_ifs <;> rfl
 
+/- English proof (translation)
+Apply the tactic sequence `unfold CbN; split_ifs <;> simp [opL, cbOp]`.
+-/
 theorem CbN_mul (i : ℕ) (f : WSm r X) (x : Fin r → ℂ) :
     (CbN r X i f : (Fin r → ℂ) → X) x = (if h : i < r then star (x ⟨i, h⟩) else 0) • (f : (Fin r → ℂ) → X) x := by
   unfold CbN; split_ifs <;> simp [opL, cbOp]
+/- English proof (translation)
+Apply the tactic sequence `unfold CbiN; split_ifs <;> simp [opL, cbiOp]`.
+-/
 theorem CbiN_mul (i : ℕ) (f : WSm r X) (x : Fin r → ℂ) :
     (CbiN r X i f : (Fin r → ℂ) → X) x =
       (if h : i < r then (star (x ⟨i, h⟩))⁻¹ else 0) • (f : (Fin r → ℂ) → X) x := by
   unfold CbiN; split_ifs <;> simp [opL, cbiOp]
 
+/- English proof (translation)
+Unfold `PN CbN`. Use `split_ifs with h1 h2`. Use `LinearMap.ext fun f => Subtype.ext ?_` and prove the remaining obligations. Conclude with `commuting_functional_holds r X ⟨i, h1⟩ ⟨j, h2⟩ 3 4 f f.2 (Or.inl fun e => h (congrArg Fin.val e))`. Apply the tactic sequence `all_goals simp`.
+-/
 theorem comm_PN_CbN {i j : ℕ} (h : i ≠ j) : Commute (PN r X i) (CbN r X j) := by
   unfold PN CbN
   split_ifs with h1 h2
   · refine LinearMap.ext fun f => Subtype.ext ?_
     exact commuting_functional_holds r X ⟨i, h1⟩ ⟨j, h2⟩ 3 4 f f.2 (Or.inl fun e => h (congrArg Fin.val e))
   all_goals simp
+/- English proof (translation)
+Unfold `PN CbiN`. Use `split_ifs with h1 h2`. Use `LinearMap.ext fun f => Subtype.ext ?_` and prove the remaining obligations. Conclude with `commuting_functional_holds r X ⟨i, h1⟩ ⟨j, h2⟩ 3 5 f f.2 (Or.inl fun e => h (congrArg Fin.val e))`. Apply the tactic sequence `all_goals simp`.
+-/
 theorem comm_PN_CbiN {i j : ℕ} (h : i ≠ j) : Commute (PN r X i) (CbiN r X j) := by
   unfold PN CbiN
   split_ifs with h1 h2
@@ -80,21 +122,39 @@ theorem comm_PN_CbiN {i j : ℕ} (h : i ≠ j) : Commute (PN r X i) (CbiN r X j)
     exact commuting_functional_holds r X ⟨i, h1⟩ ⟨j, h2⟩ 3 5 f f.2 (Or.inl fun e => h (congrArg Fin.val e))
   all_goals simp
 
+/- English proof (translation)
+The claim follows from `comm_of_mul _ _ _ _ (CbN_mul i) (CbN_mul j)`.
+-/
 theorem comm_CbN_CbN (i j : ℕ) : Commute (CbN r X i) (CbN r X j) := comm_of_mul _ _ _ _ (CbN_mul i) (CbN_mul j)
+/- English proof (translation)
+The claim follows from `comm_of_mul _ _ _ _ (CbN_mul i) (CbiN_mul j)`.
+-/
 theorem comm_CbN_CbiN (i j : ℕ) : Commute (CbN r X i) (CbiN r X j) := comm_of_mul _ _ _ _ (CbN_mul i) (CbiN_mul j)
+/- English proof (translation)
+The claim follows from `comm_of_mul _ _ _ _ (CbiN_mul i) (CbiN_mul j)`.
+-/
 theorem comm_CbiN_CbiN (i j : ℕ) : Commute (CbiN r X i) (CbiN r X j) :=
   comm_of_mul _ _ _ _ (CbiN_mul i) (CbiN_mul j)
 
 def Gop (k r : ℕ) (X : Type) [NormedAddCommGroup X] [NormedSpace ℂ X] : Module.End ℂ (WSm r X) :=
   mulE (gaugeF k r) gaugeF_smooth
 
+/- English proof (translation)
+The claim follows from `comm_of_mul _ _ (gaugeF k r) _ (fun _ _ => rfl) (CbN_mul i)`.
+-/
 theorem comm_G_CbN (k i : ℕ) : Commute (Gop k r X) (CbN r X i) :=
   comm_of_mul _ _ (gaugeF k r) _ (fun _ _ => rfl) (CbN_mul i)
+/- English proof (translation)
+The claim follows from `comm_of_mul _ _ (gaugeF k r) _ (fun _ _ => rfl) (CbiN_mul i)`.
+-/
 theorem comm_G_CbiN (k i : ℕ) : Commute (Gop k r X) (CbiN r X i) :=
   comm_of_mul _ _ (gaugeF k r) _ (fun _ _ => rfl) (CbiN_mul i)
 
 def sG (k r : ℕ) (i : Fin r) : ℂ := ((Mdim k r i - 1 : ℕ) : ℂ) / 2
 
+/- English proof (translation)
+Use `LinearMap.ext fun f => Subtype.ext ?_` and prove the remaining obligations. Use `show pbOp i (fun x => gaugeF k r x • (f : (Fin r → ℂ) → X) x) = _`. Rewrite using `[pbOp_gauge i _ f.2]`. Use function extensionality and compare the values at `x`. Simplify using `[Gop, opL_three, sG]`.
+-/
 theorem P_G (k : ℕ) (i : Fin r) : opE i 3 * Gop k r X = Gop k r X * opE i 3 + sG k r i • Gop k r X := by
   refine LinearMap.ext fun f => Subtype.ext ?_
   show pbOp i (fun x => gaugeF k r x • (f : (Fin r → ℂ) → X) x) = _
@@ -102,6 +162,9 @@ theorem P_G (k : ℕ) (i : Fin r) : opE i 3 * Gop k r X = Gop k r X * opE i 3 + 
   funext x
   simp [Gop, opL_three, sG]
 
+/- English proof (translation)
+Establish `h` using `P_G (X := X) k ⟨i, hi⟩`. Establish `hP : PN r X i = opE ⟨i, hi⟩ 3` using `dif_pos hi`. Rewrite using `[hP, sub_mul, smul_mul_assoc, one_mul, h]`. Normalize the expressions using the abelian group laws.
+-/
 theorem G_PN (k : ℕ) {i : ℕ} (hi : i < r) :
     Gop k r X * PN r X i = (PN r X i - sG k r ⟨i, hi⟩ • 1) * Gop k r X := by
   have h := P_G (X := X) k ⟨i, hi⟩
@@ -116,6 +179,11 @@ def Ee (r : ℕ) (X : Type) [NormedAddCommGroup X] [NormedSpace ℂ X] (j : ℕ)
 def Dw (r : ℕ) (X : Type) [NormedAddCommGroup X] [NormedSpace ℂ X] (w : ℂ) (m : ℕ) : Module.End ℂ (WSm r X) :=
   (w - (m : ℂ)) • 1 - PN r X (r - m - 1)
 
+/- English proof (translation)
+Introduce `i j hij`. Establish `: Commute (Dd r X y j) (Ee r X i)`. Unfold `Dd Ee`. Use `Commute.sub_left ((Commute.one_left _).smul_left y) ?_` and prove the remaining obligations. Conclude with `(comm_PN_CbN (by omega)).mul_right (comm_PN_CbiN (by omega))`.
+
+Conclude with `this.eq`.
+-/
 theorem hDe (y : ℂ) : ∀ i j, i + 1 ≤ j → Dd r X y j * Ee r X i = Ee r X i * Dd r X y j := by
   intro i j hij
   have : Commute (Dd r X y j) (Ee r X i) := by
@@ -124,6 +192,11 @@ theorem hDe (y : ℂ) : ∀ i j, i + 1 ≤ j → Dd r X y j * Ee r X i = Ee r X 
     exact (comm_PN_CbN (by omega)).mul_right (comm_PN_CbiN (by omega))
   exact this.eq
 
+/- English proof (translation)
+Introduce `i j`. Establish `: Commute (Ee r X i) (Ee r X j)`. Unfold `Ee`. Use `Commute.mul_left ?_ ?_` and prove the remaining obligations. Conclude with `(comm_CbN_CbN i j).mul_right (comm_CbN_CbiN i (j - 1))`.
+
+Conclude with `((comm_CbN_CbiN j (i - 1)).symm).mul_right (comm_CbiN_CbiN (i - 1) (j - 1))`. Conclude with `this.eq`.
+-/
 theorem hee : ∀ i j, Ee r X i * Ee r X j = Ee r X j * Ee r X i := by
   intro i j
   have : Commute (Ee r X i) (Ee r X j) := by
@@ -133,10 +206,18 @@ theorem hee : ∀ i j, Ee r X i * Ee r X j = Ee r X j * Ee r X i := by
     · exact ((comm_CbN_CbiN j (i - 1)).symm).mul_right (comm_CbiN_CbiN (i - 1) (j - 1))
   exact this.eq
 
+/- English proof (translation)
+Introduce `j`. Conclude with `((comm_G_CbN k j).mul_right (comm_G_CbiN k (j - 1))).eq`.
+-/
 theorem hGe (k : ℕ) : ∀ j, Gop k r X * Ee r X j = Ee r X j * Gop k r X := by
   intro j
   exact ((comm_G_CbN k j).mul_right (comm_G_CbiN k (j - 1))).eq
 
+/- English proof (translation)
+Establish `h : Mdim k r ⟨r - m - 1, by omega⟩ - 1 = 2 * m + k + 2`. Simplify using `only [Mdim]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [sG, kvTop, h]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem shift_eq (k : ℕ) (y : ℂ) {m : ℕ} (hm : m < r) :
     kvTop k r y - (m : ℂ) + sG k r ⟨r - m - 1, by omega⟩ = y := by
   have h : Mdim k r ⟨r - m - 1, by omega⟩ - 1 = 2 * m + k + 2 := by
@@ -145,6 +226,11 @@ theorem shift_eq (k : ℕ) (y : ℂ) {m : ℕ} (hm : m < r) :
   push_cast
   ring
 
+/- English proof (translation)
+Introduce `m hm`. Unfold `Dw Dd`. Rewrite using `[mul_sub, mul_smul_comm, mul_one, G_PN k (show r - m - 1 < r by omega), sub_mul, sub_mul, smul_mul_assoc, smul_mul_assoc, one_mul]`. Establish `hy` using `shift_eq (r := r) k y hm`. Use `conv_rhs => rw [← hy]`.
+
+Rewrite using `[add_smul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem hG (k : ℕ) (y : ℂ) : ∀ m < r,
     Gop k r X * Dw r X (kvTop k r y) m = Dd r X y (r - m - 1) * Gop k r X := by
   intro m hm
@@ -156,6 +242,9 @@ theorem hG (k : ℕ) (y : ℂ) : ∀ m < r,
   rw [add_smul]
   abel
 
+/- English proof (translation)
+The claim follows from `| 0, f => ⟨rfl, rfl⟩ | m + 1, f => by have hD : (fun c => (w - (m : ℂ)) • (f : (Fin r → ℂ) → X) c - pbN r (r - m - 1) (f : (Fin r → ℂ) → X) c) = ((Dw r X w m f : WSm r X) : (Fin r → ℂ) → X) := by funext c simp [Dw, PN_coe] refine ⟨?_, (iteratedOperator_coe w m f).1⟩ simp only [kv …`.
+-/
 theorem iteratedOperator_coe (w : ℂ) : ∀ (m : ℕ) (f : WSm r X),
     (kvP r w m).1 (f : (Fin r → ℂ) → X) = ((topK (Dw r X w) (Ee r X) r m).1 f : WSm r X) ∧
       (kvP r w m).2 (f : (Fin r → ℂ) → X) = ((topK (Dw r X w) (Ee r X) r m).2 f : WSm r X)
@@ -170,6 +259,9 @@ theorem iteratedOperator_coe (w : ℂ) : ∀ (m : ℕ) (f : WSm r X),
     rw [hD, (iteratedOperator_coe w m _).1, (iteratedOperator_coe w m f).2, ← CbiN_coe, ← CbN_coe]
     simp [Ee]
 
+/- English proof (translation)
+The claim follows from `| 0, f => ⟨rfl, rfl⟩ | i + 1, f => by by_cases h : i < r · obtain ⟨h1, h2⟩ := vABm_coe y i f have hP : PN r X i = opE ⟨i, h⟩ 3 := dif_pos h have hC : CbN r X i = opE ⟨i, h⟩ 4 := dif_pos h have hCi : CbiN r X i = opE ⟨i, h⟩ 5 := dif_pos h simp only [vABm, dif_pos h, botA, if_pos h …`.
+-/
 theorem vABm_coe (y : ℂ) : ∀ (i : ℕ) (f : WSm r X),
     (vABm r y i).1 (f : (Fin r → ℂ) → X) = ((botA (Dd r X y) (CbN r X) (CbiN r X) r i).1 f : WSm r X) ∧
       (vABm r y i).2 (f : (Fin r → ℂ) → X) = ((botA (Dd r X y) (CbN r X) (CbiN r X) r i).2 f : WSm r X)
@@ -194,6 +286,15 @@ namespace Formalism.FourierDecayAlt.P.CutMP
 
 open TVCrdAlg TVCrdLoc TVCrdGerm TVCrdE
 
+/- English proof (translation)
+Introduce `k r X _ _ y Φ U c hU hUO hc hΨ`. Take `⟨φ, hφ, hΦ, hΨφ⟩` from `TVCrdLoc.loc (k := k) Φ U c hU hUO hc hΨ`. Establish `eL : kvC r (kvTop k r y) r Φ c = kvC r (kvTop k r y) r φ c` using `(iteratedOperator_germ (kvTop k r y) r Φ φ c hΦ).1.eq_of_nhds`. Establish `eR : (vABm r y r).1 (fun c' => gaugeF k r c' • Φ c') c = (vABm r y r).1 (fun c' => gaugeF k r c' • φ c') c` using `(vABm_germ y r _ _ c hΨφ).1.eq_of_nhds`. Rewrite using `[eL, eR]`.
+
+Set `f : WSm r X` to `⟨φ, hφ⟩`. Establish `hK : kvC r (kvTop k r y) r φ = ((topK (Dw r X (kvTop k r y)) (Ee r X) r r).1 f : WSm r X)` using `(iteratedOperator_coe (kvTop k r y) r f).1`. Establish `hA : (vABm r y r).1 (fun c' => gaugeF k r c' • φ c') = ((botA (Dd r X y) (CbN r X) (CbiN r X) r r).1 (Gop k r X f) : WSm r X)` using `(vABm_coe y r (Gop k r X f)).1`. Establish `hB` using `(botA_eq (Dd r X y) (CbN r X) (CbiN r X) r r le_rfl).1`. Establish `hT` using `(topK_eq (Dd r X y) (Ee r X) (hDe y) hee r (fun m => Dd r X y (r - m - 1)) (fun _ _ => rfl) r le_rfl).1`.
+
+Establish `hC` using `(topK_conj (Gop k r X) (Dw r X (kvTop k r y)) (fun m => Dd r X y (r - m - 1)) (Ee r X) r (hG k y) (hGe k) r le_rfl).1`. Rewrite `hT` using `[Nat.sub_self]`. Establish `hAT : (botA (Dd r X y) (CbN r X) (CbiN r X) r r).1 = (topK (fun m => Dd r X y (r - m - 1)) (Ee r X) r r).1`. Rewrite using `[hB, hT]`. Both sides reduce to the same expression.
+
+Rewrite using `[hK, hA, hAT]`. Establish `h2 : (topK (fun m => Dd r X y (r - m - 1)) (Ee r X) r r).1 (Gop k r X f) = Gop k r X ((topK (Dw r X (kvTop k r y)) (Ee r X) r r).1 f)`. Rewrite using `[← Module.End.mul_apply, ← hC, Module.End.mul_apply]`. Rewrite using `[h2]`. Both sides reduce to the same expression.
+-/
 theorem toda_coordinate_holds : TVCrd := by
   intro k r X _ _ y Φ U c hU hUO hc hΨ
   obtain ⟨φ, hφ, hΦ, hΨφ⟩ := TVCrdLoc.loc (k := k) Φ U c hU hUO hc hΨ

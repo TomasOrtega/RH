@@ -8,6 +8,9 @@ open GlobalTheory.Desc
 
 namespace GlobalTheory.Desc
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `h.hom_ext hc` to reduce the goal to its premises. Rewrite using `[Over.w c, Over.w c']`.
+-/
 theorem hom_ext_of_cartesian {S S₀ X : Scheme.{0}} {q : X ⟶ S} {s₀ : S₀ ⟶ S} {A : Over S₀}
     {i : A.left ⟶ X} (h : IsPullback i A.hom q s₀) {T : Scheme.{0}} {t₀ : T ⟶ S₀}
     (c c' : Over.mk t₀ ⟶ A) (hc : c.left ≫ i = c'.left ≫ i) : c = c' := by
@@ -15,6 +18,19 @@ theorem hom_ext_of_cartesian {S S₀ X : Scheme.{0}} {q : X ⟶ S} {s₀ : S₀ 
   apply h.hom_ext hc
   rw [Over.w c, Over.w c']
 
+/- English proof (translation)
+Introduce `S S₀ S₁ X q s₀ s₁ A _ G _ i e h he hm`. Establish `one : OneAgree s₁ s₀ G A e i`. Introduce `T t₁ t₀ ht`. Establish `hw : ((1 : Over.mk t₁ ⟶ G).left ≫ e) ≫ q = t₀ ≫ s₀`. Rewrite using `[Category.assoc, he, ← Category.assoc, Over.w]`.
+
+Conclude with `ht`. Set `a' : Over.mk t₀ ⟶ A` to `Over.homMk (h.lift _ t₀ hw) (by simp)`. Establish `ha' : a'.left ≫ i = (1 : Over.mk t₁ ⟶ G).left ≫ e` using `h.lift_fst _ _ _`. Establish `hmm` using `hm T t₁ t₀ 1 1 a' a' ha'.symm ha'.symm`. Rewrite `hmm` using `[_root_.mul_one]`.
+
+Establish `h2 : a' * a' = a'` using `hom_ext_of_cartesian h _ _ (by rw [← hmm, ha'])`. Establish `h3 : a' = 1` using `by simpa using h2`. Rewrite using `[← ha', h3]`. Use `⟨one, ?_⟩` and prove the remaining obligations. Introduce `T t₁ t₀ a a' haa`.
+
+Establish `ht : t₁ ≫ s₁ = t₀ ≫ s₀`. Establish `w1 : a.left ≫ G.hom = t₁` using `Over.w a`. Establish `w0 : a'.left ≫ A.hom = t₀` using `Over.w a'`. Combine the equalities or inequalities in the displayed calculation. Establish `hw : ((a⁻¹).left ≫ e) ≫ q = t₀ ≫ s₀`.
+
+Rewrite using `[Category.assoc, he, ← Category.assoc, Over.w]`. Conclude with `ht`. Set `b' : Over.mk t₀ ⟶ A` to `Over.homMk (h.lift _ t₀ hw) (by simp)`. Establish `hb' : b'.left ≫ i = (a⁻¹).left ≫ e` using `h.lift_fst _ _ _`. Establish `hmm` using `hm T t₁ t₀ a a⁻¹ a' b' haa hb'.symm`.
+
+Rewrite `hmm` using `[_root_.mul_inv_cancel]`. Establish `h2 : a' * b' = 1` using `hom_ext_of_cartesian h _ _ (by rw [← hmm, one T t₁ t₀ ht])`. Establish `h3 : b' = a'⁻¹` using `eq_inv_of_mul_eq_one_right h2`. Rewrite using `[← h3, hb']`.
+-/
 theorem oneAgree_invAgree_of_mulAgree : ∀ (S S₀ S₁ X : Scheme.{0}) (q : X ⟶ S) (s₀ : S₀ ⟶ S) (s₁ : S₁ ⟶ S) (A : Over S₀) [GrpObj A] (G : Over S₁) [GrpObj G] (i : A.left ⟶ X) (e : G.left ⟶ X), IsPullback i A.hom q s₀ → e ≫ q = G.hom ≫ s₁ → MulAgree G A e i → OneAgree s₁ s₀ G A e i ∧ ∀ (T : Scheme.{0}) (t₁ : T ⟶ S₁) (t₀ : T ⟶ S₀) (a : Over.mk t₁ ⟶ G) (a' : Over.mk t₀ ⟶ A), a.left ≫ e = a'.left ≫ i → (a⁻¹).left ≫ e = (a'⁻¹).left ≫ i := by
   intro S S₀ S₁ X q s₀ s₁ A _ G _ i e h he hm
   have one : OneAgree s₁ s₀ G A e i := by

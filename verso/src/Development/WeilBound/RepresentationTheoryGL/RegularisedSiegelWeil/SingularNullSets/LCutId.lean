@@ -16,6 +16,55 @@ open GlobalTheory.RegSch (ikS projS Lvl)
 namespace PositivityTheory.Rg.Rsw.L
 
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+Introduce `hPolar hCfFJ hCoefId hThCoef hFP hWA1 hCfInv hThBdd hCutLow _ hIkEq hWMaj`. Introduce `D n t B W d hn ψ χ θ μB μW ωB ωW hS I H hH Φ U dd E σ hcont ε hrad nb hnb v C hK hKv 𝓕 h𝓕 Ψ Ψ' hΨ hΨ'`. Take `⟨nb₀, lam, 𝓖, hCD⟩` from `GlobalTheory.T.coefficient_data_exists D n`. Establish `hC : CoefData (D` using `D) (n := n) nb lam 𝓖 := ⟨hnb, hCD.2⟩`. Take `⟨κ, hκ⟩` from `hCoefId D n t B W d hn ψ χ θ μB μW ωB ωW hS I H hH Φ U dd E σ hcont ε hrad nb lam 𝓖 hC`.
+
+Use `⟨κ, ?_⟩` and prove the remaining obligations. Establish `hBr : B.rank = W.rank + 2 * t` using `d.rank_add.symm`. Establish `hlaw : IsLaw χ ((t : ℂ) / 2) (fun g => (ωB g Φ).1 0)` using `LCutId.law0 hS.hB Φ _ (by rw [hBr, ← hn]; push_cast; ring)`. Establish `hηB : ResEta D χ B.rank` using `by rw [hBr]; exact LCutId.resEta_add hS.hη t`. Establish `hφc : Continuous (fun g => (ωB g Φ).1 0)` using `(hWMaj D n B ψ hS.hψ χ hS.hχ hηB θ hS.hθ μB hS.hμB ωB hS.hB Φ).1.comp (continuous_id.prodMk continuous_const)`.
+
+Establish `hpol` using `hPolar D n W.rank t hn hS.big ψ hS.hψ χ hS.hχ hS.hη (fun h0 => absurd h0 (by have := hS.pos; omega)) θ hS.hθ H hH _ hφc hlaw U dd E σ hcont ε hrad`. Establish `hRk` using `hpol.1 1 le_rfl`. Take `⟨hcf, -, -⟩` from `hCfFJ D n H _ _ U dd E σ hcont ε hrad`. Establish `hcf1c` using `(hcf 1).1`. Establish `hcf1i` using `(hcf 1).2`.
+
+Establish `hcfK : ∀ k ∈ KAt D n v, ∀ g, cf dd E ((t : ℂ) / 2) ε 1 (g * k) = cf dd E ((t : ℂ) / 2) ε 1 g`. Introduce `k hk g`. Conclude with `hCfInv D n H _ _ U dd E σ hcont ε hrad k (fun g => (hKv k hk).2 g) (fun g => by show (ωB (g * k) Φ).1 0 = (ωB g Φ).1 0`. Rewrite using `[map_mul, Module.End.mul_apply, (hKv k hk).1]) 1 g`. Take `⟨-, ⟨U₁, hU₁, hU₁i⟩, hlow⟩` from `hCutLow D n W.rank ψ hS.hψ nb hnb v C hK _ hcf1c hcf1i hcfK`.
+
+Establish `hΨK : ∀ k ∈ KAt D n v, ωW k Ψ = Ψ` using `fun k hk => Subtype.ext (by`. Rewrite using `[hIkEq D n t B W d hn ψ χ θ μB μW ωB ωW hS I Φ Ψ hΨ k, (hKv k hk).1, ← hΨ])`. Take `⟨-, hthL, ⟨U₂, hU₂, hU₂i⟩, -, hthF⟩` from `hThBdd D n W ψ hS.hψ χ hS.hχ hS.hη θ hS.hθ μW hS.hμW ωW hS.hW nb hnb v C hK Ψ Ψ' hΨK hΨ'`. Take `⟨F₂, hF₂⟩ : ∃ F₂ : G D n → ℂ, F₂ = fun g => ∫ h in 𝓕, theta ωW Ψ' g h ∂I.m` from `⟨_, rfl⟩`. Establish `hF₁L : ∀ γ ∈ GF D n, ∀ g, cutR nb C (cf dd E ((t : ℂ) / 2) ε 1) (γ * g) = cutR nb C (cf dd E ((t : ℂ) / 2) ε 1) g`.
+
+Introduce `γ hγ g`. Unfold `cutR`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, hcf1i γ hγ]`. Establish `hF₁c : Continuous (cutR nb C (cf dd E ((t : ℂ) / 2) ε 1))`.
+
+Unfold `cutR`. Conclude with `continuous_finsetSum _ fun x _ => continuous_const.mul (hcf1c.comp (continuous_mul_const _))`. Establish `hF₂L : ∀ γ ∈ GF D n, ∀ g, F₂ (γ * g) = F₂ g`. Introduce `γ hγ g`. Rewrite using `[hF₂]`.
+
+Use `integral_congr_ae (Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Conclude with `hthL γ hγ g h`. Establish `hF₂R : ∀ k ∈ U₂, k ∈ atPts D.sp.cm.sig (Jst D n) {v} → ∀ g, F₂ (g * k) = F₂ g`. Introduce `k hk hk' g`. Rewrite using `[hF₂]`.
+
+Use `integral_congr_ae (Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Use `show ∑' ξ : Matrix (Fin W.rank) (Fin n) D.host.E, (ωW (g * k) Ψ').1 _ = ∑' ξ : Matrix (Fin W.rank) (Fin n) D.host.E, (ωW g Ψ').1 _`. Rewrite using `[map_mul, Module.End.mul_apply, hU₂i k hk hk']`. Establish `key : ∀ g, proj D.sp.cm.sig (Jst D n) v g = 1 → cutR nb C (cf dd E ((t : ℂ) / 2) ε 1) g = κ * F₂ g`. Introduce `g hg`.
+
+Take `⟨-, hTc, hTβ⟩` from `hThCoef D n W ψ hS.hψ θ hS.hθ I.m 𝓕 I.haar h𝓕 lam 𝓖 hCD.2 (ωW g Ψ').1 (ωW g Ψ').2`. Establish `hthS : ∀ x : hermA D n, F₂ (nb x * g) = thS W I.m 𝓕 (fun X => pch ψ x.1 (ip W X X) * (ωW g Ψ').1 X)`. Introduce `x`. Rewrite using `[hF₂]`. Use `integral_congr_ae (Eventually.of_forall fun h => ?_)` and prove the remaining obligations.
+
+Conclude with `(hthF x g hg).2 h`. Establish `hF₂c : Continuous fun x : hermA D n => F₂ (nb x * g)`. Simplify using `only [hthS]`. Conclude with `hTc`. Establish `hF₁c' : Continuous fun x : hermA D n => cutR nb C (cf dd E ((t : ℂ) / 2) ε 1) (nb x * g)` using `hF₁c.comp ((GlobalTheory.CompanionTheory.FourierN.continuous_nb hnb).mul continuous_const)`.
+
+Establish `hper : ∀ {F : G D n → ℂ}, (∀ γ ∈ GF D n, ∀ g, F (γ * g) = F g) → ∀ γ ∈ ratHerm D n, ∀ x, F (nb (γ + x) * g) = F (nb x * g)`. Introduce `F hF γ hγ x`. Rewrite using `[GlobalTheory.CompanionTheory.FourierN.nb_add hnb, mul_assoc]`. Conclude with `hF _ (GlobalTheory.CompanionTheory.FourierN.nb_rat hnb γ hγ) _`. Establish `hcoef : ∀ β : HermE D n, fc ψ lam 𝓖 nb (cutR nb C (cf dd E ((t : ℂ) / 2) ε 1)) β g = κ * ∫ x in 𝓖, F₂ (nb x * g) * conj (pch ψ x.1 (rat β.1)) ∂lam`.
+
+Introduce `β`. Simplify using `only [hthS]`. Establish `hlowβ` using `hlow lam 𝓖 hC β g hg`. Establish `horb : ∀ x₀ : Matrix (Fin W.rank) (Fin n) D.host.E, gramQ W x₀ = β.1 → orb W I.m (ωW g Ψ').1 x₀ = cutF ψ C (rat β.1) * orb W I.m (ωW g Ψ).1 x₀`. Introduce `x₀ hx₀`.
+
+Unfold `orb`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Use `show (ωW g Ψ').1 _ = _ * (ωW g Ψ).1 _`. Rewrite using `[(hthF 0 g hg).1, LCutId.ip_orbit, hx₀]`.
+
+Break down `lt_trichotomy β.1.rank W.rank with hlt | heq | hgt` into its components or cases. Rewrite using `[hlowβ.2 hlt]`. Distinguish the cases in `hx : ∃ x, x.rank = W.rank ∧ gramQ W x = β.1`. Take `⟨x₀, hx₀r, hx₀⟩` from `hx`. Rewrite using `[(hTβ β).2 x₀ hx₀r hx₀]`.
+
+Unfold `orb`. Rewrite using `[show (∫ h, (ωW g Ψ').1 (mm (Formalism.L2.Theta.mt W h⁻¹) (rat x₀)) ∂I.m) = ∫ _h, (0 : ℂ) ∂I.m from integral_congr_ae (Eventually.of_forall fun h => ?_), integral_zero, mul_zero]`. Use `show (ωW g Ψ').1 _ = 0`. Rewrite using `[(hthF 0 g hg).1, LCutId.ip_orbit, hx₀]`. Distinguish the cases in `hdual : ∀ y : hermA D n, IntAt v y → pch ψ y.1 (rat β.1) = 1`.
+
+Rewrite using `[hK β hlt hdual, zero_mul]`. Use `push Not at hdual`. Take `⟨y, hy, hne⟩` from `hdual`. Establish `hfix` using `LCutId.omega_fix hS.hW hnb Ψ hΨK hg hy (mm (Formalism.L2.Theta.mt W h⁻¹) (rat x₀))`. Rewrite `hfix` using `[LCutId.ip_orbit, hx₀]`.
+
+Establish `h2 : (1 - pch ψ y.1 (rat β.1)) * (ωW g Ψ).1 (mm (Formalism.L2.Theta.mt W h⁻¹) (rat x₀)) = 0`. Rewrite using `[sub_mul, one_mul, ← hfix, sub_self]`. Rewrite using `[(mul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 (Ne.symm hne)), mul_zero]`. Rewrite using `[(hTβ β).1 hx, mul_zero]`. Rewrite using `[hlowβ.1]`.
+
+Distinguish the cases in `hx : ∃ x, gramQ W x = β.1`. Take `⟨x₀, hx₀⟩` from `hx`. Establish `hx₀r : x₀.rank = W.rank`. Establish `h1` using `LCutId.rank_gram_le W x₀`. Rewrite `h1` using `[hx₀, heq]`.
+
+Conclude with `le_antisymm (Matrix.rank_le_height x₀) h1`. Rewrite using `[((hκ β heq g).2 x₀ hx₀), (hTβ β).2 x₀ hx₀r hx₀, horb x₀ hx₀, hIkEq D n t B W d hn ψ χ θ μB μW ωB ωW hS I Φ Ψ hΨ g]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[(hκ β heq g).1 hx, (hTβ β).1 fun ⟨x, _, hx'⟩ => hx ⟨x, hx'⟩, mul_zero, mul_zero]`. Rewrite using `[hlowβ.1, hRk nb lam 𝓖 hC β (Nat.succ_le_of_lt hgt) g, mul_zero]`.
+
+Rewrite using `[(hTβ β).1 fun ⟨x, hxr, hx'⟩ => by`. Establish `h1` using `LCutId.rank_gram_le W x`. Rewrite `h1` using `[hx', hxr]`. Use the proof step `omega, mul_zero]`. Establish `hf0` using `hFP D n ψ hS.hψ lam 𝓖 hCD.2 (fun x => cutR nb C (cf dd E ((t : ℂ) / 2) ε 1) (nb x * g) - κ * F₂ (nb x * g)) (hF₁c'.sub (continuous_const.mul hF₂c)) (fun γ hγ x => by simp only [hper hF₁L γ hγ x, hper hF₂L γ hγ x]) (fun β => by`.
+
+Establish `i1` using `LCutId.intOn hCD.2 hF₁c' (hper hF₁L) (LCutId.cont_conj_pch hS.hψ β) (LCutId.norm_conj_pch hS.hψ · β)`. Establish `i2` using `LCutId.intOn hCD.2 hF₂c (hper hF₂L) (LCutId.cont_conj_pch hS.hψ β) (LCutId.norm_conj_pch hS.hψ · β)`. Establish `e : (fun x : hermA D n => (cutR nb C (cf dd E ((t : ℂ) / 2) ε 1) (nb x * g) - κ * F₂ (nb x * g)) * conj (pch ψ x.1 (rat β.1))) = fun x => cutR nb C (cf dd E ((t : ℂ) / 2) ε 1) (nb x * g) * conj (pch ψ x.1 (rat β.1)) - κ * (F₂ (nb x * g) * conj (pch ψ x.1 (rat β.1)))` using `funext fun x => by ring`. Rewrite using `[e, integral_sub i1 (i2.const_mul κ), integral_const_mul, ← LCutId.fc_eq hS.hψ, hcoef β, sub_self])`. Establish `h0` using `congrFun hf0 0`.
+
+Simplify using `only [GlobalTheory.CompanionTheory.FourierN.nb_zero hnb, one_mul, Pi.zero_apply] at h0`. Conclude with `sub_eq_zero.1 h0`. Introduce `g`. Take `⟨γ, hγ, g', hg', k, hkU, hkv, hgeq⟩` from `hWA1 D n v (U₁ ⊓ U₂) (by rw [Subgroup.coe_inf]; exact hU₁.inter hU₂) g`. Establish `e1 : cutR nb C (cf dd E ((t : ℂ) / 2) ε 1) (γ * g' * k) = cutR nb C (cf dd E ((t : ℂ) / 2) ε 1) g'`.
+
+Rewrite using `[hU₁i k (Subgroup.mem_inf.1 hkU).1 hkv, hF₁L γ hγ]`. Establish `e2 : F₂ (γ * g' * k) = F₂ g'`. Rewrite using `[hF₂R k (Subgroup.mem_inf.1 hkU).2 hkv, hF₂L γ hγ]`. Rewrite using `[hgeq, e1, key g' hg', ← e2, hF₂]`.
+-/
 theorem cutId : Polar → CfFJ → CoefId → ThCoef → FourierPt → WeakApproximationFinitePlace → CfInv → ThBdd → CutLow → IkSch → IkEq → WMaj → CutId := by
   intro hPolar hCfFJ hCoefId hThCoef hFP hWA1 hCfInv hThBdd hCutLow _ hIkEq hWMaj
   intro D n t B W d hn ψ χ θ μB μW ωB ωW hS I H hH Φ U dd E σ hcont ε hrad nb hnb v C hK hKv 𝓕 h𝓕 Ψ Ψ' hΨ hΨ'

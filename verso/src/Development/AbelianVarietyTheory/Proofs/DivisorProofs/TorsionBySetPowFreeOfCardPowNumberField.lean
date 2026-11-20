@@ -3,6 +3,21 @@ open NumberField
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨π, hπ1, hπ2⟩` from `Ideal.exists_mem_pow_notMem_pow_succ w0 hne hmax.ne_top 1`. Rewrite `hπ1` using `[pow_one]`. Establish `h1 : Ideal.span {π} ⊔ w0 ^ 2 = w0`. Establish `hle : Ideal.span {π} ⊔ w0 ^ 2 ≤ w0` using `sup_le ((Ideal.span_singleton_le_iff_mem _).2 hπ1) (Ideal.pow_le_self two_ne_zero)`. Take `⟨K, hK⟩` from `Ideal.dvd_iff_le.2 hle`.
+
+Establish `hK' : w0 ≤ K`. Establish `h2 : w0 * w0 ≤ w0 * K` using `by rw [← hK, ← pow_two]; exact le_sup_right`. Rewrite `h2`, the goal using `[← Ideal.dvd_iff_le]`. Conclude with `(mul_dvd_mul_iff_left hne).1 h2`. Distinguish the cases in `hKt : K = ⊤`.
+
+Rewrite using `[hK, hKt, Ideal.mul_top]`. It suffices to derive a contradiction. Establish `hKe : w0 = K` using `hmax.eq_of_le hKt hK'`. Apply `hπ2` to reduce the goal to its premises. Establish `: π ∈ Ideal.span {π} ⊔ w0 ^ 2` using `Ideal.mem_sup_left (Ideal.mem_span_singleton_self π)`.
+
+Rewrite `this` using `[hK, ← hKe, ← pow_two]`. Simplify using `using this`. Establish `hge : ∀ j : ℕ, w0 ^ j ≤ Ideal.span {π ^ j} ⊔ w0 ^ (j + 1)`. Introduce `j`. Proceed by induction on `j with`.
+
+Consider the case `zero => simp`. Consider the case `succ j ih`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Ideal.sup_mul, Ideal.mul_sup, Ideal.mul_sup]`. Use `sup_le (sup_le ?_ ?_) (sup_le ?_ ?_)` and prove the remaining obligations.
+
+Rewrite using `[Ideal.span_singleton_mul_span_singleton, ← pow_succ]`. Conclude with `le_sup_left`. Use `le_trans ?_ le_sup_right` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `le_trans ?_ le_sup_right` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Use `le_trans ?_ le_sup_right` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `⟨π, hπ1, fun j => le_antisymm (sup_le ?_ (Ideal.pow_le_pow_right (Nat.le_succ j))) (hge j)⟩` and prove the remaining obligations. Conclude with `(Ideal.span_singleton_le_iff_mem _).2 (Ideal.pow_mem_pow hπ1 j)`.
+-/
 theorem exists_mem_span_pow_sup_pow_succ (F : Type) [Field F] [NumberField F] (w0 : Ideal (𝓞 F))
     (hmax : w0.IsMaximal) (hne : w0 ≠ ⊥) :
     ∃ π ∈ w0, ∀ j : ℕ, Ideal.span {π ^ j} ⊔ w0 ^ (j + 1) = w0 ^ j := by
@@ -50,11 +65,27 @@ theorem exists_mem_span_pow_sup_pow_succ (F : Type) [Field F] [NumberField F] (w
   refine ⟨π, hπ1, fun j => le_antisymm (sup_le ?_ (Ideal.pow_le_pow_right (Nat.le_succ j))) (hge j)⟩
   exact (Ideal.span_singleton_le_iff_mem _).2 (Ideal.pow_mem_pow hπ1 j)
 
+/- English proof (translation)
+Use `map_pow Ideal.absNorm w0 r` as an intermediate fact. Simplify `this` using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+-/
 theorem natCard_quotient_pow_eq (F : Type) [Field F] [NumberField F] (w0 : Ideal (𝓞 F)) (r : ℕ) :
     Nat.card (𝓞 F ⧸ w0 ^ r) = Nat.card (𝓞 F ⧸ w0) ^ r := by
   have := map_pow Ideal.absNorm w0 r
   simpa [Ideal.absNorm_apply, Submodule.cardQuot_apply] using this
 
+/- English proof (translation)
+Use `set T := Submodule.torsionBySet (𝓞 F) M (w0 : Set (𝓞 F)) with hT`. Use `haveI : Finite (𝓞 F ⧸ w0) := Ideal.finiteQuotientOfFreeOfNeBot w0 hne`. Use `haveI : Nontrivial (𝓞 F ⧸ w0) := Ideal.Quotient.nontrivial_iff.mpr hmax.ne_top`. Establish `hq : 2 ≤ Nat.card (𝓞 F ⧸ w0)` using `Finite.one_lt_card`. Use `haveI : Finite T := Nat.finite_of_card_ne_zero (by rw [hc]; positivity)`.
+
+Use `letI : Field (𝓞 F ⧸ w0) := Ideal.Quotient.field w0`. Use `haveI : Module.Finite (𝓞 F ⧸ w0) T := Module.Finite.of_finite`. Use `letI := Fintype.ofFinite (𝓞 F ⧸ w0)`. Use `letI := Fintype.ofFinite T`. Establish `hrank : Module.finrank (𝓞 F ⧸ w0) T = h`.
+
+Use `Module.card_eq_pow_finrank (K := 𝓞 F ⧸ w0) (V := T)` as an intermediate fact. Rewrite `this` using `[← Nat.card_eq_fintype_card, ← Nat.card_eq_fintype_card, hc]`. Conclude with `(Nat.pow_right_injective hq this).symm`. Set `b` to `Module.finBasisOfFinrankEq (𝓞 F ⧸ w0) T hrank`. Establish `mem : ∀ g : M, g ∈ T ↔ ∀ c ∈ w0, c • g = 0`.
+
+Introduce `g`. Simplify using `only [hT, Submodule.mem_torsionBySet_iff, Subtype.forall, SetLike.mem_coe]`. Use `⟨fun i => (b i : M), fun i => (mem _).1 (b i).2, fun g hg => ?_⟩` and prove the remaining obligations. Use `choose u hu using fun i => Ideal.Quotient.mk_surjective (b.repr ⟨g, (mem g).2 hg⟩ i)`. Use `⟨u, ?_⟩` and prove the remaining obligations.
+
+Establish `hsum` using `b.sum_repr ⟨g, (mem g).2 hg⟩`. Use `congrArg (fun x : T => (x : M)) hsum` as an intermediate fact. Simplify using `only [Submodule.coe_sum] at this`. Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← hu i]`. Use `first`. Consider the case `(rw [Submodule.torsionBySet.mk_smul]; rfl)`. Consider the case `(rw [Module.IsTorsionBySet.mk_smul]; rfl)`. Consider the case `rfl`.
+-/
 theorem exists_span_torsionBySet_maximal (F : Type) [Field F] [NumberField F] (M : Type)
     [AddCommGroup M] [Module (𝓞 F) M] (w0 : Ideal (𝓞 F)) (h : ℕ) (hmax : w0.IsMaximal)
     (hne : w0 ≠ ⊥)
@@ -91,6 +122,69 @@ theorem exists_span_torsionBySet_maximal (F : Type) [Field F] [NumberField F] (M
     | (rw [Module.IsTorsionBySet.mk_smul]; rfl)
     | rfl
 
+/- English proof (translation)
+Introduce `F _ _ M _ _ w0 h r hmax hne hcard`. Use `set T : ℕ → Submodule (𝓞 F) M := fun j => Submodule.torsionBySet (𝓞 F) M ((w0 ^ j : Ideal (𝓞 F)) : Set (𝓞 F)) with hT`. Establish `memT : ∀ j (g : M), g ∈ T j ↔ ∀ c ∈ w0 ^ j, c • g = 0`. Introduce `j g`. Simplify using `only [hT, Submodule.mem_torsionBySet_iff, Subtype.forall, SetLike.mem_coe]`.
+
+Use `haveI : Finite (𝓞 F ⧸ w0) := Ideal.finiteQuotientOfFreeOfNeBot w0 hne`. Use `haveI : Nontrivial (𝓞 F ⧸ w0) := Ideal.Quotient.nontrivial_iff.mpr hmax.ne_top`. Establish `hq : 2 ≤ Nat.card (𝓞 F ⧸ w0)` using `Finite.one_lt_card`. Establish `hqpos : 0 < Nat.card (𝓞 F ⧸ w0)` using `by omega`. Establish `hfin : ∀ j, Finite (T j)` using `fun j => Nat.finite_of_card_ne_zero (by rw [hcard j]; positivity)`.
+
+Break down `r with _ | n` into its components or cases. Use `haveI : Subsingleton (𝓞 F ⧸ w0 ^ 0) := Ideal.Quotient.subsingleton_iff.mpr (by rw [pow_zero, Ideal.one_eq_top])`. Use `⟨0, fun c a => by simp, fun a b _ => Subsingleton.elim a b, fun g hg => ⟨0, ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `hg 1 (by rw [pow_zero, Ideal.one_eq_top]; exact Submodule.mem_top)`. Rewrite `h1` using `[one_smul]`.
+
+Rewrite using `[h1]`. Both sides reduce to the same expression. Take `⟨π, hπ, hspan⟩` from `exists_mem_span_pow_sup_pow_succ F w0 hmax hne`. Establish `key : ∀ j (g : M), g ∈ T (j + 1) → π ^ j • g = 0 → g ∈ T j`. Introduce `j g hg h0`.
+
+Rewrite `hg`, the goal using `[memT]`. Introduce `c hc`. Rewrite `hc` using `[← hspan j, Submodule.mem_sup]`. Take `⟨a, ha, b, hb, rfl⟩` from `hc`. Take `⟨d, rfl⟩` from `Ideal.mem_span_singleton'.mp ha`.
+
+Rewrite using `[add_smul, mul_smul, h0, smul_zero, zero_add, hg b hb]`. Take `⟨eb, heb, hspanb⟩` from `exists_span_torsionBySet_maximal F M w0 h hmax hne (by simpa using hcard 1)`. Establish `hebT : ∀ i, eb i ∈ T 1` using `fun i => (memT 1 _).2 fun c hc => heb i c (by rwa [pow_one] at hc)`. Establish `hTle : T n ≤ T (n + 1)` using `fun x hx => by`. Rewrite `hx`, the goal using `[memT]`.
+
+Conclude with `fun c hc => hx c (Ideal.pow_le_pow_right (Nat.le_succ n) hc)`. Establish `hlift : ∀ y ∈ T 1, ∃ x ∈ T (n + 1), π ^ n • x = y`. Set `φ : T (n + 1) →ₗ[𝓞 F] M` to `π ^ n • (T (n + 1)).subtype`. Establish `φ_apply : ∀ x, φ x = π ^ n • (x : M)` using `fun x => rfl`. Establish `hker : LinearMap.ker φ = (T n).comap (T (n + 1)).subtype`.
+
+Use extensionality with `x`. Rewrite using `[LinearMap.mem_ker, Submodule.mem_comap, φ_apply, Submodule.coe_subtype]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `key n x x.2 hx`.
+
+Introduce `hx`. Conclude with `(memT _ _).1 hx _ (Ideal.pow_mem_pow hπ n)`. Establish `hcardker : Nat.card (LinearMap.ker φ) = Nat.card (T n)`. Rewrite using `[hker]`. Conclude with `Nat.card_congr (Submodule.comapSubtypeEquivOfLe hTle).toEquiv`.
+
+Establish `hcardrange : Nat.card (LinearMap.range φ) = Nat.card (T 1)`. Establish `h1` using `Submodule.card_eq_card_quotient_mul_card (LinearMap.ker φ)`. Rewrite `h1` using `[Nat.card_congr (φ.quotKerEquivRange).toEquiv, hcardker, hcard, hcard]`. Rewrite using `[hcard, one_mul]`. Establish `e1 : (n + 1) * h = h + n * h` using `by ring`.
+
+Rewrite `h1` using `[e1, pow_add]`. Conclude with `(Nat.eq_of_mul_eq_mul_right (by positivity) (h1.trans (mul_comm _ _))).symm`. Establish `hrange_le : LinearMap.range φ ≤ T 1`. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[memT, φ_apply]`.
+
+Introduce `c hc`. Rewrite using `[smul_smul]`. Apply `(memT _ _).1 x.2` to reduce the goal to its premises. Rewrite `hc` using `[pow_one]`. Rewrite using `[pow_succ']`.
+
+Conclude with `Ideal.mul_mem_mul hc (Ideal.pow_mem_pow hπ n)`. Establish `hbij` using `(Submodule.inclusion_injective hrange_le).bijective_of_nat_card_le (le_of_eq hcardrange.symm)`. Introduce `y hy`. Take `⟨⟨_, ⟨x, rfl⟩⟩, hx⟩` from `hbij.2 ⟨y, hy⟩`. Use `⟨x, x.2, ?_⟩` and prove the remaining obligations.
+
+Use `congrArg Subtype.val hx` as an intermediate fact. Simplify `this` using `[φ_apply]`. Use `choose e he1 he2 using fun i => hlift (eb i) (hebT i)`. Establish `hker_e : ∀ i, w0 ^ (n + 1) ≤ LinearMap.ker (LinearMap.toSpanSingleton (𝓞 F) M (e i))`. Introduce `i c hc`.
+
+Rewrite using `[LinearMap.mem_ker, LinearMap.toSpanSingleton_apply]`. Conclude with `(memT _ _).1 (he1 i) c hc`. Set `φi : Fin h → (𝓞 F ⧸ w0 ^ (n + 1)) →ₗ[𝓞 F] M` to `fun i => (w0 ^ (n + 1)).liftQ (LinearMap.toSpanSingleton (𝓞 F) M (e i)) (hker_e i)`. Establish `φi_mk : ∀ i c, φi i (Ideal.Quotient.mk _ c) = c • e i` using `fun i c => rfl`. Set `fL : (Fin h → 𝓞 F ⧸ w0 ^ (n + 1)) →ₗ[𝓞 F] M` to `∑ i, (φi i).comp (LinearMap.proj i)`.
+
+Establish `fL_apply : ∀ a, fL a = ∑ i, φi i (a i)`. Introduce `a`. Simplify using `[fL]`. Establish `hce : ∀ i (c : 𝓞 F), c • e i ∈ LinearMap.range fL`. Introduce `i c`.
+
+Use `⟨Pi.single i (Ideal.Quotient.mk _ c), ?_⟩` and prove the remaining obligations. Rewrite using `[fL_apply, Finset.sum_eq_single i]`. Rewrite using `[Pi.single_eq_same, φi_mk]`. Introduce `k _ hk`. Rewrite using `[Pi.single_eq_of_ne hk, map_zero]`.
+
+Introduce `hi`. Conclude with `absurd (Finset.mem_univ i) hi`. Establish `hrange : ∀ a, fL a ∈ T (n + 1)`. Introduce `a`. Rewrite using `[fL_apply]`.
+
+Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `Ideal.Quotient.mk_surjective (a i)`. Rewrite using `[← hc, φi_mk]`. Conclude with `Submodule.smul_mem _ c (he1 i)`. Establish `hsurj : ∀ j, j ≤ n + 1 → ∀ g ∈ T j, g ∈ LinearMap.range fL`.
+
+Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `_ g hg`. Establish `h1` using `(memT 0 g).1 hg 1 (by rw [pow_zero, Ideal.one_eq_top]; exact Submodule.mem_top)`.
+
+Rewrite `h1` using `[one_smul]`. Rewrite using `[h1]`. Conclude with `Submodule.zero_mem _`. Consider the case `succ j ih`. Introduce `hj g hg`.
+
+Establish `hgT1 : ∀ c ∈ w0, c • π ^ j • g = 0`. Introduce `c hc`. Rewrite using `[smul_smul]`. Apply `(memT _ _).1 hg` to reduce the goal to its premises. Rewrite using `[pow_succ']`.
+
+Conclude with `Ideal.mul_mem_mul hc (Ideal.pow_mem_pow hπ j)`. Take `⟨u, hu⟩` from `hspanb _ hgT1`. Use `set w := ∑ i, (u i * π ^ (n - j)) • e i with hw_def`. Establish `hw : w ∈ LinearMap.range fL` using `Submodule.sum_mem _ fun i _ => hce i _`. Establish `hgw : g - w ∈ T j`.
+
+Apply `key j` to reduce the goal to its premises. Use `Submodule.sub_mem _ hg (Submodule.sum_mem _ fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[memT]`. Introduce `c hc`. Rewrite using `[smul_smul]`.
+
+Apply `(memT _ _).1 (he1 i)` to reduce the goal to its premises. Establish `e1 : n + 1 = (j + 1) + (n - j)` using `by omega`. Rewrite using `[e1, pow_add, mul_left_comm]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mul_mem_mul hc (Ideal.pow_mem_pow hπ _))`. Rewrite using `[smul_sub, hu, Finset.smul_sum, sub_eq_zero]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← he2 i, smul_smul, smul_smul]`. Use `congr 1`. Rewrite using `[mul_left_comm, ← pow_add, Nat.add_sub_cancel' (by omega)]`. Establish `hgw'` using `ih (by omega) _ hgw`.
+
+Establish `hsplit : g = (g - w) + w` using `by abel`. Rewrite using `[hsplit]`. Conclude with `Submodule.add_mem _ hgw' hw`. Use `⟨fL.toAddMonoidHom, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `c a`.
+
+Establish `: (Ideal.Quotient.mk (w0 ^ (n + 1)) c • a) = c • a`. Use function extensionality and compare the values at `i`. Simplify using `[Algebra.smul_def, Ideal.Quotient.algebraMap_eq]`. Simplify using `only [LinearMap.toAddMonoidHom_coe]`. Rewrite using `[this, map_smul]`.
+
+Use `haveI : Finite (𝓞 F ⧸ w0 ^ (n + 1)) := Nat.finite_of_card_ne_zero (by rw [natCard_quotient_pow_eq]; positivity)`. Set `f' : (Fin h → 𝓞 F ⧸ w0 ^ (n + 1)) → T (n + 1)` to `fun a => ⟨fL a, hrange a⟩`. Establish `hs : Function.Surjective f'`. Introduce `g`. Take `⟨a, ha⟩` from `hsurj (n + 1) le_rfl g g.2`.
+
+Conclude with `⟨a, Subtype.ext ha⟩`. Establish `hcardeq : Nat.card (Fin h → 𝓞 F ⧸ w0 ^ (n + 1)) ≤ Nat.card (T (n + 1))`. Rewrite using `[hcard, Nat.card_fun, natCard_quotient_pow_eq, Nat.card_eq_fintype_card (α := Fin h), Fintype.card_fin, ← pow_mul]`. Establish `hb` using `hs.bijective_of_nat_card_le hcardeq`. Introduce `a b hab`.
+
+Conclude with `hb.1 (Subtype.ext hab)`. Introduce `g hg`. Take `⟨a, ha⟩` from `hsurj (n + 1) le_rfl g ((memT _ _).2 hg)`. Conclude with `⟨a, ha⟩`.
+-/
 theorem torsionBySet_pow_free_of_natCard : ∀ (F : Type) [Field F] [NumberField F] (M : Type) [AddCommGroup M] [Module (𝓞 F) M] (w0 : Ideal (𝓞 F)) (h r : ℕ), w0.IsMaximal → w0 ≠ ⊥ → (∀ j : ℕ, Nat.card (Submodule.torsionBySet (𝓞 F) M ((w0 ^ j : Ideal (𝓞 F)) : Set (𝓞 F))) = Nat.card (𝓞 F ⧸ w0) ^ (j * h)) → ∃ f : (Fin h → 𝓞 F ⧸ w0 ^ r) →+ M, (∀ (c : 𝓞 F) (a : Fin h → 𝓞 F ⧸ w0 ^ r), f (Ideal.Quotient.mk (w0 ^ r) c • a) = c • f a) ∧ Function.Injective f ∧ ∀ g : M, (∀ c ∈ w0 ^ r, c • g = 0) → ∃ a, f a = g := by
   intro F _ _ M _ _ w0 h r hmax hne hcard
   set T : ℕ → Submodule (𝓞 F) M :=

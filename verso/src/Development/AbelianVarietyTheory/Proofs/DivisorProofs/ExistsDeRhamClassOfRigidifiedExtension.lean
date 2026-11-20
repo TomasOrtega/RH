@@ -24,6 +24,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.PtExt
 
+/- English proof (translation)
+Proceed by induction on `c using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`. Establish `ha` using `G.mulBy_pow_self n a`. Establish `hb` using `G.mulBy_pow_self n b`.
+
+Simplify using `only [pullbackTwo, TensorProduct.map_tmul, Algebra.TensorProduct.lift_tmul]`. Express the relevant statement in the definitionally equal form `mulBy R (G.A n) (p ^ n) a ⊗ₜ[R] mulBy R (G.A n) (p ^ n) b = _`. Rewrite using `[ha, hb]`. Simplify using `[Algebra.algebraMap_eq_smul_one, Algebra.TensorProduct.one_def, TensorProduct.smul_tmul', smul_smul, TensorProduct.tmul_smul, mul_comm]`. Consider the case `add x y hx hy => rw [map_add, hx, hy, map_add, add_smul]`.
+-/
 theorem pullTwo_mulBy_pow_self (p : ℕ) (R : Type) [CommRing R] (G : PDivGroup p R) (n : ℕ)
     (c : G.A n ⊗[R] G.A n) :
     pullbackTwo (mulBy R (G.A n) (p ^ n)) c =
@@ -41,6 +46,15 @@ theorem pullTwo_mulBy_pow_self (p : ℕ) (R : Type) [CommRing R] (G : PDivGroup 
       TensorProduct.tmul_smul, mul_comm]
   | add x y hx hy => rw [map_add, hx, hy, map_add, add_smul]
 
+/- English proof (translation)
+Introduce `p _ R _ N hN A _ hA hP hS G t x`. Take `⟨⟨z, w⟩, rfl⟩` from `Submodule.mkQ_surjective _ x`. Establish `hq : ((p ^ N : ℕ) : R) = 0` using `by rw [Nat.cast_pow, hN]`. Establish `hcob : cobOne R (G.A N) (diagSum R (G.A N) (p ^ N) (z.1 N)) = 0`. Rewrite using `[cobOne_diagSum_eq p R G N (p ^ N) hq _ (z.2 N).1, pullTwo_mulBy_pow_self, sub_self]`.
+
+Take `⟨β, hβ, hβy⟩` from `exists_isTorsChar p R A G t N _ hcob`. Take `⟨c, d, hd⟩` from `GlobalTheory.T.exists_primitive_deRham_class_torsion_character p R N hN A hA hP hS G t β hβ`. Take `⟨z', w', hz', hw'⟩` from `Dat.exists_cocycles_omega R A hA p G t c d`. Use `⟨c, G.rigMk (z', w'), ⟨d, z', w', hz', hw', rfl⟩, ?_⟩` and prove the remaining obligations. Establish `h1 : diagSum R (G.A N) (p ^ N) (z'.1 N) = diagSum R (G.A N) (p ^ N) (z.1 N)`.
+
+Rewrite using `[hz', Dat.diagSum_coc R A p G t c d N hN, hd _ _ (t.y_pow N)]`. Establish `h2` using `hβy (G.A N) (AlgHom.id R (G.A N))`. Rewrite `h2` using `[spOver_id, Category.id_comp]`. Then use the resulting hypothesis. Establish `hdiag : diagSum R (G.A N) (p ^ N) ((z' - z).1 N) = 0`. Rewrite using `[Submodule.coe_sub, Pi.sub_apply, map_sub, h1, sub_self]`.
+
+Establish `hmem` using `GlobalTheory.T.pDivGroup_cocycle_mem_cob_range_of_diagonalSum_zero p R N hN G (z' - z) hdiag`. Use `show G.rigToExt (Submodule.Quotient.mk (z', w')) = G.rigToExt (Submodule.Quotient.mk (z, w))`. Simplify using `only [PDivGroup.rigToExt, Submodule.mapQ_apply, LinearMap.fst_apply]`. Conclude with `(Submodule.Quotient.eq _).2 hmem`.
+-/
 theorem exists_isCan_rigToExt_eq : ∀ (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R] (N : ℕ), (p : R) ^ N = 0 →
     ∀ (A : Over (Sp R)) [GrpObj A], IsAbelianScheme A → AllPrim (dp0 R) (𝟙 _) A →
     Function.Surjective (toH1O (A.hom ≫ 𝟙 _)) → ∀ (G : PDivGroup p R) (t : G.TorsionTower A) (x : G.RigExt),

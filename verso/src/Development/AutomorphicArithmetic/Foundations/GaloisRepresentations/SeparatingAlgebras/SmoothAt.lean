@@ -5,6 +5,15 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory
 open GlobalTheory.GalCut GlobalTheory.UnitaryBC GlobalTheory.Cong GlobalTheory.DefU
 open MeasureTheory GroundTheory.Automorphic.Spherical UpperTheory.Gal.Gen
 
+/- English proof (translation)
+Introduce `E _ _ _ a w₀ hw W f`. Take `⟨e, he⟩` from `GlobalTheory.locU_equiv_GL E a w₀ hw`. Set `p : GL (Fin a) (w₀.adicCompletion E) → finU E a` to `fun y => ⟨(e.symm y).1, (Subgroup.mem_inf.1 (e.symm y).2).1⟩`. Establish `hp : Continuous p` using `Continuous.subtype_mk (continuous_subtype_val.comp e.symm.continuous) _`. Establish `hp1 : p 1 = 1`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[p]`. Establish `hS : IsOpen {k : finU E a | algRep W k f = f}` using `GlobalTheory.DefU.isSmooth_algRep W f`. Use `⟨p ⁻¹' {k : finU E a | algRep W k f = f}, (hS.preimage hp).mem_nhds (by simp [hp1]), fun x hx hxN v g => ?_⟩` and prove the remaining obligations. Establish `h1 : e.symm (cLoc w₀ x) = ⟨x, hx⟩`.
+
+Rewrite using `[← he ⟨x, hx⟩]`. Conclude with `e.symm_apply_apply _`. Establish `h2 : algRep W (p (cLoc w₀ x)) f = f` using `hxN`. Establish `h3 : (p (cLoc w₀ x)).1 = x`. Simplify using `only [p, h1]`.
+
+Establish `h4` using `congrArg (fun F : algForms W => F.1 v g) h2`. Express the relevant statement in the definitionally equal form `f.1 v (g * (p (cLoc w₀ x)).1) = f.1 v g at h4`. Rewrite `h4` using `[h3]`. Then use the resulting hypothesis.
+-/
 theorem UpperTheory.Gal.Gen.smoothAt_pf :
     UpperTheory.Gal.Gen.SmoothAt := by
   intro E _ _ _ a w₀ hw W f

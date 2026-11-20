@@ -22,6 +22,11 @@ open ModularForm (E₄ E₆)
 
 namespace GlobalTheory.HilbFam
 
+/- English proof (translation)
+Introduce `hE F _ _ _ hf s N _ L hs hL _ z hz l _ lam κ y M M' b e ρ₀ ρ he hze hlM hML hLsz hNsz hρ hρ0 hlM' hMy hy τ ω hj hω`. Establish `hA` using `GlobalTheory.WpFam.Act.rightActions N`. Establish `hN : 0 < N` using `Nat.pos_of_ne_zero (NeZero.ne N)`. Establish `hfam` using `GlobalTheory.T.hilbert_family_weierstrass_twist hE F hf s N L hs hL y κ`. Establish `hq` using `GlobalTheory.HilbFam.SizeGL.main hE F hf s N L hs hL z hz l lam κ y M M' b e ρ₀ ρ he hze hlM hML hLsz hNsz hρ hρ0 hlM' hMy hy`.
+
+Establish `key` using `GlobalTheory.QFam.sz_value_of_family l lam (GL (Fin 2) (ZMod N)) (gact N 1) (wt (2 * s) κ) N _ _ τ ω hN ((hA.2.1 1).actBij) hfam hq hj hω 1`. Simplify using `only [Units.val_one, twist_one_of_hasLevel F N L hL, hA.2.2.2.1] at key`. Conclude with `key`.
+-/
 theorem size_values_hfun : EisExp → ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F], 2 ≤ Module.finrank ℚ F → ∀ (s N : ℕ) [NeZero N] (L : Lat F), 1 ≤ s → HasLevel N L → ∀ [IsGalois ℚ F] (z : ClassGroup (𝓞 F) → ℚ), ZetaVals (2 * s) z → ∀ (l : ℕ) [Fact l.Prime] (lam : algebraicClosure ℚ ℂ →+* ℂ_[l]) (κ : Emb F → ℕ) (y : Fin 2 → ZMod N) (M M' b : ℕ) (e ρ₀ ρ : ℝ), 0 ≤ e → (∀ C, -(padicValRat l (z C / 2 ^ Module.finrank ℚ F) : ℝ) ≤ e) → ¬ l ∣ M → (∀ x ∈ stdLat F, ((M * l ^ b : ℕ) : 𝓞 F) • x ∈ L) → (∀ v ∈ L, ∀ (j : Fin 2) (i : Emb F), Sz l lam ρ₀ ((i (v j) : ℝ) : ℂ)) → Sz l lam ρ₀ (N : ℂ) → b + (padicValInt l (discr F) : ℝ) / Module.finrank ℚ F + ρ₀ ≤ ρ → 0 ≤ ρ → ¬ l ∣ M' → M' • y = 0 → y ≠ 0 →  ∀ (τ : ℍ) (ω : ℂ), Sz l lam 0 (jT τ) → ω ^ 12 = DD τ → Sz l lam (e + s * (padicValInt l (discr F) : ℝ) + 2 * s * b * Module.finrank ℚ F + (∑ i, κ i : ℕ) * ρ) (hfun (2 * s) L κ (wB N y) τ / ω ^ wt (2 * s) κ) := by
   intro hE F _ _ _ hf s N _ L hs hL _ z hz l _ lam κ y M M' b e ρ₀ ρ he hze hlM hML hLsz hNsz hρ hρ0 hlM' hMy hy τ ω hj hω
   have hA := GlobalTheory.WpFam.Act.rightActions N

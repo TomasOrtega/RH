@@ -6,6 +6,17 @@ namespace UpperTheory.T3
 
 open Filter in
 
+/- English proof (translation)
+Establish `h1` using `(isLittleO_log_rpow_atTop ha).bound (show (0:ℝ) < k / (2 * (|D| + 1)) by positivity)`. Establish `h2` using `(tendsto_rpow_atTop ha).eventually_ge_atTop (2 * |A| / k)`. Use `filter_upwards [h1, h2, eventually_gt_atTop (0:ℝ)] with x hx1 hx2 hx3`. Establish `hxa : 0 < x ^ a` using `Real.rpow_pos_of_pos hx3 a`. Rewrite `hx1` using `[Real.norm_eq_abs, Real.norm_eq_abs, abs_of_pos hxa]`.
+
+Establish `hD1 : 0 < |D| + 1` using `by positivity`. Establish `e1 : D * Real.log x ≤ |D| * |Real.log x|`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : |D| * |Real.log x| ≤ |D| * (k / (2 * (|D| + 1)) * x ^ a)` using `mul_le_mul_of_nonneg_left hx1 (abs_nonneg D)`. Establish `e3 : |D| * (k / (2 * (|D| + 1)) * x ^ a) ≤ k / 2 * x ^ a`.
+
+Establish `q : |D| * (k / (2 * (|D| + 1)) * x ^ a) = (|D| / (|D| + 1)) * (k / 2 * x ^ a)`. Clear the denominators using the available nonvanishing facts. Establish `r : |D| / (|D| + 1) ≤ 1` using `by rw [div_le_one hD1]; linarith`. Establish `s : 0 ≤ k / 2 * x ^ a` using `by positivity`. Rewrite using `[q]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `e4 : A ≤ k / 2 * x ^ a`. Establish `t1 : 2 * |A| / k * k = 2 * |A|` using `div_mul_cancel₀ _ hk.ne'`. Establish `t2` using `mul_le_mul_of_nonneg_right hx2 hk.le`. Use polynomial arithmetic with `[le_abs_self A]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem ev_log_le {a k : ℝ} (ha : 0 < a) (hk : 0 < k) (A D : ℝ) (hD : 0 < D) :
     ∀ᶠ x : ℝ in atTop, A + D * Real.log x ≤ k * x ^ a := by
   have h1 := (isLittleO_log_rpow_atTop ha).bound (show (0:ℝ) < k / (2 * (|D| + 1)) by positivity)
@@ -33,6 +44,53 @@ private theorem ev_log_le {a k : ℝ} (ha : 0 < a) (hk : 0 < k) (A D : ℝ) (hD 
   linarith
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Introduce `hSN eps heps heps1 cs CY hcs hCY`. Unfold `ShortNorm at hSN`. Take `⟨A, c, c', hA, hc, hc', hmain⟩` from `hSN`. Establish `hK0 : 0 < c * Real.sqrt cs` using `mul_pos hc (Real.sqrt_pos.mpr hcs)`. Establish `hK3 : 0 < c * Real.sqrt cs / 3` using `by linarith`.
+
+Establish `E1` using `ev_log_le (a := 1 / 6 + eps / 2) (k := c * Real.sqrt cs) (by linarith) hK0 0 12 (by norm_num)`. Establish `E2` using `ev_log_le (a := (1:ℝ) / 12) (k := 1) (by norm_num) one_pos 0 1 one_pos`. Establish `E3` using `ev_log_le (a := 3 * eps / 10) (k := c * Real.sqrt cs / 3) (by linarith) hK3 9 1 one_pos`. Establish `E4` using `ev_log_le (a := 1 / 6 - eps / 2) (k := c * Real.sqrt cs / 3) (by linarith) hK3 (8 * CY) 1 one_pos`. Establish `E5` using `ev_log_le (a := 1 / 6 + eps / 2) (k := c * Real.sqrt cs / 3) (by linarith) hK3 (Real.log 4) 1 one_pos`.
+
+Take `⟨x₀, hx₀⟩` from `Filter.eventually_atTop.mp (E1.and (E2.and (E3.and (E4.and (E5.and (Filter.eventually_ge_atTop (1:ℝ)))))))`. Use `⟨x₀, fun x hx N d g₁ g₂ m hMod hg1 hg2 hlg1 hlg2 hm V Ts hV1 hVx hTs hlogT => ?_⟩` and prove the remaining obligations. Take `⟨F1, F2, F3, F4, F5, hx1⟩` from `hx₀ x hx`. Unfold `ModAt at hMod`. Take `⟨hdp, hd4, hd100, hN0, hdN, hlogN⟩` from `hMod`.
+
+Establish `hxpos : 0 < x` using `by linarith`. Establish `hV0 : 0 < V` using `by linarith`. Establish `hlogx : 0 ≤ Real.log x` using `Real.log_nonneg hx1`. Establish `rp : ∀ a b : ℝ, x ^ a * x ^ b = x ^ (a + b)` using `fun a b => (Real.rpow_add hxpos a b).symm`. Establish `hx13 : 0 < x ^ ((1:ℝ) / 3)` using `Real.rpow_pos_of_pos hxpos _`.
+
+Establish `hm0 : (0:ℝ) < m` using `lt_of_lt_of_le hx13 hm`. Establish `hxe : 0 < x ^ eps` using `Real.rpow_pos_of_pos hxpos _`. Establish `hlogT0 : 0 < Real.log Ts` using `lt_of_lt_of_le (mul_pos (mul_pos hcs hm0) hxe) hlogT`. Establish `hTs1 : 1 < Ts`. Assume the negation of the conclusion as `hh`.
+
+Use `push_neg at hh`. Use `Real.log_nonpos hTs.le hh` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsq : Real.sqrt cs * x ^ (1 / 6 + eps / 2) ≤ Real.sqrt (Real.log Ts)`. Rewrite using `[Real.le_sqrt (mul_nonneg (Real.sqrt_nonneg _) (Real.rpow_pos_of_pos hxpos _).le) hlogT0.le]`.
+
+Establish `e : (Real.sqrt cs * x ^ (1 / 6 + eps / 2)) ^ 2 = cs * (x ^ ((1:ℝ) / 3) * x ^ eps)`. Rewrite using `[mul_pow, Real.sq_sqrt hcs.le, sq, rp, rp]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Establish `t` using `mul_le_mul_of_nonneg_left hm (mul_pos hcs hxe).le`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hKs : c * Real.sqrt cs * x ^ (1 / 6 + eps / 2) ≤ c * Real.sqrt (Real.log Ts)`. Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left hsq hc.le`.
+
+Establish `hd0 : (0:ℝ) < d` using `by exact_mod_cast (show 0 < d by omega)`. Establish `hN0' : (0:ℝ) < N` using `by exact_mod_cast hN0`. Establish `hg10 : (0:ℝ) < g₁` using `by exact_mod_cast (show 0 < g₁ by omega)`. Establish `hg20 : (0:ℝ) < g₂` using `by exact_mod_cast (show 0 < g₂ by omega)`. Establish `hdN'` using `Nat.le_of_dvd hN0 hdN`.
+
+Establish `hdleN : (d:ℝ) ≤ N` using `by exact_mod_cast hdN'`. Establish `hlogd : Real.log d ≤ Real.log N` using `Real.log_le_log hd0 hdleN`. Establish `hg0 : 0 < g₁ * g₂` using `Nat.mul_pos (by omega) (by omega)`. Establish `hsq1 : 1 ≤ (g₁ * g₂) ^ 2` using `Nat.one_le_pow _ _ hg0`. Establish `hM3 : 3 ≤ N * (g₁ * g₂) ^ 2` using `by nlinarith`.
+
+Establish `hM : Real.log (4 * (d:ℝ) * ((N * (g₁ * g₂) ^ 2 : ℕ) : ℝ) ^ 2) = Real.log 4 + Real.log d + 2 * (Real.log N + 2 * Real.log g₁ + 2 * Real.log g₂)`. Establish `h4 : (4:ℝ) ≠ 0` using `by norm_num`. Use `push_cast`. Rewrite using `[Real.log_mul (mul_ne_zero h4 hd0.ne') (pow_ne_zero _ (mul_ne_zero hN0'.ne' (pow_ne_zero _ (mul_ne_zero hg10.ne' hg20.ne'))))]`. Rewrite using `[Real.log_mul h4 hd0.ne', Real.log_pow, Real.log_mul hN0'.ne' (pow_ne_zero _ (mul_ne_zero hg10.ne' hg20.ne')), Real.log_pow, Real.log_mul hg10.ne' hg20.ne']`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hxe5 : 0 < x ^ (eps / 5)` using `Real.rpow_pos_of_pos hxpos _`. Establish `hx12 : 0 < x ^ ((1:ℝ) / 12)` using `Real.rpow_pos_of_pos hxpos _`. Establish `hx6 : 0 < x ^ ((1:ℝ) / 6)` using `Real.rpow_pos_of_pos hxpos _`.
+
+Establish `q1 : Real.log x ^ 2 ≤ x ^ ((1:ℝ) / 6)`. Establish `a1 : Real.log x ≤ x ^ ((1:ℝ) / 12)` using `by linarith`. Rewrite using `[sq]`. Combine the equalities or inequalities in the displayed calculation. Establish `q3 : x ^ (eps / 5) * Real.log x ^ 2 ≤ x ^ (eps / 5) * x ^ ((1:ℝ) / 6)` using `mul_le_mul_of_nonneg_left q1 hxe5.le`.
+
+Establish `P0 : 0 < x ^ (eps / 5) * x ^ ((1:ℝ) / 6)` using `mul_pos hxe5 hx6`. Establish `f3 : 9 ≤ c * Real.sqrt cs / 3 * x ^ (3 * eps / 10)` using `by linarith`. Establish `q4 : 9 * (x ^ (eps / 5) * x ^ ((1:ℝ) / 6)) ≤ c * Real.sqrt cs / 3 * x ^ (1 / 6 + eps / 2)`. Establish `e : x ^ (1 / 6 + eps / 2) = x ^ (3 * eps / 10) * (x ^ (eps / 5) * x ^ ((1:ℝ) / 6))`. Rewrite using `[rp, rp]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Establish `t` using `mul_le_mul_of_nonneg_right f3 P0.le`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `f4 : 8 * CY ≤ c * Real.sqrt cs / 3 * x ^ (1 / 6 - eps / 2)` using `by linarith`. Establish `q5 : 8 * CY * x ^ eps ≤ c * Real.sqrt cs / 3 * x ^ (1 / 6 + eps / 2)`. Establish `e : x ^ (1 / 6 + eps / 2) = x ^ (1 / 6 - eps / 2) * x ^ eps`. Rewrite using `[rp]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Establish `t` using `mul_le_mul_of_nonneg_right f4 hxe.le`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `f5 : Real.log 4 ≤ c * Real.sqrt cs / 3 * x ^ (1 / 6 + eps / 2)` using `by linarith`.
+
+Establish `hlogbound : Real.log (4 * (d:ℝ) * ((N * (g₁ * g₂) ^ 2 : ℕ) : ℝ) ^ 2) ≤ c * Real.sqrt (Real.log Ts)`. Rewrite using `[hM]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hVle : Real.log V ≤ c * Real.sqrt (Real.log Ts)`. Establish `t : Real.log V ≤ Real.log (x ^ (12:ℝ))` using `Real.log_le_log hV0 hVx`.
+
+Rewrite `t` using `[Real.log_rpow hxpos]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hexp : Real.exp (-c * Real.sqrt (Real.log Ts)) ≤ 1 / V`. Rewrite using `[neg_mul, Real.exp_neg, one_div]`. Apply `inv_anti₀ hV0` to reduce the goal to its premises.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hh1 : 1 / V ≤ 1` using `by rw [div_le_one hV0]; exact hV1`. Establish `key` using `hmain d (N * (g₁ * g₂) ^ 2) Ts (1 / V) hdp hd4 hd100 hM3 hTs1.le hlogbound hexp hh1`. Establish `hMpos : (0:ℝ) < ((N * (g₁ * g₂) ^ 2 : ℕ) : ℝ)` using `by exact_mod_cast Nat.lt_of_lt_of_le (by norm_num) hM3`. Establish `hbase : (0:ℝ) < 4 * (d:ℝ) * ((N * (g₁ * g₂) ^ 2 : ℕ) : ℝ) ^ 2` using `mul_pos (mul_pos (by norm_num) hd0) (pow_pos hMpos 2)`.
+
+Establish `hpos : (0:ℝ) < c' * (1 / V) * Ts / ((4 * (d:ℝ) * ((N * (g₁ * g₂) ^ 2 : ℕ) : ℝ) ^ 2) ^ A * Real.log Ts)` using `div_pos (mul_pos (mul_pos hc' (one_div_pos.mpr hV0)) hTs) (mul_pos (Real.rpow_pos_of_pos hbase A) hlogT0)`. Establish `hcard : 0 < (normPrimes d (N * (g₁ * g₂) ^ 2) Ts (Ts * (1 + 1 / V))).card`. Conclude with `lt_of_lt_of_le hpos key` after adjusting the coercions. Take `⟨p, hp⟩` from `Finset.card_pos.mp hcard`. Simplify using `only [normPrimes, Finset.mem_filter, Finset.mem_Ioc] at hp`.
+
+Take `⟨⟨hlo, hhi⟩, hpp, hno⟩` from `hp`. Establish `hY : 0 ≤ Ts * (1 + 1 / V)` using `mul_nonneg hTs.le (by have := one_div_pos.mpr hV0; linarith)`. Use `⟨p, hpp, Nat.lt_of_floor_lt hlo, ?_, hno⟩` and prove the remaining obligations. Establish `t` using `(Nat.le_floor_iff hY).mp hhi`. Rewrite using `[mul_comm]`.
+
+Conclude with `t`.
+-/
 theorem levelPrimeN :
     ShortNorm → ∀ eps : ℝ, 0 < eps → eps < 1 / 52 → ∀ cs CY : ℝ, 0 < cs → 0 < CY → ∃ x₀ : ℝ, ∀ x ≥ x₀, ∀ N d g₁ g₂ m : ℕ,
       ModAt x eps N d → 1 ≤ g₁ → 1 ≤ g₂ → Real.log g₁ ≤ CY * x ^ eps → Real.log g₂ ≤ CY * x ^ eps → x ^ ((1 : ℝ) / 3) ≤ m →

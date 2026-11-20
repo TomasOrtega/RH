@@ -12,6 +12,19 @@ variable {W : Type} [AddCommGroup W] [Module ℂ W]
 def MinStab (A : Set (Module.End ℂ W)) (T : Submodule ℂ W) : Prop :=
   Stab A T ∧ ∀ U : Submodule ℂ W, Stab A U → U ≤ T → U = ⊥ ∨ U = T
 
+/- English proof (translation)
+Take `⟨hTs, hTmin⟩` from `hT`. Establish `hcomm' : ∀ a ∈ A, ∀ x, a (b x) = b (a x)` using `fun a ha x => LinearMap.congr_fun (hb a ha) x`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `a ha y hy`. Take `⟨x, hx, rfl⟩` from `Submodule.mem_map.mp hy`.
+
+Rewrite using `[hcomm' a ha x]`. Conclude with `Submodule.mem_map_of_mem (hTs a ha x hx)`. Introduce `U hU hUle`. Establish `hU' : Stab A (T ⊓ U.comap b)`. Introduce `a ha x hx`.
+
+Use `⟨hTs a ha x hx.1, ?_⟩` and prove the remaining obligations. Use `show b (a x) ∈ U`. Rewrite using `[← hcomm' a ha x]`. Conclude with `hU a ha (b x) hx.2`. Break down `hTmin _ hU' inf_le_left with h | h` into its components or cases.
+
+Use `left`. Rewrite using `[eq_bot_iff]`. Introduce `u hu`. Take `⟨x, hx, rfl⟩` from `Submodule.mem_map.mp (hUle hu)`. Establish `hx' : x ∈ T ⊓ U.comap b` using `⟨hx, hu⟩`.
+
+Rewrite `hx'` using `[h]`. Rewrite using `[(Submodule.mem_bot ℂ).mp hx', map_zero]`. Conclude with `Submodule.zero_mem _`. Use `right`. Use `le_antisymm hUle ?_` and prove the remaining obligations.
+
+Rewrite using `[Submodule.map_le_iff_le_comap]`. Introduce `x hx`. Establish `hx' : x ∈ T ⊓ U.comap b` using `by rw [h]; exact hx`. Conclude with `hx'.2`.
+-/
 theorem MinStab.map {A : Set (Module.End ℂ W)} {T : Submodule ℂ W} (hT : MinStab A T)
     (b : Module.End ℂ W) (hb : ∀ a ∈ A, a * b = b * a) : MinStab A (T.map b) := by
   obtain ⟨hTs, hTmin⟩ := hT
@@ -45,6 +58,29 @@ theorem MinStab.map {A : Set (Module.End ℂ W)} {T : Submodule ℂ W} (hT : Min
       have hx' : x ∈ T ⊓ U.comap b := by rw [h]; exact hx
       exact hx'.2
 
+/- English proof (translation)
+Establish `hsup : ∀ N N' : Submodule ℂ W, Stab A N → Stab A N' → Stab A (N ⊔ N')`. Introduce `N N' hN hN' a ha x hx`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.mp hx`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (hN a ha y hy) (hN' a ha z hz)`.
+
+Set `S : Set (Submodule ℂ W)` to `{C | Stab A C ∧ C ⊓ K = ⊥}`. Choose the witnesses or unpack the hypotheses as in `⟨C, hCmax⟩ : ∃ C, Maximal (· ∈ S) C := by`. Use `zorn_le₀ S ?_` and prove the remaining obligations. Introduce `c hcS hc`. Break down `c.eq_empty_or_nonempty with rfl | hne` into its components or cases.
+
+Use `⟨⊥, ⟨?_, bot_inf_eq _⟩, by simp⟩` and prove the remaining obligations. Introduce `a _ x hx`. Rewrite using `[(Submodule.mem_bot ℂ).mp hx, map_zero]`. Conclude with `Submodule.zero_mem _`. Use `⟨sSup c, ⟨?_, ?_⟩, fun z hz => le_sSup hz⟩` and prove the remaining obligations.
+
+Introduce `a ha x hx`. Rewrite `hx`, the goal using `[Submodule.mem_sSup_of_directed hne hc.directedOn]`. Take `⟨y, hy, hxy⟩` from `hx`. Conclude with `⟨y, hy, (hcS hy).1 a ha x hxy⟩`. Rewrite using `[eq_bot_iff]`.
+
+Introduce `x hx0`. Take `⟨hx, hxK⟩` from `Submodule.mem_inf.mp hx0`. Rewrite `hx` using `[Submodule.mem_sSup_of_directed hne hc.directedOn]`. Take `⟨y, hy, hxy⟩` from `hx`. Establish `hx' : x ∈ y ⊓ K` using `⟨hxy, hxK⟩`.
+
+Rewrite `hx'` using `[(hcS hy).2]`. Then use the resulting hypothesis. Take `⟨⟨hCs, hCK⟩, hCm⟩` from `hCmax`. Use `⟨C, hCs, hCK, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hex : ∃ T, MinStab A T ∧ ¬ T ≤ C ⊔ K`.
+
+Assume the negation of the conclusion as `h`. Simplify using `only [not_exists, not_and, not_not] at h`. Conclude with `hne (top_unique (by rw [← htop]; exact sSup_le fun T hT => h T hT))`. Take `⟨T, ⟨hTs, hTmin⟩, hTn⟩` from `hex`. Establish `hI : Stab A (T ⊓ (C ⊔ K))` using `fun a ha x hx => ⟨hTs a ha x hx.1, hsup C K hCs hK a ha x hx.2⟩`.
+
+Break down `hTmin _ hI inf_le_left with h | h` into its components or cases. Establish `hmem : C ⊔ T ∈ S`. Use `⟨hsup C T hCs hTs, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_bot_iff]`. Introduce `x hx0`.
+
+Take `⟨hx, hxK⟩` from `Submodule.mem_inf.mp hx0`. Take `⟨c, hc, t, ht, rfl⟩` from `Submodule.mem_sup.mp hx`. Establish `ht' : t ∈ T ⊓ (C ⊔ K)`. Use `⟨ht, ?_⟩` and prove the remaining obligations. Simplify using `using Submodule.sub_mem _ (Submodule.mem_sup_right hxK : c + t ∈ C ⊔ K) (Submodule.mem_sup_left hc : c ∈ C ⊔ K)`.
+
+Establish `ht0 : t = 0`. Rewrite `ht'` using `[h]`. Conclude with `(Submodule.mem_bot ℂ).mp ht'`. Substitute `ht0` using the available equality. Rewrite `hxK`, the goal using `[add_zero]`.
+
+Establish `hc' : c ∈ C ⊓ K` using `⟨hc, hxK⟩`. Rewrite `hc'` using `[hCK]`. Then use the resulting hypothesis. Establish `hle : C ⊔ T ≤ C` using `hCm hmem le_sup_left`. Conclude with `hTn ((le_sup_right.trans hle).trans le_sup_left)`. Conclude with `hTn (inf_eq_left.mp h)`.
+-/
 theorem exists_stab_compl {A : Set (Module.End ℂ W)}
     (htop : sSup {T | MinStab A T} = ⊤) (K : Submodule ℂ W) (hK : Stab A K) :
     ∃ C : Submodule ℂ W, Stab A C ∧ C ⊓ K = ⊥ ∧ C ⊔ K = ⊤ := by
@@ -108,6 +144,43 @@ theorem exists_stab_compl {A : Set (Module.End ℂ W)}
 
 end HeadKill
 
+/- English proof (translation)
+Establish `hint : ∀ g ∈ Op, ∀ x, φ (g x) = act g (φ x)` using `fun g hg x => LinearMap.congr_fun (hφ g hg) x`. Distinguish the cases in `hφ0 : LinearMap.range φ = ⊥`. Introduce `x _`. Establish `hx : φ x ∈ LinearMap.range φ` using `LinearMap.mem_range_self φ x`. Rewrite `hx` using `[hφ0]`.
+
+Conclude with `(Submodule.mem_bot ℂ).mp hx`. Establish `hrange : Stab (act '' Op) (LinearMap.range φ)`. Introduce `a ha y hy`. Take `⟨g, hg, rfl⟩` from `ha`. Take `⟨x, rfl⟩` from `LinearMap.mem_range.mp hy`.
+
+Conclude with `LinearMap.mem_range.mpr ⟨g x, hint g hg x⟩`. Establish `hcomap : ∀ U : Submodule ℂ W, Stab (act '' Op) U → Stab Op (U.comap φ)`. Introduce `U hU g hg x hx`. Use `show φ (g x) ∈ U`. Rewrite using `[hint g hg x]`.
+
+Conclude with `hU _ ⟨g, hg, rfl⟩ _ hx`. Establish `hRelc : ∀ U : Submodule ℂ W, Rel ≤ U.comap φ`. Introduce `U x hx`. Use `show φ x ∈ U`. Rewrite using `[LinearMap.mem_ker.mp (hRel hx)]`.
+
+Conclude with `U.zero_mem`. Take `⟨L, hL⟩` from `hL`. Set `P : Set (Submodule ℂ W)` to `{U | U ≤ LinearMap.range φ ∧ Stab (act '' Op) U ∧ U ≠ ⊥}`. Establish `hwf : P.WellFoundedOn (· < ·)`. Rewrite using `[Set.wellFoundedOn_iff_no_descending_seq]`.
+
+Introduce `f hf`. Establish `hlt : ∀ m n : ℕ, m < n → f n < f m` using `fun m n h => f.map_rel_iff.mpr h`. Establish `hmono : StrictMono (fun i : Fin (L + 1) => (f (L - i.val)).comap φ)`. Introduce `i j hij`. Establish `hij' : (i : ℕ) < j` using `hij`.
+
+Establish `hj` using `j.isLt`. Establish `hlt' : f (L - i.val) < f (L - j.val)` using `hlt _ _ (by omega)`. Use `show (f (L - i.val)).comap φ < (f (L - j.val)).comap φ`. Use `lt_of_le_of_ne (Submodule.comap_mono hlt'.le) ?_` and prove the remaining obligations. Introduce `heq`.
+
+Establish `hmap` using `congrArg (Submodule.map φ) heq`. Rewrite `hmap` using `[Submodule.map_comap_eq_self (hf _).1, Submodule.map_comap_eq_self (hf _).1]`. Conclude with `hlt'.ne hmap`. Establish `hbound` using `hL (L + 1) _ hmono (fun j => ⟨hRelc _, hcomap _ (hf _).2.1⟩)`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hPne : LinearMap.range φ ∈ P` using `⟨le_rfl, hrange, hφ0⟩`. Take `⟨T, hTP, hTmin⟩` from `(Set.wellFoundedOn_iff.mp hwf).has_min P ⟨_, hPne⟩`. Establish `hTms : MinStab (act '' Op) T`. Use `⟨hTP.2.1, fun U hU hUT => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hU0 : U = ⊥`.
+
+Conclude with `Or.inl hU0`. Use `right`. Assume the negation of the conclusion as `hne`. Establish `hUP : U ∈ P` using `⟨hUT.trans hTP.1, hU, hU0⟩`. Conclude with `hTmin U hUP ⟨lt_of_le_of_ne hUT hne, hUP, hTP⟩`.
+
+Establish `hbcomm : ∀ b ∈ B, ∀ a ∈ act '' Op, a * b = b * a`. Introduce and unpack `b hb _ ⟨g, hg, rfl⟩`. Conclude with `hcomm g hg b hb`. Establish `hstop : sSup {T | MinStab (act '' Op) T} = ⊤`. Establish `hst : Stab (act '' Op ∪ B) (sSup {T | MinStab (act '' Op) T})`.
+
+Introduce `a ha`. Break down `ha with ha | ha` into its components or cases. Establish `hle : sSup {T | MinStab (act '' Op) T} ≤ (sSup {T | MinStab (act '' Op) T}).comap a` using `sSup_le fun T' hT' y hy => (le_sSup hT' : T' ≤ _) (hT'.1 a ha y hy)`. Conclude with `fun x hx => hle hx`. Establish `hle : sSup {T | MinStab (act '' Op) T} ≤ (sSup {T | MinStab (act '' Op) T}).comap a` using `sSup_le fun T' hT' y hy => (le_sSup (MinStab.map hT' a (hbcomm a ha)) : T'.map a ≤ _) (Submodule.mem_map_of_mem hy)`.
+
+Conclude with `fun x hx => hle hx`. Break down `hsimple _ hst with h | h` into its components or cases. Conclude with `absurd (eq_bot_iff.mpr ((le_sSup (show T ∈ {T | MinStab (act '' Op) T} from hTms)).trans h.le)) hTP.2.2`. Conclude with `h`. Establish `hKs : Stab (act '' Op) (K.map φ)`.
+
+Introduce `a ha y hy`. Take `⟨g, hg, rfl⟩` from `ha`. Take `⟨k, hk, rfl⟩` from `Submodule.mem_map.mp hy`. Rewrite using `[← hint g hg k]`. Conclude with `Submodule.mem_map_of_mem (hK g hg k hk)`.
+
+Take `⟨C, hCs, hCK, hCtop⟩` from `exists_stab_compl hstop (K.map φ) hKs`. Establish `hNK : C.comap φ ⊔ K = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `m _`. Establish `hm : φ m ∈ C ⊔ K.map φ` using `by rw [hCtop]; exact Submodule.mem_top`.
+
+Take `⟨c, hc, y, hy, hcy⟩` from `Submodule.mem_sup.mp hm`. Take `⟨k, hk, rfl⟩` from `Submodule.mem_map.mp hy`. Establish `hmk : m - k ∈ C.comap φ` using `by show φ (m - k) ∈ C`. Rewrite using `[map_sub, ← hcy, add_sub_cancel_right]`. Conclude with `hc`.
+
+Simplify using `using Submodule.add_mem_sup hmk hk`. Distinguish the cases in `hN : C.comap φ = ⊤`. Introduce `k hk`. Establish `h1 : k ∈ C.comap φ` using `by rw [hN]; exact Submodule.mem_top`. Establish `h2 : φ k ∈ C ⊓ K.map φ` using `⟨h1, Submodule.mem_map_of_mem hk⟩`.
+
+Rewrite `h2` using `[hCK]`. Conclude with `(Submodule.mem_bot ℂ).mp h2`. Conclude with `absurd (top_unique (hNK.symm.le.trans (sup_le (hmax _ (hRelc C) (hcomap C hCs) hN) le_rfl))) hKtop`.
+-/
 theorem le_ker_of_simple_commuting {M W : Type} [AddCommGroup M] [Module ℂ M] [AddCommGroup W]
     [Module ℂ W]
     (Op : Set (Module.End ℂ M)) (Rel K : Submodule ℂ M) (φ : M →ₗ[ℂ] W)

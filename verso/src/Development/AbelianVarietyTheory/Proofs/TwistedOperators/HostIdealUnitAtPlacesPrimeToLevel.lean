@@ -8,6 +8,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 
 namespace GlobalTheory.AAUnit
 
+/- English proof (translation)
+Introduce `D w h2qd hN`. Establish `h2q : ((D.host.QS * D.host.q : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal` using `fun h => h2qd (by`. Rewrite using `[Nat.cast_mul]`. Conclude with `w.asIdeal.mul_mem_right _ h)`. Use `⟨fun a ha => ?_, ⟨_, GlobalTheory.HostClear.absNorm_mem_AA D, ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.FunObj.Good.valued_alg]`. Conclude with `GlobalTheory.FunObj.Good.valuation_le_one_of_mem h2q (Or.inl ha)`. Rewrite using `[GlobalTheory.FunObj.Good.valued_alg]`. Conclude with `GlobalTheory.FunObj.Good.valuation_nat hN`.
+-/
 theorem aa_unit : ∀ (D : D7) (w : Pl D.host.E), ((D.host.QS * D.host.q * D.host.d : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal → ((Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal → ((∀ a ∈ D.host.AA, Valued.v (algebraMap D.host.E (Kw w) a) ≤ 1) ∧ ∃ a ∈ D.host.AA, Valued.v (algebraMap D.host.E (Kw w) a) = 1) := by
   intro D w h2qd hN
   have h2q : ((D.host.QS * D.host.q : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal := fun h => h2qd (by

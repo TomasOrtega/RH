@@ -7,6 +7,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.LocMod.LinTheta
 
+/- English proof (translation)
+Take `⟨h1, h2, v, ε, ⟨α, hε, -, -⟩, h3⟩` from `he`. Establish `h4 : e = e * algebraMap (AF D.host.F) (AE D) ε`. Rewrite using `[← h3, mul_add, h1, h2, add_zero]`. Establish `h5 : infPart D (algebraMap (AF D.host.F) (AE D) ε) = 0`. Establish `h6 : fstA D.host.F ε = 0` using `by rw [hε]; rfl`.
+
+Simplify using `[infPart, Algebra.TensorProduct.algebraMap_apply, h6]`. Rewrite using `[h4, map_mul, h5, mul_zero]`.
+-/
 theorem infPart_of_isSplitIdem {D : D7} {e : AE D} (he : IsSplitIdem D e) : infPart D e = 0 := by
   obtain ⟨h1, h2, v, ε, ⟨α, hε, -, -⟩, h3⟩ := he
   have h4 : e = e * algebraMap (AF D.host.F) (AE D) ε := by
@@ -16,6 +21,9 @@ theorem infPart_of_isSplitIdem {D : D7} {e : AE D} (he : IsSplitIdem D e) : infP
     simp [infPart, Algebra.TensorProduct.algebraMap_apply, h6]
   rw [h4, map_mul, h5, mul_zero]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.DiagLiftFix.isTheta_placeModel hψ hS.1 hT.1 he.1 he.2.1 (infPart_of_isSplitIdem he) hf Tm hTm Φ hΦ`.
+-/
 theorem isThetaFunO_placeModel (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D)
     (ΛS : Lat S) (ΛT : Lat T)
     (e : AE D) (f₀ : WO S T → ℂ) (Tm : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ))

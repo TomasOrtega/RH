@@ -6,6 +6,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Conne
 
 open IsLocalRing UpperTheory.V.AlgebraTools.Conn
 
+/- English proof (translation)
+Introduce `A B _ _ _ _ _ _ _ _ I hI`. Establish `hN : IsNoetherianRing B` using `IsNoetherianRing.of_finite A B`. Establish `hc : IsAdicComplete (maximalIdeal B) B`. Conclude with `GlobalTheory.CompleteFiniteExtension.isAdicComplete_of_finite_local A B`. Establish `hle : I ≤ maximalIdeal B` using `le_maximalIdeal hI`.
+
+Establish `hH : IsHausdorff I B` using `IsHausdorff.of_isLocalRing _ _ hI`. Establish `hP : IsPrecomplete I B`. Use `⟨fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨L, hL⟩` from `hc.toIsPrecomplete.prec (f := f) (fun {m n} h => (hf h).mono (Submodule.smul_mono_left (Ideal.pow_right_mono hle m)))`. Use `⟨L, fun n => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[SModEq.sub_mem, ← Submodule.Quotient.mk_eq_zero]`. Establish `hq : IsHausdorff (maximalIdeal B) (B ⧸ (I ^ n • (⊤ : Submodule B B)))` using `IsHausdorff.of_isLocalRing _ _ (maximalIdeal.isMaximal B).ne_top`. Use `hq.haus _ fun k => ?_` and prove the remaining obligations. Rewrite using `[SModEq.zero]`. Establish `h1 : f n - f (n + k) ∈ I ^ n • (⊤ : Submodule B B)` using `SModEq.sub_mem.1 (hf (Nat.le_add_right n k))`.
+
+Establish `h2 : f (n + k) - L ∈ maximalIdeal B ^ k • (⊤ : Submodule B B)` using `Submodule.smul_mono_left (Ideal.pow_le_pow_right (Nat.le_add_left k n)) (SModEq.sub_mem.1 (hL (n + k)))`. Establish `e : f n - L = (f n - f (n + k)) + (f (n + k) - L)` using `by ring`. Rewrite using `[e, Submodule.Quotient.mk_add, (Submodule.Quotient.mk_eq_zero _).2 h1, zero_add]`. Establish `h3` using `Submodule.mem_map_of_mem (f := (I ^ n • (⊤ : Submodule B B)).mkQ) h2`. Rewrite `h3` using `[Submodule.map_smul'']`.
+
+Conclude with `Submodule.smul_mono le_rfl le_top h3`. Conclude with `{ }`.
+-/
 theorem UpperTheory.V.AlgebraTools.Conn.cplFinite :
     ∀ {A B : Type} [CommRing A] [IsLocalRing A] [IsNoetherianRing A] [IsAdicComplete (maximalIdeal A) A] [CommRing B]
       [IsLocalRing B] [Algebra A B] [Module.Finite A B] (I : Ideal B), I ≠ ⊤ → IsAdicComplete I B := by

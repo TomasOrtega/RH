@@ -4,6 +4,11 @@ import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.AbByPOfCo
 open GlobalTheory.BI
 namespace GlobalTheory.BI
 
+/- English proof (translation)
+Establish `: Fintype G` using `Fintype.ofFinite G`. Establish `: Invertible (Nat.card G : K)` using `invertibleOfNonzero (Nat.cast_ne_zero.mpr Nat.card_pos.ne')`. Establish `hK` using `congrArg (algebraMap K L) (Representation.card_inv_mul_sum_char_mul_char_eq_finrank ρ σ)`. Rewrite `hK` using `[map_natCast]`. Rewrite using `[← hK]`.
+
+Simplify using `only [pair, finsum_eq_sum_of_fintype, map_mul, map_inv₀, map_natCast, map_sum]`.
+-/
 private theorem character_pairing_eq_finrank_hom (K L : Type) [Field K] [Field L] [Algebra K L] [CharZero K]
     (G : Type) [Group G] [Finite G] {n m : ℕ} (ρ : Representation K G (Fin n → K))
     (σ : Representation K G (Fin m → K)) :
@@ -19,6 +24,17 @@ private theorem character_pairing_eq_finrank_hom (K L : Type) [Field K] [Field L
   rw [← hK]
   simp only [pair, finsum_eq_sum_of_fintype, map_mul, map_inv₀, map_natCast, map_sum]
 
+/- English proof (translation)
+Introduce `K L _ _ _ _ _ G _ _`. Establish `: Fintype G` using `Fintype.ofFinite G`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b c`. Simplify using `only [pair, finsum_eq_sum_of_fintype, Pi.add_apply, add_mul, Finset.sum_add_distrib, mul_add]`.
+
+Introduce and unpack `a b ⟨n, ρ, hρ⟩ ⟨m, σ, hσ⟩`. Use `⟨Module.finrank K (Representation.IntertwiningMap σ ρ), ?_⟩` and prove the remaining obligations. Rewrite using `[show a = fun g => algebraMap K L (ρ.character g) from funext hρ, show b = fun g => algebraMap K L (σ.character g) from funext hσ]`. Conclude with `character_pairing_eq_finrank_hom K L G σ ρ`. Introduce and unpack `φ ⟨n, ρ, hirr, hρ⟩`.
+
+Use `⟨Module.finrank K (Representation.IntertwiningMap ρ ρ), ?_, ?_⟩` and prove the remaining obligations. Establish `: IsSimpleModule (MonoidAlgebra K G) ρ.asModule` using `(Representation.irreducible_iff_isSimpleModule_asModule ρ).mp hirr`. Establish `: Nontrivial ρ.asModule` using `IsSimpleModule.nontrivial (MonoidAlgebra K G) _`. Take `⟨v, hv⟩ : ∃ v : Fin n → K, v ≠ 0` from `exists_ne (0 : ρ.asModule)`. Establish `: Nontrivial (Representation.IntertwiningMap ρ ρ)` using `⟨⟨Representation.IntertwiningMap.id ρ, 0, fun h => hv (by`.
+
+Establish `hv0` using `congrArg (fun f : Representation.IntertwiningMap ρ ρ => f v) h`. Rewrite using `[Representation.IntertwiningMap.id_apply, Representation.IntertwiningMap.coe_zero, Pi.zero_apply] at hv0)⟩⟩` and apply the resulting hypothesis. Establish `: Module.Finite K (Representation.IntertwiningMap ρ ρ)` using `Module.Finite.equiv (Representation.invariantsEquivIntertwiningMap ρ ρ)`. Conclude with `Module.finrank_pos`. Rewrite using `[show φ = fun g => algebraMap K L (ρ.character g) from funext hρ]`.
+
+Conclude with `character_pairing_eq_finrank_hom K L G ρ ρ`. Introduce `a b`. Simplify using `only [pair, finsum_eq_sum_of_fintype]`. Use `congr 1`. Conclude with `Fintype.sum_equiv (Equiv.inv G) _ _ (fun g => by simp [mul_comm])`.
+-/
 theorem pair_add_nat_pos_symm : ∀ (K L : Type) [Field K] [Field L] [Algebra K L] [CharZero K] [CharZero L] (G : Type) [Group G] [Finite G], (∀ a b c : G → L, pair (a + b) c = pair a c + pair b c) ∧ (∀ a b : G → L, IsChar K L a → IsChar K L b → ∃ n : ℕ, pair a b = (n : L)) ∧ (∀ φ : G → L, IsIrrChar K L φ → ∃ n : ℕ, 0 < n ∧ pair φ φ = (n : L)) ∧ ∀ a b : G → L, pair a b = pair b a := by
   intro K L _ _ _ _ _ G _ _
   classical

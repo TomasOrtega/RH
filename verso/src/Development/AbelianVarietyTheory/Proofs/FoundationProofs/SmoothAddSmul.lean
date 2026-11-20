@@ -20,6 +20,9 @@ open Matrix in
 open scoped ContDiff in
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 variable {n : ℕ} {ε : Fin n → Bool} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] in
+/- English proof (translation)
+Introduce `g₀ hg₀`. Take `⟨U, F, hU, hgU, hF, hfF⟩` from `hf g₀ hg₀`. Conclude with `⟨U, F, hU, hgU, hF, fun g hg hgG => (h g hgG).trans (hfF g hg hgG)⟩`.
+-/
 theorem _root_.GlobalTheory.CapelliCentral.smooth_congr {f f' : Matrix (Fin n) (Fin n) ℂ → E}
     (hf : _root_.Formalism.REAL.SmoothOnGV ε f) (h : ∀ g, _root_.Formalism.REAL.inUJ ε g → f' g = f g) : _root_.Formalism.REAL.SmoothOnGV ε f' := by
   intro g₀ hg₀
@@ -30,6 +33,11 @@ open Matrix in
 open scoped ContDiff in
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 variable {n : ℕ} {ε : Fin n → Bool} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] in
+/- English proof (translation)
+Introduce `g₀ hg₀`. Take `⟨U, F, hU, hgU, hF, hfF⟩` from `hf g₀ hg₀`. Take `⟨U', F', hU', hgU', hF', hfF'⟩` from `hf' g₀ hg₀`. Use `⟨U ∩ U', fun x => F x + c • F' x, hU.inter hU', ⟨hgU, hgU'⟩, (hF.mono Set.inter_subset_left).add ((hF'.mono Set.inter_subset_right).const_smul c), fun g hg hgG => ?_⟩` and prove the remaining obligations. Use `show f g + c • f' g = F g + c • F' g`.
+
+Rewrite using `[hfF g hg.1 hgG, hfF' g hg.2 hgG]`.
+-/
 theorem _root_.GlobalTheory.CapelliCentral.smooth_add_smul {f f' : Matrix (Fin n) (Fin n) ℂ → E} (hf : _root_.Formalism.REAL.SmoothOnGV ε f)
     (hf' : _root_.Formalism.REAL.SmoothOnGV ε f') (c : ℂ) : _root_.Formalism.REAL.SmoothOnGV ε (fun x => f x + c • f' x) := by
   intro g₀ hg₀
@@ -45,6 +53,9 @@ open Matrix in
 open scoped ContDiff in
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 variable {n : ℕ} {ε : Fin n → Bool} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] in
+/- English proof (translation)
+Introduce `g₀ _`. Conclude with `⟨Set.univ, fun _ => 0, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩`.
+-/
 theorem _root_.GlobalTheory.CapelliCentral.smooth_zero :
     _root_.Formalism.REAL.SmoothOnGV ε (fun _ : Matrix (Fin n) (Fin n) ℂ => (0 : E)) := by
   intro g₀ _
@@ -54,6 +65,9 @@ open Matrix in
 open scoped ContDiff in
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 variable {n : ℕ} {ε : Fin n → Bool} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] in
+/- English proof (translation)
+Take `⟨hP, hQ, -, -⟩` from `_root_.Formalism.REAL.complex_parts_mem_lie_algebra_holds n ε (Matrix.single a b 1)`. Establish `h1` using `_root_.Formalism.REAL.rdSmoothV n ε E f _ hf hP`. Establish `h2` using `_root_.Formalism.REAL.rdSmoothV n ε E f _ hf hQ`. Establish `h3` using `_root_.GlobalTheory.CapelliCentral.smooth_add_smul h1 h2 Complex.I`. Conclude with `_root_.GlobalTheory.CapelliCentral.smooth_congr h3 (fun g _ => rfl)`.
+-/
 theorem _root_.GlobalTheory.CapelliCentral.eab_smooth {f : Matrix (Fin n) (Fin n) ℂ → E}
     (hf : _root_.Formalism.REAL.SmoothOnGV ε f) (a b : Fin n) : _root_.Formalism.REAL.SmoothOnGV ε (_root_.Formalism.REAL.EabV ε a b f) := by
   obtain ⟨hP, hQ, -, -⟩ := _root_.Formalism.REAL.complex_parts_mem_lie_algebra_holds n ε (Matrix.single a b 1)
@@ -66,6 +80,11 @@ open Matrix in
 open scoped ContDiff in
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 variable {n : ℕ} {ε : Fin n → Bool} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] in
+/- English proof (translation)
+Take `⟨hP, hQ, -, -⟩` from `_root_.Formalism.REAL.complex_parts_mem_lie_algebra_holds n ε (Matrix.single a b 1)`. Establish `e1` using `(_root_.Formalism.REAL.rdLinV n ε E f f' _ _ 0 c g hf hf' hP hP hg).2.2`. Establish `e2` using `(_root_.Formalism.REAL.rdLinV n ε E f f' _ _ 0 c g hf hf' hQ hQ hg).2.2`. Use `show _root_.Formalism.REAL.EcV ε _ _ g = _root_.Formalism.REAL.EcV ε _ _ g + c • _root_.Formalism.REAL.EcV ε _ _ g`. Unfold `_root_.Formalism.REAL.EcV`.
+
+Rewrite using `[e1, e2]`. Simplify using `only [smul_add, smul_comm Complex.I c]`. Normalize the expressions using the abelian group laws.
+-/
 theorem _root_.GlobalTheory.CapelliCentral.eab_add_smul {f f' : Matrix (Fin n) (Fin n) ℂ → E}
     (hf : _root_.Formalism.REAL.SmoothOnGV ε f) (hf' : _root_.Formalism.REAL.SmoothOnGV ε f') (c : ℂ) (a b : Fin n)
     {g : Matrix (Fin n) (Fin n) ℂ} (hg : _root_.Formalism.REAL.inUJ ε g) :
@@ -83,6 +102,9 @@ open Matrix in
 open scoped ContDiff in
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 variable {n : ℕ} {ε : Fin n → Bool} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] in
+/- English proof (translation)
+Simplify using `[_root_.Formalism.REAL.EabV, _root_.Formalism.REAL.EcV, _root_.Formalism.REAL.RdV]`.
+-/
 theorem _root_.GlobalTheory.CapelliCentral.eab_zero (a b : Fin n) (g : Matrix (Fin n) (Fin n) ℂ) :
     _root_.Formalism.REAL.EabV ε a b (fun _ => (0 : E)) g = 0 := by
   simp [_root_.Formalism.REAL.EabV, _root_.Formalism.REAL.EcV, _root_.Formalism.REAL.RdV]
@@ -96,6 +118,9 @@ open Matrix in
 open scoped ContDiff in
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 variable {n : ℕ} {ε : Fin n → Bool} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.CapelliCentral.cut`. Rewrite using `[if_pos hg]`.
+-/
 theorem _root_.GlobalTheory.CapelliCentral.cut_of_mem (f : Matrix (Fin n) (Fin n) ℂ → E)
     {g : Matrix (Fin n) (Fin n) ℂ} (hg : _root_.Formalism.REAL.inUJ ε g) :
     _root_.GlobalTheory.CapelliCentral.cut ε f g = f g := by
@@ -106,6 +131,9 @@ open Matrix in
 open scoped ContDiff in
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 variable {n : ℕ} {ε : Fin n → Bool} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.CapelliCentral.cut`. Rewrite using `[if_neg hg]`.
+-/
 theorem _root_.GlobalTheory.CapelliCentral.cut_of_not_mem (f : Matrix (Fin n) (Fin n) ℂ → E)
     {g : Matrix (Fin n) (Fin n) ℂ} (hg : ¬ _root_.Formalism.REAL.inUJ ε g) :
     _root_.GlobalTheory.CapelliCentral.cut ε f g = 0 := by
@@ -132,6 +160,9 @@ open Matrix in
 open scoped ContDiff in
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 variable {n : ℕ} {ε : Fin n → Bool} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] in
+/- English proof (translation)
+The claim follows from `_root_.GlobalTheory.CapelliCentral.cut_of_mem f hg`.
+-/
 theorem _root_.GlobalTheory.CapelliCentral.mk_apply (f : Matrix (Fin n) (Fin n) ℂ → E)
     (hf : _root_.Formalism.REAL.SmoothOnGV ε f) {g : Matrix (Fin n) (Fin n) ℂ} (hg : _root_.Formalism.REAL.inUJ ε g) :
     (_root_.GlobalTheory.CapelliCentral.mk f hf).1 g = f g :=
@@ -141,6 +172,9 @@ open Matrix in
 open scoped ContDiff in
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 variable {n : ℕ} {ε : Fin n → Bool} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] in
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Distinguish the cases in `hg : _root_.Formalism.REAL.inUJ ε g`. Conclude with `h g hg`. Rewrite using `[F.2.2 g hg, F'.2.2 g hg]`.
+-/
 theorem _root_.GlobalTheory.CapelliCentral.ext_on {F F' : _root_.GlobalTheory.CapelliCentral.smoothSpace ε E}
     (h : ∀ g, _root_.Formalism.REAL.inUJ ε g → F.1 g = F'.1 g) : F = F' := by
   apply Subtype.ext
@@ -172,6 +206,9 @@ open Matrix in
 open scoped ContDiff in
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 variable {n : ℕ} {ε : Fin n → Bool} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] in
+/- English proof (translation)
+Unfold `_root_.Formalism.REAL.inUJ at *`. Rewrite using `[conjTranspose_mul, show kᴴ * gᴴ * _root_.Formalism.REAL.Jm ε * (g * k) = kᴴ * (gᴴ * _root_.Formalism.REAL.Jm ε * g) * k by`. Simplify using `only [Matrix.mul_assoc], hg, hk]`.
+-/
 private theorem inUJ_mul_foundation {g k : Matrix (Fin n) (Fin n) ℂ}
     (hg : _root_.Formalism.REAL.inUJ ε g) (hk : _root_.Formalism.REAL.inUJ ε k) : _root_.Formalism.REAL.inUJ ε (g * k) := by
   unfold _root_.Formalism.REAL.inUJ at *
@@ -183,6 +220,9 @@ open Matrix in
 open scoped ContDiff in
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 variable {n : ℕ} {ε : Fin n → Bool} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] in
+/- English proof (translation)
+Unfold `_root_.Formalism.REAL.RdV`. Use `congr 1`. Use function extensionality and compare the values at `t`. Conclude with `h _ (inUJ_mul_foundation hg (_root_.Formalism.REAL.f1alg_exp_inUJ ε _ (_root_.Formalism.REAL.lie_algebra_real_smul_mem ε hX t)))`.
+-/
 private theorem rdV_congr_of_eqOn_inUJ {X : Matrix (Fin n) (Fin n) ℂ} (hX : _root_.Formalism.REAL.inG ε X)
     {f f' : Matrix (Fin n) (Fin n) ℂ → E} (h : ∀ g, _root_.Formalism.REAL.inUJ ε g → f g = f' g)
     {g : Matrix (Fin n) (Fin n) ℂ} (hg : _root_.Formalism.REAL.inUJ ε g) : _root_.Formalism.REAL.RdV X f g = _root_.Formalism.REAL.RdV X f' g := by
@@ -195,6 +235,11 @@ open Matrix in
 open scoped ContDiff in
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 variable {n : ℕ} {ε : Fin n → Bool} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] in
+/- English proof (translation)
+Take `⟨hP, hQ, -, -⟩` from `_root_.Formalism.REAL.complex_parts_mem_lie_algebra_holds n ε (Matrix.single a b 1)`. Use `show _root_.GlobalTheory.CapelliCentral.cut ε (_root_.Formalism.REAL.EabV ε a b F.1) g = _`. Rewrite using `[_root_.GlobalTheory.CapelliCentral.cut_of_mem _ hg]`. Use `show _root_.Formalism.REAL.EcV ε _ _ g = _root_.Formalism.REAL.EcV ε _ _ g`. Unfold `_root_.Formalism.REAL.EcV`.
+
+Rewrite using `[rdV_congr_of_eqOn_inUJ hP h hg, rdV_congr_of_eqOn_inUJ hQ h hg]`.
+-/
 theorem _root_.GlobalTheory.CapelliCentral.eabEnd_apply (a b : Fin n) (F : _root_.GlobalTheory.CapelliCentral.smoothSpace ε E)
     {f : Matrix (Fin n) (Fin n) ℂ → E} (h : ∀ g, _root_.Formalism.REAL.inUJ ε g → F.1 g = f g)
     {g : Matrix (Fin n) (Fin n) ℂ} (hg : _root_.Formalism.REAL.inUJ ε g) :
@@ -210,6 +255,11 @@ open Matrix in
 open scoped ContDiff in
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 variable {n : ℕ} {ε : Fin n → Bool} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] in
+/- English proof (translation)
+Introduce `a b c d`. Use `LinearMap.ext fun F => ?_` and prove the remaining obligations. Apply `_root_.GlobalTheory.CapelliCentral.ext_on` to reduce the goal to its premises. Introduce `g hg`. Establish `hF : ∀ (p q : Fin n) (G : _root_.GlobalTheory.CapelliCentral.smoothSpace ε E), (_root_.GlobalTheory.CapelliCentral.eabEnd ε E p q G).1 g = _root_.Formalism.REAL.EabV ε p q G.1 g` using `fun p q G => _root_.GlobalTheory.CapelliCentral.eabEnd_apply p q G (fun _ _ => rfl) hg`.
+
+Establish `hFF : ∀ p q r s : Fin n, (_root_.GlobalTheory.CapelliCentral.eabEnd ε E p q (_root_.GlobalTheory.CapelliCentral.eabEnd ε E r s F)).1 g = _root_.Formalism.REAL.EabV ε p q (_root_.Formalism.REAL.EabV ε r s F.1) g` using `fun p q r s => _root_.GlobalTheory.CapelliCentral.eabEnd_apply p q _ (fun _ hg' => _root_.GlobalTheory.CapelliCentral.eabEnd_apply r s F (fun _ _ => rfl) hg') hg`. Establish `key` using `_root_.Formalism.REAL.eabGlV n ε E F.1 a b c d g F.2.1 hg`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, Submodule.coe_sub, Pi.sub_apply, hFF]`. Rewrite using `[key]`. Apply the tactic sequence `split_ifs <;> simp [hF]`.
+-/
 theorem _root_.GlobalTheory.CapelliCentral.eabEnd_glRel : _root_.Formalism.REAL.GlRel (_root_.GlobalTheory.CapelliCentral.eabEnd ε E) := by
   intro a b c d
   refine LinearMap.ext fun F => ?_
@@ -228,6 +278,9 @@ theorem _root_.GlobalTheory.CapelliCentral.eabEnd_glRel : _root_.Formalism.REAL.
   rw [key]
   split_ifs <;> simp [hF]
 
+/- English proof (translation)
+Unfold `Tm Formalism.QuantumDeterminants.Top`. Rewrite using `[LinearMap.add_apply, Submodule.coe_add, Pi.add_apply, eabEnd_apply a b F h hg, ← h g hg]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 lemma tm_apply (u : ℂ) (a b : Fin n) (F : smoothSpace ε E) {f : Matrix (Fin n) (Fin n) ℂ → E}
     (h : ∀ g, inUJ ε g → F.1 g = f g) {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) :
     (Tm (eabEnd ε E) u a b F).1 g = Top (EabV ε) u a b f g := by
@@ -235,6 +288,11 @@ lemma tm_apply (u : ℂ) (a b : Fin n) (F : smoothSpace ε E) {f : Matrix (Fin n
   rw [LinearMap.add_apply, Submodule.coe_add, Pi.add_apply, eabEnd_apply a b F h hg, ← h g hg]
   split_ifs <;> simp
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => intro g hg`. Simplify using `using h g hg`. Consider the case `cons p l ih`. Introduce `g hg`.
+
+Rewrite using `[List.map_cons, List.map_cons, List.prod_cons, List.foldr_cons, Module.End.mul_apply]`. Conclude with `tm_apply _ _ _ _ ih hg`.
+-/
 lemma prod_apply (l : List (ℂ × Fin n × Fin n)) (F : smoothSpace ε E)
     {f : Matrix (Fin n) (Fin n) ℂ → E} (h : ∀ g, inUJ ε g → F.1 g = f g) :
     ∀ g, inUJ ε g → ((l.map fun p => Tm (eabEnd ε E) p.1 p.2.1 p.2.2).prod F).1 g =

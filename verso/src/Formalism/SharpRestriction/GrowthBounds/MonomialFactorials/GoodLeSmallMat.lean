@@ -14,6 +14,11 @@ def GoodLeSmallMat : Prop :=
     (∀ i j, ∑ a, (X i a : ℚ_[p]) * c a * (Y j a : ℚ_[p]) = if i = j then (p : ℚ_[p]) ^ D else 0) →
     n ≤ (Finset.univ.filter (fun a : Fin m => c a ≠ 0 ∧ (c a).valuation ≤ D)).card
 
+/- English proof (translation)
+Establish `h0 : B 0 v = 0`. Use `hsm 0 0 v` as an intermediate fact. Simplify using `using this`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using h0`.
+
+Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, hadd, ih, Finset.sum_insert ha]`.
+-/
 theorem B_sum_left {p : ℕ} [Fact p.Prime] {σ ι : Type} (B : MvPolynomial σ ℚ_[p] → MvPolynomial σ ℚ_[p] → ℚ_[p])
     (hsm : ∀ (c : ℚ_[p]) u v, B (c • u) v = c * B u v) (hadd : ∀ u u' v, B (u + u') v = B u v + B u' v)
     (s : Finset ι) (g : ι → MvPolynomial σ ℚ_[p]) (v : MvPolynomial σ ℚ_[p]) :
@@ -26,6 +31,19 @@ theorem B_sum_left {p : ℕ} [Fact p.Prime] {σ ι : Type} (B : MvPolynomial σ 
   | empty => simpa using h0
   | insert a s ha ih => rw [Finset.sum_insert ha, hadd, ih, Finset.sum_insert ha]
 
+/- English proof (translation)
+Introduce `p _ σ B L W D _ _ hsm hadd hsy m f hf _ hspan horth`. Take `⟨x, y, hx, hy, hxy⟩` from `goodCount_mem p B L D`. Establish `hcoord : ∀ v ∈ L, ∃ X : Fin m → ℤ_[p], ∑ a, X a • f a = v`. Introduce `v hv`. Rewrite `hv` using `[← hspan]`.
+
+Conclude with `(Submodule.mem_span_range_iff_exists_fun ℤ_[p]).1 hv`. Use `choose! X hX using hcoord`. Establish `hsmZ : ∀ (c : ℤ_[p]) (u : MvPolynomial σ ℚ_[p]), c • u = (c : ℚ_[p]) • u` using `fun c u => (algebraMap_smul ℚ_[p] c u).symm`. Establish `hexp : ∀ v ∈ L, ∀ w, B v w = ∑ a, (X v a : ℚ_[p]) * B (f a) w`. Introduce `v hv w`.
+
+Use `conv_lhs => rw [← hX v hv]`. Rewrite using `[B_sum_left B hsm hadd]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[hsmZ, hsm]`. Establish `hfy : ∀ a j, B (f a) (y j) = (X (y j) a : ℚ_[p]) * B (f a) (f a)`.
+
+Introduce `a j`. Rewrite using `[hsy _ (hf a) _ (hy j), hexp _ (hy j)]`. Rewrite using `[Finset.sum_eq_single a]`. Introduce `b _ hb`. Rewrite using `[horth b a hb, mul_zero]`.
+
+Introduce `ha`. Conclude with `absurd (Finset.mem_univ a) ha`. Conclude with `h p _ m (fun i => X (x i)) (fun j => X (y j)) (fun a => B (f a) (f a)) D (fun i j => by`. Rewrite using `[← hxy i j, hexp _ (hx i)]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hfy]`. Use the proof step `ring)`.
+-/
 theorem goodLeSmall_of (h : GoodLeSmallMat) : GoodLeSmall := by
   intro p _ σ B L W D _ _ hsm hadd hsy m f hf _ hspan horth
   obtain ⟨x, y, hx, hy, hxy⟩ := goodCount_mem p B L D

@@ -29,6 +29,9 @@ def kfin (π : G n →* (U →L[ℂ] U)) : Submodule ℂ U where
 
 def expG (X : Mat n) (t : ℝ) : G n := (Matrix.isUnit_exp ((t : ℂ) • X)).unit
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_expG (X : Mat n) (t : ℝ) : ((expG X t : G n) : Mat n) = NormedSpace.exp ((t : ℂ) • X) := rfl
 
 structure IsLieD (π : G n →* (U →L[ℂ] U)) (D : Mat n → Module.End ℂ (kfin π)) : Prop where
@@ -55,6 +58,11 @@ def sigK (π : G n →* (U →L[ℂ] U)) : Matrix.unitaryGroup (Fin n) ℂ →* 
     ext v
     simp [uG]
 
+/- English proof (translation)
+Take `⟨S, hS, hvS, hk⟩` from `hv`. Use `⟨S.map (A : U →ₗ[ℂ] U), inferInstance, Submodule.mem_map_of_mem hvS, ?_⟩` and prove the remaining obligations. Introduce and unpack `k _ ⟨w, hw, rfl⟩`. Establish `h` using `congrArg (fun B : U →L[ℂ] U => B w) (hA k)`. Simplify using `only [ContinuousLinearMap.comp_apply] at h`.
+
+Conclude with `⟨π (uG k) w, hk k w hw, h⟩`.
+-/
 theorem map_mem_kfin (π : G n →* (U →L[ℂ] U)) (A : U →L[ℂ] U) (hA : ∀ k, A ∘L π (uG k) = π (uG k) ∘L A) {v : U}
     (hv : v ∈ kfin π) : A v ∈ kfin π := by
   obtain ⟨S, hS, hvS, hk⟩ := hv

@@ -12,6 +12,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace UpperTheory.V.Z.Win
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)}
+/- English proof (translation)
+The claim follows from `recTUnique E Ω A w h rc rc' H H' x g`.
+-/
 theorem uniqRec'_alt (_N : _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis) {h : IsPlaceOver A w} {rc rc' : IrrGL (w.adicCompletion E) → WD h}
     (H : IsRecT h rc) (H' : IsRecT h rc') (x : IrrGL (w.adicCompletion E)) (g : Good x) : rc x = rc' x :=
   recTUnique E Ω A w h rc rc' H H' x g

@@ -24,12 +24,18 @@ def ι : R →+* Til O O' R := (C O O' R).comp (Algebra.TensorProduct.includeRig
 
 instance algR : Algebra R (Til O O' R) := (ι O O' R).toAlgebra
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem algebraMap_eq : algebraMap R (Til O O' R) = ι O O' R := rfl
 
 def s : Til O O' R := PowerSeries.X
 
 def coeff (k : ℕ) (a : Til O O' R) : O' ⊗[O] R := PowerSeries.coeff k (show PowerSeries (O' ⊗[O] R) from a)
 
+/- English proof (translation)
+Establish `h : algebraMap O' (Til O O' R) (algebraMap O O' a) = C O O' R (algebraMap O' (O' ⊗[O] R) (algebraMap O O' a))` using `PowerSeries.algebraMap_apply`. Rewrite using `[h, ← IsScalarTower.algebraMap_apply]`. Conclude with `congrArg (C O O' R) ((Algebra.TensorProduct.includeRight : R →ₐ[O] O' ⊗[O] R).commutes a)`.
+-/
 theorem ι_algebraMap (a : O) : ι O O' R (algebraMap O R a) = algebraMap O' (Til O O' R) (algebraMap O O' a) := by
   have h : algebraMap O' (Til O O' R) (algebraMap O O' a) = C O O' R (algebraMap O' (O' ⊗[O] R) (algebraMap O O' a)) :=
     PowerSeries.algebraMap_apply
@@ -41,11 +47,17 @@ variable {O R} {R' : Type} [CommRing R'] [Algebra O R']
 def map (f : R →ₐ[O] R') : Til O O' R →ₐ[O'] Til O O' R' :=
   PowerSeries.mapAlgHom (Algebra.TensorProduct.map (AlgHom.id O' O') f)
 
+/- English proof (translation)
+Use `show PowerSeries.map _ (PowerSeries.C _) = PowerSeries.C _`. Rewrite using `[PowerSeries.map_C]`. Both sides reduce to the same expression.
+-/
 theorem map_ι (f : R →ₐ[O] R') (a : R) : map O' f (ι O O' R a) = ι O O' R' (f a) := by
   show PowerSeries.map _ (PowerSeries.C _) = PowerSeries.C _
   rw [PowerSeries.map_C]
   rfl
 
+/- English proof (translation)
+The claim follows from `PowerSeries.map_X _`.
+-/
 theorem map_s (f : R →ₐ[O] R') : map O' f (s O O' R) = s O O' R' := PowerSeries.map_X _
 
 def act {M : Type} [AddCommGroup M] [Module R M] [Module O M] [IsScalarTower O R M] (m : M) :

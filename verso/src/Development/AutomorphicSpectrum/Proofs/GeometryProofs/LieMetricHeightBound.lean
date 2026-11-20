@@ -22,6 +22,17 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.QuotUnif
 open _root_.Metric
 
+/- English proof (translation)
+Set `A : Finset (Fin n)` to `Finset.univ.filter (fun i => (i : ℕ) < a ∧ t₀ i = 0)`. Establish `hA : ∀ i, i ∈ A ↔ (i : ℕ) < a ∧ t₀ i = 0` using `fun i => by simp [A]`. Take `⟨π, hπ⟩` from `ChartGeo.exists_perm_prefix A`. Establish `e2 : ∀ᶠ t : Fin n → ℂ in 𝓝 t₀, ∀ i : Fin n, t₀ i ≠ 0 → t i ≠ 0`. Use `Filter.eventually_all.2 fun i => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hi : t₀ i = 0`. Conclude with `Filter.Eventually.of_forall fun t h => absurd hi h`. Use `filter_upwards [(continuous_apply i).continuousAt.eventually_ne hi] with t ht _ using ht`. Establish `e3 : ∀ᶠ t in 𝓝 t₀, t ∈ ball (0 : Fin n → ℂ) 1` using `isOpen_ball.mem_nhds ht₀`. Take `⟨ε, hε, hball⟩` from `Metric.eventually_nhds_iff_ball.1 (e2.and e3)`.
+
+Establish `hle : A.card ≤ n` using `by simpa using A.card_le_univ`. Use `⟨A.card, π, min ε 1, hle, lt_min hε one_pos, min_le_right _ _, fun u hu => ?_⟩` and prove the remaining obligations. Establish `hρ : 0 < min ε 1` using `lt_min hε one_pos`. Take `⟨hne, hb⟩` from `hball _ (ChartGeo.recentre_mem_ball hρ (min_le_left _ _) π hu)`. Use `⟨hb, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨-, hu'⟩ j hj h0`. Establish `hρc : ((min ε 1 : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hρ.ne'`. Distinguish the cases in `hti : t₀ j = 0`. Establish `hm : j ∈ A` using `(hA j).2 ⟨hj, hti⟩`. Use `hu' (π j) ((hπ j).2 hm)` as an intermediate fact.
+
+Rewrite `h0` using `[ChartGeo.recentre_apply, hti, zero_add]`. Conclude with `(mul_ne_zero hρc this) h0`. Conclude with `hne j hti h0`.
+-/
 theorem exists_recentre {n : ℕ} (a : ℕ) {t₀ : Fin n → ℂ} (ht₀ : t₀ ∈ ball (0 : Fin n → ℂ) 1) :
     ∃ (a₀ : ℕ) (π : Equiv.Perm (Fin n)) (ρ₀ : ℝ), a₀ ≤ n ∧ 0 < ρ₀ ∧ ρ₀ ≤ 1 ∧ ∀ u ∈ ball (0 : Fin n → ℂ) 1,
       HodgeMetric.recentre t₀ ρ₀ π u ∈ ball (0 : Fin n → ℂ) 1 ∧
@@ -51,6 +62,17 @@ theorem exists_recentre {n : ℕ} (a : ℕ) {t₀ : Fin n → ℂ} (ht₀ : t₀
     exact (mul_ne_zero hρc this) h0
   · exact hne j hti h0
 
+/- English proof (translation)
+Establish `hp : 0 < ρ₀ * ρ₁` using `mul_pos h₀ h₁`. Establish `hpc : ((ρ₀ : ℂ) * (ρ₁ : ℂ)) ≠ 0`. Establish `: ((ρ₀ * ρ₁ : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hp.ne'`. Simplify using `using this`. Use `⟨fun j => ((ρ₀ : ℂ) * ρ₁)⁻¹ * (t (π.symm j) - t₀ (π.symm j)), ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mem_ball_zero_iff, pi_norm_lt_iff hr]`. Introduce `j`. Establish `h1 : ‖t (π.symm j) - t₀ (π.symm j)‖ < ρ₀ * ρ₁ * r`. Use `lt_of_le_of_lt (norm_le_pi_norm (t - t₀) (π.symm j)) (mem_ball_iff_norm.1 ht)` as an intermediate fact. Simplify using `using this`.
+
+Establish `h2 : ‖((ρ₀ : ℂ) * ρ₁)⁻¹‖ = (ρ₀ * ρ₁)⁻¹`. Rewrite using `[norm_inv, norm_mul, Complex.norm_real, Complex.norm_real, Real.norm_of_nonneg h₀.le, Real.norm_of_nonneg h₁.le]`. Rewrite using `[norm_mul, h2, inv_mul_lt_iff₀ hp]`. Conclude with `h1`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[ChartGeo.recentre_apply]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Equiv.symm_apply_apply]`. Establish `c0 : (ρ₀ : ℂ) ≠ 0` using `by exact_mod_cast h₀.ne'`. Establish `c1 : (ρ₁ : ℂ) ≠ 0` using `by exact_mod_cast h₁.ne'`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_preimage {n : ℕ} {t₀ t : Fin n → ℂ} (π : Equiv.Perm (Fin n)) {ρ₀ ρ₁ r : ℝ} (h₀ : 0 < ρ₀) (h₁ : 0 < ρ₁)
     (hr : 0 < r) (ht : t ∈ ball t₀ (ρ₀ * ρ₁ * r)) :
     ∃ u ∈ ball (0 : Fin n → ℂ) r, HodgeMetric.recentre t₀ ρ₀ π ((ρ₁ : ℂ) • u) = t := by
@@ -77,6 +99,9 @@ theorem exists_preimage {n : ℕ} {t₀ t : Fin n → ℂ} (π : Equiv.Perm (Fin
     field_simp
     ring
 
+/- English proof (translation)
+Rewrite `hu`, the goal using `[mem_ball_zero_iff]`. Rewrite using `[norm_smul, Complex.norm_real, Real.norm_of_nonneg h0.le]`. Use polynomial arithmetic with `[norm_nonneg u]`.
+-/
 theorem smul_mem_ball {n : ℕ} {ρ : ℝ} (h0 : 0 < ρ) (h1 : ρ ≤ 1) {u : Fin n → ℂ}
     (hu : u ∈ ball (0 : Fin n → ℂ) 1) : (ρ : ℂ) • u ∈ ball (0 : Fin n → ℂ) 1 := by
   rw [mem_ball_zero_iff] at hu ⊢
@@ -87,6 +112,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {c : Coeff l} {Y : Model Xo c (algebraMap (𝓞 c.F) c.F)} {S : Finset ℕ} {Ω : Type} [Field Ω] {K : Type} [Fintype K]
   {J : K → Type} [∀ k, Fintype (J k)] {y : (Σ k, J k) → Ω}
 
+/- English proof (translation)
+Establish `key : ∀ (z' : Sp ℂ ⟶ S) (_ : 𝟙 (Sp ℂ) ≫ z = z') (Mz' : LieModel t.G z' V), ∃ x : V, v.left ≫ mK.φ = (Mz'.pt x).left`. Introduce and unpack `z' rfl Mz'`. Take `⟨Mk, hMk⟩` from `(LiePull.lieModel_pullback S (Sp ℂ) t.G tK.G z mK.φ mK.cart ℂ (𝟙 _) V).1 Mz'`. Take `⟨x, rfl⟩` from `Mk.onto v hv`. Conclude with `⟨x, hMk x⟩`.
+
+Conclude with `key z (Category.id_comp z) Mz`.
+-/
 theorem exists_tan {S : Scheme.{0}} (t : SAB H S) (z : Sp ℂ ⟶ S) {tK : SAB H (Sp ℂ)} (mK : SABMap tK t z) {V : Type}
     [AddCommGroup V] [Module ℂ V] (Mz : LieModel t.G z V) (v : epsAt (𝟙 (Sp ℂ)) ⟶ tK.G) (hv : IsTanAt _ _ v) :
     ∃ x : V, v.left ≫ mK.φ = (Mz.pt x).left := by
@@ -98,6 +128,41 @@ theorem exists_tan {S : Scheme.{0}} (t : SAB H S) (z : Sp ℂ ⟶ S) {tK : SAB H
     exact ⟨x, hMk x⟩
   exact key z (Category.id_comp z) Mz
 
+/- English proof (translation)
+Take `⟨a₀, π, ρ₀, ha₀, hρ₀, hρ₀', hrc⟩` from `exists_recentre a ht₀`. Use `set w' : (Fin n → ℂ) → (Σ k, J k) → ℂ := fun u => w (HodgeMetric.recentre t₀ ρ₀ π u) with hw'`. Establish `hrd : Differentiable ℂ (HodgeMetric.recentre t₀ ρ₀ π)`. Unfold `HodgeMetric.recentre`. Conclude with `(differentiable_const _).add (differentiable_pi.2 fun i => by`.
+
+Simplify using `using (differentiable_apply (π i) : Differentiable ℂ fun u : Fin n → ℂ => u (π i)).const_mul (ρ₀ : ℂ))`. Establish `hw'd : DifferentiableOn ℂ w' (ball 0 1)` using `hw.differentiableOn.comp hrd.differentiableOn fun u hu => (hrc u hu).1`. Establish `hall` using `𝔐.all`. Establish `htie` using `𝔐.tie`. Take `⟨z₀, hz₀g, hz₀⟩` from `(GlobalTheory.T.complex_points_iff_centres 𝔐.X Ω 𝔐.ξ K J y htie (w t₀)).1 (hm _ ht₀)`.
+
+Use `haveI : Smooth 𝔐.t.G.hom := 𝔐.t.semi.smooth`. Take `⟨N, s, hs, hfr⟩` from `GlobalTheory.T.lie_model_finite_generating_values 𝔐.X Ω 𝔐.ξ 𝔐.t.G 𝔐.Li 𝔐.M z₀ htie.gen hz₀g`. Establish `hw0 : w' 0 = w t₀` using `by simp only [hw', HodgeMetric.recentre_zero]`. Take `⟨ρ₁, τ, C, jj, m, sc, hρ₁, hρ₁', hC⟩` from `GlobalTheory.T.hodge_component_holomorphic_cover E H D l Xo c Y S Ω K J y 𝔐 n a₀ w' N s z₀ ha₀ hw'd (fun u hu => hm _ (hrc u hu).1) (fun u hu z hz => hi _ (hrc u hu.1).1 ((hrc u hu.1).2 hu) z hz) (by rw [hw0]; exact hz₀) hs`. Establish `huniq : ∀ (z z' : Sp ℂ ⟶ 𝔐.X) (w₁ : (Σ k, J k) → ℂ), CoordsAt 𝔐.ξ y z w₁ → CoordsAt 𝔐.ξ y z' w₁ → z = z'` using `fun z z' w₁ h₁ h₂ => by`.
+
+Take `⟨e1, -, e3⟩` from `GlobalTheory.T.local_ring_points_existsUnique 𝔐.X Ω 𝔐.ξ K J y htie ℂ`. Conclude with `(e1 w₁ h₁.1 (e3 z w₁ (hall _) h₁).1).unique ⟨hall _, h₁⟩ ⟨hall _, h₂⟩`. Establish `hsm : ∀ {r : ℝ}, r ≤ 1 → ∀ u ∈ ball (0 : Fin n → ℂ) r, u ∈ ball (0 : Fin n → ℂ) 1` using `fun hr u hu => ball_subset_ball hr hu`. Establish `hpt : ∀ {r : ℝ}, 0 < r → r ≤ 1 → ∀ t ∈ ball t₀ (ρ₀ * ρ₁ * r), ∀ z : Sp ℂ ⟶ 𝔐.X, CoordsAt 𝔐.ξ y z (w t) → ∃ u ∈ ball (0 : Fin n → ℂ) r, z = spMap (C.ψ u) ≫ jj` using `fun {r} hr hr1 t ht z hz => by`. Take `⟨u, hu, e⟩` from `exists_preimage π hρ₀ hρ₁ hr ht`.
+
+Use `⟨u, hu, huniq _ _ (w t) hz ?_⟩` and prove the remaining obligations. Use `(hC u (hsm hr1 u hu)).1` as an intermediate fact. Simplify using `only [hw', e] at this`. Conclude with `this`. Distinguish the cases in `hgood : (τ.comp (IntermediateField.inclusion c.le).toRingHom) (baseKA l).ρ = H.rt0`.
+
+Take `⟨ρ₂, K₂, hρ₂, hρ₂', hQ⟩` from `GlobalTheory.T.principal_near_boundary E H D l Xo _ n a₀ C hpq hgood`. Establish `hz0 : spMap (C.ψ 0) ≫ jj = z₀` using `huniq _ _ (w t₀) (by`. Use `(hC 0 (by simp)).1` as an intermediate fact. Rewrite `this` using `[smul_zero, hw0]`. Conclude with `this) hz₀`.
+
+Substitute `hz0` using the available equality. Establish `hcont : ContinuousOn (fun u : Fin n → ℂ => w' ((ρ₁ : ℂ) • u)) (ball 0 1)`. Use `hw'd.continuousOn.comp (continuous_const_smul _).continuousOn fun u hu => ?_` and prove the remaining obligations. Conclude with `smul_mem_ball hρ₁ hρ₁' hu`. Take `⟨ρ₃, K₃, hρ₃, hK₃, hL⟩` from `GlobalTheory.T.boundary_chart_lie_metric_bound E H D l Xo _ n a₀ C 𝔐.X 𝔐.t jj m Ω 𝔐.ξ K J y 𝔐.Li 𝔐.M h N s sc _ hcont (fun u _ => GlobalTheory.T.boundary_chart_lie_model_exists E H D l Xo _ n a₀ C u) (fun u hu => (hC u hu).1) (fun u hu i => (hC u hu).2.2 i) hfr`.
+
+Establish `hr : 0 < min 1 (min ρ₂ ρ₃)` using `lt_min one_pos (lt_min hρ₂ hρ₃)`. Use `⟨ρ₀ * ρ₁ * min 1 (min ρ₂ ρ₃), max 1 (|K₂| * K₃), mul_pos (mul_pos hρ₀ hρ₁) hr, le_max_left _ _, fun K' hK' t ht z hz _ => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, rfl⟩` from `hpt hr (min_le_left _ _) t ht z hz`. Establish `hu₂ : u ∈ ball (0 : Fin n → ℂ) ρ₂` using `ball_subset_ball ((min_le_right _ _).trans (min_le_left _ _)) hu`. Establish `hu₃ : u ∈ ball (0 : Fin n → ℂ) ρ₃` using `ball_subset_ball ((min_le_right _ _).trans (min_le_right _ _)) hu`.
+
+Introduce `P`. Take `⟨mK, hmK⟩` from `GlobalTheory.ObjMaps.exists_sab_cancel m P.m`. Set `P' : AbPart C.t (spMap (C.ψ u))` to `⟨P.tK, mK, P.τ, P.tB, P.e, P.e_hom, P.act, P.pp⟩`. Take `⟨Mz, hMz⟩` from `GlobalTheory.T.boundary_chart_lie_model_exists E H D l Xo _ n a₀ C u`. Establish `hsingle : ∀ i, C.M.Lifts (C.ψ u) (𝟙 _) (Pi.single i 1) (Mz.pt (Pi.single i 1))` using `fun i => by`.
+
+Use `hMz (Pi.single i 1)` as an intermediate fact. Establish `e : (fun j => C.ψ u ((Pi.single i 1 : Fin C.g → C.R) j)) = Pi.single i 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne hj]`. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Take `⟨hpr, hb⟩` from `hQ u hu₂ P'`. Use `⟨hpr, fun v v₀ c' hv hvv hH => ?_⟩` and prove the remaining obligations.
+
+Take `⟨x, hx⟩` from `exists_tan C.t (spMap (C.ψ u)) mK Mz v hv`. Establish `h1 : c'.re ≤ K₂ * ∑ i, ‖x i‖ ^ 2` using `hb Mz hsingle x v c' hx hH`. Establish `h2 : ∑ i, ‖x i‖ ^ 2 ≤ K₃ * (h.ip _ v₀ v₀).re` using `hL u hu₃ Mz hMz x v₀ (by`. Rewrite using `[← hx, Category.assoc, ← hmK, hvv])`. Establish `h3 : 0 ≤ ∑ i, ‖x i‖ ^ 2` using `Finset.sum_nonneg fun i _ => by positivity`.
+
+Establish `h4 : 0 ≤ (h.ip _ v₀ v₀).re`. Assume the negation of the conclusion as `hn`. Use `push_neg at hn`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation.
+
+Use `⟨ρ₀ * ρ₁ * 1, 1, mul_pos (mul_pos hρ₀ hρ₁) one_pos, le_rfl, fun K' _ t ht z hz hG => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, rfl⟩` from `hpt one_pos le_rfl t ht z hz`. Take `⟨τ', e1, e2⟩` from `hG`. It suffices to derive a contradiction. Apply `hgood` to reduce the goal to its premises.
+
+Use `haveI : FiniteDimensional ℚ c.F := c.fin`. Use `haveI : NumberField c.F := ⟨⟩`. Establish `e3` using `(hC u hu).2.1`. Rewrite `e1` using `[Category.assoc]`. Rewrite `e3` using `[e1]`.
+
+Establish `e4 : τ'.comp (algebraMap (𝓞 c.F) c.F) = τ.comp (algebraMap (𝓞 c.F) c.F)`. Use `Spec.map_injective e3` as an intermediate fact. Conclude with `congrArg CommRingCat.Hom.hom this`. Establish `e5 : τ' = τ` using `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 c.F)) e4`. Rewrite using `[← e5]`.
+
+Conclude with `e2`.
+-/
 theorem local_bound (𝔐 : HodgeCpt Y S y) (h : LieMetric 𝔐.M y) (hpq : 1 ≤ D.p + D.q) {n a : ℕ}
     (w : (Fin n → ℂ) → (Σ k, J k) → ℂ) (hw : AnalyticOnNhd ℂ w (ball 0 1))
     (hm : ∀ t ∈ ball (0 : Fin n → ℂ) 1, w t ∈ mcPts (mCoordIdeal y))
@@ -206,6 +271,23 @@ end GlobalTheory.CompanionTheory.Ar.QuotUnif
 
 open GlobalTheory.CompanionTheory.Ar.QuotUnif in
 
+/- English proof (translation)
+Introduce `hR E _ _ _ H D l Xo c Y S Ω _ K _ J _ y 𝔐 h hpq`. Take `⟨n, nc, w, a, -, hw, hm, hi, hcov⟩` from `GlobalTheory.T.hodge_component_finite_charts hR E H D l Xo c Y S Ω K J y 𝔐`. Establish `hcpt : ∀ i, ∃ Kc : ℝ, 1 ≤ Kc ∧ ∀ K', Kc ≤ K' → ∀ t ∈ Metric.closedBall (0 : Fin n → ℂ) (1 / 2), ∀ z : Sp ℂ ⟶ 𝔐.X, CoordsAt 𝔐.ξ y z (w i t) → GoodPt 𝔐 z → AbBound 𝔐.t h K' z`. Introduce `i`. Use `(isCompact_closedBall (0 : Fin n → ℂ) (1 / 2)).induction_on (p := fun A => ∃ Kc : ℝ, 1 ≤ Kc ∧ ∀ K', Kc ≤ K' → ∀ t ∈ A, ∀ z : Sp ℂ ⟶ 𝔐.X, CoordsAt 𝔐.ξ y z (w i t) → GoodPt 𝔐 z → AbBound 𝔐.t h K' z) ?_ ?_ ?_ ?_` and prove the remaining obligations.
+
+Conclude with `⟨1, le_rfl, fun _ _ t ht => absurd ht (Set.notMem_empty t)⟩`. Introduce and unpack `A B hAB ⟨Kc, h1, h2⟩`. Conclude with `⟨Kc, h1, fun K' hK t ht => h2 K' hK t (hAB ht)⟩`. Introduce and unpack `A B ⟨K₁, h1, h2⟩ ⟨K₂, h3, h4⟩`. Use `⟨max K₁ K₂, h1.trans (le_max_left _ _), fun K' hK t ht => ?_⟩` and prove the remaining obligations.
+
+Break down `ht with ht | ht` into its components or cases. Conclude with `h2 K' ((le_max_left _ _).trans hK) t ht`. Conclude with `h4 K' ((le_max_right _ _).trans hK) t ht`. Introduce `t₀ ht₀`. Establish `ht₀' : t₀ ∈ Metric.ball (0 : Fin n → ℂ) 1` using `Metric.closedBall_subset_ball (by norm_num) ht₀`.
+
+Take `⟨ε, Kc, hε, h1, h2⟩` from `local_bound 𝔐 h hpq (a := a i) (w i) (hw i) (hm i) (hi i) ht₀'`. Conclude with `⟨Metric.ball t₀ ε, mem_nhdsWithin_of_mem_nhds (Metric.ball_mem_nhds _ hε), Kc, h1, h2⟩`. Use `choose Kf hKf1 hKf using hcpt`. Establish `hle : ∀ i, Kf i ≤ 1 + ∑ j, Kf j` using `fun i => by`. Establish `: Kf i ≤ ∑ j, Kf j` using `Finset.single_le_sum (f := Kf) (fun j _ => by have := hKf1 j; linarith) (Finset.mem_univ i)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hB : ∀ z : Sp ℂ ⟶ 𝔐.X, GoodPt 𝔐 z → AbBound 𝔐.t h (1 + ∑ j, Kf j) z`. Introduce `z hz`. Take `⟨-, e2, e3⟩` from `GlobalTheory.T.local_ring_points_existsUnique 𝔐.X Ω 𝔐.ξ K J y 𝔐.tie ℂ`. Take `⟨x, hx⟩` from `e2 z (𝔐.all _)`.
+
+Establish `hxm` using `(GlobalTheory.T.complex_points_iff_centres 𝔐.X Ω 𝔐.ξ K J y 𝔐.tie x).2 ⟨z, 𝔐.all _, hx⟩`. Take `⟨i, t, b, ht, hb, rfl⟩` from `hcov x hxm`. Establish `hc : CoordsAt 𝔐.ξ y z (w i t)`. Use `((e3 z _ (𝔐.all _) hx).2 _).2 ⟨fun k => (Units.mk0 (b k) (hb k))⁻¹, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`.
+
+Simplify using `[GroundTheory.Heights₂.Heights.LowerBoundFree.torusSmul, hb p.1]`. Conclude with `hKf i _ (hle i) t (by simpa using ht) z hc hz`. Establish `h1 : (1 : ℝ) ≤ 1 + ∑ j, Kf j`. Establish `: 0 ≤ ∑ j, Kf j` using `Finset.sum_nonneg fun j _ => by have := hKf1 j; linarith`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `⟨1 + ∑ j, Kf j, h1, fun z => ?_⟩` and prove the remaining obligations. Break down `GlobalTheory.T.good_point_or_conjugate E H D l Xo c Y S Ω K J y 𝔐 z with hg | hg` into its components or cases. Conclude with `hB z hg`. Conclude with `GlobalTheory.T.abelian_bound_conjugate E H 𝔐.X 𝔐.t Ω 𝔐.ξ 𝔐.Li 𝔐.M K J y h _ z (hB _ hg)`.
+-/
 theorem GlobalTheory.CompanionTheory.Ar.QuotUnif.main : Geo.ResK.ResKStatement → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (h : LieMetric 𝔐.M y), 1 ≤ D.p + D.q → ∃ K : ℝ, 1 ≤ K ∧ ∀ (z : Sp ℂ ⟶ 𝔐.X) (P : AbPart 𝔐.t z), IsPrincipal P.tB ∧ ∀ (v : epsAt (𝟙 (Sp ℂ)) ⟶ P.tK.G) (v₀ : epsAt z ⟶ 𝔐.t.G) (c : ℂ), IsTanAt _ _ v → v.left ≫ P.m.φ = v₀.left → HodgeIP P.tB.G P.tB.PP.L (𝟙 _) (v ≫ P.τ.q ≫ P.e.hom) (v ≫ P.τ.q ≫ P.e.hom) c → c.re ≤ K * (h.ip z v₀ v₀).re := by
   intro hR E _ _ _ H D l Xo c Y S Ω _ K _ J _ y 𝔐 h hpq
   obtain ⟨n, nc, w, a, -, hw, hm, hi, hcov⟩ := GlobalTheory.T.hodge_component_finite_charts hR E H D l Xo c Y S Ω K J y 𝔐

@@ -6,6 +6,13 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.LevelOf
 
 open IsLocalRing UpperTheory.V.Alg UpperTheory.V.CA ReciprocityTheory.CA
 
+/- English proof (translation)
+Apply `DFunLike.coe_injective` to reduce the goal to its premises. Apply `IsHausdorff.funext' J` to reduce the goal to its premises. Introduce `n r`. Take `⟨c, hc⟩` from `h.dense n r`. Establish `h1 : F (r - algebraMap C R c) ∈ J ^ n` using `Ideal.le_comap_pow F n (Ideal.pow_right_mono hF n hc)`.
+
+Establish `h2 : G (r - algebraMap C R c) ∈ J ^ n` using `Ideal.le_comap_pow G n (Ideal.pow_right_mono hG n hc)`. Establish `h3 : F (algebraMap C R c) = G (algebraMap C R c)` using `RingHom.congr_fun e c`. Rewrite using `[Ideal.Quotient.eq]`. Use `sub_mem h1 h2` as an intermediate fact. Rewrite `this` using `[map_sub, map_sub, h3]`.
+
+Simplify using `using this`.
+-/
 private theorem cu_uniq {C R : Type} [CommRing C] [CommRing R] [Algebra C R] [IsLocalRing R] {x : Ideal C}
     (h : IsCplAt x R) {T : Type} [CommRing T] (J : Ideal T) [IsAdicComplete J T] (F G : R →+* T)
     (e : F.comp (algebraMap C R) = G.comp (algebraMap C R))
@@ -24,18 +31,33 @@ private theorem cu_uniq {C R : Type} [CommRing C] [CommRing R] [Algebra C R] [Is
   rw [map_sub, map_sub, h3] at this
   simpa using this
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.LevelOfCongruence.cu_ex h J f hf`.
+-/
 private theorem cu_ex {C R : Type} [CommRing C] [CommRing R] [Algebra C R] [IsLocalRing R] {x : Ideal C}
     (h : IsCplAt x R) {T : Type} [CommRing T] (J : Ideal T) [IsAdicComplete J T] (f : C →+* T)
     (hf : x ≤ J.comap f) :
     ∃ F : R →+* T, F.comp (algebraMap C R) = f ∧ maximalIdeal R ≤ J.comap F :=
   _root_.UpperTheory.Reformulated.B.LevelOfCongruence.cu_ex h J f hf
 
+/- English proof (translation)
+Use `h.comap_pow 1` as an intermediate fact. Rewrite `this` using `[pow_one, pow_one]`. Conclude with `this.ge`.
+-/
 private theorem cu_le {C R : Type} [CommRing C] [CommRing R] [Algebra C R] [IsLocalRing R] {x : Ideal C}
     (h : IsCplAt x R) : x ≤ (maximalIdeal R).comap (algebraMap C R) := by
   have := h.comap_pow 1
   rw [pow_one, pow_one] at this
   exact this.ge
 
+/- English proof (translation)
+Use `haveI := h.noeth`. Use `le_antisymm (Ideal.map_le_iff_le_comap.2 (cu_le h)) ?_` and prove the remaining obligations. Use `Submodule.le_of_le_smul_of_le_jacobson_bot (I := maximalIdeal R) (IsNoetherian.noetherian _) (maximalIdeal_le_jacobson _) fun r hr => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `h.dense 2 r`. Establish `h1 : algebraMap C R c ∈ maximalIdeal R`.
+
+Use `sub_mem hr (Ideal.pow_le_self two_ne_zero hc)` as an intermediate fact. Simplify using `using this`. Establish `h2 : c ∈ x`. Use `h.comap_pow 1` as an intermediate fact. Rewrite `this` using `[pow_one, pow_one]`.
+
+Rewrite using `[← this]`. Conclude with `h1`. Establish `h3 : r = algebraMap C R c + (r - algebraMap C R c)` using `by ring`. Rewrite using `[h3]`. Use `Submodule.add_mem_sup (Ideal.mem_map_of_mem _ h2) ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_eq_mul, ← pow_two]`. Conclude with `hc`.
+-/
 private theorem cu_map {C R : Type} [CommRing C] [CommRing R] [Algebra C R] [IsLocalRing R] {x : Ideal C}
     (h : IsCplAt x R) : x.map (algebraMap C R) = maximalIdeal R := by
   haveI := h.noeth
@@ -56,6 +78,11 @@ private theorem cu_map {C R : Type} [CommRing C] [CommRing R] [Algebra C R] [IsL
   rw [smul_eq_mul, ← pow_two]
   exact hc
 
+/- English proof (translation)
+Use `haveI := h.complete`. Use `haveI := h'.complete`. Take `⟨F, hF1, hF2⟩` from `cu_ex h (maximalIdeal S) (algebraMap C S) (cu_le h')`. Take `⟨G, hG1, hG2⟩` from `cu_ex h' (maximalIdeal R) (algebraMap C R) (cu_le h)`. Establish `e1 : G.comp F = RingHom.id R` using `cu_uniq h (maximalIdeal R) _ _ (by rw [RingHom.comp_assoc, hF1, hG1, RingHom.id_comp]) (fun r hr => hG2 (hF2 hr)) (fun r hr => hr)`.
+
+Establish `e2 : F.comp G = RingHom.id S` using `cu_uniq h' (maximalIdeal S) _ _ (by rw [RingHom.comp_assoc, hG1, hF1, RingHom.id_comp]) (fun r hr => hF2 (hG2 hr)) (fun r hr => hr)`. Conclude with `⟨AlgEquiv.ofRingEquiv (f := RingEquiv.ofRingHom F G e2 e1) fun c => RingHom.congr_fun hF1 c⟩`.
+-/
 private theorem cu_equiv {C R S : Type} [CommRing C] [CommRing R] [Algebra C R] [IsLocalRing R]
     [CommRing S] [Algebra C S] [IsLocalRing S] {x : Ideal C}
     (h : IsCplAt x R) (h' : IsCplAt x S) : Nonempty (R ≃ₐ[C] S) := by
@@ -71,6 +98,11 @@ private theorem cu_equiv {C R S : Type} [CommRing C] [CommRing R] [Algebra C R] 
       (fun r hr => hF2 (hG2 hr)) (fun r hr => hr)
   exact ⟨AlgEquiv.ofRingEquiv (f := RingEquiv.ofRingHom F G e2 e1) fun c => RingHom.congr_fun hF1 c⟩
 
+/- English proof (translation)
+Introduce `C R _ _ _ _ _ x _ h`. Use `⟨fun T _ J _ f hf => ?_, ?_, cu_map h⟩` and prove the remaining obligations. Take `⟨F, hF⟩` from `cu_ex h J f hf`. Conclude with `⟨F, hF, fun G hG => cu_uniq h J G F (hG.1.trans hF.1.symm) hG.2 hF.2⟩`. Take `⟨_, h'⟩` from `cpl_is C x`.
+
+Conclude with `cu_equiv h h'`.
+-/
 theorem UpperTheory.V.CA.cpl_uniq :
     ∀ {C R : Type} [CommRing C] [IsNoetherianRing C] [CommRing R] [Algebra C R] [IsLocalRing R] (x : Ideal C) [x.IsMaximal], IsCplAt x R → (∀ (T : Type) [CommRing T] (J : Ideal T) [IsAdicComplete J T] (f : C →+* T), x ≤ J.comap f → ∃! F : R →+* T, F.comp (algebraMap C R) = f ∧ maximalIdeal R ≤ J.comap F) ∧ Nonempty (R ≃ₐ[C] Cpl x) ∧ x.map (algebraMap C R) = maximalIdeal R := by
   intro C R _ _ _ _ _ x _ h

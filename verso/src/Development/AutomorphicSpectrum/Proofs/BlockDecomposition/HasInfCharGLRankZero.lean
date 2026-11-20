@@ -17,6 +17,11 @@ inductive ListInf (τ : E →+* ℂ) : List (Σ M : ℕ, Submodule ℂ (Sm E M))
   | cons {x : Σ M : ℕ, Submodule ℂ (Sm E M)} {l : List (Σ M : ℕ, Submodule ℂ (Sm E M))} {m₀ m' : Multiset ℂ} :
       HasInfCharGL x.2 τ m₀ → ListInf τ l m' → ListInf τ (x :: l) (m₀ + m')
 
+/- English proof (translation)
+Proceed by induction on `l₁ generalizing m with`. Consider the case `nil => exact ⟨0, m, .nil, h, by simp⟩`. Consider the case `cons x l ih`. Establish `h' : ListInf τ (x :: (l ++ l₂)) m` using `h`. Consider the cases of `h' with`.
+
+Consider the case `cons h₀ h'`. Take `⟨m₁, m₂, h₁, h₂, rfl⟩` from `ih _ h'`. Conclude with `⟨_, m₂, .cons h₀ h₁, h₂, by rw [add_assoc]⟩`.
+-/
 theorem ListInf.split (τ : E →+* ℂ) (l₁ l₂ : List (Σ M : ℕ, Submodule ℂ (Sm E M))) (m : Multiset ℂ)
     (h : ListInf τ (l₁ ++ l₂) m) : ∃ m₁ m₂, ListInf τ l₁ m₁ ∧ ListInf τ l₂ m₂ ∧ m = m₁ + m₂ := by
   induction l₁ generalizing m with
@@ -28,6 +33,9 @@ theorem ListInf.split (τ : E →+* ℂ) (l₁ l₂ : List (Σ M : ℕ, Submodul
       obtain ⟨m₁, m₂, h₁, h₂, rfl⟩ := ih _ h'
       exact ⟨_, m₂, .cons h₀ h₁, h₂, by rw [add_assoc]⟩
 
+/- English proof (translation)
+Proceed by induction on `c with`. Consider the case `zero => simpa using ListInf.nil`. Consider the case `succ c ih`. Rewrite using `[List.ofFn_succ, Fin.sum_univ_succ]`. Conclude with `.cons (h 0) (ih (fun i => N i.succ) (fun i => V i.succ) (fun i => m i.succ) (fun i => h i.succ))`.
+-/
 theorem listInf_ofFn (τ : E →+* ℂ) {c : ℕ} (N : Fin c → ℕ) (V : ∀ i, Submodule ℂ (Sm E (N i)))
     (m : Fin c → Multiset ℂ) (h : ∀ i, HasInfCharGL (V i) τ (m i)) :
     ListInf τ (List.ofFn fun i => (⟨N i, V i⟩ : Σ M : ℕ, Submodule ℂ (Sm E M))) (∑ i, m i) := by
@@ -37,10 +45,24 @@ theorem listInf_ofFn (τ : E →+* ℂ) {c : ℕ} (N : Fin c → ℕ) (V : ∀ i
     rw [List.ofFn_succ, Fin.sum_univ_succ]
     exact .cons (h 0) (ih (fun i => N i.succ) (fun i => V i.succ) (fun i => m i.succ) (fun i => h i.succ))
 
+/- English proof (translation)
+Use `⟨rfl, fun u φ _ => ?_⟩` and prove the remaining obligations. Simplify using `[cap, Formalism.REAL.qdet, Formalism.REAL.qminor, Formalism.REAL.Tm]`.
+-/
 theorem hasInfCharGL_rank_zero (V : Submodule ℂ (Sm E 0)) (τ : E →+* ℂ) : HasInfCharGL V τ 0 := by
   refine ⟨rfl, fun u φ _ => ?_⟩
   simp [cap, Formalism.REAL.qdet, Formalism.REAL.qminor, Formalism.REAL.Tm]
 
+/- English proof (translation)
+Proceed by induction on `t generalizing m with`. Consider the case `@leaf M V z`. Break down `hg with ⟨rfl, rfl, rfl⟩ | ⟨hM, -, -⟩` into its components or cases. Establish `h' : ListInf τ [] m` using `by simpa [Tr.leafList] using h`. Consider the cases of `h'`.
+
+Conclude with `⟨0, hasInfCharGL_rank_zero _ τ, by simp⟩`. Establish `hz : z = 0` using `hu z (by simp [Tr.twists])`. Substitute `hz` using the available equality. Establish `h' : ListInf τ [(⟨M, V⟩ : Σ M : ℕ, Submodule ℂ (Sm E M))] m`. Simplify `h` using `[Tr.leafList, hM]`.
+
+Consider the cases of `h' with`. Consider the case `cons h₀ h₁`. Consider the cases of `h₁`. Conclude with `⟨_, h₀, by simp⟩`. Consider the case `node t₁ t₂ ih₁ ih₂`.
+
+Establish `hu₁ : t₁.Untw` using `fun z hz => hu z (by simp [Tr.twists, hz])`. Establish `hu₂ : t₂.Untw` using `fun z hz => hu z (by simp [Tr.twists, hz])`. Establish `h'` using `h`. Simplify using `only [Tr.leafList, List.filter_append] at h'`. Take `⟨m₁, m₂, h₁, h₂, rfl⟩` from `ListInf.split τ _ _ m h'`.
+
+Conclude with `⟨m₁, m₂, ih₁ hg.1 hu₁ m₁ h₁, ih₂ hg.2 hu₂ m₂ h₂, rfl⟩`.
+-/
 theorem infOf_of_listInf (τ : E →+* ℂ) {N : ℕ} (t : Tr E N) (hg : t.Good) (hu : t.Untw) (m : Multiset ℂ)
     (h : ListInf τ (t.leafList.filter fun x => 0 < x.1) m) : t.InfOf τ m := by
   induction t generalizing m with
@@ -65,6 +87,9 @@ theorem infOf_of_listInf (τ : E →+* ℂ) {N : ℕ} (t : Tr E N) (hg : t.Good)
     obtain ⟨m₁, m₂, h₁, h₂, rfl⟩ := ListInf.split τ _ _ m h'
     exact ⟨m₁, m₂, ih₁ hg.1 hu₁ m₁ h₁, ih₂ hg.2 hu₂ m₂ h₂, rfl⟩
 
+/- English proof (translation)
+Introduce `hT E _ _ _ N t P τ m hg hu hp h0 hm`. Establish `h1` using `listInf_ofFn τ P.N P.V (fun i => P.m i τ) (fun i => P.inf i τ)`. Establish `hp' : (List.ofFn fun i => (⟨P.N i, P.V i⟩ : Σ M : ℕ, Submodule ℂ (Sm E M))) = t.leafList.filter fun x => 0 < x.1` using `hp`. Rewrite `h1` using `[hp']`. Conclude with `GlobalTheory.BcSpehProof.hasInfCharGL_unique h0 (hT E N t τ _ (infOf_of_listInf τ t hg hu _ h1)) hm`.
+-/
 theorem treeInf : PositivityTheory.Rg.BcB.F.RS.TreeInf := by
   intro hT E _ _ _ N t P τ m hg hu hp h0 hm
   have h1 := listInf_ofFn τ P.N P.V (fun i => P.m i τ) (fun i => P.inf i τ)

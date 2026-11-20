@@ -9,9 +9,15 @@ namespace LateralTheory.E.LeafQCQSInductPf
 def Cov (X : Scheme.{0}) (L : List X.Opens) : Prop :=
   (∀ u ∈ L, IsAffineOpen u) ∧ ∀ x : X, ∃ u ∈ L, x ∈ u
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by rw [← terminal.comp_from g]; infer_instance⟩`.
+-/
 lemma sep_of {X Y : Scheme.{0}} (g : Y ⟶ X) [IsOpenImmersion g] [X.IsSeparated] : Y.IsSeparated :=
   ⟨by rw [← terminal.comp_from g]; infer_instance⟩
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `hf`. Use `⟨inferInstance, ?_, inferInstance⟩` and prove the remaining obligations. Establish `: CompactSpace W` using `isCompact_iff_compactSpace.mp hW`. Conclude with `quasiCompact_of_compactSpace _`.
+-/
 lemma fp_res {X S : Scheme.{0}} [IsAffine S] (f : X ⟶ S) (hf : FP f) (W : X.Opens)
     (hW : IsCompact (W : Set X)) : FP (W.ι ≫ f) := by
   obtain ⟨h1, h2, h3⟩ := hf
@@ -19,6 +25,11 @@ lemma fp_res {X S : Scheme.{0}} [IsAffine S] (f : X ⟶ S) (hf : FP f) (W : X.Op
   have : CompactSpace W := isCompact_iff_compactSpace.mp hW
   exact quasiCompact_of_compactSpace _
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `v hv`. Take `⟨u, hu, rfl⟩` from `List.mem_map.mp hv`. Conclude with `(hA u hu).preimage_of_isOpenImmersion W.ι (by simpa using hle u hu)`. Introduce `x`.
+
+Take `⟨u, hu, hx⟩` from `hc (W.ι x) (by`. Use `Set.mem_range_self (f := W.ι) x` as an intermediate fact. Rewrite using `[Scheme.Opens.range_ι] at this)` and apply the resulting hypothesis. Conclude with `⟨_, List.mem_map.mpr ⟨u, hu, rfl⟩, by simpa using hx⟩`.
+-/
 lemma cov_pull {X : Scheme.{0}} (W : X.Opens) (L : List X.Opens) (hA : ∀ u ∈ L, IsAffineOpen u)
     (hle : ∀ u ∈ L, u ≤ W) (hc : ∀ x ∈ W, ∃ u ∈ L, x ∈ u) :
     Cov W.toScheme (L.map (W.ι ⁻¹ᵁ ·)) := by
@@ -32,6 +43,13 @@ lemma cov_pull {X : Scheme.{0}} (W : X.Opens) (L : List X.Opens) (hA : ∀ u ∈
       rwa [Scheme.Opens.range_ι] at this)
     exact ⟨_, List.mem_map.mpr ⟨u, hu, rfl⟩, by simpa using hx⟩
 
+/- English proof (translation)
+Take `⟨s, hs, e⟩` from `isCompact_iff_finite_and_eq_biUnion_affineOpens.mp hW`. Use `⟨hs.toFinset.toList.map (fun a : X.affineOpens => a.1), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu`. Take `⟨a, -, rfl⟩` from `List.mem_map.mp hu`. Conclude with `a.prop`.
+
+Introduce `u hu`. Take `⟨a, ha, rfl⟩` from `List.mem_map.mp hu`. Rewrite using `[e]`. Conclude with `le_iSup₂ (f := fun (i : X.affineOpens) (_ : i ∈ s) => (i : X.Opens)) a (by simpa using ha)`. Introduce `x hx`.
+
+Rewrite `hx` using `[e]`. Simplify using `only [TopologicalSpace.Opens.mem_iSup] at hx`. Take `⟨a, ha, hxa⟩` from `hx`. Conclude with `⟨a, List.mem_map.mpr ⟨a, by simpa using ha, rfl⟩, hxa⟩`.
+-/
 lemma exists_list {X : Scheme.{0}} (W : X.Opens) (hW : IsCompact (W : Set X)) :
     ∃ L : List X.Opens, (∀ u ∈ L, IsAffineOpen u) ∧ (∀ u ∈ L, u ≤ W) ∧ ∀ x ∈ W, ∃ u ∈ L, x ∈ u := by
   obtain ⟨s, hs, e⟩ := isCompact_iff_finite_and_eq_biUnion_affineOpens.mp hW
@@ -49,6 +67,11 @@ lemma exists_list {X : Scheme.{0}} (W : X.Opens) (hW : IsCompact (W : Set X)) :
     obtain ⟨a, ha, hxa⟩ := hx
     exact ⟨a, List.mem_map.mpr ⟨a, by simpa using ha, rfl⟩, hxa⟩
 
+/- English proof (translation)
+Establish `: (W : Set X) = ⋃ u ∈ L, (u : Set X)`. Use extensionality with `x`. Simplify using `only [Set.mem_iUnion]`. Conclude with `⟨fun hx => let ⟨u, hu, h⟩ := hc x hx; ⟨u, hu, h⟩, fun ⟨u, hu, h⟩ => hle u hu h⟩`. Rewrite using `[this]`.
+
+Conclude with `L.finite_toSet.isCompact_biUnion fun u hu => (hA u hu).isCompact`.
+-/
 lemma compact_of_cover {X : Scheme.{0}} (W : X.Opens) (L : List X.Opens) (hA : ∀ u ∈ L, IsAffineOpen u)
     (hle : ∀ u ∈ L, u ≤ W) (hc : ∀ x ∈ W, ∃ u ∈ L, x ∈ u) : IsCompact (W : Set X) := by
   have : (W : Set X) = ⋃ u ∈ L, (u : Set X) := by
@@ -58,6 +81,9 @@ lemma compact_of_cover {X : Scheme.{0}} (W : X.Opens) (L : List X.Opens) (hA : �
   rw [this]
   exact L.finite_toSet.isCompact_biUnion fun u hu => (hA u hu).isCompact
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 lemma mem_V {X : Scheme.{0}} (L : List X.Opens) (x : X) :
     x ∈ (⨆ u ∈ L, u : X.Opens) ↔ ∃ u ∈ L, x ∈ u := by
   simp
@@ -69,6 +95,13 @@ variable {S : Scheme.{0}} [IsAffine S] (P : ∀ {X : Scheme.{0}}, (X ⟶ S) → 
       P (U.ι ≫ f) → P (V.ι ≫ f) → P ((U ⊓ V).ι ≫ f) → P f)
 include hA hG
 
+/- English proof (translation)
+Establish `hU : IsAffineOpen U` using `hc.1 U (by simp)`. Establish `hL' : ∀ u ∈ L', IsAffineOpen u` using `fun u hu => hc.1 u (by simp [hu])`. Establish `hUV : U ⊔ (⨆ u ∈ L', u : X.Opens) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `x _`.
+
+Take `⟨u, hu, hx⟩` from `hc.2 x`. Break down `List.mem_cons.mp hu with rfl | hu` into its components or cases. Conclude with `TopologicalSpace.Opens.mem_sup.mpr (Or.inl hx)`. Conclude with `TopologicalSpace.Opens.mem_sup.mpr (Or.inr ((mem_V L' x).mpr ⟨u, hu, hx⟩))`. Use `hG f hf U _ hUV ?_ ?_ ?_` and prove the remaining obligations.
+
+Use `haveI : IsAffine U := hU`. Conclude with `hA _ inferInstance (fp_res f hf U hU.isCompact)`. Use `hV (cov_pull _ L' hL' (fun u hu => ?_) (fun x hx => (mem_V L' x).mp hx))` and prove the remaining obligations. Conclude with `le_iSup₂ (f := fun u (_ : u ∈ L') => u) u hu`. Conclude with `hW`.
+-/
 lemma glue_step {X : Scheme.{0}} (f : X ⟶ S) (hf : FP f) (U : X.Opens) (L' : List X.Opens)
     (hc : Cov X (U :: L'))
     (hV : Cov (⨆ u ∈ L', u : X.Opens).toScheme
@@ -100,10 +133,30 @@ variable {S : Scheme.{0}} [IsAffine S] (P : ∀ {X : Scheme.{0}}, (X ⟶ S) → 
       P (U.ι ≫ f) → P (V.ι ≫ f) → P ((U ⊓ V).ι ≫ f) → P f)
 include hA hG
 
+/- English proof (translation)
+Establish `: IsEmpty X` using `⟨fun x => by obtain ⟨u, hu, _⟩ := hc.2 x; simp at hu⟩`. Conclude with `hA f inferInstance hf`.
+-/
 lemma empty_case {X : Scheme.{0}} (f : X ⟶ S) (hf : FP f) (hc : Cov X []) : P f := by
   have : IsEmpty X := ⟨fun x => by obtain ⟨u, hu, _⟩ := hc.2 x; simp at hu⟩
   exact hA f inferInstance hf
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `X f L hl hf _ hc`. Rewrite `hc` using `[List.eq_nil_of_length_eq_zero hl]`.
+
+Conclude with `empty_case P hA hG f hf hc`. Consider the case `succ n ih`. Introduce `X f L hl hf hs hc`. Choose the witnesses or unpack the hypotheses as in `⟨U, L', rfl⟩ : ∃ U L', L = U :: L' := by`. Consider the cases of `L with`.
+
+Consider the case `nil => simp at hl`. Consider the case `cons U L' => exact ⟨U, L', rfl⟩`. Simplify using `only [List.length_cons, Nat.add_right_cancel_iff] at hl`. Establish `hU : IsAffineOpen U` using `hc.1 U (by simp)`. Establish `hL' : ∀ u ∈ L', IsAffineOpen u` using `fun u hu => hc.1 u (by simp [hu])`.
+
+Use `glue_step P hA hG f hf U L' hc ?_ ?_` and prove the remaining obligations. Introduce `hcV`. Establish `: (⨆ u ∈ L', u : X.Opens).toScheme.IsSeparated` using `sep_of (⨆ u ∈ L', u : X.Opens).ι`. Use `ih _ _ (by simp [hl]) (fp_res f hf _ ?_) this hcV` and prove the remaining obligations. Conclude with `compact_of_cover _ L' hL' (fun u hu => le_iSup₂ (f := fun u (_ : u ∈ L') => u) u hu) (fun x hx => (mem_V L' x).mp hx)`.
+
+Use `set W : X.Opens := U ⊓ ⨆ u ∈ L', u`. Establish `hA' : ∀ v ∈ L'.map (U ⊓ ·), IsAffineOpen v`. Introduce `v hv`. Take `⟨u, hu, rfl⟩` from `List.mem_map.mp hv`. Conclude with `hU.inf (hL' u hu)`.
+
+Establish `hle : ∀ v ∈ L'.map (U ⊓ ·), v ≤ W`. Introduce `v hv`. Take `⟨u, hu, rfl⟩` from `List.mem_map.mp hv`. Conclude with `inf_le_inf_left U (le_iSup₂ (f := fun u (_ : u ∈ L') => u) u hu)`. Establish `hcW : ∀ x ∈ W, ∃ v ∈ L'.map (U ⊓ ·), x ∈ v`.
+
+Introduce `x hx`. Take `⟨hxU, hxV⟩` from `hx`. Take `⟨u, hu, h⟩` from `(mem_V L' x).mp hxV`. Conclude with `⟨U ⊓ u, List.mem_map.mpr ⟨u, hu, rfl⟩, ⟨hxU, h⟩⟩`. Establish `: W.toScheme.IsSeparated` using `sep_of W.ι`.
+
+Conclude with `ih _ ((L'.map (U ⊓ ·)).map (W.ι ⁻¹ᵁ ·)) (by simp [hl]) (fp_res f hf W (compact_of_cover W _ hA' hle hcW)) this (cov_pull W _ hA' hle hcW)`.
+-/
 lemma stepA : ∀ (n : ℕ) {X : Scheme.{0}} (f : X ⟶ S) (L : List X.Opens), L.length = n → FP f →
     X.IsSeparated → Cov X L → P f := by
   intro n
@@ -145,6 +198,19 @@ lemma stepA : ∀ (n : ℕ) {X : Scheme.{0}} (f : X ⟶ S) (L : List X.Opens), L
       exact ih _ ((L'.map (U ⊓ ·)).map (W.ι ⁻¹ᵁ ·)) (by simp [hl])
         (fp_res f hf W (compact_of_cover W _ hA' hle hcW)) this (cov_pull W _ hA' hle hcW)
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `X f L hl hf hc`. Rewrite `hc` using `[List.eq_nil_of_length_eq_zero hl]`.
+
+Conclude with `empty_case P hA hG f hf hc`. Consider the case `succ n ih`. Introduce `X f L hl hf hc`. Choose the witnesses or unpack the hypotheses as in `⟨U, L', rfl⟩ : ∃ U L', L = U :: L' := by`. Consider the cases of `L with`.
+
+Consider the case `nil => simp at hl`. Consider the case `cons U L' => exact ⟨U, L', rfl⟩`. Simplify using `only [List.length_cons, Nat.add_right_cancel_iff] at hl`. Establish `hU : IsAffineOpen U` using `hc.1 U (by simp)`. Establish `hL' : ∀ u ∈ L', IsAffineOpen u` using `fun u hu => hc.1 u (by simp [hu])`.
+
+Establish `hVc : IsCompact ((⨆ u ∈ L', u : X.Opens) : Set X)` using `compact_of_cover _ L' hL' (fun u hu => le_iSup₂ (f := fun u (_ : u ∈ L') => u) u hu) (fun x hx => (mem_V L' x).mp hx)`. Use `glue_step P hA hG f hf U L' hc ?_ ?_` and prove the remaining obligations. Introduce `hcV`. Conclude with `ih _ _ (by simp [hl]) (fp_res f hf _ hVc) hcV`. Use `set W : X.Opens := U ⊓ ⨆ u ∈ L', u`.
+
+Establish `: QuasiSeparated f` using `hf.2.2`. Establish `: QuasiSeparatedSpace X` using `quasiSeparatedSpace_of_quasiSeparated f`. Establish `hWc : IsCompact (W : Set X)` using `QuasiSeparatedSpace.inter_isCompact _ _ U.2 hU.isCompact (⨆ u ∈ L', u : X.Opens).2 hVc`. Take `⟨L2, h1, h2, h3⟩` from `exists_list W hWc`. Use `haveI : IsAffine U := hU`.
+
+Establish `: W.toScheme.IsSeparated` using `sep_of (X.homOfLE (inf_le_left : W ≤ U))`. Conclude with `stepA P hA hG _ (W.ι ≫ f) (L2.map (W.ι ⁻¹ᵁ ·)) rfl (fp_res f hf W hWc) this (cov_pull W L2 h1 h2 h3)`.
+-/
 lemma stepB : ∀ (n : ℕ) {X : Scheme.{0}} (f : X ⟶ S) (L : List X.Opens), L.length = n → FP f →
     Cov X L → P f := by
   intro n
@@ -181,6 +247,9 @@ lemma stepB : ∀ (n : ℕ) {X : Scheme.{0}} (f : X ⟶ S) (L : List X.Opens), L
 
 end
 
+/- English proof (translation)
+Introduce `S _ P hA hG X f hf`. Establish `: QuasiCompact f` using `hf.2.1`. Establish `: CompactSpace X` using `QuasiCompact.compactSpace_of_compactSpace f`. Take `⟨L, h1, -, h3⟩` from `exists_list (⊤ : X.Opens) (by simpa using isCompact_univ)`. Conclude with `stepB P hA hG _ f L rfl hf ⟨h1, fun x => h3 x trivial⟩`.
+-/
 theorem LeafQCQSInduct_of : LateralTheory.E.LeafObjFPPf.LeafQCQSInduct := by
   intro S _ P hA hG X f hf
   have : QuasiCompact f := hf.2.1

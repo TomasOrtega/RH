@@ -6,6 +6,9 @@ noncomputable section
 
 namespace Formalism.ZF
 
+/- English proof (translation)
+The claim follows from `|w.re - σ| ≤ 1 / 2 ∧ |w.im - τ| ≤ 1 / 2 ∧ ‖w‖ ≤ |σ| + |τ| + 1 / 2 := by rw [mem_closedBall, dist_eq_norm] at hw have hre : (w - ((σ : ℂ) + τ * I)).re = w.re - σ := by simp have him : (w - ((σ : ℂ) + τ * I)).im = w.im - τ := by simp refine ⟨?_, ?_, ?_⟩ · rw [← hre] exact (Complex. …`.
+-/
 lemma zfo_ball_facts {σ τ : ℝ} {w : ℂ} (hw : w ∈ closedBall ((σ : ℂ) + τ * I) (1 / 2)) :
     |w.re - σ| ≤ 1 / 2 ∧ |w.im - τ| ≤ 1 / 2 ∧ ‖w‖ ≤ |σ| + |τ| + 1 / 2 := by
   rw [mem_closedBall, dist_eq_norm] at hw
@@ -24,6 +27,11 @@ lemma zfo_ball_facts {σ τ : ℝ} {w : ℂ} (hw : w ∈ closedBall ((σ : ℂ) 
       _ ≤ 1 / 2 + (|σ| + |τ|) := add_le_add hw hc
       _ = |σ| + |τ| + 1 / 2 := by ring
 
+/- English proof (translation)
+Take `⟨-, him, -⟩` from `zfo_ball_facts hw`. Establish `h : 5 / 2 ≤ |w.im|`. Establish `h'` using `abs_sub_abs_le_abs_sub τ w.im`. Rewrite `h'` using `[abs_sub_comm]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `⟨fun h1 => ?_, h⟩` and prove the remaining obligations. Evaluate the numerical expressions using `[h1] at h`.
+-/
 lemma zfo_ball_ne_one {σ τ : ℝ} (hτ : 3 ≤ |τ|) {w : ℂ}
     (hw : w ∈ closedBall ((σ : ℂ) + τ * I) (1 / 2)) : w ≠ 1 ∧ 5 / 2 ≤ |w.im| := by
   obtain ⟨-, him, -⟩ := zfo_ball_facts hw
@@ -34,11 +42,25 @@ lemma zfo_ball_ne_one {σ τ : ℝ} (hτ : 3 ≤ |τ|) {w : ℂ}
   refine ⟨fun h1 => ?_, h⟩
   norm_num [h1] at h
 
+/- English proof (translation)
+Introduce `w hw`. Conclude with `(differentiableAt_riemannZeta (zfo_ball_ne_one hτ hw).1).differentiableWithinAt`.
+-/
 lemma zfo_diff_ball {σ τ : ℝ} (hτ : 3 ≤ |τ|) :
     DifferentiableOn ℂ riemannZeta (closedBall ((σ : ℂ) + τ * I) (1 / 2)) := by
   intro w hw
   exact (differentiableAt_riemannZeta (zfo_ball_ne_one hτ hw).1).differentiableWithinAt
 
+/- English proof (translation)
+Take `⟨hre, -, hn⟩` from `zfo_ball_facts hw`. Take `⟨hne, him2⟩` from `zfo_ball_ne_one hτ hw`. Establish `hre' : 1 / 2 < w.re`. Use `(abs_le.mp hre).1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h1 : 5 / 2 ≤ ‖w - 1‖`. Establish `h' : |(w - 1).im| ≤ ‖w - 1‖` using `Complex.abs_im_le_norm _`. Simplify using `only [Complex.sub_im, Complex.one_im, sub_zero] at h'`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hinv1 : 1 / ‖w - 1‖ ≤ 2 / 5`.
+
+Rewrite using `[div_le_iff₀ (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hinv2 : 1 / w.re ≤ 2`. Rewrite using `[div_le_iff₀ (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hσabs : |σ| = σ` using `abs_of_pos (by linarith)`. Establish `hnw : ‖w‖ ≤ 2 * T + 5 / 2`. Rewrite `hn` using `[hσabs]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc0 : 0 ≤ 1 + 1 / w.re`.
+
+Establish `: 0 < 1 / w.re` using `one_div_pos.mpr (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hprod : ‖w‖ * (1 + 1 / w.re) ≤ (2 * T + 5 / 2) * 3` using `mul_le_mul hnw (by linarith) hc0 (by linarith [abs_nonneg τ])`. Establish `hg` using `hG w (by linarith) hne`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma zfo_growth_ball (hG : ZetaGrowth) {σ τ T : ℝ} (hσ1 : 1 < σ) (hσ2 : σ ≤ 2) (hτ : 3 ≤ |τ|)
     (hτT : |τ| ≤ 2 * T) {w : ℂ} (hw : w ∈ closedBall ((σ : ℂ) + τ * I) (1 / 2)) :
     ‖riemannZeta w‖ ≤ 6 * (T + 2) := by
@@ -69,6 +91,19 @@ lemma zfo_growth_ball (hG : ZetaGrowth) {σ τ T : ℝ} (hσ1 : 1 < σ) (hσ2 : 
   have hg := hG w (by linarith) hne
   linarith
 
+/- English proof (translation)
+Introduce `w hw`. Establish `hzw` using `zfo_growth_ball hG hσ1 hσ2 hτ hτT hw`. Use `set s : ℂ := (σ : ℂ) + τ * I with hs`. Establish `hsre : s.re = σ` using `by simp [hs]`. Establish `hs1 : 1 < s.re` using `by rw [hsre]; exact hσ1`.
+
+Establish `hinv` using `hI s hs1`. Rewrite `hinv` using `[hsre]`. Establish `hσ1' : 0 < σ - 1` using `by linarith`. Establish `hA : 0 < T + 2` using `by linarith`. Establish `ha0 : 0 < ‖riemannZeta s‖` using `norm_pos_iff.mpr (riemannZeta_ne_zero_of_one_lt_re hs1)`.
+
+Establish `h1 : 1 ≤ ‖riemannZeta s‖ * (σ / (σ - 1))`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h1` using `[mul_div_assoc', le_div_iff₀ hσ1']`. Establish `h3 : σ - 1 ≤ 2 * ‖riemannZeta s‖` using `by nlinarith`. Establish `h4 : 2 ≤ 20000 * (T + 2) * (σ - 1)`.
+
+Rewrite `hσK` using `[div_le_iff₀ hσ1']`. Then use the resulting hypothesis. Establish `h5 : 1 ≤ 20000 * (T + 2) * ‖riemannZeta s‖`. Use `mul_le_mul_of_nonneg_left h3 (by linarith : (0 : ℝ) ≤ 10000 * (T + 2))` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `h8 : (5 : ℝ) ^ 8 ≤ (T + 2) ^ 8` using `pow_le_pow_left₀ (by norm_num) (by linarith) 8`.
+
+Establish `h6 : 120000 * (T + 2) ^ 2 ≤ (T + 2) ^ 10`. Establish `e : (T + 2) ^ 10 = (T + 2) ^ 2 * (T + 2) ^ 8` using `by ring`. Use `mul_le_mul_of_nonneg_left h8 (sq_nonneg (T + 2))` as an intermediate fact. Rewrite using `[e]`. Evaluate the numerical expressions using `at this ⊢`.
+
+Use polynomial arithmetic with `[sq_nonneg (T + 2)]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma zfo_M_bound (hG : ZetaGrowth) (hI : ZetaInvBound) {σ τ T : ℝ} (hσ1 : 1 < σ) (hσ2 : σ ≤ 2)
     (hσK : 2 / (σ - 1) ≤ 20000 * (T + 2)) (hT : 3 ≤ T) (hτ : 3 ≤ |τ|) (hτT : |τ| ≤ 2 * T) :
     ∀ w ∈ closedBall ((σ : ℂ) + τ * I) (1 / 2),

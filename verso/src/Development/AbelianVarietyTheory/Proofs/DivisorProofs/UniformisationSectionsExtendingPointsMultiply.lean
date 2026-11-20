@@ -18,6 +18,17 @@ open GlobalTheory.Poinc.Tors
 
 namespace GlobalTheory.Poinc.Tors
 
+/- English proof (translation)
+Introduce `V _ _ _ _ D A G _ _ _ U x x' h h' h'' hx hx' hx''`. Use `U.gen_hom` as an intermediate fact. Use `U.separated` as an intermediate fact. Establish `hmon : IsMonHom U.gen.inv` using `inferInstance`. Establish `hpb` using `isGrpPullback_pullback G (jK V)`.
+
+Establish `e₁` using `hpb.2 (TFK (R := V) (FractionRing V)) (x ≫ U.gen.inv) (x' ≫ U.gen.inv) (toUnit (TF (R := V) (FractionRing V)) ≫ h) (toUnit (TF (R := V) (FractionRing V)) ≫ h') (hx.symm.trans (Category.assoc _ _ _).symm) (hx'.symm.trans (Category.assoc _ _ _).symm)`. Establish `e₂ : (x * x') ≫ U.gen.inv = (x ≫ U.gen.inv) * (x' ≫ U.gen.inv)` using `MonObj.mul_comp _ _ _`. Establish `e₃ : toUnit (TF (R` using `V) (FractionRing V)) ≫ (h * h') = (toUnit (TF (R := V) (FractionRing V)) ≫ h) * (toUnit (TF (R := V) (FractionRing V)) ≫ h') := MonObj.comp_mul _ _ _`. Establish `e : (toUnit (TF (R` using `V) (FractionRing V)) ≫ h'').left = (toUnit (TF (R := V) (FractionRing V)) ≫ (h * h')).left := by`. Rewrite using `[e₃]`.
+
+Use `Eq.trans ?_ e₁.symm` and prove the remaining obligations. Rewrite using `[← e₂]`. Conclude with `hx''.symm.trans (Category.assoc _ _ _).symm`. Establish `hj : (toUnit (TF (R` using `V) (FractionRing V))).left = jK V := by`. Establish `h₁ : jFK (R` using `V) (FractionRing V) = 𝟙 _ := Spec.map_id _`.
+
+Establish `h₂ : (toUnit (TF (R` using `V) (FractionRing V))).left ≫ 𝟙 _ = jFK (R := V) (FractionRing V) ≫ jK V := Over.w (toUnit (TF (R := V) (FractionRing V)))`. Rewrite `h₂` using `[Category.comp_id, h₁]`. Conclude with `h₂.trans (Category.id_comp _)`. Establish `hd : IsDominant (jK V)`. Use `⟨?_⟩` and prove the remaining obligations.
+
+Conclude with `(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical (algebraMap V (FractionRing V))).2 (by rw [(RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective V (FractionRing V))]; exact bot_le)`. Use `Over.OverMorphism.ext (ext_of_isDominant_of_isSeparated (X := Sp V) G.hom ((Over.w h'').trans (Over.w (h * h')).symm) (jK V) ?_)` and prove the remaining obligations. Rewrite using `[← hj]`. Conclude with `e`.
+-/
 theorem ext_mul : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], IsCN V → ∀ (D : DegData V (maximalIdeal V)) (A : PolAV (Sp (FractionRing V))) (G : Over (Sp V)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (U : Unif (maximalIdeal V) D A G), ∀ (x x' : TFK (R := V) (FractionRing V) ⟶ A.A) (h h' h'' : (𝟙_ (Over (Sp V))) ⟶ G), IntTerm.Ext U.toUnifPre x h → IntTerm.Ext U.toUnifPre x' h' → IntTerm.Ext U.toUnifPre (x * x') h'' → h'' = h * h' := by
   intro V _ _ _ _ D A G _ _ _ U x x' h h' h'' hx hx' hx''
   have := U.gen_hom

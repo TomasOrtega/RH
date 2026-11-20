@@ -14,6 +14,25 @@ open scoped CategoryTheory.Obj TensorProduct Pointwise
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `O F _ _ _ _ _ _ X U s c f W fW hs hU hfW hf hc`. Establish `hprop : IsProper s` using `(isProjOver_iff_isProper_and_exists_isAmpleLB s).mp hs |>.1`. Establish `hN : GlobalTheory.IsNormalScheme U` using `.of_pred hU`. Establish `hb : IsPullback (pullback.fst s (spMap (algebraMap O F))) (pullback.snd _ _) s (spMap (algebraMap O F))` using `.of_hasPullback _ _`. Establish `: IsLocallyNoetherian (pullback s (spMap (algebraMap O F)))` using `LocallyOfFiniteType.isLocallyNoetherian (pullback.snd s (spMap (algebraMap O F)))`.
+
+Establish `: QuasiCompact f` using `by rw [← hf]; infer_instance`. Establish `: QuasiSeparated f` using `by rw [← hf]; infer_instance`. Establish `: LocallyOfFiniteType c` using `by rw [← hc]; infer_instance`. Establish `: IsLocallyNoetherian U` using `LocallyOfFiniteType.isLocallyNoetherian c`. Establish `w : f ≫ s = c ≫ spMap (algebraMap O F)`.
+
+Rewrite using `[← hf, ← hc]`. Simplify using `only [Category.assoc, pullback.condition]`. Establish `hfin : IsFinite f.fromNormalization` using `isFinite_fromNormalization_of_over_fractionRing (o := .of O) f s F c w`. Establish `h` using `isPullback_toNormalization_of_isLocalization (nonZeroDivisors O) hb fW W.ι f hf.symm`. Establish `hb' : IsPullback (pullback.fst (f.fromNormalization ≫ s) (spMap (algebraMap O F))) (pullback.snd _ _) (f.fromNormalization ≫ s) (spMap (algebraMap O F))` using `.of_hasPullback _ _`.
+
+Establish `hpre` using `isPreimmersion_of_isPullback_localization (nonZeroDivisors O) hb`. Establish `hpre'` using `isPreimmersion_of_isPullback_localization (nonZeroDivisors O) hb'`. Set `q : pullback (f.fromNormalization ≫ s) (spMap (algebraMap O F)) ⟶ pullback s (spMap (algebraMap O F))` to `pullback.lift (pullback.fst _ _ ≫ f.fromNormalization) (pullback.snd _ _) (by simpa using pullback.condition)`. Establish `hq₁ : q ≫ pullback.fst _ _ = pullback.fst _ _ ≫ f.fromNormalization` using `pullback.lift_fst ..`. Establish `hq₂ : q ≫ pullback.snd _ _ = pullback.snd _ _` using `pullback.lift_snd ..`.
+
+Establish `hq : IsPullback (pullback.fst (f.fromNormalization ≫ s) (spMap (algebraMap O F))) q f.fromNormalization (pullback.fst s (spMap (algebraMap O F)))` using `IsPullback.of_bot (by rw [hq₂]; exact hb') hq₁.symm hb`. Set `j : U ⟶ pullback (f.fromNormalization ≫ s) (spMap (algebraMap O F))` to `pullback.lift f.toNormalization c (by simpa using w)`. Establish `hj₁ : j ≫ pullback.fst _ _ = f.toNormalization` using `pullback.lift_fst ..`. Establish `hj₂ : j ≫ pullback.snd _ _ = c` using `pullback.lift_snd ..`. Establish `hjq : j ≫ q = fW ≫ W.ι`.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hq₁, reassoc_of% hj₁, Category.assoc, hf]`. Simplify using the standard rewrite rules. Rewrite using `[Category.assoc, hq₂, hj₂, Category.assoc, hc]`. Establish `hj : IsPullback j fW q W.ι` using `IsPullback.of_right (by rw [hj₁]; exact h) hjq hq`.
+
+Use `⟨f.normalization, f.fromNormalization, j, hfin, IsNormalScheme.pred _, isProjOver_comp_of_isFinite _ hs, flat_fromNormalization_comp f F s c w, hj₂, by rw [reassoc_of% hj₁]; simp, MorphismProperty.of_isPullback (P := @IsOpenImmersion) hj.flip inferInstance, ?_, fun y ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[hpre'.isEmbedding.isInducing.dense_iff]`. Introduce `y`. Establish `hd : DenseRange f.toNormalization` using `f.toNormalization.denseRange`. Rewrite using `[← Set.range_comp, ← TopCat.coe_comp, ← Scheme.Hom.comp_base, hj₁]`.
+
+Conclude with `hd _`. Rewrite using `[← Scheme.Hom.comp_apply, ← hq₁, Scheme.Hom.comp_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`. Conclude with `⟨fW u, by rw [Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply fW, ← hjq]; simp⟩`.
+
+Introduce and unpack `⟨v, hv⟩`. Rewrite `hv` using `[Scheme.Hom.comp_apply]`. Take `⟨u, hu, -⟩` from `Scheme.exists_preimage_of_isPullback hj y v (hpre.isEmbedding.injective hv).symm`. Conclude with `⟨u, hu⟩`.
+-/
 theorem exists_normal_finite_model_of_finite_over_open : ∀ (O F : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Field F] [Algebra O F] [IsFractionRing O F] (X U : Scheme.{0}) (s : X ⟶ Sp O) (c : U ⟶ Sp F) (f : U ⟶ X) (W : (pullback s (spMap (algebraMap O F))).Opens) (fW : U ⟶ W.toScheme), IsProjOver s → Geo.Tor.IsNormalScheme U → IsFinite fW → fW ≫ W.ι ≫ pullback.fst _ _ = f → fW ≫ W.ι ≫ pullback.snd _ _ = c → ∃ (Y : Scheme.{0}) (π : Y ⟶ X) (jQ : U ⟶ pullback (π ≫ s) (spMap (algebraMap O F))), IsFinite π ∧ Geo.Tor.IsNormalScheme Y ∧ IsProjOver (π ≫ s) ∧ Flat (π ≫ s) ∧ jQ ≫ pullback.snd _ _ = c ∧ jQ ≫ pullback.fst _ _ ≫ π = f ∧ IsOpenImmersion jQ ∧ Dense (Set.range jQ) ∧ ∀ y : ↥(pullback (π ≫ s) (spMap (algebraMap O F))), y ∈ Set.range jQ ↔ π (pullback.fst (π ≫ s) (spMap (algebraMap O F)) y) ∈ Set.range (W.ι ≫ pullback.fst s (spMap (algebraMap O F))) := by
   intro O F _ _ _ _ _ _ X U s c f W fW hs hU hfW hf hc
   have hprop : IsProper s := (isProjOver_iff_isProper_and_exists_isAmpleLB s).mp hs |>.1

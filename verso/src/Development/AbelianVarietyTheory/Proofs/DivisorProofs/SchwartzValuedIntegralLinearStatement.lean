@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzValuedInteg
 import Mathlib
 open MeasureTheory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ParamSchwartz.iteratedIntegral_clm | exact GlobalTheory.ParamSchwartz.iteratedIntegral_clm | (intros; apply GlobalTheory.ParamSchwartz.iteratedIntegral_clm <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.schwartz_valued_integral_linear : ∀ {D₁ D₂ Ω₁ Ω₂ : Type} [NormedAddCommGroup D₁] [NormedSpace ℝ D₁] [NormedAddCommGroup D₂] [NormedSpace ℝ D₂]
     [MeasurableSpace Ω₁] [MeasurableSpace Ω₂] (m₁ : Measure Ω₁) (m₂ : Measure Ω₂) [IsFiniteMeasure m₁] [SFinite m₂]
     (G : SchwartzMap D₁ ℂ → Ω₁ → Ω₂ → SchwartzMap D₂ ℂ),

@@ -9,6 +9,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.O
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨gtBaseChange, CubePf.cubePull⟩`.
+-/
 theorem laws3 : Laws3 :=
   ⟨gtBaseChange, CubePf.cubePull⟩
 

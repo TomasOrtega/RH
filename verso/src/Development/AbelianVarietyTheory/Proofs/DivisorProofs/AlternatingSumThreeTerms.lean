@@ -7,6 +7,9 @@ noncomputable section
 
 namespace GlobalTheory.CechOne
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, e]`.
+-/
 theorem spec_comp {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (f : R →+* S) (g : S →+* T) (h : R →+* T)
     (e : g.comp f = h) : Spec.map (CommRingCat.ofHom g) ≫ Spec.map (CommRingCat.ofHom f) = Spec.map (CommRingCat.ofHom h) := by
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp, e]
@@ -22,6 +25,9 @@ def y1 : Fin (1 + 1) → (Spec (CommRingCat.of (B ⊗[A] B)) ⟶ Spec (CommRingC
   ![Spec.map (CommRingCat.ofHom (Algebra.TensorProduct.includeLeft : B →ₐ[A] B ⊗[A] B).toRingHom),
     Spec.map (CommRingCat.ofHom (Algebra.TensorProduct.includeRight : B →ₐ[A] B ⊗[A] B).toRingHom)]
 
+/- English proof (translation)
+Introduce `i`. Apply the tactic sequence `fin_cases i <;> exact spec_comp _ _ _ (by rw [AlgHom.toRingHom_eq_coe]; exact AlgHom.comp_algebraMap _)`.
+-/
 theorem hy1 : ∀ i, y1 A B i ≫ fB A B = Spec.map (CommRingCat.ofHom (algebraMap A (B ⊗[A] B))) := by
   intro i
   fin_cases i <;> exact spec_comp _ _ _ (by rw [AlgHom.toRingHom_eq_coe]; exact AlgHom.comp_algebraMap _)
@@ -36,6 +42,9 @@ def y2 : Fin (2 + 1) → (Spec (CommRingCat.of (B ⊗[A] (B ⊗[A] B))) ⟶ Spec
       Spec.map (CommRingCat.ofHom ((Algebra.TensorProduct.includeRight : B ⊗[A] B →ₐ[A] B ⊗[A] (B ⊗[A] B)).comp
         (Algebra.TensorProduct.includeRight : B →ₐ[A] B ⊗[A] B)).toRingHom)]
 
+/- English proof (translation)
+Introduce `i`. Apply the tactic sequence `fin_cases i <;> exact spec_comp _ _ _ (by rw [AlgHom.toRingHom_eq_coe]; exact AlgHom.comp_algebraMap _)`.
+-/
 theorem hy2 : ∀ i, y2 A B i ≫ fB A B = Spec.map (CommRingCat.ofHom (algebraMap A (B ⊗[A] (B ⊗[A] B)))) := by
   intro i
   fin_cases i <;> exact spec_comp _ _ _ (by rw [AlgHom.toRingHom_eq_coe]; exact AlgHom.comp_algebraMap _)
@@ -44,6 +53,9 @@ def P2 : Sx (cech (fB A B)) 2 (Spec (CommRingCat.of (B ⊗[A] (B ⊗[A] B)))) :=
   cechPt (fB A B) 2 (Spec.map (CommRingCat.ofHom (algebraMap A (B ⊗[A] (B ⊗[A] B))))) (y2 A B) (hy2 A B)
 
 variable {A B} in
+/- English proof (translation)
+The claim follows from `spec_comp _ _ _ (by rw [AlgHom.toRingHom_eq_coe]; exact AlgHom.comp_algebraMap _)`.
+-/
 theorem spec_algHom {B' : Type} [CommRing B'] [Algebra A B'] (φ : B →ₐ[A] B') :
     Spec.map (CommRingCat.ofHom φ.toRingHom) ≫ fB A B = fB A B' :=
   spec_comp _ _ _ (by rw [AlgHom.toRingHom_eq_coe]; exact AlgHom.comp_algebraMap _)
@@ -51,14 +63,23 @@ theorem spec_algHom {B' : Type} [CommRing B'] [Algebra A B'] (φ : B →ₐ[A] B
 def cechMap {Y Y' X : Scheme.{0}} (f : Y ⟶ X) (f' : Y' ⟶ X) (g : Y' ⟶ Y) (hg : g ≫ f = f') : cech f' ⟶ cech f :=
   Arrow.mapCechNerve (Arrow.homMk (yoneda.map g) (𝟙 _) (by simp [← hg]))
 
+/- English proof (translation)
+The claim follows from `ModuleCat.free_map_apply _ _`.
+-/
 theorem freePresheaf_map_freeMk (R : Type) [CommRing R] {P Q : PSh} (α : P ⟶ Q) (U : Scheme.{0}) (x : P.obj (op U)) :
     (((freeP R).map α).app (op U)).hom (ModuleCat.freeMk (ULift.up x)) = ModuleCat.freeMk (ULift.up (α.app (op U) x)) :=
   ModuleCat.free_map_apply _ _
 
+/- English proof (translation)
+The claim follows from `ModuleCat.free_map_apply _ _`.
+-/
 theorem freePresheaf_obj_map_freeMk (R : Type) [CommRing R] (P : PSh) {U V : Scheme.{0}} (g : V ⟶ U) (x : P.obj (op U)) :
     (((freeP R).obj P).map g.op).hom (ModuleCat.freeMk (ULift.up x)) = ModuleCat.freeMk (ULift.up (P.map g.op x)) :=
   ModuleCat.free_map_apply _ _
 
+/- English proof (translation)
+Unfold `val freeGen`. Establish `h : ((toSheafify Scheme.etaleTopology ((freeP R).obj Q)).app (op U)).hom ((((freeP R).map α).app (op U)).hom (ModuleCat.freeMk (ULift.up x))) = ((sheafifyMap Scheme.etaleTopology ((freeP R).map α)).app (op U)).hom (((toSheafify Scheme.etaleTopology ((freeP R).obj P)).app (op U)). …` using `congrArg (fun η => (η.app (op U)).hom (ModuleCat.freeMk (ULift.up x))) (toSheafify_naturality Scheme.etaleTopology ((freeP R).map α))`. Rewrite `h` using `[freePresheaf_map_freeMk]`. Use `erw [h]`. Both sides reduce to the same expression.
+-/
 theorem val_map (R : Type) [CommRing R] {P Q : PSh} {F : Shv R} (α : P ⟶ Q) (s : (free R).obj Q ⟶ F) (U : Scheme.{0})
     (x : P.obj (op U)) : val ((free R).map α ≫ s) U x = val s U (α.app (op U) x) := by
   unfold val freeGen
@@ -72,6 +93,9 @@ theorem val_map (R : Type) [CommRing R] {P Q : PSh} {F : Shv R} (α : P ⟶ Q) (
   erw [h]
   rfl
 
+/- English proof (translation)
+Unfold `val freeGen Sec.pull`. Establish `h1 : ((toSheafify Scheme.etaleTopology ((freeP R).obj P)).app (op V)).hom ((((freeP R).obj P).map g.op).hom (ModuleCat.freeMk (ULift.up x))) = ((sheafify Scheme.etaleTopology ((freeP R).obj P)).map g.op).hom (((toSheafify Scheme.etaleTopology ((freeP R).obj P)).app (op U)).hom (M …` using `congrArg (fun φ => φ.hom (ModuleCat.freeMk (ULift.up x))) ((toSheafify Scheme.etaleTopology ((freeP R).obj P)).naturality g.op)`. Rewrite `h1` using `[freePresheaf_obj_map_freeMk]`. Use `erw [h1]`. Conclude with `congrArg (fun φ => φ.hom (((toSheafify Scheme.etaleTopology ((freeP R).obj P)).app (op U)).hom (ModuleCat.freeMk (ULift.up x)))) (s.hom.naturality g.op)`.
+-/
 theorem val_nat (R : Type) [CommRing R] {P : PSh} {F : Shv R} (s : (free R).obj P ⟶ F) {U V : Scheme.{0}} (g : V ⟶ U)
     (x : P.obj (op U)) : val s V (P.map g.op x) = Sec.pull g (val s U x) := by
   unfold val freeGen Sec.pull
@@ -86,6 +110,9 @@ theorem val_nat (R : Type) [CommRing R] {P : PSh} {F : Shv R} (s : (free R).obj 
   exact congrArg (fun φ => φ.hom (((toSheafify Scheme.etaleTopology ((freeP R).obj P)).app (op U)).hom
     (ModuleCat.freeMk (ULift.up x)))) (s.hom.naturality g.op)
 
+/- English proof (translation)
+Unfold `cechPt`. Rewrite using `[← hM]`. Both sides reduce to the same expression.
+-/
 theorem map_cechPt {Y X Y' X' : Scheme.{0}} (f : Y ⟶ X) (f' : Y' ⟶ X') (k k' : ℕ) {Z : Scheme.{0}} (x : Z ⟶ X)
     (y : Fin (k + 1) → (Z ⟶ Y)) (h : ∀ i, y i ≫ f = x) (x' : Z ⟶ X') (y' : Fin (k' + 1) → (Z ⟶ Y')) (h' : ∀ i, y' i ≫ f' = x')
     (M : (cech f).obj (op ⦋k⦌) ⟶ (cech f').obj (op ⦋k'⦌))
@@ -98,6 +125,11 @@ theorem map_cechPt {Y X Y' X' : Scheme.{0}} (f : Y ⟶ X) (f' : Y' ⟶ X') (k k'
   rw [← hM]
   rfl
 
+/- English proof (translation)
+Unfold `cechPt`. Establish `e : yoneda.map g ≫ WidePullback.lift (arrows` using `fun _ : Fin (k + 1) => yoneda.map f) (yoneda.map x) (fun i => yoneda.map (y i)) (fun i => by rw [← yoneda.map_comp, h i]) = WidePullback.lift (arrows := fun _ : Fin (k + 1) => yoneda.map f) (yoneda.map (g ≫ x)) (fun i => yoneda.map (g ≫ y i)) (fun i => by rw [← yoneda.map_comp, C …`. Apply `WidePullback.hom_ext` to reduce the goal to its premises. Introduce `j erw [Category.assoc, WidePullback.lift_π, WidePullback.lift_π, yoneda.map_comp]`. Use `erw [Category.assoc, WidePullback.lift_base, WidePullback.lift_base, yoneda.map_comp]`.
+
+Rewrite using `[← e]`. Use `erw [← FunctorToTypes.naturality]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+-/
 theorem cechPt_nat {Y X : Scheme.{0}} (f : Y ⟶ X) (k : ℕ) {Z Z' : Scheme.{0}} (g : Z' ⟶ Z) (x : Z ⟶ X)
     (y : Fin (k + 1) → (Z ⟶ Y)) (h : ∀ i, y i ≫ f = x) :
     ((cech f).obj (op ⦋k⦌)).map g.op (cechPt f k x y h) =
@@ -116,6 +148,11 @@ theorem cechPt_nat {Y X : Scheme.{0}} (f : Y ⟶ X) (k : ℕ) {Z Z' : Scheme.{0}
   simp
   rfl
 
+/- English proof (translation)
+Apply `map_cechPt` to reduce the goal to its premises. Apply `WidePullback.hom_ext` to reduce the goal to its premises. Introduce `j`. Simplify using `only [cech, SimplicialObject.δ, Arrow.cechNerve]`. Use `erw [Category.assoc, WidePullback.lift_π, WidePullback.lift_π, WidePullback.lift_π]`.
+
+Both sides reduce to the same expression. Simplify using `only [cech, SimplicialObject.δ, Arrow.cechNerve] erw [Category.assoc, WidePullback.lift_base, WidePullback.lift_base, WidePullback.lift_base]`.
+-/
 theorem cechPt_face {Y X : Scheme.{0}} (f : Y ⟶ X) (k : ℕ) {Z : Scheme.{0}} (x : Z ⟶ X)
     (y : Fin (k + 2) → (Z ⟶ Y)) (h : ∀ i, y i ≫ f = x) (i : Fin (k + 2)) :
     ((cech f).δ i).app (op Z) (cechPt f (k + 1) x y h) = cechPt f k x (fun j => y (i.succAbove j)) (fun j => h _) := by
@@ -128,6 +165,9 @@ theorem cechPt_face {Y X : Scheme.{0}} (f : Y ⟶ X) (k : ℕ) {Z : Scheme.{0}} 
   · simp only [cech, SimplicialObject.δ, Arrow.cechNerve]
     erw [Category.assoc, WidePullback.lift_base, WidePullback.lift_base, WidePullback.lift_base]
 
+/- English proof (translation)
+Substitute `ex` using the available equality. Substitute `ey` using the available equality. Both sides reduce to the same expression.
+-/
 theorem cechPt_congr {Y X : Scheme.{0}} (f : Y ⟶ X) (k : ℕ) {Z : Scheme.{0}} {x x' : Z ⟶ X}
     {y y' : Fin (k + 1) → (Z ⟶ Y)} (h : ∀ i, y i ≫ f = x) (h' : ∀ i, y' i ≫ f = x') (ex : x = x') (ey : y = y') :
     cechPt f k x y h = cechPt f k x' y' h' := by
@@ -135,10 +175,16 @@ theorem cechPt_congr {Y X : Scheme.{0}} (f : Y ⟶ X) (k : ℕ) {Z : Scheme.{0}}
   subst ey
   rfl
 
+/- English proof (translation)
+Simplify using `[val]`.
+-/
 theorem val_add (R : Type) [CommRing R] {P : PSh} {F : Shv R} (s s' : (free R).obj P ⟶ F) (U : Scheme.{0}) (x : P.obj (op U)) :
     val (s + s') U x = val s U x + val s' U x := by
   simp [val]
 
+/- English proof (translation)
+Simplify using `[val]`.
+-/
 theorem val_zero (R : Type) [CommRing R] {P : PSh} {F : Shv R} (U : Scheme.{0}) (x : P.obj (op U)) :
     val (0 : (free R).obj P ⟶ F) U x = 0 := by
   simp [val]
@@ -149,13 +195,28 @@ def valHom (R : Type) [CommRing R] {P : PSh} (F : Shv R) (U : Scheme.{0}) (x : P
   map_zero' := val_zero R U x
   map_add' s s' := val_add R s s' U x
 
+/- English proof (translation)
+Simplify using `[sub_eq_add_neg]`.
+-/
 theorem alternating_sum_two_terms {M : Type*} [AddCommGroup M] (p q : M) : (-1 : ℤ) ^ (0 : ℕ) • p + (-1 : ℤ) ^ (1 : ℕ) • q = p - q := by
   simp [sub_eq_add_neg]
 
+/- English proof (translation)
+Simplify using `[sub_eq_add_neg]`.
+-/
 theorem alternating_sum_three_terms {M : Type*} [AddCommGroup M] (p q r : M) :
     (-1 : ℤ) ^ (0 : ℕ) • p + (-1 : ℤ) ^ (1 : ℕ) • q + (-1 : ℤ) ^ (2 : ℕ) • r = p - q + r := by
   simp [sub_eq_add_neg]
 
+/- English proof (translation)
+Establish `e : ∀ i : Fin 2, ((cech (fB A B)).δ i).app (op (Spec (CommRingCat.of (B ⊗[A] B)))) (P1 A B) = ((cech (fB A B)).obj (op ⦋0⦌)).map (y1 A B (i.succAbove 0)).op (P0 A B)`. Introduce `i`. Unfold `P1 P0`. Use `(cechPt_face (fB A B) 0 _ (y1 A B) (hy1 A B) i).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (cechPt_nat (fB A B) 0 (y1 A B (i.succAbove 0)) (fB A B) (fun _ => 𝟙 _) (fun _ => Category.id_comp _)).symm` and prove the remaining obligations.
+
+Apply `cechPt_congr` to reduce the goal to its premises. Conclude with `(hy1 A B _).symm`. Use function extensionality and compare the values at `j fin_cases j`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `valHom R F _ (P1 A B) (cobd t) = _`.
+
+Unfold `cobd`. Rewrite using `[map_sum, Fin.sum_univ_two]`. Simplify using `only [map_zsmul]`. Simplify using `only [valHom, AddMonoidHom.coe_mk, ZeroHom.coe_mk]`. Rewrite using `[val_map, val_map, e, e, val_nat, val_nat]`.
+
+Conclude with `(alternating_sum_two_terms _ _).trans rfl`.
+-/
 theorem val_coboundary_first_level (R : Type) [CommRing R] (F : Shv R) (t : (free R).obj ((cech (fB A B)).obj (op ⦋0⦌)) ⟶ F) :
     val (cobd t) (Spec (CommRingCat.of (B ⊗[A] B))) (P1 A B) =
       ((onRings F).map (CommRingCat.ofHom (Algebra.TensorProduct.includeRight : B →ₐ[A] B ⊗[A] B).toRingHom)).hom
@@ -188,6 +249,17 @@ def g2 : Fin 3 → (Spec (CommRingCat.of (B ⊗[A] (B ⊗[A] B))) ⟶ Spec (Comm
     Spec.map (CommRingCat.ofHom (Algebra.TensorProduct.map (AlgHom.id A B)
       (Algebra.TensorProduct.includeLeft : B →ₐ[A] B ⊗[A] B)).toRingHom)]
 
+/- English proof (translation)
+Establish `e : ∀ i : Fin 3, ((cech (fB A B)).δ i).app (op (Spec (CommRingCat.of (B ⊗[A] (B ⊗[A] B))))) (P2 A B) = ((cech (fB A B)).obj (op ⦋1⦌)).map (g2 A B i).op (P1 A B)`. Introduce `i`. Unfold `P2 P1`. Use `(cechPt_face (fB A B) 1 _ (y2 A B) (hy2 A B) i).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (cechPt_nat (fB A B) 1 (g2 A B i) _ (y1 A B) (hy1 A B)).symm` and prove the remaining obligations.
+
+Apply `cechPt_congr` to reduce the goal to its premises. Apply the tactic sequence `fin_cases i <;>`. Simplify using `only [g2]`. Conclude with `(spec_comp _ _ _ (by rw [AlgHom.toRingHom_eq_coe]; exact AlgHom.comp_algebraMap _)).symm`. Apply the tactic sequence `funext j fin_cases i <;> fin_cases j <;>`.
+
+Simplify using `only [y1, y2, g2]`. Use `(spec_comp _ _ _ ?_).symm` and prove the remaining obligations. Use extensionality with `b`. Simplify using `[Algebra.TensorProduct.one_def]`. Express the relevant statement in the definitionally equal form `valHom R F _ (P2 A B) (cobd s) = _`.
+
+Unfold `cobd`. Rewrite using `[map_sum, Fin.sum_univ_three]`. Simplify using `only [map_zsmul]`. Simplify using `only [valHom, AddMonoidHom.coe_mk, ZeroHom.coe_mk]`. Rewrite using `[val_map, val_map, val_map, e, e, e, val_nat, val_nat, val_nat]`.
+
+Conclude with `(alternating_sum_three_terms _ _ _).trans rfl`.
+-/
 theorem val_coboundary_second_level (R : Type) [CommRing R] (F : Shv R) (s : (free R).obj ((cech (fB A B)).obj (op ⦋1⦌)) ⟶ F) :
     val (cobd s) (Spec (CommRingCat.of (B ⊗[A] (B ⊗[A] B)))) (P2 A B) =
       ((onRings F).map (CommRingCat.ofHom
@@ -220,6 +292,17 @@ theorem val_coboundary_second_level (R : Type) [CommRing R] (F : Shv R) (s : (fr
   rw [val_map, val_map, val_map, e, e, e, val_nat, val_nat, val_nat]
   exact (alternating_sum_three_terms _ _ _).trans rfl
 
+/- English proof (translation)
+Rewrite using `[val_map]`. Establish `e1 : ((cechMap (fB A B) (fB A B') _ (spec_algHom φ)).app (op ⦋1⦌)).app (op (Spec (CommRingCat.of (B' ⊗[A] B')))) (P1 A B') = cechPt (fB A B) 1 (Spec.map (CommRingCat.ofHom (algebraMap A (B' ⊗[A] B')))) (fun j => y1 A B' j ≫ Spec.map (CommRingCat.ofHom φ.toRingHom)) (fun j => by r …`. Unfold `P1`. Apply `map_cechPt` to reduce the goal to its premises. Apply `WidePullback.hom_ext` to reduce the goal to its premises.
+
+Introduce `j`. Simplify using `only [cechMap, Arrow.mapCechNerve]`. Use `erw [Category.assoc, WidePullback.lift_π, WidePullback.lift_π_assoc, WidePullback.lift_π, yoneda.map_comp]`. Both sides reduce to the same expression. Simplify using `only [cechMap, Arrow.mapCechNerve] erw [Category.assoc, WidePullback.lift_base, WidePullback.lift_base_assoc, WidePullback.lift_base]`.
+
+Simplify using the standard rewrite rules. Establish `e2 : cechPt (fB A B) 1 (Spec.map (CommRingCat.ofHom (algebraMap A (B' ⊗[A] B')))) (fun j => y1 A B' j ≫ Spec.map (CommRingCat.ofHom φ.toRingHom)) (fun j => by rw [Category.assoc, spec_algHom φ, hy1 A B' j]) = ((cech (fB A B)).obj (op ⦋1⦌)).map (Spec.map (CommRingCat.ofHom (Algebr …`. Unfold `P1`. Use `Eq.trans ?_ (cechPt_nat (fB A B) 1 _ _ (y1 A B) (hy1 A B)).symm` and prove the remaining obligations. Apply `cechPt_congr` to reduce the goal to its premises.
+
+Conclude with `(spec_comp (algebraMap A (B ⊗[A] B)) (Algebra.TensorProduct.map φ φ).toRingHom (algebraMap A (B' ⊗[A] B')) (by rw [AlgHom.toRingHom_eq_coe]; exact AlgHom.comp_algebraMap _)).symm`. Apply the tactic sequence `funext j fin_cases j <;>`. Use `(spec_comp _ _ _ rfl).trans (spec_comp _ _ _ ?_).symm` and prove the remaining obligations. Use extensionality with `b`. Simplify using the standard rewrite rules.
+
+Rewrite using `[e1, e2, val_nat]`. Both sides reduce to the same expression.
+-/
 theorem val_cech_map_first_level (R : Type) [CommRing R] (F : Shv R) {B' : Type} [CommRing B'] [Algebra A B'] (φ : B →ₐ[A] B')
     (s : (free R).obj ((cech (fB A B)).obj (op ⦋1⦌)) ⟶ F) :
     val ((free R).map ((cechMap (fB A B) (fB A B') _ (spec_algHom φ)).app (op ⦋1⦌)) ≫ s)
@@ -259,11 +342,21 @@ theorem val_cech_map_first_level (R : Type) [CommRing R] (F : Shv R) {B' : Type}
   rw [e1, e2, val_nat]
   rfl
 
+/- English proof (translation)
+Use extensionality with `n : 1`. Apply the tactic sequence `exact (WidePullback.lift_base _ _ _ _).trans (by first | rfl | simp [cechAug, Arrow.augmentedCechNerve])`.
+-/
 theorem cechMap_aug {Y Y' X : Scheme.{0}} (f : Y ⟶ X) (f' : Y' ⟶ X) (g : Y' ⟶ Y) (hg : g ≫ f = f') :
     cechMap f f' g hg ≫ cechAug f = cechAug f' := by
   ext n : 1
   exact (WidePullback.lift_base _ _ _ _).trans (by first | rfl | simp [cechAug, Arrow.augmentedCechNerve])
 
+/- English proof (translation)
+Establish `he : Etale (fB A B)`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Etale)]`. Use `first`. Consider the case `exact RingHom.etale_algebraMap.2 inferInstance`. Consider the case `exact (RingHom.etale_algebraMap_iff).2 inferInstance`.
+
+Consider the case `exact inferInstance`. Use `⟨inferInstance, ?_⟩` and prove the remaining obligations. Use `(flat_and_surjective_SpecMap_iff (CommRingCat.ofHom (algebraMap A B))).2 ?_` as an intermediate fact. Conclude with `this.2`. Use `first`.
+
+Consider the case `exact RingHom.faithfullyFlat_algebraMap_iff.2 inferInstance`. Consider the case `exact inferInstance`.
+-/
 theorem smooth_surj [Algebra.Etale A B] [Module.FaithfullyFlat A B] : Smooth (fB A B) ∧ Surjective (fB A B) := by
   have he : Etale (fB A B) := by
     rw [HasRingHomProperty.Spec_iff (P := @Etale)]

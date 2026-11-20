@@ -13,6 +13,9 @@ noncomputable def evAt (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) :
     Af D.host.F ⊗[D.host.F] D.host.E →+* Fv D.host.F v ⊗[D.host.F] D.host.E :=
   (Algebra.TensorProduct.map (evalV D.host.F v) (AlgHom.id D.host.F D.host.E)).toRingHom
 
+/- English proof (translation)
+Rewrite using `[Matrix.map_mul, Matrix.map_mul, hK, Matrix.mul_one, ← Matrix.map_mul, hb, Matrix.map_one _ (map_zero f) (map_one f)]`.
+-/
 theorem map_conj_eq_one {R S : Type} [CommRing R] [CommRing S] {m k : ℕ} (f : R →+* S) (b : Matrix (Fin m) (Fin k) R)
     (b' : Matrix (Fin k) (Fin m) R) (K : Matrix (Fin k) (Fin k) R) (hb : b * b' = 1) (hK : K.map f = 1) :
     (b * K * b').map f = 1 := by
@@ -20,6 +23,9 @@ theorem map_conj_eq_one {R S : Type} [CommRing R] [CommRing S] {m k : ℕ} (f : 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => rw [RingEquiv.map_zero, RingHom.map_zero, RingHom.map_zero, _root_.map_zero]`. Consider the case `tmul e a => rfl`. Consider the case `add x y hx hy => rw [RingEquiv.map_add, RingHom.map_add, RingHom.map_add, _root_.map_add, hx, hy]`.
+-/
 theorem evAt_swapCast_symm (D : D7) (hF : D.host.F = maximalRealSubfield D.host.E)
     (v : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E))) (x : ReciprocityTheory.Aut.AL D.host.E) :
     evAt D v ((swapCast hF).symm x) =
@@ -30,6 +36,11 @@ theorem evAt_swapCast_symm (D : D7) (hF : D.host.F = maximalRealSubfield D.host.
   | tmul e a => rfl
   | add x y hx hy => rw [RingEquiv.map_add, RingHom.map_add, RingHom.map_add, _root_.map_add, hx, hy]
 
+/- English proof (translation)
+Establish `h1` using `hA v hv`. Use extensionality with `i j`. Establish `h2` using `congrFun (congrFun h1 i) j`. Rewrite `h2` using `[Matrix.map_apply]`. Rewrite using `[Matrix.map_apply, Matrix.map_apply, evAt_swapCast_symm, h2]`.
+
+Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply, h]`.
+-/
 theorem map_evAt_eq_one (D : D7) (hF : D.host.F = maximalRealSubfield D.host.E) {n : ℕ}
     (A : Set (HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)))) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)))
     (κ : Formalism.AUTREP.GAf D.host.E n) (hA : ReciprocityTheory.Aut.TrivOutside A κ) (hv : v ∉ A) :
@@ -43,6 +54,17 @@ theorem map_evAt_eq_one (D : D7) (hF : D.host.F = maximalRealSubfield D.host.E) 
   · subst h; simp
   · simp [Matrix.one_apply, h]
 
+/- English proof (translation)
+Introduce `D V n hF P β Λ hP hB κ hκ`. Establish `hSt : finE V (P.ψ κ) ∈ Formalism.L2.DIV.St β` using `(GlobalTheory.FinZeta.LevelOff.finE_mem_St_iff hB (P.into κ)).2 ((hP.2 κ).1 hκ)`. Use `⟨hSt, fun A v PP hA hPP hv => ?_⟩` and prove the remaining obligations. Establish `hu : PP.under (𝓞 D.host.F) = v` using `HeightOneSpectrum.ext hPP`. Use `GlobalTheory.ChainOnto.RedOne.redFn_eq_one D V β _ PP hSt ?_` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.FinPl.KOpen.proj_eq_one_iff, hu]`. Take `⟨⟨b, b', hbb, -, hmat⟩, -⟩` from `hP`. Establish `hF1 : (finMat D.sp.cm.sig V.gram (P.ψ κ)).map (evAt D v) = 1`. Rewrite using `[hmat κ]`. Conclude with `map_conj_eq_one _ _ _ _ hbb (map_evAt_eq_one D hF A v κ hA hv)`.
+
+Introduce `i j`. Establish `h3` using `congrFun (congrFun hF1 i) j`. Express the relevant statement in the definitionally equal form `evAt D v (finPart D ((Formalism.L2.Theta.mt V (P.ψ κ) - 1) i j)) = 0`. Rewrite using `[Matrix.sub_apply, RingHom.map_sub, RingHom.map_sub]`. Express the relevant statement in the definitionally equal form `evAt D v (finMat D.sp.cm.sig V.gram (P.ψ κ) i j) - _ = 0`.
+
+Rewrite `h3` using `[Matrix.map_apply]`. Rewrite using `[h3, sub_eq_zero]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[Matrix.one_apply, h]`.
+-/
 theorem stdFrame_stab_red : ∀ (D : D7) (V : HSp D) (n : ℕ) (hF : D.host.F = maximalRealSubfield D.host.E) (P : principalLevelFrame.RowPsi V n) (β : GL (Fin V.rank) (EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)), R3.StdFrame hF P → IsBaseFrame V β Λ 1 → ∀ κ ∈ ReciprocityTheory.Aut.Umax D.host.E n, finE V (P.ψ κ) ∈ Formalism.L2.DIV.St β ∧ ∀ (A : Set (HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)))) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E))) (PP : Formalism.L2.DIV.Pl D.host.E), ReciprocityTheory.Aut.TrivOutside A κ → NG.OverPl PP v → v ∉ A → redFn β PP (finE V (P.ψ κ)) = 1 := by
   intro D V n hF P β Λ hP hB κ hκ
   have hSt : finE V (P.ψ κ) ∈ Formalism.L2.DIV.St β :=

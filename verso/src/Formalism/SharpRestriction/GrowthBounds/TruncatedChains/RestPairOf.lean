@@ -12,17 +12,28 @@ section
 
 variable {n : ℕ} {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
 
+/- English proof (translation)
+Use `hE.1 a b c d` as an intermediate fact. Rewrite `this` using `[if_neg h1, if_neg h2, sub_zero, sub_eq_zero]`. Conclude with `this`.
+-/
 theorem comm_of_disj {E : GLOps n K V} (hE : IsGLRep E) {a b c d : Fin n} (h1 : b ≠ c) (h2 : d ≠ a) :
     Commute (E a b) (E c d) := by
   have := hE.1 a b c d
   rw [if_neg h1, if_neg h2, sub_zero, sub_eq_zero] at this
   exact this
 
+/- English proof (translation)
+Unfold `divPowE`. Conclude with `((h.pow_pow j k).smul_left _).smul_right _`.
+-/
 theorem divPow_comm {E : GLOps n K V} {a b c d : Fin n} (h : Commute (E a b) (E c d)) (j k : ℕ) :
     Commute (divPowE E a b j) (divPowE E c d k) := by
   unfold divPowE
   exact ((h.pow_pow j k).smul_left _).smul_right _
 
+/- English proof (translation)
+Unfold `pf`. Use `Commute.sum_left _ _ _ fun j _ => Commute.sum_right _ _ _ fun k _ => ?_` and prove the remaining obligations. Use `(Commute.smul_left ?_ _).smul_right _` and prove the remaining obligations. Establish `c1 : Commute (E b a) (E d c)` using `comm_of_disj hE h2 h3.symm`. Establish `c2 : Commute (E b a) (E c d)` using `comm_of_disj hE h1 h4.symm`.
+
+Establish `c3 : Commute (E a b) (E d c)` using `comm_of_disj hE h4 h1.symm`. Establish `c4 : Commute (E a b) (E c d)` using `comm_of_disj hE h3 h2.symm`. Conclude with `Commute.mul_left (Commute.mul_right (divPow_comm c1 j k) (divPow_comm c2 j k)) (Commute.mul_right (divPow_comm c3 j k) (divPow_comm c4 j k))`.
+-/
 theorem pf_comm {E : GLOps n K V} (hE : IsGLRep E) {a b c d : Fin n} (h1 : a ≠ c) (h2 : a ≠ d) (h3 : b ≠ c)
     (h4 : b ≠ d) (s s' T : ℕ) : Commute (pf E a b s T) (pf E c d s' T) := by
   unfold pf
@@ -35,12 +46,22 @@ theorem pf_comm {E : GLOps n K V} (hE : IsGLRep E) {a b c d : Fin n} (h1 : a ≠
   exact Commute.mul_left (Commute.mul_right (divPow_comm c1 j k) (divPow_comm c2 j k))
     (Commute.mul_right (divPow_comm c3 j k) (divPow_comm c4 j k))
 
+/- English proof (translation)
+Rewrite using `[mem_weightSpace_iff_diagonal_eigen, mem_weightSpace_iff_diagonal_eigen]`. Use `forall_congr' fun a => ?_` and prove the remaining obligations. Simplify using `only [dualOps, LinearMap.neg_apply, Pi.neg_apply, Int.cast_neg, neg_smul, neg_inj]`.
+-/
 theorem dual_mem (E : GLOps n K V) (ν : Fin n → ℤ) (x : V) :
     x ∈ weightSp (dualOps E) (-ν) ↔ x ∈ weightSp E ν := by
   rw [mem_weightSpace_iff_diagonal_eigen, mem_weightSpace_iff_diagonal_eigen]
   refine forall_congr' fun a => ?_
   simp only [dualOps, LinearMap.neg_apply, Pi.neg_apply, Int.cast_neg, neg_smul, neg_inj]
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b c d`. Use `hE.1 b a d c` as an intermediate fact. Simplify using `only [dualOps, neg_mul_neg]`. Rewrite using `[this, if_congr (eq_comm (a := a) (b := d)) rfl rfl, if_congr (eq_comm (a := c) (b := b)) rfl rfl]`.
+
+Apply the tactic sequence `split_ifs <;> abel`. Introduce `x`. Take `⟨W, h1, h2, h3⟩` from `hE.2.1 x`. Conclude with `⟨W, h1, h2, fun a b y hy => by`. Simplify using `only [dualOps, LinearMap.neg_apply]`.
+
+Conclude with `W.neg_mem (h3 b a y hy)⟩`. Rewrite using `[eq_top_iff, ← hE.2.2]`. Use `iSup_le fun ν => le_iSup_of_le (-ν) fun x hx => (dual_mem E ν x).2 hx` and prove the remaining obligations.
+-/
 theorem dual_rep {E : GLOps n K V} (hE : IsGLRep E) : IsGLRep (dualOps E) := by
   refine ⟨?_, ?_, ?_⟩
   · intro a b c d
@@ -56,11 +77,17 @@ theorem dual_rep {E : GLOps n K V} (hE : IsGLRep E) : IsGLRep (dualOps E) := by
   · rw [eq_top_iff, ← hE.2.2]
     refine iSup_le fun ν => le_iSup_of_le (-ν) fun x hx => (dual_mem E ν x).2 hx
 
+/- English proof (translation)
+Simplify using `only [divPowE, dualOps]`. Rewrite using `[show -E y x = (-1 : K) • E y x by simp, smul_pow, smul_comm]`.
+-/
 theorem divPow_dual (E : GLOps n K V) (x y : Fin n) (k : ℕ) :
     divPowE (dualOps E) x y k = (-1 : K) ^ k • divPowE E y x k := by
   simp only [divPowE, dualOps]
   rw [show -E y x = (-1 : K) • E y x by simp, smul_pow, smul_comm]
 
+/- English proof (translation)
+Unfold `pf`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[divPow_dual, divPow_dual, smul_mul_smul_comm, ← mul_pow]`. Simplify using the standard rewrite rules.
+-/
 theorem pf_dual (E : GLOps n K V) (x y : Fin n) (c T : ℕ) : pf (dualOps E) x y c T = pf E y x c T := by
   unfold pf
   refine Finset.sum_congr rfl fun k _ => ?_
@@ -70,8 +97,14 @@ theorem pf_dual (E : GLOps n K V) (x y : Fin n) (c T : ℕ) : pf (dualOps E) x y
 
 end
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ hE _ _ _ _ h1 h2 h3 h4 s s' T` and use `pf_comm hE h1 h2 h3 h4 s s' T`.
+-/
 theorem restComm : RestComm := fun _ _ _ _ _ _ _ hE _ _ _ _ h1 h2 h3 h4 s s' T => pf_comm hE h1 h2 h3 h4 s s' T
 
+/- English proof (translation)
+Introduce `K V _ _ _ _ _ n E hE a b c hab hac hbc ν t u hu T hT w hw`. Use `h K V n (dualOps E) (dual_rep hE) c b a hbc.symm hac.symm hab.symm (-ν) t u (by simp only [Pi.neg_apply]; omega) T hT w ((dual_mem E ν w).2 hw)` as an intermediate fact. Simplify using `only [pf_dual] at this`. Simplify using `only [dualOps, LinearMap.neg_apply, map_neg, neg_inj] at this`. Conclude with `this`.
+-/
 theorem restPair'_of (h : RestPair) : RestPair' := by
   intro K V _ _ _ _ _ n E hE a b c hab hac hbc ν t u hu T hT w hw
   have := h K V n (dualOps E) (dual_rep hE) c b a hbc.symm hac.symm hab.symm (-ν) t u
@@ -80,6 +113,9 @@ theorem restPair'_of (h : RestPair) : RestPair' := by
   simp only [dualOps, LinearMap.neg_apply, map_neg, neg_inj] at this
   exact this
 
+/- English proof (translation)
+Introduce `K V _ _ _ _ _ n E hE a b c hab hac hbc ν s t hs ht T hT x hx`. Use `h K V n (dualOps E) (dual_rep hE) c b a hbc.symm hac.symm hab.symm (-ν) t s (by simp only [Pi.neg_apply]; omega) (by simp only [Pi.neg_apply]; omega) T hT x ((dual_mem E ν x).2 hx)` as an intermediate fact. Simplify using `only [pf_dual] at this`. Rewrite `this` using `[add_comm t s]`. Conclude with `this.symm`.
+-/
 theorem ybat_symm (sg ta : ℕ) (h : YBat sg ta) : YBat ta sg := by
   intro K V _ _ _ _ _ n E hE a b c hab hac hbc ν s t hs ht T hT x hx
   have := h K V n (dualOps E) (dual_rep hE) c b a hbc.symm hac.symm hab.symm (-ν) t s

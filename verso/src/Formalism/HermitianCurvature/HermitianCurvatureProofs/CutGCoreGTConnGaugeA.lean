@@ -6,6 +6,9 @@ namespace Formalism.FourierDecayAlt.P.CutMP.Gauge.GC
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P Bs X d hH`. Establish `hOK : P.OK` using `hH.1.1`. Use `show 0 ≤ P.T * P.T'`. Conclude with `(mul_pos hOK.T_pos hOK.T'_pos).le`.
+-/
 theorem torus_parameter : GTCTT := by
   intro Wp Wq _ _ _ _ _ _ P Bs X d hH
   have hOK : P.OK := hH.1.1
@@ -17,17 +20,34 @@ section frame
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Use `first`. Consider the case `rfl`. Consider the case `(simp [B.hsVec]; done)`. Consider the case `(unfold B.hsVec; rw [← WithLp.toLp_smul]; rfl)`.
+-/
 theorem hsVec_smul (c : ℂ) (A : Wq →L[ℂ] Wp) : B.hsVec (c • A) = c • B.hsVec A := by
   first
   | rfl
   | (simp [B.hsVec]; done)
   | (unfold B.hsVec; rw [← WithLp.toLp_smul]; rfl)
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem star_mul_self_of_norm {z : ℂ} (h : ‖z‖ = 1) : star z * z = 1 := by
   calc star z * z = (starRingEnd ℂ) z * z := rfl
     _ = ((‖z‖ : ℝ) : ℂ) ^ 2 := Complex.conj_mul' _
     _ = 1 := by rw [h]; norm_num
 
+/- English proof (translation)
+Take `⟨hs, hf⟩` from `he`. Use `⟨fun ρ => (hu ρ).1.smul (hs ρ), fun ζ hζ => ?_⟩` and prove the remaining obligations. Take `⟨hF, hO, hX⟩` from `hf ζ hζ`. Establish `hn : ∀ ρ, star (u ρ ζ) * u ρ ζ = 1` using `fun ρ => star_mul_self_of_norm ((hu ρ).2 ζ hζ)`. Use `⟨fun ρ => ?_, fun ρ ρ' => ?_, fun X hXF => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `hF ρ beta_reduce`. Simplify using `only [NF.Fib, Set.mem_setOf_eq] at h1 ⊢`. Introduce `p hp`. Rewrite using `[ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul, h1 p hp]`. Use `beta_reduce`.
+
+Rewrite using `[hsVec_smul, hsVec_smul, inner_smul_left, inner_smul_right, hO ρ ρ']`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[mul_one]`. Conclude with `hn ρ`.
+
+Rewrite using `[mul_zero, mul_zero]`. Use `conv_lhs => rw [hX X hXF]`. Use `Finset.sum_congr rfl (fun ρ _ => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[hsVec_smul, inner_smul_left, smul_smul]`.
+
+Use `congr 1`. Rewrite using `[show (starRingEnd ℂ) (u ρ ζ) = star (u ρ ζ) from rfl]`. Take the linear combination `(-(inner ℂ (B.hsVec (e ρ ζ)) (B.hsVec X))) * hn ρ`.
+-/
 theorem isFrameB_phase (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) (e : M.Ty P → ℂ → (Wq →L[ℂ] Wp))
     (u : M.Ty P → ℂ → ℂ) (he : IsFrameB P Bs e)
     (hu : ∀ ρ, ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (u ρ) (Ann P) ∧ ∀ ζ ∈ Ann P, ‖u ρ ζ‖ = 1) :
@@ -61,6 +81,9 @@ end frame
 
 section trans
 
+/- English proof (translation)
+Use `show ContDiffOn ℝ MA.sm (MA.ext (fun q : MA.Qp P.r P.TT => v q.1.2)) (MA.Qset P.r P.TT)`. Establish `h1 : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun x : MA.E P.r => v x.2) (MA.Qset P.r P.TT)` using `hv.comp contDiff_snd.contDiffOn (fun x hx => show P.TT < Complex.normSq x.2 from hx.2)`. Conclude with `h1.congr (fun x hx => by simp [MA.ext, hx])`.
+-/
 theorem comp_snd_mem_smSub (P : M.Par) {v : ℂ → ℂ} (hv : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) v (Ann P)) :
     (fun q : MA.Qp P.r P.TT => v q.1.2) ∈ MA.smSub P.r P.TT := by
   show ContDiffOn ℝ MA.sm (MA.ext (fun q : MA.Qp P.r P.TT => v q.1.2)) (MA.Qset P.r P.TT)
@@ -68,11 +91,23 @@ theorem comp_snd_mem_smSub (P : M.Par) {v : ℂ → ℂ} (hv : ContDiffOn ℝ ((
     hv.comp contDiff_snd.contDiffOn (fun x hx => show P.TT < Complex.normSq x.2 from hx.2)
   exact h1.congr (fun x hx => by simp [MA.ext, hx])
 
+/- English proof (translation)
+Unfold `fnZ MA.toSm`. Conclude with `dif_pos (comp_snd_mem_smSub P hv)`.
+-/
 theorem fnZ_eq_mk (P : M.Par) {v : ℂ → ℂ} (hv : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) v (Ann P)) :
     fnZ P v = ⟨fun q => v q.1.2, comp_snd_mem_smSub P hv⟩ := by
   unfold fnZ MA.toSm
   exact dif_pos (comp_snd_mem_smSub P hv)
 
+/- English proof (translation)
+Distinguish the cases in `hg : g ∈ MA.smSub P.r P.TT`. Establish `hvg : (fun q : MA.Qp P.r P.TT => v q.1.2 * g q) ∈ MA.smSub P.r P.TT` using `(MA.smSub P.r P.TT).mul_mem (comp_snd_mem_smSub P hv) hg`. Rewrite using `[fnZ_eq_mk P hv]`. Unfold `MA.toSm`. Rewrite using `[dif_pos hvg, dif_pos hg]`.
+
+Both sides reduce to the same expression. Establish `hvg : (fun q : MA.Qp P.r P.TT => v q.1.2 * g q) ∉ MA.smSub P.r P.TT`. Introduce `h`. Apply `hg` to reduce the goal to its premises. Establish `h2` using `(MA.smSub P.r P.TT).mul_mem (comp_snd_mem_smSub P hw) h`.
+
+Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `q`. Establish `h3 : w q.1.2 * v q.1.2 = 1` using `hvw q.1.2 q.2.2`. Simplify using `only [Pi.mul_apply]`. Rewrite using `[← mul_assoc, h3, one_mul]`.
+
+Unfold `MA.toSm`. Rewrite using `[dif_neg hvg, dif_neg hg, mul_zero]`.
+-/
 theorem toSm_mulZ (P : M.Par) {v w : ℂ → ℂ} (hv : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) v (Ann P))
     (hw : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) w (Ann P)) (hvw : ∀ ζ ∈ Ann P, w ζ * v ζ = 1)
     (g : MA.Qp P.r P.TT → ℂ) :
@@ -99,6 +134,9 @@ theorem toSm_mulZ (P : M.Par) {v w : ℂ → ℂ} (hv : ContDiffOn ℝ ((⊤ : �
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `q`. Simplify using `only [rawR, hsVec_smul, inner_smul_left]`. Rewrite using `[show star (u ρ q.1.2) = (starRingEnd ℂ) (u ρ q.1.2) from rfl]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rawR_phase (P : M.Par) (μsec : ℂ → Matrix (Fin (P.k + 1)) (Fin (P.k + 1)) ℂ)
     (e : M.Ty P → ℂ → (Wq →L[ℂ] Wp)) (u : M.Ty P → ℂ → ℂ) (Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) (ρ : M.Ty P) :
     rawR P μsec (fun ρ ζ => u ρ ζ • e ρ ζ) Φ ρ = fun q => star (u ρ q.1.2) * rawR P μsec e Φ ρ q := by
@@ -107,6 +145,9 @@ theorem rawR_phase (P : M.Par) (μsec : ℂ → Matrix (Fin (P.k + 1)) (Fin (P.k
   rw [show star (u ρ q.1.2) = (starRingEnd ℂ) (u ρ q.1.2) from rfl]
   ring
 
+/- English proof (translation)
+Establish `hs : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun ζ : ℂ => star ζ)` using `by first`. Consider the case `exact contDiff_id.star`. Consider the case `exact Complex.conjCLE.contDiff`. Consider the case `simpa using (Complex.conjCLE.contDiff (n := ((⊤ : ℕ∞) : WithTop ℕ∞)))`. Conclude with `hs.comp_contDiffOn hv`.
+-/
 theorem conj_smooth {v : ℂ → ℂ} {s : Set ℂ} (hv : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) v s) :
     ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun ζ => star (v ζ)) s := by
   have hs : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun ζ : ℂ => star ζ) := by
@@ -116,6 +157,9 @@ theorem conj_smooth {v : ℂ → ℂ} {s : Set ℂ} (hv : ContDiffOn ℝ ((⊤ :
     | simpa using (Complex.conjCLE.contDiff (n := ((⊤ : ℕ∞) : WithTop ℕ∞)))
   exact hs.comp_contDiffOn hv
 
+/- English proof (translation)
+Simplify using `only [trR]`. Rewrite using `[rawR_phase]`. Conclude with `toSm_mulZ P (conj_smooth (hu ρ).1) (hu ρ).1 (fun ζ hζ => by show u ρ ζ * star (u ρ ζ) = 1`. Rewrite using `[mul_comm]`. Conclude with `star_mul_self_of_norm ((hu ρ).2 ζ hζ)) _`.
+-/
 theorem trR_phase (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) (e : M.Ty P → ℂ → (Wq →L[ℂ] Wp))
     (u : M.Ty P → ℂ → ℂ)
     (hu : ∀ ρ, ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (u ρ) (Ann P) ∧ ∀ ζ ∈ Ann P, ‖u ρ ζ‖ = 1)
@@ -135,6 +179,9 @@ section act
 
 def mulQ (P : M.Par) (x : (MA.DQ P).Pr) (f : MA.SmQ P.r P.TT) : MA.SmQ P.r P.TT := x.1 f
 
+/- English proof (translation)
+Unfold `MA.actA`. Use `(Fintype.sum_eq_single ρ (fun b hb => ?_)).trans ?_` and prove the remaining obligations. Establish `h0` using `congrArg (fun m : (MA.DQ P).Pr => m.1 (g b)) (Matrix.diagonal_apply_ne x (Ne.symm hb))`. Apply the tactic sequence `exact h0.trans (by first | rfl | simp)`. Conclude with `congrArg (fun m : (MA.DQ P).Pr => m.1 (g ρ)) (Matrix.diagonal_apply_eq x ρ)`.
+-/
 theorem actA_diag (P : M.Par) (x : M.Ty P → (MA.DQ P).Pr) (g : M.Ty P → MA.SmQ P.r P.TT) (ρ : M.Ty P) :
     MA.actA P (Matrix.diagonal x : MA.A P (MA.DQ P)) g ρ = (x ρ).1 (g ρ) := by
   unfold MA.actA
@@ -143,9 +190,15 @@ theorem actA_diag (P : M.Par) (x : M.Ty P → (MA.DQ P).Pr) (g : M.Ty P → MA.S
     exact h0.trans (by first | rfl | simp)
   · exact congrArg (fun m : (MA.DQ P).Pr => m.1 (g ρ)) (Matrix.diagonal_apply_eq x ρ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem algebraMap_fst_apply (P : M.Par) (c : ℂ) (f : MA.SmQ P.r P.TT) :
     (algebraMap ℂ (MA.DQ P).Pr c).1 f = c • f := rfl
 
+/- English proof (translation)
+Establish `hk : (MA.kap P (MA.DQ P) f : MA.A P (MA.DQ P)) = Matrix.diagonal (fun π => algebraMap ℂ (MA.DQ P).Pr (f π))` using `by first`. Consider the case `rfl`. Consider the case `(ext i j; simp [MA.kap, Matrix.diagonal_apply])`. Rewrite using `[hk, actA_diag, algebraMap_fst_apply]`.
+-/
 theorem actA_kap (P : M.Par) (f : M.Ty P → ℂ) (g : M.Ty P → MA.SmQ P.r P.TT) (ρ : M.Ty P) :
     MA.actA P (MA.kap P (MA.DQ P) f) g ρ = f ρ • g ρ := by
   have hk : (MA.kap P (MA.DQ P) f : MA.A P (MA.DQ P)) =
@@ -155,6 +208,9 @@ theorem actA_kap (P : M.Par) (f : M.Ty P → ℂ) (g : M.Ty P → MA.SmQ P.r P.T
     | (ext i j; simp [MA.kap, Matrix.diagonal_apply])
   rw [hk, actA_diag, algebraMap_fst_apply]
 
+/- English proof (translation)
+Unfold `MA.nabA`. Rewrite using `[actA_diag]`. Both sides reduce to the same expression.
+-/
 theorem actA_nabA (P : M.Par) (g : M.Ty P → MA.SmQ P.r P.TT) (ρ : M.Ty P) :
     MA.actA P (MA.nabA P (MA.DQ P)) g ρ =
       dzQ P (g ρ) + (M.aC P ρ : ℂ) • mulQ P (MA.DQ P).zbP (mulQ P ((MA.DQ P).ggiP P.TT) (g ρ)) := by
@@ -162,6 +218,9 @@ theorem actA_nabA (P : M.Par) (g : M.Ty P → MA.SmQ P.r P.TT) (ρ : M.Ty P) :
   rw [actA_diag]
   rfl
 
+/- English proof (translation)
+Unfold `MA.nabsA`. Rewrite using `[actA_diag]`. Both sides reduce to the same expression.
+-/
 theorem actA_nabsA (P : M.Par) (g : M.Ty P → MA.SmQ P.r P.TT) (ρ : M.Ty P) :
     MA.actA P (MA.nabsA P (MA.DQ P)) g ρ =
       -dzbQ P (g ρ) + (M.aC P ρ : ℂ) • mulQ P (MA.DQ P).zP (mulQ P ((MA.DQ P).ggiP P.TT) (g ρ)) := by
@@ -176,6 +235,9 @@ section kap
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Unfold `KapF at hk ⊢`. Introduce `f Φ`. Use function extensionality and compare the values at `ρ`. Rewrite using `[actA_kap, trR_phase P Bs e u hu, trR_phase P Bs e u hu, hk f Φ, actA_kap, mul_smul_comm]`.
+-/
 theorem kapF_phase (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq)
     (d : Q.NFData P (Q.Pr (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π'))) (e : M.Ty P → ℂ → (Wq →L[ℂ] Wp))
     (u : M.Ty P → ℂ → ℂ)

@@ -19,11 +19,21 @@ def untwist (W : R2 Ω l) (θ : G ℚ Ω →* (Qbar l)ˣ) : R2 Ω l where
     simp only [map_mul, mul_inv, Units.val_mul, Units.coe_map, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe,
       ← Algebra.smul_def, smul_mul_assoc, mul_smul_comm, smul_smul, Algebra.algebraMap_eq_smul_one, one_mul, mul_comm]
 
+/- English proof (translation)
+Use `show algebraMap (Qbar l) (Matrix (Fin 2) (Fin 2) (Qbar l)) (((θ s)⁻¹ : (Qbar l)ˣ) : Qbar l) * mat W s = _`. Rewrite using `[← Algebra.smul_def]`.
+-/
 theorem mat_untwist (W : R2 Ω l) (θ : G ℚ Ω →* (Qbar l)ˣ) (s : G ℚ Ω) :
     mat (untwist W θ) s = (((θ s)⁻¹ : (Qbar l)ˣ) : Qbar l) • mat W s := by
   show algebraMap (Qbar l) (Matrix (Fin 2) (Fin 2) (Qbar l)) (((θ s)⁻¹ : (Qbar l)ˣ) : Qbar l) * mat W s = _
   rw [← Algebra.smul_def]
 
+/- English proof (translation)
+Establish `h1 : Continuous fun s => mat (untwist W θ) s`. Simplify using `only [mat_untwist]`. Conclude with `(Units.continuous_coe_inv.comp hθ).smul (Units.continuous_val.comp hW)`. Use `Units.continuous_iff.2 ⟨h1, ?_⟩` and prove the remaining obligations. Establish `h2 : (fun s => (((untwist W θ s)⁻¹ : GL (Fin 2) (Qbar l)) : Matrix (Fin 2) (Fin 2) (Qbar l))) = fun s => (θ s : Qbar l) • (((W s)⁻¹ : GL (Fin 2) (Qbar l)) : Matrix (Fin 2) (Fin 2) (Qbar l))`.
+
+Use function extensionality and compare the values at `s`. Rewrite using `[← map_inv, ← map_inv]`. Use `mat_untwist W θ s⁻¹` as an intermediate fact. Rewrite `this` using `[map_inv θ, inv_inv]`. Conclude with `this`.
+
+Rewrite using `[h2]`. Conclude with `(Units.continuous_val.comp hθ).smul (Units.continuous_coe_inv.comp hW)`.
+-/
 theorem continuous_untwist {W : R2 Ω l} {θ : G ℚ Ω →* (Qbar l)ˣ} (hW : Continuous W) (hθ : Continuous θ) :
     Continuous (untwist W θ) := by
   have h1 : Continuous fun s => mat (untwist W θ) s := by
@@ -40,6 +50,23 @@ theorem continuous_untwist {W : R2 Ω l} {θ : G ℚ Ω →* (Qbar l)ˣ} (hW : C
   rw [h2]
   exact (Units.continuous_val.comp hθ).smul (Units.continuous_coe_inv.comp hW)
 
+/- English proof (translation)
+Introduce `l _ Ω _ _ _ W c θ ρ Y η y hW hθ _ hWρ hρ hYc hYi hSh hpush hη _ hy hlim q hq`. Establish `hρ' : mat (untwist W θ) = ρ`. Use function extensionality and compare the values at `s`. Rewrite using `[mat_untwist, hWρ, smul_smul, Units.inv_mul, one_smul]`. Take `⟨B, hB, v, hv⟩` from `GlobalTheory.T.shifted_cocycle_limit_integral l Ω (untwist W θ) c Y η y (continuous_untwist hW hθ) (by rw [hρ']; exact hρ) hYc hYi (by rw [hρ']; exact hSh) hpush hη hlim q hq`.
+
+Use `⟨B, hB, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : ∀ s ∈ Ine (F := ℚ) B, θ s = 1`. Use `⟨v, fun s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[hv s hs, mat_untwist, h s hs]`. Simplify using the standard rewrite rules.
+
+Use `push Not at h`. Take `⟨s, hs, hne⟩` from `h`. Use `⟨0, fun t ht => ?_⟩` and prove the remaining obligations. Establish `hc : y (s * t) = y s + mat W s *ᵥ y t`. Rewrite using `[hy.2 s t]`.
+
+Both sides reduce to the same expression. Establish `hm : mat (untwist W θ) (s * t) = mat (untwist W θ) s * mat (untwist W θ) t`. Simplify using `only [mat, map_mul, Units.val_mul]`. Establish `hc' : y (s * t) = y s + mat (untwist W θ) s *ᵥ y t`. Rewrite using `[hv _ (mul_mem hs ht), hv s hs, hv t ht, hm, Matrix.mulVec_sub, Matrix.mulVec_mulVec]`.
+
+Normalize the expressions using the abelian group laws. Rewrite `hc'` using `[hc, mat_untwist, Matrix.smul_mulVec, add_right_inj]`. Establish `h0 : mat W s *ᵥ y t = 0`. Establish `h1 : (1 - (((θ s)⁻¹ : (Qbar l)ˣ) : Qbar l)) • (mat W s *ᵥ y t) = 0`. Rewrite using `[sub_smul, one_smul, ← hc', sub_self]`.
+
+Use `(smul_eq_zero.1 h1).resolve_left fun h2 => hne ?_` and prove the remaining obligations. Establish `h3 : (θ s)⁻¹ = 1` using `Units.ext (sub_eq_zero.1 h2).symm`. Conclude with `inv_eq_one.1 h3`. Establish `h4 : y t = 0`. Establish `h5 : mat W s⁻¹ *ᵥ (mat W s *ᵥ y t) = y t`.
+
+Rewrite using `[Matrix.mulVec_mulVec]`. Establish `: mat W s⁻¹ * mat W s = 1`. Simplify using `only [mat]`. Rewrite using `[← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]`. Rewrite using `[this, Matrix.one_mulVec]`.
+
+Rewrite using `[← h5, h0, Matrix.mulVec_zero]`. Rewrite using `[h4]`. Simplify using the standard rewrite rules.
+-/
 theorem unr_of_twisted_limit : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (W : R2 Ω l) (c : Coef l) (θ : G ℚ Ω →* (Qbar l)ˣ) (ρ : G ℚ Ω → Matrix (Fin 2) (Fin 2) (Qbar l)) (Y : ∀ r : ℕ, G ℚ Ω → (ZMod (l ^ r))ˣ → Fin 2 → Qbar l) (η : ∀ r : ℕ, (ZMod (l ^ r))ˣ → Qbar l) (y : G ℚ Ω → Fin 2 → Qbar l), Continuous W → Continuous θ → (∀ s i j, mat W s i j ∈ c.O) → (∀ s, mat W s = (θ s : Qbar l) • ρ s) → (∀ s i j, ρ s i j ∈ c.O) → (∀ r x i, Continuous fun s => Y r s x i) → (∀ r s x i, Y r s x i ∈ c.O) → (∀ r, ShCoc ρ (cycMod ℚ Ω l r)⁻¹ (Y r)) → (∀ r s, Y r s = push (Units.map (ZMod.castHom (pow_dvd_pow l (Nat.le_succ r)) (ZMod (l ^ r))).toMonoidHom) (Y (r + 1)) s) → (∀ r x, η r x ∈ c.O) → (∀ r s x, ‖η r (x * cycMod ℚ Ω l r s) - η r x * (θ s : Qbar l)‖ ≤ ‖((l : ℕ) : Qbar l) ^ r‖) → y ∈ Z1 (Loc.colRep W) → (∀ r s i, ‖y s i - spec (η r) (Y r) s i‖ ≤ ‖((l : ℕ) : Qbar l) ^ r‖) → Unr W y := by
   intro l _ Ω _ _ _ W c θ ρ Y η y hW hθ _ hWρ hρ hYc hYi hSh hpush hη _ hy hlim q hq
   have hρ' : mat (untwist W θ) = ρ := by

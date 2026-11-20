@@ -7,6 +7,15 @@ open GlobalTheory.CatCoh GlobalTheory.CechDR GlobalTheory.CechCmp
 
 namespace GlobalTheory.CechCmp
 
+/- English proof (translation)
+Introduce `I _ X R _ s U hU hinf c hc T T' T'' φ ψ`. Establish `h1 : T.unop.set ⊆ T'.unop.set` using `NE.le_iff.1 (leOfHom φ.unop)`. Establish `h2 : T'.unop.set ⊆ T''.unop.set` using `NE.le_iff.1 (leOfHom ψ.unop)`. Establish `ha : T.unop.pt ∈ T''.unop.set` using `h2 (h1 T.unop.pt_mem)`. Establish `hb : T'.unop.pt ∈ T''.unop.set` using `h2 T'.unop.pt_mem`.
+
+Establish `ha' : T.unop.pt ∈ T'.unop.set` using `h1 T.unop.pt_mem`. Establish `hW : cap U T''.unop ≤ U T.unop.pt ⊓ U T'.unop.pt ⊓ U T''.unop.pt` using `le_inf (le_inf (cap_le U ha) (cap_le U hb)) (cap_le U T''.unop.pt_mem)`. Establish `hT' : cap U T'.unop ≤ U T.unop.pt ⊓ U T'.unop.pt` using `le_inf (cap_le U ha') (cap_le U T'.unop.pt_mem)`. Establish `h23 : cap U T''.unop ≤ cap U T'.unop` using `cap_mono U (leOfHom ψ.unop)`. Establish `key` using `congrArg (fun x => rsT x (cap U T''.unop)) (hc T.unop.pt T'.unop.pt T''.unop.pt)`.
+
+Simplify using `only [GlobalTheory.KS.rsT_add] at key`. Establish `e1 : U T.unop.pt ⊓ U T'.unop.pt ⊓ U T''.unop.pt ≤ U T.unop.pt ⊓ U T'.unop.pt` using `inf_le_left`. Establish `e2 : U T.unop.pt ⊓ U T'.unop.pt ⊓ U T''.unop.pt ≤ U T'.unop.pt ⊓ U T''.unop.pt` using `le_inf (inf_le_left.trans inf_le_right) inf_le_right`. Establish `e3 : U T.unop.pt ⊓ U T'.unop.pt ⊓ U T''.unop.pt ≤ U T.unop.pt ⊓ U T''.unop.pt` using `le_inf (inf_le_left.trans inf_le_left) inf_le_right`. Rewrite `key` using `[GlobalTheory.KS.rsT_rsT e1 hW, GlobalTheory.KS.rsT_rsT e2 hW, GlobalTheory.KS.rsT_rsT e3 hW]`.
+
+Apply `(cv s U hU hinf T'').injective` to reduce the goal to its premises. Rewrite using `[map_add, cv_toPos, cv_mp, cv_toPos, cv_toPos, GlobalTheory.KS.rsT_rsT hT' h23]`. Conclude with `key.symm`.
+-/
 theorem cechOneCochainToPosetCochain_mem_cocycles : ∀ (I : Type) [Finite I] (X : Scheme.{0}) (R : Type) [CommRing R] (s : X ⟶ Sp R) (U : I → X.Opens) (hU : ∀ i, IsAffineOpen (U i)) (hinf : ∀ V W : X.Opens, IsAffineOpen V → IsAffineOpen W → IsAffineOpen (V ⊓ W)), ∀ c : GlobalTheory.KS.C1 U, IsCoc U c → toPos s U hU hinf c ∈ Z1 (capF s U hU hinf) := by
   intro I _ X R _ s U hU hinf c hc T T' T'' φ ψ
   have h1 : T.unop.set ⊆ T'.unop.set := NE.le_iff.1 (leOfHom φ.unop)

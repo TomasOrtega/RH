@@ -20,6 +20,15 @@ namespace GlobalTheory.Poinc.GApprox
 
 variable {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matrix (Fin 8) (Fin 8) ℤ} {Z : Scheme.{0}} {i : F.X ⟶ Z}
 
+/- English proof (translation)
+Use `set u := algebraMap c.T.V (FractionRing c.T.V) c.T.ϖ with hu`. Establish `h0 : c.T.ϖ ≠ 0` using `c.T.irr.ne_zero`. Establish `hu0 : u ≠ 0`. Rewrite using `[hu]`. Conclude with `(IsFractionRing.injective c.T.V (FractionRing c.T.V)).ne_iff' (map_zero _) |>.2 h0`.
+
+Establish `hι0 : c.ι u ≠ 0` using `(map_ne_zero c.ι).2 hu0`. Establish `hle : ‖c.ι u‖ ≤ 1` using `(c.int u).2 ⟨_, rfl⟩`. Establish `hlt : ‖c.ι u‖ < 1`. Use `lt_of_le_of_ne hle fun h1 => ?_` and prove the remaining obligations. Establish `: ‖c.ι u⁻¹‖ ≤ 1` using `by rw [map_inv₀, norm_inv, h1, inv_one]`.
+
+Take `⟨v, hv⟩` from `(c.int _).1 this`. Apply `c.T.irr.not_isUnit` to reduce the goal to its premises. Use `IsUnit.of_mul_eq_one v ?_` and prove the remaining obligations. Apply `IsFractionRing.injective c.T.V (FractionRing c.T.V)` to reduce the goal to its premises. Rewrite using `[map_mul, hv, ← hu, mul_inv_cancel₀ hu0, map_one]`.
+
+Establish `hpos : 0 < ‖c.ι u‖` using `norm_pos_iff.2 hι0`. Unfold `CTrait.sc`. Rewrite using `[← hu]`. Combine the linear relations using `[Real.log_neg hpos hlt]`.
+-/
 theorem sc_pos {X₁ : Setup F W i} {p : ℕ} [Fact p.Prime] {z₁ : X₁.M.Z} (c : CTrait X₁ p z₁) : 0 < c.sc := by
   set u := algebraMap c.T.V (FractionRing c.T.V) c.T.ϖ with hu
   have h0 : c.T.ϖ ≠ 0 := c.T.irr.ne_zero
@@ -40,6 +49,11 @@ theorem sc_pos {X₁ : Setup F W i} {p : ℕ} [Fact p.Prime] {z₁ : X₁.M.Z} (
   rw [← hu]
   linarith [Real.log_neg hpos hlt]
 
+/- English proof (translation)
+Establish `hmem : toReal β ∈ psdCone (id : ℤ → ℤ) X` using `StrictData.toReal_mem_psdCone (mem_balForms_int.2 hs) hp`. Establish `hform : toReal (pull e.toLinearMap β') = (s / s') • toReal β`. Use `LinearMap.ext₂ fun a b => ?_` and prove the remaining obligations. Use `he a b` as an intermediate fact. Simplify using `only [toReal_apply, pull_apply, LinearMap.smul_apply, smul_eq_mul, LinearEquiv.coe_coe]`.
+
+Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : φ.evalZ (pull e.toLinearMap β') = φ.evalZ β'` using `evalZ_pull φ e.surjective _`. Rewrite using `[← h1, ← evalR_toReal φ (pull _ _), hform, hP.homog _ hmem _ (div_nonneg hs0 hs'.le), evalR_toReal]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem sc_evalZ_eq_of_equiv {φ : InvFun ℤ} {X Y : Type} [AddCommGroup X] [AddCommGroup Y] [Module.Finite ℤ X]
     [Module.Finite ℤ Y] (hP : IsPolFanOn id φ X) {β : LinearMap.BilinForm ℤ X} (hs : ∀ a b, β a b = β b a)
     (hp : ∀ x, 0 ≤ β x x) {β' : LinearMap.BilinForm ℤ Y} {s s' : ℝ} (hs0 : 0 ≤ s) (hs' : 0 < s') (e : X ≃ₗ[ℤ] Y)
@@ -56,6 +70,11 @@ theorem sc_evalZ_eq_of_equiv {φ : InvFun ℤ} {X Y : Type} [AddCommGroup X] [Ad
   rw [← h1, ← evalR_toReal φ (pull _ _), hform, hP.homog _ hmem _ (div_nonneg hs0 hs'.le), evalR_toReal]
   field_simp
 
+/- English proof (translation)
+Establish `hm : Φ.mod y = AddCommGroup.toIntModule _` using `Subsingleton.elim _ _`. Establish `hrk : Module.finrank ℤ (Φ.X y) ≤ g`. Apply the tactic sequence `convert Φ.rank_le y <;> first | rfl | exact hm.symm`. Establish `hP : IsPolFanOn id φ (Φ.X y)` using `hpol _ hrk`. Use `sc_evalZ_eq_of_equiv hP (Φ.bal y).1 (fun x => by` and compare the differences between its conclusion and the goal.
+
+Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Conclude with `(Φ.pos y x hx).le) (Φ.sc_pos y).le (sc_pos c) e he`.
+-/
 theorem sc_evalZ_eq {X₁ : Setup F W i} {p : ℕ} [Fact p.Prime] {z₁ : X₁.M.Z} {φ : InvFun ℤ} (hpol : IsPolFan id g φ)
     (Φ : FPre (id : ℤ → ℤ) g p (X₁.M.Z.presheaf.stalk z₁)) (y : Φ.Y) (c : CTrait X₁ p z₁)
     (e : Φ.X y ≃ₗ[ℤ] c.T.D.toPre.X) (he : ∀ a b, Φ.sc y * Φ.β y a b = c.sc * c.T.β (e a) (e b)) :
@@ -73,6 +92,9 @@ end GlobalTheory.Poinc.GApprox
 
 namespace GlobalTheory.Poinc.GApprox
 
+/- English proof (translation)
+Use `exists_hasSupports ℤ id q φ hpol fun X _ iM _ _ hX r γ hγ => ?_` and prove the remaining obligations. Take `rfl : iM = AddCommGroup.toIntModule X` from `Subsingleton.elim _ _`. Establish `: Module.Free ℤ X` using `inferInstance`. Conclude with `exists_supports_int φ X (hpol X hX) r γ hγ`.
+-/
 theorem exists_hasSupports_int (q : ℕ) (φ : InvFun ℤ) (hpol : IsPolFan id q φ) :
     ∃ d, 1 ≤ d ∧ HasSupports (id : ℤ → ℤ) q φ d := by
   refine exists_hasSupports ℤ id q φ hpol fun X _ iM _ _ hX r γ hγ => ?_
@@ -83,6 +105,21 @@ theorem exists_hasSupports_int (q : ℕ) (φ : InvFun ℤ) (hpol : IsPolFan id q
 end GlobalTheory.Poinc.GApprox
 
 open GlobalTheory.Poinc.GApprox in
+/- English proof (translation)
+Introduce `g n F W Z i X₁ hE hT hg φ hpol`. Take `⟨d₀, hd₀, hsup⟩` from `exists_hasSupports_int g φ hpol`. Establish `hW : 0 < W 0 0`. Use `hE.1.diag_pos (i := 0)` as an intermediate fact. Simplify using `only [Matrix.map_apply, Matrix.add_apply, Matrix.transpose_apply] at this`.
+
+Establish `h2 : (0 : ℤ) < W 0 0 + W 0 0` using `by exact_mod_cast this`. Use linear arithmetic over natural numbers and integers. Establish `hN : 3 ≤ X₁.S.r * X₁.S.N`. Establish `h1` using `X₁.big.2.2`. Establish `h2 : 1 ≤ X₁.S.N ^ X₁.S.g * X₁.S.g.factorial` using `Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero (pow_ne_zero _ (by have := X₁.S.N_ge; omega)) (Nat.factorial_ne_zero _))`.
+
+Use linear arithmetic over natural numbers and integers. Use `⟨(W 0 0).toNat * d₀, Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero (by omega) (by omega)), ?_⟩` and prove the remaining obligations. Introduce `p _ z₁ c₀ e`. Establish `hcl : IsClosed ({z₁} : Set X₁.M.Z)` using `c₀.cen ▸ isClosed_singleton_cPt c₀.y`. Take `⟨Φ, hM, hL, hR⟩` from `GlobalTheory.T.exists_classicalTrait_system_at_closedPoint g n F W Z i hE hT X₁ p z₁ hcl`.
+
+Establish `hF` using `GlobalTheory.T.classical_traits_fourier_terms_all_levels g n F W Z i X₁ p z₁ Φ hE.1 hR`. Use `haveI : IsDedekindDomain X₁.o₁ := X₁.ar.ded`. Use `haveI := X₁.M.lft`. Use `haveI : IsLocallyNoetherian X₁.M.Z := LocallyOfFiniteType.isLocallyNoetherian X₁.M.s`. Establish `hA` using `approx_of_fpre ℤ id bddAct_int_and_cm.1 g φ hpol d₀ hsup 7 W hE.1 (X₁.S.r * X₁.S.N) p hN _ Φ hL hF`.
+
+Take `⟨y₀, hev₀, e₀, he₀⟩` from `hM c₀`. Take `⟨f, hf1, hf2⟩` from `hA y₀ e`. Establish `key : ∀ (y : Φ.Y) (c : CTrait X₁ p z₁) (e' : Φ.X y ≃ₗ[ℤ] c.T.D.toPre.X), (∀ a b, Φ.sc y * Φ.β y a b = c.sc * c.T.β (e' a) (e' b)) → Φ.sc y * (((W 0 0).toNat * d₀ : ℕ) * @InvFun.evalZ ℤ _ φ (Φ.X y) _ (Φ.mod y) (Φ.fin y) (Φ.β y)) = c.sc * (((W 0 0).toNat * d₀ : ℕ) * φ.evalZ c.T.β)`. Introduce `y c e' h`. Use `sc_evalZ_eq hpol Φ y c e' h` as an intermediate fact.
+
+Combine the equalities or inequalities in the displayed calculation. Use `⟨f, ?_, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[← hev₀ f, hf1, key y₀ c₀ e₀ he₀]`. Take `⟨y, hev, e', he'⟩` from `hM c`. Break down `hf2 y with h | ⟨h, hh, hle⟩` into its components or cases.
+
+Use `left`. Rewrite using `[← hev f, ← key y c e' he']`. Conclude with `h`. Use the proof step `right; exact ⟨h, hh, by rw [← hev f, ← hev h]; exact hle⟩`.
+-/
 theorem GlobalTheory.Poinc.exists_approxAt : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0})
     (i : F.X ⟶ Z) (X₁ : Setup F W i), IsE8 W → ThetaInt F W i → 1 ≤ g → ∀ φ : InvFun ℤ, IsPolFan id g φ →
     ∃ d : ℕ, 1 ≤ d ∧ ApproxAt X₁ φ d := by

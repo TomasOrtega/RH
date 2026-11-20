@@ -14,6 +14,11 @@ namespace GlobalTheory.EvLocal
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `hs : z = ∑ i, ((Algebra.TensorProduct.basis A b).repr z i ⊗ₜ[F] (1 : E)) * ((1 : A) ⊗ₜ[F] b i)` using `by conv_lhs => rw [← (Algebra.TensorProduct.basis A b).sum_repr z]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.basis_apply, Algebra.TensorProduct.tmul_mul_tmul, TensorProduct.smul_tmul', smul_eq_mul, one_mul]`. Rewrite using `[hs, map_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, hc i, zero_mul]`.
+-/
 theorem map_eq_zero_of_repr {F A E R ι : Type} [Field F] [CommRing A] [CommRing E] [Algebra F A] [Algebra F E] [CommRing R]
     [Fintype ι] (b : Module.Basis ι F E) (φ : A ⊗[F] E →+* R) (z : A ⊗[F] E)
     (hc : ∀ i, φ (((Algebra.TensorProduct.basis A b).repr z i) ⊗ₜ[F] 1) = 0) : φ z = 0 := by
@@ -26,6 +31,11 @@ theorem map_eq_zero_of_repr {F A E R ι : Type} [Field F] [CommRing A] [CommRing
   refine Finset.sum_eq_zero fun i _ => ?_
   rw [map_mul, hc i, zero_mul]
 
+/- English proof (translation)
+Use `map_eq_zero_of_repr (A := Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) (Module.finBasis D.host.F D.host.E) ev z fun i => ?_` and prove the remaining obligations. Use `hev.2.2.1 _ fun w hw => ?_` and prove the remaining obligations. Establish `e` using `congrArg (fun z => (Algebra.TensorProduct.basis (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv D.host.F w) (Module.finBasis D.host.F D.host.E)).repr z i) (hz w hw)`. Simplify using `only [GlobalTheory.HeckeRowsCompare.cmp, AlgHom.toRingHom_eq_coe, RingHom.coe_coe] at e`. Rewrite `e` using `[GlobalTheory.HeckeRowsCompare.repr_map, map_zero]`.
+
+Conclude with `e`.
+-/
 theorem ev_eq_zero {D : D7} {l : ℕ} [Fact l.Prime] {inc : D.host.E →+* PadicAlgCl l}
     {ev : FiniteAdeleRing (𝓞 D.host.F) D.host.F ⊗[D.host.F] D.host.E →+* PadicAlgCl l} (hev : EvOk inc ev)
     (z : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)
@@ -39,6 +49,15 @@ theorem ev_eq_zero {D : D7} {l : ℕ} [Fact l.Prime] {inc : D.host.E →+* Padic
   rw [GlobalTheory.HeckeRowsCompare.repr_map, map_zero] at e
   exact e
 
+/- English proof (translation)
+Introduce `D V Pl0 pl ok i x l _ inc ev hev hl hx`. Establish `hloc : GlobalTheory.IndefiniteRowSideFullHecke.HeckeIntertwinersInert.LocAt V ((pl i.1).under (𝓞 D.host.F)) x` using `GlobalTheory.Mem.R3.LiftInertChi.locAt_of_isLocElt V _ x ((GlobalTheory.Hk3Split.isLabElt_of_isTEnv V pl ok i x).2.1 hx)`. Use extensionality with `a b`. Establish `h0 : ev (x.1.1 a b - (1 : Matrix (Fin V.rank) (Fin V.rank) _) a b) = 0`. Use `ev_eq_zero hev _ fun w hw => ?_` and prove the remaining obligations.
+
+Establish `hne : w ≠ (pl i.1).under (𝓞 D.host.F)`. Introduce and unpack `rfl`. Apply `hl` to reduce the goal to its premises. Establish `h2 : algebraMap (𝓞 D.host.F) (𝓞 D.host.E) (l : 𝓞 D.host.F) ∈ (pl i.1.1).asIdeal` using `hw`. Rewrite `h2` using `[map_natCast]`. Then use the resulting hypothesis.
+
+Establish `h1 : x.1.1.map (GlobalTheory.HeckeRowsCompare.cmp D w) = 1` using `hloc w hne`. Establish `h3` using `congrFun (congrFun h1 a) b`. Rewrite `h3` using `[Matrix.map_apply]`. Rewrite using `[map_sub, h3, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Rewrite `h0` using `[map_sub, sub_eq_zero]`. Rewrite using `[Matrix.map_apply]`. Use `h0.trans ?_` and prove the remaining obligations. Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem map_eq_one_of_isLocEnv : ∀ {D : D7} (V : Formalism.BasicNotions.TH.HSp D) {Pl0 : Type} (pl : Pl0 → Pl D.host.E) (ok : Set Pl0) (i : ok × ℕ) (x : Bridge.Gf V) {l : ℕ} [Fact l.Prime] (inc : D.host.E →+* PadicAlgCl l) (ev : FiniteAdeleRing (𝓞 D.host.F) D.host.F ⊗[D.host.F] D.host.E →+* PadicAlgCl l), EvOk inc ev → ((l : ℕ) : 𝓞 D.host.E) ∉ (pl i.1.1).asIdeal → isLocEnv V pl ok i x → ((x : GL (Fin V.rank) (FiniteAdeleRing (𝓞 D.host.F) D.host.F ⊗[D.host.F] D.host.E)).val).map ev = 1 := by
   intro D V Pl0 pl ok i x l _ inc ev hev hl hx
   have hloc : GlobalTheory.IndefiniteRowSideFullHecke.HeckeIntertwinersInert.LocAt V ((pl i.1).under (𝓞 D.host.F)) x :=

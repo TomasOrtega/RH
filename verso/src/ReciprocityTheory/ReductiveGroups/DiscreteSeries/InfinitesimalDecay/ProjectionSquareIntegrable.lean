@@ -12,6 +12,11 @@ namespace ReciprocityTheory.ChartRestriction.DS.DecInf
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Introduce `s t h`. Establish `h' : lam s + (1 - (n : ℝ)) / 2 = lam t + (1 - (n : ℝ)) / 2`. Use `h` as an intermediate fact. Simplify using `only [poleF, cond_false, poleV] at this`. Conclude with `this` after adjusting the coercions.
+
+Conclude with `hlam.injective (by linarith)`.
+-/
 theorem poles_injective {lam : Fin n → ℝ} (hlam : StrictAnti lam) : Function.Injective (poleF false lam) := by
   intro s t h
   have h' : lam s + (1 - (n : ℝ)) / 2 = lam t + (1 - (n : ℝ)) / 2 := by
@@ -20,6 +25,35 @@ theorem poles_injective {lam : Fin n → ℝ} (hlam : StrictAnti lam) : Function
     exact_mod_cast this
   exact hlam.injective (by linarith)
 
+/- English proof (translation)
+Establish `hσ` using `rreg_isURepOn ε`. Establish `hD` using `isDerivedOn_smE hσ`. Establish `hV` using `datumV_isKIrrHW hP hv₀`. Establish `hc` using `datumV_casimir hP v₀`. Establish `hVK` using `datumV_kStable hP v₀`.
+
+Establish `hsm : ∀ v : smD ε (rreg ε), IsSmoothVecU ε (rreg ε) (v : L2 ε)` using `fun v => (mem_smD_iff ε (rreg ε) (v : L2 ε)).1 v.2`. Take `⟨B, hdec, -⟩` from `ee_decomp false hσ hD hgap hV hc hVK hW`. Take `⟨hpole, -⟩` from `pole_match false hσ hD hsm hgap hV hc hVK hW hG`. Establish `hinj : Set.InjOn (poleF false lam) (Finset.univ : Finset (Fin n))` using `(poles_injective hgap.1).injOn`. Use `set a := poleF false lam with ha`.
+
+Use `set EE := eeF false (smE ε (rreg ε)) with hEE`. Use `set S := tensSub (genSub (smE ε (rreg ε)) (datumV ε Ψ v₀)) with hS`. Set `P : Fin n → Module.End ℂ (Fin n → smD ε (rreg ε))` to `fun s => Polynomial.aeval EE (Lagrange.basis Finset.univ a s)`. Establish `hPe : ∀ s (e : Fin n → smD ε (rreg ε)) (z : ℂ), EE e = z • e → P s e = (Lagrange.basis Finset.univ a s).eval z • e` using `fun s e z he => dc_aeval_eigen he _`. Establish `hLval : ∀ s t, (Lagrange.basis Finset.univ a s).eval (a t) = if s = t then 1 else 0`.
+
+Introduce `s t`. Use `split_ifs with hst`. Substitute `hst` using the available equality. Conclude with `Lagrange.eval_basis_self hinj (Finset.mem_univ _)`. Conclude with `Lagrange.eval_basis_of_ne hst (Finset.mem_univ _)`.
+
+Establish `hterm : ∀ s, ∀ e ∈ S, ∀ z : ℂ, EE e = z • e → EE (P s e) = a s • P s e`. Introduce `s e he z hz`. Distinguish the cases in `h0 : e = 0`. Substitute `h0` using the available equality. Simplify using the standard rewrite rules.
+
+Take `⟨t, rfl⟩` from `hpole z e he h0 hz`. Rewrite using `[hPe s e _ hz, hLval s t]`. Use `split_ifs with hst`. Substitute `hst` using the available equality. Rewrite using `[one_smul, hz]`.
+
+Simplify using the standard rewrite rules. Establish `hsum1 : ∀ e ∈ S, ∀ z : ℂ, EE e = z • e → ∑ s, P s e = e`. Introduce `e he z hz`. Distinguish the cases in `h0 : e = 0`. Substitute `h0` using the available equality.
+
+Simplify using the standard rewrite rules. Take `⟨t, rfl⟩` from `hpole z e he h0 hz`. Establish `hne : (Finset.univ : Finset (Fin n)).Nonempty` using `⟨t, Finset.mem_univ _⟩`. Establish `h1 : ∑ s, (Lagrange.basis Finset.univ a s).eval (a t) = 1`. Rewrite using `[← Polynomial.eval_finsetSum, Lagrange.sum_basis hinj hne, Polynomial.eval_one]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `⟨P, fun s => dc_isGKEndo_aeval (isGKEndo_eeF hσ hD _ false) _, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `s f hf`. Take `⟨fb, hfb, hfe⟩` from `hdec f hf`. Rewrite using `[hfe, map_sum, map_sum, Finset.smul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun b _ => hterm s _ (hfb b).1 _ (hfb b).2`. Introduce `s f _ hf`. Rewrite using `[hPe s f _ hf, Lagrange.eval_basis_self hinj (Finset.mem_univ _), one_smul]`. Introduce `s f hf z' hz' hfz`. Distinguish the cases in `h0 : f = 0`.
+
+Substitute `h0` using the available equality. Simplify using the standard rewrite rules. Take `⟨t, rfl⟩` from `hpole z' f hf h0 hfz`. Establish `hts : s ≠ t` using `fun h => hz' (by rw [h])`. Rewrite using `[hPe s f _ hfz, hLval s t, if_neg hts, zero_smul]`.
+
+Introduce `f hf`. Take `⟨fb, hfb, hfe⟩` from `hdec f hf`. Use `conv_lhs => rw [hfe]`. Rewrite using `[hfe]`. Simplify using `only [map_sum]`.
+
+Rewrite using `[Finset.sum_comm]`. Conclude with `(Finset.sum_congr rfl fun b _ => hsum1 _ (hfb b).1 _ (hfb b).2).symm`. Introduce `s j`. Take `⟨C, hC⟩` from `NT_poly_le false (smE ε (rreg ε)) (Lagrange.basis Finset.univ a s) j`. Establish `hdeg : (Lagrange.basis Finset.univ a s).natDegree = n - 1`.
+
+Rewrite using `[Lagrange.natDegree_basis hinj (Finset.mem_univ _), Finset.card_univ, Fintype.card_fin]`. Use `⟨C, fun f _ => ?_⟩` and prove the remaining obligations. Use `hC f` as an intermediate fact. Rewrite `this` using `[hdeg]`. Conclude with `this`.
+-/
 theorem projection_square_integrable {ε : Fin n → Bool} {lam : Fin n → ℝ} (hlam : S7.IsHCParam lam) {T : S7.KType ε (lowK ε lam)}
     {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} {v₀ : T.V}
     (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0)

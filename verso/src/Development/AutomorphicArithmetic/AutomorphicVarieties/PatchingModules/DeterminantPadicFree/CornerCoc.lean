@@ -1,6 +1,13 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.DeterminantPadicFree.FrameWith
 open Matrix IsLocalRing UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `key : (if p i ∧ q j then (A * Z * B) i j else 0) = ∑ m, ∑ k, if p i ∧ q j then A i k * Z k m * B m j else 0` using `by split_ifs`. Simplify using `only [Matrix.mul_apply, Finset.sum_mul]`. Simplify using the standard rewrite rules. Rewrite using `[Matrix.of_apply, key]`.
+
+Simplify using `only [Matrix.mul_apply, Finset.sum_mul, Matrix.of_apply]`. Use `Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `h1 : p i ↔ p k`. Distinguish the cases in `h2 : q m ↔ q j`. Distinguish the cases in `h : p i ∧ q j`.
+
+Rewrite using `[if_pos h, if_pos ⟨h1.1 h.1, h2.2 h.2⟩]`. Rewrite using `[if_neg h, if_neg (fun h' => h ⟨h1.2 h'.1, h2.1 h'.2⟩)]`. Simplify using the standard rewrite rules. Simplify using `[hB m j h2]`. Simplify using `[hA i k h1]`.
+-/
 private theorem cut_conj {F : Type} [Field F] {n : ℕ} (p q : Fin n → Prop) [DecidablePred p] [DecidablePred q]
     [∀ i j, Decidable (p i ∧ q j)] (A Z B : Matrix (Fin n) (Fin n) F)
     (hA : ∀ i k, ¬ (p i ↔ p k) → A i k = 0) (hB : ∀ i k, ¬ (q i ↔ q k) → B i k = 0) :
@@ -23,6 +30,9 @@ private theorem cut_conj {F : Type} [Field F] {n : ℕ} (p q : Fin n → Prop) [
     · simp [hB m j h2]
   · simp [hA i k h1]
 
+/- English proof (translation)
+Establish `hA' : ∀ i k : Fin n, ¬ ((i : ℕ) < a ↔ (k : ℕ) < a) → A i k = 0` using `fun i k h => by`. Simplify using `using (hA i k).2 h`. Establish `hB' : ∀ i k : Fin n, ¬ ((i : ℕ) < a ↔ (k : ℕ) < a) → B i k = 0` using `fun i k h => by`. Simplify using `using (hB i k).2 h`. Conclude with `⟨cut_conj (fun i => (i : ℕ) < a) (fun i => ¬ (i : ℕ) < a) A Z B hA' (fun i k h => hB' i k (fun e => h (not_congr e))), cut_conj (fun i => ¬ (i : ℕ) < a) (fun i => (i : ℕ) < a) A Z B (fun i k h => hA' i k (fun e => h (not_congr e))) hB'⟩`.
+-/
 private theorem cV_conj {F : Type} [Field F] {n a : ℕ} {A B : Matrix (Fin n) (Fin n) F}
     (hA : A ∈ Ev F F n a) (hB : B ∈ Ev F F n a) (Z : Matrix (Fin n) (Fin n) F) :
     cV a (A * Z * B) = A * cV a Z * B ∧ cV' a (A * Z * B) = A * cV' a Z * B := by
@@ -35,6 +45,9 @@ private theorem cV_conj {F : Type} [Field F] {n a : ℕ} {A B : Matrix (Fin n) (
     cut_conj (fun i => ¬ (i : ℕ) < a) (fun i => (i : ℕ) < a) A Z B
       (fun i k h => hA' i k (fun e => h (not_congr e))) hB'⟩
 
+/- English proof (translation)
+Apply the tactic sequence `refine ⟨⟨?_, ?_⟩, ?_, ?_⟩ <;> ext i j <;>`. Apply the tactic sequence `simp only [cV, cV', Matrix.of_apply, Matrix.add_apply, Matrix.sub_apply, Matrix.smul_apply] <;>`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 private theorem cV_lin {F : Type} [Field F] {n : ℕ} (a : ℕ) (c : F) (Y Z : Matrix (Fin n) (Fin n) F) :
     (cV a (Y + c • Z) = cV a Y + c • cV a Z ∧ cV' a (Y + c • Z) = cV' a Y + c • cV' a Z) ∧
     (cV a (c • Z - Y) = c • cV a Z - cV a Y ∧ cV' a (c • Z - Y) = c • cV' a Z - cV' a Y) := by
@@ -42,6 +55,19 @@ private theorem cV_lin {F : Type} [Field F] {n : ℕ} (a : ℕ) (c : F) (Y Z : M
     simp only [cV, cV', Matrix.of_apply, Matrix.add_apply, Matrix.sub_apply, Matrix.smul_apply] <;>
     split_ifs <;> simp
 
+/- English proof (translation)
+Introduce `F G _ _ n D χ S z hz`. Use `⟨fun g hg h hh => ?_, fun g hg h hh => ?_, fun Y g => ⟨?_, ?_⟩, fun Z => ⟨?_, ?_, ?_, fun hZ => ?_⟩⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[hz g hg h hh, (cV_lin _ _ _ _).1.1, (cV_conj (D.ev _) (D.ev _) _).1]`. Use `beta_reduce`.
+
+Rewrite using `[hz g hg h hh, (cV_lin _ _ _ _).1.2, (cV_conj (D.ev _) (D.ev _) _).2]`. Unfold `dTw`. Rewrite using `[(cV_lin _ _ _ _).2.1, (cV_conj (D.ev _) (D.ev _) _).1]`. Unfold `dTw`. Rewrite using `[(cV_lin _ _ _ _).2.2, (cV_conj (D.ev _) (D.ev _) _).2]`.
+
+Introduce `i j`. Use `⟨fun e => ?_, fun _ => Submodule.mem_top⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_bot, cV, Matrix.of_apply, if_neg (fun h => h.2 (e.1 h.1))]`. Introduce `i j`. Use `⟨fun e => ?_, fun _ => Submodule.mem_top⟩` and prove the remaining obligations.
+
+Rewrite using `[Submodule.mem_bot, cV', Matrix.of_apply, if_neg (fun h => h.1 (e.2 h.2))]`. Use extensionality with `i j`. Simplify using `only [cV, cV', Matrix.of_apply, Matrix.transpose_apply, and_comm]`. Use extensionality with `i j`. Establish `h0 : ((i : ℕ) < D.a ↔ (j : ℕ) < D.a) → Z i j = 0` using `fun e => by simpa using (hZ i j).1 e`.
+
+Simplify using `only [cV, cV', Matrix.of_apply, Matrix.add_apply]`. Apply the tactic sequence `by_cases hi : (i : ℕ) < D.a <;> by_cases hj : (j : ℕ) < D.a`. Simplify using `[hi, hj, h0 (iff_of_true hi hj)]`. Rewrite using `[if_pos ⟨hi, hj⟩, if_neg (fun h => h.1 hi), add_zero]`. Rewrite using `[if_neg (fun h => hi h.1), if_pos ⟨hi, hj⟩, zero_add]`.
+
+Rewrite using `[if_neg (fun h => hi h.1), if_neg (fun h => hj h.2), add_zero, h0 (iff_of_false hi hj)]`.
+-/
 theorem UpperTheory.V.Pa.Det.cornerCoc :
     ∀ {F G : Type} [Field F] [Group G] {n : ℕ} (D : DetFr F G n) (χ : G → F) (S : Set G) (z : G → Matrix (Fin n) (Fin n) F), TwCoc χ D.r S z → (TwCoc χ D.r S fun g => cV D.a (z g)) ∧ (TwCoc χ D.r S fun g => cV' D.a (z g)) ∧ (∀ Y g, cV D.a (dTw χ D.r Y g) = dTw χ D.r (cV D.a Y) g ∧ cV' D.a (dTw χ D.r Y g) = dTw χ D.r (cV' D.a Y) g) ∧ ∀ Z : Matrix (Fin n) (Fin n) F, cV D.a Z ∈ Od F F n D.a ∧ cV' D.a Z ∈ Od F F n D.a ∧ (cV D.a Z)ᵀ = cV' D.a Zᵀ ∧ (Z ∈ Od F F n D.a → cV D.a Z + cV' D.a Z = Z) := by
   intro F G _ _ n D χ S z hz

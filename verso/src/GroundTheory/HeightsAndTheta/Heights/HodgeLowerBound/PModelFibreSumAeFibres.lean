@@ -15,24 +15,39 @@ open MvPolynomial MeasureTheory Filter Topology ReciprocityTheory.ChartRestricti
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {P : Ideal (MRing ι)} {e : ℕ}
   (M : CxModel P e) (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ))
 
+/- English proof (translation)
+The claim follows from `((modelLift_spec M x).1 x (mem_modelU M x)).1`.
+-/
 theorem lift_mem (x : M.Xc) : modelLift M x x ∈ mcPts P :=
   ((modelLift_spec M x).1 x (mem_modelU M x)).1
 
+/- English proof (translation)
+The claim follows from `((modelLift_spec M x).1 x (mem_modelU M x)).2`.
+-/
 theorem proj_lift (x : M.Xc) : M.proj (modelLift M x x) = x :=
   ((modelLift_spec M x).1 x (mem_modelU M x)).2
 
+/- English proof (translation)
+Establish `h1` using `(modelLift_spec M x).1 z hz`. Take `⟨c, hc, h⟩` from `(M.fibre _ h1.1 _ (lift_mem M z)).mp (h1.2.trans (proj_lift M z).symm)`. Conclude with `⟨c, hc, h⟩`.
+-/
 theorem lift_compat {x z : M.Xc} (hz : z ∈ modelU M x) :
     ∃ c : K → ℂ, (∀ k, c k ≠ 0) ∧ modelLift M z z = fun p => c p.1 * modelLift M x z p := by
   have h1 := (modelLift_spec M x).1 z hz
   obtain ⟨c, hc, h⟩ := (M.fibre _ h1.1 _ (lift_mem M z)).mp (h1.2.trans (proj_lift M z).symm)
   exact ⟨c, hc, h⟩
 
+/- English proof (translation)
+Take `⟨c, hc, hzc⟩` from `sameOrbit_of_segre (lift_mem M x).1 μ hμ h`. Use `(M.fibre _ (lift_mem M x) _ hz).mpr ⟨c, hc, hzc⟩` as an intermediate fact. Rewrite using `[← this, proj_lift]`.
+-/
 theorem proj_eq_of_segre {x : M.Xc} {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts P) (μ : ℂ) (hμ : μ ≠ 0)
     (h : segre z = μ • segre (modelLift M x x)) : M.proj z = x := by
   obtain ⟨c, hc, hzc⟩ := sameOrbit_of_segre (lift_mem M x).1 μ hμ h
   have := (M.fibre _ (lift_mem M x) _ hz).mpr ⟨c, hc, hzc⟩
   rw [← this, proj_lift]
 
+/- English proof (translation)
+Take `⟨c, hc, hzc⟩` from `lift_compat M hz`. Establish `hpc : ∏ k, c k ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => hc k`. Use function extensionality and compare the values at `i`. Simplify using `only [modelQ, hzc, segre_smul, map_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `mul_div_mul_left _ _ hpc`.
+-/
 theorem modelQ_eq_local {x z : M.Xc} (hz : z ∈ modelU M x) :
     modelQ M Ψ z = fun i => Ψ (segre (modelLift M x z)) i.succ / Ψ (segre (modelLift M x z)) 0 := by
   obtain ⟨c, hc, hzc⟩ := lift_compat M hz
@@ -41,11 +56,19 @@ theorem modelQ_eq_local {x z : M.Xc} (hz : z ∈ modelU M x) :
   simp only [modelQ, hzc, segre_smul, map_smul, Pi.smul_apply, smul_eq_mul]
   exact mul_div_mul_left _ _ hpc
 
+/- English proof (translation)
+The claim follows from `analyticAt_pi_iff.mpr fun p => (modelLift_spec M x).2 p j u hu`.
+-/
 theorem analyticAt_lift_chart (x : M.Xc) (j : Fin M.atlas.n) {u : Fin e → ℂ}
     (hu : u ∈ (M.atlas.chart j).target ∩ (M.atlas.chart j).symm ⁻¹' modelU M x) :
     AnalyticAt ℂ (fun v => modelLift M x ((M.atlas.chart j).symm v)) u :=
   analyticAt_pi_iff.mpr fun p => (modelLift_spec M x).2 p j u hu
 
+/- English proof (translation)
+Establish `hl` using `analyticAt_lift_chart M x j hu`. Establish `hs : AnalyticAt ℂ (fun v => segre (modelLift M x ((M.atlas.chart j).symm v))) u`. Use `analyticAt_pi_iff.mpr fun i => ?_` and prove the remaining obligations. Simplify using `only [segre]`. Conclude with `Finset.analyticAt_fun_prod _ fun k _ => analyticAt_pi_iff.mp hl _`.
+
+Conclude with `(LinearMap.toContinuousLinearMap Ψ).analyticAt _ |>.comp hs`.
+-/
 theorem analyticAt_segre_lift (x : M.Xc) (j : Fin M.atlas.n) {u : Fin e → ℂ}
     (hu : u ∈ (M.atlas.chart j).target ∩ (M.atlas.chart j).symm ⁻¹' modelU M x) :
     AnalyticAt ℂ (fun v => Ψ (segre (modelLift M x ((M.atlas.chart j).symm v)))) u := by
@@ -57,6 +80,11 @@ theorem analyticAt_segre_lift (x : M.Xc) (j : Fin M.atlas.n) {u : Fin e → ℂ}
     exact Finset.analyticAt_fun_prod _ fun k _ => analyticAt_pi_iff.mp hl _
   exact (LinearMap.toContinuousLinearMap Ψ).analyticAt _ |>.comp hs
 
+/- English proof (translation)
+Use `set u := M.atlas.chart j x`. Establish `hsu : (M.atlas.chart j).symm u = x` using `(M.atlas.chart j).left_inv hj`. Establish `hu : u ∈ (M.atlas.chart j).target ∩ (M.atlas.chart j).symm ⁻¹' modelU M x` using `⟨(M.atlas.chart j).map_source hj, by rw [Set.mem_preimage, hsu]; exact mem_modelU M x⟩`. Establish `hH` using `analyticAt_segre_lift M Ψ x j hu`. Establish `hH0 : AnalyticAt ℂ (fun v => Ψ (segre (modelLift M x ((M.atlas.chart j).symm v))) 0) u` using `analyticAt_pi_iff.mp hH 0`.
+
+Establish `hne : Ψ (segre (modelLift M x ((M.atlas.chart j).symm u))) 0 ≠ 0` using `by rw [hsu]; exact h0`. Establish `hF : AnalyticAt ℂ (fun v => fun i : Fin e => Ψ (segre (modelLift M x ((M.atlas.chart j).symm v))) i.succ / Ψ (segre (modelLift M x ((M.atlas.chart j).symm v))) 0) u` using `analyticAt_pi_iff.mpr fun i => (analyticAt_pi_iff.mp hH i.succ).div hH0 hne`. Use `hF.congr ?_` and prove the remaining obligations. Use `filter_upwards [((M.atlas.chart j).isOpen_inter_preimage_symm (modelU_isOpen M x)).mem_nhds hu, hH0.continuousAt.eventually_ne hne] with v hv hv0`. Conclude with `(modelQ_eq_local M Ψ hv.2).symm`.
+-/
 theorem analyticAt_modelQ (x : M.Xc) (j : Fin M.atlas.n) (hj : x ∈ (M.atlas.chart j).source)
     (h0 : Ψ (segre (modelLift M x x)) 0 ≠ 0) :
     AnalyticAt ℂ (modelQ M Ψ ∘ (M.atlas.chart j).symm) (M.atlas.chart j x) := by
@@ -77,16 +105,31 @@ theorem analyticAt_modelQ (x : M.Xc) (j : Fin M.atlas.n) (hj : x ∈ (M.atlas.ch
     hH0.continuousAt.eventually_ne hne] with v hv hv0
   exact (modelQ_eq_local M Ψ hv.2).symm
 
+/- English proof (translation)
+Introduce `h` and use `hx (Or.inr (Or.inl h))`.
+-/
 theorem psi_zero_ne_of_not_mem_bad {E : Set M.Xc} {x : M.Xc} (hx : x ∉ modelBad M Ψ E) :
     Ψ (segre (modelLift M x x)) 0 ≠ 0 :=
   fun h => hx (Or.inr (Or.inl h))
 
+/- English proof (translation)
+Introduce `h` and use `hx (Or.inl h)`.
+-/
 theorem notMem_of_notMem_bad {E : Set M.Xc} {x : M.Xc} (hx : x ∉ modelBad M Ψ E) : x ∉ E :=
   fun h => hx (Or.inl h)
 
 def modelW (x : M.Xc) : ((k : K) → ι k) → ℂ :=
   (Ψ (segre (modelLift M x x)) 0)⁻¹ • segre (modelLift M x x)
 
+/- English proof (translation)
+Take `⟨k0⟩` from `hK`. Set `c : K → ℂ` to `Function.update (fun _ => (1 : ℂ)) k0 (Ψ (segre (modelLift M x x)) 0)⁻¹`. Establish `hc : ∀ k, c k ≠ 0`. Introduce `k`. Distinguish the cases in `hk : k = k0`.
+
+Substitute `hk` using the available equality. Simplify using `[c, h0]`. Simplify using `[c, Function.update_of_ne hk]`. Establish `hpc : ∏ k, c k = (Ψ (segre (modelLift M x x)) 0)⁻¹`. Simplify using `[c, Finset.prod_update_of_mem (Finset.mem_univ k0)]`.
+
+Use `⟨fun p => c p.1 * modelLift M x x p, mcPts_smul hPh c hc (lift_mem M x), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[segre_smul, hpc]`. Both sides reduce to the same expression. Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations.
+
+Simplify using `[modelW, h0]`. Simplify using `only [modelW, map_smul, Pi.smul_apply, smul_eq_mul, Fin.cons_succ, modelQ]`. Rewrite using `[div_eq_inv_mul]`.
+-/
 theorem modelW_mem_fibre (hK : Nonempty K) (hPh : IsMultiHomogIdeal P) {x : M.Xc}
     (h0 : Ψ (segre (modelLift M x x)) 0 ≠ 0) : modelW M Ψ x ∈ fibre P Ψ (modelQ M Ψ x) := by
   classical
@@ -107,6 +150,11 @@ theorem modelW_mem_fibre (hK : Nonempty K) (hPh : IsMultiHomogIdeal P) {x : M.Xc
     · simp only [modelW, map_smul, Pi.smul_apply, smul_eq_mul, Fin.cons_succ, modelQ]
       rw [div_eq_inv_mul]
 
+/- English proof (translation)
+Introduce `x hx x' hx' hw`. Establish `h` using `congrArg (fun v => Ψ (segre (modelLift M x x)) 0 • v) hw`. Simplify using `only [modelW, smul_smul, mul_inv_cancel₀ (show Ψ (segre (modelLift M x x)) 0 ≠ 0 from hx), one_smul] at h`. Use `proj_eq_of_segre M (lift_mem M x) (Ψ (segre (modelLift M x x)) 0 * (Ψ (segre (modelLift M x' x')) 0)⁻¹) (by simp [show Ψ (segre (modelLift M x x)) 0 ≠ 0 from hx, show Ψ (segre (modelLift M x' x')) 0 ≠ 0 from hx']) h` as an intermediate fact. Rewrite `this` using `[proj_lift]`.
+
+Conclude with `this`.
+-/
 theorem modelW_injOn : Set.InjOn (modelW M Ψ) {x | Ψ (segre (modelLift M x x)) 0 ≠ 0} := by
   intro x hx x' hx' hw
   have h := congrArg (fun v => Ψ (segre (modelLift M x x)) 0 • v) hw
@@ -119,6 +167,13 @@ theorem modelW_injOn : Set.InjOn (modelW M Ψ) {x | Ψ (segre (modelLift M x x))
   rw [proj_lift] at this
   exact this
 
+/- English proof (translation)
+Take `⟨c, hc, hxc⟩` from `(M.fibre _ hz _ (lift_mem M (M.proj z))).mp (proj_lift M _).symm`. Establish `hseg : segre (modelLift M (M.proj z) (M.proj z)) = (∏ k, c k) • segre z`. Rewrite using `[hxc]`. Conclude with `segre_smul c z`. Establish `hpc : ∏ k, c k ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => hc k`.
+
+Establish `hΨx : Ψ (segre (modelLift M (M.proj z) (M.proj z))) = (∏ k, c k) • Fin.cons 1 y`. Rewrite using `[hseg, map_smul, hΨz]`. Establish `h0 : Ψ (segre (modelLift M (M.proj z) (M.proj z))) 0 = ∏ k, c k` using `by simp [hΨx]`. Use `⟨by rw [h0]; exact hpc, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [modelQ, hΨx, h0, Pi.smul_apply, smul_eq_mul, Fin.cons_succ]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[modelW, h0, hseg, smul_smul, inv_mul_cancel₀ hpc, one_smul]`.
+-/
 theorem mem_fibre_data {y : Fin e → ℂ} {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts P)
     (hΨz : Ψ (segre z) = Fin.cons 1 y) :
     Ψ (segre (modelLift M (M.proj z) (M.proj z))) 0 ≠ 0 ∧ modelQ M Ψ (M.proj z) = y ∧
@@ -136,6 +191,23 @@ theorem mem_fibre_data {y : Fin e → ℂ} {z : (Σ k, ι k) → ℂ} (hz : z �
     field_simp
   · rw [modelW, h0, hseg, smul_smul, inv_mul_cancel₀ hpc, one_smul]
 
+/- English proof (translation)
+Use `set A := M.atlas`. Use `set G : Set M.Xc := {x | Ψ (segre (modelLift M x x)) 0 ≠ 0}`. Use `set D : Fin A.n → Set (Fin e → ℂ) := fun j => {u | u ∈ (A.chart j).target ∧ (A.chart j).symm u ∈ G ∧ ¬ (AnalyticAt ℂ (modelQ M Ψ ∘ (A.chart j).symm) u ∧ LinearMap.det (fderiv ℂ (modelQ M Ψ ∘ (A.chart j).symm) u : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ)) ≠ 0)}`. Establish `han : ∀ j, ∀ u ∈ (A.chart j).target, (A.chart j).symm u ∈ G → AnalyticAt ℂ (modelQ M Ψ ∘ (A.chart j).symm) u`. Introduce `j u hu hG`.
+
+Use `analyticAt_modelQ M Ψ _ j ((A.chart j).map_target hu) hG` as an intermediate fact. Rewrite `this` using `[(A.chart j).right_inv hu]`. Then use the resulting hypothesis. Establish `hsub : modelQ M Ψ '' (modelBad M Ψ E ∩ G) ⊆ (⋃ j, (modelQ M Ψ ∘ (A.chart j).symm) '' ((A.chart j).target ∩ (A.chart j).symm ⁻¹' (E ∩ G))) ∪ ⋃ j, (modelQ M Ψ ∘ (A.chart j).symm) '' D j`. Introduce and unpack `_ ⟨x, ⟨hxb, hxG⟩, rfl⟩`. Break down `hxb with hxE | hxc` into its components or cases.
+
+Take `⟨j, hj⟩` from `A.cover x`. Use `Or.inl (Set.mem_iUnion.mpr ⟨j, A.chart j x, ⟨(A.chart j).map_source hj, ?_⟩, ?_⟩)` and prove the remaining obligations. Rewrite using `[Set.mem_preimage, (A.chart j).left_inv hj]`. Conclude with `⟨hxE, hxG⟩`. Simplify using `[(A.chart j).left_inv hj]`.
+
+Break down `hxc with h0 | ⟨j, hj, hbad⟩` into its components or cases. Conclude with `absurd h0 hxG`. Use `Or.inr (Set.mem_iUnion.mpr ⟨j, A.chart j x, ⟨(A.chart j).map_source hj, ?_, hbad⟩, ?_⟩)` and prove the remaining obligations. Use `show (A.chart j).symm (A.chart j x) ∈ G`. Rewrite using `[(A.chart j).left_inv hj]`.
+
+Conclude with `hxG`. Simplify using `[(A.chart j).left_inv hj]`. Use `measure_mono_null hsub (measure_union_null (measure_iUnion_null fun j => ?_) (measure_iUnion_null fun j => ?_))` and prove the remaining obligations. Use `addHaar_image_eq_zero_of_differentiableOn_of_addHaar_eq_zero volume ?_ (measure_mono_null (Set.inter_subset_inter_right _ (Set.preimage_mono Set.inter_subset_left)) (hE j))` and prove the remaining obligations. Introduce `u hu`.
+
+Conclude with `((han j u hu.1 hu.2.2).differentiableAt.restrictScalars ℝ).differentiableWithinAt`. Use `addHaar_image_eq_zero_of_det_fderivWithin_eq_zero volume (f' := fun u => (fderiv ℂ (modelQ M Ψ ∘ (A.chart j).symm) u).restrictScalars ℝ) ?_ ?_` and prove the remaining obligations. Introduce `u hu`. Conclude with `((han j u hu.1 hu.2.1).differentiableAt.hasFDerivAt.restrictScalars ℝ).hasFDerivWithinAt`. Introduce `u hu`.
+
+Establish `h0 : LinearMap.det (fderiv ℂ (modelQ M Ψ ∘ (A.chart j).symm) u : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ)) = 0`. Assume the negation of the conclusion as `h`. Conclude with `hu.2.2 ⟨han j u hu.1 hu.2.1, h⟩`. Use `abs_det_restrictScalars (fderiv ℂ (modelQ M Ψ ∘ (A.chart j).symm) u)` as an intermediate fact. Rewrite `this` using `[h0, norm_zero, zero_pow two_ne_zero, abs_eq_zero]`.
+
+Conclude with `this`.
+-/
 theorem image_bad_null {E : Set M.Xc}
     (hE : ∀ j, volume ((M.atlas.chart j).target ∩ (M.atlas.chart j).symm ⁻¹' E) = 0) :
     volume (modelQ M Ψ '' (modelBad M Ψ E ∩ {x | Ψ (segre (modelLift M x x)) 0 ≠ 0})) = 0 := by

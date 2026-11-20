@@ -10,6 +10,9 @@ section Be
 
 variable {p : ℕ} [Fact p.Prime] (g : G1 p) {σ τ : Type}
 
+/- English proof (translation)
+Establish `hax : PowerSeries.HasSubst x` using `PowerSeries.HasSubst.of_constantCoeff_zero hx`. Establish `hae : PowerSeries.HasSubst g.ex` using `PowerSeries.HasSubst.of_constantCoeff_zero' hex`. Unfold `G1.lg G1.pt`. Rewrite using `[← PowerSeries.subst_comp_subst_apply hae hax, hinv, PowerSeries.subst_X hax]`.
+-/
 theorem lg_pt (hex : PowerSeries.constantCoeff g.ex = 0) (hinv : PowerSeries.subst g.ex g.l = PowerSeries.X)
     {x : MvPowerSeries σ ℂ_[p]} (hx : constantCoeff x = 0) : g.lg (g.pt x) = x := by
   have hax : PowerSeries.HasSubst x := PowerSeries.HasSubst.of_constantCoeff_zero hx
@@ -19,6 +22,23 @@ theorem lg_pt (hex : PowerSeries.constantCoeff g.ex = 0) (hinv : PowerSeries.sub
 
 variable (i0 : K0 p →+* ℂ_[p]) (be : MvPowerSeries (Fin 2) (K0 p)) (ep : ℂ_[p])
 
+/- English proof (translation)
+Establish `hlg : ∀ {σ' : Type} {c : σ' → MvPowerSeries τ ℂ_[p]}, HasSubst c → ∀ i : σ',`. Substitute `c (C ep * g.lg (X i)) = C ep * g.lg (c i) := by` using the available equality. Introduce `σ' c hc i`. Establish `hXi : HasSubst (fun _ : Unit => (X i : MvPowerSeries σ' ℂ_[p]))`. Use `by`.
+
+Establish `hz : ∀ _ : Unit, constantCoeff (X i : MvPowerSeries σ' ℂ_[p]) = 0` using `fun _ => constantCoeff_X i`. Use `first`. Consider the case `exact hasSubst_of_constantCoeff_zero hz`. Consider the case `exact HasSubst.of_constantCoeff_zero' hz`. Consider the case `exact hasSubst_of_constantCoeff_nilpotent (fun j => by rw [hz j]; exact IsNilpotent.zero)`.
+
+Rewrite using `[← smul_eq_C_mul, subst_smul hc, ← smul_eq_C_mul]`. Use `congr 1`. Unfold `G1.lg PowerSeries.subst`. Rewrite using `[subst_comp_subst_apply hXi hc]`. Simplify using `only [subst_X hc]`.
+
+Establish `h0 : ∀ i : Fin 2, constantCoeff (![a, b] i) = 0`. Apply the tactic sequence `intro i; fin_cases i <;> simpa`. Establish `hc : HasSubst ![a, b]` using `by first`. Consider the case `exact hasSubst_of_constantCoeff_zero h0`. Consider the case `exact HasSubst.of_constantCoeff_zero' h0`.
+
+Consider the case `exact hasSubst_of_constantCoeff_nilpotent (fun i => by rw [h0 i]; exact IsNilpotent.zero)`. Establish `hl0 : ∀ i : Fin 2, constantCoeff (g.lg (X i : MvPowerSeries (Fin 2) ℂ_[p])) = 0` using `fun i => PowerSeries.constantCoeff_subst_eq_zero (constantCoeff_X i) _ (cc_l g)`. Establish `h1 : ∀ i : Fin 2, constantCoeff (![C ep * g.lg (X (0 : Fin 2)), C ep * g.lg (X (1 : Fin 2))] i) = 0`. Apply the tactic sequence `intro i; fin_cases i <;> simp [hl0]`. Establish `hd : HasSubst ![C ep * g.lg (X (0 : Fin 2)), C ep * g.lg (X (1 : Fin 2))]` using `by first`.
+
+Consider the case `exact hasSubst_of_constantCoeff_zero h1`. Consider the case `exact HasSubst.of_constantCoeff_zero' h1`. Consider the case `exact hasSubst_of_constantCoeff_nilpotent (fun i => by rw [h1 i]; exact IsNilpotent.zero)`. Establish `h` using `congrArg (subst ![a, b]) be_tie`. Rewrite `h` using `[be_subst g hex hc (constantCoeff_X _) (constantCoeff_X _), subst_X hc, subst_X hc, subst_comp_subst_apply hd hc]`.
+
+Establish `hfun : (fun i => subst ![a, b] (![C ep * g.lg (X (0 : Fin 2)), C ep * g.lg (X (1 : Fin 2))] i)) = ![C ep * g.lg a, C ep * g.lg b]`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Conclude with `hlg hc 0`. Conclude with `hlg hc 1`.
+
+Rewrite `h` using `[hfun]`. Simplify using `using h`.
+-/
 theorem be_at (hex : PowerSeries.constantCoeff g.ex = 0)
     (be_tie : subst ![C ep * g.lg (X (0 : Fin 2)), C ep * g.lg (X (1 : Fin 2))] (map i0 be) =
       g.be (X (0 : Fin 2)) (X (1 : Fin 2)))
@@ -72,12 +92,20 @@ def LogOf (x : MvPowerSeries τ (K0 p)) (a : MvPowerSeries τ ℂ_[p]) : Prop :=
   constantCoeff x = 0 ∧ constantCoeff a = 0 ∧
     subst (diagS (PowerSeries.C ep * g.l)) (map i0 x) = C ep * g.lg a
 
+/- English proof (translation)
+Use `⟨constantCoeff_X i, constantCoeff_X i, ?_⟩` and prove the remaining obligations. Establish `hc : PowerSeries.constantCoeff (PowerSeries.C ep * g.l) = 0`. Rewrite using `[map_mul, cc_l, mul_zero]`. Rewrite using `[map_X, subst_X (hs_dg hc), dg_Cmul]`.
+-/
 theorem logOf_X (i : τ) : LogOf g i0 ep (X i) (X i) := by
   refine ⟨constantCoeff_X i, constantCoeff_X i, ?_⟩
   have hc : PowerSeries.constantCoeff (PowerSeries.C ep * g.l) = 0 := by
     rw [map_mul, cc_l, mul_zero]
   rw [map_X, subst_X (hs_dg hc), dg_Cmul]
 
+/- English proof (translation)
+Take `⟨hx0, ha0, hx1⟩` from `hx`. Take `⟨hy0, hb0, hy1⟩` from `hy`. Establish `hc : PowerSeries.constantCoeff (PowerSeries.C ep * g.l) = 0`. Rewrite using `[map_mul, cc_l, mul_zero]`. Establish `hla : constantCoeff (g.lg a) = 0` using `PowerSeries.constantCoeff_subst_eq_zero ha0 _ (cc_l g)`.
+
+Establish `hlb : constantCoeff (g.lg b) = 0` using `PowerSeries.constantCoeff_subst_eq_zero hb0 _ (cc_l g)`. Establish `hs : constantCoeff (g.lg a + g.lg b) = 0` using `by rw [map_add, hla, hlb, add_zero]`. Use `⟨by rw [map_add, hx0, hy0, add_zero], ?_, ?_⟩` and prove the remaining obligations. Conclude with `PowerSeries.constantCoeff_subst_eq_zero hs _ hex`. Rewrite using `[map_add, subst_add (hs_dg hc), hx1, hy1, G1.add, lg_pt g hex hinv hs, mul_add]`.
+-/
 theorem logOf_add (hex : PowerSeries.constantCoeff g.ex = 0)
     (hinv : PowerSeries.subst g.ex g.l = PowerSeries.X) {x y : MvPowerSeries τ (K0 p)} {a b : MvPowerSeries τ ℂ_[p]}
     (hx : LogOf g i0 ep x a) (hy : LogOf g i0 ep y b) : LogOf g i0 ep (x + y) (g.add a b) := by
@@ -92,6 +120,11 @@ theorem logOf_add (hex : PowerSeries.constantCoeff g.ex = 0)
   · exact PowerSeries.constantCoeff_subst_eq_zero hs _ hex
   · rw [map_add, subst_add (hs_dg hc), hx1, hy1, G1.add, lg_pt g hex hinv hs, mul_add]
 
+/- English proof (translation)
+Take `⟨hx0, ha0, hx1⟩` from `hx`. Establish `hc : PowerSeries.constantCoeff (PowerSeries.C ep * g.l) = 0`. Rewrite using `[map_mul, cc_l, mul_zero]`. Establish `hla : constantCoeff (g.lg a) = 0` using `PowerSeries.constantCoeff_subst_eq_zero ha0 _ (cc_l g)`. Establish `hs : constantCoeff (C (i0 c) * g.lg a) = 0` using `by rw [map_mul, hla, mul_zero]`.
+
+Use `⟨by rw [map_mul, hx0, mul_zero], ?_, ?_⟩` and prove the remaining obligations. Conclude with `PowerSeries.constantCoeff_subst_eq_zero hs _ hex`. Rewrite using `[map_mul, map_C, ← smul_eq_C_mul, subst_smul (hs_dg hc), hx1, G1.mulBy, lg_pt g hex hinv hs, smul_eq_C_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem logOf_mul (hex : PowerSeries.constantCoeff g.ex = 0)
     (hinv : PowerSeries.subst g.ex g.l = PowerSeries.X) (c : K0 p) {x : MvPowerSeries τ (K0 p)}
     {a : MvPowerSeries τ ℂ_[p]} (hx : LogOf g i0 ep x a) : LogOf g i0 ep (C c * x) (g.mulBy (i0 c) a) := by
@@ -106,6 +139,19 @@ theorem logOf_mul (hex : PowerSeries.constantCoeff g.ex = 0)
       smul_eq_C_mul]
     ring
 
+/- English proof (translation)
+Take `⟨hx0, ha0, hx1⟩` from `hx`. Take `⟨hy0, hb0, hy1⟩` from `hy`. Establish `hc : PowerSeries.constantCoeff (PowerSeries.C ep * g.l) = 0`. Rewrite using `[map_mul, cc_l, mul_zero]`. Establish `h0 : ∀ i : Fin 2, constantCoeff (![x, y] i) = 0`.
+
+Apply the tactic sequence `intro i; fin_cases i <;> simpa`. Establish `hs : HasSubst ![x, y]` using `by first`. Consider the case `exact hasSubst_of_constantCoeff_zero h0`. Consider the case `exact HasSubst.of_constantCoeff_zero' h0`. Consider the case `exact hasSubst_of_constantCoeff_nilpotent (fun i => by rw [h0 i]; exact IsNilpotent.zero)`.
+
+Establish `h0' : ∀ i : Fin 2, constantCoeff (map i0 (![x, y] i)) = 0`. Introduce `i`. Rewrite using `[constantCoeff_map, h0 i, map_zero]`. Establish `hs' : HasSubst (fun i : Fin 2 => map i0 (![x, y] i))` using `by first`. Consider the case `exact hasSubst_of_constantCoeff_zero h0'`.
+
+Consider the case `exact HasSubst.of_constantCoeff_zero' h0'`. Consider the case `exact hasSubst_of_constantCoeff_nilpotent (fun i => by rw [h0' i]; exact IsNilpotent.zero)`. Unfold `sub2`. Rewrite using `[map_subst hs, subst_comp_subst_apply hs' (hs_dg hc)]`. Establish `hfun : (fun i : Fin 2 => subst (diagS (PowerSeries.C ep * g.l)) (map i0 (![x, y] i))) = ![C ep * g.lg a, C ep * g.lg b]`.
+
+Use function extensionality and compare the values at `i`. Use `fin_cases i`. Conclude with `hx1`. Conclude with `hy1`. Rewrite using `[hfun]`.
+
+Conclude with `be_at g i0 be ep hex be_tie ha0 hb0`.
+-/
 theorem subtraction_formal_group_log (hex : PowerSeries.constantCoeff g.ex = 0)
     (be_tie : subst ![C ep * g.lg (X (0 : Fin 2)), C ep * g.lg (X (1 : Fin 2))] (map i0 be) =
       g.be (X (0 : Fin 2)) (X (1 : Fin 2)))
@@ -141,6 +187,13 @@ theorem subtraction_formal_group_log (hex : PowerSeries.constantCoeff g.ex = 0)
   rw [hfun]
   exact be_at g i0 be ep hex be_tie ha0 hb0
 
+/- English proof (translation)
+Establish `h0 : ∀ i : Fin 2, constantCoeff (![x, y] i) = 0`. Apply the tactic sequence `intro i; fin_cases i <;> simpa`. Establish `hs : HasSubst ![x, y]` using `by first`. Consider the case `exact hasSubst_of_constantCoeff_zero h0`. Consider the case `exact HasSubst.of_constantCoeff_zero' h0`.
+
+Consider the case `exact Formalism.G.LogP.hs2 hx hy`. Consider the case `exact hasSubst_of_constantCoeff_nilpotent (fun i => by rw [h0 i]; exact IsNilpotent.zero)`. Unfold `sub2`. Use `first`. Consider the case `exact constantCoeff_subst_eq_zero hs h0 hbe`.
+
+Consider the case `exact constantCoeff_subst_eq_zero h0 hbe`. Consider the case `exact MvPowerSeries.constantCoeff_subst_eq_zero hs h0 hbe`.
+-/
 theorem constantCoeff_sub2_eq_zero (hbe : constantCoeff be = 0) {x y : MvPowerSeries τ (K0 p)} (hx : constantCoeff x = 0)
     (hy : constantCoeff y = 0) : constantCoeff (sub2 p be x y) = 0 := by
   have h0 : ∀ i : Fin 2, constantCoeff (![x, y] i) = 0 := by

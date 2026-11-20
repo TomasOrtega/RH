@@ -8,6 +8,11 @@ open GlobalTheory.PhiGam GlobalTheory.AdmLoc GlobalTheory.Models
 open scoped LaurentSeries PowerSeries
 namespace GlobalTheory.Models
 
+/- English proof (translation)
+Introduce `k _ l n m _ _ _ R D r Dt N₁ N₂ h₁ h₂ i y hy`. Take `⟨hL₁, hAB₁, hC₁⟩` from `h₁`. Take `⟨hL₂, hAB₂, hC₂⟩` from `h₂`. Establish `e12` using `CloseTw.main D Dt.h Dt.w N₁ N₂ hL₁ hL₂ hAB₁ hAB₂ i`. Establish `e21` using `CloseTw.main D Dt.h Dt.w N₂ N₁ hL₂ hL₁ hAB₂ hAB₁ i`.
+
+Establish `hle : N₂ i ≤ sh (-(sg l Dt.h i : ℤ)) (N₁ i)`. Establish `h'` using `sh_le_sh (-(sg l Dt.h i : ℤ)) e21`. Rewrite `h'` using `[sh_sh_eq, neg_add_cancel, sh_zero_eq]`. Then use the resulting hypothesis. Conclude with `Compare.sen_compare R (D.γ i) (D.γ_semi i) (N₁ i) (N₂ i) (hL₁ i) (hL₂ i) (hC₁ i) (hC₂ i) _ e12 hle y hy`.
+-/
 theorem sen_near_of_abc : ∀ {k : Type} [Field k] {l n m : ℕ} [Fact l.Prime] [CharP k l] [NeZero n]
     {R : RingPG k l} (D : ModPG R n (Vc k m)) {r : ℕ} (Dt : TopData n r) (N₁ N₂ : Lats k n m),
     ABC D Dt.w Dt.wst N₁ → ABC D Dt.w Dt.wst N₂ → ∀ i y, sen (D.γ i) (N₂ i) y ≠ 0 →

@@ -26,6 +26,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 set_option linter.unusedSectionVars false
 
+/- English proof (translation)
+Use `⟨fun w => ?_, Filter.eventually_cofinite.2 (Q.finite_toSet.subset fun w hw => ?_)⟩` and prove the remaining obligations. Take `⟨K₁, K₂, h₁, h₂, he⟩` from `h w`. Rewrite using `[he]`. Conclude with `LocOk.prod_open_le h₁ h₂`. Assume the negation of the conclusion as `hq`.
+
+Conclude with `hw (hout w hq)`.
+-/
 theorem isLev_of {a b : ℕ} (U : ∀ w : Pl E, Subgroup (GLw a w × GLw b w)) (Q : Finset (Pl E))
     (h : ∀ w, LocOk.IsLv (U w)) (hout : ∀ w ∉ Q, U w = K2 a b w) : IsLev U := by
   refine ⟨fun w => ?_, Filter.eventually_cofinite.2 (Q.finite_toSet.subset fun w hw => ?_)⟩
@@ -37,13 +42,24 @@ theorem isLev_of {a b : ℕ} (U : ∀ w : Pl E, Subgroup (GLw a w × GLw b w)) (
 
 variable {n : ℕ} (d : LocData E n) {a : ℕ}
 
+/- English proof (translation)
+The claim follows from `isLev_of _ (d.T ∪ d.S₀ ∪ d.Bad) (LocOk.lev_lv d hd ha) fun _ hw => LocOk.lev_out d (LocOk.out3 d hw).1 (LocOk.out3 d hw).2`.
+-/
 theorem isLev_lev (hd : d.Ok) (ha : a ≤ n) : IsLev (d.lev a) :=
   isLev_of _ (d.T ∪ d.S₀ ∪ d.Bad) (LocOk.lev_lv d hd ha) fun _ hw =>
     LocOk.lev_out d (LocOk.out3 d hw).1 (LocOk.out3 d hw).2
 
+/- English proof (translation)
+The claim follows from `isLev_of _ (d.T ∪ d.S₀ ∪ d.Bad) (LocOk.lev₂_lv d hd ha) fun _ hw => LocOk.lev₂_out d (LocOk.out3 d hw).2`.
+-/
 theorem isLev_lev₂ (hd : d.Ok) (ha : a ≤ n) : IsLev (d.lev₂ a) :=
   isLev_of _ (d.T ∪ d.S₀ ∪ d.Bad) (LocOk.lev₂_lv d hd ha) fun _ hw => LocOk.lev₂_out d (LocOk.out3 d hw).2
 
+/- English proof (translation)
+Use `show IsHecke _ (if u ∈ d.T then d.diag (fun x => d.qT a u x.1.1) x y else d.mac a ha u (d.e u) x.1.2 y.1.2)`. Use `split_ifs with hT`. Rewrite using `[LocOk.level_eq_iwahori_pair_at_bad_places d hT]`. Conclude with `LocOk.diagH d _ (fun z => LocOk.qT_H d u z.1.1) x y`. Establish `hS : u ∈ d.S₀`.
+
+Simplify using `only [LocData.P, Finset.mem_union] at hu`. The claim follows by propositional logic. Rewrite using `[LocOk.lev_S d hT (Finset.mem_union_left _ hS)]`. Conclude with `LocOk.mac_H d PositivityTheory.Rg.BcN.F2.LocOpPf.locOp3 hd ha hS (LocOk.kap_X d hT hS x) (LocOk.kap_X d hT hS y)`.
+-/
 theorem betaL_H (hd : d.Ok) (ha : a ≤ n) {u : Pl E} (hu : u ∈ d.P) (x y : d.kap u) :
     IsHecke (d.lev a u) ((d.betaL a ha).m u x y) := by
   show IsHecke _ (if u ∈ d.T then d.diag (fun x => d.qT a u x.1.1) x y else d.mac a ha u (d.e u) x.1.2 y.1.2)
@@ -56,6 +72,9 @@ theorem betaL_H (hd : d.Ok) (ha : a ≤ n) {u : Pl E} (hu : u ∈ d.P) (x y : d.
     rw [LocOk.lev_S d hT (Finset.mem_union_left _ hS)]
     exact LocOk.mac_H d PositivityTheory.Rg.BcN.F2.LocOpPf.locOp3 hd ha hS (LocOk.kap_X d hT hS x) (LocOk.kap_X d hT hS y)
 
+/- English proof (translation)
+Introduce `p q hpq`. Use `hx _ _ ((S.orderEmbOfFin h).strictMono hpq)` as an intermediate fact. Use `show x _ + 1 ≤ x _`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem gap_restr {m : ℕ} {x : Fin n → ℤ} (hx : x ∈ coneGL n 2) (S : Finset (Fin n)) (h : S.card = m) :
     Gap (PositivityTheory.Rg.Bc.ArchbcB.B.restr x S h) := by
   intro p q hpq
@@ -63,6 +82,11 @@ theorem gap_restr {m : ℕ} {x : Fin n → ℤ} (hx : x ∈ coneGL n 2) (S : Fin
   show x _ + 1 ≤ x _
   omega
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => intro x _`. Rewrite using `[pow_zero]`. Both sides reduce to the same expression. Consider the case `succ k ih`.
+
+Introduce `x hx`. Rewrite using `[pow_succ]`. Use `show (μ ^ k).loc w x * μ.loc w x = 1`. Rewrite using `[ih x hx, h x hx, one_mul]`.
+-/
 theorem unrAt_pow {μ : HChar E} {w : Pl E} (h : μ.UnrAt w) (k : ℕ) : (μ ^ k).UnrAt w := by
   induction k with
   | zero => intro x _; rw [pow_zero]; rfl
@@ -78,6 +102,35 @@ namespace PositivityTheory.Rg.BcB.F
 
 open PCandTb
 
+/- English proof (translation)
+Introduce `hR E _ _ _ hE n hn π hπ S T F₀ F hF i s₁ s₂ Pa Pb D A G hc hG hl hne w hwT hunr hns`. Establish `hd` using `F.ok`. Establish `hwd : w ∈ F.d.T` using `F.T_le w hwT hunr hns`. Establish `hwSec : w ∈ F₀.Sec` using `(F.T_in w hwd).1`. Establish `hP : (↑F.d.P : Set (Pl E)) ⊆ F₀.Sec`.
+
+Introduce `u hu`. Break down `Finset.mem_union.1 hu with h | h` into its components or cases. Conclude with `(F.T_in u h).1`. Rewrite `h` using `[F.same.1]`. Conclude with `(F₀.S₀ u h).1`.
+
+Establish `hwP : w ∈ F.d.P` using `Finset.mem_union_left _ hwd`. Take `⟨α, x, hx⟩` from `FA.fmPow_of intHint slots BlockFiniteConvolution.finConv' BlockFiniteConvolution.fmAlg' E F.d.kap F₀.Sec F.d.P (F.B i) (Equiv.refl _) F₀.hSec hP (F.d.lev (F₀.C.a i)) (F.d.lev₂ (F₀.C.a i)) (F.d.betaL _ (F₀.C.le i)) A G F.m (isLev_lev F.d hd (F₀.C.le i)) (isLev_lev₂ F.d hd (F₀.C.le …`. Establish `hm : (F.d.betaL _ (F₀.C.le i)).m w = fun x y => if x = y then F.d.qT (F₀.C.a i) w x.1.1 else 0`. Use function extensionality and compare the values at `x y`. Use `show (if w ∈ F.d.T then _ else _) = _`.
+
+Rewrite using `[if_pos hwd]`. Both sides reduce to the same expression. Set `G' : F.d.kap w → H E (F₀.C.a i) (n - F₀.C.a i) → ℂ` to `fun y => G (α, Function.update x ⟨w, hwP⟩ y)`. Express the relevant statement in the definitionally equal form `(locM w ((F.d.betaL _ (F₀.C.le i)).m w))^[F.m] G' ≠ 0 at hx`. Rewrite `hx` using `[hm]`.
+
+Establish `hfix : ∀ y, G' y ∈ fixed (pairRt (F₀.C.a i) (n - F₀.C.a i) w) (I2 (F₀.C.a i) (n - F₀.C.a i) w)` using `fun y => by`. Establish `h` using `((hl (α, Function.update x ⟨w, hwP⟩ y)).2 w hwSec).1`. Rewrite `h` using `[LocOk.level_eq_iwahori_pair_at_bad_places F.d hwd]`. Then use the resulting hypothesis. Establish `hIo : IsOpen (I2 (F₀.C.a i) (n - F₀.C.a i) w : Set (GLw (F₀.C.a i) w × GLw (n - F₀.C.a i) w))`. Establish `h` using `((isLev_lev F.d hd (F₀.C.le i)).1 w).1`.
+
+Rewrite `h` using `[LocOk.level_eq_iwahori_pair_at_bad_places F.d hwd]`. Then use the resulting hypothesis. Take `⟨s, hs⟩` from `(locPow_holds E _ _ w _ _ G' F.m hIo hfix).2 (fun x => F.d.qT (F₀.C.a i) w x.1.1) (by convert hx)`. Distinguish the cases in `hadm : LocData.admitted n (F₀.C.a i) s.1.1`. Use `swap`. It suffices to derive a contradiction.
+
+Establish `h0 : F.d.qT (F₀.C.a i) w s.1.1 = 0`. Use function extensionality and compare the values at `y`. Simplify using `only [LocData.qT, dif_neg hadm]`. Both sides reduce to the same expression. Take `⟨k, hk⟩ : ∃ k, F.m = k + 1` from `⟨F.m - 1, by have := F.m_pos; omega⟩`.
+
+Rewrite `hs` using `[h0, hk, Function.iterate_succ_apply', Psmall.actP_zero]`. Conclude with `hs rfl`. Establish `hq : F.d.qT (F₀.C.a i) w s.1.1 = fun g => ∑ j : (F.d.c w).support, (F.d.c w j * (-qh w) ^ (-vRes n (F₀.C.a i) (lOf (j : Fin n → ℤ)) s.1.1) * (((I2 (F₀.C.a i) (n - F₀.C.a i) w).relIndex (K2 (F₀.C.a i) (n - F₀.C.a i) w) : ℕ) : ℂ)) * dc2 w (F.d.ϖ w) (restr (j : Fin n → ℤ) _ hadm.2.1 …`. Use function extensionality and compare the values at `g`. Simplify using `only [LocData.qT, dif_pos hadm, Finsupp.sum]`.
+
+Rewrite using `[← Finset.sum_coe_sort]`. Rewrite `hs` using `[hq]`. Take `⟨ξa, ξb, hJ, hsum⟩` from `h1 E n (F₀.C.a i) (n - F₀.C.a i) F₀.μ s₁ s₂ Pa Pb D hc.ctx w (F.d.ϖ w) (F.d.c w).support _ (fun j => restr (j : Fin n → ℤ) _ hadm.2.1) (fun j => restr (j : Fin n → ℤ) _ hadm.2.2) F.m (G' s) (hd.unif w) (fun j => ⟨gap_restr (hd.cone w hwd (Finset.mem_coe.2 j.2)) _ _, gap_restr (hd …`. Establish `hsum' : ((F.d.c w).sum fun x t => t * (-qh w) ^ (-vRes n (F₀.C.a i) (lOf x) s.1.1) * ev2 w ξa ξb (restr x _ hadm.2.1) (restr x _ hadm.2.2)) ≠ 0`. Introduce `h0`.
+
+Rewrite `h0` using `[Finsupp.sum, ← Finset.sum_coe_sort]`. Apply `hsum` to reduce the goal to its premises. Rewrite using `[show (0 : ℂ) = (((I2 (F₀.C.a i) (n - F₀.C.a i) w).relIndex (K2 (F₀.C.a i) (n - F₀.C.a i) w) : ℕ) : ℂ) * 0 by ring, ← h0, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hJ' : JEig Pa Pb w (F₀.d₀.ϖ w) ξa ξb`. Rewrite using `[← F.same.2.2.2.1]`. Conclude with `hJ`. Take `⟨hma, hmb, hbc⟩` from `F.choiceT i s₁ s₂ Pa Pb D hc w hwd s.1.1 hadm ξa ξb hJ' hsum'`. Take `⟨hSa, hSb⟩` from `h2 E (F₀.C.a i) (n - F₀.C.a i) Pa Pb w (F.d.ϖ w) ξa ξb (hd.unif w) hma hmb hJ`.
+
+Establish `hS0 : w ∉ F₀.d₀.S₀`. Rewrite using `[← F.same.1]`. Conclude with `Finset.disjoint_left.1 hd.disj.1 hwd`. Establish `hBad : w ∉ F₀.d₀.Bad`. Rewrite using `[← F.same.2.1]`.
+
+Conclude with `Finset.disjoint_left.1 hd.disj.2.1 hwd`. Establish `hμ` using `(F₀.good w hwSec hS0 hBad).2`. Establish `hDs` using `h3 E n (F₀.C.a i) (n - F₀.C.a i) (F₀.μ ^ (n - F₀.C.a i)) (F₀.μ ^ F₀.C.a i) Pa Pb D w _ _ hc.ctx.join (unrAt_pow hμ _) (unrAt_pow hμ _) hSa hSb`. Use `⟨_, hDs, fun s' ϖ q hs' hq' α' hα' => ?_⟩` and prove the remaining obligations. Establish `e` using `LemB.cjEq E w hns s' hs'`.
+
+Substitute `e` using the available equality. Conclude with `hbc ϖ q hq' α' hα'`.
+-/
 theorem candT_of (h1 : Tail.ReadT) (h2 : Tail.ExpRead) (h3 : RS.JoinSat) : CandT := by
   intro hR E _ _ _ hE n hn π hπ S T F₀ F hF i s₁ s₂ Pa Pb D A G hc hG hl hne w hwT hunr hns
   have hd := F.ok

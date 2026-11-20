@@ -15,13 +15,22 @@ open Matrix Formalism.UG Formalism.L2.DIV
 
 namespace GlobalTheory.LevNorm
 
+/- English proof (translation)
+The claim follows from `Units.ext rfl`.
+-/
 theorem bc_bc {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] {n : ℕ} (f : R →+* R') (g : R' →+* R'')
     (x : GL (Fin n) R) : bc g (bc f x) = bc (g.comp f) x := Units.ext rfl
 
+/- English proof (translation)
+Introduce `_ _ h` and use `Units.ext (Matrix.map_injective hf (congrArg Units.val h))`.
+-/
 theorem bc_injective {R R' : Type} [CommRing R] [CommRing R'] {n : ℕ} {f : R →+* R'} (hf : Function.Injective f) :
     Function.Injective (bc (n := Fin n) f) := fun _ _ h =>
   Units.ext (Matrix.map_injective hf (congrArg Units.val h))
 
+/- English proof (translation)
+Introduce `y` and use `by choose j hj using hf have e : f.mapMatrix ((y : Matrix (Fin n) (Fin n) k).map j) = y := by ext a b; exact hj _ haveI : IsLocalHom f := IsLocalHom.of_surjective f fun a => ⟨j a, hj a⟩ have hu : IsUnit ((y : Matrix (Fin n) (Fin n) k).map j) := by rw [Matrix.isUnit_iff_isUnit_det …`.
+-/
 theorem bc_surjective {R k : Type} [CommRing R] [IsLocalRing R] [Field k] {n : ℕ} {f : R →+* k} (hf : Function.Surjective f) :
     Function.Surjective (bc (n := Fin n) f) := fun y => by
   choose j hj using hf
@@ -46,21 +55,42 @@ def Keeps (m : GL (Fin n) A) : Prop :=
 
 variable {r σ ρ κ G T ψ a} (Z : PlaceSys A S P k r)
 
+/- English proof (translation)
+The claim follows from `Units.ext rfl`.
+-/
 theorem bc_pO (Q : P) (x : GL (Fin n) S) : bc (Z.O Q).subtype (bc (Z.pO Q) x) = bc (Z.p Q) (bc S.subtype x) := Units.ext rfl
 
+/- English proof (translation)
+Rewrite using `[bc_bc, show f.comp (Z.pO Q) = r Q from RingHom.ext hf]`.
+-/
 theorem bc_res {Q : P} {f : Z.O Q →+* k Q} (hf : ∀ s, f (Z.pO Q s) = r Q s) (x : GL (Fin n) S) :
     bc f (bc (Z.pO Q) x) = bc (r Q) x := by
   rw [bc_bc, show f.comp (Z.pO Q) = r Q from RingHom.ext hf]
 
+/- English proof (translation)
+Take `⟨f, -, hf⟩` from `Z.exists_res Q`. Rewrite using `[← bc_res Z hf, h, map_one]`.
+-/
 theorem bc_r_one {Q : P} {x : GL (Fin n) S} (h : bc (Z.pO Q) x = 1) : bc (r Q) x = 1 := by
   obtain ⟨f, -, hf⟩ := Z.exists_res Q
   rw [← bc_res Z hf, h, map_one]
 
+/- English proof (translation)
+Apply `bc_injective (Z.O Q).subtype_injective` to reduce the goal to its premises. Rewrite using `[bc_pO, e, map_mul, map_mul, ← bc_pO, h, map_one, mul_one, ← map_mul, mul_inv_cancel, map_one]`.
+-/
 theorem pO_conj_one {Q : P} {m : GL (Fin n) A} {x x' : GL (Fin n) S} (e : bc S.subtype x' = m * bc S.subtype x * m⁻¹)
     (h : bc (Z.pO Q) x = 1) : bc (Z.pO Q) x' = 1 := by
   apply bc_injective (Z.O Q).subtype_injective
   rw [bc_pO, e, map_mul, map_mul, ← bc_pO, h, map_one, mul_one, ← map_mul, mul_inv_cancel, map_one]
 
+/- English proof (translation)
+Take `⟨u, hu, rfl, h1⟩` from `GlobalTheory.T.exists_unitary_integral_of_splitPlace_component Z σ hσ hS n G hG Q Q' h hne y`. Establish `h2 : ∀ Q'' ∈ T, Q'' ≠ Q → bc (Z.pO Q'') u = 1` using `fun Q'' hT e => h1 Q'' e fun e' => hQ' (e' ▸ hT)`. Take `⟨x', e, hx', hc⟩` from `hm u ⟨hu, fun Q'' hT => by`. Distinguish the cases in `e : Q'' = Q`. Substitute `e` using the available equality.
+
+Rewrite using `[← bc_res Z hf]`. Conclude with `hy hT`. Rewrite using `[bc_r_one Z (h2 _ hT e)]`. Conclude with `one_mem _⟩`. Use `⟨bc (Z.pO Q) x', by rw [bc_pO, bc_pO, e, map_mul, map_mul, map_inv], fun hT => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[bc_res Z hf, bc_res Z hf]`. Use `⟨hx'.2 Q hT, ?_⟩` and prove the remaining obligations. Unfold `levChr at hc`. Rewrite `hc` using `[Finset.prod_eq_single_of_mem Q hT, Finset.prod_eq_single_of_mem Q hT]`. Then use the resulting hypothesis. Introduce `Q'' hT' e'`.
+
+Rewrite using `[bc_r_one Z (h2 _ hT' e'), edgeVal_one, AddChar.map_zero_eq_one]`. Introduce `Q'' hT' e'`. Rewrite using `[bc_r_one Z (pO_conj_one Z e (h2 _ hT' e')), edgeVal_one, AddChar.map_zero_eq_one]`.
+-/
 theorem loc_split (hσ : ∀ a, σ (σ a) = a) (hS : ∀ a ∈ S, σ a ∈ S)
     (hG : cT σ ((bc S.subtype G : GL (Fin n) A) : Matrix (Fin n) (Fin n) A) = ((bc S.subtype G : GL (Fin n) A) : Matrix (Fin n) (Fin n) A))
     {Q Q' : P} (h : σ (Z.e Q) = Z.e Q') (hne : Q ≠ Q') (hQ' : Q' ∉ T) {f : Z.O Q →+* k Q} (hf : ∀ s, f (Z.pO Q s) = r Q s)
@@ -83,11 +113,33 @@ theorem loc_split (hσ : ∀ a, σ (σ a) = a) (hS : ∀ a ∈ S, σ a ∈ S)
   · intro Q'' hT' e'
     rw [bc_r_one Z (pO_conj_one Z e (h2 _ hT' e')), edgeVal_one, AddChar.map_zero_eq_one]
 
+/- English proof (translation)
+Use extensionality with `i j`. Conclude with `(hs _).symm`.
+-/
 theorem map_cT {Q Q' : P} {s : Z.K Q →+* Z.K Q'} (hs : ∀ a, s (Z.p Q a) = Z.p Q' (σ a)) (M : Matrix (Fin n) (Fin n) A) :
     (Z.p Q').mapMatrix (cT σ M) = (((Z.p Q).mapMatrix M).map s)ᵀ := by
   ext i j
   exact (hs _).symm
 
+/- English proof (translation)
+Take `⟨s, hs, hsO⟩` from `Z.exists_conj hS h`. Take `⟨f, hf0, hf⟩` from `Z.exists_res Q`. Set `t : Z.O Q →+* Z.O Q` to `(s.comp (Z.O Q).subtype).codRestrict (Z.O Q) fun x => hsO _ x.2`. Establish `ht : ∀ x : S, t (Z.pO Q x) = Z.pO Q ⟨σ x, hS _ x.2⟩` using `fun x => Subtype.ext (hs _)`. Establish `htt : ∀ x, t (t x) = x` using `fun x => by`.
+
+Take `⟨x, rfl⟩` from `Z.pO_surj Q x`. Rewrite using `[ht, ht]`. Conclude with `congrArg _ (Subtype.ext (hσ _))`. Use `haveI : IsLocalHom f := IsLocalHom.of_surjective f hf0`. Establish `hδ' : IsUnit (Z.pO Q δ - t (Z.pO Q δ))`.
+
+Rewrite using `[ht, ← map_sub, ← isUnit_map_iff f, hf]`. Conclude with `hδ.isUnit`. Establish `inj : Function.Injective fun M : Matrix (Fin n) (Fin n) (Z.O Q) => M.map (Z.O Q).subtype` using `Matrix.map_injective (Z.O Q).subtype_injective`. Establish `hgen` using `GlobalTheory.T.adjoin_unitaryGroup_hermitian_local_eq_top (Z.O Q) t htt ⟨_, hδ'⟩ n hn ((bc (Z.pO Q) G : GL (Fin n) (Z.O Q)) : Matrix (Fin n) (Fin n) (Z.O Q)) (inj ((map_cT Z hs _).symm.trans (congrArg (Z.p Q).mapMatrix hG))) (Units.isUnit _)`. Use `GlobalTheory.T.isScalarMulIntegral_of_conj_integral_generators _ _ n _ _ hgen fun y hy => ?_` and prove the remaining obligations.
+
+Take `⟨x, hx1, hx2⟩` from `Z.gl_single Q (bc (Z.O Q).subtype y)`. Take `⟨u, rfl⟩` from `Z.gl_int (x := x) fun Q' => by`. Distinguish the cases in `e : Q' = Q`. Substitute `e` using the available equality. Conclude with `⟨y, hx1.symm⟩`.
+
+Conclude with `⟨1, by rw [hx2 _ e, map_one]⟩`. Establish `hu1 : bc (Z.pO Q) u = y` using `bc_injective (Z.O Q).subtype_injective hx1`. Establish `hu2 : ∀ Q', Q' ≠ Q → bc (Z.pO Q') u = 1` using `fun Q' e => bc_injective (Z.O Q').subtype_injective (by rw [bc_pO, hx2 _ e, map_one])`. Establish `hU : bc S.subtype u ∈ UJ σ ((bc S.subtype G : GL (Fin n) A) : Matrix (Fin n) (Fin n) A)`. Use `Matrix.ext fun i j => Z.ext' fun Q' => ?_` and prove the remaining obligations.
+
+Use `congrFun (congrFun (show (Z.p Q').mapMatrix _ = (Z.p Q').mapMatrix _ from ?_) i) j` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`. Distinguish the cases in `e : Q' = Q`. Substitute `e` using the available equality. Rewrite using `[map_cT Z hs]`.
+
+Establish `h3 : (Z.p Q').mapMatrix ((bc S.subtype u : GL (Fin n) A) : Matrix (Fin n) (Fin n) A) = (Z.O Q').subtype.mapMatrix (y : Matrix (Fin n) (Fin n) (Z.O Q'))` using `congrArg Units.val hx1`. Establish `h4` using `congrArg (Z.O Q').subtype.mapMatrix (show cT t _ * _ * _ = _ from hy)`. Rewrite `h4` using `[map_mul, map_mul]`. Rewrite using `[h3]`. Conclude with `h4`.
+
+Take `⟨Q₁, h1⟩` from `Z.exists_bar hσ Q'`. Establish `h1' : σ (Z.e Q₁) = Z.e Q'` using `by rw [← h1, hσ]`. Take `⟨s', hs', -⟩` from `Z.exists_conj hS h1'`. Establish `e1 : Q₁ ≠ Q` using `fun e' => e (Z.e_injective (by rw [← h1', e', h]))`. Establish `h3 : ∀ Q'', Q'' ≠ Q → (Z.p Q'').mapMatrix ((bc S.subtype u : GL (Fin n) A) : Matrix (Fin n) (Fin n) A) = 1` using `fun Q'' e' => congrArg Units.val (hx2 Q'' e')`.
+
+Rewrite using `[map_cT Z hs', h3 _ e, h3 _ e1, Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one, one_mul, mul_one]`. Take `⟨x', e, -, -⟩` from `hm u ⟨hU, fun Q' hT => by`. Rewrite using `[bc_r_one Z (hu2 _ fun e => hQ (e ▸ hT))]`. Conclude with `one_mem _⟩`. Conclude with `⟨bc (Z.pO Q) x', by rw [bc_pO, ← hu1, bc_pO, e, map_mul, map_mul, map_inv]⟩`.
+-/
 theorem loc_inert (hσ : ∀ a, σ (σ a) = a) (hS : ∀ a ∈ S, σ a ∈ S) (hn : 3 ≤ n)
     (hG : cT σ ((bc S.subtype G : GL (Fin n) A) : Matrix (Fin n) (Fin n) A) = ((bc S.subtype G : GL (Fin n) A) : Matrix (Fin n) (Fin n) A))
     {Q : P} (h : σ (Z.e Q) = Z.e Q) (hQ : Q ∉ T) (δ : S) (hδ : r Q (δ - ⟨σ δ, hS _ δ.2⟩) ≠ 0)
@@ -141,6 +193,11 @@ theorem loc_inert (hσ : ∀ a, σ (σ a) = a) (hS : ∀ a ∈ S, σ a ∈ S) (h
     rw [bc_r_one Z (hu2 _ fun e => hQ (e ▸ hT))]; exact one_mem _⟩
   exact ⟨bc (Z.pO Q) x', by rw [bc_pO, ← hu1, bc_pO, e, map_mul, map_mul, map_inv]⟩
 
+/- English proof (translation)
+Establish `h1 : ∀ y : GL (Fin n) R, (m * x⁻¹) * y = y * (m * x⁻¹)` using `fun y => Units.ext (by`. Simplify using `only [Units.val_mul, h, Matrix.smul_mul, Matrix.mul_smul, Units.mul_inv, Matrix.one_mul, Matrix.mul_one])`. Take `⟨w, rfl⟩ : ∃ w, m = w * x` from `⟨m * x⁻¹, by group⟩`. Rewrite `h1` using `[mul_inv_cancel_right]`. Prove the components needed by the constructor for the conclusion.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem conj_of_smul {R : Type} [CommRing R] {z z' : R} (hz : z * z' = 1) {m x : GL (Fin n) R}
     (h : (m : Matrix (Fin n) (Fin n) R) = z • (x : Matrix (Fin n) (Fin n) R)) (y : GL (Fin n) R) :
     m * y * m⁻¹ = x * y * x⁻¹ ∧ m⁻¹ * y * m = x⁻¹ * y * x := by
@@ -154,6 +211,37 @@ theorem conj_of_smul {R : Type} [CommRing R] {z z' : R} (hz : z * z' = 1) {m x :
   · calc _ = x⁻¹ * (w⁻¹ * (y * w)) * x := by group
       _ = _ := by rw [← h1]; group
 
+/- English proof (translation)
+Use `choose bar hbar using Z.exists_bar hσ`. Use `choose f hf0 hf using Z.exists_res`. Establish `hb1 : ∀ Q ∈ T, Q ≠ bar Q` using `fun Q hQ e => hT Q hQ Q hQ (by rw [hbar, ← e])`. Establish `hb2 : ∀ Q ∈ T, bar Q ∉ T` using `fun Q hQ e => hT Q hQ _ e (hbar Q)`. Establish `hscT : ∀ Q ∈ T, IsScal (Z.O Q) (bc (Z.p Q) m)` using `fun Q hQ => GlobalTheory.T.isScalarMul_integral_of_normalizes_symmetricLevel _ _ _ (f Q) (hf0 Q) n ρ κ hn hρ (ψ Q) (hψ Q hQ) (a Q) (ha Q hQ) _ (fun y hy => by`.
+
+Take `⟨y', h1, h2⟩` from `loc_split Z hσ hS hG (hbar Q) (hb1 Q hQ) (hb2 Q hQ) (hf Q) hm y fun _ => hy`. Conclude with `⟨y', h1, (h2 hQ).2⟩)`. Use the proof step `(fun y hy => by`. Take `⟨y', h1, -⟩` from `loc_split Z hσ hS hG (hbar Q) (hb1 Q hQ) (hb2 Q hQ) (hf Q) hm' y fun _ => hy`. Conclude with `⟨y', by rwa [map_inv, inv_inv] at h1⟩)`.
+
+Take `⟨z₁, x₁, hz₁, hx₁⟩` from `GlobalTheory.T.unitary_scalarMulIntegral_local_to_global Z σ hσ hS n G m hU fun Q => by`. Distinguish the cases in `hQ : Q ∈ T`. Conclude with `Or.inl (hscT Q hQ)`. Distinguish the cases in `hQ' : bar Q ∈ T`. Conclude with `Or.inr ⟨bar Q, by rw [← hbar, hσ], hscT _ hQ'⟩`.
+
+Use `left`. Distinguish the cases in `e : Q = bar Q`. Establish `h1 : σ (Z.e Q) = Z.e Q` using `by rw [hbar, ← e]`. Take `⟨δ, hδ⟩` from `hun Q h1`. Conclude with `loc_inert Z hσ hS (by omega) hG h1 hQ δ hδ hm`.
+
+Use `GlobalTheory.T.isScalarMulIntegral_of_conj_integral_generators _ _ n _ _ (GlobalTheory.T.adjoin_range_GL_eq_top_matrix _ n) fun y _ => ?_` and prove the remaining obligations. Take `⟨y', h1, -⟩` from `loc_split Z hσ hS hG (hbar Q) e hQ' (hf Q) hm y fun h => absurd h hQ`. Conclude with `⟨y', h1⟩`. Establish `red : ∀ x : GL (Fin n) S, Keeps r σ ρ κ G T ψ a (bc S.subtype x) → ∀ Q ∈ T, ∀ h ∈ unipSym (k Q) n ρ κ, bc (r Q) x * h * (bc (r Q) x)⁻¹ ∈ unipSym (k Q) n ρ κ ∧ ψ Q (edgeVal ρ κ (a Q) (bc (r Q) x * h * (bc (r Q) x)⁻¹)) = ψ Q (edgeVal ρ κ (a Q) h)`. Introduce `x hx Q hQ h hh`.
+
+Take `⟨y, rfl⟩` from `bc_surjective (hf0 Q) h`. Take `⟨y', h1, h2⟩` from `loc_split Z hσ hS hG (hbar Q) (hb1 Q hQ) (hb2 Q hQ) (hf Q) hx y fun _ => hh`. Establish `h3 : y' = bc (Z.pO Q) x * y * (bc (Z.pO Q) x)⁻¹` using `bc_injective (Z.O Q).subtype_injective (by rw [h1, map_mul, map_mul, map_inv, bc_pO])`. Establish `h4` using `h2 hQ`. Rewrite `h4` using `[h3, map_mul, map_mul, map_inv, bc_res Z (hf Q)]`. Then use the resulting hypothesis.
+
+Establish `k1 : Keeps r σ ρ κ G T ψ a (bc S.subtype x₁)` using `fun x hx => by`. Take `⟨x', h1, h2⟩` from `hm x hx`. Conclude with `⟨x', by rw [h1, (conj_of_smul hz₁ hx₁ _).1], h2⟩`. Establish `k2 : Keeps r σ ρ κ G T ψ a (bc S.subtype x₁⁻¹)` using `fun x hx => by`. Take `⟨x', h1, h2⟩` from `hm' x hx`.
+
+Conclude with `⟨x', by rw [h1, map_inv, inv_inv, inv_inv, (conj_of_smul hz₁ hx₁ _).2], h2⟩`. Establish `fin : ∀ Q, ∃ s c : (k Q)ˣ, Q ∈ T → ∃ h ∈ unipSym (k Q) n ρ κ, ((bc (r Q) x₁ : GL (Fin n) (k Q)) : Matrix (Fin n) (Fin n) (k Q)) = midDiag n ρ κ (s : k Q) (c : k Q) * (h : Matrix (Fin n) (Fin n) (k Q))` using `fun Q => by`. Distinguish the cases in `hQ : Q ∈ T`. Take `⟨s, c, h⟩` from `GlobalTheory.T.normaliser_unipSym_char_pattern (k Q) n ρ κ hn hρ hκ (ψ Q) (hψ Q hQ) (a Q) (ha Q hQ) _ (red x₁ k1 Q hQ) fun h hh => by`. Use `(red _ k2 Q hQ h hh).1` as an intermediate fact.
+
+Rewrite `this` using `[map_inv, inv_inv]`. Then use the resulting hypothesis. Conclude with `⟨s, c, fun _ => h⟩`. Conclude with `⟨1, 1, fun h => absurd h hQ⟩`. Use `choose s c hsc using fin`. Take `⟨z₂, hz₂, hr₂, -⟩` from `GlobalTheory.T.exists_normOne_with_residues_at_splitPlaces Z σ hσ hS T hT s`.
+
+Take `⟨c', hc', hrc, hsup⟩` from `GlobalTheory.T.exists_normOne_with_residues_at_splitPlaces Z σ hσ hS T hT fun Q => (s Q)⁻¹ * c Q`. Set `w : S` to `⟨σ z₂, hS _ z₂.2⟩`. Establish `hw : z₂ * w = 1` using `Subtype.ext hz₂`. Establish `hw' : w * z₂ = 1` using `by rw [mul_comm, hw]`. Use `⟨z₁ * z₂, c', ⟨w • x₁.1, z₂ • (x₁⁻¹).1, ?_, ?_⟩, ?_, hc', hsup, ?_, fun Q hQ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, hw', Units.mul_inv, one_smul]`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, hw, Units.inv_mul, one_smul]`. Rewrite using `[map_mul, mul_mul_mul_comm, hz₁, hz₂, one_mul]`. Rewrite using `[hx₁]`. Use extensionality with `i j`.
+
+Use `show z₁ * _ = z₁ * z₂ * (σ z₂ * (x₁.1 i j : A))`. Rewrite using `[mul_assoc, ← mul_assoc (z₂ : A), hz₂, one_mul]`. Both sides reduce to the same expression. Take `⟨h, hh, e⟩` from `hsc Q hQ`. Use `⟨h, hh, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : r Q w = ((s Q)⁻¹ : (k Q)ˣ)`. Use `congrArg (r Q) hw` as an intermediate fact. Rewrite `this` using `[map_mul, map_one, hr₂ Q hQ]`. Conclude with `(Units.inv_eq_of_mul_eq_one_right this).symm`. Use extensionality with `i j`.
+
+Establish `e'` using `congrFun (congrFun e i) j`. Use `show r Q (w * x₁.1 i j) = _`. Rewrite using `[map_mul, show r Q (x₁.1 i j) = _ from e', h1, hrc Q hQ]`. Simplify using `only [midDiag, Matrix.diagonal_mul]`. Use `split_ifs`.
+
+Rewrite using `[Units.val_mul, mul_assoc]`. Rewrite using `[← mul_assoc, Units.inv_mul]`.
+-/
 theorem normaliser_core (hσ : ∀ a, σ (σ a) = a) (hS : ∀ a ∈ S, σ a ∈ S) (hn : n = 2 * ρ + κ + 1) (hρ : 1 ≤ ρ) (hκ : 2 ≤ κ)
     (hG : cT σ ((bc S.subtype G : GL (Fin n) A) : Matrix (Fin n) (Fin n) A) = ((bc S.subtype G : GL (Fin n) A) : Matrix (Fin n) (Fin n) A))
     (hT : ∀ Q ∈ T, ∀ Q' ∈ T, σ (Z.e Q) ≠ Z.e Q')

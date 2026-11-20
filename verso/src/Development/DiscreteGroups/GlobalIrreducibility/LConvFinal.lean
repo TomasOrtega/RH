@@ -15,10 +15,16 @@ import Development.DiscreteGroups.GlobalIrreducibility.LConvBig
 
 namespace DiscreteGroups.sglob.LConv
 
+/- English proof (translation)
+The claim follows from `localConverseGL_of_leaves cuspGen kirBump bigCell extremeExists extremeIrred sepOfExtreme commBound unifOfComm altIdentity finiteOfAlt unitOfUnif glue`.
+-/
 theorem localConverseGL : GlobalTheory.Published.LocalConverseGL :=
   localConverseGL_of_leaves cuspGen kirBump bigCell extremeExists extremeIrred sepOfExtreme commBound unifOfComm
     altIdentity finiteOfAlt unitOfUnif glue
 
+/- English proof (translation)
+The claim follows from `unitOfUnif altIdentity finiteOfAlt (unifOfComm commBound)`.
+-/
 theorem unitAdmGL : UnitAdmGL := unitOfUnif altIdentity finiteOfAlt (unifOfComm commBound)
 
 end DiscreteGroups.sglob.LConv

@@ -17,6 +17,13 @@ namespace PositivityTheory.Rg.Rsw.L.LMajor
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨-, k, f, g, hg, hb⟩` from `GlobalTheory.T.schwartz_bound_finite_infinite D θ hθ a b Φ hΦ`. Use `choose C hC using fun i => ((hg i).1.continuous).bounded_above_of_compact_support (hg i).2`. Use `⟨k, f, ∑ i, max (C i) 0, Finset.sum_nonneg fun i _ => le_max_right _ _, fun x => ?_⟩` and prove the remaining obligations. Establish `h1 : ‖Φ x‖ ≤ ∑ i, ‖f i (fun τ i' j => compAt θ τ x i' j) * g i (fun i' j => finPart D (x i' j))‖`. Establish `h` using `hb x`.
+
+Simplify using `only [enorm_eq_nnnorm, ← ENNReal.ofNNReal_finsetSum, ENNReal.coe_le_coe] at h`. Establish `h' : ((‖Φ x‖₊ : NNReal) : ℝ) ≤ ((∑ i, ‖f i (fun τ i' j => compAt θ τ x i' j) * g i (fun i' j => finPart D (x i' j))‖₊ : NNReal) : ℝ)` using `NNReal.coe_le_coe.mpr h`. Simplify `h'` using `only [coe_nnnorm, NNReal.coe_sum]`. Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+
+Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, mul_comm (∑ i, max (C i) 0)]`. Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations. Conclude with `(hC i _).trans ((le_max_left _ _).trans (Finset.single_le_sum (f := fun i => max (C i) 0) (fun i _ => le_max_right _ _) (Finset.mem_univ i)))`.
+-/
 theorem domBound (θ : InfFam D) (hθ : IsInfFam θ) {a b : ℕ} (Φ : Mx D a b → ℂ) (hΦ : Φ ∈ schwartzA θ a b) :
     ∃ (k : ℕ) (f : Fin k → SchwartzMap (D.what₂.Tau → Fin a → Fin b → ℂ) ℂ) (M : ℝ), 0 ≤ M ∧
       ∀ x, ‖Φ x‖ ≤ M * ∑ i, ‖f i (fun τ i j => compAt θ τ x i j)‖ := by

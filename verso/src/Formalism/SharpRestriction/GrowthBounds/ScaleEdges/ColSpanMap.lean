@@ -15,8 +15,14 @@ def incl (k : ℕ) : (Fin k → W) →ₗ[W] (Fin k → Qq) := (Algebra.linearMa
 
 variable {W Qq}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem incl_apply {k : ℕ} (y : Fin k → W) (i : Fin k) : incl W Qq k y i = algebraMap W Qq (y i) := rfl
 
+/- English proof (translation)
+Introduce `x y h`. Use function extensionality and compare the values at `i`. Establish `h1` using `congrFun h i`. Rewrite `h1` using `[incl_apply, incl_apply]`. Conclude with `IsFractionRing.injective W Qq h1`.
+-/
 theorem incl_inj [IsFractionRing W Qq] (k : ℕ) : Function.Injective (incl W Qq k) := by
   intro x y h
   funext i
@@ -24,6 +30,9 @@ theorem incl_inj [IsFractionRing W Qq] (k : ℕ) : Function.Injective (incl W Qq
   rw [incl_apply, incl_apply] at h1
   exact IsFractionRing.injective W Qq h1
 
+/- English proof (translation)
+Unfold `colSpan`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+-/
 theorem colSpan_map {k : ℕ} (M : Matrix (Fin k) (Fin k) W) :
     colSpan W (M.map (algebraMap W Qq)) =
       (Submodule.span W (Set.range fun c : Fin k => fun i => M i c)).map (incl W Qq k) := by
@@ -31,6 +40,15 @@ theorem colSpan_map {k : ℕ} (M : Matrix (Fin k) (Fin k) W) :
   rw [Submodule.map_span, ← Set.range_comp]
   rfl
 
+/- English proof (translation)
+Establish `h1 : (1 : Matrix (Fin k) (Fin k) Qq) = (1 : Matrix (Fin k) (Fin k) W).map (algebraMap W Qq)` using `(Matrix.map_one _ (map_zero _) (map_one _)).symm`. Rewrite using `[h1, colSpan_map, LinearMap.range_eq_map]`. Use `congr 1`. Rewrite using `[← (Pi.basisFun W (Fin k)).span_eq]`. Use `congr 1`.
+
+Use extensionality with `x`. Simplify using `only [Set.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`. Use `⟨c, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `i`. Simplify using `[Matrix.one_apply, Pi.single_apply]`. Introduce and unpack `⟨c, rfl⟩`. Use `⟨c, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+
+Simplify using `[Matrix.one_apply, Pi.single_apply]`.
+-/
 theorem colSpan_one (k : ℕ) :
     colSpan W (1 : Matrix (Fin k) (Fin k) Qq) = LinearMap.range (incl W Qq k) := by
   have h1 : (1 : Matrix (Fin k) (Fin k) Qq) = (1 : Matrix (Fin k) (Fin k) W).map (algebraMap W Qq) :=
@@ -51,6 +69,23 @@ theorem colSpan_one (k : ℕ) :
     funext i
     simp [Matrix.one_apply, Pi.single_apply]
 
+/- English proof (translation)
+Use `haveI : Module.Free W N := Module.Free.of_basis (Submodule.basisOfPid (Pi.basisFun W (Fin k)) N).2`. Establish `hfin : Module.finrank W N = k`. Apply `le_antisymm` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Set `f : (Fin k → W) →ₗ[W] N` to `LinearMap.codRestrict N ((p : W) • LinearMap.id) (fun c => by simpa using hpN c)`.
+
+Establish `hinj : Function.Injective f`. Introduce `x y hxy`. Establish `h2` using `congrArg Subtype.val hxy`. Simplify using `only [f, LinearMap.codRestrict_apply, LinearMap.smul_apply, LinearMap.id_apply] at h2`. Conclude with `smul_right_injective (Fin k → W) hp0 h2`.
+
+Establish `h3` using `LinearMap.finrank_le_finrank_of_injective hinj`. Simplify using `using h3`. Set `b' : Module.Basis (Fin k) W N` to `Module.finBasisOfFinrankEq W N hfin`. Set `M : Matrix (Fin k) (Fin k) W` to `fun i c => (b' c : Fin k → W) i`. Establish `hspan : Submodule.span W (Set.range fun c => (b' c : Fin k → W)) = N`.
+
+Establish `h1` using `congrArg (Submodule.map N.subtype) b'.span_eq`. Rewrite `h1` using `[Submodule.map_span, Submodule.map_subtype_top, ← Set.range_comp]`. Conclude with `h1`. Set `A : Matrix (Fin k) (Fin k) W` to `fun c i => b'.repr ⟨(p : W) • Pi.single i 1, hpN _⟩ c`. Establish `hMA : M * A = (p : W) • (1 : Matrix (Fin k) (Fin k) W)`.
+
+Use extensionality with `a i`. Establish `hx` using `congrArg (fun v : N => (v : Fin k → W) a) (b'.sum_repr ⟨(p : W) • Pi.single i 1, hpN _⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.single_apply] at hx`. Rewrite using `[Matrix.mul_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul, ← hx]`. Conclude with `Finset.sum_congr rfl (fun c _ => by simp only [M, A]; ring)`.
+
+Establish `hdetM : M.det ≠ 0`. Introduce `h0`. Establish `h4` using `congrArg Matrix.det hMA`. Rewrite `h4` using `[Matrix.det_mul, h0, zero_mul, Matrix.det_smul, Matrix.det_one, mul_one, Fintype.card_fin]`. Conclude with `pow_ne_zero k hp0 h4.symm`.
+
+Use `⟨M.map (algebraMap W Qq), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[isUnit_iff_ne_zero, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective W Qq)).mpr hdetM`. Rewrite using `[colSpan_map]`. Use `congr 1`.
+
+Conclude with `hspan.symm`.
+-/
 theorem lattice_of [IsPrincipalIdealRing W] [IsFractionRing W Qq] (p k : ℕ) (hp0 : (p : W) ≠ 0)
     (N : Submodule W (Fin k → W)) (hpN : ∀ x, (p : W) • x ∈ N) : IsLattice W (N.map (incl W Qq k)) := by
   classical
@@ -93,6 +128,13 @@ theorem lattice_of [IsPrincipalIdealRing W] [IsFractionRing W Qq] (p k : ℕ) (h
     congr 1
     exact hspan.symm
 
+/- English proof (translation)
+Substitute `hT` using the available equality. Use `Nat.card_congr (Submodule.Quotient.equiv N _ (LinearEquiv.ofInjective (incl W Qq k) (incl_inj k)) ?_).toEquiv.symm` and prove the remaining obligations. Use extensionality with `⟨y, hy⟩`. Simplify using `only [Submodule.mem_map, Submodule.mem_comap, Submodule.subtype_apply]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨x, hx, hxy⟩`. Use `⟨x, hx, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg Subtype.val hxy`. Simplify `h1` using `[LinearEquiv.ofInjective_apply]`. Introduce and unpack `⟨x, hx, hxy⟩`.
+
+Use `⟨x, hx, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify `hxy` using `[LinearEquiv.ofInjective_apply]`.
+-/
 theorem card_quot [IsFractionRing W Qq] (k : ℕ) (T : Submodule W (Fin k → Qq))
     (hT : T = LinearMap.range (incl W Qq k)) (N : Submodule W (Fin k → W)) :
     Nat.card (↥T ⧸ Submodule.comap T.subtype (N.map (incl W Qq k))) = Nat.card ((Fin k → W) ⧸ N) := by
@@ -120,10 +162,18 @@ def psi {r K : ℕ} (I : Ideal W) (A : Fin r → Fin K → W) : (Fin (r + K) →
   LinearMap.pi fun i =>
     (Submodule.mkQ I) ∘ₗ (LinearMap.proj (Fin.castAdd K i) + ∑ c, A i c • LinearMap.proj (Fin.natAdd r c))
 
+/- English proof (translation)
+Simplify using `[psi, LinearMap.sum_apply]`.
+-/
 theorem psi_apply {r K : ℕ} (I : Ideal W) (A : Fin r → Fin K → W) (y : Fin (r + K) → W) (i : Fin r) :
     psi I A y i = Ideal.Quotient.mk I (y (Fin.castAdd K i) + ∑ c, A i c * y (Fin.natAdd r c)) := by
   simp [psi, LinearMap.sum_apply]
 
+/- English proof (translation)
+Introduce `z`. Use `choose f hf using fun i => Ideal.Quotient.mk_surjective (I := I) (z i)`. Use `⟨Fin.append f 0, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Rewrite using `[psi_apply, Fin.append_left]`.
+
+Simplify using `[Fin.append_right, hf]`.
+-/
 theorem psi_surj {r K : ℕ} (I : Ideal W) (A : Fin r → Fin K → W) : Function.Surjective (psi I A) := by
   intro z
   choose f hf using fun i => Ideal.Quotient.mk_surjective (I := I) (z i)
@@ -132,6 +182,9 @@ theorem psi_surj {r K : ℕ} (I : Ideal W) (A : Fin r → Fin K → W) : Functio
   rw [psi_apply, Fin.append_left]
   simp [Fin.append_right, hf]
 
+/- English proof (translation)
+Rewrite using `[LinearMap.mem_ker, map_smul]`. Use function extensionality and compare the values at `i`. Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (psi I A x i)`. Rewrite using `[Pi.smul_apply, ← hy, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem.mpr ha, zero_mul, Pi.zero_apply]`.
+-/
 theorem psi_smul {r K : ℕ} (I : Ideal W) (a : W) (ha : a ∈ I) (A : Fin r → Fin K → W) (x : Fin (r + K) → W) :
     a • x ∈ LinearMap.ker (psi I A) := by
   rw [LinearMap.mem_ker, map_smul]
@@ -140,6 +193,15 @@ theorem psi_smul {r K : ℕ} (I : Ideal W) (a : W) (ha : a ∈ I) (A : Fin r →
   rw [Pi.smul_apply, ← hy, Algebra.smul_def, Ideal.Quotient.algebraMap_eq,
     Ideal.Quotient.eq_zero_iff_mem.mpr ha, zero_mul, Pi.zero_apply]
 
+/- English proof (translation)
+Establish `key : ∀ Z : Fin r → Fin K → W, ∀ i', psi I Z (Fin.append (fun i'' => -A i'' c) (Pi.single c 1)) i' = Ideal.Quotient.mk I (-A i' c + Z i' c)`. Introduce `Z i'`. Rewrite using `[psi_apply, Fin.append_left]`. Use `congr 1`. Simplify using `[Fin.append_right, Pi.single_apply]`.
+
+Establish `hA : Fin.append (fun i'' => -A i'' c) (Pi.single c 1) ∈ LinearMap.ker (psi I A)`. Rewrite using `[LinearMap.mem_ker]`. Use function extensionality and compare the values at `i'`. Rewrite using `[key, Pi.zero_apply]`. Simplify using the standard rewrite rules.
+
+Rewrite `hA` using `[h, LinearMap.mem_ker]`. Establish `h1` using `congrFun hA i`. Rewrite `h1` using `[key, Pi.zero_apply, Ideal.Quotient.eq_zero_iff_mem]`. Rewrite using `[eq_comm, Ideal.Quotient.eq]`. Use `h1 using 1` and compare the differences between its conclusion and the goal.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem psi_ker_inj {r K : ℕ} (I : Ideal W) (A B : Fin r → Fin K → W)
     (h : LinearMap.ker (psi I A) = LinearMap.ker (psi I B)) (i : Fin r) (c : Fin K) :
     Ideal.Quotient.mk I (A i c) = Ideal.Quotient.mk I (B i c) := by
@@ -163,6 +225,23 @@ theorem psi_ker_inj {r K : ℕ} (I : Ideal W) (A B : Fin r → Fin K → W)
 
 end Psi
 
+/- English proof (translation)
+Introduce `p n' W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w hS k r hrk`. Take `⟨K, rfl⟩ : ∃ K, k = r + K` from `⟨k - r, by omega⟩`. Use `haveI := hS.frac_alt`. Use `set I : Ideal W := Ideal.span {(p : W)} with hI`. Establish `hpI : (p : W) ∈ I` using `Ideal.mem_span_singleton_self _`.
+
+Establish `hp0 : (p : W) ≠ 0` using `hS.p_unif.ne_zero`. Establish `hcard : Nat.card (W ⧸ I) = p ^ n'` using `hS.res_card`. Use `haveI : Finite (W ⧸ I) := Nat.finite_of_card_ne_zero (by rw [hcard]; exact pow_ne_zero _ hS.prime.ne_zero)`. Use `haveI : Fintype (W ⧸ I) := Fintype.ofFinite _`. Use `choose lift hlift using (Ideal.Quotient.mk_surjective (I := I))`.
+
+Set `ed : (Fin r → Fin K → W ⧸ I) → Edge W Qq (r + K)` to `fun A => ⟨(LinearMap.ker (psi I (fun i c => lift (A i c)))).map (incl W Qq (r + K)), colSpan W (1 : Matrix (Fin (r + K)) (Fin (r + K)) Qq)⟩`. Establish `hinj : Function.Injective ed`. Introduce `A B hAB`. Establish `h1` using `congrArg Edge.src hAB`. Establish `h2` using `Submodule.map_injective_of_injective (incl_inj (W := W) (Qq := Qq) (r + K)) h1`.
+
+Use function extensionality and compare the values at `i c`. Establish `h3` using `psi_ker_inj I _ _ h2 i c`. Rewrite `h3` using `[hlift, hlift]`. Then use the resulting hypothesis. Use `⟨Finset.univ.image ed, ?_, ?_⟩` and prove the remaining obligations. Introduce `e he`.
+
+Take `⟨A, -, rfl⟩` from `Finset.mem_image.mp he`. Use `⟨⟨?_, ?_, ?_, ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Conclude with `lattice_of (Qq := Qq) p (r + K) hp0 _ (fun x => psi_smul I (p : W) hpI _ x)`. Conclude with `⟨1, by simp, rfl⟩`. Use `show _ ≤ colSpan W (1 : Matrix (Fin (r + K)) (Fin (r + K)) Qq)`.
+
+Rewrite using `[colSpan_one]`. Conclude with `LinearMap.map_le_range`. Introduce `x hx`. Express the relevant statement in the definitionally equal form `x ∈ colSpan W (1 : Matrix (Fin (r + K)) (Fin (r + K)) Qq) at hx`. Rewrite `hx` using `[colSpan_one]`.
+
+Take `⟨y, rfl⟩` from `LinearMap.mem_range.mp hx`. Conclude with `Submodule.mem_map.mpr ⟨(p : W) • y, psi_smul I (p : W) hpI _ y, map_smul _ _ _⟩`. Use `(card_quot (r + K) _ (colSpan_one (r + K)) _).trans ?_` and prove the remaining obligations. Rewrite using `[Nat.card_congr (LinearMap.quotKerEquivOfSurjective _ (psi_surj I _)).toEquiv]`. Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_fun, Fintype.card_fin, ← Nat.card_eq_fintype_card, hcard, ← pow_mul]`.
+
+Rewrite using `[Finset.card_image_of_injective _ hinj, Finset.card_univ, Fintype.card_fun, Fintype.card_fun, Fintype.card_fin, Fintype.card_fin, ← Nat.card_eq_fintype_card, hcard, Nat.add_sub_cancel_left, ← pow_mul, ← pow_mul]`. Apply `le_of_eq` to reduce the goal to its premises. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem manyEdges : ManyEdges := by
   classical
   intro p n' W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w hS k r hrk

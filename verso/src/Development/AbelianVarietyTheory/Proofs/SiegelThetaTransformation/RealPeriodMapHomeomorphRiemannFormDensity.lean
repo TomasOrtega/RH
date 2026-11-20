@@ -11,6 +11,13 @@ open scoped ComplexConjugate ComplexOrder Real Classical
 
 namespace GlobalTheory.Ker
 
+/- English proof (translation)
+Rewrite using `[dense_iff_closure_eq, Set.eq_univ_iff_forall]`. Introduce `z`. Establish `hz : z ∈ Submodule.span ℝ (S : Set (Fin g → ℂ))` using `hS ▸ Submodule.mem_top`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem w hw => exact subset_closure hw`.
+
+Consider the case `zero => exact subset_closure S.zero_mem`. Consider the case `add a b _ _ ha hb => exact map_mem_closure₂ continuous_add ha hb fun c hc d hd => S.add_mem hc hd`. Consider the case `smul t w _ hw`. Establish `hq : ∀ q : ℚ, (q : ℝ) • w ∈ closure (S : Set (Fin g → ℂ))` using `fun q => map_mem_closure (continuous_const_smul (q : ℝ)) hw fun u hu => by`. Rewrite using `[SetLike.mem_coe, Rat.cast_smul_eq_qsmul ℝ q u]`.
+
+Conclude with `S.smul_mem q hu`. Establish `hcl : IsClosed {s : ℝ | s • w ∈ closure (S : Set (Fin g → ℂ))}` using `isClosed_closure.preimage (continuous_id.smul continuous_const)`. Establish `hsub : closure (Set.range fun q : ℚ => (q : ℝ)) ⊆ {s : ℝ | s • w ∈ closure (S : Set (Fin g → ℂ))}` using `hcl.closure_subset_iff.2 (by rintro _ ⟨q, rfl⟩; exact hq q)`. Conclude with `hsub ((Rat.denseRange_cast (𝕜 := ℝ)).closure_range ▸ Set.mem_univ t)`.
+-/
 theorem dense_of_span_real {g : ℕ} (S : Submodule ℚ (Fin g → ℂ))
     (hS : Submodule.span ℝ (S : Set (Fin g → ℂ)) = ⊤) : Dense (S : Set (Fin g → ℂ)) := by
   rw [dense_iff_closure_eq, Set.eq_univ_iff_forall]
@@ -51,6 +58,11 @@ noncomputable def zRLin (x : Frame X.Ψ r) : WR X n →ₗ[ℝ] (Fin n → Fin g
       exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
     · rw [mulVec_smul, Pi.smul_apply]
 
+/- English proof (translation)
+Establish `hrange : ((LinearMap.range ((LinearMap.funLeft ℚ ℂ idx).comp (perLin X x)) : Submodule ℚ (Fin g → ℂ)) : Set (Fin g → ℂ)) = Set.range (pv X idx x)`. Use extensionality with `z`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_range, Set.mem_range]`. Conclude with `Iff.rfl`. Unfold `DenseRange`.
+
+Rewrite using `[← hrange]`. Apply `dense_of_span_real` to reduce the goal to its premises. Rewrite using `[hrange]`. Conclude with `GlobalTheory.Dict.span_range_pv idx hs hx`.
+-/
 theorem denseRange_pv (hs : IsSympl X bas) {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
     DenseRange (pv X idx x) := by
 
@@ -65,6 +77,9 @@ theorem denseRange_pv (hs : IsSympl X bas) {x : Frame X.Ψ r} (hx : x ∈ X.dom)
   rw [hrange]
   exact GlobalTheory.Dict.span_range_pv idx hs hx
 
+/- English proof (translation)
+Establish `h : zR X idx x ∘ embR X (n` using `n) = fun y k => pv X idx x (y k) := by`. Use function extensionality and compare the values at `y k`. Conclude with `zR_embR X idx x y k`. Rewrite using `[h]`. Conclude with `DenseRange.piMap fun _ => denseRange_pv X idx hs hx`.
+-/
 theorem denseRange_zR_embR (hs : IsSympl X bas) {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
     DenseRange (zR X idx x ∘ embR X (n := n)) := by
   have h : zR X idx x ∘ embR X (n := n) = fun y k => pv X idx x (y k) := by
@@ -73,6 +88,15 @@ theorem denseRange_zR_embR (hs : IsSympl X bas) {x : Frame X.Ψ r} (hx : x ∈ X
   rw [h]
   exact DenseRange.piMap fun _ => denseRange_pv X idx hs hx
 
+/- English proof (translation)
+Establish `hsurj : Function.Surjective (zRLin X idx x (n` using `n)) := by`. Establish `hcl : IsClosed (LinearMap.range (zRLin X idx x (n` using `n)) : Set (Fin n → Fin g → ℂ)) := Submodule.closed_of_finiteDimensional _`. Establish `hd : Dense (LinearMap.range (zRLin X idx x (n` using `n)) : Set (Fin n → Fin g → ℂ)) := by`. Use `(denseRange_zR_embR X idx hs hx (n := n)).mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`.
+
+Conclude with `⟨embR X y, rfl⟩`. Establish `huniv` using `hcl.closure_eq.symm.trans hd.closure_eq`. Introduce `z`. Establish `hz : z ∈ (LinearMap.range (zRLin X idx x (n` using `n)) : Set (Fin n → Fin g → ℂ)) := by`. Rewrite using `[huniv]`.
+
+Discharge the goal by the elementary cases of `trivial`. Conclude with `LinearMap.mem_range.1 hz`. Establish `hg : g = Fintype.card X.Ψ * r`. Simplify `Fintype.card_congr idx` using `[Fintype.card_prod]`. Establish `hdim : Module.finrank ℝ (WR X n) = Module.finrank ℝ (Fin n → Fin g → ℂ)`.
+
+Simplify using `only [WR, Module.finrank_pi_fintype, Complex.finrank_real_complex, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, hg]`. Expand and normalize the polynomial expressions, which then agree. Establish `hinj` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim).2 hsurj`. Conclude with `⟨(LinearEquiv.ofBijective _ ⟨hinj, hsurj⟩).toContinuousLinearEquiv, fun v => rfl⟩`.
+-/
 theorem exists_equiv_zR (hs : IsSympl X bas) {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
     ∃ L : WR X n ≃L[ℝ] (Fin n → Fin g → ℂ), ∀ v, L v = zR X idx x v := by
 
@@ -99,6 +123,11 @@ theorem exists_equiv_zR (hs : IsSympl X bas) {x : Frame X.Ψ r} (hx : x ∈ X.do
   have hinj := (LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim).2 hsurj
   exact ⟨(LinearEquiv.ofBijective _ ⟨hinj, hsurj⟩).toContinuousLinearEquiv, fun v => rfl⟩
 
+/- English proof (translation)
+Establish `key : ∀ (τ : X.Ψ) (k : Fin n), hermC τ.1 X.Gm (embR X y τ k) (embR X y' τ k) = τ.1 (herm X.Gm (y k) (y' k))` using `fun τ k => ReciprocityTheory.ChartRestriction.G.FD.hermC_emb τ.1 X.Gm (y k) (y' k)`. Rewrite using `[EFR, Rat.cast_sum, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[EF_def, GlobalTheory.UnitFrame.trace_eq_sum_re X.Ψ X.cmType]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[key, map_mul]`.
+-/
 theorem EFR_embR (y y' : Matrix (Fin n) (Fin r) E) :
     EFR X (embR X y) (embR X y') = ((∑ k, EF X (y k) (y' k) : ℚ) : ℝ) := by
   have key : ∀ (τ : X.Ψ) (k : Fin n),
@@ -110,6 +139,25 @@ theorem EFR_embR (y y' : Matrix (Fin n) (Fin r) E) :
   refine Finset.sum_congr rfl fun τ _ => ?_
   rw [key, map_mul]
 
+/- English proof (translation)
+Introduce `E _ _ _ r X g q0 _ bas idx n hs hn x hxd`. Take `⟨L, hL⟩` from `exists_equiv_zR X idx (n := n) hs hxd`. Establish `hlaws` using `GlobalTheory.Dict.hx_laws E r X g bas idx n hs hn x hxd`. Establish `hD : DenseRange (embR X (n` using `n)) := by`. Establish `h1 : embR X (n` using `n) = L.symm ∘ (zR X idx x ∘ embR X) := by`.
+
+Use function extensionality and compare the values at `y`. Simplify using `only [Function.comp_apply, ← hL, ContinuousLinearEquiv.symm_apply_apply]`. Rewrite using `[h1]`. Conclude with `L.symm.surjective.denseRange.comp (denseRange_zR_embR X idx hs hxd) L.symm.continuous`. Establish `hB : ∀ v v' : WR X n, (∑ k, hx X bas idx x (zR X idx x v k) (zR X idx x v' k)).im = EFR X v v'`.
+
+Establish `hc1 : Continuous fun p : WR X n × WR X n => (∑ k, hx X bas idx x (zR X idx x p.1 k) (zR X idx x p.2 k)).im`. Simplify using `only [← hL, GlobalTheory.Dict.hx]`. Use `fun_prop`. Establish `hc2 : Continuous fun p : WR X n × WR X n => EFR X p.1 p.2`. Simplify using `only [EFR, hermC]`.
+
+Use `fun_prop`. Establish `heq` using `(hD.prodMap hD).equalizer hc1 hc2 (by`. Use function extensionality and compare the values at `⟨y, y'⟩`. Simplify using `only [Function.comp_apply, Prod.map_apply]`. Rewrite using `[EFR_embR X y y', Complex.im_sum, Rat.cast_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[zR_embR, zR_embR]`. Conclude with `hlaws.2.2.1 (y k) (y' k))`. Conclude with `fun v v' => congrFun heq (v, v')`. Establish `hF : ∀ γ : GL (Fin r) E, IsUn X γ → ∀ v : WR X n, zR X idx (lact γ x) (fun τ k => ((γ : Matrix (Fin r) (Fin r) E).map τ.1) *ᵥ v τ k) = zR X idx x v`.
+
+Introduce `γ hγ`. Establish `hA : Continuous fun v : WR X n => (fun τ k => ((γ : Matrix (Fin r) (Fin r) E).map τ.1) *ᵥ v τ k : WR X n)` using `by fun_prop`. Establish `hc1 : Continuous fun v : WR X n => zR X idx (lact γ x) (fun τ k => ((γ : Matrix (Fin r) (Fin r) E).map τ.1) *ᵥ v τ k)` using `(LinearMap.continuous_of_finiteDimensional (zRLin X idx (lact γ x) (n := n))).comp hA`. Establish `hc2 : Continuous fun v : WR X n => zR X idx x v`. Simplify using `only [← hL]`.
+
+Conclude with `L.continuous`. Establish `heq` using `hD.equalizer hc1 hc2 (by`. Use function extensionality and compare the values at `y`. Simplify using `only [Function.comp_apply]`. Establish `hemb : (fun τ k => ((γ : Matrix (Fin r) (Fin r) E).map τ.1) *ᵥ embR X y τ k : WR X n) = embR X (Matrix.of fun k => (γ : Matrix (Fin r) (Fin r) E) *ᵥ y k)`.
+
+Use function extensionality and compare the values at `τ k`. Conclude with `(GlobalTheory.PerMove.emb_mulVec τ.1 _ (y k)).symm`. Rewrite using `[hemb]`. Use function extensionality and compare the values at `k`. Rewrite using `[zR_embR, zR_embR]`.
+
+Conclude with `(hlaws.2.2.2.2.2.2.2 γ hγ).2.1 (y k))`. Conclude with `fun v => congrFun heq v`. Conclude with `⟨⟨L, hL⟩, hB, fun y y' => EFR_embR X y y', hD, hF⟩`.
+-/
 theorem zR_laws : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g q0 : ℕ) (hr : X.p0 + q0 = r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ x ∈ X.dom, (∃ L : WR X n ≃L[ℝ] (Fin n → Fin g → ℂ), ∀ v, L v = zR X idx x v) ∧ (∀ v v' : WR X n, (∑ k, hx X bas idx x (zR X idx x v k) (zR X idx x v' k)).im = EFR X v v') ∧ (∀ y y' : Matrix (Fin n) (Fin r) E, EFR X (embR X y) (embR X y') = ((∑ k, EF X (y k) (y' k) : ℚ) : ℝ)) ∧ DenseRange (embR X (n := n)) ∧ ∀ γ : GL (Fin r) E, IsUn X γ → ∀ v : WR X n, zR X idx (lact γ x) (fun τ k => ((γ : Matrix (Fin r) (Fin r) E).map τ.1) *ᵥ v τ k) = zR X idx x v := by
   intro E _ _ _ r X g q0 _ bas idx n hs hn x hxd
   obtain ⟨L, hL⟩ := exists_equiv_zR X idx (n := n) hs hxd

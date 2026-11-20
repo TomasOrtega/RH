@@ -19,6 +19,9 @@ def cj (U : Subgroup G) (g : Subgroup.normalizer (U : Set G)) : U ≃ₜ* U wher
     (f := fun u : U => ((g⁻¹ : Subgroup.normalizer (U : Set G)) : G) * u *
       ((g⁻¹ : Subgroup.normalizer (U : Set G)) : G)⁻¹) (by fun_prop) _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cj_coe (U : Subgroup G) (g : Subgroup.normalizer (U : Set G)) (u : U) :
     (cj U g u : G) = g * u * (g : G)⁻¹ := rfl
 
@@ -33,11 +36,20 @@ def md : Subgroup.normalizer (U : Set G) →* ℝ≥0 where
     have : cj U (a * b) = (cj U b).trans (cj U a) := by ext u; simp [cj_coe, mul_assoc]
     simp only [this, mulEquivHaarChar_trans, mul_comm]
 
+/- English proof (translation)
+The claim follows from `(mulEquivHaarChar_pos _).ne'`.
+-/
 theorem md_ne_zero (g : Subgroup.normalizer (U : Set G)) : md U g ≠ 0 := (mulEquivHaarChar_pos _).ne'
 
+/- English proof (translation)
+Rewrite using `[map_mul, map_mul, mul_right_comm, ← map_mul, mul_inv_cancel, map_one, one_mul]`.
+-/
 theorem md_conj (x g : Subgroup.normalizer (U : Set G)) : md U (x * g * x⁻¹) = md U g := by
   rw [map_mul, map_mul, mul_right_comm, ← map_mul, mul_inv_cancel, map_one, one_mul]
 
+/- English proof (translation)
+Establish `h` using `mulEquivHaarChar_smul_map μ (cj U g)`. Rewrite `h` using `[show mulEquivHaarChar (cj U g) = 1 from hg, one_smul]`. Establish `h3` using `integral_map_equiv (μ := μ) (cj U g).toHomeomorph.toMeasurableEquiv (fun u : U => f u)`. Rewrite `h3` using `[show ⇑(cj U g).toHomeomorph.toMeasurableEquiv = ⇑(cj U g) from rfl, h]`. Conclude with `h3.symm`.
+-/
 theorem integral_conj_of_md (μ : Measure U) [μ.IsHaarMeasure] [μ.Regular]
     (g : Subgroup.normalizer (U : Set G)) (hg : md U g = 1) (f : G → ℂ) :
     ∫ u : U, f (g * (u : G) * (g : G)⁻¹) ∂μ = ∫ u : U, f u ∂μ := by
@@ -52,6 +64,13 @@ end Abstract
 section Alg
 variable {k : Type} [Field k] {n : Type} [Fintype n] [DecidableEq n] {c : ℕ}
 
+/- English proof (translation)
+Rewrite `hu`, the goal using `[Model.mem_N_iff]`. Introduce `r s hrs`. Establish `e : (g * u * g⁻¹).val = 1 + g.val * (u.val - 1) * (g⁻¹).val`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Units.mul_inv, Units.val_mul, Units.val_mul]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[e, Matrix.add_apply, add_eq_left, Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun t _ => ?_` and prove the remaining obligations. Distinguish the cases in `ht : lev p s < lev p t`. Rewrite using `[hg' ht, mul_zero]`. Rewrite using `[Matrix.mul_apply]`.
+
+Use `mul_eq_zero_of_left (Finset.sum_eq_zero fun v _ => ?_) _` and prove the remaining obligations. Distinguish the cases in `hv : lev p v < lev p r`. Rewrite using `[hg hv, zero_mul]`. Rewrite using `[Matrix.sub_apply, hu v t (by omega), sub_self, mul_zero]`.
+-/
 theorem conj_mem_of_tri {p : ℕ} {g u : GL (n ⊕ Fin c) k} (hg : g.val.BlockTriangular (lev p))
     (hg' : (g⁻¹).val.BlockTriangular (lev p)) (hu : u ∈ N k n c p) : g * u * g⁻¹ ∈ N k n c p := by
   rw [Model.mem_N_iff] at hu ⊢
@@ -69,6 +88,9 @@ theorem conj_mem_of_tri {p : ℕ} {g u : GL (n ⊕ Fin c) k} (hg : g.val.BlockTr
   · rw [hg hv, zero_mul]
   rw [Matrix.sub_apply, hu v t (by omega), sub_self, mul_zero]
 
+/- English proof (translation)
+Rewrite using `[Subgroup.mem_normalizer_iff]`. Use `fun u => ⟨conj_mem_of_tri hg hg', fun h => ?_⟩` and prove the remaining obligations. Use `conj_mem_of_tri hg' (by rwa [inv_inv]) h` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+-/
 theorem mem_normalizer_of_tri {p : ℕ} {g : GL (n ⊕ Fin c) k} (hg : g.val.BlockTriangular (lev p))
     (hg' : (g⁻¹).val.BlockTriangular (lev p)) :
     g ∈ Subgroup.normalizer (N k n c p : Set (GL (n ⊕ Fin c) k)) := by
@@ -77,6 +99,11 @@ theorem mem_normalizer_of_tri {p : ℕ} {g : GL (n ⊕ Fin c) k} (hg : g.val.Blo
   have := conj_mem_of_tri hg' (by rwa [inv_inv]) h
   simpa [mul_assoc] using this
 
+/- English proof (translation)
+Introduce and unpack `(r | r) (s | s) h`. Simplify using `[lev] at h`. Simplify using `[VolN.val_embX]`. Simplify using `[VolN.val_embX]`. Establish `: r ≠ s` using `by rintro rfl; exact lt_irrefl _ h`.
+
+Simplify using `[VolN.val_embX, this]`.
+-/
 theorem embX_tri (p : ℕ) (x : GL n k) : (embX c x).val.BlockTriangular (lev p) := by
   rintro (r | r) (s | s) h
   · simp [lev] at h
@@ -85,6 +112,11 @@ theorem embX_tri (p : ℕ) (x : GL n k) : (embX c x).val.BlockTriangular (lev p)
   · have : r ≠ s := by rintro rfl; exact lt_irrefl _ h
     simp [VolN.val_embX, this]
 
+/- English proof (translation)
+Introduce and unpack `(r | r) (s | s) h`. Simplify using `[lev] at h`. Establish `: s.val + 1 ≠ p` using `by simp [lev] at h; omega`. Simplify using `[colE, upU, this]`. Simplify using `[colE, upU]`.
+
+Establish `: r ≠ s` using `by rintro rfl; exact lt_irrefl _ h`. Simplify using `[colE, upU, this]`.
+-/
 theorem colE_tri (p : ℕ) (β : n → k) : (colE c p β).val.BlockTriangular (lev p) := by
   rintro (r | r) (s | s) h
   · simp [lev] at h
@@ -94,15 +126,24 @@ theorem colE_tri (p : ℕ) (β : n → k) : (colE c p β).val.BlockTriangular (l
   · have : r ≠ s := by rintro rfl; exact lt_irrefl _ h
     simp [colE, upU, this]
 
+/- English proof (translation)
+The claim follows from `mem_normalizer_of_tri (embX_tri p x) (by rw [← map_inv]; exact embX_tri p _)`.
+-/
 theorem embX_mem (p : ℕ) (x : GL n k) :
     embX c x ∈ Subgroup.normalizer (N k n c p : Set (GL (n ⊕ Fin c) k)) :=
   mem_normalizer_of_tri (embX_tri p x) (by rw [← map_inv]; exact embX_tri p _)
 
+/- English proof (translation)
+The claim follows from `mem_normalizer_of_tri (colE_tri p β) (by rw [inv_eq_of_mul_eq_one_right (QuotStep.colE_neg p β)]; exact colE_tri p _)`.
+-/
 theorem colE_mem (p : ℕ) (β : n → k) :
     colE c p β ∈ Subgroup.normalizer (N k n c p : Set (GL (n ⊕ Fin c) k)) :=
   mem_normalizer_of_tri (colE_tri p β) (by
     rw [inv_eq_of_mul_eq_one_right (QuotStep.colE_neg p β)]; exact colE_tri p _)
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [colE, upU, Units.val_mul, fromBlocks_multiply]`. Apply the tactic sequence `congr 1 <;> simp`. Use extensionality with `r i`. Apply the tactic sequence `by_cases h : i.val + 1 = p <;> simp [h, add_comm]`.
+-/
 theorem colE_add (p : ℕ) (u w : n → k) : colE c p (u + w) = colE c p u * colE c p w := by
   apply Units.ext
   simp only [colE, upU, Units.val_mul, fromBlocks_multiply]
@@ -117,6 +158,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {n : Type} [Fintype n] [DecidableEq n] {c : ℕ}
 
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Take `⟨γ, h0, h1⟩` from `ValuativeRel.IsNontrivial.condition (R := k)`. Take `⟨a, rfl⟩` from `ValuativeRel.valuation_surjective γ`. Conclude with `⟨a, by rintro rfl; simp at h0, by rintro rfl; simp at h1⟩`.
+-/
 theorem exists_ne_zero_one [ValuativeRel.IsNontrivial k] : ∃ a : k, a ≠ 0 ∧ a ≠ 1 := by
   obtain ⟨γ, h0, h1⟩ := ValuativeRel.IsNontrivial.condition (R := k)
   obtain ⟨a, rfl⟩ := ValuativeRel.valuation_surjective γ
@@ -124,6 +168,17 @@ theorem exists_ne_zero_one [ValuativeRel.IsNontrivial k] : ∃ a : k, a ≠ 0 �
 
 variable [MeasurableSpace k] [BorelSpace k] (ν : Measure k) [ν.IsAddHaarMeasure]
 
+/- English proof (translation)
+Use `haveI := secondCountable k`. Use `haveI := t2Space k`. Use `haveI : LocallyCompactSpace (N k n c p) := (VolN.isClosed_N p).locallyCompactSpace`. Use `haveI := VolN.isHaarMeasure_volN (n := n) (c := c) ν p`. Use `haveI : SecondCountableTopology (N k n c p) := TopologicalSpace.Subtype.secondCountableTopology _`.
+
+Set `E : (n → k) → Subgroup.normalizer (N k n c p : Set (GL (n ⊕ Fin c) k))` to `fun b => ⟨_, colE_mem p b⟩`. Establish `hs : ∀ a : k, a ≠ 0 → md (N k n c p) (E (a • β)) = md (N k n c p) (E β)` using `fun a ha => by`. Set `x : GL n k` to `Matrix.GeneralLinearGroup.scalar n (Units.mk0 a ha)`. Rewrite using `[← md_conj (N k n c p) ⟨_, embX_mem p x⟩ (E β)]`. Use `congr 1`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `Eq.trans ?_ (QuotStep.conj_colE p x β).symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `colE c p (a • β) = _`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[x, Matrix.mulVec_diagonal]`. Take `⟨a, h0, h1⟩` from `exists_ne_zero_one (k := k)`. Establish `e : E β = E (a • β) * E ((1 - a) • β)`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `colE c p β = colE c p (a • β) * colE c p ((1 - a) • β)`.
+
+Rewrite using `[← colE_add, ← add_smul, add_sub_cancel, one_smul]`. Establish `h` using `congrArg (md (N k n c p)) e`. Rewrite `h` using `[map_mul, hs a h0, hs _ (sub_ne_zero.2 h1.symm)]`. Conclude with `integral_conj_of_md (N k n c p) _ (E β) (mul_left_cancel₀ (md_ne_zero _ (E β)) (h.symm.trans (mul_one _).symm)) f`.
+-/
 theorem integral_conj_colE' (p : ℕ) (β : n → k) (f : GL (n ⊕ Fin c) k → ℂ) :
     ∫ u : N k n c p, f (colE c p β * (u : GL (n ⊕ Fin c) k) * (colE c p β)⁻¹) ∂(volN ν n c p) =
       ∫ u : N k n c p, f u ∂(volN ν n c p) := by
@@ -155,6 +210,9 @@ theorem integral_conj_colE' (p : ℕ) (β : n → k) (f : GL (n ⊕ Fin c) k →
 
 end Meas
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ _ _ ρ _ _ ν _ β f` and use `integral_conj_colE' ν (ρ + 1) β f`.
+-/
 theorem integral_conj_colE : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (n : Type) [Fintype n] [DecidableEq n] (c ρ : ℕ) (_ : 1 ≤ ρ) (_ : ρ < c) (ν : Measure k) [ν.IsAddHaarMeasure] (β : n → k) (f : GL (n ⊕ Fin c) k → ℂ), ∫ u : N k n c (ρ + 1), f (colE c (ρ + 1) β * (u : GL (n ⊕ Fin c) k) * (colE c (ρ + 1) β)⁻¹) ∂(volN ν n c (ρ + 1)) = ∫ u : N k n c (ρ + 1), f u ∂(volN ν n c (ρ + 1)) :=
   fun _ _ _ _ _ _ _ _ _ _ _ ρ _ _ ν _ β f => integral_conj_colE' ν (ρ + 1) β f
 

@@ -8,6 +8,15 @@ open scoped Classical
 
 namespace GlobalTheory.Hk
 
+/- English proof (translation)
+Establish `hmaps : ∀ v ∈ hfin.toFinset, q v ∈ Finset.Icc 1 ⌊y⌋₊`. Introduce `v hv`. Rewrite `hv` using `[Set.Finite.mem_toFinset, Set.mem_ofPred_eq, hq]`. Conclude with `Finset.mem_Icc.mpr ⟨hq1 v, Nat.le_floor hv⟩`. Establish `hfib : ∀ n ∈ Finset.Icc 1 ⌊y⌋₊, {v | Q v = (n : ℕ)}.ncard = (hfin.toFinset.filter fun v => q v = n).card`.
+
+Introduce `n hn`. Rewrite using `[← Set.ncard_coe_finset]`. Use `congr 1`. Use extensionality with `v`. Simplify using `only [Set.mem_ofPred_eq, Finset.coe_filter, Set.Finite.mem_toFinset, hq, Nat.cast_inj]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `⟨le_trans (Nat.cast_le.mpr (Finset.mem_Icc.mp hn).2) (Nat.floor_le (by linarith)), rfl⟩`. Conclude with `fun h => h.2`. Rewrite using `[show (∑ n ∈ Finset.Icc 1 ⌊y⌋₊, (({v | Q v = (n : ℕ)}.ncard : ℕ) : ℝ)) = ∑ n ∈ Finset.Icc 1 ⌊y⌋₊, (((hfin.toFinset.filter fun v => q v = n).card : ℕ) : ℝ) from Finset.sum_congr rfl fun n hn => by rw [hfib n hn]]`.
+
+Rewrite using `[← Nat.cast_sum, ← Finset.card_eq_sum_card_fiberwise hmaps, ← Set.ncard_coe_finset, Set.Finite.coe_toFinset]`.
+-/
 theorem rayCountTheta_fibre_count {ι : Type} (Q : ι → ℝ) (q : ι → ℕ) (hq1 : ∀ v, 1 ≤ q v) (hq : ∀ v, Q v = q v)
     (y : ℝ) (hy : 1 ≤ y) (hfin : {v | Q v ≤ y}.Finite) :
     ∑ n ∈ Finset.Icc 1 ⌊y⌋₊, (({v | Q v = (n : ℕ)}.ncard : ℕ) : ℝ) = (({v | Q v ≤ y}.ncard : ℕ) : ℝ) := by
@@ -32,6 +41,13 @@ theorem rayCountTheta_fibre_count {ι : Type} (Q : ι → ℝ) (q : ι → ℕ) 
   rw [← Nat.cast_sum, ← Finset.card_eq_sum_card_fiberwise hmaps, ← Set.ncard_coe_finset,
     Set.Finite.coe_toFinset]
 
+/- English proof (translation)
+Establish `hf` using `hs.hasSum.tsum_fiberwise q`. Rewrite using `[← hf.tsum_eq]`. Use `congr 1`. Use function extensionality and compare the values at `n`. Establish `hset : {v | Q v = (n : ℕ)} = q ⁻¹' {n}`.
+
+Use extensionality with `v`. Simplify using `[hq]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[tsum_const, hset, Nat.card_coe_set_eq, nsmul_eq_mul]`. Use `_ = ∑' b : q ⁻¹' {n}, Real.exp (-(t * Q b)) := by`.
+
+Use `congr 1`. Use function extensionality and compare the values at `b`. Rewrite using `[hq b, show q b = n from b.2]`.
+-/
 theorem rayCountTheta_fibre_tsum {ι : Type} (Q : ι → ℝ) (q : ι → ℕ) (hq : ∀ v, Q v = q v) (t : ℝ)
     (hs : Summable fun v => Real.exp (-(t * Q v))) :
     ∑' n : ℕ, (({v | Q v = (n : ℕ)}.ncard : ℕ) : ℝ) * Real.exp (-(t * n)) = ∑' v, Real.exp (-(t * Q v)) := by
@@ -50,6 +66,31 @@ theorem rayCountTheta_fibre_tsum {ι : Type} (Q : ι → ℝ) (q : ι → ℕ) (
         funext b
         rw [hq b, show q b = n from b.2]
 
+/- English proof (translation)
+Introduce `K _ _ d M x hd hd4 hd100 hx hK hM D g`. Take `⟨α, γ, l, θ₁, θ₂, hα, hγ, hαγ, hQ, ha⟩` from `GlobalTheory.T.rayClassIdealCount_eq_ncard_shiftedBinaryForm K d M x hd hd4 hd100 hx hK hM D g`. Use `choose q hq1 hq using hQ`. Establish `hd0 : (0 : ℝ) < d` using `by exact_mod_cast (by omega : 0 < d)`. Establish `hM0 : (0 : ℝ) < M` using `by exact_mod_cast (by omega : 0 < M)`.
+
+Establish `hC : Real.pi / Real.sqrt (α * γ) = 2 * Real.pi / (Real.sqrt d * (M : ℝ) ^ 2)`. Establish `hs : Real.sqrt (α * γ) = Real.sqrt d * (M : ℝ) ^ 2 / 2`. Rewrite using `[hαγ, show (d : ℝ) * (M : ℝ) ^ 4 / 4 = (Real.sqrt d * (M : ℝ) ^ 2 / 2) ^ 2 by`. Rewrite using `[div_pow, mul_pow, Real.sq_sqrt hd0.le]`. Use the proof step `ring]`.
+
+Conclude with `Real.sqrt_sq (by positivity)`. Establish `hsd : 0 < Real.sqrt d` using `Real.sqrt_pos.mpr hd0`. Rewrite using `[hs]`. Clear the denominators using the available nonvanishing facts. Use `⟨fun y hy => ?_, fun t ht0 ht1 => ?_⟩` and prove the remaining obligations.
+
+Establish `h94` using `GlobalTheory.T.abs_ncard_qForm_le_sub_pi_div_sqrt_mul_le_ten_sqrt α γ l θ₁ θ₂ y hα hγ hy`. Establish `hsum : ∑ n ∈ Finset.Icc 1 ⌊y⌋₊, aRay D g n = (({v : ℤ × ℤ | qForm α γ l θ₁ θ₂ v ≤ y}.ncard : ℕ) : ℝ)`. Simplify using `only [ha]`. Conclude with `rayCountTheta_fibre_count (qForm α γ l θ₁ θ₂) q hq1 hq y hy h94.1`. Rewrite using `[hsum, ← hC]`.
+
+Conclude with `h94.2`. Establish `h96` using `GlobalTheory.T.summable_and_abs_tsum_exp_neg_qForm_sub_le α γ l θ₁ θ₂ t (by linarith) (by linarith) ht0`. Establish `htsum : ∑' n : ℕ, aRay D g n * Real.exp (-(t * n)) = ∑' v : ℤ × ℤ, Real.exp (-(t * qForm α γ l θ₁ θ₂ v))`. Simplify using `only [ha]`. Conclude with `rayCountTheta_fibre_tsum (qForm α γ l θ₁ θ₂) q hq t h96.1`.
+
+Rewrite using `[htsum, ← hC]`. Use `le_trans h96.2 ?_` and prove the remaining obligations. Establish `hA : α ≤ α * γ` using `by nlinarith`. Establish `hG : γ ≤ α * γ` using `by nlinarith`. Establish `hP1 : 1 ≤ α * γ` using `by nlinarith`.
+
+Establish `hsq : 1 ≤ Real.sqrt (α * γ)`. Rewrite using `[show (1 : ℝ) = Real.sqrt 1 from Real.sqrt_one.symm]`. Conclude with `Real.sqrt_le_sqrt hP1`. Establish `hsq0 : 0 < Real.sqrt (α * γ)` using `by linarith`. Establish `hCπ : Real.pi / Real.sqrt (α * γ) ≤ Real.pi` using `div_le_self Real.pi_pos.le hsq`.
+
+Establish `hC0 : 0 ≤ Real.pi / Real.sqrt (α * γ)` using `by positivity`. Establish `hd1 : (1 : ℝ) ≤ d` using `by exact_mod_cast (by omega : 1 ≤ d)`. Establish `hM1 : (1 : ℝ) ≤ M` using `by exact_mod_cast (by omega : 1 ≤ M)`. Establish `key : 3 * Real.pi * (α * γ) ^ 2 ≤ (4 * (d : ℝ) * (M : ℝ) ^ 2) ^ 10`. Rewrite using `[hαγ]`.
+
+Establish `h1 : (d : ℝ) ^ 2 ≤ (d : ℝ) ^ 10` using `pow_le_pow_right₀ hd1 (by norm_num)`. Establish `h2 : (M : ℝ) ^ 8 ≤ (M : ℝ) ^ 20` using `pow_le_pow_right₀ hM1 (by norm_num)`. Establish `hX : 0 ≤ (d : ℝ) ^ 10 * (M : ℝ) ^ 20` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show (4 * (d : ℝ) * (M : ℝ) ^ 2) ^ 10 = 4 ^ 10 * ((d : ℝ) ^ 10 * (M : ℝ) ^ 20) by ring]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpoly : α ^ 2 + γ ^ 2 + α ^ 2 * γ ^ 2 * t ^ 2 ≤ 3 * (α * γ) ^ 2`. Establish `e1 : α ^ 2 ≤ (α * γ) ^ 2` using `pow_le_pow_left₀ (by linarith) hA 2`. Establish `e2 : γ ^ 2 ≤ (α * γ) ^ 2` using `pow_le_pow_left₀ (by linarith) hG 2`. Establish `ht2 : t ^ 2 ≤ 1` using `by nlinarith`.
+
+Establish `e3 : α ^ 2 * γ ^ 2 * t ^ 2 ≤ (α * γ) ^ 2`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts.
+
+Use `_ ≤ Real.pi * t * (3 * (α * γ) ^ 2) := mul_le_mul (mul_le_mul_of_nonneg_right hCπ ht0.le) hpoly (by positivity) (by positivity)`. Use `_ = 3 * Real.pi * (α * γ) ^ 2 * t := by ring`. Use `_ ≤ (4 * (d : ℝ) * (M : ℝ) ^ 2) ^ 10 * t := mul_le_mul_of_nonneg_right key ht0.le`.
+-/
 theorem rayCountTheta : ∀ (K : Type) [Field K] [NumberField K] (d M : ℕ) (x : K), d.Prime → d % 4 = 3 → 100 ≤ d → x ^ 2 = -(d : K) → Module.finrank ℚ K = 2 → 3 ≤ M → ∀ D : RayData K M, ∀ g : D.G, (∀ y : ℝ, 1 ≤ y → |∑ n ∈ Finset.Icc 1 ⌊y⌋₊, aRay D g n - 2 * Real.pi / (Real.sqrt d * (M : ℝ) ^ 2) * y| ≤ 10 * Real.sqrt y) ∧ ∀ t : ℝ, 0 < t → t ≤ 1 → |∑' n : ℕ, aRay D g n * Real.exp (-(t * n)) - 2 * Real.pi / (Real.sqrt d * (M : ℝ) ^ 2) / t| ≤ (4 * (d : ℝ) * (M : ℝ) ^ 2) ^ 10 * t := by
   intro K _ _ d M x hd hd4 hd100 hx hK hM D g
   obtain ⟨α, γ, l, θ₁, θ₂, hα, hγ, hαγ, hQ, ha⟩ := GlobalTheory.T.rayClassIdealCount_eq_ncard_shiftedBinaryForm K d M x hd hd4 hd100 hx hK hM D g

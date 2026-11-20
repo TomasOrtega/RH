@@ -17,6 +17,13 @@ variable {V : Type} [AddCommGroup V] [Module L V] {σ : L →+* L} {B : V →ₛ
 def ReflIn (B : V →ₛₗ[σ] V →ₗ[L] L) (N : Submonoid (Module.End L V)) (Λ : Set V) : Prop :=
   ∀ w ∈ Λ, ∀ μ : L, μ ≠ 0 → μ⁻¹ ∈ intL L → B w w = μ + σ μ → refl B w μ ∈ N
 
+/- English proof (translation)
+Establish `h1 : Valued.v (δ + π * (τ * A)) = 1`. Rewrite using `[Valuation.map_add_eq_of_lt_left _ (by rw [hδ]; exact mul_lt_one hπ (mul_mem hτ hA)), hδ]`. Establish `h0 : δ + π * (τ * A) ≠ 0`. Introduce `h`. Rewrite `h1` using `[h, map_zero]`.
+
+Conclude with `zero_ne_one h1`. Use `⟨π⁻¹ * (δ + π * (τ * A)), mul_ne_zero (inv_ne_zero hπ0) h0, ?_, (δ + π * (τ * A))⁻¹, ?_, ?_, inv_mul_cancel₀ h0⟩` and prove the remaining obligations. Establish `: σ τ = 1 - τ` using `by rw [← hτ1]; ring`. Simplify using `only [map_mul, map_add, map_inv₀, hσπ, hδ', hA', this]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mem_int, map_inv₀, h1, inv_one]`. Rewrite using `[mul_inv, inv_inv]`.
+-/
 theorem exists_param (hσ : ∀ x, σ (σ x) = x) {τ : L} (hτ : τ ∈ intL L) (hτ1 : τ + σ τ = 1) {δ : L}
     (hδ : Valued.v δ = 1) (hδ' : σ δ = -δ) {π : L} (hπ0 : π ≠ 0) (hπ : Valued.v π < 1) (hσπ : σ π = π)
     {A : L} (hA : A ∈ intL L) (hA' : σ A = A) :
@@ -34,6 +41,59 @@ theorem exists_param (hσ : ∀ x, σ (σ x) = x) {τ : L} (hτ : τ ∈ intL L)
   · rw [mem_int, map_inv₀, h1, inv_one]
   · rw [mul_inv, inv_inv]
 
+/- English proof (translation)
+Establish `hσO : ∀ x ∈ intL L, σ x ∈ intL L` using `fun x hx => by rw [mem_int, hσ]; exact hx`. Establish `hϖ0 : ϖ ≠ 0`. Introduce `h`. Rewrite `hϖ` using `[h, map_zero]`. Conclude with `WithZero.exp_ne_zero hϖ.symm`.
+
+Establish `hϖ1 : Valued.v ϖ < 1`. Rewrite using `[hϖ, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions. Establish `hδ0 : δ ≠ 0`. Introduce `h`.
+
+Rewrite `hδ` using `[h, map_zero]`. Conclude with `zero_ne_one hδ`. Proceed by induction on `m with`. Consider the case `zero => intro W hW`. Use linear arithmetic over natural numbers and integers.
+
+Consider the case `succ m ih`. Introduce `W hW Λ Λ' hΛ hΛ' hR hR' hN`. Establish `hback : ∀ N : ℕ, (∀ v ∈ Λ', ϖ ^ N • v ∈ Λ) → ∀ v ∈ Λ, ϖ ^ N • v ∈ Λ'`. Introduce `N h v hv`. Use `(hΛ' _).2 ⟨W.smul_mem _ ((hΛ v).1 hv).1, fun w hw => ?_⟩` and prove the remaining obligations.
+
+Use `hΛ.pair hv (h w hw)` as an intermediate fact. Simplify `this` using `[map_smulₛₗ, hσϖ]`. Establish `ha` using `Nat.find_spec hN`. Break down `h0 : Nat.find hN with _ | b` into its components or cases. Rewrite `ha` using `[h0]`.
+
+Use `⟨1, one_mem _, fun _ _ => rfl, fun v hv => ?_⟩` and prove the remaining obligations. Simplify using `using hback 0 ha v hv`. Establish `hb : ¬ ∀ v ∈ Λ', ϖ ^ b • v ∈ Λ` using `Nat.find_min hN (by omega)`. Rewrite `ha` using `[h0]`. Use `push Not at hb`.
+
+Take `⟨e, he, hne⟩` from `hb`. Establish `heW : e ∈ W` using `((hΛ' e).1 he).1`. Rewrite `hne` using `[hΛ]`. Use `push Not at hne`. Take `⟨y, hy, hy'⟩` from `hne (W.smul_mem _ heW)`.
+
+Use `set π := ϖ ^ (b + 1) with hπdef`. Establish `hπ0 : π ≠ 0` using `pow_ne_zero _ hϖ0`. Establish `hσπ : σ π = π` using `by rw [hπdef, map_pow, hσϖ]`. Establish `hπ1 : Valued.v π < 1`. Rewrite using `[hπdef, map_pow]; exact pow_lt_one₀ zero_le hϖ1 (by omega)`.
+
+Establish `hπO : π ∈ intL L` using `hπ1.le`. Establish `hπe : π • e ∈ Λ` using `ha e he`. Establish `hunit : Valued.v (π * B e y) = 1`. Establish `h1 : Valued.v (π * B e y) ≤ 1`. Use `hΛ.pair hπe hy` as an intermediate fact.
+
+Simplify `this` using `[map_smulₛₗ, hσπ, mem_int]`. Use `le_antisymm h1 ?_` and prove the remaining obligations. Establish `h2 : 1 < Valued.v (ϖ ^ b * B e y)`. Rewrite `hy'` using `[mem_int, not_le]`. Simplify `hy'` using `[map_smulₛₗ, hσϖ]`.
+
+Establish `h3 : π * B e y = ϖ * (ϖ ^ b * B e y)` using `by rw [hπdef]; ring`. Rewrite using `[h3, map_mul, hϖ]`. Establish `h4 : Valued.v (ϖ ^ b * B e y) ≠ 0` using `(lt_trans zero_lt_one h2).ne'`. Rewrite `h2` using `[← WithZero.exp_log h4, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite using `[← WithZero.exp_log h4, ← WithZero.exp_add, ← WithZero.exp_zero, WithZero.exp_le_exp]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hu0 : π * B e y ≠ 0`. Introduce `h`. Rewrite `hunit` using `[h, map_zero]`. Conclude with `zero_ne_one hunit`.
+
+Establish `hey : B e y ≠ 0` using `right_ne_zero_of_mul hu0`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf, hef⟩ : ∃ f ∈ Λ, B e f = π⁻¹ := by`. Use `⟨(π * B e y)⁻¹ • y, hΛ.smul hσO (by rw [mem_int, map_inv₀, hunit, inv_one]) hy, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hfe : B f e = π⁻¹` using `by rw [← hB, hef, map_inv₀, hσπ]`. Establish `hfW : f ∈ W` using `((hΛ f).1 hf).1`. Establish `hπf : π • f ∈ Λ'` using `hback _ ha f hf`. Establish `hee` using `hΛ'.pair he he`. Establish `hff` using `hΛ.pair hf hf`.
+
+Establish `hsm : ∀ x v, B (π • x) v = π * B x v`. Introduce `x v`. Simplify using `[map_smulₛₗ, hσπ]`. Establish `hsmall : Valued.v (π * (π * (B e e * B f f))) < 1` using `mul_lt_one hπ1 (mul_mem hπO (mul_mem hee hff))`. Establish `hdec : ∀ v ∈ Λ, ∃ c ∈ intL L, ∃ d ∈ intL L, ∃ v₀ ∈ Λ, B e v₀ = 0 ∧ B f v₀ = 0 ∧ v = c • (π • e) + d • f + v₀`.
+
+Introduce `v hv`. Take `⟨c, hc, d, hd, v₀, hv₀, h1, h2, h3⟩` from `hΛ.decomp hσO hπe hf (by rw [hsm, hef, mul_inv_cancel₀ hπ0]) (by rw [map_smul, hfe, smul_eq_mul, mul_inv_cancel₀ hπ0]) (by convert hsmall using 2; rw [hsm, map_smul, smul_eq_mul]; ring) hv`. Rewrite `h1` using `[hsm]`. Conclude with `⟨c, hc, d, hd, v₀, hv₀, (mul_eq_zero.1 h1).resolve_left hπ0, h2, h3⟩`. Establish `hdec' : ∀ v ∈ Λ', ∃ c ∈ intL L, ∃ d ∈ intL L, ∃ v₀ ∈ Λ', B e v₀ = 0 ∧ B f v₀ = 0 ∧ v = c • e + d • (π • f) + v₀`.
+
+Introduce `v hv`. Take `⟨c, hc, d, hd, v₀, hv₀, h1, h2, h3⟩` from `hΛ'.decomp hσO he hπf (by rw [map_smul, hef, smul_eq_mul, mul_inv_cancel₀ hπ0]) (by rw [hsm, hfe, mul_inv_cancel₀ hπ0]) (by convert hsmall using 2; rw [hsm, map_smul, smul_eq_mul]; ring) hv`. Rewrite `h2` using `[hsm]`. Conclude with `⟨c, hc, d, hd, v₀, hv₀, h1, (mul_eq_zero.1 h2).resolve_left hπ0, h3⟩`. Establish `hS` using `hΛ.inter hB (fun v h => by rw [hsm, h, mul_zero]) (fun v h => h) hdec`.
+
+Establish `hS'` using `hΛ'.inter hB (fun v h => h) (fun v h => by rw [hsm, h, mul_zero]) hdec'`. Establish `hlt : perp B W e f < W`. Use `lt_of_le_of_ne inf_le_left fun h => ?_` and prove the remaining obligations. Rewrite `hfW` using `[← h]`. Conclude with `inv_ne_zero hπ0 (hef ▸ (mem_perp.1 hfW).2.1)`.
+
+Take `⟨s₀, i₀, f₀, m₀⟩` from `ih (perp B W e f) (by have := Submodule.finrank_lt_finrank_of_lt hlt; omega) _ _ hS hS' (fun w hw => hR w hw.1) (fun w hw => hR' w hw.1) ⟨b + 1, fun v hv => ⟨ha v hv.1, (perp B W e f).smul_mem _ hv.2⟩⟩`. Establish `hδi : Valued.v (-δ⁻¹) = 1` using `by rw [Valuation.map_neg, map_inv₀, hδ, inv_one]`. Take `⟨μ, hμ0, hμ, p, hp, hμp, hp1⟩` from `exists_param hσσ hτ hτ1 hδ hδ' hπ0 hπ1 hσπ hee (hB e e)`. Take `⟨μ', hμ0', hμ', p', hp', hμp', hp1'⟩` from `exists_param hσσ hτ hτ1 hδi (by rw [map_neg, map_inv₀, hδ', inv_neg]) hπ0 hπ1 hσπ hff (hB f f)`. Establish `r₁` using `hR' e he μ hμ0 (hμp ▸ mul_mem hπO hp) hμ`.
+
+Establish `r₂` using `hR f hf μ' hμ0' (hμp' ▸ mul_mem hπO hp') hμ'`. Establish `f₁ : ∀ v, B e v = 0 → B f v = 0 → refl B f μ' (refl B e μ v) = v`. Introduce `v h1 h2`. Simplify using `[refl_apply, h1, h2]`. Establish `s₀e : s₀ e = e` using `f₀ e fun w hw => by rw [← hB, (mem_perp.1 hw).2.1, map_zero]`.
+
+Establish `s₀f : s₀ f = f` using `f₀ f fun w hw => by rw [← hB, (mem_perp.1 hw).2.2, map_zero]`. Establish `se : refl B f μ' (refl B e μ e) = (1 - π * p * B e e) • e + (-((1 - π * p * B e e) * p')) • f`. Simplify using `only [refl_apply, map_sub, map_smul, hμp, hμp', hfe, smul_eq_mul]`. Apply the tactic sequence `match_scalars <;> field_simp <;> ring`. Establish `key : 1 + p * p' = π * (p * p' * (τ * B e e * (-δ⁻¹) + δ * (τ * B f f) + π * (τ * B e e * (τ * B f f))))`.
+
+Use `mul_inv_cancel₀ hδ0` as an intermediate fact. Take the linear combination `(-(p' * (-δ⁻¹ + π * (τ * B f f)))) * hp1 - hp1' - (p * p') * this`. Establish `sf : refl B f μ' (refl B e μ f) = (-p) • e + (1 + p * p' - π * p' * B f f) • f`. Simplify using `only [refl_apply, map_sub, map_smul, hμp, hμp', hfe, hef, smul_eq_mul]`. Apply the tactic sequence `match_scalars <;> field_simp <;> ring`.
+
+Use `⟨refl B f μ' * refl B e μ * s₀, mul_mem (mul_mem r₂ r₁) i₀, fun u hu => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply]`. Rewrite using `[f₀ u fun w hw => hu w (mem_perp.1 hw).1, f₁ u (hu e heW) (hu f hfW)]`. Take `⟨c, hc, d, hd, v₀, hv₀, h1, h2, rfl⟩` from `hdec v hv`. Establish `h3` using `m₀ v₀ ⟨hv₀, mem_perp.2 ⟨((hΛ v₀).1 hv₀).1, h1, h2⟩⟩`.
+
+Establish `h4` using `mem_perp.1 h3.2`. Establish `h5 : 1 - π * p * B e e ∈ intL L` using `sub_mem (one_mem _) (mul_mem (mul_mem hπO hp) hee)`. Establish `hA` using `mul_mem hτ hee`. Establish `hC` using `mul_mem hτ hff`. Take `⟨z, hz, key⟩ : ∃ z ∈ intL L, 1 + p * p' = π * z` from `⟨_, mul_mem (mul_mem hp hp') (add_mem (add_mem (mul_mem hA hδi.le) (mul_mem hδ.le hC)) (mul_mem hπO (mul_mem hA hC))), key⟩`.
+
+Establish `: (refl B f μ' * refl B e μ * s₀ : Module.End L V) (c • (π • e) + d • f + v₀) = (c * (π * (1 - π * p * B e e)) + d * (-p)) • e + (c * (-((1 - π * p * B e e) * p')) + d * (z - p' * B f f)) • (π • f) + s₀ v₀`. Simplify using `only [Module.End.mul_apply, map_add, map_smul, s₀e, s₀f, f₁ _ h4.2.1 h4.2.2, se, sf, key]`. Use `module`. Rewrite using `[this]`. Use `hΛ'.add (hΛ'.add (hΛ'.smul hσO ?_ he) (hΛ'.smul hσO ?_ hπf)) h3.1` and prove the remaining obligations.
+
+Conclude with `add_mem (mul_mem hc (mul_mem hπO h5)) (mul_mem hd (neg_mem hp))`. Conclude with `add_mem (mul_mem hc (neg_mem (mul_mem h5 hp'))) (mul_mem hd (sub_mem hz (mul_mem hp' hff)))`.
+-/
 theorem exists_move [FiniteDimensional L V] (hσσ : ∀ x, σ (σ x) = x) (hσ : ∀ x, Valued.v (σ x) = Valued.v x)
     (hB : ∀ u v, σ (B u v) = B v u) {τ : L} (hτ : τ ∈ intL L) (hτ1 : τ + σ τ = 1) {δ : L}
     (hδ : Valued.v δ = 1) (hδ' : σ δ = -δ) {ϖ : L}
@@ -188,6 +248,17 @@ def kerEnd {J : Matrix (Fin n) (Fin n) L} (ν : UJ σ J →* Circle) : Submonoid
     rw [Module.End.mul_apply, es, et, Matrix.mulVec_mulVec]
     rfl
 
+/- English proof (translation)
+Introduce `w hw μ hμ0 hμ hww`. Establish `hσO : ∀ x ∈ intL L, σ x ∈ intL L` using `fun x hx => by rw [mem_int, hσ]; exact hx`. Establish `hΛ'` using `selfDual_image (selfDual_intVec hσ hJ) g.2`. Establish `hs` using `refl_isom (form_herm hσσ hh) w μ hμ0 hww`. Establish `h2 : ∀ v, ((g : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) *ᵥ v ∈ intVec L n → ((g : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) *ᵥ (refl (form σ (J : Matrix (Fin n) (Fin n) L)) w μ v) ∈ intVec L n`.
+
+Introduce `v hv`. Rewrite using `[refl_apply, sub_eq_add_neg, ← neg_smul]`. Conclude with `hΛ'.add hv (hΛ'.smul hσO (neg_mem (mul_mem hμ (hΛ'.pair hw hv))) hw)`. Take `⟨S, hS'⟩ : ∃ S : Matrix (Fin n) (Fin n) L, Matrix.toLin' S = refl (form σ (J : Matrix (Fin n) (Fin n) L)) w μ` from `Matrix.toLin'.surjective _`. Rewrite `hs`, `h2`, the goal using `[← hS']`.
+
+Simplify using `only [Matrix.toLin'_apply] at hs h2`. Establish `hS : cT σ S * J * S = J`. Use extensionality with `i j`. Rewrite using `[← form_single (σ := σ) (cT σ S * (J : Matrix (Fin n) (Fin n) L) * S), ← form_mulVec, hs, form_single]`. Establish `hSi : (((J⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * (cT σ S * J)) * S = 1`.
+
+Rewrite using `[Matrix.mul_assoc, hS, Units.inv_mul]`. Set `S' : UJ σ (J : Matrix (Fin n) (Fin n) L)` to `⟨⟨S, _, mul_eq_one_comm.mp hSi, hSi⟩, hS⟩`. Use `⟨S', ?_, fun v => Matrix.toLin'_apply _ _⟩` and prove the remaining obligations. Use `hν (g * S' * g⁻¹) (mem_GLint_of_unitary hσ hJ (g * S' * g⁻¹).2 (entries_mem fun v hv => by` as an intermediate fact. Simplify using `only [Subgroup.coe_mul, Units.val_mul, Subgroup.coe_inv, ← Matrix.mulVec_mulVec]`.
+
+Apply `h2` to reduce the goal to its premises. Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Conclude with `hv))`. Rewrite `this` using `[map_mul, map_mul, map_inv, mul_inv_cancel_comm]`. Then use the resulting hypothesis.
+-/
 theorem reflIn_image (hσσ : ∀ x, σ (σ x) = x) (hσ : ∀ x, Valued.v (σ x) = Valued.v x) {J : GL (Fin n) L}
     (hJ : J ∈ GLint (Fin n) (intL L))
     (hh : ∀ i j, σ ((J : Matrix (Fin n) (Fin n) L) i j) = (J : Matrix (Fin n) (Fin n) L) j i)
@@ -224,6 +295,17 @@ theorem reflIn_image (hσσ : ∀ x, σ (σ x) = x) (hσ : ∀ x, Valued.v (σ x
     exact hv))
   rwa [map_mul, map_mul, map_inv, mul_inv_cancel_comm] at this
 
+/- English proof (translation)
+Take `⟨hσσ, hσ, hσϖ, hϖ, ⟨x, hx, hx1⟩, -, -⟩` from `hU`. Establish `hx0 : σ x - x ≠ 0`. Introduce `h`. Rewrite `hx1` using `[h, map_zero]`. Conclude with `zero_ne_one hx1`.
+
+Establish `hτ : σ x * (σ x - x)⁻¹ ∈ intL L` using `mul_mem (by rw [mem_int, hσ]; exact hx) (by rw [mem_int, map_inv₀, hx1, inv_one])`. Establish `hτ1 : σ x * (σ x - x)⁻¹ + σ (σ x * (σ x - x)⁻¹) = 1`. Rewrite using `[map_mul, map_inv₀, map_sub, hσσ, ← neg_sub (σ x) x, inv_neg]`. Take the linear combination `mul_inv_cancel₀ hx0`. Establish `hΛ` using `selfDual_intVec hσ hJ`.
+
+Establish `hΛ'` using `selfDual_image hΛ g.2`. Establish `hR` using `reflIn_image hσσ hσ hJ hh ν hν 1`. Simplify using `only [OneMemClass.coe_one, Units.val_one, Matrix.one_mulVec, Set.setOf_mem_eq] at hR`. Take `⟨N, hN⟩` from `exists_pow_mem hϖ (((g : GL (Fin n) L)⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)`. Take `⟨s, ⟨S, hS, es⟩, -, h1⟩` from `exists_move hσσ hσ (form_herm hσσ hh) hτ hτ1 hx1 (by rw [map_sub, hσσ, neg_sub]) hσϖ hϖ (kerEnd ν) _ ⊤ (Nat.lt_succ_self _) _ _ hΛ hΛ' hR (reflIn_image hσσ hσ hJ hh ν hν g) ⟨N, fun v hv => by`.
+
+Use `mulVec_mem (M := ϖ ^ N • (((g : GL (Fin n) L)⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)) hN hv` as an intermediate fact. Rewrite using `[Matrix.smul_mulVec, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec] at this⟩` and apply the resulting hypothesis. Use `hν (g * S) (mem_GLint_of_unitary hσ hJ (g * S).2 (entries_mem fun v hv => by` as an intermediate fact. Simplify using `only [Subgroup.coe_mul, Units.val_mul, ← Matrix.mulVec_mulVec, ← es]`. Conclude with `h1 v hv))`.
+
+Rewrite `this` using `[map_mul, hS, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem eq_one {ϖ : L} {q : ℕ} (hU : IsUnramInv ϖ σ q) {J : GL (Fin n) L}
     (hJ : J ∈ GLint (Fin n) (intL L))
     (hh : ∀ i j, σ ((J : Matrix (Fin n) (Fin n) L) i j) = (J : Matrix (Fin n) (Fin n) L) j i)
@@ -253,6 +335,9 @@ theorem eq_one {ϖ : L} {q : ℕ} (hU : IsUnramInv ϖ σ q) {J : GL (Fin n) L}
     exact h1 v hv))
   rwa [map_mul, hS, mul_one] at this
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ _ hU _ hJ hh ν hν g` and use `eq_one hU hJ hh ν hν g`.
+-/
 theorem char_eq_one : ∀ (L : Type) [Field L] [CharZero L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L) (σ : L →+* L) (q n : ℕ) (J : GL (Fin n) L), IsUnramInv ϖ σ q → Valued.v (2 : L) = 1 → J ∈ GLint (Fin n) (intL L) → (∀ i j, σ ((J : Matrix (Fin n) (Fin n) L) i j) = (J : Matrix (Fin n) (Fin n) L) j i) → ∀ ν : UJ σ (J : Matrix (Fin n) (Fin n) L) →* Circle, (∀ k : UJ σ (J : Matrix (Fin n) (Fin n) L), (k : GL (Fin n) L) ∈ GLint (Fin n) (intL L) → ν k = 1) → ∀ g, ν g = 1 :=
   fun _ _ _ _ _ _ _ _ _ _ hU _ hJ hh ν hν g => eq_one hU hJ hh ν hν g
 

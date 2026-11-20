@@ -142,6 +142,9 @@ def Jets (a : E.KT) (b : E.KR) : Prop :=
     (∀ j : Fin D.R.m, a j (d.1 j).1 (E.ptTop c j) (E.ptTop c (j + 1))) ∧
       ∀ i : Fin D.R.m, b i (d.2 i).1 (E.ptRow c i) (E.ptRow c (i + 1))
 
+/- English proof (translation)
+Introduce `τ h d hd c` and use `⟨fun j => ha _ j.2 _ _ _ ((H τ h d hd c).1 j), fun j => hb _ j.2 _ _ _ ((H τ h d hd c).2 j)⟩`.
+-/
 theorem Jets.mono {E : Env D} {a a' : E.KT} {b b' : E.KR} (H : E.Jets a b) (ha : ∀ j, j < D.R.m → ∀ r x y, a j r x y → a' j r x y)
     (hb : ∀ j, j < D.R.m → ∀ r x y, b j r x y → b' j r x y) : E.Jets a' b' := fun τ h d hd c =>
   ⟨fun j => ha _ j.2 _ _ _ ((H τ h d hd c).1 j), fun j => hb _ j.2 _ _ _ ((H τ h d hd c).2 j)⟩
@@ -172,6 +175,11 @@ def pureEquiv : PureDat G t ≃ (envOf S t Φ β).Pure :=
   (Equiv.piCongrRight fun j : Fin D.R.m => datEquiv G t (.top t j)).prodCongr
     (Equiv.piCongrRight fun i : Fin D.R.m => datEquiv G t (.chi i D.R.m))
 
+/- English proof (translation)
+Establish `h1 : ∀ p : (envOf S t Φ β).Pure → Prop, (∀ d ∈ (τ.equivMapDomain (pureEquiv S t Φ β)).support, p d) ↔ ∀ d ∈ τ.support, p (pureEquiv S t Φ β d)` using `fun p => by`. Rewrite using `[← (pureEquiv S t Φ β).forall_congr_right]`. Simplify using the standard rewrite rules. Unfold `Env.CosExp`. Simplify using `only [h1, Finsupp.sum_equivMapDomain]`.
+
+Conclude with `Iff.rfl`.
+-/
 theorem cosExp_iff (k : ℕ) (τ : PureDat G t →₀ ℂ) :
     (envOf S t Φ β).CosExp k (τ.equivMapDomain (pureEquiv S t Φ β)) ↔ IsCosetExpansion S t Φ β k τ := by
   have h1 : ∀ p : (envOf S t Φ β).Pure → Prop, (∀ d ∈ (τ.equivMapDomain (pureEquiv S t Φ β)).support, p d) ↔
@@ -182,6 +190,13 @@ theorem cosExp_iff (k : ℕ) (τ : PureDat G t →₀ ℂ) :
   simp only [h1, Finsupp.sum_equivMapDomain]
   exact Iff.rfl
 
+/- English proof (translation)
+Establish `e : sInf {k | ∃ τ, (envOf S t Φ β).CosExp k τ} = expDepth S t Φ β`. Unfold `expDepth`. Use `congr 2`. Use function extensionality and compare the values at `k`. Rewrite using `[← (Finsupp.equivCongrLeft (pureEquiv S t Φ β)).exists_congr_right]`.
+
+Simplify using `only [Finsupp.equivCongrLeft_apply, cosExp_iff]`. Unfold `Env.Jets`. Rewrite using `[e, ← (Finsupp.equivCongrLeft (pureEquiv S t Φ β)).forall_congr_right]`. Use `forall_congr' fun τ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.equivCongrLeft_apply, cosExp_iff, ← (pureEquiv S t Φ β).forall_congr_right]`.
+
+Use `imp_congr_right fun _ => forall_congr' fun d => imp_congr (by simp) ?_` and prove the remaining obligations. Conclude with `Iff.rfl`.
+-/
 theorem jets_iff {a : (envOf S t Φ β).KT} {b : (envOf S t Φ β).KR} : (envOf S t Φ β).Jets a b ↔
     ∀ τ, IsCosetExpansion S t Φ β (expDepth S t Φ β) τ → ∀ d ∈ τ.support, ∀ c : S.Classes t Φ β,
       (∀ j : Fin D.R.m, a j (raw (d.1 j)) (S.ptTop c j) (S.ptTop c (j + 1))) ∧
@@ -247,6 +262,9 @@ def KerRow {K : Type} [Field K] (σ : K →+* ℂ) (c : ℝ) (i : ℕ) (A B : HS
 variable {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
   {K : Type} [Field K] (σ : K →+* ℂ) (S : GridChoice W U) (t : T)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `f`. Unfold `FinDatum.IsTheta IsThetaAt IsTh`. Use `congr 1`. Use function extensionality and compare the values at `M`. Conclude with `propext ⟨fun h => ⟨h.1, h.2, h.3⟩, fun h => ⟨h.1, h.2.1, h.2.2⟩⟩`.
+-/
 theorem isTheta_eq {p : Pair T} (d : FinDatum G t p) (LS LT f₀) : d.IsTheta W LS LT f₀ = IsTh W.ψ _ _ LS LT f₀ (raw d) := by
   funext f
   unfold FinDatum.IsTheta IsThetaAt IsTh
@@ -264,18 +282,27 @@ def rowOf (i : ℕ) : Raw D (negSp (G.V (.grid (i + 1) D.R.m))) (G.V (.grid i D.
     (S.N.fr (.grid i D.R.m)) (S.N.fr (.grid (i + 1) D.R.m)) (S.N.u (.grid i D.R.m)).1 (S.N.u (.grid (i + 1) D.R.m)).1
     (S.Z.vac (.chi i D.R.m)) (S.Z.c0 (.chi i D.R.m)) S.Z.δ
 
+/- English proof (translation)
+Unfold `Normal.kk Normal.kkIn Normal.kkMap Normal.vec FinDatum.vec`. Rewrite using `[isTheta_eq]`. Conclude with `Iff.rfl`.
+-/
 theorem topOf_iff {j : ℕ} (d : FinDatum G t (.top t j)) (x y) :
     topOf σ S t j (raw d) x y ↔ ∀ a b, S.Z.kk d x y a b ∈ Set.range σ := by
   unfold Normal.kk Normal.kkIn Normal.kkMap Normal.vec FinDatum.vec
   rw [isTheta_eq]
   exact Iff.rfl
 
+/- English proof (translation)
+Unfold `Normal.kk Normal.kkIn Normal.kkMap Normal.vec FinDatum.vec`. Rewrite using `[isTheta_eq]`. Conclude with `Iff.rfl`.
+-/
 theorem rowOf_iff {i : ℕ} (d : FinDatum G t (.chi i D.R.m)) (x y) :
     rowOf σ S i (raw d) x y ↔ ∀ a b, S.Z.kk d x y a b ∈ Set.range σ := by
   unfold Normal.kk Normal.kkIn Normal.kkMap Normal.vec FinDatum.vec
   rw [isTheta_eq]
   exact Iff.rfl
 
+/- English proof (translation)
+Use `Iff.trans ?_ (jets_iff S t Φ β).symm` and prove the remaining obligations. Use `forall_congr' fun τ => imp_congr_right fun _ => forall_congr' fun d => imp_congr_right fun _ => forall_congr' fun c => ?_` and prove the remaining obligations. Conclude with `and_congr (forall_congr' fun j => (topOf_iff σ S t _ _ _).symm) (forall_congr' fun j => (rowOf_iff σ S t _ _ _).symm)`.
+-/
 theorem jetsIn_iff (Φ β) : JetsIn σ S t Φ β ↔ (envOf S t Φ β).Jets (topOf σ S t) (rowOf σ S) := by
   refine Iff.trans ?_ (jets_iff S t Φ β).symm
   refine forall_congr' fun τ => imp_congr_right fun _ => forall_congr' fun d => imp_congr_right fun _ => forall_congr' fun c => ?_
@@ -287,6 +314,17 @@ section Two
 
 variable {X X' : Stages}
 
+/- English proof (translation)
+Take `⟨⟨P, _⟩, _⟩` from `X`. Take `⟨⟨P', _⟩, _⟩` from `X'`. Consider the cases of `hp`. Consider the cases of `h1`. Consider the cases of `h2`.
+
+Consider the cases of `h3`. Consider the cases of `h4`. Consider the cases of `h5`. Consider the cases of `h6`. Consider the cases of `h7`.
+
+Consider the cases of `h8`. Consider the cases of `h9`. Consider the cases of `h10`. Consider the cases of `h11`. Consider the cases of `h12`.
+
+Consider the cases of `h13`. Consider the cases of `h14`. Consider the cases of `h15`. Consider the cases of `h16`. Consider the cases of `h17`.
+
+Conclude with `(by with_unfolding_all exact (H :))`.
+-/
 theorem kerTop_congr (hp : X'.B.toPre = X.B.toPre) {K : Type} [Field K] (σ : K →+* ℂ) (c : ℝ) (j : ℕ) {A B : HSp X.toD7}
     {A' B' : HSp X'.toD7} {ψ ψ' θ θ' sA sA' sB sB' om om' fA fA' fB fB' uA uA' uB uB' vac vac' c0 c0' δ δ' r r' x x' y y'}
     (h1 : HEq A' A) (h2 : HEq B' B) (h3 : HEq ψ' ψ) (h4 : HEq θ' θ) (h5 : HEq sA' sA) (h6 : HEq sB' sB) (h7 : HEq om' om)
@@ -301,6 +339,17 @@ theorem kerTop_congr (hp : X'.B.toPre = X.B.toPre) {K : Type} [Field K] (σ : K 
   cases h13; cases h14; cases h15; cases h16; cases h17
   exact (by with_unfolding_all exact (H :))
 
+/- English proof (translation)
+Take `⟨⟨P, _⟩, _⟩` from `X`. Take `⟨⟨P', _⟩, _⟩` from `X'`. Consider the cases of `hp`. Consider the cases of `h1`. Consider the cases of `h2`.
+
+Consider the cases of `h3`. Consider the cases of `h4`. Consider the cases of `h5`. Consider the cases of `h6`. Consider the cases of `h7`.
+
+Consider the cases of `h8`. Consider the cases of `h9`. Consider the cases of `h10`. Consider the cases of `h11`. Consider the cases of `h12`.
+
+Consider the cases of `h13`. Consider the cases of `h14`. Consider the cases of `h15`. Consider the cases of `h16`. Consider the cases of `h17`.
+
+Conclude with `(by with_unfolding_all exact (H :))`.
+-/
 theorem kerRow_congr (hp : X'.B.toPre = X.B.toPre) {K : Type} [Field K] (σ : K →+* ℂ) (c : ℝ) (j : ℕ) {A B : HSp X.toD7}
     {A' B' : HSp X'.toD7} {ψ ψ' θ θ' sA sA' sB sB' om om' fA fA' fB fB' uA uA' uB uB' vac vac' c0 c0' δ δ' r r' x x' y y'}
     (h1 : HEq A' A) (h2 : HEq B' B) (h3 : HEq ψ' ψ) (h4 : HEq θ' θ) (h5 : HEq sA' sA) (h6 : HEq sB' sB) (h7 : HEq om' om)
@@ -315,6 +364,17 @@ theorem kerRow_congr (hp : X'.B.toPre = X.B.toPre) {K : Type} [Field K] (σ : K 
   cases h13; cases h14; cases h15; cases h16; cases h17
   exact (by with_unfolding_all exact (H :))
 
+/- English proof (translation)
+Take `⟨⟨P, _⟩, _⟩` from `X`. Take `⟨⟨P', _⟩, _⟩` from `X'`. Consider the cases of `hp`. Consider the cases of `E`. Consider the cases of `E'`.
+
+Simplify using `only at h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 h12 h13`. Consider the cases of `h1`. Consider the cases of `h2`. Consider the cases of `h3`. Consider the cases of `h4`.
+
+Consider the cases of `h5`. Consider the cases of `h6`. Consider the cases of `h7`. Consider the cases of `h8`. Consider the cases of `h9`.
+
+Consider the cases of `h10`. Consider the cases of `h11`. Consider the cases of `h12`. Consider the cases of `h13`. Use `Env.Jets.mono (a := (by with_unfolding_all exact (a :))) (b := (by with_unfolding_all exact (b :))) (by kexactB H) (fun j hj r x y => ?_) fun j hj r x y => ?_` and prove the remaining obligations.
+
+Conclude with `(by with_unfolding_all exact (ha j hj r r x x y y HEq.rfl HEq.rfl HEq.rfl :))`. Conclude with `(by with_unfolding_all exact (hb j hj r r x x y y HEq.rfl HEq.rfl HEq.rfl :))`.
+-/
 theorem jets_congr (hp : X'.B.toPre = X.B.toPre) {E : Env X.toD7} {E' : Env X'.toD7} {a : E.KT} {a' : E'.KT} {b : E.KR} {b' : E'.KR}
     (h1 : HEq E'.P E.P) (h2 : HEq E'.ov E.ov) (h3 : HEq E'.Vt E.Vt) (h4 : HEq E'.Vr E.Vr) (h5 : HEq E'.Λt E.Λt)
     (h6 : HEq E'.Λr E.Λr) (h7 : HEq E'.βt E.βt) (h8 : HEq E'.βr E.βr) (h9 : HEq E'.dat E.dat) (h10 : HEq E'.pr E.pr)
@@ -337,6 +397,15 @@ theorem jets_congr (hp : X'.B.toPre = X.B.toPre) {E : Env X.toD7} {E' : Env X'.t
 variable {T T' : Type} {L : LevCh X.toD7 T} {L' : LevCh X'.toD7 T'} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData L sc}
   {G' : GridData L' sc} {W : G.Weil} {W' : G'.Weil}
 
+/- English proof (translation)
+Establish `h1` using `hg.v0`. Establish `h2` using `hg.w`. Use `clear hg`. Unfold `locPl`. Generalize the expression as in `L.Q t = Q at hQ`.
+
+Generalize the expression as in `L'.Q t' = Q' at hQ`. Take `⟨⟨P, _⟩, _⟩` from `X`. Take `⟨⟨P', _⟩, _⟩` from `X'`. Consider the cases of `hp`. Take `⟨⟨v, _, u, _⟩, _⟩` from `G`.
+
+Take `⟨⟨v', _, u', _⟩, _⟩` from `G'`. Simplify using `only at h1 h2`. Consider the cases of `h1`. Consider the cases of `h2`. Consider the cases of `hQ`.
+
+Use `⟨HEq.rfl, HEq.rfl, HEq.rfl, fun w w' h => ?_⟩` and prove the remaining obligations. Consider the cases of `h`. Conclude with `⟨rfl, rfl⟩`.
+-/
 theorem places_congr (hp : X'.B.toPre = X.B.toPre) (hg : GAgree G G') {t t'} (hQ : HEq (L'.Q t') (L.Q t)) :
     HEq (locPl G' t') (locPl G t) ∧ HEq (overPl G'.pl.S0 (L'.Q t')) (overPl G.pl.S0 (L.Q t)) ∧ HEq G'.modul G.modul ∧
       ∀ w w', HEq w' w → cosExp G' w' = cosExp G w ∧ keepAt G' w' = keepAt G w := by
@@ -357,6 +426,11 @@ theorem places_congr (hp : X'.B.toPre = X.B.toPre) (hg : GAgree G G') {t t'} (hQ
   cases h
   exact ⟨rfl, rfl⟩
 
+/- English proof (translation)
+Take `⟨⟨P, _⟩, _⟩` from `X`. Take `⟨⟨P', _⟩, _⟩` from `X'`. Consider the cases of `hp`. Consider the cases of `W`. Consider the cases of `W'`.
+
+Simplify using `only at h`. Consider the cases of `h`. Consider the cases of `hw`. Conclude with `HEq.rfl`.
+-/
 theorem psiAt_congr (hp : X'.B.toPre = X.B.toPre) (h : HEq W'.ψ W.ψ) {w w'} (hw : HEq w' w) : HEq (psiAt W' w') (psiAt W w) := by
   obtain ⟨⟨P, _⟩, _⟩ := X
   obtain ⟨⟨P', _⟩, _⟩ := X'
@@ -367,6 +441,11 @@ theorem psiAt_congr (hp : X'.B.toPre = X.B.toPre) (h : HEq W'.ψ W.ψ) {w w'} (h
   cases h; cases hw
   exact HEq.rfl
 
+/- English proof (translation)
+Take `⟨⟨P, _⟩, _⟩` from `X`. Take `⟨⟨P', _⟩, _⟩` from `X'`. Consider the cases of `hp`. Consider the cases of `h1`. Consider the cases of `h2`.
+
+Consider the cases of `d`. Consider the cases of `d'`. Simplify using `only at h`. Consider the cases of `h`. Conclude with `HEq.rfl`.
+-/
 theorem finEmb_congr (hp : X'.B.toPre = X.B.toPre) {A B : HSp X.toD7} {A' B' : HSp X'.toD7} {c ε ε'} {d : HermitianOrthogonalExtensionData A B c ε}
     {d' : HermitianOrthogonalExtensionData A' B' c ε'} (h1 : HEq A' A) (h2 : HEq B' B) (h : HEq d'.ι d.ι) : HEq (finEmb d') (finEmb d) := by
   obtain ⟨⟨P, _⟩, _⟩ := X
@@ -381,6 +460,13 @@ theorem finEmb_congr (hp : X'.B.toPre = X.B.toPre) {A B : HSp X.toD7} {A' B' : H
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨⟨P, _⟩, _⟩` from `X`. Take `⟨⟨P', _⟩, _⟩` from `X'`. Consider the cases of `hp`. Consider the cases of `hw`. Consider the cases of `h1`.
+
+Consider the cases of `h2`. Consider the cases of `h3`. Consider the cases of `h4`. Consider the cases of `h5`. Consider the cases of `h6`.
+
+Use `⟨(by with_unfolding_all exact (Eq.refl (Cosets hs J) :)), fun b b' h => ?_⟩` and prove the remaining obligations. Consider the cases of `h`. Conclude with `(by with_unfolding_all exact ((⟨HEq.rfl, HEq.rfl, id⟩ : let u := unfTerm ψ (unitVol w) k (Reps.through hs J (stair Γ (unifAt w) e)) f b HEq u.datum u.datum ∧ HEq u.pr u.pr ∧ (u.datum ≠ 0 → u.datum ≠ 0)) :))`.
+-/
 theorem term_congr (hp : X'.B.toPre = X.B.toPre) {w : Pl X.toD7.host.E} {w' : Pl X'.toD7.host.E} (hw : HEq w' w)
     {Γ : Grid (Kw w)} {Γ' : Grid (Kw w')} (hs : 1 ≤ Γ.s) (hs' : 1 ≤ Γ'.s) {J J' ψ ψ' k k' e e' f f'} (h1 : HEq Γ' Γ) (h2 : HEq J' J)
     (h3 : HEq ψ' ψ) (h4 : k' = k) (h5 : e' = e) (h6 : HEq f' f) : Cosets hs' J' = Cosets hs J ∧ ∀ b b', HEq b' b →
@@ -396,6 +482,11 @@ theorem term_congr (hp : X'.B.toPre = X.B.toPre) {w : Pl X.toD7.host.E} {w' : Pl
   exact (by with_unfolding_all exact ((⟨HEq.rfl, HEq.rfl, id⟩ : let u := unfTerm ψ (unitVol w) k (Reps.through hs J (stair Γ (unifAt w) e)) f b
     HEq u.datum u.datum ∧ HEq u.pr u.pr ∧ (u.datum ≠ 0 → u.datum ≠ 0)) :))
 
+/- English proof (translation)
+Take `⟨⟨_, _⟩, _⟩` from `X`. Take `⟨⟨_, _⟩, _⟩` from `X'`. Consider the cases of `hp`. Consider the cases of `h`. Use `⟨rfl, fun w w' h => ?_⟩` and prove the remaining obligations.
+
+Consider the cases of `h`. Conclude with `HEq.rfl`.
+-/
 theorem sub_congr (hp : X'.B.toPre = X.B.toPre) {P : Finset (Pl X.toD7.host.E)} {P' : Finset (Pl X'.toD7.host.E)} (h : HEq P' P) :
     (P' : Type) = P ∧ (∀ (w : P) (w' : P'), HEq w' w → HEq w'.1 w.1) := by
   obtain ⟨⟨_, _⟩, _⟩ := X
@@ -406,6 +497,17 @@ theorem sub_congr (hp : X'.B.toPre = X.B.toPre) {P : Finset (Pl X.toD7.host.E)} 
   cases h
   exact HEq.rfl
 
+/- English proof (translation)
+Establish `key : ∀ {D : D7} {U : Type} (M : LevCh D U) (μ), M.Is μ → (M.ΛX : Set _) = L0c D D.sp.X'` using `fun M μ hM => by`. Take `⟨c, -, -, -, h1, h2⟩` from `hM.βX`. Conclude with `Set.ext fun x => ⟨fun hx => by simpa using h2 x hx, fun hx => by simpa using h1 x hx⟩`. Establish `a1` using `key L _ h.is`. Establish `a2` using `key L' _ h.is'`.
+
+Establish `b1` using `colFrame_m L`. Establish `b2` using `colFrame_m L'`. Rewrite `b1` using `[h.β.1]`. Rewrite `b2` using `[h.β.2]`. Establish `hp` using `h.pre`.
+
+Establish `c : HEq X'.toD7.sp.X' X.toD7.sp.X' ∧ HEq L'.ΛX L.ΛX ∧ HEq (1 : GL (Fin X'.toD7.sp.X'.rank) (Lev.EAf X'.toD7)) (1 : GL (Fin X.toD7.sp.X'.rank) (Lev.EAf X.toD7))`. Generalize the expression as in `L.ΛX = A at a1`. Generalize the expression as in `L'.ΛX = A' at a2`. Use `clear b1 b2 h key`. Take `⟨⟨_, _⟩, _⟩` from `X`.
+
+Take `⟨⟨_, _⟩, _⟩` from `X'`. Consider the cases of `hp`. Conclude with `⟨HEq.rfl, heq_of_eq (SetLike.coe_injective (a2.trans a1.symm)), HEq.rfl⟩`. Use `⟨?_, ?_, b2.trans (c.2.2.trans b1.symm)⟩` and prove the remaining obligations. Rewrite using `[colY_m, colY_m]`.
+
+Conclude with `c.1`. Rewrite using `[colY_m, colY_m]`. Conclude with `c.2.1`.
+-/
 theorem corner_congr {μ₀ μ₀' ι} (h : LAgree L L' μ₀ μ₀' ι) :
     HEq (columnBlock L' X'.toD7.R.m).sp (columnBlock L X.toD7.R.m).sp ∧ HEq (columnBlock L' X'.toD7.R.m).lat (columnBlock L X.toD7.R.m).lat ∧
       HEq (colFrame L' X'.toD7.R.m) (colFrame L X.toD7.R.m) := by
@@ -432,6 +534,11 @@ theorem corner_congr {μ₀ μ₀' ι} (h : LAgree L L' μ₀ μ₀' ι) :
   · rw [colY_m, colY_m]; exact c.1
   · rw [colY_m, colY_m]; exact c.2.1
 
+/- English proof (translation)
+Establish `hp` using `hA.l.pre`. Take `⟨h1, -, -, h4⟩` from `places_congr hp hA.g (hA.l.Q t)`. Take `⟨e, he⟩` from `sub_congr hp h1`. Establish `key` using `fun (w : locPl G (ι t)) (w' : locPl G' t) (h : HEq w' w) => term_congr hp (he w w' h) one_le_sLen one_le_sLen (hF t _ _ (he w w' h) w'.2).1 (hF t _ _ (he w w' h) w'.2).2.1 (psiAt_congr hp hA.w.ψ (he w w' h)) (h4 _ _ (he w w' h)).2 (h4 _ _ (he w w' h)).1 (hF t _ _ (he w w' h) w'.2 …`. Use `⟨fun w => cast (key w (cast e.symm w) (cast_heq _ _)).1 (β' (cast e.symm w)), fun w w' h => ?_⟩` and prove the remaining obligations.
+
+Take `rfl : w' = cast e.symm w` from `eq_of_heq (h.trans (cast_heq _ _).symm)`. Conclude with `(key w _ h).2 _ _ (cast_heq _ _).symm`.
+-/
 theorem fam_congr {S : GridChoice W Set.univ} {S' : GridChoice W' Set.univ} {μ₀ μ₀' ι} (hA : Agree S S' μ₀ μ₀' ι) {Φ Φ'}
     (hF : FlipAgree S S' ι Φ Φ') (t : T') (β' : CosFam G' t) : ∃ β : CosFam G (ι t), ∀ (w : locPl G (ι t)) (w' : locPl G' t), HEq w' w →
       HEq (S'.term t Φ' β' w').datum (S.term (ι t) Φ β w).datum ∧ HEq (S'.term t Φ' β' w').pr (S.term (ι t) Φ β w).pr ∧
@@ -446,6 +553,21 @@ theorem fam_congr {S : GridChoice W Set.univ} {S' : GridChoice W' Set.univ} {μ�
   obtain rfl : w' = cast e.symm w := eq_of_heq (h.trans (cast_heq _ _).symm)
   exact (key w _ h).2 _ _ (cast_heq _ _).symm
 
+/- English proof (translation)
+Introduce `hF X X' T T' L L' sc G G' W W' S S' μ₀ μ₀' ι hA M σ hJ t Φ' β' hβ'`. Take `⟨Φ, hΦ⟩` from `hF X X' T T' L L' sc G G' W W' S S' μ₀ μ₀' ι hA Φ'`. Establish `hp` using `hA.l.pre`. Establish `hm : X'.toD7.R.m = X.toD7.R.m` using `congrArg (·.R.m) hp`. Take `⟨β, hβ⟩` from `fam_congr hA hΦ t β'`.
+
+Take `⟨h1, h2, h3, -⟩` from `places_congr hp hA.g (hA.l.Q t)`. Take `⟨e, he⟩` from `sub_congr hp h1`. Establish `hs : β ∈ S.supp (ι t) Φ` using `fun w => (hβ w (cast e.symm w) (cast_heq _ _)).2.2 (hβ' _)`. Establish `row : ∀ i, HEq (G'.V (.grid i X'.toD7.R.m)) (G.V (.grid i X.toD7.R.m)) ∧ HEq (G'.Λ (.grid i X'.toD7.R.m)) (G.Λ (.grid i X.toD7.R.m)) ∧ HEq (S'.B.β i X'.toD7.R.m) (S.B.β i X.toD7.R.m)`. Introduce and unpack `(_ | i)`.
+
+Conclude with `corner_congr hA.l`. Rewrite using `[← hm]`. Conclude with `⟨(hA.g.grid i _).1, (hA.g.grid i _).2, hA.s.β i _⟩`. Establish `top : HEq (G'.V (.top X'.toD7.R.m)) (G.V (.top X.toD7.R.m))`. Rewrite using `[← hm]`.
+
+Conclude with `(hA.g.top _).1`. Establish `fam : ∀ {A B : ℕ → Sort _} {a : ∀ i, A i} {b : ∀ i, B i}, (∀ i, HEq (a i) (b i)) → HEq a b` using `fun h => Function.hfunext rfl fun i j hij => by cases hij; exact h i`. Use `(jetsIn_iff σ S' t Φ' β').2 (jets_congr hp (E := envOf S (ι t) Φ β) h1 h2 (Function.hfunext rfl fun i j hij => ?_) (Function.hfunext rfl fun i j hij => ?_) (fam fun j => (hA.g.top j).2) (fam fun i => (row i).2.1) (fam hA.s.βp) (fam fun i => (row i).2.2) (Function.hfunext e fun w' …` and prove the remaining obligations. Consider the cases of `hij`. Conclude with `(hA.g.top i).1`.
+
+Consider the cases of `hij`. Conclude with `(row i).1`. Rewrite using `[hm]`. Conclude with `HEq.rfl`. Establish `n1 : DefNode X'.toD7.R.m (.top j)` using `hj.le`.
+
+Establish `n2 : DefNode X'.toD7.R.m (.top (j + 1))` using `hj`. Establish `n3 : DefPair X'.toD7.R.m (.top t j)` using `hj`. Conclude with `kerTop_congr hp σ _ j (hA.g.top _).1 (hA.g.top _).1 hA.w.ψ hA.w.θ (hA.w.cart _ n1) (hA.w.cart _ n2) (hA.w.om _ n3) (hA.s.fr _ n1).1 (hA.s.fr _ n2).1 (hA.s.fr _ n1).2 (hA.s.fr _ n2).2 (hA.s.vac _ n3).1 (hA.s.vac _ n3).2 hA.s.δ a b c`. Establish `n : ∀ k, k ≤ X'.toD7.R.m → HEq (W'.cart (.grid k X'.toD7.R.m)) (W.cart (.grid k X.toD7.R.m)) ∧ HEq (S'.N.fr (.grid k X'.toD7.R.m)) (S.N.fr (.grid k X.toD7.R.m)) ∧ HEq (S'.N.u (.grid k X'.toD7.R.m)).1 (S.N.u (.grid k X.toD7.R.m)).1` using `fun k hk => by`. Rewrite using `[← hm]`.
+
+Conclude with `⟨hA.w.cart _ ⟨hk, rfl⟩, hA.s.fr _ ⟨hk, rfl⟩⟩`. Establish `n3 : HEq (W'.om (.chi i X'.toD7.R.m)) (W.om (.chi i X.toD7.R.m)) ∧ HEq (S'.Z.vac (.chi i X'.toD7.R.m)) (S.Z.vac (.chi i X.toD7.R.m)) ∧ S'.Z.c0 (.chi i X'.toD7.R.m) = S.Z.c0 (.chi i X.toD7.R.m)`. Rewrite using `[← hm]`. Conclude with `⟨hA.w.om (.chi i _) ⟨hi, rfl⟩, hA.s.vac (.chi i _) ⟨hi, rfl⟩⟩`. Conclude with `kerRow_congr hp σ _ i (row _).1 (row _).1 hA.w.ψ hA.w.θ (n _ hi.le).1 (n _ hi).1 n3.1 (n _ hi.le).2.1 (n _ hi).2.1 (n _ hi.le).2.2 (n _ hi).2.2 n3.2.1 n3.2.2 hA.s.δ a b c`.
+-/
 theorem trJet_of_trFlip : TrFlip → TrJet := by
   intro hF X X' T T' L L' sc G G' W W' S S' μ₀ μ₀' ι hA M σ hJ t Φ' β' hβ'
   obtain ⟨Φ, hΦ⟩ := hF X X' T T' L L' sc G G' W W' S S' μ₀ μ₀' ι hA Φ'

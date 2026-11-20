@@ -11,6 +11,21 @@ namespace GlobalTheory
 
 namespace TorusTrivial
 
+/- English proof (translation)
+Establish `hiq : ∀ {Z : C} (t : Z ⟶ T), (t ≫ i) ≫ q = 1`. Introduce `Z t`. Rewrite using `[Category.assoc, hk.w, ← Category.assoc, Hom.one_def]`. Use `congr 1`. Conclude with `toUnit_unique _ _`.
+
+Set `s : T ⊗ W ⟶ T` to `fst T W * (snd T W ≫ τ)⁻¹`. Establish `hw : ((s ≫ i) * (snd T W ≫ j)) ≫ q = (snd T W ≫ q') ≫ k`. Rewrite using `[MonObj.mul_comp, hiq, _root_.one_mul, Category.assoc, Category.assoc, hW.w]`. Set `a : T ⊗ W ⟶ W` to `hW.lift _ _ hw`. Establish `ha₁ : a ≫ j = (s ≫ i) * (snd T W ≫ j)` using `hW.lift_fst _ _ _`.
+
+Establish `ha₂ : a ≫ q' = snd T W ≫ q'` using `hW.lift_snd _ _ _`. Establish `ha₃ : a ≫ τ = fst T W`. Rewrite using `[hτ _ _ _ _ ha₁]`. Simplify using `[s]`. Establish `hsq : 𝟙 _ ≫ T ◁ q' = a ≫ lift τ q'`.
+
+Apply the tactic sequence `ext <;> simp [ha₂, ha₃]`. Use `⟨a, ⟨hsq⟩, ⟨PullbackCone.IsLimit.mk hsq (fun c => c.fst) (fun c => by simp) (fun c => ?_) (fun c m h _ => by simpa using h)⟩⟩` and prove the remaining obligations. Establish `h₁ : c.fst ≫ fst T W = c.snd ≫ τ`. Simplify using `using c.condition =≫ fst _ _`. Establish `h₂ : c.fst ≫ snd T W ≫ q' = c.snd ≫ q'`.
+
+Simplify using `using c.condition =≫ snd _ _`. Establish `h₃ : ((c.snd ≫ j) * (c.fst ≫ snd T W ≫ j)⁻¹) ≫ q = toUnit _ ≫ η[B]`. Rewrite using `[MonObj.mul_comp, GrpObj.inv_comp, ← Hom.one_def]`. Simplify using `only [Category.assoc, hW.w]`. Rewrite using `[reassoc_of% h₂, mul_inv_cancel]`.
+
+Set `r : c.pt ⟶ T` to `hk.lift _ _ h₃`. Establish `hr : r ≫ i = (c.snd ≫ j) * (c.fst ≫ snd T W ≫ j)⁻¹` using `hk.lift_fst _ _ _`. Establish `h₄ : c.snd ≫ j = (r ≫ i) * ((c.fst ≫ snd T W) ≫ j)`. Rewrite using `[hr]`. Simplify using the standard rewrite rules.
+
+Establish `h₅` using `hτ _ _ _ _ h₄`. Establish `h₆ : c.fst ≫ s = r`. Simplify using `only [s, MonObj.comp_mul, GrpObj.comp_inv, h₁, h₅, Category.assoc, mul_inv_cancel_right]`. Rewrite using `[← cancel_mono j, Category.assoc, ha₁, MonObj.comp_mul, reassoc_of% h₆, h₄, Category.assoc]`.
+-/
 theorem exists_isPullback {C : Type*} [Category C] [CartesianMonoidalCategory C]
     {T G B W V : C} [GrpObj T] [GrpObj G] [GrpObj B] (q : G ⟶ B) (i : T ⟶ G)
     [IsMonHom q] [IsMonHom i] (hk : IsPullback i (toUnit _) q η[B])
@@ -53,6 +68,33 @@ theorem exists_isPullback {C : Type*} [Category C] [CartesianMonoidalCategory C]
     simp only [s, MonObj.comp_mul, GrpObj.comp_inv, h₁, h₅, Category.assoc, mul_inv_cancel_right]
   rw [← cancel_mono j, Category.assoc, ha₁, MonObj.comp_mul, reassoc_of% h₆, h₄, Category.assoc]
 
+/- English proof (translation)
+Set `R : CommRingCat.{0}` to `.of (AddMonoidAlgebra A X)`. Set `F : R ⟶ Γ(W.left, ⊤)` to `CommRingCat.ofHom f`. Set `φ : W.left ⟶ Spec R` to `W.left.toSpecΓ ≫ Spec.map F`. Establish `hφ : (Scheme.ΓSpecIso R).inv ≫ φ.appTop = F`. Rewrite using `[SplitTorusPoints.ΓSpecIso_inv_comp_specMap, Scheme.toSpecΓ_appTop, Iso.inv_hom_id, Category.comp_id]`.
+
+Establish `hφ' : ∀ x, φ.appTop.hom ((Scheme.ΓSpecIso R).inv.hom x) = f x` using `fun x => congrArg (fun g => g.hom x) hφ`. Set `c : A ⟶ R` to `CommRingCat.ofHom (AddMonoidAlgebra.singleZeroRingHom)`. Set `v : Spec R ⟶ V.left` to `Spec.map (e.inv ≫ c) ≫ V.left.isoSpec.inv`. Establish `hv : e.hom ≫ v.appTop = c ≫ (Scheme.ΓSpecIso R).inv`. Establish `: V.left.isoSpec.inv.appTop = (Scheme.ΓSpecIso _).inv`.
+
+Rewrite using `[← cancel_epi (Scheme.ΓSpecIso Γ(V.left, ⊤)).hom, Iso.hom_inv_id, ← Scheme.toSpecΓ_appTop, ← Scheme.Hom.comp_appTop]`. Conclude with `congrArg Scheme.Hom.appTop V.left.isoSpec.inv_hom_id`. Rewrite using `[Scheme.Hom.comp_appTop, this, ← Scheme.ΓSpecIso_inv_naturality, Category.assoc, Iso.hom_inv_id_assoc]`. Establish `hv' : ∀ a : A, v.appTop.hom (e.hom.hom a) = (Scheme.ΓSpecIso R).inv.hom (AddMonoidAlgebra.single 0 a)` using `fun a => congrArg (fun g => g.hom a) hv`. Set `P : Over S` to `Over.mk (v ≫ V.hom)`.
+
+Set `v' : P ⟶ V` to `Over.homMk v rfl`. Set `t : P ⟶ splitTorus S X` to `(splitTorusPointsEquiv S X P).symm ((Scheme.ΓSpecIso R).inv.hom.toMonoidHom.comp (AddMonoidAlgebra.of A X)).toHomUnits`. Establish `ht : ∀ χ : X, t.left.appTop.hom (charUnit S X χ).val = (Scheme.ΓSpecIso R).inv.hom (AddMonoidAlgebra.single χ 1)`. Introduce `χ`. Rewrite using `[← splitTorusPointsEquiv_val, MulEquiv.apply_symm_apply]`.
+
+Both sides reduce to the same expression. Establish `hφv : φ ≫ v = q.left`. Apply `ext_of_isAffine` to reduce the goal to its premises. Rewrite using `[← cancel_epi e.hom, Scheme.Hom.comp_appTop, reassoc_of% hv, hφ]`. Use extensionality with `a`.
+
+Conclude with `hf₁ a`. Set `φ' : W ⟶ P` to `Over.homMk φ (by`. Express the relevant statement in the definitionally equal form `φ ≫ v ≫ V.hom = _`. Rewrite using `[reassoc_of% hφv, Over.w])`. Establish `h₁ : φ' ≫ v' = q` using `Over.OverMorphism.ext hφv`.
+
+Establish `h₂ : φ' ≫ t = τ`. Apply `(splitTorusPointsEquiv S X W).injective` to reduce the goal to its premises. Use extensionality with `χ`. Express the relevant statement in the definitionally equal form `(splitTorusPointsEquiv S X W _ (Multiplicative.ofAdd χ)).val = (splitTorusPointsEquiv S X W _ (Multiplicative.ofAdd χ)).val`. Rewrite using `[splitTorusPointsEquiv_val, splitTorusPointsEquiv_val, ← hf₂, ← hφ', ← ht]`.
+
+Both sides reduce to the same expression. Set `σ : P ⟶ W` to `lift t v' ≫ inv (lift τ q)`. Establish `hσ : σ ≫ lift τ q = lift t v'`. Rewrite using `[Category.assoc, IsIso.inv_hom_id, Category.comp_id]`. Establish `hσ₁ : σ ≫ τ = t` using `by simpa using hσ =≫ fst _ _`.
+
+Establish `hσ₂ : σ ≫ q = v'` using `by simpa using hσ =≫ snd _ _`. Establish `h₃ : φ' ≫ σ = 𝟙 _`. Rewrite using `[← cancel_mono (lift τ q), Category.assoc, hσ, comp_lift, h₁, h₂, Category.id_comp]`. Set `σ' : Spec R ⟶ W.left` to `σ.left`. Establish `h₄ : σ' ≫ φ = 𝟙 _`.
+
+Apply `ext_of_isAffine` to reduce the goal to its premises. Rewrite using `[← cancel_epi (Scheme.ΓSpecIso R).inv, Scheme.Hom.comp_appTop, reassoc_of% hφ]`. Use `ext1`. Apply `AddMonoidAlgebra.ringHom_ext` to reduce the goal to its premises. Introduce `a`.
+
+Express the relevant statement in the definitionally equal form `σ'.appTop.hom (f (AddMonoidAlgebra.single 0 a)) = (Scheme.ΓSpecIso R).inv.hom (AddMonoidAlgebra.single 0 a)`. Rewrite using `[hf₁, ← hv']`. Conclude with `congrArg (fun g : P ⟶ V => g.left.appTop.hom (e.hom.hom a)) hσ₂`. Introduce `χ`. Express the relevant statement in the definitionally equal form `σ'.appTop.hom (f (AddMonoidAlgebra.single χ 1)) = (Scheme.ΓSpecIso R).inv.hom (AddMonoidAlgebra.single χ 1)`.
+
+Rewrite using `[hf₂, ← ht]`. Conclude with `congrArg (fun g : P ⟶ _ => g.left.appTop.hom (charUnit S X χ).val) hσ₁`. Establish `: IsIso φ` using `⟨σ', congrArg CommaMorphism.left h₃, h₄⟩`. Use `⟨.of_isIso φ, ?_⟩` and prove the remaining obligations. Establish `: IsIso φ.appTop` using `inferInstanceAs (IsIso (φ.app ⊤))`.
+
+Establish `: IsIso F` using `by rw [← hφ]; infer_instance`. Conclude with `ConcreteCategory.bijective_of_isIso F`.
+-/
 theorem isAffine_and_bijective {S : Scheme.{0}} {X : Type} [AddCommGroup X] {W V : Over S}
     [IsAffine V.left] (τ : W ⟶ splitTorus S X) (q : W ⟶ V) [IsIso (lift τ q)]
     {A : CommRingCat.{0}} (e : A ≅ Γ(V.left, ⊤)) (f : AddMonoidAlgebra A X →+* Γ(W.left, ⊤))
@@ -133,12 +175,18 @@ theorem isAffine_and_bijective {S : Scheme.{0}} {X : Type} [AddCommGroup X] {W V
   have : IsIso F := by rw [← hφ]; infer_instance
   exact ConcreteCategory.bijective_of_isIso F
 
+/- English proof (translation)
+Rewrite using `[Scheme.Hom.appTop, morphismRestrict_app', Scheme.Opens.topIso_inv, Scheme.Opens.topIso_inv, Scheme.Hom.app_eq_appLE]`. Conclude with `(Scheme.Hom.appLE_map _ _ _).trans (Scheme.Hom.map_appLE _ _ _).symm`.
+-/
 theorem app_comp_topIso_inv {Y Z : Scheme.{0}} (f : Y ⟶ Z) (V : Z.Opens) :
     f.app V ≫ (f ⁻¹ᵁ V).topIso.inv = V.topIso.inv ≫ (f ∣_ V).appTop := by
   rw [Scheme.Hom.appTop, morphismRestrict_app', Scheme.Opens.topIso_inv, Scheme.Opens.topIso_inv,
     Scheme.Hom.app_eq_appLE]
   exact (Scheme.Hom.appLE_map _ _ _).trans (Scheme.Hom.map_appLE _ _ _).symm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨MorphismProperty.of_isPullback (P := @Surjective) h hf.1.1, MorphismProperty.of_isPullback (P := @Flat) h hf.1.2⟩, MorphismProperty.of_isPullback (P := @QuasiCompact) h hf.2⟩`.
+-/
 theorem cover_of_isPullback {P Y Z W : Scheme.{0}} {a : P ⟶ Y} {b : P ⟶ Z} {f : Y ⟶ W} {g : Z ⟶ W}
     (h : IsPullback a b f g)
     (hf : (@Surjective ⊓ @Flat ⊓ @QuasiCompact : MorphismProperty Scheme.{0}) f) :
@@ -151,6 +199,31 @@ end TorusTrivial
 
 open TorusTrivial in
 
+/- English proof (translation)
+Introduce `S X _ G B _ _ q i _ _ hfl hsu hqc hk V hV u hu`. Set `U : G.left.Opens` to `q.left ⁻¹ᵁ V`. Set `W : Over S` to `Over.mk (U.ι ≫ G.hom)`. Set `V' : Over S` to `Over.mk (V.ι ≫ B.hom)`. Set `j : W ⟶ G` to `Over.homMk U.ι rfl`.
+
+Set `k : V' ⟶ B` to `Over.homMk V.ι rfl`. Set `q' : W ⟶ V'` to `Over.homMk (q.left ∣_ V) (by`. Express the relevant statement in the definitionally equal form `(q.left ∣_ V) ≫ V.ι ≫ B.hom = U.ι ≫ G.hom`. Rewrite using `[morphismRestrict_ι_assoc, Over.w])`. Establish `hW₀ : IsPullback U.ι (q.left ∣_ V) q.left V.ι` using `(isPullback_morphismRestrict q.left V).flip`.
+
+Establish `hW : IsPullback j q' q k` using `IsPullback.of_map (Over.forget S) (Over.OverMorphism.ext hW₀.w) hW₀`. Establish `: Mono j.left` using `inferInstanceAs (Mono U.ι)`. Establish `: Mono j` using `Over.mono_of_mono_left j`. Set `τ : W ⟶ splitTorus S X` to `(splitTorusPointsEquiv S X W).symm ((Units.map U.topIso.inv.hom.toMonoidHom).comp u)`. Establish `hτ₀ : ∀ χ : X, τ.left.appTop.hom (charUnit S X χ).val = U.topIso.inv.hom (u (Multiplicative.ofAdd χ)).val`.
+
+Introduce `χ`. Rewrite using `[← splitTorusPointsEquiv_val, MulEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Establish `hle : ∀ {Z : Over S} (g : Z ⟶ W), ⊤ ≤ (g ≫ j).left ⁻¹ᵁ U`. Introduce `Z g x _`.
+
+Conclude with `(g.left x).2`. Establish `hτ₁ : ∀ {Z : Over S} (g : Z ⟶ W) (χ : X), (g ≫ τ).left.appTop.hom (charUnit S X χ).val = ((g ≫ j).left.appLE U ⊤ (hle g)).hom (u (Multiplicative.ofAdd χ)).val`. Introduce `Z g χ`. Set `g' : Z.left ⟶ U` to `g.left`. Establish `h : U.topIso.inv ≫ g'.appTop = (g' ≫ U.ι).appLE U ⊤ (hle g)`.
+
+Rewrite using `[← Scheme.Hom.appLE_comp_appLE g' U.ι U ⊤ ⊤ (by simp) (by simp), Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE, Scheme.Opens.ι_appLE, Scheme.Opens.topIso_inv]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `g'.appTop.hom (τ.left.appTop.hom (charUnit S X χ).val) = _`. Rewrite using `[hτ₀]`. Conclude with `congrArg (fun f => f.hom (u (Multiplicative.ofAdd χ)).val) h`.
+
+Take `⟨a, ha⟩` from `exists_isPullback q i hk hW τ (by`. Introduce `Z t g g' hg`. Apply `(splitTorusPointsEquiv S X Z).injective` to reduce the goal to its premises. Rewrite using `[map_mul]`. Use extensionality with `χ`.
+
+Express the relevant statement in the definitionally equal form `(splitTorusPointsEquiv S X Z _ (Multiplicative.ofAdd χ)).val = (splitTorusPointsEquiv S X Z _ (Multiplicative.ofAdd χ)).val * (splitTorusPointsEquiv S X Z _ (Multiplicative.ofAdd χ)).val`. Rewrite using `[splitTorusPointsEquiv_val, splitTorusPointsEquiv_val, splitTorusPointsEquiv_val, hτ₁, hτ₁, TorusInj.appLE_of_eq (congrArg Over.Hom.left hg)]`. Conclude with `hu χ Z t (g ≫ j) _ _)`. Establish `hQ : (@Surjective ⊓ @Flat ⊓ @QuasiCompact : MorphismProperty Scheme.{0}) q'.left` using `cover_of_isPullback hW₀ ⟨⟨hsu, hfl⟩, hqc⟩`. Establish `hT : IsPullback (snd (splitTorus S X) W) (splitTorus S X ◁ q') q' (snd (splitTorus S X) V')`.
+
+Use `⟨⟨by simp⟩, ⟨PullbackCone.IsLimit.mk _ (fun c => lift (c.snd ≫ fst _ _) c.fst) (fun c => by simp) (fun c => ?_) (fun c m h₁ h₂ => ?_)⟩⟩` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [c.condition]`. Apply the tactic sequence `ext <;> simp [← h₁, ← h₂]`. Establish `hQ' : (@Surjective ⊓ @Flat ⊓ @QuasiCompact : MorphismProperty Scheme.{0}) (splitTorus S X ◁ q').left` using `cover_of_isPullback (hT.map (Over.forget S)) hQ`. Establish `: IsIso (lift τ q').left` using `MorphismProperty.of_isPullback_of_descendsAlong (P := .isomorphisms Scheme.{0}) (ha.map (Over.forget S)) hQ' (MorphismProperty.isomorphisms.infer_property _)`.
+
+Establish `: IsIso ((Over.forget S).map (lift τ q'))` using `this`. Establish `: IsIso (lift τ q')` using `isIso_of_reflects_iso _ (Over.forget S)`. Establish `: IsAffine V'.left` using `hV`. Take `⟨h₁, h₂⟩` from `isAffine_and_bijective τ q' (A := Γ(B.left, V)) V.topIso.symm (U.topIso.inv.hom.comp (AddMonoidAlgebra.liftNCRingHom (q.left.app V).hom ((Units.coeHom _).comp u) (fun _ _ => Commute.all _ _))) (fun a => by`. Use `Eq.trans ?_ (congrArg (fun f => f.hom a) (app_comp_topIso_inv q.left V))` and prove the remaining obligations.
+
+Use `congrArg U.topIso.inv.hom ?_` and prove the remaining obligations. Use `(AddMonoidAlgebra.liftNC_single _ _ 0 a).trans ?_` and prove the remaining obligations. Conclude with `(congrArg (_ * ·) (((Units.coeHom _).comp u).map_one)).trans (_root_.mul_one _))`. Use the proof step `(fun χ => by`. Rewrite using `[hτ₀]`.
+
+Simplify using `[AddMonoidAlgebra.liftNCRingHom])`. Use `⟨h₁, ?_⟩` and prove the remaining obligations. Conclude with `(Function.Bijective.of_comp_iff' (ConcreteCategory.bijective_of_isIso U.topIso.inv) _).mp h₂`.
+-/
 theorem isAffineOpen_and_bijective_of_weight_units :
     ∀ (S : Scheme.{0}) (X : Type) [AddCommGroup X] (G B : Over S) [GrpObj G] [GrpObj B] (q : G ⟶ B) (i : splitTorus S X ⟶ G), IsMonHom q → IsMonHom i → Flat q.left → Surjective q.left → QuasiCompact q.left → IsPullback i (toUnit _) q (η[B]) → ∀ (V : B.left.Opens), IsAffineOpen V → ∀ u : Multiplicative X →* Γ(G.left, q.left ⁻¹ᵁ V)ˣ, (∀ (χ : X) (Z : Over S) (t : Z ⟶ splitTorus S X) (g : Z ⟶ G) (h₁ : ⊤ ≤ ((t ≫ i) * g).left ⁻¹ᵁ (q.left ⁻¹ᵁ V)) (h₂ : ⊤ ≤ g.left ⁻¹ᵁ (q.left ⁻¹ᵁ V)), (((t ≫ i) * g).left.appLE _ ⊤ h₁).hom (u (Multiplicative.ofAdd χ)).val = t.left.appTop.hom (charUnit S X χ).val * (g.left.appLE _ ⊤ h₂).hom (u (Multiplicative.ofAdd χ)).val) → IsAffineOpen (q.left ⁻¹ᵁ V) ∧ Function.Bijective (AddMonoidAlgebra.liftNCRingHom (q.left.app V).hom ((Units.coeHom _).comp u) (fun _ _ => Commute.all _ _)) := by
   intro S X _ G B _ _ q i _ _ hfl hsu hqc hk V hV u hu

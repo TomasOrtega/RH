@@ -17,6 +17,13 @@ open Formalism.MainNotions.DIV.Cons (intO SCF)
 
 namespace GlobalTheory.OmegaHT
 
+/- English proof (translation)
+Use `letI := γ.toAlgebra`. Use `haveI : Algebra.IsIntegral R A := ⟨hγ⟩`. Use `haveI : FaithfulSMul R A := (faithfulSMul_iff_algebraMap_injective _ _).2 hi`. Take `⟨ψ, hψ⟩` from `GlobalTheory.exists_ringHom_extend_of_isIntegral_of_injective (B := A) ((intO C).subtype.comp κ)`. Establish `hm : ∀ a, ψ a ∈ intO C` using `fun a => by`.
+
+Establish `h1 : IsIntegral ↥(intO C) (ψ a)` using `IsIntegral.map_of_comp_eq κ ψ hψ.symm (Algebra.IsIntegral.isIntegral (R := R) a)`. Set `V : ValuationSubring C` to `{ intO C with mem_or_inv_mem' := fun x => by`. Express the relevant statement in the definitionally equal form `‖x‖ ≤ 1 ∨ ‖x⁻¹‖ ≤ 1`. Break down `le_total ‖x‖ 1 with h | h` into its components or cases. Conclude with `Or.inl h`.
+
+Conclude with `Or.inr (by rw [norm_inv]; exact inv_le_one_of_one_le₀ h) }`. Establish `hz' : IsIntegral V (ψ a)` using `h1`. Take `⟨v, hv⟩` from `(IsIntegrallyClosed.isIntegral_iff (R := V) (K := C)).1 hz'`. Conclude with `hv ▸ v.2`. Conclude with `⟨ψ.codRestrict (intO C) hm, RingHom.ext fun r => Subtype.ext (RingHom.congr_fun hψ r)⟩`.
+-/
 theorem exists_extend_intO {R A C : Type} [CommRing R] [CommRing A] [NormedField C] [IsUltrametricDist C] [IsAlgClosed C]
     (γ : R →+* A) (hi : Function.Injective γ) (hγ : γ.IsIntegral) (κ : R →+* ↥(intO C)) :
     ∃ κ' : A →+* ↥(intO C), κ'.comp γ = κ := by
@@ -43,6 +50,11 @@ section Descent
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {X : Scheme.{0}}
   (t : SAB H X) (p : ℕ)
 
+/- English proof (translation)
+Introduce `C κ a v hv`. Take `⟨κ', rfl⟩` from `exists_extend_intO γ hi hγ κ`. Establish `e1 : spMap ((intO ↥C.S).subtype.comp κ') ≫ spMap γ ≫ x = spMap ((intO ↥C.S).subtype.comp (κ'.comp γ)) ≫ x`. Rewrite using `[← Category.assoc, ReciprocityTheory.ChartRestriction.G.PullbackSections.spMap_comp_spMap, RingHom.comp_assoc]`. Establish `k` using `h C κ' a v`.
+
+Simplify using `only [GlobalTheory.HTPres.bc_bc, e1] at k`. Conclude with `k hv`.
+-/
 theorem CutsHT.of_integral {R A : Type} [CommRing R] [CommRing A] (γ : R →+* A) (hi : Function.Injective γ)
     (hγ : γ.IsIntegral) {x : Sp R ⟶ X} {g n : ℕ} {e : Fin g → (Sp (DualNumber R) ⟶ t.G.left)} {η : Fin n → Fin g → R}
     (h : CutsHT t p (spMap γ ≫ x) (fun i => spMap (dualMap γ) ≫ e i) fun j i => γ (η j i)) : CutsHT t p x e η := by
@@ -56,6 +68,11 @@ theorem CutsHT.of_integral {R A : Type} [CommRing R] [CommRing A] (γ : R →+* 
 
 end Descent
 
+/- English proof (translation)
+Use `charZero_of_injective_ringHom (R := O) (f := (B.X.presheaf.germ ⊤ (genericPoint B.X) trivial).hom.comp (algebraMap O Γ(B.X, ⊤))) ?_` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `g hg`. Assume the negation of the conclusion as `h0`. Establish `h1 : B.const g = 0` using `germ_injective_of_isIntegral B.X (U := ⊤) (genericPoint B.X) trivial (hg.trans (map_zero _).symm)`.
+
+Establish `h2` using `B.gen_le_basicOpen h0 B.genericPoint_mem_gen`. Rewrite `h2` using `[h1, Scheme.basicOpen_zero]`. Conclude with `h2`.
+-/
 theorem charZero_functionField_model {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O]
     (B : Vert.Model O) : CharZero B.X.functionField := by
   refine charZero_of_injective_ringHom (R := O)
@@ -69,6 +86,27 @@ theorem charZero_functionField_model {O : Type} [CommRing O] [IsDomain O] [IsDis
   rw [h1, Scheme.basicOpen_zero] at h2
   exact h2
 
+/- English proof (translation)
+Introduce `hR E _ _ _ H X _ t hX p _ O _ _ _ _ B hB ρ`. Use `haveI := charZero_functionField_model B`. Use `haveI : CharZero (Kbar B.X) := charZero_of_injective_algebraMap (algebraMap B.X.functionField (Kbar B.X)).injective`. Use `choose V g e hz he using GlobalTheory.LineNorm.exists_affine_isTanBasis E H X t B.X ρ`. Set `U : B.X → AffOp B.X` to `fun z => ⟨(V z).1, (V z).2, ⟨⟨z, hz z⟩⟩⟩`.
+
+Establish `key : ∀ z, ∃ (n : ℕ) (η : Fin n → Fin (g z) → (U z).Bp), SpansP p η ∧ CutsHT t p (spMap (algebraMap Γ(B.X, (U z).1) (U z).Bp) ≫ (V z).2.fromSpec ≫ ρ) (fun i => spMap (dualMap (algebraMap Γ(B.X, (U z).1) (U z).Bp)) ≫ e z i) η` using `fun z => by haveI : IsAlgClosed (FractionRing (U z).Bp) := IsAlgClosed.of_ringEquiv (Kbar B.X) _ (FractionRing.algEquiv (U z).Bp (Kbar B.X)).symm.toRingEquiv haveI : CharZero (U z).Bp := (algebraMap (U z).Bp (Kbar B.X)).charZero`. Conclude with `hR E H X t hX p (U z).Bp _ (g z) _ (GlobalTheory.HTPres.isTanBasis_map t (he z) _)`. Use `choose n η hsp hcut using key`. Use `choose M hM using hsp`. Take `⟨T, hT⟩` from `(isCompact_univ (X := B.X)).elim_finite_subcover (fun z => ((V z).1 : Set B.X)) (fun z => (V z).1.isOpen) fun z _ => Set.mem_iUnion.2 ⟨z, hz z⟩`.
+
+Set `s : Set (Kbar B.X)` to `Set.range (fun q : (z : T) × Fin (n z) × Fin (g z) => (η q.1 q.2.1 q.2.2 : Kbar B.X)) ∪ Set.range (fun q : (z : T) × Fin (n z) × Fin (g z) => (M q.1 q.2.2 q.2.1 : Kbar B.X))`. Establish `hs : s.Finite` using `(Set.finite_range _).union (Set.finite_range _)`. Use `haveI : Finite s := hs.to_subtype`. Take `⟨B', f, γ, hB', hf, hfin, hinj, hγ, -, hrange⟩` from `exists_normalization_in O B hB (IntermediateField.adjoin B.X.functionField s) (IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x)`. Use `⟨B', f, hB', hf, fun y => ?_⟩` and prove the remaining obligations.
+
+Take `⟨z, hzT, hy⟩` from `Set.mem_iUnion₂.1 (hT (Set.mem_univ (f.f y)))`. Establish `hA : IsAffineOpen (f.f ⁻¹ᵁ (U z).1)` using `(V z).2.preimage f.f`. Establish `hη : ∀ j i, ∃ a, γ (U z) a = η z j i` using `fun j i => by`. Establish `: η z j i ∈ (γ (U z)).range`. Rewrite using `[hrange, mem_ringOver]`.
+
+Conclude with `IntermediateField.subset_adjoin _ _ (Or.inl ⟨⟨⟨z, hzT⟩, j, i⟩, rfl⟩)`. Conclude with `this`. Establish `hM' : ∀ i j, ∃ a, γ (U z) a = M z i j` using `fun i j => by`. Establish `: M z i j ∈ (γ (U z)).range`. Rewrite using `[hrange, mem_ringOver]`.
+
+Conclude with `IntermediateField.subset_adjoin _ _ (Or.inr ⟨⟨⟨z, hzT⟩, j, i⟩, rfl⟩)`. Conclude with `this`. Use `choose η' hη' using hη`. Use `choose M' hM'' using hM'`. Establish `hsq : hA.fromSpec ≫ f.f ≫ ρ = spMap (f.f.app (U z).1).hom ≫ (V z).2.fromSpec ≫ ρ`.
+
+Rewrite using `[← Category.assoc, ← Category.assoc, ← IsAffineOpen.SpecMap_appLE_fromSpec f.f (V z).2 hA le_rfl, ← Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression. Establish `hc : (γ (U z)).comp (f.f.app (U z).1).hom = algebraMap Γ(B.X, (U z).1) (U z).Bp` using `RingHom.ext (hγ (U z))`. Use `⟨⟨_, hA⟩, g z, n z, fun i => spMap (dualMap (f.f.app (U z).1).hom) ≫ e z i, η', hy, ?_, ⟨M', fun i k => ?_⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsTanBasis t (hA.fromSpec ≫ f.f ≫ ρ) _`.
+
+Rewrite using `[hsq]`. Conclude with `GlobalTheory.HTPres.isTanBasis_map t (he z) _`. Apply `hinj (U z)` to reduce the goal to its premises. Simplify using `only [map_sum, map_mul, hη', hM'', hM z i k]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Express the relevant statement in the definitionally equal form `CutsHT t p (hA.fromSpec ≫ f.f ≫ ρ) _ _`. Rewrite using `[hsq]`. Use `CutsHT.of_integral t p (γ (U z)) (hinj _) ?_ ?_` and prove the remaining obligations. Use `RingHom.IsIntegral.tower_top (f.f.app (U z).1).hom _ ?_` and prove the remaining obligations. Rewrite using `[hc]`.
+
+Conclude with `Algebra.IsIntegral.isIntegral (R := Γ(B.X, (U z).1))`. Simplify using `only [GlobalTheory.HTPres.bc_bc, hη', hc]`. Rewrite using `[← Category.assoc, ReciprocityTheory.ChartRestriction.G.PullbackSections.spMap_comp_spMap, hc]`. Conclude with `hcut z`.
+-/
 theorem genSt_of_ringSt : RingSt → GenSt := by
   intro hR E _ _ _ H X _ t hX p _ O _ _ _ _ B hB ρ
   haveI := charZero_functionField_model B

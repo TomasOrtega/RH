@@ -5,6 +5,19 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 
 namespace GlobalTheory.Mem.Col2.AdT
 
+/- English proof (translation)
+Introduce `B X I hOk l Z a v hv`. Take `⟨-, hPr, -⟩` from `base_fields_primes_ok B X`. Break down `hv with hv | ⟨P, hP, rfl⟩` into its components or cases. Establish `key : ∀ (i : Fin 2), v ∈ plUnder (I.rec7 l Z).host.F (E` using `(I.rec7 l Z).host.E) ((B.primes X).vG i) ↔ ((B.primes X).g i : 𝓞 (I.rec7 l Z).host.F) ∈ v.asIdeal := by`. Introduce `i`.
+
+Establish `h0 : B.fields.conjO ((B.primes X).piG i) ≠ 0`. Introduce `h`. Establish `h1` using `hPr.piG_norm i`. Rewrite `h1` using `[h, mul_zero]`. Conclude with `(Nat.cast_ne_zero.2 (hPr.g_prime i).ne_zero) h1.symm`.
+
+Use `mem_plUnder_iff_norm (I.rec7 l Z).sp.cm (fun P => mem_divs h0 P) ((B.primes X).g i) ?_ v` and prove the remaining obligations. Establish `h2 : cO (I.rec7 l Z).host.E (B.fields.conjO ((B.primes X).piG i)) = (B.primes X).piG i` using `cO_cO ((B.primes X).piG i)`. Rewrite using `[h2]`. Establish `h3 : B.fields.conjO ((B.primes X).piG i) * (B.primes X).piG i = ((B.primes X).g i : 𝓞 B.fields.E)`. Rewrite using `[mul_comm]`.
+
+Conclude with `hPr.piG_norm i`. Conclude with `h3`. Establish `hv' : v ∈ plUnder (I.rec7 l Z).host.F (E` using `(I.rec7 l Z).host.E) (B.primes X).vGs := by`. Break down `hv with h | h` into its components or cases. Take `⟨P, hP, hPv⟩` from `(key 0).2 h`.
+
+Conclude with `⟨P, Finset.mem_union_left _ hP, hPv⟩`. Take `⟨P, hP, hPv⟩` from `(key 1).2 h`. Conclude with `⟨P, Finset.mem_union_right _ hP, hPv⟩`. Take `⟨P, hP, hPv⟩` from `hv'`. Use `⟨P, Finset.mem_union_left _ hP, ?_⟩` and prove the remaining obligations.
+
+Conclude with `hPv`. Use `⟨P, Finset.mem_union_right _ hP, ?_⟩` and prove the remaining obligations. Conclude with `rfl`.
+-/
 theorem exists_SBof_over : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (a : I.ι) (v : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F)), v ∈ badG (I.rec7 l Z) ∨ I.UnderQ a v → ∃ P ∈ SBof I a, Formalism.L2.Col.IsOver v (GlobalTheory.TwU.seamP (sm I l Z) P) := by
   classical
   intro B X I hOk l Z a v hv

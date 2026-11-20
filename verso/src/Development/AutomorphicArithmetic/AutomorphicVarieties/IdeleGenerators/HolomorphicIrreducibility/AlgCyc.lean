@@ -8,17 +8,26 @@ section Hecke
 
 variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Introduce `k hk` and use `by have e : (χ * χ').inf k = χ.inf k * χ'.inf k := rfl rw [e, Units.val_mul, h k hk, h' k hk, ← Finset.prod_mul_distrib] exact Finset.prod_congr rfl fun φ _ => (zpow_add₀ ((map_ne_zero φ).2 k.ne_zero) _ _).symm`.
+-/
 private theorem isAlgPos_mul {χ χ' : HChar F} {n n' : (F →+* ℂ) → ℤ} (h : IsAlgPos χ n) (h' : IsAlgPos χ' n') :
     IsAlgPos (χ * χ') (n + n') := fun k hk => by
   have e : (χ * χ').inf k = χ.inf k * χ'.inf k := rfl
   rw [e, Units.val_mul, h k hk, h' k hk, ← Finset.prod_mul_distrib]
   exact Finset.prod_congr rfl fun φ _ => (zpow_add₀ ((map_ne_zero φ).2 k.ne_zero) _ _).symm
 
+/- English proof (translation)
+Introduce `k hk` and use `by have e : (χ⁻¹).inf k = (χ.inf k)⁻¹ := rfl rw [e, Units.val_inv_eq_inv_val, h k hk, ← Finset.prod_inv_distrib] exact Finset.prod_congr rfl fun φ _ => (zpow_neg _ _).symm`.
+-/
 private theorem isAlgPos_inv {χ : HChar F} {n : (F →+* ℂ) → ℤ} (h : IsAlgPos χ n) : IsAlgPos χ⁻¹ (-n) := fun k hk => by
   have e : (χ⁻¹).inf k = (χ.inf k)⁻¹ := rfl
   rw [e, Units.val_inv_eq_inv_val, h k hk, ← Finset.prod_inv_distrib]
   exact Finset.prod_congr rfl fun φ _ => (zpow_neg _ _).symm
 
+/- English proof (translation)
+Take `⟨hc, art, χ, a, ha, h1, h2⟩` from `h`. Take `⟨hc', art', χ', a', ha', h1', h2'⟩` from `h'`. Take `rfl : art = art'` from `GlobalTheory.ArtinUniq.globalArtin_unique F Ω art art' ha ha'`. Conclude with `⟨hc.mul hc', art, _, _, ha, isAlgPos_mul h1 h1', h2.mul h2'⟩`.
+-/
 private theorem alg_mul {ι : Qbar l ≃+* ℂ} {κ κ' : G F Ω →* (Qbar l)ˣ} (h : IsAlgChar ι κ) (h' : IsAlgChar ι κ') :
     IsAlgChar ι (κ * κ') := by
   obtain ⟨hc, art, χ, a, ha, h1, h2⟩ := h
@@ -26,6 +35,11 @@ private theorem alg_mul {ι : Qbar l ≃+* ℂ} {κ κ' : G F Ω →* (Qbar l)ˣ
   obtain rfl : art = art' := GlobalTheory.ArtinUniq.globalArtin_unique F Ω art art' ha ha'
   exact ⟨hc.mul hc', art, _, _, ha, isAlgPos_mul h1 h1', h2.mul h2'⟩
 
+/- English proof (translation)
+Take `⟨art, ha⟩` from `H F Ω`. Establish `: IsGalois F Ω` using `IsAlgClosure.isGalois F Ω`. Establish `hfi : Finite (G F Ω ⧸ φ.ker)` using `Subgroup.quotient_finite_of_isOpen _ ho`. Establish `hpos : 0 < φ.ker.index` using `Nat.pos_of_ne_zero Subgroup.index_ne_zero_of_finite`. Take `⟨χ, ⟨h1, h2⟩, -⟩` from `exists_unique_hchar_of_finite_order ha ι φ (continuous_of_isOpen_ker' φ ho) hpos (MonoidHom.ext fun s => by`.
+
+Rewrite using `[MonoidHom.pow_apply, ← map_pow]`. Conclude with `φ.ker.pow_index_mem s)`. Conclude with `⟨continuous_of_isOpen_ker' φ ho, art, χ, 0, ha, isAlgPos_zero_of_orderDvd hpos h1, h2⟩`.
+-/
 private theorem alg_fin (H : GlobalTheory.Published.GlobalArtinReciprocity) (ι : Qbar l ≃+* ℂ) {φ : G F Ω →* (Qbar l)ˣ}
     (ho : IsOpen (φ.ker : Set (G F Ω))) : IsAlgChar ι φ := by
   obtain ⟨art, ha⟩ := H F Ω
@@ -38,6 +52,9 @@ private theorem alg_fin (H : GlobalTheory.Published.GlobalArtinReciprocity) (ι 
       exact φ.ker.pow_index_mem s)
   exact ⟨continuous_of_isOpen_ker' φ ho, art, χ, 0, ha, isAlgPos_zero_of_orderDvd hpos h1, h2⟩
 
+/- English proof (translation)
+Take `⟨hc, χ, art, a, h⟩` from `UpperTheory.exists_algebraic_heckeChar_cyclotomic H F Ω l ι j (cycBar F Ω l ^ j) ⟨1, 1, le_rfl, fun _ _ => rfl, (mul_one _).symm⟩`. Conclude with `⟨hc, art, χ, a, h⟩`.
+-/
 private theorem alg_cyc (H : GlobalTheory.Published.GlobalArtinReciprocity) (ι : Qbar l ≃+* ℂ) (j : ℤ) :
     IsAlgChar ι (cycBar F Ω l ^ j) := by
   obtain ⟨hc, χ, art, a, h⟩ := UpperTheory.exists_algebraic_heckeChar_cyclotomic H F Ω l ι j (cycBar F Ω l ^ j)
@@ -46,6 +63,9 @@ private theorem alg_cyc (H : GlobalTheory.Published.GlobalArtinReciprocity) (ι 
 
 end Hecke
 
+/- English proof (translation)
+Introduce `P F Ω _ _ _ _ _ l _ ι`. Use `⟨fun j χ ho => alg_mul (alg_cyc P.litN.aut.art ι j) (alg_fin P.litN.aut.art ι ho), fun _ _ h h' => alg_mul h h', ?_⟩` and prove the remaining obligations. Introduce and unpack `κ ⟨hc, art, χ, a, ha, h1, h2⟩`. Conclude with `⟨hc.inv, art, _, _, ha, isAlgPos_inv h1, h2.inv⟩`.
+-/
 theorem UpperTheory.V.Sd.algCyc :
     UpperTheory.V.Af.Hypotheses₂ → UpperTheory.V.Sd.AlgCyc := by
   intro P F Ω _ _ _ _ _ l _ ι

@@ -5,6 +5,11 @@ namespace GroundTheory.BlockD.FourierDecayAlt.WaveGridLiftGrid
 
 open Finset
 
+/- English proof (translation)
+Establish `hm : 0 < max d 1` using `lt_of_lt_of_le one_pos (le_max_right _ _)`. Establish `hmD : max d 1 ≤ D` using `max_le hD1 hD2`. Establish `h1 : 1 + c ≤ (1 + c) / max d 1 * D`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ hm]`. Conclude with `mul_le_mul_of_nonneg_left hmD (by linarith)`.
+
+Establish `h2 : (1 + (1 + c) / max d 1) * D = D + (1 + c) / max d 1 * D` using `by ring`. Rewrite using `[h2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem cloud_pair_factor (a d c D : ℝ) (hc : 0 ≤ c) (ha : a ≤ d + 1 + c) (hD1 : d ≤ D)
     (hD2 : 1 ≤ D) : a ≤ (1 + (1 + c) / max d 1) * D := by
   have hm : 0 < max d 1 := lt_of_lt_of_le one_pos (le_max_right _ _)
@@ -16,6 +21,47 @@ theorem cloud_pair_factor (a d c D : ℝ) (hc : 0 ≤ c) (ha : a ≤ d + 1 + c) 
   rw [h2]
   linarith
 
+/- English proof (translation)
+Set `φ : ℕ → ℕ` to `fun s => if 0 < Y + lam s then s else s + 1`. Establish `hF1 : ∀ s, 1 ≤ (1 + (1 + c) / max |Y + lam s| 1)` using `fun s => by`. Establish `: 0 ≤ (1 + c) / max |Y + lam s| 1` using `div_nonneg (by linarith) (le_trans zero_le_one (le_max_right _ _))`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hA0 : ∀ s, 0 ≤ |Y + ε + lam s| + c` using `fun s => by positivity`.
+
+Establish `hD0 : ∀ i, 0 ≤ |Y + 1 / 2 + v i|` using `fun i => abs_nonneg _`. Apply the tactic sequence `have hε1 : |ε| ≤ 1 := by rcases hε with h | h <;> simp [h]`. Establish `hmaps : ∀ s ∈ ((Icc 1 (k - 1)).erase e), φ s ∈ Icc 1 k`. Introduce `s hs`. Rewrite `hs` using `[Finset.mem_erase, Finset.mem_Icc]`.
+
+Rewrite using `[Finset.mem_Icc]`. Distinguish the cases in `hpos : 0 < Y + lam s`. Simplify using `only [φ, hpos, if_true]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [φ, hpos, if_false]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hkey : ∀ s ∈ ((Icc 1 (k - 1)).erase e), |Y + ε + lam s| + c ≤ (1 + (1 + c) / max |Y + lam s| 1) * |Y + 1 / 2 + v (φ s)|`. Introduce `s hs`. Establish `hs'` using `hs`. Rewrite `hs'` using `[Finset.mem_erase, Finset.mem_Icc]`.
+
+Take `⟨hne, h1, h2⟩` from `hs'`. Establish `hPs` using `hp s h1 h2 hne`. Establish `hmem` using `hmaps s hs`. Rewrite `hmem` using `[Finset.mem_Icc]`. Apply `cloud_pair_factor _ _ _ _ hc` to reduce the goal to its premises.
+
+Establish `h3 : |Y + ε + lam s| ≤ |Y + lam s| + |ε|`. Establish `h4 : Y + ε + lam s = (Y + lam s) + ε` using `by ring`. Rewrite using `[h4]`. Conclude with `abs_add_le _ _`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Distinguish the cases in `hpos : 0 < Y + lam s`. Simplify using `only [φ, hpos, if_true]`. Establish `hv` using `hPs.1 (by linarith)`. Rewrite using `[abs_of_pos hpos]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [φ, hpos, if_false]`. Establish `hv` using `hPs.2 (by linarith)`. Rewrite using `[abs_of_nonpos (not_lt.1 hpos)]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hden _ hmem.1 hmem.2`.
+
+Establish `hinj : ∀ s ∈ ((Icc 1 (k - 1)).erase e), ∀ t ∈ ((Icc 1 (k - 1)).erase e), φ s = φ t → s = t`. Introduce `s hs t ht hst`. Rewrite `hs`, `ht` using `[Finset.mem_erase, Finset.mem_Icc]`. Apply the tactic sequence `by_cases h1 : 0 < Y + lam s <;> by_cases h2 : 0 < Y + lam t`. Simplify `hst` using `[φ, h1, h2]`.
+
+Simplify using `only [φ, h1, h2, if_true, if_false] at hst`. It suffices to derive a contradiction. Establish `hg` using `hgap t ht.2.1 (by omega)`. Substitute `hst` using the available equality. Combine the linear relations using `[not_lt.1 h2]`.
+
+Simplify using `only [φ, h1, h2, if_true, if_false] at hst`. It suffices to derive a contradiction. Establish `hg` using `hgap s hs.2.1 (by omega)`. Substitute `hst` using the available equality. Combine the linear relations using `[not_lt.1 h1]`.
+
+Simplify using `only [φ, h1, h2, if_false] at hst`. Use linear arithmetic over natural numbers and integers. Establish `hFnn : ∀ s, 0 ≤ (1 + (1 + c) / max |Y + lam s| 1)` using `fun s => le_trans zero_le_one (hF1 s)`. Establish `hprodA : ∏ s ∈ ((Icc 1 (k - 1)).erase e), (|Y + ε + lam s| + c) ≤ (∏ s ∈ ((Icc 1 (k - 1)).erase e), (1 + (1 + c) / max |Y + lam s| 1)) * ∏ i ∈ Icc 1 k, |Y + 1 / 2 + v i|`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.prod_image hinj]`. Use `_ ≤ (∏ s ∈ ((Icc 1 (k - 1)).erase e), (1 + (1 + c) / max |Y + lam s| 1)) * ∏ i ∈ Icc 1 k, |Y + 1 / 2 + v i| := by`. Apply `mul_le_mul_of_nonneg_left _ (Finset.prod_nonneg fun s _ => hFnn s)` to reduce the goal to its premises. Establish `hsub : ((Icc 1 (k - 1)).erase e).image φ ⊆ Icc 1 k` using `fun i hi => by`. Take `⟨s, hs, rfl⟩` from `Finset.mem_image.1 hi`.
+
+Conclude with `hmaps s hs`. Rewrite using `[← Finset.prod_sdiff hsub]`. Establish `h1 : 1 ≤ ∏ i ∈ Icc 1 k \ ((Icc 1 (k - 1)).erase e).image φ, |Y + 1 / 2 + v i|`. Establish `h5` using `Finset.prod_le_prod (s := Icc 1 k \ ((Icc 1 (k - 1)).erase e).image φ) (f := fun _ => (1 : ℝ)) (g := fun i => |Y + 1 / 2 + v i|) (fun _ _ => zero_le_one) (fun i hi => by`. Establish `hi'` using `(Finset.mem_Icc.1 (Finset.mem_sdiff.1 hi).1)`.
+
+Conclude with `hden i hi'.1 hi'.2)`. Simplify using `using h5`. Establish `h0 : 0 ≤ ∏ i ∈ ((Icc 1 (k - 1)).erase e).image φ, |Y + 1 / 2 + v i|` using `Finset.prod_nonneg fun i _ => hD0 i`. Use the polynomial consequences of the given equalities and inequalities. Establish `hFS : ∏ s ∈ ((Icc 1 (k - 1)).erase e), (1 + (1 + c) / max |Y + lam s| 1) ≤ ∏ s ∈ (Icc 1 (k - 1)), (1 + (1 + c) / max |Y + lam s| 1)`.
+
+Distinguish the cases in `he : e ∈ (Icc 1 (k - 1))`. Rewrite using `[← Finset.mul_prod_erase _ _ he]`. Establish `h0 : 0 ≤ ∏ s ∈ ((Icc 1 (k - 1)).erase e), (1 + (1 + c) / max |Y + lam s| 1)` using `Finset.prod_nonneg fun s _ => hFnn s`. Use polynomial arithmetic with `[hF1 e]`. Rewrite using `[Finset.erase_eq_of_notMem he]`.
+
+Establish `hDnn : 0 ≤ ∏ i ∈ Icc 1 k, |Y + 1 / 2 + v i|` using `Finset.prod_nonneg fun i _ => hD0 i`. Establish `hFSnn : 0 ≤ ∏ s ∈ ((Icc 1 (k - 1)).erase e), (1 + (1 + c) / max |Y + lam s| 1)` using `Finset.prod_nonneg fun s _ => hFnn s`. Establish `hb1 : 1 ≤ b` using `by linarith`. Distinguish the cases in `he : e ∈ (Icc 1 (k - 1))`. Rewrite using `[← Finset.mul_prod_erase _ _ he]`.
+
+Establish `hAe : |Y + ε + lam e| + c ≤ 3 * b`. Rewrite `he` using `[Finset.mem_Icc]`. Establish `hl` using `hlam e he.1 he.2`. Establish `h6 : |Y + ε + lam e| ≤ |Y| + |ε| + |lam e|` using `abs_add_three Y ε (lam e)`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hAnn : 0 ≤ ∏ s ∈ ((Icc 1 (k - 1)).erase e), (|Y + ε + lam s| + c)` using `Finset.prod_nonneg fun s _ => hA0 s`. Combine the equalities or inequalities in the displayed calculation. Combine the linear relations using `[mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right hFS hDnn) (show (0 : ℝ) ≤ 3 * b by linarith)]`. Rewrite `hprodA` using `[Finset.erase_eq_of_notMem he]`. Establish `hX : 0 ≤ (∏ s ∈ (Icc 1 (k - 1)), (1 + (1 + c) / max |Y + lam s| 1)) * ∏ i ∈ Icc 1 k, |Y + 1 / 2 + v i|` using `mul_nonneg (Finset.prod_nonneg fun s _ => hFnn s) hDnn`.
+
+Combine the linear relations using `[mul_le_mul_of_nonneg_right (show (1 : ℝ) ≤ 3 * b by linarith) hX]`.
+-/
 theorem cloud_pair_le (k : ℕ) (lam v : ℕ → ℝ) (e : ℕ) (c g b Y ε : ℝ) (hk : 2 ≤ k) (hc : 0 ≤ c) (hg : 1 + c ≤ g)
     (hε : ε = 0 ∨ ε = 1) (hcb : c + 1 ≤ b) (hY : |Y| ≤ b)
     (hlam : ∀ s, 1 ≤ s → s ≤ k - 1 → |lam s| ≤ b)

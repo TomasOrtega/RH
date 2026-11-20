@@ -17,6 +17,13 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 namespace GlobalTheory.PinLayer
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Introduce `hP hL`. Use `GlobalTheory.HeightCounting.JumpsAt.evLgG_of_forall fun K B f T _ w Z Wt p0 t nch n xd c hE _ _ => ?_` and prove the remaining obligations. Take `⟨e⟩` from `hE`. Establish `e' : _root_.GlobalTheory.HeightCounting.RealExpansionExtraData (D` using `(w.st Z).toD7) c.row t.r.z.geo xd := e`. Establish `hT : TypesTrue (w.D Z).ntypes (TC.cf w.I w.l Z).P (TC.cf w.I w.l Z).W` using `by show TypesTrue _ w.I.C.P w.I.C.W`.
+
+Rewrite using `[w.C_eq]`. Conclude with `t.grp`. Establish `hEl : Elem (w.D Z)`. Use `⟨fun y => ?_, fun j g => ((w.D Z).hc ((w.D Z).eTau.symm g)).e_int j, fun v hv => ?_⟩` and prove the remaining obligations. Conclude with `(IntermediateField.normal_iff_forall_map_le.1 B.coeffGaloisSubfield_isGalois.to_normal (starRingEnd (w.D Z).what₂.LL).toRatAlgHom) ⟨_, y.2, rfl⟩`.
+
+Establish `hc : ∀ p ∈ (w.D Z).host.levelPrimes, p.Prime ∧ p % ((w.D Z).host.QS * (w.D Z).host.q * (w.D Z).host.d) = 1` using `(w.st Z).B.level_cond`. Break down `hv with hv | hv` into its components or cases. Conclude with `GlobalTheory.HeightCounting.Up.isSplitPl_of_mem_levelPrimes _ hc (w.D Z).host.pde_level.1 v hv`. Conclude with `GlobalTheory.HeightCounting.Up.isSplitPl_of_mem_levelPrimes _ hc (w.D Z).host.pde_level.2 v hv`. Conclude with `_root_.GlobalTheory.PinLayer.pinAt_of_side_alt c.a hP.greenC hT (GlobalTheory.HeightCounting.Up.valLL0_colW w Z) (fun σ => Formalism.IndefR.principalLevelFrame.rowRepR t.r.z.R.θ (t.r.Y.eFT σ)) c.row.rep_eq (fun σ σ' h => t.r.Y.eFT.injective (Formalism.IndefR.principalLevelFrame.r …`.
+-/
 theorem specialization_at_member_of_layer_alt : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists,
     _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL fun _ _ _ _ w Z _ _ t nch n c => ∃ P : _root_.GlobalTheory.NPin.CharacterChoiceData hL (w.D Z), _root_.GlobalTheory.HeightCounting.Up.PinnedAtCharacterChoice c.a P := by
   intro hP hL
@@ -46,6 +53,9 @@ section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX NumberField IsDedekindDomain GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.PinLayer.specialization_at_member_of_layer_alt | exact _root_.GlobalTheory.PinLayer.specialization_at_member_of_layer_alt | (intros; apply _root_.GlobalTheory.PinLayer.specialization_at_member_of_layer_alt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_character_choice_pin_at_of_third_layer : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL fun _ _ _ _ w Z _ _ t nch n c => ∃ P : _root_.GlobalTheory.NPin.CharacterChoiceData hL (w.D Z), _root_.GlobalTheory.HeightCounting.Up.PinnedAtCharacterChoice c.a P := by
   first | exact @_root_.GlobalTheory.PinLayer.specialization_at_member_of_layer_alt | exact _root_.GlobalTheory.PinLayer.specialization_at_member_of_layer_alt | (intros; apply _root_.GlobalTheory.PinLayer.specialization_at_member_of_layer_alt <;> assumption)
 end

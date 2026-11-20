@@ -11,6 +11,9 @@ set_option autoImplicit false
 
 namespace GlobalTheory.DualApprox
 
+/- English proof (translation)
+Rewrite `hs` using `[same_iff hN hN₀, Category.comp_id]`. Use `congrArg (CechPic.pull (lift (fst A Y) (snd A Y ≫ y)).left) hs` as an intermediate fact. Rewrite `this` using `[pull_evc, pull_evc]`. Simplify using `only [lift_fst, lift_snd, lift_snd_assoc, Category.assoc] at this`. Conclude with `this`.
+-/
 theorem evc_comp_of_same {S : Scheme.{0}} {A T T₀ Y : Over S} {N : LB (A ⊗ T).left} {N₀ : LB (A ⊗ T₀).left}
     (hN : N.IsLB) (hN₀ : N₀.IsLB) (h : T ⟶ T₀) (hs : Same A N N₀ (𝟙 T) h) (y : Y ⟶ T) :
     evc hN (fst A Y) (snd A Y ≫ y) = evc hN₀ (fst A Y) (snd A Y ≫ y ≫ h) := by
@@ -20,6 +23,11 @@ theorem evc_comp_of_same {S : Scheme.{0}} {A T T₀ Y : Over S} {N : LB (A ⊗ T
   simp only [lift_fst, lift_snd, lift_snd_assoc, Category.assoc] at this
   exact this
 
+/- English proof (translation)
+Introduce `R _ _ A _ hA U M hM hfin T _ N hN`. Take `⟨T₀, h, N₀, hT₀, hft, hN₀, hs⟩` from `GlobalTheory.T.exists_finiteType_additiveLineBundleFamily_affine R A hA T N hN`. Take `⟨W₀, hW₀⟩` from `hfin T₀ hft N₀ hN₀`. Use `⟨h.left ⁻¹ᵁ W₀, fun Y y ↦ ?_⟩` and prove the remaining obligations. Establish `key : ∀ u : Y ⟶ U, Same A N M y u ↔ Same A N₀ M (y ≫ h) u` using `fun u ↦ by`.
+
+Rewrite using `[same_iff hN.isLB hM.isLB, same_iff hN₀.isLB hM.isLB, evc_comp_of_same hN.isLB hN₀.isLB h hs y]`. Repeatedly rewrite using `[key, hW₀ Y (y ≫ h)]`. Both sides reduce to the same expression.
+-/
 theorem chartAt_of_finiteType : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (A : Over (Sp R)) [GrpObj A], IsAbelianScheme A → ∀ (U : Over (Sp R)) (M : LB (A ⊗ U).left), Fam A M → (∀ (T : Over (Sp R)) [IsAffine T.left], LocallyOfFiniteType T.hom → ∀ (N : LB (A ⊗ T).left), Fam A N → ChartAt A M N) → ∀ (T : Over (Sp R)) [IsAffine T.left] (N : LB (A ⊗ T).left), Fam A N → ChartAt A M N := by
   intro R _ _ A _ hA U M hM hfin T _ N hN
   obtain ⟨T₀, h, N₀, hT₀, hft, hN₀, hs⟩ := GlobalTheory.T.exists_finiteType_additiveLineBundleFamily_affine R A hA T N hN

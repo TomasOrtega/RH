@@ -11,18 +11,45 @@ noncomputable section
 
 namespace GlobalTheory.XGeoStd
 
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Subalgebra.sum_mem (integralClosure ℤ E) fun l _ => (hM k l).mul (hx l)`.
+-/
 theorem isIntegral_mulVec {E : Type} [Field E] {m n : ℕ} (M : Matrix (Fin m) (Fin n) E)
     (hM : ∀ i j, IsIntegral ℤ (M i j)) (x : Fin n → E) (hx : ∀ k, IsIntegral ℤ (x k)) (k : Fin m) :
     IsIntegral ℤ ((M *ᵥ x) k) := by
   simp only [Matrix.mulVec, dotProduct]
   exact Subalgebra.sum_mem (integralClosure ℤ E) fun l _ => (hM k l).mul (hx l)
 
+/- English proof (translation)
+Use `split_ifs`. Conclude with `isIntegral_one`. Conclude with `isIntegral_zero`.
+-/
 theorem isIntegral_ite {E : Type} [Field E] (p : Prop) [Decidable p] :
     IsIntegral ℤ (if p then (1 : E) else 0) := by
   split_ifs
   · exact isIntegral_one
   · exact isIntegral_zero
 
+/- English proof (translation)
+Introduce `B X I l Z hI n h x`. Substitute `h` using the available equality. Take `⟨hs, -, h2, -⟩` from `hI.spaces`. Establish `hS : ∀ y, y ∈ GlobalTheory.PlaceModel.latFrame ((I.rec7 l Z).sp.X (I.rec7 l Z).R.m) ↔ ∀ k, IsIntegral ℤ (y k)` using `fun y => by`. Rewrite using `[← SetLike.mem_coe, GlobalTheory.AdForm.PinInhab.lat_X hI]`.
+
+Both sides reduce to the same expression. Establish `hA : ∀ y, y ∈ GlobalTheory.PlaceModel.latFrame (I.rec7 l Z).sp.X' ↔ ∀ k, IsIntegral ℤ (y k)` using `fun y => by`. Rewrite using `[← SetLike.mem_coe, GlobalTheory.AdForm.VacStd.coe_latFrame_of_eq _ hs _ h2]`. Both sides reduce to the same expression. Establish `hB : ∀ y, y ∈ GlobalTheory.PlaceModel.latFrame (lineZ (I.rec7 l Z)) ↔ ∀ k, IsIntegral ℤ (y k)` using `fun y => by`.
+
+Rewrite using `[← SetLike.mem_coe, GlobalTheory.AdForm.VacStd.coe_latFrame_of_eq _ Examples₂.star_isIntegral 1 rfl]`. Both sides reduce to the same expression. Establish `ho : oTop l Z hI _ rfl = GlobalTheory.AdForm.LiveModel.topDec (GlobalTheory.AdForm.PinInhab.gram_X hI _) (gram_X' hI)` using `rfl`. Rewrite using `[ho]`. Use `set o := GlobalTheory.AdForm.LiveModel.topDec (GlobalTheory.AdForm.PinInhab.gram_X (l := l) (Z := Z) hI (I.rec7 l Z).R.m) (gram_X' hI)`.
+
+Establish `iA_int : ∀ i j, IsIntegral ℤ (o.iA i j)` using `fun i j => by`. Simplify using `only [o, GlobalTheory.AdForm.LiveModel.topDec, Matrix.of_apply]`. Conclude with `isIntegral_ite _`. Establish `iB_int : ∀ i j, IsIntegral ℤ (o.iB i j)` using `fun i j => by`. Simplify using `only [o, GlobalTheory.AdForm.LiveModel.topDec, Matrix.of_apply]`.
+
+Conclude with `isIntegral_ite _`. Establish `qA_eq : o.qA = o.iAᴴ`. Rewrite using `[OrthDec.qA, gram_X' hI, GlobalTheory.AdForm.PinInhab.gram_X hI, inv_one, Matrix.one_mul, Matrix.mul_one]`. Establish `qB_eq : o.qB = o.iBᴴ`. Rewrite using `[OrthDec.qB, GlobalTheory.AdForm.PinInhab.gram_X hI, GlobalTheory.AdForm.LiveModel.gram_pos, inv_one, Matrix.one_mul, Matrix.mul_one]`.
+
+Establish `qA_int : ∀ i j, IsIntegral ℤ (o.qA i j)` using `fun i j => by`. Rewrite using `[qA_eq, Matrix.conjTranspose_apply]`. Conclude with `hs _ (iA_int j i)`. Establish `qB_int : ∀ i j, IsIntegral ℤ (o.qB i j)` using `fun i j => by`. Rewrite using `[qB_eq, Matrix.conjTranspose_apply]`.
+
+Conclude with `hs _ (iB_int j i)`. Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Use `⟨GlobalTheory.SeeSaw.SplitLat.rat_mulVec_mem_latV o.qA (fun z hz => ?_) _ hy, GlobalTheory.SeeSaw.SplitLat.rat_mulVec_mem_latV o.qB (fun z hz => ?_) _ hy⟩` and prove the remaining obligations.
+
+Conclude with `(hA _).2 (isIntegral_mulVec _ qA_int z ((hS z).1 hz))`. Conclude with `(hB _).2 (isIntegral_mulVec _ qB_int z ((hS z).1 hz))`. Introduce and unpack `⟨hyA, hyB⟩`. Establish `e : y = o.jA *ᵥ (o.pA *ᵥ y) + o.jB *ᵥ (o.pB *ᵥ y)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.add_mulVec]`.
+
+Use `o.sum_eq_one` as an intermediate fact. Rewrite using `[show o.jA * o.pA + o.jB * o.pB = 1 from this, Matrix.one_mulVec]`. Rewrite using `[e]`. Use `add_mem (GlobalTheory.SeeSaw.SplitLat.rat_mulVec_mem_latV o.iA (fun z hz => ?_) _ hyA) (GlobalTheory.SeeSaw.SplitLat.rat_mulVec_mem_latV o.iB (fun z hz => ?_) _ hyB)` and prove the remaining obligations. Conclude with `(hS _).2 (isIntegral_mulVec _ iA_int z ((hA z).1 hz))`.
+
+Conclude with `(hS _).2 (isIntegral_mulVec _ iB_int z ((hB z).1 hz))`.
+-/
 theorem orthAt_oTop : ∀ {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} (hI : I.Ok) (n : ℕ) (h : n = (I.rec7 l Z).R.m) (x : GlobalTheory.FinPl.Pl (I.rec7 l Z)), GlobalTheory.FinPl.OrthAt (GlobalTheory.XGeoStd.oTop l Z hI n h) (GlobalTheory.PlaceModel.latFrame ((I.rec7 l Z).sp.X n)) (GlobalTheory.PlaceModel.latFrame (I.rec7 l Z).sp.X') (GlobalTheory.PlaceModel.latFrame (GlobalTheory.XGeoStd.lineZ (I.rec7 l Z))) x := by
   intro B X I l Z hI n h x
   subst h

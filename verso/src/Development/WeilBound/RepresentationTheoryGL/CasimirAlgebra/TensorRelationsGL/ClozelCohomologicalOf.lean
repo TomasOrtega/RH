@@ -52,6 +52,11 @@ def Kuga : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E]
   IsUnitTw π → IsSmall π Ξ → ∀ (q : ℕ) (ω : Herm E a [⋀^Fin q]→ₗ[ℝ] (π.V ⊗[ℂ] (Fin Ξ.d → ℂ))),
     IsCochain (tensorK π Ξ) ω → ω ≠ 0 → IsCohFor π Ξ
 
+/- English proof (translation)
+Introduce `E _ _ _ a ha π hr`. Take `⟨hK, hc⟩` from `h2 E a`. Take `⟨ℓ, hℓ, hw⟩` from `h4 E a π`. Take `⟨l, hl, hch⟩` from `h5 E a π hr`. Take `⟨s, hs⟩` from `h1 a ha π.V (E →+* ℂ) (Kinf E a) _ _ _ _ hK (h3 E a π) l hl hch ℓ hℓ hw`.
+
+Take `⟨Ξ, q, ω, hΞ, hω, h0⟩` from `h7 E a π l s hch hs`. Conclude with `⟨Ξ, h8 E a π Ξ (h6 E a ha π) hΞ q ω hω h0⟩`.
+-/
 theorem clozelCohomological_of (h1 : KType) (h2 : KData) (h3 : GKData) (h4 : WhitLie) (h5 : CharInt) (h6 : UnitTw)
     (h7 : Coef) (h8 : Kuga) : GlobalTheory.Published.ClozelCohomological := by
   intro E _ _ _ a ha π hr

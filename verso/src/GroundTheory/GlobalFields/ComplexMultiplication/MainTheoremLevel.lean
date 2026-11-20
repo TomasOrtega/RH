@@ -19,6 +19,9 @@ variable {K : Type} [Field K] [NumberField K] [Algebra K ℂ] (hK : finrank ℚ 
   [IsTotallyComplex K]
 
 omit [NumberField K] [IsTotallyComplex K] in
+/- English proof (translation)
+Substitute `eA eB` using the available equality. Conclude with `h`.
+-/
 theorem exists_isogeny_homConstSet_congr {L : Type} [Field L] [Algebra L ℂ]
     {A A' B B' : WeierstrassCurve L} [A.IsElliptic] [A'.IsElliptic] [B.IsElliptic] [B'.IsElliptic]
     (eA : A = A') (eB : B = B') {S : Set ℂ}
@@ -30,6 +33,9 @@ theorem exists_isogeny_homConstSet_congr {L : Type} [Field L] [Algebra L ℂ]
   exact h
 
 omit [NumberField K] [IsTotallyComplex K] [Algebra K ℂ] in
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `h`.
+-/
 theorem nonempty_isogEnd_congr {L : Type} [Field L] [Algebra L ℂ] {B B' : WeierstrassCurve L}
     [B.IsElliptic] [B'.IsElliptic] (e : B = B') (h : Nonempty (isogEnd (B.baseChange ℂ) ≃+* 𝓞 K)) :
     Nonempty (isogEnd (B'.baseChange ℂ) ≃+* 𝓞 K) := by
@@ -38,6 +44,61 @@ theorem nonempty_isogEnd_congr {L : Type} [Field L] [Algebra L ℂ] {B B' : Weie
 
 include hK in
 
+/- English proof (translation)
+Establish `hL₁` using `lattice_idealPeriodPair (algebraMap K ℂ) hK 𝔞`. Establish `hL₁end` using `latticeEnd_idealPeriodPair (algebraMap K ℂ) hK 𝔞`. Establish `hf₁` using `hf`. Rewrite `hf₁` using `[← hL₁]`. Take `⟨C₁, hC₁, -⟩` from `exists_vcPoint_of_isAnalyticUniformization hf₁`.
+
+Establish `hEend : Nonempty (isogEnd E ≃+* 𝓞 K)` using `⟨(vcEndEquiv C₁ hC₁).symm.trans (CMCurve.ofLattice (algebraMap K ℂ) _ hL₁end).endIso.some⟩`. Take `⟨x₀, hx₀⟩ : ∃ x₀ : ELL K, x₀ = (⟨E, hEend⟩ : CMCurve K).toEll` from `⟨_, rfl⟩`. Establish `hx₀ell : x₀ = ellOf (algebraMap K ℂ) _ hL₁end`. Rewrite using `[hx₀]`. Conclude with `(CMCurve.toEll_eq_iff _ _).2 ⟨C₁⁻¹, inv_smul_eq_of_smul_eq C₁ hC₁⟩`.
+
+Establish `hjE : ELL.j x₀ = E.j`. Rewrite using `[hx₀]`. Conclude with `ELL.j_toEll _`. Establish `hJfin : FiniteDimensional K K⟮ELL.j x₀⟯` using `adjoin.finiteDimensional (ELL.isAlgebraic_j_over hK x₀).isIntegral`. Use `set aJ : K⟮ELL.j x₀⟯ := ⟨ELL.j x₀, mem_adjoin_simple_self K _⟩`.
+
+Take `⟨M₁, hM₁fin, -, htorsJ⟩` from `exists_le_forall_torsion_mem K⟮ELL.j x₀⟯ (shortModel aJ) hm`. Use `set ζ : ℂ := Complex.exp (2 * Real.pi * Complex.I / (12 : ℕ))`. Establish `hζ : IsPrimitiveRoot ζ 12` using `Complex.isPrimitiveRoot_exp 12 (by norm_num)`. Establish `hM₃fin : FiniteDimensional K K⟮ζ⟯` using `adjoin.finiteDimensional ((hζ.isIntegral (by norm_num)).tower_top)`. Take `⟨L, hML, hLfin, hLgal, hL, hE, hiso⟩` from `exists_shortModels_isogenous hK (M₁ ⊔ (Modulus.ofNat (K := K) m hm).rayClassField ℂ ⊔ K⟮ζ⟯)`.
+
+Establish `: NumberField L` using `NumberField.of_module_finite K L`. Establish `hM₁L : M₁ ≤ L` using `le_trans (le_trans le_sup_left le_sup_left) hML`. Establish `hM₂L : (Modulus.ofNat (K` using `K) m hm).rayClassField ℂ ≤ L := le_trans (le_trans le_sup_right le_sup_left) hML`. Establish `hζL : ζ ∈ L` using `hML (le_sup_right (a := M₁ ⊔ _) (mem_adjoin_simple_self K ζ))`. Establish `hζL' : IsPrimitiveRoot (⟨ζ, hζL⟩ : L) 12` using `(IsPrimitiveRoot.map_iff_of_injective (algebraMap L ℂ).injective).1 hζ`.
+
+Take `⟨A, hAdef⟩ : ∃ A : WeierstrassCurve L, A = shortModel (⟨ELL.j x₀, hL x₀⟩ : L)` from `⟨_, rfl⟩`. Establish `: A.IsElliptic` using `by rw [hAdef]; infer_instance`. Establish `: A.IsShortNF` using `by rw [hAdef]; infer_instance`. Establish `hAℂ : A.baseChange ℂ = (shortModel aJ).baseChange ℂ`. Rewrite using `[hAdef, WeierstrassCurve.baseChange, WeierstrassCurve.baseChange, shortModel_map, shortModel_map]`.
+
+Both sides reduce to the same expression. Take `⟨V₀, hV₀⟩` from `exists_variableChange_of_j_eq E (A.baseChange ℂ) (by`. Rewrite using `[j_congr hAℂ]`. Use `show E.j = ((shortModel aJ).map (algebraMap _ ℂ)).j`. Rewrite using `[map_j, shortModel_j, ← hjE]`.
+
+Use the proof step `rfl)`. Establish `htors : ∀ (a b : ℂ) (h : (A.baseChange ℂ).toAffine.Nonsingular a b), m • (Point.some a b h : (A.baseChange ℂ).toAffine.Point) = 0 → a ∈ (algebraMap L ℂ).range ∧ b ∈ (algebraMap L ℂ).range`. Introduce `a b h hP`. Establish `h' : ((shortModel aJ).baseChange ℂ).toAffine.Nonsingular a b` using `hAℂ ▸ h`. Establish `hP' : m • (Point.some a b h' : ((shortModel aJ).baseChange ℂ).toAffine.Point) = 0` using `nsmul_some_congr hAℂ h h' hP`.
+
+Take `⟨ha, hb⟩` from `htorsJ a b h' hP'`. Conclude with `⟨⟨⟨a, hM₁L ha⟩, rfl⟩, ⟨⟨b, hM₁L hb⟩, rfl⟩⟩`. Establish `hτσ : ∀ a : L, σ (algebraMap L ℂ a) = algebraMap L ℂ (σ.restrictNormal L a)` using `fun a ↦ (AlgEquiv.restrictNormal_commutes σ L a).symm`. Take `⟨S₀, hS₀, hS₀p⟩` from `frobenius_at_primes_of_degree_one hK hL (fun x ↦ shortModel (⟨ELL.j x, hL x⟩ : L)) hE hiso`. Establish `hgood : ∀ᶠ w : HeightOneSpectrum (𝓞 L) in Filter.cofinite, ∃ W : WeierstrassCurve (localizationAt L w), W.IsElliptic ∧ W.map (algebraMap (localizationAt L w) L) = A ∧ (W.a₄ = 0 ∨ IsUnit W.a₄) ∧ (W.a₆ = 0 ∨ IsUnit W.a₆)`.
+
+Establish `h4 : ∀ᶠ w : HeightOneSpectrum (𝓞 L) in Filter.cofinite, A.a₄ = 0 ∨ ∃ h : A.a₄ ∈ localizationAt L w, IsUnit (⟨A.a₄, h⟩ : localizationAt L w)`. Distinguish the cases in `h0 : A.a₄ = 0`. Conclude with `Filter.Eventually.of_forall fun _ ↦ Or.inl h0`. Conclude with `(eventually_isUnit_localizationAt h0).mono fun _ h ↦ Or.inr h`. Establish `h6 : ∀ᶠ w : HeightOneSpectrum (𝓞 L) in Filter.cofinite, A.a₆ = 0 ∨ ∃ h : A.a₆ ∈ localizationAt L w, IsUnit (⟨A.a₆, h⟩ : localizationAt L w)`.
+
+Distinguish the cases in `h0 : A.a₆ = 0`. Conclude with `Filter.Eventually.of_forall fun _ ↦ Or.inl h0`. Conclude with `(eventually_isUnit_localizationAt h0).mono fun _ h ↦ Or.inr h`. Use `filter_upwards [eventually_exists_model A, h4, h6] with w ⟨W, hW, hWA⟩ h4w h6w`. Establish `e4 : algebraMap (localizationAt L w) L W.a₄ = A.a₄` using `by rw [← hWA]; rfl`.
+
+Establish `e6 : algebraMap (localizationAt L w) L W.a₆ = A.a₆` using `by rw [← hWA]; rfl`. Use `⟨W, hW, hWA, ?_, ?_⟩` and prove the remaining obligations. Break down `h4w with h0 | ⟨h, hu⟩` into its components or cases. Use `left`. Conclude with `Subtype.ext (e4.trans h0)`.
+
+Use `right`. Establish `: W.a₄ = ⟨A.a₄, h⟩` using `Subtype.ext e4`. Rewrite using `[this]` and apply the resulting hypothesis. Break down `h6w with h0 | ⟨h, hu⟩` into its components or cases. Use `left`.
+
+Conclude with `Subtype.ext (e6.trans h0)`. Use `right`. Establish `: W.a₆ = ⟨A.a₆, h⟩` using `Subtype.ext e6`. Rewrite using `[this]` and apply the resulting hypothesis. Take `⟨S₁, hS₁, hS₁p⟩` from `exists_finite_forall_liesOver (K := K) hgood`.
+
+Establish `h6m : ((6 * m : ℕ) : 𝓞 K) ≠ 0`. Rewrite using `[Ne, Nat.cast_eq_zero]`. Use linear arithmetic over natural numbers and integers. Establish `hS : (S₀ ∪ S₁ ∪ {v : HeightOneSpectrum (𝓞 K) | ((6 * m : ℕ) : 𝓞 K) ∈ v.asIdeal}).Finite` using `(hS₀.union hS₁).union (finite_setOf_mem_asIdeal h6m)`. Take `⟨𝔭, h𝔭S, h𝔭1, 𝔓, hlies, -, hfrob⟩` from `exists_isArithFrobAt L (σ.restrictNormal L) hS`.
+
+Establish `: 𝔓.asIdeal.LiesOver 𝔭.asIdeal` using `hlies`. Simplify using `only [Set.mem_union, Set.mem_ofPred_eq, not_or] at h𝔭S`. Take `⟨⟨h𝔭S₀, h𝔭S₁⟩, h𝔭6m⟩` from `h𝔭S`. Establish `hv` using `absNorm_prime_of_mem_degreeOnePrimes h𝔭1`. Establish `hm𝔭 : (m : 𝓞 K) ∉ 𝔭.asIdeal` using `fun h ↦ h𝔭6m (by`.
+
+Rewrite using `[Nat.cast_mul]`. Conclude with `Ideal.mul_mem_left _ _ h)`. Establish `hnorm : ((Ideal.absNorm 𝔭.asIdeal : ℕ) : 𝓞 K) ∈ 𝔭.asIdeal` using `Ideal.absNorm_mem _`. Establish `h5 : 5 ≤ Ideal.absNorm 𝔭.asIdeal`. Use `hv.five_le_of_ne_two_of_ne_three (fun h2 ↦ h𝔭6m ?_) (fun h3 ↦ h𝔭6m ?_)` and prove the remaining obligations.
+
+Rewrite `hnorm` using `[h2]`. Rewrite using `[show ((6 * m : ℕ) : 𝓞 K) = ((2 : ℕ) : 𝓞 K) * ((3 * m : ℕ) : 𝓞 K) by push_cast; ring]`. Conclude with `Ideal.mul_mem_right _ _ hnorm`. Rewrite `hnorm` using `[h3]`. Rewrite using `[show ((6 * m : ℕ) : 𝓞 K) = ((3 : ℕ) : 𝓞 K) * ((2 * m : ℕ) : 𝓞 K) by push_cast; ring]`.
+
+Conclude with `Ideal.mul_mem_right _ _ hnorm`. Take `⟨-, hcls, -⟩` from `hS₀p 𝔭 h𝔭S₀ h𝔭1 𝔓`. Take `⟨-, hτj⟩` from `hcls (σ.restrictNormal L) hfrob`. Establish `hAτ : A.map ((σ.restrictNormal L : L ≃ₐ[K] L) : L →+* L) = shortModel (⟨ELL.j ((ellMulAction (algebraMap K ℂ) hK).smul (primeClass 𝔭) x₀), hL _⟩ : L)`. Rewrite using `[hAdef, shortModel_map]`.
+
+Use `congr 1`. Conclude with `hτj x₀`. Establish `hφex : ∃ φ : Isogeny A (A.map ((σ.restrictNormal L : L ≃ₐ[K] L) : L →+* L)), (homConstSet (A.baseChange ℂ) ((A.map ((σ.restrictNormal L : L ≃ₐ[K] L) : L →+* L)).baseChange ℂ) : Set ℂ) = (algebraMap L ℂ (invConst φ) * ·) '' idealLattice (algebraMap K ℂ) (𝔭.asIdeal : FractionalIdea …`. Take `⟨φ, hφ, -⟩` from `exists_isogeny_primeClass_smul hK (fun x ↦ shortModel (⟨ELL.j x, hL x⟩ : L)) hE hiso 𝔭 x₀`. Conclude with `exists_isogeny_homConstSet_congr hAdef.symm hAτ.symm ⟨φ, hφ⟩`.
+
+Take `⟨φ, hφ⟩` from `hφex`. Establish `hEA : Nonempty (isogEnd (A.baseChange ℂ) ≃+* 𝓞 K)` using `nonempty_isogEnd_congr hAdef.symm (hE x₀).1`. Establish `hEA' : Nonempty (isogEnd ((A.map ((σ.restrictNormal L : L ≃ₐ[K] L) : L →+* L)).baseChange ℂ) ≃+* 𝓞 K)` using `nonempty_isogEnd_congr hAτ.symm (hE _).1`. Take `⟨W, hW, hWA, ha₄, ha₆⟩` from `hS₁p 𝔭 h𝔭S₁ 𝔓 hlies`. Establish `: W.IsShortNF`.
+
+Establish `hinj : Function.Injective (algebraMap (localizationAt L 𝔓) L)` using `Subtype.val_injective`. Apply the tactic sequence `refine ⟨hinj ?_, hinj ?_, hinj ?_⟩ <;> rw [map_zero]`. Rewrite using `[← a₁_of_isShortNF A, ← hWA]`. Both sides reduce to the same expression. Rewrite using `[← a₂_of_isShortNF A, ← hWA]`.
+
+Both sides reduce to the same expression. Rewrite using `[← a₃_of_isShortNF A, ← hWA]`. Both sides reduce to the same expression. Take `⟨D, hD, hDφ⟩` from `exists_vcPoint_pointHomOver_eq hK 𝔭 hv h5 𝔓 hfrob hEA hEA' φ hφ hWA ha₄ ha₆ hζL' hm𝔭`. Take `⟨x, hx⟩` from `exists_diagonal_of_isArithFrobAt m hm σ s hs 𝔭 hm𝔭 L hM₂L 𝔓 hfrob`.
+
+Establish `hL₂` using `lattice_idealPeriodPair (algebraMap K ℂ) hK ((primeIdealUnit 𝔭)⁻¹ * 𝔞)`. Establish `hL₂end` using `latticeEnd_idealPeriodPair (algebraMap K ℂ) hK ((primeIdealUnit 𝔭)⁻¹ * 𝔞)`. Establish `hsmul` using `classGroup_smul_ellOf (algebraMap K ℂ) hK _ _ hL₁end hL₂end (primeIdealUnit 𝔭) (by rw [hL₂, hL₁, Units.val_mul, idealLattice_mul])`. Establish `hcl : primeClass 𝔭 = ClassGroup.mk K (primeIdealUnit 𝔭)`. Rewrite using `[primeClass, ← classGroup_mk_primeUnit]`.
+
+Both sides reduce to the same expression. Establish `hyL₂ : (ellMulAction (algebraMap K ℂ) hK).smul (primeClass 𝔭) x₀ = ellOf (algebraMap K ℂ) _ hL₂end`. Rewrite using `[hcl, hx₀ell, hsmul]`. Establish `hjV' : (weierstrassCurve (idealPeriodPair (algebraMap K ℂ) hK ((primeIdealUnit 𝔭)⁻¹ * 𝔞))).j = ((A.map ((σ.restrictNormal L : L ≃ₐ[K] L) : L →+* L)).baseChange ℂ).j`. Rewrite using `[j_congr (congrArg (fun B : WeierstrassCurve L ↦ B.baseChange ℂ) hAτ)]`.
+
+Use `show _ = ((shortModel (⟨ELL.j ((ellMulAction (algebraMap K ℂ) hK).smul (primeClass 𝔭) x₀), hL _⟩ : L)).map (algebraMap L ℂ)).j`. Rewrite using `[map_j, shortModel_j]`. Use `show _ = ELL.j ((ellMulAction (algebraMap K ℂ) hK).smul (primeClass 𝔭) x₀)`. Rewrite using `[hyL₂, ellOf, ELL.j_toEll]`. Conclude with `j_congr rfl`.
+
+Take `⟨V', hV'⟩` from `exists_variableChange_of_j_eq _ _ hjV'`. Conclude with `exists_uniformization_of_data hK σ s 𝔞 hf (σ.restrictNormal L) hτσ V₀ hV₀ htors 𝔭 x (hx 𝔞).1 (hx 𝔞).2 φ hφ D hD hDφ V' hV'`.
+-/
 theorem exists_uniformization_level (σ : ℂ ≃ₐ[K] ℂ) (s : IdeleGroup K)
     (hs : ∀ x : maximalAbelianExtension K (algebraicClosure K ℂ),
       ((artinMap K (algebraicClosure K ℂ) (IdeleClassGroup.mk K s) x : algebraicClosure K ℂ) : ℂ) =

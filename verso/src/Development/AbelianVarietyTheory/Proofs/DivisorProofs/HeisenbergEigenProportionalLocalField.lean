@@ -19,6 +19,25 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun
 open ValuativeRel
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
+/- English proof (translation)
+Introduce `k _ κ _ ψk Λ χ f g hf hg hf0 hann`. Establish `hψ : ∀ x : k, ψk x ≠ 0`. Introduce `x hx`. Establish `h2 : ψk (x + -x) = ψk x * ψk (-x)` using `AddChar.map_add_eq_mul ψk x (-x)`. Rewrite `h2` using `[add_neg_cancel, AddChar.map_zero_eq_one, hx, zero_mul]`.
+
+Conclude with `one_ne_zero h2`. Choose the witnesses or unpack the hypotheses as in `⟨ξ₀, hξ₀⟩ : ∃ ξ₀, f ξ₀ ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hf0 (funext hc)`.
+
+Use `⟨g ξ₀ / f ξ₀, ?_⟩` and prove the remaining obligations. Take `⟨h, hh⟩ : ∃ h : (κ → k) → ℂ, ∀ ξ, h ξ = g ξ - g ξ₀ / f ξ₀ * f ξ` from `⟨_, fun _ => rfl⟩`. Establish `hid : ∀ l ∈ Λ, ∀ ξ, ψk (ξ ⬝ᵥ l.2 + (2 : k)⁻¹ * (l.1 ⬝ᵥ l.2)) * h (ξ + l.1) = χ l * h ξ`. Introduce `l hl ξ`. Establish `e1` using `hf l hl ξ`.
+
+Establish `e2` using `hg l hl ξ`. Rewrite using `[hh, hh]`. Take the linear combination `e2 - (g ξ₀ / f ξ₀) * e1`. Establish `h0 : h ξ₀ = 0` using `by rw [hh, div_mul_cancel₀ _ hξ₀, sub_self]`. Establish `hzero : ∀ ξ, h ξ = 0`.
+
+Introduce `ξ`. Assume the negation of the conclusion as `hne`. Establish `key : ∀ b, ((0 : κ → k), b) ∈ Λ → ψk ((ξ - ξ₀) ⬝ᵥ b) = 1`. Introduce `b hb`. Establish `e1` using `hid _ hb ξ`.
+
+Establish `e2` using `hf _ hb ξ₀`. Simplify using `only [zero_dotProduct, mul_zero, add_zero] at e1 e2`. Establish `a1 : ψk (ξ ⬝ᵥ b) = χ (0, b)` using `mul_right_cancel₀ hne e1`. Establish `a2 : ψk (ξ₀ ⬝ᵥ b) = χ (0, b)` using `mul_right_cancel₀ hξ₀ e2`. Establish `hχ : χ (0, b) ≠ 0` using `a2 ▸ hψ _`.
+
+Establish `hs : ψk ((ξ - ξ₀) ⬝ᵥ b) * ψk (ξ₀ ⬝ᵥ b) = ψk (ξ ⬝ᵥ b)`. Rewrite using `[← AddChar.map_add_eq_mul, sub_dotProduct, sub_add_cancel]`. Rewrite `hs` using `[a1, a2]`. Conclude with `mul_right_cancel₀ hχ (hs.trans (one_mul _).symm)`. Take `⟨y, hy⟩` from `hann _ key`.
+
+Establish `e` using `hid _ hy ξ₀`. Establish `hx : ξ₀ + (ξ - ξ₀) = ξ` using `by abel`. Simplify using `only [h0, mul_zero, hx] at e`. Conclude with `hne ((mul_eq_zero.mp e).resolve_left (hψ _))`. Use function extensionality and compare the values at `ξ`.
+
+Use `hzero ξ` as an intermediate fact. Rewrite `this` using `[hh, sub_eq_zero]`. Rewrite using `[Pi.smul_apply, smul_eq_mul, this]`.
+-/
 theorem GlobalTheory.heisenbergEigen_proportional : ∀ {k : Type} [Field k] {κ : Type} [Fintype κ] (ψk : AddChar k ℂ) (Λ : AddSubgroup ((κ → k) × (κ → k)))
     (χ : (κ → k) × (κ → k) → ℂ) (f g : (κ → k) → ℂ),
     (∀ l ∈ Λ, ∀ ξ, ψk (ξ ⬝ᵥ l.2 + (2 : k)⁻¹ * (l.1 ⬝ᵥ l.2)) * f (ξ + l.1) = χ l * f ξ) →

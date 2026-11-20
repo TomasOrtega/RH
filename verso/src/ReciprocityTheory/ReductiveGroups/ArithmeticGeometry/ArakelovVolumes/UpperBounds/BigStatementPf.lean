@@ -16,6 +16,13 @@ namespace BigC
 
 variable {r : ℕ}
 
+/- English proof (translation)
+Simplify using `only [Data.dom, GG, Set.mem_setOf_eq] at hx`. Establish `h` using `(hx τ).2`. Establish `h1` using `h i.succ`. Establish `h2` using `h i.castSucc`. Use `norm_pos_iff.mpr (div_ne_zero ?_ ?_)` and prove the remaining obligations.
+
+Introduce `h0`. Rewrite `h1` using `[h0]`. Simplify using `at h1`. Introduce `h0`. Rewrite `h2` using `[h0]`.
+
+Simplify using `at h2`.
+-/
 private theorem norm_dmin_succ_div_castSucc_pos (X : Data E r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (i : Fin r) :
     0 < ‖dmin X.Gm x τ i.succ / dmin X.Gm x τ i.castSucc‖ := by
   simp only [Data.dom, GG, Set.mem_setOf_eq] at hx
@@ -30,11 +37,19 @@ private theorem norm_dmin_succ_div_castSucc_pos (X : Data E r) {x : Frame X.Ψ r
     rw [h0] at h2
     simp at h2
 
+/- English proof (translation)
+Unfold `Data.nfac`. Conclude with `Finset.prod_pos fun τ _ => Finset.prod_pos fun i _ => Real.rpow_pos_of_pos (norm_dmin_succ_div_castSucc_pos X hx τ i) _`.
+-/
 private theorem nfac_pos_of_mem_dom (X : Data E r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (la : Wt X.Ψ r) :
     0 < X.nfac la x := by
   unfold Data.nfac
   exact Finset.prod_pos fun τ _ => Finset.prod_pos fun i _ => Real.rpow_pos_of_pos (norm_dmin_succ_div_castSucc_pos X hx τ i) _
 
+/- English proof (translation)
+Unfold `phla Data.nfac`. Rewrite using `[Real.log_prod (fun τ _ => (Finset.prod_pos fun i _ => Real.rpow_pos_of_pos (norm_dmin_succ_div_castSucc_pos X hx τ i) _).ne'), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Real.log_prod (fun i _ => (Real.rpow_pos_of_pos (norm_dmin_succ_div_castSucc_pos X hx τ i) _).ne'), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Real.log_rpow (norm_dmin_succ_div_castSucc_pos X hx τ i)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem phla_eq_sum_log_norm_dmin_ratio (X : Data E r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (la : Wt X.Ψ r) :
     phla X la x = ∑ τ, ∑ i : Fin r,
       (la τ i : ℝ) * Real.log ‖dmin X.Gm x τ i.succ / dmin X.Gm x τ i.castSucc‖ := by
@@ -47,6 +62,11 @@ private theorem phla_eq_sum_log_norm_dmin_ratio (X : Data E r) {x : Frame X.Ψ r
   rw [Real.log_rpow (norm_dmin_succ_div_castSucc_pos X hx τ i)]
   ring
 
+/- English proof (translation)
+Rewrite using `[phla_eq_sum_log_norm_dmin_ratio X hx, phla_eq_sum_log_norm_dmin_ratio X hx, phla_eq_sum_log_norm_dmin_ratio X hx, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.sub_apply, Int.cast_sub]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem phla_sub (X : Data E r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (la la' : Wt X.Ψ r) :
     phla X (la - la') x = phla X la x - phla X la' x := by
   rw [phla_eq_sum_log_norm_dmin_ratio X hx, phla_eq_sum_log_norm_dmin_ratio X hx, phla_eq_sum_log_norm_dmin_ratio X hx, ← Finset.sum_sub_distrib]
@@ -56,6 +76,11 @@ theorem phla_sub (X : Data E r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (la la' : 
   simp only [Pi.sub_apply, Int.cast_sub]
   ring
 
+/- English proof (translation)
+Rewrite using `[phla_eq_sum_log_norm_dmin_ratio X hx, phla_eq_sum_log_norm_dmin_ratio X hx, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, nsmul_eq_mul]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem phla_nsmul (X : Data E r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (k : ℕ) (la : Wt X.Ψ r) :
     phla X (k • la) x = k * phla X la x := by
   rw [phla_eq_sum_log_norm_dmin_ratio X hx, phla_eq_sum_log_norm_dmin_ratio X hx, Finset.mul_sum]
@@ -66,6 +91,11 @@ theorem phla_nsmul (X : Data E r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (k : ℕ
   push_cast
   ring
 
+/- English proof (translation)
+Establish `hN` using `nfac_pos_of_mem_dom X hx la`. Establish `hp : X.pnorm la P x = ‖P x‖ * X.nfac la x` using `rfl`. Establish `hn2 : Complex.normSq (P x) = ‖P x‖ ^ 2` using `by first`. Consider the case `exact Complex.normSq_eq_norm_sq _`. Consider the case `exact (Complex.sq_norm _).symm`.
+
+Consider the case `simp [Complex.normSq_eq_abs]`. Rewrite using `[hp, mul_pow, Real.log_mul (pow_ne_zero _ (norm_ne_zero_iff.mpr hP)) (pow_ne_zero _ hN.ne'), hn2, Real.log_pow, Real.log_pow, phla]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem log_pnorm_sq (X : Data E r) {la : Wt X.Ψ r} {P : Frame X.Ψ r → ℂ} {x : Frame X.Ψ r}
     (hx : x ∈ X.dom) (hP : P x ≠ 0) :
     Real.log (X.pnorm la P x ^ 2) = Real.log (Complex.normSq (P x)) - phla X la x := by

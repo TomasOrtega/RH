@@ -6,6 +6,11 @@ namespace GroundTheory.Heights₂.Heights
 
 open MeasureTheory
 
+/- English proof (translation)
+Introduce `e hA n δ h Z f u u' hd hu hu'`. Establish `hdu` using `h4 n e δ Z f u hd hu`. Establish `hdu'` using `h4 n e δ Z f u' hd hu'`. Establish `rel : ∀ {Y : ProjCycle ℂ n} {g : ℕ} {d : ℕ} {F : MvPolynomial (Fin (g + 1) × Fin n) ℂ}, IsChowCycleData Y g d F → ∀ W ∈ Y.support, IsRelevant W` using `fun hY W hW => (hY.prime W hW).isRelevant`. Establish `hae` using `(h3 n Z (rel hd)).and ((h3 n _ (rel hdu)).and (h3 n _ (rel hdu')))`.
+
+Take `⟨v, hvZ, hvu, hvu'⟩` from `hae.exists`. Establish `s1 : IsAdmissible (cycleSection Z v) u` using `h2 n Z u v hd.prime hu hvZ hvu`. Establish `s2 : IsAdmissible (cycleSection Z v) u'` using `h2 n Z u' v hd.prime hu' hvZ hvu'`. Rewrite using `[h1 e hA n δ h Z f u v hd hu hvZ hvu s1, h1 e hA n δ h Z f v u' hd hvZ hu' s2 hvu']`.
+-/
 theorem DefectConstStep.proof (h1 : DefectSymm.Statement) (h2 : ProperSymmCycle.Statement)
     (h3 : AdmissibleAE.Statement) (h4 : CycleSectionData.Statement) : DefectConstStep.Statement := by
   intro e hA n δ h Z f u u' hd hu hu'

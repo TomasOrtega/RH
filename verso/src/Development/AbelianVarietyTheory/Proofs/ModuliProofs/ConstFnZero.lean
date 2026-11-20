@@ -13,23 +13,40 @@ open GlobalTheory.KS
 noncomputable section
 namespace GlobalTheory.KS.Cocycle
 
+/- English proof (translation)
+Unfold `rsT`. Rewrite using `[dif_pos h]`.
+-/
 theorem rsT_of_le {Y : Scheme.{0}} {O₀ O : Y.Opens} (h : O ≤ O₀) (s : Γ(Y, O₀)) :
     rsT s O = (Y.presheaf.map (homOfLE h).op).hom s := by
   unfold rsT; rw [dif_pos h]
 
+/- English proof (translation)
+Rewrite using `[rsT_of_le h', rsT_of_le h, rsT_of_le (h'.trans h), ← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem rsT_rsT {Y : Scheme.{0}} {O₀ O₁ O₂ : Y.Opens} (h : O₁ ≤ O₀) (h' : O₂ ≤ O₁) (s : Γ(Y, O₀)) :
     rsT (rsT s O₁) O₂ = rsT s O₂ := by
   rw [rsT_of_le h', rsT_of_le h, rsT_of_le (h'.trans h), ← CommRingCat.comp_apply, ← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Simplify using `only [rsT_of_le h, map_add]`.
+-/
 theorem rsT_add {Y : Scheme.{0}} {O₀ O : Y.Opens} (h : O ≤ O₀) (s t : Γ(Y, O₀)) :
     rsT (s + t) O = rsT s O + rsT t O := by
   simp only [rsT_of_le h, map_add]
 
+/- English proof (translation)
+Simplify using `only [rsT_of_le h, map_sub]`.
+-/
 theorem rsT_sub {Y : Scheme.{0}} {O₀ O : Y.Opens} (h : O ≤ O₀) (s t : Γ(Y, O₀)) :
     rsT (s - t) O = rsT s O - rsT t O := by
   simp only [rsT_of_le h, map_sub]
 
+/- English proof (translation)
+Unfold `pbT`. Rewrite using `[dif_pos (show O ≤ (𝟙 Y) ⁻¹ᵁ O from le_rfl)]`. Establish `: (𝟙 Y : Y ⟶ Y).appLE O O (show O ≤ (𝟙 Y) ⁻¹ᵁ O from le_rfl) = 𝟙 _`. Express the relevant statement in the definitionally equal form `𝟙 _ ≫ Y.presheaf.map (𝟙 (Opposite.op O)) = _`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this]`. Both sides reduce to the same expression.
+-/
 theorem pbT_id {Y : Scheme.{0}} {O : Y.Opens} (s : Γ(Y, O)) : pbT (𝟙 Y) s O = s := by
   unfold pbT
   rw [dif_pos (show O ≤ (𝟙 Y) ⁻¹ᵁ O from le_rfl)]
@@ -38,10 +55,18 @@ theorem pbT_id {Y : Scheme.{0}} {O : Y.Opens} (s : Γ(Y, O)) : pbT (𝟙 Y) s O 
     simp
   rw [this]; rfl
 
+/- English proof (translation)
+Simplify using `[constFn]`.
+-/
 theorem constFn_zero' {K : Type} [Field K] {Y : Scheme.{0}} (q : Y ⟶ Sp K) (O : Y.Opens) :
     constFn q O (0 : K) = 0 := by
   simp [constFn]
 
+/- English proof (translation)
+Rewrite using `[h₁.add W (hW.trans l₁), h₂.add W (hW.trans l₂)]`. Expand and normalize the polynomial expressions, which then agree. Use `mul W hW f f' := by`. Rewrite using `[h₁.mul W (hW.trans l₁), h₂.mul W (hW.trans l₂)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `res W W' h hW f := by`. Rewrite using `[h₁.res W W' h (hW.trans l₁), h₂.res W W' h (hW.trans l₂), rsT_sub (m.preimage_mono h)]`. Use `base W hW r := by`. Rewrite using `[h₁.base W (hW.trans l₁), h₂.base W (hW.trans l₂), sub_self, constFn_zero']`.
+-/
 theorem locDerK_sub {K : Type} [Field K] {Y X : Scheme.{0}} {R : Type} [CommRing R] {q : Y ⟶ Sp K} {p : X ⟶ Sp R}
     {m : Y ⟶ X} {D : R → K} {W₁ W₂ W₀ : X.Opens} {d₁ d₂ : ∀ W : X.Opens, Γ(X, W) → Γ(Y, m ⁻¹ᵁ W)}
     (h₁ : LocDerK q p m D W₁ d₁) (h₂ : LocDerK q p m D W₂ d₂) (l₁ : W₀ ≤ W₁) (l₂ : W₀ ≤ W₂) :
@@ -55,6 +80,11 @@ theorem locDerK_sub {K : Type} [Field K] {Y X : Scheme.{0}} {R : Type} [CommRing
   base W hW r := by
     rw [h₁.base W (hW.trans l₁), h₂.base W (hW.trans l₂), sub_self, constFn_zero']
 
+/- English proof (translation)
+Establish `key : ∀ (y : A₀.left ⟶ A₀.left) (m' : A₀.left ⟶ X) (q' : A₀.left ⟶ Sp K), y ≫ m = m' → y ≫ A₀.hom = q' → ∀ (d : ∀ W : X.Opens, Γ(X, W) → Γ(A₀.left, m' ⁻¹ᵁ W)), LocDerK q' p m' (fun _ => 0) W₀ d → ∃! c : Fin g → Γ(A₀.left, m' ⁻¹ᵁ W₀), ∀ W, W ≤ W₀ → ∀ f, d W f = ∑ a, rsT (c a) _ * …`. Introduce `y m' q' e₁ e₂ d h`. Substitute `e₁ e₂` using the available equality. Conclude with `GlobalTheory.T.invariantVectorFields_basis_verticalDerivations K A₀ g v dd hs hv hd R x₀ X p m hp _ y W₀ d h`. Use `key (𝟙 _) m A₀.hom (Category.id_comp _) (Category.id_comp _) d h` as an intermediate fact.
+
+Simplify `this` using `only [pbT_id]`.
+-/
 theorem basis_id (K : Type) [Field K] (A₀ : Over (Sp K)) [GrpObj A₀] (g : ℕ) (v : Fin g → (epsR K ⟶ A₀))
     (dd : Fin g → ∀ O : A₀.left.Opens, Γ(A₀.left, O) → Γ(A₀.left, O)) (hs : Smooth A₀.hom) (hv : IsLieBasis v)
     (hd : ∀ a, IsInvDer (v a) (dd a)) (R : Type) [CommRing R] (x₀ : R →+* K) (X : Scheme.{0}) (p : X ⟶ Sp R)
@@ -72,6 +102,19 @@ theorem basis_id (K : Type) [Field K] (A₀ : Over (Sp K)) [GrpObj A₀] (g : �
   have := key (𝟙 _) m A₀.hom (Category.id_comp _) (Category.id_comp _) d h
   simpa only [pbT_id] using this
 
+/- English proof (translation)
+Introduce `K _ A₀ _ g v dd hs hv hd R _ x₀ X p m hp hsp D I W hD hW`. Use `choose d hder using fun i => GlobalTheory.T.exists_local_derivation_lift_smooth_over_field K R x₀ A₀.left X A₀.hom p m D (W i) hsp hp.w hD (hW i)`. Establish `hb` using `basis_id K A₀ g v dd hs hv hd R x₀ X p m hp`. Use `choose c hc using fun i j => (hb (W i ⊓ W j) _ (locDerK_sub (hder i) (hder j) inf_le_left inf_le_right)).exists`. Establish `e : ∀ i j, m ⁻¹ᵁ W i ⊓ m ⁻¹ᵁ W j = m ⁻¹ᵁ (W i ⊓ W j)` using `fun i j => rfl`.
+
+Establish `e3 : ∀ i j k, m ⁻¹ᵁ W i ⊓ m ⁻¹ᵁ W j ⊓ m ⁻¹ᵁ W k = m ⁻¹ᵁ (W i ⊓ W j ⊓ W k)` using `fun i j k => rfl`. Use `⟨d, fun a i j => rsT (c i j a) _, ⟨hder, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `i j O hO f`. Rewrite using `[hc i j O hO f]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[rsT_rsT (e i j).le ((m.preimage_mono hO).trans (e i j).ge)]`. Introduce `a i j k`. Establish `lij : W i ⊓ W j ⊓ W k ≤ W i ⊓ W j` using `inf_le_left`. Establish `ljk : W i ⊓ W j ⊓ W k ≤ W j ⊓ W k` using `inf_le_inf_right _ inf_le_right`. Establish `lik : W i ⊓ W j ⊓ W k ≤ W i ⊓ W k` using `inf_le_inf_right _ inf_le_left`.
+
+Establish `hu` using `(hb (W i ⊓ W j ⊓ W k) _ (locDerK_sub (hder i) (hder k) (lik.trans inf_le_left) inf_le_right)).unique (y₁ := fun a => rsT (c i j a) _ + rsT (c j k a) _) (y₂ := fun a => rsT (c i k a) _) (by`. Introduce `O hO f`. Establish `h1` using `hc i j O (hO.trans lij) f`. Establish `h2` using `hc j k O (hO.trans ljk) f`. Establish `: d k O f - d i O f = (d j O f - d i O f) + (d k O f - d j O f)` using `by ring`.
+
+Rewrite using `[this, h1, h2, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[rsT_add (m.preimage_mono hO), rsT_rsT (m.preimage_mono lij) (m.preimage_mono hO), rsT_rsT (m.preimage_mono ljk) (m.preimage_mono hO), add_mul])`. Use the proof step `(by`. Introduce `O hO f`.
+
+Rewrite using `[hc i k O (hO.trans lik) f]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[rsT_rsT (m.preimage_mono lik) (m.preimage_mono hO)])`. Rewrite using `[rsT_rsT (e i j).le inf_le_left, rsT_rsT (e j k).le (inf_le_inf_right _ inf_le_right), rsT_rsT (e i k).le (inf_le_inf_right _ inf_le_left)]`. Conclude with `congrFun hu a`.
+-/
 theorem exists_ksCoc : ∀ (K : Type) [Field K] (A₀ : Over (Sp K)) [GrpObj A₀] (g : ℕ) (v : Fin g → (epsR K ⟶ A₀)) (dd : Fin g → ∀ O : A₀.left.Opens, Γ(A₀.left, O) → Γ(A₀.left, O)), Smooth A₀.hom → IsLieBasis v → (∀ a, IsInvDer (v a) (dd a)) → ∀ (R : Type) [CommRing R] (x₀ : R →+* K) (X : Scheme.{0}) (p : X ⟶ Sp R) (m : A₀.left ⟶ X), IsPullback m A₀.hom p (spMap x₀) → Smooth p → ∀ (D : R → K) (I : Type) (W : I → X.Opens), IsDerK x₀ D → (∀ i, IsAffineOpen (W i)) → ∃ d θ, KSCoc A₀.hom p m D W dd d θ ∧ ∀ a, IsCoc _ (θ a) := by
   intro K _ A₀ _ g v dd hs hv hd R _ x₀ X p m hp hsp D I W hD hW
   choose d hder using fun i => GlobalTheory.T.exists_local_derivation_lift_smooth_over_field K R x₀ A₀.left X A₀.hom p m D (W i) hsp hp.w hD (hW i)

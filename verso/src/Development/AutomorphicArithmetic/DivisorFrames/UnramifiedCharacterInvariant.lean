@@ -8,6 +8,9 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.SumRigh
 open MeasureTheory GlobalTheory.SplitFlip GlobalTheory.SplitWeil ValuativeRel GlobalTheory.ConjSize
 
 open scoped Pointwise in
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.SumRightInverse.sum_rightInv μ K hKo hKt hS hSK`.
+-/
 private theorem sum_rightInv {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsMulLeftInvariant] (K : Subgroup G)
     (hKo : IsOpen (K : Set G)) (hKt : μ K ≠ ⊤) {S : Set G} (hS : IsCompact S)
@@ -19,6 +22,17 @@ private theorem sum_rightInv {G : Type} [Group G] [TopologicalSpace G] [IsTopolo
 section
 variable {k : Type} [Field k] [ValuativeRel k] {A : Type} [Fintype A] [DecidableEq A]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Use `set a := (g⁻¹).val i j with ha`. Establish `ha0 : a ≠ 0`. Introduce `h`.
+
+Rewrite `hlt` using `[h]`. Simplify using `at hlt`. Establish `hv0 : 0 < valuation k a` using `zero_lt_iff.2 (by simpa using ha0)`. Establish `hd : valuation k a⁻¹ ≤ valuation k c`. Rewrite using `[map_inv₀, inv_le_iff_one_le_mul₀' hv0]`.
+
+Conclude with `hlt.le`. Use `hdet (g.val - Matrix.single j i a⁻¹) (fun p q => ?_) ?_` and prove the remaining obligations. Rewrite using `[Matrix.sub_apply, sub_sub_cancel_left, Valuation.map_neg, Matrix.single_apply] split_ifs`. Conclude with `hd`. Simplify using the standard rewrite rules.
+
+Rewrite using `[← Matrix.exists_mulVec_eq_zero_iff]`. Use `⟨fun l => (g⁻¹).val l j, fun h => ha0 (congrFun h i), ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.sub_mulVec, Matrix.single_mulVec, ← ha, inv_mul_cancel₀ ha0]`. Use function extensionality and compare the values at `p`. Establish `: (g.val * (g⁻¹).val) p j = (1 : Matrix A A k) p j` using `by rw [Units.mul_inv]`.
+
+Rewrite `this` using `[Matrix.mul_apply]`. Simplify using `only [Pi.sub_apply, Matrix.mulVec, dotProduct, this, Matrix.one_apply, Function.update_apply, Pi.zero_apply, sub_self]`.
+-/
 private theorem inv_small (g : GL A k) (c : k)
     (hdet : ∀ y : Matrix A A k, (∀ i j, valuation k (y i j - g.val i j) ≤ valuation k c) → y.det ≠ 0) (i j : A) :
     valuation k ((g⁻¹).val i j) * valuation k c ≤ 1 := by
@@ -44,12 +58,22 @@ private theorem inv_small (g : GL A k) (c : k)
     simp only [Pi.sub_apply, Matrix.mulVec, dotProduct, this, Matrix.one_apply, Function.update_apply,
       Pi.zero_apply, sub_self]
 
+/- English proof (translation)
+Establish `: y - z = (y - x) - (z - x)` using `by ring`. Rewrite using `[this]`. Conclude with `((valuation k).map_sub _ _).trans (max_le h h')`.
+-/
 private theorem val_sub_le {x y z c : k} (h : valuation k (y - x) ≤ valuation k c)
     (h' : valuation k (z - x) ≤ valuation k c) : valuation k (y - z) ≤ valuation k c := by
   have : y - z = (y - x) - (z - x) := by ring
   rw [this]
   exact ((valuation k).map_sub _ _).trans (max_le h h')
 
+/- English proof (translation)
+Establish `e : (g⁻¹ * h).val = 1 + (g⁻¹).val * (h.val - g.val)`. Rewrite using `[Matrix.mul_sub, Units.inv_mul, Units.val_mul, add_sub_cancel]`. Establish `hs` using `inv_small g c fun y hy => hdet y fun p q => val_sub_le (hy p q) (by rw [Valuation.map_sub_swap]; exact hg p q)`. Rewrite using `[e, Matrix.add_apply, Matrix.mul_apply]`. Use `add_mem ?_ (Subring.sum_mem _ fun l _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`. Rewrite using `[Valuation.mem_integer_iff, map_mul]`.
+
+Conclude with `(mul_le_mul_right (val_sub_le (hh l j) (hg l j)) _).trans (hs i l)`.
+-/
 private theorem inv_mul_int (x : Matrix A A k) (c : k)
     (hdet : ∀ y : Matrix A A k, (∀ i j, valuation k (y i j - x i j) ≤ valuation k c) → y.det ≠ 0)
     (g h : GL A k) (hg : ∀ i j, valuation k (g.val i j - x i j) ≤ valuation k c)
@@ -69,6 +93,29 @@ private theorem inv_mul_int (x : Matrix A A k) (c : k)
 end
 
 open scoped Pointwise in
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ A _ _ K _ ι τ J hJo hJK ν ϖ e hϖ hcond hν hap n x hx hdet`. Use `haveI := isHaarMeasure_haarVol hJo hJK`. Take `⟨hSc, hSo⟩` from `GlobalTheory.GLBallInt.isCompact_isOpen_glBall x (ϖ ^ e) hdet`. Use `set S := {g : GL A k | ∀ i j, valuation k (g.val i j - x i j) ≤ valuation k ((ϖ ^ e : kˣ) : k)} with hSdef`. Use `set K' : Subgroup (GL A k) := J ⊓ GlobalTheory.SplitFlip.glLatCong (ϖ ^ e) (GlobalTheory.SplitFlip.stdLat k A) ⊓ GlobalTheory.GLBallInt.rightStab S with hKdef`.
+
+Establish `hKo : IsOpen (K' : Set (GL A k))`. Simplify using `only [hKdef, Subgroup.coe_inf]`. Conclude with `(hJo.inter (GlobalTheory.FunObj.GivenAdm.isOpen_glLatCong _)).inter (GlobalTheory.GLBallInt.isOpen_rightStab hSc hSo)`. Establish `hKJ : K' ≤ J` using `inf_le_left.trans inf_le_left`. Establish `hJc : IsCompact (J : Set (GL A k))` using `isCompact_KO.of_isClosed_subset (J.isClosed_of_isOpen hJo) hJK`.
+
+Establish `hKt : haarVol J K' ≠ ⊤` using `((measure_mono (show (K' : Set (GL A k)) ⊆ J from hKJ)).trans_lt (by simp [haarVol_self hJo hJK])).ne`. Establish `hinv : ∀ s ∈ S, ∀ k' ∈ K', ((ν (gdet (s * k')) : ℂ) * apow (gdet (s * k')) ((n : ℂ) / 2)) = (ν (gdet s) : ℂ) * apow (gdet s) ((n : ℂ) / 2)`. Introduce `s _ k' hk`. Establish `hu : gdet k' ∈ unitCong (ϖ ^ e)` using `GlobalTheory.FunObj.GivenAdm.gdet_mem_unitCong (Subgroup.mem_inf.1 (Subgroup.mem_inf.1 hk).1).2`. Rewrite using `[gdet_mul, map_mul, Units.val_mul, apow_mul, hcond _ hu, apow_of_valuation_eq_one hu.1]`.
+
+Simplify using the standard rewrite rules. Take `⟨t, htS, ht⟩` from `sum_rightInv (haarVol J) K' hKo hKt hSc (fun s hs k' hk => ((Subgroup.mem_inf.1 hk).2 s).1 hs)`. Rewrite using `[ht (fun g => (ν (gdet g) : ℂ) * apow (gdet g) ((n : ℂ) / 2)) hinv]`. Establish `h1` using `ht (fun _ => (1 : ℂ)) (fun _ _ _ _ => rfl)`. Rewrite `h1` using `[setIntegral_const, Finset.sum_const, nsmul_eq_mul, one_mul, Complex.real_smul, mul_one]`.
+
+Establish `h1' : (haarVol J).real S = t.card * (haarVol J).real K'` using `by exact_mod_cast h1`. Take `⟨m, hm⟩` from `GlobalTheory.GLBallInt.measureReal_eq_inv_natCast (haarVol J) hJc (haarVol_self hJo hJK) hKo hKJ`. Establish `hϖe : valuation k ((ϖ ^ e : kˣ) : k) ≤ 1`. Rewrite using `[Units.val_pow_eq_pow_val, map_pow]`. Conclude with `pow_le_one' (hϖ.trans_lt uniformizer_lt_one).le _`.
+
+Establish `hdv : ∀ g ∈ S, valuation k ((gdet g : kˣ) : k) ≤ 1`. Introduce `g hg`. Establish `hint : ∀ i j, g.val i j ∈ 𝒪[k]` using `fun i j => by`. Establish `: g.val i j = (g.val i j - x i j) + x i j` using `by ring`. Rewrite using `[this]`.
+
+Conclude with `add_mem ((Valuation.mem_integer_iff _ _).2 ((hg i j).trans hϖe)) ((Valuation.mem_integer_iff _ _).2 (hx i j))`. Establish `: g.val.det ∈ 𝒪[k]`. Rewrite using `[Matrix.det_apply']`. Conclude with `Subring.sum_mem _ fun σ _ => mul_mem (intCast_mem _ _) (Subring.prod_mem _ fun i _ => hint _ _)`. Conclude with `(Valuation.mem_integer_iff _ _).1 this`.
+
+Establish `hsz : Sz ι τ (∑ Q ∈ t, (ν (gdet Q.out) : ℂ) * apow (gdet Q.out) ((n : ℂ) / 2) * ((haarVol J).real K' : ℝ)) (t.card * (haarVol J).real K')`. Use `Sz.sum_card t fun Q hQ => ?_` and prove the remaining obligations. Establish `h2` using `(hν (gdet Q.out)).mul_sz (sz_apow_of_le_one (τ := τ) _ (hap _) n (hdv _ (htS Q hQ)))`. Establish `h3` using `h2.mul (Sz.inv_nat (ι := ι) (τ := τ) m)`. Rewrite using `[hm]`.
+
+Simplify using `using h3`. Use `hsz.mono ?_` and prove the remaining obligations. Rewrite using `[← h1']`. Set `x' : GL A k` to `Matrix.GeneralLinearGroup.mkOfDetNeZero x (hdet x fun i j => by simp)`. Establish `hx' : ∀ i j, valuation k (x'.val i j - x i j) ≤ valuation k ((ϖ ^ e : kˣ) : k)` using `fun i j => by show valuation k (x i j - x i j) ≤ _`.
+
+Simplify using the standard rewrite rules. Establish `hsub : S ⊆ x' • (GlobalTheory.SplitWeil.KO k A : Set (GL A k))` using `fun g hg => ⟨x'⁻¹ * g, (mem_KO_iff _).2 ⟨inv_mul_int x _ hdet x' g hx' hg, by`. Rewrite using `[mul_inv_rev, inv_inv]; exact inv_mul_int x _ hdet g x' hg hx'⟩, by simp⟩`. Rewrite using `[measureReal_def, measureReal_def]`. Use `ENNReal.toReal_mono isCompact_KO.measure_lt_top.ne ?_` and prove the remaining obligations.
+
+Conclude with `(measure_mono hsub).trans (measure_smul _ _ _).le`.
+-/
 theorem UpperTheory.unramified_character_invariant :
     ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] {A : Type} [Fintype A] [DecidableEq A] {K : Type} [Field K] (ι τ : K →+* ℂ) {J : Subgroup (GL A k)}, IsOpen (J : Set (GL A k)) → J ≤ GlobalTheory.SplitWeil.KO k A → ∀ (ν : kˣ →* ℂˣ) {ϖ : kˣ} {e : ℕ}, IsUnif ϖ → CondLE ϖ e ν → (∀ u, Un ι τ (ν u : ℂ)) → (∀ u : kˣ, apow u (1 / 2) ∈ Set.range ι) → ∀ (n : ℕ) (x : Matrix A A k), (∀ i j, valuation k (x i j) ≤ 1) → (∀ y : Matrix A A k, (∀ i j, valuation k (y i j - x i j) ≤ valuation k ((ϖ ^ e : kˣ) : k)) → y.det ≠ 0) → Sz ι τ (∫ g in {g : GL A k | ∀ i j, valuation k (g.val i j - x i j) ≤ valuation k ((ϖ ^ e : kˣ) : k)}, (ν (gdet g) : ℂ) * apow (gdet g) ((n : ℂ) / 2) ∂(haarVol J)) ((haarVol J).real (GlobalTheory.SplitWeil.KO k A : Set (GL A k))) := by
   intro k _ _ _ _ _ _ A _ _ K _ ι τ J hJo hJK ν ϖ e hϖ hcond hν hap n x hx hdet

@@ -20,19 +20,61 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 
 namespace PositivityTheory.KB
 
+/- English proof (translation)
+The claim follows from `sChain_of`.
+-/
 theorem sChain : SChain := sChain_of
+/- English proof (translation)
+The claim follows from `sEv_of`.
+-/
 theorem sEv : SEv := sEv_of
+/- English proof (translation)
+The claim follows from `sSep_of sChain`.
+-/
 theorem sSep' : SSep := sSep_of sChain
+/- English proof (translation)
+The claim follows from `sBridge_of`.
+-/
 theorem sBridge : SBridge := sBridge_of
+/- English proof (translation)
+The claim follows from `sStab_of sChain sBridge`.
+-/
 theorem sStab : SStab := sStab_of sChain sBridge
+/- English proof (translation)
+The claim follows from `sFin_of sBridge`.
+-/
 theorem sFin : SFin := sFin_of sBridge
+/- English proof (translation)
+The claim follows from `sPsi_of sChain`.
+-/
 theorem sPsi : SPsi := sPsi_of sChain
+/- English proof (translation)
+The claim follows from `sAff_of sChain sEv sSep' sBridge`.
+-/
 theorem sAff : SAff := sAff_of sChain sEv sSep' sBridge
+/- English proof (translation)
+The claim follows from `sHecke_of sChain sEv sSep' sStab sFin sAff`.
+-/
 theorem sHecke : SHecke := sHecke_of sChain sEv sSep' sStab sFin sAff
+/- English proof (translation)
+The claim follows from `sPU_of sHt_of`.
+-/
 theorem sPU : SPU := sPU_of sHt_of
+/- English proof (translation)
+The claim follows from `TwSMInt2.sMom_of sHt_of`.
+-/
 theorem sMom : SMom := TwSMInt2.sMom_of sHt_of
+/- English proof (translation)
+The claim follows from `sWhit_of sEv sStokes_of`.
+-/
 theorem sWhit : SWhit := sWhit_of sEv sStokes_of
+/- English proof (translation)
+The claim follows from `sCen_of sEv`.
+-/
 theorem sCen : SCen := sCen_of sEv
+/- English proof (translation)
+The claim follows from `sLoc_of sEv`.
+-/
 theorem sLoc : SLoc := sLoc_of sEv
 
 end PositivityTheory.KB

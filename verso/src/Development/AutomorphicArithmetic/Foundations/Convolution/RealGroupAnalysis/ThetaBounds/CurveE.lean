@@ -11,9 +11,15 @@ section SlopeTestRemainingChoices
 
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 
+/- English proof (translation)
+The claim follows from `(TR.infEq F).symm_apply_apply x`.
+-/
 private theorem pInf_sInf (x : TR.Rinf F) : TR.pInf F (TR.sInf F x) = x :=
   (TR.infEq F).symm_apply_apply x
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem pFin_sInf (x : TR.Rinf F) : pFin F (TR.sInf F x) = 0 := rfl
 
 private noncomputable def cU (w : InfinitePlace F) (t : ℝ) : GL (Fin 2) (TR.Rinf F) :=
@@ -25,14 +31,25 @@ private noncomputable def cU (w : InfinitePlace F) (t : ℝ) : GL (Fin 2) (TR.Ri
       ext i j v
       fin_cases i <;> fin_cases j <;> by_cases h : v = w <;> simp [Matrix.mul_apply, Fin.sum_univ_two, Pi.single_apply, h]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem cU_val (w : InfinitePlace F) (t : ℝ) : (cU w t).val = !![1, Pi.single w t; 0, 1] := rfl
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, cU_val, cU_val, cU_val]`. Use extensionality with `i j v`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> by_cases h : v = w <;> simp [Matrix.mul_apply, Fin.sum_univ_two, Pi.single_apply, h, add_comm]`.
+-/
 private theorem cU_add (w : InfinitePlace F) (s t : ℝ) : cU w (s + t) = cU w s * cU w t := by
   refine Units.ext ?_
   rw [Units.val_mul, cU_val, cU_val, cU_val]
   ext i j v
   fin_cases i <;> fin_cases j <;> by_cases h : v = w <;> simp [Matrix.mul_apply, Fin.sum_univ_two, Pi.single_apply, h, add_comm]
 
+/- English proof (translation)
+Establish `e : (fun t => TR.toL (cU w t).val) = fun t : ℝ => TR.toL (1 : Matrix (Fin 2) (Fin 2) (TR.Rinf F)) + t • TR.toL (Matrix.single 0 1 (Pi.single w 1))`. Use function extensionality and compare the values at `t`. Use extensionality with `i j v`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> by_cases h : v = w <;> simp [cU_val, Matrix.single_apply, Pi.single_apply, h]`. Rewrite using `[e]`.
+
+Establish `h` using `((hasDerivAt_id (0 : ℝ)).smul_const (TR.toL (Matrix.single 0 1 (Pi.single w 1)) : TR.Lie F 2)).const_add (TR.toL (1 : Matrix (Fin 2) (Fin 2) (TR.Rinf F)) : TR.Lie F 2)`. Simplify `h` using `only [id, one_smul]`.
+-/
 private theorem cU_der (w : InfinitePlace F) :
     HasDerivAt (fun t => TR.toL (cU w t).val) (TR.toL (Matrix.single 0 1 (Pi.single w 1))) 0 := by
   have e : (fun t => TR.toL (cU w t).val) =
@@ -45,6 +62,11 @@ private theorem cU_der (w : InfinitePlace F) :
     (TR.toL (1 : Matrix (Fin 2) (Fin 2) (TR.Rinf F)) : TR.Lie F 2)
   simpa only [id, one_smul] using h
 
+/- English proof (translation)
+Use `TR.ga_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[TR.pInf_infGL]`. Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j v`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [cU_val, Fo.at1, pInf_sInf]`.
+
+Rewrite using `[TR.pFin_infGL]`. Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Fo.at1, pFin_sInf]`.
+-/
 private theorem unipotent_placeEmbed_gl (w : InfinitePlace F) (t : ℝ) : gl (nU (Fo.at1 w t)) = TR.infGL F 2 (cU w t) := by
   refine TR.ga_ext ?_ ?_
   · rw [TR.pInf_infGL]
@@ -56,6 +78,11 @@ private theorem unipotent_placeEmbed_gl (w : InfinitePlace F) (t : ℝ) : gl (nU
     ext i j
     fin_cases i <;> fin_cases j <;> simp [Fo.at1, pFin_sInf]
 
+/- English proof (translation)
+Rewrite using `[(UpperTheory.ConvolutionTheory.R2.C.splitA F).2]`. Establish `h2 : (Fo.at1 w t * q).2 = 0`. Express the relevant statement in the definitionally equal form `(0 : FiniteAdeleRing (𝓞 F) F) * q.2 = 0`. Conclude with `zero_mul _`. Rewrite using `[h2, AddChar.map_zero_eq_one, Circle.coe_one, mul_one, Finset.prod_eq_single w]`.
+
+Simplify using `[Fo.at1, Fo.cc, Fo.cw, pInf_sInf]`. Introduce `v _ hv`. Simplify using `[Fo.at1, pInf_sInf, hv]`. Simplify using the standard rewrite rules.
+-/
 private theorem character_placeEmbed_exp (w : InfinitePlace F) (t : ℝ) (q : A F) :
     ψ (Fo.at1 w t * q) = Complex.exp (Fo.cc * ((t : ℂ) * Fo.cw w q)) := by
   rw [(UpperTheory.ConvolutionTheory.R2.C.splitA F).2]
@@ -70,6 +97,15 @@ private theorem character_placeEmbed_exp (w : InfinitePlace F) (t : ℝ) (q : A 
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D O W w`. Use `⟨fun t => nU (Fo.at1 w t), cU w, ⟨cU_add w, cU_der w⟩, unipotent_placeEmbed_gl w, fun φ t v => ?_⟩` and prove the remaining obligations. Establish `he : (O.e D.δ w φ).1 v = Fo.cc * Fo.cw w (q4 D.δ v) * φ.1 v`. Establish `a : ∀ i j (χ : S4 F), (O.x w i (O.x w j χ)).1 v = Fo.cw w (v i) * (Fo.cw w (v j) * χ.1 v)` using `fun i j χ => by`. Rewrite using `[O.x_apply, O.x_apply]`.
+
+Simplify using `only [Fo.Ops.e, LinearMap.smul_apply, LinearMap.sub_apply, Module.End.mul_apply]`. Express the relevant statement in the definitionally equal form `Fo.cc * (((O.x w 2 (O.x w 2 φ)).1 v - Fo.cw w (rt D.δ) * (O.x w 3 (O.x w 3 φ)).1 v) - (O.x w 1 (O.x w 0 φ)).1 v) = _`. Rewrite using `[a, a, a]`. Simplify using `only [Fo.cw, q4, map_sub, map_mul, map_pow, Pi.sub_apply, Pi.mul_apply, Pi.pow_apply]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e1 : (fun s => (W.Om (nU (Fo.at1 w s)) φ).1 v) = fun s : ℝ => Complex.exp (Fo.cc * ((s : ℂ) * Fo.cw w (q4 D.δ v))) * φ.1 v`. Use function extensionality and compare the values at `s`. Rewrite using `[W.Om_n, character_placeEmbed_exp]`. Simplify using `only []`.
+
+Rewrite using `[e1, W.Om_n, character_placeEmbed_exp, he]`. Establish `h0 : HasDerivAt (fun s : ℝ => Fo.cc * ((s : ℂ) * Fo.cw w (q4 D.δ v))) (Fo.cc * Fo.cw w (q4 D.δ v)) t`. Simplify using `using (((hasDerivAt_id t).ofReal_comp).mul_const (Fo.cw w (q4 D.δ v))).const_mul Fo.cc`. Rewrite using `[← mul_assoc (Complex.exp _)]`. Conclude with `h0.cexp.mul_const (φ.1 v)`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.curveE :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (O : Fo.Ops F) (W : Weil D), CurveE O W := by
   intro F E _ _ _ _ _ _ _ D O W w

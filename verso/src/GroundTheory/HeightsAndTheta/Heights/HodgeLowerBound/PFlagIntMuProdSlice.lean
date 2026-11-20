@@ -15,6 +15,9 @@ variable {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ}
 def sliceEmb (τ : Ψ) (i : Fin N) : Ψ × Fin N := (τ, i)
 
 omit [Fintype Ψ] [DecidableEq Ψ] in
+/- English proof (translation)
+Introduce `a b h`. Simplify `h` using `[sliceEmb]`.
+-/
 theorem sliceEmb_injective (τ : Ψ) : Function.Injective (sliceEmb (N := N) τ) := by
   intro a b h
   simpa [sliceEmb] using h
@@ -23,6 +26,9 @@ def glue (d : Ψ → (Fin N →₀ ℕ)) : Ψ × Fin N →₀ ℕ :=
   Finsupp.equivFunOnFinite.symm fun p => d p.1 p.2
 
 omit [DecidableEq Ψ] in
+/- English proof (translation)
+Introduce `d e h`. Use function extensionality and compare the values at `τ`. Use extensionality with `i`. Use `congrArg (fun g : Ψ × Fin N →₀ ℕ => g (τ, i)) h` as an intermediate fact. Simplify `this` using `[glue]`.
+-/
 theorem glue_injective : Function.Injective (glue (Ψ := Ψ) (N := N)) := by
   intro d e h
   funext τ
@@ -30,6 +36,11 @@ theorem glue_injective : Function.Injective (glue (Ψ := Ψ) (N := N)) := by
   have := congrArg (fun g : Ψ × Fin N →₀ ℕ => g (τ, i)) h
   simpa [glue] using this
 
+/- English proof (translation)
+Use extensionality with `⟨σ, i⟩`. Rewrite using `[Finsupp.coe_finsetSum, Finset.sum_apply, Finset.sum_eq_single σ]`. Rewrite using `[show ((σ, i) : Ψ × Fin N) = sliceEmb σ i from rfl, Finsupp.mapDomain_apply (sliceEmb_injective σ)]`. Both sides reduce to the same expression. Introduce `τ _ hτ`.
+
+Apply `Finsupp.mapDomain_of_notMem_range` to reduce the goal to its premises. Introduce and unpack `⟨a, ha⟩`. Conclude with `hτ (congrArg Prod.fst ha)`. Introduce `h`. Conclude with `absurd (Finset.mem_univ σ) h`.
+-/
 theorem sum_mapDomain_sliceEmb (A : Ψ → (Fin N →₀ ℕ)) :
     ∑ τ, Finsupp.mapDomain (sliceEmb τ) (A τ) = glue A := by
   ext ⟨σ, i⟩
@@ -43,6 +54,13 @@ theorem sum_mapDomain_sliceEmb (A : Ψ → (Fin N →₀ ℕ)) :
   · intro h
     exact absurd (Finset.mem_univ σ) h
 
+/- English proof (translation)
+Establish `h : ∀ τ, rename (sliceEmb τ) (r τ) = ∑ a ∈ (r τ).support, monomial (Finsupp.mapDomain (sliceEmb τ) a) (coeff a (r τ))`. Introduce `τ`. Use `conv_lhs => rw [as_sum (r τ)]`. Rewrite using `[map_sum]`. Simplify using `only [rename_monomial]`.
+
+Repeatedly rewrite using `[h]`. Rewrite using `[Finset.prod_univ_sum]`. Repeatedly rewrite using `[← monomial_sum_prod, sum_mapDomain_sliceEmb, coeff_sum, coeff_monomial, glue_injective.eq_iff]`. Rewrite using `[Finset.sum_ite_eq']`. Use `split_ifs with hd`.
+
+Both sides reduce to the same expression. Rewrite `hd` using `[Fintype.mem_piFinset] at hd push Not`. Take `⟨τ, hτ⟩` from `hd`. Conclude with `(Finset.prod_eq_zero (Finset.mem_univ τ) (notMem_support_iff.mp hτ)).symm`.
+-/
 theorem coeff_glue_prod (r : Ψ → MvPolynomial (Fin N) ℚ) (d : Ψ → (Fin N →₀ ℕ)) :
     coeff (glue d) (∏ τ, rename (sliceEmb τ) (r τ)) = ∏ τ, coeff (d τ) (r τ) := by
   have h : ∀ τ, rename (sliceEmb τ) (r τ) =
@@ -73,16 +91,27 @@ def flagIntOne (q : MvPolynomial (Fin N) ℚ) : ℚ :=
   ∑ σ : Equiv.Perm (Fin N), (((Equiv.Perm.sign σ : ℤˣ) : ℤ) : ℚ) * coeff (rhoOne N) (rename σ q)
 
 omit [DecidableEq Ψ] in
+/- English proof (translation)
+Use extensionality with `p`. Both sides reduce to the same expression.
+-/
 theorem rhoMono_eq_glue : rhoMono Ψ N = glue fun _ => rhoOne N := by
   ext p
   rfl
 
 omit [Fintype Ψ] [DecidableEq Ψ] in
+/- English proof (translation)
+Rewrite using `[rename_rename, rename_rename]`. Both sides reduce to the same expression.
+-/
 theorem rename_weylAct_sliceEmb (w : Ψ → Equiv.Perm (Fin N)) (τ : Ψ) (q : MvPolynomial (Fin N) ℚ) :
     rename (weylAct Ψ N w) (rename (sliceEmb τ) q) = rename (sliceEmb τ) (rename (w τ) q) := by
   rw [rename_rename, rename_rename]
   rfl
 
+/- English proof (translation)
+Unfold `flagInt antisym flagIntOne`. Rewrite using `[coeff_sum, Fintype.prod_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_smul, map_prod, rhoMono_eq_glue]`. Repeatedly rewrite using `[rename_weylAct_sliceEmb]`.
+
+Rewrite using `[coeff_glue_prod, weylSign, smul_eq_mul, ← Finset.prod_mul_distrib]`.
+-/
 theorem flagInt_prod (q : Ψ → MvPolynomial (Fin N) ℚ) :
     flagInt Ψ N (∏ τ, rename (sliceEmb τ) (q τ)) = ∏ τ, flagIntOne N (q τ) := by
   unfold flagInt antisym flagIntOne
@@ -92,6 +121,9 @@ theorem flagInt_prod (q : Ψ → MvPolynomial (Fin N) ℚ) :
   simp_rw [rename_weylAct_sliceEmb]
   rw [coeff_glue_prod, weylSign, smul_eq_mul, ← Finset.prod_mul_distrib]
 
+/- English proof (translation)
+Unfold `flagIntOne`. Use `Finset.sum_eq_zero fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[(hq.rename_isHomogeneous).coeff_eq_zero hD, mul_zero]`.
+-/
 theorem flagIntOne_eq_zero_of_isHomogeneous {q : MvPolynomial (Fin N) ℚ} {D : ℕ} (hq : q.IsHomogeneous D)
     (hD : (rhoOne N).degree ≠ D) : flagIntOne N q = 0 := by
   unfold flagIntOne

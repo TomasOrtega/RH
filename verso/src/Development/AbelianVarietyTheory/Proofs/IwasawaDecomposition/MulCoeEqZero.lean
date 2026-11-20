@@ -20,6 +20,9 @@ section Alg
 
 variable {S A : Type} [CommRing S] [CommRing A] [Algebra S A] (J : Ideal A) [Module Sᵐᵒᵖ J] [IsCentralScalar S J]
 
+/- English proof (translation)
+Establish `h : (a : A) * b ∈ J ^ 2` using `by rw [pow_two]; exact Ideal.mul_mem_mul a.2 b.2`. Rewrite `h` using `[hJ]`. Conclude with `h`.
+-/
 theorem mul_coe_eq_zero (hJ : J ^ 2 = ⊥) (a b : J) : (a : A) * (b : A) = 0 := by
   have h : (a : A) * b ∈ J ^ 2 := by rw [pow_two]; exact Ideal.mul_mem_mul a.2 b.2
   rw [hJ] at h
@@ -37,6 +40,9 @@ def incl (hJ : J ^ 2 = ⊥) : TrivSqZeroExt S J →ₐ[S] A where
   map_add' x y := by simp only [TrivSqZeroExt.fst_add, TrivSqZeroExt.snd_add, map_add, Submodule.coe_add]; ring
   commutes' s := by simp [TrivSqZeroExt.algebraMap_eq_inl]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem incl_apply (hJ : J ^ 2 = ⊥) (x : TrivSqZeroExt S J) : incl J hJ x = algebraMap S A x.fst + (x.snd : A) := rfl
 
 end Alg

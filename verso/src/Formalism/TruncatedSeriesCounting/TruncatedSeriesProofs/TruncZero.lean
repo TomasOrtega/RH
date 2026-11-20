@@ -2,6 +2,11 @@ import Formalism.TruncatedSeriesCounting.LengthQuotientLeOfPowSMul
 
 namespace Formalism.TruncatedSeriesCounting.R9
 
+/- English proof (translation)
+Introduce `R _ u π₀ q ℓ M η y hM hη`. Rewrite using `[Ideal.mem_span_singleton']`. Use `⟨u ^ y * π₀ ^ (y - M) * q ^ ((ℓ - 1) * y - η), ?_⟩` and prove the remaining obligations. Establish `h1 : π₀ ^ y = π₀ ^ (y - M) * π₀ ^ M` using `by rw [← pow_add, Nat.sub_add_cancel hM]`. Establish `h2 : q ^ ((ℓ - 1) * y) = q ^ ((ℓ - 1) * y - η) * q ^ η`.
+
+Rewrite using `[← pow_add, Nat.sub_add_cancel hη]`. Rewrite using `[mul_pow, mul_pow, ← pow_mul, h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pow_mem_span_pow_mul : TruncZero := by
   intro R _ u π₀ q ℓ M η y hM hη
   rw [Ideal.mem_span_singleton']

@@ -2,6 +2,27 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SymmetricPowerTransfer.TraceFormulaEigenvalues.FinD
 
 open UpperTheory.V.Z.Sym in
+/- English proof (translation)
+Introduce `Γ G V _ _ _ _ B hB tw f hf δ`. Take `⟨S₀, hS₀⟩` from `hB.cls`. Use `choose D hD using fun g : G => UpperTheory.V.Z.Sym.Tf.finD B hB tw f hf g g`. Set `rep : G → Γ → Γ` to `fun g d => if h : ∃ γ : Γ, ∃ z ∈ B.Γ₀, γ⁻¹ * δ * tw.θΓ γ = d * z then h.choose else 1`. Establish `rep_spec : ∀ g d, (∃ γ : Γ, ∃ z ∈ B.Γ₀, γ⁻¹ * δ * tw.θΓ γ = d * z) → ∃ z ∈ B.Γ₀, (rep g d)⁻¹ * δ * tw.θΓ (rep g d) = d * z`.
+
+Introduce `g d h`. Simplify using `only [rep, dif_pos h]`. Conclude with `h.choose_spec`. Use `⟨S₀.biUnion (fun g => (D g).image (fun d => B.ι (rep g d) * g)), ?_⟩` and prove the remaining obligations. Introduce `y hy`.
+
+Take `⟨γ, g, hg, u, hu, rfl⟩` from `hS₀ y`. Establish `hcomm : ∀ c : Γ, tw.θ (B.ι c) = B.ι (tw.θΓ c)` using `tw.comm`. Establish `expand : (B.ι γ * g * u)⁻¹ * B.ι δ * tw.θ (B.ι γ * g * u) = u⁻¹ * (g⁻¹ * B.ι (γ⁻¹ * δ * tw.θΓ γ) * tw.θ g) * tw.θ u`. Simplify using `only [map_mul, map_inv, hcomm]`. Use `group`.
+
+Establish `hne : f (g⁻¹ * B.ι (γ⁻¹ * δ * tw.θΓ γ) * tw.θ g) ≠ 0`. Introduce `h0`. Apply `hy` to reduce the goal to its premises. Use `show f ((B.ι γ * g * u)⁻¹ * B.ι δ * tw.θ (B.ι γ * g * u)) = 0`. Rewrite using `[expand]`.
+
+Establish `e1` using `hf.right ⟨u, hu⟩ (u⁻¹ * (g⁻¹ * B.ι (γ⁻¹ * δ * tw.θΓ γ) * tw.θ g))`. Establish `e2` using `hf.left ⟨u⁻¹, B.U.inv_mem hu⟩ (g⁻¹ * B.ι (γ⁻¹ * δ * tw.θΓ γ) * tw.θ g)`. Simplify using `only at e1 e2`. Rewrite using `[e1, e2, h0, mul_zero, mul_zero]`. Take `⟨d, hd, z₂, hz₂, hγ⟩` from `hD g (γ⁻¹ * δ * tw.θΓ γ) hne`.
+
+Take `⟨z₁, hz₁, hr⟩` from `rep_spec g d ⟨γ, z₂, hz₂, hγ⟩`. Use `set r := rep g d with hr_def`. Establish `hdr : d = r⁻¹ * δ * tw.θΓ r * z₁⁻¹` using `eq_mul_inv_of_mul_eq hr.symm`. Establish `hc : z₁⁻¹ * z₂ ∈ Subgroup.center Γ` using `B.cenΓ (B.Γ₀.mul_mem (B.Γ₀.inv_mem hz₁) hz₂)`. Establish `hx : γ * r⁻¹ ∈ tw.Cent δ`.
+
+Use `⟨z₁⁻¹ * z₂, B.Γ₀.mul_mem (B.Γ₀.inv_mem hz₁) hz₂, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [map_mul, map_inv]`. Use `group`. Use `_ = r * (d * z₂) * (tw.θΓ r)⁻¹ := by rw [hγ]`.
+
+Use `_ = δ * (tw.θΓ r * (z₁⁻¹ * z₂)) * (tw.θΓ r)⁻¹ := by`. Rewrite using `[hdr]`. Use `group`. Use `_ = δ * ((z₁⁻¹ * z₂) * tw.θΓ r) * (tw.θΓ r)⁻¹ := by`. Rewrite using `[(Subgroup.mem_center_iff.mp hc (tw.θΓ r)).symm]`.
+
+Use `_ = δ * (z₁⁻¹ * z₂) := by group`. Use `⟨⟨γ * r⁻¹, hx⟩, B.ι r * g, ?_, u, hu, ?_⟩` and prove the remaining obligations. Conclude with `Finset.mem_biUnion.mpr ⟨g, hg, Finset.mem_image.mpr ⟨d, hd, rfl⟩⟩`. Use `show B.ι γ * g * u = B.ι (γ * r⁻¹) * (B.ι r * g) * u`. Rewrite using `[map_mul, map_inv]`.
+
+Use `group`.
+-/
 theorem UpperTheory.V.Z.Sym.Tf.centFin :
     UpperTheory.V.Z.Sym.Tf.CentFin := by
   intro Γ G V _ _ _ _ B hB tw f hf δ

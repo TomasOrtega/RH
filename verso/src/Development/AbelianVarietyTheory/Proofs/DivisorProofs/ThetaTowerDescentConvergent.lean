@@ -12,6 +12,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 namespace GlobalTheory.ThK.LevCusp
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM hq d₁ H' i₀ i₁ sp pl hH hiso c h0 hj i hi f hf hCT c₀ hc₀ hJ' φ' hφ'`. Establish `h : IsCMExt F E σ` using `hM.triple.base.cm`. Take `⟨K, hK, hA⟩` from `GlobalTheory.T.matched_triple_witt_tower_descent hKP F E σ B a a' G X om om' R Rf hM hq d₁ H' i₀ i₁ sp pl hH hiso c h0 hj i hi f hf c₀ hc₀ hJ' φ' hφ'`. Take `⟨hx0, hxiso, hct⟩` from `GlobalTheory.T.theta_lift_matched_plane_tower_integral hKP F E σ B a a' G X om om' R Rf hM hq d₁ H' i₀ i₁ sp pl hH hiso c h0 hj i hi f hf hCT c₀ hc₀ hJ' φ' hφ'`. Conclude with `GlobalTheory.ThKOrthCusp.core h hJ' hKP.automorphicFormsUnitary.2 hK hA (fun x hx hxi => GlobalTheory.T.constant_term_isotropic_vectors F E σ h _ _ hJ' φ' hA.mod.left _ x hx0 hxiso hx hxi hct) (fun r Xf Yf hW S hS => GlobalTheory.T.theta_lift_matched_plane_tower_limit hKP F E σ B …`.
+-/
 theorem cusp : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ)
     (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'),
     IsMatched B G X om om' R Rf → 1 ≤ G.q →

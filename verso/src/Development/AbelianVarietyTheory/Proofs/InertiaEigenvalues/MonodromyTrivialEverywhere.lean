@@ -12,6 +12,13 @@ noncomputable section
 
 namespace GlobalTheory.GoodRowMono
 
+/- English proof (translation)
+Establish `hnd : ((Formalism.CyclotomicNorms.rootsBar f).map t).Nodup` using `(nodup_roots ((separable_map _).2 (PerfectField.separable_iff_squarefree.2 hf))).map (GlobalTheory.TameLabels.teich_injective t ht)`. Establish `e : ((Formalism.CyclotomicNorms.rootsBar f).map fun x => X - C (t x)) = ((Formalism.CyclotomicNorms.rootsBar f).map t).map (fun a => X - C a)`. Rewrite using `[Multiset.map_map]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+
+Establish `hs : ((((Formalism.CyclotomicNorms.rootsBar f).map t).map fun a => X - C a).prod).Splits` using `Splits.multisetProd fun x hx => by`. Take `⟨y, -, rfl⟩` from `Multiset.mem_map.1 hx`. Conclude with `Splits.X_sub_C _`. Use `(nodup_roots_iff_of_splits (monic_multiset_prod_of_monic _ _ fun a _ => monic_X_sub_C a).ne_zero hs).1 ?_` and prove the remaining obligations. Rewrite using `[roots_multiset_prod_X_sub_C]`.
+
+Conclude with `hnd`.
+-/
 theorem separable_prod_teich {g : ℕ} [Fact g.Prime] (t : Formalism.CyclotomicNorms.Fbar g →* ℂ)
     (ht : ∀ x y, x ≠ 0 → y ≠ 0 → t x = t y → x = y) {f : (ZMod g)[X]} (hf : Squarefree f) :
     (((Formalism.CyclotomicNorms.rootsBar f).map fun x => X - C (t x)).prod).Separable := by
@@ -31,6 +38,9 @@ theorem separable_prod_teich {g : ℕ} [Fact g.Prime] (t : Formalism.CyclotomicN
 
 variable (D : D7)
 
+/- English proof (translation)
+Rewrite using `[T.mono0]`. Rewrite `h` using `[T.inePol w L s hs]`. Conclude with `GlobalTheory.WeilDeligne.WD.noMonodromy_of_inertia_separable_charpoly D.host.E D.nd.Om _ w (D.nd.plOm.2 w) (T.e w L) s hs h`.
+-/
 theorem mono0_of_separable (T : GlobalTheory.RowTie.WDTie D.nd D.naut) {w : PlE D.host} (L : D.naut.LP w) {s : G D.host.E D.nd.Om}
     (hs : s ∈ Ine (F := D.host.E) (D.nd.plOm.1 w)) (h : (D.naut.inePol L s).Separable) : D.naut.mono0 L := by
   rw [T.mono0]
@@ -39,6 +49,9 @@ theorem mono0_of_separable (T : GlobalTheory.RowTie.WDTie D.nd D.naut) {w : PlE 
 
 variable {D}
 
+/- English proof (translation)
+Establish `: Fact (D.host.g k).Prime` using `⟨D.host.g_prime k⟩`. Establish `hfull : (D.naut.items₂ k (D.naut.plGw k v) (D.naut.locG π (D.naut.plGw k v))).natDegree = D.naut.lpDim (D.naut.locG π (D.naut.plGw k v))`. Rewrite using `[← hlab, (D.nd.lab_monic k σ v).2, D.naut.locG_dim]`. Rewrite using `[D.ntypes.inertiaCharpoly_type k v _ hfull, ← hlab]`. Conclude with `separable_prod_teich _ (D.ntypes.teichC_inj k) ((hg k).1.2.1 v)`.
+-/
 theorem separable_fixed {σ : D.what₂.FT} {π : D.naut.CG D.R.r} (hg : D.nd.goodRow σ)
     (hlab : ∀ k v, D.nd.lab k σ v = D.naut.items₂ k (D.naut.plGw k v) (D.naut.locG π (D.naut.plGw k v)))
     (k : Fin 2) (v : D.nd.PlG k) :
@@ -50,6 +63,17 @@ theorem separable_fixed {σ : D.what₂.FT} {π : D.naut.CG D.R.r} (hg : D.nd.go
   rw [D.ntypes.inertiaCharpoly_type k v _ hfull, ← hlab]
   exact separable_prod_teich _ (D.ntypes.teichC_inj k) ((hg k).1.2.1 v)
 
+/- English proof (translation)
+Take `⟨l, hl1, hl2⟩` from `Nat.exists_infinite_primes (D.host.g k + 1)`. Establish `: Fact l.Prime` using `⟨hl2⟩`. Establish `hne : l ≠ D.host.g k` using `by omega`. Take `⟨ι⟩ : Nonempty (Qbar l ≃+* ℂ)` from `GlobalTheory.nonempty_padicAlgCl_ringEquiv_complex l`. Take `⟨r, hr⟩` from `hG l ι π 0 hc ((regAlgShift_zero D.naut π).2 hra)`.
+
+Establish `hR` using `hr.toIsAttachedAway.isGaloisRepOf`. Use `set t := D.ntypes.tg k v with htdef`. Establish `ht : t ∈ Ine (F` using `D.host.E) (D.nd.plOm.1 (D.naut.plGw k v)) := D.ntypes.tg_mem k v`. Establish `hw0 : D.naut.plGw k v ∉ placesOver D.host.E l` using `GlobalTheory.TameLabels.not_mem_of_ne hl2 hne`. Establish `hwl : w ∉ placesOver D.host.E l` using `fun h => hw0 (GlobalTheory.TwistDet.mem_placesOver_conj (GlobalTheory.TwistDet.isConjPl_symm hv) h)`.
+
+Establish `hti : t⁻¹ ∈ Ine (F` using `D.host.E) (D.nd.plOm.1 (D.naut.plGw k v)) := Subgroup.inv_mem _ ht`. Establish `e1` using `GlobalTheory.TripleResidual.charpoly_cConj D.ntw hD hc hR t⁻¹`. Rewrite `e1` using `[cyc_eq_one_of_mem_Ine hw0 (D.nd.plOm.2 _) hti, Units.val_one, one_zpow, one_smul, inv_inv]`. Establish `hB` using `GlobalTheory.TwistDet.isPlaceOver_moveVal_cc D.ntw hv (D.nd.plOm.2 (D.naut.plGw k v))`. Establish `hcI` using `GlobalTheory.TwistDet.cConj_mem_ine D.ntw hti`.
+
+Take `⟨γ, hγ⟩` from `exists_smul_eq_of_isPlaceOver (F := D.host.E) hB (D.nd.plOm.2 w)`. Establish `hs : γ * GlobalTheory.TwistDet.cConj D.ntw t⁻¹ * γ⁻¹ ∈ Ine (F` using `D.host.E) (D.nd.plOm.1 w) := hγ ▸ conj_mem_Ine_smul hcI`. Use `⟨_, hs, ?_⟩` and prove the remaining obligations. Establish `e2` using `(hR.2.2 w hwl).1 _ hs`. Establish `e3` using `(hR.2.2 _ hw0).1 t ht`.
+
+Rewrite `e2` using `[GlobalTheory.TripleResidual.charpoly_conj_GL, e1, e3, D.naut.inePol_tw _ _ _ ht]`. Rewrite using `[← D.naut.inePol_tw _ ((1 - (D.R.r : ℝ)) / 2) _ hs, ← e2]`. Conclude with `separable_fixed hg hlab k v`.
+-/
 theorem separable_conj (T : GlobalTheory.RowTie.WDTie D.nd D.naut) (hD : FrobDense D) (hG : GalHodge D T)
     {σ : D.what₂.FT} {π : D.naut.CG D.R.r} (hg : D.nd.goodRow σ) (hc : D.naut.csd π) (hra : D.naut.ralg π)
     (hlab : ∀ k v, D.nd.lab k σ v = D.naut.items₂ k (D.naut.plGw k v) (D.naut.locG π (D.naut.plGw k v)))
@@ -81,6 +105,11 @@ theorem separable_conj (T : GlobalTheory.RowTie.WDTie D.nd D.naut) (hD : FrobDen
   rw [← D.naut.inePol_tw _ ((1 - (D.R.r : ℝ)) / 2) _ hs, ← e2]
   exact separable_fixed hg hlab k v
 
+/- English proof (translation)
+Introduce `D T hD hG σ π hg hc hra hunr hlab w`. Distinguish the cases in `hw : ∀ k, w ∉ placesOver D.host.E (D.host.g k)`. Conclude with `D.naut.unr_mono0 _ (hunr w hw)`. Use `push Not at hw`. Take `⟨k, hk⟩` from `hw`.
+
+Take `⟨v, rfl | hv⟩` from `GlobalTheory.TypePlaceCover.place_cover D k w hk`. Conclude with `mono0_of_separable D T _ (D.ntypes.tg_mem k v) (separable_fixed hg hlab k v)`. Take `⟨s, hs, hsp⟩` from `separable_conj T hD hG hg hc hra hlab k v hv`. Conclude with `mono0_of_separable D T _ hs hsp`.
+-/
 theorem mono0_all : ∀ (D : D7) (T : GlobalTheory.RowTie.WDTie D.nd D.naut), FrobDense D → GalHodge D T →
     ∀ (σ : D.what₂.FT) (π : D.naut.CG D.R.r), D.nd.goodRow σ → D.naut.csd π → D.naut.ralg π →
     (∀ w, (∀ k, w ∉ placesOver D.host.E (D.host.g k)) → D.naut.unr (D.naut.locG π w)) →

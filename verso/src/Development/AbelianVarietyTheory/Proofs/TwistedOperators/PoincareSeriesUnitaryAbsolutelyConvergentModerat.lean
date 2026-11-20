@@ -20,6 +20,9 @@ namespace GlobalTheory.PoinCount
 
 variable {D : D7}
 
+/- English proof (translation)
+Unfold `hsn`. Rewrite using `[← Real.sqrt_sq (norm_nonneg (X i j))]`. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_entry_le_hsn {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) : ‖X i j‖ ≤ hsn X := by
   unfold hsn
   rw [← Real.sqrt_sq (norm_nonneg (X i j))]
@@ -29,6 +32,9 @@ theorem norm_entry_le_hsn {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (i j : Fin 
     _ ≤ ∑ i', ∑ j', ‖X i' j'‖ ^ 2 :=
         Finset.single_le_sum (f := fun i' => ∑ j', ‖X i' j'‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ i)
 
+/- English proof (translation)
+Unfold `hsn`. Use `Real.sqrt_le_iff.2 ⟨by positivity, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem hsn_le_sum {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) : hsn X ≤ ∑ i, ∑ j, ‖X i j‖ := by
   unfold hsn
   refine Real.sqrt_le_iff.2 ⟨by positivity, ?_⟩
@@ -37,6 +43,11 @@ theorem hsn_le_sum {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) : hsn X ≤ ∑ i,
     _ ≤ (∑ i, ∑ j, ‖X i j‖) ^ 2 :=
         Finset.sum_sq_le_sq_sum_of_nonneg fun i _ => Finset.sum_nonneg fun j _ => norm_nonneg _
 
+/- English proof (translation)
+Use `letI := Matrix.frobeniusSeminormedAddCommGroup (m := Fin n) (n := Fin n) (α := ℂ)`. Establish `e : ∀ Z : Matrix (Fin n) (Fin n) ℂ, hsn Z = ‖Z‖` using `fun Z => by`. Rewrite using `[Matrix.frobenius_norm_def, hsn, Real.sqrt_eq_rpow]`. Use `congr 1`. Simplify using `only [Real.rpow_two]`.
+
+Rewrite using `[e, e, e]`. Conclude with `Matrix.frobenius_norm_mul X Y`.
+-/
 theorem hsn_mul_le {n : ℕ} (X Y : Matrix (Fin n) (Fin n) ℂ) : hsn (X * Y) ≤ hsn X * hsn Y := by
   letI := Matrix.frobeniusSeminormedAddCommGroup (m := Fin n) (n := Fin n) (α := ℂ)
   have e : ∀ Z : Matrix (Fin n) (Fin n) ℂ, hsn Z = ‖Z‖ := fun Z => by
@@ -46,6 +57,15 @@ theorem hsn_mul_le {n : ℕ} (X Y : Matrix (Fin n) (Fin n) ℂ) : hsn (X * Y) �
   rw [e, e, e]
   exact Matrix.frobenius_norm_mul X Y
 
+/- English proof (translation)
+Establish `hnorm : ∏ τ, ‖tauE D τ y‖ ^ 2 = |((Algebra.norm ℚ y : ℚ) : ℝ)|`. Rewrite using `[← Rat.cast_abs, ← NumberField.InfinitePlace.prod_eq_abs_norm]`. Use `(Fintype.prod_bijective _ (GlobalTheory.LevelSeries.mk_tauE_bij D) _ _ (fun τ => ?_))` and prove the remaining obligations. Rewrite using `[NumberField.InfinitePlace.mult, if_neg (GlobalTheory.LevelSeries.mk_tauE_complex D τ)]`. Both sides reduce to the same expression.
+
+Establish `h1 : (1 : ℝ) ≤ |((Algebra.norm ℚ y : ℚ) : ℝ)|`. Set `z : 𝓞 D.host.E` to `⟨y, hi⟩`. Establish `hz : z ≠ 0` using `fun h => hy (congrArg Subtype.val h)`. Establish `e : ((Algebra.norm ℤ z : ℤ) : ℚ) = Algebra.norm ℚ y` using `Algebra.coe_norm_int z`. Establish `hn : Algebra.norm ℤ z ≠ 0` using `Algebra.norm_ne_zero_iff.2 hz`.
+
+Rewrite using `[← e]`. Use `Int.one_le_abs hn` as an intermediate fact. Use `push_cast`. Conclude with `this` after adjusting the coercions. Rewrite `h1` using `[← hnorm, Finset.prod_pow]`.
+
+Establish `h0 : 0 ≤ ∏ τ, ‖tauE D τ y‖` using `Finset.prod_nonneg fun _ _ => norm_nonneg _`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem one_le_prod_tauE (D : D7) {y : D.host.E} (hy : y ≠ 0) (hi : IsIntegral ℤ y) : 1 ≤ ∏ τ, ‖tauE D τ y‖ := by
   have hnorm : ∏ τ, ‖tauE D τ y‖ ^ 2 = |((Algebra.norm ℚ y : ℚ) : ℝ)| := by
     rw [← Rat.cast_abs, ← NumberField.InfinitePlace.prod_eq_abs_norm]
@@ -65,6 +85,9 @@ theorem one_le_prod_tauE (D : D7) {y : D.host.E} (hy : y ≠ 0) (hi : IsIntegral
   have h0 : 0 ≤ ∏ τ, ‖tauE D τ y‖ := Finset.prod_nonneg fun _ _ => norm_nonneg _
   nlinarith
 
+/- English proof (translation)
+Establish `h1` using `γ.2`. Simplify using `only [GQ, HFinIn, HFin, Subgroup.mem_subgroupOf, Subgroup.mem_map] at h1`. Take `⟨δ, -, hδ⟩` from `h1`. Conclude with `⟨δ, hδ⟩`.
+-/
 theorem exists_rat (V : HSp D) (γ : GQ V) :
     ∃ δ : GL (Fin V.rank) D.host.E, Formalism.UG.bc (inclR (AF D.host.F)) δ = matHom V (γ : GA D V) := by
   have h1 := γ.2
@@ -72,6 +95,11 @@ theorem exists_rat (V : HSp D) (γ : GQ V) :
   obtain ⟨δ, -, hδ⟩ := h1
   exact ⟨δ, hδ⟩
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `e : (HA.mat (AF D.host.F) D.sp.cm.sig V.gram γ).1 i j = inclR (AF D.host.F) ((δ : Matrix (Fin V.rank) (Fin V.rank) D.host.E) i j)`. Rewrite using `[show HA.mat (AF D.host.F) D.sp.cm.sig V.gram γ = matHom V γ from rfl, ← h]`. Both sides reduce to the same expression. Use `show infMat D.sp.cm.sig V.gram (θ τ) γ i j = _`.
+
+Simplify using `only [infMat, Matrix.map_apply, e]`. Simplify using `[inclR, (hθ τ).1]`.
+-/
 theorem cmp_rat {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) (γ : GA D V) (δ : GL (Fin V.rank) D.host.E)
     (h : Formalism.UG.bc (inclR (AF D.host.F)) δ = matHom V γ) (τ : D.what₂.Tau) :
     cmp θ τ γ = (δ : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (tauE D τ) := by
@@ -88,11 +116,17 @@ end GlobalTheory.PoinCount
 
 namespace GlobalTheory.PoinCount
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_common_denominator_selfDual_level D V Λ hΛ`.
+-/
 theorem level_den (D : D7) (V : HSp D) (Λ : Lat V) (hΛ : IsSelfDualC V Λ) : ∃ b : ℕ, 0 < b ∧
     ∀ k ∈ congLev D.sp.cm V.gram Λ ⊤, ∀ i j,
       (b : Lev.EAf D) * k.1 i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E :=
   GlobalTheory.T.exists_common_denominator_selfDual_level D V Λ hΛ
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_finitePart_denominator_le_height_pow D V`.
+-/
 theorem point_den (D : D7) (V : HSp D) : ∃ (C : ℝ) (A : ℕ), ∀ g : GA D V, ∃ d : ℕ, 0 < d ∧ (d : ℝ) ≤ C * height V g ^ A ∧
     ∀ i j, (d : Lev.EAf D) * (Lev.finE V g).1 i j ∈
       Formalism.L2.Herm.intAf D.host.F D.host.E :=
@@ -100,6 +134,9 @@ theorem point_den (D : D7) (V : HSp D) : ∃ (C : ℝ) (A : ℕ), ∀ g : GA D V
 
 variable {D : D7}
 
+/- English proof (translation)
+Simplify using `only [Lev.finE, finHom, MonoidHom.comp_apply, ← h]`. Both sides reduce to the same expression.
+-/
 theorem finE_rat (V : HSp D) (γ : GA D V) (δ : GL (Fin V.rank) D.host.E)
     (h : Formalism.UG.bc (inclR (AF D.host.F)) δ = matHom V γ) (i j : Fin V.rank) :
     (Lev.finE V γ).1 i j =
@@ -113,6 +150,9 @@ namespace GlobalTheory.PoinCount
 
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Conclude with `Subring.sum_mem _ fun k _ => Subring.mul_mem _ (hX i k) (hY k j)`.
+-/
 theorem mem_mul_of_mem {n : ℕ} {S : Subring (Lev.EAf D)} (X Y : Matrix (Fin n) (Fin n) (Lev.EAf D))
     (hX : ∀ i j, X i j ∈ S) (hY : ∀ i j, Y i j ∈ S) (i j : Fin n) : (X * Y) i j ∈ S := by
   rw [Matrix.mul_apply]
@@ -120,6 +160,19 @@ theorem mem_mul_of_mem {n : ℕ} {S : Subring (Lev.EAf D)} (X Y : Matrix (Fin n)
 
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Take `⟨b, hb0, hb⟩` from `level_den D V Λ hΛ`. Take `⟨C, A, hg⟩` from `point_den D V`. Take `⟨dc, hdc0, -, hdc⟩` from `hg c⁻¹`. Use `⟨(dc : ℝ) * b * C, A, fun g => ?_⟩` and prove the remaining obligations. Take `⟨dg, hdg0, hdgH, hdg⟩` from `hg g⁻¹`.
+
+Rewrite `hdgH` using `[GlobalTheory.Grow.height_inv]`. Use `⟨dc * b * dg, by positivity, ?_, fun γ hk δ hδ i j => ?_⟩` and prove the remaining obligations. Use `push_cast`. Combine the equalities or inequalities in the displayed calculation. Establish `e : (Lev.finE V γ).1 = (Lev.finE V c⁻¹).1 * (Lev.finE V (c * γ * g)).1 * (Lev.finE V g⁻¹).1`.
+
+Rewrite using `[← Units.val_mul, ← Units.val_mul, ← map_mul, ← map_mul]`. Use `congr 2`. Use `group`. Establish `hP : ∀ i j, ((dc : Lev.EAf D) • (Lev.finE V c⁻¹).1) i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `fun i j => by rw [Matrix.smul_apply, smul_eq_mul]; exact hdc i j`. Establish `hK : ∀ i j, ((b : Lev.EAf D) • (Lev.finE V (c * γ * g)).1) i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `fun i j => by rw [Matrix.smul_apply, smul_eq_mul]; exact hb _ hk i j`.
+
+Establish `hQ : ∀ i j, ((dg : Lev.EAf D) • (Lev.finE V g⁻¹).1) i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `fun i j => by rw [Matrix.smul_apply, smul_eq_mul]; exact hdg i j`. Establish `hmem` using `mem_mul_of_mem _ _ (mem_mul_of_mem _ _ hP hK) hQ i j`. Establish `e2 : ((dc : Lev.EAf D) • (Lev.finE V c⁻¹).1 * ((b : Lev.EAf D) • (Lev.finE V (c * γ * g)).1) * ((dg : Lev.EAf D) • (Lev.finE V g⁻¹).1)) i j = ((dc * b * dg : ℕ) : Lev.EAf D) * (Lev.finE V γ).1 i j`. Rewrite using `[e]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, Matrix.smul_apply, smul_eq_mul, Nat.cast_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `hmem` using `[e2, finE_rat V γ δ hδ i j]`. Establish `e3 : Formalism.L2.Col.iA D.host.F D.host.E (((dc * b * dg : ℕ) : D.host.E) * (δ : Matrix (Fin V.rank) (Fin V.rank) D.host.E) i j) = ((dc * b * dg : ℕ) : Lev.EAf D) * Formalism.L2.Col.iA D.host.F D.host.E ((δ : Matrix (Fin V.rank) (Fin V.rank) D.host.E) i j)`. Rewrite using `[map_mul, map_natCast]`. Rewrite `hmem` using `[← e3]`.
+
+Take `⟨r, hr⟩` from `Formalism.L2.Col.til_tmv_int_of_iA hmem`. Rewrite using `[← hr]`. Conclude with `RingOfIntegers.isIntegral_coe r`.
+-/
 theorem exists_den (D : D7) (V : HSp D) (Λ : Lat V) (hΛ : IsSelfDualC V Λ) (c : GA D V) :
     ∃ (C : ℝ) (A : ℕ), ∀ g : GA D V, ∃ m : ℕ, 0 < m ∧ (m : ℝ) ≤ C * height V g ^ A ∧
       ∀ γ : GA D V, Lev.finE V (c * γ * g) ∈ congLev D.sp.cm V.gram Λ ⊤ →
@@ -166,6 +219,9 @@ end GlobalTheory.PoinCount
 
 namespace GlobalTheory.PoinCount
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.sum_productWeights_le_of_separated_geometricMean ι n`.
+-/
 theorem sum_sep_le (ι : Type) [Fintype ι] [Nonempty ι] (n : ℕ) : ∃ C : ℝ, 0 ≤ C ∧ ∀ la : ℝ, 0 < la → la ≤ 1 →
     ∀ S : Finset (ι → Matrix (Fin n) (Fin n) ℂ),
       (∀ s ∈ S, ∀ s' ∈ S, s ≠ s' → la ^ Fintype.card ι ≤ ∏ v, hsn (s v - s' v)) →
@@ -174,6 +230,11 @@ theorem sum_sep_le (ι : Type) [Fintype ι] [Nonempty ι] (n : ℕ) : ∃ C : �
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `GlobalTheory.Grow.normInf_le_height V hθ`. Use `⟨max C 0, le_max_right _ _, fun g τ => ?_⟩` and prove the remaining obligations. Establish `h1 : hsn (cmp θ τ g) ≤ normInf θ V g`. Use `(hsn_le_sum _).trans ?_` and prove the remaining obligations. Unfold `normInf`.
+
+Use `le_trans ?_ (Finset.single_le_sum (f := fun τ => ∑ i, ∑ j, (‖infMat D.sp.cm.sig V.gram (θ τ) g i j‖ + ‖infMat D.sp.cm.sig V.gram (θ τ) g⁻¹ i j‖)) (fun _ _ => by positivity) (Finset.mem_univ τ))` and prove the remaining obligations. Conclude with `Finset.sum_le_sum fun i _ => Finset.sum_le_sum fun j _ => le_add_of_nonneg_right (norm_nonneg _)`. Conclude with `h1.trans ((hC g).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (GlobalTheory.Grow.height_pos V g).le))`.
+-/
 theorem hsn_cmp_le {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ (g : GA D V) τ, hsn (cmp θ τ g) ≤ C * height V g := by
   obtain ⟨C, hC⟩ := GlobalTheory.Grow.normInf_le_height V hθ
@@ -187,6 +248,49 @@ theorem hsn_cmp_le {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) :
     exact Finset.sum_le_sum fun i _ => Finset.sum_le_sum fun j _ => le_add_of_nonneg_right (norm_nonneg _)
   exact h1.trans ((hC g).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (GlobalTheory.Grow.height_pos V g).le))
 
+/- English proof (translation)
+Introduce `D θ hθ V Λ hΛ c`. Use `haveI : Nonempty D.what₂.Tau := ⟨((GlobalTheory.LevelSeries.mk_tauE_bij D).2 (Classical.arbitrary _)).choose⟩`. Take `⟨C3, A3, h3⟩` from `exists_den D V Λ hΛ c`. Take `⟨C4, hC4, h4⟩` from `hsn_cmp_le hθ V`. Take `⟨C5, hC5, h5⟩` from `sum_sep_le D.what₂.Tau V.rank`.
+
+Use `set N := 2 * V.rank ^ 2 + 1 with hN`. Use `set f := Fintype.card D.what₂.Tau with hf`. Use `set Kc : ℝ := ∑ τ, hsn (cmp θ τ c⁻¹) with hKc`. Establish `hKc0 : 0 ≤ Kc` using `Finset.sum_nonneg fun _ _ => Real.sqrt_nonneg _`. Use `set B : ℝ := 1 + Kc * C4 with hB`.
+
+Establish `hB1 : 1 ≤ B` using `le_add_of_nonneg_right (mul_nonneg hKc0 hC4)`. Use `⟨B ^ (N * f) * C5 * (max C3 1) ^ (2 * V.rank ^ 2 * f), N * f + A3 * (2 * V.rank ^ 2 * f), fun g s hs => ?_⟩` and prove the remaining obligations. Take `⟨m, hm0, hmH, hm⟩` from `h3 g`. Use `set H := height V g with hHdef`. Establish `hH : 1 ≤ H` using `GlobalTheory.Grow.one_le_height V g`.
+
+Use `choose δ hδ using fun γ : GQ V => exists_rat V γ`. Set `x : GQ V → D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ` to `fun γ τ => cmp θ τ (γ : GA D V)`. Establish `hx : ∀ γ τ, x γ τ = (δ γ : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (tauE D τ)` using `fun γ τ => cmp_rat hθ V γ (δ γ) (hδ γ) τ`. Establish `hinj : Set.InjOn x s`. Introduce `γ _ γ' _ e`.
+
+Establish `e1 : (δ γ : Matrix (Fin V.rank) (Fin V.rank) D.host.E) = δ γ'`. Take `⟨τ⟩` from `‹Nonempty D.what₂.Tau›`. Use `congrFun e τ` as an intermediate fact. Rewrite `this` using `[hx, hx]`. Conclude with `Matrix.ext fun i j => (tauE D τ).injective (congrFun (congrFun this i) j)`.
+
+Establish `e2 : δ γ = δ γ'` using `Units.ext e1`. Establish `e3 : matHom V (γ : GA D V) = matHom V (γ' : GA D V)` using `by rw [← hδ, ← hδ, e2]`. Establish `e4 : (γ : GA D V) = γ'`. Unfold `Formalism.L2.Theta.matHom at e3`. Conclude with `Subgroup.subtype_injective _ e3`.
+
+Conclude with `Subtype.ext e4`. Establish `hsep : ∀ y ∈ s.image x, ∀ y' ∈ s.image x, y ≠ y' → ((m : ℝ)⁻¹) ^ f ≤ ∏ τ, hsn (y τ - y' τ)`. Introduce `y hy y' hy' hne`. Take `⟨γ, hγ, rfl⟩` from `Finset.mem_image.1 hy`. Take `⟨γ', hγ', rfl⟩` from `Finset.mem_image.1 hy'`.
+
+Establish `hδne : (δ γ : Matrix (Fin V.rank) (Fin V.rank) D.host.E) ≠ δ γ'`. Introduce `e`. Apply `hne` to reduce the goal to its premises. Use function extensionality and compare the values at `τ`. Rewrite using `[hx, hx, e]`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨i, j, hij⟩ : ∃ i j, (δ γ : Matrix (Fin V.rank) (Fin V.rank) D.host.E) i j ≠ (δ γ' : Matrix (Fin V.rank) (Fin V.rank) D.host.E) i j := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hδne (Matrix.ext hc)`. Use `set z := (δ γ : Matrix (Fin V.rank) (Fin V.rank) D.host.E) i j - (δ γ' : Matrix (Fin V.rank) (Fin V.rank) D.host.E) i j with hz`.
+
+Establish `hz0 : z ≠ 0` using `sub_ne_zero.2 hij`. Establish `hint : IsIntegral ℤ ((m : D.host.E) * z)`. Rewrite using `[hz, mul_sub]`. Conclude with `(hm _ (hs γ hγ) _ (hδ γ) i j).sub (hm _ (hs γ' hγ') _ (hδ γ') i j)`. Establish `h1` using `one_le_prod_tauE D (mul_ne_zero (Nat.cast_ne_zero.2 hm0.ne') hz0) hint`.
+
+Establish `h2 : ∀ τ, ‖tauE D τ ((m : D.host.E) * z)‖ ≤ m * hsn (x γ τ - x γ' τ)`. Introduce `τ`. Establish `ez : (x γ τ - x γ' τ) i j = tauE D τ z`. Rewrite using `[hx, hx, Matrix.sub_apply, Matrix.map_apply, Matrix.map_apply, hz, map_sub]`. Rewrite using `[map_mul, norm_mul, map_natCast, Complex.norm_natCast, ← ez]`.
+
+Conclude with `mul_le_mul_of_nonneg_left (norm_entry_le_hsn _ i j) (Nat.cast_nonneg _)`. Establish `h3 : (1 : ℝ) ≤ (m : ℝ) ^ f * ∏ τ, hsn (x γ τ - x γ' τ)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ]`. Establish `hmpos : (0 : ℝ) < (m : ℝ) ^ f` using `by positivity`.
+
+Rewrite using `[inv_pow, inv_le_iff_one_le_mul₀' hmpos]`. Conclude with `h3`. Establish `hterm : ∀ γ ∈ s, ∏ τ, ((1 + hsn (cmp θ τ (c * (γ : GA D V) * g))) ^ N)⁻¹ ≤ (B * H) ^ (N * f) * ∏ τ, ((1 + hsn (x γ τ)) ^ N)⁻¹`. Introduce `γ _`. Rewrite using `[pow_mul, hf, ← Finset.card_univ, ← Finset.prod_const, ← Finset.prod_mul_distrib]`.
+
+Use `Finset.prod_le_prod (fun τ _ => inv_nonneg.2 (pow_nonneg (add_nonneg zero_le_one (Real.sqrt_nonneg _)) _)) fun τ _ => ?_` and prove the remaining obligations. Use `set h := hsn (cmp θ τ (c * (γ : GA D V) * g)) with hh`. Establish `hh0 : 0 ≤ h` using `Real.sqrt_nonneg _`. Establish `e : (γ : GA D V) = c⁻¹ * (c * (γ : GA D V) * g) * g⁻¹` using `by group`. Establish `hx' : x γ τ = cmp θ τ c⁻¹ * cmp θ τ (c * (γ : GA D V) * g) * cmp θ τ g⁻¹` using `by show infMat D.sp.cm.sig V.gram (θ τ) (γ : GA D V) = _ conv_lhs => rw [e]`.
+
+Rewrite using `[GlobalTheory.SmoothForms.HeightCoset.infMat_mul', GlobalTheory.SmoothForms.HeightCoset.infMat_mul']`. Establish `hg : hsn (cmp θ τ g⁻¹) ≤ C4 * H`. Use `h4 g⁻¹ τ` as an intermediate fact. Rewrite `this` using `[GlobalTheory.Grow.height_inv]`. Then use the resulting hypothesis. Establish `hc : hsn (cmp θ τ c⁻¹) ≤ Kc` using `Finset.single_le_sum (f := fun τ => hsn (cmp θ τ c⁻¹)) (fun _ _ => Real.sqrt_nonneg _) (Finset.mem_univ τ)`.
+
+Establish `hb : hsn (x γ τ) ≤ Kc * C4 * H * h`. Rewrite using `[hx']`. Combine the equalities or inequalities in the displayed calculation. Establish `hK : 0 ≤ Kc * C4` using `mul_nonneg hKc0 hC4`. Establish `hH0 : 0 ≤ H` using `zero_le_one.trans hH`.
+
+Establish `t1 : 0 ≤ H * h` using `mul_nonneg hH0 hh0`. Establish `t2 : 0 ≤ Kc * C4 * H` using `mul_nonneg hK hH0`. Establish `t3 : 0 ≤ Kc * C4 * H * h` using `mul_nonneg t2 hh0`. Establish `eB : B * H * (1 + h) = H + H * h + Kc * C4 * H + Kc * C4 * H * h` using `by rw [hB]; ring`. Establish `hle : 1 + hsn (x γ τ) ≤ B * H * (1 + h)` using `by rw [eB]; linarith`.
+
+Establish `hp : 0 < (1 + hsn (x γ τ)) ^ N` using `pow_pos (add_pos_of_pos_of_nonneg zero_lt_one (Real.sqrt_nonneg _)) _`. Establish `hq : 0 < (1 + h) ^ N` using `pow_pos (add_pos_of_pos_of_nonneg zero_lt_one hh0) _`. Rewrite using `[← div_eq_mul_inv, le_div_iff₀ hp, ← div_eq_inv_mul, div_le_iff₀ hq, ← mul_pow]`. Conclude with `pow_le_pow_left₀ (add_nonneg zero_le_one (Real.sqrt_nonneg _)) hle N`. Establish `hla : (0 : ℝ) < (m : ℝ)⁻¹` using `by positivity`.
+
+Establish `hla1 : (m : ℝ)⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ (by exact_mod_cast hm0)`. Establish `hsum` using `h5 _ hla hla1 (s.image x) hsep`. Rewrite `hsum` using `[inv_inv]`. Establish `hmle : (m : ℝ) ≤ max C3 1 * H ^ A3` using `hmH.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (by positivity))`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← Finset.mul_sum, Finset.sum_image hinj]`. Use `_ ≤ (B * H) ^ (N * f) * (C5 * (m : ℝ) ^ (2 * V.rank ^ 2 * f)) := mul_le_mul_of_nonneg_left hsum (by positivity)`. Use `_ ≤ (B * H) ^ (N * f) * (C5 * (max C3 1 * H ^ A3) ^ (2 * V.rank ^ 2 * f)) := by gcongr`. Use `_ = B ^ (N * f) * C5 * (max C3 1) ^ (2 * V.rank ^ 2 * f) * H ^ (N * f + A3 * (2 * V.rank ^ 2 * f)) := by`. Rewrite using `[mul_pow, mul_pow, ← pow_mul, pow_add]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem poincare_count : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (Λ : Lat V), IsSelfDualC V Λ → ∀ c : GA D V,
     ∃ (C : ℝ) (A : ℕ), ∀ (g : GA D V) (s : Finset (GQ V)),
       (∀ γ ∈ s, Lev.finE V (c * (γ : GA D V) * g) ∈ congLev D.sp.cm V.gram Λ ⊤) →

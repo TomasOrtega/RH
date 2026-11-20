@@ -28,6 +28,17 @@ def LeafRigid : Prop := LateralTheory.E.E4.Hyps → ∀ (q : ℕ) [NeZero q], q.
   ∀ V : Submodule k (FractionRing B), FiniteDimensional k V →
   Set.Finite ((QuotientGroup.mk : sel B q → selQ B q) '' {f | ((f : (FractionRing B)ˣ) : FractionRing B) ∈ V})
 
+/- English proof (translation)
+Introduce `hH q _ k B _ _ _ _ _ _ hq`. Establish `key : Finite {c : ClassGroup B // c ^ q = 1}`. Apply `hT (ClassGroup B) q (NeZero.ne q)` to reduce the goal to its premises. Introduce `p hp hpq`. Establish `: NeZero p` using `⟨hp.ne_zero⟩`.
+
+Establish `hpk : IsUnit (p : k)`. Take `⟨m, rfl⟩` from `hpq`. Move the coercions through the operations in `at hq`. Conclude with `isUnit_of_mul_isUnit_left hq`. Apply `hS B p` to reduce the goal to its premises.
+
+Take `⟨V, hV, hb⟩` from `hB p k B`. Establish `hfin` using `hR hH p hp k B hpk V hV`. Use `Set.finite_univ_iff.mp (hfin.subset ?_)` and prove the remaining obligations. Introduce and unpack `x -`. Proceed by induction on `x using QuotientGroup.induction_on with`.
+
+Consider the case `H f`. Take `⟨g, hg, hgV, u, hu⟩` from `hb f f.2`. Use `⟨⟨g, hg⟩, hgV, ?_⟩` and prove the remaining obligations. Rewrite using `[QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Use `⟨u, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [powMonoidHom_apply, Subgroup.coe_mul, Subgroup.coe_inv, hu]`. Use `group`. Conclude with `Finite.of_equiv _ (@Equiv.subtypeEquiv _ _ (fun c : ClassGroup B => c ^ q = 1) (fun c : CommRing.Pic B => c ^ q = 1) (ClassGroup.equivPic B).toEquiv (fun c => by`. Simplify using `only [MulEquiv.toEquiv_eq_coe, MulEquiv.coe_toEquiv, ← map_pow, MulEquiv.map_eq_one_iff]))`.
+-/
 theorem goal_of (hT : LeafTorsPrime) (hS : LeafSelPic) (hB : LeafBound) (hR : LeafRigid) : LateralTheory.E.E4.LeafPic := by
   intro hH q _ k B _ _ _ _ _ _ hq
   have key : Finite {c : ClassGroup B // c ^ q = 1} := by

@@ -7,6 +7,15 @@ open GlobalTheory.SmGL GlobalTheory.PRep
 
 namespace GlobalTheory.LeviBlockExponentLocal
 
+/- English proof (translation)
+Unfold `polyAt`. Introduce `M`. Proceed by induction on `M with`. Consider the case `zero`. Introduce `S c _ h0 v hv`.
+
+Establish `: v ∈ S 0` using `hv`. Rewrite `this` using `[h0, Submodule.mem_bot]`. Simplify using `[this]`. Consider the case `succ M ih`. Introduce `S c hstep h0 v hv`.
+
+Rewrite using `[List.ofFn_succ', List.concat_eq_append, List.map_append, List.prod_append]`. Simplify using `only [List.map_cons, List.map_nil, List.prod_cons, List.prod_nil, mul_one, Module.End.mul_apply]`. Use `ih (fun t => S t.castSucc) (fun t => c t.castSucc) (fun t w hw => ?_) h0 _ ?_` and prove the remaining obligations. Use `hstep t.castSucc w (by rw [Fin.succ_castSucc]; exact hw)` as an intermediate fact. Conclude with `this`.
+
+Use `hstep (Fin.last M) v (by simpa using hv)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem prod_ofFn_eq_zero {V : Type} [AddCommGroup V] [Module ℂ V] (A : Module.End ℂ V) :
     ∀ (M : ℕ) (S : Fin (M + 1) → Submodule ℂ V) (c : Fin M → ℂ),
       (∀ t : Fin M, ∀ v ∈ S t.succ, A v - c t • v ∈ S t.castSucc) → S 0 = ⊥ →
@@ -29,9 +38,15 @@ theorem prod_ofFn_eq_zero {V : Type} [AddCommGroup V] [Module ℂ V] (A : Module
     · have := hstep (Fin.last M) v (by simpa using hv)
       simpa using this
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toSubmodule_bot' {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V) :
     (⊥ : Subrepresentation ρ).toSubmodule = ⊥ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toSubmodule_top' {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V) :
     (⊤ : Subrepresentation ρ).toSubmodule = ⊤ := rfl
 
@@ -49,6 +64,13 @@ def cellScalar (f : ∀ i, (Σ j, c i j) ≃ m i) (g : ∀ j, (Σ i, c i j) ≃ 
     (relDeltaHalf k c (swapBlocks k c (relProj k g x)))⁻¹ *
       χ' (relEmb k f (swapBlocks k c (relProj k g x)))
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `y`. Use `show w.1.1 (y * x) = _`. Rewrite using `[hcomm y]`.
+
+Establish `h2 : w.1.1 (x * y) = _` using `w.1.2 ⟨x, hx⟩ y`. Rewrite using `[h2]`. Use `show _ = ((cellScalar f g χ' ⟨x, hx⟩ : ℂˣ) : ℂ) • w.1.1 y`. Generalize the expression as in `w.1.1 y = u`. Proceed by induction on `u using Submodule.Quotient.induction_on with`.
+
+Consider the case `H v`. Rewrite using `[MonoidHom.comp_apply, twist_apply, MonoidHom.comp_apply, relJac_mk, ofChar, twist_apply]`. Simplify using `only [Representation.trivial_apply, cellScalar, Units.val_mul, Units.val_inv_eq_inv_val, smul_smul, ← Submodule.Quotient.mk_smul]`. Rewrite using `[mul_assoc]`.
+-/
 theorem cellFunctor_ofChar_central (f : ∀ i, (Σ j, c i j) ≃ m i) (g : ∀ j, (Σ i, c i j) ≃ m' j)
     (χ' : Levi k m →* ℂˣ) (x : Levi k m') (hx : x ∈ relParab k g) (hcomm : ∀ y, y * x = x * y) (w) :
     cellFunctor f g (ofChar χ') x w = ((cellScalar f g χ' ⟨x, hx⟩ : ℂˣ) : ℂ) • w := by
@@ -72,6 +94,9 @@ section Slot
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Unfold `blockScalar₂`. Distinguish the cases in `h : j = ⟨i, by omega⟩`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Pi.mulSingle_eq_of_ne h, if_neg h, map_one]`.
+-/
 theorem blockScalar_apply (N i : ℕ) (ϖ : kˣ) (j : Fin (i + 2)) :
     blockScalar₂ k N i ϖ j = Matrix.GeneralLinearGroup.scalar _ (if j = ⟨i, by omega⟩ then ϖ else 1) := by
   unfold blockScalar₂
@@ -79,6 +104,9 @@ theorem blockScalar_apply (N i : ℕ) (ϖ : kˣ) (j : Fin (i + 2)) :
   · subst h; simp
   · rw [Pi.mulSingle_eq_of_ne h, if_neg h, map_one]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Rewrite using `[Pi.mul_apply, Pi.mul_apply, blockScalar_apply]`. Use `ext1`. Simplify using `only [Units.val_mul, Matrix.GeneralLinearGroup.scalar, Units.coe_map, MonoidHom.coe_coe]`. Conclude with `(Matrix.scalar_commute _ (fun r => Commute.all _ r) _).symm.eq`.
+-/
 theorem blockScalar_comm (N i : ℕ) (ϖ : kˣ) (y : Levi k (fun j : Fin (i + 2) => Fin (blockSizes₂ N i j))) :
     y * blockScalar₂ k N i ϖ = blockScalar₂ k N i ϖ * y := by
   funext j
@@ -87,6 +115,9 @@ theorem blockScalar_comm (N i : ℕ) (ϖ : kˣ) (y : Levi k (fun j : Fin (i + 2)
   simp only [Units.val_mul, Matrix.GeneralLinearGroup.scalar, Units.coe_map, MonoidHom.coe_coe]
   exact (Matrix.scalar_commute _ (fun r => Commute.all _ r) _).symm.eq
 
+/- English proof (translation)
+Introduce `j _`. Rewrite using `[blockScalar_apply]`. Use `mem_parab.2 fun a b hab => ?_` and prove the remaining obligations. Establish `hne : a ≠ b` using `by rintro rfl; exact lt_irrefl _ hab`. Simplify using `[Matrix.GeneralLinearGroup.scalar, hne]`.
+-/
 theorem blockScalar_mem_relParab (N i : ℕ) (ϖ : kˣ) {β : Type} {c : Fin (i + 2) → β → Type} [LinearOrder β] [Fintype β]
     [∀ j r, Fintype (c j r)] [∀ j r, DecidableEq (c j r)]
     (g : ∀ j, (Σ r, c j r) ≃ Fin (blockSizes₂ N i j)) : blockScalar₂ k N i ϖ ∈ relParab k g := by

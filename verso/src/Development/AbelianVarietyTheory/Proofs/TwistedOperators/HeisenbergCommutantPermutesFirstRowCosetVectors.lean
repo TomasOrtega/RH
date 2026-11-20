@@ -21,10 +21,18 @@ namespace GlobalTheory.CosPerm
 
 variable {D : D7}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [heisO, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem heisO_smul_fun (ψ : AddChar (AF D.host.F) ℂ) {S T : HSp D} (w : WO S T) (c : ℂ) (f : WO S T → ℂ) :
     heisO ψ S T w (c • f) = c • heisO ψ S T w f := by
   funext x; simp only [heisO, Pi.smul_apply, smul_eq_mul]; ring
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.CjNeg.heis_negS hψ S T w (star f)`. Establish `hc : GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj id (star f) = f`. Use function extensionality and compare the values at `y`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj]`. Rewrite `h` using `[hc]`.
+
+Rewrite using `[h]`. Use function extensionality and compare the values at `y`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj]`.
+-/
 theorem heisO_star {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (S T : HSp D) (w : WO S T) (f : WO S T → ℂ) :
     heisO ψ S T w (star f) = star (heisO ψ (negSp S) T w f) := by
   have h := GlobalTheory.CjNeg.heis_negS hψ S T w (star f)
@@ -33,9 +41,15 @@ theorem heisO_star {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) 
   rw [hc] at h
   rw [h]; funext y; simp [GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.ThetaSquare.symplO_eq, GlobalTheory.ThetaSquare.symplO_eq, GlobalTheory.CjNeg.symplOH_negS]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem symplO_negSp (S T : HSp D) (x y : WO S T) : symplO (negSp S) T x y = -symplO S T x y := by
   rw [GlobalTheory.ThetaSquare.symplO_eq, GlobalTheory.ThetaSquare.symplO_eq, GlobalTheory.CjNeg.symplOH_negS]; ring
 
+/- English proof (translation)
+Establish `key : ∀ a b : WO S T, ψ (symplO S T a b) = 1 → ψ (symplO (negSp S) T a b) = 1` using `fun a b h => by`. Rewrite using `[symplO_negSp, AddChar.map_neg_eq_inv, h, inv_one]`. Conclude with `⟨fun u hu => key _ _ (hw.1 u hu), fun e he u hu hh => key _ _ (hw.2 e he u hu hh)⟩`.
+-/
 theorem mem_ann_negSp {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {Γ : AddSubgroup (WO S T)} {w : WO S T}
     (hw : w ∈ Ann ψ S T Γ) : w ∈ Ann ψ (negSp S) T Γ := by
   have key : ∀ a b : WO S T, ψ (symplO S T a b) = 1 → ψ (symplO (negSp S) T a b) = 1 := fun a b h => by
@@ -46,6 +60,23 @@ end GlobalTheory.CosPerm
 
 open GlobalTheory.CosPerm in
 
+/- English proof (translation)
+Introduce `D hD T L μ0 hL sc G W M hM i hi κ`. Take `⟨h1, hdep, hfock⟩` from `GlobalTheory.T.coset_vectors_nonzero_depth_fock_vacua D hD T L μ0 hL sc G W M hM i hi κ`. Establish `hψ : IsStdChar D W.ψ (-1)` using `W.ψ_std`. Establish `hth` using `(GlobalTheory.CjNeg.theta_heis_neg D W.ψ hψ (G.V (.grid (i + 1) 0)) (G.V (.grid i 0))).1 (star (W.cosVec i κ))`. Establish `hcj : GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj id (star (W.cosVec i κ)) = W.cosVec i κ`.
+
+Use function extensionality and compare the values at `y`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj]`. Rewrite `hth` using `[hcj]`. Use `⟨h1, hfock, ⟨hth.2.1 hdep.1, fun u hu => ?_, fun e he u hu hh => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[heisO_star hψ]`.
+
+Conclude with `congrArg star (hdep.2.1 u hu)`. Rewrite using `[heisO_star hψ]`. Conclude with `congrArg star (hdep.2.2 e he u hu hh)`. Introduce `w hw hfin`. Establish `hw' : w ∈ Ann W.ψ (G.pS (.chi i 0)) (G.pT (.chi i 0)) (depLat G (.chi i 0))` using `mem_ann_negSp hw`.
+
+Take `⟨e, he, hthe⟩` from `W.cosVec_is`. Establish `hthi` using `fun κ => hthe i hi κ`. Take `⟨c₀, hc₀⟩` from `GlobalTheory.T.heisenberg_offPart_vacuumCommutant_acts_by_scalar D hD T L μ0 hL sc G W M hM i hi e he w hw' hfin`. Take `⟨c₃, h₃⟩` from `GlobalTheory.T.heisenbergOperator_eigen_of_thetaVector_at_place D W.ψ (G.pS (.chi i 0)) (G.pT (.chi i 0)) e (latO (G.pS (.chi i 0)) (G.pT (.chi i 0)) (G.latS (.chi i 0) : Set _) (G.latT (.chi i 0) : Set _) fun _ => True) (W.vac i) (cosInd e κ) (W.cosVec i κ) ((1 - e - cA D e) • w …`. Take `⟨c₂, h₂⟩` from `GlobalTheory.T.conjugateHalfCommutant_acts_on_cosetVector_by_scalar D hD T L μ0 hL sc G W M hM i hi e he hthi w hw' hfin κ`.
+
+Take `⟨κ', h₁⟩` from `GlobalTheory.T.commutant_depth_lattice_permutes_coset_vectors D hD T L μ0 hL sc G W M hM i hi e he hthi w hw' hfin κ`. Establish `hdec : w = e • w + (cA D e • w + (1 - e - cA D e) • w)`. Rewrite using `[← add_smul, ← add_smul, show e + (cA D e + (1 - e - cA D e)) = 1 by ring, one_smul]`. Establish `hne : ∀ a, W.ψ a ≠ 0` using `fun a h => by`. Use `AddChar.map_add_eq_mul W.ψ a (-a)` as an intermediate fact.
+
+Rewrite `this` using `[add_neg_cancel, AddChar.map_zero_eq_one, h, zero_mul]`. Conclude with `one_ne_zero this`. Establish `e1` using `GlobalTheory.OrientedHeis.heisO_heisO (ψ := W.ψ) (S := G.pS (.chi i 0)) (T := G.pT (.chi i 0)) (cA D e • w) ((1 - e - cA D e) • w) (W.cosVec i κ)`. Rewrite `e1` using `[h₃, heisO_smul_fun, h₂, smul_smul]`. Establish `e1' : heisO W.ψ (G.pS (.chi i 0)) (G.pT (.chi i 0)) (cA D e • w + (1 - e - cA D e) • w) (W.cosVec i κ) = (W.ψ (symplOH (G.pS (.chi i 0)) (G.pT (.chi i 0)) (cA D e • w) ((1 - e - cA D e) • w)))⁻¹ • ((c₃ * c₂) • W.cosVec i κ)`.
+
+Rewrite using `[e1, inv_smul_smul₀ (hne _)]`. Establish `e2` using `GlobalTheory.OrientedHeis.heisO_heisO (ψ := W.ψ) (S := G.pS (.chi i 0)) (T := G.pT (.chi i 0)) (e • w) (cA D e • w + (1 - e - cA D e) • w) (W.cosVec i κ)`. Rewrite `e2` using `[← hdec, e1', heisO_smul_fun, heisO_smul_fun, h₁]`. Establish `hC : heisO W.ψ (G.pS (.chi i 0)) (G.pT (.chi i 0)) w (W.cosVec i κ) = ((W.ψ (symplOH (G.pS (.chi i 0)) (G.pT (.chi i 0)) (e • w) (cA D e • w + (1 - e - cA D e) • w)))⁻¹ * ((W.ψ (symplOH (G.pS (.chi i 0)) (G.pT (.chi i 0)) (cA D e • w) ((1 - e - cA D e) • w)))⁻¹ * (c₃ * c₂))) • W. …`. Rewrite using `[← smul_smul, ← smul_smul, e2, inv_smul_smul₀ (hne _)]`.
+
+Rewrite using `[heisO_star hψ]`. Express the relevant statement in the definitionally equal form `star (heisO W.ψ (G.pS (.chi i 0)) (G.pT (.chi i 0)) w (W.cosVec i κ)) ∈ _`. Rewrite using `[hC, star_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨κ', rfl⟩)`.
+-/
 theorem GlobalTheory.CosPerm.cosVec_perm : All fun {D} _ _ _ {G} W _ => ∀ i, i < D.R.m → ∀ κ, W.cosVec i κ ≠ 0 ∧ (∀ τ, IsFockVacAt (heisO W.ψ (G.pS (.chi i 0)) (G.pT (.chi i 0))) W.θ τ (cplxO (G.cartS W.cart (.chi i 0) τ) (G.onT W.cart (.chi i 0) τ)) (W.cosVec i κ)) ∧ VacG W.ψ _ _ (latRow G i) (star (W.cosVec i κ)) ∧ ∀ w ∈ Ann W.ψ _ _ (latRow G i), w.map (infPart D) = 0 → heisO W.ψ (G.V (.grid (i + 1) 0)) (G.V (.grid i 0)) w (star (W.cosVec i κ)) ∈ Submodule.span ℂ (Set.range fun κ' => (star (W.cosVec i κ') : WO (G.V (.grid (i + 1) 0)) (G.V (.grid i 0)) → ℂ)) := by
   intro D hD T L μ0 hL sc G W M hM i hi κ
   obtain ⟨h1, hdep, hfock⟩ := GlobalTheory.T.coset_vectors_nonzero_depth_fock_vacua D hD T L μ0 hL sc G W M hM i hi κ

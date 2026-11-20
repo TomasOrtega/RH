@@ -15,6 +15,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 attribute [local instance] algPadicInt algPadicField towerPadic factPadic GlobalTheory.PadicComplexHost.isAdicComplete
 namespace GlobalTheory.FlatModel
 
+/- English proof (translation)
+Establish `h1 : IsIso ((π ∣_ O) ∣_ (O.ι ⁻¹ᵁ Xw))` using `IsZariskiLocalAtTarget.restrict (P := MorphismProperty.isomorphisms Scheme) hiso _`. Establish `h2 : IsIso (π ∣_ (O.ι ''ᵁ (O.ι ⁻¹ᵁ Xw)))` using `((MorphismProperty.isomorphisms Scheme).arrow_mk_iso_iff (morphismRestrictRestrict π O (O.ι ⁻¹ᵁ Xw))).mp h1`. Establish `e : O.ι ''ᵁ (O.ι ⁻¹ᵁ Xw) = Xw`. Rewrite using `[Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι]`. Conclude with `inf_eq_right.mpr hle`.
+
+Rewrite `h2` using `[e]`. Introduce `k _ f hf`. Use `haveI := hg k f hf`. Establish `hcomm : (π ⁻¹ᵁ Xw).ι ≫ π ≫ s = (π ∣_ Xw) ≫ Xw.ι ≫ s`. Rewrite using `[← Category.assoc, ← morphismRestrict_ι, Category.assoc]`.
+
+Set `m` to `pullback.map ((π ⁻¹ᵁ Xw).ι ≫ π ≫ s) (spMap f) (Xw.ι ≫ s) (spMap f) (π ∣_ Xw) (𝟙 _) (𝟙 _) (by rw [Category.comp_id, hcomm]) (by simp)`. Use `haveI : IsIso m := pullback.map_isIso _ _ _ _ _ _ _ _ _`. Set `H` to `Scheme.homeoOfIso (asIso m)`. Conclude with `Function.Surjective.irreducibleSpace H.symm.continuous H.symm.surjective`.
+-/
 theorem geomIrr_preimage_of_isIso_restrict (V : Type) [CommRing V] (X X' : Scheme.{0}) (s : X ⟶ Sp V) (π : X' ⟶ X)
     (Xw O : X.Opens) (hle : Xw ≤ O) (hiso : IsIso (π ∣_ O)) (hg : GeomIrr s Xw) :
     GeomIrr (π ≫ s) (π ⁻¹ᵁ Xw) := by

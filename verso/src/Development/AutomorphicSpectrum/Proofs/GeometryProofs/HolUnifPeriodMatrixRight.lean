@@ -42,6 +42,11 @@ def ptU (h : IsGrpPullback G' G f φ) {T : Over S} (c : T ⟶ Over.mk ((𝟙_ (O
   MonoidHom.mk' (fun s => c ≫ GlobalTheory.ZH.TorusPerp.ptHom h _ s) fun s s' => by
     rw [map_mul, MonObj.comp_mul]
 
+/- English proof (translation)
+Establish `hb` using `GlobalTheory.ZH.TorusPerp.ptHom_bijective h (𝟙_ (Over S'))`. Use `⟨fun a a' e => hb.1 ((cancel_epi c).1 e), fun x => ?_⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `hb.2 (inv c ≫ x)`. Use `⟨s, ?_⟩` and prove the remaining obligations. Use `show c ≫ _ = x`.
+
+Rewrite using `[hs, IsIso.hom_inv_id_assoc]`.
+-/
 theorem ptU_bijective (h : IsGrpPullback G' G f φ) {T : Over S} (c : T ⟶ Over.mk ((𝟙_ (Over S')).hom ≫ f))
     [IsIso c] : Function.Bijective (ptU h c) := by
   have hb := GlobalTheory.ZH.TorusPerp.ptHom_bijective h (𝟙_ (Over S'))
@@ -81,6 +86,9 @@ def fibreExp (e : FamExp G M B ψ) {b : Fin n → ℂ} (hb : b ∈ B) :
         (continuous_const.prodMk continuous_snd).tendsto' _ _ rfl
       exact hc.eventually h2
 
+/- English proof (translation)
+Take `⟨h, -, H⟩` from `exists_linear_lift_of_additive_family R G g 0 M Set.univ (fun _ => ψ b) (fibreExp e hb) m Set.univ (fun _ => u) isOpen_univ subset_rfl (fun _ _ => hadd) (GlobalTheory.LocLift.isHolTo_comp hhol (C := Set.univ ×ˢ Set.univ) (β := fun bz : (Fin 0 → ℂ) × (Fin m → ℂ) => bz.2) (isOpen_u …`. Conclude with `⟨h 0, (H 0 trivial).1⟩`.
+-/
 theorem exists_lift_fibre [IsCommMonObj G] (e : FamExp G M B ψ) {b : Fin n → ℂ} (hb : b ∈ B) {m : ℕ}
     (u : (Fin m → ℂ) → (Over.mk (spMap (ψ b)) ⟶ G)) (hadd : ∀ z w, u (z + w) = u z * u w)
     (hhol : IsHolTo Set.univ (fun z => (u z).left)) :
@@ -98,6 +106,21 @@ section Core
 
 variable {Gk F Ab Au : Type} [Group Gk] [Group F] [Group Ab] [Group Au] {g g' : ℕ}
 
+/- English proof (translation)
+Establish `hu1 : ∀ z, D (uex z) = 1 → z ∈ Λ` using `fun z hz => (ker z).1 (hD (hz.trans (map_one D).symm))`. Establish `hsub : ∀ w v, uex v = uex w → w - v ∈ Λ`. Introduce `w v hv`. Use `(ker _).1 ?_` and prove the remaining obligations. Use `uadd (w - v) v` as an intermediate fact.
+
+Rewrite `this` using `[sub_add_cancel, hv]`. Conclude with `(mul_eq_right.1 this.symm)`. Establish `hrange : LinearMap.range ℓ = ⊤`. Use `GlobalTheory.AHWeil.eq_top_of_add_discrete Λ _ fun w => ?_` and prove the remaining obligations. Take `⟨s, hs⟩` from `hQ (D (uex w))`.
+
+Take `⟨y, hy⟩` from `hex (P₁ s)`. Establish `h1 : uex (ℓ y) = uex w` using `hD ((hl y s hy.symm).trans hs)`. Use `⟨⟨w - ℓ y, hsub w _ h1⟩, ⟨y, ?_⟩⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Use `⟨fun y hy => hu1 _ ?_, fun p hp => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hl y 1 (by rw [map_one, hy]), map_one]`. Take `⟨y, rfl⟩` from `LinearMap.range_eq_top.1 hrange p`. Take `⟨s, hs⟩` from `hP₁.2 (ex y)`. Establish `hQs : Q s = 1`. Rewrite using `[← hl y s hs, (ker _).2 hp, map_one]`.
+
+Take `⟨d, h, δ, h1, h2⟩` from `hker s hQs`. Establish `hmem : ∀ z, ℓ (h z) ∈ Λ` using `fun z => by`. Take `⟨s', e1, e2⟩` from `h2 z`. Conclude with `hu1 _ ((hl _ s' e1).trans e2)`. Establish `hcont : Continuous fun z => (⟨ℓ (h z), hmem z⟩ : Λ)` using `Continuous.subtype_mk ((LinearMap.continuous_of_finiteDimensional (ℓ ∘ₗ h))) _`.
+
+Establish `hconst` using `PreconnectedSpace.constant (α := Fin d → ℂ) inferInstance hcont (x := δ) (y := 0)`. Establish `hz : ℓ (h δ) = 0`. Use `congrArg Subtype.val hconst` as an intermediate fact. Simplify using `using this`. Use `⟨y - h δ, ?_, by simp [hz]⟩` and prove the remaining obligations.
+
+Use `hadd (y - h δ) (h δ)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, h1, hs]`. Conclude with `mul_eq_right.1 this.symm`.
+-/
 theorem core (P₁ : Gk →* F) (hP₁ : Function.Bijective P₁) (D : Au →* Ab) (hD : Function.Injective D)
     (Q : Gk →* Ab) (hQ : Function.Surjective Q) (ex : (Fin g → ℂ) → F)
     (hadd : ∀ z w, ex (z + w) = ex z * ex w) (hex : Function.Surjective ex)
@@ -160,21 +183,43 @@ def torusPt (c : X →+ Additive ℂˣ) : 𝟙_ (Over (Sp ℂ)) ⟶ splitTorus (
 def chHom (τ : 𝟙_ (Over (Sp ℂ)) ⟶ splitTorus (Sp ℂ) X) : X →+ Additive ℂˣ :=
   (MonoidHom.toAdditive (Units.map (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom.toMonoidHom)).comp (valHom τ)
 
+/- English proof (translation)
+Rewrite using `[torusPt, val_ofVal]`. Both sides reduce to the same expression.
+-/
 theorem val_torusPt (c : X →+ Additive ℂˣ) (a : X) :
     GlobalTheory.SplitTorus.val (torusPt c) a = (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom (((c a).toMul : ℂˣ) : ℂ) := by
   rw [torusPt, val_ofVal]
   rfl
 
+/- English proof (translation)
+Use `hom_ext fun a => ?_` and prove the remaining obligations. Rewrite using `[val_torusPt]`. Conclude with `CategoryTheory.Iso.hom_inv_id_apply (Scheme.ΓSpecIso (CommRingCat.of ℂ)) (GlobalTheory.SplitTorus.val τ a)`.
+-/
 theorem torusPt_chHom (τ : 𝟙_ (Over (Sp ℂ)) ⟶ splitTorus (Sp ℂ) X) : torusPt (chHom τ) = τ := by
   refine hom_ext fun a => ?_
   rw [val_torusPt]
   exact CategoryTheory.Iso.hom_inv_id_apply (Scheme.ΓSpecIso (CommRingCat.of ℂ)) (GlobalTheory.SplitTorus.val τ a)
 
+/- English proof (translation)
+Use `hom_ext fun a => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.SplitTorus.val_mul, val_torusPt, val_torusPt, val_torusPt, ← map_mul]`. Both sides reduce to the same expression.
+-/
 theorem torusPt_add (c c' : X →+ Additive ℂˣ) : torusPt (c + c') = torusPt c * torusPt c' := by
   refine hom_ext fun a => ?_
   rw [GlobalTheory.SplitTorus.val_mul, val_torusPt, val_torusPt, val_torusPt, ← map_mul]
   rfl
 
+/- English proof (translation)
+Use `GlobalTheory.HolFibre.isHolTo_of_isPullback (s := (splitTorusAff ZU X).hom) (t := toZ (Sp ℂ)) (IsPullback.of_hasPullback _ _) ?_ ?_` and prove the remaining obligations. Establish `: IsAffine (splitTorusAff ZU X).left` using `inferInstanceAs (IsAffine (Spec (torusRing ZU X)))`. Use `ReciprocityTheory.ChartRestriction.G.PullbackSections.isHolTo_of_affine isOpen_univ fun r => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (torusRing ZU X)).inv).2 r`. Set `φ : V → torusRing ZU X →+* ℂ` to `fun z => (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom.comp (coord (torusPt (c z))).hom`.
+
+Establish `hs : ∀ z x, φ z (single x 1) = (((c z x).toMul : ℂˣ) : ℂ)`. Introduce `z x`. Use `val_torusPt (c z) x` as an intermediate fact. Use `show (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom (GlobalTheory.SplitTorus.val (torusPt (c z)) x) = _`. Rewrite using `[this]`.
+
+Conclude with `CategoryTheory.Iso.inv_hom_id_apply (Scheme.ΓSpecIso (CommRingCat.of ℂ)) _`. It suffices to establish `hd : Differentiable ℂ (fun z => φ z a) from hd.differentiableOn.congr fun z _ => GlobalTheory.CompanionTheory.Ar.Flat.GaExp.valAt'_top _ _`. Proceed by induction on `a using AddMonoidAlgebra.induction_on with`. Consider the case `of x`. Simplify using `only [AddMonoidAlgebra.of_apply, hs]`.
+
+Conclude with `hc x`. Consider the case `add a a' h h'`. Simplify using `only [map_add]`. Conclude with `h.add h'`. Consider the case `smul r a h`.
+
+Establish `: ∀ z, φ z (r • a) = (r.down : ℂ) * φ z a`. Introduce `z`. Establish `e : r • a = r.down • a`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+
+Rewrite using `[e, map_zsmul, zsmul_eq_mul]`. Simplify using `only [this]`. Conclude with `h.const_mul _`. Use `GlobalTheory.LocLift.isHolTo_congr (GlobalTheory.HolFibre.isHolTo_const isOpen_univ (𝟙 (Sp ℂ))) fun z _ => ?_` and prove the remaining obligations. Conclude with `Over.w (torusPt (c z))`.
+-/
 theorem isHolTo_torusPt {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (c : V → X →+ Additive ℂˣ)
     (hc : ∀ a, Differentiable ℂ fun z => (((c z a).toMul : ℂˣ) : ℂ)) :
     IsHolTo Set.univ (fun z => (torusPt (c z)).left) := by
@@ -212,6 +257,23 @@ theorem isHolTo_torusPt {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (c
   · refine GlobalTheory.LocLift.isHolTo_congr (GlobalTheory.HolFibre.isHolTo_const isOpen_univ (𝟙 (Sp ℂ))) fun z _ => ?_
     exact Over.w (torusPt (c z))
 
+/- English proof (translation)
+Set `bs` to `Module.finBasis ℤ X`. Set `lin : (Fin (Module.finrank ℤ X) → ℂ) → X → ℂ` to `fun z x => ∑ i, ((bs.repr x i : ℤ) : ℂ) * z i`. Establish `lin_add : ∀ z x y, lin z (x + y) = lin z x + lin z y`. Introduce `z x y`. Simplify using `[lin, add_mul, Finset.sum_add_distrib]`.
+
+Establish `lin_addz : ∀ z w x, lin (z + w) x = lin z x + lin w x`. Introduce `z w x`. Simplify using `[lin, mul_add, Finset.sum_add_distrib]`. Set `c : (Fin (Module.finrank ℤ X) → ℂ) → X →+ Additive ℂˣ` to `fun z => AddMonoidHom.mk' (fun x => Additive.ofMul (Units.mk0 (Complex.exp (lin z x)) (Complex.exp_ne_zero _))) fun x y => by`. Apply `Additive.toMul.injective` to reduce the goal to its premises.
+
+Apply `Units.ext` to reduce the goal to its premises. Simplify using `[lin_add, Complex.exp_add]`. Establish `hcv : ∀ z x, (((c z x).toMul : ℂˣ) : ℂ) = Complex.exp (lin z x)` using `fun _ _ => rfl`. Use `⟨_, fun z => torusPt (c z), fun i => Complex.log ((((chHom τ (bs i)).toMul : ℂˣ)) : ℂ), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `z w`.
+
+Establish `key : c (z + w) = c z + c w`. Use `AddMonoidHom.ext fun x => Additive.toMul.injective (Units.ext ?_)` and prove the remaining obligations. Use `show Complex.exp (lin (z + w) x) = Complex.exp (lin z x) * Complex.exp (lin w x)`. Rewrite using `[lin_addz, Complex.exp_add]`. Use `show torusPt (c (z + w)) = torusPt (c z) * torusPt (c w)`.
+
+Rewrite using `[key, torusPt_add]`. Use `isHolTo_torusPt c fun a => ?_` and prove the remaining obligations. Simplify using `only [hcv]`. Use `Differentiable.cexp ?_` and prove the remaining obligations. Simplify using `only [lin]`.
+
+Use `fun_prop`. Establish `key : c (fun i => Complex.log ((((chHom τ (bs i)).toMul : ℂˣ)) : ℂ)) = chHom τ`. Use `AddMonoidHom.toIntLinearMap_injective (bs.ext fun i => ?_)` and prove the remaining obligations. Use `Additive.toMul.injective (Units.ext ?_)` and prove the remaining obligations. Use `show Complex.exp (lin (fun i => Complex.log ((((chHom τ (bs i)).toMul : ℂˣ)) : ℂ)) (bs i)) = _`.
+
+Establish `: lin (fun i => Complex.log ((((chHom τ (bs i)).toMul : ℂˣ)) : ℂ)) (bs i) = Complex.log ((((chHom τ (bs i)).toMul : ℂˣ)) : ℂ)`. Simplify using `[lin, Finsupp.single_apply]`. Rewrite using `[this, Complex.exp_log (Units.ne_zero _)]`. Both sides reduce to the same expression. Use `show torusPt (c _) = τ`.
+
+Rewrite using `[key, torusPt_chHom]`.
+-/
 theorem exists_torus_family [Module.Free ℤ X] [Module.Finite ℤ X]
     (τ : 𝟙_ (Over (Sp ℂ)) ⟶ splitTorus (Sp ℂ) X) :
     ∃ (d : ℕ) (T : (Fin d → ℂ) → (𝟙_ (Over (Sp ℂ)) ⟶ splitTorus (Sp ℂ) X)) (δ : Fin d → ℂ),
@@ -260,6 +322,11 @@ end Torus
 
 section Main
 
+/- English proof (translation)
+Establish `hs : Smooth τ.q.left` using `(GlobalTheory.torusExtension_smooth_geometricallyConnected G τ).1`. Use `τ.q_surjective` as an intermediate fact. Take `⟨p, hp⟩` from `τ.q.left.surjective (x.left (IsLocalRing.closedPoint ℂ))`. Take `⟨g, hg, -⟩` from `GlobalTheory.ZH.LocThetaConv.exists_point (K := ℂ) τ.q.left x.left ⊤ p trivial hp`. Establish `hw : g ≫ G.hom = (𝟙_ (Over (Sp ℂ))).hom`.
+
+Rewrite using `[← Over.w τ.q, ← Category.assoc, hg]`. Conclude with `Over.w x`. Conclude with `⟨Over.homMk g hw, Over.OverMorphism.ext hg⟩`.
+-/
 theorem exists_pt_of_q {G : Over (Sp ℂ)} [GrpObj G] (τ : TorusExtension G) (x : 𝟙_ (Over (Sp ℂ)) ⟶ τ.B) :
     ∃ s : 𝟙_ (Over (Sp ℂ)) ⟶ G, s ≫ τ.q = x := by
   have hs : Smooth τ.q.left := (GlobalTheory.torusExtension_smooth_geometricallyConnected G τ).1
@@ -279,6 +346,29 @@ namespace GlobalTheory.CompanionTheory.Ar.QuotLoc
 
 open GlobalTheory.CompanionTheory.Ar.QuotLoc.Lat
 
+/- English proof (translation)
+Introduce `E _ _ _ H R _ t g n M B ψ e b P A _ φ g' u Hm χ ℓ hb hA hAH hP hL`. Use `letI := P.τ.grpB`. Use `letI := P.τ.addCommGroup`. Use `haveI := P.τ.free`. Use `haveI := P.τ.finite`.
+
+Use `haveI := P.τ.q_hom`. Use `haveI := P.τ.i_hom`. Use `haveI : IsMonHom P.e.hom := P.e_hom`. Use `haveI := u.discrete`. Set `c₁ : Over.mk (spMap (ψ b)) ⟶ Over.mk ((𝟙_ (Over (Sp ℂ))).hom ≫ spMap (ψ b))` to `Over.homMk (𝟙 _) (by simp)`.
+
+Set `c₂ : 𝟙_ (Over (Sp ℂ)) ⟶ Over.mk ((𝟙_ (Over (Sp ℂ))).hom ≫ 𝟙 (Sp ℂ))` to `Over.homMk (𝟙 _) (by simp)`. Use `haveI : IsIso c₁ := by`. Apply the tactic sequence `refine ⟨Over.homMk (𝟙 _) (by simp), ?_, ?_⟩ <;> exact Over.OverMorphism.ext (Category.id_comp _)`. Use `haveI : IsIso c₂ := by`. Apply the tactic sequence `refine ⟨Over.homMk (𝟙 _) (by simp), ?_, ?_⟩ <;> exact Over.OverMorphism.ext (Category.id_comp _)`.
+
+Set `P₁` to `ptU P.m.cart c₁`. Set `D` to `ptU hA c₂`. Set `Q : (𝟙_ (Over (Sp ℂ)) ⟶ P.tK.G) →* (𝟙_ (Over (Sp ℂ)) ⟶ P.tB.G)` to `MonoidHom.mk' (fun s => s ≫ P.τ.q ≫ P.e.hom) fun s s' => by`. Rewrite using `[← Category.assoc, MonObj.mul_comp, MonObj.mul_comp, Category.assoc, Category.assoc]`. Establish `hQ1 : ∀ z : 𝟙_ (Over (Sp ℂ)) ⟶ splitTorus (Sp ℂ) P.τ.X, Q (z ≫ P.τ.i) = 1`.
+
+Introduce `z`. Establish `h1 : P.τ.i ≫ P.τ.q = toUnit _ ≫ η` using `P.τ.isKernel.w`. Establish `h2 : z ≫ P.τ.i ≫ P.τ.q = 1`. Rewrite using `[h1, ← Category.assoc, Hom.one_def]`. Use `congr 1`.
+
+Conclude with `toUnit_unique _ _`. Use `show (z ≫ P.τ.i) ≫ P.τ.q ≫ P.e.hom = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hQ : Function.Surjective Q` using `fun a => by`. Take `⟨s, hs⟩` from `exists_pt_of_q P.τ (a ≫ P.e.inv)`.
+
+Use `⟨s, ?_⟩` and prove the remaining obligations. Use `show s ≫ P.τ.q ≫ P.e.hom = a`. Rewrite using `[← Category.assoc, hs, Category.assoc, Iso.inv_hom_id, Category.comp_id]`. Establish `hl : ∀ y s, P₁ s = e.ex b y → D (u.ex (ℓ y)) = Q s`. Introduce `y s h`.
+
+Establish `h1 : s.left ≫ P.m.φ = (e.ex b y).left` using `(Category.id_comp _).symm.trans (congrArg (fun q => q.left) h)`. Conclude with `Over.OverMorphism.ext ((Category.id_comp _).trans (hL y s h1))`. Establish `hker : ∀ s, Q s = 1 → ∃ (d : ℕ) (h : (Fin d → ℂ) →ₗ[ℂ] (Fin g → ℂ)) (δ : Fin d → ℂ), e.ex b (h δ) = P₁ s ∧ ∀ z, ∃ s', P₁ s' = e.ex b (h z) ∧ Q s' = 1`. Introduce `s hs`. Establish `h0 : s ≫ P.τ.q = 1`.
+
+Rewrite using `[← cancel_mono P.e.hom, MonObj.one_comp, Category.assoc]`. Conclude with `hs`. Set `τ₀ : 𝟙_ (Over (Sp ℂ)) ⟶ splitTorus (Sp ℂ) P.τ.X` to `P.τ.isKernel.lift s (toUnit _) (by rw [h0, Hom.one_def])`. Establish `hτ : τ₀ ≫ P.τ.i = s` using `P.τ.isKernel.lift_fst _ _ _`. Take `⟨d, T, δ, hadd, hhol, hT⟩` from `exists_torus_family τ₀`.
+
+Set `v : (Fin d → ℂ) → (Over.mk (spMap (ψ b)) ⟶ t.G)` to `fun z => P₁ (T z ≫ P.τ.i)`. Establish `vadd : ∀ z w, v (z + w) = v z * v w` using `fun z w => by show P₁ (T (z + w) ≫ P.τ.i) = P₁ (T z ≫ P.τ.i) * P₁ (T w ≫ P.τ.i)`. Rewrite using `[hadd, MonObj.mul_comp, map_mul]`. Establish `vhol : IsHolTo Set.univ (fun z => (v z).left)` using `GlobalTheory.LocLift.isHolTo_congr (GlobalTheory.LocLift.isHolTo_comp_hom hhol (P.τ.i.left ≫ P.m.φ)) fun z _ => Category.id_comp _`. Take `⟨h, hh⟩` from `exists_lift_fibre e hb v vadd vhol`.
+
+Use `⟨d, h, δ, ?_, fun z => ⟨T z ≫ P.τ.i, (hh z).symm, hQ1 _⟩⟩` and prove the remaining obligations. Rewrite using `[hh]`. Use `show P₁ (T δ ≫ P.τ.i) = _`. Rewrite using `[hT, hτ]`. Conclude with `core P₁ (ptU_bijective _ c₁) D (ptU_bijective hA c₂).1 Q hQ (e.ex b) (e.add b hb) (GlobalTheory.T.exponential_surjective_semiabelian R t.G g n M B ψ e t.semi b hb) u.ex u.ex_add u.Λ u.ker ℓ hl hker`.
+-/
 theorem periods_map_onto_lattice : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] (t : SAB H (Sp R)) (g n : ℕ) (M : LieModel t.G (𝟙 (Sp R)) (Fin g → R)) (B : Set (Fin n → ℂ)) (ψ : (Fin n → ℂ) → (R →+* ℂ)) (e : Flat.FamExp t.G M B ψ) (b : Fin n → ℂ) (P : AbPart t (spMap (ψ b))) (A : Over (Sp ℂ)) (_ : GrpObj A) (φ : A.left ⟶ P.tB.G.left) (g' : ℕ) (u : HolUnif A (P.tB.PP.L.pull φ) g') (Hm : Matrix (Fin g') (Fin g') ℂ) (χ : u.Λ → ℂ) (ℓ : (Fin g → ℂ) →ₗ[ℂ] (Fin g' → ℂ)), b ∈ B → IsGrpPullback A P.tB.G (𝟙 _) φ → u.IsAH Hm χ → IsPrincipal P.tB → GlobalTheory.CompanionTheory.Ar.QuotLoc.IsAbLift e b P φ u ℓ → (∀ y ∈ e.per b, ℓ y ∈ u.Λ) ∧ ∀ p ∈ u.Λ, ∃ y ∈ e.per b, ℓ y = p := by
   intro E _ _ _ H R _ t g n M B ψ e b P A _ φ g' u Hm χ ℓ hb hA hAH hP hL
   letI := P.τ.grpB

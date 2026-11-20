@@ -7,28 +7,48 @@ open NumberField
 
 namespace PI.KLW.NO
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `RingOfIntegers.isIntegral_coe y`. Introduce `h`. Conclude with `⟨⟨x, h⟩, rfl⟩`.
+-/
 theorem mem_O_iff {K : Type} [Field K] [NumberField K] {x : K} :
     x ∈ (algebraMap (𝓞 K) K).range ↔ IsIntegral ℤ x := by
   constructor
   · rintro ⟨y, rfl⟩; exact RingOfIntegers.isIntegral_coe y
   · intro h; exact ⟨⟨x, h⟩, rfl⟩
 
+/- English proof (translation)
+The claim follows from `mem_O_iff.2 (map_isIntegral_int c (mem_O_iff.1 hx))`.
+-/
 theorem c_mem_O {K : Type} [Field K] [NumberField K] (c : K →+* K) {x : K}
     (hx : x ∈ (algebraMap (𝓞 K) K).range) : c x ∈ (algebraMap (𝓞 K) K).range :=
   mem_O_iff.2 (map_isIntegral_int c (mem_O_iff.1 hx))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(n : 𝓞 K), by simp⟩`.
+-/
 theorem natCast_mem_O {K : Type} [Field K] [NumberField K] (n : ℕ) :
     (n : K) ∈ (algebraMap (𝓞 K) K).range := ⟨(n : 𝓞 K), by simp⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(n : 𝓞 K), by simp⟩`.
+-/
 theorem intCast_mem_O {K : Type} [Field K] [NumberField K] (n : ℤ) :
     (n : K) ∈ (algebraMap (𝓞 K) K).range := ⟨(n : 𝓞 K), by simp⟩
 
 section Rp
 variable {K : Type} [Field K] [NumberField K] {p : ℕ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, Nat.coprime_one_left _, by simpa using hx⟩`.
+-/
 theorem rp_of_O {x : K} (hx : x ∈ (algebraMap (𝓞 K) K).range) : Rp K p x :=
   ⟨1, Nat.coprime_one_left _, by simpa using hx⟩
 
+/- English proof (translation)
+Take `⟨s, hs, hsx⟩` from `hx`. Take `⟨t, ht, hty⟩` from `hy`. Use `⟨s * t, Nat.Coprime.mul_left hs ht, ?_⟩` and prove the remaining obligations. Establish `: ((s * t : ℕ) : K) * (x + y) = (t : K) * ((s : K) * x) + (s : K) * ((t : K) * y)` using `by push_cast; ring`. Rewrite using `[this]`.
+
+Conclude with `Subring.add_mem _ (Subring.mul_mem _ (natCast_mem_O t) hsx) (Subring.mul_mem _ (natCast_mem_O s) hty)`.
+-/
 theorem rp_add {x y : K} (hx : Rp K p x) (hy : Rp K p y) : Rp K p (x + y) := by
   obtain ⟨s, hs, hsx⟩ := hx
   obtain ⟨t, ht, hty⟩ := hy
@@ -39,6 +59,11 @@ theorem rp_add {x y : K} (hx : Rp K p x) (hy : Rp K p y) : Rp K p (x + y) := by
   exact Subring.add_mem _ (Subring.mul_mem _ (natCast_mem_O t) hsx)
     (Subring.mul_mem _ (natCast_mem_O s) hty)
 
+/- English proof (translation)
+Take `⟨s, hs, hsx⟩` from `hx`. Take `⟨t, ht, hty⟩` from `hy`. Use `⟨s * t, Nat.Coprime.mul_left hs ht, ?_⟩` and prove the remaining obligations. Establish `: ((s * t : ℕ) : K) * (x * y) = ((s : K) * x) * ((t : K) * y)` using `by push_cast; ring`. Rewrite using `[this]`.
+
+Conclude with `Subring.mul_mem _ hsx hty`.
+-/
 theorem rp_mul {x y : K} (hx : Rp K p x) (hy : Rp K p y) : Rp K p (x * y) := by
   obtain ⟨s, hs, hsx⟩ := hx
   obtain ⟨t, ht, hty⟩ := hy
@@ -47,21 +72,39 @@ theorem rp_mul {x y : K} (hx : Rp K p x) (hy : Rp K p y) : Rp K p (x * y) := by
   rw [this]
   exact Subring.mul_mem _ hsx hty
 
+/- English proof (translation)
+Take `⟨s, hs, hsx⟩` from `hx`. Conclude with `⟨s, hs, by rw [mul_neg]; exact Subring.neg_mem _ hsx⟩`.
+-/
 theorem rp_neg {x : K} (hx : Rp K p x) : Rp K p (-x) := by
   obtain ⟨s, hs, hsx⟩ := hx
   exact ⟨s, hs, by rw [mul_neg]; exact Subring.neg_mem _ hsx⟩
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg]`. Conclude with `rp_add hx (rp_neg hy)`.
+-/
 theorem rp_sub {x y : K} (hx : Rp K p x) (hy : Rp K p y) : Rp K p (x - y) := by
   rw [sub_eq_add_neg]; exact rp_add hx (rp_neg hy)
 
+/- English proof (translation)
+The claim follows from `rp_of_O (natCast_mem_O n)`.
+-/
 theorem rp_natCast (n : ℕ) : Rp K p (n : K) := rp_of_O (natCast_mem_O n)
+/- English proof (translation)
+Simplify using `using rp_natCast (K := K) (p := p) 1`.
+-/
 theorem rp_one : Rp K p (1 : K) := by simpa using rp_natCast (K := K) (p := p) 1
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using rp_one`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `rp_mul ih hx`.
+-/
 theorem rp_pow {x : K} (hx : Rp K p x) (n : ℕ) : Rp K p (x ^ n) := by
   induction n with
   | zero => simpa using rp_one
   | succ n ih => rw [pow_succ]; exact rp_mul ih hx
 
+/- English proof (translation)
+Take `⟨s, hs, hsx⟩` from `hx`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Establish `: (s : K) * c x = c ((s : K) * x)` using `by rw [map_mul, map_natCast]`. Rewrite using `[this]`. Conclude with `c_mem_O c hsx`.
+-/
 theorem rp_c (c : K →+* K) {x : K} (hx : Rp K p x) : Rp K p (c x) := by
   obtain ⟨s, hs, hsx⟩ := hx
   refine ⟨s, hs, ?_⟩
@@ -70,6 +113,17 @@ theorem rp_c (c : K →+* K) {x : K} (hx : Rp K p x) : Rp K p (c x) := by
 
 end Rp
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hq`. Use `push Not at hq`. Establish `hli : LinearIndependent ℚ ![(1 : K), x]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`.
+
+Distinguish the cases in `ht : t = 0`. Substitute `ht` using the available equality. Simplify using `at hst`. Conclude with `⟨hst, rfl⟩`. It suffices to derive a contradiction.
+
+Apply `hq (-s / t)` to reduce the goal to its premises. Rewrite `hst` using `[Rat.smul_def, Rat.smul_def]`. Establish `ht' : (t : K) ≠ 0` using `by exact_mod_cast ht`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Take the linear combination `hst`. Set `b` to `basisOfLinearIndependentOfCardEqFinrank hli (by simp [hK])`. Take `⟨z, hz⟩` from `hne`. Apply `hz` to reduce the goal to its premises. Rewrite using `[← b.sum_repr z]`.
+
+Simplify using `only [b, coe_basisOfLinearIndependentOfCardEqFinrank, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Rat.smul_def, map_add, map_mul, map_ratCast, map_one, hx]`.
+-/
 theorem fixed_rat {K : Type} [Field K] [NumberField K] (c : K →+* K) (hK : Module.finrank ℚ K = 2)
     (hne : ∃ z, c z ≠ z) {x : K} (hx : c x = x) : ∃ q : ℚ, x = (q : K) := by
   by_contra hq
@@ -95,6 +149,11 @@ theorem fixed_rat {K : Type} [Field K] [NumberField K] (c : K →+* K) (hK : Mod
   simp only [b, coe_basisOfLinearIndependentOfCardEqFinrank, Fin.sum_univ_two, Matrix.cons_val_zero,
     Matrix.cons_val_one, Rat.smul_def, map_add, map_mul, map_ratCast, map_one, hx]
 
+/- English proof (translation)
+Establish `h1 : IsIntegral ℤ (algebraMap ℚ K q)`. Rewrite using `[eq_ratCast]`. Conclude with `mem_O_iff.1 h`. Rewrite `h1` using `[isIntegral_algebraMap_iff (algebraMap ℚ K).injective]`. Take `⟨m, hm⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h1`.
+
+Conclude with `⟨m, by rw [← hm]; simp⟩`.
+-/
 theorem int_of_rat {K : Type} [Field K] [NumberField K] (q : ℚ)
     (h : (q : K) ∈ (algebraMap (𝓞 K) K).range) : ∃ m : ℤ, q = m := by
   have h1 : IsIntegral ℤ (algebraMap ℚ K q) := by
@@ -103,6 +162,9 @@ theorem int_of_rat {K : Type} [Field K] [NumberField K] (q : ℚ)
   obtain ⟨m, hm⟩ := IsIntegrallyClosed.isIntegral_iff.1 h1
   exact ⟨m, by rw [← hm]; simp⟩
 
+/- English proof (translation)
+Take `⟨q, rfl⟩` from `fixed_rat c hK hne hx`. Take `⟨m, rfl⟩` from `int_of_rat q hO`. Conclude with `⟨m, by simp⟩`.
+-/
 theorem fixed_int {K : Type} [Field K] [NumberField K] (c : K →+* K) (hK : Module.finrank ℚ K = 2)
     (hne : ∃ z, c z ≠ z) {x : K} (hx : c x = x) (hO : x ∈ (algebraMap (𝓞 K) K).range) :
     ∃ m : ℤ, x = (m : K) := by
@@ -117,10 +179,18 @@ namespace PI.KLW.NO
 section Units
 variable {K : Type} [Field K] [NumberField K] {p : ℕ}
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Conclude with `hp.ne_one (by simpa using hs)`.
+-/
 theorem coprime_ne_zero (hp : p.Prime) {s : ℕ} (hs : Nat.Coprime s p) : s ≠ 0 := by
   rintro rfl
   exact hp.ne_one (by simpa using hs)
 
+/- English proof (translation)
+Introduce and unpack `⟨s, hs, hsx⟩`. Establish `h1 : (s : K) * (p : K)⁻¹ = (((s : ℚ) / p : ℚ) : K)` using `by push_cast; ring`. Rewrite `hsx` using `[h1]`. Take `⟨m, hm⟩` from `int_of_rat _ hsx`. Establish `hp0 : (p : ℚ) ≠ 0` using `by exact_mod_cast hp.ne_zero`.
+
+Establish `h2 : ((s : ℤ) : ℚ) = ((p * m : ℤ) : ℚ)` using `by push_cast; rw [← hm]; field_simp`. Establish `h3 : (p : ℤ) ∣ (s : ℤ)` using `⟨m, Int.cast_injective h2⟩`. Establish `h4 : p ∣ s` using `Int.natCast_dvd_natCast.1 h3`. Conclude with `hp.ne_one (Nat.Coprime.eq_one_of_dvd hs.symm h4)`.
+-/
 theorem not_rp_inv_p (hp : p.Prime) : ¬ Rp K p ((p : K)⁻¹) := by
   rintro ⟨s, hs, hsx⟩
   have h1 : (s : K) * (p : K)⁻¹ = (((s : ℚ) / p : ℚ) : K) := by push_cast; ring
@@ -133,6 +203,13 @@ theorem not_rp_inv_p (hp : p.Prime) : ¬ Rp K p ((p : K)⁻¹) := by
   have h4 : p ∣ s := Int.natCast_dvd_natCast.1 h3
   exact hp.ne_one (Nat.Coprime.eq_one_of_dvd hs.symm h4)
 
+/- English proof (translation)
+Establish `hm0 : m ≠ 0` using `by rintro rfl; exact hm (dvd_zero _)`. Establish `hmK : (m : K) ≠ 0` using `by exact_mod_cast hm0`. Establish `hcop : Nat.Coprime m.natAbs p` using `((Nat.Prime.coprime_iff_not_dvd hp).2 (by rwa [← Int.natCast_dvd])).symm`. Use `⟨m.natAbs, hcop, ?_⟩` and prove the remaining obligations. Break down `Int.natAbs_eq m with h | h` into its components or cases.
+
+Establish `e : (m : K) = (m.natAbs : K)` using `by rw [← Int.cast_natCast]; exact congrArg _ h`. Rewrite using `[← e, mul_div_cancel₀ _ hmK]`. Conclude with `hy`. Establish `e : (m : K) = -(m.natAbs : K)` using `by rw [← Int.cast_natCast, ← Int.cast_neg]; exact congrArg _ h`. Establish `e2 : (m.natAbs : K) = -(m : K)` using `by rw [e]; ring`.
+
+Rewrite using `[e2, neg_mul, mul_div_cancel₀ _ hmK]`. Conclude with `Subring.neg_mem _ hy`.
+-/
 theorem rp_div_int {y : K} (hy : y ∈ (algebraMap (𝓞 K) K).range) {m : ℤ} (hm : ¬ (p : ℤ) ∣ m)
     (hp : p.Prime) : Rp K p (y / m) := by
   have hm0 : m ≠ 0 := by rintro rfl; exact hm (dvd_zero _)
@@ -147,6 +224,19 @@ theorem rp_div_int {y : K} (hy : y ∈ (algebraMap (𝓞 K) K).range) {m : ℤ} 
     have e2 : (m.natAbs : K) = -(m : K) := by rw [e]; ring
     rw [e2, neg_mul, mul_div_cancel₀ _ hmK]; exact Subring.neg_mem _ hy
 
+/- English proof (translation)
+Take `⟨s, hs, hsx⟩` from `hx`. Establish `hs0 : (s : K) ≠ 0` using `by exact_mod_cast coprime_ne_zero hp hs`. Establish `hfix' : c ((s : K) * x) = (s : K) * x` using `by rw [map_mul, map_natCast, hfix]`. Take `⟨m, hm⟩` from `fixed_int c hK hne hfix' hsx`. Establish `hdvd : ¬ (p : ℤ) ∣ m`.
+
+Introduce and unpack `⟨m', rfl⟩`. Apply `hnp` to reduce the goal to its premises. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Establish `hp0 : (p : K) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Establish `: (s : K) * (x / p) = (m' : K)`.
+
+Rewrite using `[mul_div_assoc', hm]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Conclude with `intCast_mem_O m'`.
+
+Establish `hm0 : m ≠ 0` using `by rintro rfl; exact hdvd (dvd_zero _)`. Establish `hmK : (m : K) ≠ 0` using `by exact_mod_cast hm0`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Apply `hmK` to reduce the goal to its premises.
+
+Rewrite using `[← hm]`. Simplify using the standard rewrite rules. Use `⟨hx0, ?_⟩` and prove the remaining obligations. Establish `: x⁻¹ = (s : K) / m` using `by rw [← hm]; field_simp`. Rewrite using `[this]`.
+
+Conclude with `rp_div_int (natCast_mem_O s) hdvd hp`.
+-/
 theorem inv_of_fixed (c : K →+* K) (hK : Module.finrank ℚ K = 2) (hne : ∃ z, c z ≠ z) (hp : p.Prime)
     {x : K} (hx : Rp K p x) (hfix : c x = x) (hnp : ¬ Rp K p (x / p)) : x ≠ 0 ∧ Rp K p x⁻¹ := by
   obtain ⟨s, hs, hsx⟩ := hx
@@ -170,6 +260,11 @@ theorem inv_of_fixed (c : K →+* K) (hK : Module.finrank ℚ K = 2) (hne : ∃ 
   rw [this]
   exact rp_div_int (natCast_mem_O s) hdvd hp
 
+/- English proof (translation)
+Establish `hfix : c (z * c z) = z * c z` using `by rw [map_mul, hc, mul_comm]`. Take `⟨h0, hinv⟩` from `inv_of_fixed c hK hne hp (rp_mul hz (rp_c c hz)) hfix hn`. Establish `hz0 : z ≠ 0` using `by rintro rfl; simp at h0`. Establish `hcz0 : c z ≠ 0` using `by rintro h; apply h0; rw [h, mul_zero]`. Use `⟨hz0, ?_⟩` and prove the remaining obligations.
+
+Establish `: z⁻¹ = c z * (z * c z)⁻¹` using `by field_simp`. Rewrite using `[this]`. Conclude with `rp_mul (rp_c c hz) hinv`.
+-/
 theorem unit_of_norm (c : K →+* K) (hc : ∀ x, c (c x) = x) (hK : Module.finrank ℚ K = 2)
     (hne : ∃ z, c z ≠ z) (hp : p.Prime) {z : K} (hz : Rp K p z) (hn : ¬ Rp K p (z * c z / p)) :
     z ≠ 0 ∧ Rp K p z⁻¹ := by
@@ -181,6 +276,11 @@ theorem unit_of_norm (c : K →+* K) (hc : ∀ x, c (c x) = x) (hK : Module.finr
   have : z⁻¹ = c z * (z * c z)⁻¹ := by field_simp
   rw [this]; exact rp_mul (rp_c c hz) hinv
 
+/- English proof (translation)
+Apply `unit_of_norm c hc hK hne hp (rp_add rp_one (rp_mul (rp_natCast p) hr))` to reduce the goal to its premises. Introduce `h`. Apply `not_rp_inv_p (K := K) hp` to reduce the goal to its premises. Establish `hp0 : (p : K) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Establish `e : (p : K)⁻¹ = (1 + (p : K) * r) * c (1 + (p : K) * r) / p - (r + c r + (p : K) * r * c r)`.
+
+Simplify using `only [map_add, map_one, map_mul, map_natCast]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `rp_sub h (rp_add (rp_add hr (rp_c c hr)) (rp_mul (rp_mul (rp_natCast p) hr) (rp_c c hr)))`.
+-/
 theorem one_add_p_unit (c : K →+* K) (hc : ∀ x, c (c x) = x) (hK : Module.finrank ℚ K = 2)
     (hne : ∃ z, c z ≠ z) (hp : p.Prime) {r : K} (hr : Rp K p r) :
     (1 + (p : K) * r) ≠ 0 ∧ Rp K p (1 + (p : K) * r)⁻¹ := by
@@ -196,6 +296,21 @@ theorem one_add_p_unit (c : K →+* K) (hc : ∀ x, c (c x) = x) (hK : Module.fi
   rw [e]
   exact rp_sub h (rp_add (rp_add hr (rp_c c hr)) (rp_mul (rp_mul (rp_natCast p) hr) (rp_c c hr)))
 
+/- English proof (translation)
+Take `⟨s, hs, hsz⟩` from `hz`. Establish `hs0 : (s : K) ≠ 0` using `by exact_mod_cast coprime_ne_zero hp hs`. Use `set Y := (s : K) * z with hY`. Establish `hY0 : Y ≠ 0` using `mul_ne_zero hs0 h0`. Establish `hcY0 : c Y ≠ 0`.
+
+Introduce `h`. Apply `hY0` to reduce the goal to its premises. Rewrite using `[← hc Y, h, map_zero]`. Establish `hfix : c (Y * c Y) = Y * c Y` using `by rw [map_mul, hc, mul_comm]`. Take `⟨m, hm⟩` from `fixed_int c hK hne hfix (Subring.mul_mem _ hsz (c_mem_O c hsz))`.
+
+Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`. Apply `mul_ne_zero hY0 hcY0` to reduce the goal to its premises. Rewrite using `[hm]`. Simplify using the standard rewrite rules.
+
+Take `⟨J, n', hn', hJ⟩` from `Nat.exists_eq_pow_mul_and_not_dvd (Int.natAbs_ne_zero.2 hm0) p hp.ne_one`. Use `⟨J, n', ((Nat.Prime.coprime_iff_not_dvd hp).2 hn').symm, ?_⟩` and prove the remaining obligations. Establish `hnK : (m.natAbs : K) = (p : K) ^ J * n'` using `by exact_mod_cast hJ`. Break down `Int.natAbs_eq m with h | h` into its components or cases. Establish `e : (m : K) = (m.natAbs : K)` using `by rw [← Int.cast_natCast]; exact congrArg _ h`.
+
+Establish `e1 : Y * c Y = (p : K) ^ J * n'` using `by rw [hm, e, hnK]`. Establish `: (n' : K) * ((p : K) ^ J / z) = (s : K) * c Y`. Rewrite using `[← mul_div_assoc, div_eq_iff h0]`. Rewrite `e1`, the goal using `[hY]`. Take the linear combination `-e1`.
+
+Rewrite using `[this]`. Conclude with `Subring.mul_mem _ (natCast_mem_O s) (c_mem_O c hsz)`. Establish `e : (m : K) = -(m.natAbs : K)` using `by rw [← Int.cast_natCast, ← Int.cast_neg]; exact congrArg _ h`. Establish `e1 : Y * c Y = -((p : K) ^ J * n')` using `by rw [hm, e, hnK]`. Establish `: (n' : K) * ((p : K) ^ J / z) = -((s : K) * c Y)`.
+
+Rewrite using `[← mul_div_assoc, div_eq_iff h0]`. Rewrite `e1`, the goal using `[hY]`. Take the linear combination `e1`. Rewrite using `[this]`. Conclude with `Subring.neg_mem _ (Subring.mul_mem _ (natCast_mem_O s) (c_mem_O c hsz))`.
+-/
 theorem dvd_pow_p (c : K →+* K) (hc : ∀ x, c (c x) = x) (hK : Module.finrank ℚ K = 2)
     (hne : ∃ z, c z ≠ z) (hp : p.Prime) {z : K} (hz : Rp K p z) (h0 : z ≠ 0) :
     ∃ J : ℕ, Rp K p ((p : K) ^ J / z) := by
@@ -228,6 +343,15 @@ theorem dvd_pow_p (c : K →+* K) (hc : ∀ x, c (c x) = x) (hK : Module.finrank
       linear_combination e1
     rw [this]; exact Subring.neg_mem _ (Subring.mul_mem _ (natCast_mem_O s) (c_mem_O c hsz))
 
+/- English proof (translation)
+Take `⟨e, n', hn', rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hQ p hp.ne_one`. Establish `hn0 : n' ≠ 0` using `by rintro rfl; simp at hQ`. Establish `hek : e < k`. Establish `h1 : p ^ e ≤ p ^ e * n'` using `Nat.le_mul_of_pos_right _ (Nat.pos_of_ne_zero hn0)`. Establish `h2 : k < p ^ k` using `Nat.lt_pow_self hp.one_lt`.
+
+Conclude with `(Nat.pow_lt_pow_iff_right hp.one_lt).1 (by omega)`. Use `⟨n', ((Nat.Prime.coprime_iff_not_dvd hp).2 hn').symm, ?_⟩` and prove the remaining obligations. Establish `hp0 : (p : K) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Establish `hn0K : (n' : K) ≠ 0` using `by exact_mod_cast hn0`. Establish `: (n' : K) * ((p : K) ^ k / ((p ^ e * n' : ℕ) : K)) = (p : K) ^ (k - e)`.
+
+Use `push_cast`. Rewrite using `[← Nat.sub_add_cancel hek.le, pow_add]`. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+
+Conclude with `Subring.pow_mem _ (natCast_mem_O p) _`.
+-/
 theorem rp_pow_div (hp : p.Prime) {Q : ℕ} (hQ : Q ≠ 0) {k : ℕ} (hk : Q ≤ k) :
     Rp K p ((p : K) ^ k / Q) := by
   obtain ⟨e, n', hn', rfl⟩ := Nat.exists_eq_pow_mul_and_not_dvd hQ p hp.ne_one
@@ -252,6 +376,9 @@ end PI.KLW.NO
 
 namespace PI.KLW.NO
 
+/- English proof (translation)
+Take `⟨P, _, _, a, b, hab, _, hb⟩` from `h`. Use `⟨(a : K), fun h' => hb ?_⟩` and prove the remaining obligations. Establish `: a = b` using `RingOfIntegers.ext (h'.symm.trans hab)`. Rewrite using `[← this]`. Use the matching hypothesis.
+-/
 theorem ne_of_split {K : Type} [Field K] [NumberField K] (c : K →+* K) {p : ℕ} (h : SplitK c p) :
     ∃ z, c z ≠ z := by
   obtain ⟨P, _, _, a, b, hab, _, hb⟩ := h
@@ -259,6 +386,31 @@ theorem ne_of_split {K : Type} [Field K] [NumberField K] (c : K →+* K) {p : �
   have : a = b := RingOfIntegers.ext (h'.symm.trans hab)
   rw [← this]; assumption
 
+/- English proof (translation)
+Establish `hne` using `ne_of_split c hs`. Take `⟨P, hP, hpP, a, b, hab, ha, hb⟩` from `hs`. Establish `hBA : c (b : K) = (a : K)` using `by rw [← hab, hc]`. Establish `hfix : c ((a : K) ^ (k + 1) + (b : K) ^ (k + 1)) = (a : K) ^ (k + 1) + (b : K) ^ (k + 1)`. Rewrite using `[map_add, map_pow, map_pow, hab, hBA, add_comm]`.
+
+Establish `hO : (a : K) ^ (k + 1) + (b : K) ^ (k + 1) ∈ (algebraMap (𝓞 K) K).range` using `⟨a ^ (k + 1) + b ^ (k + 1), by rw [map_add, map_pow, map_pow]⟩`. Take `⟨m, hm⟩` from `fixed_int c hK hne hfix hO`. Establish `hdvd : ¬ (p : ℤ) ∣ m`. Introduce and unpack `⟨m', hm'⟩`. Apply `hb` to reduce the goal to its premises.
+
+Establish `e : a ^ (k + 1) + b ^ (k + 1) = (p : 𝓞 K) * (m' : 𝓞 K)`. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Rewrite using `[map_add, map_pow, map_pow, map_mul, map_natCast, map_intCast]`. Establish `: (m : K) = (p : K) * m'` using `by rw [hm']; push_cast; ring`. Conclude with `hm.trans this`.
+
+Establish `h1 : a ^ (k + 1) + b ^ (k + 1) ∈ P` using `by rw [e]; exact P.mul_mem_right _ hpP`. Establish `h2 : b ^ (k + 1) ∈ P` using `(P.add_mem_iff_right (P.pow_mem_of_mem ha (k + 1) (Nat.succ_pos k))).1 h1`. Conclude with `hP.mem_of_pow_mem _ h2`. Establish `hm0 : m ≠ 0` using `by rintro rfl; exact hdvd (dvd_zero _)`. Establish `hmK : (m : K) ≠ 0` using `by exact_mod_cast hm0`.
+
+Establish `hfixN : c ((a : K) * b) = (a : K) * b` using `by rw [map_mul, hab, hBA, mul_comm]`. Establish `hON : (a : K) * b ∈ (algebraMap (𝓞 K) K).range` using `⟨a * b, by rw [map_mul]⟩`. Take `⟨n, hn⟩` from `fixed_int c hK hne hfixN hON`. Establish `hpn : (p : ℤ) ∣ n`. Assume the negation of the conclusion as `hnd`.
+
+Establish `hcop : IsCoprime (p : ℤ) n`. Rewrite using `[Int.isCoprime_iff_gcd_eq_one]`. Establish `: Nat.Coprime p n.natAbs` using `(Nat.Prime.coprime_iff_not_dvd hp).2 (by rwa [← Int.natCast_dvd])`. Conclude with `this`. Take `⟨u, v, huv⟩` from `hcop`.
+
+Apply `hP.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `e : (1 : 𝓞 K) = (u : 𝓞 K) * (p : 𝓞 K) + (v : 𝓞 K) * (a * b)`. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Rewrite using `[map_one, map_add, map_mul, map_mul, map_mul, map_intCast, map_intCast, map_natCast]`.
+
+Establish `: ((u * p + v * n : ℤ) : K) = 1` using `by rw [huv]; simp`. Rewrite using `[← this]`. Use `push_cast`. Establish `hn' : algebraMap (𝓞 K) K a * algebraMap (𝓞 K) K b = (n : K)` using `hn`. Rewrite using `[hn']`.
+
+Rewrite using `[e]`. Conclude with `P.add_mem (P.mul_mem_left _ hpP) (P.mul_mem_left _ (P.mul_mem_right _ ha))`. Take `⟨n₁, hn₁⟩` from `hpn`. Establish `hab' : (a : K) * b = (p : K) * n₁` using `by rw [hn, hn₁]; push_cast; ring`. Use `⟨(b : K) ^ (k + 1) / m, rp_div_int ⟨b ^ (k + 1), by rw [map_pow]⟩ hdvd hp, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_div₀, map_pow, hBA, map_intCast, ← add_div, add_comm, hm, div_self hmK]`. Rewrite using `[map_div₀, map_pow, hBA, map_intCast]`. Establish `hp0 : (p : K) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Establish `e1 : (b : K) ^ (k + 1) * (a : K) ^ (k + 1) = (p : K) ^ k * ((p : K) * (n₁ : K) ^ (k + 1))`. Rewrite using `[← mul_pow, mul_comm (b : K), hab', mul_pow, pow_succ]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e2 : (b : K) ^ (k + 1) / m * ((a : K) ^ (k + 1) / m) / (p : K) ^ k = ((p : K) * (n₁ : K) ^ (k + 1) / m) * (1 / m)`. Rewrite using `[show (b : K) ^ (k + 1) / m * ((a : K) ^ (k + 1) / m) / (p : K) ^ k = ((b : K) ^ (k + 1) * (a : K) ^ (k + 1)) / (p : K) ^ k / (m * m) by ring, e1, mul_div_cancel_left₀ _ (pow_ne_zero _ hp0)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`.
+
+Conclude with `rp_mul (rp_div_int (Subring.mul_mem _ (natCast_mem_O p) (Subring.pow_mem _ (intCast_mem_O n₁) _)) hdvd hp) (rp_div_int (Subring.one_mem _) hdvd hp)`.
+-/
 theorem eps {K : Type} [Field K] [NumberField K] (c : K →+* K) (hc : ∀ x, c (c x) = x)
     (hK : Module.finrank ℚ K = 2) {p : ℕ} (hp : p.Prime) (hs : SplitK c p) (k : ℕ) :
     ∃ ε : K, Rp K p ε ∧ ε + c ε = 1 ∧ Rp K p (ε * c ε / (p : K) ^ k) := by

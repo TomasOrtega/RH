@@ -19,11 +19,21 @@ noncomputable section
 
 namespace GlobalTheory.Dec.CuspFrame
 
+/- English proof (translation)
+Use `⟨?_, fun y _ => ⟨0, zero_mem _, ?_⟩⟩` and prove the remaining obligations. Simplify using `[AutInst.Kset]`. Simplify using `[AutInst.fmat]`.
+-/
 theorem one_mem_Kg (I : AutInst) (g : ℕ) : (1 : I.Gf) ∈ I.Kg g := by
   refine ⟨?_, fun y _ => ⟨0, zero_mem _, ?_⟩⟩
   · simp [AutInst.Kset]
   · simp [AutInst.fmat]
 
+/- English proof (translation)
+Introduce `k hk`. Take `⟨h1, hm, hn, -, -⟩` from `GlobalTheory.RightRegFund.rightReg_unitary_continuous B`. Establish `pm : ∀ a b : B.I.Gf, B.R (1, a * b) = B.R (1, a) * B.R (1, b)` using `fun a b => by`. Use `hm (1, a) (1, b)` as an intermediate fact. Rewrite `this` using `[Prod.mk_mul_mk, mul_one]`. Then use the resulting hypothesis.
+
+Establish `ir : ∀ (a : B.I.Gf) (x z : B.I.L2 B.μf B.fund), ⟪x, B.R (1, a) z⟫_ℂ = ⟪B.R (1, a⁻¹) x, z⟫_ℂ` using `fun a x z => GlobalTheory.IdemProj.inner_rep (fun c => B.R (1, c)) h1 pm (fun c v => hn _ v) a x z`. Establish `he : ∀ x, B.e (k * x) = B.e x` using `fun x => by`. Use `B.e_adm.2.2.2.2.2.1 x k hk 1 (one_mem_Kg B.I B.g)` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis. Use `ContinuousLinearMap.ext fun y => ext_inner_left ℂ fun x => ?_` and prove the remaining obligations.
+
+Rewrite using `[ContinuousLinearMap.comp_apply, ir k, B.Re_spec.2, B.Re_spec.2, ← MeasureTheory.integral_mul_left_eq_self (fun g => B.e g * ⟪x, B.R (1, g) y⟫_ℂ) k]`. Use `congr 1`. Use extensionality with `g`. Rewrite using `[he, pm, ContinuousLinearMap.mul_apply, ir k x]`.
+-/
 theorem re_fixed (B : RowsAut) : ∀ k ∈ B.I.Kg B.g, (B.R (1, k)).comp B.Re = B.Re := by
   intro k hk
   obtain ⟨h1, hm, hn, -, -⟩ := GlobalTheory.RightRegFund.rightReg_unitary_continuous B

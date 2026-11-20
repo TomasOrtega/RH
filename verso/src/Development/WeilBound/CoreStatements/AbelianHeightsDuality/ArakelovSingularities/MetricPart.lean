@@ -19,12 +19,21 @@ section Calc
 
 variable {P : Scheme.{0}} {q : P ⟶ Sp k} {σ : k →+* ℂ} {y : CxPts q σ}
 
+/- English proof (translation)
+The claim follows from `hf.comp₂ hg (G := fun x => x.1 * x.2) (contDiff_fst.mul contDiff_snd)`.
+-/
 theorem cInfAt_mul {f g : CxPts q σ → ℝ} (hf : CInfAt f y) (hg : CInfAt g y) : CInfAt (fun z => f z * g z) y :=
   hf.comp₂ hg (G := fun x => x.1 * x.2) (contDiff_fst.mul contDiff_snd)
 
+/- English proof (translation)
+The claim follows from `hf.comp₂ hf (G := fun x => 1 - x.1) (contDiff_const.sub contDiff_fst)`.
+-/
 theorem cInfAt_one_sub {f : CxPts q σ → ℝ} (hf : CInfAt f y) : CInfAt (fun z => 1 - f z) y :=
   hf.comp₂ hf (G := fun x => 1 - x.1) (contDiff_const.sub contDiff_fst)
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using cInfAt_const (p := q) 1 y`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.prod_insert ha]`. Conclude with `cInfAt_mul (hf a (Finset.mem_insert_self a s)) (ih fun i hi => hf i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem cInfAt_prod {ι : Type} (s : Finset ι) {f : ι → CxPts q σ → ℝ} (hf : ∀ i ∈ s, CInfAt (f i) y) :
     CInfAt (fun z => ∏ i ∈ s, f i z) y := by
   classical
@@ -36,6 +45,25 @@ theorem cInfAt_prod {ι : Type} (s : Finset ι) {f : ι → CxPts q σ → ℝ} 
 
 end Calc
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `R.cover y`. Use `set e := (R.chart c).e with he`. Establish `hT : IsOpen (e.target ∩ e.symm ⁻¹' W)` using `e.isOpen_inter_preimage_symm hW`. Establish `hyT : e y ∈ e.target ∩ e.symm ⁻¹' W` using `⟨e.map_source hc, by rw [mem_preimage, e.left_inv hc]; exact hy⟩`. Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.mp hT (e y) hyT`.
+
+Set `β₀ : ContDiffBump (e y)` to `⟨ε / 4, ε / 2, by linarith, by linarith⟩`. Establish `hcb : Metric.closedBall (e y) (ε / 2) ⊆ e.target ∩ e.symm ⁻¹' W` using `(Metric.closedBall_subset_ball (half_lt_self hε)).trans hball`. Use `set C := e.symm '' Metric.closedBall (e y) (ε / 2) with hC`. Establish `hCc : IsCompact C` using `(isCompact_closedBall (e y) (ε / 2)).image_of_continuousOn (e.continuousOn_symm.mono fun v hv => (hcb hv).1)`. Establish `hCsub : C ⊆ e.source ∩ W`.
+
+Introduce and unpack `_ ⟨v, hv, rfl⟩`. Conclude with `⟨e.map_target (hcb hv).1, (hcb hv).2⟩`. Set `β : CxPts q σ → ℝ` to `fun w => if w ∈ e.source then β₀ (e w) else 0`. Establish `hsupp : Function.support β ⊆ C`. Introduce `w hw`.
+
+Simplify using `only [Function.mem_support, β] at hw`. Use `split_ifs at hw with hws`. Establish `: e w ∈ Metric.ball (e y) (ε / 2)`. Rewrite using `[← β₀.support_eq]`. Conclude with `hw`.
+
+Conclude with `⟨e w, Metric.ball_subset_closedBall this, e.left_inv hws⟩`. Conclude with `absurd rfl hw`. Establish `hts : tsupport β ⊆ C` using `closure_minimal hsupp hCc.isClosed`. Use `⟨β, fun z => ?_, fun z => ?_, hts.trans fun w hw => (hCsub hw).2, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hz : z ∈ e.source`.
+
+Use `cInfAt_of_chart e.open_source (R.chart c) ?_ hz hz` and prove the remaining obligations. Use `(β₀.contDiff.contDiffOn (s := e.target ∩ e.symm ⁻¹' e.source)).congr fun v hv => ?_` and prove the remaining obligations. Establish `hv1 : e.symm v ∈ e.source` using `hv.2`. Use `show (if e.symm v ∈ e.source then β₀ (e (e.symm v)) else 0) = β₀ v`. Rewrite using `[if_pos hv1, e.right_inv hv.1]`.
+
+Establish `hzC : z ∉ C` using `fun h => hz (hCsub h).1`. Use `(cInfAt_const (p := q) 0 z).congr ?_` and prove the remaining obligations. Use `filter_upwards [hCc.isClosed.isOpen_compl.mem_nhds hzC] with w hw`. Assume the negation of the conclusion as `h`. Conclude with `hw (hsupp h)`.
+
+Simplify using `only [β] split_ifs`. Conclude with `⟨β₀.nonneg, β₀.le_one⟩`. Conclude with `⟨le_rfl, zero_le_one⟩`. Establish `ho : IsOpen (e.source ∩ e ⁻¹' Metric.ball (e y) (ε / 4))` using `e.isOpen_inter_preimage Metric.isOpen_ball filter_upwards [ho.mem_nhds ⟨hc, Metric.mem_ball_self (by linarith)⟩] with w hw`. Simplify using `only [β, if_pos hw.1]`.
+
+Conclude with `β₀.one_of_mem_closedBall (Metric.ball_subset_closedBall hw.2)`.
+-/
 theorem exists_bump {P : Scheme.{0}} {q : P ⟶ Sp k} {N : ℕ} {σ : k →+* ℂ} (R : AnRead q σ N)
     [T2Space (CxPts q σ)] (y : CxPts q σ) (W : Set (CxPts q σ)) (hW : IsOpen W) (hy : y ∈ W) :
     ∃ β : CxPts q σ → ℝ, (∀ z, CInfAt β z) ∧ (∀ z, 0 ≤ β z ∧ β z ≤ 1) ∧ tsupport β ⊆ W ∧
@@ -87,6 +115,15 @@ theorem exists_bump {P : Scheme.{0}} {q : P ⟶ Sp k} {N : ℕ} {σ : k →+* �
     simp only [β, if_pos hw.1]
     exact β₀.one_of_mem_closedBall (Metric.ball_subset_closedBall hw.2)
 
+/- English proof (translation)
+Use `choose j hj using hc`. Use `choose β hβs hβb hβt hβ1 using fun y => exists_bump R y (V (j y)) (hV (j y)) (hj y)`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun x : CxPts q σ => interior {y | β x y = 1}) (fun _ => isOpen_interior) (fun y _ => mem_iUnion.2 ⟨y, mem_interior_iff_mem_nhds.2 (hβ1 y)⟩)`. Set `pt : Fin t.card → CxPts q σ` to `fun a => (t.equivFin.symm a : CxPts q σ)`. Set `ψ : Fin t.card → CxPts q σ → ℝ` to `fun a => β (pt a)`.
+
+Establish `hsum : ∀ x, ∑ a, ψ a x * ∏ b ∈ Finset.univ with b < a, (1 - ψ b x) = 1 - ∏ a, (1 - ψ a x)` using `fun x => by`. Rewrite using `[Finset.prod_one_sub_ordered]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨t.card, fun a => j (pt a), fun a x => ψ a x * ∏ b ∈ Finset.univ with b < a, (1 - ψ b x), fun a y => ?_, fun a y => ?_, fun a => ?_, fun x => ?_⟩` and prove the remaining obligations. Conclude with `cInfAt_mul (hβs _ y) (cInfAt_prod _ fun b _ => cInfAt_one_sub (hβs _ y))`.
+
+Conclude with `mul_nonneg (hβb _ y).1 (Finset.prod_nonneg fun b _ => sub_nonneg.2 (hβb _ y).2)`. Conclude with `(tsupport_mul_subset_left (f := ψ a)).trans (hβt (pt a))`. Rewrite using `[hsum]`. Take `⟨u, hu, hxu⟩` from `mem_iUnion₂.1 (ht (mem_univ x))`. Establish `h1 : ψ (t.equivFin ⟨u, hu⟩) x = 1`.
+
+Establish `: pt (t.equivFin ⟨u, hu⟩) = u` using `by simp [pt]`. Simplify using `only [ψ, this]`. Conclude with `(interior_subset hxu : x ∈ {y | β u y = 1})`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ (t.equivFin ⟨u, hu⟩)) (by rw [h1]; ring)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_partition {P : Scheme.{0}} {q : P ⟶ Sp k} {N : ℕ} {σ : k →+* ℂ} (R : AnRead q σ N)
     [CompactSpace (CxPts q σ)] [T2Space (CxPts q σ)] {J : Type} (V : J → Set (CxPts q σ)) (hV : ∀ j, IsOpen (V j))
     (hc : ∀ y, ∃ j, y ∈ V j) :

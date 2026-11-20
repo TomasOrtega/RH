@@ -24,6 +24,43 @@ open private irr2 pair2 freeRes from Development.AutomorphicArithmetic.Automorph
 open UpperTheory.GalN.V
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.HV GlobalTheory.GalOfCusp UpperTheory.V.Th
 open UpperTheory.V.Z.Win in
+/- English proof (translation)
+Introduce `hH hAd Ω _ _ _ l _ ι c _ N _ e ψ η σ g₁ B M H hΨσ hF A _ _ r hr hII h11 K _ _ _ _ hK2 hK W hWc hW hdet haut hWit hfree θ hθ R hR`. Take `⟨L, _, _, _, _, g₂, Φ, C₀, ⟨k⟩, hok, hbig, hseed⟩` from `hF`. Use `haveI := Db.algClo L Ω`. Use `haveI := Db.algClo K Ω`. Take `⟨-, ka, hka, hrig⟩` from `_root_.UpperTheory.V.Th.linked_rigid_of_printed_adjoint_lifting hH hAd Ω l ι c N e ψ η σ g₂ B M H L Φ C₀ k hok hbig hseed`.
+
+Establish `hof` using `UpperTheory.V.Z.Keep.ordFlag2 Ω l c N e ψ η σ g₂ B M H L Φ C₀ k hok A r`. Generalize the expression as in `Chr.Psi l e (Chr.dirG ℚ Ω ψ) = Ψ at *`. Establish `hl : l ∣ M` using `(dvd_mul_right l N).trans H.dvd`. Establish `hσ : σ * σ = 1` using `Db.cc_sq H.cc`. Establish `hmk` using `Pr.marks_of_link k hok hl hσ hΨσ`.
+
+Establish `hLη` using `Db.galL_le k`. Take `⟨_, _⟩` from `Db.algKL K L Ω (hK ▸ hLη)`. Take `⟨_, hsol⟩` from `Db.galKL K L k.ab`. Use `haveI := Db.locHom c A`. Use `haveI := (isNoetherianRing_iff_ideal_fg A).2 fun I => (IsPrincipalIdealRing.principal I).fg`.
+
+Use `haveI : Normal ℚ L := k.ab.toIsGalois.to_normal`. Establish `hb : U3.Block η r` using `fun g hg a b hab => Subtype.ext (hII.1 g hg a b hab)`. Establish `hg₂ : g₂ ∈ η.ker` using `hmk.ηg`. Establish `hgs : U3.gstar σ g₂ ∈ η.ker` using `by show η (σ * g₂⁻¹ * σ) = 1`. Rewrite using `[map_mul, map_mul, map_inv, hmk.ηg, hmk.ηc]`.
+
+Simplify using the standard rewrite rules. Establish `hr' : Pr.OrdPt l η Ψ σ g₂ B r` using `⟨hr.red, hr.cont, ⟨hr.norm.atc, by rw [U3.zmat, Matrix.sub_apply, hb _ hg₂ _ _ (by decide), hb _ hgs _ _ (by decide), sub_zero], by rw [U3.zmat, Matrix.sub_apply, hb _ hg₂ _ _ (by decide), hb _ hgs _ _ (by decide), sub_zero]⟩, hr.away, hr.ord⟩`. Establish `hFl : Flagged (W.comp (Base.galEmb ℚ K Ω))` using `Dn.flagAll_of K Ω l 2 _ fun w hw =>`. Set `⟨A', a1, κ, a2⟩` to `hof hr' hb h11 K hK _ (fun s => hW _ (hK.ge (Base.galEmb_mem ℚ K Ω s))) w hw`. Use the proof step `⟨A', a1, κ, a2.choose_spec.2.1⟩`.
+
+Take `⟨ρ', h1, h2, h3⟩` from `Pr.exists_nrep2 k hok hl hσ r hr' hb`. Establish `hηL : ∀ s : G L Ω, η (Base.galEmb ℚ L Ω s) = 1` using `fun s => hLη (Base.galEmb_mem ℚ L Ω s)`. Establish `hηK : ∀ s : G K Ω, η (Base.galEmb ℚ K Ω s) = 1` using `fun s => hK.ge (Base.galEmb_mem ℚ K Ω s)`. Set `χ : G ℚ Ω →* (ResidueField A)ˣ` to `(Units.map ((residue A).comp (algebraMap c.O A)).toMonoidHom).comp Ψ`. Establish `hU : U3.MatIrr ((Base.galOf ℚ L Ω).subgroupOf η.ker) (Pr.gm (W.comp η.ker.subtype))`.
+
+Use `irr2 (W.comp η.ker.subtype) (fun V hV => hII.2 V fun g hg v hv => ?_) (A.val : A →+* PadicAlgCl l) Subtype.val_injective (residue A) (χ.comp η.ker.subtype) (fun g => (r g).mat 0 0 + (r g).mat 2 2) (fun g => ?_) (fun g => ?_) _ (u := ⟨g₂, hg₂⟩) ?_ ?_ ?_` and prove the remaining obligations. Use `hV ⟨g, hg⟩ trivial v hv beta_reduce` as an intermediate fact. Rewrite using `[← hW g hg]`. Conclude with `this`. Use `show _ = (W g).val.trace`.
+
+Rewrite using `[hW g g.2, Matrix.trace_fin_two, map_add]`. Both sides reduce to the same expression. Establish `e2 : ∀ i, residue A ((r g).mat i i) = residue A (algebraMap c.O A ((U3.r0 η Ψ g).mat i i))` using `fun i => Ideal.Quotient.eq.2 (hr.red.red g i i)`. Rewrite using `[map_add, e2, e2, ← map_inv]`. Use `show _ = residue A (algebraMap c.O A (Ψ g : c.Oˣ)) + residue A (algebraMap c.O A (Ψ (g : G ℚ Ω)⁻¹ : c.Oˣ))`.
+
+Simplify using `[U3.GG.mat, U3.tor_val, U3.wt1]`. Rewrite using `[Subgroup.mem_subgroupOf, k.gal]`. Conclude with `⟨k.g0.1, hg₂⟩`. Use `show (W g₂).val.det = 1`. Rewrite using `[hdet, hmk.ηg]`.
+
+Simplify using the standard rewrite rules. Introduce `h`. Use `(hmk.Ψg.map ((residue A).comp (algebraMap c.O A))).ne_zero ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_pow, map_one, sub_eq_zero]`. Establish `h'` using `congrArg Units.val h`.
+
+Rewrite `h'` using `[Units.val_pow_eq_pow_val]`. Conclude with `h'`. Establish `hirr : Af.IsIrr (W.comp (Base.galEmb ℚ L Ω))` using `Db.irr_of_matIrr (by norm_num) (Base.galOf ℚ L Ω) (fun g => (W g).val) (fun V hV => hU V fun g hg v hv => hV g hg v hv) (Base.galEmb ℚ L Ω) (Base.range_galEmb ℚ L Ω).ge _ fun _ => rfl`. Take `⟨J, hJ⟩` from `pair2 (κ := Qbar l)`. Establish `hpair : ∀ s : G ℚ Ω, η s = 1 → (W s).val.transpose * (J * (W σ)⁻¹).val * (W (σ * s * σ⁻¹)).val = (J * (W σ)⁻¹).val` using `fun s hs => by`.
+
+Establish `e1 : J * (W σ)⁻¹ * W (σ * s * σ⁻¹) = J * W s * (W σ)⁻¹`. Rewrite using `[map_mul, map_mul, map_inv]`. Use `group`. Rewrite using `[Matrix.mul_assoc, ← Units.val_mul, e1, Units.val_mul, Units.val_mul, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hJ, hdet, hs, Units.val_mul]`. Simplify using the standard rewrite rules.
+
+Establish `halg : Af.IsAlgChar ι (1 : G ℚ Ω →* (Qbar l)ˣ)`. Use `(_root_.UpperTheory.V.Af.algOfCyc_s hH ℚ Ω l ι).1 _ continuous_const fun w _ => ?_` and prove the remaining obligations. Take `⟨A, hA⟩` from `exists_isPlaceOver Ω w`. Conclude with `⟨A, hA, 0, 1, one_pos, fun s _ => by simp⟩`. Establish `hautL : Af.IsAut ι (W.comp (Base.galEmb ℚ L Ω))` using `(Z.Bc.solC_of_solDescent (_root_.UpperTheory.V.Af.solvable_descent_of_printed_hida hH) ℚ K L Ω hsol ⟨inferInstance, Or.inr ⟨hK2, inferInstance⟩⟩ inferInstance inferInstance l ι 2 (by norm_num) (W.comp (Base.galEmb ℚ K Ω)) 1 (hWc.comp (Base.galEmbTop ℚ K Ω).1.continuous) hirr halg …`.
+
+Establish `hs' : Base.galEmb ℚ K Ω s' = σ * Base.galEmb ℚ K Ω s * σ⁻¹` using `hs`. Rewrite using `[MonoidHom.comp_apply, MonoidHom.comp_apply, hs', hpair _ (hηK s)]`. Use the proof step `simp⟩).1 ((_root_.UpperTheory.GalN.V.automorphy_bridge_of_printed_hida hH K Ω l ι 2 _).2.1.2 haut)`. Establish `hcsd : _root_.UpperTheory.V.Z.Win.IsAutCsdA ι (Af.tw (W.comp (Base.galEmb ℚ L Ω)) ka)`. Take `⟨hc, art, χ, a, h'⟩` from `hka.alg`.
+
+Establish `hCL` using `(_root_.UpperTheory.GalN.V.automorphy_bridge_of_printed_hida hH L Ω l ι 2 _).2.1.1 hautL`. Establish `hWL : _root_.UpperTheory.V.Z.Win.WitA ι (W.comp (Base.galEmb ℚ L Ω))` using `_root_.UpperTheory.V.Z.Win.Dn.automorphy_up_base_change (r := W.comp (Base.galEmb ℚ K Ω)) L hH hsol (by norm_num) (hWc.comp (Base.galEmbTop ℚ K Ω).1.continuous) hirr ⟨ℚ, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, 1, σ, …`. Establish `hs' : Base.galEmb ℚ K Ω s' = σ * Base.galEmb ℚ K Ω s * σ⁻¹` using `hs`. Rewrite using `[MonoidHom.comp_apply, MonoidHom.comp_apply, hs', hpair _ (hηK s)]`. Use the proof step `simp⟩ haut hFl hWit`.
+
+Use `_root_.UpperTheory.GalN.V.mkCsd'_alt ?_ fun _ => _root_.UpperTheory.V.Z.Win.Dn.twist'_alt hH.toClassicalTheorems ⟨χ, hc, art, a, h'⟩ hc hWL` and prove the remaining obligations. Use `_root_.UpperTheory.GalN.V.csdOf0_alt hH ℚ L Ω inferInstance l ι 2 (by norm_num) _ σ (J * (W σ)⁻¹) H.cc (_root_.UpperTheory.V.Af.twist_invariance_automorphic hH L Ω l ι 2 _ ka hautL ⟨χ, hc, art, a, h'⟩) fun s s' hs => ?_` and prove the remaining obligations. Establish `hs' : Base.galEmb ℚ L Ω s' = σ * Base.galEmb ℚ L Ω s * σ⁻¹` using `hs`. Establish `hp` using `hpair _ (hηL s)`. Rewrite `hp` using `[← hs']`.
+
+Rewrite using `[MonoidHom.zpow_apply, ← hka.conj s s' hs', Units.val_mul (ka s)]`. Simplify using `only [Af.tw_val, MonoidHom.comp_apply, Matrix.transpose_smul, smul_mul_assoc, mul_smul_comm, hp]`. Rewrite using `[mul_comm, mul_smul]`. Take `⟨s, V, ρ, a1, a2, a3⟩` from `hrig A ρ' h1 h3 (W.comp (Base.galEmb ℚ L Ω)) (fun s => by rw [h2, MonoidHom.comp_apply, hW _ (hηL s)]; rfl) hirr hcsd (freeRes L W hfree)`. Use `adDown Ω l K L hK2 (hK ▸ hLη) s V 2 _ _ R (hWc.comp (Base.galEmbTop ℚ K Ω).1.continuous) hR ρ ka (fun g t ht => ?_) (fun g g' t hg ht => ?_) a3` and prove the remaining obligations.
+
+Rewrite using `[a1] show _ • (W (Base.galEmb ℚ L Ω g)).val = _ • (W (Base.galEmb ℚ K Ω t)).val`. Rewrite using `[ht]`. Establish `: θ (Base.galEmb ℚ K Ω t) = 1` using `Units.ext (by rw [hθ, hηK]; simp)`. Rewrite using `[← a2 g g' hg]`. Conclude with `mul_eq_left.2 this`.
+-/
 theorem UpperTheory.V.Z.Win.Dn.rigid_end_two_w_of_printed_adjoint_lifting :
     _root_.UpperTheory.V.Af.HypothesesH' → _root_.UpperTheory.V.Th.AdjointLiftingTheorem → _root_.UpperTheory.GalN.V.RigidityEndomorphismWeightTwo := by
   intro hH hAd Ω _ _ _ l _ ι c _ N _ e ψ η σ g₁ B M H hΨσ hF A _ _ r hr hII h11 K _ _ _ _ hK2 hK W hWc hW hdet haut hWit hfree θ hθ R hR

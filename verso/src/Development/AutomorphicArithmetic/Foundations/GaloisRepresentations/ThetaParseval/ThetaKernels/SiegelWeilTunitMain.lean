@@ -19,6 +19,19 @@ open PositivityTheory.SiegelWeilFormula.TBij.Adp PositivityTheory.SiegelWeilForm
 local instance (priority := high)  {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] :
     MeasurableSpace (κ → AF F) := borel _
 local instance  {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] : BorelSpace (κ → AF F) := ⟨rfl⟩
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ d ν hν x Φ hΦ Φ' hΦ'`. Take `⟨τ, S0, S0', C, hop, hT⟩` from `_root_.PositivityTheory.SiegelWeilFormula.Tunit.T_chart_k d`. Establish `hpres : ∀ φ ∈ schA F d.κ, d.om x φ ∈ schA F d.κ` using `fun φ hφ => d.ok.dbl.weil.2.1.pres x φ hφ`. Establish `hunit` using `d.ok.dbl.weil.2.1.unit`. Take `⟨hμ, hint⟩` from `_root_.PositivityTheory.SiegelWeilFormula.KTunit.map_haar_k d τ ν hν`.
+
+Use `set μ := ν.map (_root_.PositivityTheory.SiegelWeilFormula.KTunit.cmap_k d τ) with hμdef`. Establish `h1 : ∀ Ψ ∈ d.sch, ∀ Ψ' ∈ d.sch, ∫ X, d.T Ψ X * star (d.T Ψ' X) ∂ν = (C * star C) * ∫ y, S0 Ψ y * star (S0 Ψ' y) ∂μ`. Introduce `Ψ hΨ Ψ' hΨ'`. Rewrite using `[← integral_const_mul, ← hint]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun X => ?_)` and prove the remaining obligations.
+
+Simplify using `only [hT _ hΨ, hT _ hΨ', star_mul']`. Express the relevant statement in the definitionally equal form `_ = C * star C * (S0 Ψ (fun k => d.crd X (τ k)) * star (S0 Ψ' fun k => d.crd X (τ k)))`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1 _ (hpres Φ hΦ) _ (hpres Φ' hΦ'), h1 _ hΦ _ hΦ']`. Use `congr 1`.
+
+Take `⟨c, hc0, hctop, hcn⟩` from `hop.norm μ μ hμ hμ`. Establish `hp' : ∀ φ ∈ schA F d.κ, (S0 ∘ₗ d.om x ∘ₗ S0') φ ∈ schA F d.κ` using `fun φ hφ => hop.pres _ (hpres _ (hop.pres' φ hφ))`. Establish `hT' : ∀ φ ∈ schA F d.κ, ∫⁻ y, ‖(S0 ∘ₗ d.om x ∘ₗ S0') φ y‖ₑ ^ 2 ∂μ = ∫⁻ y, ‖φ y‖ₑ ^ 2 ∂μ`. Introduce `φ hφ`. Establish `e1` using `hcn _ (hpres _ (hop.pres' φ hφ))`.
+
+Establish `e2` using `hcn _ (hop.pres' φ hφ)`. Rewrite `e2` using `[hop.right φ hφ]`. Establish `e3` using `hunit μ hμ x _ (hop.pres' φ hφ)`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[e1, e2, e3]`.
+
+Use `GlobalTheory.DblUnitaryBox.integral_mul_star_eq μ hμ (S0 ∘ₗ d.om x ∘ₗ S0') hp' hT' (hop.pres Φ hΦ) (hop.pres Φ' hΦ')` as an intermediate fact. Simplify `this` using `only [LinearMap.comp_apply, hop.left _ hΦ, hop.left _ hΦ']`.
+-/
 theorem tUnit_k : _root_.PositivityTheory.SiegelWeilFormula.TUnit_k := by
   intro F E _ _ _ _ _ σ d ν hν x Φ hΦ Φ' hΦ'
   obtain ⟨τ, S0, S0', C, hop, hT⟩ := _root_.PositivityTheory.SiegelWeilFormula.Tunit.T_chart_k d

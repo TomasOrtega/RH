@@ -17,6 +17,9 @@ namespace GlobalTheory.HL.Unimod
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 
+/- English proof (translation)
+Establish `h : ∀ i j, L.cj (Hm j i) = Hm i j` using `fun i j => congrFun (congrFun hH i) j`. Simplify using `only [hf, map_sum, map_mul, L.cj_cj, h]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hf_swap (L : LocE F E) {n : ℕ} {Hm : Matrix (Fin n) (Fin n) E} (hH : IsHerm L Hm)
     (x y : Fin n → E) : hf L Hm x y = L.cj (hf L Hm y x) := by
   have h : ∀ i j, L.cj (Hm j i) = Hm i j := fun i j => congrFun (congrFun hH i) j
@@ -25,6 +28,11 @@ theorem hf_swap (L : LocE F E) {n : ℕ} {Hm : Matrix (Fin n) (Fin n) E} (hH : I
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Take `⟨_, hi, c, hc⟩` from `hg`. Establish `hfix : ∀ v ∈ Y, g v = v` using `fun v hv => by`. Establish `h0 : hf L Hm a v = 0` using `ha v hv`. Rewrite using `[hc, hf_swap L hH v a, h0]`. Simplify using the standard rewrite rules.
+
+Use `⟨hi, fun v => ⟨fun hv => ?_, fun hv => by rw [hfix v hv]; exact hv⟩, fun v hv => ?_⟩` and prove the remaining obligations. Establish `: g v = v` using `g.injective (hfix _ hv)`. Rewrite `hv` using `[this]`. Then use the resulting hypothesis. Rewrite using `[hfix v hv]`. Simplify using the standard rewrite rules.
+-/
 theorem qrefl_mem (L : LocE F E) {n : ℕ} {Hm : Matrix (Fin n) (Fin n) E} (hH : IsHerm L Hm)
     (Y : Submodule E (Fin n → E)) {a : Fin n → E} (ha : a ∈ perp L Hm Y)
     {g : (Fin n → E) ≃ₗ[E] (Fin n → E)} (hg : IsQRefl L Hm a g) : g ∈ fixG L Hm Y := by
@@ -37,6 +45,11 @@ theorem qrefl_mem (L : LocE F E) {n : ℕ} {Hm : Matrix (Fin n) (Fin n) E} (hH :
     rwa [this] at hv
   · rw [hfix v hv]; simp
 
+/- English proof (translation)
+Use extensionality with `y`. Rewrite using `[Subgroup.mem_pointwise_smul_iff_inv_smul_mem]`. Simplify using `only [MulAut.smul_def, MulAut.inv_apply, MulAut.conj_symm_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+
+Use `H.mul_mem (H.mul_mem hh hy) (H.inv_mem hh)` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Introduce `hy`. Conclude with `H.mul_mem (H.mul_mem (H.inv_mem hh) hy) hh`.
+-/
 theorem conj_self {G : Type} [Group G] {H : Subgroup G} {h : G} (hh : h ∈ H) :
     MulAut.conj h • H = H := by
   ext y
@@ -51,11 +64,17 @@ theorem conj_self {G : Type} [Group G] {H : Subgroup G} {h : G} (hh : h ∈ H) :
 
 variable [IsNonarchimedeanLocalField F] [CharZero F]
 
+/- English proof (translation)
+Rewrite using `[((GlobalTheory.T.latticeStabilizer_commensurable_unramified_hermitian L Λ Λ hΛ hΛ H).2 h).2, Subgroup.smul_inf, conj_self hh]`.
+-/
 theorem inf_stab_smul (L : LocE F E) {n : ℕ} (H : Subgroup ((Fin n → E) ≃ₗ[E] (Fin n → E)))
     {Λ : Submodule L.O (Fin n → E)} (hΛ : IsLat L Λ) {h} (hh : h ∈ H) :
     H ⊓ stabL L (h • Λ) = MulAut.conj h • (H ⊓ stabL L Λ) := by
   rw [((GlobalTheory.T.latticeStabilizer_commensurable_unramified_hermitian L Λ Λ hΛ hΛ H).2 h).2, Subgroup.smul_inf, conj_self hh]
 
+/- English proof (translation)
+Introduce `h hh`. Establish `hl` using `((GlobalTheory.T.latticeStabilizer_commensurable_unramified_hermitian L Λ Λ hΛ hΛ H).2 h).1`. Rewrite using `[← inf_stab_smul L H hΛ hh]`. Conclude with `⟨(GlobalTheory.T.latticeStabilizer_commensurable_unramified_hermitian L _ _ hl hΛ H).1, (GlobalTheory.T.latticeStabilizer_commensurable_unramified_hermitian L _ _ hΛ hl H).1⟩`.
+-/
 theorem comm_conj (L : LocE F E) {n : ℕ} (H : Subgroup ((Fin n → E) ≃ₗ[E] (Fin n → E)))
     {Λ : Submodule L.O (Fin n → E)} (hΛ : IsLat L Λ) : ∀ h ∈ H,
     (H ⊓ stabL L Λ).relIndex (MulAut.conj h • (H ⊓ stabL L Λ)) ≠ 0 ∧
@@ -65,9 +84,15 @@ theorem comm_conj (L : LocE F E) {n : ℕ} (H : Subgroup ((Fin n → E) ≃ₗ[E
   rw [← inf_stab_smul L H hΛ hh]
   exact ⟨(GlobalTheory.T.latticeStabilizer_commensurable_unramified_hermitian L _ _ hl hΛ H).1, (GlobalTheory.T.latticeStabilizer_commensurable_unramified_hermitian L _ _ hΛ hl H).1⟩
 
+/- English proof (translation)
+Simplify using `[invVol]`.
+-/
 theorem invVol_self {G : Type} [Group G] (K : Subgroup G) : invVol K K = 1 := by
   simp [invVol]
 
+/- English proof (translation)
+Rewrite using `[← (GlobalTheory.T.haarInvVolume_conj_modular_character H _ inf_le_left (comm_conj L H hΛ)).1 g hg g⁻¹ (H.inv_mem hg)]`. Simplify using `[invVol_self]`.
+-/
 theorem delta_inv (L : LocE F E) {n : ℕ} (H : Subgroup ((Fin n → E) ≃ₗ[E] (Fin n → E)))
     {Λ : Submodule L.O (Fin n → E)} (hΛ : IsLat L Λ) {g} (hg : g ∈ H) :
     invVol (H ⊓ stabL L Λ) (MulAut.conj g • (H ⊓ stabL L Λ)) *
@@ -75,6 +100,13 @@ theorem delta_inv (L : LocE F E) {n : ℕ} (H : Subgroup ((Fin n → E) ≃ₗ[E
   rw [← (GlobalTheory.T.haarInvVolume_conj_modular_character H _ inf_le_left (comm_conj L H hΛ)).1 g hg g⁻¹ (H.inv_mem hg)]
   simp [invVol_self]
 
+/- English proof (translation)
+Establish `a` using `(GlobalTheory.T.latticeStabilizer_commensurable_unramified_hermitian L _ _ hΛ h0 H).1`. Establish `b` using `(GlobalTheory.T.latticeStabilizer_commensurable_unramified_hermitian L _ _ h0 hΛ H).1`. Establish `hl` using `((GlobalTheory.T.latticeStabilizer_commensurable_unramified_hermitian L Λ Λ hΛ hΛ H).2 g).1`. Establish `c` using `(GlobalTheory.T.latticeStabilizer_commensurable_unramified_hermitian L _ _ hl h0 H).1`. Establish `d` using `(GlobalTheory.T.latticeStabilizer_commensurable_unramified_hermitian L _ _ h0 hl H).1`.
+
+Rewrite `c`, `d` using `[inf_stab_smul L H hΛ hg]`. Establish `e1` using `((GlobalTheory.T.haarInvVolume_conj_modular_character H _ inf_le_left (comm_conj L H h0)).2.2.2 _ a b g hg).1`. Establish `e2` using `(GlobalTheory.HL.invVol_mul_pos_le_conj _ _ _ a b c d).1`. Establish `e3` using `(GlobalTheory.HL.invVol_mul_pos_le_conj _ _ _ a b a b).2.1`. Rewrite `e2` using `[e1, h1, mul_one]`.
+
+Conclude with `mul_right_cancel₀ e3.ne' (by rw [e2, one_mul])`.
+-/
 theorem delta_indep (L : LocE F E) {n : ℕ} (H : Subgroup ((Fin n → E) ≃ₗ[E] (Fin n → E)))
     {Λ0 Λ : Submodule L.O (Fin n → E)} (h0 : IsLat L Λ0) (hΛ : IsLat L Λ) {g} (hg : g ∈ H)
     (h1 : invVol (H ⊓ stabL L Λ) (MulAut.conj g • (H ⊓ stabL L Λ)) = 1) :
@@ -91,6 +123,21 @@ theorem delta_indep (L : LocE F E) {n : ℕ} (H : Subgroup ((Fin n → E) ≃ₗ
   rw [e1, h1, mul_one] at e2
   exact mul_right_cancel₀ e3.ne' (by rw [e2, one_mul])
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ E _ _ _ L n Hm hH m x hx Λ0 Λ h0 hΛ h hh`. Establish `hgen` using `GlobalTheory.T.isometriesFixingSubspace_le_quasiReflection_closure L Hm hH m x hx`. Establish `hq` using `GlobalTheory.T.exists_lattice_and_inverting_automorphism_of_quasi_reflection L Hm hH m x hx`. Establish `hmem` using `fun a ha g hg => qrefl_mem L hH.1 (Submodule.span E (Set.range x)) (a := a) ha (g := g) hg`. Use `set H := fixG L Hm (Submodule.span E (Set.range x)) with hHdef`.
+
+Establish `key : ∀ g ∈ Subgroup.closure {g | ∃ a ∈ perp L Hm (Submodule.span E (Set.range x)), IsQRefl L Hm a g}, g ∈ H ∧ invVol (H ⊓ stabL L Λ0) (MulAut.conj g • (H ⊓ stabL L Λ0)) = 1`. Introduce `g hg`. Proceed by induction on `hg using Subgroup.closure_induction with`. Consider the case `mem g hg`. Take `⟨a, ha, hg⟩` from `hg`.
+
+Establish `hgH` using `hmem a ha g hg`. Use `⟨hgH, ?_⟩` and prove the remaining obligations. Take `⟨Λ1, h1, α, hα, hαg⟩` from `hq a ha g hg`. Use `delta_indep L H h0 h1 hgH ?_` and prove the remaining obligations. Establish `M` using `GlobalTheory.T.haarInvVolume_conj_modular_character H _ inf_le_left (comm_conj L H h1)`.
+
+Establish `e1` using `M.2.2.1 α hα g hgH`. Establish `e2` using `M.2.1 g hgH`. Establish `e3` using `delta_inv L H h1 hgH`. Rewrite `e1` using `[hαg]`. Rewrite `e3` using `[e1]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Consider the case `one => exact ⟨H.one_mem, by simp [invVol_self]⟩`. Consider the case `mul a b _ _ ha hb`. Use `⟨H.mul_mem ha.1 hb.1, ?_⟩` and prove the remaining obligations. Rewrite using `[(GlobalTheory.T.haarInvVolume_conj_modular_character H _ inf_le_left (comm_conj L H h0)).1 a ha.1 b hb.1, ha.2, hb.2, one_mul]`.
+
+Consider the case `inv a _ ha`. Use `⟨H.inv_mem ha.1, ?_⟩` and prove the remaining obligations. Use `delta_inv L H h0 ha.1` as an intermediate fact. Rewrite `this` using `[ha.2, one_mul]`. Then use the resulting hypothesis. Establish `a` using `(GlobalTheory.T.latticeStabilizer_commensurable_unramified_hermitian L _ _ hΛ h0 H).1`.
+
+Establish `b` using `(GlobalTheory.T.latticeStabilizer_commensurable_unramified_hermitian L _ _ h0 hΛ H).1`. Rewrite using `[inf_stab_smul L H hΛ hh, ((GlobalTheory.T.haarInvVolume_conj_modular_character H _ inf_le_left (comm_conj L H h0)).2.2.2 _ a b h hh).1, (key h (hgen hh)).2, one_mul]`.
+-/
 theorem unimodular : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E), IsHermND L Hm → ∀ (m : ℕ) (x : Fin m → Fin n → E), IsUnit (gramT L Hm x).det → ∀ Λ0 Λ : Submodule L.O (Fin n → E), IsLat L Λ0 → IsLat L Λ → ∀ h ∈ fixG L Hm (Submodule.span E (Set.range x)), invVol (fixG L Hm (Submodule.span E (Set.range x)) ⊓ stabL L Λ0) (fixG L Hm (Submodule.span E (Set.range x)) ⊓ stabL L (h • Λ)) = invVol (fixG L Hm (Submodule.span E (Set.range x)) ⊓ stabL L Λ0) (fixG L Hm (Submodule.span E (Set.range x)) ⊓ stabL L Λ) := by
   intro F _ _ _ _ _ E _ _ _ L n Hm hH m x hx Λ0 Λ h0 hΛ h hh
   have hgen := GlobalTheory.T.isometriesFixingSubspace_le_quasiReflection_closure L Hm hH m x hx

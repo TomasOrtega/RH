@@ -26,17 +26,26 @@ def toFixedFieldAlgEquiv (h : H) : Gal(L/fixedField H) :=
 
 omit [NumberField K] [NumberField L] [IsGalois K L] in
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toFixedFieldAlgEquiv_apply (h : H) (y : L) : toFixedFieldAlgEquiv H h y = (h : Gal(L/K)) y :=
   rfl
 
 omit [IsGalois K L] in
 
+/- English proof (translation)
+Establish `hmem : σ.restrictScalars K ∈ fixingSubgroup (fixedField H)` using `(IntermediateField.mem_fixingSubgroup_iff _ _).2 fun y hy ↦ σ.commutes ⟨y, hy⟩`. Conclude with `(IntermediateField.fixingSubgroup_fixedField H).le hmem`.
+-/
 theorem restrictScalars_mem (σ : Gal(L/fixedField H)) : σ.restrictScalars K ∈ H := by
   have hmem : σ.restrictScalars K ∈ fixingSubgroup (fixedField H) :=
     (IntermediateField.mem_fixingSubgroup_iff _ _).2 fun y hy ↦ σ.commutes ⟨y, hy⟩
   exact (IntermediateField.fixingSubgroup_fixedField H).le hmem
 
 omit [NumberField K] [NumberField L] [IsGalois K L] in
+/- English proof (translation)
+Use `InfinitePlace.ext _ _ fun y ↦ ?_` and prove the remaining obligations. Rewrite using `[InfinitePlace.smul_eq_comap, InfinitePlace.smul_eq_comap, InfinitePlace.comap_apply, InfinitePlace.comap_apply]`. Use `congr 1`.
+-/
 theorem smul_infinitePlace_toFixedFieldAlgEquiv (h : H) (w : InfinitePlace L) :
     toFixedFieldAlgEquiv H h • w = (h : Gal(L/K)) • w := by
   refine InfinitePlace.ext _ _ fun y ↦ ?_
@@ -55,12 +64,22 @@ def subfieldInfinitePlace (x : Gal(L/K)) : InfinitePlace (fixedField H) :=
 
 omit [NumberField K] [NumberField L] in
 
+/- English proof (translation)
+Rewrite using `[subfieldInfinitePlace, ← InfinitePlace.comap_comp, ← IsScalarTower.algebraMap_eq]`. Conclude with `((InfinitePlace.mem_orbit_iff (k := K)).1 ⟨x, rfl⟩).symm`.
+-/
 theorem comap_subfieldInfinitePlace (x : Gal(L/K)) :
     (subfieldInfinitePlace H w x).comap (algebraMap K (fixedField H)) =
       w.comap (algebraMap K L) := by
   rw [subfieldInfinitePlace, ← InfinitePlace.comap_comp, ← IsScalarTower.algebraMap_eq]
   exact ((InfinitePlace.mem_orbit_iff (k := K)).1 ⟨x, rfl⟩).symm
 
+/- English proof (translation)
+Rewrite using `[DoubleCoset.eq]`. Prove the components needed by the constructor for the conclusion. Introduce `hxy`. Take `⟨σ, hσ⟩` from `InfinitePlace.exists_smul_eq_of_comap_eq (k := fixedField H) hxy`. Establish `hh : σ.restrictScalars K • x • w = y • w` using `hσ`.
+
+Use `⟨σ.restrictScalars K, restrictScalars_mem H σ, (y⁻¹ * σ.restrictScalars K * x)⁻¹, Subgroup.inv_mem _ ?_, by group⟩` and prove the remaining obligations. Rewrite using `[MulAction.mem_stabilizer_iff, mul_smul, mul_smul, hh, inv_smul_smul]`. Introduce and unpack `⟨h, hh, d, hd, rfl⟩`. Rewrite using `[subfieldInfinitePlace, subfieldInfinitePlace, mul_smul, mul_smul, MulAction.mem_stabilizer_iff.1 hd]`. Rewrite using `[show h = ((⟨h, hh⟩ : H) : Gal(L/K)) from rfl, ← smul_infinitePlace_toFixedFieldAlgEquiv]`.
+
+Conclude with `(InfinitePlace.mem_orbit_iff (k := fixedField H)).1 ⟨_, rfl⟩`.
+-/
 theorem subfieldInfinitePlace_eq_iff (x y : Gal(L/K)) :
     subfieldInfinitePlace H w x = subfieldInfinitePlace H w y ↔
       DoubleCoset.mk H (MulAction.stabilizer Gal(L/K) w) x =
@@ -82,6 +101,11 @@ theorem subfieldInfinitePlace_eq_iff (x y : Gal(L/K)) :
 
 omit [NumberField K] [NumberField L] in
 
+/- English proof (translation)
+Take `⟨w', rfl⟩` from `InfinitePlace.comap_surjective (k := fixedField H) (K := L) u`. Simplify using `only at hu`. Establish `h' : w.comap (algebraMap K L) = w'.comap (algebraMap K L)`. Rewrite using `[← hu, ← InfinitePlace.comap_comp, ← IsScalarTower.algebraMap_eq]`. Take `⟨x, hx⟩` from `InfinitePlace.exists_smul_eq_of_comap_eq h'`.
+
+Conclude with `⟨x, by rw [subfieldInfinitePlace, hx]⟩`.
+-/
 theorem exists_subfieldInfinitePlace_eq (u : InfinitePlace (fixedField H))
     (hu : u.comap (algebraMap K (fixedField H)) = w.comap (algebraMap K L)) :
     ∃ x : Gal(L/K), subfieldInfinitePlace H w x = u := by
@@ -108,6 +132,9 @@ def subfieldInfinitePlaceEquiv :
       exact ⟨DoubleCoset.mk _ _ x, Subtype.ext hx⟩⟩
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem subfieldInfinitePlaceEquiv_mk (x : Gal(L/K)) :
     (subfieldInfinitePlaceEquiv H w (DoubleCoset.mk _ _ x) : InfinitePlace (fixedField H)) =
       subfieldInfinitePlace H w x :=

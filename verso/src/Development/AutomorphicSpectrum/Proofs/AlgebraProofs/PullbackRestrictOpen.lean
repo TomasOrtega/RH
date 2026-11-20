@@ -9,6 +9,11 @@ open GlobalTheory.CompanionTheory.FreeQuotProof GlobalTheory.CompanionTheory.Hyp
 
 namespace GlobalTheory.CompanionTheory.PullbackRestrict
 
+/- English proof (translation)
+Introduce `P Q Y S c v g p H W D hD`. Establish `hbot : (Y.homOfLE hD ≫ p ∣_ W) ≫ W.ι = D.ι ≫ p`. Rewrite using `[Category.assoc, morphismRestrict_ι, ← Category.assoc, Scheme.homOfLE_ι]`. Establish `s : IsPullback ((v ⁻¹ᵁ D).ι ≫ c) (v ∣_ D) g ((Y.homOfLE hD ≫ p ∣_ W) ≫ W.ι)`. Rewrite using `[hbot]`.
+
+Conclude with `(isPullback_morphismRestrict v D).flip.paste_horiz H`. Conclude with `⟨_, _, IsPullback.of_right' s (isPullback_morphismRestrict g W).flip⟩`.
+-/
 theorem isPullback_restrict_opens :
     ∀ {P Q Y S : Scheme.{0}} {c : P ⟶ Q} {v : P ⟶ Y} {g : Q ⟶ S} {p : Y ⟶ S},
       IsPullback c v g p → ∀ (W : S.Opens) (D : Y.Opens), D ≤ p ⁻¹ᵁ W →

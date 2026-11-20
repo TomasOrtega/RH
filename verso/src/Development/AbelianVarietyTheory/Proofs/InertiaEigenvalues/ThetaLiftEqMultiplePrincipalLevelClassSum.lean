@@ -19,6 +19,11 @@ noncomputable section
 
 namespace GlobalTheory.LiftClassSumPrinc
 
+/- English proof (translation)
+Establish `hc : ∀ a : G, a * z = z * a` using `fun a => ((Subgroup.mem_center_iff.1 hz) a)`. Introduce `h`. Take `⟨i, ⟨γ, k, hk⟩, hu⟩` from `hy (h * z⁻¹)`. Use `⟨i, ⟨γ, k, ?_⟩, fun i' ⟨γ', k', hk'⟩ => hu i' ⟨γ', k', ?_⟩⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hc' : ∀ a : G, a * z⁻¹ = z⁻¹ * a` using `fun a => ((Subgroup.mem_center_iff.1 (Subgroup.inv_mem _ hz)) a)`. Rewrite using `[hk', mul_assoc _ (k' : G) z⁻¹, hc' (k' : G)]`. Use `group`.
+-/
 theorem isReps_mul_central {G Γ : Type} [Group G] [Group Γ] (ι : Γ →* G) (J : Subgroup G) {I : Type} (y : I → G)
     {z : G} (hz : z ∈ Subgroup.center G) (hy : Bridge.IsReps ι J y) : Bridge.IsReps ι J fun i => y i * z := by
   have hc : ∀ a : G, a * z = z * a := fun a => ((Subgroup.mem_center_iff.1 hz) a)
@@ -33,6 +38,11 @@ theorem isReps_mul_central {G Γ : Type} [Group G] [Group Γ] (ι : Γ →* G) (
     rw [hk', mul_assoc _ (k' : G) z⁻¹, hc' (k' : G)]
     group
 
+/- English proof (translation)
+Establish `hc : ∀ a : G, a * z = z * a` using `fun a => ((Subgroup.mem_center_iff.1 hz) a)`. Use extensionality with `γ`. Rewrite using `[Bridge.mem_stab, Bridge.mem_stab]`. Establish `e : (y * z)⁻¹ * ι γ * (y * z) = y⁻¹ * ι γ * y`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[e]`.
+-/
 theorem stab_mul_central {G Γ : Type} [Group G] [Group Γ] (ι : Γ →* G) (J : Subgroup G) (y : G) {z : G}
     (hz : z ∈ Subgroup.center G) : Bridge.stab ι J (y * z) = Bridge.stab ι J y := by
   have hc : ∀ a : G, a * z = z * a := fun a => ((Subgroup.mem_center_iff.1 hz) a)
@@ -44,6 +54,9 @@ theorem stab_mul_central {G Γ : Type} [Group G] [Group Γ] (ι : Γ →* G) (J 
       _ = y⁻¹ * ι γ * y := by group
   rw [e]
 
+/- English proof (translation)
+Rewrite using `[Subgroup.mem_center_iff]`. Introduce `a`. Take `⟨a', rfl⟩` from `hf a`. Rewrite using `[← map_mul, ← map_mul, (Subgroup.mem_center_iff.1 hz) a']`.
+-/
 theorem map_mem_center {G H : Type} [Group G] [Group H] (f : G →* H) (hf : Function.Surjective f) {z : G}
     (hz : z ∈ Subgroup.center G) : f z ∈ Subgroup.center H := by
   rw [Subgroup.mem_center_iff]
@@ -51,6 +64,9 @@ theorem map_mem_center {G H : Type} [Group G] [Group H] (f : G →* H) (hf : Fun
   obtain ⟨a', rfl⟩ := hf a
   rw [← map_mul, ← map_mul, (Subgroup.mem_center_iff.1 hz) a']
 
+/- English proof (translation)
+Take `⟨Q, chi, res⟩` from `ψ`. Simplify using `only at hQ hc`. Substitute `hQ hc` using the available equality. Conclude with `⟨by rw [MonoidHom.ker_one, Subgroup.coe_top]; exact isOpen_univ, fun _ => rfl, fun _ => rfl, splitSet_empty, fun _ _ _ _ _ => rfl, fun _ h => absurd h (Finset.notMem_empty _)⟩`.
+-/
 theorem twist_good_of {D : D7} (ψ : Twist D Circle) (hQ : ψ.Q = ∅) (hc : ψ.chi = 1) : ψ.Good := by
   obtain ⟨Q, chi, res⟩ := ψ
   dsimp only at hQ hc
@@ -58,6 +74,11 @@ theorem twist_good_of {D : D7} (ψ : Twist D Circle) (hQ : ψ.Q = ∅) (hc : ψ.
   exact ⟨by rw [MonoidHom.ker_one, Subgroup.coe_top]; exact isOpen_univ, fun _ => rfl, fun _ => rfl, splitSet_empty, fun _ _ _ _ _ => rfl,
     fun _ h => absurd h (Finset.notMem_empty _)⟩
 
+/- English proof (translation)
+Take `⟨r, hr0, t, s, Pg, Q, P, cg, xq⟩` from `L`. Take `⟨r', hr0', t', s', Pg', Q', P', cg', xq'⟩` from `L'`. Simplify using `only at hr ht hP hQ hH hH'`. Substitute `hr ht hP hQ` using the available equality. Use extensionality with `x`.
+
+Rewrite using `[mem_lev, mem_lev, hH, hH', Subgroup.mem_bot, Subgroup.mem_bot]`. Both sides reduce to the same expression.
+-/
 theorem lev_eq_of {F E LL : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     [CommRing LL] {n : ℕ} (hc : CMData F E) (J : Matrix (Fin n) (Fin n) E) (β : GL (Fin n) (E ⊗[F] Af F))
     (L L' : LevDat E LL n) (hr : L.r = L'.r) (ht : L.t = L'.t) (hP : L.Pg = L'.Pg) (hQ : L.Q = L'.Q)
@@ -72,6 +93,9 @@ theorem lev_eq_of {F E LL : Type} [Field F] [NumberField F] [Field E] [NumberFie
 
 open GlobalTheory.ConjTwist in
 
+/- English proof (translation)
+Simplify using `only [ser, thetaKO]`. Rewrite using `[GlobalTheory.FiniteFock.pureTensorO_smul, ← GlobalTheory.OrientedHeis.om_fin_pureTensorO R.ψ _ _ _ _ (R.ωP i t) hom R.θ hθ k hk 1 (one_mem _) _ _ _ _ (R.vP i t) _ hv, map_smul, Pi.smul_apply, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one, smul_eq_mul]`.
+-/
 theorem ser_transl {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (i : Fin D.R.m) (t : T0)
     {χS χT : (AE D)ˣ →* Circle} (hom : IsWeilDatumO R.ψ (Vc D i) (Wc D i) χS χT (R.ωP i t)) (hθ : IsInfFam R.θ)
@@ -85,6 +109,9 @@ theorem ser_transl {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A 
 
 open GlobalTheory.ConjTwist GlobalTheory.FlatVecSum in
 
+/- English proof (translation)
+Rewrite using `[Pi.smul_apply, Base.classSum_apply, Finset.sum_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hfin1 : Formalism.IndefR.FWT.fin (Vc D j) (h₀ k * z') = finPt (Vc D j) (h₀ k) * Formalism.IndefR.FWT.fin (Vc D j) z'` using `map_mul _ _ _`. Rewrite using `[Pi.smul_apply, smul_eq_mul, hrel, Nat.cast_one, inv_one, one_mul, hfin1, stab_mul_central _ _ _ hzc, show (princ B).F = B.F from rfl, hB.series_eq_ser, ← hflat, ser_transl R j t hom hθ hv hz', mul_left_comm _ c0, ← mul_assoc c0⁻¹ c0, inv_mul_cancel₀ hc0, one_mul]`. Both sides reduce to the same expression.
+-/
 theorem sum_eq_classSum {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (j : Fin D.R.m) (t : T0)
     {B : Base (Vc D j) (Wc D j)} (hB : BaseOf R j B) (ψ : Twist D Circle) {c0 : ℂ} (hc0 : c0 ≠ 0) {z' : GA D (Vc D j)}
@@ -112,6 +139,23 @@ theorem sum_eq_classSum {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type
 
 open Classical GlobalTheory.ConjTwist GlobalTheory.FlatVecSum in
 
+/- English proof (translation)
+Introduce `D X E Y i j b t hxi hQ y u`. Establish `hB : BaseOf X.R.toRealDat j (Y.Z.ρ.B i j b)` using `GlobalTheory.PinBase.baseOf_of_pin D X Y.Z.ρ Y.Z.good Y.Z.pin i j b`. Establish `hG : (Y.Z.ρ.B i j b).Good` using `Y.Z.good.base i j b`. Establish `hC : GlobalTheory.Hk3.Core X.R.toRealDat X.F.lv2` using `⟨X.char.lev, X.char.grp, X.char.fam, X.char.models, X.char.chain, X.char.thP⟩`. Establish `he : (Y.Z.ρ.tw i b 0 ∅ 1).Q = ∅` using `half_empty _`.
+
+Establish `hone : (Y.Z.ρ.tw i b 0 ∅ 1).chi = 1` using `charOf_one _ _`. Establish `hψ : (Y.Z.ρ.tw i b 0 ∅ 1).Good` using `twist_good_of _ he hone`. Establish `hadm : (Y.Z.ρ.B i j b).admitted (Y.Z.ρ.tw i b 0 ∅ 1).Q` using `by rw [he]; exact Base.admissible_empty_of_good hG`. Establish `htup : IsTupOf X.R.toRealDat (Y.Z.ρ.B i j b) (Y.Z.ρ.tw i b 0 ∅ 1) t` using `⟨by rw [hxi, hone, mul_one], by rw [hQ, he, Finset.union_empty]⟩`. Take `⟨⟨f, hf⟩, -⟩` from `GlobalTheory.FlatVecExist.flatVec_existsUnique D X.Γ X.Pl0 X.T X.A3.A _ X.R.toRealDat X.F.lv2 hC X.guard j t`.
+
+Take `⟨z', c0, hz', hc0, hfz⟩` from `GlobalTheory.T.flatVector_eq_unit_mul_centralTranslate_liftVector D X.Γ X.Pl0 X.T X.A3.A _ X.R.toRealDat X.F.lv2 hC X.guard j t (X.std j) f hf`. Establish `hflat : f = (princ (Y.Z.ρ.B i j b)).vecFlat (Y.Z.ρ.tw i b 0 ∅ 1)` using `eq_vecFlat_princ hB htup hC.lev hG hψ hadm hf`. Establish `hβ : (princ (Y.Z.ρ.B i j b)).F.βS = X.R.βV j` using `hB.βS`. Establish `hrW : (Wc D j).rank = D.R.r` using `D.sp.W_rank _ (Nat.le_add_left _ _) j.2`. Establish `hrV : (Vc D j).rank = D.R.r + D.R.t` using `D.sp.V_rank _ (Nat.le_add_left _ _) j.2`.
+
+Establish `hJ : (princ (Y.Z.ρ.B i j b)).levJ (Y.Z.ρ.tw i b 0 ∅ 1) = (levEnv (Vc D j) (X.R.βV j) (X.R.datVt j t)).J`. Unfold `Base.levJ`. Rewrite using `[hβ, GlobalTheory.LiftClassSumPrinc.lev_eq_of _ _ _ ((princ (Y.Z.ρ.B i j b)).levS (Y.Z.ρ.tw i b 0 ∅ 1)) (Formalism.IndefR.Lev.flag1L (X.R.datVt j t)) (by show (Wc D j).rank = D.R.r; exact hrW) (by show (Vc D j).rank - (Wc D j).rank = D.R.t; omega) (by show (Y.Z.ρ.B i j b).G.Pg = …`. Both sides reduce to the same expression. Establish `hrel : ((princ (Y.Z.ρ.B i j b)).levJ (Y.Z.ρ.tw i b 0 ∅ 1)).relIndex (levEnv (Vc D j) (X.R.βV j) (X.R.datVt j t)).J = 1` using `Subgroup.relIndex_eq_one.2 hJ.ge`.
+
+Use `(exists_isClassSystem (princ (Y.Z.ρ.B i j b)) (princ_good hG).frame (Y.Z.ρ.tw i b 0 ∅ 1)).elim fun m hm => hm.elim fun h₀ hcs => ?_` and prove the remaining obligations. Establish `hzc : Formalism.IndefR.FWT.fin (Vc D j) z' ∈ Subgroup.center (Bridge.Gf (Vc D j))` using `GlobalTheory.LiftClassSumPrinc.map_mem_center (finHom (Vc D j)).rangeRestrict (MonoidHom.rangeRestrict_surjective _) hz'.1`. Use `⟨m, h₀, c0⁻¹, Formalism.IndefR.FWT.fin (Vc D j) z', hcs, hzc, ?_⟩` and prove the remaining obligations. Establish `hfin1 : ∀ k, Formalism.IndefR.FWT.fin (Vc D j) (h₀ k * z') = finPt (Vc D j) (h₀ k) * Formalism.IndefR.FWT.fin (Vc D j) z'` using `fun k => map_mul _ _ _`. Establish `hy : Bridge.IsReps (Bridge.ratF (Vc D j)) ((princ (Y.Z.ρ.B i j b)).levJ (Y.Z.ρ.tw i b 0 ∅ 1)) (fun k => Formalism.IndefR.FWT.fin (Vc D j) (h₀ k * z'))`.
+
+Rewrite using `[show (fun k => Formalism.IndefR.FWT.fin (Vc D j) (h₀ k * z')) = fun k => finPt (Vc D j) (h₀ k) * Formalism.IndefR.FWT.fin (Vc D j) z' from funext hfin1]`. Conclude with `GlobalTheory.LiftClassSumPrinc.isReps_mul_central _ _ _ hzc hcs.reps`. Establish `hh : ∀ k, h₀ k * z' ∈ GfC (Vc D j)` using `fun k => mul_mem (hcs.fin k) hz'.2.1`. Establish `hθ : IsInfFam X.R.θ` using `hC.models.inf`. Establish `hvθ : IsThetaFunO X.R.ψ (Vc D j) (Wc D j) (X.R.vP j t)` using `GlobalTheory.AdTh.MinorWeight.pure_one _ (X.R.vP j t) ▸ hC.thP.pt_theta j t 1`.
+
+Use function extensionality and compare the values at `g`. Use `(hC.thP.thF j t).elim fun thP hPF => ?_` and prove the remaining obligations. Establish `hx : (X.R.HV j t).e y ∈ Bridge.AdForms (Bridge.ratF (Vc D j)) (X.R.cV j).coef.ρ (levEnv _ (X.R.βV j) (X.R.datVt j t)).J (levEnv _ (X.R.βV j) (X.R.datVt j t)).χ` using `(hC.models.HV j t).2.1.le (LinearMap.mem_range_self _ y)`. Establish `hfin : ∀ k ∈ GfC (Vc D j), ∀ hk : Formalism.IndefR.FWT.fin (Vc D j) k ∈ Formalism.IndefR.FWT.levJ X.R.toRealDat j t, ∀ P, X.R.ωP j t (k, 1) (X.R.ptP j t P) = (((levEnv (Vc D j) (X.R.βV j) (X.R.datVt j t)).χ ⟨Formalism.IndefR.FWT.fin (Vc D j) k, hk⟩ : ℂˣ) : ℂ)⁻¹ • X.R.ptP j t P` using `fun k hk hk' => GlobalTheory.FiniteFock.om_pureTensorO_of_finite X.R.ψ X.R.θ (Vc D j) (Wc D j) _ _ (X.R.ωP j t) hC.models.inf (hC.thP.ωP j t) _ _ _ _ _ (hC.thP.pt_theta j t) k hk 1 (one_mem _) _ (GlobalTheory.AdTh.LevelLawCore.omega_level_vP_core D X.Γ X.Pl0 X.T X.A3.A _ X.R.toRe …`. Establish `key` using `GlobalTheory.LiftUnfold.integral_theta (hC.thP.ωP j t) (D.sp.V_sig _) (hC.models.vpos j) (X.R.cV j) (hC.models.cV j) (X.R.βV j) (X.R.datVt j t) (fun _ => Iff.rfl) hx (pureTensorO X.R.ψ X.R.θ (Vc D j) (Wc D j) (fun _ => 1) (cart (X.R.MW j (sg0 D X.A3.A))) (X.R.BV j) (onb (X.R.MW j …`.
+
+Establish `h1` using `congrFun (hPF.2 y u) g`. Establish `h2` using `hPF.1.eq ((X.R.extV j t).rangeRestrict y) (PiTensorProduct.tprod ℂ u) g`. Use `h1.trans (h2.trans (Eq.trans ?_ (key.trans ?_)))` and prove the remaining obligations. Both sides reduce to the same expression. Conclude with `sum_eq_classSum X.R.toRealDat j t hB (Y.Z.ρ.tw i b 0 ∅ 1) hc0.1 hz'.2.1 hzc (hfz.symm.trans hflat) (hC.thP.ωP j t) hθ hvθ h₀ _ hrel ((X.R.HV j t).e y) u g`.
+-/
 theorem thF_eq_classSum_princ : ∀ (D : D7) (X : RealSide D) (E : IntegralHeckeForms.XD D) (Y : SerSide X E) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool) (t : X.T),
     X.R.xi t = (Y.Z.ρ.B i j b).de.chi → X.R.Q t = (Y.Z.ρ.B i j b).de.Q → ∀ (y : (X.R.HV j t).H) (u : ∀ ρ, lowT (X.R.MW j (sg0 D X.A3.A)) ρ),
     ∃ (m : ℕ) (h₀ : Fin m → GA D (Vc D j)) (c : ℂ) (z : Bridge.Gf (Vc D j)),

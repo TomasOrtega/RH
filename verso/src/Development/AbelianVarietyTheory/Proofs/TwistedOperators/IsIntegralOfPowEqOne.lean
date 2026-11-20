@@ -17,19 +17,31 @@ open GlobalTheory.RowEx
 noncomputable section
 namespace GlobalTheory.RowEx
 
+/- English proof (translation)
+Use `haveI : Finite S := hS.to_subtype`. Use `⟨IntermediateField.adjoin ℚ S, IntermediateField.finiteDimensional_adjoin hi, fun z hz => ?_⟩` and prove the remaining obligations. Conclude with `⟨⟨z, IntermediateField.subset_adjoin ℚ S hz⟩, rfl⟩`.
+-/
 theorem exists_nf_of_finite (S : Set ℂ) (hS : S.Finite) (hi : ∀ z ∈ S, IsIntegral ℚ z) :
     ∃ M : IntermediateField ℚ ℂ, FiniteDimensional ℚ M ∧ S ⊆ Set.range (algebraMap M ℂ) := by
   haveI : Finite S := hS.to_subtype
   refine ⟨IntermediateField.adjoin ℚ S, IntermediateField.finiteDimensional_adjoin hi, fun z hz => ?_⟩
   exact ⟨⟨z, IntermediateField.subset_adjoin ℚ S hz⟩, rfl⟩
 
+/- English proof (translation)
+The claim follows from `(Polynomial.nthRoots n (1 : ℂ)).toFinset.finite_toSet.subset fun z hz => by simpa [Polynomial.mem_nthRoots hn] using hz`.
+-/
 theorem rootsOne_finite {n : ℕ} (hn : 0 < n) : {z : ℂ | z ^ n = 1}.Finite :=
   (Polynomial.nthRoots n (1 : ℂ)).toFinset.finite_toSet.subset fun z hz => by
     simpa [Polynomial.mem_nthRoots hn] using hz
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Polynomial.X ^ n - Polynomial.C 1, Polynomial.monic_X_pow_sub_C _ hn.ne', by simp [hz]⟩`.
+-/
 theorem isIntegral_of_pow_eq_one {n : ℕ} (hn : 0 < n) {z : ℂ} (hz : z ^ n = 1) : IsIntegral ℚ z :=
   ⟨Polynomial.X ^ n - Polynomial.C 1, Polynomial.monic_X_pow_sub_C _ hn.ne', by simp [hz]⟩
 
+/- English proof (translation)
+Use `⟨Polynomial.X ^ 2 - Polynomial.C ((k : ℚ)), Polynomial.monic_X_pow_sub_C _ two_ne_zero, ?_⟩` and prove the remaining obligations. Establish `h0 : ((Real.sqrt k : ℝ) : ℂ) ^ 2 = (k : ℂ)`. Rewrite using `[← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg _)]`. Simplify using the standard rewrite rules. Simplify using `[Polynomial.eval₂_sub, h0]`.
+-/
 theorem isIntegral_sqrt_nat (k : ℕ) : IsIntegral ℚ ((Real.sqrt k : ℝ) : ℂ) := by
   refine ⟨Polynomial.X ^ 2 - Polynomial.C ((k : ℚ)), Polynomial.monic_X_pow_sub_C _ two_ne_zero, ?_⟩
   have h0 : ((Real.sqrt k : ℝ) : ℂ) ^ 2 = (k : ℂ) := by
@@ -41,6 +53,17 @@ end
 
 namespace GlobalTheory.RowEx
 
+/- English proof (translation)
+Use `⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F hs ch _ _ => ?_⟩⟩` and prove the remaining obligations. Use `haveI : Finite T := hs.fin`. Use `set G := ch.G`. Use `set S := ch.S.toGridChoice`. Establish `hN : ∀ w : Pl D.host.E, 0 < Ideal.absNorm w.asIdeal ^ depthAt G w` using `fun w => pow_pos (Nat.pos_of_ne_zero (Ideal.absNorm_eq_zero_iff.not.2 w.ne_bot)) _`.
+
+Set `P : Set (Pl D.host.E)` to `{w | w ∈ S.PA ∨ ∃ t, w ∈ locPl G t}`. Establish `hP : P.Finite`. Use `((S.PA.finite_toSet).union (Set.finite_iUnion fun t => (locPl G t).finite_toSet)).subset ?_` and prove the remaining obligations. Introduce and unpack `w (hw | ⟨t, hw⟩)`. Conclude with `Or.inl hw`.
+
+Conclude with `Or.inr (Set.mem_iUnion.2 ⟨t, hw⟩)`. Set `Q : Set (Pl D.host.E)` to `⋃ t, (locPl G t : Set (Pl D.host.E))`. Establish `hQ : Q.Finite` using `Set.finite_iUnion fun t => (locPl G t).finite_toSet`. Set `X : Set ℂ` to `{z | z ^ 8 = 1} ∪ (⋃ w ∈ Q, {z : ℂ | z ^ (Ideal.absNorm w.asIdeal ^ depthAt G w) = 1}) ∪ (fun w : Pl D.host.E => ((Real.sqrt (Ideal.absNorm w.asIdeal) : ℝ) : ℂ)) '' P`. Establish `hX : X.Finite` using `((rootsOne_finite (by norm_num)).union (hQ.biUnion fun w _ => rootsOne_finite (hN w))).union (hP.image _)`.
+
+Establish `hi : ∀ z ∈ X, IsIntegral ℚ z`. Introduce and unpack `z ((hz | hz) | ⟨w, -, rfl⟩)`. Conclude with `isIntegral_of_pow_eq_one (by norm_num) hz`. Take `⟨w, -, hz⟩` from `Set.mem_iUnion₂.1 hz`. Conclude with `isIntegral_of_pow_eq_one (hN w) hz`.
+
+Conclude with `isIntegral_sqrt_nat _`. Take `⟨M, hM, hMX⟩` from `exists_nf_of_finite X hX hi`. Use `⟨M, hM, fun z hz => hMX (Or.inl (Or.inl hz)), fun t w hw z hz => hMX (Or.inl (Or.inr ?_)), fun w hw => hMX (Or.inr ⟨w, hw, rfl⟩)⟩` and prove the remaining obligations. Conclude with `Set.mem_iUnion₂.2 ⟨w, Set.mem_iUnion.2 ⟨t, hw⟩, hz⟩`.
+-/
 theorem nfRoot : NFRoot := by
   refine ⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F hs ch _ _ => ?_⟩⟩
   haveI : Finite T := hs.fin

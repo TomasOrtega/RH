@@ -15,6 +15,11 @@ open GlobalTheory.RealWeil
 
 variable {l : Type} [Fintype l]
 
+/- English proof (translation)
+Establish `h : (fun x : EuclideanSpace ℝ l => ⟪qPart w, x⟫ + ⟪pPart w, qPart w⟫ / 2).HasTemperateGrowth` using `(innerSL ℝ (qPart w)).hasTemperateGrowth.add (Function.HasTemperateGrowth.const _)`. Use `Der.chirp_tg (-1) h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using `only [phase, Der.chirp]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem phase_tg (w : l ⊕ l → ℝ) : (phase w).HasTemperateGrowth := by
   have h : (fun x : EuclideanSpace ℝ l => ⟪qPart w, x⟫ + ⟪pPart w, qPart w⟫ / 2).HasTemperateGrowth :=
     (innerSL ℝ (qPart w)).hasTemperateGrowth.add (Function.HasTemperateGrowth.const _)
@@ -27,15 +32,28 @@ theorem phase_tg (w : l ⊕ l → ℝ) : (phase w).HasTemperateGrowth := by
 
 def rhoS (w : l ⊕ l → ℝ) : Sch l →L[ℂ] Sch l := smulLeftCLM ℂ (phase w) ∘L compSubConstCLM ℂ (-pPart w)
 
+/- English proof (translation)
+Rewrite using `[rhoS, ContinuousLinearMap.comp_apply, smulLeftCLM_apply_apply (phase_tg w)]`. Simplify using the standard rewrite rules.
+-/
 theorem rhoS_apply (w : l ⊕ l → ℝ) (f : Sch l) (x : EuclideanSpace ℝ l) : rhoS w f x = phase w x * f (x + pPart w) := by
   rw [rhoS, ContinuousLinearMap.comp_apply, smulLeftCLM_apply_apply (phase_tg w)]
   simp
 
+/- English proof (translation)
+Use `Lp.ext ((coeFn_rho w _).trans ((rhoFun_congr w (f.coeFn_toLp 2 volume)).trans ?_))` and prove the remaining obligations. Use `filter_upwards [(rhoS w f).coeFn_toLp 2 volume] with x hx`. Rewrite using `[hx, rhoS_apply, rhoFun]`.
+-/
 theorem rho_toLp (w : l ⊕ l → ℝ) (f : Sch l) : rho w (f.toLp 2 volume) = (rhoS w f).toLp 2 volume := by
   refine Lp.ext ((coeFn_rho w _).trans ((rhoFun_congr w (f.coeFn_toLp 2 volume)).trans ?_))
   filter_upwards [(rhoS w f).coeFn_toLp 2 volume] with x hx
   rw [hx, rhoS_apply, rhoFun]
 
+/- English proof (translation)
+Take `⟨G, hG, hD⟩` from `Der.hl_deriv (pPart w) (-innerSL ℝ (qPart w)) f`. Establish `e1 : ∀ t : ℝ, rhoS (t • w) f = G t` using `fun t => by`. Use extensionality with `x`. Rewrite using `[hG, rhoS_apply, Der.hl, phase, pPart_smul, qPart_smul]`. Use `congr 2`.
+
+Simplify using `only [real_inner_smul_left, real_inner_smul_right, ContinuousLinearMap.neg_apply, innerSL_apply_apply, real_inner_comm (pPart w) (qPart w)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : dRho w f = Der.dop (pPart w) (-innerSL ℝ (qPart w)) f`. Use extensionality with `x`.
+
+Rewrite using `[dRho_apply, Der.dop_apply]`. Simplify using the standard rewrite rules. Simplify using `only [e1, e2]`. Conclude with `hD T`.
+-/
 theorem hasDerivAt_rhoS (w : l ⊕ l → ℝ) (f : Sch l) (T : Sch l →L[ℂ] ℂ) :
     HasDerivAt (fun t : ℝ => T (rhoS (t • w) f)) (T (dRho w f)) 0 := by
   obtain ⟨G, hG, hD⟩ := Der.hl_deriv (pPart w) (-innerSL ℝ (qPart w)) f
@@ -54,6 +72,11 @@ theorem hasDerivAt_rhoS (w : l ⊕ l → ℝ) (f : Sch l) (T : Sch l →L[ℂ] �
   simp only [e1, e2]
   exact hD T
 
+/- English proof (translation)
+Set `b : ContDiffBump (0 : EuclideanSpace ℝ l)` to `⟨1, 2, by norm_num, by norm_num⟩`. Establish `h1 : HasCompactSupport fun x => ((b x : ℝ) : ℂ)` using `b.hasCompactSupport.comp_left (g := fun r : ℝ => (r : ℂ)) rfl`. Use `⟨h1.toSchwartzMap (ofRealCLM.contDiff.comp b.contDiff), fun h => ?_⟩` and prove the remaining obligations. Establish `h2 : ((b 0 : ℝ) : ℂ) = 0` using `congrArg (fun f : Sch l => f 0) h`. Rewrite `h2` using `[b.one_of_mem_closedBall (Metric.mem_closedBall_self b.rIn_pos.le)]`.
+
+Simplify using `at h2`.
+-/
 theorem exists_ne : ∃ f : Sch l, f ≠ 0 := by
   let b : ContDiffBump (0 : EuclideanSpace ℝ l) := ⟨1, 2, by norm_num, by norm_num⟩
   have h1 : HasCompactSupport fun x => ((b x : ℝ) : ℂ) := b.hasCompactSupport.comp_left (g := fun r : ℝ => (r : ℂ)) rfl
@@ -64,6 +87,21 @@ theorem exists_ne : ∃ f : Sch l, f ≠ 0 := by
 
 variable [DecidableEq l]
 
+/- English proof (translation)
+Establish `hS : ∀ a b, (X * Matrix.J l ℝ) a b = ∑ j, u j a * v j b` using `fun a b => by`. Use `congrFun (h (Matrix.J l ℝ *ᵥ Pi.single b 1)) a` as an intermediate fact. Rewrite `this` using `[mulVec_mulVec, mulVec_single_one]`. Rewrite using `[show (X * Matrix.J l ℝ) a b = _ from this, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Pi.smul_apply, smul_eq_mul, mul_comm]`. Use `congr 1`. Apply the tactic sequence `rcases b with b | b <;>`. Simplify using `[sympl, pPart, qPart, PiLp.inner_apply, Matrix.J, mulVec, dotProduct, Pi.single_apply, Matrix.one_apply]`. Establish `e : ∀ j, dRho (u j) * dRho (v j) + dRho (v j) * dRho (u j) = ∑ a, ∑ b, ((u j a * v j b : ℝ) : ℂ) • (dRho (Pi.single a 1) * dRho (Pi.single b 1) + dRho (Pi.single b 1) * dRho (Pi.single a 1))` using `fun j => by`.
+
+Rewrite using `[dRho_eq_sum (u j), dRho_eq_sum (v j), Finset.sum_mul_sum, Finset.sum_mul_sum, Finset.sum_comm (s := Finset.univ) (f := fun b a => ((v j b : ℂ) • dRho (Pi.single b 1)) * ((u j a : ℂ) • dRho (Pi.single a 1))), ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [smul_mul_assoc, mul_smul_comm, ofReal_mul]`.
+
+Use `module`. Establish `h8 : (8 * π * I : ℂ)⁻¹ = (4 * π * I : ℂ)⁻¹ * (1 / 2)`. Establish `: (π : ℂ) ≠ 0` using `by simp [Real.pi_ne_zero]`. Clear the denominators using the available nonvanishing facts. Evaluate the numerical expressions.
+
+Rewrite using `[quad, h8, mul_smul]`. Use `congr 1`. Simplify using `only [e, hS]`. Rewrite using `[Finset.sum_comm (s := (Finset.univ : Finset ι)), Finset.smul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_comm (s := (Finset.univ : Finset ι)), Finset.smul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul, smul_smul]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem quad_eq {ι : Type} [Fintype ι] (X : Matrix (l ⊕ l) (l ⊕ l) ℝ) (u v : ι → l ⊕ l → ℝ)
     (h : ∀ w, X *ᵥ w = ∑ j, sympl (v j) w • u j) :
     quad X = (8 * π * I : ℂ)⁻¹ • ∑ j, (dRho (u j) * dRho (v j) + dRho (v j) * dRho (u j)) := by
@@ -121,6 +159,15 @@ structure Meta : Type 1 where
 
 attribute [instance] Meta.grp Meta.top
 
+/- English proof (translation)
+Break down `isEmpty_or_nonempty l with hl | hl` into its components or cases. Use `⟨{ G := Matrix.symplecticGroup l ℝ, pr := MonoidHom.id _, om := 1, quot := IsQuotientMap.id sgn := fun _ _ => .inl rfl, cont := fun f => continuous_const (y := f.toLp 2 volume), bdd := fun g => ⟨1, fun _ => rfl⟩ cov := fun g w f => by rw [Subsingleton.elim (_ *ᵥ w) w]; rfl line : …` and prove the remaining obligations. Establish `: quad X f = 0` using `by simp [quad]`. Rewrite using `[this, ← toLpCLM_apply (𝕜 := ℂ) (f := 0), map_zero]`. Conclude with `hasDerivAt_const _ _`.
+
+Take `⟨G, _, _, _, pr, om, omS, ⟨h1, h2, ε, -, h3, h4⟩, h5, h6, h7, -, h8⟩` from `h l`. Establish `inj` using `SchwartzMap.injective_toLp (E := EuclideanSpace ℝ l) (F := ℂ) 2 volume`. Use `⟨{ G := G, pr := pr, om := omS, quot := h1.isQuotientMap h2, sgn := fun g hg => ?_, cont := fun f => ?_ bdd := fun g => ⟨(om g).toContinuousLinearEquiv, fun f => (h7 g f).symm⟩ cov := fun g w f => inj ?_, line := fun X hX => ?_ }⟩` and prove the remaining obligations. Break down `(h3 g).1 hg with rfl | rfl` into its components or cases. Conclude with `.inl (map_one _)`.
+
+Use `.inr (ContinuousLinearMap.ext fun f => inj ?_) show (omS g f).toLp 2 volume = (-f).toLp 2 volume` and prove the remaining obligations. Rewrite using `[← h7, h4, ← toLpCLM_apply (𝕜 := ℂ) (f := -f), map_neg, toLpCLM_apply]`. Simplify using `only [← h7]`. Conclude with `h5 _`. Use `show (omS g _).toLp 2 volume = (rhoS _ _).toLp 2 volume`.
+
+Rewrite using `[← h7, ← rho_toLp, ← rho_toLp, h6, h7]`. Simplify using `only [← h7]`. Conclude with `h8 X hX`.
+-/
 theorem exists_meta (h : GlobalTheory.Published.RealMetaplecticRepresentation) : Nonempty (Meta l) := by
   rcases isEmpty_or_nonempty l with hl | hl
   · refine ⟨{ G := Matrix.symplecticGroup l ℝ, pr := MonoidHom.id _, om := 1, quot := IsQuotientMap.id
@@ -148,6 +195,11 @@ theorem exists_meta (h : GlobalTheory.Published.RealMetaplecticRepresentation) :
     · simp only [← h7]
       exact h8 X hX
 
+/- English proof (translation)
+Use extensionality with `f x`. Set `T : Sch l →L[ℂ] ℂ` to `BoundedContinuousFunction.evalCLM ℂ x ∘L toBoundedContinuousFunctionCLM ℂ _ ℂ`. Establish `h1` using `hasDerivAt_rhoS w f (T ∘L M.om g)`. Establish `h2` using `hasDerivAt_rhoS ((M.pr g : Matrix (l ⊕ l) (l ⊕ l) ℝ) *ᵥ w) (M.om g f) T`. Simplify using `only [ContinuousLinearMap.comp_apply, M.cov, mulVec_smul] at h1`.
+
+Conclude with `h1.unique h2`.
+-/
 theorem Meta.covD (M : Meta l) (g : M.G) (w : l ⊕ l → ℝ) :
     M.om g * dRho w = dRho ((M.pr g : Matrix (l ⊕ l) (l ⊕ l) ℝ) *ᵥ w) * M.om g := by
   ext f x
@@ -157,6 +209,9 @@ theorem Meta.covD (M : Meta l) (g : M.G) (w : l ⊕ l → ℝ) :
   simp only [ContinuousLinearMap.comp_apply, M.cov, mulVec_smul] at h1
   exact h1.unique h2
 
+/- English proof (translation)
+Take `⟨f, hf⟩` from `exists_ne (l := l)`. Use `congrArg (fun L => (L * M.om g⁻¹) f) h` as an intermediate fact. Simplify using `only [smul_mul_assoc, ← map_mul, mul_inv_cancel, map_one] at this`. Conclude with `smul_left_injective ℂ hf this`.
+-/
 theorem Meta.smul_inj (M : Meta l) (g : M.G) {c c' : ℂ} (h : c • M.om g = c' • M.om g) : c = c' := by
   obtain ⟨f, hf⟩ := exists_ne (l := l)
   have := congrArg (fun L => (L * M.om g⁻¹) f) h
@@ -164,6 +219,9 @@ theorem Meta.smul_inj (M : Meta l) (g : M.G) {c c' : ℂ} (h : c • M.om g = c'
   exact smul_left_injective ℂ hf this
 
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra in
+/- English proof (translation)
+Establish `: CompleteSpace (Matrix n n ℝ)` using `FiniteDimensional.complete ℝ _`. Set `L : Matrix n n ℝ →ₗ[ℝ] ℝ` to `{ toFun := fun Y => (Y *ᵥ w) a map_add' := fun _ _ => by simp [add_mulVec] map_smul' := fun _ _ => by simp [smul_mulVec] }`. Use `L.toContinuousLinearMap.hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hasDerivAt_exp_smul_const (𝕂 := ℝ) X 0)` as an intermediate fact. Rewrite `this` using `[zero_smul, NormedSpace.exp_zero, one_mul]`. Conclude with `this`.
+-/
 theorem hasDerivAt_exp_mulVec {n : Type} [Fintype n] [DecidableEq n] (X : Matrix n n ℝ) (w : n → ℝ) (a : n) :
     HasDerivAt (fun t : ℝ => (NormedSpace.exp (t • X) *ᵥ w) a) ((X *ᵥ w) a) 0 := by
   have : CompleteSpace (Matrix n n ℝ) := FiniteDimensional.complete ℝ _
@@ -175,6 +233,39 @@ theorem hasDerivAt_exp_mulVec {n : Type} [Fintype n] [DecidableEq n] (X : Matrix
   rw [zero_smul, NormedSpace.exp_zero, one_mul] at this
   exact this
 
+/- English proof (translation)
+Take `⟨f0, hf0⟩` from `exists_ne (l := l)`. Set `T0 : Sch l →L[ℂ] ℂ` to `innerSL ℂ (f0.toLp 2 volume) ∘L toLpCLM ℂ ℂ 2 volume`. Establish `hT0 : T0 f0 ≠ 0` using `fun h => hf0 (SchwartzMap.injective_toLp (E := EuclideanSpace ℝ l) (F := ℂ) 2 volume (by`. Establish `: f0.toLp 2 volume = 0` using `inner_self_eq_zero.1 h`. Use `show f0.toLp 2 volume = (0 : Sch l).toLp 2 volume`.
+
+Rewrite using `[this, ← toLpCLM_apply (𝕜 := ℂ) (f := 0), map_zero]))`. Set `n : M.G → ℂ` to `fun g => T0 (M.om g f0)`. Establish `hn : Continuous n` using `(innerSL ℂ (f0.toLp 2 volume)).continuous.comp (M.cont f0)`. Establish `hn1 : n 1 = T0 f0` using `by simp [n]`. Establish `fib : ∀ g g', M.pr g = M.pr g' → M.om g' = M.om g ∨ M.om g' = -M.om g` using `fun g g' h => by`.
+
+Establish `e : M.om g' = M.om g * M.om (g⁻¹ * g')` using `by rw [← map_mul, mul_inv_cancel_left]`. Apply the tactic sequence `rcases M.sgn (g⁻¹ * g') (by rw [map_mul, map_inv, h, inv_mul_cancel]) with h1 | h1 <;> simp [e, h1]`. Use `choose L hL using M.quot.surjective`. Use `choose c hc using fun g => hA g _ (hL (s g))`. Establish `spec : ∀ g g' c', M.pr g' = s g → A g = c' • M.om g' → c g ^ 2 = c' ^ 2` using `fun g g' c' h1 h2 => by`.
+
+Rewrite `h2` using `[hc]`. Break down `fib (L (s g)) g' (by rw [hL, h1]) with h | h` into its components or cases. Rewrite `h2` using `[h]`. Rewrite using `[M.smul_inj _ h2]`. Rewrite `h2` using `[h, smul_neg, ← neg_smul]`.
+
+Rewrite using `[M.smul_inj _ h2, neg_sq]`. Set `χ : G0 →* ℂ` to `{ toFun := fun g => c g ^ 2 map_one' := (spec 1 1 1 (by simp) (by simp)).trans (one_pow 2) map_mul' := fun a b => (spec (a * b) (L (s a) * L (s b)) (c a * c b) (by simp [hL]) (by rw [map_mul, map_mul, hc, hc, smul_mul_smul_comm])).trans (mul_pow _ _ _) }`. Use `⟨χ, ?_, fun γ hγ h0 hm X hX hγX => ?_⟩` and prove the remaining obligations. Establish `hN : Continuous fun σ => n (L σ) ^ 2`. Rewrite using `[M.quot.continuous_iff]`.
+
+Use `(hn.pow 2).congr fun g => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases fib g (L (M.pr g)) (hL _).symm with h | h <;> simp [n, h]`. Establish `hN1 : n (L (s 1)) ^ 2 ≠ 0`. Apply the tactic sequence `rcases fib 1 (L (s 1)) (by simp [hL]) with h | h <;> simp only [n, h] <;> simpa using hT0`. Establish `h1 : ContinuousAt (fun g => T0 (A g f0) ^ 2 / n (L (s g)) ^ 2) 1` using `((hw T0 f0).pow 2).continuousAt.div (hN.comp hs).continuousAt hN1`.
+
+Use `h1.congr ?_` and prove the remaining obligations. Use `filter_upwards [(hN.comp hs).continuousAt.eventually_ne hN1] with g hg`. Rewrite using `[div_eq_iff (show n (L (s g)) ^ 2 ≠ 0 from hg), hc]`. Simplify using `[χ, n, mul_pow]`. Take `⟨δ, hδ, d0, dm, hδX, hd⟩` from `M.line X hX`.
+
+Establish `hpr : ∀ t, M.pr (δ t) = s (γ t)` using `fun t => Subtype.ext ((hδX t).trans (hγX t).symm)`. Use `choose a ha using fun t => hA (γ t) (δ t) (hpr t)`. Establish `a0 : a 0 = 1` using `M.smul_inj (δ 0) (by rw [← ha, h0, d0]; simp)`. Establish `am : ∀ s t, a (s + t) = a s * a t` using `fun s t => M.smul_inj (δ (s + t)) (by`. Rewrite using `[← ha, hm, dm, map_mul, map_mul, ha, ha, smul_mul_smul_comm])`.
+
+Establish `ac0 : ContinuousAt a 0`. Establish `hne : n (δ 0) ≠ 0` using `by rw [d0, hn1]; exact hT0`. Establish `h1 : ContinuousAt (fun t => T0 (A (γ t) f0) / n (δ t)) 0` using `((hw T0 f0).comp hγ).continuousAt.div (hn.comp hδ).continuousAt hne`. Use `h1.congr ?_` and prove the remaining obligations. Use `filter_upwards [(hn.comp hδ).continuousAt.eventually_ne hne] with t ht`.
+
+Rewrite using `[div_eq_iff (show n (δ t) ≠ 0 from ht), ha]`. Simplify using `[n]`. Establish `ac : Continuous a` using `continuous_iff_continuousAt.2 fun u => by`. Establish `h1 : ContinuousAt (fun t => a (t - u) * a u) u` using `(ContinuousAt.comp (f := fun t => t - u) (by simpa using ac0) (by fun_prop)).mul continuousAt_const`. Conclude with `h1.congr (.of_forall fun t => by simp only [← am, sub_add_cancel])`.
+
+Take `⟨z, hz⟩` from `hasDerivAt_oneParam a ac a0 am`. Use `⟨z, fun t => ?_, fun T => ?_⟩` and prove the remaining obligations. Use `show c (γ t) ^ 2 = _`. Rewrite using `[spec _ _ _ (hpr t) (ha t), eq_exp_of_hasDerivAt a a0 am hz t, ← Complex.exp_eq_exp_ℂ, sq, ← Complex.exp_add]`. Use `congr 1`.
+
+Rewrite using `[real_smul]`. Expand and normalize the polynomial expressions, which then agree. Establish `U0 : A (γ 0) = 1` using `by rw [h0, map_one]`. Use `weak_deriv (fun t => A (γ t)) (quad X + z • 1) U0 (good_sup _ _ U0 (fun s t => by rw [hm, map_mul]) (fun f => ?_) (fun u => ?_) fun T f => (hw T f).comp hγ) X (fun t w => NormedSpace.exp (t • -X) *ᵥ w) (fun w => by simp) (fun w b => ?_) (fun t w => ?_) (fun w => ?_) T` and prove the remaining obligations. Use `hz.smul (hd f)` as an intermediate fact.
+
+Simplify using `only [a0, d0, map_one, one_smul] at this`. Use `(this.congr_deriv ?_).congr_of_eventuallyEq (.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `only [← toLpCLM_apply (𝕜 := ℂ), ← map_smul, ← map_add]`. Both sides reduce to the same expression. Simplify using `only [ha]`.
+
+Conclude with `map_smul (toLpCLM ℂ ℂ 2 volume) (a t) (M.om (δ t) f)`. Take `⟨L, hL⟩` from `M.bdd (δ u)`. Use `⟨a u • L, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.smul_apply, ← hL, ha]`. Conclude with `map_smul (toLpCLM ℂ ℂ 2 volume) (a u) (M.om (δ u) f)`.
+
+Simplify `hasDerivAt_exp_mulVec (-X) w b` using `[neg_mulVec]`. Simplify using `only [ha, smul_mul_assoc, mul_smul_comm]`. Rewrite using `[M.covD, hδX, mulVec_mulVec, ← Matrix.exp_add_of_commute _ _ (((Commute.refl X).neg_right.smul_left t).smul_right t)]`. Simplify using the standard rewrite rules. Rewrite using `[← quad_comm hX]`.
+
+Simplify using `only [add_mul, mul_add, smul_mul_assoc, mul_smul_comm, one_mul, mul_one]`. Normalize the expressions using the abelian group laws.
+-/
 theorem core (M : Meta l) {G0 : Type} [Group G0] [TopologicalSpace G0] (s : G0 →* Matrix.symplecticGroup l ℝ)
     (hs : Continuous s) (A : G0 →* (Sch l →L[ℂ] Sch l))
     (hA : ∀ g g', M.pr g' = s g → ∃ c : ℂ, A g = c • M.om g')

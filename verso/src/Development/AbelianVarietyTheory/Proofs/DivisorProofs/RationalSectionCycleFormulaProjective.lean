@@ -15,6 +15,11 @@ namespace GlobalTheory.RatSecCycle
 
 open GlobalTheory.Cartier.CartierDiv
 
+/- English proof (translation)
+Establish `h` using `presents_toLB E`. Take `⟨s, hs1⟩` from `h.exists_rat_eq (f := 1) (mem_sections.2 hE)`. Establish `hs : genericPoint X ∈ ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus s` using `(h.generatesAt_rat_iff s).1 (hs1 ▸ E.generatesAt_genericPoint one_ne_zero)`. Use `⟨s, hs, Presents.unique (presents_divOfRatSec (isLB_toLB E) _) ⟨isLB_toLB E, isRatSec_ratOfSec s hs, fun i x hx => ?_⟩⟩` and prove the remaining obligations. Establish `e : ratOfSec s hs i = i.1.2` using `Units.ext (by`.
+
+Rewrite using `[val_ratOfSec (gen_mem hx), ← h.rat_mul s i (gen_mem hx), hs1, one_mul])`. Rewrite using `[e]`. Conclude with `h.isEqn i x hx`.
+-/
 theorem exists_sec_divOfSec_eq {X : Scheme.{0}} [IsIntegral X] (E : CartierDiv X) (hE : E.Eff) :
     ∃ (s : (toLB E).Sec) (hs : genericPoint X ∈ ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus s),
       divOfSec (isLB_toLB E) s hs = E := by
@@ -33,6 +38,17 @@ end GlobalTheory.RatSecCycle
 
 open GlobalTheory.Cartier.CartierDiv in
 
+/- English proof (translation)
+Introduce `κ _ X _ _ _ hp n hn M hM P hP r hr`. Establish `: AlgebraicGeometry.IsNoetherian X` using `isNoetherian_of_isProjOver hp`. Use `set D := divOfRatSec hM hr with hD`. Take `⟨H, hH⟩` from `exists_isAmpleLB_of_isProjOver hp`. Take `⟨E, hE, hDE⟩` from `GlobalTheory.T.exists_effective_cartierDivisor_add_effective X H hH D`.
+
+Establish `key : ∀ E' : CartierDiv X, E'.Eff → interNum κ (structureModule X) (Fin.cons (toLB E') P : Fin (n + 1) → LB X) = ∑ᶠ w, E'.mult w * interNumRed κ (⟨closure {w}, isClosed_closure⟩ : Closeds _) P`. Introduce `E' hE'`. Take `⟨s, hs, e⟩` from `GlobalTheory.RatSecCycle.exists_sec_divOfSec_eq E' hE'`. Use `GlobalTheory.T.intersectionNumber_globalSection_eq_sum_cycle κ X hp n hn (toLB E') (isLB_toLB E') P hP s hs` as an intermediate fact. Rewrite `this` using `[e]`.
+
+Conclude with `this`. Establish `hv` using `diffVanish_chiPic_of_isProjOver (algebraMap_eq_strHom κ X) (structureModule X) hp (d := n + 1) (by rw [QCoh.suppDim_structureModule]; exact hn)`. Establish `hc : CechPic.cls (toLB (D + E)) (isLB_toLB (D + E)) = CechPic.cls M hM + CechPic.cls (toLB E) (isLB_toLB E)`. Rewrite using `[← toPic_apply, ← toPic_apply, map_add, (presents_divOfRatSec hM hr).toPic_eq]`. Establish `ha` using `hv.interNum_cons_of_cls_eq_add le_rfl hP (isLB_toLB (D + E)) hM (isLB_toLB E) hc`.
+
+Rewrite `ha` using `[key _ hDE, key _ hE]`. Establish `hfin : ∀ F : CartierDiv X, Function.HasFiniteSupport (fun w => F.mult w * interNumRed κ (⟨closure {w}, isClosed_closure⟩ : Closeds _) P)` using `fun F => (F.finite_support_mult).subset (Function.support_mul_subset_left _ _)`. Establish `e2 : (∑ᶠ w, (D + E).mult w * interNumRed κ (⟨closure {w}, isClosed_closure⟩ : Closeds _) P) = (∑ᶠ w, D.mult w * interNumRed κ (⟨closure {w}, isClosed_closure⟩ : Closeds _) P) + ∑ᶠ w, E.mult w * interNumRed κ (⟨closure {w}, isClosed_closure⟩ : Closeds _) P`. Simplify using `only [mult_add, add_mul]`. Conclude with `finsum_add_distrib (hfin D) (hfin E)`.
+
+Rewrite `ha` using `[e2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem GlobalTheory.ratSec_cycle_formula : ∀ (κ : Type) [Field κ] (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] [Algebra κ Γ(X, ⊤)], IsProjOver (strHom κ X) → ∀ (n : ℕ), topologicalKrullDim X ≤ (n + 1 : ℕ) → ∀ (M : LB X) (hM : M.IsLB) (P : Fin n → LB X), (∀ i, (P i).IsLB) → ∀ (r : M.ι → X.functionFieldˣ) (hr : IsRatSec M r), interNum κ (structureModule X) (Fin.cons M P : Fin (n + 1) → LB X) = ∑ᶠ w, (divOfRatSec hM hr).mult w * interNumRed κ (⟨closure {w}, isClosed_closure⟩ : Closeds _) P := by
   intro κ _ X _ _ _ hp n hn M hM P hP r hr
   have : AlgebraicGeometry.IsNoetherian X := isNoetherian_of_isProjOver hp

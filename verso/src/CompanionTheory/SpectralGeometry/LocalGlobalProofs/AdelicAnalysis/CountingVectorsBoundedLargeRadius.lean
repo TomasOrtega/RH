@@ -24,6 +24,13 @@ def orbitHom (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (h : 
     simp [actW, actTup, ratTup, inclR, Matrix.mulVec, dotProduct, mul_add, Finset.sum_add_distrib,
       TensorProduct.tmul_add]
 
+/- English proof (translation)
+Use `set e := orbitHom σ J h with he`. Establish `key` using `hpack d b M (Fin 1 → Fin M → E) e N r₀ r h0 hr`. Establish `hsplit : ∑' X : Fin 1 → Fin M → E, (Set.indicator (box b N r₀) (fun _ => (1 : ℝ≥0∞))) (e X) ≤ 1 + ∑' X : {X : Fin 1 → Fin M → E | X ≠ 0}, (Set.indicator (box b N r₀) (fun _ => (1 : ℝ≥0∞))) (e X)`. Rewrite using `[ENNReal.tsum_eq_add_tsum_ite (0 : Fin 1 → Fin M → E)]`. Apply the tactic sequence `refine add_le_add (by rw [Set.indicator_apply]; split_ifs <;> simp) ?_`.
+
+Rewrite using `[tsum_subtype {X : Fin 1 → Fin M → E | X ≠ 0} (fun X => (Set.indicator (box b N r₀) (fun _ => (1 : ℝ≥0∞))) (e X))]`. Use `le_of_eq (tsum_congr fun X => ?_)` and prove the remaining obligations. Apply the tactic sequence `by_cases hX : X = 0 <;> simp [hX]`. Establish `hle : ∑' X : {X : Fin 1 → Fin M → E | X ≠ 0}, (Set.indicator (box b N r) (fun _ => (1 : ℝ≥0∞))) (e X) ≤ ∑' X : Fin 1 → Fin M → E, (Set.indicator (box b N r) (fun _ => (1 : ℝ≥0∞))) (e X)`. Rewrite using `[tsum_subtype {X : Fin 1 → Fin M → E | X ≠ 0} (fun X => (Set.indicator (box b N r) (fun _ => (1 : ℝ≥0∞))) (e X))]`.
+
+Conclude with `ENNReal.tsum_le_tsum fun X => Set.indicator_le_self _ _ _`. Conclude with `hle.trans (key.trans (mul_le_mul_right hsplit _))`.
+-/
 theorem count_le (hpack : ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (M : ℕ) (Λ : Type) [AddCommGroup Λ]
       (e : Λ →+ (Fin 1 → Fin M → AF F ⊗[F] E)) (N : ℕ) (r R : ℝ), 0 < r → r ≤ R →
       ∑' l : Λ, (Set.indicator (box b N R) (fun _ => (1 : ℝ≥0∞))) (e l) ≤
@@ -58,6 +65,15 @@ theorem count_le (hpack : ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (M : ℕ)
     exact ENNReal.tsum_le_tsum fun X => Set.indicator_le_self _ _ _
   exact hle.trans (key.trans (mul_le_mul_right hsplit _))
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ M J hJ hM μ 𝓕 hμ h𝓕 d b N r₀ hN h0`. Establish `hvol : μ 𝓕 < ⊤` using `((finVol_unitaryGroup F E σ hσ M J hJ).2 μ hμ).2 𝓕 h𝓕`. Establish `hcomp : IsCompact (box b N r₀ : Set (Fin 1 → Fin M → AF F ⊗[F] E))` using `(GlobalTheory.T.adelic_boxes_compact_exhaust F E σ hσ d b 1 M).1 N r₀ hN`. Establish `hcnt` using `GlobalTheory.T.theta_count_compact_finite F E σ hσ M J hJ hM μ 𝓕 hμ h𝓕 _ hcomp`. Use `set B : ℝ≥0∞ := μ 𝓕 + cntI σ J μ 𝓕 {X : Fin 1 → Fin M → E | X ≠ 0} (Set.indicator (box b N r₀) (fun _ => (1 : ℝ≥0∞))) with hB`.
+
+Establish `hBtop : B ≠ ⊤` using `(ENNReal.add_lt_top.2 ⟨hvol, hcnt⟩).ne`. Use `set k := 2 * Module.finrank ℚ F * M with hk`. Use `⟨(5 / r₀) ^ k * B.toReal, fun r hr => ?_⟩` and prove the remaining obligations. Establish `hpt : ∀ h : HA (AF F) σ J, _` using `fun h => count_le (fun d b M Λ _ e N r R => GlobalTheory.T.adelic_box_lattice_count_ratio F E σ hσ d b M Λ e N r R) σ J h⁻¹ b N h0 hr`. Establish `hr0 : 0 ≤ r` using `h0.le.trans hr`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, lintegral_add_left measurable_const]`. Simplify using `[hB, cntI]`. Use `_ = ENNReal.ofReal ((5 / r₀) ^ k * B.toReal * r ^ k) := by`. Establish `: (5 / r₀) ^ k * B.toReal * r ^ k = (5 * r / r₀) ^ k * B.toReal`.
+
+Rewrite using `[show 5 * r / r₀ = 5 / r₀ * r by ring, mul_pow]; ring`. Rewrite using `[this, ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_toReal hBtop]`.
+-/
 theorem cnt_large : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → 3 ≤ M → ∀ (μ : Measure (HA (AF F) σ J)) (𝓕 : Set (HA (AF F) σ J)), IsHaarH F E σ M J μ → IsFDH F E σ M J μ 𝓕 → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (N : ℕ) (r₀ : ℝ), 0 < N → 0 < r₀ → ∃ C : ℝ, ∀ r : ℝ, r₀ ≤ r → cntI σ J μ 𝓕 {X : Fin 1 → Fin M → E | X ≠ 0} (Set.indicator (box b N r) (fun _ => (1 : ℝ≥0∞))) ≤ ENNReal.ofReal (C * r ^ (2 * Module.finrank ℚ F * M)) := by
   intro F E _ _ _ _ _ σ hσ M J hJ hM μ 𝓕 hμ h𝓕 d b N r₀ hN h0
   have hvol : μ 𝓕 < ⊤ := ((finVol_unitaryGroup F E σ hσ M J hJ).2 μ hμ).2 𝓕 h𝓕

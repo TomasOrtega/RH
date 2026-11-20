@@ -30,21 +30,35 @@ section Local
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {v : HeightOneSpectrum (𝓞 F)} {k : ℕ}
 
+/- English proof (translation)
+Use `letI : NontriviallyNormedField (Fv F v) := Valued.toNontriviallyNormedField (Fv F v) (WithZero (Multiplicative ℤ))`. Take `⟨t, ht⟩` from `NormedField.exists_lt_norm (Fv F v) (C : ℝ)`. Conclude with `⟨t, by exact_mod_cast ht⟩`.
+-/
 theorem exists_lt_nnnorm (v : HeightOneSpectrum (𝓞 F)) (C : ℝ≥0) : ∃ t : Fv F v, C < ‖t‖₊ := by
   letI : NontriviallyNormedField (Fv F v) := Valued.toNontriviallyNormedField (Fv F v) (WithZero (Multiplicative ℤ))
   obtain ⟨t, ht⟩ := NormedField.exists_lt_norm (Fv F v) (C : ℝ)
   exact ⟨t, by exact_mod_cast ht⟩
 
+/- English proof (translation)
+Rewrite using `[map_smul, Algebra.smul_def, map_mul]`. Use `congr 1`. Conclude with `absBar_algebraMap F v t`.
+-/
 theorem valBar_smul (τ : E →ₐ[F] FvBar F v) (t : Fv F v) (y : Fv F v ⊗[F] E) :
     valBar F v (finEmb F v τ (t • y)) = ‖t‖₊ * valBar F v (finEmb F v τ y) := by
   rw [map_smul, Algebra.smul_def, map_mul]
   congr 1
   exact absBar_algebraMap F v t
 
+/- English proof (translation)
+The claim follows from `mem_intLoc_iff_absFin_le_one.trans (absFin_le_iff F v)`.
+-/
 theorem mem_intLoc_iff_valBar {y : Fv F v ⊗[F] E} :
     y ∈ intLoc F E v ↔ ∀ τ : E →ₐ[F] FvBar F v, valBar F v (finEmb F v τ y) ≤ 1 :=
   mem_intLoc_iff_absFin_le_one.trans (absFin_le_iff F v)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Use `congrArg (finEmb F v τ) h` as an intermediate fact. Rewrite using `[map_sum, map_one, Finset.sum_eq_zero fun j _ => by`. Rewrite `this` using `[map_mul, (Valuation.zero_iff _).1 (hc j), mul_zero]]`.
+
+Conclude with `zero_ne_one this`.
+-/
 theorem exists_valBar_ne_zero {u l : Fin k → Fv F v ⊗[F] E} (h : ∑ j, l j * u j = 1) (τ : E →ₐ[F] FvBar F v) :
     ∃ j, valBar F v (finEmb F v τ (u j)) ≠ 0 := by
   by_contra hc
@@ -54,6 +68,17 @@ theorem exists_valBar_ne_zero {u l : Fin k → Fv F v ⊗[F] E} (h : ∑ j, l j 
     rw [map_mul, (Valuation.zero_iff _).1 (hc j), mul_zero]] at this
   exact zero_ne_one this
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `exists_lt_nnnorm v (Finset.univ.sup fun j => absFin F v (u j))`. Establish `ht0 : ‖t‖₊ ≠ 0` using `(lt_of_le_of_lt zero_le ht).ne'`. Establish `h0 : ∀ j, (t⁻¹ • (1 : Fv F v ⊗[F] E)) * u j ∈ intLoc F E v` using `fun j => by`. Rewrite using `[smul_mul_assoc, one_mul, mem_intLoc_iff_valBar]`. Introduce `τ`.
+
+Rewrite using `[valBar_smul, nnnorm_inv, inv_mul_le_iff₀ (pos_iff_ne_zero.2 ht0), mul_one]`. Conclude with `(le_absFin F v τ (u j)).trans ((Finset.le_sup (f := fun j => absFin F v (u j)) (Finset.mem_univ j)).trans ht.le)`. Establish `hk : ∀ m : ℕ, ∀ j, c ^ m * (t⁻¹ • (1 : Fv F v ⊗[F] E)) * u j ∈ intLoc F E v` using `fun m => by`. Proceed by induction on `m with`. Consider the case `zero => simpa only [pow_zero, one_mul] using h0`.
+
+Consider the case `succ m ih`. Introduce `j`. Use `hc _ ih j` as an intermediate fact. Rewrite `this` using `[← mul_assoc, ← pow_succ']`. Then use the resulting hypothesis. Rewrite using `[mem_intLoc_iff_valBar]`.
+
+Introduce `τ`. Take `⟨j, hj⟩` from `exists_valBar_ne_zero h τ`. Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Establish `hpos : 0 < ‖t‖₊⁻¹ * valBar F v (finEmb F v τ (u j))` using `mul_pos (inv_pos.2 (pos_iff_ne_zero.2 ht0)) (pos_iff_ne_zero.2 hj)`.
+
+Take `⟨m, hm⟩` from `pow_unbounded_of_one_lt (‖t‖₊⁻¹ * valBar F v (finEmb F v τ (u j)))⁻¹ hlt`. Establish `h1` using `mem_intLoc_iff_valBar.1 (hk m j) τ`. Rewrite `h1` using `[mul_assoc, smul_mul_assoc, one_mul, map_mul, map_mul, map_pow, map_pow, valBar_smul, nnnorm_inv, ← le_mul_inv_iff₀ hpos, one_mul]`. Conclude with `absurd h1 (not_le.2 hm)`.
+-/
 theorem mem_intLoc_of_stable {u l : Fin k → Fv F v ⊗[F] E} (h : ∑ j, l j * u j = 1) {c : Fv F v ⊗[F] E}
     (hc : ∀ a, (∀ j, a * u j ∈ intLoc F E v) → ∀ j, c * a * u j ∈ intLoc F E v) : c ∈ intLoc F E v := by
   obtain ⟨t, ht⟩ := exists_lt_nnnorm v (Finset.univ.sup fun j => absFin F v (u j))
@@ -84,6 +109,13 @@ theorem mem_intLoc_of_stable {u l : Fin k → Fv F v ⊗[F] E} (h : ∑ j, l j *
     ← le_mul_inv_iff₀ hpos, one_mul] at h1
   exact absurd h1 (not_le.2 hm)
 
+/- English proof (translation)
+Use `haveI : IsArtinianRing (Fv F v ⊗[F] E) := IsArtinianRing.of_finite (Fv F v) _`. Use `IsArtinianRing.isUnit_of_mem_nonZeroDivisors (mem_nonZeroDivisors_iff_left.2 fun a ha => ?_)` and prove the remaining obligations. Use `absFin_eq_zero_iff.1 (le_antisymm ((absFin_le_iff F v).2 fun τ => ?_) zero_le)` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hpa : 0 < valBar F v (finEmb F v τ a)` using `not_le.1 hne`.
+
+Take `⟨j, hj⟩` from `exists_valBar_ne_zero h τ`. Establish `hpos : 0 < valBar F v (finEmb F v τ (a * u j))`. Rewrite using `[map_mul, map_mul]`. Conclude with `mul_pos hpa (pos_iff_ne_zero.2 hj)`. Take `⟨t, ht⟩` from `exists_lt_nnnorm v (valBar F v (finEmb F v τ (a * u j)))⁻¹`.
+
+Establish `h1` using `mem_intLoc_iff_valBar.1 (hc (t • a) (fun j => by rw [mul_smul_comm, ha, smul_zero, zero_mul]; exact zero_mem _) j) τ`. Rewrite `h1` using `[smul_mul_assoc, valBar_smul, ← le_mul_inv_iff₀ hpos, one_mul]`. Conclude with `absurd h1 (not_le.2 ht)`.
+-/
 theorem isUnit_of_reflect {u l : Fin k → Fv F v ⊗[F] E} (h : ∑ j, l j * u j = 1) {c : Fv F v ⊗[F] E}
     (hc : ∀ a, (∀ j, c * a * u j ∈ intLoc F E v) → ∀ j, a * u j ∈ intLoc F E v) : IsUnit c := by
   haveI : IsArtinianRing (Fv F v ⊗[F] E) := IsArtinianRing.of_finite (Fv F v) _
@@ -100,6 +132,15 @@ theorem isUnit_of_reflect {u l : Fin k → Fv F v ⊗[F] E} (h : ∑ j, l j * u 
   rw [smul_mul_assoc, valBar_smul, ← le_mul_inv_iff₀ hpos, one_mul] at h1
   exact absurd h1 (not_le.2 ht)
 
+/- English proof (translation)
+Take `⟨k, S, Φ, h1, hS, hΦ⟩` from `SelfDual.exists_frame L hL`. Establish `h2` using `SelfDual.map_mul_eq_one (F := F) (Fv F v) h1`. Use `set u := Φ.map (inclR (F := F) (Fv F v)) *ᵥ w with hu`. Establish `hl : ∑ j, (l ᵥ* S.map (inclR (F` using `F) (Fv F v))) j * u j = 1 := by`. Express the relevant statement in the definitionally equal form `(l ᵥ* _) ⬝ᵥ u = 1`.
+
+Rewrite using `[← Matrix.dotProduct_mulVec, hu, Matrix.mulVec_mulVec, h2, Matrix.one_mulVec, h]`. Establish `key : ∀ a : Fv F v ⊗[F] E, a • w ∈ latLoc F L v ↔ ∀ j, a * u j ∈ intLoc F E v` using `fun a => by`. Rewrite using `[SelfDual.mem_latLoc_iff_of_frame h1 hS hΦ v, Matrix.mulVec_smul]`. Both sides reduce to the same expression. Simplify using `only [key] at hc`.
+
+Establish `hc1` using `mem_intLoc_of_stable hl fun a => (hc a).2`. Take `⟨c, rfl⟩` from `isUnit_of_reflect hl fun a => (hc a).1`. Establish `hc2 : ((c⁻¹ : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E) ∈ intLoc F E v` using `mem_intLoc_of_stable hl fun a ha => (hc _).1 fun j => by rw [Units.mul_inv_cancel_left]; exact ha j`. Use `⟨fun hy => (latLoc F L v).smul_mem ⟨_, hc1⟩ hy, fun hy => ?_⟩` and prove the remaining obligations. Use `(latLoc F L v).smul_mem ⟨_, hc2⟩ hy` as an intermediate fact.
+
+Express the relevant statement in the definitionally equal form `((c⁻¹ : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E) • (c : Fv F v ⊗[F] E) • y ∈ _ at this`. Rewrite `this` using `[smul_smul, Units.inv_mul, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem smul_mem_latLoc_iff {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E)) (hL : Submodule.IsLattice E L)
     {w l : Fin n → Fv F v ⊗[F] E} (h : l ⬝ᵥ w = 1) {c : Fv F v ⊗[F] E}
     (hc : ∀ a : Fv F v ⊗[F] E, (c * a) • w ∈ latLoc F L v ↔ a • w ∈ latLoc F L v) (y : Fin n → Fv F v ⊗[F] E) :
@@ -127,6 +168,17 @@ end Local
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `D V Λ hΛ v ε hε c s hs h y hy`. Establish `hfg : Λ.FG` using `Submodule.IsLattice.fg (A := D.host.E)`. Set `π : AE D →+* Fv D.host.F v ⊗[D.host.F] D.host.E` to `(GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.compFin D v).comp (finPart D)`. Establish `hπ : ∀ z : Fin V.rank → AE D, (∀ i, z i ∈ GlobalTheory.FinPl.idAt D (· = v)) → (z ∈ GlobalTheory.FinPl.latV V Λ (· = v) ↔ (fun i => π (z i)) ∈ latLoc D.host.F Λ v)` using `fun z hz => GlobalTheory.StMoves.mem_latV_iff_latLoc V Λ hfg v z hz`. Set `w : Fin V.rank → AE D` to `s *ᵥ fun i => Formalism.L2.Theta.incA D (ε i)`.
+
+Establish `hw : ∀ a : AE D, (s *ᵥ fun i => a * Formalism.L2.Theta.incA D (ε i)) = a • w` using `fun a => Matrix.mulVec_smul s a _`. Choose the witnesses or unpack the hypotheses as in `⟨l, hl⟩ : ∃ l : Fin V.rank → AE D, l ⬝ᵥ w = 1 := by`. Take `⟨i, hi⟩` from `Function.ne_iff.1 hε`. Take `⟨s', rfl⟩` from `hs`. Use `⟨(Pi.single i (Formalism.L2.Theta.incA D (ε i)⁻¹)) ᵥ* (s'⁻¹).1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec, single_dotProduct, ← map_mul, inv_mul_cancel₀ hi, map_one]`. Establish `hl' : (fun i => π (l i)) ⬝ᵥ (fun i => π (w i)) = 1`. Rewrite using `[← map_one π, ← hl]`. Simplify using `only [dotProduct, map_sum, map_mul]`. Establish `hsm : ∀ (a : AE D) (z : Fin V.rank → AE D), (fun i => π ((a • z) i)) = π a • fun i => π (z i)` using `fun a z => funext fun i => map_mul π a (z i)`.
+
+Rewrite using `[hπ y hy, hπ (c • y) fun i => Ideal.mul_mem_left _ _ (hy i), hsm]`. Use `smul_mem_latLoc_iff Λ hΛ hl' (fun b => ?_) _` and prove the remaining obligations. Take `⟨a, ha, hab⟩` from `GlobalTheory.StMoves.exists_supp_vecLoc_eq (D := D) (n := 1) v fun _ => b`. Establish `hab' : π (a 0) = b` using `congrFun hab 0`. Establish `h1` using `h (a 0) (ha 0)`.
+
+Simplify using `only [← mul_assoc] at h1`. Rewrite `h1` using `[hw, hw, hπ ((c * a 0) • w) fun i => Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ (ha 0)), hπ (a 0 • w) fun i => Ideal.mul_mem_right _ _ (ha 0), hsm, hsm, map_mul, hab']`. Conclude with `h1`.
+-/
 theorem smul_mem_latV_iff : ∀ (D : D7) (V : Formalism.BasicNotions.TH.HSp D) (Λ : GlobalTheory.FinPl.Lat V), Submodule.IsLattice D.host.E Λ → ∀ (v : GlobalTheory.FinPl.Pl D) (ε : Fin V.rank → D.host.E), ε ≠ 0 → ∀ (c : AE D) (s : Matrix (Fin V.rank) (Fin V.rank) (AE D)), IsUnit s → (∀ a ∈ GlobalTheory.FinPl.idAt D (· = v), (Matrix.mulVec (s) (fun i => c * (a * Formalism.L2.Theta.incA D (ε i))) ∈ GlobalTheory.FinPl.latV V Λ (· = v) ↔ Matrix.mulVec (s) (fun i => a * Formalism.L2.Theta.incA D (ε i)) ∈ GlobalTheory.FinPl.latV V Λ (· = v))) → ∀ y : Fin V.rank → AE D, (∀ i, y i ∈ GlobalTheory.FinPl.idAt D (· = v)) → (y ∈ GlobalTheory.FinPl.latV V Λ (· = v) ↔ c • y ∈ GlobalTheory.FinPl.latV V Λ (· = v)) := by
   intro D V Λ hΛ v ε hε c s hs h y hy
   have hfg : Λ.FG := Submodule.IsLattice.fg (A := D.host.E)

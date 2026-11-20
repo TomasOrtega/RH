@@ -18,6 +18,23 @@ noncomputable def prodHomologyToProd (n : ℕ) :
   ModuleCat.ofHom ((HomologicalComplex.homologyMap (prodFst M N) n).hom.prod
     (HomologicalComplex.homologyMap (prodSnd M N) n).hom)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `h hh`. Take `⟨c, rfl⟩` from `(ModuleCat.epi_iff_surjective ((prodComplex M N).homologyπ n)).1 inferInstance h`. Establish `h1 : ∃ y : M.X ((ComplexShape.up ℕ).prev n), (M.d _ n).hom y = (M.iCycles n).hom ((HomologicalComplex.cyclesMap (prodFst M N) n).hom c)`.
+
+Use `(homologyπ_eq_zero_iff _ _).1 ?_` and prove the remaining obligations. Rewrite using `[← homologyMap_homologyπ_apply]`. Conclude with `congrArg Prod.fst hh`. Establish `h2 : ∃ y : N.X ((ComplexShape.up ℕ).prev n), (N.d _ n).hom y = (N.iCycles n).hom ((HomologicalComplex.cyclesMap (prodSnd M N) n).hom c)`. Use `(homologyπ_eq_zero_iff _ _).1 ?_` and prove the remaining obligations.
+
+Rewrite using `[← homologyMap_homologyπ_apply]`. Conclude with `congrArg Prod.snd hh`. Take `⟨y1, hy1⟩` from `h1`. Take `⟨y2, hy2⟩` from `h2`. Use `(homologyπ_eq_zero_iff _ c).2 ⟨show (prodComplex M N).X _ from (y1, y2), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[prodComplex_d_hom_apply', hy1, hy2, iCycles_cyclesMap_apply, iCycles_cyclesMap_apply]`. Both sides reduce to the same expression. Introduce and unpack `⟨h1, h2⟩`. Take `⟨c1, hc1⟩` from `(ModuleCat.epi_iff_surjective (M.homologyπ n)).1 inferInstance h1`. Take `⟨c2, hc2⟩` from `(ModuleCat.epi_iff_surjective (N.homologyπ n)).1 inferInstance h2`.
+
+Take `⟨c', hc'⟩` from `exists_iCycles_eq (K := prodComplex M N) (show (prodComplex M N).X n from ((M.iCycles n).hom c1, (N.iCycles n).hom c2)) (by`. Rewrite using `[CochainComplex.next, prodComplex_d_hom_apply]`. Conclude with `Prod.ext (iCycles_d_apply _ n (n + 1) c1) (iCycles_d_apply _ n (n + 1) c2))`. Use `⟨((prodComplex M N).homologyπ n).hom c', Prod.ext ?_ ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(HomologicalComplex.homologyMap (prodFst M N) n).hom _ = h1`.
+
+Rewrite using `[homologyMap_homologyπ_apply, ← hc1]`. Use `congr 1`. Apply `(ModuleCat.mono_iff_injective (M.iCycles n)).1 inferInstance` to reduce the goal to its premises. Rewrite using `[iCycles_cyclesMap_apply, hc']`. Both sides reduce to the same expression.
+
+Express the relevant statement in the definitionally equal form `(HomologicalComplex.homologyMap (prodSnd M N) n).hom _ = h2`. Rewrite using `[homologyMap_homologyπ_apply, ← hc2]`. Use `congr 1`. Apply `(ModuleCat.mono_iff_injective (N.iCycles n)).1 inferInstance` to reduce the goal to its premises. Rewrite using `[iCycles_cyclesMap_apply, hc']`.
+
+Both sides reduce to the same expression.
+-/
 theorem prodHomologyToProd_bijective (n : ℕ) :
     Function.Bijective (prodHomologyToProd M N n).hom := by
   constructor
@@ -66,6 +83,11 @@ noncomputable def prodHomologyIso (n : ℕ) :
   (LinearEquiv.ofBijective (prodHomologyToProd M N n).hom
     (prodHomologyToProd_bijective M N n)).toModuleIso
 
+/- English proof (translation)
+Rewrite using `[ConcreteCategory.isIso_iff_bijective]`. Establish `hb` using `prodHomologyToProd_bijective M N n`. Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Use `hb.1 (Prod.ext hxy ?_)` and prove the remaining obligations.
+
+Conclude with `(ModuleCat.subsingleton_of_isZero hN).elim _ _`. Introduce `m`. Take `⟨h, hh⟩` from `hb.2 (m, 0)`. Conclude with `⟨h, congrArg Prod.fst hh⟩`.
+-/
 theorem isIso_homologyMap_prodFst {n : ℕ} (hN : IsZero (N.homology n)) :
     IsIso (HomologicalComplex.homologyMap (prodFst M N) n) := by
   rw [ConcreteCategory.isIso_iff_bijective]
@@ -84,6 +106,9 @@ section DegZeroHomology
 
 variable {k : Type u} [CommRing k] (E : ModuleCat.{u} k)
 
+/- English proof (translation)
+The claim follows from `ShortComplex.isZero_homology_of_isZero_X₂ _ (ModuleCat.isZero_of_subsingleton ((degZeroComplex E).X (n + 1)))`.
+-/
 theorem isZero_degZeroComplex_homology_succ (n : ℕ) :
     IsZero ((degZeroComplex E).homology (n + 1)) :=
   ShortComplex.isZero_homology_of_isZero_X₂ _
@@ -93,6 +118,9 @@ noncomputable def degZeroHomologyIso : (degZeroComplex E).homology 0 ≅ E :=
   (degZeroComplex E).isoHomologyπ₀.symm ≪≫
     (degZeroComplex E).iCyclesIso 0 1 (by simp) (degZeroComplex_d E 0 1)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `((degZeroComplex E).iCycles 0).hom ((degZeroComplex E).isoHomologyπ₀.inv.hom (((degZeroComplex E).homologyπ 0).hom c)) = _`. Rewrite using `[hom_apply_hom_apply_of_comp_eq (HomologicalComplex.isoHomologyπ_hom_inv_id (degZeroComplex E) _ 0 rfl (by simp)) c]`. Both sides reduce to the same expression.
+-/
 theorem degZeroHomologyIso_hom_homologyπ (c : (degZeroComplex E).cycles 0) :
     (degZeroHomologyIso E).hom.hom (((degZeroComplex E).homologyπ 0).hom c) =
       ((degZeroComplex E).iCycles 0).hom c := by
@@ -125,6 +153,9 @@ noncomputable def tateLocalCohomologyIso (n : ℕ) :
     ((localCohomologyIso Aᵥ n).toLinearEquiv.prodCongr (localCohomologyIso Aᵣ n).toLinearEquiv).toModuleIso
 
 omit [∀ w, Fintype (F w)] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tateLocalCohomologyIso_hom_apply (n : ℕ) (z : (tateLocalComplex Aᵥ Aᵣ).homology n) :
     (tateLocalCohomologyIso Aᵥ Aᵣ n).hom.hom z =
       ((localCohomologyIso Aᵥ n).hom.hom ((HomologicalComplex.homologyMap (prodFst _ _) n).hom z),
@@ -139,6 +170,9 @@ noncomputable def tateGlobalCohomologyIso (n : ℕ) :
 
 omit [∀ w, TopologicalSpace (F w)] [∀ w, IsTopologicalGroup (F w)] [∀ w, Fintype (F w)]
   [∀ w, IsDiscreteRep (Aᵣ w)] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tateGlobalCohomologyIso_hom (n : ℕ) :
     (tateGlobalCohomologyIso A Aᵣ n).hom =
       HomologicalComplex.homologyMap (prodFst _ _) (n + 1) :=
@@ -152,6 +186,9 @@ noncomputable def tateGlobalCohomologyZeroIso :
 
 omit [∀ w, TopologicalSpace (F w)] [∀ w, IsTopologicalGroup (F w)] [∀ w, Fintype (F w)]
   [∀ w, IsDiscreteRep (Aᵣ w)] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tateGlobalCohomologyZeroIso_hom_apply (z : (tateGlobalComplex A Aᵣ).homology 0) :
     (tateGlobalCohomologyZeroIso A Aᵣ).hom.hom z =
       ((HomologicalComplex.homologyMap (prodFst _ _) 0).hom z,
@@ -159,10 +196,16 @@ theorem tateGlobalCohomologyZeroIso_hom_apply (z : (tateGlobalComplex A Aᵣ).ho
           ((HomologicalComplex.homologyMap (prodSnd _ _) 0).hom z)) :=
   rfl
 
+/- English proof (translation)
+The claim follows from `prodLift_prodFst _ _`.
+-/
 theorem tateCompactRes_prodFst :
     tateCompactRes φ ψ A Aᵥ a Aᵣ ar ≫ prodFst _ _ = prodFst _ _ ≫ localRes φ A Aᵥ a :=
   prodLift_prodFst _ _
 
+/- English proof (translation)
+The claim follows from `prodLift_prodSnd _ _`.
+-/
 theorem tateCompactRes_prodSnd :
     tateCompactRes φ ψ A Aᵥ a Aᵣ ar ≫ prodSnd _ _ =
       prodFst _ _ ≫ localRes ψ A Aᵣ ar + prodSnd _ _ ≫ normCochains Aᵣ :=
@@ -173,11 +216,19 @@ noncomputable def tateGlobalToLocal (n : ℕ) :
   ModuleCat.ofHom ((globalToLocal φ A Aᵥ a n).hom.prod (globalToLocal ψ A Aᵣ ar n).hom)
 
 omit [∀ w, Fintype (F w)] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tateGlobalToLocal_hom_apply (n : ℕ) (x : cohomology A n) :
     (tateGlobalToLocal φ ψ A Aᵥ a Aᵣ ar n).hom x =
       ((globalToLocal φ A Aᵥ a n).hom x, (globalToLocal ψ A Aᵣ ar n).hom x) :=
   rfl
 
+/- English proof (translation)
+Establish `e1 : HomologicalComplex.homologyMap (tateCompactRes φ ψ A Aᵥ a Aᵣ ar) (n + 1) ≫ HomologicalComplex.homologyMap (prodFst _ _) (n + 1) ≫ (localCohomologyIso Aᵥ (n + 1)).hom = (tateGlobalCohomologyIso A Aᵣ n).hom ≫ globalToLocal φ A Aᵥ a (n + 1)`. Rewrite using `[← HomologicalComplex.homologyMap_comp_assoc, tateCompactRes_prodFst, HomologicalComplex.homologyMap_comp_assoc, homologyMap_localRes_localCohomologyIso_hom]`. Both sides reduce to the same expression. Establish `hz : HomologicalComplex.homologyMap (prodSnd (cochainsComplex A) (degZeroComplex (ModuleCat.of k (∀ w, Aᵣ w)))) (n + 1) = 0` using `(isZero_degZeroComplex_homology_succ _ n).eq_of_tgt _ _`. Establish `e2 : HomologicalComplex.homologyMap (tateCompactRes φ ψ A Aᵥ a Aᵣ ar) (n + 1) ≫ HomologicalComplex.homologyMap (prodSnd _ _) (n + 1) ≫ (localCohomologyIso Aᵣ (n + 1)).hom = (tateGlobalCohomologyIso A Aᵣ n).hom ≫ globalToLocal ψ A Aᵣ ar (n + 1)`.
+
+Rewrite using `[← HomologicalComplex.homologyMap_comp_assoc, tateCompactRes_prodSnd, HomologicalComplex.homologyMap_add, HomologicalComplex.homologyMap_comp, HomologicalComplex.homologyMap_comp, hz, zero_comp, add_zero, Category.assoc, homologyMap_localRes_localCohomologyIso_hom]`. Both sides reduce to the same expression. Use `ModuleCat.hom_ext (LinearMap.ext fun z => Prod.ext ?_ ?_)` and prove the remaining obligations. Conclude with `hom_apply_hom_apply_of_comp_eq e1 z`. Conclude with `hom_apply_hom_apply_of_comp_eq e2 z`.
+-/
 theorem homologyMap_tateCompactRes_succ (n : ℕ) :
     HomologicalComplex.homologyMap (tateCompactRes φ ψ A Aᵥ a Aᵣ ar) (n + 1) ≫
         (tateLocalCohomologyIso Aᵥ Aᵣ (n + 1)).hom =
@@ -218,6 +269,9 @@ noncomputable def tateLocalToCompact (n : ℕ) :
   (tateLocalCohomologyIso Aᵥ Aᵣ n).inv ≫
     mappingCoconeNat.homologyδ (tateCompactRes φ ψ A Aᵥ a Aᵣ ar) n
 
+/- English proof (translation)
+The claim follows from `HomologicalComplex.homologyMap_comp _ _ _ @[reassoc (attr := simp)]`.
+-/
 theorem tateToGlobal_succ (n : ℕ) :
     tateToGlobal φ ψ A Aᵥ a Aᵣ ar (n + 1) =
       HomologicalComplex.homologyMap (mappingCoconeNat.fst (tateCompactRes φ ψ A Aᵥ a Aᵣ ar))
@@ -225,6 +279,9 @@ theorem tateToGlobal_succ (n : ℕ) :
   HomologicalComplex.homologyMap_comp _ _ _
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+Use `(congrArg (· ≫ tateGlobalToLocal φ ψ A Aᵥ a Aᵣ ar (n + 1)) (tateToGlobal_succ φ ψ A Aᵥ a Aᵣ ar n)).trans ?_` and prove the remaining obligations. Use `(Category.assoc _ _ _).trans ?_` and prove the remaining obligations. Use `(congrArg (_ ≫ ·) (homologyMap_tateCompactRes_succ φ ψ A Aᵥ a Aᵣ ar n).symm).trans ?_` and prove the remaining obligations. Conclude with `(mappingCoconeNat.homologyMap_fst_homologyMap_assoc _ _ _).trans zero_comp`. Use the proof step `@[reassoc (attr := simp)]`.
+-/
 theorem tateToGlobal_tateGlobalToLocal (n : ℕ) :
     tateToGlobal φ ψ A Aᵥ a Aᵣ ar (n + 1) ≫ tateGlobalToLocal φ ψ A Aᵥ a Aᵣ ar (n + 1) = 0 := by
   refine (congrArg (· ≫ tateGlobalToLocal φ ψ A Aᵥ a Aᵣ ar (n + 1))
@@ -234,6 +291,9 @@ theorem tateToGlobal_tateGlobalToLocal (n : ℕ) :
   exact (mappingCoconeNat.homologyMap_fst_homologyMap_assoc _ _ _).trans zero_comp
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+Rewrite using `[← cancel_epi (tateGlobalCohomologyIso A Aᵣ n).hom, comp_zero, ← Category.assoc, ← homologyMap_tateCompactRes_succ]`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (Iso.hom_inv_id_assoc _ _)).trans (mappingCoconeNat.homologyMap_homologyδ _ _))`. Use the proof step `@[reassoc (attr := simp)]`.
+-/
 theorem tateGlobalToLocal_tateLocalToCompact (n : ℕ) :
     tateGlobalToLocal φ ψ A Aᵥ a Aᵣ ar (n + 1) ≫ tateLocalToCompact φ ψ A Aᵥ a Aᵣ ar (n + 1) = 0 := by
   rw [← cancel_epi (tateGlobalCohomologyIso A Aᵣ n).hom, comp_zero, ← Category.assoc,
@@ -242,6 +302,9 @@ theorem tateGlobalToLocal_tateLocalToCompact (n : ℕ) :
     (mappingCoconeNat.homologyMap_homologyδ _ _))
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+Use `(congrArg (tateLocalToCompact φ ψ A Aᵥ a Aᵣ ar n ≫ ·) (tateToGlobal_succ φ ψ A Aᵥ a Aᵣ ar n)).trans ?_` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (mappingCoconeNat.homologyδ_homologyMap_fst_assoc _ _ _)).trans (by rw [zero_comp, comp_zero]))`.
+-/
 theorem tateLocalToCompact_tateToGlobal (n : ℕ) :
     tateLocalToCompact φ ψ A Aᵥ a Aᵣ ar n ≫ tateToGlobal φ ψ A Aᵥ a Aᵣ ar (n + 1) = 0 := by
   refine (congrArg (tateLocalToCompact φ ψ A Aᵥ a Aᵣ ar n ≫ ·)
@@ -249,6 +312,9 @@ theorem tateLocalToCompact_tateToGlobal (n : ℕ) :
   exact (Category.assoc _ _ _).trans ((congrArg (_ ≫ ·)
     (mappingCoconeNat.homologyδ_homologyMap_fst_assoc _ _ _)).trans (by rw [zero_comp, comp_zero]))
 
+/- English proof (translation)
+Use `(ShortComplex.exact_iff_of_iso ?_).1 (mappingCoconeNat.homology_exact₃ (tateCompactRes φ ψ A Aᵥ a Aᵣ ar) (n + 1))` and prove the remaining obligations. Conclude with `ShortComplex.isoMk (Iso.refl _) (tateGlobalCohomologyIso A Aᵣ n) (tateLocalCohomologyIso Aᵥ Aᵣ (n + 1)) ((Category.id_comp _).trans (tateToGlobal_succ φ ψ A Aᵥ a Aᵣ ar n)) (homologyMap_tateCompactRes_succ φ ψ A Aᵥ a Aᵣ ar n).symm`.
+-/
 theorem tateCompactCohomology_exact_global (n : ℕ) :
     (ShortComplex.mk _ _ (tateToGlobal_tateGlobalToLocal φ ψ A Aᵥ a Aᵣ ar n)).Exact := by
   refine (ShortComplex.exact_iff_of_iso ?_).1
@@ -258,6 +324,9 @@ theorem tateCompactCohomology_exact_global (n : ℕ) :
     ((Category.id_comp _).trans (tateToGlobal_succ φ ψ A Aᵥ a Aᵣ ar n))
     (homologyMap_tateCompactRes_succ φ ψ A Aᵥ a Aᵣ ar n).symm
 
+/- English proof (translation)
+Use `(ShortComplex.exact_iff_of_iso ?_).1 (mappingCoconeNat.homology_exact₁ (tateCompactRes φ ψ A Aᵥ a Aᵣ ar) (n + 1))` and prove the remaining obligations. Conclude with `ShortComplex.isoMk (tateGlobalCohomologyIso A Aᵣ n) (tateLocalCohomologyIso Aᵥ Aᵣ (n + 1)) (Iso.refl _) (homologyMap_tateCompactRes_succ φ ψ A Aᵥ a Aᵣ ar n).symm ((Iso.hom_inv_id_assoc _ _).trans (Category.comp_id _).symm)`.
+-/
 theorem tateCompactCohomology_exact_local (n : ℕ) :
     (ShortComplex.mk _ _ (tateGlobalToLocal_tateLocalToCompact φ ψ A Aᵥ a Aᵣ ar n)).Exact := by
   refine (ShortComplex.exact_iff_of_iso ?_).1
@@ -266,6 +335,9 @@ theorem tateCompactCohomology_exact_local (n : ℕ) :
     (Iso.refl _) (homologyMap_tateCompactRes_succ φ ψ A Aᵥ a Aᵣ ar n).symm
     ((Iso.hom_inv_id_assoc _ _).trans (Category.comp_id _).symm)
 
+/- English proof (translation)
+Use `(ShortComplex.exact_iff_of_iso ?_).1 (mappingCoconeNat.homology_exact₂ (tateCompactRes φ ψ A Aᵥ a Aᵣ ar) n)` and prove the remaining obligations. Conclude with `ShortComplex.isoMk (tateLocalCohomologyIso Aᵥ Aᵣ n) (Iso.refl _) (tateGlobalCohomologyIso A Aᵣ n) ((Iso.hom_inv_id_assoc _ _).trans (Category.comp_id _).symm) ((Category.id_comp _).trans (tateToGlobal_succ φ ψ A Aᵥ a Aᵣ ar n))`.
+-/
 theorem tateCompactCohomology_exact_compact (n : ℕ) :
     (ShortComplex.mk _ _ (tateLocalToCompact_tateToGlobal φ ψ A Aᵥ a Aᵣ ar n)).Exact := by
   refine (ShortComplex.exact_iff_of_iso ?_).1
@@ -292,18 +364,27 @@ noncomputable def tateGlobalZeroToLocal :
       (tateLocalCohomologyIso Aᵥ Aᵣ 0).hom
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (Iso.hom_inv_id_assoc _ _)).trans ((mappingCoconeNat.homologyMap_fst_homologyMap_assoc _ 0 _).trans zero_comp))`. Use the proof step `@[reassoc (attr := simp)]`.
+-/
 theorem tateToGlobalZero_tateGlobalZeroToLocal :
     tateToGlobalZero φ ψ A Aᵥ a Aᵣ ar ≫ tateGlobalZeroToLocal φ ψ A Aᵥ a Aᵣ ar = 0 := by
   exact (Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (Iso.hom_inv_id_assoc _ _)).trans
     ((mappingCoconeNat.homologyMap_fst_homologyMap_assoc _ 0 _).trans zero_comp))
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) ((Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (Iso.hom_inv_id_assoc _ _)).trans (mappingCoconeNat.homologyMap_homologyδ _ 0)))).trans comp_zero)`.
+-/
 theorem tateGlobalZeroToLocal_tateLocalToCompact :
     tateGlobalZeroToLocal φ ψ A Aᵥ a Aᵣ ar ≫ tateLocalToCompact φ ψ A Aᵥ a Aᵣ ar 0 = 0 := by
   exact (Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) ((Category.assoc _ _ _).trans
     ((congrArg (_ ≫ ·) (Iso.hom_inv_id_assoc _ _)).trans
       (mappingCoconeNat.homologyMap_homologyδ _ 0)))).trans comp_zero)
 
+/- English proof (translation)
+Use `(ShortComplex.exact_iff_of_iso ?_).1 (mappingCoconeNat.homology_exact₁ (tateCompactRes φ ψ A Aᵥ a Aᵣ ar) 0)` and prove the remaining obligations. Conclude with `ShortComplex.isoMk (tateGlobalCohomologyZeroIso A Aᵣ) (tateLocalCohomologyIso Aᵥ Aᵣ 0) (Iso.refl _) (Iso.hom_inv_id_assoc _ _) ((Iso.hom_inv_id_assoc _ _).trans (Category.comp_id _).symm)`.
+-/
 theorem tateCompactCohomology_exact_localZero :
     (ShortComplex.mk _ _ (tateGlobalZeroToLocal_tateLocalToCompact φ ψ A Aᵥ a Aᵣ ar)).Exact := by
   refine (ShortComplex.exact_iff_of_iso ?_).1
@@ -322,6 +403,11 @@ noncomputable def normClass (B : Rep.{u} k F') [IsDiscreteRep B] (m : B) : cohom
 
 end NormClass
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `homologyπ_hom_surjective _ 0 y`. Use function extensionality and compare the values at `w`. Rewrite using `[degZeroHomologyIso_hom_homologyπ, homologyMap_homologyπ_apply]`. Express the relevant statement in the definitionally equal form `(HomologicalComplex.homologyMap (piProj _ w) 0).hom (((piComplex fun w => cochainsComplex (Aᵣ w)).homologyπ 0).hom ((HomologicalComplex.cyclesMap (normCochains Aᵣ) 0).hom c)) = _`. Rewrite using `[homologyMap_homologyπ_apply]`.
+
+Unfold `normClass`. Use `congr 1`. Apply `iCycles_hom_injective` to reduce the goal to its premises. Rewrite using `[iCycles_cyclesMap_apply, iCycles_cyclesMap_apply]`. Conclude with `((cochainsComplex (Aᵣ w)).i_cyclesMk _ _ _ _).symm`.
+-/
 theorem localCohomologyIso_homologyMap_normCochains
     (y : (degZeroComplex (ModuleCat.of k (∀ w, Aᵣ w))).homology 0) :
     (localCohomologyIso Aᵣ 0).hom.hom ((HomologicalComplex.homologyMap (normCochains Aᵣ) 0).hom y) =
@@ -340,6 +426,15 @@ theorem localCohomologyIso_homologyMap_normCochains
   rw [iCycles_cyclesMap_apply, iCycles_cyclesMap_apply]
   exact ((cochainsComplex (Aᵣ w)).i_cyclesMk _ _ _ _).symm
 
+/- English proof (translation)
+Use `set z := (tateGlobalCohomologyZeroIso A Aᵣ).inv.hom (x, e) with hz`. Establish `hze : (tateGlobalCohomologyZeroIso A Aᵣ).hom.hom z = (x, e)` using `hom_apply_hom_apply_of_comp_eq (Iso.inv_hom_id (tateGlobalCohomologyZeroIso A Aᵣ)) (show ModuleCat.of k (cohomology A 0 × ∀ w, Aᵣ w) from (x, e))`. Establish `hx : (HomologicalComplex.homologyMap (prodFst _ _) 0).hom z = x` using `congrArg Prod.fst hze`. Establish `he : (degZeroHomologyIso (ModuleCat.of k (∀ w, Aᵣ w))).hom.hom ((HomologicalComplex.homologyMap (prodSnd _ _) 0).hom z) = e` using `congrArg Prod.snd hze`. Express the relevant statement in the definitionally equal form `(tateLocalCohomologyIso Aᵥ Aᵣ 0).hom.hom ((HomologicalComplex.homologyMap (tateCompactRes φ ψ A Aᵥ a Aᵣ ar) 0).hom z) = _`.
+
+Rewrite using `[tateLocalCohomologyIso_hom_apply]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Establish `e1 : HomologicalComplex.homologyMap (tateCompactRes φ ψ A Aᵥ a Aᵣ ar) 0 ≫ HomologicalComplex.homologyMap (prodFst _ _) 0 ≫ (localCohomologyIso Aᵥ 0).hom = HomologicalComplex.homologyMap (prodFst _ _) 0 ≫ globalToLocal φ A Aᵥ a 0`. Rewrite using `[← HomologicalComplex.homologyMap_comp_assoc, tateCompactRes_prodFst, HomologicalComplex.homologyMap_comp_assoc, homologyMap_localRes_localCohomologyIso_hom]`. Rewrite using `[← hx]`.
+
+Conclude with `hom_apply_hom_apply_of_comp_eq e1 z`. Establish `e2 : HomologicalComplex.homologyMap (tateCompactRes φ ψ A Aᵥ a Aᵣ ar) 0 ≫ HomologicalComplex.homologyMap (prodSnd _ _) 0 = HomologicalComplex.homologyMap (prodFst _ _) 0 ≫ HomologicalComplex.homologyMap (localRes ψ A Aᵣ ar) 0 + HomologicalComplex.homologyMap (prodSnd _ _) 0 ≫ Hom …`. Rewrite using `[← HomologicalComplex.homologyMap_comp, tateCompactRes_prodSnd, HomologicalComplex.homologyMap_add, HomologicalComplex.homologyMap_comp, HomologicalComplex.homologyMap_comp]`. Express the relevant statement in the definitionally equal form `(localCohomologyIso Aᵣ 0).hom.hom ((HomologicalComplex.homologyMap (prodSnd _ _) 0).hom ((HomologicalComplex.homologyMap (tateCompactRes φ ψ A Aᵥ a Aᵣ ar) 0).hom z)) = _`. Rewrite using `[hom_apply_hom_apply_of_comp_eq e2 z, ModuleCat.hom_add, LinearMap.add_apply, map_add]`.
+
+Use `congr 1`. Rewrite using `[← hx]`. Conclude with `hom_apply_hom_apply_of_comp_eq (homologyMap_localRes_localCohomologyIso_hom ψ A Aᵣ ar 0) _`. Rewrite using `[← he]`. Conclude with `localCohomologyIso_homologyMap_normCochains Aᵣ _`.
+-/
 theorem tateGlobalZeroToLocal_hom_apply (x : cohomology A 0) (e : ∀ w, Aᵣ w) :
     (tateGlobalZeroToLocal φ ψ A Aᵥ a Aᵣ ar).hom (x, e) =
       ((globalToLocal φ A Aᵥ a 0).hom x,

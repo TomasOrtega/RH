@@ -10,6 +10,31 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE
 
 namespace GlobalTheory.CoreHt
 
+/- English proof (translation)
+Introduce `eps Fm hTu`. Establish `he : 0 < eps`. Take `⟨i⟩` from `Fm.Ix_zero`. Rewrite using `[← Fm.L_eps 0 i]`. Conclude with `(Fm.L 0 i).sc.eps_pos`.
+
+Take `⟨x1, hT⟩` from `hTu`. Take `⟨xL, hL⟩` from `GlobalTheory.scale_large_three eps he`. Take `⟨x3, h3⟩` from `flipTwoThree.le_rpow_for_large_x ((2 : ℝ) / 5) (by norm_num) 4`. Take `⟨x4, h4⟩` from `flipTwoThree.pow_le_exp_rpow_for_large_x 2 eps he`. Use `⟨max (max (max x1 xL) x3) (max x4 (max 9 (Fm.x1 + 1))), fun x hx i hDel => ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : x1 ≤ x` using `le_trans (le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) (le_max_left _ _)) hx`. Establish `eL : xL ≤ x` using `le_trans (le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) (le_max_left _ _)) hx`. Establish `e3 : x3 ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hx`. Establish `e4 : x4 ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hx`. Establish `e9 : (9 : ℝ) ≤ x` using `le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) (le_max_right _ _)) hx`.
+
+Establish `e5 : Fm.x1 < x`. Use `le_trans (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) (le_max_right _ _)) hx` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsx : (Fm.L x i).sc.x = x` using `Fm.L_x x i e5`. Establish `hse : (Fm.L x i).sc.eps = eps` using `Fm.L_eps x i`.
+
+Take `⟨hlog, h8, h2⟩` from `hL (Fm.L x i).sc hse (by rw [hsx]; exact eL)`. Establish `hThick : ThickUp (Fm.L x i)` using `fun j j1 j2 τ hc => ((Fm.L x i).win_thick j j1 j2 τ hc).2`. Establish `hrows : HtRowsS (Fm.L x i) Fm.CYL`. Use `GlobalTheory.CoreHt.RowsOfDesign.rows_of_design (Fm.D x i) (Fm.L x i) (Fm.params x e5 i) (Fm.sizes x e5 i) hlog hDel hThick` as an intermediate fact. Rewrite `this` using `[Fm.params_CYL x e5 i]`. Then use the resulting hypothesis.
+
+Establish `hm : (4 : ℝ) ≤ (Fm.D x i).R.m`. Establish `z1` using `(flipTwoThree.size_bounds_of_scale (Fm.L x i) (Fm.sizes x e5 i) (by rw [hsx]; linarith)).1`. Rewrite `z1` using `[hsx]`. Conclude with `le_trans (h3 x e3) z1`. Establish `hx0 : 0 < x` using `by linarith`.
+
+Establish `hb1 : 1 ≤ (Fm.L x i).sc.b`. Unfold `Scale.b; exact Real.one_le_exp (Real.rpow_nonneg (by linarith [(Fm.L x i).sc.one_lt_alt]) _)`. Establish `hb0 : 0 < (Fm.L x i).sc.b` using `by linarith`. Establish `h8b : 8 * x < (Fm.L x i).sc.b`. Establish `hx2` using `h4 x e4`.
+
+Establish `hbe : (Fm.L x i).sc.b = Real.exp (x ^ eps)`. Unfold `Scale.b Scale.L`. Rewrite using `[hsx, hse]`. Rewrite using `[hbe]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hb2 : (Fm.L x i).sc.b ^ (2 : ℝ) ≤ (Fm.L x i).sc.b ^ (((Fm.D x i).R.m : ℝ) / 2)` using `Real.rpow_le_rpow_of_exponent_le hb1 (by linarith)`. Rewrite `hb2` using `[Real.rpow_two]`. Establish `hL0 : 0 ≤ (Fm.L x i).sc.L`. Unfold `Scale.L; exact Real.rpow_nonneg (by linarith [(Fm.L x i).sc.one_lt_alt]) _`. Establish `hm0 : (0 : ℝ) ≤ (Fm.D x i).R.m` using `by linarith`.
+
+Use `⟨hrows, h8, h2, fun u => ?_, fun u => ?_⟩` and prove the remaining obligations. Establish `hTge` using `(hT x e1 i).1 u`. Establish `ha : (Fm.L x i).sc.a = x * (Fm.L x i).sc.b` using `by unfold Scale.a; rw [hsx]`. Rewrite using `[ha]`. Establish `: 8 * (x * (Fm.L x i).sc.b) < (Fm.L x i).sc.b ^ 2`.
+
+Rewrite using `[← mul_assoc, sq]`. Conclude with `mul_lt_mul_of_pos_right h8b hb0`. Establish `hxb : 0 < x * (Fm.L x i).sc.b` using `mul_pos hx0 hb0`. Combine the linear equalities and inequalities to obtain the conclusion. Use `le_trans ((hT x e1 i).2 u) ?_` and prove the remaining obligations.
+
+Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_max_left _ _) hm0) hL0`.
+-/
 theorem famRowsSizes : ∀ {eps : ℝ} (Fm : FamP eps), TuSize Fm → ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, GlobalTheory.CoreHt.DelNat (Fm.D x i) → GlobalTheory.CoreHt.HtRowsS (Fm.L x i) Fm.CYL ∧ 8 ≤ (Fm.L x i).sc.X' ∧ 2 ≤ (Fm.L x i).sc.x ∧ (∀ u, 4 * (Fm.L x i).sc.a < (((Fm.D x i).mem u).A.T : ℝ)) ∧ ∀ u, Real.log ((((Fm.D x i).mem u).A.T : ℕ) : ℝ) ≤ max Fm.CTu 0 * (Fm.D x i).R.m * (Fm.L x i).sc.L := by
   intro eps Fm hTu
   have he : 0 < eps := by

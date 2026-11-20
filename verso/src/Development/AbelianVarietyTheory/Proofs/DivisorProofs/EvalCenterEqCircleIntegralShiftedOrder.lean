@@ -10,6 +10,17 @@ open GlobalTheory.Doubling (absE)
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `X s₀ k k₀ r V Eis H H₀ hr hV hball hH hH₀ hHE hH₀E g`. Establish `hdc : DiffContOnCl ℂ (H · g) (Metric.ball s₀ r)` using `((hH g).mono (by`. Introduce `z hz`. Conclude with `hball (Metric.closure_ball_subset_closedBall hz))).diffContOnCl`. Establish `hc` using `hdc.two_pi_i_inv_smul_circleIntegral_sub_inv_smul (Metric.mem_ball_self hr)`.
+
+Simplify using `only [smul_eq_mul] at hc`. Rewrite using `[← hc]`. Use `congr 1`. Apply `circleIntegral.integral_congr hr.le` to reduce the goal to its premises. Introduce `z hz`.
+
+Establish `hzV : z ∈ V` using `hball (Metric.sphere_subset_closedBall hz)`. Establish `hne : z - s₀ ≠ 0`. Introduce `h0`. Rewrite `hz` using `[Metric.mem_sphere, dist_eq_norm, h0, norm_zero]`. Conclude with `hr.ne' hz.symm`.
+
+Establish `hz' : z ≠ s₀` using `sub_ne_zero.mp hne`. Simplify using `only`. Rewrite using `[hHE z hzV hz' g, hH₀E z hzV hz' g]`. Rewrite using `[← mul_assoc, ← mul_assoc, ← zpow_natCast, ← zpow_natCast, ← zpow_neg_one, ← zpow_add₀ hne, ← zpow_add₀ hne]`. Use `congr 2`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eval_center_eq_circleIntegral_shifted_order : ∀ {X : Type} (s₀ : ℂ) (k k₀ : ℕ) (r : ℝ) (V : Set ℂ) (Eis H H₀ : ℂ → X → ℂ), 0 < r → IsOpen V →
     Metric.closedBall s₀ r ⊆ V → (∀ g, DifferentiableOn ℂ (H · g) V) → (∀ g, DifferentiableOn ℂ (H₀ · g) V) →
     (∀ s ∈ V, s ≠ s₀ → ∀ g, H s g = (s - s₀) ^ k * Eis s g) →

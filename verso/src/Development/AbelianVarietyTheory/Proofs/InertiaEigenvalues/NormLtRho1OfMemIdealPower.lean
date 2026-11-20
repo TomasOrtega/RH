@@ -10,6 +10,13 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 
 namespace GlobalTheory.Cyc.Decomp
 
+/- English proof (translation)
+Establish `hsub : Ideal.span {(l : B), z} ≤ Ideal.span {z}`. Rewrite using `[Ideal.span_le]`. Use `Set.insert_subset_iff.mpr ⟨?_, Set.singleton_subset_iff.mpr ?_⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, hu]`. Conclude with `Ideal.mul_mem_right u _ (Ideal.mem_span_singleton_self z)`.
+
+Conclude with `Ideal.mem_span_singleton_self z`. Establish `hmap : Ideal.map φ (Ideal.span {(l : A) ^ 2} ⊔ (Ideal.span {(l : A), π}) ^ N) ≤ Ideal.span {(l : B) ^ 2, z ^ N}`. Rewrite using `[Ideal.map_sup, Ideal.map_pow, Ideal.map_span, Ideal.map_span, Set.image_singleton, Set.image_pair]`. Simplify using `only [map_pow, map_natCast, hπ]`. Use `sup_le (Ideal.span_mono (by simp)) ?_` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Take `⟨x, y, hxy⟩` from `Ideal.mem_span_pair.mp (hmap (Ideal.mem_map_of_mem φ ha))`. Conclude with `⟨x, y, by rw [← hxy]; ring⟩`.
+-/
 theorem exists_map_eq_of_mem_sq_sup_pow {A B : Type*} [CommRing A] [CommRing B] (φ : A →+* B)
     (l N : ℕ) (π : A) (z u : B) (hπ : φ π = z) (hu : (l : B) = z * u) (a : A)
     (ha : a ∈ Ideal.span {(l : A) ^ 2} ⊔ (Ideal.span {(l : A), π}) ^ N) :
@@ -32,6 +39,33 @@ theorem exists_map_eq_of_mem_sq_sup_pow {A B : Type*} [CommRing A] [CommRing B] 
   obtain ⟨x, y, hxy⟩ := Ideal.mem_span_pair.mp (hmap (Ideal.mem_map_of_mem φ ha))
   exact ⟨x, y, by rw [← hxy]; ring⟩
 
+/- English proof (translation)
+Introduce `l _ LL j n f o φ ζ hj hζ hφ a ha k`. Establish `hl : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Establish `hl2 : (2 : ℝ) ≤ l` using `by exact_mod_cast (Fact.out : l.Prime).two_le`. Establish `hq : (0 : ℝ) < (l : ℝ) - 1` using `by linarith`. Establish `hζn : ‖(ζ : PadicComplex l) - 1‖ = (l : ℝ) ^ (-(1 : ℝ) / ((l : ℝ) ^ (j - 1) * ((l : ℝ) - 1)))` using `norm_primitiveRoot_sub_one l j hj _ hζ`.
+
+Establish `hlnorm : ‖(l : PadicComplex l)‖ = (l : ℝ)⁻¹` using `norm_natCast_prime_padicComplex l`. Establish `hz0 : (ζ : PadicComplex l) - 1 ≠ 0`. Rewrite using `[← norm_pos_iff, hζn]`. Check the signs of the components of the expression. Establish `hle : ‖(l : PadicComplex l)‖ ≤ ‖(ζ : PadicComplex l) - 1‖`.
+
+Rewrite using `[hlnorm, hζn, ← Real.rpow_neg_one]`. Apply `Real.rpow_le_rpow_of_exponent_le hl.le` to reduce the goal to its premises. Establish `h1 : (1 : ℝ) ≤ (l : ℝ) ^ (j - 1)` using `one_le_pow₀ hl.le`. Establish `h2 : (1 : ℝ) ≤ (l : ℝ) ^ (j - 1) * ((l : ℝ) - 1)` using `by nlinarith`. Rewrite using `[neg_div, neg_le_neg_iff, div_le_one (by linarith)]`.
+
+Conclude with `h2`. Set `u : OC l` to `⟨(l : PadicComplex l) / ((ζ : PadicComplex l) - 1), by`. Rewrite using `[mem_OC, norm_div]`. Conclude with `div_le_one_of_le₀ hle (norm_nonneg _)⟩`. Establish `hu : ((l : ℕ) : OC l) = (ζ - 1) * u`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `push_cast`. Express the relevant statement in the definitionally equal form `(l : PadicComplex l) = ((ζ : PadicComplex l) - 1) * ((l : PadicComplex l) / ((ζ : PadicComplex l) - 1))`. Clear the denominators using the available nonvanishing facts. Establish `huO : ((l : ℕ) : OCO LL) = ((ζ - 1) ⊗ₜ[ℤ_[l]] (1 : ↥(OL LL))) * (u ⊗ₜ[ℤ_[l]] (1 : ↥(OL LL)))`.
+
+Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, ← hu, ← Algebra.TensorProduct.includeLeftRingHom_apply, map_natCast]`. Take `⟨x, y, hxy⟩` from `exists_map_eq_of_mem_sq_sup_pow φ l (l ^ j) letπ _ _ hφ huO a ha`. Establish `e1 : ((l : ℕ) : OCO LL) ^ 2 = (((l : ℕ) : OC l) ^ 2) ⊗ₜ[ℤ_[l]] (1 : ↥(OL LL))`. Rewrite using `[← Algebra.TensorProduct.includeLeftRingHom_apply, map_pow, map_natCast]`. Establish `e2 : ((ζ - 1) ⊗ₜ[ℤ_[l]] (1 : ↥(OL LL))) ^ (l ^ j) = ((ζ - 1) ^ (l ^ j)) ⊗ₜ[ℤ_[l]] (1 : ↥(OL LL))`.
+
+Rewrite using `[Algebra.TensorProduct.tmul_pow, one_pow]`. Rewrite using `[hxy, kap_add, e1, e2, kap_tmul_one_mul, kap_tmul_one_mul]`. Use `lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max _ _) (max_lt ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Use `push_cast`.
+
+Rewrite using `[norm_pow, hlnorm]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_one, inv_pow, Real.rpow_neg (by positivity)]`. Use `norm_cast`. Use `_ < rho1 l := by`.
+
+Unfold `rho1`. Rewrite using `[Real.rpow_lt_rpow_left_iff hl]`. Establish `h3 : -1 ≤ -(1 : ℝ) / ((l : ℝ) - 1)`. Rewrite using `[neg_div, neg_le_neg_iff, div_le_one hq]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[norm_mul]`. Use `push_cast`. Rewrite using `[norm_pow, hζn]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[mul_one, ← Real.rpow_natCast, ← Real.rpow_mul (by positivity)]`. Use `congr 1`. Establish `hp : (0 : ℝ) < (l : ℝ) ^ (j - 1)` using `by positivity`. Establish `hpow : ((l ^ j : ℕ) : ℝ) = (l : ℝ) * (l : ℝ) ^ (j - 1)`. Rewrite using `[Nat.cast_pow, ← pow_succ']`.
+
+Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hpow]`. Clear the denominators using the available nonvanishing facts. Use `_ < rho1 l := by`.
+
+Unfold `rho1`. Rewrite using `[Real.rpow_lt_rpow_left_iff hl, div_lt_div_iff_of_pos_right hq]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem norm_kap_lt_rho1_of_mem_sq_sup_pow :
     ∀ (l : ℕ) [Fact l.Prime] (LL : FinExt l) (j n f : ℕ) (o : Module.Basis (Fin f) ℤ_[l] ↥(OL LL)) (φ : LetA ↥(OL LL) n →+* OCO LL) (ζ : OC l), 1 ≤ j → IsPrimitiveRoot (ζ : PadicComplex l) (l ^ j) → φ letπ = (ζ - 1) ⊗ₜ[ℤ_[l]] (1 : ↥(OL LL)) → ∀ a ∈ Ideal.span {((l : ℕ) : LetA ↥(OL LL) n) ^ 2} ⊔ (Ideal.span {((l : ℕ) : LetA ↥(OL LL) n), letπ}) ^ (l ^ j), ∀ k, ‖kap o (φ a) k‖ < rho1 l := by
   intro l _ LL j n f o φ ζ hj hζ hφ a ha k

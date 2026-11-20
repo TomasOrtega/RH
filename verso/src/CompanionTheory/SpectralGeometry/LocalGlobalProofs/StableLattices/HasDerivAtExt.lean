@@ -14,6 +14,9 @@ open CompanionTheory.D.Upq.Sm
 open PI.UpqRep (UJset IsURepOn inG)
 open PI.PhMeasCore (dsig smoothVecs)
 
+/- English proof (translation)
+Substitute `ha hb hc` using the available equality. Establish `hD : DifferentiableAt ℝ (fderiv ℝ F) x` using `(hF.fderiv_right (m := 1) (WithTop.coe_le_coe.2 (le_top : (2 : ℕ∞) ≤ ⊤))).differentiableAt (by simp)`. Establish `hs : IsSymmSndFDerivAt ℝ F x` using `hF.isSymmSndFDerivAt (by rw [minSmoothness_of_isRCLikeNormedField]; exact WithTop.coe_le_coe.2 le_top)`. Rewrite using `[(hD.hasFDerivAt.clm_apply L.hasFDerivAt).fderiv, (hD.hasFDerivAt.clm_apply M.hasFDerivAt).fderiv]`. Simplify using `[hs (M x) (L x)]`.
+-/
 theorem fderiv_comm {E G : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
     {F : E → G} {x : E} (hF : ContDiffAt ℝ ∞ F x) (L M : E →L[ℝ] E) {a b c : E}
     (ha : M x = a) (hb : L x = b) (hc : L a - M b = c) :
@@ -31,6 +34,11 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `hLX : Xᴴ * J = -(J * X)` using `eq_neg_of_add_eq_zero_left hX`. Establish `hLY : Yᴴ * J = -(J * Y)` using `eq_neg_of_add_eq_zero_left hY`. Establish `e1 : Yᴴ * Xᴴ * J = J * (Y * X)`. Rewrite using `[Matrix.mul_assoc, hLX, Matrix.mul_neg, ← Matrix.mul_assoc, hLY, Matrix.neg_mul, neg_neg, Matrix.mul_assoc]`. Establish `e2 : Xᴴ * Yᴴ * J = J * (X * Y)`.
+
+Rewrite using `[Matrix.mul_assoc, hLY, Matrix.mul_neg, ← Matrix.mul_assoc, hLX, Matrix.neg_mul, neg_neg, Matrix.mul_assoc]`. Rewrite using `[conjTranspose_sub, conjTranspose_mul, conjTranspose_mul, Matrix.sub_mul, e1, e2, Matrix.mul_sub]`. Normalize the expressions using the abelian group laws.
+-/
 theorem lie_bracket {J X Y : Mat n} (hX : Xᴴ * J + J * X = 0) (hY : Yᴴ * J + J * Y = 0) :
     (X * Y - Y * X)ᴴ * J + J * (X * Y - Y * X) = 0 := by
   have hLX : Xᴴ * J = -(J * X) := eq_neg_of_add_eq_zero_left hX
@@ -44,6 +52,9 @@ theorem lie_bracket {J X Y : Mat n} (hX : Xᴴ * J + J * X = 0) (hY : Yᴴ * J +
 
 variable {H : Type} [NormedAddCommGroup H] [NormedSpace ℂ H] {G : Set (Mat n)} {σ : Mat n → (H →L[ℂ] H)}
 
+/- English proof (translation)
+The claim follows from `hasDerivAt_local (A := G) (γ := fun t => g * ex X t) (fun t => h.mul_mem _ hg _ (hX t)) (by simp [ex_zero]) (hasDerivAt_mul_ex g X) hU hgU hF hfF`.
+-/
 theorem hasDerivAt_ext (h : RepOn G σ) {X g : Mat n} (hX : ∀ t, ex X t ∈ G) (hg : g ∈ G) {f F : Mat n → H}
     {U : Set (Mat n)} (hU : IsOpen U) (hgU : g ∈ U) (hF : ContDiffOn ℝ ∞ F U)
     (hfF : ∀ x ∈ U, x ∈ G → f x = F x) :
@@ -51,6 +62,11 @@ theorem hasDerivAt_ext (h : RepOn G σ) {X g : Mat n} (hX : ∀ t, ex X t ∈ G)
   hasDerivAt_local (A := G) (γ := fun t => g * ex X t) (fun t => h.mul_mem _ hg _ (hX t))
     (by simp [ex_zero]) (hasDerivAt_mul_ex g X) hU hgU hF hfF
 
+/- English proof (translation)
+Establish `hG : ContDiffOn ℝ ∞ (fun g => fderiv ℝ F g (L g)) U` using `(hF.fderiv_of_isOpen hU (by simp)).clm_apply L.contDiff.contDiffOn`. Establish `hGe : ∀ g ∈ U, g ∈ G → σ g (ds σ Y v) = fderiv ℝ F g (L g)`. Introduce `g hg hgG`. Rewrite using `[apply_ds h hY hgG (hv.differentiableAt h hY), hL]`. Conclude with `(hasDerivAt_ext h (f := fun x => σ x v) hY hgG hU hg hF hfF).deriv`.
+
+Establish `h2` using `hasDerivAt_ext h (f := fun g => σ g (ds σ Y v)) hX h.one_mem hU h1 hG hGe`. Simplify using `only [Matrix.one_mul] at h2`. Conclude with `h2.deriv`.
+-/
 theorem ds_ds (h : RepOn G σ) {X Y : Mat n} (hX : ∀ t, ex X t ∈ G) (hY : ∀ t, ex Y t ∈ G) {v : H}
     (hv : IsSm G σ v) {F : Mat n → H} {U : Set (Mat n)} (hU : IsOpen U) (h1 : (1 : Mat n) ∈ U)
     (hF : ContDiffOn ℝ ∞ F U) (hfF : ∀ x ∈ U, x ∈ G → σ x v = F x) (L : Mat n →L[ℝ] Mat n)
@@ -66,6 +82,11 @@ theorem ds_ds (h : RepOn G σ) {X Y : Mat n} (hX : ∀ t, ex X t ∈ G) (hY : �
   simp only [Matrix.one_mul] at h2
   exact h2.deriv
 
+/- English proof (translation)
+Take `⟨U, F, hU, h1, hF, hfF⟩` from `hv 1 h.one_mem`. Establish `h2` using `hasDerivAt_ext h (f := fun x => σ x v) hXY h.one_mem hU h1 hF hfF`. Simplify using `only [Matrix.one_mul] at h2`. Establish `e : ds σ (X * Y - Y * X) v = fderiv ℝ F 1 (X * Y - Y * X)` using `h2.deriv`. Set `L : Mat n →L[ℝ] Mat n` to `(LinearMap.mulRight ℝ Y).toContinuousLinearMap`.
+
+Establish `hL : ∀ x, L x = x * Y` using `by intro x; simp [L]`. Set `M : Mat n →L[ℝ] Mat n` to `(LinearMap.mulRight ℝ X).toContinuousLinearMap`. Establish `hM : ∀ x, M x = x * X` using `by intro x; simp [M]`. Rewrite using `[ds_ds h hX hY hv hU h1 hF hfF L hL, ds_ds h hY hX hv hU h1 hF hfF M hM, e]`. Conclude with `fderiv_comm (hF.contDiffAt (hU.mem_nhds h1)) L M ((hM 1).trans (Matrix.one_mul X)) ((hL 1).trans (Matrix.one_mul Y)) (congrArg₂ (· - ·) (hL X) (hM Y))`.
+-/
 theorem ds_bracket (h : RepOn G σ) {X Y : Mat n} (hX : ∀ t, ex X t ∈ G) (hY : ∀ t, ex Y t ∈ G)
     (hXY : ∀ t, ex (X * Y - Y * X) t ∈ G) {v : H} (hv : IsSm G σ v) :
     ds σ X (ds σ Y v) - ds σ Y (ds σ X v) = ds σ (X * Y - Y * X) v := by
@@ -81,6 +102,9 @@ theorem ds_bracket (h : RepOn G σ) {X Y : Mat n} (hX : ∀ t, ex X t ∈ G) (hY
   exact fderiv_comm (hF.contDiffAt (hU.mem_nhds h1)) L M ((hM 1).trans (Matrix.one_mul X))
     ((hL 1).trans (Matrix.one_mul Y)) (congrArg₂ (· - ·) (hL X) (hM Y))
 
+/- English proof (translation)
+Introduce `n ε H _ _ σ hσ X Y hX hY v hv`. Establish `h : RepOn (UJset ε) σ` using `⟨by simp [UJset, PI.UpqRep.inUJ], fun a ha b hb => Formalism.REAL.indefinite_unitary_mul_mem ε ha hb, hσ.1.1, hσ.1.2⟩`. Establish `hex : ∀ Z, inG ε Z → ∀ t, ex Z t ∈ UJset ε` using `fun Z hZ t => Formalism.REAL.exp_indefinite_unitary_holds n ε Z hZ t`. Conclude with `ds_bracket h (hex X hX) (hex Y hY) (hex _ (lie_bracket hX hY)) hv`.
+-/
 theorem smBracket : CompanionTheory.D.DSIC.SmBracket := by
   intro n ε H _ _ σ hσ X Y hX hY v hv
   have h : RepOn (UJset ε) σ :=
@@ -88,6 +112,9 @@ theorem smBracket : CompanionTheory.D.DSIC.SmBracket := by
   have hex : ∀ Z, inG ε Z → ∀ t, ex Z t ∈ UJset ε := fun Z hZ t => Formalism.REAL.exp_indefinite_unitary_holds n ε Z hZ t
   exact ds_bracket h (hex X hX) (hex Y hY) (hex _ (lie_bracket hX hY)) hv
 
+/- English proof (translation)
+Introduce `_` and use `smBracket`.
+-/
 theorem smBracket_of : CompanionTheory.D.DSIC.SmLin → CompanionTheory.D.DSIC.SmBracket := fun _ => smBracket
 
 end GlobalTheory.CompanionTheory.SmBracket

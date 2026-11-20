@@ -15,15 +15,28 @@ variable {G : Type} [Group G] [TopologicalSpace G] {W : Type} [NormedAddCommGrou
 def kj (j : G₁ →* G) {K₁ : Subgroup G₁} {K : Subgroup G} (h : K₁ ≤ K.comap j) : K₁ →* K :=
   (j.comp K₁.subtype).codRestrict K (fun m => h m.2)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem kj_coe (j : G₁ →* G) {K₁ : Subgroup G₁} {K : Subgroup G} (h : K₁ ≤ K.comap j) (m : K₁) :
     ((kj j h m : K) : G) = j m := rfl
 
+/- English proof (translation)
+The claim follows from `Continuous.subtype_mk (hj.comp continuous_subtype_val) _`.
+-/
 theorem kj_cont {j : G₁ →* G} (hj : Continuous j) {K₁ : Subgroup G₁} {K : Subgroup G}
     (h : K₁ ≤ K.comap j) : Continuous (kj j h) :=
   Continuous.subtype_mk (hj.comp continuous_subtype_val) _
 
 variable {Γ K P : Subgroup G} {Γ₁ K₁ : Subgroup G₁} {j : G₁ →* G} {c : G → ℂ}
 
+/- English proof (translation)
+Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce `hw r hr`. Establish `hm : s ⟨r, hr⟩ ∈ K₁` using `hsK ⟨r, hr⟩ r.2`. Establish `h1` using `hw ⟨s ⟨r, hr⟩, hm⟩ (by show j (s ⟨r, hr⟩) ∈ P`.
+
+Rewrite using `[hs]`. Conclude with `hr)`. Establish `h2 : kj j h ⟨s ⟨r, hr⟩, hm⟩ = r` using `Subtype.ext (hs _)`. Establish `h3 : (c ∘ j) (s ⟨r, hr⟩) = c r` using `by show c (j _) = _`. Rewrite using `[hs]`.
+
+Simplify using `only [MonoidHom.comp_apply, h2] at h1`. Rewrite `h1` using `[h3]`. Then use the resulting hypothesis. Introduce `hw r hr`. Conclude with `hw (kj j h r) hr`.
+-/
 theorem secSp_eq (h : K₁ ≤ K.comap j) {s : P → G₁} (hs : ∀ p, j (s p) = p)
     (hsK : ∀ p : P, (p : G) ∈ K → s p ∈ K₁) (ρ : K →* (W →L[ℂ] W)) :
     secSp K₁ (P.comap j) (c ∘ j) (ρ.comp (kj j h)) = secSp K P c ρ := by
@@ -44,6 +57,11 @@ theorem secSp_eq (h : K₁ ≤ K.comap j) {s : P → G₁} (hs : ∀ p, j (s p) 
   · intro hw r hr
     exact hw (kj j h r) hr
 
+/- English proof (translation)
+Use `⟨h.closed.preimage hj, hi, ⟨?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `p hp q hq`. Simplify using `only [Function.comp, map_mul]`. Conclude with `h.ch.mul _ hp _ hq`. Introduce `p hp`.
+
+Conclude with `h.ch.norm _ hp`. Introduce `γ hγ hγP`. Conclude with `h.ch.rat _ (hΓ ▸ Subgroup.mem_map_of_mem j hγ) hγP`. Conclude with `h.ch.cont.comp hj.continuousOn (fun _ hx => hx)`.
+-/
 theorem isPar_comap (hj : Continuous j) (hΓ : Γ₁.map j = Γ) (hi : Iwa (P.comap j) K₁)
     (h : IsPar Γ K P c) : IsPar Γ₁ K₁ (P.comap j) (c ∘ j) := by
   refine ⟨h.closed.preimage hj, hi, ⟨?_, ?_, ?_, ?_⟩⟩
@@ -56,6 +74,11 @@ theorem isPar_comap (hj : Continuous j) (hΓ : Γ₁.map j = Γ) (hi : Iwa (P.co
     exact h.ch.rat _ (hΓ ▸ Subgroup.mem_map_of_mem j hγ) hγP
   · exact h.ch.cont.comp hj.continuousOn (fun _ hx => hx)
 
+/- English proof (translation)
+Take `⟨p, hp, k, hk, rfl⟩` from `hi x`. Establish `h1` using `law₁ w hw₁ p hp ⟨k, hk⟩`. Establish `h2` using `law w hw (j p) hp (kj j hKK ⟨k, hk⟩)`. Simplify using `only [kj_coe] at h2`. Rewrite using `[map_mul, h2]`.
+
+Simplify using `using h1`.
+-/
 theorem sec_eq (hKK : K₁ ≤ K.comap j) (hi : Iwa (P.comap j) K₁) {ρ : K →* (W →L[ℂ] W)}
     (law : Law K P c ρ) (law₁ : Law K₁ (P.comap j) (c ∘ j) (ρ.comp (kj j hKK))) {w : W}
     (hw : w ∈ secSp K P c ρ) (hw₁ : w ∈ secSp K₁ (P.comap j) (c ∘ j) (ρ.comp (kj j hKK))) (x : G₁) :
@@ -67,6 +90,21 @@ theorem sec_eq (hKK : K₁ ≤ K.comap j) (hi : Iwa (P.comap j) K₁) {ρ : K �
   rw [map_mul, h2]
   simpa using h1
 
+/- English proof (translation)
+Establish `hm : ∀ d : Γ₁, j d ∈ Γ` using `fun d => hΓ ▸ Subgroup.mem_map_of_mem j d.2`. Set `f : Γ₁ → Γ` to `fun d => ⟨j d, hm d⟩`. Establish `hf : ∀ a b : Γ₁, b * a⁻¹ ∈ (P.comap j).subgroupOf Γ₁ ↔ f b * (f a)⁻¹ ∈ P.subgroupOf Γ`. Introduce `a b`. Rewrite using `[Subgroup.mem_subgroupOf, Subgroup.mem_subgroupOf, Subgroup.mem_comap]`.
+
+Simplify using `[f]`. Set `φ₀ : Cos (P.comap j) Γ₁ → Cos P Γ` to `Quotient.map' f (fun a b h => QuotientGroup.rightRel_apply.2 ((hf a b).1 (QuotientGroup.rightRel_apply.1 h)))`. Establish `hbij : Function.Bijective φ₀`. Prove the components needed by the constructor for the conclusion. Introduce `x y`.
+
+Proceed by induction on `x using Quotient.inductionOn with | _ a => ?_`. Proceed by induction on `y using Quotient.inductionOn with | _ b => ?_`. Introduce `h`. Establish `h2` using `Quotient.exact h`. Conclude with `Quotient.sound (QuotientGroup.rightRel_apply.2 ((hf a b).2 (QuotientGroup.rightRel_apply.1 h2)))`.
+
+Introduce `y`. Proceed by induction on `y using Quotient.inductionOn with | _ m => ?_`. Establish `hmm : (m : G) ∈ Γ₁.map j` using `hΓ ▸ m.2`. Take `⟨d, hd, hdm⟩` from `hmm`. Use `⟨Quotient.mk _ ⟨d, hd⟩, ?_⟩` and prove the remaining obligations.
+
+Use `show Quotient.mk _ (f _) = _`. Use `congr 1`. Conclude with `Subtype.ext hdm`. Use `⟨Equiv.ofBijective φ₀ hbij, fun x => ?_⟩` and prove the remaining obligations. Use `set d := Quotient.out x with hd`.
+
+Establish `hx : Quotient.mk _ d = x` using `Quotient.out_eq x`. Use `set e := Quotient.out (Equiv.ofBijective φ₀ hbij x) with he`. Establish `he' : Quotient.mk _ e = Equiv.ofBijective φ₀ hbij x` using `Quotient.out_eq _`. Establish `h1 : Equiv.ofBijective φ₀ hbij x = Quotient.mk _ (f d)` using `(congrArg (Equiv.ofBijective φ₀ hbij) hx).symm`. Establish `hrel` using `Quotient.exact (he'.trans h1)`.
+
+Establish `hmem` using `Subgroup.mem_subgroupOf.1 (QuotientGroup.rightRel_apply.1 hrel)`. Use `⟨((f d * e⁻¹ : Γ) : G), (f d * e⁻¹).2, hmem, ?_⟩` and prove the remaining obligations. Use `show j d = ((f d * e⁻¹ : Γ) : G) * (e : G)`. Simplify using `[f]`.
+-/
 theorem cos_exists (hΓ : Γ₁.map j = Γ) :
     ∃ φ : Cos (P.comap j) Γ₁ ≃ Cos P Γ, ∀ x, ∃ γ ∈ Γ, γ ∈ P ∧ j (rep x) = γ * rep (φ x) := by
   have hm : ∀ d : Γ₁, j d ∈ Γ := fun d => hΓ ▸ Subgroup.mem_map_of_mem j d.2
@@ -107,6 +145,11 @@ theorem cos_exists (hΓ : Γ₁.map j = Γ) :
   show j d = ((f d * e⁻¹ : Γ) : G) * (e : G)
   simp [f]
 
+/- English proof (translation)
+Take `⟨φ, hφ⟩` from `cos_exists (P := P) hΓ`. Introduce `g`. Take `⟨x, k, rfl⟩` from `hsurj g`. Establish `h1` using `hc x`. Rewrite using `[← φ.summable_iff]`.
+
+Use `h1.congr (fun q => ?_)` and prove the remaining obligations. Take `⟨γ, hγ, hγP, h⟩` from `hφ q`. Simplify using `only [Function.comp]`. Rewrite using `[hl₁, map_mul, h, mul_assoc, hinv γ hγ hγP, ← mul_assoc, hr _ _ k.2]`.
+-/
 theorem conv_desc (hΓ : Γ₁.map j = Γ) (hsurj : ∀ g, ∃ (x : G₁) (k : K), g = j x * k) {l : G → ℝ}
     {l₁ : G₁ → ℝ} (hl₁ : ∀ x, l₁ x = l (j x)) (hinv : ∀ γ ∈ Γ, γ ∈ P → ∀ x, l (γ * x) = l x)
     (hr : ∀ g, ∀ k ∈ K, l (g * k) = l g) (hc : Conv Γ₁ (P.comap j) l₁) : Conv Γ P l := by
@@ -120,6 +163,11 @@ theorem conv_desc (hΓ : Γ₁.map j = Γ) (hsurj : ∀ g, ∃ (x : G₁) (k : K
   simp only [Function.comp]
   rw [hl₁, map_mul, h, mul_assoc, hinv γ hγ hγP, ← mul_assoc, hr _ _ k.2]
 
+/- English proof (translation)
+Take `⟨p, hp, k₀, hk₀, rfl⟩` from `hi g`. Establish `h1` using `law w hw p hp (⟨k₀, hk₀⟩ * k)`. Establish `h2` using `law w hw p hp ⟨k₀, hk₀⟩`. Simplify using `only [Subgroup.coe_mul] at h1 h2`. Rewrite using `[mul_assoc, h1, h2, map_smul, mul_inv_rev, map_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem sec_right (hi : Iwa P K) {ρ : K →* (W →L[ℂ] W)} (law : Law K P c ρ) {w : W}
     (hw : w ∈ secSp K P c ρ) (g : G) (k : K) :
     sec K P c ρ (g * k) w = ρ k⁻¹ (sec K P c ρ g w) := by
@@ -135,6 +183,11 @@ def rhoE (ρ : K →* (W →L[ℂ] W)) (k : K) : W ≃L[ℂ] W :=
     (fun w => by rw [← ContinuousLinearMap.mul_apply, ← map_mul]; simp)
     (fun w => by rw [← ContinuousLinearMap.mul_apply, ← map_mul]; simp)
 
+/- English proof (translation)
+Unfold `eis`. Establish `h : rhoE ρ k⁻¹ (∑' q : Cos P Γ, Complex.exp (Λ (rep q * g)) • sec K P c ρ (rep q * g) w) = ∑' q : Cos P Γ, rhoE ρ k⁻¹ (Complex.exp (Λ (rep q * g)) • sec K P c ρ (rep q * g) w)` using `(rhoE ρ k⁻¹).map_tsum`. Use `Eq.trans ?_ h.symm` and prove the remaining obligations. Use `tsum_congr fun q => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, hr _ _ k.2, sec_right hi law hw, map_smul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem eis_right (hi : Iwa P K) {ρ : K →* (W →L[ℂ] W)} (law : Law K P c ρ) {w : W}
     (hw : w ∈ secSp K P c ρ) {Λ : G → ℂ} (hr : ∀ g, ∀ k ∈ K, Λ (g * k) = Λ g) (g : G) (k : K) :
     eis Γ K P c ρ Λ (g * k) w = ρ k⁻¹ (eis Γ K P c ρ Λ g w) := by
@@ -147,6 +200,11 @@ theorem eis_right (hi : Iwa P K) {ρ : K →* (W →L[ℂ] W)} (law : Law K P c 
   rw [← mul_assoc, hr _ _ k.2, sec_right hi law hw, map_smul]
   rfl
 
+/- English proof (translation)
+Take `⟨φ, hφ⟩` from `cos_exists (P := P) hΓ`. Unfold `eis`. Rewrite using `[← φ.tsum_eq]`. Use `tsum_congr fun q => ?_` and prove the remaining obligations. Take `⟨γ, hγ, hγP, h⟩` from `hφ q`.
+
+Rewrite using `[hΛ₁, hsec, map_mul, h, mul_assoc, hinv γ hγ hγP, sec_left hpar law hw hγ hγP]`.
+-/
 theorem eis_pull (hΓ : Γ₁.map j = Γ) (hpar : IsPar Γ K P c) {ρ : K →* (W →L[ℂ] W)}
     (law : Law K P c ρ) {ρ₁ : K₁ →* (W →L[ℂ] W)} {w : W} (hw : w ∈ secSp K P c ρ)
     (hsec : ∀ x, sec K₁ (P.comap j) (c ∘ j) ρ₁ x w = sec K P c ρ (j x) w) {Λ : G → ℂ} {Λ₁ : G₁ → ℂ}
@@ -166,6 +224,9 @@ def pOf (hi : Iwa P K) (g : G) : P := ⟨(hi g).choose, (hi g).choose_spec.1⟩
 def kOf (hi : Iwa P K) (g : G) : K :=
   ⟨(hi g).choose_spec.2.choose, (hi g).choose_spec.2.choose_spec.1⟩
 
+/- English proof (translation)
+The claim follows from `(hi g).choose_spec.2.choose_spec.2`.
+-/
 theorem pk_spec (hi : Iwa P K) (g : G) : g = pOf hi g * kOf hi g :=
   (hi g).choose_spec.2.choose_spec.2
 
@@ -177,6 +238,13 @@ def hD (hi : Iwa P K) (ρ : K →* (W →L[ℂ] W)) (s : P → G₁) (F : G₁ �
 def Equi (j : G₁ →* G) (ρ : K →* (W →L[ℂ] W)) (F : G₁ → A →L[ℂ] W) : Prop :=
   ∀ (x y : G₁) (k : K), j y = j x * k → ∀ a, F y a = ρ k⁻¹ (F x a)
 
+/- English proof (translation)
+Establish `h` using `pk_spec hi (j x * k)`. Use extensionality with `a`. Use `show ρ (kOf hi (j x * k))⁻¹ (F (s (pOf hi (j x * k))) a) = ρ k⁻¹ (F x a)`. Generalize the expression as in `pOf hi (j x * k) = p at h`. Generalize the expression as in `kOf hi (j x * k) = k₀ at h`.
+
+Establish `h1 : j (s p) = j x * ((k * k₀⁻¹ : K) : G)`. Rewrite using `[hs]`. Establish `: (p : G) = (j x * k) * (k₀ : G)⁻¹` using `eq_mul_inv_of_mul_eq h.symm`. Rewrite using `[this]`. Simplify using `[mul_assoc]`.
+
+Rewrite using `[hF x (s p) (k * k₀⁻¹) h1 a, ← ContinuousLinearMap.mul_apply, ← map_mul]`. Use `congr 2`. Use `group`.
+-/
 theorem hD_eq (hi : Iwa P K) {ρ : K →* (W →L[ℂ] W)} {s : P → G₁} (hs : ∀ p, j (s p) = p)
     {F : G₁ → A →L[ℂ] W} (hF : Equi j ρ F) (x : G₁) (k : K) :
     hD hi ρ s F (j x * k) = (ρ k⁻¹).comp (F x) := by
@@ -194,6 +262,17 @@ theorem hD_eq (hi : Iwa P K) {ρ : K →* (W →L[ℂ] W)} {s : P → G₁} (hs 
   congr 2
   group
 
+/- English proof (translation)
+Establish `hΦ : Continuous fun y : T × P × K => (ρ y.2.2⁻¹).comp (F y.1 (s y.2.1))`. Use `(hρ.comp (continuous_inv.comp (continuous_snd.comp continuous_snd))).clm_comp ?_` and prove the remaining obligations. Conclude with `hc.comp (continuous_fst.prodMk (hsc.comp (continuous_fst.comp continuous_snd)))`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `y₀`.
+
+Rewrite using `[ContinuousAt, tendsto_iff_ultrafilter]`. Introduce `U hU`. Use `haveI : CompactSpace K := isCompact_iff_compactSpace.mp hK`. Take `⟨k₁, -, hk₁⟩` from `isCompact_univ.ultrafilter_le_nhds (U.map fun y : T × G => kOf hi y.2) (by simp)`. Establish `hk : Tendsto (fun y : T × G => kOf hi y.2) U (𝓝 k₁)` using `hk₁`.
+
+Establish `hU' : Tendsto (fun y : T × G => y) U (𝓝 y₀)` using `hU`. Establish `hqG : Tendsto (fun y : T × G => y.2 * ((kOf hi y.2 : K) : G)⁻¹) U (𝓝 (y₀.2 * (k₁ : G)⁻¹))` using `((continuous_snd.tendsto y₀).comp hU').mul (((continuous_subtype_val.tendsto k₁).comp hk).inv)`. Establish `hqe : ∀ y : T × G, y.2 * ((kOf hi y.2 : K) : G)⁻¹ = (pOf hi y.2 : G)`. Introduce `y`. Conclude with `mul_inv_eq_of_eq_mul (pk_spec hi y.2)`.
+
+Simplify using `only [hqe] at hqG`. Establish `hmem : y₀.2 * (k₁ : G)⁻¹ ∈ P` using `hcl.mem_of_tendsto hqG (Eventually.of_forall fun y => (pOf hi y.2).2)`. Establish `hq : Tendsto (fun y : T × G => pOf hi y.2) U (𝓝 (⟨_, hmem⟩ : P))` using `tendsto_subtype_rng.2 hqG`. Establish `hlim` using `(hΦ.tendsto (y₀.1, (⟨_, hmem⟩ : P), k₁)).comp ((((continuous_fst.tendsto y₀).comp hU').prodMk_nhds (hq.prodMk_nhds hk)))`. Establish `hy : hD hi ρ s (F y₀.1) y₀.2 = (ρ k₁⁻¹).comp (F y₀.1 (s ⟨_, hmem⟩))`.
+
+Rewrite using `[← hD_eq hi hs (hF y₀.1), hs]`. Simplify using the standard rewrite rules. Rewrite using `[hy]`. Conclude with `hlim`.
+-/
 theorem hD_cont [IsTopologicalGroup G] {T : Type} [TopologicalSpace T] (hK : IsCompact (K : Set G))
     (hcl : IsClosed (P : Set G)) (hi : Iwa P K) {ρ : K →* (W →L[ℂ] W)} (hρ : Continuous ρ)
     {s : P → G₁} (hsc : Continuous s) (hs : ∀ p, j (s p) = p) {F : T → G₁ → A →L[ℂ] W}
@@ -230,6 +309,21 @@ theorem hD_cont [IsTopologicalGroup G] {T : Type} [TopologicalSpace T] (hK : IsC
   rw [hy]
   exact hlim
 
+/- English proof (translation)
+Take `⟨C, hC, hCg⟩` from `exists_compact_mem_nhds g`. Use `⟨C, hCg, ?_⟩` and prove the remaining obligations. Use `set C₁ : Set G := (fun a : G × G => a.1 * a.2⁻¹) '' (C ×ˢ (K : Set G)) with hC₁`. Establish `hC₁c : IsCompact C₁` using `(hC.prod hK).image (continuous_fst.mul continuous_snd.inv)`. Establish `hCq : IsCompact ((↑) ⁻¹' C₁ : Set P)` using `hcl.isClosedEmbedding_subtypeVal.isCompact_preimage hC₁c`.
+
+Establish `hC' : IsCompact (s '' ((↑) ⁻¹' C₁ : Set P))` using `hCq.image hsc`. Establish `hM : ∃ M : ℝ, ∀ t ∈ S, ∀ x ∈ s '' ((↑) ⁻¹' C₁ : Set P), ‖F t x‖ ≤ M`. Use `hC'.induction_on (p := fun u => ∃ M : ℝ, ∀ t ∈ S, ∀ x ∈ u, ‖F t x‖ ≤ M) ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `⟨0, fun _ _ _ h => absurd h (Set.notMem_empty _)⟩`. Introduce and unpack `a b hab ⟨M, hM⟩`.
+
+Conclude with `⟨M, fun t ht x hx => hM t ht x (hab hx)⟩`. Introduce and unpack `a b ⟨M, hM⟩ ⟨N, hN⟩`. Use `⟨max M N, fun t ht x hx => ?_⟩` and prove the remaining obligations. Break down `hx with hx | hx` into its components or cases. Conclude with `(hM t ht x hx).trans (le_max_left _ _)`.
+
+Conclude with `(hN t ht x hx).trans (le_max_right _ _)`. Introduce `x _`. Take `⟨U, hU, M, hM⟩` from `hb x`. Conclude with `⟨U, mem_nhdsWithin_of_mem_nhds hU, M, hM⟩`. Take `⟨M, hM⟩` from `hM`.
+
+Use `haveI : CompactSpace K := isCompact_iff_compactSpace.mp hK`. Take `⟨B, hB⟩` from `isCompact_univ.exists_bound_of_continuousOn hρ.continuousOn`. Use `⟨B * M, fun t ht g' hg' => ?_⟩` and prove the remaining obligations. Establish `hq : (pOf hi g' : G) ∈ C₁`. Use `⟨(g', kOf hi g'), ⟨hg', (kOf hi g').2⟩, ?_⟩` and prove the remaining obligations.
+
+Conclude with `mul_inv_eq_of_eq_mul (pk_spec hi g')`. Establish `h2` using `hM t ht (s (pOf hi g')) ⟨_, hq, rfl⟩`. Establish `h1` using `hB (kOf hi g')⁻¹ (Set.mem_univ _)`. Unfold `hD`. Use `(ContinuousLinearMap.opNorm_comp_le _ _).trans ?_` and prove the remaining obligations.
+
+Conclude with `mul_le_mul h1 h2 (norm_nonneg _) ((norm_nonneg _).trans h1)`.
+-/
 theorem hD_bdd [IsTopologicalGroup G] [LocallyCompactSpace G] {T : Type} (hK : IsCompact (K : Set G))
     (hcl : IsClosed (P : Set G)) (hi : Iwa P K) {ρ : K →* (W →L[ℂ] W)} (hρ : Continuous ρ)
     {s : P → G₁} (hsc : Continuous s) (S : Set T) (F : T → G₁ → A →L[ℂ] W)
@@ -282,6 +376,9 @@ def eL [FiniteDimensional ℂ W] {L L' : Submodule ℂ W} (h : L = L') : L ≃L[
       left_inv := fun _ => rfl
       right_inv := fun _ => rfl }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem eL_coe [FiniteDimensional ℂ W] {L L' : Submodule ℂ W} (h : L = L') (w : L) :
     ((eL h w : L') : W) = w := rfl
 
@@ -289,6 +386,29 @@ def eC [FiniteDimensional ℂ W] {L L' : Submodule ℂ W} (h : L = L') : L →L[
 
 variable {η η' β : G → ℝ}
 
+/- English proof (translation)
+Use `haveI : CompleteSpace W := FiniteDimensional.complete ℂ W`. Establish `hsurj : ∀ g, ∃ (x : G₁) (k : K), g = j x * k` using `fun g => ⟨s (pOf hpar.iwa g), kOf hpar.iwa g, by rw [hjs]; exact pk_spec _ g⟩`. Establish `hsec : ∀ w ∈ secSp K P c ρ, ∀ x, sec K₁ (P.comap j) (c ∘ j) (ρ.comp (kj j hKK)) x w = sec K P c ρ (j x) w` using `fun w hv x => sec_eq hKK hi₁ law law₁ hv (hLe.le hv) x`. Establish `hpull : ∀ {Λ : G → ℂ} {Λ₁ : G₁ → ℂ}, (∀ x, Λ₁ x = Λ (j x)) → (∀ γ ∈ Γ, γ ∈ P → ∀ x, Λ (γ * x) = Λ x) → ∀ w ∈ secSp K P c ρ, ∀ x, eis Γ₁ K₁ (P.comap j) (c ∘ j) (ρ.comp (kj j hKK)) Λ₁ x w = eis Γ K P c ρ Λ (j x) w` using `fun hΛ hinv w hv x => eis_pull hΓ hpar law hv (hsec w hv) hΛ hinv x`. Establish `hinvR : ∀ z : ℂ, ∀ γ ∈ Γ, γ ∈ P → ∀ x, (fun x => z * (η x : ℂ)) (γ * x) = z * η x` using `fun z γ hγ hγP x => by simp only [ht_left hη hγ hγP x]`.
+
+Establish `hinvL : ∀ z : ℂ, ∀ γ ∈ Γ, γ ∈ P → ∀ x, (fun x => (β x : ℂ) - z * (η' x : ℂ)) (γ * x) = (β x : ℂ) - z * η' x` using `fun z γ hγ hγP x => by simp only [ht_left hη' hγ hγP x, ht_left hβ hγ hγP x]`. Establish `hE : ∀ z, Equi j ρ (fun x => (H₁ z x).comp (eC hLe))`. Introduce `z x y k hxy w`. Establish `hf : Differentiable ℂ fun z => H₁ z y (eL hLe w)` using `(hw.hol y).clm_apply (differentiable_const _)`. Establish `hg : Differentiable ℂ fun z => ρ k⁻¹ (H₁ z x (eL hLe w))` using `(ρ k⁻¹).differentiable.comp ((hw.hol x).clm_apply (differentiable_const _))`.
+
+Establish `hev : (fun z => H₁ z y (eL hLe w)) =ᶠ[𝓝 ((R + 1 : ℝ) : ℂ)] fun z => ρ k⁻¹ (H₁ z x (eL hLe w))`. Establish `hmem : {z : ℂ | R < z.re} ∈ 𝓝 ((R + 1 : ℝ) : ℂ)` using `(isOpen_lt continuous_const Complex.continuous_re).mem_nhds (by simp)`. Use `filter_upwards [hmem] with z hz`. Rewrite using `[hw.eqR z hz y, hw.eqR z hz x, map_smul]`. Use `congr 1`.
+
+Establish `h1` using `hpull (Λ := fun x => z * (η x : ℂ)) (Λ₁ := fun x => z * ((η ∘ j) x : ℂ)) (fun _ => rfl) (hinvR z) w w.2`. Rewrite using `[eL_coe, h1 y, h1 x, hxy]`. Conclude with `eis_right hpar.iwa law w.2 (fun g k hk => by simp only [hη.right g k hk]) _ k`. Use `AnalyticOnNhd.eq_of_eventuallyEq (fun z _ => hf.analyticAt z) (fun z _ => hg.analyticAt z) hev` as an intermediate fact. Conclude with `congrFun this z`.
+
+Use `⟨le_refl _, hw.pos, fun x hx => ?_, fun x hx => ?_, hw.dEnt, hw.dNe, ?_, fun g => ?_, ?_, fun b a g => ?_, fun z hz g w => ?_, fun z hz g w => ?_⟩` and prove the remaining obligations. Conclude with `conv_desc hΓ hsurj (l := fun g => x * η g) (fun _ => rfl) (fun γ hγ hγP y => by simp only [ht_left hη hγ hγP y]) (fun g k hk => by simp only [hη.right g k hk]) (hw.convR x hx)`. Conclude with `conv_desc hΓ hsurj (l := fun g => β g - x * η' g) (fun _ => rfl) (fun γ hγ hγP y => by simp only [ht_left hη' hγ hγP y, ht_left hβ hγ hγP y]) (fun g k hk => by simp only [hη'.right g k hk, hβ.right g k hk]) (hw.convL x hx)`. Conclude with `leftGood_comp (cj (eL hLe) (eL hLe)) hw.op`. Set `T : (secSp K₁ (P.comap j) (c ∘ j) (ρ.comp (kj j hKK)) →L[ℂ] W) →L[ℂ] (secSp K P c ρ →L[ℂ] W)` to `(ContinuousLinearMap.compL ℂ (secSp K P c ρ) W W (ρ (kOf hpar.iwa g)⁻¹)).comp ((ContinuousLinearMap.compL ℂ (secSp K P c ρ) _ W).flip (eC hLe))`.
+
+Conclude with `T.differentiable.comp (hw.hol (s (pOf hpar.iwa g)))`. Conclude with `hD_cont hK hpar.closed hpar.iwa hρ hsc hjs (F := fun z x => (H₁ z x).comp (eC hLe)) hE (hw.cont.clm_comp continuous_const)`. Use `hD_bdd hK hpar.closed hpar.iwa hρ hsc {z : ℂ | b ≤ z.re ∧ z.re ≤ a} (fun z x => (H₁ z x).comp (eC hLe)) (fun x => ?_) g |>.imp ?_` and prove the remaining obligations. Take `⟨U, hU, M, hM⟩` from `hw.bdd b a x`. Use `⟨U, hU, M * ‖(eC hLe)‖, fun t ht y hy => ?_⟩` and prove the remaining obligations.
+
+Use `(ContinuousLinearMap.opNorm_comp_le _ _).trans ?_` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (hM t ht.1 ht.2 y hy) (norm_nonneg _)`. Introduce and unpack `U ⟨hU, M, hM⟩`. Conclude with `⟨hU, M, fun z h1 h2 g' hg' => hM z ⟨h1, h2⟩ g' hg'⟩`. Take `⟨x, k, rfl⟩` from `hsurj g`.
+
+Establish `h1` using `hpull (Λ := fun x => z * (η x : ℂ)) (Λ₁ := fun x => z * ((η ∘ j) x : ℂ)) (fun _ => rfl) (hinvR z) w w.2 x`. Establish `h2` using `eis_right (Γ := Γ) hpar.iwa law w.2 (Λ := fun x => z * (η x : ℂ)) (fun g k hk => by simp only [hη.right g k hk]) (j x) k`. Use `show hD hpar.iwa ρ s (fun x => (H₁ z x).comp (eC hLe)) (j x * k) w = _`. Rewrite using `[hD_eq hpar.iwa hjs (hE z), h2, ← h1]`. Use `show ρ k⁻¹ (H₁ z x (eL hLe w)) = _`.
+
+Rewrite using `[show H₁ z x (eL hLe w) = _ from hw.eqR z hz x (eL hLe w), map_smul]`. Both sides reduce to the same expression. Take `⟨x, k, rfl⟩` from `hsurj g`. Establish `hv : (((Op z (eL hLe w) : secSp K₁ (P.comap j) (c ∘ j) (ρ.comp (kj j hKK)))) : W) ∈ secSp K P c ρ` using `hLe.ge (Op z (eL hLe w)).2`. Establish `h1` using `hpull (Λ := fun x => (β x : ℂ) - z * (η' x : ℂ)) (Λ₁ := fun x => ((β ∘ j) x : ℂ) - z * ((η' ∘ j) x : ℂ)) (fun _ => rfl) (hinvL z) _ hv x`.
+
+Establish `h2` using `eis_right (Γ := Γ) hpar.iwa law hv (Λ := fun x => (β x : ℂ) - z * (η' x : ℂ)) (fun g k hk => by simp only [hη'.right g k hk, hβ.right g k hk]) (j x) k`. Use `show hD hpar.iwa ρ s (fun x => (H₁ z x).comp (eC hLe)) (j x * k) w = _`. Rewrite using `[hD_eq hpar.iwa hjs (hE z)]`. Use `show ρ k⁻¹ (H₁ z x (eL hLe w)) = _`. Rewrite using `[hw.eqL z hz x, h1]`.
+
+Conclude with `h2.symm`.
+-/
 theorem wall_desc [IsTopologicalGroup G] [LocallyCompactSpace G] [FiniteDimensional ℂ W]
     (hK : IsCompact (K : Set G)) {ρ : K →* (W →L[ℂ] W)} (hρ : Continuous ρ) (hKK : K₁ ≤ K.comap j)
     (hΓ : Γ₁.map j = Γ) {s : P → G₁} (hsc : Continuous s) (hjs : ∀ p, j (s p) = p)
@@ -387,6 +507,11 @@ theorem wall_desc [IsTopologicalGroup G] [LocallyCompactSpace G] [FiniteDimensio
 
 end Main
 
+/- English proof (translation)
+Introduce `hSec G _ _ _ _ _ W _ _ _ K ρ hK hρ G₁ _ _ _ _ _ j Γ P Γ₁ K₁ c η η' β s hj hK₁ hKK hΓ hsc hjs hsK hi₁ hpar hη hη' hβ hW`. Establish `hcont : Continuous (ρ.comp (kj j hKK))` using `hρ.comp (kj_cont hj hKK)`. Establish `hpar₁` using `isPar_comap hj hΓ hi₁ hpar`. Establish `law : Law K P c ρ` using `(hSec G W K ρ hK hρ Γ P c hpar).1`. Establish `law₁ : Law K₁ (P.comap j) (c ∘ j) (ρ.comp (kj j hKK))` using `(hSec G₁ W K₁ _ hK₁ hcont Γ₁ _ _ hpar₁).1`.
+
+Take `⟨R, D, Op, H₁, hw⟩` from `hW W (ρ.comp (kj j hKK)) hcont`. Conclude with `⟨R, D, _, _, wall_desc hK hρ hKK hΓ hsc hjs hi₁ hpar hη hη' hβ law law₁ (secSp_eq hKK hjs hsK ρ).symm hw⟩`.
+-/
 theorem descend2 : SecLaw → Descend2 := by
   intro hSec G _ _ _ _ _ W _ _ _ K ρ hK hρ G₁ _ _ _ _ _ j Γ P Γ₁ K₁ c η η' β s hj hK₁ hKK hΓ hsc hjs hsK
     hi₁ hpar hη hη' hβ hW

@@ -3,6 +3,13 @@ import CompanionTheory.AutomorphicTheory.PlaceSeparation.ArtinA
 import GroundTheory.ProfiniteCohomology.RestrictedRamification.Ramification
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.HV GlobalTheory.Ord2 GlobalTheory.KZ GlobalTheory.Col UpperTheory.Kd.C7
 
+/- English proof (translation)
+Use `letI := Localization.AtPrime.algebraOfLiesOver p P`. Establish `h2` using `((Algebra.isUnramifiedAt_iff_map_eq (𝓞 K) p P).1 h).2`. Establish `h3 : algebraMap (𝓞 E) (Localization.AtPrime P) x ∈ IsLocalRing.maximalIdeal (Localization.AtPrime P)` using `(IsLocalization.AtPrime.to_map_mem_maximal_iff _ P x).2 hx`. Rewrite `h3` using `[← h2]`. Establish `h4 : Ideal.map (algebraMap (𝓞 K) (Localization.AtPrime P)) p = Ideal.span {algebraMap (𝓞 K) (Localization.AtPrime P) π}`.
+
+Rewrite using `[hp, Ideal.map_span, Set.image_singleton]`. Rewrite `h3` using `[h4, Ideal.mem_span_singleton']`. Take `⟨z, hz⟩` from `h3`. Take `⟨⟨y, t⟩, hyt⟩` from `IsLocalization.surj P.primeCompl z`. Use `⟨t, y, t.2, ?_⟩` and prove the remaining obligations.
+
+Apply `IsLocalization.injective (Localization.AtPrime P) P.primeCompl_le_nonZeroDivisors` to reduce the goal to its premises. Simplify using `only at hyt`. Rewrite using `[map_mul, map_mul, ← hz, ← hyt, ← IsScalarTower.algebraMap_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem unramified_uniformizer_divides {K E : Type} [Field K] [NumberField K] [Field E] [NumberField E] [Algebra K E]
     (π : 𝓞 K) (p : Ideal (𝓞 K)) [p.IsPrime] (hp : p = Ideal.span {π}) (P : Ideal (𝓞 E)) [P.IsPrime] [P.LiesOver p]
     (h : Algebra.IsUnramifiedAt (𝓞 K) P) (x : 𝓞 E) (hx : x ∈ P) :
@@ -24,6 +31,15 @@ private theorem unramified_uniformizer_divides {K E : Type} [Field K] [NumberFie
   rw [map_mul, map_mul, ← hz, ← hyt, ← IsScalarTower.algebraMap_apply]
   ring
 
+/- English proof (translation)
+Establish `h1 : ∀ s : 𝓞 E, s ∉ u.asIdeal → A.valuation (algebraMap E Ω (s : E)) = 1` using `fun s hs => le_antisymm (CompanionTheory.FamInh.val_int_le_one A s) (not_lt.1 ((hu s).not.2 hs))`. Take `⟨n, d, e | e⟩` from `u.exists_primeCompl_mul_eq_or_mul_eq z`. Establish `e' : z * ((d : 𝓞 E) : E) = (n : E)` using `e`. Establish `h2 : A.valuation (algebraMap E Ω z) = A.valuation (algebraMap E Ω (n : E))`. Rewrite using `[← e', map_mul, map_mul, h1 d d.2, mul_one]`.
+
+Take `⟨t, y, ht, e2⟩` from `h n ((hu n).1 (h2 ▸ hz))`. Establish `e3 : (t : E) * (n : E) = (π : E) * (y : E)` using `by exact_mod_cast congrArg (fun a : 𝓞 E => (a : E)) e2`. Establish `h3` using `congrArg (fun a : E => A.valuation (algebraMap E Ω a)) e3`. Simplify using `only [map_mul] at h3`. Rewrite `h3` using `[h1 t ht, one_mul]`.
+
+Rewrite using `[h2, h3]`. Conclude with `mul_le_of_le_one_right' (CompanionTheory.FamInh.val_int_le_one A y)`. Establish `e' : z * (n : E) = ((d : 𝓞 E) : E)` using `e`. Establish `h2` using `h1 d d.2`. Rewrite `h2` using `[← e', map_mul, map_mul]`.
+
+Conclude with `absurd h2 ((mul_le_of_le_one_right' (CompanionTheory.FamInh.val_int_le_one A n)).trans_lt hz).ne`.
+-/
 private theorem valuation_le_uniformizer_div {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] (A : ValuationSubring Ω)
     (u : HeightOneSpectrum (𝓞 E)) (hu : IsPlaceOver A u) (π : 𝓞 E)
     (h : ∀ x ∈ u.asIdeal, ∃ t y : 𝓞 E, t ∉ u.asIdeal ∧ t * x = π * y) (z : E)
@@ -47,6 +63,17 @@ private theorem valuation_le_uniformizer_div {E Ω : Type} [Field E] [NumberFiel
     rw [← e', map_mul, map_mul] at h2
     exact absurd h2 ((mul_le_of_le_one_right' (CompanionTheory.FamInh.val_int_le_one A n)).trans_lt hz).ne
 
+/- English proof (translation)
+Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed K`. Use `haveI : IsGalois K Ω := {}`. Set `M : IntermediateField K Ω` to `(FiniteGaloisIntermediateField.adjoin K ({x} : Set Ω)).toIntermediateField`. Establish `hxM : x ∈ M` using `FiniteGaloisIntermediateField.subset_adjoin K ({x} : Set Ω) rfl`. Use `haveI : NumberField M := NumberField.of_module_finite K M`.
+
+Use `haveI : Algebra.IsAlgebraic M Ω := Algebra.IsAlgebraic.tower_top (K := K) M`. Use `haveI : IsAlgClosure M Ω := ⟨inferInstance, inferInstance⟩`. Take `⟨w, hw, hwv⟩` from `CompanionTheory.FamInh.exists_place_between (L := M) hv`. Set `E : IntermediateField K M` to `IntermediateField.fixedField (w.asIdeal.inertia Gal(M/K))`. Use `haveI : NumberField E := NumberField.of_module_finite K E`.
+
+Establish `hxE : (⟨x, hxM⟩ : M) ∈ E`. Rewrite using `[IntermediateField.mem_fixedField_iff]`. Introduce `τ hτ`. Take `⟨σ, hσ, rfl⟩` from `CompanionTheory.FamInh.exists_lift_ine hw hτ`. Apply `(algebraMap M Ω).injective` to reduce the goal to its premises.
+
+Conclude with `(AlgEquiv.restrictNormal_commutes σ M _).trans (hx σ hσ)`. Establish `hun : Algebra.IsUnramifiedAt (𝓞 K) (w.asIdeal.under (𝓞 E))` using `(GroundTheory.ProfCoh.isUnramifiedAt_under_iff_inertia (F := K) (E := E) (M := M) w.asIdeal).2 fun σ hσ y => (IntermediateField.mem_fixedField_iff _ _).1 y.2 σ hσ`. Establish `hu : IsPlaceOver A (w.under (𝓞 E))` using `fun y => by`. Use `hw (algebraMap (𝓞 E) (𝓞 M) y)` as an intermediate fact. Conclude with `this`.
+
+Use `haveI : (w.asIdeal.under (𝓞 E)).LiesOver v.asIdeal := inferInstance`. Use `valuation_le_uniformizer_div A (w.under (𝓞 E)) hu (algebraMap (𝓞 K) (𝓞 E) π) (unramified_uniformizer_divides π v.asIdeal hπ (w.asIdeal.under (𝓞 E)) hun) ⟨_, hxE⟩ h1` as an intermediate fact. Conclude with `this`.
+-/
 private theorem valuation_le_uniformizer_inertia {K Ω : Type} [Field K] [NumberField K] [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω]
     (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 K)) (hv : IsPlaceOver A v) (π : 𝓞 K)
     (hπ : v.asIdeal = Ideal.span {π}) (x : Ω) (hx : ∀ s ∈ Ine (F := K) A, s x = x) (h1 : A.valuation x < 1) :
@@ -78,6 +105,21 @@ private theorem valuation_le_uniformizer_inertia {K Ω : Type} [Field K] [Number
     (unramified_uniformizer_divides π v.asIdeal hπ (w.asIdeal.under (𝓞 E)) hun) ⟨_, hxE⟩ h1
   exact this
 
+/- English proof (translation)
+Introduce `l hl _ Ω _ _ _ A ⟨v, hv, hlv⟩ x hx`. Use `haveI : CharZero Ω := algebraRat.charZero Ω`. Establish `hpr : Prime ((l : ℕ) : 𝓞 ℚ)`. Establish `h0 : Prime (l : ℤ)` using `Nat.prime_iff_prime_int.mp hl.out`. Use `(MulEquiv.prime_iff Rat.ringOfIntegersEquiv.symm).2 h0` as an intermediate fact.
+
+Simplify using `using this`. Establish `hπ : v.asIdeal = Ideal.span {((l : ℕ) : 𝓞 ℚ)}`. Establish `hm : (Ideal.span {((l : ℕ) : 𝓞 ℚ)}).IsMaximal` using `((Ideal.span_singleton_prime hpr.ne_zero).mpr hpr).isMaximal (by simpa using hpr.ne_zero)`. Conclude with `(hm.eq_of_le v.isPrime.ne_top ((Ideal.span_singleton_le_iff_mem _).2 hlv)).symm`. Establish `hl0 : (l : Ω) ≠ 0` using `Nat.cast_ne_zero.2 hl.out.ne_zero`.
+
+Distinguish the cases in `h1 : A.valuation (x : Ω) < 1`. It suffices to derive a contradiction. Establish `h2` using `valuation_le_uniformizer_inertia A v hv _ hπ x x.2.2 h1`. Establish `h3 : algebraMap ℚ Ω (((l : ℕ) : 𝓞 ℚ) : ℚ) = (l : Ω)` using `by simp`. Rewrite `h2` using `[h3]`.
+
+Establish `h4 : (x : Ω) / l ∈ A`. Rewrite using `[← A.valuation_le_one_iff, map_div₀]`. Conclude with `div_le_one_of_le₀ h2 zero_le`. Use `hx (Ideal.mem_span_singleton'.2 ⟨⟨(x : Ω) / l, h4, fun s hs => ?_⟩, Subtype.ext ?_⟩)` and prove the remaining obligations. Rewrite using `[map_div₀, x.2.2 s hs, map_natCast]`.
+
+Use `push_cast`. Conclude with `div_mul_cancel₀ _ hl0`. Establish `h2 : A.valuation (x : Ω) = 1` using `le_antisymm ((A.valuation_le_one_iff _).2 x.2.1) (not_lt.1 h1)`. Establish `h0 : (x : Ω) ≠ 0`. Introduce `h`.
+
+Rewrite `h2` using `[h, map_zero]`. Conclude with `zero_ne_one h2`. Establish `h4 : (x : Ω)⁻¹ ∈ A`. Rewrite using `[← A.valuation_le_one_iff, map_inv₀, h2, inv_one]`. Use `IsUnit.of_mul_eq_one ⟨(x : Ω)⁻¹, h4, fun s hs => ?_⟩ (Subtype.ext ?_)` and prove the remaining obligations.
+
+Rewrite using `[map_inv₀, x.2.2 s hs]`. Conclude with `mul_inv_cancel₀ h0`.
+-/
 theorem UpperTheory.Kd.C7.inertia_invariant_valuation_uniformizer_bound :
     UpperTheory.Kd.C7.FixedIntegersIsUnitOfNotMemPrimeSpan := by
   intro l hl _ Ω _ _ _ A ⟨v, hv, hlv⟩ x hx

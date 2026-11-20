@@ -15,6 +15,23 @@ open scoped Classical
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun i j hj hi => ?_, ?_, fun i j hj => ?_⟩` and prove the remaining obligations. Rewrite using `[h i j (by omega), if_neg]`. Introduce `e`.
+
+Substitute `e` using the available equality. Use linear arithmetic over natural numbers and integers. Use extensionality with `i j`. Simplify using `only [br, entN]`. Rewrite using `[dif_pos (by omega), h _ _ (by simp; omega)]`.
+
+Simplify using `[Matrix.one_apply, Fin.ext_iff]`. Simplify using `only [tl, entN]`. Rewrite using `[dif_pos (by omega), h _ _ (by simp; omega)]`. Simplify using `[Fin.ext_iff]`. Introduce and unpack `⟨h1, h2, h3⟩ i j hij`.
+
+Distinguish the cases in `hi : (i : ℕ) ≤ a`. Establish `hj : (j : ℕ) < a` using `by omega`. Use `h3 ⟨i, by omega⟩ ⟨j, by omega⟩ hj` as an intermediate fact. Simplify using `only [tl, entN] at this`. Rewrite `this` using `[dif_pos (by omega)]`.
+
+Simplify `this` using `[Fin.ext_iff]`. Distinguish the cases in `hj : (j : ℕ) < a + 1`. Rewrite using `[h1 i j hj (by omega), if_neg]`. Introduce `e`. Substitute `e` using the available equality.
+
+Use linear arithmetic over natural numbers and integers. Use `congrFun (congrFun h2 ⟨(i : ℕ) - (a + 1), by omega⟩) ⟨(j : ℕ) - (a + 1), by omega⟩` as an intermediate fact. Simplify using `only [br, entN] at this`. Rewrite `this` using `[dif_pos (by omega)]`. Establish `ei : (⟨a + 1 + ((i : ℕ) - (a + 1)), by omega⟩ : Fin (a + 1 + c)) = i` using `Fin.ext (by simp; omega)`.
+
+Establish `ej : (⟨a + 1 + ((j : ℕ) - (a + 1)), by omega⟩ : Fin (a + 1 + c)) = j` using `Fin.ext (by simp; omega)`. Rewrite `this` using `[ei, ej, Matrix.one_apply]`. Rewrite using `[this]`. Simplify using `only [Fin.ext_iff]`. Use `congr 1`.
+
+Apply `propext` to reduce the goal to its premises. Use linear arithmetic over natural numbers and integers.
+-/
 theorem stdBlock_iff (a c : ℕ) (x : Gn p (a + 1 + c)) :
     StdBlock a x ↔ InPar (a + 1) (x : Mt p (a + 1 + c)) ∧ br (a + 1) c (x : Mt p (a + 1 + c)) = 1 ∧
       ∀ i j : Fin (a + 1), (j : ℕ) < a → tl (a + 1) (x : Mt p (a + 1 + c)) i j = if i = j then 1 else 0 := by
@@ -52,12 +69,18 @@ theorem stdBlock_iff (a c : ℕ) (x : Gn p (a + 1 + c)) :
         apply propext
         omega
 
+/- English proof (translation)
+Use `LabelDet.det_inPar (a + 1) c (x : Mt p (a + 1 + c)) h1` as an intermediate fact. Rewrite `this` using `[h2, Matrix.det_one, mul_one]`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).2 (Ne.isUnit (this ▸ x.det_ne_zero))`.
+-/
 theorem isUnit_tl (a c : ℕ) (x : Gn p (a + 1 + c)) (h1 : InPar (a + 1) (x : Mt p (a + 1 + c)))
     (h2 : br (a + 1) c (x : Mt p (a + 1 + c)) = 1) : IsUnit (tl (a + 1) (x : Mt p (a + 1 + c))) := by
   have := LabelDet.det_inPar (a + 1) c (x : Mt p (a + 1 + c)) h1
   rw [h2, Matrix.det_one, mul_one] at this
   exact (Matrix.isUnit_iff_isUnit_det _).2 (Ne.isUnit (this ▸ x.det_ne_zero))
 
+/- English proof (translation)
+Unfold `toG`. Rewrite using `[dif_pos h]`. Both sides reduce to the same expression.
+-/
 theorem val_toG {n : ℕ} (M : Mt p n) (h : IsUnit M) : ((toG M : Gn p n) : Mt p n) = M := by
   unfold toG
   rw [dif_pos h]
@@ -72,6 +95,25 @@ open scoped Classical
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Establish `hp0 : (p : ℂ) ^ ((a + 1) * c) ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero)`. Establish `e1 : (p : ℂ) ^ ((a + 1) * c) * (∑ y : Gn p (a + 1), if StdBlock a y then (((θ (Matrix.GeneralLinearGroup.det y))⁻¹ : ℂˣ) : ℂ) * res (a + 1) c ψ y 1 else 0) = ∑ y : Gn p (a + 1), ∑ x : Gn p (a + 1 + c), if StdBlock a y ∧ (InPar (a + 1) (x : Mt p (a + 1 + c)) ∧ tl (a + 1) (x : Mt p …`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Unfold `res`.
+
+Distinguish the cases in `hy : StdBlock a y`. Rewrite using `[if_pos hy, mul_left_comm, mul_inv_cancel_left₀ hp0, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Simplify using `only [hy, true_and, mul_ite, mul_zero]`. Simplify using `[hy]`.
+
+Rewrite using `[e1, Finset.sum_comm]`. Unfold `stdTrace`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Distinguish the cases in `hx : InPar (a + 1) (x : Mt p (a + 1 + c)) ∧ br (a + 1) c (x : Mt p (a + 1 + c)) = 1`. Establish `hu` using `isUnit_tl a c x hx.1 hx.2`.
+
+Establish `hy0` using `val_toG _ hu`. Rewrite using `[Finset.sum_eq_single (toG (tl (a + 1) (x : Mt p (a + 1 + c))))]`. Establish `hs : StdBlock a x ↔ StdBlock a (toG (tl (a + 1) (x : Mt p (a + 1 + c))))`. Rewrite using `[stdBlock_iff]`. Unfold `StdBlock`.
+
+Rewrite using `[hy0]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, -, h⟩ i j hij`. Conclude with `h i j (by have := i.isLt; omega)`. Introduce `h`.
+
+Conclude with `⟨hx.1, hx.2, fun i j hj => h i j (by omega)⟩`. Establish `hd : Matrix.GeneralLinearGroup.det x = Matrix.GeneralLinearGroup.det (toG (tl (a + 1) (x : Mt p (a + 1 + c))))`. Rewrite using `[LabelDet.det_par (a + 1) c x hx.1, hx.2, LabelDet.toG_one, map_one, mul_one]`. Distinguish the cases in `h : StdBlock a x`. Rewrite using `[if_pos h, if_pos ⟨hs.1 h, hx.1, hy0.symm, by simpa using hx.2⟩, hd]`.
+
+Rewrite using `[if_neg h, if_neg (fun e => h (hs.2 e.1))]`. Introduce `y _ hne`. Rewrite using `[if_neg]`. Introduce and unpack `⟨-, -, h, -⟩`. Conclude with `hne (Units.ext (h.symm.trans hy0.symm))`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[if_neg (fun h => hx ⟨((stdBlock_iff a c x).1 h).1, ((stdBlock_iff a c x).1 h).2.1⟩), eq_comm]`. Use `Finset.sum_eq_zero fun y _ => if_neg ?_` and prove the remaining obligations. Introduce and unpack `⟨-, h1, -, h3⟩`.
+
+Conclude with `hx ⟨h1, by simpa using h3⟩`.
+-/
 theorem stdTrace_eq (a c : ℕ) (θ : (ZMod p)ˣ →* ℂˣ) (ψ : Gn p (a + 1 + c) → ℂ) :
     stdTrace a θ ψ = (p : ℂ) ^ ((a + 1) * c) * ∑ y : Gn p (a + 1),
       if StdBlock a y then (((θ (Matrix.GeneralLinearGroup.det y))⁻¹ : ℂˣ) : ℂ) * res (a + 1) c ψ y 1 else 0 := by
@@ -129,12 +171,22 @@ namespace GlobalTheory.GLq.StdRes
 open GlobalTheory.GLq GlobalTheory.LevelType Formalism.MainNotions.ArithmeticCylinders
 open scoped Classical
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons q L ih => simp [Finset.sum_add_distrib, ih]`.
+-/
 theorem sum_list_comm {ι X : Type} [Fintype ι] (L : List X) (f : ι → X → ℂ) :
     ∑ i, (L.map (f i)).sum = (L.map fun q => ∑ i, f i q).sum := by
   induction L with
   | nil => simp
   | cons q L ih => simp [Finset.sum_add_distrib, ih]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact ⟨⟨0, by simp⟩, by simp⟩`. Consider the case `cons z l ih`. Take `⟨⟨k, hk⟩, H⟩` from `ih fun w hw => h w (List.mem_cons_of_mem _ hw)`. Take `⟨m, hm⟩` from `h z List.mem_cons_self`.
+
+Use `⟨⟨m + k, by rw [List.sum_cons, hk, hm]; push_cast; ring⟩, fun w hw hw0 => ?_⟩` and prove the remaining obligations. Break down `List.mem_cons.1 hw with rfl | hw` into its components or cases. Take `⟨m', rfl⟩ : ∃ m', m = m' + 1` from `⟨m - 1, by`. Establish `: m ≠ 0` using `by rintro rfl; exact hw0 (by simpa using hm)`. Use the proof step `omega⟩`.
+
+Conclude with `⟨m' + k, by rw [List.sum_cons, hk, hm]; push_cast; ring⟩`. Take `⟨k', hk'⟩` from `H w hw hw0`. Conclude with `⟨m + k', by rw [List.sum_cons, hk', hm]; push_cast; ring⟩`.
+-/
 theorem list_sum_nat (l : List ℂ) (h : ∀ z ∈ l, ∃ n : ℕ, z = n) :
     (∃ n : ℕ, l.sum = n) ∧ ∀ z ∈ l, z ≠ 0 → ∃ n : ℕ, l.sum = n + 1 := by
   induction l with
@@ -151,12 +203,20 @@ theorem list_sum_nat (l : List ℂ) (h : ∀ z ∈ l, ∃ n : ℕ, z = n) :
     · obtain ⟨k', hk'⟩ := H w hw hw0
       exact ⟨m + k', by rw [List.sum_cons, hk', hm]; push_cast; ring⟩
 
+/- English proof (translation)
+Take `⟨V, hV⟩` from `h`. Introduce `x y`. Rewrite using `[← hV, ← hV]`. Conclude with `FDRep.char_conj V x y`.
+-/
 theorem isClass_of_isChar {G : Type} [Group G] {χ : G → ℂ} (h : IsChar χ) : IsClass χ := by
   obtain ⟨V, hV⟩ := h
   intro x y
   rw [← hV, ← hV]
   exact FDRep.char_conj V x y
 
+/- English proof (translation)
+Take `⟨W, hW⟩` from `hα`. Take `⟨V, hV⟩` from `hβ`. Use `⟨Module.finrank ℂ (V ⟶ W), ?_⟩` and prove the remaining obligations. Rewrite using `[← FDRep.scalar_product_char_eq_finrank_equivariant]`. Unfold `ip`.
+
+Rewrite using `[Fintype.card_eq_nat_card]`. Simplify using `[hW, hV]`.
+-/
 theorem ip_nat {G : Type} [Group G] [Fintype G] {α β : G → ℂ} (hα : IsChar α) (hβ : IsChar β) :
     ∃ n : ℕ, ip α β = n := by
   obtain ⟨W, hW⟩ := hα
@@ -167,6 +227,11 @@ theorem ip_nat {G : Type} [Group G] [Fintype G] {α β : G → ℂ} (hα : IsCha
   rw [Fintype.card_eq_nat_card]
   simp [hW, hV]
 
+/- English proof (translation)
+Take `⟨V, hs, hV⟩` from `hα`. Use `haveI := hs`. Use `haveI : Invertible (Nat.card G : ℂ) := invertibleOfNonzero (Nat.cast_ne_zero.2 Nat.card_pos.ne')`. Use `FDRep.char_orthonormal V V` as an intermediate fact. Rewrite `this` using `[if_pos ⟨CategoryTheory.Iso.refl _⟩]`.
+
+Unfold `ip`. Rewrite using `[Fintype.card_eq_nat_card]`. Simplify `this` using `[hV]`.
+-/
 theorem ip_self {G : Type} [Group G] [Fintype G] {α : G → ℂ} (hα : IsIrr α) : ip α α = 1 := by
   obtain ⟨V, hs, hV⟩ := hα
   haveI := hs
@@ -177,6 +242,9 @@ theorem ip_self {G : Type} [Group G] [Fintype G] {α : G → ℂ} (hα : IsIrr �
   rw [Fintype.card_eq_nat_card]
   simpa [hV] using this
 
+/- English proof (translation)
+Take `⟨V, -, hV⟩` from `h`. Conclude with `⟨V, hV⟩`.
+-/
 theorem isChar_of_isIrr {G : Type} [Group G] {α : G → ℂ} (h : IsIrr α) : IsChar α := by
   obtain ⟨V, -, hV⟩ := h
   exact ⟨V, hV⟩
@@ -188,6 +256,29 @@ namespace GlobalTheory.LevelType
 open GlobalTheory.GLq GlobalTheory.GLq.StdRes Formalism.MainNotions.ArithmeticCylinders
 open scoped Classical
 
+/- English proof (translation)
+Introduce `p _ r a c θ ψ hr hψ hne`. Substitute `hr` using the available equality. Take `⟨L, hLirr, hL⟩` from `(HCChar.hc_isChar_and_res_decomp p (a + 1) c (a + 1 + c) rfl).2 ψ hψ`. Choose the witnesses or unpack the hypotheses as in `⟨q, hq, hqt⟩ : ∃ q ∈ L, stdTrace a θ q.1 ≠ 0 := by`. Assume the negation of the conclusion as `hcon`.
+
+Use `push_neg at hcon`. Apply `hne` to reduce the goal to its premises. Rewrite using `[stdTrace_eq]`. Establish `e1 : (∑ y : Gn p (a + 1), if StdBlock a y then (((θ (Matrix.GeneralLinearGroup.det y))⁻¹ : ℂˣ) : ℂ) * res (a + 1) c ψ y 1 else 0) = ∑ y : Gn p (a + 1), (L.map fun q => if StdBlock a y then (((θ (Matrix.GeneralLinearGroup.det y))⁻¹ : ℂˣ) : ℂ) * (q.1 y * q.2 1) else 0).sum`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hL]`. Distinguish the cases in `hy : StdBlock a y`. Simplify using `only [hy, if_true]`. Rewrite using `[List.sum_map_mul_left]`. Simplify using `[hy]`.
+
+Rewrite using `[e1, sum_list_comm, List.sum_eq_zero, mul_zero]`. Introduce `z hz`. Take `⟨q, hq, rfl⟩` from `List.mem_map.1 hz`. Use `hcon q hq` as an intermediate fact. Unfold `stdTrace at this`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Use `split_ifs`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using the standard rewrite rules. Use `_ = 0 := by rw [this, zero_mul]`. Use `⟨q.1, q.2, (hLirr q hq).1, (hLirr q hq).2, ?_, hqt⟩` and prove the remaining obligations. Rewrite using `[hc, FrobRecHC.hcT_adjoint p (a + 1) c (a + 1 + c) rfl ψ _ (isClass_of_isChar hψ)]`. Establish `e : ip (fun pr : Gn p (a + 1) × Gn p c => res (a + 1) c ψ pr.1 pr.2) (fun pr => q.1 pr.1 * q.2 pr.2) = (L.map fun q' => ip q'.1 q.1 * ip q'.2 q.2).sum`.
+
+Unfold `ip`. Rewrite using `[Fintype.card_prod, Nat.cast_mul, Fintype.sum_prod_type]`. Simplify using `only [hL, Prod.fst_inv, Prod.snd_inv]`. Establish `hs : ∀ (x : Gn p (a + 1)) (y : Gn p c), (L.map fun q' => q'.1 x * q'.2 y).sum * (q.1 x⁻¹ * q.2 y⁻¹) = (L.map fun q' => q'.1 x * q'.2 y * (q.1 x⁻¹ * q.2 y⁻¹)).sum` using `fun x y => by rw [List.sum_map_mul_right]`. Simplify using `only [hs]`.
+
+Rewrite using `[Finset.sum_congr rfl fun x _ => sum_list_comm L fun y q' => q'.1 x * q'.2 y * (q.1 x⁻¹ * q.2 y⁻¹), sum_list_comm, ← List.sum_map_mul_left]`. Use `congr 1`. Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `q' _`. Rewrite using `[mul_inv, mul_mul_mul_comm, Finset.sum_mul_sum, Finset.mul_sum, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Establish `hnat : ∀ z ∈ L.map (fun q' => ip q'.1 q.1 * ip q'.2 q.2), ∃ n : ℕ, z = n`. Introduce `z hz`. Take `⟨q', hq', rfl⟩` from `List.mem_map.1 hz`. Take `⟨m, hm⟩` from `ip_nat (isChar_of_isIrr (hLirr q' hq').1) (isChar_of_isIrr (hLirr q hq).1)`. Take `⟨k, hk⟩` from `ip_nat (isChar_of_isIrr (hLirr q' hq').2) (isChar_of_isIrr (hLirr q hq).2)`.
+
+Conclude with `⟨m * k, by rw [hm, hk]; push_cast; ring⟩`. Take `⟨n, hn⟩` from `(list_sum_nat _ hnat).2 _ (List.mem_map_of_mem hq) (by show ip q.1 q.1 * ip q.2 q.2 ≠ 0; rw [ip_self (hLirr q hq).1, ip_self (hLirr q hq).2]; norm_num)`. Rewrite using `[hn]`. Conclude with `Nat.succ_ne_zero n` after adjusting the coercions.
+-/
 theorem exists_irr_hc_of_stdTrace_ne_zero : ∀ (p : ℕ) [Fact p.Prime] (r a c : ℕ) (θ : (ZMod p)ˣ →* ℂˣ)
     (ψ : GlobalTheory.GLq.Gn p r → ℂ), r = a + 1 + c → GlobalTheory.GLq.IsChar ψ → stdTrace a θ ψ ≠ 0 →
     ∃ (α : GlobalTheory.GLq.Gn p (a + 1) → ℂ) (β : GlobalTheory.GLq.Gn p c → ℂ), GlobalTheory.GLq.IsIrr α ∧ GlobalTheory.GLq.IsIrr β ∧

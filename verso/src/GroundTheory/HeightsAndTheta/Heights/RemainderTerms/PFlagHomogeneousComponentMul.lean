@@ -7,6 +7,9 @@ namespace GroundTheory.Heights₂.Heights.RestTerms
 
 open MvPolynomial
 
+/- English proof (translation)
+Introduce `σ P G k n hP`. Conclude with `HomogeneousComponentMul.proof σ ℚ P G k n hP`.
+-/
 theorem FlagHomogeneousComponentMul.proof : FlagHomogeneousComponentMul.Statement := by
   intro σ P G k n hP
   exact HomogeneousComponentMul.proof σ ℚ P G k n hP

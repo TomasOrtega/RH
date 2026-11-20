@@ -72,11 +72,17 @@ def hc0 : HCParam R0 where
     · exact ⟨91, by simp [hcB]⟩
     · exact ⟨109, by simp [hcB]⟩
 
+/- English proof (translation)
+Establish `h6 : l < 6` using `by have := h; simp [R0] at this; omega`. Apply the tactic sequence `interval_cases l <;> simp [hc0, hcV] <;> norm_num`.
+-/
 theorem exampleWeight_cloud_gap_four (l : ℕ) (h : l + 1 < R0.k - 1) :
     hc0.v ⟨l, by omega⟩ - hc0.v ⟨l + 1, h⟩ = 4 * 1 := by
   have h6 : l < 6 := by have := h; simp [R0] at this; omega
   interval_cases l <;> simp [hc0, hcV] <;> norm_num
 
+/- English proof (translation)
+Establish `h6 : l < 6` using `by simpa [R0] using h`. Apply the tactic sequence `interval_cases l <;> simp [hc0, hcU, hcV] <;> norm_num`.
+-/
 theorem exampleWeight_middle_entries (l : ℕ) (h : l < R0.k - 2) :
     hc0.u ⟨l + 1, by omega⟩ = hc0.v ⟨l, by omega⟩ - 1 / 2 := by
   have h6 : l < 6 := by simpa [R0] using h
@@ -225,10 +231,16 @@ abbrev atTExample (Dst : ℝ) (hD : 0 < Dst) : ColumnsAtT R0 (emptyColumnChain T
 
 def dstarOf : ℝ := ((T : ℝ) * (2 : ℝ) ^ ((2 : ℝ) / 64)) ^ (64 : ℕ)
 
+/- English proof (translation)
+Establish `: (0 : ℝ) < T` using `by exact_mod_cast hT.out.pos`. Unfold `dstarOf`. Check the signs of the components of the expression.
+-/
 theorem dstarOf_pos : 0 < dstarOf T := by
   have : (0 : ℝ) < T := by exact_mod_cast hT.out.pos
   unfold dstarOf; positivity
 
+/- English proof (translation)
+Establish `hT0 : (0 : ℝ) ≤ T` using `by exact_mod_cast hT.out.pos.le`. Simplify using `only [ColumnsAtT.Tstar, ColumnsAtT.Xu, dstarOf, exampleRanks_f, exampleRanks_k, Nat.cast_one, div_one]`. Establish `h64 : ((8 : ℕ) : ℝ) * ((8 : ℕ) : ℝ) = ((64 : ℕ) : ℝ)` using `by norm_num`. Rewrite using `[h64, one_div, Real.pow_rpow_inv_natCast (by positivity) (by norm_num), mul_assoc, ← Real.rpow_add (by norm_num)]`. Evaluate the numerical expressions.
+-/
 theorem atTToy_Tstar_eq : (atTExample Tau T (dstarOf T) (dstarOf_pos T)).Tstar = T := by
   have hT0 : (0 : ℝ) ≤ T := by exact_mod_cast hT.out.pos.le
   simp only [ColumnsAtT.Tstar, ColumnsAtT.Xu, dstarOf, exampleRanks_f, exampleRanks_k, Nat.cast_one, div_one]
@@ -237,6 +249,11 @@ theorem atTToy_Tstar_eq : (atTExample Tau T (dstarOf T) (dstarOf_pos T)).Tstar =
     ← Real.rpow_add (by norm_num)]
   norm_num
 
+/- English proof (translation)
+Rewrite using `[atTToy_Tstar_eq]`. Establish `hT0 : (0 : ℝ) ≤ T` using `by exact_mod_cast hT.out.pos.le`. Use `⟨le_refl _, ?_⟩` and prove the remaining obligations. Use `show (T : ℝ) ≤ (1 + 1 / ((R0.f : ℝ) * R0.k)) * T`. Establish `: (1 : ℝ) ≤ 1 + 1 / ((R0.f : ℝ) * R0.k)` using `by simp [exampleRanks_f, exampleRanks_k]`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem exampleLevel_near_lower :
     (atTExample Tau T (dstarOf T) (dstarOf_pos T)).Tstar ≤
         ((atTExample Tau T (dstarOf T) (dstarOf_pos T)).T : ℝ) ∧
@@ -257,6 +274,9 @@ abbrev trivialPeriodMap : PeriodMap R0 (emptyColumnChain Tau) where
   lowerMap := 0
   period := 0
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem trivialPeriodMap_ptilCol (φ : (emptyColumnChain Tau).cls 0 → (emptyColumnChain Tau).Y 0 → ℂ) (F : Z0) :
     (trivialPeriodMap Tau).PtilCol φ F = 0 := rfl
 
@@ -268,6 +288,9 @@ instance (i : ℕ) : IsEmpty ((emptyColumnChain Tau).cls i) := inferInstanceAs (
 instance (Dst : ℝ) (hD : 0 < Dst) : Subsingleton (atTExample Tau T Dst hD).Mram :=
   ⟨fun _ _ => Subtype.ext (funext fun c => (IsEmpty.false c).elim)⟩
 
+/- English proof (translation)
+The claim follows from `Module.finrank_zero_of_subsingleton`.
+-/
 theorem atTExample_du (Dst : ℝ) (hD : 0 < Dst) : (atTExample Tau T Dst hD).du = 0 :=
   Module.finrank_zero_of_subsingleton
 
@@ -278,6 +301,9 @@ def toyZeroSpaceRefl : Z0 ≃ₗ[ℂ] Z0 := LinearEquiv.refl ℂ Z0
 
 def toyConstantOne (Tau : Type) : Tau → ℝ := fun _ => 1
 
+/- English proof (translation)
+The claim follows from `one_pos`.
+-/
 theorem toyConstantOne_pos (Tau : Type) (ρ : Tau) : 0 < toyConstantOne Tau ρ := one_pos
 
 abbrev zeroHLat (K : Type) [Field K] [NumberField K] [StarRing K] : HLat K where
@@ -291,6 +317,9 @@ variable (K : Type) [Field K] [NumberField K] [StarRing K]
 
 instance : Subsingleton (zeroHLat K).V := inferInstanceAs (Subsingleton (Fin 0 → K))
 
+/- English proof (translation)
+Use `⟨fun _ => ?_, ?_, Subsingleton.elim _ _⟩` and prove the remaining obligations. Rewrite using `[show (zeroHLat K).X _ = 1 from rfl, Matrix.det_one]`. Conclude with `isUnit_one`. Rewrite using `[show (zeroHLat K).L = ⊤ from rfl, Subsingleton.elim (⊤ : Submodule (𝓞 K) (zeroHLat K).V) ⊥]`. Conclude with `Submodule.fg_bot`.
+-/
 theorem zeroHLat_good : (zeroHLat K).Good := by
   refine ⟨fun _ => ?_, ?_, Subsingleton.elim _ _⟩
   · rw [show (zeroHLat K).X _ = 1 from rfl, Matrix.det_one]
@@ -298,6 +327,9 @@ theorem zeroHLat_good : (zeroHLat K).Good := by
   · rw [show (zeroHLat K).L = ⊤ from rfl, Subsingleton.elim (⊤ : Submodule (𝓞 K) (zeroHLat K).V) ⊥]
     exact Submodule.fg_bot
 
+/- English proof (translation)
+Establish `: Subsingleton (Submodule.span K ((zeroHLat K).L : Set (zeroHLat K).V))` using `⟨fun x y => Subtype.ext (Subsingleton.elim _ _)⟩`. Conclude with `Module.finrank_zero_of_subsingleton`.
+-/
 theorem zeroHLat_rank : (zeroHLat K).rank = 0 := by
   have : Subsingleton (Submodule.span K ((zeroHLat K).L : Set (zeroHLat K).V)) :=
     ⟨fun x y => Subtype.ext (Subsingleton.elim _ _)⟩
@@ -317,21 +349,36 @@ abbrev toyZeroLatticeDatum : DivData K Unit where
   delP := 0
   delP_le_one := zero_le_one
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨zeroHLat_good K, fun _ => zeroHLat_good K⟩`.
+-/
 theorem toyZeroLatticeDatum_good : (toyZeroLatticeDatum K).RR.Good ∧ ∀ u, ((toyZeroLatticeDatum K).Nu u).Good :=
   ⟨zeroHLat_good K, fun _ => zeroHLat_good K⟩
 
+/- English proof (translation)
+The claim follows from `zeroHLat_rank K`.
+-/
 theorem toyZeroLatticeDatum_Drows_eq_zero : (toyZeroLatticeDatum K).Drows = 0 := zeroHLat_rank K
 
+/- English proof (translation)
+The claim follows from `zeroHLat_rank K`.
+-/
 theorem toyZeroLatticeDatum_Nu_rank_eq_zero (u : Unit) : ((toyZeroLatticeDatum K).Nu u).rank = 0 := zeroHLat_rank K
 
 def jZero (embLL : K →+* ℂ) : (zeroHLat K).V →ₛₗ[embLL] Z0 := 0
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by have : IsEmpty (zeroHLat K).ι := inferInstanceAs (IsEmpty (Fin 0)); exact linearIndependent_empty_type, Subsingleton.elim _ _⟩`.
+-/
 theorem jZero_basis (embLL : K →+* ℂ) :
     LinearIndependent ℂ (fun i => jZero K embLL ((zeroHLat K).b i)) ∧
       Submodule.span ℂ (Set.range (fun i => jZero K embLL ((zeroHLat K).b i))) = ⊤ :=
   ⟨by have : IsEmpty (zeroHLat K).ι := inferInstanceAs (IsEmpty (Fin 0)); exact linearIndependent_empty_type,
     Subsingleton.elim _ _⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ => by simp, fun _ _ => by simp⟩`.
+-/
 theorem zero_isLinear {V : Type} [AddCommGroup V] [Module ℂ V] :
     IsLinearMap ℂ (fun _ : V => (0 : ℂ)) :=
   ⟨fun _ _ => by simp, fun _ _ => by simp⟩

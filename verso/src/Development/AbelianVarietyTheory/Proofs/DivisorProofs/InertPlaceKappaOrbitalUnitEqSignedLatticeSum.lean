@@ -22,6 +22,19 @@ noncomputable section
 namespace GlobalTheory.InertUnitOrb
 open GlobalTheory.UnitLemma
 
+/- English proof (translation)
+Establish `hcast : ((∑ᶠ b, G b : ℚ) : ℂ) = ∑ᶠ b, (G b : ℂ)`. Distinguish the cases in `hfin : (Function.support G).Finite`. Simplify using `using (Rat.castHom ℂ).toAddMonoidHom.map_finsum hfin`. Rewrite using `[finsum_of_infinite_support hfin, finsum_of_infinite_support]`. Simplify using the standard rewrite rules.
+
+Establish `: Function.support (fun b => (G b : ℂ)) = Function.support G`. Use extensionality with `b`. Simplify using the standard rewrite rules. Rewrite using `[this]` and apply the resulting hypothesis. Establish `hP : ∀ a, F a ≠ 0 → P a` using `fun a ha => by by_contra h; exact ha (hF0 a h)`.
+
+Rewrite using `[hcast, ← finsum_mem_support F, ← finsum_mem_support (fun b => (G b : ℂ))]`. Apply `finsum_mem_eq_of_bijOn Φ` to reduce the goal to its premises. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a ha`. Simplify using `only [Function.mem_support] at ha ⊢`.
+
+Rewrite `ha` using `[hF a (hP a ha)]`. Then use the resulting hypothesis. Introduce `a ha a' ha' h`. Conclude with `hinj a a' (hP a ha) (hP a' ha') h`. Introduce `b hb`. Simplify using `only [Function.mem_support, ne_eq, Rat.cast_eq_zero] at hb`.
+
+Take `⟨a, ha, rfl⟩` from `hsurj b hb`. Use `⟨a, ?_, rfl⟩` and prove the remaining obligations. Simplify using `only [Function.mem_support, hF a ha]`. Conclude with `hb` after adjusting the coercions. Introduce `a ha`.
+
+Conclude with `hF a (hP a ha)`.
+-/
 theorem finsum_match {α β : Type*} (F : α → ℂ) (G : β → ℚ) (Φ : α → β) (P : α → Prop)
     (hF0 : ∀ a, ¬ P a → F a = 0) (hF : ∀ a, P a → F a = G (Φ a))
     (hinj : ∀ a a', P a → P a' → Φ a = Φ a' → a = a') (hsurj : ∀ b, G b ≠ 0 → ∃ a, P a ∧ Φ a = b) :
@@ -57,6 +70,9 @@ end GlobalTheory.InertUnitOrb
 namespace GlobalTheory.InertUnitOrb
 open GlobalTheory.UnitLemma
 
+/- English proof (translation)
+Unfold `UL`. Rewrite using `[if_neg hw]`. Express the relevant statement in the definitionally equal form `cT (cj w) g.val * 1 * g.val = 1 ↔ _`. Rewrite using `[Matrix.mul_one]`. Both sides reduce to the same expression.
+-/
 theorem ul_mem_iff {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} {w : Pl E} (hw : ¬ IsSplitAt w)
     (g : GLw n w) : g ∈ UL n w ↔ (g.val.map (cj w))ᵀ * g.val = 1 := by
   unfold UL
@@ -65,6 +81,63 @@ theorem ul_mem_iff {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} 
   rw [Matrix.mul_one]
   rfl
 
+/- English proof (translation)
+Introduce `E _ _ _ hU w hw K e he hint hval hq n Q₁ Q₂ hm₁ hm₂ hdeg hsep hc₁ hc₂ B₁ B₂ hu₁ hu₂ hP₁ hP₂`. Establish `hBP : (B₁.prod B₂).P = (Q₁ * Q₂).map e.symm.toRingHom`. Rewrite using `[GlobalTheory.UnitLemma.Orbit.prod_P, hP₁, hP₂, Polynomial.map_mul]`. Establish `hBsep : (B₁.prod B₂).P.Separable` using `by rw [hBP]; exact hsep.map`. Establish `hBsep' : (B₁.P * B₂.P).Separable` using `by rw [← GlobalTheory.UnitLemma.Orbit.prod_P]; exact hBsep`.
+
+Establish `hBu : (B₁.prod B₂).g * (B₁.prod B₂).σ (B₁.prod B₂).g = 1` using `Prod.ext hu₁ hu₂`. Establish `hdim : Module.finrank K.E (B₁.prod B₂).A = n`. Rewrite using `[← LinearMap.charpoly_natDegree (LinearMap.mulLeft K.E (B₁.prod B₂).g)]`. Express the relevant statement in the definitionally equal form `(B₁.prod B₂).P.natDegree = n`. Rewrite using `[hBP, natDegree_map_eq_of_injective e.symm.injective, hm₁.natDegree_mul hm₂, hdeg]`.
+
+Use `set B := B₁.prod B₂ with hB`. Establish `hcK : ∀ y, K.c (e.symm y) = e.symm (cj w y)` using `fun y => by`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[he, RingEquiv.apply_symm_apply, RingEquiv.apply_symm_apply]`. Set `tr : GLw n w → Matrix (Fin n) (Fin n) K.E` to `fun γ => γ.val.map e.symm`.
+
+Establish `trmul : ∀ a b : GLw n w, tr (a * b) = tr a * tr b` using `fun a b => by`. Use extensionality with `i j`. Simplify using `[tr, Matrix.mul_apply, map_sum]`. Establish `trinj : ∀ a b : GLw n w, tr a = tr b → a = b` using `fun a b h => Units.ext (Matrix.map_injective e.symm.injective h)`. Establish `trU : ∀ γ : UL n w, ((tr γ.1).map K.c)ᵀ * tr γ.1 = 1` using `fun γ => by`.
+
+Establish `h` using `(ul_mem_iff hw γ.1).1 γ.2`. Establish `h2 : ((tr γ.1).map K.c)ᵀ = ((γ.1.val.map (cj w))ᵀ).map e.symm`. Use extensionality with `i j`. Simplify using `[tr, hcK]`. Rewrite using `[h2]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use extensionality with `i j`. Simplify using `[tr, Matrix.mul_apply, map_sum]`. Use `_ = 1 := by rw [h]; exact Matrix.map_one _ (map_zero _) (map_one _)`. Establish `trcp : ∀ γ : GLw n w, (tr γ).charpoly = γ.val.charpoly.map e.symm.toRingHom` using `fun γ => Matrix.charpoly_map γ.val e.symm.toRingHom`.
+
+Establish `pull : ∀ u : Matrix (Fin n) (Fin n) K.E, (u.map K.c)ᵀ * u = 1 → ∃ g : UL n w, tr g.1 = u`. Introduce `u hu`. Establish `h1 : ((u.map e).map (cj w))ᵀ * u.map e = 1`. Establish `h2 : ((u.map e).map (cj w))ᵀ = ((u.map K.c)ᵀ).map e`. Use extensionality with `i j`.
+
+Simplify using `[he]`. Establish `h3` using `congrArg (fun M => M.map e) hu`. Simplify using `only [Matrix.map_one _ (map_zero e) (map_one e)] at h3`. Rewrite using `[h2, ← h3]`. Use extensionality with `i j`.
+
+Simplify using `[Matrix.mul_apply, map_sum]`. Set `g : GLw n w` to `⟨u.map e, ((u.map e).map (cj w))ᵀ, mul_eq_one_comm.1 h1, h1⟩`. Use `⟨⟨g, (ul_mem_iff hw g).2 h1⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `[tr, g]`.
+
+Establish `hmod : ∀ γ : UL n w, γ.1.val.charpoly = Q₁ * Q₂ → ∃ (x : B.Aˣ) (ψ : B.A ≃ₗ[K.E] (Fin n → K.E)), IsModel B (tr γ.1) x ψ` using `fun γ h => GlobalTheory.T.exists_isModel_of_unitary_charpoly_eq K B n (tr γ.1) (trU γ) hBu hBsep (by rw [trcp, h, hBP])`. Establish `clEq : Equivalence (fun x y : {x : B.Aˣ // B.σ (x : B.A) = x} => ∃ u : B.Aˣ, (y.1 : B.A) = x.1 * (u * B.σ (u : B.A)))`. Use `⟨fun x => ⟨1, by simp⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `x y ⟨u, hu⟩`. Use `⟨u⁻¹, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : ((u⁻¹ : B.Aˣ) : B.A) * (u : B.A) = 1` using `Units.inv_mul u`. Establish `h2 : B.σ ((u⁻¹ : B.Aˣ) : B.A) * B.σ (u : B.A) = 1` using `by rw [← map_mul, h1, map_one]`. Rewrite using `[hu]`. Take the linear combination `(-(x.1 : B.A)) * B.σ ((u⁻¹ : B.Aˣ) : B.A) * B.σ (u : B.A) * h1 + (-(x.1 : B.A)) * h2`. Introduce and unpack `x y z ⟨u, hu⟩ ⟨v, hv⟩`.
+
+Use `⟨u * v, ?_⟩` and prove the remaining obligations. Rewrite using `[hv, hu, Units.val_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `twEq : Equivalence (fun x y : UL n w => ∃ g, y = g⁻¹ * x * (MonoidHom.id (UL n w)) g)`. Use `⟨fun x => ⟨1, by simp⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `x y ⟨g, rfl⟩`. Conclude with `⟨g⁻¹, by simp [mul_assoc]⟩`. Introduce and unpack `x y z ⟨g, rfl⟩ ⟨h, rfl⟩`. Conclude with `⟨g * h, by simp [mul_assoc]⟩`. Set `Fv : {x : B.Aˣ // B.σ (x : B.A) = x} → ℚ` to `fun x => K.eta (B₁.gramDet (x.1 : B.A).1) * B.N (x.1 : B.A)`.
+
+Establish `Fv_resp : ∀ a b : {x : B.Aˣ // B.σ (x : B.A) = x}, (∃ u : B.Aˣ, (b.1 : B.A) = a.1 * (u * B.σ (u : B.A))) → Fv a = Fv b`. Introduce and unpack `a b ⟨u, hu⟩`. Establish `e1` using `(GlobalTheory.T.latticeCount_and_gramDetSign_norm_class K B (a.1 : B.A) u).1`. Establish `e2` using `(GlobalTheory.T.latticeCount_and_gramDetSign_norm_class K B₁ (a.1 : B.A).1 (Units.map (MonoidHom.fst B₁.A B₂.A) u)).2`. Simplify using `only [Fv, hu]`.
+
+Conclude with `(congrArg₂ (· * ·) e2 e1).symm`. Establish `Fv_out : ∀ a, Fv (Quot.out (Quot.mk _ a : B.Cl)) = Fv a` using `fun a => Fv_resp _ _ (clEq.eqvGen_iff.1 (Quot.eqvGen_exact (Quot.out_eq (Quot.mk _ a : B.Cl))))`. Set `P : TwCl (MonoidHom.id (UL n w)) → Prop` to `fun c => c.rep.1.val.charpoly = Q₁ * Q₂`. Set `Φ : TwCl (MonoidHom.id (UL n w)) → B.Cl` to `fun c => if h : P c then Quot.mk _ ⟨(hmod c.rep h).choose, (hmod c.rep h).choose_spec.choose_spec.1⟩ else Quot.mk _ ⟨1, by simp⟩`. Unfold `kapOrb clSum InvAlg.kapSum`.
+
+Use `finsum_match _ _ Φ P ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `c hc`. Conclude with `if_neg hc`. Introduce `c hc`. Establish `hc' : c.rep ∈ {γ : UL n w | γ.1.val.charpoly = Q₁ * Q₂}` using `hc`.
+
+Rewrite using `[if_pos hc']`. Take `⟨ψ, hψ⟩` from `(hmod c.rep hc).choose_spec`. Establish `hΦ : Φ c = Quot.mk _ ⟨(hmod c.rep hc).choose, hψ.1⟩` using `dif_pos hc`. Rewrite using `[hΦ]`. Express the relevant statement in the definitionally equal form `_ = ((Fv (Quot.out (Quot.mk _ _ : B.Cl)) : ℚ) : ℂ)`.
+
+Rewrite using `[Fv_out]`. Use `beta_reduce`. Rewrite using `[GlobalTheory.T.hermitian_lattice_local_unitary_twist E hU w hw K e he hval n Q₁ B₁ B₂ hBsep' hP₁ c.rep.1 _ ψ hψ, GlobalTheory.T.inert_orbitalIntegral_unit_eq_lattice_count E hU w hw K e he hint n B hBsep c.rep _ ψ hψ]`. Simplify using `only [Fv]`. Use `push_cast`.
+
+Both sides reduce to the same expression. Introduce `c c' hc hc' h`. Take `⟨ψ, hψ⟩` from `(hmod c.rep hc).choose_spec`. Take `⟨ψ', hψ'⟩` from `(hmod c'.rep hc').choose_spec`. Establish `hΦ : Φ c = Quot.mk _ ⟨(hmod c.rep hc).choose, hψ.1⟩` using `dif_pos hc`.
+
+Establish `hΦ' : Φ c' = Quot.mk _ ⟨(hmod c'.rep hc').choose, hψ'.1⟩` using `dif_pos hc'`. Rewrite `h` using `[hΦ, hΦ']`. Take `⟨v, hv⟩` from `clEq.eqvGen_iff.1 (Quot.eqvGen_exact h)`. Take `⟨u, hu, hγu⟩` from `GlobalTheory.T.hermitianModels_conj_unitary_of_norm_class K B n _ _ _ _ v ψ ψ' hψ hψ' hv`. Take `⟨g, rfl⟩` from `pull u hu`.
+
+Establish `hcomm : c.rep * g = g * c'.rep`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `trinj` to reduce the goal to its premises. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_mul, trmul, trmul]`. Conclude with `hγu`.
+
+Rewrite using `[← Quot.out_eq c, ← Quot.out_eq c']`. Use `Quot.sound ⟨g, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `c'.rep = g⁻¹ * c.rep * g`. Rewrite using `[mul_assoc, hcomm, ← mul_assoc, inv_mul_cancel, one_mul]`. Introduce `k hk set a := Quot.out k with ha`.
+
+Establish `hk' : Fv a ≠ 0` using `hk`. Establish `hN : B.N (a.1 : B.A) ≠ 0` using `(mul_ne_zero_iff.1 hk').2`. Take `⟨γm, ψ, hψ⟩` from `GlobalTheory.T.exists_hermitianModel_of_norm_ne_zero K B n a.1 hdim a.2 hN`. Take `⟨hcpm, hunm⟩` from `GlobalTheory.T.hermitianModel_charpoly_eq_and_unitary K B n γm a.1 ψ hψ`. Take `⟨γ, hγ⟩` from `pull γm (hunm hBu)`.
+
+Establish `hcpγ : γ.1.val.charpoly = Q₁ * Q₂`. Apply `Polynomial.map_injective e.symm.toRingHom e.symm.injective` to reduce the goal to its premises. Rewrite using `[← trcp, hγ, hcpm, hBP]`. Set `c : TwCl (MonoidHom.id (UL n w))` to `Quot.mk _ γ`. Take `⟨g, hg⟩` from `twEq.eqvGen_iff.1 (Quot.eqvGen_exact (Quot.out_eq c : Quot.mk _ (Quot.out c) = Quot.mk _ γ))`.
+
+Simplify using `only [MonoidHom.id_apply] at hg`. Establish `hcr : c.rep = g * γ * g⁻¹`. Express the relevant statement in the definitionally equal form `Quot.out c = g * γ * g⁻¹`. Rewrite using `[hg]`. Use `group`.
+
+Establish `hPc : P c`. Express the relevant statement in the definitionally equal form `c.rep.1.val.charpoly = Q₁ * Q₂`. Rewrite using `[hcr]`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, Units.val_mul, Matrix.coe_units_inv]`. Rewrite using `[← hcpγ]`.
+
+Conclude with `Matrix.charpoly_units_conj (g.1) γ.1.val`. Use `⟨c, hPc, ?_⟩` and prove the remaining obligations. Take `⟨ψc, hψc⟩` from `(hmod c.rep hPc).choose_spec`. Establish `hΦ : Φ c = Quot.mk _ ⟨(hmod c.rep hPc).choose, hψc.1⟩` using `dif_pos hPc`. Rewrite using `[hΦ]`.
+
+Establish `hgu : γ * g⁻¹ = g⁻¹ * c.rep` using `by rw [hcr]; group`. Take `⟨v, hv⟩` from `GlobalTheory.T.exists_norm_mul_of_hermitianModel_unitary_conj K B n γm (tr c.rep.1) (tr (g⁻¹).1) a.1 _ ψ ψc hψ hψc (trU g⁻¹) (by rw [← hγ, ← trmul, ← trmul, ← Subgroup.coe_mul, ← Subgroup.coe_mul, hgu]) hBsep`. Rewrite using `[← Quot.out_eq k]`. Conclude with `(Quot.sound ⟨v, hv⟩).symm`.
+-/
 theorem kapOrb_unit_eq_kapSum : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (w : Pl E), ¬ IsSplitAt w → ∀ (K : GlobalTheory.UnitLemma.UQ) (e : K.E ≃+* w.adicCompletion E), (∀ x, e (K.c x) = cj w (e x)) → (∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e x) ≤ 1) → (∀ x, GlobalTheory.UnitLemma.val K.O x = ordL (e x)) → qV E w = K.q ^ 2 → ∀ (n : ℕ) (Q₁ Q₂ : (w.adicCompletion E)[X]), Q₁.Monic → Q₂.Monic → Q₁.natDegree + Q₂.natDegree = n → (Q₁ * Q₂).Separable → IsCsr w Q₁ → IsCsr w Q₂ → ∀ B₁ B₂ : GlobalTheory.UnitLemma.InvAlg K, B₁.g * B₁.σ B₁.g = 1 → B₂.g * B₂.σ B₂.g = 1 → B₁.P = Q₁.map e.symm.toRingHom → B₂.P = Q₂.map e.symm.toRingHom → kapOrb n w Q₁ Q₂ ((KL n w : Set (UL n w)).indicator 1) = (B₁.kapSum B₂ : ℂ) := by
   intro E _ _ _ hU w hw K e he hint hval hq n Q₁ Q₂ hm₁ hm₂ hdeg hsep hc₁ hc₂ B₁ B₂ hu₁ hu₂ hP₁ hP₂
   have hBP : (B₁.prod B₂).P = (Q₁ * Q₂).map e.symm.toRingHom := by

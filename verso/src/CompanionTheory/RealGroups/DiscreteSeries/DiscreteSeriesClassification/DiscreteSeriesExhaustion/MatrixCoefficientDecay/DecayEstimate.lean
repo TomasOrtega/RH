@@ -5,6 +5,9 @@ import CompanionTheory.RealGroups.DiscreteSeries.DiscreteSeriesClassification.Di
 
 namespace CompanionTheory.RgExh.Dec
 
+/- English proof (translation)
+The claim follows from `decay_of N.S.exhaustion_start J.exhaustion_labels L.backward_of_line_formula`.
+-/
 theorem decay_estimate : CompanionTheory.RgExh.StepChar → CompanionTheory.RgExh.Decay :=
   decay_of N.S.exhaustion_start J.exhaustion_labels L.backward_of_line_formula
 

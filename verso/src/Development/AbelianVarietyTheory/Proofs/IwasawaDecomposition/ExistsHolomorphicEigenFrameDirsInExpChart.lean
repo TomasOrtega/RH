@@ -22,6 +22,19 @@ namespace GlobalTheory.LieBase.ChartFrames
 
 open GlobalTheory GlobalTheory.LieMet GlobalTheory.Cartier in
 
+/- English proof (translation)
+Take `⟨U, hU, φ, F, hzU, hφ, -⟩` from `EigSpread.exists_stable_eigFrame E H Dw l Xo c O β Z (y₀.1 (IsLocalRing.closedPoint ℂ))`. Set `V : (gen Z).affineOpens` to `⟨U, hU⟩`. Establish `hφ' : LogKS.chart V ≫ genStr Z = spMap φ` using `hφ`. Establish `hy₀V : y₀ ∈ ptsIn (genStr Z) σ V.1` using `CxPts.mem_ptsIn.2 hzU`. Establish `hov : ∀ (y : CxPts (genStr Z) σ) (hy : y ∈ ptsIn (genStr Z) σ V.1), σ = (evHom hy).comp φ` using `fun y hy => EigLoc.spMap_inj (y.2.symm.trans (by`.
+
+Rewrite using `[← ReciprocityTheory.ChartRestriction.G.PullbackSections.spMap_comp_spMap, ← hφ', ← Category.assoc, spMap_evHom hy]))`. Establish `hx : ∀ (y : CxPts (genStr Z) σ) (hy : y ∈ ptsIn (genStr Z) σ V.1), y.1 ≫ genι Z = spMap (evHom hy) ≫ LogKS.chart V ≫ genι Z` using `fun y hy => by`. Rewrite using `[← Category.assoc, spMap_evHom hy]`. Establish `hfr : ∀ (y : CxPts (genStr Z) σ) (hy : y ∈ ptsIn (genStr Z) σ V.1), ∃ f : EigFrame Z σ (y.1 ≫ genι Z), EigFrame.IsMap (F : EigFrame Z φ (LogKS.chart V ≫ genι Z)) (evHom hy) f` using `fun y hy => EigFrame.exists_isMap F (evHom hy) (hov y hy) (hx y hy)`. Use `choose fr hfr using hfr`.
+
+Establish `h0 : e.symm (e y₀) ∈ ptsIn (genStr Z) σ V.1` using `by rw [e.left_inv hy₀]; exact hy₀V`. Set `a : (Fin n → ℂ) → CxFr Z σ` to `fun b => if h : e.symm b ∈ ptsIn (genStr Z) σ V.1 then ⟨e.symm b, fr _ h⟩ else ⟨e.symm (e y₀), fr _ h0⟩`. Establish `ha : ∀ b (h : e.symm b ∈ ptsIn (genStr Z) σ V.1), a b = ⟨e.symm b, fr _ h⟩` using `fun b h => dif_pos h`. Set `B : Set (Fin n → ℂ)` to `e.target ∩ e.symm ⁻¹' ptsIn (genStr Z) σ V.1`. Establish `hB : IsOpen B` using `e.continuousOn_symm.isOpen_inter_preimage e.open_target (isOpen_ptsIn _)`.
+
+Establish `hBt : B ⊆ e.target` using `Set.inter_subset_left`. Establish `hyB : IsHolTo B (fun b => (e.symm b).1)` using `LocLift.isHolTo_mono hex.2.2.1 hB hBt`. Set `ev : (Fin n → ℂ) → (Γ(gen Z, V.1) →+* ℂ)` to `fun b => if h : e.symm b ∈ ptsIn (genStr Z) σ V.1 then evHom h else evHom h0`. Establish `hev : ∀ b (h : e.symm b ∈ ptsIn (genStr Z) σ V.1), ev b = evHom h` using `fun b h => dif_pos h`. Establish `: IsOpenImmersion (LogKS.chart V)` using `IsAffineOpen.isOpenImmersion_fromSpec V.2`.
+
+Establish `hd : ∀ r : Γ(gen Z, V.1), DifferentiableOn ℂ (fun b => ev b r) B` using `fun r b hb => (HolLieFrame.differentiableAt_ev hyB (LogKS.chart V) ev (fun b' hb' => by rw [hev b' hb'.2]; exact (spMap_evHom hb'.2).symm) hb r).differentiableWithinAt`. Use `⟨V, φ, F, B, a, hφ', hB, ⟨e.map_source hy₀, h0⟩, hBt, ⟨?_, fun ρ i => ?_⟩, fun b hb => ?_⟩` and prove the remaining obligations. Conclude with `LocLift.isHolTo_congr hyB fun b hb => by rw [ha b hb.2]`. Conclude with `HolFrames.holTan_dualMap hB (F.v ρ i) (fun b hb => evHom hb.2) (fun r => ⟨fun b => ev b r, hd r, fun b hb => (RingHom.congr_fun (hev b hb.2) r).symm⟩) (fun b hb => by rw [ha b hb.2]; exact hfr _ hb.2 ρ i)`. Rewrite using `[ha b hb.2]`.
+
+Conclude with `⟨rfl, hb.2, hfr _ hb.2⟩`.
+-/
 theorem exists_frameFam {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} (Z : Model Xo c β) (σ : c.F →+* ℂ)
     {n g : ℕ} {e : OpenPartialHomeomorph (CxPts (genStr Z) σ) (Fin n → ℂ)} {ex : ExpMaps Z σ g} (hex : IsExpChart e ex)
@@ -70,6 +83,13 @@ theorem exists_frameFam {E : Type} [Field E] [NumberField E] [IsCMField E] {H : 
 
 open GlobalTheory.Cartier in
 
+/- English proof (translation)
+Take `⟨U, B, hU, hB, hS⟩` from `S.loc p`. Establish `hP` using `(hS _ hU A).1 hA`. Establish `hreg : ∀ g : X.Fn, RegAt p g → ∃ W : X.X.Opens, p ∈ W ∧ ∀ p' ∈ W, RegAt p' g`. Introduce `g hg`. Take `⟨W, hW, a, rfl⟩` from `hg.exists_fnOf`.
+
+Conclude with `⟨W, hW, fun p' hp' => regAt_fnOf hp' _ a⟩`. Use `choose W hW hW' using fun (τ : κ) (i j : Fin (m τ)) => hreg _ (mem_O_ratOf.1 ((hP τ).1 i j))`. Use `choose W₂ hW₂ hW₂' using fun τ : κ => hreg _ (mem_O_ratOf.1 (hP τ).2.2.1)`. Set `G : Set X.X` to `((show X.X.Opens from U) : Set X.X) ∩ (⋂ τ, ⋂ i, ⋂ j, (W τ i j : Set X.X)) ∩ ⋂ τ, (W₂ τ : Set X.X)`. Establish `hG : IsOpen G` using `(U.isOpen.inter (isOpen_iInter_of_finite fun τ => isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => (W τ i j).isOpen)).inter (isOpen_iInter_of_finite fun τ => (W₂ τ).isOpen)`.
+
+Use `⟨⟨G, hG⟩, ⟨⟨hU, Set.mem_iInter.2 fun τ => Set.mem_iInter.2 fun i => Set.mem_iInter.2 fun j => hW τ i j⟩, Set.mem_iInter.2 fun τ => hW₂ τ⟩, fun p' hp' => ?_⟩` and prove the remaining obligations. Take `⟨⟨h1, h2⟩, h3⟩` from `hp'`. Conclude with `(hS _ h1 A).2 fun τ => ⟨fun i j => mem_O_ratOf.2 (hW' τ i j p' (Set.mem_iInter.1 (Set.mem_iInter.1 (Set.mem_iInter.1 h2 τ) i) j)), (hP τ).2.1, mem_O_ratOf.2 (hW₂' τ p' (Set.mem_iInter.1 h3 τ)), fun i j hi => absurd hi (by simp)⟩`.
+-/
 theorem exists_open_mem {F : Type} [Field F] (X : Var F) {κ : Type} [Finite κ] {m : κ → ℕ} (S : Fr (ratOf X) m 0)
     {p : X.X} {A : Mat m X.Fn} (hA : A ∈ S.S p) : ∃ G : X.X.Opens, p ∈ G ∧ ∀ p' ∈ G, A ∈ S.S p' := by
   obtain ⟨U, B, hU, hB, hS⟩ := S.loc p
@@ -90,6 +110,9 @@ theorem exists_open_mem {F : Type} [Field F] (X : Var F) {κ : Type} [Finite κ]
       (Set.mem_iInter.1 (Set.mem_iInter.1 (Set.mem_iInter.1 h2 τ) i) j)), (hP τ).2.1,
     mem_O_ratOf.2 (hW₂' τ p' (Set.mem_iInter.1 h3 τ)), fun i j hi => absurd hi (by simp)⟩
 
+/- English proof (translation)
+Establish `hle : W ≤ j ⁻¹ᵁ j ''ᵁ W` using `(j.preimage_image_eq W).ge`. Rewrite using `[← GlobalTheory.Points.valR_appLE w j hle hw, ← CommRingCat.comp_apply, Scheme.Hom.appIso_inv_appLE]`. Conclude with `GlobalTheory.Points.valR_res w le_rfl hw g`.
+-/
 theorem valR_appIso_inv {Y X : Scheme.{0}} (j : Y ⟶ X) [IsOpenImmersion j] (W : Y.Opens) (g : Γ(Y, W))
     (w : Sp ℂ ⟶ Y) (hw : ⊤ ≤ w ⁻¹ᵁ W) :
     valR (w ≫ j) (j ''ᵁ W) ((j.appIso W).inv.hom g) = valR w W g := by
@@ -103,6 +126,9 @@ namespace GlobalTheory.LieBase.ChartFrames
 
 open GlobalTheory GlobalTheory.LieMet GlobalTheory.Cartier
 
+/- English proof (translation)
+Rewrite using `[CxPts.mem_ptsIn, CxPts.mem_ptsIn]`. Use `show j (z.1 (IsLocalRing.closedPoint ℂ)) ∈ j ''ᵁ W ↔ _`. Conclude with `⟨fun ⟨x, hx, hxe⟩ => (j.isOpenEmbedding.injective hxe) ▸ hx, fun h => ⟨_, h, rfl⟩⟩`.
+-/
 theorem cxOf_mem_image {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β} {F : Type} [Field F]
     (e : F ≃+* c.F) (σ : c.F →+* ℂ) {X : Var F} {j : X.X ⟶ gen Z} [IsOpenImmersion j]
@@ -116,6 +142,43 @@ end GlobalTheory.LieBase.ChartFrames
 
 open GlobalTheory GlobalTheory.LieMet GlobalTheory.Cartier GlobalTheory.LieBase.ChartFrames in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Y T F _ e σ C X j f f₀ Eb A₀ hj hL y n g ch₀ ex hex hys hy0`. Take `⟨hoi, -, hT⟩` from `hL`. Take `⟨A, hA⟩` from `Eb.nonempty (GlobalTheory.Cartier.under y)`. Take `⟨V, φ, Φ, B, a, hφ, hB, h0B, hBt, ha, hab⟩` from `exists_frameFam T.Z σ hex (cxOf e σ hj y) hys`. Rewrite `h0B` using `[hy0]`.
+
+Establish `hsy : ch₀.symm 0 = cxOf e σ hj y` using `by rw [← hy0]; exact ch₀.left_inv hys`. Establish `hyV : cxOf e σ hj y ∈ ptsIn (genStr T.Z) σ V.1`. Take `⟨h1, hy, -⟩` from `hab 0 h0B`. Rewrite `hy` using `[h1, hsy]`. Then use the resulting hypothesis. Take `⟨M, hM⟩` from `GlobalTheory.T.frame_coordinates_eq_rational_matrix_values_chart E H Dw l Xo c O β T.Z σ F e X j f₀ Eb A₀ hj hoi hT V φ Φ hφ A`.
+
+Establish `hMy` using `hM y hA hyV`. Use `choose Ws hWs s hs using fun τ p q => (hMy.1 τ p q).exists_fnOf`. Take `⟨G, hG, hGA⟩` from `exists_open_mem X Eb hA`. Establish `hoi' : IsOpenImmersion j` using `hoi`. Set `sv : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Fin (Dw.mult τ) → (Fin n → ℂ) → ℂ` to `fun τ p q u => valAt' (ch₀.symm u).1 (j ''ᵁ Ws τ p q) ((j.appIso (Ws τ p q)).inv.hom (s τ p q))`.
+
+Set `Ω : Set (Fin n → ℂ)` to `B ∩ (ch₀.target ∩ ch₀.symm ⁻¹' (ptsIn (genStr T.Z) σ (j ''ᵁ G) ∩ ⋂ τ, ⋂ p, ⋂ q, ptsIn (genStr T.Z) σ (j ''ᵁ Ws τ p q)))`. Establish `hΩ : IsOpen Ω` using `hB.inter (ch₀.continuousOn_symm.isOpen_inter_preimage ch₀.open_target ((isOpen_ptsIn _).inter (isOpen_iInter_of_finite fun τ => isOpen_iInter_of_finite fun p => isOpen_iInter_of_finite fun q => isOpen_ptsIn _)))`. Establish `h0Ω : (0 : Fin n → ℂ) ∈ Ω`. Use `⟨h0B, hBt h0B, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.mem_preimage, hsy]`.
+
+Conclude with `⟨(cxOf_mem_image e σ hj G y).2 (CxPts.mem_ptsIn.2 hG), Set.mem_iInter.2 fun τ => Set.mem_iInter.2 fun p => Set.mem_iInter.2 fun q => (cxOf_mem_image e σ hj _ y).2 (CxPts.mem_ptsIn.2 (hWs τ p q))⟩`. Take `⟨r, hr, hrΩ⟩` from `Metric.isOpen_iff.1 hΩ 0 h0Ω`. Establish `src : ∀ b ∈ B, (a b).1 ∈ ch₀.source` using `fun b hb => by`. Rewrite using `[(hab b hb).1]`. Conclude with `ch₀.map_target (hBt hb)`.
+
+Establish `h5` using `fun b (hb : b ∈ B) => hex.2.2.2.2.2 _ (src b hb)`. Use `choose! Wa hWa using fun b (hb : b ∈ B) (z : Pad.Letter Dw) => ((h5 b hb).2 _ ((a b).2.tan z.1 z.2)).exists`. Establish `hWad : ∀ b ∈ B, ∀ z, DifferentiableAt ℂ (fun b => Wa b z) b` using `fun b hb z => ExpDirs.differentiableAt_dir hex hB ha.1 src (ha.2 z.1 z.2) (fun b hb => hWa b hb z) hb`. Establish `hsvd : ∀ τ p q, ∀ u ∈ Ω, DifferentiableAt ℂ (sv τ p q) u` using `fun τ p q u hu => by`. Establish `h` using `hex.2.2.1 (j ''ᵁ Ws τ p q) ((j.appIso (Ws τ p q)).inv.hom (s τ p q))`.
+
+Use `h.2.differentiableAt (h.1.mem_nhds ⟨hu.2.1, ?_⟩)` and prove the remaining obligations. Conclude with `Set.mem_iInter.1 (Set.mem_iInter.1 (Set.mem_iInter.1 hu.2.2.2 τ) p) q`. Set `W : (Fin n → ℂ) → (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) → Fin g → ℂ` to `fun u p k => ∑ q, sv p.1 q p.2 u * Wa u ⟨p.1, q⟩ k`. Establish `evEq : ∀ {y₁ y₂ : CxPts (genStr T.Z) σ} (h₁ : y₁ ∈ ptsIn (genStr T.Z) σ V.1) (h₂ : y₂ ∈ ptsIn (genStr T.Z) σ V.1), y₁ = y₂ → evHom h₁ = evHom h₂`. Introduce and unpack `_ _ _ _ rfl`.
+
+Both sides reduce to the same expression. Establish `key : ∀ z : CxPts X.str (σ.comp e.toRingHom), cxOf e σ hj z ∈ ch₀.source → ch₀ (cxOf e σ hj z) ∈ Metric.ball 0 r → (∃ g' : EigFrame T.Z σ ((cxOf e σ hj z).1 ≫ genι T.Z), FrameAt e f₀ A₀ A z g') ∧ ∀ g' : EigFrame T.Z σ ((cxOf e σ hj z).1 ≫ genι T.Z), FrameAt e f₀ A₀ A z g' → Dirs …`. Introduce `z hzs hzr`. Establish `huΩ` using `hrΩ hzr`. Establish `hsymm : ch₀.symm (ch₀ (cxOf e σ hj z)) = cxOf e σ hj z` using `ch₀.left_inv hzs`.
+
+Take `⟨huB, -, hu1, hu2⟩` from `huΩ`. Rewrite `hu1`, `hu2` using `[hsymm]`. Establish `hzG` using `(cxOf_mem_image e σ hj G z).1 hu1`. Establish `hzW : ∀ τ p q, z ∈ ptsIn X.str (σ.comp e.toRingHom) (Ws τ p q)` using `fun τ p q => (cxOf_mem_image e σ hj _ z).1 (Set.mem_iInter.1 (Set.mem_iInter.1 (Set.mem_iInter.1 hu2 τ) p) q)`. Establish `hAz : A ∈ Eb.S (GlobalTheory.Cartier.under z)` using `hGA _ (CxPts.mem_ptsIn.1 hzG)`.
+
+Take `⟨ha1, hyV', hmap⟩` from `hab _ huB`. Establish `hzV : cxOf e σ hj z ∈ ptsIn (genStr T.Z) σ V.1` using `by rw [← hsymm, ← ha1]; exact hyV'`. Take `⟨-, hex', hco⟩` from `hM z hAz hzV`. Use `⟨hex', fun g' hg' => ?_⟩` and prove the remaining obligations. Establish `hov : σ = (evHom hzV).comp φ` using `EigLoc.spMap_inj ((cxOf e σ hj z).2.symm.trans (by`.
+
+Rewrite using `[← ReciprocityTheory.ChartRestriction.G.PullbackSections.spMap_comp_spMap, ← hφ, ← Category.assoc, spMap_evHom hzV]))`. Establish `hx : (cxOf e σ hj z).1 ≫ genι T.Z = spMap (evHom hzV) ≫ LogKS.chart V ≫ genι T.Z`. Rewrite using `[← Category.assoc, spMap_evHom hzV]`. Take `⟨fr, hfr⟩` from `Φ.exists_isMap (evHom hzV) hov hx`. Establish `hcoM` using `hco g' hg' fr hfr`.
+
+Establish `hpt : (a (ch₀ (cxOf e σ hj z))).1 = cxOf e σ hj z` using `ha1.trans hsymm`. Establish `hvq : ∀ τ i, fr.v τ i = (a (ch₀ (cxOf e σ hj z))).2.v τ i` using `fun τ i => by`. Rewrite using `[hfr τ i, hmap τ i, evEq hzV hyV' hpt.symm]`. Establish `hD : ∀ q : Pad.Letter Dw, IsDerivAt0 (fun w => (ex (cxOf e σ hj z) w).left) (Wa (ch₀ (cxOf e σ hj z)) q) (fr.v q.1 q.2)` using `fun q => by`. Establish `tr : ∀ (x x' : CxPts (genStr T.Z) σ), x = x' → ∀ w v, IsDerivAt0 (fun u => (ex x u).left) w v → IsDerivAt0 (fun u => (ex x' u).left) w v`.
+
+Introduce and unpack `_ _ rfl _ _ h`. Conclude with `h`. Rewrite using `[hvq]`. Conclude with `tr _ _ hpt _ _ (hWa _ huB q)`. Establish `e0 : ex (cxOf e σ hj z) 0 = 1` using `by simpa using hex.2.2.2.1 _ hzs 0 0`.
+
+Introduce and unpack `⟨τ, i⟩`. Establish `hcomb` using `ExpDirs.isDerivAt0_of_comb (congrArg (·.left) e0) (fun k => fr.tan τ k) (fun k => hD ⟨τ, k⟩) (g'.tan τ i) (fr.co_spec g' τ i)`. Use `hcomb using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Simplify using `only [W, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`.
+
+Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[hcoM τ, Matrix.map_apply, ← hs τ q i, ratVal_fnOf (hzW τ q i)]`. Use `show valR (ch₀.symm (ch₀ (cxOf e σ hj z))).1 _ _ = _`. Rewrite using `[hsymm]`.
+
+Conclude with `valR_appIso_inv j _ _ z.1 (hzW τ q i)`. Use `⟨A, hA, r, hr, W, fun p k u hu => ?_, ?_, key⟩` and prove the remaining obligations. Establish `huΩ` using `hrΩ hu`. Use `DifferentiableAt.differentiableWithinAt ?_` and prove the remaining obligations. Simplify using `only [W]`.
+
+Use `DifferentiableAt.fun_sum fun q _ => (hsvd _ _ _ u huΩ).mul ?_` and prove the remaining obligations. Conclude with `differentiableAt_pi.1 (hWad u huΩ.1 ⟨p.1, q⟩) k`. Take `⟨⟨g', hg'⟩, hall⟩` from `key y hys (by rw [hy0]; exact Metric.mem_ball_self hr)`. Establish `hD` using `hall g' hg'`. Rewrite `hD` using `[hy0]`.
+
+Establish `e0 : ex (cxOf e σ hj y) 0 = 1` using `by simpa using hex.2.2.2.1 _ hys 0 0`. Establish `h5y` using `hex.2.2.2.2.2 _ hys`. Take `⟨bs, hbs⟩` from `ExpDirs.dirs_basis g' (e := fun w => (ex (cxOf e σ hj y) w).left) (congrArg (·.left) e0) h5y.1 h5y.2 hD`. Rewrite using `[← hbs]`. Conclude with `bs.linearIndependent`.
+-/
 theorem GlobalTheory.LieBase.exists_chart_dirs : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (T : TorModel Y) (F : Type) [Field F] (e : F ≃+* c.F) (σ : c.F →+* ℂ) (C : FlagCpt T.Z e) (X : Var F) (j : X.X ⟶ gen T.Z) (f : C.Y.X ⟶ X.X) (f₀ : EigFrame T.Z (constF e X) (genericPt X ≫ j ≫ genι T.Z)) (Eb : Fr (ratOf X) Dw.mult 0) (A₀ : Mat Dw.mult X.Fn) (hj : j ≫ genStr T.Z ≫ spMap e.toRingHom = X.str), IsLieBase e C X j f f₀ Eb A₀ → ∀ (y : GlobalTheory.CxPts X.str (σ.comp e.toRingHom)) (n g : ℕ) (ch₀ : OpenPartialHomeomorph (GlobalTheory.CxPts (genStr T.Z) σ) (Fin n → ℂ)) (ex : ExpMaps T.Z σ g), IsExpChart ch₀ ex → cxOf e σ hj y ∈ ch₀.source → ch₀ (cxOf e σ hj y) = 0 → ∃ A ∈ Eb.S (GlobalTheory.Cartier.under y), ∃ r : ℝ, 0 < r ∧ ∃ W : (Fin n → ℂ) → (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) → Fin g → ℂ, (∀ p k, DifferentiableOn ℂ (fun u => W u p k) (Metric.ball 0 r)) ∧ LinearIndependent ℂ (W 0) ∧ ∀ z : GlobalTheory.CxPts X.str (σ.comp e.toRingHom), cxOf e σ hj z ∈ ch₀.source → ch₀ (cxOf e σ hj z) ∈ Metric.ball 0 r → (∃ g' : EigFrame T.Z σ ((cxOf e σ hj z).1 ≫ genι T.Z), FrameAt e f₀ A₀ A z g') ∧ ∀ g' : EigFrame T.Z σ ((cxOf e σ hj z).1 ≫ genι T.Z), FrameAt e f₀ A₀ A z g' → Dirs ⟨cxOf e σ hj z, g'⟩ (fun w => (ex (cxOf e σ hj z) w).left) (W (ch₀ (cxOf e σ hj z))) := by
   intro E _ _ _ H Dw l Xo c O _ β Y T F _ e σ C X j f f₀ Eb A₀ hj hL y n g ch₀ ex hex hys hy0
   obtain ⟨hoi, -, hT⟩ := hL

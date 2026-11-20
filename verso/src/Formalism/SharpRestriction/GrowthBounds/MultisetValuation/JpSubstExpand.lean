@@ -43,9 +43,17 @@ def SuppOn (π : σ → Pl) (v : Pl) : Subring (MvPowerSeries σ R) where
     rw [map_neg, neg_ne_zero] at hm
     exact hf m hm x hx
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_SuppOn {π : σ → Pl} {v : Pl} {f : MvPowerSeries σ R} :
     f ∈ SuppOn π v ↔ ∀ m, MvPowerSeries.coeff m f ≠ 0 → ∀ x ∈ m.support, π x = v := Iff.rfl
 
+/- English proof (translation)
+Introduce `m hm y hy`. Rewrite `hm` using `[MvPowerSeries.coeff_X]`. Use `split_ifs at hm with hmx`. Substitute `hmx` using the available equality. Rewrite `hy` using `[Finsupp.support_single_ne_zero _ one_ne_zero, Finset.mem_singleton]`.
+
+Rewrite using `[hy]`. Conclude with `h`. Conclude with `absurd rfl hm`.
+-/
 theorem X_mem {π : σ → Pl} {v : Pl} {x : σ} (h : π x = v) : (MvPowerSeries.X x : MvPowerSeries σ R) ∈ SuppOn π v := by
   classical
   intro m hm y hy
@@ -57,6 +65,11 @@ theorem X_mem {π : σ → Pl} {v : Pl} {x : σ} (h : π x = v) : (MvPowerSeries
     exact h
   · exact absurd rfl hm
 
+/- English proof (translation)
+Introduce `m hm y hy`. Rewrite `hm` using `[MvPowerSeries.coeff_C]`. Use `split_ifs at hm with h0`. Substitute `h0` using the available equality. Simplify using `at hy`.
+
+Conclude with `absurd rfl hm`.
+-/
 theorem C_mem {π : σ → Pl} {v : Pl} (c : R) : (MvPowerSeries.C c : MvPowerSeries σ R) ∈ SuppOn π v := by
   classical
   intro m hm y hy
@@ -66,6 +79,13 @@ theorem C_mem {π : σ → Pl} {v : Pl} (c : R) : (MvPowerSeries.C c : MvPowerSe
     simp at hy
   · exact absurd rfl hm
 
+/- English proof (translation)
+Introduce `e he x hx`. Rewrite `he` using `[MvPowerSeries.coeff_subst ha]`. Assume the negation of the conclusion as `hxv`. Apply `he` to reduce the goal to its premises. Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises.
+
+Introduce `d`. Distinguish the cases in `hd : MvPowerSeries.coeff d f = 0`. Rewrite using `[hd, zero_smul]`. Establish `hprod : (d.prod fun s n => a s ^ n) ∈ SuppOn π' v`. Unfold `Finsupp.prod`.
+
+Conclude with `Subring.prod_mem _ fun s hs => Subring.pow_mem _ (h s ((mem_SuppOn.mp hf) d hd s hs)) _`. Establish `h0 : MvPowerSeries.coeff e (d.prod fun s n => a s ^ n) = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hxv ((mem_SuppOn.mp hprod) e hne x hx)`. Rewrite using `[h0, smul_zero]`.
+-/
 theorem subst_mem {τ : Type} {π : σ → Pl} {π' : τ → Pl} {v : Pl} {a : σ → MvPowerSeries τ R}
     (ha : MvPowerSeries.HasSubst a) {f : MvPowerSeries σ R} (hf : f ∈ SuppOn π v)
     (h : ∀ s, π s = v → a s ∈ SuppOn π' v) : MvPowerSeries.subst a f ∈ SuppOn π' v := by
@@ -86,6 +106,9 @@ theorem subst_mem {τ : Type} {π : σ → Pl} {π' : τ → Pl} {v : Pl} {a : �
       exact hxv ((mem_SuppOn.mp hprod) e hne x hx)
     rw [h0, smul_zero]
 
+/- English proof (translation)
+Introduce `m hm x hx`. Rewrite `hm` using `[MvPowerSeries.coeff_map]`. Conclude with `(mem_SuppOn.mp hf) m (fun h0 => hm (by rw [h0, map_zero])) x hx`.
+-/
 theorem map_mem {R' : Type} [CommRing R'] (φ : R →+* R') {π : σ → Pl} {v : Pl} {f : MvPowerSeries σ R}
     (hf : f ∈ SuppOn π v) : MvPowerSeries.map φ f ∈ SuppOn π v := by
   intro m hm x hx
@@ -97,9 +120,25 @@ end Supp
 def resP {R Pl : Type} [CommRing R] {ι : Pl → Type} (v : Pl) (f : MvPowerSeries (Σ v, ι v) R) : MvPowerSeries (ι v) R :=
   fun m => MvPowerSeries.coeff (Finsupp.embDomain (Function.Embedding.sigmaMk v) m) f
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coeff_resP {R Pl : Type} [CommRing R] {ι : Pl → Type} (v : Pl) (f : MvPowerSeries (Σ v, ι v) R) (m : ι v →₀ ℕ) :
     MvPowerSeries.coeff m (resP v f) = MvPowerSeries.coeff (Finsupp.embDomain (Function.Embedding.sigmaMk v) m) f := rfl
 
+/- English proof (translation)
+Use extensionality with `n`. Establish `h2 : ∀ m : ι v →₀ ℕ, (eqv (ι` using `ι)).symm (Pi.single v m) = Finsupp.embDomain (Function.Embedding.sigmaMk v) m := by`. Introduce `m`. Rewrite using `[AddEquiv.symm_apply_eq, eqv_embDomain]`. Distinguish the cases in `hn : MvPowerSeries.coeff n f = 0`.
+
+Rewrite using `[hn]`. Distinguish the cases in `h : ∃ m, n = eqv.symm (Pi.single v m)`. Take `⟨m, rfl⟩` from `h`. Rewrite using `[coeff_atP_single, coeff_resP, ← h2]`. Conclude with `hn.symm`.
+
+Use `push_neg at h`. Conclude with `(coeff_atP_eq_zero v _ n h).symm`. Establish `hsupp` using `(mem_SuppOn.mp hf) n hn`. Establish `hn' : n = eqv.symm (Pi.single v (eqv n v))`. Rewrite using `[AddEquiv.eq_symm_apply]`.
+
+Use function extensionality and compare the values at `w`. Use extensionality with `i`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[Pi.single_eq_same]`.
+
+Rewrite using `[Pi.single_eq_of_ne hw, Finsupp.coe_zero, Pi.zero_apply, Finsupp.sigmaFinsuppAddEquivPiFinsupp_apply]`. Assume the negation of the conclusion as `hne`. Conclude with `hw (hsupp ⟨w, i⟩ (Finsupp.mem_support_iff.mpr hne))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← h2, ← hn']`.
+
+Use `_ = MvPowerSeries.coeff n (atP v (resP v f)) := by`. Rewrite using `[← coeff_resP, ← coeff_atP_single v (resP v f) (eqv n v), ← hn']`.
+-/
 theorem eq_atP {R Pl : Type} [CommRing R] {ι : Pl → Type} [Fintype Pl] [DecidableEq Pl] (v : Pl)
     (f : MvPowerSeries (Σ v, ι v) R) (hf : f ∈ SuppOn (Sigma.fst : (Σ v, ι v) → Pl) v) :
     f = atP v (resP v f) := by
@@ -135,6 +174,19 @@ theorem eq_atP {R Pl : Type} [CommRing R] {ι : Pl → Type} [Fintype Pl] [Decid
       _ = MvPowerSeries.coeff n (atP v (resP v f)) := by
           rw [← coeff_resP, ← coeff_atP_single v (resP v f) (eqv n v), ← hn']
 
+/- English proof (translation)
+Use `⟨Q.support.biUnion fun κ => (Finset.HasAntidiagonal.antidiagonal κ).biUnion fun pq => (MvPowerSeries.coeff_subst_finite ha U pq.2).toFinset, ?_⟩` and prove the remaining obligations. Use `set B := Q.support.biUnion fun κ => (Finset.HasAntidiagonal.antidiagonal κ).biUnion fun pq => (MvPowerSeries.coeff_subst_finite ha U pq.2).toFinset with hB`. Establish `hq : ∀ κ ∈ Q.support, ∀ pq ∈ Finset.HasAntidiagonal.antidiagonal κ, MvPowerSeries.coeff pq.2 (MvPowerSeries.subst a U) = ∑ β ∈ B, MvPowerSeries.coeff β U * MvPowerSeries.coeff pq.2 (β.prod fun s e => a s ^ e)`. Introduce `κ hκ pq hpq`. Rewrite using `[MvPowerSeries.coeff_subst ha, finsum_eq_sum_of_support_subset (s := B)]`.
+
+Simplify using `only [smul_eq_mul]`. Introduce `β hβ`. Rewrite using `[Finset.mem_coe, hB, Finset.mem_biUnion]`. Conclude with `⟨κ, hκ, Finset.mem_biUnion.mpr ⟨pq, hpq, (MvPowerSeries.coeff_subst_finite ha U pq.2).mem_toFinset.mpr hβ⟩⟩`. Establish `hκ : ∀ κ ∈ Q.support, MvPowerSeries.coeff κ (F * MvPowerSeries.subst a U) = ∑ β ∈ B, MvPowerSeries.coeff β U * MvPowerSeries.coeff κ (F * β.prod fun s e => a s ^ e)`.
+
+Introduce `κ hκ`. Rewrite using `[MvPowerSeries.coeff_mul]`. Repeatedly rewrite using `[MvPowerSeries.coeff_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun pq hpq => ?_` and prove the remaining obligations.
+
+Rewrite using `[hq κ hκ pq hpq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun β _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Unfold `jp`. Establish `hL : ∑ κ ∈ Q.support, (((fac κ : ℕ) : K) * MvPowerSeries.coeff κ (F * MvPowerSeries.subst a U)) • MvPolynomial.coeff κ Q = ∑ κ ∈ Q.support, ∑ β ∈ B, (((fac κ : ℕ) : K) * (MvPowerSeries.coeff β U * MvPowerSeries.coeff κ (F * β.prod fun s e => a s ^ e))) • MvPolynomial.coeff κ Q`.
+
+Use `Finset.sum_congr rfl fun κ hκ' => ?_` and prove the remaining obligations. Rewrite using `[hκ κ hκ', Finset.mul_sum, Finset.sum_smul]`. Rewrite using `[hL, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun β _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun κ _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem jp_subst_expand {K A σ τ : Type} [CommRing K] [CommRing A] [Algebra K A] (Q : MvPolynomial σ A)
     (F : MvPowerSeries σ K) (a : τ → MvPowerSeries σ K) (ha : MvPowerSeries.HasSubst a) (U : MvPowerSeries τ K) :
     ∃ B : Finset (τ →₀ ℕ), jp Q (F * MvPowerSeries.subst a U) =

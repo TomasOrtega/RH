@@ -6,6 +6,13 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 
 namespace GlobalTheory.HaarMul
 
+/- English proof (translation)
+Use `⟨hf, ?_⟩` and prove the remaining obligations. Use extensionality with `s hs`. Rewrite using `[Measure.map_apply hf hs, withDensity_apply _ (hf hs), withDensity_apply _ hs]`. Establish `h1 : ∫⁻ x in f ⁻¹' s, ρ x ∂μ = ∫⁻ x, d * s.indicator ρ (f x) ∂μ`. Rewrite using `[← lintegral_indicator (hf hs)]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : f x ∈ s`. Simplify using `[Set.indicator_apply, hx, ← hρf x]`. Simplify using `[Set.indicator_apply, hx]`.
+
+Rewrite using `[h1, lintegral_const_mul d (f := fun x => s.indicator ρ (f x)) ((hρ.indicator hs).comp hf), ← lintegral_map (hρ.indicator hs) hf, hμ, lintegral_smul_measure, smul_eq_mul, ← mul_assoc, hcd, one_mul, lintegral_indicator hs]`.
+-/
 theorem measurePreserving_withDensity {X : Type} [MeasurableSpace X] (μ : Measure X) {f : X → X}
     (hf : Measurable f) {ρ : X → ENNReal} (hρ : Measurable ρ) {c d : ENNReal} (hcd : d * c = 1)
     (hμ : μ.map f = c • μ) (hρf : ∀ x, ρ x = d * ρ (f x)) :
@@ -25,6 +32,21 @@ theorem measurePreserving_withDensity {X : Type} [MeasurableSpace X] (μ : Measu
     ← lintegral_map (hρ.indicator hs) hf, hμ,
     lintegral_smul_measure, smul_eq_mul, ← mul_assoc, hcd, one_mul, lintegral_indicator hs]
 
+/- English proof (translation)
+Introduce `j a b ha hb`. Set `L : (Fin j → Fin j → ℂ) →ₗ[ℝ] (Fin j → Fin j → ℂ)` to `{ toFun := fun x r s => (a * Matrix.of x * b) r s map_add' := fun x y => by`. Establish `h : a * Matrix.of (x + y) * b = a * Matrix.of x * b + a * Matrix.of y * b`. Rewrite using `[show Matrix.of (x + y) = Matrix.of x + Matrix.of y from rfl, Matrix.mul_add, Matrix.add_mul]`. Use function extensionality and compare the values at `r s`.
+
+Conclude with `congrFun (congrFun h r) s`. Use the proof step `map_smul' := fun c x => by`. Establish `h : a * Matrix.of (c • x) * b = c • (a * Matrix.of x * b)`. Rewrite using `[show Matrix.of (c • x) = c • Matrix.of x from rfl, Matrix.mul_smul, Matrix.smul_mul]`. Use function extensionality and compare the values at `r s`.
+
+Conclude with `congrFun (congrFun h r) s }`. Establish `hdet : LinearMap.det L = ‖a.det‖ ^ (2 * j) * ‖b.det‖ ^ (2 * j)` using `GlobalTheory.TwoSidedJac.real_jacobians.1 j j a b L (fun T => rfl)`. Establish `hA : ‖a.det‖ ≠ 0` using `norm_ne_zero_iff.2 ha`. Establish `hB : ‖b.det‖ ≠ 0` using `norm_ne_zero_iff.2 hb`. Establish `hD : 0 < ‖a.det‖ ^ (2 * j) * ‖b.det‖ ^ (2 * j)` using `mul_pos (pow_pos (norm_pos_iff.2 ha) _) (pow_pos (norm_pos_iff.2 hb) _)`.
+
+Establish `hcont : Continuous fun x : Fin j → Fin j → ℂ => (Matrix.of x).det` using `(continuous_id.matrix_det : Continuous fun A : Matrix (Fin j) (Fin j) ℂ => A.det)`. Establish `hρ : Measurable fun x : Fin j → Fin j → ℂ => ENNReal.ofReal ((‖(Matrix.of x).det‖ ^ 2)⁻¹ ^ j)` using `ENNReal.measurable_ofReal.comp (((hcont.measurable.norm.pow_const 2).inv).pow_const j)`. Use `haveI : (volume : Measure ℂ).IsAddHaarMeasure := inferInstance`. Use `haveI : (volume : Measure (Fin j → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure (fun _ : Fin j => (volume : Measure ℂ))`. Use `haveI : (volume : Measure (Fin j → Fin j → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure (fun _ : Fin j => (volume : Measure (Fin j → ℂ)))`.
+
+Establish `hμ : (volume : Measure (Fin j → Fin j → ℂ)).map L = ENNReal.ofReal |(LinearMap.det L)⁻¹| • volume` using `Measure.map_linearMap_addHaar_eq_smul_addHaar _ (by rw [hdet]; exact hD.ne')`. Establish `hcd : ENNReal.ofReal (‖a.det‖ ^ (2 * j) * ‖b.det‖ ^ (2 * j)) * ENNReal.ofReal |(LinearMap.det L)⁻¹| = 1`. Rewrite using `[hdet, abs_of_pos (inv_pos.2 hD), ← ENNReal.ofReal_mul hD.le, mul_inv_cancel₀ hD.ne', ENNReal.ofReal_one]`. Establish `hρf : ∀ x : Fin j → Fin j → ℂ, ENNReal.ofReal ((‖(Matrix.of x).det‖ ^ 2)⁻¹ ^ j) = ENNReal.ofReal (‖a.det‖ ^ (2 * j) * ‖b.det‖ ^ (2 * j)) * ENNReal.ofReal ((‖(Matrix.of (L x)).det‖ ^ 2)⁻¹ ^ j)`. Introduce `x`.
+
+Rewrite using `[← ENNReal.ofReal_mul hD.le]`. Use `congr 1`. Rewrite using `[show Matrix.of (L x) = a * Matrix.of x * b from rfl, Matrix.det_mul, Matrix.det_mul, norm_mul, norm_mul]`. Establish `hP : (‖a.det‖ ^ 2) ^ j * ((‖a.det‖ ^ 2) ^ j)⁻¹ = 1` using `mul_inv_cancel₀ (pow_ne_zero _ (pow_ne_zero _ hA))`. Establish `hQ : (‖b.det‖ ^ 2) ^ j * ((‖b.det‖ ^ 2) ^ j)⁻¹ = 1` using `mul_inv_cancel₀ (pow_ne_zero _ (pow_ne_zero _ hB))`.
+
+Rewrite using `[mul_pow, mul_pow, mul_inv, mul_inv, mul_pow, mul_pow, inv_pow (‖a.det‖ ^ 2), inv_pow (‖b.det‖ ^ 2), pow_mul, pow_mul]`. Take the linear combination `(-((‖(Matrix.of x).det‖ ^ 2)⁻¹ ^ j * (‖b.det‖ ^ 2) ^ j * ((‖b.det‖ ^ 2) ^ j)⁻¹)) * hP - (‖(Matrix.of x).det‖ ^ 2)⁻¹ ^ j * hQ`. Unfold `haarLoc`. Conclude with `measurePreserving_withDensity volume L.continuous_of_finiteDimensional.measurable hρ hcd hμ hρf`.
+-/
 theorem measurePreserving_mul_mul : ∀ (j : ℕ) (a b : Matrix (Fin j) (Fin j) ℂ), a.det ≠ 0 → b.det ≠ 0 →
     MeasurePreserving (fun (x : Fin j → Fin j → ℂ) (r s : Fin j) => (a * Matrix.of x * b) r s)
       (haarLoc j) (haarLoc j) := by

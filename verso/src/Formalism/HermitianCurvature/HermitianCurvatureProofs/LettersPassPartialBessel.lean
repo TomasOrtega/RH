@@ -17,6 +17,15 @@ section congr
 variable {k p ρ n : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Rewrite using `[pbF_eq_TI, pbF_eq_TI]`. Unfold `TI`. Use `integral_congr_ae (Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Distinguish the cases in `hx : PBQ.GoodP Bj x`. Simplify using `only [gI, if_pos hx]`.
+
+Use `congr 2`. Establish `hs : sE Bj e x ∈ Sset k n B0.z` using `hzS ▸ sE_mem_S Bj e x`. Establish `hs1 : (1 : B.Mat k n) ∈ Sset k n B0.z'` using `Formalism.FourierDecayAlt.P.PBG.one_mem_Sset k n B0.z'`. Establish `hmem : sE Bj e x * y ∈ B.GV k n` using `Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul (sE_GV Bj e x) hy`. Establish `hD : Dmin k n B0.z B0.z' (sE Bj e x * y) ⟨i, by omega⟩ = Dmin k n B0.z B0.z' y ⟨i, by omega⟩`.
+
+Use `Formalism.QuantumDeterminants.diagonal_inverse_holds k n B0.z B0.z' B0.z_mem B0.z'_mem _ hs 1 hs1 y ⟨i, by omega⟩` as an intermediate fact. Rewrite `this` using `[Matrix.mul_one]`. Then use the resulting hypothesis. Unfold `PBG.Kr`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [Formalism.FourierDecayAlt.P.PBG.ae_inR B0] with ξ hξ`.
+
+Establish `hG : sE Bj e x * y * Matrix.of ξ.2 * Matrix.of ξ.1 ∈ B.GV k n` using `Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul hmem hξ.2.1) hξ.1.1`. Rewrite using `[h _ hG (by rw [Formalism.FourierDecayAlt.P.PBG.dmin_pR B0 hξ, hD]; exact hyD)]`. Simplify using `[gI, hx]`.
+-/
 theorem pbF_congr_D (Bj : B.RealPlaceData k ρ Wp Wq) (B0 : B.RealPlaceData k n Wp Wq) (e : p + ρ = n)
     (hzS : B0.z = D.castV e (liftVec k p ρ Bj.z)) (i : ℕ) (hi : i ≤ n) {c0 : ℂ} {r : ℝ}
     {H1 H2 : B.Mat k n → (Wq →L[ℂ] Wp)}
@@ -50,6 +59,9 @@ section words
 variable {k p ρ n : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+The claim follows from `| [], _, _, _, _ => rfl | l :: w, ew, y, hyU, hy => by have ih := pbWords_core Bj B0 e hzS i hi H Cs hL hCs hS U hU hD hP w (fun a => ew a.succ) set H' := D.uwG k n B0.z B0.z' H i hi w (fun a => ew a.succ) with hH' obtain ⟨hL', hS'⟩ := uwG_locSupp B0.z B0.z' i hi hCs.isClosed hL …`.
+-/
 theorem pbWords_core (Bj : B.RealPlaceData k ρ Wp Wq) (B0 : B.RealPlaceData k n Wp Wq) (e : p + ρ = n)
     (hzS : B0.z = D.castV e (liftVec k p ρ Bj.z)) (i : ℕ) (hi : i ≤ n) (H : B.Mat k n → (Wq →L[ℂ] Wp))
     (Cs : Set (B.Mat k n))
@@ -91,6 +103,9 @@ theorem pbWords_core (Bj : B.RealPlaceData k ρ Wp Wq) (B0 : B.RealPlaceData k n
 
 end words
 
+/- English proof (translation)
+Introduce `k p ρ n Wp Wq _ _ _ _ _ _ Bj B0 e hzS i hi H Cs hL hCs hS U hU hD hP w ew y hyU hy`. Conclude with `pbWords_core Bj B0 e hzS i hi H Cs hL hCs hS U hU hD hP w ew y hyU hy`.
+-/
 theorem _root_.Formalism.FourierDecayAlt.P.letters_pass_partial_bessel : PbWords := by
   intro k p ρ n Wp Wq _ _ _ _ _ _ Bj B0 e hzS i hi H Cs hL hCs hS U hU hD hP w ew y hyU hy
   exact pbWords_core Bj B0 e hzS i hi H Cs hL hCs hS U hU hD hP w ew y hyU hy

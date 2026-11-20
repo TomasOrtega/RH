@@ -30,6 +30,9 @@ def LevLaws (W : LocWach PD LL O v n) : Prop :=
   ∀ (i : ZMod n) (ζ : LL), (∃ j : ℕ, IsPrimitiveRoot ζ (PD.p ^ j)) → ∀ f : LetA O n,
     W.lev i ζ (W.φA f) = PowerSeries.rescale (PD.p : LL) (W.lev (i - 1) (ζ ^ PD.p) f)
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `h`. Establish `h1 : (ζ ^ a) ^ (p ^ j) = 1` using `by rw [← pow_mul, mul_comm, pow_mul, hj.pow_eq_one, one_pow]`. Take `⟨k, -, hk⟩` from `(Nat.dvd_prime_pow hp).1 (orderOf_dvd_of_pow_eq_one h1)`. Conclude with `⟨k, hk ▸ IsPrimitiveRoot.orderOf (ζ ^ a)⟩`.
+-/
 theorem root_pow {p : ℕ} (hp : p.Prime) {ζ : LL} (h : ∃ j : ℕ, IsPrimitiveRoot ζ (p ^ j)) (a : ℕ) :
     ∃ j : ℕ, IsPrimitiveRoot (ζ ^ a) (p ^ j) := by
   obtain ⟨j, hj⟩ := h
@@ -50,9 +53,15 @@ open Classical in
 def levOf (W : LocWach PD LL O v n) (i : ZMod n) (ζ : LL) : LetA O n →ₐ[O] PowerSeries LL :=
   if ∃ j : ℕ, IsPrimitiveRoot ζ (PD.p ^ j) then W.lev i ζ else W.lev i 1
 
+/- English proof (translation)
+The claim follows from `if_pos h`.
+-/
 theorem levOf_root (W : LocWach PD LL O v n) (i : ZMod n) {ζ : LL} (h : ∃ j : ℕ, IsPrimitiveRoot ζ (PD.p ^ j)) :
     levOf W i ζ = W.lev i ζ := if_pos h
 
+/- English proof (translation)
+Apply the tactic sequence `unfold levOf; split_ifs <;> exact ⟨_, rfl⟩`.
+-/
 theorem levOf_cases (W : LocWach PD LL O v n) (i : ZMod n) (ζ : LL) : ∃ ζ', levOf W i ζ = W.lev i ζ' := by
   unfold levOf; split_ifs <;> exact ⟨_, rfl⟩
 
@@ -101,8 +110,14 @@ open Classical in
 def nOf (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) : Submodule (LetA O n) (W.DD T) :=
   if IsCrys PD T.ρ then W.N T else ⊥
 
+/- English proof (translation)
+The claim follows from `if_pos h`.
+-/
 theorem nOf_crys (W : LocWach PD LL O v n) {T : LocLat G Qp LL O} (h : IsCrys PD T.ρ) : nOf W T = W.N T := if_pos h
 
+/- English proof (translation)
+Apply the tactic sequence `unfold nOf; split_ifs <;> assumption`.
+-/
 theorem nOf_ind (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (p : Submodule (LetA O n) (W.DD T) → Prop)
     (h1 : p (W.N T)) (h0 : p ⊥) : p (nOf W T) := by
   unfold nOf; split_ifs <;> assumption
@@ -157,6 +172,9 @@ structure Laws : Prop where
   io : IoLaws (F.E K s LL h).tie
   one : IsCrys (P.PD K) (H.W K s LL h).one.ρ
 
+/- English proof (translation)
+The claim follows from `(P.PD_p K).symm ▸ (Fact.out : l.Prime)`.
+-/
 theorem p_prime (P : LocPrime l) (K : FinExt l) : (P.PD K).p.Prime := (P.PD_p K).symm ▸ (Fact.out : l.Prime)
 
 abbrev GamL := gamOf (H.W K s LL h) (H.W_s K s LL h)
@@ -173,6 +191,9 @@ abbrev IoL := ioOf (F.E K s LL h).tie (H.W_s K s LL h) (p_prime P K) hL.lev hL.i
 
 set_option maxHeartbeats 400000 in
 
+/- English proof (translation)
+The claim follows from `(F.E K s LL h).inertia_action_on_roots`.
+-/
 theorem ioW : IoW (Γ := GamL H h) (R := SerL H F h hL) (IoL H F h hL) := (F.E K s LL h).inertia_action_on_roots
 
 set_option maxHeartbeats 400000 in
@@ -190,9 +211,15 @@ abbrev LatL :=
 
 set_option maxHeartbeats 400000 in
 
+/- English proof (translation)
+The claim follows from `nOf_crys _ hT`.
+-/
 theorem latL_N {T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)} (hT : IsCrys (P.PD K) T.ρ) :
     (LatL H F h hL).N T = (H.W K s LL h).N T := nOf_crys _ hT
 
+/- English proof (translation)
+The claim follows from `hp _ _ _ (ioW H F h hL) _ _`.
+-/
 theorem apply_layers (p : ∀ (Γ : GamS P K s LL) (R : WSer Γ) (I : IoS AI R) (E : WEt I), NS E → Prop)
     (hp : ∀ (Γ : GamS P K s LL) (R : WSer Γ) (I : IoS AI R), IoW I → ∀ (E : WEt I) (Mo : NS E), p Γ R I E Mo) :
     p (GamL H h) (SerL H F h hL) (IoL H F h hL) (EtL H F h hL) (LatL H F h hL) :=
@@ -219,12 +246,18 @@ def evL (W : LocWach PD L O v n) (i : ZMod n) (ζ : L) : O⟦X⟧ →ₐ[O] L⟦
 
 omit [CharZero L] [Algebra ℚ L] in
 
+/- English proof (translation)
+Use `W.lev_letter i ζ (a - fun _ => a i) (by simp)` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Conclude with `this`.
+-/
 theorem lev_eq_evL (W : LocWach PD L O v n) (i : ZMod n) (ζ : L) (a : LetA O n) :
     W.lev i ζ a = evL W i ζ (a i) := by
   have := W.lev_letter i ζ (a - fun _ => a i) (by simp)
   rw [map_sub, sub_eq_zero] at this
   exact this
 
+/- English proof (translation)
+Take `⟨E, h1, h2, h3⟩` from `W.lev_π i ζ h`. Establish `: E = exp L` using `ode_unique 1 (by simpa using h2) (by simpa using derivative_exp L) (by simpa using h1)`. Rewrite using `[← this, ← h3, add_sub_cancel_left]`. Both sides reduce to the same expression.
+-/
 theorem evL_X (W : LocWach PD L O v n) (i : ZMod n) {ζ : L} (h : ∃ j : ℕ, IsPrimitiveRoot ζ (PD.p ^ j)) :
     evL W i ζ X = C ζ * exp L - 1 := by
   obtain ⟨E, h1, h2, h3⟩ := W.lev_π i ζ h
@@ -232,6 +265,15 @@ theorem evL_X (W : LocWach PD L O v n) (i : ZMod n) {ζ : L} (h : ∃ j : ℕ, I
   rw [← this, ← h3, add_sub_cancel_left]
   rfl
 
+/- English proof (translation)
+Establish `hc' : ∀ g, algebraMap O L (W.χΓ g : O) = algebraMap ℤ_[l] L (c g)` using `fun g => by rw [← hc, ← IsScalarTower.algebraMap_apply]`. Establish `hφ : W.φ₀ = GlobalTheory.Fon.gam O (l : ℤ_[l])`. Establish `h0 : W.φ₀ X = (1 + X) ^ l - 1` using `by rw [W.φ₀_X, W.q₀_def, hp]`. Rewrite using `[GlobalTheory.Fon.gam_l]`. Conclude with `GlobalTheory.Fon.algHom_ext_X (by rw [h0, GlobalTheory.Fon.cyclotomicFrobeniusPowerSeries_X]) (by rw [h0]; simp)`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `g i ζ _ j a h hj rfl f`. Rewrite `*` using `[lev_eq_evL, lev_eq_evL, hc']`. Express the relevant statement in the definitionally equal form `evL W i ζ (W.γ₀ g (f i)) = _`. Rewrite using `[hγ]`.
+
+Conclude with `ev_gam H (hp ▸ h.pow_eq_one) _ (hv _ j a hj) (evL_X W i ⟨j, h⟩) (evL_X W i (root_pow PD.hp ⟨j, h⟩ a)) (f i)`. Introduce and unpack `i ζ ⟨j, h⟩ f`. Rewrite using `[lev_eq_evL, lev_eq_evL]`. Express the relevant statement in the definitionally equal form `evL W i ζ (W.φ₀ (f (i - 1))) = _`. Use `ev_gam H (hp ▸ h.pow_eq_one) (l : ℤ_[l]) (a := l) (by simp) (evL_X W i ⟨j, h⟩) (evL_X W (i - 1) (root_pow PD.hp ⟨j, h⟩ l)) (f (i - 1))` as an intermediate fact.
+
+Rewrite `this` using `[map_natCast]`. Rewrite using `[hφ, hp]`. Conclude with `this`.
+-/
 theorem levLaws_of (W : LocWach PD L O v n) (hp : PD.p = l) (c : W.Gam → ℤ_[l])
     (hc : ∀ g, algebraMap ℤ_[l] O (c g) = (W.χΓ g : O)) (hγ : ∀ g, W.γ₀ g = GlobalTheory.Fon.gam O (c g))
     (hv : ∀ (c : ℤ_[l]) (j a : ℕ), (j : WithTop ℚ) ≤ v (algebraMap ℤ_[l] L c - (a : L)) →
@@ -262,6 +304,11 @@ end Generic
 variable {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P} (H : LocHW l P) (F : LocFon l P AI H)
   {K : FinExt l} {s : ℕ} {LL : FinExt l} (h : Good K s LL)
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `exists_padic_char (GamL H h)`. Take `⟨_, _, hl0, hlu, -⟩` from `GlobalTheory.Per.integers_completeDVR l LL`. Use `levLaws_of _ (P.PD_p K) (fun g => (c g : ℤ_[l])) hc (fun g => ?_) (dvd_of_le_v P) ?_` and prove the remaining obligations. Establish `h0 : (H.W K s LL h).φ₀ X = (1 + X) ^ l - 1`. Rewrite using `[(H.W K s LL h).φ₀_X, (H.W K s LL h).q₀_def, P.PD_p]`.
+
+Conclude with `(GlobalTheory.Cyc.act_unique l ↥(OL LL) hl0 hlu ((H.W K s LL h).γ₀ g) (H.W K s LL h).φ₀ (c g) h0 ((H.W K s LL h).γ₀_comm _) ((H.W K s LL h).γ₀_X _).1 (((H.W K s LL h).γ₀_X _).2.trans (hc g).symm)).2.trans (GlobalTheory.Cyc.act_eq_gam _ _ _)`. Use `evLaw_integers P LL using 1` and compare the differences between its conclusion and the goal. Conclude with `Algebra.algebra_ext _ _ fun r => PowerSeries.algebraMap_apply`.
+-/
 theorem levLaws : LevLaws (H.W K s LL h) := by
   obtain ⟨c, hc⟩ := exists_padic_char (GamL H h)
   obtain ⟨_, _, hl0, hlu, -⟩ := GlobalTheory.Per.integers_completeDVR l LL
@@ -274,6 +321,9 @@ theorem levLaws : LevLaws (H.W K s LL h) := by
   · convert evLaw_integers P LL using 1
     exact Algebra.algebra_ext _ _ fun r => PowerSeries.algebraMap_apply
 
+/- English proof (translation)
+Establish `: FiniteDimensional ℚ_[l] ↥LL.1` using `LL.2`. Conclude with `⟨levLaws H h, ⟨fun e => GlobalTheory.TorsionBoundCompare.ioE_φ _ Subtype.val_injective e, fun g e => GlobalTheory.TorsionBoundCompare.ioE_γ _ Subtype.val_injective g e⟩, GlobalTheory.TrivCrys.isCrys_lat_of_trivial _ (H.W K s LL h).one_triv⟩`.
+-/
 theorem laws : Laws H F h := by
   have : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2
   exact ⟨levLaws H h, ⟨fun e => GlobalTheory.TorsionBoundCompare.ioE_φ _ Subtype.val_injective e,
@@ -282,11 +332,17 @@ theorem laws : Laws H F h := by
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+The claim follows from `latL_N H F h _ (laws H F h).one`.
+-/
 example : (LatL H F h (laws H F h)).N (H.W K s LL h).one = (H.W K s LL h).N (H.W K s LL h).one :=
   latL_N H F h _ (laws H F h).one
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, rfl⟩`.
+-/
 example (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)) :
     (EtL H F h (laws H F h)).φD T = (H.W K s LL h).φD T ∧ (ClL H F h (laws H F h)).cl T = (H.W K s LL h).cl T :=
   ⟨rfl, rfl⟩

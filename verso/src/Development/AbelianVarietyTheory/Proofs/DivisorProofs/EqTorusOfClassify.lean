@@ -19,6 +19,17 @@ namespace GlobalTheory.ToricTorsionUnif
 
 open GlobalTheory.TorusModel GlobalTheory.TorsionFormCompare GlobalTheory.KernelNoTorsion
 
+/- English proof (translation)
+Use `hR.2` as an intermediate fact. Take `⟨_, -, -, hc⟩` from `hR.1`. Establish `hL` using `abelianSchemeLaws_all.1`. Take `⟨Gt, _, _, hH⟩` from `exists_isGt hL.globalFns (splitExt D.toPre)`. Take `⟨Φ, hΦ⟩` from `exists_points hL.globalFns hH`.
+
+Establish `hΦ : Represents Φ` using `hΦ`. Establish `hfin : IsFinite (torsion Gt k).hom ∧ Flat (torsion Gt k).hom`. Take `⟨h₁, h₂, -⟩` from `hL.mulN _ D.toPre.P k hk`. Establish `h₁' : IsFinite (𝟙 D.toPre.P.A ^ k).left` using `h₁`. Establish `h₂' : Flat (𝟙 D.toPre.P.A ^ k).left` using `h₂`.
+
+Rewrite `h₁'`, `h₂'` using `[← MulEtaleDvr.mulN_eq_pow]`. Establish `Q` using `MulEtaleDvr.isPullback_torsion D.toPre.P.A k`. Conclude with `isFinite_flat_torsion_of_isGt _ (splitExt D.toPre) Gt hH k hk (MorphismProperty.of_isPullback (P := @IsFinite) Q h₁') (MorphismProperty.of_isPullback (P := @Flat) Q h₂')`. Take `⟨hf, hl⟩` from `hfin`. Take `⟨J, hJ⟩` from `exists_mulEquiv U.toUnifPre hL.globalFns hΦ`.
+
+Establish `hN` using `isAdicColimit_of_isFinite hc (torsion Gt k)`. Use `⟨torsion Gt k, Φ _ (torsion.ι Gt k), J _ hN (torsion.ι Gt k), hf, hl, (tors_iff hΦ k _).2 (torsionι_pow Gt k), fun T g hg => ?_, ?_, (formalEq_iff _ _ _).2 ((hJ _ hN _ _).1 rfl)⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `(Φ T).surjective g`. Establish `hx` using `(tors_iff hΦ k x).1 hg`. Use `⟨torsionLift x hx, (isPull_iff_comp hΦ _ _ _).2 (torsionLift_ι _ _), fun h hh => torsion_hom_ext ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[torsionLift_ι]`. Conclude with `(isPull_iff_comp hΦ _ _ _).1 hh`. Rewrite using `[← map_pow, torsionι_pow, map_one]`.
+-/
 theorem exists_torsion_toG (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (hR : GlobalTheory.Mum.Base R)
     (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R)))
     (U : Unif (maximalIdeal R) D A G) (k : ℕ) (hk : 1 ≤ k) :
@@ -54,6 +65,19 @@ theorem exists_torsion_toG (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] 
 
 open GlobalTheory.FinitePartGeneric ReciprocityTheory.ChartRestriction.G.DVR GlobalTheory.ConstLin GlobalTheory.FormalPoint
 
+/- English proof (translation)
+Use `hR.2` as an intermediate fact. Establish `hL` using `firstFiveLaws`. Use `hfin` as an intermediate fact. Take `⟨R', _, _, _, _, φ, ξ, hR', hI, hF, hξ, rfl⟩` from `exists_normal_point R hR.1 F N x hx`. Establish `hφ : Function.Injective φ` using `fun a b e => IsFractionRing.injective R (FractionRing R) ((algebraMap (FractionRing R) F).injective (by rw [hF a, hF b, e]))`.
+
+Take `⟨D', hD, A', U', hU⟩` from `UT.EndBaseChange.exists_pull hL.1.polBaseChange hL.2.2.2.1.unifBaseChange hL.2.2.2.2.psiOnExists hR.1 hR' φ hφ hI hG U`. Establish `hh : ξ ≫ N.hom = (𝟙_ (Over (Sp R'))).hom ≫ spMap φ` using `hξ.trans (Category.id_comp _).symm`. Take `⟨gp, hgp⟩ : ∃ gp : GtPt D'.toPre (𝟙_ (Over (Sp R'))), ConstLin.Thru hD.w hD.xe (T'` from `𝟙_ _) ξ g₀ gp := ConstPoint.exists_gtPt_through hL.1.globalFns (pull_grp hD) hD.w_gen hD.xe.toAddMonoidHom hD.c_pr (T' := 𝟙_ _) ξ hh g₀`. Set `x₁ : 𝟙_ (Over (Sp R')) ⟶ (Over.pullback (specOf φ)).obj G` to `Over.homMk (pullback.lift (ξ ≫ x₀.left) (𝟙_ (Over (Sp R'))).hom (by rw [Category.assoc, Over.w]; exact hh)) (pullback.lift_snd _ _ _)`. Establish `e₁ : x₁.left ≫ pullback.fst G.hom (specOf φ) = ξ ≫ x₀.left` using `pullback.lift_fst _ _ _`.
+
+Establish `e₂ : x₁.left ≫ (Iso.refl ((Over.pullback (specOf φ)).obj G)).hom.left ≫ pullback.fst G.hom (specOf φ) = ξ ≫ x₀.left` using `(congrArg (x₁.left ≫ ·) (Category.id_comp _)).trans e₁`. Establish `gG` using `isGrpPullback_pullback G (spMap φ)`. Establish `hk₁ : x₁ ^ k = 1` using `ConstGrp.push_injective gG _ (by`. Set `ρ : Over.mk ((𝟙_ (Over (Sp R'))).hom ≫ spMap φ) ⟶ N` to `Over.homMk ξ hh`. Establish `e : pushHom gG _ x₁ = ρ ≫ x₀` using `Over.OverMorphism.ext e₁`.
+
+Rewrite using `[map_pow, map_one, e, ← MonObj.comp_pow, htors, MonObj.comp_one])`. Establish `hp` using `isPointOf_thru hU hgp e₂ ((TorsionFormCompare.formalEq_iff _ _ _).1 hform)`. Take `⟨g', hg'⟩` from `FieldRestrictionTest.exists_isPullF (toUnit (TF (R := R') F)) gp`. Set `y : TFK (R` to `R) F ⟶ (Over.pullback (jK R)).obj G := Over.homMk (pullback.lift (((jFK (R := R') F ≫ jK R') ≫ ξ) ≫ x₀.left) (jFK (R := R) F) (by rw [Category.assoc, Over.w]; exact hx)) (pullback.lift_snd _ _ _)`. Establish `hy : (y ≫ U.gen.hom).left ≫ U.gen.inv.left ≫ pullback.fst G.hom (jK R) = ((jFK (R` using `R') F ≫ jK R') ≫ ξ) ≫ x₀.left := by`.
+
+Rewrite using `[← Category.assoc, ← Over.comp_left, Category.assoc, Iso.hom_inv_id, Category.comp_id]`. Conclude with `pullback.lift_fst _ _ _`. Use `⟨_, hy, FiniteTorsionExt.main hL.1 R R' _ _ hR.1 hR' φ D A G U _ (Iso.refl _) (by show IsMonHom (𝟙 _); infer_instance) A' D' hD U' hU (maximalIdeal.isMaximal R').ne_top F hF k hk x₁ gp hk₁ (fun e => ?_) q g' _ hq (isPullGtF_thru hgp hg hg') hg' ?_⟩` and prove the remaining obligations. Set `xe : Over.mk (thick R' (maximalIdeal R') e) ⟶ (Over.map (thick R' (maximalIdeal R') e)).obj (thickObj R' (maximalIdeal R') e ((Over.pullback (specOf φ)).obj G))` to `Over.homMk (pullback.lift (toUnit (Over.mk (thick R' (maximalIdeal R') e)) ≫ x₁).left (𝟙 _) ((Over.w _).trans (Category.id_comp _).symm)) (((Category.assoc _ _ _).symm.trans (congrArg (· ≫ _) (pullback.lift_snd _ _ _))).trans (Category.id_comp _))`. Establish `hxe : xe ≫ fstG _ e _ = toUnit _ ≫ x₁` using `Over.OverMorphism.ext (pullback.lift_fst _ _ _)`.
+
+Establish `c` using `hp e _ (toUnit (Over.mk (thick R' (maximalIdeal R') e))).left xe.left (congrArg (·.left) hxe)`. Conclude with `⟨xe, hxe, Over.OverMorphism.ext c.1, c.2⟩`. Rewrite using `[hy, Over.comp_left, Category.assoc (toUnit (TF (R := R') F)).left, e₂]`. Conclude with `Category.assoc _ _ _`.
+-/
 theorem generic (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (hR : GlobalTheory.Mum.Base R)
     (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (hG : IsSemiAbelian G) (D : DegData R (maximalIdeal R))
     (A : PolAV (Sp (FractionRing R))) (U : Unif (maximalIdeal R) D A G) (k : ℕ) (hk : 1 ≤ k) (N : Over (Sp R))
@@ -122,6 +146,29 @@ open GlobalTheory.FlatTors GlobalTheory.IndefiniteRowSideFullHecke.FlatIsoUnitGe
 
 namespace GlobalTheory.ToricTorsionUnif
 
+/- English proof (translation)
+Establish `hρ` using `ha`. Establish `hρ' : ∀ x ∈ maximalIdeal R ^ (0 + 1), (f.comp a) x = 0` using `fun x hx => by`. Rewrite using `[RingHom.comp_apply, ha x hx, map_zero]`. Establish `eR : (z ≫ GlobalTheory.TorusPart.gtTorus (U.gt 0) ha h₀).left ≫ φ = (z.left ≫ GlobalTheory.SplitTorus.bcMap (GlobalTheory.TorusPart.thickPt 0 hρ) D.toPre.X ≫ (U.gt 0).i.left) ≫ pullback.fst G.hom (thick R (maximalIdeal R) 0)`. Rewrite using `[Over.comp_left, Category.assoc]`.
+
+Establish `k` using `GlobalTheory.TorusPart.gtTorus_left (U.gt 0) hρ h₀`. Conclude with `(congrArg (z.left ≫ ·) k).trans (by simp only [Category.assoc])`. Establish `hN : (h.left ≫ x₀.left) ≫ G.hom = GlobalTheory.TorusPart.thickPt 0 hρ' ≫ thick R (maximalIdeal R) 0`. Rewrite using `[GlobalTheory.TorusPart.thickPt_thick, Category.assoc, Over.w x₀, Over.w h]`. Both sides reduce to the same expression.
+
+Set `y₁ : Sp B' ⟶ (thickObj R (maximalIdeal R) 0 G).left` to `pullback.lift (h.left ≫ x₀.left) (GlobalTheory.TorusPart.thickPt 0 hρ') hN`. Set `y₂ : Sp B' ⟶ (thickObj R (maximalIdeal R) 0 G).left` to `z.left ≫ GlobalTheory.SplitTorus.bcMap (GlobalTheory.TorusPart.thickPt 0 hρ) D.toPre.X ≫ (U.gt 0).i.left`. Establish `e₁ : h.left ≫ x₀.left = y₁ ≫ pullback.fst G.hom (thick R (maximalIdeal R) 0)` using `(pullback.lift_fst _ _ _).symm`. Establish `hP` using `(GlobalTheory.TorsionFormCompare.formalEq_iff U.toUnifPre x₀ g₀).1 hform`. Establish `hc` using `hP 0 (Sp B') h.left y₁ e₁.symm`.
+
+Take `⟨hb, hv⟩` from `(GlobalTheory.FormalPoint.hasCoords_iff _ 0 g₀ h.left y₁).1 hc`. It suffices to establish `hy : y₁ = y₂ by rw [eR, e₁, hy]`. Use `GlobalTheory.TorusCoord.ext_of_val (U.gt 0) y₁ y₂ ?_ ?_` and prove the remaining obligations. Rewrite using `[hb, ← hpull.1, (hg 0).1, GlobalTheory.TorusCoord.pG_left]`. Establish `hk : (U.gt 0).i.left ≫ (U.gt 0).q.left = (splitTorus _ D.toPre.X).hom ≫ eSec (thickObj R (maximalIdeal R) 0 D.toPre.P.A)`.
+
+Use `congrArg Over.Hom.left (U.gt 0).isKernel.w` as an intermediate fact. Rewrite `this` using `[Over.comp_left, Over.comp_left]`. Conclude with `this`. Establish `hE : eSec (thickObj R (maximalIdeal R) 0 D.toPre.P.A) ≫ pullback.fst D.toPre.P.A.hom (thick R (maximalIdeal R) 0) = thick R (maximalIdeal R) 0 ≫ eSec D.toPre.P.A` using `GlobalTheory.UnitValue.eSec_pullback_fst _ _`. Establish `hz' : z.left ≫ (splitTorus (Sp B) D.toPre.X).hom = spMap f` using `Over.w z`.
+
+Establish `hfa : spMap f ≫ spMap a = spMap (f.comp a)`. Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression. Simplify using `only [y₂, Category.assoc]`. Rewrite using `[reassoc_of% hk, hE, ← Category.assoc (GlobalTheory.SplitTorus.bcMap _ _), GlobalTheory.SplitTorus.bcMap_hom, Category.assoc, reassoc_of% (GlobalTheory.TorusPart.thickPt_thick hρ), reassoc_of% hz', reassoc_of% hfa]`.
+
+Both sides reduce to the same expression. Introduce `χ w J hJ`. Rewrite using `[hv χ w J hJ]`. Establish `l₁ : val (g₀.s χ) h.left w J = gm (𝟙 _) w ⊤ (unitOn (τ (Multiplicative.ofAdd χ)))`. Establish `c₁` using `val_corr hJ (hpull.2 χ) (𝟙 _)`.
+
+Rewrite `c₁` using `[val_pull hJ, Category.id_comp]`. Conclude with `c₁.symm.trans (GlobalTheory.TorusTorsion.TorusVal.val_eq (hg χ) (𝟙 _) hJ)`. Rewrite using `[l₁]`. Set `Z₀ : Over (Spec (CommRingCat.of (R ⧸ maximalIdeal R ^ (0 + 1))))` to `Over.mk ((z.left ≫ GlobalTheory.SplitTorus.bcMap (GlobalTheory.TorusPart.thickPt 0 hρ) D.toPre.X) ≫ (splitTorus _ D.toPre.X).hom)`. Set `τ' : Z₀ ⟶ splitTorus _ D.toPre.X` to `Over.homMk (z.left ≫ GlobalTheory.SplitTorus.bcMap (GlobalTheory.TorusPart.thickPt 0 hρ) D.toPre.X) rfl`.
+
+Establish `k` using `GlobalTheory.TorusCoord.val_t_act (U.gt 0) τ' 1 χ (𝟙 Z₀.left) w J hJ`. Establish `k₁ : 𝟙 Z₀.left ≫ (τ' ≫ (U.gt 0).i * 1).left = y₂`. Rewrite using `[_root_.mul_one, Category.id_comp, Over.comp_left]`. Simplify using `only [τ', y₂, Over.homMk_left, Category.assoc]`. Establish `k₂ : val ((U.gt 0).t χ) (𝟙 Z₀.left ≫ (1 : Z₀ ⟶ thickObj R (maximalIdeal R) 0 G).left) w J = 1`.
+
+Establish `e : (1 : Z₀ ⟶ thickObj R (maximalIdeal R) 0 G).left = Z₀.hom ≫ eSec (thickObj R (maximalIdeal R) 0 G)`. Rewrite using `[Hom.one_def, Over.comp_left]`. Both sides reduce to the same expression. Rewrite using `[e, Category.id_comp, ← val_pull hJ, val_corr hJ ((U.gt 0).t_unit χ), val_one]`. Establish `k₃ : GlobalTheory.splitTorusPointsEquiv _ D.toPre.X Z₀ τ' (Multiplicative.ofAdd χ) = unitOn (τ (Multiplicative.ofAdd χ))`.
+
+Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[← hz χ, GlobalTheory.splitTorusPointsEquiv_val, GlobalTheory.UU.chV_val, GlobalTheory.SplitTorus.charUnit_val, GlobalTheory.SplitTorus.charUnit_val]`. Simplify using `only [τ', Over.homMk_left, Scheme.Hom.comp_appTop, CommRingCat.comp_apply, GlobalTheory.SplitTorus.bcMap_appTop_chi]`. Rewrite `k` using `[k₁, k₂, k₃, _root_.mul_one]`. Conclude with `k.symm`.
+-/
 theorem eq_torus_of_classify (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (G : Over (Sp R)) [GrpObj G]
     [IsCommMonObj G] (D : DegData R (maximalIdeal R)) (A₀ : PolAV (Sp (FractionRing R)))
     (U : Unif (maximalIdeal R) D A₀ G) (N : Over (Sp R)) (g₀ : GtPt D.toPre N) (x₀ : N ⟶ G)
@@ -215,6 +262,25 @@ open scoped TensorProduct
 attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 
+/- English proof (translation)
+Introduce `R _ _ _ hR G _ _ hG D A U k hk`. Take `⟨N, g₀, x₀, hfin, -, -, hU, htors, hform⟩` from `GlobalTheory.ToricTorsionUnif.exists_torsion_toG R hR G D A U k hk`. Set `u : ∀ (B : Type) [CommRing B] (_ : Multiplicative D.toPre.X →* Bˣ), D.toPre.X →+ Additive Γ(Sp B, ⊤)ˣ` to `fun B _ τ => AddMonoidHom.mk' (fun χ => Additive.ofMul (unitOn (τ (Multiplicative.ofAdd χ)))) (fun χ χ' => by`. Simplify using `only [ofAdd_add, map_mul, unitOn, ofMul_mul])`. Establish `hu : ∀ (B : Type) [CommRing B] (τ : Multiplicative D.toPre.X →* Bˣ), τ ^ k = 1 → k • u B τ = 0`.
+
+Introduce `B _ τ hτ`. Use `AddMonoidHom.ext fun χ => Additive.toMul.injective ?_` and prove the remaining obligations. Establish `e : (τ (Multiplicative.ofAdd χ)) ^ k = 1` using `by rw [← MonoidHom.pow_apply, hτ, MonoidHom.one_apply]`. Simplify using `only [u, AddMonoidHom.nsmul_apply, AddMonoidHom.mk'_apply, toMul_nsmul, toMul_ofMul, unitOn, ← map_pow, e, map_one, AddMonoidHom.zero_apply, toMul_zero]`. Establish `ex : ∀ (B : Type) [CommRing B] (a : R →+* B) (τ : Multiplicative D.toPre.X →* Bˣ), ∃ g : GtPt D.toPre (Over.mk (spMap a)), ∀ χ, GlobalTheory.IndefiniteRowSideFullHecke.FlatIsoUnitGenerator.TorusVal g χ (unitOn (τ (Multiplicative.ofAdd χ)))`.
+
+Introduce `B _ a τ`. Take `⟨g, hg⟩` from `GlobalTheory.TorusTorsion.exists_torusPt (D := D.toPre) (T := Over.mk (spMap a)) (u B τ)`. Conclude with `⟨g, hg⟩`. Use `choose gT hgT using ex`. Establish `ex₂ : ∀ (B : Type) [CommRing B] (a : R →+* B) (τ : Multiplicative D.toPre.X →* Bˣ), τ ^ k = 1 → ∃! h : Over.mk (spMap a) ⟶ N, GtPt.IsPull h.left g₀ (gT B a τ)`.
+
+Introduce `B _ a τ hτ`. Take `⟨g', h₁, h₂⟩` from `GlobalTheory.TorusTorsion.exists_nsmul_zero k (u B τ) (hu B τ hτ) (T := Over.mk (spMap a)) (g := gT B a τ) (hgT B a τ)`. Conclude with `hU _ _ ⟨g', h₁, h₂⟩`. Use `choose hT hhT hTu using ex₂`. Use `⟨fun B _ a τ hτ => hT B a τ hτ ≫ x₀, fun B _ a τ hτ => ?_, fun B B' _ _ a a' f τ hτ τ' hτ' ha hτf => ?_, fun B B' _ _ a ha a' f G₀ _ φ h₀ τ hτ z ha' hz => ?_, fun F _ _ _ a τ hτ q x ha hq hqt hx => ?_⟩` and prove the remaining obligations.
+
+Use `show (hT B a τ hτ ≫ x₀) ^ k = 1`. Rewrite using `[← MonObj.comp_pow, htors, MonObj.comp_one]`. Substitute `ha` using the available equality. Set `ρ : Over.mk (spMap (f.comp a)) ⟶ Over.mk (spMap a)` to `Over.homMk (spMap f) (GlobalTheory.ToricTorsionSec.spMap_comp a f).symm`. Establish `hρ : GtPt.IsPull ρ.left (gT B a τ) (gT B' (f.comp a) τ')` using `GlobalTheory.TorusTorsion.isPull_of_units ρ (hgT B a τ) (hgT B' _ τ') fun χ => by`.
+
+Use `(GlobalTheory.ToricTorsionSec.appTop_unitOn f _).trans ?_` and prove the remaining obligations. Use `congr 2`. Conclude with `Units.ext (hτf _).symm`. Establish `e` using `hTu B' _ τ' hτ' (ρ ≫ hT B a τ hτ) (GlobalTheory.ToricTorsionSec.isPull_trans (hhT B a τ hτ) hρ)`. Use `show (hT B' (f.comp a) τ' hτ' ≫ x₀).left = spMap f ≫ (hT B a τ hτ ≫ x₀).left`.
+
+Rewrite using `[← e]`. Both sides reduce to the same expression. Substitute `ha'` using the available equality. Conclude with `GlobalTheory.ToricTorsionUnif.eq_torus_of_classify R G D A U N g₀ x₀ hform B B' a ha f G₀ φ h₀ τ z hz (gT B' _ τ) (hgT B' _ τ) (hT B' _ τ hτ) (hhT B' _ τ hτ)`. Substitute `ha` using the available equality.
+
+Establish `hx' : GlobalTheory.FlatTors.OverGen F N (hT F _ τ hτ).left` using `(Over.w (hT F _ τ hτ)).trans (GlobalTheory.ToricTorsionSec.spMap_comp _ _)`. Establish `hp` using `GlobalTheory.ToricTorsionSec.isPullF_trans (hhT F _ τ hτ) (GlobalTheory.ToricTorsionSec.isPullF_torusPt τ (gT F _ τ) (hgT F _ τ) q.g hqt)`. Rewrite `hp` using `[Category.id_comp]`. Take `⟨a', ha', hq'⟩` from `GlobalTheory.ToricTorsionUnif.generic R hR G hG D A U k hk N g₀ x₀ hfin htors hform F _ hx' q hq hp`. Take `rfl` from `GlobalTheory.TorsionImage.qkToAkU_unique GlobalTheory.abelianSchemeLaws_all.1 GlobalTheory.abelianSchemeLaws_all.2 R (maximalIdeal R) hR.1 D A G hG U F k hk q x a' hx hq'`.
+
+Use `show x.left ≫ U.gen.inv.left ≫ pullback.fst G.hom (jK R) = (hT F _ τ hτ ≫ x₀).left`. Rewrite using `[ha', Over.comp_left]`.
+-/
 theorem GlobalTheory.ToricTorsionUnif.main : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalTheory.Mum.Base R → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (U : Unif (maximalIdeal R) D A G) (k : ℕ), 1 ≤ k → ∃ s : ∀ (B : Type) [CommRing B] (a : R →+* B) (τ : Multiplicative D.toPre.X →* Bˣ), τ ^ k = 1 → (Over.mk (spMap a) ⟶ G), (∀ (B : Type) [CommRing B] (a : R →+* B) τ h, s B a τ h ^ k = 1) ∧ (∀ (B B' : Type) [CommRing B] [CommRing B'] (a : R →+* B) (a' : R →+* B') (f : B →+* B') τ h τ' h', a' = f.comp a → (∀ χ, (τ' χ : B') = f (τ χ : B)) → (s B' a' τ' h').left = spMap f ≫ (s B a τ h).left) ∧ (∀ (B B' : Type) [CommRing B] [CommRing B'] (a : R →+* B) (ha : ∀ x ∈ maximalIdeal R ^ (0 + 1), a x = 0) (a' : R →+* B') (f : B →+* B') (G₀ : Over (Sp B)) [GrpObj G₀] (φ : G₀.left ⟶ G.left) (h₀ : IsGrpPullback G₀ G (spMap a) φ) τ h (z : Over.mk (spMap f) ⟶ splitTorus (Sp B) D.toPre.X), a' = f.comp a → (∀ χ, GlobalTheory.UU.chV z χ = unitOn (τ (Multiplicative.ofAdd χ))) → (s B' a' τ h).left = (z ≫ GlobalTheory.TorusPart.gtTorus (U.gt 0) ha h₀).left ≫ φ) ∧ ∀ (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] (a : R →+* F) τ h (q : QkPt D.toPre F k) (x : TFK (R := R) F ⟶ A.A), a = (algebraMap (FractionRing R) F).comp (algebraMap R (FractionRing R)) → q.y = 0 → GlobalTheory.UT.IsTor τ q.g → QkToAkU U.toUnifPre F k q x → x.left ≫ genMap U = (s F a τ h).left := by
   intro R _ _ _ hR G _ _ hG D A U k hk
   obtain ⟨N, g₀, x₀, hfin, -, -, hU, htors, hform⟩ := GlobalTheory.ToricTorsionUnif.exists_torsion_toG R hR G D A U k hk

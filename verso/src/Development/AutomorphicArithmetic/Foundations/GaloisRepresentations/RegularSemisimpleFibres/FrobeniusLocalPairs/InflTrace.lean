@@ -20,6 +20,9 @@ open scoped Classical
 
 namespace UpperTheory.Gal.InertialTypesAlt.L.InflationTrace
 
+/- English proof (translation)
+Take `⟨l1, -, t1, -⟩` from `UpperTheory.V.Z.Tf.Orb.gLTop_of k n`. Establish `hA` using `(GlobalTheory.CompanionTheory.AdmDict.isAdmissible_iff τ.ρ).1 (PositivityTheory.Exh.irreducibleAdmissibleGL k n τ.V τ.ρ τ.smooth τ.irred)`. Take `⟨A, hA1, hA2⟩` from `PositivityTheory.TfC.OccursIff.exists_integralOp_of_admissible m τ.ρ hA φ hφ.1 hφ.2`. Conclude with `⟨_, A, hA1, hA2, rfl⟩`.
+-/
 private theorem exists_trace {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
     [MeasurableSpace (GL (Fin n) k)] [BorelSpace (GL (Fin n) k)] (m : Measure (GL (Fin n) k)) [m.IsHaarMeasure]
     (τ : SmIrr (GL (Fin n) k)) (φ : GL (Fin n) k → ℂ) (hφ : Test φ) : ∃ z, GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.HasTrace m τ.ρ φ z := by
@@ -28,11 +31,19 @@ private theorem exists_trace {k : Type} [Field k] [ValuativeRel k] [TopologicalS
   obtain ⟨A, hA1, hA2⟩ := PositivityTheory.TfC.OccursIff.exists_integralOp_of_admissible m τ.ρ hA φ hφ.1 hφ.2
   exact ⟨_, A, hA1, hA2, rfl⟩
 
+/- English proof (translation)
+The claim follows from `(PositivityTheory.Exh.irreducibleAdmissibleGL k n τ.V τ.ρ τ.smooth τ.irred).2 U ho hc`.
+-/
 private theorem fin_fixed {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
     (τ : SmIrr (GL (Fin n) k)) (U : Subgroup (GL (Fin n) k)) (ho : IsOpen (U : Set (GL (Fin n) k)))
     (hc : IsCompact (U : Set (GL (Fin n) k))) : FiniteDimensional ℂ (fixed τ.ρ U) :=
   (PositivityTheory.Exh.irreducibleAdmissibleGL k n τ.V τ.ρ τ.smooth τ.irred).2 U ho hc
 
+/- English proof (translation)
+Establish `h : twKer ρ U 1 ≤ (twKer ρ U 1).comap I`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, x, rfl⟩`. Use `Submodule.subset_span ⟨⟨θ u, hθ u u.2⟩, I x, ?_⟩` and prove the remaining obligations. Simplify using `[hI]`.
+
+Conclude with `fun x hx => h hx`.
+-/
 private theorem twKer_keep {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V) (U : Subgroup G)
     (θ : G → G) (hθ : ∀ u ∈ U, θ u ∈ U) (I : V →ₗ[ℂ] V) (hI : ∀ g x, I (ρ g x) = ρ (θ g) (I x)) :
     ∀ x ∈ twKer ρ U 1, I x ∈ twKer ρ U 1 := by
@@ -43,6 +54,9 @@ private theorem twKer_keep {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V
     simp [hI]
   exact fun x hx => h hx
 
+/- English proof (translation)
+Use `letI : Unique (PlacesOver E v) := ⟨⟨w⟩, hw⟩`. Set `e` to `RingEquiv.piUnique (fun w : PlacesOver E v => w.1.adicCompletion E)`. Use `⟨mapGL n (e.symm : _ →+* _) g, ?_⟩` and prove the remaining obligations. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Conclude with `e.apply_symm_apply (g i j)`.
+-/
 private theorem cmp_onto {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ} {v : Pl F}
     (w : PlacesOver E v) (hw : ∀ w' : PlacesOver E v, w' = w) (g : Gw n w.1) :
     ∃ y : GL (Fin n) (CompletionsOver E v), GM.cmp w y = g := by
@@ -56,6 +70,33 @@ end UpperTheory.Gal.InertialTypesAlt.L.InflationTrace
 
 open UpperTheory.Gal.InertialTypesAlt.L.InflationTrace
 
+/- English proof (translation)
+Introduce `hIM hVE hVT hNI F E _ _ _ _ _ _ _ _ hp n hn π P hconj hweak v w hw hunr _ _ _ _ hcm F₀ F₁ _ _ _ _ _ rk rK s sb hres τ τ' hτ hτ'`. Use `haveI : CharZero (v.adicCompletion F) := charZero_of_injective_algebraMap (algebraMap F (v.adicCompletion F)).injective`. Take `⟨hgen, hfr⟩` from `UpperTheory.Gal.InertialTypesAlt.L.frobFacts _ _ F₀ F₁ rk rK s sb hres`. Take `⟨hns, hdeg, hglob⟩` from `UpperTheory.Gal.InertialTypesAlt.L.globOf F E hp v w hw hcm`. Take `⟨σ, hσg, hσs⟩` from `hglob s hgen`.
+
+Take `⟨s', hs', hI⟩` from `hVE F E σ hσg hp n hn P hconj v w hns`. Take `⟨I₀, hI₀⟩` from `hI τ' hτ'`. Establish `hsg : ∀ g : Gw n w.1, s' g = GlobalTheory.LBC.galAct s n g`. Introduce `g`. Take `⟨y, rfl⟩` from `cmp_onto w hw g`.
+
+Establish `e` using `hs' y`. Express the relevant statement in the definitionally equal form `(s' : Gw n w.1 →* Gw n w.1) (GM.cmp w y) = _`. Rewrite using `[← e]`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Conclude with `hσs (y i j)`.
+
+Take `⟨a, ha, hTw⟩` from `UpperTheory.Gal.InertialTypesAlt.L.twScale _ _ s hgen n τ'.V τ'.ρ τ'.smooth τ'.irred I₀ (fun g x => by rw [hI₀, hsg])`. Set `I₂ : τ'.V ≃ₗ[ℂ] τ'.V` to `I₀.trans (LinearEquiv.smulOfNeZero ℂ τ'.V a ha)`. Establish `hI₂c : (I₂ : τ'.V →ₗ[ℂ] τ'.V) = a • (I₀ : τ'.V →ₗ[ℂ] τ'.V)` using `rfl`. Establish `hI₂ : ∀ g x, I₂ (τ'.ρ g x) = τ'.ρ (s' g) (I₂ x)` using `fun g x => by`. Express the relevant statement in the definitionally equal form `a • I₀ (τ'.ρ g x) = τ'.ρ (s' g) (a • I₀ x)`.
+
+Rewrite using `[hI₀, map_smul]`. Take `⟨i1, i2, i3, i4, mE, mF, hE, hF, h1, h2⟩` from `(UpperTheory.ConvolutionTheory.GM.matchOne F E σ n v).1`. Use `letI : MeasurableSpace (GL (Fin n) (w.1.adicCompletion E)) := borel _`. Use `haveI : BorelSpace (GL (Fin n) (w.1.adicCompletion E)) := ⟨rfl⟩`. Take `⟨hH, hP⟩` from `@UpperTheory.V.Z.Tf.Orb.placeOfLocal_holds F E _ _ _ _ _ _ σ hσg v w hw _ _ _ _ s hgen hdeg hcm hσs n _ _ _ _ mE mF hE hF _ _`.
+
+Establish `hUS` using `UpperTheory.V.Z.Tf.Orb.unitSB_holds`. Establish `hPI` using `UpperTheory.V.Z.Tf.Orb.placeInt_holds`. Establish `hcmp : Continuous (mapGL n (Pi.evalRingHom (fun w : PlacesOver E v => w.1.adicCompletion E) w))` using `Continuous.units_map _ (continuous_id.matrix_map (continuous_apply w))`. Establish `hE1 : (mE.map (mapGL n (Pi.evalRingHom (fun w : PlacesOver E v => w.1.adicCompletion E) w))) (PositivityTheory.Rg.Tf.Loc.unitGL (n` using `Fin n) (w.1.adicCompletion E) : Set (GL (Fin n) (w.1.adicCompletion E))) = 1 := by`. Rewrite using `[Measure.map_apply hcmp.measurable (hUS _ n).1.measurableSet, ← hPI.2 F E v w hw n, h1]`.
+
+Establish `hF1 : mF (PositivityTheory.Rg.Tf.Loc.unitGL (n` using `Fin n) (v.adicCompletion F) : Set (GL (Fin n) (v.adicCompletion F))) = 1 := by`. Rewrite using `[hPI.1 F v n, h2]`. Take `⟨c, hc, hcT⟩` from `hVT F E σ hσg hp n hn π P hconj hweak v w hns mF _ hF hH τ τ' hτ hτ' (s' : Gw n w.1 →* Gw n w.1) I₂ hs' hI₂`. Use `⟨(I₂ : τ'.V →ₗ[ℂ] τ'.V), c, by rw [hI₂c]; exact hTw, hc, fun fb hfb => ?_⟩` and prove the remaining obligations. Take `⟨hKk, hUko, hUkc, hUkle, -, hfk⟩` from `UpperTheory.Gal.InertialTypesAlt.L.inflFacts _ F₀ rk hres.onto₀ n`.
+
+Take `⟨hKK, hUKo, hUKc, hUKle, -, hfK⟩` from `UpperTheory.Gal.InertialTypesAlt.L.inflFacts _ F₁ rK hres.onto₁ n`. Take `⟨hHk, hTk, hSk⟩` from `hfk fb`. Take `⟨hHK, hTK, -⟩` from `hfK (normLift sb fb)`. Take `⟨hst1, -, -⟩` from `hfr n`. Establish `hstab : ∀ u ∈ K1 rK n, GlobalTheory.LBC.galAct s n u ∈ K1 rK n` using `fun u hu => by`.
+
+Establish `: GlobalTheory.LBC.galAct s n u ∈ (K1 rK n).map (GlobalTheory.LBC.galAct s n)` using `Subgroup.mem_map_of_mem _ hu`. Rewrite `this` using `[hst1]`. Then use the resulting hypothesis. Take `⟨hm1, hm2⟩` from `hIM _ _ (UpperTheory.V.Z.Tf.Orb.extCont_of _ _).1 inferInstance F₀ F₁ hres.deg rk rK hres.onto₀ hres.onto₁ hres.inc s sb hres.gal hres.frob n fb hfb`. Rewrite `hm1` using `[hKk, hKK]`. Rewrite `hm2` using `[hKk]`.
+
+Establish `hM` using `UpperTheory.Gal.InertialTypesAlt.L.matchOfSum _ _ s hgen n _ mF hH hF hE1 hF1 (K1 rK n) (K1 rk n) _ _ ⟨hUKo, hKK ▸ hUKle, hstab⟩ ⟨hUko, hKk ▸ hUkle, fun _ h => h⟩ hHK hHk hm1 hm2`. Establish `hMA : GM.MatchAt σ v 1 (fun g => infl rK (normLift sb fb) (GM.cmp w g)) (infl rk fb)` using `@(UpperTheory.ConvolutionTheory.GM.matchOne F E σ n v).2 i1 i2 i3 i4 mE mF hE hF h1 h2 _ _ _ (hP _ hTK _ hTk hM)`. Establish `hsupp : ∀ g, infl rk fb g ≠ 0 → g ∈ UpperTheory.Gal.InertialTypesAlt.G.normSet E n v` using `fun g hg => hNI F E σ hσg hp n hn v hunr g (by`. Establish `h3 : g ∈ (PositivityTheory.Rg.Tf.Loc.unitGL (n` using `Fin n) (v.adicCompletion F) : Set (GL (Fin n) (v.adicCompletion F))) := by`. Use `hSk g hg` as an intermediate fact.
+
+Rewrite `this` using `[hKk]`. Then use the resulting hypothesis. Rewrite `h3` using `[hPI.1 F v n]`. Conclude with `h3)`. Take `⟨z, hz⟩` from `exists_trace mF τ _ hTk`. Take `⟨B, hB, hBt⟩` from `hcT _ _ 1 z hTK hTk hMA hsupp hz`.
+
+Take `⟨A, hA, hAt⟩` from `hz`. Take `⟨l1, s1, t1, -⟩` from `UpperTheory.V.Z.Tf.Orb.gLTop_of (v.adicCompletion F) n`. Take `⟨l2, s2, t2, -⟩` from `UpperTheory.V.Z.Tf.Orb.gLTop_of (w.1.adicCompletion E) n`. Establish `e1` using `UpperTheory.Gal.InertialTypesAlt.L.trSum _ _ hH (KO _ n) (by rw [hKK]; exact (hUS _ n).1) (by rw [hKK]; exact (hUS _ n).2.1) (by rw [hKK]; exact hE1) _ τ'.ρ τ'.smooth (K1 rK n) hUKo hUKle _ hHK (I₂ : τ'.V →ₗ[ℂ] τ'.V) (fun x hx => by rw [hI₂c]; exact hTw.mem_fixed hst1 hx) (twKer_ …`. Establish `e2` using `UpperTheory.Gal.InertialTypesAlt.L.trSum _ _ hF (KO _ n) (by rw [hKk]; exact (hUS _ n).1) (by rw [hKk]; exact (hUS _ n).2.1) (by rw [hKk]; exact hF1) _ τ.ρ τ.smooth (K1 rk n) hUko hUkle _ hHk LinearMap.id (fun _ h => h) (fun _ h => h) A z hA hAt (fin_fixed τ _ hUko hUkc)`.
+
+Rewrite using `[← e1, ← e2, mul_one]`.
+-/
 theorem UpperTheory.Gal.InertialTypesAlt.L.inflTrace :
     GlobalTheory.DZA.InflMatching → UpperTheory.Gal.InertialTypesAlt.G.VarEx → UpperTheory.Gal.InertialTypesAlt.G.VarTrace → UpperTheory.Gal.InertialTypesAlt.G.NormInt → UpperTheory.Gal.InertialTypesAlt.L.InflTrace := by
   intro hIM hVE hVT hNI F E _ _ _ _ _ _ _ _ hp n hn π P hconj hweak v w hw hunr _ _ _ _ hcm F₀ F₁ _ _ _ _ _ rk rK s sb hres τ τ' hτ hτ'

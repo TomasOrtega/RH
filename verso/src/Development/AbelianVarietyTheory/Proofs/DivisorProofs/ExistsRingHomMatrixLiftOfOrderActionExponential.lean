@@ -7,6 +7,13 @@ open scoped Matrix
 
 namespace GlobalTheory.ExpLin
 
+/- English proof (translation)
+Introduce `X G _ _ g O _ act hab hsm hhom h1 hmul hadd y e he`. Establish `H` using `fun a => GlobalTheory.T.existsUnique_linear_lift_of_abelianEndomorphism X G g hab hsm y e e (act a) he he (hhom a)`. Set `M : O → (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)` to `fun a => (H a).exists.choose`. Establish `hM : ∀ a z, e (M a z) = e z ≫ act a` using `fun a => (H a).exists.choose_spec`. Establish `key : ∀ a (N : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)), (∀ z, e (N z) = e z ≫ act a) → N = M a` using `fun a N hN => (H a).unique hN (hM a)`.
+
+Establish `M1 : M 1 = LinearMap.id` using `(key 1 LinearMap.id (fun z => by simp [h1])).symm`. Establish `Mmul : ∀ a b, M (a * b) = M a ∘ₗ M b` using `fun a b => (key (a * b) (M a ∘ₗ M b) (fun z => by`. Simplify using `only [LinearMap.comp_apply, hM, hmul, Category.assoc])).symm`. Establish `Madd : ∀ a b, M (a + b) = M a + M b` using `fun a b => (key (a + b) (M a + M b) (fun z => by`. Rewrite using `[LinearMap.add_apply, he.1, hM, hM, hadd, MonObj.comp_mul])).symm`.
+
+Set `f : O →* Matrix (Fin g) (Fin g) ℂ` to `{ toFun := fun a => LinearMap.toMatrix' (M a) map_one' := by simp only [M1, LinearMap.toMatrix'_id] map_mul' := fun a b => by simp only [Mmul, LinearMap.toMatrix'_comp] }`. Use `⟨RingHom.mk' f (fun a b => by simp only [f, MonoidHom.coe_mk, OneHom.coe_mk, Madd, map_add]), ?_⟩` and prove the remaining obligations. Introduce `a z`. Use `show e (LinearMap.toMatrix' (M a) *ᵥ z) = _`. Rewrite using `[LinearMap.toMatrix'_mulVec, hM]`.
+-/
 theorem exists_ringHom_matrix_lift : ∀ (X : Scheme.{0}) (G : Over X) [GrpObj G] [IsCommMonObj G] (g : ℕ) (O : Type) [Ring O] (act : O → (G ⟶ G)), IsAbelianScheme G → SmoothOfRelativeDimension g G.hom → (∀ a, IsMonHom (act a)) → act 1 = 𝟙 G → (∀ a b, act (a * b) = act b ≫ act a) → (∀ a b, act (a + b) = act a * act b) → ∀ (y : Sp ℂ ⟶ X) (e : (Fin g → ℂ) → (Over.mk y ⟶ G)), IsExp y e → ∃ ρ' : O →+* Matrix (Fin g) (Fin g) ℂ, ∀ a z, e (ρ' a *ᵥ z) = e z ≫ act a := by
   intro X G _ _ g O _ act hab hsm hhom h1 hmul hadd y e he
   have H := fun a => GlobalTheory.T.existsUnique_linear_lift_of_abelianEndomorphism X G g hab hsm y e e (act a) he he (hhom a)

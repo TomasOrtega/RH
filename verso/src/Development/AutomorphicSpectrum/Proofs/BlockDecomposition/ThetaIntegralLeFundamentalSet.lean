@@ -15,6 +15,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.WeilConv
 
+/- English proof (translation)
+Establish `hinv` using `leftInv_absTheta V φ`. Establish `hfd : IsFundamentalDomain (GQ V) (stdDom (GQ V)) ν` using `isFundamentalDomain_stdDom _ ν`. Establish `e : absThetaInt V ν φ = ∫⁻ g in stdDom (GQ V), absTheta V φ g ∂ν`. Unfold `absThetaInt`. Use `show ∫⁻ q, descend (GQ V) (absTheta V φ) q ∂GlobalTheory.AutomorphicL2Unitary.quotMeasure (GQ V) ν = _`.
+
+Rewrite using `[GlobalTheory.AutomorphicL2Unitary.lintegral_quotMeasure hfd]`. Conclude with `lintegral_congr fun g => congrFun hinv.lift_descend g`. Rewrite using `[e]`. Conclude with `GlobalTheory.lintegral_fundamentalDomain_le_of_meets_orbits (GQ V) ν hfd hS hcov (GlobalTheory.AbsThetaSemi.measurable_absTheta V hφ) hinv`.
+-/
 theorem absThetaInt_le_of_meets_orbits (D : D7) (V : HSp D) (ν : Measure (GA D V)) (hν : ν.IsHaarMeasure) {n : ℕ}
     (φ : Mx D V.rank n → ℂ) (hφ : Continuous φ) (S : Set (GA D V)) (hS : MeasurableSet S)
     (hcov : ∀ g, ∃ γ ∈ GQ V, γ * g ∈ S) : absThetaInt V ν φ ≤ ∫⁻ g in S, absTheta V φ g ∂ν := by

@@ -27,12 +27,20 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.AdForm.DatumFour
 
+/- English proof (translation)
+Establish `h` using `Formalism.L2.Ker.mem_of_forall_locP M fun Q => GlobalTheory.AdForm.HalfPairing.smul_mem_locP hc hy Q`. Rewrite `h` using `[Nat.cast_smul_eq_nsmul]`. Then use the resulting hypothesis.
+-/
 theorem nsmul_mem_perO_of_halfB {E : Type} [Field E] [NumberField E] [StarRing E] {a b : ℕ}
     {SS : Finset (HeightOneSpectrum (𝓞 E))} {M : Submodule (𝓞 E) (Formalism.L2.Col.HomE E a b)} {c : ℕ} (hc : 0 < c)
     {y : Formalism.L2.Col.HomE E a b} (hy : y ∈ halfBO SS M c) : c • y ∈ M := by
   have h := Formalism.L2.Ker.mem_of_forall_locP M fun Q => GlobalTheory.AdForm.HalfPairing.smul_mem_locP hc hy Q
   rwa [Nat.cast_smul_eq_nsmul] at h
 
+/- English proof (translation)
+Establish `hcE : (c : E) ≠ 0` using `Nat.cast_ne_zero.2 hc.ne'`. Establish `h1 : (c : E)⁻¹ • β ∈ Formalism.L2.Col.homAt SS N N'`. Use `hH _ fun P hP => ?_` and prove the remaining obligations. Establish `h2` using `(Formalism.L2.Ker.mem_twO M c _ β).1 hβ P`. Establish `h3 : expS SS P = 1` using `by unfold expS; rw [if_pos hP]`.
+
+Rewrite `h2` using `[h3, zpow_one]`. Then use the resulting hypothesis. Establish `h4` using `hΞ2 x _ h1`. Rewrite `h4` using `[smul_smul, mul_inv_cancel₀ hcE, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem xi_add_halfB {E : Type} [Field E] [NumberField E] [StarRing E] {a b : ℕ}
     {SS : Finset (HeightOneSpectrum (𝓞 E))} {N : Submodule (𝓞 E) (Formalism.L2.Col.Sp E a)} {N' : Submodule (𝓞 E) (Formalism.L2.Col.Sp E b)}
     {M : Submodule (𝓞 E) (Formalism.L2.Col.HomE E a b)} {c : ℕ} (hc : 0 < c) (Ξ : Formalism.L2.Col.HomE E a b → ℂ)
@@ -51,6 +59,9 @@ theorem xi_add_halfB {E : Type} [Field E] [NumberField E] [StarRing E] {a b : �
 noncomputable def eXm {D : D7} (S T : HSp D) (e : AE D) (x : Formalism.L2.Col.HomE D.host.E S.rank T.rank) : WO S T :=
   (LinearMap.toMatrix' x).map fun r => e * incA D r
 
+/- English proof (translation)
+Establish `h1` using `GlobalTheory.AdForm.HalfPairing.toMatrix_mem_latRat hcc dS hy`. Rewrite `h1` using `[map_nsmul]`. Rewrite using `[mul_smul]`. Conclude with `nsmul_mem h1 k`.
+-/
 theorem nsmul_toMatrix_mem_latRat {D : D7} {S T : HSp D} (hcc : D.host.ccK = ⊤) {N : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)}
     {N' : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)} (dS : IsSelfDualC S N) (k c : ℕ) {y : Formalism.L2.Col.HomE D.host.E S.rank T.rank}
     (hy : c • y ∈ perO (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N') :
@@ -60,6 +71,9 @@ theorem nsmul_toMatrix_mem_latRat {D : D7} {S T : HSp D} (hcc : D.host.ccK = ⊤
   rw [mul_smul]
   exact nsmul_mem h1 k
 
+/- English proof (translation)
+Establish `hht : IsHalf (cA D (cA D e)) t` using `by rw [GlobalTheory.LatVac.cA_cA]; exact ht`. Establish `h4` using `GlobalTheory.DatumFourier.char_eq hP.std dS dT (GlobalTheory.PlaceVec.infPart_cA he0) hht hu htM hY`. Establish `h6` using `GlobalTheory.TraceBrk.exp_trace_eq_brk D ψ θ S T δ sc hP M (LinearMap.toMatrix' y')`. Rewrite `h6` using `[Matrix.toLin'_toMatrix']`. Conclude with `h4.trans h6`.
+-/
 theorem char_brk {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D} {δ : ℂ} {sc : ℝ} (hP : StdPair θ S T δ sc ψ)
     {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)}
     (dS : IsSelfDualC S ΛS) (dT : IsSelfDualC T ΛT) {e : AE D} (he0 : infPart D e = 0) {k : ℕ} {t u : WO S T}
@@ -74,6 +88,13 @@ theorem char_brk {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T 
   rw [Matrix.toLin'_toMatrix'] at h6
   exact h4.trans h6
 
+/- English proof (translation)
+Take `⟨s0, hs0, hvs0⟩` from `hRA.2.2 v hv`. Use `⟨s0, hs0, hvs0, ?_⟩` and prove the remaining obligations. Establish `h1 : ∑ y ∈ SB, (((SA.card : ℂ))⁻¹ * ∑ s ∈ SA, f s * (brk H y s)⁻¹) * g y = ((SA.card : ℂ))⁻¹ * ∑ s ∈ SA, f s * ∑ y ∈ SB, brk H y (v - s)`. Rewrite using `[Finset.sum_congr rfl fun y hy => by rw [hg y hy]]`. Simplify using `only [Formalism.L2.Ker.brk_sub_right, Finset.mul_sum, Finset.sum_mul]`.
+
+Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun s _ => Finset.sum_congr rfl fun y _ => by ring`. Rewrite using `[h1, Finset.sum_congr rfl fun s hs => by rw [horth (v - s) (sub_mem hv (hRA.1 s hs))]]`. Rewrite using `[Finset.sum_eq_single s0 (fun s hs hne' => by`. Rewrite using `[if_neg (fun h => hne' (hRA.2.1 s hs s0 hs0 (by`.
+
+Establish `h2 : s - s0 = (v - s0) - (v - s)` using `by abel`. Rewrite using `[h2]`. Conclude with `sub_mem hvs0 h))), mul_zero]) (fun h => absurd hs0 h), if_pos hvs0, hcard]`. Establish `: (SB.card : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hne`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem fin_sum {V : Type} [AddCommGroup V] [Module ℂ V] (H : Formalism.L2.Th1.H.Sesq V) {A B Λ : AddSubgroup V} {SA SB : Finset V}
     (f g : V → ℂ) {v : V} (hv : v ∈ Λ ⊓ A) (hRA : Formalism.L2.Th1.H.IsReps B (Λ ⊓ A) SA)
     (horth : ∀ w ∈ Λ ⊓ A, ∑ y ∈ SB, brk H y w = if w ∈ B then (SB.card : ℂ) else 0)
@@ -96,6 +117,9 @@ theorem fin_sum {V : Type} [AddCommGroup V] [Module ℂ V] (H : Formalism.L2.Th1
   have : (SB.card : ℂ) ≠ 0 := Nat.cast_ne_zero.2 hne
   field_simp
 
+/- English proof (translation)
+Establish `h : ∃ x, embH emb δ x = embH emb δ z` using `⟨z, rfl⟩`. Unfold `onV`. Rewrite using `[dif_pos h]`. Conclude with `congrArg Ξ (Formalism.L2.Ker.embH_inj emb hδ h.choose_spec)`.
+-/
 theorem onV_embH {E : Type} [Field E] [NumberField E] [StarRing E] {ι : Type} [Fintype ι] [Nonempty ι] {a b : ℕ}
     (emb : ι → E →+* ℂ) {δ : ℂ} (hδ : δ ≠ 0) (Ξ : Formalism.L2.Col.HomE E a b → ℂ) (z : Formalism.L2.Col.HomE E a b) :
     onV emb δ Ξ (embH emb δ z) = Ξ z := by
@@ -104,17 +128,26 @@ theorem onV_embH {E : Type} [Field E] [NumberField E] [StarRing E] {ι : Type} [
   rw [dif_pos h]
   exact congrArg Ξ (Formalism.L2.Ker.embH_inj emb hδ h.choose_spec)
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.mem_map.1 h`.
+-/
 theorem mem_BC {E : Type} [Field E] [NumberField E] [StarRing E] {ι : Type} [Fintype ι] {a b : ℕ}
     {emb : ι → E →+* ℂ} {δ : ℂ} {AA0 : Submodule (𝓞 E) E} {SS : Finset (HeightOneSpectrum (𝓞 E))}
     {N : Submodule (𝓞 E) (Formalism.L2.Col.Sp E a)} {N' : Submodule (𝓞 E) (Formalism.L2.Col.Sp E b)} {c : ℕ} {w : VV ι a b}
     (h : w ∈ BC emb δ AA0 SS N N' c) : ∃ β ∈ halfBO SS (perO AA0 N N') c, embH emb δ β = w :=
   AddSubgroup.mem_map.1 h
 
+/- English proof (translation)
+Rewrite using `[map_sub, map_sub, hp, hβ]`. Normalize the expressions using the abelian group laws.
+-/
 theorem embH_sub_eq {E : Type} [Field E] [NumberField E] {ι : Type} {a b : ℕ} (emb : ι → E →+* ℂ) (δ : ℂ)
     (m p β : Formalism.L2.Col.HomE E a b) (x0 s0 : VV ι a b) (hp : embH emb δ p = x0)
     (hβ : embH emb δ β = embH emb δ m - s0) : s0 - x0 = embH emb δ (m - p - β) := by
   rw [map_sub, map_sub, hp, hβ]; abel
 
+/- English proof (translation)
+Establish `h1` using `xi_add_halfB hc Ξ hΞ2 hH hβ (x - β)`. Rewrite `h1` using `[sub_add_cancel]`. Conclude with `h1.symm`.
+-/
 theorem xi_sub_halfB {E : Type} [Field E] [NumberField E] [StarRing E] {a b : ℕ}
     {SS : Finset (HeightOneSpectrum (𝓞 E))} {N : Submodule (𝓞 E) (Formalism.L2.Col.Sp E a)} {N' : Submodule (𝓞 E) (Formalism.L2.Col.Sp E b)}
     {M : Submodule (𝓞 E) (Formalism.L2.Col.HomE E a b)} {c : ℕ} (hc : 0 < c) (Ξ : Formalism.L2.Col.HomE E a b → ℂ)
@@ -128,6 +161,85 @@ theorem xi_sub_halfB {E : Type} [Field E] [NumberField E] [StarRing E] {a b : �
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 200000 in
 
+/- English proof (translation)
+Introduce `D ψ θ S T a b hS hT δ sc hP e SS hE N N' c hc hcP h2 hLa ⟨ΛS, dS, eS⟩ ⟨ΛT, dT, eT⟩ Φ Ξ hSB hΦ hΞ1 hΞ2 SX SA SB hRX hRA hRB px py hpx hpy`. Substitute `hS hT` using the available equality. Take `rfl : ΛS = N` from `SetLike.coe_injective eS`. Take `rfl : ΛT = N'` from `SetLike.coe_injective eT`. Rewrite `hSB` using `[← eS, ← eT]`.
+
+Rewrite using `[← eS, ← eT]`. Use `haveI : Nonempty D.what₂.Tau := ⟨D.eTau.symm 1⟩`. Use `set Λ := latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True with hΛ`. Establish `hee : e * e = e` using `GlobalTheory.PlaceDatum.idemSum_mul_self hE`. Establish `he0 : infPart D e = 0` using `GlobalTheory.PlaceVec.idemSum_infPart hE`.
+
+Establish `hecA : e * cA D e = 0` using `hE.2`. Establish `heI : finPart D e ∈ intAE D` using `GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by rw [← map_mul, hee])`. Establish `hcAcA : cA D e * cA D e = cA D e` using `by rw [← map_mul, hee]`. Establish `hcI : finPart D (cA D e) ∈ intAE D` using `GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by rw [← map_mul, hcAcA])`. Establish `hΛe : ∀ w ∈ Λ, e • w ∈ Λ` using `GlobalTheory.LatticeStable.smul_mem_latO D S T _ _ _ e heI`.
+
+Establish `hΛc : ∀ w ∈ Λ, cA D e • w ∈ Λ` using `GlobalTheory.LatticeStable.smul_mem_latO D S T _ _ _ (cA D e) hcI`. Establish `hhe : ∀ w : WO S T, IsHalf e (e • w)` using `fun w i j => by`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, ← mul_assoc, hee]`. Establish `heX : ∀ x, IsHalf e (eXm S T e x)` using `fun x i j => by`. Simplify using `only [eXm, Matrix.map_apply, ← mul_assoc, hee]`.
+
+Establish `heX_add : ∀ x y, eXm S T e (x + y) = eXm S T e x + eXm S T e y` using `fun x y => by`. Use extensionality with `i j`. Simplify using `only [eXm, map_add, Matrix.map_apply, Matrix.add_apply, RingHom.map_add, mul_add]`. Establish `heX_sub : ∀ x y, eXm S T e (x - y) = eXm S T e x - eXm S T e y` using `fun x y => by`. Use extensionality with `i j`.
+
+Simplify using `only [eXm, map_sub, Matrix.map_apply, Matrix.sub_apply, RingHom.map_sub, mul_sub]`. Establish `heF : ∀ M : Matrix (Fin T.rank) (Fin S.rank) D.host.E, e • GlobalTheory.LatVac.finTens 1 M = eXm S T e (Matrix.toLin' M)` using `fun M => by`. Use extensionality with `i j`. Simplify using `only [eXm, LinearMap.toMatrix'_toLin', Matrix.smul_apply, smul_eq_mul, Matrix.map_apply]`. Use `GlobalTheory.SplitScalar.adele_ext (by simp only [RingHom.map_mul, he0, zero_mul]) ?_` and prove the remaining obligations.
+
+Establish `h6 : finPart D (GlobalTheory.LatVac.finTens 1 M i j) = finPart D (incA D (M i j))` using `rfl`. Rewrite using `[RingHom.map_mul, RingHom.map_mul, h6]`. Establish `hkeX : ∀ K : ℕ, ∀ M : Matrix (Fin T.rank) (Fin S.rank) D.host.E, K • eXm S T e (Matrix.toLin' ((K : D.host.E)⁻¹ • M)) = (if K = 0 then 0 else eXm S T e (Matrix.toLin' M))`. Introduce `K M`. Use `split_ifs with hK`.
+
+Rewrite using `[hK, zero_smul]`. Use extensionality with `i j`. Simplify using `only [eXm, LinearMap.toMatrix'_toLin', Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, nsmul_eq_mul]`. Rewrite using `[← mul_assoc, mul_comm (K : AE D) e, mul_assoc, show (K : AE D) = incA D (K : D.host.E) by simp, ← map_mul, ← mul_assoc, mul_inv_cancel₀ (Nat.cast_ne_zero.2 hK), one_mul]`. Establish `hKinj : ∀ K : ℕ, 0 < K → ∀ w₁ w₂ : WO S T, K • w₁ = K • w₂ → w₁ = w₂`.
+
+Introduce `K hK w₁ w₂ h`. Establish `hu : IsUnit (K : AE D)`. Establish `h1 : (K : AE D) = incA D (K : D.host.E)` using `by simp`. Rewrite using `[h1]`. Conclude with `(IsUnit.mk0 _ (Nat.cast_ne_zero.2 hK.ne')).map _`.
+
+Use extensionality with `i j`. Establish `h3` using `congrFun (congrFun h i) j`. Simplify using `only [Matrix.smul_apply, nsmul_eq_mul] at h3`. Conclude with `hu.mul_left_cancel h3`. Establish `hΦ' : ∀ x, Φ (eXm S T e x) = Ξ x` using `fun x => by`.
+
+Rewrite using `[eXm, hΦ]`. Use `congr 1`. Unfold `toHom`. Rewrite using `[show ((LinearMap.toMatrix' x).reindex (finCongr rfl) (finCongr rfl)) = LinearMap.toMatrix' x from by`. Use extensionality with `i j`.
+
+Simplify using `[Matrix.reindex_apply], Matrix.toLin'_toMatrix']`. Take `⟨hsup, k, hk, hinv, hsupp⟩` from `hSB`. Establish `hSplit` using `GlobalTheory.HalfSplit.splitHyp_halves D ψ θ S T δ sc hP e SS hE ΛS ΛT c hc hcP h2 hLa dS dT`. Introduce `t`. Use `show Φ t = ∑ x ∈ SX, ∑ y ∈ SB, (((SA.card : ℂ))⁻¹ * ∑ s ∈ SA, onV (tauE D) δ Ξ (s - x) * (brk (HV sc) y s)⁻¹) * (ψ (symplO S T (t + eXm S T e (px x)) (eXm S T (cA D e) (py y))) * halfInd e Λ (t + eXm S T e (px x)))`.
+
+Establish `hRHS0 : ∀ x ∈ SX, t + eXm S T e (px x) ∉ Λ ∨ ¬ IsHalf e (t + eXm S T e (px x)) → ∑ y ∈ SB, (((SA.card : ℂ))⁻¹ * ∑ s ∈ SA, onV (tauE D) δ Ξ (s - x) * (brk (HV sc) y s)⁻¹) * (ψ (symplO S T (t + eXm S T e (px x)) (eXm S T (cA D e) (py y))) * halfInd e Λ (t + eXm S T e (px x))) = 0`. Introduce `x _ h`. Establish `h0 : halfInd e Λ (t + eXm S T e (px x)) = 0`. Unfold `halfInd`. Rewrite using `[if_neg]`.
+
+Introduce and unpack `⟨h1, h3⟩`. Break down `h with h | h` into its components or cases. Use `exacts [h h1, h h3]`. Simplify using `[h0]`. Distinguish the cases in `ht : IsHalf e t`.
+
+Use `swap`. Establish `hΦ0 : Φ t = 0`. Assume the negation of the conclusion as `h0`. Conclude with `ht (hsup t h0)`. Rewrite using `[hΦ0]`.
+
+Use `(Finset.sum_eq_zero fun x hx => hRHS0 x hx (Or.inr fun h3 => ht fun i j => ?_)).symm` and prove the remaining obligations. Establish `h4` using `h3 i j`. Establish `h5` using `heX (px x) i j`. Simplify using `only [Matrix.add_apply, mul_add] at h4`. Rewrite `h4` using `[h5]`.
+
+Conclude with `add_right_cancel h4`. Establish `hsn : ∀ (a : AE D) (n : ℕ) (w : WO S T), a • (n • w) = n • (a • w)` using `fun a n w => by`. Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hns3 : ∀ (p q r : ℕ) (w : WO S T), (p * q * r) • w = p • (q • (r • w))` using `fun p q r w => by`. Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hns2 : ∀ (p q : ℕ) (w : WO S T), (p * q) • w = p • (q • w)` using `fun p q w => by`. Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hhs : ∀ (n : ℕ) (w : WO S T), IsHalf e w → IsHalf e (n • w)` using `fun n w hw i j => by`. Rewrite using `[Matrix.smul_apply, nsmul_eq_mul, mul_left_comm, hw i j]`. Establish `hEX : Φ t ≠ 0 → ∃ x0 ∈ SX, t + eXm S T e (px x0) ∈ Λ`. Introduce `h0`. Take `⟨M, hM, u, hu, htM⟩` from `GlobalTheory.DatumFourier.approx_mod (Nat.mul_pos (Nat.mul_pos hk hk) hc) (hsupp t h0)`.
+
+Establish `hteq : t = eXm S T e (Matrix.toLin' ((k : D.host.E)⁻¹ • M)) + k • (c • (e • u))`. Apply `hKinj k hk` to reduce the goal to its premises. Establish `h1 : k • t = e • (k • t)`. Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply, Matrix.smul_apply, Matrix.smul_apply, smul_eq_mul, nsmul_eq_mul, mul_left_comm, ht i j]`.
+
+Rewrite using `[h1, htM, smul_add, heF, smul_add, hkeX k M, if_neg hk.ne', hsn, hns3]`. Establish `hΦg : Φ t = Ξ (Matrix.toLin' ((k : D.host.E)⁻¹ • M))`. Rewrite using `[hteq, hinv _ (nsmul_mem (hΛe u hu) c) (hhs c _ (hhe u)), hΦ']`. Establish `hg1` using `hΞ1 _ (hΦg ▸ h0)`. Establish `hg2` using `(GlobalTheory.HomAtPer.homAt_iff_locP_perO D S T SS h2 ΛS ΛT dS dT _).1 hg1`.
+
+Take `⟨x0, hx0, hloc⟩` from `GlobalTheory.PerLift.exists_rep_add_mem D ψ θ S T δ sc hP e SS hE ΛS ΛT dS dT c hc SX hRX px hpx _ hg2`. Use `⟨x0, hx0, ?_⟩` and prove the remaining obligations. Establish `h3` using `(GlobalTheory.AdForm.HalfLat.half_mem_latO_iff D S T hP.cc e SS hE ΛS ΛT dS dT _).2 hloc`. Establish `h4 : t + eXm S T e (px x0) = eXm S T e (Matrix.toLin' ((k : D.host.E)⁻¹ • M) + px x0) + k • (c • (e • u))` using `by conv_lhs => rw [hteq]`. Rewrite using `[heX_add]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[h4]`. Conclude with `add_mem h3 (nsmul_mem (nsmul_mem (hΛe u hu) c) k)`. Establish `hUQ : ∀ x ∈ SX, ∀ x0 ∈ SX, t + eXm S T e (px x) ∈ Λ → t + eXm S T e (px x0) ∈ Λ → x = x0`. Introduce `x hx x0 hx0 h1 h3`.
+
+Establish `h4 : eXm S T e (px x - px x0) ∈ Λ`. Establish `h5 : eXm S T e (px x - px x0) = (t + eXm S T e (px x)) - (t + eXm S T e (px x0))` using `by rw [heX_sub]; abel`. Rewrite using `[h5]`. Conclude with `sub_mem h1 h3`. Establish `hloc` using `(GlobalTheory.AdForm.HalfLat.half_mem_latO_iff D S T hP.cc e SS hE ΛS ΛT dS dT _).1 h4`.
+
+Establish `hA : px x - px x0 ∈ halfAO SS (perO (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) ΛS ΛT) c` using `sub_mem (hpx x hx).1 (hpx x0 hx0).1`. Establish `hmem : px x - px x0 ∈ perO (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) ΛS ΛT`. Apply `Formalism.L2.Ker.mem_of_forall_locP` to reduce the goal to its premises. Introduce `Q`. Distinguish the cases in `hQ : Q ∈ SS`.
+
+Conclude with `hloc Q hQ`. Establish `h6` using `(Formalism.L2.Ker.mem_twO _ c _ _).1 hA Q`. Unfold `expS at h6`. Rewrite `h6` using `[if_neg hQ]`. Use `split_ifs at h6 with hQ'`.
+
+Establish `hcE : (c : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 hc.ne'`. Establish `h7` using `Formalism.L2.Ker.nat_smul_mem _ c h6`. Rewrite `h7` using `[neg_neg, zpow_one, smul_smul, mul_inv_cancel₀ hcE, one_smul]`. Then use the resulting hypothesis. Simplify using `using h6`. Establish `h8 : x - x0 ∈ LamC (tauE D) δ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) ΛS ΛT` using `⟨px x - px x0, hmem, by rw [map_sub, (hpx x hx).2, (hpx x0 hx0).2]⟩`.
+
+Conclude with `hRX.2.1 x hx x0 hx0 h8`. Distinguish the cases in `hex : ∃ x0 ∈ SX, t + eXm S T e (px x0) ∈ Λ`. Use `swap`. Establish `hΦ0 : Φ t = 0`. Assume the negation of the conclusion as `h0`.
+
+Conclude with `hex (hEX h0)`. Rewrite using `[hΦ0]`. Conclude with `(Finset.sum_eq_zero fun x hx => hRHS0 x hx (Or.inl fun h => hex ⟨x, hx, h⟩)).symm`. Take `⟨x0, hx0, hu0⟩` from `hex`. Rewrite using `[Finset.sum_eq_single x0 (fun x hx hne => hRHS0 x hx (Or.inl fun h => hne (hUQ x hx x0 hx0 h hu0))) (fun h => absurd hx0 h)]`.
+
+Establish `huh : IsHalf e (t + eXm S T e (px x0))` using `fun i j => by`. Rewrite using `[Matrix.add_apply, mul_add, ht i j, heX _ i j]`. Establish `hI : halfInd e Λ (t + eXm S T e (px x0)) = 1`. Unfold `halfInd`. Rewrite using `[if_pos ⟨hu0, huh⟩]`.
+
+Simplify using `only [hI, mul_one]`. Take `⟨M, hM, u', hu', huM⟩` from `GlobalTheory.DatumFourier.approx_mod (Nat.mul_pos hk hc) hu0`. Establish `hueq : t + eXm S T e (px x0) = eXm S T e (Matrix.toLin' M) + k • (c • (e • u'))`. Establish `h1 : t + eXm S T e (px x0) = e • (t + eXm S T e (px x0))`. Use extensionality with `i j`.
+
+Rewrite using `[Matrix.smul_apply, smul_eq_mul, huh i j]`. Rewrite using `[h1, huM, smul_add, heF, hsn, hns2]`. Establish `hΦt : Φ t = Ξ (Matrix.toLin' M - px x0)`. Establish `h1 : t = eXm S T e (Matrix.toLin' M - px x0) + k • (c • (e • u'))`. Rewrite using `[heX_sub, sub_add_eq_add_sub, ← hueq]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[h1, hinv _ (nsmul_mem (hΛe u' hu') c) (hhs c _ (hhe u')), hΦ']`. Establish `hcAu : cA D e • (t + eXm S T e (px x0)) = 0`. Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, Matrix.zero_apply, ← huh i j, ← mul_assoc, mul_comm (cA D e) e, hecA, zero_mul]`.
+
+Establish `hmA` using `GlobalTheory.HalfAConj.mem_perO_inf_halfAO D S T hP.cc e SS hE ΛS ΛT dS dT c hc M hM ⟨-(k • (cA D e • u')), neg_mem (nsmul_mem (hΛc u' hu') k), by`. Establish `h1` using `congrArg (fun w => cA D e • w) huM`. Simplify using `only [hcAu, smul_add] at h1`. Rewrite using `[eq_neg_of_add_eq_zero_left h1.symm, hsn, mul_comm k c, hns2, smul_neg]⟩`. Establish `hv : embH (tauE D) δ (Matrix.toLin' M) ∈ LamC (tauE D) δ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) ΛS ΛT ⊓ AC (tauE D) δ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) SS ΛS ΛT c` using `⟨⟨_, hmA.1, rfl⟩, ⟨_, hmA.2, rfl⟩⟩`.
+
+Establish `hY : ∀ y ∈ SB, ψ (symplO S T (t + eXm S T e (px x0)) (eXm S T (cA D e) (py y))) = brk (HV sc) y (embH (tauE D) δ (Matrix.toLin' M))`. Introduce `y hy`. Establish `hcy : c • py y ∈ perO (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) ΛS ΛT` using `nsmul_mem_perO_of_halfB hc (hpy y hy).1`. Establish `hKY : (k * c) • LinearMap.toMatrix' (py y) ∈ GlobalTheory.LatVac.latRat S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E))`. Conclude with `nsmul_toMatrix_mem_latRat hP.cc dS k c hcy`.
+
+Conclude with `(char_brk hP dS dT he0 huh hu' huM (py y) hKY).trans (by rw [(hpy y hy).2])`. Establish `hcard` using `GlobalTheory.RepsCard.card_reps_eq _ _ _ _ _ _ hSplit SA SB hRA hRB`. Take `⟨y0, hy0, -⟩` from `hRB.2.2 0 (zero_mem _)`. Establish `hSBne : SB.card ≠ 0` using `(Finset.card_pos.2 ⟨y0, hy0⟩).ne'`. Take `⟨s0, hs0, hvs0, hsum⟩` from `fin_sum (HV sc) (fun s => onV (tauE D) δ Ξ (s - x0)) (fun y => ψ (symplO S T (t + eXm S T e (px x0)) (eXm S T (cA D e) (py y)))) hv hRA (fun w hw => GlobalTheory.brk_sum_reps_orth _ _ _ _ _ _ hSplit SB hRB w hw) hcard hSBne hY`.
+
+Use `hΦt.trans (Eq.trans ?_ hsum.symm)` and prove the remaining obligations. Use `beta_reduce`. Use `(mem_BC hvs0).elim fun β hβ => ?_` and prove the remaining obligations. Establish `hβ'` using `hβ.1`. Establish `hβe` using `hβ.2`.
+
+Establish `hs0e` using `embH_sub_eq (tauE D) δ (Matrix.toLin' M) (px x0) β x0 s0 (hpx x0 hx0).2 hβe`. Establish `hXi` using `xi_sub_halfB hc Ξ hΞ2 (fun z hz => (GlobalTheory.HomAtPer.homAt_iff_locP_perO D S T SS h2 ΛS ΛT dS dT z).2 hz) hβ' (Matrix.toLin' M - px x0)`. Rewrite using `[hs0e, onV_embH (tauE D) hP.ne, hXi]`.
+-/
 theorem four_expand : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (a b : ℕ) (hS : S.rank = a) (hT : T.rank = b) (δ : ℂ) (sc : ℝ), StdPair θ S T δ sc ψ → ∀ (e : AE D) (SS : Finset (Formalism.L2.DIV.Pl D.host.E)), IsIdemSum e SS → ∀ (N : Submodule (𝓞 D.host.E) (Fin a → D.host.E)) (N' : Submodule (𝓞 D.host.E) (Fin b → D.host.E)) (c : ℕ), 0 < c → Odd c → (∀ Q ∈ SS, ((D.host.QS * D.host.q * D.host.d : ℕ) : 𝓞 D.host.E) ∉ Q.asIdeal) → LaFacts (tauE D) δ D.host.d sc (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N' → (∃ ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E), IsSelfDualC S ΛS ∧ (ΛS : Set (Fin S.rank → D.host.E)) = latFr S hS N) → (∃ ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E), IsSelfDualC T ΛT ∧ (ΛT : Set (Fin T.rank → D.host.E)) = latFr T hT N') → ∀ (Φ : WO S T → ℂ) (Ξ : Formalism.L2.Col.HomE D.host.E a b → ℂ), IsSBHalf e (latO S T (latFr S hS N) (latFr T hT N') fun _ => True) Φ → (∀ γ, Φ (γ.map fun r => e * incA D r) = Ξ (toHom S T hS hT γ)) → (∀ x, Ξ x ≠ 0 → (c : D.host.E) • x ∈ Formalism.L2.Col.homAt SS N N') → (∀ x, ∀ y ∈ Formalism.L2.Col.homAt SS N N', Ξ (x + (c : D.host.E) • y) = Ξ x) → ∀ (SX SA SB : Finset (VV D.what₂.Tau a b)), Formalism.L2.Th1.H.IsReps (LamC (tauE D) δ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N') (AC (tauE D) δ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) SS N N' c) SX → Formalism.L2.Th1.H.IsReps (BC (tauE D) δ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) SS N N' c) ((LamC (tauE D) δ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N') ⊓ (AC (tauE D) δ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) SS N N' c)) SA → Formalism.L2.Th1.H.IsReps (LamC (tauE D) δ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N') (BC (tauE D) δ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) SS N N' c) SB → ∀ (px py : VV D.what₂.Tau a b → Formalism.L2.Col.HomE D.host.E a b), (∀ x ∈ SX, px x ∈ halfAO SS (perO (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N') c ∧ embH (tauE D) δ (px x) = x) → (∀ y ∈ SB, py y ∈ halfBO SS (perO (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N') c ∧ embH (tauE D) δ (py y) = y) → ∀ t, Φ t = ∑ x ∈ SX, ∑ y ∈ SB, (((SA.card : ℂ))⁻¹ * ∑ s ∈ SA, onV (tauE D) δ Ξ (s - x) * (brk (HV sc) y s)⁻¹) * (ψ (symplO S T (t + ((LinearMap.toMatrix' (px x)).reindex (finCongr hT.symm) (finCongr hS.symm)).map fun r => e * incA D r) (((LinearMap.toMatrix' (py y)).reindex (finCongr hT.symm) (finCongr hS.symm)).map fun r => cA D e * incA D r)) * halfInd e (latO S T (latFr S hS N) (latFr T hT N') fun _ => True) (t + ((LinearMap.toMatrix' (px x)).reindex (finCongr hT.symm) (finCongr hS.symm)).map fun r => e * incA D r)) := by
   intro D ψ θ S T a b hS hT δ sc hP e SS hE N N' c hc hcP h2 hLa ⟨ΛS, dS, eS⟩ ⟨ΛT, dT, eT⟩ Φ Ξ hSB hΦ hΞ1 hΞ2 SX SA SB hRX hRA hRB px py hpx hpy
   subst hS hT

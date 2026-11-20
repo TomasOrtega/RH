@@ -16,6 +16,35 @@ open GlobalTheory.Poinc.ThetaOne GlobalTheory.Poinc.Sep GlobalTheory.UT GlobalTh
 
 namespace GlobalTheory.USep.EvG
 
+/- English proof (translation)
+Introduce `V₁ _ _ _ hV hunit D τ₀ W₀ _ ib B₀ _ M₀ c₀ τ₁ β w hF K _ _ ev k₀ hk₀ hk N hN b hb a`. Take `⟨-, -, hβ, -, hc, -, -⟩` from `hF`. Use `haveI : IsNoetherianRing V₁ := hV.1`. Establish `hg : spMap ev ≫ spMap ib = spMap (ev.comp ib)`. Simplify using `only [spMap, ← Spec.map_comp]`.
+
+Both sides reduce to the same expression. Take `⟨Φ, hΦ⟩` from `GlobalTheory.GroupBplus.Aff.exists_mulEquiv_points_of_isGrpPullback hβ (spMap ev) (spMap (ev.comp ib)) hg`. Establish `htor : ∀ x : Over.mk (spMap ev) ⟶ D.P.A, x ^ N = 1 → DefOver k₀ (x.left ≫ β)`. Introduce `x hx`. Establish `hNK : (N : K) ≠ 0`.
+
+Use `((hunit N (by omega)).map ev).ne_zero` as an intermediate fact. Simplify using `using this`. Establish `hcard` using `(GlobalTheory.abelianSchemeLaws_all.1.mulN (Sp V₁) D.P N hN).2.2.2.2 K (spMap ev) hNK`. Establish `hfin : Finite {y : Over.mk (spMap ev) ⟶ D.P.A // y ^ N = 1}` using `Nat.finite_of_card_ne_zero (by rw [hcard]; exact pow_ne_zero _ (by omega))`. Use `defOver_of_finite_orbit K k₀ hk₀ _ _ ((Set.finite_range fun y : {y : Over.mk (spMap ev) ⟶ D.P.A // y ^ N = 1} => (Φ y.1).left).subset ?_)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨σ, hσ, rfl⟩`. Establish `hσf : spMap σ.toRingHom ≫ spMap (ev.comp ib) = spMap (ev.comp ib)`. Establish `e1 : (σ.toRingHom).comp (ev.comp ib) = ev.comp ib` using `RingHom.ext fun u => hσ _ (hk u)`. Establish `e0 : spMap σ.toRingHom ≫ spMap (ev.comp ib) = spMap ((σ.toRingHom).comp (ev.comp ib))`. Simplify using `only [spMap, ← Spec.map_comp]`.
+
+Both sides reduce to the same expression. Rewrite using `[e0, e1]`. Set `hh : Over.mk (spMap (ev.comp ib)) ⟶ Over.mk (spMap (ev.comp ib))` to `Over.homMk (spMap σ.toRingHom) hσf`. Use `⟨⟨Φ.symm (hh ≫ Φ x), ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow, ← MonObj.comp_pow, ← map_pow, hx, map_one, MonObj.comp_one, map_one]`.
+
+Use `show (Φ (Φ.symm (hh ≫ Φ x))).left = _`. Rewrite using `[MulEquiv.apply_symm_apply, Over.comp_left, hΦ]`. Both sides reduce to the same expression. Establish `hsub : spMap k₀.subtype ≫ spMap ((ev.comp ib).codRestrict k₀ hk) = spMap (ev.comp ib)`. Simplify using `only [spMap, ← Spec.map_comp]`.
+
+Both sides reduce to the same expression. Set `j : Over.mk (spMap (ev.comp ib)) ⟶ Over.mk (spMap ((ev.comp ib).codRestrict k₀ hk))` to `Over.homMk (spMap k₀.subtype) hsub`. Establish `hdesc : ∀ p : Over.mk (spMap (ev.comp ib)) ⟶ B₀, DefOver k₀ p.left → ∃ p₀ : Over.mk (spMap ((ev.comp ib).codRestrict k₀ hk)) ⟶ B₀, j ≫ p₀ = p`. Introduce `p ⟨P₀, hP₀⟩`. Establish `e : P₀ ≫ B₀.hom = spMap ((ev.comp ib).codRestrict k₀ hk)` using `spMap_subtype_cancel k₀ (by`.
+
+Rewrite using `[← Category.assoc, hP₀, Over.w p, hsub]`. Use the proof step `rfl)`. Conclude with `⟨Over.homMk P₀ e, Over.OverMorphism.ext hP₀⟩`. Establish `hmul : ∀ p q : Over.mk (spMap (ev.comp ib)) ⟶ B₀, DefOver k₀ p.left → DefOver k₀ q.left → DefOver k₀ (p * q).left`. Introduce `p q hp hq`.
+
+Take `⟨p₀, rfl⟩` from `hdesc p hp`. Take `⟨q₀, rfl⟩` from `hdesc q hq`. Rewrite using `[← MonObj.comp_mul]`. Conclude with `⟨(p₀ * q₀).left, rfl⟩`. Establish `hprod : ∀ y z : Over.mk (spMap ev) ⟶ D.P.A, DefOver k₀ (y.left ≫ β) → DefOver k₀ (z.left ≫ β) → DefOver k₀ ((y * z).left ≫ β)`.
+
+Introduce `y z hy hz`. Rewrite using `[← hΦ, map_mul]`. Conclude with `hmul _ _ (by rw [hΦ]; exact hy) (by rw [hΦ]; exact hz)`. Set `h : Over.mk (spMap ev) ⟶ 𝟙_ (Over (Sp V₁))` to `Over.homMk (spMap ev) (Category.comp_id _)`. Establish `hl : ∀ y : 𝟙_ (Over (Sp V₁)) ⟶ D.P.A, spMap ev ≫ y.left ≫ β = (h ≫ y).left ≫ β`.
+
+Introduce `y`. Rewrite using `[Over.comp_left, Category.assoc]`. Both sides reduce to the same expression. Establish `h1 : DefOver k₀ (spMap ev ≫ b.left ≫ β)`. Rewrite using `[hl]`.
+
+Conclude with `htor _ (by rw [← MonObj.comp_pow, hb, MonObj.comp_one])`. Establish `h2 : DefOver k₀ (spMap ev ≫ (D.c a).left ≫ β)`. Establish `e : spMap ev ≫ (D.c a).left ≫ β = spMap (ev.comp ib) ≫ c₀ a`. Rewrite using `[show (D.c a).left ≫ β = spMap ib ≫ c₀ a from hc a, ← Category.assoc, hg]`. Rewrite using `[e]`.
+
+Conclude with `defOver_comp k₀ (defOver_spMap k₀ _ hk) _`. Use `⟨h1, h2, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hl, MonObj.comp_mul]`. Conclude with `hprod _ _ (by rw [← hl]; exact h1) (by rw [← hl]; exact h2)`. Rewrite using `[hl, MonObj.comp_mul]`.
+
+Conclude with `hprod _ _ (by rw [← hl]; exact h2) (by rw [← hl]; exact h1)`.
+-/
 theorem points_defOver : ∀ (V₁ : Type) [CommRing V₁] [IsDomain V₁] [IsLocalRing V₁], IsCN V₁ → (∀ m : ℕ, m ≠ 0 → IsUnit (m : V₁)) →
     ∀ (D : DegPre V₁) (τ₀ : GlobalTheory.UChart.Gens D) (W₀ : Type) [CommRing W₀] (ib : W₀ →+* V₁) (B₀ : Over (Sp W₀)) [GrpObj B₀]
       (M₀ : LB B₀.left) (c₀ : D.X → (Sp W₀ ⟶ B₀.left))

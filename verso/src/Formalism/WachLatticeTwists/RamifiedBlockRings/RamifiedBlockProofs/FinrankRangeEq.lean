@@ -11,6 +11,11 @@ namespace Formalism.RepresentationBoundsCohomology.ringDataObjects
 
 open Formalism.NG Formalism.TruncatedSeriesCounting.TruncatedSeriesCountingIdentities
 
+/- English proof (translation)
+Unfold `blockPoly`. Rewrite using `[← Polynomial.coe_mapRingHom, RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Distinguish the cases in `h : i = j`.
+
+Substitute `h` using the available equality. Simplify using `[Matrix.one_apply]`. Simplify using `[Matrix.one_apply, h]`.
+-/
 theorem blockPoly_map {A B : Type*} [CommRing A] [CommRing B] (f : A →+* B) {d : Type*} [Fintype d]
     [DecidableEq d] (e a : Matrix d d A) :
     (blockPoly e a).map f = blockPoly (e.map f) (a.map f) := by
@@ -23,6 +28,9 @@ theorem blockPoly_map {A B : Type*} [CommRing A] [CommRing B] (f : A →+* B) {d
     simp [Matrix.one_apply]
   · simp [Matrix.one_apply, h]
 
+/- English proof (translation)
+Use `⟨{g}, fun _ => 1, fun _ => T.one_mem, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+-/
 theorem r_mem' {O K : Type} [CommRing O] [CommRing K] [Algebra O K] {X : Type} (T : Subalgebra O (X → O))
     {d : Type} [Fintype d] [DecidableEq d] {G : Type} [Monoid G] (r : G →* (X → Matrix d d K)) (g : G) :
     r g ∈ tSpan T r := by
@@ -44,6 +52,9 @@ def scal : T' →+* spanSub T' rK where
   map_zero' := Subtype.ext (term_zero rK 1)
   map_add' f g := Subtype.ext (term_add rK f.1 g.1 1)
 
+/- English proof (translation)
+Simplify using `[scal, term]`.
+-/
 theorem scal_apply (f : T') (y : X') :
     (scal T' rK f).1 y = algebraMap O (FractionRing O) (f.1 y) • (1 : Matrix d d (FractionRing O)) := by
   simp [scal, term]
@@ -58,6 +69,9 @@ theorem scal_apply (f : T') (y : X') :
   Module.compHom _ ((algebraMap O (FractionRing O)).comp
     ((Pi.evalRingHom (fun _ : X' => O) x').comp T'.val.toRingHom))
 
+/- English proof (translation)
+Use `letI := algRp T' rK`. Use `show ((scal T' rK f) * a).1 y = _`. Rewrite using `[Subalgebra.coe_mul, Pi.mul_apply, scal_apply, smul_mul_assoc, one_mul]`.
+-/
 theorem smul_val (f : T') (a : spanSub T' rK) (y : X') :
     (letI := algRp T' rK; (f • a : spanSub T' rK)).1 y =
       algebraMap O (FractionRing O) (f.1 y) • a.1 y := by
@@ -65,9 +79,15 @@ theorem smul_val (f : T') (a : spanSub T' rK) (y : X') :
   show ((scal T' rK f) * a).1 y = _
   rw [Subalgebra.coe_mul, Pi.mul_apply, scal_apply, smul_mul_assoc, one_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem act_ev (R' : Subalgebra O (X' → Matrix d d (FractionRing O))) (x' : X') (a : R')
     (v : EvalSp O d R' x') : a • v = fun i => ∑ j, a.1 x' i j • (v j : FractionRing O) := rfl
 
+/- English proof (translation)
+Use `show Module.finrank (FractionRing O) (LinearMap.range (a.1 x').mulVecLin) = _`. Both sides reduce to the same expression.
+-/
 theorem finrank_range_eq (R' : Subalgebra O (X' → Matrix d d (FractionRing O))) (x' : X') (a : R') :
     Module.finrank (FractionRing O)
       (LinearMap.range (DistribSMul.toLinearMap (FractionRing O) (EvalSp O d R' x') a)) =
@@ -77,6 +97,13 @@ theorem finrank_range_eq (R' : Subalgebra O (X' → Matrix d d (FractionRing O))
 
 end Build
 
+/- English proof (translation)
+Establish `key : ∀ c : Fin t → K, ∏ i, (Polynomial.X - Polynomial.C (c i)) = ((Finset.univ.val.map c).map fun x => Polynomial.X - Polynomial.C x).prod`. Introduce `c`. Rewrite using `[Finset.prod_eq_multiset_prod, Multiset.map_map]`. Both sides reduce to the same expression. Establish `hm : Finset.univ.val.map a = Finset.univ.val.map b`.
+
+Establish `h2` using `congrArg Polynomial.roots h`. Rewrite `h2` using `[key a, key b, Polynomial.roots_multiset_prod_X_sub_C, Polynomial.roots_multiset_prod_X_sub_C]`. Then use the resulting hypothesis. Establish `hnd : (Finset.univ.val.map a).Nodup`. Rewrite using `[hm]`. Conclude with `Multiset.Nodup.map hb Finset.univ.nodup`.
+
+Introduce `x y hxy`. Conclude with `Multiset.inj_on_of_nodup_map hnd x (by simp) y (by simp) hxy`.
+-/
 theorem inj_of_prod_eq {K : Type*} [Field K] {t : ℕ} (a b : Fin t → K) (hb : Function.Injective b)
     (h : ∏ i, (Polynomial.X - Polynomial.C (a i)) = ∏ i, (Polynomial.X - Polynomial.C (b i))) :
     Function.Injective a := by

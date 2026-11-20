@@ -13,6 +13,11 @@ open Finset Formalism.HermitianLattices.ZeroFreeRegionGL2 Formalism.HermitianLat
 
 namespace QH
 
+/- English proof (translation)
+Establish `h` using `(isLittleO_log_rpow_rpow_atTop (2 : ℝ) (show 0 < ε / 20 by positivity)).bound (show (0 : ℝ) < 2 / 3 by norm_num)`. Use `filter_upwards [h, Filter.eventually_gt_atTop (0 : ℝ)] with Y hY hY0`. Rewrite `hY` using `[Real.rpow_two, Real.norm_of_nonneg (sq_nonneg _), Real.norm_of_nonneg (Real.rpow_nonneg hY0.le _)]`. Establish `e : Y ^ (ε / 4) = Y ^ (ε / 5) * Y ^ (ε / 20)`. Rewrite using `[← Real.rpow_add hY0]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `h5 : 0 < Y ^ (ε / 5)` using `Real.rpow_pos_of_pos hY0 _`. Rewrite using `[e]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 private theorem stage_log {ε : ℝ} (hε : 0 < ε) :
     ∀ᶠ Y : ℝ in Filter.atTop, 3 / 2 * (Y ^ (ε / 5) * Real.log Y ^ 2) ≤ Y ^ (ε / 4) := by
   have h := (isLittleO_log_rpow_rpow_atTop (2 : ℝ) (show 0 < ε / 20 by positivity)).bound
@@ -26,6 +31,11 @@ private theorem stage_log {ε : ℝ} (hε : 0 < ε) :
   rw [e]
   nlinarith
 
+/- English proof (translation)
+Establish `h` using `(tendsto_rpow_atTop (show (0 : ℝ) < 21 / 40 by norm_num)).eventually_ge_atTop (2 * |C| / η)`. Use `filter_upwards [h, Filter.eventually_gt_atTop (0 : ℝ)] with U hU hU0`. Establish `e : U ^ (9 / 10 : ℝ) = U ^ (21 / 40 : ℝ) * U ^ (3 / 8 : ℝ)`. Rewrite using `[← Real.rpow_add hU0]`. Evaluate the numerical expressions.
+
+Establish `h5 : 0 < U ^ (3 / 8 : ℝ)` using `Real.rpow_pos_of_pos hU0 _`. Rewrite `hU` using `[div_le_iff₀ hη]`. Rewrite using `[e]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 private theorem stage_pow (C : ℝ) {η : ℝ} (hη : 0 < η) :
     ∀ᶠ U : ℝ in Filter.atTop, |C| * U ^ (3 / 8 : ℝ) ≤ η / 2 * U ^ (9 / 10 : ℝ) := by
   have h := (tendsto_rpow_atTop (show (0 : ℝ) < 21 / 40 by norm_num)).eventually_ge_atTop
@@ -38,6 +48,53 @@ private theorem stage_pow (C : ℝ) {η : ℝ} (hη : 0 < η) :
   rw [e]
   nlinarith
 
+/- English proof (translation)
+Take `⟨C, hC, hbox⟩` from `box_of_S`. Take `⟨Cm, hCm, hms⟩` from `meanSqK`. Take `⟨Cb, hcb⟩` from `count_bad`. Use `⟨C, hC, fun ε τ K η R hε hε4 hτ hK hη => ?_⟩` and prove the remaining obligations. Take `⟨Y₁, hY₁⟩` from `hbox ε τ K hε hε4 hτ hK`.
+
+Take `⟨Y₂, hY₂⟩` from `hms ε K hε (by linarith) hK`. Take `⟨Y₃, hY₃⟩` from `bad_share Cm τ (η / (2 * (R + 1))) hCm.le hτ (by positivity)`. Take `⟨Y₄, hY₄⟩` from `count_a Formalism.HermitianLattices.Ext.PrimesInProgressions.pnt_progressions_relative_weak_holds Formalism.ZeroFreeDirichlet.excBound ε hε`. Take `⟨U₀, hU₀⟩` from `Filter.eventually_atTop.1 ((stage_pow Cb hη).and (Filter.eventually_ge_atTop (4 : ℝ)))`. Take `⟨Y₅, hY₅⟩` from `Filter.eventually_atTop.1 ((stage_log hε).and ((tendsto_rpow_atTop (show 0 < ε / 6 by positivity)).eventually_ge_atTop U₀))`.
+
+Use `⟨max (max (max Y₁ Y₂) (max Y₃ Y₄)) Y₅, ?_⟩` and prove the remaining obligations. Introduce `Y hY U F m₀ a₀ Ξ hA hp hF1 hFU hR hΞ`. Simplify using `only [ge_iff_le, max_le_iff] at hY`. Take `⟨⟨⟨h1, h2⟩, h3, h4⟩, h5⟩` from `hY`. Take `⟨hlog, hU₀Y⟩` from `hY₅ Y h5`.
+
+Establish `hU0 : 0 < U`. Assume the negation of the conclusion as `hneg`. Use `push Not at hneg`. Break down `hneg.eq_or_lt with h | h` into its components or cases. Rewrite using `[h, Real.zero_rpow (by norm_num)] at hFU; linarith`.
+
+Rewrite `hFU` using `[Real.rpow_def_of_neg h, show (1 / 2 : ℝ) * Real.pi = Real.pi / 2 by ring, Real.cos_pi_div_two, mul_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨hpow, hU4⟩` from `hU₀ U (by`. Use `Real.log_le_sub_one_of_pos hU0` as an intermediate fact. Use `hA.lo` as an intermediate fact.
+
+Use the proof step `linarith)`. Establish `hcount` using `hY₄ Y U m₀ a₀ h4 hA.pos hA.eight hA.coprime hA.log_m hA.lo hA.hi`. Establish `hM` using `hY₂ Y h2 U m₀ a₀ hA hp`. Establish `hsq2 : (2 : ℝ) ≤ U ^ (1 / 2 : ℝ)`. Rewrite using `[← Real.sqrt_eq_rpow]`.
+
+Conclude with `Real.le_sqrt_of_sq_le (by linarith)`. Establish `hF0 : 0 < F` using `by linarith`. Establish `hlogF0 : 0 ≤ Real.log F` using `Real.log_nonneg hF1`. Establish `hlogF : Real.log F ≤ 1 / 2 * Real.log U`. Rewrite using `[← Real.log_rpow hU0]`.
+
+Conclude with `Real.log_le_log hF0 hFU`. Establish `hlo : Y ^ (ε / 6) ≤ Real.log (F * U)`. Rewrite using `[Real.log_mul hF0.ne' hU0.ne']`. Combine the linear relations using `[hA.lo]`. Establish `hhi : Real.log (F * U) ≤ Y ^ (ε / 4)`.
+
+Rewrite using `[Real.log_mul hF0.ne' hU0.ne']`. Combine the linear relations using `[hA.hi]`. Use `⟨?_, fun B hB hbad => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.card_pos]`. Establish `: (0 : ℝ) < (PPset m₀ a₀ U).card` using `lt_of_lt_of_le (Real.rpow_pos_of_pos hU0 _) hcount`.
+
+Conclude with `this` after adjusting the coercions. Establish `hPP : ∀ q ∈ B, q.Prime ∧ U ^ (1 / 2 : ℝ) < q ∧ (q : ℝ) ≤ U`. Introduce `q hq`. Use `Finset.mem_filter.1 (hB hq)` as an intermediate fact. Use `⟨this.2.1, this.2.2.2, ?_⟩` and prove the remaining obligations.
+
+Conclude with `(Nat.le_floor_iff hU0.le).1 (Finset.mem_Icc.1 this.1).2`. Use `set B₁ := B.filter (fun q => ∃ (f : ℕ) (_ : NeZero (f * q)) (ψ : DirichletCharacter ℂ (f * q)), (f : ℝ) ≤ F ∧ ((f * q : ℕ) : ℝ) ≤ F * U ∧ ψ.IsPrimitive ∧ ¬ ZeroFreeBox (F * U) ψ) with hB₁`. Use `set B₂ : (Σ N : ℕ, DirichletCharacter ℂ (N + 1)) → Finset ℕ := fun ξ => B.filter (fun q => ∃ y ∈ Set.Icc Y (Y ^ K), y ^ (1 / 2 + τ) / 2 < ‖S ((Y ^ K) ^ 400) y q (fun n => ξ.2 n)‖) with hB₂`. Establish `hsub : B ⊆ B₁ ∪ Ξ.biUnion B₂`. Introduce `q hq`.
+
+Take `⟨ξ, hξ, M, hM0, hnb⟩` from `hbad q hq`. Take `⟨hqp, hq1, hq2⟩` from `hPP q hq`. Take `⟨hξp, hξF⟩` from `hΞ ξ hξ`. Establish `hq2' : q ≠ 2`. Introduce and unpack `rfl`.
+
+Move the coercions through the operations in `at hq1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hnd : ¬ q ∣ ξ.1 + 1`. Introduce `hd`. Establish `: (q : ℝ) ≤ ((ξ.1 + 1 : ℕ) : ℝ)` using `by exact_mod_cast Nat.le_of_dvd (Nat.succ_pos _) hd`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨ψ, hψp, hψ1, hψ⟩` from `twist_prim (ξ.1 + 1) q ξ.2 hξp hqp hq2' hnd`. Use `haveI hne : NeZero ((ξ.1 + 1) * q) := ⟨mul_ne_zero (Nat.succ_ne_zero _) hqp.ne_zero⟩`. Establish `hlev : (((ξ.1 + 1) * q : ℕ) : ℝ) ≤ F * U`. Rewrite using `[Nat.cast_mul]`.
+
+Conclude with `mul_le_mul hξF hq2 (Nat.cast_nonneg _) hF0.le`. Assume the negation of the conclusion as `hcon`. Rewrite `hcon` using `[Finset.mem_union, not_or]`. Take `⟨hc1, hc2⟩` from `hcon`. Establish `hz : ZeroFreeBox (F * U) ψ`.
+
+Assume the negation of the conclusion as `hz`. Conclude with `hc1 (Finset.mem_filter.2 ⟨hq, ξ.1 + 1, hne, ψ, hξF, hlev, hψp, hz⟩)`. Establish `hS : ∀ y ∈ Set.Icc Y (Y ^ K), ‖S ((Y ^ K) ^ 400) y q (fun n => ξ.2 n)‖ ≤ y ^ (1 / 2 + τ) / 2`. Introduce `y hy`. Assume the negation of the conclusion as `hy'`.
+
+Conclude with `hc2 (Finset.mem_biUnion.2 ⟨ξ, hξ, Finset.mem_filter.2 ⟨hq, y, hy, not_le.1 hy'⟩⟩)`. Establish `hB` using `hY₁ Y h1 (F * U) _ ψ q (fun n => ξ.2 n) hlo hhi ⟨hψ1, hlev, hz⟩ hψ hS`. Apply `hnb` to reduce the goal to its premises. Introduce `N _ ψ' hI`. Establish `he` using `ind_unique N _ M ψ' ψ hM0 hI.1 hψp (fun n hn => (hI.2 n hn).trans (hψ n).symm)`.
+
+Take `⟨rfl, he2⟩` from `Sigma.mk.inj_iff.1 he`. Take `rfl` from `eq_of_heq he2`. Conclude with `hB`. Establish `hP0 : (0 : ℝ) ≤ (PPset m₀ a₀ U).card` using `Nat.cast_nonneg _`. Establish `hb1 : (B₁.card : ℝ) ≤ η / 2 * (PPset m₀ a₀ U).card`.
+
+Establish `h` using `hcb (F * U) F B₁ (by nlinarith) (fun q hq => by`. Take `⟨hq1, hq2⟩` from `Finset.mem_filter.1 hq`. Conclude with `⟨(hPP q hq1).1, lt_of_le_of_lt hFU (hPP q hq1).2.1, hq2⟩)`. Establish `e : (U ^ (1 / 2 : ℝ) * U) ^ (1 / 4 : ℝ) = U ^ (3 / 8 : ℝ)`. Rewrite using `[← Real.rpow_add_one hU0.ne', ← Real.rpow_mul hU0.le]`.
+
+Evaluate the numerical expressions. Establish `h' : (F * U) ^ (1 / 4 : ℝ) ≤ U ^ (3 / 8 : ℝ)`. Rewrite using `[← e]`. Conclude with `Real.rpow_le_rpow (by positivity) (mul_le_mul_of_nonneg_right hFU hU0.le) (by norm_num)`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hb2 : ∀ ξ ∈ Ξ, ((B₂ ξ).card : ℝ) ≤ η / (2 * (R + 1)) * (PPset m₀ a₀ U).card`. Introduce `ξ _`. Conclude with `hY₃ Y h3 (Y ^ K) _ _ (B₂ ξ) (fun n => ξ.2 n) (fun n => ξ.2.norm_le_one _) hM ((Finset.filter_subset _ _).trans hB) (fun q hq => (Finset.mem_filter.1 hq).2)`. Establish `hb3 : ((Ξ.biUnion B₂).card : ℝ) ≤ η / 2 * (PPset m₀ a₀ U).card`. Establish `hR' : (Ξ.card : ℝ) ≤ R + 1` using `by exact_mod_cast hR.trans (Nat.le_succ R)`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `Finset.card_biUnion_le` after adjusting the coercions. Use `_ ≤ Ξ.card • (η / (2 * (R + 1)) * (PPset m₀ a₀ U).card) := Finset.sum_le_card_nsmul _ _ _ hb2`. Use `_ ≤ (R + 1) * (η / (2 * (R + 1)) * (PPset m₀ a₀ U).card) := by`. Rewrite using `[nsmul_eq_mul]`.
+
+Conclude with `mul_le_mul_of_nonneg_right hR' (by positivity)`. Use `_ = _ := by field_simp`. Establish `hc : (B.card : ℝ) ≤ B₁.card + (Ξ.biUnion B₂).card`. Conclude with `(Finset.card_le_card hsub).trans (Finset.card_union_le _ _)` after adjusting the coercions. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem stage :
     ∃ C : ℝ, 0 < C ∧ ∀ (ε τ K η : ℝ) (R : ℕ), 0 < ε → ε ≤ 1 / 4 → 0 < τ → 1 ≤ K → 0 < η → ∃ Y₀ : ℝ, ∀ Y ≥ Y₀,
       ∀ (U F : ℝ) (m₀ a₀ : ℕ) (Ξ : Finset (Σ N : ℕ, DirichletCharacter ℂ (N + 1))), admitted ε Y U m₀ a₀ → (∀ p : ℕ, p.Prime → p ∣ m₀ → (p : ℝ) ≤ Y ^ (ε / 5) ∨ (Y ^ K) ^ 400 < (p : ℝ)) →

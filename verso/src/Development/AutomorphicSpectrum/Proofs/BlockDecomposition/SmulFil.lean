@@ -13,6 +13,13 @@ namespace GlobalTheory.CompanionTheory.BetaFil
 
 open CrystallineSemistableComparison.CH CrystallineSemistableComparison.CechClassBoundaries
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨y, rfl⟩`. Take `⟨c, hc, rfl⟩` from `clsSurj y`. Set `α : S.fn ⟶ S'.fn` to `{ app := fun T => ModuleCat.ofHom ((a • (LinearMap.id : F.obj T →ₗ[R] F.obj T)).restrict fun x hx => h T x hx) naturality := fun T T' φ => by`. Use extensionality with `x`. Conclude with `Subtype.ext (map_smul (F.map φ).hom a x.1).symm }`.
+
+Establish `hc'` using `cyc (Mor.ofNatTrans α).hom c hc`. Establish `hc''` using `cyc S'.inc.hom _ hc'`. Establish `hs` using `cyc S.inc.hom c hc`. Use `⟨(Mor.ofNatTrans α).pull j ((cx S.fn).cls c hc), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `S'.inc.hom.mapH j ((Mor.ofNatTrans α).hom.mapH j ((cx S.fn).cls c hc)) = a • S.inc.hom.mapH j ((cx S.fn).cls c hc)`.
+
+Rewrite using `[mapH_cls' _ c hc hc', mapH_cls' _ _ hc' hc'', mapH_cls' _ c hc hs, ← cls_smul a _ hs (by rw [map_smul, hs, smul_zero])]`. Both sides reduce to the same expression.
+-/
 theorem img_smul {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {F : C ⥤ ModuleCat.{w} R}
     (S S' : SubF F) (a : R) (h : ∀ T, ∀ x ∈ S.S T, a • x ∈ S'.S T) (j : ℕ) :
     ∀ x ∈ S.img j, a • x ∈ S'.img j := by
@@ -33,12 +40,18 @@ theorem img_smul {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {F : C �
     ← cls_smul a _ hs (by rw [map_smul, hs, smul_zero])]
   rfl
 
+/- English proof (translation)
+The claim follows from `img_smul _ _ a (fun T _ hx => CrystallineSemistableComparison.B.mul_pdPow L T r (T.i_mem ha) hx) j`.
+-/
 theorem pdS_smul {b : Base} (L : b.Fun) {Λ : Type} [CommRing Λ] (c : Λ →+* b.R) (r j : ℕ) (a : Λ)
     (ha : c a ∈ b.I) : ∀ x ∈ (CrystallineSemistableComparison.B.pdS L c r).img j, a • x ∈ (CrystallineSemistableComparison.B.pdS L c (r + 1)).img j :=
   img_smul _ _ a (fun T _ hx => CrystallineSemistableComparison.B.mul_pdPow L T r (T.i_mem ha) hx) j
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `l _ O _ F κ k n r j a ha x hx`. Conclude with `@pdS_smul (bs l k n) (Lc F κ k n) (Acris l) _ ((base l).cris n) r j a ha x hx`.
+-/
 theorem smul_fil : ∀ {l : ℕ} [Fact l.Prime], ∀ {O : Type} [CommRing O] (F : Fn O) (κ : O →+* OC l) (k : Bool) (n r j : ℕ) (a : Acris l), (base l).cris n a ∈ JJ k (base l) n → ∀ x ∈ HcFil F κ k n r j, a • x ∈ HcFil F κ k n (r + 1) j := by
   intro l _ O _ F κ k n r j a ha x hx
   exact @pdS_smul (bs l k n) (Lc F κ k n) (Acris l) _ ((base l).cris n) r j a ha x hx

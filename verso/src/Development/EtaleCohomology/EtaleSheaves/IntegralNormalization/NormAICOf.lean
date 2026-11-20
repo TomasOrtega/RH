@@ -13,6 +13,11 @@ def AffAIC : Prop := ∀ (K : Type) [Field K] [IsAlgClosed K] {W : Scheme.{0}} (
 def LocAIC : Prop := ∀ (X : Scheme.{0}) [IsIntegral X],
   (∀ x : X, ∃ U : X.Opens, x ∈ U ∧ IsAffineOpen U ∧ GlobalTheory.EtC.AIC Γ(X, U)) → AICSch X
 
+/- English proof (translation)
+Introduce `K _ _ W g _ _`. Use `⟨inferInstance, ?_⟩` and prove the remaining obligations. Use `hl g.normalization ?_` as an intermediate fact. Conclude with `this.2`. Introduce `x`.
+
+Take `⟨_, ⟨U, hU, rfl⟩, hxU, -⟩` from `W.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (g.fromNormalization x)) isOpen_univ`. Conclude with `⟨g.fromNormalization ⁻¹ᵁ U, hxU, hU.preimage _, ha K g U hU⟩`.
+-/
 theorem normAIC_of (ha : AffAIC) (hl : LocAIC) : NormAIC := by
   intro K _ _ W g _ _
   refine ⟨inferInstance, ?_⟩
@@ -23,6 +28,9 @@ theorem normAIC_of (ha : AffAIC) (hl : LocAIC) : NormAIC := by
     W.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (g.fromNormalization x)) isOpen_univ
   exact ⟨g.fromNormalization ⁻¹ᵁ U, hxU, hU.preimage _, ha K g U hU⟩
 
+/- English proof (translation)
+The claim follows from `Norm_of OpenPf.openNbhdIC FFPf.ffAlg (normAIC_of ha hl)`.
+-/
 theorem norm_full (ha : AffAIC) (hl : LocAIC) : LateralTheory.E.ChowCut.Norm :=
   Norm_of OpenPf.openNbhdIC FFPf.ffAlg (normAIC_of ha hl)
 

@@ -8,6 +8,13 @@ open NumberField IsDedekindDomain Filter Topology Formalism.MainNotions.GlobalTh
 open PositivityTheory.ThKOwn.KPol
 open scoped TensorProduct Classical Matrix
 
+/- English proof (translation)
+Establish `h1 : ∀ᶠ u in 𝓝 (0 : Y), ∀ y ∈ tsupport g, g (y + u) = g y`. Use `hg.2.isCompact.eventually_forall_of_forall_eventually fun y _ => ?_` and prove the remaining obligations. Establish `a : Tendsto (fun z : Y × Y => z.2 + z.1) (𝓝 (0, y)) (𝓝 y)`. Conclude with `(continuous_snd.add continuous_fst).tendsto' ((0 : Y), y) y (add_zero y)`. Use `filter_upwards [a.eventually (hg.1.eventually_eq y), (continuous_snd.tendsto ((0 : Y), y)).eventually (hg.1.eventually_eq y)] with z h h'`.
+
+Rewrite using `[h, h']`. Establish `h2 : ∀ᶠ u in 𝓝 (0 : Y), ∀ y ∈ tsupport g, g (y + -u) = g y`. Establish `: Tendsto (fun u : Y => -u) (𝓝 0) (𝓝 0)` using `by simpa using continuous_neg.tendsto (0 : Y)`. Conclude with `this.eventually h1`. Use `filter_upwards [h1, h2] with u a b y`.
+
+Distinguish the cases in `hy : y ∈ tsupport g`. Conclude with `a y hy`. Distinguish the cases in `hy' : y + u ∈ tsupport g`. Rewrite using `[← b _ hy', add_neg_cancel_right]`. Rewrite using `[image_eq_zero_of_notMem_tsupport hy, image_eq_zero_of_notMem_tsupport hy']`.
+-/
 theorem sb_unif {Y : Type} [AddCommGroup Y] [TopologicalSpace Y] [IsTopologicalAddGroup Y] {g : Y → ℂ} (hg : g ∈ SB Y) :
     ∀ᶠ u in 𝓝 (0 : Y), ∀ y, g (y + u) = g y := by
   have h1 : ∀ᶠ u in 𝓝 (0 : Y), ∀ y ∈ tsupport g, g (y + u) = g y := by
@@ -32,6 +39,13 @@ variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 def Lev (C U : Set (κ → Af F)) (Ψ : (κ → AF F) → ℂ) : Prop :=
   (∀ x, ∀ y ∉ C, Ψ (pt x y) = 0) ∧ ∀ x y, ∀ u ∈ U, Ψ (pt x (y + u)) = Ψ (pt x y)
 
+/- English proof (translation)
+Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem Φ h`. Take `⟨f, g, hg, rfl⟩` from `h`. Conclude with `⟨_, hg.2.isCompact, _, sb_unif hg, fun x y hy => by rw [pureA_pt, image_eq_zero_of_notMem_tsupport hy, mul_zero], fun x y u hu => by rw [pureA_pt, pureA_pt, hu y]⟩`. Consider the case `zero => exact ⟨∅, isCompact_empty, _, univ_mem, fun _ _ _ => rfl, fun _ _ _ _ => rfl⟩`.
+
+Consider the case `add Φ Ψ _ _ h1 h2`. Take `⟨C, hC, U, hU, a, b⟩` from `h1`. Take `⟨C', hC', U', hU', a', b'⟩` from `h2`. Conclude with `⟨_, hC.union hC', _, inter_mem hU hU', fun x y hy => by`. Rewrite using `[Pi.add_apply, a x y fun h => hy (Or.inl h), a' x y fun h => hy (Or.inr h), add_zero],`.
+
+Use `fun x y u hu => by rw [Pi.add_apply, Pi.add_apply, b x y u hu.1, b' x y u hu.2]⟩`. Consider the case `smul c Φ _ h`. Take `⟨C, hC, U, hU, a, b⟩` from `h`. Conclude with `⟨C, hC, U, hU, fun x y hy => by rw [Pi.smul_apply, a x y hy, smul_zero], fun x y u hu => by rw [Pi.smul_apply, Pi.smul_apply, b x y u hu]⟩`.
+-/
 theorem exists_lev {Ψ} (h : Ψ ∈ schA F κ) : ∃ C, IsCompact C ∧ ∃ U ∈ 𝓝 0, Lev C U Ψ := by
   induction h using Submodule.span_induction with
   | mem Φ h =>
@@ -61,6 +75,9 @@ def slc (P : Submodule ℂ (SInf F κ)) : Submodule ℂ ((κ → AF F) → ℂ) 
     obtain ⟨f, hf, e⟩ := ha y
     exact ⟨c • f, Submodule.smul_mem _ c hf, fun x => by rw [Pi.smul_apply, e, SchwartzMap.smul_apply]⟩
 
+/- English proof (translation)
+Introduce `_ hΨ y` and use `(hΨ y).imp fun _ hf => ⟨h hf.1, hf.2⟩`.
+-/
 theorem slc_mono {P Q : Submodule ℂ (SInf F κ)} (h : P ≤ Q) : slc P ≤ slc Q := fun _ hΨ y =>
   (hΨ y).imp fun _ hf => ⟨h hf.1, hf.2⟩
 
@@ -72,6 +89,17 @@ def levS (C U : Set (κ → Af F)) : Submodule ℂ ((κ → AF F) → ℂ) where
   smul_mem' := fun c _ ha => ⟨fun x y hy => by rw [Pi.smul_apply, ha.1 x y hy, smul_zero],
     fun x y u hu => by rw [Pi.smul_apply, Pi.smul_apply, ha.2 x y u hu]⟩
 
+/- English proof (translation)
+Use `haveI : LocallyCompactSpace (Af F) := GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAdele F`. Use `haveI : SecondCountableTopology (Af F) := GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele F`. Set `C` to `CompactExhaustion.choice (κ → Af F)`. Take `⟨U, hU⟩` from `(𝓝 (0 : κ → Af F)).exists_antitone_basis`. Take `⟨⟨a, b⟩, k₀, hk₀⟩` from `nonempty_interior_of_iUnion_of_closed (f := fun p : ℕ × ℕ => {k | Lev (C p.1) (U p.2) (ρ k Φ)}) (fun p => by`.
+
+Simplify using `only [Lev, Set.setOf_and, Set.setOf_forall]`. Conclude with `(isClosed_iInter fun x => isClosed_iInter fun y => isClosed_iInter fun _ => isClosed_eq (hc _) continuous_const).inter (isClosed_iInter fun x => isClosed_iInter fun y => isClosed_iInter fun u => isClosed_iInter fun _ => isClosed_eq (hc _) (hc _)))`. Use the proof step `(Set.eq_univ_of_forall fun k => by`. Take `⟨D, hD, V, hV, h1, h2⟩` from `exists_lev (hs k)`. Take `⟨a, ha⟩` from `C.exists_superset_of_isCompact hD`.
+
+Take `⟨b, hb⟩` from `hU.mem_iff.1 hV`. Conclude with `Set.mem_iUnion.2 ⟨(a, b), fun x y hy => h1 x y fun h => hy (ha h), fun x y u hu => h2 x y u (hb hu)⟩)`. Set `Ω` to `slc P ⊓ levS (C a) (U b)`. Set `c : SInf F κ →ₗ[ℂ] ((κ → mixedEmbedding.mixedSpace F) → ℂ)` to `{ toFun := fun f => f, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Use `haveI : FiniteDimensional ℂ Ω := level_fin pt (fun z => ⟨_, _, pt_eta z⟩) c P (C.isCompact a) (hU.mem b) Ω (fun Ψ h => h.1) (fun Ψ h => h.2.1) fun Ψ h => h.2.2`.
+
+Take `⟨s, -, hcov⟩` from `isCompact_univ.elim_nhds_subcover (fun k₁ : G => (fun k => k₀ * k₁⁻¹ * k) ⁻¹' {k | Lev (C a) (U b) (ρ k Φ)}) fun k₁ _ => (continuous_const.mul continuous_id).continuousAt.preimage_mem_nhds (by simpa using mem_interior_iff_mem_nhds.1 hk₀)`. Use `Submodule.finiteDimensional_of_le (S₂ := ⨆ k₁ : s, Ω.map (ρ (k₁.1 * k₀⁻¹))) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Take `⟨k₁, h₁, hk⟩` from `Set.mem_iUnion₂.1 (hcov (Set.mem_univ k))`. Use `Submodule.mem_iSup_of_mem ⟨k₁, h₁⟩ ⟨ρ (k₀ * k₁⁻¹ * k) Φ, ⟨hP _, hk⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Use `congr 2`. Use `group`.
+-/
 theorem orbit_fin {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G]
     (ρ : G →* Module.End ℂ ((κ → AF F) → ℂ)) (Φ : (κ → AF F) → ℂ) (hc : ∀ z, Continuous fun k => ρ k Φ z)
     (hs : ∀ k, ρ k Φ ∈ schA F κ) (P : Submodule ℂ (SInf F κ)) [FiniteDimensional ℂ P] (hP : ∀ k, ρ k Φ ∈ slc P) :
@@ -114,6 +142,21 @@ open NumberField IsDedekindDomain Filter Topology Formalism.MainNotions.GlobalTh
 open PositivityTheory.ThKOwn.KPol So
 open scoped TensorProduct Classical Matrix
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP K hK Φ hΦ`. Establish `hs` using `IsUWeilPair.isUSplitting hP.weil`. Establish `h1 : Φ ∈ schA F (Fin n × Fin d) ∧ ∃ m, ∀ k ∈ K, om (k, 1) Φ ∈ slc (polM M B.emb m)`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ h`.
+
+Take `⟨f, hf, φ, h1, h2, rfl⟩` from `h`. Take `⟨g, hg, e⟩` from `GlobalTheory.CompanionTheory.Ar.RT.Inj.pure_eq_pureA M B.ψ hP.good φ h1 h2`. Take `⟨m, hm⟩` from `exists_polM M hP.base.std hf`. Rewrite using `[e f]`. Use `⟨Submodule.subset_span ⟨f, g, hg, rfl⟩, m, fun k hk y => ?_⟩` and prove the remaining obligations.
+
+Take `⟨A, hA⟩` from `exists_slice hs.toIsSplitting (k, 1) hg y`. Conclude with `⟨A f, polM_stab hP.base.std hs.toIsSplitting hg ((hK _).1 (inv_mem hk)).1 hA m hm, hA f⟩`. Consider the case `zero => exact ⟨zero_mem _, 0, fun k _ => by rw [map_zero]; exact zero_mem _⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨a1, m, hm⟩` from `ha`.
+
+Take `⟨b1, m', hm'⟩` from `hb`. Use `⟨add_mem a1 b1, max m m', fun k hk => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add]`. Conclude with `add_mem (slc_mono (fil_mono _ _ (le_max_left _ _)) (hm k hk)) (slc_mono (fil_mono _ _ (le_max_right _ _)) (hm' k hk))`. Consider the case `smul c a _ ha`.
+
+Take `⟨a1, m, hm⟩` from `ha`. Use `⟨Submodule.smul_mem _ c a1, m, fun k hk => ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem _ c (hm k hk)`. Take `⟨h1, m, hm⟩` from `h1`.
+
+Use `⟨h1, ?_⟩` and prove the remaining obligations. Take `⟨K', -, -, hK', hc, -⟩` from `hS F E σ B n X r s hP.base hP.herm`. Take `rfl : K = K'` from `Subgroup.ext fun g => (hK g).trans (hK' g).symm`. Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 hc`. Use `haveI := polM_fin M hP.base.cm B.emb m`.
+
+Use `orbit_fin (om.comp ((MonoidHom.inl _ _).comp K.subtype)) Φ (fun z => ?_) (fun k => hs.pres _ _ h1) _ fun k => hm k.1 k.2` and prove the remaining obligations. Set `l : ((Fin n × Fin d → AF F) → ℂ) →ₗ[ℂ] ℂ` to `LinearMap.proj z`. Establish `hl' : l ∈ (adeleClass F).adm (Fin n × Fin d)` using `fun g' _ => ⟨g' (fun i => (z i).2) • (BoundedContinuousFunction.evalCLM ℂ (fun i => evI F (z i)) ∘L SchwartzMap.toBoundedContinuousFunctionCLM ℂ _ _), fun f => by simp [l, pureA, evI, mul_comm]⟩`. Conclude with `(hs.cont l hl' Φ h1).comp (continuous_subtype_val.prodMk continuous_const)`.
+-/
 theorem kFinData_of (hS : StabEx) : KFinData := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP K hK Φ hΦ
   have hs := IsUWeilPair.isUSplitting hP.weil

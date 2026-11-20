@@ -15,11 +15,20 @@ def Tset (F : Set (Matrix (Fin n) (Fin n) k)) (P : k[X]) : Set (Matrix (Fin n) (
 
 def cj (g : GL (Fin n) k) (x : Matrix (Fin n) (Fin n) k) : Matrix (Fin n) (Fin n) k := g.val * x * g⁻¹.val
 
+/- English proof (translation)
+Simplify using `[cj, mul_assoc]`.
+-/
 theorem cj_mul (g h : GL (Fin n) k) (x : Matrix (Fin n) (Fin n) k) : cj (g * h) x = cj g (cj h x) := by
   simp [cj, mul_assoc]
 
+/- English proof (translation)
+Simplify using `[cj]`.
+-/
 theorem cj_one (x : Matrix (Fin n) (Fin n) k) : cj (1 : GL (Fin n) k) x = x := by simp [cj]
 
+/- English proof (translation)
+The claim follows from `((Units.continuous_val.comp continuous_fst).matrix_mul continuous_snd).matrix_mul (Units.continuous_coe_inv.comp continuous_fst)`.
+-/
 theorem continuous_cj : Continuous fun p : GL (Fin n) k × Matrix (Fin n) (Fin n) k => cj p.1 p.2 :=
   ((Units.continuous_val.comp continuous_fst).matrix_mul continuous_snd).matrix_mul
     (Units.continuous_coe_inv.comp continuous_fst)
@@ -30,6 +39,9 @@ variable {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} {F : Set (Matrix (Fin n) 
   (hFinv : ∀ g ∈ Gz Z, ∀ x ∈ F, g.val * x * g⁻¹.val ∈ F)
 
 include hFinv in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hFinv g hg x hx.1, by rw [cj, Asm.aeval_conj, hx.2]⟩`.
+-/
 theorem cj_mem_Tset {g : GL (Fin n) k} (hg : g ∈ Gz Z) {x} (hx : x ∈ Tset F P) : cj g x ∈ Tset F P :=
   ⟨hFinv g hg x hx.1, by rw [cj, Asm.aeval_conj, hx.2]⟩
 

@@ -17,6 +17,9 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.MiS
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.MiTop GlobalTheory.SeeSaw GlobalTheory.Fam ValuativeRel IsLocalRing GlobalTheory.FinPl
 namespace GlobalTheory.MiTop
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Yd cX ex W _ _`. Conclude with `_root_.GlobalTheory.MiTop.served' W`.
+-/
 theorem servedQ_of_bot_alt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.MiTop.BottomHypotheses W → _root_.Formalism.IndefR.IndefiniteRealisationRecursion W.Q → _root_.GlobalTheory.MiTop.FamilyServedCondition W := by
   intro D L hT Gi Gl Kc Yd cX ex W _ _
   exact _root_.GlobalTheory.MiTop.served' W

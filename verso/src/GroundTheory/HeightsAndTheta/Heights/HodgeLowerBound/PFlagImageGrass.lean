@@ -15,11 +15,17 @@ section Cone
 
 variable {K : Type} {ι : K → Type}
 
+/- English proof (translation)
+Rewrite using `[mConeMap, aeval_def, RingHom.ext_int (algebraMap ℤ (MvPolynomial K Ω)) (Int.castRingHom _)]`.
+-/
 theorem mConeMap_apply [Fintype K] [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω)
     (F : MRing ι) :
     mConeMap y F = eval₂ (Int.castRingHom _) (fun p => C (y p) * X p.1 : (Σ k, ι k) → MvPolynomial K Ω) F := by
   rw [mConeMap, aeval_def, RingHom.ext_int (algebraMap ℤ (MvPolynomial K Ω)) (Int.castRingHom _)]
 
+/- English proof (translation)
+Proceed by induction on `F using MvPolynomial.induction_on with`. Consider the case `C a => simp only [eval₂_C, Int.coe_castRingHom, map_intCast]`. Consider the case `add p q hp hq => simp only [eval₂_add, map_add, hp, hq]`. Consider the case `mul_X p q hp => simp only [eval₂_mul, map_mul, hp, eval₂_X, map_C, map_X]`.
+-/
 theorem cone_map {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (y : (Σ k, ι k) → A)
     (F : MvPolynomial (Σ k, ι k) ℤ) :
     eval₂ (Int.castRingHom _) (fun p => C (φ (y p)) * X p.1 : (Σ k, ι k) → MvPolynomial K B) F =
@@ -29,11 +35,17 @@ theorem cone_map {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (y : (�
   | add p q hp hq => simp only [eval₂_add, map_add, hp, hq]
   | mul_X p q hp => simp only [eval₂_mul, map_mul, hp, eval₂_X, map_C, map_X]
 
+/- English proof (translation)
+Rewrite using `[cone_map, h, map_zero]`.
+-/
 theorem cone_map_eq_zero {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (y : (Σ k, ι k) → A)
     (F : MvPolynomial (Σ k, ι k) ℤ) (h : eval₂ (Int.castRingHom _) (fun p => C (y p) * X p.1 : (Σ k, ι k) → MvPolynomial K A) F = 0) :
     eval₂ (Int.castRingHom _) (fun p => C (φ (y p)) * X p.1 : (Σ k, ι k) → MvPolynomial K B) F = 0 := by
   rw [cone_map, h, map_zero]
 
+/- English proof (translation)
+Rewrite using `[cone_map]`. Conclude with `⟨fun h => map_injective φ hφ (by rw [h, map_zero]), fun h => by rw [h, map_zero]⟩`.
+-/
 theorem cone_map_eq_zero_iff {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B)
     (hφ : Function.Injective φ) (y : (Σ k, ι k) → A) (F : MvPolynomial (Σ k, ι k) ℤ) :
     eval₂ (Int.castRingHom _) (fun p => C (φ (y p)) * X p.1 : (Σ k, ι k) → MvPolynomial K B) F = 0 ↔
@@ -41,6 +53,15 @@ theorem cone_map_eq_zero_iff {A B : Type} [CommRing A] [CommRing B] (φ : A →+
   rw [cone_map]
   exact ⟨fun h => map_injective φ hφ (by rw [h, map_zero]), fun h => by rw [h, map_zero]⟩
 
+/- English proof (translation)
+Set `D : (K → Ω) → MvPolynomial K Ω →ₐ[Ω] MvPolynomial K Ω` to `fun c => aeval fun k => C (c k) * X k`. Establish `hD : eval₂ (Int.castRingHom _) (fun p => C (c p.1 * y p) * X p.1 : (Σ k, ι k) → MvPolynomial K Ω) F = D c (eval₂ (Int.castRingHom _) (fun p => C (y p) * X p.1 : (Σ k, ι k) → MvPolynomial K Ω) F)`. Proceed by induction on `F using MvPolynomial.induction_on with`. Consider the case `C a => simp only [eval₂_C, Int.coe_castRingHom, map_intCast]`. Consider the case `add p q hp hq => simp only [eval₂_add, map_add, hp, hq]`.
+
+Consider the case `mul_X p q hp`. Rewrite using `[eval₂_mul, eval₂_mul, map_mul, hp]`. Simplify using `only [eval₂_X, aeval_X, D, map_mul, aeval_C, algebraMap_eq, C_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hinv : ∀ G, D (fun k => (c k)⁻¹) (D c G) = G`.
+
+Introduce `G`. Establish `: (D fun k => (c k)⁻¹).comp (D c) = AlgHom.id Ω _`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `k`. Simplify using `only [D, AlgHom.comp_apply, aeval_X, map_mul, aeval_C, algebraMap_eq, AlgHom.id_apply]`.
+
+Rewrite using `[← mul_assoc, ← C_mul, mul_inv_cancel₀ (hc k), C_1, one_mul]`. Conclude with `congrArg (fun φ => φ G) this`. Rewrite using `[hD]`. Conclude with `⟨fun h => by rw [← hinv (eval₂ _ _ F), h, map_zero], fun h => by rw [h, map_zero]⟩`.
+-/
 theorem cone_smul_eq_zero_iff {Ω : Type} [Field Ω] (c : K → Ω) (hc : ∀ k, c k ≠ 0)
     (y : (Σ k, ι k) → Ω) (F : MvPolynomial (Σ k, ι k) ℤ) :
     eval₂ (Int.castRingHom _) (fun p => C (c p.1 * y p) * X p.1 : (Σ k, ι k) → MvPolynomial K Ω) F = 0 ↔
@@ -75,6 +96,9 @@ variable (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (hN : j + (N - j)
 def genTop (τ : Ψ) : Matrix (Fin j) (Fin (j + (N - j))) (MvPolynomial (Ψ × Fin N × Fin N) ℚ) :=
   Matrix.of fun a b => X (τ, Fin.castLE (by omega) a, Fin.cast hN b)
 
+/- English proof (translation)
+Establish `hs : j - 1 + 1 = j` using `by omega`. Unfold `yFl`. Use `congr 1`. Rewrite using `[← Matrix.det_submatrix_equiv_self (finCongr hs)]`. Use `congr 1`.
+-/
 theorem yFl_grFlV (hj : 1 ≤ j) (hjN : j ≤ N - 1) (p : Σ _ : Fin (Fintype.card Ψ), PlIdx j (N - j)) :
     yFl Ψ N (grFlV Ψ N j hj hjN p) =
       algebraMap _ (ΩFl Ψ N) (colsOf (genTop Ψ N j hN ((Fintype.equivFin Ψ).symm p.1)) p.2).det := by
@@ -93,11 +117,17 @@ def toOnePipe : MvPolynomial (Ψ × Fin N × Fin N) ℚ →ₐ[ℚ]
   aeval fun x => if h : (x.2.1 : ℕ) < j then
     onePipe (genZ Ψ N j (Fintype.equivFin Ψ x.1)) ⟨x.2.1, h⟩ (Fin.cast hN.symm x.2.2) else 0
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[toOnePipe, genTop]`.
+-/
 theorem toOnePipe_genTop (τ : Ψ) :
     (genTop Ψ N j hN τ).map (toOnePipe Ψ N j hN) = onePipe (genZ Ψ N j (Fintype.equivFin Ψ τ)) := by
   ext a b
   simp [toOnePipe, genTop]
 
+/- English proof (translation)
+Rewrite using `[AlgHom.map_det, AlgHom.mapMatrix_apply]`. Establish `: (colsOf (genTop Ψ N j hN ((Fintype.equivFin Ψ).symm p.1)) p.2).map (toOnePipe Ψ N j hN) = colsOf ((genTop Ψ N j hN ((Fintype.equivFin Ψ).symm p.1)).map (toOnePipe Ψ N j hN)) p.2` using `rfl`. Rewrite using `[this, toOnePipe_genTop, Equiv.apply_symm_apply]`. Both sides reduce to the same expression.
+-/
 theorem toOnePipe_minor (p : Σ _ : Fin (Fintype.card Ψ), PlIdx j (N - j)) :
     toOnePipe Ψ N j hN (colsOf (genTop Ψ N j hN ((Fintype.equivFin Ψ).symm p.1)) p.2).det =
       GroundTheory.Heights₂.Heights.grassPolyCoord (Fintype.card Ψ) j (N - j) p := by
@@ -113,6 +143,13 @@ def genTopF (τ : Ψ) : Matrix (Fin j) (Fin (j + (N - j))) (ΩFl Ψ N) :=
 def genLead (τ : Ψ) : Matrix (Fin j) (Fin j) (ΩFl Ψ N) :=
   (genTopF Ψ N j hN τ).submatrix id (Fin.castAdd (N - j))
 
+/- English proof (translation)
+Establish `hA : genLead Ψ N j hN τ = (algebraMap (MvPolynomial (Ψ × Fin N × Fin N) ℚ) (ΩFl Ψ N)).mapMatrix ((genTop Ψ N j hN τ).submatrix id (Fin.castAdd (N - j)))`. Use extensionality with `a c`. Both sides reduce to the same expression. Rewrite using `[hA, ← RingHom.map_det]`. Introduce `h0`.
+
+Establish `h1 : ((genTop Ψ N j hN τ).submatrix id (Fin.castAdd (N - j))).det = 0` using `IsFractionRing.injective (MvPolynomial (Ψ × Fin N × Fin N) ℚ) (ΩFl Ψ N) (by rw [h0, map_zero])`. Establish `h2` using `congrArg (MvPolynomial.eval fun x : Ψ × Fin N × Fin N => if (x.2.1 : ℕ) = x.2.2 then (1 : ℚ) else 0) h1`. Rewrite `h2` using `[RingHom.map_det, map_zero]`. Establish `h3 : (MvPolynomial.eval fun x : Ψ × Fin N × Fin N => if (x.2.1 : ℕ) = x.2.2 then (1 : ℚ) else 0).mapMatrix ((genTop Ψ N j hN τ).submatrix id (Fin.castAdd (N - j))) = 1`. Use extensionality with `a c`.
+
+Simplify using `[genTop, Matrix.one_apply, Fin.ext_iff]`. Rewrite `h2` using `[h3, det_one]`. Conclude with `one_ne_zero h2`.
+-/
 theorem genLead_det_ne_zero (τ : Ψ) : (genLead Ψ N j hN τ).det ≠ 0 := by
   have hA : genLead Ψ N j hN τ = (algebraMap (MvPolynomial (Ψ × Fin N × Fin N) ℚ) (ΩFl Ψ N)).mapMatrix
       ((genTop Ψ N j hN τ).submatrix id (Fin.castAdd (N - j))) := by
@@ -135,6 +172,11 @@ def toFlag : MvPolynomial (Fin (Fintype.card Ψ) × Fin j × Fin (N - j)) ℚ �
   aeval fun x => ((genLead Ψ N j hN ((Fintype.equivFin Ψ).symm x.1))⁻¹ *
     genTopF Ψ N j hN ((Fintype.equivFin Ψ).symm x.1)) x.2.1 (Fin.natAdd j x.2.2)
 
+/- English proof (translation)
+Establish `hAA` using `nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr (genLead_det_ne_zero Ψ N j hN ((Fintype.equivFin Ψ).symm t)))`. Use extensionality with `a b`. Use `Fin.addCases (fun c => ?_) (fun c => ?_) b` and prove the remaining obligations. Establish `: ((genLead Ψ N j hN ((Fintype.equivFin Ψ).symm t))⁻¹ * genTopF Ψ N j hN ((Fintype.equivFin Ψ).symm t)) a (Fin.castAdd (N - j) c) = ((genLead Ψ N j hN ((Fintype.equivFin Ψ).symm t))⁻¹ * genLead Ψ N j hN ((Fintype.equivFin Ψ).symm t)) a c` using `rfl`. Rewrite using `[this, hAA]`.
+
+Simplify using `[onePipe, Matrix.one_apply]`. Simplify using `[onePipe, toFlag, genZ]`.
+-/
 theorem toFlag_onePipe (t : Fin (Fintype.card Ψ)) :
     (onePipe (genZ Ψ N j t)).map (toFlag Ψ N j hN) =
       (genLead Ψ N j hN ((Fintype.equivFin Ψ).symm t))⁻¹ * genTopF Ψ N j hN ((Fintype.equivFin Ψ).symm t) := by
@@ -148,6 +190,11 @@ theorem toFlag_onePipe (t : Fin (Fintype.card Ψ)) :
     simp [onePipe, Matrix.one_apply]
   · simp [onePipe, toFlag, genZ]
 
+/- English proof (translation)
+Rewrite using `[yFl_grFlV Ψ N j hN hj hjN p]`. Establish `e1 : GroundTheory.Heights₂.Heights.grassPolyCoord (Fintype.card Ψ) j (N - j) p = (colsOf (onePipe (genZ Ψ N j p.1)) p.2).det` using `rfl`. Rewrite using `[e1, AlgHom.map_det, AlgHom.mapMatrix_apply]`. Establish `e2 : (colsOf (onePipe (genZ Ψ N j p.1)) p.2).map (toFlag Ψ N j hN) = colsOf ((onePipe (genZ Ψ N j p.1)).map (toFlag Ψ N j hN)) p.2` using `rfl`. Rewrite using `[e2, toFlag_onePipe]`.
+
+Establish `e3 : colsOf ((genLead Ψ N j hN ((Fintype.equivFin Ψ).symm p.1))⁻¹ * genTopF Ψ N j hN ((Fintype.equivFin Ψ).symm p.1)) p.2 = (genLead Ψ N j hN ((Fintype.equivFin Ψ).symm p.1))⁻¹ * colsOf (genTopF Ψ N j hN ((Fintype.equivFin Ψ).symm p.1)) p.2` using `rfl`. Rewrite using `[e3, det_mul, det_nonsing_inv, Ring.inverse_eq_inv', RingHom.map_det, RingHom.mapMatrix_apply]`. Both sides reduce to the same expression.
+-/
 theorem toFlag_minor (hj : 1 ≤ j) (hjN : j ≤ N - 1) (p : Σ _ : Fin (Fintype.card Ψ), PlIdx j (N - j)) :
     toFlag Ψ N j hN (GroundTheory.Heights₂.Heights.grassPolyCoord (Fintype.card Ψ) j (N - j) p) =
       (genLead Ψ N j hN ((Fintype.equivFin Ψ).symm p.1)).det⁻¹ * yFl Ψ N (grFlV Ψ N j hj hjN p) := by
@@ -167,6 +214,9 @@ theorem toFlag_minor (hj : 1 ≤ j) (hjN : j ≤ N - 1) (p : Σ _ : Fin (Fintype
 
 end Rows
 
+/- English proof (translation)
+Establish `hκ : Function.Injective (grFlKappa Ψ N j hj hjN)` using `fun a b h => (Fintype.equivFin Ψ).symm.injective (congrArg Prod.fst h)`. Use extensionality with `F`. Simplify using `only [PFl, imageZ, mCoordIdeal, Ideal.mem_comap, RingHom.mem_ker, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, GroundTheory.Heights₂.Heights.Targets.ImageCoord.mConeMap_rename (grFlKappa Ψ N j hj hjN) (grFlV Ψ N j hj hjN) (fun _ => rfl) (yFl Ψ N) F]`. Conclude with `⟨fun h => rename_injective _ hκ (by rw [h, map_zero]), fun h => by rw [h, map_zero]⟩`.
+-/
 theorem image_eq (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (hj : 1 ≤ j) (hjN : j ≤ N - 1) :
     imageZ (grFlV Ψ N j hj hjN) (PFl Ψ N) = mCoordIdeal (yFl Ψ N ∘ grFlV Ψ N j hj hjN) := by
   have hκ : Function.Injective (grFlKappa Ψ N j hj hjN) := fun a b h =>
@@ -177,6 +227,15 @@ theorem image_eq (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (hj : 1 �
       (grFlV Ψ N j hj hjN) (fun _ => rfl) (yFl Ψ N) F]
   exact ⟨fun h => rename_injective _ hκ (by rw [h, map_zero]), fun h => by rw [h, map_zero]⟩
 
+/- English proof (translation)
+Introduce `Ψ _ _ N j hj hjN`. Establish `hN : j + (N - j) = N` using `by omega`. Rewrite using `[image_eq]`. Use extensionality with `F`. Simplify using `only [GroundTheory.Heights₂.Heights.grassIdeal, mCoordIdeal, RingHom.mem_ker, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, mConeMap_apply, Function.comp_apply]`.
+
+Establish `ha : ∀ F : MvPolynomial (Σ _ : Fin (Fintype.card Ψ), PlIdx j (N - j)) ℤ, eval₂ (Int.castRingHom _) (fun p => C (yFl Ψ N (grFlV Ψ N j hj hjN p)) * X p.1 : _ → MvPolynomial (Fin (Fintype.card Ψ)) (ΩFl Ψ N)) F = 0 ↔ eval₂ (Int.castRingHom _) (fun p => C (colsOf (genTop Ψ N j hN ((Fi …`. Introduce `F`. Simplify using `only [yFl_grFlV Ψ N j hN hj hjN]`. Conclude with `cone_map_eq_zero_iff (algebraMap (MvPolynomial (Ψ × Fin N × Fin N) ℚ) (ΩFl Ψ N)) (IsFractionRing.injective _ _) (fun p : (Σ _ : Fin (Fintype.card Ψ), PlIdx j (N - j)) => (colsOf (genTop Ψ N j hN ((Fintype.equivFin Ψ).symm p.1)) p.2).det) F`. Establish `hb : ∀ F : MvPolynomial (Σ _ : Fin (Fintype.card Ψ), PlIdx j (N - j)) ℤ, eval₂ (Int.castRingHom _) (fun p => C (GroundTheory.Heights₂.Heights.grassCoord (Fintype.card Ψ) j (N - j) p) * X p.1 : _ → MvPolynomial (Fin (Fintype.card Ψ)) (GroundTheory.Heights₂.Heights.GrassField (Fint …` using `fun F => cone_map_eq_zero_iff (algebraMap (MvPolynomial (Fin (Fintype.card Ψ) × Fin j × Fin (N - j)) ℚ) (GroundTheory.Heights₂.Heights.GrassField (Fintype.card Ψ) j (N - j))) (IsFractionRing.injective _ _) (GroundTheory.Heights₂.Heights.grassPolyCoord (Fintype.card Ψ) j (N - j)) …`.
+
+Rewrite using `[ha, hb]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h'` using `cone_map_eq_zero (toOnePipe Ψ N j hN).toRingHom _ F h`. Simplify `h'` using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, toOnePipe_minor]`.
+
+Introduce `h`. Establish `h'` using `cone_map_eq_zero (toFlag Ψ N j hN).toRingHom _ F h`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, toFlag_minor Ψ N j hN hj hjN] at h'`. Rewrite using `[← ha]`. Conclude with `(cone_smul_eq_zero_iff (fun t => (genLead Ψ N j hN ((Fintype.equivFin Ψ).symm t)).det⁻¹) (fun _ => inv_ne_zero (genLead_det_ne_zero Ψ N j hN _)) _ F).mp h'`.
+-/
 theorem proof : FlagImageGrass.Statement := by
   intro Ψ _ _ N j hj hjN
   have hN : j + (N - j) = N := by omega

@@ -9,6 +9,19 @@ open ModularForm (E₄ E₆)
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `f C hf hC`. Establish `hd : DifferentiableOn ℂ (f ∘ UpperHalfPlane.ofComplex) {z : ℂ | 0 < z.im}` using `UpperHalfPlane.mdifferentiable_iff.mp hf`. Establish `hopen : IsOpen {z : ℂ | 0 < z.im}` using `isOpen_lt continuous_const Complex.continuous_im`. Establish `han` using `hd.analyticOnNhd hopen`. Establish `hpc : IsPreconnected {z : ℂ | 0 < z.im}` using `(convex_halfSpace_im_gt 0).isPreconnected`.
+
+Use `set z₀ : ℂ := ((|C| + 1 : ℝ) : ℂ) * Complex.I with hz₀`. Establish `hz₀im : z₀.im = |C| + 1` using `by simp [hz₀]`. Establish `hmem : z₀ ∈ {z : ℂ | 0 < z.im}` using `by show 0 < z₀.im`. Rewrite using `[hz₀im]`. Check the signs of the components of the expression.
+
+Establish `hev : (f ∘ UpperHalfPlane.ofComplex) =ᶠ[nhds z₀] 0`. Establish `hopen2 : IsOpen {z : ℂ | max C 0 < z.im}` using `isOpen_lt continuous_const Complex.continuous_im`. Establish `hin : z₀ ∈ {z : ℂ | max C 0 < z.im}` using `by show max C 0 < z₀.im`. Rewrite using `[hz₀im]`. Use `le_abs_self C` as an intermediate fact.
+
+Use `abs_nonneg C` as an intermediate fact. Conclude with `max_lt (by linarith) (by linarith)`. Use `filter_upwards [hopen2.mem_nhds hin] with z hz`. Establish `hz' : max C 0 < z.im` using `hz`. Establish `h0 : 0 < z.im` using `lt_of_le_of_lt (le_max_right _ _) hz'`.
+
+Establish `h1 : C < z.im` using `lt_of_le_of_lt (le_max_left _ _) hz'`. Simplify using `only [Function.comp_apply, Pi.zero_apply, UpperHalfPlane.ofComplex_apply_of_im_pos h0]`. Conclude with `hC _ h1`. Establish `heq` using `han.eqOn_zero_of_preconnected_of_eventuallyEq_zero hpc hmem hev`. Use function extensionality and compare the values at `τ`.
+
+Use `heq (show (τ : ℂ) ∈ {z : ℂ | 0 < z.im} from τ.im_pos)` as an intermediate fact. Simplify `this` using `[Function.comp_apply, UpperHalfPlane.ofComplex_apply]`.
+-/
 theorem upperHalfPlane_eq_zero_of_vanish_high :
     ∀ (f : ℍ → ℂ) (C : ℝ), MDifferentiable 𝓘(ℂ) 𝓘(ℂ) f →
       (∀ τ : ℍ, C < τ.im → f τ = 0) → f = 0 := by

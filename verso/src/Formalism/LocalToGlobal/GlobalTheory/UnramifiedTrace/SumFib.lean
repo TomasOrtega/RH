@@ -4,6 +4,11 @@ open scoped Classical
 
 namespace Formalism.L2.GlobalTheoryTheory.UnramifiedTrace
 
+/- English proof (translation)
+Establish `key : ∀ x, ∑ p ∈ Finset.univ.filter (fun p => π p = x), w (π p) = ((Finset.univ.filter (fun p => π p = x)).card : ℂ) * w x`. Introduce `x`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => w x) (fun p hp => by rw [(Finset.mem_filter.1 hp).2]), Finset.sum_const, nsmul_eq_mul]`. Repeatedly rewrite using `[hV]`. Rewrite using `[← Finset.sum_fiberwise Finset.univ π (fun p => w (π p))]`.
+
+Conclude with `Finset.sum_congr rfl (fun x _ => key x)`.
+-/
 theorem sum_fib {X P : Type*} [Fintype X] [DecidableEq X] [Fintype P] (π : P → X) (V : P → ℂ) (w : X → ℂ)
     (hV : ∀ p, V p = w (π p)) :
     ∑ p, V p = ∑ x, ((Finset.univ.filter (fun p => π p = x)).card : ℂ) * w x := by
@@ -16,6 +21,35 @@ theorem sum_fib {X P : Type*} [Fintype X] [DecidableEq X] [Fintype P] (π : P �
   rw [← Finset.sum_fiberwise Finset.univ π (fun p => w (π p))]
   exact Finset.sum_congr rfl (fun x _ => key x)
 
+/- English proof (translation)
+Establish `hTn' : (0 : ℕ) < Tn ^ n1` using `pow_pos (Nat.pos_of_ne_zero hTn) _`. Establish `hA : ((Tn : ℂ) ^ n1) ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 hTn)`. Establish `hfibE : ∀ x : X, x ≠ 0 → ∃ q, πE q = x`. Introduce `x hx`. Establish `hc : 0 < (Finset.univ.filter (fun q => πE q = x)).card` using `by rw [hcE x, if_neg hx]; exact hTn'`.
+
+Take `⟨q, hq⟩` from `Finset.card_pos.1 hc`. Conclude with `⟨q, (Finset.mem_filter.1 hq).2⟩`. Take `⟨wE, hwE⟩ : ∃ wE : X → ℂ, ∀ q, VE q = wE (πE q)` from `⟨fun x => if h : ∃ q, πE q = x then VE h.choose else 0, fun q => by`. Establish `h : ∃ q', πE q' = πE q` using `⟨q, rfl⟩`. Simplify using `only [dif_pos h]`.
+
+Conclude with `hEE _ _ h.choose_spec.symm⟩`. Establish `hVD : ∀ p, VD p = (if πD p = te then Φ else wE (πD p))`. Introduce `p`. Use `split_ifs with h`. Conclude with `hself p h`.
+
+Establish `h0 : πD p ≠ 0`. Introduce `h0`. Establish `hc` using `hcD 0`. Rewrite `hc` using `[if_neg (Ne.symm hte0), if_pos (Submodule.zero_mem _)]`. Establish `hm : p ∈ Finset.univ.filter (fun p => πD p = 0)` using `Finset.mem_filter.2 ⟨Finset.mem_univ _, h0⟩`.
+
+Rewrite `hm` using `[Finset.card_eq_zero.1 hc]`. Simplify using `at hm`. Take `⟨q, hq⟩` from `hfibE _ h0`. Rewrite using `[hDE p q hq.symm, hwE q, hq]`. Establish `hD0 : ∑ p, VD p = ∑ x, ((Finset.univ.filter (fun p => πD p = x)).card : ℂ) * (if x = te then Φ else wE x)` using `sum_fib πD VD _ hVD`.
+
+Establish `hE0 : ∑ q, VE q = ∑ x, ((Finset.univ.filter (fun q => πE q = x)).card : ℂ) * wE x` using `sum_fib πE VE wE hwE`. Establish `e1 : ∀ x : X, ((Finset.univ.filter (fun p => πD p = x)).card : ℂ) * (if x = te then Φ else wE x) = (if x = te then (Tn : ℂ) ^ n1 * Φ else 0) + (Tn : ℂ) ^ n2 * (if x ∈ Submodule.span K {te} then 0 else wE x)`. Introduce `x`. Rewrite using `[hcD x]`. Distinguish the cases in `h1 : x = te`.
+
+Substitute `h1` using the available equality. Simplify using `[Submodule.mem_span_singleton_self]`. Apply the tactic sequence `by_cases h2 : x ∈ Submodule.span K {te} <;> simp [h1, h2]`. Establish `e2 : ∀ x : X, ((Finset.univ.filter (fun q => πE q = x)).card : ℂ) * wE x = (Tn : ℂ) ^ n1 * ((if x ∈ Submodule.span K {te} then 0 else wE x) + (if x ∈ Submodule.span K {te} ∧ x ≠ 0 then wE x else 0))`. Introduce `x`.
+
+Rewrite using `[hcE x]`. Distinguish the cases in `h1 : x = 0`. Substitute `h1` using the available equality. Simplify using the standard rewrite rules. Apply the tactic sequence `by_cases h2 : x ∈ Submodule.span K {te} <;> simp [h1, h2]`.
+
+Establish `hD1 : ∑ x, ((Finset.univ.filter (fun p => πD p = x)).card : ℂ) * (if x = te then Φ else wE x) = (Tn : ℂ) ^ n1 * Φ + (Tn : ℂ) ^ n2 * ∑ x : X, (if x ∈ Submodule.span K {te} then 0 else wE x)`. Rewrite using `[Finset.sum_congr rfl (fun x _ => e1 x), Finset.sum_add_distrib, ← Finset.mul_sum]`. Simplify using the standard rewrite rules. Establish `hE1 : ∑ x, ((Finset.univ.filter (fun q => πE q = x)).card : ℂ) * wE x = (Tn : ℂ) ^ n1 * (∑ x : X, (if x ∈ Submodule.span K {te} then 0 else wE x) + ∑ x : X, (if x ∈ Submodule.span K {te} ∧ x ≠ 0 then wE x else 0))`. Rewrite using `[Finset.sum_congr rfl (fun x _ => e2 x), ← Finset.mul_sum, Finset.sum_add_distrib]`.
+
+Establish `hS2 : ∑ x : X, (if x ∈ Submodule.span K {te} ∧ x ≠ 0 then wE x else 0) = ∑ a, Dl a`. Rewrite using `[← Finset.sum_filter, ← Equiv.sum_comp τ Dl]`. Use `symm`. Use `Finset.sum_bij (fun a _ => (a : K) • te) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `a _`.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Conclude with `⟨Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self te), smul_ne_zero a.ne_zero hte0⟩`. Introduce `a _ b _ h`. Conclude with `Units.ext (smul_left_injective K hte0 h)`. Introduce `x hx`.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hx`. Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.1 hx.1`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Conclude with `hx.2 (by rw [← hc, zero_smul])`.
+
+Conclude with `⟨Units.mk0 c hc0, Finset.mem_univ _, by simp [hc]⟩`. Introduce `a _`. Take `⟨q, hq⟩` from `hfibE _ (smul_ne_zero a.ne_zero hte0)`. Rewrite using `[← hq, ← hwE q, hline a q hq]`. Rewrite using `[hD0, hD1, hE0, hE1, hS2, inv_mul_cancel_left₀ hA]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem comb_du {K X PD PE : Type*} [Field K] [Fintype K] [DecidableEq K] [AddCommGroup X] [Module K X] [Fintype X]
     [DecidableEq X] {iPD : Fintype PD} {iPE : Fintype PE} (te : X) (hte0 : te ≠ 0) (Tn n1 n2 : ℕ) (hTn : Tn ≠ 0)
     (πD : PD → X) (πE : PE → X) (VD : PD → ℂ) (VE : PE → ℂ) (Φ : ℂ) (Dl : Kˣ → ℂ) (τ : Kˣ ≃ Kˣ)

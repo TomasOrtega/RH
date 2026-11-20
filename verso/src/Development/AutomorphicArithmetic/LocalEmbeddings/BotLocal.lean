@@ -22,6 +22,17 @@ namespace GlobalTheory.BotMatch
 variable {D : D7}
 
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+Establish `hXν : Xc.ν = α / β` using `by show Xc.α / Xc.β = _`. Rewrite using `[h.α, h.β]`. Take `⟨I, I', hI, hI', -, -, hiff⟩` from `hM.fin.zeta i hi`. Take `⟨-, -, hquot, ⟨m, hmα, hmβ⟩, hua, hub⟩` from `GlobalTheory.T.seesawCharacter_conductor_at_ramified_place _ _ _ Bs _ _ Γ Xc om om' hM.triple i hi`. Take `⟨hcond, hc1⟩` from `UpperTheory.localChar_conductor_le_of_heckeExponent D (α / β) νH hν i.1 (Bs.τ i) c hc`.
+
+Establish `hram` using `hM.triple.chars.ram (splitPrime (Bs.τ i)) ((splitPrime_under (Bs.τ i)).symm ▸ hi)`. Rewrite `hram` using `[hXν]`. Take `⟨gA, hgA, egA⟩` from `UpperTheory.exists_maxCompact_eq_frame_gram_splitBasis D (GlobalTheory.Grid.sgn true W) ΛW βW sW fW i.1 (Bs.τ i) (Γ.V.bas i) (hL ▸ hM.triple.geo.hV.bas i)`. Establish `hx1 : (βX.val.map (evW (Bs.τ i))).submatrix e e * ((βX⁻¹).val.map (evW (Bs.τ i))).submatrix e e = 1`. Rewrite using `[Matrix.submatrix_mul_equiv, ← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _), Matrix.submatrix_one_equiv]`.
+
+Set `bX : GL (Fin (W.rank + W₁.rank)) (Fv D.host.F i.1)` to `⟨_, _, hx1, mul_eq_one_comm.1 hx1⟩`. Establish `hy1 : (βW₁⁻¹).val.map (evW (Bs.τ i)) * βW₁.val.map (evW (Bs.τ i)) = 1`. Rewrite using `[← Matrix.map_mul, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hy2` using `gram_inv_map (Bs.τ i) W₁`. Establish `hy3 : ((Γ.V'.bas i)⁻¹).valᵀ * (Γ.V'.bas i).valᵀ = 1` using `by rw [← transpose_mul, Units.mul_inv, transpose_one]`.
+
+Set `gB : GL (Fin W₁.rank) (Fv D.host.F i.1)` to `⟨_, _, hy1, mul_eq_one_comm.1 hy1⟩ * ⟨_, _, hy2, mul_eq_one_comm.1 hy2⟩ * ⟨_, _, hy3, mul_eq_one_comm.1 hy3⟩`. Rewrite `hcond`, the goal using `[← hXν]`. Take `⟨lam, Ξ, Ψ, hlam, eΞ, eΨ, sΞ, sΨ, nΞ, nΨ, hz⟩` from `UpperTheory.exists_scaled_standardPairSections_of_maxCompact_translate (Fv D.host.F i.1) _ _ _ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.unifAt i.1) c m W.rank W₁.rank (GlobalTheory.SplitFlip.exists_isUnif).choose_spec hquot (hc1 hram) hcond hmα hmβ hua hub gA gB …`. Take `⟨φ, sφ, rfl⟩` from `hI.bij.surjOn sΞ`. Take `⟨φ', sφ', rfl⟩` from `hI'.bij.surjOn sΨ`.
+
+Use `⟨I, I', φ, φ', lam, hI, hI', sφ, sφ', fun h0 => nΞ (by rw [h0, map_zero]), fun h0 => nΨ (by rw [h0, map_zero]), hlam, (hiff φ sφ φ' sφ').2 hz, fun x => ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[eΞ, egA]`. Conclude with `congrArg _ (frMapO_coX (Bs.τ i) (GlobalTheory.Grid.sgn true W) X e βW βX (Γ.V.bas i) (Γ.W.bas i) x)`. Rewrite using `[eΨ, h.JW₁, h.JX]`. Conclude with `congrArg (fun z => lam * GlobalTheory.StdPairCone.stdB _ _ c _ _ z) (dualCoord_coY (Bs.τ i) W₁ X e βW₁ βX (Γ.V'.bas i) (Γ.W.bas i) y)`.
+-/
 theorem local_pair {ψ : AddChar (AF D.host.F) ℂ} {W W₁ X : HSp D} {A : GlobalTheory.ChainFr.Fr W} {A₁ : GlobalTheory.ChainFr.Fr W₁}
     {B : GlobalTheory.ChainFr.Fr X} {α β : (AE D)ˣ →* Circle} {e : Fin (W.rank + W₁.rank) ≃ Fin X.rank} {Bs : Base D.host.F D.host.E}
     {Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo D.sp.cm.sig W.rank W₁.rank} {Xc : Chars D.host.F D.host.E} {om : Rep D.sp.cm.sig Γ.V Γ.W}

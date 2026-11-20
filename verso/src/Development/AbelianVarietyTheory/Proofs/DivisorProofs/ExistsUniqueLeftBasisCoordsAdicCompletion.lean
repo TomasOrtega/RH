@@ -6,6 +6,17 @@ open scoped TensorProduct Classical
 
 namespace GlobalTheory.LeftBasisBC
 
+/- English proof (translation)
+Set `φ : (Fin r → L) →ₗ[ℚ] C` to `{ toFun := fun c => ∑ i, ι (c i) * e i map_add' := fun a b => by simp [add_mul, Finset.sum_add_distrib] map_smul' := fun q a => by simp [Finset.smul_sum] }`. Establish `hφ : Function.Bijective φ`. Rewrite using `[Function.bijective_iff_existsUnique]`. Introduce `x`. Take `⟨c, hc, hu⟩` from `h x`.
+
+Conclude with `⟨c, hc.symm, fun d hd => hu d hd.symm⟩`. Set `E : (Fin r → L) ≃ₗ[ℚ] C` to `LinearEquiv.ofBijective φ hφ`. Set `P : K ⊗[ℚ] (Fin r → L) ≃ₗ[ℚ] (Fin r → K ⊗[ℚ] L)` to `TensorProduct.piRight ℚ ℚ K (fun _ : Fin r => L)`. Set `F : K ⊗[ℚ] (Fin r → L) ≃ₗ[ℚ] K ⊗[ℚ] C` to `TensorProduct.congr (LinearEquiv.refl ℚ K) E`. Establish `key : ∀ z : K ⊗[ℚ] (Fin r → L), F z = ∑ i, Algebra.TensorProduct.map (AlgHom.id ℚ K) ι (P z i) * ((1 : K) ⊗ₜ[ℚ] e i)`.
+
+Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a c`. Simplify using `[F, P, E, φ, TensorProduct.tmul_sum]`.
+
+Consider the case `add a b ha hb`. Simplify using `only [map_add, ha, hb, Pi.add_apply, add_mul, Finset.sum_add_distrib]`. Use `⟨P (F.symm y), ?_, ?_⟩` and prove the remaining obligations. Use `show y = _`. Rewrite using `[← key, LinearEquiv.apply_symm_apply]`.
+
+Introduce `β hβ`. Establish `h1` using `key (P.symm β)`. Rewrite `h1` using `[LinearEquiv.apply_symm_apply, ← hβ]`. Rewrite using `[← h1, LinearEquiv.symm_apply_apply, LinearEquiv.apply_symm_apply]`.
+-/
 theorem existsUnique_coords_baseChange (K : Type) [CommRing K] [Algebra ℚ K]
     (L : Type) [Field L] [Algebra ℚ L] (C : Type) [Ring C] [Algebra ℚ C] (ι : L →ₐ[ℚ] C) (r : ℕ)
     (e : Fin r → C) (h : ∀ x : C, ∃! c : Fin r → L, x = ∑ i, ι (c i) * e i)
@@ -42,6 +53,9 @@ theorem existsUnique_coords_baseChange (K : Type) [CommRing K] [Algebra ℚ K]
     rw [LinearEquiv.apply_symm_apply, ← hβ] at h1
     rw [← h1, LinearEquiv.symm_apply_apply, LinearEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Introduce `L _ _ C _ _ ι r e h v y` and use `existsUnique_coords_baseChange (v.adicCompletion ℚ) L C ι r e h y`.
+-/
 theorem existsUnique_coords_adicCompletion :
     ∀ (L : Type) [Field L] [NumberField L] (C : Type) [Ring C] [Algebra ℚ C] (ι : L →ₐ[ℚ] C) (r : ℕ)
     (e : Fin r → C), (∀ x : C, ∃! c : Fin r → L, x = ∑ i, ι (c i) * e i) →

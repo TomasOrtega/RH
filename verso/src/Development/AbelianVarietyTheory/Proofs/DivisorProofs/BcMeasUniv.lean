@@ -17,6 +17,9 @@ open GlobalTheory GlobalTheory.CxPts GlobalTheory.VB GlobalTheory.ProjSpace Glob
 
 namespace GlobalTheory.TautFlag
 
+/- English proof (translation)
+The claim follows from `ProjSpace.isRegSurf_line.isIntegral; (ProjSpace.hermitianTwistingSheaf ℤ 1).IsSelfInter (1 / 2) ∧ (ProjSpace.hermitianTwistingSheaf ℤ 1).dual.IsSelfInter (1 / 2) := by have := ProjSpace.isRegSurf_line.isIntegral have hP := ProjSpace.isArithVar_int 1 obtain ⟨Ψ, hΨ⟩ := ((HC.arExist …`.
+-/
 theorem selfInter (HC : GlobalTheory.Published.ArCalc) : haveI := ProjSpace.isRegSurf_line.isIntegral;
     (ProjSpace.hermitianTwistingSheaf ℤ 1).IsSelfInter (1 / 2) ∧ (ProjSpace.hermitianTwistingSheaf ℤ 1).dual.IsSelfInter (1 / 2) := by
   have := ProjSpace.isRegSurf_line.isIntegral
@@ -34,6 +37,9 @@ theorem selfInter (HC : GlobalTheory.Published.ArCalc) : haveI := ProjSpace.isRe
   rw [← hval]
   simp [lin]
 
+/- English proof (translation)
+Set `e : MvPolynomial (Fin 1) ℤ ≃ₐ[ℤ] Γ(PSpace ℤ 1, chart ℤ 1 j)` to `(MvPolynomial.renameEquiv ℤ (finSuccAboveEquiv j)).trans (chartAlgEquiv ℤ 1 j)`. Establish `he : MvPolynomial.eval₂Hom (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX (PSpace.str ℤ 1) (chart ℤ 1 j)) (fun a => ratio ℤ 1 j (j.succAbove a)) = (e : MvPolynomial (Fin 1) ℤ →+* _)` using `MvPolynomial.ringHom_ext (fun a => (MvPolynomial.eval₂Hom_C _ _ a).trans (e.commutes a).symm) fun b => (MvPolynomial.eval₂Hom_X' _ _ b).trans ((congrArg (chartAlgEquiv ℤ 1 j) (MvPolynomial.rename_X _ b)).trans (chartAlgEquiv_X ℤ 1 j (finSuccAboveEquiv j b))).symm`. Take `⟨c, hs, ht, hx⟩` from `FlagZ.Plane.exists_chart_of_bijective ℤ _ (PSpace.str ℤ 1) σ 1 _ (isAffineOpen_chart ℤ 1 j) (fun a => ratio ℤ 1 j (j.succAbove a)) (by rw [he]; exact e.bijective)`. Conclude with `⟨c, hs, ht, fun y hy => hx y hy 0⟩`.
+-/
 theorem exists_chart (σ : ℤ →+* ℂ) (j : Fin 2) : ∃ c : AlgChart (PSpace.str ℤ 1) σ 1,
     c.e.source = ptsIn _ σ (chart ℤ 1 j) ∧ c.e.target = Set.univ ∧
       ∀ y ∈ c.e.source, c.e y 0 = ev _ σ (chart ℤ 1 j) (ratio ℤ 1 j (j.succAbove 0)) y := by
@@ -49,6 +55,27 @@ theorem exists_chart (σ : ℤ →+* ℂ) (j : Fin 2) : ∃ c : AlgChart (PSpace
     (isAffineOpen_chart ℤ 1 j) (fun a => ratio ℤ 1 j (j.succAbove a)) (by rw [he]; exact e.bijective)
   exact ⟨c, hs, ht, fun y hy => hx y hy 0⟩
 
+/- English proof (translation)
+Use `CxPts.secondCountableTopology_of_isProjOver σ (isProjOver_pspace_str ℤ 1)` as an intermediate fact. Establish `H : ((stdH.h.stepMet flag 1).met σ).IsCInf` using `(stdH.cInf.restrict _ _) σ`. Take `⟨c, hs, ht, hx⟩` from `exists_chart σ 0`. Take `⟨c', hs', -, hx'⟩` from `exists_chart σ 1`. Establish `hm : MeasurableSet c.e.source` using `c.e.open_source.measurableSet`.
+
+Establish `hc (y : CxPts (PSpace.str ℤ 1) σ) (hy : y ∈ c.e.sourceᶜ) : y ∈ c'.e.source`. Take `⟨j, hj⟩` from `exists_mem_chart ℤ 1 (y.1 (IsLocalRing.closedPoint ℂ))`. Rewrite using `[hs']`. Rewrite `hy` using `[hs]`. Use `fin_cases j`.
+
+Conclude with `absurd (mem_ptsIn.2 hj) hy`. Conclude with `mem_ptsIn.2 hj`. Establish `h₀ : ((stdH.h.stepMet flag 1).met σ).bcMeas (r` using `1) (s := 1) (VMetric.stepSeq_shortExact flag 1) (flag.isVB (Fin.castSucc 1)) (flag.isVB_gr 1) c.e.sourceᶜ = 0 := by`. Use `(Met.bcMeas_apply (r := 1) (s := 1) _ _ _ c' H hm.compl hc).trans (setLIntegral_measure_zero _ _ (measure_mono_null (t := {0}) ?_ (measure_singleton _)))` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+
+Establish `h₁ : c'.e y 0 = 0`. Rewrite using `[hx' y (hc y hy)]`. Assume the negation of the conclusion as `h`. Establish `h₂` using `(mem_ptsIn_basicOpen (hs' ▸ hc y hy) _).2 h`. Rewrite `h₂` using `[ratio, basicOpen_ratioOn]`.
+
+Conclude with `hy (hs ▸ (mem_ptsIn_inf.1 h₂).2)`. Use extensionality with `i`. Rewrite using `[Subsingleton.elim i 0, h₁]`. Both sides reduce to the same expression. Establish `hmem (v) : c.e.symm v ∈ c.e.source` using `c.e.map_target (ht ▸ trivial)`.
+
+Establish `hr (v) : c.e (c.e.symm v) = v` using `c.e.right_inv (ht ▸ trivial)`. Establish `hz (v) : ev _ σ (chart ℤ 1 0) (ratio ℤ 1 0 1) (c.e.symm v) = v 0` using `(hx _ (hmem v)).symm.trans (by rw [hr])`. Establish `h1 (v) : ev _ σ (chart ℤ 1 0) (ratio ℤ 1 0 0) (c.e.symm v) = 1`. Rewrite using `[ev_eq (hs ▸ hmem v), ratio, ratioOn_self, map_one]`. Establish `hG : (fun v => ((stdH.h.stepMet flag 1).met σ).gram (adapt₁ 0).frame (c.e.symm v)) = fun w : ReciprocityTheory.L2DbarEstimates.V 1 => (Matrix.fromBlocks (Matrix.of fun _ _ => 1 + w 0 * starRingEnd ℂ (w 0)) (Matrix.of fun _ _ => w 0) (Matrix.of fun _ _ => starRingEnd ℂ (w 0)) 1 : …` using `funext fun v => by`.
+
+Establish `e₁ : nsqV 0 (c.e.symm v) = 1 + v 0 * starRingEnd ℂ (v 0)`. Rewrite using `[nsqV, h1, hz, map_one, mul_one]`. Establish `e₂ : ipVT 0 (c.e.symm v) = v 0` using `hz v`. Rewrite using `[gram_adapt₁ 0 (hs ▸ hmem v), e₁, e₂]`. Establish `hd (v) : ((stdH.h.stepMet flag 1).met σ).bcDens (r` using `1) (s := 1) (VMetric.stepSeq_shortExact flag 1) (flag.isVB (Fin.castSucc 1)) (flag.isVB_gr 1) c (c.e.symm v) = 1 / Real.pi * (ArithHeightModel.u v ^ 2)⁻¹ := by`.
+
+Use `(Met.bcDens_eq (r := 1) (s := 1) _ _ _ (adapt₁ 0) c H (hmem v) (hs ▸ hmem v)).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (GlobalTheory.T.hermitian_matrix_green_value v)` and prove the remaining obligations. Conclude with `congrArg₂ (fun K w => 2 * diagVal (extTrace K w) (EuclideanSpace.single 0 1)) hG (hr v)`. Establish `hn (v : ReciprocityTheory.L2DbarEstimates.V 1) : 0 ≤ 1 / Real.pi * (ArithHeightModel.u v ^ 2)⁻¹`. Use `Real.pi_pos` as an intermediate fact.
+
+Check the signs of the components of the expression. Rewrite using `[← measure_add_measure_compl hm, h₀, add_zero]`. Use `(Met.bcMeas_apply (r := 1) (s := 1) _ _ _ c H hm subset_rfl).trans ?_` and prove the remaining obligations. Rewrite using `[c.e.image_source_eq_target, ht, Measure.restrict_univ]`. Use `(lintegral_congr fun v => congrArg ENNReal.ofReal (hd v)).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[← ofReal_integral_eq_lintegral_ofReal (Integrable.of_integral_ne_zero (ArithHeightModel.integral_dens.trans_ne one_ne_zero)) (.of_forall hn), ArithHeightModel.integral_dens, ENNReal.ofReal_one]`.
+-/
 theorem bcMeas_univ (σ : ℤ →+* ℂ) : ((stdH.h.stepMet flag 1).met σ).bcMeas (r := 1) (s := 1)
     (VMetric.stepSeq_shortExact flag 1) (flag.isVB (Fin.castSucc 1)) (flag.isVB_gr 1) Set.univ = 1 := by
   have := CxPts.secondCountableTopology_of_isProjOver σ (isProjOver_pspace_str ℤ 1)
@@ -107,6 +134,11 @@ theorem bcMeas_univ (σ : ℤ →+* ℂ) : ((stdH.h.stepMet flag 1).met σ).bcMe
     (ArithHeightModel.integral_dens.trans_ne one_ne_zero)) (.of_forall hn), ArithHeightModel.integral_dens,
     ENNReal.ofReal_one]
 
+/- English proof (translation)
+Establish `e (σ) : ((stdH.h.stepMet flag 0).met σ).bcMeas (VMetric.stepSeq_shortExact flag 0) (flag.isVB (Fin.castSucc 0)) (flag.isVB_gr 0) = 0` using `Met.bcMeas_rank_zero _ _ _`. Establish `e' (σ) : ((stdH.h.stepMet flag 1).met σ).bcMeas (VMetric.stepSeq_shortExact flag 1) (flag.isVB (Fin.castSucc 1)) (flag.isVB_gr 1) Set.univ = 1` using `bcMeas_univ σ`. Use `⟨Fin.forall_fin_two.2 ⟨fun σ => ?_, fun σ => ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `(congrArg (fun μ : Measure _ => μ Set.univ) (e σ)).trans_ne ENNReal.zero_ne_top`. Conclude with `(e' σ).trans_ne ENNReal.one_ne_top`.
+
+Rewrite using `[VMetric.flagBc, Fin.sum_univ_two]`. Use `(congrArg₂ (· + ·) (finsum_eq_zero_of_forall_eq_zero fun σ => ?_) ((finsum_eq_single _ (Int.castRingHom ℂ) fun σ h => absurd (RingHom.ext_int _ _) h).trans ?_)).trans (zero_add 1)` and prove the remaining obligations. Conclude with `congrArg (fun μ : Measure _ => (μ Set.univ).toReal) (e σ)`. Conclude with `congrArg ENNReal.toReal (e' _)`.
+-/
 theorem flagBc_flag : stdH.h.FlagBcFinite flag ∧ stdH.h.flagBc flag = 1 := by
   have e (σ) : ((stdH.h.stepMet flag 0).met σ).bcMeas (VMetric.stepSeq_shortExact flag 0)
       (flag.isVB (Fin.castSucc 0)) (flag.isVB_gr 0) = 0 := Met.bcMeas_rank_zero _ _ _
@@ -122,6 +154,9 @@ theorem flagBc_flag : stdH.h.FlagBcFinite flag ∧ stdH.h.flagBc flag = 1 := by
     · exact congrArg (fun μ : Measure _ => (μ Set.univ).toReal) (e σ)
     · exact congrArg ENNReal.toReal (e' _)
 
+/- English proof (translation)
+The claim follows from `ProjSpace.isRegSurf_line.isIntegral; ∃ fl : Vert.Flag (HermVB.std (PSpace.str ℤ 1) 2).E 2, (VMetric.grLB fl 0 (HermVB.std (PSpace.str ℤ 1) 2).cInf).Isometric (ProjSpace.hermitianTwistingSheaf ℤ 1).dual ∧ (HermVB.std (PSpace.str ℤ 1) 2).h.flagBc fl = 1 ∧ VMetric.IsFlagCh2 (HermVB. …`.
+-/
 theorem exists_flag : GlobalTheory.Published.ArCalc → haveI := ProjSpace.isRegSurf_line.isIntegral;
     ∃ fl : Vert.Flag (HermVB.std (PSpace.str ℤ 1) 2).E 2,
       (VMetric.grLB fl 0 (HermVB.std (PSpace.str ℤ 1) 2).cInf).Isometric (ProjSpace.hermitianTwistingSheaf ℤ 1).dual ∧

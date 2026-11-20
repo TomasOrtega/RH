@@ -22,12 +22,20 @@ variable {D : D7}
 
 abbrev fin (V : HSp D) : GA D V →* Bridge.Gf V := (finHom V).rangeRestrict
 
+/- English proof (translation)
+Establish `h1 : finHom V g = finHom V g'` using `congrArg Subtype.val h`. Use `(inv_mul_eq_one.1 (GlobalTheory.AutFunCounterexample.GfC_inf_GinfC V ((GfC V).mul_mem ((GfC V).inv_mem hg) hg') ?_))` and prove the remaining obligations. Use `show finHom V _ = 1`. Rewrite using `[map_mul, map_inv, h1, inv_mul_cancel]`.
+-/
 theorem fin_inj (V : HSp D) {g g' : GA D V} (hg : g ∈ GfC V) (hg' : g' ∈ GfC V) (h : fin V g = fin V g') : g = g' := by
   have h1 : finHom V g = finHom V g' := congrArg Subtype.val h
   refine (inv_mul_eq_one.1 (GlobalTheory.AutFunCounterexample.GfC_inf_GinfC V ((GfC V).mul_mem ((GfC V).inv_mem hg) hg') ?_))
   show finHom V _ = 1
   rw [map_mul, map_inv, h1, inv_mul_cancel]
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `h1` using `congrArg π (h i j)`. Rewrite `h1` using `[map_mul, hf, zero_mul, Matrix.sub_apply, map_sub]`. Rewrite using `[Matrix.map_apply, ← sub_eq_zero.1 h1.symm |>.symm]`. Distinguish the cases in `e : i = j`.
+
+Substitute `e` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne e]`.
+-/
 theorem map_eq_one_of_supp {R S : Type} [CommRing R] [CommRing S] (π : R →+* S) {n : ℕ} (f : R) (hf : π f = 0)
     (m : Matrix (Fin n) (Fin n) R) (h : ∀ i j, f * (m - 1) i j = (m - 1) i j) : m.map π = 1 := by
   ext i j
@@ -38,6 +46,15 @@ theorem map_eq_one_of_supp {R S : Type} [CommRing R] [CommRing S] (π : R →+* 
   · subst e; simp
   · simp [Matrix.one_apply_ne e]
 
+/- English proof (translation)
+Take `⟨x, g, rfl⟩` from `x`. Set `f : Formalism.L2.Theta.AE D` to `pairA D.host.F 0 1 ⊗ₜ[D.host.F] (1 : D.host.E)`. Establish `hp : pairA D.host.F 0 1 * pairA D.host.F 0 1 = pairA D.host.F 0 1` using `Prod.ext (mul_zero (0 : Ainf D.host.F)) (mul_one (1 : Af D.host.F))`. Establish `hff : f * f = f`. Simplify using `only [f, Algebra.TensorProduct.tmul_mul_tmul, mul_one, hp]`.
+
+Establish `hc : cA D f = f`. Express the relevant statement in the definitionally equal form `pairA D.host.F 0 1 ⊗ₜ[D.host.F] (D.sp.cm.sig 1) = _`. Rewrite using `[map_one]`. Take `⟨g₁, g₂, h₁, h₂, rfl⟩` from `((GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).1 f hff hc).2.1 g`. Establish `a : infHom V g₁ = 1`.
+
+Apply `Units.ext` to reduce the goal to its premises. Conclude with `map_eq_one_of_supp (infPart D) f (TensorProduct.zero_tmul _ _) _ h₁`. Establish `b : finHom V g₂ = 1`. Apply `Units.ext` to reduce the goal to its premises. Use `map_eq_one_of_supp (finPart D) (1 - f) ?_ _ h₂` and prove the remaining obligations.
+
+Rewrite using `[RingHom.map_sub, RingHom.map_one, sub_eq_zero]`. Both sides reduce to the same expression. Use `⟨g₁, a, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show finHom V g₁ = finHom V (g₁ * g₂)`. Rewrite using `[map_mul, b, mul_one]`.
+-/
 theorem fin_lift (V : HSp D) (x : Bridge.Gf V) : ∃ g ∈ GfC V, fin V g = x := by
   obtain ⟨x, g, rfl⟩ := x
   let f : Formalism.L2.Theta.AE D := pairA D.host.F 0 1 ⊗ₜ[D.host.F] (1 : D.host.E)
@@ -61,16 +78,30 @@ theorem fin_lift (V : HSp D) (x : Bridge.Gf V) : ∃ g ∈ GfC V, fin V g = x :=
   show finHom V g₁ = finHom V (g₁ * g₂)
   rw [map_mul, b, mul_one]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨hg, h⟩, fun h => h.2⟩`.
+-/
 theorem mem_J (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank) {g : GA D V}
     (hg : g ∈ GfC V) : fin V g ∈ (levEnv V β L).J ↔ g ∈ levG V β (flag1L L) :=
   ⟨fun h => ⟨hg, h⟩, fun h => h.2⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem chi_eq (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank) {g : GA D V}
     (h : fin V g ∈ (levEnv V β L).J) : ((levEnv V β L).χ ⟨fin V g, h⟩ : ℂ) = levChi V β (flag1L L) g := rfl
 
+/- English proof (translation)
+Introduce `c hc` and use `⟨Formalism.DivisionValues.cO _ c, Ideal.mem_map_of_mem _ hc, rfl⟩`.
+-/
 theorem isConjPl_conj (P : Formalism.L2.DIV.Pl D.host.E) : IsConjPl P (Formalism.DivisionValues.conjPl P) :=
   fun c hc => ⟨Formalism.DivisionValues.cO _ c, Ideal.mem_map_of_mem _ hc, rfl⟩
 
+/- English proof (translation)
+Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use `((Formalism.DivisionValues.conjPl P).isMaximal.eq_of_le P'.isPrime.ne_top ?_).symm` and prove the remaining obligations. Use `Ideal.map_le_iff_le_comap.2 fun c hc => ?_` and prove the remaining obligations. Take `⟨c', h1, h2⟩` from `h c hc`. Establish `: Formalism.DivisionValues.cO _ c = c'` using `RingOfIntegers.ext h2.symm`.
+
+Use `show Formalism.DivisionValues.cO _ c ∈ P'.asIdeal`. Rewrite using `[this]` and apply the resulting hypothesis.
+-/
 theorem eq_conj_of_isConjPl {P P' : Formalism.L2.DIV.Pl D.host.E} (h : IsConjPl P P') : P' = Formalism.DivisionValues.conjPl P := by
   apply HeightOneSpectrum.ext
   refine ((Formalism.DivisionValues.conjPl P).isMaximal.eq_of_le P'.isPrime.ne_top ?_).symm
@@ -80,6 +111,11 @@ theorem eq_conj_of_isConjPl {P P' : Formalism.L2.DIV.Pl D.host.E} (h : IsConjPl 
   show Formalism.DivisionValues.cO _ c ∈ P'.asIdeal
   rwa [this]
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `h`. Rewrite `h1`, `h3` using `[Formalism.DivisionValues.GluingInclusion.conjIdeal_eq]`. Use `⟨?_, fun hh => h3 _ hh rfl, fun Q hQ hh => h2 ?_⟩` and prove the remaining obligations. Rewrite using `[Formalism.DivisionValues.GluingInclusion.conjIdeal_eq, Formalism.DivisionValues.ValuationRepresentative.conjPl_conjPl]`. Conclude with `h1.symm`.
+
+Rewrite `hh` using `[Formalism.DivisionValues.GluingInclusion.conjIdeal_eq, Formalism.DivisionValues.ValuationRepresentative.conjPl_conjPl]`. Rewrite using `[← HeightOneSpectrum.ext hh]` and apply the resulting hypothesis.
+-/
 theorem splitOff_conj {P : Formalism.L2.DIV.Pl D.host.E} {S : Set (Formalism.L2.DIV.Pl D.host.E)} (h : Bridge.SplitOff P S) :
     Bridge.SplitOff (Formalism.DivisionValues.conjPl P) S := by
   obtain ⟨h1, h2, h3⟩ := h
@@ -89,19 +125,31 @@ theorem splitOff_conj {P : Formalism.L2.DIV.Pl D.host.E} {S : Set (Formalism.L2.
   · rw [Formalism.DivisionValues.GluingInclusion.conjIdeal_eq, Formalism.DivisionValues.ValuationRepresentative.conjPl_conjPl] at hh
     rwa [← HeightOneSpectrum.ext hh]
 
+/- English proof (translation)
+Use `⟨fun e => h.2.1 (e ▸ hQ), fun hc => h.2.2 Q hQ ?_⟩` and prove the remaining obligations. Rewrite using `[Formalism.DivisionValues.GluingInclusion.conjIdeal_eq, eq_conj_of_isConjPl hc, Formalism.DivisionValues.ValuationRepresentative.conjPl_conjPl]`.
+-/
 theorem off_of_splitOff {P : Formalism.L2.DIV.Pl D.host.E} {S : Set (Formalism.L2.DIV.Pl D.host.E)} (h : Bridge.SplitOff P S)
     (Q : Formalism.L2.DIV.Pl D.host.E) (hQ : Q ∈ S) : Q ≠ P ∧ ¬ IsConjPl Q P := by
   refine ⟨fun e => h.2.1 (e ▸ hQ), fun hc => h.2.2 Q hQ ?_⟩
   rw [Formalism.DivisionValues.GluingInclusion.conjIdeal_eq, eq_conj_of_isConjPl hc, Formalism.DivisionValues.ValuationRepresentative.conjPl_conjPl]
 
+/- English proof (translation)
+The claim follows from `(((GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).2.2.1 P e _ (Or.inl ⟨h, rfl⟩)).2.2.2.1 e' _ (Or.inl ⟨h', rfl⟩)).1`.
+-/
 theorem idem_unique (V : HSp D) {P : Formalism.L2.DIV.Pl D.host.E} {e e' : Formalism.L2.Theta.AE D} (h : IsIdemAt e P)
     (h' : IsIdemAt e' P) : e' = e :=
   (((GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).2.2.1 P e _ (Or.inl ⟨h, rfl⟩)).2.2.2.1 e' _ (Or.inl ⟨h', rfl⟩)).1
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).2.2.2 P _ e h (isConjPl_conj P)`.
+-/
 theorem idem_conj (V : HSp D) {P : Formalism.L2.DIV.Pl D.host.E} {e : Formalism.L2.Theta.AE D} (h : IsIdemAt e P) :
     IsIdemAt (cA D e) (Formalism.DivisionValues.conjPl P) :=
   (GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).2.2.2 P _ e h (isConjPl_conj P)
 
+/- English proof (translation)
+Establish `h2` using `idem_conj V (idem_conj V h)`. Rewrite `h2` using `[Formalism.DivisionValues.ValuationRepresentative.conjPl_conjPl]`. Unfold `SuppAt`. Rewrite using `[idem_unique V h h2, add_comm]`.
+-/
 theorem suppAt_conj (V : HSp D) {P : Formalism.L2.DIV.Pl D.host.E} {e : Formalism.L2.Theta.AE D} (h : IsIdemAt e P) (g : GA D V) :
     SuppAt (cA D e) V g ↔ SuppAt e V g := by
   have h2 := idem_conj V (idem_conj V h)
@@ -109,17 +157,41 @@ theorem suppAt_conj (V : HSp D) {P : Formalism.L2.DIV.Pl D.host.E} {e : Formalis
   unfold SuppAt
   rw [idem_unique V h h2, add_comm]
 
+/- English proof (translation)
+The claim follows from `((GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).2.2.1 P e _ (Or.inl ⟨he, rfl⟩)).2.2.1 g hg`.
+-/
 theorem supp_fin (V : HSp D) {P : Formalism.L2.DIV.Pl D.host.E} {e : Formalism.L2.Theta.AE D} (he : IsIdemAt e P) {g : GA D V}
     (hg : SuppAt e V g) : g ∈ GfC V :=
   ((GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).2.2.1 P e _ (Or.inl ⟨he, rfl⟩)).2.2.1 g hg
 
+/- English proof (translation)
+Rewrite using `[mul_sub, h, mul_one, sub_self]`.
+-/
 theorem idem_mul_one_sub {R : Type} [CommRing R] (f : R) (h : f * f = f) : f * (1 - f) = 0 := by
   rw [mul_sub, h, mul_one, sub_self]
 
+/- English proof (translation)
+The claim follows from `((GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).1 f hff hcf).2.2 (1 - f) g g' (idem_mul_one_sub f hff) h h'`.
+-/
 theorem commute_compl (V : HSp D) (f : Formalism.L2.Theta.AE D) (hff : f * f = f) (hcf : cA D f = f) {g g' : GA D V}
     (h : SuppF V f g) (h' : SuppF V (1 - f) g') : Commute g g' :=
   ((GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).1 f hff hcf).2.2 (1 - f) g g' (idem_mul_one_sub f hff) h h'
 
+/- English proof (translation)
+Establish `hKJ : ∀ k, k ∈ K → p k → φ k ∈ J` using `fun k h1 h2 => (hJ k (hpN k h2)).2 ((hK k h2).2 h1)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `k hk`. Take `⟨g, hg, rfl⟩` from `hs k`. Take `⟨k₁, h₁, k₂, h₂, s₁, s₂, rfl⟩` from `hsp g ((hJ g hg).1 hk)`.
+
+Use `⟨φ k₁, (hJ _ (hJN _ h₁)).2 h₁, φ k₂, (hJ _ (hJN _ h₂)).2 h₂, ⟨k₁, (hL _).2 s₁, rfl⟩, map_mul _ _ _, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨l, hl, rfl⟩`. Conclude with `(hc l k₂ ((hL l).1 hl) s₂).symm.map φ`. Introduce and unpack `⟨k, hk⟩ ⟨g, hg, hgk⟩`. Take `rfl : φ g = k` from `hgk`.
+
+Establish `a` using `(hL g).1 hg`. Rewrite using `[hχe, hχ g ((hJ g (hpN g a)).1 hk) a]`. Take `⟨θ, t1, t2, t3, t4, t5⟩` from `hθ choose s hs1 hs2 using hs`. Take `⟨θ', hθ'⟩ : ∃ θ' : G → G, ∀ g, p g → θ' (φ g) = φ (θ g)` from `⟨fun x => φ (θ (s x)), fun g hg => by simp only [hi _ _ (hs1 _) (hpN g hg) (hs2 _)]⟩`. Use `⟨θ', ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨g, hg, rfl⟩`. Establish `a` using `(hL g).1 hg`. Conclude with `⟨θ g, (hL _).2 (t1 g a), (hθ' g a).symm⟩`. Introduce and unpack `_ ⟨g, hg, rfl⟩ _ ⟨g', hg', rfl⟩`. Establish `a` using `(hL g).1 hg`.
+
+Establish `b` using `(hL g').1 hg'`. Rewrite using `[← map_mul, hθ' g a, hθ' g' b, hθ' _ ((hL _).1 (L₀.mul_mem hg hg')), t2 g g' a b, map_mul]`. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Establish `a` using `(hL g).1 hg`. Rewrite using `[hθ' g a, hθ' _ (t1 g a), t3 g a]`.
+
+Introduce and unpack `_ ⟨hj, g, hg, rfl⟩`. Establish `a` using `(hL g).1 hg`. Rewrite using `[hθ' g a]`. Conclude with `hKJ _ (t4 g ⟨(hK g a).1 ((hJ g (hpN g a)).1 hj), a⟩) (t1 g a)`. Introduce and unpack `_ ⟨g, hg, rfl⟩`.
+
+Establish `c` using `(hL g).1 hg`. Take `⟨a, ha, b, hb, h⟩` from `t5 g c`. Use `⟨φ a, ⟨hKJ a ha.1 ha.2, a, (hL a).2 ha.2, rfl⟩, φ b, ⟨hKJ b hb.1 hb.2, b, (hL b).2 hb.2, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hθ' g c, h, map_mul, map_mul]`.
+-/
 theorem transport_local {H G : Type} [Group H] [Group G] (φ : H →* G) (N J₀ L₀ : Subgroup H) (J : Subgroup G)
     (p q : H → Prop) (K : Set H) (χ : J → ℂ) (χ₀ : H → ℂ)
     (hs : ∀ x, ∃ g ∈ N, φ g = x) (hi : ∀ g g', g ∈ N → g' ∈ N → φ g = φ g' → g = g')
@@ -179,6 +251,11 @@ variable (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (Λ : Submodule (𝓞 D.host
 
 include hβ
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `k`. Take `⟨g, hg, rfl⟩` from `fin_lift V k`. Establish `h0` using `(GlobalTheory.T.level_hyperspecial_trivialCharacter_splits_off_places V β Λ 1 (flag1L L) hβ).1 g ((mem_J V β L hg).1 hk)`. Take `⟨n, hn, h⟩` from `h0`. Rewrite using `[chi_eq]`.
+
+Use `congrArg norm h` as an intermediate fact. Rewrite `this` using `[norm_pow, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 this`.
+-/
 theorem norm_chi (k : (levEnv V β L).J) : ‖((levEnv V β L).χ k : ℂ)‖ = 1 := by
   obtain ⟨k, hk⟩ := k
   obtain ⟨g, hg, rfl⟩ := fin_lift V k
@@ -189,6 +266,15 @@ theorem norm_chi (k : (levEnv V β L).J) : ‖((levEnv V β L).χ k : ℂ)‖ = 
   rw [norm_pow, norm_one] at this
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 this
 
+/- English proof (translation)
+Establish `hP : IsPrimeIdem P e (e + cA D e)` using `Or.inl ⟨he, rfl⟩`. Establish `h01` using `(GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).2.2.1 P e _ hP`. Establish `hff` using `h01.1`. Establish `hcf` using `h01.2.1`. Establish `h02` using `((GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).1 _ hff hcf).1`.
+
+Use `h02.elim fun L₀ hL₀ => ?_` and prove the remaining obligations. Establish `h1 : ((1 : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal`. Rewrite using `[Nat.cast_one]`. Conclude with `(Ideal.ne_top_iff_one _).1 P.isPrime.ne_top`. Establish `h03` using `(GlobalTheory.T.level_hyperspecial_trivialCharacter_splits_off_places V β Λ 1 (flag1L L) hβ).2 P e _ hP h1 hoff`.
+
+Establish `hK` using `h03.1`. Establish `hχ` using `h03.2.1`. Establish `hsp` using `h03.2.2`. Establish `hL : ∀ g, g ∈ L₀ ↔ SuppAt e V g` using `hL₀`. Establish `hKJ : ∀ k ∈ locPart V (KsphC V ∅) e, fin V k ∈ (levEnv V β L).J` using `fun k hk => (mem_J V β L (supp_fin V he hk.2)).2 ((hK k hk.2).2 hk.1)`.
+
+Establish `h04` using `(GlobalTheory.T.involution_spherical_hecke_anti V P e he).1`. Establish `h05` using `transport_local (fin V) (GfC V) (levG V β (flag1L L)) L₀ (levEnv V β L).J (SuppAt e V) (SuppF V (1 - (e + cA D e))) (KsphC V ∅) (fun k => ((levEnv V β L).χ k : ℂ)) (levChi V β (flag1L L)) (fin_lift V) (fun g g' => fin_inj V) (fun g => mem_J V β L) (fun g hg => hg.1) hL (fun g => …`. Conclude with `⟨L₀.map (fin V), fun g hg => ⟨g, (hL g).2 hg, rfl⟩, h05.1, fun k hk => Units.ext (h05.2.1 k hk), h05.2.2, hKJ⟩`.
+-/
 theorem local_group (P : Formalism.L2.DIV.Pl D.host.E) (e : Formalism.L2.Theta.AE D) (he : IsIdemAt e P)
     (hoff : ∀ PP, PP ∈ L.Pg ∨ PP ∈ L.Q → PP ≠ P ∧ ¬ IsConjPl PP P) :
     ∃ Lc : Subgroup (Bridge.Gf V), (∀ g, SuppAt e V g → fin V g ∈ Lc) ∧
@@ -223,6 +309,9 @@ theorem local_group (P : Formalism.L2.DIV.Pl D.host.E) (e : Formalism.L2.Theta.A
 
 end Level
 
+/- English proof (translation)
+Substitute `h` using the available equality. Use `⟨fun c hc => ?_, fun g ⟨k₁, k₂, hg⟩ => hA.2 g ?_⟩` and prove the remaining obligations. Take `⟨k₁, k₂, rfl⟩` from `hA.1 c hc`. Conclude with `⟨k₁ * ⟨a, ha⟩, ⟨b, hb⟩ * k₂, by simp only [Subgroup.coe_mul, mul_assoc]⟩`. Conclude with `⟨k₁ * ⟨a, ha⟩⁻¹, ⟨b, hb⟩⁻¹ * k₂, by rw [hg]; simp [mul_assoc]⟩`.
+-/
 theorem isDC_of_mem {G : Type} [Group G] {J : Subgroup G} {x y a b : G} {A : Finset G} (ha : a ∈ J) (hb : b ∈ J)
     (h : y = a * x * b) (hA : Bridge.IsDC J y A) : Bridge.IsDC J x A := by
   subst h
@@ -231,6 +320,9 @@ theorem isDC_of_mem {G : Type} [Group G] {J : Subgroup G} {x y a b : G} {A : Fin
     exact ⟨k₁ * ⟨a, ha⟩, ⟨b, hb⟩ * k₂, by simp only [Subgroup.coe_mul, mul_assoc]⟩
   · exact ⟨k₁ * ⟨a, ha⟩⁻¹, ⟨b, hb⟩⁻¹ * k₂, by rw [hg]; simp [mul_assoc]⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Simplify using `only [Bridge.dcOp]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b hb => Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, mul_assoc, (h a ha b hb).eq]`.
+-/
 theorem dcOp_comm_of_commute {G W : Type} [Group G] [NormedAddCommGroup W] [InnerProductSpace ℂ W] {A B : Finset G}
     (h : ∀ a ∈ A, ∀ b ∈ B, Commute a b) (F : G → W) :
     Bridge.dcOp A (Bridge.dcOp B F) = Bridge.dcOp B (Bridge.dcOp A F) := by
@@ -240,6 +332,13 @@ theorem dcOp_comm_of_commute {G W : Type} [Group G] [NormedAddCommGroup W] [Inne
   refine Finset.sum_congr rfl fun b hb => Finset.sum_congr rfl fun a ha => ?_
   rw [mul_assoc, mul_assoc, (h a ha b hb).eq]
 
+/- English proof (translation)
+Take `⟨e₁, ϖ, h1, h2, h3, h4⟩` from `h`. Take `⟨e₂, ϖ', h1', h2', h3', h4'⟩` from `h'`. Take `rfl` from `idem_unique V he h1`. Establish `hc` using `idem_conj V he`. Take `rfl` from `idem_unique V hc h1'`.
+
+Establish `h5` using `(((GlobalTheory.T.involution_spherical_hecke_anti V P e₁ he).2.2 ϖ h2 h3).2 k α h4).1`. Establish `h6 : Formalism.DivisionValues.cO _ ϖ ∈ (Formalism.DivisionValues.conjPl P).asIdeal` using `Ideal.mem_map_of_mem _ h2`. Establish `h7 : Formalism.DivisionValues.cO _ ϖ ∉ (Formalism.DivisionValues.conjPl P).asIdeal ^ 2`. Introduce `hh`. Establish `: (Formalism.DivisionValues.conjPl P).asIdeal ^ 2 = (P.asIdeal ^ 2).map (Formalism.DivisionValues.cO D.host.E)` using `(Ideal.map_pow _ _ _).symm`.
+
+Rewrite `hh` using `[this, Ideal.mem_map_of_equiv]`. Take `⟨x, hx, hx'⟩` from `hh`. Conclude with `h3 ((Formalism.DivisionValues.cO D.host.E).injective hx' ▸ hx)`. Take `⟨a, ha, b, hb, hab⟩` from `(((GlobalTheory.T.involution_spherical_hecke_anti V _ _ hc).2.2 _ h6 h7).2 k α⁻¹ h5).2 ϖ' α' h2' h3' h4'`. Conclude with `⟨a, ⟨ha.1, (suppAt_conj V he a).1 ha.2⟩, b, ⟨hb.1, (suppAt_conj V he b).1 hb.2⟩, hab⟩`.
+-/
 theorem hecke_conj (V : HSp D) {P : Formalism.L2.DIV.Pl D.host.E} {k : ℕ} {α α' : GA D V} {e : Formalism.L2.Theta.AE D}
     (he : IsIdemAt e P) (h : IsHeckeAt V P k α) (h' : IsHeckeAt V (Formalism.DivisionValues.conjPl P) k α') :
     ∃ a ∈ locPart V (KsphC V ∅) e, ∃ b ∈ locPart V (KsphC V ∅) e, α' = a * α⁻¹ * b := by
@@ -259,6 +358,9 @@ theorem hecke_conj (V : HSp D) {P : Formalism.L2.DIV.Pl D.host.E} {k : ℕ} {α 
   obtain ⟨a, ha, b, hb, hab⟩ := (((GlobalTheory.T.involution_spherical_hecke_anti V _ _ hc).2.2 _ h6 h7).2 k α⁻¹ h5).2 ϖ' α' h2' h3' h4'
   exact ⟨a, ⟨ha.1, (suppAt_conj V he a).1 ha.2⟩, b, ⟨hb.1, (suppAt_conj V he b).1 hb.2⟩, hab⟩
 
+/- English proof (translation)
+Take `⟨e', α, h1, -, h2, h3⟩` from `h`. Take `rfl` from `idem_unique V he h1`. Conclude with `⟨α, h2, Subtype.ext h3.symm⟩`.
+-/
 theorem loc_supp (V : HSp D) {Pl0 : Type} {pl : Pl0 → Formalism.L2.DIV.Pl D.host.E} {ok : Set Pl0} {i : ok × ℕ}
     {x : Bridge.Gf V} (h : isLocEnv V pl ok i x) {e : Formalism.L2.Theta.AE D} (he : IsIdemAt e (pl i.1)) :
     ∃ g, SuppAt e V g ∧ fin V g = x := by
@@ -268,6 +370,39 @@ theorem loc_supp (V : HSp D) {Pl0 : Type} {pl : Pl0 → Formalism.L2.DIV.Pl D.ho
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Establish `hout : ∀ i : ok × ℕ, ¬ (1 ≤ i.2 ∧ i.2 ≤ V.rank) → op i = 1 ∨ op i = 0`. Introduce and unpack `⟨P, k⟩ h`. Distinguish the cases in `hk : k = 0`. Substitute `hk` using the available equality. Conclude with `Or.inl (h0 P).1`.
+
+Conclude with `Or.inr ((h0 P).2 k (by simp only at h; omega))`. Establish `key : ∀ i : ok × ℕ, 1 ≤ i.2 ∧ i.2 ≤ V.rank → ∃ i' : ok × ℕ, ∀ j : ok × ℕ, 1 ≤ j.2 ∧ j.2 ≤ V.rank → (∀ f g : S.Forms, S.csum (op i f : S.Cl → S.V) (g : S.Cl → S.V) = S.csum (f : S.Cl → S.V) (op i' g : S.Cl → S.V)) ∧ Commute (op i) (op j)`. Introduce `i hi`. Establish `hx` using `T.hx_ok i hi hi.2`. Take `⟨α, hα, hxα⟩` from `hx`.
+
+Establish `hα0` using `hα`. Take `⟨e, -, he, -⟩` from `hα0`. Establish `hsp` using `(hok _).1 i.1.2`. Take `⟨P', hP'⟩` from `honto _ (splitOff_conj hsp)`. Establish `hP'ok : P' ∈ ok` using `(hok _).2 (hP' ▸ splitOff_conj hsp)`.
+
+Set `i' : ok × ℕ` to `(⟨P', hP'ok⟩, i.2)`. Establish `hi' : 1 ≤ i'.2 ∧ i'.2 ≤ V.rank` using `hi`. Establish `hx'` using `T.hx_ok i' hi' hi'.2`. Take `⟨α', hα', hxα'⟩` from `hx'`. Establish `hα'' : IsHeckeAt V (Formalism.DivisionValues.conjPl (pl i.1)) i.2 α'` using `hP' ▸ hα'`.
+
+Establish `hl` using `local_group V β Λ L hβ (pl i.1) e he fun PP h => off_of_splitOff hsp PP (hS PP h)`. Take `⟨Lc, l1, l2, l3, l4, l5⟩` from `hl`. Establish `hc` using `hecke_conj V he hα hα''`. Take `⟨a, ha, b, hb, hab⟩` from `hc`. Establish `e1 : T.hx i = fin V α⁻¹` using `Subtype.ext hxα`.
+
+Establish `e2 : T.hx i' = fin V α'⁻¹` using `Subtype.ext hxα'`. Establish `hDC' : Bridge.IsDC (levEnv V β L).J (T.hx i)⁻¹ (T.hA i')`. Use `isDC_of_mem (Subgroup.inv_mem _ (l5 b hb)) (Subgroup.inv_mem _ (l5 a ha)) ?_ (T.hDC i' hi')` and prove the remaining obligations. Rewrite using `[e1, e2, hab]`. Simplify using `only [map_mul, map_inv, mul_inv_rev, mul_assoc]`.
+
+Establish `hA : ∀ x ∈ T.hA i, ∃ g, SuppAt e V g ∧ fin V g = x` using `fun x hx => loc_supp V (T.hA_loc i hi x hx) he`. Establish `hAL : ∀ x ∈ T.hA i, x ∈ Lc` using `fun x hx => by`. Take `⟨g, hg, rfl⟩` from `hA x hx`. Conclude with `l1 g hg`. Establish `he' : IsIdemAt (cA D e) (pl i'.1)`.
+
+Use `idem_conj V he` as an intermediate fact. Rewrite `this` using `[← hP']`. Conclude with `this`. Establish `hAL' : ∀ x ∈ T.hA i', x ∈ Lc` using `fun x hx => by`. Take `⟨g, hg, rfl⟩` from `loc_supp V (T.hA_loc i' hi' x hx) he'`.
+
+Conclude with `l1 g ((suppAt_conj V he g).1 hg)`. Use `⟨i', fun j hj => ?_⟩` and prove the remaining obligations. Establish `main` using `GlobalTheory.T.classPres_doubleCoset_adjoint_commute (Bridge.ratF V) S σ ρ (levEnv V β L).J (levEnv V β L).χ Pr Lc (T.hx i) (T.hA i) (T.hA i') (T.hA j) (op i) (op i') (op j) hρ (norm_chi V β Λ L hβ) l2 l3 hAL hAL' (T.hDC i hi) hDC' (T.op_eq i hi) (T.op_eq i' hi') (T.op_eq j hj)`. Use `⟨main.1, main.2 fun F hF => ?_⟩` and prove the remaining obligations. Establish `hy` using `T.hx_ok j hj hj.2`.
+
+Take `⟨-, ⟨e', -, he', -⟩, -⟩` from `hy`. Establish `hB : ∀ x ∈ T.hA j, ∃ g, SuppAt e' V g ∧ fin V g = x` using `fun x hx => loc_supp V (T.hA_loc j hj x hx) he'`. Establish `h01` using `(GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).2.2.1 _ e _ (Or.inl ⟨he, rfl⟩)`. Establish `h02` using `h01.2.2.2.2 _ e' _ (Or.inl ⟨he', rfl⟩)`. Break down `h02 with h02 | h02` into its components or cases.
+
+Use `dcOp_comm_of_commute (fun x hx y hy => ?_) F` and prove the remaining obligations. Take `⟨g, hg, rfl⟩` from `hA x hx`. Take `⟨g', hg', rfl⟩` from `hB y hy`. Conclude with `(((GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).1 _ h01.1 h01.2.1).2.2 _ g g' h02 hg hg').map (fin V)`. Establish `hBL : ∀ x ∈ T.hA j, x ∈ Lc` using `fun x hx => by`.
+
+Take `⟨g, hg, rfl⟩` from `hB x hx`. Use `l1 g ?_` and prove the remaining obligations. Unfold `SuppAt at hg ⊢`. Rewrite using `[← h02.1]`. Conclude with `hg`.
+
+Use `(GlobalTheory.DoubleCosetComm.dcOp_comm_and_card (levEnv V β L).J Lc (levEnv V β L).χ (T.hx i) (T.hx j) (T.hA i) (T.hA j) (T.hA i') F l2 l3 l4 hAL hBL hAL' (T.hDC i hi) (T.hDC j hj) hDC' fun k h => ?_).1` and prove the remaining obligations. Use `hF 1 h k` as an intermediate fact. Rewrite `this` using `[map_one, map_one, one_mul, Module.End.one_apply]`. Then use the resulting hypothesis. Use `⟨fun i => ?_, fun i j => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hi : 1 ≤ i.2 ∧ i.2 ≤ V.rank`.
+
+Take `⟨i', h⟩` from `key i hi`. Conclude with `⟨i', (h i hi).1⟩`. Use `⟨i, fun f g => ?_⟩` and prove the remaining obligations. Break down `hout i hi with h | h` into its components or cases. Rewrite using `[h]`.
+
+Both sides reduce to the same expression. Rewrite using `[h]`. Simplify using `[Formalism.L2.DIV.CSD.csum]`. Distinguish the cases in `hi : 1 ≤ i.2 ∧ i.2 ≤ V.rank`. Distinguish the cases in `hj : 1 ≤ j.2 ∧ j.2 ≤ V.rank`.
+
+Take `⟨i', h⟩` from `key i hi`. Conclude with `(h j hj).2`. Apply the tactic sequence `rcases hout j hj with h | h <;> rw [h] exacts [Commute.one_right _, Commute.zero_right _]`. Apply the tactic sequence `rcases hout i hi with h | h <;> rw [h] exacts [Commute.one_left _, Commute.zero_left _]`.
+-/
 theorem side_adj_comm (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E))
     (L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank) (hβ : IsBaseFrame V β Λ 1) {Pl0 : Type}
     (pl : Pl0 → Formalism.L2.DIV.Pl D.host.E) (ok : Set Pl0) (Sp : Set (Formalism.L2.DIV.Pl D.host.E))
@@ -365,6 +500,9 @@ theorem side_adj_comm (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (Λ : Submodule
     · rcases hout i hi with h | h <;> rw [h]
       exacts [Commute.one_left _, Commute.zero_left _]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, fun hh => h.2.1 (hS hh), fun Q hQ => h.2.2 Q (hS hQ)⟩`.
+-/
 theorem splitOff_mono {P : Formalism.L2.DIV.Pl D.host.E} {S S' : Set (Formalism.L2.DIV.Pl D.host.E)} (hS : S ⊆ S')
     (h : Bridge.SplitOff P S') : Bridge.SplitOff P S :=
   ⟨h.1, fun hh => h.2.1 (hS hh), fun Q hQ => h.2.2 Q (hS hQ)⟩

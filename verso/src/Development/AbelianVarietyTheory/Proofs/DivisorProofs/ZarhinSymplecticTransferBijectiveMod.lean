@@ -6,20 +6,38 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.ZarhinFam
 
+/- English proof (translation)
+Unfold `omegaStd`. Simplify using `only [Pi.smul_apply, nsmul_eq_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+-/
 theorem omegaStd_nsmul_left' {h : ℕ} (M : ℕ) (a b : Fin h ⊕ Fin h → ℤ) :
     omegaStd (M • a) b = (M : ℤ) * omegaStd a b := by
   unfold omegaStd
   simp only [Pi.smul_apply, nsmul_eq_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]
   exact Finset.sum_congr rfl fun i _ => by ring
 
+/- English proof (translation)
+Simplify using `[omegaStd, Pi.single_apply]`.
+-/
 theorem omegaStd_single_inr {h : ℕ} (a : Fin h ⊕ Fin h → ℤ) (i : Fin h) :
     omegaStd a (Pi.single (Sum.inr i) 1) = a (Sum.inl i) := by
   simp [omegaStd, Pi.single_apply]
 
+/- English proof (translation)
+Simplify using `[omegaStd, Pi.single_apply]`.
+-/
 theorem omegaStd_single_inl {h : ℕ} (a : Fin h ⊕ Fin h → ℤ) (i : Fin h) :
     omegaStd a (Pi.single (Sum.inl i) 1) = -a (Sum.inr i) := by
   simp [omegaStd, Pi.single_apply]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hk choose c hc using hk`. Establish `hdiv : ∀ b, (M : ℤ) ∣ omegaStd a b`. Introduce `b`. Establish `h2 : (M : ℤ) ∣ formZ d h (fun k => κ k a) (fun k => κ k b)`.
+
+Unfold `formZ`. Use `Finset.dvd_sum fun k _ => Finset.dvd_sum fun l _ => ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hc k, omegaStd_nsmul_left']`. Conclude with `Dvd.intro (form d (sig k) (sig l) * omegaStd (c k) (κ l b)) (by ring)`.
+
+Use `dvd_add (hκ.1 a b).dvd h2` as an intermediate fact. Simplify using `using this`. Establish `hx : ∀ x, (M : ℤ) ∣ a x`. Introduce and unpack `(i | i)`. Simplify `hdiv (Pi.single (Sum.inr i) 1)` using `[omegaStd_single_inr]`.
+
+Simplify `hdiv (Pi.single (Sum.inl i) 1)` using `[omegaStd_single_inl]`. Conclude with `⟨fun x => a x / M, funext fun x => by simp [Int.mul_ediv_cancel' (hx x)]⟩`. Introduce and unpack `⟨b, rfl⟩ k`. Conclude with `⟨κ k b, map_nsmul _ _ _⟩`.
+-/
 theorem kappaOK_dvd_iff {h M d : ℕ} {κ : Fin 8 → (Fin (8 * h) ⊕ Fin (8 * h) → ℤ) →+ (Fin h ⊕ Fin h → ℤ)}
     (hκ : KappaOK h M d κ) (a : Fin (8 * h) ⊕ Fin (8 * h) → ℤ) :
     (∀ k, ∃ b, κ k a = M • b) ↔ ∃ b, a = M • b := by
@@ -44,6 +62,23 @@ theorem kappaOK_dvd_iff {h M d : ℕ} {κ : Fin 8 → (Fin (8 * h) ⊕ Fin (8 * 
   · rintro ⟨b, rfl⟩ k
     exact ⟨κ k b, map_nsmul _ _ _⟩
 
+/- English proof (translation)
+Use `⟨kappaOK_dvd_iff hκ, ?_⟩` and prove the remaining obligations. Use `haveI : NeZero M := ⟨by omega⟩`. Set `f : (Fin (8 * h) ⊕ Fin (8 * h) → ZMod M) → (Fin 8 → Fin h ⊕ Fin h → ZMod M)` to `fun x k j => ((κ k (fun i => ((x i).val : ℤ)) j : ℤ) : ZMod M)`. Establish `hinj : Function.Injective f`. Introduce `x y hxy`.
+
+Set `a : Fin (8 * h) ⊕ Fin (8 * h) → ℤ` to `fun i => ((x i).val : ℤ) - ((y i).val : ℤ)`. Establish `hk : ∀ k, ∃ b, κ k a = M • b`. Introduce `k`. Establish `hj : ∀ j, (M : ℤ) ∣ κ k a j`. Introduce `j`.
+
+Establish `e` using `congrFun (congrFun hxy k) j`. Simplify using `only [f] at e`. Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Establish `ha : a = (fun i => ((x i).val : ℤ)) - (fun i => ((y i).val : ℤ))` using `rfl`. Rewrite using `[ha, map_sub, Pi.sub_apply, Int.cast_sub, e, sub_self]`.
+
+Conclude with `⟨fun j => κ k a j / M, funext fun j => by simp [Int.mul_ediv_cancel' (hj j)]⟩`. Take `⟨b, hb⟩` from `(kappaOK_dvd_iff hκ a).1 hk`. Use function extensionality and compare the values at `i`. Establish `e` using `congrFun hb i`. Establish `h2 : ((a i : ℤ) : ZMod M) = 0` using `by rw [e]; simp`.
+
+Simplify using `[a] at h2`. Conclude with `sub_eq_zero.mp h2`. Establish `hcard : Fintype.card (Fin (8 * h) ⊕ Fin (8 * h) → ZMod M) = Fintype.card (Fin 8 → Fin h ⊕ Fin h → ZMod M)`. Simplify using `only [Fintype.card_fun, Fintype.card_sum, Fintype.card_fin, ZMod.card]`. Rewrite using `[← pow_mul]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hbij` using `(Fintype.bijective_iff_injective_and_card f).2 ⟨hinj, hcard⟩`. Introduce `cc`. Take `⟨x, hx⟩` from `hbij.2 (fun k j => (cc k j : ZMod M))`.
+
+Use `⟨fun i => ((x i).val : ℤ), fun k => ?_⟩` and prove the remaining obligations. Establish `hj : ∀ j, (M : ℤ) ∣ κ k (fun i => ((x i).val : ℤ)) j - cc k j`. Introduce `j`. Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd, Int.cast_sub]`. Establish `e` using `congrFun (congrFun hx k) j`.
+
+Simplify using `only [f] at e`. Rewrite using `[e, sub_self]`. Use `⟨fun j => (κ k (fun i => ((x i).val : ℤ)) j - cc k j) / M, funext fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.add_apply, Pi.smul_apply, nsmul_eq_mul, Int.mul_ediv_cancel' (hj j)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem kappaOK_mod (h M d : ℕ) (κ : Fin 8 → (Fin (8 * h) ⊕ Fin (8 * h) → ℤ) →+ (Fin h ⊕ Fin h → ℤ))
     (hM : 1 ≤ M) (hκ : KappaOK h M d κ) :
     (∀ a, (∀ k, ∃ b, κ k a = M • b) ↔ ∃ b, a = M • b) ∧

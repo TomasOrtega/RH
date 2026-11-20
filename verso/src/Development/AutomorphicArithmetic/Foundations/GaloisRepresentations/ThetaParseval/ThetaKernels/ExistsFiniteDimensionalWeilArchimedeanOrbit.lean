@@ -15,9 +15,21 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open UpperTheory.TP
 namespace UpperTheory.PolynomialDataFiniteKType₂
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
+/- English proof (translation)
+Establish `: mat (g⁻¹ * g) = mat g⁻¹ * mat g` using `rfl`. Rewrite using `[← this, inv_mul_cancel]`. Both sides reduce to the same expression.
+-/
 private theorem mat_inv_mul_pk {X : Spc F E n} (g : UA σ X.J) : mat g⁻¹ * mat g = 1 := by
   have : mat (g⁻¹ * g) = mat g⁻¹ * mat g := rfl
   rw [← this, inv_mul_cancel]; rfl
+/- English proof (translation)
+Proceed by induction on `hk using Subgroup.closure_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `one`. Introduce `u _`. Establish `: mat (1 : UA σ W.J) = 1` using `rfl`.
+
+Rewrite using `[this, sub_self, smul_zero]`. Consider the case `mul g h _ _ hg hh`. Introduce `u hu`. Establish `e : mat (g * h) - 1 = (mat g - 1) * mat h + (mat h - 1)`. Establish `: mat (g * h) = mat g * mat h` using `rfl`.
+
+Rewrite using `[this, sub_mul, one_mul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, smul_add, ← Matrix.smul_mul, hg u hu, hh u hu, Matrix.zero_mul, add_zero]`. Consider the case `inv g _ hg`. Introduce `u hu`.
+
+Establish `e : mat g⁻¹ - 1 = -(mat g⁻¹ * (mat g - 1))` using `by rw [mul_sub, mat_inv_mul_pk, mul_one, neg_sub]`. Rewrite using `[e, smul_neg, ← Matrix.mul_smul, hg u hu, Matrix.mul_zero, neg_zero]`.
+-/
 private theorem gInf_le_pk {W : Spc F E d} {k : UA σ W.J} (hk : k ∈ gInf σ W) : k ∈ UAt σ W (evI F) := by
   induction hk using Subgroup.closure_induction with
   | mem x hx => exact hx
@@ -41,6 +53,19 @@ private noncomputable def pureL_pk {κ : Type} [Fintype κ] (φ : ∀ v : Pl F, 
   map_smul' c f := funext fun x => by simp [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, mul_assoc]
 end UpperTheory.PolynomialDataFiniteKType₂
 open UpperTheory.PolynomialDataFiniteKType₂ in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om hP Φ hΦ`. Establish `hK : ∀ k ∈ gInf σ W, k ∈ KInf σ W B.emb` using `fun k hk => ⟨gInf_le_pk hk, fun w => by`. Rewrite using `[GlobalTheory.ThK.Dbl.Prs.cartan_one (hP.skew.sig w) (hP.skew.cartan w)]`. Conclude with `Commute.one_right _⟩`. Proceed by induction on `hΦ using Submodule.span_induction with`.
+
+Consider the case `mem x hx`. Take `⟨f, hf, φ, h1, h2, rfl⟩` from `hx`. Establish `hfin : {v | ¬ φ v = M.vac v}.Finite` using `h2`. Establish `hD : GlobalTheory.ThK.Dbl.Prs.Dat B M hfin.toFinset f φ` using `⟨hf, h1, fun v hv => by simpa using hv⟩`. Take `⟨g, hg, e⟩` from `hD.pureA hP.good`.
+
+Take `⟨U, hU, hU'⟩` from `_root_.GlobalTheory.ThK.Dbl.polFin_k hP f hf`. Use `⟨U.map (pureL_pk φ), inferInstance, ?_, fun k hk => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨f', -, rfl⟩`. Conclude with `Submodule.subset_span ⟨f', g, hg, e f'⟩`. Take `⟨A, hA⟩` from `_root_.GlobalTheory.ThK.Dbl.Prs.inf_op_k _root_.PositivityTheory.ThKF.A.archOp_k hP (hK k hk)`.
+
+Establish `hact` using `(hA f hf).2`. Conclude with `⟨A f, hU' k (hK k hk) _ hact, (hact _ (hD.rest hP.good)).symm⟩`. Consider the case `zero => exact ⟨⊥, inferInstance, bot_le, fun k _ => by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨V, h1, h2, h3⟩` from `hx`.
+
+Take `⟨V', h1', h2', h3'⟩` from `hy`. Conclude with `⟨V ⊔ V', inferInstance, sup_le h2 h2', fun k hk => by`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (h3 k hk) (h3' k hk)⟩`. Consider the case `smul c x _ hx`.
+
+Take `⟨V, h1, h2, h3⟩` from `hx`. Conclude with `⟨V, h1, h2, fun k hk => by rw [map_smul]; exact V.smul_mem c (h3 k hk)⟩`.
+-/
 theorem UpperTheory.exists_finiteDimensional_weil_archimedean_orbit :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W), _root_.GlobalTheory.ThK.IsPair_k B M χX χW om n 0 d 0 → ∀ Φ ∈ PolData B M, ∃ V : Submodule ℂ (Fn F n d), FiniteDimensional ℂ V ∧ V ≤ schA F (Fin n × Fin d) ∧ ∀ k ∈ gInf σ W, om (1, k) Φ ∈ V := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om hP Φ hΦ

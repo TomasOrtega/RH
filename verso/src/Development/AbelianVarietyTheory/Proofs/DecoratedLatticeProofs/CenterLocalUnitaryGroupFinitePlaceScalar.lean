@@ -22,18 +22,39 @@ section Gen
 
 variable {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT]`.
+-/
 theorem cT_add' (σ : A →+* A) (M N : Matrix n n A) : cT σ (M + N) = cT σ M + cT σ N := by
   ext i j; simp [cT]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT]`.
+-/
 theorem cT_sub' (σ : A →+* A) (M N : Matrix n n A) : cT σ (M - N) = cT σ M - cT σ N := by
   ext i j; simp [cT]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT]`.
+-/
 theorem cT_smul' (σ : A →+* A) (c : A) (M : Matrix n n A) : cT σ (c • M) = σ c • cT σ M := by
   ext i j; simp [cT]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT, hσ]`.
+-/
 theorem cT_cT' (σ : A →+* A) (hσ : ∀ x, σ (σ x) = x) (M : Matrix n n A) : cT σ (cT σ M) = M := by
   ext i j; simp [cT, hσ]
 
+/- English proof (translation)
+Use `set S : Matrix n n A := s • (1 : Matrix n n A) with hSdef`. Establish `hS : cT σ S = S` using `by rw [hSdef, cT_smul', cT_one, hs]`. Establish `hc : ∀ M : Matrix n n A, S * M = M * S` using `fun M => by`. Rewrite using `[hSdef, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one]`. Establish `key : cT σ (S + B) * J * (S + B) = cT σ (S - B) * J * (S - B)`.
+
+Rewrite using `[cT_add', cT_sub', hS]`. Establish `e1 : (S + cT σ B) * J * (S + B) - (S - cT σ B) * J * (S - B) = (S * J * B + cT σ B * J * S) + (S * J * B + cT σ B * J * S)` using `by noncomm_ring`. Establish `e2 : S * J * B + cT σ B * J * S = 0`. Rewrite using `[Matrix.mul_assoc (cT σ B) J S, ← hc J, ← Matrix.mul_assoc, ← hc (cT σ B), Matrix.mul_assoc S J B, Matrix.mul_assoc S (cT σ B) J, ← Matrix.mul_add, add_comm, hB, Matrix.mul_zero]`. Rewrite `e1` using `[e2, add_zero]`.
+
+Conclude with `sub_eq_zero.1 e1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[cT_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = cT σ V * (cT σ (S - B) * J * (S - B)) * V := by rw [key]`.
+
+Use `_ = cT σ ((S - B) * V) * J * ((S - B) * V) := by rw [cT_mul]; simp only [Matrix.mul_assoc]`. Use `_ = J := by rw [hV1, cT_one, Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem cayley_unitary (σ : A →+* A) (J B V : Matrix n n A) (s : A) (hs : σ s = s)
     (hB : cT σ B * J + J * B = 0) (hV1 : (s • (1 : Matrix n n A) - B) * V = 1) :
     cT σ ((s • (1 : Matrix n n A) + B) * V) * J * ((s • (1 : Matrix n n A) + B) * V) = J := by
@@ -56,6 +77,13 @@ theorem cayley_unitary (σ : A →+* A) (J B V : Matrix n n A) (s : A) (hs : σ 
     _ = cT σ ((S - B) * V) * J * ((S - B) * V) := by rw [cT_mul]; simp only [Matrix.mul_assoc]
     _ = J := by rw [hV1, cT_one, Matrix.one_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Establish `e : s • (1 : Matrix n n A) + B = (2 * s) • (1 : Matrix n n A) - (s • (1 : Matrix n n A) - B)`. Rewrite using `[two_mul, add_smul]`. Normalize the expressions using the abelian group laws. Rewrite `hg` using `[e, Matrix.sub_mul, hV1, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Matrix.one_mul, sub_left_inj]`. Establish `hgV : g * V = V * g`.
+
+Use `congrArg (fun M => (↑h2s.unit⁻¹ : A) • M) hg` as an intermediate fact. Simplify using `only [smul_smul, IsUnit.val_inv_mul, one_smul] at this`. Conclude with `this`. Establish `hU : (s • (1 : Matrix n n A) - B) * g = g * (s • (1 : Matrix n n A) - B)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite `hU` using `[Matrix.sub_mul, Matrix.mul_sub, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one, sub_right_inj]`. Conclude with `hU.symm`.
+-/
 theorem comm_of_comm_cayley (g B V : Matrix n n A) (s : A) (h2s : IsUnit (2 * s))
     (hV1 : (s • (1 : Matrix n n A) - B) * V = 1) (hV2 : V * (s • (1 : Matrix n n A) - B) = 1)
     (hg : g * ((s • (1 : Matrix n n A) + B) * V) = ((s • (1 : Matrix n n A) + B) * V) * g) :
@@ -79,6 +107,15 @@ theorem comm_of_comm_cayley (g B V : Matrix n n A) (s : A) (h2s : IsUnit (2 * s)
     sub_right_inj] at hU
   exact hU.symm
 
+/- English proof (translation)
+Establish `hJJ : J * J⁻¹ = 1` using `Matrix.mul_nonsing_inv J hJu`. Establish `hJJ' : J⁻¹ * J = 1` using `Matrix.nonsing_inv_mul J hJu`. Establish `hJi : J⁻¹ = cT σ J⁻¹` using `Matrix.inv_eq_left_inv (by`. Use `cT_mul σ J J⁻¹` as an intermediate fact. Rewrite `this` using `[hJ, hJJ, cT_one]`.
+
+Conclude with `this.symm)`. Establish `hsk : ∀ X : Matrix n n A, cT σ X = -X → g * (J⁻¹ * X) = (J⁻¹ * X) * g` using `fun X hX => hg _ (by`. Rewrite using `[cT_mul, hX, ← hJi, neg_mul, ← neg_mul, Matrix.mul_assoc, hJJ', Matrix.mul_one, ← Matrix.mul_assoc, hJJ, Matrix.one_mul, neg_add_cancel])`. Use `set Y := J * M`. Establish `h1` using `hsk (Y - cT σ Y) (by rw [cT_sub', cT_cT' σ hσ, neg_sub])`.
+
+Establish `h2'` using `hsk (δ • (Y + cT σ Y)) (by rw [cT_smul', cT_add', cT_cT' σ hσ, hδσ, neg_smul, add_comm])`. Establish `e : (2 : A) • M = J⁻¹ * (Y - cT σ Y) + (↑hδ.unit⁻¹ : A) • (J⁻¹ * (δ • (Y + cT σ Y)))`. Rewrite using `[Matrix.mul_smul, smul_smul, IsUnit.val_inv_mul, one_smul, ← Matrix.mul_add, sub_add_add_cancel, ← two_smul A Y, Matrix.mul_smul, ← Matrix.mul_assoc, hJJ', Matrix.one_mul]`. Establish `h3 : g * ((2 : A) • M) = ((2 : A) • M) * g`. Rewrite using `[e, Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, h1, h2']`.
+
+Rewrite `h3` using `[Matrix.mul_smul, Matrix.smul_mul]`. Use `congrArg (fun N => (↑h2.unit⁻¹ : A) • N) h3` as an intermediate fact. Simplify using `only [smul_smul, IsUnit.val_inv_mul, one_smul] at this`. Conclude with `this`.
+-/
 theorem comm_of_comm_skew (σ : A →+* A) (hσ : ∀ x, σ (σ x) = x) (J : Matrix n n A) (hJ : cT σ J = J)
     (hJu : IsUnit J.det) (h2 : IsUnit (2 : A)) (δ : A) (hδ : IsUnit δ) (hδσ : σ δ = -δ)
     (g : Matrix n n A) (hg : ∀ B : Matrix n n A, cT σ B * J + J * B = 0 → g * B = B * g)
@@ -105,6 +142,15 @@ theorem comm_of_comm_skew (σ : A →+* A) (hσ : ∀ x, σ (σ x) = x) (J : Mat
   simp only [smul_smul, IsUnit.val_inv_mul, one_smul] at this
   exact this
 
+/- English proof (translation)
+Set `L : Module.End K (n → A)` to `(Matrix.mulVecLin B).restrictScalars K`. Establish `hfin : {m : ℕ | L.HasEigenvalue (m : K)}.Finite` using `(Module.End.finite_hasEigenvalue L).preimage Nat.cast_injective.injOn`. Take `⟨N, hN⟩` from `hfin.bddAbove`. Use `⟨N + 1, by omega, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_surjective_iff_isUnit]`.
+
+Set `T : Module.End K (n → A)` to `(Matrix.mulVecLin (((N + 1 : ℕ) : A) • (1 : Matrix n n A) - B)).restrictScalars K`. Establish `hinj : Function.Injective T`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Assume the negation of the conclusion as `hx0`.
+
+Establish `hT : (((N + 1 : ℕ) : A) • (1 : Matrix n n A) - B) *ᵥ x = 0` using `hx`. Rewrite `hT` using `[Matrix.sub_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec, sub_eq_zero]`. Establish `hev : L.HasEigenvalue ((N + 1 : ℕ) : K)`. Use `Module.End.hasEigenvalue_of_hasEigenvector (x := x) ⟨?_, hx0⟩` and prove the remaining obligations. Rewrite using `[Module.End.mem_eigenspace_iff]`.
+
+Use `show B *ᵥ x = ((N + 1 : ℕ) : K) • x`. Rewrite using `[← hT, Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]`. Use `hN hev` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `LinearMap.injective_iff_surjective.1 hinj`.
+-/
 theorem exists_nat_isUnit_sub (K : Type) [Field K] [CharZero K] [Algebra K A] [FiniteDimensional K A]
     (B : Matrix n n A) : ∃ m : ℕ, m ≠ 0 ∧ IsUnit ((m : A) • (1 : Matrix n n A) - B) := by
   let L : Module.End K (n → A) := (Matrix.mulVecLin B).restrictScalars K
@@ -141,6 +187,17 @@ section Gen2
 
 variable {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Establish `h2 : IsUnit (2 : A)`. Establish `: (2 : A) = algebraMap K A 2` using `(map_ofNat (algebraMap K A) 2).symm`. Rewrite using `[this]`. Conclude with `(IsUnit.mk0 (2 : K) two_ne_zero).map _`. Establish `hskew : ∀ B : Matrix n n A, cT σ B * J + J * B = 0 → g * B = B * g`.
+
+Introduce `B hB`. Take `⟨m, hm, hU⟩` from `exists_nat_isUnit_sub K B`. Establish `hUd` using `(Matrix.isUnit_iff_isUnit_det _).1 hU`. Establish `hV1 : ((m : A) • (1 : Matrix n n A) - B) * ((m : A) • (1 : Matrix n n A) - B)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hUd`. Establish `hV2 : ((m : A) • (1 : Matrix n n A) - B)⁻¹ * ((m : A) • (1 : Matrix n n A) - B) = 1` using `Matrix.nonsing_inv_mul _ hUd`.
+
+Establish `hC` using `cayley_unitary σ J B _ (m : A) (map_natCast σ m) hB hV1`. Establish `hWC : (J⁻¹ * cT σ (((m : A) • (1 : Matrix n n A) + B) * ((m : A) • (1 : Matrix n n A) - B)⁻¹) * J) * (((m : A) • (1 : Matrix n n A) + B) * ((m : A) • (1 : Matrix n n A) - B)⁻¹) = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (cT σ _), hC, Matrix.nonsing_inv_mul J hJu]`. Set `Cu : GL n A` to `⟨_, _, mul_eq_one_comm.1 hWC, hWC⟩`. Establish `hCm : Cu ∈ UJ σ J` using `hC`.
+
+Establish `h2m : IsUnit (2 * (m : A))`. Establish `: (2 * (m : A)) = algebraMap K A (2 * m)` using `by rw [map_mul, map_ofNat, map_natCast]`. Rewrite using `[this]`. Conclude with `(IsUnit.mk0 _ (mul_ne_zero two_ne_zero (Nat.cast_ne_zero.2 hm))).map _`. Conclude with `comm_of_comm_cayley g B _ (m : A) h2m hV1 hV2 (hg Cu hCm)`.
+
+Take `⟨c, hc⟩` from `Matrix.mem_range_scalar_of_commute_single (M := g) (fun i j _ => (comm_of_comm_skew σ hσ J hJ hJu h2 δ hδ hδσ g hskew _).symm)`. Conclude with `⟨c, by rw [← hc, Matrix.scalar_apply, Matrix.smul_one_eq_diagonal]⟩`.
+-/
 theorem scalar_of_comm_UJ (K : Type) [Field K] [CharZero K] [Algebra K A] [FiniteDimensional K A]
     (σ : A →+* A) (hσ : ∀ x, σ (σ x) = x) (J : Matrix n n A) (hJ : cT σ J = J) (hJu : IsUnit J.det)
     (δ : A) (hδ : IsUnit δ) (hδσ : σ δ = -δ) (g : Matrix n n A)
@@ -179,6 +236,13 @@ namespace GlobalTheory.CenterLocU
 
 open Formalism.BasicNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 
+/- English proof (translation)
+Establish `hx : ∃ x : D.host.E, x ∉ Set.range (algebraMap D.host.F D.host.E)`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `htop : (⊥ : Subalgebra D.host.F D.host.E) = ⊤` using `eq_top_iff.2 fun x _ => Algebra.mem_bot.2 (h x)`. Use `Subalgebra.bot_eq_top_iff_finrank_eq_one.1 htop` as an intermediate fact.
+
+Rewrite `this` using `[D.sp.cm.deg2]`. Evaluate the numerical expressions using `at this`. Take `⟨x, hx⟩` from `hx`. Use `⟨x - star x, ?_, ?_⟩` and prove the remaining obligations. Use `show star (x - star x) = -(x - star x)`.
+
+Rewrite using `[star_sub, star_star, neg_sub]`. Introduce `h0`. Conclude with `hx (RingHom.mem_range.1 ((D.sp.cm.fixed x).1 (sub_eq_zero.1 h0).symm))`.
+-/
 theorem exists_anti (D : D7) : ∃ e : D.host.E, D.sp.cm.sig e = -e ∧ e ≠ 0 := by
   have hx : ∃ x : D.host.E, x ∉ Set.range (algebraMap D.host.F D.host.E) := by
     by_contra h
@@ -195,6 +259,13 @@ theorem exists_anti (D : D7) : ∃ e : D.host.E, D.sp.cm.sig e = -e ∧ e ≠ 0 
   · intro h0
     exact hx (RingHom.mem_range.1 ((D.sp.cm.fixed x).1 (sub_eq_zero.1 h0).symm))
 
+/- English proof (translation)
+Introduce `D V v g hg`. Establish `hσ : ∀ x : D.host.E, D.sp.cm.sig (D.sp.cm.sig x) = x` using `fun x => star_star x`. Take `⟨e, he, he0⟩` from `exists_anti D`. Establish `hJ : Formalism.UG.cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Fv D.host.F v) D.sp.cm.sig) (JR (Fv D.host.F v) V.gram) = JR (Fv D.host.F v) V.gram`. Use extensionality with `i j`.
+
+Conclude with `congrArg (inclR (Fv D.host.F v)) (V.herm.eq (V.frame j) (V.frame i))`. Establish `hδσ : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Fv D.host.F v) D.sp.cm.sig (inclR (Fv D.host.F v) e) = -inclR (Fv D.host.F v) e` using `by show inclR (Fv D.host.F v) (D.sp.cm.sig e) = _`. Conclude with `(congrArg _ he).trans (map_neg _ _)`. Establish `hgc : ∀ h ∈ Formalism.UG.UJ (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Fv D.host.F v) D.sp.cm.sig) (JR (Fv D.host.F v) V.gram), ((GlobalTheory.AdelicU.matHom (Fv D.host.F v) D.sp.cm.sig V.gram g).1) * (h : Matrix (Fin V.rank) (Fin V.rank) _) = (h : Matrix (F …`. Introduce `h hh`.
+
+Set `h' : GlobalTheory.AdelicU.GLoc D.sp.cm.sig V.gram v` to `⟨h, hh⟩`. Establish `e1` using `congrArg (fun x => (GlobalTheory.AdelicU.matHom (Fv D.host.F v) D.sp.cm.sig V.gram x).1) (Subgroup.mem_center_iff.1 hg h')`. Simplify using `only [map_mul, Units.val_mul] at e1`. Conclude with `e1.symm`. Conclude with `scalar_of_comm_UJ (Fv D.host.F v) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Fv D.host.F v) D.sp.cm.sig) (GlobalTheory.Doubling.sigR_invol hσ) (JR (Fv D.host.F v) V.gram) hJ (GlobalTheory.Doubling.isUnit_det_JR (GlobalTheory.IndefiniteRowSideFullHecke.Adelic …`.
+-/
 theorem center_scalar_loc : ∀ (D : D7) (V : Formalism.BasicNotions.TH.HSp D) (v : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.F)) (g : GlobalTheory.AdelicU.GLoc D.sp.cm.sig V.gram v), g ∈ Subgroup.center (GlobalTheory.AdelicU.GLoc D.sp.cm.sig V.gram v) → ∃ c : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv D.host.F v ⊗[D.host.F] D.host.E, (GlobalTheory.AdelicU.matHom (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv D.host.F v) D.sp.cm.sig V.gram g).1 = c • (1 : Matrix (Fin V.rank) (Fin V.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv D.host.F v ⊗[D.host.F] D.host.E)) := by
   intro D V v g hg
   have hσ : ∀ x : D.host.E, D.sp.cm.sig (D.sp.cm.sig x) = x := fun x => star_star x

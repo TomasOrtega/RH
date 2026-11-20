@@ -15,6 +15,33 @@ open ReciprocityTheory.ChartRestriction.DS
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Distinguish the cases in `h0 : v = 0`. Conclude with `⟨0, by simp [h0]⟩`. Establish `hd` using `HW.torep_dτ_of_wt T hv`. Establish `hraise : ∀ a b, a < b → ε a = ε b → T.dτ (Matrix.single a b 1) v = 0`. Introduce `a b hab he`.
+
+Assume the negation of the conclusion as `hx`. Establish `hwx : ∀ c, T.dτ (Matrix.single c c 1) (T.dτ (Matrix.single a b 1) v) = (((Λ + Pi.single a 1 - Pi.single b 1 : Fin n → ℝ) c : ℝ) : ℂ) • T.dτ (Matrix.single a b 1) v`. Introduce `c`. Establish `hR` using `HW.KType.kRel T c c a b rfl he`. Establish `h1` using `congrArg (fun f : Module.End ℂ T.V => f v) hR`.
+
+Simplify using `only [HW.kunits, LinearMap.sub_apply, Module.End.mul_apply, ContinuousLinearMap.coe_coe] at h1`. Establish `hab' : a ≠ b` using `ne_of_lt hab`. Rewrite `h1` using `[hd c, map_smul]`. Distinguish the cases in `hca : c = a`. Substitute `hca` using the available equality.
+
+Establish `hcb : ¬ b = c` using `fun h => hab' h.symm`. Rewrite `h1` using `[if_pos rfl, if_neg hcb]`. Simplify using `only [LinearMap.zero_apply, sub_zero, ContinuousLinearMap.coe_coe] at h1`. Rewrite `h1` using `[sub_eq_iff_eq_add]`. Rewrite using `[h1]`.
+
+Simplify using `only [Pi.add_apply, Pi.sub_apply, Pi.single_apply, if_pos rfl, if_neg (Ne.symm hcb)]`. Use `push_cast`. Use `module`. Distinguish the cases in `hcb : b = c`. Substitute `hcb` using the available equality.
+
+Rewrite `h1` using `[if_neg hca, if_pos rfl]`. Simplify using `only [LinearMap.zero_apply, zero_sub, ContinuousLinearMap.coe_coe] at h1`. Rewrite `h1` using `[sub_eq_iff_eq_add]`. Rewrite using `[h1]`. Simplify using `only [Pi.add_apply, Pi.sub_apply, Pi.single_apply, if_pos rfl, if_neg hca]`.
+
+Use `push_cast`. Use `module`. Rewrite `h1` using `[if_neg hca, if_neg hcb]`. Simplify using `only [LinearMap.zero_apply, sub_zero] at h1`. Rewrite `h1` using `[sub_eq_zero]`.
+
+Rewrite using `[h1]`. Simplify using `only [Pi.add_apply, Pi.sub_apply, Pi.single_apply, if_neg hca, if_neg (Ne.symm hcb)]`. Simplify using the standard rewrite rules. Take `⟨cc, hc, he'⟩` from `HW.KType.weight_le T hx hwx`. Set `ψ : (Fin n → ℝ) →ₗ[ℝ] ℝ` to `{ toFun := fun f => ∑ j : Fin n, ((j : ℕ) : ℝ) * f j map_add' := by`.
+
+Introduce `f g`. Simplify using `[mul_add, Finset.sum_add_distrib]`. Use the proof step `map_smul' := by`. Introduce `r f`. Simplify using `[Finset.mul_sum, mul_left_comm] }`.
+
+Establish `hψ : ∀ x : Fin n, ψ (Pi.single x 1) = ((x : ℕ) : ℝ)`. Introduce `x`. Simplify using `[ψ, Pi.single_apply]`. Establish `hl : Λ - (Λ + Pi.single a 1 - Pi.single b 1) = Pi.single b 1 - Pi.single a 1`. Normalize the expressions using the abelian group laws.
+
+Rewrite `he'` using `[hl]`. Establish `h` using `congrArg ψ he'`. Simplify using `only [map_sum, map_smul, root, map_sub, hψ, smul_eq_mul] at h`. Establish `hr : ∑ x, ∑ y, (cc x y : ℝ) * (((x : ℕ) : ℝ) - ((y : ℕ) : ℝ)) ≤ 0`. Use `Finset.sum_nonpos fun x _ => Finset.sum_nonpos fun y _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `h0 : cc x y = 0`. Simplify using `[h0]`. Establish `hxy` using `(hc x y h0).1`. Establish `: ((x : ℕ) : ℝ) < ((y : ℕ) : ℝ)` using `by exact_mod_cast hxy`. Conclude with `mul_nonpos_of_nonneg_of_nonpos (Nat.cast_nonneg _) (by linarith)`.
+
+Establish `hab' : ((a : ℕ) : ℝ) < ((b : ℕ) : ℝ)` using `by exact_mod_cast hab`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨-, c, hc⟩` from `HW.KType.hw_unique T h0 ⟨hd, hraise⟩`. Conclude with `⟨c, hc⟩`.
+-/
 theorem eq_smul_highestWeight_of_isWeight {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : S7.KType ε Λ) {v : T.V}
     (hv : Formalism.MainNotions.S.IsWtOn (Formalism.REAL.Kset ε) (HW.torepSig T) Λ v) : ∃ c : ℂ, v = c • T.w := by
   by_cases h0 : v = 0
@@ -89,6 +116,11 @@ section Span
 
 variable {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {Λ : Fin (2 * r + k + 1) → ℝ}
 
+/- English proof (translation)
+Use `symm`. Use `Fintype.sum_of_injective (fI k r) fI_inj _ _ ?_ (fun _ => rfl)` and prove the remaining obligations. Introduce `p hp`. Apply `hf` to reduce the goal to its premises. Introduce `hlt`.
+
+Conclude with `hp ⟨⟨p.val, hlt⟩, rfl⟩`.
+-/
 theorem sumF' {M : Type*} [AddCommMonoid M] (f : Fin (2 * r + k + 1) → M)
     (hf : ∀ p : Fin (2 * r + k + 1), ¬ p.val < k → f p = 0) :
     ∑ p, f p = ∑ q : Fin k, f (fI k r q) := by
@@ -99,6 +131,15 @@ theorem sumF' {M : Type*} [AddCommMonoid M] (f : Fin (2 * r + k + 1) → M)
   intro hlt
   exact hp ⟨⟨p.val, hlt⟩, rfl⟩
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose, kE_conjTranspose, ← kE_mul]`. Rewrite `hh` using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose]`. Rewrite using `[hh, kE_one]`. Use extensionality with `i j`.
+
+Simplify using `only [Formalism.REAL.Jm, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Distinguish the cases in `hi : i.val < k`. Distinguish the cases in `hj : j.val < k`. Rewrite using `[hε i hi, hε j hj]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[kE_col _ _ hj, if_neg (by rintro rfl; exact hj hi)]; simp`. Rewrite using `[kE_row _ _ hi]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[if_neg hij]`. Simplify using the standard rewrite rules.
+-/
 theorem kE_mem_Kset (hε : ∀ a : Fin (2 * r + k + 1), a.val < k → ε a = true) {h : Matrix (Fin k) (Fin k) ℂ}
     (hh : h ∈ Matrix.unitaryGroup (Fin k) ℂ) : kE k r h ∈ Formalism.REAL.Kset ε := by
   refine ⟨?_, ?_⟩
@@ -125,6 +166,11 @@ def th1 (θ : Fin (2 * r + k + 1) → ℝ) : Fin k → ℝ := fun q => θ (fI k 
 
 def dgk (t : Fin k → ℝ) : Matrix (Fin k) (Fin k) ℂ := Matrix.diagonal (fun a => Complex.exp ((t a : ℂ) * Complex.I))
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose, dg, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Rewrite using `[Pi.star_apply, Complex.star_def, ← Complex.exp_conj, ← Complex.exp_add, map_mul, Complex.conj_ofReal, Complex.conj_I]`.
+
+Simplify using the standard rewrite rules. Simplify using `only [dg, Formalism.REAL.Jm, Matrix.diagonal_mul_diagonal, mul_comm]`.
+-/
 theorem dg_mem (θ : Fin (2 * r + k + 1) → ℝ) : dg θ ∈ Formalism.REAL.Kset ε := by
   refine ⟨?_, ?_⟩
   · rw [Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose, dg, Matrix.diagonal_conjTranspose,
@@ -136,6 +182,11 @@ theorem dg_mem (θ : Fin (2 * r + k + 1) → ℝ) : dg θ ∈ Formalism.REAL.Kse
     simp
   · simp only [dg, Formalism.REAL.Jm, Matrix.diagonal_mul_diagonal, mul_comm]
 
+/- English proof (translation)
+Use `dg_mem (k := k) (r := 0) (ε := fun _ => true)` as an intermediate fact. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose, dgk, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+
+Rewrite using `[Pi.star_apply, Complex.star_def, ← Complex.exp_conj, ← Complex.exp_add, map_mul, Complex.conj_ofReal, Complex.conj_I]`. Simplify using the standard rewrite rules. Simplify using `only [dgk, Formalism.REAL.Jm, Matrix.diagonal_mul_diagonal, mul_comm]`.
+-/
 theorem dgk_mem (t : Fin k → ℝ) : dgk t ∈ Formalism.REAL.Kset (Formalism.MainNotions.S.allPos k) := by
   have := dg_mem (k := k) (r := 0) (ε := fun _ => true)
   refine ⟨?_, ?_⟩
@@ -148,6 +199,17 @@ theorem dgk_mem (t : Fin k → ℝ) : dgk t ∈ Formalism.REAL.Kset (Formalism.M
     simp
   · simp only [dgk, Formalism.REAL.Jm, Matrix.diagonal_mul_diagonal, mul_comm]
 
+/- English proof (translation)
+Use extensionality with `i j`. Unfold `dg`. Rewrite using `[Matrix.mul_diagonal]`. Distinguish the cases in `hi : i.val < k`. Distinguish the cases in `hj : j.val < k`.
+
+Simplify using `only [dg, dgk, kE, th1, th2, dif_pos hi, dif_pos hj, if_pos hj, Matrix.diagonal_apply, fI]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg hij, if_neg (by intro e; apply hij; exact Fin.ext (by simpa using e))]; simp`.
+
+Simplify using `only [dg, th2, if_neg hj, Matrix.diagonal_apply]`. Rewrite using `[kE_col _ _ hj]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Conclude with `absurd hi hj`.
+
+Simplify using `[hij]`. Simplify using `only [dg, th2, Matrix.diagonal_apply]`. Rewrite using `[kE_row _ _ hi]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Simplify using `[hi]`. Simplify using `[hij]`.
+-/
 theorem dg_split (θ : Fin (2 * r + k + 1) → ℝ) : dg θ = kE k r (dgk (th1 θ)) * dg (th2 θ) := by
   ext i j
   unfold dg
@@ -169,6 +231,13 @@ theorem dg_split (θ : Fin (2 * r + k + 1) → ℝ) : dg θ = kE k r (dgk (th1 �
     · subst hij; simp [hi]
     · simp [hij]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[dg, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Distinguish the cases in `hi : i.val < k`. Distinguish the cases in `hj : j.val < k`. Simplify using `[th2, hi, hj]`.
+
+Rewrite using `[kE_col _ _ hj, if_neg (by rintro rfl; exact hj hi)]; simp`. Rewrite using `[kE_row _ _ hi]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[if_neg hij]`. Simplify using the standard rewrite rules.
+-/
 theorem central_diagonal_commute (θ : Fin (2 * r + k + 1) → ℝ) (h : Matrix (Fin k) (Fin k) ℂ) :
     kE k r h * dg (th2 θ) = dg (th2 θ) * kE k r h := by
   ext i j
@@ -189,22 +258,41 @@ def rhoK (h : Matrix (Fin k) (Fin k) ℂ) : T.V →L[ℂ] T.V := HW.torepSig T (
 def spanW : Submodule ℂ T.V :=
   sInf {S | T.w ∈ S ∧ ∀ h ∈ Matrix.unitaryGroup (Fin k) ℂ, ∀ v ∈ S, rhoK (k := k) (r := r) T h v ∈ S}
 
+/- English proof (translation)
+The claim follows from `Submodule.mem_sInf.2 fun _ hS => hS.1`.
+-/
 theorem w_mem_spanW : T.w ∈ spanW (k := k) (r := r) T :=
   Submodule.mem_sInf.2 fun _ hS => hS.1
 
+/- English proof (translation)
+The claim follows from `Submodule.mem_sInf.2 fun S hS => hS.2 h hh v (Submodule.mem_sInf.1 hv S hS)`.
+-/
 theorem spanW_stable {h : Matrix (Fin k) (Fin k) ℂ} (hh : h ∈ Matrix.unitaryGroup (Fin k) ℂ) {v : T.V}
     (hv : v ∈ spanW (k := k) (r := r) T) : rhoK (k := k) (r := r) T h v ∈ spanW (k := k) (r := r) T :=
   Submodule.mem_sInf.2 fun S hS => hS.2 h hh v (Submodule.mem_sInf.1 hv S hS)
 
+/- English proof (translation)
+The claim follows from `sInf_le ⟨hw, hS⟩`.
+-/
 theorem spanW_le {S : Submodule ℂ T.V} (hw : T.w ∈ S)
     (hS : ∀ h ∈ Matrix.unitaryGroup (Fin k) ℂ, ∀ v ∈ S, rhoK (k := k) (r := r) T h v ∈ S) :
     spanW (k := k) (r := r) T ≤ S :=
   sInf_le ⟨hw, hS⟩
 
+/- English proof (translation)
+Rewrite using `[(HW.torep_isURepOn T).1.2 a ha b hb]`. Both sides reduce to the same expression.
+-/
 theorem torep_mul {a b : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (ha : a ∈ Formalism.REAL.Kset ε)
     (hb : b ∈ Formalism.REAL.Kset ε) (v : T.V) : HW.torepSig T (a * b) v = HW.torepSig T a (HW.torepSig T b v) := by
   rw [(HW.torep_isURepOn T).1.2 a ha b hb]; rfl
 
+/- English proof (translation)
+Use `set c := Complex.exp (((∑ a, Λ a * th2 θ a : ℝ) : ℂ) * Complex.I)`. Set `S : Submodule ℂ T.V` to `LinearMap.ker ((HW.torepSig T (dg (th2 θ)) : T.V →ₗ[ℂ] T.V) - c • LinearMap.id)`. Establish `hmem : ∀ y, y ∈ S ↔ HW.torepSig T (dg (th2 θ)) y = c • y`. Introduce `y`. Simplify using `[S, sub_eq_zero]`.
+
+Establish `hle : spanW (k` using `k) (r := r) T ≤ S := by`. Use `spanW_le T ((hmem _).2 (HW.torep_wt_w T (th2 θ) (dg_mem _))) ?_` and prove the remaining obligations. Introduce `h hh v hv`. Rewrite `hv`, the goal using `[hmem]`. Unfold `rhoK`.
+
+Rewrite using `[← torep_mul T (dg_mem _) (kE_mem_Kset hε hh), ← central_diagonal_commute, torep_mul T (kE_mem_Kset hε hh) (dg_mem _), hv, map_smul]`. Conclude with `(hmem x).1 (hle hx)`.
+-/
 theorem spanW_scalar (hε : ∀ a : Fin (2 * r + k + 1), a.val < k → ε a = true) (θ : Fin (2 * r + k + 1) → ℝ)
     {x : T.V} (hx : x ∈ spanW (k := k) (r := r) T) :
     HW.torepSig T (dg (th2 θ)) x = Complex.exp (((∑ a, Λ a * th2 θ a : ℝ) : ℂ) * Complex.I) • x := by

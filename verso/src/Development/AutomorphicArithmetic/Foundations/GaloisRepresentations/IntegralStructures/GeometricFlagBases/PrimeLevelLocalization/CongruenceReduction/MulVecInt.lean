@@ -11,16 +11,27 @@ attribute [local instance] Ideal.Quotient.field
 
 namespace UpperTheory.Gal.Int.Geo.Pl.Tj
 
+/- English proof (translation)
+Rewrite using `[IsScalarTower.algebraMap_apply (𝓞 E) E (u.adicCompletion E)]`. Conclude with `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' u _`.
+-/
 private theorem val_alg {E : Type} [Field E] [NumberField E] (u : Plc E) (c : 𝓞 E) :
     Valued.v (algebraMap (𝓞 E) (u.adicCompletion E) c) = u.valuation E (c : E) := by
   rw [IsScalarTower.algebraMap_apply (𝓞 E) E (u.adicCompletion E)]
   exact HeightOneSpectrum.valuedAdicCompletion_eq_valuation' u _
 
+/- English proof (translation)
+Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, val_alg]`. Conclude with `HeightOneSpectrum.valuation_le_one u c`.
+-/
 private theorem alg_int {E : Type} [Field E] [NumberField E] (u : Plc E) (c : 𝓞 E) :
     algebraMap (𝓞 E) (u.adicCompletion E) c ∈ u.adicCompletionIntegers E := by
   rw [HeightOneSpectrum.mem_adicCompletionIntegers, val_alg]
   exact HeightOneSpectrum.valuation_le_one u c
 
+/- English proof (translation)
+Break down `eq_or_ne x 0 with rfl | h0` into its components or cases. Conclude with `zero_le'`. Rewrite `h`, the goal using `[← WithZero.exp_log h0]`. Rewrite using `[WithZero.exp_le_exp]`. Establish `: WithZero.log x < 0`.
+
+Rewrite `h` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Then use the resulting hypothesis. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem lt_one_le {x : WithZero (Multiplicative ℤ)} (h : x < 1) : x ≤ WithZero.exp (-1 : ℤ) := by
   rcases eq_or_ne x 0 with rfl | h0
   · exact zero_le'
@@ -30,6 +41,23 @@ private theorem lt_one_le {x : WithZero (Multiplicative ℤ)} (h : x < 1) : x �
       rwa [← WithZero.exp_zero, WithZero.exp_lt_exp] at h
     omega
 
+/- English proof (translation)
+Establish `key : ∃ e ∈ w.asIdeal, e ≠ 0 ∧ Valued.v y ≤ u.valuation E ((e : 𝓞 E) : E)`. Distinguish the cases in `huw : u = w`. Substitute `huw` using the available equality. Take `⟨π, hπ⟩` from `HeightOneSpectrum.intValuation_exists_uniformizer u`. Establish `hv : u.valuation E ((π : 𝓞 E) : E) = WithZero.exp (-1 : ℤ)`.
+
+Rewrite using `[← hπ]`. Conclude with `HeightOneSpectrum.valuation_of_algebraMap u π`. Use `⟨π, (HeightOneSpectrum.valuation_lt_one_iff_mem (K := E) u π).1 ?_, ?_, ?_⟩` and prove the remaining obligations. Use `lt_of_eq_of_lt hv ?_` and prove the remaining obligations. Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`.
+
+Use linear arithmetic over natural numbers and integers. Introduce and unpack `rfl`. Simplify using `at hv`. Conclude with `WithZero.exp_ne_zero hv.symm`. Rewrite using `[hv]`.
+
+Conclude with `lt_one_le (hw rfl)`. Establish `: ¬ w.asIdeal ≤ u.asIdeal` using `fun hle => huw (HeightOneSpectrum.ext (w.isMaximal.eq_of_le u.isPrime.ne_top hle).symm)`. Take `⟨e, he, heu⟩` from `SetLike.not_le_iff_exists.1 this`. Use `⟨e, he, fun h => heu (h ▸ zero_mem _), ?_⟩` and prove the remaining obligations. Establish `: u.valuation E ((e : 𝓞 E) : E) = 1` using `le_antisymm (HeightOneSpectrum.valuation_le_one u e) (not_lt.1 fun h => heu ((HeightOneSpectrum.valuation_lt_one_iff_mem (K := E) u e).1 h))`.
+
+Rewrite using `[this]`. Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 E) E u).1 hy`. Take `⟨e, he, he0, hle⟩` from `key`. Rewrite `he` using `[← hab, ← Ideal.span_union, Set.singleton_union, Ideal.mem_span_pair]`. Take `⟨α, β, hαβ⟩` from `he`.
+
+Establish `hve : Valued.v (algebraMap (𝓞 E) (u.adicCompletion E) e) ≠ 0`. Rewrite using `[val_alg]`. Simplify using `using he0`. Establish `he' : algebraMap (𝓞 E) (u.adicCompletion E) e ≠ 0` using `fun h => hve (by rw [h, map_zero])`. Establish `hz : y / algebraMap (𝓞 E) (u.adicCompletion E) e ∈ u.adicCompletionIntegers E`.
+
+Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_div₀]`. Rewrite using `[div_le_one₀ (zero_lt_iff.2 hve), val_alg]`. Conclude with `hle`. Use `⟨_, mul_mem (alg_int u α) hz, _, mul_mem (alg_int u β) hz, ?_⟩` and prove the remaining obligations. Establish `: algebraMap (𝓞 E) (u.adicCompletion E) a * (algebraMap (𝓞 E) (u.adicCompletion E) α * (y / algebraMap (𝓞 E) (u.adicCompletion E) e)) + algebraMap (𝓞 E) (u.adicCompletion E) b * (algebraMap (𝓞 E) (u.adicCompletion E) β * (y / algebraMap (𝓞 E) (u.adicCompletion E) e)) = algebraMap …`.
+
+Rewrite using `[map_add, map_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, hαβ, mul_div_cancel₀ _ he']`.
+-/
 private theorem split_at {E : Type} [Field E] [NumberField E] (w u : Plc E) (a b : 𝓞 E)
     (hab : Ideal.span {a} ⊔ Ideal.span {b} = w.asIdeal) (y : u.adicCompletion E)
     (hy : y ∈ u.adicCompletionIntegers E) (hw : u = w → Valued.v y < 1) :
@@ -77,6 +105,17 @@ private theorem split_at {E : Type} [Field E] [NumberField E] (w u : Plc E) (a b
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {A : Arith E} {n p : ℕ} [Fact p.Prime] {S : Setup A n p}
 
+/- English proof (translation)
+Take `⟨a, ha, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot w.ne_bot`. Take `⟨b, hb⟩` from `IsDedekindDomain.exists_sup_span_eq ((Ideal.span_singleton_le_iff_mem _).2 ha) (by simpa using ha0)`. Establish `hs : ∀ (u : Plc E) (hu : (p : 𝓞 E) ∉ u.asIdeal) (k : Fin n), ∃ c ∈ u.adicCompletionIntegers E, ∃ d ∈ u.adicCompletionIntegers E, F.vec u v k = algebraMap (𝓞 E) (u.adicCompletion E) a * c + algebraMap (𝓞 E) (u.adicCompletion E) b * d` using `fun u hu k => split_at w u a b hb _ ((F.vec_hat v).1 hv u hu k) (fun h => by subst h; exact hw k)`. Use `choose c hc d hd e using hs`. Take `⟨v₁, h₁⟩` from `F.vec_surj (fun u k => if hu : (p : 𝓞 E) ∉ u.asIdeal then c u hu k else 0) (fun u k => by split_ifs with hu; exacts [zero_mem _, hc u hu k])`.
+
+Take `⟨v₂, h₂⟩` from `F.vec_surj (fun u k => if hu : (p : 𝓞 E) ∉ u.asIdeal then d u hu k else 0) (fun u k => by split_ifs with hu; exacts [zero_mem _, hd u hu k])`. Establish `m₁ : v₁ ∈ LaHat S.D` using `(F.vec_hat _).2 fun u hu k => by`. Rewrite using `[h₁ u hu]`. Simplify `hc u hu k` using `[hu]`. Establish `m₂ : v₂ ∈ LaHat S.D` using `(F.vec_hat _).2 fun u hu k => by`.
+
+Rewrite using `[h₂ u hu]`. Simplify `hd u hu k` using `[hu]`. Establish `hv' : v = mulF S.D a v₁ + mulF S.D b v₂`. Rewrite using `[← sub_eq_zero]`. Use `F.vec_inj _ fun u hu => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_sub, map_add, F.vec_mul u hu, F.vec_mul u hu, h₁ u hu, h₂ u hu]`. Use function extensionality and compare the values at `k`. Simplify using `only [Pi.sub_apply, Pi.add_apply, Pi.smul_apply, Pi.zero_apply, smul_eq_mul, dif_pos hu, e u hu k, sub_self]`. Rewrite using `[hv']`. Use `add_mem (AddSubgroup.subset_closure ⟨a, ha, v₁, m₁, rfl⟩) (AddSubgroup.subset_closure ⟨b, ?_, v₂, m₂, rfl⟩)` and prove the remaining obligations.
+
+Rewrite using `[← hb]`. Conclude with `Ideal.mem_sup_right (Ideal.mem_span_singleton_self b)`.
+-/
 private theorem mem_idHat (F : Frame S) (w : Plc E) {v} (hv : v ∈ LaHat S.D)
     (hw : ∀ k, Valued.v (F.vec w v k) < 1) : v ∈ idHat S.D w.asIdeal := by
   classical
@@ -115,11 +154,17 @@ open scoped TensorProduct
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {A : Arith E} {n p : ℕ} [Fact p.Prime] {S : Setup A n p}
 
+/- English proof (translation)
+The claim follows from `sum_mem fun l _ => mul_mem (hM k l) (hy l)`.
+-/
 private theorem mulVec_int (u : Plc E) {M : Matrix (Fin n) (Fin n) (u.adicCompletion E)} {y : Fin n → u.adicCompletion E}
     (hM : ∀ i k, M i k ∈ u.adicCompletionIntegers E) (hy : ∀ k, y k ∈ u.adicCompletionIntegers E) (k : Fin n) :
     (M *ᵥ y) k ∈ u.adicCompletionIntegers E :=
   sum_mem fun l _ => mul_mem (hM k l) (hy l)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Valued.v (∑ l, M k l * y l) < 1`. Use `(Valued.v : Valuation (u.adicCompletion E) _).map_sum_lt (one_ne_zero : (1 : WithZero (Multiplicative ℤ)) ≠ 0) fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' ((HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 E) E u).1 (hM k l))) (hy l)`.
+-/
 private theorem mulVec_lt (u : Plc E) {M : Matrix (Fin n) (Fin n) (u.adicCompletion E)} {y : Fin n → u.adicCompletion E}
     (hM : ∀ i k, M i k ∈ u.adicCompletionIntegers E) (hy : ∀ k, Valued.v (y k) < 1) (k : Fin n) :
     Valued.v ((M *ᵥ y) k) < 1 := by
@@ -128,11 +173,61 @@ private theorem mulVec_lt (u : Plc E) {M : Matrix (Fin n) (Fin n) (u.adicComplet
   rw [map_mul]
   exact lt_of_le_of_lt (mul_le_of_le_one_left' ((HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 E) E u).1 (hM k l))) (hy l)
 
+/- English proof (translation)
+Rewrite using `[IsLocalRing.residue_eq_zero_iff]`. Conclude with `Valuation.mem_maximalIdeal_iff _ (Valued.v : Valuation (u.adicCompletion E) _)`.
+-/
 private theorem res_zero (u : Plc E) (x : u.adicCompletionIntegers E) :
     IsLocalRing.residue (u.adicCompletionIntegers E) x = 0 ↔ Valued.v (x : u.adicCompletion E) < 1 := by
   rw [IsLocalRing.residue_eq_zero_iff]
   exact Valuation.mem_maximalIdeal_iff _ (Valued.v : Valuation (u.adicCompletion E) _)
 
+/- English proof (translation)
+Use `set c : AfP p ⊗[ℚ] VQ S.D → (Fin n → w.adicCompletion E) := fun v => ((F.a w)⁻¹).val *ᵥ F.vec w v with hc`. Establish `inv_a : ((F.a w)⁻¹).val * (F.a w).val = 1` using `by rw [← Units.val_mul]; simp`. Establish `a_inv : (F.a w).val * ((F.a w)⁻¹).val = 1` using `by rw [← Units.val_mul]; simp`. Establish `c_add : ∀ v v', c (v + v') = c v + c v'` using `fun v v' => by simp [hc, Matrix.mulVec_add]`. Establish `c_sub : ∀ v v', c (v - v') = c v - c v'` using `fun v v' => by simp [hc, Matrix.mulVec_sub]`.
+
+Establish `c_neg : ∀ v, c (-v) = - c v` using `fun v => by simp [hc, Matrix.mulVec_neg]`. Establish `c_zero : c 0 = 0` using `by simp [hc]`. Establish `vec_c : ∀ v, F.vec w v = (F.a w).val *ᵥ c v` using `fun v => by`. Simplify using `only [hc, Matrix.mulVec_mulVec, a_inv, Matrix.one_mulVec]`. Establish `c_int : ∀ v ∈ LaHat S.D, ∀ k, c v k ∈ w.adicCompletionIntegers E` using `fun v hv k => mulVec_int w haJ ((F.vec_hat v).1 hv w hp) k`.
+
+Establish `c_act : ∀ v, c (S.L.actG (F.j g) v) = (comp w g).val *ᵥ c v` using `fun v => by`. Simplify using `only [hc]`. Establish `e : ((F.a w)⁻¹).val * (F.a w * comp w g * (F.a w)⁻¹).val = (comp w g).val * ((F.a w)⁻¹).val`. Rewrite using `[← Units.val_mul, ← Units.val_mul]`. Use `congr 1`.
+
+Use `group`. Rewrite using `[F.vec_act w hp g v, Matrix.mulVec_mulVec, e, ← Matrix.mulVec_mulVec]`. Establish `hit : ∀ y : Fin n → w.adicCompletion E, (∀ k, y k ∈ w.adicCompletionIntegers E) → ∃ v ∈ LaHat S.D, c v = y ∧ ∀ u : Plc E, u ≠ w → (p : 𝓞 E) ∉ u.asIdeal → F.vec u v = 0`. Introduce `y hy`. Take `⟨v, hv⟩` from `F.vec_surj (Pi.single w ((F.a w).val *ᵥ y)) (fun u k => by`.
+
+Distinguish the cases in `h : u = w`. Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `mulVec_int u haI hy k`. Rewrite using `[Pi.single_eq_of_ne h]`.
+
+Conclude with `zero_mem _)`. Use `⟨v, (F.vec_hat v).2 fun u hu k => ?_, ?_, fun u h hu => ?_⟩` and prove the remaining obligations. Rewrite using `[hv u hu]`. Distinguish the cases in `h : u = w`. Substitute `h` using the available equality.
+
+Rewrite using `[Pi.single_eq_same]`. Conclude with `mulVec_int u haI hy k`. Rewrite using `[Pi.single_eq_of_ne h]`. Conclude with `zero_mem _`. Simplify using `only [hc]`.
+
+Rewrite using `[hv w hp, Pi.single_eq_same, Matrix.mulVec_mulVec, inv_a, Matrix.one_mulVec]`. Rewrite using `[hv u hu, Pi.single_eq_of_ne h]`. Set `ψ : LaHat S.D →+ (Fin i → IsLocalRing.ResidueField (w.adicCompletionIntegers E))` to `AddMonoidHom.mk' (fun v j => IsLocalRing.residue (w.adicCompletionIntegers E) ⟨c v.1 (Fin.castLE hi j), c_int v.1 v.2 _⟩) (fun v v' => by`. Use function extensionality and compare the values at `j`. Rewrite using `[Pi.add_apply, ← map_add]`.
+
+Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[c_add])`. Establish `hψ : ∀ v : LaHat S.D, ψ v = 0 ↔ ∀ j : Fin i, Valued.v (c v.1 (Fin.castLE hi j)) < 1` using `fun v => by`. Rewrite using `[funext_iff]`.
+
+Conclude with `forall_congr' fun j => res_zero w _`. Set `C : AddSubgroup (AfP p ⊗[ℚ] VQ S.D)` to `{ carrier := {v | ∀ j : Fin i, Valued.v (c v (Fin.castLE hi j)) < 1} add_mem' := fun {v v'} h h' j => by`. Rewrite using `[c_add, Pi.add_apply]`. Conclude with `Valuation.map_add_lt _ (h j) (h' j)`. Use the proof step `zero_mem' := fun j => by simp [c_zero]`.
+
+Use the proof step `neg_mem' := fun {v} h j => by`. Rewrite using `[c_neg, Pi.neg_apply, Valuation.map_neg]`. Conclude with `h j }`. Establish `hle : ((LaHat S.D).map (S.L.actG (F.j g)).toAddMonoidHom) ⊔ idHat S.D w.asIdeal ≤ C`. Use `sup_le ?_ ((AddSubgroup.closure_le _).2 ?_)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨v, hv, rfl⟩ j`. Express the relevant statement in the definitionally equal form `Valued.v (c (S.L.actG (F.j g) v) (Fin.castLE hi j)) < 1`. Rewrite using `[c_act, ht, Matrix.mulVec_diagonal, if_pos (by simp), map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' ((HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 E) E w).1 (c_int v hv _))) hϖ`. Introduce and unpack `_ ⟨x, hx, v, hv, rfl⟩ j`.
+
+Express the relevant statement in the definitionally equal form `Valued.v (c (mulF S.D x v) (Fin.castLE hi j)) < 1`. Simplify using `only [hc]`. Establish `e : F.vec w (mulF S.D x v) = algebraMap (𝓞 E) (w.adicCompletion E) x • F.vec w v` using `F.vec_mul w hp x v`. Rewrite using `[e, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul, map_mul]`. Use `lt_of_le_of_lt (mul_le_of_le_one_right' ((HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 E) E w).1 (c_int v hv _))) ?_` and prove the remaining obligations.
+
+Conclude with `lt_of_eq_of_lt (val_alg w x) ((HeightOneSpectrum.valuation_lt_one_iff_mem (K := E) w x).2 hx)`. Establish `hker : (((LaHat S.D).map (S.L.actG (F.j g)).toAddMonoidHom) ⊔ idHat S.D w.asIdeal).addSubgroupOf (LaHat S.D) = ψ.ker`. Use extensionality with `v`. Rewrite using `[AddSubgroup.mem_addSubgroupOf, AddMonoidHom.mem_ker, hψ]`. Use `⟨fun h => hle h, fun h => ?_⟩` and prove the remaining obligations.
+
+Take `⟨v', hv', hcv', hoff⟩` from `hit (fun k : Fin n => if (k : ℕ) < i then 0 else c v.1 k) (fun k => by split_ifs exacts [zero_mem _, c_int v.1 v.2 k])`. Establish `hfc : c (S.L.actG (F.j g) v') = fun k : Fin n => if (k : ℕ) < i then 0 else c v.1 k`. Rewrite using `[c_act, ht, hcv']`. Use function extensionality and compare the values at `k`. Rewrite using `[Matrix.mulVec_diagonal]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Establish `hfm : S.L.actG (F.j g) v' ∈ LaHat S.D` using `(F.vec_hat _).2 fun u hu k => by`. Distinguish the cases in `huw : u = w`. Substitute `huw` using the available equality. Rewrite using `[vec_c, hfc]`.
+
+Use `mulVec_int u haI (fun k => ?_) k` and prove the remaining obligations. Use `split_ifs`. Use `exacts [zero_mem _, c_int v.1 v.2 k]`. Rewrite using `[F.vec_act u hu, hoff u huw hu, Matrix.mulVec_zero]`. Conclude with `zero_mem _`.
+
+Establish `hr : v.1 - S.L.actG (F.j g) v' ∈ idHat S.D w.asIdeal`. Use `mem_idHat F w (sub_mem v.2 hfm) fun k => ?_` and prove the remaining obligations. Rewrite using `[vec_c]`. Use `mulVec_lt w haI (fun k => ?_) k` and prove the remaining obligations. Rewrite using `[c_sub, hfc, Pi.sub_apply]`.
+
+Distinguish the cases in `hk : (k : ℕ) < i`. Rewrite using `[if_pos hk, sub_zero]`. Conclude with `h ⟨k, hk⟩`. Rewrite using `[if_neg hk, sub_self, map_zero]`. Conclude with `zero_lt_one`.
+
+Establish `: v.1 = S.L.actG (F.j g) v' + (v.1 - S.L.actG (F.j g) v')` using `by abel`. Rewrite using `[this]`. Conclude with `add_mem (AddSubgroup.mem_sup_left ⟨v', hv', rfl⟩) (AddSubgroup.mem_sup_right hr)`. Establish `hsurj : Function.Surjective ψ`. Introduce `z`.
+
+Use `choose z' hz' using fun j => IsLocalRing.residue_surjective (z j)`. Take `⟨v, hv, hcv, -⟩` from `hit (fun k : Fin n => if h : (k : ℕ) < i then (z' ⟨k, h⟩ : w.adicCompletion E) else 0) (fun k => by split_ifs exacts [(z' _).2, zero_mem _])`. Use `⟨⟨v, hv⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Rewrite using `[← hz' j]`.
+
+Express the relevant statement in the definitionally equal form `IsLocalRing.residue _ _ = _`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[hcv]`. Rewrite using `[AddSubgroup.relIndex, hker, AddSubgroup.index_ker, AddMonoidHom.range_eq_top.2 hsurj, Nat.card_congr AddSubgroup.topEquiv.toEquiv, Nat.card_fun, GroundTheory.Global.natCard_residueField_adicCompletionIntegers]`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem card_core (F : Frame S) (w : Plc E) (hp : (p : 𝓞 E) ∉ w.asIdeal)
     (haI : ∀ i j, (F.a w).val i j ∈ w.adicCompletionIntegers E)
     (haJ : ∀ i j, ((F.a w)⁻¹).val i j ∈ w.adicCompletionIntegers E)
@@ -266,6 +361,13 @@ private theorem card_core (F : Frame S) (w : Plc E) (hp : (p : 𝓞 E) ∉ w.asI
 
 end UpperTheory.Gal.Int.Geo.Pl.Tj
 
+/- English proof (translation)
+Introduce `hS hD hL E _ _ _ A n p _ S F x hx N w σ i hi g hg`. Establish `hq : (σ.q : 𝓞 E) ∈ w.asIdeal` using `σ.atp.le (Ideal.subset_span (Set.mem_insert _ _))`. Establish `hp : (p : 𝓞 E) ∉ w.asIdeal` using `fun hp => by`. Establish `hcop : Nat.Coprime σ.q p` using `(Nat.coprime_primes σ.atp.prime (Fact.out : p.Prime)).2 σ.atp.ne`. Take `⟨a, b, h⟩` from `Nat.isCoprime_iff_coprime.2 hcop`.
+
+Establish `h1 : ((a : 𝓞 E)) * (σ.q : 𝓞 E) + (b : 𝓞 E) * (p : 𝓞 E) = 1` using `by exact_mod_cast congrArg (Int.cast : ℤ → 𝓞 E) h`. Conclude with `w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (h1 ▸ add_mem (Ideal.mul_mem_left _ _ hq) (Ideal.mul_mem_left _ _ hp)))`. Take `⟨haI, haJ⟩` from `GlobalTheory.EulerTwRestr.mem_KGL_iff.1 (F.a_int w σ.q σ.atp.prime σ.good hq)`. Take `⟨ϖ, hϖ, ht⟩` from `hg.at_w`. Use `card_core F w hp haI haJ i hi g ϖ ?_ ht` and prove the remaining obligations.
+
+Rewrite `hϖ` using `[Formalism.UG.IsUnifV]`. Rewrite using `[hϖ]`. Conclude with `WithZero.coe_lt_one.2 (by decide)`.
+-/
 theorem UpperTheory.Gal.Int.Geo.Pl.Tj.tCard :
     UpperTheory.Gal.Int.Geo.Pl.Tj.TCard := by
   intro hS hD hL E _ _ _ A n p _ S F x hx N w σ i hi g hg

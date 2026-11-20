@@ -9,28 +9,67 @@ namespace GlobalTheory.CovDomGrp
 
 variable {D : D7} (X : HidaSetting D)
 
+/- English proof (translation)
+Introduce `y y' h`. Rewrite using `[← vecOf_crdH X y, h, vecOf_crdH]`.
+-/
 theorem crdH_injective : Function.Injective (crdH X) := by
   intro y y' h
   rw [← vecOf_crdH X y, h, vecOf_crdH]
 
+/- English proof (translation)
+Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, GlobalTheory.SgAlg.eOf, Pc]`.
+-/
 theorem mul_eOf_Pc_apply (u : D.what₂.Word)
     (γ : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) D.host.E)
     (i : Fin (2 * D.R.rS + D.R.k + 1)) (a : Fin D.R.rS) :
     (γ * GlobalTheory.SgAlg.eOf (Pc X u)) i a = (γ *ᵥ crdH X (X.eX a)) i := by
   simp [Matrix.mul_apply, Matrix.mulVec, dotProduct, GlobalTheory.SgAlg.eOf, Pc]
 
+/- English proof (translation)
+Rewrite using `[← coordEquiv_symm_apply, map_sum]`. Simplify using `[Matrix.mul_apply, GlobalTheory.SgAlg.eOf, Pc, coordEquiv_symm_apply, Finset.sum_apply, mul_comm]`.
+-/
 theorem eOf_Pc_mul_apply (u : D.what₂.Word) (ν : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E)
     (i : Fin (2 * D.R.rS + D.R.k + 1)) (a : Fin D.R.rS) :
     (GlobalTheory.SgAlg.eOf (Pc X u) * ν) i a = crdH X (∑ b, ν b a • X.eX b) i := by
   rw [← coordEquiv_symm_apply, map_sum]
   simp [Matrix.mul_apply, GlobalTheory.SgAlg.eOf, Pc, coordEquiv_symm_apply, Finset.sum_apply, mul_comm]
 
+/- English proof (translation)
+Use `show (X.Fu u).Xa j = _`. Unfold `FlagG.Xa`. Rewrite using `[X.Fu_e]`.
+-/
 theorem xflag_Fu (u : D.what₂.Word) (j : ℕ) :
     Formalism.MainNotions.S.Lat.Xflag (lf D (X.Fu u)) j = Submodule.span D.host.E (X.eX '' {i | i.1 < j}) := by
   show (X.Fu u).Xa j = _
   unfold FlagG.Xa
   rw [X.Fu_e]
 
+/- English proof (translation)
+Introduce `hγ`. Establish `hcol : ∀ ν : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E, γ * GlobalTheory.SgAlg.eOf (Pc X u) = GlobalTheory.SgAlg.eOf (Pc X u) * ν ↔ ∀ a, n (X.eX a) = ∑ b, ν b a • X.eX b`. Introduce `ν`. Prove the components needed by the constructor for the conclusion. Introduce `h a`.
+
+Apply `crdH_injective X` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Rewrite using `[← eOf_Pc_mul_apply, ← h, mul_eOf_Pc_apply, hγ]`. Introduce `h`. Use extensionality with `i a`.
+
+Rewrite using `[mul_eOf_Pc_apply, eOf_Pc_mul_apply, ← h, hγ]`. Simplify using `only [xflag_Fu]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ν, hν, h⟩`. Establish `h1` using `(hcol ν).1 h`.
+
+Establish `hstep : ∀ a : Fin D.R.rS, n (X.eX a) - X.eX a ∈ Submodule.span D.host.E (X.eX '' {i | i.1 < a.1})`. Introduce `a`. Rewrite using `[h1 a]`. Establish `hs : ∑ b, ν b a • X.eX b - X.eX a = ∑ b, (ν b a - if b = a then 1 else 0) • X.eX b`. Simplify using `[sub_smul, Finset.sum_sub_distrib, ite_smul]`.
+
+Rewrite using `[hs]`. Use `Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Break down `lt_trichotomy b a with hb | rfl | hb` into its components or cases. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, hb, rfl⟩)`. Simplify using `[(hν b b).2 rfl]`.
+
+Simplify using `[(hν b a).1 hb, hb.ne']`. Introduce `j x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, hi, rfl⟩` from `hx`.
+
+Establish `hij : i.1 ≤ j` using `Nat.lt_succ_iff.mp hi`. Establish `hsub : {k : Fin D.R.rS | k.1 < i.1} ⊆ {k : Fin D.R.rS | k.1 < j}` using `fun k (hk : k.1 < i.1) => (lt_of_lt_of_le hk hij : k.1 < j)`. Conclude with `Submodule.span_mono (Set.image_mono hsub) (hstep i)`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`.
+
+Rewrite using `[map_add]`. Use `Submodule.add_mem _ hx hy using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Consider the case `smul c x _ hx`. Rewrite using `[map_smul]`.
+
+Use `Submodule.smul_mem _ c hx using 1` and compare the differences between its conclusion and the goal. Rewrite using `[smul_sub]`. Introduce `h`. Establish `ha : ∀ a : Fin D.R.rS, ∃ l ∈ Finsupp.supported D.host.E D.host.E {i : Fin D.R.rS | i.1 < a.1}, Finsupp.linearCombination D.host.E X.eX l = n (X.eX a) - X.eX a`. Introduce `a`.
+
+Rewrite using `[← Finsupp.mem_span_image_iff_linearCombination]`. Conclude with `h a.1 (X.eX a) (Submodule.subset_span ⟨a, Nat.lt_succ_self _, rfl⟩)`. Use `choose l hl hl2 using ha`. Use `⟨fun b a => l a b + if b = a then 1 else 0, ?_, (hcol _).2 fun a => ?_⟩` and prove the remaining obligations. Introduce `i j`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hji`. Establish `h0 : l j i = 0` using `(Finsupp.mem_supported' _ _).1 (hl j) i (fun hh => absurd (hh : i.1 < j.1) (not_lt.2 (le_of_lt hji)))`. Simplify using `[h0, (ne_of_lt hji).symm]`. Introduce and unpack `rfl`.
+
+Establish `h0 : l i i = 0` using `(Finsupp.mem_supported' _ _).1 (hl i) i (fun hh => lt_irrefl i.1 hh)`. Simplify using `[h0]`. Establish `hlc` using `hl2 a`. Rewrite `hlc` using `[Finsupp.linearCombination_apply, Finsupp.sum_fintype _ _ (by simp)]`. Simplify using `only [add_smul, Finset.sum_add_distrib, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true, hlc]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem flag_iff {D : D7} (X : HidaSetting D) (u : D.what₂.Word) (n : (VS D).V ≃ₗ[D.host.E] (VS D).V)
     (γ : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) D.host.E) :
     (∀ y, crdH X (n y) = γ *ᵥ crdH X y) →

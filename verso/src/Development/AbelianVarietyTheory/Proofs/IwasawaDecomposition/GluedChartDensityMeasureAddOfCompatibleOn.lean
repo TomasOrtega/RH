@@ -11,6 +11,21 @@ noncomputable section
 
 namespace GlobalTheory.ChartGlue
 
+/- English proof (translation)
+Introduce `Y _ _ _ _ n κ e hd hcov S hS ρ ρ' hρ hρ' hAE`. Establish `same : ∀ (τ τ' : κ → Y → ℝ≥0∞), (∀ i y, y ∈ S → τ i y = τ' i y) → glueMeas e τ S = glueMeas e τ' S`. Introduce `τ τ' h`. Establish `hm` using `GlobalTheory.ChernScale.glueMeas_restrict_eq e (ρ := τ) (ρ' := τ') (c := 1) ENNReal.one_ne_top hS (fun i y _ hy => by rw [one_mul]; exact h i y hy)`. Use `congrArg (fun μ : Measure Y => μ S) hm` as an intermediate fact.
+
+Simplify `this` using `only [Measure.smul_apply, smul_eq_mul, one_mul, Measure.restrict_apply_self]`. Establish `compat : ∀ (τ : κ → Y → ℝ≥0∞), (∀ i j y, y ∈ S → y ∈ (e i).source → y ∈ (e j).source → τ i y = ENNReal.ofReal (‖transDet (e i) (e j) y‖ ^ 2) * τ j y) → ∀ i j y, y ∈ (e i).source → y ∈ (e j).source → S.indicator (τ i) y = ENNReal.ofReal (‖transDet (e i) (e j) y‖ ^ 2) * S.indicator …`. Introduce `τ hτ i j y hi hj`. Distinguish the cases in `hy : y ∈ S`. Rewrite using `[Set.indicator_of_mem hy, Set.indicator_of_mem hy]`.
+
+Conclude with `hτ i j y hy hi hj`. Rewrite using `[Set.indicator_of_notMem hy, Set.indicator_of_notMem hy, mul_zero]`. Establish `cσ` using `compat ρ hρ`. Establish `cσ'` using `compat ρ' hρ'`. Establish `cs : ∀ i j y, y ∈ (e i).source → y ∈ (e j).source → S.indicator (ρ i) y + S.indicator (ρ' i) y = ENNReal.ofReal (‖transDet (e i) (e j) y‖ ^ 2) * (S.indicator (ρ j) y + S.indicator (ρ' j) y)`.
+
+Introduce `i j y hi hj`. Rewrite using `[mul_add, cσ i j y hi hj, cσ' i j y hi hj]`. Establish `aem : ∀ i (A : Set Y), MeasurableSet A → A ⊆ (e i).source → AEMeasurable (fun v => S.indicator (ρ i) ((e i).symm v)) (volume.restrict ((e i) '' A))`. Introduce `i A hAm hA`. Establish `hT : MeasurableSet ((e i).target ∩ (e i).symm ⁻¹' S)`.
+
+Rewrite using `[← (e i).image_source_inter_eq']`. Conclude with `measurableSet_image (e i) ((e i).open_source.measurableSet.inter hS) Set.inter_subset_left`. Establish `hg` using `((aemeasurable_indicator_iff hT).2 (hAE i)).mono_measure (Measure.restrict_le_self (s := (e i) '' A))`. Use `hg.congr ((ae_restrict_iff' (measurableSet_image (e i) hAm hA)).2 (Filter.Eventually.of_forall ?_))` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+
+Establish `ht : (e i) y ∈ (e i).target` using `(e i).map_source (hA hy)`. Use `show _ = S.indicator (ρ i) ((e i).symm ((e i) y))`. Distinguish the cases in `hs : (e i).symm ((e i) y) ∈ S`. Rewrite using `[Set.indicator_of_mem (show (e i) y ∈ (e i).target ∩ (e i).symm ⁻¹' S from ⟨ht, hs⟩), Set.indicator_of_mem hs]`. Rewrite using `[Set.indicator_of_notMem (show (e i) y ∉ (e i).target ∩ (e i).symm ⁻¹' S from fun h => hs h.2), Set.indicator_of_notMem hs]`.
+
+Establish `key : glueMeas e (fun i y => S.indicator (ρ i) y + S.indicator (ρ' i) y) = glueMeas e (fun i => S.indicator (ρ i)) + glueMeas e (fun i => S.indicator (ρ' i))`. Use `ext_of_cover (fun i => (e i).source) (fun i => (e i).open_source) hcov fun i A hA hAi => ?_` and prove the remaining obligations. Rewrite using `[Measure.add_apply, glueMeas_apply e _ hd cs i hA hAi, glueMeas_apply e (fun i => S.indicator (ρ i)) hd cσ i hA hAi, glueMeas_apply e (fun i => S.indicator (ρ' i)) hd cσ' i hA hAi, chartMeas_apply_of_subset _ _ hA hAi, chartMeas_apply_of_subset _ _ hA hAi, chartMeas_apply_of_subs …`. Conclude with `lintegral_add_left' (aem i A hA hAi) _`. Rewrite using `[same (fun i y => ρ i y + ρ' i y) (fun i y => S.indicator (ρ i) y + S.indicator (ρ' i) y) (fun i y hy => by simp only [Set.indicator_of_mem hy]), same ρ (fun i => S.indicator (ρ i)) (fun i y hy => by simp only [Set.indicator_of_mem hy]), same ρ' (fun i => S.indicator (ρ' i)) (fun …`.
+-/
 theorem glueMeas_add_of_compat_on : ∀ {Y : Type} [TopologicalSpace Y] [MeasurableSpace Y] [BorelSpace Y]
     [SecondCountableTopology Y] {n : ℕ} {κ : Type} (e : κ → OpenPartialHomeomorph Y (V n)),
     (∀ i j, DifferentiableOn ℂ (e j ∘ (e i).symm) ((e i).target ∩ (e i).symm ⁻¹' (e j).source)) →

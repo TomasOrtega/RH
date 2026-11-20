@@ -9,6 +9,11 @@ open GlobalTheory GlobalTheory.ChowHt GlobalTheory.Adelic GlobalTheory.HSCore Gl
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `F σ _ _ J f hf Ω _ _ x hx`. Establish `hrad : f ∈ J.radical`. Rewrite using `[← MvPolynomial.vanishingIdeal_zeroLocus_eq_radical (K := AlgebraicClosure F)]`. Conclude with `fun y hy => hf y hy`. Take `⟨m, hm⟩` from `hrad`.
+
+Establish `h0 : (aeval x f) ^ m = 0`. Rewrite using `[← map_pow]`. Conclude with `hx _ hm`. Conclude with `IsNilpotent.eq_zero ⟨m, h0⟩`.
+-/
 theorem vanish_transfer_of_algClosure :
     ∀ (F σ : Type) [Field F] [Finite σ] (J : Ideal (MvPolynomial σ F)) (f : MvPolynomial σ F),
       (∀ x : σ → AlgebraicClosure F, (∀ g ∈ J, aeval x g = 0) → aeval x f = 0) →

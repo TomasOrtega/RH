@@ -9,6 +9,9 @@ namespace GlobalTheory.QuotientHaar
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   [MeasurableSpace G] [BorelSpace G] (H : Subgroup G)
 
+/- English proof (translation)
+The claim follows from `(continuous_const.mul continuous_subtype_val).measurable`.
+-/
 theorem measurable_translate (g : G) : Measurable (fun h : H => g * (h : G)) :=
   (continuous_const.mul continuous_subtype_val).measurable
 
@@ -24,14 +27,23 @@ noncomputable def cosetMeasure (ν : Measure H) [ν.IsMulLeftInvariant] : G ⧸ 
     funext h
     simp [← mul_assoc])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cosetMeasure_mk (ν : Measure H) [ν.IsMulLeftInvariant] (g : G) :
     cosetMeasure H ν (g : G ⧸ H) = ν.map (fun h : H => g * (h : G)) := rfl
 
+/- English proof (translation)
+Rewrite using `[cosetMeasure_mk, Measure.map_apply (measurable_translate H g) hs]`.
+-/
 theorem cosetMeasure_apply (ν : Measure H) [ν.IsMulLeftInvariant] (g : G) {s : Set G}
     (hs : MeasurableSet s) :
     cosetMeasure H ν (g : G ⧸ H) s = ν ((fun h : H => g * (h : G)) ⁻¹' s) := by
   rw [cosetMeasure_mk, Measure.map_apply (measurable_translate H g) hs]
 
+/- English proof (translation)
+Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H g => rw [cosetMeasure_mk, lintegral_map hf (measurable_translate H g), fibreIntegral_mk]`.
+-/
 theorem lintegral_cosetMeasure (ν : Measure H) [ν.IsMulLeftInvariant] {f : G → ℝ≥0∞}
     (hf : Measurable f) (q : G ⧸ H) :
     ∫⁻ x, f x ∂(cosetMeasure H ν q) = fibreIntegral H ν f q := by
@@ -41,6 +53,9 @@ theorem lintegral_cosetMeasure (ν : Measure H) [ν.IsMulLeftInvariant] {f : G �
 variable [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G]
 
 omit [LocallyCompactSpace G] [SecondCountableTopology G] in
+/- English proof (translation)
+Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H g`. Rewrite using `[cosetMeasure_apply H ν g hK.measurableSet]`. Establish `h1 : IsCompact ((fun x : G => g * x) ⁻¹' K)` using `(Homeomorph.mulLeft g).isCompact_preimage.mpr hK`. Conclude with `(hH.isClosedEmbedding_subtypeVal.isCompact_preimage h1).measure_lt_top`.
+-/
 theorem cosetMeasure_lt_top (hH : IsClosed (H : Set G)) (ν : Measure H) [ν.IsHaarMeasure]
     (q : G ⧸ H) {K : Set G} (hK : IsCompact K) : cosetMeasure H ν q K < ⊤ := by
   induction q using QuotientGroup.induction_on with
@@ -50,6 +65,15 @@ theorem cosetMeasure_lt_top (hH : IsClosed (H : Set G)) (ν : Measure H) [ν.IsH
       (Homeomorph.mulLeft g).isCompact_preimage.mpr hK
     exact (hH.isClosedEmbedding_subtypeVal.isCompact_preimage h1).measure_lt_top
 
+/- English proof (translation)
+Use `haveI : LocallyCompactSpace H := hH.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : SecondCountableTopology H := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI : IsLocallyFiniteMeasure ν := isLocallyFiniteMeasure_of_isFiniteMeasureOnCompacts`. Use `haveI : ν.Regular := inferInstance`. Use `measurable_of_Ioi fun c => IsOpen.measurableSet ?_` and prove the remaining obligations.
+
+Rewrite using `[← (QuotientGroup.isQuotientMap_mk H).isOpen_preimage, isOpen_iff_mem_nhds]`. Introduce `g hg`. Simplify using `only [Set.mem_preimage, Set.mem_Ioi, cosetMeasure_apply H ν g hU.measurableSet] at hg`. Establish `hO : IsOpen ((fun h : H => g * (h : G)) ⁻¹' U)` using `hU.preimage (continuous_const.mul continuous_subtype_val)`. Take `⟨K, hKU, hK, hc⟩` from `hO.exists_lt_isCompact hg`.
+
+Establish `hev : ∀ᶠ x in nhds g, ∀ h ∈ K, x * (h : G) ∈ U`. Use `hK.eventually_forall_of_forall_eventually fun h hh => ?_` and prove the remaining obligations. Establish `hcont : Continuous (fun p : G × H => p.1 * (p.2 : G))` using `by fun_prop`. Conclude with `hcont.continuousAt.eventually_mem (hU.mem_nhds (hKU hh))`. Use `filter_upwards [hev] with x hx`.
+
+Simplify using `only [Set.mem_preimage, Set.mem_Ioi, cosetMeasure_apply H ν x hU.measurableSet]`. Conclude with `hc.trans_le (measure_mono fun h hh => hx h hh)`.
+-/
 theorem measurable_cosetMeasure_open (hH : IsClosed (H : Set G)) (ν : Measure H)
     [ν.IsHaarMeasure] [MeasurableSpace (G ⧸ H)] [BorelSpace (G ⧸ H)] {U : Set G}
     (hU : IsOpen U) : Measurable (fun q : G ⧸ H => cosetMeasure H ν q U) := by
@@ -72,6 +96,17 @@ theorem measurable_cosetMeasure_open (hH : IsClosed (H : Set G)) (ν : Measure H
   simp only [Set.mem_preimage, Set.mem_Ioi, cosetMeasure_apply H ν x hU.measurableSet]
   exact hc.trans_le (measure_mono fun h hh => hx h hh)
 
+/- English proof (translation)
+Set `K` to `CompactExhaustion.choice G`. Establish `hres : ∀ n, Measurable (fun q => (cosetMeasure H ν q).restrict (interior (K n)))`. Introduce `n`. Use `haveI : ∀ q, IsFiniteMeasure ((cosetMeasure H ν q).restrict (interior (K n))) := fun q => isFiniteMeasure_restrict.mpr ((measure_mono interior_subset).trans_lt (cosetMeasure_lt_top H hH ν q (K.isCompact n))).ne`. Establish `key : ∀ s : Set G, IsOpen s → Measurable fun q => (cosetMeasure H ν q).restrict (interior (K n)) s`.
+
+Introduce `s hs`. Simplify using `only [Measure.restrict_apply hs.measurableSet]`. Conclude with `measurable_cosetMeasure_open H hH ν (hs.inter isOpen_interior)`. Conclude with `Measurable.measure_of_isPiSystem (S := {s : Set G | IsOpen s}) BorelSpace.measurable_eq isPiSystem_isOpen key (key _ isOpen_univ)`. Use `Measure.measurable_of_measurable_coe _ fun s hs => ?_` and prove the remaining obligations.
+
+Establish `hmono : Monotone fun n => s ∩ interior (K n)` using `fun a b hab => Set.inter_subset_inter_right _ (interior_mono (K.subset hab))`. Establish `hun : ⋃ n, s ∩ interior (K n) = s`. Use extensionality with `x`. Simplify using `only [Set.mem_iUnion, Set.mem_inter_iff]`. Use `⟨fun ⟨_, h, _⟩ => h, fun h => ?_⟩` and prove the remaining obligations.
+
+Take `⟨n, hn⟩` from `K.exists_mem x`. Conclude with `⟨n + 1, h, K.subset_interior_succ n hn⟩`. Establish `: (fun q => cosetMeasure H ν q s) = fun q => ⨆ n, (cosetMeasure H ν q).restrict (interior (K n)) s`. Use function extensionality and compare the values at `q`. Simplify using `only [Measure.restrict_apply hs]`.
+
+Rewrite using `[← hmono.measure_iUnion, hun]`. Rewrite using `[this]`. Conclude with `Measurable.iSup fun n => (Measure.measurable_coe hs).comp (hres n)`.
+-/
 theorem measurable_cosetMeasure (hH : IsClosed (H : Set G)) (ν : Measure H)
     [ν.IsHaarMeasure] [MeasurableSpace (G ⧸ H)] [BorelSpace (G ⧸ H)] :
     Measurable (cosetMeasure H ν) := by
@@ -105,6 +140,9 @@ theorem measurable_cosetMeasure (hH : IsClosed (H : Set G)) (ν : Measure H)
   rw [this]
   exact Measurable.iSup fun n => (Measure.measurable_coe hs).comp (hres n)
 
+/- English proof (translation)
+Establish `: fibreIntegral H ν f = fun q => ∫⁻ x, f x ∂(cosetMeasure H ν q)`. Use function extensionality and compare the values at `fun q => (lintegral_cosetMeasure H ν hf q).symm`. Rewrite using `[this]`. Conclude with `(Measure.measurable_lintegral hf).comp (measurable_cosetMeasure H hH ν)`.
+-/
 theorem measurable_fibreIntegral (hH : IsClosed (H : Set G)) (ν : Measure H)
     [ν.IsHaarMeasure] [MeasurableSpace (G ⧸ H)] [BorelSpace (G ⧸ H)] {f : G → ℝ≥0∞}
     (hf : Measurable f) : Measurable (fibreIntegral H ν f) := by
@@ -113,6 +151,9 @@ theorem measurable_fibreIntegral (hH : IsClosed (H : Set G)) (ν : Measure H)
   rw [this]
   exact (Measure.measurable_lintegral hf).comp (measurable_cosetMeasure H hH ν)
 
+/- English proof (translation)
+Introduce `f hf`. Use `⟨measurable_fibreIntegral H hH ν hf, ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.lintegral_bind (measurable_cosetMeasure H hH ν).aemeasurable hf.aemeasurable]`. Conclude with `lintegral_congr fun q => lintegral_cosetMeasure H ν hf q`.
+-/
 theorem quotientFormula_bind (hH : IsClosed (H : Set G)) (ν : Measure H)
     [ν.IsHaarMeasure] [MeasurableSpace (G ⧸ H)] [BorelSpace (G ⧸ H)] (μ : Measure (G ⧸ H)) :
     QuotientFormula H (μ.bind (cosetMeasure H ν)) ν μ := by
@@ -121,6 +162,27 @@ theorem quotientFormula_bind (hH : IsClosed (H : Set G)) (ν : Measure H)
   rw [Measure.lintegral_bind (measurable_cosetMeasure H hH ν).aemeasurable hf.aemeasurable]
   exact lintegral_congr fun q => lintegral_cosetMeasure H ν hf q
 
+/- English proof (translation)
+Use `haveI := hμ.finiteOnCompacts`. Use `haveI := hμ.invariant`. Establish `hm` using `measurable_cosetMeasure H hH ν`. Use `haveI hfin : IsFiniteMeasureOnCompacts (μ.bind (cosetMeasure H ν)) := by`. Use `⟨fun K hK => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Measure.bind_apply hK.measurableSet hm.aemeasurable]`. Establish `hC : ν (Subtype.val ⁻¹' (K⁻¹ * K)) < ⊤` using `(hH.isClosedEmbedding_subtypeVal.isCompact_preimage (hK.inv.mul hK)).measure_lt_top`. Establish `hπ : IsCompact ((QuotientGroup.mk : G → G ⧸ H) '' K)` using `hK.image QuotientGroup.continuous_mk`. Establish `hle : ∀ q, cosetMeasure H ν q K ≤ ((QuotientGroup.mk : G → G ⧸ H) '' K).indicator (fun _ => ν (Subtype.val ⁻¹' (K⁻¹ * K))) q`. Introduce `q`.
+
+Distinguish the cases in `hq : q ∈ (QuotientGroup.mk : G → G ⧸ H) '' K`. Rewrite using `[Set.indicator_of_mem hq]`. Take `⟨k, hk, rfl⟩` from `hq`. Rewrite using `[cosetMeasure_apply H ν k hK.measurableSet]`. Use `measure_mono fun h hh => ?_` and prove the remaining obligations.
+
+Conclude with `⟨k⁻¹, Set.inv_mem_inv.mpr hk, k * h, hh, by simp⟩`. Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H g`. Rewrite using `[cosetMeasure_apply H ν g hK.measurableSet]`. Establish `: (fun h : H => g * (h : G)) ⁻¹' K = ∅` using `Set.eq_empty_of_forall_notMem fun h hh => hq ⟨g * h, hh, by simp⟩`.
+
+Simplify using `[this]`. Use `(lintegral_mono hle).trans_lt ((lintegral_indicator_const_le _ _).trans_lt ?_)` and prove the remaining obligations. Conclude with `ENNReal.mul_lt_top hC hπ.measure_lt_top`. Use `haveI hinv : (μ.bind (cosetMeasure H ν)).IsMulLeftInvariant := by`. Use `(forall_measure_preimage_mul_iff _).mp fun a s hs => ?_` and prove the remaining obligations.
+
+Rewrite using `[Measure.bind_apply hs hm.aemeasurable, Measure.bind_apply (measurable_const_mul a hs) hm.aemeasurable]`. Establish `h1 : Measurable fun q => cosetMeasure H ν q s` using `(Measure.measurable_coe hs).comp hm`. Establish `h2` using `(measurePreserving_smul a μ).lintegral_comp h1`. Rewrite using `[← h2]`. Use `lintegral_congr fun q => ?_` and prove the remaining obligations.
+
+Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H g`. Express the relevant statement in the definitionally equal form `_ = cosetMeasure H ν ((a * g : G) : G ⧸ H) s`. Rewrite using `[cosetMeasure_apply H ν g (measurable_const_mul a hs), cosetMeasure_apply H ν _ hs]`. Use `congr 1`.
+
+Use extensionality with `h`. Simplify using `[mul_assoc]`. Establish `hne : μ.bind (cosetMeasure H ν) ≠ 0`. Introduce `h0`. Establish `h1 : μ.bind (cosetMeasure H ν) Set.univ = ν Set.univ * μ Set.univ`.
+
+Rewrite using `[Measure.bind_apply MeasurableSet.univ hm.aemeasurable, ← lintegral_const]`. Use `lintegral_congr fun q => ?_` and prove the remaining obligations. Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H g => rw [cosetMeasure_apply H ν g MeasurableSet.univ, Set.preimage_univ]`. Rewrite `h1` using `[h0]`.
+
+Conclude with `mul_ne_zero (isOpen_univ.measure_ne_zero ν Set.univ_nonempty) (Measure.measure_univ_ne_zero.mpr hμ.ne_zero) h1.symm`. Use `haveI : IsLocallyFiniteMeasure (μ.bind (cosetMeasure H ν)) := isLocallyFiniteMeasure_of_isFiniteMeasureOnCompacts`. Use `haveI : NeZero (μ.bind (cosetMeasure H ν)) := ⟨hne⟩`. Use `haveI : (μ.bind (cosetMeasure H ν)).IsOpenPosMeasure := isOpenPosMeasure_of_mulLeftInvariant_of_regular`. Conclude with `{}`.
+-/
 theorem isHaarMeasure_bind (hH : IsClosed (H : Set G)) (ν : Measure H)
     [ν.IsHaarMeasure] [MeasurableSpace (G ⧸ H)] [BorelSpace (G ⧸ H)] (μ : Measure (G ⧸ H))
     (hμ : IsInvariantRadon H μ) : (μ.bind (cosetMeasure H ν)).IsHaarMeasure := by
@@ -187,6 +249,9 @@ end GlobalTheory.QuotientHaar
 
 namespace GlobalTheory.QuotientHaar
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ _ _ H _ _ hH ν _ μ hμ`. Use `⟨μ.bind (cosetMeasure H ν), ⟨isHaarMeasure_bind H hH ν μ hμ, quotientFormula_bind H hH ν μ⟩, fun dg hdg => ?_⟩` and prove the remaining obligations. Use extensionality with `s hs`. Establish `hf : Measurable (s.indicator (1 : G → ℝ≥0∞))` using `measurable_one.indicator hs`. Rewrite using `[← lintegral_indicator_one hs, ← lintegral_indicator_one hs, (hdg.2 _ hf).2, (quotientFormula_bind H hH ν μ _ hf).2]`.
+-/
 theorem existsUnique_haar_of_invariantRadon : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (H : Subgroup G) [MeasurableSpace (G ⧸ H)] [BorelSpace (G ⧸ H)], IsClosed (H : Set G) → ∀ (ν : Measure H) [ν.IsHaarMeasure] (μ : Measure (G ⧸ H)), IsInvariantRadon H μ → ∃! dg : Measure G, dg.IsHaarMeasure ∧ QuotientFormula H dg ν μ := by
   intro G _ _ _ _ _ _ _ _ H _ _ hH ν _ μ hμ
   refine ⟨μ.bind (cosetMeasure H ν),

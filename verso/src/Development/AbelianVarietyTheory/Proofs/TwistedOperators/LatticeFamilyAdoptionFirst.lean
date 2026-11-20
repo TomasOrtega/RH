@@ -22,6 +22,11 @@ namespace GlobalTheory.CompanionTheory.ReadingExt
 
 open Module
 
+/- English proof (translation)
+Establish `hs` using `hv.linearIndepOn_id`. Take `⟨c, hc⟩` from `hC _ (Basis.extend hs)`. Establish `hsub` using `hs.subset_extend (Set.subset_univ _)`. Set `f : ι → ↥(hs.extend (Set.subset_univ _))` to `fun a => ⟨v a, hsub ⟨a, rfl⟩⟩`. Establish `hf : Function.Injective f` using `fun a b h => hv.injective (congrArg Subtype.val h)`.
+
+Establish `h2` using `c.linearIndependent.comp f hf`. Establish `h3 : (c ∘ f) = fun a => e (v a)`. Use function extensionality and compare the values at `a`. Simplify using `only [Function.comp, hc, Basis.extend_apply_self, f]`. Rewrite `h2` using `[h3]`. Then use the resulting hypothesis.
+-/
 theorem li_of_carries {LL K WL V : Type} [Field LL] [Field K] [AddCommGroup WL] [Module LL WL] [AddCommGroup V] [Module K V]
     {emb : LL →+* K} (e : WL →ₛₗ[emb] V)
     (hC : ∀ (ι : Type) (b : Basis ι LL WL), ∃ c : Basis ι K V, ∀ i, c i = e (b i))
@@ -37,6 +42,9 @@ theorem li_of_carries {LL K WL V : Type} [Field LL] [Field K] [AddCommGroup WL] 
     simp only [Function.comp, hc, Basis.extend_apply_self, f]
   rwa [h3] at h2
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `eq_of_heq hz`.
+-/
 theorem comp_cast_of_heq {K : Type} {a b : ℕ} (h : b = a) (z : Fin a → K) (y : Fin b → K) (hz : HEq z y) :
     z ∘ finCongr h = y := by
   subst h
@@ -61,11 +69,17 @@ def jDa (Q : RealT Rc P Dcf Spf Zscf S Ks) : ∀ j, (Y.MjH j).V →ₗ[D.what₂
   | 0 => 0
   | k + 1 => if h : k < D.R.m then jDi Q ⟨k, h⟩ else 0
 
+/- English proof (translation)
+Take `⟨k, h⟩` from `i`. Simplify using `[jDa, h]`.
+-/
 theorem jDa_succ (Q : RealT Rc P Dcf Spf Zscf S Ks) (i : Fin D.R.m) :
     jDa (Y := Y) Q ((i : ℕ) + 1) = jDi Q i := by
   obtain ⟨k, h⟩ := i
   simp [jDa, h]
 
+/- English proof (translation)
+Establish `h : LinearIndependent D.what₂.LL (Q.Rl.toRealDat.bL Q.F.lv2 false i)` using `(Module.finBasis D.what₂.LL (Q.Rl.toRealDat.WL Q.F.lv2 false i)).linearIndependent.map' (Submodule.subtype _) (Submodule.ker_subtype _)`. Conclude with `linearIndependent_iff_injective_fintypeLinearCombination.1 h`.
+-/
 theorem jDL_injective (Q : RealT Rc P Dcf Spf Zscf S Ks) (i : Fin D.R.m) :
     Function.Injective (jDL Q.Rl Q.F.lv2 i) := by
   have h : LinearIndependent D.what₂.LL (Q.Rl.toRealDat.bL Q.F.lv2 false i) :=
@@ -73,6 +87,9 @@ theorem jDL_injective (Q : RealT Rc P Dcf Spf Zscf S Ks) (i : Fin D.R.m) :
       (Submodule.ker_subtype _)
   exact linearIndependent_iff_injective_fintypeLinearCombination.1 h
 
+/- English proof (translation)
+Introduce `x y h`. Establish `h1` using `(Q.nexp.fi i).e.symm.injective h`. Establish `h2` using `jDL_injective Q i h1`. Conclude with `(P.JM.eW i).symm.injective ((castL Q i).injective h2)`.
+-/
 theorem jDi_injective (Q : RealT Rc P Dcf Spf Zscf S Ks) (i : Fin D.R.m) :
     Function.Injective (jDi (Y := Y) Q i) := by
   intro x y h
@@ -80,6 +97,9 @@ theorem jDi_injective (Q : RealT Rc P Dcf Spf Zscf S Ks) (i : Fin D.R.m) :
   have h2 := jDL_injective Q i h1
   exact (P.JM.eW i).symm.injective ((castL Q i).injective h2)
 
+/- English proof (translation)
+Rewrite using `[jDa_succ]`. Establish `h1 : castL Q i ((P.JM.eW i).symm x) = y` using `comp_cast_of_heq (dWL_eq Q i) _ y h`. Simplify using `only [jDi, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply, h1]`.
+-/
 theorem jDa_read (Q : RealT Rc P Dcf Spf Zscf S Ks) (i : Fin D.R.m) (x : (Y.MjH ((i : ℕ) + 1)).V)
     (y : Fin (Module.finrank D.what₂.LL (Q.Rl.toRealDat.WL Q.F.lv2 false i)) → D.what₂.LL)
     (h : HEq ((P.JM.eW i).symm x) y) : (Q.nexp.fi i).e (jDa Q ((i : ℕ) + 1) x) = jDL Q.Rl Q.F.lv2 i y := by
@@ -87,6 +107,11 @@ theorem jDa_read (Q : RealT Rc P Dcf Spf Zscf S Ks) (i : Fin D.R.m) (x : (Y.MjH 
   have h1 : castL Q i ((P.JM.eW i).symm x) = y := comp_cast_of_heq (dWL_eq Q i) _ y h
   simp only [jDi, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply, h1]
 
+/- English proof (translation)
+Take `⟨k, rfl⟩ : ∃ k, j = k + 1` from `⟨j - 1, by omega⟩`. Establish `hk : k < D.R.m` using `by omega`. Establish `e` using `jDa_succ (Y := Y) Q ⟨k, hk⟩`. Establish `h` using `jDi_injective (Y := Y) Q ⟨k, hk⟩`. Rewrite `h` using `[← e]`.
+
+Conclude with `h`.
+-/
 theorem jDa_injective (Q : RealT Rc P Dcf Spf Zscf S Ks) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) :
     Function.Injective (jDa (Y := Y) Q j) := by
   obtain ⟨k, rfl⟩ : ∃ k, j = k + 1 := ⟨j - 1, by omega⟩
@@ -99,6 +124,9 @@ theorem jDa_injective (Q : RealT Rc P Dcf Spf Zscf S Ks) (j : ℕ) (h1 : 1 ≤ j
 open GlobalTheory.IndefiniteRowSideFullHecke.FractionalBaseInclusion in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.Proof.FractionFieldEmbeddingCompat.embCompat D ex.nch hc Q.Sx.Ks Q.Sx.kKs Q.Sx.kKs_spec w _ rfl`.
+-/
 theorem compat (hc : NChTie D ex.nch) (Q : RealT Rc P Dcf Spf Zscf S Ks) (w : D.what₂.places.Pl) :
     (ex.nch.embW w).comp (algebraMap Q.Sx.Ks D.what₂.LL) =
       (fracExt ex.nch w).comp (ιK Q.Sx (ex.nch.twI w) (ex.nch.sd w)) :=
@@ -107,6 +135,9 @@ theorem compat (hc : NChTie D ex.nch) (Q : RealT Rc P Dcf Spf Zscf S Ks) (w : D.
 open GlobalTheory.IndefiniteRowSideFullHecke.FractionalBaseInclusion in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Rewrite using `[IsScalarTower.algebraMap_apply (D.ntw.O (c.twI w)) (c.Oe w) (FractionRing (c.Oe w))]`. Simplify using `[fracExt, IsFractionRing.map]`.
+-/
 theorem fracExt_algebraMap (c : NChoice D) (w : D.what₂.places.Pl) (x : D.ntw.O (c.twI w)) :
     fracExt c w (algebraMap _ (FractionRing (D.ntw.O (c.twI w))) x) =
       algebraMap (D.ntw.O (c.twI w)) (FractionRing (c.Oe w)) x := by
@@ -116,6 +147,9 @@ theorem fracExt_algebraMap (c : NChoice D) (w : D.what₂.places.Pl) (x : D.ntw.
 open GlobalTheory.IndefiniteRowSideFullHecke.FractionalBaseInclusion in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Use `letI aK : Algebra Q.Sx.Ks (FractionRing (D.ntw.O (ex.nch.twI w))) := (ιK Q.Sx (ex.nch.twI w) (ex.nch.sd w)).toAlgebra`. Use `letI aE : Algebra (FractionRing (D.ntw.O (ex.nch.twI w))) (FractionRing (ex.nch.Oe w)) := (fracExt ex.nch w).toAlgebra`. Use `haveI : IsScalarTower (D.ntw.O (ex.nch.twI w)) (FractionRing (D.ntw.O (ex.nch.twI w))) (FractionRing (ex.nch.Oe w)) := IsScalarTower.of_algebraMap_eq fun x => (fracExt_algebraMap ex.nch w x).symm`. Take `⟨⟨e, he, -⟩, hC, -⟩` from `GlobalTheory.SemilinearExt.semilinearExtension Q.Sx.Ks D.what₂.LL (Q.Sx.WL j) (Q.Sx.A j).WK hk (D.ntw.O (ex.nch.twI w)) (FractionRing (D.ntw.O (ex.nch.twI w))) (FractionRing (ex.nch.Oe w)) (ex.nch.embW w) (compat hc Q w) (D.nexp.Fm (ex.nch.twI w) j (ex.nch.sd w)) (Q.nexp.eF (ex.n …`. Conclude with `⟨e, fun n a f => he (Fin n) a f, fun ι v hv => li_of_carries e (hC e he) hv⟩`.
+-/
 theorem exists_ext (hc : NChTie D ex.nch) (Q : RealT Rc P Dcf Spf Zscf S Ks) (w : D.what₂.places.Pl) (j : ℕ)
     (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (hk : (Q.Sx.A j).IsKsForm) :
     ∃ e : Q.Sx.WL j →ₛₗ[ex.nch.embW w]
@@ -139,6 +173,9 @@ theorem exists_ext (hc : NChTie D ex.nch) (Q : RealT Rc P Dcf Spf Zscf S Ks) (w 
 open GlobalTheory.IndefiniteRowSideFullHecke.FractionalBaseInclusion in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Use `letI aE : Algebra (FractionRing (D.ntw.O (ex.nch.twI w))) (FractionRing (ex.nch.Oe w)) := (fracExt ex.nch w).toAlgebra`. Use `haveI : IsScalarTower (D.ntw.O (ex.nch.twI w)) (FractionRing (D.ntw.O (ex.nch.twI w))) (FractionRing (ex.nch.Oe w)) := IsScalarTower.of_algebraMap_eq fun x => (fracExt_algebraMap ex.nch w x).symm`. Establish `e1 : ex.nch.embW w (algebraMap Q.Sx.Ks D.what₂.LL a) = algebraMap (FractionRing (D.ntw.O (ex.nch.twI w))) (FractionRing (ex.nch.Oe w)) (show FractionRing (D.ntw.O (ex.nch.twI w)) from ιK Q.Sx (ex.nch.twI w) (ex.nch.sd w) a)` using `RingHom.congr_fun (compat hc Q w) a`. Rewrite using `[e1]`. Conclude with `GlobalTheory.SemilinearExt.algebraMap_tmul (O := D.ntw.O (ex.nch.twI w)) _ m`.
+-/
 theorem embW_Ks (hc : NChTie D ex.nch) (Q : RealT Rc P Dcf Spf Zscf S Ks) (w : D.what₂.places.Pl) (j : ℕ) (a : Q.Sx.Ks)
     (m : D.nexp.Fm (ex.nch.twI w) j (ex.nch.sd w)) :
     (ex.nch.embW w (algebraMap Q.Sx.Ks D.what₂.LL a) ⊗ₜ[D.ntw.O (ex.nch.twI w)] m :
@@ -157,6 +194,17 @@ theorem embW_Ks (hc : NChTie D ex.nch) (Q : RealT Rc P Dcf Spf Zscf S Ks) (w : D
 
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y cX ex Rc P Dcf Spf Zscf S B _ _ hc`. Establish `hks : ∀ j, 1 ≤ j → j ≤ D.R.m → (B.Q.Sx.A j).IsKsForm`. Introduce `j h1 h2`. Take `⟨k, rfl⟩ : ∃ k, j = k + 1` from `⟨j - 1, by omega⟩`. Establish `hk : k < D.R.m` using `by omega`.
+
+Conclude with `GlobalTheory.isKsForm_of_formsIso _ _ (B.Q.nexp.fi ⟨k, hk⟩) (B.fw.ks ⟨k, hk⟩)`. Establish `hE` using `fun w j (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) => exists_ext hc B.Q w j h1 h2 (hks j h1 h2)`. Use `choose E hE1 hE2 using hE`. Set `eM : ∀ w j, (Y.MjH j).V →ₛₗ[ex.nch.embW w] FractionRing (ex.nch.Oe w) ⊗[D.ntw.O (ex.nch.twI w)] D.nexp.Fm (ex.nch.twI w) j (ex.nch.sd w)` to `fun w j => if h : 1 ≤ j ∧ j ≤ D.R.m then (E w j h.1 h.2).comp (jDa B.Q j) else 0`. Establish `heM : ∀ w j (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (x : (Y.MjH j).V), eM w j x = E w j h1 h2 (jDa B.Q j x)`.
+
+Introduce `w j h1 h2 x`. Simplify using `only [eM, dif_pos (And.intro h1 h2)]`. Both sides reduce to the same expression. Use `⟨jDa B.Q, eM, fun i x y h => jDa_read B.Q i x y h, hks, ?_, fun w j a m => embW_Ks hc B.Q w j a m, ?_⟩` and prove the remaining obligations. Introduce `w j h1 h2 x n a f hx`.
+
+Rewrite using `[heM w j h1 h2, hx]`. Conclude with `hE1 w j h1 h2 n a f`. Introduce `w j _ h1 h2`. Establish `hv : LinearIndependent D.what₂.LL (fun a => jDa B.Q j ((Y.MjH j).b a))` using `(Y.MjH j).b.linearIndependent.map' (jDa B.Q j) (LinearMap.ker_eq_bot.2 (jDa_injective B.Q j h1 h2))`. Establish `h` using `hE2 w j h1 h2 _ _ hv`.
+
+Simplify using `only [heM w j h1 h2]`. Conclude with `h`.
+-/
 theorem reading_ext : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : Formalism.MainNotions.G.Inst D L) (Gl : Formalism.MainNotions.G.LatInst D) (Kc : Formalism.MainNotions.G.Consts) (Y : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl Kc Y cX) (Rc : Formalism.L2.RecT ex) (P : RowSideFamily ex) (Dcf : ∀ Zs : DefSub P.A3.fam3.amb3, DefCols (P.A3.side3 P.Ps P.ψs Zs)) (Spf : ∀ Zs : DefSub P.A3.fam3.amb3, SPer (Dcf Zs)) (Zscf : DefSub P.A3.fam3.amb3 → IndefScale P.A3.fam3.base3) (S : Formalism.L2.SG.SpectralTiesReal.STiesR Rc) (B : RealTB Rc P Dcf Spf Zscf S) (_ : RealPins B.Q) (_ : RealRec B.Q), NChTie D ex.nch → ∃ (jD : ∀ j, (Y.MjH j).V →ₗ[D.what₂.LL] B.Q.Sx.WL j) (eM : ∀ w j, (Y.MjH j).V →ₛₗ[ex.nch.embW w] FractionRing (ex.nch.Oe w) ⊗[D.ntw.O (ex.nch.twI w)] D.nexp.Fm (ex.nch.twI w) j (ex.nch.sd w)), (∀ (i : Fin D.R.m) (x : (Y.MjH ((i : ℕ) + 1)).V) (y : Fin (Module.finrank D.what₂.LL (B.Q.Rl.toRealDat.WL B.Q.F.lv2 false i)) → D.what₂.LL), HEq ((P.JM.eW i).symm x) y → (B.Q.nexp.fi i).e (jD ((i : ℕ) + 1) x) = jDL B.Q.Rl B.Q.F.lv2 i y) ∧ (∀ j, 1 ≤ j → j ≤ D.R.m → (B.Q.Sx.A j).IsKsForm) ∧ (∀ w j (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (x : (Y.MjH j).V) (n : ℕ) (a : Fin n → D.what₂.LL) (f : Fin n → FmK B.Q.Sx j), jD j x = ∑ k, a k • (show ↥(B.Q.Sx.A j).WK from f k).1 → eM w j x = ∑ k, ex.nch.embW w (a k) ⊗ₜ[D.ntw.O (ex.nch.twI w)] (B.Q.nexp.eF (ex.nch.twI w) j (ex.nch.sd w) h1 h2).symm ((1 : KB B.Q.Sx (ex.nch.twI w) (ex.nch.sd w)) ⊗ₜ[B.Q.Sx.Ks] f k)) ∧ (∀ w j (a : B.Q.Sx.Ks) (m : D.nexp.Fm (ex.nch.twI w) j (ex.nch.sd w)), (ex.nch.embW w (algebraMap B.Q.Sx.Ks D.what₂.LL a) ⊗ₜ[D.ntw.O (ex.nch.twI w)] m : FractionRing (ex.nch.Oe w) ⊗[D.ntw.O (ex.nch.twI w)] D.nexp.Fm (ex.nch.twI w) j (ex.nch.sd w)) = (1 : FractionRing (ex.nch.Oe w)) ⊗ₜ[D.ntw.O (ex.nch.twI w)] ((show FractionRing (D.ntw.O (ex.nch.twI w)) from ιK B.Q.Sx (ex.nch.twI w) (ex.nch.sd w) a) • m)) ∧ (∀ w j, D.what₂.muAt w ≠ D.what₂.mu0 → 1 ≤ j → j ≤ D.R.m → LinearIndependent (FractionRing (ex.nch.Oe w)) (fun a => eM w j ((Y.MjH j).b a))) := by
   intro D L hT Gi Gl Kc Y cX ex Rc P Dcf Spf Zscf S B _ _ hc
   have hks : ∀ j, 1 ≤ j → j ≤ D.R.m → (B.Q.Sx.A j).IsKsForm := by
@@ -196,6 +244,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Numb
 open Formalism.L2.Rows
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
+/- English proof (translation)
+Apply the tactic sequence `first | exact @LinearIndependenceOfCarries.GlobalTheory.CompanionTheory.ReadingExt.reading_ext | exact LinearIndependenceOfCarries.GlobalTheory.CompanionTheory.ReadingExt.reading_ext | (intros; apply LinearIndependenceOfCarries.GlobalTheory.CompanionTheory.ReadingExt.reading_ext …`.
+-/
 theorem _root_.GlobalTheory.Adopt.lattice_family_adoption_first : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : Formalism.MainNotions.G.Inst D L) (Gl : Formalism.MainNotions.G.LatInst D) (Kc : Formalism.MainNotions.G.Consts) (Y : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl Kc Y cX) (Rc : Formalism.L2.RecT ex) (P : RowSideFamily ex) (Dcf : ∀ Zs : DefSub P.A3.fam3.amb3, DefCols (P.A3.side3 P.Ps P.ψs Zs)) (Spf : ∀ Zs : DefSub P.A3.fam3.amb3, SPer (Dcf Zs)) (Zscf : DefSub P.A3.fam3.amb3 → IndefScale P.A3.fam3.base3) (S : Formalism.L2.SG.SpectralTiesReal.STiesR Rc) (B : RealTB Rc P Dcf Spf Zscf S) (_ : RealPins B.Q) (_ : RealRec B.Q), NChTie D ex.nch → ∃ (jD : ∀ j, (Y.MjH j).V →ₗ[D.what₂.LL] B.Q.Sx.WL j) (eM : ∀ w j, (Y.MjH j).V →ₛₗ[ex.nch.embW w] FractionRing (ex.nch.Oe w) ⊗[D.ntw.O (ex.nch.twI w)] D.nexp.Fm (ex.nch.twI w) j (ex.nch.sd w)), (∀ (i : Fin D.R.m) (x : (Y.MjH ((i : ℕ) + 1)).V) (y : Fin (Module.finrank D.what₂.LL (B.Q.Rl.toRealDat.WL B.Q.F.lv2 false i)) → D.what₂.LL), HEq ((P.JM.eW i).symm x) y → (B.Q.nexp.fi i).e (jD ((i : ℕ) + 1) x) = jDL B.Q.Rl B.Q.F.lv2 i y) ∧ (∀ j, 1 ≤ j → j ≤ D.R.m → (B.Q.Sx.A j).IsKsForm) ∧ (∀ w j (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (x : (Y.MjH j).V) (n : ℕ) (a : Fin n → D.what₂.LL) (f : Fin n → FmK B.Q.Sx j), jD j x = ∑ k, a k • (show ↥(B.Q.Sx.A j).WK from f k).1 → eM w j x = ∑ k, ex.nch.embW w (a k) ⊗ₜ[D.ntw.O (ex.nch.twI w)] (B.Q.nexp.eF (ex.nch.twI w) j (ex.nch.sd w) h1 h2).symm ((1 : KB B.Q.Sx (ex.nch.twI w) (ex.nch.sd w)) ⊗ₜ[B.Q.Sx.Ks] f k)) ∧ (∀ w j (a : B.Q.Sx.Ks) (m : D.nexp.Fm (ex.nch.twI w) j (ex.nch.sd w)), (ex.nch.embW w (algebraMap B.Q.Sx.Ks D.what₂.LL a) ⊗ₜ[D.ntw.O (ex.nch.twI w)] m : FractionRing (ex.nch.Oe w) ⊗[D.ntw.O (ex.nch.twI w)] D.nexp.Fm (ex.nch.twI w) j (ex.nch.sd w)) = (1 : FractionRing (ex.nch.Oe w)) ⊗ₜ[D.ntw.O (ex.nch.twI w)] ((show FractionRing (D.ntw.O (ex.nch.twI w)) from ιK B.Q.Sx (ex.nch.twI w) (ex.nch.sd w) a) • m)) ∧ (∀ w j, D.what₂.muAt w ≠ D.what₂.mu0 → 1 ≤ j → j ≤ D.R.m → LinearIndependent (FractionRing (ex.nch.Oe w)) (fun a => eM w j ((Y.MjH j).b a))) := by
   first | exact @LinearIndependenceOfCarries.GlobalTheory.CompanionTheory.ReadingExt.reading_ext | exact LinearIndependenceOfCarries.GlobalTheory.CompanionTheory.ReadingExt.reading_ext | (intros; apply LinearIndependenceOfCarries.GlobalTheory.CompanionTheory.ReadingExt.reading_ext <;> assumption)
 

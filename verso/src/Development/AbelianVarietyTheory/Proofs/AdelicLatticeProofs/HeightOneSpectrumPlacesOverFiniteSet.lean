@@ -9,6 +9,9 @@ namespace GlobalTheory.QNorm
 open NumberField IsDedekindDomain in
 open scoped WithZero in
 
+/- English proof (translation)
+Use `((IsDedekindDomain.primesOver_finite v.asIdeal (𝓞 E)).preimage (fun a _ b _ h => HeightOneSpectrum.ext h)).subset ?_` and prove the remaining obligations. Introduce and unpack `w rfl`. Conclude with `⟨w.isPrime, ⟨rfl⟩⟩`.
+-/
 theorem _root_.GlobalTheory.QNorm.finite_places_over (F E : Type) [Field F] [NumberField F]
     [Field E] [NumberField E] [Algebra F E] (v : HeightOneSpectrum (𝓞 F)) :
     {w : HeightOneSpectrum (𝓞 E) | w.under (𝓞 F) = v}.Finite := by
@@ -20,6 +23,17 @@ theorem _root_.GlobalTheory.QNorm.finite_places_over (F E : Type) [Field F] [Num
 open NumberField IsDedekindDomain in
 open scoped WithZero in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _`. Use `⟨fun S => ?_, fun v => ?_, fun w => ?_⟩` and prove the remaining obligations. Establish `hfin : {w : HeightOneSpectrum (𝓞 E) | w.under (𝓞 F) ∈ S}.Finite`. Establish `hU : {w : HeightOneSpectrum (𝓞 E) | w.under (𝓞 F) ∈ S} = ⋃ v ∈ S, {w : HeightOneSpectrum (𝓞 E) | w.under (𝓞 F) = v}`. Use extensionality with `w`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hU]`. Conclude with `S.finite_toSet.biUnion fun v _ => _root_.GlobalTheory.QNorm.finite_places_over F E v`. Conclude with `⟨hfin.toFinset, fun w => by simp⟩`. Take `⟨P, hmax, hover⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral v.asIdeal (S := 𝓞 E)`.
+
+Establish `hne : P ≠ ⊥`. Introduce and unpack `rfl`. Apply `v.ne_bot` to reduce the goal to its premises. Rewrite using `[hover.over]`. Conclude with `Ideal.comap_bot_of_injective _ (FaithfulSMul.algebraMap_injective (𝓞 F) (𝓞 E))`.
+
+Conclude with `⟨⟨P, hmax.isPrime, hne⟩, HeightOneSpectrum.ext hover.over.symm⟩`. Use `haveI : w.asIdeal.LiesOver (w.under (𝓞 F)).asIdeal := ⟨rfl⟩`. Use `⟨(w.under (𝓞 F)).asIdeal.ramificationIdx' w.asIdeal, Nat.pos_of_ne_zero ?_, fun x => ?_⟩` and prove the remaining obligations. Use `Ideal.IsDedekindDomain.ramificationIdx'_ne_zero ?_ w.isPrime Ideal.map_comap_le` and prove the remaining obligations. Rewrite using `[Ne, Ideal.map_eq_bot_iff_of_injective (FaithfulSMul.algebraMap_injective (𝓞 F) (𝓞 E))]`.
+
+Conclude with `(w.under (𝓞 F)).ne_bot`. Conclude with `(HeightOneSpectrum.valuation_liesOver E (w.under (𝓞 F)) w x).symm`.
+-/
 theorem _root_.GlobalTheory.QNorm.places_over : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E], (∀ S : Finset (HeightOneSpectrum (𝓞 F)), ∃ SE : Finset (HeightOneSpectrum (𝓞 E)), ∀ w : HeightOneSpectrum (𝓞 E), w ∈ SE ↔ w.under (𝓞 F) ∈ S) ∧ (∀ v : HeightOneSpectrum (𝓞 F), ∃ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) = v) ∧ ∀ (w : HeightOneSpectrum (𝓞 E)), ∃ e : ℕ, 0 < e ∧ ∀ x : F, w.valuation E (algebraMap F E x) = (w.under (𝓞 F)).valuation F x ^ e := by
   intro F E _ _ _ _ _
   refine ⟨fun S => ?_, fun v => ?_, fun w => ?_⟩

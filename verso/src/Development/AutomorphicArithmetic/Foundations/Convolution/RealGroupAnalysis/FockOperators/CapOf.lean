@@ -7,6 +7,13 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Fo
 open scoped Classical
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W M π h1 h2 τ m hm u Φ hΦ`. Take `⟨O⟩` from `opsEx F`. Take `⟨Λ, hΛ⟩` from `lamEx F E D W M π`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ h`.
+
+Take `⟨f, hf, φ, hφ, e⟩` from `h`. Take `rfl : Φ = Λ f φ` from `Subtype.ext (e.trans (hΛ f hf φ hφ).symm)`. Rewrite using `[capLam F E D W M π O Λ hΛ (h1 O) (h2 O) τ u f hf φ hφ]`. Use `hm.2 u f hf` as an intermediate fact. Rewrite using `[show pl F τ = InfinitePlace.mk (τ.comp (algebraMap F E)) from rfl, this, map_smul, LinearMap.smul_apply]`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy, smul_add]`. Consider the case `smul c x _ hx => rw [map_smul, hx, smul_comm]`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.Fo.capOf : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2), (∀ O, LieLift O W M π) → (∀ O, MoveE O W M π) → St.Cap W M π := by
   intro F E _ _ _ _ _ _ _ D W M π h1 h2 τ m hm u Φ hΦ
   obtain ⟨O⟩ := opsEx F

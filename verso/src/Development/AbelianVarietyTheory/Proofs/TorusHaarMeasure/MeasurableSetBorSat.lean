@@ -13,14 +13,25 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 def borSat {r : ℕ} (X : Data E r) (C : Set (Frame X.Ψ r)) : Set (Frame X.Ψ r) :=
   {y | ∃ x ∈ C, ∃ b ∈ Bor X.Ψ r, y = rmul x b}
 
+/- English proof (translation)
+Introduce and unpack `y ⟨x, hx, b, hb, rfl⟩`. Conclude with `OrthogonalFrameDomain.rmul_mem_dom X (hC hx) hb`.
+-/
 theorem borSat_subset_dom {r : ℕ} (X : Data E r) {C : Set (Frame X.Ψ r)} (hC : C ⊆ X.dom) :
     borSat X C ⊆ X.dom := by
   rintro y ⟨x, hx, b, hb, rfl⟩
   exact OrthogonalFrameDomain.rmul_mem_dom X (hC hx) hb
 
+/- English proof (translation)
+Introduce `x hx` and use `⟨x, hx, ExtFPf.oneF X, ExtFPf.oneF_mem X, (ExtFPf.rmul_oneF X x).symm⟩`.
+-/
 theorem subset_borSat {r : ℕ} (X : Data E r) (C : Set (Frame X.Ψ r)) : C ⊆ borSat X C :=
   fun x hx => ⟨x, hx, ExtFPf.oneF X, ExtFPf.oneF_mem X, (ExtFPf.rmul_oneF X x).symm⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, b', hb', h⟩`. Use `⟨x, hx, rmul b' (ExtFPf.invF X b), ExtFPf.mul_mem X hb' (ExtFPf.invF_mem X hb), ?_⟩` and prove the remaining obligations. Rewrite using `[← ExtFPf.rmul_assoc, ← h, ExtFPf.rmul_assoc, ExtFPf.rmul_invF X hb, ExtFPf.rmul_oneF]`. Introduce and unpack `⟨x, hx, b', hb', rfl⟩`.
+
+Conclude with `⟨x, hx, rmul b' b, ExtFPf.mul_mem X hb' hb, ExtFPf.rmul_assoc X _ _ _⟩`.
+-/
 theorem rmul_mem_borSat_iff {r : ℕ} (X : Data E r) (C : Set (Frame X.Ψ r)) {y b : Frame X.Ψ r}
     (hb : b ∈ Bor X.Ψ r) : rmul y b ∈ borSat X C ↔ y ∈ borSat X C := by
   constructor
@@ -30,6 +41,17 @@ theorem rmul_mem_borSat_iff {r : ℕ} (X : Data E r) (C : Set (Frame X.Ψ r)) {y
   · rintro ⟨x, hx, b', hb', rfl⟩
     exact ⟨x, hx, rmul b' b, ExtFPf.mul_mem X hb' hb, ExtFPf.rmul_assoc X _ _ _⟩
 
+/- English proof (translation)
+Establish `: CompactSpace C` using `isCompact_iff_compactSpace.mp hK`. Set `T : Set (Frame X.Ψ r × C)` to `{p | ∀ τ : X.Ψ, ∀ a c : Fin r, c < a → ((mat p.2.1 τ).adjugate * ((1 : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * mat p.1 τ) a c = 0}`. Establish `hm : ∀ τ : X.Ψ, Continuous fun y : Frame X.Ψ r => mat y τ` using `fun τ => continuous_apply τ`. Establish `hT : IsClosed T`. Simplify using `only [T, Set.setOf_forall]`.
+
+Use `isClosed_iInter fun τ => isClosed_iInter fun a => isClosed_iInter fun c => isClosed_iInter fun _ => isClosed_eq ?_ continuous_const` and prove the remaining obligations. Conclude with `(((((hm τ).comp (continuous_subtype_val.comp continuous_snd)).matrix_adjugate).matrix_mul continuous_const).matrix_mul ((hm τ).comp continuous_fst)).matrix_elem a c`. Establish `hT' : IsClosed (Prod.fst '' T)` using `isClosedMap_fst_of_compactSpace T hT`. Establish `hU : IsOpen {y : Frame X.Ψ r | ∀ τ, (mat y τ).det ≠ 0}`. Simplify using `only [Set.setOf_forall]`.
+
+Conclude with `isOpen_iInter_of_finite fun τ => isOpen_ne_fun (hm τ).matrix_det continuous_const`. Establish `heq : borSat X C = {y : Frame X.Ψ r | ∀ τ, (mat y τ).det ≠ 0} ∩ Prod.fst '' T`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+
+Establish `hyd : ∀ τ, (mat y τ).det ≠ 0` using `fun τ => (borSat_subset_dom X hC hy τ).1`. Take `⟨x, hx, b, hb, h⟩` from `hy`. Use `⟨hyd, (y, ⟨x, hx⟩), ?_, rfl⟩` and prove the remaining obligations. Conclude with `(FundSetPf.charB 1 hyd fun τ => (hC hx τ).1).mp ⟨b, hb, by rw [FundSetPf.lact_one]; exact h⟩`. Introduce and unpack `⟨hyd, ⟨y', x, hx⟩, hp, rfl⟩`.
+
+Take `⟨b, hb, h⟩` from `(FundSetPf.charB 1 hyd fun τ => (hC hx τ).1).mpr hp`. Rewrite `h` using `[FundSetPf.lact_one]`. Conclude with `⟨x, hx, b, hb, h⟩`. Rewrite using `[heq]`. Conclude with `hU.measurableSet.inter hT'.measurableSet`.
+-/
 theorem measurableSet_borSat {r : ℕ} (X : Data E r) {C : Set (Frame X.Ψ r)} (hK : IsCompact C)
     (hC : C ⊆ X.dom) : MeasurableSet (borSat X C) := by
   have : CompactSpace C := isCompact_iff_compactSpace.mp hK
@@ -63,11 +85,27 @@ theorem measurableSet_borSat {r : ℕ} (X : Data E r) {C : Set (Frame X.Ψ r)} (
   rw [heq]
   exact hU.measurableSet.inter hT'.measurableSet
 
+/- English proof (translation)
+Use extensionality with `z`. Conclude with `⟨fun h => h.2, fun h => ⟨borSat_subset_dom X hC h, h⟩⟩`.
+-/
 theorem sat_eq_preimage {r : ℕ} (X : Data E r) (x0 : Frame X.Ψ r) {C : Set (Frame X.Ψ r)}
     (hC : C ⊆ X.dom) : sat X x0 C = cpt X x0 ⁻¹' borSat X C := by
   ext z
   exact ⟨fun h => h.2, fun h => ⟨borSat_subset_dom X hC h, h⟩⟩
 
+/- English proof (translation)
+Introduce `r X x0 hx0 C hK hC`. Establish `key : ∃ K : ℝ≥0∞, K < ⊤ ∧ ∀ G : Frame X.Ψ r → ℝ≥0∞, Measurable G → (∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, G (rmul x b) = G x) → ∫⁻ x in C, G x ≤ K * ∫⁻ z, G (cpt X x0 z) ∂muF X x0`. Use `hK.induction_on (p := fun s => ∃ K : ℝ≥0∞, K < ⊤ ∧ ∀ G : Frame X.Ψ r → ℝ≥0∞, Measurable G → (∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, G (rmul x b) = G x) → ∫⁻ x in s, G x ≤ K * ∫⁻ z, G (cpt X x0 z) ∂muF X x0) ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `⟨0, ENNReal.zero_lt_top, fun G _ _ => by simp⟩`. Introduce and unpack `s t hst ⟨K, hK, h⟩`.
+
+Conclude with `⟨K, hK, fun G hG hB => (lintegral_mono_set hst).trans (h G hG hB)⟩`. Introduce and unpack `s t ⟨K, hK, h⟩ ⟨K', hK', h'⟩`. Use `⟨K + K', ENNReal.add_lt_top.mpr ⟨hK, hK'⟩, fun G hG hB => ?_⟩` and prove the remaining obligations. Rewrite using `[add_mul]`. Conclude with `(lintegral_union_le _ _ _).trans (add_le_add (h G hG hB) (h' G hG hB))`.
+
+Introduce `x hx`. Take `⟨x1, hx1, b1, hb1, rfl⟩` from `ortho_holds r X x (hC hx)`. Take `⟨U, hU, K, hK, h⟩` from `hL r X x1 hx1 b1 hb1`. Use `⟨U, mem_nhdsWithin_of_mem_nhds hU, K, hK, fun G hG hB => ?_⟩` and prove the remaining obligations. Rewrite using `[hI r X x0 x1 hx0 hx1 G hG hB]`.
+
+Conclude with `h G hG hB`. Take `⟨K, hKt, h⟩` from `key`. Use `⟨K, hKt, fun G hG hB => ?_⟩` and prove the remaining obligations. Establish `hS` using `measurableSet_borSat X hK hC`. Establish `h1` using `h ((borSat X C).indicator G) (hG.indicator hS) (by`.
+
+Introduce `x hx b hb`. Distinguish the cases in `hxS : x ∈ borSat X C`. Rewrite using `[Set.indicator_of_mem hxS, Set.indicator_of_mem ((rmul_mem_borSat_iff X C hb).mpr hxS), hB x hx b hb]`. Rewrite using `[Set.indicator_of_notMem hxS, Set.indicator_of_notMem fun h => hxS ((rmul_mem_borSat_iff X C hb).mp h)])`. Establish `h2 : ∫⁻ x in C, (borSat X C).indicator G x = ∫⁻ x in C, G x` using `setLIntegral_congr_fun hK.measurableSet fun x hx => Set.indicator_of_mem (subset_borSat X C hx) G`.
+
+Establish `h3 : ∫⁻ z, (borSat X C).indicator G (cpt X x0 z) ∂muF X x0 = ∫⁻ z in sat X x0 C, G (cpt X x0 z) ∂muF X x0`. Rewrite using `[sat_eq_preimage X x0 hC, ← lintegral_indicator ((FundSetPf.cont_cpt X x0).measurable hS)]`. Both sides reduce to the same expression. Rewrite using `[← h2, ← h3]`. Conclude with `h1`.
+-/
 theorem frameMeas_of_local (hI : MeasInvStatement (E := E))
     (hL : ∀ (r : ℕ) (X : Data E r) (x1 : Frame X.Ψ r), IsOrth X x1 → ∀ b1 ∈ Bor X.Ψ r,
       ∃ U ∈ 𝓝 (rmul x1 b1), ∃ K : ℝ≥0∞, K < ⊤ ∧ ∀ G : Frame X.Ψ r → ℝ≥0∞, Measurable G →

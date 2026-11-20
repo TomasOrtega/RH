@@ -19,6 +19,15 @@ open scoped TensorProduct
 set_option synthInstance.maxHeartbeats 400000
 noncomputable section
 namespace GlobalTheory.CovTop.DeepGoodAll
+/- English proof (translation)
+Introduce `hP hG hQ hS hT hN`. Establish `R` using `GlobalTheory.T.weight_conditions_at_index`. Establish `P` using `_root_.GlobalTheory.T.covers_rk_pos_of_semiAbelianLieSeminegative hP hG hQ hS hT hN`. Unfold `DeepGood Covers Lifts at *`. Use `(R.and P).imp fun Fm CH _ h => ?_` and prove the remaining obligations.
+
+Take `⟨⟨C1, h1, e1⟩, ⟨C2, h2, e2⟩⟩` from `h`. Use `⟨C1, h1, ?_⟩` and prove the remaining obligations. Take `⟨x0, hx0⟩` from `e1.and e2`. Use `⟨x0, fun x hx hle ι p hp i hi Y hY => ?_⟩` and prove the remaining obligations. Take `⟨hA, hB⟩` from `hx0 x hx hle ι p hp`.
+
+Take `⟨hL, hp1, hq1, hf, hj, hn, hu1, hu2, hs⟩` from `hA i hi`. Establish `hpos` using `hB i hi Y hY`. Establish `hYg` using `hY.1`. Establish `g` using `fun s hs' => _root_.GlobalTheory.T.covering_shift_preserves_goodAt hP _ p.T hL _ hp1 hq1 hf hj Y _ _ hYg (wtA (p.κ i)) (p.κ i).n s hn (hs s hs').1 (hs s hs').2`. Establish `hon` using `_root_.GlobalTheory.T.covering_domain_lattice_regularity hP _ p.T hL _ hp1 hq1 hf hj Y _ _ hYg (uM p i) hu1 hu2`.
+
+Use `⟨?_, g _ (Or.inl rfl), g _ (Or.inr (Or.inr rfl)), hon.1, hpos, CompFin.finite_comp _ _, GlobalTheory.CovTop.good_comp_nonempty _ p.T hL _ hj Y _ _ hYg, hon.2⟩` and prove the remaining obligations. Use `g 0 (Or.inr (Or.inl rfl))` as an intermediate fact. Rewrite `this` using `[shiftG_zero]`. Then use the resulting hypothesis.
+-/
 theorem deepGood_alt : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted →
     GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.SemiAbelianLieSeminegative → DeepGood := by
   intro hP hG hQ hS hT hN
@@ -56,6 +65,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.CovTop.DeepGoodAll.deepGood_alt | exact _root_.GlobalTheory.CovTop.DeepGoodAll.deepGood_alt | (intros; apply _root_.GlobalTheory.CovTop.DeepGoodAll.deepGood_alt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.deepGood_of_published_inputs : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.SemiAbelianLieSeminegative → DeepGood := by
   first | exact @_root_.GlobalTheory.CovTop.DeepGoodAll.deepGood_alt | exact _root_.GlobalTheory.CovTop.DeepGoodAll.deepGood_alt | (intros; apply _root_.GlobalTheory.CovTop.DeepGoodAll.deepGood_alt <;> assumption)
 end

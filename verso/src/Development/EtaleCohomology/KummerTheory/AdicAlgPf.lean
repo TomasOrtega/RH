@@ -9,6 +9,19 @@ namespace LateralTheory.KummerTheory
 section Alg
 variable (l : ℕ) [Fact l.Prime] {M : Type*} [AddCommGroup M] [Module ℤ_[l] M]
 
+/- English proof (translation)
+Use `set T := Submodule.torsion ℤ_[l] M`. Establish `hTfin : Module.Finite ℤ_[l] T` using `inferInstance`. Take `⟨a, ha, ha0⟩` from `Submodule.annihilator_top_inter_nonZeroDivisors (Submodule.torsion_isTorsion (R := ℤ_[l]) (M := M))`. Establish `hane : a ≠ 0` using `nonZeroDivisors.ne_zero ha0`. Establish `hkill : ∀ τ ∈ T, (l ^ a.valuation : ℕ) • τ = 0`.
+
+Introduce `τ hτ`. Establish `h1 : a • (⟨τ, hτ⟩ : T) = 0` using `Submodule.mem_annihilator.mp ha _ Submodule.mem_top`. Establish `h2 : a • τ = 0` using `congrArg Subtype.val h1`. Rewrite `h2` using `[PadicInt.unitCoeff_spec hane, mul_smul]`. Establish `h3` using `congrArg (fun v => (((PadicInt.unitCoeff hane)⁻¹ : ℤ_[l]ˣ) : ℤ_[l]) • v) h2`.
+
+Simplify using `only [smul_zero, smul_smul, ← mul_assoc, Units.inv_mul, one_mul] at h3`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℤ_[l]]`. Use `push_cast`. Conclude with `h3`. Use `set Q := M ⧸ T`.
+
+Set `b` to `Module.finBasis ℤ_[l] Q`. Set `c : Fin (Module.finrank ℤ_[l] Q) → M` to `fun s => (Submodule.Quotient.mk_surjective T (b s)).choose`. Establish `hc : ∀ s, T.mkQ (c s) = b s` using `fun s => (Submodule.Quotient.mk_surjective T (b s)).choose_spec`. Establish `hcomp : T.mkQ ∘ c = b` using `funext hc`. Use `⟨_, c, l ^ a.valuation, pow_pos (Fact.out : l.Prime).pos _, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `LinearIndependent.of_comp T.mkQ (hcomp ▸ b.linearIndependent)`. Introduce `x`. Use `⟨b.repr (T.mkQ x), x - ∑ s, b.repr (T.mkQ x) s • c s, by abel, hkill _ ?_⟩` and prove the remaining obligations. Rewrite using `[← Submodule.Quotient.mk_eq_zero, ← Submodule.mkQ_apply, map_sub, map_sum]`. Simplify using `only [map_smul, hc]`.
+
+Rewrite using `[b.sum_repr, sub_self]`.
+-/
 theorem adic_decomp [Module.Finite ℤ_[l] M] : ∃ (r : ℕ) (c : Fin r → M) (e : ℕ), 0 < e ∧
     LinearIndependent ℤ_[l] c ∧ ∀ x : M, ∃ (a : Fin r → ℤ_[l]) (τ : M), x = ∑ s, a s • c s + τ ∧ e • τ = 0 := by
   classical
@@ -39,6 +52,13 @@ theorem adic_decomp [Module.Finite ℤ_[l] M] : ∃ (r : ℕ) (c : Fin r → M) 
     simp only [map_smul, hc]
     rw [b.sum_repr, sub_self]
 
+/- English proof (translation)
+Set `f` to `TensorProduct.mk ℤ_[l] ℚ_[l] M 1`. Use `⟨hli.of_isLocalizedModule ℚ_[l] (nonZeroDivisors ℤ_[l]) f, ?_⟩` and prove the remaining obligations. Establish `htop` using `span_eq_top_of_isLocalizedModule ℚ_[l] (nonZeroDivisors ℤ_[l]) f (v := Set.univ) Submodule.span_univ`. Use `top_unique (htop ▸ Submodule.span_le.mpr ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, -, rfl⟩`.
+
+Take `⟨a, τ, rfl, hτ⟩` from `hdec x`. Establish `hfτ : f τ = 0`. Establish `h1 : (e : ℚ_[l]) • f τ = 0` using `by rw [Nat.cast_smul_eq_nsmul, ← map_nsmul, hτ, map_zero]`. Conclude with `(smul_eq_zero.mp h1).resolve_left (Nat.cast_ne_zero.mpr he.ne')`. Rewrite using `[map_add, hfτ, add_zero, map_sum]`.
+
+Use `Submodule.sum_mem _ fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_of_tower_mem _ _ (Submodule.subset_span ⟨s, rfl⟩)`.
+-/
 theorem adic_qbasis {r : ℕ} (c : Fin r → M) (e : ℕ) (he : 0 < e) (hli : LinearIndependent ℤ_[l] c)
     (hdec : ∀ x : M, ∃ (a : Fin r → ℤ_[l]) (τ : M), x = ∑ s, a s • c s + τ ∧ e • τ = 0) :
     LinearIndependent ℚ_[l] (fun s => ((1 : ℚ_[l]) ⊗ₜ[ℤ_[l]] c s : ℚ_[l] ⊗[ℤ_[l]] M)) ∧
@@ -64,12 +84,32 @@ def levH (l : ℕ) [Fact l.Prime] (E : Spc) (n i : ℤ) (k : ℕ) : Hl l E n i �
   map_zero' := rfl
   map_add' _ _ := rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `levH l E n i k _ = _`. Rewrite using `[map_sum]`. Both sides reduce to the same expression.
+-/
 theorem lev_comb (l : ℕ) [Fact l.Prime] {E : Spc} {n i : ℤ} {r : ℕ} (c : Fin r → Hl l E n i) (a : Fin r → ℤ_[l]) (k : ℕ) :
     lev l (∑ s, a s • c s) k = comb (l ^ k) (fun s => lev l (c s) k) (fun s => PadicInt.toZModPow k (a s)) := by
   change levH l E n i k _ = _
   rw [map_sum]
   rfl
 
+/- English proof (translation)
+Introduce `l _ E n i hfin hker M hM hcok`. Take `⟨r, c, e, he, hli, hdec⟩` from `adic_decomp l (M := Hl l E n i)`. Use `⟨r, c, e * M, Nat.mul_pos he hM, adic_qbasis l c e he hli hdec, fun k => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce `t ht`. Establish `: NeZero (l ^ k)` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`.
+
+Set `a : Fin r → ℤ_[l]` to `fun s => ((t s).val : ℤ_[l])`. Establish `hat : (fun s => PadicInt.toZModPow k (a s)) = t` using `funext fun s => by simp [a]`. Establish `hx : lev l (∑ s, a s • c s) k = 0` using `by rw [lev_comb, hat]; exact ht`. Take `⟨y, hy⟩` from `hker k _ hx`. Take `⟨b, τ, rfl, hτ⟩` from `hdec y`.
+
+Establish `heq : ∑ s, ((e : ℤ_[l]) * a s - (e : ℤ_[l]) * (l : ℤ_[l]) ^ k * b s) • c s = 0`. Establish `h1` using `congrArg (fun v => (e : ℤ_[l]) • v) hy`. Simplify using `only [smul_add, Finset.smul_sum, smul_smul] at h1`. Establish `h2 : (e : ℤ_[l]) • (l : ℤ_[l]) ^ k • τ = 0`. Rewrite using `[smul_comm, Nat.cast_smul_eq_nsmul, hτ, smul_zero]`.
+
+Rewrite `h2` using `[smul_smul]`. Rewrite `h1` using `[h2, add_zero]`. Simplify using `only [sub_smul, Finset.sum_sub_distrib, h1, mul_assoc, sub_self]`. Establish `hs` using `Fintype.linearIndependent_iff.mp hli _ heq`. Establish `ht0 : t = 0`.
+
+Use function extensionality and compare the values at `s`. Establish `h3 : a s = (l : ℤ_[l]) ^ k * b s`. Establish `h4` using `hs s`. Rewrite `h4` using `[sub_eq_zero, mul_assoc]`. Conclude with `mul_left_cancel₀ (Nat.cast_ne_zero.mpr he.ne') h4`.
+
+Rewrite using `[← congrFun hat s]`. Simplify using `only [h3, map_mul, map_pow, map_natCast, Pi.zero_apply]`. Rewrite using `[show ((l : ZMod (l ^ k)) ^ k) = ((l ^ k : ℕ) : ZMod (l ^ k)) by push_cast; rfl, ZMod.natCast_self, zero_mul]`. Rewrite using `[ht0, smul_zero]`. Introduce `z`.
+
+Take `⟨x, hx⟩` from `hcok k z`. Take `⟨a, τ, rfl, hτ⟩` from `hdec x`. Use `⟨fun s => PadicInt.toZModPow k ((e : ℤ_[l]) * a s), ?_⟩` and prove the remaining obligations. Rewrite using `[← lev_comb, mul_smul, ← hx]`. Establish `key : ∀ w, lev l (e • w) k = e • lev l w k` using `fun w => map_nsmul (levH l E n i k) e w`.
+
+Rewrite using `[← key, smul_add, hτ, add_zero, Finset.smul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul, Nat.cast_smul_eq_nsmul]`.
+-/
 theorem AdicAlg_of : AdicAlg := by
   intro l _ E n i hfin hker M hM hcok
   obtain ⟨r, c, e, he, hli, hdec⟩ := adic_decomp l (M := Hl l E n i)

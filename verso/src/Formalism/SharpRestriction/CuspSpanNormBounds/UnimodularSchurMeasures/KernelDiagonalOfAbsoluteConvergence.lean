@@ -17,6 +17,15 @@ def AbsKernelSquareIntegrable (X : CData) : Prop :=
 def PhiIdem (X : CData) : Prop :=
   Measurable X.φ ∧ (∀ z, X.φ z⁻¹ = star (X.φ z)) ∧ ∀ z, ∫ g, X.φ g * X.φ (g⁻¹ * z) ∂(X.I.muA X.μf) = X.φ z
 
+/- English proof (translation)
+Take `⟨hH, hF, hR⟩` from `hd`. Use `hH` as an intermediate fact. Establish `: SecondCountableTopology X.I.Gf` using `rr_secondCountable X.I X.μf`. Establish `: (X.I.muA X.μf).IsMulLeftInvariant` using `rr_muA_left X.I X.μf`. Establish `: (X.I.muA X.μf).IsMulRightInvariant` using `hu`.
+
+Establish `: SigmaFinite (X.I.muA X.μf)` using `rr_muA_sigmaFinite X.I X.μf`. Establish `h1` using `rr_FD_of X.I X.μf X.fund hF`. Establish `h2` using `rr_IsReg_of X.I X.μf X.fund X.R hR`. Establish `hK' : ∀ᵐ x ∂(X.I.muA X.μf).restrict X.fund, ∫⁻ y in X.fund, (rrk_Kab (rr_GF X.I) X.φ x y) ^ 2 ∂(X.I.muA X.μf) ≠ ∞` using `hK`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Unfold `KernelL2RowsColumns CData.μ filter_upwards [hK'] with x hx`. Conclude with `(rrk_idem h1 hφ.1 hφ.2.1 hφ.2.2 x hx).2.2`. Introduce `T hT f`. Conclude with `rrk_unfold h1 hφ.1 h2 T hT.1 hT.2 hK' f`. Unfold `KerIdem CData.μ filter_upwards [hK'] with x hx`.
+
+Use `rrk_idem h1 hφ.1 hφ.2.1 hφ.2.2 x hx` as an intermediate fact. Conclude with `⟨this.1, this.2.1⟩`.
+-/
 theorem rrk_steps_of_abs (X : CData) (hd : RegData X) (hu : UnimodA X) (hφ : PhiIdem X) (hK : AbsKernelSquareIntegrable X) :
     KernelL2RowsColumns X ∧ KerUnfold X ∧ KerIdem X := by
   obtain ⟨hH, hF, hR⟩ := hd
@@ -40,15 +49,24 @@ theorem rrk_steps_of_abs (X : CData) (hd : RegData X) (hu : UnimodA X) (hφ : Ph
     have := rrk_idem h1 hφ.1 hφ.2.1 hφ.2.2 x hx
     exact ⟨this.1, this.2.1⟩
 
+/- English proof (translation)
+Take `⟨a, b, c⟩` from `rrk_steps_of_abs X hd hu hφ hK`. Conclude with `kernel_diagonal_of_L2_unfold_idempotent X hd.1 a b c`.
+-/
 theorem kernel_diagonal_of_absolute_convergence (X : CData) (hd : RegData X) (hu : UnimodA X) (hφ : PhiIdem X) (hK : AbsKernelSquareIntegrable X) :
     X.KernelDiag := by
   obtain ⟨a, b, c⟩ := rrk_steps_of_abs X hd hu hφ hK
   exact kernel_diagonal_of_L2_unfold_idempotent X hd.1 a b c
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rrk_phi_meas X hX, rrk_phi_star D hloc X hX h1, rrk_phi_idem D hloc X hX h1⟩`.
+-/
 theorem PhiIdem_of (D : Formalism.BasicNotions.D7) (hloc : LocalProjectorRealPlace D) (X : CData) {n₀ : ℕ} {A : ℝ} (hX : X.HypB n₀ A) (h1 : X.GapAboveThreeHalvesPower) :
     PhiIdem X :=
   ⟨rrk_phi_meas X hX, rrk_phi_star D hloc X hX h1, rrk_phi_idem D hloc X hX h1⟩
 
+/- English proof (translation)
+The claim follows from `kernel_diagonal_of_absolute_convergence X (RegData_of_HypB X hX) hu (PhiIdem_of D hloc X hX h1) hK`.
+-/
 theorem kernel_diagonal_of_local_projector_of_abs_kernel_L2 (D : Formalism.BasicNotions.D7) (hloc : LocalProjectorRealPlace D) (X : CData) {n₀ : ℕ} {A : ℝ} (hX : X.HypB n₀ A)
     (h1 : X.GapAboveThreeHalvesPower) (hu : UnimodA X) (hK : AbsKernelSquareIntegrable X) : X.KernelDiag :=
   kernel_diagonal_of_absolute_convergence X (RegData_of_HypB X hX) hu (PhiIdem_of D hloc X hX h1) hK

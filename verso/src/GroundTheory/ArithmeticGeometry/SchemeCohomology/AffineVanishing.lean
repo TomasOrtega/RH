@@ -18,17 +18,26 @@ noncomputable abbrev tildeAb :
 noncomputable instance (W : Opens (Spec R).toTopCat) : Module R ((tildeAb M).obj.obj (op W)) :=
   inferInstanceAs (Module R Γ(tilde M, W))
 
+/- English proof (translation)
+The claim follows from `congrArg (fun f => f.hom m) (tilde.toOpen_res M W V (homOfLE h))`.
+-/
 lemma res_toOpen {V W : Opens (Spec R).toTopCat} (h : V ≤ W) (m : M) :
     res (X := (Spec R).toTopCat) (tildeAb M).obj h ((tilde.toOpen M W).hom m) =
       (tilde.toOpen M V).hom m :=
   congrArg (fun f => f.hom m) (tilde.toOpen_res M W V (homOfLE h))
 
+/- English proof (translation)
+The claim follows from `Scheme.Modules.map_smul_Spec (M := tilde M) (homOfLE h).op r x`.
+-/
 lemma res_smul {V W : Opens (Spec R).toTopCat} (h : V ≤ W) (r : R)
     (x : (tildeAb M).obj.obj (op W)) :
     res (X := (Spec R).toTopCat) (tildeAb M).obj h (r • x) =
       r • res (X := (Spec R).toTopCat) (tildeAb M).obj h x :=
   Scheme.Modules.map_smul_Spec (M := tilde M) (homOfLE h).op r x
 
+/- English proof (translation)
+Use `(Module.End.isUnit_iff _).1 ((Scheme.Modules.isUnit_algebraMap_end_of_le_basicOpen (M := tilde M) g hW).pow k)` as an intermediate fact. Rewrite `this` using `[← map_pow]`. Conclude with `this`.
+-/
 lemma bijective_smul_tilde (g : R) (W : Opens (Spec R).toTopCat) (hW : W ≤ basicOpen g) (k : ℕ) :
     Function.Bijective (fun x : (tildeAb M).obj.obj (op W) => g ^ k • x) := by
   have := (Module.End.isUnit_iff _).1
@@ -36,6 +45,13 @@ lemma bijective_smul_tilde (g : R) (W : Opens (Spec R).toTopCat) (hW : W ≤ bas
   rw [← map_pow] at this
   exact this
 
+/- English proof (translation)
+Establish `hrad : g ∈ (Ideal.span (Set.range fun i => h i ^ N)).radical`. Rewrite using `[Ideal.radical_eq_sInf, Ideal.mem_sInf]`. Introduce and unpack `p ⟨hIp, hp⟩`. Assume the negation of the conclusion as `hg`. Establish `hx : (⟨p, hp⟩ : PrimeSpectrum R) ∈ basicOpen g` using `(mem_basicOpen _ _).2 hg`.
+
+Take `⟨i, hi⟩` from `Opens.mem_iSup.1 (hle hx)`. Apply `(mem_basicOpen _ _).1 hi` to reduce the goal to its premises. Conclude with `hp.mem_of_pow_mem N (hIp (Ideal.subset_span ⟨i, rfl⟩))`. Take `⟨L, hL⟩` from `hrad`. Take `⟨c, hc⟩` from `Ideal.mem_span_range_iff_exists_fun.1 hL`.
+
+Conclude with `⟨L, c, hc.symm⟩`.
+-/
 lemma exists_cover_eq (g : R) {ι : Type*} [Fintype ι] (h : ι → R) (N : ℕ)
     (hle : basicOpen g ≤ ⨆ i, basicOpen (h i)) :
     ∃ (L : ℕ) (c : ι → R), g ^ L = ∑ i, c i * h i ^ N := by
@@ -117,6 +133,9 @@ noncomputable def tildeAction :
 
 def IsBasicOpen (V : Opens (Spec R).toTopCat) : Prop := ∃ g : R, V = basicOpen g
 
+/- English proof (translation)
+Introduce and unpack `V ⟨g, rfl⟩ ι _ U hU hsup`. Use `choose h hh using hU`. Establish `: U = (fun r : R => (basicOpen r : Opens (Spec R).toTopCat)) ∘ h` using `funext hh`. Substitute `this` using the available equality. Conclude with `cechAcyclic_of_localizingAction (tildeAction M) h g hsup`.
+-/
 theorem cechCondition_tilde : CechCondition (X := (Spec R).toTopCat) IsBasicOpen (tildeAb M) := by
   rintro V ⟨g, rfl⟩ ι _ U hU hsup
   choose h hh using hU

@@ -4,6 +4,13 @@ open Polynomial
 
 namespace GlobalTheory.PicDiv.SquarefreeFibre
 
+/- English proof (translation)
+Use `set p := LinearMap.charpoly (Algebra.lmul R S g) with hp`. Establish `h1 : aeval g p = 0`. Establish `h2` using `congrArg (fun φ : Module.End R S => φ 1) (LinearMap.aeval_self_charpoly (Algebra.lmul R S g))`. Rewrite `h2` using `[← hp, Polynomial.aeval_algHom_apply (Algebra.lmul R S) g p]`. Simplify using `using h2`.
+
+Establish `h3 : algebraMap R S (p.coeff 0) = -(g * aeval g p.divX)`. Establish `h4` using `X_mul_divX_add p`. Rewrite `h1` using `[← h4]`. Simplify using `only [map_add, map_mul, aeval_X, aeval_C] at h1`. Take the linear combination `h1`.
+
+Rewrite using `[Algebra.norm_apply, LinearMap.det_eq_sign_charpoly_coeff, map_mul, ← hp, h3]`. Conclude with `Ideal.mul_mem_left _ _ ((Ideal.span {g}).neg_mem (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self g)))`.
+-/
 theorem algebraMap_norm_mem_span {R S : Type} [CommRing R] [CommRing S] [Algebra R S]
     [Module.Free R S] [Module.Finite R S] (g : S) :
     algebraMap R S (Algebra.norm R g) ∈ Ideal.span {g} := by
@@ -21,6 +28,45 @@ theorem algebraMap_norm_mem_span {R S : Type} [CommRing R] [CommRing S] [Algebra
   exact Ideal.mul_mem_left _ _ ((Ideal.span {g}).neg_mem
     (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self g)))
 
+/- English proof (translation)
+Introduce `k A _ _ _ _ _ _ _ _ _ hred g s hg`. Take `⟨δ, hδ0, hδ⟩` from `hred`. Use `set u := algebraMap k[X] A with hu`. Use `set N := Algebra.norm k[X] g with hNdef`. Establish `hN : N ≠ 0` using `Algebra.norm_ne_zero_iff.mpr hg`.
+
+Establish `hinj : Function.Injective u` using `FaithfulSMul.algebraMap_injective k[X] A`. Establish `huC : ∀ c : k, u (C c) = algebraMap k A c`. Introduce `c`. Rewrite using `[IsScalarTower.algebraMap_apply k k[X] A c, Polynomial.algebraMap_eq]`. Establish `hCnot : ∀ (P : Ideal A), P.IsPrime → ∀ c : k, c ≠ 0 → u (C c) ∉ P`.
+
+Introduce `P hP c hc hmem`. Rewrite `hmem` using `[huC]`. Conclude with `hP.ne_top (Ideal.eq_top_of_isUnit_mem _ hmem ((Ne.isUnit hc).map (algebraMap k A)))`. Establish `hgnot : ∀ (P : Ideal A), P.IsPrime → ∀ α : k, N.eval α ≠ 0 → u (X - C α) ∈ P → g ∉ P`. Introduce `P hP α hα hX hgP`.
+
+Establish `hNP : u N ∈ P` using `(Ideal.span_singleton_le_iff_mem P).mpr hgP (algebraMap_norm_mem_span g)`. Establish `hdec` using `modByMonic_add_div N (X - C α)`. Rewrite `hdec` using `[modByMonic_X_sub_C_eq_C_eval]`. Establish `h5 : C (N.eval α) = N - (X - C α) * (N /ₘ (X - C α))` using `eq_sub_of_add_eq hdec`. Establish `: u (C (N.eval α)) = u N - u (X - C α) * u (N /ₘ (X - C α))`.
+
+Rewrite using `[h5, map_sub, map_mul]`. Conclude with `hCnot P hP _ hα (this ▸ P.sub_mem hNP (P.mul_mem_right _ hX))`. Establish `hδN : δ * N ≠ 0` using `mul_ne_zero hδ0 hN`. Establish `hfin : {a : k | (δ * N).eval a = 0}.Finite` using `((δ * N).roots.toFinset.finite_toSet).subset (fun a ha => by`. Simplify using `only [Set.mem_setOf_eq] at ha`.
+
+Simplify using `[Polynomial.mem_roots hδN, ha])`. Establish `hinf : {a : k | (δ * N).eval a ≠ 0}.Infinite`. Use `hfin.infinite_compl` as an intermediate fact. Simplify `this` using `[Set.compl_setOf]`. Take `⟨F, hFS, hFcard⟩` from `hinf.exists_subset_card_eq s`.
+
+Establish `hF : ∀ a ∈ F, δ.eval a ≠ 0 ∧ N.eval a ≠ 0`. Introduce `a ha`. Use `hFS ha` as an intermediate fact. Simplify using `only [Set.mem_setOf_eq, eval_mul] at this`. Conclude with `⟨left_ne_zero_of_mul this, right_ne_zero_of_mul this⟩`.
+
+Use `set q : k[X] := ∏ a ∈ F, (X - C a) with hq`. Establish `hqm : q.Monic` using `monic_prod_of_monic _ _ (fun a _ => monic_X_sub_C a)`. Establish `hqdeg : q.natDegree = s`. Rewrite using `[hq, natDegree_prod_of_monic _ _ (fun a _ => monic_X_sub_C a)]`. Simplify using `[hFcard]`.
+
+Establish `hone : ∀ (P : Ideal A), P.IsPrime → u q ∈ P → ∃ a ∈ F, u (X - C a) ∈ P`. Introduce `P hP hqP`. Rewrite `hqP` using `[hq, map_prod]`. Conclude with `Ideal.IsPrime.prod_mem_iff.mp hqP`. Establish `huniq : ∀ (P : Ideal A), P.IsPrime → ∀ a b : k, u (X - C a) ∈ P → u (X - C b) ∈ P → a = b`.
+
+Introduce `P hP a b ha hb`. Assume the negation of the conclusion as `hab`. Establish `: u (C (b - a)) = u (X - C a) - u (X - C b)`. Rewrite using `[← map_sub]`. Use `congr 1`.
+
+Simplify using `[C_sub]`. Conclude with `hCnot P hP (b - a) (sub_ne_zero.mpr (Ne.symm hab)) (this ▸ P.sub_mem ha hb)`. Establish `hnotsq : ∀ (P : Ideal A), P.IsMaximal → u q ∉ P ^ 2`. Introduce `P hPm hq2`. Establish `hP : P.IsPrime` using `hPm.isPrime`.
+
+Take `⟨a, haF, haP⟩` from `hone P hP (Ideal.pow_le_self two_ne_zero hq2)`. Establish `hsplit : q = (∏ b ∈ F.erase a, (X - C b)) * (X - C a)`. Rewrite using `[hq, mul_comm, Finset.mul_prod_erase F (fun b => X - C b) haF]`. Rewrite `hq2` using `[hsplit, map_mul]`. Break down `Ideal.IsPrime.mul_mem_pow P hq2 with hrest | hX2` into its components or cases.
+
+Rewrite `hrest` using `[map_prod]`. Take `⟨b, hbF, hbP⟩` from `Ideal.IsPrime.prod_mem_iff.mp hrest`. Conclude with `(Finset.ne_of_mem_erase hbF) (huniq P hP b a hbP haP)`. Conclude with `hδ a (hF a haF).1 P hPm hX2`. Use `set I : Ideal A := Ideal.span {u q} with hI`.
+
+Establish `hI0 : I ≠ ⊥`. Rewrite using `[hI, Ne, Ideal.span_singleton_eq_bot]`. Conclude with `fun h => hqm.ne_zero (hinj (h.trans (map_zero u).symm))`. Establish `hsq : Squarefree I`. Introduce `J hJ`.
+
+Assume the negation of the conclusion as `hJu`. Establish `hJtop : J ≠ ⊤` using `fun h => hJu (Ideal.isUnit_iff.mpr h)`. Take `⟨P, hPm, hJP⟩` from `Ideal.exists_le_maximal J hJtop`. Establish `hle : I ≤ P ^ 2` using `(Ideal.le_of_dvd hJ).trans (by rw [pow_two]; exact Ideal.mul_mono hJP hJP)`. Conclude with `hnotsq P hPm (hle (Ideal.mem_span_singleton_self _))`.
+
+Establish `hnodup` using `(UniqueFactorizationMonoid.squarefree_iff_nodup_normalizedFactors hI0).mp hsq`. Use `set M := UniqueFactorizationMonoid.normalizedFactors I with hM`. Establish `hmem : ∀ P ∈ M, P.IsMaximal ∧ g ∉ P`. Introduce `P hPM`. Establish `hPp : P.IsPrime` using `Ideal.isPrime_of_prime (UniqueFactorizationMonoid.prime_of_normalized_factor P hPM)`.
+
+Establish `hPne : P ≠ ⊥` using `UniqueFactorizationMonoid.ne_zero_of_mem_normalizedFactors hPM`. Use `⟨hPp.isMaximal hPne, ?_⟩` and prove the remaining obligations. Establish `hqP : u q ∈ P` using `Ideal.le_of_dvd (UniqueFactorizationMonoid.dvd_of_mem_normalizedFactors hPM) (Ideal.mem_span_singleton_self _)`. Take `⟨a, haF, haP⟩` from `hone P hPp hqP`. Conclude with `hgnot P hPp a (hF a haF).2 haP`.
+
+Set `e` to `M.toFinset.equivFin`. Use `⟨q, M.toFinset.card, fun i => (e.symm i : Ideal A), hqm, hqdeg, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Conclude with `(hmem _ (Multiset.mem_toFinset.mp (e.symm i).2)).1`. Introduce `i j h`.
+
+Conclude with `e.symm.injective (Subtype.ext h)`. Introduce `i`. Conclude with `(hmem _ (Multiset.mem_toFinset.mp (e.symm i).2)).2`. Rewrite using `[Fintype.prod_equiv e.symm (fun i => (e.symm i : Ideal A)) (fun x => (x : Ideal A)) (fun _ => rfl), Finset.prod_coe_sort M.toFinset (fun x => x), Finset.prod_eq_multiset_prod, Multiset.toFinset_val, hnodup.dedup, Multiset.map_id', hM, ← hI]`. Conclude with `(Ideal.prod_normalizedFactors_eq_self hI0).symm`.
+-/
 theorem main : ∀ (k A : Type) [Field k] [IsAlgClosed k] [CommRing A] [IsDedekindDomain A] [Algebra k A] [Algebra k[X] A] [IsScalarTower k k[X] A] [Module.Finite k[X] A] [Module.Free k[X] A], (∃ δ : k[X], δ ≠ 0 ∧ ∀ α : k, δ.eval α ≠ 0 → ∀ Q : Ideal A, Q.IsMaximal → algebraMap k[X] A (X - C α) ∉ Q ^ 2) → ∀ (g : A) (s : ℕ), g ≠ 0 → ∃ (q : k[X]) (r : ℕ) (Q : Fin r → Ideal A), q.Monic ∧ q.natDegree = s ∧ (∀ i, (Q i).IsMaximal) ∧ Function.Injective Q ∧ (∀ i, g ∉ Q i) ∧ Ideal.span {algebraMap k[X] A q} = ∏ i, Q i := by
   intro k A _ _ _ _ _ _ _ _ _ hred g s hg
   classical

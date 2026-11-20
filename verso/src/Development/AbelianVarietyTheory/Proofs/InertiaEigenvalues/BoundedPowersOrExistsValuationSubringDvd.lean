@@ -6,6 +6,15 @@ open Polynomial
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Proceed by induction on `j using Nat.strong_induction_on with`. Consider the case `_ j ih`. Distinguish the cases in `hj : j ≤ N + n`. Conclude with `Dvd.dvd.mul_right (pow_dvd_pow v hj) _`. Take `⟨d, rfl⟩ : ∃ d, j = N + n + d` from `⟨j - (N + n), by omega⟩`.
+
+Rewrite `h` using `[Finset.sum_range_succ']`. Establish `key : q 0 * (v ^ (N + n) * x ^ (N + n + d)) = - ∑ i ∈ Finset.range n, v ^ (N + n) * x ^ d * x ^ N * (q (i + 1) * v ^ (i + 1) * x ^ (n - (i + 1)))`. Rewrite using `[← Finset.mul_sum]`. Simplify using `only [pow_zero, mul_one, Nat.sub_zero] at h`. Take the linear combination `(v ^ (N + n) * x ^ d) * h`.
+
+Rewrite using `[← h0.dvd_mul_left, key, dvd_neg]`. Use `Finset.dvd_sum fun i hi => ?_` and prove the remaining obligations. Establish `hi' : i < n` using `Finset.mem_range.1 hi`. Take `⟨e, rfl⟩ : ∃ e, n = i + 1 + e` from `⟨n - (i + 1), by omega⟩`. Take `⟨w, hw⟩` from `ih (N + e + d) (by omega)`.
+
+Use `⟨q (i + 1) * w, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.add_sub_cancel_left]`. Take the linear combination `(q (i + 1) * v ^ (i + 1)) * hw`.
+-/
 theorem pow_dvd_pow_mul_pow_of_homogeneous_relation {R : Type*} [CommRing R] (v x : R)
     (q : ℕ → R) (n N : ℕ) (h0 : IsUnit (q 0))
     (h : x ^ N * ∑ i ∈ Finset.range (n + 1), q i * v ^ i * x ^ (n - i) = 0) (j : ℕ) :
@@ -31,6 +40,29 @@ theorem pow_dvd_pow_mul_pow_of_homogeneous_relation {R : Type*} [CommRing R] (v 
       rw [Nat.add_sub_cancel_left]
       linear_combination (q (i + 1) * v ^ (i + 1)) * hw
 
+/- English proof (translation)
+Introduce `R _ u x M hu hJ`. Set `T` to `Localization.Away (u * x)`. Establish `hux : IsUnit (algebraMap R T (u * x))` using `IsLocalization.Away.algebraMap_isUnit (u * x)`. Rewrite `hux` using `[map_mul, IsUnit.mul_iff]`. Take `⟨huT, hxT⟩` from `hux`.
+
+Take `⟨y, hy⟩` from `hxT.exists_right_inv`. Set `t : T` to `algebraMap R T u ^ M * y`. Establish `ht : algebraMap R T x * t = algebraMap R T u ^ M`. Simplify using `only [t]`. Take the linear combination `(algebraMap R T u ^ M) * hy`.
+
+Set `S` to `Algebra.adjoin R ({t} : Set T)`. Distinguish the cases in `hS : IsUnit (algebraMap R S u)`. Use `left`. Take `⟨⟨z, hz⟩, hz1⟩` from `hS.exists_right_inv`. Establish `hz2 : algebraMap R T u * z = 1` using `congrArg Subtype.val hz1`.
+
+Establish `hz'` using `hz`. Simplify using `only [S] at hz'`. Rewrite `hz'` using `[Algebra.adjoin_singleton_eq_range_aeval]`. Take `⟨p, hp⟩` from `hz'`. Establish `hp' : aeval t p = z` using `hp`.
+
+Use `set q : R[X] := 1 - C u * p with hq`. Establish `hq0 : aeval t q = 0`. Simplify using `[hq, hp', hz2]`. Establish `hc : IsUnit (q.coeff 0)`. Simplify `hJ (p.coeff 0)` using `[hq]`.
+
+Establish `hsum : algebraMap R T (∑ i ∈ Finset.range (q.natDegree + 1), q.coeff i * (u ^ M) ^ i * x ^ (q.natDegree - i)) = 0`. Establish `h1 : algebraMap R T x ^ q.natDegree * aeval t q = 0` using `by rw [hq0, mul_zero]`. Rewrite `h1` using `[aeval_eq_sum_range, Finset.mul_sum]`. Rewrite using `[map_sum, ← h1]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+
+Establish `hi' : i ≤ q.natDegree` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)`. Take `⟨e, he⟩` from `Nat.exists_eq_add_of_le hi'`. Rewrite using `[he, Nat.add_sub_cancel_left, Algebra.smul_def]`. Simplify using `only [map_mul, map_pow]`. Rewrite using `[← ht]`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨⟨_, N, rfl⟩, hN⟩` from `(IsLocalization.map_eq_zero_iff (Submonoid.powers (u * x)) T _).1 hsum`. Simplify using `only [mul_pow, mul_assoc] at hN`. Establish `hN'` using `(mul_left_mem_nonZeroDivisors_eq_zero_iff (pow_mem hu N)).1 hN`. Use `⟨M * (N + q.natDegree), fun j => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[pow_mul, pow_mul]`. Use `pow_dvd_pow_mul_pow_of_homogeneous_relation (u ^ M) x q.coeff _ N hc ?_ j` and prove the remaining obligations. Simplify `hN'` using `only [mul_assoc]`. Use `right`. Take `⟨L, _, _, V, f, hf1, hf2⟩` from `GlobalTheory.T.exists_valuationSubring_algClosed_not_isUnit S _ hS`.
+
+Use `⟨L, inferInstance, inferInstance, V, f.comp (algebraMap R S), ?_, hf1, ?_⟩` and prove the remaining obligations. Use `hf2 _ (mem_nonZeroDivisors_iff_right.2 fun s hs => ?_)` and prove the remaining obligations. Establish `h1 : (s : T) * algebraMap R T u = 0` using `congrArg Subtype.val hs`. Conclude with `Subtype.ext (huT.mul_left_eq_zero.1 h1)`. Use `⟨f ⟨t, Algebra.self_mem_adjoin_singleton R t⟩, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [RingHom.comp_apply]`. Rewrite using `[← map_mul, ← map_pow]`. Use `congr 1`. Conclude with `Subtype.ext ht.symm`.
+-/
 theorem bounded_powers_or_exists_valuationSubring_dvd :
     ∀ (R : Type) [CommRing R] (u x : R) (M : ℕ), u ∈ nonZeroDivisors R →
       (∀ r, IsUnit (1 - u * r)) →

@@ -31,18 +31,27 @@ def rawBT (κ : ℂ) : List (Wd.Letter ℂ S) → (Wd.Ix S → ℂ → E) → Wd
 
 end slots
 
+/- English proof (translation)
+Establish `e : f =ᶠ[nhds τ] g` using `Filter.eventually_of_mem (hU.mem_nhds hτ) h`. Unfold `PBP.dz`. Rewrite using `[e.fderiv_eq]`.
+-/
 theorem dz_congr {f g : ℂ → E} {U : Set ℂ} (hU : IsOpen U) (h : ∀ τ ∈ U, f τ = g τ) {τ : ℂ} (hτ : τ ∈ U) :
     PBP.dz f τ = PBP.dz g τ := by
   have e : f =ᶠ[nhds τ] g := Filter.eventually_of_mem (hU.mem_nhds hτ) h
   unfold PBP.dz
   rw [e.fderiv_eq]
 
+/- English proof (translation)
+Establish `e : f =ᶠ[nhds τ] g` using `Filter.eventually_of_mem (hU.mem_nhds hτ) h`. Unfold `PBP.dzb`. Rewrite using `[e.fderiv_eq]`.
+-/
 theorem dzb_congr {f g : ℂ → E} {U : Set ℂ} (hU : IsOpen U) (h : ∀ τ ∈ U, f τ = g τ) {τ : ℂ} (hτ : τ ∈ U) :
     PBP.dzb f τ = PBP.dzb g τ := by
   have e : f =ᶠ[nhds τ] g := Filter.eventually_of_mem (hU.mem_nhds hτ) h
   unfold PBP.dzb
   rw [e.fderiv_eq]
 
+/- English proof (translation)
+Establish `h1` using `dz_congr hU hA hτ`. Establish `h2` using `dzb_congr hU hA hτ`. Simplify using `only [row, hA τ hτ, hB τ hτ, h1, h2]`.
+-/
 theorem row_congr (κ : ℂ) (pl : Bool) (Y : ℂ) {A B A' B' : ℂ → E} {U : Set ℂ} (hU : IsOpen U)
     (hA : ∀ τ ∈ U, A τ = A' τ) (hB : ∀ τ ∈ U, B τ = B' τ) (s : Fin 2) {τ : ℂ} (hτ : τ ∈ U) :
     row κ pl Y A B s τ = row κ pl Y A' B' s τ := by
@@ -54,6 +63,11 @@ section positions2
 
 variable {S : Type} [Fintype S] [DecidableEq S]
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => exact h`. Consider the case `cons l w ih`. Introduce `e τ hτ`. Simplify using `only [rawBT, rawA]`.
+
+Conclude with `row_congr κ l.plus l.pt hU (fun t ht => ih _ t ht) (fun t ht => ih _ t ht) (e l.intersection_update_fsHerm_neg_one) hτ`.
+-/
 theorem rawBT_congr (κ : ℂ) (w : List (Wd.Letter ℂ S)) {x y : Wd.Ix S → ℂ → E} {U : Set ℂ} (hU : IsOpen U)
     (h : ∀ b, ∀ τ ∈ U, x b τ = y b τ) : ∀ e, ∀ τ ∈ U, rawBT κ w x e τ = rawBT κ w y e τ := by
   induction w with
@@ -63,6 +77,11 @@ theorem rawBT_congr (κ : ℂ) (w : List (Wd.Letter ℂ S)) {x y : Wd.Ix S → �
     simp only [rawBT, rawA]
     exact row_congr κ l.plus l.pt hU (fun t ht => ih _ t ht) (fun t ht => ih _ t ht) (e l.intersection_update_fsHerm_neg_one) hτ
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Establish `hs : ∀ (s : Finset (Wd.Ix S)) (f : Wd.Ix S → Q.Pr (V1 E)), (∑ j ∈ s, f j).1 = ∑ j ∈ s, (f j).1`. Introduce `s f`. Use `Finset.induction_on s (by rw [Finset.sum_empty, Finset.sum_empty]; rfl) (fun j t hj ih => ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_insert hj, Finset.sum_insert hj, ← ih]`.
+
+Both sides reduce to the same expression. Establish `hm : ∀ p q : Q.Pr (V1 E), (p * q).1 = p.1 * q.1` using `fun p q => rfl`. Simplify using `only [act1, Matrix.mul_apply, hs, hm, LinearMap.sum_apply, Module.End.mul_apply, map_sum]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem word_action_mul (M N : Wd.SlopeTestRemainingChoices S (Q.Pr (V1 E))) (x : Wd.Ix S → V1 E) :
     act1 (M * N) x = act1 M (act1 N x) := by
   funext a
@@ -79,32 +98,86 @@ section pr
 
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pr_fst_add (x y : Q.Pr V) : (x + y).1 = x.1 + y.1 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pr_fst_neg (x : Q.Pr V) : (-x).1 = -x.1 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pr_fst_zero : (0 : Q.Pr V).1 = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pr_fst_alg (Y : ℂ) : (algebraMap ℂ (Q.Pr V) Y).1 = algebraMap ℂ (Module.End ℂ V) Y := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pr_fst_star (x : Q.Pr V) : (star x).1 = x.2.unop := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pr_snd_add (x y : Q.Pr V) : (x + y).2.unop = x.2.unop + y.2.unop := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pr_snd_neg (x : Q.Pr V) : (-x).2.unop = -x.2.unop := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pr_snd_alg (Y : ℂ) : (algebraMap ℂ (Q.Pr V) Y).2.unop = algebraMap ℂ (Module.End ℂ V) (conj Y) := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mkPair_fst (X Xs : Module.End ℂ V) : (Q.mkP X Xs).1 = X := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem snd_eq_of_mkPair_eq (X Xs : Module.End ℂ V) : (Q.mkP X Xs).2.unop = Xs := rfl
 
 end pr
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pathSpace_add_apply (f g : V1 E) (τ : ℂ) : (f + g).1 τ = f.1 τ + g.1 τ := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pathSpace_neg_apply (f : V1 E) (τ : ℂ) : (-f).1 τ = -f.1 τ := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pathSpace_smul_apply (c : ℂ) (f : V1 E) (τ : ℂ) : (c • f).1 τ = c • f.1 τ := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pathSpace_zero_apply (τ : ℂ) : (0 : V1 E).1 τ = 0 := rfl
+/- English proof (translation)
+Simplify using `[opP, off0, hτ]`.
+-/
 theorem opP_apply (κ : ℂ) (f : V1 E) {τ : ℂ} (hτ : τ ≠ 0) :
     (opP κ f).1 τ = τ • PBP.dz f.1 τ + κ • f.1 τ := by
   simp [opP, off0, hτ]
+/- English proof (translation)
+Simplify using `[opPb, off0, hτ]`.
+-/
 theorem opPb_apply (κ : ℂ) (f : V1 E) {τ : ℂ} (hτ : τ ≠ 0) :
     (opPb κ f).1 τ = conj τ • PBP.dzb f.1 τ + κ • f.1 τ := by
   simp [opPb, off0, hτ]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem opM_apply (m : ℂ → ℂ) (hm : ContDiffOn ℝ ∞ m {τ | τ ≠ 0}) (f : V1 E) (τ : ℂ) :
     (opM m hm f).1 τ = m τ • f.1 τ := rfl
 
+/- English proof (translation)
+Simplify using `only [Wd.vlet, Wd.ins, Wd.lift0, Wd.io, Wd.eU, Matrix.sum_apply, Matrix.map_apply, Matrix.scalar_apply, Matrix.mul_diagonal, Matrix.of_apply, ite_mul, one_mul, zero_mul]`. Distinguish the cases in `h : ∀ c, c ≠ l.intersection_update_fsHerm_neg_one → e c = b c`. Simplify using `[h, ite_and]`. Simplify using `[h]`.
+-/
 theorem vlet_apply {A : Type} [Ring A] [StarRing A] [Algebra ℂ A] (σ : Wd.Site A) (l : Wd.Letter ℂ S)
     (e b : Wd.Ix S) :
     Wd.vlet σ l e b = if (∀ c, c ≠ l.intersection_update_fsHerm_neg_one → e c = b c) then
@@ -115,6 +188,15 @@ theorem vlet_apply {A : Type} [Ring A] [StarRing A] [Algebra ℂ A] (σ : Wd.Sit
   · simp [h, ite_and]
   · simp [h]
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_filter]`. Use `symm`. Use `Finset.sum_nbij' (fun s => Function.update e a s) (fun b => b a) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `s _`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`.
+
+Introduce `c hc`. Rewrite using `[Function.update_of_ne hc]`. Introduce `b _`. Conclude with `Finset.mem_univ _`. Introduce `s _`.
+
+Simplify using the standard rewrite rules. Introduce `b hb`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hb`. Use function extensionality and compare the values at `c`. Distinguish the cases in `hc : c = a`.
+
+Substitute `hc` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne hc, hb c hc]`. Introduce `s _`. Simplify using the standard rewrite rules.
+-/
 private theorem sum_ite_eq_sum_update {R : Type} [Fintype R] [DecidableEq R] {β : Type} [AddCommMonoid β]
     (e : Wd.Ix R) (a : R) (g : Fin 2 → Wd.Ix R → β) :
     ∑ b : Wd.Ix R, (if (∀ c, c ≠ a → e c = b c) then g (b a) b else 0) =
@@ -140,6 +222,9 @@ private theorem sum_ite_eq_sum_update {R : Type} [Fintype R] [DecidableEq R] {β
   · intro s _
     simp
 
+/- English proof (translation)
+Unfold `act1`. Use `(Finset.sum_congr rfl (fun b _ => ?_)).trans (sum_ite_eq_sum_update e l.intersection_update_fsHerm_neg_one (fun s b => ((if l.plus then Wd.Ts σ l.pt else (Wd.Ts σ l.pt).map star) (e l.intersection_update_fsHerm_neg_one) s).1 (y b)))` and prove the remaining obligations. Rewrite using `[vlet_apply]`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem word_action_letter_apply (σ : Wd.Site (Q.Pr (V1 E))) (l : Wd.Letter ℂ S) (y : Wd.Ix S → V1 E) (e : Wd.Ix S) :
     act1 (Wd.vlet σ l) y e = ∑ s : Fin 2,
       ((if l.plus then Wd.Ts σ l.pt else (Wd.Ts σ l.pt).map star) (e l.intersection_update_fsHerm_neg_one) s).1
@@ -150,6 +235,11 @@ theorem word_action_letter_apply (σ : Wd.Site (Q.Pr (V1 E))) (l : Wd.Letter ℂ
   rw [vlet_apply]
   split_ifs <;> rfl
 
+/- English proof (translation)
+Rewrite using `[word_action_letter_apply]`. Take `⟨pl, a, Y⟩` from `l`. Simplify using `only [rawA, row]`. Generalize the expression as in `e a = s`. Apply the tactic sequence `fin_cases s <;> cases pl <;>`.
+
+Apply the tactic sequence `simp [Fin.sum_univ_two, pathSpace_add_apply, pathSpace_neg_apply, pathSpace_smul_apply, pathSpace_zero_apply, Wd.Ts, YangianSpanCharacter.T.Tm, site1, pr_fst_add, pr_fst_neg, pr_fst_zero, pr_fst_alg, pr_fst_star, pr_snd_add, pr_snd_neg, pr_snd_alg, mkPair_fst, snd_eq_of_mkPair_eq …`. Use `first`. Consider the case `rfl`. Consider the case `(simp only [add_smul, sub_smul]; abel)`.
+-/
 theorem word_action_letter_site_apply (κ : ℂ) (l : Wd.Letter ℂ S) (y : Wd.Ix S → V1 E) (e : Wd.Ix S) {τ : ℂ} (hτ : τ ≠ 0) :
     (act1 (Wd.vlet (site1 κ) l) y e).1 τ = rawA κ l (fun b => (y b).1) e τ := by
   rw [word_action_letter_apply]
@@ -164,6 +254,17 @@ theorem word_action_letter_site_apply (κ : ℂ) (l : Wd.Letter ℂ S) (y : Wd.I
     | rfl
     | (simp only [add_smul, sub_smul]; abel)
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil`. Introduce `e τ _`. Establish `hx : act1 (Wd.bT (site1 κ) ([] : List (Wd.Letter ℂ S))) x e = x e`. Rewrite using `[Wd.bT.eq_1]`.
+
+Unfold `act1`. Rewrite using `[Finset.sum_eq_single e]`. Rewrite using `[Matrix.one_apply_eq]`. Both sides reduce to the same expression. Introduce `b _ hb`.
+
+Rewrite using `[Matrix.one_apply_ne (Ne.symm hb)]`. Both sides reduce to the same expression. Introduce `h`. Conclude with `absurd (Finset.mem_univ e) h`. Rewrite using `[hx]`.
+
+Both sides reduce to the same expression. Consider the case `cons l w ih`. Introduce `e τ hτ`. Rewrite using `[Wd.bT.eq_2, word_action_mul, word_action_letter_site_apply κ l _ e hτ]`. Simplify using `only [rawBT, rawA]`.
+
+Conclude with `row_congr κ l.plus l.pt (U := {(0 : ℂ)}ᶜ) isOpen_compl_singleton (fun t ht => ih _ t ht) (fun t ht => ih _ t ht) (e l.intersection_update_fsHerm_neg_one) hτ`.
+-/
 theorem oneBT_eq_raw (κ : ℂ) (w : List (Wd.Letter ℂ S)) (x : Wd.Ix S → V1 E) :
     ∀ e, ∀ τ, τ ≠ 0 → (act1 (Wd.bT (site1 κ) w) x e).1 τ = rawBT κ w (fun b => (x b).1) e τ := by
   induction w with
@@ -193,10 +294,18 @@ end positions2
 
 section succ
 
+/- English proof (translation)
+The claim follows from `Function.update_of_ne (Fin.succ_ne_zero a).symm _ _`.
+-/
 theorem upd_succ_zero {n : ℕ} (e : Wd.Ix (Fin (n + 1))) (a : Fin n) (s : Fin 2) :
     Function.update e a.succ s 0 = e 0 :=
   Function.update_of_ne (Fin.succ_ne_zero a).symm _ _
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil`. Use function extensionality and compare the values at `e`. Simplify using `only [List.map_nil, rawBT, Fin.cons_self_tail]`. Consider the case `cons m L ih`.
+
+Simplify using `only [List.map_cons, rawBT]`. Rewrite using `[ih]`. Use function extensionality and compare the values at `e`. Simplify using `only [rawA, upd_succ_zero, Fin.tail_update_succ]`. Both sides reduce to the same expression.
+-/
 theorem rawBT_map_succ (κ : ℂ) {n : ℕ} (L : List (Wd.Letter ℂ (Fin n))) (x : Wd.Ix (Fin (n + 1)) → ℂ → E) :
     rawBT κ (L.map fun m => (⟨m.plus, m.intersection_update_fsHerm_neg_one.succ, m.pt⟩ : Wd.Letter ℂ (Fin (n + 1)))) x =
       fun e => rawBT κ L (fun b => x (Fin.cons (e 0) b : Wd.Ix (Fin (n + 1)))) (Fin.tail e) := by
@@ -211,6 +320,9 @@ theorem rawBT_map_succ (κ : ℂ) {n : ℕ} (L : List (Wd.Letter ℂ (Fin n))) (
     simp only [rawA, upd_succ_zero, Fin.tail_update_succ]
     rfl
 
+/- English proof (translation)
+Unfold `D.positionted`. Rewrite using `[List.ofFn_succ, List.map_ofFn]`. Both sides reduce to the same expression.
+-/
 theorem positioned_cons (l : C.Letter) (w : List C.Letter) :
     D.positionted (l :: w) = (⟨l.1, 0, (l.2 : ℂ)⟩ : Wd.Letter ℂ (Fin (w.length + 1))) ::
       (D.positionted w).map fun m => (⟨m.plus, m.intersection_update_fsHerm_neg_one.succ, m.pt⟩ : Wd.Letter ℂ (Fin (w.length + 1))) := by
@@ -218,6 +330,9 @@ theorem positioned_cons (l : C.Letter) (w : List C.Letter) :
   rw [List.ofFn_succ, List.map_ofFn]
   rfl
 
+/- English proof (translation)
+Rewrite using `[positioned_cons]`. Simplify using `only [rawBT, rawA, rawBT_map_succ, Function.update_self, Fin.tail_update_zero]`.
+-/
 theorem rawBT_indexed_cons (κ : ℂ) (l : C.Letter) (w : List C.Letter) (x : Wd.Ix (Fin (w.length + 1)) → ℂ → E)
     (e : Wd.Ix (Fin (w.length + 1))) :
     rawBT κ (D.positionted (l :: w)) x e =

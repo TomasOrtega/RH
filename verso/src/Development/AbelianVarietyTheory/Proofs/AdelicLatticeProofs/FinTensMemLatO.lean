@@ -25,18 +25,34 @@ def latRat (S T : HSp D) (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.r
 def finTens {m n : ℕ} (α : Af D.host.F) (M : Matrix (Fin m) (Fin n) D.host.E) : Mx D m n :=
   M.map fun x => (pairA D.host.F 0 α) ⊗ₜ[D.host.F] x
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[finTens, TensorProduct.tmul_add]`.
+-/
 theorem finTens_add {m n : ℕ} (α : Af D.host.F) (M N : Matrix (Fin m) (Fin n) D.host.E) :
     finTens α (M + N) = finTens α M + finTens α N := by
   ext i j; simp [finTens, TensorProduct.tmul_add]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[finTens]`.
+-/
 theorem finTens_zero {m n : ℕ} (α : Af D.host.F) :
     finTens α (0 : Matrix (Fin m) (Fin n) D.host.E) = 0 := by
   ext i j; simp [finTens]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[finTens, TensorProduct.tmul_neg]`.
+-/
 theorem finTens_neg {m n : ℕ} (α : Af D.host.F) (M : Matrix (Fin m) (Fin n) D.host.E) :
     finTens α (-M) = -finTens α M := by
   ext i j; simp [finTens, TensorProduct.tmul_neg]
 
+/- English proof (translation)
+Proceed by induction on `hM using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨a, ha, s, hs, t, ht, rfl⟩` from `hw`. Use `AddSubgroup.subset_closure ⟨(c : D.host.E) * a, ?_, s, hs, t, ht, ?_⟩` and prove the remaining obligations. Conclude with `Submodule.smul_mem (D.host.AA : Submodule (𝓞 D.host.E) D.host.E) c ha`.
+
+Use extensionality with `i j`. Simplify using `[genMap, mul_assoc]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`.
+
+Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `neg_mem hx`.
+-/
 theorem smul_mem_latRat {S T : HSp D} {LS : Set (Fin S.rank → D.host.E)} {LT : Set (Fin T.rank → D.host.E)}
     (c : 𝓞 D.host.E) {M : Matrix (Fin T.rank) (Fin S.rank) D.host.E} (hM : M ∈ latRat S T LS LT) :
     (c : D.host.E) • M ∈ latRat S T LS LT := by
@@ -50,6 +66,11 @@ theorem smul_mem_latRat {S T : HSp D} {LS : Set (Fin S.rank → D.host.E)} {LT :
   | add x y _ _ hx hy => rw [smul_add]; exact add_mem hx hy
   | neg x _ hx => rw [smul_neg]; exact neg_mem hx
 
+/- English proof (translation)
+Proceed by induction on `hM using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨a, ha, s, hs, t, ht, rfl⟩` from `hw`. Conclude with `AddSubgroup.subset_closure ⟨α, hα, fun v hv => absurd trivial hv, a, ha, s, hs, t, ht, rfl⟩`. Consider the case `zero => rw [finTens_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [finTens_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [finTens_neg]`. Conclude with `neg_mem hx`.
+-/
 theorem finTens_mem_latO {S T : HSp D} {LS : Set (Fin S.rank → D.host.E)} {LT : Set (Fin T.rank → D.host.E)}
     {α : Af D.host.F} (hα : α ∈ intAf D.host.F) {M : Matrix (Fin T.rank) (Fin S.rank) D.host.E}
     (hM : M ∈ latRat S T LS LT) : finTens α M ∈ latO S T LS LT fun _ => True := by
@@ -61,6 +82,11 @@ theorem finTens_mem_latO {S T : HSp D} {LS : Set (Fin S.rank → D.host.E)} {LT 
   | add x y _ _ hx hy => rw [finTens_add]; exact add_mem hx hy
   | neg x _ hx => rw [finTens_neg]; exact neg_mem hx
 
+/- English proof (translation)
+Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, -, a, ha, s, hs, t, ht, rfl⟩` from `hw`. Conclude with `mem α hα (genMap S T a s t) (AddSubgroup.subset_closure ⟨a, ha, s, hs, t, ht, rfl⟩)`. Consider the case `zero => exact zero`.
+
+Consider the case `add x y _ _ hx hy => exact add _ _ hx hy`. Consider the case `neg x _ hx => exact neg _ hx`.
+-/
 theorem latO_induction {S T : HSp D} {LS : Set (Fin S.rank → D.host.E)} {LT : Set (Fin T.rank → D.host.E)}
     {p : WO S T → Prop} (mem : ∀ α ∈ intAf D.host.F, ∀ M ∈ latRat S T LS LT, p (finTens α M))
     (zero : p 0) (add : ∀ x y, p x → p y → p (x + y)) (neg : ∀ x, p x → p (-x))
@@ -73,9 +99,19 @@ theorem latO_induction {S T : HSp D} {LS : Set (Fin S.rank → D.host.E)} {LT : 
   | add x y _ _ hx hy => exact add _ _ hx hy
   | neg x _ hx => exact neg _ hx
 
+/- English proof (translation)
+The claim follows from `S.herm.eq (S.frame i) (S.frame j)`.
+-/
 theorem gram_star (S : HSp D) (i j : Fin S.rank) : star (S.gram i j) = S.gram j i :=
   S.herm.eq (S.frame i) (S.frame j)
 
+/- English proof (translation)
+Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h`. Take `⟨v, hv, hv0⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h`. Apply `hv` to reduce the goal to its premises. Establish `h1 : ∑ j, v j • S.frame j = 0`.
+
+Apply `S.nondeg.2` to reduce the goal to its premises. Introduce `x`. Establish `: (S.hT.flip (∑ j, v j • S.frame j)) = 0`. Use `S.frame.ext fun i => ?_` and prove the remaining obligations. Use `congrFun hv0 i` as an intermediate fact.
+
+Simplify `this` using `[Matrix.mulVec, dotProduct, HSpace.gram, map_sum, mul_comm]`. Conclude with `LinearMap.congr_fun this x`. Conclude with `funext (Fintype.linearIndependent_iff.1 S.frame.linearIndependent v h1)`.
+-/
 theorem gram_det_isUnit (S : HSp D) : IsUnit S.gram.det := by
   rw [isUnit_iff_ne_zero]
   intro h
@@ -91,6 +127,17 @@ theorem gram_det_isUnit (S : HSp D) : IsUnit S.gram.det := by
     exact LinearMap.congr_fun this x
   exact funext (Fintype.linearIndependent_iff.1 S.frame.linearIndependent v h1)
 
+/- English proof (translation)
+Establish `key : ∀ e, ∑ b, S.gram⁻¹ e b * star (∑ k, star (s k) * S.gram k b) = s e`. Introduce `e`. Establish `: ∀ b, star (∑ k, star (s k) * S.gram k b) = (S.gram *ᵥ s) b`. Introduce `b`. Simplify using `[star_sum, gram_star, Matrix.mulVec, dotProduct, mul_comm]`.
+
+Repeatedly rewrite using `[this]`. Express the relevant statement in the definitionally equal form `(S.gram⁻¹ *ᵥ (S.gram *ᵥ s)) e = _`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (gram_det_isUnit S), Matrix.one_mulVec]`. Combine the equalities or inequalities in the displayed calculation. Unfold `hRat genMap`.
+
+Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [Finset.mul_sum (s := Finset.univ (α := Fin T.rank)), Matrix.of_apply, star_mul']`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => by ring` and prove the remaining obligations.
+
+Use `_ = _ := by`. Repeatedly rewrite using `[key]`. Simplify using `only [Finset.mul_sum, Matrix.mulVec, dotProduct]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun d _ => Finset.sum_congr rfl fun e _ => by ring` and prove the remaining obligations.
+-/
 theorem hRat_genMap (S T : HSp D) (x : Matrix (Fin T.rank) (Fin S.rank) D.host.E) (a : D.host.E)
     (s : Fin S.rank → D.host.E) (t : Fin T.rank → D.host.E) :
     hRat S T x (genMap S T a s t) = star a * ∑ c, ∑ d, star (t c) * T.gram c d * (x *ᵥ s) d := by
@@ -119,6 +166,11 @@ theorem hRat_genMap (S T : HSp D) (x : Matrix (Fin T.rank) (Fin S.rank) D.host.E
         rw [Finset.sum_comm]
         refine Finset.sum_congr rfl fun d _ => Finset.sum_congr rfl fun e _ => by ring
 
+/- English proof (translation)
+Establish `hp : pairA D.host.F 0 (α * β) = pairA D.host.F 0 β * pairA D.host.F 0 α`. Conclude with `Prod.ext (mul_zero _).symm (mul_comm _ _)`. Unfold `hO hRat`. Simplify using `only [TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations.
+
+Establish `h1 : cA D (finTens β N c b) = (pairA D.host.F 0 β) ⊗ₜ[D.host.F] star (N c b)` using `rfl`. Establish `h2 : ∀ x, incA D x = (1 : AF D.host.F) ⊗ₜ[D.host.F] x` using `fun x => rfl`. Rewrite using `[h1, h2, h2, hp]`. Simplify using `[finTens, Algebra.TensorProduct.tmul_mul_tmul]`.
+-/
 theorem hO_finTens (S T : HSp D) (α β : Af D.host.F) (M N : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     hO S T (finTens α M) (finTens β N) = (pairA D.host.F 0 (α * β)) ⊗ₜ[D.host.F] hRat S T M N := by
   have hp : pairA D.host.F 0 (α * β) = pairA D.host.F 0 β * pairA D.host.F 0 α := by
@@ -132,6 +184,9 @@ theorem hO_finTens (S T : HSp D) (α β : Af D.host.F) (M N : Matrix (Fin T.rank
   rw [h1, h2, h2, hp]
   simp [finTens, Algebra.TensorProduct.tmul_mul_tmul]
 
+/- English proof (translation)
+Establish `h1 : a ⊗ₜ[F] e = a • ((1 : R) ⊗ₜ[F] e)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[h1, map_smul, Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange, smul_eq_mul]`.
+-/
 theorem trace_tmul {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
     (R : Type) [CommRing R] [Algebra F R] (a : R) (e : E) :
     Algebra.trace R (R ⊗[F] E) (a ⊗ₜ[F] e) = a * algebraMap F R (Algebra.trace F E e) := by
@@ -140,6 +195,9 @@ theorem trace_tmul {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensi
   rw [h1, map_smul, Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul,
     LinearMap.trace_baseChange, smul_eq_mul]
 
+/- English proof (translation)
+Establish `h2 : ∀ x, incA D x = (1 : AF D.host.F) ⊗ₜ[D.host.F] x` using `fun x => rfl`. Rewrite using `[symplO, hO_finTens, h2, Algebra.TensorProduct.tmul_mul_tmul, one_mul, trace_tmul]`. Conclude with `Prod.ext (zero_mul _) rfl`.
+-/
 theorem symplO_finTens (S T : HSp D) (α β : Af D.host.F) (M N : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     symplO S T (finTens α M) (finTens β N) = pairA D.host.F 0 (α * β * algebraMap D.host.F (Af D.host.F)
       (Algebra.trace D.host.F D.host.E (D.host.xi0 * hRat S T M N))) := by
@@ -147,16 +205,28 @@ theorem symplO_finTens (S T : HSp D) (α β : Af D.host.F) (M N : Matrix (Fin T.
   rw [symplO, hO_finTens, h2, Algebra.TensorProduct.tmul_mul_tmul, one_mul, trace_tmul]
   exact Prod.ext (zero_mul _) rfl
 
+/- English proof (translation)
+Simplify using `only [hO, Matrix.add_apply, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem hO_add_left (S T : HSp D) (x x' y : WO S T) : hO S T (x + x') y = hO S T x y + hO S T x' y := by
   simp only [hO, Matrix.add_apply, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [hO, Matrix.add_apply, RingHom.map_add, mul_add, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem hO_add_right (S T : HSp D) (x y y' : WO S T) : hO S T x (y + y') = hO S T x y + hO S T x y' := by
   simp only [hO, Matrix.add_apply, RingHom.map_add, mul_add, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Rewrite using `[symplO, hO_add_left, mul_add, map_add]`. Both sides reduce to the same expression.
+-/
 theorem symplO_add_left (S T : HSp D) (x x' y : WO S T) :
     symplO S T (x + x') y = symplO S T x y + symplO S T x' y := by
   rw [symplO, hO_add_left, mul_add, map_add]; rfl
 
+/- English proof (translation)
+Rewrite using `[symplO, hO_add_right, mul_add, map_add]`. Both sides reduce to the same expression.
+-/
 theorem symplO_add_right (S T : HSp D) (x y y' : WO S T) :
     symplO S T x (y + y') = symplO S T x y + symplO S T x y' := by
   rw [symplO, hO_add_right, mul_add, map_add]; rfl
@@ -165,6 +235,9 @@ def symplHom (S T : HSp D) : WO S T →+ WO S T →+ AF D.host.F :=
   AddMonoidHom.mk' (fun x => AddMonoidHom.mk' (symplO S T x) (symplO_add_right S T x))
     fun x x' => AddMonoidHom.ext fun y => symplO_add_left S T x x' y
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem symplHom_apply (S T : HSp D) (x y : WO S T) : symplHom S T x y = symplO S T x y := rfl
 
 end GlobalTheory.LatVac

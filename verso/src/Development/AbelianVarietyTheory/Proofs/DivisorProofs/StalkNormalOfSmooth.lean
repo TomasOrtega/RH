@@ -24,6 +24,11 @@ noncomputable section
 
 namespace GlobalTheory.ESOrdM
 
+/- English proof (translation)
+Use `GlobalTheory.forall_isDomain_and_isIntegrallyClosed_stalk_of_smooth f (fun y => ?_) x` and prove the remaining obligations. Use `haveI : y.asIdeal.IsPrime := PrimeSpectrum.isPrime y`. Set `_ : Algebra R ((Sp R).presheaf.stalk y)` to `StructureSheaf.stalkAlgebra R y`. Establish `h : IsLocalization.AtPrime ((Sp R).presheaf.stalk y) y.asIdeal` using `StructureSheaf.IsLocalization.to_stalk R y`. Establish `hle : y.asIdeal.primeCompl ≤ nonZeroDivisors R` using `y.asIdeal.primeCompl_le_nonZeroDivisors`.
+
+Establish `hd : IsDomain ((Sp R).presheaf.stalk y)` using `IsLocalization.isDomain_of_le_nonZeroDivisors _ hle`. Conclude with `⟨hd, isIntegrallyClosed_of_isLocalization _ _ hle⟩`.
+-/
 theorem stalk_normal_of_smooth (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] (X : Scheme.{0})
     (f : X ⟶ Sp R) [Smooth f] (x : X) :
     IsDomain (X.presheaf.stalk x) ∧ IsIntegrallyClosed (X.presheaf.stalk x) := by

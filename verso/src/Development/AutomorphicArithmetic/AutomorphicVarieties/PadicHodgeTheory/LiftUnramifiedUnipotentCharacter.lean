@@ -5,6 +5,13 @@ import Mathlib.RingTheory.Nilpotent.Exp
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.UnipotentExponentialSurjective
 open Formalism.BasicNotions Formalism.BasicNotions.Loc UpperTheory.V.Loc
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `ha`. Establish `h2 : a ^ (k + 1 + 1) = 0` using `pow_eq_zero_of_le (by omega) hk`. Use `⟨∑ i ∈ Finset.range k, (((i + 1 + 1).factorial : ℚ))⁻¹ • a ^ i, ?_⟩` and prove the remaining obligations. Rewrite using `[IsNilpotent.exp_eq_sum h2, Finset.sum_range_succ', Finset.sum_range_succ', Finset.mul_sum]`. Establish `: ∀ i ∈ Finset.range k, (((i + 1 + 1).factorial : ℚ))⁻¹ • a ^ (i + 1 + 1) = a ^ 2 * ((((i + 1 + 1).factorial : ℚ))⁻¹ • a ^ i)` using `fun i _ => by`.
+
+Rewrite using `[mul_smul_comm]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl this]`. Simplify using `only [zero_add, Nat.factorial_one, Nat.factorial_zero, Nat.cast_one, inv_one, one_smul, pow_one, pow_zero]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem ul_exp_two {A : Type} [CommRing A] [Algebra ℚ A] {a : A} (ha : IsNilpotent a) :
     ∃ s, IsNilpotent.exp a = 1 + a + a ^ 2 * s := by
   obtain ⟨k, hk⟩ := ha
@@ -19,10 +26,16 @@ private theorem ul_exp_two {A : Type} [CommRing A] [Algebra ℚ A] {a : A} (ha :
     pow_zero]
   ring
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.UnipotentExponentialSurjective.ul_exp_onto hn`.
+-/
 private theorem ul_exp_onto {A : Type} [CommRing A] [Algebra ℚ A] {n : A} (hn : IsNilpotent n) :
     ∃ x, IsNilpotent x ∧ IsNilpotent.exp x = 1 + n :=
   _root_.UpperTheory.Reformulated.B.UnipotentExponentialSurjective.ul_exp_onto hn
 
+/- English proof (translation)
+Use `haveI : IsTopologicalAddGroup V := IsModuleTopology.topologicalAddGroup ℚ_[l] V`. Set `e0` to `(Module.finBasis ℚ_[l] V).equivFun`. Conclude with `T2Space.of_injective_continuous e0.injective (IsModuleTopology.continuous_of_linearMap e0.toLinearMap)`.
+-/
 private theorem t2Space_finite_padic_module {l : ℕ} [Fact l.Prime] {V : Type} [AddCommGroup V] [Module ℚ_[l] V]
     [Module.Finite ℚ_[l] V] [TopologicalSpace V] [IsModuleTopology ℚ_[l] V] : T2Space V := by
   haveI : IsTopologicalAddGroup V := IsModuleTopology.topologicalAddGroup ℚ_[l] V
@@ -30,6 +43,27 @@ private theorem t2Space_finite_padic_module {l : ℕ} [Fact l.Prime] {V : Type} 
   exact T2Space.of_injective_continuous e0.injective
     (IsModuleTopology.continuous_of_linearMap e0.toLinearMap)
 
+/- English proof (translation)
+Introduce `v l _ _ B B' _ _ _ _ _ _ p hp hker u' hc' hI' hn'`. Use `letI : Algebra ℚ B := ((algebraMap ℚ_[l] B).comp (algebraMap ℚ ℚ_[l])).toAlgebra`. Use `letI : Algebra ℚ B' := ((algebraMap ℚ_[l] B').comp (algebraMap ℚ ℚ_[l])).toAlgebra`. Use `letI : TopologicalSpace B := moduleTopology ℚ_[l] B`. Use `letI : TopologicalSpace B' := moduleTopology ℚ_[l] B'`.
+
+Use `haveI : IsModuleTopology ℚ_[l] B := ⟨rfl⟩`. Use `haveI : IsModuleTopology ℚ_[l] B' := ⟨rfl⟩`. Use `haveI : IsTopologicalAddGroup B := IsModuleTopology.topologicalAddGroup ℚ_[l] B`. Use `haveI : IsTopologicalAddGroup B' := IsModuleTopology.topologicalAddGroup ℚ_[l] B'`. Use `haveI : ContinuousSMul ℚ_[l] B := IsModuleTopology.toContinuousSMul ℚ_[l] B`.
+
+Use `haveI : ContinuousSMul ℚ_[l] B' := IsModuleTopology.toContinuousSMul ℚ_[l] B'`. Use `haveI : T2Space B' := t2Space_finite_padic_module (l := l)`. Take `⟨σ, hσ⟩` from `(iqBasic v).2.2.2.1`. Take `⟨x', hx', he'⟩` from `ul_exp_onto (hn' σ)`. Take `⟨x, rfl⟩` from `hp x'`.
+
+Establish `hx : IsNilpotent x`. Take `⟨k, hk⟩` from `hx'`. Conclude with `(hker (x ^ k) (by rw [map_pow, hk])).of_pow`. Take `⟨c, ⟨hc, hcI, hcσ⟩, -⟩` from `existsUnique_unramified_cocycle_frobenius_value (l := l) (A := ℚ_[l]) (V := ℚ_[l]) (1 : Representation ℚ_[l] (GQ v) ℚ_[l]) continuous_snd (fun _ _ => rfl) σ hσ 1`. Establish `hadd : ∀ g h, c (g * h) = c g + c h` using `fun g h => hc.2 g h`.
+
+Establish `hcc : Continuous c` using `hc.1`. Establish `hc1 : c 1 = 0` using `hcI 1 (one_mem _)`. Set `f : GQ v →* B` to `{ toFun := fun g => IsNilpotent.exp (c g • x) map_one' := by rw [hc1, zero_smul, IsNilpotent.exp_zero] map_mul' := fun g h => by`. Rewrite using `[hadd, add_smul, IsNilpotent.exp_add_of_commute (Commute.all _ _) (hx.smul _) (hx.smul _)] }`. Establish `hf : Continuous f`.
+
+Take `⟨k, hk⟩` from `hx`. Establish `: (f : GQ v → B) = fun g => ∑ i ∈ Finset.range k, ((((i.factorial : ℚ)⁻¹ : ℚ) : ℚ_[l]) * c g ^ i) • x ^ i`. Use function extensionality and compare the values at `g`. Express the relevant statement in the definitionally equal form `IsNilpotent.exp (c g • x) = _`. Rewrite using `[IsNilpotent.exp_eq_sum (k := k) (by rw [smul_pow, hk, smul_zero])]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul, Rat.cast_smul_eq_qsmul, smul_pow]`. Rewrite using `[this]`. Use `fun_prop`. Establish `hfI : ∀ g ∈ Iq v, f g = 1` using `fun g hg => by`.
+
+Express the relevant statement in the definitionally equal form `IsNilpotent.exp (c g • x) = 1`. Rewrite using `[hcI g hg, zero_smul, IsNilpotent.exp_zero]`. Use `⟨f.toHomUnits, hf, fun g hg => Units.ext (hfI g hg), fun g => ?_⟩` and prove the remaining obligations. Set `f1 : GQ v →* B'` to `(p : B →* B').comp f`. Set `f2 : GQ v →* B'` to `(Units.coeHom B').comp u'`.
+
+Establish `hcl : IsClosed ((f1.eqLocus f2 : Subgroup (GQ v)) : Set (GQ v))` using `isClosed_eq ((IsModuleTopology.continuous_of_linearMap p.toLinearMap).comp hf) hc'`. Establish `hle : Iq v ⊔ Subgroup.zpowers σ ≤ f1.eqLocus f2`. Use `sup_le (fun k hk => ?_) ((Subgroup.zpowers_le).2 ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `p (f k) = (u' k : B')`. Rewrite using `[hfI k hk, hI' k hk, map_one, Units.val_one]`.
+
+Express the relevant statement in the definitionally equal form `p (IsNilpotent.exp (c σ • x)) = (u' σ : B')`. Rewrite using `[hcσ, one_smul, IsNilpotent.map_exp hx, he', add_sub_cancel]`. Use `Subgroup.topologicalClosure_minimal _ hle hcl` as an intermediate fact. Rewrite `this` using `[frobDense σ hσ]`. Conclude with `this (Subgroup.mem_top g)`.
+-/
 theorem UpperTheory.lift_unramified_unipotent_character :
     ∀ {v l : ℕ} [Fact v.Prime] [Fact l.Prime] {B B' : Type} [CommRing B] [CommRing B'] [Algebra ℚ_[l] B] [Module.Finite ℚ_[l] B] [Algebra ℚ_[l] B'] [Module.Finite ℚ_[l] B'] (p : B →ₐ[ℚ_[l]] B'), Function.Surjective p → (∀ a, p a = 0 → IsNilpotent a) → ∀ u' : GQ v →* B'ˣ, QCont l (fun g => (u' g : B')) → (∀ g ∈ Iq v, u' g = 1) → (∀ g, IsNilpotent ((u' g : B') - 1)) → ∃ u : GQ v →* Bˣ, QCont l (fun g => (u g : B)) ∧ (∀ g ∈ Iq v, u g = 1) ∧ ∀ g, p (u g : B) = (u' g : B') := by
   intro v l _ _ B B' _ _ _ _ _ _ p hp hker u' hc' hI' hn'

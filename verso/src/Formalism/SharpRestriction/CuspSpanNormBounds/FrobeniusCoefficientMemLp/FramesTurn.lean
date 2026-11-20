@@ -11,6 +11,11 @@ open MeasureTheory Matrix Formalism.QuantumDeterminants Formalism.MainNotions.S 
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Unfold `blockW at hne`. Use `split_ifs at hne with hi hj hij`. Rewrite using `[dT_mid i hi.1 hi.2.le, dT_mid j hj.1 hj.2.le]`. Conclude with `absurd rfl hne`. Rewrite using `[hij]`.
+
+Conclude with `absurd rfl hne`.
+-/
 theorem blockW_dT (h : Matrix (Fin k) (Fin k) ℂ) (i j : Fin (2 * r + k + 1)) (hne : blockW k r h i j ≠ 0) :
     dT k r i = dT k r j := by
   unfold blockW at hne
@@ -20,6 +25,43 @@ theorem blockW_dT (h : Matrix (Fin k) (Fin k) ℂ) (i j : Fin (2 * r + k + 1)) (
   · rw [hij]
   · exact absurd rfl hne
 
+/- English proof (translation)
+Unfold `IsFrameW at hg`. Take `⟨hU, hfix, -⟩` from `hg`. Establish `hU' : gᴴ * Hpk k r * g = Hpk k r` using `hU`. Establish `hb1 : ∀ e : Fin (2 * r + k + 1), bvec e e = 1` using `fun e => by simp [bvec]`. Establish `hb0 : ∀ e p : Fin (2 * r + k + 1), p ≠ e → bvec e p = 0` using `fun e p hp => by`.
+
+Simplify using `[bvec, Pi.single_apply, hp]`. Establish `hfixv : ∀ e : Fin (2 * r + k + 1), (e.val < r ∨ r + k < e.val) → g *ᵥ bvec e = bvec e`. Introduce `e he`. Establish `heL` using `e.isLt`. Break down `he with he | he` into its components or cases.
+
+Establish `hee : e = eI k r ⟨e.val, he⟩` using `Fin.ext rfl`. Rewrite using `[hee]`. Conclude with `(hfix _).1`. Establish `ha : 2 * r + k - e.val < r` using `by omega`. Establish `hee : e = esI k r ⟨2 * r + k - e.val, ha⟩` using `Fin.ext (by show e.val = 2 * r + k - (2 * r + k - e.val); omega)`.
+
+Rewrite using `[hee]`. Conclude with `(hfix _).2`. Establish `hcol : ∀ e : Fin (2 * r + k + 1), (e.val < r ∨ r + k < e.val) → ∀ i, g i e = bvec e i`. Introduce `e he i`. Establish `hi` using `congrFun (hfixv e he) i`.
+
+Rewrite using `[← hi]`. Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[Finset.sum_eq_single e (fun b _ hb => by rw [hb0 e b hb, mul_zero]) (fun h => absurd (Finset.mem_univ e) h), hb1, mul_one]`. Establish `hHrow : ∀ q b : Fin (2 * r + k + 1), (q.val < r ∨ r + k < q.val) → Hpk k r q b = if q.val + b.val = 2 * r + k then 1 else 0`. Introduce `q b hq`.
+
+Use `q.isLt` as an intermediate fact. Use `b.isLt` as an intermediate fact. Unfold `Hpk`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`. Establish `hrow : ∀ i : Fin (2 * r + k + 1), (i.val < r ∨ r + k < i.val) → ∀ j, g i j = bvec i j`.
+
+Introduce `i hi j`. Establish `hiL` using `i.isLt`. Take `⟨q, hqv⟩ : ∃ q : Fin (2 * r + k + 1), q.val = 2 * r + k - i.val` from `⟨⟨2 * r + k - i.val, by omega⟩, rfl⟩`. Establish `hqo : q.val < r ∨ r + k < q.val` using `by omega`. Establish `hE` using `congrFun (congrFun hU' q) j`.
+
+Establish `hgHq : ∀ b, (gᴴ * Hpk k r) q b = Hpk k r q b`. Introduce `b`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single q]`. Rewrite using `[Matrix.conjTranspose_apply, hcol q hqo q, hb1, star_one, one_mul]`. Introduce `a _ ha`.
+
+Rewrite using `[Matrix.conjTranspose_apply, hcol q hqo a, hb0 q a ha, star_zero, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ q) h`. Rewrite `hE` using `[Matrix.mul_apply]`. Simplify using `only [hgHq] at hE`.
+
+Rewrite `hE` using `[Finset.sum_eq_single i]`. Rewrite `hE` using `[hHrow q i hqo, if_pos (by omega), one_mul]`. Rewrite using `[hE, hHrow q j hqo]`. Distinguish the cases in `hji : j = i`. Rewrite using `[hji, hb1, if_pos (by omega)]`.
+
+Rewrite using `[hb0 i j hji, if_neg (by intro h; apply hji; ext; omega)]`. Introduce `b _ hb`. Rewrite using `[hHrow q b hqo, if_neg (by intro h; apply hb; ext; omega), zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+
+Establish `hg_comm : tT k r * g = g * tT k r`. Use extensionality with `i j`. Simplify using `only [tT, Matrix.diagonal_mul, Matrix.mul_diagonal]`. Distinguish the cases in `hi : i.val < r ∨ r + k < i.val`. Rewrite using `[hrow i hi j]`.
+
+Distinguish the cases in `hij : j = i`. Rewrite using `[hij]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hb0 i j hij, mul_zero, zero_mul]`. Distinguish the cases in `hj : j.val < r ∨ r + k < j.val`.
+
+Rewrite using `[hcol j hj i]`. Establish `hij : i ≠ j` using `fun h => hi (by rw [h]; exact hj)`. Rewrite using `[hb0 j i hij, mul_zero, zero_mul]`. Use `push_neg at hi hj`. Rewrite using `[dT_mid i hi.1 hi.2, dT_mid j hj.1 hj.2, mul_comm]`.
+
+Establish `hB_comm : tT k r * blockW k r h = blockW k r h * tT k r`. Establish `h1 : tT k r * blockW k r h * tTi k r = blockW k r h` using `conj_eq_self (fun i j hne => blockW_dT h i j hne)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc _ (tTi k r), tTi_mul_tT, Matrix.mul_one]`. Use `_ = blockW k r h * tT k r := by rw [h1]`.
+
+Establish `hginv_comm : tT k r * g⁻¹ = g⁻¹ * tT k r`. Distinguish the cases in `hdet : IsUnit g.det`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.nonsing_inv_apply_not_isUnit g hdet, Matrix.mul_zero, Matrix.zero_mul]`. Establish `hL : tT k r * (g * blockW k r h * g⁻¹) = g * blockW k r h * g⁻¹ * tT k r`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = g * (tT k r * blockW k r h) * g⁻¹ := by rw [hg_comm]; simp only [Matrix.mul_assoc]`. Use `_ = g * blockW k r h * (tT k r * g⁻¹) := by rw [hB_comm]; simp only [Matrix.mul_assoc]`. Use `_ = g * blockW k r h * g⁻¹ * tT k r := by rw [hginv_comm]; simp only [Matrix.mul_assoc]`.
+
+Rewrite using `[hL]`. Simplify using `only [Matrix.mul_assoc, tT_mul_tTi, Matrix.mul_one]`.
+-/
 theorem frame_conj_fix {z : Fin (2 * r + k + 1) → ℂ} {g : Mx k r} (hg : IsFrameW k r z g) (h : Matrix (Fin k) (Fin k) ℂ) :
     tT k r * (g * blockW k r h * g⁻¹) * tTi k r = g * blockW k r h * g⁻¹ := by
   unfold IsFrameW at hg
@@ -110,6 +152,15 @@ theorem frame_conj_fix {z : Fin (2 * r + k + 1) → ℂ} {g : Mx k r} (hg : IsFr
   rw [hL]
   simp only [Matrix.mul_assoc, tT_mul_tTi, Matrix.mul_one]
 
+/- English proof (translation)
+Establish `h0` using `L.hσ`. Unfold `IsDSHpk at h0 ⊢`. Take `⟨P, hP, hD⟩` from `h0`. Unfold `IsCayleyU at hP`. Take `⟨hC, hU⟩` from `hP`.
+
+Unfold `IsCayley at hC`. Establish `hfun : (fun g => (fun x => L.σ (tT k r * x * tTi k r)) ((P * tT k r)⁻¹ * g * (P * tT k r))) = fun g => L.σ (P⁻¹ * g * P)`. Use function extensionality and compare the values at `g`. Simplify using `only [Matrix.mul_inv_rev, tT_inv]`. Use `congr 1`.
+
+Simplify using `only [← Matrix.mul_assoc, tT_mul_tTi, Matrix.one_mul]`. Simplify using `only [Matrix.mul_assoc, tT_mul_tTi, Matrix.mul_one]`. Use `⟨P * tT k r, ?_, by rw [hfun]; exact hD⟩` and prove the remaining obligations. Unfold `IsCayleyU IsCayley`. Use `⟨⟨hC.1.mul ((Matrix.isUnit_iff_isUnit_det _).mpr (Matrix.isUnit_det_of_right_inverse (tT_mul_tTi k r))), ?_⟩, Submonoid.mul_mem _ hU (tT_unitary k r)⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.conjTranspose_mul, conjT_tT]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Hpk k r := by rw [hC.2]; exact conjI_eq_self (fun i j h => Hpk_ne_dT i j h)`.
+-/
 theorem turn_hσ (L : LocBessel k r) : IsDSHpk k r L.ε L.lam (fun x => L.σ (tT k r * x * tTi k r)) := by
   have h0 := L.hσ
   unfold IsDSHpk at h0 ⊢
@@ -133,12 +184,18 @@ theorem turn_hσ (L : LocBessel k r) : IsDSHpk k r L.ε L.lam (fun x => L.σ (tT
         simp only [Matrix.mul_assoc]
     _ = Hpk k r := by rw [hC.2]; exact conjI_eq_self (fun i j h => Hpk_ne_dT i j h)
 
+/- English proof (translation)
+Establish `h0` using `L.hπ`. Unfold `IsHCTypeW at h0 ⊢`. Take `⟨g, hg, hH⟩` from `h0`. Conclude with `⟨g, hg, by simpa only [frame_conj_fix hg] using hH⟩`.
+-/
 theorem turn_hπ (L : LocBessel k r) : IsHCTypeW k r L.z L.u (fun x => L.π (tT k r * x * tTi k r)) := by
   have h0 := L.hπ
   unfold IsHCTypeW at h0 ⊢
   obtain ⟨g, hg, hH⟩ := h0
   exact ⟨g, hg, by simpa only [frame_conj_fix hg] using hH⟩
 
+/- English proof (translation)
+Establish `h0` using `L.hπ'`. Unfold `IsHCTypeW at h0 ⊢`. Take `⟨g, hg, hH⟩` from `h0`. Conclude with `⟨g, hg, by simpa only [frame_conj_fix hg] using hH⟩`.
+-/
 theorem turn_hπ' (L : LocBessel k r) : IsHCTypeW k r L.z' L.u' (fun x => L.π' (tT k r * x * tTi k r)) := by
   have h0 := L.hπ'
   unfold IsHCTypeW at h0 ⊢
@@ -175,11 +232,19 @@ abbrev turnF (L : LocBessel k r) (ka : ℝ) (f : Mx k r → (L.Wq →L[ℂ] L.Wp
     Mx k r → ((turnL L ka).Wq →L[ℂ] (turnL L ka).Wp) :=
   fun x => f (tT k r * x * tTi k r)
 
+/- English proof (translation)
+Unfold `cOfDpsi`. Use `push_cast`. Take the linear combination `(-2 * (ka : ℂ)) * Complex.I_sq`.
+-/
 theorem turn_c (ka : ℝ) : cOfDpsi (ka : ℂ) * Complex.I = ((2 * ka : ℝ) : ℂ) := by
   unfold cOfDpsi
   push_cast
   linear_combination (-2 * (ka : ℂ)) * Complex.I_sq
 
+/- English proof (translation)
+Unfold `IsKFinCoefH at hf ⊢`. Take `⟨P, Q, hQ, hP, hf⟩` from `hf`. Establish `key : ∀ v : L.Hs, IsKFinHpk L.σ v → IsKFinHpk (fun x => L.σ (tT k r * x * tTi k r)) v`. Introduce `v hv`. Unfold `IsKFinHpk at hv ⊢`.
+
+Take `⟨S, hS, hvS, hinv⟩` from `hv`. Use `⟨S, hS, hvS, fun g hg x hx => hinv _ ⟨?_, ?_⟩ x hx⟩` and prove the remaining obligations. Conclude with `UH_mul (UH_mul (tT_mem_UH k r) hg.1) (tTi_mem_UH k r)`. Conclude with `Submonoid.mul_mem _ (Submonoid.mul_mem _ (tT_unitary k r) hg.2) (tTi_unitary k r)`. Conclude with `⟨P, Q, fun w => key _ (hQ w), fun x => key _ (hP x), fun g => hf _⟩`.
+-/
 theorem turn_kfin (L : LocBessel k r) (ka : ℝ) {f : Mx k r → (L.Wq →L[ℂ] L.Wp)} (hf : IsKFinCoefH L.σ f) :
     IsKFinCoefH (turnL L ka).σ (turnF L ka f) := by
   unfold IsKFinCoefH at hf ⊢
@@ -193,12 +258,23 @@ theorem turn_kfin (L : LocBessel k r) (ka : ℝ) {f : Mx k r → (L.Wq →L[ℂ]
     · exact Submonoid.mul_mem _ (Submonoid.mul_mem _ (tT_unitary k r) hg.2) (tTi_unitary k r)
   exact ⟨P, Q, fun w => key _ (hQ w), fun x => key _ (hP x), fun g => hf _⟩
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mul_assoc, tT_mul_tTi, Matrix.one_mul]`.
+-/
 theorem tT_mul_tTi_assoc (M : Mx k r) : tT k r * (tTi k r * M) = M := by
   rw [← Matrix.mul_assoc, tT_mul_tTi, Matrix.one_mul]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mul_assoc, tTi_mul_tT, Matrix.one_mul]`.
+-/
 theorem tTi_mul_tT_assoc (M : Mx k r) : tTi k r * (tT k r * M) = M := by
   rw [← Matrix.mul_assoc, tTi_mul_tT, Matrix.one_mul]
 
+/- English proof (translation)
+Take `⟨⟨h, n⟩, ⟨h', n'⟩⟩` from `p`. Establish `hc' : cOfDpsi (ka : ℂ) * Complex.I = L.c` using `by rw [hc]; exact turn_c ka`. Simplify using `only [besselIntg, thP, Prod.map_apply, of_cA, turnL, turnF]`. Rewrite using `[psi_conjI L.hz.1 hc', psi_conjI L.hz'.1 hc']`. Simplify using `only [← conjI_inv]`.
+
+Simplify using `only [Matrix.mul_assoc, tT_mul_tTi_assoc, tT_mul_tTi, Matrix.mul_one]`.
+-/
 theorem besselIntg_turn (L : LocBessel k r) (ka : ℝ) (hc : L.c = ((2 * ka : ℝ) : ℂ)) (f : Mx k r → (L.Wq →L[ℂ] L.Wp))
     (g : Mx k r) (p : PairSp k r) :
     besselIntg (turnL L ka) (turnF L ka f) g (thP k r p) = besselIntg L f (tT k r * g * tTi k r) p := by
@@ -209,6 +285,11 @@ theorem besselIntg_turn (L : LocBessel k r) (ka : ℝ) (hc : L.c = ((2 * ka : �
   simp only [← conjI_inv]
   simp only [Matrix.mul_assoc, tT_mul_tTi_assoc, tT_mul_tTi, Matrix.mul_one]
 
+/- English proof (translation)
+Rewrite using `[J_eq_integral, J_eq_integral]`. Establish `hP : pairMeas (turnL L ka) = pairMeas L` using `rfl`. Rewrite using `[hP]`. Use `conv_lhs => rw [← map_thP_pairMeas L, ← thE_coe, integral_map_equiv]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations.
+
+Rewrite using `[thE_coe]`. Conclude with `besselIntg_turn L ka hc f g p`.
+-/
 theorem J_turn (L : LocBessel k r) (ka : ℝ) (hc : L.c = ((2 * ka : ℝ) : ℂ)) (f : Mx k r → (L.Wq →L[ℂ] L.Wp))
     (g : Mx k r) : (turnL L ka).J (turnF L ka f) g = L.J f (tT k r * g * tTi k r) := by
   rw [J_eq_integral, J_eq_integral]
@@ -219,6 +300,9 @@ theorem J_turn (L : LocBessel k r) (ka : ℝ) (hc : L.c = ((2 * ka : ℝ) : ℂ)
   rw [thE_coe]
   exact besselIntg_turn L ka hc f g p
 
+/- English proof (translation)
+Unfold `jNorm2`. Use `congr 1`. Use function extensionality and compare the values at `p`. Rewrite using `[J_turn L ka hc, conj_eq_self (bigCell_dT _ _)]`.
+-/
 theorem jNorm2_turn (L : LocBessel k r) (ka : ℝ) (hc : L.c = ((2 * ka : ℝ) : ℂ)) (f : Mx k r → (L.Wq →L[ℂ] L.Wp))
     (μsec : ℂ → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) : jNorm2 (turnL L ka) (turnF L ka f) μsec = jNorm2 L f μsec := by
   unfold jNorm2
@@ -226,6 +310,9 @@ theorem jNorm2_turn (L : LocBessel k r) (ka : ℝ) (hc : L.c = ((2 * ka : ℝ) :
   funext p
   rw [J_turn L ka hc, conj_eq_self (bigCell_dT _ _)]
 
+/- English proof (translation)
+Unfold `OrbInt`. Rewrite using `[← thE_coe, integral_map_equiv]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Use `show besselIntg (turnL L ka) (turnF L ka f) (tTi k r * g * tT k r) (thE k r p) = besselIntg L f g p`. Rewrite using `[thE_coe, besselIntg_turn L ka hc f, conj_conjI]`.
+-/
 theorem OrbInt_turn (L : LocBessel k r) (ka : ℝ) (hc : L.c = ((2 * ka : ℝ) : ℂ)) (f : Mx k r → (L.Wq →L[ℂ] L.Wp))
     (g : Mx k r) (ν : Measure (PairSp k r)) :
     OrbInt (turnL L ka) (turnF L ka f) (tTi k r * g * tT k r) (ν.map (thP k r)) = OrbInt L f g ν := by
@@ -235,6 +322,13 @@ theorem OrbInt_turn (L : LocBessel k r) (ka : ℝ) (hc : L.c = ((2 * ka : ℝ) :
   show besselIntg (turnL L ka) (turnF L ka f) (tTi k r * g * tT k r) (thE k r p) = besselIntg L f g p
   rw [thE_coe, besselIntg_turn L ka hc f, conj_conjI]
 
+/- English proof (translation)
+Establish `h1 : tT k r * tTi k r = 1` using `tT_mul_tTi k r`. Establish `h2 : tTi k r * tT k r = 1` using `tTi_mul_tT k r`. Establish `hinvT : (tT k r)⁻¹ = tTi k r` using `Matrix.inv_eq_right_inv h1`. Establish `hinvTi : (tTi k r)⁻¹ = tT k r` using `Matrix.inv_eq_right_inv h2`. Establish `e : ∀ M : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ, Matrix.of (fun i j => M i j) = M` using `fun M => rfl`.
+
+Take `⟨⟨x1, x2⟩, ⟨x3, x4⟩⟩` from `x`. Use `Prod.ext (Prod.ext rfl ?_) (Prod.ext rfl ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `i j show (tTi k r * Matrix.of (fun i j => (a * Matrix.of x2) i j) * tT k r) i j = ((tTi k r * a * tT k r) * Matrix.of (fun i j => (tTi k r * Matrix.of x2 * tT k r) i j)) i j`. Rewrite using `[e, e]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Simplify using `only [← Matrix.mul_assoc (tT k r) (tTi k r), h1, Matrix.one_mul]`. Use function extensionality and compare the values at `i j show (tTi k r * Matrix.of (fun i j => (g⁻¹ * a * g * Matrix.of x4) i j) * tT k r) i j = ((tTi k r * g * tT k r)⁻¹ * (tTi k r * a * tT k r) * (tTi k r * g * tT k r) * Matrix.of (fun i j => (tTi k r * Matrix.of x4 * tT k r) i j)) i j`. Rewrite using `[e, e, Matrix.mul_inv_rev, Matrix.mul_inv_rev, hinvT, hinvTi]`. Simplify using `only [Matrix.mul_assoc]`. Simplify using `only [← Matrix.mul_assoc (tT k r) (tTi k r), h1, Matrix.one_mul]`.
+-/
 theorem thP_stabAct (g a : Mx k r) (x : PairSp k r) :
     thP k r (stabAct g a x) = stabAct (tTi k r * g * tT k r) (tTi k r * a * tT k r) (thP k r x) := by
   have h1 : tT k r * tTi k r = 1 := tT_mul_tTi k r
@@ -259,6 +353,13 @@ theorem thP_stabAct (g a : Mx k r) (x : PairSp k r) :
     simp only [Matrix.mul_assoc]
     simp only [← Matrix.mul_assoc (tT k r) (tTi k r), h1, Matrix.one_mul]
 
+/- English proof (translation)
+Introduce `F hF`. Establish `hP : pairMeas (turnL L ka) = pairMeas L` using `rfl`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hP, thE_coe, map_thP_pairMeas]`. Use `_ = ∫⁻ x, F (thE k r x) ∂pairMeas L := lintegral_map_equiv _ _`.
+
+Use `_ = ∫⁻ x, (∫⁻ a, F (thE k r (stabAct g (Matrix.of a) x)) ∂μR) ∂ν := h (fun x => F (thE k r x)) (hF.comp (thE k r).measurable)`. Use `_ = ∫⁻ x, (∫⁻ a, F (stabAct (tTi k r * g * tT k r) (Matrix.of (cAE k r a)) (thE k r x)) ∂μR) ∂ν := by`. Use `lintegral_congr fun x => lintegral_congr fun a => ?_` and prove the remaining obligations. Rewrite using `[thE_coe, thP_stabAct, cAE_coe, of_cA]`. Use `_ = ∫⁻ x, (∫⁻ a, F (stabAct (tTi k r * g * tT k r) (Matrix.of a) (thE k r x)) ∂(μR.map (cAE k r))) ∂ν := by`.
+
+Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[lintegral_map_equiv]`. Use `_ = ∫⁻ x, (∫⁻ a, F (stabAct (tTi k r * g * tT k r) (Matrix.of a) x) ∂(μR.map (cAE k r))) ∂(ν.map (thE k r)) := (lintegral_map_equiv (fun x => ∫⁻ a, F (stabAct (tTi k r * g * tT k r) (Matrix.of a) x) ∂(μR.map (cAE k r))) (thE k r)).symm`. Use `_ = _ := by rw [cAE_coe, thE_coe]`.
+-/
 theorem isOrbQuot_turn (L : LocBessel k r) (ka : ℝ) {g : Mx k r} {μR : Measure (Mt k r)} {ν : Measure (PairSp k r)}
     (h : IsOrbQuot L g μR ν) : IsOrbQuot (turnL L ka) (tTi k r * g * tT k r) (μR.map (cA k r)) (ν.map (thP k r)) := by
   intro F hF
@@ -279,6 +380,13 @@ theorem isOrbQuot_turn (L : LocBessel k r) (ka : ℝ) {g : Mx k r} {μR : Measur
           (thE k r)).symm
     _ = _ := by rw [cAE_coe, thE_coe]
 
+/- English proof (translation)
+Establish `hc' : cOfDpsi (ka : ℂ) * Complex.I = L.c` using `by rw [hc]; exact turn_c ka`. Introduce `a' ha'`. Establish `ha : tT k r * a' * tTi k r ∈ RStab k r g`. Rewrite using `[← conjI_mem_RStab_iff g, conjI_conj]`. Conclude with `ha'`.
+
+Establish `e1 : a' = tTi k r * (tT k r * a' * tTi k r) * tT k r` using `(conjI_conj a').symm`. Establish `e2 : (tTi k r * g * tT k r)⁻¹ * a' * (tTi k r * g * tT k r) = tTi k r * (g⁻¹ * (tT k r * a' * tTi k r) * g) * tT k r`. Rewrite using `[← conjI_inv]`. Simplify using `only [Matrix.mul_assoc, tTi_mul_tT_assoc, tT_mul_tTi_assoc, tT_mul_tTi, tTi_mul_tT, Matrix.mul_one]`. Use `show psi k r L.z (cOfDpsi (ka : ℂ)) a' = psi k r L.z' (cOfDpsi (ka : ℂ)) ((tTi k r * g * tT k r)⁻¹ * a' * (tTi k r * g * tT k r))`.
+
+Rewrite using `[e2]`. Use `conv_lhs => rw [e1]`. Rewrite using `[psi_conjI L.hz.1 hc', psi_conjI L.hz'.1 hc']`. Conclude with `h _ ha`.
+-/
 theorem isRelStab_turn (L : LocBessel k r) (ka : ℝ) (hc : L.c = ((2 * ka : ℝ) : ℂ)) {g : Mx k r} (h : IsRelStab L g) :
     IsRelStab (turnL L ka) (tTi k r * g * tT k r) := by
   have hc' : cOfDpsi (ka : ℂ) * Complex.I = L.c := by rw [hc]; exact turn_c ka
@@ -296,6 +404,13 @@ theorem isRelStab_turn (L : LocBessel k r) (ka : ℝ) (hc : L.c = ((2 * ka : ℝ
   rw [psi_conjI L.hz.1 hc', psi_conjI L.hz'.1 hc']
   exact h _ ha
 
+/- English proof (translation)
+Use `measurePreserving_pi (fun _ => volume) (fun _ => volume) (fun s => ?_)` and prove the remaining obligations. Establish `hdet : LinearMap.det (LinearMap.mulLeft ℝ (u s)) = 1`. Establish `h1 : LinearMap.det (LinearMap.mulLeft ℝ (u s)) = Algebra.norm ℝ (u s)`. Rewrite using `[Algebra.norm_apply]`. Both sides reduce to the same expression.
+
+Rewrite using `[h1, Algebra.norm_complex_apply, hu s]`. Use `⟨(LinearMap.mulLeft ℝ (u s)).continuous_of_finiteDimensional.measurable, ?_⟩` and prove the remaining obligations. Establish `h` using `MeasureTheory.Measure.map_linearMap_addHaar_eq_smul_addHaar (volume : Measure ℂ) (f := LinearMap.mulLeft ℝ (u s)) (by rw [hdet]; norm_num)`. Rewrite `h` using `[hdet]`. Simplify using `only [inv_one, abs_one, ENNReal.ofReal_one, one_smul] at h`.
+
+Conclude with `h`.
+-/
 theorem rot_mp {S : Type*} [Fintype S] (u : S → ℂ) (hu : ∀ s, Complex.normSq (u s) = 1) :
     MeasurePreserving (fun (v : S → ℂ) s => u s * v s) volume volume := by
   refine measurePreserving_pi (fun _ => volume) (fun _ => volume) (fun s => ?_)
@@ -311,6 +426,15 @@ theorem rot_mp {S : Type*} [Fintype S] (u : S → ℂ) (hu : ∀ s, Complex.norm
   simp only [inv_one, abs_one, ENNReal.ofReal_one, one_smul] at h
   exact h
 
+/- English proof (translation)
+Unfold `flagMat fvec`. Distinguish the cases in `hi : i.val < r`. Rewrite using `[dif_pos hi, dif_pos hi, if_pos hi]`. Establish `hv : tT k r *ᵥ (if h : j.val < r then bvec (eI k r ⟨j.val, h⟩) else z) = Complex.I ^ j.val • (if h : j.val < r then bvec (eI k r ⟨j.val, h⟩) else z)`. Distinguish the cases in `hj : j.val < r`.
+
+Rewrite using `[dif_pos hj]`. Use function extensionality and compare the values at `p`. Simplify using `only [tT, Matrix.mulVec_diagonal, Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `hp : p = eI k r ⟨j.val, hj⟩`. Rewrite using `[hp, dT_eI]`.
+
+Establish `hb : bvec (eI k r ⟨j.val, hj⟩) p = 0` using `by simp [bvec, Pi.single_apply, hp]`. Rewrite using `[hb, mul_zero, mul_zero]`. Rewrite using `[dif_neg hj, tT_mulVec_Wb hz, show j.val = r by have := j.isLt; omega]`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hv, Matrix.mulVec_smul]`. Simplify using `only [tTi, Matrix.mulVec_diagonal, dT_eI, Fin.val_mk, Pi.smul_apply, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[dif_neg hi, dif_neg hi, if_neg hi, one_mul]`.
+-/
 theorem flagMat_conjI {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (x : Mx k r) (i j : Fin (r + 1)) :
     flagMat k r z (tTi k r * x * tT k r) i j =
       (if i.val < r then star (Complex.I ^ i.val) * Complex.I ^ j.val else 1) * flagMat k r z x i j := by
@@ -333,6 +457,11 @@ theorem flagMat_conjI {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (x : M
     ring
   · rw [dif_neg hi, dif_neg hi, if_neg hi, one_mul]
 
+/- English proof (translation)
+Use `continuous_pi fun q => ?_` and prove the remaining obligations. Unfold `flagMat`. Use `split_ifs with hi h2`. Establish `hc : Continuous fun a : Mt k r => Matrix.of a *ᵥ fvec k r z q.1.2` using `Continuous.matrix_mulVec continuous_id continuous_const`. Conclude with `(continuous_apply (eI k r ⟨q.1.1.val, hi⟩)).comp hc`.
+
+Conclude with `continuous_const`. Conclude with `continuous_const`.
+-/
 theorem continuous_rootCoordsS {z : Fin (2 * r + k + 1) → ℂ} (S : Finset (Fin (r + 1) × Fin (r + 1))) :
     Continuous (fun (x : Mt k r) (q : S) => flagMat k r z (Matrix.of x) q.1.1 q.1.2) := by
   refine continuous_pi fun q => ?_
@@ -344,11 +473,25 @@ theorem continuous_rootCoordsS {z : Fin (2 * r + k + 1) → ℂ} (S : Finset (Fi
   · exact continuous_const
   · exact continuous_const
 
+/- English proof (translation)
+Use `show ‖cOfDpsi (ka : ℂ)‖ = ‖L.c‖`. Rewrite using `[hc, ← turn_c, norm_mul, Complex.norm_I, mul_one]`.
+-/
 theorem turn_normc (L : LocBessel k r) (ka : ℝ) (hka : 0 < ka) (hc : L.c = ((2 * ka : ℝ) : ℂ)) :
     ‖(turnL L ka).c‖ = ‖L.c‖ := by
   show ‖cOfDpsi (ka : ℂ)‖ = ‖L.c‖
   rw [hc, ← turn_c, norm_mul, Complex.norm_I, mul_one]
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `h`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← cAE_coe, MeasurableEquiv.map_apply]`. Use `h1 using 2` and compare the differences between its conclusion and the goal. Use extensionality with `x`.
+
+Simplify using `only [Set.mem_preimage, Set.mem_ofPred_eq, cAE_coe, of_cA, conjI_mem_RStab_iff]`. Rewrite using `[turn_normc L ka hka hc] show Measure.map (fun (x : Mt k r) (q : rootPat (turnPt p)) => flagMat k r L.z (Matrix.of x) q.1.1 q.1.2) (μR.map (cA k r)) = _`. Rewrite using `[rootPat_turnPt]`. Establish `h2' : Measure.map (fun (x : Mt k r) (q : rootPat p) => flagMat k r L.z (Matrix.of x) q.1.1 q.1.2) μR = ENNReal.ofReal ((‖L.c‖ / (2 * Real.pi)) ^ (rootPat p).card) • volume` using `h2`. Use `set u : rootPat p → ℂ := fun q => if q.1.1.val < r then star (Complex.I ^ q.1.1.val) * Complex.I ^ q.1.2.val else 1`.
+
+Establish `hu : ∀ q, Complex.normSq (u q) = 1`. Introduce `q`. Simplify using `only [u]`. Use `split_ifs`. Rewrite using `[map_mul, Complex.star_def, Complex.normSq_conj]`.
+
+Simplify using `[map_pow]`. Simplify using the standard rewrite rules. Establish `e : (fun (x : Mt k r) (q : rootPat p) => flagMat k r L.z (Matrix.of x) q.1.1 q.1.2) ∘ cA k r = (fun (v : rootPat p → ℂ) q => u q * v q) ∘ (fun (x : Mt k r) (q : rootPat p) => flagMat k r L.z (Matrix.of x) q.1.1 q.1.2)`. Use function extensionality and compare the values at `x q`. Simplify using `only [Function.comp_apply, of_cA]`.
+
+Conclude with `flagMat_conjI L.hz.1 _ _ _`. Rewrite using `[Measure.map_map (continuous_rootCoordsS _).measurable continuous_cA.measurable, e, ← Measure.map_map (rot_mp u hu).measurable (continuous_rootCoordsS _).measurable, h2', Measure.map_smul, (rot_mp u hu).map_eq]`.
+-/
 theorem isRootMeas_turn (L : LocBessel k r) (ka : ℝ) (hka : 0 < ka) (hc : L.c = ((2 * ka : ℝ) : ℂ))
     {p : Point ℂ (r + 1)} {g : Mx k r} {μR : Measure (Mt k r)} (h : IsRootMeas L p g μR) :
     IsRootMeas (turnL L ka) (turnPt p) (tTi k r * g * tT k r) (μR.map (cA k r)) := by
@@ -380,6 +523,9 @@ theorem isRootMeas_turn (L : LocBessel k r) (ka : ℝ) (hka : 0 < ka) (hc : L.c 
       ← Measure.map_map (rot_mp u hu).measurable (continuous_rootCoordsS _).measurable, h2', Measure.map_smul,
       (rot_mp u hu).map_eq]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨conjI_mem_UH h.1, Zhat_conjI_turn L.hz.1 L.hz'.1 h.2⟩`.
+-/
 theorem isPtRep_turn (L : LocBessel k r) (ka : ℝ) {p : Point ℂ (r + 1)} {g : Mx k r} (h : IsPtRepO L p g) :
     IsPtRep (turnL L ka) (turnPt p) (tTi k r * g * tT k r) :=
   ⟨conjI_mem_UH h.1, Zhat_conjI_turn L.hz.1 L.hz'.1 h.2⟩

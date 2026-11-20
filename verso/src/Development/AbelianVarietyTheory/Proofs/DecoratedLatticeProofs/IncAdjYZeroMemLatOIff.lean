@@ -25,6 +25,11 @@ noncomputable section
 namespace GlobalTheory.SeeSaw.LastPrim
 variable {D : D7}
 
+/- English proof (translation)
+Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨β, -, hβ, c, -, x, -, rfl⟩` from `hz`. Conclude with `GlobalTheory.FinPl.LatMem.tmul_mem_idAt hβ _`. Consider the case `zero => exact zero_mem _`.
+
+Consider the case `add z z' _ _ hz hz' => exact add_mem hz hz'`. Consider the case `neg z _ hz => exact neg_mem hz`.
+-/
 theorem latV_entry_mem' {S : HSp D} {L : Lat S} {P : Pl D → Prop} {y : Fin S.rank → AE D}
     (hy : y ∈ latV S L P) (i : Fin S.rank) : y i ∈ idAt D P := by
   induction hy using AddSubgroup.closure_induction with
@@ -35,6 +40,13 @@ theorem latV_entry_mem' {S : HSp D} {L : Lat S} {P : Pl D → Prop} {y : Fin S.r
   | add z z' _ _ hz hz' => exact add_mem hz hz'
   | neg z _ hz => exact neg_mem hz
 
+/- English proof (translation)
+Introduce `D ρ B J hρ a y`. Use function extensionality and compare the values at `k`. Establish `hell : ∀ i : Fin ρ, cA D (ell D ρ i) = if i = ⟨ρ - 1, by omega⟩ then 1 else 0`. Introduce `i`. Simplify using `only [ell, Fin.ext_iff]`.
+
+Apply the tactic sequence `split_ifs with h1 h2 h2 <;> first | omega | simp`. Simplify using `only [HypDec.incAdj_apply, HypDec.incY_apply, yZero, zEll, adj_smul, adj_neg, colMul, Matrix.mulVec, dotProduct, Matrix.mul_apply, Matrix.smul_apply, Matrix.neg_apply, adj, Matrix.transpose_apply, Matrix.map_apply, Matrix.vecMulVec_apply, smul_eq_mul, map_mul, map_neg, hell]`. Rewrite using `[Finset.sum_congr rfl fun l _ => by`. Rewrite using `[Finset.sum_eq_single (⟨ρ - 1, by omega⟩ : Fin ρ) (fun i _ hi => by simp [hi]) (fun h => absurd (Finset.mem_univ _) h)]]`. Simplify using `only [if_true, mul_one, Finset.mul_sum, Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem incAdj_yZero_mulVec : ∀ (D : D7) (ρ : ℕ) (B : BesLev D ρ) (J : JacLev D ρ) (hρ : 0 < ρ) (a : AE D) (y : Fin B.V₀.rank → AE D),
     Matrix.mulVec (show Matrix (Fin J.W.rank) (Fin B.V₀.rank) (AE D) from J.d.incAdj B.V₀ (a • yZero B.V₀ ρ (vecB B.o B.ζ))) y =
       colMul J.d.jY ⟨ρ - 1, by omega⟩ (incA D D.host.xi0⁻¹ * cA D a * (∑ l, (∑ m, cA D (ratV (vecB B.o B.ζ) m) * gA B.V₀ m l) * y l)) := by
@@ -53,17 +65,32 @@ theorem incAdj_yZero_mulVec : ∀ (D : D7) (ρ : ℕ) (B : BesLev D ρ) (J : Jac
   refine Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun m _ => ?_
   ring
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[GlobalTheory.FinPl.Model.mem_idAt_iff]`. Rewrite `h`, the goal using `[← Algebra.smul_def]`. Use `conv_rhs => rw [← h]`. Rewrite using `[GlobalTheory.HeisDisj.cA_smul]`.
+-/
 theorem cA_mem_idAt'' {v : Pl D} {y : AE D} (h : y ∈ idAt D (· = v)) : cA D y ∈ idAt D (· = v) := by
   rw [GlobalTheory.FinPl.Model.mem_idAt_iff] at h ⊢
   rw [← Algebra.smul_def] at h ⊢
   conv_rhs => rw [← h]
   rw [GlobalTheory.HeisDisj.cA_smul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `only [colMul, Pi.smul_apply, smul_eq_mul, mul_assoc]`.
+-/
 theorem smul_colMul {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (i : Fin ρ) (s t : AE D) :
     s • colMul d.jY i t = colMul d.jY i (s * t) := by
   funext k
   simp only [colMul, Pi.smul_apply, smul_eq_mul, mul_assoc]
 
+/- English proof (translation)
+Introduce `D ψ hψ S S₀ ρ d L 𝔟 v i h𝔟 hL t ht`. Take `⟨-, h2, -, h4, -, -, h7⟩` from `GlobalTheory.T.fractionalIdealCompletion_properties_at_place D ψ hψ v`. Establish `hAAb : (D.host.AAbar : FI D) ≠ 0` using `GlobalTheory.Member.LatSelfDual.AAbar_ne_zero D`. Establish `hct` using `cA_mem_idAt'' ht`. Establish `hconj : ∀ s, s ∈ idV (D.host.AA : FI D)⁻¹ v ↔ cA D s ∈ idV (D.host.AAbar : FI D)⁻¹ v`.
+
+Introduce `s`. Use `h4 (-1) s` as an intermediate fact. Rewrite `this` using `[_root_.zpow_neg_one, _root_.zpow_neg_one]`. Then use the resulting hypothesis. Rewrite using `[h7, ← inv_inv (D.host.AAbar : FI D), mul_comm, ← h2 _ _ (inv_ne_zero hAAb) (inv_ne_zero h𝔟) _ hct]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨-, h⟩ a ha`. Establish `hs : cA D a ∈ idV (D.host.AA : FI D)⁻¹ v` using `by rw [hconj, cA_cA]; exact ha`. Establish `h1` using `h _ hs`. Rewrite `h1` using `[smul_colMul, hL _ (Ideal.mul_mem_left _ _ ht), map_mul, cA_cA]`. Rewrite using `[mul_comm]`.
+
+Conclude with `h1`. Introduce `h`. Use `⟨fun k => Ideal.mul_mem_right _ _ ht, fun s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[smul_colMul, hL _ (Ideal.mul_mem_left _ _ ht), map_mul, mul_comm]`. Conclude with `h _ ((hconj s).1 hs)`.
+-/
 theorem colMul_jY_mem_latA_iff : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S S₀ : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ)
     (L : Lat S) (𝔟 : FI D) (v : Pl D) (i : Fin ρ), 𝔟 ≠ 0 →
       (∀ t ∈ idAt D (· = v), colMul d.jY i t ∈ latV S L (· = v) ↔ cA D t ∈ idV 𝔟⁻¹ v) →

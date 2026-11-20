@@ -10,6 +10,15 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.S
 open Formalism.L2.SG.Pf.NcX.BoxVolSk Formalism.L2.SG.Pf.NcX.BoxSteps Formalism.L2.SG.Pf.NcX.FinVolSk
 open scoped TensorProduct
 
+/- English proof (translation)
+Distinguish the cases in `hx : ∀ v, projV v x ∈ C v`. Establish `hr : ({x : Fin a → Fin n → Af F ⊗[F] E | ∀ v, projV v x ∈ C v}.indicator 1 x : ℂ) = 1`. Simplify using `[Set.indicator_apply, hx]`. Rewrite using `[hr]`. Conclude with `finprod_eq_one_of_forall_eq_one fun v => by simp [Set.indicator_apply, hx v]`.
+
+Establish `hr : ({x : Fin a → Fin n → Af F ⊗[F] E | ∀ v, projV v x ∈ C v}.indicator 1 x : ℂ) = 0`. Simplify using `only [Set.indicator_apply, Set.mem_setOf_eq, if_neg hx]`. Rewrite using `[hr]`. Use `push_neg at hx`. Take `⟨v0, hv0⟩` from `hx`.
+
+Use `finprod_eq_zero _ v0 (by simp [Set.indicator_apply, hv0]) ?_` and prove the remaining obligations. Establish `hev : ∀ᶠ v in Filter.cofinite, projV v x ∈ C v` using `by filter_upwards [hCa, PI.VolStabW.AdmissibleCompactSupport.eventually_mem_latV b x] with v h1 h2`. Rewrite using `[h1]`. Conclude with `h2`. Use `(Filter.eventually_cofinite.mp hev).subset ?_` and prove the remaining obligations.
+
+Introduce `v hv hc`. Apply `hv` to reduce the goal to its premises. Simplify using `[Set.indicator_apply, hc]`.
+-/
 theorem finprod_box {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {n a d : ℕ} (b : Module.Basis (Fin d) F E)
     (C : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fin a → Fin n → Fv F v ⊗[F] E))
@@ -37,6 +46,55 @@ theorem finprod_box {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
     apply hv
     simp [Set.indicator_apply, hc]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J ψ a X0 hT νX hStd hdet ha hn hSWa hSWc hOm μinf νinf fibInf hμ hν hfib hne ωf hdec`. Establish `: FiniteDimensional F E` using `Module.Finite.of_restrictScalars_finite ℚ F E`. Use `set TI := hermOf (Ainf F) σ (gramE σ J X0) hT with hTI`. Take `⟨Φi, hΦc, hΦs, hΦ0, hΦint, hΦpos⟩` from `positivity_test_holds F E σ n J a μinf νinf fibInf TI hfib hne`. Use `set c : ENNReal := ∫⁻ z, ENNReal.ofReal (Φi z) ∂(fibInf TI) with hcdef`.
+
+Establish `hc : c = ENNReal.ofReal (∫ z, Φi z ∂(fibInf TI))` using `(ofReal_integral_eq_lintegral_ofReal hΦint (Filter.Eventually.of_forall hΦ0)).symm`. Establish `hc0 : c ≠ 0` using `by rw [hc]; exact (ENNReal.ofReal_pos.2 hΦpos).ne'`. Establish `hcT : c ≠ ⊤` using `by rw [hc]; exact ENNReal.ofReal_ne_top`. Take `⟨hGm, hGf, hGv⟩` from `gram_measurable_holds F E σ n J a (gramE σ J X0)`. Establish `hae : ∀ᵐ y ∂νX, gramR (AF F) σ J y = (gramE σ J X0).map (inclR (AF F))`.
+
+Rewrite using `[Filter.Eventually, mem_ae_iff]`. Simplify `hOm.1` using `[Set.compl_ofPred]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `set S := {x : Fin a → Fin n → Af F ⊗[F] E | gramR (Af F) σ J x ≠ (gramE σ J X0).map (inclR (Af F))} with hSdef`. Establish `h1` using `hdec (fun z => ENNReal.ofReal (Φi z)) S hGm`.
+
+Establish `hL : ∫⁻ y, ENNReal.ofReal (Φi (projInf y)) * S.indicator 1 (projFin y) ∂νX = 0`. Rewrite using `[lintegral_congr_ae (g := fun _ => 0) ?_, lintegral_zero]`. Use `filter_upwards [hae] with y hy`. Establish `: projFin y ∉ S` using `fun h => h (hGf y hy)`. Simplify using `[Set.indicator_of_notMem this]`.
+
+Rewrite `h1` using `[hL]`. Establish `hS0 : ωf S = 0`. Break down `(mul_eq_zero.1 h1.symm) with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h hc0`.
+
+Use `measure_mono_null (fun x hx => ?_) hS0` and prove the remaining obligations. Introduce `hxT`. Conclude with `hx (hGv x hxT)`. Introduce `d b C hSB hCm hCa set B := {x : Fin a → Fin n → Af F ⊗[F] E | ∀ v, projV v x ∈ C v} with hBdef`. Establish `hBm : MeasurableSet B` using `box_measurable_holds F E n a C hCm`.
+
+Establish `h2` using `hdec (fun z => ENNReal.ofReal (Φi z)) B hBm`. Establish `hA1` using `hOm.2.2 μinf hμ`. Establish `hA2` using `hA1.2 νinf hν`. Establish `hdX : ∀ v, SdW F E σ n J (Fv F v) (psiV F ψ v) a (dX σ J ψ v a)`. Introduce `v`.
+
+Take `⟨μv, hμv⟩` from `hA2.1`. Establish `hex : ∃ μ, SdW F E σ n J (Fv F v) (psiV F ψ v) a μ` using `⟨μv v, hμv v⟩`. Simplify using `only [dX, dif_pos hex]`. Conclude with `hex.choose_spec`. Establish `hA3` using `hA2.2 (fun v => dX σ J ψ v a) hdX`.
+
+Establish `hdT : ∀ v, SdHerm F E σ (Fv F v) (psiV F ψ v) a (dT σ ψ v a)`. Introduce `v`. Take `⟨νv, hνv⟩` from `hA3.1`. Establish `hex : ∃ ν, SdHerm F E σ (Fv F v) (psiV F ψ v) a ν` using `⟨νv v, hνv v⟩`. Simplify using `only [dT, dif_pos hex]`.
+
+Conclude with `hex.choose_spec`. Establish `hA4` using `hA3.2 (fun v => dT σ ψ v a) hdT`. Establish `hA5` using `hA4.2 fibInf hfib`. Establish `hOmF : ∀ v, IsOm σ J ψ v a (omFam σ J ψ v a)`. Introduce `v`.
+
+Take `⟨fibV, hfibV⟩` from `hA5.1`. Establish `hex : ∃ fib, IsOm σ J ψ v a fib` using `⟨fibV v, hfibV v⟩`. Simplify using `only [omFam, dif_pos hex]`. Conclude with `hex.choose_spec`. Establish `hQ` using `hA5.2 (fun v => omFam σ J ψ v a) hOmF`.
+
+Set `Φv : ∀ v : HeightOneSpectrum (𝓞 F), (Fin a → Fin n → Fv F v ⊗[F] E) → ℂ` to `fun v => (C v).indicator 1`. Set `Φf : (Fin a → Fin n → Af F ⊗[F] E) → ℂ` to `fun x => ∏ᶠ v, Φv v (projV v x)`. Set `Φinf : (Fin a → Fin n → Ainf F ⊗[F] E) → ℂ` to `fun z => (Φi z : ℂ)`. Set `Φ : (Fin a → Fin n → AF F ⊗[F] E) → ℂ` to `fun y => Φinf (projInf y) * Φf (projFin y)`. Establish `hpure : IsPureFin b Φf Φv` using `⟨hSB, hCa.mono fun v h => by simp only [Φv, h], fun X => rfl⟩`.
+
+Take `⟨hInt, hMult, hEq⟩` from `hQ d b Φ Φinf Φf Φv (Complex.continuous_ofReal.comp hΦc) (hΦs.comp_left Complex.ofReal_zero) hpure (fun X => rfl)`. Set `g : (Fin a → Fin n → AF F ⊗[F] E) → ℝ` to `fun y => Φi (projInf y) * B.indicator 1 (projFin y)`. Establish `hΦg : ∀ y, Φ y = (g y : ℂ)`. Introduce `y`. Simplify using `only [Φ, Φinf, Φf, Φv, g]`.
+
+Rewrite using `[finprod_box b C hCa (projFin y), ← hBdef]`. Distinguish the cases in `hy : projFin y ∈ B`. Simplify using `[Set.indicator_of_mem hy]`. Simplify using `[Set.indicator_of_notMem hy]`. Establish `hg0 : ∀ y, 0 ≤ g y` using `fun y => mul_nonneg (hΦ0 _) (Set.indicator_nonneg (fun _ _ => zero_le_one) _)`.
+
+Establish `hgInt : Integrable g νX`. Establish `: Integrable (fun y => (g y : ℂ)) νX` using `hInt.congr (Filter.Eventually.of_forall hΦg)`. Conclude with `this.re`. Establish `hlin : ∫⁻ y, ENNReal.ofReal (g y) ∂νX = ∫⁻ y, ENNReal.ofReal (Φi (projInf y)) * B.indicator 1 (projFin y) ∂νX`. Use `lintegral_congr fun y => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hy : projFin y ∈ B`. Simplify using `[g, Set.indicator_of_mem hy]`. Simplify using `[g, Set.indicator_of_notMem hy]`. Establish `hLHS : ∫ y, Φ y ∂νX = ((ωf B * c).toReal : ℂ)`. Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall hΦg), integral_complex_ofReal, integral_eq_lintegral_of_nonneg_ae (Filter.Eventually.of_forall hg0) hgInt.aestronglyMeasurable, hlin, h2]`.
+
+Establish `hfinB : ωf B * c ≠ ⊤`. Rewrite using `[← h2, ← hlin]`. Conclude with `(hgInt.lintegral_lt_top).ne`. Establish `hωT : ωf B ≠ ⊤`. Introduce `h`.
+
+Apply `hfinB` to reduce the goal to its premises. Rewrite using `[h]`. Conclude with `ENNReal.top_mul hc0`. Establish `hloc : ∀ v, (∫ X, Φv v X ∂(omFam σ J ψ v a (hermOf (Fv F v) σ (gramE σ J X0) hT))) = (((omAt σ J ψ v ((gramE σ J X0).map (inclR (Fv F v)))) (C v ∩ {X | gramR (Fv F v) σ J X = (gramE σ J X0).map (inclR (Fv F v))})).toReal : ℂ)`. Introduce `v`.
+
+Establish `hom : omAt σ J ψ v ((gramE σ J X0).map (inclR (Fv F v))) = omFam σ J ψ v a (hermOf (Fv F v) σ (gramE σ J X0) hT)`. Simplify using `only [omAt, dif_pos (map_mem_HermR (Fv F v) σ (gramE σ J X0) hT)]`. Both sides reduce to the same expression. Establish `hnull : omFam σ J ψ v a (hermOf (Fv F v) σ (gramE σ J X0) hT) {X | gramR (Fv F v) σ J X = (gramE σ J X0).map (inclR (Fv F v))}ᶜ = 0` using `measure_mono_null (Set.compl_subset_compl.2 Set.inter_subset_left) ((hOmF v).1 _)`. Rewrite using `[hom, measure_inter_conull hnull]`.
+
+Establish `e : Φv v = fun X => (((C v).indicator (1 : (Fin a → Fin n → Fv F v ⊗[F] E) → ℝ) X : ℝ) : ℂ)`. Use function extensionality and compare the values at `X`. Distinguish the cases in `hX : X ∈ C v`. Simplify using `[Φv, Set.indicator_of_mem hX]`. Simplify using `[Φv, Set.indicator_of_notMem hX]`.
+
+Rewrite using `[e, integral_complex_ofReal, integral_indicator_one (hCm v), Measure.real]`. Set `r : HeightOneSpectrum (𝓞 F) → ℝ` to `fun v => ((omAt σ J ψ v ((gramE σ J X0).map (inclR (Fv F v)))) (C v ∩ {X | gramR (Fv F v) σ J X = (gramE σ J X0).map (inclR (Fv F v))})).toReal`. Establish `hMult' : Multipliable (fun v => (r v : ℂ))`. Establish `: (fun v => ∫ X, Φv v X ∂(omFam σ J ψ v a (hermOf (Fv F v) σ (gramE σ J X0) hT))) = fun v => (r v : ℂ)` using `funext hloc`. Rewrite using `[← this]`.
+
+Conclude with `hMult`. Establish `hRHS : (∫ X, Φinf X ∂(fibInf (hermOf (Ainf F) σ (gramE σ J X0) hT))) * ∏' v, ∫ X, Φv v X ∂(omFam σ J ψ v a (hermOf (Fv F v) σ (gramE σ J X0) hT)) = (((∫ z, Φi z ∂(fibInf TI)) * ∏' v, r v : ℝ) : ℂ)`. Rewrite using `[tprod_congr hloc, BoxVolSk_tprod_ofReal r hMult']`. Simplify using `only [Φinf]`. Rewrite using `[integral_complex_ofReal, Complex.ofReal_mul]`.
+
+Rewrite `hEq` using `[hLHS, hRHS, Complex.ofReal_inj, ENNReal.toReal_mul]`. Establish `hcR : c.toReal = ∫ z, Φi z ∂(fibInf TI)`. Rewrite using `[hc, ENNReal.toReal_ofReal (integral_nonneg hΦ0)]`. Rewrite `hEq` using `[hcR, mul_comm]`. Establish `hB : (ωf B).toReal = ∏' v, r v` using `mul_left_cancel₀ hΦpos.ne' hEq`.
+
+Rewrite using `[← hB, ENNReal.ofReal_toReal hωT]`.
+-/
 theorem box_volume_holds : BoxVol := by
   intro F E _ _ _ _ _ σ n J ψ a X0 hT νX hStd hdet ha hn hSWa hSWc hOm μinf νinf fibInf hμ hν hfib hne
     ωf hdec

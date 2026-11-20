@@ -15,15 +15,26 @@ namespace GlobalTheory.TwistFlat
 variable {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A] {T : Over (Sp R)} {V : Type} [CommRing V]
   (φ : Sp V ⟶ T.left)
 
+/- English proof (translation)
+Establish `h` using `(isGrpPullback_pullback A (φ ≫ T.hom)).2 Y x y (upa φ x) (upa φ y) rfl rfl`. Conclude with `Over.OverMorphism.ext h.symm`.
+-/
 theorem upa_mul {Y : Over (Sp V)} (x y : Y ⟶ bc A φ) : upa φ (x * y) = upa φ x * upa φ y := by
   have h := (isGrpPullback_pullback A (φ ≫ T.hom)).2 Y x y (upa φ x) (upa φ y) rfl rfl
   exact Over.OverMorphism.ext h.symm
 
+/- English proof (translation)
+Establish `e` using `upa_mul φ (1 : Y ⟶ bc A φ) 1`. Rewrite `e` using `[_root_.mul_one]`. Conclude with `left_eq_mul.1 e`.
+-/
 theorem upa_one {Y : Over (Sp V)} : upa φ (1 : Y ⟶ bc A φ) = 1 := by
   have e := upa_mul φ (1 : Y ⟶ bc A φ) 1
   rw [_root_.mul_one] at e
   exact left_eq_mul.1 e
 
+/- English proof (translation)
+Set `u : up φ Y ⟶ bcR A φ` to `Over.homMk x.left (by show x.left ≫ (bc A φ).hom ≫ φ ≫ T.hom = Y.hom ≫ φ ≫ T.hom`. Rewrite using `[← Category.assoc, Over.w x])`. Establish `ha : u ≫ pa A φ = upa φ x` using `Over.OverMorphism.ext rfl`. Establish `ht : u ≫ pt A φ = upt φ Y` using `Over.OverMorphism.ext (by show x.left ≫ (bc A φ).hom ≫ φ = Y.hom ≫ φ`. Rewrite using `[← Category.assoc, Over.w x])`.
+
+Establish `e` using `pull_evc hN u (pa A φ) (pt A φ)`. Rewrite `e` using `[ha, ht]`. Conclude with `e`.
+-/
 theorem pull_cls_twist {N : LB (A ⊗ T).left} (hN : N.IsLB) (h : (twist A φ N).IsLB) {Y : Over (Sp V)}
     (x : Y ⟶ bc A φ) : CechPic.pull x.left (cls _ h) = evc hN (upa φ x) (upt φ Y) := by
   let u : up φ Y ⟶ bcR A φ := Over.homMk x.left (by
@@ -39,6 +50,11 @@ theorem pull_cls_twist {N : LB (A ⊗ T).left} (hN : N.IsLB) (h : (twist A φ N)
 
 variable (A) in
 
+/- English proof (translation)
+Establish `hO : (twist A φ N).IsLB` using `pull_isLB hF.isLB _`. Establish `hP : (abelian₂ (bc A φ) (twist A φ N)).IsLB` using `LB.isLB_linComb hO _ _`. Use `(cls_eq_zero_iff hP).1 ?_` and prove the remaining obligations. Establish `e : cls _ hP = lam (G` using `bc A φ) (cls (X := (bc A φ).left) _ hO) (fst (bc A φ) (bc A φ)) (snd (bc A φ) (bc A φ)) := cls_cube_two (G := bc A φ) (L := twist A φ N) hO _ _ hP`. Rewrite using `[e, lam, pull_cls_twist φ hF.isLB hO, pull_cls_twist φ hF.isLB hO, pull_cls_twist φ hF.isLB hO, pull_cls_twist φ hF.isLB hO, upa_mul, upa_one, (isAdditive_iff hF.isLB).1 hF.add, hF.add.evc_one hF.isLB]`.
+
+Simplify using `only [add_sub_cancel_left, sub_self, add_zero]`.
+-/
 theorem triv_lam_twist (N : LB (A ⊗ T).left) (hF : Fam A N) : Triv (abelian₂ (bc A φ) (twist A φ N)) := by
   have hO : (twist A φ N).IsLB := pull_isLB hF.isLB _
   have hP : (abelian₂ (bc A φ) (twist A φ N)).IsLB := LB.isLB_linComb hO _ _

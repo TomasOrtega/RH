@@ -41,6 +41,9 @@ def scaleBundle (P : Kleiman.LineBundle k y) (μ : K') (hμ : μ ≠ 0) : Kleima
     rw [mul_mul_mul_comm, hM, Submodule.span_mul_span, Set.singleton_mul_singleton, mul_inv_cancel₀ hμ,
       mul_one, ← Submodule.one_eq_span]
 
+/- English proof (translation)
+The claim follows from `Submodule.mem_span_singleton_mul.mpr ⟨r q, hr.mem I q hq, rfl⟩ add I q hq q' hq' := by simp only [hr.add I q hq q' hq', mul_add] smul I q hq f s e hs hf hse := by simp only [hr.smul I q hq f s e hs hf hse]; ring span I := by change _ = Submodule.span _ {μ} * P.sub I rw [← hr.span …`.
+-/
 theorem restrictData_scale {Ω : Type w} [Field Ω] [Algebra k Ω] {x : Fin (N + 1) → Ω}
     {Q : Kleiman.SubSystem k x Ω} {hxy : ∀ i, y i ≠ 0 → x i ≠ 0} {P : Kleiman.LineBundle k y} {r : Ω → K'}
     (hr : Kleiman.RestrictData Q hxy P.toSubSystem r) (μ : K') (hμ : μ ≠ 0) :
@@ -61,6 +64,9 @@ variable {k : Type} [Field k] {Ω : Type} [Field Ω] [Algebra k Ω] {N m : ℕ}
 abbrev baseRename : Kleiman.Poly k N →ₐ[k] MvPolynomial (Σ c, graphIdx N m c) k :=
   rename fun a : Fin (N + 1) => (⟨baseBlock, a⟩ : Σ c, graphIdx N m c)
 
+/- English proof (translation)
+Establish `h1` using `DFunLike.congr_fun (mConeMapOver_graph_comp_base (S := k) x s) g`. Rewrite `h1` using `[AlgHom.comp_apply, AlgHom.comp_apply]`. Rewrite using `[h1, Kleiman.cone_of_isHomogeneous x hg, AlgHom.restrictScalars_apply, map_mul, map_pow, Polynomial.aeval_C, Polynomial.aeval_X, MvPolynomial.algebraMap_eq]`.
+-/
 theorem mConeMapOver_baseRename (x : Fin (N + 1) → Ω) (s : Fin m → Ω) {g : Kleiman.Poly k N} {e : ℕ}
     (hg : g.IsHomogeneous e) :
     mConeMapOver k (graphVec x s) (baseRename g) = C (aeval x g) * X baseBlock ^ e := by
@@ -69,6 +75,9 @@ theorem mConeMapOver_baseRename (x : Fin (N + 1) → Ω) (s : Fin m → Ω) {g :
   rw [h1, Kleiman.cone_of_isHomogeneous x hg, AlgHom.restrictScalars_apply, map_mul, map_pow,
     Polynomial.aeval_C, Polynomial.aeval_X, MvPolynomial.algebraMap_eq]
 
+/- English proof (translation)
+Rewrite using `[map_sub, map_mul, map_mul, mConeMapOver_baseRename x s hh, mConeMapOver_baseRename x s hf]`. Simplify using `only [mConeMapOver, aeval_X, graphVec_inr, map_sub, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mConeMapOver_graphEq (x : Fin (N + 1) → Ω) (s : Fin m → Ω) {f h : Kleiman.Poly k N} {e : ℕ}
     (hf : f.IsHomogeneous e) (hh : h.IsHomogeneous e) (b l : Fin m) :
     mConeMapOver k (graphVec x s) (X ⟨Sum.inr (), b⟩ * baseRename h - X ⟨Sum.inr (), l⟩ * baseRename f) =
@@ -77,6 +86,11 @@ theorem mConeMapOver_graphEq (x : Fin (N + 1) → Ω) (s : Fin m → Ω) {f h : 
   simp only [mConeMapOver, aeval_X, graphVec_inr, map_sub, map_mul]
   ring
 
+/- English proof (translation)
+Establish `hmem : X ⟨Sum.inr (), b⟩ * baseRename h - X ⟨Sum.inr (), l⟩ * baseRename f ∈ mIdealOver k (graphVec x s)`. Express the relevant statement in the definitionally equal form `_ ∈ RingHom.ker _`. Rewrite using `[RingHom.mem_ker]`. Rewrite using `[mConeMapOver_graphEq x s hf hh, hx, sub_self, map_zero, zero_mul]`. Establish `h0` using `hle hmem`.
+
+Express the relevant statement in the definitionally equal form `_ ∈ RingHom.ker _ at h0`. Rewrite `h0` using `[RingHom.mem_ker]`. Express the relevant statement in the definitionally equal form `mConeMapOver k (graphVec x' s') _ = 0 at h0`. Rewrite `h0` using `[mConeMapOver_graphEq x' s' hf hh, mul_eq_zero, C_eq_zero, sub_eq_zero]`. Conclude with `h0.resolve_right (mul_ne_zero (X_ne_zero _) (pow_ne_zero _ (X_ne_zero _)))`.
+-/
 theorem graphEq_of_le {K' : Type} [Field K'] [Algebra k K'] {x : Fin (N + 1) → Ω} {s : Fin m → Ω}
     {x' : Fin (N + 1) → K'} {s' : Fin m → K'}
     (hle : mIdealOver k (graphVec x s) ≤ mIdealOver k (graphVec x' s')) {f h : Kleiman.Poly k N} {e : ℕ}

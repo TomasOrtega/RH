@@ -9,6 +9,9 @@ namespace GlobalTheory.JR.Step
 section Blocks
 variable {r : ℕ} {E : Type} [Field E]
 
+/- English proof (translation)
+Establish `ha : finSumFinEquiv.symm (Fin.castSucc a) = (Sum.inl a : Fin r ⊕ Fin 1)` using `finSumFinEquiv_symm_apply_castSucc a`. Establish `hb : finSumFinEquiv.symm (Fin.castSucc b) = (Sum.inl b : Fin r ⊕ Fin 1)` using `finSumFinEquiv_symm_apply_castSucc b`. Simplify using `[embHom, Matrix.reindex_apply, Matrix.submatrix_apply, ha, hb]`.
+-/
 theorem embHom_castSucc_castSucc (M : Matrix (Fin r) (Fin r) E) (a b : Fin r) :
     embHom r E M (Fin.castSucc a) (Fin.castSucc b) = M a b := by
   have ha : finSumFinEquiv.symm (Fin.castSucc a) = (Sum.inl a : Fin r ⊕ Fin 1) :=
@@ -17,6 +20,9 @@ theorem embHom_castSucc_castSucc (M : Matrix (Fin r) (Fin r) E) (a b : Fin r) :
     finSumFinEquiv_symm_apply_castSucc b
   simp [embHom, Matrix.reindex_apply, Matrix.submatrix_apply, ha, hb]
 
+/- English proof (translation)
+Establish `ha : finSumFinEquiv.symm (Fin.castSucc a) = (Sum.inl a : Fin r ⊕ Fin 1)` using `finSumFinEquiv_symm_apply_castSucc a`. Establish `hb : finSumFinEquiv.symm (Fin.last r) = (Sum.inr 0 : Fin r ⊕ Fin 1)` using `finSumFinEquiv_symm_last`. Simplify using `[embHom, Matrix.reindex_apply, Matrix.submatrix_apply, ha, hb]`.
+-/
 theorem embHom_castSucc_last (M : Matrix (Fin r) (Fin r) E) (a : Fin r) :
     embHom r E M (Fin.castSucc a) (Fin.last r) = 0 := by
   have ha : finSumFinEquiv.symm (Fin.castSucc a) = (Sum.inl a : Fin r ⊕ Fin 1) :=
@@ -24,6 +30,9 @@ theorem embHom_castSucc_last (M : Matrix (Fin r) (Fin r) E) (a : Fin r) :
   have hb : finSumFinEquiv.symm (Fin.last r) = (Sum.inr 0 : Fin r ⊕ Fin 1) := finSumFinEquiv_symm_last
   simp [embHom, Matrix.reindex_apply, Matrix.submatrix_apply, ha, hb]
 
+/- English proof (translation)
+Establish `ha : finSumFinEquiv.symm (Fin.castSucc b) = (Sum.inl b : Fin r ⊕ Fin 1)` using `finSumFinEquiv_symm_apply_castSucc b`. Establish `hb : finSumFinEquiv.symm (Fin.last r) = (Sum.inr 0 : Fin r ⊕ Fin 1)` using `finSumFinEquiv_symm_last`. Simplify using `[embHom, Matrix.reindex_apply, Matrix.submatrix_apply, ha, hb]`.
+-/
 theorem embHom_last_castSucc (M : Matrix (Fin r) (Fin r) E) (b : Fin r) :
     embHom r E M (Fin.last r) (Fin.castSucc b) = 0 := by
   have ha : finSumFinEquiv.symm (Fin.castSucc b) = (Sum.inl b : Fin r ⊕ Fin 1) :=
@@ -31,11 +40,21 @@ theorem embHom_last_castSucc (M : Matrix (Fin r) (Fin r) E) (b : Fin r) :
   have hb : finSumFinEquiv.symm (Fin.last r) = (Sum.inr 0 : Fin r ⊕ Fin 1) := finSumFinEquiv_symm_last
   simp [embHom, Matrix.reindex_apply, Matrix.submatrix_apply, ha, hb]
 
+/- English proof (translation)
+Establish `hb : finSumFinEquiv.symm (Fin.last r) = (Sum.inr 0 : Fin r ⊕ Fin 1)` using `finSumFinEquiv_symm_last`. Simplify using `[embHom, Matrix.reindex_apply, Matrix.submatrix_apply, hb]`.
+-/
 theorem embHom_last_last (M : Matrix (Fin r) (Fin r) E) :
     embHom r E M (Fin.last r) (Fin.last r) = 1 := by
   have hb : finSumFinEquiv.symm (Fin.last r) = (Sum.inr 0 : Fin r ⊕ Fin 1) := finSumFinEquiv_symm_last
   simp [embHom, Matrix.reindex_apply, Matrix.submatrix_apply, hb]
 
+/- English proof (translation)
+Use extensionality with `i j`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => rw [embHom_last_last, hr]`.
+
+Simplify using the standard rewrite rules. Consider the case `cast b => rw [embHom_last_castSucc, hr]`. Simplify using `[Fin.castSucc_ne_last]`. Consider the case `cast a`. Proceed by induction on `j using Fin.lastCases with`.
+
+Consider the case `last => rw [embHom_castSucc_last, hc]`. Simplify using `[Fin.castSucc_ne_last]`. Consider the case `cast b => rw [embHom_castSucc_castSucc]`. Both sides reduce to the same expression.
+-/
 theorem eq_embHom_of_last (h : Matrix (Fin (r + 1)) (Fin (r + 1)) E)
     (hc : ∀ i, h i (Fin.last r) = if i = Fin.last r then 1 else 0)
     (hr : ∀ j, h (Fin.last r) j = if j = Fin.last r then 1 else 0) :
@@ -61,6 +80,31 @@ section Main
 variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E]
   [StarRing E] [Unram F E]
 
+/- English proof (translation)
+Establish `hmem` using `Set.mem_of_indicator_ne_zero hg`. Establish `hv : ∀ i, ‖(g.1 *ᵥ (ν • eL r E)) i‖ ≤ 1` using `hmem.2.1`. Use `set v : Fin (r + 1) → E := fun i => g.1 i (Fin.last r) with hvdef`. Establish `hgv : g.1 *ᵥ eL r E = v`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[eL, Matrix.mulVec_single_one, v]`. Establish `hint : ∀ i, ‖v i‖ ≤ 1`. Introduce `i`. Use `hv i` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_smul, hgv, Pi.smul_apply, smul_eq_mul, norm_mul, hν, one_mul]`.
+
+Conclude with `this`. Establish `hunit : star v ⬝ᵥ v = 1`. Establish `h1 : (star g.1 * g.1) (Fin.last r) (Fin.last r) = 1`. Rewrite using `[Matrix.mem_unitaryGroup_iff'.mp g.2]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[← h1]`. Simplify using `[dotProduct, Matrix.mul_apply, v, Matrix.star_eq_conjTranspose, Matrix.conjTranspose_apply]`. Take `⟨k, hk, hke⟩` from `GlobalTheory.T.integralUnitaryGroup_transitive_norm_one_vectors F E r v hint hunit`. Use `set h := k⁻¹ * g with hh`. Establish `he : h.1 *ᵥ eL r E = eL r E`.
+
+Establish `hgk : g.1 *ᵥ eL r E = k.1 *ᵥ eL r E` using `by rw [hgv]; exact hke.symm`. Establish `hk1 : (k⁻¹).1 = star k.1` using `rfl`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mulVec_mulVec, ← hk1]`. Both sides reduce to the same expression.
+
+Use `_ = star k.1 *ᵥ (k.1 *ᵥ eL r E) := by rw [hgk]`. Use `_ = eL r E := by rw [Matrix.mulVec_mulVec, Matrix.mem_unitaryGroup_iff'.mp k.2, Matrix.one_mulVec]`. Establish `hse : star h.1 *ᵥ eL r E = eL r E` using `by conv_lhs => rw [← he]`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mem_unitaryGroup_iff'.mp h.2, Matrix.one_mulVec]`. Establish `hc : ∀ i, h.1 i (Fin.last r) = if i = Fin.last r then 1 else 0`.
+
+Introduce `i`. Use `congrFun he i` as an intermediate fact. Simplify `this` using `[eL, Matrix.mulVec_single_one, Pi.single_apply]`. Establish `hr : ∀ j, h.1 (Fin.last r) j = if j = Fin.last r then 1 else 0`. Introduce `j`.
+
+Establish `h0` using `congrArg star (congrFun hse j)`. Simplify using `only [eL, Matrix.mulVec_single_one, Pi.single_apply, Matrix.star_eq_conjTranspose] at h0`. Establish `h3 : star ((h.1)ᴴ.col (Fin.last r) j) = h.1 (Fin.last r) j`. Simplify using `[Matrix.col, Matrix.conjTranspose_apply]`. Rewrite using `[← h3, h0]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Use `set S := h.1.submatrix Fin.castSucc Fin.castSucc with hSdef`. Establish `hS : h.1 = embHom r E S` using `eq_embHom_of_last h.1 hc hr`. Establish `hstar : star (embHom r E S) = embHom r E (star S)`. Simplify using `only [embHom, MonoidHom.coe_mk, OneHom.coe_mk, Matrix.star_eq_conjTranspose, Matrix.reindex_apply, Matrix.conjTranspose_submatrix, Matrix.fromBlocks_conjTranspose, Matrix.conjTranspose_zero, Matrix.conjTranspose_one]`.
+
+Establish `h1 : embHom r E (S * star S) = 1`. Rewrite using `[map_mul, ← hstar, ← hS]`. Conclude with `Matrix.mem_unitaryGroup_iff.mp h.2`. Establish `hSu : S ∈ Matrix.unitaryGroup (Fin r) E`. Rewrite using `[Matrix.mem_unitaryGroup_iff]`.
+
+Use extensionality with `a b`. Establish `h2` using `congrFun (congrFun h1 (Fin.castSucc a)) (Fin.castSucc b)`. Rewrite `h2` using `[embHom_castSucc_castSucc]`. Rewrite using `[h2]`. Simplify using `[Matrix.one_apply, Fin.castSucc_inj]`.
+
+Use `⟨k, hk, ⟨S, hSu⟩, ?_⟩` and prove the remaining obligations. Establish `hu : uEmb r E ⟨S, hSu⟩ = h` using `Subtype.ext hS.symm`. Rewrite using `[hu, hh, mul_inv_cancel_left]`.
+-/
 theorem actU_liftH_support {r : ℕ} (X : Hn r F E) (ν : E) (l : F) (hν : ‖ν‖ = 1)
     (g : Matrix.unitaryGroup (Fin (r + 1)) E)
     (hg : unitU (r + 1) F E (actU g (liftH X ν l)) ≠ 0) :
@@ -127,5 +171,8 @@ end Main
 
 end GlobalTheory.JR.Step
 
+/- English proof (translation)
+Introduce `X ν l hν g hg` and use `GlobalTheory.JR.Step.actU_liftH_support X ν l hν g hg`.
+-/
 theorem GlobalTheory.JR.Step.actU_liftH_mem_uO_mul_uEmb : ∀ {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] {r : ℕ} (X : Hn r F E) (ν : E) (l : F), ‖ν‖ = 1 → ∀ g : Matrix.unitaryGroup (Fin (r + 1)) E, unitU (r + 1) F E (actU g (GlobalTheory.JR.Step.liftH X ν l)) ≠ 0 → ∃ k ∈ uO (r + 1) E, ∃ s, g = k * GlobalTheory.JR.Step.uEmb r E s :=
   fun X ν l hν g hg => GlobalTheory.JR.Step.actU_liftH_support X ν l hν g hg

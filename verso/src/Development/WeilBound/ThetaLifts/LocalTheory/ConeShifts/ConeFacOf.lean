@@ -14,6 +14,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 open PositivityTheory.ThKF
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨measEx_of hSt, coneFac_all hA hSt hO hU hPS hAr (vacFixX_of hSt)⟩`.
+-/
 theorem coneFac_of (hA : ActsEx) (hSt : StabEx) (hO : ArchOp) (hU : ArchUniq) (hPS : PositivityTheory.Mix.PureSt) (hAr : ArchCone) :
     MeasEx ∧ PositivityTheory.ThKEnd.Comp.ConeIntegralFactorisation ∧ ConeFacA ∧ ConeFacB :=
   ⟨measEx_of hSt, coneFac_all hA hSt hO hU hPS hAr (vacFixX_of hSt)⟩

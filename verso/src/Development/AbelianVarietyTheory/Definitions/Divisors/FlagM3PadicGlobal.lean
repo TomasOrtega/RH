@@ -59,6 +59,9 @@ def GenTyG : Prop :=
         (∃ (J : Subgroup (GL (Fin a) (w₀.adicCompletion E))) (m : ℕ) (θ : J →* Multiplicative (ZMod (l ^ m))), Fam J m θ ∧ ∃ χ : Multiplicative (ZMod (l ^ m)) →* ℂˣ, χ ≠ 1 ∧ HasTypeVec w₀ K J θ χ U') ∧
         (∀ w ∈ S, GenAt D U' w) ∧ ϑ = fun j => ι.symm (η U' j)}
 
+/- English proof (translation)
+The claim follows from `(polyApprox_zero_padic p).1.mono fun ϑ ⟨n, hn⟩ => by simpa [hn] using (Fact.out : p.Prime).ne_zero`.
+-/
 example (p : ℕ) [Fact p.Prime] : PolyApprox (fun _ : Unit => (0 : ℚ_[p]))
     {ϑ | MvPolynomial.aeval ϑ (MvPolynomial.X () : MvPolynomial Unit ℤ) ≠ 0} :=
   (polyApprox_zero_padic p).1.mono fun ϑ ⟨n, hn⟩ => by

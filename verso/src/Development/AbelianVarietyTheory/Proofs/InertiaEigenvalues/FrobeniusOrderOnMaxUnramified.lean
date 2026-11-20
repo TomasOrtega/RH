@@ -13,12 +13,20 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 
 namespace GlobalTheory.FrobOrder
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih => rw [Function.iterate_succ_apply', ih, map_pow, h, ← pow_mul, pow_succ']`.
+-/
 theorem iterate_of_pow {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) (x : E) (l : ℕ)
     (h : σ x = x ^ l) (j : ℕ) : (⇑σ)^[j] x = x ^ l ^ j := by
   induction j with
   | zero => simp
   | succ j ih => rw [Function.iterate_succ_apply', ih, map_pow, h, ← pow_mul, pow_succ']
 
+/- English proof (translation)
+Establish `hc : (x : Om l) ^ m = 1` using `congrArg Subtype.val hx`. Establish `h1 : (P.PD K).σ x ^ m = 1` using `by rw [← map_pow, hx, map_one]`. Establish `h2 : (((P.PD K).σ x : ↥(K0 K)) : Om l) ^ m = 1` using `congrArg Subtype.val h1`. Establish `h3 : ((x : Om l) ^ l) ^ m = 1` using `by rw [← pow_mul, mul_comm, pow_mul, hc, one_pow]`. Establish `h4 : ‖(x : Om l)‖ = 1` using `GlobalTheory.Pst.norm_eq_one_of_pow_eq_one h0 hc`.
+
+Establish `h5` using `P.PD_σ K x h4.le`. Establish `h6` using `GlobalTheory.Pst.eq_of_pow_eq_one_of_norm_sub_lt hm h2 h3 h5`. Conclude with `Subtype.ext h6`.
+-/
 theorem sigma_root {l : ℕ} [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (x : ↥(K0 K)) {m : ℕ} (h0 : 0 < m)
     (hm : ¬ l ∣ m) (hx : x ^ m = 1) : (P.PD K).σ x = x ^ l := by
   have hc : (x : Om l) ^ m = 1 := congrArg Subtype.val hx

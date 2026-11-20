@@ -9,6 +9,9 @@ open CrystallineSemistableComparison.Onto GlobalTheory.CompanionTheory.Surjectio
 
 variable {n d : ℕ}
 
+/- English proof (translation)
+Establish `hg' : (∀ l : Fin n, 0 ≤ g (Sum.inl l)) ∧ (∀ j ∉ (∅ : Finset (Fin d)), 0 ≤ g (Sum.inr j)) ∧ 0 ≤ tdeg g` using `hg`. Break down `e with l | j` into its components or cases. Conclude with `hg'.1 l`. Conclude with `hg'.2.1 j (Finset.notMem_empty j)`.
+-/
 theorem cone_empty_nonneg {g : Gam n d} (hg : g ∈ (cone ∅ : AddSubmonoid (Gam n d))) (e : E n d) : 0 ≤ g e := by
   have hg' : (∀ l : Fin n, 0 ≤ g (Sum.inl l)) ∧ (∀ j ∉ (∅ : Finset (Fin d)), 0 ≤ g (Sum.inr j)) ∧
       0 ≤ tdeg g := hg
@@ -16,6 +19,9 @@ theorem cone_empty_nonneg {g : Gam n d} (hg : g ∈ (cone ∅ : AddSubmonoid (Ga
   · exact hg'.1 l
   · exact hg'.2.1 j (Finset.notMem_empty j)
 
+/- English proof (translation)
+Use `show (∀ l : Fin n, (0 : ℤ) ≤ (f (Sum.inl l) : ℤ)) ∧ (∀ j ∉ (∅ : Finset (Fin d)), (0 : ℤ) ≤ (f (Sum.inr j) : ℤ)) ∧ 0 ≤ tdeg (fun e => (f e : ℤ) : Gam n d)`. Use `⟨fun l => Int.natCast_nonneg _, fun j _ => Int.natCast_nonneg _, ?_⟩` and prove the remaining obligations. Conclude with `Finset.sum_nonneg fun j _ => Int.natCast_nonneg _`.
+-/
 theorem coe_mem_cone (f : E n d →₀ ℕ) :
     (fun e => (f e : ℤ) : Gam n d) ∈ (cone ∅ : AddSubmonoid (Gam n d)) := by
   show (∀ l : Fin n, (0 : ℤ) ≤ (f (Sum.inl l) : ℤ)) ∧
@@ -39,6 +45,11 @@ def expEquiv : (E n d →₀ ℕ) ≃+ (cone ∅ : AddSubmonoid (Gam n d)) where
 def polyEquiv (K : Type) [Field K] : Bp K n d ≃ₐ[K] R0 K n d (∅ : Finset (Fin d)) :=
   AddMonoidAlgebra.domCongr K K expEquiv
 
+/- English proof (translation)
+Use `Subtype.ext (funext fun e' => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((Finsupp.single e 1 : E n d →₀ ℕ) e' : ℤ) = (Pi.single e (1 : ℤ) : E n d → ℤ) e'`. Distinguish the cases in `h : e' = e`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[Finsupp.single_apply, Pi.single_apply, h, Ne.symm h]`.
+-/
 theorem expEquiv_single (e : E n d) :
     (expEquiv (Finsupp.single e 1) : (cone ∅ : AddSubmonoid (Gam n d))) = ⟨oneE e, oneE_mem ∅ e⟩ := by
   refine Subtype.ext (funext fun e' => ?_)
@@ -48,6 +59,9 @@ theorem expEquiv_single (e : E n d) :
     simp
   · simp [Finsupp.single_apply, Pi.single_apply, h, Ne.symm h]
 
+/- English proof (translation)
+Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `e`. Rewrite using `[poly_X, polyEquiv, MvPolynomial.X, ← MvPolynomial.single_eq_monomial]`. Use `erw [AddMonoidAlgebra.domCongr_single, expEquiv_single]`. Both sides reduce to the same expression.
+-/
 theorem poly_eq_polyEquiv (K : Type) [Field K] :
     poly n K (∅ : Finset (Fin d)) = (polyEquiv K).toAlgHom := by
   apply MvPolynomial.algHom_ext
@@ -57,6 +71,9 @@ theorem poly_eq_polyEquiv (K : Type) [Field K] :
   erw [AddMonoidAlgebra.domCongr_single, expEquiv_single]
   rfl
 
+/- English proof (translation)
+Rewrite using `[poly_eq_polyEquiv]`. Conclude with `(polyEquiv K).bijective`.
+-/
 theorem poly_bijective {K : Type} [Field K] {n d : ℕ} :
     Function.Bijective (poly n K (∅ : Finset (Fin d))) := by
   rw [poly_eq_polyEquiv]

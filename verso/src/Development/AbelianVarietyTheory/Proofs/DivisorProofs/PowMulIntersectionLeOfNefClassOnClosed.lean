@@ -27,6 +27,15 @@ noncomputable section
 
 namespace GlobalTheory.MixExp
 
+/- English proof (translation)
+Use `isNoetherian_of_isProjOver hp` as an intermediate fact. Establish `H` using `diffVanish_chiPic_of_isProjOver (algebraMap_eq_strHom k Y) (structureModule Y) hp (d := e) (by rw [suppDim_structureModule, hD])`. Establish `hL : ∀ j, IsNef k ((![N, N'] : Fin 2 → LB Y) j)` using `fun j => by fin_cases j exacts [hN, hN']`. Establish `e₁` using `H.interNum_of_cls_eq_sum (L := ![N, N']) (fun j => (hL j).isLB) (Q := fun _ => N₀) (fun _ => h₀) (fun _ => ![(a : ℤ), (b : ℤ)]) (fun _ => by`. Rewrite using `[Fin.sum_univ_two]`.
+
+Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, natCast_zsmul]`. Conclude with `hc)`. Establish `e₂` using `Finset.single_le_sum (f := fun c : Fin e → Fin 2 => (∏ i, (![(a : ℤ), (b : ℤ)] : Fin 2 → ℤ) (c i)) * interNum k (structureModule Y) (![N, N'] ∘ c)) (fun c _ => mul_nonneg (Finset.prod_nonneg fun i _ => by`. Generalize the expression as in `c i = j`. Apply the tactic sequence `fin_cases j <;> simp)`.
+
+Use the proof step `(h.interNum_nonneg (N := ![N, N'] ∘ c) hp hD fun i => hL (c i)))`. Use the proof step `(Finset.mem_univ fun _ => 0)`. Rewrite using `[e₁]`. Use `le_trans (le_of_eq ?_) e₂` and prove the remaining obligations. Simplify using `only [Matrix.cons_val_zero, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
+
+Both sides reduce to the same expression.
+-/
 theorem pow_mul_le_of_cls_eq {k : Type} [Field k] {Y : Scheme.{0}} [Algebra k Γ(Y, ⊤)]
     (h : Published.NefProductNonneg) (hp : IsProjOver (strHom k Y)) {e : ℕ}
     (hD : topologicalKrullDim Y = e) {N N' N₀ : LB Y} (hN : IsNef k N) (hN' : IsNef k N')
@@ -63,6 +72,13 @@ end GlobalTheory.MixExp
 
 open GlobalTheory.MixExp in
 
+/- English proof (translation)
+Introduce `h k _ X q hq`. Use `letI := algebraΓOfHom q`. Introduce `N N' N₀ hN hN' h₀ a b Z e hnef hnef' hc hZ`. Establish `hp : IsProjOver (strHom k X)` using `by rwa [strHom_eq (f := q) fun _ => rfl]`. Use `letI := algebraΓAlong k (redι Z)`.
+
+Establish `hi` using `appTop_algebraMap_along k (redι Z)`. Establish `hpZ : IsProjOver (strHom k (Scheme.IdealSheafData.vanishingIdeal Z).subscheme)`. Take `⟨n, f, hf, hs⟩` from `hp`. Conclude with `⟨n, redι Z ≫ f, inferInstance, by rw [Category.assoc, hs, comp_strHom hi]⟩`. Express the relevant statement in the definitionally equal form `(a : ℤ) ^ e * interNumOn k (redι Z) (fun _ : Fin e => N) ≤ interNumOn k (redι Z) (fun _ : Fin e => N₀)`.
+
+Rewrite using `[interNumOn_eq_interNum_pull hi fun _ => hN, interNumOn_eq_interNum_pull hi fun _ => h₀]`. Use `pow_mul_le_of_cls_eq h.1 hpZ ((topologicalKrullDim_red Z).trans hZ) (hnef.pull_of_isClosedImmersion (redι Z) hi) (hnef'.pull_of_isClosedImmersion (redι Z) hi) (LB.isLB_pull h₀ (redι Z)) a b ?_` and prove the remaining obligations. Rewrite using `[cls_pull h₀, cls_pull hN, cls_pull hN', hc, map_add, map_nsmul, map_nsmul]`.
+-/
 theorem GlobalTheory.mixExp_interNumRed : GlobalTheory.Published.NefNumerics → ∀ (k : Type) [Field k] (X : Scheme.{0}) (q : X ⟶ Sp k), IsProjOver q → letI := algebraΓOfHom q; ∀ (N N' N₀ : LB X) (hN : N.IsLB) (hN' : N'.IsLB) (h₀ : N₀.IsLB) (a b : ℕ) (Z : Closeds X) (e : ℕ), IsNef k N → IsNef k N' → cls N₀ h₀ = a • cls N hN + b • cls N' hN' → topologicalKrullDim (Z : Set X) = e → (a : ℤ) ^ e * interNumRed k Z (fun _ : Fin e => N) ≤ interNumRed k Z (fun _ : Fin e => N₀) := by
   intro h k _ X q hq
   letI := algebraΓOfHom q

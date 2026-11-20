@@ -20,6 +20,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def intMap (h : w.under (𝓞 F) = v) : intLoc F E v →+* w.adicCompletionIntegers E :=
   ((toCompl h).comp (intLoc F E v).subtype).codRestrict (w.adicCompletionIntegers E) fun y => toCompl_mem h y.2
 
+/- English proof (translation)
+Introduce `z`. Take `⟨y, hy⟩` from `(toCompl_bijective hw h).2 (z : w.adicCompletion E)`. Establish `hy' : y ∈ intLoc F E v` using `(mem_intLoc_iff hw h y).2 (by rw [hy]; exact z.2)`. Conclude with `⟨⟨y, hy'⟩, Subtype.ext hy⟩`.
+-/
 theorem intMap_surjective (hw : Formalism.UG.IsInertAt F E v w) (h : w.under (𝓞 F) = v) :
     Function.Surjective (intMap h) := by
   intro z
@@ -31,10 +34,16 @@ def coord (h : w.under (𝓞 F) = v) (a : GL (Fin n) (w.adicCompletion E)) (y : 
     Fin n → w.adicCompletion E :=
   (a⁻¹).1 *ᵥ (toCompl h ∘ y)
 
+/- English proof (translation)
+Rewrite using `[coord, Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`.
+-/
 theorem mulVec_coord (h : w.under (𝓞 F) = v) (a : GL (Fin n) (w.adicCompletion E)) (y : Fin n → Fv F v ⊗[F] E) :
     a.1 *ᵥ coord h a y = toCompl h ∘ y := by
   rw [coord, Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]
 
+/- English proof (translation)
+Rewrite using `[mem_latLoc_iff hw h, ← mulVec_coord h a y]`. Conclude with `(ha _).symm`.
+-/
 theorem mem_latLoc_iff_coord {L : Submodule (𝓞 E) (Fin n → E)} (hw : Formalism.UG.IsInertAt F E v w)
     (h : w.under (𝓞 F) = v) {a : GL (Fin n) (w.adicCompletion E)} (ha : IsFrameAt w L a)
     (y : Fin n → Fv F v ⊗[F] E) :
@@ -42,12 +51,18 @@ theorem mem_latLoc_iff_coord {L : Submodule (𝓞 E) (Fin n → E)} (hw : Formal
   rw [mem_latLoc_iff hw h, ← mulVec_coord h a y]
   exact (ha _).symm
 
+/- English proof (translation)
+Introduce `y y' e`. Establish `e' : toCompl h ∘ y = toCompl h ∘ y'` using `by rw [← mulVec_coord, ← mulVec_coord, e]`. Conclude with `funext fun i => (toCompl_bijective hw h).1 (congrFun e' i)`.
+-/
 theorem coord_injective (hw : Formalism.UG.IsInertAt F E v w) (h : w.under (𝓞 F) = v)
     (a : GL (Fin n) (w.adicCompletion E)) : Function.Injective (coord h a) := by
   intro y y' e
   have e' : toCompl h ∘ y = toCompl h ∘ y' := by rw [← mulVec_coord, ← mulVec_coord, e]
   exact funext fun i => (toCompl_bijective hw h).1 (congrFun e' i)
 
+/- English proof (translation)
+Simplify using `only [coord, ← Matrix.mulVec_add]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[map_add]`.
+-/
 theorem coord_add (h : w.under (𝓞 F) = v) (a : GL (Fin n) (w.adicCompletion E)) (y y' : Fin n → Fv F v ⊗[F] E) :
     coord h a (y + y') = coord h a y + coord h a y' := by
   simp only [coord, ← Matrix.mulVec_add]
@@ -55,6 +70,9 @@ theorem coord_add (h : w.under (𝓞 F) = v) (a : GL (Fin n) (w.adicCompletion E
   funext i
   simp [map_add]
 
+/- English proof (translation)
+Simplify using `only [coord, ← Matrix.mulVec_smul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[map_mul]`.
+-/
 theorem coord_smul (h : w.under (𝓞 F) = v) (a : GL (Fin n) (w.adicCompletion E)) (c : Fv F v ⊗[F] E)
     (y : Fin n → Fv F v ⊗[F] E) :
     coord h a (fun i => c * y i) = toCompl h c • coord h a y := by
@@ -63,12 +81,18 @@ theorem coord_smul (h : w.under (𝓞 F) = v) (a : GL (Fin n) (w.adicCompletion 
   funext i
   simp [map_mul]
 
+/- English proof (translation)
+Rewrite using `[coord, comp_mulVec, ← mulVec_coord h a y, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Units.val_mul, Units.val_mul]`.
+-/
 theorem coord_mulVec (h : w.under (𝓞 F) = v) (a : GL (Fin n) (w.adicCompletion E)) (α : GL (Fin n) (Fv F v ⊗[F] E))
     (y : Fin n → Fv F v ⊗[F] E) :
     coord h a (α.1 *ᵥ y) = (a⁻¹ * Formalism.UG.bc (toCompl h) α * a).1 *ᵥ coord h a y := by
   rw [coord, comp_mulVec, ← mulVec_coord h a y, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec,
     Units.val_mul, Units.val_mul]
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `(toCompl_bijective hw h).2.comp_left (a.1 *ᵥ z)`. Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite using `[coord, show toCompl h ∘ y = a.1 *ᵥ z from hy, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
+-/
 theorem exists_coord_eq (hw : Formalism.UG.IsInertAt F E v w) (h : w.under (𝓞 F) = v)
     (a : GL (Fin n) (w.adicCompletion E)) (z : Fin n → w.adicCompletion E) : ∃ y, coord h a y = z := by
   obtain ⟨y, hy⟩ := (toCompl_bijective hw h).2.comp_left (a.1 *ᵥ z)
@@ -85,9 +109,15 @@ def phi : latLoc F L v →ₛₗ[intMap h] (Fin n → w.adicCompletionIntegers E
   map_add' y y' := funext fun i => Subtype.ext (congrFun (coord_add h a y y') i)
   map_smul' r y := funext fun i => Subtype.ext (congrFun (coord_smul h a r.1 y.1) i)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_phi (y : latLoc F L v) (i : Fin n) : (phi hw h ha y i : w.adicCompletion E) = coord h a y i := rfl
 
 include hw ha in
+/- English proof (translation)
+Introduce `z`. Take `⟨y, hy⟩` from `exists_coord_eq hw h a (fun i => (z i : w.adicCompletion E))`. Establish `hm : y ∈ latLoc F L v` using `(mem_latLoc_iff_coord hw h ha y).2 fun i => by rw [hy]; exact (z i).2`. Conclude with `⟨⟨y, hm⟩, funext fun i => Subtype.ext (congrFun hy i)⟩`.
+-/
 theorem phi_surjective : Function.Surjective (phi hw h ha) := by
   intro z
   obtain ⟨y, hy⟩ := exists_coord_eq hw h a (fun i => (z i : w.adicCompletion E))
@@ -97,6 +127,13 @@ theorem phi_surjective : Function.Surjective (phi hw h ha) := by
 variable {M : Submodule (intLoc F E v) (Fin n → Fv F v ⊗[F] E)} {α : GL (Fin n) (Fv F v ⊗[F] E)}
 
 include hw ha in
+/- English proof (translation)
+Take `⟨y, hy⟩` from `exists_coord_eq hw h a (Pi.single j 1)`. Establish `hm : y ∈ latLoc F L v` using `(mem_latLoc_iff_coord hw h ha y).2 fun k => by`. Rewrite using `[hy]`. Distinguish the cases in `e : k = j`. Substitute `e` using the available equality.
+
+Simplify using `only [Pi.single_eq_same]`. Conclude with `one_mem _`. Rewrite using `[Pi.single_eq_of_ne e]`. Conclude with `zero_mem _`. Establish `h1` using `(mem_latLoc_iff_coord hw h ha _).1 (hM ((hα _).2 ⟨y, hm, rfl⟩)) i`.
+
+Rewrite `h1` using `[coord_mulVec, hy, Matrix.mulVec_single_one]`. Conclude with `h1`.
+-/
 theorem integral_entries (hM : M ≤ latLoc F L v) (hα : ∀ y, y ∈ M ↔ ∃ x ∈ latLoc F L v, y = α.1 *ᵥ x) (i j : Fin n) :
     (a⁻¹ * Formalism.UG.bc (toCompl h) α * a).1 i j ∈ w.adicCompletionIntegers E := by
   obtain ⟨y, hy⟩ := exists_coord_eq hw h a (Pi.single j 1)
@@ -115,12 +152,22 @@ def intMat (hM : M ≤ latLoc F L v) (hα : ∀ y, y ∈ M ↔ ∃ x ∈ latLoc 
 
 variable (hM : M ≤ latLoc F L v) (hα : ∀ y, y ∈ M ↔ ∃ x ∈ latLoc F L v, y = α.1 *ᵥ x)
 
+/- English proof (translation)
+Use `RingHom.map_mulVec (w.adicCompletionIntegers E).subtype (intMat hw h ha hM hα) z i` as an intermediate fact. Conclude with `this`.
+-/
 theorem coe_intMat_mulVec (z : Fin n → w.adicCompletionIntegers E) (i : Fin n) :
     ((intMat hw h ha hM hα *ᵥ z) i : w.adicCompletion E) =
       ((a⁻¹ * Formalism.UG.bc (toCompl h) α * a).1 *ᵥ fun j => (z j : w.adicCompletion E)) i := by
   have := RingHom.map_mulVec (w.adicCompletionIntegers E).subtype (intMat hw h ha hM hα) z i
   exact this
 
+/- English proof (translation)
+Use extensionality with `y`. Express the relevant statement in the definitionally equal form `y.1 ∈ M ↔ _`. Rewrite using `[hα, Submodule.mem_comap, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, e⟩`.
+
+Use `⟨phi hw h ha ⟨x, hx⟩, funext fun i => Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVecLin_apply, coe_intMat_mulVec, coe_phi, e, coord_mulVec]`. Both sides reduce to the same expression. Introduce and unpack `⟨z, hz⟩`. Take `⟨x, hx⟩` from `exists_coord_eq hw h a (fun i => (z i : w.adicCompletion E))`.
+
+Establish `hm : x ∈ latLoc F L v` using `(mem_latLoc_iff_coord hw h ha x).2 fun i => by rw [hx]; exact (z i).2`. Use `⟨x, hm, coord_injective hw h a (funext fun i => ?_)⟩` and prove the remaining obligations. Rewrite using `[coord_mulVec, hx, ← coe_intMat_mulVec hw h ha hM hα, ← coe_phi hw h ha y]`. Conclude with `congrArg (fun t => ((t i : w.adicCompletionIntegers E) : w.adicCompletion E)) hz.symm`.
+-/
 theorem submoduleOf_eq :
     M.submoduleOf (latLoc F L v) = (LinearMap.range (intMat hw h ha hM hα).mulVecLin).comap (phi hw h ha) := by
   ext y
@@ -142,6 +189,11 @@ def quotMap : (latLoc F L v ⧸ M.submoduleOf (latLoc F L v)) →ₛₗ[intMap h
     ((Fin n → w.adicCompletionIntegers E) ⧸ LinearMap.range (intMat hw h ha hM hα).mulVecLin) :=
   (M.submoduleOf (latLoc F L v)).mapQ _ (phi hw h ha) (submoduleOf_eq hw h ha hM hα).le
 
+/- English proof (translation)
+Use `⟨(injective_iff_map_eq_zero _).2 fun q hq => ?_, fun q => ?_⟩` and prove the remaining obligations. Proceed by induction on `q using Submodule.Quotient.induction_on with`. Consider the case `H y`. Rewrite `hq` using `[quotMap, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero]`. Rewrite using `[Submodule.Quotient.mk_eq_zero, submoduleOf_eq hw h ha hM hα]`.
+
+Conclude with `hq`. Proceed by induction on `q using Submodule.Quotient.induction_on with`. Consider the case `H z`. Take `⟨y, rfl⟩` from `phi_surjective hw h ha z`. Conclude with `⟨Submodule.Quotient.mk y, rfl⟩`.
+-/
 theorem quotMap_bijective : Function.Bijective (quotMap hw h ha hM hα) := by
   refine ⟨(injective_iff_map_eq_zero _).2 fun q hq => ?_, fun q => ?_⟩
   · induction q using Submodule.Quotient.induction_on with
@@ -154,6 +206,9 @@ theorem quotMap_bijective : Function.Bijective (quotMap hw h ha hM hα) := by
       obtain ⟨y, rfl⟩ := phi_surjective hw h ha z
       exact ⟨Submodule.Quotient.mk y, rfl⟩
 
+/- English proof (translation)
+Use `haveI : RingHomSurjective (intMap h) := ⟨intMap_surjective hw h⟩`. Rewrite using `[← GlobalTheory.length_quotient_range_mulVecLin_eq_addVal_det, Module.length, Module.length, WithBot.unbot_inj]`. Conclude with `Order.krullDim_eq_of_orderIso (Submodule.orderIsoMapComapOfBijective (quotMap hw h ha hM hα) (quotMap_bijective hw h ha hM hα))`.
+-/
 theorem length_eq_addVal :
     Module.length (intLoc F E v) (latLoc F L v ⧸ M.submoduleOf (latLoc F L v)) =
       IsDiscreteValuationRing.addVal _ (intMat hw h ha hM hα).det := by
@@ -162,6 +217,11 @@ theorem length_eq_addVal :
   exact Order.krullDim_eq_of_orderIso
     (Submodule.orderIsoMapComapOfBijective (quotMap hw h ha hM hα) (quotMap_bijective hw h ha hM hα))
 
+/- English proof (translation)
+Establish `h1` using `RingHom.map_det (w.adicCompletionIntegers E).subtype (intMat hw h ha hM hα)`. Establish `h2 : (w.adicCompletionIntegers E).subtype.mapMatrix (intMat hw h ha hM hα) = (a⁻¹ * Formalism.UG.bc (toCompl h) α * a).1` using `Matrix.ext fun i j => rfl`. Establish `h3 : Matrix.GeneralLinearGroup.det (a⁻¹ * Formalism.UG.bc (toCompl h) α * a) = Matrix.GeneralLinearGroup.det (Formalism.UG.bc (toCompl h) α)`. Rewrite using `[map_mul, map_mul, map_inv, mul_comm, mul_inv_cancel_left]`. Express the relevant statement in the definitionally equal form `(w.adicCompletionIntegers E).subtype _ = _`.
+
+Rewrite using `[h1, h2]`. Establish `h4` using `congrArg Units.val h3`. Rewrite `h4` using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.GeneralLinearGroup.val_det_apply]`. Rewrite using `[h4, Matrix.GeneralLinearGroup.val_det_apply, RingHom.map_det]`. Both sides reduce to the same expression.
+-/
 theorem coe_det_intMat :
     ((intMat hw h ha hM hα).det : w.adicCompletion E) = toCompl h (Matrix.GeneralLinearGroup.det α).1 := by
   have h1 := RingHom.map_det (w.adicCompletionIntegers E).subtype (intMat hw h ha hM hα)
@@ -179,6 +239,15 @@ theorem coe_det_intMat :
 
 end Main
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `GlobalTheory.LFun.exists_isUnifV w`. Establish `hϖ' : Valued.v ϖ = WithZero.exp (-1)` using `hϖ`. Establish `hle : ϖ ∈ w.adicCompletionIntegers E`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, hϖ', ← WithZero.exp_zero, WithZero.exp_le_exp]`. Evaluate the numerical expressions.
+
+Set `π : w.adicCompletionIntegers E` to `⟨ϖ, hle⟩`. Establish `hπ` using `GlobalTheory.DegreeOneUniformiser.irreducible_of_valued w π hϖ'`. Take `⟨m, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hd hπ`. Use `⟨m, IsDiscreteValuationRing.addVal_def d u hπ m hu, ?_⟩` and prove the remaining obligations. Establish `hc : (d : w.adicCompletion E) = ((u : w.adicCompletionIntegers E) : w.adicCompletion E) * ϖ ^ m`.
+
+Rewrite using `[hu, MulMemClass.coe_mul, SubmonoidClass.coe_pow]`. Establish `hv : Valued.v (d : w.adicCompletion E) = WithZero.exp (-(m : ℤ))`. Rewrite using `[hc, map_mul, map_pow, hϖ', HeightOneSpectrum.adicCompletionIntegers.isUnit_iff_valued_eq_one.1 u.isUnit, one_mul, ← WithZero.exp_nsmul]`. Use `congr 1`. Simplify using the standard rewrite rules.
+
+Establish `hne : Valued.v (d : w.adicCompletion E) ≠ 0` using `by rw [hv]; exact WithZero.exp_ne_zero`. Establish `hz : WithZero.unzero hne = Multiplicative.ofAdd (-(m : ℤ))` using `WithZero.coe_inj.1 (by rw [WithZero.coe_unzero, hv]; rfl)`. Rewrite using `[Formalism.UG.ordL, dif_neg hne, hz]`. Simplify using the standard rewrite rules.
+-/
 theorem ordL_eq_addVal {d : w.adicCompletionIntegers E} (hd : d ≠ 0) :
     ∃ m : ℕ, IsDiscreteValuationRing.addVal _ d = m ∧ Formalism.UG.ordL (d : w.adicCompletion E) = m := by
   obtain ⟨ϖ, hϖ⟩ := GlobalTheory.LFun.exists_isUnifV w
@@ -203,6 +272,17 @@ theorem ordL_eq_addVal {d : w.adicCompletionIntegers E} (hd : d ≠ 0) :
   rw [Formalism.UG.ordL, dif_neg hne, hz]
   simp
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ n J hJ L _ v P hP g α hα`. Establish `hw : Formalism.UG.IsInertAt F E v P` using `hP`. Establish `h : P.under (𝓞 F) = v` using `(under_eq_iff hw P).2 rfl`. Take `⟨a, ha⟩` from `exists_isFrameAt hw (‹Submodule.IsLattice E L›.fg) (‹Submodule.IsLattice E L›.span_eq_top)`. Establish `hM : latLoc F L v ⊓ latMoved σ J L v g ≤ latLoc F L v` using `inf_le_left`.
+
+Establish `hα' : ∀ y, y ∈ latLoc F L v ⊓ latMoved σ J L v g ↔ ∃ x ∈ latLoc F L v, y = α.1 *ᵥ x` using `fun y => hα y`. Establish `hlen` using `length_eq_addVal hw h ha hM hα'`. Establish `hdet` using `coe_det_intMat hw h ha hM hα'`. Establish `hd0 : (intMat hw h ha hM hα').det ≠ 0`. Introduce `e`.
+
+Rewrite `hdet` using `[e, ZeroMemClass.coe_zero]`. Conclude with `((Matrix.GeneralLinearGroup.det α).isUnit.map (toCompl h)).ne_zero hdet.symm`. Take `⟨m, hm1, hm2⟩` from `ordL_eq_addVal hd0`. Use `⟨m, hlen.trans hm1, ?_⟩` and prove the remaining obligations. Establish `e1` using `habs F E σ hσ v P h hw (Matrix.GeneralLinearGroup.det α)`.
+
+Rewrite `e1` using `[← hdet, hm2]`. Establish `hq` using `absNorm_eq hσ.2.2.1 hw`. Apply `NNReal.eq` to reduce the goal to its premises. Rewrite using `[e1, NNReal.coe_zpow, hq, Formalism.UG.qV]`. Use `push_cast`.
+
+Rewrite using `[← zpow_natCast, ← zpow_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem main_of_abs (habs : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (v : HeightOneSpectrum (𝓞 F)) (w : HeightOneSpectrum (𝓞 E))
     (h : w.under (𝓞 F) = v), Formalism.UG.IsInertAt F E v w → ∀ x : (Fv F v ⊗[F] E)ˣ,
@@ -232,6 +312,9 @@ theorem main_of_abs (habs : ∀ (F E : Type) [Field F] [NumberField F] [Field E]
   congr 1
   ring
 
+/- English proof (translation)
+The claim follows from `main_of_abs GlobalTheory.AbsInert.absEv_inert`.
+-/
 theorem absEv_det_eq_of_inert : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (hJ : IsHermND σ J) (L : Submodule (𝓞 E) (Fin n → E)) [Submodule.IsLattice E L] (v : HeightOneSpectrum (𝓞 F)), ∀ P : HeightOneSpectrum (𝓞 E), IsInertUnder v P → ∀ (g : GLoc σ J v) (α : GL (Fin n) (Fv F v ⊗[F] E)), (∀ y : Fin n → Fv F v ⊗[F] E, (y ∈ latLoc F L v ∧ y ∈ latMoved σ J L v g) ↔ ∃ x ∈ latLoc F L v, y = α.1 *ᵥ x) → ∃ l : ℕ, latLength σ J L v g = l ∧ absEv F E v (Matrix.GeneralLinearGroup.det α) = ((Ideal.absNorm P.asIdeal : ℕ) : ℝ≥0) ^ (-(l : ℤ)) :=
   main_of_abs GlobalTheory.AbsInert.absEv_inert
 

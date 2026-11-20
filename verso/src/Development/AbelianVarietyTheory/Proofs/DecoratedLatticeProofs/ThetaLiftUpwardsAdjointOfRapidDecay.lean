@@ -16,6 +16,13 @@ namespace GlobalTheory.ChainOnto
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hM` using `(GlobalTheory.MultMem.mem_mult_iff _ _ _ _ _ _ _ _).1 ((mem_multT _ _ _ _ _).1 u.2)`. Proceed by induction on `v using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r w`. Establish `h1` using `GlobalTheory.Grow.rapidDec_of_cuspForm hP hc.inf (hM.aut w) (hM.cusp w)`. Establish `h2 : PiLocalization₂.val u (r • PiTensorProduct.tprod ℂ w) = r • PiTensorProduct.lift.symm (u : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ)) w`.
+
+Simplify using `[PiLocalization₂.val, PiTensorProduct.lift_symm]`. Rewrite using `[h2]`. Conclude with `Grow.RapidDec.smul r h1`. Consider the case `add x y hx hy`. Establish `: PiLocalization₂.val u (x + y) = PiLocalization₂.val u x + PiLocalization₂.val u y` using `by simp [PiLocalization₂.val]`.
+
+Rewrite using `[this]`. Conclude with `hx.add hy`.
+-/
 theorem rapidDec_val (hP : GlobalTheory.Published.CuspRapidDecay) {c : Com D} (hc : c.Is) {s : PiLocalization₂ D} (u : s.CC c)
     (v : SmT s.M) : GlobalTheory.Grow.RapidDec s.V (PiLocalization₂.val u v) := by
   have hM := (GlobalTheory.MultMem.mem_mult_iff _ _ _ _ _ _ _ _).1 ((mem_multT _ _ _ _ _).1 u.2)
@@ -31,6 +38,15 @@ theorem rapidDec_val (hP : GlobalTheory.Published.CuspRapidDecay) {c : Com D} (h
     have : PiLocalization₂.val u (x + y) = PiLocalization₂.val u x + PiLocalization₂.val u y := by simp [PiLocalization₂.val]
     rw [this]; exact hx.add hy
 
+/- English proof (translation)
+Introduce `hP D _ c hc k _ s s' hs hs' p hp u y φ v _ w _`. Establish `hF` using `GlobalTheory.T.thetaKernel_iterated_integrals_swap D c.ψ c.θ s.V s'.V (c.chS (k + 1)) (c.chT (k + 1)) p.ω hc.inf hp.weil (p.pt φ) (hp.theta φ) s.ν s.fd s'.ν s'.fd hs.haar hs.fund hs'.haar hs'.fund (PiLocalization₂.val u v) (PiLocalization₂.val y w) (rapidDec_val hP hc u v) (rapid …`. Simplify using `only [PiLocalization₂.pet, Lift.pet, Step.up]`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`.
+
+Use function extensionality and compare the values at `h`. Rewrite using `[← integral_conj, ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Simplify using `only [map_mul, Complex.conj_conj]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ = ∫ g in s.fd, ∫ h in s'.fd, thetaKO p.ω g h (p.pt φ) * PiLocalization₂.val y w h * conj (PiLocalization₂.val u v g) ∂s'.ν ∂s.ν := hF`. Use `_ = ∫ g in s.fd, PiLocalization₂.val (p.io y) (p.It φ w) g * starRingEnd ℂ (PiLocalization₂.val u v g) ∂s.ν := by`. Use `congr 1`. Use function extensionality and compare the values at `g`.
+
+Rewrite using `[integral_mul_const]`. Use `congr 1`. Conclude with `hp.io.eq y φ w g`.
+-/
 theorem upAdj_of_cuspRapidDecay : GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, UpAdj D := by
   intro hP D _ c hc k _ s s' hs hs' p hp u y φ v _ w _
   have hF := GlobalTheory.T.thetaKernel_iterated_integrals_swap D c.ψ c.θ s.V s'.V (c.chS (k + 1)) (c.chT (k + 1)) p.ω hc.inf hp.weil (p.pt φ) (hp.theta φ)

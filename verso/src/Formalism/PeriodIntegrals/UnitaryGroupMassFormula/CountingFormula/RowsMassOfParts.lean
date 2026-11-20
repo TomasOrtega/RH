@@ -33,6 +33,9 @@ section Bridge
 
 variable (D : D7) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T)
 
+/- English proof (translation)
+Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Proceed by induction on `x using Submodule.Quotient.induction_on with | H a => ?_`. Proceed by induction on `y using Submodule.Quotient.induction_on with | H b => ?_`. Rewrite using `[hWb_mk, hWb_mk]`. Conclude with `(VS D).herm.eq a.1 b.1`.
+-/
 theorem hWb_isSymm : (hWb D F0).IsSymm := by
   refine ⟨fun x y => ?_⟩
   induction x using Submodule.Quotient.induction_on with | H a => ?_
@@ -40,16 +43,25 @@ theorem hWb_isSymm : (hWb D F0).IsSymm := by
   rw [hWb_mk, hWb_mk]
   exact (VS D).herm.eq a.1 b.1
 
+/- English proof (translation)
+Use `⟨Subgroup.one_mem _, fun j => ?_, rfl⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using the standard rewrite rules.
+-/
 theorem one_mem_stabF : (1 : (VS D).V ≃ₗ[D.host.E] (VS D).V) ∈ stabF D F0 := by
   refine ⟨Subgroup.one_mem _, fun j => ?_, rfl⟩
   ext x
   simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Subgroup.one_mem _, rfl⟩`.
+-/
 theorem one_mem_hz {V1 : Type} [AddCommGroup V1] [Module D.host.E V1]
     (h1 : V1 →ₗ⋆[D.host.E] V1 →ₗ[D.host.E] D.host.E) (z : V1) :
     (1 : V1 ≃ₗ[D.host.E] V1) ∈ hz h1 z :=
   ⟨Subgroup.one_mem _, rfl⟩
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[Formalism.HermitianLatticesTheory.gmap]`.
+-/
 theorem gmap_one' {V1 : Type} [AddCommGroup V1] [Module D.host.E V1] [Module (𝓞 D.host.E) V1]
     [IsScalarTower (𝓞 D.host.E) D.host.E V1] (M : Submodule (𝓞 D.host.E) V1) :
     Formalism.HermitianLatticesTheory.gmap (1 : V1 ≃ₗ[D.host.E] V1) M = M := by

@@ -7,6 +7,15 @@ open scoped ComplexOrder
 
 namespace PositivityTheory.KB.SmoothPartitionUnityBasic.TraceLipschitz
 
+/- English proof (translation)
+Set `_` to `P.toSeminormedAddCommGroup hP.posSemidef`. Set `_` to `P.toInnerProductSpace hP.posSemidef`. Establish `cs` using `inner_mul_inner_self_le (𝕜 := ℂ) a b`. Establish `e1 : (inner ℂ a b : ℂ) = star a ⬝ᵥ (P *ᵥ b)`. Express the relevant statement in the definitionally equal form `(P *ᵥ b) ⬝ᵥ star a = _`.
+
+Rewrite using `[dotProduct_comm]`. Establish `e2 : (inner ℂ b a : ℂ) = star (star a ⬝ᵥ (P *ᵥ b))`. Rewrite using `[← e1]`. Conclude with `(inner_conj_symm (𝕜 := ℂ) b a).symm`. Establish `e3 : (inner ℂ a a : ℂ) = star a ⬝ᵥ (P *ᵥ a)`.
+
+Express the relevant statement in the definitionally equal form `(P *ᵥ a) ⬝ᵥ star a = _`. Rewrite using `[dotProduct_comm]`. Establish `e4 : (inner ℂ b b : ℂ) = star b ⬝ᵥ (P *ᵥ b)`. Express the relevant statement in the definitionally equal form `(P *ᵥ b) ⬝ᵥ star b = _`. Rewrite using `[dotProduct_comm]`.
+
+Rewrite `cs` using `[e1, e2, e3, e4, norm_star]`. Simplify using `only [RCLike.re_to_complex] at cs`. Rewrite using `[sq]`. Conclude with `cs`.
+-/
 theorem cs_pd {ι : Type*} [Fintype ι] [DecidableEq ι] {P : Matrix ι ι ℂ} (hP : P.PosDef) (a b : ι → ℂ) :
     ‖star a ⬝ᵥ (P *ᵥ b)‖ ^ 2 ≤ (star a ⬝ᵥ (P *ᵥ a)).re * (star b ⬝ᵥ (P *ᵥ b)).re := by
   let _ := P.toSeminormedAddCommGroup hP.posSemidef
@@ -28,6 +37,11 @@ theorem cs_pd {ι : Type*} [Fintype ι] [DecidableEq ι] {P : Matrix ι ι ℂ} 
   rw [sq]
   exact cs
 
+/- English proof (translation)
+Establish `key : star z ⬝ᵥ (vecMulVec a (star a) *ᵥ z) = (star z ⬝ᵥ a) * star (star z ⬝ᵥ a)`. Simplify using `only [dotProduct, mulVec, vecMulVec_apply, Pi.star_apply, star_sum, star_mul', star_star]`. Rewrite using `[Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, Complex.star_def, Complex.mul_conj, Complex.ofReal_re, Complex.normSq_eq_norm_sq]`.
+-/
 theorem dot_vecMulVec {ι : Type*} [Fintype ι] (a z : ι → ℂ) :
     (star z ⬝ᵥ (vecMulVec a (star a) *ᵥ z)).re = ‖star z ⬝ᵥ a‖ ^ 2 := by
   have key : star z ⬝ᵥ (vecMulVec a (star a) *ᵥ z) = (star z ⬝ᵥ a) * star (star z ⬝ᵥ a) := by
@@ -39,6 +53,9 @@ theorem dot_vecMulVec {ι : Type*} [Fintype ι] (a z : ι → ℂ) :
     ring
   rw [key, Complex.star_def, Complex.mul_conj, Complex.ofReal_re, Complex.normSq_eq_norm_sq]
 
+/- English proof (translation)
+The claim follows from `|Real.smoothTransition a - Real.smoothTransition b| ≤ K * |a - b| := by obtain ⟨K, hK⟩ := (Real.smoothTransition.contDiff (n := 1)).contDiffOn.exists_lipschitzOnWith (s := Set.Icc (0 : ℝ) 1) (by simp) (convex_Icc 0 1) isCompact_Icc refine ⟨K, K.2, fun a b => ?_⟩ have hp : ∀ x : ℝ …`.
+-/
 theorem st_lip : ∃ K : ℝ, 0 ≤ K ∧ ∀ a b : ℝ,
     |Real.smoothTransition a - Real.smoothTransition b| ≤ K * |a - b| := by
   obtain ⟨K, hK⟩ := (Real.smoothTransition.contDiff (n := 1)).contDiffOn.exists_lipschitzOnWith
@@ -66,6 +83,9 @@ theorem st_lip : ∃ K : ℝ, 0 ≤ K ∧ ∀ a b : ℝ,
         have := abs_min_sub_min_le_max a 1 b 1
         simpa using this
 
+/- English proof (translation)
+The claim follows from `|‖ck‖ ^ 2 - ‖ch‖ ^ 2| ≤ 5 * δ * (a * b) := by have hP : 0 ≤ a * b := mul_nonneg ha hb have hxe := abs_norm_sub_norm_le ck ch have hd := norm_nonneg (ck - ch) have he := norm_nonneg ch have hx := norm_nonneg ck have hde : ‖ck - ch‖ * ‖ch‖ ≤ 2 * δ * (a * b) := by by_contra H push N …`.
+-/
 theorem sq_diff {ck ch : ℂ} {a b δ : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) (hδ : 0 ≤ δ) (hδ1 : δ ≤ 1 / 4)
     (h1 : ‖ck - ch‖ ^ 2 ≤ 4 * δ ^ 2 * a * b) (h2 : ‖ch‖ ^ 2 ≤ a * b) :
     |‖ck‖ ^ 2 - ‖ch‖ ^ 2| ≤ 5 * δ * (a * b) := by
@@ -87,6 +107,9 @@ theorem sq_diff {ck ch : ℂ} {a b δ : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) (hδ 
   have l1 := mul_le_mul_of_nonneg_right (show ‖ch‖ - ‖ck‖ ≤ ‖ck - ch‖ by linarith [hxe.1]) (add_nonneg he hx)
   constructor <;> nlinarith
 
+/- English proof (translation)
+The claim follows from `|(s ^ 2 * FinalFormK)⁻¹ * Sk - (s ^ 2 * Zh)⁻¹ * Sh| ≤ C₁ * (5 * c) * δ / s * A := by have hZh0 : 0 < Zh := hm.trans_le hZh have hZk0 : 0 < FinalFormK := hm.trans_le hZk have hs0 : s ≠ 0 := hs.ne' have hZh1 : Zh ≠ 0 := hZh0.ne' have hZk1 : FinalFormK ≠ 0 := hZk0.ne' have e : (s ^ …`.
+-/
 theorem alg_bound {s A δ Zh FinalFormK Sh Sk M m C₁ c : ℝ} (hs : 0 < s) (hm : 0 < m) (hZh : m ≤ Zh)
     (hZk : m ≤ FinalFormK) (hM : M ≤ C₁ * m) (hC₁ : 0 ≤ C₁) (hA : 0 ≤ A) (hδ : 0 ≤ δ) (hc : 0 ≤ c)
     (hSh0 : 0 ≤ Sh) (hSh : Sh ≤ 4 * s * A * Zh) (hS : |Sk - Sh| ≤ M * δ * s * A * c)

@@ -19,12 +19,18 @@ def constUnit (R : Type) [CommRing R] [IsDomain R] (F : Type) [Field F]
     [Algebra (FractionRing R) F] (ζ : Fˣ) : Γ((TFK (R := R) F).left, ⊤)ˣ :=
   Units.map (Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom.toMonoidHom ζ
 
+/- English proof (translation)
+The claim follows from `(Scheme.ΓSpecIso (CommRingCat.of F)).inv_hom_id_apply (ζ : F)`.
+-/
 theorem ΓSpecIso_hom_constUnit (R : Type) [CommRing R] [IsDomain R] (F : Type) [Field F]
     [Algebra (FractionRing R) F] (ζ : Fˣ) :
     (Scheme.ΓSpecIso (CommRingCat.of F)).hom.hom
       (constUnit R F ζ : Γ((TFK (R := R) F).left, ⊤)) = (ζ : F) :=
   (Scheme.ΓSpecIso (CommRingCat.of F)).inv_hom_id_apply (ζ : F)
 
+/- English proof (translation)
+The claim follows from `(Units.mapEquiv (Scheme.ΓSpecIso (CommRingCat.of F)).symm.commRingCatIsoToRingEquiv.toMulEquiv).bijective`.
+-/
 theorem constUnit_bijective (R : Type) [CommRing R] [IsDomain R] (F : Type) [Field F]
     [Algebra (FractionRing R) F] : Function.Bijective (constUnit R F) :=
   (Units.mapEquiv

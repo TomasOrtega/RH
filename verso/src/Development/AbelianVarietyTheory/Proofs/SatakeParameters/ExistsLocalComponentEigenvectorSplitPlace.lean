@@ -16,6 +16,21 @@ noncomputable section
 
 namespace GlobalTheory.SplitEigen
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `Submodule.mem_iSup_iff_exists_finset.1 hφ`. Establish `key : ∀ s : Finset ι, ∀ W : Submodule ℂ V, (∀ g, ∀ x ∈ W, ρ g x ∈ W) → φ ∉ W → φ ∈ W ⊔ ⨆ i ∈ s, LinearMap.range (f i) → ∃ v : U, v ≠ 0 ∧ ∀ k ∈ K, σ k v = c k • v`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro W _ h1 h2; exact absurd (by simpa using h2) h1`.
+
+Consider the case `insert i s _ ih`. Introduce `W hW h1 h2`. Rewrite `h2` using `[Finset.iSup_insert, ← sup_assoc]`. Distinguish the cases in `h3 : φ ∈ W ⊔ LinearMap.range (f i)`. Take `⟨x, hx, _, ⟨v, rfl⟩, e⟩` from `Submodule.mem_sup.1 h3`.
+
+Establish `hv : f i v ∉ W` using `fun h => h1 (e ▸ add_mem hx h)`. Establish `hc : W.comap (f i) = ⊥`. Use `(((isIrreducible_iff σ).1 hσ).2 _ fun g u hu => ?_).resolve_right fun h => hv ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap, hf]`. Conclude with `hW g _ hu`.
+
+Establish `: v ∈ W.comap (f i)` using `h ▸ Submodule.mem_top`. Conclude with `this`. Use `⟨v, fun h => hv (by rw [h, map_zero]; exact zero_mem _), fun k hk => ?_⟩` and prove the remaining obligations. Establish `h4 : σ k v - c k • v ∈ W.comap (f i)`. Establish `h5` using `hK k hk`.
+
+Rewrite `h5` using `[← e, map_add]`. Establish `h6 : f i (σ k v - c k • v) = c k • x - ρ k x`. Rewrite using `[map_sub, hf, map_smul]`. Rewrite `h5` using `[smul_add]`. Take the linear combination `(norm := module) h5`.
+
+Rewrite using `[Submodule.mem_comap, h6]`. Conclude with `sub_mem (W.smul_mem _ hx) (hW k x hx)`. Rewrite `h4` using `[hc, Submodule.mem_bot]`. Conclude with `sub_eq_zero.1 h4`. Use `ih _ (fun g y hy => ?_) h3 h2` and prove the remaining obligations.
+
+Take `⟨x, hx, _, ⟨v, rfl⟩, rfl⟩` from `Submodule.mem_sup.1 hy`. Rewrite using `[map_add, ← hf]`. Conclude with `Submodule.add_mem_sup (hW g x hx) ⟨_, rfl⟩`. Conclude with `key s ⊥ (fun g x hx => by simp_all) (by simpa using h0) (by simpa using hs)`.
+-/
 theorem exists_eigen_of_mem_iSup {G V U ι : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup U]
     [Module ℂ U] (ρ : Representation ℂ G V) (σ : Representation ℂ G U) (hσ : σ.IsIrreducible)
     (f : ι → U →ₗ[ℂ] V) (hf : ∀ i g u, f i (σ g u) = ρ g (f i u)) (K : Set G) (c : G → ℂ) (φ : V) (h0 : φ ≠ 0)
@@ -55,6 +70,23 @@ theorem exists_eigen_of_mem_iSup {G V U ι : Type} [Group G] [AddCommGroup V] [M
         exact Submodule.add_mem_sup (hW g x hx) ⟨_, rfl⟩
   exact key s ⊥ (fun g x hx => by simp_all) (by simpa using h0) (by simpa using hs)
 
+/- English proof (translation)
+Introduce `E _ _ _ n U hU w hw J _ _ χ φ hφ h0 hχ`. Set `π : AutSub E n` to `⟨U, hU⟩`. Take `⟨σ, -, hσ, -⟩` from `GlobalTheory.DefU.exists_locComp_split E n π w hw`. Take `⟨e, he⟩` from `GlobalTheory.locU_equiv_GL E n w hw`. Take `⟨r, -, -, hr2⟩` from `GlobalTheory.DefU.LocRet.exists_ret E n w`.
+
+Establish `hcl : ∀ g, cLoc w ((e.symm g : locU n w) : UA E n) = g` using `fun g => by`. Rewrite using `[← he, e.apply_symm_apply]`. Set `p : locU n w →* GL (Fin n) (w.adicCompletion E)` to `(cLoc w).comp (locU n w).subtype`. Establish `hp : p = e.toMulEquiv.toMonoidHom` using `MonoidHom.ext fun x => (he x).symm`. Set `σ' : Representation ℂ (locU n w) σ.V` to `σ.ρ.comp p`.
+
+Establish `hirr : σ'.IsIrreducible`. Express the relevant statement in the definitionally equal form `Representation.IsIrreducible (σ.ρ.comp p)`. Rewrite using `[hp]`. Conclude with `GlobalTheory.CuspMult.isIrreducible_comp_mulEquiv σ.ρ e.toMulEquiv σ.irred`. Use `⟨σ, hσ, ?_⟩` and prove the remaining obligations.
+
+Take `⟨-, f, hf0, hfm, hf⟩` from `hσ`. Set `F : σ'.IntertwiningMap (π.rep.comp (locU n w).subtype)` to `⟨f.codRestrict π.V hfm, fun x => LinearMap.ext fun v => Subtype.ext (hf x v)⟩`. Establish `hF0 : F ≠ 0` using `fun h => hf0 (LinearMap.ext fun v => congrArg Subtype.val (DFunLike.congr_fun h v))`. Establish `hsup` using `(GlobalTheory.CuspRep.CompUniq.isotypic (UA E n) (locU n w) π.V σ.V σ.V π.rep (locU n w).subtype σ' σ' π.isIrreducible_rep hirr hirr (fun g => ⟨r g, fun y => hr2 g y⟩) F hF0).1`. Set `c : locU n w → ℂ` to `fun k => if h : cLoc w (k : UA E n) ∈ J then (χ ⟨_, h⟩ : ℂ) else 0`.
+
+Take `⟨v, hv0, hv⟩` from `exists_eigen_of_mem_iSup (π.rep.comp (locU n w).subtype) σ' hirr (fun h : σ'.IntertwiningMap (π.rep.comp (locU n w).subtype) => h.toLinearMap) (fun h g u => LinearMap.congr_fun (h.isIntertwining' g) u) {k | cLoc w (k : UA E n) ∈ J} c ⟨φ, hφ⟩ (fun h => h0 (congrArg Subtype.val h)) …`. Express the relevant statement in the definitionally equal form `RU E n (k : UA E n) φ = c k • φ`. Use `show RU E n (k : UA E n) φ = (if h : cLoc w (k : UA E n) ∈ J then (χ ⟨_, h⟩ : ℂ) else 0) • φ`. Establish `hk' : cLoc w (k : UA E n) ∈ J` using `hk`. Rewrite using `[dif_pos hk']`.
+
+Conclude with `hχ _ k.2 hk'))`. Use the proof step `(hsup ▸ Submodule.mem_top)`. Use `⟨v, hv0, fun g => ?_⟩` and prove the remaining obligations. Establish `hk : cLoc w ((e.symm g : locU n w) : UA E n) ∈ J` using `by rw [hcl]; exact g.2`. Establish `h1` using `hv (e.symm g) hk`.
+
+Establish `h2 : σ' (e.symm g) = σ.ρ g`. Express the relevant statement in the definitionally equal form `σ.ρ (cLoc w ((e.symm g : locU n w) : UA E n)) = _`. Rewrite using `[hcl]`. Rewrite `h1` using `[h2]`. Rewrite using `[h1]`.
+
+Simplify using `only [c, dif_pos hk]`. Use `congr 3`. Conclude with `Subtype.ext (hcl g)`.
+-/
 theorem exists_locComp_eigen : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (U : Submodule ℂ (UA E n → ℂ)), IsAutRepU U → ∀ w, IsSplitAt w → ∀ (J : Subgroup (GL (Fin n) (w.adicCompletion E))), IsOpen (J : Set (GL (Fin n) (w.adicCompletion E))) → IsCompact (J : Set (GL (Fin n) (w.adicCompletion E))) → ∀ (χ : J →* ℂˣ) (φ : UA E n → ℂ), φ ∈ U → φ ≠ 0 → (∀ x ∈ locU n w, ∀ hx : cLoc w x ∈ J, RU E n x φ = (χ ⟨_, hx⟩ : ℂ) • φ) → ∃ σ : SmIrr (GL (Fin n) (w.adicCompletion E)), IsCompAlong U (locU n w) ((cLoc w).comp (locU n w).subtype) σ.ρ ∧ ∃ v : σ.V, v ≠ 0 ∧ ∀ g : J, σ.ρ g v = (χ g : ℂ) • v := by
   classical
   intro E _ _ _ n U hU w hw J _ _ χ φ hφ h0 hχ

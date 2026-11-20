@@ -51,11 +51,23 @@ def cycPowSum {l : ℕ} [Fact l.Prime] (P : LocPrime l) (K LL : FinExt l) {n : �
   map_one' := by simp
   map_mul' g h := by simp only [map_mul, Units.val_mul, Matrix.diagonal_mul_diagonal]
 
+/- English proof (translation)
+The claim follows from `Matrix.mulVec_diagonal _ v c`.
+-/
 theorem cycPowSum_apply {l : ℕ} [Fact l.Prime] (P : LocPrime l) (K LL : FinExt l) {n : ℕ} (a : Fin n → ℤ)
     (g : ↥(GK K)) (v : Fin n → ↥LL.1) (c : Fin n) :
     matRep (cycPowSum P K LL a) g v c = (((cycLL (P.PD K) ↥LL.1 ^ (-a c)) g : (↥LL.1)ˣ) : ↥LL.1) * v c :=
   Matrix.mulVec_diagonal _ v c
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Use `⟨?_, fun τ u => ?_⟩` and prove the remaining obligations. Unfold `IsCrys`. Rewrite using `[Module.finrank_zero_of_subsingleton, Module.finrank_zero_of_subsingleton (M := Fin 0 → ↥LL.1), mul_zero]`.
+
+Unfold `multV`. Rewrite using `[Module.finrank_zero_of_subsingleton, Module.finrank_zero_of_subsingleton]`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Take `⟨c1, m1⟩` from `ih fun c => a c.succ`.
+
+Take `⟨c2, -, m2⟩` from `GlobalTheory.CycPow.cyc_zpow_crys_dR_jump l P AI T K LL (-a 0)`. Take `⟨-, hc, hm⟩` from `GlobalTheory.Per.DirectSumHT.directSum_hodgeTate l P AI T K LL _ (matRep (cycPowSum P K LL a)) _ (charRep (cycLL (P.PD K) ↥LL.1 ^ (-a 0))) _ (matRep (cycPowSum P K LL fun c => a c.succ)) (Fin.consLinearEquiv ↥LL.1 fun _ => ↥LL.1).symm fun g v => Prod.ext (cycPowSum_apply P K LL a …`. Use `⟨hc.2 ⟨c2, c1⟩, fun τ u => ?_⟩` and prove the remaining obligations. Rewrite using `[hm, m1, m2, List.ofFn_succ, List.count_cons, neg_neg]`. Distinguish the cases in `h : u = a 0`.
+
+Simplify using `[h, add_comm]`. Simplify using `[h, Ne.symm h]`.
+-/
 theorem cycPowSum_crys_mult {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P} (T : LocTied l P AI)
     (K LL : FinExt l) {n : ℕ} (a : Fin n → ℤ) :
     IsCrys (P.PD K) (matRep (cycPowSum P K LL a)) ∧ ∀ (τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1) (u : ℤ),

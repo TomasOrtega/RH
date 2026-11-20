@@ -10,6 +10,27 @@ section Step
 
 variable {H : Type*} [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
 
+/- English proof (translation)
+Establish `hd' : ∀ h (v : ℝ), HasDerivAt (fun t : ℝ => f (h * β (Multiplicative.ofAdd t))) (f' (h * β (Multiplicative.ofAdd v))) v` using `fun h v => by`. Establish `h1` using `hd (h * β (Multiplicative.ofAdd v))`. Establish `h2 : HasDerivAt (fun t : ℝ => f (h * β (Multiplicative.ofAdd v) * β (Multiplicative.ofAdd t))) (f' (h * β (Multiplicative.ofAdd v))) (v - v)` using `by rwa [sub_self]`. Establish `h3` using `h2.comp_sub_const v v`. Use `h3.congr_of_eventuallyEq (Eventually.of_forall fun t => ?_)` and prove the remaining obligations.
+
+Simplify using `only [mul_assoc, ← map_mul, ← ofAdd_add, add_sub_cancel]`. Use `set R : ℝ → ℂ := fun t => f (p t * β (Multiplicative.ofAdd (u t))) - f (p t) - u t * f' (p 0) with hR`. Establish `hc : Continuous fun z : H × ℝ => f' (z.1 * β (Multiplicative.ofAdd z.2))` using `hf'.comp (continuous_fst.mul (hβ.comp (continuous_ofAdd.comp continuous_snd)))`. Establish `ho : R =o[𝓝 0] u`. Use `isLittleO_iff.2 fun ε hε => ?_` and prove the remaining obligations.
+
+Establish `h1 : ∀ᶠ z : H × ℝ in 𝓝 (p 0, 0), ‖f' (z.1 * β (Multiplicative.ofAdd z.2)) - f' (p 0)‖ ≤ ε`. Establish `h2` using `(hc.tendsto (p 0, 0))`. Simplify using `only [ofAdd_zero, map_one, mul_one] at h2`. Use `filter_upwards [h2 (Metric.closedBall_mem_nhds _ hε)] with z hz`. Simplify `hz` using `[dist_eq_norm]`.
+
+Rewrite `h1` using `[nhds_prod_eq]`. Take `⟨U, hU, V, hV, hUV⟩` from `Filter.eventually_prod_iff.1 h1`. Take `⟨δ, hδ, hδV⟩` from `Metric.eventually_nhds_iff_ball.1 hV`. Establish `hu1 : ∀ᶠ t in 𝓝 (0 : ℝ), u t ∈ Metric.ball (0 : ℝ) δ`. Use `hu.continuousAt.tendsto` as an intermediate fact.
+
+Rewrite `this` using `[hu0]`. Conclude with `this (Metric.ball_mem_nhds _ hδ)`. Use `filter_upwards [hp.tendsto hU, hu1] with t ht1 ht2`. Establish `h3` using `(convex_ball (0 : ℝ) δ).norm_image_sub_le_of_norm_hasDerivWithin_le (f := fun v : ℝ => f (p t * β (Multiplicative.ofAdd v)) - v * f' (p 0)) (f' := fun v : ℝ => f' (p t * β (Multiplicative.ofAdd v)) - f' (p 0)) (C := ε) (fun v _ => by`. Establish `h4 : HasDerivAt (fun v : ℝ => (v : ℂ) * f' (p 0)) (f' (p 0)) v`.
+
+Simplify using `using (Complex.ofRealCLM.hasDerivAt (x := v)).mul_const (f' (p 0))`. Conclude with `((hd' (p t) v).sub h4).hasDerivWithinAt)`. Use the proof step `(fun v hv => hUV ht1 (hδV v hv)) (Metric.mem_ball_self hδ) ht2`. Simplify using `only [ofAdd_zero, map_one, mul_one, Complex.ofReal_zero, zero_mul, sub_zero] at h3`. Establish `e : R t = f (p t * β (Multiplicative.ofAdd (u t))) - u t * f' (p 0) - f (p t)`.
+
+Simplify using `only [hR]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `h3`. Establish `hO : u =O[𝓝 0] fun t : ℝ => t - 0`.
+
+Use `hu.isBigO_sub` as an intermediate fact. Simplify `this` using `[hu0]`. Establish `hR0 : HasDerivAt R 0 0`. Rewrite using `[hasDerivAt_iff_isLittleO]`. Establish `: R 0 = 0` using `by simp [hR, hu0]`.
+
+Simplify `ho.trans_isBigO hO` using `[this]`. Establish `h5 : HasDerivAt (fun t : ℝ => (u t : ℂ) * f' (p 0)) (u' * f' (p 0)) 0` using `hu.ofReal_comp.mul_const _`. Establish `h6` using `(hR0.add hD).add h5`. Rewrite `h6` using `[zero_add]`. Use `h6.congr_of_eventuallyEq (Eventually.of_forall fun t => ?_)` and prove the remaining obligations.
+
+Simplify using `only [hR, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem step (β : Multiplicative ℝ →* H) (hβ : Continuous β) (f f' : H → ℂ) (hf' : Continuous f')
     (hd : ∀ h, HasDerivAt (fun t : ℝ => f (h * β (Multiplicative.ofAdd t))) (f' h) 0)
     (p : ℝ → H) (hp : ContinuousAt p 0) (u : ℝ → ℝ) (u' : ℝ) (hu : HasDerivAt u u' 0) (hu0 : u 0 = 0)
@@ -70,6 +91,13 @@ theorem step (β : Multiplicative ℝ →* H) (hβ : Continuous β) (f f' : H �
   simp only [hR, Pi.add_apply]
   ring
 
+/- English proof (translation)
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `β _ f' _ _ p _ u u' _ _ D hD`. Simplify using `using hD`.
+
+Consider the case `succ m ih`. Introduce `β hβ f' hf' hd p hp u u' hu hu0 D hD`. Establish `h1` using `step (β 0) (hβ 0) f (f' 0) (hf' 0) (hd 0) p hp (u 0) (u' 0) (hu 0) (hu0 0) D hD`. Establish `h2` using `ih (fun i => β i.succ) (fun i => hβ _) (fun i => f' i.succ) (fun i => hf' _) (fun i => hd _) (fun t => p t * β 0 (Multiplicative.ofAdd (u 0 t))) (hp.mul (((hβ 0).comp continuous_ofAdd).continuousAt.comp (hu 0).continuousAt)) (fun i => u i.succ) (fun i => u' i.succ) (fun i => hu _ …`. Simplify using `only [hu0, ofAdd_zero, map_one, mul_one] at h2`.
+
+Simplify `h2` using `only [List.ofFn_succ, List.prod_cons, mul_assoc, Fin.sum_univ_succ, add_assoc]`.
+-/
 theorem chain (f : H → ℂ) : ∀ (m : ℕ) (β : Fin m → Multiplicative ℝ →* H) (_ : ∀ i, Continuous (β i))
     (f' : Fin m → H → ℂ) (_ : ∀ i, Continuous (f' i))
     (_ : ∀ i h, HasDerivAt (fun t : ℝ => f (h * β i (Multiplicative.ofAdd t))) (f' i h) 0)
@@ -102,15 +130,24 @@ def Gr (a : A →L[ℝ] A) (g : A) : Prop := a g * g = 1 ∧ g * a g = 1
 
 def pr (a : A →L[ℝ] A) : A →L[ℝ] A := (1 / 2 : ℝ) • (ContinuousLinearMap.id ℝ A - a)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pr_apply (a : A →L[ℝ] A) (x : A) : pr a x = (1 / 2 : ℝ) • (x - a x) := rfl
 
 variable {a : A →L[ℝ] A}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[ha, mul_assoc, ← mul_assoc (a g), hg.1, one_mul, hh.1]`. Rewrite using `[ha, mul_assoc, ← mul_assoc h, hh.2, one_mul, hg.2]`.
+-/
 theorem Gr.mul (ha : ∀ x y, a (x * y) = a y * a x) {g h : A} (hg : Gr a g) (hh : Gr a h) : Gr a (g * h) := by
   constructor
   · rw [ha, mul_assoc, ← mul_assoc (a g), hg.1, one_mul, hh.1]
   · rw [ha, mul_assoc, ← mul_assoc h, hh.2, one_mul, hg.2]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp [Gr, h1]`. Consider the case `cons x l ih`. Rewrite using `[List.prod_cons]`. Conclude with `(hl x (by simp)).mul ha (ih fun g hg => hl g (by simp [hg]))`.
+-/
 theorem Gr.list (ha : ∀ x y, a (x * y) = a y * a x) (h1 : a 1 = 1) (l : List A) (hl : ∀ g ∈ l, Gr a g) :
     Gr a l.prod := by
   induction l with
@@ -119,6 +156,9 @@ theorem Gr.list (ha : ∀ x y, a (x * y) = a y * a x) (h1 : a 1 = 1) (l : List A
     rw [List.prod_cons]
     exact (hl x (by simp)).mul ha (ih fun g hg => hl g (by simp [hg]))
 
+/- English proof (translation)
+Establish `h2 : a g * a (a g) = 1` using `by rw [← ha, hg.1, h1]`. Establish `h3 : a (a g) = g`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[pr_apply, map_smul, map_sub, h3, ← smul_neg, neg_sub]`.
+-/
 theorem Gr.anti (ha : ∀ x y, a (x * y) = a y * a x) (h1 : a 1 = 1) {g : A} (hg : Gr a g) :
     a (pr a g) = -pr a g := by
   have h2 : a g * a (a g) = 1 := by rw [← ha, hg.1, h1]
@@ -127,6 +167,17 @@ theorem Gr.anti (ha : ∀ x y, a (x * y) = a y * a x) (h1 : a 1 = 1) {g : A} (hg
       _ = g := by rw [mul_assoc, h2, mul_one]
   rw [pr_apply, map_smul, map_sub, h3, ← smul_neg, neg_sub]
 
+/- English proof (translation)
+Establish `e1 : g - a g = h - a h`. Use `congrArg (fun x => (2 : ℝ) • x) e` as an intermediate fact. Simplify `this` using `[pr_apply, smul_smul]`. Use `set D := g - h with hD`. Establish `e2 : a g * D * a h = -D`.
+
+Rewrite using `[hD, mul_sub, sub_mul, hg.1, one_mul, mul_assoc, hh.2, mul_one]`. Establish `: a h = h - (g - a g)` using `by rw [e1]; abel`. Rewrite using `[this]`. Normalize the expressions using the abelian group laws. Establish `e3 : (2 : ℝ) • D = (1 - a g) * D + D * (1 - a h) - (1 - a g) * D * (1 - a h)`.
+
+Establish `: (1 - a g) * D + D * (1 - a h) - (1 - a g) * D * (1 - a h) = D - a g * D * a h` using `by noncomm_ring`. Rewrite using `[this, e2, two_smul, sub_neg_eq_add]`. Establish `n1 : ‖(1 - a g) * D‖ ≤ 1 / 2 * ‖D‖` using `(norm_mul_le _ _).trans (by gcongr)`. Establish `n2 : ‖D * (1 - a h)‖ ≤ ‖D‖ * (1 / 2)` using `(norm_mul_le _ _).trans (by gcongr)`. Establish `n3 : ‖(1 - a g) * D * (1 - a h)‖ ≤ 1 / 2 * ‖D‖ * (1 / 2)` using `(norm_mul_le _ _).trans (by gcongr)`.
+
+Establish `n4 : 2 * ‖D‖ ≤ ‖(1 - a g) * D‖ + ‖D * (1 - a h)‖ + ‖(1 - a g) * D * (1 - a h)‖`. Establish `: ‖(2 : ℝ) • D‖ = 2 * ‖D‖` using `by rw [norm_smul]; norm_num`. Rewrite using `[← this, e3]`. Conclude with `(norm_sub_le _ _).trans (add_le_add_left (norm_add_le _ _) _)`. Establish `: ‖D‖ ≤ 0` using `by linarith`.
+
+Conclude with `sub_eq_zero.1 (norm_le_zero_iff.1 this)`.
+-/
 theorem Gr.eq_of_pr {g h : A} (hg : Gr a g) (hh : Gr a h) (h1 : ‖1 - a g‖ ≤ 1 / 2) (h2 : ‖1 - a h‖ ≤ 1 / 2)
     (e : pr a g = pr a h) : g = h := by
   have e1 : g - a g = h - a h := by
@@ -150,6 +201,13 @@ theorem Gr.eq_of_pr {g h : A} (hg : Gr a g) (hh : Gr a h) (h1 : ‖1 - a g‖ �
   have : ‖D‖ ≤ 0 := by linarith
   exact sub_eq_zero.1 (norm_le_zero_iff.1 this)
 
+/- English proof (translation)
+Introduce `m V _ _`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `e e' _ _`. Simplify using `using hasStrictFDerivAt_const (1 : A) (0 : V)`.
+
+Consider the case `succ m ih`. Introduce `e e' he h0`. Establish `h1` using `(he 0).mul' (ih (fun i => e i.succ) (fun i => e' i.succ) (fun i => he _) (fun i => h0 _))`. Establish `h2 : (List.ofFn fun i : Fin m => e i.succ 0).prod = 1` using `by simp [h0]`. Simplify using `only [h2] at h1`.
+
+Simplify using `only [h0, one_smul, MulOpposite.op_one] at h1`. Simplify using `only [List.ofFn_succ, List.prod_cons, Fin.sum_univ_succ]`. Rewrite using `[add_comm (e' 0)]`. Conclude with `h1`.
+-/
 theorem prod_strict : ∀ (m : ℕ) {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (e : Fin m → V → A)
     (e' : Fin m → V →L[ℝ] A) (_ : ∀ i, HasStrictFDerivAt (e i) (e' i) 0) (_ : ∀ i, e i 0 = 1),
     HasStrictFDerivAt (fun s => (List.ofFn fun i => e i s).prod) (∑ i, e' i) 0 := by
@@ -168,6 +226,25 @@ theorem prod_strict : ∀ (m : ℕ) {V : Type} [NormedAddCommGroup V] [NormedSpa
     rw [add_comm (e' 0)]
     exact h1
 
+/- English proof (translation)
+Use `set Φ : (Fin m → ℝ) → A := fun s => (List.ofFn fun i => e i (s i)).prod with hΦ`. Establish `hΦ0 : Φ 0 = 1` using `by simp [hΦ, he0]`. Establish `hΦG : ∀ s, Gr a (Φ s)` using `fun s => Gr.list ha h1 _ fun x hx => by`. Take `⟨i, rfl⟩` from `(List.mem_ofFn' _ _).1 hx`. Conclude with `heG _ _`.
+
+Establish `hΦd : HasStrictFDerivAt Φ (∑ i, (ContinuousLinearMap.toSpanSingleton ℝ (Y i)).comp (ContinuousLinearMap.proj i)) 0` using `prod_strict m (fun i (s : Fin m → ℝ) => e i (s i)) _ (fun i => HasStrictFDerivAt.comp (0 : Fin m → ℝ) (f := fun s : Fin m → ℝ => s i) (he i).hasStrictFDerivAt (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin m => ℝ) i).hasStrictFDerivAt) he0`. Establish `hΨ : HasStrictFDerivAt (fun s => c (pr a (Φ s))) ((ContinuousLinearEquiv.refl ℝ (Fin m → ℝ) : (Fin m → ℝ) ≃L[ℝ] (Fin m → ℝ)) : (Fin m → ℝ) →L[ℝ] (Fin m → ℝ)) 0`. Establish `h2` using `(c.comp (pr a)).hasStrictFDerivAt.comp 0 hΦd`. Use `HasStrictFDerivAt.congr_fderiv h2 (ContinuousLinearMap.ext fun s => ?_)` and prove the remaining obligations. Establish `h3 : pr a (∑ i, s i • Y i) = ∑ i, s i • Y i`.
+
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, pr_apply, hY, sub_neg_eq_add, ← two_smul ℝ (Y i), smul_smul (1 / 2 : ℝ)]`. Evaluate the numerical expressions. Establish `h4 : (∑ i, (ContinuousLinearMap.toSpanSingleton ℝ (Y i)).comp (ContinuousLinearMap.proj (R` using `ℝ) (φ := fun _ : Fin m => ℝ) i)) s = ∑ i, s i • Y i := by`.
+
+Rewrite using `[sum_apply]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `c (pr a ((∑ i, (ContinuousLinearMap.toSpanSingleton ℝ (Y i)).comp (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin m => ℝ) i)) s)) = s`. Rewrite using `[h4, h3, hc]`. Use `set ρ := hΨ.localInverse _ _ _ with hρ`.
+
+Establish `hz : c (pr a (Φ 0)) = c (pr a (g 0))` using `by rw [hΦ0, hg0]`. Establish `hk : HasDerivAt (fun t => c (pr a (g t))) (c (pr a Z)) 0` using `(c.comp (pr a)).hasFDerivAt.comp_hasDerivAt 0 hg`. Establish `hρ0 : ρ (c (pr a (g 0))) = 0`. Rewrite using `[← hz]`. Conclude with `hΨ.localInverse_apply_image`.
+
+Establish `hρd` using `hΨ.to_localInverse.hasFDerivAt`. Rewrite `hρd` using `[hz]`. Establish `hs : HasDerivAt (fun t => ρ (c (pr a (g t)))) (c (pr a Z)) 0`. Establish `h5` using `hρd.comp_hasDerivAt 0 hk`. Conclude with `h5`.
+
+Use `⟨fun t => ρ (c (pr a (g t))), hρ0, hs, ?_⟩` and prove the remaining obligations. Establish `hr` using `hΨ.eventually_right_inverse`. Rewrite `hr` using `[hz]`. Establish `near : ∀ k : ℝ → A, ContinuousAt k 0 → k 0 = 1 → ∀ᶠ t in 𝓝 (0 : ℝ), ‖1 - a (k t)‖ ≤ 1 / 2` using `fun k hk hk0 => by`. Establish `h4 : ContinuousAt (fun t => ‖1 - a (k t)‖) 0` using `(continuousAt_const.sub (a.continuous.continuousAt.comp hk)).norm`.
+
+Establish `h5` using `h4.tendsto`. Simplify using `only [hk0, h1, sub_self, norm_zero] at h5`. Conclude with `h5.eventually (eventually_le_nhds (by norm_num))`. Establish `hΦc : ContinuousAt (fun t => Φ (ρ (c (pr a (g t))))) 0` using `ContinuousAt.comp_of_eq (g := Φ) (f := fun t => ρ (c (pr a (g t)))) hΦd.continuousAt hs.continuousAt hρ0`. Use `filter_upwards [hk.continuousAt.tendsto hr, near g hg.continuousAt hg0, near _ hΦc (by simp only [hρ0, hΦ0])] with t t1 t2 t3`.
+
+Conclude with `(hgG t).eq_of_pr (hΦG _) t2 t3 (hc' _ _ ((hgG t).anti ha h1) ((hΦG _).anti ha h1) (Eq.symm t1))`.
+-/
 theorem coords (ha : ∀ x y, a (x * y) = a y * a x) (h1 : a 1 = 1) {m : ℕ} (Y : Fin m → A) (hY : ∀ i, a (Y i) = -Y i)
     (c : A →L[ℝ] (Fin m → ℝ)) (hc : ∀ s : Fin m → ℝ, c (∑ i, s i • Y i) = s)
     (hc' : ∀ x y, a x = -x → a y = -y → c x = c y → x = y)
@@ -229,6 +306,11 @@ theorem coords (ha : ∀ x y, a (x * y) = a y * a x) (h1 : a 1 = 1) {m : ℕ} (Y
   exact (hgG t).eq_of_pr (hΦG _) t2 t3
     (hc' _ _ ((hgG t).anti ha h1) ((hΦG _).anti ha h1) (Eq.symm t1))
 
+/- English proof (translation)
+Set `_ : NormedAlgebra ℚ A` to `NormedAlgebra.restrictScalars ℚ ℝ A`. Set `φ : A →+* Aᵐᵒᵖ` to `{ toFun := fun x => MulOpposite.op (a x) map_one' := by rw [h1]; rfl map_mul' := fun x y => by rw [ha]; rfl map_zero' := by rw [map_zero]; rfl map_add' := fun x y => by rw [map_add]; rfl }`. Establish `h2` using `NormedSpace.map_exp φ (MulOpposite.continuous_op.comp a.continuous) Y`. Establish `h3 : a (NormedSpace.exp Y) = NormedSpace.exp (-Y)`. Apply `MulOpposite.op_injective` to reduce the goal to its premises.
+
+Rewrite using `[← hY, ← NormedSpace.exp_op]`. Conclude with `h2`. Prove the components needed by the constructor for the conclusion. Rewrite using `[h3, ← NormedSpace.exp_add_of_commute (Commute.refl Y).neg_left, neg_add_cancel, NormedSpace.exp_zero]`. Rewrite using `[h3, ← NormedSpace.exp_add_of_commute (Commute.refl Y).neg_right, add_neg_cancel, NormedSpace.exp_zero]`.
+-/
 theorem gr_exp [CompleteSpace A] (ha : ∀ x y, a (x * y) = a y * a x) (h1 : a 1 = 1) {Y : A} (hY : a Y = -Y) :
     Gr a (NormedSpace.exp Y) := by
   let _ : NormedAlgebra ℚ A := NormedAlgebra.restrictScalars ℚ ℝ A
@@ -247,6 +329,17 @@ theorem gr_exp [CompleteSpace A] (ha : ∀ x y, a (x * y) = a y * a x) (h1 : a 1
   · rw [h3, ← NormedSpace.exp_add_of_commute (Commute.refl Y).neg_left, neg_add_cancel, NormedSpace.exp_zero]
   · rw [h3, ← NormedSpace.exp_add_of_commute (Commute.refl Y).neg_right, add_neg_cancel, NormedSpace.exp_zero]
 
+/- English proof (translation)
+Establish `: CompleteSpace A` using `FiniteDimensional.complete ℝ A`. Set `L : Submodule ℝ A` to `LinearMap.ker ((a : A →ₗ[ℝ] A) + LinearMap.id)`. Establish `hL : ∀ x, x ∈ L ↔ a x = -x` using `fun x => by`. Simplify using `[L, LinearMap.mem_ker, add_eq_zero_iff_eq_neg]`. Set `b` to `Module.finBasis ℝ L`.
+
+Take `⟨q, hq⟩` from `L.subtype.exists_leftInverse_of_injective L.ker_subtype`. Establish `hq' : ∀ x : L, q x = x` using `fun x => LinearMap.congr_fun hq x`. Set `c : A →L[ℝ] (Fin (Module.finrank ℝ L) → ℝ)` to `LinearMap.toContinuousLinearMap (b.equivFun.toLinearMap ∘ₗ q)`. Establish `hc0 : ∀ x : L, c x = b.equivFun x` using `fun x => by`. Express the relevant statement in the definitionally equal form `b.equivFun (q x) = _`.
+
+Rewrite using `[hq']`. Use `⟨_, fun i => b i, fun i => (LinearMap.proj (R := ℝ) (φ := fun _ => ℝ) i).comp (c.comp (pr a)).toLinearMap, fun i => (hL _).1 (b i).2, fun Z hZ => ?_⟩` and prove the remaining obligations. Take `⟨s, s0, sd, se⟩` from `coords ha h1 (fun i => (b i : A)) (fun i => (hL _).1 (b i).2) c (fun s => by`. Establish `: (∑ i, s i • (b i : A)) = ((b.equivFun.symm s : L) : A)` using `by simp [Module.Basis.equivFun_symm_apply]`. Rewrite using `[this, hc0, LinearEquiv.apply_symm_apply])`.
+
+Use the proof step `(fun x y hx hy e => by`. Establish `e1` using `(hc0 ⟨x, (hL x).2 hx⟩).symm.trans (e.trans (hc0 ⟨y, (hL y).2 hy⟩))`. Conclude with `congrArg Subtype.val (b.equivFun.injective e1))`. Use the proof step `(fun i t => NormedSpace.exp (t • (b i : A)))`. Use the proof step `(fun i => by simpa using hasStrictDerivAt_exp_smul_const (𝕂 := ℝ) (b i : A) (0 : ℝ))`.
+
+Use the proof step `(fun i => by simp)`. Use the proof step `(fun i t => gr_exp ha h1 (by rw [map_smul, (hL _).1 (b i).2, smul_neg]))`. Use the proof step `(fun t => NormedSpace.exp (t • Z)) Z`. Use the proof step `(by simpa using hasDerivAt_exp_smul_const (𝕂 := ℝ) Z (0 : ℝ)) (by simp) hZ`. Conclude with `⟨fun i t => s t i, fun i => congrFun s0 i, fun i => hasDerivAt_pi.1 sd i, se⟩`.
+-/
 theorem main [FiniteDimensional ℝ A] (ha : ∀ x y, a (x * y) = a y * a x) (h1 : a 1 = 1) :
     ∃ (m : ℕ) (Y : Fin m → A) (c : Fin m → A →ₗ[ℝ] ℝ), (∀ i, a (Y i) = -Y i) ∧ ∀ Z : A,
       (∀ t : ℝ, Gr a (NormedSpace.exp (t • Z))) → ∃ s : Fin m → ℝ → ℝ, (∀ i, s i 0 = 0) ∧ (∀ i, HasDerivAt (s i) (c i Z) 0) ∧

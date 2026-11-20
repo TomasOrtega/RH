@@ -13,12 +13,18 @@ namespace GlobalTheory.HenQ
 
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem finGL_apply (k : GL (Fin n) (Af K)) (a b : Fin n) :
     ((finGL K n k : GA K n) : Matrix (Fin n) (Fin n) (AdeleRing (𝓞 K) K)) a b =
       (1 : Matrix (Fin n) (Fin n) (AdeleRing (𝓞 K) K)) a b
         - GlobalTheory.CuspRep.sFin K ((1 : Matrix (Fin n) (Fin n) (Af K)) a b)
         + GlobalTheory.CuspRep.sFin K ((k : Matrix (Fin n) (Fin n) (Af K)) a b) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sFin_fst (x : Af K) : (GlobalTheory.CuspRep.sFin K x).1 = 0 := rfl
 
 end GlobalTheory.HenQ

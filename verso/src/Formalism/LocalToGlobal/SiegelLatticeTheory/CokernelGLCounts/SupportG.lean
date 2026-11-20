@@ -14,6 +14,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 section Abstract
 
+/- English proof (translation)
+Establish `key : ∀ θ x y, ((n x : ℂ) * ((dens θ : ℂ) * (a θ : ℂ) * v θ x * star (v θ y))) / ((Real.sqrt (n x * n y) : ℝ) : ℂ) = (dens θ : ℂ) * (a θ : ℂ) * v θ x * star (v θ y)`. Introduce `θ x y`. Distinguish the cases in `hx : v θ x = 0`. Simplify using `[hx]`. Distinguish the cases in `hy : v θ y = 0`.
+
+Simplify using `[hy]`. Rewrite using `[← hsupp θ x y hx hy, Real.sqrt_mul_self (hn x).le]`. Establish `hx0 : (n x : ℂ) ≠ 0` using `by exact_mod_cast (hn x).ne'`. Rewrite using `[mul_div_cancel_left₀ _ hx0]`. Establish `hM : ((Dsup : ℂ) • (Matrix.of fun x y => ∑ θ, (a θ : ℂ) * v θ x * star (v θ y)) - Matrix.of fun x y => ((n x : ℂ) * ∑ θ, (dens θ : ℂ) * (a θ : ℂ) * v θ x * star (v θ y)) / ((Real.sqrt (n x * n y) : ℝ) : ℂ)) = ∑ θ, (((Dsup - dens θ) * a θ : ℝ) : ℂ) • Matrix.vecMulVec (v θ) (star ( …`.
+
+Use extensionality with `x y`. Simplify using `only [Matrix.sub_apply, Matrix.smul_apply, Matrix.of_apply, Matrix.sum_apply, Matrix.vecMulVec_apply, Pi.star_apply, smul_eq_mul]`. Repeatedly rewrite using `[Finset.mul_sum, Finset.sum_div, key]`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun θ _ => ?_` and prove the remaining obligations.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hM]`. Use `Matrix.posSemidef_sum _ fun θ _ => ?_` and prove the remaining obligations. Conclude with `(Matrix.posSemidef_vecMulVec_self_star (v θ)).smul (Complex.zero_le_real.mpr (mul_nonneg (sub_nonneg.mpr (hd θ)) (ha θ)))`.
+-/
 theorem supportClosure_matrix {ι Θ : Type*} [Fintype ι] [Fintype Θ] (v : Θ → ι → ℂ) (a dens : Θ → ℝ) (Dsup : ℝ) (n : ι → ℝ)
     (ha : ∀ θ, 0 ≤ a θ) (hd : ∀ θ, dens θ ≤ Dsup) (hn : ∀ x, 0 < n x)
     (hsupp : ∀ θ x y, v θ x ≠ 0 → v θ y ≠ 0 → n x = n y) :
@@ -47,6 +56,9 @@ theorem supportClosure_matrix {ι Θ : Type*} [Fintype ι] [Fintype Θ] (v : Θ 
   exact (Matrix.posSemidef_vecMulVec_self_star (v θ)).smul
     (Complex.zero_le_real.mpr (mul_nonneg (sub_nonneg.mpr (hd θ)) (ha θ)))
 
+/- English proof (translation)
+Introduce `h`. Establish `h2` using `h.dotProduct_mulVec_nonneg ![1, -1]`. Simplify using `[dotProduct, Matrix.mulVec, Fin.sum_univ_two] at h2`. Rewrite `h2` using `[Complex.le_def]`. Evaluate the numerical expressions using `at h2`.
+-/
 theorem not_posSemidef_ones_sub_one_fin_two :
     ¬ (Matrix.of fun x y : Fin 2 => (1 : ℂ) - (1 : ℂ) * (if x = y then 1 else 0)).PosSemidef := by
   intro h
@@ -55,6 +67,11 @@ theorem not_posSemidef_ones_sub_one_fin_two :
   rw [Complex.le_def] at h2
   norm_num at h2
 
+/- English proof (translation)
+Use `⟨fun θ x => if θ = x then 1 else 0, ![1, 2], by norm_num, ?_, ?_, by simp, by simp⟩` and prove the remaining obligations. Apply the tactic sequence `intro x fin_cases x <;> norm_num`. Introduce `θ x y hx hy`. Establish `h1 : θ = x`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hx (if_neg h)`. Establish `h2 : θ = y`. Assume the negation of the conclusion as `h`. Conclude with `hy (if_neg h)`. Rewrite using `[← h1, ← h2]`.
+-/
 theorem supportClosure_inhabited : ∃ (v : Fin 2 → Fin 2 → ℂ) (n : Fin 2 → ℝ), n 0 ≠ n 1 ∧ (∀ x, 0 < n x) ∧
     (∀ θ x y, v θ x ≠ 0 → v θ y ≠ 0 → n x = n y) ∧ v 0 0 ≠ 0 ∧ v 1 1 ≠ 0 := by
   refine ⟨fun θ x => if θ = x then 1 else 0, ![1, 2], by norm_num, ?_, ?_, by simp, by simp⟩
@@ -98,6 +115,9 @@ def SupportVec (D : Formalism.BasicNotions.D7) : Prop :=
     (Function.mulSupport fun p => BBtop M δ T T' p w' (th p)).Finite →
     BBG M δ T T' w κ th ≠ 0 → BBG M δ T T' w' κ th ≠ 0 → normG T T' w = normG T T' w'
 
+/- English proof (translation)
+Establish `e : |Algebra.norm ℚ (Gpt T T' w / ((Lat.gS D : D.host.E) ^ D.R.m))| = |Algebra.norm ℚ (Gpt T T' w' / ((Lat.gS D : D.host.E) ^ D.R.m))|`. Unfold `normG at h`. Rewrite using `[div_eq_mul_inv, div_eq_mul_inv, map_mul, map_mul, abs_mul, abs_mul, h]`. Unfold `n0`. Rewrite using `[← Rat.cast_abs, ← Rat.cast_abs, e]`.
+-/
 theorem n0_eq_of_normG_eq {T T' : ℕ} {w w' : Point D.host.E (D.R.rS + 1)} (h : normG T T' w = normG T T' w') (c : ℝ) :
     n0 c T T' w = n0 c T T' w' := by
   have e : |Algebra.norm ℚ (Gpt T T' w / ((Lat.gS D : D.host.E) ^ D.R.m))| =
@@ -107,6 +127,11 @@ theorem n0_eq_of_normG_eq {T T' : ℕ} {w w' : Point D.host.E (D.R.rS + 1)} (h :
   unfold n0
   rw [← Rat.cast_abs, ← Rat.cast_abs, e]
 
+/- English proof (translation)
+Unfold `KtopG at h`. Distinguish the cases in `hk : kind w = kind w'`. Rewrite `h` using `[if_pos hk]`. Use `⟨hk, fun p hp => h ?_⟩` and prove the remaining obligations. Rewrite using `[finprod_eq_prod _ hf]`.
+
+Conclude with `Finset.prod_eq_zero (by simp [hp]) hp`. Rewrite `h` using `[if_neg hk]`. Conclude with `absurd rfl h`.
+-/
 theorem kind_eq_and_ktopP_ne_zero_of_ktopG_ne_zero {δ : ∀ p : PlF D, (D.s.atP p).Fp} {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep}
     {T T' : ℕ} {w w' : Point D.host.E (D.R.rS + 1)}
     (hf : (Function.mulSupport fun p => KtopP M δ T T' p w w').Finite) (h : KtopG M δ T T' w w' ≠ 0) :
@@ -125,10 +150,16 @@ def NormProd (D : Formalism.BasicNotions.D7) : Prop :=
     (∀ p, Agree δ M p) → ∀ x : D.host.E, x ≠ 0 →
       ∏ᶠ p, (M p).modK ((D.s.atP p).ιE x) = (((|Algebra.norm ℚ x| : ℚ)) : ℝ)⁻¹
 
+/- English proof (translation)
+Conclude with `Algebra.norm_eq_of_algEquiv (AlgEquiv.ofBijective (D.conjF.restrictScalars ℚ) (AlgHom.bijective _)) x`.
+-/
 theorem norm_conjF (x : D.host.E) : Algebra.norm ℚ (D.conjF x) = Algebra.norm ℚ x := by
   exact Algebra.norm_eq_of_algEquiv
     (AlgEquiv.ofBijective (D.conjF.restrictScalars ℚ) (AlgHom.bijective _)) x
 
+/- English proof (translation)
+The claim follows from `|Algebra.norm ℚ x| = |Algebra.norm ℚ y| := by have e : (((|Algebra.norm ℚ x| : ℚ)) : ℝ)⁻¹ = (((|Algebra.norm ℚ y| : ℚ)) : ℝ)⁻¹ := by rw [← hN δ M hA x hx, ← hN δ M hA y hy] exact finprod_congr h exact_mod_cast inv_injective e`.
+-/
 theorem absNorm_eq_of_prod (hN : NormProd D) {δ : ∀ p : PlF D, (D.s.atP p).Fp}
     {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} (hA : ∀ p, Agree δ M p) {x y : D.host.E} (hx : x ≠ 0)
     (hy : y ≠ 0) (h : ∀ p, (M p).modK ((D.s.atP p).ιE x) = (M p).modK ((D.s.atP p).ιE y)) :
@@ -138,6 +169,21 @@ theorem absNorm_eq_of_prod (hN : NormProd D) {δ : ∀ p : PlF D, (D.s.atP p).Fp
     exact finprod_congr h
   exact_mod_cast inv_injective e
 
+/- English proof (translation)
+Introduce `δ M hA T T' w w' hf hK`. Take `⟨hk, hp⟩` from `kind_eq_and_ktopP_ne_zero_of_ktopG_ne_zero hf hK`. Establish `hl` using `fun p => hL δ M p (hA p) T T' w w' hk (hp p)`. Unfold `normG Gpt`. Unfold `kind at hk`.
+
+Distinguish the cases in `h0 : Dmin w D.R.rS = 0`. Establish `h0' : Dmin w' D.R.rS = 0`. Assume the negation of the conclusion as `h0'`. Rewrite `hk` using `[if_pos h0, if_neg h0']`. Simplify using `at hk`.
+
+Simplify using `only [h0, h0', map_zero, mul_zero, sub_zero, map_mul, norm_conjF, abs_mul]`. Rewrite using `[absNorm_eq_of_prod hN hA (Formalism.MainNotions.BridgeLemma.Dmin_top_ne w) (Formalism.MainNotions.BridgeLemma.Dmin_top_ne w') (fun p => (hl p).1)]`. Establish `h0' : Dmin w' D.R.rS ≠ 0`. Introduce `h0'`. Rewrite `hk` using `[if_neg h0, if_pos h0']`.
+
+Simplify using `at hk`. Rewrite `hk` using `[if_neg h0, if_neg h0']`. Establish `hz : zetaOf w = zetaOf w'` using `Option.some_injective _ hk`. Establish `ha : Dmin w (D.R.rS + 1) = zetaOf w * Dmin w D.R.rS`. Unfold `zetaOf`.
+
+Rewrite using `[div_mul_cancel₀ _ h0]`. Establish `ha' : Dmin w' (D.R.rS + 1) = zetaOf w' * Dmin w' D.R.rS`. Unfold `zetaOf`. Rewrite using `[div_mul_cancel₀ _ h0']`. Establish `hfac : ∀ z d : D.host.E, z * d * D.conjF (z * d) - (T : D.host.E) * T' * (d * D.conjF d) = (d * D.conjF d) * (z * D.conjF z - (T : D.host.E) * T')`.
+
+Introduce `z d`. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[ha, ha', hfac, hfac]`. Simplify using `only [map_mul, norm_conjF, abs_mul]`.
+
+Rewrite using `[hz, absNorm_eq_of_prod hN hA h0 h0' (fun p => (hl p).2)]`.
+-/
 theorem supportLemma_of_loc (hL : SupportLoc D) (hN : NormProd D) : SupportLemma D := by
   intro δ M hA T T' w w' hf hK
   obtain ⟨hk, hp⟩ := kind_eq_and_ktopP_ne_zero_of_ktopG_ne_zero hf hK
@@ -173,6 +219,9 @@ theorem supportLemma_of_loc (hL : SupportLoc D) (hN : NormProd D) : SupportLemma
     simp only [map_mul, norm_conjF, abs_mul]
     rw [hz, absNorm_eq_of_prod hN hA h0 h0' (fun p => (hl p).2)]
 
+/- English proof (translation)
+Conclude with `n0_eq_of_normG_eq (hS δ M hA T T' w w' hf h) c`.
+-/
 theorem n0_eq_of_support (hS : SupportLemma D) {δ : ∀ p : PlF D, (D.s.atP p).Fp}
     {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} (hA : ∀ p, Agree δ M p) {T T' : ℕ}
     {w w' : Point D.host.E (D.R.rS + 1)} (hf : (Function.mulSupport fun p => KtopP M δ T T' p w w').Finite)
@@ -207,6 +256,9 @@ def SupportUnderDensityBoundAllModels (D : Formalism.BasicNotions.D7) {Y : TermT
   ∀ (δ : ∀ p : PlF D, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
     (hA : ∀ p, Agree δ M p), SupportUnderDensityBound δ M (fun u u' => Z δ M hA u u') cN
 
+/- English proof (translation)
+Introduce `u u' hT ϖ hϖ Dsup hD hdens ι _ w hw`. Conclude with `⟨fun x y => hfin _ _ _ _, H hA u u' hT (hC u u' hT).1 (hC u u' hT).2 ϖ hϖ Dsup hD hdens ι w hw⟩`.
+-/
 theorem lemmaG2_of_supportProposition {δ : ∀ p : PlF D, (D.s.atP p).Fp} {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep}
     {Y : TermTie D} {X : ∀ u u' : D.what₂.Word, TermLoc D Y δ M u u'} {cN : D.what₂.Word → D.what₂.Word → ℝ}
     (hA : ∀ p, Agree δ M p) (H : SupportUnderDensityBound δ M X cN)

@@ -13,6 +13,21 @@ open MvPolynomial
 
 open Formalism.BasicNotions.DV in
 
+/- English proof (translation)
+Rewrite using `[ArIn.arMix, LinearMap.sum_apply]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Set `ι : Type` to `(Bool × Rt D.what₂.Tau N) ⊕ (Bool × (Fin (D.R.f * N) ⊕ Fin (D.R.f * N)))`. Set `a : Bool → ℕ → Bool` to `fun b => Function.update (ArIn.ind Sx) p b`. Set `w : ι → Sym D.host.E →₀ ℤ` to `Sum.elim (fun q => rootSym S.Dw (a q.1) (some R) (tauEmb D q.2.1) q.2.2) fun q => wholeSym (a q.1) (some R) q.2`.
+
+Establish `ha (b : Bool) : {q | a b q = true}.Finite` using `(insert p Sx).finite_toSet.subset fun q hq => by`. Distinguish the cases in `e : q = p`. Simplify using `[e]`. Simplify `hq` using `[a, ArIn.ind, e]`. Take `⟨M, L, m, Ψ, hI, hΨ, hnum⟩` from `(GlobalTheory.ArTopTrue.arTop_true h2.p4 hH.deg HTBound.htBound D _ _ _ _ _ s x Φ c R hR).2 ι w fun i b hb => by`.
+
+Break down `i with q | q` into its components or cases. Take `⟨e₁, e₂⟩` from `mem_support_rootSym hb`. Conclude with `⟨e₁ ▸ ha _, e₂⟩`. Take `⟨e₁, e₂⟩` from `mem_support_wholeSym hb`. Conclude with `⟨e₁ ▸ ha _, e₂⟩`.
+
+Set `ev : MvPolynomial (Vm D.what₂.Tau N) ℝ →ₐ[ℝ] MvPolynomial ι ℝ` to `aeval fun v => match v with`. Consider the case `Sum.inl q => X (Sum.inl q)`. Consider the case `Sum.inr (b, k) => C ((k.factorial : ℝ)⁻¹) * ∑ l, X (Sum.inr (b, l)) ^ k`. Establish `hev : (arIn s Φ (metsOf x Φ)).mixEv Sx R p c = (rename w).comp ev`. Use `MvPolynomial.algHom_ext fun v => ?_` and prove the remaining obligations.
+
+Break down `v with ⟨b, z⟩ | ⟨b, k⟩` into its components or cases. Use `(aeval_X _ _).trans (Eq.symm ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `rename w (ev (X (Sum.inl (b, z)))) = X (w (Sum.inl (b, z)))`. Simplify using `only [ev, aeval_X, rename_X]`. Use `(aeval_X _ _).trans (Eq.symm ?_)` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `rename w (ev (X (Sum.inr (b, k)))) = (C ((k.factorial : ℝ)⁻¹) : MvPolynomial (Sym D.host.E →₀ ℤ) ℝ) * ∑ l, X (w (Sum.inr (b, l))) ^ k`. Simplify using `only [ev, aeval_X, rename_X, map_mul, rename_C, map_sum, map_pow]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `numL _ _ ((arIn s Φ (metsOf x Φ)).mixEv Sx R p c _) = 0`. Rewrite using `[hev, ← hd c]`.
+
+Use `(numL_rename w _ _ Ψ _ hΨ.2 hnum _).trans (div_eq_zero_iff.2 (.inl ?_))` and prove the remaining obligations. Establish `key` using `powerSum_mul_vertical h2 M _ L m Ψ hI hΨ p hp (fun i : Fin N => (Sum.inl (true, (τ, i)) : ι)) (GlobalTheory.T.flag_at_of_local_flag _ _ _ _ _ p hp (GlobalTheory.T.local_flag_root_symbols_prime h2 hH D _ _ _ _ _ s Φ c _ p hp (a true) (by simp [a]) (some R) τ)) (Sum.inl (false, y)) …`. Rewrite using `[← key]`. Use `congr 1`. Simplify using `[ev, tagHT, pk]`.
+-/
 theorem GlobalTheory.TrivFlag.arIn_powerSum_mul_vertical (h2 : Hypotheses2) (hH : HypothesesH) {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j}
     {κ : Lv A} (s : FinalTheorems S κ) (x : ToroidalCompactificationData s) (Φ : s.Flag) (hd : ∀ c, (Φ.C c).Y.dim = Formalism.DegreeFormula.dimFl D.what₂.Tau N)
     (Sx : Finset ℕ) (R : ℝ) (hR : 2 ≤ R) (p : ℕ) (hp : p.Prime) (τ : D.what₂.Tau) (k : ℕ) (hk : 1 ≤ k)
@@ -65,6 +80,9 @@ theorem GlobalTheory.TrivFlag.arIn_powerSum_mul_vertical (h2 : Hypotheses2) (hH 
 
 open Formalism.BasicNotions.TH Formalism.L2.Theta ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.AllWt GlobalTheory.CompHt GlobalTheory.Mean4 Formalism.BasicNotions.DV in
 
+/- English proof (translation)
+Introduce `h2 hH D O hO Sx R hR p hp τ k hk y g`. Take `⟨x, P, h⟩` from `hO`. Express the relevant statement in the definitionally equal form `(arIn O.s O.Φ O.met.hm).arMix Sx R p _ = 0`. Rewrite using `[h.hm_eq]`. Conclude with `arIn_powerSum_mul_vertical h2 hH O.s x O.Φ O.dim_eq Sx R hR p hp τ k hk y g`.
+-/
 theorem GlobalTheory.TrivFlag.arMix_powerSum_mul_vertical : Hypotheses2 → HypothesesH → ∀ (D : D7) (O : Setup D), O.Core → ∀ (Sx : Finset ℕ) (R : ℝ), 2 ≤ R → ∀ (p : ℕ), p.Prime → ∀ (τ : D.what₂.Tau) (k : ℕ), 1 ≤ k → ∀ (y : Rt D.what₂.Tau O.Y.N) (g : MvPolynomial (Vm D.what₂.Tau O.Y.N) ℝ), O.Y.arMix Sx R p (tagHT D.what₂.Tau _ (pk D _ τ k) * ((X (Sum.inl (false, y)) - X (Sum.inl (true, y))) * g)) = 0 := by
   intro h2 hH D O hO Sx R hR p hp τ k hk y g
   obtain ⟨x, P, h⟩ := hO

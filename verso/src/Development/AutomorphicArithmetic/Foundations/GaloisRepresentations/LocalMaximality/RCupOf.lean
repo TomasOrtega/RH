@@ -5,6 +5,21 @@ open scoped TensorProduct
 
 namespace UpperTheory.Gal.productCup_of_system
 
+/- English proof (translation)
+Proceed by induction on `t using Finset.induction_on_max with`. Consider the case `empty => simp`. Consider the case `insert m t hm ih`. Establish `hnot : m ∉ t` using `fun h => lt_irrefl _ (hm m h)`. Establish `h1 : (insert m t).filter (· < m) = t`.
+
+Use extensionality with `y`. Simplify using `only [Finset.mem_filter, Finset.mem_insert]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨rfl | h, h2⟩`. Conclude with `absurd h2 (lt_irrefl _)`.
+
+Conclude with `h`. Introduce `h`. Conclude with `⟨Or.inr h, hm y h⟩`. Establish `h2 : (insert m t).filter (· ≤ m) = insert m t`. Apply `Finset.filter_true_of_mem` to reduce the goal to its premises.
+
+Introduce `y hy`. Break down `Finset.mem_insert.1 hy with rfl | h` into its components or cases. Conclude with `le_rfl`. Conclude with `(hm y h).le`. Establish `h3 : GlobalTheory.cubeSign (insert m t) m = (-1) ^ t.card`.
+
+Simplify using `only [GlobalTheory.cubeSign, h1]`. Establish `h4 : ∑ j ∈ t, GlobalTheory.cubeSign (insert m t) j • (f ((insert m t).filter (· < j)) + f ((insert m t).filter (· ≤ j))) = ∑ j ∈ t, GlobalTheory.cubeSign t j • (f (t.filter (· < j)) + f (t.filter (· ≤ j)))`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Establish `hj'` using `hm j hj`. Establish `a1 : (insert m t).filter (· < j) = t.filter (· < j)`.
+
+Rewrite using `[Finset.filter_insert, if_neg (not_lt.2 hj'.le)]`. Establish `a2 : (insert m t).filter (· ≤ j) = t.filter (· ≤ j)`. Rewrite using `[Finset.filter_insert, if_neg (not_le.2 hj')]`. Simplify using `only [GlobalTheory.cubeSign, a1, a2]`. Rewrite using `[Finset.sum_insert hnot, h1, h2, h3, h4, ih, Finset.card_insert_of_notMem hnot, pow_succ]`.
+
+Simplify using `only [mul_neg, mul_one, neg_smul, smul_add]`. Normalize the expressions using the abelian group laws.
+-/
 private theorem tele {ι G : Type} [LinearOrder ι] [AddCommGroup G] (f : Finset ι → G) (t : Finset ι) :
     ∑ j ∈ t, GlobalTheory.cubeSign t j • (f (t.filter (· < j)) + f (t.filter (· ≤ j))) =
       f ∅ - ((-1 : ℤ) ^ t.card) • f t := by
@@ -44,6 +59,35 @@ end UpperTheory.Gal.productCup_of_system
 
 namespace UpperTheory.Gal.productCup_of_system
 
+/- English proof (translation)
+Set `f : Finset ι → E''` to `fun u => μ (a u) (b (t \ u))`. Establish `hf0 : f ∅ = 0` using `by simp [f, ha]`. Establish `hft : f t = 0` using `by simp [f, hb]`. Establish `ht` using `tele f t`. Rewrite `ht` using `[hf0, hft, smul_zero, sub_zero]`.
+
+Establish `key : ∀ j ∈ t, ∑ i ∈ t.erase j, GlobalTheory.cubeSign t i • μ (a ((t.erase i).filter (· ≤ j))) (b ((t.erase i).filter (j ≤ ·))) = μ (∑ i ∈ t.filter (· ≤ j), GlobalTheory.cubeSign (t.filter (· ≤ j)) i • a ((t.filter (· ≤ j)).erase i)) (b (t.filter (j ≤ ·))) - GlobalTheory.cubeSign …`. Introduce `j hj`. Establish `hf1 : f (t.filter (· < j)) = μ (a (t.filter (· < j))) (b (t.filter (j ≤ ·)))`. Establish `: t \ t.filter (· < j) = t.filter (j ≤ ·)` using `by ext y; grind`. Simplify using `only [f, this]`.
+
+Establish `hf2 : f (t.filter (· ≤ j)) = μ (a (t.filter (· ≤ j))) (b (t.filter (j < ·)))`. Establish `: t \ t.filter (· ≤ j) = t.filter (j < ·)` using `by ext y; grind`. Simplify using `only [f, this]`. Rewrite using `[hf1, hf2]`. Use `set u := t.filter (j ≤ ·) with hu`.
+
+Use `set v := t.filter (· ≤ j) with hv`. Establish `ev : ∀ (G : ι → E), ∑ i ∈ v, G i = G j + ∑ i ∈ t.filter (· < j), G i`. Introduce `G`. Establish `: v = insert j (t.filter (· < j))` using `by ext y; grind`. Rewrite using `[this, Finset.sum_insert (by simp)]`.
+
+Establish `eu : ∀ (G : ι → E'), ∑ i ∈ u, G i = G j + ∑ i ∈ t.filter (j < ·), G i`. Introduce `G`. Establish `: u = insert j (t.filter (j < ·))` using `by ext y; grind`. Rewrite using `[this, Finset.sum_insert (by simp)]`. Establish `hs` using `Finset.sum_filter_add_sum_filter_not (t.erase j) (· < j) (fun i => GlobalTheory.cubeSign t i • μ (a ((t.erase i).filter (· ≤ j))) (b ((t.erase i).filter (j ≤ ·))))`.
+
+Establish `e1 : (t.erase j).filter (· < j) = t.filter (· < j)` using `by ext y; grind`. Establish `e2 : (t.erase j).filter (fun x => ¬ x < j) = t.filter (j < ·)` using `by ext y; grind`. Rewrite `hs` using `[e1, e2]`. Establish `hA : ∑ i ∈ t.filter (· < j), GlobalTheory.cubeSign t i • μ (a ((t.erase i).filter (· ≤ j))) (b ((t.erase i).filter (j ≤ ·))) = μ (∑ i ∈ t.filter (· < j), GlobalTheory.cubeSign v i • a (v.erase i)) (b u)`. Rewrite using `[map_sum, LinearMap.sum_apply]`.
+
+Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hi' : i < j` using `(Finset.mem_filter.1 hi).2`. Establish `c1 : (t.erase i).filter (· ≤ j) = v.erase i` using `by ext y; grind`. Establish `c2 : (t.erase i).filter (j ≤ ·) = u` using `by ext y; grind`. Establish `c3 : GlobalTheory.cubeSign v i = GlobalTheory.cubeSign t i`.
+
+Establish `: v.filter (· < i) = t.filter (· < i)` using `by ext y; grind`. Simplify using `only [GlobalTheory.cubeSign, this]`. Rewrite using `[c1, c2, c3, map_zsmul, LinearMap.smul_apply]`. Establish `hB : ∑ i ∈ t.filter (j < ·), GlobalTheory.cubeSign t i • μ (a ((t.erase i).filter (· ≤ j))) (b ((t.erase i).filter (j ≤ ·))) = -(GlobalTheory.cubeSign t j • μ (a v) (b (t.filter (j < ·))))`. Establish `hd` using `hδ u`.
+
+Rewrite `hd` using `[eu]`. Establish `c0 : u.erase j = t.filter (j < ·)` using `by ext y; grind`. Establish `c00 : GlobalTheory.cubeSign u j = 1`. Establish `: u.filter (· < j) = ∅` using `by ext y; grind`. Simplify using `[GlobalTheory.cubeSign, this]`.
+
+Rewrite `hd` using `[c0, c00, one_smul]`. Establish `hb2` using `eq_neg_of_add_eq_zero_right hd`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+
+Establish `hi' : j < i` using `(Finset.mem_filter.1 hi).2`. Establish `d1 : (t.erase i).filter (· ≤ j) = v` using `by ext y; grind`. Establish `d2 : (t.erase i).filter (j ≤ ·) = u.erase i` using `by ext y; grind`. Establish `d3 : GlobalTheory.cubeSign t i = GlobalTheory.cubeSign t j * GlobalTheory.cubeSign u i`. Establish `h1 : t.filter (· < i) = t.filter (· < j) ∪ u.filter (· < i)` using `by ext y; grind`.
+
+Establish `h2 : Disjoint (t.filter (· < j)) (u.filter (· < i))` using `Finset.disjoint_left.2 (by grind)`. Simplify using `only [GlobalTheory.cubeSign]`. Rewrite using `[h1, Finset.card_union_of_disjoint h2, pow_add]`. Rewrite using `[d1, d2, d3, map_zsmul, mul_smul]`. Use `_ = _ := by rw [hb2, map_neg, smul_neg]`.
+
+Establish `c4 : v.erase j = t.filter (· < j)` using `by ext y; grind`. Establish `c5 : GlobalTheory.cubeSign v j = GlobalTheory.cubeSign t j`. Establish `: v.filter (· < j) = t.filter (· < j)` using `by ext y; grind`. Simplify using `only [GlobalTheory.cubeSign, this]`. Rewrite using `[← hs, hA, hB, ev, map_add, LinearMap.add_apply, c4, c5, map_zsmul, LinearMap.smul_apply, smul_add]`.
+
+Normalize the expressions using the abelian group laws. Establish `lhs : ∑ i ∈ t, GlobalTheory.cubeSign t i • cupE μ a b (t.erase i) = ∑ j ∈ t, ∑ i ∈ t.erase j, GlobalTheory.cubeSign t i • μ (a ((t.erase i).filter (· ≤ j))) (b ((t.erase i).filter (j ≤ ·)))`. Simplify using `only [cupE, Finset.smul_sum]`. Conclude with `Finset.sum_comm' (by intro i j; simp only [Finset.mem_erase]; tauto)`. Rewrite using `[lhs, Finset.sum_congr rfl key, Finset.sum_sub_distrib, ht, sub_zero]`.
+-/
 private theorem leib {ι E E' E'' : Type} [LinearOrder ι] [AddCommGroup E] [Module ℂ E] [AddCommGroup E'] [Module ℂ E']
     [AddCommGroup E''] [Module ℂ E''] (μ : E →ₗ[ℂ] E' →ₗ[ℂ] E'') (a : Finset ι → E) (b : Finset ι → E')
     (ha : a ∅ = 0) (hb : b ∅ = 0) (hδ : ∀ t, ∑ i ∈ t, GlobalTheory.cubeSign t i • b (t.erase i) = 0) (t : Finset ι) :
@@ -137,11 +181,17 @@ end UpperTheory.Gal.productCup_of_system
 
 namespace UpperTheory.Gal.productCup_of_system
 
+/- English proof (translation)
+Simplify using `[wd, LinearMap.pi_apply, LinearMap.sum_apply, LinearMap.smul_apply]`.
+-/
 private theorem wd_app {ν E : Type} [LinearOrder ν] [AddCommGroup E] [Module ℂ E] (w : ν → Module.End ℂ E)
     (f : Finset ν → E) (t : Finset ν) :
     wd w f t = ∑ i ∈ t, GlobalTheory.cubeSign t i • w i (f (t.erase i)) := by
   simp [wd, LinearMap.pi_apply, LinearMap.sum_apply, LinearMap.smul_apply]
 
+/- English proof (translation)
+Simplify using `only [wd_app, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[h _ (Finset.card_erase_add_one hi), map_zsmul]`. Conclude with `smul_comm _ _ _`.
+-/
 private theorem wd_sgn {ν E : Type} [LinearOrder ν] [AddCommGroup E] [Module ℂ E] (w : ν → Module.End ℂ E)
     (F : Finset ν → E) (σ : ℕ → ℤ) (τ : ℤ) (t : Finset ν) (h : ∀ n, n + 1 = t.card → σ n = τ) :
     wd w (fun t' => σ t'.card • F t') t = τ • wd w F t := by
@@ -150,6 +200,9 @@ private theorem wd_sgn {ν E : Type} [LinearOrder ν] [AddCommGroup E] [Module �
   rw [h _ (Finset.card_erase_add_one hi), map_zsmul]
   exact smul_comm _ _ _
 
+/- English proof (translation)
+Simplify using `only [wd_app, map_sum, LinearMap.sum_apply, Finset.smul_sum, map_zsmul, LinearMap.smul_apply, hw]`. Conclude with `Finset.sum_comm`.
+-/
 private theorem wd_cup {ν ρ E E' E'' : Type} [LinearOrder ν] [AddCommGroup E] [Module ℂ E] [AddCommGroup E'] [Module ℂ E']
     [AddCommGroup E''] [Module ℂ E''] (μ : E →ₗ[ℂ] E' →ₗ[ℂ] E'') (w : ν → Module.End ℂ E) (w' : ν → Module.End ℂ E'')
     (hw : ∀ l m y, μ (w l m) y = w' l (μ m y)) (I : Finset ρ) (g : ρ → Finset ν → E) (y : ρ → E') (t : Finset ν) :
@@ -157,6 +210,9 @@ private theorem wd_cup {ν ρ E E' E'' : Type} [LinearOrder ν] [AddCommGroup E]
   simp only [wd_app, map_sum, LinearMap.sum_apply, Finset.smul_sum, map_zsmul, LinearMap.smul_apply, hw]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Take `⟨h1, -, -, -, -⟩` from `hW (Two d) κ E (T.wt z) f (uni I J) L`. Take `⟨h2, -, -, h3, -⟩` from `hW (Fin (d + 1)) (Fin (d + 1)) E (fun _ => 1) (fun b' => f (uni b' L)) I J`. Establish `h1' : wd (T.wt z) f (uni (uni I J) L) = wd (fun _ => (1 : Module.End ℂ E)) (fun b' => f (uni b' L)) (uni I J) + ((-1 : ℤ) ^ (uni I J).card) • wd (fun l => T.act (z l)) (fun L' => f (uni (uni I J) L')) L` using `h1`. Establish `h2' : wd (fun _ => (1 : Module.End ℂ E)) (fun b' => f (uni b' L)) (uni I J) = wd (fun _ => (1 : Module.End ℂ E)) (fun I' => f (uni (uni I' J) L)) I + ((-1 : ℤ) ^ I.card) • wd (fun _ => (1 : Module.End ℂ E)) (fun J' => f (uni (uni I J') L)) J` using `h2`. Rewrite using `[h1', h2', h3]`.
+-/
 private theorem tri (hW : WdUni) {d : ℕ} {S E : Type} [CommRing S] [Algebra ℂ S] [AddCommGroup E] [Module ℂ E]
     (T : Sys d S E) {κ : Type} [LinearOrder κ] (z : κ → S) (f : Finset (Two d ⊕ₗ κ) → E)
     (I J : Finset (Fin (d + 1))) (L : Finset κ) :
@@ -176,6 +232,33 @@ private theorem tri (hW : WdUni) {d : ℕ} {S E : Type} [CommRing S] [Algebra �
 
 end UpperTheory.Gal.productCup_of_system
 
+/- English proof (translation)
+Introduce `hW d S E _ _ _ _ T S' E' E'' _ _ _ _ _ _ T' κ _ _ z z' μ p c x hμ hc hc0 hx hxs`. Establish `hR : ∀ I J L, rcup μ p c x (uni (uni I J) L) = ((-1 : ℤ) ^ (p * (J.card + L.card))) • cupE μ (fun I' => c (uni (uni I' J) L)) x I`. Introduce `I J L`. Take `⟨-, a1, a2, -, -⟩` from `hW (Two d) κ E'' (T'.wt z') 0 (uni I J) L`. Take `⟨-, b1, b2, -, -⟩` from `hW (Fin (d + 1)) (Fin (d + 1)) E'' (fun _ => 1) 0 I J`.
+
+Simplify using `only [rcup, a1, a2, b1, b2, cupE]`. Establish `hx0 : x ∅ = 0` using `hxs ∅ (by simp)`. Establish `hδ : ∀ t, ∑ i ∈ t, GlobalTheory.cubeSign t i • x (t.erase i) = 0` using `fun t => congrFun hx t`. Use function extensionality and compare the values at `s`. Take `⟨-, -, -, -, hs1⟩` from `hW (Two d) κ E'' (T'.wt z') 0 ∅ ∅`.
+
+Take `⟨-, -, -, -, hs2⟩` from `hW (Fin (d + 1)) (Fin (d + 1)) E'' (fun _ => 1) 0 ∅ ∅`. Rewrite using `[← hs1 s, ← hs2 (lft s)]`. Generalize the expression as in `lft (lft s) = I`. Generalize the expression as in `rgt (lft s) = J`. Generalize the expression as in `rgt s = L`.
+
+Rewrite using `[tri hW T' z' _ I J L]`. Simplify using `only [hR]`. Establish `t1 : wd (fun _ => (1 : Module.End ℂ E'')) (fun I' => ((-1 : ℤ) ^ (p * (J.card + L.card))) • cupE μ (fun I' => c (uni (uni I' J) L)) x I') I = ((-1 : ℤ) ^ (p * (J.card + L.card))) • ∑ i ∈ I, μ (wd (fun _ => (1 : Module.End ℂ E)) (fun I' => c (uni (uni I' J) L)) (I.filter (· ≤ i))) …`. Simplify using `only [wd_app, Module.End.one_apply]`. Establish `hl` using `leib μ (fun I' => c (uni (uni I' J) L)) x (hc0 J L) hx0 hδ I`.
+
+Rewrite using `[← hl, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => smul_comm _ _ _`. Establish `t2 : wd (fun _ => (1 : Module.End ℂ E'')) (fun J' => ((-1 : ℤ) ^ (p * (J'.card + L.card))) • cupE μ (fun I' => c (uni (uni I' J') L)) x I) J = ((-1 : ℤ) ^ (p * (J.card + L.card + 1))) • ∑ i ∈ I, μ (wd (fun _ => (1 : Module.End ℂ E)) (fun J' => c (uni (uni (I.filter (· ≤ i)) J') L …`. Use `(wd_sgn _ _ (fun n => (-1 : ℤ) ^ (p * (n + L.card))) ((-1 : ℤ) ^ (p * (J.card + L.card + 1))) J ?_).trans ?_` and prove the remaining obligations. Introduce `n hn`.
+
+Rewrite using `[← hn, show p * (n + 1 + L.card + 1) = p * (n + L.card) + 2 * p by ring, pow_add, pow_mul]`. Simplify using the standard rewrite rules. Use `congr 1`. Conclude with `wd_cup μ _ _ (fun _ _ _ => rfl) I (fun i J' => c (uni (uni (I.filter (· ≤ i)) J') L)) (fun i => x (I.filter (i ≤ ·))) J`. Establish `t3 : wd (fun l => T'.act (z' l)) (fun L' => ((-1 : ℤ) ^ (p * (J.card + L'.card))) • cupE μ (fun I' => c (uni (uni I' J) L')) x I) L = ((-1 : ℤ) ^ (p * (J.card + L.card + 1))) • ∑ i ∈ I, μ (wd (fun l => T.act (z l)) (fun L' => c (uni (uni (I.filter (· ≤ i)) J) L')) L) (x (I.filter …`.
+
+Use `(wd_sgn _ _ (fun n => (-1 : ℤ) ^ (p * (J.card + n))) ((-1 : ℤ) ^ (p * (J.card + L.card + 1))) L ?_).trans ?_` and prove the remaining obligations. Introduce `n hn`. Rewrite using `[← hn, show p * (J.card + (n + 1) + 1) = p * (J.card + n) + 2 * p by ring, pow_add, pow_mul]`. Simplify using the standard rewrite rules. Use `congr 1`.
+
+Conclude with `wd_cup μ _ _ hμ I (fun i L' => c (uni (uni (I.filter (· ≤ i)) J) L')) (fun i => x (I.filter (i ≤ ·))) L`. Rewrite using `[t1, t2, t3]`. Simplify using `only [Finset.smul_sum]`. Rewrite using `[← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hy : (I.filter (i ≤ ·)).card = p + 1`. Establish `h0` using `tri hW T z c (I.filter (· ≤ i)) J L`. Rewrite `h0` using `[hc]`. Establish `hcard : I.card = (I.filter (· ≤ i)).card + p`. Establish `e1 : I.filter (· ≤ i) = insert i (I.filter (· < i))` using `by ext y; grind`.
+
+Establish `e2 : (I.filter (· < i)).card + (I.filter (i ≤ ·)).card = I.card`. Establish `: I = I.filter (· < i) ∪ I.filter (i ≤ ·)` using `by ext y; grind`. Use `conv_rhs => rw [this]`. Conclude with `(Finset.card_union_of_disjoint (Finset.disjoint_left.2 (by grind))).symm`. Rewrite using `[e1, Finset.card_insert_of_notMem (by simp)]`.
+
+Use linear arithmetic over natural numbers and integers. Use `set n := (I.filter (· ≤ i)).card with hn`. Establish `hs1 : ((-1 : ℤ) ^ I.card) * (-1) ^ (p * (J.card + L.card + 1)) = (-1) ^ (p * (J.card + L.card)) * (-1) ^ n`. Rewrite using `[hcard, ← pow_add, ← pow_add, show n + p + p * (J.card + L.card + 1) = p * (J.card + L.card) + n + 2 * p by ring, pow_add _ _ (2 * p), pow_mul]`. Simplify using the standard rewrite rules.
+
+Establish `hs2 : ((-1 : ℤ) ^ (I.card + J.card)) * (-1) ^ (p * (J.card + L.card + 1)) = (-1) ^ (p * (J.card + L.card)) * (-1) ^ (n + J.card)`. Rewrite using `[pow_add, pow_add _ n, mul_right_comm, hs1]`. Expand and normalize the polynomial expressions, which then agree. Establish `hz` using `congrArg (fun m => ((-1 : ℤ) ^ (p * (J.card + L.card))) • μ m (x (I.filter (i ≤ ·)))) h0`. Simplify using `only [Pi.zero_apply, map_zero, LinearMap.zero_apply, smul_zero, map_add, LinearMap.add_apply, map_zsmul, LinearMap.smul_apply, smul_add, smul_smul] at hz`.
+
+Simplify using `only [smul_smul, hs1, hs2]`. Conclude with `hz.symm`. Simplify using `[hxs _ hy]`.
+-/
 theorem UpperTheory.Gal.productCup_of_system.rCup_of :
     WdUni → RCup := by
   intro hW d S E _ _ _ _ T S' E' E'' _ _ _ _ _ _ T' κ _ _ z z' μ p c x hμ hc hc0 hx hxs

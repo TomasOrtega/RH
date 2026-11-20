@@ -12,6 +12,9 @@ variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
 
 open scoped MatrixGroups TensorProduct in
 open Matrix in
+/- English proof (translation)
+Establish `hG : G * _root_.GlobalTheory.KZ.ofSL γ = _root_.GlobalTheory.KZ.ofSL γ' * G` using `Subtype.ext (Units.ext h)`. Rewrite using `[← _root_.GlobalTheory.KZ.Tower.sl_mul, hG, _root_.GlobalTheory.KZ.Tower.sl_mul, _root_.GlobalTheory.KZ.Tower.j_inv]`.
+-/
 private lemma sl_ofSL_sl_jK_eq_of_mul_eq_ofSL_mul {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
     (X : _root_.GlobalTheory.KZ.Tower Ω ε) (G : _root_.GlobalTheory.KZ.GQ) (γ γ' : SL(2, ℤ))
     (h : ((G : GL (Fin 2) ℚ) : Matrix (Fin 2) (Fin 2) ℚ) *
@@ -27,6 +30,9 @@ private lemma sl_ofSL_sl_jK_eq_of_mul_eq_ofSL_mul {Ω : Type} [Field Ω] [Algebr
 
 open scoped MatrixGroups TensorProduct in
 open Matrix in
+/- English proof (translation)
+Use `sl_ofSL_sl_jK_eq_of_mul_eq_ofSL_mul X G γ ⟨M, hM⟩ ?_` and prove the remaining obligations. Rewrite using `[h]`. Use `congr 1`.
+-/
 private lemma sl_ofSL_sl_jK_eq_of_mul_eq_intMatrix_mul {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
     (X : _root_.GlobalTheory.KZ.Tower Ω ε) (G : _root_.GlobalTheory.KZ.GQ) (γ : SL(2, ℤ))
     (M : Matrix (Fin 2) (Fin 2) ℤ) (hM : M.det = 1)
@@ -41,6 +47,9 @@ private lemma sl_ofSL_sl_jK_eq_of_mul_eq_intMatrix_mul {Ω : Type} [Field Ω] [A
 
 open scoped MatrixGroups TensorProduct in
 open Matrix in
+/- English proof (translation)
+Simplify using `[_root_.GlobalTheory.KZ.ofSL]`.
+-/
 private lemma ofSL_apply (γ : SL(2, ℤ)) (i j : Fin 2) :
     ((_root_.GlobalTheory.KZ.ofSL γ : GL (Fin 2) ℚ) : Matrix (Fin 2) (Fin 2) ℚ) i j =
       ((γ : Matrix (Fin 2) (Fin 2) ℤ) i j : ℚ) := by
@@ -48,6 +57,9 @@ private lemma ofSL_apply (γ : SL(2, ℤ)) (i j : Fin 2) :
 
 open scoped MatrixGroups TensorProduct in
 open Matrix in
+/- English proof (translation)
+Simplify using `[_root_.GlobalTheory.KZ.toGQ, h]`.
+-/
 private lemma toGQ_apply (M : Matrix (Fin 2) (Fin 2) ℤ) (h : 0 < M.det)
     (i j : Fin 2) :
     ((_root_.GlobalTheory.KZ.toGQ M : GL (Fin 2) ℚ) : Matrix (Fin 2) (Fin 2) ℚ) i j = (M i j : ℚ) := by
@@ -55,6 +67,27 @@ private lemma toGQ_apply (M : Matrix (Fin 2) (Fin 2) ℤ) (h : 0 < M.det)
 
 open scoped MatrixGroups TensorProduct in
 open Matrix in
+/- English proof (translation)
+Establish `hdet` using `A.2`. Express the relevant statement in the definitionally equal form `0 < Matrix.det ((A : GL (Fin 2) ℚ) : Matrix (Fin 2) (Fin 2) ℚ) at hdet`. Rewrite `hdet` using `[Matrix.det_fin_two]`. Express the relevant statement in the definitionally equal form `0 < _root_.GlobalTheory.KZ.ent A 0 0 * _root_.GlobalTheory.KZ.ent A 1 1 - _root_.GlobalTheory.KZ.ent A 0 1 * _root_.GlobalTheory.KZ.ent A 1 0 at hdet`. Use `set p := _root_.GlobalTheory.KZ.ent A 0 0 with hp`.
+
+Use `set q := _root_.GlobalTheory.KZ.ent A 1 0 with hq`. Use `set x₀ : ℤ := q.num * p.den with hx₀`. Use `set y₀ : ℤ := -(p.num * q.den) with hy₀`. Establish `hne : x₀ ≠ 0 ∨ y₀ ≠ 0`. Assume the negation of the conclusion as `hcon`.
+
+Use `push_neg at hcon`. Establish `hp0 : p = 0`. Establish `: p.num * q.den = 0` using `by simpa [hy₀] using hcon.2`. Break down `mul_eq_zero.1 this with h | h` into its components or cases. Conclude with `Rat.num_eq_zero.1 h`.
+
+Conclude with `absurd h (by exact_mod_cast q.den_nz)`. Establish `hq0 : q = 0`. Establish `: q.num * p.den = 0` using `by simpa [hx₀] using hcon.1`. Break down `mul_eq_zero.1 this with h | h` into its components or cases. Conclude with `Rat.num_eq_zero.1 h`.
+
+Conclude with `absurd h (by exact_mod_cast p.den_nz)`. Rewrite `hdet` using `[hp0, hq0]`. Simplify using `at hdet`. Establish `hg : 0 < Int.gcd x₀ y₀` using `Int.gcd_pos_iff.2 hne`. Establish `hcop : IsCoprime (x₀ / Int.gcd x₀ y₀) (y₀ / Int.gcd x₀ y₀)` using `Int.isCoprime_iff_gcd_eq_one.2 (Int.gcd_div_gcd_div_gcd hg)`.
+
+Take `⟨τ, -, hτ⟩` from `ModularGroup.bottom_row_surj (R := ℤ) (show ![x₀ / Int.gcd x₀ y₀, y₀ / Int.gcd x₀ y₀] ∈ {cd : Fin 2 → ℤ | IsCoprime (cd 0) (cd 1)} from hcop)`. Establish `hτ0 : (τ : Matrix (Fin 2) (Fin 2) ℤ) 1 0 = x₀ / Int.gcd x₀ y₀` using `congrFun hτ 0`. Establish `hτ1 : (τ : Matrix (Fin 2) (Fin 2) ℤ) 1 1 = y₀ / Int.gcd x₀ y₀` using `congrFun hτ 1`. Use `⟨τ⁻¹, _root_.GlobalTheory.KZ.ofSL τ * A, ?_, by rw [map_inv, inv_mul_cancel_left]⟩` and prove the remaining obligations. Establish `hx : (x₀ : ℚ) = ((x₀ / Int.gcd x₀ y₀ : ℤ) : ℚ) * (Int.gcd x₀ y₀ : ℤ)`.
+
+Conclude with `(Int.ediv_mul_cancel (Int.gcd_dvd_left x₀ y₀)).symm` after adjusting the coercions. Establish `hy : (y₀ : ℚ) = ((y₀ / Int.gcd x₀ y₀ : ℤ) : ℚ) * (Int.gcd x₀ y₀ : ℤ)`. Conclude with `(Int.ediv_mul_cancel (Int.gcd_dvd_right x₀ y₀)).symm` after adjusting the coercions. Establish `hzero : (x₀ : ℚ) * p + y₀ * q = 0`. Establish `h1 : (p.den : ℚ) * p = p.num` using `by exact_mod_cast Rat.den_mul_eq_num p`.
+
+Establish `h2 : (q.den : ℚ) * q = q.num` using `by exact_mod_cast Rat.den_mul_eq_num q`. Rewrite using `[hx₀, hy₀]`. Use `push_cast`. Take the linear combination `(q.num : ℚ) * h1 - (p.num : ℚ) * h2`. Establish `hgq : ((Int.gcd x₀ y₀ : ℤ) : ℚ) ≠ 0` using `by exact_mod_cast hg.ne'`.
+
+Apply the tactic sequence `have hentry : _root_.GlobalTheory.KZ.ent (_root_.GlobalTheory.KZ.ofSL τ * A) 1 0 = ((τ : Matrix (Fin 2) (Fin 2) ℤ) 1 0 : ℚ) * p + ((τ : Matrix (Fin 2) (Fin 2) ℤ) 1 1 : ℚ) * q := by`. Simplify using `[_root_.GlobalTheory.KZ.ent, _root_.GlobalTheory.KZ.ofSL, Matrix.mul_apply, Fin.sum_univ_two, hp, hq]`. Rewrite using `[hentry, hτ0, hτ1]`. Apply `mul_right_cancel₀ hgq` to reduce the goal to its premises. Rewrite using `[zero_mul, ← hzero, hx, hy]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma exists_ofSL_mul_upperTriangular (A : _root_.GlobalTheory.KZ.GQ) :
     ∃ (σ : SL(2, ℤ)) (T : _root_.GlobalTheory.KZ.GQ), _root_.GlobalTheory.KZ.ent T 1 0 = 0 ∧
       A = _root_.GlobalTheory.KZ.ofSL σ * T := by
@@ -111,6 +144,13 @@ private lemma exists_ofSL_mul_upperTriangular (A : _root_.GlobalTheory.KZ.GQ) :
 
 open scoped MatrixGroups TensorProduct in
 open Matrix in
+/- English proof (translation)
+Establish `h` using `S.2`. Express the relevant statement in the definitionally equal form `0 < Matrix.det ((S : GL (Fin 2) ℚ) : Matrix (Fin 2) (Fin 2) ℚ) at h`. Rewrite `h` using `[Matrix.det_fin_two]`. Express the relevant statement in the definitionally equal form `0 < _root_.GlobalTheory.KZ.ent S 0 0 * _root_.GlobalTheory.KZ.ent S 1 1 - _root_.GlobalTheory.KZ.ent S 0 1 * _root_.GlobalTheory.KZ.ent S 1 0 at h`. Rewrite `h` using `[hS, mul_zero, sub_zero]`.
+
+Establish `hd : _root_.GlobalTheory.KZ.ent S 1 1 ≠ 0` using `fun h0 => by rw [h0, mul_zero] at h; exact lt_irrefl _ h`. Establish `ha : _root_.GlobalTheory.KZ.ent S 0 0 ≠ 0` using `fun h0 => by rw [h0, zero_mul] at h; exact lt_irrefl _ h`. Use `⟨hd, ha, ?_⟩` and prove the remaining obligations. Establish `: _root_.GlobalTheory.KZ.ent S 0 0 / _root_.GlobalTheory.KZ.ent S 1 1 = _root_.GlobalTheory.KZ.ent S 0 0 * _root_.GlobalTheory.KZ.ent S 1 1 / _root_.GlobalTheory.KZ.ent S 1 1 ^ 2`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[this]`. Conclude with `div_pos h (by positivity)`.
+-/
 private lemma diag_ne_zero_and_ratio_pos_of_upperTriangular (S : _root_.GlobalTheory.KZ.GQ) (hS : _root_.GlobalTheory.KZ.ent S 1 0 = 0) :
     _root_.GlobalTheory.KZ.ent S 1 1 ≠ 0 ∧ _root_.GlobalTheory.KZ.ent S 0 0 ≠ 0 ∧
       0 < _root_.GlobalTheory.KZ.ent S 0 0 / _root_.GlobalTheory.KZ.ent S 1 1 := by
@@ -131,6 +171,15 @@ private lemma diag_ne_zero_and_ratio_pos_of_upperTriangular (S : _root_.GlobalTh
 
 open scoped MatrixGroups TensorProduct in
 open Matrix in
+/- English proof (translation)
+Take `⟨hd, ha, hpos⟩` from `diag_ne_zero_and_ratio_pos_of_upperTriangular S hS`. Take `⟨h1, hlow, -⟩` from `X.j_exp`. Prove the components needed by the constructor for the conclusion. Establish `h` using `X.exp_upper S hS X.jK (-1)`. Rewrite `h` using `[h1, mul_one]`.
+
+Apply the tactic sequence `convert h using 2 <;> ring`. Introduce `s hs`. Establish `h` using `X.exp_upper S hS X.jK (s * _root_.GlobalTheory.KZ.ent S 1 1 / _root_.GlobalTheory.KZ.ent S 0 0)`. Establish `hr : s * _root_.GlobalTheory.KZ.ent S 1 1 / _root_.GlobalTheory.KZ.ent S 0 0 < -1`. Establish `hinv : 0 < _root_.GlobalTheory.KZ.ent S 1 1 / _root_.GlobalTheory.KZ.ent S 0 0`.
+
+Use `inv_pos.2 hpos` as an intermediate fact. Rewrite `this` using `[inv_div]`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[neg_mul, div_mul_div_comm, mul_comm (_root_.GlobalTheory.KZ.ent S 0 0), div_self (mul_ne_zero hd ha)]`. Rewrite `h` using `[hlow _ hr, mul_zero]`.
+
+Establish `hs' : s * _root_.GlobalTheory.KZ.ent S 1 1 / _root_.GlobalTheory.KZ.ent S 0 0 * _root_.GlobalTheory.KZ.ent S 0 0 / _root_.GlobalTheory.KZ.ent S 1 1 = s` using `by field_simp`. Rewrite `h` using `[hs']`. Then use the resulting hypothesis.
+-/
 private lemma exp_sl_jK_coeff_lowest_of_upperTriangular {Ω : Type} [Field Ω] [Algebra ℚ Ω]
     [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ} (X : _root_.GlobalTheory.KZ.Tower Ω ε) (S : _root_.GlobalTheory.KZ.GQ)
     (hS : _root_.GlobalTheory.KZ.ent S 1 0 = 0) :
@@ -163,6 +212,15 @@ private lemma exp_sl_jK_coeff_lowest_of_upperTriangular {Ω : Type} [Field Ω] [
 
 open scoped MatrixGroups TensorProduct in
 open Matrix in
+/- English proof (translation)
+Take `⟨hSl, hSz⟩` from `exp_sl_jK_coeff_lowest_of_upperTriangular X S hS`. Take `⟨hTl, hTz⟩` from `exp_sl_jK_coeff_lowest_of_upperTriangular X T hT`. Rewrite `hSl`, `hSz` using `[h]`. Establish `hρ : _root_.GlobalTheory.KZ.ent S 0 0 / _root_.GlobalTheory.KZ.ent S 1 1 = _root_.GlobalTheory.KZ.ent T 0 0 / _root_.GlobalTheory.KZ.ent T 1 1`. Assume the negation of the conclusion as `hne`.
+
+Break down `lt_or_gt_of_ne hne with hlt | hlt` into its components or cases. Conclude with `_root_.GlobalTheory.KZ.ES.JStab.eOm_ne_zero' ε _ (hTl.symm.trans (hSz _ (neg_lt_neg hlt)))`. Conclude with `_root_.GlobalTheory.KZ.ES.JStab.eOm_ne_zero' ε _ (hSl.symm.trans (hTz _ (neg_lt_neg hlt)))`. Use `⟨hρ, ?_⟩` and prove the remaining obligations. Rewrite `hSl` using `[hρ]`.
+
+Establish `he` using `congrArg ε (hSl.symm.trans hTl)`. Rewrite `he` using `[_root_.GlobalTheory.Glue.KTExp.map_eOm, _root_.GlobalTheory.Glue.KTExp.map_eOm, Complex.exp_eq_exp_iff_exists_int]`. Take `⟨n, hn⟩` from `he`. Use `⟨-n, ?_⟩` and prove the remaining obligations. Establish `key : ((_root_.GlobalTheory.KZ.ent S 0 1 / _root_.GlobalTheory.KZ.ent S 1 1 : ℚ) : ℂ) = ((_root_.GlobalTheory.KZ.ent T 0 1 / _root_.GlobalTheory.KZ.ent T 1 1 + ((-n : ℤ) : ℚ) : ℚ) : ℂ)`.
+
+Establish `h2 : (2 * Real.pi * Complex.I : ℂ) ≠ 0` using `by simp [Real.pi_ne_zero, Complex.I_ne_zero]`. Apply `mul_left_cancel₀ h2` to reduce the goal to its premises. Move the coercions through the operations in `at hn ⊢`. Take the linear combination `-hn`. Conclude with `key` after adjusting the coercions.
+-/
 private lemma entry_ratios_eq_of_upperTriangular_sl_jK_eq {Ω : Type} [Field Ω] [Algebra ℚ Ω]
     [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ} (X : _root_.GlobalTheory.KZ.Tower Ω ε) (S T : _root_.GlobalTheory.KZ.GQ)
     (hS : _root_.GlobalTheory.KZ.ent S 1 0 = 0) (hT : _root_.GlobalTheory.KZ.ent T 1 0 = 0)
@@ -195,6 +253,21 @@ private lemma entry_ratios_eq_of_upperTriangular_sl_jK_eq {Ω : Type} [Field Ω]
 
 open scoped MatrixGroups TensorProduct in
 open Matrix in
+/- English proof (translation)
+Take `⟨σ₁, T₁, h₁, rfl⟩` from `exists_ofSL_mul_upperTriangular A`. Take `⟨σ₂, T₂, h₂, rfl⟩` from `exists_ofSL_mul_upperTriangular B`. Establish `hT : X.sl T₁ X.jK = X.sl T₂ X.jK`. Simplify `h` using `[_root_.GlobalTheory.KZ.Tower.sl_mul, _root_.GlobalTheory.KZ.Tower.j_inv]`. Take `⟨hρ, k, hk⟩` from `entry_ratios_eq_of_upperTriangular_sl_jK_eq X T₁ T₂ h₁ h₂ hT`.
+
+Take `⟨hd₁, ha₁, -⟩` from `diag_ne_zero_and_ratio_pos_of_upperTriangular T₁ h₁`. Take `⟨hd₂, ha₂, -⟩` from `diag_ne_zero_and_ratio_pos_of_upperTriangular T₂ h₂`. Set `U : SL(2, ℤ)` to `⟨!![1, k; 0, 1], by simp [Matrix.det_fin_two]⟩`. Use `⟨σ₁ * U * σ₂⁻¹, _root_.GlobalTheory.KZ.ent T₁ 1 1 / _root_.GlobalTheory.KZ.ent T₂ 1 1, ?_⟩` and prove the remaining obligations. Establish `hT₁ : ((T₁ : GL (Fin 2) ℚ) : Matrix (Fin 2) (Fin 2) ℚ) = (_root_.GlobalTheory.KZ.ent T₁ 1 1 / _root_.GlobalTheory.KZ.ent T₂ 1 1) • (((_root_.GlobalTheory.KZ.ofSL U : GL (Fin 2) ℚ) : Matrix (Fin 2) (Fin 2) ℚ) * ((T₂ : GL (Fin 2) ℚ) : Matrix (Fin 2) (Fin 2) ℚ))`.
+
+Unfold `_root_.GlobalTheory.KZ.ent at *`. Establish `hρ'` using `(div_eq_div_iff hd₁ hd₂).1 hρ`. Establish `hk' : ((T₁ : GL (Fin 2) ℚ) : Matrix (Fin 2) (Fin 2) ℚ) 0 1 * ((T₂ : GL (Fin 2) ℚ) : Matrix (Fin 2) (Fin 2) ℚ) 1 1 = ((T₁ : GL (Fin 2) ℚ) : Matrix (Fin 2) (Fin 2) ℚ) 1 1 * (((T₂ : GL (Fin 2) ℚ) : Matrix (Fin 2) (Fin 2) ℚ) 0 1 + ((T₂ : GL (Fin 2) ℚ) : Matrix (Fin 2) (Fin 2) ℚ) 1 1 …`. Clear denominators, using `at hk` for the nonvanishing conditions. Take the linear combination `hk`.
+
+Establish `hU : ((_root_.GlobalTheory.KZ.ofSL U : GL (Fin 2) ℚ) : Matrix (Fin 2) (Fin 2) ℚ) = !![1, (k : ℚ); 0, 1]`. Use extensionality with `i j`. Rewrite using `[ofSL_apply]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [U]`. Rewrite using `[hU]`.
+
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [Matrix.mul_apply, Fin.sum_univ_two, Matrix.vecMul, dotProduct, h₁, h₂] <;>`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hρ'`.
+
+Take the linear combination `hk'`. Establish `hgrp : _root_.GlobalTheory.KZ.ofSL (σ₁ * U * σ₂⁻¹) * (_root_.GlobalTheory.KZ.ofSL σ₂ * T₂) = _root_.GlobalTheory.KZ.ofSL σ₁ * (_root_.GlobalTheory.KZ.ofSL U * T₂)`. Simplify using `only [map_mul, map_inv, mul_assoc, inv_mul_cancel_left]`. Rewrite using `[show ((_root_.GlobalTheory.KZ.ofSL (σ₁ * U * σ₂⁻¹) : GL (Fin 2) ℚ) : Matrix (Fin 2) (Fin 2) ℚ) * ((_root_.GlobalTheory.KZ.ofSL σ₂ * T₂ : _root_.GlobalTheory.KZ.GQ) : GL (Fin 2) ℚ) = ((_root_.GlobalTheory.KZ.ofSL (σ₁ * U * σ₂⁻¹) * (_root_.GlobalTheory.KZ.ofSL σ₂ * T₂) : _root_.Gl …`. Simplify using `only [Subgroup.coe_mul, Units.val_mul]`.
+
+Rewrite using `[hT₁, Matrix.mul_smul]`.
+-/
 private lemma exists_smul_ofSL_mul_of_sl_jK_eq {Ω : Type} [Field Ω] [Algebra ℚ Ω]
     [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ} (X : _root_.GlobalTheory.KZ.Tower Ω ε) (A B : _root_.GlobalTheory.KZ.GQ)
     (h : X.sl A X.jK = X.sl B X.jK) :
@@ -248,6 +321,9 @@ private lemma exists_smul_ofSL_mul_of_sl_jK_eq {Ω : Type} [Field Ω] [Algebra �
 
 open scoped MatrixGroups TensorProduct in
 open Matrix in
+/- English proof (translation)
+Establish `h` using `σ.2`. Rewrite `h`, the goal using `[Matrix.det_fin_two]`. Simplify using `only [ofSL_apply]`. Conclude with `h` after adjusting the coercions.
+-/
 private lemma det_ofSL_eq_one (σ : SL(2, ℤ)) :
     Matrix.det ((_root_.GlobalTheory.KZ.ofSL σ : GL (Fin 2) ℚ) : Matrix (Fin 2) (Fin 2) ℚ) = 1 := by
   have h := σ.2
@@ -257,6 +333,11 @@ private lemma det_ofSL_eq_one (σ : SL(2, ℤ)) :
 
 open scoped MatrixGroups TensorProduct in
 open Matrix in
+/- English proof (translation)
+Rewrite `h` using `[← _root_.GlobalTheory.KZ.Tower.sl_mul]`. Take `⟨σ, c, hc⟩` from `exists_smul_ofSL_mul_of_sl_jK_eq X _ _ h`. Use `⟨σ, c, ?_, hc⟩` and prove the remaining obligations. Establish `hdet` using `congrArg Matrix.det hc`. Simplify using `only [Subgroup.coe_mul, Units.val_mul, Matrix.det_mul, Matrix.det_smul, det_ofSL_eq_one, Fintype.card_fin, one_mul] at hdet`.
+
+Establish `hG : Matrix.det ((G : GL (Fin 2) ℚ) : Matrix (Fin 2) (Fin 2) ℚ) ≠ 0` using `G.2.ne'`. Establish `h3 : (c * c - 1) * Matrix.det ((G : GL (Fin 2) ℚ) : Matrix (Fin 2) (Fin 2) ℚ) = 0`. Take the linear combination `-hdet`. Conclude with `mul_self_eq_one_iff.1 (sub_eq_zero.1 ((mul_eq_zero.1 h3).resolve_right hG))`.
+-/
 private lemma exists_smul_ofSL_mul_of_mul_ofSL {Ω : Type} [Field Ω] [Algebra ℚ Ω]
     [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ} (X : _root_.GlobalTheory.KZ.Tower Ω ε) (G : _root_.GlobalTheory.KZ.GQ)
     (γ : SL(2, ℤ))
@@ -280,6 +361,11 @@ private lemma exists_smul_ofSL_mul_of_mul_ofSL {Ω : Type} [Field Ω] [Algebra �
 
 open scoped MatrixGroups TensorProduct in
 open Matrix in
+/- English proof (translation)
+Break down `hc with rfl | rfl` into its components or cases. Use `⟨y, ?_⟩` and prove the remaining obligations. Establish `h' : (x : ℚ) = ((m : ℤ) : ℚ) * (y : ℚ)` using `by push_cast; linarith`. Conclude with `h'` after adjusting the coercions. Use `⟨-y, ?_⟩` and prove the remaining obligations.
+
+Establish `h' : (x : ℚ) = ((m : ℤ) : ℚ) * ((-y : ℤ) : ℚ)` using `by push_cast; linarith`. Conclude with `h'` after adjusting the coercions.
+-/
 private lemma natCast_dvd_of_eq_sign_mul {x y : ℤ} {m : ℕ} {c : ℚ} (hc : c = 1 ∨ c = -1)
     (h : (x : ℚ) = c * (y * m)) : (m : ℤ) ∣ x := by
   rcases hc with rfl | rfl
@@ -294,6 +380,35 @@ open scoped MatrixGroups TensorProduct in
 open Matrix in
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} in
 
+/- English proof (translation)
+Introduce `Ω _ _ _ ε X m hm`. Use `haveI : NeZero m := ⟨hm.ne'⟩`. Establish `hm' : (0 : ℤ) < m` using `by exact_mod_cast hm`. Establish `hd1 : 0 < (!![(m : ℤ), 0; 0, 1]).det` using `by rw [Matrix.det_fin_two_of]; simpa using hm'`. Establish `hd2 : 0 < (!![1, 0; 0, (m : ℤ)]).det` using `by rw [Matrix.det_fin_two_of]; simpa using hm'`.
+
+Establish `hd3 : 0 < (!![1, 1; 0, (m : ℤ)]).det` using `by rw [Matrix.det_fin_two_of]; simpa using hm'`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `g hg`. Unfold `_root_.GlobalTheory.KZ.ES.Lev`. Introduce `γ hγ`.
+
+Rewrite `hγ` using `[CongruenceSubgroup.Gamma_mem]`. Take `⟨h00, h01, h10, h11⟩` from `hγ`. Establish `hdet : (γ : Matrix (Fin 2) (Fin 2) ℤ) 0 0 * (γ : Matrix (Fin 2) (Fin 2) ℤ) 1 1 - (γ : Matrix (Fin 2) (Fin 2) ℤ) 0 1 * (γ : Matrix (Fin 2) (Fin 2) ℤ) 1 0 = 1`. Use `γ.2` as an intermediate fact. Rewrite `this` using `[Matrix.det_fin_two]`. Then use the resulting hypothesis.
+
+Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff] at hg`. Break down `hg with rfl | rfl | rfl` into its components or cases. Take `⟨c', hc'⟩` from `(ZMod.intCast_zmod_eq_zero_iff_dvd _ m).1 h10`. Use `sl_ofSL_sl_jK_eq_of_mul_eq_intMatrix_mul X _ γ (!![(γ : Matrix (Fin 2) (Fin 2) ℤ) 0 0, m * (γ : Matrix (Fin 2) (Fin 2) ℤ) 0 1; c', (γ : Matrix (Fin 2) (Fin 2) ℤ) 1 1]) (by` and prove the remaining obligations. Rewrite using `[Matrix.det_fin_two_of]`.
+
+Take the linear combination `hdet + (γ : Matrix (Fin 2) (Fin 2) ℤ) 0 1 * hc') ?_`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [Matrix.mul_apply, Fin.sum_univ_two, ofSL_apply, Matrix.map_apply, toGQ_apply _ hd1, hc'] <;> ring`. Take `⟨b', hb'⟩` from `(ZMod.intCast_zmod_eq_zero_iff_dvd _ m).1 h01`.
+
+Use `sl_ofSL_sl_jK_eq_of_mul_eq_intMatrix_mul X _ γ (!![(γ : Matrix (Fin 2) (Fin 2) ℤ) 0 0, b'; m * (γ : Matrix (Fin 2) (Fin 2) ℤ) 1 0, (γ : Matrix (Fin 2) (Fin 2) ℤ) 1 1]) (by` and prove the remaining obligations. Rewrite using `[Matrix.det_fin_two_of]`. Take the linear combination `hdet + (γ : Matrix (Fin 2) (Fin 2) ℤ) 1 0 * hb') ?_`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`.
+
+Apply the tactic sequence `simp [Matrix.mul_apply, Fin.sum_univ_two, ofSL_apply, Matrix.map_apply, toGQ_apply _ hd2, hb'] <;> ring`. Establish `hz : (((γ : Matrix (Fin 2) (Fin 2) ℤ) 0 1 + (γ : Matrix (Fin 2) (Fin 2) ℤ) 1 1 - (γ : Matrix (Fin 2) (Fin 2) ℤ) 0 0 - (γ : Matrix (Fin 2) (Fin 2) ℤ) 1 0 : ℤ) : ZMod m) = 0`. Use `push_cast`. Rewrite using `[h00, h01, h10, h11]`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨e', he'⟩` from `(ZMod.intCast_zmod_eq_zero_iff_dvd _ m).1 hz`. Use `sl_ofSL_sl_jK_eq_of_mul_eq_intMatrix_mul X _ γ (!![(γ : Matrix (Fin 2) (Fin 2) ℤ) 0 0 + (γ : Matrix (Fin 2) (Fin 2) ℤ) 1 0, e'; m * (γ : Matrix (Fin 2) (Fin 2) ℤ) 1 0, (γ : Matrix (Fin 2) (Fin 2) ℤ) 1 1 - (γ : Matrix (Fin 2) (Fin 2) ℤ) 1 0]) (by` and prove the remaining obligations. Rewrite using `[Matrix.det_fin_two_of]`. Take the linear combination `hdet + (γ : Matrix (Fin 2) (Fin 2) ℤ) 1 0 * he') ?_`. Establish `he'' : ((γ : Matrix (Fin 2) (Fin 2) ℤ) 0 1 : ℚ) = (m : ℚ) * e' - (γ : Matrix (Fin 2) (Fin 2) ℤ) 1 1 + (γ : Matrix (Fin 2) (Fin 2) ℤ) 0 0 + (γ : Matrix (Fin 2) (Fin 2) ℤ) 1 0`.
+
+Use `congrArg (fun z : ℤ => (z : ℚ)) he'` as an intermediate fact. Move the coercions through the operations in `at this`. Take the linear combination `this`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`.
+
+Apply the tactic sequence `simp [Matrix.mul_apply, Fin.sum_univ_two, ofSL_apply, Matrix.map_apply, toGQ_apply _ hd3, he''] <;> ring`. Introduce `γ hfix`. Take `⟨σ₁, c₁, hc₁, e₁⟩` from `exists_smul_ofSL_mul_of_mul_ofSL X _ γ (hfix !![(m : ℤ), 0; 0, 1] (by simp))`. Take `⟨σ₂, c₂, hc₂, e₂⟩` from `exists_smul_ofSL_mul_of_mul_ofSL X _ γ (hfix !![1, 0; 0, (m : ℤ)] (by simp))`. Take `⟨σ₃, c₃, hc₃, e₃⟩` from `exists_smul_ofSL_mul_of_mul_ofSL X _ γ (hfix !![1, 1; 0, (m : ℤ)] (by simp))`.
+
+Establish `E₁` using `congrFun (congrFun e₁ 1) 0`. Establish `E₂` using `congrFun (congrFun e₂ 0) 1`. Establish `E₃a` using `congrFun (congrFun e₃ 0) 0`. Establish `E₃b` using `congrFun (congrFun e₃ 0) 1`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two, ofSL_apply, toGQ_apply _ hd1] at E₁`.
+
+Simplify using `[Matrix.mul_apply, Fin.sum_univ_two, ofSL_apply, toGQ_apply _ hd2] at E₂`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two, ofSL_apply, toGQ_apply _ hd3] at E₃a E₃b`. Establish `hdiv₁ : (m : ℤ) ∣ (γ : Matrix (Fin 2) (Fin 2) ℤ) 1 0` using `natCast_dvd_of_eq_sign_mul (y := (σ₁ : Matrix (Fin 2) (Fin 2) ℤ) 1 0) hc₁ (by linear_combination E₁)`. Establish `hdiv₂ : (m : ℤ) ∣ (γ : Matrix (Fin 2) (Fin 2) ℤ) 0 1` using `natCast_dvd_of_eq_sign_mul (y := (σ₂ : Matrix (Fin 2) (Fin 2) ℤ) 0 1) hc₂ (by linear_combination E₂)`. Establish `hdiv₃ : (m : ℤ) ∣ (γ : Matrix (Fin 2) (Fin 2) ℤ) 0 1 + (γ : Matrix (Fin 2) (Fin 2) ℤ) 1 1 - (γ : Matrix (Fin 2) (Fin 2) ℤ) 0 0 - (γ : Matrix (Fin 2) (Fin 2) ℤ) 1 0` using `natCast_dvd_of_eq_sign_mul (y := (σ₃ : Matrix (Fin 2) (Fin 2) ℤ) 0 1) hc₃ (by push_cast; linear_combination E₃b - E₃a)`.
+
+Establish `z₁` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ m).2 hdiv₁`. Establish `z₂` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ m).2 hdiv₂`. Establish `z₃` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ m).2 hdiv₃`. Move the coercions through the operations in `at z₃`. Use `⟨z₂, z₁, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(((γ : Matrix (Fin 2) (Fin 2) ℤ) 0 0 : ℤ) : ZMod m) = (((γ : Matrix (Fin 2) (Fin 2) ℤ) 1 1 : ℤ) : ZMod m)`. Take the linear combination `-z₃ + z₂ - z₁`.
+-/
 theorem _root_.GlobalTheory.KZ.ES.Scal.lev_and_scalar : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : _root_.GlobalTheory.KZ.Tower Ω ε), ∀ m : ℕ, 0 < m → (∀ g ∈ ({!![(m : ℤ), 0; 0, 1], !![1, 0; 0, (m : ℤ)], !![1, 1; 0, (m : ℤ)]} : Set (Matrix (Fin 2) (Fin 2) ℤ)), _root_.GlobalTheory.KZ.ES.Lev X m (X.sl (_root_.GlobalTheory.KZ.toGQ g) X.jK)) ∧ ∀ γ : SL(2, ℤ), (∀ g ∈ ({!![(m : ℤ), 0; 0, 1], !![1, 0; 0, (m : ℤ)], !![1, 1; 0, (m : ℤ)]} : Set (Matrix (Fin 2) (Fin 2) ℤ)), X.sl (_root_.GlobalTheory.KZ.ofSL γ) (X.sl (_root_.GlobalTheory.KZ.toGQ g) X.jK) = X.sl (_root_.GlobalTheory.KZ.toGQ g) X.jK) → (_root_.GlobalTheory.KZ.en γ 0 1 : ZMod m) = 0 ∧ (_root_.GlobalTheory.KZ.en γ 1 0 : ZMod m) = 0 ∧ (_root_.GlobalTheory.KZ.en γ 0 0 : ZMod m) = _root_.GlobalTheory.KZ.en γ 1 1 := by
   intro Ω _ _ _ ε X m hm
   haveI : NeZero m := ⟨hm.ne'⟩

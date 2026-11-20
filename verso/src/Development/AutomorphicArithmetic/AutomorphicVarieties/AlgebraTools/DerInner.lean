@@ -2,6 +2,43 @@ import Mathlib
 
 open Polynomial Matrix IsLocalRing TensorProduct
 
+/- English proof (translation)
+Introduce `K E _ _ _ σ _ _ d _ _ _ j D hD`. Set `i0 : ∀ s, d s` to `fun s => Classical.arbitrary (d s)`. Set `u : ∀ s, d s → d s → (∀ s, Matrix (d s) (d s) K)` to `fun s p q => Pi.single s (Matrix.single p q (1 : K))`. Establish `hsame : ∀ s (p q r w : d s), u s p q * u s r w = if q = r then u s p w else 0`. Introduce `s p q r w`.
+
+Simplify using `only [u, ← Pi.single_mul]`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[Matrix.single_mul_single_same, one_mul]`. Rewrite using `[Matrix.single_mul_single_of_ne _ _ _ _ h, Pi.single_zero]`.
+
+Establish `hne : ∀ s t (p q : d s) (r w : d t), s ≠ t → u s p q * u t r w = 0`. Introduce `s t p q r w h`. Use function extensionality and compare the values at `x`. Simplify using `only [u, Pi.mul_apply, Pi.zero_apply]`. Distinguish the cases in `hx : x = s`.
+
+Substitute `hx` using the available equality. Rewrite using `[Pi.single_eq_of_ne h, mul_zero]`. Rewrite using `[Pi.single_eq_of_ne hx, zero_mul]`. Establish `hone : ∑ s, ∑ k, u s k k = 1`. Use function extensionality and compare the values at `x`.
+
+Rewrite using `[Finset.sum_apply, Finset.sum_eq_single x]`. Rewrite using `[Finset.sum_apply]`. Use extensionality with `a b`. Simplify using `only [u, Pi.single_eq_same, Matrix.sum_apply, Matrix.single_apply, Pi.one_apply, Matrix.one_apply]`. Distinguish the cases in `hab : a = b`.
+
+Substitute `hab` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_eq_zero fun k _ => if_neg fun h => hab (h.1.symm.trans h.2)]`. Simplify using `[hab]`. Introduce `s _ hs`.
+
+Rewrite using `[Finset.sum_apply]`. Conclude with `Finset.sum_eq_zero fun k _ => Pi.single_eq_of_ne (Ne.symm hs) _`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Set `a : E` to `∑ s, ∑ k, j (u s k (i0 s)) * D (u s (i0 s) k)`.
+
+Establish `key : ∀ t (p q : d t), D (u t p q) = j (u t p q) * a - a * j (u t p q)`. Introduce `t p q`. Establish `h1 : j (u t p q) * a = j (u t p (i0 t)) * D (u t (i0 t) q)`. Simplify using `only [a, Finset.mul_sum, ← mul_assoc, ← map_mul]`. Rewrite using `[Finset.sum_eq_single t]`.
+
+Rewrite using `[Finset.sum_eq_single q]`. Rewrite using `[hsame, if_pos rfl]`. Introduce `k _ hk`. Rewrite using `[hsame, if_neg (Ne.symm hk), map_zero, zero_mul]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ _) h`. Introduce `s _ hs`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hne t s _ _ _ _ (Ne.symm hs), map_zero, zero_mul]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ _) h`. Establish `hS1 : ∑ s, ∑ k, j (u s k (i0 s)) * D (u s (i0 s) k * u t p q) = j (u t p (i0 t)) * D (u t (i0 t) q)`. Rewrite using `[Finset.sum_eq_single t]`. Rewrite using `[Finset.sum_eq_single p]`. Rewrite using `[hsame, if_pos rfl]`.
+
+Introduce `k _ hk`. Rewrite using `[hsame, if_neg hk, map_zero, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Introduce `s _ hs`.
+
+Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hne s t _ _ _ _ hs, map_zero, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Establish `hS2 : ∑ s, ∑ k, j (u s k (i0 s)) * j (u s (i0 s) k) = 1`.
+
+Simplify using `only [← map_mul, hsame, eq_self_iff_true, if_true]`. Simplify using `only [← map_sum]`. Rewrite using `[hone, map_one]`. Establish `e : a * j (u t p q) = ∑ s, ∑ k, (j (u s k (i0 s)) * D (u s (i0 s) k * u t p q) - j (u s k (i0 s)) * j (u s (i0 s) k) * D (u t p q))`. Simplify using `only [a, Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun s _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hD]`. Use `noncomm_ring`. Rewrite using `[h1, e]`. Simplify using `only [Finset.sum_sub_distrib, ← Finset.sum_mul, hS1, hS2, one_mul]`.
+
+Normalize the expressions using the abelian group laws. Use `⟨-a, fun x => ?_⟩` and prove the remaining obligations. Establish `hlin : D = (LinearMap.mulRight K a).comp j.toLinearMap - (LinearMap.mulLeft K a).comp j.toLinearMap`. Use `(Pi.basis fun s => Matrix.stdBasis K (d s) (d s)).ext fun ji => ?_` and prove the remaining obligations. Take `⟨t, p, q⟩` from `ji`.
+
+Rewrite using `[Pi.basis_apply, Matrix.stdBasis_eq_single]`. Simplify using `only [LinearMap.sub_apply, LinearMap.comp_apply, LinearMap.mulRight_apply, LinearMap.mulLeft_apply, AlgHom.toLinearMap_apply]`. Conclude with `key t p q`. Establish `hx` using `LinearMap.congr_fun hlin x`. Simplify using `only [LinearMap.sub_apply, LinearMap.comp_apply, LinearMap.mulRight_apply, LinearMap.mulLeft_apply, AlgHom.toLinearMap_apply] at hx`.
+
+Rewrite using `[hx]`. Use `noncomm_ring`.
+-/
 theorem UpperTheory.V.AlgebraTools.der_inner :
     ∀ {K E : Type} [CommRing K] [Ring E] [Algebra K E] {σ : Type} [Fintype σ] [DecidableEq σ] (d : σ → Type) [∀ s, Fintype (d s)] [∀ s, DecidableEq (d s)] [∀ s, Nonempty (d s)] (j : (∀ s, Matrix (d s) (d s) K) →ₐ[K] E) (D : (∀ s, Matrix (d s) (d s) K) →ₗ[K] E), (∀ x y, D (x * y) = D x * j y + j x * D y) → ∃ Y : E, ∀ x, D x = Y * j x - j x * Y := by
   intro K E _ _ _ σ _ _ d _ _ _ j D hD

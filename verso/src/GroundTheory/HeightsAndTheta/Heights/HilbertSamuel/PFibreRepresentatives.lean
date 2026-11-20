@@ -17,12 +17,18 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 omit [Fintype K] in
 
+/- English proof (translation)
+Introduce `m hm` and use `hf m (support_map_subset φ f hm)`.
+-/
 theorem isMultiHomog_map {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {f : MRingOver R ι}
     {a : K → ℕ} (hf : IsMultiHomog f a) : IsMultiHomog (map φ f : MRingOver S ι) a :=
   fun m hm => hf m (support_map_subset φ f hm)
 
 omit [Fintype K] in
 
+/- English proof (translation)
+Introduce `m hm`. Rewrite `hm` using `[C_mul', C_mul']`. Break down `Finset.mem_union.1 (support_sub _ _ _ hm) with h | h` into its components or cases. Conclude with `hf m (support_smul h)`. Conclude with `hg m (support_smul h)`.
+-/
 theorem isMultiHomog_lincomb {f g : MRingOver ℂ ι} {a : K → ℕ} (hf : IsMultiHomog f a)
     (hg : IsMultiHomog g a) (c d : ℂ) : IsMultiHomog (C c * f - C d * g) a := by
   classical
@@ -32,6 +38,11 @@ theorem isMultiHomog_lincomb {f g : MRingOver ℂ ι} {a : K → ℕ} (hf : IsMu
   · exact hf m (support_smul h)
   · exact hg m (support_smul h)
 
+/- English proof (translation)
+Rewrite using `[eval_eq', eval_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Establish `hc : (∏ p : (Σ k, ι k), r p.1 ^ d p) = ∏ k, r k ^ a k`. Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Use `show ∏ i, r k ^ d ⟨k, i⟩ = _`. Rewrite using `[Finset.prod_pow_eq_pow_sum, hs d hd k]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, hc]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eval_smul {s : MRingOver ℂ ι} {a : K → ℕ} (hs : IsMultiHomog s a) (r : K → ℂ)
     (z : (Σ k, ι k) → ℂ) : eval (fun p => r p.1 * z p) s = (∏ k, r k ^ a k) * eval z s := by
   rw [eval_eq', eval_eq', Finset.mul_sum]
@@ -44,6 +55,9 @@ theorem eval_smul {s : MRingOver ℂ ι} {a : K → ℕ} (hs : IsMultiHomog s a)
   simp only [mul_pow, Finset.prod_mul_distrib, hc]
   ring
 
+/- English proof (translation)
+Rewrite using `[eq_sum_multihomogeneous_components f, map_sum, map_sum]`. Use `Finset.sum_eq_zero fun b _ => hz _ ?_ ⟨b, isMultiHomog_i2comp b f⟩` and prove the remaining obligations. Conclude with `i2comp_mem (CoordinateConeArithVar.isMultiHomogIdeal y) b hf`.
+-/
 theorem eval_eq_zero_of_homog {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) (z : (Σ k, ι k) → ℂ)
     (hz : ∀ f ∈ mCoordIdeal y, (∃ a, IsMultiHomog f a) → eval z (map (Int.castRingHom ℂ) f) = 0)
     (f : MRing ι) (hf : f ∈ mCoordIdeal y) : eval z (map (Int.castRingHom ℂ) f) = 0 := by
@@ -55,6 +69,29 @@ end FibreRepresentatives
 
 open FibreRepresentatives in
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ y D e L he hL hL0 ζ`. Use `set Lc : Fin (D + 1) → MRingOver ℂ ι := fun j => map (Int.castRingHom ℂ) (L j) with hLc`. Distinguish the cases in `hζ : ζ = 0`. Use `⟨∅, by simp, fun z hz ⟨t, ht⟩ => ?_⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `hL0 z hz`.
+
+Conclude with `absurd (by simpa [hζ] using ht j) hj`. Choose the witnesses or unpack the hypotheses as in `⟨j₀, hj₀⟩ : ∃ j₀, ζ j₀ ≠ 0 := by`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Conclude with `hζ (funext hne)`.
+
+Set `S : Set (MRingOver ℂ ι)` to `{g | ∃ f ∈ mCoordIdeal y, (∃ a, IsMultiHomog f a) ∧ g = map (Int.castRingHom ℂ) f} ∪ Set.range fun j => C (ζ j₀) * Lc j - C (ζ j) * Lc j₀`. Establish `key : ∀ z : (Σ k, ι k) → ℂ, ((∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) ∧ ∀ s ∈ S, eval z s = 0) ↔ (z ∈ mcPts (mCoordIdeal y) ∧ ∃ t : ℂ, ∀ j, eval z (Lc j) = t * ζ j)`. Introduce `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hb, hS⟩`.
+
+Use `⟨⟨hb, eval_eq_zero_of_homog y z fun f hf ha => hS _ (Or.inl ⟨f, hf, ha, rfl⟩)⟩, eval z (Lc j₀) / ζ j₀, fun j => ?_⟩` and prove the remaining obligations. Establish `h1` using `hS _ (Or.inr ⟨j, rfl⟩)`. Simplify using `only [map_sub, map_mul, eval_C] at h1`. Clear the denominators using the available nonvanishing facts. Take the linear combination `h1`.
+
+Introduce and unpack `⟨hz, t, ht⟩`. Use `⟨hz.1, fun s hs => ?_⟩` and prove the remaining obligations. Break down `hs with ⟨f, hf, -, rfl⟩ | ⟨j, rfl⟩` into its components or cases. Conclude with `hz.2 f hf`. Simplify using `only [map_sub, map_mul, eval_C, ht]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hSh : ∀ s ∈ S, ∃ a, IsMultiHomog s a`. Introduce and unpack `s (⟨f, -, ⟨a, ha⟩, rfl⟩ | ⟨j, rfl⟩)`. Conclude with `⟨a, isMultiHomog_map _ ha⟩`. Conclude with `⟨e, isMultiHomog_lincomb (isMultiHomog_map _ (hL j)) (isMultiHomog_map _ (hL j₀)) _ _⟩`.
+
+Establish `hG : ∀ z : (Σ k, ι k) → ℂ, (∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) → (∀ s ∈ S, eval z s = 0) → eval z (Lc j₀) ≠ 0`. Introduce `z hb hS h0`. Take `⟨hz, t, ht⟩` from `(key z).1 ⟨hb, hS⟩`. Establish `ht0 : t = 0`. Use `ht j₀` as an intermediate fact.
+
+Rewrite `this` using `[h0]`. Conclude with `(mul_eq_zero.1 this.symm).resolve_right hj₀`. Take `⟨j, hj⟩` from `hL0 z hz`. Conclude with `hj (by simpa [hLc, ht0] using ht j)`. Take `⟨T, hT⟩` from `h K ι S (Lc j₀) e he (isMultiHomog_map _ (hL j₀)) hSh hG`.
+
+Use `⟨T.filter fun t => (∀ k, ∃ i, t ⟨k, i⟩ ≠ 0) ∧ ∀ s ∈ S, eval t s = 0, fun z hz => ?_, fun z hz hfib => ?_⟩` and prove the remaining obligations. Conclude with `(key z).1 (Finset.mem_filter.1 hz).2`. Take `⟨hb, hS⟩` from `(key z).2 ⟨hz, hfib⟩`. Take `⟨t, htT, r, hr, rfl⟩` from `hT z hb hS`. Establish `hinv : t = fun p => (r p.1)⁻¹ * (r p.1 * t p)`.
+
+Use function extensionality and compare the values at `p`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ (hr p.1), one_mul]`. Use `⟨t, Finset.mem_filter.2 ⟨htT, fun k => ?_, fun s hs => ?_⟩, r, hr, rfl⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hb k`. Conclude with `⟨i, fun h0 => hi (by simp [h0])⟩`.
+
+Take `⟨a, ha⟩` from `hSh s hs`. Rewrite using `[hinv, eval_smul ha (fun k => (r k)⁻¹), hS s hs, mul_zero]`.
+-/
 theorem FibreRepresentatives.proof (h : AvoidFormFinite.Statement) : FibreRepresentatives.Statement := by
   intro K _ ι _ Ω _ y D e L he hL hL0 ζ
   classical

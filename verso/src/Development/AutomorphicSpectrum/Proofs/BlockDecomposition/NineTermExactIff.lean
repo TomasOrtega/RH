@@ -72,10 +72,16 @@ variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAl
   {M : Type} [AddCommGroup M] [Module (ZMod (l ^ r)) M] [TopologicalSpace M] [DiscreteTopology M]
   (ρ : Representation (ZMod (l ^ r)) (GS Ω (S : Set (HeightOneSpectrum (𝓞 F)))) M)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem nineTermExact_iff (hρ : ContAction ρ) :
     NineTermExact S Av μ j ρ hρ ↔
       NineG (locFam S Av) (continuous_locFam S Av) μ j ρ hρ := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem shaDual_iff :
     ShaDual S Av μ ρ ↔ ShaG (locFam S Av) (continuous_locFam S Av) μ ρ := Iff.rfl
 
@@ -91,6 +97,9 @@ def subgroupIso {A B : Type} [Group A] [TopologicalSpace A] [Group B] [Topologic
   continuous_toFun := (Φ.continuous.comp continuous_subtype_val).subtype_mk _
   continuous_invFun := (Φ.symm.continuous.comp continuous_subtype_val).subtype_mk _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem subgroupIso_coe {A B : Type} [Group A] [TopologicalSpace A] [Group B]
     [TopologicalSpace B] (Φ : A ≃ₜ* B) (H : Subgroup A) (K : Subgroup B)
     (h : ∀ a, a ∈ H ↔ Φ a ∈ K) (a : H) : ((subgroupIso Φ H K h a : K) : B) = Φ a := rfl

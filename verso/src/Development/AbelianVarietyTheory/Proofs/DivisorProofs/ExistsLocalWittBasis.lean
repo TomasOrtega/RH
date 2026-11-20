@@ -21,6 +21,37 @@ noncomputable section
 
 namespace GlobalTheory.LeviBlockFrame
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hcm n J hJ r Xf Yf hW v t`. Establish `cTmul : ∀ {a b c : ℕ} (A : Matrix (Fin a) (Fin b) E) (B' : Matrix (Fin b) (Fin c) E), Formalism.UG.cT (σ : E →+* E) (A * B') = Formalism.UG.cT (σ : E →+* E) B' * Formalism.UG.cT (σ : E →+* E) A` using `fun A B' => by`. Simplify using `[Formalism.UG.cT, Matrix.map_mul, Matrix.transpose_mul]`. Establish `cTJ : Formalism.UG.cT (σ : E →+* E) J = J` using `Matrix.ext fun a b => hJ.1 a b`. Establish `cTcT : Formalism.UG.cT (σ : E →+* E) (Formalism.UG.cT (σ : E →+* E) Xf) = Xf` using `Matrix.ext fun a b => by`.
+
+Simplify using `[Formalism.UG.cT, GlobalTheory.AdelicU.cm_conj_conj hcm]`. Establish `hLX : Formalism.UG.cT (σ : E →+* E) Yf * J * Xf = 1`. Establish `h` using `congrArg (Formalism.UG.cT (σ : E →+* E)) hW.xy`. Rewrite `h` using `[cTmul, cTmul, cTJ, cTcT, ← Matrix.mul_assoc]`. Rewrite using `[h]`.
+
+Use extensionality with `a b`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using `[Formalism.UG.cT]`. Simplify using `[Formalism.UG.cT, Matrix.one_apply, hab, Ne.symm hab]`.
+
+Take `⟨hrn, C, hC⟩` from `GlobalTheory.T.left_inverse_extends_to_GL E n r Xf (Formalism.UG.cT (σ : E →+* E) Yf * J) hLX`. Set `B : GL (Fin n) (Fv F v)` to `Matrix.GeneralLinearGroup.map (t : E →+* Fv F v) C`. Establish `hB : ∀ (j : Fin r) (k : Fin n), (k : ℕ) = j → (∀ a, B.1 a k = t (Xf a j)) ∧ ∀ a, (B⁻¹).1 k a = t ((Formalism.UG.cT (σ : E →+* E) Yf * J) j a)`. Introduce `j k hk`. Use `⟨fun a => ?_, fun a => ?_⟩` and prove the remaining obligations.
+
+Use `show t (C.1 a k) = _`. Rewrite using `[(hC j k hk).1 a]`. Rewrite using `[← map_inv] show t ((C⁻¹).1 k a) = _`. Rewrite using `[(hC j k hk).2 a]`. Establish `hcomp : ∀ x : E, compFin F E v (inclR (F` using `F) (AF F) x) = inclR (F := F) (Fv F v) x := fun x => by`.
+
+Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map (evFin F v) (AlgHom.id F E) ((1 : AF F) ⊗ₜ[F] x) = (1 : Fv F v) ⊗ₜ[F] x`. Simplify using the standard rewrite rules. Establish `compat : ∀ (g : GL (Fin n) (Fv F v)), IsCompAt σ J t B g ((splitEquiv hcm hJ t).symm (B * g * B⁻¹))` using `fun g => by`. Unfold `IsCompAt`. Rewrite using `[← splitEquiv_val hcm hJ t]`.
+
+Conclude with `congrArg Units.val ((splitEquiv hcm hJ t).apply_symm_apply _)`. Use `⟨B, ?_, ?_⟩` and prove the remaining obligations. Introduce `S hS i hiS hi g hg`. Establish `key : ∀ g' : GL (Fin n) (Fv F v), g' ∈ GlobalTheory.SmGL.unipRad (Fv F v) (blockIndex hi) → (∀ j : Fin r, (matHom _ σ J (emb σ J v ((splitEquiv hcm hJ t).symm (B * g' * B⁻¹)))).1 *ᵥ (adMat F Xf)ᵀ j - (adMat F Xf)ᵀ j ∈ GlobalTheory.StdPar.colSpan F Xf {l | l < j ∧ l ≤ i}) ∧ ∀ y ∈ …`. Introduce `g' hg'`.
+
+Establish `hent` using `GlobalTheory.T.unipotent_radical_entries_upper (Fv F v) n i hi g' hg'`. Use `⟨fun j => GlobalTheory.T.local_matrix_action_column_span F E σ n J r Xf v _ _ _ ?_, fun y hy => GlobalTheory.T.local_matrix_action_column_span F E σ n J r Xf v _ _ _ ?_⟩` and prove the remaining obligations. Establish `e : (fun a => compFin F E v ((adMat F Xf)ᵀ j a)) = fun a => inclR (F` using `F) (Fv F v) (Xf a j) :=`. Use function extensionality and compare the values at `fun a => hcomp _`. Rewrite using `[e]`.
+
+Conclude with `GlobalTheory.T.isotropic_columns_local_GL_extension F E σ n J hJ r Xf hW.xx hrn v t hcm B (fun j k hk => (hB j k hk).1) i g' hent j`. Use `GlobalTheory.T.CM_column_local_GL_stabilizer F E σ n J hJ r Xf hrn v t hcm B (fun j k hk => (hB j k hk).1) i g' hent _ fun l hl => ?_` and prove the remaining obligations. Establish `h1 : (adMat F (Formalism.UG.cT (σ : E →+* E) Xf * J) *ᵥ y) l = 0`. Use `Submodule.mem_iInf _ |>.1 hy l` as an intermediate fact. Conclude with `(Submodule.mem_iInf _ |>.1 this hl)`.
+
+Establish `h2` using `congrArg (compFin F E v) h1`. Rewrite `h2` using `[map_zero, RingHom.map_mulVec]`. Establish `e : (Formalism.UG.cT (σ : E →+* E) Xf * J).map (inclR (F` using `F) (Fv F v)) = (adMat F (Formalism.UG.cT (σ : E →+* E) Xf * J)).map (compFin F E v) := by`. Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, hcomp]`.
+
+Rewrite using `[e]`. Conclude with `h2`. Use `⟨(splitEquiv hcm hJ t).symm (B * g * B⁻¹), compat g, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.T.standard_parabolic_column_stable F E σ n J r Xf S hS i hiS _ fun h' hh' => ?_` and prove the remaining obligations. Break down `hh' with rfl | hh'` into its components or cases.
+
+Conclude with `key g hg`. Rewrite `hh'` using `[Set.mem_singleton_iff]`. Substitute `hh'` using the available equality. Establish `e : (emb σ J v ((splitEquiv hcm hJ t).symm (B * g * B⁻¹)))⁻¹ = emb σ J v ((splitEquiv hcm hJ t).symm (B * g⁻¹ * B⁻¹))`. Rewrite using `[← map_inv, ← map_inv]`.
+
+Use `congr 2`. Use `group`. Rewrite using `[e]`. Conclude with `key g⁻¹ (inv_mem hg)`. Introduce `i hi ϖ`.
+
+Set `e : (Fv F v ⊗[F] E)ˣ` to `⟨(splitAlgEquiv hcm t).symm ((ϖ : Fv F v), 1), (splitAlgEquiv hcm t).symm (((ϖ⁻¹ : (Fv F v)ˣ) : Fv F v), 1), by rw [← map_mul]; simp, by rw [← map_mul]; simp⟩`. Establish `he1 : splitProj t (e : Fv F v ⊗[F] E) = ϖ` using `splitProj_symm hcm t _`. Establish `he2 : splitProj (t.comp σ) (e : Fv F v ⊗[F] E) = 1` using `splitProj_comp_symm hcm t _`. Establish `hk : ((⟨i, by omega⟩ : Fin n) : ℕ) = i` using `rfl`. Establish `hD` using `GlobalTheory.T.leviEmb_position_diagonal (Fv F v) n i hi ϖ`.
+
+Use `⟨(splitEquiv hcm hJ t).symm (B * GlobalTheory.SmGL.leviEmb (Fv F v) (blockIndex hi) (blockScalar₂ (Fv F v) n i ϖ) * B⁻¹), GlobalTheory.Doubling.ideleAt F E v e, compat _, ?_, GlobalTheory.T.split_idele_abs_uniformizer F E σ hcm v t ϖ e he1 he2⟩` and prove the remaining obligations. Take `⟨h1, h2, h3⟩` from `GlobalTheory.T.wittFrame_local_GL_extension F E σ hcm n J hJ r Xf Yf hW v t B hB i _ hk (ϖ : Fv F v) _ hD e he1 he2`. Conclude with `GlobalTheory.T.local_matrix_diagonal_column_action F E σ n J r Xf Yf v _ e i h1 h2 h3`.
+-/
 theorem exists_frame_basis : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →
     ∀ (r : ℕ) (Xf Yf : Matrix (Fin n) (Fin r) E), IsWittFrame σ J Xf Yf →

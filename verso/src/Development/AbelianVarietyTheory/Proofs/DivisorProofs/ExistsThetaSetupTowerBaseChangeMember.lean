@@ -20,6 +20,9 @@ noncomputable section
 
 namespace GlobalTheory.Poinc.Sep
 
+/- English proof (translation)
+Introduce `g n F W Z i X₂ z V _ _ ev hr`. Establish `hR : X₂.S.R ≤ X₂.M.O ((jK V ≫ spMap ev ≫ X₂.M.Z.fromSpecStalk z) (IsLocalRing.closedPoint (FractionRing V)))` using `fun a ha => hr a ha`. Conclude with `⟨(RatModel.valHomOf (jK V ≫ spMap ev ≫ X₂.M.Z.fromSpecStalk z) _ (RatModel.specializes_of_range_eq (RatModel.range_eq_singleton (M := X₂.M) (jK V ≫ spMap ev ≫ X₂.M.Z.fromSpecStalk z) (IsLocalRing.closedPoint (FractionRing V))))).comp (Subalgebra.inclusion hR).toRingHom, fun a => …`.
+-/
 theorem exists_ringHom_val_of_regAt : ∀ {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matrix (Fin 8) (Fin 8) ℤ} {Z : Scheme.{0}} {i : F.X ⟶ Z} (X₂ : Setup F W i) (z : X₂.M.Z) {V : Type} [CommRing V] [IsDomain V] (ev : X₂.M.Z.presheaf.stalk z →+* V), RegAt X₂ z ev → ∃ yK : X₂.S.R →+* FractionRing V, ∀ a : X₂.S.R, yK a = X₂.M.val (jK V ≫ spMap ev ≫ X₂.M.Z.fromSpecStalk z) a := by
   intro g n F W Z i X₂ z V _ _ ev hr
   have hR : X₂.S.R ≤ X₂.M.O ((jK V ≫ spMap ev ≫ X₂.M.Z.fromSpecStalk z) (IsLocalRing.closedPoint (FractionRing V))) :=
@@ -28,6 +31,11 @@ theorem exists_ringHom_val_of_regAt : ∀ {g n : ℕ} {F : SFam g n (zetaAway n)
     (RatModel.specializes_of_range_eq (RatModel.range_eq_singleton (M := X₂.M) (jK V ≫ spMap ev ≫ X₂.M.Z.fromSpecStalk z) (IsLocalRing.closedPoint (FractionRing V))))).comp
       (Subalgebra.inclusion hR).toRingHom, fun a => rfl⟩
 
+/- English proof (translation)
+Introduce `g n F W Z i X₁ act 𝔗 K _ A' y₂ φ₂ hφ e a h`. Use `𝔗.cart.1.hom_ext ?_ ?_` and prove the remaining obligations. Simplify using `only [Category.assoc, 𝔗.act_eq a]`. Simplify `h` using `only [Category.assoc]`. Simplify using `only [Category.assoc, Over.w (𝔗.act₂ a), hφ]`.
+
+Rewrite using `[← Category.assoc, Over.w e]`.
+-/
 theorem Tower.comp_act₂_of_comp_act : ∀ {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matrix (Fin 8) (Fin 8) ℤ} {Z : Scheme.{0}} {i : F.X ⟶ Z} {X₁ : Setup F W i} {act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)} (𝔗 : Tower X₁ act) {K : Type} [Field K] (A' : Over (Sp K)) (y₂ : 𝔗.X₂.S.R →+* K) (φ₂ : A'.left ⟶ 𝔗.X₂.ρ.P.A.left), φ₂ ≫ 𝔗.X₂.ρ.P.A.hom = A'.hom ≫ spMap y₂ → ∀ (e : A' ⟶ A') (a : Matrix (Fin 8) (Fin 8) ℤ), e.left ≫ φ₂ ≫ 𝔗.φ = φ₂ ≫ 𝔗.φ ≫ (act a).left → e.left ≫ φ₂ = φ₂ ≫ (𝔗.act₂ a).left := by
   intro g n F W Z i X₁ act 𝔗 K _ A' y₂ φ₂ hφ e a h
   refine 𝔗.cart.1.hom_ext ?_ ?_
@@ -36,6 +44,17 @@ theorem Tower.comp_act₂_of_comp_act : ∀ {g n : ℕ} {F : SFam g n (zetaAway 
   · simp only [Category.assoc, Over.w (𝔗.act₂ a), hφ]
     rw [← Category.assoc, Over.w e]
 
+/- English proof (translation)
+Introduce `g n F W Z i X₁ act 𝔗 K _ A' _ ya yb φa φb σ ha hb hab hy L _ j x hx a`. Establish `hc` using `𝔗.cart.1`. Establish `hsec : ∀ b, (𝔗.X₂.ρ.pt b).left ≫ 𝔗.X₂.ρ.P.A.hom = 𝟙 _` using `fun b => Over.w (𝔗.X₂.ρ.pt b)`. Establish `hsp : ∀ y : 𝔗.X₂.S.R →+* K, spMap j ≫ spMap y = spMap (j.comp y)` using `fun y => by`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+
+Establish `hxa : (x ≫ φa) ≫ 𝔗.X₂.ρ.P.A.hom = spMap (j.comp ya)`. Rewrite using `[Category.assoc, ha.1.w, ← Category.assoc, hx, hsp]`. Establish `hxb : (x ≫ φb) ≫ 𝔗.X₂.ρ.P.A.hom = spMap (j.comp yb)`. Rewrite using `[Category.assoc, hb.1.w, ← Category.assoc, hx, hsp]`. Establish `hra : (spMap (j.comp ya) ≫ (𝔗.X₂.ρ.pt a).left) ≫ 𝔗.X₂.ρ.P.A.hom = spMap (j.comp ya)`.
+
+Rewrite using `[Category.assoc, hsec]`. Conclude with `Category.comp_id _`. Establish `hrb : (spMap (j.comp yb) ≫ (𝔗.X₂.ρ.pt (𝔗.gl σ a)).left) ≫ 𝔗.X₂.ρ.P.A.hom = spMap (j.comp yb)`. Rewrite using `[Category.assoc, hsec]`. Conclude with `Category.comp_id _`.
+
+Establish `hg : spMap (j.comp yb) ≫ (𝔗.X₂.ρ.pt (𝔗.gl σ a)).left ≫ 𝔗.φ = spMap (j.comp ya) ≫ (𝔗.X₂.ρ.pt a).left ≫ 𝔗.φ`. Rewrite using `[𝔗.gl_pt, ← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, RingHom.comp_assoc, ← hy]`. Prove the components needed by the constructor for the conclusion. Introduce `h1`. Use `hc.hom_ext ?_ (hxb.trans hrb.symm)` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, ← hab, ← Category.assoc, h1, Category.assoc, Category.assoc, hg]`. Introduce `h1`. Use `hc.hom_ext ?_ (hxa.trans hra.symm)` and prove the remaining obligations. Rewrite using `[Category.assoc, hab, ← Category.assoc, h1, Category.assoc, Category.assoc, hg]`.
+-/
 theorem Tower.pt_iff_pt_gl : ∀ {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matrix (Fin 8) (Fin 8) ℤ} {Z : Scheme.{0}} {i : F.X ⟶ Z} {X₁ : Setup F W i} {act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)} (𝔗 : Tower X₁ act) {K : Type} [Field K] (A' : Over (Sp K)) [GrpObj A'] (ya yb : 𝔗.X₂.S.R →+* K) (φa φb : A'.left ⟶ 𝔗.X₂.ρ.P.A.left) (σ : 𝔗.X₂.Ω₁ ≃ₐ[X₁.Ω₁] 𝔗.X₂.Ω₁), IsGrpPullback A' 𝔗.X₂.ρ.P.A (spMap ya) φa → IsGrpPullback A' 𝔗.X₂.ρ.P.A (spMap yb) φb → φa ≫ 𝔗.φ = φb ≫ 𝔗.φ → ya = yb.comp (𝔗.sR σ) → ∀ {L : Type} [Field L] (j : K →+* L) (x : Sp L ⟶ A'.left), x ≫ A'.hom = spMap j → ∀ a, (x ≫ φa = spMap (j.comp ya) ≫ (𝔗.X₂.ρ.pt a).left ↔ x ≫ φb = spMap (j.comp yb) ≫ (𝔗.X₂.ρ.pt (𝔗.gl σ a)).left) := by
   intro g n F W Z i X₁ act 𝔗 K _ A' _ ya yb φa φb σ ha hb hab hy L _ j x hx a
   have hc := 𝔗.cart.1
@@ -66,6 +85,25 @@ end GlobalTheory.Poinc.Sep
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `g hg n hn hodd F Z z i _ hproj hnorm hiz hdense W hE8 hth X₁ z₁ act hact 𝔗 z₂ hz₂ x₀ hdiv`. Take `⟨eps, heps⟩` from `GlobalTheory.T.thetaSetupTower_member_terms_baseChange X₁ act 𝔗 z₁ z₂ hz₂ x₀ hdiv`. Use `⟨eps, ?_⟩` and prove the remaining obligations. Introduce `V _ _ _ ev X _ m t δ 𝔪 C lab T hT V' _ _ _ io hcn hinj hfin`. Establish `hle : nonZeroDivisors V ≤ (nonZeroDivisors V').comap io` using `nonZeroDivisors_le_comap_nonZeroDivisors_of_injective io hinj`.
+
+Set `f : FractionRing V →+* FractionRing V'` to `IsLocalization.map (FractionRing V') io hle`. Establish `hf : ∀ v, f (algebraMap V (FractionRing V) v) = algebraMap V' (FractionRing V') (io v)` using `fun v => IsLocalization.map_eq hle v`. Take `⟨D', e₈', G', _, _, A', U', ψ, hD, bc, hsemi, hψ, hw, hbc, hPU, hxe, hgen, hE, hpsi⟩` from `GlobalTheory.T.exists_baseChange_finite_injective_complete_normal X₁ z₁ act V ev X m t δ 𝔪 V' io f hf hcn hinj hfin`. Establish `hreg : ∀ ev₂ : 𝔗.X₂.M.Z.presheaf.stalk z₂ →+* V', 𝔗.Ext ev io ev₂ → RegAt 𝔗.X₂ z₂ ev₂` using `fun ev₂ h => GlobalTheory.T.deeperThetaRing_regular_at_extension_point 𝔗 hz₂ ev io ev₂ hinj h 𝔪.reg`. Use `choose yK hyK using fun (ev₂ : 𝔗.X₂.M.Z.presheaf.stalk z₂ →+* V') (h : 𝔗.Ext ev io ev₂) => exists_ringHom_val_of_regAt 𝔗.X₂ z₂ ev₂ (hreg ev₂ h)`.
+
+Establish `hyKc : ∀ ev₂ h, (yK ev₂ h).comp 𝔗.om = f.comp 𝔪.yK`. Introduce `ev₂ h`. Use extensionality with `a`. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[hyK, 𝔪.yK_eq]`.
+
+Conclude with `GlobalTheory.T.deeperTheta_value_image_eq_image_value 𝔗 hz₂ ev io ev₂ f hf hinj h 𝔪.reg a`. Establish `hsq : ∀ ev₂ h, spMap (yK ev₂ h) ≫ spMap 𝔗.om = spMap f ≫ spMap 𝔪.yK`. Introduce `ev₂ h`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, hyKc ev₂ h]`. Use `choose φ₂ hφ₂ using fun (ev₂ : 𝔗.X₂.M.Z.presheaf.stalk z₂ →+* V') (h : 𝔗.Ext ev io ev₂) => GlobalTheory.T.isGrpPullback_paste_factorisation X₁.ρ.P.A 𝔗.X₂.ρ.P.A 𝔪.A.A A'.A (spMap 𝔗.om) (spMap 𝔪.yK) (spMap f) (spMap (yK ev₂ h)) 𝔗.φ 𝔪.φ ψ 𝔗.cart 𝔪.cart hψ (hsq ev₂ h)`.
+
+Use `choose wl hwl using fun (ev₂ : 𝔗.X₂.M.Z.presheaf.stalk z₂ →+* V') (h : 𝔗.Ext ev io ev₂) => GlobalTheory.T.exists_lineBundleIso_pullback_commSquare A'.L 𝔪.A.L X₁.ρ.P.L 𝔗.X₂.ρ.P.L ψ 𝔪.φ (φ₂ ev₂ h) 𝔗.φ A'.isLB 𝔪.A.isLB X₁.ρ.P.isLB 𝔗.X₂.ρ.P.isLB (hφ₂ ev₂ h).2.symm hw ⟨𝔪.wl, 𝔪.wl_gen⟩ …`. Set `𝔪₂ : ∀ ev₂ : 𝔗.X₂.M.Z.presheaf.stalk z₂ →+* V', 𝔗.Ext ev io ev₂ → UMem 𝔗.X₂ z₂ 𝔗.act₂ V' ev₂ X (fun k => io (t k)) δ` to `fun ev₂ h => { cn := hcn loc := h.1 reg := hreg ev₂ h yK := yK ev₂ h yK_eq := hyK ev₂ h D := D' e₈ := e₈' G := G' semi := hsemi A := A' U := U' φ := φ₂ ev₂ h cart := (hφ₂ ev₂ h).1 wl := wl ev₂ h wl_gen := hwl ev₂ h equiv := fun a a' hc => by`. Take `⟨E, hE1, hE2⟩` from `𝔪.equiv a a' hc`. Take `⟨E', hE'1, hE'2⟩` from `hE E`. Use `⟨E', ?_, fun mu => hD.xe.injective ?_⟩` and prove the remaining obligations.
+
+Establish `e2` using `(hφ₂ ev₂ h).2`. Use `Tower.comp_act₂_of_comp_act 𝔗 A'.A (yK ev₂ h) (φ₂ ev₂ h) (hφ₂ ev₂ h).1.1.w E'.aA a ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hE'2, hxe, hE2, hxe]`. Use `psi := hpsi }`.
+
+Use `⟨𝔪₂, ?_, ?_⟩` and prove the remaining obligations. Introduce `ev₂ h zt hzt`. Conclude with `heps V ev X m t δ 𝔪 C lab T hT V' io f hf hinj hfin ev₂ (𝔪₂ ev₂ h) ψ hD bc h (hyKc ev₂ h) hψ hw (hφ₂ ev₂ h).2 hbc hPU hxe hgen zt hzt`. Introduce `ev₂ h ev₂' h' σ h1 h2 a mu`. Establish `hy : yK ev₂' h' = (yK ev₂ h).comp (𝔗.sR σ)`.
+
+Use extensionality with `b`. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[hyK, hyK]`. Conclude with `GlobalTheory.T.deeperTheta_value_galoisConjugate_extension 𝔗 ev₂ ev₂' σ h1 h2 (hreg ev₂ h) (hreg ev₂' h') b`. Unfold `UMem.YY`.
+
+Use `exists_congr fun p => exists_congr fun x => and_congr_right fun _ => and_congr_right fun _ => ?_` and prove the remaining obligations. Conclude with `Tower.pt_iff_pt_gl 𝔗 A'.A (yK ev₂' h') (yK ev₂ h) (φ₂ ev₂' h') (φ₂ ev₂ h) σ (hφ₂ ev₂' h').1 (hφ₂ ev₂ h).1 ((hφ₂ ev₂' h').2.trans (hφ₂ ev₂ h).2.symm) hy (algebraMap (FractionRing V') (AlgebraicClosure (FractionRing V'))) x.left (Over.w x) a`.
+-/
 theorem exists_baseChange_member_of_tower : ∀ g : ℕ, 1 ≤ g → ∀ n : ℕ, 3 ≤ n → Odd n → ∀ (F : SFam g n (zetaAway n)) (Z : Scheme.{0}) (z : Z ⟶ Sp (cycAway n)) (i : F.X ⟶ Z) [IsOpenImmersion i], IsProjOver z → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Z → i ≫ z = F.s → Dense (Set.range i) → ∀ W : Matrix (Fin 8) (Fin 8) ℤ, IsE8 W → ThetaInt F W i → ∀ (X₁ : Setup F W i) (z₁ : X₁.M.Z) (act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)), IsAct X₁ act → ∀ (𝔗 : Tower X₁ act) (z₂ : 𝔗.X₂.M.Z), 𝔗.p z₂ = z₁ → ∀ x₀ : X₁.S.Gam, X₁.M.Div X₁.S.th x₀ z₁ → ∃ eps : X₁.S.Gam → ℕ, ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (X : Type) [AddCommGroup X] (m : ℕ) (t : Fin m → V) (δ : Fin m → LinearMap.BilinForm ℤ X) (𝔪 : UMem X₁ z₁ act V ev X t δ) (C : Type) (lab : C → X₁.S.Gam) (T : (Fin 8 → X) → C → V), 𝔪.Terms x₀ lab T → ∀ (V' : Type) [CommRing V'] [IsDomain V'] [IsLocalRing V'] (io : V →+* V'), IsCN V' → Function.Injective io → io.Finite → ∃ 𝔪₂ : ∀ ev₂ : 𝔗.X₂.M.Z.presheaf.stalk z₂ →+* V', 𝔗.Ext ev io ev₂ → UMem 𝔗.X₂ z₂ 𝔗.act₂ V' ev₂ X (fun k => io (t k)) δ, (∀ ev₂ h (zt : 𝔗.X₂.M.Z.presheaf.stalk z₂), 𝔗.X₂.M.stalkHom z₂ zt = algebraMap 𝔗.X₂.o₁ 𝔗.X₂.Ω₁ 𝔗.X₂.S.ζ → (𝔪₂ ev₂ h).Terms (𝔗.lam x₀) (fun c => 𝔗.lam (lab c)) (fun mu c => ev₂ zt ^ eps (lab c) * io (T mu c))) ∧ ∀ ev₂ h ev₂' h' (σ : 𝔗.X₂.Ω₁ ≃ₐ[X₁.Ω₁] 𝔗.X₂.Ω₁), (∀ x x', 𝔗.X₂.M.stalkHom z₂ x' = σ (𝔗.X₂.M.stalkHom z₂ x) → ev₂' x = ev₂ x') → (∀ x, ∃ x', 𝔗.X₂.M.stalkHom z₂ x' = σ (𝔗.X₂.M.stalkHom z₂ x)) → ∀ a mu, (𝔪₂ ev₂' h').YY a mu ↔ (𝔪₂ ev₂ h).YY (𝔗.gl σ a) mu := by
   intro g hg n hn hodd F Z z i _ hproj hnorm hiz hdense W hE8 hth X₁ z₁ act hact 𝔗 z₂ hz₂ x₀ hdiv
   obtain ⟨eps, heps⟩ := GlobalTheory.T.thetaSetupTower_member_terms_baseChange X₁ act 𝔗 z₁ z₂ hz₂ x₀ hdiv

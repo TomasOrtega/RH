@@ -6,6 +6,11 @@ noncomputable section
 
 namespace Formalism.GradedWeylDivisibility
 
+/- English proof (translation)
+Proceed by induction on `d using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f g hf hg`. Simplify using `only [map_add, Finsupp.add_apply, hf, hg]`. Apply the tactic sequence `split_ifs <;> omega`.
+
+Consider the case `single v k`. Take `⟨a, s⟩` from `v`. Simplify using `only [Finsupp.weight_apply, Finsupp.sum_single_index, zero_smul, Finsupp.smul_apply, pairW, smul_eq_mul]`. Apply the tactic sequence `by_cases hs : s = j <;> by_cases ht : t = l <;> by_cases htj : t = j <;> by_cases hab : a = b <;>`. Simplify using `[Finsupp.single_apply, Prod.ext_iff, eq_comm]`.
+-/
 theorem lcpeel_weight_apply {r n : ℕ} (l j : Fin n) (hlj : l ≠ j) (d : Fin r × Fin n →₀ ℕ)
     (b : Fin r) (t : Fin n) :
     Finsupp.weight (pairW l j) d (b, t) =

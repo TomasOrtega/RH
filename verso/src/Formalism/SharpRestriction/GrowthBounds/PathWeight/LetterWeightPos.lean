@@ -12,6 +12,17 @@ section Low
 
 variable {R σ : Type*} [CommRing R] (wt : σ → ℕ)
 
+/- English proof (translation)
+Use extensionality with `m`. Rewrite using `[coeff_weightedHomogeneousComponent, coeff_mul, coeff_mul]`. Use `split_ifs with h`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Rewrite using `[coeff_weightedHomogeneousComponent, coeff_weightedHomogeneousComponent]`.
+
+Establish `hx' : x.1 + x.2 = m` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hx`. Establish `hw : Finsupp.weight wt x.1 + Finsupp.weight wt x.2 = a + b` using `by rw [← map_add, hx', h]`. Distinguish the cases in `h1 : coeff x.1 f = 0`. Simplify using `[h1]`. Distinguish the cases in `h2 : coeff x.2 g = 0`.
+
+Simplify using `[h2]`. Establish `e1` using `hf x.1 (mem_support_iff.2 h1)`. Establish `e2` using `hg x.2 (mem_support_iff.2 h2)`. Rewrite using `[if_pos (by omega), if_pos (by omega)]`. Use `symm`.
+
+Use `Finset.sum_eq_zero fun x hx => ?_` and prove the remaining obligations. Rewrite using `[coeff_weightedHomogeneousComponent, coeff_weightedHomogeneousComponent]`. Establish `hx' : x.1 + x.2 = m` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hx`. Distinguish the cases in `h1 : Finsupp.weight wt x.1 = a`. Distinguish the cases in `h2 : Finsupp.weight wt x.2 = b`.
+
+Conclude with `absurd (by rw [← hx', map_add, h1, h2]) h`. Simplify using `[h2]`. Simplify using `[h1]`.
+-/
 theorem weighted_component_mul_lowest {f g : MvPolynomial σ R} {a b : ℕ}
     (hf : ∀ m ∈ f.support, a ≤ Finsupp.weight wt m) (hg : ∀ m ∈ g.support, b ≤ Finsupp.weight wt m) :
     weightedHomogeneousComponent wt (a + b) (f * g) =
@@ -40,6 +51,9 @@ theorem weighted_component_mul_lowest {f g : MvPolynomial σ R} {a b : ℕ}
       · simp [h2]
     · simp [h1]
 
+/- English proof (translation)
+Introduce `m hm`. Take `⟨m1, h1, m2, h2, rfl⟩` from `Finset.mem_add.1 (MvPolynomial.support_mul f g hm)`. Rewrite using `[map_add]`. Conclude with `Nat.add_le_add (hf m1 h1) (hg m2 h2)`.
+-/
 theorem support_weight_mul_lower {f g : MvPolynomial σ R} {a b : ℕ}
     (hf : ∀ m ∈ f.support, a ≤ Finsupp.weight wt m) (hg : ∀ m ∈ g.support, b ≤ Finsupp.weight wt m) :
     ∀ m ∈ (f * g).support, a + b ≤ Finsupp.weight wt m := by
@@ -48,6 +62,11 @@ theorem support_weight_mul_lower {f g : MvPolynomial σ R} {a b : ℕ}
   rw [map_add]
   exact Nat.add_le_add (hf m1 h1) (hg m2 h2)
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `⟨fun m _ => by simp, ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.sum_empty, Finset.prod_empty]`. Conclude with `(isWeightedHomogeneous_one R wt).weightedHomogeneousComponent_same`.
+
+Consider the case `insert c s hc ih`. Take `⟨ih1, ih2⟩` from `ih fun c' hc' => hf c' (Finset.mem_insert_of_mem hc')`. Establish `h0` using `hf c (Finset.mem_insert_self c s)`. Rewrite using `[Finset.sum_insert hc, Finset.prod_insert hc, Finset.prod_insert hc]`. Conclude with `⟨support_weight_mul_lower wt h0 ih1, by rw [weighted_component_mul_lowest wt h0 ih1, ih2]⟩`.
+-/
 theorem weighted_component_prod_lowest {ι : Type*} (s : Finset ι) (f : ι → MvPolynomial σ R) (o : ι → ℕ)
     (hf : ∀ c ∈ s, ∀ m ∈ (f c).support, o c ≤ Finsupp.weight wt m) :
     (∀ m ∈ (∏ c ∈ s, f c).support, ∑ c ∈ s, o c ≤ Finsupp.weight wt m) ∧
@@ -66,6 +85,13 @@ theorem weighted_component_prod_lowest {ι : Type*} (s : Finset ι) (f : ι → 
 
 end Low
 
+/- English proof (translation)
+Establish `h : rename f P = ∑ m ∈ P.support, rename f (monomial m (coeff m P))` using `by conv_lhs => rw [P.as_sum]`. Rewrite using `[map_sum]`. Rewrite using `[h]`. Use `inWj_sum _ _ fun m _ => ?_` and prove the remaining obligations. Rewrite using `[rename_monomial]`.
+
+Introduce `m'`. Take `⟨c, hc⟩` from `hP m`. Rewrite using `[coeff_monomial]`. Use `split_ifs`. Conclude with `⟨c, hc⟩`.
+
+Conclude with `⟨0, by simp⟩`.
+-/
 theorem depth_filtration_rename {O : Type*} [CommRing O] [IsDomain O] {σ τ : Type*} {w : O} (f : σ → τ)
     {P : MvPolynomial σ (KK O)} {j : ℕ} (hP : InWj w P j) : InWj w (rename f P) j := by
   have h : rename f P = ∑ m ∈ P.support, rename f (monomial m (coeff m P)) := by
@@ -87,19 +113,37 @@ variable {n' r : ℕ} [NeZero n'] (F : Frames n' r) (j : ℤ)
 
 def rho (k : ℕ) : Fin (Mj F j) × Fin k → TV n' k := fun v => (posOf n' (eL F j v.1), v.2)
 
+/- English proof (translation)
+The claim follows from `Finset.orderEmbOfFin_mem _ _ _`.
+-/
 theorem letter_enum_mem_letters (i : Fin (Mj F j)) : eL F j i ∈ F.letters j := Finset.orderEmbOfFin_mem _ _ _
 
+/- English proof (translation)
+The claim follows from `(Finset.mem_filter.1 (letter_enum_mem_letters F j i)).2`.
+-/
 theorem letter_enum_position_top (i : Fin (Mj F j)) : posOf n' (eL F j i) ∈ F.TT :=
   (Finset.mem_filter.1 (letter_enum_mem_letters F j i)).2
 
+/- English proof (translation)
+The claim follows from `(Finset.mem_Icc.1 (Finset.mem_filter.1 (letter_enum_mem_letters F j i)).1).1`.
+-/
 theorem letter_enum_lower_bound (i : Fin (Mj F j)) : F.fr (j - 1) 0 ≤ eL F j i :=
   (Finset.mem_Icc.1 (Finset.mem_filter.1 (letter_enum_mem_letters F j i)).1).1
 
+/- English proof (translation)
+The claim follows from `(Finset.mem_Icc.1 (Finset.mem_filter.1 (letter_enum_mem_letters F j i)).1).2`.
+-/
 theorem letter_enum_upper_bound (i : Fin (Mj F j)) : eL F j i ≤ F.fr j (r - 1) :=
   (Finset.mem_Icc.1 (Finset.mem_filter.1 (letter_enum_mem_letters F j i)).1).2
 
+/- English proof (translation)
+The claim follows from `(Finset.orderEmbOfFin (F.letters j) rfl).strictMono`.
+-/
 theorem letter_enum_strictMono : StrictMono (eL F j) := (Finset.orderEmbOfFin (F.letters j) rfl).strictMono
 
+/- English proof (translation)
+Introduce `v hv`. Take `⟨u, _, rfl⟩` from `Finset.mem_image.1 (vars_rename (rho F j k) P hv)`. Conclude with `letter_enum_position_top F j u.1`.
+-/
 theorem rename_supported_tops {R : Type*} [CommRing R] {k : ℕ} (P : MvPolynomial (Fin (Mj F j) × Fin k) R) :
     OnTops F (rename (rho F j k) P) := by
   intro v hv
@@ -108,6 +152,17 @@ theorem rename_supported_tops {R : Type*} [CommRing R] {k : ℕ} (P : MvPolynomi
 
 variable {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [IsDomain O] [Algebra (WF p n') O] {k : ℕ}
 
+/- English proof (translation)
+Establish `h : (subst p n' O w n' r g).comp (rename (rho F j k)) = (rename (rho F j k)).comp (liftSubst p n' O w r (LLs F j) g)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [AlgHom.comp_apply, rename_X]`. Unfold `subst liftSubst`.
+
+Rewrite using `[aeval_X, aeval_X]`. Establish `hs : sigMat p n' O g ((LLT n').pos (rho F j k v).1) = sigMat p n' O g ((LLs F j).pos v.1)` using `sigMat_posOf g (eL F j v.1)`. Rewrite using `[hs]`. Distinguish the cases in `hE : Even (eL F j v.1)`. Establish `hE' : Even (posOf n' (eL F j v.1)).val` using `(posOf_even hn _).2 hE`.
+
+Establish `h1 : (LLT n').vec (rho F j k v).1 = true` using `by simp [LLT, rho, hE']`. Establish `h2 : (LLs F j).vec v.1 = true` using `by simp [LLs, hE]`. Rewrite using `[if_pos h1, if_pos h2, map_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, rename_C]`.
+
+Apply the tactic sequence `split_ifs <;> simp [rho]`. Establish `hE' : ¬ Even (posOf n' (eL F j v.1)).val` using `fun h => hE ((posOf_even hn _).1 h)`. Establish `h1 : ¬ (LLT n').vec (rho F j k v).1 = true` using `by simp [LLT, rho, hE']`. Establish `h2 : ¬ (LLs F j).vec v.1 = true` using `by simp [LLs, hE]`. Rewrite using `[if_neg h1, if_neg h2, map_sum]`.
+
+Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, rename_C]`. Apply the tactic sequence `split_ifs <;> simp [rho]`. Conclude with `AlgHom.congr_fun h P`.
+-/
 theorem substitution_rename_lift (w : O) (hn : Even n') (g : Matrix (Fin k) (Fin k) (WF p n'))
     (P : MvPolynomial (Fin (Mj F j) × Fin k) (KK O)) :
     subst p n' O w n' r g (rename (rho F j k) P) = rename (rho F j k) (liftSubst p n' O w r (LLs F j) g P) := by
@@ -146,6 +201,11 @@ variable {n' r : ℕ} [NeZero n'] (F : Frames n' r) (j : ℤ) (p : ℕ)
 
 def omL (i : Fin (Mj F j)) : ℕ := p ^ (F.fr j (r - 1) - eL F j i).toNat
 
+/- English proof (translation)
+Introduce `a b hab`. Unfold `omL`. Apply `Nat.pow_lt_pow_right hp` to reduce the goal to its premises. Establish `h1` using `letter_enum_strictMono F j hab`. Establish `h2` using `letter_enum_upper_bound F j b`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem letter_weight_strictAnti (hp : 1 < p) : StrictAnti (omL F j p) := by
   intro a b hab
   unfold omL
@@ -154,10 +214,20 @@ theorem letter_weight_strictAnti (hp : 1 < p) : StrictAnti (omL F j p) := by
   have h2 := letter_enum_upper_bound F j b
   omega
 
+/- English proof (translation)
+The claim follows from `pow_pos (by omega) _`.
+-/
 theorem letter_weight_pos (hp : 1 < p) (i : Fin (Mj F j)) : 0 < omL F j p i := pow_pos (by omega) _
 
 variable (K : ℕ)
 
+/- English proof (translation)
+Distinguish the cases in `hE : Even (eL F j v.1)`. Establish `hE' : Even (posOf n' (eL F j v.1)).val` using `(posOf_even hn _).2 hE`. Establish `h2 : (LLs F j).toLetters.vec v.1 = true` using `by simp [LLs, hE]`. Establish `h3 : IsNormal r (rho F j (r + K) v) ↔ r ≤ v.2.val` using `by show (if Even (posOf n' (eL F j v.1)).val then r ≤ v.2.val else v.2.val < r) ↔ _`. Rewrite using `[if_pos hE']`.
+
+Rewrite using `[h3, h2]`. Simplify using the standard rewrite rules. Establish `hE' : ¬ Even (posOf n' (eL F j v.1)).val` using `fun h => hE ((posOf_even hn _).1 h)`. Establish `h2 : (LLs F j).toLetters.vec v.1 = false` using `by simp [LLs, hE]`. Establish `h3 : IsNormal r (rho F j (r + K) v) ↔ v.2.val < r` using `by show (if Even (posOf n' (eL F j v.1)).val then r ≤ v.2.val else v.2.val < r) ↔ _`.
+
+Rewrite using `[if_neg hE']`. Rewrite using `[h3, h2]`. Simplify using the standard rewrite rules.
+-/
 theorem normal_iff_letter_column (hn : Even n') (v : Fin (Mj F j) × Fin (r + K)) :
     (((LLs F j).toLetters.vec v.1 = true ∧ r ≤ v.2.val) ∨ ((LLs F j).toLetters.vec v.1 = false ∧ v.2.val < r)) ↔
       IsNormal r (rho F j (r + K) v) := by
@@ -177,6 +247,9 @@ theorem normal_iff_letter_column (hn : Even n') (v : Fin (Mj F j) × Fin (r + K)
     rw [h3, h2]
     simp
 
+/- English proof (translation)
+Unfold `symWt normalVariableWeight`. Distinguish the cases in `hN : IsNormal r (rho F j (r + K) v)`. Rewrite using `[if_pos ((normal_iff_letter_column F j K hn v).2 hN), if_pos hN, mul_one]`. Rewrite using `[if_neg (fun h => hN ((normal_iff_letter_column F j K hn v).1 h)), if_neg hN, mul_zero]`.
+-/
 theorem symbol_weight_factor (hn : Even n') (v : Fin (Mj F j) × Fin (r + K)) :
     symWt (r := r) (K := K) (LLs F j).toLetters (omL F j p) v =
       omL F j p v.1 * normalVariableWeight n' (r + K) r (rho F j (r + K) v) := by
@@ -187,6 +260,9 @@ theorem symbol_weight_factor (hn : Even n') (v : Fin (Mj F j) × Fin (r + K)) :
 
 variable (O : Type) [CommRing O]
 
+/- English proof (translation)
+Unfold `phSeg plnm`. Rewrite using `[aeval_rename]`. Both sides reduce to the same expression.
+-/
 theorem segment_substitution_aeval (Y : MvPolynomial (Fin (Mj F j) × Fin (r + K)) O) :
     phSeg O K p F j (plnm F j O K Y) =
       aeval (fun v => (X (rho F j (r + K) v) : RRing O n' (r + K)) ^ omL F j p v.1) Y := by
@@ -194,6 +270,15 @@ theorem segment_substitution_aeval (Y : MvPolynomial (Fin (Mj F j) × Fin (r + K
   rw [aeval_rename]
   rfl
 
+/- English proof (translation)
+Rewrite using `[segment_substitution_aeval]`. Establish `h : aeval (fun v => (X (rho F j (r + K) v) : RRing O n' (r + K)) ^ omL F j p v.1) Y = ∑ m ∈ Y.support, aeval (fun v => (X (rho F j (r + K) v) : RRing O n' (r + K)) ^ omL F j p v.1) (monomial m (coeff m Y))` using `by conv_lhs => rw [Y.as_sum]`. Rewrite using `[map_sum]`. Rewrite using `[h]`. Use `IsWeightedHomogeneous.sum _ _ _ fun m hm => ?_` and prove the remaining obligations.
+
+Rewrite using `[aeval_monomial]`. Establish `hw : Finsupp.weight (symWt (r` using `r) (K := K) (LLs F j).toLetters (omL F j p)) m = o := hY (mem_support_iff.1 hm)`. Establish `hC : algebraMap O (RRing O n' (r + K)) (coeff m Y) = C (coeff m Y)` using `rfl`. Rewrite using `[hC]`. Apply `IsWeightedHomogeneous.C_mul` to reduce the goal to its premises.
+
+Rewrite using `[← hw, Finsupp.weight_apply, Finsupp.sum, Finsupp.prod]`. Use `IsWeightedHomogeneous.prod _ _ _ fun v _ => ?_` and prove the remaining obligations. Establish `h1` using `((isWeightedHomogeneous_X O (normalVariableWeight n' (r + K) r) (rho F j (r + K) v)).pow (omL F j p v.1)).pow (m v)`. Establish `e : m v • symWt (r` using `r) (K := K) (LLs F j).toLetters (omL F j p) v = m v • (omL F j p v.1 • normalVariableWeight n' (r + K) r (rho F j (r + K) v)) := by`. Rewrite using `[symbol_weight_factor F j p K hn v]`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `h1`.
+-/
 theorem segment_substitution_weighted_homog (hn : Even n') (Y : MvPolynomial (Fin (Mj F j) × Fin (r + K)) O) (o : ℕ)
     (hY : IsWeightedHomogeneous (symWt (r := r) (K := K) (LLs F j).toLetters (omL F j p)) Y o) :
     IsWeightedHomogeneous (normalVariableWeight n' (r + K) r) (phSeg O K p F j (plnm F j O K Y)) o := by
@@ -222,6 +307,17 @@ theorem segment_substitution_weighted_homog (hn : Even n') (Y : MvPolynomial (Fi
 
 variable {O} [IsDomain O] [Fact p.Prime]
 
+/- English proof (translation)
+Rewrite using `[segment_substitution_aeval]`. Proceed by induction on `Y using MvPolynomial.induction_on with`. Consider the case `C a`. Establish `e1 : aeval (fun v => (X (rho F j (r + K) v) : RRing O n' (r + K)) ^ omL F j p v.1) (C a : MvPolynomial (Fin (Mj F j) × Fin (r + K)) O) = C a`. Rewrite using `[aeval_C]`.
+
+Both sides reduce to the same expression. Establish `e2 : powSubst p (LLs F j) (F.fr j (r - 1)) (C a : MvPolynomial (Fin (Mj F j) × Fin (r + K)) O) = C (algebraMap O (KK O) a)`. Unfold `powSubst`. Rewrite using `[aeval_C]`. Both sides reduce to the same expression.
+
+Rewrite using `[e1, e2, map_C, rename_C]`. Consider the case `add P Q hP hQ`. Simplify using `only [map_add, hP, hQ]`. Consider the case `mul_X P v hP`. Simplify using `only [map_mul]`.
+
+Rewrite using `[hP]`. Use `congr 1`. Establish `e2 : powSubst p (LLs F j) (F.fr j (r - 1)) (X v : MvPolynomial (Fin (Mj F j) × Fin (r + K)) O) = X v ^ omL F j p v.1`. Unfold `powSubst`. Rewrite using `[aeval_X]`.
+
+Both sides reduce to the same expression. Rewrite using `[aeval_X, e2, map_pow, map_pow, map_X, rename_X]`.
+-/
 theorem segment_substitution_eq_rename (Y : MvPolynomial (Fin (Mj F j) × Fin (r + K)) O) :
     MvPolynomial.map (algebraMap O (KK O)) (phSeg O K p F j (plnm F j O K Y)) =
       rename (rho F j (r + K)) (powSubst p (LLs F j) (F.fr j (r - 1)) Y) := by
@@ -253,6 +349,11 @@ section Main
 variable {p n' r K : ℕ} [Fact p.Prime] [NeZero n'] [NeZero r] [NeZero K] {O : Type} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] [Algebra (WF p n') O] (Cx : Ctx p n' r K O) (j : ℤ)
 
+/- English proof (translation)
+Establish `hr : 1 ≤ r` using `NeZero.one_le`. Apply `Finset.card_pos.2` to reduce the goal to its premises. Use `⟨Cx.Fr.fr j (r - 1), Finset.mem_filter.2 ⟨Finset.mem_Icc.2 ⟨?_, le_rfl⟩, (Cx.hV.2.2.2.2.1 j (r - 1) (by omega)).1⟩⟩` and prove the remaining obligations. Establish `h1` using `frame_row_monotone Cx.Fr Cx.L₁ Cx.N₁ Cx.hV (j - 1) (r - 1) (by omega)`. Establish `h2` using `Cx.hV.2.2.2.1 (j - 1)`.
+
+Establish `h3` using `frame_row_monotone Cx.Fr Cx.L₁ Cx.N₁ Cx.hV j (r - 1) (by omega)`. Rewrite `h2` using `[sub_add_cancel]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem segment_letter_count_pos : 0 < Mj Cx.Fr j := by
   have hr : 1 ≤ r := NeZero.one_le
   apply Finset.card_pos.2
@@ -264,6 +365,9 @@ theorem segment_letter_count_pos : 0 < Mj Cx.Fr j := by
   rw [sub_add_cancel] at h2
   omega
 
+/- English proof (translation)
+Establish `h1 : (Cx.Fr.letters j).card ≤ Cx.N₁` using `Cx.hV.2.2.2.2.2.2.2.1 j`. Establish `h2` using `Cx.hK`. Use `show (Cx.Fr.letters j).card + r ≤ K`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem segment_count_add_rank_le : Mj Cx.Fr j + r ≤ K := by
   have h1 : (Cx.Fr.letters j).card ≤ Cx.N₁ := Cx.hV.2.2.2.2.2.2.2.1 j
   have h2 := Cx.hK
@@ -271,6 +375,9 @@ theorem segment_count_add_rank_le : Mj Cx.Fr j + r ≤ K := by
   omega
 
 include Cx in
+/- English proof (translation)
+Use `Cx.hH.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem one_lt_prime : 1 < p := by
   have := Cx.hH.1
   omega
@@ -280,6 +387,21 @@ def keyLeadingPart (mu : Fin (Mj Cx.Fr j + 1) → Fin (r + K) → ℤ) (c : ℤ)
   C (algebraMap O (KK O) (Cx.S.w ^ oc (omL Cx.Fr j p) mu c)) *
     MvPolynomial.map (algebraMap O (KK O)) (phSeg O K p Cx.Fr j (plnm Cx.Fr j O K (plTanCol O mu c J)))
 
+/- English proof (translation)
+Establish `: NeZero (Mj Cx.Fr j)` using `⟨(segment_letter_count_pos Cx j).ne'⟩`. Establish `hn : Even n'` using `Cx.hH.2.2.2.2`. Establish `hp5 : 5 ≤ p` using `by have := Cx.hH.1; omega`. Establish `hn1 : 1 ≤ n'` using `NeZero.one_le`. Take `⟨hA, _, hord, htail, hle⟩` from `hC1 p n' O Cx.S hp5 hn1 Cx.hO.1 (Mj Cx.Fr j) r K (LLs Cx.Fr j) B (Cx.Fr.fr j (r - 1)) (segment_count_add_rank_le Cx j) (letter_enum_strictMono Cx.Fr j).monotone (letter_enum_upper_bound Cx.Fr j) Pth Cx.g Cx.hg c (fun i i' hii _ _ => letter_enum_strictMono Cx.Fr j hii) J`.
+
+Take `⟨_, hcomp⟩` from `hB2 p O Cx.S (Mj Cx.Fr j) r K (LLs Cx.Fr j).toLetters B (omL Cx.Fr j p) (segment_count_add_rank_le Cx j) (letter_weight_strictAnti Cx.Fr j p (one_lt_prime Cx)) (letter_weight_pos Cx.Fr j p (one_lt_prime Cx)) Pth c J`. Establish `hWH : IsWeightedHomogeneous (symWt (r` using `r) (K := K) (LLs Cx.Fr j).toLetters (omL Cx.Fr j p)) (plTanCol O Pth.mu c J) (oc (omL Cx.Fr j p) Pth.mu c) := by`. Rewrite using `[← hcomp]`. Conclude with `weightedHomogeneousComponent_isWeightedHomogeneous _ _`. Establish `htail' : InWj Cx.S.w (liftSubst p n' O Cx.S.w r (LLs Cx.Fr j) Cx.g (KKc p n' (O` using `O) (LLs Cx.Fr j) Cx.g (Cx.Fr.fr j (r - 1)) Pth.mu c J) - C (algebraMap O (KK O) Cx.S.w ^ oc (omL Cx.Fr j p) Pth.mu c) * powSubst p (LLs Cx.Fr j) (Cx.Fr.fr j (r - 1)) (plTanCol O Pth.mu c J)) (oc (omL Cx.Fr j p) Pth.mu c + 1) := htail`.
+
+Establish `hle' : oc (omL Cx.Fr j p) Pth.mu c ≤ 2 * p ^ (Cx.Fr.fr j (r - 1) - eL Cx.Fr j 0).toNat` using `hle`. Establish `hord' : ∀ g' : Matrix (Fin (r + K)) (Fin (r + K)) (WF p n'), IsGLW g' → InWj Cx.S.w (liftSubst p n' O Cx.S.w r (LLs Cx.Fr j) g' (KKc p n' (O` using `O) (LLs Cx.Fr j) Cx.g (Cx.Fr.fr j (r - 1)) Pth.mu c J)) (oc (omL Cx.Fr j p) Pth.mu c) := fun g' hg' => hord g' hg'`. Establish `hka0 : keyLeadingPart Cx j Pth.mu c J = rename (rho Cx.Fr j (r + K)) (C (algebraMap O (KK O) Cx.S.w ^ oc (omL Cx.Fr j p) Pth.mu c) * powSubst p (LLs Cx.Fr j) (Cx.Fr.fr j (r - 1)) (plTanCol O Pth.mu c J))`. Unfold `keyLeadingPart`. Rewrite using `[map_mul (rename (rho Cx.Fr j (r + K))), rename_C, segment_substitution_eq_rename, map_pow]`.
+
+Use `isKeyProduct_of_isKey Cx.S.w Cx.Fr Cx.Q Cx.g (ka := rename (rho Cx.Fr j (r + K)) (KKc p n' (O := O) (LLs Cx.Fr j) Cx.g (Cx.Fr.fr j (r - 1)) Pth.mu c J)) ⟨?_, ?_, ?_, ?_, ?_, ?_⟩ (rename_supported_tops Cx.Fr j _) ?_` and prove the remaining obligations. Conclude with `(inA_iff_inWj0 (w := Cx.S.w) _).2 (depth_filtration_rename _ ((inA_iff_inWj0 (w := Cx.S.w) _).1 hA))`. Establish `h1` using `Cx.hG j`. Unfold `zF at h1`. Establish `h2` using `letter_enum_lower_bound Cx.Fr j 0`.
+
+Establish `h3 : (Cx.Fr.fr j (r - 1) - eL Cx.Fr j 0).toNat ≤ Cx.G'` using `by omega`. Establish `h4 : p ^ (Cx.Fr.fr j (r - 1) - eL Cx.Fr j 0).toNat ≤ p ^ Cx.G'` using `Nat.pow_le_pow_right (by have := one_lt_prime Cx; omega) h3`. Unfold `Ctx.Q`. Use linear arithmetic over natural numbers and integers. Conclude with `leading_part_normal_degree r _ _ _ (segment_substitution_weighted_homog Cx.Fr j p K O hn _ _ hWH)`.
+
+Establish `h1` using `inWj_mul (inWj_Cpow (σ := TV n' (r + K)) (w := Cx.S.w) (oc (omL Cx.Fr j p) Pth.mu c)) (inWj_map (w := Cx.S.w) (phSeg O K p Cx.Fr j (plnm Cx.Fr j O K (plTanCol O Pth.mu c J))))`. Rewrite `h1` using `[add_zero]`. Conclude with `h1`. Rewrite using `[hka0, substitution_rename_lift Cx.Fr j Cx.S.w hn, ← map_sub]`. Conclude with `depth_filtration_rename _ htail'`.
+
+Introduce `g' hg' show InWj Cx.S.w (subst p n' O Cx.S.w n' r g' _) _`. Rewrite using `[substitution_rename_lift Cx.Fr j Cx.S.w hn]`. Conclude with `depth_filtration_rename _ (hord' g' hg')`. Rewrite using `[hka0]`. Conclude with `rename_supported_tops Cx.Fr j _`.
+-/
 theorem key_column_leading_bound (D : Formalism.BasicNotions.D7) (hB2 : admB2 D) (hC1 : CoefficientValuationLemma D) (B : Fin (Mj Cx.Fr j) → ℕ)
     (Pth : PPath (r + K) (Mj Cx.Fr j) (LLs Cx.Fr j).toLetters B) (c : ℤ) (J : Finset (Fin (r + K))) :
     bc_KP Cx.S.w Cx.Fr Cx.Q Cx.g (keyLeadingPart Cx j Pth.mu c J) (oc (omL Cx.Fr j p) Pth.mu c) := by
@@ -336,6 +458,13 @@ theorem key_column_leading_bound (D : Formalism.BasicNotions.D7) (hB2 : admB2 D)
   · rw [hka0]
     exact rename_supported_tops Cx.Fr j _
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty, Finset.prod_empty, pow_zero, map_one, mul_one]`. Conclude with `isKeyProduct_one Cx.S.w Cx.Fr Cx.Q Cx.g`. Consider the case `insert c s hc ih`.
+
+Rewrite using `[Finset.sum_insert hc, Finset.prod_insert hc]`. Establish `e : C (algebraMap O (KK O) (Cx.S.w ^ (oc (omL Cx.Fr j p) Pth.mu c + ∑ c ∈ s, oc (omL Cx.Fr j p) Pth.mu c))) * MvPolynomial.map (algebraMap O (KK O)) (phSeg O K p Cx.Fr j (plnm Cx.Fr j O K (plTanCol O Pth.mu c (I c) * ∏ c ∈ s, plTanCol O Pth.mu c (I c)))) = keyLeadingPart Cx j Pth …`. Unfold `keyLeadingPart`. Rewrite using `[pow_add]`. Simplify using `only [map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `isKeyProduct_mul (key_column_leading_bound Cx j D hB2 hC1 B Pth c (I c)) ih`.
+-/
 theorem key_polynomial_leading_part (D : Formalism.BasicNotions.D7) (hB2 : admB2 D) (hC1 : CoefficientValuationLemma D) (B : Fin (Mj Cx.Fr j) → ℕ)
     (Pth : PPath (r + K) (Mj Cx.Fr j) (LLs Cx.Fr j).toLetters B) (I : ℤ → Finset (Fin (r + K))) (s : Finset ℤ) :
     bc_KP Cx.S.w Cx.Fr Cx.Q Cx.g
@@ -365,6 +494,19 @@ theorem key_polynomial_leading_part (D : Formalism.BasicNotions.D7) (hB2 : admB2
 
 end Main
 
+/- English proof (translation)
+Introduce `p n' r K _ _ _ _ O _ _ _ _ Cx j P hP`. Take `⟨B, Pth, nu, ka, I', I'', hmu, hI', hI'', rfl⟩` from `hP`. Establish `hn : Even n'` using `Cx.hH.2.2.2.2`. Take `⟨_, h3, _⟩` from `hB3 p O Cx.S (Mj Cx.Fr j) r K (LLs Cx.Fr j).toLetters B (omL Cx.Fr j p) (segment_count_add_rank_le Cx j) (letter_weight_strictAnti Cx.Fr j p (one_lt_prime Cx)) (letter_weight_pos Cx.Fr j p (one_lt_prime Cx)) {(nu, ka)} (by`. Introduce `q hq`.
+
+Rewrite `hq` using `[Set.mem_singleton_iff]`. Substitute `hq` using the available equality. Conclude with `⟨Pth, hmu⟩)`. Take `⟨I, _, hI⟩` from `h3 (nu, ka) (Set.mem_singleton _) I' I'' hI' hI''`. Establish `hI2 : weightedHomogeneousComponent (symWt (r` using `r) (K := K) (LLs Cx.Fr j).toLetters (omL Cx.Fr j p)) (∑ c ∈ colRange Pth.mu, oc (omL Cx.Fr j p) Pth.mu c) (Psi O Pth.mu I) = PsiPl O nu I' * PsiTan O ka I'' := by`.
+
+Rewrite using `[hmu]`. Conclude with `hI`. Establish `hb2` using `fun c : ℤ => hB2 p O Cx.S (Mj Cx.Fr j) r K (LLs Cx.Fr j).toLetters B (omL Cx.Fr j p) (segment_count_add_rank_le Cx j) (letter_weight_strictAnti Cx.Fr j p (one_lt_prime Cx)) (letter_weight_pos Cx.Fr j p (one_lt_prime Cx)) Pth c (I c)`. Establish `hprod` using `(weighted_component_prod_lowest (symWt (r := r) (K := K) (LLs Cx.Fr j).toLetters (omL Cx.Fr j p)) (colRange Pth.mu) (fun c => Kcol O Pth.mu c (Mj Cx.Fr j) (I c)) (fun c => oc (omL Cx.Fr j p) Pth.mu c) (fun c _ => (hb2 c).1)).2`. Establish `hPsi : PsiPl O nu I' * PsiTan O ka I'' = ∏ c ∈ colRange Pth.mu, plTanCol O Pth.mu c (I c)`.
+
+Rewrite using `[← hI2]`. Unfold `Psi`. Rewrite using `[hprod]`. Conclude with `Finset.prod_congr rfl fun c _ => (hb2 c).2`. Use `⟨∑ c ∈ colRange Pth.mu, oc (omL Cx.Fr j p) Pth.mu c, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hWH : IsWeightedHomogeneous (symWt (r` using `r) (K := K) (LLs Cx.Fr j).toLetters (omL Cx.Fr j p)) (PsiPl O nu I' * PsiTan O ka I'') (∑ c ∈ colRange Pth.mu, oc (omL Cx.Fr j p) Pth.mu c) := by`. Rewrite using `[← hI2]`. Conclude with `weightedHomogeneousComponent_isWeightedHomogeneous _ _`. Establish `h1` using `leading_part_normal_degree r _ (1 : KK O) _ (segment_substitution_weighted_homog Cx.Fr j p K O hn _ _ hWH)`. Rewrite `h1` using `[C_1, one_mul]`.
+
+Conclude with `h1`. Rewrite using `[hPsi]`. Conclude with `AddSubmonoid.subset_closure ⟨_, 1, key_polynomial_leading_part Cx j D hB2 hC1 B Pth I (colRange Pth.mu), bc_IT_one, (mul_one _).symm⟩`.
+-/
 theorem generator_path_homogeneous_holds (D : Formalism.BasicNotions.D7) (hB2 : Formalism.MainNotions.SourceCleaning.admB2 D) (hB3 : Formalism.MainNotions.SourceCleaning.admB3 D)
     (hC1 : Formalism.MainNotions.SourceCleaning.CoefficientValuationLemma D) : GeneratorImageIsSymbol := by
   intro p n' r K _ _ _ _ O _ _ _ _ Cx j P hP

@@ -30,6 +30,21 @@ section Points
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F] [Algebra (FractionRing R) F]
   {O : Type} [CommRing O] [StarRing O] [Module O D.X]
 
+/- English proof (translation)
+Use `letI := gtModule hG oa F`. Establish `hs : ∀ (c : O) (g : GtPtF D F), gtSmul hG oa c g = c • g` using `fun _ _ => rfl`. Establish `hι : ∀ (c : O) (y : D.X), iota hB F (c • y) = c • iota hB F y` using `iota_smul hG oa hB`. Establish `hp : (k : O) • p.g = iota hB F p.y` using `by rw [Nat.cast_smul_eq_nsmul]; exact qk_nsmul hB p`. Establish `e : u * N = 1 + k * -v` using `by linear_combination huv`.
+
+Use `⟨qkSmul hB hG oa (u * N) p, qkMk hB (star a • (u * N) • p.y) ((u * star a) • p.g) ?_, ?_, ?_, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[hι, hι, ← hp, ← Nat.cast_smul_eq_nsmul O, smul_smul, smul_smul, smul_smul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `(equiv_iff hB _ _).2 ⟨(-v) • p.y, ?_, ?_⟩` and prove the remaining obligations. Use `show (u * N) • p.y = p.y + k • (-v) • p.y`. Rewrite using `[e, add_smul, one_smul, mul_smul, Nat.cast_smul_eq_nsmul]`. Use `show (u * N) • p.g = p.g + iota hB F ((-v) • p.y)`. Rewrite using `[hι, ← hp, e, add_smul, one_smul, mul_comm, mul_smul]`.
+
+Use `(gtAct_iff_eq_gtSmul hG oa _ _ _).2 ?_ show (u * N) • p.g = a • (u * star a) • p.g` and prove the remaining obligations. Rewrite using `[smul_smul, ← haa]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Introduce `b hb`.
+
+Take `⟨z, hy, hg⟩` from `(equiv_iff hB _ _).1 hb`. Establish `hy' : b • p.y = (k : O) • z`. Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `hy.trans (zero_add _)`. Establish `hg' : b • p.g = iota hB F z` using `hg.trans (zero_add _)`.
+
+Use `(equiv_iff hB _ _).2 ⟨(u * star a) • z, ?_, ?_⟩` and prove the remaining obligations. Use `show b • star a • (u * N) • p.y = 0 + (k * N) • (u * star a) • z`. Rewrite using `[zero_add, smul_comm b, smul_comm b, hy', ← Nat.cast_smul_eq_nsmul O, smul_smul, smul_smul, smul_smul]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `show b • (u * star a) • p.g = 0 + iota hB F ((u * star a) • z)`. Rewrite using `[zero_add, smul_comm b, hg', hι]`.
+-/
 theorem exists_lift (hG : GlobalFnsSt) (hB : D.TauBimult) (oa : D.OAct O) (a : O) (N k : ℕ)
     (haa : a * star a = (N : O)) (u v : O) (huv : u * N + v * k = 1) (p : QkPt D F k) :
     ∃ (p' : QkPt D F k) (p₁ : QkPt D F (k * N)), QkPt.Equiv D F p p' ∧ GtAct oa a p₁.g p'.g ∧
@@ -69,6 +84,11 @@ theorem exists_lift (hG : GlobalFnsSt) (hB : D.TauBimult) (oa : D.OAct O) (a : O
     · show b • (u * star a) • p.g = 0 + iota hB F ((u * star a) • z)
       rw [zero_add, smul_comm b, hg', hι]
 
+/- English proof (translation)
+Establish `z : f (qkZero hB F k) = 1`. Establish `e : qkAdd hB (qkZero hB F k) (qkZero hB F k) = qkZero hB F k` using `qk_ext (add_zero _) (add_zero _)`. Use `h₂ _ _ _ (qkAdd_qkAdd hB (qkZero hB F k) (qkZero hB F k))` as an intermediate fact. Rewrite `this` using `[e]`. Conclude with `left_eq_mul.1 this`.
+
+Rewrite using `[← h₁, z, h₃ b p _ (qkAct_qkSmul hB hG oa b p), eq_comm]`.
+-/
 theorem killed_iff (hG : GlobalFnsSt) (hB : D.TauBimult) (oa : D.OAct O) {k : ℕ} {G : Type} [Group G]
     (f : QkPt D F k → G) (act : O → G → G) (h₁ : ∀ p p', f p = f p' ↔ QkPt.Equiv D F p p')
     (h₂ : ∀ p p' p'', QkAdd p p' p'' → f p'' = f p * f p')
@@ -87,6 +107,15 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
   {D : DegData V (maximalIdeal V)} {F : Type} [Field F] [Algebra (FractionRing V) F]
   {O : Type} [CommRing O] [StarRing O] [Module O D.toPre.X]
 
+/- English proof (translation)
+Establish `hkN : 1 ≤ k * N` using `Nat.mul_pos hk hN`. Take `⟨w', hw', h'⟩` from `phiRel_of_qkEquiv hL V D F k hk p p' he w hw`. Take `⟨w₁, hw₁, h₁⟩` from `ThetaPull.phiRel_pullAl hL V D F O oa w0 hw0 a N k hN hk haa p' p₁ hg hy w' hw'`. Take `⟨w₂, hw₂, h₂⟩` from `phi_mul hL V D F (k * N) hkN p₀ p₁ p₂ hy₂ hg₂ w₀ w₁ hw₀ hw₁`. Establish `hc : ∀ s t, PhiRel D.toPre F k p w s t → PhiRel D.toPre F (k * N) p₁ w₁ (π s) (π t)` using `fun s t h => h₁ s t _ _ ((h' s t).1 h) ((hπ' _ _).2 rfl) ((hπ' _ _).2 rfl)`.
+
+Use `⟨w₂, hw₂, ?_, fun s t t' h h₀ => h₂ _ _ _ (hc s t h) h₀⟩` and prove the remaining obligations. Take `⟨Φ, hΦ⟩` from `phiFun_of hL V _ D F k hk p w hw`. Take `⟨Φ₁, hΦ₁⟩` from `phiFun_of hL V _ D F (k * N) hkN p₁ w₁ hw₁`. Take `⟨M, hM, hU⟩` from `(ThetaFinOrd.finOrd_iff p w ζ Φ hΦ).1 hζ`. Establish `hn : ∀ (n : ℕ) (s : Fam D.toPre F k), ((ζ • Φ₁ : Module.End F (Fam D.toPre F (k * N))) ^ n) (π s) = π (((ζ • Φ : Module.End F (Fam D.toPre F k)) ^ n) s)`.
+
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro s`. Both sides reduce to the same expression. Consider the case `succ n ih`.
+
+Introduce `s`. Rewrite using `[pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ← ih, LinearMap.smul_apply, LinearMap.smul_apply, map_smul π, (hΦ₁ _ _).1 (hc s _ ((hΦ _ _).2 rfl))]`. Take `⟨c₁, c₂⟩` from `finOrd_criteria hL V D F (k * N) hkN`. Use `c₂ p₀ p₁ p₂ hy₂ hg₂ w₀ w₁ w₂ hw₀ hw₁ hw₂ h₂ ζ₀ ζ hζ₀ (c₁ p₁ w₁ hw₁ ζ Φ₁ hΦ₁ (π θ) M (fun h => hθ (hπ (h.trans (map_zero π).symm))) hM ?_)` and prove the remaining obligations. Conclude with `(hn M θ).trans (by rw [hU]; rfl)`.
+-/
 theorem exists_operator (hL : Laws) (oa : D.toPre.OAct O) (w0 : O) (hw0 : TraceFormTwistIso D.toPre oa w0) (a : O) (N k : ℕ)
     (hN : 1 ≤ N) (hk : 1 ≤ k) (haa : a * star a = (N : O))
     (π : Fam D.toPre F k →ₗ[F] Fam D.toPre F (k * N)) (hπ : Function.Injective π)
@@ -129,6 +158,21 @@ namespace GlobalTheory
 
 open ThetaGenerators TorusExt in
 
+/- English proof (translation)
+Introduce `hL E _ _ _ H V _ _ _ t P hT`. Use `letI := H.starRing`. Introduce `a a' N N' hN hN' hco haa _ F _ _ _ θ' s θ₂ s₂ t₀ h hθ hθ₂ hs₂ m c p x w ζ tt ⟨hx, hxa, hw, htt, hs⟩ p₀ x₀ w₀ ζ₀ hx₀ hxa₀ hw₀ hζ₀ hf₀ ht₀ hh`. Establish `hG` using `hL.globalFns`. Establish `hB` using `P.D.tau_bimult`.
+
+Establish `hk : 1 ≤ 1 * N'` using `by omega`. Establish `hkN : 1 ≤ 1 * N' * N` using `Nat.mul_pos hk hN`. Choose the witnesses or unpack the hypotheses as in `⟨u, v, huv⟩ : IsCoprime (N : 𝓞 E) ((1 * N' : ℕ) : 𝓞 E) := by`. Rewrite using `[_root_.one_mul]`. Conclude with `hco.cast`.
+
+Take `⟨π, hπ, hπ'⟩` from `PullLin.exists_pull_linearMap hL V P.D F (𝓞 E) P.oD H.w0 P.w0 a N (1 * N') hN hk haa`. Take `rfl` from `(hπ' _ _).1 hθ₂`. Take `rfl` from `(hπ' _ _).1 hs₂`. Take `⟨f, f₀, -, f₁, f₂, f₃, -⟩` from `hT F (1 * N') hk`. Take `⟨g, g₀, -, g₁, g₂, g₃, -⟩` from `hT F (1 * N' * N) hkN`.
+
+Take `⟨Φ₀, hΦ₀⟩` from `phiFun_of hL V _ P.D F (1 * N' * N) hkN p₀ w₀ hw₀`. Use `choose p' p₁ he hg hy hb using fun i => exists_lift hG hB P.oD a N (1 * N') haa u v huv (p i)`. Use `choose w₂ hw₂ hf₂ hΦ₂ using fun i => exists_operator hL P.oD H.w0 P.w0 a N (1 * N') hN hk haa π hπ hπ' θ' hθ (p i) (p' i) p₀ (p₁ i) (qkAdd hB p₀ (p₁ i)) (he i) (hg i) (hy i) rfl ((isAdd_iff_eq _ _ _).2 rfl) (w i) (hw i).1 w₀ hw₀ (ζ i) ζ₀ (hw i).2.2 hf₀`. Use `choose t' ht' htt' using htt`. Use `⟨fun i => qkAdd hB p₀ (p₁ i), fun i => g (qkAdd hB p₀ (p₁ i)), w₂, fun i => ζ₀ * ζ i, fun i => (ζ₀ * ζ i) • Φ₀ (π (t' i)), fun i => (g₀ _ _).2 rfl, fun i => ?_, fun i => ⟨hw₂ i, mul_ne_zero hζ₀ (hw i).2.1, hf₂ i⟩, fun i => ⟨_, hΦ₂ i _ _ _ (ht' i) ((hΦ₀ _ _).2 rfl), (DVR.isSmul_if …` and prove the remaining obligations.
+
+Establish `k₁ : g (p₁ i) ≫ P.oA.act (star a') = 1` using `(killed_iff hG hB P.oD g (fun b y => y ≫ P.oA.act b) g₁ g₂ g₃ (star a') (p₁ i)).2 (hb i _ ((killed_iff hG hB P.oD f (fun b y => y ≫ P.oA.act b) f₁ f₂ f₃ (star a') (p i)).1 ((f₀ _ _).1 (hx i) ▸ hxa i)))`. Use `P.oA.hom (star (a' * a))` as an intermediate fact. Use `P.oA.hom (star a')` as an intermediate fact. Use `P.oA.hom (star a)` as an intermediate fact. Establish `e₀ : x₀ ≫ P.oA.act (star (a' * a)) = 1`.
+
+Rewrite using `[star_mul', P.oA.map_mul, ← Category.assoc, hxa₀, MonObj.one_comp]`. Establish `e₁ : g (p₁ i) ≫ P.oA.act (star (a' * a)) = 1`. Rewrite using `[star_mul, P.oA.map_mul, ← Category.assoc, k₁, MonObj.one_comp]`. Use `show g (qkAdd hB p₀ (p₁ i)) ≫ P.oA.act (star (a' * a)) = 1`. Rewrite using `[g₂ _ _ _ (qkAdd_qkAdd hB p₀ (p₁ i)), ← (g₀ _ _).1 hx₀, MonObj.mul_comp, e₀, e₁, _root_.mul_one]`.
+
+Rewrite using `[(DVR.isSmul_iff _ _ _).1 hh, (hΦ₀ _ _).1 ht₀, hs, map_sum, map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[(DVR.isSmul_iff _ _ _).1 (htt' i), map_smul, map_smul, map_smul, map_smul, smul_comm, smul_smul ζ₀]`.
+-/
 theorem operator_on_pullback_eq_sum : Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (t : SAB H (Sp V)) (P : PELUnif (maximalIdeal V) t), P.TorsionIso → letI := H.starRing; ∀ (a a' : 𝓞 E) (N N' : ℕ), 1 ≤ N → 1 ≤ N' → Nat.Coprime N N' → a * star a = (N : 𝓞 E) → a' * star a' = (N' : 𝓞 E) → ∀ (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing V) F] (θ' s : Fam P.D.toPre F (1 * N')) (θ₂ s₂ t₀ h : Fam P.D.toPre F (1 * N' * N)), θ' ≠ 0 → PullAl P.D F P.oD a (1 * N') N θ' θ₂ → PullAl P.D F P.oD a (1 * N') N s s₂ → ∀ (m : ℕ) (c : Fin m → F) (p : Fin m → QkPt P.D.toPre F (1 * N')) (x : Fin m → (TFK (R := V) F ⟶ P.A.A)) (w : ∀ i, LB.Gen (LB.LinComb P.D.toPre.P.L (DegPre.lineφ P.D.toPre F (p i).g.b) (DegPre.lineε (1 * N')))) (ζ : Fin m → F) (tt : Fin m → Fam P.D.toPre F (1 * N')), ((∀ i, P.ToA F (1 * N') (p i) (x i)) ∧ (∀ i, x i ≫ P.oA.act (star (a')) = 1) ∧ (∀ i, (w i).IsGen ∧ ζ i ≠ 0 ∧ FinOrd P.D F (1 * N') (p i) (w i) (ζ i)) ∧ (∀ i, ∃ t' : Fam P.D.toPre F (1 * N'), PhiRel P.D.toPre F (1 * N') (p i) (w i) θ' t' ∧ Fam.IsSmul P.D.toPre F (ζ i) t' (tt i)) ∧ s = ∑ i, c i • tt i) → ∀ (p₀ : QkPt P.D.toPre F (1 * N' * N)) (x₀ : TFK (R := V) F ⟶ P.A.A) (w₀ : LB.Gen (LB.LinComb P.D.toPre.P.L (DegPre.lineφ P.D.toPre F p₀.g.b) (DegPre.lineε (1 * N' * N)))) (ζ₀ : F), P.ToA F (1 * N' * N) p₀ x₀ → x₀ ≫ P.oA.act (star a) = 1 → w₀.IsGen → ζ₀ ≠ 0 → FinOrd P.D F (1 * N' * N) p₀ w₀ ζ₀ → PhiRel P.D.toPre F (1 * N' * N) p₀ w₀ s₂ t₀ → Fam.IsSmul P.D.toPre F ζ₀ t₀ h → ∃ (p₂ : Fin m → QkPt P.D.toPre F (1 * N' * N)) (x₂ : Fin m → (TFK (R := V) F ⟶ P.A.A)) (w₂ : ∀ i, LB.Gen (LB.LinComb P.D.toPre.P.L (DegPre.lineφ P.D.toPre F (p₂ i).g.b) (DegPre.lineε (1 * N' * N)))) (ζ₂ : Fin m → F) (t₂ : Fin m → Fam P.D.toPre F (1 * N' * N)), (∀ i, P.ToA F (1 * N' * N) (p₂ i) (x₂ i)) ∧ (∀ i, x₂ i ≫ P.oA.act (star (a' * a)) = 1) ∧ (∀ i, (w₂ i).IsGen ∧ ζ₂ i ≠ 0 ∧ FinOrd P.D F (1 * N' * N) (p₂ i) (w₂ i) (ζ₂ i)) ∧ (∀ i, ∃ t' : Fam P.D.toPre F (1 * N' * N), PhiRel P.D.toPre F (1 * N' * N) (p₂ i) (w₂ i) θ₂ t' ∧ Fam.IsSmul P.D.toPre F (ζ₂ i) t' (t₂ i)) ∧ h = ∑ i, c i • t₂ i := by
   intro hL E _ _ _ H V _ _ _ t P hT
   letI := H.starRing

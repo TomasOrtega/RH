@@ -10,16 +10,32 @@ namespace ReciprocityTheory.ChartRestriction.DS.Lap.S0.Dec
 
 open Formalism.QuantumDeterminants
 
+/- English proof (translation)
+The claim follows from `DecA.one_le_gN' hg`.
+-/
 theorem one_le_gN (k r : ℕ) (g : Mat k r) (hg : g ∈ UH (Hpk k r)) : 1 ≤ Formalism.FourierDecayAlt.B.gN g :=
   DecA.one_le_gN' hg
 
+/- English proof (translation)
+The claim follows from `DecA.gN_inv' hg`.
+-/
 theorem gN_inv (k r : ℕ) (g : Mat k r) (hg : g ∈ UH (Hpk k r)) :
     Formalism.FourierDecayAlt.B.gN g⁻¹ = Formalism.FourierDecayAlt.B.gN g :=
   DecA.gN_inv' hg
 
+/- English proof (translation)
+The claim follows from `DecA.gN_mul_le' a b`.
+-/
 theorem gN_mul_le (k r : ℕ) (a b : Mat k r) : Formalism.FourierDecayAlt.B.gN (a * b) ≤ Formalism.FourierDecayAlt.B.gN a * Formalism.FourierDecayAlt.B.gN b :=
   DecA.gN_mul_le' a b
 
+/- English proof (translation)
+Establish `hA` using `DecA.one_le_gN' hg`. Establish `hB` using `DecA.one_le_gN' (DecA.mul_mem hy hg)`. Establish `hY` using `DecA.one_le_gN' hy`. Establish `hYBA` using `DecA.gN_le_mul (y := y) hg`. Establish `hAh : 0 ≤ Formalism.FourierDecayAlt.B.gN g ^ (-(a / 2))` using `Real.rpow_nonneg (by linarith) _`.
+
+Establish `hBh : 0 ≤ Formalism.FourierDecayAlt.B.gN (y * g) ^ (-(a / 2))` using `Real.rpow_nonneg (by linarith) _`. Establish `hYq : 0 ≤ Formalism.FourierDecayAlt.B.gN y ^ (-(a / 4))` using `Real.rpow_nonneg (by linarith) _`. Break down `le_total (Formalism.FourierDecayAlt.B.gN g) (Formalism.FourierDecayAlt.B.gN (y * g)) with h | h` into its components or cases. Combine the equalities or inequalities in the displayed calculation. Use `DecA.pb_real a (Formalism.FourierDecayAlt.B.gN (y * g)) (Formalism.FourierDecayAlt.B.gN g) (Formalism.FourierDecayAlt.B.gN y) ha hB hA (by linarith) (by rw [mul_comm]; exact hYBA) h` as an intermediate fact.
+
+Rewrite `this` using `[mul_comm]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem pair_bound (k r : ℕ) (a : ℝ) (ha : 0 ≤ a) (y g : Mat k r) (hy : y ∈ UH (Hpk k r))
     (hg : g ∈ UH (Hpk k r)) :
     Formalism.FourierDecayAlt.B.gN g ^ (-a) * Formalism.FourierDecayAlt.B.gN (y * g) ^ (-a) ≤
@@ -41,20 +57,38 @@ theorem pair_bound (k r : ℕ) (a : ℝ) (ha : 0 ≤ a) (y g : Mat k r) (hy : y 
     calc _ ≤ Formalism.FourierDecayAlt.B.gN y ^ (-(a / 4)) * Formalism.FourierDecayAlt.B.gN g ^ (-(a / 2)) := this
       _ ≤ _ := mul_le_mul_of_nonneg_left (le_add_of_nonneg_right hBh) hYq
 
+/- English proof (translation)
+The claim follows from `continuous_matrix fun i j => by simp only [Matrix.of_apply]; exact (continuous_apply j).comp (continuous_apply i)`.
+-/
 theorem of_cont (k r : ℕ) : Continuous (fun g : Mt k r => (Matrix.of g : Mat k r)) :=
   continuous_matrix fun i j => by
     simp only [Matrix.of_apply]; exact (continuous_apply j).comp (continuous_apply i)
 
+/- English proof (translation)
+Unfold `Formalism.FourierDecayAlt.B.gN`. Conclude with `Real.continuous_sqrt.comp (continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ => Complex.continuous_normSq.comp (continuous_id.matrix_elem i j))`.
+-/
 theorem gN_cont (k r : ℕ) : Continuous (fun M : Mat k r => Formalism.FourierDecayAlt.B.gN M) := by
   unfold Formalism.FourierDecayAlt.B.gN
   exact Real.continuous_sqrt.comp (continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ =>
     Complex.continuous_normSq.comp (continuous_id.matrix_elem i j))
 
+/- English proof (translation)
+Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [Formalism.QuantumDeterminants.lmulM, Matrix.mul_apply, Matrix.of_apply]`. Conclude with `continuous_finsetSum _ fun l _ => continuous_const.mul ((continuous_apply j).comp (continuous_apply l))`.
+-/
 theorem lmulM_cont {k r : ℕ} (s : Mat k r) : Continuous (Formalism.QuantumDeterminants.lmulM (k := k) (r := r) s) := by
   refine continuous_pi fun i => continuous_pi fun j => ?_
   simp only [Formalism.QuantumDeterminants.lmulM, Matrix.mul_apply, Matrix.of_apply]
   exact continuous_finsetSum _ fun l _ => continuous_const.mul ((continuous_apply j).comp (continuous_apply l))
 
+/- English proof (translation)
+Establish `hGae : ∀ᵐ g ∂μG, Matrix.of g ∈ UH (Hpk k r)` using `ae_iff.2 hG.2.2.1`. Establish `hm : Measurable (fun g : Mt k r => Formalism.FourierDecayAlt.B.gN (Matrix.of g) ^ (-(a / 2)))` using `((gN_cont k r).comp (of_cont k r)).measurable.pow_const _`. Establish `hI0 : 0 ≤ ∫ g : Mt k r, Formalism.FourierDecayAlt.B.gN (Matrix.of g) ^ (-(a / 2)) ∂μG` using `integral_nonneg fun g => Real.rpow_nonneg (DecA.gN_nonneg _) _`. Establish `h1 : ∫⁻ g : Mt k r, ENNReal.ofReal (Formalism.FourierDecayAlt.B.gN (Matrix.of g) ^ (-(a / 2))) ∂μG = ENNReal.ofReal (∫ g : Mt k r, Formalism.FourierDecayAlt.B.gN (Matrix.of g) ^ (-(a / 2)) ∂μG)` using `(ofReal_integral_eq_lintegral_ofReal hI (Filter.Eventually.of_forall fun g => Real.rpow_nonneg (DecA.gN_nonneg _) _)).symm`. Establish `h2 : ∫⁻ g : Mt k r, ENNReal.ofReal (Formalism.FourierDecayAlt.B.gN (y * Matrix.of g) ^ (-(a / 2))) ∂μG = ENNReal.ofReal (∫ g : Mt k r, Formalism.FourierDecayAlt.B.gN (Matrix.of g) ^ (-(a / 2)) ∂μG)`.
+
+Rewrite using `[← h1]`. Use `conv_rhs => rw [← hG.2.2.2 y hy]`. Rewrite using `[lintegral_map hm.ennreal_ofReal (lmulM_cont y).measurable]`. Both sides reduce to the same expression. Establish `hY0 : 0 ≤ Formalism.FourierDecayAlt.B.gN y ^ (-(a / 4))` using `Real.rpow_nonneg (DecA.gN_nonneg _) _`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono_ae (hGae.mono fun g hg => ?_)` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_add (Real.rpow_nonneg (DecA.gN_nonneg _) _) (Real.rpow_nonneg (DecA.gN_nonneg _) _), ← ENNReal.ofReal_mul hY0]`. Conclude with `ENNReal.ofReal_le_ofReal (pair_bound k r a ha y _ hy hg)`. Use `_ = ENNReal.ofReal (Formalism.FourierDecayAlt.B.gN y ^ (-(a / 4))) * (ENNReal.ofReal (∫ g : Mt k r, Formalism.FourierDecayAlt.B.gN (Matrix.of g) ^ (-(a / 2)) ∂μG) + ENNReal.ofReal (∫ g : Mt k r, Formalism.FourierDecayAlt.B.gN (Matrix.of g) ^ (-(a / 2)) ∂μG)) := by`.
+
+Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, lintegral_add_left hm.ennreal_ofReal, h1, h2]`. Use `_ = _ := by`. Rewrite using `[← ENNReal.ofReal_add hI0 hI0, ← ENNReal.ofReal_mul hY0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem conv_bound (k r : ℕ) (μG : Measure (Mt k r)) (hG : Formalism.MainNotions.S.IsHaarOn (UH (Hpk k r)) μG)
     (a : ℝ) (ha : 0 ≤ a)
     (hI : Integrable (fun g : Mt k r => Formalism.FourierDecayAlt.B.gN (Matrix.of g) ^ (-(a / 2))) μG)
@@ -92,6 +126,9 @@ theorem conv_bound (k r : ℕ) (μG : Measure (Mt k r)) (hG : Formalism.MainNoti
     _ = _ := by
         rw [← ENNReal.ofReal_add hI0 hI0, ← ENNReal.ofReal_mul hY0]; congr 1; ring
 
+/- English proof (translation)
+Take `⟨hU, hfix, hz⟩` from `hh`. Establish `hinv : h⁻¹ * h = 1` using `DecA.inv_mul hU`. Establish `key : ∀ v, h *ᵥ v = v → h⁻¹ *ᵥ v = v` using `fun v hv => by`. Combine the equalities or inequalities in the displayed calculation. Conclude with `⟨DecA.inv_mem hU, fun a => ⟨key _ (hfix a).1, key _ (hfix a).2⟩, key _ hz⟩`.
+-/
 theorem UW_inv_mem {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} {h : Mat k r} (hh : h ∈ UWset k r z) :
     h⁻¹ ∈ UWset k r z := by
   obtain ⟨hU, hfix, hz⟩ := hh
@@ -101,10 +138,16 @@ theorem UW_inv_mem {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} {h : Mat k r} (
       _ = v := by rw [Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec]
   exact ⟨DecA.inv_mem hU, fun a => ⟨key _ (hfix a).1, key _ (hfix a).2⟩, key _ hz⟩
 
+/- English proof (translation)
+The claim follows from `isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id) continuous_const`.
+-/
 theorem UH_closed (k r : ℕ) : IsClosed (UH (Hpk k r) : Set (Mat k r)) :=
   isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id)
     continuous_const
 
+/- English proof (translation)
+Establish `e : UWset k r z = UH (Hpk k r) ∩ ((⋂ a : Fin r, ({g : Mat k r | g *ᵥ bvec (eI k r a) = bvec (eI k r a)} ∩ {g | g *ᵥ bvec (esI k r a) = bvec (esI k r a)})) ∩ {g | g *ᵥ z = z})`. Use extensionality with `g`. Simplify using `only [UWset, Set.mem_ofPred_eq, Set.mem_inter_iff, Set.mem_iInter]`. Rewrite using `[e]`. Conclude with `(UH_closed k r).inter ((isClosed_iInter fun a => (isClosed_eq (continuous_id.matrix_mulVec continuous_const) continuous_const).inter (isClosed_eq (continuous_id.matrix_mulVec continuous_const) continuous_const)).inter (isClosed_eq (continuous_id.matrix_mulVec continuous_const) co …`.
+-/
 theorem UW_closed (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) : IsClosed (UWset k r z) := by
   have e : UWset k r z = UH (Hpk k r) ∩ ((⋂ a : Fin r, ({g : Mat k r | g *ᵥ bvec (eI k r a) = bvec (eI k r a)} ∩
       {g | g *ᵥ bvec (esI k r a) = bvec (esI k r a)})) ∩ {g | g *ᵥ z = z}) := by
@@ -115,6 +158,13 @@ theorem UW_closed (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) : IsClosed (UWse
       (isClosed_eq (continuous_id.matrix_mulVec continuous_const) continuous_const)).inter
     (isClosed_eq (continuous_id.matrix_mulVec continuous_const) continuous_const))
 
+/- English proof (translation)
+Establish `hell : ∀ a : Fin r, Continuous (fun M : Mat k r => Formalism.MainNotions.S.ellA k r z M a)`. Introduce `a`. Distinguish the cases in `h : a.val + 1 < r`. Establish `e : (fun M : Mat k r => Formalism.MainNotions.S.ellA k r z M a) = fun M : Mat k r => M (eI k r a) (eI k r ⟨a.val + 1, h⟩)`. Use function extensionality and compare the values at `fun M => by unfold Formalism.MainNotions.S.ellA; rw [dif_pos h]`.
+
+Rewrite using `[e]`. Conclude with `continuous_id.matrix_elem _ _`. Establish `e : (fun M : Mat k r => Formalism.MainNotions.S.ellA k r z M a) = fun M : Mat k r => ∑ j, M (eI k r a) j * z j`. Use function extensionality and compare the values at `fun M => by unfold Formalism.MainNotions.S.ellA; rw [dif_neg h]; rfl`. Rewrite using `[e]`.
+
+Conclude with `continuous_finsetSum _ fun j _ => (continuous_id.matrix_elem _ _).mul continuous_const`. Unfold `Formalism.MainNotions.S.psiGen`. Conclude with `Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp (Complex.continuous_re.comp (continuous_finsetSum _ fun a _ => continuous_const.mul (hell a)))))`.
+-/
 theorem psiGen_cont (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) :
     Continuous (fun M : Mat k r => Formalism.MainNotions.S.psiGen k r z c M) := by
   have hell : ∀ a : Fin r, Continuous (fun M : Mat k r => Formalism.MainNotions.S.ellA k r z M a) := by
@@ -131,6 +181,9 @@ theorem psiGen_cont (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r →
   exact Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp
     (Complex.continuous_re.comp (continuous_finsetSum _ fun a _ => continuous_const.mul (hell a)))))
 
+/- English proof (translation)
+Use `mul_le_mul h1 h2 hM2 (hM1.trans h1)` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem product_bound_of_factor_bounds (D M1 M2 X P Q C : ℝ) (hD : 0 ≤ D) (hM1 : 0 ≤ M1) (hM2 : 0 ≤ M2) (hX : 0 ≤ X)
     (h1 : M1 ≤ C * P) (h2 : M2 ≤ C * Q) : D * M1 * (M2 * X) ≤ D * C ^ 2 * X * (P * Q) := by
   have := mul_le_mul h1 h2 hM2 (hM1.trans h1)
@@ -142,6 +195,33 @@ def Sg3 (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (x₀ x : Mat k r) : Set (
   {q | Matrix.of q.1 ∈ UH (Hpk k r) ∧ (Matrix.of q.2.1 ∈ UWset k r z ∧
     x₀⁻¹ * (Matrix.of q.2.1 * Matrix.of q.2.2 * x) * Matrix.of q.1 ∈ UH (Hpk k r))}
 
+/- English proof (translation)
+Establish `: SigmaFinite μG` using `hG.1`. Establish `: SigmaFinite μW` using `hW.1`. Establish `: SigmaFinite μN` using `hN.1`. Establish `hbG : 0 ≤ bG k r` using `by unfold bG nS q0S; positivity`. Establish `hm1` using `le_max_left (bG k r) (bS k r)`.
+
+Establish `hm2` using `le_max_right (bG k r) (bS k r)`. Establish `ha0 : 0 ≤ a` using `by linarith`. Establish `hI` using `hIG k r μG hG (a / 2) (by linarith)`. Establish `hS` using `hIS k r z μW μN hz hT hW hN x₀ hx₀ x hx (a / 4) (by linarith)`. Establish `hGae : ∀ᵐ g ∂μG, Matrix.of g ∈ UH (Hpk k r)` using `ae_iff.2 hG.2.2.1`.
+
+Establish `hWae : ∀ᵐ h ∂μW, Matrix.of h ∈ UWset k r z` using `ae_iff.2 hW.2.2.1`. Establish `hNae : ∀ᵐ m ∂μN, Matrix.of m ∈ Nset k r` using `ae_iff.2 hN.2.2.1`. Establish `hPae : ∀ᵐ p ∂(μW.prod μN), Matrix.of p.1 ∈ UWset k r z ∧ Matrix.of p.2 ∈ Nset k r` using `(Measure.quasiMeasurePreserving_fst.ae hWae).and (Measure.quasiMeasurePreserving_snd.ae hNae)`. Establish `hQae : ∀ᵐ q ∂(μG.prod (μW.prod μN)), Matrix.of q.1 ∈ UH (Hpk k r) ∧ (Matrix.of q.2.1 ∈ UWset k r z ∧ Matrix.of q.2.2 ∈ Nset k r)` using `(Measure.quasiMeasurePreserving_fst.ae hGae).and (Measure.quasiMeasurePreserving_snd.ae hPae)`. Establish `hYmem : ∀ p : Mt k r × Mt k r, Matrix.of p.1 ∈ UWset k r z ∧ Matrix.of p.2 ∈ Nset k r → x₀⁻¹ * (Matrix.of p.1 * Matrix.of p.2 * x) ∈ UH (Hpk k r)` using `fun p hp => DecA.mul_mem (DecA.inv_mem hx₀) (DecA.mul_mem (DecA.mul_mem hp.1.1 hp.2.1) hx)`.
+
+Establish `hof` using `of_cont k r`. Establish `hof1 : Continuous (fun q : Mt k r × (Mt k r × Mt k r) => Matrix.of q.1)` using `hof.comp continuous_fst`. Establish `hof21 : Continuous (fun q : Mt k r × (Mt k r × Mt k r) => Matrix.of q.2.1)` using `hof.comp (continuous_fst.comp continuous_snd)`. Establish `hof22 : Continuous (fun q : Mt k r × (Mt k r × Mt k r) => Matrix.of q.2.2)` using `hof.comp (continuous_snd.comp continuous_snd)`. Establish `hYc : Continuous (fun q : Mt k r × (Mt k r × Mt k r) => x₀⁻¹ * (Matrix.of q.2.1 * Matrix.of q.2.2 * x) * Matrix.of q.1)` using `(continuous_const.matrix_mul ((hof21.matrix_mul hof22).matrix_mul continuous_const)).matrix_mul hof1`.
+
+Establish `hΦm : Measurable (fun q : Mt k r × (Mt k r × Mt k r) => Formalism.FourierDecayAlt.B.gN (Matrix.of q.1) ^ (-a) * Formalism.FourierDecayAlt.B.gN (x₀⁻¹ * (Matrix.of q.2.1 * Matrix.of q.2.2 * x) * Matrix.of q.1) ^ (-a))` using `(((gN_cont k r).comp hof1).measurable.pow_const _).mul (((gN_cont k r).comp hYc).measurable.pow_const _)`. Establish `hΦ : Integrable (fun q : Mt k r × (Mt k r × Mt k r) => Formalism.FourierDecayAlt.B.gN (Matrix.of q.1) ^ (-a) * Formalism.FourierDecayAlt.B.gN (x₀⁻¹ * (Matrix.of q.2.1 * Matrix.of q.2.2 * x) * Matrix.of q.1) ^ (-a)) (μG.prod (μW.prod μN))`. Use `⟨hΦm.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_ofReal (Filter.Eventually.of_forall fun q => mul_nonneg (Real.rpow_nonneg (DecA.gN_nonneg _) _) (Real.rpow_nonneg (DecA.gN_nonneg _) _)), lintegral_prod_symm' _ hΦm.ennreal_ofReal]`. Establish `hI0 : 0 ≤ 2 * ∫ g : Mt k r, Formalism.FourierDecayAlt.B.gN (Matrix.of g) ^ (-(a / 2)) ∂μG` using `mul_nonneg zero_le_two (integral_nonneg fun g => Real.rpow_nonneg (DecA.gN_nonneg _) _)`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono_ae (hPae.mono fun p hp => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← ENNReal.ofReal_mul hI0]`. Conclude with `conv_bound k r μG hG a ha0 hI _ (hYmem p hp)`.
+
+Use `_ = ENNReal.ofReal (2 * ∫ g : Mt k r, Formalism.FourierDecayAlt.B.gN (Matrix.of g) ^ (-(a / 2)) ∂μG) * ∫⁻ p : Mt k r × Mt k r, ENNReal.ofReal (Formalism.FourierDecayAlt.B.gN (x₀⁻¹ * (Matrix.of p.1 * Matrix.of p.2 * x)) ^ (-(a / 4))) ∂(μW.prod μN) := lintegral_const_mul' _ _ ENNRe …`. Use `_ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top hS.lintegral_lt_top`. Establish `hScl : IsClosed (Sg3 k r z x₀ x)` using `((UH_closed k r).preimage hof1).inter (((UW_closed k r z).preimage hof21).inter ((UH_closed k r).preimage hYc))`. Establish `hSae : ∀ᵐ q ∂(μG.prod (μW.prod μN)), q ∈ Sg3 k r z x₀ x` using `by filter_upwards [hQae] with q hq`. Conclude with `⟨hq.1, hq.2.1, DecA.mul_mem (hYmem q.2 hq.2) hq.1⟩`.
+
+Establish `hassoc : ∀ q : Mt k r × (Mt k r × Mt k r), x₀⁻¹ * (Matrix.of q.2.1 * Matrix.of q.2.2 * (x * Matrix.of q.1)) = x₀⁻¹ * (Matrix.of q.2.1 * Matrix.of q.2.2 * x) * Matrix.of q.1` using `fun q => by`. Simplify using `only [Matrix.mul_assoc]`. Establish `hE1 : ContinuousOn (fun q : Mt k r × (Mt k r × Mt k r) => Formalism.MainNotions.S.eFun μG σ w (Matrix.of q.1)) (Sg3 k r z x₀ x)`. Establish `h` using `(hσ.2.2 w).comp hof1.continuousOn (fun q (hq : q ∈ Sg3 k r z x₀ x) => hq.1)`. Conclude with `continuousOn_const.mul (continuous_star.comp_continuousOn (continuousOn_const.inner h))`.
+
+Establish `hE2 : ContinuousOn (fun q : Mt k r × (Mt k r × Mt k r) => ⟪w, σ (x₀⁻¹ * (Matrix.of q.2.1 * Matrix.of q.2.2 * (x * Matrix.of q.1))) w⟫_ℂ) (Sg3 k r z x₀ x)`. Establish `hc : Continuous (fun q : Mt k r × (Mt k r × Mt k r) => x₀⁻¹ * (Matrix.of q.2.1 * Matrix.of q.2.2 * (x * Matrix.of q.1)))` using `continuous_const.matrix_mul ((hof21.matrix_mul hof22).matrix_mul (continuous_const.matrix_mul hof1))`. Establish `h` using `(hσ.2.2 w).comp hc.continuousOn (fun q (hq : q ∈ Sg3 k r z x₀ x) => by show _ ∈ UH (Hpk k r)`. Rewrite using `[hassoc q]`. Conclude with `hq.2.2)`.
+
+Conclude with `continuousOn_const.inner h`. Establish `hE3 : ContinuousOn (fun q : Mt k r × (Mt k r × Mt k r) => chiInv (Formalism.MainNotions.S.psiGen k r z c) π (Matrix.of q.2.1) (Matrix.of q.2.2) ξ) (Sg3 k r z x₀ x)` using `by show ContinuousOn (fun q : Mt k r × (Mt k r × Mt k r) => star (Formalism.MainNotions.S.psiGen k r z c (Matrix.of q.2.2)) • π (Matrix.of q.2.1)⁻¹ ξ) (Sg3 k r z x₀ x)`. Establish `hinvc : ContinuousOn (fun q : Mt k r × (Mt k r × Mt k r) => (Matrix.of q.2.1)⁻¹) (Sg3 k r z x₀ x)` using `(((continuous_const.matrix_mul hof21.matrix_conjTranspose).matrix_mul continuous_const).continuousOn).congr (fun q (hq : q ∈ Sg3 k r z x₀ x) => DecA.inv_eq hq.2.1.1)`. Establish `h` using `(hπ.2.2 ξ).comp hinvc (fun q (hq : q ∈ Sg3 k r z x₀ x) => UW_inv_mem hq.2.1)`. Conclude with `(continuous_star.comp ((psiGen_cont k r z c).comp hof22)).continuousOn.smul h`.
+
+Use `Integrable.mono' (hΦ.const_mul (‖(Formalism.MainNotions.S.fdegH μG σ w : ℂ)‖ * C ^ 2 * ‖ξ‖)) ?_ ?_` and prove the remaining obligations. Rewrite using `[← Measure.restrict_eq_self_of_ae_mem hSae]`. Conclude with `(hE1.smul (hE2.smul hE3)).aestronglyMeasurable hScl.measurableSet`. Use `filter_upwards [hQae] with q hq`. Establish `hyG` using `DecA.mul_mem (hYmem q.2 hq.2) hq.1`.
+
+Establish `h1` using `hdec _ hq.1`. Establish `h2` using `hdec _ hyG`. Establish `hψ : ‖Formalism.MainNotions.S.psiGen k r z c (Matrix.of q.2.2)‖ = 1`. Unfold `Formalism.MainNotions.S.psiGen`. Rewrite using `[mul_comm]`.
+
+Conclude with `Complex.norm_exp_ofReal_mul_I _`. Establish `hπ' : ‖π (Matrix.of q.2.1)⁻¹ ξ‖ = ‖ξ‖` using `hπ.2.1 _ (UW_inv_mem hq.2.1) ξ`. Simplify using `only [Formalism.MainNotions.S.eFun, chiInv, norm_smul, norm_mul, norm_star, hψ, hπ', hassoc q, one_mul]`. Conclude with `product_bound_of_factor_bounds _ _ _ _ _ _ _ (norm_nonneg _) (norm_nonneg _) (norm_nonneg _) (norm_nonneg _) h1 h2`.
+-/
 theorem joint_integrable (hIG : IntGStatement) (hIS : IntSStatement)
     (k r : ℕ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     (σ : Mat k r → (H →L[ℂ] H)) (w : H) (d a C : ℝ)
@@ -259,6 +339,9 @@ theorem joint_integrable (hIG : IntGStatement) (hIS : IntSStatement)
   simp only [Formalism.MainNotions.S.eFun, chiInv, norm_smul, norm_mul, norm_star, hψ, hπ', hassoc q, one_mul]
   exact product_bound_of_factor_bounds _ _ _ _ _ _ _ (norm_nonneg _) (norm_nonneg _) (norm_nonneg _) (norm_nonneg _) h1 h2
 
+/- English proof (translation)
+Introduce `k r H _ _ _ σ w d a C Vp _ _ _ π z c μG μW μN hσ hw hF hdec ha hz hT hπ hG hW hN x₀ hx₀ ξ x hx`. Conclude with `Core.repro_core k r H σ w d Vp (Formalism.MainNotions.S.psiGen k r z c) π z μG μW μN x₀ x ξ hσ hw hF hG hW hN hx₀ hx (joint_integrable hIG hIS k r H σ w d a C Vp π z c μG μW μN hσ hw hF hdec ha hz hT hπ hG hW hN x₀ hx₀ ξ x hx)`.
+-/
 theorem repro_of_int (hIG : IntGStatement) (hIS : IntSStatement) : ReproStatement := by
   intro k r H _ _ _ σ w d a C Vp _ _ _ π z c μG μW μN hσ hw hF hdec ha hz hT hπ hG hW hN x₀ hx₀ ξ x hx
   exact Core.repro_core k r H σ w d Vp (Formalism.MainNotions.S.psiGen k r z c) π z μG μW μN x₀ x ξ hσ hw hF hG hW hN hx₀ hx

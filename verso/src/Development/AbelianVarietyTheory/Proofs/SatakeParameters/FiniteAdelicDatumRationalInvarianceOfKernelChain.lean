@@ -14,6 +14,9 @@ noncomputable section
 
 namespace GlobalTheory.RatPt
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hP hTie i hi β x x₁ γ hγ h₁ g hg p hp`. Apply the tactic sequence `exact ⟨GlobalTheory.T.pointLattice_moved_rational_isometry A dtU a hP hTie i hi β x x₁ γ hγ h₁ g hg p hp, GlobalTheory.T.chartPointFrames_move_rationalIsometry A dtU a hP hTie i hi β x x₁ γ hγ h₁ g hg p hp, GlobalTheory.T.levelPrimeFunctionals_move_rationalIsometry A dtU a hP hTi …`.
+-/
 theorem isPtAd_rat : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a =>
     ∀ i (hi : i ≤ D.R.m) (β : (St i hi).Ch) (x x₁ : UA D i hi) (γ : GL (Fin (D.R.N i)) D.host.E),
       γ ∈ UJ (sigD D : D.host.E →+* D.host.E) (gramN D i hi) → x₁.1 = ratA D.host.F γ * x.1 →
@@ -24,6 +27,9 @@ theorem isPtAd_rat : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a =
   exact ⟨GlobalTheory.T.pointLattice_moved_rational_isometry A dtU a hP hTie i hi β x x₁ γ hγ h₁ g hg p hp, GlobalTheory.T.chartPointFrames_move_rationalIsometry A dtU a hP hTie i hi β x x₁ γ hγ h₁ g hg p hp,
     GlobalTheory.T.levelPrimeFunctionals_move_rationalIsometry A dtU a hP hTie i hi β x x₁ γ hγ h₁ g hg p hp⟩
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hP hTie i hi`. Break down `lt_trichotomy i t.m2 with h | h | h` into its components or cases. Conclude with `GlobalTheory.T.matrixStepDatum_equivariant_rational_unitary A dtU a hP hTie i hi h`. Conclude with `GlobalTheory.T.firstCoupledStepDatum_rationalUnitary_equivariant A dtU a hP hTie i hi h`. Conclude with `GlobalTheory.T.lastStepDatum_equivariant_rationalUnitary A dtU a hP hTie i hi h`.
+-/
 theorem xiPt_smul : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a =>
     ∀ i (hi : i + 1 ≤ D.R.m) β β' (x : UA D i (Nat.le_of_succ_le hi)) (x' : UA D (i + 1) hi) p p',
       IsPtAd A a i (Nat.le_of_succ_le hi) β x p → IsPtAd A a (i + 1) hi β' x' p' →
@@ -37,6 +43,13 @@ theorem xiPt_smul : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a =>
   · exact GlobalTheory.T.firstCoupledStepDatum_rationalUnitary_equivariant A dtU a hP hTie i hi h
   · exact GlobalTheory.T.lastStepDatum_equivariant_rationalUnitary A dtU a hP hTie i hi h
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hP hTie hEx hAw`. Introduce `i hi β β' x x' x₁ x₁' γ hγ γ' hγ' h₁ h₁' z`. Apply the tactic sequence `obtain ⟨g, hg⟩ := GlobalTheory.T.rationalUnitary_orthonormalCoords_isColumnIsometry A dtU a hP hTie i (Nat.le_of_succ_le hi) γ hγ`. Apply the tactic sequence `obtain ⟨g', hg'⟩ := GlobalTheory.T.rationalUnitary_orthonormalCoords_isColumnIsometry A dtU a hP hTie (i + 1) hi γ' hγ'`. Take `⟨p, hp⟩` from `hEx i (Nat.le_of_succ_le hi) β x`.
+
+Take `⟨p', hp'⟩` from `hEx (i + 1) hi β' x'`. Establish `hq` using `isPtAd_rat A dtU a hP hTie i (Nat.le_of_succ_le hi) β x x₁ γ hγ h₁ g hg p hp`. Establish `hq'` using `isPtAd_rat A dtU a hP hTie (i + 1) hi β' x' x₁' γ' hγ' h₁' g' hg' p' hp'`. Establish `hE1 : (∃ p, IsPtAd A a i (Nat.le_of_succ_le hi) β x₁ p) ∧ ∃ p', IsPtAd A a (i + 1) hi β' x₁' p'` using `⟨⟨_, hq⟩, ⟨_, hq'⟩⟩`. Establish `hE0 : (∃ p, IsPtAd A a i (Nat.le_of_succ_le hi) β x p) ∧ ∃ p', IsPtAd A a (i + 1) hi β' x' p'` using `⟨⟨_, hp⟩, ⟨_, hp'⟩⟩`.
+
+Establish `a1` using `hAw i hi β β' x₁ x₁' x₁ x₁' _ _ _ _ hq hq' hE1.1.choose_spec hE1.2.choose_spec (fun _ _ => ⟨rfl, rfl⟩)`. Establish `a0` using `hAw i hi β β' x x' x x' _ _ _ _ hp hp' hE0.1.choose_spec hE0.2.choose_spec (fun _ _ => ⟨rfl, rfl⟩)`. Unfold `xiAd`. Rewrite using `[dif_pos hE1, dif_pos hE0, a1, a0, GlobalTheory.T.orthonormalChange_intertwines_rationalIsometries A dtU a hP hTie i hi γ γ' g g' hg hg' z]`. Rewrite using `[xiPt_smul A dtU a hP hTie i hi β β' x x' p p' hp hp' g g']`.
+-/
 theorem ratLaw_of_tie : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a =>
     PtEx A a → (∀ i hi, PtAway A a i hi) → RatLaw A a) := by
   intro D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hP hTie hEx hAw

@@ -12,10 +12,18 @@ def RootAIC : Prop := ∀ (q : ℕ) (X : Scheme.{0}), AICSch X → IsUnit (q : �
 def ResBij : Prop := ∀ (q : ℕ) (i : ℤ) {Y X : Scheme.{0}} (f : Y ⟶ X), ConnectedSpace Y → ConnectedSpace X →
   Nonempty (Prim q Γ(X, ⊤)) → Function.Bijective (Sec.res (F := tw q i) f)
 
+/- English proof (translation)
+Use `h.1` as an intermediate fact. Use `infer_instance`.
+-/
 theorem connected_of_AICSch {X : Scheme.{0}} (h : AICSch X) : ConnectedSpace X := by
   have := h.1
   infer_instance
 
+/- English proof (translation)
+Introduce `hyp q Y X f hX hY hq i`. Take `⟨_, e, he, _⟩` from `hyp.a9 (ZMod q) (tw q i)`. Use `connected_of_AICSch hX` as an intermediate fact. Establish `hres` using `hB q i f hY (connected_of_AICSch hX) (hR q X hX hq)`. Establish `key : (pull (ZMod q) (sch.map f) (tw q i) 0) = (e Y).toAddMonoidHom.comp ((AddMonoidHom.mk' (Sec.res (F` using `tw q i) f) (fun a b => map_add _ a b)).comp (e X).symm.toAddMonoidHom) := by`.
+
+Use extensionality with `x`. Take `⟨s, rfl⟩` from `(e X).surjective x`. Simplify using `[he]`. Rewrite using `[key]`. Conclude with `(e Y).bijective.comp (hres.comp (e X).symm.bijective)`.
+-/
 theorem HZero_of (hR : RootAIC) (hB : ResBij) : LateralTheory.E.t_E2Cut.HZero := by
   intro hyp q Y X f hX hY hq i
   obtain ⟨_, e, he, _⟩ := hyp.a9 (ZMod q) (tw q i)

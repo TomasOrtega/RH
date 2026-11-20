@@ -10,6 +10,17 @@ namespace GlobalTheory.GenericLevel
 section
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `hsurj : Function.Surjective (IsLocalRing.residue 𝒪[k])` using `IsLocalRing.residue_surjective`. Establish `h1 : ∀ y : k, valuation k y ≤ 1 → ψ y = 1`. Introduce `y hy`. Conclude with `(hψ 1).2 (by simp) y (by simpa using hy)`. Establish `key : ∀ x y : 𝒪[k], IsLocalRing.residue 𝒪[k] x = IsLocalRing.residue 𝒪[k] y → ψ (((ϖ⁻¹ : kˣ) : k) * (x : k)) = ψ (((ϖ⁻¹ : kˣ) : k) * (y : k))`.
+
+Introduce `x y hxy`. Establish `h2` using `(hϖ _).1 ((residue_eq_iff_lt x y).1 hxy)`. Establish `h0 : valuation k (ϖ : k) ≠ 0` using `by simp`. Establish `h3 : valuation k (((ϖ⁻¹ : kˣ) : k) * ((x : k) - (y : k))) ≤ 1`. Rewrite using `[map_mul, Units.val_inv_eq_inv_val, map_inv₀]`.
+
+Conclude with `(inv_mul_le_one₀ (zero_lt_iff.2 h0)).2 h2`. Establish `h4 : ((ϖ⁻¹ : kˣ) : k) * (x : k) = ((ϖ⁻¹ : kˣ) : k) * (y : k) + ((ϖ⁻¹ : kˣ) : k) * ((x : k) - (y : k))` using `by ring`. Rewrite using `[h4, AddChar.map_add_eq_mul, h1 _ h3, mul_one]`. Set `f : 𝓀[k] → Circle` to `fun t => ψ (((ϖ⁻¹ : kˣ) : k) * ((Function.surjInv hsurj t : 𝒪[k]) : k))`. Establish `hf : ∀ x : 𝒪[k], f (IsLocalRing.residue 𝒪[k] x) = ψ (((ϖ⁻¹ : kˣ) : k) * (x : k))` using `fun x => key _ _ (Function.surjInv_eq hsurj _)`.
+
+Use `⟨⟨f, ?_, ?_⟩, hf⟩` and prove the remaining obligations. Use `hf 0` as an intermediate fact. Simplify using `using this`. Introduce `s t`. Take `⟨x, rfl⟩` from `hsurj s`.
+
+Take `⟨y, rfl⟩` from `hsurj t`. Rewrite using `[← map_add, hf, hf, hf, ← AddChar.map_add_eq_mul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_residueChar {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) {ϖ : kˣ} (hϖ : IsUnif ϖ) :
     ∃ φ : AddChar 𝓀[k] Circle, ∀ x : 𝒪[k],
       φ (IsLocalRing.residue 𝒪[k] x) = ψ (((ϖ⁻¹ : kˣ) : k) * (x : k)) := by
@@ -54,6 +65,11 @@ def upperUnip (F : Type) {a : Type} [Field F] [Fintype a] [DecidableEq a] (pos :
   mul_mem' := fun {g h} hg hh => Radical.Uni.mul (b := pos) hg hh
   inv_mem' := fun {g} hg => Radical.Uni.inv (b := pos) hg
 
+/- English proof (translation)
+Unfold `superSum`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+
+Use `split_ifs with hs`. Conclude with `Radical.Uni.mul_apply_succ (b := pos) h h' hs`. Simplify using the standard rewrite rules.
+-/
 theorem superSum_mul {pos : a → ℕ} {M M' : Matrix a a F} (h : IsUpperUnip pos M)
     (h' : IsUpperUnip pos M') : superSum pos (M * M') = superSum pos M + superSum pos M' := by
   unfold superSum
@@ -66,6 +82,9 @@ theorem superSum_mul {pos : a → ℕ} {M M' : Matrix a a F} (h : IsUpperUnip po
   · simp
 
 omit [DecidableEq a] in
+/- English proof (translation)
+Unfold `superSum`. Simplify using `only [map_sum, Matrix.map_apply]`. Use `Finset.sum_congr rfl fun r _ => Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem superSum_map {R : Type} [CommRing R] (f : R →+* F) (pos : a → ℕ) (M : Matrix a a R) :
     superSum pos (M.map f) = f (∑ r, ∑ s, if pos s = pos r + 1 then M r s else 0) := by
   unfold superSum
@@ -79,11 +98,23 @@ noncomputable def genChar (φ : AddChar F Circle) (pos : a → ℕ) : upperUnip 
       rw [← AddChar.map_add_eq_mul, ← superSum_mul g.2 h.2]
       rfl))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem genChar_apply (φ : AddChar F Circle) (pos : a → ℕ) (g : upperUnip F pos) :
     ((genChar φ pos g : ℂˣ) : ℂ) = φ (superSum pos ((g : GL a F) : Matrix a a F)) := rfl
 
 end
 
+/- English proof (translation)
+Introduce `k _ _ _ _ ψ hψ ϖ hϖ κ l`. Take `⟨φ, hφ⟩` from `exists_residueChar hψ hϖ`. Use `⟨TypeDatum.ofResidue (upperUnip 𝓀[k] (framePos κ l)) (genChar φ (framePos κ l)), ?_, ?_⟩` and prove the remaining obligations. Introduce `g`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨u, hu, rfl⟩`. Conclude with `⟨_, ⟨u, rfl, rfl⟩, hu⟩`. Introduce and unpack `⟨gb, ⟨u, rfl, rfl⟩, hu⟩`. Conclude with `⟨u, hu, rfl⟩`. Introduce and unpack `⟨g, u, hu, rfl⟩`.
+
+Establish `h` using `TypeDatum.ofResidue_lam (upperUnip 𝓀[k] (framePos κ l)) (genChar φ (framePos κ l)) u hu`. Rewrite using `[h, genChar_apply]`. Establish `e1` using `superSum_map (IsLocalRing.residue 𝒪[k]) (framePos κ l) (u : Matrix _ _ 𝒪[k])`. Establish `e2` using `superSum_map (algebraMap 𝒪[k] k) (framePos κ l) (u : Matrix _ _ 𝒪[k])`. Establish `e3` using `hφ (∑ r, ∑ s, if framePos κ l s = framePos κ l r + 1 then (u : Matrix _ _ 𝒪[k]) r s else 0)`.
+
+Rewrite `e3` using `[← e1]`. Establish `e4 : φ (superSum (framePos κ l) ((u : Matrix _ _ 𝒪[k]).map (IsLocalRing.residue 𝒪[k]))) = ψ (((ϖ⁻¹ : kˣ) : k) * superSum (framePos κ l) ((u : Matrix _ _ 𝒪[k]).map (algebraMap 𝒪[k] k)))`. Rewrite using `[e3, e2]`. Both sides reduce to the same expression. Conclude with `congrArg (fun z : Circle => (z : ℂ)) e4`.
+-/
 theorem exists_isGenericLevel :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
       (ψ : AddChar k Circle), HasConductor ψ 1 → ∀ ϖ : kˣ, IsUnif ϖ → ∀ κ l : ℕ,

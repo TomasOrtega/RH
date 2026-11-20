@@ -11,6 +11,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 
 namespace GlobalTheory.HaarFundDom
 
+/- English proof (translation)
+Introduce `D V ν₁ ν₂ fd₁ fd₂ h₁ h₂ hfd₁ hfd₂`. Take `⟨i1, i2, i3, i4, i5, -, i7⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Establish `hc` using `Measure.isMulLeftInvariant_eq_smul ν₁ ν₂`. Use `set c₀ : NNReal := Measure.haarScalarFactor ν₁ ν₂ with hc₀`. Establish `hpos : 0 < c₀` using `Measure.haarScalarFactor_pos_of_isHaarMeasure ν₁ ν₂`.
+
+Establish `hc0 : (c₀ : ENNReal) ≠ 0` using `by exact_mod_cast hpos.ne'`. Establish `hctop : (c₀ : ENNReal) ≠ ⊤` using `ENNReal.coe_ne_top`. Establish `hsm : (c₀ • ν₂ : Measure (GA D V)) = (c₀ : ENNReal) • ν₂` using `rfl`. Establish `hfd₂' : IsFundamentalDomain (GQ V) fd₂ ν₁` using `hfd₂.mono (by rw [hc, hsm]; exact Measure.smul_absolutelyContinuous)`. Use `⟨(c₀ : ℂ), fun f hf => ?_⟩` and prove the remaining obligations.
+
+Establish `hf' : ∀ (g : GQ V) (x : GA D V), f (g • x) = f x` using `fun g x => hf g g.2 x`. Prove the components needed by the constructor for the conclusion. Rewrite using `[hfd₁.integrableOn_iff hfd₂' hf', hc, hsm, IntegrableOn, Measure.restrict_smul, integrable_smul_measure hc0 hctop]`. Both sides reduce to the same expression. Rewrite using `[hfd₁.setIntegral_eq hfd₂' hf', hc, hsm, Measure.restrict_smul, integral_smul_measure]`.
+
+Simplify using `[Complex.real_smul]`.
+-/
 theorem setIntegral_eq_const_mul : ∀ {D : D7} {V : HSp D} (ν₁ ν₂ : Measure (GA D V)) (fd₁ fd₂ : Set (GA D V)), ν₁.IsHaarMeasure → ν₂.IsHaarMeasure → IsFundamentalDomain (GQ V) fd₁ ν₁ → IsFundamentalDomain (GQ V) fd₂ ν₂ → ∃ c : ℂ, ∀ f : GA D V → ℂ, (∀ γ ∈ GQ V, ∀ g, f (γ * g) = f g) → (IntegrableOn f fd₁ ν₁ ↔ IntegrableOn f fd₂ ν₂) ∧ ∫ g in fd₁, f g ∂ν₁ = c * ∫ g in fd₂, f g ∂ν₂ := by
   intro D V ν₁ ν₂ fd₁ fd₂ h₁ h₂ hfd₁ hfd₂
   obtain ⟨i1, i2, i3, i4, i5, -, i7⟩ := GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V

@@ -27,19 +27,31 @@ private def pt {G : Over S} (x : 𝟙_ (Over (Sp ℂ)) ⟶ (Over.pullback f).obj
     rw [Category.assoc, pullback.condition, ← Category.assoc, h]
     exact Category.id_comp _)
 
+/- English proof (translation)
+Introduce `a b e` and use `Over.OverMorphism.ext (pullback.hom_ext (congrArg (fun q => q.left) e) ((Over.w a).trans (Over.w b).symm))`.
+-/
 private theorem pt_injective {G : Over S} : Function.Injective (pt f (G := G)) := fun a b e =>
   Over.OverMorphism.ext (pullback.hom_ext (congrArg (fun q => q.left) e) ((Over.w a).trans (Over.w b).symm))
 
+/- English proof (translation)
+Introduce `y` and use `⟨Over.homMk (pullback.lift y.left (𝟙 _) ((Over.w y).trans (Category.id_comp _).symm)) (pullback.lift_snd _ _ _), Over.OverMorphism.ext (pullback.lift_fst _ _ _)⟩`.
+-/
 private theorem pt_surjective {G : Over S} : Function.Surjective (pt f (G := G)) := fun y =>
   ⟨Over.homMk (pullback.lift y.left (𝟙 _) ((Over.w y).trans (Category.id_comp _).symm)) (pullback.lift_snd _ _ _),
     Over.OverMorphism.ext (pullback.lift_fst _ _ _)⟩
 
+/- English proof (translation)
+Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Simplify using `only [pt, Over.homMk_left, Over.comp_left, Over.pullback_map_left, Category.assoc]`. Conclude with `congrArg (x.left ≫ ·) (pullback.lift_fst _ _ _)`.
+-/
 private theorem pt_map {G G' : Over S} (φ : G ⟶ G') (x : 𝟙_ (Over (Sp ℂ)) ⟶ (Over.pullback f).obj G) :
     pt f (x ≫ (Over.pullback f).map φ) = pt f x ≫ φ := by
   refine Over.OverMorphism.ext ?_
   simp only [pt, Over.homMk_left, Over.comp_left, Over.pullback_map_left, Category.assoc]
   exact congrArg (x.left ≫ ·) (pullback.lift_fst _ _ _)
 
+/- English proof (translation)
+Set `ρ : Over.mk ((𝟙_ (Over (Sp ℂ))).hom ≫ f) ⟶ Over.mk f` to `Over.homMk (𝟙 _) (by simp)`. Establish `h` using `(isGrpPullback_pullback G f).2 _ x y (ρ ≫ pt f x) (ρ ≫ pt f y) (Category.id_comp _) (Category.id_comp _)`. Rewrite `h` using `[← MonObj.comp_mul]`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Conclude with `h.symm.trans (Category.id_comp _)`.
+-/
 private theorem pt_mul {G : Over S} [GrpObj G] (x y : 𝟙_ (Over (Sp ℂ)) ⟶ (Over.pullback f).obj G) :
     pt f (x * y) = pt f x * pt f y := by
   let ρ : Over.mk ((𝟙_ (Over (Sp ℂ))).hom ≫ f) ⟶ Over.mk f := Over.homMk (𝟙 _) (by simp)
@@ -48,6 +60,9 @@ private theorem pt_mul {G : Over S} [GrpObj G] (x y : 𝟙_ (Over (Sp ℂ)) ⟶ 
   refine Over.OverMorphism.ext ?_
   exact h.symm.trans (Category.id_comp _)
 
+/- English proof (translation)
+Use `P.isAb.comm` as an intermediate fact. Set `Q` to `TorsionTauCompare.polOfPullback P _ (isGrpPullback_pullback P.A f)`. Take `⟨rig, hrig⟩` from `Q.rigid`. Take `⟨v, -⟩` from `thetaUnifAV_all Q rig hrig`. Conclude with `⟨_, v, Q.isAb, Q.smoothDim⟩`.
+-/
 private theorem exists_unif (P : Out.PolAV S) : ∃ (L : LB ((Over.pullback f).obj P.A).left)
     (_ : HolUnif ((Over.pullback f).obj P.A) L P.g), IsAbelianScheme ((Over.pullback f).obj P.A) ∧
       SmoothOfRelativeDimension P.g ((Over.pullback f).obj P.A).hom := by
@@ -57,6 +72,13 @@ private theorem exists_unif (P : Out.PolAV S) : ∃ (L : LB ((Over.pullback f).o
   obtain ⟨v, -⟩ := thetaUnifAV_all Q rig hrig
   exact ⟨_, v, Q.isAb, Q.smoothDim⟩
 
+/- English proof (translation)
+Take `⟨L, u, hA, hdA⟩` from `exists_unif f P`. Take `⟨L', v, hB, hdB⟩` from `exists_unif f Q`. Establish `hu` using `TorusTransfer.tangent_bijective u hdA`. Establish `hv` using `TorusTransfer.tangent_bijective v hdB`. Establish `one : ∀ {G : Over S} [GrpObj G] (x : 𝟙_ (Over (Sp ℂ)) ⟶ (Over.pullback f).obj G), pt f x = 1 ↔ x = 1` using `fun {G} _ x => map_eq_one_iff (MonoidHom.mk' (pt f (G := G)) (pt_mul f)) (pt_injective f)`.
+
+Use `⟨u.Λ, v.Λ, fun z => pt f (u.ex z), fun z => pt f (v.ex z), fun z w => by beta_reduce; rw [u.ex_add, pt_mul], (pt_surjective f).comp u.ex_onto, fun z => (one _).trans (u.ker z), u.discrete, u.full, fun z w => by beta_reduce; rw [v.ex_add, pt_mul], (pt_surjective f).comp v.ex_onto, …` and prove the remaining obligations. Take `⟨M, hM, -⟩` from `HomLinear.exists_linear_of_isMonHom _ _ hA hA _ _ _ _ u u hu.1 hu.2 ((Over.pullback f).map φ) inferInstance`. Conclude with `⟨M, fun z => by beta_reduce; rw [hM, pt_map]⟩`. Take `⟨M, hM, -⟩` from `HomLinear.exists_linear_of_isMonHom _ _ hB hB _ _ _ _ v v hv.1 hv.2 ((Over.pullback f).map φ) inferInstance`. Conclude with `⟨M, fun z => by beta_reduce; rw [hM, pt_map]⟩`.
+
+Take `⟨M, hM, -⟩` from `HomLinear.exists_linear_of_isMonHom _ _ hA hB _ _ _ _ u v hv.1 hv.2 ((Over.pullback f).map φ) inferInstance`. Conclude with `⟨M, fun z => by beta_reduce; rw [hM, pt_map]⟩`.
+-/
 private theorem exists_unif_points (P Q : Out.PolAV S) :
     ∃ (ΛA : Submodule ℤ (Fin P.g → ℂ)) (ΛB : Submodule ℤ (Fin Q.g → ℂ))
       (eA : (Fin P.g → ℂ) → (Over.mk f ⟶ P.A)) (eB : (Fin Q.g → ℂ) → (Over.mk f ⟶ Q.A)),
@@ -90,6 +112,25 @@ private theorem exists_unif_points (P Q : Out.PolAV S) :
 
 end Points
 
+/- English proof (translation)
+Take `⟨N, x, hN, hx, hNl⟩` from `UpperTheory.exists_nsmul_mem_sum_image_lattice_of_surjective_mod gA gB p ΛA ΛB J hAf hBd hJ honto l hl`. Take `⟨j, hj, hjs⟩` from `UpperTheory.exists_injective_lattice_hom_ringOfIntegers_of_finrank_ge E gA ΛA αA hdim hAd sA`. Establish `hN0 : (N : ℂ) ≠ 0` using `by exact_mod_cast hN.ne'`. Set `I : Ideal (𝓞 E)` to `Ideal.span (Set.range j)`. Distinguish the cases in `hI : I = ⊥`.
+
+Establish `h0 : ∀ a, x a = 0` using `fun a => by`. Establish `h : j ⟨x a, hx a⟩ ∈ I` using `Ideal.subset_span ⟨_, rfl⟩`. Rewrite `h` using `[hI, Ideal.mem_bot, ← map_zero j]`. Conclude with `congrArg Subtype.val (hj h)`. Simplify using `only [h0, map_zero, Finset.sum_const_zero] at hNl`.
+
+Rewrite using `[(smul_eq_zero.1 hNl).resolve_left hN.ne']`. Conclude with `zero_mem _`. Take `⟨c, hcI, hc⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hI`. Take `⟨I', hI'⟩ : I ∣ Ideal.span {c}` from `Ideal.dvd_span_singleton.2 hcI`. Establish `hmem : ∀ t ∈ I, ∃ y : ΛA, j y = t` using `fun t ht => by`.
+
+Use `Submodule.span_induction (p := fun t _ => ∃ y : ΛA, j y = t) (fun t ht => ht) ⟨0, map_zero _⟩ ?_ ?_ ht` and prove the remaining obligations. Introduce and unpack `_ _ - - ⟨y, rfl⟩ ⟨y', rfl⟩`. Conclude with `⟨y + y', map_add _ _ _⟩`. Introduce and unpack `s _ - ⟨y, rfl⟩`. Conclude with `⟨_, hjs s y⟩`.
+
+Establish `hdiv : ∀ b ∈ I', ∀ y : ΛA, ∃ u, u * c = j y * b` using `fun b hb y => Ideal.mem_span_singleton'.1 (hI' ▸ Ideal.mul_mem_mul (Ideal.subset_span ⟨y, rfl⟩) hb)`. Establish `key : ∀ t ∈ I * I', ∃ u, u * c = t ∧ αB u l ∈ AddSubmonoid.closure {w : Fin gB → ℂ | ∃ (m : ℕ) (z : Fin p → 𝓞 E) (x : Fin gA → ℂ), 0 < m ∧ x ∈ ΛA ∧ (∀ x' ∈ ΛA, (m : ℂ)⁻¹ • ∑ a, J a (αA (z a) x') ∈ ΛB) ∧ w = (m : ℂ)⁻¹ • ∑ a, J a (αA (z a) x)}`. Introduce `t ht`. Use `Submodule.mul_induction_on ht (fun r hr b hb => ?_) ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `hmem r hr choose φ hφ using hdiv b hb`.
+
+Establish `hsw : ∀ y y' : ΛA, αA (φ y) y' = αA (φ y') y` using `fun y y' => by`. Establish `h : (⟨αA (φ y) y', sA _ _ y'.2⟩ : ΛA) = ⟨αA (φ y') y, sA _ _ y.2⟩` using `hj (by`. Rewrite using `[hjs, hjs]`. Use `mul_right_cancel₀ hc ?_` and prove the remaining obligations. Take the linear combination `j y' * hφ y - j y * hφ y')`.
+
+Conclude with `congrArg Subtype.val h`. Establish `hval : ∀ y' : ΛA, (N : ℂ)⁻¹ • ∑ a, J a (αA (φ ⟨x a, hx a⟩) y') = αB (φ y') l` using `fun y' => by`. Establish `: ∑ a, J a (αA (φ ⟨x a, hx a⟩) y') = N • αB (φ y') l`. Rewrite using `[← map_nsmul, hNl, map_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => by rw [hsw, inter]`.
+
+Rewrite using `[this, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hN0, one_smul]`. Use `⟨φ y, hφ y, AddSubmonoid.subset_closure ⟨N, fun a => φ ⟨x a, hx a⟩, y, hN, y.2, fun x' hx' => ?_, (hval y).symm⟩⟩` and prove the remaining obligations. Rewrite using `[hval ⟨x', hx'⟩]`. Conclude with `sB _ _ hl`. Introduce and unpack `_ _ ⟨u, rfl, hu⟩ ⟨u', rfl, hu'⟩`.
+
+Conclude with `⟨u + u', add_mul _ _ _, by rw [map_add, LinearMap.add_apply]; exact add_mem hu hu'⟩`. Take `⟨u, hu, h⟩` from `key c (hI' ▸ Ideal.mem_span_singleton_self c)`. Take `rfl : u = 1` from `mul_right_cancel₀ hc (hu.trans (_root_.one_mul c).symm)`. Simplify using `using h`.
+-/
 private theorem lattice_mem_closure (E : Type) [Field E] [NumberField E] (gA gB p : ℕ)
     (ΛA : Submodule ℤ (Fin gA → ℂ)) (ΛB : Submodule ℤ (Fin gB → ℂ)) (αA : 𝓞 E →+* Module.End ℂ (Fin gA → ℂ))
     (αB : 𝓞 E →+* Module.End ℂ (Fin gB → ℂ)) (J : Fin p → (Fin gA → ℂ) →ₗ[ℂ] (Fin gB → ℂ))
@@ -155,11 +196,17 @@ section Unif
 
 variable {P : Type} [CommGroup P] {g : ℕ} {e : (Fin g → ℂ) → P} {Λ : Submodule ℤ (Fin g → ℂ)}
 
+/- English proof (translation)
+Establish `hc : Continuous fun t : ℂ => (⟨t • z, hz t⟩ : Λ)` using `by fun_prop`. Establish `h` using `(IsLocallyConstant.iff_continuous _).2 hc |>.apply_eq_of_preconnectedSpace 1 0`. Simplify using `using congrArg Subtype.val h`.
+-/
 private theorem eq_zero_of_smul_mem (hd : DiscreteTopology Λ) {z : Fin g → ℂ} (hz : ∀ t : ℂ, t • z ∈ Λ) : z = 0 := by
   have hc : Continuous fun t : ℂ => (⟨t • z, hz t⟩ : Λ) := by fun_prop
   have h := (IsLocallyConstant.iff_continuous _).2 hc |>.apply_eq_of_preconnectedSpace 1 0
   simpa using congrArg Subtype.val h
 
+/- English proof (translation)
+Establish `h` using `hadd 0 0`. Rewrite `h` using `[add_zero]`. Simplify using `using h.symm`.
+-/
 private theorem e_zero (hadd : ∀ z w, e (z + w) = e z * e w) : e 0 = 1 := by
   have h := hadd 0 0
   rw [add_zero] at h
@@ -170,22 +217,37 @@ private def eHom (hadd : ∀ z w, e (z + w) = e z * e w) : (Fin g → ℂ) →+ 
   map_zero' := by rw [e_zero hadd]; rfl
   map_add' z w := by rw [hadd]; rfl
 
+/- English proof (translation)
+Establish `h` using `hadd (z - w) w`. Rewrite `h` using `[sub_add_cancel]`. Rewrite using `[h, mul_inv_cancel_right]`.
+-/
 private theorem e_sub (hadd : ∀ z w, e (z + w) = e z * e w) (z w : Fin g → ℂ) : e (z - w) = e z * (e w)⁻¹ := by
   have h := hadd (z - w) w
   rw [sub_add_cancel] at h
   rw [h, mul_inv_cancel_right]
 
+/- English proof (translation)
+The claim follows from `congrArg Additive.toMul (map_nsmul (eHom hadd) k z)`.
+-/
 private theorem e_nsmul (hadd : ∀ z w, e (z + w) = e z * e w) (k : ℕ) (z : Fin g → ℂ) : e (k • z) = e z ^ k :=
   congrArg Additive.toMul (map_nsmul (eHom hadd) k z)
 
+/- English proof (translation)
+The claim follows from `congrArg Additive.toMul (map_sum (eHom hadd) f s)`.
+-/
 private theorem e_sum (hadd : ∀ z w, e (z + w) = e z * e w) {Idx : Type} (s : Finset Idx) (f : Idx → Fin g → ℂ) :
     e (s.sum f) = s.prod (fun i => e (f i)) :=
   congrArg Additive.toMul (map_sum (eHom hadd) f s)
 
+/- English proof (translation)
+Rewrite using `[← hker, e_sub hadd, h, mul_inv_cancel]`.
+-/
 private theorem mem_of_eq (hadd : ∀ z w, e (z + w) = e z * e w) (hker : ∀ z, e z = 1 ↔ z ∈ Λ) {z w : Fin g → ℂ}
     (h : e z = e w) : z - w ∈ Λ := by
   rw [← hker, e_sub hadd, h, mul_inv_cancel]
 
+/- English proof (translation)
+Use `ext1 z`. Use `eq_zero_of_smul_mem hd (z := M z - M' z) fun t => by` as an intermediate fact. Use `mem_of_eq hadd hker (h (t • z))` as an intermediate fact. Rewrite `this` using `[map_smul, map_smul, ← smul_sub]`. Then use the resulting hypothesis. Conclude with `sub_eq_zero.1 this`.
+-/
 private theorem rigid (hadd : ∀ z w, e (z + w) = e z * e w) (hker : ∀ z, e z = 1 ↔ z ∈ Λ) (hd : DiscreteTopology Λ)
     {W : Type} [AddCommGroup W] [Module ℂ W] (M M' : W →ₗ[ℂ] (Fin g → ℂ)) (h : ∀ z, e (M z) = e (M' z)) :
     M = M' := by
@@ -197,6 +259,9 @@ private theorem rigid (hadd : ∀ z w, e (z + w) = e z * e w) (hker : ∀ z, e z
 
 end Unif
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.prod_insert ha, Finset.prod_insert ha, MonObj.comp_mul, ih]`.
+-/
 private theorem comp_prod' {S : Scheme.{0}} {T A B : Over S} [MonObj B] [IsCommMonObj B] {Idx : Type} (s : Finset Idx)
     (x : T ⟶ A) (f : Idx → (A ⟶ B)) : x ≫ s.prod f = s.prod (fun i => x ≫ f i) := by
   classical
@@ -204,12 +269,54 @@ private theorem comp_prod' {S : Scheme.{0}} {T A B : Over S} [MonObj B] [IsCommM
   | empty => simp
   | insert a s ha ih => rw [Finset.prod_insert ha, Finset.prod_insert ha, MonObj.comp_mul, ih]
 
+/- English proof (translation)
+Rewrite using `[List.prod_ofFn, Equiv.prod_comp finSumFinEquiv.symm f, Fintype.prod_sum_type, mul_inv_eq_one]`. Simplify using `[h]`.
+-/
 private theorem exists_widePullback_of_iteratedLine {P : Type} [CommGroup P] {p : ℕ} (f : Fin p ⊕ Fin 0 → P) (g : Fin p → P)
     (h : ∀ a, g a = f (Sum.inl a)) :
     (List.ofFn fun j : Fin (p + 0) => f (finSumFinEquiv.symm j)).prod * (∏ a, g a)⁻¹ = 1 := by
   rw [List.prod_ofFn, Equiv.prod_comp finSumFinEquiv.symm f, Fintype.prod_sum_type, mul_inv_eq_one]
   simp [h]
 
+/- English proof (translation)
+Introduce `E _ _ _ H _ K _ _ ρ σ₁ p X n hn y hy`. Take `⟨ΛA, ΛB, eA, eB, hAadd, hAsurj, hAker, hAd, hAf, hBadd, hBsurj, hBker, hBd, lA, lB, lJ⟩` from `exists_unif_points (spMap (σ₁.comp (algebraMap (𝓞 K) K))) (X.A true).pol X.B.pol`. Use `choose αA hαA using fun s => lA ((X.A true).t.act.act s) ((X.A true).t.act.hom s)`. Use `choose αB hαB using fun s => lB (X.B.t.act.act s) (X.B.t.act.hom s)`. Use `choose J hJ using fun a : Fin p => lJ (GlobalTheory.FlatCM.phiP X a) (X.lin (Sum.inl a)).isMonHom`.
+
+Establish `hdim : 2 * (X.A true).g ≤ Module.finrank ℚ E`. Rewrite using `[GlobalTheory.CMSharedCompare.dim_eq (X.A true) X.split X.typeP X.ρ_sq]`. Use linear arithmetic over natural numbers and integers. Establish `act0 : ∀ {G : Over (Sp (𝓞 K))} [GrpObj G] (a : OAct (𝓞 E) G), a.act 0 = 1`. Introduce `G _ a`.
+
+Establish `h` using `a.add 0 0`. Rewrite `h` using `[add_zero]`. Simplify using `using h.symm`. Set `αA' : 𝓞 E →+* Module.End ℂ (Fin (X.A true).g → ℂ)` to `{ toFun := αA map_one' := rigid hAadd hAker hAd _ _ fun z => by`. Rewrite using `[hαA, (X.A true).t.act.one, Category.comp_id]`.
+
+Both sides reduce to the same expression. Use the proof step `map_mul' := fun s t => rigid hAadd hAker hAd _ _ fun z => by show eA (αA (s * t) z) = eA (αA s (αA t z))`. Rewrite using `[hαA, hαA, hαA, Category.assoc, ← (X.A true).t.act.mul, mul_comm]`. Use the proof step `map_zero' := rigid hAadd hAker hAd _ _ fun z => by show eA (αA 0 z) = eA 0`. Rewrite using `[hαA, act0, MonObj.comp_one, e_zero hAadd]`.
+
+Use the proof step `map_add' := fun s t => rigid hAadd hAker hAd _ _ fun z => by show eA (αA (s + t) z) = eA (αA s z + αA t z)`. Rewrite using `[hαA, hAadd, hαA, hαA, (X.A true).t.act.add, MonObj.comp_mul] }`. Set `αB' : 𝓞 E →+* Module.End ℂ (Fin X.B.g → ℂ)` to `{ toFun := αB map_one' := rigid hBadd hBker hBd _ _ fun z => by`. Rewrite using `[hαB, X.B.t.act.one, Category.comp_id]`. Both sides reduce to the same expression.
+
+Use the proof step `map_mul' := fun s t => rigid hBadd hBker hBd _ _ fun z => by show eB (αB (s * t) z) = eB (αB s (αB t z))`. Rewrite using `[hαB, hαB, hαB, Category.assoc, ← X.B.t.act.mul, mul_comm]`. Use the proof step `map_zero' := rigid hBadd hBker hBd _ _ fun z => by show eB (αB 0 z) = eB 0`. Rewrite using `[hαB, act0, MonObj.comp_one, e_zero hBadd]`. Use the proof step `map_add' := fun s t => rigid hBadd hBker hBd _ _ fun z => by show eB (αB (s + t) z) = eB (αB s z + αB t z)`.
+
+Rewrite using `[hαB, hBadd, hαB, hαB, X.B.t.act.add, MonObj.comp_mul] }`. Establish `lin : ∀ a, Serre.IsLinearHom (X.A true).t.act X.B.t.act (GlobalTheory.FlatCM.phiP X a)` using `fun a => X.lin (Sum.inl a)`. Establish `stabA : ∀ s, ∀ z ∈ ΛA, αA' s z ∈ ΛA` using `fun s z hz => by`. Use `(X.A true).t.act.hom s` as an intermediate fact. Rewrite `hz`, the goal using `[← hAker]`.
+
+Use `show eA (αA s z) = 1`. Rewrite using `[hαA, hz, MonObj.one_comp]`. Establish `stabB : ∀ s, ∀ z ∈ ΛB, αB' s z ∈ ΛB` using `fun s z hz => by`. Use `X.B.t.act.hom s` as an intermediate fact. Rewrite `hz`, the goal using `[← hBker]`.
+
+Use `show eB (αB s z) = 1`. Rewrite using `[hαB, hz, MonObj.one_comp]`. Establish `inter : ∀ a s z, J a (αA' s z) = αB' s (J a z)` using `fun a s z => by`. Establish `h` using `rigid hBadd hBker hBd ((J a).comp (αA s)) ((αB s).comp (J a)) fun z => by`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, hJ, hαA, hαB, hJ, Category.assoc, (lin a).comm, Category.assoc]`.
+
+Conclude with `congrArg (fun M : (Fin (X.A true).g → ℂ) →ₗ[ℂ] (Fin X.B.g → ℂ) => M z) h`. Establish `hJΛ : ∀ a, ∀ z ∈ ΛA, J a z ∈ ΛB` using `fun a z hz => by`. Use `(lin a).isMonHom` as an intermediate fact. Rewrite `hz` using `[← hAker]`. Rewrite using `[← hBker, hJ, hz, MonObj.one_comp]`.
+
+Establish `honto : ∀ w, ∃ v : Fin p → (Fin (X.A true).g → ℂ), w - ∑ a, J a (v a) ∈ ΛB`. Introduce `w`. Take `⟨x, hx⟩` from `X.onto (eB w)`. Use `choose v hv using fun a : Fin p => hAsurj (x (Sum.inl a))`. Use `⟨v, (hBker _).1 ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e_sub hBadd, e_sum hBadd, hx]`. Conclude with `exists_widePullback_of_iteratedLine (fun j : Fin p ⊕ Fin 0 => (x j ≫ X.φ j : Over.mk (spMap (σ₁.comp (algebraMap (𝓞 K) K))) ⟶ X.B.t.G)) (fun a => eB (J a (v a))) fun a => (hJ a (v a)).trans (congrArg (· ≫ GlobalTheory.FlatCM.phiP X a) (hv a))`. Establish `hG : ∀ (u : Fin (X.A true).g → ℂ) (z : Fin p → 𝓞 E), eA u ≫ ∏ a, ((X.A true).t.act.act (z a) ≫ GlobalTheory.FlatCM.phiP X a) = eB (∑ a, J a (αA' (z a) u))`. Introduce `u z`. Rewrite using `[comp_prod', e_sum hBadd]`.
+
+Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `show _ = eB (J a (αA (z a) u))`. Rewrite using `[hJ, hαA, Category.assoc]`. Take `⟨w, rfl⟩` from `hBsurj y`. Establish `hnw : n • w ∈ ΛB` using `(hBker _).1 (by rw [e_nsmul hBadd, hy])`.
+
+Establish `hcl` using `lattice_mem_closure E (X.A true).g X.B.g p ΛA ΛB αA' αB' J hdim hAd hAf hBd stabA stabB inter hJΛ honto _ hnw`. Establish `hn0 : (n : ℂ) ≠ 0` using `by exact_mod_cast hn.ne'`. Establish `key : ∀ l ∈ AddSubmonoid.closure {w : Fin X.B.g → ℂ | ∃ (m : ℕ) (z : Fin p → 𝓞 E) (x : Fin (X.A true).g → ℂ), 0 < m ∧ x ∈ ΛA ∧ (∀ x' ∈ ΛA, (m : ℂ)⁻¹ • ∑ a, J a (αA' (z a) x') ∈ ΛB) ∧ w = (m : ℂ)⁻¹ • ∑ a, J a (αA' (z a) x)}, eB ((n : ℂ)⁻¹ • l) ∈ Submonoid.closure {w : Over.mk (spM …`. Introduce `l hl`. Proceed by induction on `hl using AddSubmonoid.closure_induction with`.
+
+Consider the case `mem t ht`. Take `⟨m, z, x, hm, hx, hkill, rfl⟩` from `ht`. Establish `hm0 : (m : ℂ) ≠ 0` using `by exact_mod_cast hm.ne'`. Use `Submonoid.subset_closure ⟨m, eA (((n * m : ℕ) : ℂ)⁻¹ • x), z, hm, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← e_nsmul hAadd, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, mul_inv_cancel₀ (by exact_mod_cast (Nat.mul_pos hn hm).ne'), one_smul]`.
+
+Conclude with `(hAker x).2 hx`. Introduce `x' hx'`. Take `⟨u, rfl⟩` from `hAsurj x'`. Establish `hu : m • u ∈ ΛA` using `(hAker _).1 (by rw [e_nsmul hAadd, hx'])`. Establish `h` using `hkill _ hu`.
+
+Establish `e1 : (m : ℂ)⁻¹ • ∑ a, J a (αA' (z a) (m • u)) = ∑ a, J a (αA' (z a) u)`. Simplify using `only [map_nsmul, ← Finset.smul_sum]`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hm0, one_smul]`. Rewrite `h` using `[e1]`. Rewrite using `[hG, (hBker _).2 h]`.
+
+Rewrite using `[hG]`. Use `congr 1`. Simplify using `only [map_smul, ← Finset.smul_sum, smul_smul, Nat.cast_mul, mul_inv]`. Consider the case `zero => rw [smul_zero, e_zero hBadd]`. Conclude with `Submonoid.one_mem _`.
+
+Consider the case `add a b _ _ ha hb => rw [smul_add, hBadd]`. Conclude with `Submonoid.mul_mem _ ha hb`. Use `key _ hcl` as an intermediate fact. Rewrite `this` using `[← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hn0, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem _root_.GlobalTheory.T.cm_torsion_mem_closure_generators : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E),
     GlobalTheory.IndefiniteRowSideFullHecke.EigenvectorLieDegree.IsHostField H → ∀ (K : Type) [Field K] [NumberField K] (ρ : 𝓞 K) (σ₁ : K →+* ℂ) (p : ℕ)
     (X : GlobalTheory.CM.CMObj H K ρ σ₁ p 0) (n : ℕ), 0 < n →

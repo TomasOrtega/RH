@@ -5,6 +5,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeilGroupCharacter
 
 open IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Ws.H5
 
+/- English proof (translation)
+Introduce `l _ F O _ _ _ n r B R _ _ _ f₀ γ f f' hf hf'`. Take `⟨p, hp⟩` from `exists_determinantPair_map_of_algHom l F O n r B.B R f B.u`. Establish `hs : ∀ (φ : B.B →+* R) (g : F.G₀), MonoidAlgebra.mapRingHom F.G₀ φ (MonoidAlgebra.single g 1) = MonoidAlgebra.single g 1`. Introduce `φ g`. Simplify using `[MonoidAlgebra.mapRingHom]`.
+
+Establish `hD : B.u.D.map (f' : B.B →+* R) = B.u.D.map (f : B.B →+* R)`. Apply `CA.d_gext` to reduce the goal to its premises. Introduce `g i _ hi`. Establish `e1` using `((CA.d_gmap B.u.D).2.2.1 (f : B.B →+* R) (MonoidAlgebra.single g 1)).2 i`. Establish `e2` using `((CA.d_gmap B.u.D).2.2.1 (f' : B.B →+* R) (MonoidAlgebra.single g 1)).2 i`.
+
+Rewrite `e1`, `e2` using `[hs]`. Rewrite using `[e1, e2, hf.1 g i hi, hf'.1 g i hi]`. Establish `hψ : ∀ v i, pushCh (f' : B.B →+* R) (B.u.ψ v i) = pushCh (f : B.B →+* R) (B.u.ψ v i)`. Introduce `v i`. Use extensionality with `g`.
+
+Simplify using `only [pushCh, MonoidHom.coe_comp, Function.comp_apply, Units.coe_map, MonoidHom.coe_coe]`. Conclude with `(hf'.2 v i g).trans (hf.2 v i g).symm`. Establish `hp' : B.u.Maps (f' : B.B →+* R) p.D p.ψ`. Unfold `Pair.Maps at hp ⊢`. Conclude with `⟨hD.trans hp.1, fun v i => (hψ v i).trans (hp.2 v i)⟩`.
+
+Take `⟨h, _, huniq⟩` from `B.univ R p`. Conclude with `(huniq f hp).trans (huniq f' hp').symm`.
+-/
 theorem UpperTheory.V.Ws.H5.twMapUniq :
     ∀ {l : ℕ} [Fact l.Prime] {F : GFrame l} {O : Type} [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O] {n : ℕ} {r : Resid F O n} (B : UniversalOrdinaryDeterminantRing r) {R : Type} [CommRing R] [Algebra O R] [IsCO O R] (f₀ : B.B →+* R) (γ : F.G₀ →* Rˣ) (f f' : B.B →ₐ[O] R), TwMap B f₀ (f : B.B →+* R) γ → TwMap B f₀ (f' : B.B →+* R) γ → f = f' := by
   intro l _ F O _ _ _ n r B R _ _ _ f₀ γ f f' hf hf'

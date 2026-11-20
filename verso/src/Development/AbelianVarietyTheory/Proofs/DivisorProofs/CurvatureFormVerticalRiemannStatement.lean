@@ -6,6 +6,9 @@ open Matrix GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe GlobalTheory.T
 open scoped Real ContDiff
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TorsionForm.FlatAcyc.curvature_vertical | exact GlobalTheory.TorsionForm.FlatAcyc.curvature_vertical | (intros; apply GlobalTheory.TorsionForm.FlatAcyc.curvature_vertical <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.curvature_form_vertical_riemann : ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g : ℕ} {B : Set E}
     {τ : E → Matrix (Fin g) (Fin g) ℂ} (hτ : IsPeriodMap B τ) {b : E} (hb : b ∈ B)
     (z v w : Fin g → ℂ),

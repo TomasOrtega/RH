@@ -11,6 +11,11 @@ noncomputable section
 
 namespace GlobalTheory.WeberCubicAlgebra
 
+/- English proof (translation)
+Establish `e1` using `L.derivWeierstrassP_add_coe (-t) ⟨2 * t, h2⟩`. Rewrite `e1` using `[L.derivWeierstrassP_neg]`. Establish `e2 : -t + 2 * t = t` using `by ring`. Simplify using `only [e2] at e1`. Establish `e3 : L.derivWeierstrassP t = 0` using `by linear_combination e1 / 2`.
+
+Rewrite using `[← L.derivWeierstrassP_sq t ht, e3]`. Simplify using the standard rewrite rules.
+-/
 lemma half_root (L : PeriodPair) {t : ℂ} (h2 : 2 * t ∈ L.lattice) (ht : t ∉ L.lattice) :
     4 * L.weierstrassP t ^ 3 - L.g₂ * L.weierstrassP t - L.g₃ = 0 := by
   have e1 := L.derivWeierstrassP_add_coe (-t) ⟨2 * t, h2⟩
@@ -21,6 +26,15 @@ lemma half_root (L : PeriodPair) {t : ℂ} (h2 : 2 * t ∈ L.lattice) (ht : t �
   rw [← L.derivWeierstrassP_sq t ht, e3]
   simp
 
+/- English proof (translation)
+Establish `a12 : 4 * (e1 ^ 2 + e1 * e2 + e2 ^ 2) = g` using `mul_left_cancel₀ (sub_ne_zero.2 h12) (by linear_combination r1 - r2)`. Establish `a13 : 4 * (e1 ^ 2 + e1 * e3 + e3 ^ 2) = g` using `mul_left_cancel₀ (sub_ne_zero.2 h13) (by linear_combination r1 - r3)`. Establish `s : e1 + e2 + e3 = 0`. Establish `: (e2 - e3) * (e1 + e2 + e3) = (e2 - e3) * 0` using `by linear_combination (a12 - a13) / 4`. Conclude with `mul_left_cancel₀ (sub_ne_zero.2 h23) this`.
+
+Establish `hh : h = 4 * e1 ^ 3 - g * e1` using `by linear_combination -r1`. Establish `k1 : (P * A) ^ 2 = (e1 - e2) ^ 2` using `by rw [d1]`. Establish `k2 : (P * B) ^ 2 = (e1 - e3) ^ 2` using `by rw [d2]`. Establish `k3 : (P * D) ^ 2 = (e3 - e2) ^ 2` using `by rw [d3]`. Take `rfl : e3 = -e1 - e2` from `by linear_combination s`.
+
+Substitute `hh` using the available equality. Substitute `a12` using the available equality. Prove the components needed by the constructor for the conclusion. Take the linear combination `(-2 / 3 : ℂ) * (k1 + k2 + k3)`. Establish `: 16 * P ^ 6 * (A * B * D) ^ 2 = 16 * ((P * A) ^ 2 * (P * B) ^ 2 * (P * D) ^ 2)` using `by ring`.
+
+Rewrite using `[this, k1, k2, k3]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma roots_alg {e1 e2 e3 g h P A B D : ℂ} (h12 : e1 ≠ e2) (h13 : e1 ≠ e3) (h23 : e2 ≠ e3)
     (r1 : 4 * e1 ^ 3 - g * e1 - h = 0) (r2 : 4 * e2 ^ 3 - g * e2 - h = 0)
     (r3 : 4 * e3 ^ 3 - g * e3 - h = 0)
@@ -47,6 +61,11 @@ lemma roots_alg {e1 e2 e3 g h P A B D : ℂ} (h12 : e1 ≠ e2) (h13 : e1 ≠ e3)
     rw [this, k1, k2, k3]
     ring
 
+/- English proof (translation)
+Establish `e0 : F0 = 16 * A ^ 2 / (B * D)` using `by rw [eq_div_iff (mul_ne_zero hB hD)]; exact h0`. Establish `e1 : F1 = 16 * B ^ 2 / (A * D)` using `by rw [eq_div_iff (mul_ne_zero hA hD)]; exact h1`. Establish `e2 : F2 = 16 * D ^ 2 / (A * B)` using `by rw [eq_div_iff (mul_ne_zero hA hB)]; exact h2`. Establish `ej : j = 32 * (A ^ 2 + B ^ 2 + D ^ 2) ^ 3 / (A * B * D) ^ 2`. Rewrite using `[eq_div_iff (pow_ne_zero _ (mul_ne_zero (mul_ne_zero hA hB) hD))]`.
+
+Conclude with `hj`. Substitute `e0 e1 e2 ej hs` using the available equality. Apply the tactic sequence `refine ⟨?_, ?_, ?_⟩ <;> field_simp <;> ring`.
+-/
 lemma coeffs (A B D j F0 F1 F2 : ℂ) (hA : A ≠ 0) (hB : B ≠ 0) (hD : D ≠ 0) (hs : A = B + D)
     (h0 : F0 * (B * D) = 16 * A ^ 2) (h1 : F1 * (A * D) = 16 * B ^ 2)
     (h2 : F2 * (A * B) = 16 * D ^ 2) (hj : j * (A * B * D) ^ 2 = 32 * (A ^ 2 + B ^ 2 + D ^ 2) ^ 3) :
@@ -59,6 +78,11 @@ lemma coeffs (A B D j F0 F1 F2 : ℂ) (hA : A ≠ 0) (hB : B ≠ 0) (hD : D ≠ 
   subst e0 e1 e2 ej hs
   refine ⟨?_, ?_, ?_⟩ <;> field_simp <;> ring
 
+/- English proof (translation)
+Take `⟨s1, s2, s3⟩` from `h`. Establish `e : ((X - C F0) * (X - C (-F1)) * (X - C (-F2)) : ℂ[X]) = X ^ 3 - C (F0 - F1 - F2) * X ^ 2 + C (-(F0 * F1) - F0 * F2 + F1 * F2) * X - C (F0 * F1 * F2)`. Simplify using `only [map_sub, map_neg, map_mul, map_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, s1, s2, s3]`.
+
+Simplify using `only [map_sub, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma cubic_eq (j F0 F1 F2 : ℂ)
     (h : F0 - F1 - F2 = 48 ∧ -(F0 * F1) - F0 * F2 + F1 * F2 = 768 - j ∧ F0 * F1 * F2 = 4096) :
     ((X - C 16) ^ 3 - C j * X : ℂ[X]) = (X - C F0) * (X - C (-F1)) * (X - C (-F2)) := by
@@ -77,6 +101,39 @@ namespace GlobalTheory.WeberCubicAlgebra
 
 open GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber in
 
+/- English proof (translation)
+Introduce `τ hd hj hw`. Take `⟨d1, d2, d3⟩` from `hd`. Take `⟨w0, w1, w2⟩` from `hw`. Unfold `JacobiProduct at hj`. Establish `hη : ModularForm.eta (τ : ℂ) ≠ 0` using `ModularForm.eta_ne_zero τ.2`.
+
+Establish `hp : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Establish `hprod : thetaConst 0 0 τ * thetaConst 0 1 τ * thetaConst 1 0 τ ≠ 0`. Rewrite using `[hj]`. Conclude with `mul_ne_zero two_ne_zero (pow_ne_zero _ hη)`. Establish `t0 : thetaConst 0 0 τ ≠ 0` using `fun h => hprod (by simp [h])`.
+
+Establish `t1 : thetaConst 0 1 τ ≠ 0` using `fun h => hprod (by simp [h])`. Establish `t2 : thetaConst 1 0 τ ≠ 0` using `fun h => hprod (by simp [h])`. Take `⟨n1, n2, n3⟩` from `halfPeriods_notMem τ`. Establish `mem : ∀ p q : ℤ, ((p : ℂ) * (τ : ℂ) + q) ∈ (GlobalTheory.periodPairOfTau τ).lattice` using `fun p q => by`. Rewrite using `[GlobalTheory.mem_lattice_periodPairOfTau]`.
+
+Conclude with `⟨p, q, by ring⟩`. Establish `r1` using `half_root (GlobalTheory.periodPairOfTau τ) (t := 1 / 2) (by simpa using mem 0 1) n1`. Establish `r2` using `half_root (GlobalTheory.periodPairOfTau τ) (t := (τ : ℂ) / 2) (by`. Use `mem 1 0` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use `push_cast`. Use the proof step `ring) n2`. Establish `r3` using `half_root (GlobalTheory.periodPairOfTau τ) (t := (1 + (τ : ℂ)) / 2) (by`. Use `mem 1 1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use `push_cast`. Use the proof step `ring) n3`. Establish `hP : ((Real.pi : ℂ) ^ 2) ≠ 0` using `pow_ne_zero _ hp`. Establish `h12 : wp τ (1 / 2) ≠ wp τ ((τ : ℂ) / 2)`. Rewrite using `[← sub_ne_zero, d1]`.
+
+Conclude with `mul_ne_zero hP (pow_ne_zero _ t0)`. Establish `h13 : wp τ (1 / 2) ≠ wp τ ((1 + (τ : ℂ)) / 2)`. Rewrite using `[← sub_ne_zero, d2]`. Conclude with `mul_ne_zero hP (pow_ne_zero _ t1)`. Establish `h23 : wp τ ((τ : ℂ) / 2) ≠ wp τ ((1 + (τ : ℂ)) / 2)`.
+
+Introduce `h`. Establish `h' : wp τ ((1 + (τ : ℂ)) / 2) - wp τ ((τ : ℂ) / 2) = 0` using `by rw [h]; ring`. Rewrite `h'` using `[d3]`. Conclude with `mul_ne_zero hP (pow_ne_zero _ t2) h'`. Establish `hw1 : wp τ (1 / 2) = (GlobalTheory.periodPairOfTau τ).weierstrassP (1 / 2)` using `rfl`.
+
+Establish `hw2 : wp τ ((τ : ℂ) / 2) = (GlobalTheory.periodPairOfTau τ).weierstrassP ((τ : ℂ) / 2)` using `rfl`. Establish `hw3 : wp τ ((1 + (τ : ℂ)) / 2) = (GlobalTheory.periodPairOfTau τ).weierstrassP ((1 + (τ : ℂ)) / 2)` using `rfl`. Rewrite `r1` using `[← hw1]`. Rewrite `r2` using `[← hw2]`. Rewrite `r3` using `[← hw3]`.
+
+Take `⟨hg, hdisc⟩` from `roots_alg h12 h13 h23 r1 r2 r3 d1 d2 d3`. Establish `hjl : jLat τ * ((GlobalTheory.periodPairOfTau τ).g₂ ^ 3 - 27 * (GlobalTheory.periodPairOfTau τ).g₃ ^ 2) = 1728 * (GlobalTheory.periodPairOfTau τ).g₂ ^ 3`. Rewrite using `[jLat_eq, div_mul_cancel₀ _ (disc_ne_zero τ)]`. Rewrite `hjl` using `[hdisc, hg]`. Establish `hs : thetaConst 0 0 τ ^ 4 = thetaConst 0 1 τ ^ 4 + thetaConst 1 0 τ ^ 4`.
+
+Apply `mul_left_cancel₀ hP` to reduce the goal to its premises. Take the linear combination `-d1 + d2 + d3`. Establish `hJ4 : thetaConst 0 0 τ ^ 4 * thetaConst 0 1 τ ^ 4 * thetaConst 1 0 τ ^ 4 = 16 * ModularForm.eta (τ : ℂ) ^ 12`. Use `congrArg (· ^ 4) hj` as an intermediate fact. Take the linear combination `this`.
+
+Establish `a0 : (thetaConst 0 0 τ ^ 4) ^ 3 = ModularForm.eta (τ : ℂ) ^ 12 * weberF τ ^ 24`. Rewrite using `[w0]`. Expand and normalize the polynomial expressions, which then agree. Establish `a1 : (thetaConst 0 1 τ ^ 4) ^ 3 = ModularForm.eta (τ : ℂ) ^ 12 * weberF₁ τ ^ 24`. Rewrite using `[w1]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `a2 : (thetaConst 1 0 τ ^ 4) ^ 3 = ModularForm.eta (τ : ℂ) ^ 12 * weberF₂ τ ^ 24`. Rewrite using `[w2]`. Expand and normalize the polynomial expressions, which then agree. Establish `A0` using `pow_ne_zero 4 t0`.
+
+Establish `B0` using `pow_ne_zero 4 t1`. Establish `D0` using `pow_ne_zero 4 t2`. Apply `cubic_eq` to reduce the goal to its premises. Apply `coeffs _ _ _ _ _ _ _ A0 B0 D0 hs` to reduce the goal to its premises. Apply `mul_left_cancel₀ A0` to reduce the goal to its premises.
+
+Take the linear combination `weberF τ ^ 24 * hJ4 - 16 * a0`. Apply `mul_left_cancel₀ B0` to reduce the goal to its premises. Take the linear combination `weberF₁ τ ^ 24 * hJ4 - 16 * a1`. Apply `mul_left_cancel₀ D0` to reduce the goal to its premises. Take the linear combination `weberF₂ τ ^ 24 * hJ4 - 16 * a2`.
+
+Establish `h16 : (16 : ℂ) * ((Real.pi : ℂ) ^ 2) ^ 6 ≠ 0` using `mul_ne_zero (by norm_num) (pow_ne_zero _ hP)`. Apply `mul_left_cancel₀ h16` to reduce the goal to its premises. Take the linear combination `hjl`.
+-/
 theorem weberCubic_of_halfPeriodDiff : ∀ τ : UpperHalfPlane, GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber.HalfPeriodDiff τ →
     GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber.JacobiProduct τ → GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber.ThetaWeber τ → GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber.WeberCubic τ := by
   intro τ hd hj hw

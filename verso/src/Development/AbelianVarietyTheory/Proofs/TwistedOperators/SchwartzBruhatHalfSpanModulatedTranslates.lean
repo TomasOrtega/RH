@@ -15,6 +15,15 @@ open GlobalTheory.PlaceModel GlobalTheory.PlaceDatum
 
 variable {D : D7} {S T : HSp D}
 
+/- English proof (translation)
+Establish `hx'` using `(isHalf_iff S T).1 hx`. Use `⟨fun t ht => ?_, k, hk, fun u hu hh t => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Establish `h : t + x ∈ Λ ∧ IsHalf a (t + x)`. Assume the negation of the conclusion as `h`. Conclude with `ht (if_neg h)`.
+
+Use `(isHalf_iff S T).2 ?_` and prove the remaining obligations. Conclude with `(add_mem_cancel_right hx').1 ((isHalf_iff S T).1 h.2)`. Establish `hm : k • u ∈ Λ ⊓ half S T a` using `nsmul_mem (AddSubgroup.mem_inf.2 ⟨hu, (isHalf_iff S T).1 hh⟩) k`. Rewrite using `[halfInd_eq_ind]`. Express the relevant statement in the definitionally equal form `ind _ (t + k • u + x) = ind _ (t + x)`.
+
+Rewrite using `[add_right_comm]`. Conclude with `ind_add _ _ hm`. Establish `h : t + x ∈ Λ ∧ IsHalf a (t + x)`. Assume the negation of the conclusion as `h`. Conclude with `ht (if_neg h)`.
+
+Establish `e : k • t = k • (t + x) - k • x` using `by rw [nsmul_add, add_sub_cancel_right]`. Rewrite using `[e]`. Conclude with `sub_mem (nsmul_mem h.1 k) hkx`.
+-/
 theorem isSBHalf_trans {a : AE D} {Λ : AddSubgroup (WO S T)} {x : WO S T} (hx : IsHalf a x) {k : ℕ} (hk : 0 < k)
     (hkx : k • x ∈ Λ) : IsSBHalf a Λ fun t => halfInd a Λ (t + x) := by
   have hx' := (isHalf_iff S T).1 hx
@@ -37,6 +46,13 @@ theorem isSBHalf_trans {a : AE D} {Λ : AddSubgroup (WO S T)} {x : WO S T} (hx :
     rw [e]
     exact sub_mem (nsmul_mem h.1 k) hkx
 
+/- English proof (translation)
+Establish `hb` using `isBichar_symplO S T ψ`. Take `⟨a1, k', hk1, a2, a3⟩` from `hΦ`. Use `⟨fun t ht => a1 t (right_ne_zero_of_mul ht), k * k', Nat.mul_pos hk hk1, fun u hu hh t => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Establish `e1 : Φ (t + (k * k') • u) = Φ t`. Rewrite using `[mul_nsmul]`.
+
+Conclude with `a2 _ (nsmul_mem hu k) ((isHalf_iff S T).2 (nsmul_mem ((isHalf_iff S T).1 hh) k)) t`. Establish `e2 : ψ (symplO S T ((k * k') • u) y) = 1`. Rewrite using `[mul_nsmul']`. Conclude with `(hb.nsmul k _ y).trans (hLL' _ (nsmul_mem (AddSubgroup.mem_inf.2 ⟨hu, (isHalf_iff S T).1 hh⟩) k') _ ⟨hky, nsmul_mem ((isHalf_iff S T).1 hy) k⟩)`. Simplify using `only [e1, symplO_add_left, AddChar.map_add_eq_mul, e2, mul_one]`.
+
+Rewrite using `[mul_nsmul']`. Conclude with `nsmul_mem (a3 t (right_ne_zero_of_mul ht)) k`.
+-/
 theorem isSBHalf_modul (ψ : AddChar (AF D.host.F) ℂ) {a : AE D} {Λ : AddSubgroup (WO S T)}
     (hLL' : ∀ u ∈ Λ ⊓ half S T a, ∀ y ∈ Λ ⊓ half S T (cA D a), ψ (symplO S T u y) = 1)
     {y : WO S T} (hy : IsHalf (cA D a) y) {k : ℕ} (hk : 0 < k) (hky : k • y ∈ Λ) {Φ : WO S T → ℂ}
@@ -62,6 +78,25 @@ namespace GlobalTheory.PlaceTensor
 
 open GlobalTheory.PlaceModel GlobalTheory.PlaceDatum GlobalTheory.HalfWaves
 
+/- English proof (translation)
+Introduce `D ψ S T ΛS ΛT hψ hS hT e he _ hinf`. Establish `hdual` using `(GlobalTheory.LatVac.latO_selfDual_approx_sign D ψ S T _ _ hψ hS hT).1`. Establish `hfin0` using `GlobalTheory.LatFinMod.latO_finite_mod D S T _ _ hS.1.fg hT.1.fg fun _ => True`. Establish `he' : cA D e * cA D e = cA D e` using `by rw [← RingHom.map_mul, he]`. Establish `hsm : ∀ a : AE D, a * a = a → ∀ u ∈ latO S T ΛS ΛT fun _ => True, a • u ∈ (latO S T ΛS ΛT fun _ => True) ⊓ half S T a` using `fun a ha u hu => AddSubgroup.mem_inf.2 ⟨GlobalTheory.LatticeStable.smul_mem_latO D S T _ _ _ a (GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by rw [← RingHom.map_mul, ha])) u hu, by rw [mem_half, smul_smul, ha]⟩`.
+
+Establish `hLL' : ∀ u ∈ (latO S T ΛS ΛT fun _ => True) ⊓ half S T e, ∀ y ∈ (latO S T ΛS ΛT fun _ => True) ⊓ half S T (cA D e), ψ (symplO S T u y) = 1` using `fun u hu y hy => (hdual u (infPart_of_half hinf ((isHalf_iff S T).2 hu.2))).1 hu.1 y hy.1`. Establish `hX : ∀ x ∈ half S T e, (∀ y ∈ (latO S T ΛS ΛT fun _ => True) ⊓ half S T (cA D e), ψ (symplO S T x y) = 1) → x ∈ (latO S T ΛS ΛT fun _ => True) ⊓ half S T e` using `fun x hx h => by`. Use `⟨(hdual x (infPart_of_half hinf ((isHalf_iff S T).2 hx))).2 fun u hu => ?_, hx⟩` and prove the remaining obligations. Use `h _ (hsm _ he' u hu)` as an intermediate fact. Rewrite `this` using `[← symplO_smul, (mem_half S T).1 hx]`. Then use the resulting hypothesis.
+
+Establish `hfin : ∀ k : ℕ, 0 < k → ∃ R : Set (WO S T), R.Finite ∧ ∀ t ∈ (latO S T ΛS ΛT fun _ => True) ⊓ half S T e, ∃ r ∈ R, ∃ u ∈ (latO S T ΛS ΛT fun _ => True) ⊓ half S T e, t = r + k • u` using `fun k hk => by`. Take `⟨R, hR, h⟩` from `hfin0 k hk`. Use `⟨(fun r => e • r) '' R, hR.image _, fun t ht => ?_⟩` and prove the remaining obligations. Take `⟨r, hr, u, hu, htr⟩` from `h t ht.1`. Use `⟨_, ⟨r, hr, rfl⟩, e • u, hsm e he u hu, ?_⟩` and prove the remaining obligations.
+
+Use `(mem_half S T).1 ht.2` as an intermediate fact. Rewrite using `[← this, htr, smul_add, smul_comm e k u]`. Establish `tf : ∀ k : ℕ, 0 < k → Function.Injective fun t : WO S T => k • t` using `fun k hk a b hab => by`. Rewrite using `[← inv_smul_nsmul S T hk a, ← inv_smul_nsmul S T hk b]`. Conclude with `congrArg _ hab`.
+
+Establish `hb` using `isBichar_symplO S T ψ`. Establish `hsb : ∀ x, IsHalf e x → IsSBHalf e (latO S T ΛS ΛT fun _ => True) fun t => halfInd e (latO S T ΛS ΛT fun _ => True) (t + x)` using `fun x hx => by`. Take `⟨k, hk, hk'⟩` from `exists_nsmul_mem_latO' hS.1 hT.1 x (infPart_of_half hinf hx)`. Conclude with `isSBHalf_trans hx hk hk'`. Establish `hmod : ∀ x y, IsHalf e x → IsHalf (cA D e) y → IsSBHalf e (latO S T ΛS ΛT fun _ => True) fun t => ψ (symplO S T t y) * halfInd e (latO S T ΛS ΛT fun _ => True) (t + x)` using `fun x y hx hy => by`.
+
+Take `⟨k, hk, hk'⟩` from `exists_nsmul_mem_latO' hS.1 hT.1 y (infPart_of_half (infPart_cA hinf) hy)`. Conclude with `isSBHalf_modul ψ hLL' hy hk hk' (hsb x hx)`. Use `⟨fun x y hx hy => ⟨hmod x y hx hy, fun f₀ Tm hTm => ?_⟩, fun Φ hΦ => ?_⟩` and prove the remaining obligations. Establish `v` using `hTm.vac`. Rewrite `v` using `[one_smul]`.
+
+Rewrite using `[hTm.modul _ (hsb x hx) y hy, hTm.trans _ (GlobalTheory.isSBHalf_halfInd e _) x hx, v]`. Establish `hm : Φ ∈ waveSpan (fun x y : WO S T => ψ (symplO S T x y)) (half S T e) (half S T (cA D e)) ((latO S T ΛS ΛT fun _ => True) ⊓ half S T e)`. Take `⟨h1, k, hk, h2, h3⟩` from `hΦ`. Conclude with `mem_waveSpan hb inf_le_right inf_le_right hLL' hX (half_div S T e) (half_div S T _) tf hfin Φ (fun t ht => (isHalf_iff S T).1 (h1 t ht)) k hk (fun u hu => h2 u hu.1 ((isHalf_iff S T).2 hu.2)) fun t ht => ⟨h3 t ht, (half S T e).nsmul_mem ((isHalf_iff S T).1 (h1 t ht)) _⟩`. Use `(Submodule.span_le.2 ?_) hm` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨x, hx, y, hy, rfl⟩`. Establish `e1 : wave (fun x y : WO S T => ψ (symplO S T x y)) ((latO S T ΛS ΛT fun _ => True) ⊓ half S T e) x y = ψ (symplO S T x y) • fun t => ψ (symplO S T t y) * halfInd e (latO S T ΛS ΛT fun _ => True) (t + x)`. Use function extensionality and compare the values at `t`. Simplify using `only [wave, Pi.smul_apply, smul_eq_mul, halfInd_eq_ind, symplO_add_left, AddChar.map_add_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e1]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨x, y, (isHalf_iff S T).2 hx, (isHalf_iff S T).2 hy, rfl⟩)`.
+-/
 theorem halfWaves_span : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)), IsStdChar D ψ (-1) → IsSelfDualC S ΛS → IsSelfDualC T ΛT → ∀ a : AE D, a * a = a → a * cA D a = 0 → infPart D a = 0 → (∀ x y : WO S T, IsHalf a x → IsHalf (cA D a) y → IsSBHalf a (latO S T ΛS ΛT fun _ => True) (fun t => ψ (symplO S T t y) * halfInd a (latO S T ΛS ΛT fun _ => True) (t + x)) ∧ ∀ (f₀ : WO S T → ℂ) (Tm : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ)), IsPlaceModel ψ (symplO S T) (heisO ψ S T) a (latO S T ΛS ΛT fun _ => True) 1 f₀ Tm → Tm (fun t => ψ (symplO S T t y) * halfInd a (latO S T ΛS ΛT fun _ => True) (t + x)) = heisO ψ S T y (heisO ψ S T x f₀)) ∧ ∀ Φ, IsSBHalf a (latO S T ΛS ΛT fun _ => True) Φ → Φ ∈ Submodule.span ℂ {Ψ : WO S T → ℂ | ∃ x y : WO S T, IsHalf a x ∧ IsHalf (cA D a) y ∧ Ψ = fun t => ψ (symplO S T t y) * halfInd a (latO S T ΛS ΛT fun _ => True) (t + x)} := by
   intro D ψ S T ΛS ΛT hψ hS hT e he _ hinf
   have hdual := (GlobalTheory.LatVac.latO_selfDual_approx_sign D ψ S T _ _ hψ hS hT).1

@@ -8,6 +8,9 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open scoped Matrix ENNReal
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TensorSquareIntegral.exists_const_tensor | exact GlobalTheory.TensorSquareIntegral.exists_const_tensor | (intros; apply GlobalTheory.TensorSquareIntegral.exists_const_tensor <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.restricted_tensor_schwartz : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ]
     (e : ((κ → AF F) → ℂ) →ₗ[ℂ] (κ → AF F) → ℂ) (vac vac₁ : ∀ v : Pl F, (κ → Fv F v) → ℂ)
     (ei : SInf F κ →L[ℂ] SInf F κ) (ev : ∀ v : Pl F, ((κ → Fv F v) → ℂ) →ₗ[ℂ] (κ → Fv F v) → ℂ),

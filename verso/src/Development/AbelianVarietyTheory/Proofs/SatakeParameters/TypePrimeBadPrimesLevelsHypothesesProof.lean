@@ -12,6 +12,11 @@ namespace GlobalTheory.DatumJets.HidaSetting
 variable {X : Fields} {Pr : Primes X} {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} {S : Set ℕ}
   {mu : Tup X.F X.E X.K S}
 
+/- English proof (translation)
+Establish `hTn : ∀ P ∈ rowSG Pr sel mu, ((Pr.T u : ℕ) : 𝓞 X.E) ∉ P.asIdeal` using `fun P hP => notMem_rowSG hPr hsel (hPr.T_prime u) hT (hPr.T_ne_g u) hP`. Introduce `P hP hP'`. Apply the tactic sequence `rcases (mem_Sall sel mu u P).1 hP with h | h <;> rcases (mem_Sall sel mu u _).1 hP' with h' | h'`. Use `conj_piT_notMem hPr u ⟨conjPrime₂ P, h'⟩ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cO X.E (Pr.piT u) ∈ (conjPrime₂ P).asIdeal`.
+
+Rewrite using `[mem_conjP, cO_cO]`. Conclude with `decoFin_mem_of_mem_divs h`. Conclude with `hTn _ h' (natCast_mem_conjP.2 (T_mem hPr u ⟨P, h⟩))`. Conclude with `hTn _ h (natCast_mem_conjP.1 (T_mem hPr u ⟨conjPrime₂ P, h'⟩))`. Conclude with `conjP_notMem_rowSG hX hPr hsel hg h h'`.
+-/
 theorem conj_notMem (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) (u : Pr.Word) (hT : Pr.T u ∈ S) (hg : ∀ i, Pr.g i ∈ S) :
     ∀ P ∈ Sall sel mu u, conjPrime₂ P ∉ Sall sel mu u := by
   have hTn : ∀ P ∈ rowSG Pr sel mu, ((Pr.T u : ℕ) : 𝓞 X.E) ∉ P.asIdeal := fun P hP =>
@@ -26,6 +31,13 @@ theorem conj_notMem (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) (u : Pr.Word)
   · exact hTn _ h (natCast_mem_conjP.1 (T_mem hPr u ⟨conjPrime₂ P, h'⟩))
   · exact conjP_notMem_rowSG hX hPr hsel hg h h'
 
+/- English proof (translation)
+Break down `(mem_Sall sel mu u P).1 hP with h | h` into its components or cases. Introduce `hm`. Establish `h0 : Pr.piT u ∈ P.asIdeal` using `decoFin_mem_of_mem_divs h`. Establish `h1 : (l : 𝓞 X.E) ∣ Pr.piT u - 1` using `(Nat.cast_dvd_cast (hd.mul_right _)).trans (hPr.piT_cong u)`. Establish `h2 : Pr.piT u - 1 ∈ P.asIdeal` using `Ideal.mem_of_dvd _ h1 hm`.
+
+Establish `h3` using `P.asIdeal.sub_mem h0 h2`. Rewrite `h3` using `[sub_sub_cancel]`. Conclude with `P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h3)`. Use `notMem_rowSG hPr hsel hl hS (fun i e => ?_) h` and prove the remaining obligations. Substitute `e` using the available equality.
+
+Establish `h1 : Pr.g i ≡ 1 [MOD Pr.g i]` using `(hPr.g_cong i).of_dvd hd`. Establish `h2 : Pr.g i ∣ 1` using `(Nat.modEq_zero_iff_dvd).1 (h1.symm.trans ((Nat.modEq_zero_iff_dvd).2 dvd_rfl))`. Conclude with `(hPr.g_prime i).one_lt.ne' (Nat.dvd_one.1 h2)`.
+-/
 theorem notMem_Sall (hPr : Pr.Ok) (hsel : IsSel X sel) (u : Pr.Word) {l : ℕ} (hl : l.Prime) (hS : l ∈ S) (hd : l ∣ Pr.cond)
     {P : HeightOneSpectrum (𝓞 X.E)} (hP : P ∈ Sall sel mu u) : (l : 𝓞 X.E) ∉ P.asIdeal := by
   rcases (mem_Sall sel mu u P).1 hP with h | h
@@ -43,13 +55,24 @@ theorem notMem_Sall (hPr : Pr.Ok) (hsel : IsSel X sel) (u : Pr.Word) {l : ℕ} (
     have h2 : Pr.g i ∣ 1 := (Nat.modEq_zero_iff_dvd).1 (h1.symm.trans ((Nat.modEq_zero_iff_dvd).2 dvd_rfl))
     exact (hPr.g_prime i).one_lt.ne' (Nat.dvd_one.1 h2)
 
+/- English proof (translation)
+The claim follows from `Nat.pos_of_ne_zero fun h => P.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`.
+-/
 theorem qOf_pos (P : HeightOneSpectrum (𝓞 X.E)) : 0 < Formalism.L2.Col.qOf P :=
   Nat.pos_of_ne_zero fun h => P.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)
 
+/- English proof (translation)
+Conclude with `Finset.mem_union.2 (Or.inl (mem_vGs_iff.2 ⟨i, h⟩))`.
+-/
 theorem vG_mem_rowSG {i : Fin 2} {P : HeightOneSpectrum (𝓞 X.E)} (h : P ∈ Pr.vG i) : P ∈ rowSG Pr sel mu := by
   classical
   exact Finset.mem_union.2 (Or.inl (mem_vGs_iff.2 ⟨i, h⟩))
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Establish `h1 : (1 : E) ∈ localization₂ P.asIdeal (1 : Submodule (𝓞 E) E)` using `(mem_locP P _ _).2 ⟨1, (Ideal.ne_top_iff_one _).1 P.isPrime.ne_top, Submodule.mem_one.2 ⟨1, by simp⟩⟩`. Rewrite `h1` using `[← h]`. Take `⟨s, hs, hs'⟩` from `(mem_locP P _ _).1 h1`. Rewrite `hs'` using `[Submodule.mem_bot, smul_eq_zero]`.
+
+Break down `hs' with h | h` into its components or cases. Conclude with `hs (h ▸ zero_mem _)`. Conclude with `one_ne_zero h`.
+-/
 theorem ne_bot_of_locP {E : Type} [Field E] [NumberField E] [StarRing E] {I : Submodule (𝓞 E) E} {P : HeightOneSpectrum (𝓞 E)}
     (h : localization₂ P.asIdeal I = localization₂ P.asIdeal (1 : Submodule (𝓞 E) E)) : I ≠ ⊥ := by
   rintro rfl
@@ -62,6 +85,17 @@ theorem ne_bot_of_locP {E : Type} [Field E] [NumberField E] [StarRing E] {I : Su
   · exact hs (h ▸ zero_mem _)
   · exact one_ne_zero h
 
+/- English proof (translation)
+Establish `hc2 : ∀ x, X.conjO (X.conjO x) = x` using `fun x => RingOfIntegers.ext (star_star (x : X.E))`. Take `⟨P₀, hP₀⟩ : (Pr.vG i).Nonempty` from `Finset.card_pos.1 (hPr.vG_card i ▸ hX.f_pos)`. Establish `hP₀r : P₀ ∈ rowSG Pr sel mu` using `vG_mem_rowSG hP₀`. Establish `hne : X.conjO (Pr.piG i) ≠ 0`. Introduce `h`.
+
+Use `hPr.piG_norm i` as an intermediate fact. Rewrite `this` using `[h, mul_zero]`. Conclude with `(hPr.g_prime i).ne_zero (by exact_mod_cast this.symm)`. Establish `hprod : 0 < ∏ P : rowSG Pr sel mu, Formalism.L2.Col.qOf P.1` using `Finset.prod_pos fun P _ => qOf_pos P.1`. Take `⟨h1, h2, -, -, h5, h6⟩` from `hLa`.
+
+Use `⟨⟨hX, ⟨h1, h2, conj_notMem hX hPr hsel u hT hg, hU, h5, h6⟩, ne_bot_of_locP (hU P₀ ((mem_Sall sel mu u P₀).2 (Or.inr hP₀r))), hE, hPr.g_prime i, ?_, ?_, fun P hP => ?_⟩, pow_pos hprod _, Nat.mul_pos (hPr.T_prime u).pos (pow_pos hprod _), ?_⟩` and prove the remaining obligations. Rewrite using `[hc2, mul_comm]`. Conclude with `hPr.piG_norm i`. Rewrite using `[hc2]`. Conclude with `(hPr.piG_cop i).symm`.
+
+Conclude with `(mem_Sall sel mu u P).2 (Or.inr (vG_mem_rowSG (i := i) ((mem_divs hne P).2 hP)))`. Use `Dvd.dvd.mul_left (dvd_pow ?_ (Nat.one_le_iff_ne_zero.1 hcst.B_pos)) _` and prove the remaining obligations. Establish `e : Formalism.L2.Col.qOf P₀ = Pr.g i` using `hPr.vG_norm i P₀ hP₀`. Establish `hd` using `Finset.dvd_prod_of_mem (fun P : rowSG Pr sel mu => Formalism.L2.Col.qOf P.1) (Finset.mem_univ (⟨P₀, hP₀r⟩ : rowSG Pr sel mu))`. Use `beta_reduce at hd`.
+
+Rewrite `hd` using `[e]`. Conclude with `hd`.
+-/
 theorem setting_of_unit (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) (i : Fin 2) (u : Pr.Word) (hT : Pr.T u ∈ S)
     (hg : ∀ i, Pr.g i ∈ S) (cst : LocCst X (rowSG Pr sel mu)) (hcst : cst.Ok) (A : Amb X) (a b : ℕ) (hLa : A.LaHyp a b ∅)
     (hE : A.ESmooth a b) (hU : A.AAUnit (Sall sel mu u)) :
@@ -93,6 +127,13 @@ theorem setting_of_unit (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) (i : Fin 
     rw [e] at hd
     exact hd
 
+/- English proof (translation)
+Introduce `D EX sel δ B χ cD hH hsel i u mu cst hcst a b hLa hE`. Take `⟨hcc, -, -, hX1, hPr⟩` from `hH`. Establish `hT : (recPrimes EX).T u ∈ badS D` using `Or.inr (Or.inl ⟨u, rfl⟩)`. Apply the tactic sequence `have hg : ∀ j, (recPrimes EX).g j ∈ badS D := fun j => Or.inl (by fin_cases j <;> simp)`. Use `setting_of_unit hX1.ok hPr hsel i u hT hg cst hcst _ a b hLa hE fun P hP => ?_` and prove the remaining obligations.
+
+Take `⟨l, n, -, hlP, hl, -⟩` from `Ideal.exists_prime_and_absNorm_eq_pow P.asIdeal`. Use `GlobalTheory.AAUnitAway.locP_AA D _ (recSeam D) _ δ B χ cD P l hl ?_ ?_ hlP ?_` and prove the remaining obligations. Introduce `hs`. Use `notMem_Sall hPr hsel u hl (GlobalTheory.IndefiniteRowSideFullHecke.BadPrimesPeriodBound.small_mem_badS D l hs) ?_ hP hlP` and prove the remaining obligations. Conclude with `((Nat.dvd_of_mem_primeFactors hs).mul_right _).mul_right _`.
+
+Introduce and unpack `rfl`. Use `notMem_Sall hPr hsel u hl (Or.inl (by simp)) ?_ hP hlP` and prove the remaining obligations. Conclude with `(dvd_mul_left _ _).mul_right _`. Rewrite using `[hcc, Ideal.absNorm_top]`. Conclude with `Nat.coprime_one_left _`.
+-/
 theorem typePrimeBadPrimesLevelsHypotheses_proof : GlobalTheory.DatumJets.TypePrimeBadPrimesLevelsHypotheses := by
   intro D EX sel δ B χ cD hH hsel i u mu cst hcst a b hLa hE
   obtain ⟨hcc, -, -, hX1, hPr⟩ := hH

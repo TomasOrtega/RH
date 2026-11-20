@@ -48,6 +48,21 @@ structure IsInvForm (b : thetaSub ψ V W →ₗ⋆[ℂ] thetaSub ψ V W →ₗ[�
   defin : ∀ x, b x x = 0 → x = 0
   inv : ∀ p (x y x' y' : thetaSub ψ V W), x'.1 = ω p x.1 → y'.1 = ω p y.1 → b x' y' = b x y
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, K, hK, hKc⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D W V`. Use `haveI : BorelSpace (WO V W) := ⟨rfl⟩`. Establish `hN` using `GlobalTheory.exists_normalise_meanSquare_of_cocompact (WO V W) (ratL W V) K hK hKc`. Take `⟨μ, 𝓕, hμ⟩` from `(hN (fun _ => 1) continuous_const (fun h => one_ne_zero (congrFun h 0)) (fun _ _ _ => rfl)).1`. Use `haveI : IsFiniteMeasure (μ.restrict 𝓕) := ⟨by rw [Measure.restrict_apply_univ, hμ.2.2]; exact ENNReal.one_lt_top⟩`.
+
+Establish `hI : ∀ x y : thetaSub ψ V W, Integrable (fun w => x.1 w * conj (y.1 w)) (μ.restrict 𝓕)` using `fun x y => GlobalTheory.WeilInner.integrable_mul_conj _ x.2.cont.measurable y.2.cont.measurable (GlobalTheory.OrientedHeis.theta_bounded hω.std x.2) (GlobalTheory.OrientedHeis.theta_bounded hω.std y.2)`. Establish `hn : ∀ x : thetaSub ψ V W, ∫ w in 𝓕, x.1 w * conj (x.1 w) ∂μ = ((∫ w in 𝓕, ‖x.1 w‖ ^ 2 ∂μ : ℝ) : ℂ)` using `fun x => by`. Simplify using `only [Complex.mul_conj', ← Complex.ofReal_pow]`. Conclude with `integral_complex_ofReal`. Use `⟨LinearMap.mk₂'ₛₗ (starRingEnd ℂ) (RingHom.id ℂ) (fun x y => ∫ w in 𝓕, y.1 w * conj (x.1 w) ∂μ) (fun x x' y => ?_) (fun a x y => ?_) (fun x y y' => ?_) (fun a x y => ?_), fun x y => ?_, fun x => ?_, fun x h0 => ?_, fun p x y x' y' hx hy => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Submodule.coe_add, Pi.add_apply, map_add, mul_add]`. Conclude with `integral_add (hI y x) (hI y x')`. Simplify using `only [Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, map_mul, mul_left_comm _ (conj a)]`. Conclude with `integral_const_mul _ _`. Simplify using `only [Submodule.coe_add, Pi.add_apply, add_mul]`.
+
+Conclude with `integral_add (hI y x) (hI y' x)`. Simplify using `only [Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, mul_assoc, RingHom.id_apply]`. Conclude with `integral_const_mul _ _`. Simplify using `only [LinearMap.mk₂'ₛₗ_apply]`. Rewrite using `[← integral_conj]`.
+
+Simplify using `only [map_mul, Complex.conj_conj, mul_comm]`. Rewrite using `[LinearMap.mk₂'ₛₗ_apply, hn, Complex.ofReal_re]`. Conclude with `integral_nonneg fun w => by positivity`. Rewrite `h0` using `[LinearMap.mk₂'ₛₗ_apply, hn, Complex.ofReal_eq_zero]`. Assume the negation of the conclusion as `hne`.
+
+Take `⟨c, hc⟩` from `(hN x.1 x.2.cont (fun h => hne (Subtype.ext h)) (by`. Introduce and unpack `_ ⟨γ, rfl⟩ w`. Conclude with `(congrArg norm (x.2.quasi γ w)).trans (by rw [norm_mul, hω.std.1.2.1, one_mul]))).2`. Establish `h2` using `hc μ 𝓕 hμ.1 hμ.2.1 hμ.2.2`. Simplify using `only [norm_mul, mul_pow] at h2`.
+
+Rewrite `h2` using `[integral_const_mul, h0, mul_zero]`. Conclude with `zero_ne_one h2`. Simplify using `only [LinearMap.mk₂'ₛₗ_apply, hx, hy]`. Conclude with `GlobalTheory.WeilInner.om_inner D ψ V W χV χW ω hω μ 𝓕 hμ p _ _ y.2 x.2`.
+-/
 theorem exists_invForm (hω : IsWeilDatumO ψ V W χV χW ω) :
     ∃ b : thetaSub ψ V W →ₗ⋆[ℂ] thetaSub ψ V W →ₗ[ℂ] ℂ, IsInvForm ω b := by
   obtain ⟨i1, i2, i3, i4, i5, K, hK, hKc⟩ := GlobalTheory.AdelicMatrixLattice.lattice D W V
@@ -89,6 +104,11 @@ theorem exists_invForm (hω : IsWeilDatumO ψ V W χV χW ω) :
   · simp only [LinearMap.mk₂'ₛₗ_apply, hx, hy]
     exact GlobalTheory.WeilInner.om_inner D ψ V W χV χW ω hω μ 𝓕 hμ p _ _ y.2 x.2
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `h`. Distinguish the cases in `f0 : f = 0`. Conclude with `⟨1, norm_one, by rw [f0, map_zero, smul_zero]⟩`. Take `⟨b, hb⟩` from `exists_invForm hω`. Use `⟨c, ?_, hc⟩` and prove the remaining obligations.
+
+Establish `e` using `hb.inv p ⟨f, hf⟩ ⟨f, hf⟩ (c • ⟨f, hf⟩) (c • ⟨f, hf⟩) hc.symm hc.symm`. Rewrite `e` using `[LinearMap.map_smulₛₗ₂, map_smul, smul_eq_mul, smul_eq_mul, ← mul_assoc]`. Establish `e2` using `(mul_eq_right₀ fun h => f0 (congrArg Subtype.val (hb.defin _ h))).1 e`. Rewrite `e2` using `[Complex.conj_mul']`. Conclude with `(sq_eq_sq₀ (norm_nonneg _) zero_le_one).1 (by rw [one_pow]; exact_mod_cast e2)`.
+-/
 theorem exists_unit_eigen (hω : IsWeilDatumO ψ V W χV χW ω) {f : WO V W → ℂ} (hf : IsThetaFunO ψ V W f)
     {p : GA D V × GA D W} (h : ∃ c : ℂ, ω p f = c • f) : ∃ c : ℂ, ‖c‖ = 1 ∧ ω p f = c • f := by
   obtain ⟨c, hc⟩ := h
@@ -102,6 +122,11 @@ theorem exists_unit_eigen (hω : IsWeilDatumO ψ V W χV χW ω) {f : WO V W →
   rw [Complex.conj_mul'] at e2
   exact (sq_eq_sq₀ (norm_nonneg _) zero_le_one).1 (by rw [one_pow]; exact_mod_cast e2)
 
+/- English proof (translation)
+Use `haveI := (h2 τ).1`. Use `⟨Module.Finite.of_injective (((M.sm τ).subtype ∘ₗ (lowT M τ).subtype).codRestrict (lowKSub (M.ε τ) (M.lam τ) (M.σ τ)) fun x => x.2) fun x y h => Subtype.ext (Subtype.ext (by exact congrArg (fun z : lowKSub (M.ε τ) (M.lam τ) (M.σ τ) => (z : M.H τ)) h)), ?_⟩` and prove the remaining obligations. Set `g : Formalism.REAL.Kset (M.ε τ) → lowT M τ →ₗ[ℂ] lowT M τ` to `fun k => (((M.σ τ k : M.H τ →ₗ[ℂ] M.H τ) ∘ₗ (M.sm τ).subtype ∘ₗ (lowT M τ).subtype).codRestrict (M.sm τ) fun x => h1 τ ((h2 τ).2.1 k k.2 _ x.2)).codRestrict (lowT M τ) fun x => (h2 τ).2.1 k k.2 _ x.2`. Use `⟨g, fun _ _ => rfl, fun k x => (M.ds τ).2.2.1.2.1 k (kset_uj k.2) _, fun U hU => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h0 : U = ⊥`.
+
+Conclude with `Or.inl h0`. Take `⟨v, hv, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h0`. Use `Or.inr (GlobalTheory.DefLift.eq_top_of_translates h1 h2 τ U v hv0 fun k hk u hu => ?_)` and prove the remaining obligations. Establish `: u = g ⟨k, hk⟩ v` using `Subtype.ext (Subtype.ext hu)`. Conclude with `this ▸ hU _ v hv`.
+-/
 theorem exists_kop (h1 : LowSm M) (h2 : GlobalTheory.IndefiniteRowSideFullHecke.HolomorphicLowestType.LowIrr M) (τ : D.what₂.Tau) : FiniteDimensional ℂ (lowT M τ) ∧
     ∃ g : Formalism.REAL.Kset (M.ε τ) → lowT M τ →ₗ[ℂ] lowT M τ,
       (∀ k x, ((g k x : M.sm τ) : M.H τ) = M.σ τ k ((x : M.sm τ) : M.H τ)) ∧ (∀ k x, ‖g k x‖ = ‖x‖) ∧
@@ -131,6 +156,13 @@ def Eqv {c : CoefA V} (F : LowT M →ₗ[ℂ] c.W →ₗ[ℂ] thetaSub ψ V W) :
       (F (PiTensorProduct.tprod ℂ (Function.update v τ u)) w).1 =
         ω (1, atTau θ W τ ((M.fr τ)⁻¹ * k * M.fr τ)) (F (PiTensorProduct.tprod ℂ v) w).1
 
+/- English proof (translation)
+Use `exists_const (fun (v : ∀ ρ, lowT M ρ) w (v' : ∀ ρ, lowT M ρ) w' => b (F (PiTensorProduct.tprod ℂ v) w) (F' (PiTensorProduct.tprod ℂ v') w')) w₀ h₀ (fun w w' τ v v' => ?_) fun v v' => ?_` and prove the remaining obligations. Take `⟨_, g, g1, g2, g3⟩` from `exists_kop h1 h2 τ`. Use `form_eq_mul_inner g (fun k x y => (LinearIsometry.mk (g k) (g2 k)).inner_map_map x y) g3 ((b ∘ₛₗ (F.flip w ∘ₗ (PiTensorProduct.tprod ℂ).toLinearMap v τ)).compl₂ (F'.flip w' ∘ₗ (PiTensorProduct.tprod ℂ).toLinearMap v' τ)) fun k x y => ?_` and prove the remaining obligations. Establish `e1` using `hF.2 τ k k.2 (Function.update v τ x) (g k x) (by rw [Function.update_self]; exact g1 k x) w`. Establish `e2` using `hF'.2 τ k k.2 (Function.update v' τ y) (g k y) (by rw [Function.update_self]; exact g1 k y) w'`.
+
+Rewrite `e1`, `e2` using `[Function.update_idem]`. Conclude with `hb.inv _ _ _ _ _ e1 e2`. Use `form_eq_mul_inner (fun u : GinfC V => c.ρ u) (fun u => hc.2.1 u) (fun U hU => hc.2.2.2.2 U fun h => ?_) ((b ∘ₛₗ F (PiTensorProduct.tprod ℂ v)).compl₂ (F' (PiTensorProduct.tprod ℂ v'))) fun u x y => hb.inv _ _ _ _ _ (hF.1 u u.2 _ x) (hF'.1 u u.2 _ y)` and prove the remaining obligations. Take `⟨a, ha, k, hk, rfl⟩` from `(GlobalTheory.UnitarySplit.real_finite_split D V).1 h`. Rewrite using `[map_mul, hc.1 k hk, mul_one]`.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hU ⟨a, ha⟩ x hx`.
+-/
 theorem exists_const_of_eqv (h1 : LowSm M) (h2 : GlobalTheory.IndefiniteRowSideFullHecke.HolomorphicLowestType.LowIrr M) {c : CoefA V} (hc : c.Is)
     {b : thetaSub ψ V W →ₗ⋆[ℂ] thetaSub ψ V W →ₗ[ℂ] ℂ} (hb : IsInvForm ω b)
     {F F' : LowT M →ₗ[ℂ] c.W →ₗ[ℂ] thetaSub ψ V W} (hF : Eqv θ ω F) (hF' : Eqv θ ω F') (w₀ : c.W) (h₀ : ‖w₀‖ = 1) :
@@ -156,6 +188,23 @@ theorem exists_const_of_eqv (h1 : LowSm M) (h2 : GlobalTheory.IndefiniteRowSideF
     rintro _ ⟨x, hx, rfl⟩
     exact hU ⟨a, ha⟩ x hx
 
+/- English proof (translation)
+Take `⟨e, he, h1, h2⟩` from `h`. Take `⟨e', he', h1', h2'⟩` from `h'`. Take `rfl : e = e'` from `funext fun a => by`. Apply the tactic sequence `rcases he a with h | h <;> rcases he' a with h' | h' <;> first | exact h.1.trans h'.1.symm | omega`. Establish `hd : (Matrix.diagonal fun a => (e a : ℂ)) * (Matrix.diagonal fun a => (e a : ℂ)) = 1`.
+
+Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `rcases he a with h | h <;> simp [h.1]`. Establish `hJ : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1`.
+
+Rewrite using `[Formalism.REAL.Jm, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> simp`. Generalize the expression as in `(Matrix.diagonal fun a => (e a : ℂ)) = d at *`.
+
+Establish `p1 : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 hP)`. Establish `p2 : P⁻¹ * P = 1` using `mul_eq_one_comm.1 p1`. Establish `p3 : (P⁻¹)ᴴ * Pᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, p1, Matrix.conjTranspose_one]`. Take `⟨C, c2⟩ : ∃ C, C * B = 1` from `⟨d * (Bᴴ * G), by rw [Matrix.mul_assoc, h1, hd]⟩`. Establish `c1 : B * C = 1` using `mul_eq_one_comm.1 c2`.
+
+Establish `c3 : Cᴴ * Bᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, c1, Matrix.conjTranspose_one]`. Establish `e0 : P⁻¹ * (P * (B' * C) * P⁻¹) * P = B' * C`. Combine the equalities or inequalities in the displayed calculation. Establish `u : (B' * C)ᴴ * G * (B' * C) = G`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `cm : P⁻¹ * Formalism.REAL.Jm ε * P * (B' * C) = B' * C * (P⁻¹ * Formalism.REAL.Jm ε * P)`. Generalize the expression as in `P⁻¹ * Formalism.REAL.Jm ε * P = s at *`. Combine the equalities or inequalities in the displayed calculation. Establish `kJ : P * (B' * C) * P⁻¹ * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * (P * (B' * C) * P⁻¹)`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `⟨P * (B' * C) * P⁻¹, ⟨?_, kJ⟩, e0.symm ▸ u, by rw [e0, Matrix.mul_assoc, c2, Matrix.mul_one], e0.symm ▸ cm⟩` and prove the remaining obligations. Establish `k2 : (P * (B' * C) * P⁻¹)ᴴ * Formalism.REAL.Jm ε * (P * (B' * C) * P⁻¹) = Formalism.REAL.Jm ε`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = ((P⁻¹)ᴴ * Pᴴ) * Formalism.REAL.Jm ε * (P * P⁻¹) := by rw [hG, u, ← hG]; simp only [Matrix.mul_assoc]`.
+
+Use `_ = _ := by rw [p3, p1, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose]`. Generalize the expression as in `P * (B' * C) * P⁻¹ = k at *`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_kset {n p : ℕ} {ε : Fin n → Bool} {G P B B' : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P)
     (hG : Pᴴ * Formalism.REAL.Jm ε * P = G) (h : IsONBasis G (P⁻¹ * Formalism.REAL.Jm ε * P) B p)
     (h' : IsONBasis G (P⁻¹ * Formalism.REAL.Jm ε * P) B' p) :
@@ -209,6 +258,21 @@ theorem exists_kset {n p : ℕ} {ε : Fin n → Bool} {G P B B' : Matrix (Fin n)
   calc kᴴ * k = kᴴ * (k * Formalism.REAL.Jm ε) * Formalism.REAL.Jm ε := by simp only [Matrix.mul_assoc, hJ, Matrix.mul_one]
     _ = 1 := by rw [kJ, ← Matrix.mul_assoc, k2, hJ]
 
+/- English proof (translation)
+Establish `key : ∀ s : Finset D.what₂.Tau, ∃ (v' : ∀ ρ, lowT M ρ) (l : ℂ), (∀ ρ, ‖v' ρ‖ = 1) ∧ ‖l‖ = 1 ∧ (F (PiTensorProduct.tprod ℂ v') w).1 = l • pureTensorO ψ θ V W (fun _ => 1) (cart M) BV (s.piecewise B' B) f Δ`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨v, 1, hn, norm_one, by rw [Finset.piecewise_empty, one_smul, he]⟩`. Consider the case `insert τ s hτ ih`.
+
+Take `⟨v', l, n1, n2, e⟩` from `ih`. Take `⟨-, g, g1, g2, -⟩` from `exists_kop h1 h2 τ`. Take `⟨k, hk, k1, k2, k3⟩` from `exists_kset (M.fr_unit τ) (M.fr_gram τ) (hB τ) (hB' τ)`. Establish `sp` using `GlobalTheory.PointAtPlaceHom.atTau_spec hθ W τ k1`. Establish `e1` using `hF.2 τ k hk v' (g ⟨k, hk⟩ (v' τ)) (g1 _ _) w`.
+
+Generalize the expression as in `atTau θ W τ ((M.fr τ)⁻¹ * k * M.fr τ) = h at sp e1`. Establish `s1 : compAt θ τ (Formalism.L2.Theta.mt W h) = (M.fr τ)⁻¹ * k * M.fr τ` using `sp.2.1`. Establish `s2 : ∀ ρ, ρ ≠ τ → compAt θ ρ (Formalism.L2.Theta.mt W h) = 1` using `sp.2.2`. Establish `s0 : ∀ ρ, compAt θ ρ (Formalism.L2.Theta.mt V 1) = 1` using `fun ρ => GlobalTheory.PointAtPlaceHom.infMat_one V (θ ρ)`. Establish `cT : ∀ ρ, cart M ρ * compAt θ ρ (Formalism.L2.Theta.mt W h) = compAt θ ρ (Formalism.L2.Theta.mt W h) * cart M ρ` using `fun ρ => by`.
+
+Distinguish the cases in `hρ : ρ = τ`. Substitute `hρ` using the available equality. Rewrite using `[s1]`. Conclude with `k3`. Rewrite using `[s2 ρ hρ, Matrix.one_mul, Matrix.mul_one]`.
+
+Take `⟨a, a1, a2⟩` from `exists_unit_eigen hω hf (GlobalTheory.DefLift.FockAct.om_vac hω hθ kV kW (sS := fun _ => 1) hV (GlobalTheory.Chain.VacVec.cart_isCartanInv M) hf hv (one_mem _) sp.1 (fun ρ => by rw [Matrix.one_mul, Matrix.mul_one]) cT)`. Use `⟨Function.update v' τ (g ⟨k, hk⟩ (v' τ)), l * a, fun ρ => ?_, by rw [norm_mul, n2, a1, one_mul], ?_⟩` and prove the remaining obligations. Distinguish the cases in `hρ : ρ = τ`. Substitute `hρ` using the available equality. Rewrite using `[Function.update_self, g2, n1]`.
+
+Rewrite using `[Function.update_of_ne hρ, n1]`. Rewrite using `[e1, e, map_smul, (GlobalTheory.OrientedHeis.om_pureTensorO D ψ θ V W χV χW ω hω hθ (fun _ => 1) (fun _ => 1) BV BV (cart M) (cart M) (s.piecewise B' B) ((insert τ s).piecewise B' B) 1 h (fun ρ => by rw [Matrix.one_mul, Matrix.mul_one]) cT (fun ρ => by rw [s0, Matrix.one_mul]) (f …`. Distinguish the cases in `hρ : ρ = τ`. Substitute `hρ` using the available equality. Rewrite using `[s1, Finset.piecewise_insert_self, Finset.piecewise_eq_of_notMem _ _ _ hτ, k2]`.
+
+Rewrite using `[s2 ρ hρ, Matrix.one_mul, Finset.piecewise_insert_of_ne _ _ _ hρ]`. Simplify `key Finset.univ` using `only [Finset.piecewise_univ]`.
+-/
 theorem exists_move (hω : IsWeilDatumO ψ V W χV χW ω) (hθ : IsInfFam θ) (kV : V.SigOK) (kW : W.SigOK)
     (hV : ∀ τ, IsCartanInv (gramAt D V τ) 1) (h1 : LowSm M) (h2 : GlobalTheory.IndefiniteRowSideFullHecke.HolomorphicLowestType.LowIrr M) {c : CoefA V}
     {F : LowT M →ₗ[ℂ] c.W →ₗ[ℂ] thetaSub ψ V W} (hF : Eqv θ ω F) {f : WO V W → ℂ} (hf : IsThetaFunO ψ V W f)
@@ -258,6 +322,13 @@ theorem exists_move (hω : IsWeilDatumO ψ V W χV χW ω) (hθ : IsInfFam θ) (
         · rw [s2 ρ hρ, Matrix.one_mul, Finset.piecewise_insert_of_ne _ _ _ hρ]
   simpa only [Finset.piecewise_univ] using key Finset.univ
 
+/- English proof (translation)
+Take `⟨h₀, e, he, ⟨T, hT₀⟩, hall⟩` from `h`. Take `⟨h₀', e', he', -, hall'⟩` from `h'`. Choose the witnesses or unpack the hypotheses as in `rfl : e' = e := by`. Take `⟨⟨es, hes, rfl⟩, -⟩` from `he`. Take `⟨⟨es', hes', rfl⟩, -⟩` from `he'`.
+
+Conclude with `Finset.sum_congr rfl fun PP hPP => (((GlobalTheory.IdemSupport.supported_group_and_prime_idempotents V).2.2.1 PP _ _ (Or.inl ⟨hes PP hPP, rfl⟩)).2.2.2.1 _ _ (Or.inl ⟨hes' PP hPP, rfl⟩)).1`. Take `⟨a, ha, rfl⟩` from `GlobalTheory.vacuum_unique_all D ψ θ h₀.1 h₀.2.inf V W sS sT kV kW hS hT ΛS ΛT dS dT f₀ f₀' h₀ h₀'`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Rewrite using `[hall T hT₀]`. Conclude with `hall' (a • T) { trans := fun Φ hΦ x hx => by`.
+
+Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, hT₀.trans Φ hΦ x hx, GlobalTheory.SplitScalar.heisO_smul]`. Use `modul := fun Φ hΦ y hy => by`. Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, hT₀.modul Φ hΦ y hy, GlobalTheory.SplitScalar.heisO_smul]`. Use `vac := by rw [LinearMap.smul_apply, hT₀.vac] }`.
+-/
 theorem vec_unique (kV : V.SigOK) (kW : W.SigOK) {sS : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ}
     {sT : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ} (hS : ∀ τ, IsCartanInv (gramAt D V τ) (sS τ))
     (hT : ∀ τ, IsCartanInv (gramAt D W τ) (sT τ)) {ΛS : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)}
@@ -282,6 +353,17 @@ theorem vec_unique (kV : V.SigOK) (kW : W.SigOK) {sS : D.what₂.Tau → Matrix 
         rw [LinearMap.smul_apply, LinearMap.smul_apply, hT₀.modul Φ hΦ y hy, GlobalTheory.SplitScalar.heisO_smul]
       vac := by rw [LinearMap.smul_apply, hT₀.vac] }
 
+/- English proof (translation)
+Use `haveI := Fintype.ofFinite ι`. Set `b1` to `Module.Basis.mk i1 s1.ge`. Set `b2` to `Module.Basis.mk i2 s2.ge`. Set `Φ` to `b1.equiv b2 (Equiv.refl _)`. Establish `hb : ∀ a, Φ (c₁ (bX a)) = c₁' (bX a)` using `fun a => by`.
+
+Simplify `b1.equiv_apply a b2 (Equiv.refl _)` using `[b1, b2]`. Establish `h1 : ∀ v, Φ (c₁ v) = c₁' v` using `fun v => LinearMap.congr_fun (bX.ext (f₁ := Φ.toLinearMap.comp c₁) (f₂ := c₁') hb) v`. Use `⟨Φ, h1, fun x => ?_, fun h x => ?_⟩` and prove the remaining obligations. Establish `: ⟪Φ x, Φ x⟫_ℂ = ⟪x, x⟫_ℂ`. Rewrite using `[← b1.sum_repr x]`.
+
+Simplify using `only [b1, Module.Basis.mk_apply, map_sum, map_smul, hb, sum_inner, inner_sum, inner_smul_left, inner_smul_right, hp]`. Rewrite using `[@norm_eq_sqrt_re_inner ℂ, this, ← @norm_eq_sqrt_re_inner ℂ]`. Establish `hrat : ∀ γ ∈ GQ V, Φ (c.ρ γ x) = c'.ρ γ (Φ x)` using `fun γ hγ => by`. Take `⟨r, r1, r2⟩` from `hr γ hγ`. Use `LinearMap.congr_fun (LinearMap.ext_on_range (f := Φ.toLinearMap ∘ₗ c.ρ γ) (g := c'.ρ γ ∘ₗ Φ.toLinearMap) s1 fun a => ?_) x` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `Φ (c.ρ γ _) = c'.ρ γ (Φ _)`. Rewrite using `[← r1, h1, r2, h1]`. Take `⟨u, hu, k, hk, rfl⟩` from `(GlobalTheory.UnitarySplit.real_finite_split D V).1 h`. Rewrite using `[map_mul, map_mul, hc.1 k hk, hc'.1 k hk, mul_one, mul_one]`. Assume the negation of the conclusion as `hne`.
+
+Take `⟨γ, hγ, k, hk, hU, -⟩` from `GlobalTheory.RealApprox.weak_approx_real V u hu _ (isOpen_ne_fun (Φ.toLinearMap.continuous_of_finiteDimensional.comp (hc.2.2.1 x)) (hc'.2.2.1 (Φ x))) hne`. Use `hU ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Φ (c.ρ (γ * k) x) = c'.ρ (γ * k) (Φ x)`. Rewrite using `[map_mul, map_mul, hc.1 k hk, hc'.1 k hk, mul_one, mul_one, hrat γ hγ]`.
+-/
 theorem exists_isometry {K X ι : Type} [Field K] [AddCommGroup X] [Module K X] [Finite ι] (bX : Module.Basis ι K X)
     {σ : K →+* ℂ} {c c' : CoefA V} (hc : c.Is) (hc' : c'.Is) (c₁ : X →ₛₗ[σ] c.W) (c₁' : X →ₛₗ[σ] c'.W)
     (i1 : LinearIndependent ℂ fun a => c₁ (bX a)) (s1 : Submodule.span ℂ (Set.range fun a => c₁ (bX a)) = ⊤)
@@ -318,6 +400,17 @@ theorem exists_isometry {K X ι : Type} [Field K] [AddCommGroup X] [Module K X] 
     change Φ (c.ρ (γ * k) x) = c'.ρ (γ * k) (Φ x)
     rw [map_mul, map_mul, hc.1 k hk, hc'.1 k hk, mul_one, mul_one, hrat γ hγ]
 
+/- English proof (translation)
+Establish `t1` using `GlobalTheory.GalLift.Vec.theta_pureTensorO hω.std hθ (fun _ => 1) BV (cart M) B hf`. Establish `t2` using `GlobalTheory.GalLift.Vec.theta_pureTensorO hω.std hθ (fun _ => 1) BV (cart M) B' (GlobalTheory.OrientedHeis.theta_smul a hf)`. Establish `hu` using `GlobalTheory.WeilUniq.weilDatum_unique D ψ hω.std V W χV χW ω ω' hω hω'`. Set `F : LowT M →ₗ[ℂ] c.W →ₗ[ℂ] thetaSub ψ V W` to `io.compr₂ ((pureTensorO ψ θ V W (fun _ => 1) (cart M) BV B f).codRestrict _ t1)`. Set `F' : LowT M →ₗ[ℂ] c.W →ₗ[ℂ] thetaSub ψ V W` to `(io'.compl₂ Φ.toLinearMap).compr₂ ((pureTensorO ψ θ V W (fun _ => 1) (cart M) BV B' (a • f)).codRestrict _ t2)`.
+
+Establish `f1 : ∀ x w, (F x w).1 = pureTensorO ψ θ V W (fun _ => 1) (cart M) BV B f (io x w)` using `fun _ _ => rfl`. Establish `f2 : ∀ x w, (F' x w).1 = pureTensorO ψ θ V W (fun _ => 1) (cart M) BV B' (a • f) (io' x (Φ w))` using `fun _ _ => rfl`. Use `clear_value F F'`. Establish `hF : Eqv θ ω F` using `⟨fun u hu x w => by rw [f1, f1, hio.1 u hu], fun τ k hk v u hu w => by rw [f1, f1, hio.2.1 τ k hk v u hu]⟩`. Establish `hF' : Eqv θ ω F'` using `⟨fun u hu' x w => by rw [f2, f2, hu _ _ (t2 _), hio'.1 u hu', hΦ'], fun τ k hk v u hu' w => by rw [f2, f2, hu _ _ (t2 _), hio'.2.1 τ k hk v u hu']⟩`.
+
+Take `⟨v₀, w₀, n1, n2, e⟩` from `hio.2.2`. Take `⟨v₀', w₀', n1', n2', e'⟩` from `hio'.2.2`. Take `⟨w₁, rfl⟩` from `Φ.surjective w₀'`. Take `⟨v₁, l, n3, hl, e1⟩` from `exists_move hω hθ kV kW hV h1 h2 hF hf hv hB hB' Δ n1 ((f1 _ w₀).trans (congrArg _ e))`. Take `⟨b, hb⟩` from `exists_invForm hω`.
+
+Take `⟨c₁, k1⟩` from `exists_const_of_eqv h1 h2 hc hb hF hF w₀ n2`. Take `⟨c₂, k2⟩` from `exists_const_of_eqv h1 h2 hc hb hF' hF' w₀ n2`. Take `⟨c₃, k3⟩` from `exists_const_of_eqv h1 h2 hc hb hF hF' w₀ n2`. Establish `a0 : a ≠ 0` using `fun h => by simp [h] at ha`. Take `⟨κ, hκ, hk⟩` from `exists_phase b hb.symm hb.pos hb.defin (fun v w => F (PiTensorProduct.tprod ℂ v) w) (fun v w => F' (PiTensorProduct.tprod ℂ v) w) k1 k2 k3 n3 n1' n2 ((hΦ w₁).symm.trans n2') (l := l * a⁻¹) (by rw [norm_mul, norm_inv, hl, ha, inv_one, one_mul]) (Subtype.ext (by`.
+
+Rewrite using `[e1, Submodule.coe_smul, f2, e', GlobalTheory.FiniteFock.pureTensorO_smul, smul_smul, inv_mul_cancel_right₀ a0]))`. Establish `hFF : F' = κ • F` using `PiTensorProduct.ext (MultilinearMap.ext fun v => LinearMap.ext (hk v))`. Conclude with `⟨κ, hκ, fun x w => by rw [← f1, ← f2, hFF]; rfl⟩`.
+-/
 theorem io_unique {ω' : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)} (hω : IsWeilDatumO ψ V W χV χW ω)
     (hω' : IsWeilDatumO ψ V W χV χW ω') (hθ : IsInfFam θ) (kV : V.SigOK) (kW : W.SigOK)
     (hV : ∀ τ, IsCartanInv (gramAt D V τ) 1) (h1 : LowSm M) (h2 : GlobalTheory.IndefiniteRowSideFullHecke.HolomorphicLowestType.LowIrr M) {c c' : CoefA V} (hc : c.Is)
@@ -363,6 +456,9 @@ theorem io_unique {ω' : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)} 
   have hFF : F' = κ • F := PiTensorProduct.ext (MultilinearMap.ext fun v => LinearMap.ext (hk v))
   exact ⟨κ, hκ, fun x w => by rw [← f1, ← f2, hFF]; rfl⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Simplify using `only [h'.eq, Lift.thetaPInt, thetaKO, hu]`. Simplify using `only [h.eq, Lift.thetaPInt, thetaKO, hy, hk, map_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `integral_const_mul κ _`.
+-/
 theorem thetaP_eq {ω' : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)} {c c' : CoefA V} {P T : Type} [AddCommGroup P]
     [Module ℂ P] [AddCommGroup T] [Module ℂ T] {pt pt' : P → WO V W → ℂ} {io : T →ₗ[ℂ] c.W →ₗ[ℂ] P}
     {io' : T →ₗ[ℂ] c'.W →ₗ[ℂ] P} (hu : ∀ p x, ω' p (pt' x) = ω p (pt' x)) (Φ : c.W → c'.W) {κ : ℂ}

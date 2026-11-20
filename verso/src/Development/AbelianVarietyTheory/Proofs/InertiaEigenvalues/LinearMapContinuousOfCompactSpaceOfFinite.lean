@@ -2,6 +2,9 @@ import Mathlib
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨n, g, hg⟩` from `Module.Finite.exists_fin' O M`. Establish `hgc : Continuous g` using `g.continuous_on_pi`. Establish `hq : Topology.IsQuotientMap g` using `hgc.isClosedMap.isQuotientMap hgc hg`. Establish `hfg : Continuous (f ∘ g)` using `(f.comp g).continuous_on_pi`. Conclude with `hq.continuous_iff.mpr hfg`.
+-/
 theorem linearMap_continuous_of_compactSpace_of_finite
     {O : Type} [CommRing O] [TopologicalSpace O] [CompactSpace O] {M M' : Type}
     [AddCommGroup M] [Module O M] [TopologicalSpace M] [IsTopologicalAddGroup M]

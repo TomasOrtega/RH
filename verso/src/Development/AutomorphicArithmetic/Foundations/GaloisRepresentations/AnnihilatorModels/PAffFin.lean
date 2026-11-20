@@ -6,6 +6,9 @@ open CategoryTheory AlgebraicGeometry Formalism.BasicNotions Formalism.BasicNoti
 open scoped Formalism.Per
 open UpperTheory.Gal.crystallineComparison
 
+/- English proof (translation)
+Introduce `R _ Y f hf s`. Use `haveI : GlobalTheory.FiniteSubsetsInAffineOpens Y := GlobalTheory.FiniteSubsetsInAffineOpens.of_isProjOver hf`. Take `⟨U, hU, hsub⟩` from `GlobalTheory.FiniteSubsetsInAffineOpens.exists_isAffineOpen (X := Y) (s : Set Y) s.finite_toSet`. Conclude with `⟨U, hU, fun x hx => hsub (Finset.mem_coe.mpr hx)⟩`.
+-/
 theorem UpperTheory.Gal.crystallineComparison.affFin_of :
     AffFinProj := by
   intro R _ Y f hf s

@@ -29,11 +29,25 @@ def LocCond (w : Pl D.host.E) (inPg inQ : Prop) (r t : ℕ) {m : ℕ} (g : GL (F
       ∀ a b : Fin m, a.val < r → b.val < r → valuation (Kw w) ((g.1 - 1) a b) < 1) ∧
     (inQ → ∀ a b : Fin m, Formalism.L2.DIV.blk2 r b < Formalism.L2.DIV.blk2 r a → valuation (Kw w) (g.1 a b) < 1)
 
+/- English proof (translation)
+Substitute `hm` using the available equality. Conclude with `hK _`.
+-/
 theorem inBasis_mem_iff {n m : ℕ} (hm : m = n) (β x : GL (Fin n) (Lev.EAf D)) (w : Pl D.host.E)
     (K : Subgroup (GL (Fin m) (Kw w))) (p q : Prop) (r t : ℕ) (hK : ∀ g, g ∈ K ↔ LocCond w p q r t g) :
     inBasis hm β w x ∈ K ↔ LocCond w p q r t (inBasis rfl β w x) := by
   subst hm; exact hK _
 
+/- English proof (translation)
+Unfold `upperLeftBlock`. Rewrite using `[extendOne_of_mem _ hg]`. Prove the components needed by the constructor for the conclusion. Introduce `h a b ha hb`. Establish `e` using `congrArg (fun u : GL (Fin r) κ => (u : Matrix (Fin r) (Fin r) κ) ⟨a.val, ha⟩ ⟨b.val, hb⟩) h`.
+
+Establish `e2 : (g : Matrix (Fin n) (Fin n) κ) a b = (1 : Matrix (Fin r) (Fin r) κ) ⟨a.val, ha⟩ ⟨b.val, hb⟩` using `e`. Rewrite using `[e2, Matrix.one_apply, Matrix.one_apply]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules.
+
+Rewrite using `[if_neg hab, if_neg (fun h' => hab (Fin.ext (Fin.mk.inj h')))]`. Introduce `h`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Establish `e` using `h (Fin.castLE hr i) (Fin.castLE hr j) i.2 j.2`.
+
+Use `show (g : Matrix (Fin n) (Fin n) κ) (Fin.castLE hr i) (Fin.castLE hr j) = (1 : Matrix (Fin r) (Fin r) κ) i j`. Rewrite using `[e, Matrix.one_apply, Matrix.one_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules.
+
+Rewrite using `[if_neg hij, if_neg (fun h' => hij (Fin.castLE_injective hr h'))]`.
+-/
 theorem upperLeftBlock_eq_one_iff_of_mem_blockTri {κ : Type} [CommRing κ] {n r : ℕ} (hr : r ≤ n) (g : GL (Fin n) κ)
     (hg : g ∈ blockTri (blk2 r)) :
     upperLeftBlock hr g = 1 ↔ ∀ a b : Fin n, a.val < r → b.val < r →
@@ -58,6 +72,15 @@ theorem upperLeftBlock_eq_one_iff_of_mem_blockTri {κ : Type} [CommRing κ] {n r
     · subst hij; simp
     · rw [if_neg hij, if_neg (fun h' => hij (Fin.castLE_injective hr h'))]
 
+/- English proof (translation)
+Introduce `PP hP`. Take `⟨k, hk⟩` from `(hL.Pg PP).1 hP`. Establish `hg : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal` using `L.C.P.overP hk`. Establish `hv : ((D.host.g k : ℕ) : 𝓞 D.host.F) ∈ (PP.under (𝓞 D.host.F)).asIdeal` using `by show algebraMap (𝓞 D.host.F) (𝓞 D.host.E) _ ∈ PP.asIdeal`. Simplify using `using hg`.
+
+Establish `hS : PP.under (𝓞 D.host.F) ∈ G.pl.S0`. Use `G.pl.mem_S0_of_sum_eq.2 (Or.inr ((GlobalTheory.ChiGrid.S1_mem_OmF D).2 ?_))` and prove the remaining obligations. Use `fin_cases k`. Conclude with `Or.inl hv`. Conclude with `Or.inr (Or.inl hv)`.
+
+Establish `hw : G.pl.w (PP.under (𝓞 D.host.F)) ∈ L.Pg` using `G.pl.w_g _ k hv`. Establish `he : (G.pl.w (PP.under (𝓞 D.host.F))).under (𝓞 D.host.F) = PP.under (𝓞 D.host.F)` using `G.pl.under_w hS`. Break down `GlobalTheory.GoodPrimes.eq_or_conj_of_under_eq he with e | e` into its components or cases. Rewrite using `[← e]`. Conclude with `Finset.mem_image_of_mem _ hS`.
+
+Conclude with `absurd (GlobalTheory.GoodPrimes.isConjPl_iff.2 e) ((GlobalTheory.StepLifts.places_apart L hL t).1 PP hP _ (Or.inl hw))`.
+-/
 theorem levelChainTypePlaces_subset_chosenPlaces {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) {μ₀ : T} (hL : L.Is μ₀) (t : T) :
     L.Pg ⊆ G.pl.W0 := by
   classical
@@ -78,6 +101,29 @@ theorem levelChainTypePlaces_subset_chosenPlaces {T : Type} {L : LevCh D T} {sc 
   · rw [← e]; exact Finset.mem_image_of_mem _ hS
   · exact absurd (GlobalTheory.GoodPrimes.isConjPl_iff.2 e) ((GlobalTheory.StepLifts.places_apart L hL t).1 PP hP _ (Or.inl hw))
 
+/- English proof (translation)
+Establish `hloc : ∀ (w : P) x, inBasis (hn w) β w.1 x ∈ K w ↔ LocCond w.1 (w.1 ∈ Ld.Pg) (w.1 ∈ Ld.Q) Ld.r Ld.t (inBasis rfl β w.1 x)` using `fun w x => inBasis_mem_iff (hn w) β x w.1 (K w) _ _ _ _ (hK w)`. Establish `red0 : ∀ x ∈ St β, ∀ PP (i j : Fin V.rank), ((redFn β PP x : GL (Fin V.rank) (kP PP)) : Matrix (Fin V.rank) (Fin V.rank) (kP PP)) i j = 0 ↔ valuation (Kw PP) ((inBasis rfl β PP x).1 i j) < 1`. Introduce `x hx PP i j`. Establish `e` using `GlobalTheory.T.latticeStabilizer_reduction_eq_local_reduction β x PP hx i j 0`. Simplify using `using e`.
+
+Establish `red1 : ∀ x ∈ St β, ∀ PP (i j : Fin V.rank), ((redFn β PP x : GL (Fin V.rank) (kP PP)) : Matrix (Fin V.rank) (Fin V.rank) (kP PP)) i j = (1 : Matrix (Fin V.rank) (Fin V.rank) (kP PP)) i j ↔ valuation (Kw PP) (((inBasis rfl β PP x).1 - 1) i j) < 1`. Introduce `x hx PP i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Establish `e` using `GlobalTheory.T.latticeStabilizer_reduction_eq_local_reduction β x PP hx i i 1`.
+
+Simplify `e` using `[Matrix.one_apply]`. Establish `e` using `GlobalTheory.T.latticeStabilizer_reduction_eq_local_reduction β x PP hx i j 0`. Simplify `e` using `[Matrix.one_apply, hij]`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨hx, hU⟩`. Take `⟨h1, h2⟩` from `Subgroup.mem_inf.1 hx`. Establish `hA : ∀ w : P, LocCond w.1 (w.1 ∈ Ld.Pg) (w.1 ∈ Ld.Q) Ld.r Ld.t (inBasis rfl β w.1 x)` using `fun w => (hloc w x).1 (Subgroup.mem_iInf.1 h1 w)`. Establish `hSt : x ∈ St β` using `GlobalTheory.T.mem_latticeStabilizer_of_local_integral_inBasis β x fun w => by`. Distinguish the cases in `hw : ∃ w0 ∈ P, w.under (𝓞 D.host.F) = w0.under (𝓞 D.host.F)`.
+
+Take `⟨w0, hw0, e⟩` from `hw`. Establish `hK0` using `(hA ⟨w0, hw0⟩).1`. Break down `GlobalTheory.GoodPrimes.eq_or_conj_of_under_eq e with rfl | rfl` into its components or cases. Conclude with `hK0`. Conclude with `GlobalTheory.T.integralGL_conjPlace_of_selfDual_baseFrame V β Λ hβ x hU w0 hK0`.
+
+Use `push_neg at hw`. Conclude with `Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 h2 w) hw`. Establish `hgP : ∀ PP ∈ Ld.Pg, redFn β PP x ∈ blockTri (blkOf Ld.r Ld.t)` using `fun PP hP => by`. Rewrite using `[mem_blockTri]`. Introduce `a b hab`.
+
+Conclude with `(red0 x hSt PP a b).2 (((hA ⟨PP, hPg hP⟩).2.1 hP).1 a b hab)`. Use `mem_lev.2 ⟨mem_parLev.2 ⟨hU, hSt, hgP, fun PP hP => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_blockTri]`. Introduce `a b hab`. Conclude with `(red0 x hSt PP a b).2 ((hA ⟨PP, hQ hP⟩).2.2 hP a b hab)`.
+
+Rewrite using `[hH, Subgroup.mem_bot]`. Use function extensionality and compare the values at `PP`. Use `show upperLeftBlock Ld.hr (redFn β PP.1 x) = 1`. Rewrite using `[upperLeftBlock_eq_one_iff_of_mem_blockTri _ _ (blockTri_blkOf_le _ _ (hgP PP.1 PP.2))]`. Introduce `a b ha hb`.
+
+Conclude with `(red1 x hSt PP.1 a b).2 (((hA ⟨PP.1, hPg PP.2⟩).2.1 PP.2).2 a b ha hb)`. Introduce `hx`. Take `⟨hpar, hr⟩` from `mem_lev.1 hx`. Take `⟨hU, hSt, hg, hq⟩` from `mem_parLev.1 hpar`. Use `⟨Subgroup.mem_inf.2 ⟨Subgroup.mem_iInf.2 fun w => (hloc w x).2 ⟨inBasis_mem_KO β x hSt w.1, fun hw => ⟨?_, ?_⟩, fun hw a b hab => (red0 x hSt w.1 a b).1 (mem_blockTri.1 (hq w.1 hw) a b hab)⟩, Subgroup.mem_iInf.2 fun w' => Subgroup.mem_iInf.2 fun _ => inBasis_mem_KO β x hSt w'⟩, h …` and prove the remaining obligations.
+
+Introduce `a b hab`. Conclude with `(red0 x hSt w.1 a b).1 (mem_blockTri.1 (hg w.1 hw) a b hab)`. Introduce `a b ha hb`. Rewrite `hr` using `[hH, Subgroup.mem_bot]`. Establish `e : upperLeftBlock Ld.hr (redFn β w.1 x) = 1` using `congrFun hr ⟨w.1, hw⟩`.
+
+Rewrite `e` using `[upperLeftBlock_eq_one_iff_of_mem_blockTri _ _ (blockTri_blkOf_le _ _ (hg w.1 hw))]`. Conclude with `(red1 x hSt w.1 a b).1 (e a b ha hb)`.
+-/
 theorem prodLev_inf_UA {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)}
     (hβ : Lev.IsBaseFrame V β Λ 1) (P : Finset (Pl D.host.E)) {n' : P → ℕ} (hn : ∀ w, n' w = V.rank)
     (K : ∀ w : P, Subgroup (GL (Fin (n' w)) (Kw w.1))) (Ld : LevDat D.host.E ℂ V.rank) (hH : Ld.P.H = ⊥)
@@ -147,12 +193,30 @@ theorem prodLev_inf_UA {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Subm
       rw [upperLeftBlock_eq_one_iff_of_mem_blockTri _ _ (blockTri_blkOf_le _ _ (hg w.1 hw))] at e
       exact (red1 x hSt w.1 a b).1 (e a b ha hb)
 
+/- English proof (translation)
+Take `⟨j, rfl⟩ : ∃ j, k = j + 1` from `⟨k - 1, by omega⟩`. Conclude with `Iff.rfl`.
+-/
 theorem givenLevel_zero_iff {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (t : T) (w : Pl D.host.E) (k : ℕ)
     (hk : 1 ≤ k) (g : GL (Fin ((locGrid G t w).rank (0, k))) (Kw w)) :
     g ∈ givenLevel G t w (0, k) ↔ g ∈ (stepGroup L t w k).map (reGL (ixFin G t w k)).toMonoidHom := by
   obtain ⟨j, rfl⟩ : ∃ j, k = j + 1 := ⟨k - 1, by omega⟩
   exact Iff.rfl
 
+/- English proof (translation)
+Introduce `D T L sc G W U S μ₀ hL t h`. Establish `hr : D.R.r ≤ (G.V (.grid 0 D.R.m)).rank` using `by rw [← rank_zero_m G]; exact r_le_X`. Establish `hbase : Lev.IsBaseFrame (G.V (.grid 0 D.R.m)) (S.B.β 0 D.R.m) (G.Λ (.grid 0 D.R.m)) 1`. Take `⟨c, hc⟩` from `hL.βX`. Rewrite `hc` using `[one_pow]`.
+
+Establish `key : ∀ (X Y : LSp D) (a : GL (Fin X.sp.rank) (Lev.EAf D)) (b : GL (Fin Y.sp.rank) (Lev.EAf D)), X = Y → HEq a b → Lev.IsBaseFrame Y.sp b Y.lat 1 → Lev.IsBaseFrame X.sp a X.lat 1`. Introduce and unpack `X _ a b rfl hab h'`. Rewrite using `[eq_of_heq hab]` and apply the resulting hypothesis. Conclude with `key _ ⟨D.sp.X', L.ΛX⟩ _ _ (colY_m L) (colFrame_m L) hc`. Establish `hm : 1 ≤ D.R.m` using `by have := D.R.two_le_m; omega`.
+
+Establish `hdis` using `(GlobalTheory.StepLifts.places_apart L hL t).2`. Establish `core` using `prodLev_inf_UA hbase (locPl G t) (fun w => rank_vertex G t w (X := (0, D.R.m)) ⟨h, le_rfl⟩) (fun w => givenLevel G t w (0, D.R.m)) (Lev.datY (G.V (.grid 0 D.R.m)).rank D.R.r D.R.t D.R.m hr L.Pg (L.Q t) (LevelP.triv _ _ _) L.chi (L.xiR t) Lev.Frm.B) rfl (fun PP hP => Finset.mem_un …`. Rewrite using `[givenLevel_zero_iff G t w.1 D.R.m hm]`. Distinguish the cases in `hP : w.1 ∈ L.Pg`. Establish `hnq : w.1 ∉ L.Q t` using `Finset.disjoint_left.1 hdis hP`.
+
+Rewrite using `[GlobalTheory.T.thetaGridBlockCongruence_typePrime_description G t w.1 hP]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩`. Conclude with `⟨h1, fun _ => ⟨h2, h3⟩, fun hq => absurd hq hnq⟩`. Introduce and unpack `⟨h1, h2, -⟩`.
+
+Conclude with `⟨h1, (h2 hP).1, (h2 hP).2⟩`. Rewrite using `[GlobalTheory.T.thetaGridBlockCongruence_offTypePrime_description G t w.1 hP]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1, fun hp => absurd hp hP, h2⟩`.
+
+Introduce and unpack `⟨h1, -, h2⟩`. Conclude with `⟨h1, h2⟩)`. Establish `e1 : S.levRow t 0 h = prodLev (S.B.β 0 D.R.m) (locPl G t) (fun w => rank_vertex G t w (X` using `(0, D.R.m)) ⟨h, le_rfl⟩) (fun w => givenLevel G t w (0, D.R.m)) := rfl`. Rewrite using `[e1, core]`. Establish `key2 : ∀ (X : LSp D), X = ⟨D.sp.X', L.ΛX⟩ → ∀ (b : GL (Fin X.sp.rank) (Lev.EAf D)), HEq b L.βX → ∀ (hr : D.R.r ≤ X.sp.rank), HEq (lev D.sp.cm X.sp.gram b (Lev.datY X.sp.rank D.R.r D.R.t D.R.m hr L.Pg (L.Q t) (LevelP.triv _ _ _) L.chi (L.xiR t) Lev.Frm.B)) (lev D.sp.cm D.sp.X'.gra …`.
+
+Introduce and unpack `X rfl b hb hr`. Consider the cases of `eq_of_heq hb`. Both sides reduce to the same expression. Conclude with `key2 (G.node (.grid 0 D.R.m)) (colY_m L) _ (colFrame_m L) hr`.
+-/
 theorem levRow_zero_eq_lev : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) {U : Set T}
     (S : GridChoice W U) {μ₀ : T}, L.Is μ₀ → ∀ (t : T) (h : 0 ≤ D.R.m),
     HEq (S.levRow t 0 h ⊓ UA D.sp.cm (G.V (.grid 0 D.R.m)).gram) (lev D.sp.cm D.sp.X'.gram L.βX (L.datXt t)) := by

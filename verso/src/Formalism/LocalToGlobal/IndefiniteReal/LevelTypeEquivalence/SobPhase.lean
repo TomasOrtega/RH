@@ -13,6 +13,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨⟨θ, hθ⟩, hall⟩` from `hψ.2`. Establish `hf` using `hall θ hθ`. Set `Λ : Ainf D.host.F →+ ℂ` to `{ toFun := fun y => 2 * Real.pi * Complex.I * ((-1 : ℤ) : ℂ) * ∑ ρ, θ ρ (y ⊗ₜ[D.host.F] (1 : D.host.E)) map_zero' := by simp map_add' := fun y y' => by simp only [TensorProduct.add_tmul, map_add, Finset.sum_add_distrib]; ring }`. Use `⟨Λ, ?_, fun z hz => ?_⟩` and prove the remaining obligations. Use `show Continuous fun y => 2 * Real.pi * Complex.I * ((-1 : ℤ) : ℂ) * ∑ ρ, θ ρ (y ⊗ₜ[D.host.F] (1 : D.host.E))`.
+
+Conclude with `continuous_const.mul (continuous_finset_sum _ fun ρ _ => (hθ ρ).2)`. Establish `hz' : z = pairA D.host.F z.1 0` using `Prod.ext rfl hz`. Rewrite using `[hz']`. Conclude with `hf z.1`.
+-/
 theorem psi_real (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) :
     ∃ Λ : Ainf D.host.F →+ ℂ, Continuous Λ ∧ ∀ z : AF D.host.F, z.2 = 0 → ψ z = Complex.exp (Λ z.1) := by
   obtain ⟨⟨θ, hθ⟩, hall⟩ := hψ.2
@@ -28,6 +33,15 @@ theorem psi_real (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) :
     rw [hz']
     exact hf z.1
 
+/- English proof (translation)
+Establish `hp : ContDiff ℝ ∞ (fun v => Complex.exp (ℓ v))` using `(Complex.contDiff_exp (𝕜 := ℝ)).comp ℓ.contDiff`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => intro u`. Simplify using `[norm_iteratedFDeriv_zero]`.
+
+Consider the case `succ i ih`. Introduce `u`. Rewrite using `[← norm_iteratedFDeriv_fderiv]`. Set `T : ℂ →L[ℝ] (V →L[ℝ] ℂ)` to `ContinuousLinearMap.smulRight (ContinuousLinearMap.id ℝ ℂ) ℓ`. Establish `hT : ∀ a : ℂ, T a = a • ℓ` using `fun a => rfl`.
+
+Establish `hfd : fderiv ℝ (fun v => Complex.exp (ℓ v)) = T ∘ (fun v => Complex.exp (ℓ v))`. Use function extensionality and compare the values at `v`. Rewrite using `[Function.comp_apply, hT, ((ℓ.hasFDerivAt (x := v)).cexp).fderiv]`. Rewrite using `[hfd]`. Use `(T.norm_iteratedFDeriv_comp_left hp.contDiffAt (natCast_lt_inf' i).le).trans ?_` and prove the remaining obligations.
+
+Establish `hTn : ‖T‖ ≤ ‖ℓ‖`. Use `ContinuousLinearMap.opNorm_le_bound _ (norm_nonneg _) fun a => ?_` and prove the remaining obligations. Rewrite using `[hT, norm_smul, mul_comm]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_iter_exp {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (ℓ : V →L[ℝ] ℂ) :
     ∀ (i : ℕ) (u : V), ‖iteratedFDeriv ℝ i (fun v => Complex.exp (ℓ v)) u‖ ≤ ‖Complex.exp (ℓ u)‖ * ‖ℓ‖ ^ i := by
   have hp : ContDiff ℝ ∞ (fun v => Complex.exp (ℓ v)) :=

@@ -7,6 +7,9 @@ open Formalism.BasicNotions Formalism.MainNotions.StandardLattice Formalism.L2.G
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `genusMassStd_of_landherrHasse DefiniteOrthonormal.landherrHasse`.
+-/
 theorem genusMassStd_all : ∀ D : D7, GenusMassStd D :=
   genusMassStd_of_landherrHasse DefiniteOrthonormal.landherrHasse
 

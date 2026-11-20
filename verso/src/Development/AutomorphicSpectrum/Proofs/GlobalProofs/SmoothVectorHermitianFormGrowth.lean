@@ -6,6 +6,9 @@ open scoped InnerProductSpace ContDiff
 
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.HCA
 
+/- English proof (translation)
+Use `ge_of_tendsto h.tendsto_slope_zero_right ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with t ht`. Rewrite using `[zero_add, h0, sub_zero, smul_eq_mul]`. Conclude with `mul_nonneg (inv_nonneg.mpr (le_of_lt ht)) (hpos t ht)`.
+-/
 theorem deriv_nonneg_of_nonneg_right {e : ℝ → ℝ} {e' : ℝ} (h : HasDerivAt e e' 0) (h0 : e 0 = 0)
     (hpos : ∀ t, 0 < t → 0 ≤ e t) : 0 ≤ e' := by
   refine ge_of_tendsto h.tendsto_slope_zero_right ?_
@@ -13,6 +16,13 @@ theorem deriv_nonneg_of_nonneg_right {e : ℝ → ℝ} {e' : ℝ} (h : HasDerivA
   rw [zero_add, h0, sub_zero, smul_eq_mul]
   exact mul_nonneg (inv_nonneg.mpr (le_of_lt ht)) (hpos t ht)
 
+/- English proof (translation)
+Establish `hsmulR : ∀ (c : ℝ) (x y : H), Q x (c • y) = (c : ℂ) * Q x y` using `fun c x y => by`. Rewrite using `[← hsmul, Complex.coe_smul]`. Establish `haddL : ∀ x₁ x₂ y, Q (x₁ + x₂) y = Q x₁ y + Q x₂ y` using `fun x₁ x₂ y => by`. Rewrite using `[hconj, hadd, star_add, ← hconj, ← hconj]`. Establish `hsmulL : ∀ (c : ℝ) (x y : H), Q (c • x) y = (c : ℂ) * Q x y` using `fun c x y => by`.
+
+Rewrite using `[hconj, hsmulR, star_mul', ← hconj, show star (c : ℂ) = c from Complex.conj_ofReal c]`. Use `⟨fun x₁ x₂ y => ?_, fun c x y => ?_, fun x y₁ y₂ => ?_, fun c x y => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [haddL, Complex.add_re]`. Simplify using `only [hsmulL, Complex.re_ofReal_mul, smul_eq_mul]`. Simplify using `only [hadd, Complex.add_re]`.
+
+Simplify using `only [hsmulR, Complex.re_ofReal_mul, smul_eq_mul]`. Use `⟨max Mb 1, lt_of_lt_of_le one_pos (le_max_right _ _), fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem isBoundedBilinearMap_re_form {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (Q : H → H → ℂ) (Mb : ℝ) (hadd : ∀ x y z, Q x (y + z) = Q x y + Q x z)
     (hsmul : ∀ (c : ℂ) x y, Q x (c • y) = c * Q x y) (hconj : ∀ x y, Q y x = star (Q x y))
@@ -35,6 +45,25 @@ theorem isBoundedBilinearMap_re_form {H : Type} [NormedAddCommGroup H] [InnerPro
       _ ≤ Mb * ‖x‖ * ‖y‖ := hbd x y
       _ ≤ max Mb 1 * ‖x‖ * ‖y‖ := by gcongr; exact le_max_left _ _
 
+/- English proof (translation)
+Introduce `n G H _ _ π hG hrep Q Mb a hadd hsmul hconj hbd hgrow X hX x hx`. Establish `hB` using `isBoundedBilinearMap_re_form Q Mb hadd hsmul hconj hbd`. Establish `hv : HasDerivAt (fun t : ℝ => π (NormedSpace.exp (t • X)) x) (dRep π X x) 0` using `(GlobalTheory.T.derived_action_of_smooth_vector hG hrep hx hX).1`. Establish `hv0 : π (NormedSpace.exp ((0 : ℝ) • X)) x = x`. Rewrite using `[zero_smul, NormedSpace.exp_zero, hrep.1]`.
+
+Both sides reduce to the same expression. Use `set d := dRep π X x with hd`. Use `set f : ℝ → ℝ := fun t => (Q (π (NormedSpace.exp (t • X)) x) (π (NormedSpace.exp (t • X)) x)).re with hf_def`. Establish `hf : HasDerivAt f (2 * (Q d x).re) 0`. Establish `h1` using `(hB.hasFDerivAt (π (NormedSpace.exp ((0 : ℝ) • X)) x, π (NormedSpace.exp ((0 : ℝ) • X)) x)).comp_hasDerivAt (0 : ℝ) (hv.prodMk hv)`.
+
+Rewrite `h1` using `[hB.deriv_apply]`. Simplify using `only [hv0] at h1`. Establish `e : (Q x d).re + (Q d x).re = 2 * (Q d x).re`. Rewrite using `[hconj d x, Complex.star_def, Complex.conj_re]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `h1` using `[e]`. Conclude with `h1`. Establish `hf0 : f 0 = (Q x x).re`. Simplify using `only [hf_def, hv0]`. Establish `hexp : HasDerivAt (fun t : ℝ => Real.exp (a * t * mnorm X) * (Q x x).re) (a * mnorm X * (Q x x).re) 0`.
+
+Establish `h2 : HasDerivAt (fun t : ℝ => a * t * mnorm X) (a * 1 * mnorm X) 0` using `((hasDerivAt_id (0 : ℝ)).const_mul a).mul_const (mnorm X)`. Establish `h3` using `(h2.exp).mul_const (Q x x).re`. Simplify using `using h3`. Establish `up : 2 * (Q d x).re ≤ a * mnorm X * (Q x x).re`. Use `deriv_nonneg_of_nonneg_right (hexp.sub hf) (by simp [hf0]) (fun t ht => by` as an intermediate fact.
+
+Use `hgrow X hX t x` as an intermediate fact. Rewrite `this` using `[abs_of_pos ht]`. Simplify using `only [hf_def, Pi.sub_apply]`. Use the proof step `linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hfn : HasDerivAt (fun t : ℝ => f (-t)) (2 * (Q d x).re * -1) 0`. Establish `hf' : HasDerivAt f (2 * (Q d x).re) (-(0 : ℝ))` using `by rwa [neg_zero]`. Conclude with `hf'.comp (0 : ℝ) (hasDerivAt_neg (0 : ℝ))`. Establish `low : -(a * mnorm X * (Q x x).re) ≤ 2 * (Q d x).re`. Use `deriv_nonneg_of_nonneg_right (hexp.sub hfn) (by simp [hf0]) (fun t ht => by` as an intermediate fact.
+
+Use `hgrow X hX (-t) x` as an intermediate fact. Rewrite `this` using `[abs_neg, abs_of_pos ht]`. Simplify using `only [hf_def, Pi.sub_apply]`. Use the proof step `linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite using `[abs_le]`. Conclude with `⟨low, up⟩`.
+-/
 theorem abs_two_re_form_dRep_le : ∀ {n : ℕ} {G : Set (Matrix (Fin n) (Fin n) ℂ)} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hG : IsLinRed G) (hrep : Formalism.QuantumDeterminants.IsCRepOn G π) (Q : H → H → ℂ) (Mb a : ℝ) (hadd : ∀ x y z, Q x (y + z) = Q x y + Q x z) (hsmul : ∀ (c : ℂ) x y, Q x (c • y) = c * Q x y) (hconj : ∀ x y, Q y x = star (Q x y)) (hbd : ∀ x y, ‖Q x y‖ ≤ Mb * ‖x‖ * ‖y‖) (hgrow : ∀ X ∈ HCSS.lieOf G, ∀ (t : ℝ) (x : H), (Q (π (NormedSpace.exp (t • X)) x) (π (NormedSpace.exp (t • X)) x)).re ≤ Real.exp (a * |t| * mnorm X) * (Q x x).re) {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ HCSS.lieOf G) {x : H} (hx : IsSmoothVec G π x), |2 * (Q (dRep π X x) x).re| ≤ a * mnorm X * (Q x x).re := by
   intro n G H _ _ π hG hrep Q Mb a hadd hsmul hconj hbd hgrow X hX x hx
   have hB := isBoundedBilinearMap_re_form Q Mb hadd hsmul hconj hbd

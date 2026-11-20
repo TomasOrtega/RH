@@ -33,10 +33,20 @@ variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {II : In
   {Ω : Type} [Field Ω] [Algebra ℚ Ω] {W : Ψ → Type} [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)]
   {D : ComponentData II Ψ K J Ω W}
 
+/- English proof (translation)
+Introduce `_ hu` and use `Filter.Eventually.of_forall fun _ _ _ => refl_mem_uniformity hu`.
+-/
 theorem tuo_const {A₁ B₁ C₂ : Type*} [UniformSpace B₁] (l : Filter C₂) (f : A₁ → B₁) (s : Set A₁) :
     TendstoUniformlyOn (fun _ : C₂ => f) f l s :=
   fun _ hu => Filter.Eventually.of_forall fun _ _ _ => refl_mem_uniformity hu
 
+/- English proof (translation)
+Take `⟨z', ⟨hz'X, hz'P⟩, hz'⟩` from `S.Yo_sub _ hY`. Take `⟨c, hc, hzc⟩` from `(M.fibre z' hz'P z hz).1 hz'`. Use `⟨hz, fun hB => ?_⟩` and prove the remaining obligations. Establish `hinv : ∀ k, (c k)⁻¹ ≠ 0` using `fun k => inv_ne_zero (hc k)`. Establish `h1` using `D.bd_torus z hB (fun k => (c k)⁻¹) hinv`.
+
+Establish `h2 : torusSmul (fun k => (c k)⁻¹) z = z'`. Use function extensionality and compare the values at `p`. Rewrite using `[hzc]`. Simplify using `[torusSmul, inv_mul_cancel_left₀ (hc p.1)]`. Rewrite `h1` using `[h2]`.
+
+Conclude with `hz'X.2 h1`.
+-/
 theorem mem_Xo_of_proj_mem {Hd : HodgeData D} {M : XModel D} (S : LogLogRegularisationSetting M D.Xo (muLine Hd))
     {z : (Σ k, J k) → ℂ} (hz : z ∈ mcPts (mCoordIdeal D.y)) (hY : M.proj z ∈ S.R.Yo) : z ∈ D.Xo := by
   obtain ⟨z', ⟨hz'X, hz'P⟩, hz'⟩ := S.Yo_sub _ hY
@@ -51,6 +61,65 @@ theorem mem_Xo_of_proj_mem {Hd : HodgeData D} {M : XModel D} (S : LogLogRegulari
   rw [h2] at h1
   exact hz'X.2 h1
 
+/- English proof (translation)
+Take `⟨Pn, hPn, hPnS⟩` from `GlobalTheory.T.local_holomorphic_section_of_potential K J (mCoordIdeal D.y) D.n M Nb hNb`. Take `⟨Θ, hΘ, hΘp, hΘN⟩` from `GlobalTheory.T.exists_positive_potential_dominating K J II Ψ Ω W D M Pn hPn`. Take `⟨-, ⟨C₁, hC₁⟩, hpsh⟩` from `GlobalTheory.T.regularized_weight_psh_and_bounds K J (mCoordIdeal D.y) D.n M D.Xo (muLine Hd) S Θ hS hΘ hΘp`. Take `⟨κ, hκc, hκ⟩` from `GlobalTheory.T.exists_continuous_metric_ratio K J II Ψ Ω W D Hd M S B Nb hNb hNa`. Choose the witnesses or unpack the hypotheses as in `⟨Bκ, hBκ⟩ : ∃ b : ℝ, ∀ x, |κ x| ≤ b := by`.
+
+Take `⟨b, hb⟩` from `(isCompact_univ.image hκc).isBounded.exists_norm_le`. Conclude with `⟨b, fun x => hb _ ⟨x, Set.mem_univ _, rfl⟩⟩`. Take `⟨hYo, hYnull, -, -⟩` from `GlobalTheory.T.regular_chart_data_properties D.n M.Xc M.atlas S.R`. Establish `hph` using `S.R.ph_smooth`. Use `set Cc : ℝ := |C₁| + |S.R.Clog| + |Bκ| + 1 with hCc`.
+
+Establish `hCc0 : 0 ≤ Cc` using `by positivity`. Establish `hlogr : ∀ x ∈ S.R.Yo, 0 ≤ Real.log (S.R.r x)` using `fun x hx => Real.log_nonneg (S.R.one_le_r x hx)`. Establish `hbd : ∀ᶠ t in 𝓝[>] (0 : ℝ), M.atlas.Smooth (S.regWeight t) ∧ ∀ x ∈ S.R.Yo, |S.regWeight t x| ≤ |C₁| + |S.R.Clog| * Real.log (S.R.r x) ∧ S.regWeight t x ≤ |C₁|` using `by filter_upwards [hC₁] with t ht`. Use `⟨ht.1, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `ht.2 x hx`.
+
+Establish `h3` using `S.R.ph_ge x hx`. Establish `h4 : -(|S.R.Clog| * Real.log (S.R.r x)) ≤ -S.R.Clog * Real.log (S.R.r x)`. Use `mul_le_mul_of_nonneg_right (le_abs_self S.R.Clog) (hlogr x hx)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h5 : C₁ ≤ |C₁|` using `le_abs_self _`.
+
+Establish `h6 : 0 ≤ |S.R.Clog| * Real.log (S.R.r x)` using `mul_nonneg (abs_nonneg _) (hlogr x hx)`. Establish `h7 : 0 ≤ |C₁|` using `abs_nonneg _`. Conclude with `⟨abs_le.2 ⟨by linarith, by linarith⟩, by linarith⟩`. Use `set G : M.Xc → ℝ := S.R.Yo.indicator fun x => κ x - S.R.ph x with hG`. Use `set GT : ℝ → M.Xc → ℝ := fun t x => κ x - S.regWeight t x with hGT`.
+
+Establish `hconv : ∀ i : ℕ, MIntegrable M.atlas (positionPot S.R.th Pn S.R.ph i) G ∧ (∀ᶠ t in 𝓝[>] (0 : ℝ), MIntegrable M.atlas (positionPot S.R.th Pn (S.regWeight t) i) (GT t)) ∧ Tendsto (fun t => mInt M.atlas (positionPot S.R.th Pn (S.regWeight t) i) (GT t)) (𝓝[>] 0) (𝓝 (mInt M.atlas (pos …`. Introduce `i`. Use `GlobalTheory.T.mixed_integral_tendsto_off_divisor D.n M.Xc M.atlas S.R Θ hΘ hΘp (fun j : Fin D.n => if (j : ℕ) < i then S.R.th else Pn) (fun j : Fin D.n => if (j : ℕ) < i then S.R.ph else fun _ => 0) (fun (j : Fin D.n) t => if (j : ℕ) < i then S.regWeight t else fun _ => 0) G GT …` and prove the remaining obligations. Introduce `j`. Distinguish the cases in `h : (j : ℕ) < i`.
+
+Simplify `S.R.th_pot` using `[h]`. Simplify `hPn` using `[h]`. Introduce `j`. Distinguish the cases in `h : (j : ℕ) < i`. Simplify `hph` using `[h]`.
+
+Simplify using `only [h, if_false]`. Introduce `j'`. Conclude with `contDiffOn_const`. Establish `h1` using `hpsh 1 one_pos filter_upwards [hbd, h1] with t ht ht1 j`. Distinguish the cases in `h : (j : ℕ) < i`.
+
+Simplify using `only [h, if_true]`. Use `⟨ht.1, ?_, fun x hx => ?_⟩` and prove the remaining obligations. Establish `: Θ.rsmul 1 = Θ`. Consider the cases of `Θ`. Simplify using `[LocPot.rsmul]`.
+
+Rewrite `ht1` using `[this]`. Then use the resulting hypothesis. Take `⟨h2, h3⟩` from `ht.2 x hx`. Establish `hL` using `hlogr x hx`. Establish `h4 : |S.R.Clog| * Real.log (S.R.r x) ≤ Cc * Real.log (S.R.r x)` using `mul_le_mul_of_nonneg_right (by rw [hCc]; linarith [abs_nonneg C₁, abs_nonneg Bκ]) hL`. Establish `h5 : |C₁| ≤ Cc` using `by rw [hCc]; linarith [abs_nonneg S.R.Clog, abs_nonneg Bκ]`.
+
+Conclude with `⟨by linarith, by linarith⟩`. Simplify using `only [h, if_false]`. Use `⟨fun j' => contDiffOn_const, hΘN, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hL` using `hlogr x hx`. Use `mul_nonneg hCc0 hL` as an intermediate fact.
+
+Simplify using `only [abs_zero]`. Conclude with `⟨by linarith, hCc0⟩`. Introduce `j k K' hK' hK'c`. Distinguish the cases in `h : (j : ℕ) < i`. Simplify using `only [h, if_true]`.
+
+Conclude with `GlobalTheory.T.regularized_weight_tendsto_C2 K J (mCoordIdeal D.y) D.n M D.Xo (muLine Hd) S hS k K' hK' hK'c`. Simplify using `only [h, if_false]`. Conclude with `⟨tuo_const _ _ _, tuo_const _ _ _, tuo_const _ _ _⟩`. Use `filter_upwards [hbd] with t ht`. Use `⟨?_, fun x hx => ?_⟩` and prove the remaining obligations.
+
+Use `letI : MeasurableSpace M.Xc := borel M.Xc haveI : BorelSpace M.Xc := ⟨rfl⟩`. Establish `hc : Continuous (GT t)` using `hκc.sub (GlobalTheory.T.smooth_on_atlas_continuous D.n M.Xc M.atlas _ ht.1)`. Conclude with `hc.measurable.indicator hYo.measurableSet`. Take `⟨h2, -⟩` from `ht.2 x hx`. Establish `hL` using `hlogr x hx`.
+
+Establish `h4 : |S.R.Clog| * Real.log (S.R.r x) ≤ Cc * Real.log (S.R.r x)` using `mul_le_mul_of_nonneg_right (by rw [hCc]; linarith [abs_nonneg C₁, abs_nonneg Bκ]) hL`. Establish `h5 : |C₁| + |κ x| ≤ Cc`. Use `hBκ x` as an intermediate fact. Establish `h6` using `le_abs_self Bκ`. Rewrite using `[hCc]`.
+
+Combine the linear relations using `[abs_nonneg S.R.Clog]`. Establish `h7 : |GT t x| ≤ |κ x| + |S.regWeight t x|` using `abs_sub _ _`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `K' hK' hK'c`. Establish `hu` using `GlobalTheory.T.regularized_weight_tendsto_uniformly K J (mCoordIdeal D.y) D.n M D.Xo (muLine Hd) S hS K' hK' hK'c`.
+
+Establish `hu2 : TendstoUniformlyOn GT (fun x => κ x - S.R.ph x) (𝓝[>] 0) K'`. Rewrite `hu`, the goal using `[Metric.tendstoUniformlyOn_iff]`. Introduce `ε hε`. Use `filter_upwards [hu ε hε] with t ht x hx`. Use `ht x hx` as an intermediate fact.
+
+Simplify using `only [hGT, Real.dist_eq] at this ⊢`. Rewrite using `[show κ x - S.R.ph x - (κ x - S.regWeight t x) = -(S.R.ph x - S.regWeight t x) by ring, abs_neg]` and apply the resulting hypothesis. Conclude with `hu2.congr_right fun x hx => by simp [hG, Set.indicator_of_mem (hK' hx)]`. Establish `hmeasT : ∀ t, M.atlas.Smooth (S.regWeight t) → ∀ j, AEStronglyMeasurable (GT t ∘ (M.atlas.chart j).symm) (volume.restrict (M.atlas.chart j).target)`. Introduce `t ht j`.
+
+Establish `hc : Continuous (GT t)` using `hκc.sub (GlobalTheory.T.smooth_on_atlas_continuous D.n M.Xc M.atlas _ ht)`. Conclude with `(hc.comp_continuousOn (M.atlas.chart j).continuousOn_symm).aestronglyMeasurable (M.atlas.chart j).open_target.measurableSet`. Establish `hmeasG : ∀ j, AEStronglyMeasurable (G ∘ (M.atlas.chart j).symm) (volume.restrict (M.atlas.chart j).target)`. Introduce `j`. Use `set V : Set (Fin D.n → ℂ) := (M.atlas.chart j).target ∩ (M.atlas.chart j).symm ⁻¹' S.R.Yo with hV`.
+
+Establish `hVo : IsOpen V` using `(M.atlas.chart j).continuousOn_symm.isOpen_inter_preimage (M.atlas.chart j).open_target hYo`. Establish `hF : ContinuousOn (fun y => κ ((M.atlas.chart j).symm y) - S.R.ph ((M.atlas.chart j).symm y)) V`. Use `ContinuousOn.sub ?_ (hph j).continuousOn` and prove the remaining obligations. Conclude with `hκc.comp_continuousOn ((M.atlas.chart j).continuousOn_symm.mono Set.inter_subset_left)`. Establish `h1 : AEStronglyMeasurable (V.indicator fun y => κ ((M.atlas.chart j).symm y) - S.R.ph ((M.atlas.chart j).symm y)) volume` using `(aestronglyMeasurable_indicator_iff hVo.measurableSet).2 (hF.aestronglyMeasurable hVo.measurableSet)`.
+
+Use `(h1.mono_measure Measure.restrict_le_self).congr ?_` and prove the remaining obligations. Use `(ae_restrict_iff' (M.atlas.chart j).open_target.measurableSet).2 (Filter.Eventually.of_forall fun y hy => ?_)` and prove the remaining obligations. Distinguish the cases in `hyY : (M.atlas.chart j).symm y ∈ S.R.Yo`. Establish `hyV : y ∈ V` using `⟨hy, hyY⟩`. Simplify using `[hG, Set.indicator_of_mem hyY, Set.indicator_of_mem hyV]`.
+
+Establish `hyV : y ∉ V` using `fun h => hyY h.2`. Simplify using `[hG, Set.indicator_of_notMem hyY, Set.indicator_of_notMem hyV]`. Establish `hwl : ∀ i, ptsIntegral (mCoordIdeal D.y) (pot fun j : Fin D.n => if (j : ℕ) < i then muVert Hd B else Nb) (fun z => Real.log (Nb.h z) - Real.log ((muVert Hd B).h z)) = mInt M.atlas (positionPot S.R.th Pn S.R.ph i) G`. Introduce `i`. Use `GlobalTheory.T.regularized_hodge_height_limit K J II Ψ Ω W D Hd M S B Nb (muVert Hd B) Pn i S.R.ph G _ hPn hPnS hph ?_ ?_ hmeasG (hconv i).1` and prove the remaining obligations.
+
+Introduce `z hz hY`. Establish `h1` using `S.ph_eq z ⟨mem_Xo_of_proj_mem S hz hY, hz⟩ hY`. Rewrite using `[GlobalTheory.T.vertical_hodge_metric_log_formula K J II Ψ Ω W D Hd B z hz, h1]`. Expand and normalize the polynomial expressions, which then agree. Introduce `z hz hY`.
+
+Establish `h1` using `S.ph_eq z ⟨mem_Xo_of_proj_mem S hz hY, hz⟩ hY`. Establish `h2` using `GlobalTheory.T.vertical_hodge_metric_log_formula K J II Ψ Ω W D Hd B z hz`. Establish `h3` using `hκ z hz`. Simplify using `only [hG, Set.indicator_of_mem hY]`. Rewrite using `[h1, h2, h3]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hev : ∀ᶠ t in 𝓝[>] (0 : ℝ), II K J (mCoordIdeal D.y) (D.n + 1) (fun _ => Nb) - ∑ i ∈ Finset.range (D.n + 1), mInt M.atlas (positionPot S.R.th Pn (S.regWeight t) i) (GT t) = arLimFun Hd S B t`. Establish `hint : ∀ᶠ t in 𝓝[>] (0 : ℝ), ∀ i ∈ Finset.range (D.n + 1), MIntegrable M.atlas (positionPot S.R.th Pn (S.regWeight t) i) (GT t)` using `(Filter.eventually_all_finset _).2 fun i _ => (hconv i).2.1`. Use `filter_upwards [GlobalTheory.T.regularized_hodge_metric_smooth K J II Ψ Ω W D Hd M S B hS, hbd, hint] with t hsp hb hi`. Take `⟨hsm, hdeg, hlog⟩` from `hsp`.
+
+Establish `hT` using `GlobalTheory.T.intersection_number_metric_change hLoc K J II (mCoordIdeal D.y) D.n Nb (muReg Hd S B t) hII D.arith hNb hsm (hdeg.trans hNa.symm)`. Rewrite using `[arLimFun, hT]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i hi' => ?_` and prove the remaining obligations. Use `(GlobalTheory.T.regularized_hodge_height_limit K J II Ψ Ω W D Hd M S B Nb (muReg Hd S B t) Pn i (S.regWeight t) (GT t) _ hPn hPnS (fun j => (hb.1 j).mono fun y hy => ⟨hy.1, Set.mem_univ _⟩) ?_ ?_ (hmeasT t hb.1) (hi i hi')).symm` and prove the remaining obligations.
+
+Introduce `z hz _`. Conclude with `hlog z hz`. Introduce `z hz _`. Simplify using `only [hGT]`. Rewrite using `[hlog z hz, hκ z hz]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hlim : Tendsto (fun t => II K J (mCoordIdeal D.y) (D.n + 1) (fun _ => Nb) - ∑ i ∈ Finset.range (D.n + 1), mInt M.atlas (positionPot S.R.th Pn (S.regWeight t) i) (GT t)) (𝓝[>] 0) (𝓝 (limTop Hd B Nb))`. Rewrite using `[limTop]`. Simplify using `only [hwl]`. Conclude with `tendsto_const_nhds.sub (tendsto_finset_sum _ fun i _ => (hconv i).2.2)`.
+
+Conclude with `hlim.congr' hev`.
+-/
 theorem tendsto_arLimFun (hLoc : ReciprocityTheory.ChartRestriction.G.AI.I2.MetricLocalStatement) {Hd : HodgeData D} {M : XModel D}
     (S : LogLogRegularisationSetting M D.Xo (muLine Hd)) (hS : S.IsTied) (B : ℕ) (hII : IsFullIntersectionSystem II)
     (Nb : HermLine J) (hNb : IsSmoothHerm Nb) (hNa : Nb.a = muTwDeg Hd B) :
@@ -230,6 +299,11 @@ theorem tendsto_arLimFun (hLoc : ReciprocityTheory.ChartRestriction.G.AI.I2.Metr
     exact tendsto_const_nhds.sub (tendsto_finset_sum _ fun i _ => (hconv i).2.2)
   exact hlim.congr' hev
 
+/- English proof (translation)
+Introduce `hG _ K _ J _ II Ψ _ Ω _ _ W _ _ D Hd M M' S S₁ B hII hS hS₁`. Establish `hIn : PB.Inputs` using `hG.2.2.2.2.2.2.2.2.2.1`. Establish `hNb : IsSmoothHerm (fsHerm J (muTwDeg Hd B))` using `PB.StepW.fsHerm_isSmoothHerm K J _`. Establish `h1` using `tendsto_arLimFun hIn.metricLocal S hS B hII _ hNb rfl`. Establish `h2` using `tendsto_arLimFun hIn.metricLocal S₁ hS₁ B hII _ hNb rfl`.
+
+Conclude with `⟨⟨_, h1⟩, by rw [arLim, arLim, h1.limUnder_eq, h2.limUnder_eq]⟩`.
+-/
 theorem arLim_exists_eq : Top.Given → PtsIntegrableStatement → ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (II : IntersectionSystem) (Ψ : Type) [Fintype Ψ] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : Ψ → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)] (D : ComponentData II Ψ K J Ω W) (Hd : HodgeData D) (M M' : XModel D) (S : LogLogRegularisationSetting M D.Xo (muLine Hd)) (S₁ : LogLogRegularisationSetting M' D.Xo (muLine Hd)) (B : ℕ), IsFullIntersectionSystem II → S.IsTied → S₁.IsTied → ArLimExists Hd S B ∧ arLim Hd S B = arLim Hd S₁ B := by
   intro hG _ K _ J _ II Ψ _ Ω _ _ W _ _ D Hd M M' S S₁ B hII hS hS₁
   have hIn : PB.Inputs := hG.2.2.2.2.2.2.2.2.2.1

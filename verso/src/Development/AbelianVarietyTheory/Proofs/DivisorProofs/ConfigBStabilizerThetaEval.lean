@@ -11,6 +11,13 @@ noncomputable section
 
 namespace GlobalTheory.ConeSoB
 
+/- English proof (translation)
+Establish `e : (fun y => ∫ k, ∫ l, g k l y ∂μ ∂μK) = ∑ i, (∫ k, ∫ l, c i k l ∂μ ∂μK) • f i`. Use function extensionality and compare the values at `y`. Establish `h1 : ∀ k, ∫ l, g k l y ∂μ = ∑ i, (∫ l, c i k l ∂μ) * f i y` using `fun k => by`. Repeatedly rewrite using `[hsum]`. Rewrite using `[integral_finsetSum _ fun j _ => (hc1 j k).mul_const _]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => integral_mul_const _ _`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Repeatedly rewrite using `[h1]`. Rewrite using `[integral_finsetSum _ fun j _ => (hc2 j).mul_const _]`. Conclude with `Finset.sum_congr rfl fun j _ => integral_mul_const _ _`.
+
+Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hf i)`.
+-/
 theorem iterated_integral_mem {α β Y : Type} [MeasurableSpace α] [MeasurableSpace β] (μK : Measure α) (μ : Measure β)
     (S : Submodule ℂ (Y → ℂ)) {N : ℕ} (f : Fin N → Y → ℂ) (c : Fin N → α → β → ℂ) (hf : ∀ i, f i ∈ S)
     (hc1 : ∀ i k, Integrable (c i k) μ) (hc2 : ∀ i, Integrable (fun k => ∫ l, c i k l ∂μ) μK)
@@ -29,6 +36,9 @@ theorem iterated_integral_mem {α β Y : Type} [MeasurableSpace α] [MeasurableS
   rw [e]
   exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hf i)
 
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ B a b G G₁ H H' cfg e' he' K hK X om om' om₁ om₁' T T₁ ei ev hei hev hpure v μK μ hμK hμ φ hφ`. Take `⟨N, f, c, hf, hc1, hc2, hsum⟩` from `GlobalTheory.T.config_b_local_part_stabilizer hP F E σ B a b G G₁ H H' cfg e' he' ei ev ⟨hei, hev, hpure⟩ K hK X om om' om₁ om₁' T T₁ v μK μ hμK.1 hμ.1 _ (Nat.le_add_left 1 _) φ hφ`. Conclude with `iterated_integral_mem μK μ _ f c hf hc1 hc2 _ hsum`.
+-/
 theorem coneFin_mem_SB_of_norm : GlobalTheory.FunPr.Hypotheses₂ → ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} (B : Base F E) {a b : ℕ}
     (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →
     ∀ (e' : Fn F (b + 2) (a + (b + 2)) →ₗ[ℂ] Fn F b (a + b)), IsEv B G.M' G₁.M' H.ι H'.ι (isoB H H') e' →

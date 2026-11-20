@@ -21,6 +21,29 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {Lb : LevB W} {hR : Ring9 W} {uZ : ℤ_[PD.p]ˣ} {ιZ : ℤ_[PD.p] →+* O}
     {T : LocLat G Qp LL O} {C : Coord W (baseIdOf hR) T} {c : ZMod n}
 
+/- English proof (translation)
+Introduce `x`. Establish `hκE : κ = ∏ s ∈ Finset.range ell, (baseIdOf hR).Bs.p s ^ (H s + m)`. Rewrite using `[hκ, Formalism.ExponentWindows.abelian₂, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun s _ => (pow_add _ _ _).symm`. Establish `hloc : ∀ s (hs : s < ell), (lvData Hy f' kind b η).loc s x ∈ (lvData Hy f' kind b η).Nl s ↔ Ring.inverse (HahnSeries.ofPowerSeries ℤ (KsW W s) (rhoL hR c s κ)) • expN Lb s T c ⟨C.t c (κ • (x : C.V)), Hy.kap x x.2⟩ ∈ Xi (KsW W s) (fun i => FilD W T c s (-i))`.
+
+Introduce `s hs`. Express the relevant statement in the definitionally equal form `prL s (locM Lb C Hy.delta ell _ κ Hy.kap Hy.expSemi Hy.locInv x) ∈ Xi _ _ ↔ _`. Rewrite using `[prL_of_lt s hs]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hx s hs`. Rewrite using `[hloc s hs]`. Establish `hm : (baseIdOf hR).d κ • ((⟨C.t c x, hx⟩ : ↥(W.N T)) : W.DD T) ∈ W.N T`. Establish `h0` using `Hy.kap x x.2`. Express the relevant statement in the definitionally equal form `C.t c (κ • (x : C.V)) ∈ W.N T at h0`.
+
+Rewrite `h0` using `[C.t_smul]`. Then use the resulting hypothesis. Establish `e1 : (⟨C.t c (κ • (x : C.V)), Hy.kap x x.2⟩ : ↥(W.N T)) = ⟨(baseIdOf hR).d κ • C.t c x, hm⟩` using `Subtype.ext (C.t_smul c κ x)`. Rewrite using `[e1, Hy.expSemi s κ ⟨C.t c x, hx⟩ hm, smul_smul]`. Distinguish the cases in `hu : IsUnit (HahnSeries.ofPowerSeries ℤ (KsW W s) (rhoL hR c s κ))`. Rewrite using `[Ring.inverse_mul_cancel _ hu, one_smul]`.
+
+Conclude with `expN_mem_xi hP4 hcrys hLb s _`. Rewrite using `[Ring.inverse_non_unit _ hu, zero_mul, zero_smul]`. Conclude with `zero_mem _`. Introduce `h`. Establish `hy : κ • (x : C.V) ∈ (latOf C).N c` using `Hy.kap x x.2`.
+
+Establish `hdet : ∀ s < ell, ∃ y' ∈ (latOf C).N c, κ • (x : C.V) = (baseIdOf hR).Bs.p s ^ (H s + m) • y'`. Introduce `s hs`. Establish `h1 : Ring.inverse (HahnSeries.ofPowerSeries ℤ (KsW W s) (rhoL hR c s (∏ s' ∈ Finset.range ell, (baseIdOf hR).Bs.p s' ^ (H s' + m)))) • expN Lb s T c ⟨C.t c (κ • (x : C.V)), hy⟩ ∈ Xi (KsW W s) (fun i => FilD W T c s (-i))`. Rewrite using `[← hκE]`. Conclude with `(hloc s hs).1 (h s hs)`.
+
+Conclude with `detect hP4 hSat hcrys hLb hmod hP3 hfree ϖ ell hcompl hϖ s hs (hfilt s hs) (H s + m) _ hy ((levelCond_iff ell hk1b hunits (fun s' => H s' + m) s hs _ hy Hy.filAnti).1 h1)`. Take `⟨y', hy', hyy⟩` from `combine hSat hcrys ell (fun s' => H s' + m) _ hy hdet`. Establish `hp0 : ∀ s < ell, (baseIdOf hR).Bs.p s ≠ 0`. Introduce `s hs h0`. Take `⟨ζ, hζ⟩` from `hζ`.
+
+Establish `hdvd : PD.p ^ (s + 1) ∣ PD.p ^ n` using `pow_dvd_pow _ (by omega)`. Establish `hprim : IsPrimitiveRoot (ζ ^ (PD.p ^ n / PD.p ^ (s + 1))) (PD.p ^ (s + 1))`. Use `hζ.pow_of_dvd (Nat.div_pos (Nat.le_of_dvd (pow_pos PD.hp.pos _) hdvd) (pow_pos PD.hp.pos _)).ne' (Nat.div_dvd_of_dvd hdvd)` as an intermediate fact. Rewrite `this` using `[Nat.div_div_self hdvd (pow_pos PD.hp.pos _).ne']`. Then use the resulting hypothesis. Establish `: Nonempty (Rs LL PD.p s)` using `⟨⟨_, (mem_primitiveRoots (pow_pos PD.hp.pos _)).2 hprim⟩⟩`.
+
+Take `⟨ε, hε⟩` from `hk1b s hs`. Rewrite `hε` using `[h0, map_zero]`. Conclude with `PowerSeries.X_ne_zero ((Units.mul_right_eq_zero ε).1 hε.symm)`. Establish `hκ0 : κ ≠ 0`. Rewrite using `[hκE]`.
+
+Conclude with `Finset.prod_ne_zero_iff.2 fun s hs => pow_ne_zero _ (hp0 s (Finset.mem_range.1 hs))`. Establish `hxy : (x : C.V) = y'`. Apply `smul_cancel κ hκ0` to reduce the goal to its premises. Rewrite using `[hyy, ← hκE]`. Rewrite using `[hxy]`.
+
+Conclude with `hy'`.
+-/
 theorem mem_holds [IsDomain O] [IsDiscreteValuationRing O] [IsFractionRing O LL] (hP4 : LevelMapHodgeFiltration W)
     (hSat : Sat W) (hcrys : IsCrys PD T.ρ)
     (hLb : ∀ (i : ZMod n) (ζ : LL) (x : ↥(W.N T)) (k : ℤ),

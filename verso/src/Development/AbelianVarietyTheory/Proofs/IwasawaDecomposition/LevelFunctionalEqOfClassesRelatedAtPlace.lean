@@ -13,6 +13,13 @@ open Formalism.L2.GlobalTheoryTheory.LocalLatticeBases
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hk : y⁻¹ * bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) γ * y' = η * κ := by`. Rewrite using `[mul_assoc, he]`. Use `group`. Establish `hkw : bc (prV (E` using `E) w) (y⁻¹ * bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ * y') = bc (prV (E := E) w) κ := by`. Rewrite using `[hk, map_mul, hη, one_mul]`.
+
+Establish `hm` using `GlobalTheory.LevelHecke.MovePair.mov_mulVec w y y' γ z'`. Rewrite `hm` using `[hkw]`. Establish `hloc : bc (prV (E` using `E) w) κ ∈ S.Uloc w := ((S.U_eq κ).1 hκ).2 w`. Rewrite `hloc` using `[S.UlocAlt w hw]`. Take `⟨hg, hf⟩` from `(Subgroup.mem_inf.1 hloc).2`.
+
+Rewrite using `[← hf ⟨_, hx'⟩]`. Use `congr 1`. Conclude with `Subtype.ext hm`.
+-/
 theorem fT_move {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))}
     (S : StepLevel F E σ J T f bad) (w : HeightOneSpectrum (𝓞 F)) (hw : (T : 𝓞 F) ∈ w.asIdeal)
@@ -40,6 +47,9 @@ theorem fT_move {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨κ, hκ, η, -, hη, he⟩` from `hA`. Substitute `hz` using the available equality. Conclude with `fT_move S w' hw y y' η κ γ hκ (hη _ hne) he z' hx hx'`.
+-/
 theorem fT_adStep {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))}
     (S : StepLevel F E σ J T f bad) (w w' : HeightOneSpectrum (𝓞 F)) (hw : (T : 𝓞 F) ∈ w'.asIdeal) (hne : w' ≠ w)
@@ -57,6 +67,9 @@ theorem fT_adStep {F E : Type} [Field F] [NumberField F] [Field E] [NumberField 
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Use `GlobalTheory.DualCompletion.dual_move D.host.F D.host.E (sigD D) _ (gramN D i hi) v (clsCrd D u i hi (cc c)) K.lev.Lb (bc (prV (E := D.host.E) v) (K.y c).1) (bwB_gramN_det D i hi) (bwB_clsCrd_lat D u i hi (cc c)) ⟨Module.Finite.iff_fg.1 K.lev.Lb_fin, K.lev.Lb_span⟩ (Formalism.UG. …` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `rlv_yloc v (K.y c).1 (K.y_lat c) x`.
+-/
 theorem ld_loc_ch {D : D7} {u : D.what₂.Word} {i : ℕ} {hi : i ≤ D.R.m} {cl : Type} {stab : cl → Type} [∀ c, Group (stab c)]
     {cc : cl → (D.mem u).C.cls i}
     (K : LevelChart D (D.mem u).A.T (badG D) i hi stab (fun c => clsCrd D u i hi (cc c)))
@@ -76,6 +89,9 @@ theorem ld_loc_ch {D : D7} {u : D.what₂.Word} {i : ℕ} {hi : i ≤ D.R.m} {cl
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+The claim follows from `(ld_loc_ch K v c _).1 (Submodule.subset_span ⟨z, hz, rfl⟩)`.
+-/
 theorem ld_in {D : D7} {u : D.what₂.Word} {i : ℕ} {hi : i ≤ D.R.m} {cl : Type} {stab : cl → Type} [∀ c, Group (stab c)]
     {cc : cl → (D.mem u).C.cls i}
     (K : LevelChart D (D.mem u).A.T (badG D) i hi stab (fun c => clsCrd D u i hi (cc c)))
@@ -88,6 +104,9 @@ theorem ld_in {D : D7} {u : D.what₂.Word} {i : ℕ} {hi : i ≤ D.R.m} {cl : T
 set_option maxHeartbeats 2000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Establish `hw : (A.eV v').1 ≠ (A.eV v).1` using `fun h => hv (A.eV.injective (Subtype.ext h))`. Establish `hx` using `ld_in (cc := fun c => c) K.toChart (A.eV v').1 c z.1 z.2`. Establish `hx'` using `ld_in (cc := fun c => c) K.toChart (A.eV v').1 c' z'.1 z'.2`. Establish `e` using `fT_adStep K.lev (A.eV v).1 (A.eV v').1 (A.eV v').2 hw (K.y c).1 (K.y c').1 γ hA z.1 z'.1 hz hx hx'`. Conclude with `(hT v' c' z' hx').trans ((congrArg (fMe v') e).trans (hT v' c z hx).symm)`.
+-/
 theorem fv_off_cls {D : D7} {u : D.what₂.Word} {A : AtTTied u} {i : ℕ} {hi : i ≤ D.R.m} (P : LvTied u A i hi)
     (K : ClsTied u i hi) (fMe : ∀ v, K.lev.fM (A.eV v).1 (A.eV v).2 ≃+ (D.mem u).A.Fv v) (hT : FvTie P K fMe)
     (v v' : (D.mem u).A.vT) (c c' : (D.mem u).C.cls i) (γ : GL (Fin (D.R.N i)) D.host.E)
@@ -103,6 +122,9 @@ theorem fv_off_cls {D : D7} {u : D.what₂.Word} {A : AtTTied u} {i : ℕ} {hi :
 set_option maxHeartbeats 2000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Establish `hw : (eV v').1 ≠ (eV v).1` using `fun h => hv (eV.injective (Subtype.ext h))`. Establish `hx` using `ld_in (cc := fun c : {c' // chOf c' = chOf c} => c.1) (K (chOf c)) (eV v').1 ⟨c, rfl⟩ z.1 z.2`. Establish `hx'` using `ld_in (cc := fun c : {c' // chOf c' = chOf c} => c.1) (K (chOf c)) (eV v').1 ⟨c', hβ⟩ z'.1 z'.2`. Establish `e` using `fT_adStep (K (chOf c)).lev (eV v).1 (eV v').1 (eV v').2 hw _ _ γ hA z.1 z'.1 hz hx hx'`. Conclude with `(hT v' (chOf c) ⟨c', hβ⟩ z' hx').trans ((congrArg (fMe (chOf c) v') e).trans (hT v' (chOf c) ⟨c, rfl⟩ z hx).symm)`.
+-/
 theorem fv_off_ch {D : D7} {u : D.what₂.Word} {i : ℕ} {hi : i ≤ D.R.m} {Ch : Type} {chOf : (D.mem u).C.cls i → Ch}
     {res : ∀ v, 𝓞 D.host.E →+* (D.mem u).A.Fv v}
     (L : LevelCompatibleLattices (D.fm u) (D.mem u).A.T res i hi (fun c => clsCrd D u i hi c))
@@ -124,6 +146,11 @@ theorem fv_off_ch {D : D7} {u : D.what₂.Word} {i : ℕ} {hi : i ≤ D.R.m} {Ch
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `B X I hI hP l Z H F hF hC u i hi v v' c c' γ hA hv z z' hz`. Distinguish the cases in `h : i = 0 ∨ i = (I.rec7 l Z).R.m`. Conclude with `fv_off_cls ((F u).lv i hi) ((F u).cls i hi h) ((F u).fMe i hi h) ((F u).fv i hi h) v v' c c' γ (hA.1 h) hv z z' hz`. Establish `h1 : 1 ≤ i` using `by omega`. Establish `h2 : i + 1 ≤ (I.rec7 l Z).R.m` using `by omega`.
+
+Take `⟨hβ, hA'⟩` from `hA.2 h1 h2`. Establish `e` using `fv_off_ch ((F u).lvC i h1 h2) (F u).atT.eV ((F u).ch i h1 h2) ((F u).fMeC i h1 h2) ((F u).fvC i h1 h2) v v' c c' hβ γ hA' hv z z' hz`. Establish `e1` using `(pr_lvC_eq_lv I hI hP l Z H F hF hC u i h1 h2 v' c).1 z z rfl`. Establish `e2` using `(pr_lvC_eq_lv I hI hP l Z H F hF hC u i h1 h2 v' c').1 z' z' rfl`. Conclude with `(congrArg _ e2).symm.trans (e.trans (congrArg _ e1))`.
+-/
 theorem fv_eq_of_adC : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (H : Formalism.L2.Herm.HermColsCh (I.rec7 l Z)) (F : ∀ u, FormsTiedSym (I.rec7 l Z) u (H.Ch u) (H.chOf u)), (∀ u, I.StdF l Z u (F u) ∧ I.StdLvC l Z u (F u)) → CarH H F → ∀ u i (hi : i ≤ (I.rec7 l Z).R.m) v v' (c c' : ((I.rec7 l Z).mem u).C.cls i) (γ : GL (Fin ((I.rec7 l Z).R.N i)) (I.rec7 l Z).host.E), AdC (F u) i hi c c' γ ((F u).atT.eV v).1 → v' ≠ v → ∀ (z : Formalism.L2.Forms.Ld (I.rec7 l Z) u i hi c) (z' : Formalism.L2.Forms.Ld (I.rec7 l Z) u i hi c'), z.1 = γ.1 *ᵥ z'.1 → ((I.rec7 l Z).fm u).fv i v' c' (((F u).lv i hi).pr v' c' z') = ((I.rec7 l Z).fm u).fv i v' c (((F u).lv i hi).pr v' c z) := by
   intro B X I hI hP l Z H F hF hC u i hi v v' c c' γ hA hv z z' hz
   by_cases h : i = 0 ∨ i = (I.rec7 l Z).R.m

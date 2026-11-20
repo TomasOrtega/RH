@@ -7,6 +7,13 @@ open Formalism.L2.SG.LocalCountModules.LocCntCommon Formalism.L2.SG.LocalCountMo
 
 namespace Formalism.L2.SG.LocalCountModules.UnramifiedPairingAlgebraic
 
+/- English proof (translation)
+Introduce `E _ O cj hcj hO r t t' ht ht' Z₁ Z₂ hu₁ hu₂ hk hg₁ hg₂ θ hθ`. Establish `hη₁ : EtaNZD O cj Z₁ (t : E) (t' : E)` using `eta_nzd O cj hcj Z₁ hu₁ _ _ hg₁`. Establish `hη₂ : EtaNZD O cj Z₂ (t : E) (t' : E)` using `eta_nzd O cj hcj Z₂ hu₂ _ _ hg₂`. Establish `hΓ` using `hθ.2.1`. Establish `hΓ'` using `hθ.2.2`.
+
+Establish `sL` using `fun m => gEquiv_spec O cj hO t t' Z₁ Z₂ θ hu₁ hu₂ hη₁ hη₂ hΓ' m`. Establish `sR` using `fun m => gsEquiv_spec O cj hO t t' Z₁ Z₂ θ hu₁ hu₂ hη₁ hη₂ hΓ m`. Use `⟨⟨(gEquiv O cj hO t t' Z₁ Z₂ θ hu₁ hu₂ hη₁ hη₂ hΓ', gsEquiv O cj hO t t' Z₁ Z₂ θ hu₁ hu₂ hη₁ hη₂ hΓ), ⟨g_b O cj hO t t' Z₁ Z₂ θ hu₁ hu₂ hη₁ hη₂ hk hΓ hΓ', g_e O cj hO t t' Z₁ Z₂ θ hu₁ hu₂ hη₁ hη₂ hk hΓ hΓ'⟩, ?_, ?_⟩, fun m => (sL m).1, fun m => (sR m).1⟩` and prove the remaining obligations. Introduce `y' y₂' h`. Establish `key` using `(sR (Submodule.Quotient.mk y')).2`.
+
+Rewrite `key` using `[h, lamSQ_mk, lamSQ_mk]`. Conclude with `key`. Introduce `y y' y₂ y₂' h h'`. Conclude with `fwd_B O cj hcj hO t t' ht ht' hu₁ hu₂ hk hg₁ hg₂ θ hθ (gEquiv O cj hO t t' Z₁ Z₂ θ hu₁ hu₂ hη₁ hη₂ hΓ').toLinearMap (gsEquiv O cj hO t t' Z₁ Z₂ θ hu₁ hu₂ hη₁ hη₂ hΓ).toLinearMap (fun m => (sL m).1) (fun m => (sR m).1) (fun m => (sL m).2) (fun m => (sR m).2) y y' y₂ y₂' h h'`.
+-/
 theorem fwdEx : FwdEx := by
   intro E _ O cj hcj hO r t t' ht ht' Z₁ Z₂ hu₁ hu₂ hk hg₁ hg₂ θ hθ
   have hη₁ : EtaNZD O cj Z₁ (t : E) (t' : E) := eta_nzd O cj hcj Z₁ hu₁ _ _ hg₁

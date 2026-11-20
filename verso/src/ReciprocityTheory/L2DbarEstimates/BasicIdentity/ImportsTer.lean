@@ -11,6 +11,23 @@ open scoped ComplexConjugate
 
 noncomputable section
 
+/- English proof (translation)
+Establish `hph1 : CkR n z 1 ph` using `Ck.mono n z 1 2 (by norm_num) _ hph`. Establish `ha1 : Ck n z 1 a` using `Ck.mono n z 1 2 (by norm_num) a ha`. Establish `hb1 : Ck n z 1 b` using `Ck.mono n z 1 2 (by norm_num) b hb`. Establish `hE` using `ck_expNeg n z 1 ph hph1`. Establish `hdTa : Ck n z 1 (dTw n z ph j a)` using `ck_dTw n z 1 ph j a hph ha`.
+
+Establish `hdba : Ck n z 1 (db n z k a)` using `Ck.db n z 1 k a ha`. Establish `s1` using `wIbp_left n z hz ph k (dTw n z ph j a) b hph1 hdTa hb1 (Or.inr hbc)`. Establish `s3` using `((wIbp n M) z hz ph j (db n z k a) b hph1 hdba hb1 (Or.inr hbc)).2`. Establish `hcomm : ∀ x, db n z k (dTw n z ph j a) x = dTw n z ph j (db n z k a) x - d n z j (db n z k (fun y => (ph y : ℂ))) x * a x`. Introduce `x`.
+
+Use `comm n M z hz ph k j a x hph ha` as an intermediate fact. Take the linear combination `-this`. Establish `hcb : Continuous (fun x => conj (b x))` using `Ck.continuous n z hz 1 _ (Ck.conj n z 1 b hb1)`. Establish `hcE : Continuous (fun x => (Real.exp (-ph x) : ℂ))` using `Ck.continuous n z hz 1 _ hE`. Establish `hint1 : Integrable (fun x => dTw n z ph j (db n z k a) x * conj (b x) * (Real.exp (-ph x) : ℂ)) (vol n z)`.
+
+Apply `integrable_of_continuous n z hz` to reduce the goal to its premises. Conclude with `((Ck.continuous n z hz 0 _ (ck_dTw n z 0 ph j (db n z k a) hph1 hdba)).mul hcb).mul hcE`. Apply `HasCompactSupport.mono' hbc` to reduce the goal to its premises. Introduce `x hx`. Apply `subset_tsupport` to reduce the goal to its premises.
+
+Introduce `h0`. Apply `hx` to reduce the goal to its premises. Simplify using `[h0]`. Establish `hint2 : Integrable (fun x => d n z j (db n z k (fun y => (ph y : ℂ))) x * a x * conj (b x) * (Real.exp (-ph x) : ℂ)) (vol n z)`. Apply `integrable_of_continuous n z hz` to reduce the goal to its premises.
+
+Conclude with `(((Ck.continuous n z hz 0 _ (Ck.d n z 0 j _ (Ck.db n z 1 k _ hph))).mul (Ck.continuous n z hz 1 _ ha1)).mul hcb).mul hcE`. Apply `HasCompactSupport.mono' hbc` to reduce the goal to its premises. Introduce `x hx`. Apply `subset_tsupport` to reduce the goal to its premises. Introduce `h0`.
+
+Apply `hx` to reduce the goal to its premises. Simplify using `[h0]`. Establish `e2 : ∫ x, db n z k (dTw n z ph j a) x * conj (b x) * (Real.exp (-ph x) : ℂ) ∂vol n z = (∫ x, dTw n z ph j (db n z k a) x * conj (b x) * (Real.exp (-ph x) : ℂ) ∂vol n z) - ∫ x, d n z j (db n z k (fun y => (ph y : ℂ))) x * a x * conj (b x) * (Real.exp (-ph x) : ℂ) ∂vol n z`. Rewrite using `[← integral_sub hint1 hint2]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `x`. Rewrite using `[hcomm x]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `s1` using `[e2, s3]`. Take the linear combination `s1`.
+-/
 theorem pair (n : ℕ) {M : Type*} [TopologicalSpace M] [T2Space M] [SecondCountableTopology M]
     [MeasurableSpace M] [BorelSpace M] (z : M → V n) (hz : IsLocalHomeomorph z) (ph : M → ℝ)
     (hph : CkR n z 2 ph) (a b : M → ℂ) (ha : Ck n z 2 a) (_hac : HasCompactSupport a)

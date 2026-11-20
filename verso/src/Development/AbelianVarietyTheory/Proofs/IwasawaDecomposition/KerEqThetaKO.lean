@@ -17,10 +17,26 @@ namespace GlobalTheory.Mem.OrientedKer
 
 variable {D : D7}
 
+/- English proof (translation)
+Unfold `toTWsmall`. Rewrite using `[Matrix.zero_mul, Matrix.transpose_zero]`.
+-/
 theorem toTWsmall_zero (S T : HSp D) : toTWsmall S T 0 = 0 := by
   unfold toTWsmall
   rw [Matrix.zero_mul, Matrix.transpose_zero]
 
+/- English proof (translation)
+Introduce `D ψ hψ Wf S T χS χT hr ha om H f hf`. Establish `ha' : admitted S T χS χT` using `⟨ha.1.symm, ha.2.2.1, ha.2.1, ha.2.2.2.2, ha.2.2.2.1⟩`. Take `⟨omO, H', e⟩` from `GlobalTheory.Mem.WeilOriented.exists_isWeilDatumO D ψ hψ S T χS χT _ ha' hr (Wf.core.weil S T χS χT ha')`. Take `⟨E, -, -, hE, -, -, -, h7, -⟩` from `GlobalTheory.OrientedCoord.exists_coord D S T hr.le`. Establish `hf0 : IsThetaFun ψ S T fun y => f (E.symm y)`.
+
+Use `(h7 ψ _).1 ?_` and prove the remaining obligations. Simplify using `only [AddEquiv.symm_apply_apply]`. Conclude with `hf`. Set `Φ₀ : ThS ψ S T` to `⟨fun y => f (E.symm y), mem_ThS.2 hf0⟩`. Establish `hfΦ : f = fun x => Φ₀.1 (toTWsmall S T x)`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [Φ₀, ← hE, AddEquiv.symm_apply_apply]`. Establish `hΦt : IsThetaFun ψ T S fun x => Φ₀.1 x.transpose` using `(GlobalTheory.Mem.ThetaClosed.thetaFun_closed D ψ hψ S T Φ₀.1).2.2 hr.ne (mem_ThS.1 Φ₀.2)`. Set `Φ : ThS ψ T S` to `⟨fun x => Φ₀.1 x.transpose, mem_ThS.2 hΦt⟩`. Use `⟨Φ, fun h0 hΦ => h0 ?_, fun g h => ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `x`. Use `congrFun (congrArg Subtype.val hΦ) (E x).transpose` as an intermediate fact. Simplify using `only [Φ, Φ₀, Matrix.transpose_transpose, AddEquiv.symm_apply_apply, Submodule.coe_zero, Pi.zero_apply] at this`. Conclude with `this`. Establish `hs` using `Wf.om_swap S T χS χT ha' g h Φ₀ Φ (fun x => congrArg Φ₀.1 (Matrix.transpose_transpose x)) 0`.
+
+Rewrite `hs` using `[Matrix.transpose_zero]`. Establish `e1` using `congrFun (e (g, h) Φ₀) 0`. Rewrite `e1` using `[toTWsmall_zero, ← hfΦ]`. Establish `e2` using `GlobalTheory.WeilUniq.weilDatum_unique D ψ hψ S T χS χT omO om H' H (g, h) f hf`. Unfold `WeilFun.ker thetaKO`.
+
+Rewrite using `[hs, ← e2]`. Conclude with `e1.symm`.
+-/
 theorem ker_eq_thetaKO : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (Wf : WeilFun D ψ) (S T : HSp D) (χS χT : IdC D), S.rank < T.rank → admitted T S χT χS → ∀ om, IsWeilDatumO ψ S T χS χT om → ∀ f, IsThetaFunO ψ S T f → ∃ Φ : ThS ψ T S, (f ≠ 0 → Φ ≠ 0) ∧ ∀ g h, Wf.ker T S χT χS Φ h g = thetaKO om g h f := by
   intro D ψ hψ Wf S T χS χT hr ha om H f hf
   have ha' : admitted S T χS χT := ⟨ha.1.symm, ha.2.2.1, ha.2.1, ha.2.2.2.2, ha.2.2.2.1⟩

@@ -46,6 +46,9 @@ def root {a : ℕ} (h : a ∣ l.M') : F₁ˣ :=
   Units.map g.toMonoidHom
     (Units.mk0 ⟨zeta a, zeta_mem_coeff_of_dvd c h⟩ fun e => Complex.exp_ne_zero _ (congrArg Subtype.val e))
 
+/- English proof (translation)
+Establish `h1 : IsPrimitiveRoot (⟨zeta a, zeta_mem_coeff_of_dvd c h⟩ : c.F) a` using `IsPrimitiveRoot.of_map_of_injective (f := c.F.val) (isPrimitiveRoot_zeta (Nat.pos_of_dvd_of_pos h (LevelExist.M'_pos l))) Subtype.val_injective`. Conclude with `Units.ext (h1.map_of_injective g.injective).pow_eq_one`.
+-/
 theorem root_pow {a : ℕ} (h : a ∣ l.M') : root c g h ^ a = 1 := by
   have h1 : IsPrimitiveRoot (⟨zeta a, zeta_mem_coeff_of_dvd c h⟩ : c.F) a :=
     IsPrimitiveRoot.of_map_of_injective (f := c.F.val)

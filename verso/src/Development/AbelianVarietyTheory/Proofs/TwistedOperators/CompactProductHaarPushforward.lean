@@ -19,6 +19,17 @@ def mulHom {G : Type} [Group G] (A B C : Subgroup G) (hAC : A ≤ C) (hBC : B �
       _ = p.1 * (p.2 * q.1) * q.2 := by rw [h]
       _ = p.1 * p.2 * (q.1 * q.2) := by group
 
+/- English proof (translation)
+Use `haveI : CompactSpace A := isCompact_iff_compactSpace.mp hA`. Use `haveI : CompactSpace B := isCompact_iff_compactSpace.mp hB`. Use `haveI : CompactSpace C := isCompact_iff_compactSpace.mp hC`. Use `set μA : Measure A := Measure.haarMeasure (⊤ : TopologicalSpace.PositiveCompacts A) with hμAdef`. Use `haveI : IsProbabilityMeasure μA := ⟨by simpa [μA] using Measure.haarMeasure_self (K₀ := (⊤ : TopologicalSpace.PositiveCompacts A))⟩`.
+
+Use `set m := mulHom A B C hAC hBC hcomm with hm`. Establish `hmc : Continuous m`. Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Conclude with `(continuous_subtype_val.comp continuous_fst).mul (continuous_subtype_val.comp continuous_snd)`. Establish `hms : Function.Surjective m`.
+
+Introduce and unpack `⟨z, hz⟩`. Take `⟨x, hx, y, hy, rfl⟩` from `hsurj z hz`. Conclude with `⟨(⟨x, hx⟩, ⟨y, hy⟩), rfl⟩`. Use `haveI : (Measure.map m (μA.prod μB)).IsHaarMeasure := Measure.isHaarMeasure_map_of_isFiniteMeasure _ m hmc hms`. Use `haveI : IsProbabilityMeasure (Measure.map m (μA.prod μB)) := Measure.isProbabilityMeasure_map hmc.measurable.aemeasurable`.
+
+Establish `heq : μC = Measure.map m (μA.prod μB)` using `Measure.isHaarMeasure_eq_of_isProbabilityMeasure _ _`. Establish `hf : Continuous (fun z : C => φ z)` using `continuousOn_iff_continuous_restrict.mp hφ`. Rewrite using `[heq, integral_map hmc.measurable.aemeasurable hf.aestronglyMeasurable]`. Establish `h1 : (fun p : A × B => φ ((m p : C) : G)) = fun p => (fun y : B => φ y) p.2`. Use function extensionality and compare the values at `p`.
+
+Conclude with `hinv _ p.1.2 _ p.2.2`. Rewrite using `[h1]`. Establish `hg : Continuous (fun y : B => φ y)` using `hf.comp (continuous_inclusion hBC)`. Rewrite using `[← integral_map measurable_snd.aemeasurable hg.aestronglyMeasurable, Measure.map_snd_prod]`. Simplify using the standard rewrite rules.
+-/
 theorem main (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
     [T2Space G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
     (A B C : Subgroup G) (hA : IsCompact (A : Set G)) (hB : IsCompact (B : Set G))

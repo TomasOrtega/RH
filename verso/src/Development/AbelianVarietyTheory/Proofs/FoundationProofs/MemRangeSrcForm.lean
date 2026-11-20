@@ -34,14 +34,25 @@ def invChar (g : G) : K := if hg : g ∈ U then (((ψ ⟨g, hg⟩)⁻¹ : Kˣ) :
 
 def trU : M →ₗ[K] M := ∑ g, invChar U ψ g • r g
 
+/- English proof (translation)
+Simplify using `[trU, LinearMap.sum_apply]`.
+-/
 theorem trU_apply (f : M) : trU r U ψ f = ∑ g, invChar U ψ g • r g f := by simp [trU, LinearMap.sum_apply]
 
+/- English proof (translation)
+Unfold `invChar`. Use `split_ifs with hg`. Conclude with `⟨charInt (MonoidHom.id G) U ψ⁻¹ g, charInt_coe (MonoidHom.id G) U ψ⁻¹ g hg⟩`. Conclude with `⟨0, rfl⟩`.
+-/
 theorem invChar_int (g : G) : ∃ a : 𝓞 K, (a : K) = invChar U ψ g := by
   unfold invChar
   split_ifs with hg
   · exact ⟨charInt (MonoidHom.id G) U ψ⁻¹ g, charInt_coe (MonoidHom.id G) U ψ⁻¹ g hg⟩
   · exact ⟨0, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[trU_apply, map_sum, Finset.smul_sum, ← Equiv.sum_comp (Equiv.mulLeft (u : G)) fun g => ((ψ u : Kˣ) : K) • _]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulLeft, map_smul, map_mul, Module.End.mul_apply, smul_smul]`. Use `congr 1`. Unfold `invChar`.
+
+Distinguish the cases in `hg : g ∈ U`. Rewrite using `[dif_pos hg, dif_pos (U.mul_mem u.2 hg), ← Units.val_mul, show (⟨u * g, U.mul_mem u.2 hg⟩ : U) = u * ⟨g, hg⟩ from rfl, map_mul, mul_inv, mul_inv_cancel_left]`. Rewrite using `[dif_neg hg, dif_neg (fun h => hg ((U.mul_mem_cancel_left u.2).1 h)), mul_zero]`.
+-/
 theorem trU_eigen (f : M) (u : U) : r u (trU r U ψ f) = ((ψ u : Kˣ) : K) • trU r U ψ f := by
   rw [trU_apply, map_sum, Finset.smul_sum, ← Equiv.sum_comp (Equiv.mulLeft (u : G)) fun g => ((ψ u : Kˣ) : K) • _]
   refine Finset.sum_congr rfl fun g _ => ?_
@@ -53,6 +64,11 @@ theorem trU_eigen (f : M) (u : U) : r u (trU r U ψ f) = ((ψ u : Kˣ) : K) • 
       show (⟨u * g, U.mul_mem u.2 hg⟩ : U) = u * ⟨g, hg⟩ from rfl, map_mul, mul_inv, mul_inv_cancel_left]
   · rw [dif_neg hg, dif_neg (fun h => hg ((U.mul_mem_cancel_left u.2).1 h)), mul_zero]
 
+/- English proof (translation)
+Establish `: ∀ g, invChar U ψ g • r g f = if g ∈ U then f else 0` using `fun g => by`. Unfold `invChar`. Use `split_ifs with hg`. Rewrite using `[hf ⟨g, hg⟩, smul_smul, Units.inv_mul, one_smul]`. Rewrite using `[zero_smul]`.
+
+Rewrite using `[trU_apply, Finset.sum_congr rfl fun g _ => this g, ← Finset.sum_filter, Finset.sum_const, Nat.cast_smul_eq_nsmul, Nat.card_eq_fintype_card, Fintype.card_subtype]`.
+-/
 theorem trU_of_eigen {f : M} (hf : ∀ u : U, r u f = ((ψ u : Kˣ) : K) • f) : trU r U ψ f = (Nat.card U : K) • f := by
   classical
   have : ∀ g, invChar U ψ g • r g f = if g ∈ U then f else 0 := fun g => by
@@ -65,6 +81,11 @@ theorem trU_of_eigen {f : M} (hf : ∀ u : U, r u f = ((ψ u : Kˣ) : K) • f) 
 
 end Level
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `c`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply]`. Rewrite using `[Finset.sum_eq_single c]`. Simplify using `only [avgForm, Pi.single_eq_same, f.2 c, Finset.sum_const, Finset.card_univ]`.
+
+Rewrite using `[← Nat.cast_smul_eq_nsmul K, smul_smul, inv_mul_cancel₀ (by exact_mod_cast Fintype.card_ne_zero), one_smul]`. Introduce `c' _ hc`. Simplify using `[avgForm, Pi.single_eq_of_ne (Ne.symm hc)]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_avgForm {K : Type} [Field K] [NumberField K] [StarRing K] (S : CSD K) (f : S.Forms) :
     ∑ c, (Fintype.card (S.Gam c) : K)⁻¹ • avgForm S c ((f : S.Cl → S.V) c) = f := by
   classical
@@ -84,9 +105,17 @@ section FinalTheorems
 
 variable (i : Fin D.R.m) (t : T0) (U : Subgroup G) (ψ : U →* D.what₂.LLˣ)
 
+/- English proof (translation)
+The claim follows from `(A.MtCSD i t).basis.equivFun.symm.injective.comp (image_idempotent_spec _ _ _).1`.
+-/
 theorem srcForm_injective : Function.Injective (srcForm A i t U ψ) :=
   (A.MtCSD i t).basis.equivFun.symm.injective.comp (image_idempotent_spec _ _ _).1
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `(A.MtCSD i t).basis.equivFun.symm.surjective f`. Establish `h1 : LinearMap.range ((A.MtCSD i t).lvlE (A.leftGroupActionLift i t) U ψ).mulVecLin = (A.MtCSD i t).lvlPart (A.leftGroupActionLift i t) U ψ` using `(image_idempotent_spec _ _ _).2.trans (level_part_spec _ _ _ _ U ψ)`. Establish `h2 : (A.MtCSD i t).basis.equivFun.symm x ∈ LinearMap.range (srcForm A i t U ψ) ↔ x ∈ (A.MtCSD i t).lvlPart (A.leftGroupActionLift i t) U ψ`. Rewrite using `[← h1]`. Conclude with `⟨fun ⟨y, hy⟩ => ⟨y, (A.MtCSD i t).basis.equivFun.symm.injective hy⟩, fun ⟨y, hy⟩ => ⟨y, congrArg (A.MtCSD i t).basis.equivFun.symm hy⟩⟩`.
+
+Rewrite using `[h2]`. Use `forall_congr' fun u => ?_` and prove the remaining obligations. Rewrite using `[← (A.MtCSD i t).I_injective.eq_iff, action_matrix_spec, map_smul, Subtype.ext_iff]`. Both sides reduce to the same expression.
+-/
 theorem mem_range_srcForm (f : (A.MtCSD i t).Forms) :
     f ∈ LinearMap.range (srcForm A i t U ψ) ↔ ∀ u : U, A.leftGroupActionLift i t u f = ((ψ u : D.what₂.LLˣ) : D.what₂.LL) • f := by
   obtain ⟨x, rfl⟩ := (A.MtCSD i t).basis.equivFun.symm.surjective f
@@ -102,15 +131,26 @@ theorem mem_range_srcForm (f : (A.MtCSD i t).Forms) :
   rw [← (A.MtCSD i t).I_injective.eq_iff, action_matrix_spec, map_smul, Subtype.ext_iff]
   rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h c => h c trivial, fun h c _ => h c⟩`.
+-/
 theorem mem_lvlNab (x : Fin (srcDim A i t U ψ) → D.what₂.LL) : x ∈ (A.MtCSD i t).lvlNab (A.leftGroupActionLift i t) U ψ ↔
     ∀ c, (srcForm A i t U ψ x : (A.MtCSD i t).Cl → (A.MtCSD i t).V) c ∈ (A.MtCSD i t).Nab c :=
   ⟨fun h c => h c trivial, fun h c _ => h c⟩
 
+/- English proof (translation)
+The claim follows from `Formalism.DivisionValues.ValuationLatticeField.valLatF_isLattice ((A.MtCSD i t).lvlI (A.leftGroupActionLift i t) U ψ) (Subtype.val_injective.comp (srcForm_injective i t U ψ)) (A.MtCSD i t).Nab h.nab_lat`.
+-/
 theorem lvlNab_isLattice {s : ℕ} (h : (A.MtCSD i t).Good s) :
     Submodule.IsLattice D.what₂.LL ((A.MtCSD i t).lvlNab (A.leftGroupActionLift i t) U ψ) :=
   Formalism.DivisionValues.ValuationLatticeField.valLatF_isLattice ((A.MtCSD i t).lvlI (A.leftGroupActionLift i t) U ψ)
     (Subtype.val_injective.comp (srcForm_injective i t U ψ)) (A.MtCSD i t).Nab h.nab_lat
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `(mem_range_srcForm i t U ψ _).2 (trU_eigen (A.leftGroupActionLift i t) U ψ f)`. Use `⟨y, (mem_lvlNab i t U ψ y).2 fun c => ?_, hy⟩` and prove the remaining obligations. Rewrite using `[hy, trU_apply]`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply]`. Use `Submodule.sum_mem _ fun g _ => ?_` and prove the remaining obligations.
+
+Take `⟨a, ha⟩` from `invChar_int U ψ g`. Establish `h2` using `Submodule.smul_mem _ a (h.nab_stable g f hf c)`. Rewrite `h2` using `[← algebraMap_smul D.what₂.LL a, show algebraMap _ D.what₂.LL a = _ from ha]`. Then use the resulting hypothesis.
+-/
 theorem exists_src_trU (h : (A.MtCSD i t).ActGood (A.leftGroupActionLift i t)) {f : (A.MtCSD i t).Forms}
     (hf : ∀ c, (f : (A.MtCSD i t).Cl → (A.MtCSD i t).V) c ∈ (A.MtCSD i t).Nab c) :
     ∃ y ∈ (A.MtCSD i t).lvlNab (A.leftGroupActionLift i t) U ψ, srcForm A i t U ψ y = trU (A.leftGroupActionLift i t) U ψ f := by
@@ -138,11 +178,17 @@ def actS (g : G) : Ser R i →ₗ[ℂ] Ser R i := (actL (Wc D i) (R.βW i) (R.da
 
 variable {R i t}
 
+/- English proof (translation)
+The claim follows from `have h := GlobalTheory.T.thetaKernelFiniteAdelic_laws R i t hM.inf hM.cV hP.ωP hP.pt_theta hP.ioP hT ⟨h.2.1, h.2.2.1⟩`.
+-/
 theorem kernelLaws (hM : R.IsModels) (hP : R.IsThP) (hT : DatumType R i t) :
     KernelLaws (W := (R.cV i).coef.W) (Bridge.ratF (Vc D i)) (R.cV i).coef.ρ (envV R i t).χ (kern R i t) :=
   have h := GlobalTheory.T.thetaKernelFiniteAdelic_laws R i t hM.inf hM.cV hP.ωP hP.pt_theta hP.ioP hT
   ⟨h.2.1, h.2.2.1⟩
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(∑ c, _ • kern R i t _ ((presV R i t).ext f _)) v g = _`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`.
+-/
 theorem clSum_eval (f : (A.MtCSD i t).Forms) (v : ∀ ρ, lowT (R.MW i (sg0 D A)) ρ) (g : GA D (Wc D i)) :
     clSum (presV R i t) (kern R i t) f v g =
       ∑ c, (Nat.card (Bridge.stab (Bridge.ratF (Vc D i)) (envV R i t).J ((presV R i t).y c)) : ℂ)⁻¹ *
@@ -150,6 +196,9 @@ theorem clSum_eval (f : (A.MtCSD i t).Forms) (v : ∀ ρ, lowT (R.MW i (sg0 D A)
   change (∑ c, _ • kern R i t _ ((presV R i t).ext f _)) v g = _
   simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]
 
+/- English proof (translation)
+Establish `e` using `(GlobalTheory.T.thetaKernelFiniteAdelic_laws R i t hM.inf hM.cV hP.ωP hP.pt_theta hP.ioP hT).1 h`. Use `Eq.trans ?_ (congrFun (congrFun (LinearMap.congr_fun e.symm ((R.HV i t).e x (fin _ h))) v) g)` and prove the remaining obligations. Both sides reduce to the same expression.
+-/
 theorem integrand_eq (hM : R.IsModels) (hP : R.IsThP) (hT : DatumType R i t) (x : (R.HV i t).H)
     (v : ∀ ρ, lowT (R.MW i (sg0 D A)) ρ) (g : GA D (Wc D i)) (h : GA D (Vc D i)) :
     Datum.thetaKO (R.ωP i t) h g (R.ptP i t (R.ioP i (PiTensorProduct.tprod ℂ v) (R.extV i t x h))) =
@@ -158,12 +207,20 @@ theorem integrand_eq (hM : R.IsModels) (hP : R.IsThP) (hT : DatumType R i t) (x 
   refine Eq.trans ?_ (congrFun (congrFun (LinearMap.congr_fun e.symm ((R.HV i t).e x (fin _ h))) v) g)
   rfl
 
+/- English proof (translation)
+The claim follows from `(hP.thF i t).elim fun _ h => (congrFun (h.2 x v) g).trans (h.1.eq ((R.extV i t).rangeRestrict x) (PiTensorProduct.tprod ℂ v) g)`.
+-/
 theorem thF_eq_integral (hP : R.IsThP) (x : (R.HV i t).H) (v : ∀ ρ, lowT (R.MW i (sg0 D A)) ρ) (g : GA D (Wc D i)) :
     R.thF i t x (fun ρ => v ρ) g = ∫ h in R.fdV i t, Datum.thetaKO (R.ωP i t) h g
       (R.ptP i t (R.ioP i (PiTensorProduct.tprod ℂ v) (R.extV i t x h))) ∂(R.νV i t) :=
   (hP.thF i t).elim fun _ h => (congrFun (h.2 x v) g).trans
     (h.1.eq ((R.extV i t).rangeRestrict x) (PiTensorProduct.tprod ℂ v) g)
 
+/- English proof (translation)
+Establish `hF : (R.HV i t).e (jVx R i t f) = (presV R i t).ext f` using `hM.jV i t f`. Use function extensionality and compare the values at `g`. Establish `key` using `GlobalTheory.ClassUnfold.integral_eq_classSum (Vc D i) (R.βV i) (R.datVt i t) (R.νV i t) (R.fdV i t) rfl (hM.νV i t) _ (presV R i t).y (presV R i t).reps (fun c => Finite.of_equiv _ ((presV R i t).stabI c).toEquiv) (fun h => kern R i t h ((presV R i t).ext f h) v g) (fun γ h k => …`. Use `Eq.trans ?_ (key.trans (clSum_eval f v g).symm)` and prove the remaining obligations. Use `(thF_eq_integral hP _ v g).trans ?_` and prove the remaining obligations.
+
+Establish `e : (fun h => Datum.thetaKO (R.ωP i t) h g (R.ptP i t (R.ioP i (PiTensorProduct.tprod ℂ v) (R.extV i t (jVx R i t f) h)))) = fun h => kern R i t (fin _ h) ((presV R i t).ext f (fin _ h)) v g`. Use function extensionality and compare the values at `fun h => (integrand_eq hM hP hT (jVx R i t f) v g h).trans (by rw [hF])`. Conclude with `congrArg (fun F : GA D (Vc D i) → ℂ => ∫ h in R.fdV i t, F h ∂(R.νV i t)) e`.
+-/
 theorem thF_eq_clSum (hM : R.IsModels) (hP : R.IsThP) (hT : DatumType R i t) (f : (A.MtCSD i t).Forms)
     (v : ∀ ρ, lowT (R.MW i (sg0 D A)) ρ) :
     R.thF i t (jVx R i t f) (fun ρ => v ρ) = clSum (presV R i t) (kern R i t) f v := by
@@ -180,6 +237,13 @@ theorem thF_eq_clSum (hM : R.IsModels) (hP : R.IsThP) (hT : DatumType R i t) (f 
     funext fun h => (integrand_eq hM hP hT (jVx R i t f) v g h).trans (by rw [hF])
   exact congrArg (fun F : GA D (Vc D i) → ℂ => ∫ h in R.fdV i t, F h ∂(R.νV i t)) e
 
+/- English proof (translation)
+Take `⟨e, -, h1, -, h2, -⟩` from `hT.coefL i t`. Use `choose γE hγ hl using GlobalTheory.HLatMove.hLat_rat_mul_stab (Vc D i) (R.βV i) (R.ΛV i) (hL.βV i)`. Use `⟨e, fun γ => e.symm.toLinearMap ∘ₗ rhoVr (labLL D) (lamV D i) (γE γ) ∘ₗ e.toLinearMap, h1, fun γ x => ?_, fun γ h j x hx => ?_, fun c => ?_⟩` and prove the remaining obligations. Use `(h1 _).trans (Eq.trans ?_ (congrArg _ (h1 x).symm))` and prove the remaining obligations. Conclude with `(congrArg (c0L i) (e.apply_symm_apply _)).trans ((hT.mapL i).1 γ _ (hγ γ) _)`.
+
+Express the relevant statement in the definitionally equal form `e (e.symm _) ∈ nabAtr (labLL D) (lamV D i) _`. Rewrite using `[e.apply_symm_apply, hl γ h j (parLev_St j.2.1), Formalism.L2.Col.nabAtr_gmap, MulEquiv.apply_symm_apply]`. Conclude with `⟨e x, hx, rfl⟩`. Establish `h3` using `h2 c`. Use extensionality with `x`.
+
+Express the relevant statement in the definitionally equal form `e x ∈ nabAtr (labLL D) (lamV D i) (Bridge.hLat (Vc D i) ((R.B.L i t).pres.y c)) ↔ _`. Rewrite using `[← h3]`. Conclude with `⟨fun ⟨y, hy, e'⟩ => e.injective e' ▸ hy, fun hx => ⟨x, hx, rfl⟩⟩`.
+-/
 theorem exists_latSys (hL : R.toLevCh.Is A.μ0) {gramR c0R c0L}
     (hT : Bridge.FamTie R.B R.pl (R.Sb : Set (Pl D.host.E)) R.Q (labLL D) (fun τ => Bridge.lamRdef (Ptw D) τ)
       (fun i τ => Bridge.lamLdef (Vc D i).rank ((i : ℕ) + 1) τ) gramR c0R c0L) :
@@ -201,12 +265,20 @@ theorem exists_latSys (hL : R.toLevCh.Is A.μ0) {gramR c0R c0L}
     rw [← h3]
     exact ⟨fun ⟨y, hy, e'⟩ => e.injective e' ▸ hy, fun hx => ⟨x, hx, rfl⟩⟩
 
+/- English proof (translation)
+Take `⟨_, g, rfl⟩` from `h`. Take `⟨h1, h2⟩` from `GlobalTheory.Mass.parts_spec D.sp.cm.sig V.gram`. Take `⟨k, k1, k2⟩` from `h2 1 (finHom V g)`. Conclude with `⟨⟨k, (h1 k).2 ⟨k1 ▸ one_mem _, k2 ▸ ((h1 _).1 g.2).2⟩⟩, k1, Subtype.ext k2⟩`.
+-/
 theorem exists_fin (V : HSp D) (h : Bridge.Gf V) : ∃ k ∈ GfC V, fin V k = h := by
   obtain ⟨_, g, rfl⟩ := h
   obtain ⟨h1, h2⟩ := GlobalTheory.Mass.parts_spec D.sp.cm.sig V.gram
   obtain ⟨k, k1, k2⟩ := h2 1 (finHom V g)
   exact ⟨⟨k, (h1 k).2 ⟨k1 ▸ one_mem _, k2 ▸ ((h1 _).1 g.2).2⟩⟩, k1, Subtype.ext k2⟩
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `hv`. Establish `h0 : (R.HW i (sg0 D A)).e (x - y) v = 0`. Rewrite using `[map_sub]`. Conclude with `sub_eq_zero.2 (h fun ρ => ⟨v ρ, (hv ρ).2.1⟩)`. Establish `h1` using `(hW i _).2.2 (x - y) (x - y)`.
+
+Rewrite `h1` using `[ipAt, EvalAtUnitVector.ipM_self_eq_zero _ _ _ _ v (fun τ => (hv τ).1) h0, mul_zero]`. Conclude with `sub_eq_zero.1 (inner_self_eq_zero.1 h1)`.
+-/
 theorem eq_of_low (hW : R.models_HW) (hv : ∃ v, IsExtVec (R.MW i (sg0 D A)) v) {x y : (R.HW i (sg0 D A)).H}
     (h : ∀ v : ∀ ρ, lowT (R.MW i (sg0 D A)) ρ,
       (R.HW i (sg0 D A)).e x (fun ρ => v ρ) = (R.HW i (sg0 D A)).e y fun ρ => v ρ) : x = y := by
@@ -236,8 +308,14 @@ structure HidaSetting (R : RealDat D A Ks) (i : Fin D.R.m) (t : T0) : Prop where
   act : (A.MtCSD i t).ActGood (A.leftGroupActionLift i t)
   typ : DatumType R i t
 
+/- English proof (translation)
+The claim follows from `sgAt_mk _ R.hv0`.
+-/
 theorem sign_at_base_place_eq_embedding (R : RealDat D A Ks) : sg0 D A = D.what₂.embLL := sgAt_mk _ R.hv0
 
+/- English proof (translation)
+Unfold `adForm`. Rewrite using `[map_smulₛₗ, map_smul]`. Conclude with `congrArg (fun s : D.what₂.LL →+* ℂ => s a • _) (sign_at_base_place_eq_embedding R)`.
+-/
 theorem adForm_smul (a : D.what₂.LL) (x : Fin (R.nW i) → D.what₂.LL) :
     adForm R i (a • x) = D.what₂.embLL a • adForm R i x := by
   unfold adForm
@@ -249,14 +327,23 @@ namespace HidaSetting
 variable (h : HidaSetting R i t)
 include h
 
+/- English proof (translation)
+The claim follows from `inj_and_rat_of_li _ (h.unif i _).1`.
+-/
 theorem j_inj_rat : Function.Injective ((R.FW i).j (sg0 D A)) ∧ ∀ x y (c : ℂ),
     (R.FW i).j (sg0 D A) x = c • (R.FW i).j (sg0 D A) y → y = 0 ∨ ∃ a, sg0 D A a = c :=
   inj_and_rat_of_li _ (h.unif i _).1
 
+/- English proof (translation)
+The claim follows from `h.j_inj_rat.1 (eq_of_low h.models.HW h.ext e)`.
+-/
 theorem eq_of_adForm {x y : Fin (R.nW i) → D.what₂.LL}
     (e : ∀ v : ∀ ρ, lowT (R.MW i (sg0 D A)) ρ, adForm R i x (fun ρ => v ρ) = adForm R i y fun ρ => v ρ) : x = y :=
   h.j_inj_rat.1 (eq_of_low h.models.HW h.ext e)
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `exists_ne (0 : Fin (R.nW i) → D.what₂.LL)`. Establish `hx' : (R.FW i).j (sg0 D A) x ≠ 0` using `fun e => hx (h.j_inj_rat.1 (e.trans (map_zero _).symm))`. Use `clSum_act (presV R i t) (kernelLaws h.models h.thP h.typ) (R.B.L i t).act_tie (envV R i t).J_le (actS R i) (fun q y w => funext fun v => ?_) g f` and prove the remaining obligations. Conclude with `(GlobalTheory.T.thetaKernelFiniteAdelic_laws R i t h.models.inf h.models.cV h.thP.ωP h.thP.pt_theta h.thP.ioP h.typ).2.2.2 _ q (h.red i t q) (LevelForms.exists_lift R h.unif i _ (h.models.HW i _).1 hx' _) y w v`.
+-/
 theorem clSum_equiv [Nontrivial (Fin (R.nW i) → D.what₂.LL)] (g : G) (f : (A.MtCSD i t).Forms) :
     clSum (presV R i t) (kern R i t) (A.leftGroupActionLift i t g f) = actS R i g (clSum (presV R i t) (kern R i t) f) := by
   obtain ⟨x, hx⟩ := exists_ne (0 : Fin (R.nW i) → D.what₂.LL)
@@ -266,6 +353,9 @@ theorem clSum_equiv [Nontrivial (Fin (R.nW i) → D.what₂.LL)] (g : G) (f : (A
   exact (GlobalTheory.T.thetaKernelFiniteAdelic_laws R i t h.models.inf h.models.cV h.thP.ωP h.thP.pt_theta h.thP.ioP h.typ).2.2.2 _ q (h.red i t q)
     (LevelForms.exists_lift R h.unif i _ (h.models.HW i _).1 hx' _) y w v
 
+/- English proof (translation)
+Unfold `levelTrace gaL`. Rewrite using `[trU_apply, map_sum, Finset.sum_apply, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ, h.clSum_equiv, LinearMap.smul_apply, invChar, apply_dite D.what₂.embLL, map_zero]`. Both sides reduce to the same expression.
+-/
 theorem clSum_trU [Nontrivial (Fin (R.nW i) → D.what₂.LL)] (f : (A.MtCSD i t).Forms) (v : ∀ ρ, lowT (R.MW i (sg0 D A)) ρ) :
     clSum (presV R i t) (kern R i t) (trU (A.leftGroupActionLift i t) U ψ f) v =
       levelTrace R i U ψ (clSum (presV R i t) (kern R i t) f v) := by
@@ -275,18 +365,27 @@ theorem clSum_trU [Nontrivial (Fin (R.nW i) → D.what₂.LL)] (f : (A.MtCSD i t
   rw [map_smulₛₗ, h.clSum_equiv, LinearMap.smul_apply, invChar, apply_dite D.what₂.embLL, map_zero]
   rfl
 
+/- English proof (translation)
+Rewrite using `[hθ y, ← thF_eq_clSum h.models h.thP h.typ]`. Both sides reduce to the same expression.
+-/
 theorem adForm_theta {θ} (hθ : OnTies.IsClassSum R i t U ψ ph θ) (y : Fin (srcDim A i t U ψ) → D.what₂.LL)
     (v : ∀ ρ, lowT (R.MW i (sg0 D A)) ρ) :
     adForm R i (θ y) (fun ρ => v ρ) = ph • clSum (presV R i t) (kern R i t) (srcForm A i t U ψ y) v := by
   rw [hθ y, ← thF_eq_clSum h.models h.thP h.typ]
   rfl
 
+/- English proof (translation)
+Rewrite using `[h.adForm_theta hθ, e, h.clSum_trU]`.
+-/
 theorem adForm_theta_trU [Nontrivial (Fin (R.nW i) → D.what₂.LL)] {θ} (hθ : OnTies.IsClassSum R i t U ψ ph θ)
     {y : Fin (srcDim A i t U ψ) → D.what₂.LL} {f : (A.MtCSD i t).Forms} (e : srcForm A i t U ψ y = trU (A.leftGroupActionLift i t) U ψ f)
     (v : ∀ ρ, lowT (R.MW i (sg0 D A)) ρ) :
     adForm R i (θ y) (fun ρ => v ρ) = ph • levelTrace R i U ψ (clSum (presV R i t) (kern R i t) f v) := by
   rw [h.adForm_theta hθ, e, h.clSum_trU]
 
+/- English proof (translation)
+Establish `e` using `(GlobalTheory.T.thetaKernelFiniteAdelic_laws R i t h.models.inf h.models.cV h.thP.ωP h.thP.pt_theta h.thP.ioP h.typ).1 g`. Use `(congrFun (LinearMap.congr_fun e w) v).trans ?_` and prove the remaining obligations. Conclude with `congrArg (fun w' => singleSeries R i (R.ωP i t) (R.vP i t) g w' v) (LinearMap.congr_fun ((h.models.cV i).1 _ (inv_mem hg)) w)`.
+-/
 theorem kern_fin {g : GA D (Vc D i)} (hg : g ∈ GfC (Vc D i)) (w : (R.cV i).W) (v : ∀ ρ, lowT (R.MW i (sg0 D A)) ρ) :
     kern R i t (fin _ g) w v = singleSeries R i (R.ωP i t) (R.vP i t) g w v := by
   have e := (GlobalTheory.T.thetaKernelFiniteAdelic_laws R i t h.models.inf h.models.cV h.thP.ωP h.thP.pt_theta h.thP.ioP h.typ).1 g
@@ -294,6 +393,15 @@ theorem kern_fin {g : GA D (Vc D i)} (hg : g ∈ GfC (Vc D i)) (w : (R.cV i).W) 
   exact congrArg (fun w' => singleSeries R i (R.ωP i t) (R.vP i t) g w' v)
     (LinearMap.congr_fun ((h.models.cV i).1 _ (inv_mem hg)) w)
 
+/- English proof (translation)
+Break down `subsingleton_or_nontrivial (Fin (R.nW i) → D.what₂.LL) with hs | hs` into its components or cases. Conclude with `fun x _ => Subsingleton.elim 0 x ▸ Submodule.zero_mem _`. Use `Submodule.span_le.2 fun x hx => ?_` and prove the remaining obligations. Take `⟨g, hg, w, ⟨gramR, c0R, c0L, hT, P, hP, rfl⟩, hx⟩` from `hx`. Take `⟨e, r, h1, hL⟩` from `exists_latSys (i := i) (t := t) h.lev hT`.
+
+Take `⟨f, hf, j, hj⟩` from `hL.exists_trace (GlobalTheory.LevelCharOrder.levEnv_chi_isOfFinOrder _ _ _) (kernelLaws h.models h.thP h.typ) (h := fin _ g) (x := e.symm P) (Submodule.mem_comap.2 ((e.apply_symm_apply P).symm ▸ hP : e (e.symm P) ∈ nabAtr (labLL D) (lamV D i) _))`. Take `⟨y, hy, ey⟩` from `exists_src_trU i t U ψ h.act hf`. Establish `hw : (presV R i t).coef (e.symm P) = c0L i P` using `(h1 _).trans (congrArg (c0L i) (e.apply_symm_apply P))`. Establish `key : (R.FW i).j (sg0 D A) x = ((((envV R i t).χ j)⁻¹ : ℂˣ) : ℂ) • (R.FW i).j (sg0 D A) (θ y)`. Use `eq_of_low h.models.HW h.ext fun v => ?_` and prove the remaining obligations.
+
+Establish `e1 : singleSeries R i (R.ωP i t) (R.vP i t) g (c0L i P) v = ((((envV R i t).χ j)⁻¹ : ℂˣ) : ℂ) • clSum (presV R i t) (kern R i t) f v` using `(h.kern_fin hg _ v).symm.trans ((congrArg (fun w' => kern R i t (fin _ g) w' v) hw.symm).trans (congrFun hj v))`. Establish `e2` using `(hx v).trans (congrArg (fun F => ph • levelTrace R i U ψ F) e1)`. Rewrite `e2` using `[(levelTrace R i U ψ).map_smul, smul_comm, ← h.adForm_theta_trU hθ ey]`. Conclude with `e2.trans (DFunLike.congr_fun ((R.HW i (sg0 D A)).e.map_smul _ _) _).symm`. Take `⟨a, ha⟩` from `exists_int_smul _ h.j_inj_rat.1 h.j_inj_rat.2 (GlobalTheory.LevelCharOrder.levEnv_chi_isOfFinOrder _ _ _ j).inv key`.
+
+Use `⟨a • y, Submodule.smul_mem _ a hy, ?_⟩` and prove the remaining obligations. Rewrite using `[ha, map_smul]`. Both sides reduce to the same expression.
+-/
 theorem thetaTuple_le {θ} (hθ : OnTies.IsClassSum R i t U ψ ph θ) :
     thetaTuple R i U ψ ph t ≤ ((A.MtCSD i t).lvlNab (A.leftGroupActionLift i t) U ψ).map (θ.restrictScalars (𝓞 D.what₂.LL)) := by
   rcases subsingleton_or_nontrivial (Fin (R.nW i) → D.what₂.LL) with hs | hs
@@ -318,6 +426,17 @@ theorem thetaTuple_le {θ} (hθ : OnTies.IsClassSum R i t U ψ ph θ) :
   rw [ha, map_smul]
   rfl
 
+/- English proof (translation)
+Break down `subsingleton_or_nontrivial (Fin (R.nW i) → D.what₂.LL) with hs | hs` into its components or cases. Conclude with `Subsingleton.elim 0 (θ y) ▸ Submodule.zero_mem _`. Take `⟨gramR, c0R, c0L, hT⟩` from `h.tie`. Take `⟨e, r, h1, hL⟩` from `exists_latSys (i := i) (t := t) h.lev hT`. Establish `hf` using `(mem_lvlNab i t U ψ y).1 hy`.
+
+Use `choose z hz ez using fun c => exists_src_trU i t U ψ h.act (hL.avg_mem (GlobalTheory.LevelCharOrder.levEnv_chi_isOfFinOrder _ _ _) (hf c))`. Establish `hmem : ∀ c, θ (z c) ∈ thetaTuple R i U ψ ph t` using `fun c => by`. Take `⟨g, hg, eg⟩` from `exists_fin (Vc D i) ((presV R i t).y c)`. Use `Submodule.subset_span ⟨g, hg, _, ⟨gramR, c0R, c0L, hT, e _, ?_, (h1 ((srcForm A i t U ψ y : _ → _) c))⟩, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[eg]`.
+
+Conclude with `(hL.nab c).ge (hf c)`. Use `(h.adForm_theta_trU hθ (ez c) v).trans (congrArg (fun F => ph • levelTrace R i U ψ F) ?_)` and prove the remaining obligations. Use `(congrFun (clSum_avgForm (presV R i t) (kernelLaws h.models h.thP h.typ) c _) v).trans ?_` and prove the remaining obligations. Conclude with `(congrArg (fun g' => kern R i t g' _ v) eg.symm).trans (h.kern_fin hg _ v)`. Establish `hsum : (Nat.card U : D.what₂.LL) • y = ∑ c, (Fintype.card ((A.MtCSD i t).Gam c) : D.what₂.LL)⁻¹ • z c`.
+
+Apply `srcForm_injective i t U ψ` to reduce the goal to its premises. Rewrite using `[map_smul, ← trU_of_eigen _ U ψ ((mem_range_srcForm i t U ψ _).1 ⟨y, rfl⟩), map_sum]`. Use `conv_lhs => rw [← sum_avgForm _ (srcForm A i t U ψ y), map_sum]`. Conclude with `Finset.sum_congr rfl fun c _ => by rw [map_smul, map_smul, ez]`. Rewrite using `[← Submodule.smul_mem_iff _ (Nat.cast_ne_zero.2 Nat.card_pos.ne' : (Nat.card U : D.what₂.LL) ≠ 0), ← map_smul, hsum, map_sum]`.
+
+Conclude with `Submodule.sum_mem _ fun c _ => by`. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (hmem c))`.
+-/
 theorem theta_mem_span {θ} (hθ : OnTies.IsClassSum R i t U ψ ph θ) {y : Fin (srcDim A i t U ψ) → D.what₂.LL}
     (hy : y ∈ (A.MtCSD i t).lvlNab (A.leftGroupActionLift i t) U ψ) :
     θ y ∈ Submodule.span D.what₂.LL (thetaTuple R i U ψ ph t : Set (Fin (R.nW i) → D.what₂.LL)) := by
@@ -345,6 +464,11 @@ theorem theta_mem_span {θ} (hθ : OnTies.IsClassSum R i t U ψ ph θ) {y : Fin 
     rw [map_smul]
     exact Submodule.smul_mem _ _ (Submodule.subset_span (hmem c))
 
+/- English proof (translation)
+Break down `subsingleton_or_nontrivial (Fin (R.nW i) → D.what₂.LL) with hs | hs` into its components or cases. Conclude with `Subsingleton.elim 0 (θ y) ▸ Submodule.zero_mem _`. Introduce `u`. Use `h.eq_of_adForm fun v => ?_` and prove the remaining obligations. Establish `e1 : adForm R i ((R.FW i).ρ u (θ y)) (fun ρ => v ρ) = sg0 D A ((R.FW i).chi u : D.what₂.LLˣ) • actL (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG u) (adForm R i (θ y) fun ρ => v ρ)` using `DFunLike.congr_fun ((h.unif i _).2.2 u (θ y)) _`.
+
+Establish `e2` using `congrFun (h.clSum_equiv u (srcForm A i t U ψ y)) v`. Rewrite `e2` using `[(mem_range_srcForm i t U ψ _).1 ⟨y, rfl⟩ u, map_smulₛₗ]`. Rewrite using `[e1, adForm_smul, MultilinearMap.smul_apply, h.adForm_theta hθ, map_smul, Units.val_mul, map_mul, mul_smul, smul_comm _ ph, smul_comm _ ph, smul_comm _ ph]`. Conclude with `congrArg₂ (fun (s : D.what₂.LL →+* ℂ) F => ph • s _ • F) (sign_at_base_place_eq_embedding R) e2.symm`.
+-/
 theorem theta_mem_typeP {θ} (hθ : OnTies.IsClassSum R i t U ψ ph θ) (y : Fin (srcDim A i t U ψ) → D.what₂.LL) :
     θ y ∈ (R.FW i).typeP U ψ := by
   rcases subsingleton_or_nontrivial (Fin (R.nW i) → D.what₂.LL) with hs | hs
@@ -383,6 +507,15 @@ variable {T : Full D} [inst : Algebra T.J.Q.c.F D.what₂.LL] {R : RealDat D A T
   {U : Subgroup G} {ψ : U →* D.what₂.LLˣ} {ph : ℂ}
   {y : (Fin (O.nX v i) → D.what₂.LL) ≃ₗ[D.what₂.LL] (Fin (srcDim A ι (R.mu v) U ψ) → D.what₂.LL)}
 
+/- English proof (translation)
+Establish `hb` using `toForms_bijective h fw ι z`. Establish `key : ∀ (g : P) (hg : inc g ∈ U), O.ρ i g x = ((O.ψ g : 𝓞 D.what₂.LL) : D.what₂.LL) • x ↔ (R.FW ι).ρ (inc g) (toForms h fw ι z x) = (((R.FW ι).chi (inc g) * ψ ⟨inc g, hg⟩ : D.what₂.LLˣ) : D.what₂.LL) • toForms h fw ι z x` using `fun g hg => by`. Rewrite using `[← hb.1.eq_iff, t.rho_eq_of_actionPin ha, map_smul, t.ψ_eq g hg, hχ _ hg, one_mul]`. Use `and_congr ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x ∈ eig (O.ρ i) O.U O.ψ ↔ toForms h fw ι z x ∈ (R.FW ι).typeP U ψ`.
+
+Simplify using `only [eig, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero, Arith.FormsL.mem_typeP]`. Use `⟨fun H u => ?_, fun H u => ?_⟩` and prove the remaining obligations. Take `⟨_, hu⟩` from `u`. Take `⟨g, rfl⟩` from `hU hu`. Conclude with `(key g hu).1 (H ⟨g, t.U_eq.ge hu⟩)`.
+
+Conclude with `(key u (t.U_eq.le u.2)).2 (H ⟨inc u, t.U_eq.le u.2⟩)`. Express the relevant statement in the definitionally equal form `x ∈ O.V₀ i ↔ toForms h fw ι z x ∈ LinearMap.range ((R.FW ι).eOp _)`. Rewrite using `[t.V₀_eq]`. Use `⟨fun ⟨a, e⟩ => ⟨_, e ▸ (t.e_eOp a).symm⟩, fun ⟨b, e⟩ => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `hb.2 b`.
+
+Conclude with `⟨a, hb.1 ((t.e_eOp a).trans e)⟩`.
+-/
 theorem mem_Zg_iff (t : OnTie h fw hinj EX p ι wL wF nT O v i z act inc ℓ U ψ ph y) (ha : ActionPin h fw ι ℓ)
     (hU : U ≤ inc.range) (hχ : ∀ u ∈ U, (R.FW ι).chi u = 1) (x : Fin (O.nZ i) → D.what₂.LL) :
     x ∈ O.Zg i ↔ toForms h fw ι z x ∈ (R.FW ι).Wgood U ψ fun g => (idemOf A.X).coeff g := by
@@ -406,6 +539,29 @@ theorem mem_Zg_iff (t : OnTie h fw hinj EX p ι wL wF nT O v i z act inc ℓ U �
     obtain ⟨a, rfl⟩ := hb.2 b
     exact ⟨a, hb.1 ((t.e_eOp a).trans e)⟩
 
+/- English proof (translation)
+Establish `hb` using `toForms_bijective h fw ι z`. Establish `hθ` using `t.θ'_eq hr`. Establish `hM` using `lvlNab_isLattice ι (R.mu v) U ψ hG`. Establish `hθy : ∀ x, (toForms h fw ι z ∘ₗ O.θ' v i ∘ₗ y.symm.toLinearMap) (y x) = toForms h fw ι z (O.θ' v i x)` using `fun x => congrArg (fun a => toForms h fw ι z (O.θ' v i a)) (y.symm_apply_apply x)`. Establish `hle : O.X₃ v i ≤ O.Im v i`.
+
+Rewrite using `[t.X₃_eq]`. Use `Submodule.map_mono fun x hx => ?_` and prove the remaining obligations. Take `⟨m, hm, e⟩` from `hS.thetaTuple_le hθ hx`. Take `⟨m, rfl⟩` from `y.surjective m`. Conclude with `⟨m, t.Mt_eq.ge hm, hb.1 ((hθy m).symm.trans e)⟩`.
+
+Establish `hfg : (O.Im v i).FG`. Use `Submodule.FG.map _ (Submodule.FG.map _ ?_)` and prove the remaining obligations. Rewrite using `[t.Mt_eq]`. Establish `e` using `Submodule.comap_equiv_eq_map_symm (y.restrictScalars (𝓞 D.what₂.LL)) ((A.MtCSD ι (R.mu v)).lvlNab (A.leftGroupActionLift ι (R.mu v)) U ψ)`. Conclude with `e.symm ▸ hM.fg.map _`.
+
+Establish `h1 : Submodule.span D.what₂.LL (O.Im v i : Set (Fin (O.nZ i) → D.what₂.LL)) ≤ O.Zg i`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨m, -, rfl⟩, rfl⟩`. Use `(mem_Zg_iff t ha hU hχ _).2 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `toForms h fw ι z (O.e i (O.θ' v i m)) ∈ _`.
+
+Rewrite using `[t.e_eOp, ← hθy]`. Use `⟨fun u => ?_, _, rfl⟩` and prove the remaining obligations. Establish `hc` using `idempotent_central _ _ A.X hX`. Establish `e` using `LinearMap.congr_fun ((LevelForms.eOp_idem_comm (R.FW ι) _ hc.1 hc.2).2 u) ((toForms h fw ι z ∘ₗ O.θ' v i ∘ₗ y.symm.toLinearMap) (y m))`. Rewrite `e` using `[LinearMap.comp_apply, LinearMap.comp_apply _ ((R.FW ι).eOp _), hS.theta_mem_typeP hθ (y m) u, map_smul]`.
+
+Conclude with `e.symm`. Establish `h2 : O.Zg i ≤ Submodule.span D.what₂.LL (O.X₃ v i : Set (Fin (O.nZ i) → D.what₂.LL))`. Introduce `x hx`. Take `⟨m, e⟩` from `hk _ hθ ((mem_Zg_iff t ha hU hχ x).1 hx)`. Take `⟨m, rfl⟩` from `y.surjective m`.
+
+Rewrite `e` using `[LinearMap.comp_apply, hθy, ← t.e_eOp]`. Rewrite using `[← hb.1 e]`. Establish `h3 : ∀ b ∈ Submodule.span D.what₂.LL (thetaTuple R ι U ψ ph (R.mu v) : Set (Fin (R.nW ι) → D.what₂.LL)), ∀ a, toForms h fw ι z a = b → O.e i a ∈ Submodule.span D.what₂.LL (O.X₃ v i : Set (Fin (O.nZ i) → D.what₂.LL))`. Introduce `b hb'`. Proceed by induction on `hb' using Submodule.span_induction with`.
+
+Consider the case `mem b hb' => exact fun a e => Submodule.subset_span (t.X₃_eq.ge ⟨a, by subst e; exact hb', rfl⟩)`. Consider the case `zero => exact fun a e => by rw [hb.1 (e.trans (map_zero _).symm), map_zero]; exact Submodule.zero_mem _`. Consider the case `add b c _ _ ib ic`. Introduce `a e`. Take `⟨b, rfl⟩` from `hb.2 b`.
+
+Take `⟨c, rfl⟩` from `hb.2 c`. Rewrite using `[hb.1 (e.trans (map_add _ _ _).symm), map_add]`. Conclude with `Submodule.add_mem _ (ib _ rfl) (ic _ rfl)`. Consider the case `smul r b _ ib`. Introduce `a e`.
+
+Take `⟨b, rfl⟩` from `hb.2 b`. Rewrite using `[hb.1 (e.trans (map_smul _ _ _).symm), map_smul]`. Conclude with `Submodule.smul_mem _ _ (ib _ rfl)`. Use `h3 _ ?_ _ (hθy m).symm` and prove the remaining obligations. Establish `h4 : Submodule.span D.what₂.LL ((A.MtCSD ι (R.mu v)).lvlNab (A.leftGroupActionLift ι (R.mu v)) U ψ : Set (Fin _ → D.what₂.LL)) ≤ (Submodule.span D.what₂.LL (thetaTuple R ι U ψ ph (R.mu v) : Set (Fin (R.nW ι) → D.what₂.LL))).comap (toForms h fw ι z ∘ₗ O.θ' v i ∘ₗ y.symm.toLinearMa …` using `Submodule.span_le.2 fun m hm => hS.theta_mem_span hθ hm`.
+
+Conclude with `h4 (hM.span_eq_top.ge trivial)`. Use `haveI : IsNoetherian (𝓞 D.what₂.LL) (O.Im v i) := isNoetherian_of_fg_of_noetherian _ hfg`. Conclude with `⟨⟨hfg.of_le hle, le_antisymm ((Submodule.span_mono hle).trans h1) h2⟩, ⟨hfg, le_antisymm h1 (h2.trans (Submodule.span_mono hle))⟩, hle⟩`.
+-/
 theorem lattices_of_tie (t : OnTie h fw hinj EX p ι wL wF nT O v i z act inc ℓ U ψ ph y) (ha : ActionPin h fw ι ℓ)
     (hU : U ≤ inc.range) (hχ : ∀ u ∈ U, (R.FW ι).chi u = 1) (hS : HidaSetting R ι (R.mu v)) {s : ℕ}
     (hG : (A.MtCSD ι (R.mu v)).Good s) (hX : ∀ χ ∈ A.X, IsAbsIrrChar χ) (hr : ClassSumRational R ι (R.mu v) U ψ ph)

@@ -5,6 +5,9 @@ set_option autoImplicit false
 
 namespace GlobalTheory.ConstLat
 
+/- English proof (translation)
+Use extensionality with `i k`. Use `Fin.addCases (fun l => ?_) (fun l => ?_) k` and prove the remaining obligations. Simplify using `[GlobalTheory.ConstLat.compl]`. Simplify using `only [GlobalTheory.ConstLat.compl, Matrix.map_apply, Matrix.of_apply, Fin.addCases_right]`. Simplify using `[Matrix.mul_apply, map_sum]`.
+-/
 theorem compl_map_ringHom {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {g : ℕ}
     (U : Matrix (Fin (g + g)) (Fin g) R) (L : Matrix (Fin g) (Fin (g + g)) R)
     (Ji : Matrix (Fin (g + g)) (Fin (g + g)) R) :
@@ -15,6 +18,9 @@ theorem compl_map_ringHom {R S : Type} [CommRing R] [CommRing S] (f : R →+* S)
   · simp only [GlobalTheory.ConstLat.compl, Matrix.map_apply, Matrix.of_apply, Fin.addCases_right]
     simp [Matrix.mul_apply, map_sum]
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `only [Matrix.mulVec, dotProduct, Fin.sum_univ_add, GlobalTheory.ConstLat.compl, Matrix.of_apply, Fin.addCases_left, Fin.addCases_right, Pi.add_apply]`. Use `congr 1`. Rewrite using `[← Equiv.sum_comp Fin.revPerm]`. Simplify using the standard rewrite rules.
+-/
 theorem compl_mulVec_eq {R : Type} [CommRing R] {g : ℕ}
     (U : Matrix (Fin (g + g)) (Fin g) R) (L : Matrix (Fin g) (Fin (g + g)) R)
     (Ji : Matrix (Fin (g + g)) (Fin (g + g)) R) (x : Fin (g + g) → R) :
@@ -27,6 +33,15 @@ theorem compl_mulVec_eq {R : Type} [CommRing R] {g : ℕ}
   rw [← Equiv.sum_comp Fin.revPerm]
   simp
 
+/- English proof (translation)
+Introduce `hdet`. Take `⟨x, hx0, hx⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 hdet`. Rewrite `hx` using `[compl_mulVec_eq]`. Establish `h1 : U.transpose * J * (Ji * L.transpose) = 1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc J, hJ, Matrix.one_mul, ← Matrix.transpose_mul, hL, Matrix.transpose_one]`.
+
+Establish `h2 : (fun l : Fin g => x (Fin.natAdd g l.rev)) = 0`. Use `congrArg (U.transpose * J).mulVec hx` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_add, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, h0, h1]`. Simplify using `using this`. Establish `h3 : (fun l : Fin g => x (Fin.castAdd g l)) = 0`.
+
+Rewrite `hx` using `[h2, Matrix.mulVec_zero, add_zero]`. Use `congrArg L.mulVec hx` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, hL]`. Simplify using `using this`. Apply `hx0` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `k`. Use `Fin.addCases (fun l => ?_) (fun l => ?_) k` and prove the remaining obligations. Conclude with `congrFun h3 l`. Simplify using `using congrFun h2 l.rev`.
+-/
 theorem compl_det_ne_zero_of_isotropic {K : Type} [Field K] {g : ℕ}
     (U : Matrix (Fin (g + g)) (Fin g) K) (L : Matrix (Fin g) (Fin (g + g)) K)
     (J Ji : Matrix (Fin (g + g)) (Fin (g + g)) K) (hL : L * U = 1) (hJ : J * Ji = 1)
@@ -52,6 +67,13 @@ theorem compl_det_ne_zero_of_isotropic {K : Type} [Field K] {g : ℕ}
   · exact congrFun h3 l
   · simpa using congrFun h2 l.rev
 
+/- English proof (translation)
+Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, RingHom.map_det, RingHom.mapMatrix_apply, compl_map_ringHom]`. Use `compl_det_ne_zero_of_isotropic _ _ (J.map (IsLocalRing.residue R)) _ ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul, hL]`. Simplify using the standard rewrite rules. Rewrite using `[← Matrix.map_mul, hJ]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[← Matrix.transpose_map, ← Matrix.map_mul, ← Matrix.map_mul]`. Use extensionality with `i j`. Use `h0 i j` as an intermediate fact. Rewrite `this` using `[← IsLocalRing.residue_ne_zero_iff_isUnit, not_not]`.
+
+Simplify using `using this`.
+-/
 theorem isUnit_det_compl {R : Type} [CommRing R] [IsLocalRing R] {g : ℕ} (U : Matrix (Fin (g + g)) (Fin g) R)
     (L : Matrix (Fin g) (Fin (g + g)) R) (J Ji : Matrix (Fin (g + g)) (Fin (g + g)) R) (hL : L * U = 1)
     (hJ : J * Ji = 1) (h0 : ∀ i j, ¬ IsUnit ((U.transpose * J * U) i j)) :

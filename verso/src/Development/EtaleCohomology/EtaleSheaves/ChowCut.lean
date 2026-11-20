@@ -17,6 +17,15 @@ def Norm : Prop := ∀ {Z W : Scheme.{0}} (f : W ⟶ Z) [QuasiSeparated f], AICS
   (∃ (U : Z.Opens) (s : U.toScheme ⟶ W), (U : Set Z).Nonempty ∧ s ≫ f = U.ι) →
   ∃ (Z' : Scheme.{0}) (v : Z' ⟶ W), IsIntegralHom v ∧ AICSch Z' ∧ IsDominant (v ≫ f)
 
+/- English proof (translation)
+Introduce `A _ Z X h p _ hh hZ`. Take `⟨X₁, h₁, p₁, hX₁, hp₁, hh₁, hd₁, e⟩` from `hI A h p hh hZ.1`. Use `hp₁` as an intermediate fact. Use `hh₁` as an intermediate fact. Use `hd₁` as an intermediate fact.
+
+Take `⟨X', π, U, s, hU, hs, hπ, hπp⟩` from `hC A p₁ hX₁`. Take `⟨_, _⟩` from `(hπ.bc h₁ (IsPullback.of_hasPullback h₁ π).flip).qc`. Establish `hU' : ((h₁ ⁻¹ᵁ U : Z.Opens) : Set Z).Nonempty`. Take `⟨x, hxU, y, rfl⟩` from `h₁.denseRange.inter_open_nonempty _ U.isOpen hU`. Conclude with `⟨y, hxU⟩`.
+
+Establish `sec : ∃ (V : Z.Opens) (t : V.toScheme ⟶ pullback h₁ π), (V : Set Z).Nonempty ∧ t ≫ pullback.fst h₁ π = V.ι` using `⟨h₁ ⁻¹ᵁ U, pullback.lift (h₁ ⁻¹ᵁ U).ι ((h₁ ∣_ U) ≫ s) (by rw [Category.assoc, hs, morphismRestrict_ι]), hU', pullback.lift_fst _ _ _⟩`. Take `⟨Z', v, hv, hZ', hd⟩` from `hN (pullback.fst h₁ π) hZ sec`. Use `⟨Z', v ≫ pullback.fst h₁ π, hZ', hd, hπ.bc h₁ (IsPullback.of_hasPullback h₁ π).flip |>.pre v hv, ?_⟩` and prove the remaining obligations. Establish `: (v ≫ pullback.fst h₁ π) ≫ h ≫ p = (v ≫ pullback.snd h₁ π) ≫ π ≫ p₁`. Rewrite using `[← e, Category.assoc, reassoc_of% pullback.condition, Category.assoc]`.
+
+Rewrite using `[this]`. Conclude with `hπp.pre _ inferInstance`.
+-/
 theorem goal_of (hI : Img) (hC : ChowL) (hN : Norm) : LateralTheory.E.t_E2Cut.Chow := by
   intro A _ Z X h p _ hh hZ
   obtain ⟨X₁, h₁, p₁, hX₁, hp₁, hh₁, hd₁, e⟩ := hI A h p hh hZ.1

@@ -17,6 +17,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.FrameAut
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y cX ex Csz p hr hm j P W hd hn w hw hwr hs`. Use `⟨⟨hLab p hr hm j P W hd hn w hw hwr hs, hCof p hr hm j P W hd hn w hw hwr hs, hBl p hr hm j P W hd hn w hw hwr hs⟩, ?_⟩` and prove the remaining obligations. Introduce `_ F R inc T mu θ hmu hE`. Take `⟨π, hπ, hwt, hl, φ, hφ, hφ0, hQ⟩` from `hAut p hr hm j P W hd hn w hw hwr hs F R inc T mu θ hmu hE`. Use `⟨π, hπ, hwt, hl, fun Q => ?_⟩` and prove the remaining obligations.
+
+Establish `hlab` using `hLab p hr hm j P W hd hn w hw hwr hs Q`. Distinguish the cases in `hQl : ((Formalism.EigenvalueLevelCeiling.plc w : ℕ) : 𝓞 D.host.E) ∈ (plOf p j (p.R.mu w) Q).asIdeal`. Establish `hun` using `hl _ (hlab.2.2.2.2 hQl)`. Take `⟨ψ, hψ, hψ0, hψfix⟩` from `hun`. Take `⟨σ, S, hc, hsat, -⟩` from `hSat _ _ π hπ _ hlab.1 ψ hψ hψ0 hψfix`.
+
+Use `⟨⟨ψ, hψ, hψ0, hψfix⟩, σ, S, hc, hsat, fun i hi => ?_⟩` and prove the remaining obligations. Conclude with `absurd (hi ▸ hQl) ((T.ix_range (R.ix i)).1 ⟨i, rfl⟩).2.2`. Take `⟨hfix, heig⟩` from `hQ Q hQl`. Take `⟨σ, S, hc, hsat, hk⟩` from `hSat _ _ π hπ _ hlab.1 φ hφ hφ0 hfix`. Use `⟨⟨φ, hφ, hφ0, hfix⟩, σ, S, hc, hsat, fun i hi => ?_⟩` and prove the remaining obligations.
+
+Establish `hle` using `((T.ix_range (R.ix i)).1 ⟨i, rfl⟩).2.1`. Conclude with `smul_left_injective ℂ hφ0 ((heig i hi).symm.trans (hk _ hle))`.
+-/
 theorem autAt_of (hLab : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
     {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} (p : PtAt ex Csz), PtAt.Rows p → More p →
     ∀ (j : Fin D.R.m) (P : Par) (W : Wts D.what₂.Tau), Dict L j P W → NumOk P W →
@@ -82,6 +91,11 @@ theorem autAt_of (hLab : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi :
     have hle := ((T.ix_range (R.ix i)).1 ⟨i, rfl⟩).2.1
     exact smul_left_injective ℂ hφ0 ((heig i hi).symm.trans (hk _ hle))
 
+/- English proof (translation)
+Introduce `hS`. Take `⟨ε1, he, H⟩` from `hS`. Use `⟨ε1, he, fun eps h1 h2 => ?_⟩` and prove the remaining obligations. Take `⟨K, hK⟩` from `H eps h1 h2`. Use `⟨K, fun Fm CH hc hl => ?_⟩` and prove the remaining obligations.
+
+Take `⟨x0, hx0⟩` from `hK Fm CH hc hl`. Conclude with `⟨x0, fun x hx hxx i p hr hm j P W hd hn w hw hwr => autAt_of hLab hCof hBl hSat hAut p hr hm j P W hd hn w hw hwr (hx0 x hx hxx i p hr hm j P W hd hn w hw hwr)⟩`.
+-/
 theorem autSt_of (hLab : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
     {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} (p : PtAt ex Csz), PtAt.Rows p → More p →
     ∀ (j : Fin D.R.m) (P : Par) (W : Wts D.what₂.Tau), Dict L j P W → NumOk P W →
@@ -135,6 +149,9 @@ theorem autSt_of (hLab : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi :
   exact ⟨x0, fun x hx hxx i p hr hm j P W hd hn w hw hwr =>
     autAt_of hLab hCof hBl hSat hAut p hr hm j P W hd hn w hw hwr (hx0 x hx hxx i p hr hm j P W hd hn w hw hwr)⟩
 
+/- English proof (translation)
+The claim follows from `autSt_of GlobalTheory.T.small_place_block_decomposition GlobalTheory.T.small_place_finite_set GlobalTheory.T.small_place_block_bound GlobalTheory.T.exists_satake_sphericalVector_definiteUnitary GlobalTheory.T.small_place_prime_local`.
+-/
 theorem autSt : GlobalTheory.ExpTie.SmallSt → AutSt :=
   autSt_of GlobalTheory.T.small_place_block_decomposition GlobalTheory.T.small_place_finite_set GlobalTheory.T.small_place_block_bound GlobalTheory.T.exists_satake_sphericalVector_definiteUnitary GlobalTheory.T.small_place_prime_local
 

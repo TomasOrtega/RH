@@ -7,6 +7,11 @@ open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Adel PositivityTheory.Rg
 open scoped ENNReal NumberField.AdeleRing InnerProductSpace ComplexConjugate
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial
 
+/- English proof (translation)
+Establish `h` using `mem_archCompact.1 hk (Pi.single i 1)`. Rewrite `h` using `[Matrix.single_one_vecMul]`. Establish `h1 : euclidNorm (Pi.single i (1 : w.Completion)) = 1`. Rewrite using `[euclidNorm, Finset.sum_eq_single i (fun j _ hj => by simp [Pi.single_eq_of_ne hj]) (by simp)]`. Simplify using `only [Pi.single_eq_same, norm_one, one_pow, Real.sqrt_one]`.
+
+Rewrite `h` using `[h1, euclidNorm, Real.sqrt_eq_one]`. Rewrite using `[← h, ← Finset.sum_pair (f := fun j => ‖k i j‖ ^ 2) hab]`. Conclude with `Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _) fun _ _ _ => sq_nonneg _`.
+-/
 private theorem row_two {K : Type} [Field K] {n : ℕ} {w : InfinitePlace K} {k : GL (Fin n) w.Completion}
     (hk : k ∈ archCompact w) (i : Fin n) {a b : Fin n} (hab : a ≠ b) : ‖k i a‖ ^ 2 + ‖k i b‖ ^ 2 ≤ 1 := by
   classical
@@ -19,6 +24,19 @@ private theorem row_two {K : Type} [Field K] {n : ℕ} {w : InfinitePlace K} {k 
   rw [← h, ← Finset.sum_pair (f := fun j => ‖k i j‖ ^ 2) hab]
   exact Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _) fun _ _ _ => sq_nonneg _
 
+/- English proof (translation)
+Introduce `K _ _ n k hk r c _ hc`. Establish `hc01 : c 0 ≠ c 1` using `fun h => absurd (hc h) (by decide)`. Establish `H1 : ∀ w : InfinitePlace K, ‖(((k : Matrix (Fin n) (Fin n) 𝔸[K]).submatrix r c).det).1 w‖ ≤ 1`. Introduce `w`. Establish `h0` using `row_two ((mem_maxCompact.1 hk).1 w) (r 0) hc01`.
+
+Establish `h1` using `row_two ((mem_maxCompact.1 hk).1 w) (r 1) hc01`. Establish `e : (((k : Matrix (Fin n) (Fin n) 𝔸[K]).submatrix r c).det).1 w = infAt w k (r 0) (c 0) * infAt w k (r 1) (c 1) - infAt w k (r 0) (c 1) * infAt w k (r 1) (c 0)`. Rewrite using `[← infEval_apply, Matrix.det_fin_two, map_sub, map_mul, map_mul]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+
+Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul]`. Use polynomial arithmetic with `[sq_nonneg (‖infAt w k (r 0) (c 0)‖ - ‖infAt w k (r 1) (c 1)‖), sq_nonneg (‖infAt w k (r 0) (c 1)‖ - ‖infAt w k (r 1) (c 0)‖)]`. Establish `H2 : ∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 K), ‖(((k : Matrix (Fin n) (Fin n) 𝔸[K]).submatrix r c).det).2 v‖ ≤ 1`. Introduce `v`.
+
+Establish `hv` using `(mem_maxCompact.1 hk).2 v`. Rewrite `hv` using `[GLnLocal.mem_integralGL_iff]`. Simplify using `only [GroundTheory.Global.mem_valuationInteger_iff] at hv`. Establish `e : (((k : Matrix (Fin n) (Fin n) 𝔸[K]).submatrix r c).det).2 v = finAt v k (r 0) (c 0) * finAt v k (r 1) (c 1) - finAt v k (r 0) (c 1) * finAt v k (r 1) (c 0)`. Rewrite using `[← finEval_apply, Matrix.det_fin_two, map_sub, map_mul, map_mul]`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `norm_le_one_of_mem v (sub_mem (mul_mem (hv.1 _ _) (hv.1 _ _)) (mul_mem (hv.1 _ _) (hv.1 _ _)))`. Use `⟨H1, H2, fun m hm => ?_⟩` and prove the remaining obligations. Rewrite `H1`, `H2` using `[← hm]`.
+
+Express the relevant statement in the definitionally equal form `(GroundTheory.Global.IdeleGroup.ideleModule K (AdelicGLn.det K 2 m) : ℝ) ≤ 1`. Rewrite using `[GroundTheory.Global.IdeleGroup.ideleModule_eq]`. Use `mul_le_one₀ (Finset.prod_le_one (fun _ _ => by positivity) fun w _ => pow_le_one₀ (norm_nonneg _) (H1 w)) (finprod_nonneg fun _ => norm_nonneg _) ?_` and prove the remaining obligations. Conclude with `finprod_induction (fun x : ℝ => 0 ≤ x ∧ x ≤ 1) ⟨zero_le_one, le_rfl⟩ (fun x y hx hy => ⟨mul_nonneg hx.1 hy.1, mul_le_one₀ hx.2 hy.1 hy.2⟩) (fun v => ⟨norm_nonneg _, H2 v⟩) |>.2`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.subDet :
     ∀ {K : Type} [Field K] [NumberField K] (n : ℕ) (k : AdelicGLn.AdelicGL K n), k ∈ (maxCompact : Subgroup (AdelicGLn.AdelicGL K n)) → ∀ (r c : Fin 2 → Fin n), Function.Injective r → Function.Injective c →
       (∀ w : InfinitePlace K, ‖(((k : Matrix (Fin n) (Fin n) 𝔸[K]).submatrix r c).det).1 w‖ ≤ 1) ∧

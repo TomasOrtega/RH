@@ -26,6 +26,21 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Establish `hp` using `GlobalTheory.ThKContSmall.isPair_small hT`. Take `⟨t⟩ : Nonempty (E →ₐ[F] Fv F v)` from `GlobalTheory.T.split_place_embedding_exists F E σ hT.base.cm v hv.2`. Take `⟨ι, hι⟩` from `GlobalTheory.T.exists_linear_witt_model_local hP F E σ B _ _ G.V' G.W G.M' _ _ om' _ _ _ _ hp v t 1 1`. Take `⟨κW, hW⟩` from `GlobalTheory.T.linear_model_unitary_conjugate hP F E σ B _ _ G.V' G.W G.M' _ _ om' _ _ _ _ hp v t 1 1 ι hι`. Take `⟨κX, hX⟩` from `GlobalTheory.T.linear_model_compact_conjugate_exists hP F E σ B _ _ G.V' G.W G.M' _ _ om' _ _ _ _ hp v t 1 1 ι hι`.
+
+Establish `sX` using `GlobalTheory.T.linear_model_unitary_intertwines hP F E σ B _ _ G.V' G.W G.M' _ _ om' _ _ _ _ hp v t 1 1 ι hι κX hX`. Take `⟨hs, hu⟩` from `GlobalTheory.T.local_character_smooth_unitary hP F E σ B a a' G X om om' hT v hv t`. Establish `hloc` using `(GlobalTheory.T.theta_action_exists hP F E σ B _ _ G.V' G.W G.M' _ _ om' _ _ _ _ hp v).1`. Establish `hV : ∀ g ∈ UAt σ G.V' (evFin F v), ∀ φ ∈ SB (Fin a' × Fin (a + a') → Fv F v), ∀ φ₁ ∈ SB (Fin a' × Fin (a + a') → Fv F v), Acts (evFin F v) (om' (g, 1)) φ φ₁ → ι φ₁ = GlobalTheory.SplitFlip.omA (chrW X.ν t)⁻¹ 1 (locMat t 1 g) 1 (ι φ)`. Introduce `g hg φ hφ φ₁ hφ₁ hA`.
+
+Rewrite using `[hX g hg φ hφ φ₁ hφ₁ hA, sX g hg]`. Use function extensionality and compare the values at `Y`. Simplify using `[GlobalTheory.SplitFlip.omA, Chars.ν]`. Use `⟨(chrW X.ν t)⁻¹, ι, ⟨t, rfl⟩, GlobalTheory.WeilLinA.isSmoothChar_inv _ hs, GlobalTheory.WeilLinA.isUnitaryChar_inv _ hu, hι.bij, fun g hg => ⟨_, hV g hg⟩, fun g' => ?_, fun h' => ?_⟩` and prove the remaining obligations. Take `⟨K, hK⟩` from `GlobalTheory.LeviAtPlace.levi_at_place F E σ B a a' G X om om' hT v hv t`.
+
+Use `⟨K g', (hK g').1, fun φ hφ => ?_⟩` and prove the remaining obligations. Take `⟨φ₁, ⟨hφ₁, hA⟩, -⟩` from `hloc _ (hK g').1 1 (fun u _ => by simp [mat]) φ hφ`. Establish `e1 : locMat t 1 (K g') = g'` using `Units.ext (by rw [locMat_val, (hK g').2.1]; simp)`. Conclude with `⟨φ₁, hφ₁, hA, by rw [hV _ (hK g').1 φ hφ φ₁ hφ₁ hA, e1]⟩`. Take `⟨h, hh, hht⟩` from `GlobalTheory.SkewLevi.surj_at_place hP F E σ B a a' G X om om' hT v hv t (GlobalTheory.SplitFlip.invT h')`.
+
+Establish `e1 : locMat t 1 h = GlobalTheory.SplitFlip.invT h'` using `Units.ext (by rw [locMat_val, hht]; simp)`. Establish `key : ∀ φ ∈ SB (Fin a' × Fin (a + a') → Fv F v), ∃ φ₁ ∈ SB (Fin a' × Fin (a + a') → Fv F v), Acts (evFin F v) (om' (1, h)) φ φ₁ ∧ ι φ₁ = κW h • fun Y => ι φ (Y * h'.1)` using `fun φ hφ => by`. Take `⟨φ₁, ⟨hφ₁, hA⟩, -⟩` from `hloc 1 (fun u _ => by simp [mat]) h hh φ hφ`. Conclude with `⟨φ₁, hφ₁, hA, by rw [hW h hh φ hφ φ₁ hφ₁ hA, e1, GlobalTheory.SplitFlip.invT_invT]⟩`. Use `⟨h, hh, κW h, fun h0 => ?_, key⟩` and prove the remaining obligations.
+
+Establish `hvac` using `hT.geo.hM'.vac v`. Take `⟨φ₁, hφ₁, hA, e⟩` from `key _ hvac.1`. Rewrite `e` using `[h0, zero_smul, ← map_zero ι]`. Take `rfl : φ₁ = 0` from `hι.bij.injOn hφ₁ (Submodule.zero_mem _) e`. Take `⟨Rw, hRw0, hRw⟩` from `GlobalTheory.RestWitness.exists_rest (Fin a' × Fin (a + a')) v`.
+
+Establish `e0 : tens (evFin F v) (0 : (Fin a' × Fin (a + a') → Fv F v) → ℂ) Rw = 0` using `funext fun _ => zero_mul _`. Establish `e2` using `congrArg (om' (1, h)⁻¹) (hA Rw (hRw _ hvac.1))`. Rewrite `e2` using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply, e0, map_zero, ← e0]`. Conclude with `hvac.2.1 (GlobalTheory.InertAvgDual.eq_of_tens_eq v hRw0 (hRw _ hvac.1).1 e2)`.
+-/
 private theorem locOps (hP : GlobalTheory.FunPr.Hypotheses₂) {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E}
     {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W} (hT : IsTriple B G X om om') (v : Pl F) (hv : X.Good v) :
     ∃ (ν₀ : (Fv F v)ˣ →* ℂˣ) (ι : ((Fin a' × Fin (a + a') → Fv F v) → ℂ) →ₗ[ℂ] (Matrix (Fin a') (Fin (a + a')) (Fv F v) → ℂ)),
@@ -81,6 +96,65 @@ private theorem locOps (hP : GlobalTheory.FunPr.Hypotheses₂) {B : Base F E} {a
 
 open scoped Classical in
 
+/- English proof (translation)
+Establish `hT` using `hM.triple`. Establish `hσ` using `GlobalTheory.SiegelSet.sigma_sigma hT.base.cm`. Establish `hPV` using `GlobalTheory.ThKContSmall.isPair_small hT`. Establish `hθ` using `(GlobalTheory.T.theta_basic_properties hK.base F E σ B _ _ _ _ G.M' _ _ om' _ _ _ _ hPV).1`. Take `⟨-, hlc, hsc, ht2⟩` from `GlobalTheory.UnitaryAdelicTop.lcsc_UA F E σ (a + a') G.W.J`.
+
+Use `haveI : BorelSpace (UA σ G.W.J) := ⟨rfl⟩`. Use `haveI : Countable (ratU σ G.W.J) := (GlobalTheory.T.rational_unitary_countable_discrete F E σ _ G.W.J).1`. Take `⟨c₀, hc₀, hJ⟩` from `GlobalTheory.SkewToHerm.skew_to_hermND F E σ hT.base.cm B _ G.W _ _ hT.geo.hW`. Establish `h𝓕fin : μ 𝓕 < ⊤` using `GlobalTheory.ThKContSmall.measure_fundamental_domain_lt_top hK.siegelSetUnitary hT.base.cm hJ _ (GlobalTheory.SiegelSet.ug_eq_hr hσ hc₀) μ hμ 𝓕 h𝓕`. Use `haveI : IsFiniteMeasure (μ.restrict 𝓕) := isFiniteMeasure_restrict.2 h𝓕fin.ne`.
+
+Establish `hpres : ∀ z, ∀ Ψ ∈ schA F (Fin a' × Fin (a + a')), om' z Ψ ∈ schA F (Fin a' × Fin (a + a'))` using `fun z Ψ hΨ => hT.weil'.isUSplitting.pres z Ψ hΨ`. Take `⟨l, -, hl⟩` from `GlobalTheory.WeilM.exists_adm_eq_thetaSum_of_locallyCompact F (Fin a' × Fin (a + a'))`. Establish `hθl : ∀ Ψ ∈ schA F (Fin a' × Fin (a + a')), ∀ g h, theta om' Ψ g h = l (om' (g, h) Ψ)` using `fun Ψ hΨ g h => (hl _ (hpres _ _ hΨ)).symm`. Use `set f : UA σ G.W.J → ℂ := fun h => G.M.I om Φ h - c * G.M'.I om' Φ' h with hf`. Take `⟨hc1, hi1⟩` from `GlobalTheory.T.continuous_left_invariant_theta hK F E σ B a a' G X om om' hT Φ hP`.
+
+Take `⟨hc2, hi2⟩` from `GlobalTheory.T.continuous_left_invariant_dual hK F E σ B a a' G X om om' hT Φ' hP'`. Establish `hθinv : ∀ Ψ ∈ schA F (Fin a' × Fin (a + a')), ∀ g, ∀ γ ∈ ratU σ G.W.J, ∀ h, theta om' Ψ g (γ * h) = theta om' Ψ g h` using `fun Ψ hΨ g γ hγ h => by`. Simplify using `using (hθ Ψ hΨ).2.1 1 (one_mem _) γ hγ g h`. Establish `hfN : f ∈ Nice om' μ 𝓕`. Use `⟨fun γ hγ h => by simp only [hf, hi1 γ hγ, hi2 γ hγ], fun Ψ hΨ g => ?_⟩` and prove the remaining obligations.
+
+Take `⟨hc, -, C, k, hCk⟩` from `hθ Ψ hΨ`. Take `⟨D, hD⟩` from `hdec k`. Establish `hcf : Continuous fun h => f h * (starRingEnd ℂ) (theta om' Ψ g h)` using `(hc1.sub (continuous_const.mul hc2)).mul (Complex.continuous_conj.comp (hc.comp (Continuous.prodMk_right g)))`. Establish `hC0 : 0 ≤ max C 0 * (ht g : ℝ) ^ k` using `by positivity`. Use `Integrable.of_bound hcf.aestronglyMeasurable (max C 0 * (ht g : ℝ) ^ k * D) (.of_forall fun h => ?_)` and prove the remaining obligations.
+
+Establish `hb : ‖theta om' Ψ g h‖ ≤ max C 0 * (ht g : ℝ) ^ k * (qht h : ℝ) ^ k`. Use `GlobalTheory.ThKSwapV.le_mul_qht_pow h k hC0 fun γ => ?_` and prove the remaining obligations. Rewrite using `[← hθinv Ψ hΨ g γ.1 γ.2 h, mul_assoc, ← mul_pow]`. Conclude with `(hCk g _).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (by positivity))`. Rewrite using `[norm_mul, RCLike.norm_conj]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hinvP : ∀ u ∈ Nice om' μ 𝓕, ∀ Ψ ∈ schA F (Fin a' × Fin (a + a')), ∀ g, ∀ γ ∈ ratU σ G.W.J, ∀ h, u (γ * h) * (starRingEnd ℂ) (theta om' Ψ g (γ * h)) = u h * (starRingEnd ℂ) (theta om' Ψ g h)` using `fun u hu Ψ hΨ g γ hγ h => by rw [hu.1 γ hγ, hθinv Ψ hΨ g γ hγ]`. Establish `htr : ∀ y : UA σ G.W.J, (fun h => f (h * y)) ∈ Nice om' μ 𝓕`. Introduce `y`. Use `⟨fun γ hγ h => by simp only [mul_assoc, hfN.1 γ hγ], fun Ψ hΨ g => ?_⟩` and prove the remaining obligations.
+
+Take `⟨m, -, hm⟩` from `quasi μ (ratU σ G.W.J) h𝓕 y`. Establish `h1` using `hpres (1, y⁻¹) Ψ hΨ`. Use `(hm _ (hinvP f hfN _ h1 g)).1 (hfN.2 _ h1 g)` as an intermediate fact. Simplify `this` using `only [theta_right, mul_inv_cancel_right]`. Take `⟨S, hS⟩` from `GlobalTheory.ThK.TMapGood.exists_tmap hK F E σ B a a' G X om om' R Rf hM c Φ hP Φ' hP'`.
+
+Use `⟨S, fun v hv hvS Φ₁ hΦ₁ x hx g => ?_⟩` and prove the remaining obligations. Take `⟨T, hT1, hT2, hT3⟩` from `hS v hvS`. Establish `hT3' : ∀ y ∈ UAt σ G.W (evFin F v), ∀ φ ∈ SB (Fin a' × Fin (a + a') → Fv F v), ∀ φ₁ ∈ SB (Fin a' × Fin (a + a') → Fv F v), Acts (evFin F v) (om' (1, y)) φ φ₁ → ∀ h, T (Rf.p' v φ₁) h = T (Rf.p' v φ) (h * y)`. Introduce `y hy φ' hφ' φ₁' hφ₁' ha h`. Take `⟨φ, hφ, e⟩ : Rf.p' v φ' ∈ (SB _).map (Rf.p v)` from `hM.fin.onto v ▸ Submodule.mem_top`.
+
+Take `⟨φ₁, ⟨hφ₁, ha₁⟩, -⟩` from `(GlobalTheory.T.theta_action_exists hK.base F E σ B _ _ G.V G.W G.M _ _ om _ _ _ _ (GlobalTheory.ThKContSmall.isPair_big hT) v).1 1 (fun u _ => by simp [mat]) y hy φ hφ`. Rewrite using `[← hM.fin.equiv v y hy φ hφ φ' hφ' φ₁ hφ₁ φ₁' hφ₁' ha₁ ha e, ← e]`. Conclude with `hT3 y hy φ hφ φ₁ hφ₁ ha₁ h`. Rewrite `hT1` using `[(hM.fin.sph v hv.1).1]`. Establish `hTN : ∀ ξ, T ξ ∈ Nice om' μ 𝓕` using `fun ξ => (Submodule.span_le.2 (by rintro _ ⟨y, -, rfl⟩; exact htr y) : _ ≤ Nice om' μ 𝓕) (hT2 ξ)`.
+
+Establish `hadd : ∀ u ∈ Nice om' μ 𝓕, ∀ Ψ ∈ schA F (Fin a' × Fin (a + a')), ∀ Ψ' ∈ schA F (Fin a' × Fin (a + a')), ∀ g, GlobalTheory.ThKLiftConst.lift om' u (Ψ + Ψ') μ 𝓕 g = GlobalTheory.ThKLiftConst.lift om' u Ψ μ 𝓕 g + GlobalTheory.ThKLiftConst.lift om' u Ψ' μ 𝓕 g`. Introduce `u hu Ψ hΨ Ψ' hΨ' g`. Simplify using `only [GlobalTheory.ThKLiftConst.lift_apply]`. Rewrite using `[← integral_add (hu.2 Ψ hΨ g) (hu.2 Ψ' hΨ' g)]`. Simplify using `only [hθl _ (add_mem hΨ hΨ'), hθl _ hΨ, hθl _ hΨ', map_add, mul_add]`.
+
+Establish `hsmul : ∀ (u : UA σ G.W.J → ℂ) (t : ℂ), ∀ Ψ ∈ schA F (Fin a' × Fin (a + a')), ∀ g, GlobalTheory.ThKLiftConst.lift om' u (t • Ψ) μ 𝓕 g = (starRingEnd ℂ) t * GlobalTheory.ThKLiftConst.lift om' u Ψ μ 𝓕 g`. Introduce `u t Ψ hΨ g`. Simplify using `only [GlobalTheory.ThKLiftConst.lift_apply]`. Rewrite using `[← integral_const_mul]`. Simplify using `only [hθl _ (Submodule.smul_mem _ t hΨ), hθl _ hΨ, map_smul, smul_eq_mul, map_mul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `h`. Expand and normalize the polynomial expressions, which then agree. Establish `hsch` using `GlobalTheory.ThKRatInv.polData_le_schA B G.M' hT.geo.hM'`. Proceed by induction on `hΦ₁ using Submodule.span_induction with`.
+
+Consider the case `zero => simp [GlobalTheory.ThKLiftConst.lift_apply, hθl _ (Submodule.zero_mem _)]`. Consider the case `add Ψ Ψ' h1 h2 e1 e2 => rw [hadd f hfN _ (hsch h1) _ (hsch h2), hadd f hfN _ (hsch h1) _ (hsch h2), e1, e2]`. Consider the case `smul t Ψ h1 e1 => rw [hsmul f t _ (hsch h1), hsmul f t _ (hsch h1), e1]`. Consider the case `mem Ψ hΨ`. Take `⟨f₁, -, φ, hφ1, hφ2, rfl⟩` from `hΨ`.
+
+Establish `hfam : GlobalTheory.BigNZ.Fam G.M' φ` using `⟨hφ1, hφ2⟩`. Take `⟨r, hr, er⟩` from `GlobalTheory.PureFactor.exists_rest_factor v f₁ φ (hfam.std hT.geo.hM')`. Establish `hrs : ∀ χ ∈ SB (Fin a' × Fin (a + a') → Fv F v), tens (evFin F v) χ r ∈ schA F (Fin a' × Fin (a + a'))` using `fun χ hχ => by rw [er]; exact (hfam.update v hχ).mem hT.geo.hM' f₁`. Establish `hact : ∀ {Op χ χ₁}, χ ∈ SB (Fin a' × Fin (a + a') → Fv F v) → Acts (evFin F v) Op χ χ₁ → Op (tens (evFin F v) χ r) = tens (evFin F v) χ₁ r` using `fun hχ ha => ha r ⟨hr, hrs _ hχ⟩`. Set `B0 : SB (Fin a' × Fin (a + a') → Fv F v) →ₗ[ℂ] SB (Fin a' × Fin (a + a') → Fv F v) →ₗ⋆[ℂ] ℂ` to `LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun χ₁ χ₂ => GlobalTheory.ThKLiftConst.lift om' (T (Rf.p' v χ₁.1)) (tens (evFin F v) χ₂.1 r) μ 𝓕 g) (fun χ₁ χ₁' χ₂ => by`.
+
+Simplify using `only [GlobalTheory.ThKLiftConst.lift_apply]`. Rewrite using `[← integral_add ((hTN _).2 _ (hrs _ χ₂.2) g) ((hTN _).2 _ (hrs _ χ₂.2) g)]`. Simplify using `only [Submodule.coe_add, map_add, Pi.add_apply, add_mul])`. Use the proof step `(fun t χ₁ χ₂ => by`. Simplify using `only [GlobalTheory.ThKLiftConst.lift_apply, RingHom.id_apply, smul_eq_mul]`.
+
+Rewrite using `[← integral_const_mul]`. Simplify using `only [Submodule.coe_smul, map_smul, Pi.smul_apply, smul_eq_mul, mul_assoc])`. Use the proof step `(fun χ₁ χ₂ χ₂' => by`. Rewrite using `[← hadd _ (hTN _) _ (hrs _ χ₂.2) _ (hrs _ χ₂'.2)]`. Use `congr 1`.
+
+Conclude with `funext fun _ => add_mul _ _ _)`. Use the proof step `(fun t χ₁ χ₂ => by`. Rewrite using `[smul_eq_mul, ← hsmul _ t _ (hrs _ χ₂.2)]`. Use `congr 1`. Conclude with `funext fun _ => mul_assoc _ _ _)`.
+
+Establish `hB0 : ∀ χ₁ χ₂, B0 χ₁ χ₂ = GlobalTheory.ThKLiftConst.lift om' (T (Rf.p' v χ₁.1)) (tens (evFin F v) χ₂.1 r) μ 𝓕 g` using `fun _ _ => rfl`. Take `⟨ν₀, ι, ⟨t, ht⟩, s1, u1, hbij, hg1, hg2, hh⟩` from `locOps hK.base hT v hv`. Establish `hϖ : GlobalTheory.SplitFlip.IsUnif (unifAt v)` using `(GlobalTheory.SplitFlip.exists_isUnif (k := Fv F v)).choose_spec`. Establish `hν : ∀ m : ℕ, 0 < m → ∀ s : ℝ, ((ν₀ (unifAt v) : ℂ)) ^ m ≠ (s : ℂ)`. Introduce `m hm s hs`.
+
+Establish `hn : |s| = 1`. Use `congrArg (fun z : ℂ => ‖z‖) hs` as an intermediate fact. Simplify using `only [norm_pow, u1 (unifAt v), one_pow, Complex.norm_real, Real.norm_eq_abs] at this`. Conclude with `this.symm`. Establish `h2 : ν₀ (unifAt v) ^ (m * 2) = 1`.
+
+Use `ext`. Rewrite using `[Units.val_pow_eq_pow_val, pow_mul, hs, ← Complex.ofReal_pow, ← sq_abs, hn]`. Simplify using the standard rewrite rules. Establish `h3` using `GlobalTheory.NuGood.not_root_of_unity F E σ B a a' G X om om' hT v hv t ((m * 2 : ℕ) : ℤ) (by omega)`. Rewrite `h3` using `[zpow_natCast]`.
+
+Substitute `ht` using the available equality. Conclude with `h3 (by simpa using h2)`. Set `e : SB (Fin a' × Fin (a + a') → Fv F v) ≃ₗ[ℂ] SB (Matrix (Fin a') (Fin (a + a')) (Fv F v))` to `LinearEquiv.ofBijective (ι.restrict fun χ hχ => hbij.mapsTo hχ) ⟨fun χ χ' h => Subtype.ext (hbij.injOn χ.2 χ'.2 (congrArg Subtype.val h)), fun Ψ => by`. Take `⟨χ, hχ, h⟩` from `hbij.surjOn Ψ.2`. Conclude with `⟨⟨χ, hχ⟩, Subtype.ext h⟩⟩`.
+
+Establish `he : ∀ χ, (e χ).1 = ι χ.1` using `fun _ => rfl`. Establish `he' : ∀ Ψ, ι (e.symm Ψ).1 = Ψ.1` using `fun Ψ => by rw [← he, LinearEquiv.apply_symm_apply]`. Set `Bf : SB (Matrix (Fin a') (Fin (a + a')) (Fv F v)) →ₗ[ℂ] SB (Matrix (Fin a') (Fin (a + a')) (Fv F v)) →ₗ⋆[ℂ] ℂ` to `(B0.comp e.symm.toLinearMap).compl₂ e.symm.toLinearMap`. Establish `hBf : ∀ Ψ₁ Ψ₂, Bf Ψ₁ Ψ₂ = B0 (e.symm Ψ₁) (e.symm Ψ₂)` using `fun _ _ => rfl`. Establish `hlt : a' < a + a'` using `by have := hT.geo.lt; omega`.
+
+Establish `key` using `GlobalTheory.SBFormInv.form_lact_right hK (Fv F v) a' (a + a') ν₀ (unifAt v) hlt hϖ s1 u1 hν Bf (fun g' Ψ₁ Ψ₁' Ψ₂ h => by`. Take `⟨x', hx', H⟩` from `hg2 (GlobalTheory.SplitFlip.invT g')`. Take `⟨χ₁, hχ₁, ha, hι⟩` from `H _ (e.symm Ψ₁).2`. Rewrite `hι` using `[omA_left, GlobalTheory.SplitFlip.invT_invT, he', ← h, ← he']`. Establish `e1` using `hbij.injOn hχ₁ (e.symm Ψ₁').2 hι`.
+
+Establish `e2 : Rf.p' v (χ₁ - (e.symm Ψ₁).1) = 0` using `hM.fin.inv' v (Submodule.subset_span ⟨x', hx', _, (e.symm Ψ₁).2, χ₁, hχ₁, ha, rfl⟩)`. Rewrite `e2` using `[map_sub, sub_eq_zero, e1]`. Rewrite using `[hBf, hBf, hB0, hB0, e2])`. Use the proof step `(fun h => by`. Take `⟨y, hy, κ, hκ, H⟩` from `hh h`.
+
+Take `⟨m, hm0, hm⟩` from `quasi μ (ratU σ G.W.J) h𝓕 y`. Use `⟨m * Complex.normSq κ, mul_pos hm0 (Complex.normSq_pos.2 hκ), fun Ψ₁ Ψ₁' Ψ₂ Ψ₂' h1 h2 => ?_⟩` and prove the remaining obligations. Establish `loc : ∀ Ψ Ψ' : SB (Matrix (Fin a') (Fin (a + a')) (Fv F v)), (Ψ'.1 = fun Y => Ψ.1 (Y * h.1)) → Acts (evFin F v) (om' (1, y)) (e.symm Ψ).1 (κ • e.symm Ψ').1` using `fun Ψ Ψ' h0 => by`. Take `⟨χ₁, hχ₁, ha, hι⟩` from `H _ (e.symm Ψ).2`. Rewrite `hι` using `[he', ← h0, ← he', ← map_smul]`.
+
+Rewrite using `[← hbij.injOn hχ₁ (κ • e.symm Ψ').2 hι]`. Conclude with `ha`. Establish `e1 : B0 (κ • e.symm Ψ₁') (κ • e.symm Ψ₂') = Complex.normSq κ * Bf Ψ₁' Ψ₂'`. Rewrite using `[hBf, B0.map_smul, LinearMap.smul_apply, LinearMap.map_smulₛₗ, smul_eq_mul, smul_eq_mul, ← mul_assoc, Complex.mul_conj]`. Rewrite using `[Complex.ofReal_mul, mul_assoc, ← e1, hBf, hB0, hB0, ← hact (e.symm Ψ₂).2 (loc Ψ₂ Ψ₂' h2)]`.
+
+Simplify using `only [GlobalTheory.ThKLiftConst.lift_apply, theta_right, hT3' y hy _ (e.symm Ψ₁).2 _ (κ • e.symm Ψ₁').2 (loc Ψ₁ Ψ₁' h1)]`. Conclude with `(hm (fun z => T (Rf.p' v (e.symm Ψ₁).1) z * (starRingEnd ℂ) (theta om' (tens (evFin F v) (e.symm Ψ₂).1 r) g z)) (hinvP _ (hTN _) _ (hrs _ (e.symm Ψ₂).2) g)).2)`. Take `⟨χ₁, ⟨hχ₁, ha⟩, -⟩` from `(GlobalTheory.T.theta_action_exists hK.base F E σ B _ _ G.V' G.W G.M' _ _ om' _ _ _ _ hPV v).1 x hx 1 (fun u _ => by simp [mat]) (φ v) (hφ1 v)`. Take `⟨g', H⟩` from `hg1 x hx`. Establish `hvac` using `(hT.geo.hM'.vac v).1`.
+
+Use `key (GlobalTheory.SplitFlip.invT g') (e ⟨_, hvac⟩) (e ⟨_, hφ1 v⟩) (e ⟨_, hχ₁⟩) (by rw [he, he, ← omA_left]; exact H _ (hφ1 v) _ hχ₁ ha)` as an intermediate fact. Simplify using `only [hBf, LinearEquiv.symm_apply_apply, hB0, hT1] at this`. Rewrite `this` using `[← hact (hφ1 v) ha, er, Function.update_eq_self]`. Simplify `this` using `only [GlobalTheory.ThKLiftConst.lift_apply, theta_left]`.
+-/
 private theorem lift_right_inv' (hK : KP) {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E}
     {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W} {R : RealMaps F a a'} {Rf : FinMaps F a a'} (hM : IsMatched B G X om om' R Rf)
     (c : ℂ) {Φ} (hP : Φ ∈ PolData B G.M) {Φ'} (hP' : Φ' ∈ PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁)
@@ -274,6 +348,11 @@ end GlobalTheory.ThKLiftGoodSmall
 
 end
 
+/- English proof (translation)
+Introduce `hK F E _ _ _ _ _ σ B a a' G X om om' R Rf hM _ _ d₁ W₁ H' i₀ i₁ _ c _ Φ Φ' hΦ' hPM _ hdec Φ₁ Φ₁' _ hPM₁ μ 𝓕 hμ h𝓕`. Take `⟨hP, hP'⟩` from `GlobalTheory.ThKSelfOrth.polData_of_polMatch hPM`. Take `⟨S, hS⟩` from `GlobalTheory.ThKLiftGoodSmall.lift_right_inv' hK hM c hP ⟨hP', hΦ'⟩ hdec μ 𝓕 hμ h𝓕`. Use `⟨S ∪ X.T, fun v hv hsp g k hk => ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_union, not_or] at hv`.
+
+Conclude with `hS v ⟨hv.2, hsp⟩ hv.1 Φ₁' (GlobalTheory.ThKSelfOrth.polData_of_polMatch hPM₁).2 k hk g`.
+-/
 theorem _root_.GlobalTheory.T.definite_adapted_plane_theta_identity : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'), IsMatched B G X om om' R Rf → G.q = 0 → 1 ≤ G.p →
     ∀ (d₁ : ℕ) (W₁ : Spc F E d₁) (H' : Plane E (a + a') d₁) (i₀ i₁ : ℕ), H'.IsAdapted σ B G.W W₁ i₀ i₁ → ∀ c : ℂ,

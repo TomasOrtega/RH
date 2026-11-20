@@ -9,6 +9,11 @@ noncomputable section
 
 namespace GlobalTheory.BSP
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `hf.equiv.surjective w`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul s x => rw [hf.equiv_tmul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨x, rfl⟩)`.
+
+Consider the case `add a b ha hb => rw [map_add]`. Conclude with `Submodule.add_mem _ ha hb`.
+-/
 theorem mem_span_range_of_isBaseChange {R S M N : Type} [CommRing R] [CommRing S] [Algebra R S]
     [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N] [Module S N] [IsScalarTower R S N]
     {f : M →ₗ[R] N} (hf : IsBaseChange S f) (w : N) : w ∈ Submodule.span S (Set.range f) := by
@@ -18,6 +23,17 @@ theorem mem_span_range_of_isBaseChange {R S M N : Type} [CommRing R] [CommRing S
   | tmul s x => rw [hf.equiv_tmul]; exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨x, rfl⟩)
   | add a b ha hb => rw [map_add]; exact Submodule.add_mem _ ha hb
 
+/- English proof (translation)
+Set `ι` to `Submodule.inclusion hPQ`. Establish `hs : Function.Surjective (ι.lTensor S)`. Introduce `y`. Establish `hv : hQ.equiv y ∈ Submodule.span S (P : Set N)` using `hP ▸ Submodule.mem_top`. Establish `key : ∀ v ∈ Submodule.span S (P : Set N), ∃ y' : S ⊗[R] P, hQ.equiv (ι.baseChange S y') = v`.
+
+Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1 ⊗ₜ ⟨x, hx⟩, by simp [ι, hQ.equiv_tmul]⟩`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+
+Take `⟨a, ha⟩` from `hx`. Take `⟨b, hb⟩` from `hy`. Conclude with `⟨a + b, by simp [ha, hb]⟩`. Consider the case `smul c x _ hx`. Take `⟨a, ha⟩` from `hx`.
+
+Conclude with `⟨c • a, by simp [ha]⟩`. Take `⟨y', hy'⟩` from `key _ hv`. Conclude with `⟨y', by rw [← LinearMap.baseChange_eq_ltensor]; exact hQ.equiv.injective hy'⟩`. Establish `hι` using `(Module.FaithfullyFlat.lTensor_surjective_iff_surjective R S ι).mp hs`. Introduce `x hx`.
+
+Take `⟨y, hy⟩` from `hι ⟨x, hx⟩`. Establish `hx' : (y : N) = x` using `congrArg Subtype.val hy`. Conclude with `hx' ▸ y.2`.
+-/
 theorem le_of_span_eq_top_of_isBaseChange {R S N : Type} [CommRing R] [CommRing S] [Algebra R S]
     [Module.FaithfullyFlat R S] [AddCommGroup N] [Module R N] [Module S N] [IsScalarTower R S N]
     (P Q : Submodule R N) (hPQ : P ≤ Q) (hQ : IsBaseChange S Q.subtype)
@@ -46,6 +62,41 @@ theorem le_of_span_eq_top_of_isBaseChange {R S N : Type} [CommRing R] [CommRing 
   have hx' : (y : N) = x := congrArg Subtype.val hy
   exact hx' ▸ y.2
 
+/- English proof (translation)
+Establish `hmem : ∀ (k : ℕ) (w : Fin d → C.A), ((fun i => qmap p k (Ideal.Quotient.mk (adI C ^ k) (w i))) = (ε.map (Ideal.Quotient.mk (adI D ^ k))).mulVec (fun i => qmap q k (Ideal.Quotient.mk (adI C ^ k) (w i)))) ↔ ∀ i, p.f (w i) - ε.mulVec (fun j => q.f (w j)) i ∈ adI D ^ k`. Introduce `k w`. Rewrite using `[funext_iff]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations. Establish `e1 : qmap p k (Ideal.Quotient.mk (adI C ^ k) (w i)) = Ideal.Quotient.mk (adI D ^ k) (p.f (w i))` using `qmap_mk p k _`.
+
+Establish `e2 : (ε.map (Ideal.Quotient.mk (adI D ^ k))).mulVec (fun i => qmap q k (Ideal.Quotient.mk (adI C ^ k) (w i))) i = Ideal.Quotient.mk (adI D ^ k) (ε.mulVec (fun j => q.f (w j)) i)`. Simplify using `only [qmap_mk]`. Conclude with `(RingHom.map_mulVec (Ideal.Quotient.mk (adI D ^ k)) ε (fun j => q.f (w j)) i).symm`. Rewrite using `[e1, e2]`. Conclude with `Ideal.Quotient.eq`.
+
+Use `letI alg0 : Algebra (B.A ⧸ adI B ^ m) (C.A ⧸ adI C ^ m) := (qmap h m).toAlgebra`. Use `letI alg1 : Algebra (B.A ⧸ adI B ^ (m + 1)) (C.A ⧸ adI C ^ (m + 1)) := (qmap h (m + 1)).toAlgebra`. Use `haveI : Module.FaithfullyFlat (B.A ⧸ adI B ^ m) (C.A ⧸ adI C ^ m) := hff`. Take `⟨N, hN, hbN⟩` from `H m`. Take `⟨N', hN', hbN'⟩` from `H (m + 1)`.
+
+Establish `hpq : ∀ b : B.A, p.f (h.f b) = q.f (h.f b)` using `fun b => congrArg (fun g : Hom B D => g.f b) hcomm`. Set `P : Submodule (B.A ⧸ adI B ^ m) (Fin d → C.A ⧸ adI C ^ m)` to `{ carrier := {x | ∃ w : Fin d → C.A, (fun i => Ideal.Quotient.mk (adI C ^ m) (w i)) = x ∧ ∀ i, p.f (w i) - ε.mulVec (fun j => q.f (w j)) i ∈ adI D ^ (m + 1)} zero_mem' := ⟨0, by funext i; simp, fun i => by`. Establish `e : (fun j => q.f ((0 : Fin d → C.A) j)) = 0` using `funext fun j => by simp`. Rewrite using `[e, Matrix.mulVec_zero]`. Use the proof step `simp⟩`.
+
+Use the proof step `add_mem' := by`. Introduce and unpack `_ _ ⟨w₁, rfl, h₁⟩ ⟨w₂, rfl, h₂⟩`. Use `⟨w₁ + w₂, by funext i; simp, fun i => ?_⟩` and prove the remaining obligations. Use `Ideal.add_mem _ (h₁ i) (h₂ i)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Establish `e : (fun j => q.f ((w₁ + w₂) j)) = (fun j => q.f (w₁ j)) + (fun j => q.f (w₂ j))`. Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules. Rewrite using `[e, Matrix.mulVec_add]`. Simplify using `only [Pi.add_apply, map_add]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use the proof step `smul_mem' := by`. Introduce and unpack `c _ ⟨w, rfl, hw⟩`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective c`. Use `⟨fun i => h.f b * w i, ?_, fun i => ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `i`. Simplify using `[Algebra.smul_def, RingHom.algebraMap_toAlgebra, qmap_mk]`. Use `Ideal.mul_mem_left _ (q.f (h.f b)) (hw i)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Establish `e : (fun j => q.f (h.f b * w j)) = q.f (h.f b) • (fun j => q.f (w j))`.
+
+Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules. Rewrite using `[e, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul, map_mul, hpq, mul_sub] }`. Establish `hPN : P ≤ N`. Introduce and unpack `_ ⟨w, rfl, hw⟩`.
+
+Conclude with `(hN _).2 ((hmem m w).2 fun i => Ideal.pow_le_pow_right (Nat.le_succ m) (hw i))`. Establish `hspan : Submodule.span (C.A ⧸ adI C ^ m) (P : Set (Fin d → C.A ⧸ adI C ^ m)) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce and unpack `v -`. Set `πC` to `Ideal.Quotient.factor (Ideal.pow_le_pow_right (Nat.le_succ m) : adI C ^ (m + 1) ≤ adI C ^ m)`.
+
+Set `r : (Fin d → C.A ⧸ adI C ^ (m + 1)) → (Fin d → C.A ⧸ adI C ^ m)` to `fun y i => πC (y i)`. Establish `hr : ∀ y ∈ Submodule.span (C.A ⧸ adI C ^ (m + 1)) (Set.range N'.subtype), r y ∈ Submodule.span (C.A ⧸ adI C ^ m) (P : Set (Fin d → C.A ⧸ adI C ^ m))`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨⟨x, hxN⟩, rfl⟩` from `hx`. Apply `Submodule.subset_span` to reduce the goal to its premises. Take `⟨w, rfl⟩ : ∃ w : Fin d → C.A, (fun i => Ideal.Quotient.mk _ (w i)) = x` from `⟨fun i => (Ideal.Quotient.mk_surjective (x i)).choose,`. Use function extensionality and compare the values at `fun i => (Ideal.Quotient.mk_surjective (x i)).choose_spec⟩`. Conclude with `⟨w, by funext i; simp [r, πC], (hmem (m + 1) w).1 ((hN' _).1 hxN)⟩`.
+
+Consider the case `zero`. Use `Submodule.zero_mem _ using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `[r]`. Consider the case `add x y _ _ hx hy`.
+
+Use `Submodule.add_mem _ hx hy using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `[r]`. Consider the case `smul c x _ hx`. Use `Submodule.smul_mem _ (πC c) hx using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `i`. Simplify using `[r]`. Take `⟨w, rfl⟩ : ∃ w : Fin d → C.A, (fun i => Ideal.Quotient.mk (adI C ^ m) (w i)) = v` from `⟨fun i => (Ideal.Quotient.mk_surjective (v i)).choose,`. Use function extensionality and compare the values at `fun i => (Ideal.Quotient.mk_surjective (v i)).choose_spec⟩`. Use `hr (fun i => Ideal.Quotient.mk _ (w i)) (mem_span_range_of_isBaseChange hbN' _)` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `[r, πC]`. Establish `hNP : N ≤ P` using `le_of_span_eq_top_of_isBaseChange P N hPN hbN hspan`. Establish `hzN : (fun i => Ideal.Quotient.mk (adI C ^ m) (z i)) ∈ N` using `(hN _).2 ((hmem m z).2 hz)`.
+
+Take `⟨w, hw, hwE⟩` from `hNP hzN`. Conclude with `⟨w, fun i => Ideal.Quotient.eq.1 (congrFun hw i), hwE⟩`.
+-/
 theorem lift_solution_succ_of_descent {l : ℕ} {R : Type} [CommRing R] {d : ℕ} {B C D : Obj l R} (h : Hom B C)
     (p q : Hom C D) (hcomm : p.comp h = q.comp h) (m : ℕ) (hff : (qmap h m).FaithfullyFlat)
     (ε : Matrix (Fin d) (Fin d) D.A)
@@ -146,6 +197,9 @@ theorem lift_solution_succ_of_descent {l : ℕ} {R : Type} [CommRing R] {d : ℕ
   obtain ⟨w, hw, hwE⟩ := hNP hzN
   exact ⟨w, fun i => Ideal.Quotient.eq.1 (congrFun hw i), hwE⟩
 
+/- English proof (translation)
+Introduce `l _ K bk d S B C D h f p q hcov hpo m z hz`. Use `lift_solution_succ_of_descent h p q hpo.comm m (hcov.ff m) _ (fun k => ?_) z hz` and prove the remaining obligations. Conclude with `(GlobalTheory.T.stratifiedPhiModule_descent_finite_level l K bk d S B C D h f p q hcov hpo k).imp fun N hN => ⟨hN.1, hN.2.2.2⟩`.
+-/
 theorem lift_solution_succ : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d : ℕ) (S : Strat bk d) (B C D : Obj l ↥(OL K)) (h : Hom B C) (f : Hom bk.prism C) (p q : Hom C D), Cover h → IsPO h h p q → ∀ (m : ℕ) (z : Fin d → C.A), (∀ i, p.f (z i) - (S.ε (p.comp f) (q.comp f)).mulVec (fun j => q.f (z j)) i ∈ adI D ^ m) → ∃ z' : Fin d → C.A, (∀ i, z' i - z i ∈ adI C ^ m) ∧ ∀ i, p.f (z' i) - (S.ε (p.comp f) (q.comp f)).mulVec (fun j => q.f (z' j)) i ∈ adI D ^ (m + 1) := by
   intro l _ K bk d S B C D h f p q hcov hpo m z hz
   refine lift_solution_succ_of_descent h p q hpo.comm m (hcov.ff m) _ (fun k => ?_) z hz

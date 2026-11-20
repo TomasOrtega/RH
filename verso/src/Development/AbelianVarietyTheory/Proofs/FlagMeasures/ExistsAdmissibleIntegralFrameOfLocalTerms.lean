@@ -12,6 +12,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.HL.AdmFrame
 
+/- English proof (translation)
+Use `haveI := P.isPrime`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`. Use `⟨1, P.asIdeal.primeCompl.one_mem, ?_⟩` and prove the remaining obligations. Simplify using `only [one_smul, frame, Formalism.MainNotions.S.FlagG.fvec, Fin.snoc_last]`.
+
+Conclude with `hL.1`. Consider the case `cast i`. Take `⟨c, -, hc1, hc⟩` from `hF.1.1 P`. Establish `hci : c i = 1` using `hc1 hP i`. Establish `hmem : (lf D F0).fl.e i ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (XLam Λ (lf D F0))`.
+
+Rewrite using `[hc]`. Use `⟨1, P.asIdeal.primeCompl.one_mem, ?_⟩` and prove the remaining obligations. Rewrite using `[one_smul]`. Establish `: (lf D F0).fl.e i = c i • (lf D F0).fl.e i` using `by rw [hci, one_smul]`. Rewrite using `[this]`.
+
+Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Take `⟨s, hs, hx⟩` from `hmem`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Simplify using `only [frame, Formalism.MainNotions.S.FlagG.fvec, Fin.snoc_castSucc]`. Conclude with `(inf_le_left : XLam Λ (lf D F0) ≤ Λ) hx`.
+-/
 theorem frame_mem_locP (D : D7) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (Λ : Submodule (𝓞 D.host.E) (VS D).V)
     (hL : IsLift Λ (lf D F0)) (hF : FrameOK D Λ (lf D F0))
     (P : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.E)) (hP : ((gS D : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal)
@@ -37,6 +46,11 @@ theorem frame_mem_locP (D : D7) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (Λ 
     simp only [frame, Formalism.MainNotions.S.FlagG.fvec, Fin.snoc_castSucc]
     exact (inf_le_left : XLam Λ (lf D F0) ≤ Λ) hx
 
+/- English proof (translation)
+Unfold `mapLF`. Rewrite using `[dif_pos hγ]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← h]`. Conclude with `⟨F.fl.z, hL.1, rfl⟩`.
+
+Use `show γ F.zt = γ F.fl.z`. Rewrite using `[hL.2]`.
+-/
 theorem lift_transport (D : D7) (γ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (hγ : γ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT)
     (Λ₁ Λ₂ : Submodule (𝓞 D.host.E) (VS D).V) (h : Formalism.HermitianLatticesTheory.gmap γ Λ₁ = Λ₂) {T : D.host.E}
     (F : LFlag (VS D) D.R.rS T) (hL : IsLift Λ₁ F) : IsLift Λ₂ (mapLF γ F) := by
@@ -48,6 +62,11 @@ theorem lift_transport (D : D7) (γ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (hγ :
   · show γ F.zt = γ F.fl.z
     rw [hL.2]
 
+/- English proof (translation)
+Introduce `D X Y u u' hst hk w F00 F'0 FP hZ hG hAt G c t₀ ρ U U' hMv n m hn hm hlam hterm`. Establish `hγ : n⁻¹ * t₀.lin * m ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `Subgroup.mul_mem _ (Subgroup.mul_mem _ (Subgroup.inv_mem _ hn.1) t₀.rep.2.2.1) hm.1`. Establish `hrow' : IsRowLat D (X.Fu u') t₀.lam'` using `(Y.rowsOK u').1 _ t₀.mem'`. Establish `hrow : IsRowLat D (X.Fu u) t₀.lam` using `(Y.rowsOK u).1 _ t₀.mem`. Establish `hpd'` using `Formalism.L2.SG.TermDef.pd_self (X.Fu u') t₀.lam' hrow'`.
+
+Establish `hpd` using `Formalism.L2.SG.TermDef.pd_self (X.Fu u) t₀.lam hrow`. Apply the tactic sequence `refine ⟨lift_transport D _ hγ _ _ hlam _ hpd'.1, ?_, GlobalTheory.T.integralRowFrame_map_isometry D _ hγ _ _ hlam _ _ hpd'.2.2⟩`. Establish `hloc` using `GlobalTheory.T.movedReferenceFrame_congruent_unitriangular D X Y u u' hst hk w F00 F'0 FP hZ hG hAt G c t₀ ρ U U' hMv n m hn hm hlam hterm`. Take `⟨ξ, h1, h2, h3⟩` from `GlobalTheory.T.glue_frame_congruences_unitriangular_integral (VS D) D.R.rS t₀.lam (gS D) (Nat.mul_pos (D.host.g_prime 0).pos (D.host.g_prime 1).pos) (frame (lf D (X.Fu u))) (frame (mapLF (n⁻¹ * t₀.lin * m) (lf D (X.Fu u')))) (fun P hP a => frame_mem_locP D (X.Fu u) t₀.lam hpd.1 h …`. Conclude with `⟨ξ, h1, h2, h3⟩`.
+-/
 theorem exists_admissible_integralFrame_of_localTerms_alt : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), Formalism.MainNotions.S.Cnt.Stand D u u' → 4 * D.R.rS + 7 ≤ D.R.k → ∀ (w : Point D.host.E (D.R.rS + 1)) (F00 : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F'0 : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (FP : ∀ p : PlF D, LocNG.FPair (locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p) D.R.rS), ZhatOM (ZhatL F00 F'0) = ptMat w → Gval F00 F'0 ≠ 0 → (∀ p, AtBase (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p F00 F'0 (Tu D u) (Tu D u') (FP p) ∧ (FP p).RelG (LocNG.theta (Y.M p))) → ∀ (G : GFrames (placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)) D.R.rS D.R.k) (c : GCoord (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) F00 F'0 FP G), ∀ (t₀ : TauC Y u u') (ρ : ((VS D).V ≃ₗ[D.host.E] (VS D).V)) (U U' : Formalism.L2.SG.PairVal.MatR D), MovesTo F00 F'0 (lf D (X.Fu u)) t₀.frame ρ U U' → ∀ n m, n ∈ NRat (lf D (X.Fu u)) → m ∈ NRat (lf D (X.Fu u')) → Formalism.HermitianLatticesTheory.gmap (n⁻¹ * t₀.lin * m) t₀.lam' = t₀.lam → (∃ d, G.IsTerm d (c.lat (ρ * n) t₀.lam)) → Formalism.L2.SG.TermDef.PD D t₀.lam (lf D (X.Fu u)) u' (mapLF (n⁻¹ * t₀.lin * m) (lf D (X.Fu u'))) := by
   intro D X Y u u' hst hk w F00 F'0 FP hZ hG hAt G c t₀ ρ U U' hMv n m hn hm hlam hterm
   have hγ : n⁻¹ * t₀.lin * m ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT :=

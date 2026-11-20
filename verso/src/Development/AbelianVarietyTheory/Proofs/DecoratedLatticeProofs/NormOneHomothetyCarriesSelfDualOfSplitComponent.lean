@@ -17,6 +17,29 @@ open GlobalTheory.FinPl.FrameLat
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ p S L L' c g hL hL' hc hw`. Establish `hpc : p.pr c * p.pr (cA D c) = 1` using `by rw [← map_mul, hc.1, map_one]`. Establish `hGinv : ∀ x : Fin S.rank → k, (Formalism.L2.Theta.mt S g).map p.pr *ᵥ ((Formalism.L2.Theta.mt S g⁻¹).map p.pr *ᵥ x) = x`. Introduce `x`. Rewrite using `[Matrix.mulVec_mulVec, ← Matrix.map_mul, show Formalism.L2.Theta.mt S g * Formalism.L2.Theta.mt S g⁻¹ = Formalism.L2.Theta.mt S (g * g⁻¹) from rfl, mul_inv_cancel, show Formalism.L2.Theta.mt S 1 = 1 from rfl, Matrix.map_one p.pr (map_zero _) (map_one _), Matrix.one_mulVec]`.
+
+Establish `hsec : ∀ u : Fin S.rank → k, Formalism.L2.Theta.mt S g *ᵥ (fun i => p.sec (u i)) = fun i => p.sec (((Formalism.L2.Theta.mt S g).map p.pr *ᵥ u) i)`. Introduce `u`. Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, Matrix.map_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[sec_mul, p.sec_pr, mul_comm p.e, mul_assoc, e_mul_sec]`. Establish `hc1 : ∀ a : k, c * p.sec a = p.sec (p.pr c * a)`. Introduce `a`. Rewrite using `[mul_comm, sec_mul_right, mul_comm]`. Establish `hc2 : ∀ b : k, c * cA D (p.sec b) = cA D (p.sec (p.pr (cA D c) * b))`.
+
+Introduce `b`. Establish `h : c * cA D (p.sec b) = cA D (cA D c * p.sec b)` using `by rw [map_mul, cA_cA]`. Rewrite using `[h, mul_comm, sec_mul_right, mul_comm]`. Establish `hB : ∀ x z : Fin S.rank → k, ∑ i, ∑ j, (p.pr c • ((Formalism.L2.Theta.mt S g).map p.pr *ᵥ x)) i * p.pr (cA D (incA D (S.gram i j))) * (p.pr (cA D c) • ((Formalism.L2.Theta.mt S g).map (fun a => p.pr (cA D a)) *ᵥ z)) j = ∑ i, ∑ j, x i * p.pr (cA D (incA D (S.gram i j))) * z j`. Introduce `x z`.
+
+Rewrite using `[← pairing_inv (p := p) g x z]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Take the linear combination `(((Formalism.L2.Theta.mt S g).map p.pr *ᵥ x) i * p.pr (cA D (incA D (S.gram i j))) * (((Formalism.L2.Theta.mt S g).map (fun a => p.pr (cA D a)) *ᵥ z) j)) * hpc`. Introduce `y hy`.
+
+Establish `hyd : y = (fun i => p.sec (p.pr (y i))) + (fun i => cA D (p.sec (p.pr (cA D (y i)))))`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply, p.sec_pr]`. Rewrite using `[map_mul, cA_cA, ← add_mul]`. Conclude with `((idem_iff p _).1 (hy i)).symm`.
+
+Take `⟨u, z, rfl⟩ : ∃ u z : Fin S.rank → k, y = (fun i => p.sec (u i)) + (fun i => cA D (p.sec (z i)))` from `⟨_, _, hyd⟩`. Establish `himg : c • (Formalism.L2.Theta.mt S g *ᵥ ((fun i => p.sec (u i)) + (fun i => cA D (p.sec (z i))))) = (fun i => p.sec ((p.pr c • ((Formalism.L2.Theta.mt S g).map p.pr *ᵥ u)) i)) + (fun i => cA D (p.sec ((p.pr (cA D c) • ((Formalism.L2.Theta.mt S g).map (fun a => p.pr (cA D a)) *ᵥ …`. Use function extensionality and compare the values at `i`. Establish `h1` using `congrFun (hsec u) i`. Establish `h2` using `congrFun (mt_csec (p := p) g z) i`.
+
+Establish `h3 : (Formalism.L2.Theta.mt S g *ᵥ ((fun i => p.sec (u i)) + (fun i => cA D (p.sec (z i))))) i = p.sec (((Formalism.L2.Theta.mt S g).map p.pr *ᵥ u) i) + cA D (p.sec ((((Formalism.L2.Theta.mt S g).map (fun a => p.pr (cA D a))) *ᵥ z) i))`. Rewrite using `[Matrix.mulVec_add, Pi.add_apply, h1, h2]`. Establish `h4 : c * (p.sec (((Formalism.L2.Theta.mt S g).map p.pr *ᵥ u) i) + cA D (p.sec ((((Formalism.L2.Theta.mt S g).map (fun a => p.pr (cA D a))) *ᵥ z) i))) = p.sec (p.pr c * ((Formalism.L2.Theta.mt S g).map p.pr *ᵥ u) i) + cA D (p.sec (p.pr (cA D c) * (((Formalism.L2.Theta.mt S g).map …`. Rewrite using `[mul_add, hc1, hc2]`. Use `show c * (Formalism.L2.Theta.mt S g *ᵥ ((fun i => p.sec (u i)) + (fun i => cA D (p.sec (z i))))) i = _`.
+
+Use `(congrArg (c * ·) h3).trans (h4.trans ?_)` and prove the remaining obligations. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[himg, decomp hL, decomp hL']`. Use `and_congr (hw u) ?_` and prove the remaining obligations. Rewrite using `[csec_mem_iff hL, csec_mem_iff hL']`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h x' hx'`. Establish `hx : p.pr c • ((Formalism.L2.Theta.mt S g).map p.pr *ᵥ (p.pr (cA D c) • ((Formalism.L2.Theta.mt S g⁻¹).map p.pr *ᵥ x'))) = x'`. Rewrite using `[Matrix.mulVec_smul, smul_smul, hpc, one_smul, hGinv]`. Establish `hmem` using `(hw (p.pr (cA D c) • ((Formalism.L2.Theta.mt S g⁻¹).map p.pr *ᵥ x'))).2 (by rw [hx]; exact hx')`.
+
+Rewrite using `[← hx, hB]`. Conclude with `h _ hmem`. Introduce `h x hx`. Establish `h5` using `h _ ((hw x).1 hx)`. Rewrite `h5` using `[hB]`. Then use the resulting hypothesis.
+-/
 theorem sMoves_of_wComp : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : SplitPt D k) (S : HSp D) (L L' : Lat S) (c : AE D) (g : GA D S), IsSelfDualC S L → IsSelfDualC S L' → NormOneAt p.v c → (∀ x : Fin S.rank → k, (fun i => p.sec (x i)) ∈ latV S L (· = p.v) ↔ (fun i => p.sec ((p.pr c • ((Formalism.L2.Theta.mt S g).map p.pr *ᵥ x)) i)) ∈ latV S L' (· = p.v)) → SMoves S c g L L' p.v := by
   intro D k _ _ _ _ p S L L' c g hL hL' hc hw
   have hpc : p.pr c * p.pr (cA D c) = 1 := by rw [← map_mul, hc.1, map_one]

@@ -14,10 +14,20 @@ variable {C : Type} [Field C] {v : Valuation C NNReal} {O : Type} [CommRing O] [
   {σ : Type} [Finite σ]
 
 omit [Finite σ] in
+/- English proof (translation)
+Rewrite using `[coeff_rescale, Finsupp.prod, Finset.prod_pow_eq_pow_sum, Finsupp.degree_apply]`.
+-/
 theorem coeff_rescale_const (t : O) (H : MvPowerSeries σ O) (m : σ →₀ ℕ) :
     coeff m (rescale (fun _ => t) H) = t ^ m.degree * coeff m H := by
   rw [coeff_rescale, Finsupp.prod, Finset.prod_pow_eq_pow_sum, Finsupp.degree_apply]
 
+/- English proof (translation)
+Establish `hpos : 0 < v (algebraMap O C (constantCoeff H))`. Rewrite using `[pos_iff_ne_zero, Valuation.ne_zero_iff]`. Conclude with `fun h => h0 (hv.hom_inj (h.trans (map_zero _).symm))`. Take `⟨n, hn⟩` from `NNReal.exists_pow_lt_of_lt_one hpos ht`. Take `⟨m₀, -, hm₀⟩` from `Set.exists_max_image _ (fun m => v (algebraMap O C (coeff m (rescale (fun _ => t) H)))) (Finsupp.finite_of_degree_le (σ := σ) n) ⟨0, by simp⟩`.
+
+Use `⟨m₀, fun m => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hm : m.degree ≤ n`. Conclude with `hm₀ m hm`. Use `le_trans ?_ (hm₀ 0 (by simp))` and prove the remaining obligations. Simplify using `only [coeff_rescale_const, map_zero, pow_zero, one_mul, map_mul, map_pow, coeff_zero_eq_constantCoeff_apply]`.
+
+Use `le_trans (mul_le_of_le_one_right' (hv.map_le_one _)) (le_trans ?_ hn.le)` and prove the remaining obligations. Conclude with `pow_le_pow_right_of_le_one' ht.le (by omega)`.
+-/
 theorem exists_max_coeff (hv : v.Integers O) {t : O} (ht : v (algebraMap O C t) < 1) (H : MvPowerSeries σ O)
     (h0 : constantCoeff H ≠ 0) :
     ∃ m₀, ∀ m, v (algebraMap O C (coeff m (rescale (fun _ => t) H))) ≤
@@ -40,6 +50,9 @@ theorem exists_max_coeff (hv : v.Integers O) {t : O} (ht : v (algebraMap O C t) 
 
 omit [Finite σ] in
 
+/- English proof (translation)
+Use `choose y hy using h`. Use `⟨y, ?_⟩` and prove the remaining obligations. Use extensionality with `m`. Conclude with `(hy m).trans (coeff_C_mul m (y : MvPowerSeries σ O) x).symm`.
+-/
 theorem exists_eq_C_mul {x : O} {H : MvPowerSeries σ O} (h : ∀ m, x ∣ coeff m H) :
     ∃ H' : MvPowerSeries σ O, H = MvPowerSeries.C x * H' := by
   choose y hy using h
@@ -49,6 +62,11 @@ theorem exists_eq_C_mul {x : O} {H : MvPowerSeries σ O} (h : ∀ m, x ∣ coeff
 
 omit [Finite σ] in
 
+/- English proof (translation)
+Use `haveI := hv.hom_inj.isDomain`. Take `⟨H', hH'⟩` from `exists_eq_C_mul (x := coeff m₀ H) (H := H) fun m => hv.dvd_of_le (h m)`. Use `⟨H', hH', fun h1 => ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (coeff m₀) hH'`. Rewrite `h2` using `[coeff_C_mul]`.
+
+Establish `h3 : coeff m₀ H' = 1` using `mul_left_cancel₀ h0 (by rw [mul_one]; exact h2.symm)`. Establish `h4` using `congrArg (coeff m₀) h1`. Rewrite `h4` using `[coeff_map, h3, map_one, map_zero]`. Conclude with `one_ne_zero h4`.
+-/
 theorem exists_primitive [IsLocalRing O] (hv : v.Integers O) {H : MvPowerSeries σ O} {m₀ : σ →₀ ℕ}
     (h : ∀ m, v (algebraMap O C (coeff m H)) ≤ v (algebraMap O C (coeff m₀ H))) (h0 : coeff m₀ H ≠ 0) :
     ∃ H' : MvPowerSeries σ O, H = MvPowerSeries.C (coeff m₀ H) * H' ∧
@@ -63,6 +81,35 @@ theorem exists_primitive [IsLocalRing O] (hv : v.Integers O) {H : MvPowerSeries 
   rw [coeff_map, h3, map_one, map_zero] at h4
   exact one_ne_zero h4
 
+/- English proof (translation)
+Use `haveI := hv.hom_inj.isDomain`. Establish `hab : constantCoeff F * constantCoeff G = c`. Rewrite using `[← map_mul, h, constantCoeff_C]`. Establish `ha : constantCoeff F ≠ 0` using `fun h0 => hc (by rw [← hab, h0, zero_mul])`. Establish `hb : constantCoeff G ≠ 0` using `fun h0 => hc (by rw [← hab, h0, mul_zero])`.
+
+Establish `hpos : ∀ x : O, x ≠ 0 → 0 < v (algebraMap O C x)` using `fun x hx => by`. Rewrite using `[pos_iff_ne_zero, Valuation.ne_zero_iff]`. Conclude with `fun h => hx (hv.hom_inj (h.trans (map_zero _).symm))`. Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[hv.dvd_iff_le, not_le]`.
+
+Take `⟨s, hs⟩` from `hv.dvd_of_le hn.le`. Establish `hs0 : s ≠ 0` using `fun h0 => ha (by rw [hs, h0, mul_zero])`. Establish `hm0 : coeff m F ≠ 0` using `fun h0 => ha (by rw [hs, h0, zero_mul])`. Establish `hs1 : v (algebraMap O C s) < 1`. Rewrite `hn` using `[hs, map_mul, map_mul]`.
+
+Conclude with `(mul_lt_iff_lt_one_right (hpos _ hm0)).1 hn`. Take `⟨t', ht'⟩` from `IsAlgClosed.exists_pow_nat_eq (algebraMap O C s) (n := m.degree + 1) (by omega)`. Establish `ht1 : v t' < 1`. Rewrite `hs1` using `[← ht', map_pow]`. Conclude with `(pow_lt_one_iff_of_nonneg zero_le (by omega)).1 hs1`.
+
+Take `⟨t, rfl⟩` from `hv.exists_of_le_one ht1.le`. Establish `ht0 : t ≠ 0`. Introduce and unpack `rfl`. Apply `hs0` to reduce the goal to its premises. Apply `hv.hom_inj` to reduce the goal to its premises.
+
+Rewrite using `[← ht']`. Simplify using the standard rewrite rules. Take `⟨i, hi⟩` from `exists_max_coeff hv ht1 F ha`. Take `⟨j, hj⟩` from `exists_max_coeff hv ht1 G hb`. Establish `hi' : v (algebraMap O C (constantCoeff F)) < v (algebraMap O C (coeff i (rescale (fun _ => t) F)))`.
+
+Use `lt_of_lt_of_le ?_ (hi m)` and prove the remaining obligations. Rewrite using `[coeff_rescale_const, hs, map_mul, map_mul, map_mul, map_mul, ← ht', map_pow, map_pow, map_pow, pow_succ, mul_comm]`. Use `mul_lt_mul_of_pos_right ?_ (hpos _ hm0)` and prove the remaining obligations. Conclude with `mul_lt_of_lt_one_right (pow_pos (hpos _ ht0) _) ht1`. Establish `hj' : v (algebraMap O C (constantCoeff G)) ≤ v (algebraMap O C (coeff j (rescale (fun _ => t) G)))`.
+
+Use `hj 0` as an intermediate fact. Rewrite `this` using `[coeff_rescale_const, map_zero, pow_zero, one_mul, coeff_zero_eq_constantCoeff_apply]`. Then use the resulting hypothesis. Establish `hx : coeff i (rescale (fun _ => t) F) ≠ 0`. Introduce `h0`. Rewrite `hi'` using `[h0, map_zero, map_zero]`.
+
+Conclude with `not_lt_zero hi'`. Establish `hy : coeff j (rescale (fun _ => t) G) ≠ 0`. Introduce `h0`. Rewrite `hj'` using `[h0, map_zero, map_zero]`. Conclude with `(hpos _ hb).not_ge hj'`.
+
+Take `⟨F', hF', hF⟩` from `exists_primitive hv hi hx`. Take `⟨G', hG', hG⟩` from `exists_primitive hv hj hy`. Establish `hFG` using `mul_ne_zero hF hG`. Rewrite `hFG` using `[← map_mul]`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, IsUnit (coeff k (F' * G')) := by`.
+
+Assume the negation of the conclusion as `hk`. Apply `hFG` to reduce the goal to its premises. Use extensionality with `k`. Rewrite using `[coeff_map, map_zero, IsLocalRing.residue_eq_zero_iff]`. Conclude with `fun hu => hk ⟨k, hu⟩`.
+
+Generalize the expression as in `coeff i (rescale (fun _ => t) F) = x at *`. Generalize the expression as in `coeff j (rescale (fun _ => t) G) = y at *`. Establish `e1 : coeff k (rescale (fun _ => t) (F * G)) = x * y * coeff k (F' * G')`. Rewrite using `[map_mul, hF', hG', mul_mul_mul_comm, ← map_mul, coeff_C_mul]`. Rewrite `e1` using `[h, coeff_rescale_const, coeff_C]`.
+
+Use `split_ifs at e1 with hk0`. Rewrite `e1` using `[hk0, map_zero, pow_zero, one_mul, ← hk0, ← hab]`. Establish `e2` using `congrArg (fun z => v (algebraMap O C z)) e1`. Simplify using `only [map_mul] at e2`. Rewrite `e2` using `[hv.isUnit_iff_valuation_eq_one.1 hk, mul_one]`.
+
+Conclude with `(mul_lt_mul hi' hj' (hpos _ hb) zero_le).ne e2`. Rewrite `e1` using `[mul_zero]`. Conclude with `mul_ne_zero (mul_ne_zero hx hy) hk.ne_zero e1.symm`.
+-/
 theorem constantCoeff_dvd [IsAlgClosed C] [IsLocalRing O] (hv : v.Integers O) {F G : MvPowerSeries σ O} {c : O}
     (hc : c ≠ 0) (h : F * G = MvPowerSeries.C c) (m : σ →₀ ℕ) : constantCoeff F ∣ coeff m F := by
   classical
@@ -138,6 +185,11 @@ theorem constantCoeff_dvd [IsAlgClosed C] [IsLocalRing O] (hv : v.Integers O) {F
   · rw [mul_zero] at e1
     exact mul_ne_zero (mul_ne_zero hx hy) hk.ne_zero e1.symm
 
+/- English proof (translation)
+Use `haveI := hv.hom_inj.isDomain`. Take `⟨U, hU⟩` from `exists_eq_C_mul (constantCoeff_dvd hv hc h)`. Use `⟨U, ?_, hU⟩` and prove the remaining obligations. Establish `ha : constantCoeff F ≠ 0` using `fun h0 => hc (by`. Rewrite using `[← constantCoeff_C (σ := σ) c, ← h, map_mul, h0, zero_mul])`.
+
+Establish `h1` using `congrArg constantCoeff hU`. Rewrite `h1` using `[map_mul, constantCoeff_C]`. Rewrite using `[isUnit_iff_constantCoeff, mul_left_cancel₀ ha (h1.symm.trans (mul_one _).symm)]`. Conclude with `isUnit_one`.
+-/
 theorem exists_eq_C_mul_unit [IsAlgClosed C] [IsLocalRing O] (hv : v.Integers O) {F G : MvPowerSeries σ O} {c : O}
     (hc : c ≠ 0) (h : F * G = MvPowerSeries.C c) :
     ∃ U : MvPowerSeries σ O, IsUnit U ∧ F = MvPowerSeries.C (constantCoeff F) * U := by
@@ -157,6 +209,17 @@ section Complete
 
 variable {O : Type} [CommRing O] {B : Type} [CommRing B] [Algebra O B]
 
+/- English proof (translation)
+Take `⟨n, b, hb⟩` from `Module.Finite.exists_fin (R := O) (M := B)`. Establish `: RingHom.ker ψ = Ideal.span (Set.range fun i => b i - algebraMap O B (ψ (b i)))`. Apply `le_antisymm` to reduce the goal to its premises. Establish `key : ∀ x ∈ Submodule.span O (Set.range b), x - algebraMap O B (ψ x) ∈ Ideal.span (Set.range fun i => b i - algebraMap O B (ψ (b i)))`. Introduce `x hx`.
+
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Conclude with `Ideal.subset_span ⟨i, rfl⟩`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy`. Use `add_mem hx hy` as an intermediate fact. Rewrite `this` using `[sub_add_sub_comm, ← map_add, ← map_add]`. Then use the resulting hypothesis. Consider the case `smul r x _ hx`. Use `Ideal.mul_mem_left _ (algebraMap O B r) hx` as an intermediate fact.
+
+Rewrite `this` using `[mul_sub, ← map_mul, ← Algebra.smul_def, ← smul_eq_mul, ← map_smul]`. Then use the resulting hypothesis. Introduce `x hx`. Use `key x (hb ▸ Submodule.mem_top)` as an intermediate fact. Rewrite `this` using `[RingHom.mem_ker.1 hx, map_zero, sub_zero]`. Then use the resulting hypothesis. Rewrite using `[Ideal.span_le]`.
+
+Introduce and unpack `_ ⟨i, rfl⟩`. Simplify using `[RingHom.mem_ker]`. Rewrite using `[this]`. Conclude with `Submodule.fg_span (Set.finite_range _)`.
+-/
 theorem fg_ker [Module.Finite O B] (ψ : B →ₐ[O] O) : (RingHom.ker ψ).FG := by
   obtain ⟨n, b, hb⟩ := Module.Finite.exists_fin (R := O) (M := B)
   have : RingHom.ker ψ = Ideal.span (Set.range fun i => b i - algebraMap O B (ψ (b i))) := by
@@ -184,6 +247,11 @@ theorem fg_ker [Module.Finite O B] (ψ : B →ₐ[O] O) : (RingHom.ker ψ).FG :=
   rw [this]
   exact Submodule.fg_span (Set.finite_range _)
 
+/- English proof (translation)
+Rewrite using `[Ideal.radical_eq_sInf, le_sInf_iff]`. Introduce and unpack `Q ⟨hQ, hQp⟩`. Establish `h1 : IsLocalRing.maximalIdeal O ≤ Q.comap (algebraMap O B)` using `hI.trans ((Ideal.IsPrime.radical_le_iff inferInstance).2 (Ideal.map_le_iff_le_comap.1 hQ))`. Establish `h2 : (Q.comap (algebraMap O B)).IsMaximal`. Rewrite using `[← (IsLocalRing.maximalIdeal.isMaximal O).eq_of_le (Ideal.IsPrime.ne_top inferInstance) h1]`.
+
+Use `infer_instance`. Conclude with `(IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_of_isIntegral_of_isMaximal_comap Q h2)).ge`.
+-/
 theorem maximalIdeal_le_radical [IsLocalRing O] [IsLocalRing B] [Module.Finite O B] (I : Ideal O)
     (hI : IsLocalRing.maximalIdeal O ≤ I.radical) :
     IsLocalRing.maximalIdeal B ≤ (I.map (algebraMap O B)).radical := by
@@ -196,6 +264,11 @@ theorem maximalIdeal_le_radical [IsLocalRing O] [IsLocalRing B] [Module.Finite O
     infer_instance
   exact (IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_of_isIntegral_of_isMaximal_comap Q h2)).ge
 
+/- English proof (translation)
+Establish `h1` using `GlobalTheory.FlatComplete.isAdicComplete_of_finite_flat O I hO B`. Establish `h2 : RingHom.ker ψ ≤ (I.map (algebraMap O B)).radical` using `(IsLocalRing.le_maximalIdeal (RingHom.ker_ne_top ψ)).trans (maximalIdeal_le_radical I hI)`. Take `⟨n, hn⟩` from `Ideal.exists_pow_le_of_le_radical_of_fg h2 (fg_ker ψ)`. Use `⟨RingHom.ker ψ ⊔ I.map (algebraMap O B), ?_, le_sup_left⟩` and prove the remaining obligations. Establish `h3 : (RingHom.ker ψ ⊔ I.map (algebraMap O B)) ^ (n + 1) ≤ I.map (algebraMap O B)` using `Ideal.sup_pow_add_le_pow_sup_pow.trans (sup_le hn (pow_one _).le)`.
+
+Conclude with `GlobalTheory.isAdicComplete_of_pow_le_of_pow_le B _ _ 1 (n + 1) ((pow_one _).le.trans le_sup_right) h3 h1`.
+-/
 theorem exists_complete [IsLocalRing O] [IsLocalRing B] [Module.Finite O B] [Module.Flat O B] (I : Ideal O)
     [hO : IsAdicComplete I O] (hI : IsLocalRing.maximalIdeal O ≤ I.radical) (ψ : B →ₐ[O] O) :
     ∃ J : Ideal B, IsAdicComplete J B ∧ RingHom.ker ψ ≤ J := by
@@ -210,6 +283,21 @@ theorem exists_complete [IsLocalRing O] [IsLocalRing B] [Module.Finite O B] [Mod
 
 end Complete
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ _ _ hv R _ _ _ B _ _ _ _ _ θ ψ f g c hc hfg`. Use `haveI := hv.hom_inj.isDomain`. Use `haveI : ValuationRing O := ValuationRing.of_integers v hv`. Establish `hI : IsLocalRing.maximalIdeal O ≤ (Ideal.span {(p : O)}).radical`. Introduce `x hx`.
+
+Establish `h1 : v (algebraMap O C x) < 1` using `lt_of_le_of_ne (hv.map_le_one x) fun h => hx (hv.isUnit_of_one' h)`. Establish `hp : (0 : NNReal) < v (algebraMap O C (p : O))`. Rewrite using `[map_natCast, pos_iff_ne_zero, Valuation.ne_zero_iff]`. Conclude with `Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero`. Take `⟨M, hM⟩` from `NNReal.exists_pow_lt_of_lt_one hp h1`.
+
+Use `⟨M, Ideal.mem_span_singleton.2 (hv.dvd_of_le ?_)⟩` and prove the remaining obligations. Rewrite using `[map_pow, map_pow]`. Conclude with `hM.le`. Take `⟨J, hJ, hψ⟩` from `exists_complete _ hI ψ`. Take `⟨s, hs, ι, τ, _, _, ⟨Q⟩⟩` from `Algebra.IsSmoothAt.exists_notMem_isStandardSmooth O ((IsLocalRing.maximalIdeal B).comap θ)`.
+
+Use `haveI : Algebra.IsStandardSmoothOfRelativeDimension Q.dimension O (Localization.Away s) := Q.isStandardSmoothOfRelativeDimension rfl`. Take `⟨π, hπ⟩` from `Algebra.IsStandardSmoothOfRelativeDimension.exists_etale_mvPolynomial Q.dimension O (Localization.Away s)`. Establish `hs' : IsUnit (θ s)`. Assume the negation of the conclusion as `h`. Conclude with `hs h`.
+
+Set `θ' : Localization.Away s →ₐ[O] B` to `IsLocalization.Away.liftAlgHom s hs'`. Establish `hθ : ∀ r, θ' (algebraMap R _ r) = θ r` using `fun r => by simp [θ']`. Take `⟨φ, hφ₁, hφ₂⟩` from `GlobalTheory.FormalChart.exists_expansion π hπ (ψ.comp θ')`. Take `⟨w, -, hw⟩` from `GlobalTheory.FormalChart.exists_factor π hπ (ψ.comp θ') φ hφ₁ hφ₂ J θ' fun b => hψ (by simp [RingHom.mem_ker])`. Establish `h1 : φ (algebraMap R _ f) * φ (algebraMap R _ g) = MvPowerSeries.C c`.
+
+Rewrite using `[← map_mul, ← map_mul, hfg, ← IsScalarTower.algebraMap_apply, AlgHom.commutes]`. Both sides reduce to the same expression. Take `⟨U, hU, hF⟩` from `exists_eq_C_mul_unit hv hc h1`. Take `⟨u, hu⟩` from `hU.map w`. Use `⟨u, ?_⟩` and prove the remaining obligations.
+
+Establish `h2` using `congrArg w hF`. Rewrite `h2` using `[hφ₁, map_mul, ← hu, AlgHom.comp_apply, hθ, ← AlgHom.comp_apply, hw, hθ]`. Rewrite using `[← w.commutes]`. Conclude with `h2`.
+-/
 theorem localUnits : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C]
     (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)]
     [IsAdicComplete (Ideal.span {(p : O)}) O], v.Integers O → GlobalTheory.WeilIntegral.LocalUnits O := by

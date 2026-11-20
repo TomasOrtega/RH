@@ -6,6 +6,9 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 
 namespace PositivityTheory.Rg.BcB.SpectralAccumulation
 
+/- English proof (translation)
+The claim follows from `eFinal_of Cz.separation_holds FiniteDiscreteTypes.finDisc LV.limVec`.
+-/
 theorem eFinal_holds' : EFinal := eFinal_of Cz.separation_holds FiniteDiscreteTypes.finDisc LV.limVec
 
 end PositivityTheory.Rg.BcB.SpectralAccumulation

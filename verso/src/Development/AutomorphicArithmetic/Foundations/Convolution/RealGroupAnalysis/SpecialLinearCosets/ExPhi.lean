@@ -10,6 +10,9 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.H UpperTheory.ConvolutionTheory.R2.I
 open scoped Classical
 
+/- English proof (translation)
+Set `e : M2 v ≃ₜ M2 v` to `{ toFun := fun m => m * p invFun := fun m => m * q left_inv := fun m => by simp [Matrix.mul_assoc, h1] right_inv := fun m => by simp [Matrix.mul_assoc, h2] continuous_toFun := continuous_id.mul continuous_const continuous_invFun := continuous_id.mul continuous_const }`. Establish `ha' : IsLocallyConstant a ∧ HasCompactSupport a` using `ha`. Establish `hr : IsLocallyConstant (a ∘ e) ∧ HasCompactSupport (a ∘ e)` using `⟨ha'.1.comp_continuous e.continuous, ha'.2.comp_homeomorph e⟩`. Conclude with `hr`.
+-/
 private theorem sbMul {F : Type} [Field F] [NumberField F] {v : P F} {a : M2 v → ℂ} (ha : a ∈ SB (M2 v))
     (p q : M2 v) (h1 : p * q = 1) (h2 : q * p = 1) : (fun m => a (m * p)) ∈ SB (M2 v) := by
   let e : M2 v ≃ₜ M2 v :=
@@ -24,15 +27,24 @@ private theorem sbMul {F : Type} [Field F] [NumberField F] {v : P F} {a : M2 v �
     ⟨ha'.1.comp_continuous e.continuous, ha'.2.comp_homeomorph e⟩
   exact hr
 
+/- English proof (translation)
+Establish `h` using `(sgLaws F v).1 0 0`. Simplify using `using h`.
+-/
 private theorem sg0 {F : Type} [Field F] [NumberField F] (v : P F) : sg v 0 = 0 := by
   have h := (sgLaws F v).1 0 0
   simpa using h
 
+/- English proof (translation)
+Establish `h` using `(sgLaws F v).1 c (-c)`. Rewrite `h` using `[add_neg_cancel, sg0]`. Conclude with `(neg_eq_of_add_eq_zero_right h.symm).symm`.
+-/
 private theorem sgNeg {F : Type} [Field F] [NumberField F] (v : P F) (c : Kv v) : sg v (-c) = - sg v c := by
   have h := (sgLaws F v).1 c (-c)
   rw [add_neg_cancel, sg0] at h
   exact (neg_eq_of_add_eq_zero_right h.symm).symm
 
+/- English proof (translation)
+Take `⟨T, hT⟩` from `ptMem F v`. Take `⟨φ, -, h⟩` from `hu (T ⟨a, ha⟩).1 (T ⟨a, ha⟩).2`. Conclude with `⟨φ, h.trans (by rw [hT])⟩`.
+-/
 private theorem exPhi {F : Type} [Field F] [NumberField F] [IsTotallyReal F] {v : P F} {δ : F} {θ : Kv v}
     {u : V4 F → ℂ} (hu : GoodU v δ θ u) {a : M2 v → ℂ} (ha : a ∈ SB (M2 v)) :
     ∃ φ : S4 F, φ.1 = ten v θ u (Pt a) := by
@@ -40,6 +52,45 @@ private theorem exPhi {F : Type} [Field F] [NumberField F] [IsTotallyReal F] {v 
   obtain ⟨φ, -, h⟩ := hu (T ⟨a, ha⟩).1 (T ⟨a, ha⟩).2
   exact ⟨φ, h.trans (by rw [hT])⟩
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W v θ hθ hθ0 u u' hu hu' hw`. Use `⟨hu', fun j hj => ?_⟩` and prove the remaining obligations. Establish `hent` using `((jEx F v).2 j hj).2.2.2`. Establish `hn` using `(omW F E D W v θ hθ hθ0).1`. Set `H : Subgroup (SL v)` to `{ carrier := {g | ∀ a ∈ SB (M2 v), ∀ φ : S4 F, φ.1 = ten v θ u' (Pt a) → (W.Om (j g) φ).1 = ten v θ u' (Pt fun m => a (m * g.1))} one_mem' := by`.
+
+Introduce `a _ φ h`. Establish `e : (fun m : M2 v => a (m * (1 : SL v).1)) = a`. Use function extensionality and compare the values at `m`. Simplify using the standard rewrite rules. Rewrite using `[e, map_one, map_one, ← h]`.
+
+Both sides reduce to the same expression. Use the proof step `mul_mem' := by`. Introduce `g h hg hh a ha φ hφ`. Establish `hp : (h.1 * (h⁻¹).1 : M2 v) = 1` using `congrArg Subtype.val (mul_inv_cancel h)`. Establish `hq : ((h⁻¹).1 * h.1 : M2 v) = 1` using `congrArg Subtype.val (inv_mul_cancel h)`.
+
+Establish `h1` using `hh a ha φ hφ`. Establish `h2` using `hg _ (sbMul ha h.1 (h⁻¹).1 hp hq) _ h1`. Establish `e : (fun m : M2 v => a (m * (g * h).1)) = fun m => a (m * g.1 * h.1)`. Use function extensionality and compare the values at `m`. Rewrite using `[Matrix.mul_assoc]`.
+
+Both sides reduce to the same expression. Rewrite using `[e, ← h2, map_mul, map_mul, Module.End.mul_apply]`. Use the proof step `inv_mem' := by`. Introduce `g hg a ha φ hφ`. Establish `hp : (g.1 * (g⁻¹).1 : M2 v) = 1` using `congrArg Subtype.val (mul_inv_cancel g)`.
+
+Establish `hq : ((g⁻¹).1 * g.1 : M2 v) = 1` using `congrArg Subtype.val (inv_mul_cancel g)`. Establish `ha'` using `sbMul ha (g⁻¹).1 g.1 hq hp`. Take `⟨φ', h'⟩` from `exPhi hu' ha'`. Establish `h1` using `hg _ ha' φ' h'`. Establish `e : (fun m : M2 v => a (m * g.1 * (g⁻¹).1)) = a`.
+
+Use function extensionality and compare the values at `m`. Rewrite using `[Matrix.mul_assoc, hp, Matrix.mul_one]`. Establish `h2 : W.Om (j g) φ' = φ`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[h1, hφ, e]`.
+
+Rewrite using `[← h2, ← Module.End.mul_apply, ← map_mul, ← map_mul, inv_mul_cancel, map_one, map_one]`. Conclude with `h' }`. Establish `hup : ∀ (g : SL v) (b : Kv v), g.1 = !![1, b; 0, 1] → g ∈ H`. Introduce `g b hg a _ φ hφ`. Establish `e : j g = nU (sg v b)`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `i k`. Establish `h` using `hent g i k`. Establish `h' : (j g).1 i k = (1 : Matrix (Fin 2) (Fin 2) (A F)) i k + sg v (g.1 i k - (1 : Matrix (Fin 2) (Fin 2) (Kv v)) i k)` using `h`. Rewrite using `[h', hg]`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases k <;> simp [nU, sg0]`. Rewrite using `[e, hn u' a b φ hφ, hg]`. Establish `hlow : ∀ (g : SL v) (c : Kv v), g.1 = !![1, 0; c, 1] → g ∈ H`. Introduce `g c hg a ha φ hφ`. Establish `e1 : (!![0, 1; -1, 0] * !![0, -1; 1, 0] : M2 v) = 1`.
+
+Simplify using `[Matrix.mul_fin_two, Matrix.one_fin_two]`. Establish `e2 : (!![0, -1; 1, 0] * !![0, 1; -1, 0] : M2 v) = 1`. Simplify using `[Matrix.mul_fin_two, Matrix.one_fin_two]`. Establish `e3 : (!![1, -c; 0, 1] * !![1, c; 0, 1] : M2 v) = 1`. Simplify using `[Matrix.mul_fin_two, Matrix.one_fin_two]`.
+
+Establish `e4 : (!![1, c; 0, 1] * !![1, -c; 0, 1] : M2 v) = 1`. Simplify using `[Matrix.mul_fin_two, Matrix.one_fin_two]`. Establish `e5 : (!![0, 1; -1, 0] * (!![1, -c; 0, 1] * !![0, -1; 1, 0]) : M2 v) = !![1, 0; c, 1]`. Simplify using `[Matrix.mul_fin_two]`. Establish `ha0` using `sbMul ha !![0, -1; 1, 0] !![0, 1; -1, 0] e2 e1`.
+
+Take `⟨φ0, h0⟩` from `exPhi hu ha0`. Establish `h1 : W.Om (wW F) φ0 = φ`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hw _ ha0 φ0 h0, hφ]`. Establish `e : (fun m : M2 v => a (m * !![0, 1; -1, 0] * !![0, -1; 1, 0])) = a`.
+
+Use function extensionality and compare the values at `m`. Rewrite using `[Matrix.mul_assoc, e1, Matrix.mul_one]`. Rewrite using `[e]`. Establish `ej : (j g).1 = !![1, 0; sg v c, 1]`. Use extensionality with `i k`.
+
+Establish `h` using `hent g i k`. Establish `h' : (j g).1 i k = (1 : Matrix (Fin 2) (Fin 2) (A F)) i k + sg v (g.1 i k - (1 : Matrix (Fin 2) (Fin 2) (Kv v)) i k)` using `h`. Rewrite using `[h', hg]`. Apply the tactic sequence `fin_cases i <;> fin_cases k <;> simp [sg0]`. Establish `e : j g * wW F = wW F * nU (sg v (-c))`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show (j g).1 * (wW F).1 = (wW F).1 * (nU (sg v (-c))).1`. Rewrite using `[ej, sgNeg]`. Simplify using `[wW, nU, Matrix.mul_fin_two]`. Establish `h2` using `hn u _ (-c) φ0 h0`.
+
+Establish `ha1` using `sbMul ha0 !![1, -c; 0, 1] !![1, c; 0, 1] e3 e4`. Establish `h3` using `hw _ ha1 (W.Om (nU (sg v (-c))) φ0) h2`. Establish `h4 : W.Om (j g) (W.Om (wW F) φ0) = W.Om (wW F) (W.Om (nU (sg v (-c))) φ0)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, e, map_mul, Module.End.mul_apply]`. Rewrite using `[← h1, h4, h3, hg]`.
+
+Establish `e6 : (fun m : M2 v => a (m * !![0, 1; -1, 0] * !![1, -c; 0, 1] * !![0, -1; 1, 0])) = fun m => a (m * !![1, 0; c, 1])`. Use function extensionality and compare the values at `m`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, e5]`. Rewrite using `[e6]`. Establish `htop` using `genSL (Kv v) H hup hlow`.
+
+Introduce `g a ha φ hφ`. Establish `hg : g ∈ H` using `htop ▸ Subgroup.mem_top g`. Conclude with `hg a ha φ hφ`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.I.omSL :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (v : P F) (θ : Kv v), θ ^ 2 = algebraMap F (Kv v) D.δ → θ ≠ 0 →
       ∀ u u', GoodU v D.δ θ u → GoodU v D.δ θ u' → (∀ a ∈ SB (M2 v), ∀ φ : S4 F, φ.1 = ten v θ u (Pt a) →

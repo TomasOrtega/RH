@@ -12,6 +12,11 @@ namespace GlobalTheory.PrincipalCongruenceLevelK1
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] (P : HeightOneSpectrum (𝓞 E))
 
+/- English proof (translation)
+Establish `hq : ((qOf P : ℕ) : E) ≠ 0` using `qOf_ne_zero (P := P)`. Establish `e : ((qOf P : E) ^ (m : ℤ))⁻¹ * (a + (qOf P : E) ^ c * d) = ((qOf P : E) ^ (m : ℤ))⁻¹ * a + (qOf P : E) ^ (c - m) * d`. Rewrite using `[zpow_natCast]`. Take `⟨t, rfl⟩` from `Nat.exists_eq_add_of_le hm`. Rewrite using `[Nat.add_sub_cancel_left, pow_add]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `ha.add ((intAt_pow (P := P) (intAt_nat (P := P) (qOf P)) _).mul hd)`.
+-/
 theorem intAt_shift {m c : ℕ} (hm : m ≤ c) {a d : E}
     (ha : IntAt P (((qOf P : E) ^ (m : ℤ))⁻¹ * a)) (hd : IntAt P d) :
     IntAt P (((qOf P : E) ^ (m : ℤ))⁻¹ * (a + (qOf P : E) ^ c * d)) := by
@@ -25,6 +30,17 @@ theorem intAt_shift {m c : ℕ} (hm : m ≤ c) {a d : E}
   rw [e]
   exact ha.add ((intAt_pow (P := P) (intAt_nat (P := P) (qOf P)) _).mul hd)
 
+/- English proof (translation)
+Establish `hq : ((qOf P : ℕ) : E) ≠ 0` using `qOf_ne_zero (P := P)`. Rewrite `hx`, the goal using `[ciMem_sclLat]`. Establish `hxs : x ∈ stdAt E N P`. Rewrite using `[ciMem_stdAt]`. Introduce `l`.
+
+Take `⟨m, hm⟩ : ∃ m : ℕ, e l.1 = m` from `⟨(e l.1).toNat, by have := he l.1; omega⟩`. Establish `h1` using `(intAt_pow (P := P) (intAt_nat (P := P) (qOf P)) m).mul (hx l)`. Rewrite `h1` using `[hm, zpow_natCast]`. Rewrite `h1` using `[← mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ hq), one_mul]`. Then use the resulting hypothesis. Establish `hd` using `mem_stdAt.1 (hk x hxs)`.
+
+Introduce `l`. Take `⟨m, hm⟩ : ∃ m : ℕ, e l.1 = m` from `⟨(e l.1).toNat, by have := he l.1; omega⟩`. Establish `hmc : m ≤ c` using `by have := he l.1; omega`. Establish `e1 : (k : Sp E N ≃ₗ[E] Sp E N) x l = x l + (qOf P : E) ^ c * ((((qOf P : E) ^ c)⁻¹ • (k.1 x - x)) l)`. Simplify using `only [Pi.smul_apply, Pi.sub_apply, smul_eq_mul]`.
+
+Rewrite using `[← mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ hq), one_mul]`. Use `show _ = x l + ((k : Sp E N ≃ₗ[E] Sp E N) x l - x l)`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, hm]`. Establish `hxl` using `hx l`.
+
+Rewrite `hxl` using `[hm]`. Conclude with `intAt_shift P hmc hxl (hd l)`.
+-/
 theorem prinCong_maps {N c : ℕ} {e : ℕ → ℤ} (he : ∀ l, 0 ≤ e l ∧ e l ≤ c) {k : GLint E N P}
     (hk : k ∈ prinCong N P c) {x : Sp E N} (hx : x ∈ LocE.sclLat P (qOf P) N e) :
     (k : Sp E N ≃ₗ[E] Sp E N) x ∈ LocE.sclLat P (qOf P) N e := by
@@ -51,6 +67,9 @@ theorem prinCong_maps {N c : ℕ} {e : ℕ → ℤ} (he : ∀ l, 0 ≤ e l ∧ e
   rw [hm] at hxl
   exact intAt_shift P hmc hxl (hd l)
 
+/- English proof (translation)
+Introduce `x`. Use `⟨fun h => ?_, prinCong_maps P he hk⟩` and prove the remaining obligations. Establish `h1` using `prinCong_maps P he ((prinCong N P c).inv_mem hk) h`. Establish `e2 : ((k⁻¹ : GLint E N P) : Sp E N ≃ₗ[E] Sp E N) ((k : Sp E N ≃ₗ[E] Sp E N) x) = x` using `LinearEquiv.symm_apply_apply _ x`. Rewrite `h1` using `[e2]`. Then use the resulting hypothesis.
+-/
 theorem prinCong_stab {N c : ℕ} {e : ℕ → ℤ} (he : ∀ l, 0 ≤ e l ∧ e l ≤ c) {k : GLint E N P}
     (hk : k ∈ prinCong N P c) : (k : Sp E N ≃ₗ[E] Sp E N) ∈ stabL E N (LocE.sclLat P (qOf P) N e) := by
   intro x
@@ -60,6 +79,19 @@ theorem prinCong_stab {N c : ℕ} {e : ℕ → ℤ} (he : ∀ l, 0 ≤ e l ∧ e
     LinearEquiv.symm_apply_apply _ x
   rwa [e2] at h1
 
+/- English proof (translation)
+Introduce `k hk`. Establish `hq : ((qOf P : ℕ) : E) ≠ 0` using `qOf_ne_zero (P := P)`. Use `⟨⟨k.2, ?_⟩, prinCong_stab P (fun l => ?_) hk, prinCong_stab P (fun l => ?_) hk, fun w hw => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `exact prinCong_stab P (N := N + 0) (fun l => by split_ifs <;> omega) hk`. Apply the tactic sequence `unfold kOneLastExponents; split_ifs <;> omega`.
+
+Apply the tactic sequence `unfold twistedLevelExponent; split_ifs <;> omega`. Establish `hws : w ∈ stdAt E N P`. Establish `h0` using `prinCong_maps P (e := fun _ => 0) (fun _ => by omega) ((prinCong N P c).one_mem) (x := w) ?_`. Rewrite `h0` using `[ciMem_sclLat]`. Rewrite using `[ciMem_stdAt]`.
+
+Introduce `l`. Simplify using `using h0 l`. Rewrite `hw`, the goal using `[ciMem_sclLat]`. Introduce `l`. Establish `h1` using `hw l`.
+
+Unfold `twistedLevelExponent at h1`. Use `split_ifs at h1 with hl`. Simplify using `using h1`. Establish `h2` using `(intAt_pow (P := P) (intAt_nat (P := P) (qOf P)) c).mul h1`. Rewrite `h2` using `[zpow_natCast, ← mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ hq), one_mul]`.
+
+Simplify using `using h2`. Establish `hd` using `mem_stdAt.1 (hk w hws)`. Rewrite using `[ciMem_sclLat]`. Introduce `l`. Use `hd l` as an intermediate fact.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, zpow_natCast] at this ⊢`. Conclude with `this`.
+-/
 theorem principal_congruence_le_level_k1_at {N : ℕ} (r c : ℕ) (hc : 0 < c) : prinCong N P c ≤ twK1H P N r c := by
   intro k hk
   have hq : ((qOf P : ℕ) : E) ≠ 0 := qOf_ne_zero (P := P)
@@ -86,6 +118,9 @@ theorem principal_congruence_le_level_k1_at {N : ℕ} (r c : ℕ) (hc : 0 < c) :
     simp only [Pi.smul_apply, smul_eq_mul, zpow_natCast] at this ⊢
     exact this
 
+/- English proof (translation)
+Introduce `E _ _ _ P N r c hc`. Conclude with `principal_congruence_le_level_k1_at P r c hc`.
+-/
 theorem principal_congruence_le_level_k1 : ∀ {E : Type} [Field E] [NumberField E] [StarRing E] (P : HeightOneSpectrum (𝓞 E)) {N : ℕ} (r c : ℕ),
     0 < c → prinCong N P c ≤ twK1H P N r c :=
   by

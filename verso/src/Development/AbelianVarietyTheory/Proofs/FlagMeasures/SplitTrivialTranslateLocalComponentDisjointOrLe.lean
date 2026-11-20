@@ -11,6 +11,21 @@ attribute [local instance] GlobalTheory.TypeRec.factG GlobalTheory.LabPin.instCM
 open GlobalTheory.LabPin
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `L _ _ _ n s τ i T _hTi hT y hy P hP`. Establish `hpart` using `GlobalTheory.T.unitaryFiniteAdeles_splitPlace_decomposition L n s`. Establish `hstab : ∀ (g : GL (Fin n) (s.w.adicCompletion L)) (a : τ.V), a ∈ P.comap ((NG.rt L n y).comp T) → τ.ρ g a ∈ P.comap ((NG.rt L n y).comp T)`. Introduce `g a ha`. Take `⟨x, ⟨hx, hxA⟩, -⟩` from `hpart.2.2 (Matrix.GeneralLinearGroup.map i.symm.toRingHom g)`.
+
+Establish `hg : g = Matrix.GeneralLinearGroup.map i.toRingHom (s.loc n x)`. Rewrite using `[hxA]`. Use extensionality with `j k`. Simplify using the standard rewrite rules. Establish `hc` using `hpart.2.1 x y hx hy`.
+
+Simplify using `only [Submodule.mem_comap, LinearMap.comp_apply] at ha ⊢`. Rewrite using `[hg, hT x hx a]`. Establish `e : NG.rt L n y (NG.rt L n x (T a)) = NG.rt L n x (NG.rt L n y (T a))`. Use function extensionality and compare the values at `g'`. Use `show T a (g' * y * x) = T a (g' * x * y)`.
+
+Rewrite using `[mul_assoc, mul_assoc, hc.eq]`. Rewrite using `[e]`. Conclude with `hP x hx _ ha`. Set `Q : Subrepresentation τ.ρ` to `⟨P.comap ((NG.rt L n y).comp T), hstab⟩`. Break down `τ.irr.eq_bot_or_eq_top Q with h | h` into its components or cases.
+
+Use `left`. Rewrite using `[Submodule.disjoint_def]`. Introduce and unpack `f ⟨a, rfl⟩ hf`. Establish `ha : a ∈ Q.toSubmodule` using `hf`. Rewrite `ha` using `[h]`.
+
+Establish `: a = 0` using `ha`. Simplify using `[this]`. Use `right`. Introduce and unpack `f ⟨a, rfl⟩`. Establish `ha : a ∈ Q.toSubmodule` using `by rw [h]; trivial`.
+
+Conclude with `ha`.
+-/
 theorem GlobalTheory.SlocDich.translate_dichotomy : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (s : SplitPlace L) (τ : GlobalTheory.SmGL.IrrRep (GL (Fin n) (s.w.adicCompletion L))) (i : s.v.adicCompletion (maximalRealSubfield L) ≃+* s.w.adicCompletion L) (T : τ.V →ₗ[ℂ] (GAf L n → ℂ)), Function.Injective T → (∀ x : GAf L n, TrivOutside {s.v} x → ∀ a, T (τ.ρ (Matrix.GeneralLinearGroup.map i.toRingHom (s.loc n x)) a) = NG.rt L n x (T a)) → ∀ y : GAf L n, TrivOutside {s.v}ᶜ y → ∀ P : Submodule ℂ (GAf L n → ℂ), (∀ x : GAf L n, TrivOutside {s.v} x → ∀ f ∈ P, NG.rt L n x f ∈ P) → Disjoint (LinearMap.range ((NG.rt L n y).comp T)) P ∨ LinearMap.range ((NG.rt L n y).comp T) ≤ P := by
   intro L _ _ _ n s τ i T _hTi hT y hy P hP
   have hpart := GlobalTheory.T.unitaryFiniteAdeles_splitPlace_decomposition L n s

@@ -5,6 +5,15 @@ open IsLocalRing Matrix
 
 namespace GlobalTheory.DualNumberLocal
 
+/- English proof (translation)
+Introduce `O _ _ _ _`. Use `haveI hloc : IsLocalRing (DualNumber O) := IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun a => by`. Simplify using `only [TrivSqZeroExt.isUnit_iff_isUnit_fst, TrivSqZeroExt.fst_sub, TrivSqZeroExt.fst_one]`. Conclude with `isUnit_or_isUnit_one_sub_self _`. Use `haveI : Module.Finite O (DualNumber O) := inferInstanceAs (Module.Finite O (O × O))`.
+
+Establish `hmem : ∀ z : DualNumber O, z ∈ maximalIdeal (DualNumber O) ↔ z.fst ∈ maximalIdeal O`. Introduce `z`. Rewrite using `[IsLocalRing.mem_maximalIdeal, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, mem_nonunits_iff, TrivSqZeroExt.isUnit_iff_isUnit_fst]`. Use `⟨hloc, IsNoetherianRing.of_finite O (DualNumber O), GlobalTheory.FormalIsogeny.isAdicComplete_maximalIdeal_of_finite O (DualNumber O), ?_, ?_, hmem⟩` and prove the remaining obligations. Use `⟨fun a h => ?_⟩` and prove the remaining obligations.
+
+Rewrite `h` using `[TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.isUnit_iff_isUnit_fst, TrivSqZeroExt.fst_inl]`. Conclude with `h`. Introduce `y`. Take `⟨z, rfl⟩` from `IsLocalRing.residue_surjective y`. Use `⟨z.fst, ?_⟩` and prove the remaining obligations.
+
+Use `show residue (DualNumber O) (algebraMap O (DualNumber O) z.fst) = residue (DualNumber O) z`. Rewrite using `[← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff, hmem, TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.fst_sub, TrivSqZeroExt.fst_inl, sub_self]`. Conclude with `Ideal.zero_mem _`.
+-/
 theorem main : ∀ (O : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O], ∃ _ : IsLocalRing (DualNumber O), IsNoetherianRing (DualNumber O) ∧ IsAdicComplete (maximalIdeal (DualNumber O)) (DualNumber O) ∧ IsLocalHom (algebraMap O (DualNumber O)) ∧ Function.Surjective (fun x : O => residue (DualNumber O) (algebraMap O (DualNumber O) x)) ∧ ∀ z : DualNumber O, z ∈ maximalIdeal (DualNumber O) ↔ z.fst ∈ maximalIdeal O := by
   intro O _ _ _ _
   haveI hloc : IsLocalRing (DualNumber O) :=

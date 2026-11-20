@@ -54,15 +54,26 @@ def tL : Fin 2 → ℚ := ![0, 1]
 
 def ηL : Fin 2 → KL := ![-(uL (0, 1)) / uL (0, 0), 1]
 
+/- English proof (translation)
+Introduce `h`. Establish `hinj` using `IsFractionRing.injective (MvPolynomial (Fin 1 × Fin 2) ℚ) KL`. Conclude with `X_ne_zero (R := ℚ) q (hinj (by rw [map_zero]; exact h))`.
+-/
 theorem uL_ne_zero (q : Fin 1 × Fin 2) : uL q ≠ 0 := by
   intro h
   have hinj := IsFractionRing.injective (MvPolynomial (Fin 1 × Fin 2) ℚ) KL
   exact X_ne_zero (R := ℚ) q (hinj (by rw [map_zero]; exact h))
 
+/- English proof (translation)
+Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Simplify using `using IntermediateField.algebraMap_mem (IntermediateField.adjoin KL (Set.range ηL)) x`.
+-/
 theorem adjoin_ηL : IntermediateField.adjoin KL (Set.range ηL) = ⊤ := by
   refine eq_top_iff.2 fun x _ => ?_
   simpa using IntermediateField.algebraMap_mem (IntermediateField.adjoin KL (Set.range ηL)) x
 
+/- English proof (translation)
+Introduce `i`. Use `fin_cases i`. Simplify using `only [Fin.sum_univ_two, Algebra.algebraMap_self, RingHom.id_apply, ηL]`. Simplify using `only [Fin.zero_eta, Fin.isValue, Matrix.cons_val_zero, Matrix.cons_val_one, mul_one]`. Clear denominators, using `[uL_ne_zero (0, 0)]` for the nonvanishing conditions.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rel_ηL : ∀ i : Fin 1, ∑ m, algebraMap KL KL (uL (i, m)) * ηL m = 0 := by
   intro i
   fin_cases i
@@ -72,11 +83,20 @@ theorem rel_ηL : ∀ i : Fin 1, ∑ m, algebraMap KL KL (uL (i, m)) * ηL m = 0
   field_simp [uL_ne_zero (0, 0)]
   ring
 
+/- English proof (translation)
+Simplify using `[Fin.sum_univ_two, tL, ηL]`.
+-/
 theorem chart_ηL : ∑ m, algebraMap ℚ KL (tL m) * ηL m = 1 := by
   simp [Fin.sum_univ_two, tL, ηL]
 
+/- English proof (translation)
+Simplify using `[ηL]`.
+-/
 theorem ηL_one_ne_zero : ηL 1 ≠ 0 := by simp [ηL]
 
+/- English proof (translation)
+The claim follows from `Vertical.ChartPointTrdeg.full ℚ KL 2 1 ⊥ LineChowForm.D2 LineChowForm.isProjPrime_line LineChowForm.isChowForm_line ηL j₀ (fun f hf => by rw [Ideal.mem_bot.1 hf, map_zero]) hj₀`.
+-/
 theorem trdeg_ηL (j₀ : Fin 2) (hj₀ : ηL j₀ ≠ 0) :
     Algebra.trdeg ℚ (Algebra.adjoin ℚ (Set.range fun m => ηL m * (ηL j₀)⁻¹)) ≤ ((1 : ℕ) : Cardinal) :=
   Vertical.ChartPointTrdeg.full ℚ KL 2 1 ⊥ LineChowForm.D2 LineChowForm.isProjPrime_line

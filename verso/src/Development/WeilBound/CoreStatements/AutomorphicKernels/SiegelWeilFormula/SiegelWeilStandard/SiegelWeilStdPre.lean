@@ -13,9 +13,15 @@ open GlobalTheory.ThK.Dbl PositivityTheory.Rg.Sw
 
 namespace PositivityTheory.SiegelWeilFormula.Fin
 
+/- English proof (translation)
+The claim follows from `TW.tWeyl_of TBij.tBij tTheta (TW.UpToPf.upTo_of TW.Twu.uniq) hP TW.ThetaWPf.thetaW`.
+-/
 theorem tWeyl_of (hP : TW.Poisson) : TWeyl :=
   TW.tWeyl_of TBij.tBij tTheta (TW.UpToPf.upTo_of TW.Twu.uniq) hP TW.ThetaWPf.thetaW
 
+/- English proof (translation)
+The claim follows from `have hT := tAll_of (tWeyl_of hP) siegelWeilStd_mid (tWeyl_of hP) (KFP.kFinPoly_of hT Tunit.tUnit Tunit.tHeis kfour.auxEx KFock.fockMem (locOpEx_of_tAll hT) (locInst_of hT)) (Ald.ldEx_of hT kfour.auxEx) hCT`.
+-/
 theorem siegelWeilStd_pre (hP : TW.Poisson) (hCT : CTSplit) : SiegelWeilStd :=
   have hT := tAll_of (tWeyl_of hP)
   siegelWeilStd_mid (tWeyl_of hP)

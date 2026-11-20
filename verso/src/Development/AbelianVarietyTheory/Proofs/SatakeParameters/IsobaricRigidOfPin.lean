@@ -13,6 +13,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `hF hJ hL D P`. Use `GlobalTheory.CuspRep.host_isCMField D.host` as an intermediate fact. Conclude with `GlobalTheory.RowPar.isobaricRigid_of_jacquetShalika hJ.1 (GlobalTheory.HeightCounting.Blocks.readsCusp hF P.cg)`.
+-/
 theorem isobaricRigid_of_pin : GlobalTheory.Published.AutomorphicFormsFiniteGL → GlobalTheory.Published.JacquetShalika →
     ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D), IsobaricRigid D.nd D.naut := by
   intro hF hJ hL D P

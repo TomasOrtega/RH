@@ -10,6 +10,11 @@ open GlobalTheory.TInj
 
 namespace GlobalTheory.TInj
 
+/- English proof (translation)
+Take `⟨a, rfl⟩ : ∃ a, Spec.map a = κ` from `⟨_, Spec.map_preimage κ⟩`. Take `⟨a', rfl⟩ : ∃ a, Spec.map a = κ'` from `⟨_, Spec.map_preimage κ'⟩`. Establish `e : Spec.map (CommRingCat.ofHom (algebraMap R (FractionRing R)) ≫ a) = Spec.map (CommRingCat.ofHom (algebraMap R (FractionRing R)) ≫ a')`. Rewrite using `[Spec.map_comp, Spec.map_comp]`. Conclude with `h.trans h'.symm`.
+
+Establish `e2` using `Spec.map_injective e`. Use `congr 1`. Use `ext1`. Apply `IsLocalization.ringHom_ext (nonZeroDivisors R)` to reduce the goal to its premises. Conclude with `congrArg CommRingCat.Hom.hom e2`.
+-/
 theorem genPt_map_unique {R V : Type} [CommRing R] [IsDomain R] [CommRing V] [IsDomain V] (θ : R →+* V)
     (κ κ' : Sp (FractionRing V) ⟶ Sp (FractionRing R)) (h : κ ≫ jK R = jK V ≫ spMap θ)
     (h' : κ' ≫ jK R = jK V ≫ spMap θ) : κ = κ' := by

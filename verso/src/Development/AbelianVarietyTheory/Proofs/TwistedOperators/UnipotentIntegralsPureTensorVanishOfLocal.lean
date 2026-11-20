@@ -19,6 +19,13 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 open Classical in
 
+/- English proof (translation)
+Establish `h1 : (Function.mulSupport fun u => ff u (proj σ J u g)).Finite`. Simplify `hf.finite_mulSupport (projFin σ J g)` using `only [projFinLoc_projFin]`. Establish `h2 : (Function.mulSupport fun u => (Function.update ff v fun _ => 1) u (proj σ J u g)).Finite` using `h1.subset fun u hu => by`. Distinguish the cases in `e : u = v`. Substitute `e` using the available equality.
+
+Simplify using `at hu`. Simplify `hu` using `[Function.update_of_ne e]`. Simplify using `only [tensor]`. Rewrite using `[← mul_finprod_cond_ne v h1, ← mul_finprod_cond_ne v h2]`. Simplify using `only [Function.update_self, one_mul]`.
+
+Establish `: (∏ᶠ (i) (_ : i ≠ v), (Function.update ff v fun _ => 1) i (proj σ J i g)) = ∏ᶠ (i) (_ : i ≠ v), ff i (proj σ J i g)` using `finprod_congr fun i => finprod_congr fun hi => by rw [Function.update_of_ne hi]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tensor_eq_mul_update {L : Submodule (𝓞 E) (Fin n → E)} [Submodule.IsLattice E L]
     {fa : ∀ w, GArch σ J w → ℂ} {ff : ∀ v, GLoc σ J v → ℂ} (hf : IsFinFamily σ J L ff)
     (v : HeightOneSpectrum (𝓞 F)) (g : GAd σ J) :
@@ -40,6 +47,11 @@ theorem tensor_eq_mul_update {L : Submodule (𝓞 E) (Fin n → E)} [Submodule.I
 
 open Classical in
 
+/- English proof (translation)
+Simplify using `only [tensor]`. Use `congr 1`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Simplify using `only [map_mul, projArch_emb, mul_one]`. Use `finprod_congr fun u => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `e : u = v`. Substitute `e` using the available equality. Simplify using `only [Function.update_self]`. Simplify using `only [map_mul, proj_emb_ne σ J e, mul_one]`.
+-/
 theorem tensor_update_mul_emb (fa : ∀ w, GArch σ J w → ℂ) (ff : ∀ v, GLoc σ J v → ℂ)
     (v : HeightOneSpectrum (𝓞 F)) (a b : GAd σ J) (h : GLoc σ J v) :
     tensor σ J fa (Function.update ff v fun _ => 1) (a * emb σ J v h * b) =
@@ -61,12 +73,18 @@ variable {D : D7} {V : HSp D} (𝔉 : IsoFlag V) (v : HeightOneSpectrum (𝓞 D.
 
 def locIn : Subgroup (NA 𝔉) := (emb D.sp.cm.sig V.gram v).range.subgroupOf (NA 𝔉)
 
+/- English proof (translation)
+Establish `: (locIn 𝔉 v : Set (NA 𝔉)) = Subtype.val ⁻¹' Set.range (emb D.sp.cm.sig V.gram v)`. Use extensionality with `u`. Simplify using `[locIn, Subgroup.mem_subgroupOf]`. Rewrite using `[this]`. Conclude with `(isClosedEmbedding_emb D.sp.cm.sig V.gram v).isClosed_range.preimage continuous_subtype_val`.
+-/
 theorem isClosed_locIn : IsClosed (locIn 𝔉 v : Set (NA 𝔉)) := by
   have : (locIn 𝔉 v : Set (NA 𝔉)) = Subtype.val ⁻¹' Set.range (emb D.sp.cm.sig V.gram v) := by
     ext u; simp [locIn, Subgroup.mem_subgroupOf]
   rw [this]
   exact (isClosedEmbedding_emb D.sp.cm.sig V.gram v).isClosed_range.preimage continuous_subtype_val
 
+/- English proof (translation)
+Take `⟨h, hh⟩` from `Subgroup.mem_subgroupOf.1 hu`. Rewrite using `[← hh, proj_emb_self]`.
+-/
 theorem emb_proj_of_mem_locIn {u : NA 𝔉} (hu : u ∈ locIn 𝔉 v) :
     emb D.sp.cm.sig V.gram v (proj D.sp.cm.sig V.gram v u) = u := by
   obtain ⟨h, hh⟩ := Subgroup.mem_subgroupOf.1 hu
@@ -87,6 +105,19 @@ namespace GlobalTheory.TestConstTerm
 
 open Classical in
 
+/- English proof (translation)
+Introduce `D V 𝔉 fa ff ha hf v hv ν _ x y`. Use `set f := tensor D.sp.cm.sig V.gram fa ff with hfdef`. Establish `hcc` using `continuous_of_mem_ccAd (tensor_mem_ccAd ha hf)`. Set `φ : GAd D.sp.cm.sig V.gram ≃ₜ GAd D.sp.cm.sig V.gram` to `(Homeomorph.mulLeft x).trans (Homeomorph.mulRight y)`. Establish `hcont : Continuous fun n : NA 𝔉 => f (x * n * y)` using `hcc.1.comp ((continuous_const.mul continuous_subtype_val).mul continuous_const)`.
+
+Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField D.host.F`. Establish `hsupp : HasCompactSupport fun n : NA 𝔉 => f (x * n * y)` using `(hcc.2.comp_homeomorph φ).comp_isClosedEmbedding (IsoFlag.isClosed_unip 𝔉 D.sp.cm _).isClosedEmbedding_subtypeVal`. Use `⟨hcont.integrable_of_hasCompactSupport hsupp, ?_⟩` and prove the remaining obligations. Use `haveI : LocallyCompactSpace (locIn 𝔉 v) := (isClosed_locIn 𝔉 v).locallyCompactSpace`. Establish `key : ∀ g : NA 𝔉, ∫ u : locIn 𝔉 v, f (x * ((u : NA 𝔉) * g : NA 𝔉) * y) ∂(Measure.haar) = 0`.
+
+Introduce `g`. Establish `e1 : ∀ u : locIn 𝔉 v, f (x * ((u : NA 𝔉) * g : NA 𝔉) * y) = ff v (proj D.sp.cm.sig V.gram v x * (locInEquiv 𝔉 v u : GLoc D.sp.cm.sig V.gram v) * proj D.sp.cm.sig V.gram v ((g : GAd D.sp.cm.sig V.gram) * y)) * tensor D.sp.cm.sig V.gram fa (Function.update ff v fun _ => 1) (x * ((g …`. Introduce `u`. Rewrite using `[hfdef, tensor_eq_mul_update hf v]`. Establish `hu` using `emb_proj_of_mem_locIn 𝔉 v u.2`.
+
+Use `congr 1`. Simplify using `only [Subgroup.coe_mul, map_mul, mul_assoc]`. Both sides reduce to the same expression. Rewrite using `[Subgroup.coe_mul, ← hu, show ∀ a b c d : GAd D.sp.cm.sig V.gram, a * (b * c) * d = a * b * (c * d) from fun a b c d => by group, tensor_update_mul_emb]`. Repeatedly rewrite using `[e1]`.
+
+Rewrite using `[integral_mul_const]`. Establish `hH : (Measure.map (locInEquiv 𝔉 v) (Measure.haar : Measure (locIn 𝔉 v))).IsHaarMeasure` using `ContinuousMulEquiv.isHaarMeasure_map _ _`. Use `@hv (Measure.map (locInEquiv 𝔉 v) (Measure.haar : Measure (locIn 𝔉 v))) hH (proj D.sp.cm.sig V.gram v x) (proj D.sp.cm.sig V.gram v ((g : GAd D.sp.cm.sig V.gram) * y))` as an intermediate fact. Rewrite `this` using `[show Measure.map (locInEquiv 𝔉 v) (Measure.haar : Measure (locIn 𝔉 v)) = Measure.map ((locInEquiv 𝔉 v).toHomeomorph.toMeasurableEquiv) Measure.haar from rfl, integral_map_equiv]`. Use `(congrArg (· * _) ?_).trans (zero_mul _)` and prove the remaining obligations.
+
+Conclude with `this`. Use `GlobalTheory.T.integral_mul_eq_zero_of_coset_integral_eq_zero_alt (NA 𝔉) (locIn 𝔉 v) (isClosed_locIn 𝔉 v) Measure.haar ν (fun n => f (x * n * y)) (fun _ => 1) hcont hsupp (locallyIntegrable_const 1) (fun _ _ => Filter.EventuallyEq.rfl) key` as an intermediate fact. Simplify using `using this`.
+-/
 theorem unipIntegralsVanish_tensor : ∀ (D : D7) (V : HSp D) (𝔉 : IsoFlag V) (fa : ∀ w, GArch D.sp.cm.sig V.gram w → ℂ)
     (ff : ∀ v, GLoc D.sp.cm.sig V.gram v → ℂ), (∀ w, fa w ∈ CcArch D.sp.cm.sig V.gram w) →
     IsFinFamily D.sp.cm.sig V.gram (frameLat V) ff → ∀ v : HeightOneSpectrum (𝓞 D.host.F),

@@ -7,6 +7,29 @@ namespace GroundTheory.Heights₂.Heights.FieldNumbers
 
 universe u
 
+/- English proof (translation)
+Take `⟨s, g, hginj, hgfin⟩` from `exists_finite_inj_algHom_of_fg k A`. Use `set B := MvPolynomial (Fin s) k`. Set `: Algebra B A` to `g.toRingHom.toAlgebra`. Establish `: Module.Finite B A` using `hgfin`. Set `: Algebra B K` to `((algebraMap A K).comp (algebraMap B A)).toAlgebra`.
+
+Set `: Algebra B L` to `((algebraMap A L).comp (algebraMap B A)).toAlgebra`. Establish `: IsScalarTower B A K` using `IsScalarTower.of_algebraMap_eq' rfl`. Establish `: IsScalarTower B A L` using `IsScalarTower.of_algebraMap_eq' rfl`. Establish `: IsScalarTower B K L` using `IsScalarTower.of_algebraMap_eq fun x => by`. Express the relevant statement in the definitionally equal form `algebraMap A L (algebraMap B A x) = algebraMap K L (algebraMap A K (algebraMap B A x))`.
+
+Conclude with `IsScalarTower.algebraMap_apply A K L _`. Establish `hinjBK : Function.Injective (algebraMap B K)` using `(IsFractionRing.injective A K).comp hginj`. Establish `: FaithfulSMul B K` using `(faithfulSMul_iff_algebraMap_injective B K).mpr hinjBK`. Set `: Algebra (FractionRing B) K` to `FractionRing.liftAlgebra B K`. Set `: Algebra (FractionRing B) L` to `((algebraMap K L).comp (algebraMap (FractionRing B) K)).toAlgebra`.
+
+Establish `: IsScalarTower (FractionRing B) K L` using `IsScalarTower.of_algebraMap_eq' rfl`. Establish `: IsScalarTower B (FractionRing B) L` using `IsScalarTower.of_algebraMap_eq fun x => by`. Rewrite using `[IsScalarTower.algebraMap_apply (FractionRing B) K L, ← IsScalarTower.algebraMap_apply B (FractionRing B) K, ← IsScalarTower.algebraMap_apply B K L]`. Establish `: Algebra.IsIntegral B A` using `Algebra.IsIntegral.of_finite B A`. Establish `: FiniteDimensional (FractionRing B) K`.
+
+Take `⟨t, ht⟩` from `(Module.Finite.fg_top : (⊤ : Submodule B A).FG)`. Set `T : Set K` to `algebraMap A K '' t`. Establish `hTint : ∀ x ∈ T, IsIntegral (FractionRing B) x`. Introduce and unpack `_ ⟨a, -, rfl⟩`. Establish `: IsIntegral B (algebraMap A K a)` using `(Algebra.IsIntegral.isIntegral a).map (IsScalarTower.toAlgHom B A K)`.
+
+Conclude with `this.tower_top`. Establish `: Finite T` using `(t.finite_toSet.image _).to_subtype`. Establish `hfd` using `IntermediateField.finiteDimensional_adjoin hTint`. Establish `htop : IntermediateField.adjoin (FractionRing B) T = ⊤`. Rewrite using `[eq_top_iff]`.
+
+Introduce and unpack `x -`. Establish `hA : ∀ a : A, algebraMap A K a ∈ IntermediateField.adjoin (FractionRing B) T`. Introduce `a`. Establish `ha : a ∈ Submodule.span B (t : Set A)` using `ht ▸ Submodule.mem_top`. Proceed by induction on `ha using Submodule.span_induction with`.
+
+Consider the case `mem y hy => exact IntermediateField.subset_adjoin (FractionRing B) T ⟨y, hy, rfl⟩`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `add_mem hy hz`. Consider the case `smul b y _ hy`.
+
+Rewrite using `[Algebra.smul_def, map_mul, ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply B (FractionRing B) K]`. Conclude with `mul_mem (IntermediateField.algebraMap_mem _ _) hy`. Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := A) x`. Conclude with `div_mem (hA a) (hA b)`. Rewrite `hfd` using `[htop]`.
+
+Conclude with `(IntermediateField.topEquiv (F := FractionRing B) (E := K)).toLinearEquiv.finiteDimensional`. Establish `: FiniteDimensional (FractionRing B) L` using `Module.Finite.trans K L`. Establish `hB` using `hpoly s L`. Establish `hle : (integralClosure A L).toSubmodule.restrictScalars B ≤ (integralClosure B L).toSubmodule` using `fun y hy => isIntegral_trans (R := B) (A := A) y hy`. Establish `: IsNoetherian B (integralClosure B L).toSubmodule` using `isNoetherian_of_isNoetherianRing_of_finite B (integralClosure B L)`.
+
+Establish `: IsNoetherian B ((integralClosure A L).toSubmodule.restrictScalars B)` using `isNoetherian_of_le hle`. Establish `: Module.Finite B (integralClosure A L)` using `Module.IsNoetherian.finite B ((integralClosure A L).toSubmodule.restrictScalars B)`. Conclude with `Module.Finite.of_restrictScalars_finite B A (integralClosure A L)`.
+-/
 theorem finite_integralClosure_of_forall_mvPolynomial
     (k A : Type u) [Field k] [CommRing A] [IsDomain A] [Algebra k A] [Algebra.FiniteType k A]
     (K : Type u) [Field K] [Algebra A K] [IsFractionRing A K]
@@ -81,6 +104,9 @@ theorem finite_integralClosure_of_forall_mvPolynomial
     Module.IsNoetherian.finite B ((integralClosure A L).toSubmodule.restrictScalars B)
   exact Module.Finite.of_restrictScalars_finite B A (integralClosure A L)
 
+/- English proof (translation)
+The claim follows from `IsIntegralClosure.finite (MvPolynomial (Fin s) k) (FractionRing (MvPolynomial (Fin s) k)) L (integralClosure (MvPolynomial (Fin s) k) L)`.
+-/
 theorem finite_integralClosure_mvPolynomial_of_isSeparable (k : Type u) [Field k] (s : ℕ)
     (L : Type u) [Field L] [Algebra (FractionRing (MvPolynomial (Fin s) k)) L]
     [FiniteDimensional (FractionRing (MvPolynomial (Fin s) k)) L]
@@ -91,6 +117,9 @@ theorem finite_integralClosure_mvPolynomial_of_isSeparable (k : Type u) [Field k
   IsIntegralClosure.finite (MvPolynomial (Fin s) k) (FractionRing (MvPolynomial (Fin s) k)) L
     (integralClosure (MvPolynomial (Fin s) k) L)
 
+/- English proof (translation)
+Establish `: CharZero (FractionRing (MvPolynomial (Fin s) k))` using `(RingHom.charZero_iff ((algebraMap (MvPolynomial (Fin s) k) (FractionRing (MvPolynomial (Fin s) k))).comp (algebraMap k (MvPolynomial (Fin s) k))).injective).mp inferInstance`. Conclude with `finite_integralClosure_mvPolynomial_of_isSeparable k s L`.
+-/
 theorem finite_integralClosure_mvPolynomial_of_charZero (k : Type u) [Field k] [CharZero k]
     (s : ℕ) (L : Type u) [Field L] [Algebra (FractionRing (MvPolynomial (Fin s) k)) L]
     [FiniteDimensional (FractionRing (MvPolynomial (Fin s) k)) L]
@@ -103,6 +132,9 @@ theorem finite_integralClosure_mvPolynomial_of_charZero (k : Type u) [Field k] [
       inferInstance
   exact finite_integralClosure_mvPolynomial_of_isSeparable k s L
 
+/- English proof (translation)
+The claim follows from `finite_integralClosure_of_forall_mvPolynomial k A K L fun s L' _ _ _ _ _ => finite_integralClosure_mvPolynomial_of_charZero k s L'`.
+-/
 theorem finite_integralClosure_of_charZero
     (k A : Type u) [Field k] [CharZero k] [CommRing A] [IsDomain A] [Algebra k A]
     [Algebra.FiniteType k A] (K : Type u) [Field K] [Algebra A K] [IsFractionRing A K]

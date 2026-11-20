@@ -10,6 +10,13 @@ open GlobalTheory.Heat GlobalTheory.FormalOrigin
 attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Set `p : ↥(Sp Ω)` to `closedPoint Ω`. Establish `hm : (spMap ψ ≫ X.fromSpecStalk x) p ∈ O` using `h (x := p) trivial`. Rewrite `hm` using `[Scheme.Hom.comp_apply]`.
+
+Establish `e : (spMap ψ) p = (closedPoint (X.presheaf.stalk x) : ↥(Spec (X.presheaf.stalk x)))` using `by show PrimeSpectrum.comap ψ (closedPoint Ω) = _`. Conclude with `IsLocalRing.comap_closedPoint ψ`. Rewrite `hm` using `[e, Scheme.fromSpecStalk_closedPoint]`. Conclude with `hm`. Introduce `hx w _`.
+
+Establish `: X.fromSpecStalk x (spMap ψ w) ∈ Set.range (X.fromSpecStalk x)` using `⟨_, rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Use `show (spMap ψ ≫ X.fromSpecStalk x) w ∈ O`. Rewrite using `[Scheme.Hom.comp_apply]`. Conclude with `Specializes.mem_open (x := X.fromSpecStalk x (spMap ψ w)) this O.isOpen hx`.
+-/
 theorem spMap_fromSpecStalk_le_preimage_iff (X : Scheme.{0}) (x : X) (Ω : Type) [CommRing Ω] [IsLocalRing Ω]
     (ψ : X.presheaf.stalk x →+* Ω) (hψ : IsLocalHom ψ) (O : X.Opens) :
     ⊤ ≤ (spMap ψ ≫ X.fromSpecStalk x) ⁻¹ᵁ O ↔ x ∈ O := by
@@ -30,6 +37,9 @@ theorem spMap_fromSpecStalk_le_preimage_iff (X : Scheme.{0}) (x : X) (Ω : Type)
     rw [Scheme.Hom.comp_apply]
     exact Specializes.mem_open (x := X.fromSpecStalk x (spMap ψ w)) this O.isOpen hx
 
+/- English proof (translation)
+Introduce `X x Ω _ _ ψ hψ O` and use `spMap_fromSpecStalk_le_preimage_iff X x Ω ψ hψ O`.
+-/
 theorem spMap_fromSpecStalk_top_le_iff : ∀ (X : Scheme.{0}) (x : X) (Ω : Type) [CommRing Ω] [IsLocalRing Ω]
     (ψ : X.presheaf.stalk x →+* Ω), IsLocalHom ψ → ∀ O : X.Opens,
     ⊤ ≤ (spMap ψ ≫ X.fromSpecStalk x) ⁻¹ᵁ O ↔ x ∈ O :=

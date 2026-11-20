@@ -14,10 +14,22 @@ noncomputable def polyComb {K : Type} [Field K] {D δ : ℕ} (x : Fin (D + 1) �
   ∑ i : Fin δ, LinearMap.mulRight ℤ (w i) ∘ₗ (MvPolynomial.aeval x).toLinearMap ∘ₗ
     (MvPolynomial.homogeneousSubmodule (Fin (D + 1)) ℤ n).subtype ∘ₗ LinearMap.proj i
 
+/- English proof (translation)
+Simplify using `[polyComb]`.
+-/
 theorem polyComb_apply {K : Type} [Field K] {D δ : ℕ} (x : Fin (D + 1) → K) (w : Fin δ → K) (n : ℕ) (T) :
     polyComb x w n T = ∑ i, MvPolynomial.aeval x (T i : MvPolynomial (Fin (D + 1)) ℤ) * w i := by
   simp [polyComb]
 
+/- English proof (translation)
+Take `⟨-, -, -, hrk, hfin⟩` from `GlobalTheory.T.card_bounded_homogeneous_int_form_families D n δ 0 le_rfl`. Use `haveI := hfin`. Use `haveI : Module.Free ℤ (MvPolynomial.homogeneousSubmodule (Fin (D + 1)) ℤ n) := Module.free_of_finite_type_torsion_free'`. Use `set Φ := polyComb x w n`. Establish `hle : ∀ f ∈ H, f ∈ LinearMap.range Φ`.
+
+Introduce `f hf`. Take `⟨T, hT, rfl⟩` from `hH f hf`. Use `⟨fun i => ⟨T i, (MvPolynomial.mem_homogeneousSubmodule n (T i)).2 (hT i)⟩, ?_⟩` and prove the remaining obligations. Simplify using `[Φ, polyComb_apply]`. Set `g : H →ₗ[ℤ] LinearMap.range Φ` to `{ toFun := fun f => ⟨f.1, hle f.1 f.2⟩ map_add' := fun _ _ => rfl map_smul' := fun m f => by ext; simp }`.
+
+Establish `hg : Function.Injective g` using `fun a b h => Subtype.ext (congrArg Subtype.val h :)`. Use `haveI : Module.Finite ℤ H := Module.Finite.of_injective g hg`. Use `⟨(AddGroup.fg_iff_addSubgroup_fg H).1 (Module.Finite.iff_addGroup_fg.1 inferInstance), ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Module.finrank_pi_fintype, hrk]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem fg_finrank_le {K : Type} [Field K] {D δ : ℕ} (x : Fin (D + 1) → K) (w : Fin δ → K) (n : ℕ)
     (H : AddSubgroup K) (hH : ∀ f ∈ H, ∃ T : Fin δ → MvPolynomial (Fin (D + 1)) ℤ,
       (∀ i, (T i).IsHomogeneous n) ∧ f = ∑ i, MvPolynomial.aeval x (T i) * w i) :
@@ -46,6 +58,15 @@ theorem fg_finrank_le {K : Type} [Field K] {D δ : ℕ} (x : Fin (D + 1) → K) 
 
 end GlobalTheory.HSAmp.HSUpper
 
+/- English proof (translation)
+Introduce `k _ X _ p D hD P hA e x hx a b`. Take `⟨c, w, C, hC, hrep⟩` from `GlobalTheory.T.sections_eq_sum_aeval_boundedIntCoeff_ample k X p D hD P hA e x hx a b`. Use `⟨c, C, hC, fun q => ?_⟩` and prove the remaining obligations. Take `⟨hfg, hrk⟩` from `GlobalTheory.HSAmp.HSUpper.fg_finrank_le x w (q + c) (P.H (e * q + a) b) (fun f hf => by`. Take `⟨T, hT, hf', -⟩` from `hrep q f hf`.
+
+Conclude with `⟨T, hT, hf'⟩)`. Use `⟨hfg, hrk, fun R κ hR hκ hcov => ?_⟩` and prove the remaining obligations. Use `set R' : ℝ := C * R / κ ^ (q + c)`. Establish `hR' : 0 ≤ R'` using `div_nonneg (mul_nonneg hC.le hR) (pow_pos hκ _).le`. Take `⟨hSfin, hScard, -⟩` from `GlobalTheory.T.card_bounded_homogeneous_int_form_families D (q + c) (Module.finrank (ratF x) X.functionField) R' hR'`.
+
+Use `set S := {T : Fin (Module.finrank (ratF x) X.functionField) → MvPolynomial (Fin (D + 1)) ℤ | (∀ i, (T i).IsHomogeneous (q + c)) ∧ ∀ i α, |((MvPolynomial.coeff α (T i) : ℤ) : ℝ)| ≤ R'}`. Establish `hsub : P.Bl (e * q + a) b R ⊆ (fun T : Fin (Module.finrank (ratF x) X.functionField) → MvPolynomial (Fin (D + 1)) ℤ => ∑ i, MvPolynomial.aeval x (T i) * w i) '' S`. Introduce `f hf`. Rewrite `hf` using `[← ballIn_H]`. Take `⟨hfH, hfR⟩` from `hf`.
+
+Take `⟨T, hT, hfT, hbd⟩` from `hrep q f hfH`. Conclude with `⟨T, ⟨hT, hbd R κ hκ hcov hfR⟩, hfT.symm⟩`. Establish `himfin` using `hSfin.image (fun T : Fin (Module.finrank (ratF x) X.functionField) → MvPolynomial (Fin (D + 1)) ℤ => ∑ i, MvPolynomial.aeval x (T i) * w i)`. Use `⟨himfin.subset hsub, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem GlobalTheory.HSAmp.HSUpper.upper_bound : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (P : Pair p), IsAmpleLB P.L.B → ∀ (e : ℕ) (x : Fin (D + 1) → X.functionField), Gens P D e x → ∀ a b : ℤ, ∃ (c : ℕ) (C : ℝ), 0 < C ∧ ∀ q : ℕ, (P.H (e * q + a) b).FG ∧ Module.finrank ℤ (P.H (e * q + a) b) ≤ Module.finrank (ratF x) X.functionField * (q + c + D).choose D ∧ ∀ R κ : ℝ, 0 ≤ R → 0 < κ → (∀ (σ : k →+* ℂ) (y : CxPts p σ), ∃ l, κ ≤ P.nu e 0 σ y (x l)) → (P.Bl (e * q + a) b R).Finite ∧ (P.Bl (e * q + a) b R).ncard ≤ (2 * ⌊C * R / κ ^ (q + c)⌋₊ + 1) ^ (Module.finrank (ratF x) X.functionField * (q + c + D).choose D) := by
   intro k _ X _ p D hD P hA e x hx a b
   obtain ⟨c, w, C, hC, hrep⟩ := GlobalTheory.T.sections_eq_sum_aeval_boundedIntCoeff_ample k X p D hD P hA e x hx a b

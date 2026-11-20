@@ -21,6 +21,25 @@ open GlobalTheory.AbLaw
 open GlobalTheory.KeyPow GlobalTheory.KeyKa
 open GlobalTheory.SimilTheta
 
+/- English proof (translation)
+Introduce `A _ L g u hL Y K _ φ ep t ht E _ _ pt z hpt hz hφ`. Establish `hv : GlobalTheory.CubeValues.ValueRules` using `GlobalTheory.valAt'_rules`. Set `d : (Fin g → ℂ) → (Sp ℂ ⟶ A.left)` to `fun w => (u.ex w).left`. Establish `hφ' : ∀ e k, pt e ≫ φ k = d (z k e)` using `hφ`. Establish `hw : ∀ e (j : K → L.ι), ⊤ ≤ pt e ⁻¹ᵁ LB.wchart L φ j ↔ ∀ k, ⊤ ≤ d (z k e) ⁻¹ᵁ L.U (j k)` using `fun e j => by`.
+
+Rewrite using `[GlobalTheory.PowUnif.le_wchart_iff]`. Simplify using `only [hφ']`. Use `choose j₀ hj₀ using fun e k => GlobalTheory.PowUnif.exists_chart hL (d (z k e))`. Set `ω : (K → L.ι) → E → ℂ` to `fun j e => valAt' (pt e) (LB.wchart L φ j) (t.s j).val`. Set `P : (K → L.ι) → E → ℂ` to `fun j e => ∏ k, u.fr (j k) (z k e) ^ ep k`.
+
+Establish `hω : ∀ j e, (∀ k, ⊤ ≤ d (z k e) ⁻¹ᵁ L.U (j k)) → ω j e ≠ 0` using `fun j e h => GlobalTheory.valAt'_unit_ne_zero (pt e) ((hw e j).2 h) (t.s j)`. Establish `hP : ∀ j e, (∀ k, ⊤ ≤ d (z k e) ⁻¹ᵁ L.U (j k)) → P j e ≠ 0` using `fun j e h => Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (u.fr_ne _ _ (h k))`. Establish `hG : ∀ j j' e, (∀ k, ⊤ ≤ d (z k e) ⁻¹ᵁ L.U (j k)) → (∀ k, ⊤ ≤ d (z k e) ⁻¹ᵁ L.U (j' k)) → ω j e / P j e = ω j' e / P j' e`. Introduce `j j' e h h'`. Establish `hk : ∀ k, ⊤ ≤ d (z k e) ⁻¹ᵁ (L.U (j k) ⊓ L.U (j' k))` using `fun k => (GlobalTheory.top_le_preimage_inf _ _ _).2 ⟨h k, h' k⟩`.
+
+Set `c : ℂ` to `∏ k, valAt' (d (z k e)) (L.U (j k) ⊓ L.U (j' k)) (L.g (j k) (j' k)).val ^ ep k`. Establish `hc : c ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (GlobalTheory.valAt'_unit_ne_zero _ (hk k) _)`. Establish `e₁ : ω j e = c * ω j' e`. Use `(GlobalTheory.CubeValues.val_gen (pt e) hv t ht j j' ((hw e j).2 h) ((hw e j').2 h')).trans ?_` and prove the remaining obligations. Use `congrArg (· * ω j' e) ?_` and prove the remaining obligations.
+
+Use `(GlobalTheory.CubeValues.val_linComb (pt e) hv L φ ep j j' ((hw e j).2 h) ((hw e j').2 h')).trans ?_` and prove the remaining obligations. Simplify using `only [hφ', c]`. Establish `e₂ : P j e = c * P j' e`. Simplify using `only [P, c]`. Rewrite using `[← Finset.prod_mul_distrib]`.
+
+Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_zpow]`. Conclude with `congrArg (· ^ ep k) (u.fr_compat _ _ _ (hk k))`. Rewrite using `[e₁, e₂, mul_div_mul_left _ _ hc]`. Use `⟨fun e => ω (j₀ e) e / P (j₀ e) e, fun e₀ => ?_, fun e => div_ne_zero (hω _ _ (hj₀ e)) (hP _ _ (hj₀ e)), fun e j h => ?_⟩` and prove the remaining obligations.
+
+Establish `hS` using `hpt (LB.wchart L φ (j₀ e₀)) (t.s (j₀ e₀)).val`. Establish `hS₀` using `hS.1.mem_nhds ((hw e₀ _).2 (hj₀ e₀))`. Establish `hd : DifferentiableAt ℂ (fun e => ω (j₀ e₀) e * (P (j₀ e₀) e)⁻¹) e₀` using `by classical`. Use `DifferentiableAt.mul (hS.2.differentiableAt hS₀) (DifferentiableAt.inv ?_ (hP _ _ (hj₀ e₀)))` and prove the remaining obligations. Use `(HasFDerivAt.finsetProd fun k _ => DifferentiableAt.hasFDerivAt ?_).differentiableAt` and prove the remaining obligations.
+
+Use `DifferentiableAt.zpow (f := fun e => u.fr (j₀ e₀ k) (z k e)) ?_ (Or.inl (u.fr_ne _ _ (hj₀ e₀ k)))` and prove the remaining obligations. Conclude with `((u.fr_hol _).differentiableAt ((u.hol _ 0).1.mem_nhds (hj₀ e₀ k))).comp e₀ (hz k e₀)`. Use `hd.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hS₀] with e he`. Rewrite using `[hG _ _ e (hj₀ e) ((hw e _).1 he), div_eq_mul_inv]`.
+
+Use `beta_reduce`. Rewrite using `[hG _ _ e (hj₀ e) h]`. Conclude with `(div_mul_cancel₀ _ (hP j e h)).symm`.
+-/
 theorem GlobalTheory.exists_entire_generator_div_frames : ∀ (A : Over (Sp ℂ)) [GrpObj A] (L : LB A.left) (g : ℕ) (u : HolUnif A L g), L.IsLB → ∀ (Y : Scheme.{0}) (K : Type) [Fintype K] (φ : K → (Y ⟶ A.left)) (ep : K → ℤ) (t : LB.Gen (LB.LinComb L φ ep)), t.IsGen → ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] (pt : E → (Sp ℂ ⟶ Y)) (z : K → E → Fin g → ℂ), GlobalTheory.PowUnif.IsHolFamily pt → (∀ k, Differentiable ℂ (z k)) → (∀ e k, pt e ≫ φ k = (u.ex (z k e)).left) → ∃ T : E → ℂ, Differentiable ℂ T ∧ (∀ e, T e ≠ 0) ∧ ∀ e (j : K → L.ι), (∀ k, ⊤ ≤ (u.ex (z k e)).left ⁻¹ᵁ L.U (j k)) → valAt' (pt e) (LB.wchart L φ j) (t.s j).val = T e * ∏ k, u.fr (j k) (z k e) ^ ep k := by
   intro A _ L g u hL Y K _ φ ep t ht E _ _ pt z hpt hz hφ
   have hv : GlobalTheory.CubeValues.ValueRules := GlobalTheory.valAt'_rules

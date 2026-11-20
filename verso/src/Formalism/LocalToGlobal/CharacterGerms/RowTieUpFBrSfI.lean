@@ -33,6 +33,35 @@ section Eig
 
 variable {R : Type} [CommRing R] [Algebra R C]
 
+/- English proof (translation)
+Use `choose lift hlift using hsurj`. Set `S` to `{x : I0 // p.ty0 x = a}`. Set `e : Fin (Fintype.card S) ≃ S` to `(Fintype.equivFin S).symm`. Set `W : Fin (Fintype.card S) → Fin dd → R` to `fun c i => lift (p.e (e c) i) (p.e_int (e c) i)`. Establish `hu : ∀ c i, algebraMap R C (W c i) = p.e (e c) i` using `fun c i => hlift _ _`.
+
+Use `⟨Fintype.card S, W, e, ?_, hu⟩` and prove the remaining obligations. Unfold `IsEigBasis`. Use `⟨fun c a' => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Apply `hinj` to reduce the goal to its premises.
+
+Rewrite using `[linAct_toC actR hact a' (W c) i]`. Establish `hW : (fun j => algebraMap R C (W c j)) = p.e (e c)` using `funext (hu c)`. Rewrite using `[hW, p.e_eig (e c) a', (e c).2]`. Simplify using `[hτ, hu]`. Take `⟨vC, hvC⟩ : ∃ vC : Fin dd → C, ∀ j, vC j = algebraMap R C (v j)` from `⟨_, fun _ => rfl⟩`.
+
+Establish `heig : ∀ x, linAct (Y.B.A.act x) vC = p.em a x • vC`. Introduce `x`. Use function extensionality and compare the values at `i`. Establish `h1 : vC = fun j => algebraMap R C (v j)` using `funext hvC`. Rewrite using `[h1, ← linAct_toC actR hact x v i, hv x]`.
+
+Simplify using `[hτ]`. Take `⟨b, hbsupp, hvb⟩` from `p.e_full a vC heig`. Take `⟨w, hw1, hw2⟩` from `p.e_sat`. Establish `hvb' : ∀ j, vC j = ∑ c, b c * p.e c j`. Introduce `j`.
+
+Rewrite using `[hvb]`. Simplify using `[Finset.sum_apply]`. Establish `hcoef : ∀ c', ∑ x, vC x * w x c' = b c'`. Introduce `c'`. Repeatedly rewrite using `[hvb', Finset.sum_mul]`.
+
+Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[_root_.mul_assoc, ← Finset.mul_sum, hw2]`. Simplify using the standard rewrite rules. Establish `hbint : ∀ c, V.Ge 0 (b c)`. Introduce `c`.
+
+Rewrite using `[← hcoef c]`. Conclude with `VF.Ge.sum (fun x _ => by rw [hvC x]; exact (hR (v x)).mul_int (hw1 x c))`. Establish `hsum : ∀ F : I0 → C, (∀ c, p.ty0 c ≠ a → F c = 0) → ∑ c, F c = ∑ k : Fin (Fintype.card S), F (e k)`. Introduce `F hF`. Rewrite using `[← Fintype.sum_subtype_add_sum_subtype (fun c => p.ty0 c = a) F]`.
+
+Rewrite using `[Fintype.sum_eq_zero (fun x : {c // ¬ p.ty0 c = a} => F x) (fun x => hF x x.2), add_zero]`. Conclude with `(Equiv.sum_comp e (fun x : S => F x)).symm`. Use `⟨fun k => lift (b (e k)) (hbint (e k)), ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Apply `hinj` to reduce the goal to its premises.
+
+Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sum, map_mul, hlift, hu]`. Rewrite using `[← hsum (fun c => b c * p.e c j) (fun c hc => by rw [hbsupp c hc, zero_mul]), ← hvb', hvC]`. Introduce `c' hc'`. Use function extensionality and compare the values at `k`. Apply `hinj` to reduce the goal to its premises.
+
+Rewrite using `[hlift, ← hcoef (e k)]`. Establish `h2 : ∀ j, vC j = ∑ m, algebraMap R C (c' m) * p.e (e m) j`. Introduce `j`. Rewrite using `[hvC, ← hc']`. Simplify using `[Finset.sum_apply, map_sum, hu]`.
+
+Repeatedly rewrite using `[h2, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[_root_.mul_assoc, ← Finset.mul_sum, hw2]`. Simplify using `only [mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_eq_single k]`.
+
+Simplify using the standard rewrite rules. Introduce `m _ hm`. Establish `hne : (↑(e m) : I0) ≠ ↑(e k)` using `fun h => hm (e.injective (Subtype.ext h))`. Simplify using `[hne]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ k) h`.
+-/
 theorem eig_atS {Y : FBChart C V OE dd} (p : SelfData Y d I0) (hinj : Function.Injective (algebraMap R C))
     (hsurj : ∀ x : C, V.Ge 0 x → ∃ r : R, algebraMap R C r = x) (hR : ∀ x : R, V.Ge 0 (algebraMap R C x))
     (actR : OE → Fin dd → PS R 1 dd) (hact : ∀ a i, Y.B.A.act a i = toC (actR a i))
@@ -107,6 +136,17 @@ theorem eig_atS {Y : FBChart C V OE dd} (p : SelfData Y d I0) (hinj : Function.I
       · intro h
         exact absurd (Finset.mem_univ k) h
 
+/- English proof (translation)
+Establish `hsep : ∀ a a', emR a = emR a' → a = a'`. Introduce `a a' h`. Assume the negation of the conclusion as `hne`. Take `⟨x, hx⟩` from `p.em_sep a a' hne`. Establish `h1 : p.em a x = p.em a' x` using `by rw [← hem, ← hem, h]`.
+
+Rewrite `hx` using `[h1, sub_self, AddValuation.map_zero]`. Simplify using `at hx`. Establish `key : ∀ τ : OE →+* R, ∃ (s : ℕ) (W : Fin s → Fin dd → R), IsEigBasis actR τ W ∧ ∀ a, emR a = τ → ∃ e : Fin s ≃ {x : I0 // p.ty0 x = a}, ∀ c i, algebraMap R C (W c i) = p.e (e c) i`. Introduce `τ`. Distinguish the cases in `h : ∃ a, emR a = τ`.
+
+Take `⟨a, rfl⟩` from `h`. Take `⟨s, W, e, hb, hu⟩` from `eig_atS p hv.hom_inj hsurj hR actR hact (emR a) a (hem a)`. Use `⟨s, W, hb, fun a' h' => ?_⟩` and prove the remaining obligations. Take `rfl` from `hsep a' a h'`. Conclude with `⟨e, hu⟩`.
+
+Use `push_neg at h`. Take `⟨s, W, h1, h2⟩` from `eigFreeSt_holds C vm R hv dd OE (fun x => linPart (actR x)) τ`. Use `⟨s, W, ?_, fun a h' => absurd h' (h a)⟩` and prove the remaining obligations. Unfold `IsEigBasis`. Conclude with `⟨h1, h2⟩`.
+
+Use `choose r W hW using key`. Unfold `EigInS`. Conclude with `⟨r, W, fun τ => (hW τ).1, fun a => (hW (emR a)).2 a rfl⟩`.
+-/
 theorem eigInS_of_integral_lifts {Y : FBChart C V OE dd} (p : SelfData Y d I0) (vm : Valuation C NNReal)
     (hv : vm.Integers R) (hsurj : ∀ x : C, V.Ge 0 x → ∃ r : R, algebraMap R C r = x)
     (hR : ∀ x : R, V.Ge 0 (algebraMap R C x))
@@ -141,6 +181,23 @@ theorem eigInS_of_integral_lifts {Y : FBChart C V OE dd} (p : SelfData Y d I0) (
 
 end Eig
 
+/- English proof (translation)
+Use `Y.algClosed` as an intermediate fact. Introduce `a`. Take `⟨w, iN, t, jj, hj1, hjt, hbas⟩` from `hPl`. Take `⟨r, W, hW, hWe⟩` from `hEig`. Establish `hinj : Function.Injective (algebraMap R C)` using `hv.hom_inj`.
+
+Establish `hfrob : ∀ (j : Fin w.n) (x : OE), ((t (j + 1) : Emb (O` using `R) w.e) : OE →+* R) x - (((t j : Emb (O := R) w.e) : OE →+* R) x) ^ V.l ∈ maximalIdeal R := by`. Introduce `j x`. Take `⟨a', rfl⟩` from `jj.surjective j`. Rewrite using `[← hj1, hjt, hjt]`. Apply `hMM` to reduce the goal to its premises.
+
+Rewrite using `[map_sub, map_pow, hem, hem]`. Conclude with `p.em_frob a' x`. Take `⟨xs, hAF, hle⟩` from `hL C vm R hv iota hloc w t hbas hfrob r W hW (jj a)`. Take `⟨e, he⟩` from `hWe a`. Establish `hconj : ∀ b, (emR b).comp ((starRingAut : RingAut OE) : OE ≃+* OE).toRingHom = emR (b + p.hd)`.
+
+Introduce `b`. Use extensionality with `x`. Apply `hinj` to reduce the goal to its premises. Use `show algebraMap R C (emR b (star x)) = _`. Rewrite using `[hem, hem]`.
+
+Conclude with `p.em_conj b x`. Establish `hrk : ∀ b, r (emR b) = rk0 p b`. Introduce `b`. Take `⟨e', -⟩` from `hWe b`. Use `Fintype.card_congr e'` as an intermediate fact.
+
+Rewrite `this` using `[Fintype.card_fin, Fintype.card_subtype]`. Conclude with `this`. Use `⟨r (emR a), e, W (emR a), xs, he, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hAF` using `[hjt a]`. Conclude with `hAF`.
+
+Establish `hs : S4.frobSum V.l (fun b => rk0 p (b + p.hd)) a = ∑' n : ℕ, ((V.l : ℝ) ^ (-((n : ℝ) + 1))) * (r (((t (jj a + Fin.ofNat w.n (n + 1)) : Emb (O` using `R) w.e) : OE →+* R).comp ((starRingAut : RingAut OE) : OE ≃+* OE).toRingHom) : ℝ) := by`. Unfold `S4.frobSum`. Use `tsum_congr fun n => ?_` and prove the remaining obligations. Rewrite using `[← jj_add jj hj1 a (n + 1), hjt, hconj, hrk, rpow_neg_succ V.l_prime.pos]`. Rewrite using `[hs]`.
+
+Rewrite `hle` using `[map_natCast]`. Conclude with `hle`.
+-/
 theorem afBoundS_of_upFLaw (Y : FBChart C V OE dd) (p : SelfData Y d I0)
     (vm : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C] (hv : vm.Integers R)
     [Fact ¬IsUnit ((V.l : ℕ) : R)] [IsAdicComplete (Ideal.span {((V.l : ℕ) : R)}) R] [IsLocalRing R] [Algebra ℤ_[V.l] R]
@@ -193,6 +250,21 @@ theorem afBoundS_of_upFLaw (Y : FBChart C V OE dd) (p : SelfData Y d I0)
     rw [map_natCast] at hle
     exact hle
 
+/- English proof (translation)
+Take `⟨P⟩` from `ringPkSt_holds C V Y.cpl`. Set `_` to `P.loc`. Set `_` to `P.alg`. Establish `: Fact ¬IsUnit ((V.l : ℕ) : V.RR)` using `⟨P.nonunit⟩`. Use `P.cpl` as an intermediate fact.
+
+Set `iota : T →+* V.RR` to `i0.codRestrict V.RR hint`. Establish `hcomp : ∀ {n : ℕ} (f : PS T n dd), toC (C` using `C) (MvPowerSeries.map iota f) = MvPowerSeries.map i0 f := by`. Introduce `n f`. Use extensionality with `mu`. Simplify using `only [MvPowerSeries.coeff_map]`.
+
+Both sides reduce to the same expression. Set `emR : ZMod d → OE →+* V.RR` to `fun a => (p.em a).codRestrict V.RR (p.em_int a)`. Establish `hem : ∀ a x, algebraMap V.RR C (emR a x) = p.em a x` using `fun _ _ => rfl`. Establish `hlocI : IsLocalHom iota` using `⟨fun t ht => hloc t (v_of_isUnit_RR ht)⟩`. Establish `hlm : ((V.l : ℕ) : V.RR) ∈ maximalIdeal V.RR` using `(mem_maximalIdeal _).2 P.nonunit`.
+
+Establish `hPl : PlaceIn V.l OE V.RR d emR`. Use `placeSt_of_X hPlace V.l OE V.RR hlm hdisc d emR (fun a x => P.mm _ ?_) (fun a a' haa => ?_) ?_` and prove the remaining obligations. Conclude with `p.em_frob a x`. Take `⟨x, hx⟩` from `p.em_sep a a' haa`. Conclude with `⟨x, fun hm => (mem_maximalIdeal _).1 hm (isUnit_RR hx)⟩`.
+
+Take `⟨ε, h1, h2, h3⟩` from `p.em_unr`. Use `⟨ε, h1, fun a => P.mm _ (h2 a), fun x hx => h3 x fun a => ?_⟩` and prove the remaining obligations. Establish `h4 : (0 : WithTop ℝ) ≤ V.v (p.em a x)` using `p.em_int a x`. Conclude with `lt_of_le_of_ne h4 fun h5 => (mem_maximalIdeal _).1 (hx a) (isUnit_RR (x := emR a x) h5.symm)`. Establish `hEig : EigInS p V.RR (fun a i => MvPowerSeries.map iota (actT a i)) emR` using `eigInS_of_integral_lifts p P.vm P.int (fun x hx => ⟨⟨x, hx⟩, rfl⟩) (fun x => x.2) _ (fun a i => by rw [hcomp]; exact hact a i) emR hem`.
+
+Use `upCharS_of_afBound Y p hr Hc P.vm V.RR P.tie P.int P.pos P.lt (fun i => MvPowerSeries.map iota (FT i)) (fun i => by rw [hcomp]; exact hF i) ?_ (afBoundS_of_upFLaw Y p P.vm V.RR P.int (fun x hx => P.mm x hx) T FT actT hL iota hlocI emR hem hPl hEig)` and prove the remaining obligations. Introduce `i`. Apply `P.int.hom_inj` to reduce the goal to its premises. Establish `h5` using `Y.B.G.const i`. Rewrite `h5` using `[hF i, ← hcomp, MvPowerSeries.constantCoeff_map]`.
+
+Rewrite using `[h5, map_zero]`.
+-/
 theorem upCharS_of_upFLaw_RR [IsDedekindDomain OE] [CharZero OE] [Module.Free ℤ OE] [Module.Finite ℤ OE]
     (hPlace : Pl.PlaceCriterionOfIdempotent)
     (Y : FBChart C V OE dd) (p : SelfData Y d I0) (hr : (Y.rawSelf p).RankHyp)
@@ -250,6 +322,9 @@ variable (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)]
 
 variable {Xo c} in
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `chart_ties hie hY`. Conclude with `upCharS_of_upFLaw_RR hPlace Y (selfOfLab ha hg o) (rankHyp_ofLabS ha hg hr o) Hc T.V C3.FT C3.actT hL (ie.comp (algebraMap T.V T.Fr)) h1 h2 h3 h4 hd`.
+-/
 theorem upCharS_at_chartL {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io} {C3 : IntChart T io y}
     {C : Type} [Field C] [CharZero C] {V : VF C} {ie : T.Fr →+* C} (hPlace : Pl.PlaceCriterionOfIdempotent)
     (hL : UpFLaw V.l T.V (𝓞 E) (chD C3.ch) C3.FT C3.actT)
@@ -264,6 +339,9 @@ theorem upCharS_at_chartL {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io}
 
 variable {Xo c} in
 
+/- English proof (translation)
+The claim follows from `upCharS_at_chartL hPlace (upFLaw_at_chart hUp Y.l_odd hGeoJ hie hd) hie hd hY ha hg hr o Hc`.
+-/
 theorem upCharS_at_chart {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io} {C3 : IntChart T io y}
     {C : Type} [Field C] [CharZero C] {V : VF C} {ie : T.Fr →+* C} (hUp : UpFSt V.l) (hPlace : Pl.PlaceCriterionOfIdempotent)
     (hGeoJ : GeoJ T.V C3.I.G.G (𝓞 E) (fun a => C3.I.G.act.act a) (chD C3.ch) C3.FT C3.actT)
@@ -283,6 +361,9 @@ def CharacterHypothesisSelfUnramified : Prop :=
     ∀ (Orb : Type) (d : ℕ) [NeZero d] (lab : LabS E C Orb d) (ha : LabSArith V io ie lab) (hg : LabSGeo C3 ie Y lab),
     lab.RankOK Dw → ∀ o (Hc : ∀ g, (Y.rawSelf (selfOfLab ha hg o)).CartHyp V g), RawChart.CHSt Hc
 
+/- English proof (translation)
+Introduce `hstar T io y C3 _ _ _ V _ hie hd _ Y hY _ _ _ _ ha hg hr o Hc` and use `chStSelf_of_upChar Y (selfOfLab ha hg o) (rankHyp_ofLabS ha hg hr o) Hc (upCharS_at_chart (hUp V.l) hPlace (hGeo hstar T io y C3) hie hd hY ha hg hr o Hc)`.
+-/
 theorem chart_hypothesis_self_unramified_of_forms (hUp : ∀ (p : ℕ) [Fact p.Prime], UpFSt p) (hPlace : Pl.PlaceCriterionOfIdempotent) (hGeo : GeoJA3St Xo c) :
     CharacterHypothesisSelfUnramified Xo c :=
   fun hstar T io y C3 _ _ _ V _ hie hd _ Y hY _ _ _ _ ha hg hr o Hc =>

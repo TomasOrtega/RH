@@ -4,6 +4,11 @@ namespace Formalism.L2.Pj.CurveCount
 
 open MvPolynomial
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.eval₂_eq, MvPolynomial.eval₂_eq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hdeg : ∑ i ∈ m.support, m i = k`. Establish `h` using `hP (MvPolynomial.mem_support_iff.1 hm)`. Simplify `h` using `[Finsupp.weight_apply, Finsupp.sum]`.
+
+Simplify using `only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hdeg]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eval₂_mul_homog {R S σ : Type*} [CommSemiring R] [CommSemiring S] (f : R →+* S) (c : S) (g : σ → S)
     {P : MvPolynomial σ R} {k : ℕ} (hP : P.IsHomogeneous k) :
     P.eval₂ f (fun i => c * g i) = c ^ k * P.eval₂ f g := by
@@ -15,6 +20,11 @@ theorem eval₂_mul_homog {R S σ : Type*} [CommSemiring R] [CommSemiring S] (f 
   simp only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hdeg]
   ring
 
+/- English proof (translation)
+Establish `h` using `eval₂_mul_homog (algebraMap K L) c⁻¹ g hP`. Use `show MvPolynomial.eval₂ (algebraMap K L) (fun i => g i / c) P = c⁻¹ ^ k * MvPolynomial.eval₂ (algebraMap K L) g P`. Rewrite using `[← h]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[div_eq_mul_inv, mul_comm]`.
+-/
 theorem aeval_div_homog {K L σ : Type*} [Field K] [Field L] [Algebra K L] (g : σ → L) (c : L)
     {P : MvPolynomial σ K} {k : ℕ} (hP : P.IsHomogeneous k) :
     aeval (fun i => g i / c) P = c⁻¹ ^ k * aeval g P := by
@@ -26,6 +36,39 @@ theorem aeval_div_homog {K L σ : Type*} [Field K] [Field L] [Algebra K L] (g : 
   funext i
   rw [div_eq_mul_inv, mul_comm]
 
+/- English proof (translation)
+Establish `: FaithfulSMul K κ` using `(faithfulSMul_iff_algebraMap_injective K κ).mpr (algebraMap K κ).injective`. Use `set r : Fin N → κ := fun i => x i / x a with hr`. Set `t2 : Fin (D + 1) × ↥(Finset.univ.erase a) → κ` to `fun p => t (p.1, p.2.1)`. Use `set T2 : Set κ := insert (x a)⁻¹ (Set.range t2) with hT2`. Use `set S : Set κ := Set.range r ∪ T2 with hS`.
+
+Establish `hc : ∀ i : Fin (D + 1), ∑ k, t (i, k) * x k = if i = 0 then 1 else 0`. Introduce `i`. Consider the cases of `i using Fin.cases with`. Consider the case `zero => simpa using hlin0`. Consider the case `succ i => simpa [Fin.succ_ne_zero] using hlin i`.
+
+Establish `hrS : ∀ k, r k ∈ Algebra.adjoin K S` using `fun k => Algebra.subset_adjoin (Or.inl ⟨k, rfl⟩)`. Establish `hzS : (x a)⁻¹ ∈ Algebra.adjoin K S` using `Algebra.subset_adjoin (Or.inr (Set.mem_insert _ _))`. Establish `htS : ∀ i k, k ≠ a → t (i, k) ∈ Algebra.adjoin K S` using `fun i k hk => Algebra.subset_adjoin (Or.inr (Set.mem_insert_of_mem _ ⟨(i, ⟨k, Finset.mem_erase.mpr ⟨hk, Finset.mem_univ k⟩⟩), rfl⟩))`. Establish `hmem : ∀ p, t p ∈ Algebra.adjoin K S`. Introduce and unpack `⟨i, k⟩`.
+
+Distinguish the cases in `hk : k = a`. Rewrite using `[hk]`. Establish `e : t (i, a) = (if i = 0 then 1 else 0) * (x a)⁻¹ - ∑ l ∈ Finset.univ.erase a, t (i, l) * r l`. Establish `h` using `hc i`. Rewrite `h` using `[← Finset.add_sum_erase _ _ (Finset.mem_univ a)]`.
+
+Rewrite using `[← h, add_mul, Finset.sum_mul, add_sub_assoc, ← Finset.sum_sub_distrib]`. Simplify using `only [hr, div_eq_mul_inv, mul_assoc, sub_self, Finset.sum_const_zero, add_zero, mul_inv_cancel₀ hxa, mul_one]`. Rewrite using `[e]`. Use `Subalgebra.sub_mem _ (Subalgebra.mul_mem _ ?_ hzS) (Subalgebra.sum_mem _ fun l hl => Subalgebra.mul_mem _ (htS i l (Finset.ne_of_mem_erase hl)) (hrS l))` and prove the remaining obligations. Use `split_ifs`.
+
+Conclude with `Subalgebra.one_mem _`. Conclude with `Subalgebra.zero_mem _`. Conclude with `htS i k hk`. Set `M` to `AlgebraicIndependent.matroid K κ`. Establish `hI : M.Indep (Set.range t)` using `AlgebraicIndependent.matroid_indep_iff.mpr ht.to_subtype_range`.
+
+Establish `hIS : Set.range t ⊆ M.closure S`. Introduce and unpack `_ ⟨p, rfl⟩`. Rewrite using `[AlgebraicIndependent.matroid_closure_eq]`. Conclude with `isAlgebraic_algebraMap (⟨t p, hmem p⟩ : Algebra.adjoin K S)`. Establish `h1` using `hI.encard_le_eRk_of_subset hIS`.
+
+Rewrite `h1` using `[M.eRk_closure_eq]`. Establish `h2` using `M.eRk_union_le_eRk_add_eRk (Set.range r) T2`. Establish `h3 : M.eRk T2 ≤ ((D + 1) * (N - 1) + 1 : ℕ)`. Use `(M.eRk_le_encard T2).trans ((Set.encard_insert_le _ _).trans ?_)` and prove the remaining obligations. Establish `h4 : (Set.range t2).encard ≤ ((D + 1) * (N - 1) : ℕ)`.
+
+Rewrite using `[← Set.image_univ]`. Use `(Set.encard_image_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Set.encard_univ, ENat.card_eq_coe_fintype_card, Fintype.card_prod, Fintype.card_fin, Fintype.card_coe, Finset.card_erase_of_mem (Finset.mem_univ a), Finset.card_univ, Fintype.card_fin]`. Rewrite using `[Nat.cast_add, Nat.cast_one]`. Conclude with `add_le_add h4 le_rfl`.
+
+Establish `h5 : (((D + 1) * N : ℕ) : ℕ∞) ≤ (Set.range t).encard`. Use `ht.injective.encard_range` as an intermediate fact. Rewrite `this` using `[ENat.card_eq_coe_fintype_card, Fintype.card_prod, Fintype.card_fin, Fintype.card_fin]`. Then use the resulting hypothesis. Establish `hfin : M.eRk (Set.range r) ≠ ⊤` using `ne_top_of_le_ne_top (Set.finite_range r).encard_lt_top.ne (M.eRk_le_encard _)`. Take `⟨n, hn⟩` from `ENat.ne_top_iff_exists.mp hfin`.
+
+Establish `hineq : (D + 1) * N ≤ n + ((D + 1) * (N - 1) + 1)`. Use `h5.trans (h1.trans (h2.trans (add_le_add le_rfl h3)))` as an intermediate fact. Rewrite `this` using `[← hn, ← Nat.cast_add, Nat.cast_le]`. Conclude with `this`. Establish `hN : (D + 1) * N = (D + 1) * (N - 1) + (D + 1)`.
+
+Take `⟨N', rfl⟩ : ∃ N', N = N' + 1` from `⟨N - 1, by have := a.2; omega⟩`. Simplify using `only [Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree. Establish `hDn : D ≤ n`. Rewrite `hineq` using `[hN]`.
+
+Generalize the expression as in `(D + 1) * (N - 1) = X at hineq`. Use linear arithmetic over natural numbers and integers. Take `⟨B, hB⟩` from `M.exists_isBasis (Set.range r) (Set.subset_univ _)`. Establish `hDB : ((D : ℕ) : ℕ∞) ≤ B.encard`. Rewrite using `[hB.encard_eq_eRk, ← hn]`.
+
+Conclude with `hDn` after adjusting the coercions. Take `⟨B', hB'sub, hB'card⟩` from `Set.exists_subset_encard_eq hDB`. Establish `hB'fin : B'.Finite` using `Set.finite_of_encard_eq_coe hB'card`. Use `⟨hB'fin.toFinset, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `Set.encard_coe_eq_coe_finsetCard hB'fin.toFinset` as an intermediate fact.
+
+Rewrite `this` using `[Set.Finite.coe_toFinset, hB'card]`. Conclude with `this.symm` after adjusting the coercions. Rewrite using `[Set.Finite.coe_toFinset]`. Conclude with `hB'sub.trans hB.subset`. Rewrite using `[Set.Finite.coe_toFinset]`.
+
+Conclude with `AlgebraicIndependent.matroid_indep_iff.mp (hB.indep.subset hB'sub)`.
+-/
 theorem exists_indep_ratios {K κ : Type*} [Field K] [Field κ] [Algebra K κ] {N D : ℕ} (x : Fin N → κ) (a : Fin N)
     (hxa : x a ≠ 0) (t : Fin (D + 1) × Fin N → κ) (ht : AlgebraicIndependent K t)
     (hlin : ∀ i : Fin D, ∑ k, t (i.succ, k) * x k = 0) (hlin0 : ∑ k, t (0, k) * x k = 1) :
@@ -115,6 +158,49 @@ theorem exists_indep_ratios {K κ : Type*} [Field K] [Field κ] [Algebra K κ] {
   · rw [Set.Finite.coe_toFinset]
     exact AlgebraicIndependent.matroid_indep_iff.mp (hB.indep.subset hB'sub)
 
+/- English proof (translation)
+Introduce `hxP`. Use `set ρ : Fin N → Ω := fun i => v i / v a with hρ`. Use `set σ : Fin N → κ := fun i => x i / x a with hσ`. Establish `hα0 : aeval ρ P ≠ 0`. Rewrite using `[hρ, aeval_div_homog v (v a) hP]`.
+
+Conclude with `mul_ne_zero (pow_ne_zero _ (inv_ne_zero hva)) hPv`. Establish `hσP : aeval σ P = 0`. Rewrite using `[hσ, aeval_div_homog x (x a) hP, hxP, mul_zero]`. Take `⟨s, hscard, hsub, hind⟩` from `exists_indep_ratios (K := K) x a hxa t ht hlin hlin0`. Establish `hf : ∀ e : s, ∃ i, σ i = (e : κ)` using `fun e => hsub e.2`.
+
+Use `choose f hfe using hf`. Establish `hy : AlgebraicIndependent K (fun e : s => (e : κ))` using `hind`. Establish `h3 : (σ ∘ f) = fun e : s => (e : κ)` using `funext hfe`. Establish `huind : AlgebraicIndependent K (ρ ∘ f)`. Rewrite using `[algebraicIndependent_iff]`.
+
+Introduce `Q hQ`. Establish `h1 : aeval ρ (rename f Q) = 0` using `by rw [aeval_rename]; exact hQ`. Establish `h2` using `htrans (rename f Q) h1`. Rewrite `h2` using `[aeval_rename, h3]`. Conclude with `(algebraicIndependent_iff.mp hy) Q h2`.
+
+Establish `hρA : ∀ i, ρ i ∈ IntermediateField.adjoin K (Set.range ρ)` using `fun i => IntermediateField.subset_adjoin K _ ⟨i, rfl⟩`. Set `ρA : Fin N → IntermediateField.adjoin K (Set.range ρ)` to `fun i => ⟨ρ i, hρA i⟩`. Establish `hvalρ : ∀ Q : MvPolynomial (Fin N) K, IntermediateField.val _ (aeval ρA Q) = aeval ρ Q`. Introduce `Q`. Proceed by induction on `Q using MvPolynomial.induction_on`.
+
+Use `next c =>`. Simplify using `only [MvPolynomial.aeval_C, AlgHom.commutes]`. Use `next p q hp hq =>`. Rewrite using `[map_add, map_add, map_add, hp, hq]`. Use `next p i hp =>`.
+
+Rewrite using `[map_mul, map_mul, map_mul, hp, MvPolynomial.aeval_X, MvPolynomial.aeval_X]`. Both sides reduce to the same expression. Establish `hnot : ¬ AlgebraicIndependent K (fun o : Option s => o.elim (aeval ρ P) (ρ ∘ f))`. Introduce `hI`. Set `w : Option s → IntermediateField.adjoin K (Set.range ρ)` to `fun o => o.elim (aeval ρA P) (fun e => ρA (f e))`.
+
+Establish `hcomp : (IntermediateField.val _) ∘ w = fun o : Option s => o.elim (aeval ρ P) (ρ ∘ f)`. Use function extensionality and compare the values at `o`. Consider the cases of `o with`. Consider the case `none => exact hvalρ P`. Consider the case `some e => rfl`.
+
+Establish `hw : AlgebraicIndependent K w`. Apply `AlgebraicIndependent.of_comp (IntermediateField.val _)` to reduce the goal to its premises. Rewrite using `[hcomp]`. Conclude with `hI`. Establish `hcard` using `hw.lift_cardinalMk_le_trdeg.trans (Cardinal.lift_le.mpr htr)`.
+
+Simplify using `[Cardinal.mk_fintype, Fintype.card_option, hscard] at hcard`. Establish `halg : IsAlgebraic (Algebra.adjoin K (Set.range (ρ ∘ f))) (aeval ρ P)`. Assume the negation of the conclusion as `hna`. Conclude with `hnot ((huind.option_iff_transcendental _).mpr hna)`. Use `set α := aeval ρ P with hαdef`.
+
+Establish `hex : ∃ n, ∃ p : Polynomial (Algebra.adjoin K (Set.range (ρ ∘ f))), p ≠ 0 ∧ Polynomial.aeval α p = 0 ∧ p.natDegree = n`. Take `⟨p, hp0, hp⟩` from `halg`. Conclude with `⟨_, p, hp0, hp, rfl⟩`. Take `⟨p, hp0, hpα, hpn⟩` from `Nat.find_spec hex`. Establish `hc0 : p.coeff 0 ≠ 0`.
+
+Introduce `hc`. Establish `hdec : Polynomial.X * p.divX = p`. Establish `h0` using `Polynomial.X_mul_divX_add p`. Rewrite `h0` using `[hc, map_zero, add_zero]`. Conclude with `h0`.
+
+Establish `hd0 : p.divX ≠ 0`. Introduce `h`. Rewrite `hdec` using `[h, mul_zero]`. Conclude with `hp0 hdec.symm`. Establish `hdα : Polynomial.aeval α p.divX = 0`.
+
+Establish `h1 : Polynomial.aeval α p = α * Polynomial.aeval α p.divX` using `by conv_lhs => rw [← hdec]`. Rewrite using `[map_mul, Polynomial.aeval_X]`. Rewrite `h1` using `[hpα]`. Conclude with `(mul_eq_zero.mp h1.symm).resolve_left hα0`. Establish `hdeg : p.divX.natDegree < p.natDegree`.
+
+Rewrite using `[Polynomial.natDegree_divX_eq_natDegree_tsub_one]`. Establish `hn0 : p.natDegree ≠ 0`. Introduce `h0`. Rewrite `hp0` using `[Polynomial.eq_C_of_natDegree_eq_zero h0, hc, map_zero]`. Conclude with `hp0 rfl`.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `Nat.find_min hex (hpn ▸ hdeg) ⟨p.divX, hd0, hdα, rfl⟩`. Establish `hQ : ∀ c : Algebra.adjoin K (Set.range (ρ ∘ f)), ∃ Q : MvPolynomial s K, aeval (ρ ∘ f) Q = (c : Ω)`. Introduce `c`. Establish `hc : (c : Ω) ∈ (MvPolynomial.aeval (R` using `K) (ρ ∘ f)).range := by`.
+
+Rewrite using `[← Algebra.adjoin_range_eq_range_aeval]`. Conclude with `c.2`. Take `⟨Q, hQ⟩` from `hc`. Conclude with `⟨Q, hQ⟩`. Use `choose Qc hQc using hQ`.
+
+Establish `hT : aeval ρ (∑ j ∈ Finset.range (p.natDegree + 1), rename f (Qc (p.coeff j)) * P ^ j) = 0`. Rewrite using `[map_sum]`. Simplify using `only [map_mul, map_pow, aeval_rename, hQc]`. Rewrite using `[← hpα, Polynomial.aeval_eq_sum_range]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression. Establish `hT2` using `htrans _ hT`. Rewrite `hT2` using `[map_sum, Finset.sum_range_succ']`. Simplify using `only [map_mul, map_pow, aeval_rename, hσP, ne_eq, Nat.add_eq_zero, one_ne_zero, and_false, not_false_eq_true, zero_pow, mul_zero, Finset.sum_const_zero, zero_add, pow_zero, mul_one] at hT2`.
+
+Rewrite `hT2` using `[h3]`. Establish `h4` using `(algebraicIndependent_iff.mp hy) _ hT2`. Establish `h5` using `hQc (p.coeff 0)`. Rewrite `h5` using `[h4, map_zero]`. Apply `hc0` to reduce the goal to its premises.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using h5.symm`.
+-/
 theorem countCore {K κ Ω : Type*} [Field K] [Field κ] [Field Ω] [Algebra K κ] [Algebra K Ω] {N D : ℕ}
     (v : Fin N → Ω) (x : Fin N → κ) (a : Fin N) (hva : v a ≠ 0) (hxa : x a ≠ 0)
     (htr : Algebra.trdeg K (IntermediateField.adjoin K (Set.range fun i => v i / v a)) ≤ D)

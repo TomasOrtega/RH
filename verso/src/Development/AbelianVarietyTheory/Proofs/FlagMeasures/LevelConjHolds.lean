@@ -13,6 +13,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.St.G
 
+/- English proof (translation)
+Introduce `D F X hK u wt ιA h0 hW hI hL`. Take `⟨Fr, hFr⟩` from `GlobalTheory.T.exists_frame_adelicColumnLattice_linked_reference D X u wt ιA hW hI`. Take `⟨hMq, -, -, -, -, -⟩` from `GlobalTheory.T.adelicColumnLattice_eq_spanPart_transportedFrame D X u wt ιA hW hI`. Take `⟨hT, hg, hTg, hf, hNk, hH, hdet⟩` from `record_facts D u`. Establish `hΛ : ∀ x, (h0⁻¹).1.1 *ᵥ x ∈ hat D.host.F (F u).cls0.lev.Lb ↔ x ∈ hat D.host.F (Mq wt)`.
+
+Introduce `x`. Rewrite using `[hMq x]`. Conclude with `hL x`. Take `⟨h1, hL1, hK1⟩` from `GlobalTheory.T.exists_adelic_correction_level_character D.host.F D.host.E D.sp.cm (D.R.N 0) (Formalism.L2.Forms.gramN D 0 (Nat.zero_le _)) hH hdet (D.mem u).A.T D.R.f D.R.t D.R.k D.R.k D.R.k (D.R.N 0) D.host.g (F u).cls0.lev (F u).gl (F u).glev0 hNk.symm hNk.symm hNk.symm rfl (D. …`. Use `⟨h1, fun x => ?_, fun h y hy => ?_⟩` and prove the remaining obligations.
+
+Conclude with `(hL1 x).trans (hMq x)`. Establish `hin` using `GlobalTheory.T.mem_columnLevel_iff_mem_linkedFrameLevel D X u wt ιA hW hI hK Fr hFr h y hy`. Establish `hch` using `GlobalTheory.T.columns_character_eq_linked_frame_character D X u wt ιA hW hI hK Fr hFr h y hy`. Use `⟨hin.trans (hK1 y).1, fun hk hy' => ?_⟩` and prove the remaining obligations. Rewrite using `[hch hk]`.
+
+Conclude with `(hK1 y).2 hy'`.
+-/
 theorem levelConj_holds : ∀ (D : D7) (F : ∀ u, Formalism.L2.Forms.Forms0 D u), LevelConj D F := by
   intro D F X hK u wt ιA h0 hW hI hL
   obtain ⟨Fr, hFr⟩ := GlobalTheory.T.exists_frame_adelicColumnLattice_linked_reference D X u wt ιA hW hI

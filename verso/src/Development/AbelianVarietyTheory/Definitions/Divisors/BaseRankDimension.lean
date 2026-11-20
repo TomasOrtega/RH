@@ -90,15 +90,24 @@ def EvW (q : BdP Bd) (𝒜 : FamClass) (σ : RawSel Bd 𝒜) : Prop :=
 def EvWC (prem : ∀ {eps : ℝ}, FamP eps → Prop) (q : ℝ → ℝ → BdP Bd) (𝒜 : FamClass) (σ : RawSel Bd 𝒜) : Prop :=
   Closed (W3 𝒜) fun Fm CH => ∀ hc : W3 𝒜 Fm, prem Fm → ∃ C0 : ℝ, 0 ≤ C0 ∧ ∀ C, C0 ≤ C → Ev σ Fm (w3_a hc) (q C CH)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, fun x hx _ i => h Fm hc x hx i⟩`.
+-/
 theorem ev_of_atAll {𝒜 : FamClass} {σ : RawSel Bd 𝒜} {q : BdP Bd} (h : AtAll q 𝒜 σ) {eps : ℝ} (Fm : FamP eps) (hc : 𝒜 Fm) :
     Ev σ Fm hc q := ⟨0, fun x hx _ i => h Fm hc x hx i⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨b.R, b.S, b.P, b.pin, b.DH, b.C.c.face, b.C.Sp, b.C.ok1, b.B, Rr, psi, pins, muDef, recPins⟩, HEq.rfl, Iff.rfl⟩`.
+-/
 example {D : D7} {O : Obj D} {c : ℝ} (b : Bundle D O c) (Rr : RealRec b.B.Q)
     (psi : PsiPPTie D b.P.P0 b.P.ψ0 b.P.Ps b.P.ψs b.P.I.eG) (pins : RealPins b.B.Q)
     (muDef : ∀ C CH : ℝ, (b.B.Q.Rl.toCx3 b.B.Q.F).MuDef b.B.Q.F.cr (b.B.Q.Rl.num b.B.Q.F C CH) b.B.Q.Rl.mu)
     (recPins : RealRecPins pins Rr) : ∃ p : Part D O c, HEq p.B b.B ∧ (PRB D O c p ↔ RowsB b.B) :=
   ⟨⟨b.R, b.S, b.P, b.pin, b.DH, b.C.c.face, b.C.Sp, b.C.ok1, b.B, Rr, psi, pins, muDef, recPins⟩, HEq.rfl, Iff.rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, rfl⟩`.
+-/
 example {D : D7} {O : Obj D} (P : RowSideFamily O.ex) (Del h0 : ℕ) (c c' : ℝ) (Zs : DefSub P.A3.fam3.amb3) :
     (zsc P Del h0 c Zs).F0 = (zsc P Del h0 c' Zs).F0 ∧ (zsc P Del h0 c Zs).l6u = 0 := ⟨rfl, rfl⟩
 
@@ -106,6 +115,9 @@ end GlobalTheory.Fc.Ind
 
 open GlobalTheory.Fc GlobalTheory.Fc.Ind in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example {D : D7} {O : Obj D} (P : RowSideFamily O.ex) (Del h0 : ℕ) (c : ℝ) : zsc P Del h0 c = Ind.zsc P Del h0 c := rfl
 
 end

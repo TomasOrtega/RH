@@ -10,6 +10,9 @@ open PositivityTheory.Rg.Sw PositivityTheory.Rg.Sw.Glob PositivityTheory.Rg.Sw.G
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `h1 : uᴴ⁻¹ = u` using `Matrix.inv_eq_right_inv hu`. Establish `h2 : u'ᴴ⁻¹ = u'` using `Matrix.inv_eq_right_inv hu'`. Simplify using `only [mM, kth, dR, h1, h2, fromBlocks_multiply, Matrix.mul_zero, Matrix.zero_mul, neg_zero, add_zero, zero_add, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc]`.
+-/
 theorem blocks_kak (u u' : Matrix (Fin n) (Fin n) ℂ) (hu : uᴴ * u = 1) (hu' : u'ᴴ * u' = 1) (θ : Fin n → ℝ) :
     mM u * kth θ * mM u' = fromBlocks (u * (dR fun j => Real.cos (θ j)) * u') (u * (dR fun j => Real.sin (θ j)) * u')
       (-(u * (dR fun j => Real.sin (θ j)) * u')) (u * (dR fun j => Real.cos (θ j)) * u') := by
@@ -18,9 +21,23 @@ theorem blocks_kak (u u' : Matrix (Fin n) (Fin n) ℂ) (hu : uᴴ * u = 1) (hu' 
   simp only [mM, kth, dR, h1, h2, fromBlocks_multiply, Matrix.mul_zero, Matrix.zero_mul, neg_zero, add_zero,
     zero_add, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[mM_unitary u hu, det_fromBlocks_zero₂₁]`.
+-/
 theorem det_mM_unitary (u : Matrix (Fin n) (Fin n) ℂ) (hu : uᴴ * u = 1) : (mM u).det = u.det * u.det := by
   rw [mM_unitary u hu, det_fromBlocks_zero₂₁]
 
+/- English proof (translation)
+Establish `hL : (fromBlocks (1 : Matrix (Fin n) (Fin n) ℂ) (I • (1 : Matrix (Fin n) (Fin n) ℂ)) (0 : Matrix (Fin n) (Fin n) ℂ) (1 : Matrix (Fin n) (Fin n) ℂ)).det = 1`. Rewrite using `[det_fromBlocks_zero₂₁]`. Simplify using the standard rewrite rules. Establish `hR : (fromBlocks (1 : Matrix (Fin n) (Fin n) ℂ) (-(I • (1 : Matrix (Fin n) (Fin n) ℂ))) (0 : Matrix (Fin n) (Fin n) ℂ) (1 : Matrix (Fin n) (Fin n) ℂ)).det = 1`. Rewrite using `[det_fromBlocks_zero₂₁]`.
+
+Simplify using the standard rewrite rules. Establish `key : fromBlocks (1 : Matrix (Fin n) (Fin n) ℂ) (I • (1 : Matrix (Fin n) (Fin n) ℂ)) (0 : Matrix (Fin n) (Fin n) ℂ) (1 : Matrix (Fin n) (Fin n) ℂ) * kth θ * fromBlocks (1 : Matrix (Fin n) (Fin n) ℂ) (-(I • (1 : Matrix (Fin n) (Fin n) ℂ))) (0 : Matrix (Fin n) (Fin n) ℂ) (1 : Matri …`. Simplify using `only [kth, fromBlocks_multiply, Matrix.one_mul, Matrix.mul_one, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_neg, Matrix.neg_mul]`. Apply the tactic sequence `congr 1 <;> ext i j <;> by_cases h : i = j <;> simp [h, diagonal_apply] <;> first`. Consider the case `ring1`.
+
+Consider the case `linear_combination Complex.sin ((θ j : ℝ) : ℂ) * I_sq`. Establish `hprod : ∏ j, (((Real.cos (θ j) : ℂ) - I * Real.sin (θ j)) * ((Real.cos (θ j) : ℂ) + I * Real.sin (θ j))) = 1`. Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `j _`. Establish `hp` using `Real.sin_sq_add_cos_sq (θ j)`.
+
+Generalize the expression as in `Real.cos (θ j) = c at *`. Generalize the expression as in `Real.sin (θ j) = s at *`. Establish `hp' : (s : ℂ) ^ 2 + (c : ℂ) ^ 2 = 1` using `by exact_mod_cast hp`. Take the linear combination `hp' - (s : ℂ) ^ 2 * I_sq`. Establish `h` using `congrArg Matrix.det key`.
+
+Rewrite `h` using `[det_mul, det_mul, hL, hR, det_fromBlocks_zero₁₂, det_diagonal, det_diagonal, ← Finset.prod_mul_distrib, hprod, one_mul, mul_one]`. Conclude with `h`.
+-/
 private theorem det_kth_eq_one (θ : Fin n → ℝ) : (kth θ).det = 1 := by
   have hL : (fromBlocks (1 : Matrix (Fin n) (Fin n) ℂ) (I • (1 : Matrix (Fin n) (Fin n) ℂ))
       (0 : Matrix (Fin n) (Fin n) ℂ) (1 : Matrix (Fin n) (Fin n) ℂ)).det = 1 := by
@@ -56,9 +73,25 @@ private theorem det_kth_eq_one (θ : Fin n → ℝ) : (kth θ).det = 1 := by
     hprod, one_mul, mul_one] at h
   exact h
 
+/- English proof (translation)
+Conclude with `det_kth_eq_one θ`.
+-/
 theorem det_kth (θ : Fin n → ℝ) (hθ : ∀ j, -(Real.pi / 2) < θ j ∧ θ j ≤ Real.pi / 2) : (kth θ).det = 1 := by
   exact det_kth_eq_one θ
 
+/- English proof (translation)
+Establish `hdet : (mR k).det = u.det * u.det * (u'.det * u'.det)`. Rewrite using `[hkm, det_mul, det_mul, det_mM_unitary u hu, det_mM_unitary u' hu', det_kth θ hθ, mul_one]`. Establish `hk2` using `hkm.trans (blocks_kak u u' hu hu' θ)`. Establish `hdm : diagonal (fun j => cexp (-(I * (θ j : ℂ)))) = (dR fun j => Real.cos (θ j)) - I • (dR fun j => Real.sin (θ j))`. Use extensionality with `a b`.
+
+Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using `only [dR, diagonal_apply_eq, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[show -(I * (θ a : ℂ)) = (-(θ a : ℂ)) * I by ring, Complex.exp_mul_I, Complex.cos_neg, Complex.sin_neg, ← Complex.ofReal_cos, ← Complex.ofReal_sin]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `[dR, diagonal_apply, h]`. Establish `hdp : diagonal (fun j => cexp (I * (θ j : ℂ))) = (dR fun j => Real.cos (θ j)) + I • (dR fun j => Real.sin (θ j))`. Use extensionality with `a b`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality.
+
+Simplify using `only [dR, diagonal_apply_eq, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[show I * (θ a : ℂ) = (θ a : ℂ) * I by ring, Complex.exp_mul_I, ← Complex.ofReal_cos, ← Complex.ofReal_sin]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[dR, diagonal_apply, h]`. Establish `hA : toBlocks₂₁ (mR k) * (I • (1 : Matrix (Fin n) (Fin n) ℂ)) + toBlocks₂₂ (mR k) = u * diagonal (fun j => cexp (-(I * (θ j : ℂ)))) * u'`.
+
+Rewrite using `[hk2, toBlocks_fromBlocks₂₁, toBlocks_fromBlocks₂₂, hdm]`. Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, smul_neg]`. Normalize the expressions using the abelian group laws. Establish `hZ : (I • (1 : Matrix (Fin n) (Fin n) ℂ))ᴴ = -(I • (1 : Matrix (Fin n) (Fin n) ℂ))`. Rewrite using `[conjTranspose_smul, conjTranspose_one, Complex.star_def, conj_I, neg_smul]`.
+
+Establish `hB : toBlocks₂₁ (mR k) * (I • (1 : Matrix (Fin n) (Fin n) ℂ))ᴴ + toBlocks₂₂ (mR k) = u * diagonal (fun j => cexp (I * (θ j : ℂ))) * u'`. Rewrite using `[hZ, hk2, toBlocks_fromBlocks₂₁, toBlocks_fromBlocks₂₂, hdp, Matrix.mul_neg, Matrix.mul_smul, Matrix.mul_one]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, smul_neg, neg_neg]`. Normalize the expressions using the abelian group laws. Simplify using `only [jF, hdet, hA, hB, det_mul, det_diagonal]`.
+-/
 theorem jF_kak (e : ℤ) (p q : ℕ) (k : GR n) (u u' : Matrix (Fin n) (Fin n) ℂ) (θ : Fin n → ℝ) (hu : uᴴ * u = 1)
     (hu' : u'ᴴ * u' = 1) (hθ : ∀ j, -(Real.pi / 2) < θ j ∧ θ j ≤ Real.pi / 2) (hkm : mR k = mM u * kth θ * mM u') :
     jF e p q k (I • (1 : Matrix (Fin n) (Fin n) ℂ)) =

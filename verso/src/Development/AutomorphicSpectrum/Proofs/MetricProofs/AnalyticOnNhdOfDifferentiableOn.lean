@@ -29,10 +29,16 @@ def sheetNorm (Ψ : (((k : K) → J k) → ℂ) →ₗ[ℂ] (Fin (n + 1) → ℂ
     ((k : K) → J k) → ℂ :=
   (Ψ (segre z) 0)⁻¹ • segre z
 
+/- English proof (translation)
+Introduce `t ht` and use `analyticAt_pi_iff.mpr fun p => osgood n _ _ hV (differentiableOn_pi.mp hγ p) t ht`.
+-/
 theorem analyticOnNhd_of_differentiableOn {V : Set (Fin n → ℂ)} (hV : IsOpen V)
     {γ : (Fin n → ℂ) → (Σ k, J k) → ℂ} (hγ : DifferentiableOn ℂ γ V) : AnalyticOnNhd ℂ γ V :=
   fun t ht => analyticAt_pi_iff.mpr fun p => osgood n _ _ hV (differentiableOn_pi.mp hγ p) t ht
 
+/- English proof (translation)
+Establish `h1 : AnalyticAt ℂ (fun t' => segre (γ t')) t` using `analyticAt_pi_iff.mpr fun (i : (k : K) → J k) => Finset.analyticAt_fun_prod _ fun k _ => analyticAt_coord h ⟨k, i k⟩`. Conclude with `((LinearMap.toContinuousLinearMap Ψ).analyticAt _).comp h1`.
+-/
 theorem analyticAt_psi_segre (Ψ : (((k : K) → J k) → ℂ) →ₗ[ℂ] (Fin (n + 1) → ℂ))
     {γ : (Fin n → ℂ) → (Σ k, J k) → ℂ} {t : Fin n → ℂ} (h : AnalyticAt ℂ γ t) :
     AnalyticAt ℂ (fun t' => Ψ (segre (γ t'))) t := by
@@ -42,12 +48,20 @@ theorem analyticAt_psi_segre (Ψ : (((k : K) → J k) → ℂ) →ₗ[ℂ] (Fin 
       Finset.analyticAt_fun_prod _ fun k _ => analyticAt_coord h ⟨k, i k⟩
   exact ((LinearMap.toContinuousLinearMap Ψ).analyticAt _).comp h1
 
+/- English proof (translation)
+Establish `hc` using `fun j => analyticAt_pi_iff.mp (analyticAt_psi_segre Ψ h) j`. Conclude with `analyticAt_pi_iff.mpr fun i => (hc i.succ).div (hc 0) h0`.
+-/
 theorem analyticAt_sheetProj (Ψ : (((k : K) → J k) → ℂ) →ₗ[ℂ] (Fin (n + 1) → ℂ))
     {γ : (Fin n → ℂ) → (Σ k, J k) → ℂ} {t : Fin n → ℂ} (h : AnalyticAt ℂ γ t)
     (h0 : Ψ (segre (γ t)) 0 ≠ 0) : AnalyticAt ℂ (sheetProj Ψ γ) t := by
   have hc := fun j => analyticAt_pi_iff.mp (analyticAt_psi_segre Ψ h) j
   exact analyticAt_pi_iff.mpr fun i => (hc i.succ).div (hc 0) h0
 
+/- English proof (translation)
+Rewrite using `[isOpen_iff_mem_nhds]`. Introduce and unpack `t ⟨htV, h0, hd⟩`. Establish `hc0` using `(analyticAt_pi_iff.mp (analyticAt_psi_segre Ψ (hγ t htV)) 0).continuousAt`. Establish `hcd` using `(analyticAt_det_fderiv (analyticAt_sheetProj Ψ (hγ t htV) h0)).continuousAt`. Use `filter_upwards [hV.mem_nhds htV, hc0.eventually_ne h0, hcd.eventually_ne hd] with u h1 h2 h3`.
+
+Conclude with `⟨h1, h2, h3⟩`.
+-/
 theorem isOpen_sheetReg (Ψ : (((k : K) → J k) → ℂ) →ₗ[ℂ] (Fin (n + 1) → ℂ))
     {γ : (Fin n → ℂ) → (Σ k, J k) → ℂ} {V : Set (Fin n → ℂ)} (hV : IsOpen V)
     (hγ : AnalyticOnNhd ℂ γ V) : IsOpen (sheetReg Ψ γ V) := by
@@ -58,6 +72,15 @@ theorem isOpen_sheetReg (Ψ : (((k : K) → J k) → ℂ) →ₗ[ℂ] (Fin (n + 
   filter_upwards [hV.mem_nhds htV, hc0.eventually_ne h0, hcd.eventually_ne hd] with u h1 h2 h3
   exact ⟨h1, h2, h3⟩
 
+/- English proof (translation)
+Take `⟨k0⟩` from `hK`. Use `set c : K → ℂ := Function.update (fun _ => 1) k0 (Ψ (segre (γ t)) 0)⁻¹ with hc`. Establish `hc0 : ∀ k, c k ≠ 0`. Introduce `k`. Distinguish the cases in `hk : k = k0`.
+
+Substitute `hk` using the available equality. Simplify using `[hc, h0]`. Simplify using `[hc, hk]`. Establish `hprod : ∏ k, c k = (Ψ (segre (γ t)) 0)⁻¹`. Rewrite using `[hc, Finset.prod_update_of_mem (Finset.mem_univ k0)]`.
+
+Simplify using the standard rewrite rules. Use `⟨fun p => c p.1 * γ t p, mcPts_smul hP c hc0 hz, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[segre_smul, hprod]`. Both sides reduce to the same expression. Use function extensionality and compare the values at `i`.
+
+Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `[sheetNorm, h0]`. Simplify using `[sheetNorm, sheetProj, div_eq_inv_mul]`.
+-/
 theorem sheetNorm_mem_fibre {P : Ideal (MRing J)} (hK : Nonempty K) (hP : IsMultiHomogIdeal P)
     (Ψ : (((k : K) → J k) → ℂ) →ₗ[ℂ] (Fin (n + 1) → ℂ)) (γ : (Fin n → ℂ) → (Σ k, J k) → ℂ)
     {t : Fin n → ℂ} (hz : γ t ∈ mcPts P) (h0 : Ψ (segre (γ t)) 0 ≠ 0) :
@@ -80,6 +103,9 @@ theorem sheetNorm_mem_fibre {P : Ideal (MRing J)} (hK : Nonempty K) (hP : IsMult
     · simp [sheetNorm, h0]
     · simp [sheetNorm, sheetProj, div_eq_inv_mul]
 
+/- English proof (translation)
+Establish `hs : segre z = (Ψ (segre z) 0 * (Ψ (segre z') 0)⁻¹) • segre z'`. Use `congrArg (fun v => Ψ (segre z) 0 • v) h` as an intermediate fact. Simplify `this` using `[sheetNorm, smul_smul, h0]`. Take `⟨c, hc, hcz⟩` from `sameOrbit_of_segre hz' _ (mul_ne_zero h0 (inv_ne_zero h0')) hs`. Conclude with `⟨z', rfl, c, hc, hcz⟩`.
+-/
 theorem sheetNorm_eq_torusSat (Ψ : (((k : K) → J k) → ℂ) →ₗ[ℂ] (Fin (n + 1) → ℂ))
     {z z' : (Σ k, J k) → ℂ} (hz' : ∀ k, ∃ i, z' ⟨k, i⟩ ≠ 0) (h0 : Ψ (segre z) 0 ≠ 0)
     (h0' : Ψ (segre z') 0 ≠ 0) (h : sheetNorm Ψ z = sheetNorm Ψ z') : z ∈ torusSat {z'} := by
@@ -89,6 +115,11 @@ theorem sheetNorm_eq_torusSat (Ψ : (((k : K) → J k) → ℂ) →ₗ[ℂ] (Fin
   obtain ⟨c, hc, hcz⟩ := sameOrbit_of_segre hz' _ (mul_ne_zero h0 (inv_ne_zero h0')) hs
   exact ⟨z', rfl, c, hc, hcz⟩
 
+/- English proof (translation)
+Use `Set.Finite.of_finite_image (f := fun t => sheetNorm Ψ (γ t)) ((fibreFinite K J P n Ψ hP hΨ y).subset ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨t, ⟨⟨htV, h0⟩, hy⟩, rfl⟩`. Use `sheetNorm_mem_fibre hP.1 hP.2.1.2.1 Ψ γ (hmem t htV) h0` as an intermediate fact. Rewrite `this` using `[show sheetProj Ψ γ t = y from hy]`. Then use the resulting hypothesis. Introduce and unpack `t ⟨⟨ht, h0⟩, -⟩ t' ⟨⟨ht', h0'⟩, -⟩ h`.
+
+Conclude with `hinj t ht t' ht' (sheetNorm_eq_torusSat Ψ (hmem t' ht').1 h0 h0' h)`.
+-/
 theorem sheetProj_fibre_finite {P : Ideal (MRing J)} (hP : IsArithVar P (n + 1))
     {Ψ : (((k : K) → J k) → ℂ) →ₗ[ℂ] (Fin (n + 1) → ℂ)} (hΨ : IsGoodProj P Ψ)
     {V : Set (Fin n → ℂ)} {γ : (Fin n → ℂ) → (Σ k, J k) → ℂ} (hmem : ∀ t ∈ V, γ t ∈ mcPts P)
@@ -102,6 +133,9 @@ theorem sheetProj_fibre_finite {P : Ideal (MRing J)} (hP : IsArithVar P (n + 1))
   · rintro t ⟨⟨ht, h0⟩, -⟩ t' ⟨⟨ht', h0'⟩, -⟩ h
     exact hinj t ht t' ht' (sheetNorm_eq_torusSat Ψ (hmem t' ht').1 h0 h0' h)
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `exists_infinite_fibre hO hne (fun t ht => analyticAt_sheetProj Ψ (hγ t (hOV ht)) (h0 t ht)) hdet`. Conclude with `hy ((sheetProj_fibre_finite hP hΨ hmem hinj y).subset fun t ht => ⟨⟨hOV ht.1, h0 t ht.1⟩, ht.2⟩)`.
+-/
 theorem sheet_not_flat {P : Ideal (MRing J)} (hP : IsArithVar P (n + 1))
     {Ψ : (((k : K) → J k) → ℂ) →ₗ[ℂ] (Fin (n + 1) → ℂ)} (hΨ : IsGoodProj P Ψ)
     {V : Set (Fin n → ℂ)} {γ : (Fin n → ℂ) → (Σ k, J k) → ℂ} (hV : IsOpen V)

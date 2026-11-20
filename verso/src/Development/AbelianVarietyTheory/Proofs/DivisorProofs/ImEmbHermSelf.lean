@@ -14,22 +14,39 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 def frm {r : ℕ} (Ψ : Finset (E →+* ℂ)) (u : Fin r → Fin r → E) : Frame Ψ r :=
   fun τ k a => τ.1 (u a k)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem col_frm {r : ℕ} (Ψ : Finset (E →+* ℂ)) (u : Fin r → Fin r → E) (τ : Ψ) (a : Fin r) :
     col (mat (frm Ψ u) τ) a = Data.emb τ.1 (u a) := rfl
 
+/- English proof (translation)
+The claim follows from `IsCMField.complexEmbedding_complexConj E τ x`.
+-/
 theorem emb_cc (τ : E →+* ℂ) (x : E) : τ (cc x) = conj (τ x) :=
   IsCMField.complexEmbedding_complexConj E τ x
 
+/- English proof (translation)
+Simplify using `only [hermC, herm, Data.emb, map_sum, map_mul, emb_cc]`.
+-/
 theorem hermC_emb {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (x y : Fin r → E) :
     hermC τ G (Data.emb τ x) (Data.emb τ y) = τ (herm G x y) := by
   simp only [hermC, herm, Data.emb, map_sum, map_mul, emb_cc]
 
+/- English proof (translation)
+Establish `h2 : conj (τ (herm G x x)) = τ (herm G x x)`. Rewrite using `[← emb_cc, HermitianTraceFormVanishing.herm_conj G hG x x]`. Conclude with `Complex.conj_eq_iff_im.1 h2`.
+-/
 theorem im_emb_herm_self {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
     (hG : ∀ a b, cc (G a b) = G b a) (x : Fin r → E) : (τ (herm G x x)).im = 0 := by
   have h2 : conj (τ (herm G x x)) = τ (herm G x x) := by
     rw [← emb_cc, HermitianTraceFormVanishing.herm_conj G hG x x]
   exact Complex.conj_eq_iff_im.1 h2
 
+/- English proof (translation)
+Unfold `dmin lminor`. Establish `: (gram τ.1 G (mat (frm Ψ u) τ)).submatrix (Fin.castLE (Nat.le_of_lt_succ i.isLt)) (Fin.castLE (Nat.le_of_lt_succ i.isLt)) = Matrix.diagonal (fun k => τ.1 (herm G (u (Fin.castLE (Nat.le_of_lt_succ i.isLt) k)) (u (Fin.castLE (Nat.le_of_lt_succ i.isLt) k))))`. Use extensionality with `a b`. Simplify using `only [Matrix.submatrix_apply, gram, Matrix.of_apply, col_frm, hermC_emb, Matrix.diagonal_apply]`. Use `split_ifs with h`.
+
+Substitute `h` using the available equality. Both sides reduce to the same expression. Rewrite using `[ho _ _ (fun e => h (Fin.castLE_injective _ e)), map_zero]`. Rewrite using `[this, Matrix.det_diagonal]`.
+-/
 theorem dmin_frm {r : ℕ} (Ψ : Finset (E →+* ℂ)) (G : Matrix (Fin r) (Fin r) E)
     (u : Fin r → Fin r → E) (ho : ∀ j k, j ≠ k → herm G (u j) (u k) = 0) (τ : Ψ) (i : Fin (r + 1)) :
     dmin G (frm Ψ u) τ i = ∏ k : Fin i, τ.1 (herm G (u (Fin.castLE (Nat.le_of_lt_succ i.isLt) k))
@@ -45,6 +62,9 @@ theorem dmin_frm {r : ℕ} (Ψ : Finset (E →+* ℂ)) (G : Matrix (Fin r) (Fin 
     · rw [ho _ _ (fun e => h (Fin.castLE_injective _ e)), map_zero]
   rw [this, Matrix.det_diagonal]
 
+/- English proof (translation)
+Establish `hr : ∀ w : Fin r → E, τ.1 (herm G w w) = ((τ.1 (herm G w w)).re : ℂ)` using `fun w => Complex.ext (by simp) (by simp [im_emb_herm_self τ.1 G hG w])`. Rewrite using `[dmin_frm Ψ G u ho τ i, Finset.prod_mul_distrib, psgn, ← Fin.prod_univ_eq_prod_range]`. Use `congr 1`. Rewrite using `[Finset.prod_congr rfl (fun k _ => hr _), ← Complex.ofReal_prod, Complex.ofReal_re]`.
+-/
 theorem psgn_mul_dmin {r : ℕ} (Ψ : Finset (E →+* ℂ)) (G : Matrix (Fin r) (Fin r) E)
     (hG : ∀ a b, cc (G a b) = G b a) (p0 : ℕ)
     (u : Fin r → Fin r → E) (ho : ∀ j k, j ≠ k → herm G (u j) (u k) = 0) (τ : Ψ) (i : Fin (r + 1)) :
@@ -57,6 +77,9 @@ theorem psgn_mul_dmin {r : ℕ} (Ψ : Finset (E →+* ℂ)) (G : Matrix (Fin r) 
   congr 1
   rw [Finset.prod_congr rfl (fun k _ => hr _), ← Complex.ofReal_prod, Complex.ofReal_re]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `∏ k : Fin ((j : ℕ) + 1), f (Fin.castLE _ k) = (∏ k : Fin (j : ℕ), f (Fin.castLE _ k)) * f j`. Rewrite using `[Fin.prod_univ_castSucc]`. Both sides reduce to the same expression.
+-/
 theorem prod_succ {r : ℕ} (f : Fin r → ℝ) (j : Fin r) :
     ∏ k : Fin (j.succ : ℕ), f (Fin.castLE (Nat.le_of_lt_succ j.succ.isLt) k) =
       (∏ k : Fin (j.castSucc : ℕ), f (Fin.castLE (Nat.le_of_lt_succ j.castSucc.isLt) k)) * f j := by
@@ -64,6 +87,9 @@ theorem prod_succ {r : ℕ} (f : Fin r → ℝ) (j : Fin r) :
   rw [Fin.prod_univ_castSucc]
   rfl
 
+/- English proof (translation)
+Establish `h1` using `(hu τ).2 j.succ`. Establish `h0` using `(hu τ).2 j.castSucc`. Rewrite `h1`, `h0` using `[psgn_mul_dmin X.Ψ X.Gm X.Gm_herm X.p0 u ho τ]`. Rewrite `h1` using `[prod_succ (fun k => sgn X.p0 k * (τ.1 (herm X.Gm (u k) (u k))).re)]`. Conclude with `(pos_iff_pos_of_mul_pos h1).1 h0`.
+-/
 theorem sign_of_mem {r : ℕ} (X : Data E r) (u : Fin r → Fin r → E)
     (ho : ∀ j k, j ≠ k → herm X.Gm (u j) (u k) = 0) (hu : frm X.Ψ u ∈ X.dom) (τ : X.Ψ) (j : Fin r) :
     0 < sgn X.p0 j * (τ.1 (herm X.Gm (u j) (u j))).re := by
@@ -73,6 +99,11 @@ theorem sign_of_mem {r : ℕ} (X : Data E r) (u : Fin r → Fin r → E)
   rw [prod_succ (fun k => sgn X.p0 k * (τ.1 (herm X.Gm (u k) (u k))).re)] at h1
   exact (pos_iff_pos_of_mul_pos h1).1 h0
 
+/- English proof (translation)
+Introduce `τ`. Use `⟨?_, fun i => ?_⟩` and prove the remaining obligations. Establish `: mat (frm X.Ψ u) τ = τ.1.mapMatrix (Matrix.of u).transpose`. Use extensionality with `k a`. Both sides reduce to the same expression.
+
+Rewrite using `[this, ← RingHom.map_det, Matrix.det_transpose]`. Conclude with `(map_ne_zero τ.1).2 hd`. Rewrite using `[psgn_mul_dmin X.Ψ X.Gm X.Gm_herm X.p0 u ho τ]`. Conclude with `Finset.prod_pos fun k _ => hs τ _`.
+-/
 theorem mem_of_sign {r : ℕ} (X : Data E r) (u : Fin r → Fin r → E)
     (ho : ∀ j k, j ≠ k → herm X.Gm (u j) (u k) = 0) (hd : (Matrix.of u).det ≠ 0)
     (hs : ∀ τ : X.Ψ, ∀ j : Fin r, 0 < sgn X.p0 j * (τ.1 (herm X.Gm (u j) (u j))).re) : frm X.Ψ u ∈ X.dom := by

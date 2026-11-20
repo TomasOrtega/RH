@@ -6,6 +6,19 @@ namespace Formalism.MainNotions.N.LocalShareBounds
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.ArithmeticCylinders Polynomial Filter Topology
 
+/- English proof (translation)
+Use `set h : ι → α → ℝ := fun i a => if i = v then (if P a then w i a else 0) else w i a with hh`. Establish `hpt : ∀ t : ι → α, (if P (t v) then ∏ i, w i (t i) else 0) = ∏ i, h i (t i)`. Introduce `t`. Distinguish the cases in `hp : P (t v)`. Rewrite using `[if_pos hp]`.
+
+Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : i = v`. Substitute `hi` using the available equality. Simplify using `[hh, hp]`. Simplify using `[hh, hi]`.
+
+Rewrite using `[if_neg hp]`. Use `symm`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ v) (by simp [hh, hp])`. Rewrite using `[Finset.sum_congr rfl fun t _ => hpt t, ← Finset.prod_univ_sum, ← Finset.mul_prod_erase _ _ (Finset.mem_univ v)]`. Establish `hv : ∑ a ∈ S0, h v a = ∑ a ∈ S0.filter P, w v a`.
+
+Rewrite using `[Finset.sum_filter]`. Simplify using `[hh]`. Establish `hX : 0 ≤ ∑ a ∈ S0.filter P, w v a` using `Finset.sum_nonneg fun a _ => hw0 v a`. Establish `hY : ∏ i ∈ Finset.univ.erase v, ∑ a ∈ S0, h i a ≤ 1`. Use `Finset.prod_le_one (fun i _ => Finset.sum_nonneg fun a _ => ?_) fun i hi => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `simp only [hh]; split_ifs <;> first | exact hw0 _ _ | exact le_rfl`. Establish `hne : i ≠ v` using `Finset.ne_of_mem_erase hi`. Simplify using `only [hh, if_neg hne]`. Conclude with `hw1 i`. Rewrite using `[hv]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sum_pi_single {ι α : Type*} [Fintype ι] [DecidableEq ι] [DecidableEq α] (S0 : Finset α)
     (w : ι → α → ℝ) (hw0 : ∀ i a, 0 ≤ w i a) (hw1 : ∀ i, ∑ a ∈ S0, w i a ≤ 1) (v : ι) (P : α → Prop)
     [DecidablePred P] :
@@ -38,6 +51,13 @@ theorem sum_pi_single {ι α : Type*} [Fintype ι] [DecidableEq ι] [DecidableEq
       ≤ (∑ a ∈ S0.filter P, w v a) * 1 := mul_le_mul_of_nonneg_left hY hX
     _ = ∑ a ∈ S0.filter P, w v a := mul_one _
 
+/- English proof (translation)
+Establish `hpt : ∀ t : ι → α, (if ∀ i, Q (t i) then ∏ i, w i (t i) else 0) = ∏ i, (if Q (t i) then w i (t i) else 0)`. Introduce `t`. Distinguish the cases in `hq : ∀ i, Q (t i)`. Rewrite using `[if_pos hq]; exact Finset.prod_congr rfl fun i _ => by rw [if_pos (hq i)]`. Rewrite `hq` using `[if_neg hq] push Not`.
+
+Take `⟨i, hi⟩` from `hq`. Use `symm`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (by rw [if_neg hi])`. Rewrite using `[Finset.sum_congr rfl fun t _ => hpt t]`. Rewrite using `[← Finset.prod_univ_sum (fun _ => S0) (fun i a => if Q a then w i a else 0)]`.
+
+Conclude with `Finset.prod_congr rfl fun i _ => by rw [Finset.sum_filter]`.
+-/
 theorem sum_pi_all {ι α : Type*} [Fintype ι] [DecidableEq ι] [DecidableEq α] (S0 : Finset α)
     (w : ι → α → ℝ) (Q : α → Prop) [DecidablePred Q] :
     ∑ t ∈ Fintype.piFinset (fun _ : ι => S0), (if ∀ i, Q (t i) then ∏ i, w i (t i) else 0) =
@@ -95,6 +115,11 @@ def Counts : Prop :=
 
 variable {D}
 
+/- English proof (translation)
+Establish `hg : (0 : ℝ) < D.host.g k` using `by exact_mod_cast (D.host.g_prime k).pos`. Establish `hgr : (0 : ℝ) < (D.host.g k : ℝ) ^ D.R.r` using `pow_pos hg _`. Use `set U : ℝ := (1 + CL * D.R.r / D.host.g k) / (D.host.g k : ℝ) ^ D.R.r with hU`. Establish `hU0 : 0 ≤ U` using `by positivity`. Establish `h1 : ∀ f ∈ T, wtOf D k (eV k v) f ≤ U` using `fun f hf => ((hL k v).2.1 f (hT f hf).1 (hT f hf).2).2`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem wt_le_count {eV : VecAt D} {CL : ℝ} (hCL : 0 ≤ CL) (hL : lawL D eV CL) (k : Fin 2) (v : D.nd.PlG k)
     (T : Finset (ZMod (D.host.g k))[X]) (hT : ∀ f ∈ T, IsLab D k f ∧ Squarefree f) (B : ℝ)
     (hB : (T.card : ℝ) ≤ B * (D.host.g k : ℝ) ^ D.R.r) :
@@ -110,6 +135,19 @@ theorem wt_le_count {eV : VecAt D} {CL : ℝ} (hCL : 0 ≤ CL) (hL : lawL D eV C
     _ ≤ (B * (D.host.g k : ℝ) ^ D.R.r) * U := mul_le_mul_of_nonneg_right hB hU0
     _ = (1 + CL * D.R.r / D.host.g k) * B := by rw [hU]; field_simp
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hno`. Use `push Not at hno`. Take `⟨hsq, hii, hiii, hiv, hv⟩` from `hno`. Apply `hbad` to reduce the goal to its premises. Unfold `goodAt`.
+
+Establish `: Fact (D.host.g k).Prime` using `⟨D.host.g_prime k⟩`. Establish `key : ∀ χ : D.nd.PlG k → Fin D.R.m → (ZMod (D.host.g k))ˣ, (∀ v j, ¬ Eiii D k (χ v j) (t v)) → Formalism.CyclotomicNorms.IsGood D.R.r (D.host.g k) t χ`. Introduce `χ hχ`. Use `⟨hlab, hsq, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `ℓ hℓ hbb v`.
+
+Establish `h` using `hii v`. Unfold `Eii at h`. Use `push Not at h`. Conclude with `h (hlab v) (hsq v) ℓ hℓ hbb`. Introduce `ℓ hℓ hne v j`.
+
+Establish `h` using `hχ v j`. Unfold `Eiii at h`. Use `push Not at h`. Conclude with `h (hlab v) (hsq v) ℓ hℓ hne`. Introduce `a ha1 ha2`.
+
+Take `⟨v, hv'⟩` from `hiv a (Finset.mem_Icc.2 ⟨ha1, by omega⟩)`. Conclude with `⟨v, fun hq => hv' ⟨hlab v, hsq v, hq⟩⟩`. Take `⟨v, hv'⟩` from `hv`. Assume the negation of the conclusion as `hn`. Apply `hv'` to reduce the goal to its premises.
+
+Use `⟨hlab v, hsq v, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨q, hq⟩`. Conclude with `hn ⟨v, q, hq⟩`. Conclude with `⟨key _ fun v j => (hiii v j).1, key _ fun v j => (hiii v j).2⟩`.
+-/
 theorem bad_cases (k : Fin 2) (t : Tup D k) (hlab : ∀ v, IsLab D k (t v)) (hbad : ¬ goodAt D k t) :
     (∃ v, ¬ Squarefree (t v)) ∨ (∃ v, Eii D k (t v)) ∨
       (∃ v j, Eiii D k (D.nd.chiT k v j) (t v) ∨ Eiii D k (D.nd.chiT k v j)⁻¹ (t v)) ∨
@@ -145,12 +183,68 @@ theorem bad_cases (k : Fin 2) (t : Tup D k) (hlab : ∀ v, IsLab D k (t v)) (hba
       exact hn ⟨v, q, hq⟩
   exact ⟨key _ fun v j => (hiii v j).1, key _ fun v j => (hiii v j).2⟩
 
+/- English proof (translation)
+Apply the tactic sequence `rcases h with h | h | h | h | h <;> linarith`.
+-/
 theorem le_five {x a b c d e : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) (hc : 0 ≤ c) (hd : 0 ≤ d) (he : 0 ≤ e)
     (h : x ≤ a ∨ x ≤ b ∨ x ≤ c ∨ x ≤ d ∨ x ≤ e) : x ≤ a + b + c + d + e := by
   rcases h with h | h | h | h | h <;> linarith
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `eV CL hCL hL hA hr k hg S hS`. Take `⟨Cii, Ciii, Civ, Cv⟩` from `hC hA hr k hg`. Take `⟨S0, hmem, hsum⟩` from `D.ntypes.eSer_sum k`. Establish `hw0 : ∀ v f, 0 ≤ wtOf D k (eV k v) f` using `fun v f => (hL k v).1 f`. Establish `hw1 : ∀ v, ∑ f ∈ S0, wtOf D k (eV k v) f ≤ 1` using `fun v => sum_wtOf_le_one k (eV k v) S0 hsum`.
+
+Establish `hF0 : ∀ t : Tup D k, 0 ≤ ∏ v, wtOf D k (eV k v) (t v)` using `fun t => Finset.prod_nonneg fun v _ => hw0 v (t v)`. Establish `hite : ∀ (p : Prop) [Decidable p] (t : Tup D k), 0 ≤ (if p then ∏ v, wtOf D k (eV k v) (t v) else 0)`. Introduce `p _ t`. Use `split_ifs`. Conclude with `hF0 t`.
+
+Conclude with `le_rfl`. Establish `hg0 : (0 : ℝ) < D.host.g k` using `by exact_mod_cast (D.host.g_prime k).pos`. Establish `P1 : ∀ v, ∑ f ∈ S0.filter (fun f => ¬ Squarefree f), wtOf D k (eV k v) f ≤ 3 / (D.host.g k : ℝ)` using `fun v => (hL k v).2.2 _ fun f hf => (Finset.mem_filter.1 hf).2`. Establish `P2 : ∀ v, ∑ f ∈ S0.filter (Eii D k), wtOf D k (eV k v) f ≤ (1 + CL * D.R.r / D.host.g k) * (23 * Real.log (D.host.g k) * (D.host.g k : ℝ) ^ (-(1 / 2 : ℝ)))` using `fun v => wt_le_count hCL hL k v _ (fun f hf => by`. Take `⟨h1, h2, -⟩` from `(Finset.mem_filter.1 hf).2`.
+
+Conclude with `⟨h1, h2⟩) _`. Use the proof step `(Cii _ fun f hf => (Finset.mem_filter.1 hf).2)`. Establish `P3 : ∀ v (c : (ZMod (D.host.g k))ˣ), ∑ f ∈ S0.filter (Eiii D k c), wtOf D k (eV k v) f ≤ (1 + CL * D.R.r / D.host.g k) * (1 / (4 * ((min D.host.q D.host.d : ℕ) : ℝ)) + (1 + Real.log D.R.r) / ((D.host.g k : ℝ) - 1))` using `fun v c => wt_le_count hCL hL k v _ (fun f hf => by`. Take `⟨h1, h2, -⟩` from `(Finset.mem_filter.1 hf).2`. Conclude with `⟨h1, h2⟩) _`.
+
+Use the proof step `(Ciii c _ fun f hf => (Finset.mem_filter.1 hf).2)`. Establish `P4 : ∀ v, ∀ a ∈ Finset.Icc 1 (D.R.r / 2), ∑ f ∈ S0.filter (Eiv D k a), wtOf D k (eV k v) f ≤ (1 + CL * D.R.r / D.host.g k) * (7 / 8)`. Introduce `v a ha`. Take `⟨ha1, ha2⟩` from `Finset.mem_Icc.1 ha`. Conclude with `wt_le_count hCL hL k v _ (fun f hf => by`.
+
+Take `⟨h1, h2, -⟩` from `(Finset.mem_filter.1 hf).2`. Conclude with `⟨h1, h2⟩) _`. Use the proof step `(Civ a ha1 (by omega) _ fun f hf => (Finset.mem_filter.1 hf).2)`. Establish `P5 : ∀ v, ∑ f ∈ S0.filter (Ev D k), wtOf D k (eV k v) f ≤ (1 + CL * D.R.r / D.host.g k) * (1 - 1 / (5 * Real.log D.R.r))` using `fun v => wt_le_count hCL hL k v _ (fun f hf => by`. Take `⟨h1, h2, -⟩` from `(Finset.mem_filter.1 hf).2`.
+
+Conclude with `⟨h1, h2⟩) _`. Use the proof step `(Cv _ fun f hf => (Finset.mem_filter.1 hf).2)`. Establish `cover : ∀ t : Tup D k, (∀ v, t v ∈ S0) → ¬ goodAt D k t → ∏ v, wtOf D k (eV k v) (t v) ≤ ∑ v, (if ¬ Squarefree (t v) then ∏ v, wtOf D k (eV k v) (t v) else 0) + ∑ v, (if Eii D k (t v) then ∏ v, wtOf D k (eV k v) (t v) else 0) + ∑ v, ∑ j, ((if Eiii D k (D.nd.chiT k v j) (t v) then …`. Introduce `t ht hbad`. Establish `hlab : ∀ v, IsLab D k (t v)` using `fun v => (hmem (t v)).1 (ht v)`.
+
+Establish `pick : ∀ (p : Prop) [Decidable p], p → ∏ v, wtOf D k (eV k v) (t v) ≤ (if p then ∏ v, wtOf D k (eV k v) (t v) else 0)` using `fun p _ hp => by rw [if_pos hp]`. Apply `le_five (Finset.sum_nonneg fun v _ => hite _ t) (Finset.sum_nonneg fun v _ => hite _ t) (Finset.sum_nonneg fun v _ => Finset.sum_nonneg fun j _ => add_nonneg (hite _ t) (hite _ t)) (Finset.sum_nonneg fun a _ => hite _ t) (hite _ t)` to reduce the goal to its premises. Break down `bad_cases k t hlab hbad with ⟨v, hv⟩ | ⟨v, hv⟩ | ⟨v, j, hv | hv⟩ | ⟨a, ha, hv⟩ | hv` into its components or cases. Use `left`. Use `le_trans (pick (¬ Squarefree (t v)) hv) ?_` and prove the remaining obligations.
+
+Conclude with `Finset.single_le_sum (f := fun v => if ¬ Squarefree (t v) then ∏ v, wtOf D k (eV k v) (t v) else 0) (fun v _ => hite _ t) (Finset.mem_univ v)`. Use `right`. Use `left`. Use `le_trans (pick (Eii D k (t v)) hv) ?_` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun v => if Eii D k (t v) then ∏ v, wtOf D k (eV k v) (t v) else 0) (fun v _ => hite _ t) (Finset.mem_univ v)`.
+
+Use `right`. Use `right`. Use `left`. Use `le_trans (pick (Eiii D k (D.nd.chiT k v j) (t v)) hv) ?_` and prove the remaining obligations. Use `le_trans (le_add_of_nonneg_right (hite (Eiii D k (D.nd.chiT k v j)⁻¹ (t v)) t)) ?_` and prove the remaining obligations.
+
+Use `le_trans (Finset.single_le_sum (f := fun j => (if Eiii D k (D.nd.chiT k v j) (t v) then ∏ v, wtOf D k (eV k v) (t v) else 0) + (if Eiii D k (D.nd.chiT k v j)⁻¹ (t v) then ∏ v, wtOf D k (eV k v) (t v) else 0)) (fun j _ => add_nonneg (hite _ t) (hite _ t)) (Finset.mem_univ j)) ?_` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun v => ∑ j, ((if Eiii D k (D.nd.chiT k v j) (t v) then ∏ v, wtOf D k (eV k v) (t v) else 0) + (if Eiii D k (D.nd.chiT k v j)⁻¹ (t v) then ∏ v, wtOf D k (eV k v) (t v) else 0))) (fun v _ => Finset.sum_nonneg fun j _ => add_nonneg (hite _ t) (hite _ t)) …`. Use `right`. Use `right`. Use `left`.
+
+Use `le_trans (pick (Eiii D k (D.nd.chiT k v j)⁻¹ (t v)) hv) ?_` and prove the remaining obligations. Use `le_trans (le_add_of_nonneg_left (hite (Eiii D k (D.nd.chiT k v j) (t v)) t)) ?_` and prove the remaining obligations. Use `le_trans (Finset.single_le_sum (f := fun j => (if Eiii D k (D.nd.chiT k v j) (t v) then ∏ v, wtOf D k (eV k v) (t v) else 0) + (if Eiii D k (D.nd.chiT k v j)⁻¹ (t v) then ∏ v, wtOf D k (eV k v) (t v) else 0)) (fun j _ => add_nonneg (hite _ t) (hite _ t)) (Finset.mem_univ j)) ?_` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun v => ∑ j, ((if Eiii D k (D.nd.chiT k v j) (t v) then ∏ v, wtOf D k (eV k v) (t v) else 0) + (if Eiii D k (D.nd.chiT k v j)⁻¹ (t v) then ∏ v, wtOf D k (eV k v) (t v) else 0))) (fun v _ => Finset.sum_nonneg fun j _ => add_nonneg (hite _ t) (hite _ t)) …`. Use `right`.
+
+Use `right`. Use `right`. Use `left`. Use `le_trans (pick (∀ v, Eiv D k a (t v)) hv) ?_` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun a => if ∀ v, Eiv D k a (t v) then ∏ v, wtOf D k (eV k v) (t v) else 0) (fun a _ => hite _ t) ha`.
+
+Use `right`. Use `right`. Use `right`. Use `right`. Conclude with `pick (∀ v, Ev D k (t v)) hv`.
+
+Establish `h1 : locShare D eV k S = ∑ t ∈ S.filter (fun t => ∀ v, t v ∈ S0), ∏ v, wtOf D k (eV k v) (t v)`. Unfold `locShare`. Rewrite using `[Finset.sum_filter]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Use `split_ifs with ht`.
+
+Both sides reduce to the same expression. Use `push Not at ht`. Take `⟨v, hv⟩` from `ht`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ v) (wtOf_off k _ _ fun h => hv ((hmem (t v)).2 h))`. Establish `h2 : S.filter (fun t => ∀ v, t v ∈ S0) ⊆ Fintype.piFinset (fun _ : D.nd.PlG k => S0)`.
+
+Introduce `t ht`. Rewrite using `[Fintype.mem_piFinset]`. Conclude with `(Finset.mem_filter.1 ht).2`. Establish `hR0 : ∀ t : Tup D k, 0 ≤ ∑ v, (if ¬ Squarefree (t v) then ∏ v, wtOf D k (eV k v) (t v) else 0) + ∑ v, (if Eii D k (t v) then ∏ v, wtOf D k (eV k v) (t v) else 0) + ∑ v, ∑ j, ((if Eiii D k (D.nd.chiT k v j) (t v) then ∏ v, wtOf D k (eV k v) (t v) else 0) + (if Eiii D k (D.nd.chiT …`. Introduce `t`.
+
+Use `Finset.sum_nonneg (s := Finset.univ) fun v (_ : v ∈ Finset.univ) => hite (¬ Squarefree (t v)) t` as an intermediate fact. Use `Finset.sum_nonneg (s := Finset.univ) fun v (_ : v ∈ Finset.univ) => hite (Eii D k (t v)) t` as an intermediate fact. Use `Finset.sum_nonneg (s := Finset.univ) fun v (_ : v ∈ Finset.univ) => Finset.sum_nonneg (s := Finset.univ) fun j (_ : j ∈ Finset.univ) => add_nonneg (hite (Eiii D k (D.nd.chiT k v j) (t v)) t) (hite (Eiii D k (D.nd.chiT k v j)⁻¹ (t v)) t)` as an intermediate fact. Use `Finset.sum_nonneg (s := Finset.Icc 1 (D.R.r / 2)) fun a (_ : a ∈ Finset.Icc 1 (D.R.r / 2)) => hite (∀ v, Eiv D k a (t v)) t` as an intermediate fact. Use `hite (∀ v, Ev D k (t v)) t` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `b1 : ∑ t ∈ Fintype.piFinset (fun _ : D.nd.PlG k => S0), ∑ v, (if ¬ Squarefree (t v) then ∏ v, wtOf D k (eV k v) (t v) else 0) ≤ (D.R.f : ℝ) * (3 / (D.host.g k : ℝ))`. Rewrite using `[Finset.sum_comm]`. Combine the equalities or inequalities in the displayed calculation. Establish `b2 : ∑ t ∈ Fintype.piFinset (fun _ : D.nd.PlG k => S0), ∑ v, (if Eii D k (t v) then ∏ v, wtOf D k (eV k v) (t v) else 0) ≤ (D.R.f : ℝ) * ((1 + CL * D.R.r / D.host.g k) * (23 * Real.log (D.host.g k) * (D.host.g k : ℝ) ^ (-(1 / 2 : ℝ))))`.
+
+Rewrite using `[Finset.sum_comm]`. Combine the equalities or inequalities in the displayed calculation. Establish `b3 : ∑ t ∈ Fintype.piFinset (fun _ : D.nd.PlG k => S0), ∑ v, ∑ j, ((if Eiii D k (D.nd.chiT k v j) (t v) then ∏ v, wtOf D k (eV k v) (t v) else 0) + (if Eiii D k (D.nd.chiT k v j)⁻¹ (t v) then ∏ v, wtOf D k (eV k v) (t v) else 0)) ≤ (D.R.f : ℝ) * ((D.R.m : ℝ) * ((1 + CL * D.R.r / …`. Rewrite using `[Finset.sum_comm]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `Finset.sum_le_sum fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_add_distrib]`. Conclude with `add_le_add ((sum_pi_single S0 (fun v f => wtOf D k (eV k v) f) hw0 hw1 v (Eiii D k (D.nd.chiT k v j))).trans (P3 v _)) ((sum_pi_single S0 (fun v f => wtOf D k (eV k v) f) hw0 hw1 v (Eiii D k (D.nd.chiT k v j)⁻¹)).trans (P3 v _))`.
+
+Use `_ = _ := by`. Rewrite using `[Finset.sum_const, Finset.card_univ, D.nd.card_PlG k, nsmul_eq_mul, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Establish `hu0 : 0 ≤ (1 + CL * D.R.r / D.host.g k)` using `by positivity`. Establish `b4 : ∑ t ∈ Fintype.piFinset (fun _ : D.nd.PlG k => S0), ∑ a ∈ Finset.Icc 1 (D.R.r / 2), (if ∀ v, Eiv D k a (t v) then ∏ v, wtOf D k (eV k v) (t v) else 0) ≤ (((D.R.r / 2 : ℕ) : ℝ)) * ((1 + CL * D.R.r / D.host.g k) * (7 / 8)) ^ D.R.f`. Rewrite using `[Finset.sum_comm]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Nat.card_Icc, Finset.prod_const, Finset.card_univ, D.nd.card_PlG k, nsmul_eq_mul]`. Evaluate the numerical expressions. Establish `b5 : ∑ t ∈ Fintype.piFinset (fun _ : D.nd.PlG k => S0), (if ∀ v, Ev D k (t v) then ∏ v, wtOf D k (eV k v) (t v) else 0) ≤ ((1 + CL * D.R.r / D.host.g k) * (1 - 1 / (5 * Real.log D.R.r))) ^ D.R.f`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hsplit : ∑ t ∈ Fintype.piFinset (fun _ : D.nd.PlG k => S0), (∑ v, (if ¬ Squarefree (t v) then ∏ v, wtOf D k (eV k v) (t v) else 0) + ∑ v, (if Eii D k (t v) then ∏ v, wtOf D k (eV k v) (t v) else 0) + ∑ v, ∑ j, ((if Eiii D k (D.nd.chiT k v j) (t v) then ∏ v, wtOf D k (eV k v) (t v …`. Simplify using `only [Finset.sum_add_distrib]`. Establish `hcard : (((D.R.r / 2 : ℕ) : ℝ)) ≤ (D.R.r : ℝ) / 2` using `Nat.cast_div_le`. Establish `hp4 : 0 ≤ ((1 + CL * D.R.r / D.host.g k) * (7 / 8)) ^ D.R.f` using `by positivity`. Establish `b4' : (((D.R.r / 2 : ℕ) : ℝ)) * ((1 + CL * D.R.r / D.host.g k) * (7 / 8)) ^ D.R.f ≤ (D.R.r : ℝ) / 2 * (7 / 8 * (1 + CL * D.R.r / D.host.g k)) ^ D.R.f`.
+
+Rewrite using `[mul_comm (1 + CL * D.R.r / D.host.g k) (7 / 8)]`. Conclude with `mul_le_mul_of_nonneg_right hcard (by rw [mul_comm]; exact hp4)`. Establish `hWk : Wk D CL k = (D.R.f : ℝ) * (3 / (D.host.g k : ℝ)) + (D.R.f : ℝ) * ((1 + CL * D.R.r / D.host.g k) * (23 * Real.log (D.host.g k) * (D.host.g k : ℝ) ^ (-(1 / 2 : ℝ)))) + (D.R.f : ℝ) * ((D.R.m : ℝ) * ((1 + CL * D.R.r / D.host.g k) * (1 / (4 * ((min D.host.q D.host.d : ℕ) : ℝ)) + …`. Unfold `Wk`. Expand and normalize the polynomial expressions, which then agree.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem propW_of_counts (hC : Counts D) : PropW D := by
   classical
   intro eV CL hCL hL hA hr k hg S hS

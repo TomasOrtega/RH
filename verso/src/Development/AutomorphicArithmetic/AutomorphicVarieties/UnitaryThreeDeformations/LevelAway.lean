@@ -9,6 +9,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PartsConj
 
 open NumberField Matrix IsLocalRing Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.GalOfCusp UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.Aut UpperTheory.V.UnitaryThreeInertia
 
+/- English proof (translation)
+Use `haveI : Finite (H ⧸ φ.ker) := Finite.of_equiv _ (QuotientGroup.quotientKerEquivRange φ).symm.toEquiv`. Use `letI := Fintype.ofFinite (H ⧸ φ.ker)`. Establish `hQ : IsUnit (Fintype.card (H ⧸ φ.ker) : A)`. Establish `h1 : Fintype.card (H ⧸ φ.ker) ∣ Nat.card C`. Rewrite using `[← Nat.card_eq_fintype_card, Nat.card_congr (QuotientGroup.quotientKerEquivRange φ).toEquiv]`.
+
+Conclude with `Subgroup.card_subgroup_dvd_card _`. Conclude with `isUnit_of_dvd_unit (Nat.cast_dvd_cast h1) hC`. Set `a'` to `QuotientGroup.lift φ.ker a ha`. Set `b'` to `QuotientGroup.lift φ.ker b hb`. Set `M : Matrix (Fin 3) (Fin 3) A` to `∑ q, ((a' q * (b' q)⁻¹ : GL (Fin 3) A) : Matrix (Fin 3) (Fin 3) A)`.
+
+Establish `hred : ∀ q, (residue A).mapMatrix ((a' q * (b' q)⁻¹ : GL (Fin 3) A) : Matrix (Fin 3) (Fin 3) A) = 1`. Introduce `q`. Take `⟨s, rfl⟩` from `QuotientGroup.mk_surjective q`. Establish `h1 : (residue A).mapMatrix (a s : Matrix (Fin 3) (Fin 3) A) = (residue A).mapMatrix (b s : Matrix (Fin 3) (Fin 3) A)`. Use extensionality with `i j`.
+
+Conclude with `Ideal.Quotient.eq.2 (hab s i j)`. Use `show (residue A).mapMatrix ((a s * (b s)⁻¹ : GL (Fin 3) A) : Matrix (Fin 3) (Fin 3) A) = 1`. Rewrite using `[Units.val_mul, map_mul, h1, ← map_mul, Units.mul_inv, map_one]`. Establish `hM : IsUnit M`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, ← residue_ne_zero_iff_isUnit, RingHom.map_det, ← isUnit_iff_ne_zero, ← Matrix.isUnit_iff_isUnit_det, map_sum]`.
+
+Simplify using `only [hred, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one]`. Use `(hQ.map (residue A)).map (algebraMap _ (Matrix (Fin 3) (Fin 3) (ResidueField A)))` as an intermediate fact. Simplify using `using this`. Use `⟨hM.unit, fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[eq_mul_inv_iff_mul_eq]`.
+
+Apply `Units.ext` to reduce the goal to its premises. Use `show (a' s : Matrix (Fin 3) (Fin 3) A) * M = M * b' s`. Rewrite using `[Finset.mul_sum, Finset.sum_mul, eq_comm, ← Equiv.sum_comp (Equiv.mulLeft (s : H ⧸ φ.ker))]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[← Units.val_mul, ← Units.val_mul]`.
+
+Use `congr 1`. Simplify using `only [Equiv.coe_mulLeft, map_mul]`. Use `group`.
+-/
 private theorem la_avg {A H C : Type} [CommRing A] [IsLocalRing A] [Group H] [Group C] [Finite C] (φ : H →* C)
     (hC : IsUnit (Nat.card C : A)) (a b : H →* GL (Fin 3) A) (ha : ∀ s, φ s = 1 → a s = 1) (hb : ∀ s, φ s = 1 → b s = 1)
     (hab : ∀ s, EntIn (maximalIdeal A) ((a s : Matrix (Fin 3) (Fin 3) A) - (b s : Matrix (Fin 3) (Fin 3) A))) :
@@ -50,6 +65,9 @@ private theorem la_avg {A H C : Type} [CommRing A] [IsLocalRing A] [Group H] [Gr
   simp only [Equiv.coe_mulLeft, map_mul]
   group
 
+/- English proof (translation)
+Establish `h : k * GG.ofGL (tor R t) = GG.ofGL (k.left * tor R t * k.left⁻¹) * k`. Use `SemidirectProduct.ext ?_ (by simp)` and prove the remaining obligations. Apply the tactic sequence `rcases Int.units_eq_one_or k.right with h | h <;> simp [h, theta_tor]`. Rewrite using `[h, mul_inv_cancel_right]`. Both sides reduce to the same expression.
+-/
 private theorem la_left {R : Type} [CommRing R] (k : GG 3 R) (t : Rˣ) :
     (k * GG.ofGL (tor R t) * k⁻¹).left = k.left * tor R t * k.left⁻¹ := by
   have h : k * GG.ofGL (tor R t) = GG.ofGL (k.left * tor R t * k.left⁻¹) * k := by
@@ -58,6 +76,9 @@ private theorem la_left {R : Type} [CommRing R] (k : GG 3 R) (t : Rˣ) :
   rw [h, mul_inv_cancel_right]
   rfl
 
+/- English proof (translation)
+Use `SemidirectProduct.ext (Units.ext ?_) rfl` and prove the remaining obligations. Use `show (tor R t : Matrix (Fin 3) (Fin 3) R).map f = (tor S _ : Matrix (Fin 3) (Fin 3) S)`. Rewrite using `[tor_val, tor_val, Matrix.diagonal_map (map_zero f)]`. Simplify using `only [← map_zpow]`. Both sides reduce to the same expression.
+-/
 private theorem la_map {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (t : Rˣ) :
     GG.map f (GG.ofGL (tor R t)) = GG.ofGL (tor S (Units.map f.toMonoidHom t)) := by
   refine SemidirectProduct.ext (Units.ext ?_) rfl
@@ -66,6 +87,15 @@ private theorem la_map {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (t
   simp only [← map_zpow]
   rfl
 
+/- English proof (translation)
+Take `⟨k, -, hk⟩` from `h`. Use `⟨GG.ofGL k, fun s hs hη => ?_⟩` and prove the remaining obligations. Establish `h1 : conjBy k⁻¹ r s = GG.ofGL (tor R (Units.map (algebraMap O R).toMonoidHom (Ψ s)))`. Use `SemidirectProduct.ext (Units.ext ?_) (by simp [conjBy, hr s, hη])` and prove the remaining obligations. Use `show (conjBy k⁻¹ r s).mat = (tor R _ : Matrix (Fin 3) (Fin 3) R)`.
+
+Rewrite using `[tor_val]`. Use extensionality with `a b`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Rewrite using `[hk.ine s hs hη, Matrix.diagonal_apply_eq, ← map_zpow]`.
+
+Both sides reduce to the same expression. Rewrite using `[Matrix.diagonal_apply_ne _ hab]`. Break down `lt_or_gt_of_ne hab with h | h` into its components or cases. Conclude with `hk.low s hη a b (by have : (a : ℕ) < b := h; simp only [wt, wt1]; omega)`. Conclude with `hk.tri s hη a b (by have : (b : ℕ) < a := h; simp only [wt, wt1]; omega)`.
+
+Rewrite using `[← h1]`. Simplify using `[conjBy, mul_assoc]`.
+-/
 private theorem la_D {O R D : Type} [CommRing O] [IsLocalRing O] [CommRing R] [IsLocalRing R] [Algebra O R] [Group D]
     (η : D →* ℤˣ) (Ψ : D →* Oˣ) (I : Subgroup D) (r : D →* GG 3 R) (hr : HasMult η r) (h : CondD η Ψ I r) :
     ∃ k : GG 3 R, ∀ s ∈ I, η s = 1 →
@@ -88,6 +118,13 @@ private theorem la_D {O R D : Type} [CommRing O] [IsLocalRing O] [CommRing R] [I
   rw [← h1]
   simp [conjBy, mul_assoc]
 
+/- English proof (translation)
+Establish `hu : IsUnit (Nat.card (ResidueField O)ˣ : O)`. Use `letI := Fintype.ofFinite (ResidueField O)`. Rewrite using `[← residue_ne_zero_iff_isUnit, map_natCast, Nat.card_units, Nat.card_eq_fintype_card, Nat.cast_pred Fintype.card_pos, FiniteField.cast_card_eq_zero]`. Simplify using the standard rewrite rules. Establish `hu' : IsUnit (Nat.card (ResidueField O)ˣ : R)` using `by simpa using hu.map (algebraMap O R)`.
+
+Set `H : Subgroup D` to `I ⊓ η.ker`. Take `⟨M, hM⟩` from `la_avg (((Units.map (residue O).toMonoidHom).comp Ψ).comp H.subtype) hu' ((glPart η r hr.mult).comp (Subgroup.inclusion inf_le_right)) ((tor R).comp ((Units.map (algebraMap O R).toMonoidHom).comp (Ψ.comp H.subtype))) (fun s hs => congrArg SemidirectProduct.left (h s ⟨s.2, hs⟩)) ( …`. Establish `h1` using `congrArg GG.mat (la_map (algebraMap O R) (Ψ s))`. Establish `h2` using `hr.red s`. Rewrite `h2` using `[show (r0 η Ψ s).mat.map (algebraMap O R) = _ from h1]`.
+
+Conclude with `h2)`. Use `⟨GG.ofGL M, fun s hs hη => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv, ← map_mul, ← map_mul]`. Conclude with `SemidirectProduct.ext (hM ⟨s, hs, hη⟩) ((hr.mult s).trans hη)`.
+-/
 private theorem la_U {O R D : Type} [CommRing O] [IsLocalRing O] [Finite (ResidueField O)] [CommRing R] [IsLocalRing R]
     [Algebra O R] [Group D] (η : D →* ℤˣ) (Ψ : D →* Oˣ) (I : Subgroup D) (r : D →* GG 3 R) (hr : Red η Ψ r)
     (h : CondU η Ψ I r) (ht : ∀ s ∈ kerBar η Ψ I, Ψ s = 1) :
@@ -116,6 +153,11 @@ private theorem la_U {O R D : Type} [CommRing O] [IsLocalRing O] [Finite (Residu
 
 open IsDedekindDomain UpperTheory.V in
 open scoped Pointwise in
+/- English proof (translation)
+Take `⟨g, hg⟩` from `exists_smul_eq_of_isPlaceOver (F := k) hA hB`. Establish `h : IsLift (RingEquiv.refl k) g.toRingEquiv` using `fun x => g.commutes x`. Establish `hm : ∀ x, g.toRingEquiv x ∈ B ↔ x ∈ A` using `fun x => by show g • x ∈ B ↔ _`. Rewrite using `[← hg]`. Conclude with `ValuationSubring.smul_mem_pointwise_smul_iff`.
+
+Conclude with `⟨g, fun τ hτ => conjGal_mem_Ine h hm hτ⟩`.
+-/
 private theorem la_conj {k Ω : Type} [Field k] [NumberField k] [Field Ω] [Algebra k Ω] [IsAlgClosure k Ω]
     {A B : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 k)} (hA : IsPlaceOver A v) (hB : IsPlaceOver B v) :
     ∃ g : G k Ω, ∀ τ ∈ Ine (F := k) B, g⁻¹ * τ * g ∈ Ine (F := k) A := by
@@ -128,12 +170,20 @@ private theorem la_conj {k Ω : Type} [Field k] [NumberField k] [Field Ω] [Alge
   exact ⟨g, fun τ hτ => conjGal_mem_Ine h hm hτ⟩
 
 open UpperTheory.V in
+/- English proof (translation)
+The claim follows from `(Chr.clsFacts ℚ Ω N).2.2.1 s 1 fun ζ hζ => by rw [Units.val_one, ZMod.val_one_eq_one_mod, ← pow_eq_pow_mod 1 hζ, pow_one, h ζ hζ]`.
+-/
 private theorem la_cls {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (N : ℕ) [NeZero N] (s : G ℚ Ω)
     (h : ∀ ζ : Ω, ζ ^ N = 1 → s ζ = ζ) : Chr.cls ℚ Ω N s = 1 :=
   (Chr.clsFacts ℚ Ω N).2.2.1 s 1 fun ζ hζ => by
     rw [Units.val_one, ZMod.val_one_eq_one_mod, ← pow_eq_pow_mod 1 hζ, pow_one, h ζ hζ]
 
 open UpperTheory.V UpperTheory.V.Base in
+/- English proof (translation)
+Take `⟨-, i, hi⟩` from `hK`. Establish `hj : algebraMap K Ω i * algebraMap K Ω i = -1` using `by rw [← map_mul, hi, map_neg, map_one]`. Establish `hs : s (algebraMap K Ω i) = algebraMap K Ω i` using `s.commutes i`. Generalize the expression as in `algebraMap K Ω i = j at hj hs`. Establish `h : Chr.cls ℚ Ω 4 (galEmb ℚ K Ω s) = 1` using `la_cls 4 _ fun ζ hζ => by`.
+
+Establish `h0 : (ζ - 1) * (ζ + 1) * (ζ - j) * (ζ + j) = 0` using `by linear_combination hζ - (ζ ^ 2 - 1) * hj`. Rewrite using `[galEmb_apply]`. Simplify using `only [mul_eq_zero, sub_eq_zero, add_eq_zero_iff_eq_neg] at h0`. Apply the tactic sequence `rcases h0 with ((rfl | rfl) | rfl) | rfl <;> simp [hs]`. Simplify using `[eta4, Chr.dirG, h]`.
+-/
 private theorem la_eta {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {K : Type} [Field K] [NumberField K]
     [Algebra K Ω] [IsScalarTower ℚ K Ω] (hK : IsQi K) (s : G K Ω) : eta4 Ω (galEmb ℚ K Ω s) = 1 := by
   obtain ⟨-, i, hi⟩ := hK
@@ -147,6 +197,13 @@ private theorem la_eta {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω
     rcases h0 with ((rfl | rfl) | rfl) | rfl <;> simp [hs]
   simp [eta4, Chr.dirG, h]
 
+/- English proof (translation)
+Take `⟨A, _, _, t, r', hp, he⟩` from `hr`. Establish `hred : Red (F.ηv v) (F.Ψv v) (r'.comp (F.loc v))` using `⟨fun g => hp.mult _, fun g => hp.red _⟩`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k : GG 3 A, ∀ s ∈ F.Iv v, F.ηv v s = 1 → (r'.comp (F.loc v)) s = k * GG.ofGL (tor A (Units.map (algebraMap O A).toMonoidHom (F.Ψv v s))) * k⁻¹ := by`. Distinguish the cases in `hb : v ∈ F.Sb`. Conclude with `la_D _ _ _ _ hred.mult ((hp.loc v).2.1 hb)`.
+
+Establish `hT : v ∉ F.Tb` using `fun h => h.elim hv hb`. Conclude with `la_U _ _ _ _ hred ((hp.loc v).2.2 hT) (hF.teich v hT)`. Use `⟨(GG.ofGL (tor K t))⁻¹ * GG.map (A.val : A →+* K) k, fun s hs hη => ?_⟩` and prove the remaining obligations. Establish `h1 : GG.map (A.val : A →+* K) (r' (F.loc v s)) = GG.ofGL (tor K t) * r (F.loc v s) * (GG.ofGL (tor K t))⁻¹` using `DFunLike.congr_fun he _`. Establish `h2 : r' (F.loc v s) = _` using `hk s hs hη`.
+
+Rewrite `h1` using `[h2, map_mul, map_mul, map_inv, la_map]`. Establish `h3 : Units.map (A.val : A →+* K).toMonoidHom (Units.map (algebraMap O A).toMonoidHom (F.Ψv v s)) = Units.map (algebraMap O K).toMonoidHom (F.Ψv v s)` using `Units.ext (A.val.commutes _)`. Rewrite `h1` using `[h3]`. Rewrite using `[_root_.mul_inv_rev, inv_inv, mul_assoc, mul_assoc, ← mul_assoc _ _ (GG.ofGL (tor K t)), ← mul_assoc _ _ (GG.ofGL (tor K t)), ← mul_assoc (GG.map _ k), h1]`. Use `group`.
+-/
 private theorem la_loc {O G Γ ι K : Type} [CommRing O] [IsLocalRing O] [Finite (ResidueField O)] [Group G] [Group Γ]
     [TopologicalSpace G] [IsTopologicalGroup G] [TopologicalSpace Γ] (F : Frame O G Γ ι) (hF : F.Ok) [Field K]
     [Algebra O K] (g₁ : Γ) (r : Γ →* GG 3 K) (hr : F.IsCharZeroPt g₁ r) (v : ι) (hv : v ≠ F.vl) :
@@ -173,6 +230,25 @@ private theorem la_loc {O G Γ ι K : Type} [CommRing O] [IsLocalRing O] [Finite
   group
 
 open UpperTheory.V UpperTheory.V.Base in
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ c N _ e ψ o₁ hD S A F hF K _ _ _ _ hK g₁ _ r hr ρ hρ w hw`. Establish `hok` using `hostFrame_ok Ω c e ψ o₁ hD S A F hF`. Use `haveI : IsAlgClosure K Ω := ⟨IsAlgClosure.isAlgClosed ℚ, haveI : Algebra.IsAlgebraic ℚ Ω := IsAlgClosure.isAlgebraic Algebra.IsAlgebraic.tower_top (K := ℚ) K⟩`. Use `haveI : Finite (ResidueField c.O) := (abelian₂.dvr_finite l c.O).2.1`. Take `⟨B, hB⟩` from `exists_isPlaceOver Ω w`.
+
+Use `⟨B, hB, ?_⟩` and prove the remaining obligations. Establish `hρ' : ∀ s, ρ s = (r (toGS Ω _ (galEmb ℚ K Ω s))).left` using `fun s => Units.ext (hρ s)`. Establish `hI : ∀ s ∈ Ine (F` using `K) B, galEmb ℚ K Ω s ∈ Ine (F := ℚ) B := fun s hs => hs`. Establish `hl : ¬ B.valuation (l : Ω) < 1` using `fun h => hw (((places K Ω l B).2.2.1 w hB).1 h)`. Take `⟨p1, p2, p3, p4⟩` from `places ℚ Ω l B`.
+
+Establish `htriv : (∀ s ∈ Ine (F` using `ℚ) B, toGS Ω (S : Set Pl) s = 1) → ∃ χ : Fin 3 → G K Ω →* (Qbar l)ˣ, (∀ i, Af.KillsMu N (χ i)) ∧ Af.IsDiagOn ρ (Ine (F := K) B) χ := fun h => ⟨fun _ => 1, fun _ _ _ => rfl, 1, fun s hs => by rw [hρ', h _ (hI s hs), map_one]; simp⟩`. Distinguish the cases in `hT : B = ⊤`. Conclude with `htriv fun s hs => by rw [(p2 hT).1, Subgroup.mem_bot] at hs; rw [hs, map_one]`. Take `⟨v, hv⟩` from `p1 hT`. Distinguish the cases in `hvS : v ∈ S`.
+
+Use `swap`. Use `htriv fun s hs => (QuotientGroup.eq_one_iff s).2 ?_` and prove the remaining obligations. Use `Subgroup.le_topologicalClosure _ (Subgroup.subset_normalClosure ?_)` and prove the remaining obligations. Simplify using `only [Set.mem_iUnion]`. Conclude with `⟨v, hvS, B, hv, hs⟩`.
+
+Establish `hvl : (⟨v, hvS⟩ : S) ≠ F.vl` using `fun h => hl ((p3 v hv).2 (by have := hF.vl; rw [← h] at this; exact this))`. Take `⟨k, hk⟩` from `la_loc F hok g₁ r hr ⟨v, hvS⟩ hvl`. Take `⟨g, hg⟩` from `la_conj (hF.isOver ⟨v, hvS⟩) hv`. Set `θ : G K Ω →* (Qbar l)ˣ` to `(Units.map (algebraMap c.O (PadicAlgCl l)).toMonoidHom).comp ((Chr.dirG ℚ Ω ψ).comp (galEmb ℚ K Ω))`. Use `⟨fun i => θ ^ wt1 i, fun i s hs => ?_, ((r (toGS Ω _ g) * k).left)⁻¹, fun s hs => ?_⟩` and prove the remaining obligations.
+
+Establish `: Chr.cls ℚ Ω N (galEmb ℚ K Ω s) = 1` using `la_cls N _ hs`. Simplify using `[θ, Chr.dirG, this]`. Establish `h2` using `hg _ (hI s hs)`. Establish `h3 : g⁻¹ * galEmb ℚ K Ω s * g ∈ F.D ⟨v, hvS⟩` using `by rw [hF.D]; exact h2.1`. Establish `h4 : F.ηv ⟨v, hvS⟩ ⟨_, h3⟩ = 1` using `by show F.η.comp F.π (g⁻¹ * galEmb ℚ K Ω s * g) = 1`.
+
+Rewrite using `[hF.η, map_mul, map_mul, la_eta hK, map_inv, mul_one, inv_mul_cancel]`. Establish `h5 : F.Ψv ⟨v, hvS⟩ ⟨_, h3⟩ = Chr.dirG ℚ Ω ψ (galEmb ℚ K Ω s)` using `by show F.Ψ.comp F.π (g⁻¹ * galEmb ℚ K Ω s * g) = _`. Establish `: cycZ ℚ Ω l (galEmb ℚ K Ω s) = 1` using `p4 hl (hI s hs)`. Rewrite using `[hF.Ψ, map_mul, map_mul, map_inv, mul_right_comm, inv_mul_cancel, one_mul]`. Simplify using `[Chr.Psi, chiO, this]`.
+
+Establish `h6` using `hk ⟨_, h3⟩ (by rw [Subgroup.mem_subgroupOf, hF.I]; exact h2) h4`. Establish `h7 : F.loc ⟨v, hvS⟩ ⟨_, h3⟩ = (toGS Ω _ g)⁻¹ * toGS Ω _ (galEmb ℚ K Ω s) * toGS Ω _ g` using `by show F.π (g⁻¹ * galEmb ℚ K Ω s * g) = _`. Rewrite using `[hF.π, map_mul, map_mul, map_inv]`. Rewrite `h6` using `[h5, h7, map_mul, map_mul, map_inv]`. Establish `h8 : r (toGS Ω _ (galEmb ℚ K Ω s)) = r (toGS Ω _ g) * k * GG.ofGL (tor _ (θ s)) * (r (toGS Ω _ g) * k)⁻¹`.
+
+Rewrite using `[_root_.mul_inv_rev, mul_assoc, mul_assoc, ← mul_assoc _ k⁻¹, ← mul_assoc k, ← mul_assoc k]`. Use `erw [← h6]`. Use `group`. Rewrite using `[hρ', h8, la_left, inv_inv, ← mul_assoc, ← mul_assoc, inv_mul_cancel, one_mul, inv_mul_cancel_right, tor_val]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.UnitaryThreeInertia.levelAway_of_pt :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] (c : Coef l) {N : ℕ} [NeZero N] (e : ℕ) (ψ : DirichletCharacter c.O N) (o₁ : ℕ), HostData l e ψ o₁ →
     ∀ (S : Finset Pl) (A : S → ValuationSubring Ω) (F : Frame c.O (Formalism.ConjugateSelfDual.G ℚ Ω) (Gam Ω S) S), IsHostFrame Ω c e ψ S A F →

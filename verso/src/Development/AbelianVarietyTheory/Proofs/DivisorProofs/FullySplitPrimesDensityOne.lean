@@ -8,6 +8,11 @@ namespace GlobalTheory.DensitySplit
 
 open Filter Topology Set GroundTheory.Global
 
+/- English proof (translation)
+Establish `: {w : HeightOneSpectrum (𝓞 E) | w.under (𝓞 F) ∈ T} ⊆ ⋃ v ∈ (T : Set (HeightOneSpectrum (𝓞 F))), {w : HeightOneSpectrum (𝓞 E) | w.asIdeal ∣ v.asIdeal.map (algebraMap (𝓞 F) (𝓞 E))}`. Introduce `w hw`. Use `Set.mem_biUnion (x := w.under (𝓞 F)) hw ?_` and prove the remaining obligations. Use `show w.asIdeal ∣ _`. Rewrite using `[Ideal.dvd_iff_le]`.
+
+Conclude with `Ideal.map_le_iff_le_comap.mpr le_rfl`. Use `Set.Finite.subset (Set.Finite.biUnion T.finite_toSet fun v _ => ?_) this` and prove the remaining obligations. Use `Ideal.finite_factors ?_` and prove the remaining obligations. Conclude with `(Ideal.map_eq_bot_iff_of_injective (FaithfulSMul.algebraMap_injective (𝓞 F) (𝓞 E))).not.mpr v.ne_bot`.
+-/
 theorem finite_under_mem {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (T : Finset (HeightOneSpectrum (𝓞 F))) :
     {w : HeightOneSpectrum (𝓞 E) | w.under (𝓞 F) ∈ T}.Finite := by
@@ -24,6 +29,9 @@ theorem finite_under_mem {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
   exact (Ideal.map_eq_bot_iff_of_injective
       (FaithfulSMul.algebraMap_injective (𝓞 F) (𝓞 E))).not.mpr v.ne_bot
 
+/- English proof (translation)
+Introduce `x`. Use `⟨Rat.ringOfIntegersEquiv x, ?_⟩` and prove the remaining obligations. Establish `: algebraMap ℤ (𝓞 ℚ) = (Rat.ringOfIntegersEquiv.symm : ℤ →+* 𝓞 ℚ)` using `RingHom.ext_int _ _`. Rewrite using `[this]`. Conclude with `Rat.ringOfIntegersEquiv.symm_apply_apply x`.
+-/
 theorem algebraMap_int_ratIntegers_surjective : Function.Surjective (algebraMap ℤ (𝓞 ℚ)) := by
   intro x
   refine ⟨Rat.ringOfIntegersEquiv x, ?_⟩
@@ -31,6 +39,11 @@ theorem algebraMap_int_ratIntegers_surjective : Function.Surjective (algebraMap 
   rw [this]
   exact Rat.ringOfIntegersEquiv.symm_apply_apply x
 
+/- English proof (translation)
+Rewrite using `[← ncard_primesOver_of_splitsCompletely E hw]`. Use `congr 1`. Use extensionality with `P`. Establish `hinj : Function.Injective (Ideal.comap (algebraMap ℤ (𝓞 ℚ)))` using `Ideal.comap_injective_of_surjective _ algebraMap_int_ratIntegers_surjective`. Simplify using `only [Ideal.primesOver, Set.mem_setOf_eq]`.
+
+Use `and_congr Iff.rfl ?_` and prove the remaining obligations. Rewrite using `[Ideal.liesOver_iff, Ideal.liesOver_iff]`. Use `show w.asIdeal.under ℤ = P.under ℤ ↔ w.asIdeal.under (𝓞 ℚ) = P.under (𝓞 ℚ)`. Rewrite using `[← Ideal.under_under (B := 𝓞 ℚ) w.asIdeal, ← Ideal.under_under (B := 𝓞 ℚ) P]`. Conclude with `hinj.eq_iff`.
+-/
 theorem ncard_primesOver_int {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E))
     (hw : SplitsCompletely E (w.under (𝓞 ℚ))) :
     ((w.asIdeal.under ℤ).primesOver (𝓞 E)).ncard = Module.finrank ℚ E := by
@@ -46,6 +59,11 @@ theorem ncard_primesOver_int {E : Type} [Field E] [NumberField E] (w : HeightOne
   rw [← Ideal.under_under (B := 𝓞 ℚ) w.asIdeal, ← Ideal.under_under (B := 𝓞 ℚ) P]
   exact hinj.eq_iff
 
+/- English proof (translation)
+Unfold `NumberField.Set.HasDirichletDensity at hA ⊢`. Use `tendsto_of_tendsto_of_tendsto_of_le_of_le' hA tendsto_const_nhds ?_ ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with s (hs : 1 < s)`. Conclude with `div_le_div_of_nonneg_right (primeIdealZetaSum_mono hAB hs) (Set.primeIdealZetaSum_nonneg _ s)`. Use `filter_upwards [self_mem_nhdsWithin, (tendsto_primeIdealZetaSum_univ_atTop K).eventually_gt_atTop 0] with s (hs : 1 < s) hpos`.
+
+Conclude with `div_le_one_of_le₀ (primeIdealZetaSum_mono (subset_univ B) hs) hpos.le`.
+-/
 theorem hasDirichletDensity_one_of_subset {K : Type} [Field K] [NumberField K]
     {A B : Set (HeightOneSpectrum (𝓞 K))} (hAB : A ⊆ B) (hA : A.HasDirichletDensity 1) :
     B.HasDirichletDensity 1 := by
@@ -58,6 +76,15 @@ theorem hasDirichletDensity_one_of_subset {K : Type} [Field K] [NumberField K]
       (tendsto_primeIdealZetaSum_univ_atTop K).eventually_gt_atTop 0] with s (hs : 1 < s) hpos
     exact div_le_one_of_le₀ (primeIdealZetaSum_mono (subset_univ B) hs) hpos.le
 
+/- English proof (translation)
+Use `set Spl := {v : HeightOneSpectrum (𝓞 ℚ) | SplitsCompletely E v}`. Establish `hT : ∀ v ∈ Spl, SplitsCompletely E v` using `fun v hv => hv`. Establish `hn : (Module.finrank ℚ E : ℝ) ≠ 0`. Conclude with `(Module.finrank_pos (R := ℚ) (M := E)).ne'` after adjusting the coercions. Establish `h1 : (primesAbove E Spl).HasDirichletDensity 1`.
+
+Use `(hasDirichletDensity_primesAbove_iff hT _).mpr (hasDirichletDensity_setOf_splitsCompletely ℚ E)` as an intermediate fact. Rewrite `this` using `[mul_one_div_cancel hn]`. Then use the resulting hypothesis. Use `set Bad := {w : HeightOneSpectrum (𝓞 E) | w.under (𝓞 F) ∈ T}`. Establish `h2 : (primesAbove E Spl \ Bad).HasDirichletDensity 1`. Use `(hasDirichletDensity_iff_of_subset_of_isBoundedUnder diff_subset (isBoundedUnder_primeIdealZetaSum_of_finite ((finite_under_mem (E := E) T).subset ?_)) 1).mpr h1` and prove the remaining obligations.
+
+Introduce `w hw`. Assume the negation of the conclusion as `h`. Conclude with `hw.2 ⟨hw.1, h⟩`. Use `hasDirichletDensity_one_of_subset ?_ h2` and prove the remaining obligations. Introduce and unpack `w ⟨hw, hbad⟩`.
+
+Use `⟨hbad, ?_⟩` and prove the remaining obligations. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SplitsFully`. Establish `: (w.under (𝓞 F)).asIdeal.under ℤ = w.asIdeal.under ℤ` using `Ideal.under_under w.asIdeal`. Rewrite using `[this]`. Conclude with `ncard_primesOver_int w hw`.
+-/
 theorem hasDirichletDensity_splitsFully (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (hG : IsGalois ℚ E) (T : Finset (HeightOneSpectrum (𝓞 F))) :
     NumberField.Set.HasDirichletDensity {w : HeightOneSpectrum (𝓞 E) | w.under (𝓞 F) ∉ T ∧

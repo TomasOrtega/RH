@@ -14,6 +14,13 @@ namespace GlobalTheory.SqrtNegL
 
 open Polynomial
 
+/- English proof (translation)
+Establish `hint : IsIntegral F y` using `(Algebra.IsIntegral.isIntegral (R := ℚ_[l]) y).tower_top`. Establish `hmon : (X ^ 2 + C ((l : ℕ) : F)).Monic` using `(monic_X_pow 2).add_of_left (degree_C_le.trans_lt (by simp))`. Establish `hdeg : (X ^ 2 + C ((l : ℕ) : F)).natDegree = 2`. Apply the tactic sequence `rw [natDegree_add_eq_left_of_natDegree_lt] <;> simp`. Establish `hev : aeval y (X ^ 2 + C ((l : ℕ) : F)) = 0`.
+
+Simplify using `[hy]`. Establish `h1 : (minpoly F y).natDegree ≤ 2` using `hdeg ▸ natDegree_le_natDegree (minpoly.min F y hmon hev)`. Establish `h2 : 0 < (minpoly F y).natDegree` using `minpoly.natDegree_pos hint`. Establish `h3 : (minpoly F y).natDegree ≠ 1`. Introduce `h`.
+
+Take `⟨a, ha⟩` from `minpoly.natDegree_eq_one_iff.mp h`. Apply `hyK` to reduce the goal to its premises. Rewrite using `[← ha]`. Conclude with `hF a.2`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem natDegree_minpoly_sqrt (l : ℕ) [Fact l.Prime] (F : IntermediateField ℚ_[l] (Om l)) (y : Om l)
     (hF : F ≤ MaximalUnramifiedExtension l) (hy : y ^ 2 = -(l : Om l)) (hyK : y ∉ MaximalUnramifiedExtension l) :
     (minpoly F y).natDegree = 2 := by
@@ -35,6 +42,19 @@ theorem natDegree_minpoly_sqrt (l : ℕ) [Fact l.Prime] (F : IntermediateField �
     exact hF a.2
   omega
 
+/- English proof (translation)
+Introduce `l _ hl2 K M y hM hy hyK hyz hK`. Establish `hyK1 : y ∈ K.1` using `hK ▸ (le_sup_right : IntermediateField.adjoin ℚ_[l] {y} ≤ _) (IntermediateField.mem_adjoin_simple_self _ _)`. Establish `hMK0 : M ≤ K0 K` using `le_inf (hK ▸ le_sup_left) hM`. Establish `hA : IntermediateField.adjoin ℚ_[l] {y} ≤ K.1` using `(IntermediateField.adjoin_simple_le_iff).2 hyK1`. Establish `e1 : K.1 = K0 K ⊔ IntermediateField.adjoin ℚ_[l] {y}` using `le_antisymm (hK.le.trans (sup_le_sup_right hMK0 _)) (sup_le inf_le_left hA)`.
+
+Establish `e2 : K.1 ≤ Ks K 1`. Rewrite using `[e1]`. Conclude with `sup_le_sup_left ((IntermediateField.adjoin_simple_le_iff).2 hyz) _`. Establish `hd` using `natDegree_minpoly_sqrt l (K0 K) y inf_le_right hy hyK`. Establish `hf : Module.finrank ℚ_[l] ↥K.1 = Module.finrank ℚ_[l] ↥(K0 K) * 2`.
+
+Rewrite using `[← hd, ← GlobalTheory.HubLoc.finrank_sup_adjoin, ← e1]`. Establish `hpos` using `GlobalTheory.HubLoc.finrank_maxUnramifiedSubfield_padicFinExt_pos K`. Use `K.2` as an intermediate fact. Establish `htow` using `Module.finrank_mul_finrank ℚ_[l] ↥(K0 K) ↥K.1`. Establish `e3 : Module.finrank ↥(K0 K) ↥K.1 = 2`.
+
+Rewrite `htow` using `[hf]`. Conclude with `Nat.eq_of_mul_eq_mul_left hpos htow`. Use `⟨e1, e2, e3, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.HubLoc.finrank_Ks_eq l K 1 one_pos, hf]`. Establish `hodd : Odd l` using `(Fact.out : l.Prime).odd_of_ne_two hl2`.
+
+Establish `hev : 2 ∣ l - 1`. Take `⟨k, hk⟩` from `hodd`. Conclude with `⟨k, by omega⟩`. Take `⟨k, hk⟩` from `hev`. Rewrite using `[hk]`.
+
+Rewrite using `[Nat.sub_self, pow_zero, one_mul]`. Rewrite using `[Nat.mul_div_cancel_left k two_pos]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem structure_sqrt_neg : ∀ (l : ℕ) [Fact l.Prime], l ≠ 2 → ∀ (K : FinExt l) (M : IntermediateField ℚ_[l] (Om l)) (y : Om l), M ≤ MaximalUnramifiedExtension l → y ^ 2 = -(l : Om l) → y ∉ MaximalUnramifiedExtension l → y ∈ IntermediateField.adjoin ℚ_[l] {x : Om l | x ^ (l ^ 1) = 1} → K.1 = M ⊔ IntermediateField.adjoin ℚ_[l] {y} → K.1 = K0 K ⊔ IntermediateField.adjoin ℚ_[l] {y} ∧ K.1 ≤ Ks K 1 ∧ Module.finrank ↥(K0 K) ↥K.1 = 2 ∧ Module.finrank ℚ_[l] ↥(Ks K 1) = (l - 1) / 2 * Module.finrank ℚ_[l] ↥K.1 := by
   intro l _ hl2 K M y hM hy hyK hyz hK
   have hyK1 : y ∈ K.1 := hK ▸ (le_sup_right : IntermediateField.adjoin ℚ_[l] {y} ≤ _)

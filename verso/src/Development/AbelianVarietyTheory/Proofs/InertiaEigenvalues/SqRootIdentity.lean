@@ -28,6 +28,11 @@ noncomputable section
 
 namespace GlobalTheory.SingleDatum.AddValue
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.AdTh.ShortSeries.finite_levQ Dw l`. Use `letI : Fintype (Fin V.rank → LevQ Dw l) := Fintype.ofFinite _`. Unfold `transSum`. Rewrite using `[finsum_eq_sum_of_fintype]`. Use `GlobalTheory.WeilVacMove.isTheta_smul _ ?_` and prove the remaining obligations.
+
+Conclude with `Finset.sum_induction _ (IsThetaFunO ψ V W) (fun _ _ => GlobalTheory.WeilVacMove.isTheta_add) GlobalTheory.WeilVacMove.isTheta_zero fun q _ => GlobalTheory.WeilVacMove.isTheta_smul _ (GlobalTheory.AnisoMean.isTheta_heisO hψ hf _)`.
+-/
 theorem theta_transSum {D : D7} {H : Geo.Tor.Host D.host.E} {Dw : Datum H} {ψ : AddChar (AF D.host.F) ℂ}
     (hψ : IsStdChar D ψ (-1)) (V W : HSp D) (l : Geo.Tor.Level H) (ι : Dw.La →ₗ[𝓞 D.host.E] (Fin W.rank → D.host.E))
     (e : AE D) {f₀ : WO V W → ℂ} (hf : IsThetaFunO ψ V W f₀) (w : (Fin V.rank → LevQ Dw l) → ℂ) :
@@ -40,6 +45,15 @@ theorem theta_transSum {D : D7} {H : Geo.Tor.Host D.host.E} {Dw : Datum H} {ψ :
   exact Finset.sum_induction _ (IsThetaFunO ψ V W) (fun _ _ => GlobalTheory.WeilVacMove.isTheta_add) GlobalTheory.WeilVacMove.isTheta_zero
     fun q _ => GlobalTheory.WeilVacMove.isTheta_smul _ (GlobalTheory.AnisoMean.isTheta_heisO hψ hf _)
 
+/- English proof (translation)
+Establish `hc : ∀ s t : D.what₂.Tau, conjEmb (tauE D s) = conjEmb (tauE D t) → s = t` using `fun s t h => by`. Apply `GlobalTheory.StdRat.tauE_injective D` to reduce the goal to its premises. Use extensionality with `z`. Use `congrArg (starRingEnd ℂ) (RingHom.congr_fun h z)` as an intermediate fact. Simplify `this` using `[conjEmb]`.
+
+Take `⟨x1, x2, x3⟩` from `x`. Take `⟨y1, y2, y3⟩` from `y`. Take `⟨hx3, hx'⟩` from `hx`. Take `⟨hy3, hy'⟩` from `hy`. Simplify using `only at hx3 hy3 hx' hy'`.
+
+Establish `key : x1 = y1 ∧ (x2 : ℕ) = y2`. Apply the tactic sequence `rcases hx' with ⟨a1, a2⟩ | ⟨a1, a2⟩ <;> rcases hy' with ⟨b1, b2⟩ | ⟨b1, b2⟩`. Conclude with `⟨GlobalTheory.StdRat.tauE_injective D (a1.symm.trans b1), by omega⟩`. Conclude with `absurd (a1.symm.trans b1) (hne _ _)`. Conclude with `absurd (b1.symm.trans a1) (hne _ _)`.
+
+Conclude with `⟨hc _ _ (a1.symm.trans b1), by omega⟩`. Take `⟨k1, k2⟩` from `key`. Rewrite using `[k1, Fin.ext k2, hx3, hy3]`.
+-/
 theorem fvar_eq {D : D7} {m n : ℕ} {τ : D.host.E →+* ℂ} {i p : ℕ} {j : Fin n} {x y : FVar D m n}
     (hx : x.2.2 = j ∧ ((τ = tauE D x.1 ∧ (x.2.1 : ℕ) = i) ∨ (τ = conjEmb (tauE D x.1) ∧ (x.2.1 : ℕ) = p + i)))
     (hy : y.2.2 = j ∧ ((τ = tauE D y.1 ∧ (y.2.1 : ℕ) = i) ∨ (τ = conjEmb (tauE D y.1) ∧ (y.2.1 : ℕ) = p + i)))
@@ -63,6 +77,9 @@ theorem fvar_eq {D : D7} {m n : ℕ} {τ : D.host.E →+* ℂ} {i p : ℕ} {j : 
   obtain ⟨k1, k2⟩ := key
   rw [k1, Fin.ext k2, hx3, hy3]
 
+/- English proof (translation)
+Substitute `hz` using the available equality. Distinguish the cases in `hS : S = 0`. Simplify using `[hS]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem sq_root_identity (S m z : ℂ) (hm : m ≠ 0) (hz : z = m * (S * S)) : S = S⁻¹ * (m⁻¹ * z) := by
   subst hz
   by_cases hS : S = 0

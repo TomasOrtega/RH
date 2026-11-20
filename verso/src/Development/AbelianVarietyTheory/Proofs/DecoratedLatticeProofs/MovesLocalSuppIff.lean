@@ -18,6 +18,21 @@ open scoped Pointwise
 
 namespace GlobalTheory.FinPl
 
+/- English proof (translation)
+Establish `hT` using `((GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D (fun _ => True)).2 S).2.2.2 L y hL`. Establish `hV` using `((GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D (· = v)).2 S).2.2.2 L y hL`. Establish `hsub : ∀ i, y i ∈ idAt D (fun _ => True)`. Introduce `i`. Establish `h` using `hy i`.
+
+Simplify using `only [idAt, Submodule.mem_inf] at h ⊢`. Use `⟨h.1, ?_⟩` and prove the remaining obligations. Simplify using `only [Submodule.mem_iInf]`. Introduce `w`. Conclude with `absurd trivial w.2`.
+
+Rewrite using `[hT, hV]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, h⟩`. Conclude with `⟨hy, fun w hw e he => h w trivial e he⟩`. Introduce and unpack `⟨_, h⟩`.
+
+Use `⟨hsub, fun w _ e he => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hwv : w = v`. Conclude with `h w hwv e he`. Take `⟨ε, -, -, -, hAt, hOff⟩` from `(GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D (· = w)).1`. Establish `hzero : e • y = 0`.
+
+Use function extensionality and compare the values at `i`. Establish `hyi : y i ∈ idOff D (· = w)`. Establish `h'` using `hy i`. Simplify using `only [idAt, Submodule.mem_inf, Submodule.mem_iInf] at h'`. Simplify using `only [idOff, Submodule.mem_iInf]`.
+
+Introduce `u`. Use `h'.2 ⟨u.1, by rw [u.2]; exact hwv⟩` as an intermediate fact. Conclude with `this`. Establish `h1 : ε * e = e` using `(hAt e).1 he.1`. Establish `h2 : ε * y i = 0` using `(hOff (y i)).1 hyi`.
+
+Use `show e * y i = 0`. Rewrite using `[← h1, mul_comm ε e, mul_assoc, h2, mul_zero]`. Rewrite using `[hzero]`. Conclude with `(latV S L (· = w)).zero_mem`.
+-/
 theorem movesLocal_supp_iff {D : D7} (S : HSp D) (L : Lat S) (hL : Submodule.IsLattice D.host.E L) (v : Pl D)
     (y : Fin S.rank → AE D) (hy : ∀ i, y i ∈ idAt D (· = v)) :
     y ∈ latV S L (fun _ => True) ↔ y ∈ latV S L (· = v) := by
@@ -56,6 +71,21 @@ theorem movesLocal_supp_iff {D : D7} (S : HSp D) (L : Lat S) (hL : Submodule.IsL
       rw [hzero]
       exact (latV S L (· = w)).zero_mem
 
+/- English proof (translation)
+Introduce `D S L hL g`. Establish `hmv : ∀ (P : Pl D → Prop) (y : Fin S.rank → AE D), (∀ i, y i ∈ idAt D P) → ∀ i, (mt S g *ᵥ y) i ∈ idAt D P`. Introduce `P y hy i`. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (hy j)`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h v y hy`. Establish `hyT : ∀ i, y i ∈ idAt D (fun _ => True)`. Introduce `i`. Establish `h'` using `hy i`.
+
+Simplify using `only [idAt, Submodule.mem_inf] at h' ⊢`. Use `⟨h'.1, ?_⟩` and prove the remaining obligations. Simplify using `only [Submodule.mem_iInf]`. Introduce `w`. Conclude with `absurd trivial w.2`.
+
+Rewrite using `[← movesLocal_supp_iff S L hL.1 v y hy, ← movesLocal_supp_iff S L hL.1 v _ (hmv _ y hy)]`. Conclude with `h y hyT`. Introduce `h y hy`. Establish `hT` using `fun z => ((GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D (fun _ => True)).2 S).2.2.2 L z hL.1`. Rewrite using `[hT y, hT (mt S g *ᵥ y)]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, hy'⟩`. Use `⟨hmv _ y hy, fun w _ e he => ?_⟩` and prove the remaining obligations. Establish `hey : ∀ i, (e • y) i ∈ idAt D (· = w)` using `fun i => Ideal.mul_mem_right _ _ he.1`. Rewrite using `[← Matrix.mulVec_smul]`.
+
+Conclude with `(h w (e • y) hey).1 (hy' w trivial e he)`. Introduce and unpack `⟨_, hy'⟩`. Use `⟨hy, fun w _ e he => ?_⟩` and prove the remaining obligations. Establish `hey : ∀ i, (e • y) i ∈ idAt D (· = w)` using `fun i => Ideal.mul_mem_right _ _ he.1`. Use `(h w (e • y) hey).2 ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.mulVec_smul]`. Conclude with `hy' w trivial e he`.
+-/
 theorem movesLocal : ∀ (D : D7) (S : HSp D) (L : GlobalTheory.FinPl.Lat S), IsSelfDualC S L → ∀ g : GA D S, (GlobalTheory.FinPl.Moves S g L L (fun _ => True) ↔ ∀ v : GlobalTheory.FinPl.Pl D, GlobalTheory.FinPl.Moves S g L L (· = v)) := by
   intro D S L hL g
   have hmv : ∀ (P : Pl D → Prop) (y : Fin S.rank → AE D), (∀ i, y i ∈ idAt D P) → ∀ i, (mt S g *ᵥ y) i ∈ idAt D P := by

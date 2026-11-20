@@ -10,6 +10,15 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N F
 
 namespace UpperTheory.V.Loc.PstExact
 
+/- English proof (translation)
+Establish `hA : ∀ x ∈ LinearMap.ker p, T₁ x ∈ LinearMap.ker p` using `fun x hx => by`. Rewrite `hx`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[h₂, hx, map_zero]`. Rewrite using `[GlobalTheory.CuspGL.charpoly_eq_restrict_mul_mapQ (LinearMap.ker p) T₁ hA]`. Establish `h5` using `p.finrank_range_add_finrank_ker`.
+
+Rewrite `h5` using `[LinearMap.range_eq_top.2 hp, finrank_top]`. Use `congr 1`. Use `symm`. Use `eq_of_monic_of_dvd_of_natDegree_le (LinearMap.charpoly_monic _) (LinearMap.charpoly_monic _) ?_ ?_` and prove the remaining obligations. Use `charpoly_dvd_of_surjective (i.codRestrict (LinearMap.ker p) hpi) (fun y => ?_) _ _ fun x => Subtype.ext (h₀ x)` and prove the remaining obligations.
+
+Take `⟨x, hx⟩` from `hk y.2`. Conclude with `⟨x, Subtype.ext hx⟩`. Rewrite using `[LinearMap.charpoly_natDegree, LinearMap.charpoly_natDegree]`. Use linear arithmetic over natural numbers and integers. Use `symm`.
+
+Use `eq_of_monic_of_dvd_of_natDegree_le (LinearMap.charpoly_monic _) (LinearMap.charpoly_monic _) ?_ ?_ |>.symm` and prove the remaining obligations. Use `charpoly_dvd_of_surjective (p.quotKerEquivOfSurjective hp).toLinearMap (p.quotKerEquivOfSurjective hp).surjective _ _ fun x => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.mkQ_surjective _ x`. Conclude with `h₂ x`. Rewrite using `[LinearMap.charpoly_natDegree, LinearMap.charpoly_natDegree, (p.quotKerEquivOfSurjective hp).finrank_eq]`.
+-/
 theorem charpoly_exact {K M₀ M₁ M₂ : Type} [Field K] [AddCommGroup M₀] [Module K M₀] [FiniteDimensional K M₀]
     [AddCommGroup M₁] [Module K M₁] [FiniteDimensional K M₁] [AddCommGroup M₂] [Module K M₂] [FiniteDimensional K M₂]
     (i : M₀ →ₗ[K] M₁) (p : M₁ →ₗ[K] M₂) (hk : LinearMap.ker p ≤ LinearMap.range i) (hp : Function.Surjective p)
@@ -37,6 +46,15 @@ theorem charpoly_exact {K M₀ M₁ M₂ : Type} [Field K] [AddCommGroup M₀] [
       exact h₂ x
     · rw [LinearMap.charpoly_natDegree, LinearMap.charpoly_natDegree, (p.quotKerEquivOfSurjective hp).finrank_eq]
 
+/- English proof (translation)
+Establish `hs' : Function.Surjective (T.baseChange F)` using `LinearMap.lTensor_surjective F hs`. Establish `he' : Function.Exact (S.baseChange F) (T.baseChange F)` using `lTensor_exact F he hs`. Establish `hle : letterKer m₂ F τ ≤ (letterKer m₁ F τ).map (T.baseChange F)` using `iSup_le fun c => by`. Introduce and unpack `_ ⟨y, rfl⟩`. Take `⟨y, rfl⟩` from `hs' y`.
+
+Use `⟨_, Submodule.mem_iSup_of_mem c ⟨y, rfl⟩, ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun (congrArg (LinearMap.baseChange F) (hT c)) y` as an intermediate fact. Rewrite `this` using `[LinearMap.baseChange_comp, LinearMap.baseChange_comp, LinearMap.comp_apply, LinearMap.comp_apply]`. Simplify using `[this]`. Introduce `y hy`.
+
+Take `⟨z, rfl⟩` from `letterQ_surjective m₁ F τ y`. Establish `h1 : T.baseChange F z ∈ letterKer m₂ F τ`. Rewrite using `[← ker_letterQ]`. Conclude with `hy`. Take `⟨z', hz', e⟩` from `hle h1`.
+
+Take `⟨u, hu⟩` from `(he' (z - z')).1 (by rw [map_sub, e, sub_self])`. Use `⟨letterQ m₀ F τ u, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `letterQ m₁ F τ (S.baseChange F u) = _`. Rewrite `hz'` using `[← ker_letterQ]`. Rewrite using `[hu, map_sub, LinearMap.mem_ker.1 hz', sub_zero]`.
+-/
 theorem letter_exact {LL U D₀ D₁ D₂ : Type} [Field LL] [Field U] [AddCommGroup D₀] [Module LL D₀] [AddCommGroup D₁]
     [Module LL D₁] [AddCommGroup D₂] [Module LL D₂] (m₀ : U →+* End LL D₀) (m₁ : U →+* End LL D₁)
     (m₂ : U →+* End LL D₂) (F : Type) [Field F] [Algebra LL F] (τ : U →+* F) (S : D₀ →ₗ[LL] D₁) (T : D₁ →ₗ[LL] D₂)
@@ -80,6 +98,15 @@ def dUr {f : V₀ →ₗ[↥LL.1] V₁} (hf : ∀ g v, f (ρ₀ g v) = ρ₁ g (
 variable {i : V₀ →ₗ[↥LL.1] V₁} {p : V₁ →ₗ[↥LL.1] V₂} (hi : ∀ g v, i (ρ₀ g v) = ρ₁ g (i v))
   (hp : ∀ g v, p (ρ₁ g v) = ρ₂ g (p v))
 
+/- English proof (translation)
+Establish `hex : Function.Exact (i.restrictScalars ℚ_[l]) (p.restrictScalars ℚ_[l])` using `h2`. Establish `hexT` using `Module.Flat.rTensor_exact (Bst P) hex`. Establish `hinj : Function.Injective ((i.restrictScalars ℚ_[l]).rTensor (Bst P))` using `Module.Flat.rTensor_preserves_injective_linearMap _ h1`. Use `⟨fun x y h => Subtype.ext (hinj ?_), fun y => ⟨fun h => ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← tensV_eq_rTensor, ← tensV_eq_rTensor]`.
+
+Conclude with `congrArg Subtype.val h`. Establish `h0 : tensV P p (y : V₁ ⊗[ℚ_[l]] Bst P) = 0` using `congrArg Subtype.val h`. Rewrite `h0` using `[tensV_eq_rTensor]`. Take `⟨z, hz⟩` from `(hexT _).mp h0`. Establish `hz' : tensV P i z = y` using `by rw [tensV_eq_rTensor]; exact hz`.
+
+Take `⟨K', hK'⟩` from `(mem_Dpst P ρ₁).mp y.2`. Establish `hzD : z ∈ Dpst P ρ₀`. Use `(mem_Dpst P ρ₀).mpr ⟨K', fun g hg => hinj ?_⟩` and prove the remaining obligations. Rewrite using `[← tensV_eq_rTensor, ← tensV_eq_rTensor, tensV_stRep P ρ₀ ρ₁ i hi, hz', hK' g hg]`. Conclude with `⟨⟨z, hzD⟩, Subtype.ext hz'⟩`.
+
+Introduce and unpack `⟨x, rfl⟩`. Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `tensV P p (tensV P i x) = 0`. Rewrite using `[tensV_eq_rTensor, tensV_eq_rTensor]`. Conclude with `(hexT _).2 ⟨_, rfl⟩`.
+-/
 theorem dmap_exact (h1 : Function.Injective i) (h2 : Function.Exact i p) :
     Function.Injective (dmap P hi) ∧ Function.Exact (dmap P hi) (dmap P hp) := by
   have hex : Function.Exact (i.restrictScalars ℚ_[l]) (p.restrictScalars ℚ_[l]) := h2
@@ -107,6 +134,17 @@ variable [FiniteDimensional ↥LL.1 V₀] [FiniteDimensional ↥LL.1 V₁] [Fini
 
 include hi in
 
+/- English proof (translation)
+Take `⟨hdom, hfrac, -⟩` from `GlobalTheory.Pst.stRegular l P AI ⟨T⟩`. Use `haveI := LL.2`. Use `haveI : FiniteDimensional ℚ_[l] V₀ := Module.Finite.trans ↥LL.1 V₀`. Use `haveI : FiniteDimensional ℚ_[l] V₁ := Module.Finite.trans ↥LL.1 V₁`. Use `haveI : FiniteDimensional ℚ_[l] V₂ := Module.Finite.trans ↥LL.1 V₂`.
+
+Establish `b₀` using `GlobalTheory.T.finrank_dpst_unramified_le_dim_representation P hdom hfrac ρ₀`. Establish `b₂` using `GlobalTheory.T.finrank_dpst_unramified_le_dim_representation P hdom hfrac ρ₂`. Use `haveI f₀ : FiniteDimensional ↥(MaximalUnramifiedExtension l) (DpstUr P ρ₀) := Module.rank_lt_aleph0_iff.mp (b₀.trans_lt (Cardinal.natCast_lt_aleph0))`. Use `haveI f₂ : FiniteDimensional ↥(MaximalUnramifiedExtension l) (DpstUr P ρ₂) := Module.rank_lt_aleph0_iff.mp (b₂.trans_lt (Cardinal.natCast_lt_aleph0))`. Use `haveI := hV.finite`.
+
+Rewrite `b₀`, `b₂` using `[← finrank_eq_rank, Nat.cast_le]`. Establish `b₁` using `((isPst_iff P ρ₁).1 hV).2`. Take `⟨e1, e2⟩` from `dmap_exact P hi hp h1 h2`. Establish `e1' : Function.Injective (dUr P hi)` using `e1`. Establish `e2' : Function.Exact (dUr P hi) (dUr P hp)` using `e2`.
+
+Establish `h4` using `(dUr P hp).finrank_range_add_finrank_ker`. Rewrite `h4` using `[e2'.linearMap_ker_eq, LinearMap.finrank_range_of_inj e1']`. Establish `hex : Function.Exact (i.restrictScalars ℚ_[l]) (p.restrictScalars ℚ_[l])` using `h2`. Establish `h5` using `(p.restrictScalars ℚ_[l]).finrank_range_add_finrank_ker`. Rewrite `h5` using `[hex.linearMap_ker_eq, LinearMap.finrank_range_of_inj (f := i.restrictScalars ℚ_[l]) h1, (LinearMap.range_eq_top (f := p.restrictScalars ℚ_[l])).2 h3, finrank_top]`.
+
+Establish `h6` using `(LinearMap.range (dUr P hp)).finrank_le`. Use `⟨(isPst_iff P ρ₀).2 ⟨f₀, by omega⟩, (isPst_iff P ρ₂).2 ⟨f₂, by omega⟩, ?_⟩` and prove the remaining obligations. Conclude with `(LinearMap.range_eq_top (f := dUr P hp)).1 (Submodule.eq_top_of_finrank_eq (by omega))`.
+-/
 theorem isPst_exact {AI : LocAinf l P} (T : LocTied l P AI) (h1 : Function.Injective i) (h2 : Function.Exact i p)
     (h3 : Function.Surjective p) (hV : IsPst P ρ₁) :
     IsPst P ρ₀ ∧ IsPst P ρ₂ ∧ Function.Surjective (dmap P hp) := by
@@ -149,6 +187,17 @@ variable {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P} (T : LocTi
 
 include T in
 
+/- English proof (translation)
+Take `⟨p₀, p₂, hs⟩` from `isPst_exact P hi hp T h1 h2 h3 hV`. Take `⟨-, e2⟩` from `dmap_exact P hi hp h1 h2`. Use `⟨p₀, p₂, fun σ => ?_⟩` and prove the remaining obligations. Use `haveI := p₀.finite`. Use `haveI := hV.finite`.
+
+Use `haveI := p₂.finite`. Rewrite using `[charPol_wdPst P ι Bw h hj ρ₀ p₀, charPol_wdPst P ι Bw h hj ρ₁ hV, charPol_wdPst P ι Bw h hj ρ₂ p₂]`. Use `charpoly_exact (wdLin P ι hi) (wdLin P ι hp) ?_ ?_ ?_ (fun x => ?_) _ _ _ (wdLin_wdRho P ι Bw h hj hi σ) (wdLin_wdRho P ι Bw h hj hp σ)` and prove the remaining obligations. Use `letI := algC ι LL`. Conclude with `letter_exact _ _ _ ℂ (urC ι) _ _ _ _ e2 hs`.
+
+Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← span_wdMk P ι ρ₂, Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨x, rfl⟩` from `hs x`. Conclude with `⟨wdMk P ι ρ₁ x, rfl⟩`. Rewrite using `[LetterDim.finrank_wdSpace l P ι _ _ _ ρ₀ p₀, LetterDim.finrank_wdSpace l P ι _ _ _ ρ₁ hV, LetterDim.finrank_wdSpace l P ι _ _ _ ρ₂ p₂]`.
+
+Establish `h5` using `p.finrank_range_add_finrank_ker`. Rewrite `h5` using `[h2.linearMap_ker_eq, LinearMap.finrank_range_of_inj h1, LinearMap.range_eq_top.2 h3, finrank_top]`. Use linear arithmetic over natural numbers and integers. Establish `: (wdLin P ι hp).comp (wdLin P ι hi) = 0` using `LinearMap.ext_on_range (span_wdMk P ι ρ₀) fun x => by`. Rewrite using `[LinearMap.comp_apply, wdLin_mk, wdLin_mk, e2.apply_apply_eq_zero, wdMk_zero, LinearMap.zero_apply]`.
+
+Conclude with `LinearMap.congr_fun this x`.
+-/
 theorem charPol_exact
     {V₀ V₁ V₂ : Type} [AddCommGroup V₀] [Module ↥LL.1 V₀] [Module ℚ_[l] V₀] [IsScalarTower ℚ_[l] ↥LL.1 V₀]
     [AddCommGroup V₁] [Module ↥LL.1 V₁] [Module ℚ_[l] V₁] [IsScalarTower ℚ_[l] ↥LL.1 V₁]
@@ -191,6 +240,11 @@ section Tri
 
 variable {Γ k : Type} [Group Γ] [Field k] {n : ℕ}
 
+/- English proof (translation)
+Set `f : Γ →* Matrix (Fin n) (Fin n) k` to `{ toFun := fun g => (r g).val.submatrix Fin.succ Fin.succ map_one' := by`. Rewrite using `[map_one, Units.val_one, Matrix.submatrix_one _ (Fin.succ_injective n)]`. Use the proof step `map_mul' := fun g g' => by`. Use extensionality with `i j`. Rewrite using `[map_mul, Units.val_mul, Matrix.submatrix_apply, Matrix.mul_apply, Matrix.mul_apply, Fin.sum_univ_succ, hr g i.succ 0 (Fin.succ_pos i), zero_mul, zero_add]`.
+
+Use `rfl }`. Conclude with `⟨f.toHomUnits, fun _ _ _ => rfl⟩`.
+-/
 theorem exists_tail (r : Γ →* GL (Fin (n + 1)) k) (hr : ∀ g i j, j < i → (r g).val i j = 0) :
     ∃ r' : Γ →* GL (Fin n) k, ∀ g (i j : Fin n), (r' g).val i j = (r g).val i.succ j.succ := by
   let f : Γ →* Matrix (Fin n) (Fin n) k :=
@@ -204,6 +258,11 @@ theorem exists_tail (r : Γ →* GL (Fin (n + 1)) k) (hr : ∀ g i j, j < i → 
         rfl }
   exact ⟨f.toHomUnits, fun _ _ _ => rfl⟩
 
+/- English proof (translation)
+Use `⟨fun x y e => ?_, fun y => ⟨fun e => ⟨fun _ => y 0, ?_⟩, ?_⟩⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Rewrite using `[Subsingleton.elim i 0]`. Simplify using `using congrFun e 0`. Use function extensionality and compare the values at `i`.
+
+Use `Fin.cases (by simp) (fun j => ?_) i` and prove the remaining obligations. Simplify using `using (congrFun e j).symm`. Introduce and unpack `⟨x, rfl⟩`. Use function extensionality and compare the values at `j`. Simplify using `[LinearMap.funLeft_apply]`.
+-/
 theorem exact_line : Function.Injective ((LinearMap.single k (fun _ : Fin (n + 1) => k) 0).comp
       (LinearMap.proj (0 : Fin 1) : (Fin 1 → k) →ₗ[k] k)) ∧
     Function.Exact ((LinearMap.single k (fun _ : Fin (n + 1) => k) 0).comp
@@ -229,6 +288,9 @@ variable {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P} (T : LocTi
   {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O]
   (Bw : LocBridge l E Ω (Dec (F := E) A) O) (h : IsPlaceOver A w) (hj : Induces Bw) {LL : FinExt l}
 
+/- English proof (translation)
+Rewrite using `[← (WD.charPol_monic _ σ).natDegree_eq_zero, WD.charPol_natDegree, lpDim_wdPst ι Bw h hj hV, LetterDim.finrank_wdSpace l P ι _ _ _ ρ hV, finrank_fin_fun]`.
+-/
 theorem charPol_zero {ρ : Representation ↥LL.1 ↥(GK Bw.Kw) (Fin 0 → ↥LL.1)} (hV : IsPst P ρ) (σ : ↥(Weil h)) :
     (wdPst P ι Bw h hj ρ).charPol σ = 1 := by
   rw [← (WD.charPol_monic _ σ).natDegree_eq_zero, WD.charPol_natDegree, lpDim_wdPst ι Bw h hj hV,
@@ -236,6 +298,9 @@ theorem charPol_zero {ρ : Representation ↥LL.1 ↥(GK Bw.Kw) (Fin 0 → ↥LL
 
 include T in
 
+/- English proof (translation)
+Take `⟨p₀, p₂, H⟩` from `charPol_exact T ι Bw h hj (ρ₀ := (1 : Representation ↥LL.1 ↥(GK Bw.Kw) (Fin 0 → ↥LL.1))) (i := 0) (p := e.toLinearMap) (fun g v => by simp) he (Function.injective_of_subsingleton _) (fun y => by simp [@eq_comm _ 0 y]) e.surjective hV`. Conclude with `⟨p₂, fun σ => by rw [H, charPol_zero ι Bw h hj p₀, one_mul]⟩`.
+-/
 theorem charPol_equiv {n : ℕ} {ρ₁ ρ₂ : Representation ↥LL.1 ↥(GK Bw.Kw) (Fin n → ↥LL.1)}
     (e : (Fin n → ↥LL.1) ≃ₗ[↥LL.1] (Fin n → ↥LL.1)) (he : ∀ g x, e (ρ₁ g x) = ρ₂ g (e x)) (hV : IsPst P ρ₁) :
     IsPst P ρ₂ ∧ ∀ σ, (wdPst P ι Bw h hj ρ₁).charPol σ = (wdPst P ι Bw h hj ρ₂).charPol σ := by
@@ -246,6 +311,19 @@ theorem charPol_equiv {n : ℕ} {ρ₁ ρ₂ : Representation ↥LL.1 ↥(GK Bw.
 
 include T in
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `r c _ _`. Use `⟨fun _ τ a => ?_, fun hV => ⟨fun i => i.elim0, fun σ => ?_⟩⟩` and prove the remaining obligations. Simplify using `only [LocBridge.multE, Formalism.WeaklyAdmissibleFiltrations.multV, finrank_zero_of_subsingleton, Finset.univ_eq_empty, Finset.sum_empty, sub_self]`.
+
+Rewrite using `[charPol_zero ι Bw h hj hV, Finset.univ_eq_empty, Finset.prod_empty]`. Consider the case `succ n ih`. Introduce `r c hr hc`. Take `⟨r', hr'⟩` from `exists_tail r hr`. Take `⟨ih₁, ih₂⟩` from `ih r' (fun i => c i.succ) (fun g i j hij => by rw [hr', hr g _ _ (Fin.succ_lt_succ_iff.2 hij)]) (fun g i => by rw [hr', hc])`.
+
+Take `⟨h1, h2⟩` from `exact_line (k := ↥LL.1) (n := n)`. Establish `h3` using `LinearMap.funLeft_surjective_of_injective ↥LL.1 ↥LL.1 _ (Fin.succ_injective n)`. Establish `hi : ∀ g v, ((LinearMap.single ↥LL.1 (fun _ : Fin (n + 1) => ↥LL.1) 0).comp (LinearMap.proj (0 : Fin 1) : (Fin 1 → ↥LL.1) →ₗ[↥LL.1] ↥LL.1)) (Bw.repE LL (c 0) g v) = Bw.repE LL r g (((LinearMap.single ↥LL.1 (fun _ : Fin (n + 1) => ↥LL.1) 0).comp (LinearMap.proj (0 : Fin 1) : (Fin …` using `fun g v => by`. Rewrite using `[GlobalTheory.ConjLocal.repE_apply, GlobalTheory.ConjLocal.repE_apply]`. Use function extensionality and compare the values at `i`.
+
+Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `[Matrix.mulVec, dotProduct, hc, Fin.sum_univ_succ]`. Simplify using `[Matrix.mulVec, dotProduct, hr _ j.succ 0 (Fin.succ_pos j), Fin.sum_univ_succ]`. Establish `hp : ∀ g v, LinearMap.funLeft ↥LL.1 ↥LL.1 (Fin.succ : Fin n → Fin (n + 1)) (Bw.repE LL r g v) = Bw.repE LL r' g (LinearMap.funLeft ↥LL.1 ↥LL.1 Fin.succ v)` using `fun g v => by`. Rewrite using `[GlobalTheory.ConjLocal.repE_apply, GlobalTheory.ConjLocal.repE_apply]`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[LinearMap.funLeft_apply, Matrix.mulVec, dotProduct, hr _ i.succ 0 (Fin.succ_pos i), Fin.sum_univ_succ, hr']`. Use `⟨fun hd τ a => ?_, fun hV => ?_⟩` and prove the remaining obligations. Take `⟨-, d₂, H⟩` from `GlobalTheory.Per.ExactMult.exact_hodge_add l P AI T Bw.Kw LL _ _ _ _ _ _ _ _ hi hp h1 h3 h2.linearMap_ker_eq.symm (by rw [IsDR, finrank_fin_fun]; exact hd)`. Rewrite `d₂` using `[IsDR, finrank_fin_fun]`.
+
+Rewrite using `[Fin.sum_univ_succ, ← ih₁ d₂ τ a]`. Conclude with `(H τ a).2.1`. Take `⟨p₀, p₂, H⟩` from `charPol_exact T ι Bw h hj hi hp h1 h2 h3 hV`. Take `⟨q, H'⟩` from `ih₂ p₂`. Conclude with `⟨fun i => Fin.cases p₀ q i, fun σ => by rw [Fin.prod_univ_succ, H, H']⟩`.
+-/
 theorem tri (n : ℕ) : ∀ (r : ↥(Dec (F := E) A) →* GL (Fin n) ↥LL.1) (c : Fin n → ↥(Dec (F := E) A) →* GL (Fin 1) ↥LL.1),
     (∀ g i j, j < i → (r g).val i j = 0) →
     (∀ g i, (r g).val i i = (c i g).val 0 0) →
@@ -290,6 +368,9 @@ theorem tri (n : ℕ) : ∀ (r : ↥(Dec (F := E) A) →* GL (Fin n) ↥LL.1) (c
       obtain ⟨q, H'⟩ := ih₂ p₂
       exact ⟨fun i => Fin.cases p₀ q i, fun σ => by rw [Fin.prod_univ_succ, H, H']⟩
 
+/- English proof (translation)
+Take `⟨L₁, r₁, hm₁, hV₁, e₁⟩` from `wdAt_of_isPstAt ι Bw h hj (r := r) ⟨LL, r₂, hm₂, hV₂⟩`. Establish `h₁ : L₁.1 ≤ (supExt L₁ LL).1` using `le_sup_left`. Establish `h₂ : LL.1 ≤ (supExt L₁ LL).1` using `le_sup_right`. Establish `e` using `IsModel.unique Bw r (hm₁.enlarge h₁) (hm₂.enlarge h₂)`. Rewrite using `[e₁, ← GlobalTheory.T.charpoly_weilDeligne_potSemistable_enlarge_coefficients P ι Bw h hj h₁ r₁ hV₁ (GlobalTheory.T.isPotentiallySemistable_coefficientField_enlarge P Bw h₁ r₁ hV₁), ← GlobalTheory.T.charpoly_weilDeligne_potSemistable_enlarge_coefficients P ι Bw h hj h₂ r₂ hV₂ (Gl …`.
+-/
 theorem charPol_model {n : ℕ} {r : ↥(Dec (F := E) A) →* GL (Fin n) (Om l)} {r₂ : ↥(Dec (F := E) A) →* GL (Fin n) ↥LL.1}
     (hm₂ : IsModel Bw r LL r₂) (hV₂ : IsPst P (Bw.repE LL r₂)) (σ : ↥(Weil h)) :
     (wdAt P ι Bw h hj r).charPol σ = (wdPst P ι Bw h hj (Bw.repE LL r₂)).charPol σ := by
@@ -300,6 +381,13 @@ theorem charPol_model {n : ℕ} {r : ↥(Dec (F := E) A) →* GL (Fin n) (Om l)}
   rw [e₁, ← GlobalTheory.T.charpoly_weilDeligne_potSemistable_enlarge_coefficients P ι Bw h hj h₁ r₁ hV₁ (GlobalTheory.T.isPotentiallySemistable_coefficientField_enlarge P Bw h₁ r₁ hV₁),
     ← GlobalTheory.T.charpoly_weilDeligne_potSemistable_enlarge_coefficients P ι Bw h hj h₂ r₂ hV₂ (GlobalTheory.T.isPotentiallySemistable_coefficientField_enlarge P Bw h₂ r₂ hV₂), e]
 
+/- English proof (translation)
+Establish `er : ∀ g i, (((r₂ g).val i i : ↥LL.1) : Om l) = (c i g).val 0 0` using `fun g i => by`. Rewrite using `[← hc, ← hm.2]`. Both sides reduce to the same expression. Set `f : Fin n → ↥(Dec (F` to `E) A) →* Matrix (Fin 1) (Fin 1) ↥LL.1 := fun i => { toFun := fun g => Matrix.of fun _ _ => (r₂ g).val i i map_one' := by`. Use extensionality with `a b`.
+
+Rewrite using `[Subsingleton.elim a b]`. Simplify using the standard rewrite rules. Use the proof step `map_mul' := fun g g' => by`. Use extensionality with `a b`. Rewrite using `[Matrix.mul_apply, Fin.sum_univ_one, Matrix.of_apply, Matrix.of_apply, Matrix.of_apply, MulMemClass.coe_mul, er, er, er, map_mul, Units.val_mul, Matrix.mul_apply, Fin.sum_univ_one] }`.
+
+Use `⟨fun i => (f i).toHomUnits, fun i => ⟨hm.1, ?_⟩, fun _ _ => rfl⟩` and prove the remaining obligations. Use extensionality with `g a b`. Rewrite using `[Subsingleton.elim a 0, Subsingleton.elim b 0]`. Conclude with `er g i`.
+-/
 theorem exists_diag {n : ℕ} {r : ↥(Dec (F := E) A) →* GL (Fin n) (Om l)}
     {c : Fin n → ↥(Dec (F := E) A) →* GL (Fin 1) (Om l)} (hc : ∀ g i, (r g).val i i = (c i g).val 0 0)
     {r₂ : ↥(Dec (F := E) A) →* GL (Fin n) ↥LL.1} (hm : IsModel Bw r LL r₂) :
@@ -324,6 +412,17 @@ theorem exists_diag {n : ℕ} {r : ↥(Dec (F := E) A) →* GL (Fin n) (Om l)}
 
 include T in
 
+/- English proof (translation)
+Set `r' : ↥(Dec (F` to `E) A) →* GL (Fin n) (Om l) := (MulAut.conj M).toMonoidHom.comp r`. Establish `hr' : ∀ g, r' g = M * r g * M⁻¹` using `fun _ => rfl`. Establish `htri : ∀ {L : FinExt l} {r₂ : ↥(Dec (F` using `E) A) →* GL (Fin n) ↥L.1}, IsModel Bw r' L r₂ → ∀ g i j, j < i → (r₂ g).val i j = 0 := fun {L r₂} hm g i j hij => Subtype.ext (by`. Use `hr g i j hij` as an intermediate fact. Rewrite `this` using `[← hr', ← hm.2]`.
+
+Conclude with `this)`. Use `⟨fun τ J J' hJ hJ' => ?_, fun ⟨L₁, r₁, hm₁, hV₁⟩ => ?_⟩` and prove the remaining obligations. Take `⟨L, r₂, hm, hd, τ₂, hτ, H⟩` from `(GlobalTheory.ConjLocal.local_conj l P E Ω O _ Bw n r r' M hr').2.2.2 τ J hJ`. Take `⟨c₂, hm', hc₂⟩` from `exists_diag Bw (r := r') hc hm`. Use extensionality with `a`.
+
+Use `(tri T ι Bw h hj n r₂ c₂ (htri hm) hc₂).1 hd τ₂ a` as an intermediate fact. Rewrite `this` using `[← H, Finset.sum_congr rfl fun i _ => ((hJ' i).count_eq P (hm' i) hτ a).symm]`. Rewrite using `[Multiset.count_sum']`. Conclude with `this` after adjusting the coercions. Take `⟨L, hL, r₂, hm, e, he⟩` from `GlobalTheory.ConjLocal.exists_conj_model M hr' hm₁`.
+
+Take `⟨c₂, hm', hc₂⟩` from `exists_diag Bw (r := r') hc hm`. Establish `q₁` using `GlobalTheory.T.isPotentiallySemistable_coefficientField_enlarge P Bw hL r₁ hV₁`. Take `⟨q₂, H⟩` from `charPol_equiv T ι Bw h hj e he q₁`. Take `⟨q₃, H'⟩` from `(tri T ι Bw h hj n r₂ c₂ (htri hm) hc₂).2 q₂`. Use `⟨fun i => ⟨L, c₂ i, hm' i, q₃ i⟩, fun σ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[charPol_model ι Bw h hj (hm₁.enlarge hL) q₁, H, H']`. Conclude with `Finset.prod_congr rfl fun i _ => (charPol_model ι Bw h hj (hm' i) (q₃ i) σ).symm`.
+-/
 theorem flag {n : ℕ} (r : ↥(Dec (F := E) A) →* GL (Fin n) (Om l))
     (c : Fin n → ↥(Dec (F := E) A) →* GL (Fin 1) (Om l)) (M : GL (Fin n) (Om l))
     (hr : ∀ g i j, j < i → (M * r g * M⁻¹).val i j = 0) (hc : ∀ g i, (M * r g * M⁻¹).val i i = (c i g).val 0 0) :

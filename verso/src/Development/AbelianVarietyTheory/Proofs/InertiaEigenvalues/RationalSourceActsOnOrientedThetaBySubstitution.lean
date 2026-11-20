@@ -11,6 +11,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.RatSubst
 
+/- English proof (translation)
+Introduce `D ψ S T χS χT ω hω f hf γ hγ x`. Establish `h` using `GlobalTheory.SiegelFormula.om_rat_apply hω hγ (one_mem (GQ T)) (actO S T γ⁻¹ 1 x) hf (GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hω.std hf _)`. Establish `e : actO S T γ 1 (actO S T γ⁻¹ 1 x) = x`. Establish `h1 : Formalism.L2.Theta.mt T 1 = 1` using `rfl`. Establish `h2 : Formalism.L2.Theta.mt S γ * Formalism.L2.Theta.mt S γ⁻¹ = 1`.
+
+Establish `: Formalism.L2.Theta.mt S (γ * γ⁻¹) = Formalism.L2.Theta.mt S γ * Formalism.L2.Theta.mt S γ⁻¹` using `rfl`. Rewrite using `[← this, mul_inv_cancel]`. Both sides reduce to the same expression. Unfold `actO`. Rewrite using `[inv_inv, h1, Matrix.one_mul, Matrix.one_mul, Matrix.mul_assoc, h2, Matrix.mul_one]`.
+
+Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem om_rat_left_apply : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (ω : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT ω → ∀ f, IsThetaFunO ψ S T f → ∀ γ ∈ GQ S, ∀ x, ω (γ, 1) f x = f (actO S T γ⁻¹ 1 x) := by
   intro D ψ S T χS χT ω hω f hf γ hγ x
   have h := GlobalTheory.SiegelFormula.om_rat_apply hω hγ (one_mem (GQ T)) (actO S T γ⁻¹ 1 x) hf

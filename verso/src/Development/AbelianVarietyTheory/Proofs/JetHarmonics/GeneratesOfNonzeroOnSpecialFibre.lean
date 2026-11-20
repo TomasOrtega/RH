@@ -31,15 +31,26 @@ section Val
 variable {V K' : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K'] [Algebra V K']
   [IsFractionRing V K']
 
+/- English proof (translation)
+Establish `: valV V (algebraMap V K' u) = 1`. Rewrite using `[valV, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]`. Conclude with `fun h => (IsLocalRing.mem_maximalIdeal _).1 h u.isUnit`. Simplify using `[vV, this]`.
+-/
 theorem vV_unit (u : Vˣ) : vV V (algebraMap V K' u) = 0 := by
   have : valV V (algebraMap V K' u) = 1 := by
     rw [valV, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]
     exact fun h => (IsLocalRing.mem_maximalIdeal _).1 h u.isUnit
   simp [vV, this]
 
+/- English proof (translation)
+Simplify using `[vV]`.
+-/
 theorem vV_pow {x : K'} (hx : x ≠ 0) (n : ℕ) : vV V (x ^ n) = n * vV V x := by
   simp [vV]
 
+/- English proof (translation)
+Establish `h0 : algebraMap V K' a ≠ 0` using `by simpa using ha`. Establish `: valV V (algebraMap V K' a) < 1`. Rewrite using `[valV, HeightOneSpectrum.valuation_lt_one_iff_mem]`. Conclude with `hu`. Use `(WithZero.log_lt_log (valV_ne_zero (V := V) h0) one_ne_zero).2 this` as an intermediate fact.
+
+Simplify using `only [vV]`. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem vV_pos {a : V} (ha : a ≠ 0) (hu : ¬ IsUnit a) : 0 < vV V (algebraMap V K' a) := by
   have h0 : algebraMap V K' a ≠ 0 := by simpa using ha
   have : valV V (algebraMap V K' a) < 1 := by
@@ -48,12 +59,28 @@ theorem vV_pos {a : V} (ha : a ≠ 0) (hu : ¬ IsUnit a) : 0 < vV V (algebraMap 
   have := (WithZero.log_lt_log (valV_ne_zero (V := V) h0) one_ne_zero).2 this
   simp only [vV]; simp at this; omega
 
+/- English proof (translation)
+Establish `: valV V (algebraMap V K' a) = WithZero.exp (-1 : ℤ)`. Rewrite using `[valV, HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `HeightOneSpectrum.intValuation_singleton _ ha.ne_zero ha.maximalIdeal_eq`. Simplify using `[vV, this]`.
+-/
 theorem vV_irr {a : V} (ha : Irreducible a) : vV V (algebraMap V K' a) = 1 := by
   have : valV V (algebraMap V K' a) = WithZero.exp (-1 : ℤ) := by
     rw [valV, HeightOneSpectrum.valuation_of_algebraMap]
     exact HeightOneSpectrum.intValuation_singleton _ ha.ne_zero ha.maximalIdeal_eq
   simp [vV, this]
 
+/- English proof (translation)
+Take `⟨p, hp⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Establish `inj : ∀ v, v ≠ 0 → algebraMap V' K'' (j v) ≠ 0` using `fun v hv => by`. Rewrite using `[← hi]`. Simplify using `using hv`. Establish `pos : 0 < vV V' (algebraMap V' K'' (j p))` using `vV_pos (fun h => inj p hp.ne_zero (by simp [h])) (fun h => hp.not_isUnit (isUnit_of_map_unit j p h))`.
+
+Take `⟨r, hr⟩` from `Int.eq_ofNat_of_zero_le pos.le`. Establish `key : ∀ v : V, v ≠ 0 → vV V' (i (algebraMap V K' v)) = (r : ℤ) * vV V (algebraMap V K' v)`. Introduce `v hv`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hv hp`. Establish `h1 : algebraMap V K' p ≠ 0` using `by simpa using hp.ne_zero`.
+
+Establish `h2 : algebraMap V K' u ≠ 0` using `by simp`. Rewrite using `[hi, map_mul, map_mul, map_mul, map_pow, map_pow, map_pow, vV_mul (inj _ u.ne_zero) (pow_ne_zero _ (inj p hp.ne_zero)), vV_mul h2 (pow_ne_zero _ h1), vV_pow (inj p hp.ne_zero), vV_pow h1, vV_unit, vV_irr hp, hr]`. Use `vV_unit (K' := K'') (Units.map j.toMonoidHom u)` as an intermediate fact. Simplify using `only [Units.coe_map, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe] at this`. Rewrite using `[this]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨r, by omega, fun x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : x = 0`. Simplify using `[hx, vV]`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := V) x`.
+
+Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `ha0 : a ≠ 0` using `by rintro rfl; simp at hx`. Establish `hb1 : algebraMap V K' b ≠ 0` using `by simpa using hb0`. Establish `e : algebraMap V K' a / algebraMap V K' b * algebraMap V K' b = algebraMap V K' a` using `div_mul_cancel₀ _ hb1`. Establish `e1` using `vV_mul (V := V) hx hb1`.
+
+Establish `e2` using `vV_mul (V := V') ((map_ne_zero i).2 hx) ((map_ne_zero i).2 hb1)`. Rewrite `e2` using `[← map_mul, e, key a ha0, key b hb0]`. Rewrite `e1` using `[e]`. Rewrite `e2` using `[e1]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_index {V' K'' : Type} [CommRing V'] [IsDomain V'] [IsDiscreteValuationRing V'] [Field K'']
     [Algebra V' K''] [IsFractionRing V' K''] (j : V →+* V') [IsLocalHom j] (i : K' →+* K'')
     (hi : ∀ v, i (algebraMap V K' v) = algebraMap V' K'' (j v)) :
@@ -105,6 +132,11 @@ section Coord
 
 variable {S : Type} [CommRing S] {G : Over (Spec (CommRingCat.of S))} [GrpObj G]
 
+/- English proof (translation)
+Establish `one : ∀ T : Over (Spec (CommRingCat.of S)), (1 : T ⟶ G') ≫ e.hom = 1` using `fun T => map_one (IsMonHom.monoidHom e.hom T)`. Establish `one' : ∀ T : Over (Spec (CommRingCat.of S)), (1 : T ⟶ G) ≫ e.inv = 1` using `fun T => by`. Rewrite using `[← one, Category.assoc, e.hom_inv_id, Category.comp_id]`. Use `⟨fun m => ?_, fun m => ?_, fun A _ _ aug m hm y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, hx.1]`.
+
+Rewrite using `[← Category.assoc, hx.2.1, one']`. Use `hx.2.2 A aug m hm (y ≫ e.hom) (by rw [← Category.assoc, hy, one])` as an intermediate fact. Simplify `this` using `only [← Category.assoc, Iso.eq_comp_inv]`.
+-/
 theorem isUnivChart_iso {G' : Over (Spec (CommRingCat.of S))} [GrpObj G'] (e : G' ≅ G) [IsMonHom e.hom] {n : ℕ}
     {x : ∀ m : ℕ, sp (R₀ := S) (JetR S (Fin n) m) ⟶ G} (hx : IsUnivChart G n x) :
     IsUnivChart G' n (fun m => x m ≫ e.inv) := by
@@ -118,6 +150,9 @@ theorem isUnivChart_iso {G' : Over (Spec (CommRingCat.of S))} [GrpObj G'] (e : G
   · have := hx.2.2 A aug m hm (y ≫ e.hom) (by rw [← Category.assoc, hy, one])
     simpa only [← Category.assoc, Iso.eq_comp_inv] using this
 
+/- English proof (translation)
+Set `_` to `f.toAlgebra`. Take `⟨n, x, hx⟩` from `univChartLoc G₀`. Take `⟨x', hx', -⟩` from `tanBC_alg (R' := S) G₀ n x hx`. Take `⟨e, he, -⟩` from `grpPullback_iso h (isGrpPullback_pullback G₀ (fB R S))`. Conclude with `⟨n, _, isUnivChart_iso e hx'⟩`.
+-/
 theorem exists_chart_of_pullback {R : Type} [CommRing R] [IsLocalRing R] {G₀ : Over (Spec (CommRingCat.of R))} [GrpObj G₀]
     [Smooth G₀.hom] (f : R →+* S) {φ : G.left ⟶ G₀.left} (h : IsGrpPullback G G₀ (Geo.Tor.spMap f) φ) :
     ∃ (n : ℕ) (x : ∀ m : ℕ, sp (R₀ := S) (JetR S (Fin n) m) ⟶ G), IsUnivChart G n x := by
@@ -131,18 +166,29 @@ variable {n : ℕ} {y : ∀ m : ℕ, sp (R₀ := S) (JetR S (Fin n) m) ⟶ G} (h
   {g : ℕ} {v : Fin g → (epsR S ⟶ G)}
 include hy
 
+/- English proof (translation)
+Take `⟨k, -⟩` from `prodPts_tan hy z v fun i => (isTan_iff _).2 (hv i)`. Rewrite using `[(isLieComb_iff _ _ _).1 hw]`. Conclude with `(isTan_iff _).1 k`.
+-/
 theorem isTangent_of_comb (hv : ∀ i, IsTangent (v i)) {z : Fin g → S} {w : epsR S ⟶ G} (hw : IsLieComb z v w) :
     IsTangent w := by
   obtain ⟨k, -⟩ := prodPts_tan hy z v fun i => (isTan_iff _).2 (hv i)
   rw [(isLieComb_iff _ _ _).1 hw]
   exact (isTan_iff _).1 k
 
+/- English proof (translation)
+Take `⟨k, e⟩` from `prodPts_tan hy c v tv`. Conclude with `(hv.2 _ ((isTan_iff _).1 k)).unique ((comb_iff_coord hy c tv k).2 e) ((comb_iff_coord hy c' tv k).2 (e.trans h))`.
+-/
 theorem coord_inj (hv : IsLieBasis v) (tv : ∀ i, IsTan (v i)) {c c' : Fin g → S}
     (h : ∑ i, c i • tcoord hy (v i) (tv i) = ∑ i, c' i • tcoord hy (v i) (tv i)) : c = c' := by
   obtain ⟨k, e⟩ := prodPts_tan hy c v tv
   exact (hv.2 _ ((isTan_iff _).1 k)).unique ((comb_iff_coord hy c tv k).2 e)
     ((comb_iff_coord hy c' tv k).2 (e.trans h))
 
+/- English proof (translation)
+Establish `tv` using `fun i => (isTan_iff _).2 (hv.1 i)`. Establish `tu` using `fun k => (isTan_iff _).2 (isTangent_of_comb hy hv.1 (hU k))`. Establish `tw` using `(isTan_iff _).2 (isTangent_of_comb hy hv.1 hw)`. Establish `e : ∑ i, cf i • tcoord hy (u i) (tu i) = ∑ j, (∑ k, cf k • U k) j • tcoord hy (v j) (tv j)`. Simplify using `only [(comb_iff_coord hy _ tv (tu _)).1 (hU _), Finset.smul_sum, Finset.sum_smul, smul_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`.
+
+Conclude with `Finset.sum_comm`. Rewrite using `[comb_iff_coord hy cf tu tw, e, (comb_iff_coord hy z tv tw).1 hw]`. Conclude with `⟨fun q => coord_inj hy hv tv q, fun q => by rw [q]⟩`.
+-/
 theorem comb_iff (hv : IsLieBasis v) {m : ℕ} {u : Fin m → (epsR S ⟶ G)} {U : Fin m → Fin g → S}
     (hU : ∀ k, IsLieComb (U k) v (u k)) {z : Fin g → S} {w : epsR S ⟶ G} (hw : IsLieComb z v w) (cf : Fin m → S) :
     IsLieComb cf u w ↔ z = ∑ k, cf k • U k := by
@@ -156,10 +202,22 @@ theorem comb_iff (hv : IsLieBasis v) {m : ℕ} {u : Fin m → (epsR S ⟶ G)} {U
   rw [comb_iff_coord hy cf tu tw, e, (comb_iff_coord hy z tv tw).1 hw]
   exact ⟨fun q => coord_inj hy hv tv q, fun q => by rw [q]⟩
 
+/- English proof (translation)
+The claim follows from `tcoord_congr hy (congrArg (· ≫ f) (tcoord_spec hy w tw)) _ (isTan_comp (isTan_tvec hy _) f)`.
+-/
 theorem tcoord_comp (f : G ⟶ G) [IsMonHom f] {w : epsR S ⟶ G} (tw : IsTan w) :
     tcoord hy (w ≫ f) (isTan_comp tw f) = tmap hy f (tcoord hy w tw) :=
   tcoord_congr hy (congrArg (· ≫ f) (tcoord_spec hy w tw)) _ (isTan_comp (isTan_tvec hy _) f)
 
+/- English proof (translation)
+Establish `tv` using `fun i => (isTan_iff _).2 (hv.1 i)`. Establish `tw` using `(isTan_iff _).2 (isTangent_of_comb hy hv.1 hw)`. Establish `ew` using `(comb_iff_coord hy z tv tw).1 hw`. Establish `e1 : tcoord hy (w ≫ f) (isTan_comp tw f) = ∑ j, (z ᵥ* M) j • tcoord hy (v j) (tv j)`. Rewrite using `[tcoord_comp hy f tw, ew, map_sum]`.
+
+Simplify using `only [map_smul, ← tcoord_comp hy f, (comb_iff_coord hy _ tv (isTan_comp (tv _) f)).1 (hM _), Finset.smul_sum, smul_smul, Matrix.vecMul, dotProduct, Finset.sum_smul]`. Conclude with `Finset.sum_comm`. Establish `e2 : tcoord hy (spMap (scaleD r) ≫ w) (isTan_scale r tw) = ∑ j, (r • z) j • tcoord hy (v j) (tv j)`. Rewrite using `[tcoord_scale hy r tw, ew, Finset.smul_sum]`. Simplify using `only [smul_smul, Pi.smul_apply, smul_eq_mul]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `q`. Establish `q' : w ≫ f = spMap (scaleD r) ≫ w` using `Over.OverMorphism.ext q`. Conclude with `coord_inj hy hv tv (e1.symm.trans ((tcoord_congr hy q' _ _).trans e2))`. Introduce `q`.
+
+Establish `q' : w ≫ f = spMap (scaleD r) ≫ w` using `tan_ext hy (isTan_comp tw f) (isTan_scale r tw) (by rw [e1, e2, q])`. Conclude with `congrArg (fun t => t.left) q'`.
+-/
 theorem eig_iff (hv : IsLieBasis v) (f : G ⟶ G) [IsMonHom f] {M : Matrix (Fin g) (Fin g) S}
     (hM : ∀ i, IsLieComb (M i) v (v i ≫ f)) {z : Fin g → S} {w : epsR S ⟶ G} (hw : IsLieComb z v w) (r : S) :
     (w ≫ f).left = Geo.Tor.spMap (epsScaleR r) ≫ w.left ↔ z ᵥ* M = r • z := by
@@ -185,6 +243,9 @@ theorem eig_iff (hv : IsLieBasis v) (f : G ⟶ G) [IsMonHom f] {M : Matrix (Fin 
 
 omit hy in
 
+/- English proof (translation)
+Establish `c : (Geo.Tor.spMap (dualMapR f) ≫ w.left) ≫ G₀.hom = (epsR S).hom ≫ Geo.Tor.spMap f`. Rewrite using `[Category.assoc, Over.w w]`. Conclude with `(Geo.Tor.spMap_comp _ _).symm.trans ((congrArg Geo.Tor.spMap (RingHom.ext fun r => by`. Apply the tactic sequence `ext <;> simp [dualMapR, TrivSqZeroExt.algebraMap_eq_inl])).trans (Geo.Tor.spMap_comp _ _))`. Conclude with `⟨Over.homMk (h.1.lift _ _ c) (h.1.lift_snd _ _ c), h.1.lift_fst _ _ c⟩`.
+-/
 theorem exists_lift {R : Type} [CommRing R] {G₀ : Over (Spec (CommRingCat.of R))} [GrpObj G₀]
     (f : R →+* S) {φ : G.left ⟶ G₀.left} (h : IsGrpPullback G G₀ (Geo.Tor.spMap f) φ) (w : epsR R ⟶ G₀) :
     ∃ w' : epsR S ⟶ G, w'.left ≫ φ = Geo.Tor.spMap (dualMapR f) ≫ w.left := by
@@ -204,6 +265,27 @@ open AlgebraicGeometry CategoryTheory CategoryTheory.Limits NumberField IsDedeki
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
 open IsLocalRing ReciprocityTheory.ChartRestriction.G.H1
 
+/- English proof (translation)
+Take `⟨k₀, hb₀⟩` from `TopologicalSpace.Opens.mem_iSup.1 hθ`. Establish `hk₀ : g ∈ L.U k₀` using `X.basicOpen_le _ hb₀`. Establish `un : IsUnit (gs (𝟙 _) g _ (θ.f k₀))`. Rewrite using `[gs_eq (𝟙 _) g _ hk₀]`. Conclude with `(X.mem_basicOpen _ _ hk₀).1 hb₀`.
+
+Take `⟨w, gw'⟩` from `hw`. Establish `down` using `sec_pull_down ((isGen_iff w).1 gw') hL hL'`. Take `⟨θ', hθ'⟩` from `down θ`. Establish `: IsDominant (spMap (algebraMap V (FractionRing V)))` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).2 (((RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective V (FractionRing V))).le.trans bot_le)⟩`. Use `IsSchemeTheoreticallyDominant.of_isDominant (spMap (algebraMap V (FractionRing V)))` as an intermediate fact.
+
+Establish `: IsSchemeTheoreticallyDominant φ` using `IsSchemeTheoreticallyDominant.of_isPullback hφ.flip`. Establish `: QuasiCompact φ` using `MorphismProperty.of_isPullback (P := @QuasiCompact) hφ.flip inferInstance`. Establish `inj : ∀ (σ τ σK τK : _) (r : V), (∀ (Z : Scheme.{0}) (q : Z ⟶ X') (y : Z) j k, φ (q y) ∈ L.U j → q y ∈ L'.U k → gs (q ≫ φ) y _ (LB.Sec.f σ j) = (gw w q y j k).val * gs q y _ (LB.Sec.f σK k)) → (∀ (Z : Scheme.{0}) (q : Z ⟶ X') (y : Z) j k, φ (q y) ∈ L.U j → q y ∈ L'.U k → gs (q ≫ …`. Introduce `σ τ σK τK r h₁ h₂ h₃ j`. Use `φ.app_injective _ (fn_ext fun y hy => ?_)` and prove the remaining obligations.
+
+Take `⟨k, hk⟩` from `exists_chart hL' y`. Use `(gs_pull (𝟙 _) φ y _ hy _).trans (Eq.trans ?_ (gs_pull (𝟙 _) φ y _ hy _).symm)` and prove the remaining obligations. Rewrite using `[gs_mul (𝟙 _ ≫ φ) y _ hy, gs_constFn _ _ (𝟙 _ ≫ φ) y hy, h₁ _ (𝟙 _) y j k hy hk, h₂ _ (𝟙 _) y j k hy hk, (sec_eq_iff _ _ _ _).1 h₃ k y hk, Category.id_comp, hφ.w, cst_comp, mul_left_comm]`. Establish `mulc : ∀ {s t u : L'.Sec} {a a' : FractionRing V}, (∀ k, s.f k = constFn p' _ a * t.f k) → (∀ k, t.f k = constFn p' _ a' * u.f k) → ∀ k, s.f k = constFn p' _ (a * a') * u.f k` using `fun h h' => (sec_eq_iff _ _ _ _).2 fun k y hy => by`. Rewrite using `[(sec_eq_iff _ _ _ _).1 h k y hy, (sec_eq_iff _ _ _ _).1 h' k y hy, cst_mul, _root_.mul_assoc]`.
+
+Establish `invc : ∀ {s t : L'.Sec} {a : FractionRing V}, a ≠ 0 → (∀ k, s.f k = constFn p' _ a * t.f k) → ∀ k, t.f k = constFn p' _ a⁻¹ * s.f k` using `fun ha h => (sec_eq_iff _ _ _ _).2 fun k y hy => by`. Rewrite using `[(sec_eq_iff _ _ _ _).1 h k y hy, ← _root_.mul_assoc, ← cst_mul, inv_mul_cancel₀ ha, cst_one, _root_.one_mul]`. Establish `unit : ∀ (σ : L.Sec) (r : V), (∀ j, θ.f j = constFn p _ r * σ.f j) → IsUnit r` using `fun σ r h => by`. Assume the negation of the conclusion as `hr`. Rewrite `un` using `[(sec_eq_iff _ _ _ _).1 h k₀ g hk₀]`.
+
+Conclude with `cst_not_isUnit p g hg hr (isUnit_of_mul_isUnit_left un)`. Take `⟨a₀, ha₀⟩` from `hb θ'`. Establish `h₀ : a₀ ≠ 0` using `fun h => not_isUnit_zero (unit θ 0 (inj θ θ θ' θ' 0 hθ' hθ' ((sec_eq_iff _ _ _ _).2 fun k y hy => by`. Rewrite using `[(sec_eq_iff _ _ _ _).1 ha₀ k y hy, h, map_zero, ← _root_.mul_assoc, ← cst_mul, mul_zero])))`. Take `⟨σK, hσK⟩` from `down σ`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a : FractionRing V, ∀ i, σK.f i = constFn p' _ a * θ'.f i := by`. Take `⟨a, ha⟩` from `hb σK`. Conclude with `⟨a * a₀⁻¹, mulc ha (invc h₀ ha₀)⟩`. Choose the witnesses or unpack the hypotheses as in `⟨r, hr⟩ : ∃ r : V, ∀ i, σ.f i = constFn p _ r * θ.f i := by`. Distinguish the cases in `h : IsLocalization.IsInteger V a`.
+
+Take `⟨r, rfl⟩` from `h`. Conclude with `⟨r, inj σ θ σK θ' r hσK hθ' ha⟩`. Establish `hne : a ≠ 0` using `fun e => h (e ▸ IsLocalization.isInteger_zero)`. Take `⟨r, hr⟩` from `(ValuationRing.isInteger_or_isInteger V a).resolve_left h`. Take `⟨u, rfl⟩` from `unit σ r (inj θ σ θ' σK r hθ' hσK (hr ▸ invc hne ha))`.
+
+Conclude with `absurd ⟨(u⁻¹ : Vˣ), by rw [← inv_inv a, ← hr, map_units_inv]⟩ h`. Use `⟨r, hr, fun r' hr' => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `e : cst p g (r' - r) * gs (𝟙 _) g _ (θ.f k₀) = cst p g (r' - r) * 0`. Rewrite using `[cst_sub, sub_mul, ← (sec_eq_iff _ _ _ _).1 hr' k₀ g hk₀, ← (sec_eq_iff _ _ _ _).1 hr k₀ g hk₀, sub_self, mul_zero]`.
+
+Conclude with `un.ne_zero (cst_regular p g (sub_ne_zero.2 hne) e)`.
+-/
 theorem generates_of_generic_line {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {X X' : Scheme.{0}}
     (p : X ⟶ Sp V) [Flat p] {p' : X' ⟶ Sp (FractionRing V)} {φ : X' ⟶ X}
     (hφ : IsPullback φ p' p (spMap (algebraMap V (FractionRing V)))) {L : LB X} {L' : LB X'} (hL : L.IsLB)
@@ -268,9 +350,15 @@ theorem generates_of_generic_line {V : Type} [CommRing V] [IsDomain V] [IsDiscre
     rw [cst_sub, sub_mul, ← (sec_eq_iff _ _ _ _).1 hr' k₀ g hk₀, ← (sec_eq_iff _ _ _ _).1 hr k₀ g hk₀, sub_self, mul_zero]
   exact un.ne_zero (cst_regular p g (sub_ne_zero.2 hne) e)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem resG_appTop_toΓ {V : Type} [CommRing V] {X : Scheme.{0}} (p : X ⟶ Sp V) (U : X.Opens) (a : V) :
     resG X (le_top : U ≤ ⊤) (p.appTop.hom (toΓ V a)) = constFn p U a := rfl
 
+/- English proof (translation)
+Introduce `_ h₂ E _ _ _ H Dw l Xo _ T G t' x m₁ m₂ θ ⟨g, hg, hθ⟩ σ`. Use `G.semi.smooth` as an intermediate fact. Take `⟨b, hb⟩` from `globalSections_rank_one_fibre h₂.secTwist amplePt Xo.univ m₁`. Take `⟨w, hw, -⟩` from `m₂.lin`. Conclude with `generates_of_generic_line G.G.hom m₂.cart.1 G.PP.isLB t'.PP.isLB ⟨w, hw⟩ b (fun s => (hb s).exists) θ hg hθ σ`.
+-/
 theorem generates_of_nonzero_on_special_fibre : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (T : CDVR) (G : SAB H (Sp T.V)) (t' : SAB H (Sp T.Fr)) (x : Sp T.Fr ⟶ Xo.X) (_ : SABMap t' Xo.univ.t x) (_ : SABMap t' G (spMap (algebraMap T.V T.Fr))) (θ : LB.Sec G.PP.L), (∃ g : G.G.left, G.G.hom g = IsLocalRing.closedPoint T.V ∧ g ∈ Out.nonzeroLocus θ) → ∀ σ : LB.Sec G.PP.L, ∃! a : T.V, ∀ i, σ.f i = resG G.G.left le_top ((G.G.hom).appTop.hom (toΓ T.V a)) * θ.f i := by
   intro _ h₂ E _ _ _ H Dw l Xo _ T G t' x m₁ m₂ θ ⟨g, hg, hθ⟩ σ
   have := G.semi.smooth
@@ -286,6 +374,11 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
 open GlobalTheory.Reg.ChartInhab GlobalTheory.Reg.LiftUnique
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h Z r z j k hj hk`. Establish `hz : r z ∈ (L.pull F).U (fun _ => j) ⊓ L'.U k` using `⟨mem_pull.2 hj, hk⟩`. Establish `a` using `congrArg (gs r z _) (h (fun _ => j) k)`. Conclude with `(gs_res _ z _ hz _).symm.trans (a.trans ((gs_mul _ z _ hz _ _).trans (congrArg₂ (· * ·) (gs_unit _ z _ hz _) (gs_res _ z _ hz _))))`.
+
+Introduce `h (i : PUnit → L.ι) k`. Conclude with `fn_ext fun p hp => (gs_res _ p _ hp _).trans ((h _ (𝟙 _) p (i PUnit.unit) k (mem_pull.1 hp.1) hp.2).trans (Eq.symm ((gs_mul _ p _ hp _ _).trans (congrArg₂ (· * ·) (gs_unit (𝟙 _) p _ hp _) (gs_res _ p _ hp _)))))`.
+-/
 theorem isoMaps_iff {X X' : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X} (w : LB.Iso L' (L.pull F))
     (σ : LB.Sec L') (s : LB.Sec (L.pull F)) :
     IsoMaps w σ s ↔ ∀ (Z : Scheme.{0}) (r : Z ⟶ X') (z : Z) (j : L.ι) (k : L'.ι), F (r z) ∈ L.U j → r z ∈ L'.U k →
@@ -316,6 +409,17 @@ section Comparison₂
 variable {V : Type} [CommRing V] {x : Sp V ⟶ Xo.X} {G : SAB H (Sp V)} {B : Scheme.{0}} {t : SAB H B} {f : Sp V ⟶ B}
   (m1 : SABMap G Xo.univ.t x) (m2 : SABMap G t f) (θ : LB.Sec t.PP.L) (s : LB.Sec (PPx x))
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w1, w2, σ, s1, θ2, r1, r2, i1, i2, p, c⟩`. Use `⟨w1, w2, σ, r1, r2, fun Z r z j k hj hk => ?_, fun Z r z j k hj hk => ?_⟩` and prove the remaining obligations. Establish `le : (Xo.univ.t.PP.L.pull m1.φ).U (fun _ => j) ≤ toGx m1 ⁻¹ᵁ (PPx x).U (fun _ => j)` using `fun q hq => le_toGx m1 j (mem_pull.1 hq)`. Use `Eq.trans ?_ ((isoMaps_iff w1 σ s1).1 i1 Z r z j k hj hk)` and prove the remaining obligations.
+
+Rewrite using `[c (toGx m1) (toGx_snd m1) (toGx_fst m1) (fun _ => j) le]`. Conclude with `(gs_appLE (toGx m1) _ _ le r z (mem_pull.2 hj) _).symm`. Establish `le : (t.PP.L.pull m2.φ).U (fun _ => j) ≤ m2.φ ⁻¹ᵁ t.PP.L.U j` using `fun q hq => mem_pull.1 hq`. Use `Eq.trans ?_ ((isoMaps_iff w2 σ θ2).1 i2 Z r z j k hj hk)` and prove the remaining obligations. Rewrite using `[p (fun _ => j) le]`.
+
+Conclude with `(gs_appLE m2.φ _ _ le r z (mem_pull.2 hj) _).symm`. Introduce and unpack `⟨w1, w2, σ, r1, r2, a, b⟩`. Take `⟨s1, hs1⟩` from `thf_secUp ((isGen_iff w1).1 r1.1) Xo.univ.t.PP.isLB G.PP.isLB σ`. Use `⟨w1, w2, σ, s1, thfPull t.PP.L m2.φ θ, r1, r2, (isoMaps_iff w1 σ s1).2 fun Z r z j k hj hk => hs1 Z r z (fun _ => j) k (mem_pull.2 hj) hk, (isoMaps_iff w2 σ _).2 fun Z r z j k hj hk => (gs_appLE m2.φ _ _ _ r z (mem_pull.2 hj) _).trans (b Z r z j k hj hk), fun _ _ => rfl, ?_⟩` and prove the remaining obligations. Introduce `g e₁ e₂ (J : PUnit → Xo.univ.t.PP.L.ι) hJ`.
+
+Establish `eg : g = toGx m1`. Apply `FramedBaseChange.pulledGroup_hom_ext` to reduce the goal to its premises. Rewrite using `[e₁, toGx_snd]`. Rewrite using `[e₂, toGx_fst]`. Substitute `eg` using the available equality.
+
+Use `fn_ext fun p hp => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `exists_chart G.PP.isLB p`. Rewrite using `[hs1 _ (𝟙 _) p J k hp hk, gs_appLE _ _ _ hJ (𝟙 _) p hp, a _ (𝟙 _) p _ k (mem_pull.1 hp) hk]`.
+-/
 theorem tie_iff : (∃ (w1 : LB.Iso G.PP.L (Xo.univ.t.PP.L.pull m1.φ)) (w2 : LB.Iso G.PP.L (t.PP.L.pull m2.φ))
       (σ' : LB.Sec G.PP.L) (s1 : LB.Sec (Xo.univ.t.PP.L.pull m1.φ)) (θ2 : LB.Sec (t.PP.L.pull m2.φ)),
       RigIso m1 w1 ∧ RigIso m2 w2 ∧ IsoMaps w1 σ' s1 ∧ IsoMaps w2 σ' θ2 ∧ PullSec m2.φ θ θ2 ∧
@@ -351,6 +455,17 @@ theorem tie_iff : (∃ (w1 : LB.Iso G.PP.L (Xo.univ.t.PP.L.pull m1.φ)) (w2 : LB
     obtain ⟨k, hk⟩ := exists_chart G.PP.isLB p
     rw [hs1 _ (𝟙 _) p J k hp hk, gs_appLE _ _ _ hJ (𝟙 _) p hp, a _ (𝟙 _) p _ k (mem_pull.1 hp) hk]
 
+/- English proof (translation)
+Take `⟨w1, w2, σ, r1, r2, a, b⟩` from `h`. Take `⟨w0, r0⟩` from `exists_rigIso n`. Take `⟨w1', r1', T1⟩` from `cube_rig_comp m1.cm n.cm m1'.cm e₁ (by rw [m1'.base, n.base, m1.base, hx]) _ _ _ w1 w0 r1 r0`. Take `⟨w2', r2', T2⟩` from `cube_rig_comp m2.cm n.cm m2'.cm e₂ (by rw [m2'.base, n.base, m2.base, hf]) _ _ _ w2 w0 r2 r0`. Take `⟨σ', hσ'⟩` from `sec_pull_down ((isGen_iff w0).1 r0.1) G.PP.isLB G'.PP.isLB σ`.
+
+Use `⟨w1', w2', σ', r1', r2', fun Z r z j k hj hk => ?_, fun Z r z j k hj hk => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `exists_chart G.PP.isLB (n.φ (r z))`. Establish `hm : m1.φ ((r ≫ n.φ) z) ∈ Xo.univ.t.PP.L.U j` using `(congrArg (fun q => q (r z) ∈ Xo.univ.t.PP.L.U j) e₁).mp hj`. Establish `eg : (r ≫ toGx m1') ≫ pm = (r ≫ n.φ) ≫ toGx m1`. Rewrite using `[Category.assoc, Category.assoc]`.
+
+Use `congr 1`. Apply `FramedBaseChange.pulledGroup_hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hs, toGx_snd, e₁, Category.assoc, toGx_snd]`. Rewrite using `[Category.assoc, hb, ← Category.assoc, toGx_fst, Category.assoc, toGx_fst]`. Conclude with `n.cart.1.w.symm`.
+
+Rewrite using `[ha Z (r ≫ toGx m1') z j (le_toGx m1' j hj), eg, a Z (r ≫ n.φ) z j i hm hi, hσ' Z r z i k hi hk, T1 Z r z j i k hj hi hk, Units.val_mul, _root_.mul_assoc]`. Take `⟨i, hi⟩` from `exists_chart G.PP.isLB (n.φ (r z))`. Establish `hm : m2.φ ((r ≫ n.φ) z) ∈ t.PP.L.U j` using `(congrArg (fun q => q (r z) ∈ t.PP.L.U j) e₂).mp hj`. Establish `eg : r ≫ m2'.φ = (r ≫ n.φ) ≫ m2.φ` using `by rw [e₂, Category.assoc]`. Use `(congrArg (fun q => gs q z _ (θ.f j)) eg).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[b Z (r ≫ n.φ) z j i hm hi, hσ' Z r z i k hi hk, T2 Z r z j i k hj hi hk, Units.val_mul, _root_.mul_assoc]`.
+-/
 theorem tie_pull {V' : Type} [CommRing V'] {x' : Sp V' ⟶ Xo.X} {G' : SAB H (Sp V')} {f' : Sp V' ⟶ B}
     {g : Sp V' ⟶ Sp V} (n : SABMap G' G g) (m1' : SABMap G' Xo.univ.t x') (m2' : SABMap G' t f')
     (hx : x' = g ≫ x) (hf : f' = g ≫ f) (e₁ : m1'.φ = n.φ ≫ m1.φ) (e₂ : m2'.φ = n.φ ≫ m2.φ)
@@ -395,23 +510,35 @@ section Cancel
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
 
+/- English proof (translation)
+Use `show Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+-/
 theorem sp_comp {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (f : R →+* S) (g : S →+* T) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   show Spec.map _ = Spec.map _ ≫ Spec.map _
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
+/- English proof (translation)
+Rewrite using `[← sp_comp, ← sp_comp]`. Use `congr 1`. Apply the tactic sequence `exact RingHom.ext fun a => by ext <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem dual_alg {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T) :
     spMap (dualMap φ) ≫ spMap (algebraMap S (DualNumber S)) = spMap (algebraMap T (DualNumber T)) ≫ spMap φ := by
   rw [← sp_comp, ← sp_comp]
   congr 1
   exact RingHom.ext fun a => by ext <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]
 
+/- English proof (translation)
+Rewrite using `[← sp_comp]`. Use `congr 1`. Apply the tactic sequence `exact RingHom.ext fun a => by ext <;> simp [dualMap]`.
+-/
 theorem dual_comp {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (io : R →+* S) (φ : S →+* T) :
     spMap (dualMap (φ.comp io)) = spMap (dualMap φ) ≫ spMap (dualMap io) := by
   rw [← sp_comp]
   congr 1
   exact RingHom.ext fun a => by ext <;> simp [dualMap]
 
+/- English proof (translation)
+Use `algebraize [f]`. Establish `: FaithfulSMul A V` using `(faithfulSMul_iff_algebraMap_injective A V).2 hf`. Use `show Module.Flat A V`. Use `infer_instance`.
+-/
 theorem flat_of_injective {A V : Type} [CommRing A] [IsDomain A] [IsPrincipalIdealRing A] [CommRing V] [IsDomain V]
     (f : A →+* V) (hf : Function.Injective f) : f.Flat := by
   algebraize [f]
@@ -419,6 +546,9 @@ theorem flat_of_injective {A V : Type} [CommRing A] [IsDomain A] [IsPrincipalIde
   show Module.Flat A V
   infer_instance
 
+/- English proof (translation)
+Establish `: (1 : ptOver V V ⟶ G).left = η[G].left` using `by show spMap (algebraMap V V) ≫ _ = _`. Rewrite using `[show spMap (algebraMap V V) = 𝟙 _ from Spec.map_id _]`. Conclude with `Category.id_comp _`. Unfold `IsTan IsTangent`. Rewrite using `[this]`.
+-/
 theorem isTan_iff_isTangent {V : Type} [CommRing V] {G : Over (Sp V)} [GrpObj G] (w : epsR V ⟶ G) :
     IsTan (V := V) (R := V) (G := G) w ↔ IsTangent w := by
   have : (1 : ptOver V V ⟶ G).left = η[G].left := by
@@ -430,6 +560,21 @@ theorem isTan_iff_isTangent {V : Type} [CommRing V] {G : Over (Sp V)} [GrpObj G]
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Take `⟨w0, g0, r0, -⟩` from `m.lin`. Take `⟨θ', hθ'⟩` from `sec_pull_down ((isGen_iff w0).1 g0) t.PP.isLB G.PP.isLB θ`. Establish `he : k.cm.e = n.cm.e ≫ m.cm.e` using `by rw [k.base, n.base, m.base, hb]`. Take `⟨w', r', tri⟩` from `GlobalTheory.Reg.TieIntegral.exists_rigIso_cancel m.cm n.cm k.cm hφ he t'.PP G.PP t.PP w0 w ⟨g0, r0⟩ r`. Use `⟨θ', w', ?_, r', fun (i : PUnit → G.PP.L.ι) k' => fn_ext fun y hy => ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `s ⟨z, hz, hz'⟩`. Take `⟨y, rfl, hy⟩` from `Scheme.exists_preimage_of_isPullback m.cart.1 z s hz`. Take `⟨j, hj, u⟩` from `(mem_nonzeroLocus _ _).1 hz'`. Take `⟨i, hi⟩` from `exists_chart G.PP.isLB y`. Use `⟨y, hy, (mem_nonzeroLocus _ _).2 ⟨i, hi, ?_⟩⟩` and prove the remaining obligations.
+
+Establish `u₁ : IsUnit (gs m.φ y _ (θ.f j))` using `by rw [gs_stalkMap m.φ y _ hj]; exact u.map _`. Establish `e` using `hθ' _ (𝟙 _) y j i hj hi`. Rewrite `e` using `[Category.id_comp]`. Conclude with `isUnit_of_mul_isUnit_right (e ▸ u₁)`. Establish `hi' : n.φ y ∈ G.PP.L.U (i PUnit.unit)` using `mem_pull.1 hy.1`.
+
+Take `⟨j, hj⟩` from `exists_chart t.PP.isLB (m.φ (n.φ y))`. Establish `pt : k.φ y = m.φ (n.φ y)` using `congrArg (fun q => q y) hφ`. Establish `hj' : k.φ y ∈ t.PP.L.U j` using `pt ▸ hj`. Establish `e1` using `hθ' _ (𝟙 _ ≫ n.φ) y j (i PUnit.unit) hj hi'`. Establish `e2 : gs (𝟙 _ ≫ k.φ) y _ (θ.f j) = (gw w (𝟙 _) y j k').val * gs (𝟙 _) y _ (σ.f k')`.
+
+Establish `hz : y ∈ (t.PP.L.pull k.φ).U (fun _ => j) ⊓ t'.PP.L.U k'` using `⟨mem_pull.2 hj', hy.2⟩`. Establish `le : (t.PP.L.pull k.φ).U (fun _ => j) ≤ k.φ ⁻¹ᵁ t.PP.L.U j` using `fun q hq => mem_pull.1 hq`. Establish `a` using `congrArg (gs (𝟙 _) y _) (hi (fun _ => j) k')`. Use `(gs_appLE k.φ _ _ le (𝟙 _) y hz.1 _).symm.trans ?_` and prove the remaining obligations. Rewrite using `[← hp (fun _ => j) le]`.
+
+Conclude with `(gs_res _ y _ hz _).symm.trans (a.trans ((gs_mul _ y _ hz _ _).trans (congrArg₂ (· * ·) (gs_unit _ y _ hz _) (gs_res _ y _ hz _))))`. Establish `e3` using `tri _ (𝟙 _) y j (i PUnit.unit) k' hj hi' hy.2`. Establish `e4 : (𝟙 _ ≫ n.φ) ≫ m.φ = 𝟙 _ ≫ k.φ` using `by rw [Category.assoc, hφ]`. Rewrite `e1` using `[e4, e2, e3, Units.val_mul, _root_.mul_assoc, Units.mul_right_inj]`. Use `(gs_res _ y _ hy _).trans ((gs_appLE n.φ _ _ _ (𝟙 _) y hy.1 _).trans (e1.symm.trans ?_))` and prove the remaining obligations.
+
+Use `Eq.symm ((gs_mul _ y _ hy _ _).trans ?_)` and prove the remaining obligations. Conclude with `congrArg₂ (· * ·) (gs_unit _ y _ hy _) (gs_res _ y _ hy _)`.
+-/
 theorem sec_cancel {S S' S'' : Scheme.{0}} {t : SAB H S} {G : SAB H S'} {t' : SAB H S''} {f : S' ⟶ S} {g : S'' ⟶ S'}
     {h : S'' ⟶ S} (m : SABMap G t f) (n : SABMap t' G g) (k : SABMap t' t h) (hb : h = g ≫ f)
     (hφ : k.φ = n.φ ≫ m.φ) (θ : LB.Sec t.PP.L) (w : LB.Iso t'.PP.L (t.PP.L.pull k.φ)) (σ : LB.Sec t'.PP.L)
@@ -480,6 +625,19 @@ open AlgebraicGeometry CategoryTheory CategoryTheory.Limits NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
 open Matrix
 
+/- English proof (translation)
+Establish `hsm : Smooth G.G.hom` using `G.semi.smooth`. Establish `hmon : ∀ x, IsMonHom (G.act.act x)` using `G.act.hom`. Establish `hmon' : ∀ x, IsMonHom (G'.act.act x)` using `G'.act.hom`. Take `⟨g, v, hv⟩` from `Chart.exists_isLieBasis G.G hsm`. Take `⟨d, y, hy⟩` from `Chart.univChartLoc G.G`.
+
+Take `⟨d', y', hy'⟩` from `exists_chart_of_pullback f m.cart`. Use `choose U hU using fun k => (hv.2 _ (h₁ k)).exists`. Use `choose M hM using fun x i => (hv.2 (v i ≫ G.act.act x) ((Chart.isTan_iff _).1 (Chart.isTan_comp ((Chart.isTan_iff _).2 (hv.1 i)) _))).exists`. Use `choose u hu using fun k => exists_lift f m.cart (v₀ k)`. Use `choose v' hv' using fun j => exists_lift f m.cart (v j)`.
+
+Establish `hb' : IsLieBasis v'` using `Chart.isLieBasis_baseChange f m.cart hv hv'`. Establish `hU' : ∀ k, IsLieComb (fun j => f (U k j)) v' (u k)` using `fun k => Chart.comb_baseChange f m.cart (hU k) hv' (hu k)`. Establish `hMR : ∀ x i, IsLieComb (Matrix.of (M x) i) v (v i ≫ G.act.act x)` using `hM`. Establish `hM' : ∀ x i, IsLieComb ((Matrix.of (M x)).map f i) v' (v' i ≫ G'.act.act x)` using `fun x i => Chart.comb_baseChange f m.cart (hM x i) hv' (by`. Rewrite using `[Over.comp_left, Category.assoc, m.act, ← Category.assoc, hv', Category.assoc, Over.comp_left])`.
+
+Establish `hUe : ∀ k x, U k ᵥ* Matrix.of (M x) = ρ x • U k` using `fun k x => (eig_iff hy hv _ (hMR x) (hU k) _).1 (h₂ k x)`. Use `⟨u, hu, fun k => isTangent_of_comb hy' hb'.1 (hU' k), fun k x => ?_, fun w hw hwe => ?_⟩` and prove the remaining obligations. Use `(eig_iff hy' hb' _ (hM' x) (hU' k) _).2 ?_` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Use `congrArg f (congrFun (hUe k x) j)` as an intermediate fact.
+
+Simplify `this` using `[Matrix.vecMul, dotProduct]`. Take `⟨z, hz, -⟩` from `hb'.2 w hw`. Simplify using `only [comb_iff hy' hb' hU' hz]`. Set `_` to `f.toAlgebra`. Establish `: Module.Flat V S` using `hflat`.
+
+Use `(GlobalTheory.commonEigenvectors_flat_baseChange V (𝓞 E) g n (fun x => Matrix.of (M x)) ρ).1 V U hUe (fun s hs => ?_) S z (fun x => (eig_iff hy' hb' _ (hM' x) hz _).1 (hwe x))` and prove the remaining obligations. Simplify using `only [Algebra.algebraMap_self, RingHom.id_apply, RingHom.coe_id, Matrix.map_id] at hs ⊢`. Establish `hc : IsLieComb s v (Chart.prodPts s v)` using `(Chart.isLieComb_iff _ _ _).2 rfl`. Use `h₃ _ (isTangent_of_comb hy hv.1 hc) (fun x => (eig_iff hy hv _ (hMR x) hc _).2 (hs x))` as an intermediate fact. Simplify `this` using `only [comb_iff hy hv hU hc]`.
+-/
 theorem eigenbasis_baseChange {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
     {V S : Type} [CommRing V] [IsLocalRing V] [IsNoetherianRing V] [CommRing S] (f : V →+* S) (hflat : f.Flat)
     (G : SAB H (Sp V)) (G' : SAB H (Sp S)) (m : SABMap G' G (spMap f)) (ρ : 𝓞 E → V) {n : ℕ}
@@ -541,12 +699,20 @@ open GlobalTheory.Reg.ChartInhab GlobalTheory.Reg.LiftUnique
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Establish `h : IsIntegral T.V ((io.comp (embK c τ)) a)` using `(RingOfIntegers.isIntegral a).map_of_comp_eq (algebraMap ℤ T.V) _ (RingHom.ext_int _ _)`. Conclude with `IsIntegrallyClosed.isIntegral_iff.1 h`.
+-/
 theorem exists_eigenvalue (T : CDVR) (io : c.F →+* T.Fr) (τ : E →+* ℂ) (a : 𝓞 E) :
     ∃ z : T.V, algebraMap T.V T.Fr z = io (embK c τ a) := by
   have h : IsIntegral T.V ((io.comp (embK c τ)) a) :=
     (RingOfIntegers.isIntegral a).map_of_comp_eq (algebraMap ℤ T.V) _ (RingHom.ext_int _ _)
   exact IsIntegrallyClosed.isIntegral_iff.1 h
 
+/- English proof (translation)
+Take `⟨L₁, L₂, -⟩` from `GlobalTheory.firstFiveLaws`. Establish `hprop : IsProper t.G.hom` using `MorphismProperty.of_isPullback (P := @IsProper) m1.cart.1 Xo.univ.proper`. Take `⟨ψ, -⟩` from `GlobalTheory.semiAbelian_model_determined_by_generic_fibre E H T.V inferInstance G G t hprop m2 m2`. Establish `hp` using `GlobalTheory.UnifAfterExt.polAt_of_sabMap ψ m2 m1 Xo.univ.proper Xo.univ.ample Xo.univ.ktriv (jK T.V) (𝟙 _) ((Category.comp_id _).trans (Category.id_comp _).symm)`. Take `⟨σ, hσ⟩` from `GlobalTheory.ThetaDvr.thetaNZ_of_polAt L₁ L₂ E H T.V G hp`.
+
+Take `⟨g, i, hg, hi⟩` from `hσ s`. Take `⟨a, ha, -⟩` from `hθ σ`. Rewrite `hi` using `[ha i, Scheme.basicOpen_mul]`. Conclude with `⟨g, hg, TopologicalSpace.Opens.mem_iSup.2 ⟨i, hi.2⟩⟩`.
+-/
 theorem exists_nonzero_of_generator (T : CDVR) (G : SAB H (Sp T.V)) (t : SAB H (Sp T.Fr)) {x : Sp T.Fr ⟶ Xo.X}
     (m1 : SABMap t Xo.univ.t x) (m2 : SABMap t G (spMap (algebraMap T.V T.Fr))) (θ : LB.Sec G.PP.L)
     (hθ : ∀ σ : LB.Sec G.PP.L, ∃! a : T.V, ∀ i,
@@ -563,6 +729,27 @@ theorem exists_nonzero_of_generator (T : CDVR) (G : SAB H (Sp T.V)) (t : SAB H (
   rw [ha i, Scheme.basicOpen_mul] at hi
   exact ⟨g, hg, TopologicalSpace.Opens.mem_iSup.2 ⟨i, hi.2⟩⟩
 
+/- English proof (translation)
+Use `letI := io.toAlgebra`. Use `letI := io'.toAlgebra`. Introduce `ψ hψ y y' hm hy`. Take `⟨L₁, L₂, -⟩` from `GlobalTheory.firstFiveLaws`. Take `⟨G, t, m1, m2, ⟨ub, h₁, h₂, h₃, h₄⟩, θ, hθ, w1, w2, σ, s1, θ2, a1, a2, a3, a4, a5, a6⟩` from `hy`.
+
+Take `⟨hx, hu, pm, hs, hb, ha⟩` from `hm`. Choose the witnesses or unpack the hypotheses as in `⟨G', ⟨m⟩⟩ : ∃ G' : SAB H (Sp T'.V), Nonempty (SABMap G' G (spMap f)) := by`. Take `⟨_, _, _, _, _, m, -⟩` from `sabPull Out.CubePf.cubePull (spMap f) G`. Conclude with `⟨_, ⟨m⟩⟩`. Choose the witnesses or unpack the hypotheses as in `⟨t', ⟨n⟩⟩ : ∃ t' : SAB H (Sp T'.Fr), Nonempty (SABMap t' t (spMap ψ.toRingHom)) := by`.
+
+Take `⟨_, _, _, _, _, m, -⟩` from `sabPull Out.CubePf.cubePull (spMap ψ.toRingHom) t`. Conclude with `⟨_, ⟨m⟩⟩`. Establish `hι : ψ.toRingHom.comp (algebraMap T.V T.Fr) = (algebraMap T'.V T'.Fr).comp f` using `RingHom.ext hψ`. Establish `hio : spMap (algebraMap T'.V T'.Fr) ≫ spMap f = spMap ψ.toRingHom ≫ spMap (algebraMap T.V T.Fr)`. Rewrite using `[← sp_comp, ← sp_comp, hι]`.
+
+Take `⟨w0, r0⟩` from `exists_rigIso n`. Take `⟨m1', e₁, -⟩` from `exists_comp_rig m1 n y'.x hx a1 r0`. Take `⟨m2', e₂, -⟩` from `exists_comp_rig m2 n _ hio a2 r0`. Establish `T₀` using `(tie_iff m1 m2 θ y.s).1 ⟨w1, w2, σ, s1, θ2, a1, a2, a3, a4, a5, a6⟩`. Establish `T₁` using `tie_pull m1 m2 θ y.s n m1' m2' hx hio e₁ e₂ y'.s pm hs hb (fun Z r z j hz => by`.
+
+Establish `hle` using `FramedBaseChange.chart_le pm hs (fun _ => j)`. Rewrite using `[← ha _ hle, gs_appLE pm _ _ hle r z hz]) T₀`. Take `⟨w1', w2', σ', s1', θ2', r1, r2, i1, i2, p2, hg⟩` from `(tie_iff m1' m2' θ y'.s).2 T₁`. Take `⟨m', e₃⟩` from `sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ m m2'`. Take `⟨θ', w', hnz, r', i'⟩` from `sec_cancel m m' m2' rfl e₃ θ w2' σ' θ2' r2 i2 p2`.
+
+Use `choose ρ hρ using exists_eigenvalue (c := c) T io`. Establish `eig : ∀ (T : CDVR) (io : c.F →+* T.Fr) (G : SAB H (Sp T.V)) (τ : E →+* ℂ) (ρ : 𝓞 E → T.V), (∀ x, algebraMap T.V T.Fr (ρ x) = io (embK c τ x)) → ∀ w : epsR T.V ⟶ G.G, IsEigV c io G τ w ↔ ∀ x : 𝓞 E, (w ≫ G.act.act x).left = spMap (epsScaleR (ρ x)) ≫ w.left` using `fun T io G τ ρ hρ w => ⟨fun h x => h x _ (hρ x), fun h x s hs => by`. Take `rfl : s = ρ x` from `IsFractionRing.injective T.V T.Fr (hs.trans (hρ x).symm)`. Conclude with `h x⟩`. Establish `hρ' : ∀ τ x, algebraMap T'.V T'.Fr (f (ρ τ x)) = io' (embK c τ x)` using `fun τ x => by`.
+
+Rewrite using `[← hψ, hρ]`. Conclude with `ψ.commutes _`. Use `choose u k₁ k₂ k₃ k₄ using fun τ => eigenbasis_baseChange f (flat_of_injective f hf) G G' m (ρ τ) (ub τ) (fun k => (isTan_iff_isTangent _).1 (h₁ τ k)) (fun k => (eig T io G τ _ (hρ τ) _).1 (h₂ τ k)) (fun w hw he => h₃ τ w ((isTan_iff_isTangent _).2 hw) ((eig T io G τ _ (hρ τ) _). …`. Use `⟨G', t', m1', m', ⟨u, fun τ i => (isTan_iff_isTangent _).2 (k₂ τ i), fun τ i => (eig T' io' G' τ _ (hρ' τ) _).2 (k₃ τ i), fun τ w h1 h2 => k₄ τ w ((isTan_iff_isTangent _).1 h1) ((eig T' io' G' τ _ (hρ' τ) w).1 h2), fun τ i => ?_⟩, θ', generates_of_nonzero_on_special_fibre L₁ L₂ E …` and prove the remaining obligations. Take `⟨q, q1, q2⟩` from `h₄ τ i`.
+
+Establish `ub₀ : (ub τ i).left ≫ G.G.hom = spMap (algebraMap T.V (DualNumber T.V))` using `Over.w (ub τ i)`. Establish `ub₁ : (u τ i).left ≫ G'.G.hom = spMap (algebraMap T'.V (DualNumber T'.V))` using `Over.w (u τ i)`. Establish `hpre : IsPreimmersion (spMap (algebraMap T.V T.Fr))` using `IsPreimmersion.of_isLocalization (nonZeroDivisors T.V)`. Establish `qb : q ≫ t.G.hom = spMap (algebraMap T.Fr (DualNumber T.Fr))`. Rewrite using `[← cancel_mono (spMap (algebraMap T.V T.Fr)), Category.assoc, ← m2.cart.1.w, ← Category.assoc, q2, Category.assoc, ub₀, dual_alg]`.
+
+Establish `cnd : (spMap (dualMap ψ.toRingHom) ≫ q) ≫ t.G.hom = spMap (algebraMap T'.Fr (DualNumber T'.Fr)) ≫ spMap ψ.toRingHom`. Rewrite using `[Category.assoc, qb, dual_alg]`. Establish `p1` using `n.cart.1.lift_fst _ _ cnd`. Establish `p2` using `n.cart.1.lift_snd _ _ cnd`. Use `⟨n.cart.1.lift _ _ cnd, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e₁, ← Category.assoc, p1, Category.assoc, q1, hu]`. Apply `m.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, k₁, ← e₃, e₂, ← Category.assoc, p1, Category.assoc, q2, ← Category.assoc, ← Category.assoc, ← dual_comp, ← dual_comp, hι]`. Rewrite using `[Category.assoc, Category.assoc, m'.cart.1.w, ← Category.assoc, p2, ub₁, dual_alg]`.
+-/
 theorem integral_baseChange (T T' : CDVR) (io : c.F →+* T.Fr) (io' : c.F →+* T'.Fr) (f : T.V →+* T'.V)
     (hf : Function.Injective f) :
     letI := io.toAlgebra
@@ -631,6 +818,15 @@ theorem integral_baseChange (T T' : CDVR) (io : c.F →+* T.Fr) (io' : c.F →+*
         ← Category.assoc, ← dual_comp, ← dual_comp, hι]
     · rw [Category.assoc, Category.assoc, m'.cart.1.w, ← Category.assoc, p2, ub₁, dual_alg]
 
+/- English proof (translation)
+Substitute `hx` using the available equality. Establish `hι : ψ.comp (algebraMap T.V T.Fr) = (algebraMap T'.V T'.Fr).comp f` using `RingHom.ext hψ`. Establish `hio : spMap (algebraMap T'.V T'.Fr) ≫ spMap f = spMap ψ ≫ spMap (algebraMap T.V T.Fr)`. Rewrite using `[← sp_comp, ← sp_comp, hι]`. Choose the witnesses or unpack the hypotheses as in `⟨tP, ⟨mP⟩⟩ : ∃ tP : SAB H (Sp T'.V), Nonempty (SABMap tP G (spMap f)) := by`.
+
+Take `⟨_, _, _, _, _, m, -⟩` from `sabPull Out.CubePf.cubePull (spMap f) G`. Conclude with `⟨_, ⟨m⟩⟩`. Take `⟨n, -⟩` from `sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ m1 m1'`. Take `⟨w0, r0⟩` from `exists_rigIso n`. Take `⟨w2, r2⟩` from `exists_rigIso m2`.
+
+Take `⟨k, -, -⟩` from `exists_comp_rig m2 n _ hio r2 r0`. Take `⟨mK, -⟩` from `sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ mP k`. Establish `hprop : IsProper t'.G.hom` using `MorphismProperty.of_isPullback (P := @IsProper) m1'.cart.1 Xo.univ.proper`. Take `⟨j, -⟩` from `GlobalTheory.semiAbelian_model_determined_by_generic_fibre E H T'.V inferInstance G' tP t' hprop m2' mK`. Establish `hp` using `GlobalTheory.UnifAfterExt.polAt_of_sabMap j mK m1' Xo.univ.proper Xo.univ.ample Xo.univ.ktriv (jK T'.V) (𝟙 _) ((Category.comp_id _).trans (Category.id_comp _).symm)`.
+
+Take `⟨S, hS⟩` from `hS`. Take `⟨e, he, -⟩` from `grpPullback_iso ((isGrpPullback_pullback _ (spMap (residue T'.V))).comp (isGrpPullback_pullback G.G (spMap f))) ((isGrpPullback_pullback _ (spMap (residue T'.V))).comp ((j.cart.comp mP.cart).congr (Category.id_comp _) rfl))`. Take `⟨-, P, -, hP⟩` from `GlobalTheory.UnifAfterExt.isOpen_and_uniformised T'.V inferInstance G' hp ⟨S, isGt_of_iso e hS⟩`. Conclude with `⟨P, hP⟩`.
+-/
 theorem exists_unif_of_split (T T' : CDVR) (f : T.V →+* T'.V) (ψ : T.Fr →+* T'.Fr)
     (hψ : ∀ a, ψ (algebraMap T.V T.Fr a) = algebraMap T'.V T'.Fr (f a))
     {G : SAB H (Sp T.V)} {t : SAB H (Sp T.Fr)} {x : Sp T.Fr ⟶ Xo.X} (m1 : SABMap t Xo.univ.t x)

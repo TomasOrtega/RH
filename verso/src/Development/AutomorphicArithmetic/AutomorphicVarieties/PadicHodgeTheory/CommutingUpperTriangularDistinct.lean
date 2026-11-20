@@ -8,6 +8,15 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal Mod
 
 namespace UpperTheory.V.Loc
 
+/- English proof (translation)
+Establish `a10` using `hA 1 0 (by decide)`. Establish `a20` using `hA 2 0 (by decide)`. Establish `a21` using `hA 2 1 (by decide)`. Establish `b10` using `hB 1 0 (by decide)`. Establish `b20` using `hB 2 0 (by decide)`.
+
+Establish `b21` using `hB 2 1 (by decide)`. Establish `d01 : d 0 - d 1 ≠ 0` using `sub_ne_zero.2 (hd.ne (by decide))`. Establish `d02 : d 0 - d 2 ≠ 0` using `sub_ne_zero.2 (hd.ne (by decide))`. Establish `d12 : d 1 - d 2 ≠ 0` using `sub_ne_zero.2 (hd.ne (by decide))`. Establish `e20` using `congrFun (congrFun h 2) 0`.
+
+Establish `e21` using `congrFun (congrFun h 2) 1`. Establish `e10` using `congrFun (congrFun h 1) 0`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_three, a10, a20, a21, b10, b20, b21, hA', hB'] at e20 e21 e10`. Establish `k20 : k 2 0 = 0` using `(mul_eq_zero.1 (show (d 0 - d 2) * k 2 0 = 0 by linear_combination -e20)).resolve_left d02`. Rewrite `e21`, `e10` using `[k20]`.
+
+Establish `k21 : k 2 1 = 0` using `(mul_eq_zero.1 (show (d 1 - d 2) * k 2 1 = 0 by linear_combination -e21)).resolve_left d12`. Establish `k10 : k 1 0 = 0` using `(mul_eq_zero.1 (show (d 0 - d 1) * k 1 0 = 0 by linear_combination -e10)).resolve_left d01`. Introduce `a b hab`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> first | exact absurd hab (by decide) | assumption`.
+-/
 private theorem commuting_upper_triangular_distinct {K : Type} [Field K] (d : Fin 3 → K) (hd : Function.Injective d)
     (A k B : Matrix (Fin 3) (Fin 3) K) (h : A * k = k * B)
     (hA : ∀ a b, wt a b < 0 → A a b = 0) (hB : ∀ a b, wt a b < 0 → B a b = 0)
@@ -32,11 +41,23 @@ private theorem commuting_upper_triangular_distinct {K : Type} [Field K] (d : Fi
   intro a b hab
   fin_cases a <;> fin_cases b <;> first | exact absurd hab (by decide) | assumption
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.DiagonalizeThreeByThree.diagonalize_three_by_three_split d hd M hM`.
+-/
 private theorem diagonalize_three_by_three_split {K : Type} [Field K] (d : Fin 3 → K) (hd : Function.Injective d)
     (M : Matrix (Fin 3) (Fin 3) K) (hM : M.charpoly = ∏ a, (X - C (d a))) :
     ∃ h : GL (Fin 3) K, ((h⁻¹ : GL (Fin 3) K) : Matrix (Fin 3) (Fin 3) K) * M * h = Matrix.diagonal d :=
   _root_.UpperTheory.Reformulated.B.DiagonalizeThreeByThree.diagonalize_three_by_three_split d hd M hM
 
+/- English proof (translation)
+Establish `d01 : d 0 - d 1 ≠ 0` using `sub_ne_zero.2 (hd.ne (by decide))`. Establish `d02 : d 0 - d 2 ≠ 0` using `sub_ne_zero.2 (hd.ne (by decide))`. Establish `d12 : d 1 - d 2 ≠ 0` using `sub_ne_zero.2 (hd.ne (by decide))`. Establish `d10 : d 1 - d 0 ≠ 0` using `sub_ne_zero.2 (hd.ne (by decide))`. Establish `d20 : d 2 - d 0 ≠ 0` using `sub_ne_zero.2 (hd.ne (by decide))`.
+
+Establish `d21 : d 2 - d 1 ≠ 0` using `sub_ne_zero.2 (hd.ne (by decide))`. Establish `hs : ∀ c : K, Matrix.diagonal d - Matrix.scalar (Fin 3) c = Matrix.diagonal fun i => d i - c` using `fun c => by`. Rewrite using `[Matrix.scalar_apply, Matrix.diagonal_sub]`. Simplify using `only [hs, Matrix.diagonal_mul_diagonal] at h0 h1 h2`. Establish `e00` using `congrFun (congrFun h0 0) 0`.
+
+Establish `e10` using `congrFun (congrFun h0 1) 0`. Establish `e20` using `congrFun (congrFun h0 2) 0`. Establish `e11` using `congrFun (congrFun h1 1) 1`. Establish `e21` using `congrFun (congrFun h2 2) 1`. Establish `e22` using `congrFun (congrFun h2 2) 2`.
+
+Simplify using `[Matrix.mul_diagonal, Matrix.diagonal_mul, d01, d02, d12, d10, d20, d21, sub_eq_zero] at e00 e10 e20 e11 e21 e22`. Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `intro a b hab fin_cases a <;> fin_cases b <;> first | exact absurd hab (by decide) | assumption`. Apply the tactic sequence `intro a fin_cases a <;> assumption`.
+-/
 private theorem three_eigenvalue_product_zero {K : Type} [Field K] (d p : Fin 3 → K) (hd : Function.Injective d)
     (N : Matrix (Fin 3) (Fin 3) K)
     (h0 : (N - Matrix.scalar _ (p 0)) * (Matrix.diagonal d - Matrix.scalar _ (d 1)) *
@@ -68,11 +89,17 @@ private theorem three_eigenvalue_product_zero {K : Type} [Field K] (d p : Fin 3 
   · intro a
     fin_cases a <;> assumption
 
+/- English proof (translation)
+Simplify using `[conjBy, GG.mat, hg]`.
+-/
 private theorem conjugate_representation_mat {R D : Type} [CommRing R] [Group D] (r : D →* GG 3 R) (h : GL (Fin 3) R) (g : D)
     (hg : (r g).right = 1) : (conjBy h⁻¹ r g).mat =
       ((h⁻¹ : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R) * (r g).mat * h := by
   simp [conjBy, GG.mat, hg]
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Assume the negation of the conclusion as `h0`. Rewrite `hx` using `[PadicInt.unitCoeff_spec h0, map_mul, map_pow, map_natCast]`. Conclude with `mul_ne_zero ((Units.isUnit _).map φ).ne_zero (pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)) hx`.
+-/
 private theorem padic_int_ringHom_injective {l : ℕ} [Fact l.Prime] {K : Type} [Field K] [CharZero K] (φ : ℤ_[l] →+* K) :
     Function.Injective φ := by
   rw [injective_iff_map_eq_zero]
@@ -82,6 +109,15 @@ private theorem padic_int_ringHom_injective {l : ℕ} [Fact l.Prime] {K : Type} 
   exact mul_ne_zero ((Units.isUnit _).map φ).ne_zero
     (pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)) hx
 
+/- English proof (translation)
+Take `⟨s, ⟨hs1, hs2⟩, hs⟩` from `((cycInertia l).2 D.τ.ker D.τ_open).2`. Use `⟨s, hs2, ?_⟩` and prove the remaining obligations. Set `φ : ℤ_[l] →+* K` to `(algebraMap O K).comp (algebraMap ℤ_[l] O)`. Set `t : Kˣ` to `Units.map (algebraMap O K : O →* K) (D.Ψ s)`. Establish `ht : t = Units.map (φ : ℤ_[l] →* K) (cyc l l s) ^ D.e`.
+
+Establish `h1 : D.τ s = 1` using `hs1`. Simplify using `only [t]`. Rewrite using `[D.Ψ_I s hs2, h1, mul_one, map_pow]`. Both sides reduce to the same expression. Establish `hinf : ¬ IsOfFinOrder t`.
+
+Rewrite using `[ht]`. Introduce `h`. Establish `h2` using `h.of_pow (by have := D.e_pos; omega)`. Conclude with `hs ((Function.Injective.isOfFinOrder_iff (f := Units.map (φ : ℤ_[l] →* K)) (Units.map_injective (padic_int_ringHom_injective φ))).1 h2)`. Establish `e : ∀ a, algebraMap O K (UpperTheory.V.UnitaryThreeInertia.psi D.Ψ a s) = ((t ^ wt1 a : Kˣ) : K)` using `fun a => congrArg Units.val (map_zpow (Units.map (algebraMap O K : O →* K)) (D.Ψ s) (wt1 a))`.
+
+Introduce `a b hab`. Simplify using `only [e] at hab`. Establish `h3` using `injective_zpow_iff_not_isOfFinOrder.2 hinf (Units.ext hab)`. Simplify using `only [wt1] at h3`. Conclude with `Fin.ext (by omega)`.
+-/
 private theorem exists_inertia_distinct_characters {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O]
     (D : Dat3 l O) (K : Type) [Field K] [CharZero K] [Algebra O K] :
     ∃ s ∈ Iq l, Function.Injective fun a => algebraMap O K (UpperTheory.V.UnitaryThreeInertia.psi D.Ψ a s) := by
@@ -110,6 +146,25 @@ private theorem exists_inertia_distinct_characters {l : ℕ} [Fact l.Prime] {O :
 
 end UpperTheory.V.Loc
 
+/- English proof (translation)
+Introduce `hP l _ O _ _ _ _ _ _ _ D U K _ _ _ r hr`. Take `⟨hch, hpr⟩` from `UpperTheory.V.Loc.lemma2a hP D U K r hr`. Establish `hm : ∀ g, D.η g = 1 → (r g).right = 1`. Take `⟨f, rfl, -⟩` from `hr`. Conclude with `fun g hg => (U.r.hasMult g).trans hg`.
+
+Take `⟨s, hs, hd⟩` from `exists_inertia_distinct_characters D K`. Establish `hηs` using `D.η_unr s hs`. Prove the components needed by the constructor for the conclusion. Take `⟨h, hh⟩` from `diagonalize_three_by_three_split _ hd _ (hch s hs)`. Establish `hc : ∀ (A : Matrix (Fin 3) (Fin 3) K) (c : K), ((h⁻¹ : GL (Fin 3) K) : Matrix (Fin 3) (Fin 3) K) * A * (h : Matrix (Fin 3) (Fin 3) K) - Matrix.scalar _ c = ((h⁻¹ : GL (Fin 3) K) : Matrix (Fin 3) (Fin 3) K) * (A - Matrix.scalar _ c) * (h : Matrix (Fin 3) (Fin 3) K)`.
+
+Introduce `A c`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_assoc _ (Matrix.scalar _ c), Matrix.scalar_commute c (fun _ => Commute.all _ _), ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`. Establish `hc3 : ∀ A B C : Matrix (Fin 3) (Fin 3) K, A * B * C = 0 → (((h⁻¹ : GL (Fin 3) K) : Matrix (Fin 3) (Fin 3) K) * A * (h : Matrix (Fin 3) (Fin 3) K)) * (((h⁻¹ : GL (Fin 3) K) : Matrix (Fin 3) (Fin 3) K) * B * (h : Matrix (Fin 3) (Fin 3) K)) * (((h⁻¹ : GL (Fin 3) K) : Matrix (Fin 3) …`. Introduce `A B C h0`. Establish `: ∀ Y : Matrix (Fin 3) (Fin 3) K, (h : Matrix (Fin 3) (Fin 3) K) * (((h⁻¹ : GL (Fin 3) K) : Matrix (Fin 3) (Fin 3) K) * Y) = Y` using `fun Y => by rw [← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]`.
+
+Simplify using `only [Matrix.mul_assoc, this]`. Rewrite using `[← Matrix.mul_assoc B, ← Matrix.mul_assoc A, ← Matrix.mul_assoc A, h0, Matrix.zero_mul, Matrix.mul_zero]`. Establish `hI : ∀ x ∈ Iq l, (∀ a b, wt a b < 0 → (conjBy h⁻¹ r x).mat a b = 0) ∧ ∀ a, (conjBy h⁻¹ r x).mat a a = algebraMap O K (UpperTheory.V.UnitaryThreeInertia.psi D.Ψ a x)`. Introduce `x hx`. Rewrite using `[conjugate_representation_mat r h x (hm x (D.η_unr x hx))]`.
+
+Use `three_eigenvalue_product_zero _ (fun a => algebraMap O K (UpperTheory.V.UnitaryThreeInertia.psi D.Ψ a x)) hd _ ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[← hh, hc, hc, hc]`. Apply the tactic sequence `exact hc3 _ _ _ (hpr ![x, s, s] fun a => by fin_cases a <;> assumption)`. Rewrite using `[← hh, hc, hc, hc]`. Apply the tactic sequence `exact hc3 _ _ _ (hpr ![s, x, s] fun a => by fin_cases a <;> assumption)`.
+
+Rewrite using `[← hh, hc, hc, hc]`. Apply the tactic sequence `exact hc3 _ _ _ (hpr ![s, s, x] fun a => by fin_cases a <;> assumption)`. Use `⟨h, fun g hg => ?_, fun x hx _ => (hI x hx).2⟩` and prove the remaining obligations. Establish `hx : g * s * g⁻¹ ∈ Iq l` using `(iqBasic l).1.conj_mem s hs g`. Establish `hr1 : ∀ x, D.η x = 1 → (conjBy h⁻¹ r x).right = 1` using `fun x hx => by simp [conjBy, hm x hx]`.
+
+Establish `hmul : ∀ x y, D.η x = 1 → (conjBy h⁻¹ r (x * y)).mat = (conjBy h⁻¹ r x).mat * (conjBy h⁻¹ r y).mat` using `fun x y hx => by`. Rewrite using `[map_mul]`. Simplify using `only [GG.mat, SemidirectProduct.mul_left, hr1 x hx, sgnAct_one, Units.val_mul]`. Use `commuting_upper_triangular_distinct _ hd (conjBy h⁻¹ r (g * s * g⁻¹)).mat _ (conjBy h⁻¹ r s).mat ?_ (hI _ hx).1 (hI s hs).1 (fun a => ?_) (hI s hs).2` and prove the remaining obligations. Rewrite using `[← hmul _ _ (D.η_unr _ hx), ← hmul _ _ hg, inv_mul_cancel_right]`.
+
+Rewrite using `[(hI _ hx).2]`. Simplify using `only [UpperTheory.V.UnitaryThreeInertia.psi, map_mul, map_inv, mul_inv_cancel_comm]`. Introduce `h h' H H'`. Use `commuting_upper_triangular_distinct _ hd (conjBy h⁻¹ r s).mat _ (conjBy h'⁻¹ r s).mat ?_ (H.tri s hηs) (H'.tri s hηs) (H.ine s hs hηs) (H'.ine s hs hηs)` and prove the remaining obligations. Rewrite using `[conjugate_representation_mat r h s (hm s hηs), conjugate_representation_mat r h' s (hm s hηs), Units.val_mul]`.
+
+Simplify using `only [Matrix.mul_assoc, Units.mul_inv_cancel_left]`.
+-/
 theorem UpperTheory.V.Loc.lemma2b :
     LocalPublishedTheorems → ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] [IsAdicComplete (maximalIdeal O) O] (D : Dat3 l O) (U : D.Univ) (K : Type) [Field K] [CharZero K] [Algebra O K] (r : GQ l →* GG 3 K), D.On U r → (∃ h, UpperTheory.V.UnitaryThreeInertia.TriIn D.η D.Ψ (Iq l) r h) ∧ ∀ h h', UpperTheory.V.UnitaryThreeInertia.TriIn D.η D.Ψ (Iq l) r h → UpperTheory.V.UnitaryThreeInertia.TriIn D.η D.Ψ (Iq l) r h' → ∀ a b, wt a b < 0 → ((h⁻¹ * h' : GL (Fin 3) K) : Matrix (Fin 3) (Fin 3) K) a b = 0 := by
   intro hP l _ O _ _ _ _ _ _ _ D U K _ _ _ r hr

@@ -3,6 +3,11 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.FiniteA
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R _ _ _ _ _ _ hR L _ _ _ _ _`. Establish `: CharZero (FractionRing R)` using `IsFractionRing.charZero_of_isFractionRing R`. Establish `: Algebra.IsSeparable (FractionRing R) L` using `inferInstance`. Establish `hfin : Module.Finite R (integralClosure R L)` using `IsIntegralClosure.finite R (FractionRing R) L (integralClosure R L)`. Establish `hfr : IsFractionRing (integralClosure R L) L` using `integralClosure.isFractionRing_of_finite_extension (FractionRing R) L`.
+
+Use `⟨hfin, ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.isLocalRing_finite_domain (R := R) _, IsNoetherianRing.of_finite R _, ?_, hfr⟩` and prove the remaining obligations. Conclude with `(isIntegrallyClosed_iff_isIntegrallyClosedIn L).2 inferInstance`.
+-/
 theorem integralClosure_finite_local_of_isAdicComplete :
     ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [IsIntegrallyClosed R]
       [CharZero R], IsAdicComplete (IsLocalRing.maximalIdeal R) R →

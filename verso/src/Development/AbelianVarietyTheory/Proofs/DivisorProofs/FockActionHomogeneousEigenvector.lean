@@ -11,6 +11,15 @@ open MvPolynomial Formalism.BasicNotions.TH GlobalTheory.FockAlg GlobalTheory.Jo
 
 namespace GlobalTheory.FockScalarType
 
+/- English proof (translation)
+Establish `key : ∀ (α : σ →₀ ℕ) (P : MvPolynomial σ ℂ), inner ℂ (ι (monomial α 1)) (ι P) = coeff α P * α.prod (fun _ k => (k.factorial : ℂ))`. Introduce `α P`. Proceed by induction on `P using MvPolynomial.induction_on' with`. Consider the case `add P P' h h' => simp only [map_add, inner_add_right, h, h', coeff_add, add_mul]`. Consider the case `monomial β c`.
+
+Rewrite using `[monomial_eq_smul β c, map_smul, inner_smul_right, hι, coeff_smul, coeff_monomial]`. Distinguish the cases in `e : α = β`. Substitute `e` using the available equality. Simplify using the standard rewrite rules. Simplify using `[e, Ne.symm e]`.
+
+Use `(injective_iff_map_eq_zero ι).2 fun P hP => ?_` and prove the remaining obligations. Use extensionality with `α`. Establish `h` using `key α P`. Rewrite `h` using `[hP, inner_zero_right, eq_comm, mul_eq_zero]`. Use `h.resolve_right ?_` and prove the remaining obligations.
+
+Conclude with `Finset.prod_ne_zero_iff.2 fun i _ => Nat.cast_ne_zero.2 (Nat.factorial_ne_zero _)`.
+-/
 theorem injective_of_isFockIP {σ : Type} [DecidableEq σ] {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] {ι : MvPolynomial σ ℂ →ₗ[ℂ] H} (hι : IsFockIP ι) :
     Function.Injective ι := by
@@ -39,12 +48,22 @@ def charSub (p q r s : ℕ) (x : ℚ) : Submodule ℂ (Pol p q r s) where
   zero_mem' := fun Y _ => by simp
   smul_mem' := fun c _ ha Y hY => by rw [map_smul, ha Y hY, smul_comm]
 
+/- English proof (translation)
+Introduce `c d hcd`. Rewrite using `[Eab, Matrix.single_apply, if_neg]`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `hcd hab`.
+-/
 theorem isKC_Eab {a b : Ix p q} (hab : sameBlock a b) : IsKC (Eab a b) := by
   intro c d hcd
   rw [Eab, Matrix.single_apply, if_neg]
   rintro ⟨rfl, rfl⟩
   exact hcd hab
 
+/- English proof (translation)
+Use `⟨h0, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [wtSub, SetLike.mem_coe, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply]`. Introduce `a`. Apply the tactic sequence `rw [hf _ (isKC_Eab (by rcases a with a | a <;> trivial))]`. Simplify using `[Eab]`.
+
+Simplify using `only [SetLike.mem_coe, Submodule.mem_iInf, LinearMap.mem_ker]`. Introduce `a b hab`. Establish `h1 : sameBlock a b`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp_all [posC, sameBlock]`. Establish `h2 : a ≠ b`.
+
+Introduce and unpack `rfl`. Apply the tactic sequence `rcases a with a | a <;> simp [posC] at hab`. Rewrite using `[hf _ (isKC_Eab h1), Eab, Matrix.trace_single_eq_of_ne _ _ _ h2]`. Simplify using the standard rewrite rules.
+-/
 theorem isHW_of_mem {x : ℚ} {f : Pol p q r s} (h0 : f ≠ 0) (hf : f ∈ charSub p q r s x) :
     IsHW (fockAct1 p q r s) (fun _ => x) f := by
   refine ⟨h0, ?_, ?_⟩
@@ -63,6 +82,13 @@ theorem isHW_of_mem {x : ℚ} {f : Pol p q r s} (h0 : f ≠ 0) (hf : f ∈ charS
     rw [hf _ (isKC_Eab h1), Eab, Matrix.trace_single_eq_of_ne _ _ _ h2]
     simp
 
+/- English proof (translation)
+Establish `hK : ∀ {d : ℕ} {w : Pol p q r s}, w ∈ homog (Ln p q r s) d → fockAct1 p q r s Y w ∈ homog (Ln p q r s) d` using `fun hw => GlobalTheory.FockDeg.omAct_mem_homog (GlobalTheory.FockDeg.lineMatrixKroneckerLeftFactor_eq_zero_of_isKC hY) hw`. Establish `hc` using `LinearMap.congr_fun ((GlobalTheory.FockPair.pair_lie_commute p q r s).2.2 Y Z) v`. Rewrite `hc` using `[Module.End.mul_apply, Module.End.mul_apply, fockAct2_eq, omAct_odd (odd_kron2 hZ), LinearMap.add_apply, LinearMap.add_apply, map_add]`. Establish `h1 : fockAct1 p q r s Y (upOp (kron2 p q Z) v) - upOp (kron2 p q Z) (fockAct1 p q r s Y v) ∈ homog (Ln p q r s) (d + 2)` using `Submodule.sub_mem _ (hK (upOp_homog _ d v hv)) (upOp_homog _ d _ (hK hv))`. Establish `h2 : dnOp (kron2 p q Z) (fockAct1 p q r s Y v) - fockAct1 p q r s Y (dnOp (kron2 p q Z) v) ∈ homog (Ln p q r s) (d - 2)` using `Submodule.sub_mem _ (dnOp_homog _ d _ (hK hv)) (hK (dnOp_homog _ d v hv))`.
+
+Establish `e : fockAct1 p q r s Y (upOp (kron2 p q Z) v) - upOp (kron2 p q Z) (fockAct1 p q r s Y v) = dnOp (kron2 p q Z) (fockAct1 p q r s Y v) - fockAct1 p q r s Y (dnOp (kron2 p q Z) v)`. Take the linear combination `hc`. Establish `h0 : fockAct1 p q r s Y (upOp (kron2 p q Z) v) - upOp (kron2 p q Z) (fockAct1 p q r s Y v) = 0`. Assume the negation of the conclusion as `hne`. Use `IsHomogeneous.inj_right h1 (e ▸ h2) hne` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `⟨sub_eq_zero.1 h0, (sub_eq_zero.1 (e ▸ h0)).symm⟩`.
+-/
 theorem comm_parts {Y : Mat p q} (hY : IsKC Y) {Z : Mat r s} (hZ : IsPC Z) {d : ℕ}
     {v : Pol p q r s} (hv : v ∈ homog (Ln p q r s) d) :
     fockAct1 p q r s Y (upOp (kron2 p q Z) v) = upOp (kron2 p q Z) (fockAct1 p q r s Y v) ∧
@@ -89,16 +115,27 @@ theorem comm_parts {Y : Mat p q} (hY : IsKC Y) {Z : Mat r s} (hZ : IsPC Z) {d : 
     omega
   exact ⟨sub_eq_zero.1 h0, (sub_eq_zero.1 (e ▸ h0)).symm⟩
 
+/- English proof (translation)
+Introduce `Y hY` and use `by rw [(comm_parts hY hZ hv).1, hc Y hY, map_smul]`.
+-/
 theorem upOp_mem_charSub {x : ℚ} {Z : Mat r s} (hZ : IsPC Z) {d : ℕ} {v : Pol p q r s}
     (hv : v ∈ homog (Ln p q r s) d) (hc : v ∈ charSub p q r s x) :
     upOp (kron2 p q Z) v ∈ charSub p q r s x := fun Y hY => by
   rw [(comm_parts hY hZ hv).1, hc Y hY, map_smul]
 
+/- English proof (translation)
+Introduce `Y hY` and use `by rw [(comm_parts hY hZ hv).2, hc Y hY, map_smul]`.
+-/
 theorem dnOp_mem_charSub {x : ℚ} {Z : Mat r s} (hZ : IsPC Z) {d : ℕ} {v : Pol p q r s}
     (hv : v ∈ homog (Ln p q r s) d) (hc : v ∈ charSub p q r s x) :
     dnOp (kron2 p q Z) v ∈ charSub p q r s x := fun Y hY => by
   rw [(comm_parts hY hZ hv).2, hc Y hY, map_smul]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h0`. Establish `h1` using `isSide_one.degW_le Function.bijective_id hg (isHW_of_mem hg0 hgc)`. Take `⟨d, hd1, hd2⟩` from `isSide_one.homog_of_hw Function.bijective_id (isHW_of_mem h0 hvc) ((mem_harm1 v).1 fun Z hZ => by`. Rewrite using `[fockAct2_eq, (parts_omAct (odd_kron2 hZ) v).2, hd Z hZ])`. Take `rfl : d = e` from `IsHomogeneous.inj_right hd2 hv h0`.
+
+Rewrite `h1` using `[← hd1, Nat.cast_le]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem eq_zero_of_lowering {x : ℚ} {e e₀ : ℕ} {g v : Pol p q r s} (hg0 : g ≠ 0)
     (hg : g ∈ homog (Ln p q r s) e₀) (hgc : g ∈ charSub p q r s x) (he : e₀ < e)
     (hv : v ∈ homog (Ln p q r s) e) (hvc : v ∈ charSub p q r s x)
@@ -112,6 +149,17 @@ theorem eq_zero_of_lowering {x : ℚ} {e e₀ : ℕ} {g v : Pol p q r s} (hg0 : 
   rw [← hd1, Nat.cast_le] at h1
   omega
 
+/- English proof (translation)
+Introduce `p q r s x e e₀ f g hf hfc hg0 hg hgc he`. Distinguish the cases in `h2 : e < 2`. Rewrite using `[eq_zero_of_lowering hg0 hg hgc he hf hfc fun Z _ => dnOp_low _ e h2 f hf]`. Conclude with `Submodule.zero_mem _`. Establish `hι` using `GlobalTheory.FockAlg.Model.isFockIsometry_fockEmb (Ln p q r s)`.
+
+Establish `hinj` using `injective_of_isFockIP hι`. Use `set U := Submodule.span ℂ {f' | ∃ Z : Mat r s, IsPC Z ∧ ∃ g' ∈ homog (Ln p q r s) (e - 2), (∀ Y : Mat p q, IsKC Y → fockAct1 p q r s Y g' = ((x : ℂ) * Y.trace) • g') ∧ f' = plusPart (fockAct2 p q r s Z) g'} with hU`. Establish `hle : U ≤ homog (Ln p q r s) e ⊓ charSub p q r s x`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨Z, hZ, g', h1, h3, rfl⟩`.
+
+Rewrite using `[fockAct2_eq, (parts_omAct (odd_kron2 hZ) g').1]`. Use `⟨?_, upOp_mem_charSub hZ h1 h3⟩` and prove the remaining obligations. Use `upOp_homog (kron2 p q Z) _ g' h1` as an intermediate fact. Rewrite `this` using `[show e - 2 + 2 = e by omega]`. Then use the resulting hypothesis. Use `Submodule.finiteDimensional_of_le (hle.trans inf_le_left)` as an intermediate fact.
+
+Take `⟨u, hu, ho⟩` from `exists_orth (GlobalTheory.FockAlg.Model.fockEmb (Ln p q r s)) U f`. Establish `hh` using `Submodule.sub_mem _ hf (hle hu).1`. Establish `hc : f - u ∈ charSub p q r s x` using `Submodule.sub_mem _ hfc (hle hu).2`. Establish `h0 : f - u = 0` using `eq_zero_of_lowering hg0 hg hgc he hh hc fun Z hZ => by`. Establish `hZ'` using `isPC_conjTranspose hZ`.
+
+Establish `h1` using `ho _ (Submodule.subset_span ⟨_, hZ', _, dnOp_homog (kron2 p q Z) e _ hh, dnOp_mem_charSub hZ hh hc, rfl⟩)`. Rewrite `h1` using `[fockAct2_eq, (parts_omAct (odd_kron2 hZ') _).1, inner_upOp hι (odd_kron2 hZ'), ← lineKroneckerRightMatrix_conjTranspose, neg_eq_zero, inner_self_eq_zero]`. Conclude with `hinj (h1.trans (map_zero _).symm)`. Rewrite using `[sub_eq_zero.1 h0]`. Conclude with `hu`.
+-/
 theorem mem_span_raising : ∀ (P Q R S : ℕ) (x : ℚ) (e e₀ : ℕ) (f g : Pol P Q R S),
     f ∈ homog (Ln P Q R S) e →
     (∀ Y : Mat P Q, IsKC Y → fockAct1 P Q R S Y f = ((x : ℂ) * Y.trace) • f) →

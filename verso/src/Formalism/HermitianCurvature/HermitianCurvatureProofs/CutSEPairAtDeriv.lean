@@ -14,6 +14,11 @@ section Lin
 
 variable {r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+Use extensionality with `i`. Distinguish the cases in `hi : i = l`. Substitute `hi` using the available equality. Simplify using `only [Pi.add_apply, Pi.smul_apply, Pi.single_eq_same]`. Rewrite using `[Complex.real_smul, Complex.real_smul, mul_one]`.
+
+Conclude with `(Complex.re_add_im h).symm`. Simplify using `[Pi.single_eq_of_ne hi]`.
+-/
 theorem pi_single_decomp (l : Fin r) (h : ℂ) :
     (Pi.single l h : Fin r → ℂ) = h.re • (Pi.single l 1 : Fin r → ℂ) + h.im • (Pi.single l Complex.I : Fin r → ℂ) := by
   ext i
@@ -24,6 +29,11 @@ theorem pi_single_decomp (l : Fin r) (h : ℂ) :
     exact (Complex.re_add_im h).symm
   · simp [Pi.single_eq_of_ne hi]
 
+/- English proof (translation)
+Rewrite using `[pi_single_decomp l h, map_add, map_smul, map_smul]`. Rewrite using `[← Complex.coe_smul, ← Complex.coe_smul]`. Simplify using `only [smul_add, smul_sub, smul_smul]`. Use `match_scalars`. Apply the tactic sequence `apply Complex.ext <;> simp <;> ring`.
+
+Apply the tactic sequence `apply Complex.ext <;> simp <;> ring`.
+-/
 theorem clm_single_wirt (L : (Fin r → ℂ) →L[ℝ] E) (l : Fin r) (h : ℂ) :
     L (Pi.single l h) = h • ((1 / 2 : ℂ) • (L (Pi.single l 1) - Complex.I • L (Pi.single l Complex.I))) +
       conj h • ((1 / 2 : ℂ) • (L (Pi.single l 1) + Complex.I • L (Pi.single l Complex.I))) := by
@@ -39,9 +49,17 @@ end Lin
 def dSl {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (A B : E) : ℂ →L[ℝ] E :=
   (ContinuousLinearMap.id ℝ ℂ).smulRight A + Complex.conjCLE.toContinuousLinearMap.smulRight B
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dSl_apply {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (A B : E) (h : ℂ) :
     dSl A B h = h • A + conj h • B := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = l`. Substitute `hj` using the available equality. Establish `: ¬ (j.succ.val ≤ j.val)` using `by simp [Fin.val_succ]`. Simplify using `[glue, this]`.
+
+Rewrite using `[Function.update_of_ne hj]`. Unfold `glue`. Apply the tactic sequence `split_ifs <;> simp [Function.update_of_ne hj]`.
+-/
 theorem glue_succ_update_eq {r : ℕ} (l : Fin r) (c : Fin r → ℂ) (s : ℂ) (c' : Cf r l.succ) :
     glue l.succ (Function.update c l s) c' = Function.update (glue l.succ c c') l s := by
   funext j
@@ -53,6 +71,13 @@ theorem glue_succ_update_eq {r : ℕ} (l : Fin r) (c : Fin r → ℂ) (s : ℂ) 
     unfold glue
     split_ifs <;> simp [Function.update_of_ne hj]
 
+/- English proof (translation)
+Simplify using `only [OmX, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h i`. Distinguish the cases in `hi : i = l`. Substitute `hi` using the available equality.
+
+Simplify using `using hs'`. Establish `h1` using `h i`. Rewrite `h1`, the goal using `[Function.update_of_ne hi]`. Then use the resulting hypothesis. Introduce `h i`. Distinguish the cases in `hi : i = l`.
+
+Substitute `hi` using the available equality. Simplify using `using hs`. Establish `h1` using `h i`. Rewrite `h1`, the goal using `[Function.update_of_ne hi]`. Then use the resulting hypothesis.
+-/
 theorem omX_update_iff {r : ℕ} (y : Fin r → ℂ) (l : Fin r) {s s' : ℂ} (hs : s ≠ 0) (hs' : s' ≠ 0) :
     Function.update y l s ∈ OmX r ↔ Function.update y l s' ∈ OmX r := by
   simp only [OmX, Set.mem_setOf_eq]
@@ -70,6 +95,9 @@ theorem omX_update_iff {r : ℕ} (y : Fin r → ℂ) (l : Fin r) {s s' : ℂ} (h
     · have h1 := h i
       rwa [Function.update_of_ne hi] at h1 ⊢
 
+/- English proof (translation)
+Distinguish the cases in `hs : s = 0`. Substitute `hs` using the available equality. Introduce `hm`. Conclude with `hm l (by simp)`. Conclude with `fun hm => h ((omX_update_iff y l ht hs).2 hm)`.
+-/
 theorem omX_update_any {r : ℕ} (y : Fin r → ℂ) (l : Fin r) {t : ℂ} (ht : t ≠ 0)
     (h : Function.update y l t ∉ OmX r) (s : ℂ) : Function.update y l s ∉ OmX r := by
   by_cases hs : s = 0
@@ -86,12 +114,18 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [Normed
   [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp]
   [FiniteDimensional ℂ Wq] {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)}
 
+/- English proof (translation)
+Simplify using `only [dT, Module.End.mul_apply, ActualOps.op_apply, crd, opL, ciOp, pOp, if_pos hx]`. Rewrite using `[smul_smul, inv_mul_cancel₀ (hx l), one_smul]`.
+-/
 theorem dT_apply (X : ActualOps k r z z' π π') (l : Fin r) (Φ : RadSp k r z z' π π') {x : Fin r → ℂ}
     (hx : x ∈ OmX r) (g : Mx k r) :
     (dT X l Φ : Fn k r (Wq →L[ℂ] Wp)) x g = Formalism.QuantumDeterminants.wirt l (fun x' => (Φ : Fn k r (Wq →L[ℂ] Wp)) x' g) x := by
   simp only [dT, Module.End.mul_apply, ActualOps.op_apply, crd, opL, ciOp, pOp, if_pos hx]
   rw [smul_smul, inv_mul_cancel₀ (hx l), one_smul]
 
+/- English proof (translation)
+Establish `hs : star (x l) ≠ 0` using `by simpa using hx l`. Simplify using `only [dTb, Module.End.mul_apply, ActualOps.op_apply, crd, opL, cbiOp, pbOp, if_pos hx]`. Rewrite using `[smul_smul, inv_mul_cancel₀ hs, one_smul]`.
+-/
 theorem dTb_apply (X : ActualOps k r z z' π π') (l : Fin r) (Φ : RadSp k r z z' π π') {x : Fin r → ℂ}
     (hx : x ∈ OmX r) (g : Mx k r) :
     (dTb X l Φ : Fn k r (Wq →L[ℂ] Wp)) x g = Formalism.QuantumDeterminants.wirtBar l (fun x' => (Φ : Fn k r (Wq →L[ℂ] Wp)) x' g) x := by
@@ -99,6 +133,23 @@ theorem dTb_apply (X : ActualOps k r z z' π π') (l : Fin r) (Φ : RadSp k r z 
   simp only [dTb, Module.End.mul_apply, ActualOps.op_apply, crd, opL, cbiOp, pbOp, if_pos hx]
   rw [smul_smul, inv_mul_cancel₀ hs, one_smul]
 
+/- English proof (translation)
+Distinguish the cases in `hD : (Function.update y l s, g) ∈ DomR k r z z'`. Use `set x := Function.update y l s with hxdef`. Take `⟨-, hsm, -⟩` from `Φ.2`. Take `⟨U, F, hU, hxU, hF, hΦ⟩` from `hsm (x, g) hD`. Establish `hpc : Continuous (fun x' : Fin r → ℂ => (x', g))` using `continuous_id.prodMk continuous_const`.
+
+Establish `hev : (fun x' => (Φ : Fn k r (Wq →L[ℂ] Wp)) x' g) =ᶠ[𝓝 x] fun x' => F (x', g)` using `by filter_upwards [hpc.continuousAt.preimage_mem_nhds (hU.mem_nhds hxU)] with x' hx'`. Conclude with `hΦ (x', g) hx' hD.2.1`. Establish `hFd : DifferentiableAt ℝ (fun x' => F (x', g)) x`. Establish `h1 : DifferentiableAt ℝ F (x, g)` using `(hF.contDiffAt (hU.mem_nhds hxU)).differentiableAt (by simp)`. Conclude with `h1.comp x (differentiableAt_id.prodMk (differentiableAt_const _))`.
+
+Establish `hf : HasFDerivAt (fun x' => (Φ : Fn k r (Wq →L[ℂ] Wp)) x' g) (fderiv ℝ (fun x' => (Φ : Fn k r (Wq →L[ℂ] Wp)) x' g) x) x` using `(hFd.hasFDerivAt.congr_of_eventuallyEq hev).differentiableAt.hasFDerivAt`. Establish `hc` using `hf.comp s (hasFDerivAt_update (𝕜 := ℝ) y s)`. Use `hc.congr_fderiv ?_` and prove the remaining obligations. Establish `hxO : x ∈ OmX r` using `hD.1`. Use `ext1 h`.
+
+Rewrite using `[dSl_apply, dT_apply X l Φ hxO, dTb_apply X l Φ hxO, ContinuousLinearMap.comp_apply]`. Use `symm`. Establish `hp : (ContinuousLinearMap.pi (Pi.single l (ContinuousLinearMap.id ℝ ℂ)) : ℂ →L[ℝ] (Fin r → ℂ)) h = Pi.single l h`. Use extensionality with `j`. Distinguish the cases in `hj : j = l`.
+
+Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne hj]`. Rewrite using `[hp, clm_single_wirt]`. Simplify using `only [Formalism.QuantumDeterminants.wirt, Formalism.QuantumDeterminants.wirtBar]`.
+
+Establish `hx0 : ∀ s', s' ≠ 0 → (Φ : Fn k r (Wq →L[ℂ] Wp)) (Function.update y l s') g = 0`. Introduce `s' hs'`. Use `radSp_zero_off Φ (x := (Function.update y l s', g)) fun h => hD ?_` and prove the remaining obligations. Conclude with `⟨(omX_update_iff y l hs hs').2 h.1, h.2⟩`. Establish `hT : (dT X l Φ : Fn k r (Wq →L[ℂ] Wp)) (Function.update y l s) g = 0` using `radSp_zero_off (dT X l Φ) (x := (Function.update y l s, g)) hD`.
+
+Establish `hTb : (dTb X l Φ : Fn k r (Wq →L[ℂ] Wp)) (Function.update y l s) g = 0` using `radSp_zero_off (dTb X l Φ) (x := (Function.update y l s, g)) hD`. Rewrite using `[hT, hTb]`. Establish `e0 : dSl (0 : Wq →L[ℂ] Wp) 0 = 0` using `by ext1 h; simp [dSl_apply]`. Rewrite using `[e0]`. Use `(hasFDerivAt_const (0 : Wq →L[ℂ] Wp) s).congr_of_eventuallyEq ?_` and prove the remaining obligations.
+
+Use `filter_upwards [isOpen_ne.mem_nhds hs] with s' hs'`. Conclude with `hx0 s' hs'`.
+-/
 theorem slice_hasFDerivAt (X : ActualOps k r z z' π π') (l : Fin r) (Φ : RadSp k r z z' π π') (y : Fin r → ℂ)
     (g : Mx k r) {s : ℂ} (hs : s ≠ 0) :
     HasFDerivAt (fun s' => (Φ : Fn k r (Wq →L[ℂ] Wp)) (Function.update y l s') g)
@@ -157,11 +208,17 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [Normed
   [FiniteDimensional ℂ Wq] {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)}
 
 omit [FiniteDimensional ℂ Wp] in
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[B.hsVec]`.
+-/
 theorem hsVec_add' (A A' : Wq →L[ℂ] Wp) : B.hsVec (A + A') = B.hsVec A + B.hsVec A' := by
   ext i
   simp [B.hsVec]
 
 omit [FiniteDimensional ℂ Wp] in
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[B.hsVec]`.
+-/
 theorem hsVec_smul' (a : ℂ) (A : Wq →L[ℂ] Wp) : B.hsVec (a • A) = a • B.hsVec A := by
   ext i
   simp [B.hsVec]
@@ -176,8 +233,16 @@ def hsVecLin : (Wq →L[ℂ] Wp) →ₗ[ℂ] PiLp 2 (fun _ : Fin (Module.finrank
 def hsVecR : (Wq →L[ℂ] Wp) →L[ℝ] PiLp 2 (fun _ : Fin (Module.finrank ℂ Wq) => Wp) :=
   (LinearMap.toContinuousLinearMap (hsVecLin (Wp := Wp) (Wq := Wq))).restrictScalars ℝ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hsVecR_apply (A : Wq →L[ℂ] Wp) : hsVecR A = B.hsVec A := rfl
 
+/- English proof (translation)
+Establish `h1` using `hsVecR.hasFDerivAt.comp s hψ`. Establish `h2` using `hsVecR.hasFDerivAt.comp s hφ`. Establish `h3` using `h1.inner ℂ h2`. Use `h3.congr_fderiv ?_` and prove the remaining obligations. Use `ext1 h`.
+
+Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.prod_apply, fderivInnerCLM_apply, Function.comp_apply, hsVecR_apply, dSl_apply, wl_apply, hsVec_add', hsVec_smul', inner_add_left, inner_add_right, inner_smul_left, inner_smul_right, B.hsInner, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hsInner_hasFDerivAt {φ ψ : ℂ → (Wq →L[ℂ] Wp)} {a1 b1 a2 b2 : Wq →L[ℂ] Wp} {s : ℂ}
     (hφ : HasFDerivAt φ (dSl a1 b1) s) (hψ : HasFDerivAt ψ (dSl a2 b2) s) :
     HasFDerivAt (fun s => B.hsInner (φ s) (ψ s))
@@ -192,6 +257,9 @@ theorem hsInner_hasFDerivAt {φ ψ : ℂ → (Wq →L[ℂ] Wp)} {a1 b1 a2 b2 : W
     inner_smul_right, B.hsInner, Complex.conj_conj]
   ring
 
+/- English proof (translation)
+Unfold `wl`. Use `(norm_add_le _ _).trans (add_le_add ?_ ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_wl_le' (A B : ℂ) : ‖wl A B‖ ≤ ‖A‖ + ‖B‖ := by
   unfold wl
   refine (norm_add_le _ _).trans (add_le_add ?_ ?_)
@@ -204,6 +272,9 @@ theorem norm_wl_le' (A B : ℂ) : ‖wl A B‖ ≤ ‖A‖ + ‖B‖ := by
           (ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun x => by simp) (norm_nonneg _)
       _ = ‖B‖ := mul_one _
 
+/- English proof (translation)
+Unfold `pairAt`. Establish `: ∀ g : Mt k r, B.hsInner ((Φ : Fn k r (Wq →L[ℂ] Wp)) x (Matrix.of g)) ((Ψ : Fn k r (Wq →L[ℂ] Wp)) x (Matrix.of g)) = 0` using `fun g => by`. Rewrite using `[radSp_zero_off Φ (x := (x, Matrix.of g)) (fun h => hx h.1)]`. Conclude with `Formalism.FourierDecayAlt.P5.HerA.hsInner_zero_left _`. Simplify using `[this]`.
+-/
 theorem pairAt_off (μ : Measure (Mt k r)) (Φ Ψ : RadSp k r z z' π π') (x : Fin r → ℂ) (hx : x ∉ OmX r) :
     pairAt μ Φ Ψ x = 0 := by
   unfold pairAt
@@ -213,6 +284,21 @@ theorem pairAt_off (μ : Measure (Mt k r)) (Φ Ψ : RadSp k r z z' π π') (x : 
     exact Formalism.FourierDecayAlt.P5.HerA.hsInner_zero_left _
   simp [this]
 
+/- English proof (translation)
+Take `⟨U, hU, hxU, K, hKc, hKG, hK0⟩` from `h1 _ ht`. Establish `hcu : Continuous (fun s : ℂ => Function.update y l s)` using `continuous_const.update l continuous_id`. Establish `hV : IsOpen ((fun s : ℂ => Function.update y l s) ⁻¹' (U ∩ OmX r))` using `(hU.inter (P.Qx3.isOpen_OmX r)).preimage hcu`. Take `⟨δ0, hδ0, hball⟩` from `Metric.isOpen_iff.mp hV t ⟨hxU, ht⟩`. Establish `hcb : Metric.closedBall t (δ0 / 2) ⊆ (fun s : ℂ => Function.update y l s) ⁻¹' (U ∩ OmX r)` using `(Metric.closedBall_subset_ball (by linarith)).trans hball`.
+
+Use `set C : Set (Mt k r) := (fun g : Mx k r => (Matrix.of.symm g : Mt k r)) '' (K ∩ Glev k r (Fin.last r)) with hCdef`. Establish `hCmem : ∀ g : Mt k r, g ∈ C ↔ Matrix.of g ∈ K ∧ Matrix.of g ∈ Glev k r (Fin.last r)`. Introduce `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g', hg', rfl⟩`.
+
+Simplify using `using hg'`. Introduce `hg`. Conclude with `⟨Matrix.of g, hg, rfl⟩`. Establish `hCc : IsCompact C` using `(hKc.inter_right (P.Qx5.Glev_closed _)).image continuous_id`. Establish `hmap : Continuous (fun p : ℂ × Mt k r => (Function.update y l p.1, (Matrix.of p.2 : Mx k r)))` using `(hcu.comp continuous_fst).prodMk continuous_snd`.
+
+Establish `hmaps : Set.MapsTo (fun p : ℂ × Mt k r => (Function.update y l p.1, (Matrix.of p.2 : Mx k r))) (Metric.closedBall t (δ0 / 2) ×ˢ C) (DomR k r z z')`. Introduce and unpack `⟨s, g⟩ ⟨hs, hg⟩`. Use `hcb hs` as an intermediate fact. Rewrite `hg` using `[hCmem]`. Conclude with `⟨this.2, hg.2, hKG hg.1⟩`.
+
+Establish `c1 : ContinuousOn (fun p : ℂ × Mt k r => (Ξ1 : Fn k r (Wq →L[ℂ] Wp)) (Function.update y l p.1) (Matrix.of p.2)) (Metric.closedBall t (δ0 / 2) ×ˢ C)` using `(radSp_continuousOn Ξ1).comp hmap.continuousOn hmaps`. Establish `c2 : ContinuousOn (fun p : ℂ × Mt k r => (Ξ2 : Fn k r (Wq →L[ℂ] Wp)) (Function.update y l p.1) (Matrix.of p.2)) (Metric.closedBall t (δ0 / 2) ×ˢ C)` using `(radSp_continuousOn Ξ2).comp hmap.continuousOn hmaps`. Establish `hcont : ContinuousOn (fun p : ℂ × Mt k r => B.hsInner ((Ξ1 : Fn k r (Wq →L[ℂ] Wp)) (Function.update y l p.1) (Matrix.of p.2)) ((Ξ2 : Fn k r (Wq →L[ℂ] Wp)) (Function.update y l p.1) (Matrix.of p.2))) (Metric.closedBall t (δ0 / 2) ×ˢ C)` using `(Formalism.FourierDecayAlt.P.B6.hsInner_continuous (Wp := Wp) (Wq := Wq)).comp_continuousOn (c1.prodMk c2)`. Take `⟨M, hM⟩` from `((isCompact_closedBall t (δ0 / 2)).prod hCc).exists_bound_of_continuousOn hcont`. Use `⟨δ0 / 2, by positivity, C, hCc, M, fun s hs g => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hg : g ∈ C`. Rewrite using `[Set.indicator_of_mem hg]`. Conclude with `hM (s, g) ⟨Metric.ball_subset_closedBall hs, hg⟩`. Rewrite using `[Set.indicator_of_notMem hg]`. Establish `hz : (Ξ1 : Fn k r (Wq →L[ℂ] Wp)) (Function.update y l s) (Matrix.of g) = 0`.
+
+Distinguish the cases in `hgG : Matrix.of g ∈ Glev k r (Fin.last r)`. Conclude with `hK0 _ (hcb (Metric.ball_subset_closedBall hs)).1 _ hgG (fun hK => hg ((hCmem g).2 ⟨hK, hgG⟩))`. Conclude with `radSp_zero_off Ξ1 (x := (Function.update y l s, Matrix.of g)) (fun h => hgG h.2.1)`. Rewrite using `[hz, Formalism.FourierDecayAlt.P5.HerA.hsInner_zero_left, norm_zero]`.
+-/
 theorem slice_bound (Ξ1 Ξ2 : RadSp k r z z' π π') (h1 : Ξ1 ∈ lcSub k r z z' π π') (l : Fin r) (y : Fin r → ℂ)
     {t : ℂ} (ht : Function.update y l t ∈ OmX r) :
     ∃ δ : ℝ, 0 < δ ∧ ∃ C : Set (Mt k r), IsCompact C ∧ ∃ M : ℝ, ∀ s ∈ Metric.ball t δ, ∀ g : Mt k r,
@@ -258,6 +344,23 @@ theorem slice_bound (Ξ1 Ξ2 : RadSp k r z z' π π') (h1 : Ξ1 ∈ lcSub k r z 
       · exact radSp_zero_off Ξ1 (x := (Function.update y l s, Matrix.of g)) (fun h => hgG h.2.1)
     rw [hz, Formalism.FourierDecayAlt.P5.HerA.hsInner_zero_left, norm_zero]
 
+/- English proof (translation)
+Establish `hTΦ : dT X l Φ ∈ lcSub k r z z' π π'` using `op_lc X l 2 _ (op_lc X l 0 _ hΦ)`. Establish `hTbΦ : dTb X l Φ ∈ lcSub k r z z' π π'` using `op_lc X l 5 _ (op_lc X l 3 _ hΦ)`. Establish `hTΨ : dT X l Ψ ∈ lcSub k r z z' π π'` using `op_lc X l 2 _ (op_lc X l 0 _ hΨ)`. Establish `hTbΨ : dTb X l Ψ ∈ lcSub k r z z' π π'` using `op_lc X l 5 _ (op_lc X l 3 _ hΨ)`. Take `⟨δ1, hδ1, C1, hC1, M1, hB1⟩` from `slice_bound (dT X l Φ) Ψ hTΦ l y hyO`.
+
+Take `⟨δ2, hδ2, C2, hC2, M2, hB2⟩` from `slice_bound Φ (dTb X l Ψ) hΦ l y hyO`. Take `⟨δ3, hδ3, C3, hC3, M3, hB3⟩` from `slice_bound (dTb X l Φ) Ψ hTbΦ l y hyO`. Take `⟨δ4, hδ4, C4, hC4, M4, hB4⟩` from `slice_bound Φ (dT X l Ψ) hΦ l y hyO`. Establish `htn : 0 < ‖t‖` using `norm_pos_iff.2 ht`. Use `set δ : ℝ := min (min (min δ1 δ2) (min δ3 δ4)) ‖t‖ with hδdef`.
+
+Establish `hδ : 0 < δ` using `lt_min (lt_min (lt_min hδ1 hδ2) (lt_min hδ3 hδ4)) htn`. Establish `hb : ∀ s ∈ Metric.ball t δ, s ∈ Metric.ball t δ1 ∧ s ∈ Metric.ball t δ2 ∧ s ∈ Metric.ball t δ3 ∧ s ∈ Metric.ball t δ4 ∧ s ≠ 0`. Introduce `s hs`. Establish `hs' : dist s t < δ` using `hs`. Establish `e1 : δ ≤ δ1` using `(min_le_left _ _).trans ((min_le_left _ _).trans (min_le_left _ _))`.
+
+Establish `e2 : δ ≤ δ2` using `(min_le_left _ _).trans ((min_le_left _ _).trans (min_le_right _ _))`. Establish `e3 : δ ≤ δ3` using `(min_le_left _ _).trans ((min_le_right _ _).trans (min_le_left _ _))`. Establish `e4 : δ ≤ δ4` using `(min_le_left _ _).trans ((min_le_right _ _).trans (min_le_right _ _))`. Establish `e5 : δ ≤ ‖t‖` using `min_le_right _ _`. Use `⟨lt_of_lt_of_le hs' e1, lt_of_lt_of_le hs' e2, lt_of_lt_of_le hs' e3, lt_of_lt_of_le hs' e4, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `rfl`. Rewrite `hs'` using `[dist_comm, dist_zero_right]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `iA : Integrable (fun g : Mt k r => B.hsInner ((dT X l Φ : Fn k r (Wq →L[ℂ] Wp)) (Function.update y l t) (Matrix.of g)) ((Ψ : Fn k r (Wq →L[ℂ] Wp)) (Function.update y l t) (Matrix.of g)) + B.hsInner ((Φ : Fn k r (Wq →L[ℂ] Wp)) (Function.update y l t) (Matrix.of g)) ((dTb X l Ψ : F …` using `(int_lc μ hμ hTΦ hΨ _).add (int_lc μ hμ hΦ hTbΨ _)`. Establish `iB : Integrable (fun g : Mt k r => B.hsInner ((dTb X l Φ : Fn k r (Wq →L[ℂ] Wp)) (Function.update y l t) (Matrix.of g)) ((Ψ : Fn k r (Wq →L[ℂ] Wp)) (Function.update y l t) (Matrix.of g)) + B.hsInner ((Φ : Fn k r (Wq →L[ℂ] Wp)) (Function.update y l t) (Matrix.of g)) ((dT X l Ψ : F …` using `(int_lc μ hμ hTbΦ hΨ _).add (int_lc μ hμ hΦ hTΨ _)`.
+
+Establish `iC : ∀ (C : Set (Mt k r)) (M : ℝ), IsCompact C → Integrable (fun g : Mt k r => C.indicator (fun _ => M) g) μ` using `fun C M hC => (integrable_indicator_iff hC.measurableSet).mpr (integrableOn_const (hμ.finite_compact C hC).ne)`. Establish `key` using `hasFDerivAt_integral_of_dominated_of_fderiv_le (μ := μ) (𝕜 := ℝ) (F := fun s (g : Mt k r) => B.hsInner ((Φ : Fn k r (Wq →L[ℂ] Wp)) (Function.update y l s) (Matrix.of g)) ((Ψ : Fn k r (Wq →L[ℂ] Wp)) (Function.update y l s) (Matrix.of g))) (F' := fun s (g : Mt k r) => wl (B.hsInner …`. Take `⟨h1, h2, h3, h4, -⟩` from `hb s hs`. Use `(norm_wl_le' _ _).trans (add_le_add ((norm_add_le _ _).trans (add_le_add (hB1 s h1 g) (hB2 s h2 g))) ((norm_add_le _ _).trans (add_le_add (hB3 s h3 g) (hB4 s h4 g)))))` and prove the remaining obligations. Use the proof step `(((iC C1 M1 hC1).add (iC C2 M2 hC2)).add ((iC C3 M3 hC3).add (iC C4 M4 hC4)))`.
+
+Use the proof step `(Filter.Eventually.of_forall fun g s hs => by`. Take `⟨-, -, -, -, hs0⟩` from `hb s hs`. Conclude with `hsInner_hasFDerivAt (slice_hasFDerivAt X l Φ y (Matrix.of g) hs0) (slice_hasFDerivAt X l Ψ y (Matrix.of g) hs0))`. Establish `hint : ∫ g, wl (B.hsInner ((dT X l Φ : Fn k r (Wq →L[ℂ] Wp)) (Function.update y l t) (Matrix.of g)) ((Ψ : Fn k r (Wq →L[ℂ] Wp)) (Function.update y l t) (Matrix.of g)) + B.hsInner ((Φ : Fn k r (Wq →L[ℂ] Wp)) (Function.update y l t) (Matrix.of g)) ((dTb X l Ψ : Fn k r (Wq →L[ℂ] Wp) …`. Unfold `wl`.
+
+Rewrite using `[integral_add (iA.smul_const _) (iB.smul_const _), integral_smul_const, integral_smul_const, integral_add (int_lc μ hμ hTΦ hΨ _) (int_lc μ hμ hΦ hTbΨ _), integral_add (int_lc μ hμ hTbΦ hΨ _) (int_lc μ hμ hΦ hTΨ _)]`. Both sides reduce to the same expression. Rewrite `key` using `[hint]`. Conclude with `key`.
+-/
 theorem pairAt_hasFDerivAt (X : ActualOps k r z z' π π') (μ : Measure (Mt k r))
     (hμ : B.IsHaarOn (Glev k r (Fin.last r)) μ) (l : Fin r) (Φ Ψ : RadSp k r z z' π π')
     (hΦ : Φ ∈ lcSub k r z z' π π') (hΨ : Ψ ∈ lcSub k r z z' π π') (y : Fin r → ℂ) {t : ℂ} (ht : t ≠ 0)
@@ -351,6 +454,13 @@ theorem pairAt_hasFDerivAt (X : ActualOps k r z z' π π') (μ : Measure (Mt k r
   rw [hint] at key
   exact key
 
+/- English proof (translation)
+Introduce `k r z z' Wp Wq _ _ _ _ _ _ π π' X μ hμ l Φ Ψ hΦ hΨ c hc c' t ht`. Simplify using `only [glue_succ_update_eq]`. Use `set y := glue l.succ c c'`. Distinguish the cases in `hyO : Function.update y l t ∈ OmX r`. Conclude with `pairAt_hasFDerivAt X μ hμ l Φ Ψ hΦ hΨ y ht hyO`.
+
+Establish `hoff : ∀ s, Function.update y l s ∉ OmX r` using `omX_update_any y l ht hyO`. Establish `hfun : (fun s => pairAt μ Φ Ψ (Function.update y l s)) = fun _ => (0 : ℂ)`. Use function extensionality and compare the values at `fun s => pairAt_off μ Φ Ψ _ (hoff s)`. Rewrite using `[hfun, pairAt_off μ (dT X l Φ) Ψ _ (hoff t), pairAt_off μ Φ (dTb X l Ψ) _ (hoff t), pairAt_off μ (dTb X l Φ) Ψ _ (hoff t), pairAt_off μ Φ (dT X l Ψ) _ (hoff t)]`. Establish `hwl : wl (0 + 0) (0 + 0) = 0`.
+
+Use extensionality with `x`. Simplify using `[wl]`. Rewrite using `[hwl]`. Conclude with `hasFDerivAt_const 0 t`.
+-/
 theorem pairing_derivative_formula : PairAtDeriv := by
   intro k r z z' Wp Wq _ _ _ _ _ _ π π' X μ hμ l Φ Ψ hΦ hΨ c hc c' t ht
   simp only [glue_succ_update_eq]

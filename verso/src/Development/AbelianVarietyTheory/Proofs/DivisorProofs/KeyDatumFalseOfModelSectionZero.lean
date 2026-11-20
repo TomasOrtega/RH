@@ -12,6 +12,15 @@ open Classical
 
 namespace GlobalTheory.KeyEven
 
+/- English proof (translation)
+Introduce `K _ G _ _ L σ x y hK hσ`. Take `⟨φ, -, ψ, -, -, -, -, hsec, -⟩` from `hK`. Take `⟨z, -, hz⟩` from `x.th_ne (IsLocalRing.closedPoint K)`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hz`. Establish `hzi : z ∈ x.P.L.U i` using `x.P.A.left.basicOpen_le _ hi`.
+
+Establish `hc : φ z ∈ (⨆ a, L.L.U a)` using `by rw [L.isLB.cover]; trivial`. Take `⟨a, ha⟩` from `TopologicalSpace.Opens.mem_iSup.1 hc`. Set `j : (L.L.pull φ).ι` to `fun _ => a`. Establish `hzj : z ∈ (L.L.pull φ).U j` using `Set.mem_iInter.2 fun _ => ha`. Establish `h : (L.L.pull φ).U j ⊓ x.P.L.U i ≤ φ ⁻¹ᵁ L.L.U (j PUnit.unit)` using `inf_le_left.trans (LB.wchart_le L.L (fun _ => φ) j PUnit.unit)`.
+
+Establish `e` using `hsec j i h`. Rewrite `e` using `[hσ, map_zero]`. Establish `e0 : resG x.P.A.left (inf_le_right : (L.L.pull φ).U j ⊓ x.P.L.U i ≤ x.P.L.U i) (x.th.f i) = 0`. Establish `u` using `(ψ.s (j, i)).isUnit`. Conclude with `(u.mul_right_eq_zero).1 e.symm`.
+
+Establish `hb : z ∈ x.P.A.left.basicOpen (resG x.P.A.left (inf_le_right : (L.L.pull φ).U j ⊓ x.P.L.U i ≤ x.P.L.U i) (x.th.f i))`. Rewrite using `[Scheme.basicOpen_res]`. Conclude with `⟨⟨hzj, hzi⟩, hi⟩`. Rewrite `hb` using `[e0, Scheme.basicOpen_zero]`. Conclude with `hb`.
+-/
 theorem not_keyOn_of_sec_zero : ∀ (K : Type) [Field K] (G : Over (Sp K)) [GrpObj G] [IsCommMonObj G] (L : RigLB G)
     (σ : L.L.Sec) (x : KeyIn K) (y : Fin x.P.g → (epsR K ⟶ G)), KeyOn (RingHom.id K) x G L σ y →
     (∀ i, σ.f i = 0) → False := by

@@ -6,6 +6,9 @@ open Formalism Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotion
 
 namespace GlobalTheory.LitGood
 
+/- English proof (translation)
+Introduce `l _ LL` and use `GlobalTheory.Pass.goodO_ringOfIntegers l LL`.
+-/
 theorem litGoodO : LitGoodO :=
   fun l _ LL => GlobalTheory.Pass.goodO_ringOfIntegers l LL
 

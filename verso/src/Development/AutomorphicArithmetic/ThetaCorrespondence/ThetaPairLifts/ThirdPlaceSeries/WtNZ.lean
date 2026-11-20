@@ -14,6 +14,11 @@ namespace GlobalTheory.CovTop.WtShape
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz) (i : Fin D.R.m)
+/- English proof (translation)
+Use `⟨1, one_pos, fun eps he _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ _ _ => ⟨0, le_rfl, max 8 ((3 : ℝ) ^ (4 / eps)), fun x hx hle ι p _ i => ?_⟩⟩⟩` and prove the remaining obligations. Use `wtNum_at p i (Fm.params x hx ι) (Fm.parT x hx ι) (Fm.sizes x hx ι) ?_ ?_` and prove the remaining obligations. Rewrite using `[Fm.L_x x ι hx]`. Conclude with `(le_max_left _ _).trans hle`. Rewrite using `[Fm.L_x x ι hx, Fm.L_eps x ι]`.
+
+Establish `h3 : ((3 : ℝ) ^ (4 / eps)) ^ (eps / 4) = 3`. Rewrite using `[← Real.rpow_mul (by norm_num)]`. Establish `: 4 / eps * (eps / 4) = 1` using `by field_simp`. Rewrite using `[this, Real.rpow_one]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem wtN_z : _root_.GlobalTheory.CovTop.LiftWeightNumerator := by
   refine ⟨1, one_pos, fun eps he _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ _ _ =>
     ⟨0, le_rfl, max 8 ((3 : ℝ) ^ (4 / eps)), fun x hx hle ι p _ i => ?_⟩⟩⟩

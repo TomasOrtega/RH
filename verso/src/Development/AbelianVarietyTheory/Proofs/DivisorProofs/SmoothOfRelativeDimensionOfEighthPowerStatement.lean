@@ -13,5 +13,8 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PowDim.smoothOfRelativeDimension_of_eighthPower | exact GlobalTheory.PowDim.smoothOfRelativeDimension_of_eighthPower | (intros; apply GlobalTheory.PowDim.smoothOfRelativeDimension_of_eighthPower <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.smoothOfRelativeDimension_of_eighth_power : ∀ {S : Scheme.{0}} [IsIntegral S] (G H : Over S) [GrpObj G] [GrpObj H] (g : ℕ) (pr : Fin 8 → (H ⟶ G)) (huniv : ∀ (T : Over S) (y : Fin 8 → (T ⟶ G)), ∃! x : T ⟶ H, ∀ u, x ≫ pr u = y u) (hG : IsSemiAbelian G) (hH : SmoothOfRelativeDimension (8 * g) H.hom), SmoothOfRelativeDimension g G.hom := by
   first | exact @GlobalTheory.PowDim.smoothOfRelativeDimension_of_eighthPower | exact GlobalTheory.PowDim.smoothOfRelativeDimension_of_eighthPower | (intros; apply GlobalTheory.PowDim.smoothOfRelativeDimension_of_eighthPower <;> assumption)

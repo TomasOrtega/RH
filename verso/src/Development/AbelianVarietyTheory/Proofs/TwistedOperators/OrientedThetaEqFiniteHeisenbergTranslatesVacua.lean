@@ -18,16 +18,25 @@ open GlobalTheory.PlaceModel GlobalTheory.SeeSaw
 
 variable {D : D7} {S T : HSp D}
 
+/- English proof (translation)
+Rewrite using `[Finsupp.linearCombination_apply]`. Both sides reduce to the same expression.
+-/
 theorem comb_eq_linearCombination (ψ : AddChar (AF D.host.F) ℂ) (c : WO S T →₀ ℂ) (f : WO S T → ℂ) :
     comb ψ S T c f = Finsupp.linearCombination ℂ (fun u => heisO ψ S T u f) c := by
   rw [Finsupp.linearCombination_apply]; rfl
 
+/- English proof (translation)
+Rewrite using `[comb_eq_linearCombination, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finsupp.linearCombination_single _ _ _`.
+-/
 theorem comb_sum_single {ι : Type} [Fintype ι] (ψ : AddChar (AF D.host.F) ℂ) (x : ι → WO S T) (a : ι → ℂ)
     (f : WO S T → ℂ) :
     comb ψ S T (∑ i, Finsupp.single (x i) (a i)) f = ∑ i, a i • heisO ψ S T (x i) f := by
   rw [comb_eq_linearCombination, map_sum]
   exact Finset.sum_congr rfl fun i _ => Finsupp.linearCombination_single _ _ _
 
+/- English proof (translation)
+Introduce `u hu`. Take `⟨i, -, hi⟩` from `Finset.mem_biUnion.1 (Finsupp.support_finset_sum hu)`. Rewrite using `[Finset.mem_singleton.1 (Finsupp.support_single_subset hi)]`. Conclude with `hx i`.
+-/
 theorem isFinComb_sum_single {ι : Type} [Fintype ι] (x : ι → WO S T) (a : ι → ℂ)
     (hx : ∀ i, (x i).map (infPart D) = 0) : IsFinComb (∑ i, Finsupp.single (x i) (a i)) := by
   classical
@@ -36,6 +45,9 @@ theorem isFinComb_sum_single {ι : Type} [Fintype ι] (x : ι → WO S T) (a : �
   rw [Finset.mem_singleton.1 (Finsupp.support_single_subset hi)]
   exact hx i
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `h1 : infPart D (x i j) = 0` using `congrFun (congrFun hx i) j`. Establish `h2 : infPart D (y i j) = 0` using `congrFun (congrFun hy i) j`. Use `show infPart D (x i j + -y i j) = 0`. Rewrite using `[map_add, map_neg, h1, h2, neg_zero, add_zero]`.
+-/
 theorem map_infPart_add_neg {x y : WO S T} (hx : x.map (infPart D) = 0) (hy : y.map (infPart D) = 0) :
     (x + -y).map (infPart D) = 0 := by
   ext i j
@@ -44,16 +56,25 @@ theorem map_infPart_add_neg {x y : WO S T} (hx : x.map (infPart D) = 0) (hy : y.
   show infPart D (x i j + -y i j) = 0
   rw [map_add, map_neg, h1, h2, neg_zero, add_zero]
 
+/- English proof (translation)
+Establish `h` using `symplO_add_right S T x y (-y)`. Rewrite `h` using `[add_neg_cancel, symplO_zero_right]`. Take the linear combination `-h`.
+-/
 theorem symplO_neg_right (x y : WO S T) : symplO S T x (-y) = -symplO S T x y := by
   have h := symplO_add_right S T x y (-y)
   rw [add_neg_cancel, symplO_zero_right] at h
   linear_combination -h
 
+/- English proof (translation)
+Establish `h` using `symplO_skew S T x x`. Establish `hh` using `half_mul_two D`. Take the linear combination `(algebraMap D.host.F (AF D.host.F) (1 / 2)) * h - symplO S T x x * hh`.
+-/
 theorem symplO_self (x : WO S T) : symplO S T x x = 0 := by
   have h := symplO_skew S T x x
   have hh := half_mul_two D
   linear_combination (algebraMap D.host.F (AF D.host.F) (1 / 2)) * h - symplO S T x x * hh
 
+/- English proof (translation)
+Rewrite using `[heisL_heisL, symplOH, symplO_neg_right, symplO_self, neg_zero, mul_zero, AddChar.map_zero_eq_one, one_smul, add_neg_cancel]`. Use function extensionality and compare the values at `w`. Express the relevant statement in the definitionally equal form `ψ (symplOH S T w 0) * f (w + 0) = f w`. Rewrite using `[symplOH, symplO_zero_right, mul_zero, AddChar.map_zero_eq_one, one_mul, add_zero]`.
+-/
 theorem heisL_cancel (ψ : AddChar (AF D.host.F) ℂ) (x : WO S T) (f : WO S T → ℂ) :
     heisL S T ψ x (heisL S T ψ (-x) f) = f := by
   rw [heisL_heisL, symplOH, symplO_neg_right, symplO_self, neg_zero, mul_zero, AddChar.map_zero_eq_one, one_smul,
@@ -62,6 +83,11 @@ theorem heisL_cancel (ψ : AddChar (AF D.host.F) ℂ) (x : WO S T) (f : WO S T �
   change ψ (symplOH S T w 0) * f (w + 0) = f w
   rw [symplOH, symplO_zero_right, mul_zero, AddChar.map_zero_eq_one, one_mul, add_zero]
 
+/- English proof (translation)
+Establish `h` using `hΛ _ (he u hu) _ (hc _ (Λ.nsmul_mem hu 2))`. Rewrite using `[← h]`. Unfold `lamE symplOH`. Use `congr 1`. Rewrite using `[two_nsmul u, smul_add e, symplO_add_left]`.
+
+Establish `hh` using `half_mul_two D`. Take the linear combination `(symplO S T (e • u) (cA D e • (u + u))) * hh`.
+-/
 theorem lamE_two_nsmul {ψ : AddChar (AF D.host.F) ℂ} {Λ : AddSubgroup (WO S T)} {e : AE D}
     (hΛ : ∀ x ∈ Λ, ∀ y ∈ Λ, ψ (symplO S T x y) = 1) (he : ∀ u ∈ Λ, e • u ∈ Λ) (hc : ∀ u ∈ Λ, cA D e • u ∈ Λ)
     {u : WO S T} (hu : u ∈ Λ) : lamE ψ S T e (2 • u) = 1 := by
@@ -73,6 +99,11 @@ theorem lamE_two_nsmul {ψ : AddChar (AF D.host.F) ℂ} {Λ : AddSubgroup (WO S 
   have hh := half_mul_two D
   linear_combination (symplO S T (e • u) (cA D e • (u + u))) * hh
 
+/- English proof (translation)
+Establish `h : e' • u = u` using `(isHalf_iff S T).1 hu`. Establish `h1 : e • u = e' • (e • u)` using `by rw [smul_comm, h]`. Establish `h2 : cA D e' • (cA D e • u) = 0`. Rewrite using `[smul_comm, ← h, smul_smul (cA D e'), mul_comm, he', zero_smul, smul_zero]`. Unfold `lamE symplOH`.
+
+Rewrite using `[h1, symplO_smul, h2, symplO_zero_right, mul_zero, AddChar.map_zero_eq_one]`.
+-/
 theorem lamE_half {ψ : AddChar (AF D.host.F) ℂ} (e : AE D) {e' : AE D} (he' : e' * cA D e' = 0) {u : WO S T}
     (hu : IsHalf e' u) : lamE ψ S T e u = 1 := by
   have h : e' • u = u := (isHalf_iff S T).1 hu
@@ -82,6 +113,13 @@ theorem lamE_half {ψ : AddChar (AF D.host.F) ℂ} (e : AE D) {e' : AE D} (he' :
   unfold lamE symplOH
   rw [h1, symplO_smul, h2, symplO_zero_right, mul_zero, AddChar.map_zero_eq_one]
 
+/- English proof (translation)
+Use `haveI : Finite R := hR`. Use `Finite.of_surjective (fun r : R => if hr : (r : V) ∈ Λ then (QuotientAddGroup.mk (⟨r, hr⟩ : Λ) : Qm m Λ) else 0) fun q => ?_` and prove the remaining obligations. Take `⟨r, hr, u, hu, ht⟩` from `h _ (repm_mem q)`. Establish `hrΛ : r ∈ Λ`. Use `Λ.sub_mem (repm_mem q) (Λ.nsmul_mem hu m)` as an intermediate fact.
+
+Rewrite `this` using `[ht, add_sub_cancel_right]`. Then use the resulting hypothesis. Use `⟨⟨r, hr⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [dif_pos hrΛ]`. Rewrite using `[← mk_repm q, QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`. Use `mem_mLat.2 ⟨u, hu, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `m • u = -r + repm q`. Rewrite using `[ht]`. Normalize the expressions using the abelian group laws.
+-/
 theorem finite_Qm {V : Type} [AddCommGroup V] {Λ : AddSubgroup V} {m : ℕ} {R : Set V} (hR : R.Finite)
     (h : ∀ t ∈ Λ, ∃ r ∈ R, ∃ u ∈ Λ, t = r + m • u) : Finite (Qm m Λ) := by
   classical
@@ -99,6 +137,23 @@ theorem finite_Qm {V : Type} [AddCommGroup V] {Λ : AddSubgroup V} {m : ℕ} {R 
   change m • u = -r + repm q
   rw [ht]; abel
 
+/- English proof (translation)
+Take `⟨s, hs⟩ : ∃ s : Qm m Λ → WO S T, ∀ a, s a = incA D ((m : D.host.E)⁻¹) • repm a` from `⟨_, fun _ => rfl⟩`. Take `⟨N, hN⟩ : ∃ N : ℂ, N = (Fintype.card (Qm m Λ) : ℂ)` from `⟨_, rfl⟩`. Establish `hN0 : N ≠ 0` using `by rw [hN]; exact_mod_cast Fintype.card_ne_zero`. Establish `hsinf : ∀ a, (s a).map (infPart D) = 0` using `fun a => by`. Rewrite using `[hs]`.
+
+Conclude with `map_infPart_smul _ (hinf _ (repm_mem a))`. Establish `hcomb : ∀ a, comb ψ S T (∑ q : Qm m Λ, Finsupp.single (repm q + -s a) (lam (repm q) * N⁻¹ * ψ (symplOH S T (repm q) (-s a)))) f = ∑ q : Qm m Λ, lam (repm q) • heisO ψ S T (repm q) (N⁻¹ • heisL S T ψ (-s a) f)`. Introduce `a`. Rewrite using `[comb_sum_single]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `_ = lam (repm q) • heisL S T ψ (repm q) (N⁻¹ • heisL S T ψ (-s a) f)`. Rewrite using `[map_smul, heisL_heisL, smul_smul, smul_smul]`. Both sides reduce to the same expression. Use `⟨s, fun a => ∑ q : Qm m Λ, Finsupp.single (repm q + -s a) (lam (repm q) * N⁻¹ * ψ (symplOH S T (repm q) (-s a))), hsinf, fun a => isFinComb_sum_single _ _ fun q => map_infPart_add_neg (hinf _ (repm_mem q)) (hsinf a), fun a b hb => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hcomb]`.
+
+Use `heisAvg_invariant D ψ S T Λ m lam hlam _ (fun l hl => ?_) b hb` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `lam (m • l) • heisL S T ψ (m • l) (N⁻¹ • heisL S T ψ (-s a) f) = _`. Establish `h1 : ψ (symplO S T (m • l) (-s a)) = 1`. Rewrite using `[symplO_neg_right, ← symplO_skew, hs, symplO_inv_smul_nsmul hm]`. Conclude with `hΛ _ (repm_mem a) _ hl`.
+
+Establish `h2 : heisL S T ψ (m • l) f = f` using `hf l hl`. Rewrite using `[hlm l hl, one_smul, map_smul, heisL_comm, h1, one_smul, h2]`. Establish `h3 : ∀ a, heisO ψ S T (s a) (comb ψ S T (∑ q : Qm m Λ, Finsupp.single (repm q + -s a) (lam (repm q) * N⁻¹ * ψ (symplOH S T (repm q) (-s a)))) f) = ∑ q : Qm m Λ, ψ (symplO S T (s a) (repm q)) • ((lam (repm q) * N⁻¹) • heisL S T ψ (repm q) f)`. Introduce `a`. Rewrite using `[hcomb]`.
+
+Express the relevant statement in the definitionally equal form `heisL S T ψ (s a) (∑ q : Qm m Λ, lam (repm q) • heisL S T ψ (repm q) (N⁻¹ • heisL S T ψ (-s a) f)) = _`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, map_smul, heisL_comm, heisL_cancel, smul_smul, smul_smul, smul_smul]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h3]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.sum_smul, hs, charSum_selfAnn D ψ S T Λ m hm hinf hΛ hmax, ← hN, ite_smul, zero_smul]`. Rewrite using `[Finset.sum_ite_eq', if_pos (Finset.mem_univ _)]`.
+
+Take `⟨l, hl, hl'⟩` from `mem_mLat.1 (repm_zero_mem (m := m) (Λ := Λ))`. Establish `h2 : heisL S T ψ (m • l) f = f` using `hf l hl`. Rewrite using `[← hl', hlm l hl, h2, one_mul, smul_smul, mul_inv_cancel₀ hN0, one_smul]`.
+-/
 theorem decomp_of_lam (ψ : AddChar (AF D.host.F) ℂ) (Λ : AddSubgroup (WO S T)) (m : ℕ) (hm : 0 < m)
     (hinf : ∀ u ∈ Λ, u.map (infPart D) = 0) (hΛ : ∀ x ∈ Λ, ∀ y ∈ Λ, ψ (symplO S T x y) = 1)
     (hmax : ∀ x : WO S T, x.map (infPart D) = 0 → (∀ u ∈ Λ, ψ (symplO S T x u) = 1) → x ∈ Λ)
@@ -152,6 +207,17 @@ theorem decomp_of_lam (ψ : AddChar (AF D.host.F) ℂ) (Λ : AddSubgroup (WO S T
     have h2 : heisL S T ψ (m • l) f = f := hf l hl
     rw [← hl', hlm l hl, h2, one_mul, smul_smul, mul_inv_cancel₀ hN0, one_smul]
 
+/- English proof (translation)
+Introduce `D ψ θ S T sS sT LS LT f₀ hS hT hv f hf`. Establish `hψ` using `hv.1`. Take `⟨k, hk, hfk⟩` from `Formalism.IndefR.Fin.latLevel_of (Formalism.IndefR.Fin.latSelfDual D) ψ hψ S T LS LT hS hT f hf`. Take `⟨-, -, hmod, hdual⟩` from `Formalism.IndefR.Fin.latSelfDual D ψ hψ S T LS LT hS hT`. Establish `hinf` using `fun u (hu : u ∈ latO S T LS LT fun _ => True) => Formalism.IndefR.Fin.latAll_inf S T LS LT hu`.
+
+Take `⟨R, hR, hRc⟩` from `GlobalTheory.LatFinMod.latO_finite_mod D S T _ _ hS.1.fg hT.1.fg (fun _ => True) (2 * k) (by omega)`. Express the relevant statement in the definitionally equal form `∀ u ∈ latO S T LS LT fun _ => True, _ at hfk`. Generalize the expression as in `latO S T (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E)) (fun _ => True) = Λ at hfk hmod hdual hinf hRc ⊢`. Use `haveI : Finite (Qm (2 * k) Λ) := finite_Qm hR hRc`. Use `letI : Fintype (Qm (2 * k) Λ) := Fintype.ofFinite _`.
+
+Take `⟨e, h1, h2, hi, hi', h, hh, h3⟩` from `GlobalTheory.TwoPlaceIdem.exists_idem_half D`. Establish `hΛ : ∀ x ∈ Λ, ∀ y ∈ Λ, ψ (symplO S T x y) = 1` using `fun x hx => (hdual x (hinf x hx)).1 hx`. Establish `hr : ∀ u ∈ Λ, ∃ z ∈ Λ, (1 - e - cA D e) • u = 2 • z` using `fun u hu => ⟨h • u, hmod h hh u hu, by rw [← h3, two_mul, add_smul, two_nsmul]⟩`. Establish `hl2 : ∀ u ∈ Λ, lamE ψ S T e (2 • u) = 1` using `fun u hu => lamE_two_nsmul hΛ (hmod e hi) (hmod _ hi') hu`. Take `⟨u, c, hu, hc, hfix, hsum⟩` from `decomp_of_lam ψ Λ (2 * k) (by omega) hinf hΛ (fun x hx h => (hdual x hx).2 h) (lamE ψ S T e) (lamE_add_of_lattice D ψ S T Λ e h1 h2 hΛ (hmod e hi) (hmod _ hi') hr) (fun l hl => by rw [mul_nsmul']; exact hl2 _ (Λ.nsmul_mem hl k)) f (fun l hl => by rw [mul_nsmul]; exact hfk _ (Λ.ns …`.
+
+Set `ι` to `(Fintype.equivFin (Qm (2 * k) Λ)).symm`. Use `⟨_, fun i => u (ι i), fun i => c (ι i), fun i => hu _, fun i => hc _, fun i => ⟨fun b hb => ?_, fun e' he' b hb hb' => ?_⟩, ?_⟩` and prove the remaining obligations. Use `hfix (ι i) _ (Λ.nsmul_mem hb 2)` as an intermediate fact. Rewrite `this` using `[hl2 b hb, one_smul]`. Then use the resulting hypothesis. Use `hfix (ι i) b hb` as an intermediate fact.
+
+Rewrite `this` using `[lamE_half e he'.2.1 hb', one_smul]`. Then use the resulting hypothesis. Conclude with `hsum.trans (Equiv.sum_comp ι fun q => heisO ψ S T (u q) (comb ψ S T (c q) f)).symm`.
+-/
 theorem theta_eq_sum_latVac : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) (LS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (LT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (f₀ : WO S T → ℂ), IsSelfDualC S LS → IsSelfDualC T LT → IsVacO ψ θ S T sS sT LS LT f₀ → ∀ f : WO S T → ℂ, IsThetaFunO ψ S T f → ∃ (n : ℕ) (u : Fin n → WO S T) (c : Fin n → WO S T →₀ ℂ), (∀ i, (u i).map (infPart D) = 0) ∧ (∀ i, GlobalTheory.SeeSaw.IsFinComb (c i)) ∧ (∀ i, IsLatVac (heisO ψ S T) (latO S T LS LT fun _ => True) (GlobalTheory.SeeSaw.comb ψ S T (c i) f)) ∧ f = ∑ i, heisO ψ S T (u i) (GlobalTheory.SeeSaw.comb ψ S T (c i) f) := by
   intro D ψ θ S T sS sT LS LT f₀ hS hT hv f hf
   have hψ := hv.1
@@ -185,5 +251,8 @@ end GlobalTheory.FinDecomp
 
 end
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.FinDecomp.theta_eq_sum_latVac`.
+-/
 theorem _root_.GlobalTheory.T.orientedTheta_eq_finite_heisenbergTranslates_vacua : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) (LS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (LT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (f₀ : WO S T → ℂ), IsSelfDualC S LS → IsSelfDualC T LT → IsVacO ψ θ S T sS sT LS LT f₀ → ∀ f : WO S T → ℂ, IsThetaFunO ψ S T f → ∃ (n : ℕ) (u : Fin n → WO S T) (c : Fin n → WO S T →₀ ℂ), (∀ i, (u i).map (infPart D) = 0) ∧ (∀ i, GlobalTheory.SeeSaw.IsFinComb (c i)) ∧ (∀ i, IsLatVac (heisO ψ S T) (latO S T LS LT fun _ => True) (GlobalTheory.SeeSaw.comb ψ S T (c i) f)) ∧ f = ∑ i, heisO ψ S T (u i) (GlobalTheory.SeeSaw.comb ψ S T (c i) f) :=
   GlobalTheory.FinDecomp.theta_eq_sum_latVac

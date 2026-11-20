@@ -17,11 +17,23 @@ def evalQ (O : Type) [CommRing O] (ϖ : O) :
     obtain ⟨b, rfl⟩ := ha
     simp)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `evalQ O ϖ (Ideal.Quotient.mk _ (MvPolynomial.C o)) = o`. Simplify using `[evalQ]`.
+-/
 theorem evalQ_algebraMap (O : Type) [CommRing O] (ϖ : O) (o : O) :
     evalQ O ϖ (algebraMap O _ o) = o := by
   change evalQ O ϖ (Ideal.Quotient.mk _ (MvPolynomial.C o)) = o
   simp [evalQ]
 
+/- English proof (translation)
+Set `I : Ideal (MvPolynomial (Fin 1) O)` to `Ideal.span {(∏ i ∈ Finset.univ.filter (fun i : Fin 1 => (i : ℕ) < 1), MvPolynomial.X i) - MvPolynomial.C ϖ}`. Establish `key : (Ideal.Quotient.mkₐ O I) = (Algebra.ofId O _).comp (MvPolynomial.aeval fun _ : Fin 1 => ϖ)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Use `fin_cases i`.
+
+Simplify using `only [Ideal.Quotient.mkₐ_eq_mk, AlgHom.comp_apply, MvPolynomial.aeval_X, Algebra.ofId_apply]`. Express the relevant statement in the definitionally equal form `_ = Ideal.Quotient.mk I (MvPolynomial.C ϖ)`. Rewrite using `[Ideal.Quotient.eq]`. Apply `Ideal.subset_span` to reduce the goal to its premises. Simplify using `[I]`.
+
+Use `⟨fun a b hab => ?_, fun o => ⟨algebraMap O _ o, evalQ_algebraMap O ϖ o⟩⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Establish `ha` using `AlgHom.congr_fun key a`. Establish `hb` using `AlgHom.congr_fun key b`.
+
+Simplify using `only [Ideal.Quotient.mkₐ_eq_mk, AlgHom.comp_apply, Algebra.ofId_apply] at ha hb`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk I a = Ideal.Quotient.mk I b`. Rewrite using `[ha, hb]`. Express the relevant statement in the definitionally equal form `(MvPolynomial.aeval fun _ : Fin 1 => ϖ) a = (MvPolynomial.aeval fun _ : Fin 1 => ϖ) b at hab`. Rewrite using `[hab]`.
+-/
 theorem evalQ_bijective (O : Type) [CommRing O] (ϖ : O) : Function.Bijective (evalQ O ϖ) := by
   let I : Ideal (MvPolynomial (Fin 1) O) := Ideal.span {(∏ i ∈ Finset.univ.filter (fun i : Fin 1 => (i : ℕ) < 1), MvPolynomial.X i) -
       MvPolynomial.C ϖ}
@@ -45,6 +57,13 @@ theorem evalQ_bijective (O : Type) [CommRing O] (ϖ : O) : Function.Bijective (e
   change (MvPolynomial.aeval fun _ : Fin 1 => ϖ) a = (MvPolynomial.aeval fun _ : Fin 1 => ϖ) b at hab
   rw [hab]
 
+/- English proof (translation)
+Introduce `x`. Set `T` to `((Scheme.ΓSpecIso (CommRingCat.of O)).inv ≫ Scheme.Hom.appLE (𝟙 (Spec (CommRingCat.of O))) ⊤ ⊤ le_top)`. Establish `hT : Function.Bijective T.hom`. Establish `: IsIso T`. Establish `h1 : Scheme.Hom.appLE (𝟙 (Spec (CommRingCat.of O))) ⊤ ⊤ le_top = 𝟙 _`.
+
+Simplify using `[Scheme.Hom.appLE]`. Simplify using `only [T, h1, Category.comp_id]`. Use `infer_instance`. Conclude with `ConcreteCategory.bijective_of_isIso T`. Use `⟨⊤, isAffineOpen_top _, trivial, 1, 1, le_rfl, le_rfl, T.hom.comp (evalQ O ϖ), ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `RingHom.Etale.of_bijective (hT.comp (evalQ_bijective O ϖ))`. Use extensionality with `o`. Simplify using `[evalQ_algebraMap, T]`.
+-/
 theorem isStrictlySemistable_base (O : Type) [CommRing O] (ϖ : O) :
     GlobalTheory.Et.IsStrictlySemistable ϖ (𝟙 (Spec (CommRingCat.of O))) := by
   intro x

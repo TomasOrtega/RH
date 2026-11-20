@@ -22,6 +22,11 @@ variable {R₁ R₂ R' : Type} [CommRing R₁] [CommRing R₂] [CommRing R'] {I�
 def pv (h : IsMor κ₁ s₁ κ' s' σ₁ p₁) (f : Z1 (O κ₁ s₁)) {T T' : Thick κ' s'} (φ : T ⟶ T') : T'.B :=
   ev f (h.functor.map φ)
 
+/- English proof (translation)
+Establish `e' : H1.mk (O κ' s') (h₁.coef.pullbackOneCocycle f) = H1.mk (O κ' s') (h₂.coef.pullbackOneCocycle g + r • h₂.coef.pullbackOneCocycle b)`. Rewrite using `[map_add, map_smul]`. Conclude with `e`. Take `⟨G, hG⟩` from `H1.mk_eq_mk.1 e'`. Use `⟨G, fun T T' φ ↦ ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Algebra.smul_def]`. Conclude with `congrFun (congrFun (congrFun hG T) T') φ`.
+-/
 theorem exists_of_pull1_eq (h₁ : IsMor κ₁ s₁ κ' s' σ₁ p₁) (h₂ : IsMor κ₂ s₂ κ' s' σ₂ p₂) (f : Z1 (O κ₁ s₁))
     (g b : Z1 (O κ₂ s₂)) (r : R')
     (e : h₁.pull1 (H1.mk _ f) = h₂.pull1 (H1.mk _ g) + r • h₂.pull1 (H1.mk _ b)) :
@@ -36,6 +41,9 @@ theorem exists_of_pull1_eq (h₁ : IsMor κ₁ s₁ κ' s' σ₁ p₁) (h₂ : I
   rw [← Algebra.smul_def]
   exact congrFun (congrFun (congrFun hG T) T') φ
 
+/- English proof (translation)
+Set `a : Thick.triv T.B y hy ⟶ Thick.triv T'.B y' hy'` to `Thick.trivHom Φ.φ e`. Establish `k` using `Form.ev_sq f a (idLift T' y' hy' ey') (idLift T y hy ey) Φ rfl rfl fun _ ↦ rfl`. Conclude with `eq_sub_of_add_eq' k.symm`.
+-/
 theorem form_idLift {R : Type} [CommRing R] {X : Scheme.{0}} {s : X ⟶ Sp R} (f : Form s)
     {T T' : Thick (dp0 R) s} (Φ : T ⟶ T') (y : Sp T.B ⟶ X) (hy : y ≫ s = spMap (algebraMap R T.B))
     (ey : spMap T.π ≫ y = T.x) (y' : Sp T'.B ⟶ X) (hy' : y' ≫ s = spMap (algebraMap R T'.B))
@@ -84,6 +92,9 @@ def epsSec (P : GPt A) : P.triv ⟶ (constMor A).isMor.obj P.eps :=
 
 def secVal (f : Z1 (O (dp0 K) (A.hom ≫ 𝟙 (Sp K)))) (P : GPt A) : DualNumber P.B := ev f (epsSec P)
 
+/- English proof (translation)
+Establish `k` using `Cris.ev_sq f φ.triv (epsSec Q) (epsSec P) ((constMor A).isMor.functor.map (epsHom φ)) fun c ↦ by`. Express the relevant statement in the definitionally equal form `(TrivSqZeroExt.inl (φ.ρ c) : DualNumber Q.B) = dualMap (φ.ρ : P.B →+* Q.B) (TrivSqZeroExt.inl c)`. Apply the tactic sequence `ext <;> simp [dualMap]`. Conclude with `eq_sub_of_add_eq' (G := DualNumber Q.B) k.symm`.
+-/
 theorem pv_const (f : Z1 (O (dp0 K) (A.hom ≫ 𝟙 (Sp K)))) {P Q : GPt A} (φ : P.Hom Q) :
     (pv (constMor A).isMor f (epsHom φ) : DualNumber Q.B) =
       TrivSqZeroExt.inl (ev f φ.triv : Q.B) + secVal f Q - dualMap (φ.ρ : P.B →+* Q.B) (secVal f P) := by
@@ -94,6 +105,9 @@ theorem pv_const (f : Z1 (O (dp0 K) (A.hom ≫ 𝟙 (Sp K)))) {P Q : GPt A} (φ 
 
 variable {A' : Over (Sp (DualNumber K))} [GrpObj A'] {i : A.left ⟶ A'.left}
 
+/- English proof (translation)
+Conclude with `form_idLift ω' ((liftMor (epsDP K) h).isMor.functor.map (epsHom φ)) y hy.1 hy.2 y' hy'.1 hy'.2 e`.
+-/
 theorem pv_lift (h : IsGrpPullback A A' (DeRham.epsRed K) i) (ω' : Form (A'.hom ≫ 𝟙 (Sp (DualNumber K))))
     {P Q : GPt A} (φ : P.Hom Q) {y : Sp (DualNumber P.B) ⟶ A'.left} {y' : Sp (DualNumber Q.B) ⟶ A'.left}
     (hy : IsLift i P y) (hy' : IsLift i Q y') (e : spMap (dualMap (φ.ρ : P.B →+* Q.B)) ≫ y = y') :
@@ -103,6 +117,11 @@ theorem pv_lift (h : IsGrpPullback A A' (DeRham.epsRed K) i) (ω' : Form (A'.hom
 
 end Eps
 
+/- English proof (translation)
+Take `⟨G₀, hG⟩` from `exists_of_pull1_eq (liftMor (epsDP K) h).isMor (constMor A).isMor ω'.1 ω.1 b DualNumber.eps hyp`. Set `G₁ : ∀ P : GPt A, DualNumber P.B` to `fun P ↦ G₀ (Pt.eps P)`. Use `⟨fun P ↦ -(secVal ω.1 P).snd - (secVal b P).fst - (G₁ P).snd, fun P Q φ y y' hy hy' e ↦ ?_⟩` and prove the remaining obligations. Establish `k : G₁ Q - dualMap (φ.ρ : P.B →+* Q.B) (G₁ P) = (pv (liftMor (epsDP K) h).isMor ω'.1 (epsHom φ) : DualNumber Q.B) - ((pv (constMor A).isMor ω.1 (epsHom φ) : DualNumber Q.B) + dualMap (algebraMap K Q.B) DualNumber.eps * (pv (constMor A).isMor b (epsHom φ) : DualNumber Q.B))` using `hG P.eps Q.eps (epsHom φ)`. Rewrite `k` using `[pv_lift h ω' φ hy hy' e, pv_const, pv_const]`.
+
+Establish `k2` using `congrArg TrivSqZeroExt.snd k`. Simplify using `[dualMap] at k2`. Simplify using `only [map_add, map_sub, map_neg]`. Take the linear combination `k2`.
+-/
 theorem eps_part_eq_coboundary (K : Type) [Field K] (A : Over (Sp K)) [GrpObj A]
     (A' : Over (Sp (DualNumber K))) [GrpObj A'] (i : A.left ⟶ A'.left)
     (h : IsGrpPullback A A' (GlobalTheory.DeRham.epsRed K) i) (ω' : Form (A'.hom ≫ 𝟙 (Sp (DualNumber K))))

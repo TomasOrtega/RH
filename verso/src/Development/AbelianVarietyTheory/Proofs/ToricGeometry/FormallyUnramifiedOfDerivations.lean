@@ -36,6 +36,15 @@ namespace GlobalTheory.ThetaVeryAmple
 
 open ProjModelDim TangentOrigin
 
+/- English proof (translation)
+Use `algebraize [β, c]`. Use `⟨?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `: Nontrivial Ω[B⁄A]` using `not_subsingleton_iff_nontrivial.1 hne`. Take `⟨N, hN, -⟩` from `(eq_top_or_exists_le_coatom (⊥ : Submodule B Ω[B⁄A])).resolve_left bot_ne_top`.
+
+Take `⟨I, hI, ⟨ψ⟩⟩` from `isSimpleModule_iff_quot_maximal.1 (isSimpleModule_iff_isCoatom.2 hN)`. Set `` to `Ideal.Quotient.field I`. Establish `: Module.Finite ℂ (B ⧸ I)` using `finite_of_finite_type_of_isJacobsonRing _ _`. Set `ε : ℂ ≃+* B ⧸ I` to `RingEquiv.ofBijective (algebraMap ℂ (B ⧸ I)) IsAlgClosed.algebraMap_bijective_of_isIntegral`. Set `χ : Ω[B⁄A] →ₗ[B] B ⧸ I` to `ψ.toLinearMap ∘ₗ N.mkQ`.
+
+Set `D : B →+ ℂ` to `ε.symm.toAddMonoidHom.comp (χ.toAddMonoidHom.comp (KaehlerDifferential.D A B).toLinearMap.toAddMonoidHom)`. Establish `hD : ∀ f, D f = ε.symm (χ (KaehlerDifferential.D A B f))` using `fun _ => rfl`. Establish `h0` using `H (ε.symm.toRingHom.comp (Ideal.Quotient.mk I)) (fun a => ε.symm_apply_apply a) D (fun f f' => by`. Rewrite using `[hD, hD, hD, Derivation.leibniz, map_add, map_smul, map_smul, Algebra.smul_def, Algebra.smul_def, map_add, map_mul, map_mul]`. Use the proof step `rfl)`.
+
+Use the proof step `(fun a => by`. Rewrite using `[hD, show β a = algebraMap A B a from rfl, Derivation.map_algebraMap, map_zero, map_zero])`. Establish `h1 : χ = 0` using `LinearMap.ext_on_range (KaehlerDifferential.span_range_derivation A B) fun f => ε.symm.map_eq_zero_iff.1 ((hD f).symm.trans (DFunLike.congr_fun h0 f))`. Use `hN.1 (top_le_iff.1 fun x _ => ?_)` and prove the remaining obligations. Conclude with `(Submodule.Quotient.mk_eq_zero N).1 (ψ.map_eq_zero_iff.1 (DFunLike.congr_fun h1 x))`.
+-/
 theorem formallyUnramified_of_derivations {A B : Type} [CommRing A] [CommRing B] (c : ℂ →+* B) (hc : c.FiniteType)
     (β : A →+* B) (hβ : β.FiniteType)
     (H : ∀ e : B →+* ℂ, (∀ a, e (c a) = a) → ∀ D : B →+ ℂ, (∀ f f', D (f * f') = e f * D f' + e f' * D f) →
@@ -81,9 +90,15 @@ section Family
 
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {X Y : Scheme.{0}} {ex : E → (Sp ℂ ⟶ X)}
 
+/- English proof (translation)
+Introduce `V b` and use `by simpa only [← valAt'_comp, top_le_preimage_comp] using h (φ ⁻¹ᵁ V) ((φ.app V).hom b)`.
+-/
 theorem isHolFamily_comp (h : IsHolFamily ex) (φ : X ⟶ Y) : IsHolFamily fun z => ex z ≫ φ := fun V b => by
   simpa only [← valAt'_comp, top_le_preimage_comp] using h (φ ⁻¹ᵁ V) ((φ.app V).hom b)
 
+/- English proof (translation)
+Establish `: (fun y => valAt' (ex y) U ((φ.appLE V U e).hom b)) =ᶠ[𝓝 z] fun y => valAt' (ex y ≫ φ) V b` using `(h.eventually hz).mono fun y hy => valAt'_appLE _ φ V U e b hy`. Rewrite using `[IsHolFamily.der_apply, this.fderiv_eq]`.
+-/
 theorem der_appLE (h : IsHolFamily ex) (φ : X ⟶ Y) {U : X.Opens} {V : Y.Opens} (e : U ≤ φ ⁻¹ᵁ V) {z : E}
     (hz : ⊤ ≤ ex z ⁻¹ᵁ U) (ξ : E) (b : Γ(Y, V)) :
     h.der hz ξ ((φ.appLE V U e).hom b) = fderiv ℂ (fun y => valAt' (ex y ≫ φ) V b) z ξ := by
@@ -91,6 +106,9 @@ theorem der_appLE (h : IsHolFamily ex) (φ : X ⟶ Y) {U : X.Opens} {V : Y.Opens
     (h.eventually hz).mono fun y hy => valAt'_appLE _ φ V U e b hy
   rw [IsHolFamily.der_apply, this.fderiv_eq]
 
+/- English proof (translation)
+Establish `: (fun y => valAt' (ex y) U (resG X e b)) =ᶠ[𝓝 z] fun y => valAt' (ex y) V b` using `(h.eventually hz).mono fun y hy => valAt'_res _ e b hy`. Rewrite using `[IsHolFamily.der_apply, IsHolFamily.der_apply, this.fderiv_eq]`.
+-/
 theorem der_res (h : IsHolFamily ex) {U V : X.Opens} (e : U ≤ V) {z : E}
     (hz : ⊤ ≤ ex z ⁻¹ᵁ U) (hV : ⊤ ≤ ex z ⁻¹ᵁ V) (ξ : E) (b : Γ(X, V)) :
     h.der hz ξ (resG X e b) = h.der hV ξ b := by
@@ -98,12 +116,22 @@ theorem der_res (h : IsHolFamily ex) {U V : X.Opens} (e : U ≤ V) {z : E}
     (h.eventually hz).mono fun y hy => valAt'_res _ e b hy
   rw [IsHolFamily.der_apply, IsHolFamily.der_apply, this.fderiv_eq]
 
+/- English proof (translation)
+Substitute `hw` using the available equality. Rewrite using `[valAt'_eq_evalPt _ _ ((top_le_preimage_iff w U).1 h), evalPt_spMap_comp fstC w U h]`. Both sides reduce to the same expression.
+-/
 theorem fst_evalPt {w : Sp (DualNumber ℂ) ⟶ X} {x : Sp ℂ ⟶ X} (hw : spMap fstC ≫ w = x) {U : X.Opens}
     (h : ⊤ ≤ w ⁻¹ᵁ U) (f : Γ(X, U)) : (evalPt w U h f).fst = valAt' x U f := by
   subst hw
   rw [valAt'_eq_evalPt _ _ ((top_le_preimage_iff w U).1 h), evalPt_spMap_comp fstC w U h]
   rfl
 
+/- English proof (translation)
+Take `⟨s, hsV, hs⟩` from `hU.exists_basicOpen_le (V := V) ⟨_, (top_le_preimage_iff_mem _ _).1 hV⟩ ((top_le_preimage_iff_mem _ _).1 hz)`. Establish `hB : ⊤ ≤ ex z ⁻¹ᵁ X.basicOpen s` using `(top_le_preimage_iff_mem _ _).2 hs`. Establish `hwB : ⊤ ≤ w ⁻¹ᵁ X.basicOpen s` using `(top_le_preimage_iff w _).2 (hw ▸ hB)`. Use `hU.isLocalization_basicOpen s` as an intermediate fact. Establish `heq : evalPt w _ hwB = dualHom (valAtHom _ _ hB) (h.der hB ξ) (fun f f' => by`.
+
+Rewrite using `[h.der_mul, valAt'_eq_valAtHom _ hB, valAt'_eq_valAtHom _ hB]) := by`. Use `IsLocalization.ringHom_ext (Submonoid.powers s) (RingHom.ext fun f => TrivSqZeroExt.ext ?_ ?_)` and prove the remaining obligations. Conclude with `(fst_evalPt hw hwB _).trans (valAt'_eq_valAtHom _ hB _)`. Conclude with `(congrArg TrivSqZeroExt.snd (evalPt_res w (X.basicOpen_le s) hwU hwB f)).trans ((h0 f).trans (der_res h (X.basicOpen_le s) hB hz ξ f).symm)`. Rewrite using `[← evalPt_res w hsV hwV hwB, heq]`.
+
+Conclude with `der_res h hsV hB hV ξ r`.
+-/
 theorem snd_evalPt_eq_der (h : IsHolFamily ex) {w : Sp (DualNumber ℂ) ⟶ X} {z : E} (hw : spMap fstC ≫ w = ex z)
     {U V : X.Opens} (hU : IsAffineOpen U) (hz : ⊤ ≤ ex z ⁻¹ᵁ U) (hV : ⊤ ≤ ex z ⁻¹ᵁ V) (hwU : ⊤ ≤ w ⁻¹ᵁ U)
     (hwV : ⊤ ≤ w ⁻¹ᵁ V) (ξ : E) (h0 : ∀ f, (evalPt w U hwU f).snd = h.der hz ξ f) (r : Γ(X, V)) :
@@ -124,6 +152,11 @@ theorem snd_evalPt_eq_der (h : IsHolFamily ex) {w : Sp (DualNumber ℂ) ⟶ X} {
 
 end Family
 
+/- English proof (translation)
+Establish `h1 : AmpleSpan.EmbedsBy A.hom s` using `(ProjSpace.veryAmpleBy_comp_iff A.hom (𝟙 _) s).1 (by`. Rewrite using `[Category.comp_id]`. Conclude with `(ProjSpace.veryAmpleBy_iff _ s).2 ⟨hs, h⟩)`. Introduce `U hU`. Establish `: IsAffine U` using `hU`.
+
+Use `choose s' hs' _ using fun i => AmpleSpan.existsUnique_secScal hL (φ := fun _ : PUnit => 𝟙 A.left) (ε := fun _ => N) (h := (A.hom ⁻¹ᵁ U).ι) (AmpleSpan.formEq_const (K' := Fin N) (ε' := fun _ => 1) (Category.comp_id _) (by simp)) (s i)`. Conclude with `⟨K, s', AmpleSpan.EmbedsBy.secScal hL (isPullback_morphismRestrict A.hom U).flip h1 hs'⟩`.
+-/
 theorem veryAmpleAt_of_isClosedImmersion {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} (hL : L.IsLB) {N K : ℕ}
     (s : Fin (K + 1) → (lbPow L N).Sec) (hs : ⨆ i, Out.nonzeroLocus (s i) = ⊤)
     (h : IsClosedImmersion (ProjSpace.toProj A.hom s hs)) : Out.VeryAmpleAt A L N := by
@@ -141,17 +174,40 @@ section Criterion
 variable {g : ℕ} {X : Over (Sp ℂ)} {Y : Scheme.{0}} {ex : (Fin g → ℂ) → (𝟙_ (Over (Sp ℂ)) ⟶ X)}
   {φ : X.left ⟶ Y} {p : Y ⟶ Sp ℂ}
 
+/- English proof (translation)
+Rewrite using `[← hp]`. Conclude with `(congrArg (fun q => q.hom ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom a)) (Scheme.Hom.appLE_comp_appLE φ p ⊤ V U le_top e)).symm`.
+-/
 theorem constFn_eq_appLE (hp : φ ≫ p = X.hom) {U : X.left.Opens} {V : Y.Opens} (e : U ≤ φ ⁻¹ᵁ V) (a : ℂ) :
     constFn X.hom U a = (φ.appLE V U e).hom (constFn p V a) := by
   rw [← hp]
   exact (congrArg (fun q => q.hom ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom a))
     (Scheme.Hom.appLE_comp_appLE φ p ⊤ V U le_top e)).symm
 
+/- English proof (translation)
+The claim follows from `congrArg (fun r => r.hom ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom a)) (Scheme.Hom.appLE_map q (le_top : V ≤ q ⁻¹ᵁ ⊤) (homOfLE e).op)`.
+-/
 theorem resG_constFn' {Z : Scheme.{0}} (q : Z ⟶ Sp ℂ) {U V : Z.Opens} (e : U ≤ V) (a : ℂ) :
     resG Z e (constFn q V a) = constFn q U a :=
   congrArg (fun r => r.hom ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom a))
     (Scheme.Hom.appLE_map q (le_top : V ≤ q ⁻¹ᵁ ⊤) (homOfLE e).op)
 
+/- English proof (translation)
+Establish `: Smooth X.hom` using `SmoothOfRelativeDimension.smooth g X.hom`. Use `⟨fun {V} hV {U} hU hUV => ?_⟩` and prove the remaining obligations. Use `formallyUnramified_of_derivations ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv ≫ X.hom.appLE ⊤ U le_top).hom ((X.hom.finiteType_appLE (isAffineOpen_top _) hU le_top).comp (RingHom.FiniteType.of_surjective _ (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of ℂ)).in …` and prove the remaining obligations. Take `⟨x, ⟨hz, hx⟩, -⟩` from `existsUnique_point_of_ringHom X U hU e he`. Take `⟨z, rfl⟩` from `hex x`.
+
+Take `⟨w, hwU, hwe⟩` from `exists_evalPt_eq hU (dualHom e D hD)`. Establish `hw : spMap fstC ≫ w = (ex z).left`. Use `ext_evalPt hU ((top_le_preimage_iff w U).1 hwU) hz (RingHom.ext fun f => ?_)` and prove the remaining obligations. Rewrite using `[evalPt_spMap_comp fstC w U hwU, hwe]`. Conclude with `(hx f).symm.trans (valAt'_eq_evalPt _ _ hz f)`.
+
+Take `⟨W, σ, U₀, t, -, hW0, hσ, hU₀, -, ht, -, hdet⟩` from `HolChart.exists_holomorphic_chart valAt'_rules existsUnique_point_of_ringHom exists_holomorphic_section_of_etale X g hsm (ex z)`. Establish `hz₀ : ⊤ ≤ (ex z).left ⁻¹ᵁ U₀` using `hσ ▸ (ht 0 hW0).1`. Establish `hw₀ : ⊤ ≤ w ⁻¹ᵁ U₀` using `(top_le_preimage_iff w _).2 (hw ▸ hz₀)`. Establish `hc : ∀ ξ a, hol.der hz₀ ξ (constFn X.hom U₀ a) = 0` using `fun ξ a => hol.der_constFn hz₀ ξ X.hom (fun y => Over.w (ex y)) a`. Set `T : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)` to `LinearMap.pi fun i => (fderiv ℂ (fun y => valAt' (ex y).left U₀ (t i)) z).toLinearMap`.
+
+Establish `hT : Function.Injective T`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `ξ hξ`. Establish `h0` using `hdet _ (hc ξ) (hol.der_mul hz₀ ξ) fun i => congrFun hξ i`. Use `htan z ξ fun V' b hV' => ?_` and prove the remaining obligations.
+
+Use `hol.fderiv_eq_zero hU₀ hz₀ ((top_le_preimage_comp _ φ V').1 hV') (ξ := ξ) (fun f => DFunLike.congr_fun h0 f) ((φ.app V').hom b)` as an intermediate fact. Simplify `this` using `only [valAt'_comp]`. Set `D₀ : Γ(X.left, U₀) →+ ℂ` to `(TrivSqZeroExt.sndHom ℂ ℂ).toAddMonoidHom.comp (evalPt w U₀ hw₀).toAddMonoidHom`. Establish `hD₀ : ∀ f, D₀ f = (evalPt w U₀ hw₀ f).snd` using `fun _ => rfl`. Take `⟨ξ, hξ⟩` from `LinearMap.injective_iff_surjective.1 hT fun i => D₀ (t i)`.
+
+Establish `h1 : D₀ - hol.der hz₀ ξ = 0`. Use `hdet _ (fun a => ?_) (fun f f' => ?_) fun i => sub_eq_zero.2 (congrFun hξ i).symm` and prove the remaining obligations. Establish `hi : ⊤ ≤ w ⁻¹ᵁ (U ⊓ U₀)` using `le_inf hwU hw₀`. Rewrite using `[AddMonoidHom.sub_apply, hc, sub_zero, hD₀, ← evalPt_res w inf_le_right hw₀ hi, resG_constFn', ← resG_constFn' X.hom (inf_le_left : U ⊓ U₀ ≤ U), evalPt_res w inf_le_left hwU hi, hwe, constFn_eq_appLE hp hUV]`. Conclude with `hD0 _`.
+
+Simplify using `only [AddMonoidHom.sub_apply, hD₀, map_mul, DualNumber.snd_mul, fst_evalPt hw, hol.der_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ∀ f, D f = hol.der hz ξ f` using `fun f => (congrArg (fun q => (q f).snd) hwe).symm.trans (snd_evalPt_eq_der hol hw hU₀ hz₀ hz hw₀ hwU ξ (fun f => sub_eq_zero.1 (DFunLike.congr_fun h1 f)) f)`. Establish `hzV : ⊤ ≤ ((ex z).left ≫ φ) ⁻¹ᵁ V` using `(top_le_preimage_comp _ φ V).2 (top_le_preimage_mono _ hUV hz)`. Take `rfl : ξ = 0` from `htan z ξ fun V' b hV' => (isHolFamily_comp hol φ).fderiv_eq_zero hV hzV hV' (fun b => (der_appLE hol φ hUV hz ξ b).symm.trans ((h2 _).symm.trans (hD0 b))) b`.
+
+Use extensionality with `f`. Rewrite using `[h2, IsHolFamily.der_apply, map_zero]`. Both sides reduce to the same expression.
+-/
 theorem formallyUnramified_of_fderiv (hsm : SmoothOfRelativeDimension g X.hom) [LocallyOfFiniteType φ]
     (hex : Function.Surjective ex) (hol : IsHolFamily fun z => (ex z).left) (hp : φ ≫ p = X.hom)
     (htan : ∀ z ξ, (∀ (V : Y.Opens) (b : Γ(Y, V)), ⊤ ≤ ((ex z).left ≫ φ) ⁻¹ᵁ V →
@@ -210,6 +266,17 @@ theorem formallyUnramified_of_fderiv (hsm : SmoothOfRelativeDimension g X.hom) [
   rw [h2, IsHolFamily.der_apply, map_zero]
   rfl
 
+/- English proof (translation)
+Establish `: IsProper (φ ≫ p)` using `hp ▸ inferInstance`. Establish `: IsProper φ` using `IsProper.of_comp φ p`. Use `formallyUnramified_of_fderiv hsm hex hol hp htan` as an intermediate fact. Establish `hs : (pullback.diagonal φ).opensRange = ⊤`. Use `top_le_iff.1 (ThetaAmple.opens_le_of_points (pullback.fst φ φ ≫ X.hom) fun y hy _ => ?_)` and prove the remaining obligations.
+
+Take `⟨z, hz⟩` from `hex (Over.homMk (y ≫ pullback.fst φ φ) ((Category.assoc _ _ _).trans hy))`. Take `⟨z', hz'⟩` from `hex (Over.homMk (y ≫ pullback.snd φ φ) ((Category.assoc _ _ _).trans (by`. Rewrite using `[← hp, ← pullback.condition_assoc, hp]`. Conclude with `hy)))`. Establish `e` using `hinj z z' (by`.
+
+Rewrite using `[hz, hz']`. Conclude with `(Category.assoc _ _ _).trans ((congrArg _ pullback.condition).trans (Category.assoc _ _ _).symm))`. Establish `e' : y ≫ pullback.fst φ φ = y ≫ pullback.snd φ φ` using `congrArg CommaMorphism.left (hz.symm.trans (e.trans hz'))`. Establish `e'' : (y ≫ pullback.fst φ φ) ≫ pullback.diagonal φ = y`. Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Simplify using `[e']`. Introduce `a _`. Conclude with `⟨(y ≫ pullback.fst φ φ) a, congrArg (fun q => q a) e''⟩`. Establish `: IsIso (pullback.diagonal φ)` using `isIso_of_isOpenImmersion_of_opensRange_eq_top _ hs`.
+
+Establish `: Mono φ` using `(pullback.isIso_diagonal_iff φ).1 this`. Conclude with `(IsClosedImmersion.iff_isProper_and_mono φ).2 ⟨inferInstance, inferInstance⟩`.
+-/
 theorem isClosedImmersion_of_fderiv (hsm : SmoothOfRelativeDimension g X.hom) [IsProper X.hom] [IsProper p]
     (hex : Function.Surjective ex) (hol : IsHolFamily fun z => (ex z).left) (hp : φ ≫ p = X.hom)
     (hinj : ∀ z z', (ex z).left ≫ φ = (ex z').left ≫ φ → ex z = ex z')
@@ -244,6 +311,23 @@ section Lefschetz
 variable {g : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ} (hτ : τ ∈ SiegelH (Fin g)) (a b : Fin g → ℝ) {M : ℕ} (hM : 3 ≤ M)
 include hτ hM
 
+/- English proof (translation)
+Establish `f0` using `@GlobalTheory.siegelSubDomain_and_domainOpen`. Establish `f1` using `@GlobalTheory.thetaMTest_and_thetaSummable`. Establish `f2` using `@GlobalTheory.thetaHolo_of_domainOpen_of_mTest f0.2 f1.1`. Establish `f3` using `@GlobalTheory.classicalTheta_level_and_linearIndependent f0.1 f2 f1.1`. Establish `f8` using `@GlobalTheory.riemannTheta_level_one_ne_zero f3`.
+
+Establish `f9` using `@GlobalTheory.exists_level_apply_ne_zero_of_two_le f8`. Establish `f10` using `@GlobalTheory.periodLattice_isLattice_of_mem_siegelH`. Establish `f11` using `@GlobalTheory.mem_periodLattice_of_theta_translate_eq_unit_mul f8 f10`. Establish `f12` using `@GlobalTheory.ThetaSeparation.level_three_separates_points f8 f11`. Establish `f13` using `@GlobalTheory.ThetaTangent.level_three_separates_tangent_vectors f8 f11 f10`.
+
+Set `v` to `τ *ᵥ ofRealVec a + ofRealVec b`. Set `E : (Fin g → ℂ) → ℂ` to `fun z => eC (M * (ofRealVec a ⬝ᵥ (τ *ᵥ ofRealVec a) / 2 + ofRealVec a ⬝ᵥ (z + ofRealVec b)))`. Establish `hE : Differentiable ℂ E`. Simplify using `only [E, eC, dotProduct]`. Use `fun_prop`.
+
+Establish `hE0 : ∀ z, E z ≠ 0` using `fun z => GlobalTheory.eC_ne_zero _`. Establish `hs : ∀ f ∈ thetaLevel M τ, (fun z => E z * f (z + v)) ∈ thetaLevelChar a b M τ` using `fun f hf => by`. Use `(thetaLevelEquivChar a b M hτ.1 ⟨f, hf⟩).2` as an intermediate fact. Rewrite `this` using `[thetaLevelEquivChar_apply]`. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `z`. Rewrite using `[thetaShift_apply, add_assoc z]`. Use `⟨fun z => ?_, fun z z' κ h => ?_, fun z ξ κ h => ?_⟩` and prove the remaining obligations. Take `⟨f, hf, h0⟩` from `f9 g τ hτ M (by omega) (z + v)`. Conclude with `⟨_, hs f hf, mul_ne_zero (hE0 z) h0⟩`.
+
+Use `f12 g τ hτ M hM (z + v) (z' + v) (κ * E z' / E z) fun f hf => by` as an intermediate fact. Establish `h1 : E z * f (z + v) = κ * (E z' * f (z' + v))` using `h _ (hs f hf)`. Use `hE0 z` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Take the linear combination `h1`.
+
+Rewrite `this` using `[add_sub_add_right_eq_sub]`. Then use the resulting hypothesis. Use `f13 g τ hτ M hM (z + v) ξ (κ - fderiv ℂ E z ξ / E z) fun f hf => ?_` and prove the remaining obligations. Establish `h1` using `h _ (hs f hf)`. Establish `h2 : HasFDerivAt (fun z => f (z + v)) (fderiv ℂ f (z + v)) z` using `(hasFDerivAt_comp_add_right v).2 (hf.1 (z + v)).hasFDerivAt`. Rewrite `h1` using `[((hE z).hasFDerivAt.fun_mul h2).fderiv]`.
+
+Simplify using `only [_root_.add_apply, _root_.smul_apply, smul_eq_mul] at h1`. Use `hE0 z` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Take the linear combination `h1`.
+-/
 theorem lefschetz_char :
     (∀ z, ∃ f ∈ thetaLevelChar a b M τ, f z ≠ 0) ∧
     (∀ z z' κ, (∀ f ∈ thetaLevelChar a b M τ, f z = κ * f z') → z - z' ∈ periodLattice τ) ∧
@@ -297,11 +381,17 @@ section Sections
 variable {X : Over (Sp ℂ)} [GrpObj X] {L : LB X.left} {g : ℕ} (u : HolUnif X L g) (hL : L.IsLB) {M : ℕ}
 include hL
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `(ThetaAmple.top_le_preimage_iSup (u.ex z).left L.U).1 (by rw [hL.cover]; exact le_top)`. Conclude with `⟨i, fun q hq => Set.mem_iInter.2 fun _ => hi hq, u.fr_ne i z hi⟩`.
+-/
 theorem exists_chart_pow (M : ℕ) (z : Fin g → ℂ) :
     ∃ i, ⊤ ≤ (u.ex z).left ⁻¹ᵁ (lbPow L M).U (fun _ => i) ∧ u.fr i z ≠ 0 := by
   obtain ⟨i, hi⟩ := (ThetaAmple.top_le_preimage_iSup (u.ex z).left L.U).1 (by rw [hL.cover]; exact le_top)
   exact ⟨i, fun q hq => Set.mem_iInter.2 fun _ => hi hq, u.fr_ne i z hi⟩
 
+/- English proof (translation)
+Use `(ThetaAmple.top_le_preimage_iSup _ _).trans ⟨fun ⟨j, hj⟩ => ?_, fun h0 => ?_⟩` and prove the remaining obligations. Establish `h1` using `(top_le_preimage_basicOpen_iff _ _ _).1 hj`. Conclude with `left_ne_zero_of_mul ((h j z (top_le_preimage_of_valAt'_ne_zero _ h1)).symm.trans_ne h1)`. Take `⟨i, hi, hf⟩` from `exists_chart_pow u hL M z`. Conclude with `⟨fun _ => i, (top_le_preimage_basicOpen_iff _ _ _).2 ((h _ z hi).trans_ne (mul_ne_zero h0 (pow_ne_zero _ hf)))⟩`.
+-/
 theorem mem_nonzeroLocus_iff {s : (lbPow L M).Sec} {θ : (Fin g → ℂ) → ℂ} (h : u.IsFnPow M s θ) (z : Fin g → ℂ) :
     ⊤ ≤ (u.ex z).left ⁻¹ᵁ Out.nonzeroLocus s ↔ θ z ≠ 0 := by
   refine (ThetaAmple.top_le_preimage_iSup _ _).trans ⟨fun ⟨j, hj⟩ => ?_, fun h0 => ?_⟩
@@ -311,6 +401,11 @@ theorem mem_nonzeroLocus_iff {s : (lbPow L M).Sec} {θ : (Fin g → ℂ) → ℂ
     exact ⟨fun _ => i, (top_le_preimage_basicOpen_iff _ _ _).2
       ((h _ z hi).trans_ne (mul_ne_zero h0 (pow_ne_zero _ hf)))⟩
 
+/- English proof (translation)
+Take `⟨i, hi, hf⟩` from `exists_chart_pow u hL M z`. Establish `hm` using `(top_le_preimage_inf _ _ _).2 ⟨(mem_nonzeroLocus_iff u hL h z).2 hz, hi⟩`. Establish `e` using `congrArg (valAt' (u.ex z).left _) (ProjSpace.secRatio_spec s s' fun _ => i)`. Rewrite `e` using `[valAt'_mul, valAt'_res _ _ _ hm, valAt'_res _ _ _ hm, valAt'_res _ _ _ hm, h _ z hi, h' _ z hi, ← _root_.mul_assoc]`. Rewrite using `[eq_div_iff hz]`.
+
+Conclude with `(mul_right_cancel₀ (pow_ne_zero _ hf) e).symm`.
+-/
 theorem valAt'_secRatio {s s' : (lbPow L M).Sec} {θ θ' : (Fin g → ℂ) → ℂ} (h : u.IsFnPow M s θ)
     (h' : u.IsFnPow M s' θ') {z : Fin g → ℂ} (hz : θ z ≠ 0) :
     valAt' (u.ex z).left _ (ProjSpace.secRatio s s') = θ' z / θ z := by
@@ -322,6 +417,21 @@ theorem valAt'_secRatio {s s' : (lbPow L M).Sec} {θ θ' : (Fin g → ℂ) → �
   rw [eq_div_iff hz]
   exact (mul_right_cancel₀ (pow_ne_zero _ hf) e).symm
 
+/- English proof (translation)
+Establish `hsp : ∀ z z' κ, (∀ j, θ j z = κ * θ j z') → ∀ f ∈ Submodule.span ℂ (Set.range θ), f z = κ * f z'`. Introduce `z z' κ h f hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f hf => obtain ⟨j, rfl⟩ := hf`. Conclude with `h j`.
+
+Consider the case `zero => simp`. Consider the case `add f f' _ _ e e' => rw [Pi.add_apply, Pi.add_apply, e, e', mul_add]`. Consider the case `smul c f _ e => rw [Pi.smul_apply, Pi.smul_apply, e, smul_eq_mul, smul_eq_mul, mul_left_comm]`. Establish `hne : ∀ z, ∃ j, θ j z ≠ 0` using `fun z => by by_contra! h`. Take `⟨f, hf, h0⟩` from `h₀ z`.
+
+Conclude with `h0 ((hsp z z 0 (fun j => (h j).trans (zero_mul _).symm) f hf).trans (zero_mul _))`. Establish `hcov : ⨆ i, Out.nonzeroLocus (s i) = ⊤`. Use `top_le_iff.1 (ThetaAmple.opens_le_of_points X.hom fun x hx _ => ?_)` and prove the remaining obligations. Take `⟨z, hz⟩` from `u.ex_onto (Over.homMk x hx)`. Take `rfl : (u.ex z).left = x` from `congrArg CommaMorphism.left hz`.
+
+Conclude with `(ThetaAmple.top_le_preimage_iSup _ _).2 ((hne z).imp fun j hj => (mem_nonzeroLocus_iff u hL (hs j) z).2 hj)`. Use `veryAmpleAt_of_isClosedImmersion hL s hcov ?_` and prove the remaining obligations. Use `set φ := ProjSpace.toProj X.hom s hcov`. Establish `hch : ∀ i z, ⊤ ≤ ((u.ex z).left ≫ φ) ⁻¹ᵁ ProjSpace.chart ℂ K i ↔ θ i z ≠ 0` using `fun i z => by`. Rewrite using `[top_le_preimage_comp, ProjSpace.toProj_preimage_chart]`.
+
+Conclude with `mem_nonzeroLocus_iff u hL (hs i) z`. Establish `hval : ∀ i j z, θ i z ≠ 0 → valAt' ((u.ex z).left ≫ φ) _ (ProjSpace.ratio ℂ K i j) = θ j z / θ i z` using `fun i j z hz => by`. Rewrite using `[← valAt'_secRatio u hL (hs i) (hs j) hz, ← ProjSpace.pullRatio_toProj X.hom s hcov]`. Conclude with `(valAt'_appLE _ φ _ _ _ _ ((mem_nonzeroLocus_iff u hL (hs i) z).2 hz)).symm`. Use `isProper_str ℂ K` as an intermediate fact.
+
+Use `isClosedImmersion_of_fderiv hsm u.ex_onto u.hol (ProjSpace.toProj_str X.hom s hcov) (fun z z' e => ?_) fun z ξ h => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `hne z`. Establish `hi' : θ i z' ≠ 0` using `(hch i z').1 (e ▸ (hch i z).2 hi)`. Use `h₁ z z' (θ i z / θ i z') (hsp _ _ _ fun j => ?_)` and prove the remaining obligations. Use `(hval i j z hi).symm.trans ((congrArg (fun q => valAt' q _ (ProjSpace.ratio ℂ K i j)) e).trans (hval i j z' hi'))` as an intermediate fact.
+
+Clear denominators, using `at this ⊢` for the nonvanishing conditions. Take the linear combination `this`. Take `⟨i, hi⟩` from `hne z`. Conclude with `h₂ z ξ _ (fderiv_eq_mul_of_ratio θ hθ i z ξ hi _ (hval i) fun j => h _ _ ((hch i z).2 hi))`.
+-/
 theorem veryAmpleAt_of_separation [IsProper X.hom] (hsm : SmoothOfRelativeDimension g X.hom) {K : ℕ}
     (s : Fin (K + 1) → (lbPow L M).Sec) (θ : Fin (K + 1) → (Fin g → ℂ) → ℂ) (hθ : ∀ j, Differentiable ℂ (θ j))
     (hs : ∀ j, u.IsFnPow M (s j) (θ j))
@@ -374,6 +484,13 @@ end GlobalTheory.ThetaVeryAmple
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce and unpack `g τ hτ N - X ex D ⟨-, hprop, -, hex, -⟩ - - _ - a b - - L u hL ⟨rfl, -⟩ - hsm hsec M hM`. Take `⟨h₀, h₁, h₂⟩` from `ThetaVeryAmple.lefschetz_char hτ a b hM`. Use `finiteDimensional_thetaLevelChar (a := a) (b := b) (N := M) hτ.1 (by omega)` as an intermediate fact. Establish `hK : Module.finrank ℂ (thetaLevelChar a b M τ) = (M ^ g - 1) + 1`. Rewrite using `[finrank_thetaLevelChar hτ (by omega), Fintype.card_fin, Nat.sub_add_cancel (Nat.one_le_pow _ _ (by omega))]`.
+
+Set `B` to `Module.finBasisOfFinrankEq ℂ _ hK`. Establish `hB : Submodule.span ℂ (Set.range fun j => (B j).1) = thetaLevelChar a b M τ`. Use `congrArg (Submodule.map (thetaLevelChar a b M τ).subtype) B.span_eq` as an intermediate fact. Rewrite `this` using `[Submodule.map_span, ← Set.range_comp, Submodule.map_subtype_top]`. Then use the resulting hypothesis. Use `choose s hs _ using fun j => (hsec M).2 _ (B j).2`.
+
+Rewrite `h₀`, `h₁`, `h₂` using `[← hB]`. Conclude with `ThetaVeryAmple.veryAmpleAt_of_separation u hL hsm s _ (fun j => (B j).2.1) hs h₀ (fun z z' κ h => (hex z z').2 (h₁ z z' κ h)) h₂`.
+-/
 theorem thetaBundle_veryAmpleAt : ∀ (g : ℕ) (τ : Matrix (Fin g) (Fin g) ℂ), τ ∈ SiegelH (Fin g) → ∀ N : ℕ, 3 ≤ N → ∀ (X : Over (Sp ℂ)) (ex : (Fin g → ℂ) → (𝟙_ (Over (Sp ℂ)) ⟶ X)) (D : (Fin g → Fin N) → X.left.Opens), (IsIntegral X.left ∧ IsProper X.hom ∧ Function.Surjective ex ∧ (∀ z z', ex z = ex z' ↔ z - z' ∈ periodLattice τ) ∧ (∀ (U : (X).left.Opens) (f : Γ((X).left, U)), IsOpen {w | w ∈ (Set.univ : Set (Fin g → ℂ)) ∧ ⊤ ≤ (ex w).left ⁻¹ᵁ U} ∧ DifferentiableOn ℂ (fun w => valAt' (ex w).left U f) {w | w ∈ (Set.univ : Set (Fin g → ℂ)) ∧ ⊤ ≤ (ex w).left ⁻¹ᵁ U}) ∧ (∀ c, IsAffineOpen (D c) ∧ ringKrullDim Γ(X.left, D c) ≤ g ∧ (∀ z, ⊤ ≤ (ex z).left ⁻¹ᵁ D c ↔ theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ) ≠ 0) ∧ ∃ r : (Fin g → Fin N) → Γ(X.left, D c), (∀ c' z, theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ) ≠ 0 → valAt' (ex z).left (D c) (r c') = theta (fun i => ((c' i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ) / theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ)) ∧ ∀ f : Γ(X.left, D c), ∃ F : MvPolynomial (Fin g → Fin N) ℂ, f = MvPolynomial.eval₂ (RingHom.comp (X.hom.appLE ⊤ _ le_top).hom (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom) r F) ∧ (⨆ c, D c = ⊤)) → (∀ (d : ℕ) (p q : (Fin g → ℂ) → ℂ), (Differentiable ℂ p ∧ ∀ (n n' : Fin g → ℤ) z, p (z + τ *ᵥ ofIntVec n + ofIntVec n') = eC (-((N * d : ℕ) : ℂ) * (ofIntVec n ⬝ᵥ (τ *ᵥ ofIntVec n) / 2 + ofIntVec n ⬝ᵥ z)) * p z) → (Differentiable ℂ q ∧ ∀ (n n' : Fin g → ℤ) z, q (z + τ *ᵥ ofIntVec n + ofIntVec n') = eC (-((N * d : ℕ) : ℂ) * (ofIntVec n ⬝ᵥ (τ *ᵥ ofIntVec n) / 2 + ofIntVec n ⬝ᵥ z)) * q z) → ∃ (U : X.left.Opens) (φ : Γ(X.left, U)), ∀ z, (⊤ ≤ (ex z).left ⁻¹ᵁ U ↔ q z ≠ 0) ∧ (q z ≠ 0 → valAt' (ex z).left U φ = p z / q z)) → Even N → ∀ [GrpObj X], (∀ z w, ex (z + w) = ex z * ex w) → ∀ a b : Fin g → ℝ, (∀ i, a i = 0 ∨ a i = 1 / 2) → (∀ i, b i = 0 ∨ b i = 1 / 2) → ∀ (L : LB X.left) (u : HolUnif X L g), L.IsLB → (u.ex = ex ∧ (∀ z, z ∈ u.Λ ↔ z ∈ periodLattice τ) ∧ (∀ (n n' : Fin g → ℤ) i z, ⊤ ≤ (ex z).left ⁻¹ᵁ L.U i → u.fr i z = autFactor a b τ n n' z * u.fr i (z + τ *ᵥ ofIntVec n + ofIntVec n')) ∧ (∀ i, ∃ h F : (Fin g → ℂ) → ℂ, (Differentiable ℂ h ∧ ∀ (n n' : Fin g → ℤ) z, h (z + τ *ᵥ ofIntVec n + ofIntVec n') = eC (-(N : ℂ) * (ofIntVec n ⬝ᵥ (τ *ᵥ ofIntVec n) / 2 + ofIntVec n ⬝ᵥ z)) * h z) ∧ Differentiable ℂ F ∧ (∀ (n n' : Fin g → ℤ) z, F (z + τ *ᵥ ofIntVec n + ofIntVec n') = autFactor a b τ n n' z * eC (-(N : ℂ) * (ofIntVec n ⬝ᵥ (τ *ᵥ ofIntVec n) / 2 + ofIntVec n ⬝ᵥ z)) * F z) ∧ ∀ z, (⊤ ≤ (ex z).left ⁻¹ᵁ L.U i ↔ h z ≠ 0 ∧ F z ≠ 0) ∧ u.fr i z = h z / F z)) → IsAbelianScheme X → SmoothOfRelativeDimension g X.hom → (∀ n : ℕ, (∀ s, ∃! θ, θ ∈ thetaLevelChar a b n τ ∧ u.IsFnPow n s θ) ∧ ∀ θ ∈ thetaLevelChar a b n τ, ∃! s, u.IsFnPow n s θ) → ∀ M : ℕ, 3 ≤ M → Out.VeryAmpleAt X L M := by
   rintro g τ hτ N - X ex D ⟨-, hprop, -, hex, -⟩ - - _ - a b - - L u hL ⟨rfl, -⟩ - hsm hsec M hM
   obtain ⟨h₀, h₁, h₂⟩ := ThetaVeryAmple.lefschetz_char hτ a b hM

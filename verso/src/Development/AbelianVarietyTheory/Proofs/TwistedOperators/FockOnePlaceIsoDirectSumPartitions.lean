@@ -7,6 +7,13 @@ open scoped TensorProduct DirectSum
 
 namespace GlobalTheory.OneFunctional
 
+/- English proof (translation)
+Introduce `a b α β`. Take `⟨e⟩` from `GlobalTheory.GLDuality.nonempty_equiv_polyRep a b`. Take `⟨e, he⟩` from `Iso.of_equiv e`. Use `⟨e, fun p x => ?_⟩` and prove the remaining obligations. Establish `key : (Representation.directSum fun i : GlobalTheory.GLDuality.Part (min a b) => Representation.tprod ((twist (detU a ^ α) ((irr a (GlobalTheory.GLDuality.pad a i)).comp (conjU a))).comp (MonoidHom.fst (U a) (U b))) ((twist (detU b ^ β) (irr b (GlobalTheory.GLDuality.pad b i))).c …`.
+
+Apply `DFinsupp.ext` to reduce the goal to its premises. Introduce `i`. Express the relevant statement in the definitionally equal form `TensorProduct.map ((((detU a ^ α) p.1 : ℂˣ) : ℂ) • (irr a (GlobalTheory.GLDuality.pad a i) (conjU a p.1))) ((((detU b ^ β) p.2 : ℂˣ) : ℂ) • (irr b (GlobalTheory.GLDuality.pad b i) p.2)) (x i) = ((((detU a ^ α) p.1 * (detU b ^ β) p.2 : ℂˣ) : ℂ)) • TensorProduct.map (irr a (GlobalT …`. Rewrite using `[TensorProduct.map_smul_left, TensorProduct.map_smul_right, smul_smul, Units.val_mul, LinearMap.smul_apply]`. Rewrite using `[key, map_smul, he]`.
+
+Both sides reduce to the same expression.
+-/
 theorem iso_directSum_fockOne : ∀ (a b : ℕ) (α β : ℤ), Iso (Representation.directSum fun i : GlobalTheory.GLDuality.Part (min a b) => Representation.tprod ((twist (detU a ^ α) ((irr a (GlobalTheory.GLDuality.pad a i)).comp (conjU a))).comp (MonoidHom.fst (U a) (U b))) ((twist (detU b ^ β) (irr b (GlobalTheory.GLDuality.pad b i))).comp (MonoidHom.snd (U a) (U b)))) (fockOne a b α β) := by
   intro a b α β
   obtain ⟨e⟩ := GlobalTheory.GLDuality.nonempty_equiv_polyRep a b

@@ -13,6 +13,27 @@ open IsLocalRing GlobalTheory.Henselisation
 
 namespace GlobalTheory.Henselisation
 
+/- English proof (translation)
+Introduce `R _ _`. Use `haveI : IsDirected (EtNbhd R) (· ≤ ·) := GlobalTheory.T.pointedEtaleNeighbourhoodLocalRing_isDirected R`. Take `⟨hloc, hofloc⟩` from `GlobalTheory.T.isLocalRing_hens_and_isLocalHom_of R`. Use `haveI : HenselianLocalRing (Hens R) := GlobalTheory.T.henselianLocalRing_hens' R`. Set `ofA : ∀ i : EtNbhd R, i.B →ₐ[R] Hens R` to `fun i => { toRingHom := Hens.of i, commutes' := GlobalTheory.T.etaleNbhdLocalRingToHenselisation_algebraMap R i }`.
+
+Establish `hof_trans : ∀ {i j : EtNbhd R} (h : i ≤ j) (x : i.B), Hens.of j (EtNbhd.trans h x) = Hens.of i x` using `fun h x => Ring.DirectLimit.of_f h x`. Establish `hexists : ∀ s : Hens R, ∃ i b, Hens.of i b = s` using `fun s => Ring.DirectLimit.exists_of s`. Establish `hlocB : ∀ i : EtNbhd R, IsLocalHom (algebraMap R i.B)` using `fun i => ⟨fun r hr => by`. Assume the negation of the conclusion as `hn`. Establish `hm : algebraMap R i.B r ∈ maximalIdeal i.B`.
+
+Rewrite using `[GlobalTheory.T.maximalIdeal_pointedEtaleNeighbourhood_eq_map R i]`. Conclude with `Ideal.mem_map_of_mem _ ((mem_maximalIdeal r).2 hn)`. Conclude with `(mem_maximalIdeal _).1 hm hr⟩`. Use `haveI : IsLocalHom (algebraMap R (Hens R)) := by`. Establish `e : algebraMap R (Hens R) = (Hens.of EtNbhd.base).comp (algebraMap R (EtNbhd.base (R` using `R)).B) := rfl`.
+
+Rewrite using `[e]`. Use `haveI := hlocB EtNbhd.base`. Use `haveI := hofloc EtNbhd.base`. Use `infer_instance`. Establish `hmax : (maximalIdeal R).map (algebraMap R (Hens R)) = maximalIdeal (Hens R)`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Conclude with `Ideal.map_le_iff_le_comap.2 fun r hr => map_nonunit (algebraMap R (Hens R)) r hr`. Introduce `s hs`. Take `⟨i, b, rfl⟩` from `hexists s`. Establish `hb : b ∈ maximalIdeal i.B`.
+
+Rewrite using `[mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Conclude with `(mem_maximalIdeal _).1 hs (hu.map (Hens.of i))`. Rewrite `hb` using `[GlobalTheory.T.maximalIdeal_pointedEtaleNeighbourhood_eq_map R i]`. Establish `hm` using `Ideal.mem_map_of_mem (Hens.of i) hb`.
+
+Rewrite `hm` using `[Ideal.map_map, show (Hens.of i).comp (algebraMap R i.B) = algebraMap R (Hens R) from RingHom.ext (GlobalTheory.T.etaleNbhdLocalRingToHenselisation_algebraMap R i)]`. Then use the resulting hypothesis. Establish `hres : Function.Bijective (ResidueField.map (algebraMap R (Hens R)))`. Use `⟨RingHom.injective _, fun y => ?_⟩` and prove the remaining obligations. Take `⟨s, rfl⟩` from `residue_surjective y`. Take `⟨i, b, rfl⟩` from `hexists s`.
+
+Take `⟨r, hr⟩` from `GlobalTheory.T.exists_sub_mem_maximalIdeal_pointedEtaleNeighbourhood R i b`. Use `⟨residue R r, ?_⟩` and prove the remaining obligations. Rewrite using `[ResidueField.map_residue, eq_comm, ← sub_eq_zero, ← map_sub, residue_eq_zero_iff, ← GlobalTheory.T.etaleNbhdLocalRingToHenselisation_algebraMap R i r, ← map_sub]`. Conclude with `map_nonunit (Hens.of i) _ hr`. Use `⟨Hens R, inferInstance, inferInstance, inferInstance, inferInstance, GlobalTheory.T.flat_hens' R, hmax, hres, EtNbhd R, inferInstance, inferInstance, inferInstance, fun i => (ofA i).range, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `i j h y hy`. Take `⟨x, rfl⟩` from `(AlgHom.mem_range _).1 hy`. Conclude with `(AlgHom.mem_range _).2 ⟨EtNbhd.trans h x, hof_trans h x⟩`. Introduce `s`. Take `⟨i, b, rfl⟩` from `hexists s`.
+
+Conclude with `⟨i, (AlgHom.mem_range _).2 ⟨b, rfl⟩⟩`. Introduce `i`. Conclude with `⟨i.A, inferInstance, inferInstance, inferInstance, i.q, inferInstance, ⟨AlgEquiv.ofInjective (ofA i) (GlobalTheory.T.etaleNbhdLocalRingToHenselisation_injective_of_nbhd R i)⟩⟩`.
+-/
 theorem exists_henselisation : ∀ (R : Type) [CommRing R] [IsLocalRing R], ∃ (S : Type) (_ : CommRing S) (_ : Algebra R S) (_ : HenselianLocalRing S) (_ : IsLocalHom (algebraMap R S)), Module.Flat R S ∧ (maximalIdeal R).map (algebraMap R S) = maximalIdeal S ∧ Function.Bijective (ResidueField.map (algebraMap R S)) ∧ (∃ (ι : Type) (_ : Preorder ι) (_ : IsDirected ι (· ≤ ·)) (_ : Nonempty ι) (Si : ι → Subalgebra R S), Monotone Si ∧ (∀ s : S, ∃ i, s ∈ Si i) ∧ ∀ i, ∃ (A : Type) (_ : CommRing A) (_ : Algebra R A) (_ : Algebra.Etale R A) (q : Ideal A) (_ : q.IsPrime), Nonempty (Localization.AtPrime q ≃ₐ[R] Si i)) := by
   intro R _ _
   haveI : IsDirected (EtNbhd R) (· ≤ ·) := GlobalTheory.T.pointedEtaleNeighbourhoodLocalRing_isDirected R

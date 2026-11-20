@@ -11,6 +11,19 @@ open scoped Classical
 
 namespace GlobalTheory.MultDer
 
+/- English proof (translation)
+Introduce `D θ V _ S M J χ T hT v τ Z y hy`. Take `⟨hc, hU, -⟩` from `GlobalTheory.T.discreteSeriesModel_unitary_irreducible_orthonormal D V S M τ`. Establish `hu` using `GlobalTheory.SmoothAutCheck.gramAt_unit V τ`. Take `⟨hsp, hsm⟩` from `GlobalTheory.T.smoothVectors_subspace_stable_sobolevForm_deriv V.rank (gramAt D V τ) (M.H τ) (M.rep τ) (GlobalTheory.SmoothAutCheck.gramAt_herm V τ) hu.ne_zero hU`. Establish `hv : SmoothVec (lieH (gramAt D V τ)) (M.rep τ) (v τ : M.H τ)` using `hsp _ (v τ).2`.
+
+Take `⟨h1, -, -, h4⟩` from `hsm _ hv`. Use function extensionality and compare the values at `g`. Take `⟨ℓ, hℓ, hval⟩` from `hT.cont τ v g`. Establish `key : ∀ X ∈ lieAt V τ, Rder θ V τ X (T v) g = ℓ (dRep (M.rep τ) X (v τ : M.H τ))`. Introduce `X hX`.
+
+Establish `e : (fun t : ℝ => T v (g * oneP θ V τ X t)) = fun t : ℝ => ℓ (M.rep τ (NormedSpace.exp (t • X)) (v τ : M.H τ))`. Use function extensionality and compare the values at `t`. Establish `hm` using `GlobalTheory.SmoothAutCheck.exp_mem_UH hu hX t`. Set `w : M.sm τ` to `⟨M.rep τ (NormedSpace.exp (t • X)) (v τ : M.H τ), Submodule.subset_span (h1 _ hm)⟩`. Establish `h` using `congrFun (hT.equiv τ _ hm v w rfl) g`.
+
+Conclude with `((hval w).trans h).symm`. Unfold `Rder`. Rewrite using `[e]`. Conclude with `(h4 ℓ hℓ X hX).deriv`. Take `⟨p1, p2⟩` from `GlobalTheory.SmoothAutCheck.parts_mem V τ Z`.
+
+Establish `h` using `hval y`. Rewrite `h` using `[hy]`. Use `Eq.trans ?_ h` and prove the remaining obligations. Unfold `RderC dRepC`. Rewrite using `[Pi.add_apply, Pi.smul_apply, key _ p1, key _ p2, map_add, map_smul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem rderC_eq : ∀ (D : D7) (θ : InfFam D) (V : HSp D), IsInfFam θ → ∀ (S : D.what₂.Tau → SPar) (M : DSModel V S) (J : Set (GA D V)) (χ : GA D V → ℂ) (T : MMap M), IsMultMap θ M J χ T → ∀ (v : M.Vec) (τ : D.what₂.Tau) (Z : Mt V.rank) (y : M.sm τ), (y : M.H τ) = dRepC (gramAt D V τ) (M.rep τ) Z (v τ : M.H τ) → RderC θ V τ Z (T v) = T (Function.update v τ y) := by
   intro D θ V _ S M J χ T hT v τ Z y hy
   obtain ⟨hc, hU, -⟩ := GlobalTheory.T.discreteSeriesModel_unitary_irreducible_orthonormal D V S M τ

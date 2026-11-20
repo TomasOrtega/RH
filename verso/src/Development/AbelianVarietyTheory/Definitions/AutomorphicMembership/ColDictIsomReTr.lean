@@ -26,19 +26,31 @@ def eEECre {X : HidaSetting D} (G : GoodOp X) : EEC X G ≃ₗᵢ[ℂ] EEC (reX 
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+The claim follows from `(h)`.
+-/
 theorem measTie_reX {X : HidaSetting D} {hb : Formalism.L2.SG.AdBridge.AdBridgeIso X.B.I} (h : X.MeasTie hb) :
     (reX Z X).MeasTie hb := (h)
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+The claim follows from `(h)`.
+-/
 theorem measCompat_reX {X : HidaSetting D} {ψ : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF X.B.I.F) ℂ}
     (h : Formalism.L2.SG.MassDataConc.MeasCompatψ X ψ) : Formalism.L2.SG.MassDataConc.MeasCompatψ (reX Z X) ψ := (h)
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+The claim follows from `(h)`.
+-/
 theorem locCompat_reX {X : HidaSetting D} {ψ : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF X.B.I.F) ℂ} {w : D.what₂.Word}
     (h : Formalism.L2.SG.LocVol.LocCompatX X ψ w) : Formalism.L2.SG.LocVol.LocCompatX (reX Z X) ψ (wd Z w) := (h)
 
+/- English proof (translation)
+Take `rfl : L = colDictL X T hK` from `LinearMap.ext hL`. Conclude with `⟨fun h => h, fun h => h, fun _ _ h => h⟩`.
+-/
 theorem colDict_congr {X : HidaSetting D} {u : D.what₂.Word} {F : Forms0 D u} (T : Transport X u F) (hK : X.LevelSubgroupCharacter)
     (L : Cu X u hK →ₗ[ℂ] ((D.mem u).C.cls 0 → (D.mem u).C.Y 0 → ℂ)) (hL : ∀ x, L x = colDictL X T hK x) :
     (ColDictInto X T hK → ∀ x, L x ∈ (D.mem u).A.Mu0) ∧
@@ -57,16 +69,25 @@ variable {X : HidaSetting D} {u : D.what₂.Word} {F : Forms0 D u} {F' : Forms0 
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+The claim follows from `(by with_unfolding_all exact ((colDict_congr T Y.hK ((by with_unfolding_all exact (colDictL (reX Z X) (reTr Z T hy he) (reY Z Y).hK :))) ((by with_unfolding_all exact (colDictL_reTr Z T hy he Y.hK :)))).1 h :))`.
+-/
 theorem colDictInto_reTr (h : ColDictInto X T Y.hK) : ColDictInto (reX Z X) (reTr Z T hy he) (reY Z Y).hK := (by with_unfolding_all exact ((colDict_congr T Y.hK ((by with_unfolding_all exact (colDictL (reX Z X) (reTr Z T hy he) (reY Z Y).hK :)))
     ((by with_unfolding_all exact (colDictL_reTr Z T hy he Y.hK :)))).1 h :))
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+The claim follows from `(by with_unfolding_all exact ((colDict_congr T Y.hK ((by with_unfolding_all exact (colDictL (reX Z X) (reTr Z T hy he) (reY Z Y).hK :))) ((by with_unfolding_all exact (colDictL_reTr Z T hy he Y.hK :)))).2.1 h :))`.
+-/
 theorem colDictBij_reTr (h : ColDictBij X T Y.hK) : ColDictBij (reX Z X) (reTr Z T hy he) (reY Z Y).hK := (by with_unfolding_all exact ((colDict_congr T Y.hK ((by with_unfolding_all exact (colDictL (reX Z X) (reTr Z T hy he) (reY Z Y).hK :)))
     ((by with_unfolding_all exact (colDictL_reTr Z T hy he Y.hK :)))).2.1 h :))
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+The claim follows from `(by with_unfolding_all exact ((colDict_congr T Y.hK ((by with_unfolding_all exact (colDictL (reX Z X) (reTr Z T hy he) (reY Z Y).hK :))) ((by with_unfolding_all exact (colDictL_reTr Z T hy he Y.hK :)))).2.2 (Y.cs u) (hF.shInj u) h :))`.
+-/
 theorem colDictIsom_reTr (hF : FinX Y) (hF' : FinX (reY Z Y)) (h : ColDictIsom X T Y.hK (Y.cs u) (hF.shInj u)) :
     ColDictIsom (reX Z X) (reTr Z T hy he) (reY Z Y).hK ((reY Z Y).cs u) (hF'.shInj u) := (by with_unfolding_all exact ((colDict_congr T Y.hK ((by with_unfolding_all exact (colDictL (reX Z X) (reTr Z T hy he) (reY Z Y).hK :)))
     ((by with_unfolding_all exact (colDictL_reTr Z T hy he Y.hK :)))).2.2 (Y.cs u) (hF.shInj u) h :))
@@ -75,6 +96,9 @@ end Col
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Unfold `LevelMatch`. Rewrite using `[hl]`. Conclude with `(h)`.
+-/
 theorem levelMatch_reTr {X : HidaSetting D} {u : D.what₂.Word} {F : Forms0 D u} {F' : Forms0 (reD D Z) u} (T : Transport X u F)
     (hl : F'.cls0.lev = F.cls0.lev) (hy : F'.cls0.y = F.cls0.y) (he : F'.val0.eY = F.val0.eY) (Y : Full X)
     (h : LevelMatch X T Y.hK) : LevelMatch (reX Z X) (reTr Z T hy he) (reY Z Y).hK := by

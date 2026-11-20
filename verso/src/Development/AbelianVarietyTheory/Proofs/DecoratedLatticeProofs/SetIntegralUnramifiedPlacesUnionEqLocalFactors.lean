@@ -16,6 +16,11 @@ noncomputable section
 
 namespace GlobalTheory.Core.Rk.EulStep
 
+/- English proof (translation)
+Use `hL.1` as an intermediate fact. Set `U : Subgroup (GA D A)` to `⨅ k, ⨅ (_ : k ∉ S), (stabLoc D.sp.cm.sig A.gram L k).comap (proj D.sp.cm.sig A.gram k)`. Establish `hU : ∀ g, g ∈ U ↔ g ∈ openOff A L S` using `fun g => by simp [U, Subgroup.mem_iInf, openOff]`. Establish `hUo : IsOpen (U : Set (GA D A))` using `Subgroup.isOpen_mono (H₁ := ⨅ k, (stabLoc D.sp.cm.sig A.gram L k).comap (proj D.sp.cm.sig A.gram k)) (fun g hg => (hU g).2 fun k _ => Subgroup.mem_iInf.1 hg k) (by`. Use `(isRestrGroup_GAd D.sp.cm.sig A.gram L).isOpen_all using 1` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `g`. Simplify using `[Subgroup.mem_iInf])`. Use `hUo using 1` and compare the differences between its conclusion and the goal. Conclude with `Set.ext fun g => (hU g).symm`.
+-/
 theorem isOpen_openOff {D : D7} (A : HSp D) (L : Lat A) (hL : IsSelfDualC A L) (S : Finset (FinPl D)) :
     IsOpen (openOff A L S) := by
   have := hL.1
@@ -32,6 +37,11 @@ theorem isOpen_openOff {D : D7} (A : HSp D) (L : Lat A) (hL : IsSelfDualC A L) (
   convert hUo using 1
   exact Set.ext fun g => (hU g).symm
 
+/- English proof (translation)
+Introduce `v hv k hk g`. Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : ∃ w : HeightOneSpectrum (𝓞 D.host.E), w.under (𝓞 D.host.F) = v := by`. Use `v.isMaximal` as an intermediate fact. Take `⟨Q, hQ, hl⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 D.host.E) v.asIdeal`. Conclude with `⟨⟨Q, hQ.isPrime, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot Q⟩, HeightOneSpectrum.ext hl.over.symm⟩`.
+
+Establish `hx` using `(hf v (by simpa using hv) w hw).mem_fixed`. Use `congrFun (hx ⟨k, hk⟩) g` as an intermediate fact. Simplify `this` using `[GlobalTheory.PRep.rightReg, LinearMap.funLeft]`.
+-/
 theorem sphFun_of_param {D : D7} {V : HSp D} {Λ : Lat V} {Sf : Finset (FinPl D)} {f : GA D V → ℂ}
     {B : GlobalTheory.LFun.Fam D.host.E} (hf : GlobalTheory.LFun.IsParamFun D.sp.cm.sig V.gram Λ (Sf : Set (FinPl D)) f B) :
     SphFun V Λ Sf f := by
@@ -44,6 +54,27 @@ theorem sphFun_of_param {D : D7} {V : HSp D} {Λ : Lat V} {Sf : Finset (FinPl D)
   have := congrFun (hx ⟨k, hk⟩) g
   simpa [GlobalTheory.PRep.rightReg, LinearMap.funLeft] using this
 
+/- English proof (translation)
+Introduce `hP D hSF hLZ ψ θ A B χA χB sA sB t cA a om ν 𝓕 hpair LA LB Sf Φ₁ Φ₂ hΦ₁ hΦ₂ hU m hm u₁ hu₁ u₂ hu₂ par hpar hsph s hs hint`. Establish `: BorelSpace (GA D A)` using `⟨rfl⟩`. Use `hU.sdA.1` as an intermediate fact. Establish `hsph₁ : SphFun A LA Sf u₁` using `sphFun_of_param hpar`. Establish `step : ∀ (S : Finset (FinPl D)) (v : FinPl D), Sf ⊆ S → v ∉ S → ∀ S' : Finset (FinPl D), (∀ u, u ∈ S' ↔ u = v ∨ u ∈ S) → ∫ g in openOff A LA S', integrand om m ν 𝓕 LA a Φ₁ Φ₂ u₁ u₂ s g ∂m = GlobalTheory.LFun.LvTw par (GlobalTheory.LFun.val χB) v (s + 1 / 2) / GlobalTheory.LFun.dv …`.
+
+Introduce `S v hS hv S' hS'`. Establish `hvf : v ∉ Sf` using `fun h => hv (hS h)`. Rewrite using `[GlobalTheory.T.integral_unramifiedOutsideOpenSubset_insert_place D A LA hU.sdA m hm S v hv (haarLoc D.sp.cm.sig A.gram LA v) inferInstance (haarLoc_stabLoc D.sp.cm.sig A.gram LA v) S' hS' _ hint.integrableOn, ← integral_const_mul]`. Use `setIntegral_congr_fun (isOpen_openOff A LA hU.sdA S).measurableSet fun x hx => ?_` and prove the remaining obligations. Take `⟨φ, hφ, hfac⟩` from `hSF ψ θ A B χA χB sA sB t cA a om ν 𝓕 hpair LA LB Sf Φ₁ Φ₂ hΦ₁ hΦ₂ hU v hvf s`.
+
+Establish `hk : proj D.sp.cm.sig A.gram v x ∈ stabLoc D.sp.cm.sig A.gram LA v` using `hx v hv`. Take `⟨x', hx'⟩ : ∃ x', x' = x * (emb D.sp.cm.sig A.gram v (proj D.sp.cm.sig A.gram v x))⁻¹` from `⟨_, rfl⟩`. Establish `hx1 : proj D.sp.cm.sig A.gram v x' = 1`. Rewrite using `[hx', map_mul, map_inv, proj_emb_self, mul_inv_cancel]`. Establish `hxe : x = x' * emb D.sp.cm.sig A.gram v (proj D.sp.cm.sig A.gram v x)`.
+
+Rewrite using `[hx', inv_mul_cancel_right]`. Establish `hc` using `GlobalTheory.T.petersson_coefficient_bounded_spherical_unramified hP D θ A cA LA hpair.setting.2.2.2.1 m hm Sf u₁ hu₁ u₂ hu₂ par hpar hsph v hvf x' hx1`. Establish `hz` using `(hLZ A LA hU.sdA χB B.rank hpair.weil.hecT hpair.weil.resT v trivial (fun w hw => hU.unr w (by show ¬ (w.under (𝓞 D.host.F) ∈ (Sf : Set (FinPl D)))`. Rewrite using `[hw]`. Simplify using `using hvf))`.
+
+Use the proof step `(haarLoc D.sp.cm.sig A.gram LA v) inferInstance (haarLoc_stabLoc D.sp.cm.sig A.gram LA v) s hs φ hφ par _ hc).2`. Establish `hφk : φ (ioAt A v (proj D.sp.cm.sig A.gram v x)) = 1`. Use `hφ.2.1 (ioAt A v (proj D.sp.cm.sig A.gram v x)) ((ioH_mem_KFin (gram_hdbl A)).2 ⟨hk, one_mem _⟩) 1` as an intermediate fact. Rewrite `this` using `[one_mul, hφ.2.2]`. Conclude with `this`.
+
+Establish `hr : rcoef m u₁ u₂ x = rcoef m u₁ u₂ x'`. Establish `: rTr A x u₁ = rTr A x' u₁` using `funext fun g => by`. Simplify using `only [rTr]`. Use `conv_lhs => rw [hxe, ← mul_assoc]`. Conclude with `hsph₁ v hvf _ hk _`.
+
+Simplify using `only [rcoef, this]`. Establish `hw` using `hfac x' hx1 (proj D.sp.cm.sig A.gram v x)`. Rewrite `hw` using `[← hxe, hφk, mul_one]`. Simplify using `only [← hx', integrand, hfac x' hx1, hw, hr, mul_assoc]`. Rewrite using `[integral_const_mul, integral_const_mul, hz, map_one, mul_one]`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `S₁ S₂ hS₁`. Proceed by induction on `S₂ using Finset.induction_on with`. Consider the case `empty`. Introduce `_ S₃ h`.
+
+Take `rfl : S₃ = S₁` from `Finset.ext fun u => by simpa using h u`. Simplify using the standard rewrite rules. Consider the case `insert v S₂ hv ih`. Introduce `hd S₃ h`. Rewrite `hd` using `[Finset.disjoint_insert_right]`.
+
+Rewrite using `[step (S₁ ∪ S₂) v (hS₁.trans Finset.subset_union_left) (by simp [hd.1, hv]) S₃ (fun u => by rw [h u, Finset.mem_insert, Finset.mem_union]; tauto), ih hd.2 _ (fun u => Finset.mem_union), Finset.prod_insert hv, mul_assoc]`.
+-/
 theorem setIntegral_openOff_union : GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, SphFactor D → LocalZetaOn D (fun _ => True) → ∀ (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (A B : HSp D) (χA χB : (AE D)ˣ →* Circle) (sA : RealMat A) (sB : RealMat B) (t : ℕ) (cA : CptF A) (a : GL (Fin A.rank) (AE D)) (om : WRep A B) (ν : Measure (WO A B)) (𝓕 : Set (WO A B)), Pair ψ θ A B χA χB sA sB t cA a om ν 𝓕 → ∀ (LA : Lat A) (LB : Lat B) (Sf : Finset (FinPl D)) (Φ₁ Φ₂ : WO A B → ℂ), IsThetaFunO ψ A B Φ₁ → IsThetaFunO ψ A B Φ₂ → Unram ψ A B χB LA LB Sf Φ₁ Φ₂ → ∀ m : Measure (GA D A), m.IsHaarMeasure → ∀ u₁ ∈ A0 θ A cA, ∀ u₂ ∈ A0 θ A cA, ∀ par : GlobalTheory.LFun.Fam D.host.E, GlobalTheory.LFun.IsParamFun D.sp.cm.sig A.gram LA (Sf : Set (FinPl D)) u₁ par → SphFun A LA Sf u₂ → ∀ s : ℂ, (A.rank : ℝ) < s.re → Integrable (integrand om m ν 𝓕 LA a Φ₁ Φ₂ u₁ u₂ s) m → ∀ S₁ S₂ : Finset (FinPl D), Sf ⊆ S₁ → Disjoint S₁ S₂ → ∀ S₃ : Finset (FinPl D), (∀ u, u ∈ S₃ ↔ u ∈ S₁ ∨ u ∈ S₂) → ∫ g in openOff A LA S₃, integrand om m ν 𝓕 LA a Φ₁ Φ₂ u₁ u₂ s g ∂m = (∏ v ∈ S₂, GlobalTheory.LFun.LvTw par (GlobalTheory.LFun.val χB) v (s + 1 / 2) / GlobalTheory.LFun.dv D.host.E A.rank B.rank v s) * ∫ g in openOff A LA S₁, integrand om m ν 𝓕 LA a Φ₁ Φ₂ u₁ u₂ s g ∂m := by
   intro hP D hSF hLZ ψ θ A B χA χB sA sB t cA a om ν 𝓕 hpair LA LB Sf Φ₁ Φ₂ hΦ₁ hΦ₂ hU m hm u₁ hu₁ u₂ hu₂ par hpar hsph
     s hs hint

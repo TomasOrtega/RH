@@ -9,6 +9,17 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.SiegelRadTop
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n Y b ε h`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : LocallyCompactSpace (AF F) := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele F`. Use `haveI : SecondCountableTopology (AF F) := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `haveI : T2Space (AF F) := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`.
+
+Use `haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`. Use `haveI : LocallyCompactSpace (AE F E) := e.isClosedEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology (AE F E) := e.secondCountableTopology`.
+
+Use `haveI : T2Space (AE F E) := e.isEmbedding.t2Space`. Use `haveI : BorelSpace (AE F E) := ⟨rfl⟩`. Use `haveI : BorelSpace (Matrix (Fin n) (Fin n) (AE F E)) := inferInstanceAs (BorelSpace (Fin n → Fin n → AE F E))`. Use `haveI : LocallyCompactSpace (Matrix (Fin n) (Fin n) (AE F E)) := inferInstanceAs (LocallyCompactSpace (Fin n → Fin n → AE F E))`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) (AE F E)) := inferInstanceAs (SecondCountableTopology (Fin n → Fin n → AE F E))`.
+
+Establish `hc : Continuous (cA σ)` using `IsModuleTopology.continuous_of_linearMap (R := AF F) (cA σ).toLinearMap`. Establish `hS : (nA σ Y b : Set (Matrix (Fin n) (Fin n) (AE F E))) = {β | βᵀ + ((ε : ℤ) : AE F E) • β.map (cA σ) = 0}` using `Set.ext h`. Establish `hC : IsClosed (nA σ Y b : Set (Matrix (Fin n) (Fin n) (AE F E)))`. Rewrite using `[hS]`. Establish `h1 : Continuous fun β : Matrix (Fin n) (Fin n) (AE F E) => β.map (cA σ)` using `continuous_id.matrix_map hc`.
+
+Establish `h2 : Continuous fun β : Matrix (Fin n) (Fin n) (AE F E) => ((ε : ℤ) : AE F E) • β.map (cA σ)` using `(continuous_const_smul (((ε : ℤ) : AE F E))).comp h1`. Conclude with `isClosed_eq (continuous_id.matrix_transpose.add h2) continuous_const`. Use `haveI : LocallyCompactSpace (nA σ Y b) := hC.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : SecondCountableTopology (nA σ Y b) := TopologicalSpace.Subtype.secondCountableTopology _`. Conclude with `⟨hC, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance⟩`.
+-/
 theorem nA_top : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (Y : Spc F E n) (b : GL (Fin n ⊕ Fin n) E) (ε : ℤˣ),
     (∀ β : Matrix (Fin n) (Fin n) (AE F E), β ∈ nA σ Y b ↔ βᵀ + ((ε : ℤ) : AE F E) • β.map (cA σ) = 0) →
     IsClosed (nA σ Y b : Set (Matrix (Fin n) (Fin n) (AE F E))) ∧ IsTopologicalAddGroup (nA σ Y b) ∧

@@ -10,26 +10,41 @@ namespace GlobalTheory.EtC
 section FreeYoneda
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun k => k.hom s) (φ.hom.naturality g.op)`. Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply] at h`. Conclude with `h`.
+-/
 theorem freeYoneda_secMap_res {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (s : Sec F U) :
     Sec.map φ (Sec.res g s) = Sec.res g (Sec.map φ s) := by
   have h := congrArg (fun k => k.hom s) (φ.hom.naturality g.op)
   simp only [ModuleCat.hom_comp, LinearMap.comp_apply] at h
   exact h
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(F.obj.map g.op).hom ((F.obj.map x.op).hom s) = (F.obj.map (g ≫ x).op).hom s`. Rewrite using `[op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply]`.
+-/
 theorem freeYoneda_res_res {F : Shv R} {W V U : Scheme.{0}} (g : W ⟶ V) (x : V ⟶ U) (s : Sec F U) :
     Sec.res g (Sec.res x s) = Sec.res (g ≫ x) s := by
   change (F.obj.map g.op).hom ((F.obj.map x.op).hom s) = (F.obj.map (g ≫ x).op).hom s
   rw [op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(F.obj.map (𝟙 U).op).hom s = s`. Rewrite using `[op_id, CategoryTheory.Functor.map_id, ModuleCat.hom_id, LinearMap.id_apply]`.
+-/
 theorem freeYoneda_res_id {F : Shv R} {U : Scheme.{0}} (s : Sec F U) : Sec.res (𝟙 U) s = s := by
   change (F.obj.map (𝟙 U).op).hom s = s
   rw [op_id, CategoryTheory.Functor.map_id, ModuleCat.hom_id, LinearMap.id_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem freeYoneda_secMap_comp {F G H : Shv R} (φ : F ⟶ G) (ψ : G ⟶ H) {U : Scheme.{0}} (s : Sec F U) :
     Sec.map (φ ≫ ψ) s = Sec.map ψ (Sec.map φ s) := rfl
 
 variable (R) in
 
+/- English proof (translation)
+Rewrite using `[(free_hom_sections R (yoneda.obj Y) ((free R).obj (yoneda.obj Y))).2.2.1]`. Simplify using the standard rewrite rules.
+-/
 theorem freeYoneda_gen {Y U : Scheme.{0}} (x : U ⟶ Y) :
     freeGen R (yoneda.obj Y) U x = Sec.res x (freeGen R (yoneda.obj Y) Y (𝟙 Y)) := by
   rw [(free_hom_sections R (yoneda.obj Y) ((free R).obj (yoneda.obj Y))).2.2.1]
@@ -37,6 +52,13 @@ theorem freeYoneda_gen {Y U : Scheme.{0}} (x : U ⟶ Y) :
 
 variable (R) in
 
+/- English proof (translation)
+Take `⟨hex, hext, -, -⟩` from `free_hom_sections R (yoneda.obj Y) F`. Prove the components needed by the constructor for the conclusion. Introduce `φ ψ e`. Apply `hext` to reduce the goal to its premises. Introduce `U x`.
+
+Rewrite using `[freeYoneda_gen R (x : U ⟶ Y), freeYoneda_secMap_res, freeYoneda_secMap_res]`. Conclude with `congrArg (Sec.res (x : U ⟶ Y)) e`. Introduce `s`. Take `⟨φ, hφ⟩` from `hex (fun U x => Sec.res (x : U ⟶ Y) s) (fun V U g x => by`. Simplify using `only [yoneda_obj_map]`.
+
+Conclude with `freeYoneda_res_res g x s)`. Conclude with `⟨φ, (hφ Y (𝟙 Y)).trans (freeYoneda_res_id s)⟩`.
+-/
 theorem freeYoneda_ev_bijective {Y : Scheme.{0}} (F : Shv R) :
     Function.Bijective fun h : (free R).obj (yoneda.obj Y) ⟶ F => Sec.map h (freeGen R (yoneda.obj Y) Y (𝟙 Y)) := by
   obtain ⟨hex, hext, -, -⟩ := free_hom_sections R (yoneda.obj Y) F
@@ -54,6 +76,9 @@ theorem freeYoneda_ev_bijective {Y : Scheme.{0}} (F : Shv R) :
 
 variable (R) in
 
+/- English proof (translation)
+Rewrite using `[freeYoneda_secMap_comp, (free_hom_sections R (yoneda.obj Y) F).2.2.2, ← freeYoneda_secMap_res, ← freeYoneda_gen R f]`. Use `congr 2`.
+-/
 theorem freeYoneda_ev_pre {Y X : Scheme.{0}} (f : Y ⟶ X) {F : Shv R} (h : (free R).obj (yoneda.obj X) ⟶ F) :
     Sec.map ((free R).map (yoneda.map f) ≫ h) (freeGen R (yoneda.obj Y) Y (𝟙 Y)) =
       Sec.res f (Sec.map h (freeGen R (yoneda.obj X) X (𝟙 X))) := by
@@ -63,6 +88,17 @@ theorem freeYoneda_ev_pre {Y X : Scheme.{0}} (f : Y ⟶ X) {F : Shv R} (h : (fre
 
 end FreeYoneda
 
+/- English proof (translation)
+Introduce `R _ Y₁ Y₂ X f₁ f₂ hb`. Rewrite using `[isIso_iff_coyoneda_map_bijective]`. Introduce `F`. Establish `key : Function.Bijective fun h : (free R).obj (yoneda.obj X) ⟶ F => ((free R).map (yoneda.map f₁) ≫ h, (free R).map (yoneda.map f₂) ≫ h)`. Establish `e12` using `(freeYoneda_ev_bijective R (Y := Y₁) F).prodMap (freeYoneda_ev_bijective R (Y := Y₂) F)`.
+
+Use `(e12.of_comp_iff' _).1 ?_` and prove the remaining obligations. Establish `comm : (Prod.map (fun h : (free R).obj (yoneda.obj Y₁) ⟶ F => Sec.map h (freeGen R (yoneda.obj Y₁) Y₁ (𝟙 Y₁))) (fun h : (free R).obj (yoneda.obj Y₂) ⟶ F => Sec.map h (freeGen R (yoneda.obj Y₂) Y₂ (𝟙 Y₂)))) ∘ (fun h : (free R).obj (yoneda.obj X) ⟶ F => ((free R).map (yoneda.map f₁ …`. Use function extensionality and compare the values at `h`. Simplify using `only [Function.comp_apply, Prod.map_apply]`. Rewrite using `[freeYoneda_ev_pre R f₁ h, freeYoneda_ev_pre R f₂ h]`.
+
+Rewrite using `[comm]`. Conclude with `(hb F).comp (freeYoneda_ev_bijective R F)`. Establish `hβ : Function.Bijective fun g : ((free R).obj (yoneda.obj Y₁) ⊞ (free R).obj (yoneda.obj Y₂)) ⟶ F => (biprod.inl ≫ g, biprod.inr ≫ g)`. Prove the components needed by the constructor for the conclusion. Introduce `g g' e`.
+
+Simplify using `only [Prod.mk.injEq] at e`. Conclude with `biprod.hom_ext' _ _ e.1 e.2`. Introduce and unpack `⟨a, b⟩`. Conclude with `⟨biprod.desc a b, by simp⟩`. Use `(hβ.of_comp_iff' _).1 ?_` and prove the remaining obligations.
+
+Use `key using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `h`. Simplify using the standard rewrite rules.
+-/
 theorem freeYoneda_desc_isIso : ∀ (R : Type) [CommRing R] {Y₁ Y₂ X : Scheme.{0}} (f₁ : Y₁ ⟶ X) (f₂ : Y₂ ⟶ X),
     (∀ F : Shv R, Function.Bijective fun s : Sec F X => (Sec.res f₁ s, Sec.res f₂ s)) →
     IsIso (biprod.desc ((free R).map (yoneda.map f₁)) ((free R).map (yoneda.map f₂))) := by

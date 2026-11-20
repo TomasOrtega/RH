@@ -15,6 +15,19 @@ section SlopeTestRemainingChoices
 
 variable {ι : Type*} [Fintype ι]
 
+/- English proof (translation)
+Use `set f : (ι → ℂ) → ℝ := fun y => (star y ⬝ᵥ (P *ᵥ y)).re with hf`. Establish `hscale : ∀ (r : ℝ) (y : ι → ℂ), f (r • y) = r ^ 2 * f y`. Introduce `r y`. Simplify using `only [hf, star_smul, star_trivial, mulVec_smul, dotProduct_smul, smul_dotProduct, Complex.smul_re]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hunit : ∀ y : ι → ℂ, y ≠ 0 → ‖y‖⁻¹ • y ∈ Metric.sphere (0 : ι → ℂ) 1`. Introduce `y hy`. Rewrite using `[mem_sphere_zero_iff_norm, norm_smul, norm_inv, norm_norm, inv_mul_cancel₀ (norm_ne_zero_iff.mpr hy)]`. Establish `hrecover : ∀ y : ι → ℂ, y ≠ 0 → f y = ‖y‖ ^ 2 * f (‖y‖⁻¹ • y)`. Introduce `y hy`.
+
+Rewrite using `[hscale, ← mul_assoc, ← mul_pow, mul_inv_cancel₀ (norm_ne_zero_iff.mpr hy), one_pow, one_mul]`. Distinguish the cases in `hne : (Metric.sphere (0 : ι → ℂ) 1).Nonempty`. Establish `hcont : Continuous f` using `by simp only [hf]; fun_prop`. Take `⟨y0, hy0, hmin⟩` from `(isCompact_sphere (0 : ι → ℂ) 1).exists_isMinOn hne hcont.continuousOn`. Establish `hy0ne : y0 ≠ 0`.
+
+Introduce and unpack `rfl`. Simplify using `at hy0`. Use `⟨f y0, by simpa [hf] using hP.re_dotProduct_pos hy0ne, fun y => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hy : y = 0`. Substitute `hy` using the available equality.
+
+Simplify using `[hf]`. Express the relevant statement in the definitionally equal form `f y0 * ‖y‖ ^ 2 ≤ f y`. Rewrite using `[hrecover y hy, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_left (hmin (hunit y hy)) (sq_nonneg _)`. Use `⟨1, one_pos, fun y => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hy : y = 0`. Substitute `hy` using the available equality. Simplify using the standard rewrite rules. Conclude with `absurd ⟨_, hunit y hy⟩ hne`.
+-/
 theorem posDef_exists_lower {P : Matrix ι ι ℂ} (hP : P.PosDef) :
     ∃ c : ℝ, 0 < c ∧ ∀ y : ι → ℂ, c * ‖y‖ ^ 2 ≤ (star y ⬝ᵥ (P *ᵥ y)).re := by
   set f : (ι → ℂ) → ℝ := fun y => (star y ⬝ᵥ (P *ᵥ y)).re with hf
@@ -53,6 +66,9 @@ theorem posDef_exists_lower {P : Matrix ι ι ℂ} (hP : P.PosDef) :
 
 omit [Fintype ι] in
 
+/- English proof (translation)
+Rewrite using `[mul_apply]`. Use `(norm_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem norm_mul_apply_le {m κ : Type*} [Fintype κ] (A : Matrix m κ ℂ) (B : Matrix κ ι ℂ)
     (i : m) (j : ι) : ‖(A * B) i j‖ ≤ ∑ k, ‖A i k‖ * ‖B k j‖ := by
   rw [mul_apply]
@@ -67,6 +83,13 @@ variable {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι] [De
 
 omit [IsTotallyComplex E] [Fintype ι] in
 
+/- English proof (translation)
+Establish `hmem : ∀ i, ∃ c : Fin n → E, ∑ a, c a • e a = v i` using `fun i => (Submodule.mem_span_range_iff_exists_fun E).mp (he ▸ Submodule.mem_top)`. Use `choose c hc using hmem`. Use `⟨c, fun w => ?_⟩` and prove the remaining obligations. Use extensionality with `k i`. Establish `h1 : ∑ a, v.repr (e a) k * c i a = v.repr (v i) k`.
+
+Rewrite using `[← hc i, map_sum, Finsupp.finsetSum_apply]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul, mul_comm]`. Simplify using `only [mul_apply, of_apply, vecAt, ← map_mul, ← map_sum, h1, Basis.repr_self, one_apply]`. Distinguish the cases in `hki : k = i`.
+
+Substitute `hki` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hki]`.
+-/
 theorem exists_rightInv (v : Basis ι E W) {n : ℕ} {e : Fin n → W}
     (he : Submodule.span E (Set.range e) = ⊤) :
     ∃ c : ι → Fin n → E, ∀ w : InfinitePlace E,
@@ -96,6 +119,39 @@ variable {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι] [De
 
 omit [NumberField F] [IsTotallyReal F] [IsTotallyComplex E] in
 
+/- English proof (translation)
+Introduce `M n e he C`. Take `⟨c, hc⟩` from `exists_rightInv v he`. Use `choose κ hκ hκle using fun w => posDef_exists_lower (M.posDef w)`. Use `set U : InfinitePlace E → Matrix ι (Fin n) ℂ := fun w => Matrix.of fun k a => vecAt v (e a) w k`. Use `set R : InfinitePlace E → Matrix (Fin n) ι ℂ := fun w => Matrix.of fun a i => w.embedding (c i a)`.
+
+Use `set H := gramAt h v`. Use `set D : InfinitePlace E → ℝ := fun w => 1 + C ^ 2 / κ w`. Use `set r1 : InfinitePlace E → ι → ι → ℝ := fun w _ i => ∑ a, D w * ‖R w a i‖`. Use `set r2 : InfinitePlace E → ι → ι → ℝ := fun w j i => ∑ l, (∑ k, ‖(H w)⁻¹ j k‖ * r1 w l k) * ‖H w l i‖`. Establish `hBx : ∀ r : ι → ι → ℝ, IsCompact {A : Matrix ι ι ℂ | ∀ i j, ‖A i j‖ ≤ r i j}`.
+
+Introduce `r`. Establish `: {A : Matrix ι ι ℂ | ∀ i j, ‖A i j‖ ≤ r i j} = Set.pi Set.univ fun i => Set.pi Set.univ fun j => Metric.closedBall (0 : ℂ) (r i j)`. Use extensionality with `A`. Prove the components needed by the constructor for the conclusion. Introduce `hA i _ j _`.
+
+Simplify using `using hA i j`. Introduce `hA i j`. Simplify using `using hA i (Set.mem_univ _) j (Set.mem_univ _)`. Rewrite using `[this]`. Conclude with `isCompact_univ_pi fun i => isCompact_univ_pi fun j => isCompact_closedBall _ _`.
+
+Use `set K : InfinitePlace E → Set (GL ι ℂ) := fun w => Units.embedProduct (Matrix ι ι ℂ) ⁻¹' ({A | ∀ i j, ‖A i j‖ ≤ r2 w i j} ×ˢ (MulOpposite.unop ⁻¹' {A : Matrix ι ι ℂ | ∀ i j, ‖A i j‖ ≤ r1 w i j}))`. Establish `hK : ∀ w, IsCompact (K w)` using `fun w => Units.isClosedEmbedding_embedProduct.isCompact_preimage ((hBx _).prod (MulOpposite.opHomeomorph.isCompact_preimage.mp (hBx _)))`. Use `set S := {g : archUnitary h v | ∀ a, M.len (invApply g (vecAt v (e a))) ≤ C}`. Establish `hclosed : IsClosed S`. Simplify using `only [S, Set.ofPred_forall]`.
+
+Use `isClosed_iInter fun a => isClosed_le ?_ continuous_const` and prove the remaining obligations. Establish `hw : ∀ w, Continuous fun x : archUnitary h v => (((x⁻¹ : archUnitary h v) : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ)` using `fun w => Units.continuous_val.comp ((continuous_apply w).comp (continuous_subtype_val.comp continuous_inv))`. Establish `hm : ∀ w, Continuous fun x : archUnitary h v => invApply x (vecAt v (e a)) w` using `fun w => (hw w).matrix_mulVec continuous_const`. Conclude with `Real.continuous_sqrt.comp (continuous_finsetSum _ fun w _ => Complex.continuous_re.comp ((continuous_star.comp (hm w)).dotProduct (continuous_const.matrix_mulVec (hm w))))`. Rewrite using `[Subtype.isCompact_iff]`.
+
+Use `(isCompact_univ_pi hK).of_isClosed_subset ((isClosed_archUnitary h v).isClosedEmbedding_subtypeVal.isClosedMap _ hclosed) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, rfl⟩ w -`. Use `set Gi : Matrix ι ι ℂ := (((g⁻¹ : archUnitary h v) : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ)`. Use `set G : Matrix ι ι ℂ := (((g : archUnitary h v) : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ)`. Establish `hy : ∀ a, ‖invApply g (vecAt v (e a)) w‖ ≤ D w`.
+
+Introduce `a`. Use `set y := invApply g (vecAt v (e a))`. Establish `hnn : ∀ w', 0 ≤ (star (y w') ⬝ᵥ (M.P w' *ᵥ y w')).re` using `fun w' => (Complex.nonneg_iff.mp ((M.posDef w').posSemidef.dotProduct_mulVec_nonneg (y w'))).1`. Establish `h0` using `Finset.sum_nonneg fun w' (_ : w' ∈ Finset.univ) => hnn w'`. Establish `hsum : ∑ w', (star (y w') ⬝ᵥ (M.P w' *ᵥ y w')).re ≤ C ^ 2`.
+
+Rewrite using `[← Real.sq_sqrt h0]`. Conclude with `pow_le_pow_left₀ (Real.sqrt_nonneg _) (hg a) 2`. Establish `hterm` using `(Finset.single_le_sum (fun w' _ => hnn w') (Finset.mem_univ w)).trans hsum`. Establish `hk` using `hκle w (y w)`. Establish `hq : ‖y w‖ ^ 2 ≤ C ^ 2 / κ w`.
+
+Rewrite using `[le_div_iff₀ (hκ w)]`. Use the polynomial consequences of the given equalities and inequalities. Simplify using `only [D]`. Use polynomial arithmetic with `[norm_nonneg (y w)]`. Establish `hGiU : ∀ j a, (Gi * U w) j a = invApply g (vecAt v (e a)) w j`.
+
+Introduce `j a`. Simplify using `[Gi, U, invApply, mul_apply, mulVec, dotProduct]`. Establish `hGi_eq : Gi = Gi * U w * R w`. Rewrite using `[Matrix.mul_assoc, hc w, Matrix.mul_one]`. Establish `hGi_le : ∀ j i, ‖Gi j i‖ ≤ r1 w j i`.
+
+Introduce `j i`. Rewrite using `[hGi_eq]`. Use `(norm_mul_apply_le _ _ j i).trans (Finset.sum_le_sum fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[hGiU]`. Conclude with `mul_le_mul_of_nonneg_right ((norm_le_pi_norm _ j).trans (hy a)) (norm_nonneg _)`.
+
+Establish `hHdet : IsUnit (H w).det`. Simplify using `only [H, gramAt]`. Rewrite using `[show ((gram h.toSesq v).map w.embedding).det = w.embedding (gram h.toSesq v).det from (RingHom.map_det w.embedding _).symm]`. Conclude with `(isUnit_det_gram h v).map w.embedding`. Establish `hinv : Giᴴ * H w * Gi = H w` using `(mem_archUnitary.mp (g⁻¹).2) w`.
+
+Establish `hGiG : Gi * G = 1`. Simplify using `only [Gi, G, Subgroup.coe_inv, Pi.inv_apply]`. Conclude with `Units.inv_mul _`. Establish `hG_eq : G = (H w)⁻¹ * Giᴴ * H w`. Establish `h1 : Giᴴ * H w = H w * G`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, h1, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hHdet, Matrix.one_mul]`. Establish `hG_le : ∀ j i, ‖G j i‖ ≤ r2 w j i`. Introduce `j i`. Rewrite using `[hG_eq]`.
+
+Use `(norm_mul_apply_le _ _ j i).trans (Finset.sum_le_sum fun l _ => mul_le_mul_of_nonneg_right ?_ (norm_nonneg _))` and prove the remaining obligations. Use `(norm_mul_apply_le _ _ j l).trans (Finset.sum_le_sum fun k _ => mul_le_mul_of_nonneg_left ?_ (norm_nonneg _))` and prove the remaining obligations. Rewrite using `[conjTranspose_apply, norm_star]`. Conclude with `hGi_le l k`. Conclude with `⟨hG_le, hGi_le⟩`.
+-/
 theorem BoundedInverseCompact.proof (h : HermitianForm F E W) (v : Basis ι E W) :
     BoundedInverseCompact.Statement h v := by
   intro M n e he C

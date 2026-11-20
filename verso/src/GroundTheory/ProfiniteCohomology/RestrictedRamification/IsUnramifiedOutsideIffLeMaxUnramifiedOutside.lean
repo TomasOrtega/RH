@@ -13,15 +13,24 @@ section Basic
 
 variable (S : Set (HeightOneSpectrum (𝓞 F)))
 
+/- English proof (translation)
+The claim follows from `le_iSup_of_le E (le_iSup_of_le ‹_› (le_iSup_of_le hE le_rfl))`.
+-/
 theorem le_maxUnramifiedOutside {E : IntermediateField F Ω} [FiniteDimensional F E]
     (hE : IsUnramifiedOutside S E) : E ≤ maxUnramifiedOutside F Ω S :=
   le_iSup_of_le E (le_iSup_of_le ‹_› (le_iSup_of_le hE le_rfl))
 
+/- English proof (translation)
+The claim follows from `iSup_mono fun _ => iSup_mono fun _ => iSup_le fun hE => le_iSup_of_le (fun v hv => hE v fun hs => hv (h hs)) le_rfl`.
+-/
 theorem maxUnramifiedOutside_mono {S T : Set (HeightOneSpectrum (𝓞 F))} (h : S ⊆ T) :
     maxUnramifiedOutside F Ω S ≤ maxUnramifiedOutside F Ω T :=
   iSup_mono fun _ => iSup_mono fun _ => iSup_le fun hE =>
     le_iSup_of_le (fun v hv => hE v fun hs => hv (h hs)) le_rfl
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Conclude with `iSup_le fun E => iSup_le fun hf => iSup_le fun hu => le_iSup_of_le ⟨E, hf, hu⟩ le_rfl`. Conclude with `iSup_le fun E => have := E.2.1`. Use `le_maxUnramifiedOutside S E.2.2`.
+-/
 theorem maxUnramifiedOutside_eq_iSup :
     maxUnramifiedOutside F Ω S =
       ⨆ E : {E : IntermediateField F Ω // FiniteDimensional F E ∧ IsUnramifiedOutside S E}, E.1 := by
@@ -31,6 +40,13 @@ theorem maxUnramifiedOutside_eq_iSup :
 
 variable [NumberField F] [IsGalois F Ω]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hne : Nonempty {E : IntermediateField F Ω // FiniteDimensional F E ∧ IsUnramifiedOutside S E}` using `⟨⟨⊥, inferInstance, isUnramifiedOutside_bot S⟩⟩`. Establish `hdir : Directed (· ≤ ·) (fun E : {E : IntermediateField F Ω // FiniteDimensional F E ∧ IsUnramifiedOutside S E} => E.1)`. Introduce `E₁ E₂`.
+
+Use `E₁.2.1` as an intermediate fact. Use `E₂.2.1` as an intermediate fact. Conclude with `⟨⟨E₁.1 ⊔ E₂.1, inferInstance, E₁.2.2.sup E₂.2.2⟩, le_sup_left, le_sup_right⟩`. Rewrite `hx` using `[maxUnramifiedOutside_eq_iSup, ← SetLike.mem_coe, IntermediateField.coe_iSup_of_directed hdir, Set.mem_iUnion]`. Take `⟨E, hE⟩` from `hx`.
+
+Conclude with `⟨E.1, E.2.1, E.2.2, hE⟩`. Introduce and unpack `⟨E, hf, hu, hx⟩`. Conclude with `le_maxUnramifiedOutside S hu hx`.
+-/
 theorem mem_maxUnramifiedOutside_iff {x : Ω} :
     x ∈ maxUnramifiedOutside F Ω S ↔
       ∃ E : IntermediateField F Ω, FiniteDimensional F E ∧ IsUnramifiedOutside S E ∧ x ∈ E := by
@@ -51,6 +67,11 @@ theorem mem_maxUnramifiedOutside_iff {x : Ω} :
   · rintro ⟨E, hf, hu, hx⟩
     exact le_maxUnramifiedOutside S hu hx
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨⊥, inferInstance, isUnramifiedOutside_bot S, by simp⟩`. Consider the case `insert a s _ ih`. Take `⟨E₁, hf₁, hu₁, ha⟩` from `(mem_maxUnramifiedOutside_iff S).1 (hs a (Finset.mem_insert_self a s))`. Take `⟨E₂, hf₂, hu₂, hs₂⟩` from `ih fun x hx => hs x (Finset.mem_insert_of_mem hx)`.
+
+Use `⟨E₁ ⊔ E₂, inferInstance, hu₁.sup hu₂, fun x hx => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hx with rfl | hx` into its components or cases. Conclude with `le_sup_left (α := IntermediateField F Ω) ha`. Conclude with `le_sup_right (α := IntermediateField F Ω) (hs₂ x hx)`.
+-/
 theorem exists_subset_of_subset_maxUnramifiedOutside (s : Finset Ω)
     (hs : ∀ x ∈ s, x ∈ maxUnramifiedOutside F Ω S) :
     ∃ E : IntermediateField F Ω, FiniteDimensional F E ∧ IsUnramifiedOutside S E ∧
@@ -67,6 +88,13 @@ theorem exists_subset_of_subset_maxUnramifiedOutside (s : Finset Ω)
     · exact le_sup_left (α := IntermediateField F Ω) ha
     · exact le_sup_right (α := IntermediateField F Ω) (hs₂ x hx)
 
+/- English proof (translation)
+Use `⟨le_maxUnramifiedOutside S, fun h => ?_⟩` and prove the remaining obligations. Set `b` to `Module.finBasis F E`. Take `⟨E', hf, hu, hE'⟩` from `exists_subset_of_subset_maxUnramifiedOutside S (Finset.univ.image fun i => (b i : Ω)) fun x hx => by`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hx`. Conclude with `h (b i).2`.
+
+Establish `hle : E ≤ E'`. Introduce `x hx`. Establish `hx' : x = ∑ i, b.repr ⟨x, hx⟩ i • (b i : Ω)`. Use `congrArg E.val (b.sum_repr ⟨x, hx⟩)` as an intermediate fact. Rewrite `this` using `[map_sum]`.
+
+Simplify using `only [map_smul] at this`. Conclude with `this.symm`. Rewrite using `[hx']`. Conclude with `sum_mem fun i _ => E'.smul_mem (hE' _ (Finset.mem_image_of_mem _ (Finset.mem_univ i)))`. Conclude with `fun v hv => isUnramifiedIn_of_le hle v (hu v hv)`.
+-/
 theorem isUnramifiedOutside_iff_le_maxUnramifiedOutside {E : IntermediateField F Ω}
     [FiniteDimensional F E] : IsUnramifiedOutside S E ↔ E ≤ maxUnramifiedOutside F Ω S := by
   refine ⟨le_maxUnramifiedOutside S, fun h => ?_⟩
@@ -98,6 +126,9 @@ instance isGalois_maxUnramifiedOutside : IsGalois F (maxUnramifiedOutside F Ω S
     exact le_maxUnramifiedOutside S (hu.map τ) ((IntermediateField.mem_map _).2 ⟨y, hyE, rfl⟩)
   exact ⟨⟩
 
+/- English proof (translation)
+The claim follows from `galois_isProfinite F (maxUnramifiedOutside F Ω S)`.
+-/
 theorem galUnramifiedOutside_isProfinite :
     CompactSpace (galUnramifiedOutside F Ω S) ∧ T2Space (galUnramifiedOutside F Ω S) ∧
       TotallyDisconnectedSpace (galUnramifiedOutside F Ω S) :=
@@ -109,6 +140,19 @@ section Relative
 
 variable [NumberField F] (S : Set (HeightOneSpectrum (𝓞 F)))
 
+/- English proof (translation)
+Use `NumberField.of_module_finite F L` as an intermediate fact. Establish `: FiniteDimensional F M` using `FiniteDimensional.trans F L M`. Use `NumberField.of_module_finite L M` as an intermediate fact. Express the relevant statement in the definitionally equal form `(∀ v ∉ S, Algebra.IsUnramifiedIn (𝓞 M) v.asIdeal) ↔ _`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hM w hw Q hQ hQw`. Establish `hv0 : w.asIdeal.under (𝓞 F) ≠ ⊥` using `Ideal.under_ne_bot (𝓞 F) w.ne_bot`. Set `v : HeightOneSpectrum (𝓞 F)` to `⟨w.asIdeal.under (𝓞 F), inferInstance, hv0⟩`. Establish `hwv : w.asIdeal.LiesOver v.asIdeal` using `⟨rfl⟩`. Establish `hv : v ∉ S` using `fun hvS => hw ⟨v, hvS, hwv⟩`.
+
+Establish `: Q.LiesOver v.asIdeal` using `Ideal.LiesOver.trans Q w.asIdeal v.asIdeal`. Conclude with `((isUnramifiedAt_tower_iff (F := F) (L := L) Q).1 (hM v hv Q hQ this)).2`. Introduce `hM v hv Q hQ hQv`. Establish `hP0 : Q.under (𝓞 L) ≠ ⊥`. Establish `: (Q.under (𝓞 L)).LiesOver v.asIdeal` using `⟨by rw [Ideal.under_under]; exact hQv.over⟩`.
+
+Conclude with `Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot (Q.under (𝓞 L))`. Set `w : HeightOneSpectrum (𝓞 L)` to `⟨Q.under (𝓞 L), inferInstance, hP0⟩`. Establish `hwv : w.asIdeal.LiesOver v.asIdeal` using `⟨by`. Express the relevant statement in the definitionally equal form `v.asIdeal = (Q.under (𝓞 L)).under (𝓞 F)`. Rewrite using `[Ideal.under_under]`.
+
+Conclude with `hQv.over⟩`. Establish `hw : w ∉ placesOver S`. Introduce and unpack `⟨u, huS, hwu⟩`. Establish `huv : u = v` using `HeightOneSpectrum.ext (hwu.over.trans hwv.over.symm)`. Conclude with `hv (huv ▸ huS)`.
+
+Establish `h1` using `hM w hw Q hQ ⟨rfl⟩`. Establish `h2` using `hL v hv (Q.under (𝓞 L)) inferInstance hwv`. Conclude with `(isUnramifiedAt_tower_iff (F := F) (L := L) Q).2 ⟨h2, h1⟩`.
+-/
 theorem isUnramifiedOutside_restrictScalars_iff {L : IntermediateField F Ω} [FiniteDimensional F L]
     (hL : IsUnramifiedOutside S L) (M : IntermediateField L Ω) [FiniteDimensional L M] :
     IsUnramifiedOutside S (M.restrictScalars F) ↔ IsUnramifiedOutside (placesOver S) M := by
@@ -143,6 +187,15 @@ theorem isUnramifiedOutside_restrictScalars_iff {L : IntermediateField F Ω} [Fi
 
 variable [IsGalois F Ω]
 
+/- English proof (translation)
+Use `NumberField.of_module_finite F L` as an intermediate fact. Establish `hLu : IsUnramifiedOutside S L` using `(isUnramifiedOutside_iff_le_maxUnramifiedOutside S).2 hL`. Use extensionality with `x`. Rewrite using `[IntermediateField.mem_restrictScalars]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hx`. Take `⟨M, hf, hu, hxM⟩` from `(mem_maxUnramifiedOutside_iff (placesOver S)).1 hx`. Establish `: FiniteDimensional F (M.restrictScalars F)` using `FiniteDimensional.trans F L M`. Conclude with `le_maxUnramifiedOutside S ((isUnramifiedOutside_restrictScalars_iff S hLu M).2 hu) hxM`. Introduce `hx`.
+
+Take `⟨E, hf, hu, hxE⟩` from `(mem_maxUnramifiedOutside_iff S).1 hx`. Set `M : IntermediateField L Ω` to `IntermediateField.extendScalars (le_sup_left : L ≤ L ⊔ E)`. Establish `: FiniteDimensional F M` using `(inferInstance : FiniteDimensional F ↥(L ⊔ E))`. Establish `: FiniteDimensional L M` using `Module.Finite.of_restrictScalars_finite F L M`. Establish `hMu : IsUnramifiedOutside S (M.restrictScalars F)` using `hLu.sup hu`.
+
+Conclude with `le_maxUnramifiedOutside (placesOver S) ((isUnramifiedOutside_restrictScalars_iff S hLu M).1 hMu) (le_sup_right (α := IntermediateField F Ω) hxE)`.
+-/
 theorem restrictScalars_maxUnramifiedOutside {L : IntermediateField F Ω} [FiniteDimensional F L]
     (hL : L ≤ maxUnramifiedOutside F Ω S) :
     (maxUnramifiedOutside L Ω (placesOver S)).restrictScalars F = maxUnramifiedOutside F Ω S := by

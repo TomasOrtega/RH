@@ -10,6 +10,25 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.CaCpl
 open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa UpperTheory.V.Pa.Core
 open scoped TensorProduct
 
+/- English proof (translation)
+Use `set I : Ideal A := Ideal.span (Set.range y) with hIdef`. Establish `hI : Ideal.span (Set.range fun i => algebraMap A B (y i)) = I.map (algebraMap A B)`. Rewrite using `[hIdef, Ideal.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[hI]`.
+
+Use `⟨(TensorProduct.AlgebraTensorModule.tensorQuotientEquiv (R := A) B A B (I • ⊤ : Submodule A M) ≪≫ₗ Submodule.quotEquivOfEq _ _ ?_).symm⟩` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, rfl⟩`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul b m`. Take `⟨m, hm⟩` from `m`. Simplify using `only [TensorProduct.AlgebraTensorModule.lTensor_tmul, LinearMap.coe_restrictScalars, Submodule.coe_subtype]`. Use `Submodule.smul_induction_on hm ?_ ?_` and prove the remaining obligations. Introduce `a ha m' _`.
+
+Rewrite using `[← TensorProduct.smul_tmul, algebra_compatible_smul B a, ← TensorProduct.smul_tmul']`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_map_of_mem _ ha) Submodule.mem_top`. Introduce `u v hu hv`. Rewrite using `[TensorProduct.tmul_add]`. Conclude with `Submodule.add_mem _ hu hv`.
+
+Consider the case `add x z hx hz`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hx hz`. Rewrite using `[Submodule.smul_le]`. Introduce `r hr x hx`.
+
+Use `clear hx`. Proceed by induction on `hr using Submodule.span_induction generalizing x with`. Consider the case `mem r hr`. Take `⟨a, ha, rfl⟩` from `hr`. Proceed by induction on `x using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul b m`. Use `⟨b ⊗ₜ[A] (⟨a • m, Submodule.smul_mem_smul ha Submodule.mem_top⟩ : (I • ⊤ : Submodule A M)), ?_⟩` and prove the remaining obligations. Simplify using `only [TensorProduct.AlgebraTensorModule.lTensor_tmul, LinearMap.coe_restrictScalars, Submodule.coe_subtype]`. Rewrite using `[← TensorProduct.smul_tmul, algebra_compatible_smul B a, TensorProduct.smul_tmul']`.
+
+Consider the case `add u v hu hv`. Rewrite using `[smul_add]`. Conclude with `Submodule.add_mem _ hu hv`. Consider the case `zero => simp`. Consider the case `add r s _ _ hr hs`.
+
+Rewrite using `[add_smul]`. Conclude with `Submodule.add_mem _ (hr x) (hs x)`. Consider the case `smul c r _ hr`. Rewrite using `[smul_eq_mul, mul_smul]`. Conclude with `Submodule.smul_mem _ c (hr x)`.
+-/
 private theorem pmDim_quot {A B σ M : Type} [CommRing A] [CommRing B] [Algebra A B] [AddCommGroup M]
     [Module A M] (y : σ → A) :
     Nonempty (((B ⊗[A] M) ⧸ (Ideal.span (Set.range fun i => algebraMap A B (y i)) • ⊤ :
@@ -64,6 +83,15 @@ private theorem pmDim_quot {A B σ M : Type} [CommRing A] [CommRing B] [Algebra 
       rw [smul_eq_mul, mul_smul]
       exact Submodule.smul_mem _ c (hr x)
 
+/- English proof (translation)
+Introduce `Z hZ`. Break down `subsingleton_or_nontrivial M with hM | hM` into its components or cases. Establish `htop : Module.annihilator B M = ⊤` using `Module.annihilator_eq_top_iff.mpr hM`. Rewrite `hZ` using `[htop]`. Conclude with `absurd (top_le_iff.mp hZ.1.2) hZ.1.1.ne_top`.
+
+Use `letI : Module L M := Module.compHom M (algebraMap L B) haveI : IsScalarTower L B M := ⟨fun a b m => by show (a • b) • m = algebraMap L B a • (b • m)`. Rewrite using `[Algebra.smul_def, mul_smul]⟩`. Set `eσ : Fin (Fintype.card σ) ≃ σ` to `(Fintype.equivFin σ).symm`. Establish `hq'` using `hq.comp_equiv eσ`. Establish `hspan : Ideal.span (Set.range (y ∘ eσ)) = Ideal.span (Set.range y)`.
+
+Rewrite using `[Set.range_comp, EquivLike.range_eq_univ, Set.image_univ]`. Set `e' : (M ⧸ (Ideal.span (Set.range (y ∘ eσ)) • ⊤ : Submodule B M)) ≃ₗ[L] N` to `((Submodule.quotEquivOfEq _ _ (by rw [hspan])) ≪≫ₗ e).restrictScalars L`. Establish `hfree : Module.Free L (M ⧸ (Ideal.span (Set.range (y ∘ eσ)) • ⊤ : Submodule B M))` using `Module.Free.of_equiv e'.symm`. Establish `hfin : Module.Finite L (M ⧸ (Ideal.span (Set.range (y ∘ eσ)) • ⊤ : Submodule B M))` using `Module.Finite.equiv e'.symm`. Establish `h` using `(UpperTheory.V.AlgebraTools.patched_depth_dim L B M (Fintype.card σ) d (y ∘ eσ) hd (fun i => hy _) hq' hfree hfin).2 Z hZ`.
+
+Rewrite using `[h, Nat.add_comm]`.
+-/
 private theorem pmDim_step {L B σ M N : Type} [CommRing L] [IsRegularLocalRing L] [CommRing B]
     [IsLocalRing B] [IsNoetherianRing B] [Algebra L B] [IsLocalHom (algebraMap L B)] [Fintype σ]
     [AddCommGroup M] [Module B M] [Module.Finite B M] [AddCommGroup N] [Module B N] [Module L N]
@@ -96,6 +124,23 @@ private theorem pmDim_step {L B σ M N : Type} [CommRing L] [IsRegularLocalRing 
       (fun i => hy _) hq' hfree hfin).2 Z hZ
     rw [h, Nat.add_comm]
 
+/- English proof (translation)
+Introduce `Λ R σ _ _ _ _ _ c y f ii X _ _ _ _ _ P q d La B _ _ _ _ _ _ hc hq hf hy hLa hreg hdim hB`. Establish `hYP` using `UpperTheory.V.Pa.Core.yPrime R σ y f P.BB P.cpl q hq hf hy`. Use `haveI : IsNoetherianRing P.BB := P.cpl.noeth`. Use `haveI : IsNoetherianRing B := hB.noeth`. Use `haveI : Module.Finite P.BB P.MM := P.fin`.
+
+Use `haveI : IsAdicComplete (maximalIdeal B) B := hB.complete`. Use `letI : Algebra R B := ((algebraMap P.BB B).comp (algebraMap R P.BB)).toAlgebra`. Use `haveI : IsScalarTower R P.BB B := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Establish `hRB : IsCplAt R q B` using `hYP.2.2.2 B hB`. Use `haveI : Module.Flat P.BB B := UpperTheory.V.AlgebraTools.IsCplAt.flat P.BB _ B hB`.
+
+Set `φ : Λ →+* B` to `(algebraMap R B).comp c`. Establish `hφ : Ideal.comap φ (maximalIdeal B) = q.comap c` using `by show Ideal.comap ((algebraMap P.BB B).comp ((algebraMap R P.BB).comp c)) (maximalIdeal B) = q.comap c`. Rewrite using `[← Ideal.comap_comap, ← Ideal.comap_comap, hB.comap_eq, hYP.2.1]`. Take `⟨ψ, hψ, -⟩` from `UpperTheory.V.AlgebraTools.IsCplAt.existsUnique_lift Λ (q.comap c) La hLa B φ hφ`. Use `letI : Algebra La B := ψ.toAlgebra`.
+
+Use `haveI : IsLocalHom (algebraMap La B) := by show IsLocalHom ψ`. Use `((IsLocalRing.local_hom_TFAE ψ).out 0 3).mpr ?_` and prove the remaining obligations. Establish `hm : maximalIdeal La = (q.comap c).map (algebraMap Λ La)`. Simplify using `using (UpperTheory.V.AlgebraTools.IsCplAt.map_pow_eq Λ (q.comap c) La hLa 1).symm`. Rewrite using `[hm, Ideal.map_le_iff_le_comap, Ideal.comap_comap, hψ, hφ]`.
+
+Use `letI : Algebra Λ R := c.toAlgebra`. Use `letI : Algebra Λ B := φ.toAlgebra`. Use `haveI : IsScalarTower Λ R B := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Use `haveI : IsScalarTower Λ La B := IsScalarTower.of_algebraMap_eq (fun x => (RingHom.congr_fun hψ x).symm)`. Use `haveI : IsScalarTower Λ R X := ⟨fun a r x => by show (c a * r) • x = a • (r • x)`.
+
+Rewrite using `[mul_smul, hc]⟩`. Take `⟨hfin, hfree⟩` from `UpperTheory.V.AlgebraTools.IsCplAt.finite_free_baseChange Λ R (q.comap c) q La B X hLa hRB rfl`. Use `haveI := hfin`. Use `haveI := hfree`. Set `y' : σ → B` to `fun i => algebraMap P.BB B (algebraMap R P.BB (y i))`.
+
+Take `⟨e1⟩` from `pmDim_quot (A := P.BB) (B := B) (M := P.MM) (fun a => algebraMap R P.BB (y a))`. Set `e : ((B ⊗[P.BB] P.MM) ⧸ (Ideal.span (Set.range y') • ⊤ : Submodule B (B ⊗[P.BB] P.MM))) ≃ₗ[B] B ⊗[R] X` to `e1 ≪≫ₗ TensorProduct.AlgebraTensorModule.congr (LinearEquiv.refl B B) P.fib ≪≫ₗ TensorProduct.AlgebraTensorModule.cancelBaseChange R P.BB B B X`. Establish `hy' : ∀ i, y' i ∈ maximalIdeal B`. Introduce `i`. Establish `h : algebraMap R P.BB (y i) ∈ Ideal.comap (algebraMap P.BB B) (maximalIdeal B)`.
+
+Rewrite using `[hB.comap_eq]`. Conclude with `Ideal.mem_map_of_mem _ (hy i)`. Conclude with `h`. Establish `hqr : GlobalTheory.IsQuasiRegularSeq (B ⊗[P.BB] P.MM) y'` using `P.qr.baseChange B`. Conclude with `pmDim_step (L := La) (B := B) (M := B ⊗[P.BB] P.MM) (N := B ⊗[R] X) d y' hdim hy' hqr e`.
+-/
 theorem UpperTheory.V.Pa.Core.pmDim :
     ∀ (Λ R σ : Type) [CommRing Λ] [IsNoetherianRing Λ] [CommRing R] [IsNoetherianRing R] [Fintype σ] (c : Λ →+* R) (y : σ → R) (f : R) (ii : Ideal R) (X : Type) [AddCommGroup X] [Module R X] [Module Λ X] [Module.Free Λ X] [Module.Finite Λ X] (P : PMod y f ii X) (q : Ideal R) (d : ℕ) (La B : Type) [CommRing La] [IsLocalRing La] [Algebra Λ La] [CommRing B] [IsLocalRing B] [Algebra P.BB B], (∀ (a : Λ) (x : X), a • x = c a • x) → q.IsPrime → f ∉ q → (∀ a, y a ∈ q) → IsCplAt Λ (q.comap c) La → IsRegularLocalRing La → ringKrullDim La = d → IsCplAt P.BB (q.map (algebraMap R P.BB)) B → ∀ Z ∈ (Module.annihilator B (B ⊗[P.BB] P.MM)).minimalPrimes, ringKrullDim (B ⧸ Z) = ((d + Fintype.card σ : ℕ) : WithBot ℕ∞) := by
   intro Λ R σ _ _ _ _ _ c y f ii X _ _ _ _ _ P q d La B _ _ _ _ _ _ hc hq hf hy hLa hreg hdim hB

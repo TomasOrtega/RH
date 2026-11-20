@@ -14,6 +14,11 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {ε : Fin n → Bool}
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
+/- English proof (translation)
+Introduce `g₀ hg₀`. Take `⟨U, F, hU, hgU, hF, hfF⟩` from `hv g₀ hg₀`. Use `⟨U, fun g => fderiv ℝ F g (g * X), hU, hgU, ?_, ?_⟩` and prove the remaining obligations. Establish `h2 : ContDiffOn ℝ ∞ (fun g : Matrix (Fin n) (Fin n) ℂ => g * X) U` using `(LinearMap.toContinuousLinearMap (LinearMap.mulRight ℝ X)).contDiff.contDiffOn`. Conclude with `((contDiffOn_infty_iff_fderiv_of_isOpen hU).1 hF).2.clm_apply h2`.
+
+Introduce `g hg hgJ dsimp only`. Rewrite using `[smBr_orbit hσ hX hv hgJ]`. Conclude with `smBr_rdExt _ F U g X hU hg hgJ hF hfF hX`.
+-/
 theorem IsSmoothVecU.dS (hσ : IsURepOn (UJset ε) σ) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) {v : H}
     (hv : IsSmoothVecU ε σ v) : IsSmoothVecU ε σ (dS σ X v) := by
   intro g₀ hg₀

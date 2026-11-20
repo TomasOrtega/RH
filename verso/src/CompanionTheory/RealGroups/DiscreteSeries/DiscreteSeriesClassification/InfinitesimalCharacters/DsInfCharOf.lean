@@ -41,6 +41,17 @@ def DSIff : Prop :=
 def CoefSmooth : Prop :=
   ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (v : GlobalTheory.SmoothVecMod.smoothVec ε σ) (w : H), Formalism.REAL.SmoothOnG ε (fun g => ⟪w, σ g (v : H)⟫_ℂ)
 
+/- English proof (translation)
+Introduce `n ε lam H _ _ σ hlam hds v w hv _`. Take `⟨hvs, hvs'⟩` from `hS n ε lam H σ hlam hds v hv`. Establish `hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ` using `hds.2.2.1`. Set `sv : GlobalTheory.SmoothVecMod.smoothVec ε σ` to `⟨v, hvs⟩`. Use `⟨hF n ε H σ sv w, fun m g hg => ?_⟩` and prove the remaining obligations.
+
+Establish `hgelf : GlobalTheory.Dec.gelf ε m (fun g => ⟪w, σ g v⟫_ℂ) g = ⟪w, σ g ((Formalism.REAL.etr (fun a b => GlobalTheory.SmoothVecMod.unitAct hσ a b) (m + 1) sv : GlobalTheory.SmoothVecMod.smoothVec ε σ) : H)⟫_ℂ`. Simplify using `only [GlobalTheory.Dec.gelf]`. Rewrite using `[← hY, LinearMap.sum_apply, Submodule.coe_sum, map_sum, inner_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => hW n ε H σ hσ sv w _ g hg`. Rewrite using `[hgelf]`.
+
+Break down `n with _ | k` into its components or cases. Simplify using `[Formalism.REAL.etr, GlobalTheory.Dec.gelfVal]`. Establish `hφ : (fun a b => GlobalTheory.CapelliCoef.freeAct hσ (PI.DSInfCharCap.Egl (k + 1) a b)) = fun a b => GlobalTheory.SmoothVecMod.unitAct hσ a b`. Use function extensionality and compare the values at `a b`. Simplify using `[GlobalTheory.CapelliCoef.freeAct, PI.DSInfCharCap.Egl]`.
+
+Establish `hq : ∀ Y : ℂ, Formalism.REAL.qdet (fun a b => GlobalTheory.SmoothVecMod.unitAct hσ a b) (Y + (((k + 1 : ℕ) : ℂ) - 1) / 2) sv = Formalism.QuantumDeterminants.capP (fun s => (lam s : ℂ)) Y • sv`. Introduce `Y`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h1` using `hcap (k + 1) ε lam H σ hlam (hD _ ε lam H σ hds) v hvs' Y`. Establish `h2` using `(GlobalTheory.CapelliCoef.actU_eq hσ (Formalism.REAL.qdet (PI.DSInfCharCap.Egl (k + 1)) (Y + (((k + 1 : ℕ) : ℂ) - 1) / 2)) sv).symm.trans h1`.
+
+Rewrite `h2` using `[(hM _ _ (GlobalTheory.CapelliCoef.freeAct hσ) _ _ _ 0).1, hφ]`. Simplify using `using h2`. Rewrite using `[hC _ k _ _ sv (hG _ ε H σ hσ) hq (m + 1)]`. Simplify using `[sv]`.
+-/
 theorem dsInfChar_of (hC : CapToGelf) (hG : GlRelUnit) (hM : MapQdet) (hW : CoefWord) (hY : CycEtr)
     (hS : SmoothKFin) (hD : DSIff) (hF : CoefSmooth) (hcap : PI.DSInfCharCap.DSInfCharCap) :
     GlobalTheory.Dec.DSInfChar := by

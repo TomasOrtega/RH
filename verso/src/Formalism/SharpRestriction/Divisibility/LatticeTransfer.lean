@@ -325,6 +325,17 @@ def ThreeIdentitiesOnModel : Prop :=
       (XD.shv S κ).arMix Sx R p (dCh D.what₂.Tau (XD.shv S κ).N k * toR G) =
         Real.log p * ∑ la, XD.wtP p la * vCh D XD T S κ p la (z la) k G)
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `Sx R p _ z τ0 τ' hτ i i' hi G hG`. Take `⟨z0, h1, -, -⟩` from `h p`. Rewrite using `[h1 Sx R τ0 τ' hτ i i' hi G hG]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl (fun la _ => ?_)` and prove the remaining obligations. Rewrite using `[(ht p la (z0 la) (z la)).1 τ0 (τ' la) (hτ la) (i la) G hG]`. Both sides reduce to the same expression. Introduce `Sx R p _ z τ0 τ' hτ i i' hi G hG`. Take `⟨z0, -, h2, -⟩` from `h p`.
+
+Rewrite using `[h2 Sx R τ0 τ' hτ i i' hi G hG]`. Use `congr 1`. Use `Finset.sum_congr rfl (fun la _ => ?_)` and prove the remaining obligations. Rewrite using `[(ht p la (z0 la) (z la)).2.1 τ0 (τ' la) (hτ la) (i la) G hG]`. Both sides reduce to the same expression.
+
+Introduce `Sx R p _ z k m hk hm G hG`. Take `⟨z0, -, -, h3⟩` from `h p`. Rewrite using `[h3 Sx R k m hk hm G hG]`. Use `congr 1`. Use `Finset.sum_congr rfl (fun la _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[(ht p la (z0 la) (z la)).2.2 k m hk hm G hG]`. Both sides reduce to the same expression.
+-/
 theorem three_identities_of_model_independence (h : ThreeIdentitiesOnModel D XD T S κ) (ht : ModInd D XD T S κ) : adm6 D XD T S κ := by
   refine ⟨?_, ?_, ?_⟩
   · intro Sx R p _ z τ0 τ' hτ i i' hi G hG
@@ -349,6 +360,11 @@ theorem three_identities_of_model_independence (h : ThreeIdentitiesOnModel D XD 
     rw [(ht p la (z0 la) (z la)).2.2 k m hk hm G hG]
     rfl
 
+/- English proof (translation)
+Introduce `p _`. Use `⟨fun la => XD.htMdl S κ p la, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `Sx R τ0 τ' hτ i i' hi G hG`. Conclude with `h.1 Sx R p _ τ0 τ' hτ i i' hi G hG`. Introduce `Sx R τ0 τ' hτ i i' hi G hG`.
+
+Conclude with `h.2.1 Sx R p _ τ0 τ' hτ i i' hi G hG`. Introduce `Sx R k m hk hm G hG`. Conclude with `h.2.2 Sx R p _ k m hk hm G hG`.
+-/
 theorem three_identities_on_model_of (h : adm6 D XD T S κ) : ThreeIdentitiesOnModel D XD T S κ := by
   intro p _
   refine ⟨fun la => XD.htMdl S κ p la, ?_, ?_, ?_⟩
@@ -373,12 +389,18 @@ def ModIndF {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (PL : DIV.Align.Pr
   ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x) S κ, HidaSetting (Fm.D x i) (Fm.X x i) S κ → DIV.Align.LevB (PL x hx i) κ →
     ModInd (Fm.D x i) (Fm.X x i) (TF x hx i) S κ
 
+/- English proof (translation)
+Introduce `x hx i S κ hs hB` and use `three_identities_of_model_independence _ _ _ _ _ (h x hx i S κ hs hB) (ht x hx i S κ hs hB)`.
+-/
 theorem three_identities_family_of_model {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (PL : DIV.Align.PrinLevF Fm) (TF : LocF Fm)
     (h : ThreeIdentitiesOnModelFamily Fm PL TF) (ht : ModIndF Fm PL TF) :
     ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x) S κ, HidaSetting (Fm.D x i) (Fm.X x i) S κ → DIV.Align.LevB (PL x hx i) κ →
       adm6 (Fm.D x i) (Fm.X x i) (TF x hx i) S κ :=
   fun x hx i S κ hs hB => three_identities_of_model_independence _ _ _ _ _ (h x hx i S κ hs hB) (ht x hx i S κ hs hB)
 
+/- English proof (translation)
+Introduce `x hx i S κ hs hB` and use `three_identities_on_model_of _ _ _ _ _ (h x hx i S κ hs hB)`.
+-/
 theorem one_model_family_of_identities {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (PL : DIV.Align.PrinLevF Fm) (TF : LocF Fm)
     (h : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x) S κ, HidaSetting (Fm.D x i) (Fm.X x i) S κ → DIV.Align.LevB (PL x hx i) κ →
       adm6 (Fm.D x i) (Fm.X x i) (TF x hx i) S κ) : ThreeIdentitiesOnModelFamily Fm PL TF :=

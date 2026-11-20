@@ -11,6 +11,9 @@ open Formalism.MainNotions.DIV.Cons (intO)
 open scoped Classical
 open GlobalTheory.LieFilt
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LieFilt.exists_dualCharts_pull_dual_pull | exact GlobalTheory.LieFilt.exists_dualCharts_pull_dual_pull | (intros; apply GlobalTheory.LieFilt.exists_dualCharts_pull_dual_pull <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.metric_pullback_dual_frames : ∀ {k k' : Type} [CommRing k] [CommRing k'] (φ : k ≃+* k') {X Y Y' : Scheme.{0}} {F : Y'.Modules} {g : ℕ}
     {p' : Y' ⟶ Sp k'} (h : VMetric p' F g) (b : Y ⟶ Y') {p : Y ⟶ Sp k}
     (h₀ : VMetric p ((Scheme.Modules.pullback b).obj F) g), SameMet φ (h.pull b rfl) h₀ →

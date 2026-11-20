@@ -31,6 +31,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.ChF
 
+/- English proof (translation)
+Establish `h1 : ((1 : ℤ_[p]) ⊗ₜ[ℤ] a) = ((a : ℤ) : ℤ_[p] ⊗[ℤ] ℤ)`. Rewrite using `[← Algebra.TensorProduct.includeRight_apply]`. Simplify using the standard rewrite rules. Rewrite `h` using `[h1, map_intCast]`. Take `⟨u, rfl⟩` from `hS`.
+
+Rewrite `h` using `[← (Int.cast_commute a (u : Matrix (Fin g) (Fin g) O)).eq]`. Conclude with `(Units.mul_left_inj u).mp h`.
+-/
 private theorem eq_intCast_of_conj {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] {g : ℕ}
     (ρ : (ℤ_[p] ⊗[ℤ] ℤ) →+* Matrix (Fin g) (Fin g) O) (S M : Matrix (Fin g) (Fin g) O) (hS : IsUnit S) (a : ℤ)
     (h : M * S = S * ρ (1 ⊗ₜ[ℤ] a)) : M = (a : Matrix (Fin g) (Fin g) O) := by
@@ -41,11 +46,27 @@ private theorem eq_intCast_of_conj {p : ℕ} [Fact p.Prime] {O : Type} [CommRing
   rw [← (Int.cast_commute a (u : Matrix (Fin g) (Fin g) O)).eq] at h
   exact (Units.mul_left_inj u).mp h
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Matrix.intCast_apply, mul_comm]`.
+-/
 private theorem mul_intCast_eq {O : Type} [CommRing O] {m n : ℕ} (M : Matrix (Fin m) (Fin n) O) (a : ℤ) :
     M * (a : Matrix (Fin n) (Fin n) O) = (a : Matrix (Fin m) (Fin m) O) * M := by
   ext i j
   simp [Matrix.mul_apply, Matrix.intCast_apply, mul_comm]
 
+/- English proof (translation)
+Introduce `p _ T _ _ _ _ _ _ hp G _ _ D A x d F xx hC C _ _ _ v O _ _ hv _ _ iota hiota`. Take `⟨hL1, -, -, -, -⟩` from `GlobalTheory.firstFiveLaws`. Take `⟨-, -, -, -, -, -, hcube, -⟩` from `hL1`. Use `letI : Algebra ℤ_[p] O := ((GlobalTheory.ChF.padicInt_algebra_of_isAdicComplete_and_matrix_unique p O).1).some`. Establish `hFH : FH p (F.mapF iota)`.
+
+Establish `h` using `GlobalTheory.FormalTorsion.fhSt p`. Unfold `FHSt at h`. Unfold `FH`. Introduce `m`. Take `⟨h1, h2, -, h4⟩` from `h T hp G D A x d F xx hC C v O hv iota hiota m`.
+
+Conclude with `⟨h1, h2, h4⟩`. Take `⟨X, hX, -⟩` from `GlobalTheory.T.exists_nilChart_reads_of_isChartJ T G x.1 d F xx hC`. Take `⟨FB, xB, hxB⟩` from `GlobalTheory.T.exists_nilpotentGroupChart_smooth_commGroup T D.toPre.P.A D.toPre.P.g D.toPre.P.5`. Take `⟨r, J, Q, hEx, -⟩` from `GlobalTheory.T.uniformization_split_formal_group_law_equivariant T (IsLocalRing.maximalIdeal T) D A G x d D.toPre.P.g F FB X xB hX hxB`. Take `⟨o, ho⟩` from `GlobalTheory.exists_oAct_int hcube (Spec (CommRingCat.of T)) D.toPre.P`.
+
+Establish `hα : ∀ a : ℤ, ∃ φ, Reads xB xB (o.act a) φ` using `fun a => GlobalTheory.T.exists_powerSeries_reading_groupHom_nilpotentCharts T D.toPre.P.A D.toPre.P.A D.toPre.P.g D.toPre.P.g FB.F FB.F xB xB hxB hxB (o.act a) (by rw [ho a]; exact GlobalTheory.IntAct.isMonHom_id_zpow a)`. Use `choose α hα using hα`. Take `⟨hmapF, -, hmapEx⟩` from `GlobalTheory.T.formalGroupLaw_jacobian_extension_changeCoeff T O iota`. Take `⟨F', hF'⟩` from `hmapF d F`. Take `⟨FB', hFB'⟩` from `hmapF D.toPre.P.g FB`.
+
+Take `⟨cp, hUp, H, S, hP, hPL, hS, hSa, hSu⟩` from `GlobalTheory.T.exists_hodgeTateDatum_polarisedAbelian_characters p C v O hv T iota D.toPre.P D.toPre.P.g rfl ℤ o FB xB hxB α hα`. Establish `hαB : ∀ a : ℤ, lin (fun j => MvPowerSeries.map iota (α a j)) = (a : Matrix (Fin D.toPre.P.g) (Fin D.toPre.P.g) O)` using `fun a => eq_intCast_of_conj H.ρL S _ hS a (hSa a)`. Take `⟨cp', hUp', H', B, m, u, hu, hLin⟩` from `GlobalTheory.T.exists_linearData_of_split_formalGroup_extension p C v O hv ℤ d D.toPre.P.g r F' FB' (fun j => MvPowerSeries.map iota (J j)) (fun j => MvPowerSeries.map iota (Q j)) (by rw [hF', hFB']; exact hmapEx d D.toPre.P.g r F FB J Q hEx) (by rw [hF']; exact hFH) (Int.castRin …`. Establish `e : ((a : Matrix (Fin r) (Fin r) ℤ)).map (Int.castRingHom O) = (a : Matrix (Fin r) (Fin r) O)` using `map_intCast (Int.castRingHom O).mapMatrix a`. Rewrite using `[eq_intCast, eq_intCast, e]`.
+
+Conclude with `(mul_intCast_eq _ a).symm)`. Use the proof step `⟨cp, hUp, H, S, hP, hPL, hS, hSa, by rw [hFB']; exact hSu⟩`. Use `⟨m, u, fun k => hF' ▸ hu k, ?_⟩` and prove the remaining obligations. Introduce `c hc f`. Conclude with `GlobalTheory.T.linearData_hodgeTate_inclusion p C v O hv ℤ cp' hUp' D.toPre.P.g H' d r m _ B (Int.castRingHom _) (Int.castRingHom _) (fun k => dl (u k)) hLin c hc f`.
+-/
 theorem hodgeTate_inclusion_chart : ∀ (p : ℕ) [Fact p.Prime], HTFSt p := by
   intro p _ T _ _ _ _ _ _ hp G _ _ D A x d F xx hC C _ _ _ v O _ _ hv _ _ iota hiota
   obtain ⟨hL1, -, -, -, -⟩ := GlobalTheory.firstFiveLaws

@@ -83,6 +83,9 @@ def ValidPullbackAlongSmooth : Prop :=
       [AlgebraicGeometry.Smooth h] [AlgebraicGeometry.QuasiCompact q],
       h ≫ T.structMap = q → (T.pullbackAlong Y q h).IsAdmissible
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem validPullbackAlongSmooth_iff :
     ValidPullbackAlongSmooth.{u} ↔
       ∀ (T : MarkedIdealWithBoundary.{u}), T.IsAdmissible → ∀ (Y : Scheme.{u})
@@ -95,6 +98,11 @@ end OrderReduction
 
 namespace MaxContactCoverData
 
+/- English proof (translation)
+Introduce `x hx`. Simplify using `only [SetLike.mem_coe] at hx ⊢`. Rewrite `hx`, the goal using `[mem_support_iff_stalkIdeal_ne_top]`. Introduce `hI`. Apply `hx` to reduce the goal to its premises.
+
+Rewrite using `[stalkIdeal_pow, hI, Ideal.top_pow]`.
+-/
 private theorem support_pow_subset {X : Scheme.{u}} (I : X.IdealSheafData) (s : ℕ) :
     ((I ^ s).support : Set ↥X) ⊆ (I.support : Set ↥X) := by
   intro x hx
@@ -104,6 +112,11 @@ private theorem support_pow_subset {X : Scheme.{u}} (I : X.IdealSheafData) (s : 
   apply hx
   rw [stalkIdeal_pow, hI, Ideal.top_pow]
 
+/- English proof (translation)
+Establish `h1 : (List.map (fun j => A j ^ (if j = n then s else 0)) (List.range n)).prod = 1`. Apply `List.prod_eq_one` to reduce the goal to its premises. Introduce `y hy`. Simplify using `only [List.mem_map, List.mem_range] at hy`. Take `⟨j, hj, rfl⟩` from `hy`.
+
+Rewrite using `[if_neg (Nat.ne_of_lt hj), pow_zero]`. Rewrite using `[List.range_succ, List.map_append, List.prod_append, h1, one_mul]`. Simplify using the standard rewrite rules.
+-/
 private theorem prod_map_range_pow_ite_eq_pow {X : Scheme.{u}} (A : ℕ → X.IdealSheafData) (n s : ℕ) :
     (List.map (fun j => A j ^ (if j = n then s else 0)) (List.range (n + 1))).prod = A n ^ s := by
   have h1 : (List.map (fun j => A j ^ (if j = n then s else 0)) (List.range n)).prod = 1 := by
@@ -115,6 +128,11 @@ private theorem prod_map_range_pow_ite_eq_pow {X : Scheme.{u}} (A : ℕ → X.Id
   rw [List.range_succ, List.map_append, List.prod_append, h1, one_mul]
   simp
 
+/- English proof (translation)
+Take `⟨n, rfl⟩ : ∃ n, m = n + 1` from `⟨m - 1, by omega⟩`. Use `⟨derivIdealSheafIterate k p n I, le_derivIdealSheafIterate k p n I, ?_⟩` and prove the remaining obligations. Establish `h0 : (∑ j ∈ Finset.range (n + 1), (n + 1 - j) * (if j = n then s else 0)) = (n + 1 - n) * (if n = n then s else 0)`. Use `Finset.sum_eq_single n (fun b _ hb => by simp [hb]) (fun h => ?_)` and prove the remaining obligations. Conclude with `absurd (Finset.mem_range.2 (Nat.lt_succ_self n)) h`.
+
+Establish `hsum : (∑ j ∈ Finset.range (n + 1), (n + 1 - j) * (if j = n then s else 0)) = s`. Rewrite using `[h0, if_pos rfl, Nat.add_sub_cancel_left, one_mul]`. Establish `h` using `prod_pow_derivIdealSheafIterate_le_tunedSheaf k p I (n + 1) s (fun j => if j = n then s else 0) hsum.ge`. Rewrite `h` using `[prod_map_range_pow_ite_eq_pow]`. Conclude with `h`.
+-/
 private theorem exists_le_and_pow_le_tunedSheaf (k : Type u) [Field k] [IsNoetherianRing k]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k))
     [AlgebraicGeometry.LocallyOfFiniteType p] (I : X.IdealSheafData) (m s : ℕ) (hm : 1 ≤ m) :
@@ -132,11 +150,21 @@ private theorem exists_le_and_pow_le_tunedSheaf (k : Type u) [Field k] [IsNoethe
   rw [prod_map_range_pow_ite_eq_pow] at h
   exact h
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem balancedTunedIdeal_eq_balancedTunedSheaf (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
     [AlgebraicGeometry.LocallyOfFiniteType T.structMap] :
     balancedTunedIdeal T hv = FunctorialResolution.EmbeddedResolution.balancedTunedSheaf T.base T.structMap T.ideal T.mult :=
   rfl
 
+/- English proof (translation)
+Use `hv.locallyOfFiniteType` as an intermediate fact. Take `⟨J, hIJ, hJ⟩` from `exists_le_and_pow_le_tunedSheaf T.base T.structMap T.ideal T.mult (tuningExponent T.mult) hv.one_le_mult`. Establish `hle : J ^ tuningExponent T.mult ≤ balancedTunedIdeal T hv`. Rewrite using `[balancedTunedIdeal_eq_balancedTunedSheaf T hv, balancedTunedSheaf_eq]`. Conclude with `hJ`.
+
+Establish `hnz` using `hv.nonzeroOnComponents`. Rewrite `hnz`, the goal using `[nonzeroOnComponents_iff]`. Introduce `C hC hsub`. Use `hnz C hC ?_` and prove the remaining obligations. Introduce `x hx`.
+
+Establish `h1` using `hsub hx`. Establish `h2` using `SetLike.coe_subset_coe.2 (Scheme.IdealSheafData.support_antitone hle) h1`. Establish `h3` using `support_pow_subset J (tuningExponent T.mult) h2`. Conclude with `SetLike.coe_subset_coe.2 (Scheme.IdealSheafData.support_antitone hIJ) h3`.
+-/
 theorem nonzeroOnComponents_balancedTunedIdeal (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible) :
     NonzeroOnComponents (balancedTunedIdeal T hv) := by
   have := hv.locallyOfFiniteType
@@ -155,6 +183,15 @@ theorem nonzeroOnComponents_balancedTunedIdeal (T : MarkedIdealWithBoundary.{u})
   have h3 := support_pow_subset J (tuningExponent T.mult) h2
   exact SetLike.coe_subset_coe.2 (Scheme.IdealSheafData.support_antitone hIJ) h3
 
+/- English proof (translation)
+Use `hv.locallyOfFiniteType` as an intermediate fact. Use `hv.charZero` as an intermediate fact. Use `hv.smooth` as an intermediate fact. Distinguish the cases in `hemp : orderAtLeastLocus T.ideal T.mult = ∅`. Establish `htop : balancedTunedIdeal T hv = ⊤`.
+
+Rewrite using `[balancedTunedIdeal_eq_balancedTunedSheaf T hv]`. Conclude with `balancedTunedSheaf_eq_top_of_orderAtLeastLocus_eq_empty T.base T.structMap T.ideal hv.one_le_mult hemp`. Rewrite using `[htop, orderAt_top]`. Simplify using the standard rewrite rules. Establish `hmax : MaxOrderEq T.ideal T.mult` using `⟨(orderLE_iff T.ideal T.mult).2 hord, Set.nonempty_iff_ne_empty.2 hemp⟩`.
+
+Establish `hLE` using `htf.coSupport_tunedSheaf_eq_and_orderLE.orderLE T.base T.scheme T.structMap T.ideal T.mult hv.one_le_mult hmax (tuningExponent T.mult) (one_le_tuningExponent T.mult)`. Rewrite `hLE` using `[orderLE_iff]`. Establish `h2 : balancedTunedIdeal T hv = tunedSheaf T.base T.structMap T.ideal T.mult (tuningExponent T.mult)`. Rewrite using `[balancedTunedIdeal_eq_balancedTunedSheaf T hv, balancedTunedSheaf_eq]`. Rewrite using `[h2]`.
+
+Conclude with `hLE x`.
+-/
 theorem orderAt_balancedTunedIdeal_le_tunedMult (htf : TunedSheafProperties.{u}) (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
     (hord : ∀ x : ↥T.scheme, orderAt T.ideal x ≤ (T.mult : ℕ∞)) (x : ↥T.scheme) :
     orderAt (balancedTunedIdeal T hv) x ≤ ((tunedMult T : ℕ) : ℕ∞) := by
@@ -177,6 +214,9 @@ theorem orderAt_balancedTunedIdeal_le_tunedMult (htf : TunedSheafProperties.{u})
     rw [h2]
     exact hLE x
 
+/- English proof (translation)
+Establish `hvt` using `MaxContactOpenCover.isAdmissible_tunedTriple T hv (nonzeroOnComponents_balancedTunedIdeal T hv)`. Establish `hqc` using `MaxContactOpenCover.quasiCompact_coverMap_comp_structureMorphism T hv hgood`. Rewrite using `[MaxContactOpenCover.coverTriple_eq_tunedTriple_pullbackAlong T hv]`. Conclude with `@hpb (MaxContactOpenCover.tunedTriple T hv) hvt (chosenCoverData T hv).disjointUnion (coverMap T hv ≫ T.structMap) (coverMap T hv) (MaxContactCoverData.instSmoothCoverMap T hv) hqc rfl`.
+-/
 theorem isAdmissible_coverTriple_of_validPullbackAlongSmooth (hpb : OrderReduction.ValidPullbackAlongSmooth.{u})
     (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
     (hgood : MaxContactReduction.IsMaxContactCover T (chosenCoverData T hv) hv.locallyOfFiniteType
@@ -188,6 +228,11 @@ theorem isAdmissible_coverTriple_of_validPullbackAlongSmooth (hpb : OrderReducti
   exact @hpb (MaxContactOpenCover.tunedTriple T hv) hvt (chosenCoverData T hv).disjointUnion
     (coverMap T hv ≫ T.structMap) (coverMap T hv) (MaxContactCoverData.instSmoothCoverMap T hv) hqc rfl
 
+/- English proof (translation)
+Use `FunctorialResolution.EmbeddedResolution.isSmoothDivisor_of_locally_coordIdeal (coverMaxContactIdeal T hv) ?_` and prove the remaining obligations. Introduce `x`. Take `⟨U, hxU, m, c, a, _hinj, hnone, hsome⟩` from `(MaxContactCoverGeometry.inStrictNormalCrossingPositionAt_of_isMaxContactCover T hv hgood x).exists_etaleChart`. Use `⟨U, hxU, m, c, ?_⟩` and prove the remaining obligations. Break down `ha : a 0 with _ | t` into its components or cases.
+
+Conclude with `Or.inl (hnone 0 (by simp) ha)`. Conclude with `Or.inr ⟨t, hsome 0 (by simp) t ha⟩`.
+-/
 theorem isSmoothDivisor_coverMaxContactIdeal (_hpb : OrderReduction.ValidPullbackAlongSmooth.{u})
     (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
     (hgood : MaxContactReduction.IsMaxContactCover T (chosenCoverData T hv) hv.locallyOfFiniteType
@@ -206,6 +251,17 @@ end MaxContactCoverData
 
 namespace OrderReduction
 
+/- English proof (translation)
+Use `{ strictTransform_admissible := ?_ coSupport_le_preimage := ?_ schemeDim_level_le := ?_ exists_goodCover := ?_ hasSNCWith_cons := ?_ valid_level := ?_ orderAt_level_le := ?_ coverTriple_dim_le := ?_ coverTriple_valid := ?_ coverContact_admissible := ?_ coverContact_snc := ?_ tuni …` and prove the remaining obligations. Introduce `k _ _ P P₁ p _ _ _ π _ Z E hZ hπ A A₁ μ hμ hordA hsupp htr H hH`. Conclude with `FunctorialResolution.EmbeddedResolution.isMaxContactHypersurface_strictTransform_of_orderAt_le k p π Z E hZ hπ A A₁ μ hμ hordA hsupp htr H hH`. Introduce `X X₁ π Z hπ A A₁ μ htr hsupp`. Conclude with `FunctorialResolution.EmbeddedResolution.OrderLocusBlowup.orderAtLeastLocus_subset_preimage_of_isBlowupAlongIdealSheaf π Z hπ A A₁ μ htr hsupp`.
+
+Introduce `T hT s i hi`. Conclude with `hdim T hT s i hi`. Introduce `T hv hord`. Conclude with `MaxContactOpenCover.exists_isMaxContactCover T hv (MaxContactCoverData.orderAt_balancedTunedIdeal_le_tunedMult htf T hv hord)`. Introduce `k _ P p _ Z H N _hsmZ hsnc hZN hHZ`.
+
+Conclude with `FunctorialResolution.EmbeddedResolution.hasStrictNormalCrossingsWith_cons_of_le p Z H N hsnc hZN hHZ`. Introduce `T hT s i hi`. Conclude with `MarkedIdealWithBoundary.IsAdmissible.transformAt effectiveCartierSupportContainsNoComponent hT s i hi`. Introduce `T hT hord s i hi x`. Conclude with `FunctorialResolution.EmbeddedResolution.orderAt_ideal_le_mult_along_sequence T hT hord s i hi x`.
+
+Introduce `T hv`. Conclude with `MaxContactOpenCover.krullDimSucc_coverTriple_scheme_le_dim T hv`. Introduce `T hv _hord hgood`. Conclude with `MaxContactCoverData.isAdmissible_coverTriple_of_validPullbackAlongSmooth hpb T hv hgood`. Introduce `T hv hgood _`.
+
+Conclude with `MaxContactCoverGeometry.isMaxContactHypersurface_coverMaxContactIdeal T hv hgood`. Introduce `T hv hgood`. Conclude with `MaxContactCoverGeometry.inStrictNormalCrossingPosition_of_isMaxContactCover T hv hgood (MaxContactCoverData.isSmoothDivisor_coverMaxContactIdeal hpb T hv hgood)`.
+-/
 theorem maxContactCoverProperties_of_tunedSheafProperties (htf : TunedSheafProperties.{u}) (hdim : DimensionNonincreasingAlongBlowups.{u})
     (hpb : ValidPullbackAlongSmooth.{u}) : MaxContactCoverProperties.{u} := by
   refine

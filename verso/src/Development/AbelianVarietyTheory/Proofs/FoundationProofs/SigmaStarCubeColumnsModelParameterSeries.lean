@@ -16,6 +16,13 @@ noncomputable section
 
 namespace GlobalTheory.FrobStick
 
+/- English proof (translation)
+Establish `h0 : coef1 (sgStar g.abelian₂) 0 = 0`. Simplify using `[coef1, (hL.sg_eq_zero 0).2 (zero_mem _)]`. Choose the witnesses or unpack the hypotheses as in `⟨S, hS⟩ : ∃ S : PowerSeries Qbar, PowerSeries.mk (coef1 (sgStar g.abelian₂)) = PowerSeries.map (algebraMap Qbar ℂ) (X * S) := by`. Use `⟨PowerSeries.mk fun n => ⟨coef1 (sgStar g.abelian₂) (n + 1), hσ.2 _⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `n`.
+
+Consider the cases of `n with`. Consider the case `zero => simp [h0]`. Consider the case `succ n => rw [coeff_map, coeff_succ_X_mul, coeff_mk, coeff_mk]`. Both sides reduce to the same expression. Establish `hS' : GL3Theta.ser1 g.lam (sgStar g.abelian₂) = X * PowerSeries.map g.lam S`.
+
+Rewrite using `[GlobalTheory.EvenTheta.Param.theta_series_map_coefficients g.lam _ _ hS, map_mul, map_X]`. Establish `hE` using `GlobalTheory.EvenTheta.Param.X_mul_ePhi1 g _ hS'`. Establish `hs` using `HasSubst.of_constantCoeff_zero' (GlobalTheory.SerTransport.const_Cl g ((g.C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]))`. Rewrite using `[GlobalTheory.SerTransport.atU_eq, hS', subst_mul hs, subst_X hs, mul_assoc, mul_assoc, hE]`.
+-/
 theorem sgStar_atU {p : ℕ} [Fact p.Prime] (g : GL3Theta.G1 p) (hL : IsLat g.abelian₂) (hσ : AlgEnt (sgStar g.abelian₂)) :
     g.atU (sgStar g.abelian₂) =
       C ((g.C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]) * X * ePhi1 g.lam g.abelian₂ g.C g.wq := by
@@ -35,6 +42,17 @@ theorem sgStar_atU {p : ℕ} [Fact p.Prime] (g : GL3Theta.G1 p) (hL : IsLat g.ab
     (GlobalTheory.SerTransport.const_Cl g ((g.C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]))
   rw [GlobalTheory.SerTransport.atU_eq, hS', subst_mul hs, subst_X hs, mul_assoc, mul_assoc, hE]
 
+/- English proof (translation)
+Introduce `p _ g hq hL h2 h3 hσ v hv hw`. Take `⟨hT, hC, -, -⟩` from `GlobalTheory.SerTransport.transport p g`. Take `⟨aT, eT⟩` from `GlobalTheory.EvenTheta.Param.sqTh_atU p g hq hL h2 h3 hσ v hv hw`. Establish `e1` using `sgStar_atU g hL hσ`. Take `⟨⟨a2, e2⟩, -⟩` from `hT _ _ hσ hσ`.
+
+Take `⟨⟨a3, e3⟩, -⟩` from `hT _ _ a2 hσ`. Take `⟨aw, ew⟩` from `hC _ hw`. Take `⟨⟨a4, e4⟩, -⟩` from `hT _ _ aw a2`. Take `⟨-, a5, e5⟩` from `hT _ _ aT a4`. Take `⟨⟨a6, e6⟩, -⟩` from `hT _ _ hσ a5`.
+
+Establish `hA : colA g.abelian₂ = fun z => sgStar g.abelian₂ z * sgStar g.abelian₂ z * sgStar g.abelian₂ z`. Use function extensionality and compare the values at `z`. Rewrite using `[colA]`. Expand and normalize the polynomial expressions, which then agree. Establish `hB : colB g.abelian₂ v = fun z => sgStar g.abelian₂ z * (sqTh g.abelian₂ v z + wpF g.abelian₂ v * (sgStar g.abelian₂ z * sgStar g.abelian₂ z))`.
+
+Use function extensionality and compare the values at `z`. Rewrite using `[colB]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hA, hB]`. Use `⟨a3, a6, e1, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e3, e2, e1, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e6, e5, e4, e2, ew, eT, e1, lineSer, xAt]`. Simplify using `only [map_mul, map_pow, map_sub]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem colAB_atU : ∀ (p : ℕ) [Fact p.Prime] (g : GL3Theta.G1 p), IsWq g.W g.wq → IsLat g.abelian₂ → g2 g.abelian₂ ∈ Qbar → g3 g.abelian₂ ∈ Qbar → AlgEnt (sgStar g.abelian₂) → ∀ v, v ∉ g.abelian₂ → wpF g.abelian₂ v ∈ Qbar → AlgEnt (GlobalTheory.FrobStick.colA g.abelian₂) ∧ AlgEnt (GlobalTheory.FrobStick.colB g.abelian₂ v) ∧ g.atU (sgStar g.abelian₂) = PowerSeries.C ((g.C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]) * PowerSeries.X * ePhi1 g.lam g.abelian₂ g.C g.wq ∧ g.atU (GlobalTheory.FrobStick.colA g.abelian₂) = PowerSeries.C (((g.C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]) ^ 3) * PowerSeries.X ^ 3 * ePhi1 g.lam g.abelian₂ g.C g.wq ^ 3 ∧ g.atU (GlobalTheory.FrobStick.colB g.abelian₂ v) = PowerSeries.C ((g.C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]) * ePhi1 g.lam g.abelian₂ g.C g.wq ^ 3 * (PowerSeries.X * g.wq⁻¹ + PowerSeries.C (((g.C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]) ^ 2 * g.C.r) * PowerSeries.X ^ 3) := by
   intro p _ g hq hL h2 h3 hσ v hv hw
   obtain ⟨hT, hC, -, -⟩ := GlobalTheory.SerTransport.transport p g

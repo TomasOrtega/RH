@@ -24,6 +24,11 @@ def RatTup : Prop :=
   ∀ L : G.P.Tup, G.P.IsLatTup L → ∃ a : GL (Fin (G.P.m + 1)) E,
     ∀ v, L v = colSpan (G.P.W v) ((a : Matrix (Fin (G.P.m + 1)) (Fin (G.P.m + 1)) E).map (iw v))
 
+/- English proof (translation)
+Use `⟨fun i γ v s => ?_, hc⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `ha i γ`. Use `⟨Matrix.GeneralLinearGroup.map (t v s) a, ?_⟩` and prove the remaining obligations. Rewrite using `[ha v]`. Use extensionality with `j k`.
+
+Simplify using `[gPosGL, hp v s]`.
+-/
 theorem ratLev_of (hp : PosCompat G e iw t) (ha : ActE G iw) (hc : ChiRat G e) : RatLev G e := by
   refine ⟨fun i γ v s => ?_, hc⟩
   obtain ⟨a, ha⟩ := ha i γ
@@ -32,6 +37,11 @@ theorem ratLev_of (hp : PosCompat G e iw t) (ha : ActE G iw) (hc : ChiRat G e) :
   ext j k
   simp [gPosGL, hp v s]
 
+/- English proof (translation)
+Introduce `L hL v s`. Take `⟨a, ha⟩` from `hr L hL`. Use `⟨Matrix.GeneralLinearGroup.map (t v s) a, ?_⟩` and prove the remaining obligations. Rewrite using `[ha v, Formalism.MainNotions.G.LatticeSystems.la_extO_G]`. Use `congr 1`.
+
+Use extensionality with `j k`. Simplify using `[Formalism.MainNotions.G.LatticeSystems.la_tw, hp v s]`.
+-/
 theorem ratBasis_of (hp : PosCompat G e iw t) (hr : RatTup G iw) : RatBasis G e := by
   intro L hL v s
   obtain ⟨a, ha⟩ := hr L hL

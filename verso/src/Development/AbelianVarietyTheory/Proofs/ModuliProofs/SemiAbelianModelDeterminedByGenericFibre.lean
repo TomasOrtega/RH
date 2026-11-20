@@ -6,6 +6,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.O
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.ModelUniqueChecks.extV_holds`.
+-/
 theorem semiAbelian_model_determined_by_generic_fibre : ExtVStatement :=
   GlobalTheory.ModelUniqueChecks.extV_holds
 

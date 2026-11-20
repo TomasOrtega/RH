@@ -37,6 +37,9 @@ def idEta (M : Model l K) (n : ℕ) : (CH.Mor.id (B.Oc (B.schFn M.p) (okToOC l K
       (LevelPullbackIdentities.spec_qid _ (fun _ h => h) _)))
   naturality _ _ f := Thick.Hom.ext (RingHom.ext fun _ => rfl) (funext fun j => Empty.elim j)
 
+/- English proof (translation)
+Establish `h1 : (CH.Mor.id (B.Oc (B.schFn M.p) (okToOC l K) false n)).pull j x = x` using `(CrystallineSemistableComparison.P.pull_comp (CH.Mor.id _) (CH.Mor.id _) j x).2`. Establish `h2` using `CrystallineSemistableComparison.P.prism (CH.Mor.id (B.Oc (B.schFn M.p) (okToOC l K) false n)) (idOm M n) (idEta M n) (fun T x => rfl) j x`. Conclude with `h2.symm.trans h1`.
+-/
 theorem idMor_pull (M : Model l K) (n j : ℕ) (x : M.Hc false n j) : (idOm M n).pull j x = x := by
   have h1 : (CH.Mor.id (B.Oc (B.schFn M.p) (okToOC l K) false n)).pull j x = x :=
     (CrystallineSemistableComparison.P.pull_comp (CH.Mor.id _) (CH.Mor.id _) j x).2
@@ -46,6 +49,11 @@ theorem idMor_pull (M : Model l K) (n j : ℕ) (x : M.Hc false n j) : (idOm M n)
 
 end LevelIdentityMorphisms
 
+/- English proof (translation)
+Establish `hρ : ∀ y, (dOf S hS hC m n).ρ (RingHom.id _ y) = lnMap (S.dA m) l le_rfl ((dOf S hS hC (m + 1) n).ρ y)`. Introduce `y`. Take `⟨c, rfl⟩` from `((RL.base_acr (PAlg.base l) PAlg.isBase_base).2 n).1 y`. Rewrite using `[RingHom.id_apply, hcOf, hcOf]`. Conclude with `congrArg (Ideal.Quotient.mk _) (hS.dlam m c).symm`.
+
+Establish `e` using `red_nm (dOf S hS hC (m + 1) n) (dOf S hS hC m n) s (nmLevA S hS m M) (LevelIdentityMorphisms.idMor M n) ((PAlg.base l).cris n) ((PAlg.base l).cris n) (S.L (m + 1)).lam (S.L m).lam (hcOf S hS hC (m + 1) n) (hcOf S hS hC m n) (RingHom.id _) (fun _ => rfl) (fun _ _ => (Category.comp …`. Conclude with `(congrArg _ (LevelIdentityMorphisms.idMor_pull M n j x).symm).trans e |>.symm`.
+-/
 theorem nmHM_nmLevA_rHof_succ (M : Model l K) (m s n j : ℕ) (x : M.Hc false n j) :
     nmHM (nmLevA S hS m M) l s none n j (rHof (dOf S hS hC (m + 1)) (hcOf S hS hC (m + 1)) M s n j x) =
       rHof (dOf S hS hC m) (hcOf S hS hC m) M s n j x := by

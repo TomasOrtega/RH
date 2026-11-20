@@ -72,6 +72,11 @@ section Letters
 
 variable {R : Type} [CommRing R] {S : Letter → Prop}
 
+/- English proof (translation)
+Unfold `LetAlg at hP`. Proceed by induction on `hP using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨T, hT, rfl⟩` from `hx`. Simplify using `[h T hT]`.
+
+Consider the case `algebraMap r => simp`. Consider the case `add x y _ _ hx hy => simp [hx, hy]`. Consider the case `mul x y _ _ hx hy => simp [hx, hy]`.
+-/
 theorem lift_congr {A : Type} [Semiring A] [Algebra R A] {f g : Letter → A} (h : ∀ T, S T → f T = g T)
     {P : FreeAlgebra R Letter} (hP : P ∈ LetAlg R S) : FreeAlgebra.lift R f P = FreeAlgebra.lift R g P := by
   unfold LetAlg at hP
@@ -85,6 +90,15 @@ theorem lift_congr {A : Type} [Semiring A] [Algebra R A] {f g : Letter → A} (h
 
 end Letters
 
+/- English proof (translation)
+Establish `: NeZero (N * l)` using `⟨Nat.mul_ne_zero hN hl⟩`. Establish `hNl : N ∣ N * l` using `Dvd.intro l rfl`. Take `⟨u, hu⟩` from `ZMod.unitsMap_surjective hNl (ZMod.unitOfCoprime d hd)`. Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.2 (ZMod.val_coe_unit_coprime u)`. Establish `hdet : (!![a, -b; ((N * l : ℕ) : ℤ), ((u : ZMod (N * l)).val : ℤ)]).det = 1`.
+
+Rewrite using `[Matrix.det_fin_two_of]`. Take the linear combination `hab`. Take `⟨γ, hγ⟩ : ∃ γ : SL(2, ℤ), (γ : Matrix (Fin 2) (Fin 2) ℤ) = !![a, -b; ((N * l : ℕ) : ℤ), ((u : ZMod (N * l)).val : ℤ)]` from `⟨⟨_, hdet⟩, rfl⟩`. Use `⟨γ, Subgroup.mem_inf.2 ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[CongruenceSubgroup.Gamma0_mem, hγ]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[CongruenceSubgroup.Gamma0_mem, hγ]`. Simplify using the standard rewrite rules. Establish `hcast : (((u : ZMod (N * l)).val : ℕ) : ZMod N) = d`. Rewrite using `[ZMod.natCast_val, ← ZMod.unitsMap_val hNl, hu, ZMod.coe_unitOfCoprime]`.
+
+Simplify `hcast` using `[en, hγ]`.
+-/
 theorem exists_isDiam {N l d : ℕ} (hN : N ≠ 0) (hl : l ≠ 0) (hd : Nat.Coprime d N) : ∃ γ, IsDiam N l d γ := by
   have : NeZero (N * l) := ⟨Nat.mul_ne_zero hN hl⟩
   have hNl : N ∣ N * l := Dvd.intro l rfl
@@ -105,9 +119,17 @@ theorem exists_isDiam {N l d : ℕ} (hN : N ≠ 0) (hl : l ≠ 0) (hd : Nat.Copr
       rw [ZMod.natCast_val, ← ZMod.unitsMap_val hNl, hu, ZMod.coe_unitOfCoprime]
     simpa [en, hγ] using hcast
 
+/- English proof (translation)
+Conclude with `Classical.epsilon_spec (exists_isDiam hN hl hd)`.
+-/
 theorem isDiam_sgD {N l d : ℕ} (hN : N ≠ 0) (hl : l ≠ 0) (hd : Nat.Coprime d N) : IsDiam N l d (sgD N l d) := by
   exact Classical.epsilon_spec (exists_isDiam hN hl hd)
 
+/- English proof (translation)
+Establish `h' : q.Prime ∧ ¬ q ∣ N * l` using `h`. Take `⟨hq, hqN⟩` from `h'`. Establish `hN : N ≠ 0`. Introduce and unpack `rfl`. Conclude with `hqN (by simp)`.
+
+Establish `hl : l ≠ 0`. Introduce and unpack `rfl`. Conclude with `hqN (by simp)`. Conclude with `isDiam_sgD hN hl ((Nat.Prime.coprime_iff_not_dvd hq).2 fun h'' => hqN (h''.mul_right l))`.
+-/
 theorem isDiam_sgD_of_adm {N l q : ℕ} (h : admitted N l (Letter.T q)) : IsDiam N l q (sgD N l q) := by
   have h' : q.Prime ∧ ¬ q ∣ N * l := h
   obtain ⟨hq, hqN⟩ := h'
@@ -123,10 +145,18 @@ section Slash
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Simplify using `only [slP, MvPolynomial.aeval_X]`.
+-/
 theorem slP_X (m : Matrix (Fin 2) (Fin 2) ℤ) (i : Fin 2) :
     slP (R := R) m (MvPolynomial.X i) = (m i 0 : R) • MvPolynomial.X 0 + (m i 1 : R) • MvPolynomial.X 1 := by
   simp only [slP, MvPolynomial.aeval_X]
 
+/- English proof (translation)
+Establish `h1 : slP (R` using `R) 1 = AlgHom.id R _ := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Rewrite using `[slP_X]`. Apply the tactic sequence `fin_cases i <;> simp [Matrix.one_apply]`.
+
+Rewrite using `[h1, AlgHom.id_apply]`.
+-/
 theorem polySlash_one (p : MvPolynomial (Fin 2) R) : slP 1 p = p := by
   have h1 : slP (R := R) 1 = AlgHom.id R _ := by
     apply MvPolynomial.algHom_ext
@@ -135,6 +165,11 @@ theorem polySlash_one (p : MvPolynomial (Fin 2) R) : slP 1 p = p := by
     fin_cases i <;> simp [Matrix.one_apply]
   rw [h1, AlgHom.id_apply]
 
+/- English proof (translation)
+Establish `h1 : (slP m').comp (slP m) = slP (R` using `R) (m * m') := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Simplify using `only [AlgHom.comp_apply, slP_X, map_add, map_smul, Matrix.mul_apply, Fin.sum_univ_two, Int.cast_add, Int.cast_mul]`. Use `module`.
+
+Conclude with `DFunLike.congr_fun h1 p`.
+-/
 theorem polySlash_polySlash (m m' : Matrix (Fin 2) (Fin 2) ℤ) (p : MvPolynomial (Fin 2) R) :
     slP m' (slP m p) = slP (m * m') p := by
   have h1 : (slP m').comp (slP m) = slP (R := R) (m * m') := by
@@ -145,6 +180,9 @@ theorem polySlash_polySlash (m m' : Matrix (Fin 2) (Fin 2) ℤ) (p : MvPolynomia
     module
   exact DFunLike.congr_fun h1 p
 
+/- English proof (translation)
+Establish `h1` using `hp.aeval (fun i => (m i 0 : R) • MvPolynomial.X 0 + (m i 1 : R) • MvPolynomial.X 1) (n := 1) fun i => (MvPolynomial.homogeneousSubmodule (Fin 2) R 1).add_mem ((MvPolynomial.homogeneousSubmodule (Fin 2) R 1).smul_mem _ (MvPolynomial.isHomogeneous_X R 0)) ((MvPolynomial.homogeneous …`. Rewrite `h1` using `[one_mul]`. Conclude with `h1`.
+-/
 theorem polySlash_isHomogeneous (m : Matrix (Fin 2) (Fin 2) ℤ) {p : MvPolynomial (Fin 2) R} {w : ℕ} (hp : p.IsHomogeneous w) :
     (slP m p).IsHomogeneous w := by
   have h1 := hp.aeval (fun i => (m i 0 : R) • MvPolynomial.X 0 + (m i 1 : R) • MvPolynomial.X 1)
@@ -154,6 +192,11 @@ theorem polySlash_isHomogeneous (m : Matrix (Fin 2) (Fin 2) ℤ) {p : MvPolynomi
   rw [one_mul] at h1
   exact h1
 
+/- English proof (translation)
+Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simp [slP]`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp`. Simplify using `only [map_mul, hp, slP_X, MvPolynomial.eval_X, map_add, MvPolynomial.smul_eval]`.
+
+Use `congr 1`. Apply the tactic sequence `fin_cases i <;> simp [Matrix.mulVec, dotProduct, Fin.sum_univ_two]`.
+-/
 theorem eval_slP (m : Matrix (Fin 2) (Fin 2) ℤ) (u : Fin 2 → R) (p : MvPolynomial (Fin 2) R) :
     MvPolynomial.eval u (slP m p) = MvPolynomial.eval (m.map (Int.castRingHom R) *ᵥ u) p := by
   induction p using MvPolynomial.induction_on with
@@ -164,6 +207,11 @@ theorem eval_slP (m : Matrix (Fin 2) (Fin 2) ℤ) (u : Fin 2 → R) (p : MvPolyn
     congr 1
     fin_cases i <;> simp [Matrix.mulVec, dotProduct, Fin.sum_univ_two]
 
+/- English proof (translation)
+Establish `h : 0 < (γ : Matrix (Fin 2) (Fin 2) ℤ).det`. Rewrite using `[Matrix.SpecialLinearGroup.det_coe]`. Conclude with `one_pos`. Unfold `toGQ`. Rewrite using `[dif_pos h]`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Both sides reduce to the same expression.
+-/
 theorem toGQ_sl (γ : SL(2, ℤ)) : toGQ (γ : Matrix (Fin 2) (Fin 2) ℤ) = ofSL γ := by
   have h : 0 < (γ : Matrix (Fin 2) (Fin 2) ℤ).det := by
     rw [Matrix.SpecialLinearGroup.det_coe]
@@ -207,19 +255,36 @@ def trivSub (R : Type) [CommRing R] (w : ℕ) (Γ : Subgroup SL(2, ℤ)) : Submo
     · simp [h1 γ hγ z hz]
     · simp [h2 z hz]
 
+/- English proof (translation)
+Conclude with `Iff.rfl`.
+-/
 @[simp] theorem mem_potSub {F : ℂ → MvPolynomial (Fin 2) R} : F ∈ potSub R w Γ ↔ F ∈ Pot R w Γ := by exact Iff.rfl
 
+/- English proof (translation)
+Conclude with `Iff.rfl`.
+-/
 @[simp] theorem mem_trivSub {F : ℂ → MvPolynomial (Fin 2) R} : F ∈ trivSub R w Γ ↔ F ∈ Triv R w Γ := by exact Iff.rfl
 
 end Slash
 
+/- English proof (translation)
+Simplify using `[slP_X, MvPolynomial.smul_eq_C_mul]`.
+-/
 example : slP (R := ℤ) !![1, 2; 0, 3] (MvPolynomial.X 0) = MvPolynomial.X 0 + 2 * MvPolynomial.X 1 := by
   simp [slP_X, MvPolynomial.smul_eq_C_mul]
 
+/- English proof (translation)
+Simplify using `only [admitted]`. Evaluate the decidable proposition.
+-/
 example : admitted 5 3 (Letter.T 2) ∧ ¬ admitted 5 3 (Letter.T 0) ∧ ¬ admitted 5 3 (Letter.T 1) ∧ ¬ admitted 5 3 (Letter.T 3) ∧
     ¬ admitted 5 3 (Letter.T 4) ∧ admitted 5 3 (Letter.D 3) ∧ ¬ admitted 5 3 (Letter.D 0) := by
   simp only [admitted]; decide
 
+/- English proof (translation)
+Introduce `h`. Use `lift_congr (f := fun _ => (0 : ℂ)) (g := fun T => match T with | Letter.T 0 => 1 | _ => 0) (fun T hT => by` as an intermediate fact. Break down `T with (_ | q) | _ | d` into its components or cases. Conclude with `absurd hT.1 Nat.not_prime_zero`. Apply the tactic sequence `all_goals rfl) h`.
+
+Simplify using `at this`.
+-/
 example : FreeAlgebra.ι ℂ (Letter.T 0) ∉ LetAlg ℂ (admitted 5 3) := by
   intro h
   have := lift_congr (f := fun _ => (0 : ℂ)) (g := fun T => match T with | Letter.T 0 => 1 | _ => 0) (fun T hT => by
@@ -228,6 +293,9 @@ example : FreeAlgebra.ι ℂ (Letter.T 0) ∉ LetAlg ℂ (admitted 5 3) := by
     all_goals rfl) h
   simp at this
 
+/- English proof (translation)
+Introduce and unpack `⟨V, h, -⟩`. Simplify using `[ValuationSubring.mem_nonunits_iff] at h`.
+-/
 example (s : Ω ≃ₐ[ℚ] Ω) : ¬ FrobAt 1 s := by
   rintro ⟨V, h, -⟩
   simp [ValuationSubring.mem_nonunits_iff] at h

@@ -21,6 +21,9 @@ def eb_Pc (v : X.Pl) (j : ℕ) (K' : Type) [Field K'] (I : X.ColCh j) :
           (MvPolynomial (ea_S X v × Fin (NN X.G.P.m X.t j) × Fin (NN X.G.P.m X.t j)) K')))
     (ea_hts X v j s) (ea_hp X v j s) (ea_Ic X v j I s)
 
+/- English proof (translation)
+Unfold `Sys.PIv eb_Pc Formalism.DworkPowerSeriesWeights.minorProd`. Simplify using `only [map_prod]`. Use `(Fintype.prod_equiv (ea_e X v).symm _ _ fun s => ?_).symm` and prove the remaining obligations. Rewrite using `[Finset.prod_range]`. Conclude with `Finset.prod_congr rfl fun c _ => eb_fac X v j K' I s c`.
+-/
 theorem eb_poly (v : X.Pl) (j : ℕ) (K' : Type) [Field K'] (I : X.ColCh j) :
     MvPolynomial.map (MvPolynomial.map (Int.castRingHom K')) (X.PIv j I v) =
       MvPolynomial.rename (ea_eps X v j) (MvPolynomial.map
@@ -32,12 +35,20 @@ theorem eb_poly (v : X.Pl) (j : ℕ) (K' : Type) [Field K'] (I : X.ColCh j) :
   rw [Finset.prod_range]
   exact Finset.prod_congr rfl fun c _ => eb_fac X v j K' I s c
 
+/- English proof (translation)
+Rewrite using `[eb_applyD, eb_poly, eb_J_rename _ (eb_eps_inj X v j), eb_J_map]`. Both sides reduce to the same expression.
+-/
 theorem eb_jet (v : X.Pl) (j : ℕ) (K' : Type) [Field K'] (F : MvPowerSeries (X.ZA j) K') (I : X.ColCh j) :
     applyD (X.PIv j I v) F = MvPolynomial.rename (eb_phi X v j)
       (Formalism.DworkPowerSeriesWeights.frameJet (ea_colN X v j) (ea_hts X v j) (ea_hp X v j) (ea_Ic X v j I) (resV (ea_eps X v j) F)) := by
   rw [eb_applyD, eb_poly, eb_J_rename _ (eb_eps_inj X v j), eb_J_map]
   rfl
 
+/- English proof (translation)
+Introduce `v j K' _ F I n`. Rewrite using `[eb_jet]`. Distinguish the cases in `h : ∃ n', Finsupp.mapDomain (eb_phi X v j) n' = n`. Take `⟨n', rfl⟩` from `h`. Conclude with `Or.inr ⟨n', MvPolynomial.coeff_rename_mapDomain _ (eb_phi_inj X v j) _ n'⟩`.
+
+Conclude with `Or.inl (MvPolynomial.coeff_rename_eq_zero _ _ _ fun u hu => absurd ⟨u, hu⟩ h)`.
+-/
 theorem eb_brJet : ea_BrJet X := by
   intro v j K' _ F I n
   rw [eb_jet]

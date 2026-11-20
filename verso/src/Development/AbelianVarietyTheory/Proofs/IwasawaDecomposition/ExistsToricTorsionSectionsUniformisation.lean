@@ -19,28 +19,47 @@ namespace GlobalTheory.ToricTorsionSec
 
 open ReciprocityTheory.ChartRestriction.G.DVR
 
+/- English proof (translation)
+Use `⟨by rw [h'.1, h.1, Category.assoc], fun χ => corr_of_val D.P.isLB fun y J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[val_corr hJ (h'.2 χ), val_pull hJ, val_corr hJ (h.2 χ), val_pull hJ, val_pull hJ, Category.assoc]`.
+-/
 theorem isPull_trans {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {T T' T'' : Over (Sp R)}
     {a : T'.left ⟶ T.left} {b : T''.left ⟶ T'.left} {g : GtPt D T} {g' : GtPt D T'} {g'' : GtPt D T''}
     (h : GtPt.IsPull a g g') (h' : GtPt.IsPull b g' g'') : GtPt.IsPull (b ≫ a) g g'' := by
   refine ⟨by rw [h'.1, h.1, Category.assoc], fun χ => corr_of_val D.P.isLB fun y J hJ => ?_⟩
   rw [val_corr hJ (h'.2 χ), val_pull hJ, val_corr hJ (h.2 χ), val_pull hJ, val_pull hJ, Category.assoc]
 
+/- English proof (translation)
+The claim follows from `isPull_trans (T'' := TF (R := R) F) (g'' := ⟨g''.b, g''.s, g''.isGen, g''.s_zero, g''.mult⟩) h h'`.
+-/
 theorem isPullF_trans {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {T T' : Over (Sp R)}
     {F : Type} [Field F] [Algebra (FractionRing R) F]
     {a : T'.left ⟶ T.left} {b : Sp F ⟶ T'.left} {g : GtPt D T} {g' : GtPt D T'} {g'' : GtPtF D F}
     (h : GtPt.IsPull a g g') (h' : GtPt.IsPullF F b g' g'') : GtPt.IsPullF F (b ≫ a) g g'' :=
   isPull_trans (T'' := TF (R := R) F) (g'' := ⟨g''.b, g''.s, g''.isGen, g''.s_zero, g''.mult⟩) h h'
 
+/- English proof (translation)
+Rewrite using `[spMap, spMap, spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   rw [spMap, spMap, spMap, ← Spec.map_comp]
   rfl
 
+/- English proof (translation)
+Establish `e` using `congrArg (fun φ => φ.hom (u : A)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom f))`. Conclude with `e.symm`.
+-/
 theorem appTop_unitOn {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (u : Aˣ) :
     (spMap f).appTop.hom (unitOn u).val = (unitOn (Units.map f.toMonoidHom u)).val := by
   have e := congrArg (fun φ => φ.hom (u : A)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom f))
   exact e.symm
 
+/- English proof (translation)
+Use `⟨?_, fun χ => corr_of_val D.P.isLB fun y J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[hq.1, (hg 0).1, Category.id_comp, Hom.one_def, DegPre.zeroT, Over.comp_left, Over.comp_left]`. Use `congr 1`. Establish `e₁` using `Over.w (toUnit (TF (R := R) F))`. Establish `e₂` using `Over.w (toUnit (Over.mk (spMap ((algebraMap (FractionRing R) F).comp (algebraMap R (FractionRing R))))))`.
+
+Simplify using `only [Over.mk_hom] at e₁ e₂`. Rewrite using `[← Category.comp_id (toUnit (TF (R := R) F)).left, ← Category.comp_id (toUnit (Over.mk _)).left]`. Conclude with `e₁.trans ((spMap_comp _ _).symm.trans e₂.symm)`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[hq.2 χ y J hJ, val_pull hJ, Category.id_comp, GlobalTheory.TorusTorsion.TorusVal.val_eq (hg χ) _ hJ]`.
+
+Conclude with `gs_unit (𝟙 _) y ⊤ trivial (unitOn (τ (Multiplicative.ofAdd χ)))`.
+-/
 theorem isPullF_torusPt {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F]
     [Algebra (FractionRing R) F] (τ : Multiplicative D.X →* Fˣ)
     (g : GtPt D (Over.mk (spMap ((algebraMap (FractionRing R) F).comp (algebraMap R (FractionRing R))))))
@@ -58,6 +77,23 @@ theorem isPullF_torusPt {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F :
     rw [hq.2 χ y J hJ, val_pull hJ, Category.id_comp, GlobalTheory.TorusTorsion.TorusVal.val_eq (hg χ) _ hJ]
     exact gs_unit (𝟙 _) y ⊤ trivial (unitOn (τ (Multiplicative.ofAdd χ)))
 
+/- English proof (translation)
+Introduce `E _ _ _ H R _ _ _ t P _ hR k hk`. Take `⟨N, g₀, x₀, hfin, -, -, hU, htors, hform⟩` from `GlobalTheory.WholeBaseFinitePart.exists_torsion_toG E H R hR t P k hk`. Set `u : ∀ (A : Type) [CommRing A] (_ : Multiplicative P.D.toPre.X →* Aˣ), P.D.toPre.X →+ Additive Γ(Sp A, ⊤)ˣ` to `fun A _ τ => AddMonoidHom.mk' (fun χ => Additive.ofMul (unitOn (τ (Multiplicative.ofAdd χ)))) (fun χ χ' => by`. Simplify using `only [ofAdd_add, map_mul, unitOn, ofMul_mul])`. Establish `hu : ∀ (A : Type) [CommRing A] (τ : Multiplicative P.D.toPre.X →* Aˣ), τ ^ k = 1 → k • u A τ = 0`.
+
+Introduce `A _ τ hτ`. Use `AddMonoidHom.ext fun χ => Additive.toMul.injective ?_` and prove the remaining obligations. Establish `e : (τ (Multiplicative.ofAdd χ)) ^ k = 1` using `by rw [← MonoidHom.pow_apply, hτ, MonoidHom.one_apply]`. Simplify using `only [u, AddMonoidHom.nsmul_apply, AddMonoidHom.mk'_apply, toMul_nsmul, toMul_ofMul, unitOn, ← map_pow, e, map_one, AddMonoidHom.zero_apply, toMul_zero]`. Establish `ex : ∀ (A : Type) [CommRing A] (a : R →+* A) (τ : Multiplicative P.D.toPre.X →* Aˣ), ∃ g : GtPt P.D.toPre (Over.mk (spMap a)), ∀ χ, TorusVal g χ (unitOn (τ (Multiplicative.ofAdd χ)))`.
+
+Introduce `A _ a τ`. Take `⟨g, hg⟩` from `GlobalTheory.TorusTorsion.exists_torusPt (D := P.D.toPre) (T := Over.mk (spMap a)) (u A τ)`. Conclude with `⟨g, hg⟩`. Use `choose gT hgT using ex`. Establish `ex₂ : ∀ (A : Type) [CommRing A] (a : R →+* A) (τ : Multiplicative P.D.toPre.X →* Aˣ), τ ^ k = 1 → ∃! h : Over.mk (spMap a) ⟶ N, GtPt.IsPull h.left g₀ (gT A a τ)`.
+
+Introduce `A _ a τ hτ`. Take `⟨g', h₁, h₂⟩` from `GlobalTheory.TorusTorsion.exists_nsmul_zero k (u A τ) (hu A τ hτ) (T := Over.mk (spMap a)) (g := gT A a τ) (hgT A a τ)`. Conclude with `hU _ _ ⟨g', h₁, h₂⟩`. Use `choose hT hhT hTu using ex₂`. Use `⟨fun A _ a τ hτ => hT A a τ hτ ≫ x₀, fun A _ a τ hτ => ?_, fun A A' _ _ a a' f τ hτ τ' hτ' ha hτf => ?_, fun A A' _ _ a ha a' f t₀ m₀ τ hτ z ha' hz => ?_, fun F _ _ _ a τ hτ q ha hq hqt => ?_⟩` and prove the remaining obligations.
+
+Use `show (hT A a τ hτ ≫ x₀) ^ k = 1`. Rewrite using `[← MonObj.comp_pow, htors, MonObj.comp_one]`. Substitute `ha` using the available equality. Set `ρ : Over.mk (spMap (f.comp a)) ⟶ Over.mk (spMap a)` to `Over.homMk (spMap f) (spMap_comp a f).symm`. Establish `hρ : GtPt.IsPull ρ.left (gT A a τ) (gT A' (f.comp a) τ')` using `GlobalTheory.TorusTorsion.isPull_of_units ρ (hgT A a τ) (hgT A' _ τ') fun χ => by`.
+
+Use `(appTop_unitOn f _).trans ?_` and prove the remaining obligations. Use `congr 2`. Conclude with `Units.ext (hτf _).symm`. Establish `e` using `hTu A' _ τ' hτ' (ρ ≫ hT A a τ hτ) (isPull_trans (hhT A a τ hτ) hρ)`. Use `show (hT A' (f.comp a) τ' hτ' ≫ x₀).left = spMap f ≫ (hT A a τ hτ ≫ x₀).left`.
+
+Rewrite using `[← e]`. Both sides reduce to the same expression. Substitute `ha'` using the available equality. Conclude with `GlobalTheory.T.classified_torusTorsionPoint_eq_uniformisationTorus E H R t P N g₀ x₀ hform A A' a ha f t₀ m₀ τ z hz (gT A' _ τ) (hgT A' _ τ) (hT A' _ τ hτ) (hhT A' _ τ hτ)`. Substitute `ha` using the available equality.
+
+Establish `hx : OverGen F N (hT F _ τ hτ).left` using `(Over.w (hT F _ τ hτ)).trans (spMap_comp _ _)`. Establish `hp` using `isPullF_trans (hhT F _ τ hτ) (isPullF_torusPt τ (gT F _ τ) (hgT F _ τ) q.g hqt)`. Rewrite `hp` using `[Category.id_comp]`. Conclude with `GlobalTheory.WholeBaseFinitePart.generic E H R hR t P k hk N g₀ x₀ hfin htors hform F _ hx q hq hp`.
+-/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (t : SAB H (Sp R)) (P : PELUnif (maximalIdeal R) t) [CharZero R], AdmBase R (maximalIdeal R) → ∀ k : ℕ, 1 ≤ k →
     ∃ s : ∀ (A : Type) [CommRing A] (a : R →+* A) (τ : Multiplicative P.D.toPre.X →* Aˣ), τ ^ k = 1 → (Over.mk (spMap a) ⟶ t.G),
       (∀ (A : Type) [CommRing A] (a : R →+* A) τ h, s A a τ h ^ k = 1) ∧

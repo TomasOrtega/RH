@@ -1,17 +1,26 @@
 import Formalism.PeriodIntegrals.NormGramAtOrigin
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.OrthogonalFamilyExistence.ExistsOrthFamily
 
+/- English proof (translation)
+Simplify using `only [PI.NormGramAtOrigin.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+-/
 private lemma hform_add_right_orbital_bounds_conclusion {E : Type} [Field E] (σ : E →+* E) {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (x y z : Fin n → E) :
     PI.NormGramAtOrigin.hform σ J x (y + z) = PI.NormGramAtOrigin.hform σ J x y + PI.NormGramAtOrigin.hform σ J x z := by
   simp only [PI.NormGramAtOrigin.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [PI.NormGramAtOrigin.hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+-/
 private lemma hform_smul_right_orbital_bounds_conclusion {E : Type} [Field E] (σ : E →+* E) {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (x y : Fin n → E) (c : E) :
     PI.NormGramAtOrigin.hform σ J x (c • y) = c * PI.NormGramAtOrigin.hform σ J x y := by
   simp only [PI.NormGramAtOrigin.hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Simplify using `only [PI.NormGramAtOrigin.hform, Finset.sum_apply, Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma hform_sum_right' {E : Type} [Field E] (σ : E →+* E) {n k : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (x : Fin n → E) (f : Fin k → Fin n → E) :
     PI.NormGramAtOrigin.hform σ J x (∑ a, f a) = ∑ a, PI.NormGramAtOrigin.hform σ J x (f a) := by
@@ -20,11 +29,17 @@ private lemma hform_sum_right' {E : Type} [Field E] (σ : E →+* E) {n k : ℕ}
         Finset.sum_congr rfl fun i _ => Finset.sum_comm
     _ = _ := Finset.sum_comm
 
+/- English proof (translation)
+Simplify using `only [PI.NormGramAtOrigin.hform, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]`.
+-/
 private lemma Hf_sub_right' {E : Type} [Field E] (σ : E →+* E) {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (x y z : Fin n → E) :
     PI.NormGramAtOrigin.hform σ J x (y - z) = PI.NormGramAtOrigin.hform σ J x y - PI.NormGramAtOrigin.hform σ J x z := by
   simp only [PI.NormGramAtOrigin.hform, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Simplify using `only [PI.NormGramAtOrigin.hform, map_sum, map_mul, hσ]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => by rw [hJ j i]; ring`.
+-/
 private lemma hform_symm_of_involutive_of_hermitian {E : Type} [Field E] (σ : E →+* E) (hσ : ∀ a, σ (σ a) = a) {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (hJ : ∀ i j, σ (J j i) = J i j) (x y : Fin n → E) :
     σ (PI.NormGramAtOrigin.hform σ J x y) = PI.NormGramAtOrigin.hform σ J y x := by
@@ -32,6 +47,15 @@ private lemma hform_symm_of_involutive_of_hermitian {E : Type} [Field E] (σ : E
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => by rw [hJ j i]; ring
 
+/- English proof (translation)
+Establish `e1 : PI.NormGramAtOrigin.hform σ J w (w + σ t • y) = σ t * t`. Rewrite using `[hform_add_right_orbital_bounds_conclusion, hform_smul_right_orbital_bounds_conclusion, hw, ht, zero_add]`. Establish `e2 : PI.NormGramAtOrigin.hform σ J y w = σ t`. Rewrite using `[← hform_symm_of_involutive_of_hermitian σ hσ J hJ w y, ht]`. Establish `e3 : PI.NormGramAtOrigin.hform σ J y (w + σ t • y) = σ t`.
+
+Rewrite using `[hform_add_right_orbital_bounds_conclusion, hform_smul_right_orbital_bounds_conclusion, hy, e2, mul_zero, add_zero]`. Establish `e4 : PI.NormGramAtOrigin.hform σ J (w + σ t • y) w = t * σ t`. Rewrite using `[← hform_symm_of_involutive_of_hermitian σ hσ J hJ w, e1, map_mul, hσ]`. Establish `e5 : PI.NormGramAtOrigin.hform σ J (w + σ t • y) y = t`. Rewrite using `[← hform_symm_of_involutive_of_hermitian σ hσ J hJ y, e3, hσ]`.
+
+Rewrite using `[hform_add_right_orbital_bounds_conclusion, hform_smul_right_orbital_bounds_conclusion, e4, e5]`. Establish `hs : σ t ≠ 0`. Introduce `h`. Apply `ht0` to reduce the goal to its premises. Rewrite using `[← hσ t, h, map_zero]`.
+
+Establish `e6 : t * σ t + σ t * t = 2 * (t * σ t)` using `by ring`. Rewrite using `[e6]`. Conclude with `mul_ne_zero two_ne_zero (mul_ne_zero ht0 hs)`.
+-/
 private lemma hform_add_smul_self_ne_zero_of_isotropic_pair {E : Type} [Field E] [CharZero E] (σ : E →+* E) (hσ : ∀ a, σ (σ a) = a)
     {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (hJ : ∀ i j, σ (J j i) = J i j) (w y : Fin n → E)
     (hw : PI.NormGramAtOrigin.hform σ J w w = 0) (hy : PI.NormGramAtOrigin.hform σ J y y = 0) (t : E)
@@ -56,6 +80,9 @@ private lemma hform_add_smul_self_ne_zero_of_isotropic_pair {E : Type} [Field E]
   rw [e6]
   exact mul_ne_zero two_ne_zero (mul_ne_zero ht0 hs)
 
+/- English proof (translation)
+Take `⟨y, hy0, hy⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr (Matrix.det_eq_zero_of_row_eq_zero (A := Matrix.of fun (i j : Fin n) => if h : (i : ℕ) < k then A ⟨i, h⟩ j else 0) ⟨k, hk⟩ (fun j => by simp))`. Use `⟨y, hy0, fun a => ?_⟩` and prove the remaining obligations. Establish `h` using `congrFun hy ⟨a, lt_trans a.isLt hk⟩`. Simplify `h` using `[Matrix.mulVec, dotProduct]`.
+-/
 private lemma exists_ne_zero_mulVec_eq_zero_of_lt {E : Type} [Field E] {k n : ℕ} (hk : k < n) (A : Fin k → Fin n → E) :
     ∃ y : Fin n → E, y ≠ 0 ∧ ∀ a, ∑ j, A a j * y j = 0 := by
   obtain ⟨y, hy0, hy⟩ := Matrix.exists_mulVec_eq_zero_iff.mpr
@@ -66,6 +93,13 @@ private lemma exists_ne_zero_mulVec_eq_zero_of_lt {E : Type} [Field E] {k n : �
   have h := congrFun hy ⟨a, lt_trans a.isLt hk⟩
   simpa [Matrix.mulVec, dotProduct] using h
 
+/- English proof (translation)
+Establish `hJy : Matrix.mulVec J y ≠ 0` using `fun h => hJd (Matrix.exists_mulVec_eq_zero_iff.mp ⟨y, hy, h⟩)`. Take `⟨i, hi⟩` from `Function.ne_iff.mp hJy`. Use `⟨Pi.single i 1, ?_⟩` and prove the remaining obligations. Establish `e : PI.NormGramAtOrigin.hform σ J (Pi.single i 1) y = Matrix.mulVec J y i`. Unfold `PI.NormGramAtOrigin.hform`.
+
+Rewrite using `[Finset.sum_eq_single i]`. Simplify using `[Matrix.mulVec, dotProduct]`. Introduce `l _ hl`. Simplify using `[Pi.single_apply, hl]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ i) h`. Rewrite using `[e]`. Conclude with `hi`.
+-/
 private lemma exists_hform_ne_zero_of_det_ne_zero {E : Type} [Field E] (σ : E →+* E) {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (hJd : J.det ≠ 0) (y : Fin n → E) (hy : y ≠ 0) :
     ∃ z : Fin n → E, PI.NormGramAtOrigin.hform σ J z y ≠ 0 := by
@@ -83,6 +117,13 @@ private lemma exists_hform_ne_zero_of_det_ne_zero {E : Type} [Field E] (σ : E �
   rw [e]
   exact hi
 
+/- English proof (translation)
+Use `⟨z - ∑ a, (PI.NormGramAtOrigin.hform σ J (v a) z / PI.NormGramAtOrigin.hform σ J (v a) (v a)) • v a, fun b => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Hf_sub_right', hform_sum_right', Finset.sum_eq_single b]`. Rewrite using `[hform_smul_right_orbital_bounds_conclusion, div_mul_cancel₀ _ (hvd b), sub_self]`. Introduce `a _ hab`. Rewrite using `[hform_smul_right_orbital_bounds_conclusion, hvo b a (Ne.symm hab), mul_zero]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ b) h`. Rewrite using `[← hform_symm_of_involutive_of_hermitian σ hσ J hJ y0, Hf_sub_right', hform_sum_right']`. Establish `h0 : ∀ a, PI.NormGramAtOrigin.hform σ J y0 ((PI.NormGramAtOrigin.hform σ J (v a) z / PI.NormGramAtOrigin.hform σ J (v a) (v a)) • v a) = 0`. Introduce `a`.
+
+Rewrite using `[hform_smul_right_orbital_bounds_conclusion, ← hform_symm_of_involutive_of_hermitian σ hσ J hJ (v a) y0, hy0W a, map_zero, mul_zero]`. Simplify using `only [h0, Finset.sum_const_zero, sub_zero]`. Rewrite using `[hform_symm_of_involutive_of_hermitian σ hσ J hJ]`. Conclude with `hz`.
+-/
 private lemma hermC_ppos_col_castLE {E : Type} [Field E] (σ : E →+* E) (hσ : ∀ a, σ (σ a) = a) {n k : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (hJ : ∀ i j, σ (J j i) = J i j) (v : Fin k → Fin n → E)
     (hvo : ∀ a b, a ≠ b → PI.NormGramAtOrigin.hform σ J (v a) (v b) = 0)
@@ -106,6 +147,23 @@ private lemma hermC_ppos_col_castLE {E : Type} [Field E] (σ : E →+* E) (hσ :
     rw [hform_symm_of_involutive_of_hermitian σ hσ J hJ]
     exact hz
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `_`. Conclude with `⟨fun a => a.elim0, fun a => a.elim0, fun a => a.elim0⟩`.
+
+Consider the case `succ k ih`. Introduce `hk`. Take `⟨v, hvo, hvd⟩` from `ih (Nat.le_of_succ_le hk)`. Take `⟨y0, hy0, hW0⟩` from `exists_ne_zero_mulVec_eq_zero_of_lt (Nat.lt_of_succ_le hk) (fun a j => ∑ l, σ (v a l) * J l j)`. Establish `hy0W : ∀ a, PI.NormGramAtOrigin.hform σ J (v a) y0 = 0`.
+
+Introduce `a`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [PI.NormGramAtOrigin.hform, Finset.sum_mul]`. Conclude with `Finset.sum_comm`. Use `_ = 0 := hW0 a`.
+
+Take `⟨z, hz⟩` from `exists_hform_ne_zero_of_det_ne_zero σ J hJd y0 hy0`. Take `⟨p, hpW, hp⟩` from `hermC_ppos_col_castLE σ hσ J hJ v hvo hvd z y0 hy0W hz`. Establish `key : ∃ y, (∀ a, PI.NormGramAtOrigin.hform σ J (v a) y = 0) ∧ PI.NormGramAtOrigin.hform σ J y y ≠ 0`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+
+Use `hform_add_smul_self_ne_zero_of_isotropic_pair σ hσ J hJ p y0 (hcon p hpW) (hcon y0 hy0W) _ rfl hp (hcon _ fun a => ?_)` and prove the remaining obligations. Rewrite using `[hform_add_right_orbital_bounds_conclusion, hform_smul_right_orbital_bounds_conclusion, hpW a, hy0W a, mul_zero, add_zero]`. Take `⟨y, hyW, hyy⟩` from `key`. Use `⟨Fin.snoc (α := fun _ => Fin n → E) v y, fun a b hab => ?_, fun a => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rcases Fin.eq_castSucc_or_eq_last a with ⟨a, rfl⟩ | rfl <;>`.
+
+Break down `Fin.eq_castSucc_or_eq_last b with ⟨b, rfl⟩ | rfl` into its components or cases. Simplify using `only [Fin.snoc_castSucc]`. Conclude with `hvo a b fun h => hab (congrArg Fin.castSucc h)`. Simplify using `only [Fin.snoc_castSucc, Fin.snoc_last]`. Conclude with `hyW a`.
+
+Simplify using `only [Fin.snoc_castSucc, Fin.snoc_last]`. Rewrite using `[← hform_symm_of_involutive_of_hermitian σ hσ J hJ, hyW b, map_zero]`. Conclude with `absurd rfl hab`. Break down `Fin.eq_castSucc_or_eq_last a with ⟨a, rfl⟩ | rfl` into its components or cases. Simplify using `only [Fin.snoc_castSucc]`.
+
+Conclude with `hvd a`. Simplify using `only [Fin.snoc_last]`. Conclude with `hyy`.
+-/
 private lemma Hf_e_e_eq_ite {E : Type} [Field E] [CharZero E] (σ : E →+* E) (hσ : ∀ a, σ (σ a) = a)
     {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (hJ : ∀ i j, σ (J j i) = J i j) (hJd : J.det ≠ 0) :
     ∀ k, k ≤ n → ∃ v : Fin k → Fin n → E,
@@ -151,6 +209,15 @@ private lemma Hf_e_e_eq_ite {E : Type} [Field E] [CharZero E] (σ : E →+* E) (
       · simp only [Fin.snoc_last]
         exact hyy
 
+/- English proof (translation)
+Unfold `PI.NormGramAtOrigin.Statement`. Introduce `E _ _ _ n r hr J hJ hJd`. Establish `hσ : ∀ a : E, starRingEnd E (starRingEnd E a) = a` using `fun a => by simp`. Establish `hJ' : ∀ i j, starRingEnd E (J j i) = J i j` using `fun i j => by`. Rewrite using `[starRingEnd_apply]`.
+
+Conclude with `hJ i j`. Take `⟨v, hvo, hvd⟩` from `Hf_e_e_eq_ite (starRingEnd E) hσ J hJ' hJd r hr`. Use `⟨v, ?_⟩` and prove the remaining obligations. Establish `hg : PI.NormGramAtOrigin.gram (starRingEnd E) J v = Matrix.diagonal (fun a => PI.NormGramAtOrigin.hform (starRingEnd E) J (v a) (v a))`. Use extensionality with `a b`.
+
+Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using `[PI.NormGramAtOrigin.gram]`. Simplify using `[PI.NormGramAtOrigin.gram, Matrix.diagonal_apply_ne _ h, hvo a b h]`. Rewrite using `[hg, Matrix.det_diagonal]`.
+
+Conclude with `Finset.prod_ne_zero_iff.mpr fun a _ => hvd a`.
+-/
 theorem exists_nondegenerate : PI.NormGramAtOrigin.Statement := by
   unfold PI.NormGramAtOrigin.Statement
   intro E _ _ _ n r hr J hJ hJd

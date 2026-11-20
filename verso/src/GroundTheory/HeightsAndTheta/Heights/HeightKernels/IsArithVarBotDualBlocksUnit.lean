@@ -53,6 +53,9 @@ def DualLineIndex.Statement : Prop :=
       genIndex (Submodule.span (𝓞 K') (Set.range (dualPointCoord b v))).toAddSubgroup
         (1 : Submodule (𝓞 K') K').toAddSubgroup = 1
 
+/- English proof (translation)
+The claim follows from `dualBasisStandard`.
+-/
 example : Module.Basis Unit ℤ (dualLattice (HermLattice.standard ℚ 1)) := dualBasisStandard
 
 end

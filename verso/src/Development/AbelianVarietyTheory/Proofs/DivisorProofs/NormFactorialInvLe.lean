@@ -10,6 +10,11 @@ namespace GlobalTheory.JetExp
 
 variable {l : ℕ} [Fact l.Prime] {lam : algebraicClosure ℚ ℂ →+* ℂ_[l]}
 
+/- English proof (translation)
+Take `⟨hx, hx'⟩` from `hx`. Take `⟨hy, hy'⟩` from `hy`. Use `⟨mul_mem hx hy, ?_⟩` and prove the remaining obligations. Establish `e : (⟨x * y, mul_mem hx hy⟩ : algebraicClosure ℚ ℂ) = ⟨x, hx⟩ * ⟨y, hy⟩` using `rfl`. Establish `hl : (0 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).pos`.
+
+Rewrite using `[e, map_mul, norm_mul, Real.rpow_add hl]`. Conclude with `mul_le_mul hx' hy' (norm_nonneg _) (by positivity)`.
+-/
 theorem sz_mul {r r' : ℝ} {x y : ℂ} (hx : Sz l lam r x) (hy : Sz l lam r' y) : Sz l lam (r + r') (x * y) := by
   obtain ⟨hx, hx'⟩ := hx
   obtain ⟨hy, hy'⟩ := hy
@@ -19,13 +24,22 @@ theorem sz_mul {r r' : ℝ} {x y : ℂ} (hx : Sz l lam r x) (hy : Sz l lam r' y)
   rw [e, map_mul, norm_mul, Real.rpow_add hl]
   exact mul_le_mul hx' hy' (norm_nonneg _) (by positivity)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hx.1, hx.2.trans (Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast (Fact.out : l.Prime).one_lt.le) h)⟩`.
+-/
 theorem sz_mono {r r' : ℝ} {x : ℂ} (h : r ≤ r') (hx : Sz l lam r x) : Sz l lam r' x :=
   ⟨hx.1, hx.2.trans (Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast (Fact.out : l.Prime).one_lt.le) h)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨one_mem _, by have e : (⟨1, one_mem _⟩ : algebraicClosure ℚ ℂ) = 1 := rfl rw [e, map_one, norm_one, Real.rpow_zero]⟩`.
+-/
 theorem sz_one : Sz l lam 0 1 := ⟨one_mem _, by
   have e : (⟨1, one_mem _⟩ : algebraicClosure ℚ ℂ) = 1 := rfl
   rw [e, map_one, norm_one, Real.rpow_zero]⟩
 
+/- English proof (translation)
+Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simpa using (sz_one (l := l) (lam := lam))`. Consider the case `insert j t hj ih`. Rewrite using `[Finset.sum_insert hj, Finset.prod_insert hj]`. Conclude with `sz_mul (h j (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem sz_prod {ι : Type} (t : Finset ι) (r : ι → ℝ) (f : ι → ℂ) (h : ∀ i ∈ t, Sz l lam (r i) (f i)) :
     Sz l lam (∑ i ∈ t, r i) (∏ i ∈ t, f i) := by
   classical
@@ -35,6 +49,11 @@ theorem sz_prod {ι : Type} (t : Finset ι) (r : ι → ℝ) (f : ι → ℂ) (h
     rw [Finset.sum_insert hj, Finset.prod_insert hj]
     exact sz_mul (h j (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Establish `hp : l.Prime` using `Fact.out`. Establish `e1 : ((n.factorial : ℂ_[l])) = (((n.factorial : ℚ) : ℚ_[l]) : ℂ_[l])` using `by simp`. Rewrite using `[e1, PadicComplex.norm_extends', Padic.eq_padicNorm, padicNorm.eq_zpow_of_nonzero (by exact_mod_cast Nat.factorial_ne_zero n), padicValRat.of_nat]`. Establish `hv : padicValNat l n.factorial ≤ n`. Use `sub_one_mul_padicValNat_factorial (p := l) n` as an intermediate fact.
+
+Establish `h1 : 1 ≤ l - 1` using `by have := hp.two_le; omega`. Combine the equalities or inequalities in the displayed calculation. Establish `hl1 : (1 : ℝ) ≤ l` using `by exact_mod_cast hp.one_lt.le`. Rewrite using `[Rat.cast_zpow, Rat.cast_natCast, zpow_neg, inv_inv, zpow_natCast, Real.rpow_natCast]`. Conclude with `pow_le_pow_right₀ hl1 hv`.
+-/
 theorem norm_factorial_inv_le (n : ℕ) : ‖((n.factorial : ℂ_[l]))‖⁻¹ ≤ (l : ℝ) ^ (n : ℝ) := by
   have hp : l.Prime := Fact.out
   have e1 : ((n.factorial : ℂ_[l])) = (((n.factorial : ℚ) : ℚ_[l]) : ℂ_[l]) := by simp
@@ -49,6 +68,9 @@ theorem norm_factorial_inv_le (n : ℕ) : ‖((n.factorial : ℂ_[l]))‖⁻¹ �
   rw [Rat.cast_zpow, Rat.cast_natCast, zpow_neg, inv_inv, zpow_natCast, Real.rpow_natCast]
   exact pow_le_pow_right₀ hl1 hv
 
+/- English proof (translation)
+Establish `hm : ((n.factorial : ℂ)⁻¹) ∈ algebraicClosure ℚ ℂ` using `inv_mem (natCast_mem _ _)`. Use `⟨hm, ?_⟩` and prove the remaining obligations. Establish `e : (⟨(n.factorial : ℂ)⁻¹, hm⟩ : algebraicClosure ℚ ℂ) = ((n.factorial : algebraicClosure ℚ ℂ))⁻¹` using `by ext; simp`. Rewrite using `[e, map_inv₀, map_natCast, norm_inv]`. Conclude with `norm_factorial_inv_le n`.
+-/
 theorem sz_factorial_inv (n : ℕ) : Sz l lam (n : ℝ) ((n.factorial : ℂ)⁻¹) := by
   have hm : ((n.factorial : ℂ)⁻¹) ∈ algebraicClosure ℚ ℂ := inv_mem (natCast_mem _ _)
   refine ⟨hm, ?_⟩
@@ -57,6 +79,15 @@ theorem sz_factorial_inv (n : ℕ) : Sz l lam (n : ℝ) ((n.factorial : ℂ)⁻�
   rw [e, map_inv₀, map_natCast, norm_inv]
   exact norm_factorial_inv_le n
 
+/- English proof (translation)
+Introduce `hJ E _ _ _ _ I _ d φ s hφ hs z hz 𝔣 Λ h𝔣 hΛ l hl Q hQ hQl y hy _ _ lam Ω hΩ`. Take `⟨a, b, hab, hX⟩` from `hJ E I d φ s hφ hs z hz 𝔣 Λ h𝔣 hΛ l hl Q hQ hQl y hy lam Ω hΩ`. Use `⟨a, b, hab, fun g κ u hg hu => ?_⟩` and prove the remaining obligations. Establish `h1` using `hX g κ u hg hu`. Establish `h2 : Sz l lam ((∑ i, κ i : ℕ) : ℝ) (∏ i, ((κ i).factorial : ℂ)⁻¹)`.
+
+Rewrite using `[Nat.cast_sum]`. Conclude with `sz_prod _ _ _ fun i _ => sz_factorial_inv (κ i)`. Establish `e : iterD u g 0 * ∏ i, ((b i / a i) ^ κ i / (a i ^ (2 * s) * ((κ i).factorial : ℂ))) = (iterD u g 0 * ∏ i, ((b i / a i) ^ κ i / a i ^ (2 * s))) * ∏ i, ((κ i).factorial : ℂ)⁻¹`. Rewrite using `[mul_assoc, ← Finset.prod_mul_distrib]`. Use `congr 1`.
+
+Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[div_mul_eq_div_div, div_eq_mul_inv (_ / _)]`. Rewrite using `[e]`. Use `sz_mono ?_ (sz_mul h1 h2)` and prove the remaining obligations. Establish `hK : (0 : ℝ) ≤ ((∑ i, κ i : ℕ) : ℝ)` using `Nat.cast_nonneg _`.
+
+Apply the tactic sequence `split_ifs <;> nlinarith`.
+-/
 theorem expansion_of_jetInt : JetInt → Expansion := by
   classical
   intro hJ E _ _ _ _ I _ d φ s hφ hs z hz 𝔣 Λ h𝔣 hΛ l hl Q hQ hQl y hy _ _ lam Ω hΩ

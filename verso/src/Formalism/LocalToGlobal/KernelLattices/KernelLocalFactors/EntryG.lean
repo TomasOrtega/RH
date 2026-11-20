@@ -19,21 +19,56 @@ variable {E : Type} [Field E] [NumberField E] {H M : Type} [AddCommGroup H] [Mod
 def lrep (A B : Submodule (𝓞 E) H) (z : ↥A ⧸ B.comap A.subtype) : ↥A :=
   Function.surjInv (Submodule.Quotient.mk_surjective (B.comap A.subtype)) z
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem latSum_eq (A B : Submodule (𝓞 E) H) (F : H → M) : latSum A B F = ∑ᶠ z, F (lrep A B z : H) := rfl
 
+/- English proof (translation)
+The claim follows from `Function.surjInv_eq _ z`.
+-/
 theorem mk_lrep (A B : Submodule (𝓞 E) H) (z : ↥A ⧸ B.comap A.subtype) : Submodule.Quotient.mk (lrep A B z) = z :=
   Function.surjInv_eq _ z
 
+/- English proof (translation)
+Establish `h` using `mk_lrep A B (Submodule.Quotient.mk a)`. Rewrite `h` using `[Submodule.Quotient.eq]`. Simplify using `using h`.
+-/
 theorem lrep_mk_sub (A B : Submodule (𝓞 E) H) (a : ↥A) :
     ((lrep A B (Submodule.Quotient.mk a) : ↥A) : H) - (a : H) ∈ B := by
   have h := mk_lrep A B (Submodule.Quotient.mk a)
   rw [Submodule.Quotient.eq] at h
   simpa using h
 
+/- English proof (translation)
+Rewrite using `[latSum_eq, latSum_eq]`. Conclude with `finsum_congr fun z => h _ (lrep A B z).2`.
+-/
 theorem latSum_congr (A B : Submodule (𝓞 E) H) {F G : H → M} (h : ∀ x ∈ A, F x = G x) : latSum A B F = latSum A B G := by
   rw [latSum_eq, latSum_eq]
   exact finsum_congr fun z => h _ (lrep A B z).2
 
+/- English proof (translation)
+Set `φ : (↥A ⧸ B.comap A.subtype) × (↥B ⧸ C.comap B.subtype) → (↥A ⧸ C.comap A.subtype)` to `fun zt => Submodule.Quotient.mk ⟨(lrep A B zt.1 : H) + (lrep B C zt.2 : H), A.add_mem (lrep A B zt.1).2 (hBA (lrep B C zt.2).2)⟩`. Establish `hinj : Function.Injective φ`. Introduce and unpack `⟨z, t⟩ ⟨z', t'⟩ h`. Establish `h1 : ((lrep A B z : H) + (lrep B C t : H)) - ((lrep A B z' : H) + (lrep B C t' : H)) ∈ C`. Establish `h0` using `(Submodule.Quotient.eq _).1 h`.
+
+Simplify using `using h0`. Establish `hz : z = z'`. Rewrite using `[← mk_lrep A B z, ← mk_lrep A B z', Submodule.Quotient.eq]`. Use `show ((lrep A B z - lrep A B z' : ↥A) : H) ∈ B`. Establish `e : ((lrep A B z - lrep A B z' : ↥A) : H) = (((lrep A B z : H) + (lrep B C t : H)) - ((lrep A B z' : H) + (lrep B C t' : H))) - (lrep B C t : H) + (lrep B C t' : H)`.
+
+Use `push_cast`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `B.add_mem (B.sub_mem (hCB h1) (lrep B C t).2) (lrep B C t').2`. Substitute `hz` using the available equality.
+
+Establish `ht : t = t'`. Rewrite using `[← mk_lrep B C t, ← mk_lrep B C t', Submodule.Quotient.eq]`. Use `show ((lrep B C t - lrep B C t' : ↥B) : H) ∈ C`. Establish `e : ((lrep B C t - lrep B C t' : ↥B) : H) = ((lrep A B z : H) + (lrep B C t : H)) - ((lrep A B z : H) + (lrep B C t' : H))`. Use `push_cast`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `h1`. Rewrite using `[ht]`. Establish `hsurj : Function.Surjective φ`.
+
+Introduce `w`. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ w`. Establish `hb : (a : H) - (lrep A B (Submodule.Quotient.mk a) : H) ∈ B`. Use `B.neg_mem (lrep_mk_sub A B a)` as an intermediate fact. Simplify using `using this`.
+
+Use `⟨(Submodule.Quotient.mk a, Submodule.Quotient.mk ⟨_, hb⟩), ?_⟩` and prove the remaining obligations. Use `show Submodule.Quotient.mk _ = Submodule.Quotient.mk a`. Rewrite using `[Submodule.Quotient.eq]`. Establish `h2` using `lrep_mk_sub B C ⟨_, hb⟩`. Use `show (lrep A B (Submodule.Quotient.mk a) : H) + (lrep B C (Submodule.Quotient.mk ⟨_, hb⟩) : H) - (a : H) ∈ C`.
+
+Establish `e : (lrep A B (Submodule.Quotient.mk a) : H) + (lrep B C (Submodule.Quotient.mk ⟨_, hb⟩) : H) - (a : H) = (lrep B C (Submodule.Quotient.mk ⟨_, hb⟩) : H) - ((a : H) - (lrep A B (Submodule.Quotient.mk a) : H))` using `by abel`. Rewrite using `[e]`. Conclude with `h2`. Establish `hG : ∀ a : ↥A, F (lrep A C (Submodule.Quotient.mk a) : H) = F a`. Introduce `a`.
+
+Establish `h` using `hF (a : H) _ (lrep_mk_sub A C a)`. Rewrite `h` using `[add_sub_cancel]`. Then use the resulting hypothesis. Establish `: Finite ((↥A ⧸ B.comap A.subtype) × (↥B ⧸ C.comap B.subtype))` using `Finite.of_injective φ hinj`. Establish `: Finite (↥A ⧸ B.comap A.subtype)` using `Finite.prod_left (↥B ⧸ C.comap B.subtype)`. Establish `: Finite (↥B ⧸ C.comap B.subtype)` using `Finite.prod_right (↥A ⧸ B.comap A.subtype)`.
+
+Set `_` to `Fintype.ofFinite (↥A ⧸ C.comap A.subtype)`. Set `_` to `Fintype.ofFinite (↥A ⧸ B.comap A.subtype)`. Set `_` to `Fintype.ofFinite (↥B ⧸ C.comap B.subtype)`. Simplify using `only [latSum_eq, finsum_eq_sum_of_fintype]`. Rewrite using `[← (Function.Bijective.sum_comp ⟨hinj, hsurj⟩ fun w => F (lrep A C w : H)), Fintype.sum_prod_type]`.
+
+Use `Finset.sum_congr rfl fun z _ => Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Conclude with `hG _`.
+-/
 theorem latSum_tower (A B C : Submodule (𝓞 E) H) (hCB : C ≤ B) (hBA : B ≤ A) (F : H → M)
     (hF : ∀ x c, c ∈ C → F (x + c) = F x) [Finite (↥A ⧸ C.comap A.subtype)] :
     latSum A C F = latSum A B fun x => latSum B C fun y => F (x + y) := by
@@ -95,17 +130,26 @@ theorem latSum_tower (A B C : Submodule (𝓞 E) H) (hCB : C ≤ B) (hBA : B ≤
   refine Finset.sum_congr rfl fun z _ => Finset.sum_congr rfl fun t _ => ?_
   exact hG _
 
+/- English proof (translation)
+Set `_` to `Fintype.ofFinite (↥A ⧸ B.comap A.subtype)`. Rewrite using `[latSum_eq, latSum_eq, finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, Finset.mul_sum]`.
+-/
 theorem latSum_mul_left {R : Type} [NonUnitalNonAssocSemiring R] (A B : Submodule (𝓞 E) H) [Finite (↥A ⧸ B.comap A.subtype)] (r : R) (F : H → R) :
     latSum A B (fun x => r * F x) = r * latSum A B F := by
   let _ := Fintype.ofFinite (↥A ⧸ B.comap A.subtype)
   rw [latSum_eq, latSum_eq, finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, Finset.mul_sum]
 
+/- English proof (translation)
+Introduce `w hw`. Take `⟨y, hy, rfl⟩` from `(mem_mulLat (c * k) M w).1 hw`. Use `(mem_mulLat c M _).2 ⟨(k : 𝓞 E) • y, M.smul_mem _ hy, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul, Nat.cast_mul]`.
+-/
 theorem mulLat_mul_le (c k : ℕ) (M : Submodule (𝓞 E) H) : mulLat (c * k) M ≤ mulLat c M := by
   intro w hw
   obtain ⟨y, hy, rfl⟩ := (mem_mulLat (c * k) M w).1 hw
   refine (mem_mulLat c M _).2 ⟨(k : 𝓞 E) • y, M.smul_mem _ hy, ?_⟩
   rw [smul_smul, Nat.cast_mul]
 
+/- English proof (translation)
+Introduce `w hw`. Take `⟨y, hy, rfl⟩` from `(mem_mulLat c M w).1 hw`. Conclude with `(mem_divLat d M _).2 (M.smul_mem _ (M.smul_mem _ hy))`.
+-/
 theorem mulLat_le_divLat (c d : ℕ) (M : Submodule (𝓞 E) H) : mulLat c M ≤ divLat d M := by
   intro w hw
   obtain ⟨y, hy, rfl⟩ := (mem_mulLat c M w).1 hw
@@ -118,10 +162,16 @@ section Regroup
 variable {X : Fields} (A : Amb X) {a b : ℕ} (S : Finset (HeightOneSpectrum (𝓞 X.E)))
   (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b))
 
+/- English proof (translation)
+The claim follows from `kerFin S N N' hN hN' cA c hA hc`.
+-/
 theorem fin_div (hN : IsSdLat N) (hN' : IsSdLat N') (cA c : ℕ) (hA : 0 < cA) (hc : 0 < c) :
     Finite (↥(divLat cA (homAt S N N')) ⧸ (mulLat c (homAt S N N')).comap (divLat cA (homAt S N N')).subtype) :=
   kerFin S N N' hN hN' cA c hA hc
 
+/- English proof (translation)
+The claim follows from `lattice_classes_finite_refinement X a b S N N' c c' hN hN' hc hc'`.
+-/
 theorem fin_mul (hN : IsSdLat N) (hN' : IsSdLat N') (c c' : ℕ) (hc : 0 < c) (hc' : 0 < c') :
     Finite (↥(mulLat c (homAt S N N')) ⧸ (mulLat (c * c') (homAt S N N')).comap (mulLat c (homAt S N N')).subtype) :=
   lattice_classes_finite_refinement X a b S N N' c c' hN hN' hc hc'

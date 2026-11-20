@@ -19,6 +19,31 @@ namespace GlobalTheory.Poinc.DiagPull
 
 open MonObj in
 
+/- English proof (translation)
+Take `⟨c, hc, pr, hpr, huniv, hbun, hε⟩` from `hS`. Take `⟨⟨c', hc'⟩, -⟩` from `GlobalTheory.siegPre_pullback g n _ (zetaAway n) T T' (u ≫ F.s) ((f ≫ u) ≫ F.s) f c (by rw [Category.assoc])`. Establish `hc'u : SiegPB c' F.univ (f ≫ u)` using `GlobalTheory.SiegelPullComp.pb_comp hc hc'`. Take `⟨ψ, ψ₂, hψ, hsq, hw, -⟩` from `hc'`. Establish `hp` using `hψ.1`.
+
+Establish `hφp` using `hφ.1`. Establish `wa : ∀ a, (φ ≫ (pr a).left) ≫ c.A.hom = P'.A.hom ≫ f` using `fun a => by`. Rewrite using `[Category.assoc, Over.w, hφp.w]`. Set `pr' : Fin 8 → (P'.A ⟶ c'.A)` to `fun a => Over.homMk (hp.lift (φ ≫ (pr a).left) P'.A.hom (wa a)) (hp.lift_snd _ _ _)`. Establish `hpr'ψ : ∀ a, (pr' a).left ≫ ψ = φ ≫ (pr a).left` using `fun a => hp.lift_fst _ _ _`.
+
+Establish `push_comp : ∀ {T₁ : Over T'} (x : T₁ ⟶ P'.A) a, pushPt hψ.1.w (x ≫ pr' a) = pushPt hφ.1.w x ≫ pr a` using `fun x a => Over.OverMorphism.ext (by show (x.left ≫ (pr' a).left) ≫ ψ = (x.left ≫ φ) ≫ (pr a).left`. Rewrite using `[Category.assoc, hpr'ψ, Category.assoc])`. Establish `pmψ : ∀ {T₁ : Over T'} (x y : T₁ ⟶ c'.A), pushPt hψ.1.w (x * y) = pushPt hψ.1.w x * pushPt hψ.1.w y` using `fun x y => map_mul (pushHom hψ _) x y`. Establish `pmφ : ∀ {T₁ : Over T'} (x y : T₁ ⟶ P'.A), pushPt hφ.1.w (x * y) = pushPt hφ.1.w x * pushPt hφ.1.w y` using `fun x y => map_mul (pushHom hφ _) x y`. Establish `injψ : ∀ {T₁ : Over T'} {x y : T₁ ⟶ c'.A}, pushPt hψ.1.w x = pushPt hψ.1.w y → x = y` using `fun e => GlobalTheory.SiegelPull.push_injective hψ _ e`.
+
+Establish `injφ : ∀ {T₁ : Over T'} {x y : T₁ ⟶ P'.A}, pushPt hφ.1.w x = pushPt hφ.1.w y → x = y` using `fun e => GlobalTheory.SiegelPull.push_injective hφ _ e`. Establish `hmon : ∀ a, IsMonHom (pr' a)` using `fun a => by haveI := hpr a`. Use `isMonHom_of_mul _ fun T₁ x y => injψ ?_` and prove the remaining obligations. Rewrite using `[push_comp, pmψ, push_comp, push_comp, pmφ]`. Conclude with `MonObj.mul_comp _ _ _`.
+
+Establish `huniv' : ∀ (T₁ : Over T') (y : Fin 8 → (T₁ ⟶ c'.A)), ∃! x : T₁ ⟶ P'.A, ∀ a, x ≫ pr' a = y a`. Introduce `T₁ y`. Take `⟨x₀, hx₀, hu₀⟩` from `huniv (Over.mk (T₁.hom ≫ f)) (fun a => pushPt hψ.1.w (y a))`. Set `x : T₁ ⟶ P'.A` to `Over.homMk (hφp.lift x₀.left T₁.hom (Over.w x₀)) (hφp.lift_snd _ _ _)`. Establish `hx : pushPt hφ.1.w x = x₀` using `Over.OverMorphism.ext (hφp.lift_fst _ _ _)`.
+
+Establish `key : ∀ z : T₁ ⟶ P'.A, (∀ a, z ≫ pr' a = y a) ↔ ∀ a, pushPt hφ.1.w z ≫ pr a = pushPt hψ.1.w (y a)` using `fun z => forall_congr' fun a => ⟨fun h => by rw [← push_comp, h], fun h => injψ (by rw [push_comp, h])⟩`. Use `⟨x, (key x).2 (by rw [hx]; exact hx₀), fun z hz => injφ ?_⟩` and prove the remaining obligations. Conclude with `(hu₀ _ ((key z).1 hz)).trans hx.symm`. Establish `hq : ∀ ab : Fin 8 × Fin 8, (lift (pr' ab.1) (pr' ab.2)).left ≫ ψ₂ = φ ≫ (lift (pr ab.1) (pr ab.2)).left` using `fun ab => (Category.id_comp _).symm.trans (GlobalTheory.SiegelPull.lift_sq hsq (T := Over.mk (φ ≫ P.A.hom)) (T' := P'.A) (𝟙 P'.A.left) (pr' ab.1) (pr' ab.2) (Z := P.A) φ (pr ab.1) (pr ab.2) ((Category.id_comp _).trans (hpr'ψ ab.1)) ((Category.id_comp _).trans (hpr'ψ ab.2)))`. Use `⟨c', hc'u, pr', hmon, huniv', ?_, fun E a => injψ ?_⟩` and prove the remaining obligations.
+
+Use `swap`. Establish `e₁ : pushPt hφ.1.w (ε' E) = pushPt hφ.1.w (𝟙 P'.A) ≫ ε E` using `Over.OverMorphism.ext (by show (ε' E).left ≫ φ = ((𝟙 P'.A : P'.A ⟶ P'.A).left ≫ φ) ≫ (ε E).left`. Rewrite using `[hε', Over.id_left, Category.id_comp])`. Rewrite using `[push_comp, e₁, Category.assoc, hε]`. Express the relevant statement in the definitionally equal form `diagPrecomp (M := c.A) (pushPt hφ.1.w (𝟙 P'.A)) _ = pushHom hψ _ _`.
+
+Rewrite using `[map_list_prod, map_list_prod, List.map_map, List.map_map]`. Use `congr 1`. Use `List.map_congr_left fun b _ => ?_` and prove the remaining obligations. Use `(map_zpow (diagPrecomp (M := c.A) (pushPt hφ.1.w (𝟙 P'.A))) (pr b) (E a b)).trans (Eq.trans ?_ (map_zpow (pushHom hψ P'.A) (pr' b) (E a b)).symm)` and prove the remaining obligations. Use `congr 1`.
+
+Establish `e₂` using `push_comp (𝟙 P'.A) b`. Rewrite `e₂` using `[Category.id_comp]`. Conclude with `e₂.symm`. Set `ε₀ : Fin 8 × Fin 8 → ℤ` to `fun ab => W ab.1 ab.2`. Set `q` to `fun ab : Fin 8 × Fin 8 => (lift (pr ab.1) (pr ab.2)).left`.
+
+Set `q'` to `fun ab : Fin 8 × Fin 8 => (lift (pr' ab.1) (pr' ab.2)).left`. Establish `l0 : (LB.LinComb c.P q ε₀).IsLB` using `ReciprocityTheory.ChartRestriction.G.DVR.linComb_isLB c.P c.isLB q ε₀`. Establish `l1 : (LB.LinComb c.P (fun ab => φ ≫ q ab) ε₀).IsLB` using `ReciprocityTheory.ChartRestriction.G.DVR.linComb_isLB c.P c.isLB _ ε₀`. Establish `l2 : (LB.LinComb (c.P.pull ψ₂) q' ε₀).IsLB` using `ReciprocityTheory.ChartRestriction.G.DVR.linComb_isLB (c.P.pull ψ₂) (pull_isLB c.isLB ψ₂) q' ε₀`. Establish `l3 : (LB.LinComb c'.P q' ε₀).IsLB` using `ReciprocityTheory.ChartRestriction.G.DVR.linComb_isLB c'.P c'.isLB q' ε₀`.
+
+Establish `refl1 : LBIso (LB.LinComb c.P (fun ab => φ ≫ q ab) ε₀) (LB.LinComb c.P (fun ab => φ ≫ q ab) ε₀)` using `ReciprocityTheory.ChartRestriction.G.Pdiv.PullbackComparison.gen_refl _ l1`. Establish `i2 : LBIso (P.L.pull φ) ((LB.LinComb c.P q ε₀).pull φ)` using `GlobalTheory.SiegelPullComp.iso_pull φ hbun`. Establish `i3 : LBIso ((LB.LinComb c.P q ε₀).pull φ) (LB.LinComb c.P (fun ab => φ ≫ q ab) ε₀)` using `LBIso.chartPull (chartPullOut c.P q ε₀ φ _ fun _ => rfl) (chartPullId _) refl1`. Establish `i4 : LBIso (LB.LinComb c.P (fun ab => φ ≫ q ab) ε₀) (LB.LinComb (c.P.pull ψ₂) q' ε₀)` using `LBIso.chartPull (chartPullId _) (chartPullLinComb c.P ψ₂ q' (fun ab => φ ≫ q ab) ε₀ (𝟙 _) fun ab => (hq ab).trans (Category.id_comp _).symm) refl1`. Establish `i5 : LBIso (LB.LinComb (c.P.pull ψ₂) q' ε₀) (LB.LinComb c'.P q' ε₀)` using `GlobalTheory.PowPrimitive.lbIso_linComb hw.symm q' ε₀`.
+
+Establish `h1` using `pull_isLB P.isLB φ`. Establish `h2` using `pull_isLB l0 φ`. Conclude with `LBIso.trans P'.isLB h1 l3 hL (LBIso.trans h1 h2 l3 i2 (LBIso.trans h2 l1 l3 i3 (LBIso.trans l1 l2 l3 i4 i5)))`.
+-/
 theorem isDiagEnd_pull {g n : ℕ} (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ)
     {T T' : Scheme.{0}} (P : PolAV T) (P' : PolAV T') (u : T ⟶ F.X) (f : T' ⟶ T) (φ : P'.A.left ⟶ P.A.left)
     (ε : Matrix (Fin 8) (Fin 8) ℤ → (P.A ⟶ P.A)) (ε' : Matrix (Fin 8) (Fin 8) ℤ → (P'.A ⟶ P'.A))
@@ -103,6 +128,13 @@ theorem isDiagEnd_pull {g n : ℕ} (F : SFam g n (zetaAway n)) (W : Matrix (Fin 
   have h2 := pull_isLB l0 φ
   exact LBIso.trans P'.isLB h1 l3 hL (LBIso.trans h1 h2 l3 i2 (LBIso.trans h2 l1 l3 i3 (LBIso.trans l1 l2 l3 i4 i5)))
 
+/- English proof (translation)
+Introduce `g n F W R _ P ε u' hS K _ yK`. Set `A : PolAV (Sp K)` to `GlobalTheory.StrictPull.polPull P (spMap yK)`. Set `φ : A.A.left ⟶ P.A.left` to `pullback.fst P.A.hom (spMap yK)`. Establish `hφ : IsGrpPullback A.A P.A (spMap yK) φ` using `isGrpPullback_pullback P.A (spMap yK)`. Establish `hL : LBIso A.L (P.L.pull φ)` using `ReciprocityTheory.ChartRestriction.G.Pdiv.PullbackComparison.gen_refl _ A.isLB`.
+
+Establish `w : ∀ E, (φ ≫ (ε E).left) ≫ P.A.hom = A.A.hom ≫ spMap yK` using `fun E => by`. Rewrite using `[Category.assoc, Over.w, hφ.1.w]`. Set `εA : Matrix (Fin 8) (Fin 8) ℤ → (A.A ⟶ A.A)` to `fun E => Over.homMk (hφ.1.lift (φ ≫ (ε E).left) A.A.hom (w E)) (hφ.1.lift_snd _ _ _)`. Establish `hεA : ∀ E, (εA E).left ≫ φ = φ ≫ (ε E).left` using `fun E => hφ.1.lift_fst _ _ _`. Use `⟨A, φ, hφ, hL, εA, isDiagEnd_pull F W P A u' (spMap yK) φ ε εA hS hφ hL hεA, fun Y x x' E h => ?_⟩` and prove the remaining obligations.
+
+Use `Over.OverMorphism.ext (hφ.1.hom_ext ?_ (by rw [Over.w, Over.w]))` and prove the remaining obligations. Rewrite using `[h, Over.comp_left, Category.assoc, hεA]`.
+-/
 theorem exists_pull_field : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (R : Type) [CommRing R] (P : PolAV (Sp R)) (ε : Matrix (Fin 8) (Fin 8) ℤ → (P.A ⟶ P.A)) (u' : Sp R ⟶ F.X), IsDiagEnd F W P u' ε → ∀ (K : Type) [Field K] (yK : R →+* K), ∃ (A : PolAV (Sp K)) (φ : A.A.left ⟶ P.A.left) (_ : IsGrpPullback A.A P.A (spMap yK) φ) (_ : LBIso A.L (P.L.pull φ)) (εA : Matrix (Fin 8) (Fin 8) ℤ → (A.A ⟶ A.A)), IsDiagEnd F W A (spMap yK ≫ u') εA ∧ ∀ (Y : Over (Sp K)) (x x' : Y ⟶ A.A) (E : Matrix (Fin 8) (Fin 8) ℤ), x'.left ≫ φ = x.left ≫ φ ≫ (ε E).left → x' = x ≫ εA E := by
   intro g n F W R _ P ε u' hS K _ yK
   let A : PolAV (Sp K) := GlobalTheory.StrictPull.polPull P (spMap yK)

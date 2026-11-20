@@ -12,6 +12,9 @@ section Fock
 
 variable {σ : Type}
 
+/- English proof (translation)
+Unfold `Formalism.REAL.fockF`. Use `Finset.sum_subset hS fun m _ hm => ?_` and prove the remaining obligations. Rewrite using `[notMem_support_iff.mp hm]`. Simplify using the standard rewrite rules.
+-/
 theorem tf_eq_sum (f g : MvPolynomial σ ℂ) (S : Finset (σ →₀ ℕ)) (hS : f.support ⊆ S) :
     Formalism.REAL.fockF f g = ∑ m ∈ S, f.coeff m * star (g.coeff m) * ((∏ k ∈ m.support, (m k).factorial : ℕ) : ℂ) := by
   unfold Formalism.REAL.fockF
@@ -19,6 +22,9 @@ theorem tf_eq_sum (f g : MvPolynomial σ ℂ) (S : Finset (σ →₀ ℕ)) (hS :
   rw [notMem_support_iff.mp hm]
   simp
 
+/- English proof (translation)
+Rewrite using `[tf_eq_sum (f + f') g (f.support ∪ f'.support) support_add, tf_eq_sum f g (f.support ∪ f'.support) Finset.subset_union_left, tf_eq_sum f' g (f.support ∪ f'.support) Finset.subset_union_right, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tf_add_left (f f' g : MvPolynomial σ ℂ) :
     Formalism.REAL.fockF (f + f') g = Formalism.REAL.fockF f g + Formalism.REAL.fockF f' g := by
   classical
@@ -29,6 +35,9 @@ theorem tf_add_left (f f' g : MvPolynomial σ ℂ) :
   rw [coeff_add]
   ring
 
+/- English proof (translation)
+Rewrite using `[tf_eq_sum (c • f) g f.support support_smul, tf_eq_sum f g f.support le_rfl, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tf_smul_left (c : ℂ) (f g : MvPolynomial σ ℂ) :
     Formalism.REAL.fockF (c • f) g = c * Formalism.REAL.fockF f g := by
   rw [tf_eq_sum (c • f) g f.support support_smul, tf_eq_sum f g f.support le_rfl, Finset.mul_sum]
@@ -36,6 +45,9 @@ theorem tf_smul_left (c : ℂ) (f g : MvPolynomial σ ℂ) :
   rw [coeff_smul, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Unfold `Formalism.REAL.fockF`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_add, star_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tf_add_right (f g g' : MvPolynomial σ ℂ) :
     Formalism.REAL.fockF f (g + g') = Formalism.REAL.fockF f g + Formalism.REAL.fockF f g' := by
   unfold Formalism.REAL.fockF
@@ -44,6 +56,9 @@ theorem tf_add_right (f g g' : MvPolynomial σ ℂ) :
   rw [coeff_add, star_add]
   ring
 
+/- English proof (translation)
+Unfold `Formalism.REAL.fockF`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_smul, smul_eq_mul, star_mul']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tf_smul_right (c : ℂ) (f g : MvPolynomial σ ℂ) :
     Formalism.REAL.fockF f (c • g) = star c * Formalism.REAL.fockF f g := by
   unfold Formalism.REAL.fockF
@@ -55,8 +70,14 @@ theorem tf_smul_right (c : ℂ) (f g : MvPolynomial σ ℂ) :
 def tfB : MvPolynomial σ ℂ →ₗ[ℂ] MvPolynomial σ ℂ →ₗ⋆[ℂ] ℂ :=
   LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) Formalism.REAL.fockF tf_add_left tf_smul_left tf_add_right tf_smul_right
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tfB_apply (f g : MvPolynomial σ ℂ) : tfB f g = Formalism.REAL.fockF f g := rfl
 
+/- English proof (translation)
+Rewrite using `[tf_eq_sum f g (f.support ∪ g.support) Finset.subset_union_left, Formalism.L2.DIV.fockS_eq_sum g f (f.support ∪ g.support) Finset.subset_union_right]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Unfold `Formalism.L2.DIV.mfact`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tf_eq_fockS (f g : MvPolynomial σ ℂ) : Formalism.REAL.fockF f g = Formalism.L2.DIV.fockS g f := by
   classical
   rw [tf_eq_sum f g (f.support ∪ g.support) Finset.subset_union_left,
@@ -65,6 +86,11 @@ theorem tf_eq_fockS (f g : MvPolynomial σ ℂ) : Formalism.REAL.fockF f g = For
   unfold Formalism.L2.DIV.mfact
   ring
 
+/- English proof (translation)
+Rewrite using `[tf_eq_fockS g f]`. Unfold `Formalism.REAL.fockF Formalism.L2.DIV.fockS`. Rewrite using `[star_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Unfold `Formalism.L2.DIV.mfact`.
+
+Simplify using `only [star_mul', star_star, star_natCast]`.
+-/
 theorem tf_star (f g : MvPolynomial σ ℂ) : star (Formalism.REAL.fockF f g) = Formalism.REAL.fockF g f := by
   rw [tf_eq_fockS g f]
   unfold Formalism.REAL.fockF Formalism.L2.DIV.fockS
@@ -73,6 +99,9 @@ theorem tf_star (f g : MvPolynomial σ ℂ) : star (Formalism.REAL.fockF f g) = 
   unfold Formalism.L2.DIV.mfact
   simp only [star_mul', star_star, star_natCast]
 
+/- English proof (translation)
+Rewrite using `[← tfB_apply]`. Simplify using `only [map_sum, LinearMap.sum_apply, map_smul, LinearMap.smul_apply, map_smulₛₗ, tfB_apply, smul_eq_mul, dotProduct, mulVec, Matrix.of_apply, Pi.star_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [starRingEnd_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tf_quad {k : ℕ} (w : Fin k → MvPolynomial σ ℂ) (x : Fin k → ℂ) :
     star x ⬝ᵥ (Matrix.of fun i j => Formalism.REAL.fockF (w j) (w i)) *ᵥ x =
       Formalism.REAL.fockF (∑ j, x j • w j) (∑ i, x i • w i) := by
@@ -83,6 +112,9 @@ theorem tf_quad {k : ℕ} (w : Fin k → MvPolynomial σ ℂ) (x : Fin k → ℂ
   simp only [starRingEnd_apply]
   ring
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [conjTranspose_apply, Matrix.sub_apply, Matrix.smul_apply, Matrix.of_apply, smul_eq_mul, star_sub, star_mul', tf_star]`. Rewrite using `[Complex.star_def, Complex.conj_ofReal]`.
+-/
 theorem tf_herm {σ' : Type} {k : ℕ} (w : Fin k → MvPolynomial σ ℂ) (v : Fin k → MvPolynomial σ' ℂ) (r : ℝ) :
     (((r : ℂ) • Matrix.of fun i j => Formalism.REAL.fockF (w j) (w i)) - Matrix.of fun i j => Formalism.REAL.fockF (v j) (v i)).IsHermitian := by
   ext i j
@@ -90,6 +122,11 @@ theorem tf_herm {σ' : Type} {k : ℕ} (w : Fin k → MvPolynomial σ ℂ) (v : 
     tf_star]
   rw [Complex.star_def, Complex.conj_ofReal]
 
+/- English proof (translation)
+Rewrite using `[posSemidef_iff_dotProduct_mulVec]`. Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [conjTranspose_apply, Matrix.of_apply, tf_star]`. Rewrite using `[tf_quad, Formalism.L2.Ker.nm_fockF_self]`.
+
+Conclude with `Complex.zero_le_real.2 (Formalism.L2.Ker.nm_fockF_nonneg _)`.
+-/
 theorem tf_gram_psd {k : ℕ} (w : Fin k → MvPolynomial σ ℂ) :
     (Matrix.of fun i j => Formalism.REAL.fockF (w j) (w i)).PosSemidef := by
   rw [posSemidef_iff_dotProduct_mulVec]
@@ -104,6 +141,11 @@ section Had
 
 variable {ι : Type} [Fintype ι] {k : ℕ}
 
+/- English proof (translation)
+Rewrite using `[posSemidef_iff_dotProduct_mulVec]`. Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `: star x ⬝ᵥ (Matrix.of fun (_ _ : Fin k) => (1 : ℂ)) *ᵥ x = star (∑ i, x i) * ∑ i, x i`.
+
+Simplify using `only [dotProduct, mulVec, Matrix.of_apply, one_mul, star_sum, Finset.sum_mul, Pi.star_apply]`. Rewrite using `[this]`. Conclude with `star_mul_self_nonneg _`.
+-/
 theorem tf_ones_psd : (Matrix.of fun (_ _ : Fin k) => (1 : ℂ)).PosSemidef := by
   rw [posSemidef_iff_dotProduct_mulVec]
   refine ⟨?_, fun x => ?_⟩
@@ -113,6 +155,17 @@ theorem tf_ones_psd : (Matrix.of fun (_ _ : Fin k) => (1 : ℂ)).PosSemidef := b
     rw [this]
     exact star_mul_self_nonneg _
 
+/- English proof (translation)
+Establish `hA : ∀ τ, (A τ).PosSemidef` using `fun τ => by simpa using (hAB τ).add (hB τ)`. It suffices to establish `h : ∀ s : Finset ι, ((Matrix.of fun i j => ∏ τ ∈ s, A τ i j) - Matrix.of fun i j => ∏ τ ∈ s, B τ i j).PosSemidef ∧ (Matrix.of fun i j => ∏ τ ∈ s, A τ i j).PosSemidef from (h Finset.univ).1`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`.
+
+Simplify using `only [Finset.prod_empty, sub_self]`. Conclude with `⟨PosSemidef.zero, tf_ones_psd⟩`. Consider the case `insert t s ht ih`. Establish `eA : (Matrix.of fun i j => ∏ τ ∈ insert t s, A τ i j) = A t ⊙ Matrix.of fun i j => ∏ τ ∈ s, A τ i j`. Use extensionality with `i j`.
+
+Simplify using `[Finset.prod_insert ht, hadamard]`. Establish `eB : (Matrix.of fun i j => ∏ τ ∈ insert t s, B τ i j) = B t ⊙ Matrix.of fun i j => ∏ τ ∈ s, B τ i j`. Use extensionality with `i j`. Simplify using `[Finset.prod_insert ht, hadamard]`. Establish `e : A t ⊙ (Matrix.of fun i j => ∏ τ ∈ s, A τ i j) - B t ⊙ (Matrix.of fun i j => ∏ τ ∈ s, B τ i j) = (A t - B t) ⊙ (Matrix.of fun i j => ∏ τ ∈ s, A τ i j) + B t ⊙ ((Matrix.of fun i j => ∏ τ ∈ s, A τ i j) - Matrix.of fun i j => ∏ τ ∈ s, B τ i j)`.
+
+Use extensionality with `i j`. Simplify using `[hadamard]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[eA, eB, e]`.
+
+Conclude with `((hAB t).hadamard ih.2).add ((hB t).hadamard ih.1)`. Rewrite using `[eA]`. Conclude with `(hA t).hadamard ih.2`.
+-/
 theorem tf_had_sub (A B : ι → Matrix (Fin k) (Fin k) ℂ) (hB : ∀ τ, (B τ).PosSemidef) (hAB : ∀ τ, (A τ - B τ).PosSemidef) :
     ((Matrix.of fun i j => ∏ τ, A τ i j) - Matrix.of fun i j => ∏ τ, B τ i j).PosSemidef := by
   classical
@@ -140,6 +193,9 @@ theorem tf_had_sub (A B : ι → Matrix (Fin k) (Fin k) ℂ) (hB : ∀ τ, (B τ
 
 end Had
 
+/- English proof (translation)
+Rewrite using `[tf_eq_fockS]`. Establish `h` using `Formalism.L2.DIV.fockSymTensor_holds ℂ ι n g f`. Use `(h.trans ?_)` and prove the remaining obligations. Conclude with `Finset.prod_congr rfl fun τ _ => (tf_eq_fockS _ _).symm`.
+-/
 theorem tf_ten {ι : Type} [Fintype ι] {n : ℕ} (f g : ι → MvPolynomial (Fin n × Fin n) ℂ) :
     Formalism.REAL.fockF (Formalism.MainNotions.product_first_zeroth_parts.ten f) (Formalism.MainNotions.product_first_zeroth_parts.ten g) = ∏ τ, Formalism.REAL.fockF (f τ) (g τ) := by
   rw [tf_eq_fockS]
@@ -147,6 +203,25 @@ theorem tf_ten {ι : Type} [Fintype ι] {n : ℕ} (f g : ι → MvPolynomial (Fi
   refine (h.trans ?_)
   exact Finset.prod_congr rfl fun τ _ => (tf_eq_fockS _ _).symm
 
+/- English proof (translation)
+Introduce `ι _ n n' V F c hF P hP`. Take `⟨k, a, p, hsum⟩` from `Submodule.mem_span_set'.1 hP`. Use `choose f hfV hfeq using fun i => (p i).2`. Establish `hs : ∀ (r : ℂ) (M : Matrix (Fin k) (Fin k) ℂ) (v : Fin k → ℂ), (r • M) *ᵥ v = r • (M *ᵥ v)`. Introduce `r M v`.
+
+Use extensionality with `i`. Simplify using `only [mulVec, dotProduct, Matrix.smul_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Establish `hd : ∀ (r : ℂ) (v w : Fin k → ℂ), v ⬝ᵥ (r • w) = r * (v ⬝ᵥ w)`. Introduce `r v w`.
+
+Simplify using `only [dotProduct, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Establish `hP' : P = ∑ i, a i • Formalism.MainNotions.product_first_zeroth_parts.ten (f i)`. Rewrite using `[← hsum]; exact Finset.sum_congr rfl fun i _ => by rw [hfeq i]`. Establish `hblk : Formalism.MainNotions.product_first_zeroth_parts.blk (fun τ => F τ) P = ∑ i, a i • Formalism.MainNotions.product_first_zeroth_parts.ten (fun τ => F τ (f i τ))`.
+
+Rewrite using `[hP', map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_smul, Formalism.MainNotions.product_first_zeroth_parts.blk_ten]`. Use `set G : ι → Matrix (Fin k) (Fin k) ℂ := fun τ => Matrix.of fun i j => Formalism.REAL.fockF (f j τ) (f i τ) with hG`. Use `set H : ι → Matrix (Fin k) (Fin k) ℂ := fun τ => Matrix.of fun i j => Formalism.REAL.fockF (F τ (f j τ)) (F τ (f i τ)) with hH`. Establish `qP : Formalism.REAL.fockF P P = star a ⬝ᵥ (Matrix.of fun i j => ∏ τ, G τ i j) *ᵥ a`.
+
+Use `tf_quad (fun i => Formalism.MainNotions.product_first_zeroth_parts.ten (f i)) a` as an intermediate fact. Simplify using `only [tf_ten] at this`. Rewrite using `[hP', ← this]`. Both sides reduce to the same expression. Establish `qB : Formalism.REAL.fockF (Formalism.MainNotions.product_first_zeroth_parts.blk (fun τ => F τ) P) (Formalism.MainNotions.product_first_zeroth_parts.blk (fun τ => F τ) P) = star a ⬝ᵥ (Matrix.of fun i j => ∏ τ, H τ i j) *ᵥ a`.
+
+Use `tf_quad (fun i => Formalism.MainNotions.product_first_zeroth_parts.ten (fun τ => F τ (f i τ))) a` as an intermediate fact. Simplify using `only [tf_ten] at this`. Rewrite using `[hblk, ← this]`. Both sides reduce to the same expression. Establish `hBpsd : ∀ τ, (H τ).PosSemidef` using `fun τ => tf_gram_psd (fun i => F τ (f i τ))`.
+
+Establish `hABpsd : ∀ τ, ((((c τ ^ 2 : ℝ) : ℂ) • G τ) - H τ).PosSemidef`. Introduce `τ`. Rewrite using `[posSemidef_iff_dotProduct_mulVec]`. Use `⟨tf_herm (fun i => f i τ) (fun i => F τ (f i τ)) (c τ ^ 2), fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[sub_mulVec, dotProduct_sub, hs, hd, tf_quad, tf_quad]`.
+
+Establish `hlin : ∑ i, x i • F τ (f i τ) = F τ (∑ i, x i • f i τ)` using `by rw [map_sum]; simp [map_smul]`. Establish `hmem : ∑ i, x i • f i τ ∈ V τ` using `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hfV i τ)`. Rewrite using `[hlin, Formalism.L2.Ker.nm_fockF_self (∑ i, x i • f i τ), Formalism.L2.Ker.nm_fockF_self (F τ (∑ i, x i • f i τ)), ← Complex.ofReal_mul, ← Complex.ofReal_sub]`. Conclude with `Complex.zero_le_real.2 (sub_nonneg.2 (hF τ _ hmem))`. Establish `key` using `(tf_had_sub (fun τ => ((c τ ^ 2 : ℝ) : ℂ) • G τ) H hBpsd hABpsd).dotProduct_mulVec_nonneg a`.
+
+Establish `eA : (Matrix.of fun i j => ∏ τ, (((c τ ^ 2 : ℝ) : ℂ) • G τ) i j) = (((∏ τ, c τ ^ 2 : ℝ) : ℂ)) • Matrix.of fun i j => ∏ τ, G τ i j`. Use extensionality with `i j`. Simplify using `only [Matrix.of_apply, Matrix.smul_apply, smul_eq_mul, Finset.prod_mul_distrib, Complex.ofReal_prod]`. Rewrite `key` using `[eA, sub_mulVec, dotProduct_sub, hs, hd, ← qP, ← qB, Formalism.L2.Ker.nm_fockF_self P, Formalism.L2.Ker.nm_fockF_self (Formalism.MainNotions.product_first_zeroth_parts.blk (fun τ => F τ) P), ← Complex.ofReal_mul, ← Complex.ofReal_sub, Complex.zero_le_real]`. Conclude with `sub_nonneg.1 key`.
+-/
 theorem blkFockLe : BlockFockBound := by
   intro ι _ n n' V F c hF P hP
   classical
@@ -199,6 +274,9 @@ theorem blkFockLe : BlockFockBound := by
     ← Complex.ofReal_sub, Complex.zero_le_real] at key
   exact sub_nonneg.1 key
 
+/- English proof (translation)
+The claim follows from `nfAll_brTen_le blkFockLe Tf hB P hP`.
+-/
 theorem nfAll_brTen_le' {D : Formalism.BasicNotions.D7} {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : ∀ i, (D.mem u).C.cls i → Ch i}
     (Tf : Formalism.L2.Forms.FormsTiedSym D u Ch chOf) (hB : Formalism.L2.Ker.BeOnTie D u)
     (P : MvPolynomial (D.what₂.Tau × Fin (D.R.N D.R.m) × Fin (D.R.N D.R.m)) ℂ) (hP : P ∈ Formalism.L2.Forms.CSpan ((D.fm u).lam D.R.m)) :

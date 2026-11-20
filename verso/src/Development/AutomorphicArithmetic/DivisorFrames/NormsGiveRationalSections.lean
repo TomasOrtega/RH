@@ -10,6 +10,19 @@ open scoped Classical
 
 open private UpperTheory.VertGlob.exists_lift from Development.AutomorphicArithmetic.DivisorFrames.ArithmeticFunctionInducedBound
 
+/- English proof (translation)
+Introduce `F _ _ Y C A V L m a h`. Take `⟨s, hs, hR, -⟩` from `UpperTheory.VertGlob.exists_lift V L h`. Take `⟨W, hW, hE⟩` from `(A.D.isEqn_genericPoint 1).exists_nhds`. Establish `hu (x : Y.X) (hx : x ∈ W) : UnitAt x (eqn A.D x : Y.Fn)`. Simplify using `using (hE x hx).iff_unitAt.1 (Base.isEqn_eqn A.D x)`.
+
+Establish `hf (x : Y.X) (hx : x ∈ W) : UnitAt x (genAt A.D x ^ m)`. Rewrite using `[genAt, Units.val_inv_eq_inv_val]`. Use `clear hR h`. Proceed by induction on `m with`. Consider the case `zero => simpa using unitAt_one x`.
+
+Consider the case `succ n ih => rw [pow_succ]`. Conclude with `ih.mul (hu x hx).inv`. Use `⟨s, fun v => ⟨hs, W, hW, fun e y z yt i hy e₁ e₂ hU _ => ?_⟩⟩` and prove the remaining obligations. Use `haveI := CoverHt.isPreimmersion_j V`. Take `⟨hw, H⟩` from `hR v e y z yt i e₁ e₂ hU`.
+
+Take `⟨hπ, eφ⟩` from `V.φ_eq_fnMap`. Establish `hb : V.π (below z) = below y.1` using `by rw [← e₁]; rfl`. Establish `hfy` using `hf _ hy`. Establish `hfz : UnitAt (below z) (V.φ (genAt A.D (below y.1) ^ m))`. Rewrite using `[eφ]`.
+
+Conclude with `unitAt_fnMap_of V.π hπ (by rw [hb]; exact hfy)`. Establish `hs'` using `hfz.inv.mul hw`. Rewrite `hs'` using `[inv_mul_cancel_left₀ hfz.ne_zero]`. Establish `hval : TrueGeo.valAt z (V.φ (genAt A.D (below y.1) ^ m)) = TrueGeo.valAt y.1 (genAt A.D (below y.1) ^ m)`. Rewrite using `[eφ, SmallSec.valAt_fnMap V.π hπ z (by rw [hb]; exact hfy.regAt), e₁]`.
+
+Rewrite `H` using `[SmallSec.valAt_mul hfz.regAt hs'.regAt, map_mul, Real.log_mul (e.w.pos (Res.valAt_ne_zero hfz)).ne' (e.w.pos (Res.valAt_ne_zero hs')).ne', hval, genAt, Units.val_inv_eq_inv_val, Res.valAt_pow (hu _ hy).inv.regAt, LineNorm.Neg.valAt_inv (hu _ hy), AbsoluteValue.map_pow, map_inv₀, …`. Use `beta_reduce at H ⊢`. Rewrite using `[VertCmp.lam, ModelFn.valAt_comp V.j (Isom.j_gen_specializes V) z, mul_add, H]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.norms_give_rational_sections :
     ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (C : CxSt F) (A : Adl C Y) (V : Mean4O.Cover Y) (L : HermLB V.p) (m : ℕ) (a : ∀ σ : F →+* ℂ, Pts Y σ → ℝ), Norms V L (fun x => genAt A.D x ^ m) a (fun v e y => (m : ℝ) * A.lg v e y) → ∃ s : L.B.ι → V.X.functionFieldˣ, ∀ v, CRead V v L.B s fun e y => (m : ℝ) * VertCmp.lam A v e y := by
   intro F _ _ Y C A V L m a h

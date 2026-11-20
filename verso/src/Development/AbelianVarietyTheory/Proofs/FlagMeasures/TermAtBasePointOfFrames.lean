@@ -21,10 +21,24 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
+/- English proof (translation)
+Simplify using `[frame, FlagG.fvec]`.
+-/
 theorem frame_castSucc {T : D.host.E} (F : LFlag (VS D) D.R.rS T) (i : Fin D.R.rS) :
     frame F i.castSucc = F.fl.e i := by
   simp [frame, FlagG.fvec]
 
+/- English proof (translation)
+Establish `ex : ∀ b : Fin (D.R.rS + 1), ∃ l : Fin D.R.rS →₀ D.host.E, l ∈ Finsupp.supported D.host.E D.host.E {i : Fin D.R.rS | i.val < b.val} ∧ Finsupp.linearCombination D.host.E G.fl.e l = g (frame F b) - frame G b` using `fun b => (Finsupp.mem_span_image_iff_linearCombination D.host.E).1 (h b)`. Use `choose l hl hx using ex`. Establish `hz : ∀ b (i : Fin D.R.rS), ¬ i.val < b.val → l b i = 0` using `fun b i hi => (Finsupp.mem_supported' D.host.E (l b)).1 (hl b) i hi`. Use `⟨fun a b => (if a = b then 1 else 0) + (if h : a.val < D.R.rS then l b ⟨a.val, h⟩ else 0), ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `a b hba dsimp only`.
+
+Rewrite using `[if_neg (ne_of_gt hba), zero_add]`. Use `split_ifs with h'`. Conclude with `hz b _ (by show ¬ a.val < b.val; have := Fin.lt_def.1 hba; omega)`. Both sides reduce to the same expression. Introduce `a dsimp only`.
+
+Rewrite using `[if_pos rfl]`. Use `split_ifs with h'`. Rewrite using `[hz a _ (by simp), add_zero]`. Rewrite using `[add_zero]`. Introduce `b`.
+
+Rewrite using `[Formalism.L2.SG.Saturated.frame_mapL]`. Simplify using `only [add_smul, Finset.sum_add_distrib, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `only [Fin.coe_castSucc, Fin.is_lt, dif_pos, Fin.val_last, lt_irrefl, dif_neg, not_false_eq_true, zero_smul, add_zero, frame_castSucc, Fin.eta]`. Establish `e` using `hx b`.
+
+Rewrite `e` using `[Finsupp.linearCombination_apply, Finsupp.sum_fintype _ _ (by simp)]`. Rewrite using `[e]`. Normalize the expressions using the abelian group laws.
+-/
 theorem tri_of_adapt {T : D.host.E} (g : GV D) (F G : LFlag (VS D) D.R.rS T) (hg : g ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT)
     (h : ∀ a : Fin (D.R.rS + 1), g (frame F a) - frame G a ∈ Xflag G a.val) :
     GlobalTheory.LocOver.Tri D.host.E (frame G) (frame (Formalism.L2.SG.Saturated.mapL g hg F)) := by
@@ -60,6 +74,15 @@ theorem tri_of_adapt {T : D.host.E} (g : GV D) (F G : LFlag (VS D) D.R.rS T) (hg
     rw [e]
     abel
 
+/- English proof (translation)
+Introduce `D X Y u u' F F' w hZ hG t Λ hTG`. Take `⟨g, ⟨hg, h1⟩, ⟨-, h2⟩, -⟩` from `hTG`. Establish `hT : ((Tu D u : ℕ) : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 (D.mem u).A.T_prime.ne_zero`. Establish `hT' : ((Tu D u' : ℕ) : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 (D.mem u').A.T_prime.ne_zero`. Establish `hcell : IsInCell (ZhatOM (ZhatL F F')) w`.
+
+Use `⟨1, 1, fun i j => ⟨fun hij => Matrix.one_apply_ne (ne_of_lt hij), fun hij => by subst hij; exact Matrix.one_apply_eq i⟩, fun i j => ⟨fun hij => Matrix.one_apply_ne (ne_of_gt hij), fun hij => by subst hij; exact Matrix.one_apply_eq i⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hZ, Matrix.one_mul, Matrix.mul_one]`. Take `⟨-, hB⟩` from `GlobalTheory.T.exists_unitriangular_frames_gram_eq_cell_point D F F' w hT hT' hcell`. Take `⟨hcell2, hG2⟩` from `hB _ _ (tri_of_adapt g (lf D (X.Fu u)) F hg h1) (tri_of_adapt g t.frame F' hg h2)`. Use `replace hcell2 : IsInCell (ZhatOM (ZhatL (lf D (X.Fu u)) t.frame)) w := (congrArg (fun Z => IsInCell (ZhatOM Z) w) (Formalism.L2.SG.Saturated.zhat_mapL g hg (lf D (X.Fu u)) t.frame)).mp hcell2`.
+
+Use `replace hG2 : Gval (lf D (X.Fu u)) t.frame = Gval F F' := (Formalism.L2.SG.Saturated.gval_mapL g hg (lf D (X.Fu u)) t.frame).symm.trans hG2`. Establish `hGt : t.G ≠ 0` using `by rw [Formalism.L2.SG.Pf.SatGram.gterm_G Y t, hG2]; exact hG`. Establish `hat : t.toTerm.atPt w` using `⟨t.frame, ⟨t.rep.2.2.2.2, rfl⟩, fun h0 => hG (hG2.symm.trans h0), hcell2⟩`. Establish `hrel : t.toTerm.relevant` using `Formalism.L2.SG.Pf.FinXP.atPtRelevant_holds D u u' _ _ t.toTerm w hat`. Establish `hsp` using `Formalism.L2.SG.PairVal.ptOf_spec t.toTerm ⟨w, hat, hrel⟩`.
+
+Establish `heq` using `Formalism.L2.SG.Pf.cellPtUnique_of Formalism.L2.SG.Pf.cell_point_uniqueness (Formalism.L2.SG.Closed.TermFun_holds D u u') (Y.rowsOK u) t.toTerm _ _ hsp hat`. Conclude with `⟨hGt, by show toPts (Formalism.L2.SG.PairVal.ptOf t.toTerm) = toPts w; rw [heq]⟩`.
+-/
 theorem term_at_base_point : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word),
     ∀ (F : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E))
       (w : Point D.host.E (D.R.rS + 1)), ZhatOM (ZhatL F F') = ptMat w → Gval F F' ≠ 0 →

@@ -16,6 +16,9 @@ namespace Data
 
 variable (d : Data K ι Ω WT A)
 
+/- English proof (translation)
+The claim follows from `HtGenericPt 𝒜 d hd h`.
+-/
 theorem exists_generic (hd : d.AxH 𝒜) (h : d.S1) :
     (∃ x : Fin (d.N + 1) → K, ∀ c, d.wx x c ≠ 0) ∧
     (∃ ta' : ∀ c, A c, ∀ c, ta' c ∈ 𝒜 c d.wF ∧ ta' c ≠ 0) :=

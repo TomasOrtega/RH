@@ -28,6 +28,13 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 variable {L : LocE F E} {r k : ℕ} (S : Frames L r k)
 
+/- English proof (translation)
+Establish `key : ∀ w : S.MW, w ∈ S.refA J Λ → ((w.1, -w.2) : S.MW) ∈ S.refA J Λ`. Introduce `w hw`. Rewrite `hw`, the goal using `[Frames.refA, AddSubgroup.mem_prod]`. Conclude with `⟨hw.1, neg_mem hw.2⟩`. Use extensionality with `w`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, rfl⟩`. Conclude with `key v hv`. Introduce `hw`. Use `⟨(w.1, -w.2), key w hw, ?_⟩` and prove the remaining obligations.
+
+Use `show ((w.1, - -w.2) : S.MW) = w`. Simplify using the standard rewrite rules.
+-/
 theorem refA_map_flip (J : ℕ) (Λ : Submodule L.O S.V) :
     (S.refA J Λ).map (flipMv (S.V × S.V) S.V E).toAddMonoidHom = S.refA J Λ := by
   have key : ∀ w : S.MW, w ∈ S.refA J Λ → ((w.1, -w.2) : S.MW) ∈ S.refA J Λ := by
@@ -43,6 +50,13 @@ theorem refA_map_flip (J : ℕ) (Λ : Submodule L.O S.V) :
     show ((w.1, - -w.2) : S.MW) = w
     simp
 
+/- English proof (translation)
+Establish `h1 : S.h (-w.2.1) (-w.2.1) = S.h w.2.1 w.2.1`. Simplify using `[Frames.h, hf]`. Establish `h2 : algebraMap F E 2⁻¹ + algebraMap F E 2⁻¹ = 1`. Rewrite using `[← map_add, ← map_one (algebraMap F E)]`. Use `congr 1`.
+
+Evaluate the numerical expressions. Establish `h3 : L.cj (S.sOf w) = S.h w.2.1 w.2.1 - S.sOf w`. Rewrite using `[← hs]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3]`.
+
+Use `show algebraMap F E 2⁻¹ * S.h (-w.2.1) (-w.2.1) + -w.2.2 = _`. Rewrite using `[h1, Frames.sOf]`. Take the linear combination `(S.h w.2.1 w.2.1) * h2`.
+-/
 theorem sOf_flip [CharZero F] (w : S.MW) (hs : S.sOf w + L.cj (S.sOf w) = S.h w.2.1 w.2.1) :
     S.sOf (w.1, -w.2) = L.cj (S.sOf w) := by
   have h1 : S.h (-w.2.1) (-w.2.1) = S.h w.2.1 w.2.1 := by
@@ -64,6 +78,13 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 variable {L : LocE F E} {r k : ℕ} (S : Frames L r k)
 
+/- English proof (translation)
+Take `⟨hm, he⟩` from `hw`. Take `⟨Λ₁, h1, -, h3, h4, -⟩` from `GlobalTheory.T.hermitianDoubleCoset_move_term_weight_character L r k S j β βJ d Λ hT hF w.1.1 w.1.2 w.2.1 (S.sOf w) hm`. Establish `hΛ : Λ₁ = Λ'` using `SetLike.coe_injective (h1.trans he.symm)`. Substitute `hΛ` using the available equality. Establish `hs` using `sOf_flip S w hm.2.2.2.2.2.2.2`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show S.IsMove (j + 1) d Λ₁ w.1.1 w.1.2 (-w.2.1) (S.sOf (w.1, -w.2))`. Rewrite using `[hs]`. Conclude with `h4 hF'`. Use `show (Λ : Set S.V) = S.moved Λ₁ w.1.1 (-w.2.1) (S.sOf (w.1, -w.2))`.
+
+Rewrite using `[hs]`. Conclude with `h3.symm`.
+-/
 theorem mvTo_flip (j : Fin r) (β βJ : ℕ) (d : S.Datum) (Λ Λ' : Submodule L.O S.V)
     (hT : S.IsTerm d Λ) (hF : S.InFF β (j + 1) βJ d Λ) (hF' : S.InFF β (j + 1) βJ d Λ')
     (w : S.MW) (hw : S.MvTo (j + 1) d Λ Λ' w) : S.MvTo (j + 1) d Λ' Λ (w.1, -w.2) := by
@@ -82,6 +103,17 @@ theorem mvTo_flip (j : Fin r) (β βJ : ℕ) (d : S.Datum) (Λ Λ' : Submodule L
     exact h3.symm
 end
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ E _ _ _ L r k S j β βJ d Λ hT hF Λ' hT' hF'`. Take `⟨hr, hne⟩` from `GlobalTheory.T.hermitianFrames_reference_subgroups_relIndex_eq L r k S j β βJ d Λ hT hF Λ' hT' hF'`. Take `⟨hmap, hchg⟩` from `@GlobalTheory.T.indexMeasureIntegral_transport_and_change S.MW _ S.MW _`. Establish `e1` using `(hmap (flipMv (S.V × S.V) S.V E) (S.refA (j + 1) Λ) (ind (S.MvTo (j + 1) d Λ' Λ))).2`. Rewrite `e1` using `[refA_map_flip]`.
+
+Establish `e2 : (fun w => ind (S.MvTo (j + 1) d Λ' Λ) (flipMv (S.V × S.V) S.V E w)) = ind (S.MvTo (j + 1) d Λ Λ')`. Use function extensionality and compare the values at `w`. Establish `hiff : S.MvTo (j + 1) d Λ' Λ (flipMv (S.V × S.V) S.V E w) ↔ S.MvTo (j + 1) d Λ Λ' w`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Establish `h'` using `mvTo_flip S j β βJ d Λ' Λ hT' hF' hF _ h`. Establish `hw : (((flipMv (S.V × S.V) S.V E w).1, -(flipMv (S.V × S.V) S.V E w).2) : S.MW) = w` using `by show ((w.1, - -w.2) : S.MW) = w`. Simplify using the standard rewrite rules. Rewrite `h'` using `[hw]`. Then use the resulting hypothesis. Introduce `h`.
+
+Conclude with `mvTo_flip S j β βJ d Λ Λ' hT hF hF' w h`. Simplify using `only [ind, hiff]`. Rewrite `e1` using `[e2]`. Establish `e3` using `(hchg (S.refA (j + 1) Λ) (S.refA (j + 1) Λ') (ind (S.MvTo (j + 1) d Λ' Λ)) hne (hr ▸ hne)).2`. Rewrite `e3` using `[← hr]`.
+
+Establish `e4` using `mul_right_cancel₀ (Nat.cast_ne_zero.mpr hne) e3`. Unfold `Frames.kern`. Rewrite using `[e4, e1]`.
+-/
 theorem kern_symm : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), ∀ (j : Fin r) (β βJ : ℕ) (d : S.Datum) (Λ : Submodule L.O S.V), S.IsTerm d Λ → S.InFF β (j + 1) βJ d Λ → ∀ Λ', S.IsTerm d Λ' → S.InFF β (j + 1) βJ d Λ' → S.kern β (j + 1) βJ d Λ Λ' = S.kern β (j + 1) βJ d Λ' Λ := by
   intro F _ _ _ _ _ E _ _ _ L r k S j β βJ d Λ hT hF Λ' hT' hF'
   obtain ⟨hr, hne⟩ := GlobalTheory.T.hermitianFrames_reference_subgroups_relIndex_eq L r k S j β βJ d Λ hT hF Λ' hT' hF'

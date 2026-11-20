@@ -14,6 +14,9 @@ open scoped ContDiff Real CategoryTheory.Obj
 open GlobalTheory GlobalTheory.TorsionForm
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PeriodChartExists.exists_periodChart | exact GlobalTheory.PeriodChartExists.exists_periodChart | (intros; apply GlobalTheory.PeriodChartExists.exists_periodChart <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_period_chart_dual_riemann : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k), IsRegSurf p → ∀ (P : PPAS S)
     (h : VMetric p (omega P.A) P.g), P.IsDualRiemann (1 / 2) h → ∀ (σ : k →+* ℂ) (y : CxPts p σ),
     ∃ (c : AlgChart p σ 1) (τ : V 1 → Matrix (Fin P.g) (Fin P.g) ℂ)

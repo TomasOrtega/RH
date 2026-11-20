@@ -12,6 +12,19 @@ open GlobalTheory.Poinc.Sep
 
 namespace GlobalTheory.GSep.GMem
 
+/- English proof (translation)
+Introduce `I X₁ z₁ act V _ _ _ ev X _ t δ 𝔪 mu`. Use `haveI : CharZero V := 𝔪.cn.2.2.2`. Establish `hA : AdmBase V (maximalIdeal V)` using `⟨𝔪.cn.1, inferInstance, 𝔪.cn.2.1, 𝔪.cn.2.2.1⟩`. Establish `hk : 1 ≤ X₁.S.r * X₁.S.N`. Take `⟨j, -, hj⟩` from `X₁.ρ.r_eq`.
+
+Establish `hn` using `X₁.ρ.n_prime.pos`. Rewrite using `[hj, X₁.ρ.N_eq]`. Conclude with `Nat.one_le_iff_ne_zero.2 (by positivity)`. Take `⟨h, hh⟩` from `GlobalTheory.TorusExt.exists_iota (F := AlgebraicClosure (FractionRing V)) 𝔪.D.tau_bimult (𝔪.e₈ mu)`. Take `⟨g', hg'⟩` from `(GlobalTheory.UT.gt_onto_divisible_kernel GlobalTheory.firstFiveLaws V (maximalIdeal V) hA 𝔪.D (AlgebraicClosure (FractionRing V))).2.1 _ hk h`.
+
+Set `p : QkPt 𝔪.D.toPre (AlgebraicClosure (FractionRing V)) (X₁.S.r * X₁.S.N)` to `⟨𝔪.e₈ mu, g', h, hg', hh⟩`. Take `⟨f, hf, -⟩` from `GlobalTheory.TorsionIso.torsion_eq GlobalTheory.firstFiveLaws V (maximalIdeal V) hA 𝔪.D 𝔪.A 𝔪.G 𝔪.semi 𝔪.U (AlgebraicClosure (FractionRing V)) _ hk`. Establish `hx` using `(hf p (f p)).2 rfl`. Take `⟨w, hw⟩` from `𝔪.U.ext`. Establish `hpow : f p ^ (X₁.S.r * X₁.S.N) = 1` using `(hx w hw).1`.
+
+Set `z` to `pushHom 𝔪.cart (TFK (R := V) (AlgebraicClosure (FractionRing V))) (f p)`. Establish `hz : z ^ (X₁.S.r * X₁.S.N) = 1`. Simplify using `only [z]`. Rewrite using `[← map_pow, hpow, map_one]`. Take `⟨a, ha, -⟩` from `X₁.ρ.pt_bij (AlgebraicClosure (FractionRing V)) _ z hz`.
+
+Use `⟨a, p, f p, rfl, hx, ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (fun q => q.left) ha`. Simplify using `only [Over.comp_left, Over.homMk_left] at e`. Establish `e2 : spMap ((algebraMap (FractionRing V) (AlgebraicClosure (FractionRing V))).comp 𝔪.yK) = jFK (R` using `V) (AlgebraicClosure (FractionRing V)) ≫ spMap 𝔪.yK := by`. Simplify using `[spMap, jFK, ← Spec.map_comp]`.
+
+Rewrite using `[e2]`. Conclude with `e.symm`.
+-/
 theorem exists_yy : ∀ (I : Type) (X₁ : GlobalTheory.GSep.GSet) (z₁ : X₁.M.Z) (act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)), ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (X : Type) [AddCommGroup X] (t : X → V) (δ : I → X → X) (𝔪 : GlobalTheory.GSep.GMem X₁ z₁ act V ev X t δ) (mu : X), ∃ a : X₁.S.Gam, 𝔪.YY a mu := by
   intro I X₁ z₁ act V _ _ _ ev X _ t δ 𝔪 mu
   haveI : CharZero V := 𝔪.cn.2.2.2

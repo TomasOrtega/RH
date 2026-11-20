@@ -20,6 +20,11 @@ def coefMap {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (dual :
     (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (η f : Fin n → H) (g : Matrix (Fin n) (Fin n) ℂ) : ℂ :=
   ∑ c, inner ℂ (η c) (tensGrp dual σ g f c)
 
+/- English proof (translation)
+Introduce `f hf`. Use `⟨⟨occA_coef_smooth dual hσ _ _ (fun d => hsm (f d)), fun w => ?_⟩, fun a b g hg => occA_coef_Eab dual hσ hD _ f a b hg, ?_⟩` and prove the remaining obligations. Use `(occA_coef_memLp dual hσ hW η (tensWord dual E w f) hη (occA_tensWord_mem dual w f hf)).ae_eq ?_` and prove the remaining obligations. Conclude with `Filter.Eventually.of_forall fun g => (occA_coef_Eword dual hσ hD _ w f g.2).symm`. Introduce `k hk f' _ hff g hg show ∑ c, _ = ∑ c, _`.
+
+Rewrite using `[occA_tensGrp_mul dual hσ hg hk, ← hff]`.
+-/
 theorem coef_embed (dual : Bool) {lam : Fin n → ℝ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {ε : Fin n → Bool}
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ D}
     (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) (hsm : ∀ v : D, IsSmoothVecU ε σ v)
@@ -46,6 +51,9 @@ theorem coef_embed (dual : Bool) {lam : Fin n → ℝ} {H : Type*} [NormedAddCom
     show ∑ c, _ = ∑ c, _
     rw [occA_tensGrp_mul dual hσ hg hk, ← hff]
 
+/- English proof (translation)
+Establish `hB` using `occB_pairing_ne dual hP hP' hv₀' hpos hpos' (occB_memLp_psi hgap hP hv₀ hW) s hlam'`. Take `⟨ps, hps, hne⟩` from `occC_exists_ps dual hgap hP hv₀ hgap' hP' hv₀' hW (occC_pairing dual hgap hP hv₀ hP' hW hB)`. Take `⟨ι, hι⟩` from `occAdj_emb dual hgap hP hv₀ hgap' hP' hv₀' hps hne`. Conclude with `⟨ι, hι, occD_eeF dual hP hP' s hlam' hι⟩`.
+-/
 theorem occ_exists (dual : Bool) {ε : Fin n → Bool} {lam lam' : Fin n → ℝ} {T : S7.KType ε (lowK ε lam)}
     {T' : S7.KType ε (lowK ε lam')} {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)}
     {Ψ' : Matrix (Fin n) (Fin n) ℂ → (T'.V →L[ℂ] T'.V)} {v₀ : T.V} {v₀' : T'.V}

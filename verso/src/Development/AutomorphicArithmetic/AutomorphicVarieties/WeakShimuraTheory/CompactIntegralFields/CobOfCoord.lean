@@ -11,6 +11,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
+/- English proof (translation)
+Establish `r01 : P 0 1 ↔ P 2 3` using `⟨h3 0 1, h3 2 3⟩`. Establish `r10 : P 1 0 ↔ P 3 2` using `⟨h3 1 0, h3 3 2⟩`. Establish `r02 : P 0 2 ↔ P 1 3` using `⟨h3 0 2, h3 1 3⟩`. Establish `r20 : P 2 0 ↔ P 3 1` using `⟨h3 2 0, h3 3 1⟩`. Establish `a01` using `h4 0 1 (by decide)`.
+
+Establish `a03` using `h4 0 3 (by decide)`. Establish `a21` using `h4 2 1 (by decide)`. Establish `a23` using `h4 2 3 (by decide)`. Establish `e0` using `h1 0`. Establish `e1` using `h1 1`.
+
+Establish `e2` using `h1 2`. Establish `e3` using `h1 3`. Simplify using `only [Fin.exists_fin_succ, Fin.forall_fin_succ, lamW] at *`. Simplify using `at *`. Use `grind (splits := 200)`.
+-/
 private theorem tri_comb (P : Fin 4 → Fin 4 → Prop) (h1 : ∀ i, P i i)
     (h2 : ∀ i j k, P i j → P j k → P i k) (h3 : ∀ i j, P i j → P j.rev i.rev)
     (h4 : ∀ i j, lamW i ≠ lamW j → P i j → P j i → ∃ k, k ≠ i ∧ k ≠ j ∧ P i k ∧ P k i) :
@@ -32,6 +39,13 @@ private theorem tri_comb (P : Fin 4 → Fin 4 → Prop) (h1 : ∀ i, P i i)
   simp at *
   grind (splits := 200)
 
+/- English proof (translation)
+Distinguish the cases in `h1 : ∀ g, a g = 1`. Use `⟨0, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_zero, sub_zero, ← Module.forall_dual_apply_eq_zero_iff k₀]`. Introduce `φ`. Take `⟨m, hm⟩` from `h φ`.
+
+Rewrite using `[hm, h1, one_mul, sub_self]`. Take `⟨g₀, hg₀⟩` from `not_forall.mp h1`. Establish `hne : a g₀ - 1 ≠ 0` using `sub_ne_zero.mpr hg₀`. Use `⟨(a g₀ - 1)⁻¹ • z g₀, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← Algebra.smul_def, ← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff k₀]`.
+
+Introduce `φ`. Take `⟨m, hm⟩` from `h φ`. Simplify using `only [map_sub, map_smul, hm, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem cob_of_coord {H k₀ k : Type} [Field k₀] [Field k] [Algebra k₀ k] (a : H → k₀) (z : H → k)
     (h : ∀ φ : k →ₗ[k₀] k₀, ∃ m, ∀ g, φ (z g) = a g * m - m) :
     ∃ m, ∀ g, z g = algebraMap k₀ k (a g) * m - m := by
@@ -51,6 +65,21 @@ private theorem cob_of_coord {H k₀ k : Type} [Field k₀] [Field k] [Algebra k
     field_simp
     ring
 
+/- English proof (translation)
+Introduce `m hm`. Establish `key : ∀ h, residue O (c h) = m * residue O (r h s s)`. Introduce `h`. Establish `e1` using `congrFun (congrFun (hE h) s) u`. Establish `e2` using `congrFun (congrFun (hE h) s) s`.
+
+Establish `e3` using `congrFun (congrFun (hE h) u) u`. Simplify using `only [Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul, Matrix.single_mul_apply_same, one_mul] at e1 e2 e3`. Rewrite `e3` using `[Matrix.single_mul_apply_of_ne (h := hsu.symm)]`. Establish `e4 : ∑ g ∈ t, a g * c (g * h) = c h`. Apply `mul_left_cancel₀ hb` to reduce the goal to its premises.
+
+Rewrite using `[← hc, ← e1, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[hc (g * h)]`. Expand and normalize the polynomial expressions, which then agree. Establish `e5 : residue O (r h s s) = residue O (r h s s) - residue O 0` using `by simp`.
+
+Rewrite using `[← e4, e5, ← e3]`. Use `conv_rhs => rw [← e2]`. Simplify using `only [map_sum, map_mul, hm, ← Finset.sum_sub_distrib, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `c1 : c 1 = 0`. Use `hc 1` as an intermediate fact. Rewrite `this` using `[h1, Matrix.one_apply_ne hsu]`. Conclude with `(mul_eq_zero.1 this.symm).resolve_left hb`. Establish `hm0 : m = 0`.
+
+Use `key 1` as an intermediate fact. Rewrite `this` using `[c1, h1]`. Simplify using `using this.symm`. Establish `cg : c g1 = 1`. Apply `mul_left_cancel₀ hb` to reduce the goal to its premises.
+
+Rewrite using `[← hc, mul_one]`. Use `key g1` as an intermediate fact. Rewrite `this` using `[cg, hm0]`. Simplify using `at this`.
+-/
 private theorem lattice {O : Type} [CommRing O] [IsDomain O] [IsLocalRing O] {H : Type} [Group H]
     (r : H → M4 O) (h1 : r 1 = 1) (s u : Fin 4) (hsu : s ≠ u) (t : Finset H) (a : H → O)
     (hE : ∀ h, ∑ g ∈ t, a g • r (g * h) = Matrix.single s s (1 : O) * r h) (g1 : H) (c : H → O) (hb : r g1 s u ≠ 0)
@@ -90,6 +119,29 @@ private theorem lattice {O : Type} [CommRing O] [IsDomain O] [IsLocalRing O] {H 
   rw [cg, hm0] at this
   simp at this
 
+/- English proof (translation)
+Set `Q : ℕ → Prop` to `fun n => ∃ x : Fin 4 → K, (∀ k, ¬ P k → x k = 0) ∧ (∀ b : Fin 4, n ≤ b → (u : M4 K).mulVec x b = 0) ∧ (x i ≠ 0 ∨ x j ≠ 0)`. Establish `hQ : ∃ n, Q n` using `⟨4, Pi.single i 1, fun k hk => Pi.single_eq_of_ne (fun h : k = i => hk (h ▸ hi)) _, fun b hb => absurd b.2 (not_lt.2 hb), Or.inl (by simp)⟩`. Establish `h4 : Nat.find hQ ≤ 4` using `Nat.find_min' hQ ⟨Pi.single i 1, fun k hk => Pi.single_eq_of_ne (fun h : k = i => hk (h ▸ hi)) _, fun b hb => absurd b.2 (not_lt.2 hb), Or.inl (by simp)⟩`. Take `⟨x, hx1, hx2, hx3⟩` from `Nat.find_spec hQ`. Establish `hinv : ∀ z : Fin 4 → K, ((u⁻¹ : (M4 K)ˣ) : M4 K).mulVec ((u : M4 K).mulVec z) = z` using `fun z => by`.
+
+Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Establish `h0 : Nat.find hQ ≠ 0`. Introduce `h`. Establish `: (u : M4 K).mulVec x = 0` using `funext fun b => hx2 b (by omega)`. Establish `hx` using `hinv x`.
+
+Rewrite `hx` using `[this, Matrix.mulVec_zero]`. Rewrite `hx3` using `[← hx]`. Simplify using `at hx3`. Set `a : Fin 4` to `⟨Nat.find hQ - 1, by omega⟩`. Establish `hmin` using `Nat.find_min hQ (m := a) (by simp only [a]; omega)`.
+
+Use `⟨x i, x j, fun g => ((u : M4 K) * r g * (u⁻¹ : (M4 K)ˣ)) a a, hx3, fun g => ?_⟩` and prove the remaining obligations. Use `set T : M4 K := (u : M4 K) * r g * (u⁻¹ : (M4 K)ˣ) with hT`. Establish `hy : ¬ (((r g).mulVec x - T a a • x) i ≠ 0 ∨ ((r g).mulVec x - T a a • x) j ≠ 0)`. Introduce `hy`. Use `hmin ⟨_, fun k hk => ?_, fun b hb => ?_, hy⟩` and prove the remaining obligations.
+
+Rewrite using `[Pi.sub_apply, Pi.smul_apply, hx1 k hk, smul_zero, sub_zero, Matrix.mulVec, dotProduct]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hb : P b`. Rewrite using `[hP g k b hb hk, zero_mul]`. Rewrite using `[hx1 b hb, mul_zero]`.
+
+Establish `e : (u : M4 K).mulVec ((r g).mulVec x) = T.mulVec ((u : M4 K).mulVec x)`. Rewrite using `[hT, ← Matrix.mulVec_mulVec, hinv, Matrix.mulVec_mulVec]`. Rewrite using `[Matrix.mulVec_sub, Matrix.mulVec_smul, e, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, sub_eq_zero]`. Establish `hba : a ≤ b` using `hb`. Rewrite using `[show T.mulVec ((u : M4 K).mulVec x) b = ∑ d, T b d * (u : M4 K).mulVec x d from rfl]`.
+
+Rewrite using `[Finset.sum_eq_single a]`. Break down `hba.eq_or_lt with h | h` into its components or cases. Rewrite using `[h]`. Rewrite using `[show T b a = 0 from tri g b a h, zero_mul, hx2 b (by have : (a : ℕ) < b := h; simp only [a] at this; omega), mul_zero]`. Introduce `d _ hd`.
+
+Break down `lt_or_gt_of_ne hd with h | h` into its components or cases. Rewrite using `[show T b d = 0 from tri g b d (h.trans_le hba), zero_mul]`. Rewrite using `[hx2 d (by have : (a : ℕ) < d := h; simp only [a] at this; omega), mul_zero]`. Simplify using the standard rewrite rules. Rewrite `hy` using `[not_or, not_not, not_not]`.
+
+Establish `hs : ∀ w, (∀ k, P k → k ≠ i → k ≠ j → r g w k = 0) → (r g).mulVec x w = r g w i * x i + r g w j * x j`. Introduce `w hw`. Rewrite using `[Matrix.mulVec, dotProduct, ← Finset.sum_pair (f := fun k => r g w k * x k) hij]`. Use `symm`. Use `Finset.sum_subset (Finset.subset_univ _) fun k _ hk => ?_` and prove the remaining obligations.
+
+Simplify using `only [Finset.mem_insert, Finset.mem_singleton, not_or] at hk`. Distinguish the cases in `hb : P k`. Rewrite using `[hw k hb hk.1 hk.2, zero_mul]`. Rewrite using `[hx1 k hb, mul_zero]`. Rewrite `hy` using `[Pi.sub_apply, Pi.sub_apply, hs i fun k a b c => (hz g k a b c).1, hs j fun k a b c => (hz g k a b c).2]`.
+
+Conclude with `⟨sub_eq_zero.1 hy.1, sub_eq_zero.1 hy.2⟩`.
+-/
 private theorem line {H K : Type} [Field K] (r : H → M4 K) (u : (M4 K)ˣ)
     (tri : ∀ g i j, j < i → ((u : M4 K) * r g * (u⁻¹ : (M4 K)ˣ)) i j = 0) (P : Fin 4 → Prop) (i j : Fin 4) (hij : i ≠ j)
     (hi : P i) (hP : ∀ g a b, P b → ¬ P a → r g a b = 0) (hz : ∀ g k, P k → k ≠ i → k ≠ j → r g i k = 0 ∧ r g j k = 0) :
@@ -150,6 +202,9 @@ private theorem line {H K : Type} [Field K] (r : H → M4 K) (u : (M4 K)ˣ)
   rw [Pi.sub_apply, Pi.sub_apply, hs i fun k a b c => (hz g k a b c).1, hs j fun k a b c => (hz g k a b c).2] at hy
   exact ⟨sub_eq_zero.1 hy.1, sub_eq_zero.1 hy.2⟩
 
+/- English proof (translation)
+Establish `e1 : D.th * D.Psi⁻¹ = D.al` using `by rw [Raw.th, mul_inv_cancel_right]`. Establish `e2 : D.Psi * D.th⁻¹ = D.al⁻¹` using `by rw [← e1, mul_inv_rev, inv_inv]`. Establish `e3 : D.Psi * D.al⁻¹ = D.be` using `rfl`. Establish `e4 : D.al * D.Psi⁻¹ = D.be⁻¹` using `by rw [← e3, mul_inv_rev, inv_inv]`. Apply the tactic sequence `fin_cases s <;> fin_cases u <;> simp [lamW] at h <;> simp [Raw.ps, e1, e2, e3, e4]`.
+-/
 private theorem root_mem {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c)
     (s u : Fin 4) (h : lamW s ≠ lamW u) : D.ps s * (D.ps u)⁻¹ ∈ [D.al, D.be, D.th, D.al⁻¹, D.be⁻¹, D.th⁻¹] := by
   have e1 : D.th * D.Psi⁻¹ = D.al := by rw [Raw.th, mul_inv_cancel_right]
@@ -158,6 +213,15 @@ private theorem root_mem {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ 
   have e4 : D.al * D.Psi⁻¹ = D.be⁻¹ := by rw [← e3, mul_inv_rev, inv_inv]
   fin_cases s <;> fin_cases u <;> simp [lamW] at h <;> simp [Raw.ps, e1, e2, e3, e4]
 
+/- English proof (translation)
+Take `⟨g0, hg0⟩` from `hne`. Choose the witnesses or unpack the hypotheses as in `⟨g1, hg1⟩ : ∃ g1, ∀ g, x g1 ∣ x g := by`. Take `⟨_, ⟨g1, rfl⟩, hmin⟩` from `(wellFounded_lt (α := ℕ∞)).has_min (Set.range fun g => IsDiscreteValuationRing.addVal A (x g)) ⟨_, g0, rfl⟩`. Conclude with `⟨g1, fun g => IsDiscreteValuationRing.addVal_le_iff_dvd.1 (not_lt.1 (hmin _ ⟨g, rfl⟩))⟩`. Use `choose c hc using hg1`.
+
+Establish `hb : x g1 ≠ 0` using `fun h0 => hg0 (by rw [hc g0, h0, zero_mul])`. Use `⟨g1, fun g => f (c g), hb, fun g => by rw [← map_mul, ← hc], ?_⟩` and prove the remaining obligations. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible A`. Take `⟨n, w, hw⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hb hϖ`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`.
+
+Introduce `g`. Use `filter_upwards [(IsLocallyConstant.iff_eventually_eq _).1 (hx (n + 1)) g] with y hy`. Rewrite `hy` using `[Ideal.Quotient.eq, hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.mem_span_singleton, hc y, hc g, ← mul_sub, hw, mul_assoc, Units.dvd_mul_left, pow_succ, mul_dvd_mul_iff_left (pow_ne_zero n hϖ.ne_zero)]`. Rewrite using `[← sub_eq_zero, ← map_sub, ← map_sub, residue_eq_zero_iff]`. Use `map_nonunit f _ ?_` and prove the remaining obligations.
+
+Rewrite using `[hϖ.maximalIdeal_eq, Ideal.mem_span_singleton]`. Conclude with `hy`.
+-/
 private theorem gen {Γ A V : Type} [TopologicalSpace Γ] [CommRing A] [IsDomain A] [IsDiscreteValuationRing A] [CommRing V]
     [IsLocalRing V] (f : A →+* V) [IsLocalHom f] (x : Γ → A) (hx : AdicCont (maximalIdeal A) x) (hne : ∃ g, x g ≠ 0) :
     ∃ (g1 : Γ) (c : Γ → V), x g1 ≠ 0 ∧ (∀ g, f (x g) = f (x g1) * c g) ∧ IsLocallyConstant fun g => residue V (c g) := by
@@ -181,6 +245,11 @@ private theorem gen {Γ A V : Type} [TopologicalSpace Γ] [CommRing A] [IsDomain
   rw [hϖ.maximalIdeal_eq, Ideal.mem_span_singleton]
   exact hy
 
+/- English proof (translation)
+Use `haveI : Finite (ResidueField c.O) := (UpperTheory.V.abelian₂.dvr_finite l c.O).2.1`. Set `f : ResidueField c.O →+* k` to `Ideal.Quotient.lift (maximalIdeal c.O) red hred`. Use `letI : Algebra (ResidueField c.O) k := f.toAlgebra`. Establish `hf : ∀ a : c.O, algebraMap (ResidueField c.O) k (residue c.O a) = red a` using `fun a => rfl`. Establish `hs : ∀ (a : c.O) (x : k), red a * x = residue c.O a • x` using `fun a x => by`.
+
+Rewrite using `[Algebra.smul_def, hf]`. Establish `key` using `cob_of_coord (fun g : D.Gp p => Raw.bar γ g) z fun φ => locVanP D hD hL _ (residue c.O) (fun a ha => (residue_eq_zero_iff a).2 ha) γ hγ p hp (fun g => φ (z g)) (hz.comp φ) (fun g h => by simp only [hco, hs, map_add, map_smul, smul_eq_mul])`. Simplify `key` using `only [hf]`.
+-/
 private theorem locVan {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c)
     (hD : D.Good) (hL : UpperTheory.V.Loc.LocalPublishedTheorems) (k : Type) [Field k] (red : c.O →+* k) (hred : ∀ a ∈ maximalIdeal c.O, red a = 0)
     (γ : G ℚ Ω →* c.Oˣ) (hγ : γ ∈ [D.al, D.be, D.th, D.al⁻¹, D.be⁻¹, D.th⁻¹]) (p : ℕ) (hp : p ∈ D.Sb) (z : D.Gp p → k)
@@ -197,6 +266,43 @@ private theorem locVan {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω
       (fun g h => by simp only [hco, hs, map_add, map_smul, smul_eq_mul])
   simpa only [hf] using key
 
+/- English proof (translation)
+Establish `hne : s ≠ u` using `fun h => hsu (h ▸ rfl)`. Take `⟨-, hsg, -, -, -, -, -, -, -, -, hcont, -⟩` from `facts D hD`. Take `⟨hsg1, -, hsg2⟩` from `hsg l (Finset.mem_insert_self _ _)`. Take `⟨a, hE⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.1 hE`. Take `⟨A, _, _, _, f, P, hf, hP, hPr⟩` from `hr.small`.
+
+Establish `hfr : ∀ g i j, f (P.r g i j) = r g i j` using `fun g i j => congrArg (fun Q : PD Unit _ _ => Q.r g i j) hPr`. Use `haveI := hf.loc`. Take `⟨g1, cc, hb, hc, hcl⟩` from `gen f (fun g => P.r g s u) (hP s u) (by`. Take `⟨g, hg⟩` from `hge`. Conclude with `⟨g, fun h => hg (by rw [← hfr, h, map_zero])⟩)`.
+
+Simplify using `only [hfr] at hc`. Use `replace hb : r g1 s u ≠ 0 := fun h => hb (hf.inj (by rw [hfr, h, map_zero]))`. Establish `hns` using `lattice r (map_one r) s u hne a.support a (fun h => by`. Rewrite using `[← hE, Finsupp.sum, Finset.sum_mul]`. Simplify using `only [map_mul, smul_mul_assoc]) g1 cc hb hc`.
+
+Generalize the expression as in `r g1 s u = b at hb hc`. Set `red : c.O →+* 𝔞.k` to `𝔞.red c`. Use `haveI := 𝔞.loc c`. Establish `hred : ∀ x : c.O, red x = 0 ↔ residue c.O x = 0` using `fun x => by show residue 𝔞.V (𝔞.a c x) = 0 ↔ _`. Rewrite using `[residue_eq_zero_iff, residue_eq_zero_iff, mem_maximalIdeal, mem_maximalIdeal, mem_nonunits_iff, mem_nonunits_iff, isUnit_map_iff]`.
+
+Establish `hred0 : ∀ x ∈ maximalIdeal c.O, red x = 0` using `fun x hx => (hred x).2 ((residue_eq_zero_iff x).2 hx)`. Establish `hdiag : ∀ g i, residue 𝔞.V (r g i i) = red (D.ps i g : c.O)` using `fun g i => by`. Use `hr.red g i i` as an intermediate fact. Rewrite using `[← sub_eq_zero]`. Express the relevant statement in the definitionally equal form `residue 𝔞.V _ - residue 𝔞.V _ = 0`.
+
+Rewrite using `[← map_sub, residue_eq_zero_iff]`. Simplify `this` using `[Raw.r0, diagRep]`. Establish `hoff : ∀ g, residue 𝔞.V (r g u s) = 0` using `fun g => by`. Use `hr.red g u s` as an intermediate fact. Rewrite using `[residue_eq_zero_iff]`.
+
+Simplify `this` using `[Raw.r0, diagRep, Matrix.diagonal_apply_ne _ hne.symm]`. Establish `hU : ∀ g, red (D.ps u g : c.O) ≠ 0` using `fun g => ((D.ps u g).isUnit.map red).ne_zero`. Establish `hγ : ∀ g, red ((D.ps s * (D.ps u)⁻¹) g : c.O) = red (D.ps s g : c.O) / red (D.ps u g : c.O)` using `fun g => by`. Rewrite using `[eq_div_iff (hU g), ← map_mul, ← Units.val_mul]`. Simplify using the standard rewrite rules.
+
+Set `z : G ℚ Ω → 𝔞.k` to `fun g => residue 𝔞.V (cc g) / red (D.ps u g : c.O)`. Establish `hzl : IsLocallyConstant z`. Establish `a2 : IsLocallyConstant fun g => red (D.ps u g : c.O)` using `(hcont u 1).comp (Ideal.Quotient.lift (maximalIdeal c.O ^ 1) red fun x hx => hred0 x (by simpa using hx))`. Conclude with `hcl.comp₂ a2 fun x y => x / y`. Establish `hcoc : ∀ g h, z (g * h) = z g + red ((D.ps s * (D.ps u)⁻¹) g : c.O) * z h` using `fun g h => by`.
+
+Establish `e : cc (g * h) = r g s s * cc h + cc g * r h u u`. Apply `mul_left_cancel₀ hb` to reduce the goal to its premises. Rewrite using `[← hc, hmul, hc g, hc h]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [z]`.
+
+Rewrite using `[hγ, e, map_add, map_mul, map_mul, hdiag, hdiag, map_mul, Units.val_mul, map_mul]`. Use `hU g` as an intermediate fact. Use `hU h` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨m, hm⟩` from `xvanExt D hD _ red hred0 _ (root_mem D s u hsu) z hzl hcoc (by`. Introduce `A hA g hg h1`. Establish `e` using `hc g`. Rewrite `e` using `[hr.unr A hA g hg h1, Matrix.one_apply_ne hne]`. Establish `: cc g = 0` using `(mul_eq_zero.1 e.symm).resolve_left hb`.
+
+Simplify using `only [z, this, map_zero, zero_div]) (by`. Introduce `p hp`. Break down `Finset.mem_insert.1 hp with rfl | hp` into its components or cases. Establish `hd : red (D.ps u (D.sg p) : c.O) - red (D.ps s (D.sg p) : c.O) ≠ 0`. Rewrite using `[← map_sub, Ne, hred, map_sub, sub_eq_zero]`.
+
+Conclude with `hsg2 u s hsu.symm`. Use `⟨-(residue 𝔞.V (cc (D.sg p)) / (red (D.ps u (D.sg p) : c.O) - red (D.ps s (D.sg p) : c.O))), fun g hg => ?_⟩` and prove the remaining obligations. Establish `e : residue 𝔞.V (cc g * (r (D.sg p) u u - r (D.sg p) s s) - cc (D.sg p) * (r g u u - r g s s)) = 0`. Establish `e1` using `hl g hg`. Establish `e2` using `hl _ hsg1`.
+
+Rewrite `e1`, `e2` using `[hc]`. Establish `e3 : cc g * (r (D.sg p) u u - r (D.sg p) s s) - cc (D.sg p) * (r g u u - r g s s) = cc (D.sg p) * v * r g u s + -(cc g * v * r (D.sg p) u s)`. Apply `mul_left_cancel₀ hb` to reduce the goal to its premises. Take the linear combination `(r (D.sg p) u s * v + r (D.sg p) u u - r (D.sg p) s s) * e1 - (r g u s * v + r g u u - r g s s) * e2`. Rewrite using `[e3]`.
+
+Simplify using `only [map_add, map_neg, map_mul, hoff, mul_zero, neg_zero, add_zero]`. Simplify using `only [map_sub, map_mul, hdiag] at e`. Simplify using `only [z]`. Rewrite using `[hγ]`. Use `hU g` as an intermediate fact.
+
+Clear the denominators using the available nonvanishing facts. Take the linear combination `e`. Take `⟨m, hm⟩` from `locVan D hD hL _ red hred0 _ (root_mem D s u hsu) p hp (fun g => z g) (hzl.comp_continuous continuous_subtype_val) (fun g h => hcoc g h)`. Conclude with `⟨m, fun g hg => hm ⟨g, hg⟩⟩)`. Use `hns m fun g => ?_` and prove the remaining obligations.
+
+Use `hm g` as an intermediate fact. Simplify using `only [z] at this`. Rewrite `this` using `[hγ, div_eq_iff (hU g)]`. Rewrite using `[this, hdiag, hdiag]`. Use `hU g` as an intermediate fact.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 private theorem core {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c)
     (hD : D.Good) (hL : UpperTheory.V.Loc.LocalPublishedTheorems) (𝔞 : Amb l) (r : G ℚ Ω →* M4 𝔞.V) (u0 : M4 𝔞.V) (hr : KPair D 𝔞 r u0)
     (s u : Fin 4) (hE : Matrix.single s s (1 : 𝔞.V) ∈ Submodule.span 𝔞.V (Set.range r)) (hsu : lamW s ≠ lamW u)
@@ -294,6 +400,39 @@ private theorem core {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] 
   have := hU g
   field_simp
 
+/- English proof (translation)
+Introduce `hC Ω _ _ _ l _ c D hD 𝔞 r hr`. Take `⟨u, hu⟩` from `ptPair hC D hD 𝔞 r hr`. Establish `push : ∀ {R R' : Type} [CommRing R] [CommRing R'] (y : R →+* R') (ρ : G ℚ Ω →* M4 R) (i : Fin 4), Matrix.single i i (1 : R) ∈ Submodule.span R (Set.range ρ) → Matrix.single i i (1 : R') ∈ Submodule.span R' (Set.range (mapRep y ρ))`. Introduce `R R' _ _ y ρ i h`. Take `⟨b, hb⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.1 h`.
+
+Establish `e : Matrix.single i i (1 : R') = ∑ g ∈ b.support, y (b g) • mapRep y ρ g`. Use extensionality with `p q`. Establish `h2` using `congrArg y (congrFun (congrFun hb p) q)`. Rewrite `h2` using `[Finsupp.sum, Matrix.sum_apply, map_sum]`. Rewrite using `[Matrix.sum_apply]`.
+
+Simplify using `only [Matrix.smul_apply, smul_eq_mul, map_mul, mapRep_apply] at h2 ⊢`. Rewrite using `[h2, Matrix.single_apply, Matrix.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun g _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨g, rfl⟩)`.
+
+Establish `hE : ∀ i, Matrix.single i i (1 : 𝔞.V) ∈ Submodule.span 𝔞.V (Set.range r)`. Take `⟨-, R, _, _, _, ρ, y, hρ, -, -, rfl⟩` from `hr`. Conclude with `fun i => push y _ i (eii D hD R ρ hρ.mult hρ.nrm i)`. Establish `hinj : Function.Injective 𝔞.toK` using `Subtype.val_injective`. Establish `hadj : ∀ X : M4 𝔞.V, 𝔞.toK.mapMatrix (adj X) = adj (𝔞.toK.mapMatrix X)` using `fun X => by`.
+
+Use extensionality with `i j`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, adj_apply, map_zsmul]`. Establish `hgsp : ∀ (ν : 𝔞.V) (X : M4 𝔞.V), IsGSp ν X → IsGSp (𝔞.toK ν) (𝔞.toK.mapMatrix X)` using `fun ν X h => by`. Unfold `IsGSp at h ⊢`. Rewrite using `[← hadj, ← map_mul, h]`.
+
+Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`. Establish `hge : ∀ i j, Ge (mapRep 𝔞.toK r) i j ↔ Ge r i j` using `fun i j => by`. Simplify using `only [Ge, mapRep_apply, Ne, map_eq_zero_iff _ hinj]`. Take `⟨-, grefl, gtr, h3, h5, -⟩` from `geAlg 𝔞.K (mapRep 𝔞.toK r) _ (fun g => hgsp _ _ (hu.mult g)) fun i => push _ r i (hE i)`.
+
+Simplify using `only [hge] at grefl gtr h3 h5`. Rewrite using `[h5]`. Use `tri_comb (Ge r) grefl gtr h3 fun i j hij gij gji => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hno`. Establish `hne : i ≠ j` using `fun h => hij (h ▸ rfl)`.
+
+Establish `hk : ∀ k, k ≠ i → k ≠ j → Ge r i k → Ge r k i → False` using `fun k a b x y => hno ⟨k, a, b, x, y⟩`. Establish `hmul : ∀ a b, Ge r i a → Ge r b i → ∀ g h, r (g * h) a b = r g a i * r h i b + r g a j * r h j b`. Introduce `a b ha hb g h`. Rewrite using `[map_mul, Matrix.mul_apply, ← Finset.sum_pair (f := fun k => r g a k * r h k b) hne]`. Use `symm`.
+
+Use `Finset.sum_subset (Finset.subset_univ _) fun k _ hk' => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_insert, Finset.mem_singleton, not_or] at hk'`. Assume the negation of the conclusion as `h0`. Rewrite `h0` using `[mul_eq_zero, not_or]`. Conclude with `hk k hk'.1 hk'.2 (gtr _ _ _ ha ⟨g, h0.1⟩) (gtr _ _ _ ⟨h, h0.2⟩ hb)`.
+
+Establish `hu1 : adj u * u = 1` using `by simpa [IsGSp] using hu.sp`. Set `U : (M4 𝔞.K)ˣ` to `Units.map 𝔞.toK.mapMatrix.toMonoidHom ⟨adj u, u, hu1, mul_eq_one_comm.1 hu1⟩`. Establish `z0 : ∀ x : 𝔞.V, x = 0 → 𝔞.toK x = 0` using `fun x h => by rw [h, map_zero]`. Take `⟨x, y, φ, hxy, hφ⟩` from `line (fun g : D.Gp l => 𝔞.toK.mapMatrix (r g)) U (fun g a b h => by show (𝔞.toK.mapMatrix (adj u) * 𝔞.toK.mapMatrix (r g) * 𝔞.toK.mapMatrix u) a b = 0`. Rewrite using `[← map_mul, ← map_mul]`.
+
+Conclude with `z0 _ (hu.flag g g.2 a b h))`. Use the proof step `(fun k => Ge r k i) i j hne (grefl i)`. Use the proof step `(fun g a b hb ha => z0 _ (by_contra fun h => ha (gtr _ _ _ ⟨g, h⟩ hb)))`. Use the proof step `(fun g k h a b => ⟨z0 _ (by_contra fun h' => hk k a b ⟨g, h'⟩ h), z0 _ (by_contra fun h' => hk k a b (gtr _ _ _ gij ⟨g, h'⟩) h)⟩)`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply] at hφ`.
+
+Establish `hv : (y ≠ 0 ∧ x / y ∈ 𝔞.V) ∨ (x ≠ 0 ∧ y / x ∈ 𝔞.V)`. Distinguish the cases in `hy : y = 0`. Conclude with `Or.inr ⟨hxy.resolve_right (not_not.2 hy), by rw [hy, zero_div]; exact zero_mem _⟩`. Distinguish the cases in `hx : x = 0`. Conclude with `Or.inl ⟨hy, by rw [hx, zero_div]; exact zero_mem _⟩`.
+
+Break down `𝔞.V.mem_or_inv_mem (x / y) with h | h` into its components or cases. Conclude with `Or.inl ⟨hy, h⟩`. Conclude with `Or.inr ⟨hx, by rwa [inv_div] at h⟩`. Break down `hv with ⟨hy, h⟩ | ⟨hx, h⟩` into its components or cases. Use `core D hD hC.loc 𝔞 r u hu i j (hE i) hij gij (hmul i j (grefl i) gji) ⟨x / y, h⟩ fun g hg => hinj ?_` and prove the remaining obligations.
+
+Take `⟨e1, e2⟩` from `hφ ⟨g, hg⟩`. Establish `e : 𝔞.toK ⟨x / y, h⟩ = x / y` using `rfl`. Simplify using `only [map_add, map_mul, e] at e1 e2 ⊢`. Clear the denominators using the available nonvanishing facts. Take the linear combination `y * e1 - x * e2`.
+
+Use `core D hD hC.loc 𝔞 r u hu j i (hE j) hij.symm gji (fun g h => by rw [hmul j i gij (grefl i), add_comm]) ⟨y / x, h⟩ fun g hg => hinj ?_` and prove the remaining obligations. Take `⟨e1, e2⟩` from `hφ ⟨g, hg⟩`. Establish `e : 𝔞.toK ⟨y / x, h⟩ = y / x` using `rfl`. Simplify using `only [map_add, map_mul, e] at e1 e2 ⊢`. Clear the denominators using the available nonvanishing facts.
+
+Take the linear combination `x * e2 - y * e1`.
+-/
 theorem UpperTheory.V.Ws.triV :
     CohomologyHyp → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ (𝔞 : Amb l) r, VPt D 𝔞 r → Irr (mapRep 𝔞.toK r) ∨ DiagType r ∨
       (Ge r 0 2 ∧ Ge r 2 0 ∧ ((∀ i j, lamW i < lamW j → ¬ Ge r i j) ∨ ∀ i j, lamW j < lamW i → ¬ Ge r i j)) := by

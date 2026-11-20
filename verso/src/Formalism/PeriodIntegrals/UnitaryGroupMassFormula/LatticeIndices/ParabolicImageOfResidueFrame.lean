@@ -24,6 +24,19 @@ def StSImgB (u : D.what₂.Word) (p : TypX X) : Prop :=
         - 1) i j ∈ Ideal.span {((gOf p : ℕ) : Op X p)}) ↔ (x : HAp X p) ∈ KgX X p) ∧
       ∃ c, ((SuX X u p).comap K.subtype).map ψ = (sG (Op X p) D.R.rS D.R.k).map (MulAut.conj c).toMonoidHom
 
+/- English proof (translation)
+Take `⟨π, hπ, hker⟩` from `hR`. Take `⟨K, hK, ψ, hψ, hP, c, hc⟩` from `hS`. Establish `: Fact (gOf p).Prime` using `⟨gOf_prime X p⟩`. Use `set ρ₀ : K →* GL (Formalism.FourierDecayAlt.S3.Idx D.R.rS D.R.k) (ZMod (gOf p)) := (glRed π).comp ψ with hρ₀`. Establish `hker₀ : ∀ x : K, ρ₀ x = 1 ↔ (x : HAp X p) ∈ KgX X p`.
+
+Introduce `x`. Rewrite using `[hρ₀, MonoidHom.comp_apply, glRed_eq_one_iff, hker]`. Conclude with `hP x`. Establish `hmemK : ∀ y : HAp X p, y ∈ KvX X p → y ∈ K` using `fun y hy => by`. Rewrite using `[← SetLike.mem_coe, hK]`.
+
+Conclude with `hy`. Use `⟨K, hK, ρ₀, (glRed_surjective π hπ (isUnit_of_map π hπ)).comp hψ, hker₀, (SuX X u p).comap K.subtype ⊔ ρ₀.ker, ?_, le_sup_right, glRed π c, ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`.
+
+Take `⟨s, hs, κ, hκ, rfl⟩` from `(mem_sup_ker ρ₀ _).1 hx`. Establish `hκ' : (κ : HAp X p) ∈ KgX X p` using `(hker₀ κ).1 hκ`. Establish `hsK : (s : HAp X p) ∈ KvX X p` using `by rw [← hK]; exact s.2`. Establish `hxK : ((s * κ : K) : HAp X p) ∈ KvX X p` using `by rw [← hK]; exact (s * κ).2`. Conclude with `⟨hxK, s, κ, hs, hsK, hκ', rfl⟩`.
+
+Introduce and unpack `⟨hy, s, κ, hs, hsK, hκ, rfl⟩`. Use `⟨⟨s, hmemK s hsK⟩ * ⟨κ, hmemK κ hκ.1⟩, ?_, rfl⟩` and prove the remaining obligations. Use `Subgroup.mul_mem _ (Subgroup.mem_sup_left ?_) (Subgroup.mem_sup_right ?_)` and prove the remaining obligations. Conclude with `hs`. Rewrite using `[MonoidHom.mem_ker, hker₀]`.
+
+Conclude with `hκ`. Rewrite using `[map_sup_ker, hρ₀, ← Subgroup.map_map, hc, map_conj, sG_map_glRed π hπ]`.
+-/
 theorem parabolic_image_of_residue (u : D.what₂.Word) (p : TypX X) (hR : StResZ X p) (hS : StSImgB X u p) :
     ParabolicReductionImage X u p := by
   obtain ⟨π, hπ, hker⟩ := hR
@@ -61,14 +74,23 @@ def StFrameB (u : D.what₂.Word) (p : TypX X) : Prop :=
         - 1) i j ∈ Ideal.span {((gOf p : ℕ) : Op X p)}) ↔ (x : HAp X p) ∈ KgX X p) ∧
       ∃ c, ∀ x : K, (x : HAp X p) ∈ SuX X u p ↔ c⁻¹ * ψ x * c ∈ sG (Op X p) D.R.rS D.R.k
 
+/- English proof (translation)
+Take `⟨K, hK, ψ, hψ, hP, c, hc⟩` from `h`. Conclude with `⟨K, hK, ψ, hψ, hP, c, map_eq_conj ψ hψ _ _ c fun x => hc x⟩`.
+-/
 theorem stSImgB_of (u : D.what₂.Word) (p : TypX X) (h : StFrameB X u p) : StSImgB X u p := by
   obtain ⟨K, hK, ψ, hψ, hP, c, hc⟩ := h
   exact ⟨K, hK, ψ, hψ, hP, c, map_eq_conj ψ hψ _ _ c fun x => hc x⟩
 
+/- English proof (translation)
+The claim follows from `parabolic_image_of_residue X u p hR (stSImgB_of X u p h)`.
+-/
 theorem parabolic_image_of_residue_frame (u : D.what₂.Word) (p : TypX X) (hR : StResZ X p) (h : StFrameB X u p) :
     ParabolicReductionImage X u p :=
   parabolic_image_of_residue X u p hR (stSImgB_of X u p h)
 
+/- English proof (translation)
+The claim follows from `parabolic_image_of_residue_frame X u p (stResZ_holds X p) h`.
+-/
 theorem parabolic_image_of_frame (u : D.what₂.Word) (p : TypX X) (h : StFrameB X u p) : ParabolicReductionImage X u p :=
   parabolic_image_of_residue_frame X u p (stResZ_holds X p) h
 

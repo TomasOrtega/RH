@@ -20,6 +20,9 @@ namespace GlobalTheory.FlatMass
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ} {D : ℕ}
 
+/- English proof (translation)
+Establish `h` using `ReciprocityTheory.L2DbarEstimates.I.MongeAmpereIntegrability.cHess_add_smul isOpen_univ (p := fun _ => (0 : ℝ)) (q := fun _ => (0 : ℝ)) contDiffOn_const contDiffOn_const 1 (Set.mem_univ v)`. Simplify using `only [mul_zero, add_zero, Complex.ofReal_one, one_smul] at h`. Simplify using `using h`.
+-/
 theorem cHess_zero (v : ReciprocityTheory.L2DbarEstimates.V D) :
     ReciprocityTheory.L2DbarEstimates.cHess D (fun _ => ((0 : ℝ) : ℂ)) v = 0 := by
   have h := ReciprocityTheory.L2DbarEstimates.I.MongeAmpereIntegrability.cHess_add_smul isOpen_univ (p := fun _ => (0 : ℝ)) (q := fun _ => (0 : ℝ))
@@ -29,6 +32,9 @@ theorem cHess_zero (v : ReciprocityTheory.L2DbarEstimates.V D) :
 
 variable {A B : LB X} {c : AlgChart p σ D} {y : CxPts p σ}
 
+/- English proof (translation)
+Establish `ho` using `isOpen_over c.e (isOpen_ptsIn (p := p) (σ := σ) (A.U a ⊓ B.U b))`. Establish `hm` using `mem_over c.e hy (mem_ptsIn_inf.2 ⟨ha, hb⟩)`. Establish `e` using `ReciprocityTheory.L2DbarEstimates.I.MongeAmpereIntegrability.cHess_add_smul ho ((contDiffOn_chart (hψ a) c).mono fun v hv => ⟨hv.1, (mem_ptsIn_inf.1 hv.2).1⟩) ((contDiffOn_chart (hφ b) c).mono fun v hv => ⟨hv.1, (mem_ptsIn_inf.1 hv.2).2⟩) 1 hm`. Simplify using `only [one_mul, Complex.ofReal_one, one_smul] at e`. Conclude with `e`.
+-/
 theorem hess_tens {ψ : Weight p σ A} {φ : Weight p σ B} (hψ : ψ.IsCInf) (hφ : φ.IsCInf) (hy : y ∈ c.e.source)
     {a : A.ι} {b : B.ι} (ha : y ∈ ptsIn p σ (A.U a)) (hb : y ∈ ptsIn p σ (B.U b)) :
     c.hess (ψ.tens φ) (a, b) y = c.hess ψ a y + c.hess φ b y := by
@@ -40,6 +46,11 @@ theorem hess_tens {ψ : Weight p σ A} {φ : Weight p σ B} (hψ : ψ.IsCInf) (h
   simp only [one_mul, Complex.ofReal_one, one_smul] at e
   exact e
 
+/- English proof (translation)
+Establish `ho` using `isOpen_over c.e (isOpen_ptsIn (p := p) (σ := σ) (B.U b))`. Establish `hm` using `mem_over c.e hy hb`. Establish `e` using `ReciprocityTheory.L2DbarEstimates.I.MongeAmpereIntegrability.cHess_add_smul ho (p := fun _ => (0 : ℝ)) contDiffOn_const (contDiffOn_chart (hφ b) c) (-1) hm`. Rewrite `e` using `[cHess_zero, zero_add]`. Simplify using `only [zero_add, neg_one_mul, Complex.ofReal_neg, Complex.ofReal_one, neg_smul, one_smul] at e`.
+
+Use `show ReciprocityTheory.L2DbarEstimates.cHess D (fun v => ((φ.dual.φ b (c.e.symm v) : ℝ) : ℂ)) (c.e y) = -ReciprocityTheory.L2DbarEstimates.cHess D (fun v => ((φ.φ b (c.e.symm v) : ℝ) : ℂ)) (c.e y)`. Use `(congrArg (fun g => ReciprocityTheory.L2DbarEstimates.cHess D g (c.e y)) ?_).trans e` and prove the remaining obligations. Use function extensionality and compare the values at `v`. Simplify using `only [Function.comp_apply]`. Conclude with `Complex.ofReal_neg _`.
+-/
 theorem hess_dual {φ : Weight p σ B} (hφ : φ.IsCInf) (hy : y ∈ c.e.source) {b : B.ι}
     (hb : y ∈ ptsIn p σ (B.U b)) : c.hess φ.dual b y = -c.hess φ b y := by
   have ho := isOpen_over c.e (isOpen_ptsIn (p := p) (σ := σ) (B.U b))
@@ -55,6 +66,11 @@ theorem hess_dual {φ : Weight p σ B} (hφ : φ.IsCInf) (hy : y ∈ c.e.source)
   simp only [Function.comp_apply]
   exact Complex.ofReal_neg _
 
+/- English proof (translation)
+Establish `ho` using `isOpen_over c.e (isOpen_ptsIn (p := p) (σ := σ) (B.U (j PUnit.unit)))`. Establish `hm` using `mem_over c.e hy hb`. Establish `e` using `ReciprocityTheory.L2DbarEstimates.I.MongeAmpereIntegrability.cHess_add_smul ho (p := fun _ => (0 : ℝ)) contDiffOn_const (contDiffOn_chart (hφ (j PUnit.unit)) c) n hm`. Rewrite `e` using `[cHess_zero, zero_add]`. Use `show ReciprocityTheory.L2DbarEstimates.cHess D (fun v => (((φ.zpow n).φ j (c.e.symm v) : ℝ) : ℂ)) (c.e y) = (n : ℂ) • ReciprocityTheory.L2DbarEstimates.cHess D (fun v => ((φ.φ (j PUnit.unit) (c.e.symm v) : ℝ) : ℂ)) (c.e y)`.
+
+Rewrite using `[show ((n : ℂ)) = (((n : ℝ) : ℂ)) by push_cast; rfl]`. Use `(congrArg (fun g => ReciprocityTheory.L2DbarEstimates.cHess D g (c.e y)) ?_).trans e` and prove the remaining obligations. Use function extensionality and compare the values at `v`. Simplify using `only [Function.comp_apply, Weight.zpow_φ, zero_add]`.
+-/
 theorem hess_zpow {φ : Weight p σ B} (hφ : φ.IsCInf) (hy : y ∈ c.e.source) (n : ℤ) (j : PUnit → B.ι)
     (hb : y ∈ ptsIn p σ (B.U (j PUnit.unit))) : c.hess (φ.zpow n) j y = (n : ℂ) • c.hess φ (j PUnit.unit) y := by
   have ho := isOpen_over c.e (isOpen_ptsIn (p := p) (σ := σ) (B.U (j PUnit.unit)))
@@ -72,6 +88,11 @@ theorem hess_zpow {φ : Weight p σ B} (hφ : φ.IsCInf) (hy : y ∈ c.e.source)
 def HessFlat (φ : Weight p σ B) (D : ℕ) : Prop :=
   ∀ (c : AlgChart p σ D) (y : CxPts p σ) (i : B.ι), y ∈ c.e.source → y ∈ ptsIn p σ (B.U i) → c.hess φ i y = 0
 
+/- English proof (translation)
+Introduce `c y i hy hi`. Take `⟨hi₁, hi₂⟩` from `mem_ptsIn_inf.1 hi`. Establish `h₁ : y ∈ ptsIn p σ (M.B.U (i.1 PUnit.unit))` using `(mem_pow_iff (n := ((m.toNat : ℕ) : ℤ)) (j := i.1)).1 hi₁`. Establish `h₂ : y ∈ ptsIn p σ (M.B.U (i.2 PUnit.unit))` using `(mem_pow_iff (n := (((-m).toNat : ℕ) : ℤ)) (j := i.2)).1 hi₂`. Establish `e` using `hess_tens ((M.cInf σ).zpow _) ((M.cInf σ).zpow _).dual hy hi₁ hi₂`.
+
+Express the relevant statement in the definitionally equal form `c.hess (((M.φ σ).pow m.toNat).tens ((M.φ σ).pow (-m).toNat).dual) (i.1, i.2) y = 0`. Rewrite using `[e, hess_dual ((M.cInf σ).zpow _) hy hi₂, hess_zpow (M.cInf σ) hy _ _ h₁, hess_zpow (M.cInf σ) hy _ _ h₂, h c y _ hy h₁, h c y _ hy h₂]`. Simplify using the standard rewrite rules.
+-/
 theorem hessFlat_zp {M : HermLB p} (h : HessFlat (M.φ σ) D) (m : ℤ) : HessFlat ((zp M m).φ σ) D := by
   intro c y i hy hi
   obtain ⟨hi₁, hi₂⟩ := mem_ptsIn_inf.1 hi
@@ -83,6 +104,9 @@ theorem hessFlat_zp {M : HermLB p} (h : HessFlat (M.φ σ) D) (m : ℤ) : HessFl
     hess_zpow (M.cInf σ) hy _ _ h₂, h c y _ hy h₁, h c y _ hy h₂]
   simp
 
+/- English proof (translation)
+Establish `ha` using `mem_pick (L.φ σ).isLB y`. Establish `hb` using `mem_pick (N.φ σ).isLB y`. Rewrite using `[c.chernDens_eq ((L.tens N).cInf σ) hy (i := (pick (L.φ σ).isLB y, pick (N.φ σ).isLB y)) (mem_ptsIn_inf.2 ⟨ha, hb⟩), c.chernDens_eq (L.cInf σ) hy ha]`. Express the relevant statement in the definitionally equal form `_ * (c.hess ((L.φ σ).tens (N.φ σ)) _ y).det.re = _`. Rewrite using `[hess_tens (L.cInf σ) (N.cInf σ) hy ha hb, h c y _ hy hb, add_zero]`.
+-/
 theorem chernDens_tens_flat {L N : HermLB p} (h : HessFlat (N.φ σ) D) (hy : y ∈ c.e.source) :
     c.chernDens ((L.tens N).φ σ) y = c.chernDens (L.φ σ) y := by
   have ha := mem_pick (L.φ σ).isLB y
@@ -92,12 +116,22 @@ theorem chernDens_tens_flat {L N : HermLB p} (h : HessFlat (N.φ σ) D) (hy : y 
   change _ * (c.hess ((L.φ σ).tens (N.φ σ)) _ y).det.re = _
   rw [hess_tens (L.cInf σ) (N.cInf σ) hy ha hb, h c y _ hy hb, add_zero]
 
+/- English proof (translation)
+Use `iSup_congr fun c => congrArg (MeasureTheory.Measure.map _) (MeasureTheory.withDensity_congr_ae (MeasureTheory.ae_restrict_of_forall_mem c.e.open_target.measurableSet fun v hv => ?_))` and prove the remaining obligations. Simplify using `only [Function.comp_apply, chernDens_tens_flat h (c.e.map_target hv)]`.
+-/
 theorem chernPart_tens_flat {L N : HermLB p} (h : HessFlat (N.φ σ) D) (ε : ℤˣ) :
     ((L.tens N).φ σ).chernPart D ε = (L.φ σ).chernPart D ε := by
   refine iSup_congr fun c => congrArg (MeasureTheory.Measure.map _) (MeasureTheory.withDensity_congr_ae
     (MeasureTheory.ae_restrict_of_forall_mem c.e.open_target.measurableSet fun v hv => ?_))
   simp only [Function.comp_apply, chernDens_tens_flat h (c.e.map_target hv)]
 
+/- English proof (translation)
+Use `HermLB.icls_eq_iff.1 ?_` and prove the remaining obligations. Rewrite using `[HermLB.icls_tens, icls_comb, icls_comb, icls_zp]`. Establish `key : ∀ j, n j • (L j).icls = Function.update n i 0 j • (L j).icls + (Pi.single i (n i) : ι → ℤ) j • (L j).icls`. Introduce `j`. Distinguish the cases in `hj : j = i`.
+
+Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hj]`. Rewrite using `[Finset.sum_congr rfl fun j _ => key j, Finset.sum_add_distrib]`. Use `congr 1`.
+
+Simplify using `[Pi.single_apply]`.
+-/
 theorem isometric_comb_update {ι : Type} [Fintype ι] [DecidableEq ι] (L : ι → HermLB p) (n : ι → ℤ) (i : ι) :
     (comb L n).Isometric ((comb L (Function.update n i 0)).tens (zp (L i) (n i))) := by
   refine HermLB.icls_eq_iff.1 ?_
@@ -119,6 +153,29 @@ open GlobalTheory.CoverNorm
 
 variable {F : Type} [Field F] [NumberField F] {Y : Var F}
 
+/- English proof (translation)
+Establish `hinj : Function.Injective σ` using `(RingHom.injective_iff_ker_eq_bot _).2 (Ideal.eq_bot_of_comap_eq_bot (R := ℤ) (eq_bot_iff.2 fun n hn => by simpa using hn))`. Take `⟨τ, rfl⟩ : ∃ τ : F →+* ℂ, τ.comp (algebraMap (𝓞 F) F) = σ` from `⟨IsFractionRing.lift (K := F) hinj, RingHom.ext fun x => by`. Rewrite using `[RingHom.comp_apply, IsFractionRing.lift_algebraMap]⟩`. Introduce `c y₀ a hy₀ ha`. Establish `hsp (z : CxPts V.p (τ.comp (algebraMap (𝓞 F) F))) : z.1 ≫ V.p = spMap τ ≫ spMap (algebraMap (𝓞 F) F)` using `z.2.trans (Spec.map_comp (CommRingCat.ofHom _) (CommRingCat.ofHom _))`.
+
+Set `lift (z : CxPts V.p (τ.comp (algebraMap (𝓞 F) F))) : CxPts (V.π ≫ Y.str) τ` to `⟨V.pb.lift z.1 (spMap τ) (hsp z), V.pb.lift_snd _ _ _⟩`. Establish `hj (z : CxPts V.p (τ.comp (algebraMap (𝓞 F) F))) : (lift z).1 ≫ V.j = z.1` using `V.pb.lift_fst _ _ _`. Establish `hunder (z : CxPts V.p (τ.comp (algebraMap (𝓞 F) F))) : V.j (under (lift z)) = under z` using `by show V.j ((lift z).1 _) = z.1 _`. Rewrite using `[← hj z]`. Both sides reduce to the same expression.
+
+Take `⟨r, -, hu, hc, -⟩` from `hN`. Set `ja : (M.B.pull V.j).ι` to `fun _ => a`. Establish `hmem (z : CxPts V.p (τ.comp (algebraMap (𝓞 F) F))) (hz : z ∈ ptsIn V.p _ (M.B.U a)) : under (lift z) ∈ (M.B.pull V.j).U ja` using `mem_pull.2 (by rw [hunder]; exact mem_ptsIn.1 hz)`. Establish `hunit (z : CxPts V.p (τ.comp (algebraMap (𝓞 F) F))) (hz : z ∈ ptsIn V.p _ (M.B.U a)) : UnitAt (under (lift z)) (r ja : V.G.functionField)`. Simplify using `using hu ja _ (hmem z hz)`.
+
+Take `⟨U, hxU, g, hg⟩` from `(hunit y₀ ha).regAt.exists_fnOf`. Take `⟨W', hW, hxW, n, g', hn, hg'⟩` from `T.exists_integral_multiple_extension F V.X V.G V.p (V.π ≫ Y.str) V.j V.pb U _ hxU Unit (fun _ => g)`. Establish `hpre (z : CxPts V.p (τ.comp (algebraMap (𝓞 F) F))) (hz : z ∈ ptsIn V.p _ W') : lift z ∈ ptsIn (V.π ≫ Y.str) τ (V.j ⁻¹ᵁ W')`. Use `mem_ptsIn.2 ?_` and prove the remaining obligations. Use `show V.j (under (lift z)) ∈ W'`.
+
+Rewrite using `[hunder]`. Conclude with `mem_ptsIn.1 hz`. Establish `hval (z : CxPts V.p (τ.comp (algebraMap (𝓞 F) F))) (hz : z ∈ ptsIn V.p _ W') : (n : ℂ) * ratVal (r ja : V.G.functionField) (lift z) = ev V.p _ W' (g' ()) z`. Establish `h1` using `hpre z hz`. Rewrite using `[← hg, ratVal_fnOf (mem_ptsIn.2 (hW (mem_ptsIn.1 h1))), ← ev_res hW h1 g]`.
+
+Use `show (n : ℂ) * valR (lift z).1 (V.j ⁻¹ᵁ W') (resG V.G hW g) = valR z.1 W' (g' ())`. Rewrite using `[← hj z, ← Cover.valR_app_comp (lift z).1 V.j W' h1, ← hg' (), ZH.CrdCalc.valR_eq _ _ h1, ZH.CrdCalc.valR_eq _ _ h1, map_mul, map_natCast]`. Establish `hn' : (n : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hn`. Establish `hweight (z : CxPts V.p (τ.comp (algebraMap (𝓞 F) F))) (hz : z ∈ ptsIn V.p _ (W' ⊓ M.B.U a)) : (M.φ _).φ a z = Real.log (‖(n : ℂ)⁻¹ * ev V.p _ W' (g' ()) z‖ ^ 2)`. Take `⟨hz₁, hz₂⟩` from `mem_ptsIn_inf.1 hz`.
+
+Establish `H` using `hc τ (lift z) ⟨(lift z).1 ≫ V.π, by rw [Category.assoc]; exact (lift z).2⟩ z ja rfl (hj z).symm (hmem z hz₂)`. Rewrite using `[← hval z hz₁, ← mul_assoc, inv_mul_cancel₀ hn', one_mul, Real.log_pow]`. Simplify using `only [map_one, one_mul] at H`. Express the relevant statement in the definitionally equal form `(0 : ℝ) = _ - (M.φ _).φ a z / 2 at H`. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hne (z : CxPts V.p (τ.comp (algebraMap (𝓞 F) F))) (hz : z ∈ ptsIn V.p _ (W' ⊓ M.B.U a)) : (n : ℂ)⁻¹ * ev V.p _ W' (g' ()) z ≠ 0`. Take `⟨hz₁, hz₂⟩` from `mem_ptsIn_inf.1 hz`. Rewrite using `[← hval z hz₁, ← mul_assoc, inv_mul_cancel₀ hn', one_mul]`. Conclude with `ratVal_ne_zero (hunit z hz₂)`.
+
+Establish `hy₀W : y₀ ∈ ptsIn V.p _ W'`. Use `mem_ptsIn.2 ?_` and prove the remaining obligations. Use `show under y₀ ∈ W'`. Rewrite using `[← hunder y₀]`. Conclude with `hxW`.
+
+Establish `ho` using `isOpen_over c.e (isOpen_ptsIn (p := V.p) (σ := τ.comp (algebraMap (𝓞 F) F)) (W' ⊓ M.B.U a))`. Establish `hm` using `mem_over c.e hy₀ (mem_ptsIn_inf.2 ⟨hy₀W, ha⟩)`. Establish `hol : DifferentiableOn ℂ (fun v => (n : ℂ)⁻¹ * ev V.p _ W' (g' ()) (c.e.symm v)) (c.e.target ∩ c.e.symm ⁻¹' ptsIn V.p _ (W' ⊓ M.B.U a))` using `((c.holo W' (g' ())).mono fun v hv => ⟨hv.1, (mem_ptsIn_inf.1 hv.2).1⟩).const_mul _`. Use `show ReciprocityTheory.L2DbarEstimates.cHess D (fun v => (((M.φ _).φ a (c.e.symm v) : ℝ) : ℂ)) (c.e y₀) = 0`. Rewrite using `[ReciprocityTheory.L2DbarEstimates.Y.cmpb_cHess_congr (g₂ := fun v => ((Real.log (‖(n : ℂ)⁻¹ * ev V.p _ W' (g' ()) (c.e.symm v)‖ ^ 2) : ℝ) : ℂ)) ?_]`.
+
+Use extensionality with `i j`. Conclude with `ReciprocityTheory.L2DbarEstimates.Y.cmpa_hess_log ho hm hol (fun v hv => hne _ hv.2) i j`. Use `filter_upwards [ho.mem_nhds hm] with v hv`. Rewrite using `[hweight _ hv.2]`.
+-/
 theorem hessFlat_of_norms (V : Cover Y) (M : HermLB V.p)
     {lg : ∀ v : HeightOneSpectrum (𝓞 F), TrueGeo.Ext v → AlgPt Y → ℝ}
     (hN : Norms V M (fun _ => 1) (fun _ _ => 0) lg) (σ : 𝓞 F →+* ℂ) (D : ℕ) : HessFlat (M.φ σ) D := by
@@ -196,6 +253,9 @@ theorem hessFlat_of_norms (V : Cover Y) (M : HermLB V.p)
   · filter_upwards [ho.mem_nhds hm] with v hv
     rw [hweight _ hv.2]
 
+/- English proof (translation)
+Introduce `_ F _ _ Y V D _ M lg hN ι _ _ L i hLi n σ`. Substitute `hLi` using the available equality. Establish `hflat : HessFlat ((zp (L i) (n i)).φ σ) D` using `hessFlat_zp (hessFlat_of_norms V (L i) hN σ D) (n i)`. Rewrite using `[(isometric_comb_update L n i).chernInt_eq σ D]`. Simplify using `only [Weight.chernInt, chernPart_tens_flat hflat]`.
+-/
 theorem chernInt_comb_update_of_norms : Hypotheses2 → ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Cover Y) (D : ℕ), Y.dim = D → ∀ (M : HermLB V.p) (lg : ∀ v : HeightOneSpectrum (𝓞 F), TrueGeo.Ext v → AlgPt Y → ℝ), Norms V M (fun _ => 1) (fun _ _ => 0) lg → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (L : ι → HermLB V.p) (i : ι), L i = M → ∀ (n : ι → ℤ) (σ : 𝓞 F →+* ℂ), ((comb L n).φ σ).chernInt D Set.univ (fun _ => 1) = ((comb L (Function.update n i 0)).φ σ).chernInt D Set.univ (fun _ => 1) := by
   intro _ F _ _ Y V D _ M lg hN ι _ _ L i hLi n σ
   subst hLi

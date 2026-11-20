@@ -85,6 +85,13 @@ def rowSplit (n n' Z k : Type) [TopologicalSpace k] :
     | inl i => simpa using continuous_snd.matrix_elem i j
     | inr u => simpa using (by fun_prop : Continuous fun a : (Matrix n n' k × (n → k)) × Matrix Z n k => a.1.2 j)
 
+/- English proof (translation)
+Use `(IsLocallyConstant.iff_eventually_eq _).mpr fun q₀ => ?_` and prove the remaining obligations. Establish `h1 : ∀ᶠ q in 𝓝 q₀, ∀ y ∈ K, H (q, y) = H (q₀, y)`. Use `IsCompact.eventually_forall_of_forall_eventually hK fun y _ => ?_` and prove the remaining obligations. Establish `h2 : IsLocallyConstant fun p : Q × Y => (H p, H (q₀, p.2))` using `hH.prodMk (hH.comp_continuous (by fun_prop))`. Use `filter_upwards [h2.eventually_eq (q₀, y)] with p hp`.
+
+Simplify using `only [Prod.mk.injEq] at hp`. Conclude with `hp.1.trans hp.2.symm`. Use `filter_upwards [h1] with q hq`. Use `congr 1`. Use function extensionality and compare the values at `y`.
+
+Distinguish the cases in `hy : y ∈ K`. Conclude with `hq y hy`. Rewrite using `[hz q y hy, hz q₀ y hy]`.
+-/
 theorem isLocallyConstant_integral {Q Y : Type} [TopologicalSpace Q] [TopologicalSpace Y] [MeasurableSpace Y]
     (μ : Measure Y) {H : Q × Y → ℂ} (hH : IsLocallyConstant H) {K : Set Y} (hK : IsCompact K)
     (hz : ∀ q, ∀ y ∉ K, H (q, y) = 0) : IsLocallyConstant fun q => ∫ y, H (q, y) ∂μ := by
@@ -106,6 +113,21 @@ theorem isLocallyConstant_integral {Q Y : Type} [TopologicalSpace Q] [Topologica
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   [MeasurableSpace k] [BorelSpace k]
 
+/- English proof (translation)
+Use `secondCountable k` as an intermediate fact. Use `t2Space k` as an intermediate fact. Take `⟨c, hc⟩` from `(conductor_exists k).1 ψ hψ hne`. Use `set f : Matrix n n' k × (n → k) → ℂ := fun p => Ψ (colJoin n n' k p) with hfdef`. Establish `hf : f ∈ SB (Matrix n n' k × (n → k))` using `⟨hΨ.1.comp_continuous (colJoin n n' k).continuous, hΨ.2.comp_homeomorph _⟩`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : ∃ s : kˣ, ∀ t ∈ FourierPi.box n s, ∀ x y, f (x, y + t) = f (x, y) := by`. Establish `h1` using `PartialFourier.eventually_add_invariant hf`. Establish `h2 : Filter.Tendsto (fun t : n → k => ((0, t) : Matrix n n' k × (n → k))) (𝓝 0) (𝓝 0)`. Establish `: Continuous (fun t : n → k => ((0, t) : Matrix n n' k × (n → k)))` using `by fun_prop`. Conclude with `this.tendsto 0`.
+
+Take `⟨s, hs⟩` from `FourierPi.exists_box_subset (h2.eventually h1)`. Conclude with `⟨s, fun t ht x y => by simpa using hs ht (x, y)⟩`. Establish `hfun : (fun p : Matrix n n' k × (n → k) => GlobalTheory.StepData.hat ψ ν (-1) (fun y => Ψ (fromCols p.1 (Matrix.of fun r _ => y r))) p.2) = fun p => ∫ y, f (p.1, y) * (ψ (y ⬝ᵥ (-p.2)) : ℂ) ∂(Measure.pi fun _ => ν)`. Use function extensionality and compare the values at `p`. Simplify using `only [GlobalTheory.StepData.hat]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[dotProduct_neg, dotProduct_comm, neg_one_mul]`. Both sides reduce to the same expression. Rewrite using `[hfun]`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `isLocallyConstant_integral _ (H := fun q : (Matrix n n' k × (n → k)) × (n → k) => f (q.1.1, q.2) * (ψ (q.2 ⬝ᵥ (-q.1.2)) : ℂ)) ?_ (hf.2.image continuous_snd) ?_` and prove the remaining obligations. Use `(hf.1.comp_continuous (by fun_prop)).mul ?_` and prove the remaining obligations. Conclude with `(hc.isLocallyConstant.comp_continuous (continuous_snd.dotProduct (continuous_snd.comp continuous_fst).neg)).comp (fun z : Circle => (z : ℂ))`. Introduce `q y hy`.
+
+Establish `: f (q.1, y) = 0` using `image_eq_zero_of_notMem_tsupport fun h => hy ⟨_, h, rfl⟩`. Simplify using `[this]`. Use `HasCompactSupport.intro ((hf.2.image continuous_fst).prod (FourierPi.isCompact_box (n := n) (c * s⁻¹)).neg) fun p hp => ?_` and prove the remaining obligations. Rewrite `hp` using `[Set.mem_prod, not_and_or]`. Break down `hp with hp | hp` into its components or cases.
+
+Establish `: ∀ y, f (p.1, y) = 0` using `fun y => image_eq_zero_of_notMem_tsupport fun h => hp ⟨_, h, rfl⟩`. Simplify using `[this]`. Rewrite `hp` using `[Set.mem_neg]`. Conclude with `FourierPi.fourier_eq_zero_pi _ hc (f := fun y => f (p.1, y)) (fun t ht y => hs t ht p.1 y) hp`.
+-/
 theorem hatCol_mem_SB (ψ : AddChar k Circle) (hψ : Continuous ψ) (hne : ψ ≠ 1) (ν : Measure k)
     [ν.IsAddHaarMeasure] {n n' : Type} [Fintype n] [DecidableEq n]
     {Ψ : Matrix n (n' ⊕ Unit) k → ℂ} (hΨ : Ψ ∈ SB (Matrix n (n' ⊕ Unit) k)) :
@@ -155,6 +177,11 @@ theorem hatCol_mem_SB (ψ : AddChar k Circle) (hψ : Continuous ψ) (hne : ψ �
     · rw [Set.mem_neg] at hp
       exact FourierPi.fourier_eq_zero_pi _ hc (f := fun y => f (p.1, y)) (fun t ht y => hs t ht p.1 y) hp
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ ν hν ψk hψ hne n n' Z _ _ _ _ _ _`. Use `haveI := hν`. Use `⟨fun Ψ₁ Ψ₂ => ?_, fun Ξ₁ c => ?_⟩` and prove the remaining obligations. Set `F : SB (Matrix n n' k × (n → k))` to `⟨_, hatCol_mem_SB ψk hψ hne ν Ψ₁.2⟩`. Conclude with `⟨comapH (rowSplit n n' Z k) (prodSB F Ψ₂), fun q => mul_comm _ _⟩`.
+
+Conclude with `⟨comapH (colSplit n n' k) (prodSB Ξ₁ c), fun x => rfl⟩`.
+-/
 theorem lastColumn_datum_mem_SB : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ν : Measure k), ν.IsAddHaarMeasure → ∀ (ψk : AddChar k Circle), Continuous ψk → ψk ≠ 1 → ∀ (n n' Z : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] [Fintype Z] [DecidableEq Z], (∀ (Ψ₁ : SB (Matrix n (n' ⊕ Unit) k)) (Ψ₂ : SB (Matrix Z n k)), ∃ Ξ : SB (Matrix n n' k × Matrix (Z ⊕ Unit) n k), ∀ q, Ξ.1 q = Ψ₂.1 q.2.toRows₁ * GlobalTheory.StepData.hat ψk ν (-1) (fun y => Ψ₁.1 (fromCols q.1 (Matrix.of fun r _ => y r))) (q.2 (Sum.inr ()))) ∧ ∀ (Ξ₁ : SB (Matrix n n' k)) (c : SB (Matrix n Unit k)), ∃ Ψ₁ : SB (Matrix n (n' ⊕ Unit) k), ∀ x, Ψ₁.1 x = Ξ₁.1 x.toCols₁ * c.1 (Matrix.of fun r _ => x r (Sum.inr ())) := by
   intro k _ _ _ _ _ _ ν hν ψk hψ hne n n' Z _ _ _ _ _ _
   haveI := hν

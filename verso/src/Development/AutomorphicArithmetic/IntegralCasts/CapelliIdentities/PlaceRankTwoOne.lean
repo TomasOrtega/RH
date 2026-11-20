@@ -36,6 +36,11 @@ noncomputable def UpperTheory.Reformulated.B.placeRankTwoOne.inUJ :
           g)
         (@UpperTheory.Reformulated.B.placeRankTwoOne.Jm n ε)
 
+/- English proof (translation)
+Introduce `n ε g h hg hh`. Establish `hg' : g.val.conjTranspose * Jm ε * g.val = Jm ε` using `hg`. Establish `hh' : h.val.conjTranspose * Jm ε * h.val = Jm ε` using `hh`. Express the relevant statement in the definitionally equal form `(g.val * h.val).conjTranspose * Jm ε * (g.val * h.val) = Jm ε`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.conjTranspose_mul, mul_assoc]`. Use `_ = Jm ε := by rw [hg', hh']`.
+-/
 theorem UpperTheory.Reformulated.B.placeRankTwoOne.aux3 :
     ∀ {n : Nat} (ε : Fin n → Bool)
       {g h :
@@ -171,6 +176,9 @@ theorem UpperTheory.Reformulated.B.placeRankTwoOne.aux3 :
         simp only [Matrix.conjTranspose_mul, mul_assoc]
     _ = Jm ε := by rw [hg', hh']
 
+/- English proof (translation)
+Introduce `n ε`. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin n) (Fin n) ℂ).conjTranspose * Jm ε * 1 = Jm ε`. Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.Reformulated.B.placeRankTwoOne.aux4 :
     ∀ {n : Nat} (ε : Fin n → Bool),
       @Eq (Matrix (Fin n) (Fin n) Complex)
@@ -275,6 +283,11 @@ theorem UpperTheory.Reformulated.B.placeRankTwoOne.aux4 :
   change (1 : Matrix (Fin n) (Fin n) ℂ).conjTranspose * Jm ε * 1 = Jm ε
   simp
 
+/- English proof (translation)
+Introduce `n ε g hg`. Establish `hg' : g.val.conjTranspose * Jm ε * g.val = Jm ε` using `hg`. Express the relevant statement in the definitionally equal form `(g⁻¹).val.conjTranspose * Jm ε * (g⁻¹).val = Jm ε`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, mul_assoc]`.
+
+Use `_ = Jm ε := by rw [Units.mul_inv]; simp`.
+-/
 theorem UpperTheory.Reformulated.B.placeRankTwoOne.aux5 :
     ∀ {n : Nat} (ε : Fin n → Bool)
       {g :
@@ -505,6 +518,9 @@ noncomputable def UpperTheory.Reformulated.B.placeRankTwoOne.UJ :
               (@Matrix.semiring (Fin n) Complex Complex.instSemiring (Fin.fintype n) (instDecidableEqFin n)))))
 attribute [local instance] UpperTheory.Reformulated.B.placeRankTwoOne.instMeasurableSpaceUJ
 
+/- English proof (translation)
+Introduce `n ε`. Use `infer_instance`.
+-/
 theorem UpperTheory.Reformulated.B.placeRankTwoOne.aux8 :
     ∀ {n : Nat} (ε : Fin n → Bool),
       @IsTopologicalGroup (↥(@UpperTheory.Reformulated.B.placeRankTwoOne.UJ n ε))
@@ -568,6 +584,9 @@ theorem UpperTheory.Reformulated.B.placeRankTwoOne.aux8 :
   intro n ε
   infer_instance
 
+/- English proof (translation)
+Introduce `n ε`. Conclude with `⟨rfl⟩`.
+-/
 theorem UpperTheory.Reformulated.B.placeRankTwoOne.aux9 :
     ∀ (n : Nat) (ε : Fin n → Bool),
       @BorelSpace (↥(@UpperTheory.Reformulated.B.placeRankTwoOne.UJ n ε))
@@ -627,6 +646,9 @@ theorem UpperTheory.Reformulated.B.placeRankTwoOne.aux9 :
 section JLemmas
 open Matrix
 
+/- English proof (translation)
+Unfold `Jm`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 private theorem UpperTheory.Reformulated.B.placeRankTwoOne.Jm_sq {n : ℕ} (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
   unfold Jm
   rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
@@ -634,6 +656,11 @@ private theorem UpperTheory.Reformulated.B.placeRankTwoOne.Jm_sq {n : ℕ} (ε :
   funext a
   split_ifs <;> simp
 
+/- English proof (translation)
+Establish `hJ : (Jm ε).det ≠ 0` using `fun h => by`. Use `congrArg Matrix.det (Jm_sq ε)` as an intermediate fact. Simplify using `[h] at this`. Establish `h` using `congrArg Matrix.det (show gᴴ * Jm ε * g = Jm ε from hg)`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose, mul_right_comm, mul_eq_right₀ hJ]`.
+
+Establish `h2` using `Complex.normSq_eq_conj_mul_self (z := g.det)`. Conclude with `h2.trans h` after adjusting the coercions.
+-/
 private theorem UpperTheory.Reformulated.B.placeRankTwoOne.normSq_det {n : ℕ} {ε : Fin n → Bool}
     {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) : Complex.normSq g.det = 1 := by
   have hJ : (Jm ε).det ≠ 0 := fun h => by
@@ -645,6 +672,11 @@ private theorem UpperTheory.Reformulated.B.placeRankTwoOne.normSq_det {n : ℕ} 
   have h2 := Complex.normSq_eq_conj_mul_self (z := g.det)
   exact_mod_cast h2.trans h
 
+/- English proof (translation)
+Establish `h : (g⁻¹).val = Jm ε * g.valᴴ * Jm ε`. Apply `Units.inv_eq_of_mul_eq_one_left` to reduce the goal to its premises. Establish `h0 : g.valᴴ * Jm ε * g.val = Jm ε` using `hg`. Rewrite using `[mul_assoc (Jm ε), mul_assoc (Jm ε), h0, Jm_sq]`. Rewrite using `[h]`.
+
+Unfold `Jm`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 private theorem UpperTheory.Reformulated.B.placeRankTwoOne.norm_inv_entry {n : ℕ} {ε : Fin n → Bool}
     {g : (Matrix (Fin n) (Fin n) ℂ)ˣ} (hg : inUJ ε g.val) (i j : Fin n) :
     ‖(g⁻¹).val i j‖ = ‖g.val j i‖ := by
@@ -659,12 +691,20 @@ private theorem UpperTheory.Reformulated.B.placeRankTwoOne.norm_inv_entry {n : �
 
 end JLemmas
 
+/- English proof (translation)
+The claim follows from `isClosed_eq (f := fun g : (Matrix (Fin n) (Fin n) ℂ)ˣ => g.val.conjTranspose * Jm ε * g.val) ((Units.continuous_val.matrix_conjTranspose.mul continuous_const).mul Units.continuous_val) continuous_const`.
+-/
 private theorem UpperTheory.Reformulated.B.placeRankTwoOne.isClosed_UJ {n : ℕ} (ε : Fin n → Bool) :
     IsClosed (UJ ε : Set (Matrix (Fin n) (Fin n) ℂ)ˣ) :=
   isClosed_eq (f := fun g : (Matrix (Fin n) (Fin n) ℂ)ˣ => g.val.conjTranspose * Jm ε * g.val)
     ((Units.continuous_val.matrix_conjTranspose.mul continuous_const).mul Units.continuous_val)
     continuous_const
 
+/- English proof (translation)
+Establish `hC` using `(isCompact_closedBall (0 : ℂ) r).matrix (m := Fin n) (n := Fin n)`. Establish `he` using `Units.isClosedEmbedding_embedProduct.comp (isClosed_UJ ε).isClosedEmbedding_subtypeVal`. Use `(he.isCompact_preimage (hC.prod (hC.image MulOpposite.continuous_op))).of_isClosed_subset ?_ fun g hg => ⟨fun i j => ?_, (g.val⁻¹).val, fun i j => ?_, rfl⟩` and prove the remaining obligations. Simplify using `only [Set.setOf_forall]`. Conclude with `isClosed_iInter fun i => isClosed_iInter fun j => isClosed_le ((Units.continuous_val.comp continuous_subtype_val).matrix_elem i j).norm continuous_const`.
+
+Conclude with `mem_closedBall_zero_iff.2 (hg i j)`. Apply the tactic sequence `exact mem_closedBall_zero_iff.2 ((norm_inv_entry g.2 i j).trans_le (hg j i))`.
+-/
 private theorem UpperTheory.Reformulated.B.placeRankTwoOne.isCompact_bdd {n : ℕ} (ε : Fin n → Bool) (r : ℝ) :
     IsCompact {g : UJ ε | ∀ i j, ‖g.val.val i j‖ ≤ r} := by
   have hC := (isCompact_closedBall (0 : ℂ) r).matrix (m := Fin n) (n := Fin n)
@@ -677,6 +717,9 @@ private theorem UpperTheory.Reformulated.B.placeRankTwoOne.isCompact_bdd {n : �
   · exact mem_closedBall_zero_iff.2 (hg i j)
   · exact mem_closedBall_zero_iff.2 ((norm_inv_entry g.2 i j).trans_le (hg j i))
 
+/- English proof (translation)
+Introduce `n ε`. Use `haveI : LocallyCompactSpace (Matrix (Fin n) (Fin n) ℂ) := inferInstanceAs (LocallyCompactSpace (Fin n → Fin n → ℂ))`. Conclude with `(isClosed_UJ ε).locallyCompactSpace`.
+-/
 theorem UpperTheory.Reformulated.B.placeRankTwoOne.laurent_T_neg_one_mul_T_one :
     ∀ (n : Nat) (ε : Fin n → Bool),
       @LocallyCompactSpace (↥(@UpperTheory.Reformulated.B.placeRankTwoOne.UJ n ε))
@@ -883,6 +926,15 @@ noncomputable def UpperTheory.Reformulated.B.placeRankTwoOne.VolGrowth :
 section Helpers
 open MeasureTheory Matrix
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_indicator_const hB]`. Use `_ ≤ ∫⁻ g, ν (Prod.mk g ⁻¹' S) ∂μ := by`. Use `lintegral_mono fun g => ?_` and prove the remaining obligations. Distinguish the cases in `hg : g ∈ B`.
+
+Simplify `h1 g hg` using `[hg]`. Simplify using `[hg]`. Use `_ = ∫⁻ x, μ ((fun g => (g, x)) ⁻¹' S) ∂ν := by`. Rewrite using `[← Measure.prod_apply hS, Measure.prod_apply_symm hS]`. Use `_ ≤ ∫⁻ x, V.indicator (fun _ => k) x ∂ν := by`.
+
+Use `lintegral_mono fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ V`. Simplify `h2 x` using `[hx]`. Establish `: (fun g => (g, x)) ⁻¹' S = ∅` using `Set.eq_empty_of_forall_notMem fun g hg => hx (h3 g x hg)`. Simplify using `[this]`.
+
+Use `_ = k * ν V := by rw [lintegral_indicator_const hV]`.
+-/
 private theorem UpperTheory.Reformulated.B.placeRankTwoOne.fub {G E : Type*} [MeasurableSpace G] [MeasurableSpace E]
     (μ : Measure G) (ν : Measure E) [SFinite μ] [SFinite ν] {S : Set (G × E)} (hS : MeasurableSet S)
     {B : Set G} (hB : MeasurableSet B) {V : Set E} (hV : MeasurableSet V) {c k : ENNReal}
@@ -909,20 +961,34 @@ private theorem UpperTheory.Reformulated.B.placeRankTwoOne.fub {G E : Type*} [Me
 private def UpperTheory.Reformulated.B.placeRankTwoOne.act {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) (x : Fin n → Fin n → ℂ) :
     Fin n → Fin n → ℂ := fun j => g *ᵥ x j
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `[act, Matrix.mulVec_mulVec]`.
+-/
 private theorem UpperTheory.Reformulated.B.placeRankTwoOne.act_mul {n : ℕ} (g h : Matrix (Fin n) (Fin n) ℂ)
     (x : Fin n → Fin n → ℂ) : act (g * h) x = act g (act h x) := by
   funext j
   simp [act, Matrix.mulVec_mulVec]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `[act]`.
+-/
 private theorem UpperTheory.Reformulated.B.placeRankTwoOne.act_one {n : ℕ} (x : Fin n → Fin n → ℂ) : act 1 x = x := by
   funext j
   simp [act]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `[act, Matrix.mulVec_sub]`.
+-/
 private theorem UpperTheory.Reformulated.B.placeRankTwoOne.act_sub {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ)
     (x y : Fin n → Fin n → ℂ) : act g (x - y) = act g x - act g y := by
   funext j
   simp [act, Matrix.mulVec_sub]
 
+/- English proof (translation)
+Establish `h0 : 0 ≤ n * r * ‖x‖` using `by positivity`. Use `(pi_norm_le_iff_of_nonneg h0).2 fun j => (pi_norm_le_iff_of_nonneg h0).2 fun i => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `norm_sum_le_of_le _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+
+Conclude with `mul_le_mul (hg i k) ((norm_le_pi_norm (x j) k).trans (norm_le_pi_norm x j)) (norm_nonneg _) hr`. Use `_ = n * r * ‖x‖ := by simp [mul_assoc]`.
+-/
 private theorem UpperTheory.Reformulated.B.placeRankTwoOne.norm_act_le {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) {r : ℝ}
     (hr : 0 ≤ r) (hg : ∀ i j, ‖g i j‖ ≤ r) (x : Fin n → Fin n → ℂ) :
     ‖act g x‖ ≤ n * r * ‖x‖ := by
@@ -936,6 +1002,11 @@ private theorem UpperTheory.Reformulated.B.placeRankTwoOne.norm_act_le {n : ℕ}
           (norm_nonneg _) hr
     _ = n * r * ‖x‖ := by simp [mul_assoc]
 
+/- English proof (translation)
+Set `f : (Fin n → Fin n → ℂ) →ₗ[ℝ] (Fin n → Fin n → ℂ)` to `LinearMap.pi fun j => ((Matrix.toLin' g).restrictScalars ℝ).comp (LinearMap.proj j)`. Establish `hf : LinearMap.det f = 1`. Simplify using `only [f]`. Rewrite using `[LinearMap.det_pi]`. Simplify using `[LinearMap.det_restrictScalars, Algebra.norm_complex_apply, hg]`.
+
+Establish `: act g = f` using `rfl`. Rewrite using `[this, Measure.addHaar_preimage_linearMap _ (by rw [hf]; exact one_ne_zero), hf]`. Simplify using the standard rewrite rules.
+-/
 private theorem UpperTheory.Reformulated.B.placeRankTwoOne.vol_act {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ)
     (hg : Complex.normSq g.det = 1) (ν : Measure (Fin n → Fin n → ℂ)) [ν.IsAddHaarMeasure]
     (s : Set (Fin n → Fin n → ℂ)) : ν (act g ⁻¹' s) = ν s := by
@@ -949,6 +1020,13 @@ private theorem UpperTheory.Reformulated.B.placeRankTwoOne.vol_act {n : ℕ} (g 
   rw [this, Measure.addHaar_preimage_linearMap _ (by rw [hf]; exact one_ne_zero), hf]
   simp
 
+/- English proof (translation)
+Use `set e : Fin n → Fin n → ℂ := fun j : Fin n => (Pi.single j 1 : Fin n → ℂ) with he`. Establish `h1 : ∀ i j, ‖h i j‖ ≤ ‖act h e‖` using `fun i j => by`. Establish `: h i j = act h e j i` using `by simp [act, he]`. Rewrite using `[this]`. Conclude with `(norm_le_pi_norm _ i).trans (norm_le_pi_norm _ j)`.
+
+Establish `h2` using `norm_act_le h (norm_nonneg _) h1 (e - v)`. Rewrite `h2` using `[act_sub]`. Establish `h3 : ‖e - v‖ < 1 / (2 * n + 2)` using `by rwa [mem_ball_iff_norm'] at hv`. Establish `h4 : (n : ℝ) * ‖e - v‖ ≤ 1 / 2`. Rewrite `h3` using `[lt_div_iff₀ (by positivity)]`.
+
+Use polynomial arithmetic with `[norm_nonneg (e - v)]`. Establish `h5` using `norm_sub_norm_le (act h e) (act h v)`. Establish `h6` using `mul_le_mul_of_nonneg_left h4 (norm_nonneg (act h e))`. Use `h1 i j` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+-/
 private theorem UpperTheory.Reformulated.B.placeRankTwoOne.entry_le {n : ℕ} (h : Matrix (Fin n) (Fin n) ℂ)
     (v : Fin n → Fin n → ℂ)
     (hv : v ∈ Metric.ball (fun j : Fin n => (Pi.single j 1 : Fin n → ℂ)) (1 / (2 * n + 2)))
@@ -969,6 +1047,11 @@ private theorem UpperTheory.Reformulated.B.placeRankTwoOne.entry_le {n : ℕ} (h
   have := h1 i j
   nlinarith
 
+/- English proof (translation)
+Use `set e : Fin n → Fin n → ℂ := fun j : Fin n => (Pi.single j 1 : Fin n → ℂ) with he`. Establish `h1 : ‖e‖ ≤ 1` using `(pi_norm_le_iff_of_nonneg zero_le_one).2 fun j => by`. Simplify using `[he, Pi.norm_single]`. Establish `h3 : ‖v - e‖ < 1 / (2 * n + 2)` using `by rwa [mem_ball_iff_norm] at hv`. Establish `h4 : (1 : ℝ) / (2 * n + 2) ≤ 1`.
+
+Rewrite using `[div_le_one (by positivity)]`. Establish `: (0 : ℝ) ≤ n` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h5` using `norm_sub_norm_le v e`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem UpperTheory.Reformulated.B.placeRankTwoOne.norm_le_two {n : ℕ} (v : Fin n → Fin n → ℂ)
     (hv : v ∈ Metric.ball (fun j : Fin n => (Pi.single j 1 : Fin n → ℂ)) (1 / (2 * n + 2))) :
     ‖v‖ ≤ 2 := by
@@ -985,6 +1068,31 @@ private theorem UpperTheory.Reformulated.B.placeRankTwoOne.norm_le_two {n : ℕ}
 
 end Helpers
 
+/- English proof (translation)
+Introduce `n ε`. Use `haveI := aux8 ε`. Use `haveI := aux9 n ε`. Use `haveI := laurent_T_neg_one_mul_T_one n ε`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) ℂ) := inferInstanceAs (SecondCountableTopology (Fin n → Fin n → ℂ))`.
+
+Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) ℂ)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.secondCountableTopology`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) ℂ)ˣ := Units.isEmbedding_embedProduct.secondCountableTopology`. Use `haveI hμ : (muG ε).IsHaarMeasure := by`. Unfold `muG`. Use `infer_instance`.
+
+Use `haveI : SecondCountableTopology (UJ ε) := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI : SigmaCompactSpace (UJ ε) := inferInstance`. Use `haveI : MeasureTheory.SigmaFinite (muG ε) := inferInstance`. Set `ν : MeasureTheory.Measure (Fin n → Fin n → ℂ)` to `MeasureTheory.Measure.addHaar`. Set `V : Set (Fin n → Fin n → ℂ)` to `Metric.ball (fun j : Fin n => (Pi.single j 1 : Fin n → ℂ)) (1 / (2 * n + 2))`.
+
+Set `K : Set (UJ ε)` to `{g | ∀ i j, ‖g.val.val i j‖ ≤ 4}`. Establish `hK : muG ε K ≠ ⊤` using `(isCompact_bdd ε 4).measure_lt_top.ne`. Establish `hV0 : ν V ≠ 0` using `(Metric.measure_ball_pos ν _ (by positivity)).ne'`. Establish `hV1 : ν V ≠ ⊤` using `MeasureTheory.measure_ball_lt_top.ne`. Establish `hB1 : ν (Metric.ball 0 1) ≠ ⊤` using `MeasureTheory.measure_ball_lt_top.ne`.
+
+Establish `hA : muG ε K * ν (Metric.ball 0 1) / ν V ≠ ⊤` using `ENNReal.div_ne_top (ENNReal.mul_ne_top hK hB1) hV0`. Use `⟨(muG ε K * ν (Metric.ball 0 1) / ν V).toReal * (2 * n) ^ (2 * n ^ 2), fun R hR => ?_⟩` and prove the remaining obligations. Establish `hR0 : 0 ≤ R` using `zero_le_one.trans hR`. Establish `hval : Continuous fun g : UJ ε => g.val.val` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hB : IsClosed {g : UJ ε | hsG g ≤ R ^ 2}` using `isClosed_le (f := fun g : UJ ε => ∑ i, ∑ j, ‖g.val.val i j‖ ^ 2) (continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => (hval.matrix_elem i j).norm.pow 2) continuous_const`.
+
+Establish `hact : Continuous fun p : UJ ε × (Fin n → Fin n → ℂ) => act (p.1⁻¹).val.val p.2` using `continuous_pi fun j => (hval.comp continuous_fst.inv).matrix_mulVec ((continuous_apply j).comp continuous_snd)`. Establish `hcancel : ∀ (g : UJ ε) x, act g.val.val (act (g⁻¹).val.val x) = x` using `fun g x => by`. Rewrite using `[← act_mul, Subgroup.coe_inv, Units.mul_inv, act_one]`. Establish `key` using `fub (muG ε) ν (S := {p | hsG p.1 ≤ R ^ 2 ∧ act (p.1⁻¹).val.val p.2 ∈ V}) ((hB.preimage continuous_fst).measurableSet.inter (Metric.isOpen_ball.preimage hact).measurableSet) hB.measurableSet (V := Metric.closedBall 0 (2 * n * R)) measurableSet_closedBall (c := ν V) (k := muG ε K) …`. Establish `hd : Module.finrank ℝ (Fin n → Fin n → ℂ) = 2 * n ^ 2`.
+
+Simplify using `[Module.finrank_pi_fintype]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `key` using `[MeasureTheory.Measure.addHaar_closedBall ν _ (by positivity), hd]`. Rewrite using `[mul_assoc, ← mul_pow, ENNReal.ofReal_mul ENNReal.toReal_nonneg, ENNReal.ofReal_toReal hA, ← ENNReal.mul_div_right_comm, ENNReal.le_div_iff_mul_le (Or.inl hV0) (Or.inl hV1), mul_comm, mul_right_comm, mul_assoc]`. Conclude with `key`.
+
+Introduce `g hg`. Rewrite using `[← vol_act (g⁻¹).val.val (normSq_det (g⁻¹).2) ν V]`. Conclude with `MeasureTheory.measure_mono fun x hx => ⟨hg, hx⟩`. Introduce `x`. Break down `Set.eq_empty_or_nonempty ((fun g : UJ ε => (g, x)) ⁻¹' {p | hsG p.1 ≤ R ^ 2 ∧ act (p.1⁻¹).val.val p.2 ∈ V}) with h | ⟨g₀, hg₀⟩` into its components or cases.
+
+Rewrite using `[h]`. Simplify using the standard rewrite rules. Rewrite using `[← MeasureTheory.measure_preimage_mul (muG ε) g₀⁻¹ K]`. Use `MeasureTheory.measure_mono fun g hg => entry_le _ _ hg.2 ?_` and prove the remaining obligations. Establish `: act (g₀⁻¹ * g).val.val (act (g⁻¹).val.val x) = act (g₀⁻¹).val.val x`.
+
+Rewrite using `[Subgroup.coe_mul, Units.val_mul, act_mul, hcancel]`. Rewrite using `[this]`. Conclude with `norm_le_two _ hg₀.2`. Introduce `g x hg`. Establish `h1 : ∀ i j, ‖g.val.val i j‖ ≤ R` using `fun i j => by`.
+
+Use `(pow_le_pow_iff_left₀ (norm_nonneg _) hR0 two_ne_zero).1 (le_trans ?_ hg.1)` and prove the remaining obligations. Conclude with `(Finset.single_le_sum (f := fun j => ‖g.val.val i j‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun i => ∑ j, ‖g.val.val i j‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ i))`. Establish `h2` using `norm_act_le _ hR0 h1 (act (g⁻¹).val.val x)`. Rewrite `h2` using `[hcancel]`. Establish `h3` using `mul_le_mul_of_nonneg_left (norm_le_two _ hg.2) (show 0 ≤ n * R by positivity)`.
+
+Rewrite using `[mem_closedBall_zero_iff]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem UpperTheory.Reformulated.B.placeRankTwoOne.volume_growth :
     UpperTheory.Reformulated.B.placeRankTwoOne.VolGrowth := by
   intro n ε

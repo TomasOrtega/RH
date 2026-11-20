@@ -12,6 +12,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.R
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.RingKrullDimEqHeightKerSectionAddOne
 open Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal Module UpperTheory.V.Loc UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.Published IsLocalRing Polynomial
 
+/- English proof (translation)
+Set `cc : MvPowerSeries (Fin n) E →ₐ[E] E` to `{ (MvPowerSeries.constantCoeff : MvPowerSeries (Fin n) E →+* E) with commutes' := fun a => by simp [MvPowerSeries.algebraMap_apply] }`. Use `⟨Ideal.Quotient.liftₐ _ cc fun g hg => (sc_max E n g).1 (Ideal.pow_le_self (by omega) hg), fun g => rfl, fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Use `⟨k + 2, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow, Ideal.Quotient.eq_zero_iff_mem]`.
+
+Conclude with `Ideal.pow_mem_pow ((sc_max E n g).2 ha) _`.
+-/
 private theorem sc_pi (E : Type) [Field E] (n k : ℕ) :
     ∃ π : (MvPowerSeries (Fin n) E ⧸ maximalIdeal (MvPowerSeries (Fin n) E) ^ (k + 2)) →ₐ[E] E,
       (∀ g, π (Ideal.Quotient.mk _ g) = MvPowerSeries.constantCoeff g) ∧ ∀ a, π a = 0 → IsNilpotent a := by
@@ -25,6 +30,19 @@ private theorem sc_pi (E : Type) [Field E] (n k : ℕ) :
   rw [← map_pow, Ideal.Quotient.eq_zero_iff_mem]
   exact Ideal.pow_mem_pow ((sc_max E n g).2 ha) _
 
+/- English proof (translation)
+Establish `hmap : ∀ k, ∀ b ∈ RingHom.ker x ^ k ⊔ I, φ b ∈ maximalIdeal (MvPowerSeries (Fin n) E) ^ k`. Introduce `k`. Establish `: RingHom.ker x ^ k ⊔ I ≤ (maximalIdeal (MvPowerSeries (Fin n) E) ^ k).comap (φ : R →+* _)`. Use `sup_le (le_trans (Ideal.pow_right_mono (fun y hy => ?_) k) (Ideal.le_comap_pow _ k)) fun y hy => ?_` and prove the remaining obligations. Use `(sc_max E n (φ y)).2 ?_` and prove the remaining obligations.
+
+Rewrite using `[hconst, show x y = 0 from hy, map_zero]`. Use `show φ y ∈ maximalIdeal (MvPowerSeries (Fin n) E) ^ k`. Rewrite using `[show φ y = 0 from hI hy]`. Conclude with `zero_mem _`. Conclude with `fun b hb => this hb`.
+
+Proceed by induction on `N with`. Consider the case `zero => exact fun a _ => ⟨1, one_ne_zero, by simp⟩`. Consider the case `succ N ih`. Introduce `a ha`. Take `⟨e, he, h1⟩` from `ih a (Ideal.pow_le_pow_right (Nat.le_succ N) ha)`.
+
+Take `⟨b, hb, i, hi, hbi⟩` from `Submodule.mem_sup.1 h1`. Take `⟨e', h, he', hh, h2⟩` from `UpperTheory.exists_homogeneous_lift_mod_ker_pow_succ_sup O R I x n t ht0 hspan N b hb`. Establish `hφb : φ b = e • φ a`. Rewrite using `[← map_smul, ← hbi, map_add, show φ i = 0 from hI hi, add_zero]`. Establish `h3 : MvPolynomial.aeval (fun j => φ (t j)) h ∈ maximalIdeal (MvPowerSeries (Fin n) E) ^ (N + 1)`.
+
+Establish `h4` using `hmap _ _ h2`. Rewrite `h4` using `[map_sub, map_smul, hφb, MvPolynomial.comp_aeval_apply]`. Establish `h5 : e' • e • φ a ∈ maximalIdeal (MvPowerSeries (Fin n) E) ^ (N + 1)` using `Submodule.smul_of_tower_mem _ _ (Submodule.smul_of_tower_mem _ _ ha)`. Simplify using `using sub_mem h5 h4`. Establish `h0` using `UpperTheory.eq_zero_of_homogeneous_aeval_mem_maximalIdeal_pow_succ O E n _ c hc ht N h hh h3`.
+
+Rewrite `h2` using `[h0, map_zero, sub_zero]`. Use `⟨e' * e, mul_ne_zero he' he, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul, ← hbi, smul_add]`. Conclude with `add_mem h2 (Ideal.mem_sup_right (Submodule.smul_of_tower_mem _ _ hi))`.
+-/
 private theorem sc_inj {O E R : Type} [CommRing O] [IsDomain O] [Field E] [Algebra O E] [IsFractionRing O E]
     [CommRing R] [Algebra O R] (I : Ideal R) (x : R →ₐ[O] O) (n : ℕ) (φ : R →ₐ[O] MvPowerSeries (Fin n) E)
     (t : Fin n → R) (c : O) (hc : c ≠ 0) (hI : I ≤ RingHom.ker φ)
@@ -64,6 +82,17 @@ private theorem sc_inj {O E R : Type} [CommRing O] [IsDomain O] [Field E] [Algeb
     rw [mul_smul, ← hbi, smul_add]
     exact add_mem h2 (Ideal.mem_sup_right (Submodule.smul_of_tower_mem _ _ hi))
 
+/- English proof (translation)
+Establish `: IsDomain (MvPowerSeries (Fin n) E)` using `NoZeroDivisors.to_isDomain _`. Establish `: (RingHom.ker φ).IsPrime` using `RingHom.ker_isPrime _`. Establish `: IsCO O (R ⧸ RingHom.ker φ)` using `co_quot O R _ (Ideal.Quotient.mkₐ O _) Ideal.Quotient.mk_surjective`. Establish `hPx : ∀ a ∈ RingHom.ker φ, x a = 0` using `fun a ha => by`. Use `IsFractionRing.injective O E ?_` and prove the remaining obligations.
+
+Rewrite using `[← hconst, show φ a = 0 from ha, map_zero, map_zero]`. Take `⟨x', hx'⟩ : ∃ x' : (R ⧸ RingHom.ker φ) →ₐ[O] O, ∀ a, x' (Ideal.Quotient.mk _ a) = x a` from `⟨Ideal.Quotient.liftₐ _ x hPx, fun _ => rfl⟩`. Take `⟨φ', hφ'⟩ : ∃ φ' : (R ⧸ RingHom.ker φ) →ₐ[O] MvPowerSeries (Fin n) E, ∀ a, φ' (Ideal.Quotient.mk _ a) = φ a` from `⟨Ideal.Quotient.liftₐ _ φ fun _ h => h, fun _ => rfl⟩`. Establish `h1` using `UpperTheory.ringKrullDim_mvPowerSeries_fin_field O E _ x' n φ' (fun i => Ideal.Quotient.mk _ (t i)) c hc (fun a => by obtain ⟨a, rfl⟩ := Ideal.Quotient.mk_surjective a; rw [hφ', hx', hconst]) (fun i => by rw [hφ']; exact ht i)`. Establish `h2` using `UpperTheory.height_ker_section_le_of_cotangent_generators O _ x' n (fun i => Ideal.Quotient.mk _ (t i)) (fun i => by rw [hx', ht0]) (fun a ha => by`.
+
+Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Take `⟨e, o, he, h⟩` from `hspan a (by rw [← hx', ha])`. Use `⟨e, o, he, ?_⟩` and prove the remaining obligations. Establish `hle : RingHom.ker x ^ 2 ⊔ I ≤ (RingHom.ker x' ^ 2).comap (Ideal.Quotient.mk (RingHom.ker φ))`. Use `sup_le (le_trans (Ideal.pow_right_mono (fun y hy => ?_) 2) (Ideal.le_comap_pow _ 2)) fun y hy => ?_` and prove the remaining obligations.
+
+Conclude with `(hx' y).trans hy`. Rewrite using `[Ideal.mem_comap, Ideal.Quotient.eq_zero_iff_mem.2 (hI hy)]`. Conclude with `zero_mem _`. Establish `h3 : Ideal.Quotient.mkₐ O (RingHom.ker φ) (e • a - ∑ i, o i • t i) ∈ RingHom.ker x' ^ 2` using `hle h`. Simplify `h3)` using `only [map_sub, map_sum, map_smul, Ideal.Quotient.mkₐ_eq_mk]`.
+
+Rewrite using `[UpperTheory.ringKrullDim_eq_height_ker_section_add_one O _ x', le_antisymm h2 h1]`. Use `norm_cast`.
+-/
 private theorem sc_dim {O E R : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [IsAdicComplete (maximalIdeal O) O] [Field E] [Algebra O E] [IsFractionRing O E]
     [CommRing R] [Algebra O R] [IsCO O R] (I : Ideal R) (x : R →ₐ[O] O) (n : ℕ)
@@ -101,6 +130,15 @@ private theorem sc_dim {O E R : Type} [CommRing O] [IsDomain O] [IsDiscreteValua
   rw [UpperTheory.ringKrullDim_eq_height_ker_section_add_one O _ x', le_antisymm h2 h1]
   norm_cast
 
+/- English proof (translation)
+Establish `: IsDomain (MvPowerSeries (Fin n) E)` using `NoZeroDivisors.to_isDomain _`. Establish `hP : (RingHom.ker φ).IsPrime` using `RingHom.ker_isPrime _`. Establish `hinj` using `sc_inj I x n φ t c hc hI hconst ht0 ht hspan`. Establish `hPx : RingHom.ker φ ≤ RingHom.ker x` using `fun a ha => by`. Use `IsFractionRing.injective O E ?_` and prove the remaining obligations.
+
+Rewrite using `[← hconst, show φ a = 0 from ha, map_zero, map_zero]`. Take `⟨y, hy, hyP⟩` from `UpperTheory.exists_not_mem_mul_mem_ideal_of_forall_prime_pow_sup R I (RingHom.ker x) (RingHom.ker φ) (RingHom.ker_isPrime _) hIx fun a ha N => by`. Take `⟨e, he, h⟩` from `hinj N a (by rw [show φ a = 0 from ha]; exact zero_mem _)`. Use `⟨algebraMap O R e, fun h' => he ?_, by rwa [← Algebra.smul_def]⟩` and prove the remaining obligations. Simplify using `using h'`.
+
+Establish `hle : ∀ Q : Ideal R, Q.IsPrime → I.radical ≤ Q → Q ≤ RingHom.ker x → RingHom.ker φ ≤ Q` using `fun Q hQ h1 h2 a ha => (hQ.mem_or_mem (h1 (Ideal.le_radical (hyP a ha)))).resolve_left fun h => hy (h2 h)`. Establish `hrad : I.radical ≤ RingHom.ker φ` using `hP.radical_le_iff.2 hI`. Use `⟨RingHom.ker φ, ⟨rfl, hconst, UpperTheory.power_series_approximation_mod_maximal O E R n φ t c hc ht, fun N a ha => ?_⟩, hI, ⟨y, hy, hyP⟩, fun Q hQ => ⟨fun h => ?_, fun h => h ▸ hPx⟩, ⟨⟨hP, hrad⟩, fun Q hQ h => hle Q hQ.1 hQ.2 (h.trans hPx)⟩, sc_dim I x n φ t c hc hI hconst ht0 h …` and prove the remaining obligations. Take `⟨e, he, h⟩` from `hinj N a ha`. Conclude with `⟨e, he, sup_le_sup_left hI _ h⟩`.
+
+Establish `h1` using `hle Q hQ.1.1 hQ.1.2 h`. Conclude with `le_antisymm (hQ.2 ⟨hP, hrad⟩ h1) h1`.
+-/
 private theorem sc_end {O E R : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [IsAdicComplete (maximalIdeal O) O] [Field E] [Algebra O E] [IsFractionRing O E]
     [CommRing R] [Algebra O R] [IsCO O R] (I : Ideal R) (x : R →ₐ[O] O) (hIx : I ≤ RingHom.ker x) (n : ℕ)
@@ -133,6 +171,21 @@ private theorem sc_end {O E R : Type} [CommRing O] [IsDomain O] [IsDiscreteValua
   · have h1 := hle Q hQ.1.1 hQ.1.2 h
     exact le_antisymm (hQ.2 ⟨hP, hrad⟩ h1) h1
 
+/- English proof (translation)
+Introduce `l _ O _ _ _ _ _ _ _ E _ _ _ _ _ _ _ _ R _ _ _ I x hIx H`. Take `⟨n, D, t, c, hc, hD, hDI, ht0, htD, hspan⟩` from `UpperTheory.exists_derivations_dual_to_cotangent_parameters O E R I x hIx`. Take `⟨f₀, hf₀⟩` from `sc_first x n D hD`. Establish `: IsAdicComplete (maximalIdeal (MvPowerSeries (Fin n) E)) (MvPowerSeries (Fin n) E)`. Rewrite using `[← sc_span]`.
+
+Use `infer_instance`. Establish `hfin : ∀ k, Module.Finite ℚ_[l] (MvPowerSeries (Fin n) E ⧸ maximalIdeal (MvPowerSeries (Fin n) E) ^ k)` using `fun k => by`. Establish `: Module.Finite E (MvPowerSeries (Fin n) E ⧸ maximalIdeal (MvPowerSeries (Fin n) E) ^ k)` using `GlobalTheory.FormalIsogeny.finite_quotient_of_pow_le (N := k) (by rw [sc_span])`. Conclude with `Module.Finite.trans E _`. Establish `hc0 : ∀ a g, Ideal.Quotient.mk _ g = f₀ a → MvPowerSeries.constantCoeff g = algebraMap O E (x a)`.
+
+Introduce `a g hg`. Rewrite `hg` using `[hf₀, Ideal.Quotient.eq]`. Use `(sc_max E n _).1 (Ideal.pow_le_self (by omega) hg)` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`. Take `⟨φ, hφI, hφ⟩` from `sc_tower (maximalIdeal (MvPowerSeries (Fin n) E)) I f₀ (fun a ha => by`.
+
+Rewrite using `[RingHom.mem_ker, hf₀, show x a = 0 from hIx ha]`. Simplify using `[hDI _ a ha])`. Use the proof step `(fun N f' h1 h2 => by`. Take `⟨π, hπ, hn⟩` from `sc_pi E n (N + 1)`. Take `⟨π', hπ', hn'⟩` from `sc_pi E n N`.
+
+Use `hfin (N + 1 + 2)` as an intermediate fact. Use `hfin (N + 2)` as an intermediate fact. Use `H _ π hn _ π' hn' (Ideal.Quotient.factorₐ E (Ideal.pow_le_pow_right (by omega : N + 2 ≤ N + 1 + 2))) (Ideal.Quotient.factor_surjective (Ideal.pow_le_pow_right (by omega : N + 2 ≤ N + 1 + 2))) (AlgHom.ext fun b => ?_) f' h1 fun a => ?_` and prove the remaining obligations. Take `⟨g, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Conclude with `(hπ' g).trans (hπ g).symm`.
+
+Take `⟨g, hg⟩` from `Ideal.Quotient.mk_surjective (f' a)`. Rewrite using `[← hg, hπ']`. Use `hc0 a g ?_` and prove the remaining obligations. Rewrite using `[← h2, ← hg, Ideal.Quotient.factor_mk])`. Take `⟨P, hP⟩` from `sc_end I x hIx n φ t c hc hφI (fun a => hc0 a _ (hφ a)) ht0 (fun i => by`.
+
+Establish `h` using `hφ (t i)`. Rewrite `h` using `[hf₀, Ideal.Quotient.eq]`. Simplify `h) hspan` using `[ht0, htD, apply_ite, Algebra.smul_def, MvPowerSeries.algebraMap_apply]`. Conclude with `⟨n, P, φ, hP⟩`.
+-/
 theorem UpperTheory.V.Loc.smoothCompl :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] [IsAdicComplete (maximalIdeal O) O] (E : Type) [Field E] [Algebra ℚ_[l] E] [Module.Finite ℚ_[l] E] [Algebra O E] [Algebra ℤ_[l] E] [IsScalarTower ℤ_[l] O E] [IsScalarTower ℤ_[l] ℚ_[l] E] [IsFractionRing O E] (R : Type) [CommRing R] [Algebra O R] [IsCO O R] (I : Ideal R) (x : R →ₐ[O] O), I ≤ RingHom.ker x → (∀ (B : Type) [CommRing B] [Algebra ℚ_[l] B] [Module.Finite ℚ_[l] B] [Algebra O B] [Algebra ℤ_[l] B] [IsScalarTower ℤ_[l] O B] [IsScalarTower ℤ_[l] ℚ_[l] B] [Algebra E B] [IsScalarTower O E B] [IsScalarTower ℚ_[l] E B] (π : B →ₐ[E] E) (hπ : ∀ a, π a = 0 → IsNilpotent a) (B' : Type) [CommRing B'] [Algebra ℚ_[l] B'] [Module.Finite ℚ_[l] B'] [Algebra O B'] [Algebra ℤ_[l] B'] [IsScalarTower ℤ_[l] O B'] [IsScalarTower ℤ_[l] ℚ_[l] B'] [Algebra E B'] [IsScalarTower O E B'] [IsScalarTower ℚ_[l] E B'] (π' : B' →ₐ[E] E) (hπ' : ∀ a, π' a = 0 → IsNilpotent a) (p : B →ₐ[E] B'), Function.Surjective p → π'.comp p = π → ∀ f' : R →ₐ[O] B', I ≤ RingHom.ker f' → (∀ a, π' (f' a) = algebraMap O E (x a)) → ∃ f : R →ₐ[O] B, I ≤ RingHom.ker f ∧ ∀ a, p (f a) = f' a) → ∃ (n : ℕ) (P : Ideal R) (φ : R →ₐ[O] MvPowerSeries (Fin n) E), UpperTheory.V.Loc.IsCompl P x φ ∧ I ≤ P ∧ (∃ y, x y ≠ 0 ∧ ∀ a ∈ P, y * a ∈ I) ∧ (∀ Q ∈ I.radical.minimalPrimes, Q ≤ RingHom.ker x ↔ Q = P) ∧ P ∈ I.radical.minimalPrimes ∧ ringKrullDim (R ⧸ P) = (n + 1 : ℕ) := by
   intro l _ O _ _ _ _ _ _ _ E _ _ _ _ _ _ _ _ R _ _ _ I x hIx H

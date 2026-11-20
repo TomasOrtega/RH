@@ -2,6 +2,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeGroups
 
 open Matrix IsLocalRing UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.HV
 
+/- English proof (translation)
+Establish `hdiv : ∀ i, ∃ u : ℤ_[l], v i - w i = (l : ℤ_[l]) ^ n * u`. Introduce `i`. Establish `hi : ‖v i - w i‖ ≤ (l : ℝ) ^ (-(n : ℤ))`. Rewrite using `[← dist_eq_norm]`. Conclude with `(dist_le_pi_dist v w i).trans h`.
+
+Rewrite `hi` using `[PadicInt.norm_le_pow_iff_mem_span_pow, Ideal.mem_span_singleton]`. Take `⟨u, hu⟩` from `hi`. Conclude with `⟨u, hu⟩`. Use `choose u hu using hdiv`. Establish `hvw : v - w = (l ^ n) • u`.
+
+Use extensionality with `i`. Simplify using `[hu i, nsmul_eq_mul]`. Rewrite using `[← map_sub, hvw, map_nsmul, nsmul_eq_mul]`. Use `Ideal.mul_mem_right _ _ ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_pow]`.
+
+Conclude with `Ideal.pow_mem_pow hl n`.
+-/
 private theorem map_sub_map_mem_pow_of_dist_le_zpow_neg {l : ℕ} [Fact l.Prime] {R : Type} [CommRing R] (J : Ideal R)
     (hl : (l : R) ∈ J) {k : ℕ} (φ : (Fin k → ℤ_[l]) →+ R) (n : ℕ) (v w : Fin k → ℤ_[l])
     (h : dist v w ≤ (l : ℝ) ^ (-(n : ℤ))) : φ v - φ w ∈ J ^ n := by
@@ -22,6 +31,15 @@ private theorem map_sub_map_mem_pow_of_dist_le_zpow_neg {l : ℕ} [Fact l.Prime]
   rw [Nat.cast_pow]
   exact Ideal.pow_mem_pow hl n
 
+/- English proof (translation)
+Use `choose v hv using h`. Take `⟨a, ψ, hψ, htend⟩` from `SeqCompactSpace.tendsto_subseq v`. Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `hall : ∀ m : ℕ, y - φ a ∈ J ^ m`. Introduce `m`.
+
+Establish `hpos : (0 : ℝ) < (l : ℝ) ^ (-(m : ℤ))`. Establish `hl0 : (0 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).pos`. Conclude with `zpow_pos hl0 _`. Establish `hev1 : ∀ᶠ j in Filter.atTop, (v ∘ ψ) j ∈ Metric.closedBall a ((l : ℝ) ^ (-(m : ℤ)))` using `htend.eventually (Metric.closedBall_mem_nhds a hpos)`. Establish `hev2 : ∀ᶠ j in Filter.atTop, m ≤ ψ j` using `hψ.tendsto_atTop.eventually_ge_atTop m`.
+
+Take `⟨j, hj1, hj2⟩` from `(hev1.and hev2).exists`. Establish `e1 : y - φ (v (ψ j)) ∈ J ^ m` using `Ideal.pow_le_pow_right hj2 (hv (ψ j))`. Establish `e2 : φ (v (ψ j)) - φ a ∈ J ^ m` using `map_sub_map_mem_pow_of_dist_le_zpow_neg J hl φ m _ _ hj1`. Establish `e3` using `add_mem e1 e2`. Rewrite `e3` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis.
+
+Establish `h0 : y - φ a = 0`. Use `IsHausdorff.haus' (I := J) (y - φ a) (fun n => ?_)` and prove the remaining obligations. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top]`. Conclude with `hall n`. Conclude with `(sub_eq_zero.mp h0).symm`.
+-/
 private theorem mem_range_of_approx {l : ℕ} [Fact l.Prime] {R : Type} [CommRing R] (J : Ideal R)
     [IsHausdorff J R] (hl : (l : R) ∈ J) {k : ℕ} (φ : (Fin k → ℤ_[l]) →+ R) (y : R)
     (h : ∀ n : ℕ, ∃ v, y - φ v ∈ J ^ n) : ∃ v, φ v = y := by
@@ -47,6 +65,17 @@ private theorem mem_range_of_approx {l : ℕ} [Fact l.Prime] {R : Type} [CommRin
     exact hall n
   exact (sub_eq_zero.mp h0).symm
 
+/- English proof (translation)
+Use `haveI := c.fin`. Establish `hint : IsIntegral ℤ_[l] (x : PadicAlgCl l)`. Establish `hx : IsIntegral ℤ_[l] x` using `Algebra.IsIntegral.isIntegral x`. Conclude with `hx.map c.O.val`. Take `⟨p, hmon, hp⟩` from `hint`.
+
+Assume the negation of the conclusion as `hgt`. Use `push_neg at hgt`. Rewrite `hp` using `[hmon.as_sum, Polynomial.eval₂_add, Polynomial.eval₂_X_pow, Polynomial.eval₂_finset_sum]`. Establish `hcoef : ∀ i ∈ Finset.range p.natDegree, ‖Polynomial.eval₂ (algebraMap ℤ_[l] (PadicAlgCl l)) (x : PadicAlgCl l) (Polynomial.C (p.coeff i) * Polynomial.X ^ i)‖ ≤ ‖(x : PadicAlgCl l)‖ ^ i`. Introduce `i _`.
+
+Rewrite using `[Polynomial.eval₂_mul, Polynomial.eval₂_C, Polynomial.eval₂_X_pow, norm_mul, norm_pow]`. Establish `hc : ‖algebraMap ℤ_[l] (PadicAlgCl l) (p.coeff i)‖ ≤ 1`. Rewrite using `[IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (PadicAlgCl l), PadicAlgCl.norm_extends]`. Conclude with `PadicInt.norm_le_one _`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hlt : ‖∑ i ∈ Finset.range p.natDegree, Polynomial.eval₂ (algebraMap ℤ_[l] (PadicAlgCl l)) (x : PadicAlgCl l) (Polynomial.C (p.coeff i) * Polynomial.X ^ i)‖ < ‖(x : PadicAlgCl l)‖ ^ p.natDegree`. Break down `Nat.eq_zero_or_pos p.natDegree with hn | hn` into its components or cases. Rewrite using `[hn]`. Simplify using the standard rewrite rules. Take `⟨i, hi, hle⟩` from `IsUltrametricDist.exists_norm_finset_sum_le_of_nonempty (Finset.nonempty_range_iff.mpr hn.ne') (fun i => Polynomial.eval₂ (algebraMap ℤ_[l] (PadicAlgCl l)) (x : PadicAlgCl l) (Polynomial.C (p.coeff i) * Polynomial.X ^ i))`.
+
+Conclude with `lt_of_le_of_lt (hle.trans (hcoef i hi)) (pow_lt_pow_right₀ hgt (Finset.mem_range.mp hi))`. Establish `heq` using `eq_neg_of_add_eq_zero_left hp`. Establish `hn` using `congrArg norm heq`. Rewrite `hn` using `[norm_neg, norm_pow]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem norm_coe_coefO_le_one {l : ℕ} [Fact l.Prime] (c : Coef l) (x : c.O) :
     ‖(x : PadicAlgCl l)‖ ≤ 1 := by
   haveI := c.fin
@@ -82,6 +111,13 @@ private theorem norm_coe_coefO_le_one {l : ℕ} [Fact l.Prime] (c : Coef l) (x :
   rw [norm_neg, norm_pow] at hn
   linarith
 
+/- English proof (translation)
+Introduce and unpack `⟨u, hu⟩`. Establish `h1` using `norm_coe_coefO_le_one c (↑u⁻¹ : c.O)`. Establish `hprod : (l : PadicAlgCl l) * ((↑u⁻¹ : c.O) : PadicAlgCl l) = 1`. Establish `h` using `congrArg (fun z : c.O => (z : PadicAlgCl l)) (Units.mul_inv u)`. Rewrite `h` using `[hu]`.
+
+Simplify using `using h`. Establish `hl : ‖(l : PadicAlgCl l)‖ = (l : ℝ)⁻¹`. Rewrite using `[← map_natCast (algebraMap ℚ_[l] (PadicAlgCl l)), PadicAlgCl.norm_extends, Padic.norm_p]`. Establish `hn` using `congrArg norm hprod`. Rewrite `hn` using `[norm_mul, norm_one, hl]`.
+
+Establish `hl2 : (2 : ℝ) ≤ l` using `by exact_mod_cast (Fact.out : l.Prime).two_le`. Establish `hle : (l : ℝ)⁻¹ * ‖((↑u⁻¹ : c.O) : PadicAlgCl l)‖ ≤ (l : ℝ)⁻¹ * 1` using `mul_le_mul_of_nonneg_left h1 (by positivity)`. Establish `hinv : (l : ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem natCast_not_isUnit {l : ℕ} [Fact l.Prime] (c : Coef l) : ¬ IsUnit (l : c.O) := by
   rintro ⟨u, hu⟩
   have h1 := norm_coe_coefO_le_one c (↑u⁻¹ : c.O)
@@ -99,6 +135,37 @@ private theorem natCast_not_isUnit {l : ℕ} [Fact l.Prime] (c : Coef l) : ¬ Is
   have hinv : (l : ℝ)⁻¹ < 1 := inv_lt_one_of_one_lt₀ (by linarith)
   linarith
 
+/- English proof (translation)
+Introduce `l _ c Γ H _ _ _ _ _ _ η Ψ N ι hι U I cc g₁ S M hl2 hmk hfin`. Use `haveI := c.dvr`. Use `haveI := c.fin`. Use `haveI hH : IsHausdorff (maximalIdeal S.R) S.R := (IsCO.complete (O := c.O) (R := S.R)).toIsHausdorff`. Use `haveI hloc : IsLocalHom (algebraMap c.O S.R) := IsCO.isLocalHom (O := c.O) (R := S.R)`.
+
+Establish `hlm : ((l : ℕ) : S.R) ∈ maximalIdeal S.R`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Apply `natCast_not_isUnit c` to reduce the goal to its premises. Rewrite `hu` using `[← map_natCast (algebraMap c.O S.R)]`.
+
+Conclude with `isUnit_of_map_unit (algebraMap c.O S.R) _ hu`. Take `⟨n, b, hb⟩` from `Module.Finite.exists_fin (R := c.O) (M := weightZeroSubalgebra c.O S.r.hom)`. Take `⟨t, o, ho⟩` from `Module.Finite.exists_fin (R := ℤ_[l]) (M := c.O)`. Set `F : (Fin n × Fin t → ℤ_[l]) → Fin n × Fin t → S.R` to `fun z q => algebraMap c.O S.R (algebraMap ℤ_[l] c.O (z q) * o q.2) * ((b q.1 : weightZeroSubalgebra c.O S.r.hom) : S.R)`. Set `φ : (Fin (n * t) → ℤ_[l]) →+ S.R` to `{ toFun := fun v => ∑ q : Fin n × Fin t, F (v ∘ finProdFinEquiv) q map_zero' := by simp [F] map_add' := by`.
+
+Introduce `v w`. Simplify using `only [F, Function.comp_apply, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib] }`. Establish `hφB : ∀ v, φ v ∈ weightZeroSubalgebra c.O S.r.hom`. Introduce `v`. Use `show (∑ q : Fin n × Fin t, F (v ∘ finProdFinEquiv) q) ∈ _`.
+
+Use `Subalgebra.sum_mem _ (fun q _ => ?_)` and prove the remaining obligations. Conclude with `Subalgebra.mul_mem _ (Subalgebra.algebraMap_mem _ _) (b q.1).2`. Establish `hBφ : ∀ x ∈ weightZeroSubalgebra c.O S.r.hom, ∃ v, φ v = x`. Introduce `x hx`. Establish `hx' : (⟨x, hx⟩ : weightZeroSubalgebra c.O S.r.hom) ∈ Submodule.span c.O (Set.range b)`.
+
+Rewrite using `[hb]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun c.O).mp hx'`. Establish `hz : ∀ i, ∃ z : Fin t → ℤ_[l], ∑ j, z j • o j = a i`. Introduce `i`.
+
+Establish `hai : a i ∈ Submodule.span ℤ_[l] (Set.range o)`. Rewrite using `[ho]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `(Submodule.mem_span_range_iff_exists_fun ℤ_[l]).mp hai`. Use `choose z hz using hz`.
+
+Establish `hx2 : ∑ i, a i • ((b i : weightZeroSubalgebra c.O S.r.hom) : S.R) = x`. Establish `h` using `congrArg Subtype.val ha`. Simplify using `using h`. Use `⟨(fun q : Fin n × Fin t => z q.1 q.2) ∘ finProdFinEquiv.symm, ?_⟩` and prove the remaining obligations. Use `show ∑ q : Fin n × Fin t, F (((fun q : Fin n × Fin t => z q.1 q.2) ∘ finProdFinEquiv.symm) ∘ finProdFinEquiv) q = x`.
+
+Establish `hcomp : ((fun q : Fin n × Fin t => z q.1 q.2) ∘ finProdFinEquiv.symm) ∘ finProdFinEquiv = fun q => z q.1 q.2`. Use function extensionality and compare the values at `q`. Simplify using the standard rewrite rules. Rewrite using `[hcomp, Fintype.sum_prod_type, ← hx2]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations.
+
+Simplify using `only [F]`. Rewrite using `[← Finset.sum_mul, ← map_sum, Algebra.smul_def, ← hz i]`. Use `congr 2`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`.
+
+Establish `key : ∀ f ∈ M.𝒜 0, M.q f ∈ weightZeroSubalgebra c.O S.r.hom`. Introduce `f hf`. Take `⟨v, hv⟩` from `mem_range_of_approx (maximalIdeal S.R) hlm φ (M.q f) (fun m => by`. Take `⟨y, hy, hdiff⟩` from `M.dense 0 f hf m`. Establish `hle : Submodule.span c.O (entMon S.r.hom 0) ≤ Subalgebra.toSubmodule (weightZeroSubalgebra c.O S.r.hom)` using `Submodule.span_le.mpr (fun z hz => Algebra.subset_adjoin hz)`.
+
+Take `⟨v, hv⟩` from `hBφ y (hle hy)`. Conclude with `⟨v, by rw [hv]; exact hdiff⟩)`. Rewrite using `[← hv]`. Conclude with `hφB v`. Establish `hsub : (M.𝒜 0).map M.q.toLinearMap ≤ Subalgebra.toSubmodule (weightZeroSubalgebra c.O S.r.hom)`.
+
+Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `key f hf`. Use `haveI : Module.Finite c.O (Subalgebra.toSubmodule (weightZeroSubalgebra c.O S.r.hom)) := hfin`. Use `haveI hpir : IsPrincipalIdealRing c.O := c.dvr.toIsPrincipalIdealRing`. Use `haveI hnr : IsNoetherianRing c.O := PrincipalIdealRing.isNoetherianRing`.
+
+Use `haveI : IsNoetherian c.O (Subalgebra.toSubmodule (weightZeroSubalgebra c.O S.r.hom)) := isNoetherian_of_isNoetherianRing_of_finite _ _`. Establish `hfg : ((M.𝒜 0).map M.q.toLinearMap).FG` using `isNoetherian_submodule.mp inferInstance _ hsub`. Use `show (Submodule.map (Ideal.Quotient.mkₐ c.O M.Q.ideal).toLinearMap (M.𝒜 0)).FG`. Rewrite using `[← M.ker_q]`. Use `Submodule.fg_of_fg_map_injective (Ideal.kerLiftAlg M.q).toLinearMap (Ideal.kerLiftAlg_injective M.q) ?_` and prove the remaining obligations.
+
+Rewrite using `[← Submodule.map_comp]`. Use `hfg using 2` and compare the differences between its conclusion and the goal. Use extensionality with `a`. Simplify using `[Ideal.kerLiftAlg_mk]`.
+-/
 theorem UpperTheory.V.U3.modelIdeal_finiteness_of_weightZero_finite :
     ∀ {l : ℕ} [Fact l.Prime] {c : Coef l} {Γ H : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
       {η : Γ →* ℤˣ} {Ψ : Γ →* (c.O)ˣ} {N : Set Γ} {ι : H →* Γ} {hι : Continuous ι}

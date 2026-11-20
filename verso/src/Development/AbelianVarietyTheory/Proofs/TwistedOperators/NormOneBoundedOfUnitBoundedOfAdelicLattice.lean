@@ -7,6 +7,17 @@ open scoped TensorProduct
 
 namespace GlobalTheory.RegSS
 
+/- English proof (translation)
+Use `set K : Set X := (fun x => x * s x) '' D with hK`. Establish `hKc : IsCompact K` using `hD.image (continuous_id.mul hs : Continuous fun x : X => x * s x)`. Use `set T : Set B := {γ : B | i γ ∈ K} with hT`. Establish `hTf : T.Finite` using `hfin K hKc`. Set `c : B → B` to `fun γ => if h : ∃ p : B × B, p.1 * p.2 = 1 ∧ p.1 * τ p.1 = γ then (Classical.choose h).2 else 0`.
+
+Use `⟨⋃ γ ∈ T, (fun x => x * i (c γ)) '' D, hTf.isCompact_biUnion fun γ _ => hD.image (continuous_mul_const _), ?_⟩` and prove the remaining obligations. Introduce `u hu`. Take `⟨β, hβ, hβD⟩` from `h u hu`. Take `⟨β', hβ'⟩` from `hβ.exists_right_inv`. Establish `hex : ∃ p : B × B, p.1 * p.2 = 1 ∧ p.1 * τ p.1 = β * τ β` using `⟨(β, β'), hβ', rfl⟩`.
+
+Use `set p := Classical.choose hex with hpdef`. Establish `hp : p.1 * p.2 = 1 ∧ p.1 * τ p.1 = β * τ β` using `Classical.choose_spec hex`. Establish `hc : c (β * τ β) = p.2` using `by show (if h : ∃ q : B × B, q.1 * q.2 = 1 ∧ q.1 * τ q.1 = β * τ β then (Classical.choose h).2 else 0) = p.2`. Rewrite using `[dif_pos hex]`. Use `⟨β * p.2, ?_, ?_⟩` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hmem : β * τ β ∈ T` using `by show i (β * τ β) ∈ K`. Use `⟨u * i β, hβD, ?_⟩` and prove the remaining obligations. Use `show u * i β * s (u * i β) = i (β * τ β)`. Rewrite using `[map_mul s, map_mul i, hi]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `Set.mem_biUnion hmem ⟨u * i β, hβD, ?_⟩` and prove the remaining obligations. Use `show u * i β * i (c (β * τ β)) = u * i (β * p.2)`. Rewrite using `[hc, map_mul i, mul_assoc]`.
+-/
 theorem normOne_bounded_of_unit_bounded {B X : Type} [CommRing B] [CommRing X]
     [TopologicalSpace X] [IsTopologicalRing X] (i : B →+* X) (τ : B →+* B) (s : X →+* X)
     (hs : Continuous s) (hi : ∀ b, i (τ b) = s (i b))
@@ -54,6 +65,11 @@ theorem normOne_bounded_of_unit_bounded {B X : Type} [CommRing B] [CommRing X]
     show u * i β * i (c (β * τ β)) = u * i (β * p.2)
     rw [hc, map_mul i, mul_assoc]
 
+/- English proof (translation)
+Introduce `hL F B _ _ _ _ _ τ hU`. Set `_ : TopologicalSpace (B ⊗[F] AdeleRing (𝓞 F) F)` to `Formalism.BasicNotions.tensTopL (F := F) (E := B) (AdeleRing (𝓞 F) F)`. Take `⟨hTR, -, -, -, -, hfin, -⟩` from `hL F B`. Use `hTR` as an intermediate fact. Take `⟨D, hD, hDu⟩` from `hU`.
+
+Conclude with `normOne_bounded_of_unit_bounded (inclE (F := F) (AdeleRing (𝓞 F) F)) (τ : B →+* B) (sigR τ (AdeleRing (𝓞 F) F)) (continuous_sigR τ _) (fun b => inclE_conj τ _ b) hfin D hD hDu`.
+-/
 theorem normOfUnitBounded_of_tensorLattice :
     GlobalTheory.RegSS.TensorLattice → GlobalTheory.RegSS.NormOfUnitBounded := by
   intro hL F B _ _ _ _ _ τ hU

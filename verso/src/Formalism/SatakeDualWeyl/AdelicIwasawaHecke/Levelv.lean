@@ -9,6 +9,13 @@ namespace Formalism.UG.P
 
 open Formalism.UG
 
+/- English proof (translation)
+Establish `hfin : Finite (K ⧸ H.subgroupOf K)`. Use `Finite.of_surjective (fun y : Set.range (fun k : K => f k) => (QuotientGroup.mk (Set.mem_range.mp y.2).choose : K ⧸ H.subgroupOf K)) ?_` and prove the remaining obligations. Introduce `q`. Take `⟨k, rfl⟩` from `QuotientGroup.mk_surjective q`. Use `⟨⟨f k, k, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Use `beta_reduce`. Establish `hc` using `(Set.mem_range.mp (⟨k, rfl⟩ : f k ∈ Set.range (fun k : K => f k))).choose_spec`. Rewrite using `[QuotientGroup.eq, Subgroup.mem_subgroupOf, Subgroup.coe_mul, Subgroup.coe_inv]`. Conclude with `hf _ (Set.mem_range.mp (⟨k, rfl⟩ : f k ∈ Set.range (fun k : K => f k))).choose.2 _ k.2 hc`. Use `show (H.subgroupOf K).index ≠ 0`.
+
+Conclude with `Subgroup.index_ne_zero_of_finite`.
+-/
 theorem levelv_relIndex_ne_zero {G : Type*} [Group G] (H K : Subgroup G) {β : Type*} [Finite β]
     (f : G → β) (hf : ∀ a ∈ K, ∀ b ∈ K, f a = f b → a⁻¹ * b ∈ H) : H.relIndex K ≠ 0 := by
   classical
@@ -26,6 +33,13 @@ theorem levelv_relIndex_ne_zero {G : Type*} [Group G] (H K : Subgroup G) {β : T
   show (H.subgroupOf K).index ≠ 0
   exact Subgroup.index_ne_zero_of_finite
 
+/- English proof (translation)
+Take `⟨a, s, hs, rfl⟩` from `IsFractionRing.div_surjective (A := R) x`. Establish `hs0 : s ≠ 0` using `nonZeroDivisors.ne_zero hs`. Use `haveI := hfin s hs0`. Establish `hN : ringChar (R ⧸ Ideal.span {s}) ≠ 0` using `CharP.char_ne_zero_of_finite (R ⧸ Ideal.span {s}) (ringChar (R ⧸ Ideal.span {s}))`. Establish `hmem : ((ringChar (R ⧸ Ideal.span {s}) : ℕ) : R) ∈ Ideal.span {s}`.
+
+Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Conclude with `ringChar.Nat.cast_ringChar`. Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.mp hmem`. Use `⟨ringChar (R ⧸ Ideal.span {s}), hN, t * a, ?_⟩` and prove the remaining obligations. Establish `hs' : algebraMap R K s ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hs`.
+
+Rewrite using `[nsmul_eq_mul, ← map_natCast (algebraMap R K), ← ht, map_mul, map_mul]`. Apply the tactic sequence `field_simp <;> ring`.
+-/
 theorem levelv_nat_denom {R K : Type*} [CommRing R] [IsDomain R] [Field K] [Algebra R K]
     [IsFractionRing R K] (hfin : ∀ s : R, s ≠ 0 → Finite (R ⧸ Ideal.span {s})) (x : K) :
     ∃ N : ℕ, N ≠ 0 ∧ ∃ y : R, algebraMap R K y = N • x := by
@@ -54,6 +68,11 @@ abbrev lvS (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Alg
     (v : HeightOneSpectrum (𝓞 F)) : Subring (E ⊗[F] v.adicCompletion F) :=
   tensInt (F := F) (v.adicCompletion F) (intOE E) (v.adicCompletionIntegers F).toSubring
 
+/- English proof (translation)
+Establish `h1 : e ⊗ₜ[F] (1 : v.adicCompletion F) ∈ lvS F E v`. Apply `Subring.subset_closure` to reduce the goal to its premises. Conclude with `Set.mem_union_left _ ⟨⟨e, he⟩, rfl⟩`. Establish `h2 : (1 : E) ⊗ₜ[F] x ∈ lvS F E v`. Apply `Subring.subset_closure` to reduce the goal to its premises.
+
+Conclude with `Set.mem_union_right _ ⟨⟨x, hx⟩, rfl⟩`. Simplify using `using mul_mem h1 h2`.
+-/
 theorem levelv_tmul_mem (e : E) (he : e ∈ intOE E) (x : v.adicCompletion F)
     (hx : x ∈ v.adicCompletionIntegers F) : e ⊗ₜ[F] x ∈ lvS F E v := by
   have h1 : e ⊗ₜ[F] (1 : v.adicCompletion F) ∈ lvS F E v := by
@@ -72,6 +91,13 @@ def levelvPsi (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [
       ((a i : v.adicCompletionIntegers F) : v.adicCompletion F))
     (by intro a a'; simp [tmul_add, Finset.sum_add_distrib])
 
+/- English proof (translation)
+Set `φ : 𝓞 E →+ E ⊗[F] v.adicCompletion F` to `AddMonoidHom.mk' (fun y => algebraMap (𝓞 E) E y ⊗ₜ[F] (x : v.adicCompletion F)) (by intro a b; simp [TensorProduct.add_tmul])`. Establish `hb : ∀ i, φ (RingOfIntegers.basis E i) ∈ (levelvPsi F E v).range`. Introduce `i`. Use `AddMonoidHom.mem_range.mpr ⟨Pi.single i x, ?_⟩` and prove the remaining obligations. Simplify using `only [levelvPsi, AddMonoidHom.mk'_apply, φ]`.
+
+Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[Pi.single_apply, hj]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ i) h`. Use `show φ e ∈ _`. Rewrite using `[← (RingOfIntegers.basis E).sum_repr e, map_sum]`. Conclude with `sum_mem fun i _ => by rw [map_zsmul]; exact zsmul_mem (hb i) _`.
+-/
 theorem levelv_tmul_mem_range (e : 𝓞 E) (x : v.adicCompletionIntegers F) :
     algebraMap (𝓞 E) E e ⊗ₜ[F] (x : v.adicCompletion F) ∈ (levelvPsi F E v).range := by
   classical
@@ -92,6 +118,11 @@ theorem levelv_tmul_mem_range (e : 𝓞 E) (x : v.adicCompletionIntegers F) :
   rw [← (RingOfIntegers.basis E).sum_repr e, map_sum]
   exact sum_mem fun i _ => by rw [map_zsmul]; exact zsmul_mem (hb i) _
 
+/- English proof (translation)
+Establish `hPsi : ∀ c, levelvPsi F E v c = ∑ i, algebraMap (𝓞 E) E (RingOfIntegers.basis E i) ⊗ₜ[F] ((c i : v.adicCompletionIntegers F) : v.adicCompletion F)` using `fun c => rfl`. Take `⟨a, rfl⟩` from `AddMonoidHom.mem_range.mp hy`. Take `⟨a', rfl⟩` from `AddMonoidHom.mem_range.mp hy'`. Rewrite using `[hPsi, hPsi]`. Simplify using `only [Finset.sum_mul, Finset.mul_sum, Algebra.TensorProduct.tmul_mul_tmul]`.
+
+Use `sum_mem fun i _ => sum_mem fun j _ => ?_` and prove the remaining obligations. Use `first`. Consider the case `simpa using levelv_tmul_mem_range v (RingOfIntegers.basis E i * RingOfIntegers.basis E j) (a i * a' j)`. Consider the case `simpa using levelv_tmul_mem_range v (RingOfIntegers.basis E j * RingOfIntegers.basis E i) (a j * a' i)`.
+-/
 theorem levelv_mul_mem_range (y y' : E ⊗[F] v.adicCompletion F)
     (hy : y ∈ (levelvPsi F E v).range) (hy' : y' ∈ (levelvPsi F E v).range) :
     y * y' ∈ (levelvPsi F E v).range := by
@@ -119,6 +150,13 @@ def levelvT (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Al
   zero_mem' := zero_mem _
   neg_mem' := neg_mem
 
+/- English proof (translation)
+Establish `hle : lvS F E v ≤ levelvT F E v`. Apply `Subring.closure_le.mpr` to reduce the goal to its premises. Introduce and unpack `z (⟨⟨e, he⟩, rfl⟩ | ⟨⟨x, hx⟩, rfl⟩)`. Take `⟨e', rfl⟩` from `RingHom.mem_range.mp he show algebraMap (𝓞 E) E e' ⊗ₜ[F] (1 : v.adicCompletion F) ∈ (levelvPsi F E v).range`. Simplify using `using levelv_tmul_mem_range v e' 1`.
+
+Use `show (1 : E) ⊗ₜ[F] x ∈ (levelvPsi F E v).range`. Establish `h` using `levelv_tmul_mem_range (E := E) v 1 ⟨x, hx⟩`. Use `first`. Consider the case `exact h`. Consider the case `(rw [map_one] at h; exact h)`.
+
+Consider the case `simpa using h`. Conclude with `hle hy`.
+-/
 theorem levelv_S_le_range (y : E ⊗[F] v.adicCompletion F) (hy : y ∈ lvS F E v) :
     y ∈ (levelvPsi F E v).range := by
   have hle : lvS F E v ≤ levelvT F E v := by
@@ -135,11 +173,35 @@ theorem levelv_S_le_range (y : E ⊗[F] v.adicCompletion F) (hy : y ∈ lvS F E 
         | simpa using h
   exact hle hy
 
+/- English proof (translation)
+Simplify using `only [levelvPsi, AddMonoidHom.mk'_apply]`. Conclude with `sum_mem fun i _ => levelv_tmul_mem v _ (RingHom.mem_range.mpr ⟨_, rfl⟩) _ (a i).2`.
+-/
 theorem levelv_range_le_S (a : Module.Free.ChooseBasisIndex ℤ (𝓞 E) → v.adicCompletionIntegers F) :
     levelvPsi F E v a ∈ lvS F E v := by
   simp only [levelvPsi, AddMonoidHom.mk'_apply]
   exact sum_mem fun i _ => levelv_tmul_mem v _ (RingHom.mem_range.mpr ⟨_, rfl⟩) _ (a i).2
 
+/- English proof (translation)
+Establish `h1 : ∀ (m : ℕ) (e : E) (x : v.adicCompletion F), m • (e ⊗ₜ[F] x) = (m • e) ⊗ₜ[F] x` using `fun m e x => (map_nsmul ((TensorProduct.mk F E (v.adicCompletion F)).flip x) m e).symm`. Establish `h2 : ∀ (m : ℕ) (e : E) (x : v.adicCompletion F), m • (e ⊗ₜ[F] x) = e ⊗ₜ[F] (m • x)` using `fun m e x => (map_nsmul (TensorProduct.mk F E (v.adicCompletion F) e) m x).symm`. Establish `hE : ∀ e : E, ∃ M : ℕ, M ≠ 0 ∧ M • e ∈ intOE E`. Introduce `e`. Take `⟨a, s, hs, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) e`.
+
+Establish `hs0 : s ≠ 0` using `nonZeroDivisors.ne_zero hs`. Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.mp (Ideal.absNorm_mem (Ideal.span {s}))`. Use `⟨Ideal.absNorm (Ideal.span {s}), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `hs0`.
+
+Use `RingHom.mem_range.mpr ⟨t * a, ?_⟩` and prove the remaining obligations. Establish `hs' : algebraMap (𝓞 E) E s ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hs`. Rewrite using `[nsmul_eq_mul, ← map_natCast (algebraMap (𝓞 E) E), ← ht, map_mul, map_mul]`. Apply the tactic sequence `field_simp <;> ring`. Establish `hF : ∀ x : v.adicCompletion F, ∃ N : ℕ, N ≠ 0 ∧ N • x ∈ v.adicCompletionIntegers F`.
+
+Introduce `x`. Take `⟨b, hb, hbx⟩` from `IsDedekindDomain.HeightOneSpectrum.adicCompletion.mul_nonZeroDivisor_mem_adicCompletionIntegers v x`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.mp (Ideal.absNorm_mem (Ideal.span {b}))`. Use `⟨Ideal.absNorm (Ideal.span {b}), ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `hb0`. Establish `hcv : algebraMap (𝓞 F) (v.adicCompletion F) c ∈ v.adicCompletionIntegers F` using `(algebraMap (𝓞 F) (v.adicCompletionIntegers F) c).2`. Establish `key : Ideal.absNorm (Ideal.span {b}) • x = algebraMap (𝓞 F) (v.adicCompletion F) c * (x * algebraMap (𝓞 F) (v.adicCompletion F) b)`. Rewrite using `[nsmul_eq_mul, ← map_natCast (algebraMap (𝓞 F) (v.adicCompletion F)), ← hc, map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Conclude with `mul_mem hcv hbx`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨1, one_ne_zero, by rw [smul_zero]; exact zero_mem _⟩`.
+
+Consider the case `tmul e x`. Take `⟨M, hM0, hM⟩` from `hE e`. Take `⟨N, hN0, hN⟩` from `hF x`. Use `⟨M * N, mul_ne_zero hM0 hN0, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul, h2, h1]`.
+
+Conclude with `levelv_tmul_mem v _ hM _ hN`. Consider the case `add y z hy hz`. Take `⟨M, hM0, hM⟩` from `hy`. Take `⟨N, hN0, hN⟩` from `hz`. Use `⟨M * N, mul_ne_zero hM0 hN0, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[smul_add]`. Use `add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`. Conclude with `nsmul_mem hM _`. Rewrite using `[mul_smul]`.
+
+Conclude with `nsmul_mem hN _`.
+-/
 theorem levelv_denom (y : E ⊗[F] v.adicCompletion F) : ∃ N : ℕ, N ≠ 0 ∧ N • y ∈ lvS F E v := by
   classical
   have h1 : ∀ (m : ℕ) (e : E) (x : v.adicCompletion F), m • (e ⊗ₜ[F] x) = (m • e) ⊗ₜ[F] x :=
@@ -194,6 +256,9 @@ theorem levelv_denom (y : E ⊗[F] v.adicCompletion F) : ∃ N : ℕ, N ≠ 0 �
     · rw [mul_smul]
       exact nsmul_mem hN _
 
+/- English proof (translation)
+Use `choose M hM0 hM using fun i => levelv_denom v (a i)`. Use `⟨∏ i, M i, Finset.prod_ne_zero_iff.mpr fun i _ => hM0 i, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.prod_erase_mul Finset.univ M (Finset.mem_univ i), mul_smul]`. Conclude with `nsmul_mem (hM i) _`.
+-/
 theorem levelv_denom_family {ι : Type*} [Fintype ι] (a : ι → E ⊗[F] v.adicCompletion F) :
     ∃ N : ℕ, N ≠ 0 ∧ ∀ i, N • a i ∈ lvS F E v := by
   classical
@@ -211,6 +276,11 @@ open IsDedekindDomain NumberField
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   (v : HeightOneSpectrum (𝓞 F)) {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Rewrite using `[stdLat, Submodule.mem_pi]`. Use `⟨fun h j => ?_, fun h j _ => ?_⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `LinearMap.mem_range.mp (h j (Set.mem_univ j))`. Rewrite using `[← hs]`. Conclude with `s.2`.
+
+Conclude with `LinearMap.mem_range.mpr ⟨⟨x j, h j⟩, rfl⟩`.
+-/
 theorem levelv_mem_lat (x : n → E ⊗[F] v.adicCompletion F) :
     x ∈ stdLat (n := n) ↥(lvS F E v) ↔ ∀ j, x j ∈ lvS F E v := by
   rw [stdLat, Submodule.mem_pi]
@@ -220,6 +290,11 @@ theorem levelv_mem_lat (x : n → E ⊗[F] v.adicCompletion F) :
     exact s.2
   · exact LinearMap.mem_range.mpr ⟨⟨x j, h j⟩, rfl⟩
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[levelv_mem_lat]`. Introduce `i`. Simplify using `only [Pi.smul_apply, Matrix.mulVec, dotProduct, Finset.smul_sum]`. Use `sum_mem fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_mul_assoc]`.
+
+Conclude with `mul_mem (hM i j) (hx j)`.
+-/
 theorem levelv_smul_mulVec_mem (N : ℕ) (M : Matrix n n (E ⊗[F] v.adicCompletion F))
     (hM : ∀ i j, N • M i j ∈ lvS F E v) (x : n → E ⊗[F] v.adicCompletion F)
     (hx : x ∈ stdLat (n := n) ↥(lvS F E v)) :
@@ -237,18 +312,29 @@ def levelvPhi (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [
       (n → E ⊗[F] v.adicCompletion F) :=
   AddMonoidHom.mk' (fun α j => levelvPsi F E v (α j)) (by intro α β; ext j; simp)
 
+/- English proof (translation)
+Rewrite using `[levelv_mem_lat]`. Introduce `j`. Conclude with `levelv_range_le_S v (α j)`.
+-/
 theorem levelv_phi_mem (α : n → Module.Free.ChooseBasisIndex ℤ (𝓞 E) → v.adicCompletionIntegers F) :
     levelvPhi F E v n α ∈ stdLat (n := n) ↥(lvS F E v) := by
   rw [levelv_mem_lat]
   intro j
   exact levelv_range_le_S v (α j)
 
+/- English proof (translation)
+Rewrite `hx` using `[levelv_mem_lat]`. Use `choose α hα using fun j => AddMonoidHom.mem_range.mp (levelv_S_le_range v (x j) (hx j))`. Conclude with `⟨α, funext fun j => hα j⟩`.
+-/
 theorem levelv_lat_phi (x : n → E ⊗[F] v.adicCompletion F)
     (hx : x ∈ stdLat (n := n) ↥(lvS F E v)) : ∃ α, levelvPhi F E v n α = x := by
   rw [levelv_mem_lat] at hx
   choose α hα using fun j => AddMonoidHom.mem_range.mp (levelv_S_le_range v (x j) (hx j))
   exact ⟨α, funext fun j => hα j⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Establish `hj` using `congr_fun h j`. Simplify using `only [Pi.smul_apply] at hj`. Establish `hu : IsUnit ((N : E ⊗[F] v.adicCompletion F))`. Establish `h0 : (N : F) ≠ 0` using `Nat.cast_ne_zero.mpr hN`.
+
+Rewrite using `[← map_natCast (algebraMap F (E ⊗[F] v.adicCompletion F)) N]`. Conclude with `(IsUnit.mk0 _ h0).map _`. Rewrite `hj` using `[nsmul_eq_mul, nsmul_eq_mul]`. Conclude with `hu.mul_left_cancel hj`.
+-/
 theorem levelv_nsmul_inj {N : ℕ} (hN : N ≠ 0) (y y' : n → E ⊗[F] v.adicCompletion F)
     (h : N • y = N • y') : y = y' := by
   funext j
@@ -267,20 +353,42 @@ section GLact
 
 variable {R : Type*} [CommRing R] {n : Type*} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Rewrite using `[Units.val_mul, Matrix.mulVec_mulVec]`.
+-/
 theorem levelv_mulVec_mul (k l : GL n R) (x : n → R) :
     ((k * l : GL n R) : Matrix n n R) *ᵥ x = (k : Matrix n n R) *ᵥ ((l : Matrix n n R) *ᵥ x) := by
   rw [Units.val_mul, Matrix.mulVec_mulVec]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`.
+-/
 theorem levelv_inv_mulVec (k : GL n R) (x : n → R) :
     ((k⁻¹ : GL n R) : Matrix n n R) *ᵥ ((k : Matrix n n R) *ᵥ x) = x := by
   rw [Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`.
+-/
 theorem levelv_mulVec_inv (k : GL n R) (x : n → R) :
     (k : Matrix n n R) *ᵥ (((k⁻¹ : GL n R) : Matrix n n R) *ᵥ x) = x := by
   rw [Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]
 
 end GLact
 
+/- English proof (translation)
+Establish `hk : ∀ y, ((ga⁻¹ * (a⁻¹ * b) * ga : GL n R) : Matrix n n R) *ᵥ y = ((ga⁻¹ : GL n R) : Matrix n n R) *ᵥ (((a⁻¹ : GL n R) : Matrix n n R) *ᵥ ((b : Matrix n n R) *ᵥ ((ga : Matrix n n R) *ᵥ y)))`. Introduce `y`. Simplify using `only [Units.val_mul, ← Matrix.mulVec_mulVec]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Establish `hmem : N • ((b : Matrix n n R) *ᵥ ((ga : Matrix n n R) *ᵥ x)) ∈ (fun x => N • ((a : Matrix n n R) *ᵥ ((ga : Matrix n n R) *ᵥ x))) '' Λ`. Rewrite using `[hZ]`. Conclude with `⟨x, hx, rfl⟩`. Take `⟨x', hx', he⟩` from `hmem`. Establish `he'` using `hinj _ _ he`.
+
+Establish `hxx : x' = ((ga⁻¹ * (a⁻¹ * b) * ga : GL n R) : Matrix n n R) *ᵥ x`. Rewrite using `[hk, ← he', levelv_inv_mulVec, levelv_inv_mulVec]`. Rewrite using `[← hxx]`. Conclude with `hx'`. Introduce `hx`.
+
+Establish `hmem : N • ((a : Matrix n n R) *ᵥ ((ga : Matrix n n R) *ᵥ (((ga⁻¹ * (a⁻¹ * b) * ga : GL n R) : Matrix n n R) *ᵥ x))) ∈ (fun x => N • ((b : Matrix n n R) *ᵥ ((ga : Matrix n n R) *ᵥ x))) '' Λ`. Rewrite using `[← hZ]`. Conclude with `⟨_, hx, rfl⟩`. Take `⟨x', hx', he⟩` from `hmem`. Establish `he'` using `hinj _ _ he`.
+
+Rewrite `he'` using `[hk, levelv_mulVec_inv, levelv_mulVec_inv]`. Establish `hxx : x' = x`. Establish `h1` using `congrArg (fun y => ((ga⁻¹ : GL n R) : Matrix n n R) *ᵥ (((b⁻¹ : GL n R) : Matrix n n R) *ᵥ y)) he'`. Simplify `h1` using `only [levelv_inv_mulVec]`. Rewrite using `[← hxx]`.
+
+Conclude with `hx'`.
+-/
 theorem levelv_stab_of_eq {R : Type*} [CommRing R] {n : Type*} [Fintype n] [DecidableEq n]
     (Λ : Set (n → R)) (N : ℕ) (hinj : ∀ y y' : n → R, N • y = N • y' → y = y') (ga a b : GL n R)
     (hZ : (fun x => N • ((a : Matrix n n R) *ᵥ ((ga : Matrix n n R) *ᵥ x))) '' Λ =
@@ -320,6 +428,33 @@ theorem levelv_stab_of_eq {R : Type*} [CommRing R] {n : Type*} [Fintype n] [Deci
     exact hx'
 
 open IsDedekindDomain NumberField in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ n _ _ σ J v g`. Establish `hlev : ∀ k : UPts σ J (v.adicCompletion F), k ∈ (levelV σ J v).subgroupOf (UPts σ J (v.adicCompletion F)) ↔ (k : GL n (E ⊗[F] v.adicCompletion F)) ∈ stabGL (stdLat (n` using `n) (A := E ⊗[F] v.adicCompletion F) ↥(lvS F E v)) := by`. Introduce `k`. Rewrite using `[Subgroup.mem_subgroupOf]`. Simplify using `only [levelV, level, Subgroup.mem_inf]`.
+
+Conclude with `⟨fun h => h.2, fun h => ⟨k.2, h⟩⟩`. Take `⟨N, hN0, hN⟩` from `levelv_denom_family (E := E) v (fun p : (n × n) ⊕ (n × n) => Sum.elim (fun q : n × n => ((g : GL n (E ⊗[F] v.adicCompletion F)) : Matrix n n (E ⊗[F] v.adicCompletion F)) q.1 q.2) (fun q : n × n => (((g : GL n (E ⊗[F] v.adicCompletion F))⁻¹ : GL n (E ⊗[F] v.adicCompletion F)) : Ma …`. Establish `hg : ∀ i j, N • ((g : GL n (E ⊗[F] v.adicCompletion F)) : Matrix n n (E ⊗[F] v.adicCompletion F)) i j ∈ lvS F E v` using `fun i j => hN (.inl (i, j))`. Establish `hg' : ∀ i j, N • (((g : GL n (E ⊗[F] v.adicCompletion F))⁻¹ : GL n (E ⊗[F] v.adicCompletion F)) : Matrix n n (E ⊗[F] v.adicCompletion F)) i j ∈ lvS F E v` using `fun i j => hN (.inr (i, j))`. Take `⟨c, hcdef⟩ : ∃ c : v.adicCompletionIntegers F, c = ((N * N : ℕ) : v.adicCompletionIntegers F)` from `⟨_, rfl⟩`.
+
+Establish `hcz : CharZero (v.adicCompletion F)` using `charZero_of_injective_algebraMap (algebraMap F (v.adicCompletion F)).injective`. Establish `hc : c ≠ 0`. Introduce `h0`. Establish `h1 : ((c : v.adicCompletionIntegers F) : v.adicCompletion F) = 0` using `by rw [h0]; rfl`. Rewrite `h1` using `[hcdef]`.
+
+Simplify using `[hN0] at h1`. Establish `: Finite (v.adicCompletionIntegers F ⧸ Ideal.span {c})` using `glint_finite_quotient_of_dvr (glint_finite_residueField v) _ (by rwa [Ne, Ideal.span_singleton_eq_bot])`. Set `Z : UPts σ J (v.adicCompletion F) → Set (n → E ⊗[F] v.adicCompletion F)` to `fun k => (fun x => N • (((k : GL n (E ⊗[F] v.adicCompletion F)) : Matrix n n (E ⊗[F] v.adicCompletion F)) *ᵥ (((g : GL n (E ⊗[F] v.adicCompletion F)) : Matrix n n (E ⊗[F] v.adicCompletion F)) *ᵥ x))) '' (stdLat (n := n) (A := E ⊗[F] v.adicCompletion F) ↥(lvS F E v) : Set (n → E ⊗ …`. Establish `hZ1 : ∀ k : UPts σ J (v.adicCompletion F), (k : GL n (E ⊗[F] v.adicCompletion F)) ∈ stabGL (stdLat (n` using `n) (A := E ⊗[F] v.adicCompletion F) ↥(lvS F E v)) → Z k ⊆ (stdLat (n := n) (A := E ⊗[F] v.adicCompletion F) ↥(lvS F E v) : Set (n → E ⊗[F] v.adicCompletion F)) := by`. Introduce and unpack `k hk _ ⟨x, hx, rfl⟩`.
+
+Simplify using `only`. Rewrite using `[← Matrix.mulVec_smul]`. Conclude with `(hk _).1 (levelv_smul_mulVec_mem v N _ hg x hx)`. Establish `hZ2 : ∀ k : UPts σ J (v.adicCompletion F), (k : GL n (E ⊗[F] v.adicCompletion F)) ∈ stabGL (stdLat (n` using `n) (A := E ⊗[F] v.adicCompletion F) ↥(lvS F E v)) → ∀ z ∈ stdLat (n := n) (A := E ⊗[F] v.adicCompletion F) ↥(lvS F E v), (N * N) • z ∈ Z k := by`. Introduce `k hk z hz`.
+
+Establish `hw : ((((k : GL n (E ⊗[F] v.adicCompletion F)))⁻¹ : GL n (E ⊗[F] v.adicCompletion F)) : Matrix n n (E ⊗[F] v.adicCompletion F)) *ᵥ z ∈ stdLat (n` using `n) (A := E ⊗[F] v.adicCompletion F) ↥(lvS F E v) := ((inv_mem hk) z).1 hz`. Use `⟨N • ((((g : GL n (E ⊗[F] v.adicCompletion F)))⁻¹ : GL n (E ⊗[F] v.adicCompletion F)) : Matrix n n (E ⊗[F] v.adicCompletion F)) *ᵥ (((((k : GL n (E ⊗[F] v.adicCompletion F)))⁻¹ : GL n (E ⊗[F] v.adicCompletion F)) : Matrix n n (E ⊗[F] v.adicCompletion F)) *ᵥ z), levelv_smul_mulVec …` and prove the remaining obligations. Simplify using `only`. Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_smul, levelv_mulVec_inv, levelv_mulVec_inv, mul_smul]`. Establish `hZ3 : ∀ k : UPts σ J (v.adicCompletion F), ∀ y ∈ Z k, ∀ y' ∈ Z k, y + y' ∈ Z k`.
+
+Introduce and unpack `k _ ⟨x, hx, rfl⟩ _ ⟨x', hx', rfl⟩`. Conclude with `⟨x + x', add_mem hx hx', by simp only [Matrix.mulVec_add, smul_add]⟩`. Set `π : (n → Module.Free.ChooseBasisIndex ℤ (𝓞 E) → v.adicCompletionIntegers F) → (n → Module.Free.ChooseBasisIndex ℤ (𝓞 E) → v.adicCompletionIntegers F ⧸ Ideal.span {c})` to `fun α j i => Ideal.Quotient.mk _ (α j i)`. Set `f : UPts σ J (v.adicCompletion F) → Set (n → Module.Free.ChooseBasisIndex ℤ (𝓞 E) → v.adicCompletionIntegers F ⧸ Ideal.span {c})` to `fun k => π '' ((levelvPhi F E v n) ⁻¹' Z k)`. Establish `hsub : ∀ a b : UPts σ J (v.adicCompletion F), (a : GL n (E ⊗[F] v.adicCompletion F)) ∈ stabGL (stdLat (n` using `n) (A := E ⊗[F] v.adicCompletion F) ↥(lvS F E v)) → (b : GL n (E ⊗[F] v.adicCompletion F)) ∈ stabGL (stdLat (n := n) (A := E ⊗[F] v.adicCompletion F) ↥(lvS F E v)) → f a = f b → Z a ⊆ Z b := by`.
+
+Introduce `a b ha hb hab y hy`. Take `⟨α, hα⟩` from `levelv_lat_phi v y (hZ1 a ha hy)`. Establish `hmem : π α ∈ f b`. Rewrite using `[← hab]`. Conclude with `⟨α, by rw [Set.mem_preimage, hα]; exact hy, rfl⟩`.
+
+Take `⟨α', hα'Z, hπ⟩` from `hmem`. Establish `hdiff : ∀ j i, α j i - α' j i ∈ Ideal.span {c}`. Introduce `j i`. Use `congrFun (congrFun hπ j) i` as an intermediate fact. Conclude with `Ideal.Quotient.eq.1 this.symm`.
+
+Use `choose β hβ using fun j i => Ideal.mem_span_singleton'.1 (hdiff j i)`. Establish `hαβ : α = α' + (N * N) • β`. Use function extensionality and compare the values at `j i`. Use `hβ j i` as an intermediate fact. Rewrite `this` using `[hcdef]`.
+
+Simplify using `only [Pi.add_apply, Pi.smul_apply]`. Rewrite using `[nsmul_eq_mul]`. Move the coercions through the operations in `at this ⊢`. Take the linear combination `-this`. Rewrite using `[← hα, hαβ, map_add, map_nsmul]`.
+
+Conclude with `hZ3 b _ hα'Z _ (hZ2 b hb _ (levelv_phi_mem v β))`. Use `levelv_relIndex_ne_zero _ _ f ?_` and prove the remaining obligations. Introduce `a ha b hb hab`. Establish `ha'` using `(hlev a).1 ha`. Establish `hb'` using `(hlev b).1 hb`.
+
+Establish `hZ : Z a = Z b` using `(hsub a b ha' hb' hab).antisymm (hsub b a hb' ha' hab.symm)`. Rewrite using `[Subgroup.mem_map_equiv, MulAut.conj_symm_apply, hlev]`. Introduce `x`. Conclude with `levelv_stab_of_eq _ N (levelv_nsmul_inj v hN0) _ _ _ hZ x`.
+-/
 theorem level_subgroup_commute : Formalism.UG.LevelVComm := by
   intro F E _ _ _ _ _ n _ _ σ J v g
   classical

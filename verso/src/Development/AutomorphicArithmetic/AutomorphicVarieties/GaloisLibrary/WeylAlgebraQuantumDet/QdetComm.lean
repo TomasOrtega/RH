@@ -4,6 +4,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Weyl
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CapCommuteRtInfGL
 open Matrix UpperTheory.V.Weyl
 
+/- English proof (translation)
+Introduce `n Ξ u y hy`. Take `⟨Q, hQ⟩` from `hy.exists_left_inv`. Establish `hW : ∀ a b : Fin n, y * Matrix.single a b (1 : ℂ) * Q = ∑ c, ∑ d, (y c a * Q b d) • Matrix.single c d (1 : ℂ)`. Introduce `a b`. Rewrite using `[Matrix.matrix_eq_sum_single (y * Matrix.single a b (1 : ℂ) * Q)]`.
+
+Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_single]`. Use `congr 1`. Simplify using `[Matrix.mul_apply, Matrix.single_apply, ite_and]`. Establish `h : ∀ a b : Fin n, Ξ.mat y * Ξ.E a b = (∑ c, ∑ d, (y c a * Q b d) • Ξ.E c d) * Ξ.mat y`.
+
+Introduce `a b`. Establish `h1` using `UpperTheory.V.Weyl.adEq n Ξ y (Matrix.single a b 1) (y * Matrix.single a b (1 : ℂ) * Q) (by rw [mul_assoc, hQ, mul_one])`. Rewrite `h1` using `[hW]`. Simplify using `only [map_sum, map_smul] at h1`. Conclude with `h1`.
+
+Rewrite using `[GlobalTheory.CapAdInv.qdet_semiconj _ _ _ h u, GlobalTheory.CapAdInv.qdet_ad _ (UpperTheory.V.Weyl.glRel n Ξ) y Q hQ u]`.
+-/
 theorem UpperTheory.V.Weyl.qdetComm :
     ∀ (n : ℕ) (Ξ : Pre n) (u : ℂ) (y : Matrix (Fin n) (Fin n) ℂ), IsUnit y →
       Ξ.mat y * Formalism.REAL.qdet Ξ.E u = Formalism.REAL.qdet Ξ.E u * Ξ.mat y := by

@@ -75,10 +75,18 @@ section PPts
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Establish `h` using `P.ζQ_succ 0`. Simplify `h` using `[P.ζQ_zero]`.
+-/
 theorem primitive_root_pow_l_eq_one (P : LocPrime l) : P.ζQ 1 ^ l = 1 := by
   have h := P.ζQ_succ 0
   simpa [P.ζQ_zero] using h
 
+/- English proof (translation)
+Unfold `Ks`. Apply `(le_sup_right : IntermediateField.adjoin ℚ_[l] {x : Om l | x ^ (l ^ 1) = 1} ≤ K0 K ⊔ _)` to reduce the goal to its premises. Apply `IntermediateField.subset_adjoin` to reduce the goal to its premises. Use `show P.ζQ 1 ^ (l ^ 1) = 1`. Rewrite using `[pow_one]`.
+
+Conclude with `primitive_root_pow_l_eq_one P`.
+-/
 theorem primitive_root_mem_cyclotomic (P : LocPrime l) (K : FinExt l) : P.ζQ 1 ∈ Ks K 1 := by
   unfold Ks
   apply (le_sup_right : IntermediateField.adjoin ℚ_[l] {x : Om l | x ^ (l ^ 1) = 1} ≤ K0 K ⊔ _)
@@ -95,9 +103,15 @@ def galoisEmbedding {K LL : FinExt l} (hG : Good K 1 LL) (g : GQ l) : ↥(Ks K 1
   map_add' x y := Subtype.ext (by simp)
   commutes' r := Subtype.ext (by simp)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem galoisEmbedding_coe {K LL : FinExt l} (hG : Good K 1 LL) (g : GQ l) (y : ↥(Ks K 1)) :
     ((galoisEmbedding hG g y : ↥LL.1) : Om l) = g y := rfl
 
+/- English proof (translation)
+Set `φ : Om l →ₐ[ℚ_[l]] Om l` to `τ.liftNormal (Om l)`. Use `⟨AlgEquiv.ofBijective φ (Algebra.IsAlgebraic.algHom_bijective φ), fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[AlgEquiv.ofBijective_apply]`. Establish `h` using `τ.liftNormal_commutes (Om l) x`. Simplify using `using h`.
+-/
 theorem exists_galois_extending_algHom {F : IntermediateField ℚ_[l] (Om l)} (τ : F →ₐ[ℚ_[l]] Om l) :
     ∃ g : GQ l, ∀ x : F, g x = τ x := by
   classical
@@ -118,6 +132,19 @@ structure UsedJ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop wh
   a23 : Formalism.MainNotions.CrystallineLiftingBounds.adm23 D HW F
   c4 : Formalism.MainNotions.N.LetterConditionGlobal D HW F
 
+/- English proof (translation)
+Introduce `i τ hτ`. Establish `hτ'` using `hτ`. Unfold `Formalism.MainNotions.LiftingTheory.Over at hτ'`. Take `⟨g, hg⟩` from `exists_galois_extending_algHom ((LL.1).val.comp τ)`. Establish `hz` using `primitive_root_mem_cyclotomic (D.loc l) K`.
+
+Establish `h1 : ((galoisEmbedding hG g ⟨(D.loc l).ζQ 1, hz⟩ : ↥LL.1) : Om l) = g ((D.loc l).ζQ 1)` using `galoisEmbedding_coe hG g _`. Use `⟨galoisEmbedding hG g ⟨(D.loc l).ζQ 1, hz⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[(D.loc l).PD_p K]`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [SubmonoidClass.coe_pow, h1, OneMemClass.coe_one]`.
+
+Rewrite using `[← map_pow, primitive_root_pow_l_eq_one, map_one]`. Introduce `h`. Apply `(D.loc l).ζQ_one` to reduce the goal to its premises. Establish `h2` using `congrArg (fun z : ↥LL.1 => (z : Om l)) h`. Simplify using `only [h1, OneMemClass.coe_one] at h2`.
+
+Conclude with `g.injective (h2.trans (map_one g).symm)`. Unfold `Formalism.MainNotions.DeltaInvariantLattices.ptK Formalism.BasicNotions.LocHW.IsPt`. Use `⟨galoisEmbedding hG g, ⟨fun x y hxy => ?_, fun y hy => ?_⟩, fun x y hxy => ?_⟩` and prove the remaining obligations. Rewrite using `[← hτ']`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[galoisEmbedding_coe, hxy]`. Conclude with `hg (IsScalarTower.toAlgHom ℚ_[l] ↥(K0 K) ↥K.1 x)`. Conclude with `congrArg (galoisEmbedding hG g) (Subtype.ext hy)`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[galoisEmbedding_coe, hxy]`.
+
+Conclude with `(hg x).symm`.
+-/
 theorem ptEx_at (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (hG : Good K 1 LL) (hK : CaseA K LL)
     [NeZero (Module.finrank ℚ_[l] ↥(K0 K))] :
     ∀ (i : ZMod (Module.finrank ℚ_[l] ↥(K0 K))) (τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1),

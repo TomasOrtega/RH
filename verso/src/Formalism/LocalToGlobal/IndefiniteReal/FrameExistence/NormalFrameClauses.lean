@@ -37,6 +37,9 @@ def FramesExistDiagonal (Pg : Finset (Pl D.host.E)) : Prop :=
 variable {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type}
   {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact Iff.rfl`. Consider the case `(unfold FramesOKg2 NormalFrameConditionsDiagonal; done)`.
+-/
 theorem framesOKg2_iff (Rl : RealDat3 D A3 Ks) :
     FramesOKg2 Rl ↔ NormalFrameConditionsDiagonal Rl.toRealDat.Pg Rl.toRealDat.βY Rl.toRealDat.βW := by
   first

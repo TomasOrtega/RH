@@ -5,6 +5,15 @@ open MeasureTheory GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.SatakeB
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ μ ν _ _ _ K hK hcov s c hso hsc hsn hνs`. Establish `key : ∀ A : Set G, IsCompact (closure A) → ν A = (Measure.haarScalarFactor ν μ : ENNReal) * μ A` using `fun A hA => by`. Use `Measure.measure_isMulInvariant_eq_smul_of_isCompact_closure ν μ hA` as an intermediate fact. Rewrite using `[this, ENNReal.smul_def, smul_eq_mul]`. Establish `hs0 : μ s ≠ 0` using `(hso.measure_pos μ hsn).ne'`.
+
+Establish `hstop : μ s ≠ ⊤` using `hsc.measure_lt_top.ne`. Establish `hc : c = (Measure.haarScalarFactor ν μ : ENNReal)`. Establish `h1` using `key s (hsc.closure_of_subset subset_rfl)`. Rewrite `h1` using `[hνs]`. Conclude with `(ENNReal.mul_left_inj hs0 hstop).mp h1`.
+
+Substitute `hc` using the available equality. Use extensionality with `A hA`. Set `B : ℕ → Set G` to `fun j => A ∩ Set.accumulate K j`. Establish `hBmono : Monotone B` using `fun i j hij => Set.inter_subset_inter_right _ (Set.monotone_accumulate hij)`. Establish `hBcl : ∀ j, IsCompact (closure (B j))` using `fun j => (isCompact_accumulate (fun i => (hK i).1) j).closure_of_subset Set.inter_subset_right`.
+
+Establish `hBU : (⋃ j, B j) = A`. Simplify using `only [B, ← Set.inter_iUnion, Set.iUnion_accumulate, hcov, Set.inter_univ]`. Rewrite using `[← hBU, hBmono.measure_iUnion, hBmono.measure_iUnion]`. Simplify using `only [Measure.smul_apply, smul_eq_mul]`. Conclude with `iSup_congr fun j => key _ (hBcl j)`.
+-/
 theorem haar_unique_of_sigmaCompact_normalised :
     ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [MeasurableSpace G]
     [BorelSpace G] (μ ν : Measure G) [μ.IsHaarMeasure] [ν.IsMulLeftInvariant] [IsFiniteMeasureOnCompacts ν]

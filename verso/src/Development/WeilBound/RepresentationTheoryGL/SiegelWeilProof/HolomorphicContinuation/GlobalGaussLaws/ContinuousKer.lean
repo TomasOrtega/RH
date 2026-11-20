@@ -16,6 +16,9 @@ open Classical
 
 variable {D : D7} {n m : ℕ}
 
+/- English proof (translation)
+Unfold `ker`. Rewrite using `[show Complex.I * ((2 * t : ℝ) : ℂ) * ((((Matrix.of v)ᴴ * Matrix.diagonal (sgn ε) * Matrix.of u).trace.re : ℝ) : ℂ) = ((2 * t * ((Matrix.of v)ᴴ * Matrix.diagonal (sgn ε) * Matrix.of u).trace.re : ℝ) : ℂ) * Complex.I by push_cast; ring]`. Conclude with `Complex.norm_exp_ofReal_mul_I _`.
+-/
 theorem norm_ker (ε : Fin m → Bool) (t : ℝ) (v u : Fin m → Fin n → ℂ) : ‖ker ε t v u‖ = 1 := by
   unfold ker
   rw [show Complex.I * ((2 * t : ℝ) : ℂ) * ((((Matrix.of v)ᴴ * Matrix.diagonal (sgn ε) * Matrix.of u).trace.re : ℝ) : ℂ) =
@@ -23,6 +26,9 @@ theorem norm_ker (ε : Fin m → Bool) (t : ℝ) (v u : Fin m → Fin n → ℂ)
     push_cast; ring]
   exact Complex.norm_exp_ofReal_mul_I _
 
+/- English proof (translation)
+Unfold `ker`. Use `Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp (Complex.continuous_re.comp ?_)))` and prove the remaining obligations. Establish `h2 : Continuous fun u : Fin m → Fin n → ℂ => Matrix.of u` using `continuous_id`. Establish `h : Continuous fun u : Fin m → Fin n → ℂ => ((Matrix.of v)ᴴ * Matrix.diagonal (sgn ε) * Matrix.of u)` using `continuous_const.matrix_mul h2`. Conclude with `h.matrix_trace`.
+-/
 theorem continuous_ker (ε : Fin m → Bool) (t : ℝ) (v : Fin m → Fin n → ℂ) : Continuous (ker ε t v) := by
   unfold ker
   refine Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp
@@ -39,6 +45,13 @@ def Aw (ψ : AddChar (AF D.host.F) ℂ) (V : HSp D) (θ : InfFam D) (τ : D.what
 
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Rewrite using `[hω.weyl w hw]`. Establish `e1 : ∀ y, (⟨tens θ τ fr f Ψ, hΨ.2 f hf⟩ : schwartzA θ V.rank n).1 y * ψ (trA (Matrix.trace (inner V x y))) = (fun u => f u * ker ε (tLoc l τ) (piF θ τ fr x) u) (piF θ τ fr y) * Bw ψ V θ τ fr Ψ x y` using `fun y => integrand_eq hθ hl hfr f Ψ x y`. Repeatedly rewrite using `[e1]`. Take `⟨S, hS⟩` from `hf`.
+
+Establish `hfc : Continuous f` using `hS ▸ S.continuous`. Take `⟨C, hC⟩` from `sch_decay f ⟨S, hS⟩`. Establish `hk` using `kap_spec hθ hfr.1 μ hΨ hψ x (fun u => f u * ker ε (tLoc l τ) (piF θ τ fr x) u) ((hfc.mul (continuous_ker ε (tLoc l τ) (piF θ τ fr x))).measurable) ⟨C, fun u => by rw [norm_mul, norm_ker, mul_one]; exact hC u⟩`. Rewrite using `[hk]`. Simplify using `only [tens, Aw, ftLoc_eq_ker, one_mul]`.
+
+Rewrite using `[mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem weyl_tens {θ : InfFam D} (hθ : IsInfFam θ) {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ)
     {l : D.what₂.Tau → ℝ} (hl : HasRealPar ψ θ l) {V : HSp D} {τ : D.what₂.Tau}
     {s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ} {ε : Fin V.rank → Bool}

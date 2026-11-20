@@ -20,6 +20,9 @@ def dcOfCoset (Γ W K : Subgroup G) (t : G) : K ⧸ W.subgroupOf K → DC Γ W :
     refine ⟨1, Γ.one_mem, (a : G)⁻¹ * b, by simpa using h, ?_⟩
     simp [mul_assoc])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dcOfCoset_mk (Γ W K : Subgroup G) (t : G) (k : K) :
     dcOfCoset Γ W K t (k : K ⧸ W.subgroupOf K) = Quotient.mk (dcSetoid Γ W) (t * k) := rfl
 
@@ -27,6 +30,33 @@ end GlobalTheory.UnimodMass
 
 namespace GlobalTheory.UnimodMass
 
+/- English proof (translation)
+Use `set A := {γ : Γ // t⁻¹ * (γ : G) * t ∈ K}`. Use `set B := {x : K ⧸ W.subgroupOf K // dcOfCoset Γ W K t x = dcOfCoset Γ W K t (k : K ⧸ W.subgroupOf K)}`. Use `set T := {δ : Γ // (t * k)⁻¹ * (δ : G) * (t * k) ∈ W}`. Establish `hT : stabCard Γ W (t * k) = Nat.card T` using `rfl`. Establish `hA : stabCard Γ K t = Nat.card A` using `rfl`.
+
+Set `φ : A → K` to `fun γ => ⟨t⁻¹ * (γ.1 : G) * t, γ.2⟩`. Establish `hα : ∀ γ : A, dcOfCoset Γ W K t ((φ γ * k : K) : K ⧸ W.subgroupOf K) = dcOfCoset Γ W K t (k : K ⧸ W.subgroupOf K)`. Introduce `γ`. Rewrite using `[dcOfCoset_mk, dcOfCoset_mk]`. Apply `Quotient.sound` to reduce the goal to its premises.
+
+Use `⟨(γ.1 : G)⁻¹, Γ.inv_mem γ.1.2, 1, W.one_mem, ?_⟩` and prove the remaining obligations. Simplify using `[φ, mul_assoc]`. Set `α : A → B` to `fun γ => ⟨(φ γ * k : K), hα γ⟩`. Establish `hsurj : Function.Surjective α`. Introduce and unpack `⟨x, hx⟩`.
+
+Proceed by induction on `x using QuotientGroup.induction_on with`. Consider the case `H k'`. Rewrite `hx` using `[dcOfCoset_mk, dcOfCoset_mk]`. Take `⟨γ, hγ, w, hw, e⟩` from `Quotient.exact hx`. Establish `hmem : t⁻¹ * γ⁻¹ * t ∈ K`.
+
+Establish `: t⁻¹ * γ⁻¹ * t = (k' : G) * w * (k : G)⁻¹`. Establish `e' : (k : G) = t⁻¹ * γ * t * k' * w`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e']`. Use `group`.
+
+Rewrite using `[this]`. Conclude with `K.mul_mem (K.mul_mem k'.2 (hWK hw)) (K.inv_mem k.2)`. Use `⟨⟨⟨γ⁻¹, Γ.inv_mem hγ⟩, hmem⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((φ _ * k : K) : K ⧸ W.subgroupOf K) = (k' : K ⧸ W.subgroupOf K)`.
+
+Rewrite using `[QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Establish `e' : (k : G) = t⁻¹ * γ * t * k' * w`. Combine the equalities or inequalities in the displayed calculation. Establish `: ((φ ⟨⟨γ⁻¹, Γ.inv_mem hγ⟩, hmem⟩ * k)⁻¹ * k' : K) = (w⁻¹ : G)`. Simplify using `only [φ, Subgroup.coe_mul, Subgroup.coe_inv, Subgroup.coe_mk]`.
+
+Rewrite using `[e']`. Use `group`. Rewrite using `[this]`. Conclude with `W.inv_mem hw`. Establish `hfib : ∀ γ₀ : A, Nonempty ({γ : A // α γ = α γ₀} ≃ T)`.
+
+Introduce `γ₀`. Establish `key : ∀ γ : A, α γ = α γ₀ ↔ (t * k)⁻¹ * ((γ₀.1 : G)⁻¹ * γ.1) * (t * k) ∈ W`. Introduce `γ`. Rewrite using `[Subtype.ext_iff]`. Use `show ((φ γ * k : K) : K ⧸ W.subgroupOf K) = ((φ γ₀ * k : K) : K ⧸ W.subgroupOf K) ↔ _`.
+
+Rewrite using `[eq_comm, QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Establish `: (((φ γ₀ * k)⁻¹ * (φ γ * k) : K) : G) = (t * k)⁻¹ * ((γ₀.1 : G)⁻¹ * γ.1) * (t * k)`. Simplify using `only [φ, Subgroup.coe_mul, Subgroup.coe_inv, Subgroup.coe_mk]`. Use `group`. Rewrite using `[this]`.
+
+Use `⟨{ toFun := fun γ => ⟨⟨(γ₀.1 : G)⁻¹ * γ.1.1, Γ.mul_mem (Γ.inv_mem γ₀.1.2) γ.1.1.2⟩, (key γ.1).1 γ.2⟩ invFun := fun δ => ⟨⟨⟨(γ₀.1 : G) * δ.1, Γ.mul_mem γ₀.1.2 δ.1.2⟩, ?_⟩, ?_⟩ left_inv := fun γ => by ext; simp right_inv := fun δ => by ext; simp }⟩` and prove the remaining obligations. Establish `h1 : t⁻¹ * ((γ₀.1 : G) * δ.1) * t = (t⁻¹ * γ₀.1 * t) * ((k : G) * ((t * k)⁻¹ * δ.1 * (t * k)) * (k : G)⁻¹)` using `by group`. Rewrite using `[h1]`. Conclude with `K.mul_mem γ₀.2 (K.mul_mem (K.mul_mem k.2 (hWK δ.2)) (K.inv_mem k.2))`. Rewrite using `[key]`.
+
+Simplify using `using δ.2`. Establish `e : A ≃ B × T` using `(Equiv.sigmaFiberEquiv α).symm.trans ((Equiv.sigmaCongrRight (fun b => by`. Establish `hb` using `hsurj b`. Conclude with `Classical.choice (by`. Take `⟨γ₀, hγ₀⟩` from `hb`.
+
+Substitute `hγ₀` using the available equality. Conclude with `hfib γ₀))).trans (Equiv.sigmaEquivProd B T))`. Rewrite using `[hT, hA, Nat.card_congr e, Nat.card_prod]`.
+-/
 theorem fiber_card_mul_stabCard {G : Type} [Group G] (Γ W K : Subgroup G) (hWK : W ≤ K) (t : G)
     (ht : Finite {γ : Γ // t⁻¹ * (γ : G) * t ∈ K}) (k : K) :
     Nat.card {x : K ⧸ W.subgroupOf K // dcOfCoset Γ W K t x = dcOfCoset Γ W K t (k : K ⧸ W.subgroupOf K)} *
@@ -107,6 +137,11 @@ end GlobalTheory.UnimodMass
 namespace GlobalTheory.UnimodMass
 open scoped BigOperators
 
+/- English proof (translation)
+Proceed by induction on `d using Quotient.inductionOn with`. Consider the case `h g`. Establish `h2 : (dcSetoid Γ K) g t` using `Quotient.exact hd`. Take `⟨γ, hγ, κ, hκ, e⟩` from `(dcSetoid Γ K).iseqv.symm h2`. Use `⟨⟨κ, hκ⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[dcOfCoset_mk]`. Apply `Quotient.sound` to reduce the goal to its premises. Use `⟨γ⁻¹, Γ.inv_mem hγ, 1, W.one_mem, ?_⟩` and prove the remaining obligations. Simplify using `[e, mul_assoc]`.
+-/
 theorem dcOfCoset_surj {G : Type} [Group G] {Γ W K : Subgroup G} (hWK : W ≤ K) (t : G)
     (d : DC Γ W) (hd : dcMapLe hWK d = Quotient.mk (dcSetoid Γ K) t) :
     ∃ k : K, d = dcOfCoset Γ W K t (k : K ⧸ W.subgroupOf K) := by
@@ -120,6 +155,9 @@ theorem dcOfCoset_surj {G : Type} [Group G] {Γ W K : Subgroup G} (hWK : W ≤ K
     refine ⟨γ⁻¹, Γ.inv_mem hγ, 1, W.one_mem, ?_⟩
     simp [e, mul_assoc]
 
+/- English proof (translation)
+Proceed by induction on `x using QuotientGroup.induction_on with`. Consider the case `H k`. Rewrite using `[dcOfCoset_mk]`. Apply `Quotient.sound` to reduce the goal to its premises. Conclude with `⟨1, Γ.one_mem, (k : G)⁻¹, K.inv_mem k.2, by simp⟩`.
+-/
 theorem dcMapLe_dcOfCoset {G : Type} [Group G] {Γ W K : Subgroup G} (hWK : W ≤ K) (t : G)
     (x : K ⧸ W.subgroupOf K) : dcMapLe hWK (dcOfCoset Γ W K t x) = Quotient.mk (dcSetoid Γ K) t := by
   induction x using QuotientGroup.induction_on with
@@ -128,6 +166,31 @@ theorem dcMapLe_dcOfCoset {G : Type} [Group G] {Γ W K : Subgroup G} (hWK : W �
     apply Quotient.sound
     exact ⟨1, Γ.one_mem, (k : G)⁻¹, K.inv_mem k.2, by simp⟩
 
+/- English proof (translation)
+Use `haveI := hW`. Use `haveI : Finite (DC Γ K) := finite_dc_of_le hWK`. Establish `hfibre : ∀ d : DC Γ W, Finite {x : K ⧸ W.subgroupOf K // dcOfCoset Γ W K 1 x = d}`. Introduce `d`. Distinguish the cases in `hne : ∃ x : K ⧸ W.subgroupOf K, dcOfCoset Γ W K 1 x = d`.
+
+Take `⟨x, rfl⟩` from `hne`. Proceed by induction on `x using QuotientGroup.induction_on with`. Consider the case `H k`. Establish `h1` using `fiber_card_mul_stabCard Γ W K hWK 1 (hfin 1) k`. Establish `h2` using `stabCard_pos (Γ := Γ) (K := K) 1 (hfin 1)`.
+
+Establish `h3 : 0 < Nat.card {x : K ⧸ W.subgroupOf K // dcOfCoset Γ W K 1 x = dcOfCoset Γ W K 1 (k : K ⧸ W.subgroupOf K)}`. Break down `Nat.eq_zero_or_pos (Nat.card {x : K ⧸ W.subgroupOf K // dcOfCoset Γ W K 1 x = dcOfCoset Γ W K 1 (k : K ⧸ W.subgroupOf K)}) with h | h` into its components or cases. Rewrite `h1` using `[h, zero_mul]`. Use linear arithmetic over natural numbers and integers. Conclude with `h`.
+
+Conclude with `(Nat.card_pos_iff.1 h3).2`. Use `push_neg at hne`. Conclude with `Finite.of_injective (β := Empty) (fun x => (hne x.1 x.2).elim) (fun x => (hne x.1 x.2).elim)`. Use `haveI : Finite (K ⧸ W.subgroupOf K) := Finite.of_equiv _ (Equiv.sigmaFiberEquiv (dcOfCoset Γ W K 1))`. Establish `hidx : W.relIndex K = Nat.card (K ⧸ W.subgroupOf K)` using `rfl`.
+
+Establish `hne0 : W.relIndex K ≠ 0`. Rewrite using `[hidx]`. Conclude with `Nat.card_ne_zero.2 ⟨⟨(1 : K)⟩, inferInstance⟩`. Use `⟨hne0, ?_⟩` and prove the remaining obligations. Use `haveI := Fintype.ofFinite (DC Γ W)`.
+
+Use `haveI := Fintype.ofFinite (DC Γ K)`. Use `haveI := Fintype.ofFinite (K ⧸ W.subgroupOf K)`. Establish `hfib : ∀ c : DC Γ K, ∑ d ∈ Finset.univ.filter (fun d => dcMapLe hWK d = c), ((stabCard Γ W d.out : ℕ) : ℚ)⁻¹ = (W.relIndex K : ℚ) * ((stabCard Γ K c.out : ℕ) : ℚ)⁻¹`. Introduce `c`. Use `set t := c.out with htdef`.
+
+Establish `hct : c = Quotient.mk (dcSetoid Γ K) t` using `(Quotient.out_eq c).symm`. Establish `hsK : (0 : ℚ) < stabCard Γ K t` using `by exact_mod_cast stabCard_pos t (hfin t)`. Establish `hcard : (W.relIndex K : ℚ) = ∑ d ∈ Finset.univ.filter (fun d => dcMapLe hWK d = c), ((Finset.univ.filter (fun x => dcOfCoset Γ W K t x = d)).card : ℚ)`. Rewrite using `[hidx, Nat.card_eq_fintype_card, ← Finset.card_univ]`. Rewrite using `[Finset.card_eq_sum_card_fiberwise (f := dcOfCoset Γ W K t) (t := Finset.univ.filter (fun d => dcMapLe hWK d = c))]`.
+
+Use `push_cast`. Both sides reduce to the same expression. Introduce `x _`. Simplify using `[dcMapLe_dcOfCoset, hct]`. Rewrite using `[hcard, Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl (fun d hd => ?_)` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hd`. Take `⟨k, rfl⟩` from `dcOfCoset_surj hWK t _ (hd.trans hct)`. Establish `h1` using `fiber_card_mul_stabCard Γ W K hWK t (hfin t) k`. Rewrite using `[dcOfCoset_mk, stabCard_out]`.
+
+Rewrite using `[← Fintype.card_subtype, ← Nat.card_eq_fintype_card, ← dcOfCoset_mk]`. Establish `hsW : (0 : ℚ) < stabCard Γ W (t * k)`. Use `stabCard_pos t (hfin t)` as an intermediate fact. Break down `Nat.eq_zero_or_pos (stabCard Γ W (t * k)) with h | h` into its components or cases. Rewrite `h1` using `[h, mul_zero]`.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `h` after adjusting the coercions. Establish `h1' : (Nat.card {x : K ⧸ W.subgroupOf K // dcOfCoset Γ W K t x = dcOfCoset Γ W K t (k : K ⧸ W.subgroupOf K)} : ℚ) * stabCard Γ W (t * k) = stabCard Γ K t`. Conclude with `h1` after adjusting the coercions. Clear the denominators using the available nonvanishing facts.
+
+Combine the linear relations using `[h1']`. Unfold `mass`. Rewrite using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, Finset.mul_sum]`. Rewrite using `[← Finset.sum_fiberwise Finset.univ (dcMapLe hWK)]`. Conclude with `Finset.sum_congr rfl (fun c _ => hfib c)`.
+-/
 theorem mass_eq_relIndex_mul {G : Type} [Group G] (Γ W K : Subgroup G) (hWK : W ≤ K)
     (hW : Finite (DC Γ W)) (hfin : ∀ t : G, Finite {γ : Γ // t⁻¹ * (γ : G) * t ∈ K}) :
     W.relIndex K ≠ 0 ∧ mass Γ W = (W.relIndex K : ℚ) * mass Γ K := by

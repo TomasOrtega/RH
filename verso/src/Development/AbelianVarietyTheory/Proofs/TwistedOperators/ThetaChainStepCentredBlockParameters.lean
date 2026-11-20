@@ -21,6 +21,11 @@ open GlobalTheory.Chain.ItPairCompare GlobalTheory.Chain.ParOfSizes GlobalTheory
 
 namespace GlobalTheory.ArchRec.ParChain
 
+/- English proof (translation)
+Establish `hq' : (q : ℝ) ≤ m` using `by exact_mod_cast hq`. Establish `hn' : (n : ℝ) ≤ N` using `by exact_mod_cast hn`. Establish `hm' : (1 : ℝ) ≤ m` using `by exact_mod_cast hm`. Establish `hN' : 8 * (m : ℝ) ≤ N` using `by exact_mod_cast hN`. Establish `h1 : (q : ℝ) ^ ((3 : ℝ) / 2) ≤ (m : ℝ) ^ 2`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h2 : 60 * (m : ℝ) ^ 2 ≤ (N : ℝ) ^ 2` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem num_bound_two {n q m N : ℕ} (hq : q ≤ m) (hn : n ≤ N) (hm : 1 ≤ m) (hN : 8 * m ≤ N) :
     120 * (n : ℝ) * (q : ℝ) ^ ((3 : ℝ) / 2) ≤ 2 * (N : ℝ) ^ 3 := by
   have hq' : (q : ℝ) ≤ m := by exact_mod_cast hq
@@ -37,6 +42,23 @@ theorem num_bound_two {n q m N : ℕ} (hq : q ≤ m) (hn : n ≤ N) (hm : 1 ≤ 
     _ ≤ 2 * (N : ℝ) * (N : ℝ) ^ 2 := by gcongr
     _ = 2 * (N : ℝ) ^ 3 := by ring
 
+/- English proof (translation)
+Introduce `τ`. Take `⟨N, hN, hgap⟩` from `h`. Use `set h₀ : ℝ := (D.R.t : ℝ) + 2 * (N : ℝ) ^ 3 + 1 with hh`. Establish `hg : ∀ (i : ℕ) (h : i + 1 < D.R.m), h₀ ≤ (((D.hc τ).b ⟨i + 1, h⟩ - (D.hc τ).b ⟨i, by omega⟩ : ℚ) : ℝ)`. Introduce `i h`.
+
+Use `hgap τ ⟨i, by omega⟩ h` as an intermediate fact. Rewrite using `[hh]`. Conclude with `this` after adjusting the coercions. Establish `hS : NcGapGe (lamS D k τ) h₀`. Introduce and unpack `⟨x, s⟩ hx ⟨y, s'⟩ hy hs`.
+
+Take `⟨a, rfl, rfl⟩` from `(mem_lamS k τ _ _).1 hx`. Take `⟨b, rfl, rfl⟩` from `(mem_lamS k τ _ _).1 hy`. Conclude with `le_val_sub _ hg _ _ a b hs`. Establish `hT : NcGapGe (lamT D k τ) h₀`. Introduce and unpack `⟨x, s⟩ hx ⟨y, s'⟩ hy hs`.
+
+Take `⟨a, rfl, rfl⟩` from `(mem_lamT k τ _ _).1 hx`. Take `⟨b, rfl, rfl⟩` from `(mem_lamT k τ _ _).1 hy`. Conclude with `le_val_sub _ hg _ _ a b hs`. Establish `hr : ∀ j, j ≤ D.R.m → D.R.rankY j ≤ N` using `fun j hj => by`. Use `Nat.mul_le_mul_right D.R.t hj` as an intermediate fact.
+
+Unfold `Ranks.rankX' at hN`. Unfold `Ranks.rankY`. Use linear arithmetic over natural numbers and integers. Establish `h3 : 8 * D.R.m ≤ N`. Establish `h8 : 8 ≤ D.R.t`.
+
+Use `D.R.rank_add_five_le` as an intermediate fact. Use `D.R.m_add_three_le_k` as an intermediate fact. Use `D.R.two_le_m` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `Nat.mul_le_mul_left D.R.m h8` as an intermediate fact.
+
+Unfold `Ranks.rankX' at hN`. Use linear arithmetic over natural numbers and integers. Establish `ht : (0 : ℝ) ≤ D.R.t` using `by positivity`. Establish `h1 : (D.R.rankY ((k : ℕ) + 1) : ℝ) ^ 3 < h₀`. Establish `h2 : (D.R.rankY ((k : ℕ) + 1) : ℝ) ≤ (N : ℝ)` using `by exact_mod_cast hr _ k.2`.
+
+Establish `h3` using `pow_le_pow_left₀ (by positivity) h2 3`. Establish `h4 : (0 : ℝ) ≤ (N : ℝ) ^ 3` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2` using `num_bound_two (minSig_lamS_le k τ) (hr _ k.2.le) (by have := D.R.two_le_m; omega) h3`. Conclude with `⟨fun x hx y hy hs => h1.trans_le (hS x hx y hy hs), fun x hx y hy hs => h1.trans_le (hT x hx y hy hs), fun x hx y hy hs => le_trans (by linarith) (hS x hx y hy hs)⟩`.
+-/
 theorem stepGap_of_gap {D : D7} (h : NodeGap D) (k : Fin D.R.m) : StepGap D k := by
   intro τ
   obtain ⟨N, hN, hgap⟩ := h
@@ -78,6 +100,11 @@ theorem stepGap_of_gap {D : D7} (h : NodeGap D) (k : Fin D.R.m) : StepGap D k :=
   exact ⟨fun x hx y hy hs => h1.trans_le (hS x hx y hy hs), fun x hx y hy hs => h1.trans_le (hT x hx y hy hs),
     fun x hx y hy hs => le_trans (by linarith) (hS x hx y hy hs)⟩
 
+/- English proof (translation)
+Introduce `D k τ`. Take `⟨al, be, ga, de, hA, hb, h1, h2⟩` from `exists_lists_chain k τ`. Use `⟨al, be, ga, de, ⟨hA, hb, fun hG => ?_⟩, eq_signed_iff.2 h1, eq_signed_iff.2 h2⟩` and prove the remaining obligations. Establish `h` using `stepGap_of_gap hG k τ`. Establish `hr : D.R.rankY ((k : ℕ) + 1) = D.R.rankY k + D.R.t` using `by simp only [Ranks.rankY]; ring`.
+
+Rewrite `h` using `[hr]`. Use `(hypG_iff hA.2.2.2.2.2.2.1 (h1 ▸ card_lamS k τ)).2 ?_` and prove the remaining obligations. Rewrite using `[← h1, ← h2]` and apply the resulting hypothesis.
+-/
 theorem parChain : ∀ (D : D7) (k : Fin D.R.m) (τ : D.what₂.Tau), ∃ al be ga de : List ℚ, Centred D al be ga de ∧ parA (Ptw D) k τ = signed (al ++ be) (ga ++ de) (alT D k τ) ∧ parA (Ptw D) (k + 1) τ = signed (al ++ block D.R.t ++ de) (ga ++ be) (alS D k τ) := by
   intro D k τ
   obtain ⟨al, be, ga, de, hA, hb, h1, h2⟩ := exists_lists_chain k τ

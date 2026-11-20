@@ -4,6 +4,9 @@ noncomputable section
 namespace Formalism.MainNotions.StandardLattice
 open NumberField Formalism.BasicNotions Finset
 
+/- English proof (translation)
+The claim follows from `|Real.log X - Real.log X'| ≤ e / c := by have he0 : 0 ≤ e := le_trans (abs_nonneg _) he have key : ∀ A B : ℝ, c ≤ A → c ≤ B → A - B ≤ e → Real.log A - Real.log B ≤ e / c := by intro A B hA hB hAB have hA0 : 0 < A := lt_of_lt_of_le hc hA have hB0 : 0 < B := lt_of_lt_of_le hc hB rw …`.
+-/
 theorem abs_log_sub_le_div (X X' e c : ℝ) (hc : 0 < c) (hX : c ≤ X) (hX' : c ≤ X') (he : |X - X'| ≤ e) :
     |Real.log X - Real.log X'| ≤ e / c := by
   have he0 : 0 ≤ e := le_trans (abs_nonneg _) he
@@ -28,6 +31,17 @@ theorem abs_log_sub_le_div (X X' e c : ℝ) (hc : 0 < c) (hX : c ≤ X) (hX' : c
     linarith
   · exact key X X' hX hX' (by linarith [h.2])
 
+/- English proof (translation)
+Establish `e : (∑ b ∈ univ.filter (fun b : Fin k => a < b), (1 : ℝ) / ((b.val : ℝ) - (a.val : ℝ))) = ∑ i ∈ range k, (if a.val < i then (1 : ℝ) / ((i : ℝ) - (a.val : ℝ)) else 0)`. Rewrite using `[Finset.sum_filter, ← Fin.sum_univ_eq_sum_range (fun i => if a.val < i then (1 : ℝ) / ((i : ℝ) - (a.val : ℝ)) else 0) k]`. Use `Finset.sum_congr rfl (fun b _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `try dsimp only`. Distinguish the cases in `h : a < b`.
+
+Rewrite using `[if_pos h, if_pos (show a.val < b.val from h)]`. Rewrite using `[if_neg h, if_neg (show ¬ a.val < b.val from h)]`. Take `⟨m, hm⟩ : ∃ m, k = (a.val + 1) + m` from `⟨k - (a.val + 1), by have := a.isLt; omega⟩`. Establish `hr : range k = range ((a.val + 1) + m)` using `congrArg range hm`. Rewrite using `[e, hr, Finset.sum_range_add]`.
+
+Establish `h1 : ∑ i ∈ range (a.val + 1), (if a.val < i then (1 : ℝ) / ((i : ℝ) - (a.val : ℝ)) else 0) = 0` using `Finset.sum_eq_zero (fun i hi => if_neg (by have := Finset.mem_range.mp hi; omega))`. Establish `h2 : ∑ x ∈ range m, (if a.val < a.val + 1 + x then (1 : ℝ) / (((a.val + 1 + x : ℕ) : ℝ) - (a.val : ℝ)) else 0) = ∑ x ∈ range m, (1 : ℝ) / ((x : ℝ) + 1)` using `Finset.sum_congr rfl (fun x _ => by`. Rewrite using `[if_pos (show a.val < a.val + 1 + x by omega)]`. Use `push_cast`. Use `congr 1`.
+
+Use the proof step `ring)`. Rewrite using `[h1, zero_add, h2]`. Establish `h3 : ∑ x ∈ range m, (1 : ℝ) / ((x : ℝ) + 1) ≤ ∑ x ∈ range k, (1 : ℝ) / ((x : ℝ) + 1)` using `Finset.sum_le_sum_of_subset_of_nonneg (fun x hx => Finset.mem_range.mpr (by have := Finset.mem_range.mp hx; omega)) (fun i _ _ => by positivity)`. Establish `h4 : ∑ x ∈ range k, (1 : ℝ) / ((x : ℝ) + 1) = (harmonic k : ℝ)`. Simplify using `[harmonic]`.
+
+Establish `h5` using `harmonic_le_one_add_log k`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem harmonic_gap_sum_le (k : ℕ) (a : Fin k) :
     ∑ b ∈ univ.filter (fun b : Fin k => a < b), (1 : ℝ) / ((b.val : ℝ) - (a.val : ℝ)) ≤ 1 + Real.log k := by
   have e : (∑ b ∈ univ.filter (fun b : Fin k => a < b), (1 : ℝ) / ((b.val : ℝ) - (a.val : ℝ))) =
@@ -61,6 +75,9 @@ theorem harmonic_gap_sum_le (k : ℕ) (a : Fin k) :
   have h5 := harmonic_le_one_add_log k
   linarith
 
+/- English proof (translation)
+The claim follows from `|Real.log (vand u) - Real.log (vand u')| ≤ 1 / 4 + 2 / 3 * k * (1 + Real.log k) := by rcases Nat.eq_zero_or_pos k with rfl | hk · norm_num [vand] have hkR : (0 : ℝ) < k := by exact_mod_cast hk have hk0 : (k : ℝ) ≠ 0 := hkR.ne' have hlogk : 0 ≤ Real.log (k : ℝ) := Real.log_natCast …`.
+-/
 theorem log_vandermonde_variation_of_separated (k : ℕ) (Δ : ℝ) (u u' : Fin k → ℝ) (h0 : 0 < Δ)
     (G0 : ∀ a b : Fin k, a.val = 0 → a < b → (k : ℝ) * (4 * Δ) ≤ u a - u b ∧ (k : ℝ) * (4 * Δ) ≤ u' a - u' b ∧
       |(u a - u b) - (u' a - u' b)| ≤ Δ)
@@ -151,6 +168,9 @@ theorem log_vandermonde_variation_of_separated (k : ℕ) (Δ : ℝ) (u u' : Fin 
   refine le_trans (Finset.sum_le_sum (fun a _ => hrow a)) ?_
   exact hS
 
+/- English proof (translation)
+The claim follows from `|Real.log (vand (uColR D u ρ)) - Real.log (vand (uColR D u' ρ))| ≤ 1 / 4 + 2 / 3 * D.R.k * (1 + Real.log D.R.k) := by obtain ⟨⟨-, -, -, -, -, -, hΔ1, hv, hvstep, hmid, -, hnt, -⟩, ⟨-, -, hm44, hmk, -, -, -, htop⟩⟩ := hA have hk44 : 44 ≤ D.R.k := le_trans hm44 hmk have hkpos : 0 < …`.
+-/
 theorem vandermonde_variation_at_place (D : D7) (sc : Scale) (C0 CY Δ : ℝ) (w : ℕ → D.what₂.Tau → ℝ) (hA : DataA D sc C0 CY Δ w)
     (u u' : D.what₂.Word) (ρ : D.what₂.Tau) :
     |Real.log (vand (uColR D u ρ)) - Real.log (vand (uColR D u' ρ))| ≤
@@ -304,6 +324,35 @@ theorem vandermonde_variation_at_place (D : D7) (sc : Scale) (C0 CY Δ : ℝ) (w
         rw [e3]
         linarith
 
+/- English proof (translation)
+Unfold `VandermondeVariationExplicitBound`. Introduce `Δ w hA`. Establish `hlogk : 0 ≤ Real.log (D.R.k : ℝ)` using `Real.log_natCast_nonneg _`. Establish `hkpos : 0 < D.R.k`. Use `D.R.m_add_three_le_k` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `hkR : (0 : ℝ) < D.R.k` using `by exact_mod_cast hkpos`. Establish `hkk : 0 ≤ (D.R.k : ℝ) * (1 + Real.log D.R.k)` using `mul_nonneg hkR.le (by linarith)`. Establish `hplace` using `fun u u' ρ => vandermonde_variation_at_place D sc C0 CY Δ w hA u u' ρ`. Use `⟨fun u u' ρ => le_trans (hplace u u' ρ) (by linarith), ?_⟩` and prove the remaining obligations.
+
+Introduce `u u'`. Establish `hdec : ∀ (x : D.what₂.Word) (ρ : D.what₂.Tau) (i j : ℕ) (hi : i < D.R.k) (hj : j < D.R.k), i < j → (((D.hcW x ρ).u ⟨j, hj⟩ : ℚ) : ℝ) < (((D.hcW x ρ).u ⟨i, hi⟩ : ℚ) : ℝ)`. Introduce `x ρ i j`. Proceed by induction on `j with`. Consider the case `zero`.
+
+Introduce `_ _ h`. Use linear arithmetic over natural numbers and integers. Consider the case `succ n ih`. Introduce `hi hj h`. Establish `h1` using `(D.hcW x ρ).v_gt_u ⟨n, by omega⟩`.
+
+Establish `h2` using `(D.hcW x ρ).u_gt_v ⟨n, by omega⟩`. Establish `h3` using `h1.trans h2`. Establish `step : (((D.hcW x ρ).u ⟨n + 1, hj⟩ : ℚ) : ℝ) < (((D.hcW x ρ).u ⟨n, by omega⟩ : ℚ) : ℝ)`. Conclude with `h3` after adjusting the coercions. Break down `Nat.lt_succ_iff_lt_or_eq.mp h with h' | h'` into its components or cases.
+
+Conclude with `step.trans (ih hi (by omega) h')`. Substitute `h'` using the available equality. Conclude with `step`. Establish `hvpos : ∀ (x : D.what₂.Word) (ρ : D.what₂.Tau), 0 < vand (uColR D x ρ)`. Introduce `x ρ`.
+
+Simplify using `only [vand]`. Use `Finset.prod_pos (fun a _ => Finset.prod_pos (fun b hb => ?_))` and prove the remaining obligations. Establish `hab : a < b` using `(Finset.mem_filter.mp hb).2`. Simplify using `only [uColR]`. Conclude with `sub_pos.mpr (hdec x ρ a.val b.val a.isLt b.isLt hab)`.
+
+Establish `hdu : ∀ x, duStarU D x = (massI D D.R.k * idxPi D (D.host.g 0) (D.host.g 1) / ∏ ρ : D.what₂.Tau, facProd D.R.k) * ∏ ρ, vand (uColR D x ρ)`. Introduce `x`. Simplify using `only [duStarU, duStarP, dimV]`. Rewrite using `[Finset.prod_div_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hsum : |Real.log (∏ ρ, vand (uColR D u ρ)) - Real.log (∏ ρ, vand (uColR D u' ρ))| ≤ (D.R.f : ℝ) * (1 / 4 + 2 / 3 * D.R.k * (1 + Real.log D.R.k))`. Rewrite using `[Real.log_prod (fun ρ _ => (hvpos u ρ).ne'), Real.log_prod (fun ρ _ => (hvpos u' ρ).ne'), ← Finset.sum_sub_distrib]`. Use `le_trans (Finset.abs_sum_le_sum_abs _ _) ?_` and prove the remaining obligations. Use `le_trans (Finset.sum_le_sum (fun ρ _ => hplace u u' ρ)) ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_const, Finset.card_univ, D.what₂.card_Tau, nsmul_eq_mul]`.
+
+Establish `hkey : ∀ (Ds K P P' : ℝ), 0 < P → 0 < P' → |Real.log (Ds / (K * P)) - Real.log (Ds / (K * P'))| ≤ |Real.log P - Real.log P'|`. Introduce `Ds K P P' hP hP'`. Distinguish the cases in `hD : Ds = 0`. Simplify using `[hD]`. Distinguish the cases in `hK : K = 0`.
+
+Simplify using `[hK]`. Rewrite using `[Real.log_div hD (mul_ne_zero hK hP.ne'), Real.log_div hD (mul_ne_zero hK hP'.ne'), Real.log_mul hK hP.ne', Real.log_mul hK hP'.ne', abs_sub_comm (Real.log P)]`. Apply `le_of_eq` to reduce the goal to its premises. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [logXuD, logXu]`. Rewrite using `[hdu u, hdu u', ← mul_sub, abs_mul, abs_of_nonneg (by positivity : (0 : ℝ) ≤ 1 / ((D.R.f : ℝ) * D.R.k))]`. Use `le_trans (mul_le_mul_of_nonneg_left (le_trans (hkey _ _ _ _ (Finset.prod_pos (fun ρ _ => hvpos u ρ)) (Finset.prod_pos (fun ρ _ => hvpos u' ρ))) hsum) (by positivity)) ?_` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos D.R.f with hf0 | hf0` into its components or cases. Rewrite using `[hf0]`.
+
+Simplify using `only [Nat.cast_zero, zero_mul, div_zero]`. Establish `: 0 ≤ 2 / (D.R.k : ℝ)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hfR : (0 : ℝ) < D.R.f` using `by exact_mod_cast hf0`. Rewrite using `[div_mul_eq_mul_div, one_mul, mul_div_mul_left _ _ hfR.ne', div_le_iff₀ hkR]`.
+
+Establish `h2 : 2 / (D.R.k : ℝ) * D.R.k = 2` using `div_mul_cancel₀ 2 hkR.ne'`. Establish `h3` using `mul_nonneg hkR.le hlogk`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem vandermonde_variation_holds (D : D7) (sc : Scale) (C0 CY : ℝ) : VandermondeVariationExplicitBound D sc C0 CY := by
   unfold VandermondeVariationExplicitBound
   intro Δ w hA

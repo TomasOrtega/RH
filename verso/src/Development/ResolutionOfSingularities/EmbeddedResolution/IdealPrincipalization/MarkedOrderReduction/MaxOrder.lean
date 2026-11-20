@@ -16,6 +16,9 @@ section
 
 variable {X : Scheme.{u}}
 
+/- English proof (translation)
+Use `⟨B, ?_⟩` and prove the remaining obligations. Introduce `n hn`. Take `⟨x, hx⟩` from `hn`. Establish `hnB : (n : ℕ∞) ≤ (B : ℕ∞)` using `le_trans hx (hB x)`. Conclude with `hnB` after adjusting the coercions.
+-/
 theorem bddAbove_setOf_le_orderAt (N : X.IdealSheafData) {B : ℕ}
     (hB : ∀ x : ↥X, orderAt N x ≤ (B : ℕ∞)) :
     BddAbove {n : ℕ | ∃ x : ↥X, (n : ℕ∞) ≤ orderAt N x} := by
@@ -25,6 +28,13 @@ theorem bddAbove_setOf_le_orderAt (N : X.IdealSheafData) {B : ℕ}
   have hnB : (n : ℕ∞) ≤ (B : ℕ∞) := le_trans hx (hB x)
   exact_mod_cast hnB
 
+/- English proof (translation)
+Establish `hxB : orderAt N x ≤ (B : ℕ∞)` using `hB x`. Establish `hBtop : (B : ℕ∞) ≠ ⊤` using `by simp`. Establish `hne : orderAt N x ≠ ⊤`. Introduce `h`. Rewrite `hxB` using `[h]`.
+
+Conclude with `hBtop (top_le_iff.mp hxB)`. Take `⟨m, hm⟩` from `ENat.ne_top_iff_exists.mp hne`. Establish `hmem : ∃ y : ↥X, (m : ℕ∞) ≤ orderAt N y` using `⟨x, hm.le⟩`. Establish `hle : m ≤ maxOrder N` using `le_csSup (bddAbove_setOf_le_orderAt N hB) hmem`. Rewrite using `[← hm]`.
+
+Conclude with `hle` after adjusting the coercions.
+-/
 theorem orderAt_le_maxOrder (N : X.IdealSheafData) {B : ℕ}
     (hB : ∀ x : ↥X, orderAt N x ≤ (B : ℕ∞)) (x : ↥X) :
     orderAt N x ≤ ((maxOrder N : ℕ) : ℕ∞) := by
@@ -40,6 +50,15 @@ theorem orderAt_le_maxOrder (N : X.IdealSheafData) {B : ℕ}
   rw [← hm]
   exact_mod_cast hle
 
+/- English proof (translation)
+Establish `hbdd : BddAbove {n : ℕ | ∃ x : ↥X, (n : ℕ∞) ≤ orderAt N x}` using `bddAbove_setOf_le_orderAt N hB`. Establish `hnonempty : {n : ℕ | ∃ x : ↥X, (n : ℕ∞) ≤ orderAt N x}.Nonempty`. Take `⟨x₀⟩` from `‹Nonempty ↥X›`. Conclude with `⟨0, x₀, by simp⟩`. Take `⟨x, hx⟩` from `Nat.sSup_mem hnonempty hbdd`.
+
+Establish `hdef : maxOrder N = sSup {n : ℕ | ∃ x : ↥X, (n : ℕ∞) ≤ orderAt N x}` using `rfl`. Use `⟨x, ?_⟩` and prove the remaining obligations. Rewrite using `[hdef]`. Use `le_antisymm ?_ hx` and prove the remaining obligations. Establish `hordle : orderAt N x ≤ (B : ℕ∞)` using `hB x`.
+
+Establish `hne_top : orderAt N x ≠ ⊤`. Introduce `h`. Rewrite `hordle` using `[h]`. Simplify using `at hordle`. Take `⟨n, hn⟩` from `ENat.ne_top_iff_exists.mp hne_top`.
+
+Establish `hmemn : n ∈ {n : ℕ | ∃ x : ↥X, (n : ℕ∞) ≤ orderAt N x}` using `⟨x, le_of_eq hn⟩`. Establish `hle : n ≤ sSup {n : ℕ | ∃ x : ↥X, (n : ℕ∞) ≤ orderAt N x}` using `le_csSup hbdd hmemn`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_orderAt_eq_maxOrder [Nonempty ↥X] (N : X.IdealSheafData) {B : ℕ}
     (hB : ∀ x : ↥X, orderAt N x ≤ (B : ℕ∞)) :
     ∃ x : ↥X, orderAt N x = ((maxOrder N : ℕ) : ℕ∞) := by
@@ -63,12 +82,18 @@ theorem exists_orderAt_eq_maxOrder [Nonempty ↥X] (N : X.IdealSheafData) {B : �
   calc orderAt N x = (n : ℕ∞) := hn.symm
     _ ≤ ((sSup {n : ℕ | ∃ x : ↥X, (n : ℕ∞) ≤ orderAt N x} : ℕ) : ℕ∞) := by exact_mod_cast hle
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `exists_orderAt_eq_maxOrder N hB`. Conclude with `⟨x, (mem_orderAtLeastLocus_iff N (maxOrder N) x).mpr hx.ge⟩`.
+-/
 theorem orderAtLeastLocus_maxOrder_nonempty [Nonempty ↥X] (N : X.IdealSheafData) {B : ℕ}
     (hB : ∀ x : ↥X, orderAt N x ≤ (B : ℕ∞)) :
     (orderAtLeastLocus N (maxOrder N)).Nonempty := by
   obtain ⟨x, hx⟩ := exists_orderAt_eq_maxOrder N hB
   exact ⟨x, (mem_orderAtLeastLocus_iff N (maxOrder N) x).mpr hx.ge⟩
 
+/- English proof (translation)
+Establish `h1 : orderAt N x ≤ ((maxOrder N : ℕ) : ℕ∞)` using `orderAt_le_maxOrder N hB x`. Establish `h2 : ((maxOrder N : ℕ) : ℕ∞) < (c : ℕ∞)` using `by exact_mod_cast hc`. Conclude with `lt_of_le_of_lt h1 h2`.
+-/
 theorem orderAt_lt_of_maxOrder_lt (N : X.IdealSheafData) {B : ℕ}
     (hB : ∀ x : ↥X, orderAt N x ≤ (B : ℕ∞)) {c : ℕ} (hc : maxOrder N < c) (x : ↥X) :
     orderAt N x < (c : ℕ∞) := by
@@ -76,6 +101,15 @@ theorem orderAt_lt_of_maxOrder_lt (N : X.IdealSheafData) {B : ℕ}
   have h2 : ((maxOrder N : ℕ) : ℕ∞) < (c : ℕ∞) := by exact_mod_cast hc
   exact lt_of_le_of_lt h1 h2
 
+/- English proof (translation)
+Establish `key : maxOrder N ≤ c - 1` using `by show sSup {n : ℕ | ∃ x : ↥X, (n : ℕ∞) ≤ orderAt N x} ≤ c - 1`. Use `csSup_le' ?_` and prove the remaining obligations. Introduce `n hn`. Take `⟨x, hx⟩` from `hn`. Establish `hlt : ¬ ((c : ℕ∞) ≤ orderAt N x)`.
+
+Introduce `hcon`. Establish `hmem : x ∈ orderAtLeastLocus N c` using `(mem_orderAtLeastLocus_iff N c x).mpr hcon`. Rewrite `hmem` using `[h]`. Simplify using `at hmem`. Establish `hnc : n < c`.
+
+Assume the negation of the conclusion as `hcon`. Establish `hcon' : c ≤ n` using `Nat.le_of_not_lt hcon`. Establish `hcast : (c : ℕ∞) ≤ (n : ℕ∞)` using `by exact_mod_cast hcon'`. Conclude with `hlt (le_trans hcast hx)`. Use linear arithmetic over natural numbers and integers.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem maxOrder_lt_of_orderAtLeastLocus_eq_empty (N : X.IdealSheafData) {B : ℕ}
     (_hB : ∀ x : ↥X, orderAt N x ≤ (B : ℕ∞)) {c : ℕ} (hc : 1 ≤ c)
     (h : orderAtLeastLocus N c = ∅) :
@@ -104,6 +138,9 @@ section
 
 variable {X : Scheme.{u}}
 
+/- English proof (translation)
+Use `⟨B, ?_⟩` and prove the remaining obligations. Introduce `n hn`. Take `⟨x, _, hx⟩` from `hn`. Establish `hnB : (n : ℕ∞) ≤ (B : ℕ∞)` using `le_trans hx (hB x)`. Conclude with `hnB` after adjusting the coercions.
+-/
 theorem bddAbove_setOf_le_orderAt_of_mem (N : X.IdealSheafData) {B : ℕ}
     (hB : ∀ x : ↥X, orderAt N x ≤ (B : ℕ∞)) (S : Set ↥X) :
     BddAbove {n : ℕ | ∃ x ∈ S, (n : ℕ∞) ≤ orderAt N x} := by
@@ -113,6 +150,11 @@ theorem bddAbove_setOf_le_orderAt_of_mem (N : X.IdealSheafData) {B : ℕ}
   have hnB : (n : ℕ∞) ≤ (B : ℕ∞) := le_trans hx (hB x)
   exact_mod_cast hnB
 
+/- English proof (translation)
+Establish `hxB : orderAt N x ≤ (B : ℕ∞)` using `hB x`. Establish `hne : orderAt N x ≠ ⊤`. Introduce `h`. Rewrite `hxB` using `[h]`. Simplify using `at hxB`.
+
+Take `⟨m, hm⟩` from `ENat.ne_top_iff_exists.mp hne`. Establish `hmem : m ∈ {n : ℕ | ∃ y ∈ S, (n : ℕ∞) ≤ orderAt N y}` using `⟨x, hx, hm.le⟩`. Establish `hle : m ≤ maxOrderOn N S` using `le_csSup (bddAbove_setOf_le_orderAt_of_mem N hB S) hmem`. Rewrite using `[← hm]`. Conclude with `hle` after adjusting the coercions.
+-/
 theorem orderAt_le_maxOrderOn (N : X.IdealSheafData) {B : ℕ}
     (hB : ∀ x : ↥X, orderAt N x ≤ (B : ℕ∞)) (S : Set ↥X) {x : ↥X} (hx : x ∈ S) :
     orderAt N x ≤ ((maxOrderOn N S : ℕ) : ℕ∞) := by
@@ -127,6 +169,11 @@ theorem orderAt_le_maxOrderOn (N : X.IdealSheafData) {B : ℕ}
   rw [← hm]
   exact_mod_cast hle
 
+/- English proof (translation)
+Establish `key : maxOrderOn N S ≤ c - 1` using `by show sSup {n : ℕ | ∃ x ∈ S, (n : ℕ∞) ≤ orderAt N x} ≤ c - 1`. Use `csSup_le' ?_` and prove the remaining obligations. Introduce `n hn`. Take `⟨x, hxS, hx⟩` from `hn`. Establish `hlt : (n : ℕ∞) < (c : ℕ∞)` using `lt_of_le_of_lt hx (h x hxS)`.
+
+Establish `hnc : n < c` using `by exact_mod_cast hlt`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+-/
 theorem maxOrderOn_lt_of_forall_lt (N : X.IdealSheafData) {B : ℕ}
     (_hB : ∀ x : ↥X, orderAt N x ≤ (B : ℕ∞)) (S : Set ↥X) {c : ℕ} (hc : 1 ≤ c)
     (h : ∀ x ∈ S, orderAt N x < (c : ℕ∞)) :
@@ -141,6 +188,15 @@ theorem maxOrderOn_lt_of_forall_lt (N : X.IdealSheafData) {B : ℕ}
     omega
   omega
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h x hx`. Establish `h1 : orderAt N x ≤ ((maxOrderOn N S : ℕ) : ℕ∞)` using `orderAt_le_maxOrderOn N hB S hx`. Rewrite `h1` using `[h]`. Establish `h2 : orderAt N x ≤ (0 : ℕ∞)` using `by exact_mod_cast h1`.
+
+Conclude with `nonpos_iff_eq_zero.mp h2`. Introduce `h`. Establish `hub : (0 : ℕ) ∈ upperBounds {n : ℕ | ∃ x ∈ S, (n : ℕ∞) ≤ orderAt N x}`. Introduce `n hn`. Take `⟨x, hxS, hx⟩` from `hn`.
+
+Rewrite `hx` using `[h x hxS]`. Establish `hn0 : (n : ℕ∞) = 0` using `nonpos_iff_eq_zero.mp hx`. Establish `hn1 : n = 0` using `by exact_mod_cast hn0`. Use linear arithmetic over natural numbers and integers. Establish `key : maxOrderOn N S ≤ 0` using `by show sSup {n : ℕ | ∃ x ∈ S, (n : ℕ∞) ≤ orderAt N x} ≤ 0`.
+
+Conclude with `csSup_le' hub`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem maxOrderOn_eq_zero_iff (N : X.IdealSheafData) {B : ℕ}
     (hB : ∀ x : ↥X, orderAt N x ≤ (B : ℕ∞)) (S : Set ↥X) :
     maxOrderOn N S = 0 ↔ ∀ x ∈ S, orderAt N x = 0 := by
@@ -170,11 +226,17 @@ section
 
 variable {X : Scheme.{u}}
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [Set.mem_inter_iff, mem_orderAtLeastLocus_iff, orderAt_sup, le_min_iff]`.
+-/
 theorem orderAtLeastLocus_sup (A J : X.IdealSheafData) (c : ℕ) :
     orderAtLeastLocus (A ⊔ J) c = orderAtLeastLocus A c ∩ orderAtLeastLocus J c := by
   ext x
   simp only [Set.mem_inter_iff, mem_orderAtLeastLocus_iff, orderAt_sup, le_min_iff]
 
+/- English proof (translation)
+Rewrite using `[orderAt_sup, orderAt_pow k p, orderAt_pow k p]`.
+-/
 theorem orderAt_pow_sup_pow (k : Type u) [Field k] [CharZero k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
     (N I : X.IdealSheafData) (m s : ℕ) (x : ↥X) :
@@ -182,6 +244,9 @@ theorem orderAt_pow_sup_pow (k : Type u) [Field k] [CharZero k]
       = min ((m : ℕ∞) * orderAt N x) ((s : ℕ∞) * orderAt I x) := by
   rw [orderAt_sup, orderAt_pow k p, orderAt_pow k p]
 
+/- English proof (translation)
+Rewrite using `[orderAtLeastLocus_sup, orderAtLeastLocus_pow_mul k p N hm s, mul_comm m s, orderAtLeastLocus_pow_mul k p I hs m]`.
+-/
 theorem orderAtLeastLocus_pow_sup_pow (k : Type u) [Field k] [CharZero k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
     (N I : X.IdealSheafData) {m s : ℕ} (hm : 1 ≤ m) (hs : 1 ≤ s) :
@@ -189,6 +254,11 @@ theorem orderAtLeastLocus_pow_sup_pow (k : Type u) [Field k] [CharZero k]
   rw [orderAtLeastLocus_sup, orderAtLeastLocus_pow_mul k p N hm s, mul_comm m s,
     orderAtLeastLocus_pow_mul k p I hs m]
 
+/- English proof (translation)
+Rewrite using `[orderAt_pow_sup_pow k p N I m s x]`. Distinguish the cases in `hx : x ∈ orderAtLeastLocus I m`. Use `le_trans (min_le_left _ _) ?_` and prove the remaining obligations. Establish `h1 : orderAt N x ≤ (s : ℕ∞)` using `h x hx`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `le_trans (min_le_right _ _) ?_` and prove the remaining obligations. Establish `hle : orderAt I x ≤ (m : ℕ∞)` using `le_of_lt (not_le.mp (fun hc => hx ((mem_orderAtLeastLocus_iff I m x).mpr hc)))`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem orderAt_pow_sup_pow_le (k : Type u) [Field k] [CharZero k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
     (N I : X.IdealSheafData) (m s : ℕ)
@@ -206,6 +276,13 @@ theorem orderAt_pow_sup_pow_le (k : Type u) [Field k] [CharZero k]
     calc (s : ℕ∞) * orderAt I x ≤ (s : ℕ∞) * (m : ℕ∞) := by gcongr
       _ = ((m * s : ℕ) : ℕ∞) := by rw [Nat.cast_mul]; exact mul_comm _ _
 
+/- English proof (translation)
+Rewrite using `[orderAtLeastLocus_pow_sup_pow k p N I hm hs]`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx`. Assume the negation of the conclusion as `hcon`. Establish `hcon' : (s : ℕ∞) ≤ orderAt N x` using `not_lt.mp hcon`.
+
+Establish `hmem : x ∈ orderAtLeastLocus N s ∩ orderAtLeastLocus I m` using `⟨(mem_orderAtLeastLocus_iff N s x).mpr hcon', hx⟩`. Rewrite `hmem` using `[h]`. Conclude with `hmem.elim`. Introduce `h`. Use extensionality with `x`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `absurd ((mem_orderAtLeastLocus_iff N s x).mp hx.1) (not_le.mpr (h x hx.2))`. Introduce `hx`. Conclude with `hx.elim`.
+-/
 theorem orderAtLeastLocus_pow_sup_pow_eq_empty_iff (k : Type u) [Field k] [CharZero k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
     (N I : X.IdealSheafData) {m s : ℕ} (hm : 1 ≤ m) (hs : 1 ≤ s) :
@@ -233,6 +310,9 @@ section
 
 variable {X Y : Scheme.{u}}
 
+/- English proof (translation)
+Rewrite using `[orderAtLeastLocus_comap k p h N c]`. Conclude with `Set.image_preimage_subset _ _`.
+-/
 theorem image_orderAtLeastLocus_comap_subset (k : Type u) [Field k] [CharZero k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
     (h : Y ⟶ X) [AlgebraicGeometry.Smooth h] (N : X.IdealSheafData) (c : ℕ) :

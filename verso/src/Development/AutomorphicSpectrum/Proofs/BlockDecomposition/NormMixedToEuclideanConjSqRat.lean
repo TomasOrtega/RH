@@ -23,6 +23,9 @@ instance isEmpty_complexPlaces : IsEmpty {w : InfinitePlace ℚ // w.IsComplex} 
   ⟨fun w => InfinitePlace.not_isReal_iff_isComplex.mpr w.2 (by
     rw [Subsingleton.elim w.1 Rat.infinitePlace]; exact Rat.isReal_infinitePlace)⟩
 
+/- English proof (translation)
+Rewrite using `[← real_inner_self_eq_norm_sq]`. Express the relevant statement in the definitionally equal form `⟪(euclidean.toMixed ℚ).symm (mapComplexCoord ℚ sqrtTwoSMulComplex x), (euclidean.toMixed ℚ).symm (mapComplexCoord ℚ sqrtTwoSMulComplex x)⟫ = _`. Rewrite using `[inner_toMixed_symm, mapComplexCoord_apply]`. Simplify using `[sq]`.
+-/
 theorem norm_mixedToEuclidean_sq_rat (x : mixedSpace ℚ) :
     ‖mixedToEuclidean ℚ x‖ ^ 2 = ∑ w, x.1 w ^ 2 := by
   rw [← real_inner_self_eq_norm_sq]
@@ -31,6 +34,9 @@ theorem norm_mixedToEuclidean_sq_rat (x : mixedSpace ℚ) :
   rw [inner_toMixed_symm, mapComplexCoord_apply]
   simp [sq]
 
+/- English proof (translation)
+Rewrite using `[← real_inner_self_eq_norm_sq]`. Express the relevant statement in the definitionally equal form `⟪(euclidean.toMixed ℚ).symm (mapComplexCoord ℚ sqrtTwoSMulConj x), (euclidean.toMixed ℚ).symm (mapComplexCoord ℚ sqrtTwoSMulConj x)⟫ = _`. Rewrite using `[inner_toMixed_symm, mapComplexCoord_apply]`. Simplify using `[sq]`.
+-/
 theorem norm_mixedToEuclideanConj_sq_rat (x : mixedSpace ℚ) :
     ‖mixedToEuclideanConj ℚ x‖ ^ 2 = ∑ w, x.1 w ^ 2 := by
   rw [← real_inner_self_eq_norm_sq]
@@ -39,18 +45,31 @@ theorem norm_mixedToEuclideanConj_sq_rat (x : mixedSpace ℚ) :
   rw [inner_toMixed_symm, mapComplexCoord_apply]
   simp [sq]
 
+/- English proof (translation)
+Rewrite using `[← real_inner_self_eq_norm_sq, Adele2.toEuclid2_apply, WithLp.prod_inner_apply, real_inner_self_eq_norm_sq, real_inner_self_eq_norm_sq, Fin.sum_univ_two, norm_mixedToEuclidean_sq_rat, norm_mixedToEuclidean_sq_rat]`.
+-/
 theorem norm_toEuclid2_sq_rat (x : Fin 2 → mixedSpace ℚ) :
     ‖Adele2.toEuclid2 ℚ x‖ ^ 2 = ∑ i, ∑ w, (x i).1 w ^ 2 := by
   rw [← real_inner_self_eq_norm_sq, Adele2.toEuclid2_apply, WithLp.prod_inner_apply,
     real_inner_self_eq_norm_sq, real_inner_self_eq_norm_sq, Fin.sum_univ_two,
     norm_mixedToEuclidean_sq_rat, norm_mixedToEuclidean_sq_rat]
 
+/- English proof (translation)
+Rewrite using `[← real_inner_self_eq_norm_sq, Adele2.toEuclid2Conj_apply, WithLp.prod_inner_apply, real_inner_self_eq_norm_sq, real_inner_self_eq_norm_sq, Fin.sum_univ_two, norm_mixedToEuclideanConj_sq_rat, norm_mixedToEuclideanConj_sq_rat]`.
+-/
 theorem norm_toEuclid2Conj_sq_rat (x : Fin 2 → mixedSpace ℚ) :
     ‖Adele2.toEuclid2Conj ℚ x‖ ^ 2 = ∑ i, ∑ w, (x i).1 w ^ 2 := by
   rw [← real_inner_self_eq_norm_sq, Adele2.toEuclid2Conj_apply, WithLp.prod_inner_apply,
     real_inner_self_eq_norm_sq, real_inner_self_eq_norm_sq, Fin.sum_univ_two,
     norm_mixedToEuclideanConj_sq_rat, norm_mixedToEuclideanConj_sq_rat]
 
+/- English proof (translation)
+Establish `hcomp : (γ : (Fin 2 → mixedSpace ℚ) → ℂ) ∘ (Adele2.toEuclid2 ℚ).symm = fun v => Complex.exp (-(Real.pi : ℂ) * (‖v‖ : ℂ) ^ 2)`. Use function extensionality and compare the values at `v`. Establish `hv : ‖v‖ ^ 2 = ∑ i, ∑ w, (((Adele2.toEuclid2 ℚ).symm v) i).1 w ^ 2`. Rewrite using `[← norm_toEuclid2_sq_rat, ContinuousLinearEquiv.apply_symm_apply]`. Rewrite using `[Function.comp_apply, hγ, ← hv]`.
+
+Use `push_cast`. Both sides reduce to the same expression. Establish `hb : 0 < ((Real.pi : ℂ)).re` using `by simpa using Real.pi_pos`. Establish `hpi : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Rewrite using `[Adele2.mixedFourier2_eq, hcomp, fourier_gaussian_innerProductSpace hb, hγ, ← norm_toEuclid2Conj_sq_rat, div_self hpi, Complex.one_cpow, one_mul]`.
+
+Use `push_cast`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem mixedFourier2_gauss (γ : 𝓢(Fin 2 → mixedSpace ℚ, ℂ)) (hγ : IsGauss γ)
     (y : Fin 2 → mixedSpace ℚ) : Adele2.mixedFourier2 ℚ γ y = γ y := by
   have hcomp : (γ : (Fin 2 → mixedSpace ℚ) → ℂ) ∘ (Adele2.toEuclid2 ℚ).symm =
@@ -71,6 +90,11 @@ theorem mixedFourier2_gauss (γ : 𝓢(Fin 2 → mixedSpace ℚ, ℂ)) (hγ : Is
 
 end Helpers
 
+/- English proof (translation)
+Introduce `γ hγ r`. Rewrite using `[show Adele2.mixedFourier2 ℚ γ (Adele2.infPart ![r 1, -r 0]) = γ (Adele2.infPart ![r 1, -r 0]) from mixedFourier2_gauss γ hγ _, hγ, hγ]`. Establish `h1 : Adele2.infPart ![r 1, -r 0] 0 = Adele2.infPart r 1` using `rfl`. Establish `h2 : Adele2.infPart ![r 1, -r 0] 1 = -Adele2.infPart r 0` using `congrFun (Adele2.infPart_neg r) 0`. Simplify using `only [Fin.sum_univ_two, h1, h2, Prod.fst_neg, Pi.neg_apply, neg_sq]`.
+
+Rewrite using `[add_comm]`.
+-/
 theorem mixedFourier2_gauss_rot : ∀ (γ : 𝓢(Fin 2 → mixedEmbedding.mixedSpace ℚ, ℂ)), IsGauss γ → ∀ r : Fin 2 → 𝔸[ℚ], Adele2.mixedFourier2 ℚ γ (Adele2.infPart ![r 1, -r 0]) = γ (Adele2.infPart r) := by
   intro γ hγ r
   rw [show Adele2.mixedFourier2 ℚ γ (Adele2.infPart ![r 1, -r 0]) =

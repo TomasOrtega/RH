@@ -38,15 +38,26 @@ def X : Scheme.{0} := C.I.subscheme
 
 def str : C.X ⟶ Sp R := C.I.subschemeι ≫ PSpace.str R C.n
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨C.n, C.I.subschemeι, inferInstanceAs (IsClosedImmersion C.I.subschemeι), rfl⟩`.
+-/
 theorem isProjOver : IsProjOver C.str :=
   ⟨C.n, C.I.subschemeι, inferInstanceAs (IsClosedImmersion C.I.subschemeι), rfl⟩
 
 instance algebra : Algebra R Γ(C.X, ⊤) :=
   ((Scheme.ΓSpecIso (.of R)).inv ≫ C.str.appTop).hom.toAlgebra
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.strHom_eq fun _ => rfl`.
+-/
 theorem strHom_eq {k : Type} [Field k] (C : ProjCode k) : strHom k C.X = C.str :=
   GlobalTheory.strHom_eq fun _ => rfl
 
+/- English proof (translation)
+Take `⟨n, i, _, hi⟩` from `h`. Establish `hk : i.ker.subschemeι.ker = i.ker` using `Scheme.IdealSheafData.ker_subschemeι _`. Use `IsClosedImmersion.isIso_lift _ _ hk` as an intermediate fact. Set `e` to `asIso (IsClosedImmersion.lift _ i hk.le)`. Establish `he : e.hom ≫ i.ker.subschemeι = i` using `IsClosedImmersion.lift_fac _ _ _`.
+
+Use `⟨⟨n, i.ker⟩, e.symm, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e.inv ≫ f = i.ker.subschemeι ≫ PSpace.str R n`. Rewrite using `[Iso.inv_comp_eq, reassoc_of% he, hi]`.
+-/
 theorem exists_iso {Y : Scheme.{0}} {f : Y ⟶ Sp R} (h : IsProjOver f) :
     ∃ (C : ProjCode R) (e : C.X ≅ Y), e.hom ≫ f = C.str := by
   obtain ⟨n, i, _, hi⟩ := h
@@ -62,6 +73,11 @@ end ProjCode
 
 abbrev toSpZ (Y : Scheme.{0}) : Y ⟶ Sp ℤ := specZIsTerminal.from Y
 
+/- English proof (translation)
+Take `⟨N, i, hi, -⟩` from `h`. Establish `hb : IsFinite (spMap (Int.castRingHom R))`. Rewrite using `[spMap, IsFinite.SpecMap_iff]`. Conclude with `(RingHom.finite_algebraMap (A := ℤ) (B := R)).2 inferInstance`. Establish `P` using `GlobalTheory.ProjSpace.isPullback_baseChange N (Int.castRingHom R)`.
+
+Establish `hf : IsFinite (GlobalTheory.ProjSpace.baseChange N (Int.castRingHom R))` using `MorphismProperty.of_isPullback P.flip hb`. Use `isProjOver_comp_of_finite ℤ (PSpace ℤ N) Y (i ≫ GlobalTheory.ProjSpace.baseChange N (Int.castRingHom R)) (PSpace.str ℤ N) inferInstance ⟨N, 𝟙 _, inferInstance, Category.id_comp _⟩` as an intermediate fact. Conclude with `specZIsTerminal.hom_ext _ (toSpZ Y) ▸ this`.
+-/
 theorem isProjOver_toSpZ {R : Type} [CommRing R] [Module.Finite ℤ R] {Y : Scheme.{0}}
     {f : Y ⟶ Sp R} (h : IsProjOver f) : IsProjOver (toSpZ Y) := by
   obtain ⟨N, i, hi, -⟩ := h
@@ -76,6 +92,9 @@ theorem isProjOver_toSpZ {R : Type} [CommRing R] [Module.Finite ℤ R] {Y : Sche
     ⟨N, 𝟙 _, inferInstance, Category.id_comp _⟩
   exact specZIsTerminal.hom_ext _ (toSpZ Y) ▸ this
 
+/- English proof (translation)
+The claim follows from `have := h.finite ⟨inferInstance, inferInstance, h.isIntegral, isProjOver_toSpZ h.isProjOver, specZIsTerminal.hom_ext (p ≫ spMap (Int.castRingHom k)) (toSpZ Y ≫ spMap (Int.castRingHom ℤ)) ▸ h.flat, h.dim_eq⟩`.
+-/
 theorem isArithVar_toSpZ {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {D : ℕ}
     (h : IsArithVar p D) : IsArithVar (toSpZ Y) D :=
   have := h.finite
@@ -112,11 +131,24 @@ def P (Q : PPCode S) : PPAS S :=
   { A := Over.mk Q.π, isAb := Q.isAb, g := Q.g, smoothDim := Q.smoothDim,
     c := smallPicEquiv _ Q.c, isPol := Q.isPol }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem P_g (Q : PPCode S) : Q.P.g = Q.g := rfl
 
+/- English proof (translation)
+The claim follows from `(specZIsTerminal.hom_ext Q.C.str (toSpZ Q.C.X) ▸ Q.C.isProjOver : IsProjOver (toSpZ Q.C.X))`.
+-/
 theorem isProjOver (Q : PPCode S) : IsProjOver (toSpZ Q.P.A.left) :=
   (specZIsTerminal.hom_ext Q.C.str (toSpZ Q.C.X) ▸ Q.C.isProjOver : IsProjOver (toSpZ Q.C.X))
 
+/- English proof (translation)
+Take `⟨C, e, -⟩` from `ProjCode.exists_iso h`. Set `B` to `(Over.pullback f).obj P.A`. Set `ε : B ≅ Over.mk (e.hom ≫ pullback.snd P.A.hom f)` to `Over.isoMk e.symm (e.inv_hom_id_assoc _)`. Use `letI := GrpObj.ofIso ε`. Establish `: IsMonHom ε.hom` using `isMonHom_ofIso ε`.
+
+Establish `: IsMonHom ε.symm.hom` using `inferInstanceAs (IsMonHom ε.inv)`. Establish `H` using `((isGrpPullback_of_iso ε.symm).comp (isGrpPullback_pullback P.A f)).congr (Category.id_comp f) rfl`. Use `⟨⟨C, _, PolPull.isAbelianScheme_of_isGrpPullback P.isAb H, P.g, hg, (smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback H.1 P.smoothDim, (smallPicEquiv _).symm (CechPic.pull (sqMap H.1.w) P.c), ?_⟩, _, rfl, H, ?_⟩` and prove the remaining obligations. Rewrite using `[AddEquiv.apply_symm_apply]`. Conclude with `PPAS.isPrincipalPol_pull H P.isPol`.
+
+Conclude with `AddEquiv.apply_symm_apply _ _`.
+-/
 theorem exists_isPull (P : PPAS S) (hg : 1 ≤ P.g) (f : S' ⟶ S)
     (h : IsProjOver (toSpZ (pullback P.A.hom f))) :
     ∃ (Q : PPCode S') (φ : Q.P.A.left ⟶ P.A.left), Q.g = P.g ∧ Q.P.IsPull P f φ := by
@@ -136,12 +168,18 @@ theorem exists_isPull (P : PPAS S) (hg : 1 ≤ P.g) (f : S' ⟶ S)
     exact PPAS.isPrincipalPol_pull H P.isPol
   · exact AddEquiv.apply_symm_apply _ _
 
+/- English proof (translation)
+The claim follows from `exists_isPull P hg f (isProjOver_toSpZ (isProjOver_comp_of_finite ℤ _ _ (pullback.fst P.A.hom f) _ inferInstance h))`.
+-/
 theorem exists_isPull_of_isIso (P : PPAS S) (hg : 1 ≤ P.g) (f : S' ⟶ S) [IsIso f]
     (h : IsProjOver (toSpZ P.A.left)) :
     ∃ (Q : PPCode S') (φ : Q.P.A.left ⟶ P.A.left), Q.g = P.g ∧ Q.P.IsPull P f φ :=
   exists_isPull P hg f (isProjOver_toSpZ
     (isProjOver_comp_of_finite ℤ _ _ (pullback.fst P.A.hom f) _ inferInstance h))
 
+/- English proof (translation)
+The claim follows from `exists_isPull (.ofPolAV P) hg f (isProjOver_toSpZ (ProjSpace.isProjOver_pullback (ProjSpace.isProjOver_polAV P) hf))`.
+-/
 theorem exists_const {R : Type} [CommRing R] [Module.Finite ℤ R] (P : Out.PolAV (Sp R))
     (hg : 1 ≤ P.g) {f : S' ⟶ Sp R} (hf : IsProjOver f) :
     ∃ (Q : PPCode S') (φ : Q.P.A.left ⟶ P.A.left), Q.g = P.g ∧ Q.P.IsPull (.ofPolAV P) f φ :=
@@ -174,9 +212,15 @@ def degOm : ℝ := s.A.P.degOmega s.C.str
 
 variable {s} in
 
+/- English proof (translation)
+The claim follows from `H.ch2Omega_eq ha`.
+-/
 theorem secondChern_eq_double_sum {h : VMetric s.C.str (omega s.A.P.A) s.A.P.g} (H : s.A.P.IsHodge h) {a : ℝ}
     (ha : h.IsCh2Deg a) : s.ch2 = a := H.ch2Omega_eq ha
 
+/- English proof (translation)
+Simplify using `[degOm, PPAS.degOmega, cxDeg, degOfRank]`.
+-/
 theorem degOm_eq : s.degOm =
     (chi ℂ ((Scheme.Modules.pullback (cxFibre.fst s.C.str)).obj (omega s.A.P.A)) : ℝ) -
       s.A.g * (chi ℂ (structureModule (cxFibre s.C.str)) : ℝ) := by
@@ -184,6 +228,11 @@ theorem degOm_eq : s.degOm =
 
 end Surf
 
+/- English proof (translation)
+Substitute `w` using the available equality. Set `ε : cxFibre (e.hom ≫ p) ≅ cxFibre p` to `@asIso _ _ _ _ (pullback.map _ _ _ _ e.hom (𝟙 _) (𝟙 _) (by simp) (by simp)) (Limits.pullback.map_isIso ..)`. Establish `h₁ : ε.hom ≫ cxFibre.fst p = cxFibre.fst (e.hom ≫ p) ≫ e.hom` using `pullback.lift_fst _ _ _`. Establish `h₂ : ε.hom ≫ cxFibre.snd p = cxFibre.snd (e.hom ≫ p)` using `(pullback.lift_snd _ _ _).trans (Category.comp_id _)`. Establish `hf (r : ℂ) : ε.hom.appTop (algebraMap ℂ Γ(cxFibre p, ⊤) r) = algebraMap ℂ Γ(cxFibre (e.hom ≫ p), ⊤) r`.
+
+Express the relevant statement in the definitionally equal form `_ = (cxFibre.snd (e.hom ≫ p)).appTop _`. Rewrite using `[← h₂, Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression. Rewrite using `[cxDeg, cxDeg, ← CxLine.degOfRank_pullback_iso ε hf]`. Conclude with `degOfRank_congr ℂ ((Scheme.Modules.pullbackComp _ _).app E ≪≫ (Scheme.Modules.pullbackCongr h₁.symm).app E ≪≫ ((Scheme.Modules.pullbackComp _ _).app E).symm)`.
+-/
 theorem cxDeg_pullback_iso {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X ⟶ Sp k} {q : Y ⟶ Sp k}
     (e : Y ≅ X) (w : e.hom ≫ p = q) (E : X.Modules) (r : ℕ) :
     cxDeg q ((Scheme.Modules.pullback e.hom).obj E) r = cxDeg p E r := by
@@ -202,6 +251,11 @@ theorem cxDeg_pullback_iso {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X ⟶
   exact degOfRank_congr ℂ ((Scheme.Modules.pullbackComp _ _).app E ≪≫
     (Scheme.Modules.pullbackCongr h₁.symm).app E ≪≫ ((Scheme.Modules.pullbackComp _ _).app E).symm)
 
+/- English proof (translation)
+Take `⟨C, e, he⟩` from `ProjCode.exists_iso hX.isProjOver`. Take `⟨Q, φ, hQ, H⟩` from `PPCode.exists_isPull_of_isIso P hg e.hom h`. Use `hX.isIntegral` as an intermediate fact. Use `hX.flat` as an intermediate fact. Use `⟨⟨C, ⟨inferInstance, inferInstance, .of_isIso e.inv, C.isProjOver, ?_, ?_⟩, Q⟩, e, φ, he, hQ, H, congrArg Int.cast ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← he, Category.assoc] infer_instance`. Conclude with `(IsHomeomorph.topologicalKrullDim_eq _ (Scheme.homeoOfIso e).isHomeomorph).trans hX.dim_eq`. Rewrite using `[PPAS.degOmega, PPAS.degOmega, ← cxDeg_congr (omegaPullIso H), cxDeg_pullback_iso e he, PPCode.P_g, hQ]`.
+-/
 theorem Surf.exists_iso {X : Scheme.{0}} {p : X ⟶ Sp ℤ} (hX : IsArithVar p 1) (P : PPAS X)
     (hg : 1 ≤ P.g) (h : IsProjOver (toSpZ P.A.left)) :
     ∃ (s : Surf) (e : s.C.X ≅ X) (φ : s.A.P.A.left ⟶ P.A.left), e.hom ≫ p = s.C.str ∧
@@ -242,6 +296,9 @@ def ch2Q : ℚ := degCh2 (ZMod s.p) (omega s.A.P.A) s.A.g
 
 def ch2 : ℝ := s.ch2Q
 
+/- English proof (translation)
+Rewrite using `[ch2Q, h]`. Conclude with `s.surf.degCh2_rank_one (h ▸ s.A.P.isVB_omega)`.
+-/
 theorem secondChernFinite_elliptic (h : s.A.g = 1) :
     s.ch2Q = (topSelfIntersection (ZMod s.p) (det (omega s.A.P.A) 1) 2 : ℚ) / 2 := by
   rw [ch2Q, h]
@@ -256,11 +313,19 @@ def IsFlagCh2 (a : ℚ) : Prop :=
       HasFlag ((Scheme.Modules.pullback ρ).obj (omega s.A.P.A)) l ∧
       a = (l.map fun L => (interNum (ZMod s.p) (structureModule T) ![L, L] : ℚ) / 2).sum / m
 
+/- English proof (translation)
+Rewrite using `[IndefiniteRowSideFullHecke.GenericFiniteMaps.degCh2_eq s.A.P.isVB_omega, ch2Q, degCh2, PPCode.P_g]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem secondChernFinite_eq : s.ch2Q = IndefiniteRowSideFullHecke.GenericFiniteMaps.degCh2 (ZMod s.p) (omega s.A.P.A) := by
   rw [IndefiniteRowSideFullHecke.GenericFiniteMaps.degCh2_eq s.A.P.isVB_omega, ch2Q, degCh2, PPCode.P_g]
   push_cast
   ring
 
+/- English proof (translation)
+Take `⟨h₁, -, h₃⟩` from `H (ZMod s.p) s.C.X ⟨s.surf.1, s.surf.2.1, s.surf.2.2⟩`. Establish `key {a : ℚ} (h : s.IsFlagCh2 a) : a = s.ch2Q`. Take `⟨T, _, _, ρ, m, l, hT, w, hρ, hl, rfl⟩` from `h`. Rewrite using `[← (H _ T hT).2.1 _ l hl, h₁ T hT ρ m w hρ _ _ s.A.P.isVB_omega, secondChernFinite_eq, mul_div_cancel_left₀ _ (Nat.cast_ne_zero.2 hρ.pos.ne')]`. Use `⟨key, fun e => ?_⟩` and prove the remaining obligations.
+
+Take `⟨T, _, _, ρ, m, l, hT, w, hρ, hl⟩` from `h₃ _ _ s.A.P.isVB_omega`. Establish `h : s.IsFlagCh2 _` using `⟨T, _, _, ρ, m, l, hT, w, hρ, hl, rfl⟩`. Conclude with `(e.trans (key h).symm) ▸ h`.
+-/
 theorem isFlagCh2_iff (H : IndefiniteRowSideFullHecke.GenericFiniteMaps.CoverStatement) {a : ℚ} : s.IsFlagCh2 a ↔ a = s.ch2Q := by
   obtain ⟨h₁, -, h₃⟩ := H (ZMod s.p) s.C.X ⟨s.surf.1, s.surf.2.1, s.surf.2.2⟩
   have key {a : ℚ} (h : s.IsFlagCh2 a) : a = s.ch2Q := by
@@ -274,6 +339,13 @@ theorem isFlagCh2_iff (H : IndefiniteRowSideFullHecke.GenericFiniteMaps.CoverSta
 
 end SurfFp
 
+/- English proof (translation)
+Establish `hf (a : k) : e.hom.appTop (algebraMap k Γ(X, ⊤) a) = algebraMap k Γ(Y, ⊤) a`. Rewrite using `[algebraMap_eq_strHom, algebraMap_eq_strHom, ← w, Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression. Use `DualPull.isIso_theta e.hom hE` as an intermediate fact. Establish `h₁` using `CxLine.degOfRank_pullback_iso e hf E r`.
+
+Establish `h₂` using `CxLine.degOfRank_pullback_iso e hf (dual E) r`. Rewrite `h₂` using `[degOfRank_congr k (asIso (DualPull.theta e.hom E))]`. Simplify using `only [degOfRank] at h₁ h₂`. Rewrite using `[degCh2, degCh2]`. Use `congr 2`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem degCh2_pullback_iso {k : Type} [Field k] {X Y : Scheme.{0}} [Algebra k Γ(X, ⊤)]
     [Algebra k Γ(Y, ⊤)] (e : Y ≅ X) (w : e.hom ≫ strHom k X = strHom k Y) {E : X.Modules} {r : ℕ}
     (hE : IsVB E r) : degCh2 k ((Scheme.Modules.pullback e.hom).obj E) r = degCh2 k E r := by
@@ -289,6 +361,11 @@ theorem degCh2_pullback_iso {k : Type} [Field k] {X Y : Scheme.{0}} [Algebra k �
   congr 2
   linarith
 
+/- English proof (translation)
+Take `⟨C, e, he⟩` from `ProjCode.exists_iso hT.2.2`. Take `⟨Q, φ, hQ, H⟩` from `PPCode.exists_isPull_of_isIso P hg e.hom h`. Use `hT.1` as an intermediate fact. Use `⟨⟨p, C, ⟨.of_isIso e.inv, ?_, C.strHom_eq ▸ C.isProjOver⟩, Q⟩, e, φ, rfl, hQ, H, ?_⟩` and prove the remaining obligations. Conclude with `(IsHomeomorph.topologicalKrullDim_eq _ (Scheme.homeoOfIso e).isHomeomorph).trans hT.2.1`.
+
+Express the relevant statement in the definitionally equal form `degCh2 (ZMod p) (omega Q.P.A) Q.g = _`. Rewrite using `[← IndefiniteRowSideFullHecke.ZeroSectionBase.degCh2_congr (omegaPullIso H), hQ, degCh2_pullback_iso e (he.trans C.strHom_eq.symm) P.isVB_omega]`.
+-/
 theorem SurfFp.exists_iso (p : ℕ) [Fact p.Prime] {T : Scheme.{0}} [Algebra (ZMod p) Γ(T, ⊤)]
     (hT : IsProjSurface (ZMod p) T) (P : PPAS T) (hg : 1 ≤ P.g) (h : IsProjOver (toSpZ P.A.left)) :
     ∃ (s : SurfFp) (e : s.C.X ≅ T) (φ : s.A.P.A.left ⟶ P.A.left), s.p = p ∧ s.A.g = P.g ∧
@@ -335,8 +412,14 @@ def put (t : SurfSt) (X : DivX D) : DivX D :=
     SurfFp := t.SurfFp
     surfFpCh2 := t.surfFpCh2 }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem of_put (t : SurfSt) (X : DivX D) : of (t.put X) = t := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem put_of (X : DivX D) : (of X).put X = X := rfl
 
 end SurfSt
@@ -345,22 +428,37 @@ variable {D : D7} {X : DivX D}
 
 def HasTrueSurf (X : DivX D) : Prop := SurfSt.of X = surfSt
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hasTrueSurf_put (X : DivX D) : HasTrueSurf (surfSt.put X) := rfl
 
+/- English proof (translation)
+Rewrite using `[← SurfSt.put_of X, h]`. Conclude with `fun s : SurfFp => ⟨s.p, inferInstance, s.C.X, inferInstance, s.A.P.A, inferInstance, s.A.g, s.surf, s.A.P.isAb, s.A.P.smoothDim, ⟨_, s.A.P.isPol⟩, rfl⟩`.
+-/
 theorem HasTrueSurf.recordIsGeometric (h : HasTrueSurf X) : IndefiniteRowSideFullHecke.ZeroSectionBase.RecordIsGeometric D X := by
   rw [← SurfSt.put_of X, h]
   exact fun s : SurfFp => ⟨s.p, inferInstance, s.C.X, inferInstance, s.A.P.A, inferInstance, s.A.g,
     s.surf, s.A.P.isAb, s.A.P.smoothDim, ⟨_, s.A.P.isPol⟩, rfl⟩
 
+/- English proof (translation)
+The claim follows from `IndefiniteRowSideFullHecke.ZeroSectionBase.recordVanishes_of H h.recordIsGeometric`.
+-/
 theorem HasTrueSurf.secondChernDegree_vanishes_trueSurfaces (h : HasTrueSurf X) (H : IndefiniteRowSideFullHecke.ZeroSectionBase.Ch2HodgeVanishes) :
     Formalism.MainNotions.WeightThresholdDefs.Conclusion4b X := IndefiniteRowSideFullHecke.ZeroSectionBase.recordVanishes_of H h.recordIsGeometric
 
+/- English proof (translation)
+Rewrite using `[← SurfSt.put_of X, h]`. Conclude with `fun s : Surf => H _ _ s.arith s.A.P s.A.pos`.
+-/
 theorem HasTrueSurf.secondChern_eq_of_trueSurfaces (h : HasTrueSurf X) {r : ℝ}
     (H : ∀ (S : Scheme.{0}) (p : S ⟶ Sp ℤ) [IsIntegral S], IsArithVar p 1 → ∀ P : PPAS S, 1 ≤ P.g →
       P.ch2Omega p = r / 2 * P.degOmega p) : Formalism.MainNotions.WeightThresholdDefs.Conclusion4a X r := by
   rw [← SurfSt.put_of X, h]
   exact fun s : Surf => H _ _ s.arith s.A.P s.A.pos
 
+/- English proof (translation)
+Rewrite `H` using `[← SurfSt.put_of X, h]`. Take `⟨s, -, -, -, -, -, e⟩` from `SurfFp.exists_iso p hT P hg hP`. Conclude with `e ▸ Rat.cast_eq_zero.1 (H s)`.
+-/
 theorem HasTrueSurf.degCh2_eq_zero (h : HasTrueSurf X) (H : Formalism.MainNotions.WeightThresholdDefs.Conclusion4b X) (p : ℕ)
     [Fact p.Prime] {T : Scheme.{0}} [Algebra (ZMod p) Γ(T, ⊤)] (hT : IsProjSurface (ZMod p) T)
     (P : PPAS T) (hg : 1 ≤ P.g) (hP : IsProjOver (toSpZ P.A.left)) :
@@ -369,6 +467,9 @@ theorem HasTrueSurf.degCh2_eq_zero (h : HasTrueSurf X) (H : Formalism.MainNotion
   obtain ⟨s, -, -, -, -, -, e⟩ := SurfFp.exists_iso p hT P hg hP
   exact e ▸ Rat.cast_eq_zero.1 (H s)
 
+/- English proof (translation)
+Establish `h` using `ProjModel.isArithVar_pspace (𝓞 F) (ProjModel.ringKrullDim_ringOfIntegers F) 1`. Take `⟨Q, -⟩` from `PPCode.exists_const (WeierstrassCurve.ellPolAV W) le_rfl h.isProjOver`. Take `⟨s, e, -⟩` from `Surf.exists_iso (isArithVar_toSpZ h) Q.P Q.pos Q.isProjOver`. Take `⟨Q', φ, hg, H⟩` from `PPCode.exists_const (WeierstrassCurve.ellPolAV W) le_rfl (isProjOver_comp_of_finite _ _ _ e.hom _ inferInstance h.isProjOver)`. Conclude with `⟨⟨s.C, s.arith, Q'⟩, e, φ, hg, H⟩`.
+-/
 theorem Surf.exists_const (F : Type) [Field F] [NumberField F] (W : _root_.WeierstrassCurve (𝓞 F))
     [W.IsElliptic] : ∃ (s : Surf) (e : s.C.X ≅ PSpace (𝓞 F) 1)
       (φ : s.A.P.A.left ⟶ (WeierstrassCurve.ellPolAV W).A.left), s.A.g = 1 ∧
@@ -388,6 +489,9 @@ abbrev QuadraticFieldTwentyNine : Type := QuadraticAlgebra ℚ 1 5
 
 instance : NumberField QuadraticFieldTwentyNine := NumberField.of_module_finite ℚ _
 
+/- English proof (translation)
+Rewrite using `[pow_two, QuadraticAlgebra.omega_mul_omega_eq_add, Algebra.smul_def, Algebra.smul_def]`. Simplify using the standard rewrite rules.
+-/
 theorem omega_sq_sqrtTwentyNine : (QuadraticAlgebra.omega : QuadraticFieldTwentyNine) ^ 2 = 1 + 5 * QuadraticAlgebra.omega := by
   rw [pow_two, QuadraticAlgebra.omega_mul_omega_eq_add, Algebra.smul_def, Algebra.smul_def]
   simp
@@ -395,6 +499,9 @@ theorem omega_sq_sqrtTwentyNine : (QuadraticAlgebra.omega : QuadraticFieldTwenty
 def fundamentalUnitSqrtTwentyNine : 𝓞 QuadraticFieldTwentyNine := ⟨QuadraticAlgebra.omega, Polynomial.X ^ 2 - Polynomial.C 5 * Polynomial.X - 1,
   by monicity!, by simp [omega_sq_sqrtTwentyNine]⟩
 
+/- English proof (translation)
+Use `RingOfIntegers.ext ?_` and prove the remaining obligations. Simplify using `only [map_pow, map_add, map_mul, map_one, map_ofNat]`. Conclude with `omega_sq_sqrtTwentyNine`.
+-/
 theorem fundamentalUnit_sq : fundamentalUnitSqrtTwentyNine ^ 2 = 1 + 5 * fundamentalUnitSqrtTwentyNine := by
   refine RingOfIntegers.ext ?_
   simp only [map_pow, map_add, map_mul, map_one, map_ofNat]
@@ -402,6 +509,9 @@ theorem fundamentalUnit_sq : fundamentalUnitSqrtTwentyNine ^ 2 = 1 + 5 * fundame
 
 def tateCurveSqrtTwentyNine : _root_.WeierstrassCurve (𝓞 QuadraticFieldTwentyNine) := ⟨1, 0, fundamentalUnitSqrtTwentyNine ^ 2, 0, 0⟩
 
+/- English proof (translation)
+Simplify using `only [tateCurveSqrtTwentyNine, _root_.WeierstrassCurve.Δ, _root_.WeierstrassCurve.b₂, _root_.WeierstrassCurve.b₄, _root_.WeierstrassCurve.b₆, _root_.WeierstrassCurve.b₈]`. Take the linear combination `(fundamentalUnitSqrtTwentyNine ^ 8 + 5 * fundamentalUnitSqrtTwentyNine ^ 7 - fundamentalUnitSqrtTwentyNine ^ 6) * fundamentalUnit_sq`.
+-/
 theorem tateCurve_discriminant : tateCurveSqrtTwentyNine.Δ = -fundamentalUnitSqrtTwentyNine ^ 10 := by
   simp only [tateCurveSqrtTwentyNine, _root_.WeierstrassCurve.Δ, _root_.WeierstrassCurve.b₂,
     _root_.WeierstrassCurve.b₄, _root_.WeierstrassCurve.b₆, _root_.WeierstrassCurve.b₈]
@@ -410,12 +520,18 @@ theorem tateCurve_discriminant : tateCurveSqrtTwentyNine.Δ = -fundamentalUnitSq
 instance : tateCurveSqrtTwentyNine.IsElliptic := ⟨tateCurve_discriminant ▸ ((IsUnit.of_mul_eq_one (fundamentalUnitSqrtTwentyNine - 5)
   (by linear_combination fundamentalUnit_sq)).pow 10).neg⟩
 
+/- English proof (translation)
+The claim follows from `have ⟨s, _, _, h, _⟩ := Surf.exists_const QuadraticFieldTwentyNine tateCurveSqrtTwentyNine ⟨s, h⟩`.
+-/
 theorem Surf.exists_g_eq_one : ∃ s : Surf, s.A.g = 1 :=
   have ⟨s, _, _, h, _⟩ := Surf.exists_const QuadraticFieldTwentyNine tateCurveSqrtTwentyNine
   ⟨s, h⟩
 
 instance : Nonempty Surf := Surf.exists_g_eq_one.nonempty
 
+/- English proof (translation)
+Take `⟨C, e, -⟩` from `ProjCode.exists_iso (ProjSpace.isProjOver_str (ZMod p) 2)`. Take `⟨Q, φ, hg, H⟩` from `PPCode.exists_const (WeierstrassCurve.ellPolAV W) le_rfl C.isProjOver`. Use `ProjSpace.isIntegral_of_isDomain (ZMod p) 2` as an intermediate fact. Conclude with `⟨C, ⟨.of_isIso e.inv, (IsHomeomorph.topologicalKrullDim_eq _ (Scheme.homeoOfIso e).isHomeomorph).trans (ProjSpace.topologicalKrullDim_eq _ 2), C.strHom_eq ▸ C.isProjOver⟩, Q, φ, ⟨e⟩, hg, H⟩`.
+-/
 theorem SurfFp.exists_const (p : ℕ) [Fact p.Prime] (W : _root_.WeierstrassCurve (ZMod p))
     [W.IsElliptic] : ∃ (C : ProjCode (ZMod p)) (h : IsProjSurface (ZMod p) C.X) (A : PPCode C.X)
       (φ : A.P.A.left ⟶ (WeierstrassCurve.ellPolAV W).A.left),
@@ -428,6 +544,11 @@ theorem SurfFp.exists_const (p : ℕ) [Fact p.Prime] (W : _root_.WeierstrassCurv
     (Scheme.homeoOfIso e).isHomeomorph).trans (ProjSpace.topologicalKrullDim_eq _ 2),
     C.strHom_eq ▸ C.isProjOver⟩, Q, φ, ⟨e⟩, hg, H⟩
 
+/- English proof (translation)
+Take `⟨U, t, hU, ht⟩` from `(hg ▸ P.isVB_omega : IsVB (omega P.A) 1) (IsLocalRing.closedPoint _)`. Take `rfl : U = ⊤` from `top_le_iff.1 fun x _ => by`. Rewrite using `[Subsingleton.elim x (IsLocalRing.closedPoint _)]` and apply the resulting hypothesis. Establish `e : omega s.A.P.A ≅ structureModule s.C.X` using `(omegaPullIso H).symm ≪≫ (ht.pullback s.C.str).iso (isFrame_one ⊤)`. Establish `e' : dual (structureModule s.C.X) ≅ structureModule s.C.X` using `(isFrame_one ⊤).dual.iso (isFrame_one ⊤)`.
+
+Rewrite using `[ch2Q, IndefiniteRowSideFullHecke.ZeroSectionBase.degCh2_congr e, hs, degCh2, chi_congr _ e']`. Simplify using `[two_mul]`.
+-/
 theorem SurfFp.secondChernFinite_constantFamily (s : SurfFp) (P : PPAS (Sp (ZMod s.p))) (hg : P.g = 1) (hs : s.A.g = 1)
     {φ : s.A.P.A.left ⟶ P.A.left} (H : s.A.P.IsPull P s.C.str φ) : s.ch2Q = 0 := by
   obtain ⟨U, t, hU, ht⟩ := (hg ▸ P.isVB_omega : IsVB (omega P.A) 1) (IsLocalRing.closedPoint _)
@@ -440,6 +561,9 @@ theorem SurfFp.secondChernFinite_constantFamily (s : SurfFp) (P : PPAS (Sp (ZMod
   rw [ch2Q, IndefiniteRowSideFullHecke.ZeroSectionBase.degCh2_congr e, hs, degCh2, chi_congr _ e']
   simp [two_mul]
 
+/- English proof (translation)
+The claim follows from `have ⟨C, h, A, _, _, hg, H⟩ := SurfFp.exists_const p (.ofJ 0) ⟨.mk p C h A, rfl, hg, SurfFp.secondChernFinite_constantFamily _ _ rfl hg H⟩`.
+-/
 theorem SurfFp.exists_g_eq_one (p : ℕ) [Fact p.Prime] :
     ∃ s : SurfFp, s.p = p ∧ s.A.g = 1 ∧ s.ch2Q = 0 :=
   have ⟨C, h, A, _, _, hg, H⟩ := SurfFp.exists_const p (.ofJ 0)

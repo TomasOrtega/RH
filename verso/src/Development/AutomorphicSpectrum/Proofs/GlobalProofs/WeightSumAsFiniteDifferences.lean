@@ -14,6 +14,21 @@ open NumberField Formalism.MainNotions.ShortIntervalPrimes GlobalTheory.RayZeta 
 
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel
 
+/- English proof (translation)
+Introduce `ι _ r a b ha hb B N cs u hN hu hsupp`. Take `⟨Cu, hCu⟩` from `hu`. Establish `hCu0 : 0 ≤ Cu` using `(abs_nonneg _).trans (hCu 0)`. Establish `hopen : ∀ R : ℕ, IsOpen {s : ℂ | ‖s‖ < (R : ℝ) ∧ -(B : ℝ) < s.re}` using `fun R => (isOpen_lt continuous_norm continuous_const).inter (isOpen_lt continuous_const Complex.continuous_re)`. Establish `key : ∀ R : ℕ, DifferentiableOn ℂ (fun s => ∑' m, (u m : ℂ) * DL cs (coneTerm a b s) m) {s : ℂ | ‖s‖ < (R : ℝ) ∧ -(B : ℝ) < s.re}`.
+
+Introduce `R`. Take `⟨C, hC0, hC⟩` from `GlobalTheory.T.real_difference_cone_bound ι r a b ha hb B R cs 0`. Use `Complex.differentiableOn_tsum_of_summable_norm (u := fun m : Fin r → ℕ => Cu * C * ∏ i, ((1 + (m i : ℝ)) ^ 2)⁻¹) ((GlobalTheory.T.summable_inverse_square_product r).mul_left _) ?_ (hopen R) ?_` and prove the remaining obligations. Introduce `m`. Conclude with `((GlobalTheory.T.finite_difference_cone_term_differentiable ι r a b ha hb cs m).const_mul _).differentiableOn`.
+
+Introduce `m s hs`. Establish `hprod : 0 ≤ ∏ i, ((1 + (m i : ℝ)) ^ 2)⁻¹` using `Finset.prod_nonneg fun i _ => by positivity`. Distinguish the cases in `hum : u m = 0`. Simplify using `only [hum, Rat.cast_zero, zero_mul, norm_zero]`. Check the signs of the components of the expression.
+
+Establish `hcount : ∀ i, cs.count i = N ∨ m i = 0`. Introduce `i`. Break down `hsupp i with h | h` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr (by_contra fun hne => hum (h m hne))`.
+
+Establish `hbound` using `hC s hs.1.le hs.2.le (fun i => (m i : ℝ)) (fun i => Nat.cast_nonneg _)`. Simplify using `only [Pi.zero_apply, Nat.cast_zero, Finset.sum_const_zero, sub_zero] at hbound`. Establish `hsize` using `GlobalTheory.T.size_power_le_inverse_square_product r (Fintype.card ι) B N cs m hN hcount`. Establish `hDL : ‖DL cs (coneTerm a b s) m‖ ≤ C * ∏ i, ((1 + (m i : ℝ)) ^ 2)⁻¹`. Rewrite using `[GlobalTheory.T.finite_difference_cone_term_eq ι r a b s cs m]`.
+
+Conclude with `hbound.trans (mul_le_mul_of_nonneg_left hsize hC0)`. Rewrite using `[norm_mul, Complex.norm_ratCast, mul_assoc]`. Conclude with `mul_le_mul (hCu m) hDL (norm_nonneg _) hCu0`. Introduce `s hs`. Take `⟨R, hR⟩` from `exists_nat_gt ‖s‖`.
+
+Establish `hmem : s ∈ {s : ℂ | ‖s‖ < (R : ℝ) ∧ -(B : ℝ) < s.re}` using `⟨hR, hs⟩`. Conclude with `((key R s hmem).differentiableAt ((hopen R).mem_nhds hmem)).differentiableWithinAt`.
+-/
 theorem differentiableOn_tsum_weighted_DL_halfplane : ∀ (ι : Type) [Fintype ι] (r : ℕ) (a : ι → Fin r → ℝ) (b : ι → ℝ), (∀ j i, 0 < a j i) → (∀ j, 0 < b j) → ∀ (B N : ℕ) (cs : List (Fin r)) (u : (Fin r → ℕ) → ℚ), Fintype.card ι * B + 2 ≤ N → BddW u →
   (∀ i, cs.count i = N ∨ ∀ m, m i ≠ 0 → u m = 0) →
   DifferentiableOn ℂ (fun s => ∑' m, (u m : ℂ) * DL cs (coneTerm a b s) m) {s | -(B : ℝ) < s.re} := by

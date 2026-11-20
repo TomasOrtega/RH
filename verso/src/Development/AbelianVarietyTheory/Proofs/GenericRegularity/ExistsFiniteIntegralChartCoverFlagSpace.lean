@@ -19,6 +19,13 @@ namespace GlobalTheory.Reg
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsDedekindDomain
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.Reg
 
+/- English proof (translation)
+Establish `hb` using `vec_bijective E H Dw l Xo c O β Y M L f y.x Λ`. Establish `hc` using `GlobalTheory.T.isCombAt_iff_coordinate_combination E H Dw l Xo c O β Y M L f y.x Λ`. Use `choose cv hcv using fun τ i => (hb.2.2 (y.u τ i) (y.4 τ i)).exists`. Use `⟨fun τ j i => cv τ i j, fun τ i => hcv τ i, fun τ => ?_⟩` and prove the remaining obligations. Use `Fintype.linearIndependent_iff.2 fun a ha k => ?_` and prove the remaining obligations.
+
+Establish `ha' : ∑ i, a i • cv τ i = 0` using `ha`. Establish `s1 : ∑ i, ((Pi.single k (1 : L) : Fin (Dw.mult τ) → L) + a) i • cv τ i = cv τ k`. Simplify using `[Pi.single_apply, add_smul, Finset.sum_add_distrib, ha']`. Establish `s2 : ∑ i, (Pi.single k (1 : L) : Fin (Dw.mult τ) → L) i • cv τ i = cv τ k`. Simplify using `[Pi.single_apply]`.
+
+Establish `e1 : IsCombAt y.x (y.u τ) (Pi.single k 1 + a) (y.u τ k)` using `(hc _ (cv τ) (y.u τ) _ (y.u τ k) (hcv τ)).2 (by rw [s1]; exact hcv τ k)`. Establish `e2 : IsCombAt y.x (y.u τ) (Pi.single k 1) (y.u τ k)` using `(hc _ (cv τ) (y.u τ) _ (y.u τ k) (hcv τ)).2 (by rw [s2]; exact hcv τ k)`. Establish `h` using `(y.6 τ (y.u τ k) (y.4 τ k) (y.5 τ k)).unique e1 e2`. Simplify using `using congrFun h k`.
+-/
 theorem MChart.Lift.exists_coordinates (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)
     (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β)
     (M : MChart Y) (L : Type) [Field L] [Algebra c.F L] (f : Γ(Y.X, M.U) →+* L) (y : FrPt Xo c L)
@@ -43,11 +50,21 @@ theorem MChart.Lift.exists_coordinates (E : Type) [Field E] [NumberField E] [IsC
   have h := (y.6 τ (y.u τ k) (y.4 τ k) (y.5 τ k)).unique e1 e2
   simpa using congrFun h k
 
+/- English proof (translation)
+Unfold `spMap`. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp]`.
+-/
 private theorem spMap_comp_moduli_spaces {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B)
     (g : B →+* C) : spMap (g.comp f) = spMap g ≫ spMap f := by
   unfold spMap
   rw [CommRingCat.ofHom_comp, Spec.map_comp]
 
+/- English proof (translation)
+Establish `hx : y.x ≫ Xo.s = spMap (algebraMap c.F L) ≫ spMap (IntermediateField.inclusion c.le).toRingHom`. Rewrite using `[y.2]`. Unfold `sOf`. Conclude with `spMap_comp_moduli_spaces _ _`. Take `⟨yt, ⟨-, hyt⟩, -⟩` from `(GlobalTheory.ModelPoints.model_points_charts E H Dw l Xo c O β Y).1 W L (((algebraMap c.F L).comp β).codRestrict W hW) (algebraMap c.F L) (pullback.lift y.x (spMap (algebraMap c.F L)) hx) (RingHom.ext fun _ => rfl) (pullback.lift_snd _ _ _)`.
+
+Take `⟨j, hj⟩` from `hM (yt (IsLocalRing.closedPoint W))`. Take `⟨ψ, hψ, -⟩` from `GlobalTheory.ModelPoints.existsUnique_chartHom (M j).hU W yt hj`. Use `⟨j, (algebraMap W L).comp ψ, fun a => (ψ a).2, ?_⟩` and prove the remaining obligations. Establish `key : pullback.lift y.x (spMap (algebraMap c.F L)) hx ≫ Y.j = spMap ((algebraMap W L).comp ψ) ≫ (M j).hU.fromSpec`. Rewrite using `[spMap_comp_moduli_spaces, Category.assoc, hψ, hyt]`.
+
+Establish `hn` using `MChart.nonempty_lift E H Dw l Xo c O β Y (M j) L ((algebraMap W L).comp ψ) (pullback.lift y.x (spMap (algebraMap c.F L)) hx) (pullback.lift_snd _ _ _) key`. Rewrite `hn` using `[pullback.lift_fst]`. Then use the resulting hypothesis.
+-/
 theorem exists_integral_lift (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)
     (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β)
     {J : Type} (M : J → MChart Y) (hM : ∀ x : Y.X, ∃ j, x ∈ (M j).U) (L : Type) [Field L] [Algebra c.F L]
@@ -71,6 +88,13 @@ theorem exists_integral_lift (E : Type) [Field E] [NumberField E] [IsCMField E] 
     (pullback.lift y.x (spMap (algebraMap c.F L)) hx) (pullback.lift_snd _ _ _) key
   rwa [pullback.lift_fst] at hn
 
+/- English proof (translation)
+Introduce `hS E _ _ _ H Dw l Xo c hBC O _ _ _ _ _ Y hP`. Take `⟨J₀, hJ₀, M, hM⟩` from `exists_finite_mchart_cover E H Dw l Xo c O (algebraMap O c.F) Y hP`. Establish `hT` using `fun (j : J₀) (ix : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) ↪ Fin (M j).n) => GlobalTheory.T.exists_flagCellChart_over_modelChart hS E H Dw l Xo c hBC O Y hP (M j) ix`. Use `choose K hK P hPc using hT`. Use `⟨(j : J₀) × (ix : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) ↪ Fin (M j).n) × K j ix, ?_, fun q => P q.1 q.2.1 q.2.2, ?_⟩` and prove the remaining obligations.
+
+Use `infer_instance`. Introduce `L _ _ W hW y`. Take `⟨j, f, hf, ⟨Λ⟩⟩` from `exists_integral_lift E H Dw l Xo c O (algebraMap O c.F) Y M hM L W hW y`. Take `⟨g, hg, hind⟩` from `MChart.Lift.exists_coordinates E H Dw l Xo c O (algebraMap O c.F) Y (M j) L f y Λ`. Use `choose ixs u b hu hlow hone hbt hdiag hgu using fun τ => GlobalTheory.exists_integral_pivot_decomposition L W (M j).n (Dw.mult τ) (g τ) (hind τ)`.
+
+Take `⟨k, hk⟩` from `hPc j ixs L W f y Λ u b hf hu (fun τ => ⟨hlow τ, hone τ⟩) (fun τ => ⟨hbt τ, hdiag τ⟩) (by rw [← funext hgu]; exact hg)`. Conclude with `⟨⟨j, ixs, k⟩, hk⟩`.
+-/
 theorem exists_finite_pchart_cover : ReciprocityTheory.ChartRestriction.G.Out.SecTwistSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), FrBC Xo c → ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra O c.F] [IsFractionRing O c.F] (Y : Model Xo c (algebraMap O c.F)), PushInvertible Y.t.G Y.t.PP.L → ∃ (J : Type) (_ : Finite J) (P : J → PChart Xo c (algebraMap O c.F)), Covers P := by
   intro hS E _ _ _ H Dw l Xo c hBC O _ _ _ _ _ Y hP
   classical

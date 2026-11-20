@@ -11,9 +11,23 @@ namespace GlobalTheory.RealGeo.BaseFrame
 
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `_ _ h` and use `D.eTau.injective (Subtype.ext ((factEmb D.R D.host).1.1 h))`.
+-/
 theorem tauE_injective : Function.Injective (tauE D) := fun _ _ h =>
   D.eTau.injective (Subtype.ext ((factEmb D.R D.host).1.1 h))
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Establish `hp : p ≤ V.rank` using `by omega`. Establish `hq : nNeg (M.ε ρ) = q` using `(nNeg_shape hp hε).trans (by omega)`. Establish `h0 : ∀ x : Matrix (Fin V.rank) (Fin V.rank) ℂ, ReciprocityTheory.ChartRestriction.G.FD.gram (tauE D ρ) (-V.gramᵀ) x = (-(xᴴ * gramAt D V ρ * x))ᵀ` using `fun x => by`. Use extensionality with `a b`.
+
+Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.gram, hermC, ReciprocityTheory.ChartRestriction.G.FD.col, of_apply, transpose_apply, Matrix.neg_apply, Matrix.mul_apply, conjTranspose_apply, gramAt, map_apply, map_neg, Finset.sum_mul, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [RCLike.star_def]`. Expand and normalize the polynomial expressions, which then agree. Establish `hinv : M.fr ρ * (M.fr ρ)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit ρ))`.
+
+Establish `h1 : ((M.fr ρ)⁻¹)ᴴ * gramAt D V ρ * (M.fr ρ)⁻¹ = Formalism.REAL.Jm (M.ε ρ)`. Rewrite using `[← M.fr_gram ρ]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [hinv]; simp`.
+
+Establish `h2 : (x0Mat M ρ)ᴴ * gramAt D V ρ * x0Mat M ρ = (((M.fr ρ)⁻¹)ᴴ * gramAt D V ρ * (M.fr ρ)⁻¹).submatrix (arr (nNeg (M.ε ρ))) (arr (nNeg (M.ε ρ)))` using `rfl`. Use `show ReciprocityTheory.ChartRestriction.G.FD.gram (tauE D ρ) (-V.gramᵀ) (x0Mat M ρ) = _`. Rewrite using `[h0, h2, h1, hq]`. Use extensionality with `a c`. Establish `ha` using `a.2`.
+
+Establish `hc` using `c.2`. Simplify using `only [transpose_apply, Matrix.neg_apply, submatrix_apply, Formalism.REAL.Jm, diagonal_apply, hε, sgn, arr, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> simp_all <;> omega`.
+-/
 theorem gram_x0Mat {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) {r : ℕ} (hr : V.rank = r) (ρ : D.what₂.Tau)
     {p q : ℕ} (hpq : r = p + q) (hε : ∀ a, M.ε ρ a = decide ((a : ℕ) < p)) :
     ReciprocityTheory.ChartRestriction.G.FD.gram (tauE D ρ) (-(Matrix.reindex (finCongr hr) (finCongr hr) V.gram).transpose)
@@ -46,6 +60,19 @@ theorem gram_x0Mat {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) {r
   simp only [transpose_apply, Matrix.neg_apply, submatrix_apply, Formalism.REAL.Jm, diagonal_apply, hε, sgn, arr, Fin.ext_iff]
   split_ifs <;> simp_all <;> omega
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A T _ R hL hA hF`. Set `x₀ : ℕ → (T.Q.c.F →+* ℂ) → (D.host.E →+* ℂ) → Matrix (Fin D.R.r) (Fin D.R.r) ℂ` to `fun j s τ => if h : ∃ p : Fin D.R.m × (D.what₂.LL →+* ℂ) × D.what₂.Tau, j = (p.1 : ℕ) + 1 ∧ s = res T p.2.1 ∧ τ = tauE D p.2.2 then Matrix.reindex (finCongr (rank_Wc h.choose.1)) (finCongr (rank_Wc h.choose.1)) (x0Mat (R.MW h.choose.1 h.choose.2.1) h.choose.2.2) else T.x₀ j s τ`. Establish `key : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), IsModelBaseFrameFamily (R.MW i σ) (rank_Wc i) (x₀ ((i : ℕ) + 1) (res T σ))`. Introduce `i σ ρ`. Establish `h : ∃ p : Fin D.R.m × (D.what₂.LL →+* ℂ) × D.what₂.Tau, (i : ℕ) + 1 = (p.1 : ℕ) + 1 ∧ res T σ = res T p.2.1 ∧ tauE D ρ = tauE D p.2.2` using `⟨(i, σ, ρ), rfl, rfl, rfl⟩`.
+
+Establish `aux : ∀ p : Fin D.R.m × (D.what₂.LL →+* ℂ) × D.what₂.Tau, ((i : ℕ) + 1 = (p.1 : ℕ) + 1 ∧ res T σ = res T p.2.1 ∧ tauE D ρ = tauE D p.2.2) → Matrix.reindex (finCongr (rank_Wc p.1)) (finCongr (rank_Wc p.1)) (x0Mat (R.MW p.1 p.2.1) p.2.2) = Matrix.reindex (finCongr (rank_Wc i)) (fin …`. Introduce and unpack `⟨i', σ', ρ'⟩ ⟨h1, h2, h3⟩`. Take `rfl : i = i'` from `Fin.ext (Nat.add_right_cancel h1)`. Take `rfl : ρ = ρ'` from `tauE_injective h3`. Rewrite using `[hF.1 i σ σ' h2 ρ]`.
+
+Conclude with `(dif_pos h).trans (aux _ h.choose_spec)`. Use `⟨x₀, fun i σ _ => key i σ, fun j hj s hs k τ hτ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : ∃ p : Fin D.R.m × (D.what₂.LL →+* ℂ) × D.what₂.Tau, j = (p.1 : ℕ) + 1 ∧ s = res T p.2.1 ∧ τ = tauE D p.2.2`. Take `⟨⟨i, σ, ρ⟩, rfl, rfl, rfl⟩` from `h dsimp only at hj hs k hτ ⊢`. Establish `hU` using `hL.unf _ hj _ hs`.
+
+Establish `hdp : (T.Q.Dw ((i : ℕ) + 1)).p = (D.R.sigW ((i : ℕ) + 1)).1` using `(hL.pins.2.2.2 _ hj).1`. Establish `hM : ModelW (Wc D i) (rank_Wc i) ((T.U ((i : ℕ) + 1) (res T σ)).X k)`. Take `⟨hr, hm⟩` from `hL.modelW _ hj _ hs`. Establish `hV : T.V ((i : ℕ) + 1) (res T σ) = Wc D i` using `hL.spaceW _ hj _ hs`. Establish `h1` using `hm k`.
+
+Use `revert hr`. Rewrite using `[hV]`. Conclude with `fun _ _ h => h`. Establish `hε : ∀ a, (R.MW i σ).ε ρ a = decide ((a : ℕ) < (T.Q.Dw ((i : ℕ) + 1)).p)` using `fun a => by`. Rewrite using `[hF.2 i σ (fun ρ' => (GlobalTheory.HolRead.good_iff_labE_and_lab_conj D T hL hA σ ρ').1.1 hs) ρ a, hdp, show (Wc D i).sig (tauE D ρ) = D.R.sigW ((i : ℕ) + 1) from D.sp.W_sigval _ hj.1 hj.2 _]`.
+
+Rewrite using `[key i σ ρ, hM.1, (hU.2.1 k).1]`. Conclude with `gram_x0Mat _ _ ρ hU.1 hε`. Establish `e : x₀ j s τ = T.x₀ j s τ` using `dif_neg h`. Rewrite using `[e]`. Conclude with `hL.familyUniformisationBasePointOrthogonal j hj s hs k τ hτ`.
+-/
 theorem exists_baseFrame : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F), LawsJ T → AlgTie T → FrameKs T.Q.c.F R.MW → ∃ (x₀ : ℕ → (T.Q.c.F →+* ℂ) → (D.host.E →+* ℂ) → Matrix (Fin D.R.r) (Fin D.R.r) ℂ), (∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), GoodEmb T.Q.c (res T σ) → IsModelBaseFrameFamily (R.MW i σ) (rank_Wc i) (x₀ ((i : ℕ) + 1) (res T σ))) ∧ ∀ j, InR D j → ∀ σ, GoodEmb T.Q.c σ → ∀ k, IsOrthogonalFrame ((T.U j σ).X k) (x₀ j σ) := by
   intro D G _ _ Pl0 T0 A T _ R hL hA hF
   classical

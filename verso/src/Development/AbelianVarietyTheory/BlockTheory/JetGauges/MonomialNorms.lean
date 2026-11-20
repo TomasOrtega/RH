@@ -34,6 +34,9 @@ def Separates {X : Type} [AddCommGroup X] [Module (𝓞 E) X] (g : ℕ) (ξ : Mo
     (β : LinearMap.BilinForm ℤ X) (ν₀ : E) (j : ℤ) : Prop :=
   TotNonneg ν₀ ∧ IsExponent g ξ β ν₀ j ∧ ∀ ν : E, TotNonneg ν → IsExponent g ξ β ν j → ν = ν₀
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, by simp, by simp⟩`.
+-/
 example {X : Type} [AddCommGroup X] [Module (𝓞 E) X] (g : ℕ) (ξ : Module.Dual ℤ X) (β : LinearMap.BilinForm ℤ X) :
     IsExponent g ξ β (0 : E) 0 := ⟨0, by simp, by simp⟩
 
@@ -278,6 +281,9 @@ def ExistsMemberOfCuspData : Prop :=
         CuspGeom ((T.U j σ).X k) Xx.L' n' La ξ x.1 lam → ((T.U j σ).X k).fj la ξ ν P x.1 ≠ 0 →
         ∑ τ, ν τ ≤ c₁ → HasTiedMember n' La c₁ Wp Y k x ξ ν lam
 
+/- English proof (translation)
+Introduce `D T j hT hj Wp Y hY σ hσ k Xx hX n' La c₁ ξ x ν lam la P hP hχ hg hne hc`. Use `h D T j hT hj Wp Y hY σ hσ k Xx hX n' La c₁ ξ x ν lam hg ?_ hc` and prove the remaining obligations. Use `hs _ _ _ Xx hX.1 la P hP hχ ξ hg.1 ν x.1 x.2 hne` as an intermediate fact. Rewrite `this` using `[hX.2.1]`. Then use the resulting hypothesis.
+-/
 theorem realized_of (h : ExistsMemberSt) (hs : SupportSt) : ExistsMemberOfCuspData := by
   intro D T j hT hj Wp Y hY σ hσ k Xx hX n' La c₁ ξ x ν lam la P hP hχ hg hne hc
   refine h D T j hT hj Wp Y hY σ hσ k Xx hX n' La c₁ ξ x ν lam hg ?_ hc

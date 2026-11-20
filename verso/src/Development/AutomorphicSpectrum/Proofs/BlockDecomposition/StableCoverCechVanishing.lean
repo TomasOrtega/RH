@@ -20,6 +20,9 @@ variable {O : Type} [CommRing O] {R : Type} [CommRing R] {I : Ideal R} {γ : Div
   {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I}
   (Q : ObjectProperty (Thick (nlFun γ p X q κ))) {ι : Type} (U : ι → X.Opens)
 
+/- English proof (translation)
+Take `⟨-, V, hV, hi⟩` from `h`. Take `⟨β, hQ, -⟩` from `h'`. Rewrite `hV` using `[Set.mem_singleton_iff]`. Substitute `hV` using the available equality. Conclude with `⟨hQ, _, rfl, GlobalTheory.T.inOpen_of_thickening_morphism _ φ hi⟩`.
+-/
 theorem st_single_rel (α : ι) ⦃T T' : Thick (nlFun γ p X q κ)⦄ (φ : T ⟶ T') (h : St Q {U α} T)
     (h' : ∃ β, St Q {U β} T') : St Q {U α} T' := by
   obtain ⟨-, V, hV, hi⟩ := h
@@ -28,6 +31,11 @@ theorem st_single_rel (α : ι) ⦃T T' : Thick (nlFun γ p X q κ)⦄ (φ : T �
   subst hV
   exact ⟨hQ, _, rfl, GlobalTheory.T.inOpen_of_thickening_morphism _ φ hi⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `T`. Use `propext ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨α, hQ, V, hV, hi⟩`. Rewrite `hV` using `[Set.mem_singleton_iff]`. Substitute `hV` using the available equality.
+
+Conclude with `⟨hQ, _, ⟨α, rfl⟩, hi⟩`. Introduce and unpack `⟨hQ, V, ⟨α, rfl⟩, hi⟩`. Conclude with `⟨α, hQ, _, rfl, hi⟩`.
+-/
 theorem st_single_union : (fun T => ∃ α, St Q {U α} T) = St Q (Set.range U) := by
   funext T
   refine propext ⟨?_, ?_⟩
@@ -38,6 +46,13 @@ theorem st_single_union : (fun T => ∃ α, St Q {U α} T) = St Q (Set.range U) 
   · rintro ⟨hQ, V, ⟨α, rfl⟩, hi⟩
     exact ⟨α, hQ, _, rfl, hi⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `T`. Use `propext ⟨fun h => ?_, ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hS`. Use `⟨(h a ha).1, _, rfl, (GlobalTheory.T.inOpen_finite_inf_iff U S T).2 fun α hα => ?_⟩` and prove the remaining obligations. Take `⟨-, V, hV, hi⟩` from `h α hα`.
+
+Rewrite `hV` using `[Set.mem_singleton_iff]`. Substitute `hV` using the available equality. Conclude with `hi`. Introduce and unpack `⟨hQ, V, hV, hi⟩ α hα`. Rewrite `hV` using `[Set.mem_singleton_iff]`.
+
+Substitute `hV` using the available equality. Conclude with `⟨hQ, _, rfl, (GlobalTheory.T.inOpen_finite_inf_iff U S T).1 hi α hα⟩`.
+-/
 theorem st_single_capS (S : Finset ι) (hS : S.Nonempty) :
     capS (fun α => St Q {U α}) S = St Q {⨅ α ∈ S, U α} := by
   funext T
@@ -55,6 +70,9 @@ theorem st_single_capS (S : Finset ι) (hS : S.Nonempty) :
 
 end St
 
+/- English proof (translation)
+Substitute `e e'` using the available equality. Conclude with `H`.
+-/
 theorem tens_congr {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'} {C C' : Type 1} [Category.{0} C]
     [Category.{0} C'] (G : C' ⥤ C) {ι : Type} [DecidableEq ι] (N : ι → Type) [∀ i, AddCommGroup (N i)]
     [∀ i, Module R (N i)] (F : ι → (C ⥤ ModuleCat.{0} R)) (F' : C' ⥤ ModuleCat.{0} R')
@@ -69,6 +87,13 @@ theorem tens_congr {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'} {C
   subst e e'
   exact H
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `O _ R _ I γ p X q κ Λ _ F Q ι _ U s`. Establish `key` using `GlobalTheory.CompanionTheory.GlobRel.glob_van_rel F (fun α => St Q {U α}) (st_single_rel Q U) s`. Rewrite `key` using `[st_single_union Q U]`. Take `⟨k1, k2, k3⟩` from `key`.
+
+Apply the tactic sequence `refine ⟨fun H => k1 fun S hS => ?_, fun H => k2 fun S hS => ?_, fun H => k3 fun S hS => ?_⟩ <;>`. Rewrite using `[st_single_capS Q U S hS]`. Conclude with `H S hS`. Introduce `O _ R _ I γ p X q κ Λ _ F Q ι U 𝒮 n H`. Establish `key` using `GlobalTheory.CompanionTheory.CosieveRel.serre_union F (fun α => St Q {U α}) (st_single_rel Q U) 𝒮 n H`.
+
+Rewrite `key` using `[st_single_union Q U]`. Conclude with `key`. Introduce `O _ R _ I γ p X q κ O' _ R' _ I' γ' p' X' q' κ' Λ Λ' _ _ σ G ι _ _ N _ _ _ F F' τ hτ hadd hsm Q Q' A _ U U' h hS hR H j`. Use `tens_congr G N F F' τ hτ (st_single_union Q U) (st_single_union Q' U') (fun T ⟨α, hα⟩ => ⟨α, h α T hα⟩) hR j (GlobalTheory.CompanionTheory.CosieveRel.base_change_rel G N F F' τ hτ hadd hsm (fun α => St Q {U α}) (fun α => St Q' {U' α}) (st_single_rel Q U) (st_single_rel Q' U') h ( …` and prove the remaining obligations. Conclude with `tens_congr G N F F' τ hτ (st_single_capS Q U S hne).symm (st_single_capS Q' U' S hne).symm (hS S) _ j (H S hne j)`.
+-/
 theorem glob_st : (∀ {O : Type} [CommRing O] {R : Type} [CommRing R] {I : Ideal R} {γ : DividedPowers I} {p : ℕ}
     {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I} {Λ : Type} [CommRing Λ]
     (F : Thick (nlFun γ p X q κ) ⥤ ModuleCat.{0} Λ) (Q : ObjectProperty (Thick (nlFun γ p X q κ)))

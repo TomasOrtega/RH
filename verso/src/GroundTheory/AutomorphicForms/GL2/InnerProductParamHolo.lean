@@ -9,6 +9,23 @@ noncomputable section
 
 namespace PseudoEisenstein
 
+/- English proof (translation)
+Introduce `s₀ hs₀`. Take `⟨ε, hε, hsub, B, hB, hle⟩` from `hbound s₀ hs₀`. Use `set r := ε / 2 with hr`. Establish `hr0 : 0 < r` using `by rw [hr]; linarith`. Establish `hball : ∀ s ∈ ball s₀ r, closedBall s r ⊆ closedBall s₀ ε`.
+
+Introduce `s hs z hz`. Rewrite `hz`, the goal using `[mem_closedBall]`. Rewrite `hs` using `[mem_ball]`. Combine the equalities or inequalities in the displayed calculation. Establish `hderiv : ∀ x, ∀ s ∈ U, HasDerivAt (fun z => F z x) (deriv (fun z => F z x) s) s` using `fun x s hs => ((hF x).differentiableAt (hU.mem_nhds hs)).hasDerivAt`.
+
+Establish `hF'meas : AEStronglyMeasurable (fun x => deriv (fun z => F z x) s₀) μ`. Establish `hev : ∀ᶠ n : ℕ in atTop, s₀ + ((n : ℂ) + 1)⁻¹ ∈ U`. Establish `ht : Tendsto (fun n : ℕ => s₀ + ((n : ℂ) + 1)⁻¹) atTop (𝓝 s₀)`. Use `tendsto_one_div_add_atTop_nhds_zero_nat (𝕜 := ℂ)` as an intermediate fact. Simplify `(tendsto_const_nhds (x := s₀)).add this` using `[one_div]`.
+
+Conclude with `ht (hU.mem_nhds hs₀)`. Use `set q : ℕ → α → ℂ := fun n x => if s₀ + ((n : ℂ) + 1)⁻¹ ∈ U then ((n : ℂ) + 1) * (F (s₀ + ((n : ℂ) + 1)⁻¹) x - F s₀ x) else 0 with hq`. Use `aestronglyMeasurable_of_tendsto_ae atTop (f := q) (fun n => ?_) (Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [hq] split_ifs with h`. Conclude with `aestronglyMeasurable_const.mul ((hmeas _ h).sub (hmeas s₀ hs₀))`.
+
+Conclude with `aestronglyMeasurable_const`. Establish `hsl` using `(hasDerivAt_iff_tendsto_slope.1 (hderiv x s₀ hs₀))`. Establish `hseq : Tendsto (fun n : ℕ => s₀ + ((n : ℂ) + 1)⁻¹) atTop (𝓝[≠] s₀)`. Use `tendsto_nhdsWithin_iff.2 ⟨?_, Eventually.of_forall fun n => ?_⟩` and prove the remaining obligations. Use `tendsto_one_div_add_atTop_nhds_zero_nat (𝕜 := ℂ)` as an intermediate fact.
+
+Simplify `(tendsto_const_nhds (x := s₀)).add this` using `[one_div]`. Simplify using `only [mem_compl_iff, mem_singleton_iff, add_eq_left, inv_eq_zero]`. Conclude with `Nat.succ_ne_zero n` after adjusting the coercions. Use `(hsl.comp hseq).congr' ?_` and prove the remaining obligations. Use `filter_upwards [hev] with n hn`.
+
+Simplify using `only [hq, Function.comp_apply, if_pos hn, slope, vsub_eq_sub, add_sub_cancel_left, inv_inv, smul_eq_mul]`. Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := μ) (x₀ := s₀) (F := F) (F' := fun s x => deriv (fun z => F z x) s) (bound := fun x => B x / r) (ball_mem_nhds s₀ hr0) (eventually_of_mem (hU.mem_nhds hs₀) hmeas) (hB.mono' (hmeas s₀ hs₀) (Eventually.of_forall fun x => hle s₀ …`. Conclude with `key.2.differentiableAt.differentiableWithinAt`. Use `Complex.norm_deriv_le_of_forall_mem_sphere_norm_le hr0 ?_ fun z hz => hle z (hball s hs (sphere_subset_closedBall hz)) x` and prove the remaining obligations. Use `DifferentiableOn.diffContOnCl ?_` and prove the remaining obligations.
+
+Rewrite using `[closure_ball s hr0.ne']`. Conclude with `(hF x).mono ((hball s hs).trans hsub)`.
+-/
 theorem differentiableOn_integral_of_bound {α : Type*} [MeasurableSpace α] {μ : Measure α}
     {F : ℂ → α → ℂ} {U : Set ℂ} (hU : IsOpen U) (hF : ∀ x, DifferentiableOn ℂ (fun s => F s x) U)
     (hmeas : ∀ s ∈ U, AEStronglyMeasurable (F s) μ)
@@ -72,6 +89,9 @@ theorem differentiableOn_integral_of_bound {α : Type*} [MeasurableSpace α] {μ
 
 open GroundTheory.Global.Elliptic in
 
+/- English proof (translation)
+Use `residue_eq_of_eventuallyEq (u := fun s => ∫ x, A s x ∂μ) (hA.analyticAt (isOpen_ball.mem_nhds (mem_ball_self hε))) ?_` and prove the remaining obligations. Rewrite using `[EventuallyEq, eventually_nhdsWithin_iff]`. Use `filter_upwards [isOpen_ball.mem_nhds (mem_ball_self hε)] with s hs hsp`. Rewrite using `[show (fun x => F s x) = fun x => R x * (s - p)⁻¹ + A s x from funext (hFA s hs hsp), integral_add (hR.mul_const _) (hAint s hs), integral_mul_const]`.
+-/
 theorem residue_integral_eq {α : Type*} [MeasurableSpace α] {μ : Measure α} {F A : ℂ → α → ℂ}
     {R : α → ℂ} {p : ℂ} {ε : ℝ} (hε : 0 < ε) (hR : Integrable R μ)
     (hA : DifferentiableOn ℂ (fun s => ∫ x, A s x ∂μ) (ball p ε))
@@ -87,6 +107,11 @@ theorem residue_integral_eq {α : Type*} [MeasurableSpace α] {μ : Measure α} 
 
 open GroundTheory.Global.Elliptic in
 
+/- English proof (translation)
+Establish `hd : AnalyticAt ℂ (dslope H p) p`. Take `⟨pf, hpf⟩` from `hH`. Conclude with `⟨_, hpf.has_fpower_series_dslope_fslope⟩`. Use `residue_eq_of_eventuallyEq (u := fun z => c * dslope H p z + H z * u z) ((analyticAt_const.mul hd).add (hH.mul hu)) ?_` and prove the remaining obligations. Use `filter_upwards [hΦ, self_mem_nhdsWithin] with z hz hzp`.
+
+Rewrite using `[hz, dslope_of_ne _ hzp, slope_def_field]`. Establish `: z - p ≠ 0` using `sub_ne_zero.2 hzp`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem residue_mul_eq {Φ H u : ℂ → ℂ} {p c : ℂ} (hH : AnalyticAt ℂ H p) (hu : AnalyticAt ℂ u p)
     (hΦ : Φ =ᶠ[𝓝[≠] p] fun z => c * (z - p)⁻¹ + u z) :
     residue (fun z => H z * Φ z) p = H p * c := by

@@ -10,6 +10,11 @@ section Generic
 
 variable {R S : Type*} [CommRing R] [IsDomain R] [CommRing S] [IsDomain S] (f : R →+* S)
 
+/- English proof (translation)
+Establish `: NeZero (n : S)` using `⟨hn⟩`. Establish `: NeZero (n : R)` using `⟨fun h => hn (by rw [← map_natCast f n, h, map_zero])⟩`. Establish `hr : eval ζ (cyclotomic n R) = 0` using `isRoot_cyclotomic_iff.mpr hζ`. Apply `isRoot_cyclotomic_iff.mp` to reduce the goal to its premises. Use `show eval (f ζ) (cyclotomic n S) = 0`.
+
+Rewrite using `[← map_cyclotomic n f, eval_map, eval₂_hom, hr, map_zero]`.
+-/
 theorem isPrimitiveRoot_map_of_natCast_ne_zero {ζ : R} {n : ℕ} (hζ : IsPrimitiveRoot ζ n)
     (hn : (n : S) ≠ 0) : IsPrimitiveRoot (f ζ) n := by
   have : NeZero (n : S) := ⟨hn⟩
@@ -19,6 +24,9 @@ theorem isPrimitiveRoot_map_of_natCast_ne_zero {ζ : R} {n : ℕ} (hζ : IsPrimi
   show eval (f ζ) (cyclotomic n S) = 0
   rw [← map_cyclotomic n f, eval_map, eval₂_hom, hr, map_zero]
 
+/- English proof (translation)
+Establish `hf` using `isPrimitiveRoot_map_of_natCast_ne_zero f hζ hn`. Take `⟨j, hj, rfl⟩` from `hζ.eq_pow_of_pow_eq_one hη`. Take `⟨k, hk, rfl⟩` from `hζ.eq_pow_of_pow_eq_one hη'`. Rewrite `h` using `[map_pow, map_pow]`. Rewrite using `[hf.pow_inj hj hk h]`.
+-/
 theorem eq_of_map_eq_of_pow_eq_one {ζ : R} {n : ℕ} [NeZero n] (hζ : IsPrimitiveRoot ζ n)
     (hn : (n : S) ≠ 0) {η η' : R} (hη : η ^ n = 1) (hη' : η' ^ n = 1) (h : f η = f η') :
     η = η' := by
@@ -28,6 +36,11 @@ theorem eq_of_map_eq_of_pow_eq_one {ζ : R} {n : ℕ} [NeZero n] (hζ : IsPrimit
   rw [map_pow, map_pow] at h
   rw [hf.pow_inj hj hk h]
 
+/- English proof (translation)
+Establish `hf` using `isPrimitiveRoot_map_of_natCast_ne_zero f hζ hn`. Take `⟨i, -, e⟩` from `hf.eq_pow_of_pow_eq_one hw`. Establish `hi : (ζ ^ i) ^ n = 1` using `by rw [← pow_mul, mul_comm, pow_mul, hζ.pow_eq_one, one_pow]`. Use `⟨ζ ^ i, ⟨hi, by rw [map_pow, e]⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `η ⟨hη, hfη⟩`.
+
+Conclude with `eq_of_map_eq_of_pow_eq_one f hζ hn hη hi (by rw [hfη, map_pow, e])`.
+-/
 theorem existsUnique_pow_eq_one_of_isPrimitiveRoot {ζ : R} {n : ℕ} [NeZero n]
     (hζ : IsPrimitiveRoot ζ n) (hn : (n : S) ≠ 0) {w : S} (hw : w ^ n = 1) :
     ∃! η : R, η ^ n = 1 ∧ f η = w := by
@@ -40,6 +53,9 @@ theorem existsUnique_pow_eq_one_of_isPrimitiveRoot {ζ : R} {n : ℕ} [NeZero n]
 
 end Generic
 
+/- English proof (translation)
+Use `⟨fun h2 => ?_, fun h3 => ?_⟩` and prove the remaining obligations. Use `Nat.le_of_dvd (by norm_num) ((ringChar.spec k 2).mp (by exact_mod_cast h2))` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `Nat.le_of_dvd (by norm_num) ((ringChar.spec k 3).mp (by exact_mod_cast h3))` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem two_ne_zero_and_three_ne_zero_of_five_le_ringChar {k : Type*} [Field k]
     (h : 5 ≤ ringChar k) : (2 : k) ≠ 0 ∧ (3 : k) ≠ 0 := by
   refine ⟨fun h2 => ?_, fun h3 => ?_⟩

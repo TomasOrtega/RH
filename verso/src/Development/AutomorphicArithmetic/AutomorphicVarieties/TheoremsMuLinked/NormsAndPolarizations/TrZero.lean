@@ -1,6 +1,21 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.NormsAndPolarizations.CjApply
 open IsLocalRing Matrix NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa UpperTheory.V.HV UpperTheory.V.Th UpperTheory.V.Th.Nm GlobalTheory.GalOfCusp
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Conclude with `⟨0, fun A => Subsingleton.elim _ _⟩`. Set `o : Fin n` to `⟨0, hn⟩`. Use `⟨-∑ i, D (single i o 1) * single o i 1, fun A => ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ i, A * single i o (1 : K) = ∑ j, A j i • single j o (1 : K)`.
+
+Introduce `i`. Use extensionality with `a b`. Distinguish the cases in `hb : o = b`. Substitute `hb` using the available equality. Simplify using `[Matrix.sum_apply, Matrix.single_apply]`.
+
+Simplify using `[Matrix.sum_apply, Matrix.single_apply, hb, Matrix.mul_apply]`. Establish `h2 : ∀ j, single o j (1 : K) * A = ∑ i, A j i • single o i (1 : K)`. Introduce `j`. Use extensionality with `a b`. Distinguish the cases in `ha : o = a`.
+
+Substitute `ha` using the available equality. Simplify using `[Matrix.sum_apply, Matrix.single_apply]`. Simplify using `[Matrix.sum_apply, Matrix.single_apply, ha, Matrix.mul_apply]`. Establish `h3 : ∑ i, single i o (1 : K) * single o i (1 : K) = (1 : Matrix (Fin n) (Fin n) K)`. Simplify using `only [Matrix.single_mul_single_same, mul_one]`.
+
+Conclude with `Matrix.sum_single_one`. Establish `h4 : A * ∑ i, D (single i o 1) * single o i 1 = (∑ i, D (single i o 1) * single o i 1) * A - D A`. Establish `e1 : ∀ i, A * (D (single i o 1) * single o i (1 : K)) = D (A * single i o 1) * single o i 1 - D A * (single i o 1 * single o i 1)`. Introduce `i`. Rewrite using `[hD]`.
+
+Use `noncomm_ring`. Rewrite using `[Finset.mul_sum, Finset.sum_congr rfl fun i _ => e1 i, Finset.sum_sub_distrib, ← Finset.mul_sum, h3, mul_one, Finset.sum_mul]`. Use `congr 1`. Simplify using `only [h1, map_sum, map_smul, Finset.sum_mul, mul_assoc, h2, Finset.mul_sum, smul_mul_assoc, mul_smul_comm]`. Conclude with `Finset.sum_comm`.
+
+Rewrite using `[mul_neg, neg_mul, h4]`. Normalize the expressions using the abelian group laws.
+-/
 private theorem UpperTheory.V.Th.Nm.trZero_inner {K : Type} [Field K] {n : ℕ}
     (D : Matrix (Fin n) (Fin n) K →ₗ[K] Matrix (Fin n) (Fin n) K)
     (hD : ∀ A B, D (A * B) = D A * B + A * D B) : ∃ Y, ∀ A, D A = A * Y - Y * A := by
@@ -39,6 +54,39 @@ private theorem UpperTheory.V.Th.Nm.trZero_inner {K : Type} [Field K] {n : ℕ}
     exact Finset.sum_comm
   rw [mul_neg, neg_mul, h4]; abel
 
+/- English proof (translation)
+Introduce `K G _ _ n ρ z hsp hc ht`. Establish `hmul : ∀ g h, mat ρ (g * h) = mat ρ g * mat ρ h`. Introduce `g h`. Simplify using `[mat]`. Establish `hone : mat ρ 1 = 1` using `by simp [mat]`.
+
+Establish `hinv : ∀ g, mat ρ g⁻¹ * mat ρ g = 1` using `fun g => by rw [← hmul, inv_mul_cancel, hone]`. Establish `hinv' : ∀ g, mat ρ g * mat ρ g⁻¹ = 1` using `fun g => by rw [← hmul, mul_inv_cancel, hone]`. Set `d : G → Matrix (Fin n) (Fin n) K` to `fun g => z g * mat ρ g`. Establish `hd : ∀ g h, d (g * h) = d g * mat ρ h + mat ρ g * d h`. Introduce `g h`.
+
+Simplify using `only [d]`. Rewrite using `[hc, hmul, add_mul, mul_assoc (mat ρ g * z h), ← mul_assoc (mat ρ g⁻¹), hinv, one_mul]`. Simplify using `only [mul_assoc]`. Set `R` to `Finsupp.linearCombination K (mat ρ)`. Set `E` to `Finsupp.linearCombination K d`.
+
+Establish `hR : LinearMap.range R = ⊤` using `by rw [Finsupp.range_linearCombination]; exact hsp`. Establish `hker : ∀ y, R y = 0 → E y = 0`. Introduce `y hy`. Establish `key : ∀ h, ∀ y : G →₀ K, (d h * R y).trace + (mat ρ h * E y).trace = 0`. Introduce `h y`.
+
+Proceed by induction on `y using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb`. Simplify using `only [map_add, mul_add, trace_add]`. Take the linear combination `ha + hb`.
+
+Consider the case `single g a`. Use `ht (h * g)` as an intermediate fact. Express the relevant statement in the definitionally equal form `(d (h * g)).trace = 0 at this`. Rewrite `this` using `[hd, trace_add]`. Simplify using `only [R, E, Finsupp.linearCombination_single, mul_smul_comm, trace_smul, smul_eq_mul]`.
+
+Rewrite using `[← mul_add, this, mul_zero]`. Establish `k2 : ∀ A : Matrix (Fin n) (Fin n) K, (A * E y).trace = 0`. Introduce `A`. Establish `hA : A ∈ Submodule.span K (Set.range (mat ρ))` using `hsp ▸ Submodule.mem_top`. Proceed by induction on `hA using Submodule.span_induction with`.
+
+Consider the case `mem x hx`. Take `⟨h, rfl⟩` from `hx`. Simplify `key h y` using `[hy]`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => simp [add_mul, ha, hb]`.
+
+Consider the case `smul a b _ hb => simp [hb]`. Use extensionality with `i j`. Simplify `k2 (single j i 1)` using `[Matrix.trace_single_mul]`. Take `⟨s, hs⟩` from `R.exists_rightInverse_of_surjective hR`. Set `D` to `E ∘ₗ s`.
+
+Establish `hDg : ∀ g, D (mat ρ g) = d g`. Introduce `g`. Establish `h0 : R (s (mat ρ g) - Finsupp.single g 1) = 0`. Use `LinearMap.congr_fun hs (mat ρ g)` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at this`.
+
+Rewrite using `[map_sub, this]`. Simplify using `[R]`. Use `hker _ h0` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Simplify `this` using `[D, E]`.
+
+Establish `hD : ∀ A B, D (A * B) = D A * B + A * D B`. Introduce `A B`. Establish `hA : A ∈ Submodule.span K (Set.range (mat ρ))` using `hsp ▸ Submodule.mem_top`. Establish `hB : B ∈ Submodule.span K (Set.range (mat ρ))` using `hsp ▸ Submodule.mem_top`. Proceed by induction on `hA using Submodule.span_induction with`.
+
+Consider the case `mem x hx`. Take `⟨g, rfl⟩` from `hx`. Proceed by induction on `hB using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨h, rfl⟩` from `hx`.
+
+Rewrite using `[← hmul, hDg, hDg, hDg, hd]`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => simp only [mul_add, map_add, ha, hb]`. Normalize the expressions using the abelian group laws. Consider the case `smul a b _ hb => simp only [mul_smul_comm, map_smul, hb, smul_add]`.
+
+Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => simp only [add_mul, map_add, ha, hb]`. Normalize the expressions using the abelian group laws. Consider the case `smul a b _ hb => simp only [smul_mul_assoc, map_smul, hb, smul_add]`. Take `⟨Y, hY⟩` from `UpperTheory.V.Th.Nm.trZero_inner D hD`.
+
+Use `⟨Y, fun g => ?_⟩` and prove the remaining obligations. Establish `h1` using `hY (mat ρ g)`. Rewrite `h1` using `[hDg]`. Establish `h2 : z g = d g * mat ρ g⁻¹` using `by simp only [d]; rw [mul_assoc, hinv', mul_one]`. Rewrite using `[h2, h1, sub_mul, mul_assoc Y, hinv', mul_one]`.
+-/
 theorem UpperTheory.V.Th.Nm.trZero :
     ∀ {K G : Type} [Field K] [Group G] {n : ℕ} (ρ : G →* GL (Fin n) K) (z : G → Matrix (Fin n) (Fin n) K), Submodule.span K (Set.range (mat ρ)) = ⊤ → (∀ g g', z (g * g') = z g + mat ρ g * z g' * mat ρ g⁻¹) → (∀ g, (z g * mat ρ g).trace = 0) → ∃ Y, ∀ g, z g = mat ρ g * Y * mat ρ g⁻¹ - Y := by
   intro K G _ _ n ρ z hsp hc ht

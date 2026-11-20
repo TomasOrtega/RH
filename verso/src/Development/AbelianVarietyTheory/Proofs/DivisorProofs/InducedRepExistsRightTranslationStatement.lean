@@ -19,6 +19,9 @@ open GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.IndLineGL
 open scoped GlobalTheory.IndLineGL
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.KSplit.indSp_rightTr_equiv_prod₂ | exact GlobalTheory.KSplit.indSp_rightTr_equiv_prod₂ | (intros; apply GlobalTheory.KSplit.indSp_rightTr_equiv_prod₂ <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.induced_rep_exists_right_translation : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (a a' : ℕ)
     (α β : kˣ →* ℂˣ), IsSmoothChar α → IsSmoothChar β →
     ∃ ρ : Representation ℂ (GL (Fin (a + a')) k) (GlobalTheory.KSplit.indSp a a' α β),

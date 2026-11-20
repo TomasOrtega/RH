@@ -22,6 +22,29 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {v : AddValuation LL (WithTop ℚ)} {n : ℕ} [NeZero n] {W : LocWach PD LL O v n}
     {Lb : LevB W} {hR : Ring9 W} {uZ : ℤ_[PD.p]ˣ} {ιZ : ℤ_[PD.p] →+* O}
 
+/- English proof (translation)
+Establish `hp0 : (PD.p : LL) ≠ 0`. Introduce `h0`. Establish `h` using `W.v_l`. Rewrite `h` using `[h0, v.map_zero]`. Conclude with `absurd h (by simp)`.
+
+Establish `hQ` using `Q_eq_unit_mul_qP hs1 hp9`. Establish `hℓ : (baseIdOf hR).Bs.ℓ = PD.p` using `rfl`. Introduce `x a w hx hγ hred hw s hs`. Take `⟨y, hxg, hxy⟩` from `gamma_reduction_pi0_pow C (c - (ell : ZMod n)) hs1 hp2 x hx M hγ`. Establish `hcoef : ∀ i : ℤ, i < (((PD.p - 1) * M : ℕ) : ℤ) → i ≠ 0 → frobeniusCoeff Lb T c ell ⟨C.t (c - (ell : ZMod n)) x, hx⟩ i = 0`.
+
+Introduce `i hi hi0`. Establish `hb : Lb.levB T (c - (ell : ZMod n)) 1 ⟨C.t (c - (ell : ZMod n)) x, hx⟩ i = 0`. Break down `lt_or_gt_of_ne hi0 with h | h` into its components or cases. Conclude with `levelExpansion_neg_eq_zero levN_eq hs1 T hP4 _ _ i h`. Conclude with `expansion_at_one levN_eq levB_Γ hs1 hp2 T hT hP4 hp9 _ _ y M hxg hxy i h hi`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((PD.p : LL) ^ ((ell : ℤ) * i)) • (φVB PD (LL := LL) (V := T.V))^[ell] (Lb.levB T (c - (ell : ZMod n)) 1 ⟨C.t (c - (ell : ZMod n)) x, hx⟩ i) = 0`. Rewrite using `[hb, Function.iterate_fixed (map_zero _), smul_zero]`. Establish `hcoef0 : frobeniusCoeff Lb T c ell ⟨C.t (c - (ell : ZMod n)) x, hx⟩ 0 = ∑ k, algebraMap O LL (a k) • lam k`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[Submodule.coe_sum]`. Use `show ((PD.p : LL) ^ ((ell : ℤ) * 0)) • (φVB PD (LL := LL) (V := T.V))^[ell] (Lb.levB T (c - (ell : ZMod n)) 1 ⟨C.t (c - (ell : ZMod n)) x, hx⟩ 0) = _`. Establish `hlet : ((letE (c - (ell : ZMod n)) : LetA O n) • (⟨C.t (c - (ell : ZMod n)) x, hx⟩ : ↥(W.N T))) = ⟨C.t (c - (ell : ZMod n)) x, hx⟩` using `Subtype.ext (C.t_letter _ x)`. Rewrite using `[mul_zero, zpow_zero, one_smul, ← cmp_eq, hlet, comparison_of_reduction C (c - (ell : ZMod n)) hp9 e he x hx a hred, ← Module.End.coe_pow, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul, Submodule.coe_smul, hlam, lambda_coe_eq_frobenius_pow C c ell e k (he k)]`. Establish `aux : ∀ A Bv : LvT hR uZ ιZ T c Hy.delta ell, (∀ i, cf (prL s (Formalism.ExponentWindows.abelian₂ (baseIdOf hR).Bs.p H ell • A)) i - cf (prL s (Formalism.ExponentWindows.abelian₂ (baseIdOf hR).Bs.p H ell • Bv)) i ∈ (Tw (LL` using `LL) (D := Dc W T c) ((((baseIdOf hR).Bs.ℓ - 1) * M : ℕ) : ℤ) i).baseChange (KsW W s)) → prL s (Formalism.ExponentWindows.abelian₂ (baseIdOf hR).Bs.p H ell • (A - Bv)) ∈ Xi (KsW W s) (Tw (LL := LL) (D := Dc W T c) ((((baseIdOf hR).Bs.ℓ - 1) * M : ℕ) : ℤ)) := by`. Introduce `A Bv h i`. Rewrite using `[smul_sub, map_sub, cf_sub_level_kernel_detection]`. Conclude with `h i`.
+
+Use `rho_sub_mem Hy k1b unitsAt hj h3g s hs _ (aux (@id (LvT hR uZ ιZ T c Hy.delta ell) ((lvData Hy ((baseIdOf hR).Bs.ff' ell j M g) kind b η).loc s w)) (@id (LvT hR uZ ιZ T c Hy.delta ell) ((lvData Hy ((baseIdOf hR).Bs.ff' ell j M g) kind b η).locL s (cst a))) fun i => ?_)` and prove the remaining obligations. Establish `hK : cf (prL s (Formalism.ExponentWindows.abelian₂ (baseIdOf hR).Bs.p H ell • @id (LvT hR uZ ιZ T c Hy.delta ell) ((lvData Hy ((baseIdOf hR).Bs.ff' ell j M g) kind b η).loc s w))) i = (1 : KsW W s) ⊗ₜ[LL] frobeniusCoeff Lb T c ell ⟨C.t (c - (ell : ZMod n)) x, hx⟩ i` using `level_expansion_d Hy j M g η kind b m hκ k1b unitsAt hP5 hQ levN_eq levB_φ lev_φ hp0 x hx w hw s hs i`. Establish `hL : prL s (Formalism.ExponentWindows.abelian₂ (baseIdOf hR).Bs.p H ell • @id (LvT hR uZ ιZ T c Hy.delta ell) ((lvData Hy ((baseIdOf hR).Bs.ff' ell j M g) kind b η).locL s (cst a))) = ∑ k, HahnSeries.ofPowerSeries ℤ (KsW W s) (rhoL hR c s (cst a k)) • cstD (KsW W s) (lam k)` using `locLIs_holds Hy j M g η kind b H rfl k1b unitsAt s hs (cst a)`. Rewrite using `[hK, hL]`. Simplify using `only [cst, rhoC_holds, constSeries_C_smul]`.
+
+Rewrite using `[← constSeries_sum, coeff_constSeries]`. Distinguish the cases in `hm : ((((baseIdOf hR).Bs.ℓ - 1) * M : ℕ) : ℤ) ≤ i`. Establish `htop : Tw (LL` using `LL) (D := Dc W T c) ((((baseIdOf hR).Bs.ℓ - 1) * M : ℕ) : ℤ) i = ⊤ := by`. Unfold `Tw`. Rewrite using `[if_pos hm]`.
+
+Rewrite using `[htop, Submodule.baseChange_top]`. Conclude with `Submodule.mem_top`. Establish `hbot : Tw (LL` using `LL) (D := Dc W T c) ((((baseIdOf hR).Bs.ℓ - 1) * M : ℕ) : ℤ) i = ⊥ := by`. Unfold `Tw`. Rewrite using `[if_neg hm]`.
+
+Rewrite using `[hbot, Submodule.baseChange_bot, Submodule.mem_bot]`. Rewrite `hm` using `[hℓ]`. Use `push_neg at hm`. Distinguish the cases in `h0 : i = 0`. Substitute `h0` using the available equality.
+
+Rewrite using `[if_pos rfl, hcoef0, sub_self]`. Rewrite using `[if_neg h0, hcoef i hm h0, TensorProduct.tmul_zero, sub_zero]`.
+-/
 theorem lvData_localizesConst_of_crystalline [IsDomain O] {T : LocLat G Qp LL O} {C : Coord W (baseIdOf hR) T} {c : ZMod n} {ell : ℕ}
     {H : ℕ → ℕ} {κ : PowerSeries O} {r : ℕ} {lam : Fin r → Dc W T c}
     (Hy : LvHyp Lb hR uZ ιZ C c ell (Formalism.ExponentWindows.abelian₂ (baseIdOf hR).Bs.p H ell) κ lam) (j M g η : ℕ)

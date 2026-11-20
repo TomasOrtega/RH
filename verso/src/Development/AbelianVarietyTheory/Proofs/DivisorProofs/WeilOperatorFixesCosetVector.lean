@@ -23,14 +23,33 @@ namespace GlobalTheory.FunObj.CosetFix
 
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `_` and use `⟨1, one_pos, Nat.coprime_one_left _, 0, zero_mem _, by simp⟩`.
+-/
 theorem zeroAt_zero (q : ℕ) : ZeroAt D q 0 :=
   fun _ => ⟨1, one_pos, Nat.coprime_one_left _, 0, zero_mem _, by simp⟩
 
+/- English proof (translation)
+Introduce `i j` and use `by simpa using zeroAt_zero (D := D) q`.
+-/
 theorem trivAt_one {N : ℕ} (q : ℕ) : TrivAt D q ((1 : GA D N) : GL (Fin N) (AE D)) := fun i j => by
   simpa using zeroAt_zero (D := D) q
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Apply `P.W.nz` to reduce the goal to its premises. Establish `h0 : P.W.Om 1 g' P.e0 = 0` using `by rw [hc', zero_smul]`. Establish `e` using `P.W.mul 1 1 g'⁻¹ g' P.e0 hT`.
+
+Establish `e1 : (1 : GA D P.a) * 1 = 1` using `mul_one 1`. Establish `e2 : g'⁻¹ * g' = 1` using `inv_mul_cancel g'`. Rewrite `e` using `[e1, e2, P.W.one _ hT, h0]`. Establish `z` using `P.W.smul 1 g'⁻¹ (0 : ℂ) (0 : VC D P.a P.d → ℂ) (NormUniq.tt_zero _)`. Establish `z0 : (0 : ℂ) • (0 : VC D P.a P.d → ℂ) = 0` using `zero_smul ℂ _`.
+
+Rewrite `z` using `[z0]`. Rewrite using `[e, z]`. Conclude with `zero_smul ℂ _`. Establish `hHT : H ∈ TT D (tor0 D ⊤ δ) P.a P.d`. Establish `e : H = c⁻¹ • P.W.Om 1 g' P.e0` using `by rw [hc', smul_smul, inv_mul_cancel₀ hc0, one_smul]`.
+
+Establish `hm : P.W.Om 1 g' P.e0 ∈ TT D (tor0 D ⊤ δ) P.a P.d` using `P.W.maps 1 g' P.e0 hT`. Rewrite using `[e]`. Conclude with `NormUniq.tt_smul hm c⁻¹`. Use `⟨hHT, fun k he => ?_⟩` and prove the remaining obligations. Establish `e1` using `P.W.mul k 1 1 g' P.e0 hT`.
+
+Establish `e2` using `P.W.mul 1 k g' 1 P.e0 hT`. Establish `f1 : k * (1 : GA D P.a) = k` using `mul_one k`. Establish `f2 : (1 : GA D P.d) * g' = g'` using `one_mul g'`. Establish `f3 : (1 : GA D P.a) * k = k` using `one_mul k`. Establish `f4 : g' * (1 : GA D P.d) = g'` using `mul_one g'`.
+
+Rewrite `e1` using `[f1, f2]`. Rewrite `e2` using `[f3, f4]`. Establish `e3 : P.W.Om k 1 (P.W.Om 1 g' P.e0) = P.W.Om 1 g' P.e0` using `by rw [← e1, e2, he]`. Rewrite `e3` using `[hc', P.W.smul _ _ _ _ hHT]`. Conclude with `smul_right_injective _ hc0 e3`.
+-/
 theorem fix_of_prop {δ t0 : ℂ} {Q : ℕ} (P : Pair D ⊤ δ t0 Q) (hT : P.e0 ∈ TT D (tor0 D ⊤ δ) P.a P.d) {g' : GA D P.d}
     {H : VC D P.a P.d → ℂ} {c : ℂ} (hc' : P.W.Om 1 g' P.e0 = c • H) :
     H ∈ TT D (tor0 D ⊤ δ) P.a P.d ∧ ∀ k : GA D P.a, P.W.Om k 1 P.e0 = P.e0 → P.W.Om k 1 H = H := by
@@ -65,6 +84,9 @@ theorem fix_of_prop {δ t0 : ℂ} {Q : ℕ} (P : Pair D ⊤ δ t0 Q) (hT : P.e0 
   rw [hc', P.W.smul _ _ _ _ hHT] at e3
   exact smul_right_injective _ hc0 e3
 
+/- English proof (translation)
+Take `⟨g', hg'⟩` from `GlobalTheory.TrueTheta.exists_moves_of_selfDual D P.d _ (GlobalTheory.SkewLatSelfDual.skewLat_SD h𝔪 P.d)`. Take `⟨c, hc⟩` from `VacMove.exists_scalar hI P.crv P.vac.1 P.W 1 g' (VacMove.moves_one D P.a) hg'`. Conclude with `fix_of_prop P (VacMove.vac_TT hI.g1 P.crv P.vac.1) (c := c) (by rw [hc]; funext z; rfl)`.
+-/
 theorem iop_facts (hI : Inp D) {δ t0 : ℂ} {Q : ℕ} (P : Pair D ⊤ δ t0 Q) {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ ⊥) :
     Iop D (tor0 D ⊤ δ) (La0 D (tor0 D ⊤ δ) P.a P.d) (La D (tor0 D ⊤ δ) (stdL D P.a) (skewLat D 𝔪 P.d)) P.e0 ∈
       TT D (tor0 D ⊤ δ) P.a P.d ∧
@@ -78,6 +100,13 @@ theorem iop_facts (hI : Inp D) {δ t0 : ℂ} {Q : ℕ} (P : Pair D ⊤ δ t0 Q) 
 
 variable {T : Type} {L : LevCh D T} {sc : Consts}
 
+/- English proof (translation)
+Take `⟨x, hxu, hxi, hx, h1, h2⟩` from `GlobalTheory.FunObj.NormUniq.SplitDet.exists_splitComp_det hk hk' hs`. Establish `hm : Moves D (k : GL (Fin P.a) (AE D)) (stdL D P.a)`. Simplify using `using VacMove.moves_mul_int hk (VacMove.moves_one D P.a)`. Establish `e` using `P.W.split k 1 x 1 (stdL D P.a) (stdL D P.d) hs (fun q _ _ => trivAt_one q) (fun q hq hi => ⟨hxi q hq hi, by simpa using zeroAt_zero (D := D) q⟩) hx (by simp) hm (VacMove.moves_one D P.d)`. Establish `hc : P.W.chV'.f x ^ P.W.ep' = 1`.
+
+Rewrite using `[h.chars.2 x]`. Use `show ((nuH G μ₀ i j).1 (GlobalTheory.Mem.Col2.SplitChar.finIdl D x))⁻¹ = 1`. Rewrite using `[GlobalTheory.NuTrivSq.nuH_finIdl_eq_one G i j hL x hxu h1 h2, inv_one]`. Rewrite using `[e, map_one, one_zpow, hc, one_mul, show La D (tor0 D ⊤ δ) (stdL D P.a) (stdL D P.d) = La0 D (tor0 D ⊤ δ) P.a P.d from rfl, VacMove.iop_self D _ (La0 D (tor0 D ⊤ δ) P.a P.d) P.vac.1]`. Use function extensionality and compare the values at `z`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem vac_fix_split (G : GridData L sc) (i j : Fin D.R.m) {μ₀ : T} (hL : L.Is μ₀) {δ t0 : ℂ} {Q : ℕ}
     {P P' : Pair D ⊤ δ t0 Q} (h : IsBottom G μ₀ i j (condE G.pl) P P') {k : GA D P.a} (hk : k ∈ intG D P.a)
     (hk' : CongOne D (condE G.pl) k) (hs : SuppSplit D (k : GL (Fin P.a) (AE D))) : P.W.Om k 1 P.e0 = P.e0 := by
@@ -96,6 +125,11 @@ theorem vac_fix_split (G : GridData L sc) (i j : Fin D.R.m) {μ₀ : T} (hL : L.
   funext z
   simp
 
+/- English proof (translation)
+Take `⟨ks, ki, rfl, hs, hi, hs', hss, hii⟩` from `GlobalTheory.CongSplitFactor.exists_split_inert_factor hk hk'`. Establish `hT` using `VacMove.vac_TT hI.g1 P.crv P.vac.1`. Establish `h1 : P.W.Om ki 1 P.e0 = P.e0` using `P.W.inert ki 1 ((mem_intG ki).1 hi) ((mem_intG 1).1 (one_mem _)) hii (fun q _ _ => trivAt_one q)`. Establish `e` using `P.W.mul ks ki 1 1 P.e0 hT`. Rewrite `e` using `[mul_one]`.
+
+Rewrite using `[e, h1, vac_fix_split G i j hL h hs hs' hss]`.
+-/
 theorem vac_fix (G : GridData L sc) (i j : Fin D.R.m) (hI : Inp D) {μ₀ : T} (hL : L.Is μ₀) {δ t0 : ℂ} {Q : ℕ}
     {P P' : Pair D ⊤ δ t0 Q} (h : IsBottom G μ₀ i j (condE G.pl) P P') {k : GA D P.a} (hk : k ∈ intG D P.a)
     (hk' : CongOne D (condE G.pl) k) : P.W.Om k 1 P.e0 = P.e0 := by
@@ -107,6 +141,11 @@ theorem vac_fix (G : GridData L sc) (i j : Fin D.R.m) (hI : Inp D) {μ₀ : T} (
   rw [mul_one] at e
   rw [e, h1, vac_fix_split G i j hL h hs hs' hss]
 
+/- English proof (translation)
+Take `⟨hHT, hfix⟩` from `iop_facts hI P (condE_ne_bot G.pl)`. Establish `hH` using `hfix k (vac_fix G i j hI hL h hk hk')`. Establish `hW` using `GlobalTheory.HeisFix.heis_fix hI P (condE_ne_bot G.pl) 0 hk hk' hHT hH`. Establish `hWT` using `GlobalTheory.FunObj.NormUniq.wd_rat_mem_TT P.crv one_pos (by rw [one_smul]; exact pt_unitBlock_mem δ 0 P.a P.d) hHT`. Unfold `cosetVec`.
+
+Rewrite using `[P.W.smul _ _ _ _ hWT, hW]`.
+-/
 theorem cosetVec_fix (G : GridData L sc) (i j : Fin D.R.m) (hI : Inp D) {μ₀ : T} (hL : L.Is μ₀) {δ t0 : ℂ} {Q : ℕ}
     {P P' : Pair D ⊤ δ t0 Q} (h : IsBottom G μ₀ i j (condE G.pl) P P') {k : GA D P.a} (hk : k ∈ intG D P.a)
     (hk' : CongOne D (condE G.pl) k) : P.W.Om k 1 (cosetVec P (condE G.pl) 0) = cosetVec P (condE G.pl) 0 := by
@@ -117,6 +156,9 @@ theorem cosetVec_fix (G : GridData L sc) (i j : Fin D.R.m) (hI : Inp D) {μ₀ :
   unfold cosetVec
   rw [P.W.smul _ _ _ _ hWT, hW]
 
+/- English proof (translation)
+The claim follows from `@cosetVec_fix`.
+-/
 example : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (i j : Fin D.R.m), Inp D → ∀ {μ₀ : T}, L.Is μ₀ → ∀ {δ t0 : ℂ} {Q : ℕ} {P P' : Pair D ⊤ δ t0 Q}, IsBottom G μ₀ i j (condE G.pl) P P' → ∀ {k : GA D P.a}, k ∈ intG D P.a → CongOne D (condE G.pl) k → P.W.Om k 1 (cosetVec P (condE G.pl) 0) = cosetVec P (condE G.pl) 0 := @cosetVec_fix
 
 end GlobalTheory.FunObj.CosetFix

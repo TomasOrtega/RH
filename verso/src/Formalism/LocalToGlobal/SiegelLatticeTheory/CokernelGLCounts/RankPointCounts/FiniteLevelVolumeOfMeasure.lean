@@ -15,6 +15,11 @@ open scoped Classical TensorProduct
 
 variable {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I)
 
+/- English proof (translation)
+Unfold `FiniteLevelVolumeEquality`. Rewrite using `[hM.2.2.1]`. Use `haveI : BorelSpace (HA (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af X.B.I.F) X.B.I.cm.sig X.B.I.J) := ⟨rfl⟩`. Set `e` to `(Formalism.L2.SG.Pf.Meas.eFin X.B.I hb).toHomeomorph.toMeasurableEquiv`. Establish `he : (X.toFin hb : X.B.I.Gf → _) = e` using `rfl`.
+
+Establish `hK : levelUnitary X hb = e '' X.K2` using `rfl`. Rewrite using `[hK, he, MeasurableEquiv.map_apply, Set.preimage_image_eq _ e.injective]`.
+-/
 theorem finiteLevelVolume_of_measure (hM : X.MeasTie hb) : FiniteLevelVolumeEquality X hb := by
   unfold FiniteLevelVolumeEquality
   rw [hM.2.2.1]
@@ -24,6 +29,11 @@ theorem finiteLevelVolume_of_measure (hM : X.MeasTie hb) : FiniteLevelVolumeEqua
   have hK : levelUnitary X hb = e '' X.K2 := rfl
   rw [hK, he, MeasurableEquiv.map_apply, Set.preimage_image_eq _ e.injective]
 
+/- English proof (translation)
+Establish `hGF` using `Formalism.L2.SG.Closed.AdBridgeGF_holds X.B.I (toHA X.B.I hb) (toHA_isBridge X.B.I hb)`. Establish `hrat : ∀ h : HA (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF X.B.I.F) X.B.I.cm.sig X.B.I.J, h ∈ ratHA X.B.I ↔ h ∈ HFinIn (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF X.B.I.F) X.B.I.cm.sig X.B.I.J` using `fun h => Iff.rfl`. Rewrite using `[← hrat, ← hGF, Formalism.MainNotions.LeviCoordinates.rr_mem_GF]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Conclude with `⟨x, hx, rfl⟩`. Introduce and unpack `⟨y, hy, hyx⟩`. Rewrite using `[← (toHA X.B.I hb).injective hyx]` and apply the resulting hypothesis.
+-/
 theorem mem_rr_iff (x : X.B.I.GA) :
     x ∈ Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I ↔
       toHA X.B.I hb x ∈ HFinIn (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF X.B.I.F) X.B.I.cm.sig X.B.I.J := by
@@ -37,6 +47,21 @@ theorem mem_rr_iff (x : X.B.I.GA) :
   · rintro ⟨y, hy, hyx⟩
     rwa [← (toHA X.B.I hb).injective hyx]
 
+/- English proof (translation)
+Use `haveI hBor : BorelSpace (HA (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF X.B.I.F) X.B.I.cm.sig X.B.I.J) := ⟨rfl⟩`. Use `haveI : (X.B.I.muA X.B.μf).IsHaarMeasure := Formalism.L2.SG.PoincareInHH.Cut.muA_isHaar' X.B.I X.B.μf`. Use `haveI : (X.B.I.muA X.B.μf).IsMulLeftInvariant := inferInstance`. Establish `hfd0 : IsFundamentalDomain (Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I) X.B.fund (X.B.I.muA X.B.μf)` using `Formalism.MainNotions.LeviCoordinates.rr_isFD ⟨X.B.fund_spec.1, X.B.fund_spec.2.1, X.B.fund_spec.2.2⟩`. Set `Γ : Subgroup (HA (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF X.B.I.F) X.B.I.cm.sig X.B.I.J)` to `HFinIn (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF X.B.I.F) X.B.I.cm.sig X.B.I.J`.
+
+Set `e` to `(toHA X.B.I hb).toHomeomorph.toMeasurableEquiv`. Set `eΓ : Γ ≃ Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I` to `{ toFun := fun g => ⟨(toHA X.B.I hb).symm (g : HA _ _ _), (mem_rr_iff X hb _).2 (by rw [ContinuousMulEquiv.apply_symm_apply]; exact g.2)⟩ invFun := fun x => ⟨toHA X.B.I hb x, (mem_rr_iff X hb _).1 x.2⟩ left_inv := fun g => Subtype.ext (ContinuousMulEquiv.apply_symm_apply _ _) rig …`. Use `haveI : Countable Γ := Function.Injective.countable eΓ.injective`. Establish `hqmp : Measure.QuasiMeasurePreserving e.toEquiv.symm ((X.B.I.muA X.B.μf).map e) (X.B.I.muA X.B.μf)`. Use `(MeasurePreserving.quasiMeasurePreserving ⟨e.symm.measurable, ?_⟩)` and prove the remaining obligations.
+
+Conclude with `e.map_symm_map`. Establish `hfd : IsFundamentalDomain Γ (e '' X.B.fund) X.measG.μG`. Establish `hμ : X.measG.μG = (X.B.I.muA X.B.μf).map e` using `hM.1`. Rewrite using `[hμ]`. Use `hfd0.image_of_equiv e.toEquiv hqmp eΓ fun g x => ?_` and prove the remaining obligations.
+
+Use `show e ((eΓ g : X.B.I.GA) * x) = (g : HA _ _ _) * e x`. Use `show toHA X.B.I hb ((toHA X.B.I hb).symm g * x) = (g : HA _ _ _) * toHA X.B.I hb x`. Rewrite using `[map_mul, ContinuousMulEquiv.apply_symm_apply]`. Establish `hmap : X.measG.μG (e '' X.B.fund) = X.B.I.muA X.B.μf X.B.fund`. Establish `hμ : X.measG.μG = (X.B.I.muA X.B.μf).map e` using `hM.1`.
+
+Rewrite using `[hμ, MeasurableEquiv.map_apply, Set.preimage_image_eq _ e.injective]`. Use `haveI : (X.measG.μG).IsHaarMeasure := by`. Establish `hμ : X.measG.μG = (X.B.I.muA X.B.μf).map e` using `hM.1`. Rewrite using `[hμ]`. Conclude with `(toHA X.B.I hb).isHaarMeasure_map (X.B.I.muA X.B.μf)`.
+
+Use `haveI : (X.measG.μG).IsMulLeftInvariant := inferInstance`. Use `haveI : MeasurableConstSMul Γ (HA (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF X.B.I.F) X.B.I.cm.sig X.B.I.J) := ⟨fun c => (continuous_mul_left (c : HA (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF X.B.I.F) X.B.I.cm.sig X.B.I.J)).measurable⟩`. Unfold `CovolTie covolBy`. Use `split_ifs with h`. Establish `h1 : IsFundamentalDomain Γ h.choose X.measG.μG` using `h.choose_spec`.
+
+Rewrite using `[h1.measure_eq hfd, hmap]`. Both sides reduce to the same expression. Conclude with `absurd ⟨_, hfd⟩ h`.
+-/
 theorem covolTie_of (hM : X.MeasTie hb) : CovolTie X := by
   haveI hBor : BorelSpace (HA (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF X.B.I.F) X.B.I.cm.sig X.B.I.J) := ⟨rfl⟩
   haveI : (X.B.I.muA X.B.μf).IsHaarMeasure := Formalism.L2.SG.PoincareInHH.Cut.muA_isHaar' X.B.I X.B.μf
@@ -93,6 +118,9 @@ variable (hK : X.LevelSubgroupCharacter) (FdN FdN' : Set X.B.I.Ginf)
   (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (δ : ∀ p : PlF D, (D.s.atP p).Fp)
   (i0 i0' : ∀ _ : NumberField.InfinitePlace X.B.I.F, Fin D.R.k) (νq : X.B.I.Ginf → Measure X.B.I.Ginf)
 
+/- English proof (translation)
+The claim follows from `MassDataDstarX X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq L A hH hKpp (finiteLevelVolume_of_measure X hb hH.1) (covolTie_of X hb hH.1)`.
+-/
 theorem MassDataDstarX_holds (L : LocIn (TypX X)) (A : AnIn) (hH : HypX X hb FdN FdN' u u')
     (hKpp : KppVolAt X hb hK FdN FdN' u u' X0 L A) :
     (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).Dstar = Formalism.L2.SG.RowsConc.DstC X :=

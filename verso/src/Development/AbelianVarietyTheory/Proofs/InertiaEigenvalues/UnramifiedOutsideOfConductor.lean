@@ -27,6 +27,13 @@ namespace GlobalTheory.ZEul
 
 open GlobalTheory.CuspRep.CuspidalL2GL in
 
+/- English proof (translation)
+Introduce `E _ _ n μ _`. Use `haveI := CuspidalL2GL.locallyCompactSpace_GA E n`. Use `haveI := CuspidalL2GL.t2Space_GA E n`. Use `haveI := CuspidalL2GL.secondCountableTopology_GA E n`. Use `haveI : DiscreteTopology (ratGL E n).range := GroundTheory.Automorphic.AdelicGLn.discreteTopology_rationalGL E n`.
+
+Establish `hsub : (GlobalTheory.CellDec.NE E n : Set (GA E n)) ⊆ ((ratGL E n).range : Set (GA E n))`. Introduce and unpack `_ ⟨u, -, rfl⟩`. Conclude with `⟨u, rfl⟩`. Use `haveI : DiscreteTopology (GlobalTheory.CellDec.NE E n) := DiscreteTopology.of_subset (inferInstance : DiscreteTopology ((ratGL E n).range : Set (GA E n))) hsub`. Take `⟨𝓕, -, -, h𝓕⟩` from `GlobalTheory.exists_isFundamentalDomain_subgroup (GlobalTheory.CellDec.NE E n)`.
+
+Conclude with `⟨𝓕, h𝓕 _⟩`.
+-/
 theorem exists_fundamentalDomain_NE : ∀ (E : Type) [Field E] [NumberField E] (n : ℕ) (μ : Measure (GA E n)) [μ.IsHaarMeasure],
   ∃ 𝓕₀ : Set (GA E n), IsFundamentalDomain (GlobalTheory.CellDec.NE E n) 𝓕₀ μ := by
   intro E _ _ n μ _

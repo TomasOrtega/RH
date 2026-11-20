@@ -17,12 +17,23 @@ namespace ChartTie
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {κ : Type} {x : κ → Ω}
   {c : κ} {E : Type} [AddCommGroup E] [Module Ω E]
 
+/- English proof (translation)
+The claim follows from `RingHom.mem_range`.
+-/
 theorem mem_regAt_iff {a : Ω} {p : Cpt ξ} : a ∈ regAt ξ p ↔ ∃ t, genMap ξ p t = a := RingHom.mem_range
 
+/- English proof (translation)
+The claim follows from `(hT.ring c hp.1 a).1 ha p hp`.
+-/
 theorem mem_regAt_of_mem (hT : CoordTie ℤ ξ x) {a : Ω} (ha : a ∈ chartRing ℤ x c) {p : Cpt ξ}
     (hp : InChart ξ x c p) : a ∈ regAt ξ p :=
   (hT.ring c hp.1 a).1 ha p hp
 
+/- English proof (translation)
+Take `⟨h0, -, hi⟩` from `h`. Establish `hf0` using `left_ne_zero_of_mul h0`. Establish `hg0` using `right_ne_zero_of_mul h0`. Use `⟨hf0, hf, ?_⟩` and prove the remaining obligations. Establish `e : f⁻¹ = g * (f * g)⁻¹` using `by field_simp`.
+
+Rewrite using `[e]`. Conclude with `mul_mem hg hi`.
+-/
 theorem unitAt_of_mul {p : Cpt ξ} {f g : Ω} (hf : f ∈ regAt ξ p) (hg : g ∈ regAt ξ p)
     (h : unitAt ξ p (f * g)) : unitAt ξ p f := by
   obtain ⟨h0, -, hi⟩ := h
@@ -33,6 +44,17 @@ theorem unitAt_of_mul {p : Cpt ξ} {f g : Ω} (hf : f ∈ regAt ξ p) (hg : g �
   rw [e]
   exact mul_mem hg hi
 
+/- English proof (translation)
+Set `A` to `Algebra.adjoin ℤ (Set.range fun j => x j / x c)`. Set `J : Ideal A` to `{ carrier := {s | (s : Ω) * a ∈ A} add_mem' := fun {s t} hs ht => by show ((s + t : A) : Ω) * a ∈ A`. Establish `hs' : (s : Ω) * a ∈ A` using `hs`. Establish `ht' : (t : Ω) * a ∈ A` using `ht`. Use `add_mem hs' ht'` as an intermediate fact.
+
+Simplify `this` using `[add_mul]`. Use the proof step `zero_mem' := by show ((0 : A) : Ω) * a ∈ A`. Simplify using the standard rewrite rules. Use the proof step `smul_mem' := fun b s hs => by show ((b * s : A) : Ω) * a ∈ A`. Establish `hs' : (s : Ω) * a ∈ A` using `hs`.
+
+Use `mul_mem b.2 hs'` as an intermediate fact. Simplify `this }` using `[_root_.mul_assoc]`. Establish `hmem : (⟨f, hf⟩ : A) ∈ J.radical`. Rewrite using `[Ideal.radical_eq_sInf, Ideal.mem_sInf]`. Introduce and unpack `P ⟨hJP, hP⟩`.
+
+Assume the negation of the conclusion as `hfP`. Take `⟨p, ⟨hpc, hpu⟩, -⟩` from `GlobalTheory.T.prime_chart_existsUnique_point X Ω ξ ℤ κ x hT c hc P hP`. Establish `hu` using `(hpu ⟨f, hf⟩).1 hfP`. Take `⟨s, hs, hsu, hsa⟩` from `(GlobalTheory.T.regAt_iff_chart_localization X Ω ξ ℤ κ x hT c p hpc a).1 (ha p hpc hu)`. Establish `hsJ : (⟨s, hs⟩ : A) ∈ J` using `hsa`.
+
+Conclude with `(hpu ⟨s, hs⟩).2 hsu (hJP hsJ)`. Take `⟨n, hn⟩` from `hmem`. Establish `hn' : (((⟨f, hf⟩ : A) ^ n : A) : Ω) * a ∈ A` using `hn`. Establish `hn'' : f ^ n * a ∈ A` using `by simpa using hn'`. Conclude with `⟨n, hn''⟩`.
+-/
 theorem exists_pow_mul_mem (hT : CoordTie ℤ ξ x) (hc : x c ≠ 0) {f a : Ω} (hf : f ∈ chartRing ℤ x c)
     (ha : ∀ p : Cpt ξ, InChart ξ x c p → unitAt ξ p f → a ∈ regAt ξ p) :
     ∃ n : ℕ, f ^ n * a ∈ chartRing ℤ x c := by
@@ -68,6 +90,17 @@ theorem exists_pow_mul_mem (hT : CoordTie ℤ ξ x) (hc : x c ≠ 0) {f a : Ω} 
   have hn'' : f ^ n * a ∈ A := by simpa using hn'
   exact ⟨n, hn''⟩
 
+/- English proof (translation)
+Take `⟨U, hU, hmem⟩` from `hT.affine c hc`. Establish `hpU : p.1 ∈ U` using `(hmem p.1).2 ⟨p.2, hp⟩`. Take `⟨s, hsV, hps⟩` from `hU.exists_basicOpen_le (V := V) ⟨p.1, hV⟩ hpU`. Establish `hη : genPt ξ ∈ U` using `p.2.mem_open U.isOpen hpU`. Take `⟨a, ha⟩ : ∃ a, a = (Scheme.stalkClosedPointTo ξ).hom (X.presheaf.germ U (genPt ξ) hη s)` from `⟨_, rfl⟩`.
+
+Establish `hUq : ∀ q : Cpt ξ, InChart ξ x c q → q.1 ∈ U` using `fun q hq => (hmem q.1).2 ⟨q.2, hq⟩`. Establish `hval : ∀ (q : Cpt ξ) (hq : q.1 ∈ U), genMap ξ q (X.presheaf.germ U q.1 hq s) = a` using `fun q hq => by`. Rewrite using `[ha]`. Conclude with `genMap_germ_eq_stalk_closed ξ q U hq hη s`. Use `⟨a, (hT.ring c hc a).2 fun q hq => mem_regAt_iff.2 ⟨_, hval q (hUq q hq)⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hu : IsUnit (X.presheaf.germ U p.1 hpU s)` using `(X.mem_basicOpen s p.1 hpU).1 hps`. Take `⟨t, ht⟩` from `hu.exists_right_inv`. Establish `h1 : a * genMap ξ p t = 1`. Rewrite using `[← hval p hpU, ← map_mul, ht, map_one]`. Establish `ha0 : a ≠ 0` using `left_ne_zero_of_mul_eq_one h1`.
+
+Use `⟨ha0, mem_regAt_iff.2 ⟨_, hval p hpU⟩, mem_regAt_iff.2 ⟨t, ?_⟩⟩` and prove the remaining obligations. Conclude with `eq_inv_of_mul_eq_one_right h1`. Introduce `q hq hu`. Take `⟨h0, -, hi⟩` from `hu`. Take `⟨t, ht⟩` from `mem_regAt_iff.1 hi`.
+
+Establish `hqU` using `hUq q hq`. Establish `h1 : X.presheaf.germ U q.1 hqU s * t = 1` using `hT.gen.inj q (by`. Rewrite using `[map_mul, hval q hqU, ht, map_one, mul_inv_cancel₀ h0])`. Conclude with `hsV ((X.mem_basicOpen s q.1 hqU).2 (isUnit_iff_exists_inv.2 ⟨t, h1⟩))`.
+-/
 theorem exists_basic (hT : CoordTie ℤ ξ x) (hc : x c ≠ 0) {p : Cpt ξ} (hp : InChart ξ x c p) (V : X.Opens)
     (hV : p.1 ∈ V) : ∃ f ∈ chartRing ℤ x c, unitAt ξ p f ∧
       ∀ q : Cpt ξ, InChart ξ x c q → unitAt ξ q f → q.1 ∈ V := by
@@ -96,6 +129,17 @@ theorem exists_basic (hT : CoordTie ℤ ξ x) (hc : x c ≠ 0) {p : Cpt ξ} (hp 
       rw [map_mul, hval q hqU, ht, map_one, mul_inv_cancel₀ h0])
     exact hsV ((X.mem_basicOpen s q.1 hqU).2 (isUnit_iff_exists_inv.2 ⟨t, h1⟩))
 
+/- English proof (translation)
+Set `A` to `Algebra.adjoin ℤ (Set.range fun j => x j / x c)`. Set `T : Set A` to `{f | ∃ V : X.Opens, Q V ∧ ∀ q : Cpt ξ, InChart ξ x c q → unitAt ξ q (f : Ω) → q.1 ∈ V}`. Establish `htop : Ideal.span T = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ hne`.
+
+Take `⟨p, ⟨hpc, hpu⟩, -⟩` from `GlobalTheory.T.prime_chart_existsUnique_point X Ω ξ ℤ κ x hT c hc m hm.isPrime`. Take `⟨V, hpV, hQV⟩` from `hQ p hpc`. Take `⟨f, hf, hfu, hfV⟩` from `exists_basic hT hc hpc V hpV`. Conclude with `(hpu ⟨f, hf⟩).2 hfu (hle (Ideal.subset_span ⟨V, hQV, hfV⟩))`. Take `⟨s, hsT, hs⟩` from `(Ideal.span_eq_top_iff_finite T).1 htop`.
+
+Set `e` to `s.equivFin`. Establish `h1 : (1 : A) ∈ Ideal.span (Set.range fun l : Fin s.card => ((e.symm l : s) : A))`. Establish `hr : (Set.range fun l : Fin s.card => ((e.symm l : s) : A)) = (s : Set A)`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨l, rfl⟩`. Conclude with `(e.symm l).2`. Introduce `hy`. Conclude with `⟨e ⟨y, hy⟩, by simp⟩`. Rewrite using `[hr, hs]`.
+
+Discharge the goal by the elementary cases of `trivial`. Take `⟨g, hg⟩` from `Ideal.mem_span_range_iff_exists_fun.1 h1`. Use `⟨s.card, fun l => (((e.symm l : s) : A) : Ω), fun l => (g l : Ω), fun l => ((e.symm l : s) : A).2, fun l => (g l).2, ?_, fun l => hsT (e.symm l).2⟩` and prove the remaining obligations. Establish `h2` using `congrArg (Subtype.val) hg`. Simplify using `using h2`.
+-/
 theorem exists_cover (hT : CoordTie ℤ ξ x) (hc : x c ≠ 0) (Q : X.Opens → Prop)
     (hQ : ∀ p : Cpt ξ, InChart ξ x c p → ∃ V : X.Opens, p.1 ∈ V ∧ Q V) :
     ∃ (k : ℕ) (f g : Fin k → Ω), (∀ l, f l ∈ chartRing ℤ x c) ∧ (∀ l, g l ∈ chartRing ℤ x c) ∧
@@ -130,6 +174,13 @@ theorem exists_cover (hT : CoordTie ℤ ξ x) (hc : x c ≠ 0) (Q : X.Opens → 
   have h2 := congrArg (Subtype.val) hg
   simpa using h2
 
+/- English proof (translation)
+Take `⟨hloc, -, -⟩` from `regAt_isLocalRing_isFractionRing_stalk X Ω ξ hT.gen p`. Assume the negation of the conclusion as `hno`. Set `ff : Fin k → regAt ξ p` to `fun l => ⟨f l, mem_regAt_of_mem hT (hf l) hp⟩`. Set `gg : Fin k → regAt ξ p` to `fun l => ⟨g l, mem_regAt_of_mem hT (hg l) hp⟩`. Establish `h1 : ∑ l, gg l * ff l = 1` using `Subtype.ext (by simpa [ff, gg] using hsum)`.
+
+Establish `hmem : (1 : regAt ξ p) ∈ IsLocalRing.maximalIdeal (regAt ξ p)`. Rewrite using `[← h1]`. Use `Ideal.sum_mem _ fun l _ => Ideal.mul_mem_left _ _ ((IsLocalRing.mem_maximalIdeal _).2 fun hu => ?_)` and prove the remaining obligations. Take `⟨t, ht⟩` from `hu.exists_right_inv`. Establish `ht' : f l * (t : Ω) = 1` using `congrArg Subtype.val ht`.
+
+Use `hno ⟨l, left_ne_zero_of_mul_eq_one ht', (ff l).2, ?_⟩` and prove the remaining obligations. Rewrite using `[← eq_inv_of_mul_eq_one_right ht']`. Conclude with `t.2`. Conclude with `(Ideal.ne_top_iff_one _).1 (IsLocalRing.maximalIdeal.isMaximal _).ne_top hmem`.
+-/
 theorem exists_unitAt (hT : CoordTie ℤ ξ x) {k : ℕ} {f g : Fin k → Ω} (hf : ∀ l, f l ∈ chartRing ℤ x c)
     (hg : ∀ l, g l ∈ chartRing ℤ x c) (hsum : ∑ l, g l * f l = 1) {p : Cpt ξ} (hp : InChart ξ x c p) :
     ∃ l, unitAt ξ p (f l) := by
@@ -148,10 +199,16 @@ theorem exists_unitAt (hT : CoordTie ℤ ξ x) {k : ℕ} {f g : Fin k → Ω} (h
     exact t.2
   exact (Ideal.ne_top_iff_one _).1 (IsLocalRing.maximalIdeal.isMaximal _).ne_top hmem
 
+/- English proof (translation)
+The claim follows from `(L p).smul_mem ⟨a, ha⟩ he`.
+-/
 theorem smul_mem_lat (L : Lat ξ E) {p : Cpt ξ} {a : Ω} (ha : a ∈ regAt ξ p) {e : E} (he : e ∈ L p) :
     a • e ∈ L p :=
   (L p).smul_mem ⟨a, ha⟩ he
 
+/- English proof (translation)
+Take `⟨d, hd⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 h`. Establish `hd' : ∑ i, (d i : Ω) • b i = ∑ i, a i • b i` using `hd`. Establish `h0` using `Fintype.linearIndependent_iff.1 hb (fun i => (d i : Ω) - a i) (by simp [sub_smul, Finset.sum_sub_distrib, hd']) q`. Rewrite using `[← sub_eq_zero.1 h0]`. Conclude with `(d q).2`.
+-/
 theorem coord_mem {p : Cpt ξ} {r : ℕ} {b : Fin r → E} (hb : LinearIndependent Ω b) {a : Fin r → Ω}
     (h : ∑ q, a q • b q ∈ Submodule.span (regAt ξ p) (Set.range b)) (q : Fin r) : a q ∈ regAt ξ p := by
   obtain ⟨d, hd⟩ := (Submodule.mem_span_range_iff_exists_fun _).1 h
@@ -161,6 +218,9 @@ theorem coord_mem {p : Cpt ξ} {r : ℕ} {b : Fin r → E} (hb : LinearIndepende
   rw [← sub_eq_zero.1 h0]
   exact (d q).2
 
+/- English proof (translation)
+Establish `he : e ∈ Submodule.span Ω (Set.range b)` using `hs ▸ Submodule.mem_top`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun Ω).1 he`. Conclude with `⟨a, ha.symm⟩`.
+-/
 theorem exists_coords {r : ℕ} {b : Fin r → E} (hs : Submodule.span Ω (Set.range b) = ⊤) (e : E) :
     ∃ a : Fin r → Ω, e = ∑ q, a q • b q := by
   have he : e ∈ Submodule.span Ω (Set.range b) := hs ▸ Submodule.mem_top
@@ -171,16 +231,39 @@ def FrameOpen (L : Lat ξ E) (r : ℕ) (V : X.Opens) : Prop :=
   ∃ b : Fin r → E, LinearIndependent Ω b ∧ Submodule.span Ω (Set.range b) = ⊤ ∧
     ∀ q : Cpt ξ, q.1 ∈ V → L.IsFrameAt b q
 
+/- English proof (translation)
+Take `⟨U, hp, b, hs, hq⟩` from `hv p (Set.mem_univ _)`. Conclude with `⟨U, hp, b, (hq p trivial hp).1, hs, fun q h => hq q trivial h⟩`.
+-/
 theorem frameOpen_cover {L : Lat ξ E} {r : ℕ} (hv : L.IsVB r ⊤) (p : Cpt ξ) :
     ∃ V : X.Opens, p.1 ∈ V ∧ FrameOpen L r V := by
   obtain ⟨U, hp, b, hs, hq⟩ := hv p (Set.mem_univ _)
   exact ⟨U, hp, b, (hq p trivial hp).1, hs, fun q h => hq q trivial h⟩
 
+/- English proof (translation)
+Rewrite using `[h.2]`. Conclude with `Submodule.subset_span ⟨q, rfl⟩`.
+-/
 theorem frame_mem {L : Lat ξ E} {r : ℕ} {b : Fin r → E} {p : Cpt ξ} (h : L.IsFrameAt b p) (q : Fin r) :
     b q ∈ L p := by
   rw [h.2]
   exact Submodule.subset_span ⟨q, rfl⟩
 
+/- English proof (translation)
+Take `⟨k, g, d, hg, hd, hsum, hl⟩` from `exists_cover hT hc (FrameOpen L r) fun p _ => frameOpen_cover hv p`. Establish `key : ∀ l, ∃ N : ℕ, ∀ p : Cpt ξ, InChart ξ x c p → unitAt ξ p (g l) → f ^ N • e ∈ L p`. Introduce `l`. Take `⟨V, ⟨b, hb, hspan, hfr⟩, hV⟩` from `hl l`. Take `⟨a, hae⟩` from `exists_coords hspan e`.
+
+Establish `h1 : ∀ q, ∃ n : ℕ, (f * g l) ^ n * a q ∈ chartRing ℤ x c` using `fun q => exists_pow_mul_mem hT hc (mul_mem hf (hg l)) fun p hp hu => by`. Establish `hfp` using `mem_regAt_of_mem hT hf hp`. Establish `hgp` using `mem_regAt_of_mem hT (hg l) hp`. Establish `huf : unitAt ξ p f` using `unitAt_of_mul hfp hgp hu`. Establish `hug : unitAt ξ p (g l)` using `unitAt_of_mul hgp hfp (by rwa [mul_comm])`.
+
+Establish `hmem` using `he p hp huf`. Rewrite `hmem` using `[(hfr p (hV p hp hug)).2, hae]`. Conclude with `coord_mem hb hmem q`. Use `choose n hn using h1`. Use `⟨∑ q, n q, fun p hp hu => ?_⟩` and prove the remaining obligations.
+
+Establish `hg0 : g l ≠ 0` using `hu.1`. Establish `hfrp` using `hfr p (hV p hp hu)`. Rewrite using `[hae, Finset.smul_sum]`. Use `sum_mem fun q _ => ?_` and prove the remaining obligations. Establish `hle : n q ≤ ∑ q, n q` using `Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ q)`.
+
+Establish `hA : (f * g l) ^ (∑ q, n q) * a q ∈ chartRing ℤ x c`. Establish `e1 : (f * g l) ^ (∑ q, n q) * a q = (f * g l) ^ (∑ q, n q - n q) * ((f * g l) ^ n q * a q)`. Rewrite using `[← _root_.mul_assoc, ← pow_add, Nat.sub_add_cancel hle]`. Rewrite using `[e1]`. Conclude with `mul_mem (pow_mem (mul_mem hf (hg l)) _) (hn q)`.
+
+Establish `e2 : f ^ (∑ q, n q) • a q • b q = (((g l)⁻¹) ^ (∑ q, n q) * ((f * g l) ^ (∑ q, n q) * a q)) • b q`. Rewrite using `[smul_smul]`. Use `congr 1`. Rewrite using `[mul_pow, inv_pow]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[e2]`. Conclude with `smul_mem_lat L (mul_mem (pow_mem hu.2.2 _) (mem_regAt_of_mem hT hA hp)) (frame_mem hfrp q)`. Use `choose N hN using key`. Use `⟨∑ l, N l, fun p hp => ?_⟩` and prove the remaining obligations. Take `⟨l, hl'⟩` from `exists_unitAt hT hg hd hsum hp`.
+
+Establish `hle : N l ≤ ∑ l, N l` using `Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ l)`. Establish `e1 : f ^ (∑ l, N l) • e = f ^ (∑ l, N l - N l) • f ^ N l • e`. Rewrite using `[smul_smul, ← pow_add, Nat.sub_add_cancel hle]`. Rewrite using `[e1]`. Conclude with `smul_mem_lat L (pow_mem (mem_regAt_of_mem hT hf hp) _) (hN l p hp hl')`.
+-/
 theorem exists_pow_smul_sec (hT : CoordTie ℤ ξ x) (hc : x c ≠ 0) {L : Lat ξ E} {r : ℕ} (hv : L.IsVB r ⊤)
     {f : Ω} (hf : f ∈ chartRing ℤ x c) {e : E}
     (he : ∀ p : Cpt ξ, InChart ξ x c p → unitAt ξ p f → e ∈ L p) :
@@ -235,12 +318,32 @@ def sec (L : Lat ξ E) (x : κ → Ω) (c : κ) : AddSubgroup E where
   zero_mem' _ _ := zero_mem _
   neg_mem' ha p hp := neg_mem (ha p hp)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_sec {L : Lat ξ E} {e : E} : e ∈ sec L x c ↔ ∀ p : Cpt ξ, InChart ξ x c p → e ∈ L p := Iff.rfl
 
 end ChartTie
 
 open ChartTie in
 
+/- English proof (translation)
+Introduce `X Ω _ ξ E _ _ κ x L r hT hv`. Use `⟨{ lat := sec L x, stable := ?_, frame := ?_, overlap := ?_ }, fun c _ e => mem_sec⟩` and prove the remaining obligations. Introduce `i a ha e he`. Conclude with `mem_sec.2 fun p hp => smul_mem_lat L (mem_regAt_of_mem hT ha hp) (mem_sec.1 he p hp)`. Introduce `c hc`.
+
+Take `⟨k, f, g, hf, hg, hsum, hl⟩` from `exists_cover hT hc (FrameOpen L r) fun p _ => frameOpen_cover hv p`. Use `⟨k, f, g, hf, hg, hsum, fun l => ?_⟩` and prove the remaining obligations. Take `⟨V, ⟨b, hb, hspan, hfr⟩, hV⟩` from `hl l`. Use `⟨b, hb, hspan, fun e => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨n, hn⟩`.
+
+Take `⟨a, hae⟩` from `exists_coords hspan e`. Use `⟨a, fun q => exists_pow_mul_mem hT hc (hf l) fun p hp hu => ?_, hae⟩` and prove the remaining obligations. Establish `h0 : f l ≠ 0` using `hu.1`. Establish `h1 : e = ((f l)⁻¹) ^ n • f l ^ n • e`. Rewrite using `[smul_smul, ← mul_pow, inv_mul_cancel₀ h0, one_pow, one_smul]`.
+
+Establish `h2 : e ∈ L p`. Rewrite using `[h1]`. Conclude with `smul_mem_lat L (pow_mem hu.2.2 _) (mem_sec.1 hn p hp)`. Rewrite `h2` using `[(hfr p (hV p hp hu)).2, hae]`. Conclude with `coord_mem hb h2 q`.
+
+Introduce and unpack `⟨a, ha, rfl⟩`. Take `⟨N, hN⟩` from `exists_pow_smul_sec hT hc hv (hf l) (e := ∑ q, a q • b q) fun p hp hu => by`. Use `sum_mem fun q _ => smul_mem_lat L ?_ (frame_mem (hfr p (hV p hp hu)) q)` and prove the remaining obligations. Take `⟨n, hn⟩` from `ha q`. Establish `h0 : f l ≠ 0` using `hu.1`.
+
+Establish `h1 : a q = ((f l)⁻¹) ^ n * (f l ^ n * a q)`. Rewrite using `[← _root_.mul_assoc, ← mul_pow, inv_mul_cancel₀ h0, one_pow, _root_.one_mul]`. Rewrite using `[h1]`. Conclude with `mul_mem (pow_mem hu.2.2 _) (mem_regAt_of_mem hT hn hp)`. Conclude with `⟨N, mem_sec.2 hN⟩`.
+
+Introduce `i j hi hj e he`. Establish `hf : x i / x j ∈ chartRing ℤ x j` using `Algebra.subset_adjoin ⟨i, rfl⟩`. Take `⟨N, hN⟩` from `exists_pow_smul_sec hT hj hv hf (e := e) fun p hp hu => by`. Use `mem_sec.1 he p ⟨hi, fun c' => ?_⟩` and prove the remaining obligations. Establish `h1 : x c' / x i = (x c' / x j) * (x i / x j)⁻¹`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[h1]`. Conclude with `mul_mem (hp.2 c') hu.2.2`. Conclude with `⟨N, mem_sec.2 hN⟩`.
+-/
 theorem exists_chartBundle_of_isVB : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X)
     (E : Type) [AddCommGroup E] [Module Ω E] (κ : Type) (x : κ → Ω) (L : Lat ξ E) (r : ℕ),
     CoordTie ℤ ξ x → L.IsVB r ⊤ → ∃ W : ChartBundle ℤ x r E, L.IsChartOf x W.lat := by

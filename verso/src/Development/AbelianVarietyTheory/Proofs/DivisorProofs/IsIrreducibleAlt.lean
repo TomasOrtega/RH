@@ -9,6 +9,23 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.IndLineGL
 
 namespace GlobalTheory.MidMixedCell
 
+/- English proof (translation)
+Introduce `hG hBZ hB k _ _ _ _ a a' m α₀ β₀ hα hβ hαu hβu hlt b hb`. Take `⟨hrow, hcol⟩` from `b.2`. Establish `r0 : b.1 false 0 + b.1 false 1 + b.1 false 2 = a`. Establish `h` using `hrow false`. Rewrite `h` using `[Fin.sum_univ_three]`.
+
+Simplify using `using h`. Establish `r1 : b.1 true 0 + b.1 true 1 + b.1 true 2 = a'`. Establish `h` using `hrow true`. Rewrite `h` using `[Fin.sum_univ_three]`. Simplify using `using h`.
+
+Establish `c0 : b.1 false 0 + b.1 true 0 = 1`. Establish `h` using `hcol 0`. Rewrite `h` using `[Fintype.sum_bool]`. Rewrite using `[add_comm]`. Conclude with `h.trans (Fintype.card_fin 1)`.
+
+Establish `c2 : b.1 false 2 + b.1 true 2 = 1`. Establish `h` using `hcol 2`. Rewrite `h` using `[Fintype.sum_bool]`. Rewrite using `[add_comm]`. Conclude with `h.trans (Fintype.card_fin 1)`.
+
+Establish `hmix` using `GlobalTheory.MixedCell.isIrreducible hG hBZ hB k (b.1 false 1) (b.1 true 1) (by omega) α₀ β₀ hα hβ hαu hβu`. Unfold `cellMid`. Establish `hcases : (b.1 false 0 = 1 ∧ b.1 false 2 = 0 ∧ b.1 true 0 = 0 ∧ b.1 true 2 = 1) ∨ (b.1 false 0 = 0 ∧ b.1 false 2 = 1 ∧ b.1 true 0 = 1 ∧ b.1 true 2 = 0)` using `by omega`. Break down `hcases with ⟨h1, h2, h3, h4⟩ | ⟨h1, h2, h3, h4⟩` into its components or cases. Establish `e1 : α₀ * absPow k ((((b.1 false 0 : ℕ) : ℂ) - (b.1 false 2 : ℕ)) / 2) = α₀ * absPow k (1 / 2)`.
+
+Rewrite using `[h1, h2]`. Evaluate the numerical expressions. Establish `e2 : β₀ * absPow k ((((b.1 true 0 : ℕ) : ℂ) - (b.1 true 2 : ℕ)) / 2) = β₀ * absPow k (-(1 / 2))`. Rewrite using `[h3, h4]`. Evaluate the numerical expressions.
+
+Rewrite using `[e1, e2]`. Conclude with `hmix.1`. Establish `e1 : α₀ * absPow k ((((b.1 false 0 : ℕ) : ℂ) - (b.1 false 2 : ℕ)) / 2) = α₀ * absPow k (-(1 / 2))`. Rewrite using `[h1, h2]`. Evaluate the numerical expressions.
+
+Establish `e2 : β₀ * absPow k ((((b.1 true 0 : ℕ) : ℂ) - (b.1 true 2 : ℕ)) / 2) = β₀ * absPow k (1 / 2)`. Rewrite using `[h3, h4]`. Evaluate the numerical expressions. Rewrite using `[e1, e2]`. Conclude with `hmix.2`.
+-/
 theorem isIrreducible : GlobalTheory.Published.GeometricLemmaFiltration → GlobalTheory.Published.BernsteinZelevinskyFiniteness →
     GlobalTheory.Published.BernsteinUnitaryProductIrreducible →
   ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]

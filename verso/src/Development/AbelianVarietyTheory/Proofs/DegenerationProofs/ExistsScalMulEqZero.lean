@@ -14,6 +14,13 @@ namespace GenericEq
 
 open GenericIso
 
+/- English proof (translation)
+Establish `: IsClosedImmersion (equalizer.ι f g).left` using `inferInstance`. Establish `: LocallyOfFiniteType (equalizer f g).hom`. Rewrite using `[← Over.w (equalizer.ι f g)]`. Use `infer_instance`. Establish `h` using `isIso_generic_of_dense_fibres R (equalizer f g) X (equalizer.ι f g) Sg hD fun x hx => by`.
+
+Take `⟨K, _, t, ht, e⟩` from `H x hx`. Use `⟨K, inferInstance, t, ht, ?_⟩` and prove the remaining obligations. Rewrite using `[← equalizerComparison_comp_π]`. Use `equalizer.ι_of_eq e` as an intermediate fact. Use `infer_instance`.
+
+Rewrite using `[← cancel_epi ((Over.pullback (Out.jK R)).map (equalizer.ι f g)), ← Functor.map_comp, ← Functor.map_comp, equalizer.condition]`.
+-/
 theorem map_eq_generic (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] (X : Over (Sp R))
     [LocallyOfFiniteType X.hom] [QuasiCompact X.hom] (Sg : Set (Sp R)) (hD : Dense Sg)
     (Y : Over (Sp R)) [IsSeparated Y.hom] (f g : X ⟶ Y)
@@ -33,6 +40,11 @@ theorem map_eq_generic (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R]
   rw [← cancel_epi ((Over.pullback (Out.jK R)).map (equalizer.ι f g)), ← Functor.map_comp,
     ← Functor.map_comp, equalizer.condition]
 
+/- English proof (translation)
+Set `F` to `Ideal.Quotient.mkₐ R (Ideal.span {y})`. Establish `hF : Function.Surjective F` using `Ideal.Quotient.mkₐ_surjective _ _`. Take `⟨a, ha0, ha⟩` from `exists_pow_smul_ker_eq_zero_of_dense F hD fun x hx => by`. Take `⟨K, _, _, hK, hy⟩` from `H x hx`. Use `(bijective_residueField F K x hK ⟨?_, Algebra.TensorProduct.map_surjective _ _ Function.surjective_id hF⟩).1` and prove the remaining obligations.
+
+Rewrite using `[RingHom.injective_iff_ker_eq_bot, Algebra.TensorProduct.lTensor_ker F hF, show RingHom.ker F = Ideal.span {y} from Ideal.mk_ker, Ideal.map_span, Set.image_singleton, Ideal.span_singleton_eq_bot]`. Conclude with `hy`. Take `⟨n, hn⟩` from `ha y (Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self y))`. Conclude with `⟨a ^ n, pow_ne_zero _ ha0, by rw [← Algebra.smul_def]; exact hn⟩`.
+-/
 theorem exists_smul_eq_zero {R A : Type} [CommRing R] [IsDomain R] [IsNoetherianRing R]
     [CommRing A] [Algebra R A] [Algebra.FiniteType R A] {D : Set (PrimeSpectrum R)} (hD : Dense D)
     (y : A) (H : ∀ x ∈ D, ∃ (K : Type) (_ : Field K) (_ : Algebra R K),
@@ -51,10 +63,28 @@ theorem exists_smul_eq_zero {R A : Type} [CommRing R] [IsDomain R] [IsNoetherian
   obtain ⟨n, hn⟩ := ha y (Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self y))
   exact ⟨a ^ n, pow_ne_zero _ ha0, by rw [← Algebra.smul_def]; exact hn⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem appTop_scal {R : Type} [CommRing R] {Y Z : Scheme.{0}} (q : Z ⟶ Y) (p : Y ⟶ Sp R)
     (a : R) : q.appTop.hom (Out.scal p a) = Out.scal (q ≫ p) a := by
   rfl
 
+/- English proof (translation)
+Take `⟨φ, hφ⟩` from `Spec.map_surjective (j ≫ X.hom)`. Set `: Algebra R A` to `φ.hom.toAlgebra`. Establish `: Algebra.FiniteType R A`. Establish `: LocallyOfFiniteType (Spec.map φ)` using `by rw [hφ]; infer_instance`. Conclude with `(HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)).1 this`.
+
+Establish `hφ' : Spec.map (CommRingCat.ofHom (algebraMap R A)) = j ≫ X.hom` using `hφ`. Take `⟨a, ha0, ha⟩` from `exists_smul_eq_zero (R := R) hD ((Scheme.ΓSpecIso A).hom.hom (j.appTop.hom u)) fun x hx => by`. Take `⟨K, _, t, ht, hu⟩` from `H x hx`. Take `⟨ψ, rfl⟩` from `Spec.map_surjective t`. Set `: Algebra R K` to `ψ.hom.toAlgebra`.
+
+Use `⟨K, inferInstance, inferInstance, ?_, ?_⟩` and prove the remaining obligations. Establish `: Spec.map ψ (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum K) = x` using `ht.le (Set.mem_range_self _)`. Rewrite using `[← this]`. Both sides reduce to the same expression. Establish `w` using `(isPullback_tensor (R := R) K A).w`.
+
+Rewrite `w` using `[hφ', ← Category.assoc]`. Establish `e` using `congrArg (fun k => k.appTop.hom u) (pullback.lift_fst _ _ w)`. Simplify using `only [Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply] at e`. Use `erw [hu, map_zero] at e`. Establish `n` using `congrArg (fun k => k.hom (j.appTop.hom u)) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (Algebra.TensorProduct.includeRight (R := R) (A := K) (B := A)).toRingHom))`.
+
+Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at n`. Use `erw [← e, map_zero] at n`. Conclude with `n.symm`. Use `⟨a, ha0, ?_⟩` and prove the remaining obligations. Apply `(Scheme.ΓSpecIso A).commRingCatIsoToRingEquiv.injective` to reduce the goal to its premises.
+
+Rewrite using `[map_zero, ← ha, map_mul, map_mul, appTop_scal, ← hφ]`. Use `congr 1`. Establish `n` using `congrArg (fun k => k.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a)) (Scheme.ΓSpecIso_naturality φ)`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at n`. Use `n.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Iso.inv_hom_id_apply]`. Both sides reduce to the same expression.
+-/
 theorem exists_scal_mul_chart {R : Type} [CommRing R] [IsDomain R] [IsNoetherianRing R]
     (X : Over (Sp R)) [LocallyOfFiniteType X.hom] {Sg : Set (Sp R)} (hD : Dense Sg)
     (u : Γ(X.left, ⊤))
@@ -100,6 +130,15 @@ theorem exists_scal_mul_chart {R : Type} [CommRing R] [IsDomain R] [IsNoetherian
   rw [Iso.inv_hom_id_apply]
   rfl
 
+/- English proof (translation)
+Establish `: CompactSpace X.left` using `QuasiCompact.compactSpace_of_compactSpace X.hom`. Set `𝒰 : X.left.OpenCover` to `X.left.affineCover.finiteSubcover`. Establish `hc : ∀ i : 𝒰.I₀, ∃ a : R, a ≠ 0 ∧ (𝒰.f i).appTop.hom (Out.scal X.hom a * u) = 0`. Introduce `i`. Take `⟨a, ha0, ha⟩` from `exists_scal_mul_chart X hD u H _ ((𝒰.X i).isoSpec.inv ≫ 𝒰.f i)`.
+
+Use `⟨a, ha0, ?_⟩` and prove the remaining obligations. Rewrite using `[← (𝒰.X i).isoSpec.hom_inv_id_assoc (𝒰.f i), Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply, ha, map_zero]`. Use `choose a ha0 ha using hc`. Use `⟨∏ i, a i, Finset.prod_ne_zero_iff.2 fun i _ => ha0 i, Scheme.zero_of_zero_cover _ 𝒰 fun i => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `Finset.dvd_prod_of_mem a (Finset.mem_univ i)`.
+
+Establish `e : Out.scal X.hom (∏ i, a i) * u = Out.scal X.hom b * (Out.scal X.hom (a i) * u)`. Rewrite using `[hb]`. Simplify using `only [Out.scal, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, map_mul]`.
+
+Conclude with `mul_eq_zero_of_right _ (ha i)`.
+-/
 theorem exists_scal_mul_eq_zero (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R]
     (X : Over (Sp R)) [LocallyOfFiniteType X.hom] [QuasiCompact X.hom] (Sg : Set (Sp R))
     (hD : Dense Sg) (u : Γ(X.left, ⊤))
@@ -127,6 +166,13 @@ theorem exists_scal_mul_eq_zero (R : Type) [CommRing R] [IsDomain R] [IsNoetheri
   rw [e, map_mul]
   exact mul_eq_zero_of_right _ (ha i)
 
+/- English proof (translation)
+Establish `: IsLocallyNoetherian X.left` using `LocallyOfFiniteType.isLocallyNoetherian X.hom`. Establish `: CompactSpace X.left` using `QuasiCompact.compactSpace_of_compactSpace X.hom`. Establish `: IsNoetherian X.left` using `{}`. Establish `hC : Topology.IsConstructible ((V : Set X.left)ᶜ)` using `(IsCompact.isConstructible (TopologicalSpace.NoetherianSpace.isCompact _) V.isOpen).compl`. Take `⟨W, ⟨y, hy⟩, -, hW⟩` from `exists_isAffineOpen_disjoint_image_of_isConstructible_of_disjoint_dense X.left (Sp R) X.hom _ Sg hC hD (Set.disjoint_left.2 (by rintro _ ⟨x, hx, rfl⟩ h; exact hx (H x h)))`.
+
+Take `⟨_, ⟨a, rfl⟩, hya, haW⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open hy W.isOpen`. Use `⟨a, ?_, fun x hx => ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hya (Ideal.zero_mem _)`. Assume the negation of the conclusion as `hxV`.
+
+Conclude with `Set.disjoint_left.1 hW ⟨x, hxV, rfl⟩ (haW hx)`.
+-/
 theorem exists_mem_of_not_mem (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R]
     (X : Over (Sp R)) [LocallyOfFiniteType X.hom] [QuasiCompact X.hom] (Sg : Set (Sp R))
     (hD : Dense Sg) (V : X.left.Opens) (H : ∀ x : X.left, X.hom x ∈ Sg → x ∈ V) :
@@ -151,6 +197,9 @@ end GenericEq
 
 open GenericEq
 
+/- English proof (translation)
+Introduce `R _ _ _ X _ _ Sg hD`. Conclude with `⟨fun Y _ f g => map_eq_generic R X Sg hD Y f g, exists_scal_mul_eq_zero R X Sg hD, exists_mem_of_not_mem R X Sg hD⟩`.
+-/
 theorem generic_of_dense_fibres :
     ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] (X : Over (Sp R)) [LocallyOfFiniteType X.hom] [QuasiCompact X.hom] (Sg : Set (Sp R)), Dense Sg → (∀ (Y : Over (Sp R)) [IsSeparated Y.hom] (f g : X ⟶ Y), (∀ x ∈ Sg, ∃ (K : Type) (_ : Field K) (t : Sp K ⟶ Sp R), Set.range t = {x} ∧ (Over.pullback t).map f = (Over.pullback t).map g) → (Over.pullback (Out.jK R)).map f = (Over.pullback (Out.jK R)).map g) ∧ (∀ u : Γ(X.left, ⊤), (∀ x ∈ Sg, ∃ (K : Type) (_ : Field K) (t : Sp K ⟶ Sp R), Set.range t = {x} ∧ (pullback.fst X.hom t).appTop.hom u = 0) → ∃ a : R, a ≠ 0 ∧ Out.scal X.hom a * u = 0) ∧ (∀ V : X.left.Opens, (∀ x : X.left, X.hom x ∈ Sg → x ∈ V) → ∃ a : R, a ≠ 0 ∧ ∀ x : X.left, a ∉ (X.hom x).asIdeal → x ∈ V) := by
   intro R _ _ _ X _ _ Sg hD

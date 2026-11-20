@@ -21,6 +21,17 @@ open Filter Topology
 
 namespace GlobalTheory.ImmInj
 
+/- English proof (translation)
+Establish `hU : IsAffineOpen (i ⁻¹ᵁ c0.U)` using `c0.affine.preimage i`. Establish `hmU : PtsOver.map i w (spMap σ) y ∈ ptsIn q σ c0.U` using `c0.source_subset hy0`. Establish `hyU : y ∈ ptsIn p σ (i ⁻¹ᵁ c0.U)` using `hmU`. Take `⟨h, hhW, hh⟩` from `hU.exists_basicOpen_le (V := W) ⟨_, mem_ptsIn.1 hW⟩ (mem_ptsIn.1 hyU)`. Establish `hB : y ∈ ptsIn p σ (X.basicOpen h)` using `mem_ptsIn.2 hh`.
+
+Use `hU.isLocalization_basicOpen h` as an intermediate fact. Take `⟨n, a, ha⟩` from `IsLocalization.Away.surj h (resG X hhW f)`. Take `⟨G, rfl⟩` from `i.app_surjective c0.U c0.affine h`. Take `⟨F, rfl⟩` from `i.app_surjective c0.U c0.affine a`. Establish `hd` using `fun a : Γ(Y, c0.U) => c0.differentiableAt_ev a hy0 hmU`.
+
+Establish `hne (z : CxPts p σ) (hz : z ∈ ptsIn p σ (X.basicOpen (i.app c0.U G))) : ev q σ c0.U G (PtsOver.map i w (spMap σ) z) ≠ 0`. Rewrite using `[← ev_app i w]`. Conclude with `(mem_ptsIn_basicOpen (ptsIn_mono (X.basicOpen_le _) hz) _).1 hz`. Use `⟨fun v => ev q σ c0.U F (c0.e.symm v) * (ev q σ c0.U G (c0.e.symm v) ^ n)⁻¹, (hd F).mul (((hd G).pow n).inv (pow_ne_zero n ?_)), ?_⟩` and prove the remaining obligations. Simplify `hne y hB` using `only [Function.comp_apply, c0.e.left_inv hy0]`.
+
+Use `filter_upwards [(isOpen_ptsIn _).mem_nhds hB, (c0.e.open_source.preimage (PtsOver.continuous_map i w (spMap σ))).mem_nhds hy0] with z hz hz0`. Establish `ha' : resG X hhW f * resG X (X.basicOpen_le _) (i.app c0.U G) ^ n = resG X (X.basicOpen_le (i.app c0.U G)) (i.app c0.U F)` using `ha`. Establish `e` using `congrArg (evHom hz) ha'`. Rewrite `e` using `[map_mul, map_pow, ← ev_eq, ← ev_eq, ← ev_eq, ev_res _ hz, ev_res _ hz, ev_res _ hz, ev_app i w, ev_app i w]`. Rewrite using `[c0.e.left_inv hz0]`.
+
+Conclude with `(eq_mul_inv_iff_mul_eq₀ (pow_ne_zero n (hne z hz))).2 e`.
+-/
 theorem exists_holo_of_chart {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X ⟶ Sp k} {q : Y ⟶ Sp k} {D' : ℕ}
     (i : X ⟶ Y) [IsClosedImmersion i] (w : i ≫ q = p) (σ : k →+* ℂ) (c0 : AlgChart q σ D') (y : CxPts p σ)
     (hy0 : PtsOver.map i w (spMap σ) y ∈ c0.e.source) {W : X.Opens} (f : Γ(X, W)) (hW : y ∈ ptsIn p σ W) :
@@ -53,6 +64,17 @@ theorem exists_holo_of_chart {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X �
   rw [c0.e.left_inv hz0]
   exact (eq_mul_inv_iff_mul_eq₀ (pow_ne_zero n (hne z hz))).2 e
 
+/- English proof (translation)
+Introduce `k _ X Y p q D D' i hi w σ c c0 y hy hy0`. Use `choose R hR hRe using fun a => exists_holo_of_chart i w σ c0 y hy0 (c.x a) (c.source_subset hy)`. Use `set m := PtsOver.map i w (spMap σ)`. Establish `hm : ∀ z, (m z).1 = z.1 ≫ i` using `fun _ => rfl`. Use `set Φ : V D → V D' := c0.e ∘ m ∘ c.e.symm with hΦ`.
+
+Establish `hU : IsOpen (c.e.target ∩ c.e.symm ⁻¹' (m ⁻¹' c0.e.source))` using `GlobalTheory.ChartGlue.isOpen_over c.e (c0.e.open_source.preimage (PtsOver.continuous_map i w (spMap σ)))`. Establish `hF : DifferentiableAt ℂ Φ (c.e y)` using `(AlgChart.holo_map hm c c0).differentiableAt (hU.mem_nhds (GlobalTheory.ChartGlue.mem_over c.e hy hy0))`. Establish `hFy : Φ (c.e y) = c0.e (m y)`. Simplify using `only [hΦ, Function.comp_apply, c.e.left_inv hy]`. Set `S : V D' → V D` to `fun v => WithLp.toLp 2 fun a => R a v`.
+
+Establish `hS : DifferentiableAt ℂ S (Φ (c.e y))`. Rewrite using `[hFy]`. Conclude with `differentiableAt_euclidean.2 hR`. Establish `ht : Tendsto c.e.symm (𝓝 (c.e y)) (𝓝 y)`. Use `c.e.continuousAt_symm (c.e.map_source hy)` as an intermediate fact.
+
+Rewrite `this` using `[ContinuousAt, c.e.left_inv hy]`. Then use the resulting hypothesis. Establish `e : S ∘ Φ =ᶠ[𝓝 (c.e y)] id` using `by filter_upwards [ht.eventually (eventually_all.2 hRe), c.e.open_target.mem_nhds (c.e.map_source hy)] with v hv hv'`. Use extensionality with `a`. Establish `h₁` using `c.apply_eq _ (c.e.map_target hv') a`. Rewrite `h₁` using `[c.e.right_inv hv', hv a]`.
+
+Conclude with `h₁.symm`. Establish `h₂` using `e.fderiv_eq (𝕜 := ℂ)`. Rewrite `h₂` using `[fderiv_comp _ hS hF, fderiv_id]`. Conclude with `Function.LeftInverse.injective (g := fderiv ℂ S (Φ (c.e y))) fun v => congrArg (· v) h₂`.
+-/
 theorem fderiv_injective : ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) (p : X ⟶ Sp k) (q : Y ⟶ Sp k) (D D' : ℕ) (i : X ⟶ Y), IsClosedImmersion i → ∀ (w : i ≫ q = p) (σ : k →+* ℂ) (c : AlgChart p σ D) (c0 : AlgChart q σ D') (y : CxPts p σ), y ∈ c.e.source → PtsOver.map i w (spMap σ) y ∈ c0.e.source → Function.Injective (fderiv ℂ (c0.e ∘ PtsOver.map i w (spMap σ) ∘ c.e.symm) (c.e y)) := by
   intro k _ X Y p q D D' i hi w σ c c0 y hy hy0
   choose R hR hRe using fun a => exists_holo_of_chart i w σ c0 y hy0 (c.x a) (c.source_subset hy)

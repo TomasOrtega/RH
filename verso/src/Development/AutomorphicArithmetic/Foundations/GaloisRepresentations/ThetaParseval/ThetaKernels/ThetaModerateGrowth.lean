@@ -14,6 +14,15 @@ open scoped Classical
 namespace PositivityTheory.ThKF0
 def ArchBd_k : Prop := ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), _root_.GlobalTheory.ThK.IsPair_k B M χX χW om r s r' s' → ∀ Φ ∈ schA F (Fin n × Fin d), ∀ N : ℕ, ∃ (C : ℝ) (k : ℕ), ∀ g h (x : Fin n × Fin d → AF F),
     ‖om (g, h) Φ x‖ * (1 + ‖fun i => evI F (x i)‖) ^ N ≤ C * ((ht g : ℝ) * ht h) ^ k
+/- English proof (translation)
+Establish `hlat` using `theta_sum_norm_bound_denominator`. Establish `hfin` using `_root_.PositivityTheory.ThKF0.weil_rational_support_bound`. Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP Φ hΦ`. Take `⟨N₀, k₂, C₂, hL⟩` from `hlat F (Fin n × Fin d)`. Take `⟨C₁, k₁, hA⟩` from `harch F E σ B n d X W M χX χW om r s r' s' hP Φ hΦ N₀`.
+
+Take `⟨C₃, k₃, hF⟩` from `hfin F E σ B n d X W M χX χW om r s r' s' hP Φ hΦ`. Use `⟨|C₂| * |C₁| * |C₃| ^ k₂, k₁ + k₃ * k₂, fun g h => ?_⟩` and prove the remaining obligations. Take `⟨m, hm1, hmC, hsupp⟩` from `hF g h`. Use `set H : ℝ := (ht g : ℝ) * ht h with hH`. Establish `hH0 : 0 ≤ H` using `by rw [hH]; positivity`.
+
+Establish `hb` using `hL (C₁ * H ^ k₁) m (om (g, h) Φ) hm1 (fun ξ => hA g h _) hsupp`. Establish `hA0 : 0 ≤ C₁ * H ^ k₁` using `le_trans (by positivity) (hA g h (fun i => algebraMap F (AF F) ((0 : Fin n × Fin d → F) i)))`. Establish `hm0 : (0 : ℝ) ≤ (m : ℝ) ^ k₂` using `by positivity`. Establish `hmk : (m : ℝ) ^ k₂ ≤ (|C₃| * H ^ k₃) ^ k₂` using `pow_le_pow_left₀ (Nat.cast_nonneg _) (hmC.trans (mul_le_mul_of_nonneg_right (le_abs_self _) (pow_nonneg hH0 _))) _`. Establish `hC1 : C₁ * H ^ k₁ ≤ |C₁| * H ^ k₁` using `mul_le_mul_of_nonneg_right (le_abs_self _) (pow_nonneg hH0 _)`.
+
+Use `show ‖thetaSum F (om (g, h) Φ)‖ ≤ _`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_theta_le_mul_ht_pow_of_isPair (harch : _root_.PositivityTheory.ThKF0.ArchBd_k) : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), _root_.GlobalTheory.ThK.IsPair_k B M χX χW om r s r' s' → ∀ Φ ∈ schA F (Fin n × Fin d), ∃ (C : ℝ) (k : ℕ), ∀ g h, ‖theta om Φ g h‖ ≤ C * ((ht g : ℝ) * ht h) ^ k := by
   have hlat := theta_sum_norm_bound_denominator
   have hfin := _root_.PositivityTheory.ThKF0.weil_rational_support_bound

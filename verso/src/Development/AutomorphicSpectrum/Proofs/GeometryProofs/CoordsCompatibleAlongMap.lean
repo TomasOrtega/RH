@@ -20,6 +20,15 @@ section Loc
 
 variable {Ω : Type} [Field Ω] [CharZero Ω]
 
+/- English proof (translation)
+Use `letI : Algebra C L := (Subalgebra.inclusion hCL).toRingHom.toAlgebra`. Establish `hne : ∀ s : C, s ∉ P → (s : Ω) ≠ 0` using `fun s hs h0 => hs (by rw [show s = 0 from Subtype.ext h0]; exact P.zero_mem)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨s, hs⟩`. Establish `hs' : s ∉ P` using `hs`.
+
+Establish `hinv : (s : Ω)⁻¹ ∈ L` using `(h _).2 ⟨s, hs', by rw [mul_inv_cancel₀ (hne s hs')]; exact C.one_mem⟩`. Use `IsUnit.of_mul_eq_one (⟨_, hinv⟩ : L) (Subtype.ext ?_)` and prove the remaining obligations. Conclude with `mul_inv_cancel₀ (hne s hs')`. Introduce `z`. Take `⟨s, hs, hsa⟩` from `(h z).1 z.2`.
+
+Use `⟨(⟨_, hsa⟩, ⟨s, hs⟩), Subtype.ext ?_⟩` and prove the remaining obligations. Conclude with `mul_comm _ _`. Introduce `x y e`. Use `⟨1, ?_⟩` and prove the remaining obligations. Establish `: x = y` using `Subtype.ext (congrArg (fun t : L => (t : Ω)) e)`.
+
+Rewrite using `[this]`.
+-/
 theorem isLocalization_of_mem_iff (C L : Subalgebra ℚ Ω) (hCL : C ≤ L) (P : Ideal C) [P.IsPrime]
     (h : ∀ a : Ω, a ∈ L ↔ ∃ s : C, s ∉ P ∧ (s : Ω) * a ∈ C) :
     letI : Algebra C L := (Subalgebra.inclusion hCL).toRingHom.toAlgebra
@@ -42,6 +51,9 @@ theorem isLocalization_of_mem_iff (C L : Subalgebra ℚ Ω) (hCL : C ≤ L) (P :
     have : x = y := Subtype.ext (congrArg (fun t : L => (t : Ω)) e)
     rw [this]
 
+/- English proof (translation)
+Use `letI : Algebra C L := (Subalgebra.inclusion hCL).toRingHom.toAlgebra`. Use `haveI : IsScalarTower ℚ C L := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : IsLocalization.AtPrime L P := isLocalization_of_mem_iff C L hCL P h`. Use `haveI : Algebra.FormallySmooth C L := Algebra.FormallySmooth.of_isLocalization P.primeCompl`. Conclude with `Algebra.FormallySmooth.comp ℚ C L`.
+-/
 theorem formallySmooth_of_mem_iff (C L : Subalgebra ℚ Ω) (hCL : C ≤ L) (P : Ideal C) [P.IsPrime]
     (h : ∀ a : Ω, a ∈ L ↔ ∃ s : C, s ∉ P ∧ (s : Ω) * a ∈ C) [Algebra.FormallySmooth ℚ C] :
     Algebra.FormallySmooth ℚ L := by
@@ -51,6 +63,9 @@ theorem formallySmooth_of_mem_iff (C L : Subalgebra ℚ Ω) (hCL : C ≤ L) (P :
   haveI : Algebra.FormallySmooth C L := Algebra.FormallySmooth.of_isLocalization P.primeCompl
   exact Algebra.FormallySmooth.comp ℚ C L
 
+/- English proof (translation)
+Use `letI : Algebra C L := (Subalgebra.inclusion hCL).toRingHom.toAlgebra`. Use `haveI : IsScalarTower ℚ C L := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : IsLocalization.AtPrime L P := isLocalization_of_mem_iff C L hCL P h`. Conclude with `Algebra.FormallySmooth.of_equiv ((IsLocalization.algEquiv P.primeCompl L (Localization.AtPrime P)).restrictScalars ℚ)`.
+-/
 theorem formallySmooth_atPrime_of_mem_iff (C L : Subalgebra ℚ Ω) (hCL : C ≤ L) (P : Ideal C) [P.IsPrime]
     (h : ∀ a : Ω, a ∈ L ↔ ∃ s : C, s ∉ P ∧ (s : Ω) * a ∈ C) [Algebra.FormallySmooth ℚ L] :
     Algebra.FormallySmooth ℚ (Localization.AtPrime P) := by
@@ -67,16 +82,28 @@ section Pts
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] [CharZero Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
   {κ : Type} {x : κ → Ω} {c : κ} {p : Cpt ξ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨mul_ne_zero ha.1 hb.1, mul_mem ha.2.1 hb.2.1, by rw [mul_inv]; exact mul_mem ha.2.2 hb.2.2⟩`.
+-/
 theorem unitAt_mul {a b : Ω} (ha : unitAt ξ p a) (hb : unitAt ξ p b) : unitAt ξ p (a * b) :=
   ⟨mul_ne_zero ha.1 hb.1, mul_mem ha.2.1 hb.2.1, by rw [mul_inv]; exact mul_mem ha.2.2 hb.2.2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inv_ne_zero ha.1, ha.2.2, by rw [inv_inv]; exact ha.2.1⟩`.
+-/
 theorem unitAt_inv {a : Ω} (ha : unitAt ξ p a) : unitAt ξ p a⁻¹ :=
   ⟨inv_ne_zero ha.1, ha.2.2, by rw [inv_inv]; exact ha.2.1⟩
 
+/- English proof (translation)
+Use `unitAt_mul (unitAt_inv ha) hab` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_left₀ ha.1]`. Then use the resulting hypothesis.
+-/
 theorem unitAt_of_mul {a b : Ω} (ha : unitAt ξ p a) (hab : unitAt ξ p (a * b)) : unitAt ξ p b := by
   have := unitAt_mul (unitAt_inv ha) hab
   rwa [inv_mul_cancel_left₀ ha.1] at this
 
+/- English proof (translation)
+Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem a ha => exact Algebra.subset_adjoin ha`. Consider the case `algebraMap n => simpa using intCast_mem (chRing ℚ x c) n`. Consider the case `add a b _ _ ha hb => exact add_mem ha hb`. Consider the case `mul a b _ _ ha hb => exact mul_mem ha hb`.
+-/
 theorem mem_chQ_of_mem_chZ {a : Ω} (ha : a ∈ chRing ℤ x c) : a ∈ chRing ℚ x c := by
   induction ha using Algebra.adjoin_induction with
   | mem a ha => exact Algebra.subset_adjoin ha
@@ -84,6 +111,17 @@ theorem mem_chQ_of_mem_chZ {a : Ω} (ha : a ∈ chRing ℤ x c) : a ∈ chRing �
   | add a b _ _ ha hb => exact add_mem ha hb
   | mul a b _ _ ha hb => exact mul_mem ha hb
 
+/- English proof (translation)
+Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem a ha => exact ⟨1, one_pos, by simpa using Algebra.subset_adjoin ha⟩`. Consider the case `algebraMap q`. Use `⟨q.den, q.den_pos, ?_⟩` and prove the remaining obligations. Establish `: (q.den : Ω) * algebraMap ℚ Ω q = (q.num : Ω)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul, map_natCast]`. Use `_ = algebraMap ℚ Ω (q.num : ℚ) := by rw [Rat.den_mul_eq_num]`. Use `_ = (q.num : Ω) := map_intCast _ _`. Rewrite using `[this]`.
+
+Conclude with `intCast_mem _ _`. Consider the case `add a b _ _ ha hb`. Take `⟨n, hn, hna⟩` from `ha`. Take `⟨m, hm, hmb⟩` from `hb`. Use `⟨n * m, Nat.mul_pos hn hm, ?_⟩` and prove the remaining obligations.
+
+Establish `: ((n * m : ℕ) : Ω) * (a + b) = (m : Ω) * ((n : Ω) * a) + (n : Ω) * ((m : Ω) * b)` using `by push_cast; ring`. Rewrite using `[this]`. Conclude with `add_mem (mul_mem (natCast_mem _ m) hna) (mul_mem (natCast_mem _ n) hmb)`. Consider the case `mul a b _ _ ha hb`. Take `⟨n, hn, hna⟩` from `ha`.
+
+Take `⟨m, hm, hmb⟩` from `hb`. Use `⟨n * m, Nat.mul_pos hn hm, ?_⟩` and prove the remaining obligations. Establish `: ((n * m : ℕ) : Ω) * (a * b) = ((n : Ω) * a) * ((m : Ω) * b)` using `by push_cast; ring`. Rewrite using `[this]`. Conclude with `mul_mem hna hmb`.
+-/
 theorem exists_nat_mul_mem {a : Ω} (ha : a ∈ chRing ℚ x c) :
     ∃ n : ℕ, 0 < n ∧ (n : Ω) * a ∈ chRing ℤ x c := by
   induction ha using Algebra.adjoin_induction with
@@ -114,16 +152,27 @@ theorem exists_nat_mul_mem {a : Ω} (ha : a ∈ chRing ℚ x c) :
     rw [this]
     exact mul_mem hna hmb
 
+/- English proof (translation)
+The claim follows from `(tie.ring c hc.1 a).1 ha p hc`.
+-/
 theorem chZ_mem_regAt (tie : CoordTie ℤ ξ x) (hc : InChart ξ x c p) {a : Ω} (ha : a ∈ chRing ℤ x c) :
     a ∈ regAt ξ p :=
   (tie.ring c hc.1 a).1 ha p hc
 
+/- English proof (translation)
+Take `⟨n, hn, hna⟩` from `exists_nat_mul_mem ha`. Establish `h` using `mul_mem (hp n hn).2.2 (chZ_mem_regAt tie hc hna)`. Rewrite `h` using `[inv_mul_cancel_left₀ (hp n hn).1]`. Then use the resulting hypothesis.
+-/
 theorem chQ_mem_regAt (tie : CoordTie ℤ ξ x) (hc : InChart ξ x c p) (hp : p ∈ genFib ξ) {a : Ω}
     (ha : a ∈ chRing ℚ x c) : a ∈ regAt ξ p := by
   obtain ⟨n, hn, hna⟩ := exists_nat_mul_mem ha
   have h := mul_mem (hp n hn).2.2 (chZ_mem_regAt tie hc hna)
   rwa [inv_mul_cancel_left₀ (hp n hn).1] at h
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `ha`. Take `⟨s, hs, hu, hsa⟩` from `(GlobalTheory.T.regAt_iff_chart_localization X Ω ξ ℤ κ x tie c p hc a).1 ha`. Conclude with `⟨s, mem_chQ_of_mem_chZ hs, hu, mem_chQ_of_mem_chZ hsa⟩`. Introduce and unpack `⟨s, _, hu, hsa⟩`.
+
+Establish `h` using `mul_mem hu.2.2 (chQ_mem_regAt tie hc hp hsa)`. Rewrite `h` using `[inv_mul_cancel_left₀ hu.1]`. Then use the resulting hypothesis.
+-/
 theorem mem_regAt_iff (tie : CoordTie ℤ ξ x) (hc : InChart ξ x c p) (hp : p ∈ genFib ξ) (a : Ω) :
     a ∈ regAt ξ p ↔ ∃ s ∈ chRing ℚ x c, unitAt ξ p s ∧ s * a ∈ chRing ℚ x c := by
   constructor
@@ -134,10 +183,20 @@ theorem mem_regAt_iff (tie : CoordTie ℤ ξ x) (hc : InChart ξ x c p) (hp : p 
     have h := mul_mem hu.2.2 (chQ_mem_regAt tie hc hp hsa)
     rwa [inv_mul_cancel_left₀ hu.1] at h
 
+/- English proof (translation)
+The claim follows from `(RingEquiv.ofBijective (genMap ξ p).rangeRestrict ⟨fun _ _ h => gen.inj p (congrArg Subtype.val h), (genMap ξ p).rangeRestrict_surjective⟩).isLocalRing`.
+-/
 theorem isLocalRing_regAt (gen : IsCptGen ξ) (p : Cpt ξ) : IsLocalRing (regAt ξ p) :=
   (RingEquiv.ofBijective (genMap ξ p).rangeRestrict
     ⟨fun _ _ h => gen.inj p (congrArg Subtype.val h), (genMap ξ p).rangeRestrict_surjective⟩).isLocalRing
 
+/- English proof (translation)
+Use `haveI := isLocalRing_regAt tie.gen p`. Set `f : chRing ℚ x c →+* regAt ξ p` to `RingHom.codRestrict (algebraMap (chRing ℚ x c) Ω) (regAt ξ p) fun s => chQ_mem_regAt tie hc hp s.2`. Use `⟨Ideal.comap f (IsLocalRing.maximalIdeal _), inferInstance, fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, not_not]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hu`. Take `⟨t, ht⟩` from `hu.exists_right_inv`. Establish `ht' : (s : Ω) * (t : Ω) = 1` using `congrArg (fun u : regAt ξ p => (u : Ω)) ht`. Establish `h0 : (s : Ω) ≠ 0` using `left_ne_zero_of_mul_eq_one ht'`. Use `⟨h0, (f s).2, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← eq_inv_of_mul_eq_one_right ht']`. Conclude with `t.2`. Introduce and unpack `⟨h0, _, h2⟩`. Conclude with `IsUnit.of_mul_eq_one (⟨_, h2⟩ : regAt ξ p) (Subtype.ext (mul_inv_cancel₀ h0))`.
+-/
 theorem exists_prime_of_point (tie : CoordTie ℤ ξ x) (hc : InChart ξ x c p) (hp : p ∈ genFib ξ) :
     ∃ P : Ideal (chRing ℚ x c), P.IsPrime ∧ ∀ s : chRing ℚ x c, s ∉ P ↔ unitAt ξ p (s : Ω) := by
   haveI := isLocalRing_regAt tie.gen p
@@ -156,6 +215,17 @@ theorem exists_prime_of_point (tie : CoordTie ℤ ξ x) (hc : InChart ξ x c p) 
   · rintro ⟨h0, _, h2⟩
     exact IsUnit.of_mul_eq_one (⟨_, h2⟩ : regAt ξ p) (Subtype.ext (mul_inv_cancel₀ h0))
 
+/- English proof (translation)
+Set `inc : chRing ℤ x c →+* chRing ℚ x c` to `RingHom.codRestrict (algebraMap (chRing ℤ x c) Ω) (chRing ℚ x c) fun s => mem_chQ_of_mem_chZ s.2`. Take `⟨p, ⟨hpc, hpu⟩, -⟩` from `GlobalTheory.T.prime_chart_existsUnique_point X Ω ξ ℤ κ x tie c hc (Ideal.comap inc P) inferInstance`. Establish `hnP : ∀ n : ℕ, 0 < n → (n : chRing ℚ x c) ∉ P`. Introduce `n hn hmem`. Establish `hn0 : (n : ℚ) ≠ 0` using `by exact_mod_cast hn.ne'`.
+
+Establish `h1 : (algebraMap ℚ (chRing ℚ x c) (n : ℚ)⁻¹) * (n : chRing ℚ x c) = 1`. Rewrite using `[← map_natCast (algebraMap ℚ (chRing ℚ x c)), ← map_mul, inv_mul_cancel₀ hn0, map_one]`. Conclude with `(inferInstance : P.IsPrime).ne_top ((Ideal.eq_top_iff_one _).2 (h1 ▸ P.mul_mem_left _ hmem))`. Establish `hg : p ∈ genFib ξ`. Introduce `n hn`.
+
+Use `(hpu (n : chRing ℤ x c)).1 (fun h => hnP n hn (by simpa [Ideal.mem_comap] using h))` as an intermediate fact. Simplify using `using this`. Use `⟨p, hpc, hg, fun s => ?_⟩` and prove the remaining obligations. Take `⟨n, hn, hr⟩` from `exists_nat_mul_mem s.2`. Set `r : chRing ℤ x c` to `⟨_, hr⟩`.
+
+Establish `hr' : inc r = (n : chRing ℚ x c) * s` using `Subtype.ext (by simp [inc, r])`. Establish `hrP : r ∉ Ideal.comap inc P ↔ s ∉ P`. Rewrite using `[Ideal.mem_comap, hr', (inferInstance : P.IsPrime).mul_mem_iff_mem_or_mem]`. Simplify using `[hnP n hn]`. Rewrite using `[← hrP, hpu r]`.
+
+Conclude with `⟨fun h => unitAt_of_mul (hg n hn) h, fun h => unitAt_mul (hg n hn) h⟩`.
+-/
 theorem exists_point_of_prime (tie : CoordTie ℤ ξ x) (hc : x c ≠ 0) (P : Ideal (chRing ℚ x c)) [P.IsPrime] :
     ∃ p : Cpt ξ, InChart ξ x c p ∧ p ∈ genFib ξ ∧ ∀ s : chRing ℚ x c, s ∉ P ↔ unitAt ξ p (s : Ω) := by
   let inc : chRing ℤ x c →+* chRing ℚ x c :=
@@ -191,12 +261,26 @@ section Main
 
 variable {Ω : Type} [Field Ω] [CharZero Ω] {X₁ X₂ : Scheme.{0}}
 
+/- English proof (translation)
+Take `⟨h, -, hu⟩` from `GlobalTheory.CompanionTheory.Ar.RegAtDom.regAt_dominates X₁ Ω ξ₁ X₂ Ω ξ₂ g (RingHom.id Ω) dom p`. Conclude with `⟨⟨g p.1, h⟩, rfl, fun n hn => hu gen n (natCast_mem _ n) (hp n hn)⟩`.
+-/
 theorem exists_image_genFib {ξ₁ : Spec (CommRingCat.of Ω) ⟶ X₁} {ξ₂ : Spec (CommRingCat.of Ω) ⟶ X₂}
     {g : X₂ ⟶ X₁} (gen : IsCptGen ξ₂) (dom : Dominates ξ₂ ξ₁ g (RingHom.id Ω)) (p : Cpt ξ₂)
     (hp : p ∈ genFib ξ₂) : ∃ q : Cpt ξ₁, g p.1 = q.1 ∧ q ∈ genFib ξ₁ := by
   obtain ⟨h, -, hu⟩ := GlobalTheory.CompanionTheory.Ar.RegAtDom.regAt_dominates X₁ Ω ξ₁ X₂ Ω ξ₂ g (RingHom.id Ω) dom p
   exact ⟨⟨g p.1, h⟩, rfl, fun n hn => hu gen n (natCast_mem _ n) (hp n hn)⟩
 
+/- English proof (translation)
+Take `⟨p, hpc, hpg, hpu⟩` from `exists_point_of_prime tie₂ hc P`. Take `⟨q, hq, hqg⟩` from `exists_image_genFib tie₂.gen dom p hpg`. Take `⟨c', hc'⟩` from `tie₁.cover q`. Establish `hreg : regAt ξ₂ p = regAt ξ₁ q` using `by simpa using (iso q hqg).2 p hq`. Take `⟨P₁, hP₁, hu₁⟩` from `exists_prime_of_point tie₁ hc' hqg`.
+
+Set `L : Subalgebra ℚ Ω` to `regAlg ξ₁ q fun r => chQ_mem_regAt tie₁ hc' hqg (Subalgebra.algebraMap_mem _ r)`. Establish `hL : ∀ a, a ∈ L ↔ a ∈ regAt ξ₁ q` using `fun _ => Iff.rfl`. Use `haveI := sm c' hc'.1`. Use `haveI : Algebra.FormallySmooth ℚ L := by`. Use `formallySmooth_of_mem_iff (chRing ℚ x₁ c') L (fun a ha => chQ_mem_regAt tie₁ hc' hqg ha) P₁ fun a => ?_` and prove the remaining obligations.
+
+Rewrite using `[hL, mem_regAt_iff tie₁ hc' hqg]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hu, hsa⟩`. Conclude with `⟨⟨s, hs⟩, (hu₁ _).2 hu, hsa⟩`. Introduce and unpack `⟨s, hs, hsa⟩`.
+
+Conclude with `⟨s, s.2, (hu₁ s).1 hs, hsa⟩`. Use `formallySmooth_atPrime_of_mem_iff (chRing ℚ x₂ c) L (fun a ha => (hL a).2 (hreg ▸ chQ_mem_regAt tie₂ hpc hpg ha)) P fun a => ?_` and prove the remaining obligations. Rewrite using `[hL, ← hreg, mem_regAt_iff tie₂ hpc hpg]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hu, hsa⟩`.
+
+Conclude with `⟨⟨s, hs⟩, (hpu _).2 hu, hsa⟩`. Introduce and unpack `⟨s, hs, hsa⟩`. Conclude with `⟨s, s.2, (hpu s).1 hs, hsa⟩`.
+-/
 theorem formallySmooth_atPrime {κ₁ κ₂ : Type} {x₁ : κ₁ → Ω} {x₂ : κ₂ → Ω}
     {ξ₁ : Spec (CommRingCat.of Ω) ⟶ X₁} {ξ₂ : Spec (CommRingCat.of Ω) ⟶ X₂} {g : X₂ ⟶ X₁}
     (tie₁ : CoordTie ℤ ξ₁ x₁) (tie₂ : CoordTie ℤ ξ₂ x₂) (dom : Dominates ξ₂ ξ₁ g (RingHom.id Ω))
@@ -228,6 +312,11 @@ theorem formallySmooth_atPrime {κ₁ κ₂ : Type} {x₁ : κ₁ → Ω} {x₂ 
   · rintro ⟨s, hs, hsa⟩
     exact ⟨s, s.2, (hpu s).1 hs, hsa⟩
 
+/- English proof (translation)
+Use `haveI : Algebra.FiniteType ℚ (chRing ℚ x₂ c) := (Subalgebra.fg_iff_finiteType _).1 (Subalgebra.fg_def.2 ⟨_, Set.finite_range _, rfl⟩)`. Use `haveI : Algebra.FinitePresentation ℚ (chRing ℚ x₂ c) := Algebra.FinitePresentation.of_finiteType.1 this`. Use `⟨?_, inferInstance⟩` and prove the remaining obligations. Rewrite using `[← Algebra.smoothLocus_eq_univ_iff]`. Use `Set.eq_univ_of_forall fun P => ?_` and prove the remaining obligations.
+
+Conclude with `formallySmooth_atPrime tie₁ tie₂ dom sm iso hc P.asIdeal`.
+-/
 theorem smooth_chRing {κ₁ κ₂ : Type} [Finite κ₂] {x₁ : κ₁ → Ω} {x₂ : κ₂ → Ω}
     {ξ₁ : Spec (CommRingCat.of Ω) ⟶ X₁} {ξ₂ : Spec (CommRingCat.of Ω) ⟶ X₂} {g : X₂ ⟶ X₁}
     (tie₁ : CoordTie ℤ ξ₁ x₁) (tie₂ : CoordTie ℤ ξ₂ x₂) (dom : Dominates ξ₂ ξ₁ g (RingHom.id Ω))
@@ -242,6 +331,15 @@ theorem smooth_chRing {κ₁ κ₂ : Type} [Finite κ₂] {x₁ : κ₁ → Ω} 
   refine Set.eq_univ_of_forall fun P => ?_
   exact formallySmooth_atPrime tie₁ tie₂ dom sm iso hc P.asIdeal
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨k, i⟩, rfl⟩`. Use `Algebra.subset_adjoin ⟨Function.update c k i, ?_⟩` and prove the remaining obligations. Use `show (∏ k', y ⟨k', Function.update c k i k'⟩) / (∏ k', y ⟨k', c k'⟩) = y ⟨k, i⟩ / y ⟨k, c k⟩`.
+
+Rewrite using `[← Finset.prod_div_distrib, Finset.prod_eq_single k]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[Function.update_of_ne hb, div_self (hc b)]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ k) h`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨c', rfl⟩`. Use `show (∏ k, y ⟨k, c' k⟩) / (∏ k, y ⟨k, c k⟩) ∈ _`. Rewrite using `[← Finset.prod_div_distrib]`.
+
+Conclude with `Subalgebra.prod_mem _ fun k _ => Algebra.subset_adjoin ⟨⟨k, c' k⟩, rfl⟩`.
+-/
 theorem adjoin_blocks_eq {K : Type} [Fintype K] {J : K → Type} (y : (Σ k, J k) → Ω) (c : (k : K) → J k)
     (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) :
     Algebra.adjoin ℚ (Set.range fun p : Σ k, J k => y p / y ⟨p.1, c p.1⟩) =
@@ -266,6 +364,11 @@ theorem adjoin_blocks_eq {K : Type} [Fintype K] {J : K → Type} (y : (Σ k, J k
 
 end Main
 
+/- English proof (translation)
+Introduce `Ω _ _ K₁ _ J₁ _ y₁ K₂ _ J₂ _ y₂ X₁ X₂ ξ₁ ξ₂ g _ _ t₁ t₂ dom sm iso c hc`. Establish `hne : (∏ k, y₂ ⟨k, c k⟩) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => hc k`. Rewrite using `[adjoin_blocks_eq y₂ c hc]`. Use `smooth_chRing t₁ t₂ dom (fun c' hc' => ?_) iso hne` and prove the remaining obligations. Establish `hc'' : ∀ k, y₁ ⟨k, c' k⟩ ≠ 0` using `fun k => Finset.prod_ne_zero_iff.1 hc' k (Finset.mem_univ k)`.
+
+Establish `h` using `sm c' hc''`. Rewrite `h` using `[adjoin_blocks_eq y₁ c' hc'']`. Conclude with `h.formallySmooth`.
+-/
 theorem smoothGenericFibreM_of_isoAt : ∀ (Ω : Type) [Field Ω] [CharZero Ω] (K₁ : Type) [Fintype K₁] (J₁ : K₁ → Type) [∀ k, Fintype (J₁ k)] (y₁ : (Σ k, J₁ k) → Ω) (K₂ : Type) [Fintype K₂] (J₂ : K₂ → Type) [∀ k, Fintype (J₂ k)] (y₂ : (Σ k, J₂ k) → Ω) (X₁ X₂ : Scheme.{0}) (ξ₁ : Spec (CommRingCat.of Ω) ⟶ X₁) (ξ₂ : Spec (CommRingCat.of Ω) ⟶ X₂) (g : X₂ ⟶ X₁), (∀ q : X₁, GlobalTheory.CompanionTheory.Ar.genPt ξ₁ ⤳ q) → (∀ q : X₂, GlobalTheory.CompanionTheory.Ar.genPt ξ₂ ⤳ q) → CoordTie ℤ ξ₁ (fun c' : (k : K₁) → J₁ k => ∏ k, y₁ ⟨k, c' k⟩) → CoordTie ℤ ξ₂ (fun c' : (k : K₂) → J₂ k => ∏ k, y₂ ⟨k, c' k⟩) → GlobalTheory.CompanionTheory.Ar.Dominates ξ₂ ξ₁ g (RingHom.id Ω) → SmoothGenericFibreM y₁ → (∀ q ∈ genFib ξ₁, IsoAt ξ₂ g (RingHom.id Ω) q) → SmoothGenericFibreM y₂ := by
   intro Ω _ _ K₁ _ J₁ _ y₁ K₂ _ J₂ _ y₂ X₁ X₂ ξ₁ ξ₂ g _ _ t₁ t₂ dom sm iso c hc
   have hne : (∏ k, y₂ ⟨k, c k⟩) ≠ 0 := Finset.prod_ne_zero_iff.2 fun k _ => hc k

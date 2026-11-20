@@ -13,6 +13,9 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 variable {Φ : Type} [Field Φ] {y : (Σ k, ι k) → Φ} {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N j : ℕ}
 
+/- English proof (translation)
+Simplify using `only [FlagModel.wCo, Matrix.single_zero, add_zero, mul_one]`. Rewrite using `[M.y_step p k₀ hk m, map_sum]`. Conclude with `Finset.sum_congr rfl fun I _ => by rw [map_mul, CPts.minorIJ_map]`.
+-/
 theorem wCo_zero (M : FlagModel y Ψ N j) {p : Ψ × Fin N} {k₀ : K} (hk : M.blk p = some k₀) (ca cb : Fin N)
     (m : ι k₀) : M.wCo p k₀ ca cb 0 ⟨none, m⟩ = M.wCo p k₀ ca cb 0 ⟨some k₀, m⟩ := by
   simp only [FlagModel.wCo, Matrix.single_zero, add_zero, mul_one]

@@ -14,6 +14,23 @@ open GlobalTheory.PowGerm
 
 namespace GlobalTheory.LinkEps
 
+/- English proof (translation)
+Introduce `E _ _ _ H V _ _ t d FT act ph1 ph2 sy ad tg xT eT wPT hch _ _ htr j hj`. Establish `hL` using `t.PP.isLB`. Establish `hi0 : (e0 t (𝟙 (Sp V))) ⁻¹ᵁ t.PP.L.U j = ⊤`. Use `top_unique fun y _ => ?_` and prove the remaining obligations. Conclude with `hj (x := (toUnit (overAt (𝟙 (Sp V)) V)).left y) trivial`.
+
+Establish `hW : ∀ m, LB.wchart t.PP.L (cφG t ![jptG t (𝟙 (Sp V)) d xT m (0 : Fin 2), jptG t (𝟙 (Sp V)) d xT m (1 : Fin 2)]) (fun _ => j) = ⊤` using `fun m => wchart_top t (𝟙 (Sp V)) d j hi0 _ fun i => by`. Rewrite using `[vec2 (fun i => jptG t (𝟙 (Sp V)) d xT m i)]`. Conclude with `jpt_aug hch m i`. Establish `hU : ∀ m, ∃ u : Γ((jOG (𝟙 (Sp V)) d m 2).left, ⊤), ∀ (Z : Scheme.{0}) (r : Z ⟶ (jOG (𝟙 (Sp V)) d m 2).left) (z : Z) (J : (Z ⟶ t.G.left) → t.PP.L.ι), (∀ I, J (r ≫ cφG t ![jptG t (𝟙 (Sp V)) d xT m (0 : Fin 2), jptG t (𝟙 (Sp V)) d xT m (1 : Fin 2)] I) = j) → (val (eT m) r z J).val = …`. Introduce `m`.
+
+Use `⟨((jOG (𝟙 (Sp V)) d m 2).left.presheaf.map (homOfLE (hW m).ge).op).hom ((eT m).s (fun _ => j)).val, fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Conclude with `(congrArg Units.val (val_of (eT m) r z J (fun _ => j) hJ)).trans ((gs_unit r z _ ((hW m).ge trivial) _).symm.trans (gs_res r z (hW m).ge trivial _).symm)`. Use `choose U hU using hU`. Establish `hUc : ∀ m, U m = (ρn (𝟙 (Sp V)) d 2 m).left.appTop.hom (U (m + 1))`. Introduce `m`.
+
+Use `fn_ext (V := ⊤) fun y _ => ?_` and prove the remaining obligations. Take `⟨J, hJ, hJi⟩` from `exists_good t.PP.L hL y (cφG t ![jptG t (𝟙 (Sp V)) d xT m (0 : Fin 2), jptG t (𝟙 (Sp V)) d xT m (1 : Fin 2)]) (fun _ => j) (fun _ _ _ => rfl) (fun I => Set.mem_iInter.1 ((hW m).ge (Set.mem_univ y)) I)`. Establish `hmor : ∀ I : ULift (Finset (Fin 2)), (𝟙 _ ≫ (ρn (𝟙 (Sp V)) d 2 m).left) ≫ cφG t ![jptG t (𝟙 (Sp V)) d xT (m + 1) (0 : Fin 2), jptG t (𝟙 (Sp V)) d xT (m + 1) (1 : Fin 2)] I = cφG t ![jptG t (𝟙 (Sp V)) d xT m (0 : Fin 2), jptG t (𝟙 (Sp V)) d xT m (1 : Fin 2)] I`. Introduce `I`. Rewrite using `[Category.id_comp, vec2 (fun i => jptG t (𝟙 (Sp V)) d xT (m + 1) i), vec2 (fun i => jptG t (𝟙 (Sp V)) d xT m i)]`.
+
+Simplify using `only [cφG, ← Over.comp_left]`. Use `congrArg Over.Hom.left ((psum_hom (preHom _) _ I.down).trans ?_)` and prove the remaining obligations. Conclude with `congrArg (fun f => psum t.G f I.down) (funext fun i => jpt_trunc hch m i)`. Establish `e0'` using `hU m _ (𝟙 _) y J (fun I => (congrArg J (Category.id_comp _)).trans (hJi I))`. Establish `e1` using `hU (m + 1) _ (𝟙 _ ≫ (ρn (𝟙 (Sp V)) d 2 m).left) y J (fun I => (congrArg J (hmor I)).trans (hJi I))`.
+
+Establish `e2` using `(val_pull hJ (eT (m + 1)) _ _).symm.trans (val_corr hJ (htr m) (𝟙 _))`. Establish `e3` using `gs_pull (𝟙 _) (ρn (𝟙 (Sp V)) d 2 m).left y ⊤ trivial (U (m + 1))`. Conclude with `e0'.symm.trans ((congrArg Units.val e2).symm.trans (e1.trans e3.symm))`. Use `choose a ha using fun m => (⟨_, congrArg (fun f => CommRingCat.Hom.hom f (U m)) (Iso.hom_inv_id (Scheme.ΓSpecIso (CommRingCat.of (Jet V (Fin 2 × Fin d) m))))⟩ : ∃ b, toΓ (Jet V (Fin 2 × Fin d) m) b = U m)`. Establish `hac : ∀ m, (jetTrunc : Jet V (Fin 2 × Fin d) (m + 1) →ₐ[V] _) (a (m + 1)) = a m`.
+
+Introduce `m`. Apply `toΓ_injective` to reduce the goal to its premises. Rewrite using `[ha m, hUc m, ← ha (m + 1)]`. Conclude with `congrArg (fun f => CommRingCat.Hom.hom f (a (m + 1))) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom ((jetTrunc : Jet V (Fin 2 × Fin d) (m + 1) →ₐ[V] _) : Jet V (Fin 2 × Fin d) (m + 1) →+* Jet V (Fin 2 × Fin d) m)))`. Take `⟨f, hf⟩` from `exists_ps_of_jets a hac`.
+
+Use `⟨f, fun m y J _ hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[hf m, ha m]`. Conclude with `hU m _ (𝟙 _) y J hJ`.
+-/
 theorem linkEps : LinkEpsSt := by
   intro E _ _ _ H V _ _ t d FT act ph1 ph2 sy ad tg xT eT wPT hch _ _ htr j hj
   have hL := t.PP.isLB

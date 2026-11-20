@@ -19,6 +19,11 @@ namespace GlobalTheory.VacSecondPf
 
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite using `[eq_bot_iff, latO, AddSubgroup.closure_le]`. Introduce and unpack `w ⟨α, -, hα, a, -, s, -, t, -, rfl⟩`. Establish `h0 : α = 0`. Use extensionality with `v : 1`. Conclude with `hα v (hP v)`.
+
+Substitute `h0` using the available equality. Rewrite using `[SetLike.mem_coe, AddSubgroup.mem_bot]`. Establish `hp : pairA D.host.F 0 0 = 0` using `rfl`. Use extensionality with `i j`. Simplify using `[hp]`.
+-/
 theorem latO_of_none (S T : HSp D) (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E))
     (P : Pl D → Prop) (hP : ∀ v, ¬ P v) : latO S T LS LT P = ⊥ := by
   rw [eq_bot_iff, latO, AddSubgroup.closure_le]
@@ -32,10 +37,24 @@ theorem latO_of_none (S T : HSp D) (LS : Set (Fin S.rank → D.host.E)) (LT : Se
   ext i j
   simp [hp]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Simplify using `[heisO, symplOH, symplO, hO]`.
+-/
 theorem heisO_zero (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (f : WO S T → ℂ) : heisO ψ S T 0 f = f := by
   funext w
   simp [heisO, symplOH, symplO, hO]
 
+/- English proof (translation)
+Introduce `D ψ σ J B s LV LV₀ LW LW₀ P hP f hf h₁ hh₁ h₂ hh₂`. Establish `hflat : ∀ Q : Pl D → Prop, IsFlatFB s Q (flatFB s)` using `fun Q => (GlobalTheory.T.flatMapsSatisfyFlatLaws_finitePlaces D ψ Q).2 σ J B s`. Establish `htheta : IsThetaFunO ψ J.W B.V (s.om (h₁, h₂) f)` using `s.weil.om_pres _ _ hf.1`. Establish `hth0 : IsThetaFunO ψ J.W₀ B.V₀ (flatFB s (s.om (h₁, h₂) f))` using `(hflat P).Heisenberg₂.theta _ htheta`. Distinguish the cases in `hne : ∃ v, P v`.
+
+Take `⟨v₀, hv₀⟩` from `hne`. Establish `a₀` using `(hP v₀ hv₀).1`. Establish `hT : ∀ v, P v → Tame D v` using `fun v hv => (hP v hv).1.tame`. Establish `L1` using `GlobalTheory.T.latticeVacuum_iff_placewise D ψ J.W B.V s.χV s.χW s.om s.weil LV LW a₀.sdV a₀.sdW P hT`. Establish `L0` using `GlobalTheory.T.latticeVacuum_iff_placewise D ψ J.W₀ B.V₀ s.χV s.χW s.om₀ s.weil₀ LV₀ LW₀ a₀.sdV₀ a₀.sdW₀ P hT`.
+
+Establish `hg : Vac ψ J.W B.V LV LW P (s.om (h₁, h₂) f)` using `(L1 f).2.1 hf h₁ hh₁ h₂ hh₂`. Establish `hgv` using `((L1 _).1.mp hg).2`. Use `(L0 _).1.mpr ⟨hth0, fun v hv => ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.T.jacobiToBesselFlatMapSupport_proof D ψ σ J B s LV LV₀ LW LW₀ v (hP v hv).1 (hP v hv).2 (flatFB s) (hflat (· = v)) ((GlobalTheory.T.flatMaps_heisenbergTranslation_law D ψ (· = v)).2 σ J B s) _ (hgv v hv)).1`. Use `push_neg at hne`.
+
+Establish `hbot` using `latO_of_none J.W₀ B.V₀ (LV₀ : Set _) (LW₀ : Set _) P hne`. Use `⟨hth0, ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu`. Rewrite `hu` using `[hbot, AddSubgroup.mem_bot]`. Substitute `hu` using the available equality.
+
+Rewrite using `[two_nsmul, add_zero, heisO_zero]`. Introduce `e _ u hu _`. Rewrite `hu` using `[hbot, AddSubgroup.mem_bot]`. Substitute `hu` using the available equality. Rewrite using `[heisO_zero]`.
+-/
 theorem vac_second : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (σ : ℕ) (J : JacLev D (σ + 1)) (B : BesLev D σ) (s : StepFB ψ J B) (LV : Lat J.W) (LV₀ : Lat J.W₀) (LW : Lat B.V) (LW₀ : Lat B.V₀) (P : Pl D → Prop), (∀ v, P v → AdaptFB ψ J B LV LV₀ LW LW₀ v ∧ UnrAt s v) → ∀ f, Vac ψ J.W B.V LV LW P f → ∀ h₁ ∈ grpOff J.W P, ∀ h₂ ∈ grpOff B.V P, Vac ψ J.W₀ B.V₀ LV₀ LW₀ P (flatFB s (s.om (h₁, h₂) f)) := by
   intro D ψ σ J B s LV LV₀ LW LW₀ P hP f hf h₁ hh₁ h₂ hh₂
   have hflat : ∀ Q : Pl D → Prop, IsFlatFB s Q (flatFB s) := fun Q => (GlobalTheory.T.flatMapsSatisfyFlatLaws_finitePlaces D ψ Q).2 σ J B s

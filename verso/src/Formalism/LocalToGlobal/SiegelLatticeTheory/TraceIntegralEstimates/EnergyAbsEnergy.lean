@@ -19,6 +19,11 @@ variable {HH : Type} [NormedAddCommGroup HH] [InnerProductSpace ℂ HH] [Complet
 variable {V V' : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V]
   [NormedAddCommGroup V'] [InnerProductSpace ℂ V'] [FiniteDimensional ℂ V']
 
+/- English proof (translation)
+Establish `hc : ∀ a : HH, Continuous (fun g => σ g a)` using `hσ.2.2.2`. Unfold `hsA Xop sand`. Use `continuous_finsetSum _ fun i _ => ?_` and prove the remaining obligations. Use `(continuous_norm.comp ?_).pow 2` and prove the remaining obligations. Simplify using `only [FunLike.coe_smul, Pi.smul_apply, ContinuousLinearMap.comp_apply]`.
+
+Conclude with `((ContinuousLinearMap.adjoint _).continuous.comp (hc _)).const_smul _`.
+-/
 theorem continuous_hsA_Xop {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) (μS ν μS' ν' : Measure G) (d : ℝ)
     (w : HH) (W : G → V) (W' : G → V') (A A' : Set G) :
     Continuous (fun g => hsA (Xop μS ν μS' ν' σ d w W W' A A' g)) := by
@@ -29,6 +34,11 @@ theorem continuous_hsA_Xop {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) (
   simp only [FunLike.coe_smul, Pi.smul_apply, ContinuousLinearMap.comp_apply]
   exact ((ContinuousLinearMap.adjoint _).continuous.comp (hc _)).const_smul _
 
+/- English proof (translation)
+Establish `hd : 0 < d` using `hSch.1`. Establish `h1 : ∀ g, ENNReal.ofReal (hsA (Xop μS ν μS' ν' σ d w W W' A A' g)) = ENNReal.ofReal (d ^ 2) * ENNReal.ofReal (hsA (sand σ (Yop μS ν σ w W A) (Yop μS' ν' σ w W' A') g))`. Introduce `g`. Rewrite using `[Xop, hsA_smul, Complex.norm_real, Real.norm_eq_abs, sq_abs, ENNReal.ofReal_mul (sq_nonneg d)]`. Repeatedly rewrite using `[h1]`.
+
+Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, lintegral_hsA_sand hSch, ← ENNReal.ofReal_mul (sq_nonneg d)]`. Use `congr 1`. Simplify using `only [Yop_apply_basis]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem lintegral_hsA_Xop {μ : Measure G} {σ : G → (HH →L[ℂ] HH)} {d : ℝ} (hSch : IsSchur μ σ d)
     (μS ν μS' ν' : Measure G) (w : HH) (W : G → V) (W' : G → V') (A A' : Set G) :
     ∫⁻ g, ENNReal.ofReal (hsA (Xop μS ν μS' ν' σ d w W W' A A' g)) ∂μ =
@@ -47,6 +57,13 @@ theorem lintegral_hsA_Xop {μ : Measure G} {σ : G → (HH →L[ℂ] HH)} {d : �
   simp only [Yop_apply_basis]
   field_simp
 
+/- English proof (translation)
+Establish `key : ∀ n, (a n * b n)⁻¹ * ENNReal.ofReal (d * N n * N' n) = ENNReal.ofReal (d * (N n / (a n).toReal) * (N' n / (b n).toReal))`. Introduce `n`. Take `⟨ha0, hat⟩` from `ha n`. Take `⟨hb0, hbt⟩` from `hb n`. Establish `ha' : 0 < (a n).toReal` using `ENNReal.toReal_pos ha0.ne' hat.ne`.
+
+Establish `hb' : 0 < (b n).toReal` using `ENNReal.toReal_pos hb0.ne' hbt.ne`. Establish `hab : (a n * b n)⁻¹ = ENNReal.ofReal (((a n).toReal * (b n).toReal)⁻¹)`. Rewrite using `[ENNReal.ofReal_inv_of_pos (mul_pos ha' hb'), ← ENNReal.toReal_mul, ENNReal.ofReal_toReal (ENNReal.mul_ne_top hat.ne hbt.ne)]`. Rewrite using `[hab, ← ENNReal.ofReal_mul (inv_nonneg.mpr (mul_pos ha' hb').le)]`. Use `congr 1`.
+
+Clear the denominators using the available nonvanishing facts. Repeatedly rewrite using `[key]`. Apply `ENNReal.tendsto_ofReal` to reduce the goal to its premises. Establish `hlim` using `(hN.const_mul d).mul hN'`. Rewrite `hlim` using `[show d * (1 / d) * (1 / d) = 1 / d by field_simp]`. Then use the resulting hypothesis.
+-/
 theorem tendsto_energy {d : ℝ} (hd : 0 < d) {a b : ℕ → ℝ≥0∞} (ha : ∀ n, 0 < a n ∧ a n < ⊤)
     (hb : ∀ n, 0 < b n ∧ b n < ⊤) {N N' : ℕ → ℝ}
     (hN : Tendsto (fun n => N n / (a n).toReal) atTop (𝓝 (1 / d)))

@@ -171,14 +171,25 @@ def SiegelWeil (D : D7) : Prop :=
   ∀ (n m : ℕ) (T : Matrix (Fin m) (Fin m) D.host.E), IsHermND D.sp.cm.sig T →
     n < m → m ≤ 2 * n → n + wittIdx T < m → FormulaFor n T
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨m, by rintro _ ⟨W, -, rfl⟩; simpa using W.finrank_le⟩`.
+-/
 theorem bddAbove_witt {m : ℕ} (T : Matrix (Fin m) (Fin m) D.host.E) :
     BddAbove {r | ∃ W : Submodule D.host.E (Fin m → D.host.E),
       (∀ x ∈ W, ∀ y ∈ W, hE D.sp.cm.sig T x y = 0) ∧ Module.finrank D.host.E W = r} :=
   ⟨m, by rintro _ ⟨W, -, rfl⟩; simpa using W.finrank_le⟩
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[upperLeft, blocks]`.
+-/
 theorem upperLeft_blocks {R : Type} {n : ℕ} (a b c d : Matrix (Fin n) (Fin n) R) : upperLeft (blocks a b c d) = a := by
   ext i j; simp [upperLeft, blocks]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(mat g).BlockTriangular _`. Rewrite using `[h]`. Introduce `i j hij`. Take `⟨i, rfl⟩` from `finSumFinEquiv.surjective i`. Take `⟨j, rfl⟩` from `finSumFinEquiv.surjective j`.
+
+Simplify using `only [blocks, Matrix.submatrix_apply, Equiv.symm_apply_apply]`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> simp [blockIdx] at hij ⊢`.
+-/
 theorem mem_siegel_of_blocks {n : ℕ} {g : GG D n} {a b d : Mx D n n} (h : mat g = blocks a b 0 d) : g ∈ siegel D n := by
   change (mat g).BlockTriangular _
   rw [h]
@@ -188,6 +199,9 @@ theorem mem_siegel_of_blocks {n : ℕ} {g : GG D n} {a b d : Mx D n n} (h : mat 
   simp only [blocks, Matrix.submatrix_apply, Equiv.symm_apply_apply]
   rcases i with i | i <;> rcases j with j | j <;> simp [blockIdx] at hij ⊢
 
+/- English proof (translation)
+Simplify using `[sect]`.
+-/
 example {θ : InfFam D} {m n : ℕ} {T : Matrix (Fin m) (Fin m) D.host.E} (α : GG D n → ℝ≥0) (ω : Rep θ n T)
     (Φ : Sch θ m n) (g : GG D n) : sect α ω Φ (s0 m n) g = (ω (g, 1) Φ).1 0 := by simp [sect]
 

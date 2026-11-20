@@ -17,6 +17,11 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 
 namespace GlobalTheory.FlagExist
 
+/- English proof (translation)
+Introduce `B ι _ E r hE`. Use `GlobalTheory.T.flag_bundle_glues_from_cover B ι E r hE fun x => ?_` and prove the remaining obligations. Take `⟨U, hx, hU⟩` from `GlobalTheory.T.vector_bundle_local_trivial B ι E r hE x`. Establish `e` using `fun a => Classical.choice (hU a)`. Take `⟨Y, π, fl, h⟩` from `GlobalTheory.T.universal_flag_bundle_exists ι r`.
+
+Set `g : U.toScheme ⟶ Sp ℤ` to `U.toScheme.toSpecΓ ≫ Spec.map (CommRingCat.ofHom (Int.castRingHom _))`. Establish `h1` using `GlobalTheory.T.isFlagBundle_pullback' _ _ _ π g ι _ r fl h`. Establish `f` using `fun a => Classical.choice (GlobalTheory.T.pullback_free_module_iso U.toScheme (Sp ℤ) g (r a))`. Conclude with `⟨U, hx, _, _, _, GlobalTheory.T.flag_bundle_transport_along_iso _ _ _ ι _ (fun a => (Scheme.Modules.pullback U.ι).obj (E a)) r _ (fun a => f a ≪≫ (e a).symm) h1⟩`.
+-/
 theorem main : ∀ (B : Scheme.{0}) (ι : Type) [Fintype ι] (E : ι → B.Modules) (r : ι → ℕ), (∀ a, GlobalTheory.VB.IsVB (E a) (r a)) → ∃ (Y : Scheme.{0}) (π : Y ⟶ B) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)), IsFlagBundle π E r fl := by
   intro B ι _ E r hE
   refine GlobalTheory.T.flag_bundle_glues_from_cover B ι E r hE fun x => ?_

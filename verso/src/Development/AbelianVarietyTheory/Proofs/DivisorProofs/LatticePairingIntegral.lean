@@ -9,5 +9,8 @@ open ReciprocityTheory.DiscreteGroups.LocalClassField
 open scoped TensorProduct
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | (exact @GlobalTheory.LKGeo.formInt_laHat) | (exact GlobalTheory.LKGeo.formInt_laHat) | (intros; apply GlobalTheory.LKGeo.formInt_laHat <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.lattice_pairing_integral : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (v w : AfP p ⊗[ℚ] VQ D), v ∈ LaHat D → w ∈ LaHat D → IsIntAf ((D.EF.baseChange ℚ).baseChange (AfP p) v w) := by
   first | (exact @GlobalTheory.LKGeo.formInt_laHat) | (exact GlobalTheory.LKGeo.formInt_laHat) | (intros; apply GlobalTheory.LKGeo.formInt_laHat  <;> assumption)

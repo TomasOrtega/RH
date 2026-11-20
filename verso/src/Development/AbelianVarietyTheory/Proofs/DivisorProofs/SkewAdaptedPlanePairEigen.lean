@@ -19,6 +19,11 @@ namespace GlobalTheory.EvZeroUniqOfHyp
 
 open scoped Classical
 
+/- English proof (translation)
+Introduce `g _`. Use `⟨g 0 • (BoundedContinuousFunction.evalCLM ℂ 0).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ (κ → mixedEmbedding.mixedSpace F) ℂ), fun f => ?_⟩` and prove the remaining obligations. Establish `h1 : (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F ((0 : κ → AF F) i).1) = 0`. Use function extensionality and compare the values at `i`. Conclude with `map_zero _`.
+
+Establish `h2 : (fun i => ((0 : κ → AF F) i).2) = 0` using `rfl`. Use `show pureA F f g 0 = _`. Rewrite using `[pureA, h1, h2]`. Simplify using `[mul_comm]`.
+-/
 theorem proj_zero_mem_adm (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] :
     (LinearMap.proj (R := ℂ) (φ := fun _ : (κ → AF F) => ℂ) 0) ∈ (adeleClass F).adm κ := by
   intro g _
@@ -32,6 +37,11 @@ theorem proj_zero_mem_adm (F : Type) [Field F] [NumberField F] (κ : Type) [Fint
   rw [pureA, h1, h2]
   simp [mul_comm]
 
+/- English proof (translation)
+Establish `h2` using `GlobalTheory.T.addCharDotMul_mem_adelicSchwartzSpace ψ hψ w.2 _ (GlobalTheory.SchwartzTranslate.main F κ w.1 Φ hΦ)`. Establish `: schr ψ w Φ = ψ (⅟(2 : AF F) * (w.1 ⬝ᵥ w.2)) • (fun x => ψ (x ⬝ᵥ w.2) * Φ (x + w.1))`. Use function extensionality and compare the values at `x`. Simplify using `only [schr, Pi.smul_apply, smul_eq_mul, AddChar.map_add_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ h2`.
+-/
 theorem schr_mem_schA {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) {κ : Type} [Fintype κ]
     (w : (κ → AF F) × (κ → AF F)) {Φ : (κ → AF F) → ℂ} (hΦ : Φ ∈ schA F κ) : schr ψ w Φ ∈ schA F κ := by
   have h2 := GlobalTheory.T.addCharDotMul_mem_adelicSchwartzSpace ψ hψ w.2 _ (GlobalTheory.SchwartzTranslate.main F κ w.1 Φ hΦ)
@@ -42,16 +52,27 @@ theorem schr_mem_schA {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) 
   rw [this]
   exact Submodule.smul_mem _ _ h2
 
+/- English proof (translation)
+Simplify using `[Darboux.rho, schr]`.
+-/
 theorem apply_eq_rho {F : Type} [Field F] [NumberField F] {W : Type} [AddCommGroup W] [Module (AF F) W]
     {Bf : W → W → AF F} {κ : Type} [Fintype κ] (dc : Darboux Bf κ) (ψ : AddChar (AF F) ℂ) (f : (κ → AF F) → ℂ)
     (x : κ → AF F) : f x = dc.rho ψ (dc.e.symm (x, 0)) f 0 := by
   simp [Darboux.rho, schr]
 
+/- English proof (translation)
+Simplify using `[Darboux.rho, schr, hz]`.
+-/
 theorem rho_apply_zero {F : Type} [Field F] [NumberField F] {W : Type} [AddCommGroup W] [Module (AF F) W]
     {Bf : W → W → AF F} {κ : Type} [Fintype κ] (dc : Darboux Bf κ) (ψ : AddChar (AF F) ℂ) (f : (κ → AF F) → ℂ)
     (z : W) (hz : (dc.e z).1 = 0) : dc.rho ψ z f 0 = f 0 := by
   simp [Darboux.rho, schr, hz]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH' hP₁ l l' hl hl' hu hz hne`. Establish `hstd : IsStd B.ψ` using `hP.base.std`. Take `⟨L, hiso, hdim, hL⟩` from `GlobalTheory.T.skew_adapted_pair_restriction_theta F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH' hP₁`. Establish `hρ : ∀ u, ∀ Φ ∈ schA F (Fin n × Fin d), M.co.rho B.ψ u Φ ∈ schA F (Fin n × Fin d)` using `fun u Φ hΦ => schr_mem_schA _ hstd _ hΦ`. Use `GlobalTheory.T.adelicStoneVonNeumann_lagrangian_uniqueness F B.ψ hstd (Fin n × Fin d) L hiso hdim l hl l' hl' (fun t w hw φ hφ => ?_) (fun t w hw φ hφ => ?_) hne` and prove the remaining obligations.
+
+Take `⟨u, hu0, z, hz0, he⟩` from `hL t w hw`. Rewrite using `[he, (hu u hu0 _ (hρ _ φ hφ)).1, (hz z hz0 φ hφ).1]`. Take `⟨u, hu0, z, hz0, he⟩` from `hL t w hw`. Rewrite using `[he, (hu u hu0 _ (hρ _ φ hφ)).2, (hz z hz0 φ hφ).2]`.
+-/
 theorem uniqB : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
     ∀ (d₁ : ℕ) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ) (M₁ : Model σ X W₁) (om₁ : Rep σ X W₁) (r₁ s₁ : ℕ),
@@ -73,12 +94,26 @@ theorem uniqB : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberFiel
   · obtain ⟨u, hu0, z, hz0, he⟩ := hL t w hw
     rw [he, (hu u hu0 _ (hρ _ φ hφ)).2, (hz z hz0 φ hφ).2]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.eigen_intertwiner_extension`.
+-/
 theorem evNe : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d n₁ d₁ : ℕ)
     (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (W₁ : Spc F E d₁) (M : Model σ X W) (M₁ : Model σ X₁ W₁)
     (ι : Matrix (Fin n) (Fin n₁) E) (ι' : Matrix (Fin d) (Fin d₁) E) (I : Set (Matrix (Fin n) (Fin d) (AE F E)))
     (e : Fn F n d →ₗ[ℂ] Fn F n₁ d₁), M.IsGood B.ψ → M₁.IsGood B.ψ → IsEv B M M₁ ι ι' I e →
       ∃ Φ ∈ schA F (Fin n × Fin d), e Φ ≠ 0 := GlobalTheory.T.eigen_intertwiner_extension
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH' hP₁ e he S _ hSheis hSinv hSadm`. Establish `hstd : IsStd B.ψ` using `hP.base.std`. Set `δ : Fn F n d₁ →ₗ[ℂ] ℂ` to `LinearMap.proj 0`. Establish `hδ : δ ∈ (adeleClass F).adm (Fin n × Fin d₁)` using `proj_zero_mem_adm F _`. Establish `hρ : ∀ u, ∀ Φ ∈ schA F (Fin n × Fin d), M.co.rho B.ψ u Φ ∈ schA F (Fin n × Fin d)` using `fun u Φ hΦ => schr_mem_schA _ hstd _ hΦ`.
+
+Establish `hδe : ∀ (f : Fn F n d₁) x, f x = δ (M₁.co.rho B.ψ (M₁.co.e.symm (x, 0)) f)` using `fun f x => apply_eq_rho _ _ f x`. Establish `hfix : ∀ z, (M₁.co.e z).1 = 0 → ∀ f : Fn F n d₁, δ (M₁.co.rho B.ψ z f) = δ f` using `fun z hz f => rho_apply_zero _ _ f z hz`. Take `⟨Φ₀, hΦ₀, hne⟩` from `evNe F E σ B n d n d₁ X W X W₁ M M₁ 1 H'.ι (iso0 n H') e hP.good hP₁.good he`. Choose the witnesses or unpack the hypotheses as in `⟨x₀, hx₀⟩ : ∃ x, e Φ₀ x ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+
+Use `push_neg at h`. Conclude with `hne (funext h)`. Take `⟨c, hc⟩` from `uniqB F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH' hP₁ (δ ∘ₗ S) (δ ∘ₗ e) (hSadm δ hδ) (GlobalTheory.T.eigen_intertwiner_good_models F E σ B n d n d₁ X W X W₁ M M₁ 1 H'.ι (iso0 n H') e hP.good hP₁.good he δ hδ) (fun u hu Φ hΦ => ⟨by simp only [LinearMap. …`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[he.Heisenberg₂ _ Φ₀ hΦ₀, ← hδe]`.
+
+Conclude with `hx₀⟩`. Use `⟨c, fun Φ hΦ => funext fun x => ?_⟩` and prove the remaining obligations. Establish `h1` using `hc _ (hρ (incM F (1 : Matrix (Fin n) (Fin n) E) * M₁.co.e.symm (x, 0) * (incM F H'.ι)ᵀ) Φ hΦ)`. Simplify using `only [LinearMap.comp_apply] at h1`. Rewrite `h1` using `[hSheis _ Φ hΦ, he.Heisenberg₂ _ Φ hΦ, ← hδe, ← hδe]`.
+
+Simplify using `using h1`.
+-/
 theorem main : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
     ∀ (d₁ : ℕ) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ) (M₁ : Model σ X W₁) (om₁ : Rep σ X W₁) (r₁ s₁ : ℕ),

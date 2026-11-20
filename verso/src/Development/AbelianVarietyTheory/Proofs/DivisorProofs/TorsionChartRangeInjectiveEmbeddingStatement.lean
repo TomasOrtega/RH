@@ -15,5 +15,8 @@ open GlobalTheory.DeRham (spOver spOver_comp)
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.GroupBplus.Aff.PreChart.range_subset_of_generic | exact GlobalTheory.GroupBplus.Aff.PreChart.range_subset_of_generic | (intros; apply GlobalTheory.GroupBplus.Aff.PreChart.range_subset_of_generic <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.torsion_chart_range_injective_embedding : ∀ (R K : Type) [CommRing R] [Field K] [Algebra R K] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSeparated G.hom → ∀ (N : ℕ) (q : PrimeSpectrum R) (c : PreChart G N q) (B : Type) [CommRing B] [IsDomain B] [Algebra R B], IsUnit (algebraMap R B c.r) → ∀ (em : B →ₐ[R] K), Function.Injective em → ∀ z : Tors G N B, Set.range (torsMap em z).1.left ⊆ c.W → Set.range z.1.left ⊆ c.W := by
   first | exact @GlobalTheory.GroupBplus.Aff.PreChart.range_subset_of_generic | exact GlobalTheory.GroupBplus.Aff.PreChart.range_subset_of_generic | (intros; apply GlobalTheory.GroupBplus.Aff.PreChart.range_subset_of_generic <;> assumption)

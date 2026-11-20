@@ -7,6 +7,39 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 noncomputable section
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `l _ K LL _ _ O _ _ V _ _ _ _ _ _ _ _ lam n e f h1 h2 h3 ρ L`. Establish `hz : ∀ (z : ℤ_[l]) (v : V), z • v = ((z : ℚ_[l]) : ℚ_[l]) • v` using `fun z v => by`. Rewrite using `[← algebraMap_smul ℚ_[l] z v]`. Both sides reduce to the same expression. Establish `hdec : ∀ (a : LL) (t : V), a • t = ∑ i, lam (algebraMap O LL (f i) * a) • (e i • t)`.
+
+Introduce `a t`. Use `conv_lhs => rw [h3 a]`. Rewrite using `[Finset.sum_smul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_assoc, algebraMap_smul]`.
+
+Set `TZ : Submodule ℤ_[l] V` to `{ carrier := (L.T : Set V) add_mem' := fun ha hb => L.T.add_mem ha hb zero_mem' := L.T.zero_mem smul_mem' := by`. Introduce `z v hv`. Take `⟨o, ho⟩` from `h1 z`. Use `show z • v ∈ L.T`. Rewrite using `[hz, ← algebraMap_smul LL (z : ℚ_[l]) v, ← ho, algebraMap_smul]`.
+
+Conclude with `L.T.smul_mem o hv }`. Establish `hmem : ∀ v, v ∈ TZ ↔ v ∈ L.T` using `fun v => Iff.rfl`. Establish `hfg : TZ.FG`. Take `⟨S, hS⟩` from `L.fg`. Use `⟨Finset.image (fun p : Fin n × V => e p.1 • p.2) (Finset.univ ×ˢ S), ?_⟩` and prove the remaining obligations.
+
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce `x hx`. Simplify using `only [Finset.coe_image, Set.mem_image, Finset.coe_product, Set.mem_prod, Finset.coe_univ, Set.mem_univ, true_and, Finset.mem_coe] at hx`. Take `⟨⟨i, t⟩, ht, rfl⟩` from `hx`.
+
+Establish `: t ∈ L.T` using `hS ▸ Submodule.subset_span ht`. Conclude with `L.T.smul_mem (e i) this`. Introduce `x hx`. Establish `hx' : x ∈ Submodule.span O (S : Set V)` using `by rw [hS]; exact hx`. Take `⟨c, -, rfl⟩` from `(Submodule.mem_span_finset).1 hx'`.
+
+Use `Submodule.sum_mem _ fun t ht => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul LL (c t) t, hdec]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Take `⟨z, hz'⟩` from `h2 (f i * c t)`. Rewrite using `[← map_mul, hz', ← hz]`.
+
+Use `Submodule.smul_mem _ z (Submodule.subset_span ?_)` and prove the remaining obligations. Simplify using `only [Finset.coe_image, Set.mem_image, Finset.coe_product, Set.mem_prod, Finset.coe_univ, Set.mem_univ, true_and, Finset.mem_coe]`. Conclude with `⟨(i, t), ht, rfl⟩`. Establish `hfin : Module.Finite ℤ_[l] TZ` using `Module.Finite.iff_fg.mpr hfg`. Establish `htf : Module.IsTorsionFree ℤ_[l] TZ`.
+
+Rewrite using `[Module.isTorsionFree_iff_smul_eq_zero]`. Introduce `z x h`. Distinguish the cases in `hz0 : z = 0`. Conclude with `Or.inl hz0`. Use `right`.
+
+Establish `h' : ((z : ℚ_[l]) : ℚ_[l]) • (x : V) = 0`. Rewrite using `[← hz]`. Conclude with `congrArg Subtype.val h`. Establish `hq : (z : ℚ_[l]) ≠ 0` using `fun h0 => hz0 (PadicInt.coe_eq_zero.1 h0)`. Conclude with `Subtype.ext ((smul_eq_zero.1 h').resolve_left hq)`.
+
+Use `⟨{ T := TZ, stable := ?_, fg := hfg, free := ?_, span := ?_ }, hmem⟩` and prove the remaining obligations. Introduce `g x hx`. Conclude with `L.stable g x hx`. Conclude with `Module.free_of_finite_type_torsion_free'`. Set `W : Submodule LL V` to `{ carrier := (Submodule.span ℚ_[l] (TZ : Set V) : Set V) add_mem' := fun ha hb => Submodule.add_mem _ ha hb zero_mem' := Submodule.zero_mem _ smul_mem' := by`.
+
+Introduce `a x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem t ht => show a • t ∈ Submodule.span ℚ_[l] (TZ : Set V)`. Rewrite using `[hdec]`. Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ?_)` and prove the remaining obligations.
+
+Conclude with `L.T.smul_mem (e i) ht`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => show a • (x + y) ∈ Submodule.span ℚ_[l] (TZ : Set V)`. Rewrite using `[smul_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+
+Consider the case `smul q x _ hx => show a • (q • x) ∈ Submodule.span ℚ_[l] (TZ : Set V)`. Rewrite using `[← algebraMap_smul LL q x, smul_smul, mul_comm, ← smul_smul, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ q hx }`. Establish `hW : W = ⊤`. Rewrite using `[eq_top_iff, ← L.span, Submodule.span_le]`.
+
+Introduce `t ht`. Conclude with `Submodule.subset_span ht`. Rewrite using `[eq_top_iff]`. Introduce `v _`. Establish `: v ∈ W` using `hW ▸ Submodule.mem_top`.
+
+Conclude with `this`.
+-/
 theorem latticeZl_of_latticeO : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (LL : Type) [Field LL] [Algebra ℚ_[l] LL]
     (O : Type) [CommRing O] [Algebra O LL]
     (V : Type) [AddCommGroup V] [Module LL V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] LL V]

@@ -12,6 +12,9 @@ open GlobalTheory.PairTerm
 open Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PairTerm.finsum_vertNum_eq_sum_places | exact GlobalTheory.PairTerm.finsum_vertNum_eq_sum_places | (intros; apply GlobalTheory.PairTerm.finsum_vertNum_eq_sum_places <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.vertical_number_sum_over_places : ∀ (D : D7) (p : ℕ) [Fact p.Prime] (Y : Var D.what₂.LL) (V : Cover Y) (n : ℕ) (N : Fin n → HermLB V.p)
     (g : V.X → ℝ), (Function.support g).Finite →
     ∑ᶠ y, g y * vertNum p V n N y = (letI := Formalism.L2.Geo.finPl D p;

@@ -17,11 +17,21 @@ def spanAlg {Γ K : Type} [Group Γ] [Field K] {a : ℕ} (ρ : Γ →* GL (Fin a
       rintro _ ⟨_, ⟨g, rfl⟩, _, ⟨h, rfl⟩, rfl⟩
       exact ⟨g * h, by simp⟩)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_spanAlg {Γ K : Type} [Group Γ] [Field K] {a : ℕ} (ρ : Γ →* GL (Fin a) K)
     (x : Matrix (Fin a) (Fin a) K) :
     x ∈ spanAlg ρ ↔ x ∈ Submodule.span K
       (Set.range fun g => ((ρ g : GL (Fin a) K) : Matrix (Fin a) (Fin a) K)) := Iff.rfl
 
+/- English proof (translation)
+Establish `: IsArtinianRing (spanAlg ρ)` using `IsArtinianRing.of_finite K _`. Rewrite using `[IsArtinianRing.isSemisimpleRing_iff_jacobson, eq_bot_iff]`. Introduce `x hx`. Rewrite using `[Ideal.mem_bot]`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `h x.1 x.2 fun g => ?_` and prove the remaining obligations. Set `y : spanAlg ρ` to `⟨(ρ g : GL (Fin a) K), Submodule.subset_span ⟨g, rfl⟩⟩`. Establish `hxy : x * y ∈ Ring.jacobson (spanAlg ρ)` using `Ideal.mul_mem_right _ _ hx`. Take `⟨n, hn⟩ : IsNilpotent (Ring.jacobson (spanAlg ρ))` from `IsSemiprimaryRing.isNilpotent`. Establish `h1 : (x * y) ^ n = 0`.
+
+Use `Ideal.pow_mem_pow hxy n` as an intermediate fact. Rewrite `this` using `[hn]`. Simplify using `using this`. Establish `h2 : IsNilpotent ((x * y : spanAlg ρ) : Matrix (Fin a) (Fin a) K)` using `⟨n, by simpa using congrArg Subtype.val h1⟩`. Conclude with `(Matrix.isNilpotent_trace_of_isNilpotent h2).eq_zero`.
+-/
 theorem isSemisimpleRing_spanAlg {Γ K : Type} [Group Γ] [Field K] {a : ℕ}
     (ρ : Γ →* GL (Fin a) K)
     (h : ∀ x ∈ Submodule.span K
@@ -45,6 +55,19 @@ theorem isSemisimpleRing_spanAlg {Γ K : Type} [Group Γ] [Field K] {a : ℕ}
     ⟨n, by simpa using congrArg Subtype.val h1⟩
   exact (Matrix.isNilpotent_trace_of_isNilpotent h2).eq_zero
 
+/- English proof (translation)
+Introduce `Γ K _ _ a ρ h W hW`. Use `isSemisimpleRing_spanAlg ρ h` as an intermediate fact. Set `f : spanAlg ρ →+* Module.End K (Fin a → K)` to `((Matrix.toLinAlgEquiv' (R := K) (n := Fin a)).toAlgHom.comp (spanAlg ρ).val).toRingHom`. Set `: Module (spanAlg ρ) (Fin a → K)` to `Module.compHom _ f`. Establish `hW' : ∀ x ∈ Submodule.span K (Set.range fun g => ((ρ g : GL (Fin a) K) : Matrix (Fin a) (Fin a) K)), ∀ v ∈ W, x.mulVec v ∈ W`.
+
+Introduce `x hx v hv`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨g, rfl⟩ := hx`. Conclude with `hW g v hv`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy => rw [Matrix.add_mulVec]`. Conclude with `W.add_mem hx hy`. Consider the case `smul c x _ hx => rw [Matrix.smul_mulVec]`. Conclude with `W.smul_mem c hx`. Set `U : Submodule (spanAlg ρ) (Fin a → K)` to `{ toAddSubmonoid := W.toAddSubmonoid smul_mem' := fun x v hv => hW' x.1 x.2 v hv }`.
+
+Take `⟨U', hU⟩` from `exists_isCompl U`. Set `W' : Submodule K (Fin a → K)` to `{ toAddSubmonoid := U'.toAddSubmonoid smul_mem' := fun c v hv => by`. Establish `: (c • (1 : Matrix (Fin a) (Fin a) K)).mulVec v ∈ U'` using `U'.smul_mem ⟨c • 1, (spanAlg ρ).smul_mem (spanAlg ρ).one_mem c⟩ hv`. Rewrite using `[Matrix.smul_mulVec, Matrix.one_mulVec] at this }` and apply the resulting hypothesis. Use `⟨W', fun g v hv => ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `U'.smul_mem ⟨(ρ g : GL (Fin a) K), Submodule.subset_span ⟨g, rfl⟩⟩ hv`. Rewrite using `[Submodule.disjoint_def]`. Introduce `v hv hv'`. Conclude with `(Submodule.disjoint_def.1 hU.disjoint) v hv hv'`. Rewrite using `[codisjoint_iff, eq_top_iff]`.
+
+Introduce `v _`. Establish `: v ∈ U ⊔ U'` using `by rw [hU.sup_eq_top]; trivial`. Take `⟨x, hx, y, hy, rfl⟩` from `Submodule.mem_sup.1 this`. Conclude with `Submodule.add_mem_sup hx hy`.
+-/
 theorem isSSRep_of_trace_nondegenerate :
     ∀ (Γ K : Type) [Group Γ] [Field K] (a : ℕ) (ρ : Γ →* GL (Fin a) K),
     (∀ x ∈ Submodule.span K (Set.range fun g => ((ρ g : GL (Fin a) K) : Matrix (Fin a) (Fin a) K)),

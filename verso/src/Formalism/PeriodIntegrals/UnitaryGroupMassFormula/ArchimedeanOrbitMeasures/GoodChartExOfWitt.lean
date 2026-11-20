@@ -27,6 +27,9 @@ def PerpPosV : Prop := ∀ {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (�
       (∀ b, star (wV X u' v b) ⬝ᵥ (Formalism.REAL.Jm (X.B.I.ε v) *ᵥ z) = 0) →
       0 < (star z ⬝ᵥ (Formalism.REAL.Jm (X.B.I.ε v) *ᵥ z)).re
 
+/- English proof (translation)
+Introduce `D X`. Rewrite using `[X.n_eq]`. Establish `h1` using `D.R.rS_two`. Establish `h2` using `D.R.r_eq`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem dimNK_holds : DimNK := by
   intro D X
   rw [X.n_eq]
@@ -34,6 +37,15 @@ theorem dimNK_holds : DimNK := by
   have h2 := D.R.r_eq
   omega
 
+/- English proof (translation)
+Establish `hPu : IsUnit (X.B.I.P v).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (X.B.I.P_unit v)`. Establish `hJ : ((X.B.I.P v)⁻¹)ᴴ * Formalism.REAL.Jm (X.B.I.ε v) * (X.B.I.P v)⁻¹ = X.B.I.J.map (X.B.I.φ v)`. Rewrite using `[← X.B.I.P_spec v]`. Establish `e1 : ((X.B.I.P v)⁻¹)ᴴ * (X.B.I.P v)ᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul, Matrix.mul_nonsing_inv _ hPu, Matrix.conjTranspose_one]`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = X.B.I.J.map (X.B.I.φ v) := by`. Rewrite using `[e1, Matrix.mul_nonsing_inv _ hPu, Matrix.one_mul, Matrix.mul_one]`. Unfold `wV`.
+
+Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hJ]`. Establish `hσφ : ∀ a, X.B.I.φ v (X.B.I.cm.sig a) = star (X.B.I.φ v a)` using `fun a => X.B.I.cm.cmUnram.2.1 (X.B.I.φ v) a`. Simplify using `only [dotProduct, Matrix.mulVec, Matrix.map_apply, gramE, hE, Formalism.UG.hform, map_sum, map_mul, Pi.star_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[show (X.B.I.cm.sig : X.B.I.E →+* X.B.I.E) (tupH (frameOf X u') b i) = X.B.I.cm.sig (tupH (frameOf X u') b i) from rfl, hσφ]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gram_wV {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (v : InfinitePlace X.B.I.F) (b b' : Fin (D.R.rS + 1 + D.R.rS)) :
     star (wV X u' v b) ⬝ᵥ (Formalism.REAL.Jm (X.B.I.ε v) *ᵥ wV X u' v b') =
       X.B.I.φ v (gramE X.B.I.cm.sig X.B.I.J (tupH (frameOf X u')) b b') := by
@@ -57,6 +69,15 @@ theorem gram_wV {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (v : Infinite
     hσφ]
   ring
 
+/- English proof (translation)
+Introduce `D X u' ψ hT μinf νinf fibInf hP v`. Establish `hd` using `detNZ_holds X u' ψ hT μinf νinf fibInf hP`. Use `set G : Matrix (Fin (D.R.rS + 1 + D.R.rS)) (Fin (D.R.rS + 1 + D.R.rS)) ℂ := (gramE X.B.I.cm.sig X.B.I.J (tupH (frameOf X u'))).map (X.B.I.φ v) with hG`. Establish `hGd : G.det ≠ 0`. Establish `e : G.det = X.B.I.φ v (gramE X.B.I.cm.sig X.B.I.J (tupH (frameOf X u'))).det` using `(RingHom.map_det (X.B.I.φ v) _).symm`.
+
+Rewrite using `[e]`. Conclude with `(map_ne_zero _).2 hd`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Establish `hGg : G *ᵥ g = 0`.
+
+Use function extensionality and compare the values at `b'`. Establish `h0` using `congrArg (fun z => star (wV X u' v b') ⬝ᵥ (Formalism.REAL.Jm (X.B.I.ε v) *ᵥ z)) hg`. Simplify using `only [Matrix.mulVec_sum, Matrix.mulVec_smul, dotProduct_sum, dotProduct_smul, smul_eq_mul, Matrix.mulVec_zero, dotProduct_zero] at h0`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.zero_apply]`. Rewrite using `[← h0]`.
+
+Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[gram_wV]`. Simplify using `only [hG, Matrix.map_apply]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `fun b => congrFun (Matrix.eq_zero_of_mulVec_eq_zero hGd hGg) b`.
+-/
 theorem linIndW_holds : LinIndW := by
   intro D X u' ψ hT μinf νinf fibInf hP v
   have hd := detNZ_holds X u' ψ hT μinf νinf fibInf hP
@@ -82,11 +103,17 @@ theorem linIndW_holds : LinIndW := by
     ring
   exact fun b => congrFun (Matrix.eq_zero_of_mulVec_eq_zero hGd hGg) b
 
+/- English proof (translation)
+Introduce `D X u' ψ hT μinf νinf fibInf hP v`. Conclude with `h3 (h0 X) (X.B.I.ε v) (wV X u' v) (h1 X u' ψ hT μinf νinf fibInf hP v) (h2 X u' ψ hT μinf νinf fibInf hP v)`.
+-/
 theorem wittBlock_of (h0 : DimNK) (h1 : LinIndW) (h2 : PerpPosV) (h3 : WittLin) : WittBlock := by
   intro D X u' ψ hT μinf νinf fibInf hP v
   exact h3 (h0 X) (X.B.I.ε v) (wV X u' v) (h1 X u' ψ hT μinf νinf fibInf hP v)
     (h2 X u' ψ hT μinf νinf fibInf hP v)
 
+/- English proof (translation)
+The claim follows from `goodChartEx_of_std (stdDataEx_of (stdConjEx_of_witt (wittBlock_of dimNK_holds h1 h2 h3))) hG hT`.
+-/
 theorem goodChartEx_of_witt (h1 : LinIndW) (h2 : PerpPosV) (h3 : WittLin) (hG : GrpStd) (hT : TupStd) :
     GoodChartEx :=
   goodChartEx_of_std (stdDataEx_of (stdConjEx_of_witt (wittBlock_of dimNK_holds h1 h2 h3))) hG hT

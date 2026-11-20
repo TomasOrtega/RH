@@ -33,14 +33,47 @@ def contLeft (V : HSp D) : Submodule ℂ (GA D V → ℂ) where
     rintro c F ⟨hF, hF'⟩
     exact ⟨continuous_const.mul hF, fun γ hγ g => by simp [hF' γ hγ g]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hF.1.comp (continuous_id.mul continuous_const), fun γ hγ g => by simp only [rTrans, mul_assoc]; exact hF.2 γ hγ (g * t)⟩`.
+-/
 theorem rTrans_mem {V : HSp D} (t : GA D V) {F : GA D V → ℂ} (hF : F ∈ contLeft V) : rTrans t F ∈ contLeft V :=
   ⟨hF.1.comp (continuous_id.mul continuous_const), fun γ hγ g => by
     simp only [rTrans, mul_assoc]; exact hF.2 γ hγ (g * t)⟩
 
+/- English proof (translation)
+Conclude with `hψ.1.2.1 _`.
+-/
 theorem norm_psiBes {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ)
     (θ : D.host.E) (z : Fin S₀.rank → D.host.E) (n : GA D S) : ‖psiBes ψ d θ z n‖ = 1 := by
   exact hψ.1.2.1 _
 
+/- English proof (translation)
+Take `⟨Cφ, hCφ⟩` from `GlobalTheory.Unf.EvalCont.bounded_of_contAut B.cpt hφ`. Establish `hμ : B.vA.μ B.vA.𝓕 < ⊤` using `GlobalTheory.Unf.vol_fund_lt_top B.cpt B.vA`. Establish `hν1 : B.vN.ν B.vN.𝓝 = 1` using `B.vN.unit.2.2`. Establish `hν : B.vN.ν B.vN.𝓝 < ⊤` using `by rw [hν1]; exact ENNReal.one_lt_top`. Use `haveI : IsFiniteMeasure (B.vN.ν.restrict B.vN.𝓝) := isFiniteMeasure_restrict.2 hν.ne`.
+
+Establish `hψc : Continuous ψ` using `hψ.1.1`. Establish `hemb` using `GlobalTheory.Unf.BesSemi.continuous_embA B.d B.o`. Establish `hpsi` using `GlobalTheory.CharLaws.continuous_psiBes ψ B.d hψc 1 (vecB B.o B.ζ)`. Establish `hsup : ∀ f, f ∈ contLeft B.V → ∀ K : ℝ, (∀ x ∈ Ω, ‖f x‖ ≤ K) → ∀ (h : GA D B.A) (n : flagN B.d), ‖f (n.1 * embA B.d B.o h)‖ ≤ K`. Introduce `f hf K hK h n`.
+
+Establish `hs : n.1 * embA B.d B.o h ∈ besGrp B.d B.o` using `mul_mem (Subgroup.mem_sup_left n.2) (Subgroup.mem_sup_right ⟨h, rfl⟩)`. Take `⟨γ, hγ, hγs⟩` from `hΩ _ hs`. Rewrite using `[← hf.2 γ (Subgroup.mem_inf.1 hγ).1]`. Conclude with `hK _ hγs`. Establish `hbd : ∀ f, f ∈ contLeft B.V → ∀ K : ℝ, (∀ x ∈ Ω, ‖f x‖ ≤ K) → ∀ h n, ‖GlobalTheory.MixPer.besFun ψ 1 B.d B.o B.ζ φ f h n‖ ≤ Cφ * K`.
+
+Introduce `f hf K hK h n`. Simplify using `only [GlobalTheory.MixPer.besFun, norm_mul, norm_star, norm_psiBes hψ, mul_one]`. Conclude with `mul_le_mul (hCφ h) (hsup f hf K hK h n) (norm_nonneg _) ((norm_nonneg _).trans (hCφ h))`. Establish `hcont : ∀ f, f ∈ contLeft B.V → ∀ h, Continuous (GlobalTheory.MixPer.besFun ψ 1 B.d B.o B.ζ φ f h)`. Introduce `f hf h`.
+
+Express the relevant statement in the definitionally equal form `Continuous fun n : flagN B.d => φ h * f (n.1 * embA B.d B.o h) * star (psiBes ψ B.d 1 (vecB B.o B.ζ) n.1)`. Conclude with `(continuous_const.mul (hf.1.comp (continuous_subtype_val.mul continuous_const))).mul (continuous_star.comp (hpsi.comp continuous_subtype_val))`. Establish `hcontH : ∀ f, f ∈ contLeft B.V → ∀ n : flagN B.d, Continuous fun h => GlobalTheory.MixPer.besFun ψ 1 B.d B.o B.ζ φ f h n`. Introduce `f hf n`. Simplify using `only [GlobalTheory.MixPer.besFun]`.
+
+Conclude with `(hφ.2.mul (hf.1.comp (continuous_const.mul hemb))).mul continuous_const`. Establish `hK : ∀ f, f ∈ contLeft B.V → ∃ K : ℝ, ∀ x ∈ Ω, ‖f x‖ ≤ K`. Introduce `f hf`. Take `⟨K, hK⟩` from `hΩc.exists_bound_of_continuousOn hf.1.continuousOn`. Conclude with `⟨K, hK⟩`.
+
+Establish `hin : ∀ f, f ∈ contLeft B.V → ∀ h, IntegrableOn (GlobalTheory.MixPer.besFun ψ 1 B.d B.o B.ζ φ f h) B.vN.𝓝 B.vN.ν`. Introduce `f hf h`. Take `⟨K, hK⟩` from `hK f hf`. Conclude with `Measure.integrableOn_of_bounded hν.ne (hcont f hf h).aestronglyMeasurable (Filter.Eventually.of_forall fun n => hbd f hf K hK h n)`. Establish `houtC : ∀ f, f ∈ contLeft B.V → Continuous fun h => ∫ n in B.vN.𝓝, GlobalTheory.MixPer.besFun ψ 1 B.d B.o B.ζ φ f h n ∂B.vN.ν`.
+
+Introduce `f hf`. Take `⟨K, hK⟩` from `hK f hf`. Use `haveI := GlobalTheory.Unf.EvalCont.firstCountable_GA B.A`. Conclude with `continuous_of_dominated (bound := fun _ => Cφ * K) (fun h => (hcont f hf h).aestronglyMeasurable) (fun h => Filter.Eventually.of_forall fun n => hbd f hf K hK h n) (integrable_const _) (Filter.Eventually.of_forall fun n => hcontH f hf n)`. Establish `hout : ∀ f, f ∈ contLeft B.V → IntegrableOn (fun h => ∫ n in B.vN.𝓝, GlobalTheory.MixPer.besFun ψ 1 B.d B.o B.ζ φ f h n ∂B.vN.ν) B.vA.𝓕 B.vA.μ`.
+
+Introduce `f hf`. Take `⟨K, hK⟩` from `hK f hf`. Use `Measure.integrableOn_of_bounded (M := Cφ * K * B.vN.ν.real B.vN.𝓝) hμ.ne (houtC f hf).aestronglyMeasurable (Filter.Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Conclude with `norm_setIntegral_le_of_norm_le_const hν fun n _ => hbd f hf K hK h n`. Use `⟨Cφ * B.vA.μ.real B.vA.𝓕, fun f g hf hg => ?_, fun f hf K hK' => ?_⟩` and prove the remaining obligations.
+
+Establish `e : ∀ h n, GlobalTheory.MixPer.besFun ψ 1 B.d B.o B.ζ φ (f + g) h n = GlobalTheory.MixPer.besFun ψ 1 B.d B.o B.ζ φ f h n + GlobalTheory.MixPer.besFun ψ 1 B.d B.o B.ζ φ g h n`. Introduce `h n`. Simplify using `only [GlobalTheory.MixPer.besFun, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [GlobalTheory.Unf.BesLev.per, GlobalTheory.MixPer.besPer]`.
+
+Repeatedly rewrite using `[e]`. Rewrite using `[← integral_add (hout f hf) (hout g hg)]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun h => integral_add (hin f hf h) (hin g hg h))`. Establish `hνr : B.vN.ν.real B.vN.𝓝 = 1` using `by simp [Measure.real, hν1]`. Establish `h1 : ∀ h ∈ B.vA.𝓕, ‖∫ n in B.vN.𝓝, GlobalTheory.MixPer.besFun ψ 1 B.d B.o B.ζ φ f h n ∂B.vN.ν‖ ≤ Cφ * K`.
+
+Introduce `h _`. Use `norm_setIntegral_le_of_norm_le_const hν fun n _ => hbd f hf K hK' h n` as an intermediate fact. Rewrite `this` using `[hνr, mul_one]`. Then use the resulting hypothesis. Establish `h2` using `norm_setIntegral_le_of_norm_le_const hμ h1`. Simplify using `only [GlobalTheory.Unf.BesLev.per, GlobalTheory.MixPer.besPer]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem per_add_bound {ρ : ℕ} (B : BesLev D ρ) {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1))
     {φ : GA D B.A → ℂ} (hφ : IsContAut B.A φ) (Ω : Set (GA D B.V)) (hΩc : IsCompact Ω)
     (hΩ : ∀ s ∈ besGrp B.d B.o, ∃ γ ∈ GQ B.V ⊓ besGrp B.d B.o, γ * s ∈ Ω) :
@@ -128,6 +161,9 @@ namespace GlobalTheory.Core.Mi.SepPer
 
 variable {D : D7}
 
+/- English proof (translation)
+Set `Q : Submodule ℂ (MMap M)` to `{ carrier := {T | ∀ u, T u ∈ contLeft V} add_mem' := fun ha hb u => by simpa using (contLeft V).add_mem (ha u) (hb u) zero_mem' := fun u => by simpa using (contLeft V).zero_mem smul_mem' := fun c T hT u => by simpa using (contLeft V).smul_mem c (hT u) }`. Establish `: Mult θ M J χ ≤ Q` using `Submodule.span_le.2 fun T hT u => ⟨(hT.aut u).cont, (hT.aut u).left⟩`. Conclude with `this hT u`.
+-/
 theorem mult_mem_contLeft (θ : InfFam D) {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (J : Set (GA D V))
     (χ : GA D V → ℂ) {T : MMap M} (hT : T ∈ Mult θ M J χ) (u : M.Vec) : T u ∈ contLeft V := by
   let Q : Submodule ℂ (MMap M) :=
@@ -138,6 +174,17 @@ theorem mult_mem_contLeft (θ : InfFam D) {V : HSp D} {S : D.what₂.Tau → SPa
   have : Mult θ M J χ ≤ Q := Submodule.span_le.2 fun T hT u => ⟨(hT.aut u).cont, (hT.aut u).left⟩
   exact this hT u
 
+/- English proof (translation)
+Proceed by induction on `hT using Submodule.span_induction with`. Consider the case `mem T hT => exact GlobalTheory.T.cuspFormMap_values_compact_sobolev_bound D θ V S M J χ hθ T hT Ω hΩ τ v`. Consider the case `zero => exact ⟨[], 0, by simp, fun w g _ => by simp⟩`. Consider the case `add T₁ T₂ _ _ h₁ h₂`. Take `⟨L₁, C₁, hL₁, hb₁⟩` from `h₁`.
+
+Take `⟨L₂, C₂, hL₂, hb₂⟩` from `h₂`. Use `⟨L₁ ++ L₂, max C₁ 0 + max C₂ 0, fun l hl => ?_, fun w g hg => ?_⟩` and prove the remaining obligations. Break down `List.mem_append.1 hl with h | h exacts [hL₁ l h, hL₂ l h]` into its components or cases. Use `set s₁ := (L₁.map fun l => ‖l.foldr (dRep (M.rep τ)) (w : M.H τ)‖).sum set s₂ := (L₂.map fun l => ‖l.foldr (dRep (M.rep τ)) (w : M.H τ)‖).sum`. Establish `hs₁ : 0 ≤ s₁` using `List.sum_nonneg fun x hx => by`.
+
+Take `⟨l, _, rfl⟩` from `List.mem_map.1 hx`. Conclude with `norm_nonneg _`. Establish `hs₂ : 0 ≤ s₂` using `List.sum_nonneg fun x hx => by`. Take `⟨l, _, rfl⟩` from `List.mem_map.1 hx`. Conclude with `norm_nonneg _`.
+
+Rewrite using `[List.map_append, List.sum_append, MultilinearMap.add_apply, Pi.add_apply]`. Combine the equalities or inequalities in the displayed calculation. Use `le_max_right C₁ 0` as an intermediate fact. Use `le_max_right C₂ 0` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+
+Consider the case `smul c T _ h`. Take `⟨L, C, hL, hb⟩` from `h`. Use `⟨L, ‖c‖ * C, hL, fun w g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[MultilinearMap.smul_apply, Pi.smul_apply, norm_smul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hb w g hg) (norm_nonneg _)`.
+-/
 theorem mult_bound (θ : InfFam D) (hθ : IsInfFam θ) {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S)
     (J : Set (GA D V)) (χ : GA D V → ℂ) {T : MMap M} (hT : T ∈ Mult θ M J χ) (Ω : Set (GA D V)) (hΩ : IsCompact Ω)
     (τ : D.what₂.Tau) (v : M.Vec) :
@@ -179,6 +226,29 @@ namespace GlobalTheory.Core.Mi
 
 open SepPer in
 
+/- English proof (translation)
+Introduce `D θ ψ ρ B S M J χ t φ hθ hψ hφ T hT`. Take `⟨-, -, ⟨Ω, hΩc, hΩ⟩, -⟩` from `GlobalTheory.T.besselGroup_quotient_fundamentalDomain_cocompact D ρ B`. Take `⟨Cp, hadd, hbd⟩` from `per_add_bound B hψ hφ Ω hΩc hΩ`. Use `set T' : MMap M := PiTensorProduct.lift.symm T with hT'`. Establish `hT'm : T' ∈ Mult θ M J χ` using `(mem_multT θ M J χ T).1 hT`.
+
+Establish `hTt : ∀ u : M.Vec, T (PiTensorProduct.tprod ℂ u) = T' u`. Introduce `u`. Establish `: T = PiTensorProduct.lift T'` using `by rw [hT']; exact (PiTensorProduct.lift.apply_symm_apply T).symm`. Rewrite using `[this, PiTensorProduct.lift.tprod]`. Establish `hmem : ∀ x : SmT M, T x ∈ contLeft B.V`.
+
+Introduce `x`. Proceed by induction on `x using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r u`. Rewrite using `[map_smul, hTt]`. Conclude with `(contLeft B.V).smul_mem r (mult_mem_contLeft θ M J χ hT'm u)`.
+
+Consider the case `add x y hx hy`. Rewrite using `[map_add]`. Conclude with `(contLeft B.V).add_mem hx hy`. Set `Λ : SmT M →ₗ[ℂ] ℂ` to `{ toFun := fun x => B.per ψ φ (rTrans t (T x)) map_add' := fun x y => by`. Establish `e : rTrans t (T (x + y)) = rTrans t (T x) + rTrans t (T y)`.
+
+Use function extensionality and compare the values at `g`. Simplify using `[rTrans]`. Rewrite using `[e]`. Conclude with `hadd _ _ (rTrans_mem t (hmem x)) (rTrans_mem t (hmem y))`. Use the proof step `map_smul' := fun c x => by`.
+
+Establish `e : rTrans t (T (c • x)) = c • rTrans t (T x)`. Use function extensionality and compare the values at `g`. Simplify using `[rTrans]`. Use `GlobalTheory.HandHom.per_smul B ψ 1 c φ (rTrans t (T x))` as an intermediate fact. Rewrite `this` using `[one_smul, one_mul]`.
+
+Simplify using `only [RingHom.id_apply, smul_eq_mul]`. Rewrite using `[e, this] }`. Use `⟨Λ, fun τ v => ?_, fun x => rfl⟩` and prove the remaining obligations. Establish `hΩt : IsCompact ((fun g => g * t) '' Ω)` using `hΩc.image (continuous_id.mul continuous_const)`. Take `⟨L, Cu, hL, hb⟩` from `mult_bound θ hθ M J χ hT'm _ hΩt τ v`.
+
+Set `ℓ₀ : M.sm τ →ₗ[ℂ] ℂ` to `(Λ.compMultilinearMap (PiTensorProduct.tprod ℂ)).toLinearMap v τ`. Take `⟨ℓ, hℓ⟩` from `LinearMap.exists_extend ℓ₀`. Establish `hℓw : ∀ w : M.sm τ, ℓ w = Λ (PiTensorProduct.tprod ℂ (Function.update v τ w))`. Introduce `w`. Use `congrArg (fun m => m w) hℓ` as an intermediate fact.
+
+Simplify `this` using `[ℓ₀, MultilinearMap.toLinearMap_apply]`. Use `⟨ℓ, ⟨L, Cp * Cu, hL, fun w hw => ?_⟩, hℓw⟩` and prove the remaining obligations. Establish `hw' : w ∈ M.sm τ` using `Submodule.subset_span hw`. Establish `e` using `hℓw ⟨w, hw'⟩`. Simplify using `only at e`.
+
+Rewrite using `[e]`. Express the relevant statement in the definitionally equal form `‖B.per ψ φ (rTrans t (T (PiTensorProduct.tprod ℂ (Function.update v τ ⟨w, hw'⟩))))‖ ≤ _`. Establish `hK : ∀ x ∈ Ω, ‖rTrans t (T (PiTensorProduct.tprod ℂ (Function.update v τ ⟨w, hw'⟩))) x‖ ≤ Cu * (L.map fun l => ‖l.foldr (dRep (M.rep τ)) w‖).sum`. Introduce `x hx`. Rewrite using `[rTrans, hTt]`.
+
+Conclude with `hb ⟨w, hw'⟩ (x * t) ⟨x, hx, rfl⟩`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sepCont_per_rTrans : ∀ (D : D7) (θ : InfFam D) (ψ : AddChar (AF D.host.F) ℂ) (ρ : ℕ) (B : BesLev D ρ) (S : D.what₂.Tau → SPar) (M : DSModel B.V S) (J : Set (GA D B.V)) (χ : GA D B.V → ℂ) (t : GA D B.V) (φ : GA D B.A → ℂ), IsInfFam θ → IsStdChar D ψ (-1) → IsContAut B.A φ → ∀ T ∈ MultT θ M J χ, ∃ Λ : SmT M →ₗ[ℂ] ℂ, SepCont M Λ ∧ ∀ x, Λ x = B.per ψ φ (rTrans t (T x)) := by
   intro D θ ψ ρ B S M J χ t φ hθ hψ hφ T hT
   obtain ⟨-, -, ⟨Ω, hΩc, hΩ⟩, -⟩ := GlobalTheory.T.besselGroup_quotient_fundamentalDomain_cocompact D ρ B

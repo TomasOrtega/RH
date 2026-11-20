@@ -19,6 +19,11 @@ noncomputable section
 
 namespace GlobalTheory.RootOfUnityFn
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => rw [pow_zero, pow_zero]`. Conclude with `evalAt_one _ _ y h`. Consider the case `succ k ih`. Rewrite using `[pow_succ, pow_succ, ← ih]`.
+
+Conclude with `evalAt_mul _ _ _ _ y`.
+-/
 theorem evR_pow {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Level H} (Xo : Moduli Dw l) (c : Coeff l) (f : Rul Xo c) {S : Type} [CommRing S]
     [Algebra c.F S] (y : FrPt Xo c S)
@@ -30,6 +35,15 @@ theorem evR_pow {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Reciproc
     rw [pow_succ, pow_succ, ← ih]
     exact evalAt_mul _ _ _ _ y
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c n d m hm hsec hpow hval`. Use `choose a ha using hval`. Use `haveI : NeZero m := ⟨hm.ne'⟩`. Use `haveI : IsReduced (CAt d.c₂.F.val.toRingHom) := (inferInstance : IsReduced ℂ)`. Establish `hinj : Function.Injective (algebraMap d.c₂.F (CAt d.c₂.F.val.toRingHom))` using `(d.c₂.F.val.toRingHom).injective`.
+
+Establish `hroot : ∀ y, a y ^ m = 1`. Introduce `y`. Establish `hT` using `GlobalTheory.Frames.allTest_of_secBaseChange GlobalTheory.firstFiveLaws.1.secBaseChange E H Dw d.l₂ d.Xo₂ d.c₂ _ y`. Establish `h1` using `evR_pow d.Xo₂ d.c₂ d.cδ y hT m`. Establish `h0` using `evR_pow d.Xo₂ d.c₂ d.cδ y hT 0`.
+
+Rewrite `h0` using `[pow_zero, pow_zero]`. Rewrite `h1` using `[hpow, h0, ha, ← map_pow]`. Conclude with `hinj (by rw [map_one]; exact h1.symm)`. Use `⟨rootsOfUnity m d.c₂.F, inferInstance, inferInstance, (rootsOfUnity m d.c₂.F).subtype, fun y => rootsOfUnity.mkOfPowEq (a y) (hroot y), hsec, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[ha]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_character : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (n : ℕ) (d : DeltaDat Xo c n) (m : ℕ), 0 < m → d.cδ ∈ sec d.Xo₂ d.c₂ 0 0 → d.cδ ^ m = 1 → (∀ y : FrPt d.Xo₂ d.c₂ (CAt d.c₂.F.val.toRingHom), ∃ a : d.c₂.F, evR d.Xo₂ d.c₂ d.cδ y = algebraMap d.c₂.F (CAt d.c₂.F.val.toRingHom) a) → ∃ (Cls : Type) (_ : CommGroup Cls) (_ : Finite Cls) (δ : Cls →* d.c₂.Fˣ) (gdet : FrPt d.Xo₂ d.c₂ (CAt d.c₂.F.val.toRingHom) → Cls), CMP Xo c d _ Cls δ gdet false := by
   intro E _ _ _ H Dw l Xo c n d m hm hsec hpow hval
   choose a ha using hval

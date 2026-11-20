@@ -17,6 +17,15 @@ section Nb
 
 variable {X : Fields} {n : ℕ} {ST SG : Finset (HeightOneSpectrum (𝓞 X.E))} (V : Type) [AddCommGroup V] [Module X.K V]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `d`. Rewrite using `[trF_apply]`. Use `show ∑ d₁ ∈ ((((1 : UF X.E n), a⁻¹) : UF X.E n × GLG X.E n SG) • d).heckeNb P i, ψ d₁ = ∑ d₁ ∈ d.heckeNb P i, ψ ((((1 : UF X.E n), a⁻¹) : UF X.E n × GLG X.E n SG) • d₁)`. Use `set g : UF X.E n × GLG X.E n SG := ((1 : UF X.E n), a⁻¹)`. Use `Finset.sum_nbij' (fun e => g⁻¹ • e) (fun e => g • e) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce `e he`. Establish `: g • (g⁻¹ • e) ∈ (g • d).heckeNb P i` using `by rwa [smul_inv_smul]`. Conclude with `(DecoSet.smul_mem_heckeNb_iff g).1 this`. Introduce `e he`. Conclude with `(DecoSet.smul_mem_heckeNb_iff g).2 he`.
+
+Introduce `e _`. Conclude with `smul_inv_smul g e`. Introduce `e _`. Conclude with `inv_smul_smul g e`. Introduce `e _`.
+
+Rewrite using `[smul_inv_smul]`.
+-/
 theorem trF_nbFun (a : GLG X.E n SG) (P : Ideal (𝓞 X.E)) (i : ℕ) (ψ : DecoSet X.E n ST SG → V) :
     trF X n ST SG V a (nbFun X.K V P i ψ) = nbFun X.K V P i (trF X n ST SG V a ψ) := by
   funext d
@@ -103,6 +112,21 @@ variable {K : Type} [Field K] {a b : ℕ}
 
 open Classical in
 
+/- English proof (translation)
+Take `⟨A', B', A, B, hl, hper, hsupp⟩` from `hΦ`. Use `⟨fun Q => if Q = P then N' else A' Q, fun Q => if Q = P then N' else B' Q, fun Q => if Q = P then N else A Q, fun Q => if Q = P then N else B Q, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `Q hQ`. Distinguish the cases in `e : Q = P`. Simplify using `only [if_pos e]`.
+
+Conclude with `⟨hN', hN, hN', hN⟩`. Simplify using `only [if_neg e]`. Conclude with `hl Q ((Finset.mem_insert.1 hQ).resolve_left e)`. Introduce `x y hy`. Establish `hyP : wmIntAt P N' N y` using `by simpa using hy P (Finset.mem_insert_self P S)`.
+
+Establish `hyS : ∀ Q ∈ S, wmIntAt Q (A' Q) (A Q) y`. Introduce `Q hQ`. Establish `hne : Q ≠ P` using `fun e => hP (e ▸ hQ)`. Simplify `hy Q (Finset.mem_insert_of_mem hQ)` using `[hne]`. Establish `hiff : wmIntAt P N' N (x + y) ↔ wmIntAt P N' N x`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h z hz`. Use `Submodule.sub_mem _ (h z hz) (hyP z hz)` as an intermediate fact. Simplify using `using this`. Introduce `h z hz`.
+
+Rewrite using `[LinearMap.add_apply]`. Conclude with `Submodule.add_mem _ (h z hz) (hyP z hz)`. Simplify using `only [hiff, hper x y hyS]`. Introduce `x hx Q hQ`. Distinguish the cases in `hint : wmIntAt P N' N x`.
+
+Establish `hx' : Φ x ≠ 0` using `by simpa [hint] using hx`. Distinguish the cases in `e : Q = P`. Simplify using `only [if_pos e]`. Conclude with `e ▸ hint`. Simplify using `only [if_neg e]`.
+
+Conclude with `hsupp x hx' Q ((Finset.mem_insert.1 hQ).resolve_left e)`. Conclude with `absurd (by simp [hint]) hx`.
+-/
 theorem WmSchw.insert {S : Finset (HeightOneSpectrum (𝓞 E))} {Φ : (Sp E a →ₗ[E] Sp E b) → K} (hΦ : WmSchw S Φ)
     (P : HeightOneSpectrum (𝓞 E)) (hP : P ∉ S) {N' : Submodule (𝓞 E) (Sp E a)} {N : Submodule (𝓞 E) (Sp E b)}
     (hN' : Submodule.IsLattice E N') (hN : Submodule.IsLattice E N) :

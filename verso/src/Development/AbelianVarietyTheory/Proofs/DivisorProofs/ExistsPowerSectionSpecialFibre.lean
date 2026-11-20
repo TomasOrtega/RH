@@ -11,6 +11,11 @@ namespace GlobalTheory.ExpChoice
 
 variable {X : Scheme.{0}} [IsIntegral X]
 
+/- English proof (translation)
+Establish `hp : ∀ k : ℕ, UnitAt z (u ^ k)` using `fun k => by`. Proceed by induction on `k with`. Consider the case `zero => simpa using unitAt_one z`. Consider the case `succ k ih => rw [pow_succ]`. Conclude with `ih.mul h`.
+
+Break down `n with k | k` into its components or cases. Simplify using `using hp k`. Rewrite using `[zpow_negSucc]`. Conclude with `(hp (k+1)).inv`.
+-/
 theorem unitAt_zpow {z : X} {u : X.functionField} (h : UnitAt z u) (n : ℤ) : UnitAt z (u ^ n) := by
   have hp : ∀ k : ℕ, UnitAt z (u ^ k) := fun k => by
     induction k with
@@ -24,6 +29,13 @@ section DVR
 
 variable {z : X} [IsDiscreteValuationRing (X.presheaf.stalk z)]
 
+/- English proof (translation)
+Establish `hinj` using `IsFractionRing.injective (X.presheaf.stalk z) X.functionField`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := X.presheaf.stalk z) f`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `ha0 : a ≠ 0` using `by rintro rfl; simp at hf`. Take `⟨na, ua, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha0 hϖ`.
+
+Take `⟨nb, ub, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hb0 hϖ`. Establish `hp : algebraMap _ X.functionField ϖ ≠ 0` using `(map_ne_zero_iff _ hinj).2 hϖ.ne_zero`. Establish `hub : algebraMap _ X.functionField (ub : X.presheaf.stalk z) ≠ 0` using `(map_ne_zero_iff _ hinj).2 ub.ne_zero`. Use `⟨(na : ℤ) - nb, algebraMap _ X.functionField (ua : X.presheaf.stalk z) / algebraMap _ X.functionField (ub : X.presheaf.stalk z), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[div_eq_mul_inv]`.
+
+Conclude with `UnitAt.mul ⟨_, ua.isUnit, rfl⟩ (UnitAt.inv ⟨_, ub.isUnit, rfl⟩)`. Rewrite using `[zpow_sub₀ hp, zpow_natCast, zpow_natCast, map_mul, map_mul, map_pow, map_pow]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_unit_mul_zpow {ϖ : X.presheaf.stalk z} (hϖ : Irreducible ϖ) {f : X.functionField}
     (hf : f ≠ 0) : ∃ (k : ℤ) (u : X.functionField), UnitAt z u ∧
       f = u * algebraMap _ X.functionField ϖ ^ k := by
@@ -43,6 +55,15 @@ theorem exists_unit_mul_zpow {ϖ : X.presheaf.stalk z} (hϖ : Irreducible ϖ) {f
   · rw [zpow_sub₀ hp, zpow_natCast, zpow_natCast, map_mul, map_mul, map_pow, map_pow]
     field_simp
 
+/- English proof (translation)
+Establish `hinj` using `IsFractionRing.injective (X.presheaf.stalk z) X.functionField`. Establish `hp : algebraMap _ X.functionField ϖ ≠ 0` using `(map_ne_zero_iff _ hinj).2 hϖ.ne_zero`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha⟩`. Assume the negation of the conclusion as `hk`.
+
+Use `push_neg at hk`. Take `⟨b, -, hbu⟩` from `hu.inv`. Take `⟨j, hj⟩ : ∃ j : ℕ, (j : ℤ) = -k - 1` from `⟨(-k - 1).toNat, Int.toNat_of_nonneg (by omega)⟩`. Establish `e : algebraMap _ X.functionField (ϖ * (b * a * ϖ ^ j)) = 1`. Rewrite using `[map_mul, map_mul, map_mul, map_pow, hbu, ha, ← zpow_natCast, hj]`.
+
+Establish `hu0` using `hu.ne_zero`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[zpow_add₀ hp, zpow_add₀ hp, zpow_one]`. Clear the denominators using the available nonvanishing facts. Use `_ = 1 := by rw [show 1 + k + (-k - 1) = 0 by ring, zpow_zero]`.
+
+Rewrite `e` using `[← map_one (algebraMap (X.presheaf.stalk z) X.functionField)]`. Conclude with `hϖ.not_isUnit (IsUnit.of_mul_eq_one _ (hinj e))`. Introduce `hk`. Use `hu.regAt.mul ⟨ϖ ^ k.toNat, ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow, ← zpow_natCast, Int.toNat_of_nonneg hk]`.
+-/
 theorem regAt_unit_mul_zpow_iff {ϖ : X.presheaf.stalk z} (hϖ : Irreducible ϖ) {u : X.functionField}
     (hu : UnitAt z u) (k : ℤ) :
     RegAt z (u * algebraMap _ X.functionField ϖ ^ k) ↔ 0 ≤ k := by
@@ -71,6 +92,23 @@ theorem regAt_unit_mul_zpow_iff {ϖ : X.presheaf.stalk z} (hϖ : Irreducible ϖ)
 
 end DVR
 
+/- English proof (translation)
+Establish `hπ0 : fnOf ⊤ trivial π ≠ 0` using `((unitAt_fnOf_iff (show genericPoint X ∈ (⊤ : X.Opens) from trivial) trivial π).2 hπ).ne_zero`. Establish `hcov : (Set.univ : Set X) ⊆ ⋃ U : X.affineOpens, ((U : X.Opens) : Set X)` using `fun x _ => by`. Take `⟨U, hU, hx, -⟩` from `exists_isAffineOpen_mem_and_subset (x := x) (U := ⊤) trivial`. Conclude with `Set.mem_iUnion.2 ⟨⟨U, hU⟩, hx⟩`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun U : X.affineOpens => ((U : X.Opens) : Set X)) (fun U => (U : X.Opens).isOpen) hcov`.
+
+Establish `fin : ∀ U : X.affineOpens, ({z : X | z ∉ X.basicOpen π ∧ IsDiscreteValuationRing (X.presheaf.stalk z)} ∩ ((U : X.Opens) : Set X)).Finite`. Introduce and unpack `⟨U, hU⟩`. Distinguish the cases in `hne : Nonempty U`. Use `swap`. Use `Set.finite_empty.subset fun z hz => hne ⟨⟨z, hz.2⟩⟩` and prove the remaining obligations.
+
+Establish `hg : genericPoint X ∈ U`. Take `⟨⟨x, hx⟩⟩` from `hne`. Conclude with `gen_mem hx`. Use `haveI : IsNoetherianRing Γ(X, U) := IsLocallyNoetherian.component_noetherian ⟨U, hU⟩`. Set `a : Γ(X, U)` to `ReciprocityTheory.ChartRestriction.G.Geo.Tor.resG X (le_top : U ≤ ⊤) π`.
+
+Establish `ha : a ≠ 0`. Introduce `h0`. Apply `hπ0` to reduce the goal to its premises. Rewrite using `[← fnOf_resG (le_top : U ≤ ⊤) hg π]`. Conclude with `(congrArg (fnOf U hg) h0).trans (map_zero _)`.
+
+Establish `hba : X.basicOpen a = U ⊓ X.basicOpen π` using `X.basicOpen_res π (homOfLE (le_top : U ≤ ⊤)).op`. Use `((GlobalTheory.finite_height_eq_one_mem ha).image hU.fromSpec).subset ?_` and prove the remaining obligations. Introduce and unpack `z ⟨⟨hzπ, hdvr⟩, hzU⟩`. Use `⟨hU.primeIdealOf ⟨z, hzU⟩, ⟨?_, ?_⟩, hU.fromSpec_primeIdealOf ⟨z, hzU⟩⟩` and prove the remaining obligations. Set `y : U` to `⟨z, hzU⟩ haveI : IsDiscreteValuationRing (X.presheaf.stalk (y : X)) := hdvr`.
+
+Use `letI : Algebra Γ(X, U) (X.presheaf.stalk (y : X)) := X.presheaf.algebra_section_stalk y`. Use `haveI := hU.isLocalization_stalk y`. Establish `e` using `IsLocalization.AtPrime.ringKrullDim_eq_height (hU.primeIdealOf y).asIdeal (X.presheaf.stalk (y : X))`. Rewrite `e` using `[IsDiscreteValuationRing.ringKrullDim_eq_one]`. Conclude with `e.symm` after adjusting the coercions.
+
+Establish `hz' : hU.fromSpec (hU.primeIdealOf ⟨z, hzU⟩) ∉ X.basicOpen a`. Rewrite using `[hU.fromSpec_primeIdealOf ⟨z, hzU⟩, hba]`. Conclude with `fun h => hzπ h.2`. Use `mt (fun h => (hU.fromSpec_preimage_basicOpen a).ge h) hz'` as an intermediate fact. Assume the negation of the conclusion as `h`.
+
+Conclude with `this ((PrimeSpectrum.mem_basicOpen _ _).2 h)`. Use `(t.finite_toSet.biUnion fun U _ => fin U).subset fun z hz => ?_` and prove the remaining obligations. Take `⟨U, hU, hzU⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ z))`. Conclude with `Set.mem_biUnion hU ⟨hz, hzU⟩`.
+-/
 theorem finite_dvr_notMem [IsLocallyNoetherian X] [CompactSpace X] (π : Γ(X, ⊤))
     (hπ : genericPoint X ∈ X.basicOpen π) :
     {z : X | z ∉ X.basicOpen π ∧ IsDiscreteValuationRing (X.presheaf.stalk z)}.Finite := by
@@ -120,6 +158,23 @@ theorem finite_dvr_notMem [IsLocallyNoetherian X] [CompactSpace X] (π : Γ(X, �
   obtain ⟨U, hU, hzU⟩ := Set.mem_iUnion₂.1 (ht (Set.mem_univ z))
   exact Set.mem_biUnion hU ⟨hz, hzU⟩
 
+/- English proof (translation)
+Establish `hπ0 : fnOf ⊤ trivial π ≠ 0` using `((unitAt_fnOf_iff (show genericPoint X ∈ (⊤ : X.Opens) from trivial) trivial π).2 hπ).ne_zero`. Take `⟨U, hU, hz₀U, -⟩` from `exists_isAffineOpen_mem_and_subset (x := z₀) (U := ⊤) trivial`. Use `haveI : Nonempty U := ⟨⟨z₀, hz₀U⟩⟩`. Establish `hg : genericPoint X ∈ U` using `gen_mem hz₀U`. Use `haveI : IsNoetherianRing Γ(X, U) := IsLocallyNoetherian.component_noetherian ⟨U, hU⟩`.
+
+Use `haveI : IsIntegrallyClosed Γ(X, U) := GlobalTheory.isIntegrallyClosed_sections_of_stalks hN hU`. Set `a : Γ(X, U)` to `ReciprocityTheory.ChartRestriction.G.Geo.Tor.resG X (le_top : U ≤ ⊤) π`. Establish `ha : a ≠ 0`. Introduce `h0`. Apply `hπ0` to reduce the goal to its premises.
+
+Rewrite using `[← fnOf_resG (le_top : U ≤ ⊤) hg π]`. Conclude with `(congrArg (fnOf U hg) h0).trans (map_zero _)`. Establish `hba : X.basicOpen a = U ⊓ X.basicOpen π` using `X.basicOpen_res π (homOfLE (le_top : U ≤ ⊤)).op`. Establish `haq : a ∈ (hU.primeIdealOf ⟨z₀, hz₀U⟩).asIdeal`. Establish `hz' : hU.fromSpec (hU.primeIdealOf ⟨z₀, hz₀U⟩) ∉ X.basicOpen a`.
+
+Rewrite using `[hU.fromSpec_primeIdealOf ⟨z₀, hz₀U⟩, hba]`. Conclude with `fun h => hz₀ h.2`. Use `mt (fun h => (hU.fromSpec_preimage_basicOpen a).ge h) hz'` as an intermediate fact. Assume the negation of the conclusion as `h`. Conclude with `this ((PrimeSpectrum.mem_basicOpen _ _).2 h)`.
+
+Take `⟨p, hp, -⟩` from `Ideal.exists_minimalPrimes_le ((Ideal.span_singleton_le_iff_mem _).2 haq)`. Use `haveI : p.IsPrime := hp.1.1`. Establish `hap : a ∈ p` using `(Ideal.span_singleton_le_iff_mem _).1 hp.1.2`. Establish `h1 : p.height = 1`. Use `le_antisymm (Ideal.height_le_one_of_isPrincipal_of_mem_minimalPrimes _ p hp) ?_` and prove the remaining obligations.
+
+Rewrite using `[ENat.one_le_iff_ne_zero, Ne, Ideal.height_eq_zero_iff_eq_bot]`. Introduce and unpack `rfl`. Conclude with `ha hap`. Set `P : PrimeSpectrum Γ(X, U)` to `⟨p, inferInstance⟩`. Establish `hz : hU.fromSpec P ∈ U` using `hU.range_fromSpec.le ⟨P, rfl⟩`.
+
+Use `letI : Algebra Γ(X, U) (X.presheaf.stalk (hU.fromSpec P)) := TopCat.Presheaf.algebra_section_stalk X.presheaf ⟨_, hz⟩`. Use `haveI : IsLocalization.AtPrime (X.presheaf.stalk (hU.fromSpec P)) p := hU.isLocalization_stalk' P hz`. Use `⟨hU.fromSpec P, fun h => ?_, GlobalTheory.isDiscreteValuationRing_of_height_eq_one p h1 _⟩` and prove the remaining obligations. Establish `h2 : hU.fromSpec P ∈ X.basicOpen a` using `by rw [hba]; exact ⟨hz, h⟩`. Establish `h3` using `(hU.fromSpec_preimage_basicOpen a).le h2`.
+
+Conclude with `(PrimeSpectrum.mem_basicOpen _ _).1 h3 hap`.
+-/
 theorem exists_dvr_notMem [IsLocallyNoetherian X]
     (hN : ∀ x : X, IsIntegrallyClosed (X.presheaf.stalk x)) (π : Γ(X, ⊤))
     (hπ : genericPoint X ∈ X.basicOpen π) {z₀ : X} (hz₀ : z₀ ∉ X.basicOpen π) :
@@ -163,6 +218,9 @@ theorem exists_dvr_notMem [IsLocallyNoetherian X]
   have h3 := (hU.fromSpec_preimage_basicOpen a).le h2
   exact (PrimeSpectrum.mem_basicOpen _ _).1 h3 hap
 
+/- English proof (translation)
+Rewrite using `[← zpow_natCast (v * p ^ t), zpow_sub₀ hp, mul_zpow, mul_zpow, ← zpow_mul, ← zpow_mul, mul_inv, mul_comm t]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem zpow_exponent_identity {K : Type} [Field K] {p : K} (hp : p ≠ 0) (u v : K) (m t n : ℤ) (M : ℕ) :
     (u * p ^ m) ^ n * ((v * p ^ t) ^ M)⁻¹ = (u ^ n * (v ^ (M : ℤ))⁻¹) * p ^ (m * n - t * M) := by
   rw [← zpow_natCast (v * p ^ t), zpow_sub₀ hp, mul_zpow, mul_zpow, ← zpow_mul, ← zpow_mul,
@@ -171,6 +229,15 @@ theorem zpow_exponent_identity {K : Type} [Field K] {p : K} (hp : p ≠ 0) (u v 
 
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor in
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible (X.presheaf.stalk z)`. Establish `hp : algebraMap _ X.functionField ϖ ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (X.presheaf.stalk z) X.functionField)).2 hϖ.ne_zero`. Establish `hzt : z ∈ (⊤ : X.Opens)` using `trivial`. Take `⟨m, u, hu, hm⟩` from `exists_unit_mul_zpow hϖ hπ0`. Take `⟨j, hj⟩` from `exists_chart hL z`.
+
+Take `⟨t, w, hw, ht⟩` from `exists_unit_mul_zpow hϖ (τ j).ne_zero`. Use `⟨_, m, t, hp, ?_, fun u hu k => regAt_unit_mul_zpow_iff hϖ hu k, ⟨u, hu, hm⟩, ?_⟩` and prove the remaining obligations. Establish `h0 : 0 ≤ m` using `(regAt_unit_mul_zpow_iff hϖ hu m).1 (hm ▸ regAt_fnOf hzt trivial π)`. Establish `h1 : m ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `hm` using `[zpow_zero, mul_one]`. Conclude with `hz ((unitAt_fnOf_iff hzt trivial π).1 (hm ▸ hu))`. Use linear arithmetic over natural numbers and integers. Introduce `i hi`. Establish `hij : z ∈ L.U i ⊓ L.U j` using `⟨hi, hj⟩`.
+
+Use `⟨fnOf _ (gen_mem hij) (L.g i j : Γ(X, L.U i ⊓ L.U j)) * w, (unitAt_fnOf hij _ _).mul hw, ?_⟩` and prove the remaining obligations. Rewrite using `[hr i j (gen_mem hij), ht, mul_assoc]`.
+-/
 theorem point_data {z : X} [IsDiscreteValuationRing (X.presheaf.stalk z)] (π : Γ(X, ⊤))
     (hπ0 : fnOf ⊤ trivial π ≠ 0) (hz : z ∉ X.basicOpen π) (L : LB X) (τ : L.ι → X.functionFieldˣ) (hL : L.IsLB)
     (hr : IsRatSec L τ) :
@@ -202,6 +269,23 @@ end GlobalTheory.ExpChoice
 
 open GlobalTheory.ExpChoice in
 
+/- English proof (translation)
+Introduce `X _ _ _ hN π hπ ⟨z₀, hz₀⟩ L τ hL hr hτ`. Establish `hπ0 : fnOf ⊤ trivial π ≠ 0` using `((unitAt_fnOf_iff (show genericPoint X ∈ (⊤ : X.Opens) from trivial) trivial π).2 hπ).ne_zero`. Use `set S : Set X := {z | z ∉ X.basicOpen π ∧ IsDiscreteValuationRing (X.presheaf.stalk z)} with hSdef`. Establish `hS : S.Finite` using `finite_dvr_notMem π hπ`. Establish `hne : S.Nonempty` using `exists_dvr_notMem hN π hπ hz₀`.
+
+Establish `data : ∀ z ∈ S, ∃ (p : X.functionField) (m t : ℤ), p ≠ 0 ∧ 1 ≤ m ∧ (∀ u, UnitAt z u → ∀ k : ℤ, RegAt z (u * p ^ k) ↔ 0 ≤ k) ∧ (∃ u, UnitAt z u ∧ fnOf ⊤ trivial π = u * p ^ m) ∧ ∀ i, z ∈ L.U i → ∃ v, UnitAt z v ∧ (τ i : X.functionField) = v * p ^ t` using `fun z hz => by haveI := hz.2`. Conclude with `point_data π hπ0 hz.1 L τ hL hr`. Use `choose! p m t hp hm hreg hπrep hτrep using data`. Take `⟨x₀, hx₀, hmax⟩` from `Set.exists_max_image S (fun z => (t z : ℚ) / (m z)) hS hne`. Establish `hM : (((m x₀).toNat : ℕ) : ℤ) = m x₀` using `Int.toNat_of_nonneg (by linarith [hm x₀ hx₀])`.
+
+Establish `key : ∀ z ∈ S, ∀ i, z ∈ L.U i → ∃ u, UnitAt z u ∧ fnOf ⊤ trivial π ^ t x₀ * ((τ i : X.functionField) ^ (m x₀).toNat)⁻¹ = u * p z ^ (m z * t x₀ - t z * m x₀)`. Introduce `z hz i hi`. Take `⟨u, hu, e1⟩` from `hπrep z hz`. Take `⟨v, hv, e2⟩` from `hτrep z hz i hi`. Use `⟨u ^ t x₀ * (v ^ ((m x₀).toNat : ℤ))⁻¹, (unitAt_zpow hu _).mul (unitAt_zpow hv _).inv, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e1, e2, zpow_exponent_identity (hp z hz), hM]`. Use `⟨(m x₀).toNat, t x₀, x₀, by have := hm x₀ hx₀; omega, hx₀.1, ?_, ?_⟩` and prove the remaining obligations. Introduce `i z hi hdvr`. Distinguish the cases in `hzb : z ∈ X.basicOpen π`. Establish `h1` using `(unitAt_fnOf_iff (show z ∈ (⊤ : X.Opens) from trivial) trivial π).2 hzb`.
+
+Establish `h2` using `unitAt_zpow (hτ i z hi hzb) ((m x₀).toNat : ℤ)`. Rewrite `h2` using `[zpow_natCast]`. Conclude with `((unitAt_zpow h1 _).mul h2.inv).regAt`. Establish `hz : z ∈ S` using `⟨hzb, hdvr⟩`. Take `⟨u, hu, e⟩` from `key z hz i hi`.
+
+Rewrite using `[e, hreg z hz u hu]`. Establish `h` using `hmax z hz`. Establish `hmz : (0 : ℚ) < m z` using `by exact_mod_cast (hm z hz)`. Establish `hm0 : (0 : ℚ) < m x₀` using `by exact_mod_cast (hm x₀ hx₀)`. Rewrite `h` using `[div_le_div_iff₀ hmz hm0]`.
+
+Establish `h' : t z * m x₀ ≤ t x₀ * m z` using `by exact_mod_cast h`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `i hi`. Take `⟨u, hu, e⟩` from `key x₀ hx₀ i hi`. Rewrite using `[e, mul_comm (m x₀) (t x₀), sub_self, zpow_zero, mul_one]`.
+
+Conclude with `hu`.
+-/
 theorem GlobalTheory.ExpChoice.exists_exponents : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] [CompactSpace X],
   (∀ x : X, IsIntegrallyClosed (X.presheaf.stalk x)) →
   ∀ (π : Γ(X, ⊤)), genericPoint X ∈ X.basicOpen π → (∃ z : X, z ∉ X.basicOpen π) →

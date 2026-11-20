@@ -20,10 +20,20 @@ variable {R : Type} [CommRing R] [IsDomain R] {D D' : DegPre R} {r : ℕ} {W : M
 def tensHom (T : Tens D D' W) (k : (Fin r × Fin r) × Fin 4) : D'.P.A ⟶ D.P.A :=
   ![T.pr k.1.1 * T.pr k.1.2, T.pr k.1.1, T.pr k.1.2, 1] k.2
 
+/- English proof (translation)
+Take `⟨⟨i, j⟩, m⟩` from `k`. Apply the tactic sequence `fin_cases m <;> rfl`.
+-/
 theorem tensφ_eq (T : Tens D D' W) (k : (Fin r × Fin r) × Fin 4) : tensφ T.pr k = (tensHom T k).left := by
   obtain ⟨⟨i, j⟩, m⟩ := k
   fin_cases m <;> rfl
 
+/- English proof (translation)
+Take `⟨⟨i, j⟩, m⟩` from `k`. Use `haveI := T.pr_hom i`. Use `haveI := T.pr_hom j`. Use `fin_cases m`. Use `show (a * b) ≫ (T.pr i * T.pr j) = (a ≫ (T.pr i * T.pr j)) * (b ≫ (T.pr i * T.pr j))`.
+
+Rewrite using `[MonObj.comp_mul, MonObj.comp_mul, MonObj.comp_mul, MonObj.mul_comp, MonObj.mul_comp]`. Conclude with `mul_mul_mul_comm _ _ _ _`. Use `show (a * b) ≫ T.pr i = (a ≫ T.pr i) * (b ≫ T.pr i)`. Conclude with `MonObj.mul_comp _ _ _`. Use `show (a * b) ≫ T.pr j = (a ≫ T.pr j) * (b ≫ T.pr j)`.
+
+Conclude with `MonObj.mul_comp _ _ _`. Use `show (a * b) ≫ (1 : D'.P.A ⟶ D.P.A) = (a ≫ 1) * (b ≫ 1)`. Rewrite using `[MonObj.comp_one, MonObj.comp_one, MonObj.comp_one, _root_.mul_one]`.
+-/
 theorem tensHom_mul (T : Tens D D' W) (k : (Fin r × Fin r) × Fin 4) {Z : Over (Spec (CommRingCat.of R))}
     (a b : Z ⟶ D'.P.A) : (a * b) ≫ tensHom T k = (a ≫ tensHom T k) * (b ≫ tensHom T k) := by
   obtain ⟨⟨i, j⟩, m⟩ := k
@@ -47,6 +57,11 @@ def tensHomH (T : Tens D D' W) (k : (Fin r × Fin r) × Fin 4) (Z : Over (Spec (
 def cubeρ (T : Tens D D' W) (k : (Fin r × Fin r) × Fin 4) : (G3 D'.P.A).left ⟶ (G3 D.P.A).left :=
   (lift (x3 D'.P.A 0 ≫ tensHom T k) (lift (x3 D'.P.A 1 ≫ tensHom T k) (x3 D'.P.A 2 ≫ tensHom T k))).left
 
+/- English proof (translation)
+Rewrite using `[tensφ_eq]`. Use `show (psum D'.P.A (x3 D'.P.A) I.down).left ≫ (tensHom T k).left = _ ≫ (psum D.P.A (x3 D.P.A) I.down).left`. Rewrite using `[cubeρ, ← Over.comp_left, ← Over.comp_left]`. Use `congr 1`. Use `show tensHomH T k _ (psum D'.P.A (x3 D'.P.A) I.down) = preHom _ (psum D.P.A (x3 D.P.A) I.down)`.
+
+Rewrite using `[psum_hom, psum_hom]`. Use `congr 1`. Use function extensionality and compare the values at `n`. Apply the tactic sequence `fin_cases n <;> simp [x3, tensHomH, preHom]`.
+-/
 theorem cube_comm (T : Tens D D' W) (k : (Fin r × Fin r) × Fin 4) (I : thK) :
     thφ D'.P.A (x3 D'.P.A) I ≫ tensφ T.pr k = cubeρ T k ≫ thφ D.P.A (x3 D.P.A) I := by
   rw [tensφ_eq]
@@ -65,9 +80,15 @@ namespace GlobalTheory.Mum.TensCube
 
 variable {R : Type} [CommRing R] [IsDomain R] {D D' : DegPre R} {r : ℕ} {W : Matrix (Fin r) (Fin r) ℤ}
 
+/- English proof (translation)
+The claim follows from `map_one (tensHomH T k Z)`.
+-/
 theorem one_tensHom (T : Tens D D' W) (k : (Fin r × Fin r) × Fin 4) {Z : Over (Spec (CommRingCat.of R))} :
     (1 : Z ⟶ D'.P.A) ≫ tensHom T k = 1 := map_one (tensHomH T k Z)
 
+/- English proof (translation)
+Rewrite using `[cubeρ, ← Over.comp_left]`. Use `congr 1`. Simplify using `[x3]`.
+-/
 theorem lift_cubeρ (T : Tens D D' W) (k : (Fin r × Fin r) × Fin 4) {Z : Over (Spec (CommRingCat.of R))}
     (a b c : Z ⟶ D'.P.A) : (lift a (lift b c)).left ≫ cubeρ T k =
       (lift (a ≫ tensHom T k) (lift (b ≫ tensHom T k) (c ≫ tensHom T k))).left := by
@@ -75,6 +96,13 @@ theorem lift_cubeρ (T : Tens D D' W) (k : (Fin r × Fin r) × Fin 4) {Z : Over 
   congr 1
   simp [x3]
 
+/- English proof (translation)
+Establish `hA` using `D'.P.isAb`. Establish `he : (lift 1 (lift 1 1) : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ G3 D'.P.A).left ≫ (snd D'.P.A (D'.P.A ⊗ D'.P.A)).left ≫ (snd D'.P.A D'.P.A).left ≫ D'.P.A.hom = 𝟙 _`. Rewrite using `[Over.w, Over.w]`. Conclude with `Over.w _`. Use `GlobalTheory.TensEven.box_uniqueE (pr := tensφ T.pr) (εp := tensε W) D.P.isLB D'.P.isLB T.w T.w_gen (φ' := thφ D'.P.A (x3 D'.P.A)) (φ := thφ D.P.A (x3 D.P.A)) (ε := thε) (ρ := cubeρ T) (fun k I => cube_comm T k I) D'.cub.isGen D.cub.isGen _ _ he (surj_comp (surj_snd hG hA _) (sur …` and prove the remaining obligations.
+
+Establish `p` using `prod_cub (1 : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ D'.P.A) 1 1 (fun ψ => GlobalTheory.TensEven.bwE T.w ψ y (fun i => I (ψ ≫ tensφ T.pr i)) (I' ψ))`. Simplify using `only [_root_.mul_one, mul_inv_cancel, inv_mul_cancel] at p`. Establish `c' : val (L` using `D'.P.L) (φ := thφ D'.P.A (x3 D'.P.A)) (ε := thε) D'.cub.t (lift 1 (lift 1 1) : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ G3 D'.P.A).left y I' = 1 := (isCub_cubV D'.cub hI').face 1 1`. Establish `c : ∀ k, val (L` using `D.P.L) (φ := thφ D.P.A (x3 D.P.A)) (ε := thε) D.cub.t ((lift 1 (lift 1 1) : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ G3 D'.P.A).left ≫ cubeρ T k) y I = 1 := fun k => by`. Rewrite using `[lift_cubeρ, one_tensHom]`.
+
+Conclude with `(isCub_cubV D.cub hI).face 1 1`. Use `(congrArg₂ (· * ·) p c').trans ?_` and prove the remaining obligations. Simplify using `only [c, one_zpow, Finset.prod_const_one]`. Use `group`.
+-/
 theorem cube_tens (hG : GlobalFnsSt) (T : Tens D D' W) {Z : Scheme.{0}} (q : Z ⟶ (G3 D'.P.A).left) (z : Z)
     {J J'} (hJ : Good D.P.L z J) (hJ' : Good D'.P.L z J') :
     (∏ a : thK.{0}, GlobalTheory.TensEven.bwE T.w (q ≫ thφ D'.P.A (x3 D'.P.A) a) z
@@ -107,6 +135,9 @@ end GlobalTheory.Mum.TensCube
 
 namespace GlobalTheory.Mum.TensCube
 
+/- English proof (translation)
+Substitute `key` using the available equality. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 theorem alg {U : Type} [CommGroup U] (Θ P hxyu hxy hxu hyu hx hy hu h1 : U)
     (key : hxyu * hxy⁻¹ * hxu⁻¹ * hyu⁻¹ * hx * hy * hu * h1⁻¹ * Θ = P) :
     Θ * hxyu * hx * hy * hu = P * hxy * hxu * hyu * h1 := by
@@ -115,6 +146,25 @@ theorem alg {U : Type} [CommGroup U] (Θ P hxyu hxy hxu hyu hx hy hu h1 : U)
   simp only [ofMul_mul, ofMul_inv]
   abel
 
+/- English proof (translation)
+Introduce `R _ _ _ _ D D' r W T F _ _ _ N N' ν ν' x y u`. Take `⟨z⟩ : Nonempty (Sp F)` from `inferInstanceAs (Nonempty (PrimeSpectrum F))`. Establish `hJ : Good D.toPre.P.L z ν.J` using `fun ψ => ν.good ψ trivial`. Establish `hJ' : Good D'.toPre.P.L z ν'.J` using `fun ψ => ν'.good ψ trivial`. Set `h : ((TF (R` to `R) F).left ⟶ D'.toPre.P.A.left) → ((Sp F).presheaf.stalk z)ˣ := fun ψ => GlobalTheory.TensEven.bwE T.w ψ z (fun i => ν.J (ψ ≫ tensφ T.pr i)) (ν'.J ψ)`.
+
+Set `τ : Fˣ →* ((Sp F).presheaf.stalk z)ˣ` to `Units.map (toStk z).toMonoidHom`. Establish `vw : ∀ a, toStk z (wv T ν ν' a) = (h (ν'.eA a).left).val` using `fun a => toStk_valF (ν'.eA a).left (LB.wchart D.toPre.P.L (tensφ T.pr) (fun k => ν.J ((ν'.eA a).left ≫ tensφ T.pr k)) ⊓ D'.toPre.P.L.U (ν'.J (ν'.eA a).left)) z ⟨hJ.mem (tensφ T.pr) _, hJ' _⟩ _`. Establish `vθ' : toStk z (N'.θ x y u : F) = (cubV D'.toPre.cub (T` using `TF (R := R) F) z ν'.J (ν'.eA x) (ν'.eA y) (ν'.eA u)).val := (congrArg (toStk z) (ν'.θ_eq x y u)).trans (toStk_valF _ _ z (hJ'.mem _ _) _)`. Establish `tθ : ∀ a b c, τ (N.θ a b c) = cubV D.toPre.cub (T` using `TF (R := R) F) z ν.J (ν.eA a) (ν.eA b) (ν.eA c) := fun a b c => Units.ext ((Units.coe_map _ _).trans ((congrArg (toStk z) (ν.θ_eq a b c)).trans (toStk_valF _ _ z (hJ.mem _ _) _)))`. Establish `ecmp : ∀ a j, ν.eA (cmp T ν ν' a j) = ν'.eA a ≫ T.pr j` using `fun a j => ν.eA.apply_symm_apply _`.
+
+Establish `key` using `cube_tens GlobalTheory.globalFns_holds T (Z := Sp F) (lift (ν'.eA x) (lift (ν'.eA y) (ν'.eA u))).left z hJ hJ'`. Establish `key'` using `(congrArg₂ (· * ·) (prod_cub (ν'.eA x) (ν'.eA y) (ν'.eA u) h) rfl).symm.trans key`. Establish `c1` using `(isCub_cubV D.toPre.cub hJ).face (1 : TF (R := R) F ⟶ D.toPre.P.A) 1`. Establish `hP : τ (∏ i, ∏ j, (N.θ (cmp T ν ν' x i * cmp T ν ν' x j) (cmp T ν ν' y i * cmp T ν ν' y j) (cmp T ν ν' u i * cmp T ν ν' u j) / (N.θ (cmp T ν ν' x i) (cmp T ν ν' y i) (cmp T ν ν' u i) * N.θ (cmp T ν ν' x j) (cmp T ν ν' y j) (cmp T ν ν' u j))) ^ W i j) = ∏ k, val (L` using `D.toPre.P.L) (φ := thφ D.toPre.P.A (x3 D.toPre.P.A)) (ε := thε) D.toPre.cub.t ((lift (ν'.eA x) (lift (ν'.eA y) (ν'.eA u))).left ≫ cubeρ T k) z ν.J ^ tensε W k := by`. Rewrite using `[Fintype.prod_prod_type, Fintype.prod_prod_type, map_prod]`.
+
+Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_four]`. Simplify using `only [lift_cubeρ]`.
+
+Use `haveI := T.pr_hom i`. Use `haveI := T.pr_hom j`. Establish `m0 : ∀ a, ν'.eA a ≫ tensHom T ((i, j), 0) = ν.eA (cmp T ν ν' a i * cmp T ν ν' a j)` using `fun a => by`. Rewrite using `[map_mul, ecmp, ecmp]`. Conclude with `MonObj.comp_mul _ _ _`.
+
+Establish `m1 : ∀ a, ν'.eA a ≫ tensHom T ((i, j), 1) = ν.eA (cmp T ν ν' a i)` using `fun a => (ecmp a i).symm`. Establish `m2 : ∀ a, ν'.eA a ≫ tensHom T ((i, j), 2) = ν.eA (cmp T ν ν' a j)` using `fun a => (ecmp a j).symm`. Establish `m3 : ∀ a, ν'.eA a ≫ tensHom T ((i, j), 3) = 1` using `fun a => MonObj.comp_one _`. Express the relevant statement in the definitionally equal form `_ = cubV D.toPre.cub (T := TF (R := R) F) z ν.J _ _ _ ^ _ * cubV D.toPre.cub (T := TF (R := R) F) z ν.J _ _ _ ^ _ * cubV D.toPre.cub (T := TF (R := R) F) z ν.J _ _ _ ^ _ * cubV D.toPre.cub (T := TF (R := R) F) z ν.J _ _ _ ^ _`. Rewrite using `[m0, m0, m0, m1, m1, m1, m2, m2, m2, m3, m3, m3, c1, ← tθ, ← tθ, ← tθ, map_zpow, map_div, map_mul]`.
+
+Simplify using `only [tensε, Oε, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three, Matrix.head_cons, Matrix.tail_cons, one_zpow, _root_.mul_one, zpow_mul]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_div, ofMul_one]`. Use `module`. Rewrite `key'` using `[← hP]`.
+
+Apply `(toStk z).injective` to reduce the goal to its premises. Establish `eq1 : toStk z (((∏ i, ∏ j, (N.θ (cmp T ν ν' x i * cmp T ν ν' x j) (cmp T ν ν' y i * cmp T ν ν' y j) (cmp T ν ν' u i * cmp T ν ν' u j) / (N.θ (cmp T ν ν' x i) (cmp T ν ν' y i) (cmp T ν ν' u i) * N.θ (cmp T ν ν' x j) (cmp T ν ν' y j) (cmp T ν ν' u j))) ^ W i j : Fˣ) : F)) = (τ _).v …` using `(Units.coe_map _ _).symm`. Simplify using `only [map_mul, vw, vθ', eq1, map_one]`. Simplify using `only [← Units.val_mul]`. Use `congr 1`.
+
+Use `alg _ _ _ _ _ _ _ _ _ _ ?_` and prove the remaining obligations. Conclude with `key'`.
+-/
 theorem theta_tens : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D D' : DegData R (maximalIdeal R)) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (T : Tens D.toPre D'.toPre W) (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] (N N' : NumD F) (ν : NumOf D.toPre F N) (ν' : NumOf D'.toPre F N'), ∀ x y u, (N'.θ x y u : F) * wv T ν ν' (x * y * u) * wv T ν ν' x * wv T ν ν' y * wv T ν ν' u =
     ((∏ i, ∏ j, (N.θ (cmp T ν ν' x i * cmp T ν ν' x j) (cmp T ν ν' y i * cmp T ν ν' y j) (cmp T ν ν' u i * cmp T ν ν' u j) /
         (N.θ (cmp T ν ν' x i) (cmp T ν ν' y i) (cmp T ν ν' u i) * N.θ (cmp T ν ν' x j) (cmp T ν ν' y j) (cmp T ν ν' u j))) ^ W i j : Fˣ) : F) *

@@ -8,6 +8,17 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.CechPic GlobalTheory.ProjVar
 open GlobalTheory.VertCmp
 open scoped Classical
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw Xo p W Y i₀ Z a τ mu hT R _ φ y f hy hf`. Establish `key : f = (φ.comp (Z.alg a)).comp (IntermediateField.inclusion Z.le).toRingHom`. Take `⟨b, π', -, hb, h₁, h₂, -⟩` from `hT`. Establish `e : τ ≫ (Y i₀).s = (Y Z.i).s ≫ spMap b`. Rewrite using `[← h₁, ← h₂, Category.assoc, Category.assoc, pullback.condition]`.
+
+Establish `js : (Y i₀).j ≫ (Y i₀).s = pullback.snd _ _ ≫ spMap (i₀.c.V W).subtype`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model.j, Category.assoc, pullback.condition, ← Category.assoc, (Y i₀).jQ_over]`. Use `mono_spMap_subtype (i₀.c.V W)` as an intermediate fact. Use `congrArg CommRingCat.Hom.hom (Spec.map_injective (a₁ := CommRingCat.ofHom _) (a₂ := CommRingCat.ofHom _) ?_)` and prove the remaining obligations. Establish `cs` using `Pull.affineOpenChart_comp_structure_eq_spMap Z (a := a) (φ := φ) rfl`.
+
+Establish `e2 : spMap f ≫ spMap (i₀.c.V W).subtype = (spMap (φ.comp (Z.alg a)) ≫ spMap (Z.i.c.V W).subtype) ≫ spMap b`. Rewrite using `[← cs, ← hf]`. Use `(Category.assoc _ _ _).trans ((congrArg (y ≫ ·) js.symm).trans ?_)` and prove the remaining obligations. Rewrite using `[← Category.assoc, hy]`. Simplify using `only [Category.assoc, e]`.
+
+Rewrite using `[← cancel_mono (spMap (i₀.c.V W).subtype)]`. Use `e2.trans ?_` and prove the remaining obligations. Rewrite using `[ModelRelProbe.spMap_comp, ModelRelProbe.spMap_comp, ModelRelProbe.spMap_comp]`. Use `congr 1`. Use extensionality with `x`.
+
+Conclude with `congrArg (φ.comp (Z.alg a)) (Subtype.ext (hb x))`. Conclude with `Pull.frame_push mu (by rw [hy, Category.assoc]) (fun σ x => by rw [key]; rfl) (Pull.chart_frame Z (a := a) (φ := φ) rfl)`.
+-/
 theorem UpperTheory.transition_local_frame :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (Xo : ∀ l : Level H, Moduli Dw l) (p : ℕ) (W : ValuationSubring ℂ) (Y : LocalSystem Xo p W) (i₀ : Idx H p) (Z : LocM.Mdl Y i₀) (a : Fin Z.m) (τ : (Y Z.i).X ⟶ (Y i₀).X) (mu : SABMap (Y Z.i).t (Y i₀).t τ), LocM.IsTrans i₀ Z.i τ mu → ∀ (R : Type) [CommRing R] (φ : Γ(Z.X, (Z.U a).1) →+* R) (y : Sp R ⟶ (Xo i₀.l).XF i₀.c) (f : i₀.c.F →+* R), y ≫ (Y i₀).j = (spMap φ ≫ Z.chart a) ≫ Z.π ≫ τ → y ≫ pullback.snd _ _ = spMap f → LocM.IsFrame (Dw := Dw) (Y i₀).t f (y ≫ (Y i₀).j) (fun σ m => (Z.fr a).bc φ σ m ≫ mu.φ) := by
   intro E _ _ _ H Dw Xo p W Y i₀ Z a τ mu hT R _ φ y f hy hf

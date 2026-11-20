@@ -11,6 +11,9 @@ set_option synthInstance.maxHeartbeats 200000
 section
 open GlobalTheory.ThK.Dbl
 namespace PositivityTheory.SiegelWeilFormula.Fin
+/- English proof (translation)
+The claim follows from `_root_.PositivityTheory.SiegelWeilFormula.Fin.siegelWeilStd_pre_k _root_.PositivityTheory.SiegelWeilFormula.TW.Twp.poisson_k hCT`.
+-/
 theorem siegelWeilStd_of_ct_k (hCT : _root_.PositivityTheory.SiegelWeilFormula.CTSplit_k) : _root_.GlobalTheory.ThK.Dbl.SiegelWeilStd_k := _root_.PositivityTheory.SiegelWeilFormula.Fin.siegelWeilStd_pre_k _root_.PositivityTheory.SiegelWeilFormula.TW.Twp.poisson_k hCT
 end PositivityTheory.SiegelWeilFormula.Fin
 end

@@ -17,10 +17,16 @@ open GlobalTheory.LatticeIndex GlobalTheory.TrivLattice
 section Val
 variable {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K))
 
+/- English proof (translation)
+Rewrite using `[← map_natCast (algebraMap (𝓞 K) K)]`. Conclude with `la.valuation_eq_one_iff_notMem.2 hk`.
+-/
 theorem valuation_nat {k : ℕ} (hk : (k : 𝓞 K) ∉ la.asIdeal) : la.valuation K (k : K) = 1 := by
   rw [← map_natCast (algebraMap (𝓞 K) K)]
   exact la.valuation_eq_one_iff_notMem.2 hk
 
+/- English proof (translation)
+Introduce `hb` and use `by obtain ⟨u, v, e⟩ : IsCoprime (a : 𝓞 K) (b : 𝓞 K) := h.cast exact la.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (e ▸ la.asIdeal.add_mem (la.asIdeal.mul_mem_left _ ha) (la.asIdeal.mul_mem_left _ hb)))`.
+-/
 theorem not_mem_of_coprime' {a b : ℕ} (h : Nat.Coprime a b) (ha : (a : 𝓞 K) ∈ la.asIdeal) :
     (b : 𝓞 K) ∉ la.asIdeal := fun hb => by
   obtain ⟨u, v, e⟩ : IsCoprime (a : 𝓞 K) (b : 𝓞 K) := h.cast
@@ -29,6 +35,17 @@ theorem not_mem_of_coprime' {a b : ℕ} (h : Nat.Coprime a b) (ha : (a : 𝓞 K)
 
 end Val
 
+/- English proof (translation)
+Take `⟨k, hk, hk1, hk2⟩` from `hA`. Establish `h1 : ∀ v ∈ Λ.La, k • v ∈ stdLat E n` using `fun v hv => nsmul_mem_of_le hk1 hv`. Establish `h2 : ∀ v ∈ stdLat E n, k • v ∈ Λ.La` using `fun v hv => nsmul_mem_of_le hk2 hv`. Set `w` to `la.valuation c.F`. Establish `hw : ∀ r : 𝓞 c.F, w (algebraMap (𝓞 c.F) c.F r) ≤ 1` using `fun r => la.valuation_le_one r`.
+
+Establish `hwτ : ∀ τ, ∀ r : 𝓞 E, w.comap (embF c τ) (algebraMap (𝓞 E) E r) ≤ 1` using `fun τ r => hw ⟨_, map_isIntegral_int (embF c τ) r.isIntegral_coe⟩`. Establish `hnat : ∀ τ, w.comap (embF c τ) (k : E) = 1` using `fun τ => by`. Simplify using `only [w, Valuation.comap_apply, map_natCast]`. Conclude with `valuation_nat la hk`. Establish `hm : ∀ (A : Submodule (𝓞 E) (Fin n → E)), (∀ v ∈ A, k • v ∈ stdLat E n) → (∀ v ∈ stdLat E n, k • v ∈ A) → HasMax w (∏ τ : E →+* ℂ, idealAt c A τ ^ Dw.mult τ) 1` using `fun A a1 a2 => by`.
+
+Use `hasMax_prod hw Finset.univ (fun τ => idealAt c A τ ^ Dw.mult τ) (fun _ => 1) fun τ => by` as an intermediate fact. Take `⟨a, y, hy, b⟩` from `detSet_max _ (hwτ τ) A (hnat τ) a1 a2`. Establish `h : HasMax w (idealAt c A τ) 1`. Use `hasMax_span hw ?_ ⟨_, ⟨_, hy, rfl⟩, b⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+
+Conclude with `a y hy`. Simplify using `using h.pow hw (Dw.mult τ)`. Simplify using `using this`. Establish `hb : HasMax w (Submodule.span (𝓞 c.F) {β}) (w β)` using `hasMax_span hw (by simp) (by simp)`. Establish `f1` using `hb.mul (hm Λ.La h1 h2)`.
+
+Rewrite `f1` using `[hβ]`. Establish `f` using `f1.unique (hm Λ.Ln (fun v hv => h1 v hv.1) (fun v hv => ⟨h2 v hv, (stdLat E n).toAddSubgroup.nsmul_mem hv k⟩))`. Rewrite `f` using `[_root_.mul_one]`. Establish `f' : la.valuation c.F β = 1` using `f`. Simplify using `[vLa, f']`.
+-/
 theorem vLa_beta {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     (c : Coeff l) {n : ℕ} (Λ : GenLat E n) (la : HeightOneSpectrum (𝓞 c.F)) (hA : PullbackSections.AdaptAt Λ la) (β : c.F)
     (hβ : BetaIs (Dw := Dw) c Λ β) : vLa la β = 0 := by
@@ -61,6 +78,9 @@ theorem vLa_beta {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
   have f' : la.valuation c.F β = 1 := f
   simp [vLa, f']
 
+/- English proof (translation)
+Establish `h` using `hF.sh.beta j hj n (hF.p.kPsi j hj) Λ hU hT`. Use `vLa_beta (Dw := T.Q.Dw j) T.Q.c Λ la hA _ ?_` and prove the remaining obligations. Unfold `betaH`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec.2.1`.
+-/
 theorem vLa_betaH {D : D7} (T : Full D) (hF : LawsFull T) (j : ℕ) (hj : InR D j) {n : ℕ} (Λ : GenLat D.host.E n)
     (la : HeightOneSpectrum (𝓞 T.Q.c.F)) (hU : Λ.Unimod) (hT : Λ.TrivAt (badN D)) (hA : PullbackSections.AdaptAt Λ la) :
     vLa la (betaH (Dw := T.Q.Dw j) T.Q.c Λ) = 0 := by

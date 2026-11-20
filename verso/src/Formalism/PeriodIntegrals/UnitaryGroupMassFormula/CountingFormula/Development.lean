@@ -45,6 +45,13 @@ def MassAtUnif : Prop :=
         ∃ c : ℝ, 0 < c ∧ ∀ Z : MatZ D, TotPos (GZ (Tn u) (Tn u') Z) →
           nu (Tn u') F0 what₂ Z = c * sqrtAbsNormOfScaledGram (Tn u) (Tn u') Z ^ (D.R.k - 1) * ∏' p, densP L δ ϖ (Tn u) (Tn u') Z p
 
+/- English proof (translation)
+Unfold `PI.CntLocalParts.FormulaAll`. Introduce `D δ M hA L u u' hc F0 what₂ hr`. Distinguish the cases in `hex : ∃ ϖ₀ : (∀ p : PlF D, 𝒪[(D.s.atP p).Fp]), ∀ p, Irreducible (ϖ₀ p)`. Take `⟨ϖ₀, hϖ₀⟩` from `hex`. Take `⟨c, hc0, hcf⟩` from `h4 D δ M hA L u u' hc F0 what₂ hr ϖ₀ hϖ₀`.
+
+Use `⟨c, ?_⟩` and prove the remaining obligations. Unfold `Formula`. Use `⟨hc0, fun ϖ hϖ Z => ⟨fun Λ hΛ => h1 D δ M hA L u u' hc F0 what₂ hr Z Λ hΛ, fun hpos => ?_⟩⟩` and prove the remaining obligations. Use `⟨h3 D δ M hA L u u' hc F0 what₂ hr ϖ hϖ Z hpos, ?_⟩` and prove the remaining obligations. Rewrite using `[h2 D δ M hA L u u' hc F0 what₂ hr ϖ ϖ₀ hϖ hϖ₀ Z]`.
+
+Conclude with `hcf Z hpos`. Use `⟨1, ?_⟩` and prove the remaining obligations. Unfold `Formula`. Conclude with `⟨one_pos, fun ϖ hϖ _ => (hex ⟨ϖ, hϖ⟩).elim⟩`.
+-/
 theorem cntFormula_of (h1 : OrbitFinite) (h2 : DensIndep) (h3 : DensMult) (h4 : MassAtUnif) :
     PI.CntLocalParts.FormulaAll := by
   unfold PI.CntLocalParts.FormulaAll

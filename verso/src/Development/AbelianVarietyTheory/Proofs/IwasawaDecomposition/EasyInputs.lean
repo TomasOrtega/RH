@@ -14,17 +14,31 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Mem.EasyInputs
 
+/- English proof (translation)
+Introduce `V S M τ` and use `by obtain ⟨w, hw, h0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot (GlobalTheory.GardingVec.sm_ne_bot D V S M τ) exact ⟨⟨w, hw⟩, by simpa using h0⟩`.
+-/
 theorem smAll (D : D7) : SmAll D := fun V S M τ => by
   obtain ⟨w, hw, h0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot (GlobalTheory.GardingVec.sm_ne_bot D V S M τ)
   exact ⟨⟨w, hw⟩, by simpa using h0⟩
 
+/- English proof (translation)
+Introduce `i σ ρ` and use `GlobalTheory.Mem.WeylDimPos.dimK_kapAt_Wc_pos D i σ ρ`.
+-/
 theorem dimOK (D : D7) : DimOK D := fun i σ ρ => GlobalTheory.Mem.WeylDimPos.dimK_kapAt_Wc_pos D i σ ρ
 
+/- English proof (translation)
+Use `⟨fun V S M _ τ => GlobalTheory.Chain.VacVec.cart_isCartanInv M τ, fun V hs hp τ => ?_⟩` and prove the remaining obligations. Establish `h` using `GlobalTheory.RepsObj.gramAt_posDef hp hs τ`. Conclude with `⟨by simp, by simp, by simpa using h⟩`.
+-/
 theorem cartanOK (D : D7) : CartanOK D := by
   refine ⟨fun V S M _ τ => GlobalTheory.Chain.VacVec.cart_isCartanInv M τ, fun V hs hp τ => ?_⟩
   have h := GlobalTheory.RepsObj.gramAt_posDef hp hs τ
   exact ⟨by simp, by simp, by simpa using h⟩
 
+/- English proof (translation)
+Use `⟨fun τ => Or.inl ?_, fun τ => Or.inl (D.X'_posDef τ)⟩` and prove the remaining obligations. Establish `hm : D.R.m - 1 ≤ D.R.m` using `Nat.sub_le _ _`. Use `show (D.sp.Y (min (D.R.m - 1) D.R.m)).sig τ = ((D.sp.Y (min (D.R.m - 1) D.R.m)).rank, 0)`. Rewrite using `[min_eq_left hm, D.Y_sigval _ hm τ, D.sp.Y_rank _ hm, sigYD]`. Use `D.R.two_le_m` as an intermediate fact.
+
+Establish `h1 : (D.R.m - (D.R.m - 1)) / 2 = 0` using `by omega`. Rewrite using `[h1, Nat.sub_zero]`.
+-/
 theorem spOK (D : D7) : SpOK D := by
   refine ⟨fun τ => Or.inl ?_, fun τ => Or.inl (D.X'_posDef τ)⟩
   have hm : D.R.m - 1 ≤ D.R.m := Nat.sub_le _ _
@@ -34,6 +48,13 @@ theorem spOK (D : D7) : SpOK D := by
   have h1 : (D.R.m - (D.R.m - 1)) / 2 = 0 := by omega
   rw [h1, Nat.sub_zero]
 
+/- English proof (translation)
+Introduce and unpack `V β Λ N ⟨-, hd, hN, h1, h2⟩`. Establish `hM0 : (N : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Establish `hL` using `(GlobalTheory.PlaceModel.isSelfDualC_latFrame V).1`. Rewrite `h1`, `h2` using `[← GlobalTheory.PlaceModel.coe_latFrame]`. Use `⟨⟨?_, ?_⟩, fun y => ?_⟩` and prove the remaining obligations.
+
+Set `f : (Fin V.rank → D.host.E) →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)` to `(LinearMap.lsmul D.host.E (Fin V.rank → D.host.E) (N : D.host.E)⁻¹).restrictScalars (𝓞 D.host.E)`. Use `(hL.fg.map f).of_le fun x hx => ⟨_, h2 x hx, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(N : D.host.E)⁻¹ • ((N : D.host.E) • x) = x`. Rewrite using `[smul_smul, inv_mul_cancel₀ hM0, one_smul]`. Rewrite using `[eq_top_iff, ← hL.span_eq_top, Submodule.span_le]`.
+
+Introduce `x hx`. Use `Submodule.smul_mem _ (N : D.host.E)⁻¹ (Submodule.subset_span (R := D.host.E) (s := (Λ : Set (Fin V.rank → D.host.E))) (h1 x hx))` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hM0, one_smul]`. Then use the resulting hypothesis. Rewrite using `[← GlobalTheory.SDFrameLattice.mem_dualL_iff, hd]`.
+-/
 theorem selfDualOK (D : D7) : SelfDualOK D := by
   rintro V β Λ N ⟨-, hd, hN, h1, h2⟩
   have hM0 : (N : D.host.E) ≠ 0 := Nat.cast_ne_zero.2 hN.ne'
@@ -54,6 +75,15 @@ theorem selfDualOK (D : D7) : SelfDualOK D := by
 
 open scoped Pointwise in
 
+/- English proof (translation)
+Introduce `V μ 𝓕 hμ h𝓕 F hc hl h0 hi`. Use `haveI : BorelSpace (GA D V) := ⟨rfl⟩`. Use `haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.isTopRing (F := D.host.F) (E := D.host.E)`. Use `haveI : IsTopologicalGroup (GA D V) := inferInstanceAs (IsTopologicalGroup (HR (AF D.host.F) D.sp.cm.sig V.gram))`. Use `haveI : Countable (GQ V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma _ _`.
+
+Rewrite using `[setIntegral_pos_iff_support_of_nonneg_ae (Filter.Eventually.of_forall fun g => by positivity) hi]`. Establish `hs : Function.support (fun g => ‖F g‖ ^ 2) = Function.support F`. Use extensionality with `g`. Simplify using `[Function.mem_support]`. Rewrite using `[hs, pos_iff_ne_zero]`.
+
+Introduce `hz`. Establish `hinv : ∀ γ : GQ V, γ • Function.support F = Function.support F` using `fun γ => by`. Use extensionality with `g`. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem, Function.mem_support, Function.mem_support]`. Establish `: F (γ⁻¹ • g) = F g` using `hl _ (γ⁻¹).2 g`.
+
+Rewrite using `[this]`. Establish `hzero` using `h𝓕.measure_zero_of_invariant _ hinv hz`. Conclude with `(hc.isOpen_support.measure_pos μ (Function.support_nonempty_iff.2 h0)).ne' hzero`.
+-/
 theorem petAll (D : D7) : PetAll D := by
   intro V μ 𝓕 hμ h𝓕 F hc hl h0 hi
   haveI : BorelSpace (GA D V) := ⟨rfl⟩
@@ -74,6 +104,9 @@ theorem petAll (D : D7) : PetAll D := by
   have hzero := h𝓕.measure_zero_of_invariant _ hinv hz
   exact (hc.isOpen_support.measure_pos μ (Function.support_nonempty_iff.2 h0)).ne' hzero
 
+/- English proof (translation)
+Introduce `D` and use `⟨cartanOK D, selfDualOK D, spOK D, dimOK D, petAll D, smAll D⟩`.
+-/
 theorem easy_inputs : ∀ D : D7, CartanOK D ∧ SelfDualOK D ∧ SpOK D ∧ DimOK D ∧ PetAll D ∧ SmAll D := fun D =>
   ⟨cartanOK D, selfDualOK D, spOK D, dimOK D, petAll D, smAll D⟩
 

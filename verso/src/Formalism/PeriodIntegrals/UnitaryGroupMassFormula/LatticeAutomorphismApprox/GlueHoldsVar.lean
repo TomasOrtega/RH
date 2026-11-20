@@ -13,6 +13,9 @@ open NumberField IsDedekindDomain Matrix
 open scoped TensorProduct
 open Formalism.MainNotions.S PI.ScRefExists PI.UnitaryGroupMassFormula.AdIndexEq
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Establish `h0 : x i - y i = 0` using `PI.FinKW.local_vector_injective I (x i - y i) (fun v => by`. Rewrite using `[map_sub]`. Conclude with `sub_eq_zero.2 (congrFun (h v) i))`. Conclude with `sub_eq_zero.1 h0`.
+-/
 theorem vec_ext (I : AutInst) (x y : Fin I.n → I.E ⊗[I.F] Af I.F)
     (h : ∀ v, PI.FinKW.vecV I v x = PI.FinKW.vecV I v y) : x = y := by
   funext i
@@ -21,23 +24,37 @@ theorem vec_ext (I : AutInst) (x y : Fin I.n → I.E ⊗[I.F] Af I.F)
     exact sub_eq_zero.2 (congrFun (h v) i))
   exact sub_eq_zero.1 h0
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[PI.FinKW.vecV, map_mul]`.
+-/
 theorem vecV_smul (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (a : I.E ⊗[I.F] Af I.F)
     (x : Fin I.n → I.E ⊗[I.F] Af I.F) :
     PI.FinKW.vecV I v (a • x) = PI.FinKW.psiV I v a • PI.FinKW.vecV I v x := by
   funext i
   simp [PI.FinKW.vecV, map_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[PI.FinKW.vecV, map_sub]`.
+-/
 theorem vecV_sub (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (x y : Fin I.n → I.E ⊗[I.F] Af I.F) :
     PI.FinKW.vecV I v (x - y) = PI.FinKW.vecV I v x - PI.FinKW.vecV I v y := by
   funext i
   simp [PI.FinKW.vecV, map_sub]
 
+/- English proof (translation)
+Rewrite using `[← map_natCast (algebraMap F (v.adicCompletion F)) N, Formalism.UG.P.levelaf_valued_algebraMap, ← map_natCast (algebraMap (𝓞 F) F) N, HeightOneSpectrum.valuation_eq_one_iff_notMem]`. Conclude with `h`.
+-/
 theorem val_nat (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (N : ℕ)
     (h : (N : 𝓞 F) ∉ v.asIdeal) : Valued.v ((N : v.adicCompletion F)) = 1 := by
   rw [← map_natCast (algebraMap F (v.adicCompletion F)) N, Formalism.UG.P.levelaf_valued_algebraMap,
     ← map_natCast (algebraMap (𝓞 F) F) N, HeightOneSpectrum.valuation_eq_one_iff_notMem]
   exact h
 
+/- English proof (translation)
+Introduce `hm`. Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.2 h`. Apply `v.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `h1 : ((a * (m : ℤ) + b * (g : ℤ) : ℤ) : 𝓞 F) = 1` using `by rw [hab, Int.cast_one]`.
+
+Rewrite using `[← h1]`. Use `push_cast`. Conclude with `v.asIdeal.add_mem (v.asIdeal.mul_mem_left _ hm) (v.asIdeal.mul_mem_left _ hg)`.
+-/
 theorem not_mem_of_coprime {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
     {m g : ℕ} (h : Nat.Coprime m g) (hg : (g : 𝓞 F) ∈ v.asIdeal) : (m : 𝓞 F) ∉ v.asIdeal := by
   intro hm
@@ -49,6 +66,9 @@ theorem not_mem_of_coprime {F : Type} [Field F] [NumberField F] (v : HeightOneSp
   push_cast
   exact v.asIdeal.add_mem (v.asIdeal.mul_mem_left _ hm) (v.asIdeal.mul_mem_left _ hg)
 
+/- English proof (translation)
+Establish `hg0 : (g : 𝓞 F) ≠ 0` using `by exact_mod_cast (show g ≠ 0 by omega)`. Establish `h0 : Ideal.span {(g : 𝓞 F)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hg0`. Conclude with `(Ideal.finite_factors h0).subset (fun v hv => Ideal.dvd_span_singleton.2 hv)`.
+-/
 theorem finite_over (F : Type) [Field F] [NumberField F] {g : ℕ} (hg : 1 ≤ g) :
     {v : HeightOneSpectrum (𝓞 F) | (g : 𝓞 F) ∈ v.asIdeal}.Finite := by
   have hg0 : (g : 𝓞 F) ≠ 0 := by exact_mod_cast (show g ≠ 0 by omega)
@@ -57,17 +77,28 @@ theorem finite_over (F : Type) [Field F] [NumberField F] {g : ℕ} (hg : 1 ≤ g
     exact hg0
   exact (Ideal.finite_factors h0).subset (fun v hv => Ideal.dvd_span_singleton.2 hv)
 
+/- English proof (translation)
+The claim follows from `Submodule.span_le.2 (by rintro _ ⟨y, hy, rfl⟩ simpa using hy)`.
+-/
 theorem mL_one_le (I : AutInst) : mL I 1 ≤ I.Lf :=
   Submodule.span_le.2 (by
     rintro _ ⟨y, hy, rfl⟩
     simpa using hy)
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨W, hW, rfl⟩`.
+-/
 theorem mem_mL (I : AutInst) (m : ℕ) {W : Fin I.n → I.E ⊗[I.F] Af I.F} (hW : W ∈ I.Lf) :
     (m : I.E ⊗[I.F] Af I.F) • W ∈ mL I m :=
   Submodule.subset_span ⟨W, hW, rfl⟩
 
 open Classical in
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons v l ih`. Rewrite `hl` using `[List.nodup_cons]`. Rewrite using `[List.map_cons, List.prod_cons, Subgroup.coe_mul, map_mul, ih hl.2]`.
+
+Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Simplify using `[hY1, hl.1]`. Rewrite using `[hY2 v w hw]`. Simplify using `[hw]`.
+-/
 theorem matV_listProd (I : AutInst) (loc : ∀ v, GL (Fin I.n) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v ⊗[I.F] I.E))
     (Y : HeightOneSpectrum (𝓞 I.F) → I.Gf)
     (hY1 : ∀ v, matV I v (Y v : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) = loc v)
@@ -86,6 +117,65 @@ theorem matV_listProd (I : AutInst) (loc : ∀ v, GL (Fin I.n) (Formalism.MainNo
     · rw [hY2 v w hw]
       simp [hw]
 
+/- English proof (translation)
+Introduce `hL I g r k e f z Rf hg hs hn hee hff hef hz ht hi hiz`. Establish `hH : Hyps I g r k e f z` using `hyps_of hg hs hn hee hff hef hz ht hi hiz`. Establish `hloc : ∀ v : HeightOneSpectrum (𝓞 I.F), (g : 𝓞 I.F) ∈ v.asIdeal → LocConcl I g r e f z Rf.z0 v` using `fun v hv => hL I g r k e f z Rf hH v hv`. Set `loc : ∀ v : HeightOneSpectrum (𝓞 I.F), GL (Fin I.n) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v ⊗[I.F] I.E)` to `fun v => if hv : (g : 𝓞 I.F) ∈ v.asIdeal then Classical.choose (hloc v hv) else 1`. Establish `hloc1 : ∀ v, (g : 𝓞 I.F) ∉ v.asIdeal → loc v = 1` using `fun v hv => dif_neg hv`.
+
+Establish `hspec : ∀ v (hv : (g : 𝓞 I.F) ∈ v.asIdeal), loc v = Classical.choose (hloc v hv)` using `fun v hv => dif_pos hv`. Establish `hlocUK : ∀ v, loc v ∈ Uv I v ∧ loc v ∈ Kv I v`. Introduce `v`. Distinguish the cases in `hv : (g : 𝓞 I.F) ∈ v.asIdeal`. Take `⟨hU, hK, -⟩` from `Classical.choose_spec (hloc v hv)`.
+
+Rewrite using `[hspec v hv]`. Conclude with `⟨hU, hK⟩`. Rewrite using `[hloc1 v hv]`. Conclude with `⟨one_mem _, one_mem _⟩`. Establish `hlocS : ∀ v, (g : 𝓞 I.F) ∈ v.asIdeal → (∀ a, ((loc v : GL (Fin I.n) _) : Matrix (Fin I.n) (Fin I.n) _) *ᵥ PI.FinKW.vecV I v (incl I (e a)) = PI.FinKW.vecV I v (incl I (e a)) ∧ ((loc v : GL (Fin I.n) _) : Matrix (Fin I.n) (Fin I.n) _) *ᵥ PI.FinKW.vecV I v (incl I (f a)) = PI.FinKW …`.
+
+Introduce `v hv`. Take `⟨-, -, hfix, hw⟩` from `Classical.choose_spec (hloc v hv)`. Rewrite using `[hspec v hv]`. Conclude with `⟨hfix, hw⟩`. Establish `hY : ∀ v, ∃ y : I.Gf, matV I v (y : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) = loc v ∧ SuppAt I v y` using `fun v => lift_unitary' I v (loc v) (hlocUK v).1`.
+
+Use `choose Y hY1 hY2 using hY`. Establish `hfin` using `finite_over I.F hg`. Set `x : I.Gf` to `(hfin.toFinset.toList.map Y).prod`. Establish `hx : ∀ w, matV I w (x : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) = loc w`. Introduce `w`.
+
+Rewrite using `[matV_listProd I loc Y hY1 hY2 _ (Finset.nodup_toList _) w]`. Distinguish the cases in `hw : (g : 𝓞 I.F) ∈ w.asIdeal`. Rewrite using `[if_pos (by simpa using hw)]`. Rewrite using `[if_neg (by simpa using hw), hloc1 w hw]`. Establish `hxm : ∀ v, (I.fmat x).map (PI.FinKW.psiV I v).toRingHom = ((loc v : GL (Fin I.n) _) : Matrix (Fin I.n) (Fin I.n) _)`.
+
+Introduce `v`. Rewrite using `[← hx v, matV_coe]`. Establish `hxi : ∀ v, (I.fmat x⁻¹).map (PI.FinKW.psiV I v).toRingHom = (((loc v)⁻¹ : GL (Fin I.n) _) : Matrix (Fin I.n) (Fin I.n) _)`. Introduce `v`. Rewrite using `[← hx v, ← map_inv, ← Subgroup.coe_inv, matV_coe]`.
+
+Establish `hmulx : ∀ v (u : Fin I.n → I.E ⊗[I.F] Af I.F), PI.FinKW.vecV I v (I.fmat x *ᵥ u) = ((loc v : GL (Fin I.n) _) : Matrix (Fin I.n) (Fin I.n) _) *ᵥ PI.FinKW.vecV I v u`. Introduce `v u`. Rewrite using `[vecV_mulVec', hxm]`. Establish `hmulxi : ∀ v (u : Fin I.n → I.E ⊗[I.F] Af I.F), PI.FinKW.vecV I v (I.fmat x⁻¹ *ᵥ u) = (((loc v)⁻¹ : GL (Fin I.n) _) : Matrix (Fin I.n) (Fin I.n) _) *ᵥ PI.FinKW.vecV I v u`. Introduce `v u`.
+
+Rewrite using `[vecV_mulVec', hxi]`. Establish `hLf : ∀ W, (∀ v, PI.FinKW.vecV I v W ∈ Formalism.L2.SG.Sub.latLoc v (I.L : Set (Fin I.n → I.E))) → W ∈ I.Lf` using `fun W hW => PI.FinKW.memLocFrom_of PI.FinKW.local_vector_injective I W hW`. Establish `hLt : ∀ W, W ∈ I.Lf → ∀ v, PI.FinKW.vecV I v W ∈ Formalism.L2.SG.Sub.latLoc v (I.L : Set (Fin I.n → I.E))` using `fun W hW v => PI.FinKW.LocTo.mem_local_lattice_iff I W hW v`. Use `⟨x, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a`.
+
+Prove the components needed by the constructor for the conclusion. Apply `vec_ext` to reduce the goal to its premises. Introduce `v`. Rewrite using `[hmulx]`. Distinguish the cases in `hv : (g : 𝓞 I.F) ∈ v.asIdeal`.
+
+Conclude with `((hlocS v hv).1 a).1`. Rewrite using `[hloc1 v hv, Units.val_one, one_mulVec]`. Apply `vec_ext` to reduce the goal to its premises. Introduce `v`. Rewrite using `[hmulx]`.
+
+Distinguish the cases in `hv : (g : 𝓞 I.F) ∈ v.asIdeal`. Conclude with `((hlocS v hv).1 a).2`. Rewrite using `[hloc1 v hv, Units.val_one, one_mulVec]`. Take `⟨c, hc, hcz⟩` from `hiz`. Establish `hcz' : (c : I.E ⊗[I.F] Af I.F) • incl I z ∈ I.Lf` using `mL_one_le I hcz`.
+
+Establish `hz0 : Rf.z0 ∈ I.Lf` using `Rf.vectorsInLattice.2.1`. Use `set u : Fin I.n → I.E ⊗[I.F] Af I.F := I.fmat x⁻¹ *ᵥ incl I z - Rf.z0 with hu`. Establish `hgF : ((g : ℕ) : I.F) ≠ 0` using `by exact_mod_cast (show g ≠ 0 by omega)`. Use `set W : Fin I.n → I.E ⊗[I.F] Af I.F := algebraMap I.F (I.E ⊗[I.F] Af I.F) ((g : I.F)⁻¹) • ((c : I.E ⊗[I.F] Af I.F) • u) with hWdef`. Establish `hvW : ∀ v, PI.FinKW.vecV I v W = algebraMap I.F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v ⊗[I.F] I.E) ((g : I.F)⁻¹) • ((c : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v ⊗[I.F] I.E) • PI.FinKW.vecV I v u)`.
+
+Introduce `v`. Rewrite using `[hWdef, vecV_smul, vecV_smul, AlgHom.commutes, map_natCast]`. Establish `hscal : ∀ v, algebraMap I.F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v ⊗[I.F] I.E) ((g : I.F)⁻¹) * ((g : ℕ) : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v ⊗[I.F] I.E) = 1`. Introduce `v`. Rewrite using `[← map_natCast (algebraMap I.F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v ⊗[I.F] I.E)) g, ← map_mul, inv_mul_cancel₀ hgF, map_one]`.
+
+Establish `hW : W ∈ I.Lf`. Apply `hLf` to reduce the goal to its premises. Introduce `v`. Distinguish the cases in `hv : (g : 𝓞 I.F) ∈ v.asIdeal`. Take `⟨w, hw, hweq⟩` from `(hlocS v hv).2`.
+
+Establish `hvu : PI.FinKW.vecV I v u = ((g : ℕ) : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v ⊗[I.F] I.E) • w`. Rewrite using `[hu, vecV_sub, hmulxi]`. Conclude with `hweq`. Establish `hA : algebraMap I.F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v ⊗[I.F] I.E) ((g : I.F)⁻¹) * (c : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v ⊗[I.F] I.E) * ((g : ℕ) : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v …`. Rewrite using `[mul_right_comm, hscal v, one_mul]`.
+
+Rewrite using `[hvW, hvu, smul_smul, smul_smul, hA, Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem hw c`. Establish `hval` using `val_nat I.F v g hv`. Apply `PI.UnitaryGroupMassFormula.AdIndexEq.cancel_nat v hval` to reduce the goal to its premises. Establish `hvu : PI.FinKW.vecV I v u = PI.FinKW.vecV I v (incl I z) - PI.FinKW.vecV I v Rf.z0`.
+
+Rewrite using `[hu, vecV_sub, hmulxi, hloc1 v hv, inv_one, Units.val_one, one_mulVec]`. Establish `e1 : g • PI.FinKW.vecV I v W = PI.FinKW.vecV I v ((c : I.E ⊗[I.F] Af I.F) • incl I z) - c • PI.FinKW.vecV I v Rf.z0`. Rewrite using `[hvW, hvu, ← Nat.cast_smul_eq_nsmul (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v ⊗[I.F] I.E) g, smul_smul, mul_comm ((g : ℕ) : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v ⊗[I.F] I.E), hscal v, one_smul, smul_sub, vecV_smul, map_natCas …`. Rewrite using `[e1]`. Conclude with `sub_mem (hLt _ hcz' v) (nsmul_mem (hLt _ hz0 v) c)`.
+
+Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Establish `hcu : (c : I.E ⊗[I.F] Af I.F) • u = ((g : ℕ) : I.E ⊗[I.F] Af I.F) • W`. Rewrite using `[hWdef, smul_smul, ← map_natCast (algebraMap I.F (I.E ⊗[I.F] Af I.F)) g, ← map_mul, mul_inv_cancel₀ hgF, map_one, one_smul]`. Rewrite using `[hcu]`. Conclude with `mem_mL I g hW`.
+
+Introduce `m hm y hy`. Use `set u : Fin I.n → I.E ⊗[I.F] Af I.F := (I.fmat x - 1) *ᵥ y with hu`. Establish `hvu : ∀ v, PI.FinKW.vecV I v u = ((loc v : GL (Fin I.n) _) : Matrix (Fin I.n) (Fin I.n) _) *ᵥ PI.FinKW.vecV I v y - PI.FinKW.vecV I v y`. Introduce `v`. Rewrite using `[hu, Matrix.sub_mulVec, Matrix.one_mulVec, vecV_sub, hmulx]`.
+
+Distinguish the cases in `hm0 : m = 0`. Substitute `hm0` using the available equality. Establish `hg1 : g = 1` using `(Nat.coprime_zero_left g).1 hm`. Establish `hu0 : u = 0`. Apply `vec_ext` to reduce the goal to its premises.
+
+Introduce `v`. Establish `hv : (g : 𝓞 I.F) ∉ v.asIdeal`. Rewrite using `[hg1, Nat.cast_one]`. Conclude with `fun h1 => v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)`. Rewrite using `[hvu, hloc1 v hv, Units.val_one, one_mulVec, sub_self]`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[PI.FinKW.vecV]`. Use `⟨1, by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[hu0, smul_zero]`. Conclude with `zero_mem _`.
+
+Establish `hmF : ((m : ℕ) : I.F) ≠ 0` using `by exact_mod_cast hm0`. Use `set W : Fin I.n → I.E ⊗[I.F] Af I.F := algebraMap I.F (I.E ⊗[I.F] Af I.F) ((m : I.F)⁻¹) • u with hWdef`. Establish `hW : W ∈ I.Lf`. Apply `hLf` to reduce the goal to its premises. Introduce `v`.
+
+Establish `hvW : PI.FinKW.vecV I v W = algebraMap I.F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v ⊗[I.F] I.E) ((m : I.F)⁻¹) • PI.FinKW.vecV I v u`. Rewrite using `[hWdef, vecV_smul, AlgHom.commutes]`. Distinguish the cases in `hv : (g : 𝓞 I.F) ∈ v.asIdeal`. Establish `hval` using `val_nat I.F v m (not_mem_of_coprime v hm hv)`. Apply `PI.UnitaryGroupMassFormula.AdIndexEq.cancel_nat v hval` to reduce the goal to its premises.
+
+Establish `e1 : m • PI.FinKW.vecV I v W = PI.FinKW.vecV I v u`. Rewrite using `[hvW, ← Nat.cast_smul_eq_nsmul (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v ⊗[I.F] I.E) m, smul_smul, ← map_natCast (algebraMap I.F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v ⊗[I.F] I.E)) m, ← map_mul, mul_inv_cancel₀ hmF, map_one, …`. Rewrite using `[e1, hvu]`. Establish `hyv` using `hLt y hy v`. Conclude with `sub_mem (((hlocUK v).2 _).1 hyv) hyv`.
+
+Rewrite using `[hvW, hvu, hloc1 v hv, Units.val_one, one_mulVec, sub_self, smul_zero]`. Conclude with `zero_mem _`. Use `⟨1, by simp, ?_⟩` and prove the remaining obligations. Establish `hmu : u = ((m : ℕ) : I.E ⊗[I.F] Af I.F) • W`. Rewrite using `[hWdef, smul_smul, ← map_natCast (algebraMap I.F (I.E ⊗[I.F] Af I.F)) m, ← map_mul, mul_inv_cancel₀ hmF, map_one, one_smul]`.
+
+Rewrite using `[Nat.cast_one, one_smul, hmu]`. Conclude with `mem_mL I m hW`. Use `show (x : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) ∈ Formalism.UG.stabGL I.Lf`. Rewrite using `[stab_iff_loc]`. Introduce `v`.
+
+Rewrite using `[hx v]`. Conclude with `(hlocUK v).2`.
+-/
 theorem glue_holds_var : Glue := by
   intro hL I g r k e f z Rf hg hs hn hee hff hef hz ht hi hiz
   classical

@@ -11,15 +11,28 @@ open UpperTheory.Esk
 
 variable {F I Gf : Type} [Field F] [Group Gf] [Fintype I]
 
+/- English proof (translation)
+The claim follows from `(hE F I Gf D hD).2.2.2.2.2.2.2.2.2.2 s γ δ`.
+-/
 theorem fix_iff (D : Dat F I Gf) (hD : D.Ax) (hE : E0d) (s : Fin 2 → F) (γ δ : GL (Fin 2) F) :
     Fix s ((δ : PG F) * γ * (δ : PG F)⁻¹) ↔ ∃ c : F, (s ᵥ* δ.val) ᵥ* γ.val = c • (s ᵥ* δ.val) :=
   (hE F I Gf D hD).2.2.2.2.2.2.2.2.2.2 s γ δ
 
+/- English proof (translation)
+Establish `h` using `fix_iff D hD hE s γ 1`. Simplify using `using h`.
+-/
 theorem fix_mk (D : Dat F I Gf) (hD : D.Ax) (hE : E0d) (s : Fin 2 → F) (γ : GL (Fin 2) F) :
     Fix s (γ : PG F) ↔ ∃ c : F, s ᵥ* γ.val = c • s := by
   have h := fix_iff D hD hE s γ 1
   simpa using h
 
+/- English proof (translation)
+Simplify using `only [IsEll, fix_iff D hD hE, fix_mk D hD hE]`. Prove the components needed by the constructor for the conclusion. Introduce `h t ht hc`. Use `h (t ᵥ* (δ⁻¹).val) ?_ ?_` and prove the remaining obligations. Introduce `h0`.
+
+Apply `ht` to reduce the goal to its premises. Use `congrArg (· ᵥ* δ.val) h0` as an intermediate fact. Simplify `this` using `[Matrix.vecMul_vecMul]`. Simplify `hc` using `[Matrix.vecMul_vecMul]`. Introduce `h s hs hc`.
+
+Use `h (s ᵥ* δ.val) ?_ hc` and prove the remaining obligations. Introduce `h0`. Apply `hs` to reduce the goal to its premises. Use `congrArg (· ᵥ* (δ⁻¹).val) h0` as an intermediate fact. Simplify `this` using `[Matrix.vecMul_vecMul]`.
+-/
 theorem isEll_conj (D : Dat F I Gf) (hD : D.Ax) (hE : E0d) (γ δ : GL (Fin 2) F) :
     IsEll ((δ : PG F) * (γ : PG F) * (δ : PG F)⁻¹) ↔ IsEll (γ : PG F) := by
   simp only [IsEll, fix_iff D hD hE, fix_mk D hD hE]
@@ -38,6 +51,9 @@ theorem isEll_conj (D : Dat F I Gf) (hD : D.Ax) (hE : E0d) (γ δ : GL (Fin 2) F
     have := congrArg (· ᵥ* (δ⁻¹).val) h0
     simpa [Matrix.vecMul_vecMul] using this
 
+/- English proof (translation)
+Establish `h` using `isEll_conj D hD hE γ.out δ.out`. Establish `e1 : ((γ.out : GL (Fin 2) F) : PG F) = γ` using `Quotient.out_eq γ`. Establish `e2 : ((δ.out : GL (Fin 2) F) : PG F) = δ` using `Quotient.out_eq δ`. Rewrite `h` using `[e1, e2]`. Then use the resulting hypothesis.
+-/
 theorem isEll_conj' (D : Dat F I Gf) (hD : D.Ax) (hE : E0d) (δ γ : PG F) :
     IsEll (δ * γ * δ⁻¹) ↔ IsEll γ := by
   have h := isEll_conj D hD hE γ.out δ.out
@@ -45,6 +61,17 @@ theorem isEll_conj' (D : Dat F I Gf) (hD : D.Ax) (hE : E0d) (δ γ : PG F) :
   have e2 : ((δ.out : GL (Fin 2) F) : PG F) = δ := Quotient.out_eq δ
   rwa [e1, e2] at h
 
+/- English proof (translation)
+Introduce `s hs ⟨c, hc⟩`. Use `set M : Matrix (Fin 2) (Fin 2) F := γ.out.val with hM`. Establish `e0` using `congrFun hc 0`. Establish `e1` using `congrFun hc 1`. Simplify using `only [Matrix.vecMul, dotProduct, Fin.sum_univ_two, Pi.smul_apply, smul_eq_mul] at e0 e1`.
+
+Establish `q0 : (c ^ 2 - M.trace * c + M.det) * s 0 = 0`. Rewrite using `[Matrix.trace_fin_two, Matrix.det_fin_two]`. Take the linear combination `(M 1 1 - c) * e0 - M 1 0 * e1`. Establish `q1 : (c ^ 2 - M.trace * c + M.det) * s 1 = 0`. Rewrite using `[Matrix.trace_fin_two, Matrix.det_fin_two]`.
+
+Take the linear combination `(-M 0 1) * e0 + (M 0 0 - c) * e1`. Establish `hq : c ^ 2 - M.trace * c + M.det = 0`. Assume the negation of the conclusion as `hne`. Apply `hs` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+
+Use `fin_cases i`. Simplify `q0` using `[hne]`. Simplify `q1` using `[hne]`. Establish `key : (2 * c - M.trace) ^ 2 = M.trace ^ 2 - 4 * M.det` using `by linear_combination 4 * hq`. Take `⟨v⟩` from `‹Nonempty I›`.
+
+Establish `hv` using `h v`. Establish `k2` using `congrArg (D.σ v) key`. Simplify using `only [map_pow, map_sub, map_mul, map_ofNat] at k2`. Rewrite `hv` using `[← hM]`. Use polynomial arithmetic with `[sq_nonneg (2 * D.σ v c - D.σ v M.trace)]`.
+-/
 theorem isEll_of_totEll (D : Dat F I Gf) [Nonempty I] (γ : PG F) (h : D.TotEll γ.out) : IsEll γ := by
   intro s hs ⟨c, hc⟩
   set M : Matrix (Fin 2) (Fin 2) F := γ.out.val with hM
@@ -72,6 +99,13 @@ theorem isEll_of_totEll (D : Dat F I Gf) [Nonempty I] (γ : PG F) (h : D.TotEll 
   rw [← hM] at hv
   nlinarith [sq_nonneg (2 * D.σ v c - D.σ v M.trace)]
 
+/- English proof (translation)
+Take `⟨i, -, hi⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h`. Use `⟨i, ?_⟩` and prove the remaining obligations. Establish `hm : (D.rep ω)⁻¹ * (D.j γ.out)⁻¹ * D.rep ω * a i ∈ D.H`. Assume the negation of the conclusion as `hn`. Conclude with `hi (by simp [Dat.ee, hn])`.
+
+Establish `e1 : ((γ.out : GL (Fin 2) F) : PG F) = γ` using `Quotient.out_eq γ`. Establish `e2 : (show D.Om from ((D.rep ω : Gf) : Gf ⧸ D.H)) = ω` using `Quotient.out_eq ω`. Establish `h2 : γ • ω = ((D.j γ.out * D.rep ω : Gf) : Gf ⧸ D.H)`. Establish `h3` using `D.mk_smulO γ.out (D.rep ω)`. Rewrite `h3` using `[e1, e2]`.
+
+Conclude with `h3`. Rewrite using `[h2]`. Use `QuotientGroup.eq.2 ?_` and prove the remaining obligations. Simplify `hm` using `[_root_.mul_inv_rev, mul_assoc]`.
+-/
 theorem supp (D : Dat F I Gf) {ι : Type} [Fintype ι] (a : ι → Gf) (γ : PG F) (ω : D.Om)
     (h : D.Te a γ.out (D.rep ω) ≠ 0) : ∃ i, γ • ω = ((D.rep ω * a i : Gf) : Gf ⧸ D.H) := by
   obtain ⟨i, -, hi⟩ := Finset.exists_ne_zero_of_sum_ne_zero h
@@ -95,6 +129,49 @@ namespace UpperTheory.Esk
 
 open EllipticFixedPointTerms
 
+/- English proof (translation)
+Introduce `hC4 hE0a hE0c hE0d hE1 hE3 hEcut hFsum hF2 hF3 hF4`. Introduce `F I Gf _ _ _ D hD ι _ a`. Use `haveI : Nonempty I := by have := hD.two; infer_instance`. Take `⟨f, hf1, hf2⟩ : ∃ f : D.Cj × D.Om → D.Cj × D.Om, (∀ p, f p ∈ MulAction.orbit (PG F) p) ∧ (∀ p q, q ∈ MulAction.orbit (PG F) p → f q = f p)` from `⟨fun p => Quotient.out (Quotient.mk (MulAction.orbitRel (PG F) (D.Cj × D.Om)) p), fun p => MulAction.orbitRel_apply.1 (Quotient.mk_out p), fun p q h => congrArg Quotient.out (Quotient.sound (MulAction.orbitRel_apply.2 h))⟩`. Establish `hff : ∀ p, f (f p) = f p` using `fun p => hf2 p (f p) (hf1 p)`.
+
+Establish `hR : ∀ ω, ∃! r, r ∈ Set.range f ∧ r ∈ MulAction.orbit (PG F) ω`. Introduce `ω`. Use `⟨f ω, ⟨⟨ω, rfl⟩, hf1 ω⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `r ⟨⟨p, rfl⟩, hr⟩`. Rewrite using `[← hf2 ω (f p) hr, hff]`.
+
+Use `choose Sa hSa using fun i => hF4 F I Gf D hD (a i)`. Set `Sset : Set (D.Cj × D.Om)` to `{p | p ∈ Set.range f ∧ D.TotEll (D.el p.1).out ∧ D.Te a (D.el p.1).out (D.rep p.2) ≠ 0 ∧ Finite (MulAction.stabilizer (PG F) p)}`. Establish `hSfin : Sset.Finite`. Use `(Set.finite_iUnion fun i => (hSa i).1.image f).subset ?_` and prove the remaining obligations. Introduce and unpack `p ⟨⟨q, rfl⟩, htot, hte, -⟩`.
+
+Take `⟨i, hi⟩` from `supp D a (D.el (f q).1) (f q).2 hte`. Take `⟨δ, hδ⟩` from `(hSa i).2 (D.el (f q).1) (f q).2 htot hi`. Use `Set.mem_iUnion.2 ⟨i, δ • f q, hδ, ?_⟩` and prove the remaining obligations. Rewrite using `[hf2 (f q) (δ • f q) (MulAction.mem_orbit _ δ), hff]`. Use `⟨hSfin.toFinset, fun p hp => ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hp` using `[Set.Finite.mem_toFinset]`. Conclude with `⟨hp.2.1, hp.2.2.2⟩`. Introduce `k hk b hb`. Establish `hc` using `hE0c F I Gf ι D k a hk`. Set `u : PG F → D.Y → ℂ` to `fun γ y => if IsEll γ then D.kk k a γ y else 0`.
+
+Establish `hu_meas : ∀ γ, Measurable (u γ)`. Introduce `γ`. Distinguish the cases in `h : IsEll γ`. Simplify using `only [u, h, if_true]`. Conclude with `hc.2.2.1 γ`.
+
+Simplify using `only [u, h, if_false]`. Conclude with `measurable_const`. Take `⟨c₀, hc₀, hmink⟩` from `hD.mink`. Take `⟨C, hC⟩` from `hE1 F I Gf ι D k a hk c₀ hc₀`. Establish `hbd : ∀ y, ∑' γ, ‖u γ y‖ₑ ≤ (C : ℝ≥0∞)`.
+
+Introduce `y`. Take `⟨s, hs, hsy⟩` from `hmink y.2 (D.rep y.1)`. Combine the equalities or inequalities in the displayed calculation. Distinguish the cases in `h : IsEll γ`. Establish `hm : γ ∈ {γ : PG F | ¬ Fix s γ}` using `h s hs`.
+
+Simplify using `only [u, h, if_true, Set.indicator_of_mem hm, le_refl]`. Simplify using `[u, h]) ENNReal.summable`. Use `_ = ∑' γ : {γ : PG F | ¬ Fix s γ}, ‖D.kk k a γ.1 y‖ₑ := (tsum_subtype _ _).symm`. Use `_ ≤ C := hC y s hs hsy`. Establish `hfin : ∫⁻ y, ENNReal.ofReal (b y) * ∑' γ, ‖u γ y‖ₑ ∂D.μY < ⊤`.
+
+Combine the equalities or inequalities in the displayed calculation. Take `⟨hb', hFs⟩` from `hFsum F I Gf D hD b hb`. Take `⟨hmeas', hint', hintY, heq⟩` from `hFs u hu_meas hfin`. Use `⟨hintY, heq.trans ?_⟩` and prove the remaining obligations. Take `⟨hcount, hsig, hpres, -⟩` from `hE0a F I Gf D hD`.
+
+Use `haveI : Countable (PG F) := hcount`. Use `haveI : Countable D.Cj := hcount`. Use `haveI : Countable D.Om := hD.cO`. Use `haveI : SigmaFinite (volume : Measure D.Xs) := hsig`. Use `haveI : DiscreteMeasurableSpace (D.Cj × D.Om) := ⟨fun s => s.to_countable.measurableSet⟩`.
+
+Establish `stab_le : ∀ p : D.Cj × D.Om, MulAction.stabilizer (PG F) p ≤ MulAction.stabilizer (PG F) p.2`. Introduce `p g hg`. Rewrite `hg`, the goal using `[MulAction.mem_stabilizer_iff]`. Conclude with `congrArg Prod.snd hg`. Use `choose β hβ using fun p : D.Cj × D.Om => (hEcut F I Gf D hD).2 p.2 (MulAction.stabilizer (PG F) p) (stab_le p)`.
+
+Establish `hinv : ∀ (g : PG F) (y : (D.Cj × D.Om) × D.Xs), u (D.el (g • y).1.1) ((g • y).1.2, (g • y).2) = u (D.el y.1.1) (y.1.2, y.2)`. Introduce and unpack `g ⟨⟨γ, ω⟩, z⟩`. Use `show u (g * D.el γ * g⁻¹) (g • ((ω, z) : D.Y)) = u (D.el γ) (ω, z)`. Simplify using `only [u, isEll_conj' D hD hE0d, hc.2.1]`. Take `⟨hintR, hsum⟩` from `hC4 (PG F) (D.Cj × D.Om) D.Xs volume hpres (fun p => b (p.1.2, p.2)) hb' (fun p => u (D.el p.1.1) (p.1.2, p.2)) hmeas' hinv hint' (Set.range f) hR β (fun r _ => hβ r)`.
+
+Set `g' : D.Cj × D.Om → ℂ` to `fun r => ∫ x, β r x • u (D.el r.1) (r.2, x)`. Set `h' : D.Cj × D.Om → ℂ` to `fun p => (Nat.card (MulAction.stabilizer (PG F) p) : ℂ)⁻¹ * (D.Te a ((D.el p.1).out) (D.rep p.2) * D.orb k ((D.el p.1).out))`. Establish `hind : (Set.range f).indicator g' = Sset.indicator h'`. Use function extensionality and compare the values at `p`. Distinguish the cases in `hpR : p ∈ Set.range f`.
+
+Rewrite using `[Set.indicator_of_mem hpR]`. Take `⟨γ, ω⟩` from `p`. Establish `hI` using `hintR (γ, ω) hpR`. Distinguish the cases in `hS : (γ, ω) ∈ Sset`. Rewrite using `[Set.indicator_of_mem hS]`.
+
+Take `⟨-, htot, hte, -⟩` from `hS`. Establish `hell` using `isEll_of_totEll D (D.el γ) htot`. Use `(hF3 F I Gf ι D k a hk (D.el γ) ω htot hte).2 (β (γ, ω)) (hβ (γ, ω))` as an intermediate fact. Simplify using `only [g', u, hell, if_true]`. Conclude with `this`.
+
+Rewrite using `[Set.indicator_of_notMem hS]`. Simplify using `only [g', u]`. Distinguish the cases in `hell : IsEll (D.el γ)`. Simplify using `only [hell, if_true]`. Distinguish the cases in `htot : D.TotEll (D.el γ).out`.
+
+Distinguish the cases in `hte : D.Te a (D.el γ).out (D.rep ω) = 0`. Simplify using `[Dat.kk, Dat.kt, hte]`. It suffices to derive a contradiction. Conclude with `hS ⟨hpR, htot, hte, (hF3 F I Gf ι D k a hk (D.el γ) ω htot hte).1⟩`. Use `hF2 F I Gf ι D k a hk (D.el γ) ω htot (β (γ, ω)) (hβ (γ, ω)) ?_` and prove the remaining obligations.
+
+Establish `hI'` using `hI`. Simplify using `only [u, hell, if_true] at hI'`. Conclude with `hI'`. Simplify using `[hell]`. Rewrite using `[Set.indicator_of_notMem hpR, Set.indicator_of_notMem (fun h => hpR h.1)]`.
+
+Establish `h1 : HasSum ((Set.range f).indicator g') (∫ y, (fun p : (D.Cj × D.Om) × D.Xs => b (p.1.2, p.2)) y • (fun p : (D.Cj × D.Om) × D.Xs => u (D.el p.1.1) (p.1.2, p.2)) y ∂(Measure.count.prod volume))` using `(hasSum_subtype_iff_indicator (f := g')).1 hsum`. Rewrite `h1` using `[hind]`. Establish `h2 : HasSum (Sset.indicator h') (∑ p ∈ hSfin.toFinset, Sset.indicator h' p)` using `hasSum_sum_of_ne_finset_zero fun p hp => Set.indicator_of_notMem (by simpa using hp) _`. Establish `h3 : ∑ p ∈ hSfin.toFinset, Sset.indicator h' p = geo D k a hSfin.toFinset`. Unfold `geo`.
+
+Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Rewrite using `[Set.indicator_of_mem (by simpa using hp)]`. Rewrite using `[← h3]`. Conclude with `h1.unique h2`.
+-/
 theorem pf_Fell : UpperTheory.Esk.C4 → UpperTheory.Esk.E0a → UpperTheory.Esk.KernelTermsInvariantBounded → UpperTheory.Esk.E0d → UpperTheory.Esk.E1 → UpperTheory.Esk.E3 → UpperTheory.Esk.Ecut → UpperTheory.Esk.Fsum → UpperTheory.Esk.F2 → UpperTheory.Esk.F3 → UpperTheory.Esk.F4 → UpperTheory.Esk.Fell := by
   intro hC4 hE0a hE0c hE0d hE1 hE3 hEcut hFsum hF2 hF3 hF4
   intro F I Gf _ _ _ D hD ι _ a

@@ -48,6 +48,9 @@ def unipRadical (h : HermitianForm F E W) (v : Basis ι E W) (x₀ : W) :
     rw [neg_smul, ← sub_eq_add_neg, eq_sub_iff_add_eq, ← this]
 
 omit [NumberField E] in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_unipRadical {h : HermitianForm F E W} {v : Basis ι E W} {x₀ : W}
     {g : archUnitary h v} : g ∈ unipRadical h v x₀ ↔
       ∀ w, ((g : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ) *ᵥ vecAt v x₀ w = vecAt v x₀ w ∧
@@ -57,12 +60,20 @@ theorem mem_unipRadical {h : HermitianForm F E W} {v : Basis ι E W} {x₀ : W}
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Introduce `_ hg w` and use `(hg w).1`.
+-/
 theorem unipRadical_le_vecFixGroup (h : HermitianForm F E W) (v : Basis ι E W) (x₀ : W) :
     unipRadical h v x₀ ≤ vecFixGroup h v x₀ :=
   fun _ hg w => (hg w).1
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Establish `hc : ∀ w, Continuous fun g : archUnitary h v => ((g : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ)` using `fun w => Units.continuous_val.comp ((continuous_apply w).comp continuous_subtype_val)`. Establish `: (unipRadical h v x₀ : Set (archUnitary h v)) = ⋂ w, ({g : archUnitary h v | ((g : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ) *ᵥ vecAt v x₀ w = vecAt v x₀ w} ∩ ⋂ z ∈ {z : ι → ℂ | star (vecAt v x₀ w) ⬝ᵥ (gramAt h v w *ᵥ z) = 0}, (fun g : archUnitary h v => ((g : InfinitePlace E …`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, mem_unipRadical, Set.mem_iInter, Set.mem_inter_iff, Set.mem_ofPred_eq, Set.mem_preimage, Submodule.mem_span_singleton]`. Use `forall_congr' fun w => and_congr Iff.rfl (forall_congr' fun z => imp_congr_right fun _ => ⟨fun ⟨c, hc⟩ => ⟨c, by rw [hc]; abel⟩, fun ⟨c, hc⟩ => ⟨c, by rw [hc]; abel⟩⟩)` and prove the remaining obligations.
+
+Rewrite using `[this]`. Use `isClosed_iInter fun w => (isClosed_eq ((hc w).matrix_mulVec continuous_const) continuous_const).inter (isClosed_biInter fun z _ => ?_)` and prove the remaining obligations. Conclude with `(Submodule.closed_of_finiteDimensional _).preimage (((hc w).matrix_mulVec continuous_const).sub continuous_const)`.
+-/
 theorem isClosed_unipRadical (h : HermitianForm F E W) (v : Basis ι E W) (x₀ : W) :
     IsClosed (unipRadical h v x₀ : Set (archUnitary h v)) := by
   have hc : ∀ w, Continuous fun g : archUnitary h v =>

@@ -15,25 +15,43 @@ variable {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} {X : Fin n → Fin n → 
 
 def blockOf {m o : Type} (N : Matrix (m × o) (m × o) ℂ) (i : o) : Matrix m m ℂ := Matrix.of fun I K => N (I, i) (K, i)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem blockOf_add {m o : Type} (N N' : Matrix (m × o) (m × o) ℂ) (i : o) :
     blockOf (N + N') i = blockOf N i + blockOf N' i := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem blockOf_sub {m o : Type} (N N' : Matrix (m × o) (m × o) ℂ) (i : o) :
     blockOf (N - N') i = blockOf N i - blockOf N' i := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem blockOf_smul {m o : Type} (c : ℂ) (N : Matrix (m × o) (m × o) ℂ) (i : o) :
     blockOf (c • N) i = c • blockOf N i := rfl
 
 variable {m o : Type} [Fintype m] [DecidableEq m] [Fintype o] [DecidableEq o]
 
+/- English proof (translation)
+Use extensionality with `I K`. Simplify using `[blockOf]`.
+-/
 theorem blockOf_blockDiagonal (P : o → Matrix m m ℂ) (i : o) : blockOf (blockDiagonal P) i = P i := by
   ext I K; simp [blockOf]
 
+/- English proof (translation)
+Use extensionality with `I K`. Simplify using `[blockOf, Matrix.mul_apply, Fintype.sum_prod_type, blockDiagonal_apply]`.
+-/
 theorem blockOf_bd_mul (P : o → Matrix m m ℂ) (N : Matrix (m × o) (m × o) ℂ) (i : o) :
     blockOf (blockDiagonal P * N) i = P i * blockOf N i := by
   ext I K
   simp [blockOf, Matrix.mul_apply, Fintype.sum_prod_type, blockDiagonal_apply]
 
+/- English proof (translation)
+Use extensionality with `I K`. Simplify using `[blockOf, Matrix.mul_apply, Fintype.sum_prod_type, blockDiagonal_apply]`.
+-/
 theorem blockOf_mul_bd (P : o → Matrix m m ℂ) (N : Matrix (m × o) (m × o) ℂ) (i : o) :
     blockOf (N * blockDiagonal P) i = blockOf N i * P i := by
   ext I K
@@ -47,8 +65,14 @@ def phi (d : ℕ) {k : ℕ} (b : Fin k → A) :
   map_add' N N' := by simp [blockOf_add, add_mul, Finset.sum_add_distrib]
   map_smul' c N := by simp [blockOf_smul, Finset.smul_sum, smul_mul_assoc]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem phi_apply (d : ℕ) {k : ℕ} (b : Fin k → A) (N) : phi X d b N = ∑ i, wordMap X d (blockOf N i) * b i := rfl
 
+/- English proof (translation)
+Simplify using `only [phi_apply, blockOf_sub, blockOf_bd_mul, blockOf_mul_bd, ← GlobalTheory.T.commutator_glGenerator_tensorWordMapMatrixUnits A n X hX, Finset.mul_sum, Finset.sum_mul, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[sub_mul, mul_assoc, mul_assoc, ← hb, ← mul_assoc, ← mul_assoc]`.
+-/
 theorem phi_comm (hX : Formalism.REAL.GlRel X) (d : ℕ) {k : ℕ} (b : Fin k → A) (hb : ∀ i a c, X a c * b i = b i * X a c)
     (N : Matrix ((Fin d → Fin n) × Fin k) ((Fin d → Fin n) × Fin k) ℂ) (a c : Fin n) :
     X a c * phi X d b N - phi X d b N * X a c =
@@ -64,6 +88,11 @@ namespace GlobalTheory.LeviHC.RelCentre
 
 variable {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} {X : Fin n → Fin n → A}
 
+/- English proof (translation)
+Use `Submodule.mul_induction_on hy (fun u hu v hv => ?_) fun x y hx hy => ?_` and prove the remaining obligations. Establish `e : X a c * (u * v) - u * v * X a c = (X a c * u - u * X a c) * v`. Rewrite using `[sub_mul, mul_assoc u v, ← hB v hv, ← mul_assoc, ← mul_assoc]`. Rewrite using `[e]`. Conclude with `Submodule.mul_mem_mul (filt_ad hX d a c hu) hv`.
+
+Establish `e : X a c * (x + y) - (x + y) * X a c = (X a c * x - x * X a c) + (X a c * y - y * X a c)`. Rewrite using `[mul_add, add_mul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `add_mem hx hy`.
+-/
 theorem filtB_ad (hX : Formalism.REAL.GlRel X) {B : Subalgebra ℂ A} (hB : ∀ b ∈ B, ∀ i j, X i j * b = b * X i j) (d : ℕ)
     (a c : Fin n) {y : A} (hy : y ∈ filt X d * Subalgebra.toSubmodule B) :
     X a c * y - y * X a c ∈ filt X d * Subalgebra.toSubmodule B := by
@@ -76,6 +105,13 @@ theorem filtB_ad (hX : Formalism.REAL.GlRel X) {B : Subalgebra ℂ A} (hB : ∀ 
       rw [mul_add, add_mul]; abel
     rw [e]; exact add_mem hx hy
 
+/- English proof (translation)
+Use `Submodule.mul_induction_on hu (fun x hx v hv => ?_) fun x y hx hy => ?_` and prove the remaining obligations. Take `⟨M, rfl⟩` from `hx`. Conclude with `⟨1, fun _ => M, fun _ => v, fun _ => hv, by simp⟩`. Take `⟨k, M, b, hb, rfl⟩` from `hx`. Take `⟨k', M', b', hb', rfl⟩` from `hy`.
+
+Use `⟨k + k', Fin.append M M', Fin.append b b', fun i => ?_, ?_⟩` and prove the remaining obligations. Use `Fin.addCases (fun i => ?_) (fun i => ?_) i` and prove the remaining obligations. Simplify using `using hb i`. Simplify using `using hb' i`. Rewrite using `[Fin.sum_univ_add]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem exists_sum {B : Subalgebra ℂ A} {d : ℕ} {u : A}
     (hu : u ∈ LinearMap.range (wordMap X d) * Subalgebra.toSubmodule B) :
     ∃ (k : ℕ) (M : Fin k → Matrix (Fin d → Fin n) (Fin d → Fin n) ℂ) (b : Fin k → A),
@@ -91,6 +127,21 @@ theorem exists_sum {B : Subalgebra ℂ A} {d : ℕ} {u : A}
       · simpa using hb' i
     · rw [Fin.sum_univ_add]; simp
 
+/- English proof (translation)
+Use `set S := Algebra.adjoin ℂ (Set.range fun p : Fin n × Fin n => X p.1 p.2)`. Establish `hSB : ∀ s ∈ S, ∀ b ∈ B, b * s = s * b`. Introduce `s hs b hb`. Establish `: S ≤ Subalgebra.centralizer ℂ {b}`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨p, rfl⟩ g hg`. Rewrite using `[Set.mem_singleton_iff.1 hg]`. Conclude with `(hB b hb p.1 p.2).symm`. Conclude with `this hs b rfl`. Use `set W := Subalgebra.toSubmodule S * Subalgebra.toSubmodule B`.
+
+Establish `mono : ∀ {P Q R U : Submodule ℂ A}, P ≤ Q → R ≤ U → P * R ≤ Q * U` using `fun h h' => Submodule.mul_le.2 fun p hp r hr => Submodule.mul_mem_mul (h hp) (h' hr)`. Establish `oS : (1 : A) ∈ Subalgebra.toSubmodule S` using `one_mem S`. Establish `oB : (1 : A) ∈ Subalgebra.toSubmodule B` using `one_mem B`. Establish `hmul : W * W ≤ W`. Establish `h1 : Subalgebra.toSubmodule B * Subalgebra.toSubmodule S ≤ W` using `Submodule.mul_le.2 fun b hb s hs => by rw [hSB s hs b hb]; exact Submodule.mul_mem_mul hs hb`.
+
+Establish `h2 : Subalgebra.toSubmodule S * Subalgebra.toSubmodule S ≤ Subalgebra.toSubmodule S` using `Submodule.mul_le.2 fun s hs t ht => show s * t ∈ S from mul_mem (show s ∈ S from hs) (show t ∈ S from ht)`. Establish `h3 : Subalgebra.toSubmodule B * Subalgebra.toSubmodule B ≤ Subalgebra.toSubmodule B` using `Submodule.mul_le.2 fun s hs t ht => show s * t ∈ B from mul_mem (show s ∈ B from hs) (show t ∈ B from ht)`. Combine the equalities or inequalities in the displayed calculation. Set `T : Subalgebra ℂ A` to `Submodule.toSubalgebra W (by simpa using Submodule.mul_mem_mul oS oB) (fun x y hx hy => hmul (Submodule.mul_mem_mul hx hy))`. Establish `hT : S ⊔ B ≤ T`.
+
+Use `sup_le (fun s hs => ?_) fun b hb => ?_` and prove the remaining obligations. Use `show s ∈ W`. Simplify using `using Submodule.mul_mem_mul (show s ∈ Subalgebra.toSubmodule S from hs) oB`. Use `show b ∈ W`. Simplify using `using Submodule.mul_mem_mul oS (show b ∈ Subalgebra.toSubmodule B from hb)`.
+
+Establish `hW : W ≤ ⨆ d, filt X d * Subalgebra.toSubmodule B` using `Submodule.mul_le.2 fun s hs b hb => by`. Take `⟨d, hd⟩` from `exists_filt (E := X) hs`. Conclude with `Submodule.mem_iSup_of_mem d (Submodule.mul_mem_mul hd hb)`. Establish `hz' : z ∈ ⨆ d, filt X d * Subalgebra.toSubmodule B` using `hW (hT hz)`. Use `(Submodule.mem_iSup_of_directed _ (Monotone.directed_le fun d d' h => ?_)).1 hz'` and prove the remaining obligations.
+
+Conclude with `Submodule.mul_le.2 fun u hu v hv => Submodule.mul_mem_mul (filt_mono h hu) hv`.
+-/
 theorem exists_filtB {B : Subalgebra ℂ A} (hB : ∀ b ∈ B, ∀ i j, X i j * b = b * X i j) {z : A}
     (hz : z ∈ Algebra.adjoin ℂ (Set.range fun p : Fin n × Fin n => X p.1 p.2) ⊔ B) :
     ∃ d, z ∈ filt X d * Subalgebra.toSubmodule B := by
@@ -143,6 +194,35 @@ namespace GlobalTheory.LeviHC.RelCentre
 
 variable {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} {X : Fin n → Fin n → A}
 
+/- English proof (translation)
+Proceed by induction on `d with`. Consider the case `zero`. Introduce `z hz _`. Establish `h0 : filt X 0 ≤ ⊥` using `iSup₂_le fun k hk => absurd hk (Nat.not_lt_zero k)`. Establish `: filt X 0 * Subalgebra.toSubmodule B ≤ ⊥` using `Submodule.mul_le.2 fun u hu v _ => by rw [(Submodule.mem_bot ℂ).1 (h0 hu), zero_mul]; exact zero_mem _`.
+
+Rewrite using `[(Submodule.mem_bot ℂ).1 (this hz)]`. Conclude with `zero_mem _`. Consider the case `succ d ih`. Introduce `z hz hc`. Establish `hz' : z ∈ LinearMap.range (wordMap X d) * Subalgebra.toSubmodule B ⊔ filt X d * Subalgebra.toSubmodule B`.
+
+Rewrite using `[← Submodule.sup_mul]`. Conclude with `(Submodule.mul_le.2 fun u hu v hv => Submodule.mul_mem_mul (filt_succ d hu) hv) hz`. Take `⟨u, hu, y, hy, rfl⟩` from `Submodule.mem_sup.1 hz'`. Take `⟨k, M, b, hb, rfl⟩` from `exists_sum hu`. Establish `hbX : ∀ i a c, X a c * b i = b i * X a c` using `fun i a c => hB _ (hb i) a c`.
+
+Use `set FB := filt X d * Subalgebra.toSubmodule B`. Establish `hM : phi X d b (blockDiagonal M) = ∑ i, wordMap X d (M i) * b i`. Simplify using `[phi_apply, blockOf_blockDiagonal]`. Take `⟨M₀, h1, h2⟩` from `GlobalTheory.T.commutant_lift_mod_stable_selfAdjoint _ (Set.range fun p : Fin n × Fin n => blockDiagonal fun _ : Fin k => polar n d p.1 p.2) (FB.comap (phi X d b)) (by`. Introduce and unpack `_ ⟨p, rfl⟩`.
+
+Conclude with `⟨(p.2, p.1), by rw [blockDiagonal_conjTranspose]; simp [polar_conjTranspose]⟩)`. Use the proof step `(by`. Introduce and unpack `_ ⟨p, rfl⟩ N hN`. Rewrite using `[Submodule.mem_comap, ← phi_comm hX d b hbX]`. Conclude with `filtB_ad hX hB d _ _ hN)`.
+
+Use the proof step `(blockDiagonal M)`. Use the proof step `(by`. Introduce and unpack `_ ⟨p, rfl⟩`. Rewrite using `[Submodule.mem_comap, ← phi_comm hX d b hbX, hM]`. Establish `h3` using `neg_mem (filtB_ad hX hB d p.1 p.2 hy)`.
+
+Establish `h4` using `hc p.1 p.2`. Rewrite `h4` using `[mul_add, add_mul]`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[neg_sub, sub_eq_sub_iff_add_eq_add, h4, add_comm])`. Establish `h4 : Submodule.span ℂ (Set.range (permMat n d)) ≤ (Subalgebra.toSubmodule (Algebra.adjoin ℂ (Set.range (gelfA X))) ⊔ filt X d).comap (wordMap X d)`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨π, rfl⟩`. Take `⟨c, hc1, hc2⟩` from `GlobalTheory.T.permutationWord_gelfandPolynomial_mod_shorter A n X hX d π`. Conclude with `Submodule.mem_sup.2 ⟨c, hc1, _, hc2, by abel⟩`. Establish `h5 : ∀ i, blockOf M₀ i ∈ Submodule.span ℂ (Set.range (permMat n d))` using `fun i => by`.
+
+Use `GlobalTheory.T.bicommutant_tensorFactorPerm_mem_span n d _ fun T hT => ?_` and prove the remaining obligations. Establish `: Algebra.adjoin ℂ (Set.range fun p : Fin n × Fin n => polar n d p.1 p.2) ≤ Subalgebra.centralizer ℂ {blockOf M₀ i}`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩ g hg`. Rewrite using `[Set.mem_singleton_iff.1 hg]`.
+
+Use `congrArg (fun N => blockOf N i) (h2 _ ⟨p, rfl⟩)` as an intermediate fact. Simplify using `only [blockOf_bd_mul, blockOf_mul_bd] at this`. Conclude with `this.symm`. Conclude with `this (GlobalTheory.T.mem_adjoin_glAction_of_commute_tensorPerm n d T hT) _ rfl`. Establish `h6 : ∀ i, ∃ c ∈ Algebra.adjoin ℂ (Set.range (gelfA X)), ∃ f ∈ filt X d, wordMap X d (blockOf M₀ i) = c + f` using `fun i => by`.
+
+Take `⟨c, hc1, f, hf, e⟩` from `Submodule.mem_sup.1 (h4 (h5 i))`. Conclude with `⟨c, hc1, f, hf, e.symm⟩`. Use `choose c hc1 f hf hcf using h6`. Establish `h7 : ∑ i, wordMap X d (M i) * b i + y - ∑ i, c i * b i ∈ FB`. Establish `e : ∑ i, wordMap X d (M i) * b i + y - ∑ i, c i * b i = phi X d b (blockDiagonal M - M₀) + ∑ i, f i * b i + y`.
+
+Rewrite using `[map_sub, hM, phi_apply]`. Simplify using `only [hcf, add_mul, Finset.sum_add_distrib]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Use `add_mem (add_mem h1 (sum_mem fun i _ => Submodule.mul_mem_mul (hf i) (hb i))) hy` and prove the remaining obligations.
+
+Establish `hcX : ∀ a a', X a a' * ∑ i, c i * b i = (∑ i, c i * b i) * X a a'` using `fun a a' => by`. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, gelf_adjoin_comm hX (hc1 i), mul_assoc, hbX, mul_assoc]`. Establish `h8` using `ih _ h7 fun a a' => by rw [mul_sub, sub_mul, hc, hcX]`.
+
+Establish `h9 : ∑ i, c i * b i ∈ Algebra.adjoin ℂ (Set.range (gelfA X)) ⊔ B` using `sum_mem fun i _ => mul_mem (le_sup_left (a := Algebra.adjoin ℂ (Set.range (gelfA X))) (hc1 i)) (le_sup_right (b := B) (hb i))`. Simplify using `using add_mem h8 h9`.
+-/
 theorem central_of_filtB (hX : Formalism.REAL.GlRel X) (B : Subalgebra ℂ A) (hB : ∀ b ∈ B, ∀ i j, X i j * b = b * X i j)
     (d : ℕ) : ∀ z ∈ filt X d * Subalgebra.toSubmodule B, (∀ a c, X a c * z = z * X a c) →
       z ∈ Algebra.adjoin ℂ (Set.range (gelfA X)) ⊔ B := by
@@ -228,6 +308,9 @@ end GlobalTheory.LeviHC.RelCentre
 
 namespace GlobalTheory.LeviHC
 
+/- English proof (translation)
+Introduce `A _ _ n X hX B hB z hz hc`. Take `⟨d, hd⟩` from `RelCentre.exists_filtB hB hz`. Conclude with `RelCentre.central_of_filtB hX B hB d z hd hc`.
+-/
 theorem relativeCentre : RelativeCentre := by
   intro A _ _ n X hX B hB z hz hc
   obtain ⟨d, hd⟩ := RelCentre.exists_filtB hB hz

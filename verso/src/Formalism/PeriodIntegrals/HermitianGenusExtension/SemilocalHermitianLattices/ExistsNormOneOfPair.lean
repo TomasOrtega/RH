@@ -19,6 +19,13 @@ structure IsHermSemilocal (S : Subring K) : Prop where
 
 variable {S : Subring K}
 
+/- English proof (translation)
+Take `⟨θ, hθ, hμ0, -, hμi⟩` from `hS.unram`. Use `⟨s * θ * (θ - star θ)⁻¹, S.mul_mem (S.mul_mem hs hθ) hμi, ?_⟩` and prove the remaining obligations. Establish `h2 : star θ - θ ≠ 0`. Introduce `h`. Apply `hμ0` to reduce the goal to its premises.
+
+Rewrite using `[← neg_sub, h, neg_zero]`. Simplify using `only [star_mul', star_inv₀, star_sub, star_star, hss]`. Establish `h3 : (star θ - θ)⁻¹ = -(θ - star θ)⁻¹`. Rewrite using `[← neg_sub, neg_inv]`. Rewrite using `[h3]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_trace_eq (hS : IsHermSemilocal S) {s : K} (hs : s ∈ S) (hss : star s = s) :
     ∃ c ∈ S, c + star c = s := by
   obtain ⟨θ, hθ, hμ0, -, hμi⟩ := hS.unram
@@ -34,6 +41,21 @@ theorem exists_trace_eq (hS : IsHermSemilocal S) {s : K} (hs : s ∈ S) (hss : s
   field_simp
   ring
 
+/- English proof (translation)
+Set `A : AddSubgroup K` to `{ carrier := {z | ∃ x ∈ S, ∃ y ∈ S, z = x + y * a} zero_mem' := ⟨0, S.zero_mem, 0, S.zero_mem, by simp⟩ add_mem' := by`. Introduce and unpack `_ _ ⟨x, hx, y, hy, rfl⟩ ⟨x', hx', y', hy', rfl⟩`. Conclude with `⟨x + x', S.add_mem hx hx', y + y', S.add_mem hy hy', by ring⟩`. Use the proof step `neg_mem' := by`. Introduce and unpack `_ ⟨x, hx, y, hy, rfl⟩`.
+
+Conclude with `⟨-x, S.neg_mem hx, -y, S.neg_mem hy, by ring⟩ }`. Establish `h1A : (1 : K) ∈ A` using `⟨1, S.one_mem, 0, S.zero_mem, by simp⟩`. Establish `haA : a ∈ A` using `⟨0, S.zero_mem, 1, S.one_mem, by simp⟩`. Establish `hAS : ∀ s ∈ S, ∀ z ∈ A, s * z ∈ A`. Introduce and unpack `s hs _ ⟨x, hx, y, hy, rfl⟩`.
+
+Conclude with `⟨s * x, S.mul_mem hs hx, s * y, S.mul_mem hs hy, by ring⟩`. Take `⟨t, htS, ht0, hta⟩` from `hS.frac a`. Establish `htA : ∀ z ∈ A, t * z ∈ S`. Introduce and unpack `_ ⟨x, hx, y, hy, rfl⟩`. Establish `: t * (x + y * a) = t * x + y * (t * a)` using `by ring`.
+
+Rewrite using `[this]`. Conclude with `S.add_mem (S.mul_mem htS hx) (S.mul_mem hy hta)`. Take `⟨δ, ⟨x, hx, y, hy, hδ⟩, hδ0, hdiv⟩` from `hS.principal A hAS ⟨1, h1A, one_ne_zero⟩ ⟨t, ht0, htA⟩`. Establish `hsS : δ⁻¹ ∈ S` using `by simpa using hdiv 1 h1A`. Establish `hrS : a * δ⁻¹ ∈ S` using `hdiv a haA`.
+
+Generalize the expression as in `hsdef : δ⁻¹ = s at hsS hrS`. Establish `hs0 : s ≠ 0` using `by rw [← hsdef]; exact inv_ne_zero hδ0`. Establish `h1 : x * s + y * (a * s) = 1`. Rewrite using `[← mul_assoc, ← add_mul, ← hδ, ← hsdef]`. Conclude with `mul_inv_cancel₀ hδ0`.
+
+Establish `hss0 : star s ≠ 0` using `star_ne_zero.mpr hs0`. Use `⟨s / star s, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[star_div₀, star_star]`. Clear the denominators using the available nonvanishing facts. Establish `hq : (x * star (a * s) + y * (star a * a) * star s) * s = star (a * s)`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `: a * (s / star s) = star (x * star (a * s) + y * (star a * a) * star s)`. Rewrite using `[← mul_div_assoc, div_eq_iff hss0, ← star_mul', hq, star_star]`. Rewrite using `[this]`. Conclude with `hS.star_mem _ (S.add_mem (S.mul_mem hx (hS.star_mem _ hrS)) (S.mul_mem (S.mul_mem hy ha) (hS.star_mem _ hsS)))`.
+-/
 theorem exists_norm_one_mul_mem (hS : IsHermSemilocal S) {a : K} (ha : star a * a ∈ S) :
     ∃ b : K, star b * b = 1 ∧ a * b ∈ S := by
   let A : AddSubgroup K :=
@@ -81,6 +103,25 @@ theorem exists_norm_one_mul_mem (hS : IsHermSemilocal S) {a : K} (ha : star a * 
 
 variable {V : Type*} [AddCommGroup V] [Module K V]
 
+/- English proof (translation)
+Establish `hwy : h w y = 1`. Use `hs.eq y w` as an intermediate fact. Rewrite `this` using `[hyw, map_one]`. Conclude with `this.symm`. Establish `hH : star (h w w) = h w w` using `hs.eq w w`.
+
+Establish `key : ∀ c d : K, h (c • w + d • y) (c • w + d • y) = star c * c * h w w + star c * d + star d * c + star d * d * (star a * a)`. Introduce `c d`. Simplify using `only [map_add, LinearMap.add_apply, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, hy, hyw, hwy, starRingEnd_apply, RingHom.id_apply]`. Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `hu : a⁻¹ ∈ S`.
+
+Use `⟨0, S.zero_mem, a⁻¹, hu, ?_⟩` and prove the remaining obligations. Establish `hsa : star a ≠ 0` using `star_ne_zero.mpr ha0`. Rewrite using `[key, star_inv₀]`. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
+
+Take `⟨θ, hθ, hμ⟩` from `hS.unram`. Establish `h1a : 1 + a ∈ S` using `S.add_mem S.one_mem ha`. Choose the witnesses or unpack the hypotheses as in `⟨κ, hκ, hκt⟩ : ∃ κ ∈ S, κ + star κ = star (1 + a) * (1 + a) * h w w - 1 := by`. Apply `exists_trace_eq hS` to reduce the goal to its premises. Conclude with `S.sub_mem (S.mul_mem (S.mul_mem (hS.star_mem _ h1a) h1a) hw) S.one_mem`.
+
+Simplify using `only [star_sub, star_mul', star_star, hH, star_one]`. Expand and normalize the polynomial expressions, which then agree. Establish `fin : ∀ κ' ∈ S, κ' + star κ' = star (1 + a) * (1 + a) * h w w - 1 → IsUnitIn S (1 - κ' * a) → ∃ c ∈ S, ∃ d ∈ S, h (c • w + d • y) (c • w + d • y) = 1`. Introduce and unpack `κ' hκ' ht ⟨h0, -, h2⟩`. Use `⟨star (1 + a) * (1 - κ' * a)⁻¹, S.mul_mem (hS.star_mem _ h1a) h2, -κ' * (1 - κ' * a)⁻¹, S.mul_mem (S.neg_mem hκ') h2, ?_⟩` and prove the remaining obligations.
+
+Establish `h0' : star (1 - κ' * a) ≠ 0` using `star_ne_zero.mpr h0`. Establish `hb : star (1 + a) * (1 + a) * h w w = κ' + star κ' + 1` using `by rw [ht]; ring`. Rewrite using `[key]`. Establish `e : star (star (1 + a) * (1 - κ' * a)⁻¹) * (star (1 + a) * (1 - κ' * a)⁻¹) * h w w + star (star (1 + a) * (1 - κ' * a)⁻¹) * (-κ' * (1 - κ' * a)⁻¹) + star (-κ' * (1 - κ' * a)⁻¹) * (star (1 + a) * (1 - κ' * a)⁻¹) + star (-κ' * (1 - κ' * a)⁻¹) * (-κ' * (1 - κ' * a)⁻¹) * (star a * a) …`. Simplify using `only [star_mul', star_inv₀, star_star, star_neg]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, hb]`. Establish `e2 : κ' + star κ' + 1 - (1 + a) * κ' - star κ' * star (1 + a) + star κ' * κ' * (star a * a) = star (1 - κ' * a) * (1 - κ' * a)`. Simplify using `only [star_sub, star_add, star_mul', star_one]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e2]`. Clear the denominators using the available nonvanishing facts. Break down `hS.unit_or a ha κ hκ (θ - star θ) hu hμ with h1 | h1` into its components or cases. Conclude with `fin κ hκ hκt h1`. Use `fin (κ + (θ - star θ)) (S.add_mem hκ hμ.2.1) ?_ h1` and prove the remaining obligations.
+
+Rewrite using `[← hκt]`. Simplify using `only [star_add, star_sub, star_star]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_norm_one_of_pair (hS : IsHermSemilocal S) {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm)
     {y w : V} {a : K} (ha : a ∈ S) (ha0 : a ≠ 0) (hy : h y y = star a * a) (hyw : h y w = 1)
     (hw : h w w ∈ S) :

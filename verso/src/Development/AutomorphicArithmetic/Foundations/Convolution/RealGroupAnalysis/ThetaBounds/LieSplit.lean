@@ -5,6 +5,11 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
+/- English proof (translation)
+Establish `h : X 0 0 + X 1 1 = (2⁻¹ : ℝ) • (X 0 0 + X 1 1) + (2⁻¹ : ℝ) • (X 0 0 + X 1 1)`. Rewrite using `[← add_smul]`. Evaluate the numerical expressions. Use `⟨X - zE ((2⁻¹ : ℝ) • (X 0 0 + X 1 1)), _, ?_, (sub_add_cancel _ _).symm, h⟩` and prove the remaining obligations. Rewrite using `[Matrix.trace_fin_two]`.
+
+Express the relevant statement in the definitionally equal form `(X 0 0 - (2⁻¹ : ℝ) • (X 0 0 + X 1 1)) + (X 1 1 - (2⁻¹ : ℝ) • (X 0 0 + X 1 1)) = 0`. Take the linear combination `h`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.lieSplit {E : Type} [Field E] [NumberField E] (X : Lie E 2) :
     ∃ (Y : Lie E 2) (s : Cinf E), (Matrix.of Y).trace = 0 ∧ X = Y + zE s ∧ X 0 0 + X 1 1 = s + s := by
   have h : X 0 0 + X 1 1 = (2⁻¹ : ℝ) • (X 0 0 + X 1 1) + (2⁻¹ : ℝ) • (X 0 0 + X 1 1) := by

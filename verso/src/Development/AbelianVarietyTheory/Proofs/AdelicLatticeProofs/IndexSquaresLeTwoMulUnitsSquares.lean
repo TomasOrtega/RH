@@ -6,6 +6,13 @@ open scoped WithZero
 
 namespace GlobalTheory.QNorm
 
+/- English proof (translation)
+Establish `h1 : w ((x * (p ^ m) ^ 2 : Kˣ) : K) = 1`. Rewrite using `[Units.val_mul, Units.val_pow_eq_pow_val, Units.val_zpow_eq_zpow_val, map_mul, map_pow, map_zpow₀, hx, hp, ← WithZero.exp_zsmul, ← WithZero.exp_nsmul, ← WithZero.exp_add, ← WithZero.exp_zero]`. Use `congr 1`. Simplify using the standard rewrite rules. Establish `hU : x * (p ^ m) ^ 2 ∈ hiUnits w 0`.
+
+Use `⟨h1, ?_⟩` and prove the remaining obligations. Use `le_trans (w.map_sub _ _) (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[h1]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+
+Establish `hS : ((p ^ m)⁻¹) ^ 2 ∈ sqs (⊤ : Subgroup Kˣ)` using `⟨(p ^ m)⁻¹, trivial, rfl⟩`. Establish `: x = (x * (p ^ m) ^ 2) * ((p ^ m)⁻¹) ^ 2`. Rewrite using `[mul_assoc, ← mul_pow, mul_inv_cancel, one_pow, mul_one]`. Rewrite using `[this]`. Conclude with `Subgroup.mul_mem_sup hU hS`.
+-/
 theorem mem_hiUnits_sup_sqs_of_even {K : Type} [Field K] (w : Valuation K ℤᵐ⁰) (p : Kˣ)
     (hp : w (p : K) = WithZero.exp (-1)) (x : Kˣ) (m : ℤ)
     (hx : w (x : K) = WithZero.exp (2 * m)) :
@@ -27,6 +34,19 @@ theorem mem_hiUnits_sup_sqs_of_even {K : Type} [Field K] (w : Valuation K ℤᵐ
   rw [this]
   exact Subgroup.mul_mem_sup hU hS
 
+/- English proof (translation)
+Introduce `K _ w π hπ h0`. Establish `hπ0 : π ≠ 0`. Introduce and unpack `rfl`. Rewrite `hπ` using `[map_zero]`. Conclude with `WithZero.exp_ne_zero hπ.symm`.
+
+Establish `hdvd : (hiUnits w 0 ⊔ sqs (⊤ : Subgroup Kˣ)).index ∣ 2`. Rewrite using `[Subgroup.index_dvd_two_iff]`. Use `⟨Units.mk0 π hπ0, fun b => ?_⟩` and prove the remaining obligations. Establish `hb : w (b : K) ≠ 0` using `by simp`. Establish `hb' : w (b : K) = WithZero.exp (WithZero.log (w (b : K)))` using `(WithZero.exp_log hb).symm`.
+
+Take `⟨m, hm | hm⟩` from `Int.even_or_odd' (WithZero.log (w (b : K)))`. Use `right`. Conclude with `mem_hiUnits_sup_sqs_of_even w (Units.mk0 π hπ0) hπ b m (by rw [hb', hm])`. Use `left`. Use `mem_hiUnits_sup_sqs_of_even w (Units.mk0 π hπ0) hπ _ m ?_` and prove the remaining obligations.
+
+Rewrite using `[Units.val_mul, map_mul, hb', hm, Units.val_mk0, hπ, ← WithZero.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hmul` using `Subgroup.relIndex_mul_index (le_sup_right : sqs (⊤ : Subgroup Kˣ) ≤ hiUnits w 0 ⊔ sqs (⊤ : Subgroup Kˣ))`. Rewrite `hmul` using `[Subgroup.relIndex_sup_right]`.
+
+Establish `hle : sqs (hiUnits w 0) ≤ sqs (⊤ : Subgroup Kˣ)` using `Subgroup.map_mono le_top`. Establish `hd2` using `Subgroup.relIndex_dvd_of_le_left (hiUnits w 0) hle`. Establish `hd : (sqs (⊤ : Subgroup Kˣ)).index ∣ 2 * (sqs (hiUnits w 0)).relIndex (hiUnits w 0)`. Rewrite using `[← hmul, mul_comm]`. Conclude with `Nat.mul_dvd_mul hdvd hd2`.
+
+Establish `hpos : 2 * (sqs (hiUnits w 0)).relIndex (hiUnits w 0) ≠ 0` using `mul_ne_zero two_ne_zero h0`. Conclude with `⟨ne_zero_of_dvd_ne_zero hpos hd, Nat.le_of_dvd (Nat.pos_of_ne_zero hpos) hd⟩`.
+-/
 theorem index_sqs_top_le : ∀ (K : Type) [Field K] (w : Valuation K ℤᵐ⁰) (π : K),
     w π = WithZero.exp (-1) → (sqs (hiUnits w 0)).relIndex (hiUnits w 0) ≠ 0 →
     (sqs (⊤ : Subgroup Kˣ)).index ≠ 0 ∧

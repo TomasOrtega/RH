@@ -12,21 +12,36 @@ def chi0 (l : ℕ) [Fact l.Prime] : (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) 
   (cyclotomicCharacter (PadicAlgCl l) l).comp
     (MulSemiringAction.toRingAut (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) (PadicAlgCl l))
 
+/- English proof (translation)
+The claim follows from `cyclotomicCharacter.continuous l ℚ_[l] (PadicAlgCl l)`.
+-/
 theorem continuous_cyclotomic_character : Continuous (chi0 l) :=
   cyclotomicCharacter.continuous l ℚ_[l] (PadicAlgCl l)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cycloChar_toBot (g : PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) :
     cycloChar ⊥ (toBot g) = chi0 l g := rfl
 
+/- English proof (translation)
+Use `show algebraMap (BdRp l) (BdR l) (ACris.iota ℂ_[l] l (tA l)) = _`. Rewrite using `[tA, ACris.iota_periodT]`. Both sides reduce to the same expression.
+-/
 theorem tQ_eq : tQ l = algebraMap (BdRp l) (BdR l) (tBdR l) := by
   show algebraMap (BdRp l) (BdR l) (ACris.iota ℂ_[l] l (tA l)) = _
   rw [tA, ACris.iota_periodT]
   rfl
 
+/- English proof (translation)
+Rewrite using `[tQ_eq]`. Conclude with `algebraMap_tBdR_ne_zero`.
+-/
 theorem tQ_ne : tQ l ≠ 0 := by
   rw [tQ_eq]
   exact algebraMap_tBdR_ne_zero
 
+/- English proof (translation)
+Rewrite using `[tQ_eq]`. Use `show galBdRField (toBot g) _ = _`. Rewrite using `[galBdRField_algebraMap, gal_smul_tBdR, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem σD_tQ (g : PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) :
     σD g (tQ l) = qQ l ((chi0 l g : ℤ_[l]) : ℚ_[l]) * tQ l := by
   rw [tQ_eq]

@@ -13,6 +13,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.HeightCounting.Up GlobalTheory.Mem.SRe GlobalTheory.Mem.R3.Rw GlobalTheory.ShFam
 open Formalism.BasicNotions.TH Formalism.L2.Theta GlobalTheory.Mem.Th
 namespace GlobalTheory.Mem.Top.Closing
+/- English proof (translation)
+Introduce `K B f T w Z c hc`. Take `⟨b, hb⟩` from `hc`. Take `⟨⟨nx⟩, hg⟩` from `hN _ _ _ _ _ _ _ _ _ _ _ _ _ b.nx.2`. Establish `ch : GlobalTheory.HeightCounting.ChoiceC (w.D Z) c.O.nch` using `b.nx.1.a.all.choice`. Use `⟨⟨⟨{ b with nx := ⟨b.nx.1, nx⟩ }, hb⟩, hg⟩, fun v hv => ⟨ch.conj v hv, ch.sd_conj v hv⟩, ?_⟩` and prove the remaining obligations.
+
+Take `⟨I, hI, hI1, -⟩` from `hg.tw`. Use `⟨I.N0, I.S, ?_⟩` and prove the remaining obligations. Break down `I with ⟨E, N0, S'⟩` into its components or cases. Simplify using `only at hI`. Substitute `hI` using the available equality.
+
+Conclude with `hI1`.
+-/
 theorem goodE_of_builtE_alt (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (N Ng : _root_.GlobalTheory.Mem.Top.Bl.NormChoiceExtension hL) (S : SExt) (Γ : GeoP)
     (hN : ∀ K B f T w Z Wt p0 t nch n xd c, Ng K B f T w Z Wt p0 t nch n xd c →
       Nonempty (N K B f T w Z Wt p0 t nch n xd c) ∧ GoodO (w.D Z) nch xd) :

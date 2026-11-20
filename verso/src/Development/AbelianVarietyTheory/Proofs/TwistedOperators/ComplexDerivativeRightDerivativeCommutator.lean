@@ -18,6 +18,13 @@ open GlobalTheory.Mem.AutSpace GlobalTheory.Mem.RealTranslate
 
 variable {D : D7} {θ : InfFam D} {V : HSp D}
 
+/- English proof (translation)
+Establish `hX0 : Xᴴ * gramAt D V τ + gramAt D V τ * X = 0` using `hX`. Establish `hY0 : Yᴴ * gramAt D V τ + gramAt D V τ * Y = 0` using `hY`. Establish `hX' : Xᴴ * gramAt D V τ = -(gramAt D V τ * X)` using `eq_neg_of_add_eq_zero_left hX0`. Establish `hY' : Yᴴ * gramAt D V τ = -(gramAt D V τ * Y)` using `eq_neg_of_add_eq_zero_left hY0`. Establish `e1 : Yᴴ * Xᴴ * gramAt D V τ = gramAt D V τ * Y * X`.
+
+Rewrite using `[Matrix.mul_assoc Yᴴ Xᴴ, hX', Matrix.mul_neg, ← Matrix.mul_assoc Yᴴ, hY', Matrix.neg_mul, neg_neg]`. Establish `e2 : Xᴴ * Yᴴ * gramAt D V τ = gramAt D V τ * X * Y`. Rewrite using `[Matrix.mul_assoc Xᴴ Yᴴ, hY', Matrix.mul_neg, ← Matrix.mul_assoc Xᴴ, hX', Matrix.neg_mul, neg_neg]`. Use `show (X * Y - Y * X)ᴴ * gramAt D V τ + gramAt D V τ * (X * Y - Y * X) = 0`. Rewrite using `[conjTranspose_sub, conjTranspose_mul, conjTranspose_mul, Matrix.sub_mul, e1, e2]`.
+
+Use `noncomm_ring`.
+-/
 theorem bracket_mem_lieAt {τ : D.what₂.Tau} {X Y : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hX : X ∈ lieAt V τ) (hY : Y ∈ lieAt V τ) : X * Y - Y * X ∈ lieAt V τ := by
 
@@ -33,16 +40,29 @@ theorem bracket_mem_lieAt {τ : D.what₂.Tau} {X Y : Matrix (Fin V.rank) (Fin V
   rw [conjTranspose_sub, conjTranspose_mul, conjTranspose_mul, Matrix.sub_mul, e1, e2]
   noncomm_ring
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.SmoothForms.isSmoothInf_iff φ).1 ((GlobalTheory.SmoothForms.smooth_iff R φ).1 hφ)`.
+-/
 private theorem mem_smF_of_mem_smFun (R : GlobalTheory.SmoothForms.RealPoints θ V) {φ : GA D V → ℂ} (hφ : φ ∈ SmFun θ V) :
     φ ∈ GlobalTheory.SmoothForms.SmF θ V :=
   (GlobalTheory.SmoothForms.isSmoothInf_iff φ).1 ((GlobalTheory.SmoothForms.smooth_iff R φ).1 hφ)
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.SmoothForms.opInf_coe]`. Conclude with `GlobalTheory.SmoothForms.Rder_eq R τ X ψ.1`.
+-/
 private theorem rder_eq_opInf_atPlace (R : GlobalTheory.SmoothForms.RealPoints θ V) (τ : D.what₂.Tau) (X : GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.LieAt V τ)
     (ψ : GlobalTheory.SmoothForms.SmF θ V) :
     Rder θ V τ X.1 ψ.1 = (GlobalTheory.SmoothForms.opInf R (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.atPlace V τ X) ψ).1 := by
   rw [GlobalTheory.SmoothForms.opInf_coe]
   exact GlobalTheory.SmoothForms.Rder_eq R τ X ψ.1
 
+/- English proof (translation)
+Establish `R : GlobalTheory.SmoothForms.RealPoints θ V` using `(GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ V`. Establish `hXY` using `bracket_mem_lieAt hX hY`. Use `set ψ : GlobalTheory.SmoothForms.SmF θ V := ⟨φ, mem_smF_of_mem_smFun R hφ⟩ with hψ`. Use `set Xl : GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.LieAt V τ := ⟨X, (GlobalTheory.SmoothForms.mem_lieAt_iff τ X).1 hX⟩ with hXl`. Use `set Yl : GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.LieAt V τ := ⟨Y, (GlobalTheory.SmoothForms.mem_lieAt_iff τ Y).1 hY⟩ with hYl`.
+
+Use `set Zl : GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.LieAt V τ := ⟨X * Y - Y * X, (GlobalTheory.SmoothForms.mem_lieAt_iff τ _).1 hXY⟩ with hZl`. Establish `e` using `GlobalTheory.SmoothForms.opAt_bracket R τ Xl Yl Zl rfl`. Establish `a1 : Rder θ V τ Y φ = (GlobalTheory.SmoothForms.opInf R (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.atPlace V τ Yl) ψ).1` using `rder_eq_opInf_atPlace R τ Yl ψ`. Establish `a2 : Rder θ V τ X φ = (GlobalTheory.SmoothForms.opInf R (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.atPlace V τ Xl) ψ).1` using `rder_eq_opInf_atPlace R τ Xl ψ`. Establish `a3 : Rder θ V τ X (GlobalTheory.SmoothForms.opInf R (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.atPlace V τ Yl) ψ).1 = (GlobalTheory.SmoothForms.opInf R (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.atPlace V τ Xl) (GlobalTheory …` using `rder_eq_opInf_atPlace R τ Xl _`.
+
+Establish `a4 : Rder θ V τ Y (GlobalTheory.SmoothForms.opInf R (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.atPlace V τ Xl) ψ).1 = (GlobalTheory.SmoothForms.opInf R (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.atPlace V τ Yl) (GlobalTheory …` using `rder_eq_opInf_atPlace R τ Yl _`. Establish `a5 : Rder θ V τ (X * Y - Y * X) φ = (GlobalTheory.SmoothForms.opInf R (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.atPlace V τ Zl) ψ).1` using `rder_eq_opInf_atPlace R τ Zl ψ`. Rewrite using `[a1, a3, a2, a4, a5, e, LinearMap.sub_apply, Submodule.coe_sub]`. Express the relevant statement in the definitionally equal form `_ = _ + ((GlobalTheory.SmoothForms.opInf R (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.atPlace V τ Xl) (GlobalTheory.SmoothForms.opInf R (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.atPlace V τ Yl) ψ)).1 - (GlobalTheory.SmoothF …`. Normalize the expressions using the abelian group laws.
+-/
 theorem Rder_bracket (hθ : IsInfFam θ) {φ : GA D V → ℂ} (hφ : φ ∈ SmFun θ V) {τ : D.what₂.Tau}
     {X Y : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hX : X ∈ lieAt V τ) (hY : Y ∈ lieAt V τ) :
     Rder θ V τ X (Rder θ V τ Y φ) = Rder θ V τ Y (Rder θ V τ X φ) + Rder θ V τ (X * Y - Y * X) φ := by
@@ -71,6 +91,11 @@ theorem Rder_bracket (hθ : IsInfFam θ) {φ : GA D V → ℂ} (hφ : φ ∈ SmF
         (GlobalTheory.SmoothForms.opInf R (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.atPlace V τ Xl) ψ)).1)
   abel
 
+/- English proof (translation)
+Establish `R : GlobalTheory.SmoothForms.RealPoints θ V` using `(GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ V`. Use `set ψ : GlobalTheory.SmoothForms.SmF θ V := ⟨φ, mem_smF_of_mem_smFun R hφ⟩ with hψ`. Use `set Xl : GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.LieAt V τ := ⟨X, (GlobalTheory.SmoothForms.mem_lieAt_iff τ X).1 hX⟩ with hXl`. Use `set Yl : GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.LieAt V τ' := ⟨Y, (GlobalTheory.SmoothForms.mem_lieAt_iff τ' Y).1 hY⟩ with hYl`. Establish `hc` using `(GlobalTheory.SmoothForms.opAt_comm R hτ Xl Yl).eq`.
+
+Establish `a1 : Rder θ V τ' Y φ = (GlobalTheory.SmoothForms.opInf R (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.atPlace V τ' Yl) ψ).1` using `rder_eq_opInf_atPlace R τ' Yl ψ`. Establish `a2 : Rder θ V τ X φ = (GlobalTheory.SmoothForms.opInf R (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.atPlace V τ Xl) ψ).1` using `rder_eq_opInf_atPlace R τ Xl ψ`. Rewrite using `[a1, a2, rder_eq_opInf_atPlace R τ Xl, rder_eq_opInf_atPlace R τ' Yl]`. Conclude with `congrArg Subtype.val (LinearMap.congr_fun hc ψ)`.
+-/
 theorem Rder_comm (hθ : IsInfFam θ) {φ : GA D V → ℂ} (hφ : φ ∈ SmFun θ V) {τ τ' : D.what₂.Tau} (hτ : τ ≠ τ')
     {X Y : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hX : X ∈ lieAt V τ) (hY : Y ∈ lieAt V τ') :
     Rder θ V τ X (Rder θ V τ' Y φ) = Rder θ V τ' Y (Rder θ V τ X φ) := by
@@ -85,11 +110,25 @@ theorem Rder_comm (hθ : IsInfFam θ) {φ : GA D V → ℂ} (hφ : φ ∈ SmFun 
   rw [a1, a2, rder_eq_opInf_atPlace R τ Xl, rder_eq_opInf_atPlace R τ' Yl]
   exact congrArg Subtype.val (LinearMap.congr_fun hc ψ)
 
+/- English proof (translation)
+Rewrite using `[Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_sub]`. Normalize the expressions using the abelian group laws.
+-/
 private theorem commutator_add_I_smul' {n : ℕ} (A B X : Matrix (Fin n) (Fin n) ℂ) :
     (A + Complex.I • B) * X - X * (A + Complex.I • B) = (A * X - X * A) + Complex.I • (B * X - X * B) := by
   rw [Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_sub]
   abel
 
+/- English proof (translation)
+Introduce `D θ hθ V τ τ' Z X hX φ hφ`. Prove the components needed by the constructor for the conclusion. Take `⟨hA, hB⟩` from `GlobalTheory.SmoothAutCheck.parts_mem V τ Z`. Establish `hZ` using `GlobalTheory.SmoothAutCheck.parts_sum V τ Z`. Use `set A := (1 / 2 : ℂ) • (Z + conjAt V τ Z) with hAdef`.
+
+Use `set B := (1 / (2 * Complex.I)) • (Z - conjAt V τ Z) with hBdef`. Establish `hc` using `commutator_add_I_smul' A B X`. Rewrite `hc` using `[hZ]`. Establish `hAX` using `bracket_mem_lieAt hA hX`. Establish `hBX` using `bracket_mem_lieAt hB hX`.
+
+Establish `e1 : RderC θ V τ (Z * X - X * Z) φ = Rder θ V τ (A * X - X * A) φ + Complex.I • Rder θ V τ (B * X - X * B) φ`. Rewrite using `[hc, GlobalTheory.Mem.RealTranslate.RderC_add hθ hφ, GlobalTheory.Mem.RealTranslate.RderC_smul hθ hφ, GlobalTheory.SmoothAutCheck.RderC_eq θ V τ hAX, GlobalTheory.SmoothAutCheck.RderC_eq θ V τ hBX]`. Rewrite using `[e1]`. Use `show Rder θ V τ A (Rder θ V τ X φ) + Complex.I • Rder θ V τ B (Rder θ V τ X φ) = Rder θ V τ X (Rder θ V τ A φ + Complex.I • Rder θ V τ B φ) + _`. Rewrite using `[Rder_bracket hθ hφ hA hX, Rder_bracket hθ hφ hB hX, Rder_add (Rder_mem hφ hA) ((SmFun θ V).smul_mem _ (Rder_mem hφ hB)) hX, Rder_smul]`.
+
+Rewrite using `[smul_add]`. Normalize the expressions using the abelian group laws. Introduce `hne`. Take `⟨hA, hB⟩` from `GlobalTheory.SmoothAutCheck.parts_mem V τ' Z`. Use `show Rder θ V τ' ((1 / 2 : ℂ) • (Z + conjAt V τ' Z)) (Rder θ V τ X φ) + Complex.I • Rder θ V τ' ((1 / (2 * Complex.I)) • (Z - conjAt V τ' Z)) (Rder θ V τ X φ) = Rder θ V τ X (Rder θ V τ' ((1 / 2 : ℂ) • (Z + conjAt V τ' Z)) φ + Complex.I • Rder θ V τ' ((1 / (2 * Complex.I)) • (Z - …`.
+
+Rewrite using `[Rder_add (Rder_mem hφ hA) ((SmFun θ V).smul_mem _ (Rder_mem hφ hB)) hX, Rder_smul, Rder_comm hθ hφ hne hA hX, Rder_comm hθ hφ hne hB hX]`.
+-/
 theorem RderC_Rder : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (τ τ' : D.what₂.Tau) (Z : Matrix (Fin V.rank) (Fin V.rank) ℂ), ∀ X ∈ lieAt V τ, ∀ φ ∈ GlobalTheory.Mem.AutSpace.SmFun θ V, (RderC θ V τ Z (Rder θ V τ X φ) = Rder θ V τ X (RderC θ V τ Z φ) + RderC θ V τ (Z * X - X * Z) φ) ∧ (τ' ≠ τ → RderC θ V τ' Z (Rder θ V τ X φ) = Rder θ V τ X (RderC θ V τ' Z φ)) := by
   intro D θ hθ V τ τ' Z X hX φ hφ
   constructor

@@ -17,6 +17,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.ThetaCommutation
 
+/- English proof (translation)
+Take `⟨h, rfl⟩` from `(finHom V).rangeRestrict_surjective q`. Take `⟨a, ha, k, hk, rfl⟩` from `(GlobalTheory.UnitarySplit.real_finite_split D V).1 h`. Use `⟨k, hk, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show finHom V k = finHom V (a * k)`. Rewrite using `[map_mul, show finHom V a = 1 from ha, one_mul]`.
+-/
 theorem exists_fin_part {D : D7} (V : HSp D) (q : Bridge.Gf V) : ∃ k ∈ GfC V, (finHom V).rangeRestrict k = q := by
   obtain ⟨h, rfl⟩ := (finHom V).rangeRestrict_surjective q
   obtain ⟨a, ha, k, hk, rfl⟩ := (GlobalTheory.UnitarySplit.real_finite_split D V).1 h
@@ -24,15 +27,26 @@ theorem exists_fin_part {D : D7} (V : HSp D) (q : Bridge.Gf V) : ∃ k ∈ GfC V
   show finHom V k = finHom V (a * k)
   rw [map_mul, show finHom V a = 1 from ha, one_mul]
 
+/- English proof (translation)
+Rewrite using `[hk, hc, Bridge.g0Act, Units.val_inv_eq_inv_val]`.
+-/
 theorem finiteGroupLevelAction_eq_inv_smul_translate {H W : Type} [Group H] [NormedAddCommGroup W] [InnerProductSpace ℂ W] {Q : Subgroup H} (ch : Q →* ℂˣ)
     (q : Q) (k : H) (hk : k = q) (c : ℂ) (hc : c = ch q) (f : H → W) (h : H) :
     Bridge.g0Act ch q f h = c⁻¹ • f (h * k) := by
   rw [hk, hc, Bridge.g0Act, Units.val_inv_eq_inv_val]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ch_eq {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank)
     (q : (levEnv V β L).Q) :
     (levEnv V β L).ch q = levFn β (flagL L) (Formalism.UG.bc (swapAE D) ((q : Bridge.Gf V) : GL _ _)) := rfl
 
+/- English proof (translation)
+Take `⟨k, hk, e⟩` from `exists_fin_part V q.1`. Establish `e1 : finE V k = Formalism.UG.bc (swapAE D) ((q : Bridge.Gf V) : GL _ _)` using `congrArg (fun x : Bridge.Gf V => Formalism.UG.bc (swapAE D) x.1) e`. Use `⟨k, ⟨hk, ?_, ?_⟩, finiteGroupLevelAction_eq_inv_smul_translate _ q _ e _ ?_⟩` and prove the remaining obligations. Rewrite using `[e1]`. Conclude with `q.2.1`.
+
+Rewrite using `[e1]`. Conclude with `hq`. Conclude with `congrArg Units.val ((congrArg (levFn β (flagL L)) e1).trans (ch_eq V β L q).symm)`.
+-/
 theorem exists_adelic_lift {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank)
     (q : (levEnv V β L).Q) (g0 : G0 L.Pg L.r) (hq : rTup β L (Formalism.UG.bc (swapAE D) ((q : Bridge.Gf V) : GL _ _)) = g0)
     (W : Type) [NormedAddCommGroup W] [InnerProductSpace ℂ W] :
@@ -49,6 +63,9 @@ theorem exists_adelic_lift {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {F : Face D A}
 
+/- English proof (translation)
+Use `MultilinearMap.ext fun v => ?_` and prove the remaining obligations. Use `show (∑ g, c g • actL (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g)) (U v) = _`. Rewrite using `[LinearMap.sum_apply, _root_.sum_apply]`. Both sides reduce to the same expression.
+-/
 theorem algW_apply (i : Fin D.R.m) (c : G → ℂ) (U : MMap (R.MW i (sg0 D A))) :
     algW R i c U = ∑ g, c g • FWT.actW R i (sg0 D A) g U := by
   refine MultilinearMap.ext fun v => ?_
@@ -56,6 +73,9 @@ theorem algW_apply (i : Fin D.R.m) (c : G → ℂ) (U : MMap (R.MW i (sg0 D A)))
   rw [LinearMap.sum_apply, _root_.sum_apply]
   rfl
 
+/- English proof (translation)
+Use `choose z hz using h1`. Establish `h3 : y = ∑ g, c g • z g` using `he (by simp only [hy, map_sum, map_smul, hz])`. Simplify using `only [h3, map_sum, map_smul, h2 _ _ (hz _)]`.
+-/
 theorem map_comb {G H X Y : Type} [Fintype G] [AddCommGroup H] [Module ℂ H] [AddCommGroup X] [Module ℂ X] [AddCommGroup Y]
     [Module ℂ Y] (e : H →ₗ[ℂ] X) (he : Function.Injective e) (Θ : H →ₗ[ℂ] Y) (c : G → ℂ) (a : G → X) (b : G → Y) (y : H)
     (hy : e y = ∑ g, c g • a g) (h1 : ∀ g, ∃ z, e z = a g) (h2 : ∀ g z, e z = a g → Θ z = b g) :

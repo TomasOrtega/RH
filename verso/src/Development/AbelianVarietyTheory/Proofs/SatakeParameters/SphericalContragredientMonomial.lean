@@ -36,6 +36,9 @@ noncomputable section
 
 namespace GlobalTheory.WeakTheRep
 
+/- English proof (translation)
+Take `⟨n, a, rfl⟩` from `WD.exists_rep x`. Take `⟨m, b, rfl⟩` from `WD.exists_rep y`. Rewrite `hx`, `hy` using `[WD.monodromyZero_ofWeilDeligneRepClass_iff]`. Take `⟨e, he⟩` from `GlobalTheory.AboveL.weil_rep_equiv_of_charpoly_eq E Ω A w h n m a b (fun σ => by rw [← WD.charPol_mk, ← WD.charPol_mk]; exact hc σ)`. Conclude with `WD.sound ⟨e, he, fun v => by rw [hx, hy]; simp⟩`.
+-/
 theorem eq_of_mono0_charPol {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w} (x y : WD h)
     (hx : x.mono0) (hy : y.mono0) (hc : ∀ g, x.charPol g = y.charPol g) : x = y := by
@@ -46,6 +49,11 @@ theorem eq_of_mono0_charPol {E Ω : Type} [Field E] [NumberField E] [Field Ω] [
     (fun σ => by rw [← WD.charPol_mk, ← WD.charPol_mk]; exact hc σ)
   exact WD.sound ⟨e, he, fun v => by rw [hx, hy]; simp⟩
 
+/- English proof (translation)
+Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff _).1 h`. Use `(Submodule.ne_bot_iff _).2 ⟨e v, ?_, fun h0 => hv0 ?_⟩` and prove the remaining obligations. Use `GlobalTheory.ContraRefl.mem_fix.2 fun g hg => ?_` and prove the remaining obligations. Establish `h1` using `LinearMap.congr_fun (e.toIntertwiningMap.isIntertwining' g) v`. Simplify using `only [LinearMap.comp_apply] at h1`.
+
+Rewrite `h1` using `[GlobalTheory.ContraRefl.mem_fix.1 hv g hg]`. Conclude with `h1.symm`. Conclude with `e.toLinearEquiv.injective (h0.trans (map_zero e.toLinearEquiv).symm)`.
+-/
 theorem fixed_ne_bot_of_equiv {G V W : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {ρ : Representation ℂ G V} {ρ' : Representation ℂ G W} (e : ρ.Equiv ρ') {K : Subgroup G}
     (h : GlobalTheory.PRep.fixed ρ K ≠ ⊥) : GlobalTheory.PRep.fixed ρ' K ≠ ⊥ := by

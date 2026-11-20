@@ -10,31 +10,55 @@ namespace PI.ProdFormulaE.Base
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {sig : E →ₐ[F] E} {p : HeightOneSpectrum (𝓞 F)}
 
+/- English proof (translation)
+Rewrite using `[L.rank]`. Evaluate the numerical expressions.
+-/
 theorem finrank_pos (L : LocAt F E sig p) : 0 < Module.finrank L.Fp L.Ep := by
   rw [L.rank]; norm_num
 
+/- English proof (translation)
+The claim follows from `Module.nontrivial_of_finrank_pos (finrank_pos L)`.
+-/
 theorem nontrivial (L : LocAt F E sig p) : Nontrivial L.Ep :=
   Module.nontrivial_of_finrank_pos (finrank_pos L)
 
+/- English proof (translation)
+The claim follows from `Module.finite_of_finrank_pos (finrank_pos L)`.
+-/
 theorem finite (L : LocAt F E sig p) : Module.Finite L.Fp L.Ep :=
   Module.finite_of_finrank_pos (finrank_pos L)
 
+/- English proof (translation)
+Use `nontrivial L` as an intermediate fact. Conclude with `L.ιE.injective`.
+-/
 theorem ιE_injective (L : LocAt F E sig p) : Function.Injective L.ιE := by
   have := nontrivial L
   exact L.ιE.injective
 
+/- English proof (translation)
+The claim follows from `(isUnit_iff_ne_zero.mpr hx).map L.ιE`.
+-/
 theorem isUnit_ιE (L : LocAt F E sig p) {x : E} (hx : x ≠ 0) : IsUnit (L.ιE x) :=
   (isUnit_iff_ne_zero.mpr hx).map L.ιE
 
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def, map_mul, L.compat, Algebra.smul_def]`.
+-/
 theorem ιE_smul (L : LocAt F E sig p) (a : F) (y : E) : L.ιE (a • y) = L.ιF a • L.ιE y := by
   rw [Algebra.smul_def, map_mul, L.compat, Algebra.smul_def]
 
+/- English proof (translation)
+Use `conv_lhs => rw [← b.sum_repr y]`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => ιE_smul L _ _`.
+-/
 theorem ιE_eq_sum (L : LocAt F E sig p) {ι : Type*} [Fintype ι] (b : Module.Basis ι F E) (y : E) :
     L.ιE y = ∑ i, L.ιF (b.repr y i) • L.ιE (b i) := by
   conv_lhs => rw [← b.sum_repr y]
   rw [map_sum]
   exact Finset.sum_congr rfl fun i _ => ιE_smul L _ _
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff, ← L.span, Submodule.span_le]`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[ιE_eq_sum L b y]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+-/
 theorem span_basis (L : LocAt F E sig p) {ι : Type*} [Fintype ι] (b : Module.Basis ι F E) :
     Submodule.span L.Fp (Set.range (L.ιE ∘ b)) = ⊤ := by
   rw [eq_top_iff, ← L.span, Submodule.span_le]
@@ -49,10 +73,16 @@ def basisE (L : LocAt F E sig p) {ι : Type*} [Fintype ι] (b : Module.Basis ι 
   basisOfTopLeSpanOfCardEqFinrank (L.ιE ∘ b) (span_basis L b).ge
     (by rw [L.rank, ← h, Module.finrank_eq_card_basis b])
 
+/- English proof (translation)
+Simplify using `[basisE]`.
+-/
 theorem basisE_apply (L : LocAt F E sig p) {ι : Type*} [Fintype ι] (b : Module.Basis ι F E)
     (h : Module.finrank F E = 2) (i : ι) : basisE L b h i = L.ιE (b i) := by
   simp [basisE]
 
+/- English proof (translation)
+Establish `hy : L.ιE y = ∑ j, L.ιF (b.repr y j) • basisE L b h j`. Simplify using `only [basisE_apply]`. Conclude with `ιE_eq_sum L b y`. Rewrite using `[hy, Module.Basis.repr_sum_self]`.
+-/
 theorem basisE_repr (L : LocAt F E sig p) {ι : Type*} [Fintype ι] (b : Module.Basis ι F E)
     (h : Module.finrank F E = 2) (y : E) (i : ι) :
     (basisE L b h).repr (L.ιE y) i = L.ιF (b.repr y i) := by
@@ -60,6 +90,9 @@ theorem basisE_repr (L : LocAt F E sig p) {ι : Type*} [Fintype ι] (b : Module.
     simp only [basisE_apply]; exact ιE_eq_sum L b y
   rw [hy, Module.Basis.repr_sum_self]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Algebra.leftMulMatrix_eq_repr_mul, Matrix.map_apply, Algebra.leftMulMatrix_eq_repr_mul, basisE_apply, ← map_mul, basisE_repr]`.
+-/
 theorem leftMulMatrix_ιE (L : LocAt F E sig p) {ι : Type*} [Fintype ι] [DecidableEq ι]
     (b : Module.Basis ι F E) (h : Module.finrank F E = 2) (x : E) :
     Algebra.leftMulMatrix (basisE L b h) (L.ιE x) = (Algebra.leftMulMatrix b x).map L.ιF := by
@@ -67,6 +100,9 @@ theorem leftMulMatrix_ιE (L : LocAt F E sig p) {ι : Type*} [Fintype ι] [Decid
   rw [Algebra.leftMulMatrix_eq_repr_mul, Matrix.map_apply, Algebra.leftMulMatrix_eq_repr_mul,
     basisE_apply, ← map_mul, basisE_repr]
 
+/- English proof (translation)
+Set `b` to `Module.finBasisOfFinrankEq F E h`. Rewrite using `[Algebra.trace_eq_matrix_trace (basisE L b h), Algebra.trace_eq_matrix_trace b, leftMulMatrix_ιE, Matrix.trace, Matrix.trace, map_sum]`. Both sides reduce to the same expression.
+-/
 theorem trace_ιE (L : LocAt F E sig p) (h : Module.finrank F E = 2) (x : E) :
     Algebra.trace L.Fp L.Ep (L.ιE x) = L.ιF (Algebra.trace F E x) := by
   classical
@@ -75,6 +111,9 @@ theorem trace_ιE (L : LocAt F E sig p) (h : Module.finrank F E = 2) (x : E) :
     leftMulMatrix_ιE, Matrix.trace, Matrix.trace, map_sum]
   rfl
 
+/- English proof (translation)
+Set `b` to `Module.finBasisOfFinrankEq F E h`. Rewrite using `[Algebra.norm_eq_matrix_det (basisE L b h), Algebra.norm_eq_matrix_det b, leftMulMatrix_ιE, RingHom.map_det]`. Both sides reduce to the same expression.
+-/
 theorem norm_ιE (L : LocAt F E sig p) (h : Module.finrank F E = 2) (x : E) :
     Algebra.norm L.Fp (L.ιE x) = L.ιF (Algebra.norm F x) := by
   classical
@@ -83,6 +122,11 @@ theorem norm_ιE (L : LocAt F E sig p) (h : Module.finrank F E = 2) (x : E) :
     leftMulMatrix_ιE, RingHom.map_det]
   rfl
 
+/- English proof (translation)
+Use `L.ellPrime` as an intermediate fact. Set `_ : Algebra ℚ_[resChar p] L.Ep` to `((algebraMap L.Fp L.Ep).comp (algebraMap ℚ_[resChar p] L.Fp)).toAlgebra`. Establish `: IsScalarTower ℚ_[resChar p] L.Fp L.Ep` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `L.free` as an intermediate fact. Use `finite L` as an intermediate fact.
+
+Use `L.qlFin` as an intermediate fact. Conclude with `(Algebra.trace_trace (R := ℚ_[resChar p]) (S := L.Fp) (T := L.Ep) y).symm`.
+-/
 theorem trace_tower (L : LocAt F E sig p) (y : L.Ep) :
     (haveI := L.ellPrime
      letI := ((algebraMap L.Fp L.Ep).comp (algebraMap ℚ_[resChar p] L.Fp)).toAlgebra
@@ -98,6 +142,9 @@ theorem trace_tower (L : LocAt F E sig p) (y : L.Ep) :
   have := L.qlFin
   exact (Algebra.trace_trace (R := ℚ_[resChar p]) (S := L.Fp) (T := L.Ep) y).symm
 
+/- English proof (translation)
+Rewrite using `[trace_tower, trace_ιE L h]`.
+-/
 theorem trace_ιE_ql (L : LocAt F E sig p) (h : Module.finrank F E = 2) (x : E) :
     (haveI := L.ellPrime
      letI := ((algebraMap L.Fp L.Ep).comp (algebraMap ℚ_[resChar p] L.Fp)).toAlgebra
@@ -106,6 +153,9 @@ theorem trace_ιE_ql (L : LocAt F E sig p) (h : Module.finrank F E = 2) (x : E) 
      Algebra.trace ℚ_[resChar p] L.Fp (L.ιF (Algebra.trace F E x))) := by
   rw [trace_tower, trace_ιE L h]
 
+/- English proof (translation)
+The claim follows from `L.ellPrime ∃ a : ℚ, (∃ n : ℕ, a.den = (resChar p) ^ n) ∧ ‖Algebra.trace ℚ_[resChar p] L.Fp (L.ιF (Algebra.trace F E x)) - (a : ℚ_[resChar p])‖ ≤ 1 ∧ L.psiE (L.ιE x) = Complex.exp (2 * Real.pi * Complex.I * (a : ℂ)) := by obtain ⟨a, ha, hn, he⟩ := L.psiE_def (L.ιE x) exact ⟨a, ha, …`.
+-/
 theorem psiE_ιE (L : LocAt F E sig p) (h : Module.finrank F E = 2) (x : E) :
     haveI := L.ellPrime
     ∃ a : ℚ, (∃ n : ℕ, a.den = (resChar p) ^ n) ∧

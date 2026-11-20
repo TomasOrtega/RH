@@ -62,10 +62,18 @@ def LeafPoly : Prop := ∀ (e d : ℕ) (R A : Type) [CommRing R] [CommRing A] (�
 def LeafNbhd : Prop := ∀ (e d : ℕ) (R A : Type) [CommRing R] [CommRing A] (φ : R →+* A) (I : Ideal A) (x : Fin d → A)
   (y : Fin e → A), IsCoord φ I x y → Chart d A I
 
+/- English proof (translation)
+Use `algebraize [φ]`. Conclude with `RingHom.etale_algebraMap.mpr (inferInstance : Algebra.Etale A B)`.
+-/
 theorem etale_of_subsingleton {A B : Type} [CommRing A] [CommRing B] [Subsingleton B] (φ : A →+* B) : φ.Etale := by
   algebraize [φ]
   exact RingHom.etale_algebraMap.mpr (inferInstance : Algebra.Etale A B)
 
+/- English proof (translation)
+Establish `: Subsingleton (A ⧸ (⊤ : Ideal A))` using `Ideal.Quotient.subsingleton_iff.mpr rfl`. Use `⟨A ⧸ (⊤ : Ideal A), inferInstance, Ideal.Quotient.mk ⊤, MvPolynomial.constantCoeff, ⟨etale_of_subsingleton _, ?_⟩, etale_of_subsingleton _, Subsingleton.elim _ _, fun a => ?_⟩` and prove the remaining obligations. Use `(Ideal.Quotient.mk_surjective (I := (⊤ : Ideal A).map (Ideal.Quotient.mk (⊤ : Ideal A)))).subsingleton` as an intermediate fact. Conclude with `⟨fun _ _ _ => Subsingleton.elim _ _, fun b => ⟨0, Subsingleton.elim _ _⟩⟩`. Rewrite using `[Subsingleton.elim (_ - _) 0]`.
+
+Conclude with `zero_mem _`.
+-/
 theorem chart_top (d : ℕ) (A : Type) [CommRing A] : Chart d A ⊤ := by
   have : Subsingleton (A ⧸ (⊤ : Ideal A)) := Ideal.Quotient.subsingleton_iff.mpr rfl
   refine ⟨A ⧸ (⊤ : Ideal A), inferInstance, Ideal.Quotient.mk ⊤, MvPolynomial.constantCoeff,
@@ -74,6 +82,9 @@ theorem chart_top (d : ℕ) (A : Type) [CommRing A] : Chart d A ⊤ := by
     exact ⟨fun _ _ _ => Subsingleton.elim _ _, fun b => ⟨0, Subsingleton.elim _ _⟩⟩
   · rw [Subsingleton.elim (_ - _) 0]; exact zero_mem _
 
+/- English proof (translation)
+Establish `h : V.2.primeIdealOf ⟨x, hx⟩ ∈ V.2.fromSpec ⁻¹ᵁ X.basicOpen f`. Rewrite using `[V.2.fromSpec_preimage_basicOpen]`. Conclude with `hf`. Establish `h2 : V.2.fromSpec (V.2.primeIdealOf ⟨x, hx⟩) ∈ X.basicOpen f` using `h`. Rewrite `h2` using `[V.2.fromSpec_primeIdealOf]`. Then use the resulting hypothesis.
+-/
 theorem mem_basicOpen_of_notMem {X : Scheme.{0}} (V : X.affineOpens) (x : X) (hx : x ∈ V.1) (f : Γ(X, V.1))
     (hf : f ∉ (V.2.primeIdealOf ⟨x, hx⟩).asIdeal) : x ∈ X.basicOpen f := by
   have h : V.2.primeIdealOf ⟨x, hx⟩ ∈ V.2.fromSpec ⁻¹ᵁ X.basicOpen f := by
@@ -81,6 +92,9 @@ theorem mem_basicOpen_of_notMem {X : Scheme.{0}} (V : X.affineOpens) (x : X) (hx
   have h2 : V.2.fromSpec (V.2.primeIdealOf ⟨x, hx⟩) ∈ X.basicOpen f := h
   rwa [V.2.fromSpec_primeIdealOf] at h2
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨X.affineBasicOpen f, (inferInstance : Algebra Γ(X, V.1) Γ(X, X.basicOpen f)), mem_basicOpen_of_notMem V x hx f hf, X.basicOpen_le f, V.2.isLocalization_basicOpen f, (I.map_ideal_basicOpen V f).symm⟩`.
+-/
 theorem shrink {X : Scheme.{0}} (I : X.IdealSheafData) (V : X.affineOpens) (x : X) (hx : x ∈ V.1) (f : Γ(X, V.1))
     (hf : f ∉ (V.2.primeIdealOf ⟨x, hx⟩).asIdeal) :
     ∃ (V' : X.affineOpens) (_ : Algebra Γ(X, V.1) Γ(X, V'.1)), x ∈ V'.1 ∧ V'.1 ≤ V.1 ∧ IsLocalization.Away f Γ(X, V'.1) ∧
@@ -88,6 +102,11 @@ theorem shrink {X : Scheme.{0}} (I : X.IdealSheafData) (V : X.affineOpens) (x : 
   ⟨X.affineBasicOpen f, (inferInstance : Algebra Γ(X, V.1) Γ(X, X.basicOpen f)), mem_basicOpen_of_notMem V x hx f hf,
     X.basicOpen_le f, V.2.isLocalization_basicOpen f, (I.map_ideal_basicOpen V f).symm⟩
 
+/- English proof (translation)
+Take `⟨f, hfI, hf⟩` from `SetLike.not_le_iff_exists.mp h`. Take `⟨V', _, hx', hle, _, hI⟩` from `shrink I V x hx f hf`. Establish `ht : I.ideal V' = ⊤`. Rewrite using `[hI]`. Conclude with `Ideal.eq_top_of_isUnit_mem _ (Ideal.mem_map_of_mem _ hfI) (IsLocalization.Away.algebraMap_isUnit f)`.
+
+Use `⟨V', hx', hle, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ht]`. Conclude with `Ideal.fg_top _`. Rewrite using `[ht]`. Conclude with `chart_top d _`.
+-/
 theorem off_case (d : ℕ) {X : Scheme.{0}} (I : X.IdealSheafData) (V : X.affineOpens) (x : X) (hx : x ∈ V.1)
     (h : ¬ I.ideal V ≤ (V.2.primeIdealOf ⟨x, hx⟩).asIdeal) :
     ∃ V' : X.affineOpens, x ∈ V'.1 ∧ V'.1 ≤ V.1 ∧ (I.ideal V').FG ∧ Chart d Γ(X, V'.1) (I.ideal V') := by
@@ -100,6 +119,17 @@ theorem off_case (d : ℕ) {X : Scheme.{0}} (I : X.IdealSheafData) (V : X.affine
   · rw [ht]; exact Ideal.fg_top _
   · rw [ht]; exact chart_top d _
 
+/- English proof (translation)
+Introduce `d P x W hx`. Take `⟨V, hxV, hVW, R, _, φ, hφ⟩` from `hL d P x W hx`. Distinguish the cases in `h : P.ι.ker.ideal V ≤ (V.2.primeIdealOf ⟨x, hxV⟩).asIdeal`. Use `swap`. Take `⟨V', a, b, c⟩` from `off_case d P.ι.ker V x hxV h`.
+
+Conclude with `⟨V', a, b.trans hVW, c⟩`. Take `⟨f, hf, H⟩` from `hS P.e d R _ φ _ _ (V.2.primeIdealOf ⟨x, hxV⟩).isPrime h hφ`. Take `⟨V₁, _, hx₁, hle₁, _, hI₁⟩` from `shrink P.ι.ker V x hxV f hf`. Establish `H₁` using `H Γ(P.X, V₁.1)`. Rewrite `H₁` using `[← hI₁]`.
+
+Distinguish the cases in `h₁ : P.ι.ker.ideal V₁ ≤ (V₁.2.primeIdealOf ⟨x, hx₁⟩).asIdeal`. Use `swap`. Take `⟨V', a, b, c⟩` from `off_case d P.ι.ker V₁ x hx₁ h₁`. Conclude with `⟨V', a, b.trans (hle₁.trans hVW), c⟩`. Take `⟨g, hg, G⟩` from `hC P.e d R _ _ _ _ (V₁.2.primeIdealOf ⟨x, hx₁⟩).isPrime h₁ H₁`.
+
+Take `⟨V₂, _, hx₂, hle₂, _, hI₂⟩` from `shrink P.ι.ker V₁ x hx₁ g hg`. Take `⟨u, v, G₂⟩` from `G Γ(P.X, V₂.1)`. Rewrite `G₂` using `[← hI₂]`. Use `⟨V₂, hx₂, hle₂.trans (hle₁.trans hVW), ?_, hN P.e d R _ _ _ u v G₂⟩` and prove the remaining obligations. Rewrite using `[G₂.2]`.
+
+Conclude with `Submodule.fg_span (Set.finite_range u)`.
+-/
 theorem goal_of (hL : LeafLoc) (hS : LeafShrink) (hC : LeafCoord) (hN : LeafNbhd) : LeafChart := by
   intro d P x W hx
   obtain ⟨V, hxV, hVW, R, _, φ, hφ⟩ := hL d P x W hx

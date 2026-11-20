@@ -6,6 +6,17 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.NumFin
 
+/- English proof (translation)
+Introduce `E _ _ d hd`. Establish `hd0 : (d : E) ≠ 0` using `by exact_mod_cast hd.ne'`. Use `set S := {z : E | (∀ w : HeightOneSpectrum (𝓞 E), (d : w.adicCompletion E) * algebraMap E (w.adicCompletion E) z ∈ w.adicCompletionIntegers E) ∧ ∀ τ : E →+* ℂ, ‖τ z‖ ≤ 1} with hS`. Establish `hF` using `NumberField.Embeddings.finite_of_norm_le E ℂ (d : ℝ)`. Establish `himg : (fun z : E => (d : E) * z) '' S ⊆ {x : E | IsIntegral ℤ x ∧ ∀ φ : E →+* ℂ, ‖φ x‖ ≤ (d : ℝ)}`.
+
+Introduce and unpack `_ ⟨z, ⟨hz1, hz2⟩, rfl⟩`. Use `⟨?_, fun φ => ?_⟩` and prove the remaining obligations. Take `⟨r, hr⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 E) E ((d : E) * z) fun w => by`. Establish `h` using `hz1 w`. Rewrite `h` using `[HeightOneSpectrum.mem_adicCompletionIntegers]`.
+
+Rewrite using `[← HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Use `h using 2` and compare the differences between its conclusion and the goal. Rewrite using `[← map_natCast (algebraMap E (w.adicCompletion E)) d, ← map_mul]`. Both sides reduce to the same expression. Use `show IsIntegral ℤ ((d : E) * z)`.
+
+Rewrite using `[← hr]`. Conclude with `RingOfIntegers.isIntegral_coe r`. Rewrite using `[map_mul, map_natCast, norm_mul, Complex.norm_natCast]`. Combine the equalities or inequalities in the displayed calculation. Establish `hinj : Set.InjOn (fun z : E => (d : E) * z) S` using `fun a _ b _ h => mul_left_cancel₀ hd0 h`.
+
+Conclude with `Set.Finite.of_finite_image (hF.subset himg) hinj`.
+-/
 theorem finite_bdd_denom_conj_le_one : ∀ (E : Type) [Field E] [NumberField E] (d : ℕ), 0 < d → {z : E | (∀ w : HeightOneSpectrum (𝓞 E), (d : w.adicCompletion E) * algebraMap E (w.adicCompletion E) z ∈ w.adicCompletionIntegers E) ∧ ∀ τ : E →+* ℂ, ‖τ z‖ ≤ 1}.Finite := by
   intro E _ _ d hd
   have hd0 : (d : E) ≠ 0 := by exact_mod_cast hd.ne'

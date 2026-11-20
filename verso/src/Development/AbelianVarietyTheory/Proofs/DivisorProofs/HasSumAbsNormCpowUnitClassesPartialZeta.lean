@@ -12,6 +12,9 @@ namespace GlobalTheory.PartialZetaSum
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Rewrite using `[← FractionalIdeal.le_one_iff_exists_coeIdeal]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_ideal (𝔟 : Frac F) (b : NZ (𝔟 : FractionalIdeal (𝓞 F)⁰ F)) :
     ∃ J : Ideal (𝓞 F), (J : FractionalIdeal (𝓞 F)⁰ F) =
       FractionalIdeal.spanSingleton (𝓞 F)⁰ b.1 * ((𝔟⁻¹ : Frac F) : FractionalIdeal (𝓞 F)⁰ F) := by
@@ -23,15 +26,26 @@ theorem exists_ideal (𝔟 : Frac F) (b : NZ (𝔟 : FractionalIdeal (𝓞 F)⁰
 
 def idealOf (𝔟 : Frac F) (b : NZ (𝔟 : FractionalIdeal (𝓞 F)⁰ F)) : Ideal (𝓞 F) := (exists_ideal 𝔟 b).choose
 
+/- English proof (translation)
+The claim follows from `(exists_ideal 𝔟 b).choose_spec`.
+-/
 theorem idealOf_coe (𝔟 : Frac F) (b : NZ (𝔟 : FractionalIdeal (𝓞 F)⁰ F)) :
     (idealOf 𝔟 b : FractionalIdeal (𝓞 F)⁰ F) =
       FractionalIdeal.spanSingleton (𝓞 F)⁰ b.1 * ((𝔟⁻¹ : Frac F) : FractionalIdeal (𝓞 F)⁰ F) :=
   (exists_ideal 𝔟 b).choose_spec
 
+/- English proof (translation)
+Rewrite using `[idealOf_coe, mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, mul_one]`.
+-/
 theorem span_eq (𝔟 : Frac F) (b : NZ (𝔟 : FractionalIdeal (𝓞 F)⁰ F)) :
     FractionalIdeal.spanSingleton (𝓞 F)⁰ b.1 = (idealOf 𝔟 b : FractionalIdeal (𝓞 F)⁰ F) * (𝔟 : FractionalIdeal (𝓞 F)⁰ F) := by
   rw [idealOf_coe, mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, mul_one]
 
+/- English proof (translation)
+Apply `mem_nonZeroDivisors_of_ne_zero` to reduce the goal to its premises. Introduce `h`. Establish `h1` using `span_eq 𝔟 b`. Rewrite `h1` using `[h]`. Simplify using `at h1`.
+
+Conclude with `b.2.2 (FractionalIdeal.spanSingleton_eq_zero_iff.1 h1)`.
+-/
 theorem idealOf_mem (𝔟 : Frac F) (b : NZ (𝔟 : FractionalIdeal (𝓞 F)⁰ F)) : idealOf 𝔟 b ∈ (Ideal (𝓞 F))⁰ := by
   apply mem_nonZeroDivisors_of_ne_zero
   intro h
@@ -40,6 +54,11 @@ theorem idealOf_mem (𝔟 : Frac F) (b : NZ (𝔟 : FractionalIdeal (𝓞 F)⁰ 
   simp at h1
   exact b.2.2 (FractionalIdeal.spanSingleton_eq_zero_iff.1 h1)
 
+/- English proof (translation)
+Rewrite using `[← ClassGroup.mk_mk0 F, ← map_inv]`. Establish `hb : (b.1 : F) ≠ 0` using `b.2.2`. Establish `h : FractionalIdeal.mk0 F ⟨idealOf 𝔟 b, idealOf_mem 𝔟 b⟩ = toPrincipalIdeal (𝓞 F) F (Units.mk0 b.1 hb) * 𝔟⁻¹`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[FractionalIdeal.coe_mk0, Units.val_mul, coe_toPrincipalIdeal, Units.val_mk0, idealOf_coe]`.
+
+Establish `hp : ClassGroup.mk F (toPrincipalIdeal (𝓞 F) F (Units.mk0 b.1 hb)) = 1`. Rewrite using `[ClassGroup.mk_eq_one_iff, coe_toPrincipalIdeal, FractionalIdeal.coe_spanSingleton]`. Conclude with `⟨⟨_, rfl⟩⟩`. Rewrite using `[h, map_mul, hp, one_mul]`.
+-/
 theorem idealOf_class (𝔟 : Frac F) (b : NZ (𝔟 : FractionalIdeal (𝓞 F)⁰ F)) :
     ClassGroup.mk0 ⟨idealOf 𝔟 b, idealOf_mem 𝔟 b⟩ = (ClassGroup.mk F 𝔟)⁻¹ := by
   rw [← ClassGroup.mk_mk0 F, ← map_inv]
@@ -53,6 +72,9 @@ theorem idealOf_class (𝔟 : Frac F) (b : NZ (𝔟 : FractionalIdeal (𝓞 F)�
     exact ⟨⟨_, rfl⟩⟩
   rw [h, map_mul, hp, one_mul]
 
+/- English proof (translation)
+Establish `h2 : FractionalIdeal.spanSingleton (𝓞 F)⁰ b.1 = FractionalIdeal.spanSingleton (𝓞 F)⁰ b'.1`. Rewrite using `[span_eq, span_eq, h]`. Take `⟨z, hz⟩` from `FractionalIdeal.spanSingleton_eq_spanSingleton.1 h2`. Conclude with `⟨z, by rw [← hz, Units.smul_def, Algebra.smul_def]⟩`.
+-/
 theorem rel_of_idealOf_eq (𝔟 : Frac F) {b b' : NZ (𝔟 : FractionalIdeal (𝓞 F)⁰ F)}
     (h : idealOf 𝔟 b = idealOf 𝔟 b') : (unitRel (𝔟 : FractionalIdeal (𝓞 F)⁰ F)).r b b' := by
   have h2 : FractionalIdeal.spanSingleton (𝓞 F)⁰ b.1 = FractionalIdeal.spanSingleton (𝓞 F)⁰ b'.1 := by
@@ -60,6 +82,11 @@ theorem rel_of_idealOf_eq (𝔟 : Frac F) {b b' : NZ (𝔟 : FractionalIdeal (�
   obtain ⟨z, hz⟩ := FractionalIdeal.spanSingleton_eq_spanSingleton.1 h2
   exact ⟨z, by rw [← hz, Units.smul_def, Algebra.smul_def]⟩
 
+/- English proof (translation)
+Take `⟨ε, hε⟩` from `h`. Apply `FractionalIdeal.coeIdeal_injective (K := F)` to reduce the goal to its premises. Use `beta_reduce`. Rewrite using `[idealOf_coe, idealOf_coe, hε]`. Use `congr 1`.
+
+Conclude with `FractionalIdeal.spanSingleton_eq_spanSingleton.2 ⟨ε, by rw [Units.smul_def, Algebra.smul_def]⟩`.
+-/
 theorem idealOf_eq_of_rel (𝔟 : Frac F) {b b' : NZ (𝔟 : FractionalIdeal (𝓞 F)⁰ F)}
     (h : (unitRel (𝔟 : FractionalIdeal (𝓞 F)⁰ F)).r b b') : idealOf 𝔟 b = idealOf 𝔟 b' := by
   obtain ⟨ε, hε⟩ := h
@@ -69,6 +96,17 @@ theorem idealOf_eq_of_rel (𝔟 : Frac F) {b b' : NZ (𝔟 : FractionalIdeal (�
   congr 1
   exact FractionalIdeal.spanSingleton_eq_spanSingleton.2 ⟨ε, by rw [Units.smul_def, Algebra.smul_def]⟩
 
+/- English proof (translation)
+Establish `h1 : ClassGroup.mk F (FractionalIdeal.mk0 F J * 𝔟) = 1`. Rewrite using `[map_mul, ClassGroup.mk_mk0, hJ, inv_mul_cancel]`. Take `⟨⟨x, hx⟩⟩` from `ClassGroup.mk_eq_one_iff.1 h1`. Establish `hx' : ((FractionalIdeal.mk0 F J * 𝔟 : Frac F) : FractionalIdeal (𝓞 F)⁰ F) = FractionalIdeal.spanSingleton (𝓞 F)⁰ x`. Apply `FractionalIdeal.coeToSubmodule_injective` to reduce the goal to its premises.
+
+Use `beta_reduce`. Rewrite using `[FractionalIdeal.coe_spanSingleton]`. Conclude with `hx`. Rewrite `hx'` using `[Units.val_mul, FractionalIdeal.coe_mk0]`. Establish `hx0 : x ≠ 0`.
+
+Introduce and unpack `rfl`. Rewrite `hx'` using `[FractionalIdeal.spanSingleton_zero]`. Conclude with `(mul_ne_zero (FractionalIdeal.coeIdeal_ne_zero.2 (nonZeroDivisors.coe_ne_zero J)) (Units.ne_zero 𝔟)) hx'`. Establish `hxm : x ∈ (𝔟 : FractionalIdeal (𝓞 F)⁰ F)`. Establish `: FractionalIdeal.spanSingleton (𝓞 F)⁰ x ≤ (𝔟 : FractionalIdeal (𝓞 F)⁰ F)`.
+
+Rewrite using `[← hx']`. Combine the equalities or inequalities in the displayed calculation. Conclude with `FractionalIdeal.spanSingleton_le_iff_mem.1 this`. Set `b : NZ (𝔟 : FractionalIdeal (𝓞 F)⁰ F)` to `⟨x, hxm, hx0⟩`. Use `⟨b, ?_⟩` and prove the remaining obligations.
+
+Apply `FractionalIdeal.coeIdeal_injective (K := F)` to reduce the goal to its premises. Use `beta_reduce`. Rewrite using `[idealOf_coe]`. Use `show FractionalIdeal.spanSingleton (𝓞 F)⁰ x * _ = _`. Rewrite using `[← hx', mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, mul_one]`.
+-/
 theorem exists_of_class (𝔟 : Frac F) (J : (Ideal (𝓞 F))⁰) (hJ : ClassGroup.mk0 J = (ClassGroup.mk F 𝔟)⁻¹) :
     ∃ b : NZ (𝔟 : FractionalIdeal (𝓞 F)⁰ F), idealOf 𝔟 b = J.1 := by
   have h1 : ClassGroup.mk F (FractionalIdeal.mk0 F J * 𝔟) = 1 := by
@@ -99,6 +137,9 @@ theorem exists_of_class (𝔟 : Frac F) (J : (Ideal (𝓞 F))⁰) (hJ : ClassGro
   show FractionalIdeal.spanSingleton (𝓞 F)⁰ x * _ = _
   rw [← hx', mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, mul_one]
 
+/- English proof (translation)
+The claim follows from `|((Algebra.norm ℚ b.1 : ℚ) : ℝ)| = (Ideal.absNorm (idealOf 𝔟 b) : ℝ) * nrm 𝔟 := by have h2 := congrArg FractionalIdeal.absNorm (span_eq 𝔟 b) rw [FractionalIdeal.absNorm_span_singleton, map_mul, FractionalIdeal.coeIdeal_absNorm] at h2 unfold nrm rw [← Rat.cast_abs, h2]; push_cast; …`.
+-/
 theorem norm_eq (𝔟 : Frac F) (b : NZ (𝔟 : FractionalIdeal (𝓞 F)⁰ F)) :
     |((Algebra.norm ℚ b.1 : ℚ) : ℝ)| = (Ideal.absNorm (idealOf 𝔟 b) : ℝ) * nrm 𝔟 := by
   have h2 := congrArg FractionalIdeal.absNorm (span_eq 𝔟 b)
@@ -106,9 +147,23 @@ theorem norm_eq (𝔟 : Frac F) (b : NZ (𝔟 : FractionalIdeal (𝓞 F)⁰ F)) 
   unfold nrm
   rw [← Rat.cast_abs, h2]; push_cast; ring
 
+/- English proof (translation)
+Unfold `nrm`. Conclude with `FractionalIdeal.absNorm_nonneg _` after adjusting the coercions.
+-/
 theorem nrm_nonneg (𝔟 : Frac F) : 0 ≤ nrm 𝔟 := by
   unfold nrm; exact_mod_cast FractionalIdeal.absNorm_nonneg _
 
+/- English proof (translation)
+Introduce `F _ _ 𝔟 Zb hZ s hs`. Set `e : Quotient (unitRel (𝔟 : FractionalIdeal (𝓞 F)⁰ F)) → {J : (Ideal (𝓞 F))⁰ // ClassGroup.mk0 J = (ClassGroup.mk F 𝔟)⁻¹}` to `fun c => ⟨⟨idealOf 𝔟 c.out, idealOf_mem 𝔟 c.out⟩, idealOf_class 𝔟 c.out⟩`. Establish `he : Function.Bijective e`. Prove the components needed by the constructor for the conclusion. Introduce `c c' h`.
+
+Establish `h' : idealOf 𝔟 c.out = idealOf 𝔟 c'.out` using `congrArg (fun J => (J.1.1 : Ideal (𝓞 F))) h`. Rewrite using `[← Quotient.out_eq c, ← Quotient.out_eq c']`. Conclude with `Quotient.sound (rel_of_idealOf_eq 𝔟 h')`. Introduce `J`. Take `⟨b, hb⟩` from `exists_of_class 𝔟 J.1 J.2`.
+
+Use `⟨Quotient.mk _ b, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use `show idealOf 𝔟 (Quotient.mk _ b).out = J.1.1`. Rewrite using `[← hb]`.
+
+Conclude with `idealOf_eq_of_rel 𝔟 (Quotient.exact (Quotient.out_eq _))`. Establish `key` using `(hZ.2 s hs).mul_left (((nrm 𝔟 : ℝ) : ℂ) ^ (-s))`. Rewrite `key` using `[← (Equiv.ofBijective e he).hasSum_iff]`. Use `(congrArg (fun f => HasSum f _) ?_).mpr key` and prove the remaining obligations. Use function extensionality and compare the values at `c`.
+
+Simplify using `only [Function.comp_apply, Equiv.ofBijective_apply, e]`. Rewrite using `[norm_eq 𝔟 c.out, ofReal_mul, mul_cpow_ofReal_nonneg (Nat.cast_nonneg _) (nrm_nonneg 𝔟), mul_comm, ofReal_natCast]`.
+-/
 theorem hasSum_norm_cpow : ∀ (F : Type) [Field F] [NumberField F] (𝔟 : GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Frac F) (Zb : ℂ → ℂ), GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.IsPartialZeta (ClassGroup.mk F 𝔟)⁻¹ Zb → ∀ s : ℂ, 1 < s.re → HasSum (fun c : Quotient (GlobalTheory.HeckeTwo.unitRel (𝔟 : FractionalIdeal (NumberField.RingOfIntegers F)⁰ F)) => ((|((Algebra.norm ℚ c.out.1 : ℚ) : ℝ)| : ℝ) : ℂ) ^ (-s)) (((GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.nrm 𝔟 : ℝ) : ℂ) ^ (-s) * Zb s) := by
   intro F _ _ 𝔟 Zb hZ s hs
   let e : Quotient (unitRel (𝔟 : FractionalIdeal (𝓞 F)⁰ F)) →

@@ -14,6 +14,13 @@ noncomputable section
 
 namespace GlobalTheory.KerConjMean
 
+/- English proof (translation)
+Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Break down `g with _ | g` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[zero_pow (Nat.succ_ne_zero g)]`. Conclude with `(Real.exp_pos _).le`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.log_pow, Real.exp_log (pow_pos (abs_pos.2 hx) g)]`. Use `_ ≤ Real.exp (g * Real.posLog x) := by gcongr`. Rewrite using `[Real.log_abs]`. Unfold `Real.posLog`.
+
+Conclude with `le_max_right _ _`.
+-/
 theorem pow_le_exp_posLog (x : ℝ) (g : ℕ) : x ^ g ≤ Real.exp (g * Real.posLog x) := by
   rcases eq_or_ne x 0 with rfl | hx
   · rcases g with _ | g
@@ -27,6 +34,9 @@ theorem pow_le_exp_posLog (x : ℝ) (g : ℕ) : x ^ g ≤ Real.exp (g * Real.pos
           gcongr
           rw [Real.log_abs]; unfold Real.posLog; exact le_max_right _ _
 
+/- English proof (translation)
+Establish `h1 : max 1 A⁻¹ ≤ Real.exp (Real.posLog A⁻¹)`. Use `max_le ?_ ?_` and prove the remaining obligations. Conclude with `Real.one_le_exp (by unfold Real.posLog; exact le_max_left _ _)`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem max_pow_le_exp_posLog (A : ℝ) (hA : 0 < A) (d : ℕ) :
     max 1 A⁻¹ ^ d ≤ Real.exp (d * Real.posLog A⁻¹) := by
   have h1 : max 1 A⁻¹ ≤ Real.exp (Real.posLog A⁻¹) := by
@@ -37,6 +47,33 @@ theorem max_pow_le_exp_posLog (A : ℝ) (hA : 0 < A) (d : ℕ) :
   calc max 1 A⁻¹ ^ d ≤ Real.exp (Real.posLog A⁻¹) ^ d := pow_le_pow_left₀ (by positivity) h1 d
     _ = Real.exp (d * Real.posLog A⁻¹) := (Real.exp_nat_mul _ d).symm
 
+/- English proof (translation)
+Establish `hb0 : 0 < b` using `by linarith`. Establish `hf0 : 0 ≤ f` using `by linarith`. Establish `hN0 : 0 ≤ N` using `by linarith`. Establish `hlogb : 1 ≤ Real.log b`. Establish `: Real.exp 1 ≤ b` using `by linarith [Real.exp_one_lt_d9]`.
+
+Simplify using `using Real.log_le_log (Real.exp_pos 1) this`. Establish `hfN1 : 1 ≤ f * N` using `one_le_mul_of_one_le_of_one_le hf1 hN1`. Establish `hfNb : 1 ≤ f * N * b` using `by nlinarith`. Establish `hab : a * bb ≤ N * N` using `mul_le_mul haN hbN hbb0 hN0`. Establish `hfNN : f * a * bb ≤ f * N * N`.
+
+Use `mul_le_mul_of_nonneg_left hab hf0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hNN : f * N * N ≤ f * N * b` using `mul_le_mul_of_nonneg_left hNb (by positivity)`. Establish `hgG : (g : ℝ) ≤ f * N * b` using `by rw [hg]; linarith`. Establish `hfNb3 : f * N * b ≤ b ^ 3`.
+
+Establish `h1` using `mul_le_mul hfb hNb hN0 hb0.le`. Establish `h2` using `mul_le_mul_of_nonneg_right h1 hb0.le`. Combine the equalities or inequalities in the displayed calculation. Establish `hg3 : (g : ℝ) ≤ b ^ 3` using `hgG.trans hfNb3`. Establish `hg0 : (0 : ℝ) ≤ g` using `Nat.cast_nonneg g`.
+
+Establish `hrdpos : 0 < 2 * (g : ℝ) * rd + 1` using `by have := mul_nonneg (mul_nonneg zero_le_two hg0) hrd0; linarith`. Establish `hq : 2 * (g : ℝ) * rd + 1 ≤ 3 * b ^ 4`. Establish `h1` using `mul_le_mul hg3 hrd hrd0 (by positivity)`. Establish `h2 : (1 : ℝ) ≤ b ^ 4` using `one_le_pow₀ (by linarith)`. Establish `h3 : b ^ 3 * b = b ^ 4` using `by ring`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hl3 : Real.log 3 ≤ Real.log b` using `Real.log_le_log (by norm_num) hb3`. Establish `hlq : Real.log (2 * (g : ℝ) * rd + 1) ≤ 5 * Real.log b`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.log_mul (by norm_num) (by positivity), Real.log_pow]; push_cast; ring`.
+
+Use `_ ≤ _ := by linarith`. Establish `hlq0 : 0 ≤ Real.log (2 * (g : ℝ) * rd + 1)` using `Real.log_nonneg (by`. Use `mul_nonneg (mul_nonneg zero_le_two hg0) hrd0` as an intermediate fact. Use the proof step `linarith)`. Establish `hY0 : 0 ≤ f * N * b * Real.log b` using `by positivity`.
+
+Establish `hgl : (g : ℝ) * Real.log (2 * (g : ℝ) * rd + 1) ≤ 5 * (f * N * b * Real.log b)`. Use `mul_le_mul hgG hlq hlq0 (by positivity); linarith` as an intermediate fact. Establish `hKb : Real.log Kx ≤ 126 * K * (f * N * b * Real.log b)`. Establish `hsq : (a + bb) ^ 2 ≤ (2 * N) ^ 2` using `pow_le_pow_left₀ (by positivity) (by linarith) 2`. Establish `hab2 : c * (a + bb) ^ 2 ≤ 4 * (f * N * b)`.
+
+Use `mul_le_mul hcf hsq (by positivity) hf0` as an intermediate fact. Establish `e : f * (2 * N) ^ 2 = 4 * (f * N * N)` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hQ1 : W1 + W2 + c * (a + bb) ^ 2 + 1 ≤ 21 * (f * N * b)` using `by linarith`. Establish `hQ1' : 0 ≤ W1 + W2 + c * (a + bb) ^ 2 + 1` using `by positivity`.
+
+Establish `hArg0 : 0 < 2 + W1 + W2 + a + bb + c` using `by linarith`. Establish `hb27 : (27 : ℝ) ≤ b ^ 3`. Use `pow_le_pow_left₀ (by norm_num : (0 : ℝ) ≤ 3) hb3 3; norm_num at this; linarith` as an intermediate fact. Establish `hbb3 : b ≤ b ^ 3` using `le_self_pow₀ (by linarith) (by norm_num)`. Establish `hArg : 2 + W1 + W2 + a + bb + c ≤ 27 * b ^ 3` using `by linarith`.
+
+Establish `hQ2 : Real.log (2 + W1 + W2 + a + bb + c) ≤ 6 * Real.log b`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.log_mul (by norm_num) (by positivity), Real.log_pow, show (27 : ℝ) = 3 ^ 3 by norm_num, Real.log_pow]; push_cast; ring`. Use `_ ≤ _ := by linarith`. Establish `hQ20 : 0 ≤ Real.log (2 + W1 + W2 + a + bb + c)` using `Real.log_nonneg (by linarith)`.
+
+Use `mul_le_mul (mul_le_mul_of_nonneg_left hQ1 hK0) hQ2 hQ20 (by positivity)` as an intermediate fact. Use `hlogKx.trans (this.trans (le_of_eq ?_))` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `⟨?_, hgG⟩` and prove the remaining obligations. Rewrite using `[Real.log_mul (by positivity) hKx.ne', Real.log_mul (by norm_num) (pow_pos hrdpos g).ne', Real.log_pow]`.
+
+Establish `hlY : Real.log b ≤ f * N * b * Real.log b` using `le_mul_of_one_le_left (by linarith) hfNb`. Establish `e : (6 + 126 * K) * f * N * b * Real.log b = f * N * b * Real.log b + 5 * (f * N * b * Real.log b) + 126 * K * (f * N * b * Real.log b)` using `by ring`. Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem size_bound (K f N b rd Kx W1 W2 a bb c : ℝ) (g : ℕ) (hK0 : 0 ≤ K) (hc0 : 0 ≤ c) (hcf : c ≤ f) (hb3 : 3 ≤ b) (hN1 : 1 ≤ N) (hNb : N ≤ b)
     (hf1 : 1 ≤ f) (hfb : f ≤ b) (hrd0 : 0 ≤ rd) (hrd : rd ≤ b) (ha0 : 0 ≤ a) (haN : a ≤ N) (hbb0 : 0 ≤ bb)
     (hbN : bb ≤ N) (hW1 : W1 ≤ f * N * (8 * b)) (hW2 : W2 ≤ f * N * (8 * b)) (hW10 : 0 ≤ W1) (hW20 : 0 ≤ W2)
@@ -112,6 +149,47 @@ theorem size_bound (K f N b rd Kx W1 W2 a bb c : ℝ) (g : ℕ) (hK0 : 0 ≤ K) 
       f * N * b * Real.log b + 5 * (f * N * b * Real.log b) + 126 * K * (f * N * b * Real.log b) := by ring
   rw [e]; linarith
 
+/- English proof (translation)
+Introduce `tA tB tC tD hPr hInp hDict hDepth C1 hC1`. Take `⟨K, hK0, hFock⟩` from `tC`. Take `⟨CF0, h⟩` from `BigC.and (tA hPr hInp hDict hDepth) tD`. Use `⟨CF0, fun CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C0, h⟩` from `h CF hCF`.
+
+Use `⟨max C0 (2 * (6 + 126 * K) + 9 * C1), fun ε C hC => ?_⟩` and prove the remaining obligations. Take `⟨x0, h⟩` from `h ε C ((le_max_left _ _).trans hC)`. Use `⟨x0, fun D large₂ he hx Γ _ _ Pl0 T A Ks _ _ _ R F hS ch h1 h2 h3 => ?_⟩` and prove the remaining obligations. Take `⟨hA, hb3, hN1, hNb, hf1, hfb, hcard, hrd0, hrd, hj⟩` from `h D large₂ he hx Γ Pl0 T A Ks R F hS ch h1 h2 h3`. Establish `hCb : 2 * (6 + 126 * K) + 9 * C1 ≤ C` using `(le_max_right _ _).trans hC`.
+
+Establish `hlogb : 1 ≤ Real.log large₂.sc.b`. Establish `: Real.exp 1 ≤ large₂.sc.b` using `by linarith [Real.exp_one_lt_d9]`. Simplify using `using Real.log_le_log (Real.exp_pos 1) this`. Establish `hN1' : (1 : ℝ) ≤ (bigN D : ℝ)` using `by exact_mod_cast hN1`. Establish `hf1' : (1 : ℝ) ≤ (D.R.f : ℝ)` using `by exact_mod_cast hf1`.
+
+Establish `hfNb : 1 ≤ (D.R.f : ℝ) * (bigN D : ℝ) * large₂.sc.b`. Establish `: 1 ≤ (D.R.f : ℝ) * (bigN D : ℝ)` using `one_le_mul_of_one_le_of_one_le hf1' hN1'`. Use the polynomial consequences of the given equalities and inequalities. Establish `hX : 0 ≤ (D.R.f : ℝ) * (bigN D : ℝ) * large₂.sc.b * Real.log large₂.sc.b` using `by positivity`. Use `⟨(6 + 126 * K) * D.R.f * bigN D * large₂.sc.b * Real.log large₂.sc.b, 8 * D.R.f * bigN D * large₂.sc.b, D.R.f * bigN D * large₂.sc.b, by positivity, by positivity, by positivity, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hsig : 0 ≤ sig ch.G` using `Finset.sum_nonneg fun v _ => mul_nonneg (Nat.cast_nonneg _) (Real.log_natCast_nonneg _)`. Establish `hC0 : 0 ≤ C` using `by linarith`. Establish `h2 : 0 ≤ C * D.R.m * (bigN D : ℝ) ^ 2 * sig ch.G` using `by positivity`. Establish `h3` using `mul_le_mul_of_nonneg_right hCb hX`. Unfold `aOne`.
+
+Use the polynomial consequences of the given equalities and inequalities. Introduce `Φ β d hocc c j fm hfm σ ρ hρ u B hu`. Take `⟨ρ', e0, Ls, Lt, κ, k, n, r, s, hev, he0, hLs, hLt, hκ, hk, hs, hr, hlam, ⟨t, ht⟩, hJ, hfeq⟩` from `hA Φ β d hocc c j fm hfm σ ρ hρ`. Establish `htc : GL3Theta.IsTwoTorsionPointUnkilled D (lamConj Qbar ρ' (lamOf D D.host.ccK ch.S.Z.δ)) (tc D ch.S.Z.δ ch.S.Z.t0 ρ)`. Rewrite using `[hlam]`.
+
+Unfold `tc`. Rewrite using `[dif_pos ⟨t, ht⟩]`. Conclude with `Exists.choose_spec _`. Take `⟨harea, -, hdiff, hgr⟩` from `tB D (hInp D) D.host.ccK ch.S.Z.δ ch.S.Z.t0 ch.S.Z.crv ch.S.Z.pt0 _ _ e0 hev he0 Ls Lt hLs hLt κ hκ k n r s hk hs hr ρ' _ htc`. Take `⟨hpos, Kx, hKx, hlogKx, hop⟩` from `hFock D _ _ (wt ch.G (.top j)) (wt ch.G (.top (j + 1))) _ hJ`.
+
+Establish `eA : hArea D ch.S.Z.δ ch.S.Z.t0 ρ = Real.posLog (area (lamConj Qbar ρ' (lamOf D D.host.ccK ch.S.Z.δ)))⁻¹`. Unfold `hArea`. Rewrite using `[hlam]`. Establish `eT : hTh D ch.S.Z.δ ch.S.Z.t0 ρ = Real.posLog (nrm1Sq (lamConj Qbar ρ' (lamOf D D.host.ccK ch.S.Z.δ)) (GL3Theta.th0 (lamConj Qbar ρ' (lamOf D D.host.ccK ch.S.Z.δ)) (tc D ch.S.Z.δ ch.S.Z.t0 ρ)))`. Unfold `hTh`.
+
+Rewrite using `[hlam]`. Use `set L := lamConj Qbar ρ' (lamOf D D.host.ccK ch.S.Z.δ) with hL`. Use `set X := nrm1Sq L (GL3Theta.th0 L (tc D ch.S.Z.δ ch.S.Z.t0 ρ)) with hXdef`. Use `set a := (ch.G.V (.top j)).rank with ha`. Use `set bb := (ch.G.V (.top ((j : ℕ) + 1))).rank with hbb`.
+
+Use `set g := fF D * a * bb with hg`. Use `set P := 3 * (2 * ((g : ℕ) : ℝ) * D.host.rdE + 1) ^ g with hP`. Use `set deg := ∑ τ, ∑ i, (wt ch.G (.top ((j : ℕ) + 1)) τ).natW i with hdeg`. Establish `hS : 0 ≤ P * X ^ g`. Establish `h0` using `hgr 0`.
+
+Establish `: (∑ τ, ∑ i, ∑ j, ‖(0 : VC D a bb) τ i j‖ ^ 2) = 0` using `by simp`. Rewrite `h0` using `[this, mul_zero, zero_div, Real.exp_zero, mul_one]`. Conclude with `le_trans (sq_nonneg _) h0`. Establish `hop'` using `hop _ (P * X ^ g) _ harea hS hdiff hgr (GlobalTheory.CoefModel.mapVV σ _ u)`. Establish `hM0 : 0 ≤ P * X ^ g * Kx * max 1 (area L)⁻¹ ^ deg` using `mul_nonneg (mul_nonneg hS hKx.le) (pow_nonneg (le_trans zero_le_one (le_max_left _ _)) _)`.
+
+Establish `hrdpos : 0 < 2 * ((g : ℕ) : ℝ) * D.host.rdE + 1`. Use `mul_nonneg (mul_nonneg zero_le_two (Nat.cast_nonneg g)) hrd0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hPpos : 0 < P` using `by rw [hP]; exact mul_pos (by norm_num) (pow_pos hrdpos g)`. Establish `hW : ∀ jj : ℕ, jj ≤ D.R.m → (∑ τ, ∑ i, ((wt ch.G (.top jj) τ).natW i : ℝ)) ≤ (D.R.f : ℝ) * (bigN D : ℝ) * (8 * large₂.sc.b)`.
+
+Introduce `jj hjj`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Use `_ ≤ (D.R.f : ℝ) * ((bigN D : ℝ) * (8 * large₂.sc.b)) := by`. Establish `h1 : (Fintype.card D.what₂.Tau : ℝ) ≤ D.R.f` using `by exact_mod_cast hcard`.
+
+Establish `h2 : ((ch.G.V (.top jj)).rank : ℝ) ≤ bigN D` using `by exact_mod_cast (hj jj hjj).1`. Conclude with `mul_le_mul h1 (mul_le_mul_of_nonneg_right h2 (by positivity)) (by positivity) (by positivity)`. Use `_ = _ := by ring`. Establish `hW0 : ∀ jj : ℕ, 0 ≤ (∑ τ, ∑ i, ((wt ch.G (.top jj) τ).natW i : ℝ))` using `fun jj => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Nat.cast_nonneg _`. Establish `haN : (a : ℝ) ≤ bigN D` using `by exact_mod_cast (hj j j.2.le).1`.
+
+Establish `hbN : (bb : ℝ) ≤ bigN D` using `by exact_mod_cast (hj ((j : ℕ) + 1) (Nat.succ_le_of_lt j.2)).1`. Establish `hgc : (g : ℝ) = (D.R.f : ℝ) * a * bb` using `by rw [hg]; push_cast; rfl`. Take `⟨hc0, hgG⟩` from `size_bound K D.R.f (bigN D) large₂.sc.b D.host.rdE Kx _ _ a bb (Fintype.card D.what₂.Tau) g hK0 (Nat.cast_nonneg _) (by exact_mod_cast hcard) hb3 hN1' hNb hf1' hfb hrd0 hrd (Nat.cast_nonneg _) haN (Nat.cast_nonneg _) hbN (hW j j.2.le) (hW _ (Nat.succ_le_of_lt j.2)) (hW0 _) (hW0 _ …`. Establish `hc : Real.log (P * Kx) ≤ (6 + 126 * K) * D.R.f * bigN D * large₂.sc.b * Real.log large₂.sc.b`. Rewrite using `[hP]`.
+
+Conclude with `hc0`. Establish `hdN : (deg : ℝ) ≤ 8 * D.R.f * bigN D * large₂.sc.b`. Establish `e : (deg : ℝ) = ∑ τ, ∑ i, ((wt ch.G (.top ((j : ℕ) + 1)) τ).natW i : ℝ)` using `by rw [hdeg]; push_cast; rfl`. Rewrite using `[e]`. Use `(hW _ (Nat.succ_le_of_lt j.2)).trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hpA : 0 ≤ Real.posLog (area L)⁻¹` using `by unfold Real.posLog; exact le_max_left _ _`. Establish `hpX : 0 ≤ Real.posLog X` using `by unfold Real.posLog; exact le_max_left _ _`. Establish `hMexp : P * X ^ g * Kx * max 1 (area L)⁻¹ ^ deg ≤ Real.exp ((6 + 126 * K) * D.R.f * bigN D * large₂.sc.b * Real.log large₂.sc.b + 8 * D.R.f * bigN D * large₂.sc.b * hArea D ch.S.Z.δ ch.S.Z.t0 ρ + D.R.f * bigN D * large₂.sc.b * hTh D ch.S.Z.δ ch.S.Z.t0 ρ)`. Establish `hXg` using `pow_le_exp_posLog X g`.
+
+Establish `hMd` using `max_pow_le_exp_posLog (area L) harea deg`. Establish `step1 : P * X ^ g * Kx * max 1 (area L)⁻¹ ^ deg ≤ (P * Kx) * (Real.exp (g * Real.posLog X) * Real.exp (deg * Real.posLog (area L)⁻¹))`. Use `mul_le_mul hXg hMd (pow_nonneg (le_trans zero_le_one (le_max_left _ _)) _) (Real.exp_pos _).le` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Use `step1.trans ?_` and prove the remaining obligations.
+
+Establish `eq : (P * Kx) * (Real.exp (g * Real.posLog X) * Real.exp (deg * Real.posLog (area L)⁻¹)) = Real.exp (Real.log (P * Kx) + g * Real.posLog X + deg * Real.posLog (area L)⁻¹)`. Rewrite using `[Real.exp_add, Real.exp_add, Real.exp_log (mul_pos hPpos hKx)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[eq, Real.exp_le_exp, eA, eT]`. Combine the linear relations using `[mul_le_mul_of_nonneg_right hgG hpX, mul_le_mul_of_nonneg_right hdN hpA]`.
+
+Rewrite using `[hfeq u]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem main_of : (GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → DictK → DepthK → BigC fun {D} _ _ _ _ _ A _ _ _ _ _ _ ch _ b =>
   ∀ Φ β d, Occurs ch.S.toGridChoice A.μ0 Φ β d → ∀ (c : ch.S.Classes A.μ0 Φ β) (j : Fin D.R.m)
     (f : VV D.what₂.LL (wt ch.G (.top j)) →ₗ[D.what₂.LL] VV D.what₂.LL (wt ch.G (.top (j + 1)))),
@@ -268,6 +346,9 @@ theorem main_of : (GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.Nor
       _ ≤ P * X ^ g * Kx * max 1 (area L)⁻¹ ^ deg * B := mul_le_mul_of_nonneg_left hu hM0
       _ ≤ _ := mul_le_mul_of_nonneg_right hMexp (le_trans (hpos _) hu)
 
+/- English proof (translation)
+The claim follows from `main_of GlobalTheory.T.coefficient_model_top_classes_map GlobalTheory.T.gaussianGrowth_conj_torsionTranslates_vacuum GlobalTheory.T.exists_const_jetOperatorNorm_cauchyBound GlobalTheory.T.eventually_parameterSizes_testChoices`.
+-/
 theorem conjTopK : GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → DictK → DepthK → ∀ C1 : ℝ, 0 < C1 → BigC fun _ ch C b => ConjTopAt ch C b C1 :=
   main_of GlobalTheory.T.coefficient_model_top_classes_map GlobalTheory.T.gaussianGrowth_conj_torsionTranslates_vacuum GlobalTheory.T.exists_const_jetOperatorNorm_cauchyBound GlobalTheory.T.eventually_parameterSizes_testChoices
 

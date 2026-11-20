@@ -9,6 +9,15 @@ open scoped Formalism.Per NNReal
 
 namespace GlobalTheory.BSP.EnvPush
 
+/- English proof (translation)
+Establish `key : ∀ a : A, TB.c i (a * x) ∈ L`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨j, hj, rfl⟩` from `hy`. Introduce `a`.
+
+Rewrite using `[mul_comm, TB.c_mul]`. Conclude with `L.mul_mem_right _ hj`. Consider the case `zero => intro a`. Rewrite using `[mul_zero, map_zero]`. Conclude with `L.zero_mem`.
+
+Consider the case `add y z _ _ hy hz => intro a`. Rewrite using `[mul_add, map_add]`. Conclude with `L.add_mem (hy a) (hz a)`. Consider the case `smul b y _ hy => intro a`. Rewrite using `[smul_eq_mul, ← mul_assoc]`.
+
+Conclude with `hy (a * b)`. Simplify using `using key 1`.
+-/
 theorem c_mem_of_mem_map {S A ι : Type} [CommRing S] [CommRing A] {s : S →+* A} {I : Ideal S}
     (TB : TopBasis s I ι) (L : Ideal S) (i : ι) {x : A} (hx : x ∈ L.map s) : TB.c i x ∈ L := by
   have key : ∀ a : A, TB.c i (a * x) ∈ L := by
@@ -23,6 +32,15 @@ theorem c_mem_of_mem_map {S A ι : Type} [CommRing S] [CommRing A] {s : S →+* 
     | smul b y _ hy => intro a; rw [smul_eq_mul, ← mul_assoc]; exact hy (a * b)
   simpa using key 1
 
+/- English proof (translation)
+Use `sub_eq_zero.1 (hH.haus _ fun n => SModEq.zero.2 ((Ideal.mul_top _).ge ?_))` and prove the remaining obligations. Establish `hF : ∀ i, i ∉ (TB.fin x n).toFinset ∪ {α} → TB.c i x ∈ I ^ n` using `fun i hi => by`. Assume the negation of the conclusion as `h`. Conclude with `hi (Finset.mem_union_left _ ((Set.Finite.mem_toFinset _).2 h))`. Establish `hm : qf (x - ∑ i ∈ (TB.fin x n).toFinset ∪ {α}, s (TB.c i x) * TB.b i) ∈ (I' ^ n).map s'`.
+
+Establish `h1` using `Ideal.mem_map_of_mem qf (TB.approx x n _ hF)`. Rewrite `h1` using `[Ideal.map_map, show qf.comp s = s'.comp g from RingHom.ext hq, ← Ideal.map_map, Ideal.map_pow]`. Conclude with `Ideal.map_mono (Ideal.pow_right_mono hI n) h1`. Establish `hc` using `c_mem_of_mem_map TB' _ α hm`. Establish `e : TB'.c α (qf (x - ∑ i ∈ (TB.fin x n).toFinset ∪ {α}, s (TB.c i x) * TB.b i)) = TB'.c α (qf x) - g (TB.c α x)`.
+
+Rewrite using `[map_sub, map_sub, map_sum, map_sum, Finset.sum_eq_single α]`. Rewrite using `[map_mul, hq, hb, TB'.c_mul, TB'.c_self, mul_one]`. Introduce `i _ hi`. Rewrite using `[map_mul, hq, hb, TB'.c_mul, TB'.c_ne α i (Ne.symm hi), mul_zero]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_union_right _ (Finset.mem_singleton_self α)) h`. Rewrite `hc` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem coeff_map {S A S' A' ι : Type} [CommRing S] [CommRing A] [CommRing S'] [CommRing A'] {s : S →+* A}
     {s' : S' →+* A'} {I : Ideal S} {I' : Ideal S'} (TB : TopBasis s I ι) (TB' : TopBasis s' I' ι) (g : S →+* S')
     (qf : A →+* A') (hq : ∀ y, qf (s y) = s' (g y)) (hb : ∀ i, qf (TB.b i) = TB'.b i) (hI : I.map g ≤ I')
@@ -51,6 +69,23 @@ end GlobalTheory.BSP.EnvPush
 
 open GlobalTheory.BSP.EnvPush in
 
+/- English proof (translation)
+Introduce `l _ K bk En An q hl hr x hx`. Establish `hql : ∀ y : bk.prism.A, q.f (En.inl.f y) = An.inl.f (bk.ι.f y)` using `fun y => congrArg (fun h : Hom bk.prism An.Q => h.f y) hl`. Establish `hqr : ∀ y : bk.prism.A, q.f (En.inr.f y) = An.inr.f y` using `fun y => congrArg (fun h : Hom bk.prism An.Q => h.f y) hr`. Establish `hw : q.f En.w = An.w`. Establish `e1 : q.f (En.inr.f (bk.toP X)) = An.inr.f (bk.toP X)` using `hqr _`.
+
+Establish `e2 : En.inr.f (bk.toP X) = En.inl.f (bk.toP X) + En.inl.f (bk.toP bk.E) * En.w` using `En.w_eq`. Establish `e3 : An.inr.f (bk.toP X) = An.inl.f (bk.ι.f (bk.toP X)) + An.inl.f (bk.ι.f (bk.toP bk.E)) * An.w` using `An.w_eq`. Establish `e4 : q.f (En.inl.f (bk.toP X) + En.inl.f (bk.toP bk.E) * En.w) = An.inl.f (bk.ι.f (bk.toP X)) + An.inl.f (bk.ι.f (bk.toP bk.E)) * q.f En.w` using `(q.f.map_add _ _).trans (congrArg₂ (· + ·) (hql _) ((q.f.map_mul _ _).trans (congrArg (· * q.f En.w) (hql _))))`. Establish `e5` using `add_left_cancel (e4.symm.trans ((congrArg q.f e2).symm.trans (e1.trans e3)))`. Establish `key : ∀ (b u v : An.Q.A), b ∈ nonZeroDivisors An.Q.A → b * u = b * v → u = v` using `fun b u v hb h => sub_eq_zero.1 ((mul_left_mem_nonZeroDivisors_eq_zero_iff hb).1 (by rw [mul_sub, h, sub_self]))`.
+
+Establish `hnz : An.inl.f (bk.ι.f (bk.toP bk.E)) ∈ nonZeroDivisors An.Q.A` using `(GlobalTheory.T.breuilKisin_two_homs_E_regular_associated l K bk An.Q (An.inl.comp bk.ι) (An.inl.comp bk.ι)).1`. Conclude with `key _ _ _ hnz e5`. Establish `hδ : ∀ (n : ℕ) (y : En.Q.A), q.f (En.Q.D.δ^[n] y) = An.Q.D.δ^[n] (q.f y)`. Introduce `n`. Proceed by induction on `n with`.
+
+Consider the case `zero => intro y`. Both sides reduce to the same expression. Consider the case `succ n ih`. Introduce `y`. Conclude with `(congrArg q.f (Function.iterate_succ_apply' _ n y)).trans ((q.f_δ _).trans ((congrArg An.Q.D.δ (ih y)).trans (Function.iterate_succ_apply' _ n _).symm))`.
+
+Establish `hb : ∀ α, q.f (En.tb.b α) = An.tb.b α`. Introduce `α`. Use `(congrArg q.f (En.tb_b α)).trans ((map_finsuppProd q.f _ _).trans (Eq.trans ?_ (An.tb_b α).symm))` and prove the remaining obligations. Conclude with `Finsupp.prod_congr fun i _ => (map_pow q.f _ _).trans (congrArg (· ^ α.1 i) ((hδ i En.w).trans (congrArg _ hw)))`. Establish `hJ : (Ideal.span {((l : ℕ) : bk.prism.A)} ⊔ bk.prism.I).map bk.ι.f ≤ Ideal.span {((l : ℕ) : (ainfObj K).A)} ⊔ (ainfObj K).I`.
+
+Use `Ideal.map_le_iff_le_comap.2 (sup_le (Ideal.span_le.2 (Set.singleton_subset_iff.2 ?_)) fun y hy => Ideal.mem_sup_right (bk.ι.f_I y hy))` and prove the remaining obligations. Use `show bk.ι.f ((l : ℕ) : bk.prism.A) ∈ Ideal.span {((l : ℕ) : (ainfObj K).A)} ⊔ (ainfObj K).I`. Rewrite using `[map_natCast]`. Conclude with `Ideal.mem_sup_left (Ideal.mem_span_singleton_self _)`. Establish `hH : IsHausdorff (Ideal.span {((l : ℕ) : (ainfObj K).A)} ⊔ (ainfObj K).I) (ainfObj K).A` using `(ainfObj K).complete.toIsHausdorff`.
+
+Establish `key : ∀ α, An.tb.c α (q.f x) = bk.ι.f (En.tb.c α x)` using `fun α => coeff_map En.tb An.tb bk.ι.f q.f hql hb hJ hH x α`. Take `⟨y, hy⟩` from `hx`. Establish `hl' : ∀ α, ((l : ℕ) : bk.S) ∣ En.tb.c α x` using `fun α => by`. Apply `(GlobalTheory.T.breuilKisin_evW_isUnit_injective_dvd l K bk).2.2` to reduce the goal to its premises. Use `⟨An.tb.c α y, ?_⟩` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h` using `(GlobalTheory.T.dvd_iff_dvd_coeff_breuilKisin l K bk En.Q.A (En.inl.f : bk.S →+* En.Q.A) (Digits l) En.tb ((l : ℕ) : bk.S) x).2 hl'`. Establish `hg : ∀ {R A : Type} [CommRing R] [CommRing A] (s : R →+* A) (y : A) (n : ℕ), s n ∣ y → (n : A) ∣ y` using `fun s y n h => (map_natCast s n) ▸ h`. Conclude with `hg _ _ _ h`.
+-/
 theorem GlobalTheory.BSP.envPush_dvd_l : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (En : Env bk bk.prism (bk.toP bk.E) (bk.toP X)) (An : Env bk (ainfObj K) (bk.ev bk.E) (bk.ev X)) (q : Hom En.Q An.Q), q.comp En.inl = An.inl.comp bk.ι → q.comp En.inr = An.inr → ∀ x : En.Q.A, ((l : ℕ) : An.Q.A) ∣ q.f x → ((l : ℕ) : En.Q.A) ∣ x := by
   intro l _ K bk En An q hl hr x hx
   have hql : ∀ y : bk.prism.A, q.f (En.inl.f y) = An.inl.f (bk.ι.f y) := fun y =>

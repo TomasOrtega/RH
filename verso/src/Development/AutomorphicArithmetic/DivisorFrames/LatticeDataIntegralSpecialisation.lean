@@ -15,16 +15,27 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 
 private noncomputable def actZ (Dw : Datum H) : 𝓞 E →+* Module.End ℤ Dw.La := (Algebra.lsmul ℤ ℤ Dw.La).toRingHom
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun _ => rfl`.
+-/
 private theorem actZ_apply (Dw : Datum H) (o : 𝓞 E) :
     actZ Dw o = (LinearMap.lsmul (𝓞 E) Dw.La o).restrictScalars ℤ :=
   LinearMap.ext fun _ => rfl
 
+/- English proof (translation)
+The claim follows from `Module.Flat.flat_iff_torsion_eq_bot_of_isBezout.2 (Submodule.isTorsionFree_iff_torsion_eq_bot.1 (Module.isTorsionFree_iff_algebraMap_injective.2 (FaithfulSMul.algebraMap_injective V V')))`.
+-/
 private theorem flat_of_pid (V V' : Type) [CommRing V] [IsDomain V] [IsPrincipalIdealRing V] [CommRing V'] [IsDomain V']
     [Algebra V V'] [FaithfulSMul V V'] : Module.Flat V V' :=
   Module.Flat.flat_iff_torsion_eq_bot_of_isBezout.2
     (Submodule.isTorsionFree_iff_torsion_eq_bot.1
       (Module.isTorsionFree_iff_algebraMap_injective.2 (FaithfulSMul.algebraMap_injective V V')))
 
+/- English proof (translation)
+Use `letI : Algebra V ℂ := io.toAlgebra`. Establish `: FaithfulSMul V ℂ` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hin`. Establish `: Module.Flat V ℂ` using `flat_of_pid V ℂ`. Establish `hF` using `EigenSplit.finrank_eigenSub_of_flat (R := V) (R' := ℂ) (ρ := EigenSplit.baseChangeAction V (actZ Dw)) (ρ' := EigenSplit.baseChangeAction ℂ (actZ Dw)) (f := EigenSplit.extendTensor ℤ V ℂ Dw.La) (EigenSplit.extendTensor_equivariant V ℂ (actZ Dw)) (EigenSplit.isBaseChange_extendTens …`. Establish `hT` using `TensorDet.finrank_eigenSub (E := E) (k := ℂ) (O := ℤ) (M := Dw.La) ((algebraMap V ℂ).comp σ) (RingHom.ext_int _ _)`.
+
+Establish `e : TensorDet.rightAction ℂ ℤ (𝓞 E) Dw.La = EigenSplit.baseChangeAction ℂ (actZ Dw)` using `rfl`. Rewrite `hT` using `[e, hF, Dw.rank]`. Conclude with `hT`.
+-/
 private theorem finrank_eig (Dw : Datum H) [Module.Finite ℤ Dw.La] [Module.Free ℤ Dw.La] {V : Type} [CommRing V]
     [IsDomain V] [IsPrincipalIdealRing V] (io : V →+* ℂ) (hin : Function.Injective io) (σ : 𝓞 E →+* V) :
     Module.finrank V (EigenSplit.eigenSub (EigenSplit.baseChangeAction V (actZ Dw)) σ) = Dw.p + Dw.q := by
@@ -40,6 +51,37 @@ private theorem finrank_eig (Dw : Datum H) [Module.Finite ℤ Dw.La] [Module.Fre
   rw [e, hF, Dw.rank] at hT
   exact hT
 
+/- English proof (translation)
+Take `⟨N, ⟨a⟩⟩ : ∃ k : ℕ, Nonempty (Module.Basis (Fin k) ℤ Dw.La)` from `by haveI := Dw.fin haveI : Module.Finite ℤ Dw.La := Module.Finite.trans (𝓞 E) Dw.La haveI : Module.IsTorsionFree ℤ Dw.La := Function.Injective.moduleIsTorsionFree Dw.EF Dw.unimod.1 (fun r x => map_smul _ r x) haveI : Module.Free ℤ Dw.La := Module.free_of_finite_type_torsion_free'`. Conclude with `⟨_, ⟨Module.finBasis ℤ Dw.La⟩⟩`. Use `haveI : Module.Free ℤ Dw.La := Module.Free.of_basis a`. Use `haveI : Module.Finite ℤ Dw.La := Module.Finite.of_basis a`. Use `set K := EigenSplit.eigenSub (EigenSplit.baseChangeAction V (actZ Dw)) σ with hK`.
+
+Use `haveI : Module.Finite V K := inferInstance`. Use `haveI : Module.Free V K := Module.free_of_finite_type_torsion_free'`. Establish `hrk : Module.finrank V K = Dw.p + Dw.q` using `finrank_eig Dw io hin σ`. Set `b : Module.Basis (Fin (Dw.p + Dw.q)) V K` to `Module.finBasisOfFinrankEq V K hrk`. Take `⟨Q, hQ⟩ : ∃ Q, IsCompl K Q` from `(EigenSplit.isSaturatedSubmodule_eigenSub (EigenSplit.baseChangeAction V (actZ Dw)) σ).exists_isCompl`.
+
+Set `pr` to `Submodule.linearProjOfIsCompl K Q hQ`. Set `f : Fin (Dw.p + Dw.q) → (V ⊗[ℤ] Dw.La →ₗ[V] V)` to `fun i => (b.coord i).comp pr`. Establish `hf : ∀ i j, f i (b j) = if i = j then 1 else 0`. Introduce `i j`. Use `show b.coord i (pr (b j)) = _`.
+
+Rewrite using `[show pr (b j) = b j from Submodule.linearProjOfIsCompl_apply_left hQ (b j), Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply]`. Simplify using `[eq_comm]`. Use `choose y hy using fun m' : Fin N => Dw.unimod.2 (a.coord m')`. Set `cc : Fin N → Fin N → ℤ` to `fun m' m => a.repr (y m') m`. Establish `hcc : ∀ m' k, ∑ m, cc m' m * Dw.EF (a m) (a k) = if m' = k then 1 else 0`.
+
+Introduce `m' k`. Establish `h0 : Dw.EF (y m') (a k) = ∑ m, cc m' m * Dw.EF (a m) (a k)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [map_sum, LinearMap.sum_apply, map_smul, LinearMap.smul_apply, smul_eq_mul, cc]`. Rewrite using `[← h0, hy, Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply]`.
+
+Simplify using `[eq_comm]`. Set `tb` to `Algebra.TensorProduct.basis V a`. Set `T : Fin (Dw.p + Dw.q) → Fin N → V` to `fun j m => tb.repr (b j : V ⊗[ℤ] Dw.La) m`. Set `S : Fin (Dw.p + Dw.q) → Fin N → V` to `fun i m => ∑ m', f i (1 ⊗ₜ a m') * (cc m' m : V)`. Establish `hT : ∀ j, ∑ m, T j m ⊗ₜ[ℤ] a m = (b j : V ⊗[ℤ] Dw.La)`.
+
+Introduce `j`. Use `conv_rhs => rw [← tb.sum_repr (b j : V ⊗[ℤ] Dw.La)]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`. Establish `hS : ∀ i k, ∑ m, S i m * ((Dw.EF (a m) (a k) : ℤ) : V) = f i (1 ⊗ₜ a k)`.
+
+Introduce `i k`. Simplify using `only [S, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Establish `e : ∀ m', ∑ m, f i (1 ⊗ₜ a m') * (cc m' m : V) * ((Dw.EF (a m) (a k) : ℤ) : V) = f i (1 ⊗ₜ a m') * (if m' = k then 1 else 0)`. Introduce `m'`.
+
+Establish `h2` using `congrArg (fun z : ℤ => (z : V)) (hcc m' k)`. Simplify using `only [Int.cast_sum, Int.cast_mul] at h2`. Repeatedly rewrite using `[_root_.mul_assoc, ← Finset.mul_sum, h2]`. Apply the tactic sequence `split_ifs <;> simp`. Repeatedly rewrite using `[e, mul_ite, _root_.mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+
+Use `⟨N, a, T, S, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i o`. Establish `hm` using `EigenSplit.mem_eigenSub.1 (b i).2 o`. Rewrite `hm` using `[EigenSplit.baseChangeAction_apply, actZ_apply]`. Establish `e1 : ∑ m, T i m ⊗ₜ[ℤ] (o • a m) = ((LinearMap.lsmul (𝓞 E) Dw.La o).restrictScalars ℤ).baseChange V (∑ m, T i m ⊗ₜ[ℤ] a m)`.
+
+Simplify using `[map_sum, LinearMap.baseChange_tmul]`. Rewrite using `[e1, hT, hm, ← hT, Finset.smul_sum]`. Simplify using `[TensorProduct.smul_tmul', smul_eq_mul]`. Introduce `i j`. Establish `e2 : ∑ m, ∑ m', S i m * T j m' * ((Dw.EF (a m) (a m') : ℤ) : V) = f i (b j)`.
+
+Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[mul_comm (S i _) (T j _), _root_.mul_assoc, ← Finset.mul_sum, hS]`. Rewrite using `[← hT j, map_sum]`. Use `Finset.sum_congr rfl fun m' _ => ?_` and prove the remaining obligations. Establish `e3 : T j m' ⊗ₜ[ℤ] a m' = T j m' • ((1 : V) ⊗ₜ[ℤ] a m')`.
+
+Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`. Rewrite using `[e3, map_smul, smul_eq_mul]`. Rewrite using `[e2, hf]`. Introduce `x hx`. Establish `hxK : x ∈ K` using `EigenSplit.mem_eigenSub.2 fun o => by`.
+
+Rewrite using `[EigenSplit.baseChangeAction_apply, actZ_apply]`. Conclude with `hx o`. Establish `e' : x = ∑ i, b.repr ⟨x, hxK⟩ i • (b i : V ⊗[ℤ] Dw.La)` using `by conv_lhs => rw [show x = ((⟨x, hxK⟩ : K) : V ⊗[ℤ] Dw.La) from rfl, ← b.sum_repr ⟨x, hxK⟩]`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul]`. Rewrite using `[e']`.
+
+Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, hT i⟩)`.
+-/
 private theorem latData_pid (Dw : Datum H) {V : Type} [CommRing V] [IsDomain V] [IsPrincipalIdealRing V]
     (io : V →+* ℂ) (hin : Function.Injective io) (σ : 𝓞 E →+* V) :
     ∃ (N : ℕ) (a : Fin N → Dw.La) (T S : Fin (Dw.p + Dw.q) → Fin N → V), GlobalTheory.FlatModel.LatData Dw σ a T S := by
@@ -126,6 +168,19 @@ private theorem latData_pid (Dw : Datum H) {V : Type} [CommRing V] [IsDomain V] 
     rw [e']
     exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, hT i⟩)
 
+/- English proof (translation)
+Use `letI : Algebra V V' := φ.toAlgebra`. Establish `: FaithfulSMul V V'` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hφ`. Establish `: Module.Flat V V'` using `flat_of_pid V V'`. Establish `hφa : algebraMap V V' = φ` using `rfl`. Take `⟨h1, h2, h3⟩` from `h`.
+
+Use `⟨fun i o => ?_, fun i j => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Use `congrArg (EigenSplit.extendTensor ℤ V V' Dw.La) (h1 i o)` as an intermediate fact. Simplify `this` using `only [map_sum, EigenSplit.extendTensor_tmul, hφa, map_mul, RingHom.comp_apply]`. Use `congrArg φ (h2 i j)` as an intermediate fact. Simplify `this` using `only [map_sum, map_mul, map_intCast, apply_ite φ, map_one, map_zero]`.
+
+Establish `hxK : x ∈ EigenSplit.eigenSub (EigenSplit.baseChangeAction V' (actZ Dw)) ((algebraMap V V').comp σ)` using `EigenSplit.mem_eigenSub.2 fun o => by`. Rewrite using `[EigenSplit.baseChangeAction_apply, actZ_apply]`. Conclude with `hx o`. Rewrite `hxK` using `[EigenSplit.eigenSub_eq_span_of_flat (EigenSplit.extendTensor_equivariant V V' (actZ Dw)) (EigenSplit.isBaseChange_extendTensor ℤ V V' Dw.La) σ]`. Use `(Submodule.span_le.2 ?_) hxK` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨y, hy, rfl⟩`. Establish `hy'` using `h3 y fun o => by`. Use `EigenSplit.mem_eigenSub.1 hy o` as an intermediate fact. Rewrite `this` using `[EigenSplit.baseChangeAction_apply, actZ_apply]`. Then use the resulting hypothesis. Use `clear hy`.
+
+Proceed by induction on `hy' using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨i, rfl⟩` from `hz`. Conclude with `Submodule.subset_span ⟨i, by simp only [map_sum, EigenSplit.extendTensor_tmul, hφa]⟩`. Consider the case `zero => simp`.
+
+Consider the case `add u v _ _ hu hv => rw [map_add]`. Conclude with `Submodule.add_mem _ hu hv`. Consider the case `smul c u _ hu`. Rewrite using `[map_smul, ← algebraMap_smul V' c]`. Conclude with `Submodule.smul_mem _ _ hu`.
+-/
 private theorem latData_map (Dw : Datum H) {V V' J : Type} [CommRing V] [IsDomain V] [IsPrincipalIdealRing V]
     [CommRing V'] [IsDomain V'] [DecidableEq J] (φ : V →+* V') (hφ : Function.Injective φ) (σ : 𝓞 E →+* V) {N : ℕ}
     (a : Fin N → Dw.La) (T S : J → Fin N → V) (h : GlobalTheory.FlatModel.LatData Dw σ a T S) :
@@ -163,6 +218,21 @@ private theorem latData_map (Dw : Datum H) {V V' J : Type} [CommRing V] [IsDomai
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Establish `hp : p.Prime` using `Fact.out`. Set `P : Ideal ℤ` to `Ideal.span {(p : ℤ)}`. Establish `hP0 : P ≠ ⊥`. Simplify using `[P, hp.ne_zero]`. Use `haveI : P.IsPrime := (Ideal.span_singleton_prime (by exact_mod_cast hp.ne_zero)).2 (Nat.prime_iff_prime_int.1 hp)`.
+
+Set `M` to `Algebra.algebraMapSubmonoid (𝓞 F) P.primeCompl`. Establish `hM : M ≤ nonZeroDivisors (𝓞 F)` using `map_le_nonZeroDivisors_of_injective _ (FaithfulSMul.algebraMap_injective _ _) P.primeCompl_le_nonZeroDivisors`. Use `haveI : IsDomain (Localization M) := IsLocalization.isDomain_localization hM`. Use `haveI : IsDedekindDomain (Localization M) := IsLocalization.isDedekindDomain (𝓞 F) hM (Localization M)`. Use `haveI : IsPrincipalIdealRing (Localization M) := IsDedekindDomain.isPrincipalIdealRing_localization_over_prime (𝓞 F) P hP0`.
+
+Establish `hu : ∀ y : M, IsUnit (algebraMap (𝓞 F) F y)` using `fun y => IsUnit.mk0 _ ((map_ne_zero_iff _ (FaithfulSMul.algebraMap_injective _ _)).2 (nonZeroDivisors.ne_zero (hM y.2)))`. Use `⟨Localization M, inferInstance, inferInstance, inferInstance, algebraMap _ _, IsLocalization.lift hu, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocalization.lift_injective_iff]`. Introduce `x y`. Rewrite using `[(IsLocalization.injective (Localization M) hM).eq_iff, (FaithfulSMul.algebraMap_injective (𝓞 F) F).eq_iff]`.
+
+Introduce `x`. Conclude with `IsLocalization.lift_eq hu x`. Introduce `k x`. Take `⟨⟨r, s⟩, rfl⟩` from `IsLocalization.mk'_surjective M x`. Take `⟨s, n, hn, rfl⟩` from `s`.
+
+Establish `h1 : ‖k (algebraMap (𝓞 F) F r)‖ ≤ 1`. Establish `hi : IsIntegral ℤ (k (algebraMap (𝓞 F) F r))`. Use `map_isIntegral_int k r.isIntegral_coe` and compare the differences between its conclusion and the goal. Conclude with `Subsingleton.elim _ _`. Establish `hv` using `(Valuation.integer.integers (NormedField.valuation (K := ℂ_[p]))).isIntegral_iff_v_le_one.1 (IsIntegral.tower_top hi)`.
+
+Conclude with `hv` after adjusting the coercions. Establish `h2 : ‖((n : ℤ) : ℂ_[p])‖ = 1`. Establish `hn' : ¬ (p : ℤ) ∣ n` using `fun h => hn (Ideal.mem_span_singleton.2 h)`. Rewrite using `[← map_intCast (algebraMap ℚ_[p] ℂ_[p]) n, norm_algebraMap']`. Conclude with `le_antisymm (Padic.norm_int_le_one n) (not_lt.1 fun h => hn' (Padic.norm_intCast_lt_one_iff.1 h))`.
+
+Establish `h3` using `congrArg (fun z => ‖k (IsLocalization.lift hu z)‖) (IsLocalization.mk'_spec (Localization M) r (⟨algebraMap ℤ (𝓞 F) n, n, hn, rfl⟩ : M))`. Simplify using `only [map_mul, IsLocalization.lift_eq, norm_mul, eq_intCast, map_intCast, h2, _root_.mul_one] at h3`. Conclude with `h3.le.trans h1`.
+-/
 private theorem exists_pid (p : ℕ) [Fact p.Prime] (F : Type) [Field F] [NumberField F] :
     ∃ (V : Type) (_ : CommRing V) (_ : IsDomain V) (_ : IsPrincipalIdealRing V) (j : 𝓞 F →+* V) (io : V →+* F),
       Function.Injective io ∧ (∀ x, io (j x) = x) ∧ ∀ (k : F →+* ℂ_[p]) (x : V), ‖k (io x)‖ ≤ 1 := by
@@ -205,6 +275,13 @@ private theorem exists_pid (p : ℕ) [Fact p.Prime] (F : Type) [Field F] [Number
     simp only [map_mul, IsLocalization.lift_eq, norm_mul, eq_intCast, map_intCast, h2, _root_.mul_one] at h3
     exact h3.le.trans h1
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw p _ F _ _ σ`. Take `⟨V, _, _, _, j, io, hin, hj, hk⟩` from `exists_pid p F`. Establish `hint : ∀ o : 𝓞 E, σ o ∈ integralClosure ℤ F` using `fun o => (RingOfIntegers.isIntegral o).map σ.toIntAlgHom`. Set `σ₀ : 𝓞 E →+* 𝓞 F` to `σ.codRestrict (integralClosure ℤ F) hint`. Establish `hσ₀ : ∀ o, ((σ₀ o : 𝓞 F) : F) = σ o` using `fun _ => rfl`.
+
+Take `⟨c⟩ : Nonempty (F →+* ℂ)` from `inferInstance`. Take `⟨N, a, T, S, h⟩` from `latData_pid Dw (c.comp io) (c.injective.comp hin) (j.comp σ₀)`. Use `⟨N, a, fun i m => io (T i m), fun i m => io (S i m), fun k => ?_⟩` and prove the remaining obligations. Set `φ : V →+* ↥(intO ℂ_[p])` to `(k.comp io).codRestrict (intO ℂ_[p]) (hk k)`. Establish `hφ : Function.Injective φ` using `fun x y hxy => hin (k.injective (congrArg Subtype.val hxy))`.
+
+Use `⟨φ.comp (j.comp σ₀), fun i m => φ (T i m), fun i m => φ (S i m), fun o => ?_, fun _ _ => rfl, fun _ _ => rfl, latData_map Dw φ hφ _ a T S h⟩` and prove the remaining obligations. Use `show k (io (j (σ₀ o))) = _`. Rewrite using `[hj, hσ₀]`.
+-/
 theorem UpperTheory.lattice_data_integral_specialisation :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (p : ℕ) [Fact p.Prime] (F : Type) [Field F] [NumberField F] (σ : 𝓞 E →+* F), ∃ (M : ℕ) (a : Fin M → Dw.La) (T S : Fin (Dw.p + Dw.q) → Fin M → F), ∀ k : F →+* ℂ_[p], ∃ (s : 𝓞 E →+* ↥(intO ℂ_[p])) (T' S' : Fin (Dw.p + Dw.q) → Fin M → ↥(intO ℂ_[p])), (∀ o, (s o : ℂ_[p]) = k (σ o)) ∧ (∀ j m, (T' j m : ℂ_[p]) = k (T j m)) ∧ (∀ j m, (S' j m : ℂ_[p]) = k (S j m)) ∧ GlobalTheory.FlatModel.LatData Dw s a T' S' := by
   intro E _ _ _ H Dw p _ F _ _ σ

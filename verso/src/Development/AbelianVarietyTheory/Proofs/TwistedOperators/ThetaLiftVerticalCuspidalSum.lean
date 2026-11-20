@@ -20,6 +20,15 @@ namespace GlobalTheory.ColFockRed
 
 open GlobalTheory.Grid
 
+/- English proof (translation)
+Establish `sm : ∀ {f : GA D N.V → ℂ}, GlobalTheory.Unf.IsContAut N.V f → ∀ c : ℂ, GlobalTheory.Unf.IsContAut N.V (c • f)` using `fun hf c => ⟨fun γ hγ x => by simp only [Pi.smul_apply, hf.1 γ hγ x], hf.2.const_smul c⟩`. Establish `ad : ∀ {f g : GA D N.V → ℂ}, GlobalTheory.Unf.IsContAut N.V f → GlobalTheory.Unf.IsContAut N.V g → GlobalTheory.Unf.IsContAut N.V (f + g)` using `fun hf hg => ⟨fun γ hγ x => by simp only [Pi.add_apply, hf.1 γ hγ x, hg.1 γ hγ x], hf.2.add hg.2⟩`. Take `⟨G, hG⟩` from `F`. Use `show GlobalTheory.Unf.IsContAut N.V (G x)`. Take `⟨T, hT, rfl⟩` from `hG`.
+
+Proceed by induction on `hT using Submodule.span_induction generalizing x with`. Consider the case `mem T hT`. Proceed by induction on `x using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r v`. Rewrite using `[map_smul, LinearEquiv.coe_coe, PiTensorProduct.lift.tprod]`.
+
+Conclude with `sm ⟨(hT.aut v).left, (hT.aut v).cont⟩ r`. Consider the case `add x y hx hy => rw [map_add]`. Conclude with `ad hx hy`. Consider the case `zero => rw [map_zero, LinearMap.zero_apply]`. Conclude with `⟨fun _ _ _ => rfl, continuous_const⟩`.
+
+Consider the case `add T₁ T₂ _ _ h₁ h₂ => rw [map_add, LinearMap.add_apply]`. Conclude with `ad (h₁ x) (h₂ x)`. Consider the case `smul c T _ h => rw [map_smul, LinearMap.smul_apply]`. Conclude with `sm (h x) c`.
+-/
 theorem isContAut_cusp {D : D7} {θ : InfFam D} {N : Node D} (F : N.Cusp θ) (x : SmT N.M) :
     GlobalTheory.Unf.IsContAut N.V (F.1 x) := by
   have sm : ∀ {f : GA D N.V → ℂ}, GlobalTheory.Unf.IsContAut N.V f → ∀ c : ℂ, GlobalTheory.Unf.IsContAut N.V (c • f) := fun hf c =>
@@ -40,6 +49,11 @@ theorem isContAut_cusp {D : D7} {θ : InfFam D} {N : Node D} (F : N.Cusp θ) (x 
   | add T₁ T₂ _ _ h₁ h₂ => rw [map_add, LinearMap.add_apply]; exact ad (h₁ x) (h₂ x)
   | smul c T _ h => rw [map_smul, LinearMap.smul_apply]; exact sm (h x) c
 
+/- English proof (translation)
+Consider the cases of `k with`. Consider the case `zero`. Establish `h` using `hG.spaces.P D.R.m le_rfl`. Rewrite `h` using `[show (D.R.m - D.R.m + 1) / 2 = 0 by omega]`. Conclude with `⟨_, _, h⟩`.
+
+Consider the case `succ k => exact ⟨_, _, hG.spaces.X k hk⟩`.
+-/
 theorem xp_is {D : D7} {G₀ : Type} [Group G₀] [Fintype G₀] {Pl0 T : Type} {A : FamIn D.what₂.LL G₀ Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {G : GlobalTheory.Grid.GridPre R}
     (hG : G.Is) (k : ℕ) (hk : k ≤ D.R.m) : ∃ ν P, (G.Xp k).Is ν 0 P := by
@@ -50,12 +64,18 @@ theorem xp_is {D : D7} {G₀ : Type} [Group G₀] [Fintype G₀] {Pl0 T : Type} 
     exact ⟨_, _, h⟩
   | succ k => exact ⟨_, _, hG.spaces.X k hk⟩
 
+/- English proof (translation)
+Distinguish the cases in `hd : df`. Conclude with `⟨(h.1 hd).1.1, (h.1 hd).2⟩`. Conclude with `⟨(h.2 hd).1.1, (h.2 hd).2⟩`.
+-/
 theorem measDat_haar_fd {D : D7} {N : Node D} {m : N.MeasDat} {df : Prop} {K : Subgroup (GL (Fin N.V.rank) (Lev.EAf D))}
     (h : m.Is df K) : m.ν.IsHaarMeasure ∧ IsFundamentalDomain (GQ N.V) m.fd m.ν := by
   by_cases hd : df
   · exact ⟨(h.1 hd).1.1, (h.1 hd).2⟩
   · exact ⟨(h.2 hd).1.1, (h.2 hd).2⟩
 
+/- English proof (translation)
+Consider the cases of `j with`. Consider the case `zero => exact measDat_haar_fd (hG.meas.P D.R.m le_rfl)`. Consider the case `succ j => exact measDat_haar_fd (hG.meas.X j hj)`.
+-/
 theorem measX_haar_fd {D : D7} {G₀ : Type} [Group G₀] [Fintype G₀] {Pl0 T : Type} {A : FamIn D.what₂.LL G₀ Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {G : GridPre R}
     (hG : G.Is) (j : ℕ) (hj : j ≤ D.R.m) :
@@ -64,6 +84,21 @@ theorem measX_haar_fd {D : D7} {G₀ : Type} [Group G₀] [Fintype G₀] {Pl0 T 
   | zero => exact measDat_haar_fd (hG.meas.P D.R.m le_rfl)
   | succ j => exact measDat_haar_fd (hG.meas.X j hj)
 
+/- English proof (translation)
+Introduce `hL _hPr D hSz G₀ _ _ Pl0 T A Ks _ _ _ R G hRB hG t j hj Φ hΦ n F w hint`. Establish `hCA` using `hL D hSz G₀ Pl0 T A Ks R G hRB hG`. Establish `hθ : IsInfFam R.θ` using `hRB.inf`. Take `⟨νS, PS, hS⟩` from `xp_is hG j hj.le`. Take `⟨νT, PT, hT⟩` from `xp_is hG (j + 1) hj`.
+
+Take `⟨hsig, hdef⟩` from `GlobalTheory.ColTypeLift.xp_definite hG j hj.le`. Take `⟨χ, hχ⟩` from `GlobalTheory.T.exists_realCentralCharacter_definiteVertexMultiplicity D R.θ hθ (G.Xp j) νS PS hS`. Establish `hψc : GlobalTheory.SeeSaw.HasCen (G.Xp j).V χ (∑ i, (F i).1 (w i))` using `fun z hz hc h => by`. Simplify using `only [Finset.sum_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => hχ (F i) (w i) z hz hc h`.
+
+Establish `hψa : GlobalTheory.Unf.IsContAut (G.Xp j).V (∑ i, (F i).1 (w i))`. Use `⟨fun γ hγ g => ?_, by rw [Finset.sum_fn]; exact continuous_finset_sum _ fun i _ => (isContAut_cusp (F i) (w i)).2⟩` and prove the remaining obligations. Simplify using `only [Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => (isContAut_cusp (F i) (w i)).1 γ hγ g`. Take `⟨hν, hfd⟩` from `measX_haar_fd hG j hj.le`.
+
+Establish `hA` using `hG.arrows.col t j hj`. Take `⟨Φ', hΦ', heig, heq⟩` from `GlobalTheory.T.exists_thetaLift_realCentre_average_eigenvector D R.ψ _ _ _ _ (G.col t j).ω hA.weil hsig hdef _ _ hν hfd χ _ hψc hψa Φ hΦ hint`. Take `⟨k, f, p, hf, hsum⟩` from `GlobalTheory.T.centreEigen_thetaFunction_finite_sum_fockPolynomials D R.ψ R.θ hθ (G.Xp j) (G.Xp (j + 1)) νS νT PS PT hS hT (G.col t j) _ _ hA (fun z => (χ z)⁻¹) Φ' hΦ' heig`. Establish `hcol` using `hCA.col t j hj`. Use `choose F' hF' hI using fun (l : Fin k) (i : Fin n) => hcol (f l) (hf l) (F i).1 (F i).2`.
+
+Use `⟨k * n, fun q => ⟨F' (finProdFinEquiv.symm q).1 (finProdFinEquiv.symm q).2, hF' _ _⟩, fun q => (G.col t j).It (p (finProdFinEquiv.symm q).1) (w (finProdFinEquiv.symm q).2), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `h`. Rewrite using `[heq h, hsum]`. Establish `key : ∀ g, thetaKO (G.col t j).ω g h (∑ l, fock R.ψ R.θ false (G.Xp j) (G.Xp (j + 1)) (f l) (p l)) * (∑ i, (F i).1 (w i)) g = ∑ l, ∑ i, thetaKO (G.col t j).ω g h (fock R.ψ R.θ false (G.Xp j) (G.Xp (j + 1)) (f l) (p l)) * (F i).1 (w i) g` using `fun g => by`. Simplify using `only [thetaKO, map_sum, Finset.sum_apply, Finset.sum_mul_sum]`.
+
+Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall key)]`. Rewrite using `[integral_finset_sum _ fun l _ => integrable_finset_sum _ fun i _ => (hI l i (p l) (w i) h).1]`. Repeatedly rewrite using `[integral_finset_sum _ fun i _ => (hI _ i _ (w i) h).1]`. Establish `e2 : ∀ l i, ∫ g in (G.measX j).fd, thetaKO (G.col t j).ω g h (fock R.ψ R.θ false (G.Xp j) (G.Xp (j + 1)) (f l) (p l)) * (F i).1 (w i) g ∂(G.measX j).ν = F' l i ((G.col t j).It (p l) (w i)) h` using `fun l i => (hI l i (p l) (w i) h).2`. Repeatedly rewrite using `[e2]`.
+
+Rewrite using `[← Fintype.sum_prod_type']`. Rewrite using `[Finset.sum_apply]`. Conclude with `(finProdFinEquiv.symm.sum_comp (fun x : Fin k × Fin n => F' x.1 x.2 ((G.col t j).It (p x.1) (w x.2)) h)).symm`.
+-/
 theorem lift_finSum_smooth : GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsCuspidal → GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7), GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.Sizes D → ∀ (G₀ : Type) [Group G₀] [Fintype G₀] (Pl0 T : Type) (A : FamIn D.what₂.LL G₀ Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (G : GlobalTheory.Grid.GridPre R), GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.RowBase R → G.Is → ∀ t j, j < D.R.m → ∀ Φ, IsThetaFunO R.ψ (G.Xp j).V (G.Xp (j + 1)).V Φ →
     ∀ (n : ℕ) (F : Fin n → (G.Xp j).Cusp R.θ) (w : Fin n → SmT (G.Xp j).M),
     (∀ h, IntegrableOn (fun g => thetaKO (G.col t j).ω g h Φ * (∑ i, (F i).1 (w i)) g) (G.measX j).fd (G.measX j).ν) →

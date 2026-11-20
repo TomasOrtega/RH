@@ -14,12 +14,18 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 open PI.UnitaryGroupMassFormula.UsCost PI.UnitaryGroupMassFormula.UsCost.DA
 
+/- English proof (translation)
+Unfold `dmuP`. Rewrite using `[P.Ux4.block3_add]`. Simplify using `only [Matrix.conjTranspose_add, Matrix.mul_add, Matrix.add_mul, add_zero, neg_add]`.
+-/
 lemma leviDifferential_add (k j ρ : ℕ) (Q Q' : Matrix (Fin j) (Fin j) ℂ) :
     dmuP k j ρ (Q + Q') = dmuP k j ρ Q + dmuP k j ρ Q' := by
   unfold dmuP
   rw [P.Ux4.block3_add]
   simp only [Matrix.conjTranspose_add, Matrix.mul_add, Matrix.add_mul, add_zero, neg_add]
 
+/- English proof (translation)
+Unfold `dmuP`. Apply `P.Ux4.ext_eB` to reduce the goal to its premises. Apply the tactic sequence `rintro (((a | a) | a)) (((b | b) | b)) <;>`. Simplify using `[P.Ux4.block3_apply, Matrix.conjTranspose_smul]`.
+-/
 lemma leviDifferential_smul (k j ρ : ℕ) (c : ℝ) (Q : Matrix (Fin j) (Fin j) ℂ) :
     dmuP k j ρ (c • Q) = c • dmuP k j ρ Q := by
   unfold dmuP
@@ -27,6 +33,9 @@ lemma leviDifferential_smul (k j ρ : ℕ) (c : ℝ) (Q : Matrix (Fin j) (Fin j)
   rintro (((a | a) | a)) (((b | b) | b)) <;>
     simp [P.Ux4.block3_apply, Matrix.conjTranspose_smul]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [blk2, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.add_apply]`. Generalize the expression as in `finSumFinEquiv.symm i = u`. Generalize the expression as in `finSumFinEquiv.symm j = v`. Apply the tactic sequence `rcases u with a | a <;> rcases v with b | b <;> simp`.
+-/
 lemma block_matrix_two_zero_add {p s : ℕ} (e e' : Matrix (Fin s) (Fin s) ℂ) :
     blk2 (0 : Matrix (Fin p) (Fin p) ℂ) 0 0 (e + e') = blk2 (0 : Matrix (Fin p) (Fin p) ℂ) 0 0 e + blk2 0 0 0 e' := by
   ext i j
@@ -35,6 +44,9 @@ lemma block_matrix_two_zero_add {p s : ℕ} (e e' : Matrix (Fin s) (Fin s) ℂ) 
   generalize finSumFinEquiv.symm j = v
   rcases u with a | a <;> rcases v with b | b <;> simp
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [blk2, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.smul_apply]`. Generalize the expression as in `finSumFinEquiv.symm i = u`. Generalize the expression as in `finSumFinEquiv.symm j = v`. Apply the tactic sequence `rcases u with a | a <;> rcases v with b | b <;> simp`.
+-/
 lemma block_matrix_two_zero_smul {p s : ℕ} (c : ℝ) (e : Matrix (Fin s) (Fin s) ℂ) :
     blk2 (0 : Matrix (Fin p) (Fin p) ℂ) 0 0 (c • e) = c • blk2 (0 : Matrix (Fin p) (Fin p) ℂ) 0 0 e := by
   ext i j
@@ -43,9 +55,17 @@ lemma block_matrix_two_zero_smul {p s : ℕ} (c : ℝ) (e : Matrix (Fin s) (Fin 
   generalize finSumFinEquiv.symm j = v
   rcases u with a | a <;> rcases v with b | b <;> simp
 
+/- English proof (translation)
+Simplify using `[blk2, Matrix.fromBlocks_one]`.
+-/
 lemma symmetricScalarBlockMatrix_one_zero {p s : ℕ} : blk2 (1 : Matrix (Fin p) (Fin p) ℂ) 0 0 (1 : Matrix (Fin s) (Fin s) ℂ) = 1 := by
   simp [blk2, Matrix.fromBlocks_one]
 
+/- English proof (translation)
+Rewrite using `[← symmetricScalarBlockMatrix_one_zero]`. Use extensionality with `i j`. Simplify using `only [blk2, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.add_apply, Matrix.smul_apply]`. Generalize the expression as in `finSumFinEquiv.symm i = u`. Generalize the expression as in `finSumFinEquiv.symm j = v`.
+
+Apply the tactic sequence `rcases u with a | a <;> rcases v with b | b <;> simp`.
+-/
 lemma block_matrix_two_line {p s : ℕ} (t : ℝ) (A : Matrix (Fin s) (Fin s) ℂ) :
     blk2 (1 : Matrix (Fin p) (Fin p) ℂ) 0 0 (1 + t • A) = 1 + t • blk2 (0 : Matrix (Fin p) (Fin p) ℂ) 0 0 A := by
   rw [← symmetricScalarBlockMatrix_one_zero]
@@ -70,6 +90,9 @@ def lamL (k : ℕ) {p s : ℕ} (ρ : ℕ) {σ : Equiv.Perm (Fin p)} (ξ : Xi k p
   map_smul' c e := by
     simp only [lamZ, block_matrix_two_zero_smul, Matrix.mul_smul, Matrix.smul_mul, leviDifferential_smul, RingHom.id_apply]
 
+/- English proof (translation)
+Use extensionality with `x y`. Rewrite using `[Matrix.sum_apply]`. Simplify using `only [Matrix.smul_apply, eMat, Matrix.of_apply]`. Simplify using `[Fintype.sum_prod_type, smul_ite, ite_and, Finset.sum_ite_eq, coefZ, Complex.real_smul, Complex.re_add_im]`.
+-/
 lemma coef_sum {s : ℕ} (Z W : G.Mat s) :
     ∑ i : Fin s × Fin s × Bool, coefZ Z W i • eMat i.1 i.2.1 i.2.2 = (Matrix.of Z)⁻¹ * Matrix.of W := by
   ext x y
@@ -78,6 +101,9 @@ lemma coef_sum {s : ℕ} (Z W : G.Mat s) :
   simp [Fintype.sum_prod_type, smul_ite, ite_and, Finset.sum_ite_eq, coefZ,
     Complex.real_smul, Complex.re_add_im]
 
+/- English proof (translation)
+Rewrite using `[← coef_sum Z W]`. Express the relevant statement in the definitionally equal form `_ = lamL k ρ ξ _`. Rewrite using `[map_sum]`. Simplify using `only [map_smul]`. Both sides reduce to the same expression.
+-/
 lemma sum_dirZ {k p s ρ : ℕ} {σ : Equiv.Perm (Fin p)} (ξ : Xi k p s ρ σ) (Z W : G.Mat s) :
     ∑ i : Fin s × Fin s × Bool, coefZ Z W i • dirZ k ρ ξ i = lamZ k ρ ξ ((Matrix.of Z)⁻¹ * Matrix.of W) := by
   rw [← coef_sum Z W]
@@ -86,10 +112,18 @@ lemma sum_dirZ {k p s ρ : ℕ} {σ : Equiv.Perm (Fin p)} (ξ : Xi k p s ρ σ) 
   simp only [map_smul]
   rfl
 
+/- English proof (translation)
+Establish `h : Rn k j ρ x ∈ Rset k j ρ` using `(hRad k j ρ).2.1 ▸ Set.mem_range_self x`. Conclude with `h.1`.
+-/
 lemma rn_mem (hRad : RadicalParam) (k j ρ : ℕ) (x : RC k j ρ) : Rn k j ρ x ∈ B.GV k (j + ρ) := by
   have h : Rn k j ρ x ∈ Rset k j ρ := (hRad k j ρ).2.1 ▸ Set.mem_range_self x
   exact h.1
 
+/- English proof (translation)
+Establish `hdet : (ZjH σ d ξ.2 Z).det ≠ 0`. Rewrite using `[P.level_determinant_z]`. Use `mul_ne_zero ?_ hZ` and prove the remaining obligations. Rewrite using `[hMat, Matrix.det_mul, Matrix.det_diagonal]`. Conclude with `mul_ne_zero (P.Ux5.det_permutationMatrix_ne_zero σ) (Finset.prod_ne_zero_iff.mpr fun i _ => hd i)`.
+
+Conclude with `P.BetaSesquilinearity.gv_mul (P.BetaSesquilinearity.gv_mul (P.BetaSesquilinearity.gv_inv (rn_mem hRad _ _ _ _)) ((hMem k (p + s) ρ).1 _ γ hdet hγ)) (rn_mem hRad _ _ _ _)`.
+-/
 lemma ga_mem (hMem : SliceMem) (hRad : RadicalParam) {k p s ρ : ℕ} {σ : Equiv.Perm (Fin p)} {d : Fin p → ℂ}
     (hd : ∀ i, d i ≠ 0) (ξ : Xi k p s ρ σ) {Z : G.Mat s} {γ : B.Mat k ρ} (hZ : G.detM Z ≠ 0)
     (hγ : γ ∈ B.GV k ρ) : gaXi k ρ σ d ξ Z γ ∈ B.GV k (p + s + ρ) := by
@@ -103,6 +137,9 @@ lemma ga_mem (hMem : SliceMem) (hRad : RadicalParam) {k p s ρ : ℕ} {σ : Equi
 
 variable {k p s ρ : ℕ} {σ : Equiv.Perm (Fin p)} {d : Fin p → ℂ}
 
+/- English proof (translation)
+Establish `hZu : IsUnit (Matrix.of Z).det` using `isUnit_iff_ne_zero.mpr hZ`. Use `hSZ k p s ρ σ d ξ Z ((Matrix.of Z)⁻¹ * Matrix.of Z') γ` as an intermediate fact. Rewrite `this` using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hZu, Matrix.one_mul]`. Conclude with `this`.
+-/
 lemma phi_rep (hSZ : SliceZ) (ξ : Xi k p s ρ σ) {Z : G.Mat s} (hZ : G.detM Z ≠ 0) (γ : B.Mat k ρ) (Z' : G.Mat s) :
     gaXi k ρ σ d ξ Z' γ = gaXi k ρ σ d ξ Z γ * ((Rn k (p + s) ρ ξ.1.2)⁻¹ *
       muP k (p + s) ρ ((blk2 1 (Matrix.of ξ.2.1.2) 0 1)⁻¹ *
@@ -113,6 +150,9 @@ lemma phi_rep (hSZ : SliceZ) (ξ : Xi k p s ρ σ) {Z : G.Mat s} (hZ : G.detM Z 
   rw [← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hZu, Matrix.one_mul] at this
   exact this
 
+/- English proof (translation)
+Apply `Matrix.nonsing_inv_mul` to reduce the goal to its premises. Rewrite using `[P.Ux4.block2_det_upper_triangular]`. Simplify using the standard rewrite rules.
+-/
 lemma U_inv_mul {p s : ℕ} (b : Fin p → Fin s → ℂ) :
     (blk2 (1 : Matrix (Fin p) (Fin p) ℂ) (Matrix.of b) 0 (1 : Matrix (Fin s) (Fin s) ℂ))⁻¹ *
       blk2 1 (Matrix.of b) 0 1 = 1 := by
@@ -120,6 +160,11 @@ lemma U_inv_mul {p s : ℕ} (b : Fin p → Fin s → ℂ) :
   rw [P.Ux4.block2_det_upper_triangular]
   simp
 
+/- English proof (translation)
+Rewrite using `[phi_rep hSZ ξ hZ γ (Z + t • W)]`. Establish `hZu : IsUnit (Matrix.of Z).det` using `isUnit_iff_ne_zero.mpr hZ`. Establish `e1 : (Matrix.of Z)⁻¹ * Matrix.of (Z + t • W) = 1 + t • ((Matrix.of Z)⁻¹ * Matrix.of W)`. Establish `: Matrix.of (Z + t • W) = Matrix.of Z + t • Matrix.of W` using `rfl`. Rewrite using `[this, Matrix.mul_add, Matrix.nonsing_inv_mul _ hZu, Matrix.mul_smul]`.
+
+Rewrite using `[e1, block_matrix_two_line, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, U_inv_mul, Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 lemma line_rep (hSZ : SliceZ) (ξ : Xi k p s ρ σ) {Z : G.Mat s} (hZ : G.detM Z ≠ 0) (γ : B.Mat k ρ) (W : G.Mat s)
     (t : ℝ) :
     gaXi k ρ σ d ξ (Z + t • W) γ = gaXi k ρ σ d ξ Z γ * ((Rn k (p + s) ρ ξ.1.2)⁻¹ *

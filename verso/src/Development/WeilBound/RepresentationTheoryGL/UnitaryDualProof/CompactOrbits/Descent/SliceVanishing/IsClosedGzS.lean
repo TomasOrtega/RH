@@ -26,6 +26,11 @@ def GzS (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) : Subgroup (GL (Fin n) k) 
       _ = (g⁻¹).val * (a * g.val) * (g⁻¹).val := by rw [h1]
       _ = (g⁻¹).val * a := by simp [mul_assoc]
 
+/- English proof (translation)
+Establish `hset : (GzS Z : Set (GL (Fin n) k)) = ⋂ a ∈ Z, {g : GL (Fin n) k | a * g.val = g.val * a}`. Use extensionality with `g`. Simplify using `only [Set.mem_iInter, Set.mem_setOf_eq]`. Both sides reduce to the same expression. Rewrite using `[hset]`.
+
+Conclude with `isClosed_biInter fun a _ => isClosed_eq (continuous_const.mul Units.continuous_val) (Units.continuous_val.mul continuous_const)`.
+-/
 theorem isClosed_GzS (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) : IsClosed (GzS Z : Set (GL (Fin n) k)) := by
   have hset : (GzS Z : Set (GL (Fin n) k)) = ⋂ a ∈ Z, {g : GL (Fin n) k | a * g.val = g.val * a} := by
     ext g

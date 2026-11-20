@@ -15,6 +15,13 @@ section Inst3
 
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G] {Pl0 I0 Ty : Type}
 
+/- English proof (translation)
+Break down `i with p | k` into its components or cases. Conclude with `hH.rat p a b`. Conclude with `hH3.rat k a b`. Use `adj i := by`. Break down `i with p | k` into its components or cases.
+
+Take `⟨p', hp'⟩` from `hH.adj p`. Conclude with `⟨Sum.inl p', hp'⟩`. Take `⟨k', hk'⟩` from `hH3.adj k`. Conclude with `⟨Sum.inr k', hk'⟩`. Use `comm := hD.comm`.
+
+Use `split := InertDat3.splitOver_opAll D h hD`. Use `opG i g := by`. Break down `i with p | k` into its components or cases. Conclude with `h.opG p g`. Conclude with `hD.opG k g`.
+-/
 theorem okOp_opAll {B : BlockDat K G Pl0} {D : InertDat3 B I0 Ty} {s : ℕ} (h : B.Ok s) (hD : D.Ok3) (hH : B.OkH)
     (hH3 : D.InertRationalAdjoint) : OkOp B D.opAll where
   rat i a b := by
@@ -42,6 +49,11 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K]
 variable {G : Type} [Group G] [Fintype G] {Pl0 I0 Ty T : Type} {m : ℕ}
 variable (A3 : FamIn3 K G Pl0 I0 Ty T m) (X : CxData A3.fam3.amb3)
 
+/- English proof (translation)
+Introduce `j`. Establish `hB` using `DefFam.blockHyp_lift A3.A.fam hOk.ok2 P ψ j A3.A.fam.μ0`. Establish `hO : OkOp _ (A3.liftI j A3.A.fam.μ0).opAll` using `okOp_opAll (hOk.ok2.lifts j A3.A.fam.μ0) (hOk.lifts j A3.A.fam.μ0) (hH j).1 (hH j).2`. Establish `hr` using `eig_ratG hB hO (C j)`. Rewrite `hr` using `[← hC j]`.
+
+Conclude with `CyclotomicLifting.xq_rat hB hr`.
+-/
 theorem proviso_of_lift_eigenvalues {s : ℕ} (hOk : A3.fam3.Ok3 s) (hH : ∀ j, (A3.A.fam.L j A3.A.fam.μ0).OkH ∧ (A3.liftI j A3.A.fam.μ0).InertRationalAdjoint)
     (P : Subgroup G) (ψ : P →* Kˣ) {C : ∀ j : Fin m, ((A3.liftI j A3.A.fam.μ0).OpIx → K) → Prop}
     (hC : LiftsEig3 A3 X P ψ C) : (A3.side3 P ψ X.zs).Proviso := by
@@ -53,6 +65,13 @@ theorem proviso_of_lift_eigenvalues {s : ℕ} (hOk : A3.fam3.Ok3 s) (hH : ∀ j,
   rw [← hC j] at hr
   exact CyclotomicLifting.xq_rat hB hr
 
+/- English proof (translation)
+Introduce `j`. Use `(A3.fam3.LI j A3.A.fam.μ0).inert_parts_span_top (ℓ := A3.A.fam.lvlA P ψ) (Z := X.Zl j A3.A.fam.μ0) hOk.ok2.conj (hOk.ok2.lifts j A3.A.fam.μ0) (hOk.lifts j A3.A.fam.μ0) hOk.ok2.irr ?_ (fun p : A3.fam3.base3.Ix => A3.fam3.tr3 j p.1) ?_ ?_` and prove the remaining obligations. Introduce `i`. Conclude with `Submodule.map_le_iff_le_comap.1 (hst.2 j A3.A.fam.μ0 (Sum.inl i))`. Introduce `p q hpq`.
+
+Conclude with `hsep p.1 p.2 q.1 q.2 (fun h => hpq (Subtype.ext h)) j`. Use `(hC j).le.trans ?_` and prove the remaining obligations. Apply `BlockDat.good_part_coordinates_mono` to reduce the goal to its premises. Use `Col.eigSum_mono fun x hx => ?_` and prove the remaining obligations. Take `⟨p, hp, hx'⟩` from `hT j x hx`.
+
+Conclude with `⟨⟨p, hp⟩, hx'⟩`.
+-/
 theorem types_of_lift_eigenvalues {s : ℕ} (hOk : A3.fam3.Ok3 s) (hsep : A3.fam3.TypesSep3) (hst : X.zs.Stable) (P : Subgroup G)
     (ψ : P →* Kˣ) {C : ∀ j : Fin m, ((A3.liftI j A3.A.fam.μ0).OpIx → K) → Prop} (hC : LiftsEig3 A3 X P ψ C)
     (hT : LiftsTyp3 A3 C) : (A3.side3 P ψ X.zs).Types := by
@@ -70,6 +89,9 @@ theorem types_of_lift_eigenvalues {s : ℕ} (hOk : A3.fam3.Ok3 s) (hsep : A3.fam
     obtain ⟨p, hp, hx'⟩ := hT j x hx
     exact ⟨⟨p, hp⟩, hx'⟩
 
+/- English proof (translation)
+Establish `hB : BlockHyp (A3.A.fam.R A3.A.fam.μ0) (A3.A.fam.lvl P ψ) A3.A.fam.v0 s` using `⟨hOk.ok2.conj, hOk.ok2.irr, hOk.ok2.what₂ A3.A.fam.μ0⟩`. Establish `hO : OkOp (A3.A.fam.R A3.A.fam.μ0) (A3.fam3.RI A3.A.fam.μ0).opAll` using `okOp_opAll (hOk.ok2.what₂ A3.A.fam.μ0) (hOk.what₂ A3.A.fam.μ0) hH.1 hH.2`. Use `part_orthg hB hO (fun i => Submodule.map_le_iff_le_comap.1 (hst.1 A3.A.fam.μ0 (Sum.inl i))) v (C := (A3.fam3.RI A3.A.fam.μ0).HasRes3 p.1) (C' := (A3.fam3.RI A3.A.fam.μ0).HasRes3 q.1) ?_ hx hy` and prove the remaining obligations. Introduce `z hz`. Conclude with `(A3.fam3.RI A3.A.fam.μ0).excl3 ((A3.fam3.RI A3.A.fam.μ0).diffAt_of_mem_ixFin3 q.2 p.2 (fun h => hpq (Subtype.ext h).symm)) z hz`.
+-/
 theorem majAt_eq_zero_of_mem_Qp_of_ne {s : ℕ} (hOk : A3.fam3.Ok3 s) (hH : (A3.A.fam.R A3.A.fam.μ0).OkH ∧ (A3.rowI A3.A.fam.μ0).InertRationalAdjoint)
     (hst : X.zs.Stable) (P : Subgroup G) (ψ : P →* Kˣ) (v : InfinitePlace K) (p q : A3.fam3.base3.Ix) (hpq : p ≠ q)
     (x : Fin ((A3.side3 P ψ X.zs).dQ A3.A.fam.μ0) → K) (hx : x ∈ (A3.side3 P ψ X.zs).Qp A3.A.fam.μ0 p)

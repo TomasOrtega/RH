@@ -13,6 +13,17 @@ noncomputable section
 
 namespace GlobalTheory.LieEtale
 
+/- English proof (translation)
+Set `π : CommRingCat.of (DualNumber k) ⟶ CommRingCat.of k` to `CommRingCat.ofHom (TrivSqZeroExt.fstHom k k k).toRingHom`. Establish `hπ : Function.Surjective π` using `fun a => ⟨TrivSqZeroExt.inl a, rfl⟩`. Establish `hsq : ∀ a b : DualNumber k, a.fst = 0 → b.fst = 0 → a * b = 0` using `fun a b ha hb => by`. Apply the tactic sequence `ext <;> simp [ha, hb]`. Establish `hnil : IsNilpotent (RingHom.ker π.hom)` using `⟨2, by`.
+
+Rewrite using `[pow_two, Ideal.zero_eq_bot, eq_bot_iff, Ideal.mul_le]`. Conclude with `fun a ha b hb => hsq a b ha hb⟩`. Establish `hj : RingHom.ker π.hom ≤ Ideal.jacobson ⊥` using `fun a ha => Ideal.mem_sInf.mpr fun {J} hJ => hJ.2.isPrime.mem_of_pow_mem 2 (by`. Rewrite using `[pow_two, hsq a a ha ha]`. Conclude with `J.zero_mem)`.
+
+Use `existsUnique_of_exists_of_unique ?_ fun x₁ x₂ h₁ h₂ => lift_ext_of_unramified f π hπ hj (h₁.1.trans h₂.1.symm) (h₁.2.trans h₂.2.symm)` and prove the remaining obligations. Establish `: IsLocalHom π.hom` using `⟨fun a ha => TrivSqZeroExt.isUnit_iff_isUnit_fst.mpr ha⟩`. Take `⟨U, V, hU, hV, hVU, -, hxV⟩` from `exists_isAffineOpen_pair f (x₀ (IsLocalRing.closedPoint k)) (O := ⊤) trivial`. Use `exists_lift_of_smooth_of_isAffineOpen f hU hV hVU π s x₀ h (range_subset_opens_of_isLocalRing s ?_) (range_subset_opens_of_isLocalRing x₀ hxV) ?_` and prove the remaining obligations. Establish `e : f (x₀ (IsLocalRing.closedPoint k)) = s (Spec.map π (IsLocalRing.closedPoint k))` using `congr($h (IsLocalRing.closedPoint k))`.
+
+Rewrite using `[← Spec_closedPoint (f := π), ← e]`. Conclude with `hVU hxV`. Introduce `R A _ _ _ _ _ _ π' hπ' φ`. Establish `hs : Function.Surjective π'` using `fun c => (hπ c).imp fun b hb => (hπ' b).trans hb`. Establish `hk : IsNilpotent (RingHom.ker (π' : CommRingCat.of (DualNumber k) →+* CommRingCat.of k))`.
+
+Use `hnil using 2` and compare the differences between its conclusion and the goal. Conclude with `RingHom.ext hπ'`. Conclude with `⟨_, Algebra.FormallySmooth.comp_liftOfSurjective φ π' hs hk⟩`.
+-/
 theorem existsUnique_dual_lift {X Y : Scheme.{0}} (f : X ⟶ Y) [Etale f] {k : Type} [Field k]
     (s : Sp (DualNumber k) ⟶ Y) (x₀ : Sp k ⟶ X)
     (h : x₀ ≫ f = spMap (TrivSqZeroExt.fstHom k k k).toRingHom ≫ s) :
@@ -56,6 +67,9 @@ def Eig {G : Over S} [GrpObj G] (z : P ⟶ E) (sc : k → (E ⟶ E)) (act : O �
     (v : E ⟶ G) : Prop :=
   z ≫ v = 1 ∧ ∀ a, v ≫ act a = sc (τ a) ≫ v
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact MonObj.comp_one z`. Consider the case `cons u l ih`. Rewrite using `[List.prod_cons, MonObj.comp_mul, h u (by simp), ih fun w hw => h w (by simp [hw]), _root_.mul_one]`.
+-/
 theorem comp_listProd {G : Over S} [GrpObj G] (z : P ⟶ E) (l : List (E ⟶ G))
     (h : ∀ u ∈ l, z ≫ u = 1) : z ≫ l.prod = 1 := by
   induction l with
@@ -64,10 +78,26 @@ theorem comp_listProd {G : Over S} [GrpObj G] (z : P ⟶ E) (l : List (E ⟶ G))
     rw [List.prod_cons, MonObj.comp_mul, h u (by simp), ih fun w hw => h w (by simp [hw]),
       _root_.mul_one]
 
+/- English proof (translation)
+The claim follows from `(map_list_prod (IsMonHom.monoidHom ψ E) _).trans (by rw [List.map_ofFn]; rfl)`.
+-/
 theorem ofFn_prod_comp {A B : Over S} [GrpObj A] [GrpObj B] (ψ : A ⟶ B) [IsMonHom ψ] {n : ℕ}
     (u : Fin n → (E ⟶ A)) : (List.ofFn u).prod ≫ ψ = (List.ofFn fun i => u i ≫ ψ).prod :=
   (map_list_prod (IsMonHom.monoidHom ψ E) _).trans (by rw [List.map_ofFn]; rfl)
 
+/- English proof (translation)
+Establish `htan : ∀ v : E ⟶ A, z ≫ v = 1 → z ≫ v ≫ ψ = 1` using `fun v hv => by`. Rewrite using `[← Category.assoc, hv, MonObj.one_comp]`. Establish `hinj : ∀ v v' : E ⟶ A, z ≫ v = 1 → z ≫ v' = 1 → v ≫ ψ = v' ≫ ψ → v = v'` using `fun v v' hv hv' e => (H _ (htan v' hv')).unique ⟨hv, e⟩ ⟨hv', rfl⟩`. Establish `hsc : ∀ (c : k) (v : E ⟶ A), z ≫ v = 1 → z ≫ sc c ≫ v = 1` using `fun c v hv => by`. Rewrite using `[← Category.assoc, hz, hv]`.
+
+Establish `heig : ∀ v : E ⟶ A, z ≫ v = 1 → (Eig z sc a τ v ↔ Eig z sc b τ (v ≫ ψ))` using `fun v hv => by`. Use `⟨fun h => ⟨htan v hv, fun c => ?_⟩, fun h => ⟨hv, fun c => hinj _ _ ?_ (hsc _ _ hv) ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ← hab, ← Category.assoc, h.2, Category.assoc]`. Use `ha c` as an intermediate fact. Rewrite using `[← Category.assoc, hv, MonObj.one_comp]`.
+
+Rewrite using `[Category.assoc, hab, ← Category.assoc, h.2, Category.assoc]`. Establish `hcomb : ∀ (v : Fin n → (E ⟶ A)) (w : E ⟶ A), (∀ i, z ≫ v i = 1) → z ≫ w = 1 → ∀ c : Fin n → k, (w = (List.ofFn fun i => sc (c i) ≫ v i).prod ↔ w ≫ ψ = (List.ofFn fun i => sc (c i) ≫ v i ≫ ψ).prod)` using `fun v w hv hw c => by`. Establish `e : (List.ofFn fun i => sc (c i) ≫ v i).prod ≫ ψ = (List.ofFn fun i => sc (c i) ≫ v i ≫ ψ).prod`. Simplify using `only [ofFn_prod_comp, Category.assoc]`. Rewrite using `[← e]`.
+
+Use `⟨fun h => by rw [← h], hinj _ _ hw (comp_listProd z _ fun u hu => ?_)⟩` and prove the remaining obligations. Take `⟨i, rfl⟩` from `List.mem_ofFn.mp hu`. Conclude with `hsc _ _ (hv i)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, h⟩`.
+
+Use `⟨fun i => v i ≫ ψ, fun i => (heig _ (hv i).1).mp (hv i), fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨w', ⟨hw', rfl⟩, -⟩` from `H w hw.1`. Conclude with `(existsUnique_congr (hcomb v w' (fun i => (hv i).1) hw')).mp (h w' ((heig _ hw').mpr hw))`. Introduce and unpack `⟨v, hv, h⟩ choose v' hv' using fun i => (H (v i) (hv i).1).exists`. Take `rfl : v = fun i => v' i ≫ ψ` from `funext fun i => (hv' i).2.symm`.
+
+Use `⟨v', fun i => (heig _ (hv' i).1).mpr (hv i), fun w hw => ?_⟩` and prove the remaining obligations. Conclude with `(existsUnique_congr (hcomb v' w (fun i => (hv' i).1) hw.1)).mpr (h _ ((heig _ hw.1).mp hw))`.
+-/
 theorem mult_iff {A B : Over S} [GrpObj A] [GrpObj B] (ψ : A ⟶ B) [IsMonHom ψ]
     (z : P ⟶ E) (sc : k → (E ⟶ E)) (hz : ∀ c, z ≫ sc c = z)
     (a : O → (A ⟶ A)) (b : O → (B ⟶ B)) (ha : ∀ c, IsMonHom (a c))
@@ -132,6 +162,9 @@ def epsPtScale (c : k) : epsPt x ⟶ epsPt x :=
     congr 3
     exact RingHom.ext fun r => (TrivSqZeroExt.map (c • (LinearMap.id : k →ₗ[k] k))).commutes r)
 
+/- English proof (translation)
+Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `spMap _ ≫ spMap _ = spMap _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Conclude with `RingHom.ext fun r => TrivSqZeroExt.fst_map _ r`.
+-/
 theorem epsPtZero_epsPtScale (c : k) : epsPtZero x ≫ epsPtScale x c = epsPtZero x := by
   refine Over.OverMorphism.ext ?_
   change spMap _ ≫ spMap _ = spMap _
@@ -141,11 +174,19 @@ theorem epsPtZero_epsPtScale (c : k) : epsPtZero x ≫ epsPtScale x c = epsPtZer
 
 variable {O : Type} [CommRing O] {G : Over S} [GrpObj G] (act : OAct O G) (τ : O →+* k)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨Over.OverMorphism.ext h.1, fun a => Over.OverMorphism.ext (h.2 a)⟩, fun h => ⟨congrArg (·.left) h.1, fun a => congrArg (·.left) (h.2 a)⟩⟩`.
+-/
 theorem isLieEigen_iff (v : epsPt x ⟶ G) :
     IsLieEigen act x τ v ↔ Eig (epsPtZero x) (epsPtScale x) act.act τ v :=
   ⟨fun h => ⟨Over.OverMorphism.ext h.1, fun a => Over.OverMorphism.ext (h.2 a)⟩,
     fun h => ⟨congrArg (·.left) h.1, fun a => congrArg (·.left) (h.2 a)⟩⟩
 
+/- English proof (translation)
+Simplify using `only [LieMult, isLieEigen_iff]`. Use `exists_congr fun v => and_congr_right fun _ => forall_congr' fun w => imp_congr_right fun _ => existsUnique_congr fun c => ⟨?_, fun h => ⟨_, fun _ => rfl, h⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨u, hu, rfl⟩`. Choose the witnesses or unpack the hypotheses as in `rfl : u = fun i => epsPtScale x (c i) ≫ v i :=`. Use function extensionality and compare the values at `fun i => Over.OverMorphism.ext (hu i)`.
+
+Both sides reduce to the same expression.
+-/
 theorem lieMult_iff (n : ℕ) : LieMult act x τ n ↔
     ∃ v : Fin n → (epsPt x ⟶ G), (∀ i, Eig (epsPtZero x) (epsPtScale x) act.act τ (v i)) ∧
       ∀ w, Eig (epsPtZero x) (epsPtScale x) act.act τ w →
@@ -158,6 +199,9 @@ theorem lieMult_iff (n : ℕ) : LieMult act x τ n ↔
     funext fun i => Over.OverMorphism.ext (hu i)
   rfl
 
+/- English proof (translation)
+Take `⟨v, ⟨h₁, h₂⟩, hu⟩` from `existsUnique_dual_lift ψ.left w.left (1 : Over.mk x ⟶ A).left (congrArg (·.left) ((MonObj.one_comp ψ).trans hw.symm))`. Use `⟨Over.homMk v ?_, ⟨Over.OverMorphism.ext h₁, Over.OverMorphism.ext h₂⟩, fun v' hv' => Over.OverMorphism.ext (hu _ ⟨congrArg (·.left) hv'.1, congrArg (·.left) hv'.2⟩)⟩` and prove the remaining obligations. Rewrite using `[← Over.w ψ, ← Category.assoc]`. Conclude with `(congrArg (· ≫ B.hom) h₂).trans (Over.w w)`.
+-/
 theorem existsUnique_tangent_lift {A B : Over S} [GrpObj A] [GrpObj B] (ψ : A ⟶ B) [IsMonHom ψ]
     [Etale ψ.left] (w : epsPt x ⟶ B) (hw : epsPtZero x ≫ w = 1) :
     ∃! v : epsPt x ⟶ A, epsPtZero x ≫ v = 1 ∧ v ≫ ψ = w := by
@@ -171,6 +215,9 @@ theorem existsUnique_tangent_lift {A B : Over S} [GrpObj A] [GrpObj B] (ψ : A �
 
 end Dual
 
+/- English proof (translation)
+Introduce `O _ S A B _ _ ψ a b _ _ hab k _ x τ n`. Rewrite using `[lieMult_iff, lieMult_iff]`. Conclude with `mult_iff ψ _ _ (epsPtZero_epsPtScale x) a.act b.act a.hom hab τ (existsUnique_tangent_lift x ψ) n`.
+-/
 theorem lieMult_iff_of_etale :
     ∀ (O : Type) [CommRing O] (S : Scheme.{0}) (A B : Over S) [GrpObj A] [GrpObj B] (ψ : A ⟶ B) (a : OAct O A) (b : OAct O B), IsMonHom ψ → Etale ψ.left → (∀ c, a.act c ≫ ψ = ψ ≫ b.act c) → ∀ (k : Type) [Field k] (x : Sp k ⟶ S) (τ : O →+* k) (n : ℕ), LieMult a x τ n ↔ LieMult b x τ n := by
   intro O _ S A B _ _ ψ a b _ _ hab k _ x τ n

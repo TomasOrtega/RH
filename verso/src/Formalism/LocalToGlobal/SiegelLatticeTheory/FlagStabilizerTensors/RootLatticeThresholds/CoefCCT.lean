@@ -13,6 +13,9 @@ namespace Formalism.L2.SG.Pf.CoefCCT
 
 variable {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSetting D} {θ : ℝ}
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.SG.Pf.CoefCC.smul_coefM_translate_inCC_kfin_gapOK (hlam j) (hgap j) (hok j) hA0 (hA j) (Formalism.L2.SG.Pf.dsTr C (e (plE D j))) (hka j) (hkb j) (Formalism.L2.SG.RealObj.EnergyIntTor.tor_mem_UH (Formalism.L2.SG.Pf.muT_ne D)) (Formalism.L2.SG.RealObj.EnergyIntTor.tor_ …`.
+-/
 theorem fcT_inCC (C : Choice X θ) (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (u u' : D.what₂.Word)
     (a b : ∀ j : Fin (nfE D), X.B.H (tauE X e j)) (ξ : ∀ j : Fin (nfE D), X.Vloc u (tauE X e j))
     (ξ' : ∀ j : Fin (nfE D), X.Vloc u' (tauE X e j)) (cc : Fin (nfE D) → ℂ) (h : Fin (nfE D) → ℝ)
@@ -30,6 +33,9 @@ theorem fcT_inCC (C : Choice X θ) (e : InfinitePlace D.host.E ≃ D.what₂.Tau
     (Formalism.L2.SG.RealObj.EnergyIntTor.tor_mem_UH (Formalism.L2.SG.Pf.muT_ne D))
     (Formalism.L2.SG.RealObj.EnergyIntTor.tor_mem_UH (inv_ne_zero (Formalism.L2.SG.Pf.muT_ne D))) (cc j) (ξ j) (ξ' j) m
 
+/- English proof (translation)
+Introduce `j m` and use `fcT_inCC C e u u' a b ξ ξ' cc h hlam hgap hok hA0 hA hka hkb j m`.
+-/
 theorem coefCC_carrierInTc (C : Choice X θ) (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what₂.Tau)
     (he : PlaceTie X e) (hv : D.host.v = Formalism.FourierDecayAlt.S6.rd D.host.E / 2) (CA : ℝ) (de de' : ℕ → ℝ) (l : ℕ)
     (grid : Fin (nfE D) → ℕ → Finset ℝ) (grid1 : Fin (nfE D) → Finset ℝ)

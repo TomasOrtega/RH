@@ -2,6 +2,33 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr UpperTheory.V.Z.J
 
+/- English proof (translation)
+Introduce `l _ O _ _ _ _ _ hl`. Use `haveI hchar := IsCoef.char (l := l) (O := O)`. Use `haveI hfinres := IsCoef.fin (l := l) (O := O)`. Establish `hlm : (l : O) ∈ maximalIdeal O`. Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_natCast]`.
+
+Conclude with `CharP.cast_eq_zero _ l`. Establish `hlu : ¬ IsUnit (l : O)` using `fun hu => ((IsLocalRing.mem_maximalIdeal _).mp hlm) hu`. Establish `hfinc : ∀ c : O, c ≠ 0 → Finite (O ⧸ Ideal.span {c})`. Introduce `c hc`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`.
+
+Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hc hϖ`. Apply `IsLocalRing.finite_quotient_iff.mpr` to reduce the goal to its premises. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.span_singleton_le_span_singleton]`. Conclude with `Units.mul_left_dvd.mpr dvd_rfl`.
+
+Establish `hfin : ∀ k, Finite (Ok l O k)` using `fun k => hfinc _ (pow_ne_zero k hl)`. Establish `hcard : ∀ k, 2 ^ k ≤ Nat.card (Ok l O k)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => haveI := hfin 0`.
+
+Rewrite using `[pow_zero]`. Conclude with `Nat.card_pos`. Consider the case `succ k ih => haveI := hfin k haveI := hfin (k + 1)`. Establish `hle : Ideal.span {(l : O) ^ (k + 1)} ≤ Ideal.span {(l : O) ^ k}`. Rewrite using `[Ideal.span_singleton_le_span_singleton]`.
+
+Conclude with `pow_dvd_pow _ (Nat.le_succ k)`. Set `g : Ok l O (k + 1) →+ Ok l O k` to `(Ideal.Quotient.factor hle).toAddMonoidHom`. Establish `hsurj : Function.Surjective g` using `Ideal.Quotient.factor_surjective hle`. Establish `hmem : Ideal.Quotient.mk (Ideal.span {(l : O) ^ (k + 1)}) ((l : O) ^ k) ∈ g.ker`. Rewrite using `[AddMonoidHom.mem_ker]`.
+
+Use `show Ideal.Quotient.factor hle (Ideal.Quotient.mk _ ((l : O) ^ k)) = 0`. Rewrite using `[Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_span_singleton_self _`. Establish `hne : Ideal.Quotient.mk (Ideal.span {(l : O) ^ (k + 1)}) ((l : O) ^ k) ≠ 0`. Rewrite using `[Ne, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton, pow_dvd_pow_iff hl hlu]`.
+
+Use linear arithmetic over natural numbers and integers. Use `haveI : Nontrivial g.ker := nontrivial_of_ne ⟨_, hmem⟩ 0 (fun h => hne (congrArg Subtype.val h))`. Establish `h2 : 2 ≤ Nat.card g.ker` using `Finite.one_lt_card_iff_nontrivial.mpr inferInstance`. Establish `hrange : Nat.card g.range = Nat.card (Ok l O k)`. Rewrite using `[AddMonoidHom.range_eq_top.mpr hsurj, AddSubgroup.card_top]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `⟨hfin, hfinc, ?_, hcard, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `k x`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[nsmul_eq_mul, ← map_natCast (Ideal.Quotient.mk _), ← map_mul, Ideal.Quotient.eq_zero_iff_mem, Nat.cast_pow]`.
+
+Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`. Introduce `k haveI := hfin k`. Conclude with `IsLocalRing.finite_quotient_iff.mp (hfin k)`. Introduce `k a x`. Establish `hmem : a - (((PadicInt.toZModPow k a).val : ℕ) : ℤ_[l]) ∈ RingHom.ker (PadicInt.toZModPow (p` using `l) k) := by`.
+
+Rewrite using `[RingHom.mem_ker, map_sub, map_natCast, ZMod.natCast_zmod_val, sub_self]`. Rewrite `hmem` using `[PadicInt.ker_toZModPow, Ideal.mem_span_singleton']`. Take `⟨b, hb⟩` from `hmem`. Establish `ha : algebraMap ℤ_[l] O a = (((PadicInt.toZModPow k a).val : ℕ) : O) + algebraMap ℤ_[l] O b * (l : O) ^ k`. Establish `h0` using `congrArg (algebraMap ℤ_[l] O) hb`.
+
+Simplify using `only [map_mul, map_sub, map_pow, map_natCast] at h0`. Take the linear combination `(-1 : O) * h0`. Establish `hz : (algebraMap ℤ_[l] O b * (l : O) ^ k) • x = 0`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, Ideal.Quotient.eq_zero_iff_mem]`.
+
+Conclude with `Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _))`. Rewrite using `[ha, add_smul, Nat.cast_smul_eq_nsmul, hz, add_zero]`. Introduce `k hk`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `Ideal.pow_mem_of_mem _ hlm k hk`.
+-/
 theorem UpperTheory.V.Z.J.okFin :
     ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O], (l : O) ≠ 0 → (∀ k, Finite (Ok l O k)) ∧ (∀ c : O, c ≠ 0 → Finite (O ⧸ Ideal.span {c})) ∧ (∀ k, (∀ x : Ok l O k, l ^ k • x = 0)) ∧ (∀ k, 2 ^ k ≤ Nat.card (Ok l O k)) ∧ (∀ k, ∃ N, maximalIdeal O ^ N ≤ Ideal.span {(l : O) ^ k}) ∧ (∀ k (a : ℤ_[l]) (x : Ok l O k), algebraMap ℤ_[l] O a • x = (PadicInt.toZModPow k a).val • x) ∧ (∀ k, 0 < k → Ideal.span {(l : O) ^ k} ≤ maximalIdeal O) := by
   intro l _ O _ _ _ _ _ hl

@@ -27,6 +27,11 @@ namespace UpperTheory.Gal.Int.Row
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
+/- English proof (translation)
+Take `⟨n, a, rfl⟩` from `y.exists_rep`. Establish `ha : a.Tame` using `(WD.tame_mk a).1 ((WD.tame_iff_inePol _).2 fun σ hσ => k σ hσ)`. Use `⟨n, a, rfl, fun σ hσ => ha σ fun x hx => ?_⟩` and prove the remaining obligations. Establish `e : (σ : G E Ω) x / x - 1 = ((σ : G E Ω) x - x) / x` using `by field_simp`. Establish `h0 : 0 < A.valuation x` using `zero_lt_iff.mpr (by simpa using hx)`.
+
+Rewrite using `[e, map_div₀, div_lt_one₀ h0]`. Conclude with `hσ.2 x hx`.
+-/
 theorem isTameWD_of_tmW {y : WD h} (k : TmW y) : IsTameWD y := by
   obtain ⟨n, a, rfl⟩ := y.exists_rep
   have ha : a.Tame := (WD.tame_mk a).1 ((WD.tame_iff_inePol _).2 fun σ hσ => k σ hσ)
@@ -36,6 +41,11 @@ theorem isTameWD_of_tmW {y : WD h} (k : TmW y) : IsTameWD y := by
   rw [e, map_div₀, div_lt_one₀ h0]
   exact hσ.2 x hx
 
+/- English proof (translation)
+Take `⟨n, b, rfl, hb⟩` from `hy`. Establish `hn : n = 1` using `UpperTheory.Zero.LLC.AbC.dim_one b hb fun σ t => by`. Take `⟨m, hm⟩` from `k σ (ineIncl h t)`. Rewrite `hm` using `[WD.charPol_mk]`. Conclude with `⟨m, hm⟩`.
+
+Rewrite using `[WD.lpDim_mk]`. Simplify using `using hn`.
+-/
 theorem dim_one_of_dvd {y : WD h} (hy : IsIrrWD y) (k : ∀ s t : Weil h, ∃ m : ℕ, y.charPol ⁅s, t⁆ ∣ (X - 1 : ℂ[X]) ^ m) :
     y.lpDim = 1 := by
   obtain ⟨n, b, rfl, hb⟩ := hy
@@ -46,6 +56,19 @@ theorem dim_one_of_dvd {y : WD h} (hy : IsIrrWD y) (k : ∀ s t : Weil h, ∃ m 
   rw [WD.lpDim_mk]
   simpa using hn
 
+/- English proof (translation)
+Take `⟨n, a, rfl, ha'⟩` from `ht`. Establish `ha : a.Tame` using `fun σ hσ => ha' σ (TameWeilRepresentationIrreducibility.wild_inertia_isWild hσ)`. Set `u` to `a.ρ.toHomUnits`. Set `g : Weil h` to `ineIncl h ⟨γ, hγ.1⟩`. Establish `hq : 1 ≤ normV w` using `(one_lt_normV w).le`.
+
+Establish `p1 : a.ρ g ^ (normV w - 1) = 1` using `pow_eq_one_of_roots (a.semisimple g) fun z hz => k z (by rwa [WD.charPol_mk])`. Establish `p2 : a.ρ (frob h * g * (frob h)⁻¹) = a.ρ g`. Rewrite using `[ha.conj_eq_pow hγ.1 deg_frob, ← Nat.sub_add_cancel hq, pow_succ, p1, one_mul]`. Establish `c1 : Commute (u (frob h)) (u g)`. Establish `e : u (frob h * g * (frob h)⁻¹) = u g` using `Units.ext p2`.
+
+Rewrite `e` using `[map_mul, map_mul, map_inv, mul_inv_eq_iff_eq_mul]`. Conclude with `e`. Establish `cen : ∀ x : (End ℂ (Fin n → ℂ))ˣ, Commute x (u g) → ∀ σ, Commute x (u (ineIncl h σ))` using `fun x hx σ => Subgroup.mem_centralizer_singleton_iff.1 (mem_of_gen ha hγ (Subgroup.centralizer {x}) (Subgroup.mem_centralizer_singleton_iff.2 hx.symm) σ) |>.symm`. Establish `c2` using `cen _ c1`. Establish `c3 : ∀ τ σ, Commute (u (ineIncl h τ)) (u (ineIncl h σ))` using `fun τ => cen _ (cen _ (Commute.refl _) τ).symm`.
+
+Introduce `s t`. Establish `c : Commute (u s) (u t)`. Take `⟨τ, e⟩` from `exists_eq_zpow_mul deg_frob s`. Take `⟨τ', e'⟩` from `exists_eq_zpow_mul deg_frob t`. Rewrite using `[e, e', map_mul, map_mul, map_zpow, map_zpow]`.
+
+Conclude with `Commute.mul_left (Commute.mul_right (Commute.zpow_zpow_self _ _ _) ((c2 τ').zpow_left _)) (Commute.mul_right ((c2 τ).symm.zpow_right _) (c3 τ τ'))`. Establish `e : a.ρ ⁅s, t⁆ = 1`. Use `(map_commutatorElement u s t).trans (commutatorElement_eq_one_iff_commute.2 c)` as an intermediate fact. Conclude with `congrArg Units.val this`. Use `show (WD.mk a).charPol _ = _`.
+
+Rewrite using `[WD.charPol_mk, e, LinearMap.charpoly_one, WD.lpDim_mk]`.
+-/
 theorem tor_of_fix {y : WD h} (ht : IsTameWD y) {γ : G E Ω} (hγ : TameGenAt A γ)
     (k : ∀ z : ℂ, (y.charPol (ineIncl h ⟨γ, hγ.1⟩)).IsRoot z → z ^ (normV w - 1) = 1) : Tor y := by
   obtain ⟨n, a, rfl, ha'⟩ := ht
@@ -80,6 +103,13 @@ theorem tor_of_fix {y : WD h} (ht : IsTameWD y) {γ : G E Ω} (hγ : TameGenAt A
 
 variable {rc : IrrGL (w.adicCompletion E) → WD h}
 
+/- English proof (translation)
+Establish `: CharZero (w.adicCompletion E)` using `charZero_of_injective_algebraMap (algebraMap E _).injective`. Take `⟨c, Δ, hun, hL⟩` from `GlobalTheory.T.exists_unlinked_langlandsDatum_generic _ x hx`. Take `⟨a, ha, L⟩` from `id hrc`. Establish `e : rc x = segSum rc (List.ofFn Δ)` using `L.langlands _ x hL`. Take `⟨hlen, hsum⟩` from `GlobalTheory.T.segmentSum_no_monodromy_length_one rc hrc (List.ofFn Δ) (e ▸ hm)`.
+
+Establish `h1 : ∀ i, (Δ i).len = 1` using `fun i => hlen _ (List.mem_ofFn.2 ⟨i, rfl⟩)`. Use `⟨List.ofFn fun i => (Δ i).first, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Fin.univ_val_map]`. Conclude with `GlobalTheory.T.supercuspidalSupport_of_lengthOne_langlandsDatum _ c Δ x h1 hL`. Rewrite using `[← Fin.univ_val_map]`.
+
+Conclude with `GlobalTheory.T.unlinkedLengthOneSegments_firstTerms_not_nuTwist rc hrc c Δ h1 hun`. Rewrite using `[e, hsum, List.map_ofFn, List.map_ofFn]`. Both sides reduce to the same expression.
+-/
 theorem split (hrc : IsRecT h rc) {x : IrrGL (w.adicCompletion E)} (hx : IsGeneric x.rep) (hm : (rc x).mono0) :
     ∃ l : List (IrrGL (w.adicCompletion E)), HasSupport x.rep (l : Multiset _) ∧ GlobalTheory.RoadU.Unlinked (l : Multiset (IrrGL (w.adicCompletion E))) ∧
       rc x = sumList (l.map rc) := by
@@ -94,6 +124,11 @@ theorem split (hrc : IsRecT h rc) {x : IrrGL (w.adicCompletion E)} (hx : IsGener
   · rw [← Fin.univ_val_map]; exact GlobalTheory.T.unlinkedLengthOneSegments_firstTerms_not_nuTwist rc hrc c Δ h1 hun
   · rw [e, hsum, List.map_ofFn, List.map_ofFn]; rfl
 
+/- English proof (translation)
+Take `⟨l, hs, hu, e⟩` from `split hrc hx hm`. Take `⟨a, ha, L⟩` from `hrc`. Use `⟨_, hs, fun y hy => ?_, hu⟩` and prove the remaining obligations. Rewrite using `[← L.dim y]`. Use `dim_one_of_dvd (L.cusp y (hs.isCusp hy)) fun s t => ⟨(rc x).lpDim, ?_⟩` and prove the remaining obligations.
+
+Establish `k : (rc x).charPol ⁅s, t⁆ = _` using `ht s t`. Rewrite using `[← k, e, CuspExt.charPol_sumList, List.map_map]`. Conclude with `List.dvd_prod (List.mem_map.2 ⟨y, hy, rfl⟩)`.
+-/
 theorem plainTor_of_tor (hrc : IsRecT h rc) {x : IrrGL (w.adicCompletion E)} (hx : IsGeneric x.rep) (ht : Tor (rc x))
     (hm : (rc x).mono0) : GlobalTheory.RoadU.PlainTor x := by
   obtain ⟨l, hs, hu, e⟩ := split hrc hx hm
@@ -105,12 +140,26 @@ theorem plainTor_of_tor (hrc : IsRecT h rc) {x : IrrGL (w.adicCompletion E)} (hx
   rw [← k, e, CuspExt.charPol_sumList, List.map_map]
   exact List.dvd_prod (List.mem_map.2 ⟨y, hy, rfl⟩)
 
+/- English proof (translation)
+Establish `: CharZero (w.adicCompletion E)` using `charZero_of_injective_algebraMap (algebraMap E _).injective`. Establish `h1 : IsSmoothChar (1 : (w.adicCompletion E)ˣ →* ℂˣ)`. Simplify using `using isSmoothChar_absPow (k := w.adicCompletion E) 0`. Conclude with `((goodSeg _).2.1 y hy).2 (Or.inr ⟨hq, y, 1, h1, hd, (y.tw_one h1).symm⟩)`.
+-/
 theorem good_of_dz (hq : IsQp w) {y : IrrGL (w.adicCompletion E)} (hy : y.IsCusp) (hd : DZ y) : Good y := by
   have : CharZero (w.adicCompletion E) := charZero_of_injective_algebraMap (algebraMap E _).injective
   have h1 : IsSmoothChar (1 : (w.adicCompletion E)ˣ →* ℂˣ) := by
     simpa using isSmoothChar_absPow (k := w.adicCompletion E) 0
   exact ((goodSeg _).2.1 y hy).2 (Or.inr ⟨hq, y, 1, h1, hd, (y.tw_one h1).symm⟩)
 
+/- English proof (translation)
+Take `⟨a, ha, H⟩` from `hrc`. Take `⟨φ, hφ⟩` from `deg_surjective (h := h) (-1)`. Establish `hord : ord (w.adicCompletion E) (a φ) = 1` using `by rw [ha.ord_eq, hφ]; rfl`. Establish `hc : ((rc x).eig φ).prod ≠ 0`. Take `⟨δ, hδ⟩` from `(wDBasic E Ω A w h (rc x)).1`.
+
+Rewrite using `[hδ]`. Conclude with `Units.ne_zero _`. Take `⟨f, hf, hfi⟩` from `depth_zero_intermediate_holds E Ω A w h φ hφ x.1 _ hx.1`. Take `⟨Y, hY, hYi⟩` from `depth_zero_count_holds (w.adicCompletion E) x.1 hx.1 (a φ) hord (Units.mk0 _ hc)`. Establish `hg : ∀ P ∈ Lab 𝓀[w.adicCompletion E] x.1, Good (Y P)` using `fun P hP => good_of_dz hq (hY P hP).2.1 (hY P hP).2.2.1`.
+
+Establish `hmap : Set.MapsTo (rc ∘ Y) (Lab 𝓀[w.adicCompletion E] x.1) (TameSet φ x.1 ((rc x).eig φ).prod)`. Introduce `P hP`. Take `⟨h1, h2, h3, ω, h4, h5⟩` from `hY P hP`. Use `⟨H.cusp _ h2, H.depth _ (hg P hP) h3, (H.dim _).trans h1, ?_⟩` and prove the remaining obligations. Use `show ((rc (Y P)).eig φ).prod = _`.
+
+Rewrite using `[H.central _ ω (hg P hP) h4 φ, h5, Units.val_mk0]`. Establish `hinj : Set.InjOn (f ∘ rc ∘ Y) (Lab 𝓀[w.adicCompletion E] x.1)` using `hfi.comp (fun P hP P' hP' e => hYi hP hP' (H.inj _ _ (hg P' hP') e)) hmap`. Establish `hbij` using `((lab_finite _ _).injOn_iff_bijOn_of_mapsTo (hf.comp hmap)).1 hinj`. Establish `hxT : rc x ∈ TameSet φ x.1 ((rc x).eig φ).prod` using `⟨H.cusp _ hx, ht, H.dim _, rfl⟩`. Take `⟨P, hP, hPe⟩` from `hbij.surjOn (hf hxT)`.
+
+Establish `e : x = Y P` using `H.inj _ _ (hg P hP) (hfi (hmap hP) hxT hPe).symm`. Rewrite using `[e]`. Conclude with `(hY P hP).2.2.1`.
+-/
 theorem dz_of_cusp (hq : IsQp w) (hrc : IsRecT h rc) {x : IrrGL (w.adicCompletion E)} (hx : x.IsCusp) (ht : IsTameWD (rc x)) :
     DZ x := by
   obtain ⟨a, ha, H⟩ := hrc
@@ -138,6 +187,11 @@ theorem dz_of_cusp (hq : IsQp w) (hrc : IsRecT h rc) {x : IrrGL (w.adicCompletio
   rw [e]
   exact (hY P hP).2.2.1
 
+/- English proof (translation)
+Take `⟨a, ha, H⟩` from `hrc`. Take `⟨μ, hμ, rfl⟩` from `k`. Rewrite using `[H.twist _ _ _ hy, H.one, lpChar_lpOfChar]`. Take `⟨n, b, hb⟩` from `(rc y).exists_rep`. Establish `h1 : μ (a (ineIncl h t)) = 1` using `hμ _ (ord_eq_zero_iff.1 (by rw [ha.ord_eq, deg_ineIncl, neg_zero]))`.
+
+Rewrite using `[← hb, WD.lpTwist_mk, WD.charPol_mk, WD.charPol_mk, WDRep.twist_ρ, MonoidHom.comp_apply, h1, Units.val_one, one_smul]`.
+-/
 theorem charPol_of_inert (hrc : IsRecT h rc) {y z : IrrGL (w.adicCompletion E)} (hy : Good y) (k : y.Inert z)
     (t : Ine (F := E) A) : (rc z).charPol (ineIncl h t) = (rc y).charPol (ineIncl h t) := by
   obtain ⟨a, ha, H⟩ := hrc
@@ -148,6 +202,19 @@ theorem charPol_of_inert (hrc : IsRecT h rc) {y z : IrrGL (w.adicCompletion E)} 
     hμ _ (ord_eq_zero_iff.1 (by rw [ha.ord_eq, deg_ineIncl, neg_zero]))
   rw [← hb, WD.lpTwist_mk, WD.charPol_mk, WD.charPol_mk, WDRep.twist_ρ, MonoidHom.comp_apply, h1, Units.val_one, one_smul]
 
+/- English proof (translation)
+Establish `: CharZero (w.adicCompletion E)` using `charZero_of_injective_algebraMap (algebraMap E _).injective`. Take `⟨l, hl, hu, e⟩` from `split hrc hx hm`. Establish `tame : ∀ y ∈ l, IsTameWD (rc y)` using `fun y hy => GlobalTheory.T.isTame_of_mem_weilDeligneListSum _ (e ▸ isTameWD_of_tmW ht) _ (List.mem_map_of_mem hy)`. Establish `dz : ∀ y ∈ l, DZ y` using `fun y hy => dz_of_cusp hq hrc (hl.isCusp hy) (tame y hy)`. Take `⟨hGL, hZ⟩` from `GlobalTheory.geometricLemma_and_zelevinskyPolynomialRing`.
+
+Use `⟨GlobalTheory.DepthZeroPass.depthZeroInduction hGL GlobalTheory.bernsteinZelevinskyFiniteness_holds hZ _ x _ hl dz, fun s hs' => ?_⟩` and prove the remaining obligations. Take `rfl : s = (l : Multiset _)` from `(goodSeg _).2.2 x _ _ hs' hl`. Use `⟨hu, _, Multiset.filter_coe _ l, ?_⟩` and prove the remaining obligations. Rewrite using `[List.pairwise_filter, List.pairwise_iff_forall_sublist]`. Introduce `y z hsub h2 _ hI`.
+
+Establish `hy : y ∈ l` using `hsub.subset (by simp)`. Take `⟨γ, hγ⟩ : ∃ γ : G E Ω, TameGenAt A γ` from `GlobalTheory.exists_tameGenAt_of_isPlaceOver E Ω A w h`. Establish `e1` using `charPol_of_inert hrc (good_of_dz hq (hl.isCusp hy) (dz y hy)) hI ⟨γ, hγ.1⟩`. Establish `hd : (rc y).charPol (ineIncl h ⟨γ, hγ.1⟩) * (rc y).charPol (ineIncl h ⟨γ, hγ.1⟩) ∣ (rc x).charPol (ineIncl h ⟨γ, hγ.1⟩)`. Rewrite using `[e, CuspExt.charPol_sumList, List.map_map]`.
+
+Use `(hsub.map ((fun v : WD h => v.charPol (ineIncl h ⟨γ, hγ.1⟩)) ∘ rc)).prod_dvd_prod` as an intermediate fact. Simplify `this` using `[e1]`. Establish `T : Tor (rc y)` using `tor_of_fix (tame y hy) hγ fun c hc => by`. Use `hs γ hγ.1 hγ.2 c ?_` and prove the remaining obligations. Rewrite using `[WD.inePol_of_mem_Ine _ hγ.1, le_rootMultiplicity_iff (WD.charPol_monic _ _).ne_zero, pow_two]`.
+
+Conclude with `(mul_dvd_mul (dvd_iff_isRoot.2 hc) (dvd_iff_isRoot.2 hc)).trans hd`. Take `⟨a, ha, H⟩` from `hrc`. Establish `d1` using `dim_one_of_dvd (H.cusp y (hl.isCusp hy)) fun s t => ⟨_, (T s t : (rc y).charPol ⁅s, t⁆ = _).dvd⟩`. Rewrite `d1` using `[H.dim]`. Simplify using `only [decide_eq_true_eq] at h2`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem mixed_of_tame (hq : IsQp w) (hrc : IsRecT h rc) {x : IrrGL (w.adicCompletion E)} (hx : IsGeneric x.rep)
     (ht : TmW (rc x)) (hs : Sqf (rc x)) (hm : (rc x).mono0) :
     DZ x ∧ ∀ s, HasSupport x.rep s → GlobalTheory.RoadU.Unlinked s ∧ (s.filter fun y => 2 ≤ y.1).Pairwise fun y z => ¬ y.Inert z := by
@@ -179,6 +246,11 @@ theorem mixed_of_tame (hq : IsQp w) (hrc : IsRecT h rc) {x : IrrGL (w.adicComple
   simp only [decide_eq_true_eq] at h2
   omega
 
+/- English proof (translation)
+Establish `: CharZero (w.adicCompletion E)` using `charZero_of_injective_algebraMap (algebraMap E _).injective`. Establish `e : x = (x.nu s).nu (-s)` using `by simp`. Rewrite using `[e]`. Use `(twTame _ (x.nu s) _ (isSmoothChar_absPow (-s)) h0 k).2 fun u hu => ?_` and prove the remaining obligations. Establish `h1 : valuation (w.adicCompletion E) (u : w.adicCompletion E) = 1`.
+
+Use `(valuation (w.adicCompletion E)).map_one_add_of_lt hu` as an intermediate fact. Simplify using `using this`. Conclude with `isUnram_absPow _ _ _ h1`.
+-/
 theorem dz_of_nu {x : IrrGL (w.adicCompletion E)} (h0 : 0 < x.1) (s : ℂ) (k : DZ (x.nu s)) : DZ x := by
   have : CharZero (w.adicCompletion E) := charZero_of_injective_algebraMap (algebraMap E _).injective
   have e : x = (x.nu s).nu (-s) := by simp

@@ -58,6 +58,9 @@ def HyperplaneRank (D : D7) : Prop :=
 def DefiniteRankOne (D : D7) : Prop :=
   S.UnitaryVolumeMass.DefiniteRankOneAllWords D
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h0, h2⟩`. Conclude with `⟨fun u T' Λ F F' a b c => h0 u T' Λ F F' a b c, fun u T' Λ F F' F'' β a b c d e hs W hW => (h2 u T' Λ F F' F'' β a b c d e).1 hs W hW, fun u T' Λ F F' F'' β a b c d e hs => (h2 u T' Λ F F' F'' β a b c d e).2 hs⟩`. Introduce and unpack `⟨h0, h2, h3⟩`. Conclude with `⟨fun u T' Λ F F' a b c => h0 u T' Λ F F' a b c, fun u T' Λ F F' F'' β a b c d e => ⟨fun hs W hW => h2 u T' Λ F F' F'' β a b c d e hs W hW, fun hs => h3 u T' Λ F F' F'' β a b c d e hs⟩⟩`.
+-/
 theorem setting_claims_iff (D : D7) : DefiniteComplementAndPairRank D ↔ GlobalIntegralModelCondition D ∧ HyperplaneRank D ∧ DefiniteRankOne D := by
   constructor
   · rintro ⟨h0, h2⟩
@@ -92,6 +95,9 @@ def ConditionalHyperplaneRank (D : D7) : Prop := GlobalIntegralModelCondition D 
 
 def ThetaChernBoundOfLastLine (D : D7) : Prop := adm1 D → adm3 D → Conclusion2 D → DefiniteRankOne D → Conclusion4 D
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨a1, a2, a3⟩ => ⟨h1 a1 h0, h2, h3 a2 (h1 a1 h0) h2 (hA2 h0), h4 a1 a3 h2 (hA3 h0)⟩, fun _ => (setting_claims_iff D).2 ⟨h0, hA2 h0, hA3 h0⟩⟩`.
+-/
 theorem local_statement_of_parts (D : D7) (h0 : GluingBaseStatement D) (h1 : IntegralityFromMetric D) (h2 : HodgeTateFromSandwich D) (hA2 : PrvA2OfGlobalModelA0Cond D) (h3 : TowerRallisLemma D)
     (hA3 : ConditionalHyperplaneRank D) (h4 : ThetaChernBoundOfLastLine D) : Stmt D ∧ SettingFromHypotheses D :=
   ⟨fun ⟨a1, a2, a3⟩ => ⟨h1 a1 h0, h2, h3 a2 (h1 a1 h0) h2 (hA2 h0), h4 a1 a3 h2 (hA3 h0)⟩,
@@ -127,6 +133,9 @@ def ConditionalFamilyHyperplaneRank {eps : ℝ} (Fm : Formalism.MainNotions.FamP
 def LiftNormFamilyStatement {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop :=
   admF1 Fm → admF3 Fm → ConclusionF2 Fm → FamilyHyperplaneRank Fm → FamilyEstimateFour Fm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨a1, a2, a3⟩ => ⟨h1 a1 h0, h2, h3 a2 (h1 a1 h0) h2 (hA2 h0), h4 a1 a3 h2 (hA3 h0)⟩, fun _ x i => (setting_claims_iff _).2 ⟨h0 x i, hA2 h0 x i, hA3 h0 x i⟩⟩`.
+-/
 theorem family_statement_of_components {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (h0 : FamilyGluingBaseStatement Fm) (h1 : PeriodFamilyStatement Fm) (h2 : DeterminantValueFamily Fm)
     (hA2 : ConditionalFamilyDefiniteRank Fm) (h3 : FlatLineDegreeFamilyStatement Fm) (hA3 : ConditionalFamilyHyperplaneRank Fm) (h4 : LiftNormFamilyStatement Fm) : KudlaFamilyStatement Fm ∧ ConditionalFamilyDefiniteComplementAndPairRank Fm :=
   ⟨fun ⟨a1, a2, a3⟩ => ⟨h1 a1 h0, h2, h3 a2 (h1 a1 h0) h2 (hA2 h0), h4 a1 a3 h2 (hA3 h0)⟩,

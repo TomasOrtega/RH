@@ -27,6 +27,9 @@ def Sw (A fi : Matrix (Fin m) (Fin m) ℂ) (C bw biw : Matrix (Fin n ⊕ Fin n) 
   (4 * Real.pi * Complex.I) * ((T1 A C bw x (U * biwᵀ).toCols₁).re : ℂ) -
     (4 * Real.pi) * ((T2 fi x (U * biwᵀ).toCols₂).re : ℂ)
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `h` using `congrFun (congrFun hJ (Sum.inr i)) (Sum.inl j)`. Simplify using `only [PositivityTheory.SiegelWeilFormula.KK.jE, Matrix.fromBlocks_apply₂₁] at h`. Rewrite using `[← h]`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Matrix.toCols₁_apply, Matrix.toCols₂_apply]`.
+-/
 theorem frame_block_pairing_sign {C bw : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℂ} {ε : ℤˣ} (hJ : bwᵀ * C * bw.map star = jE n ε) :
     (bw.toCols₂)ᵀ * C * (bw.toCols₁).map star = ((ε : ℤ) : ℂ) • 1 := by
   ext i j
@@ -36,11 +39,21 @@ theorem frame_block_pairing_sign {C bw : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin
   simp only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Matrix.toCols₁_apply,
     Matrix.toCols₂_apply]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.mul_apply, star_sum, star_mul']`.
+-/
 theorem mapStar_mul {a b c : Type} [Fintype b] (M : Matrix a b ℂ) (N : Matrix b c ℂ) :
     (M * N).map star = M.map star * N.map star := by
   ext i j
   simp only [Matrix.map_apply, Matrix.mul_apply, star_sum, star_mul']
 
+/- English proof (translation)
+Establish `h1` using `PositivityTheory.SiegelWeilFormula.KK.frame_block_pairing_sign hJ`. Establish `h2 : ((bw.toCols₁).map star)ᵀ * Cᵀ * bw.toCols₂ = ((ε : ℤ) : ℂ) • 1`. Establish `h` using `congrArg Matrix.transpose h1`. Rewrite `h` using `[Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_smul, Matrix.transpose_one, ← Matrix.mul_assoc]`. Conclude with `h`.
+
+Unfold `PositivityTheory.SiegelWeilFormula.KK.T1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose, PositivityTheory.SiegelWeilFormula.KK.mapStar_mul, Matrix.transpose_map, Matrix.mul_assoc]`. Use `_ = trace (xᵀ * A * V.map star * (((bw.toCols₁).map star)ᵀ * Cᵀ) * bw.toCols₂) := Matrix.trace_mul_comm _ _`. Use `_ = trace (xᵀ * A * V.map star * (((bw.toCols₁).map star)ᵀ * Cᵀ * bw.toCols₂)) := by`.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = trace (xᵀ * A * V.map star * (((ε : ℤ) : ℂ) • 1)) := by rw [h2]`. Use `_ = ((ε : ℤ) : ℂ) * trace (xᵀ * A * V.map star) := by`. Rewrite using `[Matrix.mul_smul, Matrix.mul_one, Matrix.trace_smul, smul_eq_mul]`.
+-/
 theorem trace_form_sign_eq {A : Matrix (Fin m) (Fin m) ℂ} {C bw : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℂ} {ε : ℤˣ}
     (hJ : bwᵀ * C * bw.map star = jE n ε) (x V : Matrix (Fin m) (Fin n) ℂ) :
     T1 A C bw x V = ((ε : ℤ) : ℂ) * trace (xᵀ * A * V.map star) := by
@@ -63,11 +76,21 @@ theorem trace_form_sign_eq {A : Matrix (Fin m) (Fin m) ℂ} {C bw : Matrix (Fin 
     _ = ((ε : ℤ) : ℂ) * trace (xᵀ * A * V.map star) := by
         rw [Matrix.mul_smul, Matrix.mul_one, Matrix.trace_smul, smul_eq_mul]
 
+/- English proof (translation)
+Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Matrix.conjTranspose_apply, star_sum, star_mul', star_star]`.
+-/
 theorem trace_transpose_star {a b : Type} [Fintype a] [Fintype b] (M N : Matrix a b ℂ) :
     trace (Mᵀ * N.map star) = star (trace (Mᴴ * N)) := by
   simp only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply,
     Matrix.conjTranspose_apply, star_sum, star_mul', star_star]
 
+/- English proof (translation)
+Establish `h1 : frᵀ * A * fr.map star = (((sg : ℤ) : ℂ) * star ζ) • (1 : Matrix (Fin m) (Fin m) ℂ)`. Establish `h` using `congrArg (fun M => star ζ • M) hfr`. Simplify using `only [smul_smul, hz, one_smul] at h`. Rewrite using `[h, mul_comm]`. Establish `hfi : fiᵀ * frᵀ = 1` using `by rw [← Matrix.transpose_mul, hfi', Matrix.transpose_one]`.
+
+Establish `hfi2 : fr.map star * fi.map star = 1`. Rewrite using `[← PositivityTheory.SiegelWeilFormula.KK.mapStar_mul, hfi']`. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hfi, hfi2, Matrix.one_mul, Matrix.mul_one]`. Use `_ = fiᵀ * (frᵀ * A * fr.map star) * fi.map star := by simp only [Matrix.mul_assoc]`. Use `_ = fiᵀ * ((((sg : ℤ) : ℂ) * star ζ) • (1 : Matrix (Fin m) (Fin m) ℂ)) * fi.map star := by rw [h1]`. Use `_ = (((sg : ℤ) : ℂ) * star ζ) • (fiᵀ * fi.map star) := by`. Rewrite using `[Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul]`.
+-/
 theorem A_eq {A fr fi : Matrix (Fin m) (Fin m) ℂ} {sg : ℤˣ} {ζ : ℂ} (hfi' : fr * fi = 1) (hz : star ζ * ζ = 1)
     (hfr : ζ • (frᵀ * A * fr.map star) = ((sg : ℤ) : ℂ) • 1) :
     A = (((sg : ℤ) : ℂ) * star ζ) • (fiᵀ * fi.map star) := by
@@ -87,6 +110,9 @@ theorem A_eq {A fr fi : Matrix (Fin m) (Fin m) ℂ} {sg : ℤˣ} {ζ : ℂ} (hfi
     _ = (((sg : ℤ) : ℂ) * star ζ) • (fiᵀ * fi.map star) := by
         rw [Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul]
 
+/- English proof (translation)
+Rewrite using `[PositivityTheory.SiegelWeilFormula.KK.trace_form_sign_eq hJ, PositivityTheory.SiegelWeilFormula.KK.A_eq hfi' hz hfr]`. Use `congr 1`. Unfold `PositivityTheory.SiegelWeilFormula.KK.T2`. Rewrite using `[← PositivityTheory.SiegelWeilFormula.KK.trace_transpose_star, Matrix.transpose_mul, PositivityTheory.SiegelWeilFormula.KK.mapStar_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.trace_smul, smul_eq_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem trace_form_dual_eq {A fr fi : Matrix (Fin m) (Fin m) ℂ} {C bw : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℂ} {ε sg : ℤˣ} {ζ : ℂ} (hfi' : fr * fi = 1) (hz : star ζ * ζ = 1)
     (hfr : ζ • (frᵀ * A * fr.map star) = ((sg : ℤ) : ℂ) • 1) (hJ : bwᵀ * C * bw.map star = jE n ε)
     (x V : Matrix (Fin m) (Fin n) ℂ) :
@@ -99,6 +125,19 @@ theorem trace_form_dual_eq {A fr fi : Matrix (Fin m) (Fin m) ℂ} {C bw : Matrix
     Matrix.mul_smul, Matrix.smul_mul, Matrix.trace_smul, smul_eq_mul]
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `hz : star ζ * ζ = 1`. Apply the tactic sequence `rcases hζ with ⟨_, rfl⟩ | ⟨_, rfl⟩ <;> simp`. Establish `hW : (bw * (PositivityTheory.SiegelWeilFormula.KK.jE n ε)ᵀ * biw)ᵀ * biwᵀ = biwᵀ * PositivityTheory.SiegelWeilFormula.KK.jE n ε`. Rewrite using `[← Matrix.transpose_mul, ← Matrix.mul_assoc, ← Matrix.mul_assoc, e2, Matrix.one_mul, Matrix.transpose_mul, Matrix.transpose_transpose]`. Establish `hUb : U' * biwᵀ = (((((1 : ℤˣ) : ℤ) : ℂ) * Complex.I) * (-(Complex.I * ((((ε : ℤ) : ℂ) * ((sg : ℤ) : ℂ)) * ζ)))) • (U * biwᵀ * PositivityTheory.SiegelWeilFormula.KK.jE n ε)`.
+
+Rewrite using `[hU, Matrix.smul_mul, Matrix.smul_mul, Matrix.one_mul, Matrix.smul_mul, Matrix.smul_mul, smul_smul, Matrix.mul_assoc U _ biwᵀ, hW, ← Matrix.mul_assoc]`. Establish `hYS1 : ∀ Y : Matrix (Fin m) (Fin n ⊕ Fin n) ℂ, (Y * PositivityTheory.SiegelWeilFormula.KK.jE n ε).toCols₁ = ((ε : ℤ) : ℂ) • Y.toCols₂`. Introduce `Y`. Use extensionality with `i j`. Simplify using `[PositivityTheory.SiegelWeilFormula.KK.jE, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply]`.
+
+Apply the tactic sequence `try ring`. Establish `hYS2 : ∀ Y : Matrix (Fin m) (Fin n ⊕ Fin n) ℂ, (Y * PositivityTheory.SiegelWeilFormula.KK.jE n ε).toCols₂ = Y.toCols₁`. Introduce `Y`. Use extensionality with `i j`. Simplify using `[PositivityTheory.SiegelWeilFormula.KK.jE, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply]`.
+
+Apply the tactic sequence `try ring`. Establish `hts1 : ∀ (c : ℂ) (M : Matrix (Fin m) (Fin n ⊕ Fin n) ℂ), (c • M).toCols₁ = c • M.toCols₁` using `fun _ _ => Matrix.ext fun _ _ => rfl`. Establish `hts2 : ∀ (c : ℂ) (M : Matrix (Fin m) (Fin n ⊕ Fin n) ℂ), (c • M).toCols₂ = c • M.toCols₂` using `fun _ _ => Matrix.ext fun _ _ => rfl`. Establish `hT : ∀ V, PositivityTheory.SiegelWeilFormula.KK.T1 A C bw x V = ((ε : ℤ) : ℂ) * ((((sg : ℤ) : ℂ) * star ζ) * star (PositivityTheory.SiegelWeilFormula.KK.T2 fi x V))` using `PositivityTheory.SiegelWeilFormula.KK.trace_form_dual_eq hfi' hz hfr hJ x`. Establish `hN : ∀ (c : ℂ) (V : Matrix (Fin m) (Fin n) ℂ), PositivityTheory.SiegelWeilFormula.KK.T2 fi x (c • V) = c * PositivityTheory.SiegelWeilFormula.KK.T2 fi x V`.
+
+Introduce `c V`. Unfold `PositivityTheory.SiegelWeilFormula.KK.T2`. Rewrite using `[Matrix.mul_smul, Matrix.mul_smul, Matrix.trace_smul, smul_eq_mul]`. Unfold `PositivityTheory.SiegelWeilFormula.KK.Sw`. Rewrite using `[hUb, hts1, hts2, hYS1, hYS2, smul_smul, hT, hT, hN, hN]`.
+
+Apply the tactic sequence `rcases hζ with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ <;> rcases Int.units_eq_one_or sg with rfl | rfl <;>`. Apply the tactic sequence `apply Complex.ext <;> simp [Complex.mul_re, Complex.mul_im] <;> ring`.
+-/
 theorem Sw_rel {A fr fi : Matrix (Fin m) (Fin m) ℂ} {C bw biw : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℂ} {ε sg : ℤˣ}
     {ζ : ℂ} (e2 : biw * bw = 1) (hfi' : fr * fi = 1) (hJ : bwᵀ * C * bw.map star = jE n ε)
     (hfr : ζ • (frᵀ * A * fr.map star) = ((sg : ℤ) : ℂ) • 1) (hζ : ε = -1 ∧ ζ = 1 ∨ ε = 1 ∧ ζ = Complex.I)

@@ -9,6 +9,9 @@ namespace GlobalTheory.InertiaEigenvalues
 
 open BrauerSchur
 
+/- English proof (translation)
+Set `e : G ⧸ H ≃ Fin H.index` to `Finite.equivFin (G ⧸ H)`. Use `⟨fun i => (e.symm i).out, fun i j => ?_, fun x => ⟨e (x : G ⧸ H), ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← QuotientGroup.eq, QuotientGroup.out_eq', QuotientGroup.out_eq', e.symm.injective.eq_iff]`. Rewrite using `[← QuotientGroup.eq]`. Simplify using `only [Equiv.symm_apply_apply, QuotientGroup.out_eq']`.
+-/
 theorem exists_transversal_index {G : Type} [Group G] [Finite G] (H : Subgroup G) :
     ∃ t : Fin H.index → G, (∀ i j, (t i)⁻¹ * t j ∈ H ↔ i = j) ∧ ∀ x, ∃ i, (t i)⁻¹ * x ∈ H := by
   classical
@@ -18,6 +21,35 @@ theorem exists_transversal_index {G : Type} [Group G] [Finite G] (H : Subgroup G
   · rw [← QuotientGroup.eq]
     simp only [Equiv.symm_apply_apply, QuotientGroup.out_eq']
 
+/- English proof (translation)
+Take `⟨t, ht, hc⟩` from `exists_transversal_index H`. Take `⟨i0, hi0⟩` from `hc 1`. Rewrite `hi0` using `[mul_one]`. Establish `hti0 : t i0 ∈ H` using `by simpa using H.inv_mem hi0`. Establish `memiff : ∀ (k i : Fin H.index) (a : G), (t i)⁻¹ * a ∈ H → ((t k)⁻¹ * a * t i0 ∈ H ↔ k = i)`.
+
+Introduce `k i a ha`. Rewrite using `[← ht k i]`. Prove the components needed by the constructor for the conclusion. Introduce `hm`. Establish `e : (t k)⁻¹ * t i = ((t k)⁻¹ * a * t i0) * (t i0)⁻¹ * ((t i)⁻¹ * a)⁻¹` using `by group`.
+
+Rewrite using `[e]`. Conclude with `H.mul_mem (H.mul_mem hm (H.inv_mem hti0)) (H.inv_mem ha)`. Introduce `hm`. Establish `e : (t k)⁻¹ * a * t i0 = ((t k)⁻¹ * t i) * ((t i)⁻¹ * a) * t i0` using `by group`. Rewrite using `[e]`.
+
+Conclude with `H.mul_mem (H.mul_mem hm ha) hti0`. Use `⟨indRep H χ t ht hc, Pi.single i0 1, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `σ`. Use extensionality with `k`. Use `show Matrix.toLin' (indMat H χ t (σ : G)) (Pi.single i0 1) k = _`.
+
+Rewrite using `[Matrix.toLin'_apply, Matrix.mulVec_single_one]`. Simplify using `only [Matrix.col_apply, indMat, Pi.smul_apply, smul_eq_mul]`. Establish `hσ : (t i0)⁻¹ * (σ : G) ∈ H` using `H.mul_mem hi0 σ.2`. Distinguish the cases in `hk : k = i0`. Substitute `hk` using the available equality.
+
+Rewrite using `[Pi.single_eq_same, mul_one, dot_conj H χ hti0 (σ : G)]`. Unfold `dot`. Rewrite using `[dif_pos σ.2]`. Rewrite using `[Pi.single_eq_of_ne hk, mul_zero]`. Unfold `dot`.
+
+Rewrite using `[dif_neg]`. Rewrite using `[memiff k i0 _ hσ]`. Conclude with `hk`. Rewrite using `[eq_top_iff]`. Establish `hsingle : ∀ i, Pi.single i (1 : ℂ) ∈ Submodule.span ℂ (Set.range fun g => indRep H χ t ht hc g (Pi.single i0 1))`.
+
+Introduce `i`. Establish `hti : (t i)⁻¹ * t i ∈ H` using `by simpa using H.one_mem`. Establish `hval : indRep H χ t ht hc (t i) (Pi.single i0 1) = dot H χ (t i0) • Pi.single i (1 : ℂ)`. Use extensionality with `k`. Use `show Matrix.toLin' (indMat H χ t (t i)) (Pi.single i0 1) k = _`.
+
+Rewrite using `[Matrix.toLin'_apply, Matrix.mulVec_single_one]`. Simplify using `only [Matrix.col_apply, indMat, Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Rewrite using `[Pi.single_eq_same, mul_one, inv_mul_cancel, one_mul]`.
+
+Rewrite using `[Pi.single_eq_of_ne hk, mul_zero]`. Unfold `dot`. Rewrite using `[dif_neg]`. Rewrite using `[memiff k i _ hti]`. Conclude with `hk`.
+
+Establish `hne : dot H χ (t i0) ≠ 0`. Unfold `dot`. Rewrite using `[dif_pos hti0]`. Conclude with `Units.ne_zero _`. Establish `: Pi.single i (1 : ℂ) = (dot H χ (t i0))⁻¹ • indRep H χ t ht hc (t i) (Pi.single i0 1)`.
+
+Rewrite using `[hval, smul_smul, inv_mul_cancel₀ hne, one_smul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨t i, rfl⟩)`. Introduce `x _`. Rewrite using `[pi_eq_sum_univ x]`.
+
+Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `e : (fun j => if i = j then (1 : ℂ) else 0) = Pi.single i 1`. Use extensionality with `j`. Simplify using `[Pi.single_apply, eq_comm]`. Rewrite using `[e]`.
+
+Conclude with `hsingle i`. Introduce `g`. Rewrite using `[indRep_trace, ← indFun_eq_sum H χ t ht hc g]`. Both sides reduce to the same expression.
+-/
 theorem inducedRep_cyclic_trace (G : Type) [Group G] [Fintype G] (H : Subgroup G) (χ : H →* ℂˣ) :
     ∃ (R : Representation ℂ G (Fin H.index → ℂ)) (v : Fin H.index → ℂ),
       (∀ σ : H, R σ v = (χ σ : ℂ) • v) ∧ Submodule.span ℂ (Set.range fun g => R g v) = ⊤ ∧

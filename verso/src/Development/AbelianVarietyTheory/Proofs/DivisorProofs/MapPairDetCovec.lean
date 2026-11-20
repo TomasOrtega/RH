@@ -70,6 +70,9 @@ def pairDet (h U : Fin m → Fin g → R) : R := (Matrix.of fun k k' : Fin m => 
 def covec (β : V →+* R) (T : J → Fin N → V) (h : Fin N → Fin g → R) (I : Fin m → J) : Fin m → Fin g → R :=
   fun k b => ∑ a, β (T (I k) a) * h a b
 
+/- English proof (translation)
+Rewrite using `[pairDet, pairDet, RingHom.map_det]`. Use `congr 1`. Use extensionality with `k k'`. Simplify using `[covec, map_sum]`.
+-/
 theorem map_pairDet_covec {S : Type} [CommRing S] (φ : R →+* S) (β : V →+* R) (T : J → Fin N → V)
     (h : Fin N → Fin g → R) (I : Fin m → J) (U : Fin m → Fin g → R) :
     φ (pairDet (covec β T h I) U) =
@@ -351,6 +354,9 @@ section BaseChange
 
 variable {X : Scheme.{0}} {t : SAB H X} {g : ℕ} {R S S' : Type} [CommRing R] [CommRing S] [CommRing S']
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Rewrite using `[bcV, bcV, bcV, ← Category.assoc, spMap_spMap]`. Use `congr 2`. Apply the tactic sequence `ext s <;> simp [dualMap]`.
+-/
 theorem bcV_bcV (φ : R →+* S) (ψ : S →+* S') (e : Fin g → (Sp (DualNumber R) ⟶ t.G.left)) :
     bcV t ψ (bcV t φ e) = bcV t (ψ.comp φ) e := by
   funext i
@@ -358,9 +364,19 @@ theorem bcV_bcV (φ : R →+* S) (ψ : S →+* S') (e : Fin g → (Sp (DualNumbe
   congr 2
   ext s <;> simp [dualMap]
 
+/- English proof (translation)
+Rewrite using `[← Category.assoc, spMap_spMap]`.
+-/
 theorem sp_sp (φ : R →+* S) (ψ : S →+* S') (x : Sp R ⟶ X) : spMap ψ ≫ spMap φ ≫ x = spMap (ψ.comp φ) ≫ x := by
   rw [← Category.assoc, spMap_spMap]
 
+/- English proof (translation)
+Use `⟨fun i => ⟨?_, ?_⟩, fun S' _ ψ w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[bcV, Category.assoc, (h.1 i).1, sp_sp, sp_sp]`. Use `congr 2`. Apply the tactic sequence `ext s <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `e1 : (1 : Over.mk (spMap φ ≫ x) ⟶ t.G) = (Over.homMk (spMap φ) rfl : Over.mk (spMap φ ≫ x) ⟶ Over.mk x) ≫ 1` using `(MonObj.comp_one _).symm`.
+
+Rewrite using `[e1, Over.comp_left, ← (h.1 i).2, bcV, ← Category.assoc, spMap_spMap]`. Express the relevant statement in the definitionally equal form `_ = spMap φ ≫ _ ≫ _`. Rewrite using `[← Category.assoc, spMap_spMap]`. Use `congr 2`. Apply the tactic sequence `ext s <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+
+Rewrite `hw`, the goal using `[sp_sp]`. Use `h.2 S' (ψ.comp φ) w hw` as an intermediate fact. Express the relevant statement in the definitionally equal form `∃! a, IsCombAtG t _ (bcV t ψ (bcV t φ e)) a w`. Rewrite using `[bcV_bcV]`. Conclude with `this`.
+-/
 theorem isTanBasis_bc {x : Sp R ⟶ X} {e : Fin g → (Sp (DualNumber R) ⟶ t.G.left)} (h : IsTanBasis t x e)
     (φ : R →+* S) : IsTanBasis t (spMap φ ≫ x) (bcV t φ e) := by
   refine ⟨fun i => ⟨?_, ?_⟩, fun S' _ ψ w hw => ?_⟩
@@ -380,11 +396,17 @@ theorem isTanBasis_bc {x : Sp R ⟶ X} {e : Fin g → (Sp (DualNumber R) ⟶ t.G
     rw [bcV_bcV]
     exact this
 
+/- English proof (translation)
+Use `(Scheme.Hom.comp_apply _ _ _).trans (congrArg x ?_)` and prove the remaining obligations. Conclude with `PrimeSpectrum.ext ((RingHom.injective_iff_ker_eq_bot φ).1 hφ)`.
+-/
 theorem bot_map [IsDomain R] [IsDomain S] {φ : R →+* S} (hφ : Function.Injective φ) (x : Sp R ⟶ X) :
     (spMap φ ≫ x) (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum S) = x (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum R) := by
   refine (Scheme.Hom.comp_apply _ _ _).trans (congrArg x ?_)
   exact PrimeSpectrum.ext ((RingHom.injective_iff_ker_eq_bot φ).1 hφ)
 
+/- English proof (translation)
+Establish `h1 : (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum R) ⤳ z` using `(PrimeSpectrum.le_iff_specializes _ _).1 bot_le`. Conclude with `(h1.map x.continuous).mem_open O.isOpen h`.
+-/
 theorem bot_mem [IsDomain R] (x : Sp R ⟶ X) {O : X.Opens} {z : Sp R} (h : x z ∈ O) :
     x (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum R) ∈ O := by
   have h1 : (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum R) ⤳ z := (PrimeSpectrum.le_iff_specializes _ _).1 bot_le
@@ -392,6 +414,9 @@ theorem bot_mem [IsDomain R] (x : Sp R ⟶ X) {O : X.Opens} {z : Sp R} (h : x z 
 
 end BaseChange
 
+/- English proof (translation)
+Rewrite using `[PadicComplex.norm_eq_norm, Valued.v.norm_def, PadicComplex.RankOne.hom_eq_embedding, Valuation.embedding_restrict]`.
+-/
 theorem coe_valued (p : ℕ) [Fact p.Prime] (x : ℂ_[p]) : ((Valued.v x : ℝ≥0) : ℝ) = ‖x‖ := by
   rw [PadicComplex.norm_eq_norm, Valued.v.norm_def, PadicComplex.RankOne.hom_eq_embedding, Valuation.embedding_restrict]
 

@@ -26,6 +26,13 @@ namespace GlobalTheory.HeisSmoothing
 
 open GlobalTheory.FockCompare
 
+/- English proof (translation)
+Establish `hc : Integrable (fun x => (φ x : ℂ) * c) μ` using `hφ.ofReal.mul_const c`. Establish `e : ∫ x, (φ x : ℂ) * c ∂μ = c`. Rewrite using `[integral_mul_const, integral_complex_ofReal, h1]`. Simplify using the standard rewrite rules. Establish `e2 : ∫ x, φ x * δ ∂μ = δ` using `by rw [integral_mul_const, h1, one_mul]`.
+
+Rewrite using `[← e2]`. Use `conv_lhs => rw [← e, ← integral_sub hF hc]`. Use `norm_integral_le_of_norm_le (hφ.mul_const δ) (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Rewrite using `[← mul_sub, norm_mul, Complex.norm_real, Real.norm_of_nonneg (h0 x)]`. Distinguish the cases in `hx : φ x = 0`.
+
+Rewrite using `[hx, zero_mul, zero_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hb x hx) (h0 x)`.
+-/
 theorem norm_integral_sub_le {X : Type} [MeasurableSpace X] (μ : Measure X) (φ : X → ℝ) (F : X → ℂ) (c : ℂ) (δ : ℝ)
     (h0 : ∀ x, 0 ≤ φ x) (h1 : ∫ x, φ x ∂μ = 1) (hφ : Integrable φ μ) (hF : Integrable (fun x => (φ x : ℂ) * F x) μ)
     (hb : ∀ x, φ x ≠ 0 → ‖F x - c‖ ≤ δ) : ‖∫ x, (φ x : ℂ) * F x ∂μ - c‖ ≤ δ := by
@@ -42,12 +49,32 @@ theorem norm_integral_sub_le {X : Type} [MeasurableSpace X] (μ : Measure X) (φ
   · rw [hx, zero_mul, zero_mul]
   · exact mul_le_mul_of_nonneg_left (hb x hx) (h0 x)
 
+/- English proof (translation)
+Use `haveI : (volume : Measure (n → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Use `haveI : (volume : Measure (m → n → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Conclude with `Measure.pi.isAddHaarMeasure _`.
+-/
 theorem isAddHaarMeasure_volume (ι m n : Type) [Fintype ι] [Fintype m] [Fintype n] :
     (volume : Measure (ι → m → n → ℂ)).IsAddHaarMeasure := by
   haveI : (volume : Measure (n → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _
   haveI : (volume : Measure (m → n → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _
   exact Measure.pi.isAddHaarMeasure _
 
+/- English proof (translation)
+Introduce `D ψ hψ A T f hf hlaw hlev N hN δ hδ`. Take `⟨θ, hθ⟩` from `GlobalTheory.Member.exists_isInfFam_family D`. Take `⟨σ, h⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Take `⟨i1, -⟩` from `lattice_Mx D T.rank A.rank`. Use `haveI : (volume : Measure (RW T A)).IsAddHaarMeasure := isAddHaarMeasure_volume _ _ _`.
+
+Establish `hι : Continuous (iotaW σ T A)` using `h.continuous_iota T A`. Establish `hN' : iotaW σ T A ⁻¹' N ∈ 𝓝 (0 : RW T A)` using `hι.continuousAt.preimage_mem_nhds (by rw [AddMonoidHom.map_zero]; exact hN)`. Take `⟨r, hr, hrN⟩` from `Metric.mem_nhds_iff.1 hN'`. Set `b : ContDiffBump (0 : RW T A)` to `⟨r / 2, r, half_pos hr, half_lt_self hr⟩`. Set `φ : RW T A → ℝ` to `b.normed volume`.
+
+Establish `hφs : ContDiff ℝ ∞ φ` using `b.contDiff_normed`. Establish `hφc : HasCompactSupport φ` using `b.hasCompactSupport_normed`. Set `g : WO A T → ℂ` to `fun w => ∫ x, (φ x : ℂ) * heisO ψ A T (iotaW σ T A x) f w`. Establish `hsm : Sm (iotaW σ T A) g` using `GlobalTheory.T.heisenbergAverage_realPlaces_smooth D θ σ h ψ hψ A T φ hφs hφc f hf`. Establish `hl : ∃ U : AddSubgroup (WO A T), IsOpen (U : Set (WO A T)) ∧ ∀ u ∈ U, u.map (infPart D) = 0 → heisO ψ A T u g = g`.
+
+Take `⟨U, hU, hUf⟩` from `hlev`. Use `⟨U, hU, fun u hu h0 => funext fun w => ?_⟩` and prove the remaining obligations. Use `show ψ (symplOH A T w u) * ∫ x, (φ x : ℂ) * heisO ψ A T (iotaW σ T A x) f (w + u) = _`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
+
+Establish `e` using `congrFun (GlobalTheory.OrientedHeis.heisO_comm_fin_real h0 (h.real_iota T A x) (hUf u hu h0)) w`. Use `show _ = (φ x : ℂ) * heisO ψ A T (iotaW σ T A x) f w`. Rewrite using `[← e]`. Conclude with `mul_left_comm _ _ _`. Use `⟨g, ⟨fun γ w => ?_, hl, GlobalTheory.OrientedHeis.continuous_of_level h hψ.1.1 g hl hsm, ((smooth_iff_sm_and_real_lines D θ σ h T A).1 g).2 hsm⟩, fun w => ?_⟩` and prove the remaining obligations.
+
+Use `show ∫ x, (φ x : ℂ) * heisO ψ A T (iotaW σ T A x) f (ratW T A γ + w) = _ * ∫ x, (φ x : ℂ) * heisO ψ A T (iotaW σ T A x) f w`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Use `show (φ x : ℂ) * heisO ψ A T (iotaW σ T A x) f (ratW T A γ + w) = _`. Rewrite using `[GlobalTheory.OrientedHeis.heisO_quasi _ f hlaw]`.
+
+Conclude with `mul_left_comm _ _ _`. Establish `hc : Continuous fun x : RW T A => heisO ψ A T (iotaW σ T A x) f w` using `(hψ.1.1.comp (GlobalTheory.OrientedHeis.continuous_symplOH continuous_const hι)).mul (hf.comp (continuous_const.add hι))`. Establish `hφℂ : HasCompactSupport fun x => (φ x : ℂ)` using `hφc.comp_left (g := fun t : ℝ => (t : ℂ)) Complex.ofReal_zero`. Use `norm_integral_sub_le volume φ _ (f w) δ b.nonneg_normed b.integral_normed b.integrable_normed (((Complex.continuous_ofReal.comp hφs.continuous).mul hc).integrable_of_hasCompactSupport hφℂ.mul_right) fun x hx => hδ _ (hrN ?_) w` and prove the remaining obligations. Establish `: x ∈ Function.support φ` using `hx`.
+
+Rewrite `this` using `[b.support_normed_eq]`. Then use the resulting hypothesis.
+-/
 theorem exists_theta_of_level : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (A T : HSp D) (f : WO A T → ℂ), Continuous f → (∀ (γ : Matrix (Fin T.rank) (Fin A.rank) D.host.E) (u : WO A T), f (ratW T A γ + u) = ψ (-(symplOH A T (ratW T A γ) u)) * f u) → (∃ U : AddSubgroup (WO A T), IsOpen (U : Set (WO A T)) ∧ ∀ u ∈ U, u.map (infPart D) = 0 → heisO ψ A T u f = f) → ∀ N ∈ 𝓝 (0 : WO A T), ∀ δ : ℝ, (∀ a ∈ N, ∀ w, ‖heisO ψ A T a f w - f w‖ ≤ δ) → ∃ g : WO A T → ℂ, IsThetaFunO ψ A T g ∧ ∀ w, ‖g w - f w‖ ≤ δ := by
   intro D ψ hψ A T f hf hlaw hlev N hN δ hδ
   obtain ⟨θ, hθ⟩ := GlobalTheory.Member.exists_isInfFam_family D
@@ -94,6 +121,15 @@ theorem exists_theta_of_level : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), I
     have : x ∈ Function.support φ := hx
     rwa [b.support_normed_eq] at this
 
+/- English proof (translation)
+Establish `h1` using `GlobalTheory.T.heisenbergOperator_thetaLaw_tendsto_uniform_near_zero`. Establish `h2a` using `GlobalTheory.T.exists_small_compact_level_symplecticCharacter_trivial`. Establish `h2b` using `GlobalTheory.T.exists_heisenbergAverage_compactSymplecticTrivial`. Establish `h4` using `exists_theta_of_level`. Introduce `D ψ hψ A T q hq hlaw ε hε`.
+
+Take `⟨N, hN, hNq⟩` from `h1 D ψ hψ A T q hq hlaw (ε / 2) (half_pos hε)`. Take `⟨K, hKc, hKN, -, ⟨U, hU, hUK⟩, hKψ⟩` from `h2a D ψ hψ A T N hN`. Take `⟨g1, hg1c, hg1law, hg1K, hg1near⟩` from `h2b D ψ hψ A T K hKc hKψ q hq hlaw`. Establish `hg1q : ∀ w, ‖g1 w - q w‖ ≤ ε / 2` using `hg1near (ε / 2) (fun a ha w => hNq a (hKN ha) w)`. Take `⟨N2, hN2, hN2g⟩` from `h1 D ψ hψ A T g1 hg1c hg1law (ε / 2) (half_pos hε)`.
+
+Take `⟨g, hg, hgg1⟩` from `h4 D ψ hψ A T g1 hg1c hg1law ⟨U, hU, fun u hu h0 => hg1K u (hUK u hu h0)⟩ N2 hN2 (ε / 2) hN2g`. Use `⟨g, hg, fun w => ?_⟩` and prove the remaining obligations. Establish `e : q w - g w = (g1 w - g w) - (g1 w - q w)` using `by ring`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[norm_sub_rev]`. Conclude with `hgg1 w`. Conclude with `hg1q w`. Use `_ = ε := add_halves ε`.
+-/
 theorem exists_theta_near : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (A T : HSp D) (q : WO A T → ℂ), Continuous q → (∀ (γ : Matrix (Fin T.rank) (Fin A.rank) D.host.E) (u : WO A T), q (ratW T A γ + u) = ψ (-(symplOH A T (ratW T A γ) u)) * q u) → ∀ ε : ℝ, 0 < ε → ∃ g : WO A T → ℂ, IsThetaFunO ψ A T g ∧ ∀ u, ‖q u - g u‖ ≤ ε := by
   have h1 := GlobalTheory.T.heisenbergOperator_thetaLaw_tendsto_uniform_near_zero
   have h2a := GlobalTheory.T.exists_small_compact_level_symplecticCharacter_trivial

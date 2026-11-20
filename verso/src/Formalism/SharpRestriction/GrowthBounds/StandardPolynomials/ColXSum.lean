@@ -12,17 +12,26 @@ section General
 
 variable {N K : ℕ}
 
+/- English proof (translation)
+The claim follows from `|ka i a| ≤ ∑ i, ∑ m, |ka i m| := le_trans (Finset.single_le_sum (f := fun m => |ka i m|) (fun _ _ => abs_nonneg _) (Finset.mem_univ a)) (Finset.single_le_sum (f := fun i => ∑ m, |ka i m|) (fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _) (Finset.mem_univ i))`.
+-/
 theorem abs_le_colT (ka : Fin (N + 1) → Fin K → ℤ) (i : Fin (N + 1)) (a : Fin K) :
     |ka i a| ≤ ∑ i, ∑ m, |ka i m| :=
   le_trans (Finset.single_le_sum (f := fun m => |ka i m|) (fun _ _ => abs_nonneg _) (Finset.mem_univ a))
     (Finset.single_le_sum (f := fun i => ∑ m, |ka i m|) (fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _)
       (Finset.mem_univ i))
 
+/- English proof (translation)
+Unfold `colRange`. Conclude with `Finset.mem_Icc`.
+-/
 theorem mem_colRange_iff (ka : Fin (N + 1) → Fin K → ℤ) (c : ℤ) :
     c ∈ colRange ka ↔ -(∑ i, ∑ m, |ka i m|) ≤ c ∧ c ≤ ∑ i, ∑ m, |ka i m| := by
   unfold colRange
   exact Finset.mem_Icc
 
+/- English proof (translation)
+Rewrite using `[mem_colRange_iff]`. Establish `e1` using `abs_le.1 (abs_le_colT ka i a)`. Establish `e2` using `abs_le.1 (abs_le_colT ka i' a)`. Apply the tactic sequence `constructor <;> omega`.
+-/
 theorem mem_colRange_of (ka : Fin (N + 1) → Fin K → ℤ) (i i' : Fin (N + 1)) (a : Fin K) (c : ℤ)
     (h1 : ka i a < c) (h2 : c ≤ ka i' a) : c ∈ colRange ka := by
   rw [mem_colRange_iff]
@@ -32,6 +41,11 @@ theorem mem_colRange_of (ka : Fin (N + 1) → Fin K → ℤ) (i i' : Fin (N + 1)
 
 variable {vecc : Fin N → Bool} {B : Fin N → ℕ} {ka : Fin (N + 1) → Fin K → ℤ} {nu : ℕ → ℤ}
 
+/- English proof (translation)
+Establish `hs` using `h.kastep i`. Distinguish the cases in `hv : vecc i = true`. Rewrite `hs` using `[if_pos hv]`. Conclude with `strip_count _ _ _ hs S fun a c h1 h2 => hS (mem_colRange_of ka _ _ a c h1 h2)`. Rewrite `hs` using `[if_neg hv]`.
+
+Rewrite using `[← strip_count _ _ _ hs S fun a c h1 h2 => hS (mem_colRange_of ka _ _ a c h1 h2)]`. Use `congr 1`. Conclude with `Finset.filter_congr fun c _ => ne_comm`.
+-/
 theorem change_count (h : PH vecc B ka nu) (S : Finset ℤ) (hS : colRange ka ⊆ S) (i : Fin N) :
     (S.filter fun c => colH (ka i.castSucc) c ≠ colH (ka i.succ) c).card = B i := by
   have hs := h.kastep i
@@ -43,6 +57,13 @@ theorem change_count (h : PH vecc B ka nu) (S : Finset ℤ) (hS : colRange ka �
     congr 1
     exact Finset.filter_congr fun c _ => ne_comm
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_congr rfl fun c _ => h.oc_eq om c, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hv : vecc i = true`. Rewrite using `[if_pos hv, ← change_count h S hS i, Finset.card_filter, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Use `(h.stepV i hv c).1` as an intermediate fact. Distinguish the cases in `hlt : colH (ka i.castSucc) c < colH (ka i.succ) c`. Rewrite using `[if_pos hlt, if_pos (by omega), mul_one]`. Rewrite using `[if_neg hlt, if_neg (by omega), mul_zero]`. Rewrite using `[if_neg hv, mul_zero]`.
+
+Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Use `(h.stepC i (by simpa using hv) c).1` as an intermediate fact. Rewrite using `[if_neg (by omega)]`.
+-/
 theorem oc_sum (h : PH vecc B ka nu) (S : Finset ℤ) (hS : colRange ka ⊆ S) (om : Fin (N + 1) → ℕ) :
     ∑ c ∈ S, oc om (muP nu ka) c = ∑ i : Fin N, om i.succ * (if vecc i then B i else 0) := by
   rw [Finset.sum_congr rfl fun c _ => h.oc_eq om c, Finset.sum_comm]
@@ -59,6 +80,13 @@ theorem oc_sum (h : PH vecc B ka nu) (S : Finset ℤ) (hS : colRange ka ⊆ S) (
     have := (h.stepC i (by simpa using hv) c).1
     rw [if_neg (by omega)]
 
+/- English proof (translation)
+Establish `mono : Monotone nu` using `monotone_nat_of_le_succ hm`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_filter, Finset.sum_const]`. Establish `e : S.filter (fun c => nu t.val < c ∧ c ≤ nu (t.val + 1)) = Finset.Ioc (nu t.val) (nu (t.val + 1))`.
+
+Use extensionality with `c`. Simplify using `only [Finset.mem_filter, Finset.mem_Ioc]`. Use `⟨fun x => x.2, fun x => ⟨hS (Finset.mem_Icc.2 ⟨?_, ?_⟩), x⟩⟩` and prove the remaining obligations. Use `mono (Nat.zero_le t.val)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `le_trans x.2 (mono t.2)`. Rewrite using `[e, Int.card_Ioc, Finsupp.smul_single, smul_eq_mul, mul_comm]`.
+-/
 theorem pl_sum {σ : Type*} (nu : ℕ → ℤ) (h0 : 0 ≤ nu 0) (hm : ∀ t, nu t ≤ nu (t + 1)) (n : ℕ) (S : Finset ℤ)
     (hS : Finset.Icc 1 (nu n) ⊆ S) (v : Fin n → σ) (P : Fin n → ℕ) :
     ∑ c ∈ S, ∑ t : Fin n, (if nu t.val < c ∧ c ≤ nu (t.val + 1) then Finsupp.single (v t) (P t) else 0) =
@@ -77,6 +105,9 @@ theorem pl_sum {σ : Type*} (nu : ℕ → ℤ) (h0 : 0 ≤ nu 0) (hm : ∀ t, nu
     · exact le_trans x.2 (mono t.2)
   rw [e, Int.card_Ioc, Finsupp.smul_single, smul_eq_mul, mul_comm]
 
+/- English proof (translation)
+Unfold `colH`. Rewrite using `[Finset.card_eq_zero, Finset.filter_eq_empty_iff]`. Introduce `m _ hle`. Use `(abs_le.1 (abs_le_colT ka i m)).2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem colH_above (ka : Fin (N + 1) → Fin K → ℤ) (c : ℤ) (hc : ∑ i, ∑ m, |ka i m| < c) (i : Fin (N + 1)) :
     colH (ka i) c = 0 := by
   unfold colH
@@ -85,6 +116,11 @@ theorem colH_above (ka : Fin (N + 1) → Fin K → ℤ) (c : ℤ) (hc : ∑ i, �
   have := (abs_le.1 (abs_le_colT ka i m)).2
   omega
 
+/- English proof (translation)
+Proceed by induction on `t with`. Consider the case `zero => rfl`. Consider the case `succ t ih`. Rewrite using `[Kcol]`. Use `split_ifs with h`.
+
+Rewrite using `[colH_above ka c hc, colH_above ka c hc, ih]`. Unfold `colStep`. Rewrite using `[if_neg (lt_irrefl _), if_neg (lt_irrefl _)]`. Conclude with `ih`.
+-/
 theorem Kcol_above (R : Type) [CommRing R] (ka : Fin (N + 1) → Fin K → ℤ) (c : ℤ) (hc : ∑ i, ∑ m, |ka i m| < c)
     (t : ℕ) : Kcol R ka c t = extOne := by
   induction t with
@@ -97,6 +133,13 @@ theorem Kcol_above (R : Type) [CommRing R] (ka : Fin (N + 1) → Fin K → ℤ) 
       rw [if_neg (lt_irrefl _), if_neg (lt_irrefl _)]
     · exact ih
 
+/- English proof (translation)
+Unfold `Psi`. Use `symm`. Use `Finset.prod_subset Finset.subset_union_left fun c hc hn => ?_` and prove the remaining obligations. Rewrite using `[hI c hn]`. Establish `h1 : 1 ≤ c`.
+
+Break down `Finset.mem_union.1 hc with h | h` into its components or cases. Conclude with `absurd h hn`. Conclude with `(Finset.mem_Icc.1 h).1`. Establish `h2 : ∑ i, ∑ m, |ka i m| < c`. Rewrite `hn` using `[mem_colRange_iff]`.
+
+Establish `h3 : (0 : ℤ) ≤ ∑ i, ∑ m, |ka i m|` using `Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun m _ => abs_nonneg _`. Assume the negation of the conclusion as `h4`. Conclude with `hn ⟨by omega, by omega⟩`. Rewrite using `[Kcol_above R ka c h2]`. Simplify using `[extOne]`.
+-/
 theorem Psi_eq_prod (R : Type) [CommRing R] (ka : Fin (N + 1) → Fin K → ℤ) (I : ℤ → Finset (Fin K))
     (hI : ∀ c, c ∉ colRange ka → I c = ∅) (M : ℤ) :
     ∏ c ∈ colRange ka ∪ Finset.Icc 1 M, Kcol R ka c N (I c) = Psi R ka I := by
@@ -122,6 +165,11 @@ section Seg
 
 variable (C0 CE1 CE2 mu : ℝ) (X : Loc) (β : GlobalTheory X) (j : Fin (numSeg X.TT))
 
+/- English proof (translation)
+Unfold `PS`. Rewrite using `[posS_succ_lt X j _ (by have := l.2; simp only; omega)]`. Use `show _ = X.p ^ (segG X.TT j - (segDists X.TT j).get l)`. Establish `e2 : (⟨(2 * l.val) / 2, by have` using `l.2; omega⟩ : Fin (segS X.TT j)) = l := by`. Apply `Fin.ext` to reduce the goal to its premises.
+
+Simplify using the standard rewrite rules. Simplify using `only [e2]`. Use `congr 1`. Unfold `zS`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem PS_even (l : Fin (segS X.TT j)) :
     PS X j (⟨2 * l.val, by have := l.2; omega⟩ : Fin (2 * segS X.TT j + 1)).succ = (X.seg C0 CE1 CE2 j).P X.p l := by
   unfold PS
@@ -134,20 +182,36 @@ theorem PS_even (l : Fin (segS X.TT j)) :
   unfold zS
   omega
 
+/- English proof (translation)
+Unfold `PS`. Rewrite using `[posS_succ_ge X j _ (by simp)]`. Unfold `zS`. Simplify using the standard rewrite rules.
+-/
 theorem PS_last : PS X j (⟨2 * segS X.TT j, by omega⟩ : Fin (2 * segS X.TT j + 1)).succ = 1 := by
   unfold PS
   rw [posS_succ_ge X j _ (by simp)]
   unfold zS
   simp
 
+/- English proof (translation)
+Unfold `nuS`. Rewrite using `[if_pos rfl]`.
+-/
 theorem nuS_zero : nuS C0 CE1 CE2 mu X β j 0 = 0 := by
   unfold nuS
   rw [if_pos rfl]
 
+/- English proof (translation)
+Unfold `nuS`. Rewrite using `[if_neg (by omega), Finset.sum_eq_zero fun l _ => if_neg (by omega), add_zero]`.
+-/
 theorem nuS_one : nuS C0 CE1 CE2 mu X β j (0 + 1) = a0Z C0 CE1 CE2 mu X β j := by
   unfold nuS
   rw [if_neg (by omega), Finset.sum_eq_zero fun l _ => if_neg (by omega), add_zero]
 
+/- English proof (translation)
+Unfold `nuS`. Rewrite using `[if_neg (by omega), if_neg (by omega), add_assoc (a0Z C0 CE1 CE2 mu X β j)]`. Use `congr 1`. Establish `e : ∀ l' : Fin (segS X.TT j), (if 2 * (l' : ℕ) + 2 ≤ 2 * l.val + 1 + 1 then (zxS C0 CE1 CE2 X β j l' : ℤ) else 0) = (if 2 * (l' : ℕ) + 2 ≤ 2 * l.val + 1 then (zxS C0 CE1 CE2 X β j l' : ℤ) else 0) + (if l' = l then (zxS C0 CE1 CE2 X β j l' : ℤ) else 0)`. Introduce `l'`.
+
+Distinguish the cases in `e : l' = l`. Substitute `e` using the available equality. Rewrite using `[if_pos (by omega), if_neg (by omega), if_pos rfl, zero_add]`. Establish `: l'.val ≠ l.val` using `fun x => e (Fin.ext x)`. Rewrite using `[if_neg e, add_zero]`.
+
+Conclude with `if_congr (by omega) rfl rfl`. Rewrite using `[Finset.sum_congr rfl fun l' _ => e l', Finset.sum_add_distrib, Finset.sum_ite_eq', if_pos (Finset.mem_univ _)]`.
+-/
 theorem nuS_step (l : Fin (segS X.TT j)) :
     nuS C0 CE1 CE2 mu X β j (2 * l.val + 1 + 1) = nuS C0 CE1 CE2 mu X β j (2 * l.val + 1) + zxS C0 CE1 CE2 X β j l := by
   unfold nuS
@@ -165,6 +229,9 @@ theorem nuS_step (l : Fin (segS X.TT j)) :
       exact if_congr (by omega) rfl rfl
   rw [Finset.sum_congr rfl fun l' _ => e l', Finset.sum_add_distrib, Finset.sum_ite_eq', if_pos (Finset.mem_univ _)]
 
+/- English proof (translation)
+Unfold `nuS`. Rewrite using `[if_neg (by omega), if_neg (by omega)]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun l' _ => if_congr (by omega) rfl rfl`.
+-/
 theorem nuS_cov (l : ℕ) :
     nuS C0 CE1 CE2 mu X β j (2 * l + 1 + 1 + 1) = nuS C0 CE1 CE2 mu X β j (2 * l + 1 + 1) := by
   unfold nuS
@@ -172,6 +239,9 @@ theorem nuS_cov (l : ℕ) :
   congr 1
   exact Finset.sum_congr rfl fun l' _ => if_congr (by omega) rfl rfl
 
+/- English proof (translation)
+Unfold `nuS`. Rewrite using `[if_neg (by omega), if_neg (by omega)]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun l' _ => if_congr (by have := l'.2; omega) rfl rfl`.
+-/
 theorem nuS_last :
     nuS C0 CE1 CE2 mu X β j (2 * segS X.TT j + 1 + 1) = nuS C0 CE1 CE2 mu X β j (2 * segS X.TT j + 1) := by
   unfold nuS
@@ -184,6 +254,17 @@ end Seg
 variable {C0 CE1 CE2 mu : ℝ} {X : Loc} [NeZero X.m] {β : GlobalTheory X} (L : LvDat C0 CE1 CE2 mu X β)
   (j : Fin (numSeg X.TT)) (y : Tx X.m (L.LL j))
 
+/- English proof (translation)
+Establish `hsub : Finset.Icc 1 (nuS C0 CE1 CE2 mu X β j (2 * segS X.TT j + 1 + 1)) ⊆ colsS C0 CE1 CE2 mu X β j y.1.1.mu`. Unfold `colsS`. Conclude with `Finset.subset_union_right`. Establish `e0` using `pl_sum (nuS C0 CE1 CE2 mu X β j) (h.nonneg 0) h.numono (2 * segS X.TT j + 1 + 1) _ hsub (fun t => phiS X j (t, Fin.castAdd X.m 0)) (PS X j)`. Use `Eq.trans e0 ?_` and prove the remaining obligations.
+
+Rewrite using `[Fin.sum_univ_succ]`. Establish `t0 : (Finsupp.single (phiS X j ((0 : Fin (2 * segS X.TT j + 1 + 1)), Fin.castAdd X.m 0)) (PS X j 0 * (nuS C0 CE1 CE2 mu X β j (0 + 1) - nuS C0 CE1 CE2 mu X β j 0).toNat) : MonH X) = Finsupp.single ((topStart X j, true), 0) ((X.seg C0 CE1 CE2 j).Qj X.p * (a0Z C0 CE1 CE2 mu X β j). …`. Rewrite using `[phiS_zero, nuS_one, nuS_zero, sub_zero]`. Use `congr 2`. Conclude with `lev_zero X j C0 CE1 CE2`.
+
+Establish `tE : ∀ l : Fin (segS X.TT j), (Finsupp.single (phiS X j ((⟨2 * l.val, by have` using `l.2; omega⟩ : Fin (2 * segS X.TT j + 1)).succ, Fin.castAdd X.m 0)) (PS X j (⟨2 * l.val, by have := l.2; omega⟩ : Fin (2 * segS X.TT j + 1)).succ * (nuS C0 CE1 CE2 mu X β j (2 * l.val + 1 + 1) - nuS C0 CE1 CE2 mu X β j (2 * l.val + 1)).toNat) : MonH X) = Finsupp.single ((topOdd X …`. Introduce `l`. Establish `e1 : phiS X j ((⟨2 * l.val, by have` using `l.2; omega⟩ : Fin (2 * segS X.TT j + 1)).succ, Fin.castAdd X.m 0) = ((topOdd X j l, true), 0) := phiS_odd X j l`. Rewrite using `[e1, PS_even C0 CE1 CE2, nuS_step, add_sub_cancel_left, Int.toNat_natCast]`. Rewrite using `[sum_fin_odd]`.
+
+Use `congrArg₂ (· + ·) t0 ?_` and prove the remaining obligations. Establish `tL : (Finsupp.single (phiS X j ((⟨2 * segS X.TT j, by omega⟩ : Fin (2 * segS X.TT j + 1)).succ, Fin.castAdd X.m 0)) (PS X j (⟨2 * segS X.TT j, by omega⟩ : Fin (2 * segS X.TT j + 1)).succ * (nuS C0 CE1 CE2 mu X β j (2 * segS X.TT j + 1 + 1) - nuS C0 CE1 CE2 mu X β j (2 * segS X.TT …`. Rewrite using `[nuS_last, sub_self, Int.toNat_zero, mul_zero, Finsupp.single_zero]`. Use `Eq.trans (congrArg₂ (· + ·) (Finset.sum_congr rfl fun l _ => ?_) tL) (add_zero _)` and prove the remaining obligations. Use `Eq.trans (congrArg₂ (· + ·) (tE l) ?_) (add_zero _)` and prove the remaining obligations.
+
+Use `show (Finsupp.single _ (_ * (nuS C0 CE1 CE2 mu X β j (2 * l.val + 1 + 1 + 1) - nuS C0 CE1 CE2 mu X β j (2 * l.val + 1 + 1)).toNat) : MonH X) = 0`. Rewrite using `[nuS_cov, sub_self, Int.toNat_zero, mul_zero, Finsupp.single_zero]`.
+-/
 theorem plSum_seg (h : Col.PH (L.LL j).vec (L.LL j).deg y.1.1.mu (nuS C0 CE1 CE2 mu X β j)) :
     ∑ c ∈ colsS C0 CE1 CE2 mu X β j y.1.1.mu, plS C0 CE1 CE2 mu X β j c =
       Finsupp.single ((topStart X j, true), 0) ((X.seg C0 CE1 CE2 j).Qj X.p * (a0Z C0 CE1 CE2 mu X β j).toNat) +
@@ -226,6 +307,13 @@ theorem plSum_seg (h : Col.PH (L.LL j).vec (L.LL j).deg y.1.1.mu (nuS C0 CE1 CE2
     nuS C0 CE1 CE2 mu X β j (2 * l.val + 1 + 1)).toNat) : MonH X) = 0
   rw [nuS_cov, sub_self, Int.toNat_zero, mul_zero, Finsupp.single_zero]
 
+/- English proof (translation)
+Establish `hsub : colRange y.1.1.mu ⊆ colsS C0 CE1 CE2 mu X β j y.1.1.mu`. Unfold `colsS`. Conclude with `Finset.subset_union_left`. Use `Eq.trans (oc_sum h _ hsub (PS X j)) ?_` and prove the remaining obligations. Rewrite using `[sum_fin_odd]`.
+
+Establish `v3 : (L.LL j).vec ⟨2 * segS X.TT j, by omega⟩ = true` using `by show decide ((2 * segS X.TT j) % 2 = 0) = true`. Simplify using the standard rewrite rules. Rewrite using `[if_pos v3, PS_last, one_mul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Establish `v1 : (L.LL j).vec ⟨2 * l.val, by have` using `l.2; omega⟩ = true := by show decide ((2 * l.val) % 2 = 0) = true`. Simplify using the standard rewrite rules. Establish `v2 : (L.LL j).vec ⟨2 * l.val + 1, by have` using `l.2; omega⟩ = false := by show decide ((2 * l.val + 1) % 2 = 0) = false`. Simplify using the standard rewrite rules. Rewrite using `[if_pos v1, if_neg (by rw [v2]; simp), mul_zero, add_zero, PS_even C0 CE1 CE2]`.
+-/
 theorem oSum_seg (h : Col.PH (L.LL j).vec (L.LL j).deg y.1.1.mu (nuS C0 CE1 CE2 mu X β j)) :
     ∑ c ∈ colsS C0 CE1 CE2 mu X β j y.1.1.mu, oCS C0 CE1 CE2 mu X β j y.1.1.mu c =
       (∑ i : Fin (segS X.TT j), (X.seg C0 CE1 CE2 j).P X.p i *
@@ -249,6 +337,11 @@ theorem oSum_seg (h : Col.PH (L.LL j).vec (L.LL j).deg y.1.1.mu (nuS C0 CE1 CE2 
     simp
   rw [if_pos v1, if_neg (by rw [v2]; simp), mul_zero, add_zero, PS_even C0 CE1 CE2]
 
+/- English proof (translation)
+Establish `hsub : colRange y.1.1.mu ⊆ colsS C0 CE1 CE2 mu X β j y.1.1.mu`. Unfold `colsS`. Conclude with `Finset.subset_union_left`. Use `Eq.trans ?_ (change_count h _ hsub i)` and prove the remaining obligations. Rewrite using `[Finset.card_filter]`.
+
+Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Unfold `dKS`. Distinguish the cases in `e : colH (y.1.1.mu i.castSucc) c = colH (y.1.1.mu i.succ) c`. Rewrite using `[if_pos e, if_neg (not_not.2 e)]`. Rewrite using `[if_neg e, if_pos e]`.
+-/
 theorem dKsum_seg (h : Col.PH (L.LL j).vec (L.LL j).deg y.1.1.mu (nuS C0 CE1 CE2 mu X β j))
     (i : Fin (2 * segS X.TT j + 1)) :
     ∑ c ∈ colsS C0 CE1 CE2 mu X β j y.1.1.mu, dKS X j y.1.1.mu c i = (L.LL j).deg i := by
@@ -263,6 +356,9 @@ theorem dKsum_seg (h : Col.PH (L.LL j).vec (L.LL j).deg y.1.1.mu (nuS C0 CE1 CE2
   · rw [if_pos e, if_neg (not_not.2 e)]
   · rw [if_neg e, if_pos e]
 
+/- English proof (translation)
+Unfold `colsS psiR`. Conclude with `Psi_eq_prod R y.1.1.mu y.1.2 y.2.1 _`.
+-/
 theorem Kprod_seg (R : Type) [CommRing R] :
     ∏ c ∈ colsS C0 CE1 CE2 mu X β j y.1.1.mu, Kcol R y.1.1.mu c (2 * segS X.TT j + 1) (y.1.2 c) =
       psiR R (L.LL j) y := by

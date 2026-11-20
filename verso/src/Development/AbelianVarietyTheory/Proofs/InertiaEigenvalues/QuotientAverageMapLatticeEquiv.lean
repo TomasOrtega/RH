@@ -6,6 +6,17 @@ open NumberField IsDedekindDomain MeasureTheory Matrix GlobalTheory.CuspRep Glob
 
 namespace GlobalTheory.CuspGeneric
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ G' _ _ _ _ _ _ Γ Γ' hΓ hΓ' e he Φ hΦ`. Use `letI mG : MeasurableSpace G := borel G`. Use `haveI : BorelSpace G := ⟨rfl⟩`. Use `letI mG' : MeasurableSpace G' := borel G'`. Use `haveI : BorelSpace G' := ⟨rfl⟩`.
+
+Take `⟨μ, 𝓕, hμ, h𝓕, h1⟩` from `GlobalTheory.T.exists_fundamentalDomain_mass_one_cocompactLattice G Γ hΓ`. Set `f : G ≃ᵐ G'` to `e.toHomeomorph.toMeasurableEquiv`. Use `haveI := hμ`. Establish `hμ' : (μ.map f).IsAddHaarMeasure` using `e.isAddHaarMeasure_map μ`. Set `eΓ : Γ' ≃ Γ` to `{ toFun := fun g => ⟨e.symm g, (he _).1 (by simpa using g.2)⟩ invFun := fun x => ⟨e x, (he x).2 x.2⟩ left_inv := fun g => Subtype.ext (by simp) right_inv := fun x => Subtype.ext (by simp) }`.
+
+Establish `hqmp : Measure.QuasiMeasurePreserving f.toEquiv.symm (μ.map f) μ` using `MeasurePreserving.quasiMeasurePreserving ⟨f.symm.measurable, f.map_symm_map⟩`. Establish `h𝓕' : IsAddFundamentalDomain Γ' (f '' 𝓕) (μ.map f)`. Use `h𝓕.image_of_equiv f.toEquiv hqmp eΓ fun g x => ?_` and prove the remaining obligations. Use `show e (e.symm (g : G') + x) = (g : G') + e x`. Rewrite using `[map_add, ContinuousAddEquiv.apply_symm_apply]`.
+
+Establish `hm : (μ.map f) (f '' 𝓕) = 1`. Rewrite using `[MeasurableEquiv.map_apply, Set.preimage_image_eq _ f.injective, h1]`. Establish `hΦ' : Per Γ (fun x => Φ (e x))` using `⟨hΦ.1.comp e.continuous, fun γ hγ x => by show Φ (e (γ + x)) = Φ (e x); rw [map_add]; exact hΦ.2 _ ((he γ).2 hγ) _⟩`. Establish `A` using `(GlobalTheory.T.setIntegral_fundamentalDomain_eq_mass_mul_average G' Γ' hΓ' (μ.map f) (f '' 𝓕) hμ' h𝓕' Φ hΦ).2.2.2`. Establish `B` using `(GlobalTheory.T.setIntegral_fundamentalDomain_eq_mass_mul_average G Γ hΓ μ 𝓕 hμ h𝓕 _ hΦ').2.2.2`.
+
+Rewrite `A` using `[hm]`. Rewrite `B` using `[h1]`. Simplify using `only [ENNReal.toReal_one, Complex.ofReal_one, one_mul] at A B`. Rewrite using `[← A, ← B, f.measurableEmbedding.setIntegral_map, Set.preimage_image_eq _ f.injective]`. Both sides reduce to the same expression.
+-/
 theorem avg_equiv : ∀ (G : Type) [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] (G' : Type) [AddCommGroup G'] [TopologicalSpace G'] [IsTopologicalAddGroup G'] [LocallyCompactSpace G'] [SecondCountableTopology G'] [T2Space G'] (Γ : AddSubgroup G) (Γ' : AddSubgroup G'), IsCoLat Γ → IsCoLat Γ' → ∀ e : G ≃ₜ+ G', (∀ x, e x ∈ Γ' ↔ x ∈ Γ) → ∀ Φ : G' → ℂ, Per Γ' Φ → avg Γ (fun x => Φ (e x)) = avg Γ' Φ := by
   intro G _ _ _ _ _ _ G' _ _ _ _ _ _ Γ Γ' hΓ hΓ' e he Φ hΦ
   letI mG : MeasurableSpace G := borel G

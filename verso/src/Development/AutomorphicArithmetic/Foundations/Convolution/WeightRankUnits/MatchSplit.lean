@@ -9,6 +9,11 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `E _ _ _ w hw n a b h μ f ⟨K', hKo, hKl, hf⟩`. Take `rfl : b = n - a` from `by omega`. Establish `ha : a ≤ n` using `by omega`. Establish `hL : IsLevel (MonoidHom.id _) (KL n w) K'` using `⟨hKo, hKl, fun k hk => hk⟩`. Establish `hμ : IsOpen {x | μ.loc w x = 1}` using `GroundTheory.Global.isOpen_ker_of_continuous w GroundTheory.Global.Complex.units_noSmallSubgroups (μ.loc w) (μ.2.1.comp (GlobalTheory.Mem.UnrAe.continuous_localIdele w))`.
+
+Take `⟨K₁, K₂, -, h₁, h₂, -, -, -, -, -, -, hH⟩` from `GlobalTheory.T.exists_block_levels_twistedConstantTerm_split_place E n a ha w hw (μ.loc w) hμ K' hL`. Conclude with `⟨⟨K₁.prod K₂, h₁.1.prod h₂.1, Subgroup.prod_mono h₁.2.1 h₂.2.1, hH f hf⟩, GlobalTheory.T.splitPlace_twistedConstantTerm_matches E n a ha w hw (μ.loc w) K' hL f hf⟩`.
+-/
 theorem UpperTheory.ConvolutionTheory.G2.matchSplit : UpperTheory.V.Z.Tf.GlobalTraceComparison.MatchSplit := by
   intro E _ _ _ w hw n a b h μ f ⟨K', hKo, hKl, hf⟩
   obtain rfl : b = n - a := by omega

@@ -15,6 +15,13 @@ noncomputable section
 
 namespace GlobalTheory.BKLim.HTDiag
 
+/- English proof (translation)
+Break down `Nat.lt_or_gt_of_ne hnm with hlt | hgt` into its components or cases. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_lt hlt`. Establish `e : t ^ (n + k + 1) = t ^ n * t ^ (k + 1)` using `by ring`. Rewrite `h` using `[e, mul_assoc]`. Establish `hw : w = t ^ (k + 1) * v` using `mul_left_cancel₀ (pow_ne_zero n ht) h`.
+
+Rewrite using `[hw, map_mul, map_pow, hθt, zero_pow (Nat.succ_ne_zero k), zero_mul]`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_lt hgt`. Establish `e : t ^ (m + k + 1) = t ^ m * t ^ (k + 1)` using `by ring`. Rewrite `h` using `[e, mul_assoc]`. Establish `hv' : v = t ^ (k + 1) * w` using `(mul_left_cancel₀ (pow_ne_zero m ht) h).symm`.
+
+Establish `hv0 : v = 0` using `hv (by rw [hv', map_mul, map_pow, hθt, zero_pow (Nat.succ_ne_zero k), zero_mul])`. Rewrite `h` using `[hv0, mul_zero]`. Establish `h' : t ^ (k + 1) * w = 0` using `(mul_eq_zero.1 h).resolve_left (pow_ne_zero _ ht)`. Establish `hw : w = 0` using `(mul_eq_zero.1 h').resolve_left (pow_ne_zero _ ht)`. Rewrite using `[hw, map_zero]`.
+-/
 theorem theta_zero_of_pow_eq {R S : Type*} [CommRing R] [IsDomain R] [CommRing S] (θ : R →+* S)
     {t w v : R} {n m : ℕ} (ht : t ≠ 0) (hθt : θ t = 0) (hv : θ v = 0 → v = 0)
     (h : t ^ n * w = t ^ m * v) (hnm : n ≠ m) : θ w = 0 := by
@@ -38,6 +45,59 @@ end GlobalTheory.BKLim.HTDiag
 
 open GlobalTheory.BKLim.HTDiag in
 
+/- English proof (translation)
+Introduce `l _ K K' C hI ξ hξ a ρ H z u hKK'`. Prove the components needed by the constructor for the conclusion. Introduce `hm K'' p q x y hfix hxy`. Take `⟨hdom, hinj, hF, -⟩` from `BdRField.bdR_isField l`. Use `haveI := hdom`.
+
+Use `set ι := algebraMap (Per.BdRp l) (Per.BdR l) with hι`. Establish `hxiker : xi C.ε ∈ Ideal.span {ξ}`. Rewrite using `[hξ, C.ker_theta]`. Conclude with `Ideal.mem_span_singleton_self _`. Take `⟨c0, hc0⟩` from `Ideal.mem_span_singleton'.1 hxiker`.
+
+Establish `hXu : IsUnit (ι (aDp l ξ))`. Establish `h1` using `TiedUnif.isUnit_xi (core_isEps l C)`. Rewrite `h1` using `[← hc0, map_mul, map_mul]`. Conclude with `isUnit_of_mul_isUnit_right h1`. Use `set e := ι (aDp l ξ) with he`.
+
+Take `⟨i0, hie⟩ : ∃ i0, i0 * e = 1` from `⟨_, hXu.val_inv_mul⟩`. Establish `ht0 : aDp l ξ ≠ 0`. Introduce `h0`. Rewrite `hie` using `[he, h0, map_zero, mul_zero]`. Conclude with `zero_ne_one (hinj (by rw [map_zero, map_one]; exact hie))`.
+
+Establish `hVdet : IsUnit H.V.det` using `(Matrix.isUnit_iff_isUnit_det _).1 H.unit`. Use `set W := H.V⁻¹ with hW`. Establish `hVW : H.V * W = 1` using `Matrix.mul_nonsing_inv _ hVdet`. Establish `hWV : W * H.V = 1` using `Matrix.nonsing_inv_mul _ hVdet`. Establish `hWVι : W.map ι * H.V.map ι = 1`.
+
+Rewrite using `[← Matrix.map_mul, hWV, Matrix.map_one _ (map_zero _) (map_one _)]`. Use `set d : Fin a → Per.BdR l := fun k => i0 ^ H.q * e ^ H.p k with hd`. Use `set d' : Fin a → Per.BdR l := fun k => e ^ H.q * i0 ^ H.p k with hd'`. Establish `hdd : ∀ k, d' k * d k = 1` using `fun k => by`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hQ : H.Q = H.V.map ι * Matrix.diagonal d`. Use extensionality with `i k`. Rewrite using `[Matrix.mul_diagonal, Matrix.map_apply]`. Establish `h` using `H.Q_eq i k`. Simplify using `only [map_mul, map_pow] at h`.
+
+Rewrite `h` using `[← he]`. Combine the equalities or inequalities in the displayed calculation. Use `set Qi := Matrix.diagonal d' * W.map ι with hQi`. Establish `hQiQ : Qi * H.Q = 1`. Rewrite using `[hQi, hQ, Matrix.mul_assoc, ← Matrix.mul_assoc (W.map ι), hWVι, Matrix.one_mul, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `k`. Conclude with `hdd k`. Establish `hQQi : H.Q * Qi = 1` using `mul_eq_one_comm.1 hQiQ`. Use `set av := Qi *ᵥ x with hav`.
+
+Establish `hxa : x = H.Q *ᵥ av` using `by rw [hav, Matrix.mulVec_mulVec, hQQi, Matrix.one_mulVec]`. Set `K3 : FinExt l` to `⟨K'.1 ⊔ K''.1, by haveI := K'.2; haveI := K''.2; exact IntermediateField.finiteDimensional_sup _ _⟩`. Establish `hmono : ∀ {A B : FinExt l}, A.1 ≤ B.1 → ∀ g, g ∈ GK B → g ∈ GK A` using `fun h g hg => (IntermediateField.mem_fixingSubgroup_iff _ _).2 fun x hx => (IntermediateField.mem_fixingSubgroup_iff _ _).1 hg x (h hx)`. Establish `h3' : K'.1 ≤ K3.1` using `le_sup_left`. Establish `h3'' : K''.1 ≤ K3.1` using `le_sup_right`.
+
+Establish `h3 : K.1 ≤ K3.1` using `hKK'.trans h3'`. Establish `hinv : ∀ g : GQ l, g ∈ GK K3 → ∀ j, Per.σD g (av j) = av j`. Introduce `g hg`. Set `g' : ↥(GK K)` to `⟨g, hmono h3 g hg⟩`. Establish `h1` using `hfix g' (hmono h3'' g hg)`.
+
+Establish `h2` using `H.inv g' (hmono h3' g hg)`. Establish `hσx : (fun i => Per.σD (g' : GQ l) (x i)) = H.Q.map (Per.σD (g' : GQ l)) *ᵥ (fun k => Per.σD (g' : GQ l) (av k))`. Use function extensionality and compare the values at `i`. Rewrite using `[hxa]`. Conclude with `RingHom.map_mulVec _ _ _ i`.
+
+Rewrite `h1` using `[hσx, Matrix.mulVec_mulVec, h2]`. Establish `h4 : av = (fun k => Per.σD (g' : GQ l) (av k))`. Combine the equalities or inequalities in the displayed calculation. Introduce `j`. Conclude with `(congrFun h4 j).symm`.
+
+Use `choose c hcK hc using fun j => hI K3 (av j) (fun g hg => hinv g hg j)`. Establish `hWx : ∀ k, e ^ q * (W.map ι *ᵥ x) k = e ^ p * (W.map ι *ᵥ (fun i => ι (y i))) k`. Establish `hv : e ^ q • x = e ^ p • (fun i => ι (y i))`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[hxy i, map_mul, map_pow]`. Introduce `k`. Use `congrFun (congrArg (fun v => W.map ι *ᵥ v) hv) k` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_smul]`. Establish `hD : ∀ k, aDp l ξ ^ (H.q + p) * (W *ᵥ y) k = aDp l ξ ^ (q + H.p k) * C.o (c k)`.
+
+Introduce `k`. Apply `hinj` to reduce the goal to its premises. Establish `hck : ι (C.o (c k)) = av k` using `hc k`. Rewrite using `[map_mul, map_mul, map_pow, map_pow, hck, RingHom.map_mulVec]`. Establish `hak : av k = d' k * (W.map ι *ᵥ x) k`.
+
+Rewrite using `[hav, hQi, ← Matrix.mulVec_mulVec, Matrix.mulVec_diagonal]`. Rewrite using `[hak]`. Combine the equalities or inequalities in the displayed calculation. Establish `hθξ : Per.θD l (aDp l ξ) = 0`. Rewrite using `[(thetaD_props l).2.2.2.1 ξ]`.
+
+Establish `: Per.θ l ξ = 0` using `RingHom.mem_ker.1 (hξ ▸ Ideal.mem_span_singleton_self ξ)`. Rewrite using `[this]`. Both sides reduce to the same expression. Establish `hkey : ∀ k, z ^ ((H.p k : ℤ) - H.q) * Per.θD l ((W *ᵥ y) k) = z ^ ((p : ℤ) - q) * Per.θD l ((W *ᵥ y) k)`. Introduce `k`.
+
+Distinguish the cases in `hk : (H.p k : ℤ) - H.q = (p : ℤ) - q`. Rewrite using `[hk]`. Establish `hz : Per.θD l ((W *ᵥ y) k) = 0`. Use `theta_zero_of_pow_eq (Per.θD l) ht0 hθξ ?_ (hD k) ?_` and prove the remaining obligations. Introduce `h0`.
+
+Rewrite `h0` using `[C.o_sec.th]`. Establish `: c k = 0` using `by first`. Consider the case `exact (algebraMap (Om l) ℂ_[l]).injective (by simpa using h0)`. Consider the case `exact UniformSpace.Completion.coe_injective _ (by simpa using h0)`. Rewrite using `[this, map_zero]`.
+
+Introduce `hn`. Apply `hk` to reduce the goal to its premises. Use linear arithmetic over natural numbers and integers. Rewrite using `[hz, mul_zero, mul_zero]`. Establish `hyw : y = H.V *ᵥ (W *ᵥ y)` using `by rw [Matrix.mulVec_mulVec, hVW, Matrix.one_mulVec]`.
+
+Establish `hθy : (fun i => Per.θD l (y i)) = H.V.map (Per.θD l) *ᵥ (fun k => Per.θD l ((W *ᵥ y) k))`. Use function extensionality and compare the values at `i`. Use `conv_lhs => rw [hyw]`. Conclude with `RingHom.map_mulVec _ _ _ i`. Establish `hdiag : Matrix.diagonal (fun i => z ^ ((H.p i : ℤ) - H.q)) *ᵥ (fun k => Per.θD l ((W *ᵥ y) k)) = z ^ ((p : ℤ) - q) • (fun k => Per.θD l ((W *ᵥ y) k))`.
+
+Use function extensionality and compare the values at `k`. Rewrite using `[Matrix.mulVec_diagonal, hkey k]`. Both sides reduce to the same expression. Rewrite using `[hθy, Matrix.mulVec_mulVec, hm, ← Matrix.mulVec_mulVec, hdiag, Matrix.mulVec_smul]`. Introduce `hHT`.
+
+Use extensionality with `i j`. Establish `h` using `hHT K' (H.p j) H.q (fun i => H.Q i j) (fun i => H.V i j) ?_ ?_`. Use `congrFun h i` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] at this`. Rewrite using `[Matrix.mul_diagonal, Matrix.map_apply, Matrix.mul_apply]`.
+
+Simplify using `only [Matrix.map_apply]`. Rewrite using `[this, mul_comm]`. Introduce `g hg`. Use function extensionality and compare the values at `i`. Use `congrFun (congrFun (H.inv g hg) i) j` as an intermediate fact.
+
+Simplify `this` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Introduce `i`. Conclude with `H.Q_eq i j`.
+-/
 theorem GlobalTheory.BKLim.isHT_iff_diag : ∀ (l : ℕ) [Fact l.Prime] (K K' : FinExt l) (C : Core l), C.InvdR → ∀ (ξ : Ainf l), Ideal.span {ξ} = RingHom.ker (Per.θ l) → ∀ (a : ℕ) (ρ : ↥(GK K) → Matrix (Fin a) (Fin a) (Om l)) (H : Hodge C ξ ρ K') (z : ℂ_[l]) (u : Matrix (Fin a) (Fin a) (ℂ_[l])), K.1 ≤ K'.1 → (u * H.V.map (Per.θD l) = H.V.map (Per.θD l) * Matrix.diagonal (fun i => z ^ ((H.p i : ℤ) - H.q)) ↔ IsHT C ξ ρ z u) := by
   intro l _ K K' C hI ξ hξ a ρ H z u hKK'
   constructor

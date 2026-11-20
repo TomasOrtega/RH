@@ -22,6 +22,9 @@ noncomputable def twoCover {X U V : Scheme.{0}} (u : U ⟶ X) (v : V ⟶ X) [IsO
     · exact ⟨false, y, hy⟩
     · exact ⟨true, y, hy⟩) (fun i => by cases i <;> assumption)
 
+/- English proof (translation)
+Establish `H` using `pullback_map_diagonal_isPullback g g f`. Rewrite using `[← MorphismProperty.cancel_left_of_respectsIso @IsClosedImmersion H.isoPullback.hom, H.isoPullback_hom_snd, ← MorphismProperty.cancel_left_of_respectsIso @IsClosedImmersion (pullback.diagonal g)]`. Use `(inferInstance : IsClosedImmersion (pullback.diagonal (g ≫ f)))` and compare the differences between its conclusion and the goal. Apply the tactic sequence `ext : 1 <;> simp`.
+-/
 theorem isClosedImmersion_snd_diagonal {U Y S : Scheme.{0}} (g : U ⟶ Y) (f : Y ⟶ S) [Mono g]
     [IsSeparated (g ≫ f)] :
     IsClosedImmersion (pullback.snd (pullback.diagonal f)
@@ -32,6 +35,11 @@ theorem isClosedImmersion_snd_diagonal {U Y S : Scheme.{0}} (g : U ⟶ Y) (f : Y
   convert (inferInstance : IsClosedImmersion (pullback.diagonal (g ≫ f)))
   ext : 1 <;> simp
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Use `IsZariskiLocalAtTarget.of_openCover (P := @IsClosedImmersion) (twoCover (pullback.map (u ≫ f) (u ≫ f) f f u u (𝟙 _) (Category.comp_id _) (Category.comp_id _)) (pullback.map (v ≫ f) (v ≫ f) f f v v (𝟙 _) (Category.comp_id _) (Category.comp_id _)) ?_) ?_` and prove the remaining obligations. Introduce `z`. Rewrite using `[Scheme.Pullback.range_map, Scheme.Pullback.range_map]`. Conclude with `h _ _ (by rw [← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, pullback.condition])`.
+
+Introduce and unpack `(_ | _)`. Conclude with `isClosedImmersion_snd_diagonal u f`. Conclude with `isClosedImmersion_snd_diagonal v f`.
+-/
 theorem isSeparated_of_two {U V Y S : Scheme.{0}} (u : U ⟶ Y) (v : V ⟶ Y) (f : Y ⟶ S) [IsOpenImmersion u]
     [IsOpenImmersion v] [IsSeparated (u ≫ f)] [IsSeparated (v ≫ f)]
     (h : ∀ x y : Y, f x = f y → (x ∈ Set.range u ∧ y ∈ Set.range u) ∨ (x ∈ Set.range v ∧ y ∈ Set.range v)) :
@@ -47,6 +55,25 @@ theorem isSeparated_of_two {U V Y S : Scheme.{0}} (u : U ⟶ Y) (v : V ⟶ Y) (f
     · exact isClosedImmersion_snd_diagonal u f
     · exact isClosedImmersion_snd_diagonal v f
 
+/- English proof (translation)
+Establish `: IsOpenImmersion p` using `MorphismProperty.of_isPullback (P := @IsOpenImmersion) hW.flip ‹_›`. Use `GlueModels.isOpenImmersion_inl p u` as an intermediate fact. Use `GlueModels.isOpenImmersion_inr p u` as an intermediate fact. Establish `hc` using `GlueModels.pushout_cover p u`. Set `f : pushout p u ⟶ S` to `pushout.desc c (a ≫ i) (by rw [hW.w, ← Category.assoc, hu])`.
+
+Establish `h1 : pushout.inl p u ≫ f = c` using `pushout.inl_desc _ _ _`. Establish `h2 : pushout.inr p u ≫ f = a ≫ i` using `pushout.inr_desc _ _ _`. Establish `e1 (x : X) : f (pushout.inl p u x) = c x` using `congrArg (fun g => g x) h1`. Establish `e2 (x : A) : f (pushout.inr p u x) = i (a x)` using `congrArg (fun g => g x) h2`. Establish `e3 (x : W) : pushout.inl p u (p x) = pushout.inr p u (u x)` using `congrArg (fun g => g x) (pushout.condition (f := p) (g := u))`.
+
+Establish `hin (y) (hy : f y ∈ Set.range i) : y ∈ Set.range (pushout.inr p u)`. Break down `hc y with ⟨x, rfl⟩ | hy` into its components or cases. Take `⟨t, ht⟩` from `hy`. Take `⟨z, rfl, -⟩` from `Scheme.exists_preimage_of_isPullback hW x t ((e1 x).symm.trans ht.symm)`. Conclude with `⟨u z, (e3 z).symm⟩`.
+
+Conclude with `hy`. Establish `hout (y) (hy : f y ∉ Set.range i) : y ∈ Set.range (pushout.inl p u)`. Break down `hc y with h | ⟨x, rfl⟩` into its components or cases. Conclude with `h`. Conclude with `absurd ⟨a x, (e2 x).symm⟩ hy`.
+
+Use `⟨_, f, pushout.inl p u, pushout.inr p u, inferInstance, ?_, h1, pushout.condition, ?_, ?_, ?_, hout⟩` and prove the remaining obligations. Use `(IsOpenImmersion.isPullback _ _ _ _ h2 ?_).flip` and prove the remaining obligations. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Conclude with `hin y`.
+
+Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨a x, (e2 x).symm⟩`. Use `IsZariskiLocalAtSource.of_openCover (P := @Smooth) (twoCover _ _ hc) ?_` and prove the remaining obligations. Introduce and unpack `(_ | _)`. Express the relevant statement in the definitionally equal form `Smooth (pushout.inl p u ≫ f)`.
+
+Rewrite using `[h1]`. Use `infer_instance`. Express the relevant statement in the definitionally equal form `Smooth (pushout.inr p u ≫ f)`. Rewrite using `[h2]`. Use `infer_instance`.
+
+Establish `: IsSeparated (pushout.inl p u ≫ f)` using `by rw [h1]; infer_instance`. Establish `: IsSeparated (pushout.inr p u ≫ f)` using `by rw [h2]; infer_instance`. Use `isSeparated_of_two (pushout.inl p u) (pushout.inr p u) f fun x y hxy => ?_` and prove the remaining obligations. Distinguish the cases in `hx : f x ∈ Set.range i`. Conclude with `Or.inr ⟨hin x hx, hin y (hxy ▸ hx)⟩`.
+
+Conclude with `Or.inl ⟨hout x hx, hout y (hxy ▸ hx)⟩`. Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[← Set.eq_univ_of_forall (s := Set.range (pushout.inl p u) ∪ Set.range (pushout.inr p u)) hc]`. Conclude with `(isCompact_range (pushout.inl p u).continuous).union (isCompact_range (pushout.inr p u).continuous)`.
+-/
 theorem exists_glue_chart {S T A X W : Scheme.{0}} (i : T ⟶ S) [IsOpenImmersion i] (a : A ⟶ T) (c : X ⟶ S)
     {p : W ⟶ X} {w : W ⟶ T} (hW : IsPullback p w c i) (u : W ⟶ A) [IsOpenImmersion u] (hu : u ≫ a = w)
     [Smooth a] [IsSeparated a] [Smooth c] [IsSeparated c] [CompactSpace A] [CompactSpace X] :
@@ -96,6 +123,17 @@ theorem exists_glue_chart {S T A X W : Scheme.{0}} (i : T ⟶ S) [IsOpenImmersio
     rw [← Set.eq_univ_of_forall (s := Set.range (pushout.inl p u) ∪ Set.range (pushout.inr p u)) hc]
     exact (isCompact_range (pushout.inl p u).continuous).union (isCompact_range (pushout.inr p u).continuous)
 
+/- English proof (translation)
+Introduce `R K _ _ _ _ _ _ A hA hs hq C _ _ hC u hu hua`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible R`. Establish `hloc : IsLocalization.Away π K`. Use `(IsLocalization.iff_of_le_of_exists_dvd (S := K) (M := Submonoid.powers π) (nonZeroDivisors R) (powers_le_nonZeroDivisors_of_noZeroDivisors hπ.ne_zero) fun r hr => ?_).2 inferInstance` and prove the remaining obligations. Take `⟨n, hn⟩` from `IsDiscreteValuationRing.associated_pow_irreducible (nonZeroDivisors.ne_zero hr) hπ`.
+
+Conclude with `⟨π ^ n, ⟨n, rfl⟩, hn.dvd⟩`. Establish `hi : IsOpenImmersion (spMap (algebraMap R K))` using `IsOpenImmersion.of_isLocalization π`. Establish `hW : IsPullback (spMap (Algebra.TensorProduct.includeRight : C →ₐ[R] TensorProduct R K C).toRingHom) (spMap (algebraMap K (TensorProduct R K C))) (spMap (algebraMap R C)) (spMap (algebraMap R K))` using `(isPullback_SpecMap_of_isPushout _ _ _ _ (CommRingCat.isPushout_tensorProduct R K C)).flip`. Establish `: Smooth (spMap (algebraMap R C))`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Smooth)]`.
+
+Conclude with `RingHom.smooth_algebraMap.mpr hC`. Establish `: CompactSpace A.left` using `QuasiCompact.compactSpace_of_compactSpace A.hom`. Take `⟨Y, f, g, j, hg, hj, hgf, hp, h1, h2, h3, h4⟩` from `exists_glue_chart (spMap (algebraMap R K)) A.hom (spMap (algebraMap R C)) hW u hua`. Use `⟨⟨Over.mk f, Over.isoMk hj.isoPullback.symm hj.isoPullback_inv_snd, h1, h2, (inferInstance : QuasiCompact f)⟩, g, hg, hgf, ?_, fun y hy => h4 y ?_⟩` and prove the remaining obligations. Conclude with `hp.trans (congrArg (u ≫ ·) hj.isoPullback_hom_fst.symm)`.
+
+Introduce and unpack `⟨t, ht⟩`. Establish `ht' : spMap (algebraMap R K) t = IsLocalRing.closedPoint R` using `ht.trans hy`. Establish `h5 : π ∈ (spMap (algebraMap R K) t).asIdeal`. Rewrite using `[ht']`. Conclude with `hπ.not_isUnit`.
+
+Conclude with `t.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ (show algebraMap R K π ∈ t.asIdeal from h5) (IsLocalization.Away.algebraMap_isUnit π))`.
+-/
 theorem exists_model_of_chart : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [Field K] [Algebra R K] [IsFractionRing R K] (A : Over (Sp K)), Smooth A.hom → IsSeparated A.hom → QuasiCompact A.hom → ∀ (C : Type) [CommRing C] [Algebra R C], Algebra.Smooth R C → ∀ u : Sp (TensorProduct R K C) ⟶ A.left, IsOpenImmersion u → u ≫ A.hom = spMap (algebraMap K (TensorProduct R K C)) → ∃ (M : Model R A) (g : Sp C ⟶ M.Y.left), IsOpenImmersion g ∧ g ≫ M.Y.hom = spMap (algebraMap R C) ∧ spMap (Algebra.TensorProduct.includeRight : C →ₐ[R] TensorProduct R K C).toRingHom ≫ g = u ≫ M.j ∧ M.sp ⊆ Set.range g := by
   intro R K _ _ _ _ _ _ A hA hs hq C _ _ hC u hu hua
   obtain ⟨π, hπ⟩ := IsDiscreteValuationRing.exists_irreducible R

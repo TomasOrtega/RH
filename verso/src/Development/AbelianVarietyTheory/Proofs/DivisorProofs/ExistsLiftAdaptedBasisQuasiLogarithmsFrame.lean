@@ -14,6 +14,27 @@ noncomputable section
 
 namespace GlobalTheory.QLog.LiftBasis
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ _ _ _ hv ε hε F G d c μ' hμ' hμ Θ hΘ k e0 hB hA`. Establish `hC : IsFrame p C (RingHom.id O)` using `GlobalTheory.T.isTorsionFreePDThickeningFrame_valuation_integers p C v O hv`. Establish `hF : IsFrame p F.Q F.θ` using `F.frame`. Establish `hμf : (fun i => map F.θ (μ' i)) = c.μ` using `funext hμ`. Establish `hw : ∀ l, ∃ w : Fin d → F.B, (∀ i, lin (e0 l) i = algebraMap O C (F.θ (w i))) ∧ ∀ j, l = Sum.inl j → w = Pi.single j 1`.
+
+Introduce `l`. Consider the cases of `l with`. Consider the case `inl j`. Use `⟨Pi.single j 1, fun i => ?_, fun j' h => by cases h; rfl⟩` and prove the remaining obligations. Rewrite using `[(hA j).2]`.
+
+Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hij]`. Consider the case `inr j`.
+
+Use `⟨fun i => Classical.choose (hF.surj (Classical.choose ((hB.1 (Sum.inr j)).2.1 i))), fun i => ?_, fun j' h => by cases h⟩` and prove the remaining obligations. Rewrite using `[Classical.choose_spec (hF.surj _)]`. Conclude with `(Classical.choose_spec ((hB.1 (Sum.inr j)).2.1 i)).2`. Use `choose w hw1 hw2 using hw`. Establish `hlift : ∀ l, ∃ f : MvPowerSeries (Fin d) F.Q, QL μ' ⊤ f ∧ map Θ f = e0 l ∧ ∀ i, lin f i = algebraMap F.B F.Q (w l i)`.
+
+Introduce `l`. Use `GlobalTheory.T.lift_quasiLogarithm_along_pdThickening p F.B O F.Q F.θ hF d μ' hμ' C hC Θ hΘ (e0 l) (w l) ?_ (hw1 l)` and prove the remaining obligations. Rewrite using `[hμf]`. Conclude with `hB.1 l`. Use `choose e he1 he2 he3 using hlift`.
+
+Use `⟨e, he2, ?_, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.T.quasiLogarithm_basis_lift_pdThickening p F.B O F.Q F.θ hF d μ' hμ' C hC Θ hΘ (Fin d ⊕ Fin k) e he1 ?_ (GlobalTheory.T.ainfSquareZeroFrame_reflTransGen_cyclic_chain p C v O hv ε hε F)` and prove the remaining obligations. Rewrite using `[hμf]`. Establish `: (fun i => map Θ (e i)) = e0` using `funext he2`. Rewrite using `[this]`.
+
+Conclude with `hB`. Introduce `i`. Use `⟨fun α => ?_, ?_⟩` and prove the remaining obligations. Take `⟨b, -, eb⟩` from `(he1 (Sum.inl i)).2.2 α`. Use `⟨b, RingHom.mem_ker.2 ?_, eb⟩` and prove the remaining obligations.
+
+Take `⟨b', hb', eb'⟩` from `(hA i).1 α`. Establish `hb0 : b' = 0` using `RingHom.mem_ker.1 hb'`. Establish `hup : up C c.μ = fun j => map Θ (up F.Q μ' j)`. Use function extensionality and compare the values at `(WindowMat.up_map F.θ Θ hΘ hμ)`. Establish `key : algebraMap O C (F.θ b) = 0`.
+
+Rewrite using `[← hΘ, ← eb, ← coeff_map, Window.map_formalGroupLawCoboundaryOne_eq Θ _ (Window.constantCoeff_up hμ'.const), ← hup, he2, eb', hb0, map_zero]`. Conclude with `hC.inj (by rw [key, map_zero])`. Use function extensionality and compare the values at `j`. Rewrite using `[he3, hw2 _ i rfl]`. Distinguish the cases in `hij : j = i`.
+
+Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hij]`.
+-/
 theorem exists_lift_isAdapted : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), ∀ F : BFrame ε, ∀ (G : PDivGroup p O) (d : ℕ) (c : QLog.Chart G d) (μ' : Fin d → MvPowerSeries (Fin d ⊕ Fin d) F.B), IsLift F.θ μ' → (∀ i, map F.θ (μ' i) = c.μ i) → ∀ Θ : F.Q →+* C, (∀ b, Θ (algebraMap F.B F.Q b) = algebraMap O C (F.θ b)) → ∀ (k : ℕ) (e0 : Fin d ⊕ Fin k → MvPowerSeries (Fin d) C), IsBasis c.μ e0 → IsAdapted (RingHom.id O) c.μ e0 → ∃ e : Fin d ⊕ Fin k → MvPowerSeries (Fin d) F.Q, (∀ l, map Θ (e l) = e0 l) ∧ IsBasis μ' e ∧ IsAdapted F.θ μ' e := by
   intro p _ C _ _ _ v O _ _ _ _ _ hv ε hε F G d c μ' hμ' hμ Θ hΘ k e0 hB hA
   have hC : IsFrame p C (RingHom.id O) := GlobalTheory.T.isTorsionFreePDThickeningFrame_valuation_integers p C v O hv

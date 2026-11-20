@@ -8,20 +8,34 @@ namespace PositivityTheory.Rg.Sw.HSt.CompactCayleyBlocks
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Use `open scoped Matrix.Norms.L2Operator in exact CStarAlgebra.span_unitary (A := Matrix (Fin n) (Fin n) ℂ)`.
+-/
 theorem span_unitary_matrix :
     Submodule.span ℂ (unitary (Matrix (Fin n) (Fin n) ℂ) : Set (Matrix (Fin n) (Fin n) ℂ)) = ⊤ := by
   open scoped Matrix.Norms.L2Operator in exact CStarAlgebra.span_unitary (A := Matrix (Fin n) (Fin n) ℂ)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h, mul_eq_one_comm.mp h⟩`.
+-/
 theorem mem_unitary_of {U : Matrix (Fin n) (Fin n) ℂ} (h : Uᴴ * U = 1) : U ∈ unitary (Matrix (Fin n) (Fin n) ℂ) :=
   ⟨h, mul_eq_one_comm.mp h⟩
 
 def pm (σ : Equiv.Perm (Fin n)) : Matrix (Fin n) (Fin n) ℂ := Matrix.of fun i j => if σ i = j then 1 else 0
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[pm, Matrix.mul_apply, Matrix.conjTranspose_apply, eq_comm]`.
+-/
 theorem pm_conj (σ : Equiv.Perm (Fin n)) (X : Matrix (Fin n) (Fin n) ℂ) :
     pm σ * X * (pm σ)ᴴ = X.submatrix σ σ := by
   ext i j
   simp [pm, Matrix.mul_apply, Matrix.conjTranspose_apply, eq_comm]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [pm, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.of_apply, Matrix.one_apply]`. Rewrite using `[Finset.sum_eq_single (σ.symm i)]`. Apply the tactic sequence `by_cases h : i = j <;> simp [h, eq_comm, Equiv.apply_eq_iff_eq_symm_apply]`. Introduce `k _ hk`.
+
+Establish `: σ k ≠ i` using `fun e => hk (by rw [← e]; simp)`. Simplify using `[this]`. Simplify using the standard rewrite rules.
+-/
 theorem pm_unit (σ : Equiv.Perm (Fin n)) : (pm σ)ᴴ * pm σ = 1 := by
   ext i j
   simp only [pm, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.of_apply, Matrix.one_apply]
@@ -34,11 +48,19 @@ theorem pm_unit (σ : Equiv.Perm (Fin n)) : (pm σ)ᴴ * pm σ = 1 := by
 
 def dph (a : Fin n) : Matrix (Fin n) (Fin n) ℂ := Matrix.diagonal fun i => if i = a then Complex.I else 1
 
+/- English proof (translation)
+Rewrite using `[dph, diagonal_conjTranspose, diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `by_cases hi : i = a <;> simp [hi]`.
+-/
 theorem dph_unit (a : Fin n) : (dph a)ᴴ * dph a = 1 := by
   rw [dph, diagonal_conjTranspose, diagonal_mul_diagonal, ← diagonal_one]
   congr 1; funext i
   by_cases hi : i = a <;> simp [hi]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[dph, diagonal_conjTranspose, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Simplify using `only [Matrix.single_apply, Matrix.smul_apply, smul_eq_mul, Pi.star_apply]`. Apply the tactic sequence `by_cases hi : a = i <;> by_cases hj : b = j`. Substitute `hi hj` using the available equality.
+
+Simplify using `[hab.symm]`. Simplify using `[hj]`. Simplify using `[hi]`. Simplify using `[hi, hj]`.
+-/
 theorem dph_conj {a b : Fin n} (hab : a ≠ b) :
     dph a * Matrix.single a b (1 : ℂ) * (dph a)ᴴ = Complex.I • Matrix.single a b (1 : ℂ) := by
   ext i j
@@ -50,6 +72,29 @@ theorem dph_conj {a b : Fin n} (hab : a ≠ b) :
   · simp [hi]
   · simp [hi, hj]
 
+/- English proof (translation)
+Establish `h' : ∀ U X : Matrix (Fin n) (Fin n) ℂ, Uᴴ * U = 1 → L (U * X * Uᴴ) = L X`. Introduce `U X hU`. Set `C : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] ℂ` to `L.comp ((LinearMap.mulLeft ℂ U).comp (LinearMap.mulRight ℂ Uᴴ)) - L`. Establish `hC : Submodule.span ℂ (unitary (Matrix (Fin n) (Fin n) ℂ) : Set _) ≤ LinearMap.ker C`. Rewrite using `[Submodule.span_le]`.
+
+Introduce `Y hY`. Establish `hY' : Yᴴ * Y = 1` using `hY.1`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, C, LinearMap.sub_apply, LinearMap.comp_apply, LinearMap.mulLeft_apply, LinearMap.mulRight_apply, ← Matrix.mul_assoc]`. Rewrite using `[h U Y hU hY', sub_self]`. Establish `hX : X ∈ LinearMap.ker C` using `hC (by rw [span_unitary_matrix]; trivial)`.
+
+Simplify `hX` using `[C, sub_eq_zero, ← Matrix.mul_assoc]`. Establish `hoff : ∀ a b : Fin n, a ≠ b → L (Matrix.single a b 1) = 0`. Introduce `a b hab`. Establish `e` using `h' (dph a) (Matrix.single a b 1) (dph_unit a)`. Rewrite `e` using `[dph_conj hab, L.map_smul, smul_eq_mul]`.
+
+Establish `: (Complex.I - 1) * L (Matrix.single a b 1) = 0` using `by linear_combination e`. Break down `mul_eq_zero.mp this with h0 | h0` into its components or cases. Conclude with `absurd h0 (by simp [sub_eq_zero, Complex.ext_iff])`. Conclude with `h0`. Establish `hdiag : ∀ a b : Fin n, L (Matrix.single a a 1) = L (Matrix.single b b 1)`.
+
+Introduce `a b`. Establish `e` using `h' (pm (Equiv.swap a b)) (Matrix.single a a 1) (pm_unit _)`. Rewrite `e` using `[pm_conj]`. Establish `: (Matrix.single a a (1 : ℂ)).submatrix (Equiv.swap a b) (Equiv.swap a b) = Matrix.single b b 1`. Establish `key : ∀ x, a = (Equiv.swap a b) x ↔ b = x`.
+
+Introduce `x`. Rewrite using `[eq_comm, Equiv.swap_apply_eq_iff, Equiv.swap_apply_left, eq_comm]`. Use extensionality with `i j`. Simplify using `only [Matrix.submatrix_apply, Matrix.single_apply, key]`. Rewrite `e` using `[this]`.
+
+Conclude with `e.symm`. Introduce `X`. Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Substitute `hn` using the available equality. Establish `: X = 0` using `Subsingleton.elim _ _`.
+
+Simplify using `[this]`. Use `set κ := L (Matrix.single (⟨0, hn⟩ : Fin n) ⟨0, hn⟩ 1)`. Establish `hsum : ∀ Y : Matrix (Fin n) (Fin n) ℂ, L Y = κ * Y.trace`. Introduce `Y`. Use `conv_lhs => rw [Matrix.matrix_eq_sum_single Y]`.
+
+Simplify using `only [map_sum]`. Rewrite using `[Matrix.trace, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single a]`. Rewrite using `[show Matrix.single a a (Y a a) = Y a a • Matrix.single a a (1 : ℂ) by rw [Matrix.smul_single, smul_eq_mul, mul_one], L.map_smul, smul_eq_mul, hdiag a ⟨0, hn⟩, Matrix.diag_apply]; ring`.
+
+Introduce `b _ hb`. Rewrite using `[show Matrix.single a b (Y a b) = Y a b • Matrix.single a b (1 : ℂ) by rw [Matrix.smul_single, smul_eq_mul, mul_one], L.map_smul, hoff a b (Ne.symm hb), smul_zero]`. Simplify using the standard rewrite rules. Establish `h1 : L 1 = κ * n` using `by rw [hsum, trace_one, Fintype.card_fin]`. Establish `hn' : (n : ℂ) ≠ 0` using `by exact_mod_cast hn.ne'`.
+
+Rewrite using `[hsum X, h1]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem inv_trace (L : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] ℂ)
     (h : ∀ U X : Matrix (Fin n) (Fin n) ℂ, Uᴴ * U = 1 → Xᴴ * X = 1 → L (U * X * Uᴴ) = L X) :
     ∀ X, L X = L 1 / n * X.trace := by

@@ -16,6 +16,13 @@ open GlobalTheory.TUniq
 
 namespace GlobalTheory.TUniq
 
+/- English proof (translation)
+Use `letI : Algebra k K := φ.toAlgebra`. Use `letI : Algebra k K₀ := ψ.toAlgebra`. Use `haveI : Nontrivial (K ⊗[k] K₀) := Algebra.TensorProduct.nontrivial_of_algebraMap_injective_of_isDomain k K K₀ φ.injective ψ.injective`. Take `⟨m, hm⟩` from `Ideal.exists_maximal (K ⊗[k] K₀)`. Use `letI : Field (K ⊗[k] K₀ ⧸ m) := Ideal.Quotient.field m`.
+
+Set `emb : K ⊗[k] K₀ →+* AlgebraicClosure (K ⊗[k] K₀ ⧸ m)` to `(algebraMap (K ⊗[k] K₀ ⧸ m) (AlgebraicClosure (K ⊗[k] K₀ ⧸ m))).comp (Ideal.Quotient.mk m)`. Use `⟨AlgebraicClosure (K ⊗[k] K₀ ⧸ m), inferInstance, inferInstance, emb.comp Algebra.TensorProduct.includeLeftRingHom, emb.comp (Algebra.TensorProduct.includeRight : K₀ →ₐ[k] K ⊗[k] K₀).toRingHom, ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Simplify using `only [RingHom.comp_apply]`. Use `congr 1`.
+
+Use `show (algebraMap k K a) ⊗ₜ[k] (1 : K₀) = (1 : K) ⊗ₜ[k] (algebraMap k K₀ a)`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`.
+-/
 private theorem exists_algClosed_compositum {k K K₀ : Type} [Field k] [Field K] [Field K₀]
     (φ : k →+* K) (ψ : k →+* K₀) :
     ∃ (Ω : Type) (_ : Field Ω) (_ : IsAlgClosed Ω) (i : K →+* Ω) (j : K₀ →+* Ω),
@@ -38,9 +45,21 @@ private theorem exists_algClosed_compositum {k K K₀ : Type} [Field k] [Field K
   show (algebraMap k K a) ⊗ₜ[k] (1 : K₀) = (1 : K) ⊗ₜ[k] (algebraMap k K₀ a)
   rw [Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]
 
+/- English proof (translation)
+The claim follows from `PrimeSpectrum.ext ((Ideal.eq_bot_of_prime q.asIdeal).trans (Ideal.eq_bot_of_prime r.asIdeal).symm)`.
+-/
 private theorem pt_eq_lemma_2 {K : Type} [Field K] (q r : PrimeSpectrum K) : q = r :=
   PrimeSpectrum.ext ((Ideal.eq_bot_of_prime q.asIdeal).trans (Ideal.eq_bot_of_prime r.asIdeal).symm)
 
+/- English proof (translation)
+Establish `e : p = IsLocalRing.closedPoint K` using `pt_eq_lemma_2 _ _`. Establish `e₀ : p₀ = IsLocalRing.closedPoint K₀` using `pt_eq_lemma_2 _ _`. Substitute `e e₀` using the available equality. Establish `hx` using `Scheme.descResidueField_stalkClosedPointTo_fromSpecResidueField K S x`. Establish `hx₀` using `Scheme.descResidueField_stalkClosedPointTo_fromSpecResidueField K₀ S x₀`.
+
+Generalize the expression as in `S.descResidueField (Scheme.stalkClosedPointTo x) = φ at hx`. Generalize the expression as in `S.descResidueField (Scheme.stalkClosedPointTo x₀) = φ₀ at hx₀`. Take `⟨Ω, hΩ, hΩc, i, j, hij⟩` from `exists_algClosed_compositum φ.hom ((S.residueFieldCongr h).hom ≫ φ₀).hom`. Use `⟨Ω, hΩ, hΩc, i, j, ?_⟩` and prove the remaining obligations. Establish `hx₀' : Spec.map ((S.residueFieldCongr h).hom ≫ φ₀) ≫ S.fromSpecResidueField (x (IsLocalRing.closedPoint K)) = x₀`.
+
+Rewrite using `[Spec.map_comp, Category.assoc, Scheme.residueFieldCongr_fromSpecResidueField, hx₀]`. Establish `hc : φ ≫ CommRingCat.ofHom i = ((S.residueFieldCongr h).hom ≫ φ₀) ≫ CommRingCat.ofHom j`. Use extensionality with `a`. Conclude with `RingHom.congr_fun hij a`. Use `show Spec.map (CommRingCat.ofHom i) ≫ x = Spec.map (CommRingCat.ofHom j) ≫ x₀`.
+
+Use `conv_lhs => rw [← hx]`. Use `conv_rhs => rw [← hx₀']`. Rewrite using `[← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp, hc]`.
+-/
 theorem exists_algClosed_join_of_mem_range {S : Scheme.{0}} {K K₀ : Type} [Field K] [Field K₀]
     (x : Sp K ⟶ S) (x₀ : Sp K₀ ⟶ S) (p : Sp K) (p₀ : Sp K₀) (h : x p = x₀ p₀) :
     ∃ (Ω : Type) (_ : Field Ω) (_ : IsAlgClosed Ω) (i : K →+* Ω) (j : K₀ →+* Ω),
@@ -65,6 +84,11 @@ theorem exists_algClosed_join_of_mem_range {S : Scheme.{0}} {K K₀ : Type} [Fie
   conv_rhs => rw [← hx₀']
   rw [← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp, hc]
 
+/- English proof (translation)
+Introduce `o _ g k J b S s t t' K _ x hx`. Take `⟨K₁, hK₁, x₁, u₁, ⟨p₁, hp₁⟩, hu, hu'⟩` from `hx ⟨IsLocalRing.closedPoint K, rfl⟩`. Take `⟨Ω, hΩ, hΩc, i, j, hij⟩` from `exists_algClosed_join_of_mem_range x x₁ (IsLocalRing.closedPoint K) p₁ hp₁.symm`. Take `⟨u, hu₀⟩` from `GlobalTheory.tObj_pull o g k J b (Sp K₁) (Sp Ω) (x₁ ≫ s) (spMap i ≫ x ≫ s) (spMap j) u₁ (by rw [← Category.assoc, ← hij, Category.assoc])`. Establish `hT` using `((GlobalTheory.T.thetaLevelPullback_id_comp_cancel o g k J b S (Sp K₁) (Sp Ω) s (x₁ ≫ s) (spMap i ≫ x ≫ s) t u₁ u).2 x₁ (spMap j) hu).1 hu₀`.
+
+Establish `hT'` using `((GlobalTheory.T.thetaLevelPullback_id_comp_cancel o g k J b S (Sp K₁) (Sp Ω) s (x₁ ≫ s) (spMap i ≫ x ≫ s) t' u₁ u).2 x₁ (spMap j) hu').1 hu₀`. Rewrite `hT`, `hT'` using `[← hij]`. Take `⟨ψ, hψ⟩` from `(tMap_iff u t _).1 hT`. Take `⟨ψ', hψ'⟩` from `(tMap_iff u t' _).1 hT'`. Conclude with `⟨Ω, hΩ, hΩc, i, spMap i ≫ x ≫ s, u, ψ, ψ', hψ, hψ'⟩`.
+-/
 theorem geoGood_commonFibres : ∀ (o : Type) [CommRing o] (g k : ℕ) (J : Type) (b : TBase o k) (S : Scheme.{0}) (s : S ⟶ Sp o) (t t' : TObj g k J b s), GeoGood t t' {p : S | ∃ (K : Type) (_ : Field K) (x : Sp K ⟶ S) (u : TObj g k J b (x ≫ s)), p ∈ Set.range x ∧ TMap u t x ∧ TMap u t' x} := by
   intro o _ g k J b S s t t' K _ x hx
   obtain ⟨K₁, hK₁, x₁, u₁, ⟨p₁, hp₁⟩, hu, hu'⟩ := hx ⟨IsLocalRing.closedPoint K, rfl⟩

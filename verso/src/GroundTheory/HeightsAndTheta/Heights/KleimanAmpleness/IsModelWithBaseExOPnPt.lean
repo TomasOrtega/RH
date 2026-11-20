@@ -30,6 +30,13 @@ def SpecialCurves.Statement : Prop :=
               NumbersDVR.specialIdeal (mIdealOver O y) ≤ W ∧ relDim W = ((d : ℕ) : WithBot (WithTop ℤ)) ∧
               baseComap (IsLocalRing.ResidueField O) k₀ e W = P)
 
+/- English proof (translation)
+Rewrite using `[eq_bot_iff]`. Introduce `f hf`. Rewrite using `[Ideal.mem_bot]`. Establish `hcomp : ((MvPolynomial.aeval (R` using `IndefiniteRowSideFullHecke.Kleiman2.pnField exF 1) (fun _ : Unit => (1 : IndefiniteRowSideFullHecke.Kleiman2.pnField exF 1))).restrictScalars exO).comp (ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.mConeMapOver exO (IndefiniteRowSideFullHecke.Kleiman2.pnPt exF 1)) = ( …`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises.
+
+Introduce `p`. Simplify using `[ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.mConeMapOver, IndefiniteRowSideFullHecke.Kleiman2.pnPt]`. Establish `h1` using `AlgHom.congr_fun hcomp f`. Establish `hf' : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.mConeMapOver exO (IndefiniteRowSideFullHecke.Kleiman2.pnPt exF 1) f = 0` using `hf`. Rewrite `h1` using `[AlgHom.comp_apply, hf', map_zero, AlgHom.comp_apply, IsScalarTower.toAlgHom_apply]`.
+
+Establish `h2 : MvPolynomial.mapAlgHom (Algebra.ofId exO exF) f = 0` using `(IsFractionRing.injective _ (IndefiniteRowSideFullHecke.Kleiman2.pnField exF 1)) (by rw [← h1, map_zero])`. Establish `hinj : Function.Injective (MvPolynomial.map (σ` using `Σ k, IndefiniteRowSideFullHecke.Kleiman2.pnIdx 1 k) (algebraMap exO exF)) := MvPolynomial.map_injective _ (IsFractionRing.injective exO exF)`. Conclude with `hinj (by simpa [MvPolynomial.mapAlgHom_apply] using h2)`.
+-/
 theorem mIdealOver_exO_pnPt : mIdealOver exO (IndefiniteRowSideFullHecke.Kleiman2.pnPt exF 1) = ⊥ := by
   rw [eq_bot_iff]
   intro f hf
@@ -51,13 +58,22 @@ theorem mIdealOver_exO_pnPt : mIdealOver exO (IndefiniteRowSideFullHecke.Kleiman
       (algebraMap exO exF)) := MvPolynomial.map_injective _ (IsFractionRing.injective exO exF)
   exact hinj (by simpa [MvPolynomial.mapAlgHom_apply] using h2)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => ⟨0, IndefiniteRowSideFullHecke.Kleiman2.pnPt_ne_zero exF 1 _⟩, rfl⟩`.
+-/
 theorem isModelWithBase_exO_pnPt : IndefiniteRowSideFullHecke.Kleiman2.IsModelWithBase exO (IndefiniteRowSideFullHecke.Kleiman2.pnPt exF 1) () :=
   ⟨fun _ => ⟨0, IndefiniteRowSideFullHecke.Kleiman2.pnPt_ne_zero exF 1 _⟩, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[mIdealOver_exO_pnPt, NumbersDVR.specialIdeal, Ideal.map_bot]`.
+-/
 theorem specialIdeal_exO_pnPt :
     NumbersDVR.specialIdeal (mIdealOver exO (IndefiniteRowSideFullHecke.Kleiman2.pnPt exF 1)) = ⊥ := by
   rw [mIdealOver_exO_pnPt, NumbersDVR.specialIdeal, Ideal.map_bot]
 
+/- English proof (translation)
+Use `⟨isModelWithBase_exO_pnPt, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[specialIdeal_exO_pnPt]`. Conclude with `NumbersDVR.isMultiProjPrime_bot`. Rewrite using `[specialIdeal_exO_pnPt]`. Conclude with `GroundTheory.Heights₂.Heights.FieldNumbers.relDim_projectiveSpace 1`.
+-/
 theorem SpecialCurves.hyps :
     IndefiniteRowSideFullHecke.Kleiman2.IsModelWithBase exO (IndefiniteRowSideFullHecke.Kleiman2.pnPt exF 1) () ∧
       NumbersDVR.IsMultiProjPrime (NumbersDVR.specialIdeal (mIdealOver exO (IndefiniteRowSideFullHecke.Kleiman2.pnPt exF 1))) ∧
@@ -69,6 +85,9 @@ theorem SpecialCurves.hyps :
   · rw [specialIdeal_exO_pnPt]
     exact GroundTheory.Heights₂.Heights.FieldNumbers.relDim_projectiveSpace 1
 
+/- English proof (translation)
+The claim follows from `h exO Unit (IndefiniteRowSideFullHecke.Kleiman2.pnIdx 1) (IndefiniteRowSideFullHecke.Kleiman2.pnField exF 1) (IndefiniteRowSideFullHecke.Kleiman2.pnPt exF 1) () 1 (Equiv.refl _) _ rfl SpecialCurves.hyps.1 1`.
+-/
 example (h : SpecialCurves.Statement) :=
   h exO Unit (IndefiniteRowSideFullHecke.Kleiman2.pnIdx 1) (IndefiniteRowSideFullHecke.Kleiman2.pnField exF 1) (IndefiniteRowSideFullHecke.Kleiman2.pnPt exF 1) () 1
     (Equiv.refl _) _ rfl SpecialCurves.hyps.1 1

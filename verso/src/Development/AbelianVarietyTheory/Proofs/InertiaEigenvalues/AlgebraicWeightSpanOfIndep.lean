@@ -26,6 +26,9 @@ noncomputable def evS {S : Type} [CommRing S] (c : L →+* L) (τ : L →+* K) (
   else if p.1 = τ.comp c then Y p.2.2 p.2.1
   else if p.2.1 = p.2.2 then 1 else 0
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Simplify using `only [evS, Function.comp_apply, Matrix.map_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem evS_map {S S' : Type} [CommRing S] [CommRing S'] (ψ : S →+* S') (c : L →+* L) (τ : L →+* K)
     (X Y : Matrix (Fin n) (Fin n) S) : ψ ∘ evS c τ X Y = evS c τ (X.map ψ) (Y.map ψ) := by
   funext p
@@ -38,6 +41,9 @@ noncomputable def defect {S : Type} [CommRing S] (φ : K →+* S) (c : L →+* L
   (∏ a, X a a ^ (-lam a).toNat) * ∑ j, eval₂ φ (evS c τ X Y) (P i j) * φ (v j) -
     (∏ a, X a a ^ (lam a).toNat) * φ (v i)
 
+/- English proof (translation)
+Simplify using `only [defect, map_sub, map_mul, map_prod, map_pow, map_sum, hom_eval₂, Matrix.map_apply, RingHom.comp_apply]`. Rewrite using `[← evS_map]`. Both sides reduce to the same expression.
+-/
 theorem defect_map {S S' : Type} [CommRing S] [CommRing S'] (ψ : S →+* S') (φ : K →+* S) (c : L →+* L)
     (τ : L →+* K) {ι : Type} [Fintype ι] (P : ι → ι → MvPolynomial ((L →+* K) × Fin n × Fin n) K) (v : ι → K)
     (lam : Fin n → ℤ) (X Y : Matrix (Fin n) (Fin n) S) (i : ι) :
@@ -47,6 +53,11 @@ theorem defect_map {S S' : Type} [CommRing S] [CommRing S'] (ψ : S →+* S') (�
   rw [← evS_map]
   rfl
 
+/- English proof (translation)
+Establish `key : ∀ a, X a a ^ (lam a).toNat = X a a ^ (-lam a).toNat * X a a ^ lam a`. Introduce `a`. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_add₀ (hX a)]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hu : (∏ a, X a a ^ (-lam a).toNat) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun a _ => pow_ne_zero _ (hX a)`. Simplify using `only [defect, sub_eq_zero, key, Finset.prod_mul_distrib, mul_assoc]`. Conclude with `⟨fun h => mul_left_cancel₀ hu h, fun h => by rw [h]⟩`.
+-/
 theorem defect_eq_zero_iff {F : Type} [Field F] (φ : K →+* F) (c : L →+* L) (τ : L →+* K) {ι : Type}
     [Fintype ι] (P : ι → ι → MvPolynomial ((L →+* K) × Fin n × Fin n) K) (v : ι → K) (lam : Fin n → ℤ)
     (X Y : Matrix (Fin n) (Fin n) F) (hX : ∀ a, X a a ≠ 0) (i : ι) :
@@ -69,11 +80,45 @@ open MvPolynomial
 
 variable {L : Type} [Field L] {n : ℕ} {K : Type} [Field K]
 
+/- English proof (translation)
+Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[← Matrix.map_mul, h, Matrix.map_one _ (map_zero ψ) (map_one ψ)]`.
+-/
 theorem inv_map_of_mul {A F : Type} [CommRing A] [Field F] (ψ : A →+* F) (G : Matrix (Fin n) (Fin n) A)
     (h : G⁻¹ * G = 1) : (G.map ψ)⁻¹ = G⁻¹.map ψ := by
   apply Matrix.inv_eq_left_inv
   rw [← Matrix.map_mul, h, Matrix.map_one _ (map_zero ψ) (map_one ψ)]
 
+/- English proof (translation)
+Use `haveI : CharZero K := RingHom.charZero e`. Use `haveI : Infinite K := inferInstance`. Take `⟨D, hD⟩ : ∃ D : MvPolynomial (Fin n × Fin n) K, D = ∏ a, X (a, a)` from `⟨_, rfl⟩`. Set `A` to `Localization.Away D`. Set `φA : K →+* A` to `(algebraMap (MvPolynomial (Fin n × Fin n) K) A).comp C`.
+
+Set `G : Matrix (Fin n) (Fin n) A` to `fun a b => if b < a then 0 else algebraMap (MvPolynomial (Fin n × Fin n) K) A (X (a, b))`. Establish `hGtri : G.BlockTriangular id` using `fun a b h => by`. Simplify using `only [G]`. Rewrite using `[if_pos (show b < a from h)]`. Establish `hDA : algebraMap (MvPolynomial (Fin n × Fin n) K) A D = ∏ a, algebraMap (MvPolynomial (Fin n × Fin n) K) A (X (a, a))`.
+
+Rewrite using `[← map_prod]`. Conclude with `congrArg _ hD`. Establish `hdet : G.det = algebraMap (MvPolynomial (Fin n × Fin n) K) A D`. Rewrite using `[Matrix.det_of_upperTriangular hGtri, hDA]`. Simplify using `[G]`.
+
+Establish `hunit : IsUnit G.det` using `hdet ▸ IsLocalization.Away.algebraMap_isUnit D`. Establish `hGinv : G⁻¹ * G = 1` using `Matrix.nonsing_inv_mul G hunit`. Establish `hy : defect φA c τ P v lam G G⁻¹ i = 0`. Take `⟨⟨f, s⟩, hfs⟩` from `IsLocalization.surj (Submonoid.powers D) (defect φA c τ P v lam G G⁻¹ i)`. Establish `hf : ∀ x : Fin n × Fin n → K, eval x D ≠ 0 → eval x f = 0`.
+
+Introduce `x hx`. Set `ψ : A →+* K` to `IsLocalization.Away.lift D (g := eval x) (Ne.isUnit hx)`. Establish `hψ : ∀ r, ψ (algebraMap (MvPolynomial (Fin n × Fin n) K) A r) = eval x r` using `IsLocalization.Away.lift_eq D _`. Use `set M : Matrix (Fin n) (Fin n) K := G.map ψ with hM`. Establish `hMtri : M.BlockTriangular id` using `fun a b h => by show ψ (G a b) = 0`.
+
+Rewrite using `[hGtri h, map_zero]`. Establish `hMd : ∀ a, M a a = x (a, a)` using `fun a => by show ψ (G a a) = x (a, a)`. Simplify using `[G, hψ]`. Establish `hMdet : M.det ≠ 0`. Rewrite using `[Matrix.det_of_upperTriangular hMtri, Finset.prod_congr rfl (fun a _ => hMd a)]`.
+
+Simplify `hx` using `[hD]`. Set `BK` to `Matrix.GeneralLinearGroup.mkOfDetNeZero M hMdet`. Establish `h1` using `hK BK hMtri i`. Establish `h2 : ψ (defect φA c τ P v lam G G⁻¹ i) = 0`. Rewrite using `[defect_map, ← inv_map_of_mul ψ G hGinv]`.
+
+Establish `hc : ψ.comp φA = RingHom.id K` using `RingHom.ext fun k => by simp [φA, hψ]`. Rewrite using `[hc]`. Simplify `h1` using `[BK, Matrix.GeneralLinearGroup.mkOfDetNeZero, Matrix.coe_units_inv]`. Establish `h3` using `congrArg ψ hfs`. Rewrite `h3` using `[map_mul, h2, zero_mul, hψ]`.
+
+Conclude with `h3.symm`. Establish `hfD : f * D = 0`. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `x`. Rewrite using `[map_mul, map_zero]`.
+
+Distinguish the cases in `hx : eval x D = 0`. Rewrite using `[hx, mul_zero]`. Rewrite using `[hf x hx, zero_mul]`. Establish `hD0 : D ≠ 0`. Rewrite using `[hD]`.
+
+Conclude with `Finset.prod_ne_zero_iff.2 fun a _ => X_ne_zero _`. Establish `hf0 : f = 0` using `(mul_eq_zero.1 hfD).resolve_right hD0`. Rewrite `hfs` using `[hf0, map_zero]`. Conclude with `(IsUnit.mul_left_eq_zero (IsLocalization.map_units A s)).1 hfs`. Establish `hBdiag : eval₂ e (fun p => B.val p.1 p.2) D ≠ 0`.
+
+Establish `: B.val.det ≠ 0` using `(Matrix.isUnit_iff_isUnit_det _).1 B.isUnit |>.ne_zero`. Rewrite `this` using `[Matrix.det_of_upperTriangular hB]`. Simplify `this` using `[hD]`. Set `ψ : A →+* ℂ` to `IsLocalization.Away.lift D (g := eval₂Hom e (fun p => B.val p.1 p.2)) (Ne.isUnit hBdiag)`. Establish `hψ : ∀ r, ψ (algebraMap (MvPolynomial (Fin n × Fin n) K) A r) = eval₂ e (fun p => B.val p.1 p.2) r` using `IsLocalization.Away.lift_eq D _`.
+
+Establish `hGB : G.map ψ = B.val`. Use extensionality with `a b`. Distinguish the cases in `h : b < a`. Use `show ψ (G a b) = B.val a b`. Rewrite using `[hGtri h, map_zero, hB h]`.
+
+Use `show ψ (G a b) = B.val a b`. Simplify using `[G, h, hψ]`. Establish `hc : ψ.comp φA = e` using `RingHom.ext fun k => by simp [φA, hψ]`. Use `congrArg ψ hy` as an intermediate fact. Rewrite `this` using `[defect_map, ← inv_map_of_mul ψ G hGinv, hGB, hc, map_zero]`.
+
+Simplify `this` using `[Matrix.coe_units_inv]`.
+-/
 theorem defect_transfer (e : K →+* ℂ) (c : L →+* L) (τ : L →+* K) {ι : Type} [Fintype ι]
     (P : ι → ι → MvPolynomial ((L →+* K) × Fin n × Fin n) K) (v : ι → K) (lam : Fin n → ℤ)
     (hK : ∀ B : GL (Fin n) K, B.val.BlockTriangular id → ∀ i, defect (RingHom.id K) c τ P v lam B.val (B⁻¹).val i = 0)
@@ -163,6 +208,9 @@ namespace GlobalTheory.HwTransfer
 
 open MvPolynomial
 
+/- English proof (translation)
+Establish `h : B.val.det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).1 B.isUnit).ne_zero`. Rewrite `h` using `[Matrix.det_of_upperTriangular hB]`. Conclude with `Finset.prod_ne_zero_iff.1 h a (Finset.mem_univ a)`.
+-/
 theorem diag_ne_zero {n : ℕ} {F : Type} [Field F] (B : GL (Fin n) F) (hB : B.val.BlockTriangular id) (a : Fin n) :
     B.val a a ≠ 0 := by
   have h : B.val.det ≠ 0 := ((Matrix.isUnit_iff_isUnit_det _).1 B.isUnit).ne_zero
@@ -173,6 +221,33 @@ end GlobalTheory.HwTransfer
 
 open MvPolynomial GlobalTheory.HwTransfer in
 
+/- English proof (translation)
+Introduce `L _ _ _ n K _ e c hc W _ _ ρ a ω hind hspan hint τ lam h`. Take `⟨ι, hι, hdec, b, P, hP, v, hv0, hv⟩` from `h`. Establish `hcomp : ∀ σ σ' : L →+* K, e.comp σ = e.comp σ' ↔ σ = σ'` using `fun σ σ' => ⟨fun h => RingHom.ext fun x => e.injective (RingHom.congr_fun h x), fun h => h ▸ rfl⟩`. Establish `hconj : ComplexEmbedding.conjugate (e.comp τ) = e.comp (τ.comp c)`. Use extensionality with `x`.
+
+Establish `h5` using `IsCMField.complexEmbedding_complexConj L (e.comp τ) x`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq]`. Simplify using `only [RingHom.comp_apply, hc] at h5 ⊢`. Conclude with `h5.symm`. Establish `hli : LinearIndependent ℂ (fun i => ω (b i))` using `hind ι b b.linearIndependent`.
+
+Establish `hsp : ⊤ ≤ Submodule.span ℂ (Set.range fun i => ω (b i))`. Rewrite using `[← hspan]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl⟩`. Rewrite using `[← b.sum_repr w, map_sum]`.
+
+Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Set `b' : Module.Basis ι ℂ a.W` to `Module.Basis.mk hli hsp`. Set `f : (L →+* K) × Fin n × Fin n → (L →+* ℂ) × Fin n × Fin n` to `fun p => (e.comp p.1, p.2)`.
+
+Establish `hev : ∀ (g : (L →+* ℂ) × Fin n × Fin n → ℂ) (Q : MvPolynomial ((L →+* K) × Fin n × Fin n) K), eval g (rename f (map e Q)) = eval₂ e (g ∘ f) Q` using `fun g Q => by rw [eval_rename, eval_map]`. Use `⟨ι, hι, hdec, b', fun i j => rename f (map e (P i j)), ?_, fun i => e (v i), ?_, ?_⟩` and prove the remaining obligations. Introduce `γ γ₀ hγ`. Establish `h1` using `hP γ γ₀ hγ`. Use extensionality with `i j`.
+
+Rewrite using `[LinearMap.toMatrix_apply, Module.Basis.mk_apply, ← hint, ← b.sum_repr (ρ γ (b j)), map_sum]`. Simplify using `only [LinearMap.map_smulₛₗ]`. Establish `hb' : ∀ k, ω (b k) = b' k` using `fun k => (Module.Basis.mk_apply hli hsp k).symm`. Simplify using `only [hb', map_sum, map_smul, Module.Basis.repr_self]`. Rewrite using `[Finsupp.finset_sum_apply]`.
+
+Simplify using `only [Finsupp.smul_apply, Finsupp.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[hev]`. Establish `h2` using `congrFun (congrFun h1 i) j`. Rewrite `h2` using `[LinearMap.toMatrix_apply]`. Rewrite using `[h2]`.
+
+Express the relevant statement in the definitionally equal form `e (eval₂ (RingHom.id K) _ (P i j)) = _`. Rewrite using `[hom_eval₂, RingHom.comp_id]`. Both sides reduce to the same expression. Introduce `h0`. Apply `hv0` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `i`. Conclude with `e.injective (by simpa using congrFun h0 i)`. Introduce `B hB`. Establish `hK : ∀ B : GL (Fin n) K, B.val.BlockTriangular id → ∀ i, defect (RingHom.id K) c τ P v lam B.val (B⁻¹).val i = 0`. Introduce `B hB i`.
+
+Rewrite using `[defect_eq_zero_iff _ c τ P v lam _ _ (diag_ne_zero B hB)]`. Establish `h3` using `congrFun (hv B hB) i`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, Pi.smul_apply, smul_eq_mul] at h3`. Establish `hF : NX.evPtF c τ B = evS c τ B.val (B⁻¹).val`. Use function extensionality and compare the values at `p`.
+
+Unfold `NX.evPtF evS`. Apply the tactic sequence `split_ifs <;> rfl`. Rewrite `h3` using `[hF]`. Simplify using `only [RingHom.id_apply]`. Conclude with `h3`.
+
+Establish `hC` using `fun i => defect_transfer e c τ P v lam hK B hB i`. Establish `hevC : NG.evPt (e.comp τ) B ∘ f = evS c τ B.val (B⁻¹).val`. Use function extensionality and compare the values at `p`. Simplify using `only [NG.evPt, evS, Function.comp_apply, f, hconj, hcomp]`. Use function extensionality and compare the values at `i`.
+
+Establish `h4` using `(defect_eq_zero_iff e c τ P v lam _ _ (diag_ne_zero B hB) i).1 (hC i)`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, Pi.smul_apply, smul_eq_mul, hev, hevC]`. Conclude with `h4`.
+-/
 theorem GlobalTheory.hwAt_of_hwAtF : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (K : Type) [Field K] (e : K →+* ℂ)
     (c : L →+* L), (∀ x, c x = IsCMField.complexConj L x) → ∀ (W : Type) [AddCommGroup W] [Module K W]
     (ρ : Representation K (ReciprocityTheory.Aut.GQ L n) W) (a : NG.AlgWt L n) (ω : W →ₛₗ[e] a.W),

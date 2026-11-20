@@ -7,6 +7,27 @@ open scoped InnerProductSpace
 
 namespace PositivityTheory.KReal
 
+/- English proof (translation)
+Establish `hz0 : z ∈ W` using `by rw [hW]; exact Submodule.mem_sInf.2 fun N hN => hN.1`. Establish `hLW : ∀ F ∈ L, ∀ x ∈ W, F x ∈ W`. Introduce `F hF x hx`. Rewrite `hx`, the goal using `[hW]`. Conclude with `Submodule.mem_sInf.2 fun N hN => hN.2 F hF x (Submodule.mem_sInf.1 hx N hN)`.
+
+Establish `hmin : ∀ N : Submodule ℂ M, z ∈ N → (∀ F ∈ L, ∀ x ∈ N, F x ∈ N) → W ≤ N`. Introduce `N h1 h2`. Rewrite using `[hW]`. Conclude with `sInf_le ⟨h1, h2⟩`. Establish `hspan : ∀ F ∈ Submodule.span ℂ L, F z ∈ W`.
+
+Introduce `F hF`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F hF => exact hLW F hF z hz0`. Consider the case `zero => simp`. Consider the case `add F G _ _ h1 h2 => exact W.add_mem h1 h2`.
+
+Consider the case `smul c F _ h1 => exact W.smul_mem c h1`. Use `⟨hz0, ?_, ?_⟩` and prove the remaining obligations. Establish `hle : W ≤ W ⊓ ⨅ E ∈ S, W.comap E`. Use `hmin _ ?_ ?_` and prove the remaining obligations. Use `⟨hz0, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [SetLike.mem_coe, Submodule.mem_iInf, Submodule.mem_comap]`. Introduce `E hE`. Take `⟨F, hF, c, hc⟩` from `hz E hE`. Rewrite using `[hc]`. Conclude with `W.add_mem (hspan F hF) (W.smul_mem c hz0)`.
+
+Introduce `F hF x hx`. Take `⟨hx1, hx2⟩` from `Submodule.mem_inf.1 hx`. Simplify using `only [Submodule.mem_iInf, Submodule.mem_comap] at hx2`. Use `Submodule.mem_inf.2 ⟨hLW F hF x hx1, ?_⟩` and prove the remaining obligations. Simplify using `only [Submodule.mem_iInf, Submodule.mem_comap]`.
+
+Introduce `E hE`. Establish `e : E (F x) = F (E x) + (E * F - F * E) x`. Simplify using `[Module.End.mul_apply]`. Rewrite using `[e]`. Conclude with `W.add_mem (hLW F hF _ (hx2 E hE)) (hx2 _ (hS E hE F (hL hF)))`.
+
+Introduce `E hE x hx`. Establish `h2` using `(Submodule.mem_inf.1 (hle hx)).2`. Simplify using `only [Submodule.mem_iInf, Submodule.mem_comap] at h2`. Conclude with `h2 E hE`. Establish `hge : Submodule.span ℂ {z} ⊔ ⨆ F ∈ L, W.map F ≤ W`.
+
+Use `sup_le ((Submodule.span_singleton_le_iff_mem _ _).2 hz0) (iSup₂_le fun F hF => ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hLW F hF x hx`. Use `le_antisymm (hmin _ ?_ ?_) hge` and prove the remaining obligations. Conclude with `Submodule.mem_sup_left (Submodule.mem_span_singleton_self z)`.
+
+Introduce `F hF x hx`. Use `Submodule.mem_sup_right ?_` and prove the remaining obligations. Conclude with `(le_iSup₂_of_le (f := fun F (_ : F ∈ L) => W.map F) F hF le_rfl) ⟨x, hge hx, rfl⟩`.
+-/
 theorem words {M : Type} [AddCommGroup M] [Module ℂ M] (S : Submodule ℂ (Module.End ℂ M))
     (hS : ∀ E ∈ S, ∀ F ∈ S, E * F - F * E ∈ S) (L : Set (Module.End ℂ M)) (hL : L ⊆ S) (z : M)
     (hz : ∀ E ∈ S, ∃ F ∈ Submodule.span ℂ L, ∃ c : ℂ, E z = F z + c • z)
@@ -63,24 +84,45 @@ theorem words {M : Type} [AddCommGroup M] [Module ℂ M] (S : Submodule ℂ (Mod
 
 variable {r s : ℕ}
 
+/- English proof (translation)
+Apply the tactic sequence `cases a <;> trivial`.
+-/
 theorem sb_refl (a : Ix r s) : sameBlock a a := by cases a <;> trivial
 
+/- English proof (translation)
+Apply the tactic sequence `cases a <;> cases b <;> simp_all [sameBlock]`.
+-/
 theorem sb_symm {a b : Ix r s} (h : sameBlock a b) : sameBlock b a := by
   cases a <;> cases b <;> simp_all [sameBlock]
 
+/- English proof (translation)
+Apply the tactic sequence `cases a <;> cases b <;> cases c <;> simp_all [sameBlock]`.
+-/
 theorem sb_trans {a b c : Ix r s} (h : sameBlock a b) (h' : sameBlock b c) : sameBlock a c := by
   cases a <;> cases b <;> cases c <;> simp_all [sameBlock]
 
+/- English proof (translation)
+Apply the tactic sequence `cases a <;> cases b <;> simp_all [sameBlock, posC]`.
+-/
 theorem sb_of_pos {a b : Ix r s} (h : posC a b) : sameBlock a b := by
   cases a <;> cases b <;> simp_all [sameBlock, posC]
 
+/- English proof (translation)
+Apply the tactic sequence `cases a <;> simp [posC]`.
+-/
 theorem pos_irrefl (a : Ix r s) : ¬ posC a a := by cases a <;> simp [posC]
 
+/- English proof (translation)
+Apply the tactic sequence `cases a <;> cases b <;> simp only [posC] at h ⊢`. Conclude with `not_lt.2 h.le`. Conclude with `not_lt.2 h.le`.
+-/
 theorem pos_asymm {a b : Ix r s} (h : posC a b) : ¬ posC b a := by
   cases a <;> cases b <;> simp only [posC] at h ⊢
   · exact not_lt.2 h.le
   · exact not_lt.2 h.le
 
+/- English proof (translation)
+Apply the tactic sequence `cases a <;> cases b <;> simp only [sameBlock, posC, Sum.inl.injEq, Sum.inr.injEq] at h ⊢`. Name the introduced variables `i j`. Apply the tactic sequence `rcases lt_trichotomy i j with h | h | h <;> simp [h]`. Name the introduced variables `i j`. Apply the tactic sequence `rcases lt_trichotomy i j with h | h | h <;> simp [h]`.
+-/
 theorem sb_tri {a b : Ix r s} (h : sameBlock a b) : a = b ∨ posC a b ∨ posC b a := by
   cases a <;> cases b <;> simp only [sameBlock, posC, Sum.inl.injEq, Sum.inr.injEq] at h ⊢
   · rename_i i j
@@ -88,12 +130,18 @@ theorem sb_tri {a b : Ix r s} (h : sameBlock a b) : a = b ∨ posC a b ∨ posC 
   · rename_i i j
     rcases lt_trichotomy i j with h | h | h <;> simp [h]
 
+/- English proof (translation)
+Unfold `Eab`. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Conclude with `Matrix.single_mul_single_of_ne _ _ _ _ h _`.
+-/
 theorem eab_mul (a b c d : Ix r s) : Eab a b * Eab c d = if b = c then Eab a d else 0 := by
   unfold Eab
   split_ifs with h
   · subst h; simp
   · exact Matrix.single_mul_single_of_ne _ _ _ _ h _
 
+/- English proof (translation)
+Establish `h` using `LinearMap.congr_fun (hρ a b b a (sb_of_pos hab) (sb_symm (sb_of_pos hab))) f`. Simplify using `only [if_true, LinearMap.sub_apply, Module.End.mul_apply, hf.2 a b hab, map_zero, sub_zero, hf.1] at h`. Rewrite using `[h, ← sub_smul]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem hw_comm {M : Type} [AddCommGroup M] [Module ℂ M] {ρ : Ix r s → Ix r s → Module.End ℂ M}
     (hρ : GlK ρ) {μ : Ix r s → ℚ} {f : M} (hf : HwK ρ μ f) {a b : Ix r s} (hab : posC a b) :
     ρ a b (ρ b a f) = ((μ a - μ b : ℚ) : ℂ) • f := by
@@ -104,6 +152,11 @@ theorem hw_comm {M : Type} [AddCommGroup M] [Module ℂ M] {ρ : Ix r s → Ix r
   push_cast
   rfl
 
+/- English proof (translation)
+Establish `h` using `hadj b a (sb_symm (sb_of_pos hab)) f (ρ b a f)`. Rewrite `h` using `[hw_comm hρ hf hab, inner_smul_right, inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K]`. Establish `h2 : ((‖ρ b a f‖ ^ 2 : ℝ) : ℂ) = ((((μ a - μ b : ℚ) : ℝ) * ‖f‖ ^ 2 : ℝ) : ℂ)`. Move the coercions through the operations in `at h ⊢`. Conclude with `h`.
+
+Conclude with `h2` after adjusting the coercions.
+-/
 theorem norm_low {A : Type} [NormedAddCommGroup A] [InnerProductSpace ℂ A]
     {ρ : Ix r s → Ix r s → Module.End ℂ A} (hadj : AdjK ρ) (hρ : GlK ρ) {μ : Ix r s → ℚ} {f : A}
     (hf : HwK ρ μ f) {a b : Ix r s} (hab : posC a b) :
@@ -115,6 +168,27 @@ theorem norm_low {A : Type} [NormedAddCommGroup A] [InnerProductSpace ℂ A]
     exact h
   exact_mod_cast h2
 
+/- English proof (translation)
+Establish `key : ∀ c d : Ix r s, ρ a b * (if sameBlock c d then ρ c d * ρ d c else 0) - (if sameBlock c d then ρ c d * ρ d c else 0) * ρ a b = ((if b = c then (if sameBlock a d then ρ a d * ρ d b else 0) else 0) - (if a = d then (if sameBlock c a then ρ c b * ρ a c else 0) else 0)) + ((if b …`. Introduce `c d`. Distinguish the cases in `hcd : sameBlock c d`. Establish `e : ρ a b * (ρ c d * ρ d c) - (ρ c d * ρ d c) * ρ a b = (ρ a b * ρ c d - ρ c d * ρ a b) * ρ d c + ρ c d * (ρ a b * ρ d c - ρ d c * ρ a b)` using `by noncomm_ring`. Rewrite using `[if_pos hcd, e, hρ a b c d hab hcd, hρ a b d c hab (sb_symm hcd), sub_mul, mul_sub]`.
+
+Use `congr 2`. Distinguish the cases in `h : b = c`. Substitute `h` using the available equality. Simplify using `[sb_trans hab hcd]`. Simplify using `[h]`.
+
+Distinguish the cases in `h : a = d`. Substitute `h` using the available equality. Simplify using `[hcd]`. Simplify using `[h, Ne.symm h]`. Distinguish the cases in `h : b = d`.
+
+Substitute `h` using the available equality. Simplify using `[sb_trans hcd (sb_symm hab)]`. Simplify using `[h]`. Distinguish the cases in `h : a = c`. Substitute `h` using the available equality.
+
+Simplify using `[hcd]`. Simplify using `[h, Ne.symm h]`. Establish `t1 : (if b = c then (if sameBlock a d then ρ a d * ρ d b else 0) else 0) = 0` using `by split_ifs with h1 h2`. Substitute `h1` using the available equality. Conclude with `absurd (sb_trans (sb_symm hab) h2) hcd`.
+
+Apply the tactic sequence `all_goals rfl`. Establish `t2 : (if a = d then (if sameBlock c a then ρ c b * ρ a c else 0) else 0) = 0` using `by split_ifs with h1 h2`. Substitute `h1` using the available equality. Conclude with `absurd h2 hcd`. Apply the tactic sequence `all_goals rfl`.
+
+Establish `t3 : (if b = d then (if sameBlock c a then ρ c b * ρ a c else 0) else 0) = 0` using `by split_ifs with h1 h2`. Substitute `h1` using the available equality. Conclude with `absurd (sb_trans h2 hab) hcd`. Apply the tactic sequence `all_goals rfl`. Establish `t4 : (if a = c then (if sameBlock a d then ρ a d * ρ d b else 0) else 0) = 0` using `by split_ifs with h1 h2`.
+
+Substitute `h1` using the available equality. Conclude with `absurd h2 hcd`. Apply the tactic sequence `all_goals rfl`. Rewrite using `[t1, t2, t3, t4, if_neg hcd]`. Simplify using the standard rewrite rules.
+
+Establish `h0 : ρ a b * casK ρ - casK ρ * ρ a b = 0`. Unfold `casK`. Simplify using `only [Finset.mul_sum, Finset.sum_mul, ← Finset.sum_sub_distrib, key]`. Simplify using `only [Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[Finset.sum_comm (f := fun c d => if b = c then (if sameBlock a d then ρ a d * ρ d b else 0) else 0), Finset.sum_comm (f := fun c d => if a = c then (if sameBlock a d then ρ a d * ρ d b else 0) else 0)]`.
+
+Simplify using `only [Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Normalize the expressions using the abelian group laws. Conclude with `(sub_eq_zero.1 h0).symm`.
+-/
 theorem cas_comm {M : Type} [AddCommGroup M] [Module ℂ M] {ρ : Ix r s → Ix r s → Module.End ℂ M}
     (hρ : GlK ρ) {a b : Ix r s} (hab : sameBlock a b) : casK ρ * ρ a b = ρ a b * casK ρ := by
   have key : ∀ c d : Ix r s,
@@ -170,6 +244,15 @@ theorem cas_comm {M : Type} [AddCommGroup M] [Module ℂ M] {ρ : Ix r s → Ix 
     abel
   exact (sub_eq_zero.1 h0).symm
 
+/- English proof (translation)
+Establish `key : ∀ a b : Ix r s, (if sameBlock a b then ρ a b * ρ b a else 0) f = (((if a = b then μ a ^ 2 else 0) + (if posC a b then μ a - μ b else 0) : ℚ) : ℂ) • f`. Introduce `a b`. Distinguish the cases in `hab : sameBlock a b`. Rewrite using `[if_pos hab]`. Break down `sb_tri hab with h | h | h` into its components or cases.
+
+Substitute `h` using the available equality. Rewrite using `[if_pos rfl, if_neg (pos_irrefl a), Module.End.mul_apply, hf.1 a, map_smul, hf.1 a, smul_smul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[if_neg (fun e : a = b => pos_irrefl b (by subst e; exact h)), if_pos h, Module.End.mul_apply, hw_comm hρ hf h, zero_add]`. Rewrite using `[if_neg (fun e : a = b => pos_irrefl b (by subst e; exact h)), if_neg (pos_asymm h), Module.End.mul_apply, hf.2 b a h]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg hab, if_neg (fun e : a = b => hab (by subst e; exact sb_refl a)), if_neg (fun h => hab (sb_of_pos h))]`. Simplify using the standard rewrite rules.
+
+Unfold `casK casW`. Simplify using `only [LinearMap.sum_apply, key, ← Finset.sum_smul]`. Use `congr 1`. Simplify using `only [← Rat.cast_sum, Finset.sum_add_distrib, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+-/
 theorem cas_hw {M : Type} [AddCommGroup M] [Module ℂ M] {ρ : Ix r s → Ix r s → Module.End ℂ M}
     (hρ : GlK ρ) {μ : Ix r s → ℚ} {f : M} (hf : HwK ρ μ f) : casK ρ f = ((casW μ : ℚ) : ℂ) • f := by
   have key : ∀ a b : Ix r s, (if sameBlock a b then ρ a b * ρ b a else 0) f =
@@ -193,15 +276,26 @@ theorem cas_hw {M : Type} [AddCommGroup M] [Module ℂ M] {ρ : Ix r s → Ix r 
   congr 1
   simp only [← Rat.cast_sum, Finset.sum_add_distrib, Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
+/- English proof (translation)
+Conclude with `Submodule.mem_sInf.2 fun N hN => hN.1`.
+-/
 theorem self_mem_cycK {M : Type} [AddCommGroup M] [Module ℂ M] (ρ : Ix r s → Ix r s → Module.End ℂ M) (f : M) :
     f ∈ cycK ρ f := by
   exact Submodule.mem_sInf.2 fun N hN => hN.1
 
+/- English proof (translation)
+Introduce `a b hab x hx`. Conclude with `Submodule.mem_sInf.2 fun N hN => hN.2 a b hab x (Submodule.mem_sInf.1 hx N hN)`.
+-/
 theorem kSt_cycK {M : Type} [AddCommGroup M] [Module ℂ M] (ρ : Ix r s → Ix r s → Module.End ℂ M) (f : M) :
     KSt ρ (cycK ρ f) := by
   intro a b hab x hx
   exact Submodule.mem_sInf.2 fun N hN => hN.2 a b hab x (Submodule.mem_sInf.1 hx N hN)
 
+/- English proof (translation)
+Introduce `x hx`. Establish `hle : cycK ρ f ≤ LinearMap.ker (casK ρ - ((casW μ : ℚ) : ℂ) • 1)`. Use `sInf_le ⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `[LinearMap.mem_ker, cas_hw hρ hf]`. Introduce `a b hab y hy`.
+
+Simplify using `only [LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero] at hy ⊢`. Rewrite using `[← Module.End.mul_apply, cas_comm hρ hab, Module.End.mul_apply, hy, map_smul]`. Establish `h` using `hle hx`. Simplify `h` using `only [LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`.
+-/
 theorem cas_cyc {M : Type} [AddCommGroup M] [Module ℂ M] {ρ : Ix r s → Ix r s → Module.End ℂ M}
     (hρ : GlK ρ) {μ : Ix r s → ℚ} {f : M} (hf : HwK ρ μ f) :
     ∀ x ∈ cycK ρ f, casK ρ x = ((casW μ : ℚ) : ℂ) • x := by
@@ -217,6 +311,11 @@ theorem cas_cyc {M : Type} [AddCommGroup M] [Module ℂ M] {ρ : Ix r s → Ix r
   simpa only [LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply,
     sub_eq_zero] using h
 
+/- English proof (translation)
+Introduce `a b hab`. Establish `h` using `norm_low hadj hρ hf hab`. Establish `hp : 0 < ‖f‖ ^ 2` using `by positivity`. Establish `h2 : (0 : ℝ) ≤ ((μ a - μ b : ℚ) : ℝ) * ‖f‖ ^ 2` using `h ▸ sq_nonneg _`. Establish `h3 : (0 : ℝ) ≤ ((μ a - μ b : ℚ) : ℝ)` using `nonneg_of_mul_nonneg_left h2 hp`.
+
+Establish `h4 : (0 : ℚ) ≤ μ a - μ b` using `by exact_mod_cast h3`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem dom_of_hw {A : Type} [NormedAddCommGroup A] [InnerProductSpace ℂ A] {ρ : Ix r s → Ix r s → Module.End ℂ A}
     (hadj : AdjK ρ) (hρ : GlK ρ) {μ : Ix r s → ℚ} {f : A} (hf : HwK ρ μ f) (h0 : f ≠ 0) : Dom μ := by
   intro a b hab
@@ -227,6 +326,9 @@ theorem dom_of_hw {A : Type} [NormedAddCommGroup A] [InnerProductSpace ℂ A] {�
   have h4 : (0 : ℚ) ≤ μ a - μ b := by exact_mod_cast h3
   linarith
 
+/- English proof (translation)
+Establish `h` using `norm_low hadj hρ hf hab`. Rewrite `h` using `[hμ]`. Simplify using `using h`.
+-/
 theorem low_kill {A : Type} [NormedAddCommGroup A] [InnerProductSpace ℂ A] {ρ : Ix r s → Ix r s → Module.End ℂ A}
     (hadj : AdjK ρ) (hρ : GlK ρ) {μ : Ix r s → ℚ} {f : A} (hf : HwK ρ μ f) {a b : Ix r s} (hab : posC a b)
     (hμ : μ a = μ b) : ρ b a f = 0 := by
@@ -234,6 +336,53 @@ theorem low_kill {A : Type} [NormedAddCommGroup A] [InnerProductSpace ℂ A] {ρ
   rw [hμ] at h
   simpa using h
 
+/- English proof (translation)
+Set `S : Submodule ℂ (Module.End ℂ A)` to `Submodule.span ℂ {E | ∃ a b, sameBlock a b ∧ E = ρ a b}`. Set `L : Set (Module.End ℂ A)` to `{E | ∃ a b, posC a b ∧ E = ρ b a}`. Establish `hmem : ∀ a b, sameBlock a b → ρ a b ∈ S` using `fun a b h => Submodule.subset_span ⟨a, b, h, rfl⟩`. Establish `hS : ∀ E ∈ S, ∀ F ∈ S, E * F - F * E ∈ S`. Introduce `E hE F hF`.
+
+Proceed by induction on `hE using Submodule.span_induction with`. Consider the case `mem E hE`. Take `⟨a, b, hab, rfl⟩` from `hE`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F hF`.
+
+Take `⟨c, d, hcd, rfl⟩` from `hF`. Rewrite using `[hρ a b c d hab hcd]`. Use `S.sub_mem ?_ ?_` and prove the remaining obligations. Use `split_ifs with h`. Substitute `h` using the available equality.
+
+Conclude with `hmem _ _ (sb_trans hab hcd)`. Conclude with `S.zero_mem`. Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `hmem _ _ (sb_trans hcd hab)`.
+
+Conclude with `S.zero_mem`. Consider the case `zero => simp`. Consider the case `add F G _ _ h1 h2`. Use `S.add_mem h1 h2` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use `noncomm_ring`. Consider the case `smul c F _ h1`. Use `S.smul_mem c h1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `[smul_sub]`.
+
+Consider the case `zero => simp`. Consider the case `add E G _ _ h1 h2`. Use `S.add_mem h1 h2` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `noncomm_ring`.
+
+Consider the case `smul c E _ h1`. Use `S.smul_mem c h1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `[smul_sub]`. Establish `hL : L ⊆ S`.
+
+Introduce and unpack `_ ⟨a, b, hab, rfl⟩`. Conclude with `hmem _ _ (sb_symm (sb_of_pos hab))`. Establish `hz : ∀ E ∈ S, ∃ F ∈ Submodule.span ℂ L, ∃ c : ℂ, E f = F f + c • f`. Introduce `E hE`. Proceed by induction on `hE using Submodule.span_induction with`.
+
+Consider the case `mem E hE`. Take `⟨a, b, hab, rfl⟩` from `hE`. Break down `sb_tri hab with h | h | h` into its components or cases. Substitute `h` using the available equality. Conclude with `⟨0, Submodule.zero_mem _, ((μ a : ℚ) : ℂ), by rw [hf.1 a]; simp⟩`.
+
+Conclude with `⟨0, Submodule.zero_mem _, 0, by rw [hf.2 a b h]; simp⟩`. Conclude with `⟨ρ a b, Submodule.subset_span ⟨b, a, h, rfl⟩, 0, by simp⟩`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _, 0, by simp⟩`. Consider the case `add E G _ _ h1 h2`. Take `⟨F1, hF1, c1, e1⟩` from `h1`.
+
+Take `⟨F2, hF2, c2, e2⟩` from `h2`. Use `⟨F1 + F2, Submodule.add_mem _ hF1 hF2, c1 + c2, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.add_apply, e1, e2, add_smul]`. Normalize the expressions using the abelian group laws. Consider the case `smul c E _ h1`.
+
+Take `⟨F1, hF1, c1, e1⟩` from `h1`. Use `⟨c • F1, Submodule.smul_mem _ _ hF1, c * c1, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.smul_apply, e1, smul_add, smul_smul]`. Take `⟨W, hW⟩ : ∃ W : Submodule ℂ A, W = sInf {N | f ∈ N ∧ ∀ F ∈ L, ∀ x ∈ N, F x ∈ N}` from `⟨_, rfl⟩`. Take `⟨hfW, hSW, hWeq⟩` from `words S hS L hL f hz W hW`.
+
+Establish `hcW : cycK ρ f ≤ W` using `sInf_le ⟨hfW, fun a b hab x hx => hSW _ (hmem a b hab) x hx⟩`. Establish `hKo : KSt ρ Nᗮ`. Introduce `a b hab x hx`. Rewrite `hx`, the goal using `[Submodule.mem_orthogonal']`. Introduce `u hu`.
+
+Rewrite using `[hadj a b hab]`. Conclude with `hx _ (hK b a (sb_symm hab) u hu)`. Take `⟨y, hy, z, hz', hyz⟩` from `Submodule.mem_sup.1 (show f ∈ N ⊔ Nᗮ by rw [Submodule.sup_orthogonal_of_hasOrthogonalProjection]; exact Submodule.mem_top)`. Establish `hyk : ∀ a b, posC a b → ρ a b y = 0`. Introduce `a b hab`.
+
+Establish `h1 : ρ a b y ∈ N` using `hK a b (sb_of_pos hab) y hy`. Establish `h2 : ρ a b y ∈ Nᗮ`. Establish `e : ρ a b y = - ρ a b z`. Use `hf.2 a b hab` as an intermediate fact. Rewrite `this` using `[← hyz, map_add]`.
+
+Conclude with `eq_neg_of_add_eq_zero_left this`. Rewrite using `[e]`. Conclude with `Nᗮ.neg_mem (hKo a b (sb_of_pos hab) z hz')`. Conclude with `inner_self_eq_zero.1 (Submodule.inner_right_of_mem_orthogonal h1 h2)`. Establish `hw0 : ⟪f, f⟫_ℂ • y - ⟪f, y⟫_ℂ • f = 0` using `by set w := ⟪f, f⟫_ℂ • y - ⟪f, y⟫_ℂ • f with hw`.
+
+Establish `hwW : w ∈ W` using `W.sub_mem (W.smul_mem _ (hcW (hN hy))) (W.smul_mem _ hfW)`. Establish `hle : W ≤ (Submodule.span ℂ {w})ᗮ`. Rewrite using `[hWeq]`. Use `sup_le ((Submodule.span_singleton_le_iff_mem _ _).2 ?_) (iSup₂_le ?_)` and prove the remaining obligations. Rewrite using `[Submodule.mem_orthogonal_singleton_iff_inner_left, hw, inner_sub_right, inner_smul_right, inner_smul_right]`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `_ ⟨a, b, hab, rfl⟩ _ ⟨x, _, rfl⟩`. Rewrite using `[Submodule.mem_orthogonal_singleton_iff_inner_left, hadj b a (sb_symm (sb_of_pos hab)), hw, map_sub, map_smul, map_smul, hyk a b hab, hf.2 a b hab]`. Simplify using the standard rewrite rules. Use `hle hwW` as an intermediate fact.
+
+Rewrite `this` using `[Submodule.mem_orthogonal_singleton_iff_inner_left]`. Conclude with `inner_self_eq_zero.1 this`. Distinguish the cases in `hfy : ⟪f, y⟫_ℂ = 0`. Use `left`. Establish `hy0 : y = 0`.
+
+Rewrite `hfy` using `[← hyz, inner_add_left, Submodule.inner_left_of_mem_orthogonal hy hz', add_zero]`. Conclude with `inner_self_eq_zero.1 hfy`. Establish `hfo : f ∈ Nᗮ` using `by rw [← hyz, hy0, zero_add]; exact hz'`. Establish `hle : cycK ρ f ≤ Nᗮ` using `sInf_le ⟨hfo, hKo⟩`. Rewrite using `[eq_bot_iff]`.
+
+Introduce `u hu`. Conclude with `(Submodule.mem_bot ℂ).2 (inner_self_eq_zero.1 (Submodule.inner_right_of_mem_orthogonal hu (hle (hN hu))))`. Use `right`. Establish `hfN : f ∈ N`. Establish `h1 : ⟪f, y⟫_ℂ • f ∈ N`.
+
+Rewrite using `[← sub_eq_zero.1 hw0]`. Conclude with `N.smul_mem _ hy`. Conclude with `(N.smul_mem_iff hfy).1 h1`. Conclude with `le_antisymm hN (sInf_le ⟨hfN, hK⟩)`.
+-/
 theorem cyc_irred {A : Type} [NormedAddCommGroup A] [InnerProductSpace ℂ A] [FiniteDimensional ℂ A] {ρ : Ix r s → Ix r s → Module.End ℂ A}
     (hadj : AdjK ρ) (hρ : GlK ρ) {μ : Ix r s → ℚ} {f : A} (hf : HwK ρ μ f)
     (N : Submodule ℂ A) (hN : N ≤ cycK ρ f) (hK : KSt ρ N) : N = ⊥ ∨ N = cycK ρ f := by
@@ -355,6 +504,9 @@ theorem cyc_irred {A : Type} [NormedAddCommGroup A] [InnerProductSpace ℂ A] [F
       exact (N.smul_mem_iff hfy).1 h1
     exact le_antisymm hN (sInf_le ⟨hfN, hK⟩)
 
+/- English proof (translation)
+Unfold `units`. Rewrite using `[h, eab_mul, eab_mul, map_sub]`. Apply the tactic sequence `congr 1 <;> split_ifs <;> simp`.
+-/
 theorem glK_units {M : Type} [AddCommGroup M] [Module ℂ M] {act : Mat r s →ₗ[ℂ] Module.End ℂ M}
     (h : IsLie act) (a b c d : Ix r s) :
     units act a b * units act c d - units act c d * units act a b =
@@ -363,10 +515,16 @@ theorem glK_units {M : Type} [AddCommGroup M] [Module ℂ M] {act : Mat r s →�
   rw [h, eab_mul, eab_mul, map_sub]
   congr 1 <;> split_ifs <;> simp
 
+/- English proof (translation)
+Introduce `a b c d _ _` and use `glK_units h a b c d`.
+-/
 theorem glK_of_lie {M : Type} [AddCommGroup M] [Module ℂ M] {act : Mat r s →ₗ[ℂ] Module.End ℂ M}
     (h : IsLie act) : GlK (units act) :=
   fun a b c d _ _ => glK_units h a b c d
 
+/- English proof (translation)
+Use `conv_lhs => rw [Matrix.matrix_eq_sum_single W]`. Simplify using `only [map_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← map_smul, Eab, Matrix.smul_single, smul_eq_mul, mul_one]`.
+-/
 theorem act_eq_sum {M : Type} [AddCommGroup M] [Module ℂ M] (act : Mat r s →ₗ[ℂ] Module.End ℂ M) (W : Mat r s) :
     act W = ∑ a, ∑ b, W a b • act (Eab a b) := by
   conv_lhs => rw [Matrix.matrix_eq_sum_single W]
@@ -374,6 +532,9 @@ theorem act_eq_sum {M : Type} [AddCommGroup M] [Module ℂ M] (act : Mat r s →
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
   rw [← map_smul, Eab, Matrix.smul_single, smul_eq_mul, mul_one]
 
+/- English proof (translation)
+Introduce `a b hab u v`. Use `h a b u v` as an intermediate fact. Rewrite `this` using `[epsB, if_pos hab, one_mul]`. Conclude with `this`.
+-/
 theorem adjK_of_adjG {A : Type} [NormedAddCommGroup A] [InnerProductSpace ℂ A] {act : Mat r s →ₗ[ℂ] Module.End ℂ A} (h : AdjG act) : AdjK (units act) := by
   intro a b hab u v
   have := h a b u v

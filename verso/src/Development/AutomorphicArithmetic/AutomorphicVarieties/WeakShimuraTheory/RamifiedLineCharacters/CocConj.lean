@@ -3,6 +3,27 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LengthCyclotom
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ R M _ _ _ _ _ _ ρ c hc v A A' hA hA'`. Take `⟨-, hco⟩` from `hc`. Take `⟨s, hs⟩` from `exists_smul_eq_of_isPlaceOver hA hA'`. Establish `h1 : c 1 = 0` using `by simpa using hco 1 1`. Establish `hinv : ρ s (c s⁻¹) = - c s`.
+
+Establish `h` using `hco s s⁻¹`. Rewrite `h` using `[mul_inv_cancel, h1]`. Conclude with `(neg_eq_of_add_eq_zero_right h.symm).symm`. Establish `hconj : ∀ g ∈ Dec (F` using `F) A', s⁻¹ * g * s ∈ Dec (F := F) A := by`. Introduce `g hg`.
+
+Rewrite `hg`, the goal using `[mem_Dec]`. Use `open scoped Pointwise in`. Rewrite using `[mul_smul, mul_smul, hs, hg, ← hs, inv_smul_smul]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨m, hm⟩`.
+
+Use `⟨ρ s m - c s, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hg'` using `hconj g hg`. Establish `e2 : c (g * s) = c s + ρ s (c (s⁻¹ * g * s))`. Rewrite using `[← hco]`. Use `congr 1`.
+
+Use `group`. Establish `e3 : c g = c (g * s) + ρ (g * s) (c s⁻¹)`. Rewrite using `[← hco]`. Use `congr 1`. Use `group`.
+
+Establish `e4 : ρ s (ρ (s⁻¹ * g * s) m) = ρ g (ρ s m)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`. Use `congr 2`. Use `group`. Rewrite using `[e3, e2, map_mul ρ g s, Module.End.mul_apply, hinv, hm _ hg']`.
+
+Simplify using `only [map_sub, map_neg]`. Rewrite using `[e4]`. Normalize the expressions using the abelian group laws. Introduce `hI g hg`. Rewrite `hg` using `[← hs]`.
+
+Take `⟨hρ, hc0⟩` from `hI _ (GlobalTheory.Cut.ShaBound.conj_mem_Ine' hg)`. Establish `e2 : c (g * s) = c s + ρ s (c (s⁻¹ * g * s))`. Rewrite using `[← hco]`. Use `congr 1`. Use `group`.
+
+Establish `e3 : c g = c (g * s) + ρ (g * s) (c s⁻¹)`. Rewrite using `[← hco]`. Use `congr 1`. Use `group`. Establish `hρg : ρ g = 1`.
+
+Establish `hgs : g = s * (s⁻¹ * g * s) * s⁻¹` using `by group`. Rewrite using `[hgs, map_mul, map_mul, hρ, mul_one, ← map_mul, mul_inv_cancel, map_one]`. Rewrite using `[e3, e2, hc0, map_zero, add_zero, map_mul ρ g s, hρg, one_mul, hinv, add_neg_cancel]`.
+-/
 theorem UpperTheory.V.Ws.Gys.cocConj :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (R M : Type) [CommRing R] [AddCommGroup M] [Module R M] [Finite M] [TopologicalSpace M] [DiscreteTopology M] (ρ : Representation R (G F Ω) M), ∀ c ∈ Z1 ρ, ∀ (v : HeightOneSpectrum (𝓞 F)) (A A' : ValuationSubring Ω), IsPlaceOver A v → IsPlaceOver A' v →
       ((∃ m, ∀ g ∈ Dec (F := F) A, c g = ρ g m - m) → ∃ m, ∀ g ∈ Dec (F := F) A', c g = ρ g m - m) ∧

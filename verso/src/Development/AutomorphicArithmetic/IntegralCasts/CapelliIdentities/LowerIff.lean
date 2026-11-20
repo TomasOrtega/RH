@@ -1,5 +1,8 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `n P _ h b`. Conclude with `(Fin.lt_card_filter_univ_iff_apply_of_imp P (fun i j hij => h j i hij)).symm`.
+-/
 theorem UpperTheory.Reformulated.B.Re1.lower_iff :
     ∀ {n : ℕ} (P : Fin n → Prop) [inst : DecidablePred P],
     (∀ (a b : Fin n), a ≤ b → P b → P a) → ∀ (b : Fin n), P b ↔ (↑b : ℕ) < (Finset.filter P Finset.univ).card := by

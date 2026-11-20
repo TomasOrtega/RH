@@ -43,6 +43,9 @@ open GroundTheory.Automorphic.FourierWhittaker (blockGL blockMat blockMat_apply 
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[blockMat_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem map_blockGL' {R S : Type} [CommRing R] [CommRing S] (p : R →+* S) {j n : ℕ} (hj : j ≤ n)
     (g : GL (Fin j) R) :
     Matrix.GeneralLinearGroup.map p (blockGL hj g) = blockGL hj (Matrix.GeneralLinearGroup.map p g) := by
@@ -50,6 +53,9 @@ theorem map_blockGL' {R S : Type} [CommRing R] [CommRing S] (p : R →+* S) {j n
   simp [blockMat_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Establish `hf : ∀ (N : ℕ) (k : GL (Fin N) (Af E)) (a b : Fin N), ((finGL E N k : GA E N) : Matrix (Fin N) (Fin N) (Ad E)) a b = (1 : Matrix (Fin N) (Fin N) (Ad E)) a b - sFin E ((1 : Matrix (Fin N) (Fin N) (Af E)) a b) + sFin E ((k : Matrix (Fin N) (Fin N) (Af E)) a b)` using `fun N k a b => rfl`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`. Rewrite using `[coe_blockGL, blockMat_apply, hf, coe_blockGL, blockMat_apply]`. Apply the tactic sequence `split_ifs with h1 h2 h3 <;> simp only [hf, Matrix.one_apply, Fin.ext_iff] <;> split_ifs <;> first | (simp; done) | (exfalso; omega) | (exfalso; simp_all; done) | (simp only [map_zero]; abel)`.
+-/
 theorem blockGL_finGL {j n : ℕ} (hj : j ≤ n) (k : GL (Fin j) (Af E)) :
     blockGL hj (finGL E j k) = finGL E n (blockGL hj k) := by
   have hf : ∀ (N : ℕ) (k : GL (Fin N) (Af E)) (a b : Fin N), ((finGL E N k : GA E N) : Matrix (Fin N) (Fin N) (Ad E)) a b =
@@ -60,6 +66,13 @@ theorem blockGL_finGL {j n : ℕ} (hj : j ≤ n) (k : GL (Fin j) (Af E)) :
   rw [coe_blockGL, blockMat_apply, hf, coe_blockGL, blockMat_apply]
   split_ifs with h1 h2 h3 <;> simp only [hf, Matrix.one_apply, Fin.ext_iff] <;> split_ifs <;> first | (simp; done) | (exfalso; omega) | (exfalso; simp_all; done) | (simp only [map_zero]; abel)
 
+/- English proof (translation)
+Rewrite `hy`, the goal using `[GlobalTheory.HenQ.Basic.mem_KGL_iff]`. Use `⟨fun a b => ?_, fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[coe_blockGL, blockMat_apply] split_ifs`. Conclude with `hy.1 _ _`. Conclude with `zero_mem _`.
+
+Conclude with `one_mem _`. Conclude with `zero_mem _`. Rewrite using `[← map_inv, coe_blockGL, blockMat_apply] split_ifs`. Conclude with `hy.2 _ _`. Conclude with `zero_mem _`.
+
+Conclude with `one_mem _`. Conclude with `zero_mem _`.
+-/
 theorem blockGL_mem_KGL (w : HeightOneSpectrum (𝓞 E)) {j n : ℕ} (hj : j ≤ n) {y : GL (Fin j) (w.adicCompletion E)}
     (hy : y ∈ KGL w j) : blockGL hj y ∈ KGL w n := by
   rw [GlobalTheory.HenQ.Basic.mem_KGL_iff] at hy ⊢
@@ -83,6 +96,15 @@ namespace GlobalTheory.CellEvalNM
 
 open GroundTheory.Automorphic.FourierWhittaker (blockGL blockMat blockMat_apply coe_blockGL)
 
+/- English proof (translation)
+Use `set D := GlobalTheory.CellDec.compV E N w P with hD`. Use `set P' := P * (finGL E N (locGL E N w D))⁻¹ with hP'`. Establish `hP'w : Matrix.GeneralLinearGroup.map ((pLoc E w).comp (pFin E)) P' = 1`. Express the relevant statement in the definitionally equal form `GlobalTheory.CellDec.compV E N w P' = 1`. Rewrite using `[hP', map_mul, map_inv, GlobalTheory.CellDec.compV_finGL_locGL_same, ← hD, mul_inv_cancel]`.
+
+Establish `htt : P' * finGL E N (locGL E N w D) = P` using `by rw [hP', inv_mul_cancel_right]`. Set `f : GL (Fin N) (w.adicCompletion E) → ℂ` to `fun g => W (P' * finGL E N (locGL E N w g))`. Establish `hfD : f D = W P` using `by simp only [f]; rw [htt]`. Establish `hfN : ∀ u ∈ GlobalTheory.SmGL.unipB (w.adicCompletion E) (Fin N), ∀ g, f (u * g) = GlobalTheory.JSW.psiLocChar w (GlobalTheory.Whittaker.superDiag u) * f g`. Introduce `u hu g`.
+
+Simplify using `only [f]`. Rewrite using `[map_mul, map_mul, ← mul_assoc P', GlobalTheory.JSW.commute_finGL_locGL w hP'w, mul_assoc, hWN _ (GlobalTheory.JSW.CutTransfer.finGL_locGL_mem_NA' w hu), GlobalTheory.JSW.CutTransfer.psiN_finGL_locGL]`. Both sides reduce to the same expression. Establish `hfK : ∀ g, ∀ k ∈ KGL w N, f (g * k) = f g`. Introduce `g k hk`.
+
+Simplify using `only [f]`. Rewrite using `[map_mul, map_mul, ← mul_assoc]`. Conclude with `hWK k hk _`. Establish `h` using `GlobalTheory.WhitTorus.eq_zero_of_not_antitone_int E w N (GlobalTheory.JSW.psiLocChar w) hψ f hfN hfK ϖw hϖ e he D hP`. Rewrite `h` using `[hfD]`. Then use the resulting hypothesis.
+-/
 theorem eq_zero_of_comp_diag (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (N : ℕ)
     (w : HeightOneSpectrum (𝓞 E))
     (hψ : ∀ x : w.adicCompletion E, (∀ y ∈ Ov E w, GlobalTheory.JSW.psiLoc w (x * y) = 1) ↔ x ∈ Ov E w)
@@ -118,12 +140,22 @@ theorem eq_zero_of_comp_diag (E : Type) [Field E] [NumberField E] [IsTotallyComp
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `only [GlobalTheory.ZEul.lastRow, Units.val_mul, GlobalTheory.SmGL.val_diagT, Matrix.diagonal_mul]`.
+-/
 theorem lastRow_diag_mul {m : ℕ} (d : Fin (m + 1) → (Ad E)ˣ) (g : GA E (m + 1)) :
     GlobalTheory.ZEul.lastRow (GlobalTheory.SmGL.diagT (Ad E) (Fin (m + 1)) d * g) =
       fun j => ((d (Fin.last m) : Ad E)) * GlobalTheory.ZEul.lastRow g j := by
   funext j
   simp only [GlobalTheory.ZEul.lastRow, Units.val_mul, GlobalTheory.SmGL.val_diagT, Matrix.diagonal_mul]
 
+/- English proof (translation)
+Rewrite `hk` using `[GlobalTheory.HenQ.Basic.mem_KGL_iff]`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hlt : ∀ j, Valued.v ((k : Matrix (Fin (m + 1)) (Fin (m + 1)) (w.adicCompletion E)) (Fin.last m) j) < 1` using `fun j => lt_of_le_of_ne (hk.1 _ _) (hne j)`. Establish `h1 : ((k : Matrix (Fin (m + 1)) (Fin (m + 1)) (w.adicCompletion E)) * ((k⁻¹ : GL (Fin (m + 1)) (w.adicCompletion E)) : Matrix (Fin (m + 1)) (Fin (m + 1)) (w.adicCompletion E))) (Fin.last m) (Fin.last m) = 1`.
+
+Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_apply_eq]`. Rewrite `h1` using `[Matrix.mul_apply]`. Establish `h2 : Valued.v (∑ j, (k : Matrix (Fin (m + 1)) (Fin (m + 1)) (w.adicCompletion E)) (Fin.last m) j * ((k⁻¹ : GL (Fin (m + 1)) (w.adicCompletion E)) : Matrix (Fin (m + 1)) (Fin (m + 1)) (w.adicCompletion E)) j (Fin.last m)) < 1`. Use `Valuation.map_sum_lt _ one_ne_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite `h2` using `[h1, map_one]`. Conclude with `lt_irrefl _ h2`.
+-/
 theorem exists_val_lastRow_eq_one (w : HeightOneSpectrum (𝓞 E)) {m : ℕ} {k : GL (Fin (m + 1)) (w.adicCompletion E)}
     (hk : k ∈ KGL w (m + 1)) : ∃ j, Valued.v ((k : Matrix (Fin (m + 1)) (Fin (m + 1)) (w.adicCompletion E)) (Fin.last m) j) = 1 := by
   rw [GlobalTheory.HenQ.Basic.mem_KGL_iff] at hk
@@ -151,9 +183,25 @@ namespace GlobalTheory.CellEvalNM
 
 open GlobalTheory.RSnmUnf
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[padNat]`.
+-/
 theorem padNat_self {j : ℕ} (l : Fin j → ℕ) : padNat (n := j) l = l := by
   funext i; simp [padNat]
 
+/- English proof (translation)
+Establish `hqR : (0 : ℝ) < q` using `by exact_mod_cast hq`. Establish `hl : Antitone (padNat (n` using `n) fun i => (v i).toNat) := by`. Introduce `a b hab`. Establish `hab' : (a : ℕ) ≤ b` using `hab`. Simplify using `only [padNat]`.
+
+Use `split_ifs with h1 h2 h2`. Conclude with `Int.toNat_le_toNat (hv (show (⟨a, h2⟩ : Fin j) ≤ ⟨b, h1⟩ from hab'))`. Use linear arithmetic over natural numbers and integers. Conclude with `Nat.zero_le _`. Conclude with `le_rfl`.
+
+Establish `hcast : ∀ i, (((v i).toNat : ℕ) : ℂ) = ((v i : ℤ) : ℂ)`. Introduce `i`. Rewrite using `[← Int.cast_natCast, Int.toNat_of_nonneg (h0 i)]`. Establish `hc : (∑ i : Fin n, (((n : ℂ) - 1 - 2 * (i : ℕ)) * ((padNat (n` using `n) (fun i => (v i).toNat) i : ℕ) : ℂ))) = ∑ i : Fin j, (((n : ℂ) - 1 - 2 * (i : ℕ)) * (v i : ℂ)) := by`. Use `symm`.
+
+Use `Fintype.sum_of_injective (Fin.castLE hj) (Fin.castLE_injective hj) _ _ ?_ ?_` and prove the remaining obligations. Introduce `i hi`. Establish `hij : ¬ (i : ℕ) < j` using `fun h => hi ⟨⟨i, h⟩, rfl⟩`. Simplify using `[padNat, hij]`. Introduce `i`.
+
+Simplify using `[padNat, hcast]`. Rewrite using `[sphW, if_pos hl, hc, Complex.ofReal_cpow hqR.le, GlobalTheory.ZEulLocal.wtS_eq_sum]`. Use `congr 2`. Use `push_cast`. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`.
+
+Use `congr 2`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sphW_pad (q : ℕ) (hq : 0 < q) {j n : ℕ} (hj : j ≤ n) (α : Fin n → ℂ) (v : Fin j → ℤ) (h0 : ∀ i, 0 ≤ v i)
     (hv : Antitone v) :
     sphW q α (padNat fun i => (v i).toNat) =
@@ -189,6 +237,17 @@ theorem sphW_pad (q : ℕ) (hq : 0 < q) {j n : ℕ} (hj : j ≤ n) (α : Fin n �
   refine Finset.sum_congr rfl fun i _ => ?_
   ring
 
+/- English proof (translation)
+Establish `hqR : (0 : ℝ) < q` using `by exact_mod_cast hq`. Establish `hβ` using `sphW_pad q hq le_rfl β v h0 hv`. Rewrite `hβ` using `[padNat_self]`. Establish `key2 : (((q : ℝ) ^ (-x * ∑ i, (v i : ℝ)) : ℝ) : ℂ) = ((q : ℂ) ^ (-(x : ℂ))) ^ (∑ i, (v i).toNat)`. Establish `e : (q : ℂ) ^ (-(x : ℂ)) = (((q : ℝ) ^ (-x) : ℝ) : ℂ)`.
+
+Rewrite using `[Complex.ofReal_cpow hqR.le]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[e, ← Complex.ofReal_pow, ← Real.rpow_natCast, ← Real.rpow_mul hqR.le]`. Use `congr 3`.
+
+Use `push_cast`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `(Int.toNat_of_nonneg (h0 i)).symm` after adjusting the coercions. Rewrite using `[sphW_pad q hq hj α v h0 hv, hβ, rsTermNM, if_pos ⟨h0, hv⟩, ← key2, map_mul, Complex.conj_ofReal]`. Use `set s : ℝ := ∑ i, (v i : ℝ)`.
+
+Use `set A : ℝ := (q : ℝ) ^ (-((GlobalTheory.CellDec.wtS j v : ℝ) + ((n : ℝ) - j) * s) / 2) with hA`. Use `set A' : ℝ := (q : ℝ) ^ (-((GlobalTheory.CellDec.wtS j v : ℝ) + ((j : ℝ) - j) * s) / 2) with hA'`. Establish `key : (q : ℝ) ^ GlobalTheory.CellDec.wtS j v * (A * A') * (q : ℝ) ^ (-y * s) = (q : ℝ) ^ (-x * s)`. Rewrite using `[hA, hA', ← Real.rpow_intCast, ← Real.rpow_add hqR, ← Real.rpow_add hqR, ← Real.rpow_add hqR, hy]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← key]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem localTerm_mixed (q : ℕ) (hq : 0 < q) {j n : ℕ} (hj : j ≤ n) (α : Fin n → ℂ) (β : Fin j → ℂ) (x y : ℝ)
     (hy : y = x - ((n : ℝ) - j) / 2) (v : Fin j → ℤ) (h0 : ∀ i, 0 ≤ v i) (hv : Antitone v) :
     (((q : ℝ) ^ GlobalTheory.CellDec.wtS j v : ℝ) : ℂ) *
@@ -219,6 +278,13 @@ theorem localTerm_mixed (q : ℕ) (hq : 0 < q) {j n : ℕ} (hj : j ≤ n) (α : 
   push_cast
   ring
 
+/- English proof (translation)
+Establish `hqR : (0 : ℝ) < q` using `by exact_mod_cast hq`. Establish `hs : ((∑ i, (v i).toNat : ℕ) : ℝ) = ∑ i, (v i : ℝ)`. Use `push_cast`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `(Int.toNat_of_nonneg (h0 i))` after adjusting the coercions.
+
+Rewrite using `[sphW_pad q hq hj α v h0 hv, hs, norm_mul, Complex.norm_real, Real.norm_of_nonneg (Real.rpow_nonneg hqR.le _)]`. Use `set s : ℝ := ∑ i, (v i : ℝ)`. Use `set A : ℝ := (q : ℝ) ^ (-((GlobalTheory.CellDec.wtS j v : ℝ) + ((n : ℝ) - j) * s) / 2) with hA`. Establish `key : (q : ℝ) ^ GlobalTheory.CellDec.wtS j v * (A * A) * (q : ℝ) ^ (-y * s) = (q : ℝ) ^ (-(s * x))`. Rewrite using `[hA, ← Real.rpow_intCast, ← Real.rpow_add hqR, ← Real.rpow_add hqR, ← Real.rpow_add hqR, hy]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← key]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem localTerm_diag (q : ℕ) (hq : 0 < q) {j n : ℕ} (hj : j ≤ n) (α : Fin n → ℂ) (x y : ℝ)
     (hy : y = x - ((n : ℝ) - j)) (v : Fin j → ℤ) (h0 : ∀ i, 0 ≤ v i) (hv : Antitone v) :
     (q : ℝ) ^ GlobalTheory.CellDec.wtS j v * ‖sphW q α (padNat fun i => (v i).toNat)‖ ^ 2 * (q : ℝ) ^ (-y * ∑ i, (v i : ℝ)) =
@@ -238,6 +304,9 @@ theorem localTerm_diag (q : ℕ) (hq : 0 < q) {j n : ℕ} (hj : j ≤ n) (α : F
   rw [← key]
   ring
 
+/- English proof (translation)
+Establish `h1 : (∏ w ∈ s, ENNReal.ofReal (t w)) = ENNReal.ofReal (∏ w ∈ s, a w) * ‖∏ w ∈ s, p w‖ₑ ^ 2 * ENNReal.ofReal (∏ w ∈ s, e w)`. Rewrite using `[← ENNReal.ofReal_prod_of_nonneg (fun w hw => by rw [← ht w hw]; have := ha w; have := he w; positivity), ← Finset.prod_congr rfl ht, Finset.prod_mul_distrib, Finset.prod_mul_distrib, Finset.prod_pow, ← norm_prod, ENNReal.ofReal_mul (mul_nonneg (Finset.prod_nonneg fun w _ => ha w …`. Establish `h2 : ‖c‖ₑ = 1` using `by rw [← ofReal_norm_eq_enorm, hc, ENNReal.ofReal_one]`. Rewrite using `[h1, enorm_mul, enorm_mul, h2, ENNReal.ofReal_mul (Finset.prod_nonneg fun w _ => he w)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ennreal_collect {ι : Type} (s : Finset ι) (a e t : ι → ℝ) (p : ι → ℂ) (ha : ∀ w, 0 ≤ a w) (he : ∀ w, 0 ≤ e w)
     (ht : ∀ w ∈ s, a w * ‖p w‖ ^ 2 * e w = t w) (c W : ℂ) (hc : ‖c‖ = 1) (Z : ℝ≥0∞) (D : ℝ) :
     ENNReal.ofReal (∏ w ∈ s, a w) * (‖c * (∏ w ∈ s, p w) * W‖ₑ ^ 2 * Z * ENNReal.ofReal ((∏ w ∈ s, e w) * D)) =
@@ -258,6 +327,11 @@ namespace GlobalTheory.CellEvalNM
 
 open GroundTheory.Automorphic.FourierWhittaker (blockGL blockMat blockMat_apply coe_blockGL)
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.CellDec.tl, GlobalTheory.CellDec.compV_finGL]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pLoc E w (((GlobalTheory.SmGL.diagT (Af E) (Fin N) _ : GL (Fin N) (Af E)) : Matrix (Fin N) (Fin N) (Af E)) i j) = _`. Rewrite using `[GlobalTheory.SmGL.val_diagT]`. Distinguish the cases in `hij : i = j`.
+
+Substitute `hij` using the available equality. Simplify using `only [Matrix.diagonal_apply_eq]`. Express the relevant statement in the definitionally equal form `((ϖ w ^ (Finsupp.mapRange (fun x : Fin N → ℤ => x i) rfl l) w : (w.adicCompletion E)ˣ) : w.adicCompletion E) = _`. Simplify using the standard rewrite rules. Simplify using `[Matrix.diagonal_apply_ne _ hij]`.
+-/
 theorem compV_tl {E : Type} [Field E] [NumberField E] (N : ℕ) (ϖ : ∀ w : HeightOneSpectrum (𝓞 E), (w.adicCompletion E)ˣ)
     (l : HeightOneSpectrum (𝓞 E) →₀ (Fin N → ℤ)) (w : HeightOneSpectrum (𝓞 E)) :
     ((GlobalTheory.CellDec.compV E N w (GlobalTheory.CellDec.tl N ϖ l) : GL (Fin N) (w.adicCompletion E)) :
@@ -274,6 +348,29 @@ theorem compV_tl {E : Type} [Field E] [NumberField E] (N : ℕ) (ϖ : ∀ w : He
     simp
   · simp [Matrix.diagonal_apply_ne _ hij]
 
+/- English proof (translation)
+Take `⟨u, hu, h, hh, k, hk, hkS, rfl⟩` from `GlobalTheory.CellDec.exists_mul_supS_finGL E N S g hg`. Use `set t := GlobalTheory.CellDec.tl N ϖ l.1 with ht`. Establish `hcomm : h * t = t * h` using `GlobalTheory.CellDec.TlComm.tl_commute_of_one_off E N S ϖ l h hh`. Establish `hu0 : u ∈ GlobalTheory.JSW.NA E N` using `(GlobalTheory.SmGL.mem_unipB (Ad E)).1 hu`. Establish `hu' : t * u * t⁻¹ ∈ GlobalTheory.JSW.NA E N` using `(GlobalTheory.SmGL.mem_unipB (Ad E)).1 (GlobalTheory.CellDec.tl_conj_mem ϖ l.1 hu)`.
+
+Establish `hσ : t * (u * h * finGL E N k) = (t * u * t⁻¹) * (h * t) * finGL E N k`. Rewrite using `[hcomm]`. Use `group`. Establish `hne : GlobalTheory.JSW.psiN u ≠ 0` using `norm_ne_zero_iff.1 (by rw [GlobalTheory.RSnmUnfProps.norm_psiN]; exact one_ne_zero)`. Use `⟨GlobalTheory.JSW.psiN (t * u * t⁻¹) * (GlobalTheory.JSW.psiN u)⁻¹, ?_, fun V hN hK => ⟨?_, fun p hp hnn => ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[norm_mul, norm_inv, GlobalTheory.RSnmUnfProps.norm_psiN, GlobalTheory.RSnmUnfProps.norm_psiN, inv_one, mul_one]`. Introduce and unpack `⟨w, hw⟩`. Establish `hw0 : l.1 w ≠ 0` using `by rintro h0; rw [h0] at hw; exact hw antitone_const`. Establish `hwS : w ∉ S` using `fun h => hw0 (l.2 w h)`. Rewrite using `[hσ, hK k hk hkS, hN _ hu', eq_zero_of_comp_diag E N w (hψ w hwS) (ϖ w) (hϖ w) V hN ?_ (l.1 w) hw (h * t) ?_, mul_zero]`.
+
+Introduce `k' hk'`. Use `hK _ (fun v => ?_) fun v hv => pLoc_locGL_of_ne (fun e : v = w => hwS (e ▸ hv)) k'` and prove the remaining obligations. Distinguish the cases in `hvw : v = w`. Substitute `hvw` using the available equality. Rewrite using `[pLoc_locGL]`.
+
+Conclude with `hk'`. Rewrite using `[pLoc_locGL_of_ne hvw]`. Conclude with `one_mem _`. Establish `h1 : GlobalTheory.CellDec.compV E N w h = 1` using `hh w hwS`. Rewrite using `[map_mul, h1, one_mul]`.
+
+Conclude with `compV_tl N ϖ l.1 w`. Take `⟨l', hl'app⟩ : ∃ l' : HeightOneSpectrum (𝓞 E) →₀ (Fin N → ℕ), ∀ w, l' w = fun i => (l.1 w i).toNat` from `⟨Finsupp.mapRange (fun v i => (v i).toNat) (funext fun _ => rfl) l.1, fun w => Finsupp.mapRange_apply⟩`. Establish `hl' : ∀ w i, ((l' w i : ℕ) : ℤ) = l.1 w i` using `fun w i => by`. Rewrite using `[hl'app]`. Conclude with `Int.toNat_of_nonneg (hnn w i)`.
+
+Establish `hsupp : l'.support = l.1.support`. Use extensionality with `w`. Simplify using `only [Finsupp.mem_support_iff, ne_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h h0`.
+
+Apply `h` to reduce the goal to its premises. Rewrite using `[hl'app, h0]`. Both sides reduce to the same expression. Introduce `h h0`. Apply `h` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `i`. Use `hl' w i` as an intermediate fact. Rewrite `this` using `[h0]`. Simplify using `using this.symm`. Establish `htl : t = GlobalTheory.JSW.tl ϖ l'` using `GlobalTheory.CellDecNat.tl_eq_jsw_tl E N ϖ l.1 l' hl'`.
+
+Establish `hsS : ∀ w ∈ l'.support, w ∉ S` using `fun w hw hS' => by`. Rewrite `hw` using `[hsupp, Finsupp.mem_support_iff]`. Conclude with `hw (l.2 w hS')`. Establish `e1 : V (h * t) = (∏ w ∈ l.1.support, p w (fun i => (l.1 w i).toNat)) * V h`. Rewrite using `[htl, hp l' hsS h hh, hsupp]`.
+
+Simplify using `only [hl'app]`. Rewrite using `[hσ, hK k hk hkS, hN _ hu', e1, hK k hk hkS, hN _ hu0]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem cell_values (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (N : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E)))
     (hψ : ∀ w ∉ S, ∀ x : w.adicCompletion E, (∀ y ∈ Ov E w, GlobalTheory.JSW.psiLoc w (x * y) = 1) ↔ x ∈ Ov E w)
     (ϖ : ∀ w : HeightOneSpectrum (𝓞 E), (w.adicCompletion E)ˣ) (hϖ : ∀ w, IsUnifV E w (ϖ w : w.adicCompletion E))
@@ -329,6 +426,13 @@ theorem cell_values (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (N
     rw [hσ, hK k hk hkS, hN _ hu', e1, hK k hk hkS, hN _ hu0]
     field_simp
 
+/- English proof (translation)
+Take `⟨u, hu, k, hk, rfl⟩` from `hg`. Rewrite using `[GlobalTheory.ZEulProps.lastRow_unip hu]`. Establish `hkw : GlobalTheory.CellDec.compV E (m + 1) w k ∈ KGL w (m + 1)`. Simplify using `only [GlobalTheory.CellDec.US, Subgroup.mem_iInf, Subgroup.mem_comap] at hk`. Conclude with `hk w hw`.
+
+Establish `he : ∀ j, pLoc E w (pFin E (GlobalTheory.ZEul.lastRow k j)) = ((GlobalTheory.CellDec.compV E (m + 1) w k : GL (Fin (m + 1)) (w.adicCompletion E)) : Matrix (Fin (m + 1)) (Fin (m + 1)) (w.adicCompletion E)) (Fin.last m) j` using `fun j => by`. Rewrite using `[GlobalTheory.CellDec.compV, Matrix.GeneralLinearGroup.map_apply]`. Both sides reduce to the same expression. Take `⟨j, hj⟩` from `exists_val_lastRow_eq_one w hkw`. Use `⟨fun j => ?_, j, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[he]`. Conclude with `((GlobalTheory.HenQ.Basic.mem_KGL_iff w _).1 hkw).1 (Fin.last m) j`. Rewrite using `[he]`. Conclude with `hj`.
+-/
 theorem lastRow_prim (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E)))
     (g : GA E (m + 1)) (hg : g ∈ GlobalTheory.CellDec.C0 E (m + 1) S) (w : HeightOneSpectrum (𝓞 E)) (hw : w ∉ S) :
     (∀ j, pLoc E w (pFin E (GlobalTheory.ZEul.lastRow g j)) ∈ w.adicCompletionIntegers E) ∧
@@ -351,6 +455,37 @@ end GlobalTheory.CellEvalNM
 open GroundTheory.Automorphic.FourierWhittaker (blockGL) in
 open GlobalTheory.CellEvalNM in
 
+/- English proof (translation)
+Introduce `E _ _ _ m r S hψ ϖ hϖ α β φ φ' F hN hN' hK hK' hS' hS hF x g hg l`. Establish `hmn : m + 1 ≤ m + r + 1 + 1` using `by omega`. Take `⟨c, hc, hV⟩` from `cell_values E (m + 1) S hψ ϖ hϖ g hg l`. Take `⟨hz1, hv1⟩` from `hV (fun g => GlobalTheory.JSW.whit φ (blockGL hmn g)) (fun u hu g => by`. Rewrite using `[map_mul, hN _ (GlobalTheory.RSnmUnfProps.blockGL_mem_NA hmn hu), GlobalTheory.RSnmUnfProps.psiN_blockGL])`.
+
+Use the proof step `(fun k hk hkS g => by`. Rewrite using `[map_mul, blockGL_finGL]`. Use `hK _ (fun v => ?_) (fun v hv => ?_) _` and prove the remaining obligations. Rewrite using `[map_blockGL']`. Conclude with `blockGL_mem_KGL v hmn (hk v)`.
+
+Rewrite using `[map_blockGL', hkS v hv, map_one])`. Take `⟨hz2, hv2⟩` from `hV (GlobalTheory.JSW.whit φ') hN' hK'`. Establish `hrow : GlobalTheory.ZEul.lastRow (GlobalTheory.CellDec.tl (m + 1) ϖ l.1 * g) = fun j => ((finId E (GlobalTheory.CellDec.adl ϖ (Finsupp.mapRange (fun x : Fin (m + 1) → ℤ => x (Fin.last m)) rfl l.1)) : (Ad E)ˣ) : Ad E) * GlobalTheory.ZEul.lastRow g j`. Rewrite using `[GlobalTheory.CellDec.tl_eq_diagT, lastRow_diag_mul]`. Take `⟨hF1, hF2⟩` from `hF (Finsupp.mapRange (fun x : Fin (m + 1) → ℤ => x (Fin.last m)) rfl l.1) (fun v hv => by rw [Finsupp.mapRange_apply, l.2 v hv]; rfl) (GlobalTheory.ZEul.lastRow g) (lastRow_prim E m S g hg)`.
+
+Rewrite `hF1`, `hF2` using `[← hrow]`. Simplify using `only [Finsupp.mapRange_apply] at hF1 hF2`. Distinguish the cases in `hgood : ∀ w, (∀ i, 0 ≤ l.1 w i) ∧ Antitone (l.1 w)`. Use `swap`. Take `⟨w, hw⟩` from `not_forall.1 hgood`.
+
+Establish `hws : w ∈ l.1.support`. Rewrite using `[Finsupp.mem_support_iff]`. Introduce `h0`. Rewrite `hw` using `[h0]`. Conclude with `hw ⟨fun _ => le_rfl, antitone_const⟩`.
+
+Rewrite using `[Finsupp.prod, Finsupp.prod, Finsupp.prod, Finset.prod_eq_zero hws (by rw [GlobalTheory.RSnmUnf.rsTermNM, if_neg hw]), Finset.prod_eq_zero hws (if_neg hw), Finset.prod_eq_zero hws (if_neg hw), GlobalTheory.RSnmUnf.uIntNM]`. Distinguish the cases in `ha : ∀ w, Antitone (l.1 w)`. Establish `h0` using `hF2 ⟨w, not_le.1 fun h => hw ⟨fun i => le_trans h (ha w (Fin.le_last i)), ha w⟩⟩`. Simplify using `[h0]`. Establish `h1` using `hz1 (not_forall.1 ha)`.
+
+Establish `h2` using `hz2 (not_forall.1 ha)`. Rewrite using `[h1, h2]`. Simplify using the standard rewrite rules. Establish `hnn : ∀ w i, 0 ≤ l.1 w i` using `fun w => (hgood w).1`. Establish `e1` using `hv1 (fun w v => GlobalTheory.JSW.sphW (qV E w) (fun i => (α w i : ℂ)) (GlobalTheory.RSnmUnf.padNat v)) hS hnn`.
+
+Establish `e2` using `hv2 (fun w v => GlobalTheory.JSW.sphW (qV E w) (fun i => (β w i : ℂ)) v) hS' hnn`. Establish `e3` using `hF1 fun w => hnn w _`. Establish `hq : ∀ w, 0 < qV E w` using `fun w => Nat.pos_of_ne_zero fun h => w.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`. Establish `hdet : ∀ y : ℝ, GlobalTheory.RSnm.detAbs (GlobalTheory.CellDec.tl (m + 1) ϖ l.1 * g) ^ y = (∏ w ∈ l.1.support, (qV E w : ℝ) ^ (-y * ∑ i, (l.1 w i : ℝ))) * GlobalTheory.RSnm.detAbs g ^ y` using `fun y => by`. Use `GlobalTheory.CellEvalDet.detPow_tl_mul E (m + 1) ϖ hϖ l.1 y g` as an intermediate fact.
+
+Rewrite `this` using `[GlobalTheory.CellEvalDet.detPow_eq_rpow, GlobalTheory.CellEvalDet.detPow_eq_rpow]`. Then use the resulting hypothesis. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `set y : ℝ := x - (((m + r + 1 + 1 : ℕ) : ℝ) - ((m + 1 : ℕ) : ℝ)) / 2 with hy`. Establish `hp : ∀ (z : ℝ) (h : GA E (m + 1)), ((GlobalTheory.RSnm.detAbs h : ℝ) : ℂ) ^ ((z : ℂ) - (((m + r + 1 + 1 : ℕ) : ℂ) - ((m + 1 : ℕ) : ℂ)) / 2) = ((GlobalTheory.RSnm.detAbs h ^ (z - (((m + r + 1 + 1 : ℕ) : ℝ) - ((m + 1 : ℕ) : ℝ)) / 2) : ℝ) : ℂ)` using `fun z h => by`. Rewrite using `[Complex.ofReal_cpow (GlobalTheory.RSnm.detAbs_pos h).le]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hg2 : GlobalTheory.RSnm.detAbs g ^ y = GlobalTheory.RSnm.detAbs g ^ ((0 : ℝ) - (((m + r + 1 + 1 : ℕ) : ℝ) - ((m + 1 : ℕ) : ℝ)) / 2) * GlobalTheory.RSnm.detAbs g ^ x`. Rewrite using `[← Real.rpow_add (GlobalTheory.RSnm.detAbs_pos g), hy]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `key : ((GlobalTheory.CellDec.dinv (m + 1) l.1 : ℝ) : ℂ) * ((∏ w ∈ l.1.support, GlobalTheory.JSW.sphW (qV E w) (fun i => (α w i : ℂ)) (GlobalTheory.RSnmUnf.padNat fun i => (l.1 w i).toNat)) * conj (∏ w ∈ l.1.support, GlobalTheory.JSW.sphW (qV E w) (fun i => (β w i : ℂ)) (fun i => …`. Rewrite using `[map_prod, ← Finset.prod_mul_distrib, GlobalTheory.CellDec.dinv, Complex.ofReal_prod, Complex.ofReal_prod, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib, Finsupp.prod]`. Conclude with `Finset.prod_congr rfl fun w _ => localTerm_mixed (qV E w) (hq w) hmn _ _ x y hy (l.1 w) (hgood w).1 (hgood w).2`.
+
+Establish `hcc : c * conj c = 1`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, hc]`. Simplify using the standard rewrite rules. Rewrite using `[GlobalTheory.RSnmUnf.uIntNM, GlobalTheory.RSnmUnf.uIntNM, hp, hp, ← hy, hdet, hg2, e1, e2, e3, ← key, map_mul, map_mul, Complex.ofReal_mul, Complex.ofReal_mul]`. Generalize the expression as in `GlobalTheory.JSW.whit φ (blockGL hmn g) = W₁`.
+
+Generalize the expression as in `conj (GlobalTheory.JSW.whit φ' g) = W₂`. Take the linear combination `(exp := 1) (((GlobalTheory.CellDec.dinv (m + 1) l.1 : ℝ) : ℂ) * ((∏ w ∈ l.1.support, GlobalTheory.JSW.sphW (qV E w) (fun i => (α w i : ℂ)) (GlobalTheory.RSnmUnf.padNat fun i => (l.1 w i).toNat)) * conj (∏ w ∈ l.1.support, GlobalTheory.JSW.sphW (qV E w) (fun i => (β w i : ℂ)) (fun …`. Rewrite using `[e1, e3, hdet, GlobalTheory.CellDec.dinv, Finsupp.prod, Finset.prod_congr rfl fun w _ => if_pos (hgood w)]`. Use `ennreal_collect _ _ _ _ _ (fun w => zpow_nonneg (Nat.cast_nonneg _) _) (fun w => Real.rpow_nonneg (Nat.cast_nonneg _) _) (fun w _ => ?_) c _ hc _ _` and prove the remaining obligations. Conclude with `localTerm_diag (qV E w) (hq w) hmn _ x _ (by push_cast; ring) (l.1 w) (hgood w).1 (hgood w).2`.
+
+Rewrite using `[e2, e3, hdet, GlobalTheory.CellDec.dinv, Finsupp.prod, Finset.prod_congr rfl fun w _ => if_pos (hgood w)]`. Use `ennreal_collect _ _ _ _ _ (fun w => zpow_nonneg (Nat.cast_nonneg _) _) (fun w => Real.rpow_nonneg (Nat.cast_nonneg _) _) (fun w _ => ?_) c _ hc _ _` and prove the remaining obligations. Use `localTerm_diag (qV E w) (hq w) le_rfl (fun i => (β w i : ℂ)) x x (by ring) (l.1 w) (hgood w).1 (hgood w).2` as an intermediate fact. Rewrite `this` using `[padNat_self]`. Rewrite using `[padNat_self]`.
+
+Conclude with `this`.
+-/
 theorem GlobalTheory.CellEvalNM.uIntNM_cell_eval : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m r : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E))),
     (∀ w ∉ S, ∀ x : w.adicCompletion E, (∀ y ∈ Ov E w, GlobalTheory.JSW.psiLoc w (x * y) = 1) ↔ x ∈ Ov E w) →
     ∀ (ϖ : ∀ w : HeightOneSpectrum (𝓞 E), (w.adicCompletion E)ˣ), (∀ w, IsUnifV E w (ϖ w : w.adicCompletion E)) →

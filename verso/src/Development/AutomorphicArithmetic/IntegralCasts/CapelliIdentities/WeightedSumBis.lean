@@ -4,6 +4,23 @@ open scoped ContDiff
 
 namespace UpperTheory.Reformulated.B.weightedSumBis
 
+/- English proof (translation)
+Use `set F : ℝ → ℂ := fun u => ∫ t in (0 : ℝ)..u, f t with hF`. Establish `hFd : ∀ u, HasDerivAt F (f u) u` using `fun u => (hc.integral_hasStrictDerivAt 0 u).hasDerivAt`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, F a ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+
+Establish `h1 : F = fun _ => 0` using `funext h`. Establish `h2` using `hFd 0`. Rewrite `h2` using `[h1, h0]`. Conclude with `one_ne_zero (h2.unique (hasDerivAt_const _ _))`. Establish `key : ∀ x, f x = (F (x + a) - F x) / F a`.
+
+Introduce `x`. Rewrite using `[eq_div_iff ha]`. Establish `h1 : F (x + a) - F x = ∫ t in x..(x + a), f t` using `intervalIntegral.integral_interval_sub_left (hc.intervalIntegrable _ _) (hc.intervalIntegrable _ _)`. Establish `h2 : ∫ t in (0 : ℝ)..a, f (x + t) = ∫ t in x..(x + a), f t`. Simplify using the standard rewrite rules.
+
+Rewrite using `[h1, ← h2]`. Simplify using `only [hm, hF]`. Rewrite using `[intervalIntegral.integral_const_mul]`. Use `set c : ℂ := (f a - 1) / F a with hcdef`. Establish `hfd : ∀ x, HasDerivAt f (c * f x) x`.
+
+Introduce `x`. Establish `h1 : HasDerivAt (fun y => (F (y + a) - F y) / F a) ((f (x + a) - f x) / F a) x` using `(((hFd (x + a)).comp_add_const x a).sub (hFd x)).div_const _`. Rewrite `h1` using `[← funext key]`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hm, hcdef]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hg : ∀ x : ℝ, HasDerivAt (fun y : ℝ => f y * Complex.exp (-c * y)) 0 x`. Introduce `x`. Establish `h1 : HasDerivAt (fun y : ℝ => Complex.exp (-c * y)) (Complex.exp (-c * x) * (-c * 1)) x` using `((Complex.ofRealCLM.hasDerivAt (x := x)).const_mul (-c)).cexp`. Establish `h2` using `(hfd x).mul h1`.
+
+Establish `h3 : c * f x * Complex.exp (-c * x) + f x * (Complex.exp (-c * x) * (-c * 1)) = 0`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[h3]`. Conclude with `h2`. Use `⟨c, fun x => ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `is_const_of_deriv_eq_zero (fun y => (hg y).differentiableAt) (fun y => (hg y).deriv) x 0`. Simplify using `only [h0, Complex.ofReal_zero, mul_zero, Complex.exp_zero, mul_one] at h`. Rewrite `h` using `[neg_mul, Complex.exp_neg]`. Conclude with `(mul_inv_eq_one₀ (Complex.exp_ne_zero _)).mp h`.
+-/
 theorem exists_eq_exp (f : ℝ → ℂ) (hc : Continuous f) (h0 : f 0 = 1) (hm : ∀ x y, f (x + y) = f x * f y) :
     ∃ c : ℂ, ∀ x : ℝ, f x = Complex.exp (c * x) := by
   set F : ℝ → ℂ := fun u => ∫ t in (0 : ℝ)..u, f t with hF

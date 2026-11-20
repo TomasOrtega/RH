@@ -7,6 +7,9 @@ set_option autoImplicit false
 
 namespace GlobalTheory.AffBaseChange
 
+/- English proof (translation)
+Introduce `X X' S S' f g p q h hS hS' W hW`. Use `haveI : IsAffineHom q := inferInstance`. Establish `P` using `ReciprocityTheory.ChartRestriction.G.Out.GtBCPf.isPushout_appLE h.flip this (isAffineOpen_top S) hW (fun _ _ => trivial) (fun _ _ => trivial)`. Conclude with `P.flip`.
+-/
 theorem isPushout_appLE_of_isPullback_of_isAffine :
     ∀ (X X' S S' : Scheme.{0}) (f : X' ⟶ X) (g : X' ⟶ S') (p : X ⟶ S) (q : S' ⟶ S),
       IsPullback f g p q → IsAffine S → IsAffine S' → ∀ (W : X.Opens), IsAffineOpen W →

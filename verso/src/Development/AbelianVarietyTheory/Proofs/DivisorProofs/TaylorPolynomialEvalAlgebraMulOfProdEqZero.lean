@@ -12,6 +12,15 @@ section
 
 variable {I : Type} [Fintype I] [DecidableEq I] {D : Type} [CommRing D]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => intro m _; exact ⟨Fin.elim0, by simp⟩`. Consider the case `succ k ih`. Introduce `m hm`. Establish `h : m ≠ 0` using `by rintro rfl; simp at hm`.
+
+Take `⟨i, hi⟩ : ∃ i, m i ≠ 0` from `by simpa using Finsupp.ne_iff.1 h`. Establish `hle : Finsupp.single i 1 ≤ m`. Rewrite using `[Finsupp.single_le_iff]`. Use linear arithmetic over natural numbers and integers. Take `⟨m', rfl⟩` from `exists_add_of_le hle`.
+
+Take `⟨s, hs⟩` from `ih m' (by rw [map_add, Finsupp.degree_single] at hm; omega)`. Use `⟨Fin.cons i s, ?_⟩` and prove the remaining obligations. Establish `h1 : ∏ j, t j ^ (Finsupp.single i 1 : I →₀ ℕ) j = t i`. Apply the tactic sequence `rw [Finset.prod_eq_single i] <;> simp +contextual [Finsupp.single_apply, eq_comm]`. Simplify using `only [Fin.prod_univ_succ, Fin.cons_zero, Fin.cons_succ, Finsupp.add_apply, pow_add, Finset.prod_mul_distrib, h1]`.
+
+Conclude with `mul_dvd_mul_left _ hs`.
+-/
 theorem exists_prod_dvd_monomial (t : I → D) (k : ℕ) :
     ∀ m : I →₀ ℕ, k ≤ m.degree → ∃ s : Fin k → I, ∏ a, t (s a) ∣ ∏ i, t i ^ m i := by
   induction k with
@@ -33,6 +42,11 @@ theorem exists_prod_dvd_monomial (t : I → D) (k : ℕ) :
 
 variable [Algebra ℂ D]
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.aeval_def, MvPolynomial.eval₂_eq']`. Use `Finset.sum_eq_zero fun m hm => ?_` and prove the remaining obligations. Establish `h : N + 1 ≤ m.degree`. Assume the negation of the conclusion as `h`. Conclude with `MvPolynomial.mem_support_iff.1 hm (hP m (by omega))`.
+
+Take `⟨s, hs⟩` from `exists_prod_dvd_monomial t (N + 1) m h`. Rewrite `hs` using `[ht, zero_dvd_iff]`. Rewrite using `[hs, mul_zero]`.
+-/
 theorem aeval_eq_zero_of_coeff_eq_zero {N : ℕ} {t : I → D}
     (ht : ∀ s : Fin (N + 1) → I, ∏ a, t (s a) = 0) (P : MvPolynomial I ℂ)
     (hP : ∀ m : I →₀ ℕ, m.degree < N + 1 → P.coeff m = 0) : MvPolynomial.aeval t P = 0 := by
@@ -47,6 +61,9 @@ theorem aeval_eq_zero_of_coeff_eq_zero {N : ℕ} {t : I → D}
 
 omit [Algebra ℂ D] [CommRing D] in
 
+/- English proof (translation)
+Simplify using `only [MvPolynomial.coeff_sum, MvPolynomial.coeff_monomial, Finset.sum_ite_eq', Finset.mem_finsuppAntidiag, Finset.subset_univ, and_true]`. Rewrite using `[← Finsupp.degree_eq_sum, Finset.sum_ite_eq, if_pos (Finset.mem_range.2 hn)]`.
+-/
 theorem coeff_sum_monomial_finsuppAntidiag (N : ℕ) (F : MvPowerSeries I ℂ) (n : I →₀ ℕ)
     (hn : n.degree < N + 1) :
     MvPolynomial.coeff n (∑ k ∈ Finset.range (N + 1),
@@ -56,6 +73,9 @@ theorem coeff_sum_monomial_finsuppAntidiag (N : ℕ) (F : MvPowerSeries I ℂ) (
     Finset.mem_finsuppAntidiag, Finset.subset_univ, and_true]
   rw [← Finsupp.degree_eq_sum, Finset.sum_ite_eq, if_pos (Finset.mem_range.2 hn)]
 
+/- English proof (translation)
+Simplify using `only [map_sum, MvPolynomial.aeval_monomial, Algebra.smul_def, Finsupp.prod_fintype _ _ (fun i => pow_zero (t i))]`.
+-/
 theorem aeval_sum_monomial_finsuppAntidiag (N : ℕ) (t : I → D) (F : MvPowerSeries I ℂ) :
     MvPolynomial.aeval t (∑ k ∈ Finset.range (N + 1),
       ∑ m ∈ Finset.finsuppAntidiag (Finset.univ : Finset I) k,
@@ -67,6 +87,11 @@ theorem aeval_sum_monomial_finsuppAntidiag (N : ℕ) (t : I → D) (F : MvPowerS
 
 end
 
+/- English proof (translation)
+Introduce `I _ _ D _ _ N t ht f g hf hg`. Express the relevant statement in the definitionally equal form `GlobalTheory.PeriodFamily.taylor N t (f * g) = _`. Rewrite using `[GlobalTheory.PeriodFamily.taylor_eq_sum_coeff_taylor N t _ (hf.mul hg), GlobalTheory.PeriodFamily.taylor_eq_sum_coeff_taylor N t _ hf, GlobalTheory.PeriodFamily.taylor_eq_sum_coeff_taylor N t _ hg, GlobalTheory.taylor_mul hf hg, ← aeval_sum_monomial_finsuppAntidiag, ← aeval_sum_ …`. Use `aeval_eq_zero_of_coeff_eq_zero ht _ fun m hm => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_sub, coeff_sum_monomial_finsuppAntidiag _ _ _ hm, MvPolynomial.coeff_mul, MvPowerSeries.coeff_mul, sub_eq_zero]`.
+
+Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Rewrite `hp` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Rewrite `hm` using `[← hp, map_add]`. Rewrite using `[coeff_sum_monomial_finsuppAntidiag _ _ _ (by omega), coeff_sum_monomial_finsuppAntidiag _ _ _ (by omega)]`.
+-/
 theorem taylor_mul_of_prod_eq_zero : ∀ {I : Type} [Fintype I] [DecidableEq I] {D : Type}
     [CommRing D] [Algebra ℂ D] (N : ℕ) (t : I → D), (∀ s : Fin (N + 1) → I, ∏ a, t (s a) = 0) →
     ∀ f g : (I → ℂ) → ℂ, AnalyticAt ℂ f 0 → AnalyticAt ℂ g 0 →

@@ -15,6 +15,9 @@ local notation "C♭" => Tilt C NormedField.valuation (normInteger C) normIntege
 local notation "𝒪C♭" => PreTilt (normInteger C) p
 local notation "θ" => WittVector.fontaineTheta (normInteger C) p
 
+/- English proof (translation)
+Rewrite using `[← wittVector_map_comp]`. Both sides reduce to the same expression.
+-/
 theorem fontaineTheta_map_inclusion {N N' : IntermediateField K♭ C♭} (h : N ≤ N')
     (u : WittVector p (integerTilt K C p N)) :
     θ (WittVector.map (integerTilt K C p N').subtype
@@ -23,6 +26,19 @@ theorem fontaineTheta_map_inclusion {N N' : IntermediateField K♭ C♭} (h : N 
   rw [← wittVector_map_comp]
   rfl
 
+/- English proof (translation)
+Use `set f : untiltField K C p N →ₐ[K] C := (untiltField K C p N').val.comp ((untiltAut N' σ').toAlgHom.comp (IntermediateField.inclusion (untiltField_mono h)))`. Use `set g : untiltField K C p N →ₐ[K] C := (untiltField K C p N).val.comp (untiltAut N σ).toAlgHom`. Establish `hfg : f = g`. Apply `IntermediateField.adjoin_algHom_ext` to reduce the goal to its premises. Introduce `y hy`.
+
+Use `show ((untiltAut N' σ' (IntermediateField.inclusion (untiltField_mono h) ⟨y, IntermediateField.subset_adjoin _ _ hy⟩) : untiltField K C p N') : C) = ((untiltAut N σ ⟨y, IntermediateField.subset_adjoin _ _ hy⟩ : untiltField K C p N) : C)`. Generalize the expression as in `IntermediateField.subset_adjoin K _ hy = hy0`. Take `⟨z, ⟨u, rfl⟩, rfl⟩` from `hy`. Use `set u' := WittVector.map (Subring.inclusion (integerTilt_mono h)) u`. Establish `hz : ((RingHom.comp θ (WittVector.map (integerTilt K C p N).subtype) u : normInteger C) : C) = ((θ (WittVector.map (integerTilt K C p N').subtype u') : normInteger C) : C)`.
+
+Rewrite using `[fontaineTheta_map_inclusion h]`. Both sides reduce to the same expression. Establish `hcoeff : ∀ n, integerTiltHom N' σ'.toAlgHom (norm_tiltAlgEquiv_toAlgHom_apply N' σ') (u'.coeff n) = Subring.inclusion (integerTilt_mono h) (integerTiltHom N σ.toAlgHom (norm_tiltAlgEquiv_toAlgHom_apply N σ) (u.coeff n))`. Introduce `n`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Apply `IsFractionRing.injective 𝒪C♭ C♭` to reduce the goal to its premises. Rewrite using `[algebraMap_integerTiltHom]`. Express the relevant statement in the definitionally equal form `_ = algebraMap 𝒪C♭ C♭ (integerTiltHom N σ.toAlgHom (norm_tiltAlgEquiv_toAlgHom_apply N σ) (u.coeff n) : 𝒪C♭)`. Rewrite using `[algebraMap_integerTiltHom]`. Conclude with `hσ ⟨algebraMap 𝒪C♭ C♭ (u.coeff n : 𝒪C♭), (u.coeff n).2⟩`.
+
+Establish `hmap : WittVector.map (integerTiltHom N' σ'.toAlgHom (norm_tiltAlgEquiv_toAlgHom_apply N' σ')) u' = WittVector.map (Subring.inclusion (integerTilt_mono h)) (WittVector.map (integerTiltHom N σ.toAlgHom (norm_tiltAlgEquiv_toAlgHom_apply N σ)) u)` using `WittVector.ext fun n => by`. Simplify using `only [WittVector.map_coeff]`. Conclude with `hcoeff n`. Establish `hmemN : ((θ (WittVector.map (integerTilt K C p N).subtype u) : normInteger C) : C) ∈ untiltField K C p N` using `coe_mem_untiltField ⟨u, rfl⟩`. Establish `hmemN' : ((θ (WittVector.map (integerTilt K C p N').subtype u') : normInteger C) : C) ∈ untiltField K C p N'` using `coe_mem_untiltField ⟨u', rfl⟩`.
+
+Establish `e1 : IntermediateField.inclusion (untiltField_mono h) ⟨_, hy0⟩ = (⟨_, hmemN'⟩ : untiltField K C p N')` using `Subtype.ext hz`. Establish `e2 : (⟨_, hy0⟩ : untiltField K C p N) = ⟨_, hmemN⟩` using `rfl`. Rewrite using `[e1, e2, coe_untiltAut_fontaineTheta, coe_untiltAut_fontaineTheta, hmap, fontaineTheta_map_inclusion h]`. Conclude with `congrArg (fun φ : untiltField K C p N →ₐ[K] C => φ x) hfg`.
+-/
 theorem coe_untiltAut_of_le {N N' : IntermediateField K♭ C♭} [FiniteDimensional K♭ N]
     [FiniteDimensional K♭ N'] (h : N ≤ N') (σ : N ≃ₐ[K♭] N) (σ' : N' ≃ₐ[K♭] N')
     (hσ : ∀ y : N, ((σ' ⟨y, h y.2⟩ : N') : C♭) = ((σ y : N) : C♭)) (x : untiltField K C p N) :
@@ -70,6 +86,17 @@ theorem coe_untiltAut_of_le {N N' : IntermediateField K♭ C♭} [FiniteDimensio
       fontaineTheta_map_inclusion h]
   exact congrArg (fun φ : untiltField K C p N →ₐ[K] C => φ x) hfg
 
+/- English proof (translation)
+Use `set f : untiltField K C p M →ₐ[K] C := (untiltField K C p N).val.comp ((untiltAut N σ).toAlgHom.comp (IntermediateField.inclusion (untiltField_mono h)))`. Use `set g : untiltField K C p M →ₐ[K] C := (untiltField K C p M).val`. Establish `hfg : f = g`. Apply `IntermediateField.adjoin_algHom_ext` to reduce the goal to its premises. Introduce `y hy`.
+
+Use `show ((untiltAut N σ (IntermediateField.inclusion (untiltField_mono h) ⟨y, IntermediateField.subset_adjoin _ _ hy⟩) : untiltField K C p N) : C) = y`. Generalize the expression as in `IntermediateField.subset_adjoin K _ hy = hy0`. Take `⟨z, ⟨u, rfl⟩, rfl⟩` from `hy`. Use `set u' := WittVector.map (Subring.inclusion (integerTilt_mono h)) u`. Establish `hz : ((RingHom.comp θ (WittVector.map (integerTilt K C p M).subtype) u : normInteger C) : C) = ((θ (WittVector.map (integerTilt K C p N).subtype u') : normInteger C) : C)`.
+
+Rewrite using `[fontaineTheta_map_inclusion h]`. Both sides reduce to the same expression. Establish `hmemN' : ((θ (WittVector.map (integerTilt K C p N).subtype u') : normInteger C) : C) ∈ untiltField K C p N` using `coe_mem_untiltField ⟨u', rfl⟩`. Establish `hcoeff : ∀ n, integerTiltHom N σ.toAlgHom (norm_tiltAlgEquiv_toAlgHom_apply N σ) (u'.coeff n) = u'.coeff n`. Introduce `n`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `IsFractionRing.injective 𝒪C♭ C♭` to reduce the goal to its premises. Rewrite using `[algebraMap_integerTiltHom]`. Conclude with `congrArg Subtype.val (hσ ⟨algebraMap 𝒪C♭ C♭ (u'.coeff n : 𝒪C♭), (u'.coeff n).2⟩ (u.coeff n).2)`. Establish `hmap : WittVector.map (integerTiltHom N σ.toAlgHom (norm_tiltAlgEquiv_toAlgHom_apply N σ)) u' = u'` using `WittVector.ext fun n => by rw [WittVector.map_coeff, hcoeff n]`.
+
+Establish `e1 : IntermediateField.inclusion (untiltField_mono h) ⟨_, hy0⟩ = (⟨_, hmemN'⟩ : untiltField K C p N)` using `Subtype.ext hz`. Rewrite using `[e1, coe_untiltAut_fontaineTheta, hmap]`. Conclude with `hz.symm`. Conclude with `Subtype.ext (congrArg (fun φ : untiltField K C p M →ₐ[K] C => φ x) hfg)`.
+-/
 theorem untiltAut_apply_of_le {M N : IntermediateField K♭ C♭} [FiniteDimensional K♭ N] (h : M ≤ N)
     (σ : N ≃ₐ[K♭] N) (hσ : ∀ y : N, (y : C♭) ∈ M → σ y = y) (x : untiltField K C p M) :
     untiltAut N σ ⟨x, untiltField_mono h x.2⟩ = ⟨x, untiltField_mono h x.2⟩ := by
@@ -106,11 +133,25 @@ theorem untiltAut_apply_of_le {M N : IntermediateField K♭ C♭} [FiniteDimensi
     exact hz.symm
   exact Subtype.ext (congrArg (fun φ : untiltField K C p M →ₐ[K] C => φ x) hfg)
 
+/- English proof (translation)
+The claim follows from `Module.Finite.of_injective (IntermediateField.inclusion h).toLinearMap (IntermediateField.inclusion h).injective`.
+-/
 theorem finiteDimensional_of_le_tilt {M N : IntermediateField K♭ C♭} [FiniteDimensional K♭ N]
     (h : M ≤ N) : FiniteDimensional K♭ M :=
   Module.Finite.of_injective (IntermediateField.inclusion h).toLinearMap
     (IntermediateField.inclusion h).injective
 
+/- English proof (translation)
+Establish `hMfin : FiniteDimensional K♭ M` using `finiteDimensional_of_le_tilt h`. Take `⟨hbij, hgal⟩` from `untiltAutHom_bijective (K := K) (C := C) (p := p) N`. Use `set M' := IntermediateField.restrict h`. Use `set L' := IntermediateField.restrict (untiltField_mono (K := K) (p := p) h)`. Establish `hJH : ∀ τ ∈ M'.fixingSubgroup, untiltAut N τ ∈ L'.fixingSubgroup`.
+
+Introduce `τ hτ`. Rewrite `hτ`, the goal using `[IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`. Establish `hx' : (x : C) ∈ untiltField K C p M` using `(IntermediateField.mem_restrict _ x).1 hx`. Conclude with `untiltAut_apply_of_le h τ (fun y hy => hτ y ((IntermediateField.mem_restrict h y).2 hy)) ⟨x, hx'⟩`.
+
+Use `⟨fun hσ => ?_, hJH σ⟩` and prove the remaining obligations. Establish `hM'fin : Module.finrank K♭ M' = Module.finrank K♭ M` using `(IntermediateField.restrictAlgEquiv h).toLinearEquiv.finrank_eq.symm`. Establish `hL'fin : Module.finrank K L' = Module.finrank K (untiltField K C p M)` using `(IntermediateField.restrictAlgEquiv (untiltField_mono (K := K) (p := p) h)).toLinearEquiv.finrank_eq.symm`. Establish `h1 : Module.finrank K♭ M' * Module.finrank M' N = Module.finrank K♭ N` using `Module.finrank_mul_finrank K♭ M' N`. Establish `h2 : Module.finrank K L' * Module.finrank L' (untiltField K C p N) = Module.finrank K (untiltField K C p N)` using `Module.finrank_mul_finrank K L' (untiltField K C p N)`.
+
+Rewrite `h2` using `[finrank_untiltField, hL'fin, finrank_untiltField, ← hM'fin, ← h1]`. Establish `hpos : 0 < Module.finrank K♭ M'` using `Module.finrank_pos`. Establish `hdeg : Module.finrank L' (untiltField K C p N) = Module.finrank M' N` using `Nat.eq_of_mul_eq_mul_left hpos h2`. Establish `hcard : Nat.card L'.fixingSubgroup ≤ Nat.card M'.fixingSubgroup`. Rewrite using `[IsGalois.card_fixingSubgroup_eq_finrank, IsGalois.card_fixingSubgroup_eq_finrank, hdeg]`.
+
+Use `set φ : M'.fixingSubgroup → L'.fixingSubgroup := fun τ => ⟨untiltAut N τ, hJH τ τ.2⟩`. Establish `hφ : Function.Injective φ` using `fun a b hab => Subtype.ext (hbij.1 (congrArg Subtype.val hab :))`. Take `⟨τ, hτ⟩` from `(hφ.bijective_of_nat_card_le hcard).2 ⟨untiltAut N σ, hσ⟩`. Establish `: (τ : N ≃ₐ[K♭] N) = σ` using `hbij.1 (congrArg Subtype.val hτ :)`. Conclude with `this ▸ τ.2`.
+-/
 theorem untiltAut_mem_fixingSubgroup_iff (N : IntermediateField K♭ C♭) [FiniteDimensional K♭ N]
     [IsGalois K♭ N] {M : IntermediateField K♭ C♭} (h : M ≤ N) (σ : N ≃ₐ[K♭] N) :
     untiltAut N σ ∈ (IntermediateField.restrict (untiltField_mono (K := K) (p := p) h)).fixingSubgroup ↔

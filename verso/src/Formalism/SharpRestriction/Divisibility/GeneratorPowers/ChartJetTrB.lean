@@ -11,12 +11,18 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Simplify using `only [spMap]`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (a : A →+* B) (b : B →+* C) :
     spMap b ≫ spMap a = spMap (b.comp a) := by
   simp only [spMap]
   rw [← Spec.map_comp]
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem one_left {S : Scheme.{0}} {X : Over S} {G : Over S} [MonObj G] :
     (1 : X ⟶ G).left = X.hom ≫ η[G].left := rfl
 
@@ -31,6 +37,11 @@ abbrev fV : Sp T.Fr ⟶ Sp T.V := spMap (algebraMap T.V T.Fr)
 abbrev jc (n m : ℕ) : Jet T.V (Fin n × Fin d) m →+* Jet T.Fr (Fin n × Fin d) m :=
   jetCoef (algebraMap T.V T.Fr) (Fin n × Fin d) m
 
+/- English proof (translation)
+Rewrite using `[Category.assoc, Over.w]`. Simplify using `only [spMap_comp']`. Simplify using `only [jOG, Over.mk_hom, Category.comp_id, spMap_comp']`. Use `congr 1`. Use extensionality with `r`.
+
+Simplify using `only [jc, jetCoef, RingHom.comp_apply]`. Use `erw [Ideal.Quotient.lift_mk]`. Simplify using `only [RingHom.comp_apply, MvPolynomial.algebraMap_eq, MvPolynomial.map_C]`. Both sides reduce to the same expression.
+-/
 theorem xL_w (m : ℕ) : (spMap (jc (d := d) 1 m) ≫ (xT m).left) ≫ I.G.G.hom =
     spMap (algebraMap T.Fr (Jet T.Fr (Fin 1 × Fin d) m)) ≫ spMap (algebraMap T.V T.Fr) := by
   rw [Category.assoc, Over.w]
@@ -47,8 +58,14 @@ def xL (m : ℕ) : Sp (Jet T.Fr (Fin 1 × Fin d) m) ⟶ I.t'.G.left :=
   I.m2.cart.1.lift (spMap (jc (d := d) 1 m) ≫ (xT m).left) (spMap (algebraMap T.Fr (Jet T.Fr (Fin 1 × Fin d) m)))
     (xL_w I xT m)
 
+/- English proof (translation)
+The claim follows from `I.m2.cart.1.lift_fst _ _ _`.
+-/
 theorem xL_fst (m : ℕ) : xL I xT m ≫ I.m2.φ = spMap (jc (d := d) 1 m) ≫ (xT m).left := I.m2.cart.1.lift_fst _ _ _
 
+/- English proof (translation)
+The claim follows from `I.m2.cart.1.lift_snd _ _ _`.
+-/
 theorem xL_snd (m : ℕ) : xL I xT m ≫ I.t'.G.hom = spMap (algebraMap T.Fr (Jet T.Fr (Fin 1 × Fin d) m)) := I.m2.cart.1.lift_snd _ _ _
 
 def xP (m : ℕ) : jOG (𝟙 (Sp T.Fr)) d m 1 ⟶ I.t'.G :=
@@ -62,6 +79,9 @@ def xU (m : ℕ) : (letI := io.toAlgebra; jO y.1 d m 1) ⟶ Xo.univ.t.G :=
     show (xL I xT m ≫ I.m1.φ) ≫ Xo.univ.t.G.hom = spMap _ ≫ y.1.x
     rw [Category.assoc, I.m1.cart.1.w, ← Category.assoc, xL_snd])
 
+/- English proof (translation)
+The claim follows from `I.m2.cart.1.hom_ext h1 h2`.
+-/
 theorem ext2 {Z : Scheme.{0}} {a b : Z ⟶ I.t'.G.left} (h1 : a ≫ I.m2.φ = b ≫ I.m2.φ)
     (h2 : a ≫ I.t'.G.hom = b ≫ I.t'.G.hom) : a = b := I.m2.cart.1.hom_ext h1 h2
 

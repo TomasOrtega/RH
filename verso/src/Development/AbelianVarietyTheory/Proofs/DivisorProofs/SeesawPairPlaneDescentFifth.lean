@@ -14,6 +14,19 @@ noncomputable section
 
 namespace GlobalTheory.NwInvTerm
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ hH' d₂ H hH V₁ M₁ e hV₁ hM₁ he μ 𝓕 hμ h𝓕 h1 Ψ hΨ u' hu'`. Establish `hspl` using `IsUWeilPair.isUSplitting hP.weil`. Establish `hpres : ∀ x, ∀ Φ ∈ schA F (Fin n × Fin d), om x Φ ∈ schA F (Fin n × Fin d)` using `fun x Φ hΦ => hspl.pres x Φ hΦ`. Establish `hfix : mat u' *ᵥ incV F H'.x = incV F H'.x`. Rewrite `hu'` using `[GlobalTheory.UnipCT.unip_eq]`.
+
+Conclude with `hu'.1`. Establish `hcomm : ∀ Φ ∈ schA F (Fin n × Fin d), M.co.rho B.ψ (Matrix.vecMulVec (incV F H.y) (incV F H'.x)) (om (1, u') Φ) = om (1, u') (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.y) (incV F H'.x)) Φ)`. Introduce `Φ hΦ`. Rewrite using `[hspl.impl (1, u') _ Φ hΦ]`. Use `congr 2`.
+
+Establish `h2 : ((((1, u') : UA σ X.J × UA σ W.J).2 : GL (Fin d) (AE F E)) : Matrix (Fin d) (Fin d) (AE F E)) = mat u'` using `rfl`. Establish `h1' : ((((1, u') : UA σ X.J × UA σ W.J).1 : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)) = 1` using `rfl`. Use `show _ = ((((1, u') : UA σ X.J × UA σ W.J).1 : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)) * _ * ((((1, u') : UA σ X.J × UA σ W.J).2 : GL (Fin d) (AE F E)) : Matrix (Fin d) (Fin d) (AE F E))ᵀ`. Rewrite using `[h1', h2, Matrix.one_mul, Matrix.vecMulVec_mul, Matrix.vecMul_transpose, hfix]`. Establish `hA` using `GlobalTheory.T.pair_restricts_to_adapted_plane hKP F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ hH' d₂ H hH V₁ M₁ e hV₁ hM₁ he`.
+
+Use `choose vf hvf using fun u : unip σ X H => hA u.1 u.2`. Establish `hρ : M.co.rho B.ψ (Matrix.vecMulVec (incV F H.y) (incV F H'.x)) Ψ ∈ schA F (Fin n × Fin d)` using `GlobalTheory.EvZeroUniq.schr_mem_schA _ hP.base.std _ hΨ`. Establish `hB` using `GlobalTheory.T.pair_adapted_plane_second_form hKP F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ hH' d₂ H hH V₁ M₁ e hV₁ hM₁ he μ 𝓕 hμ h𝓕 h1 vf (fun u => (hvf u).1) _ hρ u' hu'`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`.
+
+Use function extensionality and compare the values at `u`. Rewrite using `[(hvf u).2 _ (hpres _ _ hΨ), hcomm Ψ hΨ]`. Use `_ = _ := hB`. Use `_ = _ := by`. Use `congr 1`.
+
+Use function extensionality and compare the values at `u`. Rewrite using `[(hvf u).2 _ hΨ]`.
+-/
 theorem integral_term_invariant : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ),
     IsPair B M χX χW om r s r' s' →

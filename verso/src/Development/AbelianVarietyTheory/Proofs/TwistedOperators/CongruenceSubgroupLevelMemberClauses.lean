@@ -35,6 +35,35 @@ open scoped TensorProduct
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `D c s 𝔪 h𝔪 hS hsd hJ`. Establish `hΛ : Submodule.IsLattice D.host.E s.Λ` using `hsd.1`. Take `⟨β, hβ⟩` from `frame_exists_alt D.host.F D.host.E s.V.rank s.Λ hΛ`. Establish `memJ : ∀ k, k ∈ s.J ↔ k ∈ GfC s.V ∧ Lev.finE s.V k ∈ congLev D.sp.cm s.V.gram s.Λ 𝔪`. Introduce `k`.
+
+Rewrite using `[hJ]`. Conclude with `Iff.rfl`. Establish `toSt : ∀ x, x ∈ congLev D.sp.cm s.V.gram s.Λ 𝔪 → x ∈ Formalism.L2.DIV.St β` using `fun x hx => (GlobalTheory.LevSplit.mem_St_iff β s.Λ hβ x).2 (stab_of_mem_congLev hx)`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `k hk`.
+
+Conclude with `((memJ k).1 hk).1`. Conclude with `⟨(congLev D.sp.cm s.V.gram s.Λ 𝔪).comap (Lev.finE s.V), (GlobalTheory.FunObj.congLev_open_compact s.V hΛ h𝔪).1, fun k hk hkf => (memJ k).2 ⟨hkf, hk⟩⟩`. Introduce `k hk v`. Conclude with `(GlobalTheory.ChainOnto.LStab.finE_mem_St_iff_stabLoc D s.V β s.Λ hβ k).1 (toSt _ ((memJ k).1 hk).2) v`. Introduce `k hkf hint h1`.
+
+Conclude with `(memJ k).2 ⟨hkf, GlobalTheory.T.finitePoint_mem_congruenceSubgroup_offPlaces D s.V c.S 𝔪 h𝔪 hS k hkf hint h1⟩`. Introduce `P hP`. Take `⟨T1, T2, T3, -⟩` from `GlobalTheory.IdemSupport.supported_group_and_prime_idempotents s.V`. Take `⟨e, f, hi⟩` from `T2 P`. Use `⟨e, f, hi, fun g hg => ?_, fun _ _ _ => rfl⟩` and prove the remaining obligations.
+
+Take `⟨hff, hcf, -, -⟩` from `T3 P e f hi`. Take `⟨⟨Lf, hLf⟩, -, -⟩` from `T1 f hff hcf`. Take `⟨a, ha, u, hu⟩` from `exists_idem_eq h𝔪 hS hP hi`. Establish `hL0 : Formalism.L2.Herm.hatL (F` using `D.host.F) (GlobalTheory.LevSplit.L0sub s.V) = Formalism.L2.Herm.hatL (F := D.host.F) s.Λ := by`. Use `congr 1`.
+
+Conclude with `SetLike.coe_injective (GlobalTheory.AdelicU.hermitianSpaceBaseLattice_eq_frameLattice s.V)`. Rewrite using `[GlobalTheory.LevSplit.ksph_iff, hL0, SetLike.mem_coe, memJ]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hG, hK⟩`. Conclude with `⟨hG, stab_of_mem_congLev hK⟩`.
+
+Introduce and unpack `⟨hG, h1, h2⟩`. Establish `s1` using `GlobalTheory.LevSplit.supp_fin s.V hg`. Establish `s2` using `GlobalTheory.LevSplit.supp_fin s.V ((hLf _).1 (Lf.inv_mem ((hLf _).2 hg)))`. Rewrite `s2` using `[MonoidHom.map_inv]`. Rewrite `s1`, `s2` using `[← hu]`.
+
+Use `⟨hG, mem_congLev_of _ _ _ _ _ (GlobalTheory.LevSplit.finE_mem_UA s.V g) ?_ ?_⟩` and prove the remaining obligations. Conclude with `cong_of_eq s.Λ ha u _ _ s1.symm h1`. Conclude with `cong_of_eq s.Λ ha u _ _ s2.symm h2`. Introduce `P e f hP hi k hk`. Take `⟨T1, -, T3, -⟩` from `GlobalTheory.IdemSupport.supported_group_and_prime_idempotents s.V`.
+
+Take `⟨hff, hcf, hG, -⟩` from `T3 P e f hi`. Take `⟨⟨Lf, hLf⟩, hsplit, -⟩` from `T1 f hff hcf`. Take `⟨⟨Lf', hLf'⟩, -, -⟩` from `T1 (1 - f) (by rw [mul_sub, mul_one, sub_mul, one_mul, hff, sub_self, sub_zero]) (by rw [RingHom.map_sub, RingHom.map_one, hcf])`. Take `⟨k₁, k₂, h1, h2, hk12⟩` from `hsplit k`. Take `⟨a, ha, u, hu⟩` from `exists_idem_eq h𝔪 hS hP hi`.
+
+Establish `hinv : SuppF s.V f k₁⁻¹` using `(hLf _).1 (Lf.inv_mem ((hLf _).2 h1))`. Establish `hinv' : SuppF s.V (1 - f) k₂⁻¹` using `(hLf' _).1 (Lf'.inv_mem ((hLf' _).2 h2))`. Establish `hφφ : GlobalTheory.LevSplit.finSw D f * GlobalTheory.LevSplit.finSw D f = GlobalTheory.LevSplit.finSw D f`. Rewrite using `[← RingHom.map_mul, hff]`. Rewrite `hφφ` using `[← hu]`.
+
+Establish `s1` using `GlobalTheory.LevSplit.supp_fin s.V h1`. Establish `s1'` using `GlobalTheory.LevSplit.supp_fin s.V hinv`. Establish `s2` using `GlobalTheory.LevSplit.supp_fin s.V h2`. Establish `s2'` using `GlobalTheory.LevSplit.supp_fin s.V hinv'`. Rewrite `s1'`, `s2'` using `[MonoidHom.map_inv]`.
+
+Rewrite `s2`, `s2'` using `[RingHom.map_sub, RingHom.map_one]`. Rewrite `s1`, `s1'`, `s2`, `s2'` using `[← hu]`. Take `⟨-, hkK⟩` from `(memJ k).1 hk`. Establish `hK'` using `stab_of_mem_congLev hkK`. Establish `ek : Lev.finE s.V k = Lev.finE s.V k₁ * Lev.finE s.V k₂` using `by rw [hk12, MonoidHom.map_mul]`.
+
+Establish `m1 : k₁ ∈ s.J`. Use `(memJ k₁).2 ⟨hG k₁ h1, mem_congLev_of _ _ _ _ _ (GlobalTheory.LevSplit.finE_mem_UA s.V k₁) ?_ ?_⟩` and prove the remaining obligations. Conclude with `cong_of_eq s.Λ ha u _ _ (comp_sub_one _ hφφ _ _ _ s1 s2 (Or.inl (by rw [ek, Units.val_mul]))) hK'.1`. Conclude with `cong_of_eq s.Λ ha u _ _ (comp_sub_one _ hφφ _ _ _ s1' s2' (Or.inr (by rw [ek, _root_.mul_inv_rev, Units.val_mul]))) hK'.2`. Use `⟨k₁, m1, k₂, ?_, h1, h2, hk12⟩` and prove the remaining obligations.
+
+Establish `: k₂ = k₁⁻¹ * k` using `by rw [hk12, inv_mul_cancel_left]`. Rewrite using `[this]`. Conclude with `Subgroup.mul_mem _ (Subgroup.inv_mem _ m1) hk`.
+-/
 theorem congLev_clauses : ∀ (D : D7) (c : GlobalTheory.EvenOnto.Com D) (s : GlobalTheory.EvenOnto.PiLocalization₂ D) (𝔪 : Ideal (𝓞 D.host.E)), 𝔪 ≠ ⊥ → (∀ P : HeightOneSpectrum (𝓞 D.host.E), 𝔪 ≤ P.asIdeal → P.under (𝓞 D.host.F) ∈ c.S) → IsSelfDualC s.V s.Λ → s.J = Lev.levA s.V (congLev D.sp.cm s.V.gram s.Λ 𝔪) → s.J ≤ GfC s.V ∧ (∃ U : Subgroup (GA D s.V), IsOpen (U : Set (GA D s.V)) ∧ ∀ k ∈ U, k ∈ GfC s.V → k ∈ s.J) ∧ (∀ k ∈ s.J, ∀ v, GlobalTheory.AdelicU.proj D.sp.cm.sig s.V.gram v k ∈ GlobalTheory.AdelicU.stabLoc D.sp.cm.sig s.V.gram s.Λ v) ∧ (∀ k ∈ GfC s.V, k ∈ GlobalTheory.EvenOnto.intOff c s → (∀ v ∈ c.S, GlobalTheory.AdelicU.proj D.sp.cm.sig s.V.gram v k = 1) → k ∈ s.J) ∧ SphOff (s.J : Set (GA D s.V)) 1 c.S ∧ ∀ (P : HeightOneSpectrum (𝓞 D.host.E)) e f, OffS D c.S P → IsPrimeIdem P e f → ∀ k ∈ s.J, ∃ k₁ ∈ s.J, ∃ k₂ ∈ s.J, SuppF s.V f k₁ ∧ SuppF s.V (1 - f) k₂ ∧ k = k₁ * k₂ := by
   intro D c s 𝔪 h𝔪 hS hsd hJ
   have hΛ : Submodule.IsLattice D.host.E s.Λ := hsd.1

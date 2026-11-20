@@ -1,6 +1,9 @@
 import Mathlib
 
 open CategoryTheory in
+/- English proof (translation)
+Set `p : ∀ m : ℕ, K.X m ⟶ L.X m` to `fun m => ModuleCat.ofHom ((u.f m).hom.codRestrictOfInjective (ι.f m).hom (hι m) (h m))`. Establish `hp : ∀ m : ℕ, p m ≫ ι.f m = u.f m` using `fun m => ModuleCat.hom_ext (LinearMap.codRestrictOfInjective_comp _ _ _ _)`. Use `⟨{ f := p, comm' := fun i j _ => ?_ }, fun m x => congr($(hp m).hom x)⟩` and prove the remaining obligations. Use `haveI : Mono (ι.f j) := (ModuleCat.mono_iff_injective _).2 (hι j)`. Rewrite using `[← cancel_mono (ι.f j), Category.assoc, Category.assoc, hp, ← ι.comm, ← Category.assoc, hp, u.comm]`.
+-/
 private lemma exists_lift {k : Type} [CommRing k] {K L M : CochainComplex (ModuleCat.{0} k) ℕ}
     (u : K ⟶ M) (ι : L ⟶ M) (hι : ∀ m : ℕ, Function.Injective (ι.f m).hom)
     (h : ∀ (m : ℕ) (x : K.X m), ∃ y, (ι.f m).hom y = (u.f m).hom x) :
@@ -15,6 +18,9 @@ private lemma exists_lift {k : Type} [CommRing k] {K L M : CochainComplex (Modul
     u.comm]
 
 open CategoryTheory in
+/- English proof (translation)
+Take `⟨φ, hφ⟩` from `exists_lift (ιA ≫ groupCohomology.cochainsMap (MonoidHom.id G) f) ιB iB fun m x => (hB m _).2 (((hA m _).1 ⟨x, rfl⟩).comp f.hom)`. Conclude with `⟨φ, fun m x t => congr_fun (hφ m x) t⟩`.
+-/
 private lemma exists_map {k G : Type} [CommRing k] [Group G] [TopologicalSpace G]
     {A B : Rep.{0, 0, 0} k G} (f : A ⟶ B) {KA KB : CochainComplex (ModuleCat.{0} k) ℕ}
     (ιA : KA ⟶ groupCohomology.inhomogeneousCochains A)
@@ -29,6 +35,25 @@ private lemma exists_map {k G : Type} [CommRing k] [Group G] [TopologicalSpace G
     fun m x => (hB m _).2 (((hA m _).1 ⟨x, rfl⟩).comp f.hom)
   exact ⟨φ, fun m x t => congr_fun (hφ m x) t⟩
 
+/- English proof (translation)
+Introduce `k G _ _ _ A B C f g KA KB KC ιA ιB ιC hf hfg hg iA iB iC hA hB hC`. Take `⟨φ, hφ⟩` from `exists_map f ιA ιB iB hA hB`. Take `⟨ψ, hψ⟩` from `exists_map g ιB ιC iC hB hC`. Establish `w : CategoryTheory.CategoryStruct.comp φ ψ = 0`. Use extensionality with `m : 1`.
+
+Use `ModuleCat.hom_ext (LinearMap.ext fun x => iC m ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(ιC.f m).hom ((ψ.f m).hom ((φ.f m).hom x)) = (ιC.f m).hom 0`. Rewrite using `[map_zero]`. Use function extensionality and compare the values at `t`. Rewrite using `[hψ, hφ]`.
+
+Conclude with `hfg.apply_apply_eq_zero _`. Use `⟨φ, ψ, w, HomologicalComplex.shortExact_of_degreewise_shortExact _ fun m => ?_⟩` and prove the remaining obligations. Establish `hm : CategoryTheory.Mono (φ.f m)`. Use `(ModuleCat.mono_iff_injective _).2 fun a b hab => iA m (funext fun t => hf ?_)` and prove the remaining obligations. Establish `hab' : (φ.f m).hom a = (φ.f m).hom b` using `hab`.
+
+Rewrite using `[← hφ, ← hφ, hab']`. Establish `he : CategoryTheory.Epi (ψ.f m)`. Use `(ModuleCat.epi_iff_surjective _).2 fun c => ?_` and prove the remaining obligations. Take `⟨b, hb⟩` from `(hB m _).2 (((hC m _).1 ⟨c, rfl⟩).comp (Function.surjInv hg))`. Use `⟨b, iC m (funext fun t => ?_)⟩` and prove the remaining obligations.
+
+Use `(hψ m b t).trans ?_` and prove the remaining obligations. Rewrite using `[hb]`. Conclude with `Function.surjInv_eq hg _`. Use `{ exact := ?_, mono_f := hm, epi_g := he }` and prove the remaining obligations. Use `(CategoryTheory.ShortComplex.moduleCat_exact_iff _).2 fun (b : KB.X m) hb => ?_` and prove the remaining obligations.
+
+Establish `hb0 : (ψ.f m).hom b = 0` using `hb`. Establish `hb' : ∀ t : Fin m → G, ∃ a, f.hom a = ((ιB.f m).hom b : (Fin m → G) → B.V) t` using `fun t => by`. Use `(hfg _).1 ?_` and prove the remaining obligations. Rewrite using `[← hψ, hb0, map_zero]`. Both sides reduce to the same expression.
+
+Use `choose a ha using hb'`. Establish `hla : IsLocallyConstant a`. Use `IsLocallyConstant.desc a f.hom ?_ hf` and prove the remaining obligations. Establish `e : f.hom ∘ a = (ιB.f m).hom b` using `funext ha`. Rewrite using `[e]`.
+
+Conclude with `(hB m _).1 ⟨b, rfl⟩`. Take `⟨y, hy⟩` from `(hA m a).2 hla`. Use `⟨y, iB m (funext fun t => ?_)⟩` and prove the remaining obligations. Use `(hφ m y t).trans ?_` and prove the remaining obligations. Rewrite using `[hy]`.
+
+Conclude with `ha t`.
+-/
 theorem UpperTheory.cochain_injective_exact :
     ∀ {k G : Type} [CommRing k] [Group G] [TopologicalSpace G] (A B C : Rep.{0, 0, 0} k G)
         (f : A ⟶ B) (g : B ⟶ C) (KA KB KC : CochainComplex (ModuleCat.{0} k) ℕ)

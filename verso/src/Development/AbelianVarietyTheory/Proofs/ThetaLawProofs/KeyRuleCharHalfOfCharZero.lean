@@ -20,16 +20,27 @@ attribute [local instance] Over.cartesianMonoidalCategory
 noncomputable section
 namespace GlobalTheory.KeyPow
 
+/- English proof (translation)
+Take `⟨_, hg, -⟩` from `h`. Conclude with `hg.symm`.
+-/
 theorem IsKeyPow.dim_eq {R : Type} [CommRing R] {y x : KeyIn R} {j : ℕ} (h : IsKeyPow y x j) :
     y.P.g = j * x.P.g := by
   obtain ⟨_, hg, -⟩ := h
   exact hg.symm
 
+/- English proof (translation)
+Use `x.g_pos` as an intermediate fact. Rewrite using `[h.dim_eq]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem IsKeyPow.two_le_dim {R : Type} [CommRing R] {y x : KeyIn R} (h : IsKeyPow y x 2) : 2 ≤ y.P.g := by
   have := x.g_pos
   rw [h.dim_eq]
   omega
 
+/- English proof (translation)
+Establish `: ∀ i, ∃ m : ℤ, a i = (((m : ℝ) / 2 : ℝ) : ℂ)` using `fun i => by`. Break down `h i with h | h` into its components or cases. Conclude with `⟨0, by simp [h]⟩`. Conclude with `⟨1, by simp [h]⟩`. Use `choose n hn using this`.
+
+Conclude with `⟨n, funext hn⟩`.
+-/
 theorem exists_int_half {g : ℕ} {a : Fin g → ℂ} (h : ∀ i, a i = 0 ∨ a i = 1 / 2) :
     ∃ n : Fin g → ℤ, a = fun i => (((n i : ℝ) / 2 : ℝ) : ℂ) := by
   have : ∀ i, ∃ m : ℤ, a i = (((m : ℝ) / 2 : ℝ) : ℂ) := fun i => by
@@ -39,6 +50,9 @@ theorem exists_int_half {g : ℕ} {a : Fin g → ℂ} (h : ∀ i, a i = 0 ∨ a 
   choose n hn using this
   exact ⟨n, funext hn⟩
 
+/- English proof (translation)
+Use `⟨n ⬝ᵥ n', ?_⟩` and prove the remaining obligations. Unfold `dotProduct`. Rewrite using `[← e.sum_comp]`. Simplify using `[Fintype.sum_prod_type, two_mul]`.
+-/
 theorem even_dot_double {g g' : ℕ} (e : Fin 2 × Fin g ≃ Fin g') (n n' : Fin g → ℤ) :
     Even ((fun p => n (e.symm p).2) ⬝ᵥ (fun p => n' (e.symm p).2)) := by
   refine ⟨n ⬝ᵥ n', ?_⟩
@@ -46,6 +60,21 @@ theorem even_dot_double {g g' : ℕ} (e : Fin 2 × Fin g ≃ Fin g') (n n' : Fin
   rw [← e.sum_comp]
   simp [Fintype.sum_prod_type, two_mul]
 
+/- English proof (translation)
+Introduce `hinv N ⟨κ, hH, hF, hU, hN⟩`. Establish `hex : ∀ (R : Type) [CommRing R] (x : KeyIn R), ∃ y, IsKeyPow y x 2` using `fun R _ x => GlobalTheory.KeyPow.exists_isKeyPow R x 2 (by norm_num)`. Use `choose sq hsq using hex`. Establish `indep : ∀ (K : Type) [Field K] [CharZero K] (x y : KeyIn K), IsKeyPow y x 2 → (κ K (sq K x) : K) = κ K y` using `fun K _ _ x y hy => hF K K (RingHom.id K) y (sq K x) hy.two_le_dim (GlobalTheory.KeyPow.keyPB_of_isKeyPow K K (RingHom.id K) x y x (sq K x) 2 (GlobalTheory.keyPB_id K x) hy (hsq K x))`. Use `⟨fun K _ _ x => κ K (sq K x), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `K _ _ P hg rig hr th hth v hv th' hth' v' hv' a M _ h₁ h₂`. Establish `hy` using `hsq K ⟨P, hg, rig, hr, th, hth, v, hv⟩`. Take `⟨t, ht, w, hw, M', hp, ht', hw', hd⟩` from `GlobalTheory.PowChange.isKeyPow_change K P hg rig hr th hth v hv th' hth' v' hv' a M 2 _ h₁ h₂ hy`. Establish `key` using `hH K _ (sq K ⟨P, hg, rig, hr, th, hth, v, hv⟩).g_pos _ (sq K ⟨P, hg, rig, hr, th, hth, v, hv⟩).rig_gen _ (sq K ⟨P, hg, rig, hr, th, hth, v, hv⟩).th_ne _ (sq K ⟨P, hg, rig, hr, th, hth, v, hv⟩).basis t ht w hw (a ^ 2) M' hy.two_le_dim ht' hw'`. Establish `hdim : (sq K ⟨P, hg, rig, hr, th, hth, v, hv⟩).P.g = 2 * P.g` using `hy.dim_eq`.
+
+Simplify using `only`. Rewrite using `[indep K _ _ hp]`. Rewrite `key` using `[hd, ← pow_mul, ← pow_mul]`. Rewrite using `[← hdim, show 8 * (2 * N (sq K ⟨P, hg, rig, hr, th, hth, v, hv⟩).P.g) = 2 * (8 * N (sq K ⟨P, hg, rig, hr, th, hth, v, hv⟩).P.g) by ring, show 4 * (2 * N (sq K ⟨P, hg, rig, hr, th, hth, v, hv⟩).P.g) = 2 * (4 * N (sq K ⟨P, hg, rig, hr, th, hth, v, hv⟩).P.g) by ring]`. Conclude with `key`.
+
+Introduce `K K' _ _ _ _ f x x' _ h`. Conclude with `hF K K' f _ _ (hsq K x).two_le_dim (GlobalTheory.KeyPow.keyPB_of_isKeyPow K K' f x _ x' _ 2 h (hsq K x) (hsq K' x'))`. Introduce `R K _ _ _ _ _ _ _ x xK _ h`. Take `⟨u, hu, hu'⟩` from `hU R K (sq R x) (sq K xK) (hsq R x).two_le_dim (GlobalTheory.KeyPow.keyPB_of_isKeyPow R K _ x _ xK _ 2 h (hsq R x) (hsq K xK))`. Conclude with `⟨u, hu, fun k _ _ r xk hr hk => hu' k r (sq k xk) hr (GlobalTheory.KeyPow.keyPB_of_isKeyPow R k r x _ xk _ 2 hk (hsq R x) (hsq k xk))⟩`.
+
+Introduce `x τ a b _ hab hx`. Take `⟨n, rfl⟩` from `exists_int_half hab.1`. Take `⟨n', rfl⟩` from `exists_int_half hab.2`. Establish `hy` using `hsq ℂ x`. Take `⟨e, τ', M', hd, hn⟩` from `GlobalTheory.KeyPow.normalAt_pow x _ 2 τ 1 (fun i => (n i : ℝ) / 2) (fun i => (n' i : ℝ) / 2) 1 hy hx`.
+
+Take `⟨sp, hsp, hlaw⟩` from `GlobalTheory.KeyPow.exists_thetaLaw_zero_of_even hinv _ _ _ (even_dot_double e n n')`. Take `⟨M'', c, hc, hq, hn'⟩` from `GlobalTheory.T.theta_law_symplectic_normal_form (sq ℂ x) τ' M' (1 ^ 2) sp _ _ 0 0 hsp hlaw (by simp) (by simpa using hn)`. Establish `hq' : M''.det ^ 4 / c ^ 8 = 1` using `by rw [hq, hd]; simp`. Establish `hM : M''.det ≠ 0` using `fun h => by simp [h] at hq'`. Use `GlobalTheory.KeyPow.value_at_normalForm N 2 (κ ℂ) (sq ℂ x).P.g 0 0 hy.two_le_dim (hH ℂ) (fun z hz τ h => hN z τ _ _ (hz ▸ hy.two_le_dim) ⟨rfl, rfl⟩ h) (sq ℂ x) rfl _ M'' c hc hM (by simpa using hn')` as an intermediate fact.
+
+Rewrite `this` using `[hq', _root_.one_pow]`. Conclude with `Units.ext this`.
+-/
 theorem keyRule_charHalf_of_charZero : ReciprocityTheory.ChartRestriction.G.Key.Chi.InversionStatement → ∀ N : ℕ → ℕ,
     GlobalTheory.KeyPow.KeyRule N 2 GlobalTheory.KeyPow.charZero' →
       GlobalTheory.KeyPow.KeyRule (fun g => 2 * N (2 * g)) 1 GlobalTheory.KeyPow.charHalf := by

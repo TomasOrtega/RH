@@ -5,6 +5,25 @@ open scoped Matrix
 
 namespace GlobalTheory.ConjCoordDenom
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ w hσ hden n L hL X hX`. Take `⟨S, hS⟩` from `hL`. Establish `key : ∀ g ∈ S, ∀ i, ∃ s : 𝓞 E, s ∉ w.asIdeal ∧ ∃ r : 𝓞 E, (s : E) * σ ((X⁻¹ *ᵥ g) i) = r`. Introduce `g hg i`. Apply `hden` to reduce the goal to its premises.
+
+Rewrite using `[hσ]`. Conclude with `hX g (hS ▸ Submodule.subset_span hg) i`. Use `choose! d hd r hr using key`. Use `haveI := w.isPrime`. Use `⟨∏ g ∈ S, ∏ i, d g i, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `hmem`. Take `⟨g, hg, hmem⟩` from `(Ideal.IsPrime.prod_mem_iff).1 hmem`. Take `⟨i, -, hmem⟩` from `(Ideal.IsPrime.prod_mem_iff).1 hmem`. Conclude with `hd g hg i hmem`. Introduce `x hx`.
+
+Rewrite `hx` using `[← hS]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem g hg`. Introduce `i`. Take `⟨t, ht⟩ : d g i ∣ ∏ g ∈ S, ∏ i, d g i` from `(Finset.dvd_prod_of_mem (fun i => d g i) (Finset.mem_univ i)).trans (Finset.dvd_prod_of_mem (fun g => ∏ i, d g i) hg)`.
+
+Use `⟨t * r g i, ?_⟩` and prove the remaining obligations. Rewrite using `[ht]`. Use `push_cast`. Rewrite using `[mul_comm (d g i : E), mul_assoc, hr g hg i]`. Consider the case `zero => intro i; exact ⟨0, by simp⟩`.
+
+Consider the case `add x y _ _ hx hy`. Introduce `i`. Take `⟨a, ha⟩` from `hx i`. Take `⟨b, hb⟩` from `hy i`. Use `⟨a + b, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.mulVec_add, Pi.add_apply, map_add, mul_add, ha, hb]`. Use `push_cast`. Both sides reduce to the same expression. Consider the case `smul c x _ hx`. Introduce `i`.
+
+Take `⟨a, ha⟩` from `hx i`. Use `⟨NumberField.RingOfIntegers.mapRingHom σ.toRingHom c * a, ?_⟩` and prove the remaining obligations. Establish `hc : c • x = (c : E) • x` using `(algebraMap_smul E c x).symm`. Rewrite using `[hc, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul, map_mul, mul_left_comm, ha]`. Use `push_cast`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_common_denom_conj_coords : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (σ : E →ₐ[F] E) (w : HeightOneSpectrum (𝓞 E)), (∀ x, w.valuation E (σ x) = w.valuation E x) →
     (∀ a : E, w.valuation E a ≤ 1 → ∃ s : 𝓞 E, s ∉ w.asIdeal ∧ ∃ r : 𝓞 E, (s : E) * a = r) →

@@ -8,6 +8,13 @@ open Polynomial MeasureTheory Set
 
 noncomputable section
 
+/- English proof (translation)
+Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq`. Take `⟨a, ha⟩` from `hp`. Take `⟨b, hb⟩` from `hq`. Conclude with `⟨a + b, by rw [derivative_add, ha, hb]⟩`.
+
+Consider the case `monomial n a`. Use `⟨monomial (n + 1) (a / (n + 1)), ?_⟩` and prove the remaining obligations. Rewrite using `[derivative_monomial, Nat.add_sub_cancel]`. Use `congr 1`. Establish `: (n : ℝ) + 1 ≠ 0` using `by positivity`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_polynomial_antiderivative (p : ℝ[X]) : ∃ q : ℝ[X], derivative q = p := by
   induction p using Polynomial.induction_on' with
   | add p q hp hq =>
@@ -22,6 +29,15 @@ theorem exists_polynomial_antiderivative (p : ℝ[X]) : ∃ q : ℝ[X], derivati
     push_cast
     field_simp
 
+/- English proof (translation)
+Take `⟨q, hq⟩` from `exists_polynomial_antiderivative (F - C (uniformMean F.eval))`. Establish `hprim : ∀ c, centredPrimitive F c = q.eval c - q.eval (-1)`. Introduce `c`. Unfold `centredPrimitive`. Rewrite using `[intervalIntegral.integral_eq_sub_of_hasDerivAt]`.
+
+Introduce `x _`. Use `q.hasDerivAt x` as an intermediate fact. Rewrite `this` using `[hq, eval_sub, eval_C]`. Then use the resulting hypothesis. Conclude with `(F.continuous.sub continuous_const).intervalIntegrable _ _`. Use `⟨q - C (q.eval (-1)), fun c => by rw [hprim]; simp, by simp [hq], by simp, ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `hprim 1`. Unfold `centredPrimitive at h1`. Rewrite `h1` using `[intervalIntegral.integral_sub (F.continuous.intervalIntegrable _ _) intervalIntegrable_const, intervalIntegral.integral_const]`. Simplify using `only [eval_sub, eval_C]`. Rewrite using `[← h1]`.
+
+Unfold `uniformMean`. Simplify using `only [smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_centredPrimitive_poly (F : ℝ[X]) :
     ∃ G : ℝ[X], (∀ c, centredPrimitive F c = G.eval c) ∧
       derivative G = F - C (uniformMean F.eval) ∧ G.eval (-1) = 0 ∧ G.eval 1 = 0 := by
@@ -45,6 +61,11 @@ theorem exists_centredPrimitive_poly (F : ℝ[X]) :
   simp only [smul_eq_mul]
   ring
 
+/- English proof (translation)
+Establish `h1 : (X - C 1) * (G /ₘ (X - C 1)) = G` using `mul_divByMonic_eq_iff_isRoot.mpr hp`. Establish `hq : (G /ₘ (X - C 1)).IsRoot (-1)`. Establish `h` using `congrArg (eval (-1)) h1`. Rewrite `h` using `[eval_mul, hm, eval_sub, eval_X, eval_C]`. Conclude with `(mul_eq_zero.mp h).resolve_left (by norm_num)`.
+
+Establish `h2 : (X - C (-1)) * ((G /ₘ (X - C 1)) /ₘ (X - C (-1))) = G /ₘ (X - C 1)` using `mul_divByMonic_eq_iff_isRoot.mpr hq`. Use `⟨(G /ₘ (X - C 1)) /ₘ (X - C (-1)), ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← h1, ← h2]`. Simplify using `only [map_neg, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_eq_sq_sub_one_mul (G : ℝ[X]) (hm : G.eval (-1) = 0) (hp : G.eval 1 = 0) :
     ∃ w : ℝ[X], G = (X ^ 2 - C 1) * w := by
   have h1 : (X - C 1) * (G /ₘ (X - C 1)) = G := mul_divByMonic_eq_iff_isRoot.mpr hp
@@ -59,6 +80,11 @@ theorem exists_eq_sq_sub_one_mul (G : ℝ[X]) (hm : G.eval (-1) = 0) (hp : G.eva
   simp only [map_neg, map_one]
   ring
 
+/- English proof (translation)
+Establish `h1 : (0 : ℝ) < 1 + x` using `by linarith`. Establish `h2 : (0 : ℝ) < 1 - y` using `by linarith`. Unfold `zonalKernel`. Rewrite using `[max_eq_left hyx, min_eq_right hyx, Real.log_div (mul_pos h1 h2).ne' (by norm_num), Real.log_mul h1.ne' h2.ne']`. Establish `: Real.log 4 = 2 * Real.log 2`.
+
+Rewrite using `[show (4 : ℝ) = 2 ^ 2 by norm_num, Real.log_pow]`. Evaluate the numerical expressions. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem zonalKernel_of_le {x y : ℝ} (hx : -1 < x) (hy : y < 1) (hyx : y ≤ x) :
     zonalKernel x y = (1 / 2) * Real.log (1 + x) + (1 / 2) * Real.log (1 - y) - Real.log 2 := by
   have h1 : (0 : ℝ) < 1 + x := by linarith
@@ -72,6 +98,11 @@ theorem zonalKernel_of_le {x y : ℝ} (hx : -1 < x) (hy : y < 1) (hyx : y ≤ x)
   rw [this]
   ring
 
+/- English proof (translation)
+Establish `h1 : (0 : ℝ) < 1 + y` using `by linarith`. Establish `h2 : (0 : ℝ) < 1 - x` using `by linarith`. Unfold `zonalKernel`. Rewrite using `[max_eq_right hxy, min_eq_left hxy, Real.log_div (mul_pos h1 h2).ne' (by norm_num), Real.log_mul h1.ne' h2.ne']`. Establish `: Real.log 4 = 2 * Real.log 2`.
+
+Rewrite using `[show (4 : ℝ) = 2 ^ 2 by norm_num, Real.log_pow]`. Evaluate the numerical expressions. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem zonalKernel_of_ge {x y : ℝ} (hx : x < 1) (hy : -1 < y) (hxy : x ≤ y) :
     zonalKernel x y = (1 / 2) * Real.log (1 + y) + (1 / 2) * Real.log (1 - x) - Real.log 2 := by
   have h1 : (0 : ℝ) < 1 + y := by linarith
@@ -85,6 +116,11 @@ theorem zonalKernel_of_ge {x y : ℝ} (hx : x < 1) (hy : -1 < y) (hxy : x ≤ y)
   rw [this]
   ring
 
+/- English proof (translation)
+Apply `ContinuousOn.mul _ H.continuous.continuousOn` to reduce the goal to its premises. Unfold `zonalKernel`. Apply `ContinuousOn.mul continuousOn_const` to reduce the goal to its premises. Apply `ContinuousOn.log (by fun_prop)` to reduce the goal to its premises. Introduce `y _`.
+
+Establish `h1 : 0 < 1 + max x y` using `by linarith [le_max_left x y, hx.1]`. Establish `h2 : 0 < 1 - min x y` using `by linarith [min_le_left x y, hx.2]`. Conclude with `(div_pos (mul_pos h1 h2) (by norm_num)).ne'`.
+-/
 theorem continuousOn_zonalKernel_mul_eval {x : ℝ} (hx : x ∈ Ioo (-1 : ℝ) 1) (H : ℝ[X]) :
     ContinuousOn (fun y => zonalKernel x y * H.eval y) (Icc (-1) 1) := by
   apply ContinuousOn.mul _ H.continuous.continuousOn
@@ -96,6 +132,25 @@ theorem continuousOn_zonalKernel_mul_eval {x : ℝ} (hx : x ∈ Ioo (-1 : ℝ) 1
   have h2 : 0 < 1 - min x y := by linarith [min_le_left x y, hx.2]
   exact (div_pos (mul_pos h1 h2) (by norm_num)).ne'
 
+/- English proof (translation)
+Take `⟨hx1, hx2⟩` from `hx`. Establish `hcont` using `continuousOn_zonalKernel_mul_eval ⟨hx1, hx2⟩ H`. Establish `hint1 : IntervalIntegrable (fun y => zonalKernel x y * H.eval y) volume (-1) x` using `(hcont.mono (by rw [uIcc_of_le hx1.le]; exact Icc_subset_Icc le_rfl hx2.le)).intervalIntegrable`. Establish `hint2 : IntervalIntegrable (fun y => zonalKernel x y * H.eval y) volume x 1` using `(hcont.mono (by rw [uIcc_of_le hx2.le]; exact Icc_subset_Icc hx1.le le_rfl)).intervalIntegrable`. Use `set Γ : ℝ[X] := (X ^ 2 - C 1) * w with hΓ`.
+
+Establish `hΓe : ∀ y, Γ.eval y = (y ^ 2 - 1) * w.eval y` using `fun y => by simp [hΓ]`. Rewrite using `[← intervalIntegral.integral_add_adjacent_intervals hint1 hint2]`. Establish `h1 : ∫ y in (-1 : ℝ)..x, zonalKernel x y * H.eval y = (((1 / 2) * Real.log (1 + x) - Real.log 2 + (1 / 2) * Real.log (1 - x)) * (Γ.eval x + e * (1 + x)) + (1 / 2) * (ρ.eval x - e * x - 2 * e * Real.log (1 - x))) - (((1 / 2) * Real.log (1 + x) - Real.log 2 + (1 / 2) * Real.log (1 …`. Use `intervalIntegral.integral_eq_sub_of_hasDerivAt (f := fun y => ((1 / 2) * Real.log (1 + x) - Real.log 2 + (1 / 2) * Real.log (1 - y)) * (Γ.eval y + e * (1 + y)) + (1 / 2) * (ρ.eval y - e * y - 2 * e * Real.log (1 - y))) ?_ hint1` and prove the remaining obligations. Introduce `y hy`.
+
+Rewrite `hy` using `[uIcc_of_le hx1.le]`. Take `⟨hy1, hy2⟩` from `hy`. Establish `hy3 : 0 < 1 - y` using `by linarith`. Establish `hL : HasDerivAt (fun y => Real.log (1 - y)) (-1 / (1 - y)) y`. Conclude with `((hasDerivAt_id y).const_sub 1).log hy3.ne'`.
+
+Establish `hk : HasDerivAt (fun y => (1 / 2) * Real.log (1 + x) - Real.log 2 + (1 / 2) * Real.log (1 - y)) ((1 / 2) * (-1 / (1 - y))) y` using `(hL.const_mul (1 / 2)).const_add _`. Establish `hP : HasDerivAt (fun y => Γ.eval y + e * (1 + y)) (Γ.derivative.eval y + e * 1) y` using `(Γ.hasDerivAt y).add (((hasDerivAt_id y).const_add 1).const_mul e)`. Establish `hQ : HasDerivAt (fun y => (1 / 2) * (ρ.eval y - e * y - 2 * e * Real.log (1 - y))) ((1 / 2) * (ρ.derivative.eval y - e * 1 - 2 * e * (-1 / (1 - y)))) y` using `(((ρ.hasDerivAt y).sub ((hasDerivAt_id y).const_mul e)).sub (hL.const_mul (2 * e))).const_mul (1 / 2)`. Use `((hk.mul hP).add hQ).congr_deriv ?_` and prove the remaining obligations. Rewrite using `[zonalKernel_of_le hx1 (by linarith) hy2, hw, hρ]`.
+
+Simplify using `only [eval_sub, eval_neg, eval_mul, eval_add, eval_C, eval_X, hΓe]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ∫ y in x..1, zonalKernel x y * H.eval y = (-(((1 / 2) * Real.log (1 - x) - Real.log 2 + (1 / 2) * Real.log (1 + 1)) * (-Γ.eval 1 + e * (1 - 1))) + (1 / 2) * (σ.eval 1 + 2 * e * Real.log (1 + 1) - e * 1)) - (-(((1 / 2) * Real.log (1 - x) - Real.log 2 + (1 / 2) * Real.log (1 + …`. Use `intervalIntegral.integral_eq_sub_of_hasDerivAt (f := fun y => -(((1 / 2) * Real.log (1 - x) - Real.log 2 + (1 / 2) * Real.log (1 + y)) * (-Γ.eval y + e * (1 - y))) + (1 / 2) * (σ.eval y + 2 * e * Real.log (1 + y) - e * y)) ?_ hint2` and prove the remaining obligations.
+
+Introduce `y hy`. Rewrite `hy` using `[uIcc_of_le hx2.le]`. Take `⟨hy1, hy2⟩` from `hy`. Establish `hy3 : 0 < 1 + y` using `by linarith`. Establish `hL : HasDerivAt (fun y => Real.log (1 + y)) (1 / (1 + y)) y`.
+
+Conclude with `((hasDerivAt_id y).const_add 1).log hy3.ne'`. Establish `hk : HasDerivAt (fun y => (1 / 2) * Real.log (1 - x) - Real.log 2 + (1 / 2) * Real.log (1 + y)) ((1 / 2) * (1 / (1 + y))) y` using `(hL.const_mul (1 / 2)).const_add _`. Establish `hP : HasDerivAt (fun y => -Γ.eval y + e * (1 - y)) (-Γ.derivative.eval y + e * (-1)) y` using `(Γ.hasDerivAt y).neg.add (((hasDerivAt_id y).const_sub 1).const_mul e)`. Establish `hQ : HasDerivAt (fun y => (1 / 2) * (σ.eval y + 2 * e * Real.log (1 + y) - e * y)) ((1 / 2) * (σ.derivative.eval y + 2 * e * (1 / (1 + y)) - e * 1)) y` using `(((σ.hasDerivAt y).add (hL.const_mul (2 * e))).sub ((hasDerivAt_id y).const_mul e)).const_mul (1 / 2)`. Use `((hk.mul hP).neg.add hQ).congr_deriv ?_` and prove the remaining obligations.
+
+Rewrite using `[zonalKernel_of_ge hx2 (by linarith) hy1, hw, hσ]`. Simplify using `only [eval_sub, eval_mul, eval_C, eval_X, hΓe]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, h2]`.
+
+Simplify using `only [hΓe]`. Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem integral_zonalKernel_mul_eval (H w ρ σ : ℝ[X]) (e : ℝ)
     (hw : derivative ((X ^ 2 - C 1) * w) = H - C e)
     (hρ : derivative ρ = -((X + C 1) * w)) (hσ : derivative σ = (C 1 - X) * w)

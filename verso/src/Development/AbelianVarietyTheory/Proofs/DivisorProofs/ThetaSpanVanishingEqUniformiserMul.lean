@@ -12,6 +12,9 @@ open GlobalTheory.Desc
 
 namespace GlobalTheory.Desc.ModPi
 
+/- English proof (translation)
+Apply `ext_of_isAffine` to reduce the goal to its premises. Rewrite using `[← cancel_mono (Scheme.ΓSpecIso _).hom, Scheme.ΓSpecIso_naturality, Scheme.Hom.comp_appTop, gp, Scheme.fromSpecStalk_appTop]`. Use extensionality with `r`. Simplify using `[GlobalTheory.Desc.cst, fnOf, Scheme.functionField]`.
+-/
 theorem gp_comp_cst (X : Scheme.{0}) [IsIntegral X] (R : Type) [CommRing R] (p : X ⟶ Sp R) :
     gp X ≫ p = spMap (GlobalTheory.Desc.cst p) := by
   apply ext_of_isAffine
@@ -20,6 +23,11 @@ theorem gp_comp_cst (X : Scheme.{0}) [IsIntegral X] (R : Type) [CommRing R] (p :
   ext r
   simp [GlobalTheory.Desc.cst, fnOf, Scheme.functionField]
 
+/- English proof (translation)
+Establish `hreg : GlobalTheory.Cartier.RegAt x (GlobalTheory.Desc.cst p r)` using `regAt_fnOf (U := ⊤) trivial trivial _`. Use `⟨hreg, fun hr => zeroAt_iff.2 ⟨hreg, fun hu => ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `(unitAt_fnOf_iff (U := ⊤) trivial trivial _).1 hu`. Establish `h2 : x ∈ p ⁻¹ᵁ (Sp R).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of R)).inv r)`. Rewrite using `[Scheme.Hom.preimage_basicOpen]`.
+
+Conclude with `h1`. Establish `h3 : p x ∈ (Sp R).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of R)).inv r)` using `h2`. Rewrite `h3` using `[basicOpen_eq_of_affine, hx]`. Conclude with `(PrimeSpectrum.mem_basicOpen _ _).1 h3 hr`.
+-/
 theorem cst_reg_zero (R : Type) [CommRing R] [IsLocalRing R] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp R) (x : X)
     (hx : p x = closedPoint R) (r : R) :
     GlobalTheory.Cartier.RegAt x (GlobalTheory.Desc.cst p r) ∧ (r ∈ maximalIdeal R → GlobalTheory.Cartier.ZeroAt x (GlobalTheory.Desc.cst p r)) := by
@@ -32,6 +40,11 @@ theorem cst_reg_zero (R : Type) [CommRing R] [IsLocalRing R] (X : Scheme.{0}) [I
   rw [basicOpen_eq_of_affine, hx] at h3
   exact (PrimeSpectrum.mem_basicOpen _ _).1 h3 hr
 
+/- English proof (translation)
+Take `⟨n, r, t, ht, rfl⟩` from `hv`. Take `⟨m, r', t', ht', rfl⟩` from `hw`. Use `⟨n + m, Fin.append r r', Fin.append t t', fun i => ?_, ?_⟩` and prove the remaining obligations. Use `Fin.addCases (fun i => ?_) (fun i => ?_) i` and prove the remaining obligations. Rewrite using `[Fin.append_left]`.
+
+Conclude with `ht i`. Rewrite using `[Fin.append_right]`. Conclude with `ht' i`. Rewrite using `[Fin.sum_univ_add]`. Simplify using the standard rewrite rules.
+-/
 theorem span_add {R₁ F₁ : Type} [CommRing R₁] [CommRing F₁] (c : R₁ →+* F₁) {S : Set F₁} {v w : F₁}
     (hv : v ∈ spanBy c S) (hw : w ∈ spanBy c S) : v + w ∈ spanBy c S := by
   obtain ⟨n, r, t, ht, rfl⟩ := hv
@@ -42,12 +55,54 @@ theorem span_add {R₁ F₁ : Type} [CommRing R₁] [CommRing F₁] (c : R₁ �
     · rw [Fin.append_right]; exact ht' i
   · rw [Fin.sum_univ_add]; simp
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero]`. Conclude with `(unitAt_one x).regAt`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `ih.mul h`.
+-/
 theorem regAt_npow {X : Scheme.{0}} [IsIntegral X] {x : X} {f : X.functionField} (h : GlobalTheory.Cartier.RegAt x f) (n : ℕ) :
     GlobalTheory.Cartier.RegAt x (f ^ n) := by
   induction n with
   | zero => rw [pow_zero]; exact (unitAt_one x).regAt
   | succ n ih => rw [pow_succ]; exact ih.mul h
 
+/- English proof (translation)
+Introduce `T D _ _ _ _ _ _ a ha hm H _ _ H' _ _ π θ hH hpb hff y y' hy hy' hdy hdy' ϖ hmT`. Establish `hmD : maximalIdeal D = Ideal.span {a ϖ}` using `by rw [← hm, hmT, Ideal.map_span, Set.image_singleton]`. Establish `hcomp : θ.comp (cst H.hom) = (cst H'.hom).comp a`. Take `⟨l, hl1, hl2⟩` from `hff`. Establish `e1` using `gp_comp_cst H.left T H.hom`.
+
+Establish `e2` using `gp_comp_cst H'.left D H'.hom`. Establish `hl : l = gp H'.left` using `by simpa using hl1`. Establish `key : spMap (θ.comp (cst H.hom)) = spMap ((cst H'.hom).comp a)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective key)`.
+
+Establish `hθc : ∀ t, θ (cst H.hom t) = cst H'.hom (a t)` using `fun t => by`. Rewrite using `[← RingHom.comp_apply, hcomp, RingHom.comp_apply]`. Use `set c := cst H'.hom with hc`. Establish `hreg : ∀ u, GlobalTheory.Cartier.RegAt y u → GlobalTheory.Cartier.RegAt y' (θ u)`. Introduce `u hu`.
+
+Establish `hpt` using `GlobalTheory.T.baseChange_sends_closedFibre_genericPoint_dvr T D a ha hm H H' π θ hH hpb ⟨_, hff.choose_spec⟩ y y' hy hy' hdy hdy'`. Conclude with `GlobalTheory.T.regularAtPoint_functionField_map_of_genericPoint_comp H.left H'.left π θ ⟨_, hff.choose_spec⟩ y' u (hpt ▸ hu)`. Establish `hcreg : ∀ d, GlobalTheory.Cartier.RegAt y' (c d)` using `fun d => (cst_reg_zero D H'.left H'.hom y' hy' d).1`. Establish `hc0reg : ∀ t, GlobalTheory.Cartier.RegAt y (cst H.hom t)` using `fun t => (cst_reg_zero T H.left H.hom y hy t).1`. Establish `hϖz : GlobalTheory.Cartier.ZeroAt y (cst H.hom ϖ)` using `(cst_reg_zero T H.left H.hom y hy ϖ).2 (by rw [hmT]; exact Ideal.subset_span rfl)`.
+
+Take `⟨hϖ0, hfac⟩` from `GlobalTheory.T.semiAbelian_dvr_closedFibre_stalk_uniformiser T H hH y hy hdy ϖ hmT`. Establish `hdiv : ∀ x, GlobalTheory.Cartier.ZeroAt y x → ∃ w, GlobalTheory.Cartier.RegAt y w ∧ x = cst H.hom ϖ * w`. Introduce `x hx`. Distinguish the cases in `hx0 : x = 0`. Conclude with `⟨0, regAt_zero y, by rw [hx0, mul_zero]⟩`.
+
+Take `⟨k, w, hw, rfl⟩` from `hfac x hx0`. Break down `le_or_gt 1 k with hk | hk` into its components or cases. Use `⟨cst H.hom ϖ ^ (k - 1).toNat * w, (regAt_npow (hc0reg ϖ) _).mul hw.regAt, ?_⟩` and prove the remaining obligations. Rewrite using `[← _root_.mul_assoc, ← pow_succ', ← zpow_natCast]`. Use `congr 2`.
+
+Use linear arithmetic over natural numbers and integers. It suffices to derive a contradiction. Establish `hk' : ((-k).toNat : ℤ) = -k` using `Int.toNat_of_nonneg (by omega)`. Establish `e : cst H.hom ϖ ^ k * w * cst H.hom ϖ ^ (-k).toNat = w`. Rewrite using `[mul_comm _ (cst H.hom ϖ ^ (-k).toNat), ← _root_.mul_assoc, ← zpow_natCast, hk', ← zpow_add₀ hϖ0, neg_add_cancel, zpow_zero, _root_.one_mul]`.
+
+Conclude with `(zeroAt_iff.1 (e ▸ hx.mul (regAt_npow (hc0reg ϖ) _))).2 hw`. Establish `hgeo` using `GlobalTheory.T.residueField_linearIndependent_closedFibre_genericPoints T D a ha hm H H' π θ hH hpb hff y y' hy hy' hdy hdy'`. Use `set S := spanBy c (θ '' regSet y) with hS`. Establish `hyes : ∀ (n : ℕ) (d : Fin n → D) (u : Fin n → H.left.functionField), (∀ i, GlobalTheory.Cartier.RegAt y (u i)) → (∀ cc : Fin n → T, GlobalTheory.Cartier.ZeroAt y (∑ i, cst H.hom (cc i) * u i) → ∀ i, cc i ∈ maximalIdeal T) → GlobalTheory.Cartier.ZeroAt y' (∑ i, c (d i) * θ (u i)) …`. Introduce `n d u hu hind hz`.
+
+Establish `hd` using `hgeo n u hu hind d hz`. Use `choose e he using fun i => Ideal.mem_span_singleton'.1 (hmD ▸ hd i)`. Use `⟨∑ i, c (e i) * θ (u i), ⟨n, e, fun i => θ (u i), fun i => ⟨u i, hu i, rfl⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← he i, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmain : ∀ (n : ℕ) (d : Fin n → D) (u : Fin n → H.left.functionField), (∀ i, GlobalTheory.Cartier.RegAt y (u i)) → GlobalTheory.Cartier.ZeroAt y' (∑ i, c (d i) * θ (u i)) → ∃ z₁ ∈ S, ∑ i, c (d i) * θ (u i) = c (a ϖ) * z₁`. Introduce `n`. Proceed by induction on `n with`.
+
+Consider the case `zero => intro d u hu hz`. Conclude with `hyes 0 d u hu (fun _ _ i => i.elim0) hz`. Consider the case `succ n ih`. Introduce `d u hu hz`. Distinguish the cases in `hind : ∀ cc : Fin (n + 1) → T, GlobalTheory.Cartier.ZeroAt y (∑ i, cst H.hom (cc i) * u i) → ∀ i, cc i ∈ maximalIdeal T`.
+
+Conclude with `hyes _ d u hu hind hz`. Use `push_neg at hind`. Take `⟨cc, hZ, k, hk⟩` from `hind`. Choose the witnesses or unpack the hypotheses as in `⟨ν, hν⟩ : ∃ ν : T, ν * cc k = 1 := by`. Take `⟨v, hv⟩` from `IsLocalRing.notMem_maximalIdeal.1 hk`.
+
+Conclude with `⟨↑v⁻¹, by rw [← hv, Units.inv_mul]⟩`. Take `⟨w, hw, hrel⟩` from `hdiv _ hZ`. Rewrite `hrel` using `[Fin.sum_univ_succAbove _ k]`. Establish `hrel'` using `congrArg θ hrel`. Simplify using `only [map_add, map_sum, map_mul, hθc] at hrel'`.
+
+Establish `hν' : c (a ν) * c (a (cc k)) = 1` using `by rw [← map_mul, ← map_mul, hν, map_one, map_one]`. Use `set d' : Fin n → D := fun j => d (k.succAbove j) - d k * a ν * a (cc (k.succAbove j)) with hd'`. Use `set u' : Fin n → H.left.functionField := fun j => u (k.succAbove j) with hu'`. Establish `hsplit : ∑ i, c (d i) * θ (u i) = c (a ϖ) * (c (d k * a ν) * θ w) + ∑ j, c (d' j) * θ (u' j)`. Rewrite using `[Fin.sum_univ_succAbove _ k]`.
+
+Establish `: ∑ j, c (d' j) * θ (u' j) = ∑ j, c (d (k.succAbove j)) * θ (u (k.succAbove j)) - c (d k) * c (a ν) * ∑ j, c (a (cc (k.succAbove j))) * θ (u (k.succAbove j))`. Rewrite using `[Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [hd', hu', map_sub, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[this, map_mul]`. Take the linear combination `(c (d k) * c (a ν)) * hrel' - (c (d k) * θ (u k)) * hν'`. Establish `hz' : GlobalTheory.Cartier.ZeroAt y' (∑ j, c (d' j) * θ (u' j))`. Establish `e : ∑ j, c (d' j) * θ (u' j) = ∑ i, c (d i) * θ (u i) + c (a ϖ) * (c (-(d k * a ν)) * θ w)`. Rewrite using `[hsplit, map_neg]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `hz.add (ZeroAt.mul ?_ ((hcreg _).mul (hreg w hw)))` and prove the remaining obligations. Conclude with `(cst_reg_zero D H'.left H'.hom y' hy' (a ϖ)).2 (by rw [hmD]; exact Ideal.subset_span rfl)`. Take `⟨z₁, hz₁, e₁⟩` from `ih d' u' (fun j => hu _) hz'`.
+
+Use `⟨c (d k * a ν) * θ w + z₁, span_add c ⟨1, fun _ => d k * a ν, fun _ => θ w, fun _ => ⟨w, hw, rfl⟩, by simp⟩ hz₁, ?_⟩` and prove the remaining obligations. Rewrite using `[hsplit, e₁]`. Expand and normalize the polynomial expressions, which then agree. Introduce `z hz hzy`. Take `⟨n, r, t, ht, rfl⟩` from `hz`.
+
+Use `choose u hu hut using ht`. Establish `e : ∑ i, c (r i) * t i = ∑ i, c (r i) * θ (u i)` using `Finset.sum_congr rfl fun i _ => by rw [hut i]`. Rewrite `hzy`, the goal using `[e]`. Conclude with `hmain n r u hu hzy`.
+-/
 theorem modPi : ∀ (T D : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [CommRing D] [IsDomain D] [IsDiscreteValuationRing D] (a : T →+* D), a.Flat → (maximalIdeal T).map a = maximalIdeal D → ∀ (H : Over (Sp T)) [GrpObj H] [IsIntegral H.left] (H' : Over (Sp D)) [GrpObj H'] [IsIntegral H'.left] (π : H'.left ⟶ H.left) (θ : H.left.functionField →+* H'.left.functionField), IsSemiAbelian H → IsPullback π H'.hom H.hom (spMap a) → PFF (𝟙 _) π θ → ∀ (y : H.left) (y' : H'.left), H.hom y = closedPoint T → H'.hom y' = closedPoint D → ringKrullDim (H.left.presheaf.stalk y) = 1 → ringKrullDim (H'.left.presheaf.stalk y') = 1 → ∀ ϖ : T, maximalIdeal T = Ideal.span {ϖ} → ∀ z ∈ spanBy (GlobalTheory.Desc.cst H'.hom) (θ '' regSet y), GlobalTheory.Cartier.ZeroAt y' z → ∃ z₁ ∈ spanBy (GlobalTheory.Desc.cst H'.hom) (θ '' regSet y), z = GlobalTheory.Desc.cst H'.hom (a ϖ) * z₁ := by
   intro T D _ _ _ _ _ _ a ha hm H _ _ H' _ _ π θ hH hpb hff y y' hy hy' hdy hdy' ϖ hmT
   have hmD : maximalIdeal D = Ideal.span {a ϖ} := by rw [← hm, hmT, Ideal.map_span, Set.image_singleton]

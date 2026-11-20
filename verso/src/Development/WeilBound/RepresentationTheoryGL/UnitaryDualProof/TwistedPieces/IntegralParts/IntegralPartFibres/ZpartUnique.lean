@@ -12,6 +12,9 @@ open PositivityTheory.RgUd.T PositivityTheory.RgUd.T.Nil PositivityTheory.RgUd.T
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
+/- English proof (translation)
+Establish `h : ∃ c ∈ Z, IsNilpotent (x - c)` using `hx.1`. Unfold `zpart`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+-/
 theorem zpart_spec {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} {x : Matrix (Fin n) (Fin n) k} (hx : x ∈ CC Z) :
     zpart Z x ∈ Z ∧ IsNilpotent (x - zpart Z x) := by
   have h : ∃ c ∈ Z, IsNilpotent (x - c) := hx.1
@@ -19,9 +22,19 @@ theorem zpart_spec {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} {x : Matrix (Fi
   rw [dif_pos h]
   exact h.choose_spec
 
+/- English proof (translation)
+Introduce `c hc a ha` and use `hZ.1 a ha c hc`.
+-/
 theorem Z_sub_Bz {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} (hZ : CR Z) : (Z : Set (Matrix (Fin n) (Fin n) k)) ⊆ Bz Z :=
   fun c hc a ha => hZ.1 a ha c hc
 
+/- English proof (translation)
+Establish `hxc : x ∈ CC Z` using `⟨⟨c, hc, hn⟩, hx⟩`. Take `⟨h0, hn0⟩` from `zpart_spec hxc`. Use `set c0 := zpart Z x`. Establish `hcomm : Commute (x - c) (x - c0)`. Establish `h1 : Commute x c` using `(hx c hc).symm`.
+
+Establish `h2 : Commute x c0` using `(hx c0 h0).symm`. Establish `h3 : Commute c c0` using `hZ.1 c hc c0 h0`. Conclude with `((Commute.refl x).sub_right h2).sub_left (h1.symm.sub_right h3)`. Establish `hd : IsNilpotent (c0 - c)`. Use `hcomm.isNilpotent_sub hn hn0` as an intermediate fact.
+
+Simplify `this` using `[sub_sub_sub_cancel_left]`. Use `PositivityTheory.RgUd.T.Nil.Orb.Ozn.eq_zero_of_mem_of_isNilpotent hZ (Z.sub_mem h0 hc) hd` as an intermediate fact. Conclude with `sub_eq_zero.1 this`.
+-/
 theorem zpart_unique {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} (hZ : CR Z) {x c : Matrix (Fin n) (Fin n) k}
     (hx : x ∈ Bz Z) (hc : c ∈ Z) (hn : IsNilpotent (x - c)) : zpart Z x = c := by
   have hxc : x ∈ CC Z := ⟨⟨c, hc, hn⟩, hx⟩
@@ -38,6 +51,11 @@ theorem zpart_unique {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} (hZ : CR Z) {
   have := PositivityTheory.RgUd.T.Nil.Orb.Ozn.eq_zero_of_mem_of_isNilpotent hZ (Z.sub_mem h0 hc) hd
   exact sub_eq_zero.1 this
 
+/- English proof (translation)
+Take `⟨h0, hn0⟩` from `zpart_spec hx`. Establish `hB : t • x ∈ Bz Z` using `fun a ha => by rw [mul_smul_comm, smul_mul_assoc, hx.2 a ha]`. Establish `hn : IsNilpotent (t • x - t • zpart Z x)`. Rewrite using `[← smul_sub]`. Take `⟨m, hm⟩` from `hn0`.
+
+Conclude with `⟨m, by rw [smul_pow, hm, smul_zero]⟩`. Establish `hc : t • zpart Z x ∈ Z` using `Z.smul_mem h0 t`. Conclude with `⟨⟨⟨_, hc, hn⟩, hB⟩, zpart_unique hZ hB hc hn⟩`.
+-/
 theorem cc_smul {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} (hZ : CR Z) (t : k) {x : Matrix (Fin n) (Fin n) k}
     (hx : x ∈ CC Z) : t • x ∈ CC Z ∧ zpart Z (t • x) = t • zpart Z x := by
   obtain ⟨h0, hn0⟩ := zpart_spec hx
@@ -49,6 +67,15 @@ theorem cc_smul {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} (hZ : CR Z) (t : k
   have hc : t • zpart Z x ∈ Z := Z.smul_mem h0 t
   exact ⟨⟨⟨_, hc, hn⟩, hB⟩, zpart_unique hZ hB hc hn⟩
 
+/- English proof (translation)
+Establish `hcB` using `Z_sub_Bz hZ hc`. Establish `hBz : x + c ∈ Bz Z ↔ x ∈ Bz Z`. Prove the components needed by the constructor for the conclusion. Introduce `h a ha`. Establish `e1` using `h a ha`.
+
+Establish `e2` using `hcB a ha`. Rewrite `e1` using `[mul_add, add_mul, e2]`. Conclude with `add_right_cancel e1`. Introduce `h a ha`. Rewrite using `[mul_add, add_mul, h a ha, hcB a ha]`.
+
+Use `⟨⟨fun h => ⟨?_, hBz.1 h.2⟩, fun h => ⟨?_, hBz.2 h.2⟩⟩, fun h => ?_⟩` and prove the remaining obligations. Take `⟨c1, hc1, hn⟩` from `h.1`. Conclude with `⟨c1 - c, Z.sub_mem hc1 hc, by simpa [sub_sub_eq_add_sub, add_sub_add_right_eq_sub] using hn⟩`. Take `⟨c1, hc1, hn⟩` from `h.1`. Conclude with `⟨c1 + c, Z.add_mem hc1 hc, by simpa [add_sub_add_right_eq_sub] using hn⟩`.
+
+Take `⟨h0, hn0⟩` from `zpart_spec h`. Use `zpart_unique hZ (hBz.2 h.2) (Z.add_mem h0 hc) ?_` and prove the remaining obligations. Simplify `hn0` using `[add_sub_add_right_eq_sub]`.
+-/
 theorem cc_add {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} (hZ : CR Z) {c x : Matrix (Fin n) (Fin n) k} (hc : c ∈ Z) :
     (x + c ∈ CC Z ↔ x ∈ CC Z) ∧ (x ∈ CC Z → zpart Z (x + c) = zpart Z x + c) := by
   have hcB := Z_sub_Bz hZ hc
@@ -70,6 +97,17 @@ theorem cc_add {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} (hZ : CR Z) {c x : 
     refine zpart_unique hZ (hBz.2 h.2) (Z.add_mem h0 hc) ?_
     simpa [add_sub_add_right_eq_sub] using hn0
 
+/- English proof (translation)
+Take `⟨h0, hn0⟩` from `zpart_spec hx`. Establish `hgi : ∀ a ∈ Z, a * g⁻¹.val = g⁻¹.val * a`. Introduce `a ha`. Establish `e` using `hg a ha`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hB : g.val * x * g⁻¹.val ∈ Bz Z` using `fun a ha => by`. Rewrite using `[← mul_assoc, ← mul_assoc, hg a ha, mul_assoc (g.val), hx.2 a ha, mul_assoc, mul_assoc, hgi a ha, ← mul_assoc, ← mul_assoc]`. Establish `hcz : g.val * zpart Z x * g⁻¹.val = zpart Z x`. Rewrite using `[← hg _ h0, mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, mul_one]`. Establish `hn : IsNilpotent (g.val * x * g⁻¹.val - zpart Z x)`.
+
+Establish `e : g.val * x * g⁻¹.val - zpart Z x = g.val * (x - zpart Z x) * g⁻¹.val`. Rewrite using `[mul_sub, sub_mul, hcz]`. Rewrite using `[e]`. Take `⟨m, hm⟩` from `hn0`. Use `⟨m, ?_⟩` and prove the remaining obligations.
+
+Establish `: ∀ j : ℕ, (g.val * (x - zpart Z x) * g⁻¹.val) ^ j = g.val * (x - zpart Z x) ^ j * g⁻¹.val`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => simp [← Units.val_mul]`. Consider the case `succ j ih`.
+
+Rewrite using `[pow_succ, ih, pow_succ]`. Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc (g⁻¹.val) (g.val), ← Units.val_mul, inv_mul_cancel, Units.val_one, one_mul]`. Rewrite using `[this, hm, mul_zero, zero_mul]`. Conclude with `⟨⟨⟨_, h0, hn⟩, hB⟩, zpart_unique hZ hB h0 hn⟩`.
+-/
 theorem cc_conj {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} (hZ : CR Z) {g : GL (Fin n) k} (hg : g ∈ Gz Z)
     {x : Matrix (Fin n) (Fin n) k} (hx : x ∈ CC Z) :
     g.val * x * g⁻¹.val ∈ CC Z ∧ zpart Z (g.val * x * g⁻¹.val) = zpart Z x := by
@@ -102,24 +140,36 @@ theorem cc_conj {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} (hZ : CR Z) {g : G
     rw [this, hm, mul_zero, zero_mul]
   exact ⟨⟨⟨_, h0, hn⟩, hB⟩, zpart_unique hZ hB h0 hn⟩
 
+/- English proof (translation)
+Take `⟨h0, hn0⟩` from `zpart_spec hx`. Use `⟨fun a ha => ?_, hn0⟩` and prove the remaining obligations. Rewrite using `[mul_sub, sub_mul, hx.2 a ha, Z_sub_Bz hZ h0 a ha]`.
+-/
 theorem sub_mem_NB {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} (hZ : CR Z) {x : Matrix (Fin n) (Fin n) k}
     (hx : x ∈ CC Z) : x - zpart Z x ∈ NB Z := by
   obtain ⟨h0, hn0⟩ := zpart_spec hx
   refine ⟨fun a ha => ?_, hn0⟩
   rw [mul_sub, sub_mul, hx.2 a ha, Z_sub_Bz hZ h0 a ha]
 
+/- English proof (translation)
+Establish `hB : c + m ∈ Bz Z` using `fun a ha => by rw [mul_add, add_mul, Z_sub_Bz hZ hc a ha, hm.1 a ha]`. Establish `hn : IsNilpotent (c + m - c)` using `by simpa using hm.2`. Conclude with `⟨⟨⟨c, hc, hn⟩, hB⟩, zpart_unique hZ hB hc hn⟩`.
+-/
 theorem cc_of_NB {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} (hZ : CR Z) {c m : Matrix (Fin n) (Fin n) k}
     (hc : c ∈ Z) (hm : m ∈ NB Z) : c + m ∈ CC Z ∧ zpart Z (c + m) = c := by
   have hB : c + m ∈ Bz Z := fun a ha => by rw [mul_add, add_mul, Z_sub_Bz hZ hc a ha, hm.1 a ha]
   have hn : IsNilpotent (c + m - c) := by simpa using hm.2
   exact ⟨⟨⟨c, hc, hn⟩, hB⟩, zpart_unique hZ hB hc hn⟩
 
+/- English proof (translation)
+Establish `e : Bz Z = ⋂ a ∈ (Z : Set (Matrix (Fin n) (Fin n) k)), {x | a * x = x * a}`. Use extensionality with `x`. Simplify using `[Bz]`. Rewrite using `[e]`. Conclude with `isClosed_biInter fun a _ => isClosed_eq (continuous_const.mul continuous_id) (continuous_id.mul continuous_const)`.
+-/
 theorem isClosed_Bz (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) : IsClosed (Bz Z) := by
   have e : Bz Z = ⋂ a ∈ (Z : Set (Matrix (Fin n) (Fin n) k)), {x | a * x = x * a} := by
     ext x; simp [Bz]
   rw [e]
   exact isClosed_biInter fun a _ => isClosed_eq (continuous_const.mul continuous_id) (continuous_id.mul continuous_const)
 
+/- English proof (translation)
+The claim follows from `(isClosed_Bz Z).inter PositivityTheory.RgUd.T.Nil.Orb.Ozn.isClosed_nilpotent`.
+-/
 theorem isClosed_NB (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) : IsClosed (NB Z) :=
   (isClosed_Bz Z).inter PositivityTheory.RgUd.T.Nil.Orb.Ozn.isClosed_nilpotent
 

@@ -22,12 +22,24 @@ noncomputable section
 
 namespace GlobalTheory.DSGapData
 
+/- English proof (translation)
+Establish `h` using `Finset.card_filter_add_card_filter_not (s := (Finset.univ : Finset (Fin n))) (fun a => ε a = true)`. Simplify using `only [Bool.not_eq_true, Finset.card_univ, Fintype.card_fin] at h`. Unfold `GlobalTheory.Count.rkR`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem two_mul_rkR_le {n : ℕ} (ε : Fin n → Bool) : 2 * GlobalTheory.Count.rkR ε ≤ n := by
   have h := Finset.card_filter_add_card_filter_not (s := (Finset.univ : Finset (Fin n))) (fun a => ε a = true)
   simp only [Bool.not_eq_true, Finset.card_univ, Fintype.card_fin] at h
   unfold GlobalTheory.Count.rkR
   omega
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos q with h0 | h0` into its components or cases. Substitute `h0` using the available equality. Rewrite using `[Nat.cast_zero, Real.zero_rpow (by norm_num), mul_zero]`. Check the signs of the components of the expression. Establish `hq1 : (1 : ℝ) ≤ q` using `by exact_mod_cast h0`.
+
+Establish `hq2 : (2 : ℝ) * q ≤ n` using `by exact_mod_cast hq`. Establish `hn : (2 : ℝ) ≤ n` using `by linarith`. Establish `e : ((q : ℕ) : ℝ) ^ ((3 : ℝ) / 2) ≤ (q : ℝ) ^ 2`. Use `Real.rpow_le_rpow_of_exponent_le hq1 (show (3 : ℝ) / 2 ≤ 2 by norm_num)` as an intermediate fact. Simplify using `using this`.
+
+Establish `h1 : 4 * (q : ℝ) ^ 2 ≤ (n : ℝ) ^ 2` using `by nlinarith`. Establish `h2 : 120 * (n : ℝ) * ((q : ℕ) : ℝ) ^ ((3 : ℝ) / 2) ≤ 120 * (n : ℝ) * (q : ℝ) ^ 2`. Establish `: (0 : ℝ) ≤ 120 * n` using `by positivity`. Conclude with `mul_le_mul_of_nonneg_left e this`. Establish `h3 : 120 * (n : ℝ) * (q : ℝ) ^ 2 ≤ 30 * (n : ℝ) ^ 3` using `by nlinarith`.
+
+Establish `h4 : 30 * (n : ℝ) ^ 3 ≤ 100 * (n : ℝ) ^ 4` using `by nlinarith [pow_nonneg (show (0 : ℝ) ≤ n by linarith) 3]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem rank_bound (n q : ℕ) (hq : 2 * q ≤ n) :
     120 * (n : ℝ) * ((q : ℕ) : ℝ) ^ ((3 : ℝ) / 2) ≤ 100 * (n : ℝ) ^ 4 := by
   rcases Nat.eq_zero_or_pos q with h0 | h0
@@ -48,6 +60,13 @@ theorem rank_bound (n q : ℕ) (hq : 2 * q ≤ n) :
   have h4 : 30 * (n : ℝ) ^ 3 ≤ 100 * (n : ℝ) ^ 4 := by nlinarith [pow_nonneg (show (0 : ℝ) ≤ n by linarith) 3]
   linarith
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos n with h0 | h0` into its components or cases. Substitute `h0` using the available equality. Establish `: q = 0` using `by omega`. Substitute `this` using the available equality. Simplify using the standard rewrite rules.
+
+Establish `hn : (1 : ℝ) ≤ n` using `by exact_mod_cast h0`. Establish `hqn : (q : ℝ) ≤ (n : ℝ) ^ 2`. Establish `: q ≤ n ^ 2` using `by nlinarith`. Conclude with `this` after adjusting the coercions. Establish `hs : Real.sqrt q ≤ n` using `Real.sqrt_le_iff.2 ⟨by positivity, hqn⟩`.
+
+Establish `h1 : 40 * (n : ℝ) ^ 2 * Real.sqrt q ≤ 40 * (n : ℝ) ^ 2 * n` using `mul_le_mul_of_nonneg_left hs (by positivity)`. Establish `h2 : 40 * (n : ℝ) ^ 2 * n ≤ 100 * (n : ℝ) ^ 4` using `by nlinarith [pow_nonneg (show (0 : ℝ) ≤ n by linarith) 3]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem big_bound (n q : ℕ) (hq : 2 * q ≤ n) :
     40 * (n : ℝ) ^ 2 * Real.sqrt q ≤ 100 * (n : ℝ) ^ 4 := by
   rcases Nat.eq_zero_or_pos n with h0 | h0
@@ -64,6 +83,13 @@ theorem big_bound (n q : ℕ) (hq : 2 * q ≤ n) :
   have h2 : 40 * (n : ℝ) ^ 2 * n ≤ 100 * (n : ℝ) ^ 4 := by nlinarith [pow_nonneg (show (0 : ℝ) ≤ n by linarith) 3]
   linarith
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos (GlobalTheory.Count.rkR ε) with h0 | h0` into its components or cases. Conclude with `Or.inl h0`. Use `right`. Establish `hq : (0 : ℝ) < GlobalTheory.Count.rkR ε` using `by exact_mod_cast h0`. Establish `hn : (0 : ℝ) < n`.
+
+Use `two_mul_rkR_le ε` as an intermediate fact. Conclude with `(show 0 < n by omega)` after adjusting the coercions. Establish `e : ((GlobalTheory.Count.rkR ε : ℕ) : ℝ) ^ ((3 : ℝ) / 2) = Real.sqrt (GlobalTheory.Count.rkR ε) * GlobalTheory.Count.rkR ε`. Rewrite using `[Real.sqrt_eq_rpow, ← Real.rpow_add_one hq.ne']`. Evaluate the numerical expressions.
+
+Rewrite `hh` using `[e]`. Establish `hp : 0 < (n : ℝ) * (Real.sqrt (GlobalTheory.Count.rkR ε) * GlobalTheory.Count.rkR ε)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem gap_numeric' {n : ℕ} (ε : Fin n → Bool) (h : ℝ)
     (hh : 120 * (n : ℝ) * ((GlobalTheory.Count.rkR ε : ℕ) : ℝ) ^ ((3 : ℝ) / 2) ≤ h) :
     GlobalTheory.Count.rkR ε = 0 ∨ 8 * Real.sqrt (GlobalTheory.Count.rkR ε) * (0 + 4 * n * GlobalTheory.Count.rkR ε) < h := by
@@ -81,6 +107,13 @@ theorem gap_numeric' {n : ℕ} (ε : Fin n → Bool) (h : ℝ)
   have hp : 0 < (n : ℝ) * (Real.sqrt (GlobalTheory.Count.rkR ε) * GlobalTheory.Count.rkR ε) := by positivity
   nlinarith
 
+/- English proof (translation)
+Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro h`. Use linear arithmetic over natural numbers and integers. Consider the case `succ j ih`.
+
+Introduce `hij hj`. Establish `g` using `hH.gapR τ j hj`. Break down `Nat.lt_succ_iff_lt_or_eq.1 hij with h | h` into its components or cases. Use `ih h (by omega)` as an intermediate fact. Establish `h0 : (0 : ℚ) ≤ 100 * (D.R.r : ℚ) ^ 4` using `by positivity`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Substitute `h` using the available equality. Conclude with `g`.
+-/
 theorem lamAt_gap {D : D7} (hH : HostHyp D) (τ : D.what₂.Tau) (i : ℕ) :
     ∀ j, i < j → j < D.R.r →
       100 * (D.R.r : ℚ) ^ 4 ≤ Formalism.L2.NTheta.lamAt (D.hc τ) i - Formalism.L2.NTheta.lamAt (D.hc τ) j := by
@@ -96,10 +129,34 @@ theorem lamAt_gap {D : D7} (hH : HostHyp D) (τ : D.what₂.Tau) (i : ℕ) :
       linarith
     · subst h; exact g
 
+/- English proof (translation)
+Substitute `h` using the available equality. Simplify using `using hl`.
+-/
 theorem isHCParam_cast {n m : ℕ} (h : n = m) (lam : Fin m → ℝ) (hl : Formalism.QuantumDeterminants.IsHCParam lam) :
     Formalism.QuantumDeterminants.IsHCParam (fun i : Fin n => lam (Fin.cast h i)) := by
   subst h; simpa using hl
 
+/- English proof (translation)
+Introduce `D X hH`. Establish `hn : (X.B.I.n : ℝ) = (D.R.r : ℝ)` using `by exact_mod_cast X.n_eq`. Establish `hds : GlobalTheory.Count.IsDSData X.B X.dv`. Introduce `v`. Establish `e : X.B.lam v = fun i => Formalism.MainNotions.S.lamS D.R (D.hc (X.pl v)) (Fin.cast X.n_eq i)` using `funext (X.lam_eq v)`.
+
+Use `⟨?_, X.ds v, X.low v, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `isHCParam_cast X.n_eq _ (Formalism.MainNotions.S.Inh.aut_isHCParam_lamS D.R (D.hc (X.pl v)))`. Take `⟨d, hd⟩` from `GlobalTheory.Mem.Vol.exists_isFdeg_smul_of_isDS _ _ _ _ _ (X.ds v) 1 one_pos`. Rewrite `hd` using `[ENNReal.coe_one, one_smul]`.
+
+Establish `hw : X.B.w v ≠ 0`. Introduce `h0`. Establish `h1` using `(X.low v).1`. Rewrite `h1` using `[h0, norm_zero]`. Conclude with `zero_ne_one h1`.
+
+Establish `e2 : X.dv v = d` using `Formalism.L2.SG.Pf.RowDictPf.fdegOf_eq hd hw`. Rewrite using `[e2]`. Conclude with `hd`. Establish `hgap : GlobalTheory.Count.GapGe X.B (100 * (D.R.r : ℝ) ^ 4)`. Introduce `v a b hab`.
+
+Establish `hne : (a : ℕ) ≠ (b : ℕ)` using `fun h => hab (by rw [Fin.ext h])`. Rewrite using `[X.lam_eq, X.lam_eq, Formalism.IndefR.ModelConjugation.lamS_eq, Formalism.IndefR.ModelConjugation.lamS_eq]`. Simplify using `only [Fin.val_cast]`. Break down `lt_or_gt_of_ne hne with h | h` into its components or cases. Establish `g` using `lamAt_gap hH (X.pl v) a b h (by have := b.2; have := X.n_eq; omega)`.
+
+Establish `g' : (100 * (D.R.r : ℝ) ^ 4) ≤ ((Formalism.L2.NTheta.lamAt (D.hc (X.pl v)) a : ℚ) : ℝ) - ((Formalism.L2.NTheta.lamAt (D.hc (X.pl v)) b : ℚ) : ℝ)` using `by exact_mod_cast g`. Conclude with `le_abs.2 (Or.inl g')`. Establish `g` using `lamAt_gap hH (X.pl v) b a h (by have := a.2; have := X.n_eq; omega)`. Establish `g' : (100 * (D.R.r : ℝ) ^ 4) ≤ ((Formalism.L2.NTheta.lamAt (D.hc (X.pl v)) b : ℚ) : ℝ) - ((Formalism.L2.NTheta.lamAt (D.hc (X.pl v)) a : ℚ) : ℝ)` using `by exact_mod_cast g`. Conclude with `le_abs.2 (Or.inr (by linarith))`.
+
+Establish `hh : ∀ v, 120 * (X.B.I.n : ℝ) * ((GlobalTheory.Count.rkR (X.B.I.ε v) : ℕ) : ℝ) ^ ((3 : ℝ) / 2) ≤ 100 * (D.R.r : ℝ) ^ 4`. Introduce `v`. Rewrite using `[← hn]`. Conclude with `rank_bound _ _ (two_mul_rkR_le _)`. Establish `hbig : GlobalTheory.Dec.HBig X.B 40 (100 * (D.R.r : ℝ) ^ 4)`.
+
+Introduce `v`. Rewrite using `[← hn]`. Conclude with `big_bound _ _ (two_mul_rkR_le _)`. Establish `hD` using `GlobalTheory.DecGapBound.decGap_of_formulaGap GlobalTheory.Jet.FormGapFree.formulaGap`. Establish `hloc : GlobalTheory.Dec.LocDec X.B (100 * (D.R.r : ℝ) ^ 4)` using `GlobalTheory.Dec.locDec_of_decGap_gapGe hD X.B X.dv _ hds hgap hh`.
+
+Take `⟨hc, hle, hint⟩` from `GlobalTheory.Dec.PhMajProof.phMaj X.B X.dv _ hds hloc`. Establish `hI` using `hint 0 le_rfl fun v => gap_numeric' _ _ (hh v)`. Establish `hph : Integrable (GlobalTheory.Count.ph X.B X.dv) (GlobalTheory.Dec.muInf X.B.I)`. Use `hI.mono' hc.aestronglyMeasurable (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `using hle g`.
+
+Establish `hph' : Integrable X.ph (Formalism.L2.SG.ProjRows.muInf X.B.I)` using `hph`. Conclude with `⟨hds, hloc, hbig, hh, hph', GlobalTheory.ProdFactor.integrable_phLoc_of_integrable_ph D X hph'⟩`.
+-/
 theorem dsData_gap_integrable : ∀ {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D), HostHyp D → GlobalTheory.Count.IsDSData X.B X.dv ∧ GlobalTheory.Dec.LocDec X.B (100 * (D.R.r : ℝ) ^ 4) ∧ GlobalTheory.Dec.HBig X.B 40 (100 * (D.R.r : ℝ) ^ 4) ∧ (∀ v, 120 * (X.B.I.n : ℝ) * ((GlobalTheory.Count.rkR (X.B.I.ε v) : ℕ) : ℝ) ^ ((3 : ℝ) / 2) ≤ 100 * (D.R.r : ℝ) ^ 4) ∧ Integrable X.ph (Formalism.L2.SG.ProjRows.muInf X.B.I) ∧ ∀ v, Integrable (Formalism.L2.SG.ProjRows.phLoc (ε := X.B.I.ε v) (X.B.σ v) (X.B.w v) (X.dv v)) (Formalism.REAL.muG (X.B.I.ε v)) := by
   intro D X hH
   have hn : (X.B.I.n : ℝ) = (D.R.r : ℝ) := by exact_mod_cast X.n_eq

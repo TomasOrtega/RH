@@ -10,6 +10,21 @@ open GlobalTheory.Orb (IsPseudoCoeff ujMat ujRep)
 open scoped InnerProductSpace
 namespace GlobalTheory.CapelliRoots
 
+/- English proof (translation)
+Introduce `L`. Proceed by induction on `L using List.reverseRecOn with`. Consider the case `nil => intro _ b hb w`. Simplify using `using h1 b hb w`. Consider the case `append_singleton L X ih`.
+
+Introduce `hL b hb w`. Take `⟨x, c, d, hd, rfl⟩` from `hL X (by simp)`. Establish `hL' : ∀ Y ∈ L, ∃ (x : ℂ) (c d : Fin n), d ≠ p ∧ Y = Formalism.REAL.Tm E x c d` using `fun Y hY => hL Y (by simp [hY])`. Establish `hS : ∀ s : ℂ, algebraMap ℂ (Module.End ℂ V) s * E p b = E p b * algebraMap ℂ _ s` using `fun s => Algebra.commutes s _`. Establish `h` using `hE c d p b`.
+
+Rewrite `h` using `[if_neg hd]`. Establish `h'` using `sub_eq_iff_eq_add.mp h`. Establish `hcomm : Formalism.REAL.Tm E x c d * E p b = E p b * Formalism.REAL.Tm E x c d - (if b = c then E p d else 0)`. Unfold `Formalism.REAL.Tm`. Use `split_ifs with hcd hbc hbc`.
+
+Rewrite using `[add_mul, mul_add, hS, h', if_pos hbc]`. Normalize the expressions using the abelian group laws. Rewrite using `[add_mul, mul_add, hS, h', if_neg hbc]`. Normalize the expressions using the abelian group laws. Rewrite using `[add_mul, mul_add, zero_mul, mul_zero, h', if_pos hbc]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[add_mul, mul_add, zero_mul, mul_zero, h', if_neg hbc]`. Normalize the expressions using the abelian group laws. Establish `hw` using `LinearMap.congr_fun hcomm w`. Rewrite using `[List.prod_append, List.prod_singleton, Module.End.mul_apply]`.
+
+Distinguish the cases in `hbc : b = c`. Simplify using `only [hbc, if_true, LinearMap.sub_apply, Module.End.mul_apply] at hw`. Substitute `hbc` using the available equality. Rewrite using `[hw, map_sub, map_sub, ih hL' b hb, ih hL' d hd, sub_zero]`. Simplify using `only [hbc, if_false, LinearMap.sub_apply, Module.End.mul_apply, LinearMap.zero_apply, sub_zero] at hw`.
+
+Rewrite using `[hw, ih hL' b hb]`.
+-/
 theorem kill_left {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ} (E : Fin n → Fin n → Module.End ℂ V)
     (hE : Formalism.REAL.GlRel E) (p : Fin n) (ℓ : V →ₗ[ℂ] ℂ) (h1 : ∀ b, b ≠ p → ∀ v, ℓ (E p b v) = 0) :
     ∀ (L : List (Module.End ℂ V)), (∀ X ∈ L, ∃ (x : ℂ) (c d : Fin n), d ≠ p ∧ X = Formalism.REAL.Tm E x c d) →
@@ -44,6 +59,13 @@ theorem kill_left {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ} (E : Fin 
     · simp only [hbc, if_false, LinearMap.sub_apply, Module.End.mul_apply, LinearMap.zero_apply, sub_zero] at hw
       rw [hw, ih hL' b hb]
 
+/- English proof (translation)
+Introduce `L`. Proceed by induction on `L with`. Consider the case `nil => intro _ ℓ w; exact ⟨Polynomial.C (ℓ w), by simp⟩`. Consider the case `cons f L ih`. Introduce `hL ℓ w`.
+
+Take `⟨c, D, hf⟩` from `hL f (by simp)`. Establish `hL'` using `fun g hg => hL g (List.mem_cons_of_mem _ hg)`. Take `⟨P1, hP1⟩` from `ih hL' ℓ w`. Take `⟨P2, hP2⟩` from `ih hL' (ℓ ∘ₗ D) w`. Use `⟨Polynomial.C c * Polynomial.X * P1 + P2, fun u => ?_⟩` and prove the remaining obligations.
+
+Establish `e2` using `hP2 u`. Simplify using `only [LinearMap.comp_apply] at e2`. Simplify using `only [List.map_cons, List.prod_cons, Module.End.mul_apply, hf, LinearMap.add_apply, map_add, Module.algebraMap_end_apply, map_smul, smul_eq_mul, hP1, e2, Polynomial.eval_add, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_X]`.
+-/
 theorem poly_of_list {V : Type} [AddCommGroup V] [Module ℂ V] :
     ∀ (L : List (ℂ → Module.End ℂ V)),
       (∀ f ∈ L, ∃ (c : ℂ) (D : Module.End ℂ V), ∀ u, f u = algebraMap ℂ _ (c * u) + D) →
@@ -64,6 +86,19 @@ theorem poly_of_list {V : Type} [AddCommGroup V] [Module ℂ V] :
       Module.algebraMap_end_apply, map_smul, smul_eq_mul, hP1, e2, Polynomial.eval_add, Polynomial.eval_mul,
       Polynomial.eval_C, Polynomial.eval_X]
 
+/- English proof (translation)
+Use `open Polynomial in`. Establish `hQ : (∏ s, (X - C (f s))) * C k = (X - C r1) * (X - C r2) * G`. Apply `Polynomial.funext` to reduce the goal to its premises. Introduce `u`. Simplify using `[Polynomial.eval_prod, h u]`.
+
+Use `open Polynomial in`. Establish `hdvd : (X - C r1) * (X - C r2) ∣ ∏ s, (X - C (f s))`. Use `⟨G * C k⁻¹, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, ← C_mul, mul_inv_cancel₀ hk, C_1, mul_one]`.
+
+Use `_ = _ := by rw [hQ]; ring`. Use `open Polynomial in`. Establish `hne : (∏ s, (X - C (f s))) ≠ 0` using `Finset.prod_ne_zero_iff.mpr (fun s _ => X_sub_C_ne_zero _)`. Establish `hle` using `Polynomial.roots.le_of_dvd hne hdvd`. Use `open Polynomial in`.
+
+Establish `hr : (∏ s, (X - C (f s))).roots = Finset.univ.val.map f`. Rewrite using `[← roots_multiset_prod_X_sub_C (Finset.univ.val.map f), Multiset.map_map, Finset.prod_eq_multiset_prod]`. Both sides reduce to the same expression. Use `open Polynomial in`. Establish `hr2 : ((X - C r1) * (X - C r2)).roots = r1 ::ₘ {r2}`.
+
+Rewrite using `[roots_mul (mul_ne_zero (X_sub_C_ne_zero _) (X_sub_C_ne_zero _)), roots_X_sub_C, roots_X_sub_C]`. Both sides reduce to the same expression. Rewrite `hle` using `[hr, hr2]`. Take `⟨j, -, hj⟩` from `Multiset.mem_map.mp (Multiset.mem_of_le hle (Multiset.mem_cons_self _ _))`. Establish `hu : Finset.univ.val = j ::ₘ (Finset.univ.val.erase j)` using `(Multiset.cons_erase (Finset.mem_univ_val j)).symm`.
+
+Rewrite `hle` using `[hu, Multiset.map_cons, hj, Multiset.cons_le_cons_iff]`. Take `⟨i, hi, hi2⟩` from `Multiset.mem_map.mp (Multiset.mem_of_le hle (Multiset.mem_singleton_self _))`. Use `⟨i, j, ?_, hi2, hj⟩` and prove the remaining obligations. Conclude with `((Multiset.Nodup.mem_erase_iff Finset.univ.nodup).mp hi).1`.
+-/
 theorem two_roots {n : ℕ} (f : Fin n → ℂ) (r1 r2 : ℂ) (G : Polynomial ℂ) (k : ℂ) (hk : k ≠ 0)
     (h : ∀ u, (∏ s, (u - f s)) * k = (u - r1) * (u - r2) * G.eval u) :
     ∃ i j, i ≠ j ∧ f i = r2 ∧ f j = r1 := by
@@ -102,15 +137,26 @@ end GlobalTheory.CapelliRoots
 namespace GlobalTheory.CapelliRoots
 open Formalism.REAL
 
+/- English proof (translation)
+Simplify using `[Formalism.REAL.Tm, h]`.
+-/
 theorem Tm_ne {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ} (E : Fin n → Fin n → Module.End ℂ V)
     (x : ℂ) (a b : Fin n) (h : a ≠ b) : Formalism.REAL.Tm E x a b = E a b := by
   simp [Formalism.REAL.Tm, h]
 
+/- English proof (translation)
+Simplify using `[Formalism.REAL.Tm, Module.algebraMap_end_apply, h, add_mul]`.
+-/
 theorem Tm_diag_apply {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ} (E : Fin n → Fin n → Module.End ℂ V)
     (ℓ : V →ₗ[ℂ] ℂ) (a : Fin n) (γ : ℂ) (h : ∀ v, ℓ (E a a v) = γ * ℓ v) (x : ℂ) (w : V) :
     ℓ (Formalism.REAL.Tm E x a a w) = (x + γ) * ℓ w := by
   simp [Formalism.REAL.Tm, Module.algebraMap_end_apply, h, add_mul]
 
+/- English proof (translation)
+Establish `h` using `hE p p c d`. Rewrite `h` using `[if_neg (Ne.symm hc), if_neg hd, sub_zero, sub_eq_zero]`. Unfold `Formalism.REAL.Tm`. Rewrite using `[if_pos rfl]`. Use `Commute.add_left (Algebra.commute_algebraMap_left _ _) (Commute.add_right ?_ h)` and prove the remaining obligations.
+
+Use `split_ifs`. Conclude with `Algebra.commute_algebraMap_right _ _`. Conclude with `Commute.zero_right _`.
+-/
 theorem Tm_comm {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ} (E : Fin n → Fin n → Module.End ℂ V)
     (hE : Formalism.REAL.GlRel E) (p c d : Fin n) (hc : c ≠ p) (hd : d ≠ p) (x y : ℂ) :
     Commute (Formalism.REAL.Tm E y p p) (Formalism.REAL.Tm E x c d) := by
@@ -123,6 +169,9 @@ theorem Tm_comm {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ} (E : Fin n 
   · exact Algebra.commute_algebraMap_right _ _
   · exact Commute.zero_right _
 
+/- English proof (translation)
+Distinguish the cases in `h : a = b`. Use `⟨1, algebraMap ℂ _ (-g) + E a b, fun u => ?_⟩` and prove the remaining obligations. Simplify using `only [Formalism.REAL.Tm, if_pos h, one_mul, ← add_assoc, ← map_add, sub_eq_add_neg]`. Conclude with `⟨0, E a b, fun u => by simp [Formalism.REAL.Tm, h]⟩`.
+-/
 theorem Tm_affine {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ} (E : Fin n → Fin n → Module.End ℂ V)
     (g : ℂ) (a b : Fin n) : ∃ (c : ℂ) (D : Module.End ℂ V), ∀ u,
       Formalism.REAL.Tm E (u - g) a b = algebraMap ℂ _ (c * u) + D := by
@@ -131,6 +180,11 @@ theorem Tm_affine {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ} (E : Fin 
     simp only [Formalism.REAL.Tm, if_pos h, one_mul, ← add_assoc, ← map_add, sub_eq_add_neg]
   · exact ⟨0, E a b, fun u => by simp [Formalism.REAL.Tm, h]⟩
 
+/- English proof (translation)
+Establish `hx : Equiv.swap 0 q p ≠ 0`. Introduce `h`. Rewrite `h` using `[Equiv.swap_apply_eq_iff, Equiv.swap_apply_left]`. Conclude with `hpq h`. Establish `h0l : (0 : Fin (m + 2)) ≠ Fin.last (m + 1)` using `by simp [Fin.ext_iff]`.
+
+Use `⟨Equiv.swap 0 q * Equiv.swap (Fin.last (m + 1)) (Equiv.swap 0 q p), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Equiv.Perm.mul_apply, Equiv.swap_apply_of_ne_of_ne h0l hx.symm, Equiv.swap_apply_left]`. Rewrite using `[Equiv.Perm.mul_apply, Equiv.swap_apply_left, Equiv.swap_apply_self]`.
+-/
 theorem perm_ends {m : ℕ} (p q : Fin (m + 2)) (hpq : p ≠ q) :
     ∃ τ : Equiv.Perm (Fin (m + 2)), τ 0 = q ∧ τ (Fin.last (m + 1)) = p := by
   have hx : Equiv.swap 0 q p ≠ 0 := by
@@ -142,6 +196,29 @@ theorem perm_ends {m : ℕ} (p q : Fin (m + 2)) (hpq : p ≠ q) :
   · rw [Equiv.Perm.mul_apply, Equiv.swap_apply_of_ne_of_ne h0l hx.symm, Equiv.swap_apply_left]
   · rw [Equiv.Perm.mul_apply, Equiv.swap_apply_left, Equiv.swap_apply_self]
 
+/- English proof (translation)
+Use `set F : Fin (m+2) → Module.End ℂ V := fun k => Formalism.REAL.Tm E (u - ((k : ℕ) : ℂ)) (τ (σ k)) (τ k) with hF`. Distinguish the cases in `hl : σ (Fin.last (m+1)) = Fin.last (m+1)`. Distinguish the cases in `h0 : σ 0 = 0`. Rewrite using `[if_pos ⟨h0, hl⟩, List.ofFn_succ, List.ofFn_succ']`. Simplify using `only [List.prod_cons, List.concat_eq_append, List.prod_append, List.prod_singleton, List.prod_nil, mul_one, Module.End.mul_apply]`.
+
+Establish `hcomm : Commute (F (Fin.last m).succ) (List.ofFn fun i : Fin m => F i.castSucc.succ).prod`. Apply `Commute.list_prod_right` to reduce the goal to its premises. Introduce `X hX`. Take `⟨i, rfl⟩` from `List.mem_ofFn.mp hX`. Establish `hne : (i.castSucc.succ : Fin (m+2)) ≠ Fin.last (m+1)`.
+
+Simplify using `[Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Establish `hσne : σ i.castSucc.succ ≠ Fin.last (m+1)` using `fun h => hne (σ.injective (h.trans hl.symm))`. Simplify using `only [hF, Fin.succ_last, hl, hτl]`. Conclude with `Tm_comm E hE p _ _ (fun h => hσne (τ.injective (h.trans hτl.symm))) (fun h => hne (τ.injective (h.trans hτl.symm))) _ _`.
+
+Establish `hw` using `LinearMap.congr_fun hcomm.eq v`. Simplify using `only [Module.End.mul_apply] at hw`. Rewrite using `[← hw]`. Simplify using `only [hF, h0, hτ0, Fin.succ_last, hl, hτl]`. Rewrite using `[Tm_diag_apply E ℓ q β h4, Tm_diag_apply E ℓ p α h3]`.
+
+Simplify using `only [Fin.val_zero, Fin.val_last, Nat.cast_zero, sub_zero, Nat.cast_add, Nat.cast_one, Nat.cast_succ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg (fun h => h0 h.1), mul_zero, List.ofFn_succ, List.prod_cons, Module.End.mul_apply]`. Establish `hne : τ (σ 0) ≠ q` using `fun h => h0 (τ.injective (h.trans hτ0.symm) |>.trans rfl)`. Simplify using `only [hF, hτ0]`.
+
+Rewrite using `[Tm_ne E _ _ _ hne]`. Conclude with `h2 _ hne _`. Rewrite using `[if_neg (fun h => hl h.2), mul_zero]`. Establish `hσk0 : σ (σ.symm (Fin.last (m+1))) = Fin.last (m+1)` using `σ.apply_symm_apply _`. Establish `hk0 : σ.symm (Fin.last (m+1)) ≠ Fin.last (m+1)` using `fun h => hl (by rw [h] at hσk0; exact hσk0)`.
+
+Establish `hk0v : ((σ.symm (Fin.last (m+1)) : Fin (m+2)) : ℕ) < m + 1`. Conclude with `Fin.val_lt_last hk0`. Establish `hτk0 : τ (σ.symm (Fin.last (m+1))) ≠ p` using `fun h => hk0 (τ.injective (h.trans hτl.symm))`. Establish `hlen : ((σ.symm (Fin.last (m+1)) : Fin (m+2)) : ℕ) < (List.ofFn F).length` using `by rw [List.length_ofFn]; omega`. Rewrite using `[← List.take_append_drop ((σ.symm (Fin.last (m+1)) : Fin (m+2)) : ℕ) (List.ofFn F), List.drop_eq_getElem_cons hlen, List.getElem_ofFn]`.
+
+Simplify using `only [List.prod_append, List.prod_cons, Module.End.mul_apply]`. Establish `hFk0 : F (σ.symm (Fin.last (m+1))) = E p (τ (σ.symm (Fin.last (m+1))))`. Simplify using `only [hF, hσk0, hτl]`. Conclude with `Tm_ne E _ _ _ hτk0.symm`. Simplify using `only [Fin.eta]`.
+
+Rewrite using `[hFk0]`. Use `kill_left E hE p ℓ h1 _ ?_ _ hτk0 _` and prove the remaining obligations. Introduce `X hX`. Take `⟨j, hj, rfl⟩` from `List.mem_take_iff_getElem.mp hX`. Establish `hj1 : j < ((σ.symm (Fin.last (m+1)) : Fin (m+2)) : ℕ)` using `lt_of_lt_of_le hj (min_le_left _ _)`.
+
+Establish `hj2 : j < m + 2` using `by omega`. Use `⟨u - (j : ℂ), τ (σ ⟨j, hj2⟩), τ ⟨j, hj2⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Use `τ.injective (h.trans hτl.symm)` as an intermediate fact. Simplify using `[Fin.ext_iff] at this`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[List.getElem_ofFn]`.
+-/
 theorem term_eq {V : Type} [AddCommGroup V] [Module ℂ V] {m : ℕ} (E : Fin (m+2) → Fin (m+2) → Module.End ℂ V)
     (hE : Formalism.REAL.GlRel E) (p q : Fin (m+2)) (ℓ : V →ₗ[ℂ] ℂ) (α β : ℂ)
     (h1 : ∀ b, b ≠ p → ∀ v, ℓ (E p b v) = 0) (h2 : ∀ a, a ≠ q → ∀ v, ℓ (E a q v) = 0)
@@ -213,6 +290,29 @@ end GlobalTheory.CapelliRoots
 namespace GlobalTheory.CapelliRoots
 open Formalism.REAL
 
+/- English proof (translation)
+Introduce `V _ _ n E χ hE hq p q hpq ℓ α β hℓ h1 h2 h3 h4`. Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v, ℓ v ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hℓ (LinearMap.ext h)`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨m, rfl⟩ : ∃ m, n = m + 2 := by`. Use `⟨n - 2, ?_⟩` and prove the remaining obligations. Use `Fin.val_ne_of_ne hpq` as an intermediate fact. Use `p.2` as an intermediate fact. Use `q.2` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Take `⟨τ, hτ0, hτl⟩` from `perm_ends p q hpq`. Establish `hdet : ∀ u, qdet E u = qminor E τ τ u`. Introduce `u`. Establish `r` using `Formalism.REAL.qSkewRow (Module.End ℂ V) (m+2) (m+2) E id id τ u`.
+
+Establish `c` using `Formalism.REAL.qSkewCol (Module.End ℂ V) (m+2) (m+2) E hE τ id τ u`. Simplify using `only [Function.id_comp] at r c`. Rewrite using `[c, r, ← mul_assoc, ← Int.cast_mul, ← Units.val_mul, Int.units_mul_self]`. Simplify using `[qdet]`. Establish `hpolyσ : ∀ σ : Equiv.Perm (Fin (m+2)), ∃ P : Polynomial ℂ, ∀ u, ℓ ((List.ofFn fun i : Fin m => Formalism.REAL.Tm E (u - (((i.castSucc.succ : Fin (m+2)) : ℕ) : ℂ)) (τ (σ i.castSucc.succ)) (τ i.castSucc.succ)).prod v) = P.eval u`.
+
+Introduce `σ`. Establish `hmem : ∀ f ∈ (List.ofFn fun i : Fin m => fun u : ℂ => Formalism.REAL.Tm E (u - (((i.castSucc.succ : Fin (m+2)) : ℕ) : ℂ)) (τ (σ i.castSucc.succ)) (τ i.castSucc.succ)), ∃ (c : ℂ) (D : Module.End ℂ V), ∀ u, f u = algebraMap ℂ _ (c * u) + D`. Introduce `f hf`. Take `⟨i, rfl⟩` from `List.mem_ofFn.mp hf`. Conclude with `Tm_affine E _ _ _`.
+
+Take `⟨P, hP⟩` from `poly_of_list _ hmem ℓ v`. Use `⟨P, fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[← hP u, List.map_ofFn]`. Both sides reduce to the same expression. Use `choose P hP using hpolyσ`.
+
+Set `G : Polynomial ℂ` to `∑ σ : Equiv.Perm (Fin (m+2)), if σ 0 = 0 ∧ σ (Fin.last (m+1)) = Fin.last (m+1) then Polynomial.C (((Equiv.Perm.sign σ : ℤ) : ℂ)) * P σ else 0`. Establish `key : ∀ u : ℂ, (∏ s, (u - ((((m + 2 : ℕ) : ℂ) - 1) / 2 - χ s))) * ℓ v = (u - (-β)) * (u - ((m : ℂ) + 1 - α)) * G.eval u`. Introduce `u`. Establish `e1` using `congrArg ℓ (hq (u - (((m + 2 : ℕ) : ℂ) - 1) / 2) v)`. Rewrite `e1` using `[sub_add_cancel, hdet, map_smul, smul_eq_mul]`.
+
+Establish `hprod : (∏ s, (u - ((((m + 2 : ℕ) : ℂ) - 1) / 2 - χ s))) = ∏ s, (u - (((m + 2 : ℕ) : ℂ) - 1) / 2 + χ s)` using `Finset.prod_congr rfl (fun s _ => by ring)`. Rewrite using `[hprod, ← e1]`. Unfold `Formalism.REAL.qminor`. Simplify using `only [LinearMap.sum_apply, map_sum, Module.End.mul_apply, Module.End.intCast_apply, map_zsmul]`. Simplify using `only [term_eq E hE p q ℓ α β h1 h2 h3 h4 τ _ hτ0 hτl u v]`.
+
+Simplify using `only [G, Polynomial.eval_finset_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun σ _ => ?_)` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[Polynomial.eval_mul, Polynomial.eval_C, ← hP σ u, zsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using the standard rewrite rules. Take `⟨i, j, hij, hi, hj⟩` from `two_roots (fun s => (((m + 2 : ℕ) : ℂ) - 1) / 2 - χ s) (-β) ((m : ℂ) + 1 - α) G (ℓ v) hv key`. Use `⟨i, j, hij, ?_, ?_⟩` and prove the remaining obligations. Move the coercions through the operations in `at hi ⊢`. Take the linear combination `-hi`.
+
+Move the coercions through the operations in `at hj ⊢`. Take the linear combination `-hj`.
+-/
 theorem two_roots_of_parabolic_functional : ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (n : ℕ) (E : Fin n → Fin n → Module.End ℂ V) (χ : Fin n → ℂ), GlRel E → (∀ (Y : ℂ) (v : V), qdet E (Y + ((n : ℂ) - 1) / 2) v = (∏ s, (Y + χ s)) • v) → ∀ (p q : Fin n), p ≠ q → ∀ (ℓ : V →ₗ[ℂ] ℂ) (α β : ℂ), ℓ ≠ 0 → (∀ b, b ≠ p → ∀ v, ℓ (E p b v) = 0) → (∀ a, a ≠ q → ∀ v, ℓ (E a q v) = 0) → (∀ v, ℓ (E p p v) = α * ℓ v) → (∀ v, ℓ (E q q v) = β * ℓ v) → ∃ i j, i ≠ j ∧ χ i = α - ((n : ℂ) - 1) / 2 ∧ χ j = β + ((n : ℂ) - 1) / 2 := by
   intro V _ _ n E χ hE hq p q hpq ℓ α β hℓ h1 h2 h3 h4
   obtain ⟨v, hv⟩ : ∃ v, ℓ v ≠ 0 := by

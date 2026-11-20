@@ -32,14 +32,41 @@ def conjH (P Q : Matrix (Fin m) (Fin m) ℂ) (hQP : Q * P = 1) (hPQ : P * Q = 1)
     show Continuous fun x : Matrix (Fin m) (Fin m) ℂ => P * x * Q
     exact (continuous_const.matrix_mul continuous_id).matrix_mul continuous_const
 
+/- English proof (translation)
+Use `show Continuous fun x : Matrix (Fin m) (Fin m) ℂ => a * x`. Conclude with `continuous_const.matrix_mul continuous_id`.
+-/
 lemma continuous_lmulQ (a : Matrix (Fin m) (Fin m) ℂ) : Continuous (lmulQ (m := m) a) := by
   show Continuous fun x : Matrix (Fin m) (Fin m) ℂ => a * x
   exact continuous_const.matrix_mul continuous_id
 
+/- English proof (translation)
+Use `show Continuous fun x : Matrix (Fin m) (Fin m) ℂ => x * a`. Conclude with `continuous_id.matrix_mul continuous_const`.
+-/
 lemma continuous_rmulQ (a : Matrix (Fin m) (Fin m) ℂ) : Continuous (rmulQ (m := m) a) := by
   show Continuous fun x : Matrix (Fin m) (Fin m) ℂ => x * a
   exact continuous_id.matrix_mul continuous_const
 
+/- English proof (translation)
+Introduce `m ε T S P Q hQP hPQ hS hR μ hσ h0 hcar hl s hs`. Use `set Φ : UJ ε → MtM m := fun g => fun i j => (Q * uMat g * P) i j with hΦdef`. Establish `hΦc : Φ = conjH P Q hQP hPQ ∘ coeMatrixAlt ε` using `rfl`. Establish `hemb : MeasurableEmbedding Φ`. Rewrite using `[hΦc]`.
+
+Conclude with `((conjH P Q hQP hPQ).isClosedEmbedding.comp (isClosedEmbeddingMatrix m ε).1).measurableEmbedding`. Establish `hΦm : Measurable Φ` using `hemb.measurable`. Establish `hH : IsHaarOnM S (μ.map Φ)`. Use `⟨hemb.sigmaFinite_map, (Measure.map_ne_zero_iff hΦm.aemeasurable).2 h0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hemb.map_apply]`.
+
+Use `measure_mono_null (fun g hg => ?_) hcar` and prove the remaining obligations. Introduce `hT`. Conclude with `hg ((hS _).1 ⟨g.2, hT⟩)`. Introduce `s' hs'`. Establish `ht : inUJ ε (P * s' * Q) ∧ P * s' * Q ∈ T`.
+
+Use `(hS _).2 ?_` and prove the remaining obligations. Rewrite using `[show Q * (P * s' * Q) * P = (Q * P) * s' * (Q * P) by simp only [Matrix.mul_assoc], hQP, Matrix.one_mul, Matrix.mul_one]`. Conclude with `hs'`. Establish `hr : P * s' * Q ∈ Set.range (coeMatrixAlt ε)` using `by rw [range_coeMatrix]; exact ht.1`. Take `⟨t, htt⟩` from `hr`.
+
+Establish `hcomm : lmulQ s' ∘ Φ = Φ ∘ (fun x => t * x)`. Use function extensionality and compare the values at `g`. Use `show s' * Matrix.of (fun i j => (Q * uMat g * P) i j) = fun i j => (Q * uMat (t * g) * P) i j`. Establish `hu : uMat (t * g) = coeMatrixAlt ε t * uMat g` using `rfl`. Rewrite using `[hu, htt]`.
+
+Use function extensionality and compare the values at `i j`. Use `show (s' * (Q * uMat g * P)) i j = (Q * (P * s' * Q * uMat g) * P) i j`. Rewrite using `[show Q * (P * s' * Q * uMat g) * P = (Q * P) * s' * (Q * uMat g * P) by`. Simplify using `only [Matrix.mul_assoc], hQP, Matrix.one_mul]`. Establish `htT : t ∈ {g : UJ ε | uMat g ∈ T}` using `by show coeMatrixAlt ε t ∈ T`.
+
+Rewrite using `[htt]`. Conclude with `ht.2`. Rewrite using `[Measure.map_map (continuous_lmulQ s').measurable hΦm, hcomm, ← Measure.map_map hΦm (continuous_const_mul t).measurable, hl t htT]`. Establish `hRI` using `hR _ hH`. Establish `hs' : Q * uMat s * P ∈ S` using `(hS _).1 ⟨s.2, hs⟩`.
+
+Establish `hcomm : Φ ∘ (fun x => x * s) = rmulQ (Q * uMat s * P) ∘ Φ`. Use function extensionality and compare the values at `g`. Use `show (fun i j => (Q * uMat (g * s) * P) i j) = Matrix.of (fun i j => (Q * uMat g * P) i j) * (Q * uMat s * P)`. Establish `hu : uMat (g * s) = uMat g * uMat s` using `rfl`. Rewrite using `[hu]`.
+
+Use function extensionality and compare the values at `i j`. Use `show (Q * (uMat g * uMat s) * P) i j = ((Q * uMat g * P) * (Q * uMat s * P)) i j`. Rewrite using `[show (Q * uMat g * P) * (Q * uMat s * P) = Q * uMat g * (P * Q) * uMat s * P by`. Simplify using `only [Matrix.mul_assoc], hPQ, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Establish `hmap : (μ.map (fun x => x * s)).map Φ = μ.map Φ`. Rewrite using `[Measure.map_map hΦm (continuous_mul_const s).measurable, hcomm, ← Measure.map_map (continuous_rmulQ _).measurable hΦm, hRI _ hs']`. Rewrite using `[← hemb.comap_map (μ.map (fun x => x * s)), hmap, hemb.comap_map]`.
+-/
 theorem transfer_holds : Transfer := by
   intro m ε T S P Q hQP hPQ hS hR μ hσ h0 hcar hl s hs
   set Φ : UJ ε → MtM m := fun g => fun i j => (Q * uMat g * P) i j with hΦdef

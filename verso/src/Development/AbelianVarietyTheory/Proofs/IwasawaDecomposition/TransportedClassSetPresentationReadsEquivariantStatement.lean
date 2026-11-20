@@ -12,6 +12,9 @@ open Formalism.IndefR.RecTie Formalism.IndefR.Lev Formalism.L2.Rows GlobalTheory
 set_option maxHeartbeats 4000000
 set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Mem.TransportRead.transport_ext_eq | exact GlobalTheory.Mem.TransportRead.transport_ext_eq | (intros; apply GlobalTheory.Mem.TransportRead.transport_ext_eq <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.transportedClassSetPresentation_reads_equivariant : ∀ {K : Type} [Field K] [NumberField K] [StarRing K] {S : Formalism.L2.Col.GSD K} {G Γ G' Γ' : Type}
     [Group G] [Group Γ] [Group G'] [Group Γ'] {ι : Γ →* G} {J : Subgroup G} (A : Bridge.AdPts S ι J) (h : S.Ok)
     {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] (σ : K →+* ℂ) (ρ : Γ →* Module.End ℂ W) (χ : J →* ℂˣ)

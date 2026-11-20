@@ -24,11 +24,19 @@ noncomputable section
 
 namespace GlobalTheory.SquareAgree.StabLieAdelic
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU]`.
+-/
 theorem conjU_one {D : D7} (V : HSp D) {J : Matrix (Fin V.rank) (Fin V.rank) D.host.E} (c : D.host.E)
     (h : J = c • V.gram) : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU V c h 1 = 1 := by
   apply Subtype.ext
   simp [GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU]
 
+/- English proof (translation)
+Take `⟨m, c, g, hg⟩` from `Submodule.mem_span_set'.mp hΦ`. Establish `hg' : ∀ i, ∃ f φ, f ∈ M.Pol ψ emb ∧ (∀ v, φ v ∈ GlobalTheory.WeilM.SB _) ∧ (∀ᶠ v in Filter.cofinite, φ v = M.vac v) ∧ (g i : (Fin n × Fin d → AF F) → ℂ) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ` using `fun i => (g i).2`. Use `choose f φ hf hSB hvac hpure using hg'`. Use `⟨m, fun i => c i • f i, φ, fun i => ⟨(M.Pol ψ emb).smul_mem _ (hf i), hSB i, hvac i⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hg]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hpure i]`. Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, Pi.smul_apply, SchwartzMap.smul_apply, smul_eq_mul, mul_assoc]`.
+-/
 theorem exists_sum_pure {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {Y : Spc F E n} {Wd : Spc F E d} (M : Model σ Y Wd) (ψ : AddChar (AF F) ℂ)
     (emb : ∀ w : InfinitePlace F, GlobalTheory.AdelicU.EmbOver E w) {Φ : (Fin n × Fin d → AF F) → ℂ}
@@ -52,6 +60,19 @@ end GlobalTheory.SquareAgree.StabLieAdelic
 
 open GlobalTheory.SquareAgree.StabLieAdelic in
 
+/- English proof (translation)
+Introduce `hPr D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ _hTr hO hT Pi rf rl p p' _hMa N' hN τ Y hY ΦD hΦD Φ₀ hD`. Establish `hψ` using `hO.psi`. Substitute `hψ` using the available equality. Take `⟨γ, hγ, hγt⟩` from `GlobalTheory.KapXLine.exists_line D θ X τ Y hθ hY e Γ.W hO.JX`. Take `⟨δ, hδ⟩` from `GlobalTheory.T.exists_line_operator_polynomial hPr Bs Γ Xc om om' hT γ hγ`.
+
+Take `⟨m, f, φ, hfφ, hΦ⟩` from `exists_sum_pure Γ.M' Bs.ψ Bs.emb (hN.le hΦD)`. Establish `hΨalg : (∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (δ (f i)) (φ i)) ∈ algD Γ.M' Bs.ψ Bs.emb` using `Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨δ (f i), φ i, (hδ (f i) (hfφ i).1).1, (hfφ i).2.1, (hfφ i).2.2, rfl⟩`. Establish `hpt : ∀ x, HasDerivAt (fun t : ℝ => om' (1, γ (Multiplicative.ofAdd t)) ΦD x) ((∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (δ (f i)) (φ i)) x) 0`. Introduce `x`. Establish `hsum` using `HasDerivAt.fun_sum (u := Finset.univ) fun i _ => (hδ (f i) (hfφ i).1).2 _ (GlobalTheory.ThK.EvUniqInf.rest_pure (f i) (φ i) (hfφ i).2.1 (((hfφ i).2.2.and hT.geo.hM'.std).mono fun v hv => hv.1.trans hv.2)) x`.
+
+Establish `hfun : (fun t : ℝ => om' (1, γ (Multiplicative.ofAdd t)) ΦD x) = fun t => ∑ i, om' (1, γ (Multiplicative.ofAdd t)) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f i) (φ i)) x`. Use function extensionality and compare the values at `t`. Rewrite using `[hΦ, map_sum, Finset.sum_apply]`. Rewrite using `[hfun, Finset.sum_apply]`. Conclude with `hsum`.
+
+Establish `hΨN` using `hN.stabLie γ hγ ΦD hΦD _ hΨalg hpt`. Take `⟨Φ₁, hΦ₁, hD₁⟩` from `hO.algB' _ hΨalg`. Use `⟨_, hΨN, Φ₁, hΦ₁, hD₁, fun z => ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ t : ℝ, ωB (1, oneP θ X τ Y t) Φ₀ z = GlobalTheory.WeilM.thetaSum D.host.F (Γ.M'.co.rho Bs.ψ (cB.symm z) (om' (1, γ (Multiplicative.ofAdd t)) ΦD))`. Introduce `t`.
+
+Establish `h` using `(hO.weilB ΦD Φ₀ hD 1 (oneP θ X τ Y t)).2 (cB.symm z)`. Rewrite `h` using `[conjU_one, ← hγt t, AddEquiv.apply_symm_apply]`. Conclude with `h.symm`. Establish `h2 : Φ₁ z = GlobalTheory.WeilM.thetaSum D.host.F (Γ.M'.co.rho Bs.ψ (cB.symm z) (∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (δ (f i)) (φ i)))`. Rewrite using `[hD₁.2 (cB.symm z), AddEquiv.apply_symm_apply]`.
+
+Use `show HasDerivAt (fun t : ℝ => ωB (1, oneP θ X τ Y t) Φ₀ z) (Φ₁ z) 0`. Rewrite using `[funext h1, h2, hΦ]`. Conclude with `GlobalTheory.T.weil_model_standard_character hPr Γ.M' Bs.ψ Xc.α (Xc.α / Xc.β) om' hT.base.cm hT.base.std hT.geo.hM' hT.weil' γ hγ m f (fun i => δ (f i)) φ (fun i => ⟨(hfφ i).2.1, (hfφ i).2.2⟩) (fun i => (hδ (f i) (hfφ i).1).2) (cB.symm z)`.
+-/
 theorem GlobalTheory.SquareAgree.StabLieAdelic.stabLie_adelic : GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))
     (𝓕₁ : Set (GA D W₁)) (ωA : WRep W X) (ωB : WRep W₁ X) (e : Fin X.rank ≃ Fin (W.rank + W₁.rank))

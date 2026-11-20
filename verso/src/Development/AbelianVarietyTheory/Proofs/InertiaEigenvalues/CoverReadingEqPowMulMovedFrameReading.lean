@@ -30,6 +30,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 omit [IsCMField E] in
 
+/- English proof (translation)
+Establish `hli : ∀ v, ((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ ((γ : Matrix (Fin r) (Fin r) E) *ᵥ v) = v` using `fun v => by rw [Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Set `f : L₂ →ₗ[𝓞 E] L₁` to `{ toFun := fun a => ⟨(γ : Matrix (Fin r) (Fin r) E) *ᵥ (a : Fin r → E), by`. Rewrite using `[← SetLike.mem_coe, h]`. Conclude with `⟨a, a.2, rfl⟩⟩`. Use the proof step `map_add' := fun a b => Subtype.ext (by simp [Matrix.mulVec_add])`.
+
+Use the proof step `map_smul' := fun s a => Subtype.ext (by simp [Matrix.mulVec_smul]) }`. Use `⟨LinearEquiv.ofBijective f ⟨fun a b hab => Subtype.ext ?_, fun v => ?_⟩, fun _ => rfl⟩` and prove the remaining obligations. Rewrite using `[← hli a, ← hli b]`. Conclude with `congrArg _ (congrArg Subtype.val hab)`. Establish `hv : (v : Fin r → E) ∈ (L₁ : Set (Fin r → E))` using `v.2`.
+
+Rewrite `hv` using `[h]`. Take `⟨u, hu, e⟩` from `hv`. Conclude with `⟨⟨u, hu⟩, Subtype.ext e⟩`.
+-/
 theorem exists_latEquiv (L₁ L₂ : Submodule (𝓞 E) (Fin r → E)) (γ : GL (Fin r) E)
     (h : (L₁ : Set (Fin r → E)) = (γ : Matrix (Fin r) (Fin r) E).mulVec '' (L₂ : Set _)) :
     ∃ f : L₂ ≃ₗ[𝓞 E] L₁, ∀ a, (f a : Fin r → E) = (γ : Matrix (Fin r) (Fin r) E) *ᵥ (a : Fin r → E) := by
@@ -49,6 +56,13 @@ theorem exists_latEquiv (L₁ L₂ : Submodule (𝓞 E) (Fin r → E)) (γ : GL 
     obtain ⟨u, hu, e⟩ := hv
     exact ⟨⟨u, hu⟩, Subtype.ext e⟩
 
+/- English proof (translation)
+Establish `hu : ∀ t : E →+* ℂ, IsUnit ((γ : Matrix (Fin r) (Fin r) E).map t).det` using `fun t => (Matrix.isUnit_iff_isUnit_det _).1 (γ.isUnit.map t.mapMatrix)`. Rewrite `hγ` using `[hG]`. Unfold `perFr`. Rewrite using `[hp, hG]`. Distinguish the cases in `h₁ : τ ∈ X.Ψ`.
+
+Rewrite using `[dif_pos h₁, dif_pos ((hΨ τ).2 h₁), hx τ h₁, GlobalTheory.PerMove.emb_mulVec, Matrix.mul_inv_rev, Matrix.mulVec_mulVec, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (hu _), Matrix.mul_one]`. Rewrite using `[dif_neg h₁, dif_neg (mt (hΨ τ).1 h₁)]`. Distinguish the cases in `h₂ : conjEmb τ ∈ X.Ψ`. Rewrite using `[dif_pos h₂, dif_pos ((hΨ _).2 h₂), hx _ h₂]`. Simplify using `only [GlobalTheory.PerMove.emb_mulVec, GlobalTheory.PerMove.col_mul, GlobalTheory.PerMove.hermC_unitary _ _ _ hγ]`.
+
+Rewrite using `[dif_neg h₂, dif_neg (mt (hΨ _).1 h₂)]`.
+-/
 theorem perFr_move (X X' : Data E r) (hΨ : ∀ τ, τ ∈ X'.Ψ ↔ τ ∈ X.Ψ) (hp : X'.p0 = X.p0) (hG : X'.Gm = X.Gm)
     (γ : GL (Fin r) E)
     (hγ : ∀ u v, herm X'.Gm ((γ : Matrix (Fin r) (Fin r) E) *ᵥ u) ((γ : Matrix (Fin r) (Fin r) E) *ᵥ v) =
@@ -72,10 +86,16 @@ theorem perFr_move (X X' : Data E r) (hΨ : ∀ τ, τ ∈ X'.Ψ ↔ τ ∈ X.Ψ
 
 end Lattice
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, zero_mem _, by rw [map_one, Units.val_one, Matrix.one_mulVec, smul_zero, add_zero]⟩`.
+-/
 theorem congr_one {G A : Type} [Group G] [CommRing A] {n : ℕ} (f : G →* GL (Fin n) A) (L : AddSubgroup (Fin n → A))
     (M : ℕ) (z : Fin n → A) : ∃ w ∈ L, (f 1).1 *ᵥ z = z + M • w :=
   ⟨0, zero_mem _, by rw [map_one, Units.val_one, Matrix.one_mulVec, smul_zero, add_zero]⟩
 
+/- English proof (translation)
+Take `⟨w, hw, e⟩` from `h`. Conclude with `⟨p • w, nsmul_mem hw p, e.trans (mul_smul M p w)⟩`.
+-/
 theorem congr_of_mul {A : Type} [AddCommGroup A] (L : AddSubgroup A) (M p : ℕ) {x : A}
     (h : ∃ w ∈ L, x = (M * p) • w) : ∃ w ∈ L, x = M • w := by
   obtain ⟨w, hw, e⟩ := h
@@ -83,6 +103,17 @@ theorem congr_of_mul {A : Type} [AddCommGroup A] (L : AddSubgroup A) (M p : ℕ)
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Establish `hre : ∀ m : Matrix (Fin V.rank) (Fin V.rank) ℂ, Matrix.reindex (finCongr (rfl : V.rank = V.rank)) (finCongr rfl) m = m` using `fun m => by`. Use extensionality with `i j`. Both sides reduce to the same expression. Take `⟨δ, -, hδf, hδa⟩` from `GlobalTheory.MarkCoset.rational_matrix V _ (mul_mem hγ₁ (inv_mem hγ₂))`.
+
+Establish `hmem : ∀ v, v ∈ L₁ ↔ finVec V v ∈ latGHat V (γ₁ * h)` using `fun v => by`. Rewrite using `[← (GlobalTheory.MarkCoset.latG_spec D V _).1, ← SetLike.mem_coe, hL₁]`. Conclude with `Set.ext_iff.1 (Set.image_id _) v`. Use `⟨δ, fun τ θ hθ x => ?_, fun M p hM v₁ v₂ z h₁ h₂ => ?_⟩` and prove the remaining obligations. Establish `hmul : ∀ a b : GA D V, archM V θ (a * b) = archM V θ a * archM V θ b`.
+
+Introduce `a b`. Rewrite using `[archM, archM, archM, map_mul, Units.val_mul, Matrix.map_mul]`. Establish `e : γ₁ * h = γ₁ * γ₂⁻¹ * (γ₂ * h)` using `by group`. Rewrite using `[hre, hre, e, hmul, hδa _ _ hθ, Matrix.mul_assoc]`. Establish `hprod : γ₁ * γ₂⁻¹ * (γ₂ * h) * 1 = γ₁ * h` using `by group`.
+
+Take `⟨-, ht⟩` from `GlobalTheory.ShortMoveIso.transport (finHom V) (latGHat V) (fun g => (GlobalTheory.MarkCoset.latG_spec D V g).2) M (γ₁ * γ₂⁻¹) (γ₂ * h) 1 rfl`. Rewrite `ht` using `[hprod]`. Take `⟨y, hy, e⟩` from `ht (finVec V v₂) (finVec V v₁) z z (congr_one _ _ M z) (congr_of_mul _ M p h₂) h₁`. Take `⟨w, hw, e'⟩` from `GlobalTheory.MarkCoset.finVec_div V M hM (δ.1 *ᵥ v₂ - v₁) y (by`. Rewrite using `[← e, hδf]`.
+
+Use function extensionality and compare the values at `i`. Conclude with `TensorProduct.tmul_sub _ _ _)`. Conclude with `⟨w, (hmem w).2 (hw ▸ hy), sub_eq_iff_eq_add'.1 e'⟩`.
+-/
 theorem move_mark {D : D7} (V : HSp D) {r : ℕ} (hr : V.rank = r) (h γ₁ γ₂ : GA D V) (hγ₁ : γ₁ ∈ GQ V) (hγ₂ : γ₂ ∈ GQ V)
     (L₁ : Submodule (𝓞 D.host.E) (Fin r → D.host.E))
     (hL₁ : (L₁ : Set (Fin r → D.host.E)) =
@@ -130,6 +161,15 @@ open AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G.Semi
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l} {n : ℕ}
 
+/- English proof (translation)
+Take `rfl : g₂ = g` from `by simpa using Fintype.card_congr (e₂.trans e.symm)`. Establish `hy : (F₂.u k₂ P₂ ≫ d.r) ≫ Xo.s = spMap σ`. Rewrite using `[Category.assoc, GlobalTheory.ClsVal.Cmp.point_over_of_ne hpq hA d hle, ← Category.assoc, F₂.over_σ k₂ P₂ hP₂, GlobalTheory.ClsVal.Cmp.spMap_comp', hσ]`. Set `h : (Fin g₂ → ℂ) ≃ₗ[ℂ] (Fin g₂ → ℂ)` to `LinearEquiv.funCongrLeft ℂ ℂ (e.trans e₂.symm)`. Take `⟨h₁, h₂⟩` from `GlobalTheory.CoverExp.ex_comp_eq d.m d.pd hA hd.2.1 hd.1.2.1 hd.2.2.2.2.2.1.1 F F₂ k k₂ hP hP₂ hy gam h hEF gM fun a => funext (hh a)`.
+
+Use `⟨h₁, fun ℓ v v₂ hv hv₂ => ?_⟩` and prove the remaining obligations. Establish `k₁` using `GlobalTheory.FibreDeriv.isDerivAt0_comp hv₂ d.m.φ`. Simplify using `only [h₂] at k₁`. Establish `k₂` using `(GlobalTheory.ExpChain.isDerivAt0_comp_linear _ (GlobalTheory.ExpChain.isHolTo_ex F k P hP) h.toLinearMap _ _).1 k₁`. Establish `k₃ : h.toLinearMap (Pi.single (e₂.symm ℓ) 1) = Pi.single (e.symm ℓ) 1`.
+
+Use function extensionality and compare the values at `j`. Express the relevant statement in the definitionally equal form `(Pi.single (e₂.symm ℓ) 1 : Fin g₂ → ℂ) (e₂.symm (e j)) = _`. Rewrite using `[Pi.single_apply, Pi.single_apply]`. Conclude with `if_congr (e₂.symm.apply_eq_iff_eq.trans e.eq_symm_apply.symm) rfl rfl`. Rewrite `k₂` using `[k₃]`.
+
+Conclude with `GlobalTheory.VerticalDeriv.isDerivAt0_unique k₂ hv`.
+-/
 theorem point_over (d : DeltaDat Xo c n) (hd : d.IsLev) (hpq : Dw.p ≠ Dw.q) (hA : l.A = 1) (hle : KA l ≤ KA d.l₂)
     {σ : KA l →+* ℂ} {σ₂ : KA d.l₂ →+* ℂ} (hσ : σ₂.comp (IntermediateField.inclusion hle).toRingHom = σ)
     {ι : Type} {g g₂ : ℕ} (e : Fin g ≃ ι) (e₂ : Fin g₂ ≃ ι) {ty : Fin g → (E →+* ℂ)} {ty₂ : Fin g₂ → (E →+* ℂ)}
@@ -162,6 +202,9 @@ theorem point_over (d : DeltaDat Xo c n) (hd : d.IsLev) (hpq : Dw.p ≠ Dw.q) (h
   rw [k₃] at k₂
   exact GlobalTheory.VerticalDeriv.isDerivAt0_unique k₂ hv
 
+/- English proof (translation)
+Simplify using `[wchar, Fintype.prod_option, ex]`.
+-/
 theorem wchar_generator {S : Type} [CommRing S] (a : (E →+* ℂ) × ℕ → ℕ) (m : ℕ) (t : Sˣ) :
     wchar (ex Dw a m) (fun i => Option.elim i t (fun _ => 1)) = (t : S) ^ m := by
   simp [wchar, Fintype.prod_option, ex]
@@ -172,6 +215,15 @@ section Read
 
 open AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G.Semi
 
+/- English proof (translation)
+Use `letI : Field (CAt C.σ₂) := inferInstanceAs (Field ℂ)`. Use `letI : Algebra T.Q.c.F (CAt C.σ₂) := (show T.Q.c.F →+* CAt C.σ₂ from σ).toAlgebra`. Use `letI : Algebra C.c'.F (CAt C.σ₂) := (show C.c'.F →+* CAt C.σ₂ from C.σ₂.comp (C.d.eF : C.c'.F →+* C.d.c₂.F)).toAlgebra`. Establish `hA : AlgOver T.Q.c C.c' C.hle (CAt C.σ₂)` using `fun a => RingHom.congr_fun hσ a`. Establish `hc : ∀ x : C.c'.F, algebraMap C.d.c₂.F (CAt C.σ₂) (C.d.eF x) = algebraMap C.c'.F (CAt C.σ₂) x` using `fun _ => rfl`.
+
+Set `y₀ : FrPt (T.Q.Xo j) T.Q.c (CAt C.σ₂)` to `y`. Take `⟨z, hz, ho⟩` from `GlobalTheory.FrameLift.exists_frOver C.d hc (y₀.ext C.hle hA) y₂.x hx y₂.x_over`. Establish `hzu : y₂.u = z.u`. Use function extensionality and compare the values at `τ i`. Use `C.d.m.cart.1.hom_ext ((hu τ i).trans (ho.2.1 τ i).symm) ?_` and prove the remaining obligations.
+
+Rewrite using `[(y₂.tan τ i).1, (z.tan τ i).1, hz]`. Take `⟨t, ht⟩` from `GlobalTheory.GeoLevel.exists_frBor_gen z y₂ hz.symm hzu`. Use `⟨toC (t : CAt C.σ₂), t.ne_zero, fun n a f f₂ hf₂ hp => ?_⟩` and prove the remaining obligations. Establish `e₁` using `GlobalTheory.NonDominant.evR_weight hf₂ ht`. Rewrite `e₁` using `[wchar_generator]`.
+
+Establish `e₂` using `hp (CAt C.σ₂) hA hc z (y₀.ext C.hle hA) ho`. Conclude with `e₁.trans (congrArg (fun s => (t : CAt C.σ₂) ^ n * s) e₂)`.
+-/
 theorem read_of_over {D : D7} {T : CoreJ D} {j : ℕ} {σ : T.Q.c.F →+* ℂ} (C : Cover T j σ)
     (hσ : C.σ₂.comp C.inc = σ) (y : FrPt (T.Q.Xo j) T.Q.c (CAt σ)) (y₂ : FrPt C.d.Xo₂ C.d.c₂ (CAt C.σ₂))
     (hx : y₂.x ≫ C.d.r = y.x) (hu : ∀ τ i, y₂.u τ i ≫ C.d.m.φ = y.u τ i) :
@@ -200,6 +252,29 @@ end Read
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D T hT j hj σ hσ C hC h γ hlat hiso hfr x x' hx hx' hxx`. Take `⟨hr₁, g₁, e₁, F₁, ik₁, φ₁, th₁, -, -, hth₁, ⟨hEF₁, hper₁⟩, hd₁⟩` from `hT.adPin j hj σ hσ`. Take `⟨hlev, hA₂, hσ₂, hU₂, hdom, hr₂, g₂, e₂, F₂, ik₂, φ₂, th₂, hW₂, hth₂, ⟨hEF₂, hper₂⟩, hd₂⟩` from `hC`. Take `⟨hr₀, hW₁⟩` from `hT.modelW j hj σ hσ`. Establish `hU₁` using `hT.unf j hj σ hσ`.
+
+Establish `hA : T.Q.l.A = 1` using `hT.pins.2.1.2`. Take `⟨-, hpq, -, hq⟩` from `GlobalTheory.Member.exists_iotaOK D T.Q hT.pins j hj`. Take `⟨γ₁, hγ₁, hL₁, hm₁, hf₁⟩` from `hd₁ h`. Take `⟨γ₂, hγ₂, -, hm₂, hf₂⟩` from `hd₂ h`. Establish `hΨ : ∀ τ, τ ∈ ((T.U j σ).X (T.dict j σ h).1).Ψ ↔ τ ∈ (C.U₂.X (C.dict₂ h).1).Ψ` using `fun τ => ((hU₁.2.1 _).2 τ).trans ((hU₂.2.1 _).2 τ).symm`.
+
+Take `⟨δ, hδf, hδm⟩` from `move_mark (T.V j σ) hr₁ h γ₁ γ₂ hγ₁ hγ₂ _ hL₁`. Establish `hγδ : (γ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E) = δ`. Choose the witnesses or unpack the hypotheses as in `⟨τ, t₂⟩ : ∃ τ, τ ∈ (C.U₂.X (C.dict₂ h).1).Ψ := by`. Distinguish the cases in `h0 : D.host.φ₀ ∈ (C.U₂.X (C.dict₂ h).1).Ψ`. Conclude with `⟨_, h0⟩`.
+
+Conclude with `⟨_, not_not.1 (mt ((C.U₂.X (C.dict₂ h).1).cmType _).2 h0)⟩`. Establish `t₁` using `(hΨ τ).2 t₂`. Establish `a₂` using `hf₂ ⟨τ, t₂⟩`. Establish `a₁` using `hf₁ ⟨τ, t₁⟩`. Rewrite `a₂` using `[GlobalTheory.LettersCheck.isInfEmb_unique τ _ _ (hth₂ _ ⟨τ, t₂⟩) (hth₁ _ ⟨τ, t₁⟩)]`.
+
+Establish `a₃` using `a₁.trans ((hδf τ _ (hth₁ _ ⟨τ, t₁⟩) _).trans (congrArg (_ * ·) a₂.symm))`. Establish `a₄` using `(hfr τ t₂ t₁).symm.trans a₃`. Establish `hu : IsUnit (mat (C.dict₂ h).2 ⟨τ, t₂⟩)` using `(Matrix.isUnit_iff_isUnit_det _).2 (Ne.isUnit (hdom h ⟨τ, t₂⟩).1)`. Conclude with `Matrix.map_injective τ.injective (hu.mul_right_cancel a₄)`. Take `⟨f, hf⟩` from `exists_latEquiv _ _ γ hlat`.
+
+Set `gam` to `(φ₂ (C.dict₂ h).1).trans (f.trans (φ₁ (T.dict j σ h).1).symm)`. Establish `hgam : ∀ a, (φ₁ (T.dict j σ h).1 (gam a) : Fin D.R.r → D.host.E) = (γ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E) *ᵥ (φ₂ (C.dict₂ h).1 a : Fin D.R.r → D.host.E)` using `fun a => (congrArg Subtype.val ((φ₁ (T.dict j σ h).1).apply_symm_apply _)).trans (hf _)`. Take `⟨P₁, hP₁, hp₁, hu₁, hv₁⟩` from `hper₁ _ ⟨x', hx'⟩`. Take `⟨P₂, hP₂, hp₂, hu₂, hv₂⟩` from `hper₂ _ ⟨x, hx⟩`. Establish `hle : KA T.Q.l ≤ KA C.d.l₂` using `by rw [KA, KA, hA, hA₂]`.
+
+Establish `hrel : ∀ τ : D.host.E →+* ℂ, relab T.Q.c σ τ = relab C.d.c₂ C.σ₂ τ` using `fun τ => by`. Use extensionality with `a`. Conclude with `(RingHom.congr_fun hσ₂ _).symm.trans (congrArg C.σ₂ (Subtype.ext rfl))`. Take `⟨k₁, k₂⟩` from `point_over C.d hlev (by omega) hA hle (RingHom.ext fun a => (congrArg C.σ₂ (Subtype.ext rfl)).trans (RingHom.congr_fun hσ₂ ((IntermediateField.inclusion T.Q.c.le).toRingHom a))) e₁ e₂ F₁ F₂ _ _ hp₁ hp₂ gam (fun a b => by`. Use `(hEF₁ _ (gam a) (gam b)).trans (Eq.trans (by rw [hgam, hgam, hiso, (hW₁ _).2, (hW₂ _).2]) (hEF₂ _ a b).symm)` as an intermediate fact.
+
+Conclude with `this)` after adjusting the coercions. Use the proof step `(fun a ha => by`. Establish `b₂` using `hm₂ a ha`. Rewrite `b₂` using `[hlev.2.1]`. Take `⟨u, hu, e⟩` from `hδm T.Q.l.M C.d.pd (by have := T.Q.l.three_le; omega) _ _ _ (hm₁ a (Submodule.smul_mono_left (Ideal.map_mono hlev.1.2.1) ha)) b₂`.
+
+Use `⟨(φ₁ _).symm ⟨u, hu⟩, (φ₁ (T.dict j σ h).1).injective (Subtype.ext ?_)⟩` and prove the remaining obligations. Rewrite using `[hgam, hγδ, e, map_add, map_nsmul, LinearEquiv.apply_symm_apply]`. Use the proof step `rfl)`. Use the proof step `(fun a i => by`. Rewrite using `[hP₁, hP₂, hgam, Equiv.apply_symm_apply, hrel]`.
+
+Conclude with `perFr_move _ _ hΨ ((hU₁.2.1 _).1.trans (hU₂.2.1 _).1.symm) ((hW₁ _).1.trans (hW₂ _).1.symm) γ hiso x x' hxx _ _ _)`. Take `⟨t, ht, H⟩` from `read_of_over C hσ₂ ((T.U j σ).un _ ⟨x', hx'⟩) (C.U₂.un _ ⟨x, hx⟩) (by rw [hu₁, hu₂]; exact k₁) fun τ i => k₂ ⟨τ, i⟩ _ _ (hv₁ τ i) (hv₂ τ i)`. Use `⟨t, ht, fun n a _ f _ f₂ hf₂ hp => ?_⟩` and prove the remaining obligations. Establish `b₁ : rdU (T.U j σ) f (T.dict j σ h).1 x' = toC (evR (T.Q.Xo j) T.Q.c f ((T.U j σ).un _ ⟨x', hx'⟩))` using `dif_pos hx'`. Establish `b₂ : rdU C.U₂ f₂ (C.dict₂ h).1 x = toC (evR C.d.Xo₂ C.d.c₂ f₂ (C.U₂.un _ ⟨x, hx⟩))` using `dif_pos hx`.
+
+Rewrite using `[b₁, b₂]`. Conclude with `H n a f f₂ hf₂ hp`.
+-/
 theorem rdU_cover_eq : ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j, Formalism.L2.Pj.InR D j → ∀ σ : T.Q.c.F →+* ℂ, GoodEmb T.Q.c σ → ∀ C : Cover T j σ, C.IsUnif → ∀ (h : GA D (T.V j σ)) (γ : GL (Fin D.R.r) D.host.E), (((T.U j σ).X (T.dict j σ h).1).Λ : Set (Fin D.R.r → D.host.E)) = (γ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E).mulVec '' ((C.U₂.X (C.dict₂ h).1).Λ : Set _) → (∀ v w, herm ((T.U j σ).X (T.dict j σ h).1).Gm ((γ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E).mulVec v) ((γ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E).mulVec w) = herm (C.U₂.X (C.dict₂ h).1).Gm v w) → (∀ (τ : D.host.E →+* ℂ) (h₂ : τ ∈ (C.U₂.X (C.dict₂ h).1).Ψ) (h₁ : τ ∈ ((T.U j σ).X (T.dict j σ h).1).Ψ), mat (T.dict j σ h).2 ⟨τ, h₁⟩ = (γ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E).map τ * mat (C.dict₂ h).2 ⟨τ, h₂⟩) → ∀ (x : Frame (C.U₂.X (C.dict₂ h).1).Ψ D.R.r) (x' : Frame ((T.U j σ).X (T.dict j σ h).1).Ψ D.R.r), x ∈ (C.U₂.X (C.dict₂ h).1).dom → x' ∈ ((T.U j σ).X (T.dict j σ h).1).dom → (∀ (τ : D.host.E →+* ℂ) (h₂ : τ ∈ (C.U₂.X (C.dict₂ h).1).Ψ) (h₁ : τ ∈ ((T.U j σ).X (T.dict j σ h).1).Ψ), mat x' ⟨τ, h₁⟩ = (γ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E).map τ * mat x ⟨τ, h₂⟩) → ∃ t : ℂ, t ≠ 0 ∧ ∀ n : ℕ, ∀ (a : (D.host.E →+* ℂ) × ℕ → ℕ), Dom a n → ∀ f ∈ sec (T.Q.Xo j) T.Q.c a n, ∀ f₂ ∈ sec C.d.Xo₂ C.d.c₂ a n, C.IsPull f f₂ → rdU C.U₂ f₂ (C.dict₂ h).1 x = t ^ n * rdU (T.U j σ) f (T.dict j σ h).1 x' := by
   intro D T hT j hj σ hσ C hC h γ hlat hiso hfr x x' hx hx' hxx
   obtain ⟨hr₁, g₁, e₁, F₁, ik₁, φ₁, th₁, -, -, hth₁, ⟨hEF₁, hper₁⟩, hd₁⟩ := hT.adPin j hj σ hσ

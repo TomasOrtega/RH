@@ -10,6 +10,21 @@ noncomputable section
 open scoped TensorProduct
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Use `haveI := M.integral`. Use `haveI := M.dominant`. Distinguish the cases in `hU : (U : Set M.S).Nonempty`. Take `⟨x, hx⟩` from `M.gp.denseRange.exists_mem_open U.isOpen hU`. Establish `h1` using `germ_injective_of_isIntegral (X := M.S) (M.gp x) hx`.
+
+Establish `h2` using `M.gp.germ_stalkMap U x hx`. Establish `hcl : closure {M.gp x} = (Set.univ : Set M.S)`. Establish `hd` using `M.gp.denseRange`. Establish `hr : Set.range M.gp = {M.gp x}`. Use extensionality with `y`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩ haveI : Subsingleton (Sp (FractionRing R)) := inferInstanceAs (Subsingleton (PrimeSpectrum _))`. Rewrite using `[Subsingleton.elim z x]`. Both sides reduce to the same expression. Introduce and unpack `rfl`.
+
+Conclude with `⟨x, rfl⟩`. Rewrite using `[← hr]`. Conclude with `hd.closure_range`. Establish `hF` using `isField_stalk_of_closure_mem_irreducibleComponents M.S (M.gp x) (by rw [hcl]; simp [irreducibleComponents_eq_singleton])`. Use `letI := hF.toField`.
+
+Establish `h3 : Function.Injective (M.gp.stalkMap x).hom` using `RingHom.injective _`. Introduce `a b h`. Apply `h1` to reduce the goal to its premises. Apply `h3` to reduce the goal to its premises. Establish `ea` using `congrArg (fun φ => φ.hom a) h2`.
+
+Establish `eb` using `congrArg (fun φ => φ.hom b) h2`. Simplify using `only [CommRingCat.comp_apply] at ea eb`. Rewrite using `[ea, eb, h]`. Establish `: U = ⊥`. Use extensionality with `y`.
+
+Simplify using `only [TopologicalSpace.Opens.coe_bot, Set.mem_empty_iff_false, iff_false]`. Conclude with `fun hy => hU ⟨y, hy⟩`. Substitute `this` using the available equality. Introduce `a b _`. Conclude with `Subsingleton.elim a b`.
+-/
 theorem injective_gp_app {R : Type} [CommRing R] [IsDomain R] (M : Modif R) (U : M.S.Opens) :
     Function.Injective (M.gp.app U).hom := by
   haveI := M.integral
@@ -48,6 +63,9 @@ def fracRes (R : Type) [CommRing R] [IsDomain R] (V : (Sp (FractionRing R)).Open
   ((Sp (FractionRing R)).presheaf.map (homOfLE le_top).op).hom.comp
     (((Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).inv.hom).comp (algebraMap R (FractionRing R)))
 
+/- English proof (translation)
+Establish `: IsUnit (algebraMap R (FractionRing R) r)` using `Ne.isUnit ((map_ne_zero_iff _ (IsFractionRing.injective R (FractionRing R))).2 hr)`. Conclude with `this.map (((Sp (FractionRing R)).presheaf.map (homOfLE le_top).op).hom.comp (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).inv.hom)`.
+-/
 theorem isUnit_fracRes {R : Type} [CommRing R] [IsDomain R] (V : (Sp (FractionRing R)).Opens) {r : R} (hr : r ≠ 0) :
     IsUnit (fracRes R V r) := by
   have : IsUnit (algebraMap R (FractionRing R) r) :=
@@ -55,6 +73,17 @@ theorem isUnit_fracRes {R : Type} [CommRing R] [IsDomain R] (V : (Sp (FractionRi
   exact this.map (((Sp (FractionRing R)).presheaf.map (homOfLE le_top).op).hom.comp
     (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).inv.hom)
 
+/- English proof (translation)
+Use `haveI : Subsingleton (Sp (FractionRing R)) := inferInstanceAs (Subsingleton (PrimeSpectrum _))`. Distinguish the cases in `h : (V : Set (Sp (FractionRing R))).Nonempty`. Take `⟨x, hx⟩` from `h`. Establish `hV : V = ⊤`. Use extensionality with `y`.
+
+Simplify using `only [TopologicalSpace.Opens.coe_top, Set.mem_univ, iff_true]`. Conclude with `Subsingleton.elim x y ▸ hx`. Substitute `hV` using the available equality. Take `⟨⟨a, r⟩, hr⟩` from `IsLocalization.mk'_surjective (nonZeroDivisors R) ((Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).hom.hom k)`. Use `⟨a, r, nonZeroDivisors.ne_zero r.2, ?_⟩` and prove the remaining obligations.
+
+Establish `hmap : ((Sp (FractionRing R)).presheaf.map (homOfLE (le_top : (⊤ : (Sp (FractionRing R)).Opens) ≤ ⊤)).op) = 𝟙 _`. Rewrite using `[show (homOfLE (le_top : (⊤ : (Sp (FractionRing R)).Opens) ≤ ⊤)) = 𝟙 _ from Subsingleton.elim _ _]`. Simplify using the standard rewrite rules. Simplify using `only [fracRes, RingHom.coe_comp, Function.comp_apply, hmap, CommRingCat.hom_id, RingHom.id_apply]`. Establish `hk : k = (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).inv.hom ((Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).hom.hom k)`.
+
+Rewrite using `[← CommRingCat.comp_apply, Iso.hom_inv_id]`. Both sides reduce to the same expression. Rewrite using `[hk, ← map_mul, ← hr, IsLocalization.mk'_spec]`. Establish `hV : V = ⊥`. Use extensionality with `y`.
+
+Simplify using `only [TopologicalSpace.Opens.coe_bot, Set.mem_empty_iff_false, iff_false]`. Conclude with `fun hy => h ⟨y, hy⟩`. Substitute `hV` using the available equality. Conclude with `⟨0, 1, one_ne_zero, Subsingleton.elim _ _⟩`.
+-/
 theorem exists_mul_fracRes {R : Type} [CommRing R] [IsDomain R] (V : (Sp (FractionRing R)).Opens)
     (k : Γ(Sp (FractionRing R), V)) : ∃ a r : R, r ≠ 0 ∧ k * fracRes R V r = fracRes R V a := by
   haveI : Subsingleton (Sp (FractionRing R)) := inferInstanceAs (Subsingleton (PrimeSpectrum _))
@@ -82,6 +111,11 @@ theorem exists_mul_fracRes {R : Type} [CommRing R] [IsDomain R] (V : (Sp (Fracti
     subst hV
     exact ⟨0, 1, one_ne_zero, Subsingleton.elim _ _⟩
 
+/- English proof (translation)
+Substitute `hf` using the available equality. Establish `h` using `congrArg (fun φ => φ.hom x) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap R (FractionRing R))))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at h`. Simplify using `only [fracRes, RingHom.coe_comp, Function.comp_apply, Scheme.Hom.appLE, CommRingCat.comp_apply]`. Rewrite using `[h]`.
+
+Both sides reduce to the same expression.
+-/
 theorem appLE_jK_eq_fracRes {R : Type} [CommRing R] [IsDomain R] (f : Sp (FractionRing R) ⟶ Sp R) (hf : f = jK R)
     (V : (Sp (FractionRing R)).Opens) (e : V ≤ f ⁻¹ᵁ ⊤) (x : R) :
     (f.appLE ⊤ V e).hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom x) = fracRes R V x := by
@@ -92,12 +126,36 @@ theorem appLE_jK_eq_fracRes {R : Type} [CommRing R] [IsDomain R] (f : Sp (Fracti
   rw [h]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_comp_appLE]`. Conclude with `appLE_jK_eq_fracRes _ M.gp_π _ _ r`.
+-/
 theorem gp_app_fracRes {R : Type} [CommRing R] [IsDomain R] (M : Modif R) (U : M.S.Opens) (e : U ≤ M.π ⁻¹ᵁ ⊤) (r : R) :
     (M.gp.app U).hom ((M.π.appLE ⊤ U e).hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r)) =
       fracRes R (M.gp ⁻¹ᵁ U) r := by
   rw [← CommRingCat.comp_apply, Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_comp_appLE]
   exact appLE_jK_eq_fracRes _ M.gp_π _ _ r
 
+/- English proof (translation)
+Introduce `R _ _ M G hG Y α t hpb W U hWU hW hU`. Establish `hV : IsAffineOpen (M.gp ⁻¹ᵁ U)` using `isAffineOpen_Sp_field _ _`. Establish `hle` using `locInt_le_gen G.hom α t M.gp hpb.w W U hWU`. Establish `hUY : α ⁻¹ᵁ W = α ⁻¹ᵁ W ⊓ t ⁻¹ᵁ (M.gp ⁻¹ᵁ U)` using `(inf_eq_left.2 hle).symm`. Establish `po` using `(isIso_pushoutSection_iff hpb (US := U) (UT := M.gp ⁻¹ᵁ U) (UX := W) le_rfl hWU hUY).mp (isIso_pushoutSection_of_isAffineOpen hpb le_rfl hWU hUY hU hV hW)`.
+
+Rewrite `po` using `[Scheme.Hom.appLE_eq_app, Scheme.Hom.appLE_eq_app]`. Use `letI : Algebra Γ(M.S, U) Γ(G.left, W) := (G.hom.appLE U W hWU).hom.toAlgebra`. Use `letI : Algebra Γ(M.S, U) Γ(Sp (FractionRing R), M.gp ⁻¹ᵁ U) := (M.gp.app U).hom.toAlgebra`. Use `letI : Algebra Γ(G.left, W) Γ(Y, α ⁻¹ᵁ W) := (α.app W).hom.toAlgebra`. Use `letI : Algebra Γ(Sp (FractionRing R), M.gp ⁻¹ᵁ U) Γ(Y, α ⁻¹ᵁ W) := (t.appLE (M.gp ⁻¹ᵁ U) (α ⁻¹ᵁ W) hle).hom.toAlgebra`.
+
+Use `letI : Algebra Γ(M.S, U) Γ(Y, α ⁻¹ᵁ W) := (G.hom.appLE U W hWU ≫ α.app W).hom.toAlgebra`. Use `haveI : IsScalarTower Γ(M.S, U) Γ(G.left, W) Γ(Y, α ⁻¹ᵁ W) := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI : IsScalarTower Γ(M.S, U) Γ(Sp (FractionRing R), M.gp ⁻¹ᵁ U) Γ(Y, α ⁻¹ᵁ W) := IsScalarTower.of_algebraMap_eq' (congrArg CommRingCat.Hom.hom po.w)`. Use `haveI : Algebra.IsPushout Γ(M.S, U) Γ(G.left, W) Γ(Sp (FractionRing R), M.gp ⁻¹ᵁ U) Γ(Y, α ⁻¹ᵁ W) := CommRingCat.isPushout_iff_isPushout.mp po`. Use `haveI : Algebra.Smooth Γ(M.S, U) Γ(G.left, W) := HasRingHomProperty.appLE @AlgebraicGeometry.Smooth G.hom hG ⟨U, hU⟩ ⟨W, hW⟩ hWU`.
+
+Use `haveI : Module.Flat Γ(M.S, U) Γ(G.left, W) := inferInstance`. Set `e` to `Algebra.IsPushout.equiv Γ(M.S, U) Γ(G.left, W) Γ(Sp (FractionRing R), M.gp ⁻¹ᵁ U) Γ(Y, α ⁻¹ᵁ W)`. Establish `he1 : ∀ c : Γ(G.left, W), e (c ⊗ₜ 1) = (α.app W).hom c` using `fun c => by`. Rewrite using `[Algebra.IsPushout.equiv_tmul, map_one, _root_.mul_one]`. Both sides reduce to the same expression.
+
+Establish `hinc` using `Algebra.TensorProduct.includeLeft_injective (S := Γ(M.S, U)) (R := Γ(M.S, U)) (A := Γ(G.left, W)) (B := Γ(Sp (FractionRing R), M.gp ⁻¹ᵁ U)) (injective_gp_app M U)`. Use `⟨fun a b h => hinc (e.injective ?_), fun b => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e (a ⊗ₜ 1) = e (b ⊗ₜ 1)`. Rewrite using `[he1, he1, h]`. Establish `eU : U ≤ M.π ⁻¹ᵁ ⊤` using `fun x _ => trivial`.
+
+Set `σ : R →+* Γ(G.left, W)` to `(algebraMap Γ(M.S, U) Γ(G.left, W)).comp ((M.π.appLE ⊤ U eU).hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom)`. Establish `hσ : ∀ r : R, (α.app W).hom (σ r) = algebraMap Γ(Sp (FractionRing R), M.gp ⁻¹ᵁ U) Γ(Y, α ⁻¹ᵁ W) (fracRes R (M.gp ⁻¹ᵁ U) r)` using `fun r => by`. Rewrite using `[← gp_app_fracRes M U eU r]`. Express the relevant statement in the definitionally equal form `algebraMap Γ(G.left, W) Γ(Y, α ⁻¹ᵁ W) (algebraMap Γ(M.S, U) Γ(G.left, W) _) = algebraMap Γ(Sp (FractionRing R), M.gp ⁻¹ᵁ U) Γ(Y, α ⁻¹ᵁ W) (algebraMap Γ(M.S, U) _ _)`. Conclude with `(IsScalarTower.algebraMap_apply Γ(M.S, U) Γ(G.left, W) Γ(Y, α ⁻¹ᵁ W) _).symm.trans (IsScalarTower.algebraMap_apply Γ(M.S, U) Γ(Sp (FractionRing R), M.gp ⁻¹ᵁ U) Γ(Y, α ⁻¹ᵁ W) _)`.
+
+Establish `key : ∀ y : Γ(G.left, W) ⊗[Γ(M.S, U)] Γ(Sp (FractionRing R), M.gp ⁻¹ᵁ U), ∃ (c : Γ(G.left, W)) (r : R), r ≠ 0 ∧ e y * (α.app W).hom (σ r) = (α.app W).hom c`. Introduce `y`. Proceed by induction on `y with`. Consider the case `zero => exact ⟨0, 1, one_ne_zero, by simp⟩`. Consider the case `tmul c k`.
+
+Take `⟨a, r, hr, hk⟩` from `exists_mul_fracRes (M.gp ⁻¹ᵁ U) k`. Use `⟨c * σ a, r, hr, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.IsPushout.equiv_tmul, hσ, map_mul, hσ, _root_.mul_assoc, ← map_mul, hk]`. Both sides reduce to the same expression. Consider the case `add y₁ y₂ h₁ h₂`.
+
+Take `⟨c₁, r₁, hr₁, e₁⟩` from `h₁`. Take `⟨c₂, r₂, hr₂, e₂⟩` from `h₂`. Use `⟨c₁ * σ r₂ + c₂ * σ r₁, r₁ * r₂, mul_ne_zero hr₁ hr₂, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, add_mul, map_mul σ, map_mul, map_add, map_mul, map_mul, ← e₁, ← e₂]`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨c, r, hr, hc⟩` from `key (e.symm b)`. Use `⟨c, σ r, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hσ]`. Conclude with `(isUnit_fracRes _ hr).map _`. Rewrite using `[← hc, e.apply_symm_apply]`.
+-/
 theorem injective_and_exists_frac_genericChart : ∀ (R : Type) [CommRing R] [IsDomain R] (M : Modif R) (G : Over M.S), Smooth G.hom → ∀ (Y : Scheme.{0}) (α : Y ⟶ G.left) (t : Y ⟶ Sp (FractionRing R)), IsPullback α t G.hom M.gp → ∀ (W : G.left.Opens) (U : M.S.Opens), W ≤ G.hom ⁻¹ᵁ U → IsAffineOpen W → IsAffineOpen U → Function.Injective (α.app W).hom ∧ ∀ b : Γ(Y, α ⁻¹ᵁ W), ∃ c s : Γ(G.left, W), IsUnit ((α.app W).hom s) ∧ b * (α.app W).hom s = (α.app W).hom c := by
   intro R _ _ M G hG Y α t hpb W U hWU hW hU
   have hV : IsAffineOpen (M.gp ⁻¹ᵁ U) := isAffineOpen_Sp_field _ _

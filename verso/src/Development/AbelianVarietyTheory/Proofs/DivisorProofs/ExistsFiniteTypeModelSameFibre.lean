@@ -14,6 +14,9 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.FibreSpread
 
+/- English proof (translation)
+The claim follows from `(isGrpPullback_pullback A _).cancel ((isGrpPullback_pullback A _).congr (spMap_algHom_comp ρ).symm (bcMap_fst A.hom ρ).symm) (bcMap_snd A.hom ρ)`.
+-/
 theorem isGrpPullback_transition {k R S : Type} [CommRing k] [CommRing R] [CommRing S] [Algebra k R] [Algebra k S]
     (A : Over (Sp k)) [GrpObj A] (ρ : R →ₐ[k] S) :
     IsGrpPullback ((Over.pullback (spMap (algebraMap k S))).obj A) ((Over.pullback (spMap (algebraMap k R))).obj A)
@@ -21,6 +24,15 @@ theorem isGrpPullback_transition {k R S : Type} [CommRing k] [CommRing R] [CommR
   (isGrpPullback_pullback A _).cancel
     ((isGrpPullback_pullback A _).congr (spMap_algHom_comp ρ).symm (bcMap_fst A.hom ρ).symm) (bcMap_snd A.hom ρ)
 
+/- English proof (translation)
+Establish `hfw : f.left ≫ pullback.snd _ _ = pullback.snd _ _` using `Over.w f`. Take `⟨R, ψ, hR, hψ, hψf⟩` from `exists_fg_comp_eq A.hom B.hom (f.left ≫ pullback.fst _ _) (by`. Rewrite using `[Category.assoc, pullback.condition, pullback.condition, ← Category.assoc]`. Conclude with `congrArg (· ≫ _) hfw)`. Use `⟨R, hR, fun L hle => ?_⟩` and prove the remaining obligations.
+
+Set `ρ : R →ₐ[K] L` to `Subalgebra.inclusion hle`. Establish `hw : (bcMap A.hom ρ ≫ ψ) ≫ B.hom = pullback.snd _ _ ≫ spMap (algebraMap K L)`. Rewrite using `[Category.assoc, hψ, bcMap_fst_assoc, pullback.condition]`. Set `g₀ : pullback A.hom (spMap (algebraMap K L)) ⟶ pullback B.hom (spMap (algebraMap K L))` to `pullback.lift (bcMap A.hom ρ ≫ ψ) (pullback.snd _ _) hw`. Set `f₀ : pullback A.hom (spMap (algebraMap K Ω)) ⟶ pullback B.hom (spMap (algebraMap K Ω))` to `f.left`.
+
+Establish `hf₀ : f₀ ≫ pullback.snd _ _ = pullback.snd _ _` using `hfw`. Establish `hψ₀ : bcMap A.hom R.val ≫ ψ = f₀ ≫ pullback.fst _ _` using `hψf`. Use `⟨Over.homMk g₀ (pullback.lift_snd _ _ _), ?_⟩` and prove the remaining obligations. Use `symm`. Express the relevant statement in the definitionally equal form `bcMap A.hom L.val ≫ g₀ = f₀ ≫ bcMap B.hom L.val`.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, bcMap_fst, pullback.lift_fst, bcMap_comp_of_eq_assoc A.hom ρ L.val R.val fun _ ↦ rfl, hψ₀]`. Rewrite using `[Category.assoc, Category.assoc, bcMap_snd, pullback.lift_snd, bcMap_snd, reassoc_of% hf₀]`.
+-/
 theorem exists_descend {K Ω : Type} [CommRing K] [CommRing Ω] [Algebra K Ω] (A B : Over (Sp K))
     [QuasiCompact A.hom] [QuasiSeparated A.hom] [LocallyOfFinitePresentation B.hom]
     (f : (Over.pullback (spMap (algebraMap K Ω))).obj A ⟶ (Over.pullback (spMap (algebraMap K Ω))).obj B) :
@@ -48,6 +60,17 @@ theorem exists_descend {K Ω : Type} [CommRing K] [CommRing Ω] [Algebra K Ω] (
       bcMap_comp_of_eq_assoc A.hom ρ L.val R.val fun _ ↦ rfl, hψ₀]
   · rw [Category.assoc, Category.assoc, bcMap_snd, pullback.lift_snd, bcMap_snd, reassoc_of% hf₀]
 
+/- English proof (translation)
+Take `⟨C, _, φ, ψ, hφ, hψ⟩` from `h`. Take `⟨a, ha, -⟩` from `grpPullback_iso (isGrpPullback_pullback A _) hφ`. Take `⟨b, hb, -⟩` from `grpPullback_iso hψ (isGrpPullback_pullback B _)`. Use `hA.smooth` as an intermediate fact. Use `hB.smooth` as an intermediate fact.
+
+Use `hA.separated` as an intermediate fact. Use `hB.separated` as an intermediate fact. Use `hA.quasiCompact` as an intermediate fact. Use `hB.quasiCompact` as an intermediate fact. Take `⟨R₁, hR₁, h₁⟩` from `exists_descend A B (a ≪≫ b).hom`.
+
+Take `⟨R₂, hR₂, h₂⟩` from `exists_descend B A (a ≪≫ b).inv`. Take `⟨f, hf⟩` from `h₁ (R₁ ⊔ R₂) le_sup_left`. Take `⟨g, hg⟩` from `h₂ (R₁ ⊔ R₂) le_sup_right`. Use `⟨R₁ ⊔ R₂, hR₁.sup hR₂, ?_⟩` and prove the remaining obligations. Generalize the expression as in `R₁ ⊔ R₂ = L at f g hf hg`.
+
+Establish `gA` using `isGrpPullback_transition A L.val`. Establish `gB` using `isGrpPullback_transition B L.val`. Establish `: IsSchemeTheoreticallyDominant (spMap L.val.toRingHom)` using `ExtUnique.isSchemeTheoreticallyDominant_spec_of_injective (CommRingCat.ofHom L.val.toRingHom) Subtype.val_injective`. Take `⟨_, _⟩` from `ExtUnique.flat_and_isSeparated_of_isSemiAbelian _ (IsSemiAbelian.pullback (f := spMap (algebraMap K L)) _ hA)`. Take `⟨_, _⟩` from `ExtUnique.flat_and_isSeparated_of_isSemiAbelian _ (IsSemiAbelian.pullback (f := spMap (algebraMap K L)) _ hB)`.
+
+Establish `: IsIso f` using `ExtUnique.isIso_of_isPullback gA.1 gB.1 (a ≪≫ b) f g hf hg`. Establish `: IsMonHom (a ≪≫ b).hom` using `by rw [Iso.trans_hom]; infer_instance`. Establish `: IsMonHom (asIso f).hom` using `ExtUnique.isMonHom_of_isGrpPullback gA gB (a ≪≫ b).hom f hf`. Conclude with `⟨_, _, _, _, isGrpPullback_pullback A _, ((isGrpPullback_of_iso (asIso f)).comp (isGrpPullback_pullback B _)).congr (Category.id_comp _) rfl⟩`.
+-/
 theorem exists_fg_sameFibre {K Ω : Type} [CommRing K] [CommRing Ω] [Algebra K Ω] (A B : Over (Sp K)) [GrpObj A]
     [GrpObj B] (hA : IsSemiAbelian A) (hB : IsSemiAbelian B)
     (h : SameFibre A (spMap (algebraMap K Ω)) B (spMap (algebraMap K Ω))) :
@@ -85,6 +108,15 @@ end GlobalTheory.FibreSpread
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k₀ k _ _ ι Y s G G' _ _ z hs hG hG' hz h`. Use `letI := ι.toAlgebra`. Establish `: LocallyOfFinitePresentation s` using `inferInstance`. Take `⟨R, y, hR, -, hy⟩` from `exists_fg_points s (fun _ : Unit => z) (fun _ => hz) ⊥ Subalgebra.fg_bot`. Take `⟨hy₁, hy₂⟩` from `hy ()`.
+
+Establish `hy₃ : spMap (algebraMap R k) ≫ y () = z` using `hy₂`. Establish `p` using `isGrpPullback_pullback G (y ())`. Establish `p'` using `isGrpPullback_pullback G' (y ())`. Take `⟨C, _, φ, ψ, hφ, hψ⟩` from `h`. Establish `w : φ ≫ G.hom = (C.hom ≫ spMap (algebraMap R k)) ≫ y ()` using `by rw [Category.assoc, hy₃, hφ.1.w]`.
+
+Establish `w' : ψ ≫ G'.hom = (C.hom ≫ spMap (algebraMap R k)) ≫ y ()` using `by rw [Category.assoc, hy₃, hψ.1.w]`. Take `⟨L, hL, D, _, α, β, hα, hβ⟩` from `FibreSpread.exists_fg_sameFibre (Ω := k) _ _ (IsSemiAbelian.pullback (f := y ()) _ hG) (IsSemiAbelian.pullback (f := y ()) _ hG') ⟨C, _, pullback.lift φ _ w, pullback.lift ψ _ w', p.cancel (hφ.congr hy₃.symm (pullback.lift_fst _ _ _).symm) (pullback.lift_snd _ _ _), p'.cancel (hψ …`. Establish `: Algebra.FiniteType k₀ R` using `(Subalgebra.fg_iff_finiteType R).1 hR`. Establish `: Algebra.FiniteType R L` using `(Subalgebra.fg_iff_finiteType L).1 hL`. Use `⟨L, inferInstance, inferInstance, L.val.toRingHom, spMap (algebraMap R L) ≫ y (), Algebra.FiniteType.trans (S := R) ‹_› ‹_›, Subtype.val_injective, ?_, ?_, D, _, _, _, hα.comp p, hβ.comp p'⟩` and prove the remaining obligations.
+
+Rewrite using `[← Category.assoc, spMap_algHom_comp, hy₃]`. Rewrite using `[Category.assoc, hy₁]`. Conclude with `spMap_algHom_comp (IsScalarTower.toAlgHom k₀ R L)`.
+-/
 theorem sameFibre_spreads_to_fg_subalgebra : ∀ (k₀ k : Type) [Field k₀] [Field k] (ι : k₀ →+* k) (Y : Scheme.{0}) (s : Y ⟶ Sp k₀) (G G' : Over Y) [GrpObj G] [GrpObj G'] (z : Sp k ⟶ Y), LocallyOfFiniteType s → IsSemiAbelian G → IsSemiAbelian G' → z ≫ s = spMap ι → SameFibre G z G' z → ∃ (A : Type) (_ : CommRing A) (_ : Algebra k₀ A) (j : A →+* k) (a : Sp A ⟶ Y), Algebra.FiniteType k₀ A ∧ Function.Injective j ∧ spMap j ≫ a = z ∧ a ≫ s = spMap (algebraMap k₀ A) ∧ SameFibre G a G' a := by
   intro k₀ k _ _ ι Y s G G' _ _ z hs hG hG' hz h
   letI := ι.toAlgebra

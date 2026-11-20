@@ -13,6 +13,19 @@ variable {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι] [De
 
 omit [IsTotallyReal F] in
 
+/- English proof (translation)
+Introduce `M r ha D La g x hD hx hx0 hmin`. Use `set c : InfinitePlace E → ℝ := fun w => (star (invApply g (vecAt v x) w) ⬝ᵥ (M.P w *ᵥ invApply g (vecAt v x) w)).re with hc`. Establish `hcpos : ∀ w, 0 < c w` using `h₄ M g x hx0`. Establish `hdeg : finrank ℚ E = 2 * finrank ℚ F`. Rewrite using `[← Module.finrank_mul_finrank ℚ F E, Algebra.IsQuadraticExtension.finrank_eq_two F E, mul_comm]`.
+
+Establish `hlen : ∀ a : E, M.len (invApply g (vecAt v (a • x))) ^ 2 = ∑ w, c w * ‖w.embedding a‖ ^ 2`. Introduce `a`. Rewrite using `[h₃ M g x a]`. Conclude with `Finset.sum_congr rfl fun w _ => mul_comm _ _`. Establish `hlen1 : M.len (invApply g (vecAt v x)) ^ 2 = ∑ w, c w`.
+
+Use `hlen 1` as an intermediate fact. Simplify using `using this`. Establish `hsub : intSubgroup E ≤ lineCoeffs La x`. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `hD.isLattice.smul_mem a x hx`.
+
+Establish `hfg : (lineCoeffs La x).FG` using `h₂ La x hD.isLattice.fg hx0`. Establish `hmin' : ∀ a ∈ lineCoeffs La x, a ≠ 0 → ∑ w, c w ≤ ∑ w, c w * ‖w.embedding a‖ ^ 2`. Introduce `a haA ha0`. Establish `hax : a • x ∈ La` using `haA`. Establish `hax0 : a • x ≠ 0` using `smul_ne_zero ha0 hx0`.
+
+Establish `hle` using `hmin (a • x) hax hax0`. Rewrite using `[← hlen1, ← hlen a]`. Conclude with `pow_le_pow_left₀ (Real.sqrt_nonneg _) hle 2`. Take `⟨a, hali, habs⟩` from `ha`. Establish `ha' : ∃ b : Fin (finrank ℚ E) → 𝓞 E, LinearIndependent ℚ (fun i => (b i : E)) ∧ ∀ i (σ : E →+* ℂ), ‖σ (b i)‖ ≤ r` using `⟨a ∘ Fin.cast hdeg, hali.comp _ (Fin.cast_injective hdeg), fun i σ => habs _ σ⟩`.
+
+Establish `key` using `h₅ c hcpos (lineCoeffs La x) hsub hfg hmin' r ha'`. Rewrite using `[h₁ La x hx0]`. Rewrite `key` using `[hdeg]`. Move the coercions through the operations in `at key`. Conclude with `key`.
+-/
 theorem ShortestVectorIndex.proof (h : HermitianForm F E W) (v : Basis ι E W)
     (h₁ : LineIndexCoeffs.Statement (E := E) W) (h₂ : LineCoeffsFG.Statement (E := E) W)
     (h₃ : WeightedLenSmul.Statement h v) (h₄ : WeightPos.Statement h v)

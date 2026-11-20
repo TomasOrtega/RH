@@ -12,6 +12,21 @@ noncomputable section
 
 universe u
 
+/- English proof (translation)
+Introduce `F _ K _ _ ι _ P hP 𝒲 h𝒲 h𝒲P`. Use `hP.isPrime` as an intermediate fact. Introduce `W₁ hW₁ W₂ hW₂ hle`. Take `⟨hW₁p, hPW₁⟩` from `h𝒲P W₁ hW₁`. Take `⟨hW₂p, hPW₂⟩` from `h𝒲P W₂ hW₂`.
+
+Establish `: W₂.IsPrime` using `hW₂p.isPrime`. Take `⟨f, c, hf, hfW₁, hfW₂⟩` from `exists_form_mem_not_mem hW₁p.multiHomog hle`. Take `⟨e, h, hh, hce, hhS⟩` from `exists_form_avoid_primes (insert P h𝒲.toFinset) (fun W hW => by`. Break down `Finset.mem_insert.mp hW with rfl | hW` into its components or cases. Conclude with `⟨hP.isPrime, hP.multiHomog, hP.relevant⟩`.
+
+Establish `hW'` using `(h𝒲P W (h𝒲.mem_toFinset.mp hW)).1`. Conclude with `⟨hW'.isPrime, hW'.multiHomog, hW'.relevant⟩) c`. Establish `hhP : h ∉ P` using `hhS P (Finset.mem_insert_self _ _)`. Establish `hh𝒲 : ∀ W ∈ 𝒲, h ∉ W` using `fun W hW => hhS W (Finset.mem_insert_of_mem (h𝒲.mem_toFinset.mpr hW))`. Take `⟨m, hm, hmW₂⟩` from `exists_form_not_mem_of_isRelevant (H := W₂) hW₂p.relevant (e - c)`.
+
+Establish `hfm : IsMultiHomog (f * m) e`. Use `IsWeightedHomogeneous.mul hf hm` as an intermediate fact. Rewrite `this` using `[add_tsub_cancel_of_le hce]`. Then use the resulting hypothesis. Establish `hfmW₂ : f * m ∉ W₂` using `fun h' => (hW₂p.isPrime.mem_or_mem h').elim hfW₂ hmW₂`. Establish `hfmP : f * m ∉ P` using `fun h' => hfmW₂ (hPW₂ h')`.
+
+Establish `hq0 : ∀ a : MRing ι F, a ∉ P → algebraMap (MRing ι F ⧸ P) (FractionRing (MRing ι F ⧸ P)) (Ideal.Quotient.mk P a) ≠ 0` using `fun a ha => by`. Rewrite using `[Ne, IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `ha`. Use `⟨_, div_mem_degZeroLoc P 𝒲 hfm hh hhP hh𝒲, ?_, _, div_mem_degZeroLoc P {W₂} hh hfm hfmP (fun W hW => by rw [Set.mem_singleton_iff.mp hW]; exact hfmW₂), ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy, hxy⟩`.
+
+Take `⟨b', f', g', -, -, hg'P, hg'W, hy'⟩` from `DegZeroLocQuot.proof F K ι P {W₁} (fun W hW => by rw [Set.mem_singleton_iff.mp hW]; exact hW₁p.isPrime) y hy`. Rewrite `hxy` using `[hy', div_mul_div_comm, div_eq_one_iff_eq (mul_ne_zero (hq0 h hhP) (hq0 g' hg'P)), ← map_mul, ← map_mul, ← map_mul, ← map_mul]`. Establish `h2` using `Ideal.Quotient.eq.mp (IsFractionRing.injective _ _ hxy)`. Establish `h3 : h * g' ∈ W₁`. Use `W₁.sub_mem (W₁.mul_mem_right f' (W₁.mul_mem_right m hfW₁)) (hPW₁ h2)` as an intermediate fact.
+
+Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Break down `hW₁p.isPrime.mem_or_mem h3 with h4 | h4` into its components or cases. Use `exacts [hh𝒲 W₁ hW₁ h4, hg'W W₁ (Set.mem_singleton W₁) h4]`. Rewrite using `[div_mul_div_comm, mul_comm (algebraMap _ _ (Ideal.Quotient.mk P (f * m))), div_self (mul_ne_zero (hq0 h hhP) (hq0 _ hfmP))]`.
+-/
 theorem DegZeroLocSeparate.proof : DegZeroLocSeparate.Statement.{u} := by
   intro F _ K _ _ ι _ P hP 𝒲 h𝒲 h𝒲P
   have := hP.isPrime

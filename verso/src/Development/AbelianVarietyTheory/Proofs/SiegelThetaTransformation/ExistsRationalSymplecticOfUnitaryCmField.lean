@@ -14,6 +14,15 @@ section Abstract
 variable {ι K : Type} [Fintype ι] [DecidableEq ι] [Fintype K] [DecidableEq K]
   {S : Matrix ι K ℂ} {S' : Matrix K ι ℂ}
 
+/- English proof (translation)
+Establish `t1 : S'ᵀ * Sᵀ = 1` using `by rw [← transpose_mul, h1, transpose_one]`. Establish `t2 : Sᵀ * S'ᵀ = 1` using `by rw [← transpose_mul, h2, transpose_one]`. Establish `c2 : ∀ X : Matrix K ι ℂ, S' * (S * X) = X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, h2, Matrix.one_mul]`. Establish `c3 : ∀ X : Matrix K ι ℂ, Sᵀ * (S'ᵀ * X) = X` using `fun X => by`.
+
+Rewrite using `[← Matrix.mul_assoc, t2, Matrix.one_mul]`. Establish `e : den = S'ᵀ * (c * T + d) * Sᵀ`. Simplify using `only [hden, Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc, c2]`. Establish `ei : den⁻¹ = S'ᵀ * Qi * Sᵀ`. Use `Matrix.inv_eq_right_inv ?_` and prove the remaining obligations.
+
+Rewrite using `[e]`. Simplify using `only [Matrix.mul_assoc, c3]`. Rewrite using `[← Matrix.mul_assoc _ Qi, hQ, Matrix.one_mul, t1]`. Use `⟨by rw [e, Matrix.det_conj_of_mul_eq_one t1 t2], ?_, fun w => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[ei, ← hW]`.
+
+Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc, c2, c3]`. Rewrite using `[ei, ← vecMul_transpose, ← vecMul_transpose, vecMul_vecMul, vecMul_vecMul]`. Simplify using `only [Matrix.mul_assoc, c3]`. Rewrite using `[ei, dotProduct_mulVec, ← vecMul_transpose S w, vecMul_vecMul, ← dotProduct_mulVec, vecMul_transpose, mulVec_mulVec]`. Simplify using `only [Matrix.mul_assoc, c3, h2, Matrix.mul_one]`.
+-/
 theorem transport (h1 : S * S' = 1) (h2 : S' * S = 1) {a b c d T W Qi : Matrix K K ℂ}
     (hQ : (c * T + d) * Qi = 1) (hW : (a * T + b) * Qi = W) {den : Matrix ι ι ℂ}
     (hden : den = S'ᵀ * c * S' * (S * T * Sᵀ) + S'ᵀ * d * Sᵀ) :
@@ -43,6 +52,13 @@ theorem transport (h1 : S * S' = 1) (h2 : S' * S = 1) {a b c d T W Qi : Matrix K
       vecMul_transpose, mulVec_mulVec]
     simp only [Matrix.mul_assoc, c3, h2, Matrix.mul_one]
 
+/- English proof (translation)
+Establish `t1 : S'ᵀ * Sᵀ = 1` using `by rw [← transpose_mul, h1, transpose_one]`. Establish `t2 : Sᵀ * S'ᵀ = 1` using `by rw [← transpose_mul, h2, transpose_one]`. Establish `c2 : ∀ X : Matrix K ι ℂ, S' * (S * X) = X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, h2, Matrix.one_mul]`. Establish `c3 : ∀ X : Matrix K ι ℂ, Sᵀ * (S'ᵀ * X) = X` using `fun X => by`.
+
+Rewrite using `[← Matrix.mul_assoc, t2, Matrix.one_mul]`. Establish `f : ∀ (x y : Matrix K K ℂ) (X : Matrix K ι ℂ), x * (y * X) = (x * y) * X` using `fun x y X => (Matrix.mul_assoc _ _ _).symm`. Rewrite using `[Matrix.J, fromBlocks_transpose, fromBlocks_multiply, fromBlocks_multiply, fromBlocks_inj]`. Simplify using `only [Matrix.mul_zero, Matrix.mul_one, Matrix.mul_neg, zero_add, add_zero, Matrix.neg_mul, transpose_mul, transpose_transpose, Matrix.mul_assoc, c2, c3]`. Simplify using `only [f, e1, e2, e3, e4, Matrix.add_mul, Matrix.mul_add, Matrix.one_mul, h1, t1]`.
+
+Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_⟩ <;> abel`.
+-/
 theorem transport_sp (h1 : S * S' = 1) (h2 : S' * S = 1) {a b c d : Matrix K K ℂ}
     (e1 : b * aᵀ = a * bᵀ) (e2 : a * dᵀ = b * cᵀ + 1) (e3 : d * aᵀ = c * bᵀ + 1)
     (e4 : d * cᵀ = c * dᵀ) :
@@ -64,10 +80,16 @@ theorem transport_sp (h1 : S * S' = 1) (h2 : S' * S = 1) {a b c d : Matrix K K �
 
 variable {m o : Type} [Fintype m] [Fintype o] [DecidableEq o]
 
+/- English proof (translation)
+Simplify using `[vecMul, dotProduct, Fintype.sum_prod_type, blockDiagonal_apply]`.
+-/
 theorem vecMul_bd (w : m × o → ℂ) (M : o → Matrix m m ℂ) (p : m × o) :
     (w ᵥ* blockDiagonal M) p = ((fun i => w (i, p.2)) ᵥ* M p.2) p.1 := by
   simp [vecMul, dotProduct, Fintype.sum_prod_type, blockDiagonal_apply]
 
+/- English proof (translation)
+Simplify using `only [dotProduct_mulVec]`. Simplify using `only [dotProduct, vecMul_bd]`. Rewrite using `[Fintype.sum_prod_type_right]`.
+-/
 theorem quad_bd (w : m × o → ℂ) (M : o → Matrix m m ℂ) :
     w ⬝ᵥ blockDiagonal M *ᵥ w = ∑ t, (fun i => w (i, t)) ⬝ᵥ M t *ᵥ fun i => w (i, t) := by
   simp only [dotProduct_mulVec]
@@ -80,8 +102,16 @@ def dl (X : Matrix m m ℂ) : Matrix (m ⊕ m) (m ⊕ m) ℂ := fromBlocks X 0 0
 
 def sw (m : Type) [DecidableEq m] : Matrix (m ⊕ m) (m ⊕ m) ℂ := fromBlocks 0 1 1 0
 
+/- English proof (translation)
+Simplify using `[sw, fromBlocks_multiply]`.
+-/
 theorem sw_sw : sw m * sw m = 1 := by simp [sw, fromBlocks_multiply]
 
+/- English proof (translation)
+Establish `g1` using `congrArg transpose h1`. Establish `g2` using `congrArg transpose h2`. Establish `g3` using `congrArg transpose h3`. Establish `g4` using `congrArg transpose h4`. Simplify using `only [transpose_mul, transpose_add, transpose_one] at g1 g2 g3 g4`.
+
+Rewrite using `[← fromBlocks_one]`. Simplify using `only [dl, sw, fromBlocks_multiply, fromBlocks_transpose, fromBlocks_add, transpose_zero, transpose_transpose, Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_one, Matrix.one_mul, add_zero, zero_add, h1, h2, h3, h4, g1, g2, g3, g4, and_self]`.
+-/
 theorem local_sp {A B C D : Matrix m m ℂ} (h1 : A * Bᴴ = B * Aᴴ) (h2 : A * Dᴴ = B * Cᴴ + 1)
     (h3 : D * Aᴴ = C * Bᴴ + 1) (h4 : C * Dᴴ = D * Cᴴ) :
     dl B * sw m * (dl A)ᵀ = dl A * (dl B * sw m)ᵀ ∧
@@ -98,16 +128,27 @@ theorem local_sp {A B C D : Matrix m m ℂ} (h1 : A * Bᴴ = B * Aᴴ) (h2 : A *
     transpose_transpose, Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_one, Matrix.one_mul, add_zero,
     zero_add, h1, h2, h3, h4, g1, g2, g3, g4, and_self]
 
+/- English proof (translation)
+Simplify using `[dl, sw, fromBlocks_multiply, fromBlocks_add]`.
+-/
 theorem local_den (C D Z : Matrix m m ℂ) :
     sw m * dl C * fromBlocks 0 Z Zᵀ 0 + sw m * dl D * sw m =
       fromBlocks (Z * Cᴴ + Dᴴ)ᵀ 0 0 (C * Z + D) := by
   simp [dl, sw, fromBlocks_multiply, fromBlocks_add]
 
+/- English proof (translation)
+Simplify using `[dl, sw, fromBlocks_multiply, fromBlocks_add]`.
+-/
 theorem local_num (A B Z : Matrix m m ℂ) :
     dl A * fromBlocks 0 Z Zᵀ 0 + dl B * sw m =
       fromBlocks 0 (A * Z + B) (Z * Aᴴ + Bᴴ)ᵀ 0 := by
   simp [dl, sw, fromBlocks_multiply, fromBlocks_add]
 
+/- English proof (translation)
+Establish `e : Cᴴ * (Z * Cᴴ + Dᴴ)⁻¹ = (C * Z + D)⁻¹ * C`. Establish `e0 : (C * Z + D) * Cᴴ = C * (Z * Cᴴ + Dᴴ)`. Rewrite using `[Matrix.add_mul, Matrix.mul_add, h4, Matrix.mul_assoc]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc, nonsing_inv_mul _ (Ne.isUnit hQ), Matrix.one_mul]`.
+
+Use `_ = _ := by`. Rewrite using `[e0, Matrix.mul_assoc, Matrix.mul_assoc, mul_nonsing_inv _ (Ne.isUnit hP), Matrix.mul_one]`. Simplify using `only [dl, sw, fromBlocks_multiply, Matrix.mul_zero, Matrix.zero_mul, Matrix.one_mul, add_zero, zero_add, ← transpose_mul, e, fromBlocks_mulVec, zero_mulVec, Sum.elim_comp_inl, Sum.elim_comp_inr, sumElim_dotProduct_sumElim]`. Rewrite using `[mulVec_transpose, dotProduct_comm z, ← dotProduct_mulVec, two_mul]`.
+-/
 theorem local_quad {C D Z : Matrix m m ℂ} (h4 : C * Dᴴ = D * Cᴴ) (hP : (Z * Cᴴ + Dᴴ).det ≠ 0)
     (hQ : (C * Z + D).det ≠ 0) (z z' : m → ℂ) :
     Sum.elim z z' ⬝ᵥ (fromBlocks ((Z * Cᴴ + Dᴴ)⁻¹)ᵀ 0 0 (C * Z + D)⁻¹ * (sw m * dl C)) *ᵥ
@@ -138,12 +179,18 @@ def Sm (Ψ : Finset (E →+* ℂ)) (N : ℕ) : Matrix (QI E N) ((Fin N ⊕ Fin N
 
 variable {Ψ : Finset (E →+* ℂ)} {N : ℕ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Simplify using `[zetaOf, Sm, mulVec, dotProduct, Fintype.sum_prod_type_right, Fintype.sum_sum_type, mul_comm]`.
+-/
 theorem zeta_eq (z z' : CM Ψ n N) (k : Fin n) :
     zetaOf Ψ z z' k = Sm Ψ N *ᵥ fun q => Sum.elim (z q.2 k) (z' q.2 k) q.1 := by
   funext p
   simp [zetaOf, Sm, mulVec, dotProduct, Fintype.sum_prod_type_right, Fintype.sum_sum_type,
     mul_comm]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `∑ x, (Sm Ψ N p ᵥ* blockDiagonal M) x * Sm Ψ N q x = _`. Simplify using `only [vecMul_bd]`. Rewrite using `[Fintype.sum_prod_type_right]`. Both sides reduce to the same expression.
+-/
 theorem conj_apply (M : Ψ → Matrix (Fin N ⊕ Fin N) (Fin N ⊕ Fin N) ℂ) (p q : QI E N) :
     (Sm Ψ N * blockDiagonal M * (Sm Ψ N)ᵀ) p q = ∑ τ : Ψ,
       (fun i => Sm Ψ N p (i, τ)) ᵥ* M τ ⬝ᵥ fun i => Sm Ψ N q (i, τ) := by
@@ -152,6 +199,11 @@ theorem conj_apply (M : Ψ → Matrix (Fin N ⊕ Fin N) (Fin N ⊕ Fin N) ℂ) (
   rw [Fintype.sum_prod_type_right]
   rfl
 
+/- English proof (translation)
+Use extensionality with `p q`. Rewrite using `[conj_apply]`. Simplify using `only [tauOf, Matrix.of_apply]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `[Sm, vecMul, dotProduct, Fintype.sum_sum_type]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tau_eq (Z : CM Ψ N N) :
     tauOf Ψ Z = Sm Ψ N * blockDiagonal (fun τ => fromBlocks 0 (Z τ) (Z τ)ᵀ 0) * (Sm Ψ N)ᵀ := by
   ext p q
@@ -161,6 +213,13 @@ theorem tau_eq (Z : CM Ψ N N) :
   simp [Sm, vecMul, dotProduct, Fintype.sum_sum_type]
   ring
 
+/- English proof (translation)
+Use `choose z z' h using fun p : QI E N => Dict.zetaOf_surj (n := 1) hΨ fun _ => (Pi.single p 1 : QI E N → ℂ)`. Establish `h1 : Sm Ψ N * (Matrix.of fun (q : (Fin N ⊕ Fin N) × Ψ) (p : QI E N) => Sum.elim (z p q.2 0) (z' p q.2 0) q.1) = 1`. Use extensionality with `q p`. Use `congrFun (congrFun (h p) 0) q` as an intermediate fact. Rewrite `this` using `[zeta_eq, Pi.single_apply]`.
+
+Rewrite using `[Matrix.one_apply, ← this]`. Both sides reduce to the same expression. Establish `hc : Fintype.card (QI E N) = Fintype.card ((Fin N ⊕ Fin N) × Ψ)`. Use `Dict.sum_type hΨ (fun _ => 1)` as an intermediate fact. Simplify using `only [Finset.sum_const, Finset.card_univ, Embeddings.card, nsmul_eq_mul, mul_one, mul_add] at this`.
+
+Establish `h2 : Module.finrank ℚ E = Fintype.card Ψ + Fintype.card Ψ` using `by exact_mod_cast this`. Simplify using `only [Fintype.card_prod, Fintype.card_sum, Fintype.card_fin, h2]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨_, h1, (Matrix.mul_eq_one_comm_of_equiv (Fintype.equivOfCardEq hc)).1 h1⟩`.
+-/
 theorem exists_inv (hΨ : IsType Ψ) : ∃ S' : Matrix ((Fin N ⊕ Fin N) × Ψ) (QI E N) ℂ,
     Sm Ψ N * S' = 1 ∧ S' * Sm Ψ N = 1 := by
   choose z z' h using fun p : QI E N =>
@@ -181,23 +240,42 @@ theorem exists_inv (hΨ : IsType Ψ) : ∃ S' : Matrix ((Fin N ⊕ Fin N) × Ψ)
     ring
   exact ⟨_, h1, (Matrix.mul_eq_one_comm_of_equiv (Fintype.equivOfCardEq hc)).1 h1⟩
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[qm, Matrix.mul_apply]`.
+-/
 theorem qm_mul {α β δ : Type} [Fintype β] (X : Matrix α β ℚ) (Y : Matrix β δ ℚ) :
     qm (X * Y) = qm X * qm Y := by
   ext i j
   simp [qm, Matrix.mul_apply]
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `congrFun (congrFun h i) j` as an intermediate fact. Simplify `this` using `[qm]`.
+-/
 theorem qm_inj {α β : Type} {X Y : Matrix α β ℚ} (h : qm X = qm Y) : X = Y := by
   ext i j
   have := congrFun (congrFun h i) j
   simpa [qm] using this
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [qm, Matrix.one_apply, h]`.
+-/
 theorem qm_one {α : Type} [DecidableEq α] : qm (1 : Matrix α α ℚ) = 1 := by
   ext i j
   by_cases h : i = j <;> simp [qm, Matrix.one_apply, h]
 
+/- English proof (translation)
+Apply the tactic sequence `ext (i | i) (j | j) <;> by_cases h : i = j <;> simp [qm, Matrix.J, Matrix.one_apply, h]`.
+-/
 theorem qm_J {α : Type} [DecidableEq α] : qm (Matrix.J α ℚ) = Matrix.J α ℂ := by
   ext (i | i) (j | j) <;> by_cases h : i = j <;> simp [qm, Matrix.J, Matrix.one_apply, h]
 
+/- English proof (translation)
+Use `⟨Matrix.of fun p q => (Module.finBasis ℚ E).repr (Module.finBasis ℚ E p.2 * X p.1 q.1) q.2, ?_⟩` and prove the remaining obligations. Use extensionality with `p ⟨i, τ⟩`. Express the relevant statement in the definitionally equal form `_ = (Sm Ψ N p ᵥ* _) _`. Rewrite using `[vecMul_bd]`. Establish `key : ∀ x : E, ∑ j, (((Module.finBasis ℚ E).repr x j : ℚ) : ℂ) * τ.1 (Module.finBasis ℚ E j) = τ.1 x` using `fun x => by conv_rhs => rw [← (Module.finBasis ℚ E).sum_repr x]`.
+
+Simplify using `[Algebra.smul_def]`. Establish `key' : ∀ x : E, ∑ j, (((Module.finBasis ℚ E).repr x j : ℚ) : ℂ) * conj (τ.1 (Module.finBasis ℚ E j)) = conj (τ.1 x)` using `fun x => by`. Rewrite using `[← key x]`. Simplify using the standard rewrite rules. Break down `i with b | b` into its components or cases.
+
+Simplify using `[Matrix.mul_apply, qm, Sm, Fintype.sum_prod_type_right, vecMul, dotProduct, dl, key, -Module.Basis.repr_self]`. Simplify using `[Matrix.mul_apply, qm, Sm, Fintype.sum_prod_type_right, vecMul, dotProduct, dl, key', -Module.Basis.repr_self]`.
+-/
 theorem exists_reg (X : Matrix (Fin N) (Fin N) E) : ∃ R : Matrix (QI E N) (QI E N) ℚ,
     qm R * Sm Ψ N = Sm Ψ N * blockDiagonal fun τ : Ψ => dl (X.map τ.1) := by
   refine ⟨Matrix.of fun p q =>
@@ -217,6 +295,15 @@ theorem exists_reg (X : Matrix (Fin N) (Fin N) E) : ∃ R : Matrix (QI E N) (QI 
   · simp [Matrix.mul_apply, qm, Sm, Fintype.sum_prod_type_right, vecMul, dotProduct, dl, key, -Module.Basis.repr_self]
   · simp [Matrix.mul_apply, qm, Sm, Fintype.sum_prod_type_right, vecMul, dotProduct, dl, key', -Module.Basis.repr_self]
 
+/- English proof (translation)
+Use `⟨Matrix.of fun p q => if p.1 = q.1 then Algebra.trace ℚ E (Module.finBasis ℚ E p.2 * cc (Module.finBasis ℚ E q.2)) else 0, ?_⟩` and prove the remaining obligations. Use extensionality with `p q`. Rewrite using `[conj_apply]`. Establish `key : ∀ x : E, ((Algebra.trace ℚ E x : ℚ) : ℂ) = ∑ τ : Ψ, (τ.1 x + conj (τ.1 x))`. Introduce `x`.
+
+Establish `h` using `trace_eq_sum_embeddings ℂ (K := ℚ) (x := x)`. Establish `h2` using `Dict.sum_type hΨ (fun σ => σ x)`. Simplify using `only [ComplexEmbedding.conjugate_coe_eq] at h2`. Rewrite using `[← h2, ← eq_ratCast (algebraMap ℚ ℂ), h]`. Conclude with `(Fintype.sum_equiv (RingHom.equivRatAlgHom (R := E) (S := ℂ)) _ _ fun _ => rfl).symm`.
+
+Distinguish the cases in `h : p.1 = q.1`. Simplify using `only [qm, Matrix.map_apply, Matrix.of_apply, if_pos h, key]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `[Sm, sw, vecMul, dotProduct, Fintype.sum_sum_type, Matrix.one_apply, h, HAct.emb_cc]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `[qm, Sm, sw, vecMul, dotProduct, Fintype.sum_sum_type, Matrix.one_apply, h, Ne.symm h]`.
+-/
 theorem exists_gram [IsCMField E] (hΨ : IsType Ψ) : ∃ G : Matrix (QI E N) (QI E N) ℚ,
     qm G = Sm Ψ N * blockDiagonal (fun _ : Ψ => sw (Fin N)) * (Sm Ψ N)ᵀ := by
   refine ⟨Matrix.of fun p q => if p.1 = q.1 then
@@ -237,6 +324,19 @@ theorem exists_gram [IsCMField E] (hΨ : IsType Ψ) : ∃ G : Matrix (QI E N) (Q
     ring
   · simp [qm, Sm, sw, vecMul, dotProduct, Fintype.sum_sum_type, Matrix.one_apply, h, Ne.symm h]
 
+/- English proof (translation)
+Establish `hR : ∀ X : Matrix (Fin N) (Fin N) E, ∃ R : Matrix (QI E N) (QI E N) ℚ, qm R = Sm Ψ N * (blockDiagonal fun τ : Ψ => dl (X.map τ.1)) * S'` using `fun X => by`. Take `⟨R, hR⟩` from `exists_reg (Ψ := Ψ) X`. Conclude with `⟨R, by rw [← hR, Matrix.mul_assoc, h1, Matrix.mul_one]⟩`. Use `choose R hR using hR`. Take `⟨G, hG⟩` from `exists_gram (N := N) hΨ`.
+
+Establish `t2 : (Sm Ψ N)ᵀ * S'ᵀ = 1` using `by rw [← transpose_mul, h2, transpose_one]`. Establish `c2 : ∀ X : Matrix ((Fin N ⊕ Fin N) × Ψ) (QI E N) ℂ, S' * (Sm Ψ N * X) = X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, h2, Matrix.one_mul]`. Establish `c3 : ∀ X : Matrix ((Fin N ⊕ Fin N) × Ψ) (QI E N) ℂ, (Sm Ψ N)ᵀ * (S'ᵀ * X) = X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, t2, Matrix.one_mul]`.
+
+Establish `hGi : qm G * (S'ᵀ * blockDiagonal (fun _ : Ψ => sw (Fin N)) * S') = 1`. Rewrite using `[hG]`. Simplify using `only [Matrix.mul_assoc, c3]`. Rewrite using `[← Matrix.mul_assoc (blockDiagonal _), ← blockDiagonal_mul]`. Simplify using `only [sw_sw]`.
+
+Rewrite using `[show (fun _ : Ψ => (1 : Matrix (Fin N ⊕ Fin N) (Fin N ⊕ Fin N) ℂ)) = 1 from rfl, blockDiagonal_one, Matrix.one_mul, h1]`. Establish `hdet : G.det ≠ 0`. Introduce `h0`. Establish `e : (qm G).det = ((G.det : ℚ) : ℂ)` using `((Rat.castHom ℂ).map_det G).symm`. Use `congrArg det hGi` as an intermediate fact.
+
+Rewrite `this` using `[det_mul, e, h0]`. Simplify using `at this`. Establish `hGinv : qm G⁻¹ = S'ᵀ * blockDiagonal (fun _ : Ψ => sw (Fin N)) * S'`. Rewrite using `[← Matrix.mul_one (qm G⁻¹), ← hGi, ← Matrix.mul_assoc, ← qm_mul, nonsing_inv_mul _ (Ne.isUnit hdet), qm_one, Matrix.one_mul]`. Use `⟨fromBlocks (R A) (R B * G) (G⁻¹ * R C) (G⁻¹ * R D * G), hR A, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `all_goals`. Simplify using `only [toBlocks_fromBlocks₁₂, toBlocks_fromBlocks₂₁, toBlocks_fromBlocks₂₂, qm_mul, hR, hGinv, hG, blockDiagonal_mul, Matrix.mul_assoc, c2]`.
+-/
 theorem exists_blocks [IsCMField E] (hΨ : IsType Ψ)
     {S' : Matrix ((Fin N ⊕ Fin N) × Ψ) (QI E N) ℂ} (h1 : Sm Ψ N * S' = 1) (h2 : S' * Sm Ψ N = 1)
     (A B C D : Matrix (Fin N) (Fin N) E) :
@@ -286,6 +386,35 @@ end GlobalTheory.SW.UniSp
 
 open GlobalTheory.SW.UniSp GlobalTheory.SW.HAct Classical in
 
+/- English proof (translation)
+Introduce `E _ _ _ Ψ hΨ n N γ hγ`. Take `⟨S', h1, h2⟩` from `exists_inv (N := N) hΨ`. Take `⟨σ, s1, s2, s3, s4⟩` from `exists_blocks hΨ h1 h2 γ.toBlocks₁₁ γ.toBlocks₁₂ γ.toBlocks₂₁ γ.toBlocks₂₂`. Establish `hb` using `fun τ : Ψ => blocks (map_blocks τ.1 γ ▸ map_mem τ.1 hγ)`. Establish `hb' : ∀ τ : Ψ, _` using `fun τ : Ψ => by`.
+
+Establish `h` using `map_mem τ.1 (group_part hγ).2.2.1`. Rewrite `h` using `[map_ccT, map_blocks τ.1 γ, fromBlocks_conjTranspose]`. Establish `h'` using `blocks h`. Simplify using `only [conjTranspose_conjTranspose] at h'`. Conclude with `h'`.
+
+Establish `one : ∀ {m : Type} [DecidableEq m], blockDiagonal (fun _ : Ψ => (1 : Matrix m m ℂ)) = 1` using `fun {m} _ => blockDiagonal_one`. Establish `add : ∀ {m : Type} (X Y : Ψ → Matrix m m ℂ), blockDiagonal X + blockDiagonal Y = blockDiagonal fun τ => X τ + Y τ` using `fun X Y => (blockDiagonal_add X Y).symm`. Establish `hl` using `fun τ : Ψ => local_sp (hb' τ).1 (hb' τ).2.1 (hb' τ).2.2.1 (hb' τ).2.2.2`. Use `⟨σ, ?_, ∏ τ : Ψ, (τ.1 γ.det)⁻¹, ?_, fun Z hZ => ?_⟩` and prove the remaining obligations. Rewrite using `[SymplecticGroup.mem_iff]`.
+
+Apply `qm_inj` to reduce the goal to its premises. Establish `e : qm σ = fromBlocks (qm σ.toBlocks₁₁) (qm σ.toBlocks₁₂) (qm σ.toBlocks₂₁) (qm σ.toBlocks₂₂)`. Simplify using `only [qm]`. Rewrite using `[← fromBlocks_map, fromBlocks_toBlocks]`. Rewrite using `[qm_mul, qm_mul, qm_J, show qm σᵀ = (qm σ)ᵀ from rfl, e, s1, s2, s3, s4]`.
+
+Use `transport_sp h1 h2 ?_ ?_ ?_ ?_` and prove the remaining obligations. Use `all_goals`. Simplify using `only [blockDiagonal_transpose, ← blockDiagonal_mul, ← one, add]`. Use `congr 1`. Use function extensionality and compare the values at `τ`.
+
+Use `exacts [(hl τ).1, (hl τ).2.1, (hl τ).2.2.1, (hl τ).2.2.2]`. Simplify using `[norm_prod, norm_det _ hγ]`. Take `⟨hA, -⟩` from `(unitary_act_halfSpace E Ψ N γ hγ).2 Z hZ`. Establish `hQ : ∀ τ, (hDen Ψ γ Z τ).det ≠ 0` using `fun τ => (hA τ).1`. Establish `hP : ∀ τ, (hDen' Ψ γ Z τ).det ≠ 0` using `fun τ h => hQ τ (by rw [← (hA τ).2.1, h, zero_mul])`.
+
+Establish `hden : blockDiagonal (fun τ : Ψ => sw _ * dl (γ.toBlocks₂₁.map τ.1)) * blockDiagonal (fun τ => fromBlocks 0 (Z τ) (Z τ)ᵀ 0) + blockDiagonal (fun τ : Ψ => sw _ * dl (γ.toBlocks₂₂.map τ.1) * sw _) = blockDiagonal fun τ => fromBlocks (hDen' Ψ γ Z τ)ᵀ 0 0 (hDen Ψ γ Z τ)`. Simplify using `only [← blockDiagonal_mul, add, local_den]`. Both sides reduce to the same expression. Take `⟨t1, t2, t3⟩` from `transport h1 h2 (a := blockDiagonal fun τ : Ψ => dl (γ.toBlocks₁₁.map τ.1)) (b := blockDiagonal fun τ : Ψ => dl (γ.toBlocks₁₂.map τ.1) * sw _) (c := blockDiagonal fun τ : Ψ => sw _ * dl (γ.toBlocks₂₁.map τ.1)) (d := blockDiagonal fun τ : Ψ => sw _ * dl (γ.toBlocks₂₂.map τ.1) * sw …`. Rewrite using `[hden, ← blockDiagonal_mul, ← one]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `τ`. Simplify using `only [fromBlocks_multiply, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, ← transpose_mul, nonsing_inv_mul _ (Ne.isUnit (hP τ)), mul_nonsing_inv _ (Ne.isUnit (hQ τ)), transpose_one, fromBlocks_one])`. Use the proof step `(by`. Simplify using `only [← blockDiagonal_mul, add, local_num]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `τ`. Establish `hd : hDen' Ψ γ Z τ * hAct Ψ γ Z τ = _` using `den'_act (hb τ).1 (hb τ).2.1 (hb τ).2.2.1 (hb τ).2.2.2 (hQ τ)`. Simplify using `only [fromBlocks_multiply, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, ← transpose_mul, ← hd, nonsing_inv_mul_cancel_left _ _ (Ne.isUnit (hP τ))]`. Use the proof step `rfl)`.
+
+Use the proof step `(by rw [spDen, s3, s4, tau_eq])`. Use `⟨?_, ?_, fun z z' => ⟨?_, fun k => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[spAct, s1, s2, tau_eq (hAct Ψ γ Z), ← t2, ← tau_eq]`. Rewrite using `[t1, hden, det_blockDiagonal, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Establish `h0 : τ.1 γ.det ≠ 0` using `fun h => by`. Use `norm_det τ.1 hγ` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Conclude with `zero_ne_one this`. Rewrite using `[det_fromBlocks_zero₂₁, det_transpose, ← (hA τ).2.1]`.
+
+Clear the denominators using the available nonvanishing facts. Use function extensionality and compare the values at `k`. Rewrite using `[zeta_eq, zeta_eq, (t3 _).1]`. Use `congr 1`. Use function extensionality and compare the values at `⟨i, τ⟩`.
+
+Rewrite using `[vecMul_bd]`. Express the relevant statement in the definitionally equal form `_ = (Sum.elim (z τ k) (z' τ k) ᵥ* fromBlocks _ _ _ _) i`. Rewrite using `[vecMul_fromBlocks]`. Apply the tactic sequence `rcases i with a | a <;> simp [vecMul_transpose]`. Rewrite using `[zeta_eq, s3, (t3 _).2, ← blockDiagonal_mul, quad_bd, Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun τ _ => local_quad (hb' τ).2.2.2 (hP τ) (hQ τ) (z τ k) (z' τ k)`.
+-/
 theorem GlobalTheory.SW.exists_symplectic_of_unitary : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Finset (E →+* ℂ)), IsType Ψ → ∀ (n N : ℕ) (γ : M2 E N), γ ∈ UU E N → ∃ σ ∈ Matrix.symplecticGroup (QI E N) ℚ, ∃ c : ℂ, ‖c‖ = 1 ∧ ∀ Z ∈ Hn Ψ N, spAct σ (tauOf Ψ Z) = tauOf Ψ (hAct Ψ γ Z) ∧ (spDen σ (tauOf Ψ Z)).det = c * ∏ τ, (hDen Ψ γ Z τ).det ^ 2 ∧ ∀ z z' : CM Ψ n N, (zetaOf Ψ (fun τ => Matrix.of fun k => (hDen' Ψ γ Z τ)⁻¹ *ᵥ z τ k) (fun τ => Matrix.of fun k => z' τ k ᵥ* (hDen Ψ γ Z τ)⁻¹) = fun k => zetaOf Ψ z z' k ᵥ* (spDen σ (tauOf Ψ Z))⁻¹) ∧ ∀ k, zetaOf Ψ z z' k ⬝ᵥ ((spDen σ (tauOf Ψ Z))⁻¹ * qm σ.toBlocks₂₁) *ᵥ zetaOf Ψ z z' k = 2 * ∑ τ : Ψ, z' τ k ⬝ᵥ ((hDen Ψ γ Z τ)⁻¹ * γ.toBlocks₂₁.map τ.1) *ᵥ z τ k := by
   intro E _ _ _ Ψ hΨ n N γ hγ
   obtain ⟨S', h1, h2⟩ := exists_inv (N := N) hΨ

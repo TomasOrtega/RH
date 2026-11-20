@@ -12,18 +12,27 @@ namespace InducedTensorMap.Main
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Simplify using `[cf]`. Both sides reduce to the same expression.
+-/
 theorem act_fin_val {a : ℕ} (g : GL (Fin a) (Af E)) (F : Sm E a) :
     (act (.fin g) F).1 = fun y => F.1 (y * cf a 1 g) := by
   funext y
   simp [cf]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Simplify using `[cf]`. Both sides reduce to the same expression.
+-/
 theorem act_cpt_val {a : ℕ} (k : Kinf E a) (F : Sm E a) :
     (act (.cpt k) F).1 = fun y => F.1 (y * cf a k 1) := by
   funext y
   simp [cf]
   rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k => cptRep E N k (T φ)))`. Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ (Set.range fun k => cptRep E N k φ)).map T) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Use `⟨cptRep E N k φ, Submodule.subset_span ⟨k, rfl⟩, ?_⟩` and prove the remaining obligations. Conclude with `hT (.cpt k) φ hφ`.
+-/
 theorem finVec_of_equiv {N : ℕ} {V : Submodule ℂ (Sm E N)} {T : Sm E N →ₗ[ℂ] Sm E N}
     (hT : ∀ o, ∀ φ ∈ V, T (act o φ) = act o (T φ)) {φ : Sm E N} (hφ : φ ∈ V)
     (hK : FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k => cptRep E N k φ))) :
@@ -38,6 +47,25 @@ theorem finVec_of_equiv {N : ℕ} {V : Submodule ℂ (Sm E N)} {T : Sm E N →�
 end InducedTensorMap.Main
 
 open InducedTensorMap InducedTensorMap.Main in
+/- English proof (translation)
+Introduce `E _ _ _ r s V U₁ U₂ T f₁ f₂ hV hVa hU₁ hU₂ hT hTi hf₁ hf₂`. Establish `H : Good U₁ U₂ f₁ f₂` using `⟨hU₁, hU₂, hf₁, hf₂⟩`. Establish `hI : ∀ φ ∈ V, T φ ∈ indSub U₁ U₂` using `fun φ hφ => ⟨(hTi φ hφ).1, fun k g => (hTi φ hφ).2 k g⟩`. Establish `hK : ∀ φ ∈ V, T φ ∈ finVec (cptRep E (r + s))` using `fun φ hφ => finVec_of_equiv hT hφ (hVa φ hφ).kfin`. Set `L : V →ₗ[ℂ] Sm E (r + s)` to `{ toFun := fun φ => ⟨ind f₁ f₂ (T φ.1).1, ind_mem_Sm H (hI _ φ.2) (hK _ φ.2)⟩ map_add' := fun φ ψ => Subtype.ext (by`.
+
+Express the relevant statement in the definitionally equal form `ind f₁ f₂ (T (φ.1 + ψ.1)).1 = ind f₁ f₂ (T φ.1).1 + ind f₁ f₂ (T ψ.1).1`. Rewrite using `[map_add, Submodule.coe_add, map_add])`. Use the proof step `map_smul' := fun c φ => Subtype.ext (by`. Express the relevant statement in the definitionally equal form `ind f₁ f₂ (T (c • φ.1)).1 = c • ind f₁ f₂ (T φ.1).1`. Rewrite using `[map_smul, Submodule.coe_smul, map_smul]) }`.
+
+Take `⟨T', hT'⟩` from `LinearMap.exists_extend L`. Establish `e : ∀ φ (hφ : φ ∈ V), (T' φ).1 = ind f₁ f₂ (T φ).1` using `fun φ hφ => congrArg Subtype.val (LinearMap.congr_fun hT' ⟨φ, hφ⟩)`. Use `⟨T', fun o φ hφ => ?_, fun φ hφ x g => ?_, fun φ hφ k g n ψ₁ ψ₂ _ _ hs m => ?_⟩` and prove the remaining obligations. Establish `ho` using `hV o φ hφ`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[e _ ho, hT o φ hφ]`. Consider the cases of `o with`. Consider the case `fin g`. Rewrite using `[act_fin_val, act_fin_val, e _ hφ]`. Use function extensionality and compare the values at `x`.
+
+Conclude with `ind_rt H (hI φ hφ) 1 g x`. Consider the case `cpt k`. Rewrite using `[act_cpt_val, act_cpt_val, e _ hφ]`. Use function extensionality and compare the values at `x`. Conclude with `ind_rt H (hI φ hφ) k 1 x`.
+
+Consider the case `lie X`. Establish `hX : lie E (r + s) X (T φ) ∈ indSub U₁ U₂`. Use `hT (.lie X) φ hφ` as an intermediate fact. Express the relevant statement in the definitionally equal form `T (lie E (r + s) X φ) = lie E (r + s) X (T φ) at this`. Rewrite using `[← this]`.
+
+Conclude with `hI _ (hV (.lie X) φ hφ)`. Express the relevant statement in the definitionally equal form `ind f₁ f₂ (lie E (r + s) X (T φ)).1 = lieD X (T' φ).1`. Rewrite using `[e _ hφ]`. Conclude with `ind_lie H (hI φ hφ) (hK φ hφ) X hX`. Rewrite using `[e φ hφ]`.
+
+Conclude with `ind_left H (hI φ hφ) x g`. Rewrite using `[e φ hφ]`. Establish `hres : res (cf (r + s) k g) (T φ).1 = fun m => ∑ i, (ψ₁ i).1 m.1 * (ψ₂ i).1 m.2` using `funext hs`. Establish `h1` using `congrFun (ind_levi H (hI φ hφ) k g) m`. Rewrite `h1` using `[res_apply]`.
+
+Express the relevant statement in the definitionally equal form `ind f₁ f₂ (T φ).1 (lev (Ad E) r s m * cf (r + s) k g) = _`. Rewrite using `[h1, hres, tensOp_sum]`.
+-/
 theorem indMap_holds : IndMap := by
   intro E _ _ _ r s V U₁ U₂ T f₁ f₂ hV hVa hU₁ hU₂ hT hTi hf₁ hf₂
   have H : Good U₁ U₂ f₁ f₂ := ⟨hU₁, hU₂, hf₁, hf₂⟩

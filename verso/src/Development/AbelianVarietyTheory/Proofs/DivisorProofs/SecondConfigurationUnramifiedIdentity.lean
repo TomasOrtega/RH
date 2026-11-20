@@ -14,22 +14,40 @@ namespace GlobalTheory.StabCosetDomain
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+The claim follows from `Algebra.TensorProduct.includeRight_injective (AdeleRing.algebraMap_injective (𝓞 F) F)`.
+-/
 theorem inclR_inj : Function.Injective (inclR (F := F) (E := E) (AF F)) :=
   Algebra.TensorProduct.includeRight_injective (AdeleRing.algebraMap_injective (𝓞 F) F)
 
+/- English proof (translation)
+Introduce `x y h` and use `funext fun i => inclR_inj (congrFun h i)`.
+-/
 theorem incV_inj {n : ℕ} : Function.Injective (incV (E := E) (n := n) F) :=
   fun x y h => funext fun i => inclR_inj (congrFun h i)
 
+/- English proof (translation)
+Simplify using `[cA, inclR, Algebra.TensorProduct.map_tmul]`.
+-/
 theorem cA_inclR (σ : E →ₐ[F] E) (e : E) :
     cA σ (inclR (F := F) (AF F) e) = inclR (F := F) (AF F) (σ e) := by
   simp [cA, inclR, Algebra.TensorProduct.map_tmul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_mul {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (g h : UA σ J) :
     mat (g * h) = mat g * mat h := rfl
 
+/- English proof (translation)
+The claim follows from `Units.inv_mul g.1`.
+-/
 theorem mat_inv_mul {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (g : UA σ J) :
     mat g⁻¹ * mat g = 1 := Units.inv_mul g.1
 
+/- English proof (translation)
+Apply `incV_inj (F := F)` to reduce the goal to its premises. Establish `e : ∀ z, incV F z = mat h⁻¹ *ᵥ (mat h *ᵥ incV F z)` using `fun z => by`. Rewrite using `[Matrix.mulVec_mulVec, mat_inv_mul, Matrix.one_mulVec]`. Rewrite using `[e x, e y, hx, hy]`.
+-/
 theorem eq_of_mulVec {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (h : UA σ J) {x y v : Fin n → E}
     (hx : mat h *ᵥ incV F x = incV F v) (hy : mat h *ᵥ incV F y = incV F v) : x = y := by
   apply incV_inj (F := F)
@@ -37,6 +55,13 @@ theorem eq_of_mulVec {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) 
     rw [Matrix.mulVec_mulVec, mat_inv_mul, Matrix.one_mulVec]
   rw [e x, e y, hx, hy]
 
+/- English proof (translation)
+Take `⟨g₀, hg₀⟩` from `Subgroup.mem_subgroupOf.1 hδ`. Establish `hm : mat δ = g₀.1.map (inclR (F` using `F) (AF F)) := by show δ.1.1 = _`. Rewrite using `[← hg₀]`. Both sides reduce to the same expression. Use `⟨g₀.1, hm, ?_⟩` and prove the remaining obligations.
+
+Establish `hu : (mat δ)ᵀ * incM F J * (mat δ).map (cA σ) = incM F J` using `δ.2`. Establish `key : (g₀.1ᵀ * J * g₀.1.map σ).map (inclR (F` using `F) (AF F)) = J.map (inclR (F := F) (AF F)) := by`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map]`. Establish `e2 : (g₀.1.map σ).map (inclR (F` using `F) (AF F)) = (mat δ).map (cA σ) := by`. Rewrite using `[hm]`.
+
+Use extensionality with `i j`. Simplify using `[cA_inclR]`. Rewrite using `[e2, ← hm]`. Conclude with `hu`. Conclude with `Matrix.ext fun i j => inclR_inj (congrFun (congrFun key i) j)`.
+-/
 theorem rat_desc {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (δ : UA σ J) (hδ : δ ∈ ratU σ J) :
     ∃ g : Matrix (Fin n) (Fin n) E, mat δ = g.map (inclR (F := F) (AF F)) ∧ gᵀ * J * g.map σ = J := by
   obtain ⟨g₀, hg₀⟩ := Subgroup.mem_subgroupOf.1 hδ
@@ -53,6 +78,9 @@ theorem rat_desc {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (
     exact hu
   exact Matrix.ext fun i j => inclR_inj (congrFun (congrFun key i) j)
 
+/- English proof (translation)
+Establish `h1 : (fun i => σ ((g *ᵥ y) i)) = g.map σ *ᵥ fun i => σ (y i)`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec (σ : E →+* E) g y i`. Simplify using `only [form]`. Rewrite using `[h1, Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.vecMul_transpose, Matrix.vecMul_vecMul, ← Matrix.mul_assoc, hg, ← Matrix.dotProduct_mulVec]`.
+-/
 theorem form_pres {σ : E →ₐ[F] E} {n : ℕ} {J g : Matrix (Fin n) (Fin n) E} (hg : gᵀ * J * g.map σ = J)
     (x y : Fin n → E) : form σ J (g *ᵥ x) (g *ᵥ y) = form σ J x y := by
   have h1 : (fun i => σ ((g *ᵥ y) i)) = g.map σ *ᵥ fun i => σ (y i) := by
@@ -65,6 +93,35 @@ end GlobalTheory.StabCosetDomain
 
 open GlobalTheory.StabCosetDomain in
 
+/- English proof (translation)
+Introduce `_kp F E _ _ _ _ _ σ B a b G G₁ H H' _cfg X om om' om₁ om₁' hT _hT1 V₂ n₁ X₁ H₀ j₀ j₁ M₂ e₂ _hh hA _hg _hev γ hγ`. Establish `hdom` using `hT.geo.hM.dom`. Establish `hx0 : H₀.x ≠ 0`. Introduce `h`. Use `hA.xy` as an intermediate fact.
+
+Rewrite `this` using `[h]`. Simplify using `[form] at this`. Set `T : UA σ G.V.J → Set (UA σ G.V.J)` to `fun h => (fun g => h⁻¹ * g) ⁻¹' G.M.dom`. Establish `hsmul : ∀ δ : ratU σ G.V.J, δ • G.M.dom = T δ.1` using `fun δ => by`. Use extensionality with `g`.
+
+Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem]`. Both sides reduce to the same expression. Establish `hdisj : ∀ δ δ' : UA σ G.V.J, δ ∈ ratU σ G.V.J → δ' ∈ ratU σ G.V.J → δ ≠ δ' → AEDisjoint G.M.μ (T δ) (T δ')`. Introduce `δ δ' hδ hδ' hne`. Use `hdom.aedisjoint (show (⟨δ, hδ⟩ : ratU σ G.V.J) ≠ ⟨δ', hδ'⟩ from fun h => hne (congrArg Subtype.val h))` as an intermediate fact.
+
+Rewrite `this` using `[Function.onFun, hsmul, hsmul]`. Then use the resulting hypothesis. Use `⟨fun x y hxy => hdisj _ _ (hγ x).1 (hγ y).1 fun heq => hxy (Subtype.ext (eq_of_mulVec (γ x) (hγ x).2 (heq ▸ (hγ y).2))), fun Q hQ => ?_⟩` and prove the remaining obligations. Use `haveI : Countable E := (Module.finBasis ℚ E).equivFun.injective.countable`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI : BorelSpace (UA σ G.V.J) := ⟨rfl⟩`.
+
+Use `haveI := hT.geo.hM.haar`. Establish `hnm : ∀ h, NullMeasurableSet (T h) G.M.μ` using `fun h => hdom.nullMeasurableSet.preimage (measurePreserving_mul_left G.M.μ h⁻¹).quasiMeasurePreserving`. Establish `hq : ∀ q : Q, q • (⋃ x, T (γ x)) = ⋃ x, T (q.1 * γ x)`. Introduce `q`. Rewrite using `[Set.smul_set_iUnion]`.
+
+Use `Set.iUnion_congr fun x => ?_` and prove the remaining obligations. Use extensionality with `g`. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem]`. Use `show (γ x)⁻¹ * (q.1⁻¹ * g) ∈ G.M.dom ↔ (q.1 * γ x)⁻¹ * g ∈ G.M.dom`. Rewrite using `[mul_inv_rev, mul_assoc]`.
+
+Use `{ nullMeasurableSet := NullMeasurableSet.iUnion fun x => hnm (γ x), ae_covers := ?_, aedisjoint := ?_ }` and prove the remaining obligations. Use `filter_upwards [hdom.ae_covers] with g ⟨δ, hδg⟩`. Take `⟨g₀, hmat, hunit⟩` from `rat_desc δ.1 δ.2`. Establish `hmv : mat δ.1 *ᵥ incV F H₀.x = incV F (g₀ *ᵥ H₀.x)`. Rewrite using `[hmat]`.
+
+Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec (inclR (F := F) (AF F)) g₀ H₀.x i).symm`. Establish `hv0 : g₀ *ᵥ H₀.x ≠ 0`. Introduce `h0`. Establish `hz : incV F (0 : Fin a → E) = 0` using `funext fun i => by simp [incV]`.
+
+Establish `hy : mat δ.1 *ᵥ incV F (0 : Fin a → E) = incV F 0`. Rewrite using `[hz, Matrix.mulVec_zero]`. Conclude with `hx0 (eq_of_mulVec δ.1 (hmv.trans (by rw [h0])) hy)`. Establish `hviso : form σ G.V.J (g₀ *ᵥ H₀.x) (g₀ *ᵥ H₀.x) = 0`. Rewrite using `[form_pres hunit]`.
+
+Conclude with `hA.xx`. Set `x : {x : Fin a → E // x ≠ 0 ∧ form σ G.V.J x x = 0}` to `⟨g₀ *ᵥ H₀.x, hv0, hviso⟩`. Establish `hmem : γ x * δ.1 ∈ Q` using `(hQ _).2 ⟨mul_mem (hγ x).1 δ.2, by`. Rewrite using `[mat_mul, ← Matrix.mulVec_mulVec, hmv]`. Conclude with `(hγ x).2⟩`.
+
+Use `⟨⟨γ x * δ.1, hmem⟩, Set.mem_iUnion.2 ⟨x, ?_⟩⟩` and prove the remaining obligations. Use `show (γ x)⁻¹ * (γ x * δ.1 * g) ∈ G.M.dom`. Rewrite using `[mul_assoc, inv_mul_cancel_left]`. Conclude with `hδg`. Introduce `q q' hqq'`.
+
+Rewrite using `[Function.onFun, hq, hq, AEDisjoint.iUnion_left_iff]`. Introduce `x`. Rewrite using `[AEDisjoint.iUnion_right_iff]`. Introduce `y`. Apply `hdisj _ _ (mul_mem ((hQ _).1 q.2).1 (hγ x).1) (mul_mem ((hQ _).1 q'.2).1 (hγ y).1)` to reduce the goal to its premises.
+
+Introduce `heq`. Establish `hxy : x = y`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `eq_of_mulVec (γ y) (v := H₀.x) _ (hγ y).2` to reduce the goal to its premises. Establish `e : γ y = (q'.1⁻¹ * q.1) * γ x`.
+
+Rewrite using `[mul_assoc, heq, ← mul_assoc, inv_mul_cancel, one_mul]`. Rewrite using `[e, mat_mul, ← Matrix.mulVec_mulVec, (hγ x).2]`. Conclude with `((hQ _).1 (Q.mul_mem (Q.inv_mem q'.2) q.2)).2`. Substitute `hxy` using the available equality. Conclude with `hqq' (Subtype.ext (mul_right_cancel heq))`.
+-/
 theorem GlobalTheory.StabCosetDomain.translates_isFundamentalDomain : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' → ∀ (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (om₁ : Rep σ G₁.V G₁.W) (om₁' : Rep σ G₁.V' G₁.W), IsTriple B G X om om' → IsTriple B G₁ X om₁ om₁' → ∀ (V₂ : Spc F E a) (n₁ : ℕ) (X₁ : Spc F E n₁) (H₀ : Plane E a n₁) (j₀ j₁ : ℕ) (M₂ : Model σ X₁ G₁.W) (e₂ : Fn F a (a + (b + 2)) →ₗ[ℂ] Fn F n₁ (a + b)), (reS G.V V₂).IsHerm σ B (a - G.p) G.p → H₀.IsAdapted σ B (reS G.V V₂) X₁ j₀ j₁ → M₂.IsGood B.ψ → IsEv B G.M M₂ H₀.ι H'.ι (isoA H₀ H') e₂ → ∀ γ : {x : Fin a → E // x ≠ 0 ∧ form σ G.V.J x x = 0} → UA σ G.V.J, (∀ x, γ x ∈ ratU σ G.V.J ∧ mat (γ x) *ᵥ incV F x.1 = incV F H₀.x) → Pairwise (Function.onFun (AEDisjoint G.M.μ) fun x => (fun g => (γ x)⁻¹ * g) ⁻¹' G.M.dom) ∧ ∀ Q : Subgroup (UA σ G.V.J), (∀ q, q ∈ Q ↔ q ∈ ratU σ G.V.J ∧ mat q *ᵥ incV F H₀.x = incV F H₀.x) → IsFundamentalDomain Q (⋃ x, (fun g => (γ x)⁻¹ * g) ⁻¹' G.M.dom) G.M.μ := by
   intro _kp F E _ _ _ _ _ σ B a b G G₁ H H' _cfg X om om' om₁ om₁' hT _hT1 V₂ n₁ X₁ H₀ j₀ j₁ M₂ e₂ _hh hA _hg _hev γ hγ
   classical

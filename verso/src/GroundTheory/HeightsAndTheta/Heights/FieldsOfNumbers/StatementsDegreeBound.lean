@@ -30,21 +30,33 @@ def RelevantPrimeDimGe.Statement : Prop :=
     [∀ k, Fintype (ι k)] (P : Ideal (MRing ι F)), IsMultiProjPrime P →
     ((Fintype.card K : ℕ) : WithBot ℕ∞) ≤ ringKrullDim (MRing ι F ⧸ P)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨eventuallyPoly_projectiveLine, eventuallyPoly_projectiveLine⟩`.
+-/
 theorem EventuallyPolyUnique.hypotheses_example :
     EventuallyPoly (hilbFn (⊥ : Ideal (MRing (ProjIdx 1) ℚ))) (X () + 1) ∧
       EventuallyPoly (hilbFn (⊥ : Ideal (MRing (ProjIdx 1) ℚ))) (X () + 1) :=
   ⟨eventuallyPoly_projectiveLine, eventuallyPoly_projectiveLine⟩
 
+/- English proof (translation)
+The claim follows from `eventuallyPoly_projectiveLine`.
+-/
 theorem EventuallyPolyShift.hypotheses_example :
     EventuallyPoly (hilbFn (⊥ : Ideal (MRing (ProjIdx 1) ℚ))) (X () + 1) :=
   eventuallyPoly_projectiveLine
 
+/- English proof (translation)
+Introduce `h`. Take `⟨i, hi⟩` from `h ()`. Conclude with `hi (Ideal.subset_span ⟨_, rfl⟩)`.
+-/
 theorem HilbIrrelevantZero.hypotheses_example :
     ¬ IsRelevant (Ideal.span (Set.range X) : Ideal (MRing (ProjIdx 1) ℚ)) := by
   intro h
   obtain ⟨i, hi⟩ := h ()
   exact hi (Ideal.subset_span ⟨_, rfl⟩)
 
+/- English proof (translation)
+The claim follows from `isMultiProjPrime_bot`.
+-/
 theorem RelevantPrimeDimGe.hypotheses_example :
     IsMultiProjPrime (⊥ : Ideal (MRing (ProjIdx 1) ℚ)) :=
   isMultiProjPrime_bot

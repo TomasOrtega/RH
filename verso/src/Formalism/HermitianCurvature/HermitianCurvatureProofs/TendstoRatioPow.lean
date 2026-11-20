@@ -34,6 +34,17 @@ def Ac {ι : Type} (s : ℕ) (β ε : ℂ) (bt : ι → ℂ → H) : ι × ℂ �
 def Nhat {ι : Type} (s : ℕ) (β : ℂ) (bt : ι → ℂ → H) (σ : ℂ) (h h' : ι) : ℂ :=
   ∫ z, G.psi β (σ * z) • ⟪bz s (bt h) z, bz s (bt h') z⟫_ℂ
 
+/- English proof (translation)
+Establish `hn : Tendsto (fun x : ℂ => ‖x + b‖) (cocompact ℂ) atTop`. Establish `h0 : Tendsto (fun x : ℂ => ‖x‖) (cocompact ℂ) atTop` using `tendsto_norm_cocompact_atTop`. Use `tendsto_atTop_mono (fun x => ?_) (tendsto_atTop_add_const_right _ (-‖b‖) h0)` and prove the remaining obligations. Use `norm_sub_norm_le x (-b)` as an intermediate fact. Rewrite `this` using `[norm_neg, sub_neg_eq_add]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hi : Tendsto (fun x : ℂ => (x + b)⁻¹) (cocompact ℂ) (𝓝 0)`. Rewrite using `[tendsto_zero_iff_norm_tendsto_zero]`. Conclude with `(tendsto_inv_atTop_zero.comp hn).congr fun x => by simp [norm_inv]`. Establish `hne : ∀ᶠ x in cocompact ℂ, x + b ≠ 0` using `(hn.eventually_gt_atTop 0).mono fun x hx => norm_pos_iff.mp hx`.
+
+Establish `hq : Tendsto (fun x : ℂ => 1 + (a - b) * (x + b)⁻¹) (cocompact ℂ) (𝓝 1)`. Simplify using `using (tendsto_const_nhds (x := (1 : ℂ))).add ((tendsto_const_nhds (x := a - b)).mul hi)`. Establish `hp` using `hq.pow (s - 1)`. Rewrite `hp` using `[one_pow]`. Use `hp.congr' ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hne] with x hx`. Rewrite using `[← div_pow]`. Use `congr 1`. Use `first`. Consider the case `(field_simp; ring)`.
+
+Consider the case `field_simp`.
+-/
 theorem tendsto_ratio_pow (s : ℕ) (a b : ℂ) :
     Tendsto (fun x : ℂ => (x + a) ^ (s - 1) / (x + b) ^ (s - 1)) (cocompact ℂ) (𝓝 1) := by
   have hn : Tendsto (fun x : ℂ => ‖x + b‖) (cocompact ℂ) atTop := by
@@ -61,19 +72,41 @@ theorem tendsto_ratio_pow (s : ℕ) (a b : ℂ) :
 
 variable {ι : Type} {s : ℕ} {β ε : ℂ} {Y : Finset ι} {ut : ι → ℂ → ℂ → H} {bt : ι → ℂ → H} {SS : ℝ}
 
+/- English proof (translation)
+The claim follows from `memLp_bz_of_sup hG.hs hG.hβ hG.hε (ut h) (bt h) SS (hG.memU h hh) (hG.sup h hh) (hG.meas h hh) (hG.loc h hh) (hG.germ h hh)`.
+-/
 theorem GermD.memLp_bz (hG : GermD s β ε Y ut bt SS) {h : ι} (hh : h ∈ Y) :
     MemLp (bz s (bt h)) 2 volume ∧ ∫ z, ‖bz s (bt h) z‖ ^ 2 ≤ SS := memLp_bz_of_sup hG.hs hG.hβ hG.hε (ut h) (bt h) SS (hG.memU h hh) (hG.sup h hh)
     (hG.meas h hh) (hG.loc h hh) (hG.germ h hh)
 
+/- English proof (translation)
+Take `⟨hb, hbS⟩` from `hG.memLp_bz hh`. Take `⟨h1, h2⟩` from `Formalism.FourierDecayAlt.P.PBK.memLp_abar hG.hs hG.hε (hG.meas h hh) hb`. Conclude with `⟨h1, h2.trans (mul_le_mul_of_nonneg_left hbS (Nat.cast_nonneg s))⟩`.
+-/
 theorem GermD.memLp_abar (hG : GermD s β ε Y ut bt SS) {h : ι} (hh : h ∈ Y) :
     MemLp (abar s ε (bt h)) 2 volume ∧ ∫ D, abar s ε (bt h) D ^ 2 ≤ s * SS := by
   obtain ⟨hb, hbS⟩ := hG.memLp_bz hh
   obtain ⟨h1, h2⟩ := Formalism.FourierDecayAlt.P.PBK.memLp_abar hG.hs hG.hε (hG.meas h hh) hb
   exact ⟨h1, h2.trans (mul_le_mul_of_nonneg_left hbS (Nat.cast_nonneg s))⟩
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.PBK.memLp_mainD hG.hs β hG.hε (hG.meas h hh) (hG.memLp_bz hh).1 x`.
+-/
 theorem GermD.memLp_mainD (hG : GermD s β ε Y ut bt SS) {h : ι} (hh : h ∈ Y) (x : ℂ) :
     MemLp (mainD s β ε (bt h) x) 2 volume := Formalism.FourierDecayAlt.P.PBK.memLp_mainD hG.hs β hG.hε (hG.meas h hh) (hG.memLp_bz hh).1 x
 
+/- English proof (translation)
+Take `⟨hab', habS'⟩` from `hG.memLp_abar hh'`. Take `⟨hab, habS⟩` from `hG.memLp_abar hh`. Take `⟨hdom1, hdom2, hdom3⟩` from `dil_dominator (abar s ε (bt h')) hab' (fun x : ℂ => (x + a) ^ (s - 1) / (x + b) ^ (s - 1)) (tendsto_ratio_pow s a b)`. Establish `hev : ∀ᶠ x in cocompact ℂ, x + a ≠ 0 ∧ x + b ≠ 0` using `by filter_upwards [eventually_ne_cocompact (-a), eventually_ne_cocompact (-b)] with x ha hb`. Conclude with `⟨fun h0 => ha (eq_neg_of_add_eq_zero_left h0), fun h0 => hb (eq_neg_of_add_eq_zero_left h0)⟩`.
+
+Establish `key : ∀ᶠ x in cocompact ℂ, ∫ D, ⟪ut h (x + a) D - mainD s β ε (bt h) (x + a) D, ((‖(x + a) ^ (s - 1) / (x + b) ^ (s - 1)‖ : ℝ) : ℂ) • mainD s β ε (bt h') (x + b) ((x + a) ^ (s - 1) / (x + b) ^ (s - 1) * D)⟫_ℂ = ∫ c, ⟪cvec s (fun x D => ut h x D - mainD s β ε (bt h) x D) (x + a) c …` using `by filter_upwards [hev] with x hx`. Rewrite using `[cvec_inner s _ _ (x + a) (x + b) hx.1 hx.2]`. Use `Tendsto.congr' key ?_` and prove the remaining obligations. Use `tendsto_integral_inner_germ_moving volume (fun x D => ut h (x + a) D - mainD s β ε (bt h) (x + a) D) (fun x D => ((‖(x + a) ^ (s - 1) / (x + b) ^ (s - 1)‖ : ℝ) : ℂ) • mainD s β ε (bt h') (x + b) ((x + a) ^ (s - 1) / (x + b) ^ (s - 1) * D)) (abar s ε (bt h')) (fun x D => |‖(x + a) …` and prove the remaining obligations. Use `filter_upwards [hev] with x hx`.
+
+Establish `hu` using `hG.memU h hh _ hx.1`. Establish `hm` using `hG.memLp_mainD hh (x + a)`. Use `⟨hu.sub hm, ?_⟩` and prove the remaining obligations. Establish `h1` using `integral_sq_sub_le hu hm hab (ae_of_all _ fun D => norm_mainD_le s β ε (bt h) (x + a) D)`. Establish `hb` using `hG.sup h hh _ hx.1`.
+
+Use `beta_reduce`. Combine the linear equalities and inequalities to obtain the conclusion. Use `filter_upwards with x`. Use `ae_of_all _ fun D => ?_` and prove the remaining obligations. Use `beta_reduce`.
+
+Rewrite using `[norm_smul, Complex.norm_real, Real.norm_of_nonneg (norm_nonneg _)]`. Conclude with `(mul_le_mul_of_nonneg_left (norm_mainD_le _ _ _ _ _ _) (norm_nonneg _)).trans (hdom1 x D)`. Introduce `K hK hK0 δ hδ`. Take `⟨C, hC⟩` from `hG.germ h hh K hK hK0`. Use `filter_upwards [hev, eventually_rate_cocompact a C δ hδ] with x hx hr`.
+
+Use `filter_upwards [hC _ hx.1] with D hD hDK`. Conclude with `(hD hDK).trans hr`.
+-/
 theorem GermD.tendsto_cross (hG : GermD s β ε Y ut bt SS) {h h' : ι} (hh : h ∈ Y) (hh' : h' ∈ Y) (a b : ℂ) :
     Tendsto (fun x => ∫ c, ⟪cvec s (fun x D => ut h x D - mainD s β ε (bt h) x D) (x + a) c,
       cvec s (fun x D => mainD s β ε (bt h') x D) (x + b) c⟫_ℂ) (cocompact ℂ) (𝓝 0) := by
@@ -120,6 +153,33 @@ theorem GermD.tendsto_cross (hG : GermD s β ε Y ut bt SS) {h h' : ι} (hh : h 
     filter_upwards [hC _ hx.1] with D hD hDK
     exact (hD hDK).trans hr
 
+/- English proof (translation)
+Establish `hs1 : 1 ≤ s` using `Nat.one_le_iff_ne_zero.mpr hG.hs`. Establish `memUc : ∀ h ∈ Y, ∀ x : ℂ, x ≠ 0 → MemLp (Uc s ut (h, x)) 2 volume` using `fun h hh x hx => (memLp_cvec s (ut h) x hx).1 (hG.memU h hh x hx)`. Establish `memAc : ∀ h ∈ Y, ∀ x : ℂ, x ≠ 0 → MemLp (Ac s β ε bt (h, x)) 2 volume` using `fun h hh x hx => (memLp_cvec s (fun x D => mainD s β ε (bt h) x D) x hx).1 (hG.memLp_mainD hh x)`. Use `⟨fun h hh => hG.memLp_bz hh, fun Xs hXs => blockPSD_gramL volume Y _ _ memUc memAc Xs hXs, ?_, ?_⟩` and prove the remaining obligations. Use `⟨s * SS, fun h hh x hx => ?_⟩` and prove the remaining obligations.
+
+Take `⟨hab, habS⟩` from `hG.memLp_abar hh`. Establish `hmD` using `hG.memLp_mainD hh x`. Establish `i1 : Integrable (fun D => ‖mainD s β ε (bt h) x D‖ ^ 2)` using `(memLp_two_iff_integrable_sq_norm hmD.1).1 hmD`. Establish `i2 : Integrable (fun D => abar s ε (bt h) D ^ 2)` using `(memLp_two_iff_integrable_sq hab.1).1 hab`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `integral_congr_ae (Eventually.of_forall fun c => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[inner_self_eq_norm_sq_to_K]`. Use `norm_cast`. Conclude with `abs_of_nonneg (sq_nonneg _)`.
+
+Use `_ = ∫ D, ‖mainD s β ε (bt h) x D‖ ^ 2 := integral_norm_cvec_sq s _ x hx`. Use `_ ≤ ∫ D, abar s ε (bt h) D ^ 2 := by`. Use `integral_mono i1 i2 fun D => ?_` and prove the remaining obligations. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (norm_mainD_le s β ε (bt h) x D) 2`. Use `_ ≤ s * SS := habS`.
+
+Introduce `h hh h' hh' σ`. Establish `hAA : Tendsto (fun x => gramL volume (Ac s β ε bt) (Ac s β ε bt) (h, x) (h', x + σ)) (cocompact ℂ) (𝓝 (Nhat s β bt σ h h'))`. Establish `hρ0 : ∀ᶠ x in cocompact ℂ, rhoR s σ x ≠ 0` using `(tendsto_rhoR s σ).eventually_ne one_ne_zero`. Establish `hT` using `tendsto_pairD hG.hs hG.hβ hG.hε (hG.memLp_bz hh).1 (hG.memLp_bz hh').1 (l := cocompact ℂ) id (fun x => x + σ) (rhoR s σ) σ hρ0 (tendsto_rhoR s σ) (tendsto_shift s hs1 σ) (fun ζ _ hζ => tendsto_shift_ne s hs1 σ ζ hζ)`. Use `hT.congr' ?_` and prove the remaining obligations.
+
+Use `filter_upwards [eventually_ne_zero_add σ] with x hx`. Conclude with `(pairD_of_cvec hG.hs β ε (bt h) (bt h') σ x hx.1 hx.2).symm`. Use `⟨hAA, ?_, ?_⟩` and prove the remaining obligations. Establish `hR` using `hG.tendsto_cross hh hh' 0 σ`. Simplify using `only [add_zero] at hR`.
+
+Establish `hsum` using `hAA.add hR`. Rewrite `hsum` using `[add_zero]`. Use `hsum.congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ne_zero_add σ] with x hx`. Establish `iA` using `integrable_inner_of_memLp (memAc h hh x hx.1) (memAc h' hh' _ hx.2)`.
+
+Establish `iR : Integrable (fun c => ⟪cvec s (fun x D => ut h x D - mainD s β ε (bt h) x D) x c, cvec s (fun x D => mainD s β ε (bt h') x D) (x + σ) c⟫_ℂ)`. Use `integrable_inner_of_memLp ?_ (memAc h' hh' _ hx.2)` and prove the remaining obligations. Conclude with `(memLp_cvec s _ x hx.1).1 ((hG.memU h hh x hx.1).sub (hG.memLp_mainD hh x))`. Simplify using `only [gramL]`. Rewrite using `[← integral_add iA iR]`.
+
+Use `integral_congr_ae (Eventually.of_forall fun c => ?_)` and prove the remaining obligations. Simplify using `only [Uc, Ac]`. Rewrite using `[← cvec_sub, inner_sub_left]`. Expand and normalize the polynomial expressions, which then agree. Establish `hR` using `hG.tendsto_cross hh' hh σ 0`.
+
+Simplify using `only [add_zero] at hR`. Establish `hRc` using `((Complex.continuous_conj.tendsto 0).comp hR)`. Simplify using `only [map_zero] at hRc`. Establish `hsum` using `hAA.add hRc`. Rewrite `hsum` using `[add_zero]`.
+
+Use `hsum.congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ne_zero_add σ] with x hx`. Establish `iA` using `integrable_inner_of_memLp (memAc h hh x hx.1) (memAc h' hh' _ hx.2)`. Establish `iR : Integrable (fun c => ⟪cvec s (fun x D => mainD s β ε (bt h) x D) x c, cvec s (fun x D => ut h' x D - mainD s β ε (bt h') x D) (x + σ) c⟫_ℂ)`. Use `integrable_inner_of_memLp (memAc h hh x hx.1) ?_` and prove the remaining obligations.
+
+Conclude with `(memLp_cvec s _ _ hx.2).1 ((hG.memU h' hh' _ hx.2).sub (hG.memLp_mainD hh' _))`. Simplify using `only [gramL, Function.comp_apply]`. Rewrite using `[← integral_conj, ← integral_conj]`. Simplify using `only [inner_conj_symm]`. Rewrite using `[← integral_add iA iR]`.
+
+Use `integral_congr_ae (Eventually.of_forall fun c => ?_)` and prove the remaining obligations. Simplify using `only [Uc, Ac]`. Rewrite using `[← cvec_sub, inner_sub_right]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GermD.propG (hG : GermD s β ε Y ut bt SS) :
     (∀ h ∈ Y, MemLp (bz s (bt h)) 2 volume ∧ ∫ z, ‖bz s (bt h) z‖ ^ 2 ≤ SS) ∧
     (∀ Xs : Finset ℂ, (∀ x ∈ Xs, x ≠ 0) →

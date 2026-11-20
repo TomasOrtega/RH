@@ -15,6 +15,11 @@ section Indices
 
 variable {M : Type*} [Monoid M]
 
+/- English proof (translation)
+Proceed by induction on `q with`. Consider the case `zero => simp`. Consider the case `succ q ih`. Establish `h1` using `Fin.partialProd_succ x ⟨p + q, by omega⟩`. Establish `h2` using `Fin.partialProd_succ y ⟨q, by omega⟩`.
+
+Simplify using `only [Fin.succ_mk, Fin.castSucc_mk] at h1 h2`. Rewrite using `[show (⟨p + (q + 1), by omega⟩ : Fin (m + 1)) = ⟨p + q + 1, by omega⟩ from Fin.ext (by simp only; omega), h1, h2, ih (by omega), hy, mul_assoc]`.
+-/
 theorem partialProd_add {m r p q : ℕ} (x : Fin m → M) (y : Fin r → M) (hpr : p + r ≤ m)
     (hy : ∀ j : Fin r, y j = x ⟨p + j, by omega⟩) (hq : q ≤ r) :
     Fin.partialProd x ⟨p + q, by omega⟩ =
@@ -28,6 +33,11 @@ theorem partialProd_add {m r p q : ℕ} (x : Fin m → M) (y : Fin r → M) (hpr
     rw [show (⟨p + (q + 1), by omega⟩ : Fin (m + 1)) = ⟨p + q + 1, by omega⟩ from
       Fin.ext (by simp only; omega), h1, h2, ih (by omega), hy, mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[Fin.partialProd_contractNth]`. Simplify using `only [Function.comp_apply]`. Use `congr 1`. Rewrite using `[Fin.succAbove_of_le_castSucc]`. Both sides reduce to the same expression.
+
+Simplify using `[Fin.le_def]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem partialProd_contractNth_of_lt {m p : ℕ} (x : Fin (m + 1) → M) (j : Fin (m + 1))
     (hp : p ≤ m) (hj : (j : ℕ) < p) :
     Fin.partialProd (Fin.contractNth j (· * ·) x) ⟨p, by omega⟩ =
@@ -39,6 +49,11 @@ theorem partialProd_contractNth_of_lt {m p : ℕ} (x : Fin (m + 1) → M) (j : F
   · rfl
   · simp [Fin.le_def]; omega
 
+/- English proof (translation)
+Rewrite using `[Fin.partialProd_contractNth]`. Simplify using `only [Function.comp_apply]`. Use `congr 1`. Rewrite using `[Fin.succAbove_of_castSucc_lt]`. Both sides reduce to the same expression.
+
+Simplify using `[Fin.lt_def]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem partialProd_contractNth_of_le {m p : ℕ} (x : Fin (m + 1) → M) (j : Fin (m + 1))
     (hp : p ≤ m) (hj : p ≤ (j : ℕ)) :
     Fin.partialProd (Fin.contractNth j (· * ·) x) ⟨p, by omega⟩ =
@@ -52,6 +67,9 @@ theorem partialProd_contractNth_of_le {m p : ℕ} (x : Fin (m + 1) → M) (j : F
 
 variable {α : Type*}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Simplify using `only [Fin.contractNth, Fin.castSucc_mk, Fin.succ_mk, hj]`. Both sides reduce to the same expression.
+-/
 theorem contractNth_prefix {m p : ℕ} (op : α → α → α) (x : Fin (m + 1) → α) (j : Fin (m + 1))
     (j' : Fin (p + 1)) (hp : p ≤ m) (hj : (j : ℕ) = j') :
     (fun l : Fin p => Fin.contractNth j op x ⟨l, by omega⟩) =
@@ -60,6 +78,9 @@ theorem contractNth_prefix {m p : ℕ} (op : α → α → α) (x : Fin (m + 1) 
   simp only [Fin.contractNth, Fin.castSucc_mk, Fin.succ_mk, hj]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Rewrite using `[Fin.contractNth_apply_of_lt _ _ _ _ (by simp; omega)]`. Both sides reduce to the same expression.
+-/
 theorem contractNth_prefix_of_le {m p : ℕ} (op : α → α → α) (x : Fin (m + 1) → α)
     (j : Fin (m + 1)) (hj : p ≤ (j : ℕ)) :
     (fun l : Fin p => Fin.contractNth j op x ⟨l, by omega⟩) = fun l : Fin p => x ⟨l, by omega⟩ := by
@@ -67,6 +88,9 @@ theorem contractNth_prefix_of_le {m p : ℕ} (op : α → α → α) (x : Fin (m
   rw [Fin.contractNth_apply_of_lt _ _ _ _ (by simp; omega)]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Rewrite using `[Fin.contractNth_apply_of_gt _ _ _ _ (by simp; omega)]`. Simplify using `only [Fin.succ_mk]`. Use `congr 2`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem contractNth_suffix_of_lt {m p q : ℕ} (op : α → α → α) (x : Fin (m + 1) → α)
     (j : Fin (m + 1)) (hpq : p + q ≤ m) (hj : (j : ℕ) < p) :
     (fun l : Fin q => Fin.contractNth j op x ⟨p + l, by omega⟩) =
@@ -77,6 +101,13 @@ theorem contractNth_suffix_of_lt {m p q : ℕ} (op : α → α → α) (x : Fin 
   congr 2
   omega
 
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Simplify using `only [Fin.contractNth, Fin.castSucc_mk, Fin.succ_mk, hj]`. Distinguish the cases in `h1 : (l : ℕ) < j'`. Rewrite using `[if_pos (by omega), if_pos h1]`. Both sides reduce to the same expression.
+
+Rewrite using `[if_neg (by omega), if_neg h1]`. Distinguish the cases in `h2 : (l : ℕ) = j'`. Rewrite using `[if_pos (by omega), if_pos h2]`. Both sides reduce to the same expression. Rewrite using `[if_neg (by omega), if_neg h2]`.
+
+Both sides reduce to the same expression.
+-/
 theorem contractNth_suffix {m p q : ℕ} (op : α → α → α) (x : Fin (m + 1) → α) (j : Fin (m + 1))
     (j' : Fin (q + 1)) (hpq : p + q = m) (hj : (j : ℕ) = p + j') :
     (fun l : Fin q => Fin.contractNth j op x ⟨p + l, by omega⟩) =
@@ -104,12 +135,36 @@ def cupCochain (h : p + q = n) (f : (Fin p → G) → A) (g : (Fin q → G) → 
   f (fun i : Fin p => x ⟨i, by omega⟩) ⊗ₜ[k]
     B.ρ (Fin.partialProd x ⟨p, by omega⟩) (g fun j : Fin q => x ⟨p + j, by omega⟩)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cupCochain_apply (h : p + q = n) (f : (Fin p → G) → A) (g : (Fin q → G) → B)
     (x : Fin n → G) :
     cupCochain h f g x = f (fun i : Fin p => x ⟨i, by omega⟩) ⊗ₜ[k]
       B.ρ (Fin.partialProd x ⟨p, by omega⟩) (g fun j : Fin q => x ⟨p + j, by omega⟩) :=
   rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Use function extensionality and compare the values at `x`. Simplify using `only [inhomogeneousCochains.d_hom_apply, cupCochain_apply, Pi.add_apply, Pi.smul_apply]`. Establish `hs : ∀ {M : Type u} [AddCommMonoid M] (F : Fin (p + q + 1) → M), ∑ j, F j = ∑ i : Fin p, F (Fin.castAdd (q + 1) i) + ∑ m : Fin (q + 1), F (Fin.natAdd p m)` using `fun F => Fin.sum_univ_add (a := p) (b := q + 1) F`. Rewrite using `[hs, Fin.sum_univ_castSucc (n := p)]`.
+
+Establish `e0 : ((A ⊗ B).ρ (x 0)) ((f fun i : Fin p => x (⟨i, by omega⟩ : Fin (p + q)).succ) ⊗ₜ[k] B.ρ (Fin.partialProd (fun i : Fin (p + q) => x i.succ) ⟨p, by omega⟩) (g fun j : Fin q => x (⟨p + j, by omega⟩ : Fin (p + q)).succ)) = A.ρ (x 0) (f fun i : Fin p => x (⟨i, by omega⟩ : Fin (p + …`. Rewrite using `[Rep.tensor_ρ, Representation.tprod_apply, TensorProduct.map_tmul, ← Module.End.mul_apply, ← map_mul]`. Establish `hP : x 0 * Fin.partialProd (fun i : Fin (p + q) => x i.succ) ⟨p, by omega⟩ = Fin.partialProd x ⟨p + 1, by omega⟩`. Use `Fin.partialProd_succ' x ⟨p, by omega⟩` as an intermediate fact. Simplify using `only [Fin.succ_mk] at this`.
+
+Rewrite using `[this]`. Both sides reduce to the same expression. Establish `hg : (fun j : Fin q => x (⟨p + j, by omega⟩ : Fin (p + q)).succ) = fun j : Fin q => x ⟨p + 1 + j, by omega⟩`. Use function extensionality and compare the values at `j`. Use `congr 1`.
+
+Use `ext`. Simplify using `only [Fin.val_succ]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hP, hg]`. Establish `e1 : ∀ i : Fin p, (-1 : k) ^ ((Fin.castAdd (q + 1) i : Fin (p + q + 1)) + 1 : ℕ) • ((f fun l : Fin p => Fin.contractNth (n` using `p + q) (Fin.castAdd (q + 1) i) (· * ·) x ⟨l, by omega⟩) ⊗ₜ[k] B.ρ (Fin.partialProd (Fin.contractNth (n := p + q) (Fin.castAdd (q + 1) i) (· * ·) x) ⟨p, by omega⟩) (g fun j : Fin q => Fin.contractNth (n := p + q) (Fin.castAdd (q + 1) i) (· * ·) x ⟨p + j, by omega⟩)) = ((-1 : k) ^ …`.
+
+Introduce `i`. Rewrite using `[contractNth_prefix _ x _ (Fin.castSucc i) (by omega) (by simp), partialProd_contractNth_of_lt _ _ (by omega) (by simp), contractNth_suffix_of_lt _ x _ (by omega) (by simp), TensorProduct.smul_tmul']`. Simplify using the standard rewrite rules. Establish `e2 : ∀ m : Fin (q + 1), (-1 : k) ^ ((Fin.natAdd p m : Fin (p + q + 1)) + 1 : ℕ) • ((f fun l : Fin p => Fin.contractNth (n` using `p + q) (Fin.natAdd p m) (· * ·) x ⟨l, by omega⟩) ⊗ₜ[k] B.ρ (Fin.partialProd (Fin.contractNth (n := p + q) (Fin.natAdd p m) (· * ·) x) ⟨p, by omega⟩) (g fun j : Fin q => Fin.contractNth (n := p + q) (Fin.natAdd p m) (· * ·) x ⟨p + j, by omega⟩)) = (-1 : k) ^ p • ((f fun l : Fin p …`. Introduce `m`.
+
+Rewrite using `[contractNth_prefix_of_le _ x _ (by simp), partialProd_contractNth_of_le _ _ (by omega) (by simp), contractNth_suffix _ x _ m rfl (by simp), map_smul, TensorProduct.tmul_smul, smul_smul, ← pow_add]`. Use `congr 2`. Rewrite using `[e0, Finset.sum_congr rfl fun i _ => e1 i, Finset.sum_congr rfl fun m _ => e2 m]`. Establish `hlast : (Fin.contractNth (Fin.last p) (· * ·) fun l : Fin (p + 1) => x ⟨l, by omega⟩) = fun l : Fin p => x ⟨l, by omega⟩`. Use function extensionality and compare the values at `l`.
+
+Rewrite using `[Fin.contractNth_apply_of_lt _ _ _ _ (by simp)]`. Both sides reduce to the same expression. Establish `hT : A.ρ (x ⟨((0 : Fin (p + 1)) : ℕ), by omega⟩) (f fun i : Fin p => x ⟨(i.succ : ℕ), by omega⟩) = A.ρ (x 0) (f fun i : Fin p => x (⟨i, by omega⟩ : Fin (p + q)).succ)` using `rfl`. Establish `hG : (fun i : Fin q => x ⟨p + (i.succ : ℕ), by omega⟩) = fun j : Fin q => x ⟨p + 1 + j, by omega⟩`. Use function extensionality and compare the values at `j`.
+
+Use `congr 1`. Use `ext`. Simplify using `only [Fin.val_succ]`. Use linear arithmetic over natural numbers and integers. Establish `hP : B.ρ (Fin.partialProd x ⟨p, by omega⟩) (B.ρ (x ⟨p + ((0 : Fin (q + 1)) : ℕ), by omega⟩) (g fun j : Fin q => x ⟨p + 1 + j, by omega⟩)) = B.ρ (Fin.partialProd x ⟨p + 1, by omega⟩) (g fun j : Fin q => x ⟨p + 1 + j, by omega⟩)`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Use `congr 2`. Use `Fin.partialProd_succ x ⟨p, by omega⟩` as an intermediate fact. Simplify using `only [Fin.succ_mk, Fin.castSucc_mk] at this`. Rewrite using `[this]`.
+
+Both sides reduce to the same expression. Rewrite using `[hlast, hT, hG, map_add, TensorProduct.tmul_add, smul_add, hP, TensorProduct.add_tmul, TensorProduct.add_tmul, ← TensorProduct.smul_tmul', TensorProduct.sum_tmul, map_sum, TensorProduct.tmul_sum, Finset.smul_sum, Fin.val_last, pow_succ, mul_neg_one, neg_smul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem d_cupCochain (h : p + q = n) (f : (Fin p → G) → A) (g : (Fin q → G) → B) :
     (inhomogeneousCochains.d (A ⊗ B) n).hom (cupCochain h f g) =
       cupCochain (by omega) ((inhomogeneousCochains.d A p).hom f) g +
@@ -203,6 +258,11 @@ theorem d_cupCochain (h : p + q = n) (f : (Fin p → G) → A) (g : (Fin q → G
     TensorProduct.tmul_sum, Finset.smul_sum, Fin.val_last, pow_succ, mul_neg_one, neg_smul]
   abel
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => simp [Fin.partialProd]`. Consider the case `succ j ih`. Establish `h1` using `Fin.partialProd_succ x ⟨j, by omega⟩`. Establish `h2` using `Fin.partialProd_succ (fun i : Fin m => x ⟨i, by omega⟩) ⟨j, by omega⟩`.
+
+Simplify using `only [Fin.succ_mk, Fin.castSucc_mk] at h1 h2`. Rewrite using `[h1, h2, ih (by omega)]`.
+-/
 theorem partialProd_prefix {M : Type*} [Monoid M] {m m' j : ℕ} (x : Fin m' → M) (hm : m ≤ m')
     (hj : j ≤ m) :
     Fin.partialProd (fun i : Fin m => x ⟨i, by omega⟩) ⟨j, by omega⟩ =
@@ -215,23 +275,38 @@ theorem partialProd_prefix {M : Type*} [Monoid M] {m m' j : ℕ} (x : Fin m' →
     simp only [Fin.succ_mk, Fin.castSucc_mk] at h1 h2
     rw [h1, h2, ih (by omega)]
 
+/- English proof (translation)
+Simplify using `[Fin.partialProd]`.
+-/
 theorem partialProd_mk_zero {M : Type*} [Monoid M] {m : ℕ} (x : Fin m → M) (h : 0 < m + 1) :
     Fin.partialProd x ⟨0, h⟩ = 1 := by
   simp [Fin.partialProd]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tensor_ρ_tmul (X Y : Rep k G) (s : G) (a : X) (b : Y) :
     (X ⊗ Y).ρ s (a ⊗ₜ[k] b) = X.ρ s a ⊗ₜ[k] Y.ρ s b :=
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem associator_hom_tmul (X Y Z : Rep k G) (a : X) (b : Y) (c : Z) :
     (α_ X Y Z).hom.hom (((a ⊗ₜ[k] b : (X ⊗ Y : Rep k G)) ⊗ₜ[k] c : ((X ⊗ Y) ⊗ Z : Rep k G))) =
       a ⊗ₜ[k] (b ⊗ₜ[k] c) :=
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem leftUnitor_hom_tmul (X : Rep k G) (c : k) (a : X) :
     (λ_ X).hom.hom ((c ⊗ₜ[k] a : (𝟙_ (Rep k G) ⊗ X : Rep k G))) = c • a :=
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rightUnitor_hom_tmul (X : Rep k G) (a : X) (c : k) :
     (ρ_ X).hom.hom ((a ⊗ₜ[k] c : (X ⊗ 𝟙_ (Rep k G) : Rep k G))) = c • a :=
   rfl
@@ -245,6 +320,9 @@ def cupₗ (h : p + q = n) :
     (fun c f g => by funext x; simp [cupCochain_apply, TensorProduct.tmul_smul])
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cupₗ_apply (h : p + q = n) (f : (Fin p → G) → A) (g : (Fin q → G) → B) :
     cupₗ h f g = cupCochain h f g :=
   rfl
@@ -256,10 +334,16 @@ def cupCochainsTensor :
   TensorProduct.lift (cupₗ rfl)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cupCochainsTensor_tmul (f : (Fin p → G) → A) (g : (Fin q → G) → B) :
     cupCochainsTensor A B p q (f ⊗ₜ g) = cupCochain rfl f g :=
   rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `φ.hom _ ⊗ₜ[k] ψ.hom _ = _`. Rewrite using `[Rep.hom_comm_apply]`. Both sides reduce to the same expression.
+-/
 theorem tensorHom_cupCochain {A' B' : Rep k G} (φ : A ⟶ A') (ψ : B ⟶ B') (h : p + q = n)
     (f : (Fin p → G) → A) (g : (Fin q → G) → B) (x : Fin n → G) :
     (φ ⊗ₘ ψ).hom (cupCochain h f g x) =
@@ -268,6 +352,11 @@ theorem tensorHom_cupCochain {A' B' : Rep k G} (φ : A ⟶ A') (ψ : B ⟶ B') (
   rw [Rep.hom_comm_apply]
   rfl
 
+/- English proof (translation)
+Substitute `h₁ h₂ h₃` using the available equality. Simplify using `only [cupCochain_apply]`. Rewrite using `[associator_hom_tmul, tensor_ρ_tmul, ← Module.End.mul_apply, ← map_mul, ← partialProd_add x (fun j : Fin (q + r) => x ⟨p + j, by omega⟩) (by omega) (fun j => rfl) (by omega), partialProd_prefix x (by omega) (by omega)]`. Establish `hE : (fun j : Fin r => x ⟨p + (q + j), by omega⟩) = fun j : Fin r => x ⟨p + q + j, by omega⟩`. Use function extensionality and compare the values at `fun j => congrArg x (Fin.ext (by simp only; omega))`.
+
+Rewrite using `[hE]`.
+-/
 theorem associator_cupCochain {C : Rep k G} {r m l : ℕ} (h₁ : p + q = m) (h₂ : m + r = n)
     (h₃ : q + r = l) (h₄ : p + l = n) (f : (Fin p → G) → A) (g : (Fin q → G) → B)
     (e : (Fin r → G) → C) (x : Fin n → G) :
@@ -284,12 +373,18 @@ theorem associator_cupCochain {C : Rep k G} {r m l : ℕ} (h₁ : p + q = m) (h�
 
 def oneCochain : (Fin 0 → G) → (𝟙_ (Rep k G) : Rep k G) := fun _ => (1 : k)
 
+/- English proof (translation)
+Simplify using `only [cupCochain_apply, oneCochain, partialProd_mk_zero, map_one, Module.End.one_apply]`. Rewrite using `[leftUnitor_hom_tmul, one_smul]`. Conclude with `congrArg f (funext fun j => congrArg x (Fin.ext (zero_add _)))`.
+-/
 theorem leftUnitor_oneCochain_cupCochain (f : (Fin q → G) → A) (x : Fin q → G) :
     (λ_ A).hom.hom (cupCochain (zero_add q) oneCochain f x) = f x := by
   simp only [cupCochain_apply, oneCochain, partialProd_mk_zero, map_one, Module.End.one_apply]
   rw [leftUnitor_hom_tmul, one_smul]
   exact congrArg f (funext fun j => congrArg x (Fin.ext (zero_add _)))
 
+/- English proof (translation)
+Simplify using `only [cupCochain_apply, oneCochain]`. Rewrite using `[rightUnitor_hom_tmul]`. Conclude with `one_smul k _`.
+-/
 theorem rightUnitor_cupCochain_oneCochain (f : (Fin p → G) → A) (x : Fin p → G) :
     (ρ_ A).hom.hom (cupCochain (add_zero p) f oneCochain x) = f x := by
   simp only [cupCochain_apply, oneCochain]

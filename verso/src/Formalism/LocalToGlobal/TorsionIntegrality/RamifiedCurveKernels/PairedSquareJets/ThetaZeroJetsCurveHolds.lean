@@ -18,6 +18,9 @@ open Formalism.DworkPowerSeriesWeights (JetsIntegral jetPair)
 
 namespace GramFrameCompositionTwoFacts
 
+/- English proof (translation)
+Rewrite using `[WeierstrassCurve.Affine.negY]`. Take the linear combination `-h`.
+-/
 theorem negY_two {K : Type} [Field K] (W : WeierstrassCurve K) (x0 y0 : K)
     (h : 2 * y0 + W.a₁ * x0 + W.a₃ = 0) : W.toAffine.negY x0 y0 = y0 := by
   rw [WeierstrassCurve.Affine.negY]
@@ -27,6 +30,9 @@ section Even
 
 variable {K : Type} [Field K] [CharZero K]
 
+/- English proof (translation)
+Establish `h1` using `congrArg (PowerSeries.coeff n) h`. Rewrite `h1` using `[PowerSeries.coeff_rescale, hn.neg_one_pow]`. Establish `h2 : (2 : K) * PowerSeries.coeff n f = 0` using `by linear_combination -h1`. Conclude with `(mul_eq_zero.1 h2).resolve_left two_ne_zero`.
+-/
 theorem odd_coeff_of_rescale {f : PowerSeries K} (h : PowerSeries.rescale (-1 : K) f = f) (n : ℕ)
     (hn : Odd n) : PowerSeries.coeff n f = 0 := by
   have h1 := congrArg (PowerSeries.coeff n) h
@@ -34,6 +40,9 @@ theorem odd_coeff_of_rescale {f : PowerSeries K} (h : PowerSeries.rescale (-1 : 
   have h2 : (2 : K) * PowerSeries.coeff n f = 0 := by linear_combination -h1
   exact (mul_eq_zero.1 h2).resolve_left two_ne_zero
 
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[PowerSeries.coeff_rescale]`. Break down `Nat.even_or_odd n with hn | hn` into its components or cases. Rewrite using `[hn.neg_one_pow, one_mul]`. Rewrite using `[h n hn, mul_zero]`.
+-/
 theorem rescale_of_odd_coeff {f : PowerSeries K} (h : ∀ n : ℕ, Odd n → PowerSeries.coeff n f = 0) :
     PowerSeries.rescale (-1 : K) f = f := by
   ext n
@@ -42,6 +51,13 @@ theorem rescale_of_odd_coeff {f : PowerSeries K} (h : ∀ n : ℕ, Odd n → Pow
   · rw [hn.neg_one_pow, one_mul]
   · rw [h n hn, mul_zero]
 
+/- English proof (translation)
+Establish `h2 : n ≠ 2`. Introduce and unpack `rfl`. Conclude with `absurd hn (by decide)`. Rewrite using `[lam, map_add, PowerSeries.coeff_C_mul, PowerSeries.coeff_X_pow, if_neg h2, mul_zero, add_zero, dblInt, PowerSeries.coeff_mk]`. Use `split_ifs with h1`.
+
+Both sides reduce to the same expression. Establish `h3 : Odd (n - 2)`. Take `⟨k, hk⟩` from `hn`. Use `⟨k - 1, ?_⟩` and prove the remaining obligations. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[h _ h3, zero_div]`.
+-/
 theorem odd_coeff_lam {e : PowerSeries K} (h : ∀ n : ℕ, Odd n → PowerSeries.coeff n e = 0) (s2 : K)
     (n : ℕ) (hn : Odd n) : PowerSeries.coeff n (lam e s2) = 0 := by
   have h2 : n ≠ 2 := by
@@ -57,6 +73,11 @@ theorem odd_coeff_lam {e : PowerSeries K} (h : ∀ n : ℕ, Odd n → PowerSerie
       omega
     rw [h _ h3, zero_div]
 
+/- English proof (translation)
+Establish `he : PowerSeries.HasSubst (expSer W)` using `PowerSeries.HasSubst.of_constantCoeff_zero' (Formalism.L2.Th1.A.expSpec K W).1`. Establish `hi : PowerSeries.HasSubst (Formalism.L2.Th1.A.iSer W)` using `PowerSeries.HasSubst.of_constantCoeff_zero' (Formalism.L2.Th1.A.iSerSpec K W).1`. Establish `hX : ((-1 : K) • (PowerSeries.X : PowerSeries K)) = -PowerSeries.X`. Rewrite using `[neg_smul, one_smul]`. Unfold `wTr`.
+
+Rewrite using `[map_add, rescale_C_eq, PowerSeries.rescale_eq_subst, PowerSeries.subst_comp_subst_apply he (PowerSeries.HasSubst.smul_X' (-1 : K)), hX, (Formalism.L2.Th1.A.logNeg K W).2, ← PowerSeries.subst_comp_subst_apply hi he, Formalism.L2.Th1.A.plusNeg K W x0 y0 hE, negY_two W x0 y0 h2]`.
+-/
 theorem rescale_wTr (W : WeierstrassCurve K) (x0 y0 : K) (hE : W.toAffine.Equation x0 y0)
     (h2 : 2 * y0 + W.a₁ * x0 + W.a₃ = 0) :
     PowerSeries.rescale (-1 : K) (wTr W x0 y0) = wTr W x0 y0 := by
@@ -78,6 +99,15 @@ section abelian₂
 
 variable {K : Type} [Field K] [CharZero K]
 
+/- English proof (translation)
+Establish `h1 : ((n : K) + 2) ≠ 0` using `by exact_mod_cast Nat.succ_ne_zero (n + 1)`. Establish `h2 : ((n : K) + 1) ≠ 0` using `by exact_mod_cast Nat.succ_ne_zero n`. Establish `h3 : ¬ (n + 2 < 2)` using `by omega`. Rewrite using `[lam, map_add, PowerSeries.coeff_C_mul, PowerSeries.coeff_X_pow, dblInt, PowerSeries.coeff_mk, if_neg h3, Nat.add_sub_cancel, Nat.factorial_succ, Nat.factorial_succ]`. Distinguish the cases in `h0 : n = 0`.
+
+Substitute `h0` using the available equality. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `h4 : n + 2 ≠ 2` using `by omega`.
+
+Establish `h5 : ((n : K) + 2 - 1) = (n : K) + 1` using `by ring`. Rewrite using `[if_neg h0, if_neg h4]`. Use `push_cast`. Rewrite using `[h5]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fact_coeff_lam (e : PowerSeries K) (s2 : K) (n : ℕ) :
     (((n + 2).factorial : ℕ) : K) * PowerSeries.coeff (n + 2) (lam e s2) =
       ((n.factorial : ℕ) : K) * PowerSeries.coeff n e + if n = 0 then s2 else 0 := by
@@ -99,14 +129,29 @@ theorem fact_coeff_lam (e : PowerSeries K) (s2 : K) (n : ℕ) :
     field_simp
     ring
 
+/- English proof (translation)
+Rewrite using `[PowerSeries.coeff_zero_eq_constantCoeff_apply, constantCoeff_lam]`.
+-/
 theorem coeff_zero_lam (e : PowerSeries K) (s2 : K) : PowerSeries.coeff 0 (lam e s2) = 0 := by
   rw [PowerSeries.coeff_zero_eq_constantCoeff_apply, constantCoeff_lam]
 
+/- English proof (translation)
+Establish `h` using `constantCoeff_derivative_lam e s2`. Rewrite `h` using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_derivative]`. Simplify using `using h`.
+-/
 theorem coeff_one_lam (e : PowerSeries K) (s2 : K) : PowerSeries.coeff 1 (lam e s2) = 0 := by
   have h := constantCoeff_derivative_lam e s2
   rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_derivative] at h
   simpa using h
 
+/- English proof (translation)
+Take `⟨w1, w2, w3, w4, w6⟩` from `hW`. Establish `hint : ∀ n, PowerSeries.coeff n (xPlus W x0 y0) ∈ R` using `fun n => ((Formalism.L2.Th1.A.coeffMem K W R w1 w2 w3 w4 w6).2.2.2.2.2.2.2.2.2.2 x0 hx y0 hy n).1`. Establish `hj` using `(Formalism.L2.Th1.A.jetMem K W R w1 w2 w3 w4 w6).2.1 (xPlus W x0 y0) hint`. Introduce `n`. Use `match n with`.
+
+Consider the case `0 => rw [coeff_zero_lam, mul_zero]`. Conclude with `R.zero_mem`. Consider the case `1 => rw [coeff_one_lam, mul_zero]`. Conclude with `R.zero_mem`. Consider the case `2`.
+
+Establish `h` using `fact_coeff_lam (wTr W x0 y0) s2 0`. Rewrite `h` using `[zero_add]`. Rewrite using `[h, if_pos rfl, Nat.factorial_zero, Nat.cast_one, one_mul, wTr, map_add, PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_zero_eq_constantCoeff_apply, JetSubstitutionLemmas.cc_subst1 (Formalism.L2.Th1.A.expSpec K W).1, (Formalism.L2.Th1.A.plusFlow K W x0 y0 hE).2. …`. Conclude with `hs`. Consider the case `k + 3`.
+
+Establish `h` using `fact_coeff_lam (wTr W x0 y0) s2 (k + 1)`. Rewrite using `[h, if_neg (Nat.succ_ne_zero k), add_zero, wTr, map_add, PowerSeries.coeff_C, if_neg (Nat.succ_ne_zero k), add_zero]`. Conclude with `hj (k + 1)`.
+-/
 theorem jetsIn1_lam {R : Subring K} (W : WeierstrassCurve K) (hW : CoeffIn R W) (x0 y0 s2 : K)
     (hE : W.toAffine.Equation x0 y0) (hx : x0 ∈ R) (hy : y0 ∈ R) (hs : x0 + W.b₂ / 12 + s2 ∈ R) :
     JetsIn1 R (lam (wTr W x0 y0) s2) := by
@@ -138,17 +183,26 @@ section Hom
 
 variable {K : Type} [Field K]
 
+/- English proof (translation)
+Rewrite using `[PowerSeries.subst_def, PowerSeries.subst_def, MvPowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero hg).const ha]`.
+-/
 theorem mvSubst_subst {σ τ : Type} {a : σ → MvPowerSeries τ K} (ha : MvPowerSeries.HasSubst a)
     {g : MvPowerSeries σ K} (hg : MvPowerSeries.constantCoeff g = 0) (f : PowerSeries K) :
     MvPowerSeries.subst a (PowerSeries.subst g f) = PowerSeries.subst (MvPowerSeries.subst a g) f := by
   rw [PowerSeries.subst_def, PowerSeries.subst_def,
     MvPowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero hg).const ha]
 
+/- English proof (translation)
+The claim follows from `PowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.constantCoeff_X i) linv h0`.
+-/
 theorem cc_zPt {n : Type} {linv : PowerSeries K} (h0 : PowerSeries.constantCoeff linv = 0) (i : n) :
     MvPowerSeries.constantCoeff
       (PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries n K) linv : MvPowerSeries n K) = 0 :=
   PowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.constantCoeff_X i) linv h0
 
+/- English proof (translation)
+The claim follows from `MvPowerSeries.hasSubst_of_constantCoeff_zero fun i => cc_zPt h0 i`.
+-/
 theorem hasSubst_zPt {n : Type} [Finite n] {linv : PowerSeries K}
     (h0 : PowerSeries.constantCoeff linv = 0) :
     MvPowerSeries.HasSubst (fun i : n =>
@@ -159,11 +213,17 @@ def toZHom {n : Type} [Finite n] {linv : PowerSeries K} (h0 : PowerSeries.consta
     MvPowerSeries n K →ₐ[K] MvPowerSeries n K :=
   MvPowerSeries.substAlgHom (hasSubst_zPt h0)
 
+/- English proof (translation)
+The claim follows from `MvPowerSeries.substAlgHom_apply _ f`.
+-/
 theorem toZHom_apply {n : Type} [Finite n] {linv : PowerSeries K}
     (h0 : PowerSeries.constantCoeff linv = 0) (f : MvPowerSeries n K) :
     toZHom h0 f = toZ linv f :=
   MvPowerSeries.substAlgHom_apply _ f
 
+/- English proof (translation)
+Unfold `toZ`. Rewrite using `[mvSubst_subst (hasSubst_zPt h0) (MvPowerSeries.constantCoeff_X i), MvPowerSeries.subst_X (hasSubst_zPt h0), PowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero' h0) (PowerSeries.HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X i))]`.
+-/
 theorem toZ_subst_X {n : Type} [Finite n] {linv : PowerSeries K}
     (h0 : PowerSeries.constantCoeff linv = 0) (f : PowerSeries K) (i : n) :
     toZ linv (PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries n K) f) =
@@ -174,6 +234,9 @@ theorem toZ_subst_X {n : Type} [Finite n] {linv : PowerSeries K}
     PowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero' h0)
       (PowerSeries.HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X i))]
 
+/- English proof (translation)
+Unfold `phSum`. Rewrite using `[← toZHom_apply h0, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, toZHom_apply, toZ_subst_X h0]`.
+-/
 theorem toZ_phSum {n : Type} [Fintype n] {linv : PowerSeries K}
     (h0 : PowerSeries.constantCoeff linv = 0) (c : n → K) (ph : PowerSeries K) :
     toZ linv (phSum c ph) = phSum c (PowerSeries.subst linv ph) := by
@@ -182,6 +245,9 @@ theorem toZ_phSum {n : Type} [Fintype n] {linv : PowerSeries K}
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [map_smul, toZHom_apply, toZ_subst_X h0]
 
+/- English proof (translation)
+Unfold `phSum`. Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.smul_eq_C_mul, map_mul, PowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.constantCoeff_X i) ph h0, mul_zero]`.
+-/
 theorem cc_phSum {n : Type} [Fintype n] (c : n → K) {ph : PowerSeries K}
     (h0 : PowerSeries.constantCoeff ph = 0) : MvPowerSeries.constantCoeff (phSum c ph) = 0 := by
   unfold phSum
@@ -190,6 +256,9 @@ theorem cc_phSum {n : Type} [Fintype n] (c : n → K) {ph : PowerSeries K}
   rw [MvPowerSeries.smul_eq_C_mul, map_mul,
     PowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.constantCoeff_X i) ph h0, mul_zero]
 
+/- English proof (translation)
+Unfold `phSum`. Use `jetsIn_sum _ _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.smul_eq_C_mul]`. Conclude with `jetsIn_mul (jetsIn_C (hc i)) (jetsIn_subst_one hf (MvPowerSeries.constantCoeff_X i) (jetsIn_X i))`.
+-/
 theorem jetsIn_phSum [CharZero K] {R : Subring K} {n : Type} [Fintype n]
     {c : n → K} (hc : ∀ i, c i ∈ R) {f : PowerSeries K} (hf : JetsIn1 R f) :
     JetsIn R (phSum c f) := by
@@ -199,17 +268,26 @@ theorem jetsIn_phSum [CharZero K] {R : Subring K} {n : Type} [Fintype n]
   exact jetsIn_mul (jetsIn_C (hc i))
     (jetsIn_subst_one hf (MvPowerSeries.constantCoeff_X i) (jetsIn_X i))
 
+/- English proof (translation)
+The claim follows from `IntMvZ_of (JetsSubst_of jets_ring_holds jets_div_pow_holds) integral_jets_holds jets_subst_one_holds jets_ring_holds K R l linv h hl n G hG`.
+-/
 theorem jetsIn_toZ [CharZero K] {R : Subring K} {l linv : PowerSeries K}
     (h : IsLogPair l linv) (hl : IsOneUnit R (PowerSeries.derivative K l)) {n : Type} [Fintype n]
     {G : MvPowerSeries n K} (hG : IntMv R G) : JetsIn R (toZ linv G) :=
   IntMvZ_of (JetsSubst_of jets_ring_holds jets_div_pow_holds) integral_jets_holds jets_subst_one_holds
     jets_ring_holds K R l linv h hl n G hG
 
+/- English proof (translation)
+The claim follows from `mvSubst_mvExp hf (hasSubst_zPt h0)`.
+-/
 theorem toZ_mvExp [CharZero K] {n : Type} [Finite n] {linv : PowerSeries K}
     (h0 : PowerSeries.constantCoeff linv = 0) {f : MvPowerSeries n K}
     (hf : MvPowerSeries.constantCoeff f = 0) : toZ linv (mvExp f) = mvExp (toZ linv f) :=
   mvSubst_mvExp hf (hasSubst_zPt h0)
 
+/- English proof (translation)
+Rewrite using `[PowerSeries.subst_comp_subst_apply (JetSubstitutionLemmas.hs1 h.1) (JetSubstitutionLemmas.hs1 h.2.2.1), h.2.2.2.2, PowerSeries.X_subst]`.
+-/
 theorem subst_linv_subst_l {l linv : PowerSeries K} (h : IsLogPair l linv) (f : PowerSeries K) :
     PowerSeries.subst linv (PowerSeries.subst l f) = f := by
   rw [PowerSeries.subst_comp_subst_apply (JetSubstitutionLemmas.hs1 h.1) (JetSubstitutionLemmas.hs1 h.2.2.1), h.2.2.2.2,
@@ -217,6 +295,17 @@ theorem subst_linv_subst_l {l linv : PowerSeries K} (h : IsLogPair l linv) (f : 
 
 end Hom
 
+/- English proof (translation)
+Establish `hD` using `curve_second_log_derivative K W x0 y0 hE`. Rewrite `hD` using `[negY_two W x0 y0 h2]`. Use `set L : PowerSeries K := 2 • lam (wpReg W) s2 + 2 • (-(lam (wTr W x0 y0) s2)) with hL`. Establish `cL : PowerSeries.constantCoeff L = 0`. Rewrite using `[hL, map_add, map_nsmul, map_nsmul, map_neg, constantCoeff_lam, constantCoeff_lam]`.
+
+Simplify using the standard rewrite rules. Establish `cL' : PowerSeries.constantCoeff (PowerSeries.derivative K L) = 0`. Rewrite using `[hL, map_add, map_nsmul, map_nsmul, map_neg, map_add, map_nsmul, map_nsmul, map_neg, constantCoeff_derivative_lam, constantCoeff_derivative_lam]`. Simplify using the standard rewrite rules. Establish `dL : PowerSeries.derivative K (PowerSeries.derivative K L) = 2 * wpReg W - wTr W x0 y0 - wTr W x0 y0`.
+
+Rewrite using `[hL]`. Simplify using `only [map_add, map_nsmul, map_neg, derivative2_lam]`. Simplify using `only [nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hP` using `hasSecondLogDeriv_powerSeriesExp L cL`. Rewrite `hP` using `[dL]`. Use `hasSecondLogDeriv_left_unique ?_ (constantCoeff_pExp mvExpLaws L cL) ?_ hD hP` and prove the remaining obligations. Simplify using `[wpShift]`. Rewrite using `[derivative_pExp L cL, map_mul, cL', mul_zero, ← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_derivative, wpShift, map_add, PowerSeries.coeff_X_pow_mul']`.
+
+Simplify using `[PowerSeries.coeff_one]`.
+-/
 theorem wpShift_eq {K : Type} [Field K] [CharZero K] (W : WeierstrassCurve K) (x0 y0 s2 : K)
     (hE : W.toAffine.Equation x0 y0) (h2 : 2 * y0 + W.a₁ * x0 + W.a₃ = 0) :
     wpShift (wpReg W) (x0 + W.b₂ / 12) =
@@ -250,6 +339,13 @@ end GramFrameCompositionTwoFacts
 
 open GramFrameCompositionTwoFacts
 
+/- English proof (translation)
+Introduce `K _ _ W x0 y0 s2 hE h2`. Establish `c1 : PowerSeries.constantCoeff (lam (wpReg W) s2) = 0` using `constantCoeff_lam _ _`. Establish `c2 : PowerSeries.constantCoeff (-(lam (wTr W x0 y0) s2)) = 0`. Rewrite using `[map_neg, constantCoeff_lam, neg_zero]`. Establish `e1 : PowerSeries.constantCoeff (2 • lam (wpReg W) s2) = 0`.
+
+Rewrite using `[map_nsmul, c1, smul_zero]`. Establish `e2 : PowerSeries.constantCoeff (2 • (-(lam (wTr W x0 y0) s2))) = 0`. Rewrite using `[map_nsmul, c2, smul_zero]`. Rewrite using `[wpShift_eq W x0 y0 s2 hE h2, pExp_add mvExpLaws _ _ e1 e2, pExp_nsmul mvExpLaws _ c1, pExp_nsmul mvExpLaws _ c2]`. Establish `h` using `pExp_mul_neg mvExpLaws (lam (wpReg W) s2) c1`.
+
+Express the relevant statement in the definitionally equal form `PowerSeries.X ^ 2 * pExp (-(lam (wTr W x0 y0) s2)) ^ 2 = (PowerSeries.X * pExp (-(lam (wpReg W) s2))) ^ 2 * (pExp (lam (wpReg W) s2) ^ 2 * pExp (-(lam (wTr W x0 y0) s2)) ^ 2)`. Take the linear combination `(-(PowerSeries.X ^ 2 * pExp (-(lam (wTr W x0 y0) s2)) ^ 2 * (pExp (lam (wpReg W) s2) * pExp (-(lam (wpReg W) s2)) + 1))) * h`.
+-/
 theorem theta_zero_square_holds : ThetaZeroSquare := by
   intro K _ _ W x0 y0 s2 hE h2
   have c1 : PowerSeries.constantCoeff (lam (wpReg W) s2) = 0 := constantCoeff_lam _ _
@@ -268,6 +364,11 @@ theorem theta_zero_square_holds : ThetaZeroSquare := by
   linear_combination (-(PowerSeries.X ^ 2 * pExp (-(lam (wTr W x0 y0) s2)) ^ 2 *
     (pExp (lam (wpReg W) s2) * pExp (-(lam (wpReg W) s2)) + 1))) * h
 
+/- English proof (translation)
+Introduce `K _ _ W x0 y0 s2 hE h2`. Establish `c2 : PowerSeries.constantCoeff (-(lam (wTr W x0 y0) s2)) = 0`. Rewrite using `[map_neg, constantCoeff_lam, neg_zero]`. Use `⟨constantCoeff_pExp mvExpLaws _ c2, ?_⟩` and prove the remaining obligations. Establish `hw` using `odd_coeff_of_rescale (rescale_wTr W x0 y0 hE h2)`.
+
+Establish `hl : PowerSeries.rescale (-1 : K) (lam (wTr W x0 y0) s2) = lam (wTr W x0 y0) s2` using `rescale_of_odd_coeff (odd_coeff_lam hw s2)`. Use `odd_coeff_of_rescale ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `PowerSeries.rescale (-1 : K) (pExp (-(lam (wTr W x0 y0) s2))) = pExp _`. Rewrite using `[rescale_pExp _ _ c2, map_neg, hl]`.
+-/
 theorem theta_zero_even_holds : ThetaZeroEven := by
   intro K _ _ W x0 y0 s2 hE h2
   have c2 : PowerSeries.constantCoeff (-(lam (wTr W x0 y0) s2)) = 0 := by
@@ -280,6 +381,11 @@ theorem theta_zero_even_holds : ThetaZeroEven := by
   change PowerSeries.rescale (-1 : K) (pExp (-(lam (wTr W x0 y0) s2))) = pExp _
   rw [rescale_pExp _ _ c2, map_neg, hl]
 
+/- English proof (translation)
+Introduce `K _ _ _ s2 al albar b ι _ xP hN hu hx hb hs`. Establish `key : al * (al - albar) * (s2 + b / 12) = ∑ P, xP P + (al ^ 2 - 1) * (b / 12)`. Rewrite using `[mul_add, hs, Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Take the linear combination `(-(b / 12)) * hN`. Establish `e : ‖s2 + b / 12‖ = ‖al * (al - albar) * (s2 + b / 12)‖`.
+
+Rewrite using `[norm_mul (al * (al - albar)), hu, one_mul]`. Rewrite using `[e, key]`. Conclude with `(unitBall K).add_mem (Subring.sum_mem _ fun P _ => hx P) hb`.
+-/
 theorem s2_integral_holds : ShiftedSigmaConstantIntegralOfIsogenySum := by
   intro K _ _ _ s2 al albar b ι _ xP hN hu hx hb hs
   have key : al * (al - albar) * (s2 + b / 12) = ∑ P, xP P + (al ^ 2 - 1) * (b / 12) := by
@@ -290,6 +396,17 @@ theorem s2_integral_holds : ShiftedSigmaConstantIntegralOfIsogenySum := by
   rw [e, key]
   exact (unitBall K).add_mem (Subring.sum_mem _ fun P _ => hx P) hb
 
+/- English proof (translation)
+Introduce `K _ _ _ W hW x0 y0 s2 hE h2 hx hy hs`. Take `⟨hlp, -, -, -, hl1⟩` from `curveFrame K (unitBall K) W hW`. Establish `hΛ : JetsIn1 (unitBall K) (lam (wTr W x0 y0) s2)` using `jetsIn1_lam W hW x0 y0 s2 hE hx hy hs`. Establish `cΛ : PowerSeries.constantCoeff (lam (wTr W x0 y0) s2) = 0` using `constantCoeff_lam _ _`. Establish `cph : PowerSeries.constantCoeff (phT W x0 y0 s2) = 0`.
+
+Unfold `phT`. Rewrite using `[JetSubstitutionLemmas.cc_subst1 hlp.1, cΛ]`. Establish `p1 : ∀ i : ℕ, jet (logSer W) (phT W x0 y0 s2) i ∈ unitBall K`. Introduce `i`. Rewrite using `[jetAdditive K _ _ _ hlp i, phT, subst_linv_subst_l hlp]`.
+
+Conclude with `hΛ i`. Establish `eq : PowerSeries.subst (logSer W) (th0 W x0 y0 s2) = (mvExp (-(phT W x0 y0 s2)) : PowerSeries K)`. Unfold `th0 phT`. Rewrite using `[mvExpSubst K Unit (-(lam (wTr W x0 y0) s2)) (logSer W) (by rw [map_neg, cΛ, neg_zero]) hlp.1]`. Use `congr 1`.
+
+Rewrite using `[← sub_eq_zero, sub_neg_eq_add, ← PowerSeries.subst_add (JetSubstitutionLemmas.hs1 hlp.1), neg_add_cancel, ← PowerSeries.coe_substAlgHom (JetSubstitutionLemmas.hs1 hlp.1), map_zero]`. Establish `p3 : ∀ i : ℕ, jet (logSer W) (PowerSeries.subst (logSer W) (th0 W x0 y0 s2)) i ∈ unitBall K`. Introduce `i`. Rewrite using `[eq]`. Conclude with `jetExp K (unitBall K) _ _ _ hlp cph (fun i _ => p1 i) i`.
+
+Establish `p2` using `(jets_of_dist_jets_holds K (unitBall K) _ _ _ hlp).1 p3`. Rewrite `p2` using `[subst_linv_subst_l hlp]`. Conclude with `⟨fun i _ => p1 i, p2, p3⟩`.
+-/
 theorem theta_zero_jets_two_holds : ThetaZeroJetsTwo := by
   intro K _ _ _ W hW x0 y0 s2 hE h2 hx hy hs
   obtain ⟨hlp, -, -, -, hl1⟩ := curveFrame K (unitBall K) W hW
@@ -318,6 +435,11 @@ theorem theta_zero_jets_two_holds : ThetaZeroJetsTwo := by
   rw [subst_linv_subst_l hlp] at p2
   exact ⟨fun i _ => p1 i, p2, p3⟩
 
+/- English proof (translation)
+Introduce `K _ _ _ W hW s2 al albar ι _ neg xP yP _ hxP _ hN hu hb hs x0 y0 hE hT hx hy`. Establish `a1 : ‖s2 + W.b₂ / 12‖ ≤ 1` using `h1 K s2 al albar W.b₂ ι xP hN hu hxP hb hs`. Establish `a2 : ‖x0 + W.b₂ / 12 + s2‖ ≤ 1`. Establish `e : x0 + W.b₂ / 12 + s2 = x0 + (s2 + W.b₂ / 12)` using `by ring`. Rewrite using `[e]`.
+
+Conclude with `(unitBall K).add_mem hx a1`. Take `⟨q1, q2, -⟩` from `h2 K W hW x0 y0 s2 hE hT hx hy a2`. Conclude with `⟨q2, q1⟩`.
+-/
 theorem Th0JetsCurve_of (h1 : ShiftedSigmaConstantIntegralOfIsogenySum) (h2 : ThetaZeroJetsTwo) : ThetaZeroJetsCurve := by
   intro K _ _ _ W hW s2 al albar ι _ neg xP yP _ hxP _ hN hu hb hs x0 y0 hE hT hx hy
   have a1 : ‖s2 + W.b₂ / 12‖ ≤ 1 := h1 K s2 al albar W.b₂ ι xP hN hu hxP hb hs
@@ -328,8 +450,22 @@ theorem Th0JetsCurve_of (h1 : ShiftedSigmaConstantIntegralOfIsogenySum) (h2 : Th
   obtain ⟨q1, q2, -⟩ := h2 K W hW x0 y0 s2 hE hT hx hy a2
   exact ⟨q2, q1⟩
 
+/- English proof (translation)
+The claim follows from `Th0JetsCurve_of s2_integral_holds theta_zero_jets_two_holds`.
+-/
 theorem theta_zero_jets_curve_holds : ThetaZeroJetsCurve := Th0JetsCurve_of s2_integral_holds theta_zero_jets_two_holds
 
+/- English proof (translation)
+Introduce `K _ _ _ l linv ph h hl hph hj n _ c hc G hG`. Establish `hv : PowerSeries.constantCoeff linv = 0` using `h.2.2.1`. Establish `j0 : JetsIn1 (unitBall K) (PowerSeries.subst linv ph)`. Use `(jets_of_dist_jets_holds K (unitBall K) l linv ph h).1 fun i => ?_` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos i with hi | hi` into its components or cases.
+
+Substitute `hi` using the available equality. Establish `: jet l ph 0 = 0` using `hph`. Rewrite using `[this]`. Conclude with `(unitBall K).zero_mem`. Conclude with `hj i hi`.
+
+Establish `cz : PowerSeries.constantCoeff (PowerSeries.subst linv ph) = 0`. Rewrite using `[JetSubstitutionLemmas.cc_subst1 hv, hph]`. Establish `c1 : MvPowerSeries.constantCoeff (-(phSum c ph)) = 0`. Rewrite using `[map_neg, cc_phSum c hph, neg_zero]`. Establish `c3 : MvPowerSeries.constantCoeff (-(phSum c (PowerSeries.subst linv ph))) = 0`.
+
+Rewrite using `[map_neg, cc_phSum c cz, neg_zero]`. Establish `e : toZ linv (-(phSum c ph)) = -(phSum c (PowerSeries.subst linv ph))`. Rewrite using `[← toZHom_apply hv, map_neg, toZHom_apply, toZ_phSum hv]`. Establish `key : JetsIntegral (toZ linv (mvExp (-(phSum c ph)) * G))`. Rewrite using `[← toZHom_apply hv, map_mul, toZHom_apply, toZHom_apply, toZ_mvExp hv c1, e]`.
+
+Conclude with `jetsIn_mul (R := unitBall K) (jetsIn_mvExp c3 (jetsIn_neg (jetsIn_phSum hc j0))) (jetsIn_toZ h hl hG)`. Conclude with `⟨key, fun P hP => Formalism.DworkPowerSeriesWeights.intOp K n _ key P hP⟩`.
+-/
 theorem kernel_two_holds : KernelTwo := by
   intro K _ _ _ l linv ph h hl hph hj n _ c hc G hG
   have hv : PowerSeries.constantCoeff linv = 0 := h.2.2.1
@@ -355,6 +491,11 @@ theorem kernel_two_holds : KernelTwo := by
       (jetsIn_toZ h hl hG)
   exact ⟨key, fun P hP => Formalism.DworkPowerSeriesWeights.intOp K n _ key P hP⟩
 
+/- English proof (translation)
+Introduce `K _ _ _ W hW s2 al albar ι _ neg xP yP hEnd hxP hyP hN hu hb hs x0 y0 hE hT hx hy n _ c hc G hG P hP`. Take `⟨hlp, -, -, -, hl1⟩` from `curveFrame K (unitBall K) W hW`. Establish `hj` using `(h K W hW s2 al albar ι neg xP yP hEnd hxP hyP hN hu hb hs x0 y0 hE hT hx hy).2`. Establish `cph : PowerSeries.constantCoeff (phT W x0 y0 s2) = 0`. Unfold `phT`.
+
+Rewrite using `[JetSubstitutionLemmas.cc_subst1 hlp.1, constantCoeff_lam]`. Conclude with `(hK K _ _ _ hlp hl1 cph hj n c hc G hG).2 P hP`.
+-/
 theorem CurveKernelTwo_of (h : ThetaZeroJetsCurve) (hK : KernelTwo) : CurveKernelTwo := by
   intro K _ _ _ W hW s2 al albar ι _ neg xP yP hEnd hxP hyP hN hu hb hs x0 y0 hE hT hx hy n _ c hc
     G hG P hP
@@ -365,6 +506,9 @@ theorem CurveKernelTwo_of (h : ThetaZeroJetsCurve) (hK : KernelTwo) : CurveKerne
     rw [JetSubstitutionLemmas.cc_subst1 hlp.1, constantCoeff_lam]
   exact (hK K _ _ _ hlp hl1 cph hj n c hc G hG).2 P hP
 
+/- English proof (translation)
+The claim follows from `CurveKernelTwo_of theta_zero_jets_curve_holds kernel_two_holds`.
+-/
 theorem curve_kernel_two_holds : CurveKernelTwo :=
   CurveKernelTwo_of theta_zero_jets_curve_holds kernel_two_holds
 

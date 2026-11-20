@@ -25,6 +25,15 @@ variable {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [IsCommMonOb
   [IsCommMonObj G'] in
 omit [IsCommMonObj G] [IsCommMonObj G'] in
 
+/- English proof (translation)
+Substitute `hb` using the available equality. Establish `hpb : IsPullback F G'.hom G.hom f` using `gp.1`. Set `φ : (Over.mk a ⟶ G') → (Over.mk (a ≫ f) ⟶ G)` to `fun x => Over.homMk (x.left ≫ F) (by`. Rewrite using `[Category.assoc, hpb.w, ← Category.assoc, Over.w x]`. Use the proof step `rfl)`.
+
+Set `ψ : (Over.mk (a ≫ f) ⟶ G) → (Over.mk a ⟶ G')` to `fun y => Over.homMk (hpb.lift y.left a (by simpa using Over.w y)) (by simp)`. Use `⟨{ toFun := φ, invFun := ψ, left_inv := ?_, right_inv := ?_, map_mul' := ?_ }, fun x => rfl⟩` and prove the remaining obligations. Introduce `x`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `hpb.hom_ext` to reduce the goal to its premises.
+
+Simplify using `[φ, ψ]`. Simplify using `[φ, ψ]`. Introduce `y`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `[φ, ψ]`.
+
+Introduce `x y`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `(gp.2 (Over.mk a) x y (φ x) (φ y) rfl rfl).symm`.
+-/
 theorem _root_.GlobalTheory.AlphaPair.exists_ptEquiv {f : S' ⟶ S} {F : G'.left ⟶ G.left}
     (gp : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsGrpPullback G' G f F) {Z : Scheme.{0}}
     (a : Z ⟶ S') (b : Z ⟶ S) (hb : b = a ≫ f) :

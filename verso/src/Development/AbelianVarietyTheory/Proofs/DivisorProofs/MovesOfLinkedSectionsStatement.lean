@@ -6,5 +6,8 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory GlobalTheory.Cart
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LatChain.moves_of_link | exact GlobalTheory.LatChain.moves_of_link | (intros; apply GlobalTheory.LatChain.moves_of_link <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.moves_of_linked_sections : Hypotheses2 → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (q : X ⟶ Sp k) (n : ℕ), IsArithVar q (n + 1) → ∀ num : Form (Cl q) (n + 1), IsArForm (n + 1) num → IsSymm num → ∀ (G : Fin n → HermLB q) (p m N : ℕ), p.Prime → ∀ c c' : X → Fin N → X.functionFieldˣ, Link p c c' → Moves num G p m c c' := by
   first | exact @GlobalTheory.LatChain.moves_of_link | exact GlobalTheory.LatChain.moves_of_link | (intros; apply GlobalTheory.LatChain.moves_of_link <;> assumption)

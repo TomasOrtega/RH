@@ -7,6 +7,13 @@ noncomputable section
 
 namespace Deduction
 
+/- English proof (translation)
+Establish `ha : 0 < (σ - 2) / 2` using `by linarith`. Establish `h1 : IntegrableOn (fun u : ℝ => (1 / ((σ - 2) / 2) ^ k) * Real.exp (-((σ - 2) / 2) * u)) (Ioi 0)` using `(exp_neg_integrableOn_Ioi 0 ha).const_mul _`. Use `Integrable.mono' h1 (by fun_prop) ?_` and prove the remaining obligations. Use `(ae_restrict_iff' measurableSet_Ioi).2 (Eventually.of_forall fun u hu => ?_)` and prove the remaining obligations. Establish `hu0 : 0 ≤ u` using `le_of_lt hu`.
+
+Rewrite using `[Real.norm_of_nonneg (by positivity)]`. Establish `h2` using `landau_kernel_max k ha hu0`. Establish `h3 : u ^ k * Real.exp ((2 - σ) * u) / (k.factorial : ℝ) = (u ^ k * Real.exp (-((σ - 2) / 2) * u) / (k.factorial : ℝ)) * Real.exp (-((σ - 2) / 2) * u)`. Establish `: (2 - σ) * u = -((σ - 2) / 2) * u + -((σ - 2) / 2) * u` using `by ring`. Rewrite using `[this, Real.exp_add]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3]`. Conclude with `mul_le_mul_of_nonneg_right h2 (Real.exp_pos _).le`.
+-/
 theorem landau_window_ineq_int (k : ℕ) {σ : ℝ} (hσ : 2 < σ) :
     IntegrableOn (fun u : ℝ => u ^ k * Real.exp ((2 - σ) * u) / (k.factorial : ℝ)) (Ioi 0) := by
   have ha : 0 < (σ - 2) / 2 := by linarith
@@ -24,6 +31,35 @@ theorem landau_window_ineq_int (k : ℕ) {σ : ℝ} (hσ : 2 < σ) :
   rw [h3]
   exact mul_le_mul_of_nonneg_right h2 (Real.exp_pos _).le
 
+/- English proof (translation)
+Use `set w : ℝ → ℝ := fun u => u ^ k * Real.exp (-σ * u) / (k.factorial : ℝ) with hw`. Use `set h : ℝ → ℝ := fun u => u ^ k * Real.exp ((2 - σ) * u) / (k.factorial : ℝ) with hh`. Establish `hhi : IntegrableOn h (Ioi 0)` using `landau_window_ineq_int k hσ`. Establish `hw0 : ∀ u, 0 ≤ u → 0 ≤ w u` using `fun u hu => by simp only [hw]; positivity`. Establish `hwm : Measurable w` using `by simp only [hw]; fun_prop`.
+
+Establish `hb : ∀ u, 0 ≤ u → |g u| * w u ≤ C₀ * h u` using `fun u hu => by`. Establish `: C₀ * h u = C₀ * Real.exp (2 * u) * w u`. Simplify using `only [hw, hh]`. Establish `: (2 - σ) * u = 2 * u + -σ * u` using `by ring`. Rewrite using `[this, Real.exp_add]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `mul_le_mul_of_nonneg_right (hC u hu) (hw0 u hu)`. Establish `hI1 : IntegrableOn (fun u => |g u| * w u) (Ioi 0)`. Use `Integrable.mono' (hhi.const_mul C₀) (hg.abs.mul hwm).aestronglyMeasurable ?_` and prove the remaining obligations.
+
+Use `(ae_restrict_iff' measurableSet_Ioi).2 (Eventually.of_forall fun u hu => ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_of_nonneg (mul_nonneg (abs_nonneg _) (hw0 u (le_of_lt hu)))]`. Conclude with `hb u (le_of_lt hu)`. Establish `hI2 : IntegrableOn (fun u => g u * w u) (Ioi 0)`. Use `Integrable.mono' (hhi.const_mul C₀) (hg.mul hwm).aestronglyMeasurable ?_` and prove the remaining obligations.
+
+Use `(ae_restrict_iff' measurableSet_Ioi).2 (Eventually.of_forall fun u hu => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, Real.norm_of_nonneg (hw0 u (le_of_lt hu)), Real.norm_eq_abs]`. Conclude with `hb u (le_of_lt hu)`. Establish `hL : ‖∫ u in Ioi (0 : ℝ), (g u : ℂ) * (u : ℂ) ^ k * cexp (-((σ : ℂ) + γ * I) * u) / (k.factorial : ℂ)‖ ≤ ∫ u in Ioi (0 : ℝ), |g u| * w u`. Use `(norm_integral_le_integral_norm _).trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Use `setIntegral_congr_fun measurableSet_Ioi fun u hu => ?_` and prove the remaining obligations. Establish `hu0 : 0 ≤ u` using `le_of_lt hu`. Establish `hre : (-((σ : ℂ) + γ * I) * u).re = -σ * u` using `by simp`. Simplify using `only [hw, norm_div, norm_mul, norm_pow, Complex.norm_real, Complex.norm_exp, hre, Complex.norm_natCast, Real.norm_eq_abs, abs_of_nonneg hu0]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hM : (∫ u in Ioi (0 : ℝ), (g u : ℂ) * (u : ℂ) ^ k * cexp (-(σ : ℂ) * u) / (k.factorial : ℂ)).re = ∫ u in Ioi (0 : ℝ), g u * w u`. Establish `: (fun u : ℝ => (g u : ℂ) * (u : ℂ) ^ k * cexp (-(σ : ℂ) * u) / (k.factorial : ℂ)) = fun u : ℝ => ((g u * w u : ℝ) : ℂ)`. Use function extensionality and compare the values at `u`. Simplify using `only [hw]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, integral_complex_ofReal, Complex.ofReal_re]`. Establish `hI3 : IntegrableOn (fun u => |g u| * w u + g u * w u) (Ioi 0)` using `hI1.add hI2`. Establish `hsub : Icc U V ⊆ Ioi (0 : ℝ)` using `fun u hu => lt_of_lt_of_le hU hu.1`. Establish `hsplit` using `integral_inter_add_diff (μ := volume) (s := Ioi (0 : ℝ)) (t := Icc U V) measurableSet_Icc hI3`.
+
+Rewrite `hsplit` using `[inter_eq_right.2 hsub, integral_add hI1 hI2]`. Establish `hA : ∫ u in Icc U V, (|g u| * w u + g u * w u) ≤ 2 * (1 / (σ - θ) ^ k) * (∫ u in Icc U V, R u * Real.exp (-θ * u))`. Rewrite using `[← integral_const_mul]`. Use `setIntegral_mono_on (hI3.mono_set hsub) (hR.const_mul _) measurableSet_Icc fun u hu => ?_` and prove the remaining obligations. Establish `hu0 : 0 ≤ u` using `le_of_lt (hsub hu)`.
+
+Take `⟨h1, h2⟩` from `hR' u hu`. Establish `h3 : |g u| + g u ≤ 2 * R u`. Apply the tactic sequence `rcases abs_cases (g u) with h | h <;> linarith [h.1]`. Establish `h4 : w u ≤ 1 / (σ - θ) ^ k * Real.exp (-θ * u)`. Establish `h5` using `landau_kernel_max k (sub_pos.2 hθ) hu0`.
+
+Establish `h6 : w u = (u ^ k * Real.exp (-(σ - θ) * u) / (k.factorial : ℝ)) * Real.exp (-θ * u)`. Simplify using `only [hw]`. Establish `: -σ * u = -(σ - θ) * u + -θ * u` using `by ring`. Rewrite using `[this, Real.exp_add]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[h6]`. Conclude with `mul_le_mul_of_nonneg_right h5 (Real.exp_pos _).le`. Combine the equalities or inequalities in the displayed calculation. Establish `hB : ∫ u in Ioi (0 : ℝ) \ Icc U V, (|g u| * w u + g u * w u) ≤ 2 * C₀ * ∫ u in Ioi (0 : ℝ) \ Icc U V, h u`. Rewrite using `[← integral_const_mul]`.
+
+Use `setIntegral_mono_on (hI3.mono_set diff_subset) ((hhi.mono_set diff_subset).const_mul _) (measurableSet_Ioi.diff measurableSet_Icc) fun u hu => ?_` and prove the remaining obligations. Establish `hu0 : 0 ≤ u` using `le_of_lt hu.1`. Establish `h1` using `hb u hu0`. Establish `h2 : g u * w u ≤ |g u| * w u` using `mul_le_mul_of_nonneg_right (le_abs_self _) (hw0 u hu0)`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite using `[hM]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem landau_window_ineq {g R : ℝ → ℝ} (hg : Measurable g) {C₀ : ℝ}
     (hC : ∀ u : ℝ, 0 ≤ u → |g u| ≤ C₀ * Real.exp (2 * u)) {σ θ U V : ℝ} (hσ : 2 < σ) (hθ : θ < σ) (hU : 0 < U)
     (hR : IntegrableOn (fun u => R u * Real.exp (-θ * u)) (Icc U V))

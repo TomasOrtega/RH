@@ -21,6 +21,25 @@ open GlobalTheory.FlatModel
 
 namespace GlobalTheory.FlatModel
 
+/- English proof (translation)
+Introduce `F _ _ V p _ hp X s Xw hX hN hflat hlft hXw hne A _ w hw hA`. Use `haveI : IsIntegral (Sp A) := isIntegral_of_isOpenImmersion w`. Use `haveI : IsDomain A := (affine_isIntegral_iff (CommRingCat.of A)).1 inferInstance`. Use `haveI : GlobalTheory.IsNormalScheme X := GlobalTheory.IsNormalScheme.of_pred hN`. Use `haveI : GlobalTheory.IsNormalScheme (Sp A) := GlobalTheory.IsNormalScheme.of_isOpenImmersion w`.
+
+Establish `hic : IsIntegrallyClosed A` using `(GlobalTheory.IsNormalScheme.spec_iff_of_isDomain (CommRingCat.of A)).1 inferInstance`. Set `f : V →+* A` to `(Spec.preimage (w ≫ s)).hom`. Use `letI : Algebra V A := f.toAlgebra`. Use `haveI hft : Algebra.FiniteType V A := by`. Establish `h : LocallyOfFiniteType (w ≫ s)` using `inferInstance`.
+
+Rewrite `h` using `[← Spec.map_preimage (w ≫ s)]`. Conclude with `(HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)).1 h`. Establish `hinj : Function.Injective (algebraMap V A)`. Establish `h : Flat (w ≫ s)` using `inferInstance`. Rewrite `h` using `[← Spec.map_preimage (w ≫ s)]`.
+
+Use `haveI : Module.Flat V A := (HasRingHomProperty.Spec_iff (P := @Flat)).1 h`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Assume the negation of the conclusion as `h0`. Establish `hreg` using `Module.Flat.isSMulRegular_of_nonZeroDivisors (M := A) (mem_nonZeroDivisors_of_ne_zero h0)`.
+
+Establish `h1 : a • (1 : A) = a • (0 : A)` using `by rw [Algebra.smul_def, _root_.mul_one, ha, smul_zero]`. Conclude with `one_ne_zero (hreg h1)`. Take `⟨y⟩` from `hA`. Establish `hopen : IsOpen (Set.range w)` using `w.isOpenEmbedding.isOpen_range`. Take `⟨_, ⟨z, rfl⟩, hz⟩` from `nonempty_preirreducible_inter hopen Xw.isOpen ⟨_, y, rfl⟩ hne`.
+
+Establish `hzO : z ∈ w ⁻¹ᵁ Xw` using `hz`. Take `⟨_, ⟨e, rfl⟩, hze, hsub⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open hzO (w ⁻¹ᵁ Xw).isOpen`. Establish `he : e ≠ 0`. Introduce and unpack `rfl`. Conclude with `(PrimeSpectrum.mem_basicOpen _ _).1 hze (Ideal.zero_mem _)`.
+
+Use `⟨inferInstance, hic, this, hft, hinj, e, he, ?_⟩` and prove the remaining obligations. Introduce `T kO φ hT hkO hφe`. Use `⟨⟨T, kO, spMap φ ≫ w, hT, hkO, sp_sp _ _ _⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨u, rfl⟩`. Establish `hu : u = (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum ℂ_[p])`.
+
+Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Use `haveI := (u : PrimeSpectrum ℂ_[p]).isPrime`. Conclude with `Ideal.eq_bot_of_prime _`. Substitute `hu` using the available equality. Establish `hinj2 : Function.Injective ((algebraMap 𝓞_ℂ_[p] ℂ_[p]).comp kO)` using `Subtype.val_injective.comp hkO`.
+
+Rewrite using `[← sp_sp φ kO w, sp_sp kO (algebraMap 𝓞_ℂ_[p] ℂ_[p]) (spMap φ ≫ w), bot_map hinj2 (spMap φ ≫ w)]`. Establish `hq : (spMap φ) (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum T.V) ∈ PrimeSpectrum.basicOpen e` using `by show e ∉ Ideal.comap φ ⊥`. Simplify using `using hφe`. Conclude with `hsub hq`.
+-/
 theorem chart_normal_domain_testPoints : ∀ (F : Type) [Field F] [NumberField F] (V : ValuationSubring F) (p : ℕ) [Fact p.Prime], (p : F) ∈ V.nonunits → ∀ (X : Scheme.{0}) (s : X ⟶ Sp V) (Xw : X.Opens), IsIntegral X → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X → Flat s → LocallyOfFiniteType s → Xw ≤ X.basicOpen (p : Γ(X, ⊤)) → (Xw : Set X).Nonempty → ∀ (A : Type) [CommRing A] (w : Sp A ⟶ X), IsOpenImmersion w → Nonempty (Sp A) → ∃ (_ : IsDomain A) (_ : IsIntegrallyClosed A) (_ : Algebra V A) (_ : Algebra.FiniteType V A), Function.Injective (algebraMap V A) ∧ ∃ e : A, e ≠ 0 ∧ ∀ (T : CDVR) (kO : T.V →+* 𝓞_ℂ_[p]) (φ : A →+* T.V), T.FinRes → Function.Injective kO → φ e ≠ 0 → IsTest p Xw (spMap (kO.comp φ) ≫ w) := by
   intro F _ _ V p _ hp X s Xw hX hN hflat hlft hXw hne A _ w hw hA
   haveI : IsIntegral (Sp A) := isIntegral_of_isOpenImmersion w

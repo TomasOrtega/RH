@@ -13,6 +13,13 @@ open scoped TensorProduct Classical Matrix
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
   {n d : ℕ} {X : Spc F E n} {W : Spc F E d}
 
+/- English proof (translation)
+Use `choose b hb using fun w => (infEmb_bijective h (τ w)).2 (z w)`. Use `⟨∑ w, TensorProduct.map (sgI w) LinearMap.id (b w), fun s hs => ?_, fun w => ?_⟩` and prove the remaining obligations. Establish `h1 : s.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).map_eq_zero_iff.1 hs`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_eq_zero fun w _ => ?_` and prove the remaining obligations.
+
+Proceed by induction on `b w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x`. Establish `: s * sgI w a = 0` using `Prod.ext (show s.1 * _ = 0 by rw [h1, zero_mul]) (show s.2 * 0 = 0 from mul_zero _)`. Rewrite using `[TensorProduct.map_tmul, TensorProduct.smul_tmul', smul_eq_mul, this, TensorProduct.zero_tmul]`.
+
+Consider the case `add x y hx hy => rw [map_add, smul_add, hx, hy, add_zero]`. Rewrite using `[piInf, RingHom.comp_apply, map_sum, Finset.sum_eq_single w (fun u _ hu => compInf_sgI_ne hu.symm _) (fun h => absurd (Finset.mem_univ w) h), compInf_sgI_self, hb]`.
+-/
 theorem exists_at_inf (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) (z : InfinitePlace F → ℂ) :
     ∃ a : AE F E, At (evI F) a ∧ ∀ w, piInf (τ w) a = z w := by
   choose b hb using fun w => (infEmb_bijective h (τ w)).2 (z w)
@@ -29,6 +36,9 @@ theorem exists_at_inf (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOve
   · rw [piInf, RingHom.comp_apply, map_sum, Finset.sum_eq_single w (fun u _ hu => compInf_sgI_ne hu.symm _)
       (fun h => absurd (Finset.mem_univ w) h), compInf_sgI_self, hb]
 
+/- English proof (translation)
+Use `choose a ha using fun i j => exists_at_inf h τ (fun w => z w i j)`. Conclude with `⟨Matrix.of a, fun x hx => Matrix.ext fun i j => (ha i j).1 x hx, fun w => Matrix.ext fun i j => (ha i j).2 w⟩`.
+-/
 theorem exists_mat_inf (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) (z : InfinitePlace F → Matrix (Fin n) (Fin d) ℂ) :
     ∃ u : Matrix (Fin n) (Fin d) (AE F E), At (evI F) u ∧ ∀ w, u.map (piInf (τ w)) = z w := by
   choose a ha using fun i j => exists_at_inf h τ (fun w => z w i j)
@@ -45,6 +55,11 @@ def lamF (κ : Type) [Fintype κ] : (κ → mixedEmbedding.mixedSpace F) →ₗ[
     ext y
     simp [linForm_apply, ← Finset.smul_sum]
 
+/- English proof (translation)
+Use `(injective_iff_map_eq_zero _).2 fun l h => funext fun i => ?_` and prove the remaining obligations. Use `(mixedEmbedding.latticeBasis F).ext_elem fun j => ?_` and prove the remaining obligations. Establish `h1 : linForm l (Pi.single i (mixedEmbedding F ((integralBasis F).traceDual j))) = 0` using `DFunLike.congr_fun h _`. Rewrite `h1` using `[linForm_apply, Finset.sum_eq_single i (fun b _ hb => by simp [hb]) (by simp), Pi.single_eq_same, mul_comm, ← (mixedEmbedding.latticeBasis F).sum_repr (l i)]`. Simplify using `only [Finset.sum_mul, smul_mul_assoc, map_sum, map_smul, mixedEmbedding.latticeBasis_apply, ← map_mul, GlobalTheory.LatVacArith.trace_mixedEmbedding, Module.Basis.trace_mul_traceDual] at h1`.
+
+Simplify `h1` using `[apply_ite]`.
+-/
 theorem lamF_inj (κ : Type) [Fintype κ] : Function.Injective (lamF F κ) := by
   refine (injective_iff_map_eq_zero _).2 fun l h => funext fun i => ?_
   refine (mixedEmbedding.latticeBasis F).ext_elem fun j => ?_
@@ -61,9 +76,17 @@ def ph (u : Matrix (Fin n) (Fin d) (AE F E)) :
     (Fin n × Fin d → mixedEmbedding.mixedSpace F) × (Fin n × Fin d → mixedEmbedding.mixedSpace F) :=
   (aOf M u, fun i => evI F ((M.co.e u).2 i))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dopL_ph (u : Matrix (Fin n) (Fin d) (AE F E)) (f : SInf F (Fin n × Fin d)) :
     dopL (lamF F _) (ph M u) f = dop (aOf M u) (lOf M u) f := rfl
 
+/- English proof (translation)
+Establish `hat : ∀ (ξ : Fin n × Fin d → mixedEmbedding.mixedSpace F) (s : AF F), evI F s = 0 → s • pt ξ 0 = 0` using `fun ξ s hs => by`. Establish `h1 : s.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).map_eq_zero_iff.1 hs`. Use function extensionality and compare the values at `i`. Conclude with `Prod.ext (show s.1 * _ = 0 by rw [h1, zero_mul]) (show s.2 * 0 = 0 from mul_zero _)`. Use `⟨M.co.e.symm (pt p.1 0, pt p.2 0), fun s hs => ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← map_smul, LinearEquiv.map_eq_zero_iff]`. Conclude with `Prod.ext (hat _ s hs) (hat _ s hs)`. Unfold `ph aOf`. Rewrite using `[LinearEquiv.apply_symm_apply, evI_pt, evI_pt]`.
+-/
 theorem exists_ph (p) : ∃ u, At (evI F) u ∧ ph M u = p := by
   have hat : ∀ (ξ : Fin n × Fin d → mixedEmbedding.mixedSpace F) (s : AF F), evI F s = 0 → s • pt ξ 0 = 0 := fun ξ s hs => by
     have h1 : s.1 = 0 := (InfiniteAdeleRing.ringEquiv_mixedSpace F).map_eq_zero_iff.1 hs
@@ -82,6 +105,11 @@ def Rel (τ : ∀ w : InfinitePlace F, EmbOver E w) (ε : InfinitePlace F → �
 def vacE (τ : ∀ w : InfinitePlace F, EmbOver E w) (ε : InfinitePlace F → ℤˣ) : Submodule ℂ (SInf F (Fin n × Fin d)) :=
   vacs (lamF F _) {γ | ∃ u u', Rel (X := X) (W := W) τ ε u u' ∧ γ = (ph M u, ph M u')}
 
+/- English proof (translation)
+Rewrite using `[vacE, mem_vacs]`. Prove the components needed by the constructor for the conclusion. Introduce `h u u' hu`. Rewrite using `[← dopL_ph, ← dopL_ph]`. Conclude with `h (ph M u, ph M u') ⟨u, u', hu, rfl⟩`.
+
+Introduce and unpack `h _ ⟨u, u', hu, rfl⟩`. Rewrite using `[dopL_ph, dopL_ph]`. Conclude with `h u u' hu`.
+-/
 theorem mem_vacE {τ : ∀ w : InfinitePlace F, EmbOver E w} {ε : InfinitePlace F → ℤˣ} {f : SInf F (Fin n × Fin d)} :
     f ∈ vacE M τ ε ↔ ∀ u u', Rel (X := X) (W := W) τ ε u u' →
       dop (aOf M u') (lOf M u') f = Complex.I • dop (aOf M u) (lOf M u) f := by
@@ -94,6 +122,9 @@ theorem mem_vacE {τ : ∀ w : InfinitePlace F, EmbOver E w} {ε : InfinitePlace
     rw [dopL_ph, dopL_ph]
     exact h u u' hu
 
+/- English proof (translation)
+Use `vacs_fin _ (lamF_inj _) _ fun p => ?_` and prove the remaining obligations. Take `⟨u, hu, rfl⟩` from `exists_ph M p`. Take `⟨u', hu', e⟩` from `exists_mat_inf h τ fun w => (((ε w : ℤ) : ℂ) * Complex.I) • (X.θ w * u.map (piInf (τ w)) * (W.θ w)ᵀ)`. Conclude with `⟨_, ⟨u, u', ⟨hu, hu', e⟩, rfl⟩, rfl⟩`.
+-/
 theorem vacE_fin (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) (ε : InfinitePlace F → ℤˣ) :
     FiniteDimensional ℂ (vacE M τ ε) := by
   refine vacs_fin _ (lamF_inj _) _ fun p => ?_
@@ -104,10 +135,18 @@ theorem vacE_fin (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w
 def polM (τ : ∀ w : InfinitePlace F, EmbOver E w) (m : ℕ) : Submodule ℂ (SInf F (Fin n × Fin d)) :=
   fil (⨆ ε, vacE M τ ε) (fun i => dopL (lamF F _) (Module.finBasis ℝ _ i)) m
 
+/- English proof (translation)
+Use `haveI := vacE_fin M h τ`. Conclude with `fil_fin _ _ m`.
+-/
 theorem polM_fin (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) (m : ℕ) : FiniteDimensional ℂ (polM M τ m) := by
   haveI := vacE_fin M h τ
   exact fil_fin _ _ m
 
+/- English proof (translation)
+Establish `hd : Directed (· ≤ ·) (polM M τ)` using `(fil_mono _ _).directed_le`. Rewrite using `[← Submodule.mem_iSup_of_directed _ hd]`. Use `(sInf_le ⟨fun f₀ ⟨ε, hε⟩ => ?_, fun u hu f hf f₁ h => ?_⟩ : M.Pol ψ τ ≤ ⨆ m, polM M τ m) hf` and prove the remaining obligations. Use `Submodule.mem_iSup_of_mem 0 (Submodule.mem_iSup_of_mem ε ((mem_vacE M).2 fun u u' h => ?_))` and prove the remaining obligations. Conclude with `hε u u' h.1 h.2.1 h.2.2 _ _ (actsD_dop M hψ h.1 f₀) (actsD_dop M hψ h.2.1 f₀)`.
+
+Take `⟨m, hm⟩` from `(Submodule.mem_iSup_of_directed _ hd).1 hf`. Rewrite using `[actsD_unique M hψ hu h, ← dopL_ph]`. Conclude with `Submodule.mem_iSup_of_mem (m + 1) (fil_step _ _ hm (dopL_mem _ _ _ _))`.
+-/
 theorem exists_polM (hψ : IsStd ψ) {τ : ∀ w : InfinitePlace F, EmbOver E w} {f} (hf : f ∈ M.Pol ψ τ) : ∃ m, f ∈ polM M τ m := by
   have hd : Directed (· ≤ ·) (polM M τ) := (fil_mono _ _).directed_le
   rw [← Submodule.mem_iSup_of_directed _ hd]
@@ -118,6 +157,13 @@ theorem exists_polM (hψ : IsStd ψ) {τ : ∀ w : InfinitePlace F, EmbOver E w}
     rw [actsD_unique M hψ hu h, ← dopL_ph]
     exact Submodule.mem_iSup_of_mem (m + 1) (fil_step _ _ hm (dopL_mem _ _ _ _))
 
+/- English proof (translation)
+Proceed by induction on `hΨ using Submodule.span_induction with`. Consider the case `mem Φ h`. Take `⟨f, g, hg, rfl⟩` from `h`. Rewrite using `[← tens_rOf, heisLine_tens M hψ hu f (fun x z hz => rOf_add g x z hz) t, tens_rOf, tens_rOf]`. Simplify using `only [pureA_pt, hl, mul_assoc]`.
+
+Consider the case `zero => simp [Model.heisLine, Darboux.rho, schr, hl]`. Consider the case `add Φ Ψ _ _ h1 h2`. Rewrite `*` using `[Model.heisLine, rho_add]`. Simplify using `only [Pi.add_apply, h1, h2, hl, mul_add]`. Consider the case `smul c Φ _ h`.
+
+Rewrite `*` using `[Model.heisLine, rho_smul]`. Simplify using `only [Pi.smul_apply, h, hl, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem line_slice (hψ : IsStd ψ) {u : Matrix (Fin n) (Fin d) (AE F E)} (hu : At (evI F) u) (t : ℝ) {Ψ} (hΨ : Ψ ∈ schA F (Fin n × Fin d))
     (ξ) (y) : M.heisLine ψ u t Ψ (pt ξ y) = hl (aOf M u) (lOf M u) t (fun ξ' => Ψ (pt ξ' y)) ξ := by
   induction hΨ using Submodule.span_induction with
@@ -136,6 +182,11 @@ theorem line_slice (hψ : IsStd ψ) {u : Matrix (Fin n) (Fin d) (AE F E)} (hu : 
 
 variable {M} {om : Rep σ X W} {x : UA σ X.J × UA σ W.J} {g : (Fin n × Fin d → Af F) → ℂ} {y : Fin n × Fin d → Af F}
 
+/- English proof (translation)
+Use `choose A hA using fun f : SInf F (Fin n × Fin d) => slice_schwartz (hs.pres x (pureA F f g) (Submodule.subset_span ⟨f, g, hg, rfl⟩)) y`. Use `⟨{ toFun := A, map_add' := fun a b => ?_, map_smul' := fun c a => ?_ }, hA⟩` and prove the remaining obligations. Use extensionality with `ξ`. Establish `: pureA F (a + b : SInf F _) g = pureA F a g + pureA F b g` using `funext fun _ => by simp [pureA, add_mul]`. Rewrite using `[SchwartzMap.add_apply, ← hA, ← hA, ← hA, this, map_add, Pi.add_apply]`.
+
+Use extensionality with `ξ`. Establish `: pureA F (c • a : SInf F _) g = c • pureA F a g` using `funext fun _ => by simp [pureA, mul_assoc]`. Rewrite using `[RingHom.id_apply, SchwartzMap.smul_apply, ← hA, ← hA, this, map_smul, Pi.smul_apply]`.
+-/
 theorem exists_slice (hs : IsSplitting (adeleClass F) ψ M.co (actAB (cA σ)) om) (x) (hg : g ∈ SB _) (y) :
     ∃ A : SInf F (Fin n × Fin d) →ₗ[ℂ] SInf F (Fin n × Fin d), ∀ (f : SInf F (Fin n × Fin d)) ξ, om x (pureA F f g) (pt ξ y) = A f ξ := by
   choose A hA using fun f : SInf F (Fin n × Fin d) =>
@@ -148,10 +199,24 @@ theorem exists_slice (hs : IsSplitting (adeleClass F) ψ M.co (actAB (cA σ)) om
     have : pureA F (c • a : SInf F _) g = c • pureA F a g := funext fun _ => by simp [pureA, mul_assoc]
     rw [RingHom.id_apply, SchwartzMap.smul_apply, ← hA, ← hA, this, map_smul, Pi.smul_apply]
 
+/- English proof (translation)
+Introduce `s hs` and use `by rw [actAB, ← Matrix.smul_mul, ← Matrix.mul_smul, hu s hs, Matrix.mul_zero, Matrix.zero_mul]`.
+-/
 theorem at_act {u : Matrix (Fin n) (Fin d) (AE F E)} (hu : At (evI F) u) (x : UA σ X.J × UA σ W.J) :
     At (evI F) (actAB (cA σ) x u) := fun s hs => by
   rw [actAB, ← Matrix.smul_mul, ← Matrix.mul_smul, hu s hs, Matrix.mul_zero, Matrix.zero_mul]
 
+/- English proof (translation)
+Take `⟨G, hG, hD⟩` from `hl_line_deriv (aOf M u) (lOf M u) f`. Use extensionality with `ξ`. Set `l : ((Fin n × Fin d → AF F) → ℂ) →ₗ[ℂ] ℂ` to `LinearMap.proj (pt ξ y)`. Establish `hl' : l ∈ (adeleClass F).adm (Fin n × Fin d)` using `fun g' _ => ⟨g' y • (BoundedContinuousFunction.evalCLM ℂ ξ ∘L SchwartzMap.toBoundedContinuousFunctionCLM ℂ _ _), fun f => by`. Simplify using `[l, pureA_pt, mul_comm]⟩`.
+
+Take `⟨T, hT⟩` from `hs.adm x l hl' g hg`. Establish `hT' : ∀ f, A f ξ = T f` using `fun f => (hA f ξ).symm.trans (hT f)`. Establish `h1` using `hD ha T`. Establish `hΦ : pureA F f g ∈ schA F (Fin n × Fin d)` using `Submodule.subset_span ⟨f, g, hg, rfl⟩`. Establish `e : (fun t => T (G t)) = fun t => hl (aOf M (actAB (cA σ) x u)) (lOf M (actAB (cA σ) x u)) t (A f) ξ`.
+
+Use function extensionality and compare the values at `t`. Establish `e1 : M.heisLine ψ u t (pureA F f g) = pureA F (G t) g`. Rewrite using `[← tens_rOf, heisLine_tens M hψ hu f (fun x z hz => rOf_add g x z hz) t, tens_rOf]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+
+Conclude with `(hG t x).symm`. Establish `e2 : om x (M.heisLine ψ u t (pureA F f g)) = M.heisLine ψ (actAB (cA σ) x u) t (om x (pureA F f g))`. Use `hs.impl x (realAd F t • u) _ hΦ` as an intermediate fact. Rewrite using `[show actAB (cA σ) x (realAd F t • u) = realAd F t • actAB (cA σ) x u by` and apply the resulting hypothesis. Rewrite `this` using `[actAB, actAB, Matrix.mul_smul, Matrix.smul_mul]]`.
+
+Rewrite using `[← hT', ← hA, ← e1, e2, line_slice M hψ (at_act hu x) t (hs.pres x _ hΦ), funext (hA f)]`. Rewrite `h1` using `[e]`. Rewrite using `[hT']`. Conclude with `h1.unique (hasDerivAt_hl _ _ (A f) ξ)`.
+-/
 theorem inter_ne (hψ : IsStd ψ) (hs : IsSplitting (adeleClass F) ψ M.co (actAB (cA σ)) om) (hg : g ∈ SB _)
     {A : SInf F (Fin n × Fin d) →ₗ[ℂ] SInf F (Fin n × Fin d)} (hA : ∀ (f : SInf F (Fin n × Fin d)) ξ, om x (pureA F f g) (pt ξ y) = A f ξ)
     {u : Matrix (Fin n) (Fin d) (AE F E)} (hu : At (evI F) u) (ha : aOf M u ≠ 0) (f : SInf F (Fin n × Fin d)) :
@@ -182,6 +247,13 @@ theorem inter_ne (hψ : IsStd ψ) (hs : IsSplitting (adeleClass F) ψ M.co (actA
   rw [hT']
   exact h1.unique (hasDerivAt_hl _ _ (A f) ξ)
 
+/- English proof (translation)
+Distinguish the cases in `ha : aOf M u = 0`. Break down `subsingleton_or_nontrivial (Fin n × Fin d → mixedEmbedding.mixedSpace F) with hV | hV` into its components or cases. Rewrite using `[dop_subsingleton, dop_subsingleton, map_zero]`. Take `⟨ξ, hξ⟩` from `exists_ne (0 : Fin n × Fin d → mixedEmbedding.mixedSpace F)`. Take `⟨v, hv, rfl⟩` from `exists_at M ξ`.
+
+Establish `huv : At (evI F) (u + v)` using `fun s hs => by rw [smul_add, hu s hs, hv s hs, add_zero]`. Establish `h1` using `inter_ne hψ hs hg hA huv (by rw [aOf_add, ha, zero_add]; exact hξ) f`. Establish `h2` using `inter_ne hψ hs hg hA hv hξ f`. Rewrite using `[aOf_add, lOf_add, dop_add, map_add, show actAB (cA σ) x (u + v) = actAB (cA σ) x u + actAB (cA σ) x v by`. Rewrite `h1` using `[actAB, actAB, actAB, Matrix.mul_add, Matrix.add_mul], aOf_add, lOf_add, dop_add, h2]`.
+
+Conclude with `add_right_cancel h1`. Conclude with `inter_ne hψ hs hg hA hu ha f`.
+-/
 theorem inter' (hψ : IsStd ψ) (hs : IsSplitting (adeleClass F) ψ M.co (actAB (cA σ)) om) (hg : g ∈ SB _)
     {A : SInf F (Fin n × Fin d) →ₗ[ℂ] SInf F (Fin n × Fin d)} (hA : ∀ (f : SInf F (Fin n × Fin d)) ξ, om x (pureA F f g) (pt ξ y) = A f ξ)
     {u : Matrix (Fin n) (Fin d) (AE F E)} (hu : At (evI F) u) (f : SInf F (Fin n × Fin d)) :
@@ -199,6 +271,15 @@ theorem inter' (hψ : IsStd ψ) (hs : IsSplitting (adeleClass F) ψ M.co (actAB 
       exact add_right_cancel h1
   · exact inter_ne hψ hs hg hA hu ha f
 
+/- English proof (translation)
+Use `fil_stab _ _ A (fun f hf => ?_) (fun i f => ?_) m hf` and prove the remaining obligations. Use `(iSup_le fun ε f hf => ?_ : _ ≤ (⨆ ε, vacE M τ ε).comap A) hf` and prove the remaining obligations. Use `Submodule.mem_iSup_of_mem ε ((mem_vacE M).2 fun u u' h => ?_)` and prove the remaining obligations. Establish `hat : ∀ u : Matrix (Fin n) (Fin d) (AE F E), At (evI F) u → At (evI F) (mat k⁻¹ * u)` using `fun u hu s hs => by`. Rewrite using `[← Matrix.mul_smul, hu s hs, Matrix.mul_zero]`.
+
+Establish `e : ∀ u : Matrix (Fin n) (Fin d) (AE F E), actAB (cA σ) ((k, 1) : UA σ X.J × UA σ W.J) (mat k⁻¹ * u) = u` using `fun u => by`. Express the relevant statement in the definitionally equal form `mat k * (mat k⁻¹ * u) * (1 : Matrix (Fin d) (Fin d) (AE F E))ᵀ = u`. Rewrite using `[← Matrix.mul_assoc, mat_mul_inv, Matrix.one_mul, Matrix.transpose_one, Matrix.mul_one]`. Establish `i1` using `inter' hψ hs hg hA (hat u h.1) f`. Establish `i2` using `inter' hψ hs hg hA (hat u' h.2.1) f`.
+
+Rewrite `i1`, `i2` using `[e]`. Rewrite using `[← i1, ← i2, (mem_vacE M).1 hf _ _ ⟨hat u h.1, hat u' h.2.1, fun w => ?_⟩, map_smul]`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, h.2.2 w, Matrix.mul_smul, ← Matrix.mul_assoc, ← Matrix.mul_assoc, (hk w).eq]`. Simplify using `only [Matrix.mul_assoc]`. Take `⟨u, hu, e⟩` from `exists_ph M (Module.finBasis ℝ _ i)`.
+
+Rewrite using `[← e, dopL_ph, inter' hψ hs hg hA hu, ← dopL_ph]`. Conclude with `dopL_mem _ _ _ _`.
+-/
 theorem polM_stab (hψ : IsStd ψ) (hs : IsSplitting (adeleClass F) ψ M.co (actAB (cA σ)) om) (hg : g ∈ SB _)
     {τ : ∀ w : InfinitePlace F, EmbOver E w} {k : UA σ X.J} (hk : ∀ w, Commute ((mat k⁻¹).map (piInf (τ w))) (X.θ w))
     {A : SInf F (Fin n × Fin d) →ₗ[ℂ] SInf F (Fin n × Fin d)} (hA : ∀ (f : SInf F (Fin n × Fin d)) ξ, om (k, 1) (pureA F f g) (pt ξ y) = A f ξ) (m : ℕ)

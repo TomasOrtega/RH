@@ -18,6 +18,11 @@ open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.Chart
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[ptF, pullback.lift_fst, Category.assoc, ptF, pullback.lift_fst, h.1]`. Rewrite using `[ptF, pullback.lift_snd, Category.assoc, ptF, pullback.lift_snd, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `a`.
+
+Conclude with `(φ.commutes a).symm`.
+-/
 theorem ptF_frMap {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T]
     {φ : S →ₐ[c.F] T} {y : FrPt Xo c S} {z : FrPt Xo c T} (h : FrMap φ y z) :
     ptF z = spMap φ.toRingHom ≫ ptF y := by
@@ -28,12 +33,20 @@ theorem ptF_frMap {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebr
     ext a
     exact (φ.commutes a).symm
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[ptF, pullback.lift_fst, ptF, pullback.lift_fst, h.1]`. Rewrite using `[ptF, pullback.lift_snd, ptF, pullback.lift_snd]`.
+-/
 theorem ptF_frBor {S : Type} [CommRing S] [Algebra c.F S] {t : Ix Dw → Sˣ} {y z : FrPt Xo c S}
     (h : FrBor t y z) : ptF z = ptF y := by
   apply pullback.hom_ext
   · rw [ptF, pullback.lift_fst, ptF, pullback.lift_fst, h.1]
   · rw [ptF, pullback.lift_snd, ptF, pullback.lift_snd]
 
+/- English proof (translation)
+Introduce `s`. Set `η : Sp C.R` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum C.R)`. Set `s₀ : Sp (Om C.Z)` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (Om C.Z))`. Establish `e : spMap C.R.val.toRingHom s₀ = η` using `PrimeSpectrum.ext (Ideal.comap_bot_of_injective C.R.val.toRingHom Subtype.val_injective)`. Establish `h1 : ptF C.y η ∈ (C.Z : Set (Xo.XF c))`.
+
+Use `liesOn_genFr h C.Z s₀` as an intermediate fact. Rewrite `this` using `[← ptF_frBor C.bor, ptF_frMap C.gen, Scheme.Hom.comp_apply, e]`. Conclude with `this`. Establish `h2 : η ⤳ s` using `(PrimeSpectrum.le_iff_specializes (R := C.R) _ _).1 bot_le`. Conclude with `(h2.map (ptF C.y).continuous).mem_closed (isClosed_of_mem_irreducibleComponents _ C.Z.2) h1`.
+-/
 theorem liesOn_chart {h : GenFrEx Xo c} (C : GlobalTheory.Reg.FChart h) : LiesOn C.Z C.y := by
   intro s
   let η : Sp C.R := (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum C.R)
@@ -47,6 +60,11 @@ theorem liesOn_chart {h : GenFrEx Xo c} (C : GlobalTheory.Reg.FChart h) : LiesOn
   have h2 : η ⤳ s := (PrimeSpectrum.le_iff_specializes (R := C.R) _ _).1 bot_le
   exact (h2.map (ptF C.y).continuous).mem_closed (isClosed_of_mem_irreducibleComponents _ C.Z.2) h1
 
+/- English proof (translation)
+Take `⟨-, -, h, hA⟩` from `GlobalTheory.Reg.evLaws_genFr_atlas E H Dw l Xo c`. Take `⟨Z, hZ⟩` from `GlobalTheory.OneComp.exists_comp_of_charts E H Dw l Xo c σ r U hU h k`. Use `⟨Z, fun x s => ?_⟩` and prove the remaining obligations. Use `letI : Field (CAt σ) := inferInstanceAs (Field ℂ)`. Take `⟨C, ψ, z, t, hz, hb⟩` from `hA h (CAt σ) (U.un k x)`.
+
+Rewrite using `[← hZ x C ψ z t hz hb, ptF_frBor hb, ptF_frMap hz, Scheme.Hom.comp_apply]`. Conclude with `liesOn_chart C _`.
+-/
 theorem exists_liesOn {σ : c.F →+* ℂ} {r : ℕ} (U : Formalism.L2.PjFree.Unf Xo c σ r) (hU : Formalism.L2.PjFree.IsUnf U)
     (k : U.Comp) : ∃ Z : Comp Xo c, ∀ x : (U.X k).dom, LiesOn Z (U.un k x) := by
   obtain ⟨-, -, h, hA⟩ := GlobalTheory.Reg.evLaws_genFr_atlas E H Dw l Xo c
@@ -57,6 +75,11 @@ theorem exists_liesOn {σ : c.F →+* ℂ} {r : ℕ} (U : Formalism.L2.PjFree.Un
   rw [← hZ x C ψ z t hz hb, ptF_frBor hb, ptF_frMap hz, Scheme.Hom.comp_apply]
   exact liesOn_chart C _
 
+/- English proof (translation)
+Take `⟨P, w, x, t, hw, ht⟩` from `hk`. Assume the negation of the conclusion as `hne`. Set `s : Sp (CAt σ)` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum ℂ)`. Use `Set.disjoint_left.1 (CompSplitPfD.cspD_comp_disj Xo c Z' Z hne) (h' x s) ?_` and prove the remaining obligations. Rewrite using `[← ptF_frBor ht, ptF_frMap hw, Scheme.Hom.comp_apply]`.
+
+Conclude with `liesOn_genFr h Z _`.
+-/
 theorem eq_of_carries {σ : c.F →+* ℂ} {r : ℕ} {U : Formalism.L2.PjFree.Unf Xo c σ r} {h : GenFrEx Xo c} {k : U.Comp}
     {Z Z' : Comp Xo c} (hk : GlobalTheory.CompModel.CarriesGeneric U h k Z) (h' : ∀ x : (U.X k).dom, LiesOn Z' (U.un k x)) :
     Z' = Z := by
@@ -67,6 +90,13 @@ theorem eq_of_carries {σ : c.F →+* ℂ} {r : ℕ} {U : Formalism.L2.PjFree.Un
   rw [← ptF_frBor ht, ptF_frMap hw, Scheme.Hom.comp_apply]
   exact liesOn_genFr h Z _
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c σ N U hσ hU _ hF`. Take `⟨-, -, h, -⟩` from `GlobalTheory.Reg.evLaws_genFr_atlas E H Dw l Xo c`. Use `choose q hq using exists_liesOn U hU`. Use `⟨Equiv.ofBijective q ⟨fun k k' e => ?_, fun Z => ?_⟩, fun k x s => hq k x s⟩` and prove the remaining obligations. Take `⟨Z, hZ⟩` from `GlobalTheory.CompModel.exists_comp U hσ hU h k`.
+
+Take `⟨Z', hZ'⟩` from `GlobalTheory.CompModel.exists_comp U hσ hU h k'`. Take `rfl : Z = Z'` from `(eq_of_carries hZ (hq k)).symm.trans (e.trans (eq_of_carries hZ' (hq k')))`. Take `⟨P, w, x, t, hw, ht⟩` from `hZ`. Take `⟨P', w', x', t', hw', ht'⟩` from `hZ'`. Conclude with `GlobalTheory.GeomConn.comp_eq_of_fnAlgClosed E H Dw l Xo c σ N U.toPj hσ hU hF h Z k k' x x' ⟨P, w, t, hw, ht⟩ ⟨P', w', t', hw', ht'⟩`.
+
+Take `⟨k, hk⟩` from `GlobalTheory.CompModel.exists_model U hU h Z`. Conclude with `⟨k, eq_of_carries hk (hq k)⟩`.
+-/
 theorem exists_equiv_comp : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (N : ℕ) (U : Formalism.L2.PjFree.Unf Xo c σ N), Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf U → (∀ k, (U.X k).dom.Nonempty) → FnAlgClosed Xo c → ∃ q : U.Comp ≃ Comp Xo c, ∀ k (x : (U.X k).dom) (s : Sp (CAt σ)), GlobalTheory.AllWt.ptF (U.un k x) s ∈ (q k).1 := by
   intro E _ _ _ H Dw l Xo c σ N U hσ hU _ hF
   obtain ⟨-, -, h, -⟩ := GlobalTheory.Reg.evLaws_genFr_atlas E H Dw l Xo c

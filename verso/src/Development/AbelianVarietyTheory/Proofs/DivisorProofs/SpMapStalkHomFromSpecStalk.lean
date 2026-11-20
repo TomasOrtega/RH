@@ -18,10 +18,16 @@ noncomputable section
 
 namespace GlobalTheory.Poinc.Sep
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp_spMap {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R' →+* R'') (g : R →+* R') :
     spMap f ≫ spMap g = spMap (f.comp g) := by
   rw [← Spec.map_comp]; rfl
 
+/- English proof (translation)
+Establish `h1` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk (R := CommRingCat.of Ω) M.pt`. Establish `h2` using `Scheme.SpecMap_stalkSpecializes_fromSpecStalk (M.pt_specializes (IsLocalRing.closedPoint Ω) z)`. Use `Eq.trans ?_ h1` and prove the remaining obligations. Rewrite using `[← h2, ← Category.assoc, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_stalkHom_fromSpecStalk {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω) (z : M.Z) :
     spMap (M.stalkHom z) ≫ M.Z.fromSpecStalk z = M.pt := by
   have h1 := Scheme.Spec_stalkClosedPointTo_fromSpecStalk (R := CommRingCat.of Ω) M.pt
@@ -30,6 +36,27 @@ theorem spMap_stalkHom_fromSpecStalk {o Ω : Type} [CommRing o] [Field Ω] [Alge
   rw [← h2, ← Category.assoc, ← Spec.map_comp]
   rfl
 
+/- English proof (translation)
+Introduce `g hg n hn hodd F Z z i _ hproj hnorm hiz hdense W hW hth X₁ z₁ act hact`. Take `⟨hdom, hfr, hic, hnoeth⟩` from `GlobalTheory.Poinc.stalk_isNoetherian_normal_fractionRing g n F W Z i X₁ z₁`. Use `letI : Algebra (X₁.M.Z.presheaf.stalk z₁) X₁.Ω₁ := (X₁.M.stalkHom z₁).toAlgebra`. Use `haveI : CharZero X₁.Ω₁ := X₁.ar.char`. Use `haveI : CharZero (X₁.M.Z.presheaf.stalk z₁) := (X₁.M.stalkHom z₁).charZero`.
+
+Take `⟨V₀, _, _, _, φ₀, ⟨hdvr, hcpl, hchar⟩, hinj₀, hmax⟩` from `GlobalTheory.ClosedPol.exists_cdvr (X₁.M.Z.presheaf.stalk z₁) (maximalIdeal _)`. Use `haveI : IsLocalHom φ₀ := ((IsLocalRing.local_hom_TFAE φ₀).out 0 4).2 hmax`. Establish `hB : GlobalTheory.Mum.Base V₀` using `⟨⟨inferInstance, inferInstance, inferInstance, hcpl⟩, hchar⟩`. Establish `hg₀ : Function.Injective ((algebraMap V₀ (FractionRing V₀)).comp φ₀)` using `(IsFractionRing.injective V₀ (FractionRing V₀)).comp hinj₀`. Set `emb : X₁.Ω₁ →+* FractionRing V₀` to `IsFractionRing.lift (A := X₁.M.Z.presheaf.stalk z₁) hg₀`.
+
+Establish `hemb : ∀ r, emb (X₁.M.stalkHom z₁ r) = algebraMap V₀ (FractionRing V₀) (φ₀ r)` using `fun r => IsFractionRing.lift_algebraMap (A := X₁.M.Z.presheaf.stalk z₁) hg₀ r`. Establish `hpt : jK V₀ ≫ spMap φ₀ ≫ X₁.M.Z.fromSpecStalk z₁ = spMap emb ≫ X₁.M.pt`. Rewrite using `[← spMap_stalkHom_fromSpecStalk, ← Category.assoc, ← Category.assoc]`. Use `congr 1`. Rewrite using `[show jK V₀ = spMap (algebraMap V₀ (FractionRing V₀)) from rfl, spMap_comp_spMap, spMap_comp_spMap]`.
+
+Use `congr 1`. Use extensionality with `r`. Conclude with `(hemb r).symm`. Set `y₀ : Sp (FractionRing V₀) ⟶ F.X` to `spMap emb ≫ spMap X₁.S.R.val.toRingHom ≫ X₁.u`. Establish `hy₀ : y₀ ≫ i = jK V₀ ≫ spMap φ₀ ≫ X₁.M.Z.fromSpecStalk z₁ ≫ X₁.π`.
+
+Simplify using `only [y₀, Category.assoc]`. Rewrite using `[← X₁.comp, ← Category.assoc (jK V₀), ← Category.assoc (jK V₀ ≫ spMap φ₀), Category.assoc (jK V₀), hpt, Category.assoc]`. Take `⟨T, f, fK, hf, hfl, hff, hfK, hTy⟩` from `GlobalTheory.T.traitExistsAfterFiniteExtension_of_completeDVR g n _ (zetaAway n) F V₀ hB hdvr y₀`. Use `haveI := hfl`. Set `ev : X₁.M.Z.presheaf.stalk z₁ →+* T.V` to `f.comp φ₀`.
+
+Establish `hev : Function.Injective ev` using `hf.comp hinj₀`. Establish `hkey : jK T.V ≫ spMap ev = spMap fK ≫ jK V₀ ≫ spMap φ₀`. Rewrite using `[show jK T.V = spMap (algebraMap T.V (FractionRing T.V)) from rfl, show jK V₀ = spMap (algebraMap V₀ (FractionRing V₀)) from rfl, spMap_comp_spMap, spMap_comp_spMap, spMap_comp_spMap]`. Use `congr 1`. Use extensionality with `a`.
+
+Simplify using `only [RingHom.comp_apply]`. Conclude with `(hfK _).symm`. Establish `hpt' : jK T.V ≫ spMap ev ≫ X₁.M.Z.fromSpecStalk z₁ = spMap fK ≫ spMap emb ≫ X₁.M.pt`. Rewrite using `[← Category.assoc, hkey, Category.assoc, Category.assoc, hpt]`. Establish `hreg : RegAt X₁ z₁ ev`.
+
+Introduce `a _`. Rewrite using `[hpt']`. Express the relevant statement in the definitionally equal form `a ∈ X₁.M.O (X₁.M.pt ((spMap fK ≫ spMap emb) (closedPoint (FractionRing T.V))))`. Rewrite using `[X₁.M.pt_apply, RatModel.O_genericPoint]`. Discharge the goal by the elementary cases of `trivial`.
+
+Establish `hcomm : jK T.V ≫ spMap ev ≫ X₁.M.Z.fromSpecStalk z₁ ≫ X₁.π = T.y ≫ i`. Rewrite using `[hTy, Category.assoc, hy₀, ← Category.assoc (jK T.V), hkey]`. Simplify using `only [Category.assoc]`. Take `⟨hmono, hnn, -, -⟩` from `GlobalTheory.T.siegelModuliTrait_periods_monomial_posDef g n _ (zetaAway n) F T`. Establish `hCN : IsCN T.V` using `⟨inferInstance, inferInstance, T.complete, inferInstance⟩`.
+
+Take `⟨𝔪, -⟩` from `GlobalTheory.T.exists_uniformised_member_of_refined_uniformisation g hg n hn hodd F Z z i hproj hnorm hiz hdense W hW hth X₁ z₁ act hact T.V (Wit.ofDeg T.D.toPre T.D.tau_bimult) 1 ![T.ϖ] ![T.β] (fun k => by fin_cases k; exact T.irr.ne_zero) (fun k a b => by fin_cases k; exact T.s …`. Conclude with `⟨T.V, inferInstance, inferInstance, inferInstance, ev, _, inferInstance, 1, _, _, hev, ⟨𝔪⟩⟩`.
+-/
 theorem exists_uMem_injective : ∀ g : ℕ, 1 ≤ g → ∀ n : ℕ, 3 ≤ n → Odd n → ∀ (F : SFam g n (zetaAway n)) (Z : Scheme.{0}) (z : Z ⟶ Sp (cycAway n)) (i : F.X ⟶ Z) [IsOpenImmersion i], IsProjOver z → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Z → i ≫ z = F.s → Dense (Set.range i) → ∀ W : Matrix (Fin 8) (Fin 8) ℤ, IsE8 W → ThetaInt F W i → ∀ (X₁ : Setup F W i) (z₁ : X₁.M.Z) (act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)), IsAct X₁ act → ∃ (V : Type) (_ : CommRing V) (_ : IsDomain V) (_ : IsLocalRing V) (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (X : Type) (_ : AddCommGroup X) (m : ℕ) (t : Fin m → V) (δ : Fin m → LinearMap.BilinForm ℤ X), Function.Injective ev ∧ Nonempty (UMem X₁ z₁ act V ev X t δ) := by
   intro g hg n hn hodd F Z z i _ hproj hnorm hiz hdense W hW hth X₁ z₁ act hact
   obtain ⟨hdom, hfr, hic, hnoeth⟩ := GlobalTheory.Poinc.stalk_isNoetherian_normal_fractionRing g n F W Z i X₁ z₁

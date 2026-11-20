@@ -100,12 +100,22 @@ def TwoStep {O M : Type} [CommRing O] [AddCommGroup M] [Module O M] (l g g₀ e 
     (∀ p ∈ Z, (l ^ e : ℕ) • p ∈ Submodule.span O (s₀ : Set M) ⊔ I) ∧
     (∀ p ∈ Submodule.span O (s₀ : Set M), (l ^ e' : ℕ) • p ∈ I)
 
+/- English proof (translation)
+Rewrite using `[Module.length_ne_top_iff]`. Apply `isFiniteLength_quotient_span_singleton` to reduce the goal to its premises. Rewrite using `[mem_nonZeroDivisors_iff_ne_zero]` and apply the resulting hypothesis.
+-/
 theorem len_ne_top {O : Type} [CommRing O] [IsDedekindDomain O] (x : O) (h : x ≠ 0) :
     Module.length O (O ⧸ Ideal.span {x}) ≠ ⊤ := by
   rw [Module.length_ne_top_iff]
   apply isFiniteLength_quotient_span_singleton
   rwa [mem_nonZeroDivisors_iff_ne_zero]
 
+/- English proof (translation)
+Substitute `hp` using the available equality. Take `⟨s, s₀, hs, hgen, hs₀, hsub, h1, h2⟩` from `h`. Establish `key` using `Formalism.IrreducibleCountingLemmas.WindowSums.colength_bound_two_layers O M p g g₀ y e' Z Bc I s s₀ hs hgen hB hs₀ hsub h1 h2`. Rewrite `key` using `[hk]`. Establish `hcol : Module.length O (↥Z ⧸ I.comap Z.subtype) ≤ (((g * y + g₀ * e') * k : ℕ) : ℕ∞)`.
+
+Use `push_cast`. Conclude with `key`. Take `⟨m, hm⟩` from `ENat.ne_top_iff_exists.1 (ne_top_of_le_ne_top (ENat.natCast_ne_top _) hcol)`. Use `⟨m, hm.symm, ?_⟩` and prove the remaining obligations. Rewrite `hcol` using `[← hm]`.
+
+Conclude with `hcol` after adjusting the coercions.
+-/
 theorem len_le_nat {O M : Type} [CommRing O] [AddCommGroup M] [Module O M] (l p g g₀ y e' k : ℕ)
     (Z Bc I : Submodule O M) (h : TwoStep l g g₀ y e' Z Bc I) (hB : Bc ≤ I) (hp : p = l)
     (hk : Module.length O (O ⧸ Ideal.span {((p : ℕ) : O)}) = (k : ℕ∞)) :
@@ -126,6 +136,13 @@ section PartI
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Establish `: FiniteDimensional ℚ_[l] ↥LL.1` using `LL.2`. Establish `: IsDedekindDomain ↥(OL LL)` using `integralClosure.isDedekindDomain ℤ_[l] ℚ_[l] ↥LL.1`. Establish `hne : lenOl (P.PD K) (O` using `↥(OL LL)) ≠ ⊤ := by`. Apply `len_ne_top` to reduce the goal to its premises. Rewrite using `[P.PD_p K]`.
+
+Introduce `h`. Establish `h2` using `congrArg (Subtype.val : ↥(OL LL) → ↥LL.1) h`. Establish `h3 : ((l : ℕ) : ↥LL.1) = 0` using `by simpa using h2`. Conclude with `(Fact.out : l.Prime).ne_zero (by exact_mod_cast h3)`. Take `⟨k, hk⟩` from `ENat.ne_top_iff_exists.1 hne`.
+
+Conclude with `⟨k, hk.symm⟩`.
+-/
 theorem lenOl_finite (P : LocPrime l) (K LL : FinExt l) :
     ∃ k : ℕ, lenOl (P.PD K) (O := ↥(OL LL)) = (k : ℕ∞) := by
   have : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2
@@ -140,11 +157,17 @@ theorem lenOl_finite (P : LocPrime l) (K LL : FinExt l) :
   obtain ⟨k, hk⟩ := ENat.ne_top_iff_exists.1 hne
   exact ⟨k, hk.symm⟩
 
+/- English proof (translation)
+Take `⟨m, k, h1, h2, h3⟩` from `h`. Conclude with `⟨m, k, h1, h2, h3.trans (mul_le_mul_of_nonneg_right hb (Nat.cast_nonneg k))⟩`.
+-/
 theorem colLe_mono (P : LocPrime l) (K LL : FinExt l) {T₁ T₂ : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)}
     (F : LatHom T₁.L T₂.L) {b b' : ℝ} (hb : b ≤ b') (h : colLe P K LL F b) : colLe P K LL F b' := by
   obtain ⟨m, k, h1, h2, h3⟩ := h
   exact ⟨m, k, h1, h2, h3.trans (mul_le_mul_of_nonneg_right hb (Nat.cast_nonneg k))⟩
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `lenOl_finite P K LL`. Take `⟨m, hm, hmk⟩` from `len_le_nat l (P.PD K).p g g₀ y e' k _ _ _ h le_sup_right (P.PD_p K) hk`. Use `⟨m, k, hm, hk, ?_⟩` and prove the remaining obligations. Conclude with `hmk` after adjusting the coercions.
+-/
 theorem colLe_of_twoStep (P : LocPrime l) (K LL : FinExt l)
     {T₁ T₂ : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)} (F : LatHom T₁.L T₂.L) (g g₀ y e' : ℕ)
     (h : TwoStep l g g₀ y e' (latticeFiniteCocycles (P.PD K) T₂.L) (latticeCoboundaries T₂.L) (F.ImF (P.PD K))) :

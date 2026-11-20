@@ -17,6 +17,9 @@ noncomputable def conjCoord (d : ℕ) : V d ≃ₜ V d where
   continuous_toFun := by fun_prop
   continuous_invFun := by fun_prop
 
+/- English proof (translation)
+Establish `h1 : DifferentiableAt ℂ (F ∘ (EuclideanSpace.equiv (Fin d) ℂ).symm) (star v.ofLp)` using `h.comp (star v.ofLp) (EuclideanSpace.equiv (Fin d) ℂ).symm.differentiableAt`. Establish `h2` using `h1.star_star`. Rewrite `h2` using `[star_star]`. Conclude with `h2.comp v (EuclideanSpace.equiv (Fin d) ℂ).differentiableAt`.
+-/
 theorem differentiableAt_conj_comp {d : ℕ} {F : V d → ℂ} {v : V d}
     (h : DifferentiableAt ℂ F (conjCoord d v)) :
     DifferentiableAt ℂ (fun w => starRingEnd ℂ (F (conjCoord d w))) v := by
@@ -39,6 +42,9 @@ noncomputable def conjPts (p : Y ⟶ Sp k) (h : σ = (starRingEnd ℂ).comp σ')
     rw [e, Category.assoc]
     exact (Points.conjHomeomorph (Sp k)).injective.eq_iff.symm
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `⊤ ≤ y'.1 ⁻¹ᵁ U`. Rewrite using `[h]`. Conclude with `fun x _ => hy (Set.mem_univ _)`.
+-/
 theorem mem_ptsIn_of_conj {y : CxPts p σ} {y' : CxPts p σ'} (h : y'.1 = spMap (starRingEnd ℂ) ≫ y.1)
     {U : Y.Opens} (hy : y ∈ ptsIn p σ U) : y' ∈ ptsIn p σ' U := by
   change ⊤ ≤ y'.1 ⁻¹ᵁ U
@@ -77,6 +83,11 @@ noncomputable def conjChart (h : σ = (starRingEnd ℂ).comp σ') {d : ℕ} (c :
 
 end
 
+/- English proof (translation)
+Introduce `k _ Y p d _ σ σ' j h hj`. Take `rfl : j = conjPts p h` from `funext fun z => Subtype.ext (hj z)`. Use `⟨(conjPts p h).continuous, fun c => ⟨conjChart h c, fun z => ?_, fun z _ a => ?_⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(conjPts p h).symm (conjPts p h z) ∈ c.e.source ↔ _`. Rewrite using `[Homeomorph.symm_apply_apply]`.
+
+Express the relevant statement in the definitionally equal form `starRingEnd ℂ (c.e ((conjPts p h).symm (conjPts p h z)) a) = _`. Rewrite using `[Homeomorph.symm_apply_apply]`.
+-/
 theorem continuous_and_exists_conj_chart :
     ∀ (k : Type) [Field k] (Y : Scheme.{0}) (p : Y ⟶ Sp k) (d : ℕ) [SmoothOfRelativeDimension d p] (σ σ' : k →+* ℂ) (j : CxPts p σ' → CxPts p σ), σ = (starRingEnd ℂ).comp σ' → IsConjMap j → Continuous j ∧ ∀ c' : AlgChart p σ' d, ∃ c : AlgChart p σ d, (∀ z, j z ∈ c.e.source ↔ z ∈ c'.e.source) ∧ ∀ z ∈ c'.e.source, ∀ a, c.e (j z) a = starRingEnd ℂ (c'.e z a) := by
   intro k _ Y p d _ σ σ' j h hj

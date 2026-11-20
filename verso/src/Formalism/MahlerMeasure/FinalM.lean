@@ -10,5 +10,8 @@ import Formalism.MahlerMeasure.LevelConst
 
 namespace Formalism.GM.Top
 open Formalism.GM
+/- English proof (translation)
+The claim follows from `levelAct_of alternatingChooseSum`.
+-/
 theorem levelAct : LevelAct := levelAct_of alternatingChooseSum
 end Formalism.GM.Top

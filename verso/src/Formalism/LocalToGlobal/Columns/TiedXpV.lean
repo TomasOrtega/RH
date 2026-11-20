@@ -17,6 +17,13 @@ open Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.DIV F
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Unfold `RowPar.sgHC Formalism.L2.Forms.sgHC`. Distinguish the cases in `h1 : i.1 < R.k - 1`. Simplify using `only [dif_pos h1, RowPar.of]`. Establish `h2 : (i.1 - (R.k - 1)) / (R.t + 1) < R.m`. Apply `Nat.div_lt_of_lt_mul` to reduce the goal to its premises.
+
+Use `R.m_add_three_le_k` as an intermediate fact. Establish `hi` using `i.2`. Unfold `Ranks.N at hi`. Rewrite using `[Nat.mul_comm]`. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `only [dif_neg h1, dif_pos h2, RowPar.bAt, RowPar.eAt, RowPar.of]`.
+-/
 theorem xp_sgHC_eq {R : Ranks} (P : HCParam R) (i : Fin (R.N R.m - 1)) :
     (RowPar.of P).sgHC i.1 = Formalism.L2.Forms.sgHC R P i.1 := by
   unfold RowPar.sgHC Formalism.L2.Forms.sgHC
@@ -30,15 +37,26 @@ theorem xp_sgHC_eq {R : Ranks} (P : HCParam R) (i : Fin (R.N R.m - 1)) :
       rw [Nat.mul_comm]; omega
     simp only [dif_neg h1, dif_pos h2, RowPar.bAt, RowPar.eAt, RowPar.of]
 
+/- English proof (translation)
+Rewrite using `[RowPar.sg_eq, xp_sgHC_eq]`.
+-/
 theorem xp_sg_tie {R : Ranks} (P : HCParam R) (i : Fin (R.N R.m - 1)) :
     (((RowPar.of P).sg).w i : ℚ) = Formalism.L2.Forms.sgHC R P i - rhoVec (R.N R.m - 1) i := by
   rw [RowPar.sg_eq, xp_sgHC_eq]
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `R.t_odd`. Establish `h : R.t + 1 = 2 * (b + 1)` using `by omega`. Rewrite using `[h, Nat.mul_div_cancel_left _ (by norm_num : 0 < 2), Nat.mul_left_comm, Nat.mul_div_cancel_left _ (by norm_num : 0 < 2)]`.
+-/
 theorem xp_half (R : Ranks) : R.m * (R.t + 1) / 2 = R.m * ((R.t + 1) / 2) := by
   obtain ⟨b, hb⟩ := R.t_odd
   have h : R.t + 1 = 2 * (b + 1) := by omega
   rw [h, Nat.mul_div_cancel_left _ (by norm_num : 0 < 2), Nat.mul_left_comm, Nat.mul_div_cancel_left _ (by norm_num : 0 < 2)]
 
+/- English proof (translation)
+Unfold `RowPar.sgTrue shiftW shW`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[xp_half]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem xp_sgTrue_eq {R : Ranks} (S : RowPar R) : S.sgTrue = shW S.sg ((R.m * (R.t + 1) / 2 : ℕ) : ℤ) := by
   unfold RowPar.sgTrue shiftW shW
   congr 1
@@ -53,6 +71,11 @@ variable {X : Fields} {n : ℕ} {ST SG : Finset (HeightOneSpectrum (𝓞 X.E))} 
   (hσ : ∀ x : X.K, σ₀ (star x) = starRingEnd ℂ (σ₀ x)) (lam : X.Tau → DomWeight n)
   (Lf : DecoSet X.E n ST SG → Submodule (𝓞 X.E) (Sp X.E n)) (Λ : LevFam X.E X.K n SG)
 
+/- English proof (translation)
+Substitute `hJ hemb hT` using the available equality. Use `(GSD.Ev.ipCl_apply (roundEv σ₀ hσ lamT Lf Λ) hOk z z').trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[hz c, hz' c, ← hnf]`.
+
+Conclude with `ipFr_fnOf _ lamT (stdFrC _) o (frame_std _ _ (stdFrC_isON _)) (frame_std _ o ho) (P c) (Q c)`.
+-/
 theorem xp_ipCl_tie (hOk : (formGSD (roundPk X lam Lf) Λ).Ok) (lam' : X.Tau → DomWeight n)
     (hnf : ∀ p q, nfAll lam p q = nfAll lam' p q) {J : Matrix (Fin n) (Fin n) X.E} (hJ : J = 1)
     {emb : X.Tau → X.E →+* ℂ} (hemb : emb = X.embC σ₀) {lamT : X.Tau → DomWeight n} (hT : lamT = lam)
@@ -133,6 +156,11 @@ def Norm (Q : PCrd W ΛM σ₀) : Prop :=
 
 end XpV
 
+/- English proof (translation)
+Introduce `o ho z z' P P' _ _ hz hz'`. Use `xp_ipCl_tie σ₀ hσ W.sgTrue _ ΛM.inv (ptOk W ΛM hX) W.sgW ?_ Q.hJ Q.hemb Q.hlt o ho z z' P P' hz hz'` and prove the remaining obligations. Introduce `p q`. Establish `h : W.sgTrue = fun τ => shW (W.sgW τ) ((R.m * (R.t + 1) / 2 : ℕ) : ℤ)` using `funext fun τ => xp_sgTrue_eq (W.row τ)`. Rewrite using `[h]`.
+
+Conclude with `nfAll_shW _ _ _ _`.
+-/
 theorem XpV.ipP (Q : PCrd W ΛM σ₀) : XpV.IpP W ΛM hX σ₀ hσ Q := by
   intro o ho z z' P P' _ _ hz hz'
   refine xp_ipCl_tie σ₀ hσ W.sgTrue _ ΛM.inv (ptOk W ΛM hX) W.sgW ?_ Q.hJ Q.hemb Q.hlt o ho z z' P P' hz hz'
@@ -142,6 +170,11 @@ theorem XpV.ipP (Q : PCrd W ΛM σ₀) : XpV.IpP W ΛM hX σ₀ hσ Q := by
   exact nfAll_shW _ _ _ _
 
 include hX in
+/- English proof (translation)
+Take `⟨⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩, lt, rfl⟩` from `Q`. Introduce `z`. Establish `h` using `roundEv_exists_emb_iff σ₀ hσ W.sgTrue (fun d : DecoSet X.E (R.N R.m - 1) ∅ Pr.vGs => d.1.N) ΛM.inv (ptOk W ΛM hX) z`. Establish `e : RatSpanG σ₀ W.sgTrue = RatSpanG σ₀ W.sgW`. Establish `h2 : W.sgTrue = fun τ => shW (W.sgW τ) ((R.m * (R.t + 1) / 2 : ℕ) : ℤ)` using `funext fun τ => xp_sgTrue_eq (W.row τ)`.
+
+Rewrite using `[h2]`. Conclude with `RatSpanG_shW σ₀ _ _`. Rewrite `h` using `[e]`. Conclude with `h`.
+-/
 theorem XpV.rat (Q : PCrd W ΛM σ₀) : XpV.Rat W ΛM σ₀ hσ Q := by
   obtain ⟨⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩, lt, rfl⟩ := Q
   intro z
@@ -154,12 +187,18 @@ theorem XpV.rat (Q : PCrd W ΛM σ₀) : XpV.Rat W ΛM σ₀ hσ Q := by
   exact h
 
 include hX in
+/- English proof (translation)
+Take `⟨⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩, lt, rfl⟩` from `Q`. Introduce `z`. Conclude with `fi_iff_FiC hc σ₀ hσ W.sgTrue (fun d : DecoSet X.E (R.N R.m - 1) ∅ Pr.vGs => d.1.N) ΛM.inv 1 (ptOk W ΛM hX) hS (L := tieLevP hc σ₀ ΛM.inv) ⟨rfl, fun _ _ => rfl⟩ z`.
+-/
 theorem XpV.ptC (Q : PCrd W ΛM σ₀) : XpV.PtC W ΛM hc σ₀ hσ hS Q := by
   obtain ⟨⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩, lt, rfl⟩ := Q
   intro z
   exact fi_iff_FiC hc σ₀ hσ W.sgTrue (fun d : DecoSet X.E (R.N R.m - 1) ∅ Pr.vGs => d.1.N) ΛM.inv 1 (ptOk W ΛM hX) hS
     (L := tieLevP hc σ₀ ΛM.inv) ⟨rfl, fun _ _ => rfl⟩ z
 
+/- English proof (translation)
+Use `show (W.row τ).sgTrue.natW = _`. Rewrite using `[xp_sgTrue_eq, natW_shW]`. Both sides reduce to the same expression.
+-/
 theorem xp_natW_sgTrue (τ : X.Tau) : (W.sgTrue τ).natW = (W.sgW τ).natW := by
   show (W.row τ).sgTrue.natW = _
   rw [xp_sgTrue_eq, natW_shW]
@@ -167,6 +206,11 @@ theorem xp_natW_sgTrue (τ : X.Tau) : (W.sgTrue τ).natW = (W.sgW τ).natW := by
 
 include hX in
 
+/- English proof (translation)
+Take `⟨⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩, lt, rfl⟩` from `Q`. Introduce `x`. Rewrite using `[(ptGSD W ΛM).mem_intDel_iff (ptOk W ΛM hX) (ptGSD W ΛM).outSec x]`. Establish `key` using `fun c : (ptGSD W ΛM).Cl => vl_mem_delAtr_iff Pl pw hval X.emb σ₀ hpw (1 : Matrix (Fin (R.N R.m - 1)) (Fin (R.N R.m - 1)) X.E) W.sgTrue W.sgW (xp_natW_sgTrue W) ((ptGSD W ΛM).outSec.rep c).1.N ((ptGSD W ΛM).outSec.rep c).2.lat ((x : (ptGSD W ΛM).D → (ptGSD W ΛM).V) ((ptGSD W ΛM).o …`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h w c B hB`. Conclude with `(key c).1 (h c) w B hB`. Introduce `h c`. Conclude with `(key c).2 fun w B hB => h w c B hB`.
+-/
 theorem XpV.lat (Pl : Rows.Places X.K) (pw : Pl.Pl → HeightOneSpectrum (𝓞 X.K)) (hpw : Function.Surjective pw)
     (hval : ∀ w (x : X.K), x ≠ 0 → Pl.val w x = ((vAdd (pw w) x : ℤ) : WithTop ℤ)) (Q : PCrd W ΛM σ₀) :
     XpV.Lat W ΛM σ₀ hσ Pl Q := by
@@ -182,6 +226,15 @@ theorem XpV.lat (Pl : Rows.Places X.K) (pw : Pl.Pl → HeightOneSpectrum (𝓞 X
   · intro h c
     exact (key c).2 fun w B hB => h w c B hB
 
+/- English proof (translation)
+Take `⟨⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩, lt, rfl⟩` from `Q`. Introduce `s x Pc hPc o ho`. Establish `hval : ∀ c, (x.1 ((ptGSD W ΛM).outSec.rep c) : VV X.K W.sgTrue).1 = Pc c`. Introduce `c`. Apply `evFr_injective (gramC (1 : Matrix (Fin (R.N R.m - 1)) (Fin (R.N R.m - 1)) X.E) (embAt σ₀ X.emb)) (shiftOf W.sgTrue) σ₀ (stdFrC _)` to reduce the goal to its premises.
+
+Rewrite using `[evFr_eq_fnOf, evFr_eq_fnOf]`. Conclude with `hPc c`. Establish `h` using `vn_norm_round W.sgTrue (fun d : DecoSet X.E (R.N R.m - 1) ∅ Pr.vGs => d.1.N) ΛM.inv (ptOk W ΛM hX) (ptRat W ΛM hX) s o ho x`. Use `h.trans ?_` and prove the remaining obligations. Set `_` to `(ptOk W ΛM hX).fintypeCl`.
+
+Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `hv : (x.1 ((formGSD (roundPk X W.sgTrue fun d : DecoSet X.E (R.N R.m - 1) ∅ Pr.vGs => d.1.N) ΛM.inv).outSec.rep c) : VV X.K W.sgTrue).1 = Pc c` using `hval c`. Establish `h2 : ∀ p q, nfAll W.sgTrue p q = nfAll W.sgW p q`. Introduce `p q`. Establish `h3 : W.sgTrue = fun τ => shW (W.sgW τ) ((R.m * (R.t + 1) / 2 : ℕ) : ℤ)` using `funext fun τ => xp_sgTrue_eq (W.row τ)`.
+
+Rewrite using `[h3]`. Conclude with `nfAll_shW _ _ _ _`. Rewrite using `[hv, h2, vn_inv_natCast_re]`.
+-/
 theorem XpV.norm (Q : PCrd W ΛM σ₀) : XpV.Norm W ΛM hX σ₀ hσ Q := by
   obtain ⟨⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩, lt, rfl⟩ := Q
   intro s x Pc hPc o ho
@@ -213,6 +266,9 @@ variable {d : ColDat} (a : ColArgs d)
 
 def RowSame (d : ColDat) : Prop := ∀ u τ, RowPar.of (d.hcW u τ) = RowPar.of (d.hcW d.u₀ τ)
 
+/- English proof (translation)
+The claim follows from `funext fun τ => (xp_sgTrue_eq (d.W.row τ)).symm`.
+-/
 theorem sgT_eq (u : d.what₂.Word) : CF.sgT (D := d.colRec a) u = d.W.sgTrue :=
   funext fun τ => (xp_sgTrue_eq (d.W.row τ)).symm
 
@@ -235,6 +291,9 @@ def parabolicValuationAgreement (hR : RowSame d) :
   rat := XpV.rat (Pr := d.Pr) d.W d.levP d.hX d.σ₀ d.star_cx (pCrd a hS hH u)
   lat := XpV.lat (Pr := d.Pr) d.W d.levP d.hX d.σ₀ d.star_cx d.what₂.places d.plEq d.plEq.surjective hH.val_eq (pCrd a hS hH u)
 
+/- English proof (translation)
+The claim follows from `XpV.norm (Pr := d.Pr) d.W d.levP d.hX d.σ₀ d.star_cx (pCrd a hS hH u)`.
+-/
 theorem normPTied (hR : RowSame d) :
     CF.NormPTie (parabolicValuationAgreement a hS hH hP u hR) :=
   XpV.norm (Pr := d.Pr) d.W d.levP d.hX d.σ₀ d.star_cx (pCrd a hS hH u)

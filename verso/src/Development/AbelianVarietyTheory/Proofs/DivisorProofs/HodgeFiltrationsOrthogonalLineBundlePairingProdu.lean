@@ -24,6 +24,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.PtExt.HodgeOrth
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, Finset.sum_empty]`. Both sides reduce to the same expression. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi, (GlobalTheory.T.crystallineCocycleOnTrivialThickenings_additive_linear R X).1, ← ih, mul_comm, ← (GlobalTheory.T.crystallineCocycleOnTrivialThickenings_additive_linear R X).2.1]`.
+
+Both sides reduce to the same expression.
+-/
 theorem fv_sum {R : Type} [CommRing R] {X : Over (Sp R)} {J : Type} (s : Finset J) (c : J → R)
     (α : J → Z1 (O (dp0 R) (X.hom ≫ 𝟙 _))) (D : Type) [CommRing D] [Algebra R D] (D' : Type) [CommRing D']
     [Algebra R D'] (φ : D →ₐ[R] D') (x : Pt X D) :
@@ -36,11 +41,17 @@ theorem fv_sum {R : Type} [CommRing R] {X : Over (Sp R)} {J : Type} (s : Finset 
       ← (GlobalTheory.T.crystallineCocycleOnTrivialThickenings_additive_linear R X).2.1]
     rfl
 
+/- English proof (translation)
+Simplify using `only [Submodule.coe_sum, Finset.sum_apply]`.
+-/
 theorem commAlgFunctorCocyclesTwo_finsetSum_apply {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R) {J : Type}
     (s : Finset J) (w : J → Z2 F) (T T' T'' : C) (φ : T ⟶ T') (ψ : T' ⟶ T'') :
     (∑ i ∈ s, w i).1 T T' T'' φ ψ = ∑ i ∈ s, (w i).1 T T' T'' φ ψ := by
   simp only [Submodule.coe_sum, Finset.sum_apply]
 
+/- English proof (translation)
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ ↦ ?_` and prove the remaining obligations. Rewrite using `[← cup_mk]`. Both sides reduce to the same expression.
+-/
 theorem sum_cup_eq_mk {R : Type} [CommRing R] {A B : Over (Sp R)} {N : ℕ}
     (m₁ : IsMor (dp0 R) (A.hom ≫ 𝟙 _) (dp0 R) ((A ⊗ B).hom ≫ 𝟙 _) (RingHom.id R) (fst A B).left)
     (m₂ : IsMor (dp0 R) (B.hom ≫ 𝟙 _) (dp0 R) ((A ⊗ B).hom ≫ 𝟙 _) (RingHom.id R) (snd A B).left)
@@ -53,6 +64,11 @@ theorem sum_cup_eq_mk {R : Type} [CommRing R] {A B : Over (Sp R)} {N : ℕ}
   rw [← cup_mk]
   rfl
 
+/- English proof (translation)
+Establish `m₁ : IsMor (dp0 R) (A.hom ≫ 𝟙 _) (dp0 R) ((A ⊗ B).hom ≫ 𝟙 _) (RingHom.id R) (fst A B).left` using `IsMor.of_over _ (by rw [← Category.assoc, Over.w])`. Establish `m₂ : IsMor (dp0 R) (B.hom ≫ 𝟙 _) (dp0 R) ((A ⊗ B).hom ≫ 𝟙 _) (RingHom.id R) (snd A B).left` using `IsMor.of_over _ (by rw [← Category.assoc, Over.w])`. Rewrite `hc` using `[sum_cup_eq_mk m₁ m₂]`. Take `⟨n, hn⟩` from `GlobalTheory.T.exists_pointwiseCochain_coboundary_eq_chernCocycle' R (A ⊗ B) P _ hc`. Use `⟨n, fun E _ _ E' _ _ E'' _ _ φ ψ z hz ↦ ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hn E E' E'' φ ψ z hz, commAlgFunctorCocyclesTwo_finsetSum_apply]`. Conclude with `Finset.sum_congr rfl fun k _ ↦ GlobalTheory.T.cup_pullback_cocycles_pointValue R A B m₁ m₂ _ _ E E' E'' φ ψ z`.
+-/
 theorem exists_isCupCob {R : Type} [CommRing R] {A B : Over (Sp R)} {N : ℕ} (P : LB (A ⊗ B).left)
     (α : Fin N → Z1 (O (dp0 R) (A.hom ≫ 𝟙 _))) (β : Fin N → Z1 (O (dp0 R) (B.hom ≫ 𝟙 _)))
     (hc : IsChern (dp0 R) ((A ⊗ B).hom ≫ 𝟙 _) P
@@ -69,6 +85,11 @@ theorem exists_isCupCob {R : Type} [CommRing R] {A B : Over (Sp R)} {N : ℕ} (P
   rw [hn E E' E'' φ ψ z hz, commAlgFunctorCocyclesTwo_finsetSum_apply]
   exact Finset.sum_congr rfl fun k _ ↦ GlobalTheory.T.cup_pullback_cocycles_pointValue R A B m₁ m₂ _ _ E E' E'' φ ψ z
 
+/- English proof (translation)
+Establish `hF : CatCoh.H1.mk _ (∑ i, c i • α i) ∈ F1 (A.hom ≫ 𝟙 _)`. Use `(mem_hodgeFiltration_iff_pointwiseCoboundary R A _).2 ⟨k, fun D _ _ D' _ _ ψ z hz ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[fv_sum]`. Conclude with `hk D D' ψ z hz`. Rewrite `hF` using `[map_sum]`.
+
+Simplify using `only [map_smul, hα] at hF`. Rewrite using `[PrimitiveSubmodule, Submodule.mem_comap, map_sum]`. Conclude with `hF`.
+-/
 theorem sum_mem_F1prim {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A] {N : ℕ} (a : Fin N → primDR A)
     (α : Fin N → Z1 (O (dp0 R) (A.hom ≫ 𝟙 _))) (hα : ∀ i, CatCoh.H1.mk _ (α i) = (a i).1) (c : Fin N → R)
     (k : Fn0 A)
@@ -83,6 +104,13 @@ theorem sum_mem_F1prim {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A] {N :
   rw [PrimitiveSubmodule, Submodule.mem_comap, map_sum]
   exact hF
 
+/- English proof (translation)
+Introduce `H R _ A B _ _ g _ hB _ gB P hP φ hP' x hx y hy`. Take `⟨N, a, b, hc, hφ⟩` from `hP'`. Use `choose α hα using fun k ↦ CatCoh.H1.mk_surjective _ (a k).1`. Use `choose β hβ using fun k ↦ CatCoh.H1.mk_surjective _ (b k).1`. Take `⟨n, hcup⟩` from `exists_isCupCob P α β (by simp only [hα, hβ]; exact hc)`.
+
+Establish `hβ' : ∀ i, CatCoh.H1.mk _ (β i) ∈ primDR B` using `fun i ↦ by rw [hβ]; exact (b i).2`. Take `⟨k, hk⟩` from `GlobalTheory.T.exists_coboundary_of_mem_hodgeFiltration H R A B g hB gB _ P.U hP.cover (Fin N) _ β hβ' n (fun i ↦ (fv_isCoc_and_ev_eq R A (α i)).1) hcup y hy`. Establish `eb : ∀ i, (⟨_, hβ' i⟩ : primDR B) = b i` using `fun i ↦ Subtype.ext (hβ i)`. Establish `h0` using `(Submodule.mem_dualAnnihilator _).1 hx _ (sum_mem_F1prim a α hα _ k hk)`. Rewrite using `[hφ, ← h0, map_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun k _ ↦ by rw [map_smul, smul_eq_mul, mul_comm, eb]`.
+-/
 theorem fil_orthogonal : GlobalTheory.Published.AbelianHodgeDeRham → ∀ (R : Type) [CommRing R] (A B : Over (Sp R)) [GrpObj A] [GrpObj B] (g : ℕ), IsAbelianScheme A → IsAbelianScheme B → SmoothOfRelativeDimension g A.hom → SmoothOfRelativeDimension g B.hom → ∀ P : LB (A ⊗ B).left, P.IsLB → ∀ φ : HdR A →ₗ[R] HdR B →ₗ[R] R, AbDual.IsCorrForm (dp0 R) (𝟙 _) A B P φ → ∀ x ∈ Fil A, ∀ y ∈ Fil B, φ x y = 0 := by
   intro H R _ A B _ _ g _ hB _ gB P hP φ hP' x hx y hy
   obtain ⟨N, a, b, hc, hφ⟩ := hP'

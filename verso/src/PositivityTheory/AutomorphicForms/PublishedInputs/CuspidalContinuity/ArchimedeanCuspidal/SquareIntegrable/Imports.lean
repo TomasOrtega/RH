@@ -10,6 +10,21 @@ namespace Ad3.SchwartzSpaceL2.UnramifiedWhittakerGL2
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
   [MeasurableSpace F] [BorelSpace F]
 
+/- English proof (translation)
+Establish `h1 : ∫ x, (𝒪[F] : Set F).indicator (1 : F → ℂ) (y * (c + x)) * (ψ (-x) : ℂ) ∂selfDualMeasure ψ = ∫ x, (𝒪[F] : Set F).indicator (1 : F → ℂ) (y * x) * (ψ (-(x - c)) : ℂ) ∂selfDualMeasure ψ`. Rewrite using `[← integral_add_left_eq_self (fun x => (𝒪[F] : Set F).indicator (1 : F → ℂ) (y * x) * (ψ (-(x - c)) : ℂ)) c]`. Simplify using `only [add_sub_cancel_left]`. Rewrite using `[h1]`. Establish `h2 : ∀ x, (𝒪[F] : Set F).indicator (1 : F → ℂ) (y * x) * (ψ (-(x - c)) : ℂ) = (ψ c : ℂ) * ((𝒪[F] : Set F).indicator (fun z => (ψ.mulShift (-y⁻¹) z : ℂ)) (y * x))`.
+
+Introduce `x`. Distinguish the cases in `hx : y * x ∈ (𝒪[F] : Set F)`. Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem hx, AddChar.mulShift_apply]`. Establish `: -(x - c) = c + -y⁻¹ * (y * x)` using `by field_simp; ring`. Rewrite using `[this, AddChar.map_add_eq_mul]`.
+
+Simplify using the standard rewrite rules. Simplify using `[Set.indicator_of_notMem hx]`. Repeatedly rewrite using `[h2]`. Rewrite using `[integral_const_mul, integral_comp_mul_left (selfDualMeasure ψ) hy (fun z => (𝒪[F] : Set F).indicator (fun z => (ψ.mulShift (-y⁻¹) z : ℂ)) z)]`. Rewrite using `[integral_indicator (by rw [← coe_valBall_zero]; exact measurableSet_valBall 0), ← coe_valBall_zero, integral_valBall_char]`.
+
+Establish `hcond : addCharConductor ψ = 0` using `hψ.2.2`. Establish `hy' : -y⁻¹ ≠ 0` using `neg_ne_zero.2 (inv_ne_zero hy)`. Establish `htriv : IsTrivialOn (ψ.mulShift (-y⁻¹)) 0 ↔ ord y ≤ 0`. Rewrite using `[isTrivialOn_mulShift_iff hy', isTrivialOn_iff hψ.1 hψ.2.1, hcond, ord_neg_eq, ord_inv hy]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hvol : (selfDualMeasure ψ).real (valBall F 0) = 1`. Rewrite using `[selfDualMeasure_real_valBall_zero, hcond]`. Simplify using the standard rewrite rules. Rewrite using `[modulus_of_ne_zero hy]`. Distinguish the cases in `h : ord y ≤ 0`.
+
+Rewrite using `[if_pos (htriv.2 h), if_pos h, hvol]`. Simplify using `only [NNReal.coe_zpow, NNReal.coe_natCast, Complex.ofReal_one, smul_eq_mul]`. Rewrite using `[Complex.real_smul]`. Use `push_cast`. Rewrite using `[_root_.zpow_neg, inv_inv]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg (fun h' => h (htriv.1 h')), if_neg h]`. Simplify using the standard rewrite rules.
+-/
 theorem inner_eq (ψ : AddChar F Circle) (hψ : IsStd ψ) (y c : F) (hy : y ≠ 0) :
     ∫ x, (𝒪[F] : Set F).indicator (1 : F → ℂ) (y * (c + x)) * (ψ (-x) : ℂ) ∂selfDualMeasure ψ =
       (ψ c : ℂ) * (if ord y ≤ 0 then ((residueCard F : ℂ)) ^ (ord y) else 0) := by

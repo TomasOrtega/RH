@@ -8,9 +8,15 @@ open Matrix
 noncomputable def realDotC {g : ℕ} (u w : Fin g → ℂ) : ℝ :=
   ∑ k, ((u k).re * (w k).re + (u k).im * (w k).im)
 
+/- English proof (translation)
+Unfold `realDotC`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma realDotC_comm {g : ℕ} (u w : Fin g → ℂ) : realDotC u w = realDotC w u := by
   unfold realDotC; refine Finset.sum_congr rfl (fun k _ => ?_); ring
 
+/- English proof (translation)
+Unfold `realDotC`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, Complex.re_sum, Complex.im_sum, Complex.smul_re, Complex.smul_im, smul_eq_mul, Finset.mul_sum, ← Finset.sum_add_distrib]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun k _ => ?_))` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma realDotC_sum_right {g m : ℕ} (u : Fin g → ℂ) (x : Fin m → ℝ) (μ : Fin m → Fin g → ℂ) :
     realDotC u (∑ i, x i • μ i) = ∑ i, x i * realDotC u (μ i) := by
   unfold realDotC
@@ -19,6 +25,11 @@ lemma realDotC_sum_right {g m : ℕ} (u : Fin g → ℂ) (x : Fin m → ℝ) (μ
   rw [Finset.sum_comm]
   refine Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun k _ => ?_)); ring
 
+/- English proof (translation)
+Unfold `realDotC at h`. Establish `hn : ∀ k ∈ Finset.univ, 0 ≤ (u k).re * (u k).re + (u k).im * (u k).im` using `fun k _ => by nlinarith [sq_nonneg (u k).re, sq_nonneg (u k).im]`. Rewrite `h` using `[Finset.sum_eq_zero_iff_of_nonneg hn]`. Use function extensionality and compare the values at `k`. Establish `hk` using `h k (Finset.mem_univ _)`.
+
+Apply the tactic sequence `apply Complex.ext <;> simp <;> nlinarith [sq_nonneg (u k).re, sq_nonneg (u k).im]`.
+-/
 lemma realDotC_self_eq_zero {g : ℕ} (u : Fin g → ℂ) (h : realDotC u u = 0) : u = 0 := by
   unfold realDotC at h
   have hn : ∀ k ∈ Finset.univ, 0 ≤ (u k).re * (u k).re + (u k).im * (u k).im :=
@@ -28,6 +39,25 @@ lemma realDotC_self_eq_zero {g : ℕ} (u : Fin g → ℂ) (h : realDotC u u = 0)
   have hk := h k (Finset.mem_univ _)
   apply Complex.ext <;> simp <;> nlinarith [sq_nonneg (u k).re, sq_nonneg (u k).im]
 
+/- English proof (translation)
+Introduce `g m U μ v c hμ hv hli hc`. Rewrite `hμ`, `hv`, the goal using `[continuousOn_iff_continuous_restrict]`. Set `G : U → Matrix (Fin m) (Fin m) ℝ` to `fun s a b => realDotC (μ s a) (μ s b)`. Set `b : U → Fin m → ℝ` to `fun s a => realDotC (μ s a) (v s)`. Establish `hdot : Continuous (fun p : (Fin g → ℂ) × (Fin g → ℂ) => realDotC p.1 p.2)`.
+
+Unfold `realDotC`. Use `fun_prop`. Establish `hμa : ∀ a, Continuous (fun s : U => μ s a)` using `fun a => (continuous_apply a).comp hμ`. Establish `hGc : Continuous G` using `continuous_pi (fun a => continuous_pi (fun b' => hdot.comp ((hμa a).prodMk (hμa b'))))`. Establish `hbc : Continuous b` using `continuous_pi (fun a => hdot.comp ((hμa a).prodMk hv))`.
+
+Establish `hGc_eq : ∀ s : U, G s *ᵥ (c s) = b s`. Introduce `s`. Use function extensionality and compare the values at `a`. Simplify using `only [G, b, Matrix.mulVec, dotProduct]`. Rewrite using `[hc s s.2, realDotC_sum_right]`.
+
+Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hdet : ∀ s : U, (G s).det ≠ 0`. Introduce `s hd`. Take `⟨x, hx0, hx⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hd`.
+
+Apply `hx0` to reduce the goal to its premises. Establish `hw : ∑ i, x i • μ s i = 0`. Apply `realDotC_self_eq_zero` to reduce the goal to its premises. Rewrite using `[realDotC_sum_right]`. Establish `key : ∀ i, realDotC (μ s i) (∑ j, x j • μ s j) = (G s *ᵥ x) i`.
+
+Introduce `i`. Rewrite using `[realDotC_sum_right]`. Simplify using `only [G, Matrix.mulVec, dotProduct]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+
+Repeatedly rewrite using `[realDotC_comm _ (μ s _), key, hx]`. Simplify using the standard rewrite rules. Use function extensionality and compare the values at `i`. Conclude with `Fintype.linearIndependent_iff.mp (hli s s.2) x hw i`. Establish `hceq : U.domRestrict c = fun s => ((G s).det)⁻¹ • ((G s).adjugate *ᵥ b s)`.
+
+Use function extensionality and compare the values at `s`. Establish `h1 : c s = (G s)⁻¹ *ᵥ b s`. Rewrite using `[← hGc_eq s, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr (hdet s)), Matrix.one_mulVec]`. Use `show c s = _`. Rewrite using `[h1, Matrix.inv_def, Ring.inverse_eq_inv']`.
+
+Use extensionality with `a`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.smul_apply, Finset.mul_sum, mul_assoc]`. Rewrite using `[hceq]`. Conclude with `(hGc.matrix_det.inv₀ hdet).smul (hGc.matrix_adjugate.matrix_mulVec hbc)`.
+-/
 theorem continuousOn_coords_of_linearIndependent :
     ∀ (g m : ℕ) (U : Set ℂ) (μ : ℂ → Fin m → Fin g → ℂ) (v : ℂ → Fin g → ℂ) (c : ℂ → Fin m → ℝ),
       ContinuousOn μ U → ContinuousOn v U → (∀ s ∈ U, LinearIndependent ℝ (μ s)) →

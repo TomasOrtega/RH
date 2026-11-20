@@ -10,6 +10,9 @@ open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Au
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C
 open scoped TensorProduct InnerProductSpace ComplexConjugate Pointwise
 
+/- English proof (translation)
+Unfold `UnitaryRep.ccToL1`. Rewrite using `[← MemLp.toLp_const_smul]`. Both sides reduce to the same expression.
+-/
 private theorem ccToL1_smul {G : Type} [Group G] [TopologicalSpace G] [MeasurableSpace G] [OpensMeasurableSpace G]
     (μ : Measure G) [IsFiniteMeasureOnCompacts μ] (c : ℂ) (f : CompactlySupportedContinuousMap G ℂ) :
     UnitaryRep.ccToL1 μ (c • f) = c • UnitaryRep.ccToL1 μ f := by
@@ -17,6 +20,11 @@ private theorem ccToL1_smul {G : Type} [Group G] [TopologicalSpace G] [Measurabl
   rw [← MemLp.toLp_const_smul]
   rfl
 
+/- English proof (translation)
+Establish `hf1 : ((UnitaryRep.ccToL1 μ f : G →₁[μ] ℂ) : G → ℂ) =ᵐ[μ] f`. Unfold `UnitaryRep.ccToL1`. Conclude with `MemLp.coeFn_toLp _`. Use `(π.norm_integrated_le μ _).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[L1.norm_eq_integral_norm]`.
+
+Conclude with `integral_congr_ae (hf1.mono fun x hx => by simp only [hx])`.
+-/
 private theorem norm_int_le {G H : Type} [Group G] [TopologicalSpace G] [MeasurableSpace G] [OpensMeasurableSpace G]
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (π : UnitaryRep G H)
     (μ : Measure G) [IsFiniteMeasureOnCompacts μ] (f : CompactlySupportedContinuousMap G ℂ) :
@@ -28,6 +36,9 @@ private theorem norm_int_le {G H : Type} [Group G] [TopologicalSpace G] [Measura
   rw [L1.norm_eq_integral_norm]
   exact integral_congr_ae (hf1.mono fun x hx => by simp only [hx])
 
+/- English proof (translation)
+Rewrite using `[UnitaryRep.ccToL1_add, map_add]`.
+-/
 private theorem int_add {G H : Type} [Group G] [TopologicalSpace G] [MeasurableSpace G] [OpensMeasurableSpace G]
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (π : UnitaryRep G H)
     (μ : Measure G) [IsFiniteMeasureOnCompacts μ] (f g : CompactlySupportedContinuousMap G ℂ) :
@@ -35,12 +46,18 @@ private theorem int_add {G H : Type} [Group G] [TopologicalSpace G] [MeasurableS
       π.integrated μ (UnitaryRep.ccToL1 μ f) + π.integrated μ (UnitaryRep.ccToL1 μ g) := by
   rw [UnitaryRep.ccToL1_add, map_add]
 
+/- English proof (translation)
+Rewrite using `[ccToL1_smul, map_smul]`.
+-/
 private theorem int_smul {G H : Type} [Group G] [TopologicalSpace G] [MeasurableSpace G] [OpensMeasurableSpace G]
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (π : UnitaryRep G H)
     (μ : Measure G) [IsFiniteMeasureOnCompacts μ] (c : ℂ) (f : CompactlySupportedContinuousMap G ℂ) :
     π.integrated μ (UnitaryRep.ccToL1 μ (c • f)) = c • π.integrated μ (UnitaryRep.ccToL1 μ f) := by
   rw [ccToL1_smul, map_smul]
 
+/- English proof (translation)
+Establish `hT : π x ∈ (π.compHom p hp).intertwiners (π.compHom p hp)`. Introduce `a v`. Use `show π x (π (p a) v) = π (p a) (π x v)`. Rewrite using `[← UnitaryRep.map_mul_apply, ← UnitaryRep.map_mul_apply, hx]`. Conclude with `(UnitaryRep.comp_integrated_of_mem_intertwiners _ μ hT f).symm`.
+-/
 private theorem int_commute {G G₁ H : Type} [Group G] [TopologicalSpace G] [Group G₁] [TopologicalSpace G₁]
     [MeasurableSpace G₁] [OpensMeasurableSpace G₁] [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     (π : UnitaryRep G H) (p : G₁ →* G) (hp : Continuous p) (μ : Measure G₁) [IsFiniteMeasureOnCompacts μ]
@@ -52,6 +69,15 @@ private theorem int_commute {G G₁ H : Type} [Group G] [TopologicalSpace G] [Gr
     rw [← UnitaryRep.map_mul_apply, ← UnitaryRep.map_mul_apply, hx]
   exact (UnitaryRep.comp_integrated_of_mem_intertwiners _ μ hT f).symm
 
+/- English proof (translation)
+Introduce `K _ _ n μ _ ν _ m _`. Take `⟨hν₁, hν₂⟩` from `(Tf.unimod K n).1 ν`. Take `⟨hm₁, hm₂⟩` from `(Tf.unimod K n).2 m`. Establish `hpq : ∀ (a : archGroup K n) (b : AdelicGLn.FiniteAdelicGL K n), archP K n a * MultiplicityOne.finProj K n b = MultiplicityOne.finProj K n b * archP K n a` using `fun a b => (MultiplicityOne.finProj_mul_archProj_comm b (a : ArchUnits K n)).symm`. Use `⟨fun β β' => ⟨?_, ?_⟩, fun e e' => ⟨?_, ?_⟩, fun c β e => ⟨?_, ?_⟩, fun β β' h => ?_, fun e e' h => ?_, fun β => ?_, fun e => ?_, fun β e => ?_, fun β h => ?_⟩` and prove the remaining obligations.
+
+Conclude with `CuspidalProjection.integrated_conv ν _ β β'`. Conclude with `int_add _ ν β β'`. Conclude with `CuspidalProjection.integrated_conv m _ e e'`. Conclude with `int_add _ m e e'`. Conclude with `int_smul _ ν c β`.
+
+Conclude with `int_smul _ m c e`. Conclude with `(Tf.adjInt _ _ _ ν β β' h).1`. Conclude with `(Tf.adjInt _ _ _ m e e' h).1`. Conclude with `norm_int_le _ ν β`. Conclude with `norm_int_le _ m e`.
+
+Conclude with `(Tf.commInt _ _ _ _ (rightRegularRep (rationalGLOne K n) μ) (archP K n) continuous_archP (MultiplicityOne.finProj K n) MultiplicityOne.continuous_finProj ν m β e).2 hpq`. Conclude with `int_commute _ (archP K n) continuous_archP ν _ (MultiplicityOne.finProj K n h) fun a => (hpq a h).symm`.
+-/
 theorem UpperTheory.ConvolutionTheory.Tf.opAlg :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (ν : Measure (archGroup K n)) [ν.IsHaarMeasure] (m : Measure (AdelicGLn.FiniteAdelicGL K n)) [m.IsHaarMeasure],
       (∀ β β' : TI K n, Oinf μ ν (conv ν β β') = Oinf μ ν β ∘L Oinf μ ν β' ∧ Oinf μ ν (β + β') = Oinf μ ν β + Oinf μ ν β') ∧

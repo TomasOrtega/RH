@@ -10,6 +10,9 @@ open NumberField IsDedekindDomain
 
 variable {K : Type} [Field K] [NumberField K] {p : Nat.Primes} (j : K →+* ℂ_[p])
 
+/- English proof (translation)
+Establish `h` using `PadicComplex.norm_extends' (p : ℕ) (n : ℚ_[p])`. Simplify using `using h`.
+-/
 theorem norm_natCast_padicComplex (p : Nat.Primes) (n : ℕ) :
     ‖(n : ℂ_[p])‖ = ‖(n : ℚ_[p])‖ := by
   have h := PadicComplex.norm_extends' (p : ℕ) (n : ℚ_[p])
@@ -34,8 +37,14 @@ def unitBall : ValuationSubring K where
     · exact Or.inl h
     · exact Or.inr (inv_le_one_of_one_le₀ h)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_unitBall {a : K} : a ∈ unitBall j ↔ ‖j a‖ ≤ 1 := Iff.rfl
 
+/- English proof (translation)
+Establish `h : IsIntegral (unitBall j) (a : K)` using `IsIntegral.tower_top (R := ℤ) (RingOfIntegers.isIntegral_coe a)`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h`. Rewrite using `[← hy]`. Conclude with `y.2`.
+-/
 theorem integer_mem_unitBall (a : 𝓞 K) : (a : K) ∈ unitBall j := by
   have h : IsIntegral (unitBall j) (a : K) :=
     IsIntegral.tower_top (R := ℤ) (RingOfIntegers.isIntegral_coe a)
@@ -43,6 +52,9 @@ theorem integer_mem_unitBall (a : 𝓞 K) : (a : K) ∈ unitBall j := by
   rw [← hy]
   exact y.2
 
+/- English proof (translation)
+The claim follows from `integer_mem_unitBall j a`.
+-/
 theorem norm_integer_le_one (a : 𝓞 K) : ‖j (a : K)‖ ≤ 1 := integer_mem_unitBall j a
 
 def primeBelow : Ideal (𝓞 K) where
@@ -55,6 +67,9 @@ def primeBelow : Ideal (𝓞 K) where
     simp only [Set.mem_setOf_eq, smul_eq_mul, map_mul, norm_mul] at *
     exact (mul_le_of_le_one_left (norm_nonneg _) (norm_integer_le_one j c)).trans_lt ha
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_primeBelow {a : 𝓞 K} : a ∈ primeBelow j ↔ ‖j (a : K)‖ < 1 := Iff.rfl
 
 instance primeBelow_isPrime : (primeBelow j).IsPrime := by
@@ -69,10 +84,18 @@ instance primeBelow_isPrime : (primeBelow j).IsPrime := by
     have := (mem_primeBelow j).1 hab
     simp [ha1, hb1] at this
 
+/- English proof (translation)
+Rewrite using `[map_natCast, norm_natCast_padicComplex, Padic.norm_p]`. Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast (p.2.one_lt))`.
+-/
 theorem norm_p_lt_one : ‖j ((p : ℕ) : K)‖ < 1 := by
   rw [map_natCast, norm_natCast_padicComplex, Padic.norm_p]
   exact inv_lt_one_of_one_lt₀ (by exact_mod_cast (p.2.one_lt))
 
+/- English proof (translation)
+Introduce `h`. Establish `h1 : (((p : ℕ) : 𝓞 K)) ∈ primeBelow j`. Rewrite using `[mem_primeBelow]`. Simplify using `using norm_p_lt_one j`. Rewrite `h1` using `[h, Ideal.mem_bot]`.
+
+Conclude with `p.2.ne_zero (by exact_mod_cast h1)`.
+-/
 theorem primeBelow_ne_bot : primeBelow j ≠ ⊥ := by
   intro h
   have h1 : (((p : ℕ) : 𝓞 K)) ∈ primeBelow j := by
@@ -83,6 +106,11 @@ theorem primeBelow_ne_bot : primeBelow j ≠ ⊥ := by
 
 def place : HeightOneSpectrum (𝓞 K) := ⟨primeBelow j, primeBelow_isPrime j, primeBelow_ne_bot j⟩
 
+/- English proof (translation)
+Take `⟨n, d, h⟩` from `(place j).exists_primeCompl_mul_eq_of_integer y hy`. Establish `hd : ‖j ((d : 𝓞 K) : K)‖ = 1` using `le_antisymm (norm_integer_le_one j _) (not_lt.1 d.2)`. Establish `h2` using `congrArg (fun t => ‖j t‖) h`. Simplify using `only [map_mul, norm_mul] at h2`. Express the relevant statement in the definitionally equal form `‖j y‖ * ‖j ((d : 𝓞 K) : K)‖ = ‖j (n : K)‖ at h2`.
+
+Rewrite `h2` using `[hd, mul_one]`. Conclude with `h2.le.trans (norm_integer_le_one j n)`.
+-/
 theorem norm_le_one_of_valuation_le_one {y : K} (hy : (place j).valuation K y ≤ 1) :
     ‖j y‖ ≤ 1 := by
   obtain ⟨n, d, h⟩ := (place j).exists_primeCompl_mul_eq_of_integer y hy
@@ -94,6 +122,15 @@ theorem norm_le_one_of_valuation_le_one {y : K} (hy : (place j).valuation K y �
   rw [hd, mul_one] at h2
   exact h2.le.trans (norm_integer_le_one j n)
 
+/- English proof (translation)
+Take `⟨n, d, h⟩` from `(place j).exists_primeCompl_mul_eq_of_integer y hy.le`. Establish `hd : ‖j ((d : 𝓞 K) : K)‖ = 1` using `le_antisymm (norm_integer_le_one j _) (not_lt.1 d.2)`. Establish `hdv : (place j).valuation K ((d : 𝓞 K) : K) = 1`. Use `((place j).intValuation_eq_one_iff_mem_primeCompl (d : 𝓞 K)).2 d.2` as an intermediate fact. Rewrite `this` using `[← (place j).valuation_of_algebraMap (K := K)]`.
+
+Conclude with `this`. Establish `hn : (place j).valuation K (n : K) < 1`. Establish `h3` using `congrArg ((place j).valuation K) h`. Rewrite `h3` using `[map_mul]`. Express the relevant statement in the definitionally equal form `(place j).valuation K y * (place j).valuation K ((d : 𝓞 K) : K) = (place j).valuation K (n : K) at h3`.
+
+Rewrite `h3` using `[hdv, mul_one]`. Conclude with `h3 ▸ hy`. Establish `hn' : n ∈ primeBelow j` using `((place j).valuation_lt_one_iff_mem (K := K) n).1 hn`. Establish `h2` using `congrArg (fun t => ‖j t‖) h`. Simplify using `only [map_mul, norm_mul] at h2`.
+
+Express the relevant statement in the definitionally equal form `‖j y‖ * ‖j ((d : 𝓞 K) : K)‖ = ‖j (n : K)‖ at h2`. Rewrite `h2` using `[hd, mul_one]`. Conclude with `h2.trans_lt hn'`.
+-/
 theorem norm_lt_one_of_valuation_lt_one {y : K} (hy : (place j).valuation K y < 1) :
     ‖j y‖ < 1 := by
   obtain ⟨n, d, h⟩ := (place j).exists_primeCompl_mul_eq_of_integer y hy.le
@@ -117,6 +154,13 @@ theorem norm_lt_one_of_valuation_lt_one {y : K} (hy : (place j).valuation K y < 
   rw [hd, mul_one] at h2
   exact h2.trans_lt hn'
 
+/- English proof (translation)
+Use extensionality with `y`. Rewrite using `[Valuation.mem_valuationSubring_iff, mem_unitBall]`. Use `⟨fun h => ?_, norm_le_one_of_valuation_le_one j⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Establish `hc'` using `not_le.1 hc`.
+
+Establish `hy : y ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hc'`. Establish `h1 : (place j).valuation K y⁻¹ < 1`. Rewrite using `[map_inv₀]`.
+
+Conclude with `inv_lt_one_of_one_lt₀ hc'`. Establish `h2` using `norm_lt_one_of_valuation_lt_one j h1`. Rewrite `h2` using `[map_inv₀, norm_inv]`. Establish `h3 : 0 < ‖j y‖` using `norm_pos_iff.2 ((map_ne_zero j).2 hy)`. Conclude with `absurd ((one_le_inv₀ h3).2 h) (not_le.2 h2)`.
+-/
 theorem unitBall_eq : unitBall j = ((place j).valuation K).valuationSubring := by
   ext y
   rw [Valuation.mem_valuationSubring_iff, mem_unitBall]
@@ -134,6 +178,9 @@ theorem unitBall_eq : unitBall j = ((place j).valuation K).valuationSubring := b
   have h3 : 0 < ‖j y‖ := norm_pos_iff.2 ((map_ne_zero j).2 hy)
   exact absurd ((one_le_inv₀ h3).2 h) (not_le.2 h2)
 
+/- English proof (translation)
+Introduce `K _ _ p j`. Use `⟨unitBall j, ?_, fun a => Iff.rfl, integer_mem_unitBall j, fun n hn => ?_⟩` and prove the remaining obligations. Rewrite using `[unitBall_eq] infer_instance`. Rewrite using `[map_natCast, norm_natCast_padicComplex, Padic.norm_natCast_eq_one_iff]`. Conclude with `(Nat.Prime.coprime_iff_not_dvd p.2).2 hn`.
+-/
 theorem exists_dvr_of_padic_embedding : ∀ (K : Type) [Field K] [NumberField K] (p : Nat.Primes)
     (j : K →+* ℂ_[p]), ∃ (V : ValuationSubring K), IsDiscreteValuationRing V ∧
       (∀ a : K, ‖j a‖ ≤ 1 ↔ a ∈ V) ∧ (∀ a : 𝓞 K, (a : K) ∈ V) ∧

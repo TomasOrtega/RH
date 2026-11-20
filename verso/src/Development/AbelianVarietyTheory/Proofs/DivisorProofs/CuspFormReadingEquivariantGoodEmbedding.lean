@@ -19,6 +19,9 @@ namespace GlobalTheory.ReadingEquivGood
 
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
 
+/- English proof (translation)
+Unfold `Formalism.L2.DIV.ext1`. Use `split_ifs`. Conclude with `h _`. Both sides reduce to the same expression.
+-/
 theorem extendByOne_eq_one_of_trivial {M L : Type} [Group M] [Monoid L] (H : Subgroup M) (χ : H → L) (h : ∀ x, χ x = 1) (x : M) :
     Formalism.L2.DIV.ext1 H χ x = 1 := by
   unfold Formalism.L2.DIV.ext1
@@ -29,6 +32,9 @@ theorem extendByOne_eq_one_of_trivial {M L : Type} [Group M] [Monoid L] (H : Sub
 section
 variable {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)
 
+/- English proof (translation)
+Establish `h2 : Formalism.L2.DIV.ext1 (Lev.flagL (R.datWp i R.triv)).P.H (Lev.flagL (R.datWp i R.triv)).P.chi (Formalism.L2.DIV.rTup (R.βW i) (Lev.flagL (R.datWp i R.triv)) (Lev.finE (Wc D i) k)) = 1` using `extendByOne_eq_one_of_trivial _ _ (fun _ => rfl) _`. Unfold `Lev.levChi Formalism.L2.DIV.levFn`. Rewrite using `[h2]`. Use `show ((1 * (∏ PP ∈ R.Pg, ∏ c ∈ Finset.range 0, _) * ∏ PP ∈ ∅, _ : ℂˣ) : ℂ) = 1`. Simplify using the standard rewrite rules.
+-/
 theorem levChi_flag (i : Fin D.R.m) (k : GA D (Wc D i)) :
     Lev.levChi (Wc D i) (R.βW i) (Lev.flagL (R.datWp i R.triv)) k = 1 := by
   have h2 : Formalism.L2.DIV.ext1 (Lev.flagL (R.datWp i R.triv)).P.H (Lev.flagL (R.datWp i R.triv)).P.chi
@@ -38,6 +44,9 @@ theorem levChi_flag (i : Fin D.R.m) (k : GA D (Wc D i)) :
   show ((1 * (∏ PP ∈ R.Pg, ∏ c ∈ Finset.range 0, _) * ∏ PP ∈ ∅, _ : ℂˣ) : ℂ) = 1
   simp
 
+/- English proof (translation)
+Use `show Lev.actG0 (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g) (x v) h = _`. Unfold `Lev.actG0`. Rewrite using `[dif_pos hk]`. Simplify using `only [levChi_flag, inv_one, one_mul]`.
+-/
 theorem actW_apply {i : Fin D.R.m} {σ : D.what₂.LL →+* ℂ} {g : G}
     (hk : ∃ k, Lev.IsLevelLift (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g) k) (x : MMap (R.MW i σ)) (v : (R.MW i σ).Vec)
     (h : GA D (Wc D i)) : actW R i σ g x v h = x v (h * hk.choose) := by
@@ -46,10 +55,20 @@ theorem actW_apply {i : Fin D.R.m} {σ : D.what₂.LL →+* ℂ} {g : G}
   rw [dif_pos hk]
   simp only [levChi_flag, inv_one, one_mul]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.FlagAction.finiteGroupAction_preserves_principalFlagMultiplicity R.θ (R.MW i σ) hθ (R.βW i) (R.datWp i R.triv) (R.eG g) x hx _ fun _ => rfl`.
+-/
 theorem actW_mem (hθ : IsInfFam R.θ) {i : Fin D.R.m} {σ : D.what₂.LL →+* ℂ} (g : G) {x : MMap (R.MW i σ)}
     (hx : x ∈ R.Wall i σ) : actW R i σ g x ∈ R.Wall i σ :=
   GlobalTheory.FlagAction.finiteGroupAction_preserves_principalFlagMultiplicity R.θ (R.MW i σ) hθ (R.βW i) (R.datWp i R.triv) (R.eG g) x hx _ fun _ => rfl
 
+/- English proof (translation)
+Establish `hr : LinearMap.range (R.HW i σ).e = R.Wall i σ` using `(he i σ).2.1`. Establish `h1 : c • actW R i σ g ((R.HW i σ).e y) ∈ LinearMap.range (R.HW i σ).e`. Rewrite using `[hr]`. Conclude with `Submodule.smul_mem _ _ (actW_mem R hθ g (hr ▸ LinearMap.mem_range_self _ y))`. Take `⟨z, hz⟩` from `h1`.
+
+Establish `h2 : x = z`. Use `GlobalTheory.EvalAtUnitVector.eval_injective (R.MW i σ) (R.HW i σ).H (R.HW i σ).e _ _ _ (he i σ).2.2 v hv (funext fun h' => ?_)` and prove the remaining obligations. Use `show (R.HW i σ).e x v h' = (R.HW i σ).e z v h'`. Rewrite using `[hz]`. Conclude with `h h'`.
+
+Rewrite using `[h2, hz]`.
+-/
 theorem equiv_of_values (hθ : IsInfFam R.θ) (he : R.models_HW) {i : Fin D.R.m} {σ : D.what₂.LL →+* ℂ} {v : (R.MW i σ).Vec}
     (hv : IsUnitV v) {g : G} {x y : (R.HW i σ).H} {c : ℂ}
     (h : ∀ h, evAt R i σ v x h = c * actW R i σ g ((R.HW i σ).e y) v h) :
@@ -67,6 +86,11 @@ theorem equiv_of_values (hθ : IsInfFam R.θ) (he : R.models_HW) {i : Fin D.R.m}
     exact h h'
   rw [h2, hz]
 
+/- English proof (translation)
+Use `choose a ha using h1`. Establish `hne : ∀ g, a g ≠ 0` using `fun g h0 => (chiC R i g).ne_zero (by rw [← ha, h0, map_zero])`. Establish `hex : ∃ chi, ChiIs R i chi` using `⟨MonoidHom.mk' (fun g => Units.mk0 (a g) (hne g)) fun g g' => Units.ext (D.what₂.embLL.injective (by`. Simplify using `only [Units.val_mk0, Units.val_mul, map_mul, ha, chiC_mul])), ha⟩`. Rewrite using `[chiTop, dif_pos hex]`.
+
+Conclude with `hex.choose_spec`.
+-/
 theorem chiIs_of_values {i : Fin D.R.m} (h1 : ∀ g, ∃ a, D.what₂.embLL a = (chiC R i g : ℂ)) : ChiIs R i (chiTop R i) := by
   choose a ha using h1
   have hne : ∀ g, a g ≠ 0 := fun g h0 => (chiC R i g).ne_zero (by rw [← ha, h0, map_zero])
@@ -76,12 +100,18 @@ theorem chiIs_of_values {i : Fin D.R.m} (h1 : ∀ g, ∃ a, D.what₂.embLL a = 
   rw [chiTop, dif_pos hex]
   exact hex.choose_spec
 
+/- English proof (translation)
+Rewrite using `[chiC, Units.coe_prod]`.
+-/
 theorem coe_chiC (i : Fin D.R.m) (g : G) : (chiC R i g : ℂ) =
     ∏ PP : R.Pg, ((R.chi ((i : ℕ) + 1) PP.1 (Matrix.GeneralLinearGroup.det (R.eG g PP)) : ℂˣ) : ℂ) := by
   rw [chiC, Units.coe_prod]
 
 end
 
+/- English proof (translation)
+Establish `key : ∀ (W : HSp D) (hV : T.V ((i : ℕ) + 1) σ = W) (g : GA D W), phiC T hV a f g = (lieFac (T.Q.Dw ((i : ℕ) + 1)) (xiR D) a : ℂ) * castDict hV (adel (T.V ((i : ℕ) + 1) σ) (T.dict ((i : ℕ) + 1) σ) (muPin (T.V ((i : ℕ) + 1) σ) (T.dict ((i : ℕ) + 1) σ) (T.mu ((i : ℕ) + 1) σ) (T.cE ( …`. Introduce `W hV g`. Substitute `hV` using the available equality. Both sides reduce to the same expression. Conclude with `key _ hV h`.
+-/
 theorem phiC_eq (T : CoreJ D) (i : Fin D.R.m) (σ : T.Q.c.F →+* ℂ) (hV : T.V ((i : ℕ) + 1) σ = Wc D i)
     (a : (D.host.E →+* ℂ) × ℕ → ℕ) (f : T.R ((i : ℕ) + 1)) (h : GA D (Wc D i)) :
     phiC T hV a f h = (lieFac (T.Q.Dw ((i : ℕ) + 1)) (xiR D) a : ℂ) * phiAt T i σ hV (T.cE ((i : ℕ) + 1) σ) f h := by
@@ -94,6 +124,15 @@ theorem phiC_eq (T : CoreJ D) (i : Fin D.R.m) (σ : T.Q.c.F →+* ℂ) (hV : T.V
     rfl
   exact key _ hV h
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A T _ R κ v₀ O hθ he ht i hl hq ρC hρ σ hσ g f`. Establish `hV : T.V ((i : ℕ) + 1) (res T σ) = Wc D i` using `ht.laws.spaceW _ (inR i) _ hσ`. Distinguish the cases in `hj : JEvAt T R κ v₀ i σ hV`. Establish `hq'` using `hq _ hσ hV`. Establish `hc : ChiIs R i (chiTop R i)` using `chiIs_of_values R fun g' => by`.
+
+Take `⟨-, y, hy, -⟩` from `hq' g' _ (hl g').choose_spec 0 (zero_mem _)`. Conclude with `⟨_, hy.trans (coe_chiC R i g').symm⟩`. Take `⟨-, y, hy, h2⟩` from `hq' g _ (hl g).choose_spec (f : T.R ((i : ℕ) + 1)) f.2`. Establish `hy' : ((chiTop R i g : D.what₂.LLˣ) : D.what₂.LL) = algebraMap T.Q.c.F D.what₂.LL y` using `D.what₂.embLL.injective ((hc g).trans ((coe_chiC R i g).trans hy.symm))`. Establish `hs : σ ((chiTop R i g : D.what₂.LLˣ) : D.what₂.LL) = res T σ y` using `congrArg σ hy'`.
+
+Use `equiv_of_values R hθ he (v := v₀ i σ) ((ht.hv₀ i σ).norm R) fun h => ?_` and prove the remaining obligations. Establish `e1` using `congrFun (jTop_good T R κ v₀ hσ hV hj (ρC g f)) h`. Establish `e2` using `congrFun (jTop_good T R κ v₀ hσ hV hj f) (h * (hl g).choose)`. Establish `e3` using `actW_apply R (hl g) ((R.HW i σ).e (jTop T R κ v₀ i σ f)) (v₀ i σ) h`. Establish `e4 : phiC T hV (wtA (κ i)) ((ρC g f : Cu T κ i) : T.R ((i : ℕ) + 1)) h = res T σ y * phiC T hV (wtA (κ i)) (f : T.R ((i : ℕ) + 1)) (h * (hl g).choose)`.
+
+Rewrite using `[hρ, phiC_eq, phiC_eq, h2, mul_left_comm]`. Conclude with `e1.trans (e4.trans (congrArg₂ (· * ·) hs.symm (e2.symm.trans e3.symm)))`. Rewrite using `[jTop_good0 T R κ v₀ hσ hV hj]`. Simplify using the standard rewrite rules.
+-/
 theorem reading_equivariant : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec) (O : ∀ i, OMDat T.toCore R i Unit (fun _ => A.μ0)), IsInfFam R.θ → R.models_HW → TieIn T R κ v₀ → ∀ (i : Fin D.R.m), (∀ g, ∃ k, Lev.IsLevelLift (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g) k) → (∀ σ, GoodEmb T.Q.c σ → ∀ hV, EqAt T R κ (O i) σ hV (T.cE ((i : ℕ) + 1) σ)) → ∀ (ρC : G →* (Cu T κ i →ₗ[T.Q.c.F] Cu T κ i)), (∀ g (f : Cu T κ i), ((ρC g f : Cu T κ i) : T.R ((i : ℕ) + 1)) = actLev T.Q.c (O i).lev2 g (f : T.R ((i : ℕ) + 1))) → ∀ σ : D.what₂.LL →+* ℂ, GoodEmb T.Q.c (res T σ) → ∀ g f, (R.HW i σ).e (jTop T R κ v₀ i σ (ρC g f)) = σ ((chiTop R i g : D.what₂.LLˣ) : D.what₂.LL) • actW R i σ g ((R.HW i σ).e (jTop T R κ v₀ i σ f)) := by
   intro D G _ _ Pl0 T0 A T _ R κ v₀ O hθ he ht i hl hq ρC hρ σ hσ g f
   have hV : T.V ((i : ℕ) + 1) (res T σ) = Wc D i := ht.laws.spaceW _ (inR i) _ hσ

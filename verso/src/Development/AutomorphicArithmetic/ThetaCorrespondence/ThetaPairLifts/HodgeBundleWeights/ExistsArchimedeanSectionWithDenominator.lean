@@ -15,6 +15,13 @@ namespace GlobalTheory.FlatDenom
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
   {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 open GlobalTheory.DetLine GlobalTheory.IndefiniteRowSideFullHecke.HermitianCompactForm GlobalTheory.Toroidal in
+/- English proof (translation)
+Take `⟨Y, -⟩` from `hp.p1 E H Dw hpos l Xo c`. Take `⟨V, hV, hirr⟩` from `GlobalTheory.GeomIrrComp.exists_open_irreducibleSpace_baseChange E H Dw l Xo c hgeo Z`. Establish `hc : IsClosed (V : Set (Xo.XF c))` using `hV ▸ isClosed_of_mem_irreducibleComponents _ Z.2`. Establish `hG : GeometricallyConnected (V.ι ≫ toF Xo c)` using `⟨geometrically_iff_of_commRing_of_isClosedUnderIsomorphisms.2 fun K _ _ => by`. Use `hirr K (algebraMap c.F K)` as an intermediate fact.
+
+Conclude with `(inferInstance : ConnectedSpace ↑(pullback (V.ι ≫ toF Xo c) (spMap (algebraMap c.F K))))⟩`. Take `⟨-, σ, -, -, hf, -, hY⟩` from `detLineTrivial_of_toroidal hp.p1 E H Dw l Xo c V hc hG τ.1 τ.2`. Take `⟨σb, hs, hz, hres, -⟩` from `hY _ _ Y (GlobalTheory.FlatRow.isNormal_genFibre Y)`. Use `⟨Y, V, fun R _ _ a => σb R a.x a.v a.w, hV, fun R R' _ _ j j' a a' f M N h => ?_, fun R _ j a => hz R j _ _ _ (PeriodFlat.frY_framed a), PeriodFlat.isHorizontal_of_isFlatAt hc hres hz hf⟩` and prove the remaining obligations. Rewrite using `[mul_comm, mul_comm _ N.det]`.
+
+Conclude with `(sec_chg hs (PeriodFlat.frY_framed a) (PeriodFlat.frY_framed a') ⟨h.2.1, h.2.2⟩).symm`.
+-/
 theorem exists_horizontal_section_flat_model (hp : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems) (hpos : 1 ≤ Dw.p + Dw.q) (hgeo : FnAlgClosed Xo c) (Z : Comp Xo c)
     (τ : Psi H) : ∃ (Y : Model Xo c (RingHom.id c.F)) (V : (Xo.XF c).Opens) (sig : GlobalTheory.IndefiniteRowSideFullHecke.FramedFlatCoordinates.Rule Y V τ.1),
       (V : Set (Xo.XF c)) = Z ∧ sig ∈ GlobalTheory.IndefiniteRowSideFullHecke.FramedFlatCoordinates.sections Y V τ.1 ∧ GlobalTheory.IndefiniteRowSideFullHecke.FramedFlatCoordinates.VanishesNowhere sig ∧
@@ -33,6 +40,9 @@ theorem exists_horizontal_section_flat_model (hp : _root_.GlobalTheory.CovTop.Pu
   rw [mul_comm, mul_comm _ N.det]
   exact (sec_chg hs (PeriodFlat.frY_framed a) (PeriodFlat.frY_framed a') ⟨h.2.1, h.2.2⟩).symm
 variable {r : ℕ} {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {x : ℝ} {Z : Comp Xo c} {τ : Psi H}
+/- English proof (translation)
+Take `⟨Y, V, sig, hV, hs, hnv, hh⟩` from `_root_.GlobalTheory.FlatDenom.exists_horizontal_section_flat_model hP hpq hgeo Z τ`. Take `⟨f, g, hf, hg, hfi, hgi, hfg, hR⟩` from `GlobalTheory.BdryUnit.ReadDet.exists_reads E H Dw l Xo c Y Z V τ sig hV hs hnv`. Use `choose b hb hb' using fun σ => const_length (U _) x (goodEmb_goodOf c σ) (hU _ (goodEmb_goodOf c σ)) hgeo hV hnv hh hR`. Conclude with `⟨⟨f, g, hf, hg, hfi, hgi, hfg, b, hb, hb'⟩, archSec_denom hpq hA _ fun T io y₀ h0 hZ => _root_.GlobalTheory.BdryUnitVal.boundary_unit_at_integral_points hP E H Dw l Xo c Y Z V τ sig f hV hs hnv hR T io y₀ h0 hZ⟩`.
+-/
 theorem exists_archimedean_section_of_unramified (hP : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems) (hpq : 1 ≤ Dw.p + Dw.q) (hA : l.A = 1)
     (hU : ∀ σ, GoodEmb c σ → IsUnf (U σ)) (hgeo : FnAlgClosed Xo c) (x : ℝ) (Z : Comp Xo c) (τ : Psi H) :
     ∃ (s : ArchSec U x Z (flatWt Dw τ)) (m : ℕ), 0 < m ∧
@@ -44,6 +54,9 @@ theorem exists_archimedean_section_of_unramified (hP : _root_.GlobalTheory.CovTo
     _root_.GlobalTheory.BdryUnitVal.boundary_unit_at_integral_points hP E H Dw l Xo c Y Z V τ sig f hV hs hnv hR T io y₀ h0 hZ⟩
 end GlobalTheory.FlatDenom
 open Formalism.BasicNotions GlobalTheory.CovTop in
+/- English proof (translation)
+Introduce `hP D T j Y e o hG _ Z τ`. Establish `hr : 1 ≤ D.R.r` using `by unfold Ranks.r; have := D.R.two_le_m; omega`. Establish `h1 : D.R.r = (T.Q.Dw j).p + (T.Q.Dw j).q` using `(hG.unf Y.d.c₂.F.val.toRingHom rfl).1`. Conclude with `_root_.GlobalTheory.FlatDenom.exists_archimedean_section_of_unramified hP (by omega) hG.lev.2 hG.unf hG.geo _ Z τ`.
+-/
 theorem GlobalTheory.FlatDenom.exists_archimedean_section_with_denominator : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o → 2 < Module.finrank ℚ D.host.E / 2 → ∀ (Z : Comp Y.d.Xo₂ Y.d.c₂) (τ : Psi T.Q.H), ∃ (s : GlobalTheory.FlatCore.ArchSec Y.U (xiR D) Z (GlobalTheory.FlatLine.flatWt (T.Q.Dw j) τ)) (m : ℕ), 0 < m ∧ ∀ la, ∀ v ∈ GlobalTheory.FlatLine.valOn Z la, 0 ≤ v ((m : Y.d.c₂.F) • s.sig) ∧ 0 ≤ v ((m : Y.d.c₂.F) • s.inv) := by
   intro hP D T j Y e o hG _ Z τ
   have hr : 1 ≤ D.R.r := by unfold Ranks.r; have := D.R.two_le_m; omega
@@ -60,6 +73,37 @@ end GlobalTheory.FlatDenom
 open Formalism.BasicNotions GlobalTheory.CovTop in
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `hP D T j Y e o hY hE n Z τ s i ⟨hs, hi, hIs, hIi, hsi, hb⟩`. Establish `h₁ : HasBddSec Y.U (xiR D) Z (flatWt (T.Q.Dw j) τ)` using `_root_.GlobalTheory.FlatDenom.exists_archimedean_section_with_denominator hP D T j Y e o hY hE Z τ`. Take `⟨s₀, m₀, hm₀, h₀⟩` from `h₁.zsmul n`. Generalize the expression as in `n • GlobalTheory.FlatLine.flatWt (T.Q.Dw j) τ = la at *`. Establish `hw : wtOf (T.Q.Dw j) la 0 + wtOf (T.Q.Dw j) (-la) 0 = 0`.
+
+Rewrite using `[← GlobalTheory.FlatLine.wtOf_add', add_neg_cancel, GlobalTheory.AllWt.wtOf_zero]`. Establish `hg : s * s₀.inv ∈ GlobalTheory.AllWt.secZ Y.d.Xo₂ Y.d.c₂ 0`. Establish `h` using `GlobalTheory.AllWt.mul_mem_secZ hs s₀.inv_mem`. Establish `h0 : Formalism.L2.Pj.exZ (T.Q.Dw j) (wtOf (T.Q.Dw j) la 0) + -GlobalTheory.AllWt.exOf (T.Q.Dw j) la 0 = 0` using `add_neg_cancel _`. Rewrite `h` using `[h0]`. Then use the resulting hypothesis.
+
+Establish `hh : i * s₀.sig ∈ GlobalTheory.AllWt.secZ Y.d.Xo₂ Y.d.c₂ 0`. Establish `h` using `GlobalTheory.AllWt.mul_mem_secZ hi s₀.sig_mem`. Establish `h0 : -Formalism.L2.Pj.exZ (T.Q.Dw j) (wtOf (T.Q.Dw j) la 0) + GlobalTheory.AllWt.exOf (T.Q.Dw j) la 0 = 0` using `neg_add_cancel _`. Rewrite `h` using `[h0]`. Then use the resulting hypothesis. Establish `hIg : GlobalTheory.FlatLine.idem Z * (s * s₀.inv) = s * s₀.inv` using `by rw [← mul_assoc, hIs]`.
+
+Establish `hIh : GlobalTheory.FlatLine.idem Z * (i * s₀.sig) = i * s₀.sig` using `by rw [← mul_assoc, hIi]`. Establish `hgh : s * s₀.inv * (i * s₀.sig) = GlobalTheory.FlatLine.idem Z`. Combine the equalities or inequalities in the displayed calculation. Establish `hbd : ∀ σ, GoodEmb Y.d.c₂ σ → ∃ C : ℝ, ∀ z ∈ framesOn (Y.U σ) Z, GlobalTheory.AllWt.homN (Y.U σ) (xiR D) 0 (s * s₀.inv) z ≤ C ∧ GlobalTheory.AllWt.homN (Y.U σ) (xiR D) 0 (i * s₀.sig) z ≤ C`. Introduce `σ hσ`.
+
+Take `⟨C, hC⟩` from `hb σ hσ`. Establish `hgo : Formalism.L2.Pj.goodOf Y.d.c₂ σ = σ` using `if_pos hσ`. Establish `hN : ∀ σ'' (_ : Formalism.L2.Pj.goodOf Y.d.c₂ σ = σ''), ∀ z ∈ framesOn (Y.U σ'') Z, GlobalTheory.AllWt.homN (Y.U σ'') (xiR D) (wtOf (T.Q.Dw j) la 0) s₀.sig z = s₀.cInf σ ∧ GlobalTheory.AllWt.homN (Y.U σ'') (xiR D) (wtOf (T.Q.Dw j) (-la) 0) s₀.inv z = (s₀.cInf σ)⁻¹`. Introduce and unpack `_ rfl z hz`. Conclude with `⟨homN_sig s₀ hz, homN_inv s₀ hz⟩`.
+
+Establish `hpos` using `s₀.cInf_pos σ`. Use `⟨max (C * (s₀.cInf σ)⁻¹) (C * s₀.cInf σ), fun z hz => ?_⟩` and prove the remaining obligations. Establish `hd : z.2 ∈ ((Y.U σ).X z.1).dom` using `hz.1`. Take `⟨h1, h2⟩` from `hN σ hgo z hz`. Take `⟨c1, c2⟩` from `hC z hz`.
+
+Establish `hev : Even (-(wtOf (T.Q.Dw j) la 0)).2`. Simplify using `using (GlobalTheory.AllWt.even_wtOf (Dw := T.Q.Dw j) la 0).neg`. Establish `e1` using `GlobalTheory.AllWt.homN_mul (Y.U σ) (xiR D) (GlobalTheory.AllWt.even_wtOf la 0) (GlobalTheory.AllWt.even_wtOf (-la) 0) s s₀.inv z hd`. Rewrite `e1` using `[hw, h2]`. Establish `e2` using `GlobalTheory.AllWt.homN_mul (Y.U σ) (xiR D) hev (GlobalTheory.AllWt.even_wtOf la 0) i s₀.sig z hd`.
+
+Rewrite `e2` using `[neg_add_cancel, h1]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[e1]`. Conclude with `(mul_le_mul_of_nonneg_right c1 (inv_pos.2 hpos).le).trans (le_max_left _ _)`. Rewrite using `[e2]`.
+
+Conclude with `(mul_le_mul_of_nonneg_right c2 hpos.le).trans (le_max_right _ _)`. Take `⟨a, ha⟩` from `_root_.GlobalTheory.CovTop.koecher_principle_unit_constant hP D T j Y e o hY hE Z _ _ hg hh hIg hIh hgh hbd`. Establish `hsa : s = a • s₀.sig`. Combine the equalities or inequalities in the displayed calculation. Distinguish the cases in `ha0 : a = 0`.
+
+Use `⟨1, one_pos, fun w v hv => ?_⟩` and prove the remaining obligations. It suffices to derive a contradiction. Establish `h1` using `GlobalTheory.FlatLine.val_idem hv`. Rewrite `h1` using `[← hsi, hsa, ha0, zero_smul, zero_mul, (GlobalTheory.FlatLine.isVal_valOn hv).zero]`. Conclude with `EReal.top_ne_zero h1`.
+
+Establish `hia : i = a⁻¹ • s₀.inv`. Combine the equalities or inequalities in the displayed calculation. Take `⟨n₁, hn₁, k₁⟩` from `exists_nat_vAdd ha0`. Take `⟨n₂, hn₂, k₂⟩` from `exists_nat_vAdd (inv_ne_zero ha0)`. Establish `hnat : ∀ (k : ℕ), 0 < k → ∀ w, 0 ≤ vAdd w (k : Y.d.c₂.F)` using `fun k hk w => by`.
+
+Use `Formalism.L2.Pj.vAdd_int_nonneg w (a := (k : 𝓞 Y.d.c₂.F)) (by` as an intermediate fact. Establish `: (k : Y.d.c₂.F) ≠ 0` using `Nat.cast_ne_zero.2 hk.ne'`. Simplify using `using this)`. Simplify using `using this`. Establish `key : ∀ (b : Y.d.c₂.F) (k k' : ℕ) (f : Rul Y.d.Xo₂ Y.d.c₂), b ≠ 0 → 0 < k → 0 < k' → ∀ w, ∀ v ∈ valOn Z w, 0 ≤ vAdd w ((k : Y.d.c₂.F) * b) → 0 ≤ v ((m₀ : Y.d.c₂.F) • f) → 0 ≤ v (((k' * k * m₀ : ℕ) : Y.d.c₂.F) • b • f)` using `fun b k k' f hb hk hk' w v hv h1 h2 => by`.
+
+Establish `hV` using `GlobalTheory.FlatLine.isVal_valOn hv`. Establish `e1 : ((k' * k * m₀ : ℕ) : Y.d.c₂.F) • b • f = (k' : Y.d.c₂.F) • ((k : Y.d.c₂.F) * b) • (m₀ : Y.d.c₂.F) • f`. Simplify using `only [smul_smul]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, hV.smul _ _ (Nat.cast_ne_zero.2 hk'.ne'), hV.smul _ _ (mul_ne_zero (Nat.cast_ne_zero.2 hk.ne') hb)]`. Conclude with `add_nonneg (EReal.coe_nonneg.2 (by exact_mod_cast hnat k' hk' w)) (add_nonneg (EReal.coe_nonneg.2 (by exact_mod_cast h1)) h2)`. Use `⟨n₂ * n₁ * m₀, Nat.mul_pos (Nat.mul_pos hn₂ hn₁) hm₀, fun w v hv => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hsa]`.
+
+Conclude with `key a n₁ n₂ _ ha0 hn₁ hn₂ w v hv (k₁ w) (h₀ w v hv).1`. Rewrite using `[hia, mul_comm n₂]`. Conclude with `key a⁻¹ n₂ n₁ _ (inv_ne_zero ha0) hn₂ hn₁ w v hv (k₂ w) (h₀ w v hv).2`.
+-/
 theorem GlobalTheory.FlatDenom.unit_pow_clears_denominator_flat_model : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o → 2 < Module.finrank ℚ D.host.E / 2 → ∀ (n : ℤ) (Z : Comp Y.d.Xo₂ Y.d.c₂) (τ : Psi T.Q.H) (s i : Rul Y.d.Xo₂ Y.d.c₂), (s ∈ GlobalTheory.AllWt.secZ Y.d.Xo₂ Y.d.c₂ (Formalism.L2.Pj.exZ (T.Q.Dw j) (wtOf (T.Q.Dw j) (n • GlobalTheory.FlatLine.flatWt (T.Q.Dw j) τ) 0)) ∧ i ∈ GlobalTheory.AllWt.secZ Y.d.Xo₂ Y.d.c₂ (-Formalism.L2.Pj.exZ (T.Q.Dw j) (wtOf (T.Q.Dw j) (n • GlobalTheory.FlatLine.flatWt (T.Q.Dw j) τ) 0)) ∧ GlobalTheory.FlatLine.idem Z * s = s ∧ GlobalTheory.FlatLine.idem Z * i = i ∧ s * i = GlobalTheory.FlatLine.idem Z ∧ (∀ σ, GoodEmb Y.d.c₂ σ → ∃ C : ℝ, ∀ z ∈ framesOn (Y.U σ) Z, GlobalTheory.AllWt.homN (Y.U σ) (xiR D) (wtOf (T.Q.Dw j) (n • GlobalTheory.FlatLine.flatWt (T.Q.Dw j) τ) 0) s z ≤ C ∧ GlobalTheory.AllWt.homN (Y.U σ) (xiR D) (-(wtOf (T.Q.Dw j) (n • GlobalTheory.FlatLine.flatWt (T.Q.Dw j) τ) 0)) i z ≤ C)) → ∃ m : ℕ, 0 < m ∧ ∀ la, ∀ v ∈ GlobalTheory.FlatLine.valOn Z la, 0 ≤ v ((m : Y.d.c₂.F) • s) ∧ 0 ≤ v ((m : Y.d.c₂.F) • i) := by
   intro hP D T j Y e o hY hE n Z τ s i ⟨hs, hi, hIs, hIi, hsi, hb⟩
   have h₁ : HasBddSec Y.U (xiR D) Z (flatWt (T.Q.Dw j) τ) := _root_.GlobalTheory.FlatDenom.exists_archimedean_section_with_denominator hP D T j Y e o hY hE Z τ

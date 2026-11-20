@@ -18,9 +18,15 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestric
 
 variable {R : Type} [CommRing R] [IsDomain R]
 
+/- English proof (translation)
+Simplify using `using Over.w (toUnit X)`.
+-/
 theorem toUnit_left_eq {S : Scheme.{0}} (X : Over S) : (toUnit X).left = X.hom := by
   simpa using Over.w (toUnit X)
 
+/- English proof (translation)
+Use `Units.ext (mul_left_cancel₀ (mul_ne_zero W.ne_zero hs) ?_)` and prove the remaining obligations. Simplify using `only [Units.val_mul] at e ⊢`. Take the linear combination `e - ((ψ : A) * G * rig) * e4`.
+-/
 theorem cancel {A : Type} [CommRing A] [IsDomain A] {S S₂ : A} {ψ rig G N W Wc W1 ψ₂ rig₂ : Aˣ} (hs : S₂ ≠ 0)
     (e : S * (ψ * rig).val * (G * N).val = (W * Wc⁻¹ * W1).val * (S₂ * (ψ₂ * rig₂).val))
     (e4 : S * N.val = W.val * S₂) : ψ * G * rig = Wc⁻¹ * W1 * (ψ₂ * rig₂) := by
@@ -28,6 +34,17 @@ theorem cancel {A : Type} [CommRing A] [IsDomain A] {S S₂ : A} {ψ rig G N W W
   simp only [Units.val_mul] at e ⊢
   linear_combination e - ((ψ : A) * G * rig) * e4
 
+/- English proof (translation)
+Set `T` to `DegPre.BF D₂ (FractionRing R)`. Set `κ : T ⟶ TF (R` to `R) (FractionRing R) := fst _ _`. Set `Φ : D₂.P.A ⟶ D.P.A` to `padd D.P.A β (toUnit D₂.P.A ≫ g.b)`. Establish `hΦ : ∀ u : T ⟶ D₂.P.A, u ≫ Φ = (u ≫ β) * (toUnit T ≫ g.b)` using `fun u => by show u ≫ (β * (toUnit D₂.P.A ≫ g.b)) = _`. Rewrite using `[MonObj.comp_mul, ← Category.assoc, toUnit_unique (u ≫ toUnit D₂.P.A) (toUnit T)]`.
+
+Establish `hU : ∀ u : T ⟶ D₂.P.A, u.left ≫ (toUnit D₂.P.A).left = (toUnit T).left` using `fun u => by`. Rewrite using `[← Over.comp_left, toUnit_unique (u ≫ toUnit D₂.P.A) (toUnit T)]`. Take `⟨y, hy⟩ : ∃ y : T ⟶ D₂.P.A, y * cP D₂ T χ = DegPre.prB D₂ (FractionRing R)` from `⟨_, inv_mul_cancel_right _ _⟩`. Establish `hyΦ : (y ≫ Φ) * cP D T (xe χ) = DegPre.prB D₂ (FractionRing R) ≫ Φ`. Rewrite using `[hΦ, hΦ, ← hy, MonObj.mul_comp, cP_comp β (hc χ), mul_right_comm]`.
+
+Establish `e₁` using `h (xe χ) 0 rfl T κ (y ≫ Φ) z J hJ`. Establish `e₂` using `h₂ χ 0 rfl T κ y z J' hJ'`. Establish `e₃` using `hf χ _ y.left z J J' hJ hJ'`. Establish `e₄` using `hf 0 _ (DegPre.prB D₂ (FractionRing R)).left z J J' hJ hJ'`. Establish `p₃` using `prod_famB D₂ y χ (fun q => wv w q z J J')`.
+
+Establish `p₄` using `prod_famB D₂ (DegPre.prB D₂ (FractionRing R)) 0 (fun q => wv w q z J J')`. Rewrite `p₃`, `e₂` using `[hy]`. Rewrite `p₄` using `[cPoint_zero, _root_.mul_one, inv_mul_cancel_right]`. Rewrite `e₁` using `[hyΦ]`. Express the relevant statement in the definitionally equal form `_ = (∏ κ, wv w (y.left ≫ D₂.famφB χ κ) z J J' ^ DegPre.famε 1 κ).val * _ at e₃`.
+
+Express the relevant statement in the definitionally equal form `_ = (∏ κ, wv w ((DegPre.prB D₂ (FractionRing R)).left ≫ D₂.famφB 0 κ) z J J' ^ DegPre.famε 1 κ).val * _ at e₄`. Rewrite `e₃` using `[p₃, hU, show y.left ≫ twφ D₂ D β g.b 0 = (y ≫ Φ).left from rfl, e₁, e₂]`. Rewrite `e₄` using `[p₄, hU, map_zero xe, val_corr hJ g.s_zero, val_one, _root_.one_mul, show (DegPre.prB D₂ (FractionRing R)).left ≫ twφ D₂ D β g.b 0 = (DegPre.prB D₂ (FractionRing R) ≫ Φ).left from rfl]`. Conclude with `cancel ne e₃ e₄`.
+-/
 theorem core {D D₂ : DegPre R} (g : GtPt D (𝟙_ (Over (Sp R)))) (β : D₂.P.A ⟶ D.P.A) [IsMonHom β]
     (xe : D₂.X ≃+ D.X) (hc : ∀ χ, D₂.c χ ≫ β = D.c (xe χ))
     (w : LB.Iso D₂.P.L (LB.LinComb D.P.L (twφ D₂ D β g.b) twε))
@@ -79,6 +96,11 @@ theorem core {D D₂ : DegPre R} (g : GtPt D (𝟙_ (Over (Sp R)))) (β : D₂.P
     show (DegPre.prB D₂ (FractionRing R)).left ≫ twφ D₂ D β g.b 0 = (DegPre.prB D₂ (FractionRing R) ≫ Φ).left from rfl] at e₄
   exact cancel ne e₃ e₄
 
+/- English proof (translation)
+Substitute `h0` using the available equality. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `e0` using `congrArg Additive.ofMul c0`. Establish `e` using `congrArg Additive.ofMul c`. Simplify using `only [ofMul_mul, ofMul_inv] at e0 e ⊢`.
+
+Take the linear combination `(norm := abel) e - e0`.
+-/
 theorem grp {U : Type} [CommGroup U] {ψ0 ψ₂0 rig rig₂ W1 ψ G Wc ψ₂ : U} (h0 : ψ0 = W1⁻¹ * ψ₂0)
     (c0 : ψ0 * rig = ψ₂0 * rig₂) (c : ψ * G * rig = Wc⁻¹ * W1 * (ψ₂ * rig₂)) : ψ * G = Wc⁻¹ * ψ₂ := by
   subst h0
@@ -88,6 +110,15 @@ theorem grp {U : Type} [CommGroup U] {ψ0 ψ₂0 rig rig₂ W1 ψ G Wc ψ₂ : U
   simp only [ofMul_mul, ofMul_inv] at e0 e ⊢
   linear_combination (norm := abel) e - e0
 
+/- English proof (translation)
+Set `u` to `toUnit (TK R)`. Establish `k : ∀ a : TK R ⟶ 𝟙_ (Over (Sp R)), a = u` using `fun a => toUnit_unique _ _`. Establish `m0 : u.left ≫ DegPre.gtφT D (𝟙_ (Over (Sp R))) g.b (xe χ) 0 = D₂.xK χ ≫ twφ D₂ D β g.b 0` using `by show u.left ≫ ((toUnit _ ≫ D.c (xe χ)) * g.b).left = (u ≫ D₂.c χ).left ≫ (β * (toUnit _ ≫ g.b)).left`. Rewrite using `[← Over.comp_left, ← Over.comp_left]`. Use `congr 1`.
+
+Simplify using `only [MonObj.comp_mul, ← Category.assoc]`. Rewrite using `[k (u ≫ toUnit _), k ((u ≫ D₂.c χ) ≫ toUnit _), Category.assoc, hc]`. Establish `m1 : u.left ≫ DegPre.gtφT D (𝟙_ (Over (Sp R))) g.b (xe χ) 1 = ptK (D.c (xe χ))` using `by show u.left ≫ (toUnit _ ≫ D.c (xe χ)).left = (u ≫ D.c (xe χ)).left`. Rewrite using `[← Over.comp_left, ← Category.assoc, k (u ≫ toUnit _)]`. Establish `m2 : u.left ≫ DegPre.gtφT D (𝟙_ (Over (Sp R))) g.b (xe χ) 2 = D₂.xK χ ≫ twφ D₂ D β g.b 1` using `by show u.left ≫ g.b.left = (u ≫ D₂.c χ).left ≫ (toUnit _ ≫ g.b).left`.
+
+Rewrite using `[← Over.comp_left, ← Over.comp_left, ← Category.assoc, k ((u ≫ D₂.c χ) ≫ toUnit _)]`. Establish `m3 : u.left ≫ DegPre.gtφT D (𝟙_ (Over (Sp R))) g.b (xe χ) 3 = D₂.xK χ ≫ twφ D₂ D β g.b 2` using `by show u.left ≫ (toUnit _ ≫ η[D.P.A]).left = (u ≫ D₂.c χ).left ≫ (toUnit _ ≫ η[D.P.A]).left`. Rewrite using `[← Over.comp_left, ← Over.comp_left, ← Category.assoc, ← Category.assoc, k (u ≫ toUnit _), k ((u ≫ D₂.c χ) ≫ toUnit _)]`. Introduce `U _ h`. Simplify using `only [Fintype.prod_sum_type, Fin.prod_univ_four, Fin.prod_univ_three, Fintype.prod_unique, Sum.elim_inl, Sum.elim_inr]`.
+
+Rewrite using `[m0, m1, m2, m3]`. Simplify using `only [DegPre.gtε, twε, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three, Matrix.head_cons, Matrix.vecHead, Matrix.vecTail, Function.comp_apply, Fin.succ_zero_eq_one, Matrix.cons_val_succ]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_zpow]`. Normalize the expressions using the abelian group laws.
+-/
 theorem formEq {D D₂ : DegPre R} (g : GtPt D (𝟙_ (Over (Sp R)))) (β : D₂.P.A ⟶ D.P.A) [IsMonHom β]
     (xe : D₂.X ≃+ D.X) (hc : ∀ χ, D₂.c χ ≫ β = D.c (xe χ)) (χ : D₂.X) :
     FormEq (Sum.elim (fun _ : PUnit => ptK (D.c (xe χ)))
@@ -127,6 +158,33 @@ namespace GlobalTheory.MumCmp
 
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.DVR GlobalTheory.PsiCompare GlobalTheory.MumCmp.Point GlobalTheory.MumCmp.TwPsi in
 
+/- English proof (translation)
+Introduce `R _ _ _ _ D D₂ g β hβ xe hc w hw ⟨t₀, m₀, c₀⟩ f f₂ ν _ h h₂ hne hf χ`. Establish `hL` using `D.toPre.P.isLB`. Establish `hL'` using `D₂.toPre.P.isLB`. Use `D₂.toPre.P.isAb.smooth` as an intermediate fact. Use `D₂.toPre.P.isAb.geomConnected` as an intermediate fact.
+
+Establish `: IsIntegral (DegPre.BF D₂.toPre (FractionRing R)).left` using `(geometricallyIntegral_of_smooth_of_geometricallyConnected_fibres D₂.toPre.P.A.hom).geometrically_isIntegral (TF (R := R) (FractionRing R)).hom _ _ (IsPullback.of_hasPullback _ D₂.toPre.P.A.hom).flip`. Set `T` to `DegPre.BF D₂.toPre (FractionRing R)`. Set `π : T.left ⟶ (TK R).left` to `(fst (TF (R := R) (FractionRing R)) D₂.toPre.P.A).left ≫ jFK (R := R) (FractionRing R)`. Establish `hπ : π ≫ jK R = T.hom`. Rewrite using `[Category.assoc]`.
+
+Conclude with `Over.w (fst (TF (R := R) (FractionRing R)) D₂.toPre.P.A)`. Establish `hT0 : π ≫ D₂.toPre.xK 0 = (1 : T ⟶ D₂.toPre.P.A).left`. Rewrite using `[Uniq.xK_zero, ← Category.assoc, hπ]`. Both sides reduce to the same expression. Establish `hTχ : π ≫ D₂.toPre.xK χ = (cP D₂.toPre T χ).left`.
+
+Set `k : T ⟶ TK R` to `Over.homMk π hπ`. Conclude with `congrArg (fun q => q.left) (comp_cP D₂.toPre k χ)`. Establish `hTU : π ≫ (toUnit (TK R)).left = (toUnit T).left`. Rewrite using `[toUnit_left_eq, toUnit_left_eq]`. Conclude with `hπ`.
+
+Establish `key : ∀ (z : T.left) J J', Good D.toPre.P.L z J → Good D₂.toPre.P.L z J' → val (D.toPre.psi (xe χ)) π z J * val (g.s (xe χ)) (π ≫ (toUnit (TK R)).left) z J = (wv w (π ≫ D₂.toPre.xK χ) z J J')⁻¹ * val (D₂.toPre.psi χ) π z J'`. Introduce `z J J' hJ hJ'`. Establish `ne : sval (f₂ 0) (DegPre.prB D₂.toPre (FractionRing R)).left z J' ≠ 0` using `fun e => hne (h₂.eq_zero z hJ' e)`. Establish `cχ` using `core g β.hom xe hc w f f₂ ν h h₂ hf χ z J J' hJ hJ' ne`. Establish `c0` using `core g β.hom xe hc w f f₂ ν h h₂ hf 0 z J J' hJ hJ' ne`.
+
+Rewrite `c0` using `[map_zero xe, val_corr hJ g.s_zero, val_one, _root_.mul_one, cPoint_zero, inv_mul_cancel, _root_.one_mul]`. Establish `h0 : val (D.toPre.psi 0) π z J = (wv w (π ≫ D₂.toPre.xK 0) z J J')⁻¹ * val (D₂.toPre.psi 0) π z J'`. Establish `e` using `Uniq.gm_mapsAtExp m₀ π z (fun k => J ((π ≫ D₂.toPre.xK 0) ≫ twφ D₂.toPre D.toPre β.hom g.b k)) (J' (π ≫ D₂.toPre.xK 0)) (Set.mem_iInter.2 fun k => hJ _) (hJ' _)`. Rewrite `e` using `[← val_of t₀ π z J (fun k => J ((π ≫ D₂.toPre.xK 0) ≫ twφ D₂.toPre D.toPre β.hom g.b k)) (fun k => congrArg J (Category.assoc π _ _).symm), val_corr hJ c₀, val_mul hJ, val_pull hJ, val_corr hJ g.s_zero, val_one, _root_.mul_one]`. Rewrite using `[e, zpow_neg_one]`.
+
+Both sides reduce to the same expression. Rewrite `h0` using `[hT0]`. Rewrite using `[hTχ, hTU]`. Conclude with `grp h0 c0 cχ`. Take `⟨t₁, ht₁, hv₁⟩` from `exists_gen hL (formEq g β.hom xe hc χ) (LB.mulGen D.toPre.P.L _ _ _ _ (D.toPre.psi (xe χ)) (LB.pullGen D.toPre.P.L _ _ (g.s (xe χ)) (toUnit (TK R)).left)) (mulGen_isGen _ _ _ _ _ _ _ (D.toPre.psi_gen _) (pullGen_isGen _ _ _ _ (g.isGen _) _))`.
+
+Establish `R₁` using `reg_val (L' := D₂.toPre.P.L) ht₁ π`. Establish `R₂` using `reg_wv (L := D.toPre.P.L) (L' := D₂.toPre.P.L) hw (π ≫ D₂.toPre.xK χ)`. Establish `R₃` using `(reg_val' (L := D.toPre.P.L) (D₂.toPre.psi_gen χ) π).inv`. Take `⟨a, ha⟩` from `((R₁.mul R₂).mul R₃).glue hL hL' (fun U _ h h' => by`. Simplify using `only [Category.assoc, Fintype.prod_unique, zpow_neg_one, inv_inv]`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_zpow, ofMul_inv, ofMul_prod, ofMul_one]`. Simplify using `only [neg_mul, _root_.one_mul, neg_zsmul, Finset.sum_neg_distrib]`. Use the proof step `abel)`. Establish `ha1 : a = 1` using `unit_ext fun x _ => by`.
+
+Take `⟨J, hJ⟩` from `good_exists hL x`. Take `⟨J', hJ'⟩` from `good_exists hL' x`. Rewrite using `[← ha _ (𝟙 _) x J J' hJ hJ', map_one]`. Use `show val t₁ (𝟙 _ ≫ π) x J * wv w (𝟙 _ ≫ π ≫ D₂.toPre.xK χ) x J J' * (val (D₂.toPre.psi χ) (𝟙 _ ≫ π) x J')⁻¹ = 1`. Rewrite using `[Category.id_comp, Category.id_comp, hv₁ _ _ x J hJ, val_mul hJ, val_pull hJ, key x J J' hJ hJ']`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_one]`. Normalize the expressions using the abelian group laws. Establish `H : ∀ (y : (TK R).left) J J', Good D.toPre.P.L y J → Good D₂.toPre.P.L y J' → val t₁ (𝟙 _) y J = wv w (D₂.toPre.xK χ) y J J' ^ (-1 : ℤ) * val (D₂.toPre.psi χ) (𝟙 _) y J'`. Introduce `y J J' hJ hJ'`.
+
+Establish `e` using `ha _ (DegPre.zF D₂.toPre (FractionRing R)).left y J J' hJ hJ'`. Rewrite `e` using `[ha1, map_one]`. Establish `hz : (DegPre.zF D₂.toPre (FractionRing R)).left ≫ π = 𝟙 _` using `PsiCompare.zF_fst D₂.toPre`. Express the relevant statement in the definitionally equal form `val t₁ ((DegPre.zF D₂.toPre (FractionRing R)).left ≫ π) y J * wv w ((DegPre.zF D₂.toPre (FractionRing R)).left ≫ π ≫ D₂.toPre.xK χ) y J J' * (val (D₂.toPre.psi χ) ((DegPre.zF D₂.toPre (FractionRing R)).left ≫ π) y J')⁻¹ = 1 at e`. Establish `hz' : (DegPre.zF D₂.toPre (FractionRing R)).left ≫ π ≫ D₂.toPre.xK χ = D₂.toPre.xK χ`.
+
+Rewrite using `[← Category.assoc (DegPre.zF D₂.toPre (FractionRing R)).left π, hz, Category.id_comp]`. Rewrite `e` using `[hz', hz]`. Rewrite using `[zpow_neg_one, ← mul_inv_eq_one, mul_inv, inv_inv, ← _root_.mul_assoc]`. Conclude with `e`. Conclude with `⟨t₁, mapsAtExp_of_val hL hL' hw (D₂.toPre.psi_gen χ) ht₁ H, corr_of_val hL fun y J hJ => hv₁ _ _ y J hJ⟩`.
+-/
 theorem psi_maps_twist : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D D₂ : DegData R (maximalIdeal R)) (g : GtPt D.toPre (𝟙_ (Over (Sp R)))) (β : D₂.toPre.P.A ≅ D.toPre.P.A), IsMonHom β.hom → ∀ xe : D₂.toPre.X ≃+ D.toPre.X, (∀ χ : D₂.toPre.X, D₂.toPre.c χ ≫ β.hom = D.toPre.c (xe χ)) → ∀ w : LB.Iso D₂.toPre.P.L (LB.LinComb D.toPre.P.L (GlobalTheory.MumCmp.twφ D₂.toPre D.toPre β.hom g.b) GlobalTheory.MumCmp.twε), w.IsGen → (∃ t : LB.Gen (LB.LinComb D.toPre.P.L (fun i => D₂.toPre.xK 0 ≫ GlobalTheory.MumCmp.twφ D₂.toPre D.toPre β.hom g.b i) (fun i => -1 * GlobalTheory.MumCmp.twε i)), GlobalTheory.MumCmp.MapsAtExp D.toPre.P.L D₂.toPre.P.L (GlobalTheory.MumCmp.twφ D₂.toPre D.toPre β.hom g.b) GlobalTheory.MumCmp.twε w (D₂.toPre.xK 0) (-1) (D₂.toPre.psi 0) t ∧ LB.Gen.Corr D.toPre.P.L _ _ _ _ t (LB.mulGen D.toPre.P.L _ _ _ _ (D.toPre.psi 0) (LB.pullGen D.toPre.P.L _ _ (g.s 0) (toUnit (TK R)).left))) → ∀ (f : ∀ α : D.toPre.X, D.toPre.SecB 1 α) (f₂ : ∀ α : D₂.toPre.X, D₂.toPre.SecB 1 α) (ν : LB.Gen (LB.LinComb D.toPre.P.L (K := Fin 2) ![g.b.left, η[D.toPre.P.A].left] ![-1, 1])), ν.IsGen → GlobalTheory.PsiCompare.LevelOneEq D.toPre f → GlobalTheory.PsiCompare.LevelOneEq D₂.toPre f₂ → (¬ ∀ mu j, (f₂ mu).f j = 0) → (∀ (χ : D₂.toPre.X) (Z : Scheme.{0}) (r : Z ⟶ D₂.toPre.P.A.left) (z : Z) (J : (Z ⟶ D.toPre.P.A.left) → D.toPre.P.L.ι) (J' : (Z ⟶ D₂.toPre.P.A.left) → D₂.toPre.P.L.ι), Geo.Tor.Good D.toPre.P.L z J → Geo.Tor.Good D₂.toPre.P.L z J' → Geo.Tor.sval (f (xe χ)) (r ≫ GlobalTheory.MumCmp.twφ D₂.toPre D.toPre β.hom g.b 0) z J * (Geo.Tor.val (g.s (xe χ)) (r ≫ (toUnit D₂.toPre.P.A).left) z J * Geo.Tor.val ν (r ≫ (toUnit D₂.toPre.P.A).left) z J).val = (∏ κ, Geo.Tor.gv w (r ≫ D₂.toPre.famφB χ κ) z (fun i => J ((r ≫ D₂.toPre.famφB χ κ) ≫ GlobalTheory.MumCmp.twφ D₂.toPre D.toPre β.hom g.b i)) (J' (r ≫ D₂.toPre.famφB χ κ)) ^ DegPre.famε 1 κ).val * Geo.Tor.sval (f₂ χ) r z J') → ∀ χ : D₂.toPre.X, ∃ t : LB.Gen (LB.LinComb D.toPre.P.L (fun i => D₂.toPre.xK χ ≫ GlobalTheory.MumCmp.twφ D₂.toPre D.toPre β.hom g.b i) (fun i => -1 * GlobalTheory.MumCmp.twε i)), GlobalTheory.MumCmp.MapsAtExp D.toPre.P.L D₂.toPre.P.L (GlobalTheory.MumCmp.twφ D₂.toPre D.toPre β.hom g.b) GlobalTheory.MumCmp.twε w (D₂.toPre.xK χ) (-1) (D₂.toPre.psi χ) t ∧ LB.Gen.Corr D.toPre.P.L _ _ _ _ t (LB.mulGen D.toPre.P.L _ _ _ _ (D.toPre.psi (xe χ)) (LB.pullGen D.toPre.P.L _ _ (g.s (xe χ)) (toUnit (TK R)).left)) := by
   intro R _ _ _ _ D D₂ g β hβ xe hc w hw ⟨t₀, m₀, c₀⟩ f f₂ ν _ h h₂ hne hf χ
   have hL := D.toPre.P.isLB

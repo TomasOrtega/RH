@@ -6,6 +6,9 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RootsOfUnity
 open NumberField
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.EigenDivide.exists_projection_eq | exact GlobalTheory.EigenDivide.exists_projection_eq | (intros; apply GlobalTheory.EigenDivide.exists_projection_eq <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.eigenvector_integral_completion : ∀ (E : Type) [Field E] [NumberField E] [IsGalois ℚ E] (F : Type) [Field F] [CharZero F] (R : Subring F)
     (N : ℕ) (ρ : 𝓞 E →+* Matrix (Fin N) (Fin N) ℤ) (τ : E →+* F) (y : Fin N → F), (∀ i, y i ∈ R) →
     (∀ a : 𝓞 E, ((ρ a).map (Int.castRingHom F)).mulVec y = τ (a : E) • y) →

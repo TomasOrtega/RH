@@ -19,6 +19,9 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] {I : Type}
 
 def flD (C : ColObj K I) (u : I) : HeightOneSpectrum (𝓞 K) → ℤ := fun w => ⌊sgD C u w⌋
 
+/- English proof (translation)
+Use `(C.supp.finite_toSet).subset fun w hw => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Apply `hw` to reduce the goal to its premises. Rewrite `h` using `[Finset.mem_coe]`. Simplify using `[flD, sgD, h]`.
+-/
 theorem flD_support_finite (C : ColObj K I) (u : I) : (Function.support (flD C u)).Finite := by
   classical
   refine (C.supp.finite_toSet).subset fun w hw => ?_
@@ -40,12 +43,18 @@ end Lemmas2
 
 section Main
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example : LineHypothesesOfColumnExtension = ∀ (K : Type) [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K] (I : Type) [Fintype I]
     {Bs : DefBase K} {Df : DefSide Bs} {Dc : DefCols Df} {Sp : SPer Dc} {N : IndefNum Bs}
     (C : ColObj K I) (L : ColLink C Dc) (S : IndefCols Df Dc Sp N) (X : RowExt C S.D) (hu : I → ℝ) (sg : ℝ),
     Df.WF → L.Tied → (∀ u, Nonempty (RowIn S (L.wU u) (L.NuD u) (sgD C u) (hu u))) → ExtHyp C L S X sg →
     RowHyp C (rowArg C L S X hu) sg := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, rfl, rfl, rfl, rfl⟩`.
+-/
 example {K : Type} [Field K] [NumberField K] [StarRing K] {I : Type} {Bs : DefBase K} {Df : DefSide Bs}
     {Dc : DefCols Df} {Sp : SPer Dc} {N : IndefNum Bs} (C : ColObj K I) (L : ColLink C Dc) (S : IndefCols Df Dc Sp N)
     (X : RowExt C S.D) (hu : I → ℝ) :

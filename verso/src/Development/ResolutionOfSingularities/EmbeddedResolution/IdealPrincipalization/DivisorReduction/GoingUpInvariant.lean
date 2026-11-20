@@ -49,6 +49,9 @@ def StrictNormalCrossingsLiftFromDivisor : Prop :=
       HasStrictNormalCrossingsWith (H.subschemeι ≫ p) Z (N.map (fun D => D.comap H.subschemeι)) →
       HasStrictNormalCrossingsWith p (imageIdealSheaf H.subschemeι Z) (H :: N)
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem derivIdealSheafIterate_congr {k : Type u} [Field k] {Y : Scheme.{u}}
     (p q : Y ⟶ Spec (CommRingCat.of k))
     [AlgebraicGeometry.LocallyOfFiniteType p] [AlgebraicGeometry.LocallyOfFiniteType q]
@@ -57,6 +60,9 @@ theorem derivIdealSheafIterate_congr {k : Type u} [Field k] {Y : Scheme.{u}}
   subst h
   rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem logDerivIdealSheafIterate_congr {k : Type u} [Field k] {Y : Scheme.{u}}
     (p q : Y ⟶ Spec (CommRingCat.of k))
     [AlgebraicGeometry.LocallyOfFiniteType p] [AlgebraicGeometry.LocallyOfFiniteType q]
@@ -65,6 +71,9 @@ theorem logDerivIdealSheafIterate_congr {k : Type u} [Field k] {Y : Scheme.{u}}
   subst h
   rfl
 
+/- English proof (translation)
+Rewrite using `[FunctorialResolution.EmbeddedResolution.imageIdealSheaf_eq_comap_inv e.hom J, CategoryTheory.IsIso.Iso.inv_hom]`.
+-/
 theorem imageIdealSheaf_hom_eq_comap_inv {A B : Scheme.{u}} (e : A ≅ B) (J : A.IdealSheafData) :
     imageIdealSheaf e.hom J = J.comap e.inv := by
   rw [FunctorialResolution.EmbeddedResolution.imageIdealSheaf_eq_comap_inv e.hom J,
@@ -72,6 +81,9 @@ theorem imageIdealSheaf_hom_eq_comap_inv {A B : Scheme.{u}} (e : A ≅ B) (J : A
 
 namespace DivisorReduction
 
+/- English proof (translation)
+Establish `h0 : (ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).projectionToBase 0 ≫ T.structMap = T.structMap`. Rewrite using `[BlowupSequenceData.projectionToBase_zero]`. Conclude with `Category.id_comp T.structMap`. Conclude with `h0`.
+-/
 theorem structureMorphism_ambientBlowupSeq_zero (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
     [AlgebraicGeometry.IsNoetherian T.scheme] (j : ℕ) (hj : j < T.boundary.length)
@@ -84,10 +96,16 @@ theorem structureMorphism_ambientBlowupSeq_zero (hres : FunctorialResolution.Blo
     exact Category.id_comp T.structMap
   exact h0
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 private theorem list_map_comap_id_eq_self {X : Scheme.{u}} (E : List X.IdealSheafData) :
     List.map (fun D : X.IdealSheafData => D.comap (CategoryTheory.CategoryStruct.id X)) E = E := by
   simp
 
+/- English proof (translation)
+Rewrite using `[BlowupSequenceData.boundary_zero]`. Use `show List.map (fun D : T.scheme.IdealSheafData => D.comap (CategoryTheory.CategoryStruct.id T.scheme)) E₀ = E₀`. Conclude with `list_map_comap_id_eq_self E₀`.
+-/
 theorem ambientBlowupSeq_boundary_zero (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
     [AlgebraicGeometry.IsNoetherian T.scheme] (j : ℕ) (hj : j < T.boundary.length)
@@ -100,6 +118,9 @@ theorem ambientBlowupSeq_boundary_zero (hres : FunctorialResolution.Blowup.Stric
       D.comap (CategoryTheory.CategoryStruct.id T.scheme)) E₀ = E₀
   exact list_map_comap_id_eq_self E₀
 
+/- English proof (translation)
+Rewrite using `[embeddingIntoAmbient_zero hres hno T j hj I₀ E₀ s hpr]`. Conclude with `(Scheme.Hom.ker_comp_of_isIso s.isoZero.hom (T.boundary.get ⟨j, hj⟩).subschemeι).trans (Scheme.IdealSheafData.ker_subschemeι _)`.
+-/
 theorem ker_embeddingIntoAmbient_zero_eq_boundary_get (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
     [AlgebraicGeometry.IsNoetherian T.scheme] (j : ℕ) (hj : j < T.boundary.length)
@@ -111,6 +132,13 @@ theorem ker_embeddingIntoAmbient_zero_eq_boundary_get (hres : FunctorialResoluti
   exact (Scheme.Hom.ker_comp_of_isIso s.isoZero.hom (T.boundary.get ⟨j, hj⟩).subschemeι).trans
     (Scheme.IdealSheafData.ker_subschemeι _)
 
+/- English proof (translation)
+Proceed by induction on `t with`. Consider the case `zero`. Introduce `_`. Conclude with `isNoetherian_of_iso (ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).isoZero.symm`. Consider the case `succ n ih`.
+
+Introduce `ht`. Establish `hn : n < s.length` using `ht`. Establish `: AlgebraicGeometry.IsNoetherian ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).obj n)` using `ih (le_of_lt hn)`. Establish `hlen : n < (ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).length`. Rewrite using `[ambientBlowupSeq_length hres hno T j hj I₀ E₀ s hpr]`.
+
+Conclude with `hn`. Conclude with `isNoetherian_of_isBlowupAlongIdealSheaf ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).isBlowup n hlen)`.
+-/
 private theorem le_length_imp_isNoetherian_ambientBlowupSeq_schemeAt
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -134,6 +162,9 @@ private theorem le_length_imp_isNoetherian_ambientBlowupSeq_schemeAt
         exact hn
       exact isNoetherian_of_isBlowupAlongIdealSheaf ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).isBlowup n hlen)
 
+/- English proof (translation)
+The claim follows from `le_length_imp_isNoetherian_ambientBlowupSeq_schemeAt hres hno T j hj I₀ E₀ s hpr t ht`.
+-/
 theorem isNoetherian_ambientBlowupSeq_schemeAt (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
     [AlgebraicGeometry.IsNoetherian T.scheme] (j : ℕ) (hj : j < T.boundary.length)
@@ -144,6 +175,9 @@ theorem isNoetherian_ambientBlowupSeq_schemeAt (hres : FunctorialResolution.Blow
     AlgebraicGeometry.IsNoetherian ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).obj t) :=
   le_length_imp_isNoetherian_ambientBlowupSeq_schemeAt hres hno T j hj I₀ E₀ s hpr t ht
 
+/- English proof (translation)
+Establish `key : Scheme.Hom.ker (embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t) ≤ Scheme.Hom.ker ((s.center t).subschemeι ≫ embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t)`. Apply `Scheme.Hom.le_ker_comp` to reduce the goal to its premises. Establish `h2` using `(imageIdealSheaf_eq_ker_subschemeι_comp (embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t) (s.center t)).symm`. Establish `h3` using `(ambientBlowupSeq_center_eq_imageIdealSheaf hres hno T j hj I₀ E₀ s hpr t).symm`. Conclude with `le_of_le_of_eq key (h2.trans h3)`.
+-/
 theorem ker_embeddingIntoAmbient_le_center (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
     [AlgebraicGeometry.IsNoetherian T.scheme] (j : ℕ) (hj : j < T.boundary.length)
@@ -161,6 +195,9 @@ theorem ker_embeddingIntoAmbient_le_center (hres : FunctorialResolution.Blowup.S
   have h3 := (ambientBlowupSeq_center_eq_imageIdealSheaf hres hno T j hj I₀ E₀ s hpr t).symm
   exact le_of_le_of_eq key (h2.trans h3)
 
+/- English proof (translation)
+Unfold `ambientDerivIdeal`. Rewrite using `[BlowupSequenceData.controlledTransform_zero]`. Use `show (derivIdealSheafIterate T.base T.structMap l I₀).comap (CategoryTheory.CategoryStruct.id T.scheme) = derivIdealSheafIterate T.base T.structMap l I₀`. Simplify using the standard rewrite rules.
+-/
 theorem ambientDerivIdeal_at_zero_eq_derivIdealSheafIterate (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
     [AlgebraicGeometry.IsNoetherian T.scheme] [AlgebraicGeometry.Smooth T.structMap]
@@ -178,6 +215,9 @@ theorem ambientDerivIdeal_at_zero_eq_derivIdealSheafIterate (hres : FunctorialRe
     derivIdealSheafIterate T.base T.structMap l I₀
   simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ambientDerivIdeal_order_zero_eq_controlledTransform (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
     [AlgebraicGeometry.IsNoetherian T.scheme] [AlgebraicGeometry.Smooth T.structMap]
@@ -227,6 +267,9 @@ structure GoingUpInvariant (hres : FunctorialResolution.Blowup.StrictTransformIs
 
 namespace GoingUpInvariant
 
+/- English proof (translation)
+Introduce `i hi`. Take `⟨B, hB⟩` from `hgoingUp.divDeriv 0 (Nat.zero_le T.mult) i hi`. Use `⟨B, ?_⟩` and prove the remaining obligations. Rewrite using `[← ambientDerivIdeal_order_zero_eq_controlledTransform hres hno T j hj I₀ E₀ s hpr i, ← hB, Nat.sub_zero]`.
+-/
 theorem exists_exceptionalIdeal_pow_mul_eq_comap_controlledTransform {hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}}
     {hno : BlowupPreservesNoetherian.{u}} {T : MarkedIdealWithBoundary.{u}}
     [AlgebraicGeometry.IsNoetherian T.scheme] [AlgebraicGeometry.Smooth T.structMap]
@@ -246,6 +289,9 @@ theorem exists_exceptionalIdeal_pow_mul_eq_comap_controlledTransform {hres : Fun
   refine ⟨B, ?_⟩
   rw [← ambientDerivIdeal_order_zero_eq_controlledTransform hres hno T j hj I₀ E₀ s hpr i, ← hB, Nat.sub_zero]
 
+/- English proof (translation)
+The claim follows from `FunctorialResolution.EmbeddedResolution.DivisorReduction.comap_controlledTransform_embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t ht hgoingUp.exists_exceptionalIdeal_pow_mul_eq_comap_controlledTransform`.
+-/
 theorem comap_controlledTransform {hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}}
     {hno : BlowupPreservesNoetherian.{u}} {T : MarkedIdealWithBoundary.{u}}
     [AlgebraicGeometry.IsNoetherian T.scheme] [AlgebraicGeometry.Smooth T.structMap]
@@ -259,11 +305,25 @@ theorem comap_controlledTransform {hres : FunctorialResolution.Blowup.StrictTran
         (embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t) = s.ideal t :=
   FunctorialResolution.EmbeddedResolution.DivisorReduction.comap_controlledTransform_embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t ht hgoingUp.exists_exceptionalIdeal_pow_mul_eq_comap_controlledTransform
 
+/- English proof (translation)
+Rewrite using `[h]`. Conclude with `hg`.
+-/
 private theorem smooth_of_eq {A B : Scheme.{u}} {f g : A ⟶ B} (h : f = g)
     (hg : AlgebraicGeometry.Smooth g) : AlgebraicGeometry.Smooth f := by
   rw [h]
   exact hg
 
+/- English proof (translation)
+Establish `hsmP : AlgebraicGeometry.Smooth (ambientBlowupSeqStructureMorphism hres hno T j hj I₀ E₀ s hpr t)` using `hgoingUp.smooth_structMap`. Establish `hftP : AlgebraicGeometry.LocallyOfFiniteType (ambientBlowupSeqStructureMorphism hres hno T j hj I₀ E₀ s hpr t)` using `inferInstance`. Establish `hstep1 : embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t ≫ ambientBlowupSeqStructureMorphism hres hno T j hj I₀ E₀ s hpr t = (embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t ≫ (ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).projectionToBase t) ≫ T.structMap` using `(Category.assoc _ _ _).symm`. Establish `hstep2 : (embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t ≫ (ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).projectionToBase t) ≫ T.structMap = (s.projectionToBase t ≫ divisorEmbedding T j hj I₀ E₀) ≫ T.structMap` using `congrArg (fun f : (MarkedBlowupSequenceData.ofMarkedSequence s).obj t ⟶ T.scheme => f ≫ T.structMap) (embeddingIntoAmbient_comp_projectionToBase hres hno T j hj I₀ E₀ s hpr t)`. Establish `hstep3 : (s.projectionToBase t ≫ divisorEmbedding T j hj I₀ E₀) ≫ T.structMap = s.projectionToSpec t` using `(Category.assoc _ _ _).trans (MarkedSequenceOfBlowups.projectionToSpec_eq s t).symm`.
+
+Establish `hcomp` using `hstep1.trans (hstep2.trans hstep3)`. Establish `hsmE : AlgebraicGeometry.Smooth (embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t ≫ ambientBlowupSeqStructureMorphism hres hno T j hj I₀ E₀ s hpr t)` using `smooth_of_eq hcomp (MarkedSequenceOfBlowups.smooth_projectionToSpec effectiveCartierSupportContainsNoComponent hV s t (le_of_lt ht))`. Establish `hdom` using `hgoingUp.deriv_le (T.mult - 1) (by omega)`. Establish `hbal' : ∀ l < T.mult, ambientDerivIdeal hres hno T j hj I₀ E₀ s hpr l t ^ T.mult ≤ (ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).controlledTransform I₀ T.mult t ^ (T.mult - l)`. Introduce `l hl`.
+
+Conclude with `pow_ambientDerivIdeal_le_pow_controlledTransform hres hno T j hj I₀ E₀ s hpr hbal l hl t (le_of_lt ht) hgoingUp.exists_exceptionalIdeal_pow_mul_eq_comap_controlledTransform (fun i hi => hgoingUp.divDeriv l (le_of_lt hl) i hi)`. Introduce `x hx`. Rewrite `hx` using `[support_ambientBlowupSeq_center_eq_image hres hno T j hj I₀ E₀ s hpr t]`. Take `⟨y, hy, rfl⟩` from `hx`. Establish `hy1 : y ∈ orderAtLeastLocus (s.ideal t) T.mult`.
+
+Establish `hco` using `s.center_order t ht`. Conclude with `hco hy`. Establish `hy2 : y ∈ orderAtLeastLocus (((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).controlledTransform I₀ T.mult t).comap (embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t)) T.mult`. Rewrite using `[hgoingUp.comap_controlledTransform (le_of_lt ht)]`. Conclude with `hy1`.
+
+Conclude with `base_mem_orderAtLeastLocus_of_mem_comap T.base (ambientBlowupSeqStructureMorphism hres hno T j hj I₀ E₀ s hpr t) (embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t) T.mult hm ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).controlledTransform I₀ T.mult t) (fun l => ambientDerivI …`.
+-/
 theorem support_center_subset_orderAtLeastLocus {hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}}
     {hno : BlowupPreservesNoetherian.{u}} {T : MarkedIdealWithBoundary.{u}}
     [AlgebraicGeometry.IsNoetherian T.scheme] [AlgebraicGeometry.Smooth T.structMap]
@@ -323,17 +383,34 @@ theorem support_center_subset_orderAtLeastLocus {hres : FunctorialResolution.Blo
     ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).controlledTransform I₀ T.mult t)
     (fun l => ambientDerivIdeal hres hno T j hj I₀ E₀ s hpr l t) hdom hbal' y hy2
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨asIso f.toImage, f.toImage_imageι⟩`.
+-/
 private theorem exists_iso_ker_subschemeι {S X : Scheme.{u}} (f : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion f] :
     ∃ e : S ≅ (Scheme.Hom.ker f).subscheme,
       e.hom ≫ (Scheme.Hom.ker f).subschemeι = f :=
   ⟨asIso f.toImage, f.toImage_imageι⟩
 
+/- English proof (translation)
+The claim follows from `(Scheme.IdealSheafData.map_comp J f g).symm`.
+-/
 private theorem imageIdealSheaf_comp {A B C : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C)
     (J : A.IdealSheafData) :
     imageIdealSheaf g (imageIdealSheaf f J) = imageIdealSheaf (f ≫ g) J :=
   (Scheme.IdealSheafData.map_comp J f g).symm
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `exists_iso_ker_subschemeι ι`. Establish `hinv : e.inv ≫ ι = (Scheme.Hom.ker ι).subschemeι`. Establish `h` using `congrArg (fun m => e.inv ≫ m) he.symm`. Simplify using `using h`. Establish `hq' : e.inv ≫ q = (Scheme.Hom.ker ι).subschemeι ≫ p`.
+
+Rewrite using `[← hq, ← Category.assoc, hinv]`. Establish `hlist : List.map (fun D : S.IdealSheafData => D.comap e.inv) Bs = List.map (fun D : P.IdealSheafData => D.comap (Scheme.Hom.ker ι).subschemeι) N`. Rewrite using `[← hN, List.map_map]`. Use `List.map_congr_left ?_` and prove the remaining obligations. Introduce `D _`.
+
+Use `show (D.comap ι).comap e.inv = D.comap (Scheme.Hom.ker ι).subschemeι`. Rewrite using `[← hinv]`. Simplify using the standard rewrite rules. Establish `hZ : HasStrictNormalCrossingsWith ((Scheme.Hom.ker ι).subschemeι ≫ p) (Zs.comap e.inv) (List.map (fun D : P.IdealSheafData => D.comap (Scheme.Hom.ker ι).subschemeι) N)`. Establish `h` using `hasStrictNormalCrossingsWith_comap_iso q e.symm Zs Bs hlow`.
+
+Simplify using `only [Iso.symm_hom] at h`. Rewrite `h` using `[hq', hlist]`. Conclude with `h`. Establish `hfin` using `hlift k P p (Scheme.Hom.ker ι) N hsnc (Zs.comap e.inv) hZ`. Establish `himg : imageIdealSheaf (Scheme.Hom.ker ι).subschemeι (Zs.comap e.inv) = imageIdealSheaf ι Zs`.
+
+Rewrite using `[← imageIdealSheaf_hom_eq_comap_inv e Zs, imageIdealSheaf_comp e.hom _ Zs, he]`. Rewrite `hfin` using `[himg]`. Then use the resulting hypothesis.
+-/
 private theorem hasStrictNormalCrossingsWith_imageIdealSheaf_of_restriction {k : Type u} [Field k] [CharZero k]
     {P S : Scheme.{u}}
     (p : P ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -373,6 +450,13 @@ private theorem hasStrictNormalCrossingsWith_imageIdealSheaf_of_restriction {k :
     rw [← imageIdealSheaf_hom_eq_comap_inv e Zs, imageIdealSheaf_comp e.hom _ Zs, he]
   rwa [himg] at hfin
 
+/- English proof (translation)
+Establish `hsmooth : AlgebraicGeometry.Smooth (ambientBlowupSeqStructureMorphism hres hno T j hj I₀ E₀ s hpr t)` using `hgoingUp.smooth_structMap`. Establish `hsnccons : InStrictNormalCrossingPosition (ambientBlowupSeqStructureMorphism hres hno T j hj I₀ E₀ s hpr t) (Scheme.Hom.ker (embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t) :: ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).boundaryFrom E₀ t).eraseIdx j)`. Establish `h1` using `inStrictNormalCrossingPosition_moveToFront (ambientBlowupSeqStructureMorphism hres hno T j hj I₀ E₀ s hpr t) ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).boundaryFrom E₀ t) j hgoingUp.idx_lt hgoingUp.snc_bdry`. Rewrite `h1` using `[moveToFront_eq_cons _ _ hgoingUp.idx_lt, hgoingUp.bdry_getElem]`. Then use the resulting hypothesis. Establish `hstep1 : embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t ≫ ambientBlowupSeqStructureMorphism hres hno T j hj I₀ E₀ s hpr t = (embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t ≫ (ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).projectionToBase t) ≫ T.structMap` using `(Category.assoc _ _ _).symm`.
+
+Establish `hstep2 : (embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t ≫ (ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).projectionToBase t) ≫ T.structMap = (s.projectionToBase t ≫ divisorEmbedding T j hj I₀ E₀) ≫ T.structMap` using `congrArg (fun f : (MarkedBlowupSequenceData.ofMarkedSequence s).obj t ⟶ T.scheme => f ≫ T.structMap) (embeddingIntoAmbient_comp_projectionToBase hres hno T j hj I₀ E₀ s hpr t)`. Establish `hstep3 : (s.projectionToBase t ≫ divisorEmbedding T j hj I₀ E₀) ≫ T.structMap = s.projectionToSpec t` using `(Category.assoc _ _ _).trans (MarkedSequenceOfBlowups.projectionToSpec_eq s t).symm`. Establish `hq : embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t ≫ ambientBlowupSeqStructureMorphism hres hno T j hj I₀ E₀ s hpr t = s.projectionToSpec t` using `hstep1.trans (hstep2.trans hstep3)`. Establish `hlow : HasStrictNormalCrossingsWith (s.projectionToSpec t) (s.center t) (s.boundary t)`. Rewrite using `[MarkedSequenceOfBlowups.projectionToSpec_eq]`.
+
+Conclude with `s.center_snc t ht`. Rewrite using `[ambientBlowupSeq_center_eq_imageIdealSheaf hres hno T j hj I₀ E₀ s hpr t]`. Conclude with `hasStrictNormalCrossingsWith_imageIdealSheaf_of_restriction (ambientBlowupSeqStructureMorphism hres hno T j hj I₀ E₀ s hpr t) (embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t) (s.projectionToSpec t) hq (s.center t) (s.boundary t) (((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr …`.
+-/
 theorem hasStrictNormalCrossingsWith_center_ker_cons {hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}}
     {hno : BlowupPreservesNoetherian.{u}} {T : MarkedIdealWithBoundary.{u}}
     [AlgebraicGeometry.IsNoetherian T.scheme] [AlgebraicGeometry.Smooth T.structMap]
@@ -419,6 +503,9 @@ theorem hasStrictNormalCrossingsWith_center_ker_cons {hres : FunctorialResolutio
     (s.boundary t) (((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).boundaryFrom E₀ t).eraseIdx j)
     hgoingUp.comap_eraseIdx hsnccons hlow hlift
 
+/- English proof (translation)
+Establish `hcons` using `hasStrictNormalCrossingsWith_center_ker_cons hgoingUp hlift ht`. Use `hasStrictNormalCrossingsWith_of_moveToFront (ambientBlowupSeqStructureMorphism hres hno T j hj I₀ E₀ s hpr t) ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).center t) ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).boundaryFrom E₀ t) j hgoingUp.idx_lt ?_` and prove the remaining obligations. Rewrite using `[moveToFront_eq_cons _ j hgoingUp.idx_lt, hgoingUp.bdry_getElem]`. Conclude with `hcons`.
+-/
 theorem hasStrictNormalCrossingsWith_center_boundary {hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}}
     {hno : BlowupPreservesNoetherian.{u}} {T : MarkedIdealWithBoundary.{u}}
     [AlgebraicGeometry.IsNoetherian T.scheme] [AlgebraicGeometry.Smooth T.structMap]
@@ -439,6 +526,13 @@ theorem hasStrictNormalCrossingsWith_center_boundary {hres : FunctorialResolutio
   rw [moveToFront_eq_cons _ j hgoingUp.idx_lt, hgoingUp.bdry_getElem]
   exact hcons
 
+/- English proof (translation)
+Break down `hl.lt_or_eq with hlt | h` into its components or cases. Establish `hsmth : AlgebraicGeometry.Smooth ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).projectionToBase t ≫ T.structMap)` using `hgoingUp.smooth_structMap`. Establish `hnoe : AlgebraicGeometry.IsNoetherian ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).obj (t + 1))` using `isNoetherian_ambientBlowupSeq_schemeAt hres hno T j hj I₀ E₀ s hpr (t + 1) ht`. Establish `hpow` using `pow_ambientDerivIdeal_le_pow_controlledTransform hres hno T j hj I₀ E₀ s hpr hbal l hlt t (le_of_lt ht) hgoingUp.exists_exceptionalIdeal_pow_mul_eq_comap_controlledTransform (hgoingUp.divDeriv l hl)`. Establish `hcos` using `orderAtLeastLocus_subset_orderAtLeastLocus_of_pow_le T.base ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).projectionToBase t ≫ T.structMap) (ambientDerivIdeal hres hno T j hj I₀ E₀ s hpr l t) ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).controlledTransform I₀ T.mult t) l T.m …`.
+
+Establish `hord` using `(support_center_subset_orderAtLeastLocus hgoingUp hbal hm hV ht).trans hcos`. Establish `hlen : t < (ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).length`. Rewrite using `[ambientBlowupSeq_length hres hno T j hj I₀ E₀ s hpr]`. Conclude with `ht`. Conclude with `BlowupSequenceData.exists_pow_mul_eq_comap_controlledTransform (ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr) T.structMap (derivIdealSheafIterate T.base T.structMap l I₀) (T.mult - l) t hlen ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).boundaryFrom E₀ t) (hasStrictNormalCrossi …`.
+
+Use `⟨(ambientDerivIdeal hres hno T j hj I₀ E₀ s hpr l t).comap ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).map t), ?_⟩` and prove the remaining obligations. Rewrite using `[h, Nat.sub_self, pow_zero, one_mul]`.
+-/
 theorem exists_pow_mul_eq_comap_ambientDerivIdeal
     {hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}}
     {hno : BlowupPreservesNoetherian.{u}} {T : MarkedIdealWithBoundary.{u}}
@@ -480,6 +574,11 @@ theorem exists_pow_mul_eq_comap_ambientDerivIdeal
       ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).map t), ?_⟩
     rw [h, Nat.sub_self, pow_zero, one_mul]
 
+/- English proof (translation)
+Break down `hl.lt_or_eq with hlt | h` into its components or cases. Establish `hsmth : AlgebraicGeometry.Smooth (ambientBlowupSeqStructureMorphism hres hno T j hj I₀ E₀ s hpr t)` using `hgoingUp.smooth_structMap`. Establish `hpow` using `pow_ambientDerivIdeal_le_pow_controlledTransform hres hno T j hj I₀ E₀ s hpr hbal l hlt t (le_of_lt ht) hgoingUp.exists_exceptionalIdeal_pow_mul_eq_comap_controlledTransform (hgoingUp.divDeriv l hl)`. Establish `hcos` using `orderAtLeastLocus_subset_orderAtLeastLocus_of_pow_le T.base (ambientBlowupSeqStructureMorphism hres hno T j hj I₀ E₀ s hpr t) (ambientDerivIdeal hres hno T j hj I₀ E₀ s hpr l t) ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).controlledTransform I₀ T.mult t) l T.mult hlt hpow`. Conclude with `le_pow_of_hasStrictNormalCrossingsWith (ambientBlowupSeqStructureMorphism hres hno T j hj I₀ E₀ s hpr t) ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).center t) (ambientDerivIdeal hres hno T j hj I₀ E₀ s hpr l t) ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).boundaryFrom E₀ t …`.
+
+Rewrite using `[h, Nat.sub_self, pow_zero]`. Conclude with `le_top`.
+-/
 theorem ambientDerivIdeal_le_center_pow {hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}}
     {hno : BlowupPreservesNoetherian.{u}} {T : MarkedIdealWithBoundary.{u}}
     [AlgebraicGeometry.IsNoetherian T.scheme] [AlgebraicGeometry.Smooth T.structMap]
@@ -513,6 +612,9 @@ theorem ambientDerivIdeal_le_center_pow {hres : FunctorialResolution.Blowup.Stri
 
 end GoingUpInvariant
 
+/- English proof (translation)
+Rewrite using `[List.map_map]`. Use `List.map_congr_left ?_` and prove the remaining obligations. Introduce `D _`. Simplify using the standard rewrite rules.
+-/
 private theorem list_map_comap_map_comap_eq_map_comap_comp {A B C : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C)
     (L : List C.IdealSheafData) :
     List.map (fun D : B.IdealSheafData => D.comap f)
@@ -523,6 +625,19 @@ private theorem list_map_comap_map_comap_eq_map_comap_comp {A B C : Scheme.{u}} 
   intro D _
   simp
 
+/- English proof (translation)
+Establish `hbd : (ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).boundaryFrom E₀ 0 = E₀` using `ambientBlowupSeq_boundary_zero hres hno T j hj I₀ E₀ s hpr`. Establish `hsm : ambientBlowupSeqStructureMorphism hres hno T j hj I₀ E₀ s hpr 0 = T.structMap` using `structureMorphism_ambientBlowupSeq_zero hres hno T j hj I₀ E₀ s hpr`. Establish `: @AlgebraicGeometry.LocallyOfFiniteType ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).obj 0) (Spec (CommRingCat.of T.base)) T.structMap` using `‹AlgebraicGeometry.LocallyOfFiniteType T.structMap›`. Establish `hctrl : (ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).controlledTransform I₀ T.mult 0 = I₀`. Rewrite using `[BlowupSequenceData.controlledTransform_zero]`.
+
+Use `show I₀.comap (CategoryTheory.CategoryStruct.id T.scheme) = I₀`. Simplify using the standard rewrite rules. Establish `hlow0 : (restrictToBoundaryDivisor T j hj I₀ E₀).boundary = List.map (fun D : T.scheme.IdealSheafData => D.comap (T.boundary.get ⟨j, hj⟩).subschemeι) ((E₀.eraseIdx j).take (T.boundary.length - 1))` using `rfl`. Establish `hlow : (restrictToBoundaryDivisor T j hj I₀ E₀).boundary = List.map (fun D : T.scheme.IdealSheafData => D.comap (T.boundary.get ⟨j, hj⟩).subschemeι) (E₀.eraseIdx j)` using `hlow0.trans (congrArg (List.map (fun D : T.scheme.IdealSheafData => D.comap (T.boundary.get ⟨j, hj⟩).subschemeι)) htrunc)`. Establish `hRHS : List.map (fun D : (restrictToBoundaryDivisor T j hj I₀ E₀).scheme.IdealSheafData => D.comap s.isoZero.hom) (restrictToBoundaryDivisor T j hj I₀ E₀).boundary = List.map (fun D : T.scheme.IdealSheafData => D.comap (s.isoZero.hom ≫ (T.boundary.get ⟨j, hj⟩).subschemeι)) (E₀.er …` using `(congrArg (List.map (fun D : (restrictToBoundaryDivisor T j hj I₀ E₀).scheme.IdealSheafData => D.comap s.isoZero.hom)) hlow).trans (list_map_comap_map_comap_eq_map_comap_comp s.isoZero.hom (T.boundary.get ⟨j, hj⟩).subschemeι (E₀.eraseIdx j))`.
+
+Use `{ divDeriv := ?_ idx_lt := by rw [hbd]; exact hjE deriv_le := ?_ comap_eraseIdx := ?_ snc_bdry := ?_ bdry_getElem := ?_ smooth_structMap := ?_ }` and prove the remaining obligations. Introduce `l _ i hi`. Conclude with `absurd hi (Nat.not_lt_zero i)`. Introduce `_ _ n _`. Establish `h1 : derivIdealSheafIterate T.base (ambientBlowupSeqStructureMorphism hres hno T j hj I₀ E₀ s hpr 0) n ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).controlledTransform I₀ T.mult 0) = derivIdealSheafIterate T.base T.structMap n ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).co …` using `derivIdealSheafIterate_congr _ _ hsm n _`.
+
+Establish `h2 : derivIdealSheafIterate T.base T.structMap n ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).controlledTransform I₀ T.mult 0) = derivIdealSheafIterate T.base T.structMap n I₀`. Rewrite using `[hctrl]`. Establish `h3 : derivIdealSheafIterate T.base T.structMap n I₀ = ambientDerivIdeal hres hno T j hj I₀ E₀ s hpr n 0` using `(ambientDerivIdeal_at_zero_eq_derivIdealSheafIterate hres hno T j hj I₀ E₀ s hpr n).symm`. Use `le_iSup₂_of_le n le_rfl ?_` and prove the remaining obligations. Rewrite using `[Nat.sub_self, logDerivIdealSheafIterate_zero]`.
+
+Conclude with `le_of_eq (h1.trans (h2.trans h3))`. Rewrite using `[hbd, embeddingIntoAmbient_zero hres hno T j hj I₀ E₀ s hpr, MarkedSequenceOfBlowups.boundary_zero s]`. Conclude with `hRHS.symm`. Rewrite using `[hbd, hsm]`. Conclude with `hE₀`.
+
+Rewrite using `[ker_embeddingIntoAmbient_zero_eq_boundary_get hres hno T j hj I₀ E₀ s hpr]`. Simplify using `only [hbd]`. Conclude with `hget`. Rewrite using `[hsm]`. Conclude with `‹AlgebraicGeometry.Smooth T.structMap›`.
+-/
 theorem goingUpInvariant_zero (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
     [AlgebraicGeometry.IsNoetherian T.scheme] [AlgebraicGeometry.Smooth T.structMap]

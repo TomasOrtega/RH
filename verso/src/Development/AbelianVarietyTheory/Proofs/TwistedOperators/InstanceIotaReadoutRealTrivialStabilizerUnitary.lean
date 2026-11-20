@@ -17,6 +17,13 @@ namespace GlobalTheory.SeeConjReadIota
 
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite `hβ` using `[GlobalTheory.ConjPlaceRed.crdLat_eq_latFrame]`. Use `⟨GlobalTheory.ConjPlaceRed.mem_St_of_Kset D β x hβ, fun hx => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `(GlobalTheory.LevSplit.mem_St_iff β _ hβ (x.1 : GL (Fin (Yc D 0).rank) (EAf D))).1 hx`. Introduce `v`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hv`. Conclude with `(GlobalTheory.ConjPlaceRed.mem_Lf D _).1 (h1 v ((GlobalTheory.ConjPlaceRed.mem_Lf D v).2 hv))`. Introduce `hv`. Establish `h3` using `h2 _ ((GlobalTheory.ConjPlaceRed.mem_Lf D _).2 hv)`. Establish `e : Matrix.mulVec ((x.1 : GL (Fin (Yc D 0).rank) (EAf D))⁻¹).val (Matrix.mulVec (x.1 : GL (Fin (Yc D 0).rank) (EAf D)).val v) = v`.
+
+Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Establish `h4 : v ∈ Formalism.L2.Herm.hatL (F` using `D.host.F) (GlobalTheory.PlaceModel.latFrame (Yc D 0)) := e ▸ h3`. Conclude with `(GlobalTheory.ConjPlaceRed.mem_Lf D v).1 h4`.
+-/
 theorem mem_Kset_iff_mem_St (β : GL (Fin (Yc D 0).rank) (EAf D))
     (hβ : IsFrame β (Formalism.L2.Herm.crdLat (Yc D 0) (Yc D 0).L0)) (x : (Formalism.L2.SG.InstExistsPf.instOf D).Gf) :
     x ∈ (Formalism.L2.SG.InstExistsPf.instOf D).Kset ↔ (x.1 : GL (Fin (Yc D 0).rank) (EAf D)) ∈ St β := by
@@ -35,6 +42,13 @@ theorem mem_Kset_iff_mem_St (β : GL (Fin (Yc D 0).rank) (EAf D))
     have h4 : v ∈ Formalism.L2.Herm.hatL (F := D.host.F) (GlobalTheory.PlaceModel.latFrame (Yc D 0)) := e ▸ h3
     exact (GlobalTheory.ConjPlaceRed.mem_Lf D v).1 h4
 
+/- English proof (translation)
+Substitute `h` using the available equality. Establish `e : (Formalism.IndefR.RationalEmbedding.iota D).symm (Formalism.IndefR.RationalEmbedding.iota D κ) = κ` using `(Formalism.IndefR.RationalEmbedding.iota D).symm_apply_apply κ`. Establish `h1` using `Formalism.L2.SG.EvalTIota.brg_mem_GfC_i (Formalism.IndefR.RationalEmbedding.iota D κ)`. Establish `hf` using `Formalism.L2.SG.EvalTIota.finE_brg_i (Formalism.IndefR.RationalEmbedding.iota D κ)`. Rewrite `h1`, `hf` using `[e]`.
+
+Express the relevant statement in the definitionally equal form `((Formalism.IndefR.RationalEmbedding.iota D κ).1 = 1 ↔ κ ∈ GfC (Yc D 0)) ∧ ((Formalism.IndefR.RationalEmbedding.iota D κ).2 ∈ (Formalism.L2.SG.InstExistsPf.instOf D).Kset ↔ finE (Yc D 0) κ ∈ St β) ∧ finE (Yc D 0) κ ∈ UA D.sp.cm (Yc D 0).gram`. Use `⟨h1.symm, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_Kset_iff_mem_St β hβ]`. Conclude with `iff_of_eq (congrArg (· ∈ St β) hf.symm)`. Use `((Formalism.IndefR.RationalEmbedding.iota D κ).2).2` as an intermediate fact.
+
+Conclude with `hf ▸ this`.
+-/
 theorem instanceIota_real_finite_stabilizer_unitary_characterization {I : Formalism.MainNotions.S.AutInst} (h : I = Formalism.L2.SG.InstExistsPf.instOf D) (β : GL (Fin (Yc D 0).rank) (EAf D))
     (hβ : IsFrame β (Formalism.L2.Herm.crdLat (Yc D 0) (Yc D 0).L0)) (κ : GA D (Yc D 0)) :
     ((((Formalism.IndefR.RationalEmbedding.iota D).trans (castGA h.symm)) κ).1 = 1 ↔ κ ∈ GfC (Yc D 0)) ∧
@@ -54,6 +68,9 @@ theorem instanceIota_real_finite_stabilizer_unitary_characterization {I : Formal
   · have := ((Formalism.IndefR.RationalEmbedding.iota D κ).2).2
     exact hf ▸ this
 
+/- English proof (translation)
+Introduce `D X h β hβ κ`. Conclude with `instanceIota_real_finite_stabilizer_unitary_characterization h β hβ κ`.
+-/
 theorem read_iota : ∀ {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (β : GL (Fin (Yc D 0).rank) (EAf D)), IsFrame β (Formalism.L2.Herm.crdLat (Yc D 0) (Yc D 0).L0) → ∀ κ : GA D (Yc D 0), (((iotaX X h).toMulEquiv κ).1 = 1 ↔ κ ∈ GfC (Yc D 0)) ∧ (((iotaX X h).toMulEquiv κ).2 ∈ X.B.I.Kset ↔ finE (Yc D 0) κ ∈ St β) ∧ finE (Yc D 0) κ ∈ UA D.sp.cm (Yc D 0).gram := by
   intro D X h β hβ κ
   exact instanceIota_real_finite_stabilizer_unitary_characterization h β hβ κ

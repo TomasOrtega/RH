@@ -30,6 +30,9 @@ def lift1 {p : ∀ i, N i → M i → P} (hp : Bal R p) (i : ι) : N i ⊗[R] M 
       fun a b => AddMonoidHom.ext fun x => hp.1 i a b x)
     fun r n x => hp.2.2 i r n x
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem balanced_lift_tmul {p : ∀ i, N i → M i → P} (hp : Bal R p) (i : ι) (n : N i) (x : M i) :
     lift1 hp i (n ⊗ₜ x) = p i n x := rfl
 
@@ -38,6 +41,11 @@ variable [Fintype ι] [DecidableEq ι]
 def gmap {p : ∀ i, N i → M i → P} (hp : Bal R p) : (∀ i, N i ⊗[R] M i) →+ P :=
   ∑ i, (lift1 hp i).comp (Pi.evalAddMonoidHom _ i)
 
+/- English proof (translation)
+Unfold `gmap`. Rewrite using `[AddMonoidHom.finset_sum_apply, Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `k _ hk`. Simplify using `[Pi.single_eq_of_ne hk]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem gmap_single {p : ∀ i, N i → M i → P} (hp : Bal R p) (i : ι) (t : N i ⊗[R] M i) :
     gmap hp (Pi.single i t) = lift1 hp i t := by
   unfold gmap
@@ -47,6 +55,9 @@ theorem gmap_single {p : ∀ i, N i → M i → P} (hp : Bal R p) (i : ι) (t : 
     simp [Pi.single_eq_of_ne hk]
   · simp
 
+/- English proof (translation)
+Use `AddMonoidHom.functions_ext _ _ _ fun i t => ?_` and prove the remaining obligations. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul n x => exact h i n x`. Consider the case `add s t hs ht => rw [Pi.single_add, map_add, map_add, hs, ht]`.
+-/
 theorem hom_ext {Q : Type w'} [AddCommGroup Q] {a b : (∀ i, N i ⊗[R] M i) →+ Q}
     (h : ∀ i n x, a (Pi.single i (n ⊗ₜ x)) = b (Pi.single i (n ⊗ₜ x))) : a = b := by
   refine AddMonoidHom.functions_ext _ _ _ fun i t => ?_
@@ -55,6 +66,13 @@ theorem hom_ext {Q : Type w'} [AddCommGroup Q] {a b : (∀ i, N i ⊗[R] M i) �
   | tmul n x => exact h i n x
   | add s t hs ht => rw [Pi.single_add, map_add, map_add, hs, ht]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg⟩`. Establish `e : g.toAddMonoidHom = gmap hp` using `hom_ext fun i n x => by`. Rewrite using `[gmap_single, balanced_lift_tmul]`. Conclude with `hg i n x`.
+
+Rewrite using `[← e]`. Conclude with `g.bijective`. Introduce `h`. Use `⟨AddEquiv.ofBijective (gmap hp) h, fun i n x => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `gmap hp _ = _`.
+
+Rewrite using `[gmap_single, balanced_lift_tmul]`.
+-/
 theorem tens_iff {p : ∀ i, N i → M i → P} (hp : Bal R p) :
     Tens R (N := N) (M := M) (M' := P) p ↔ Function.Bijective (gmap hp) := by
   constructor
@@ -73,6 +91,11 @@ def tmap {M₂ : ι → Type w} [∀ i, AddCommGroup (M₂ i)] [∀ i, Module R 
     (∀ i, N i ⊗[R] M i) →+ ∀ i, N i ⊗[R] M₂ i :=
   AddMonoidHom.mk' (fun t i => (a i).lTensor (N i) (t i)) fun s t => funext fun i => map_add _ _ _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Express the relevant statement in the definitionally equal form `(a k).lTensor (N k) ((Pi.single i (n ⊗ₜ x) : ∀ i, N i ⊗[R] M i) k) = _`. Distinguish the cases in `h : k = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[Pi.single_eq_of_ne h]`.
+-/
 theorem tmap_single {M₂ : ι → Type w} [∀ i, AddCommGroup (M₂ i)] [∀ i, Module R (M₂ i)]
     (a : ∀ i, M i →ₗ[R] M₂ i) (i : ι) (n : N i) (x : M i) :
     tmap (N := N) a (Pi.single i (n ⊗ₜ x)) = Pi.single i (n ⊗ₜ a i x) := by
@@ -83,6 +106,11 @@ theorem tmap_single {M₂ : ι → Type w} [∀ i, AddCommGroup (M₂ i)] [∀ i
     simp
   · simp [Pi.single_eq_of_ne h]
 
+/- English proof (translation)
+Establish `e` using `fun i => Module.Flat.lTensor_exact (N i) (h i)`. Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `hy'` using `fun i => (e i (y i)).1 (congrFun hy i)`.
+
+Use `choose t ht using hy'`. Conclude with `⟨t, funext ht⟩`. Introduce and unpack `⟨t, rfl⟩`. Conclude with `funext fun i => (e i _).2 ⟨t i, rfl⟩`.
+-/
 theorem tmap_exact [∀ i, Module.Flat R (N i)] {M₂ M₃ : ι → Type w} [∀ i, AddCommGroup (M₂ i)] [∀ i, Module R (M₂ i)]
     [∀ i, AddCommGroup (M₃ i)] [∀ i, Module R (M₃ i)] (a : ∀ i, M i →ₗ[R] M₂ i) (b : ∀ i, M₂ i →ₗ[R] M₃ i)
     (h : ∀ i, Function.Exact (a i) (b i)) : Function.Exact (tmap (N := N) a) (tmap (N := N) b) := by
@@ -96,6 +124,9 @@ theorem tmap_exact [∀ i, Module.Flat R (N i)] {M₂ M₃ : ι → Type w} [∀
   · rintro ⟨t, rfl⟩
     exact funext fun i => (e i _).2 ⟨t i, rfl⟩
 
+/- English proof (translation)
+The claim follows from `hom_ext fun i n x => by simp only [AddMonoidHom.comp_apply] rw [tmap_single, gmap_single, gmap_single, balanced_lift_tmul, balanced_lift_tmul, c]`.
+-/
 theorem comm_gmap {M₂ : ι → Type w} [∀ i, AddCommGroup (M₂ i)] [∀ i, Module R (M₂ i)] {P₂ : Type w'} [AddCommGroup P₂]
     {p : ∀ i, N i → M i → P} {q : ∀ i, N i → M₂ i → P₂} (hp : Bal R p) (hq : Bal R q)
     (a : ∀ i, M i →ₗ[R] M₂ i) (b : P →+ P₂) (c : ∀ i n x, b (p i n x) = q i n (a i x)) :
@@ -103,6 +134,11 @@ theorem comm_gmap {M₂ : ι → Type w} [∀ i, AddCommGroup (M₂ i)] [∀ i, 
   simp only [AddMonoidHom.comp_apply]
   rw [tmap_single, gmap_single, gmap_single, balanced_lift_tmul, balanced_lift_tmul, c]
 
+/- English proof (translation)
+Rewrite `t₁` using `[tens_iff B₁]`. Rewrite `t₂` using `[tens_iff B₂]`. Rewrite `t₄` using `[tens_iff B₄]`. Rewrite `t₅` using `[tens_iff B₅]`. Rewrite using `[tens_iff B₃]`.
+
+Conclude with `AddMonoidHom.bijective_of_surjective_of_bijective_of_bijective_of_injective (tmap (N := N) a₁) (tmap (N := N) a₂) (tmap (N := N) a₃) (tmap (N := N) a₄) b₁ b₂ b₃ b₄ (gmap B₁) (gmap B₂) (gmap B₃) (gmap B₄) (gmap B₅) (comm_gmap B₁ B₂ a₁ b₁ c₁) (comm_gmap B₂ B₃ a₂ b₂ c₂) (comm_gmap B …`.
+-/
 theorem tens_five [∀ i, Module.Flat R (N i)] {M₁ M₂ M₃ M₄ M₅ : ι → Type w}
     [∀ i, AddCommGroup (M₁ i)] [∀ i, Module R (M₁ i)] [∀ i, AddCommGroup (M₂ i)] [∀ i, Module R (M₂ i)]
     [∀ i, AddCommGroup (M₃ i)] [∀ i, Module R (M₃ i)] [∀ i, AddCommGroup (M₄ i)] [∀ i, Module R (M₄ i)]
@@ -132,6 +168,13 @@ theorem tens_five [∀ i, Module.Flat R (N i)] {M₁ M₂ M₃ M₄ M₅ : ι �
     (comm_gmap B₁ B₂ a₁ b₁ c₁) (comm_gmap B₂ B₃ a₂ b₂ c₂) (comm_gmap B₃ B₄ a₃ b₃ c₃) (comm_gmap B₄ B₅ a₄ b₄ c₄)
     (tmap_exact a₁ a₂ ea₁) (tmap_exact a₂ a₃ ea₂) (tmap_exact a₃ a₄ ea₃) eb₁ eb₂ eb₃ t₁.2 t₂ t₄ t₅.1
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `t`. Use `⟨(AddEquiv.piCongrRight fun i => ((e i).lTensor (N i)).toAddEquiv).trans (g.trans b.symm), fun i n x => ?_⟩` and prove the remaining obligations. Use `b.injective ?_` and prove the remaining obligations. Simplify using `only [AddEquiv.trans_apply, AddEquiv.apply_symm_apply]`. Rewrite using `[c, ← hg]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `k`. Distinguish the cases in `h : k = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[Pi.single_eq_of_ne h]`.
+-/
 theorem tens_of_bij {M₂ : ι → Type w} [∀ i, AddCommGroup (M₂ i)] [∀ i, Module R (M₂ i)] {P₂ : Type w'} [AddCommGroup P₂]
     {p : ∀ i, N i → M i → P} {q : ∀ i, N i → M₂ i → P₂} (hp : Bal R p) (hq : Bal R q)
     (e : ∀ i, M₂ i ≃ₗ[R] M i) (b : P₂ ≃+ P) (c : ∀ i n x, b (q i n x) = p i n (e i x))

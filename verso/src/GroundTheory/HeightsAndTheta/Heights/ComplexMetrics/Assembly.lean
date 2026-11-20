@@ -17,18 +17,33 @@ noncomputable section
 
 namespace ComplexMetric
 
+/- English proof (translation)
+The claim follows from `ProjPointContinuous.proof`.
+-/
 theorem ProjPointContinuous.full : ProjPointContinuous.Statement.{u} :=
   ProjPointContinuous.proof
 
+/- English proof (translation)
+The claim follows from `FractionContinuous.proof`.
+-/
 theorem FractionContinuous.full : FractionContinuous.Statement.{u} :=
   FractionContinuous.proof
 
+/- English proof (translation)
+The claim follows from `GermFraction.proof`.
+-/
 theorem GermFraction.full : GermFraction.Statement.{u} :=
   GermFraction.proof
 
+/- English proof (translation)
+The claim follows from `LocalLift.proof`.
+-/
 theorem LocalLift.full : LocalLift.Statement.{u} :=
   LocalLift.proof
 
+/- English proof (translation)
+The claim follows from `RegularContinuous.proof ProjPointContinuous.full FractionContinuous.full GermFraction.full LocalLift.full`.
+-/
 theorem RegularContinuous.full : RegularContinuous.Statement.{u} :=
   RegularContinuous.proof ProjPointContinuous.full FractionContinuous.full GermFraction.full
     LocalLift.full
@@ -59,6 +74,9 @@ def standardMetricBase (A : Type u) [CommRing A] (N : ℕ) :
 def trivialBundleBase (A : Type u) [CommRing A] (N : ℕ) : (ProjScheme.base A N).HermitianLineBundle :=
   (ProjScheme.base A N).trivialBundleOf
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (x : (ProjScheme.self ℤ 1).complexPoints (Int.castRingHom ℂ))
     (s : (ProjScheme.self ℤ 1).Fibre (𝟙_ (ProjScheme.self ℤ 1).X.Modules) x) :
     (standardMetricSelf ℤ 1).norm _ x s = ‖(ProjScheme.self ℤ 1).unitFibreEquiv x s‖ := rfl

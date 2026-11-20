@@ -31,27 +31,44 @@ def Dom (v : Place (ZMod p) K) (w : (Σ k, J k) → K) (W : Ideal (MRing J)) : P
       (g ∈ W → v.valuation (aeval w g) < v.valuation (aeval w h))
 
 omit [Fact p.Prime] in
+/- English proof (translation)
+Simplify using `[mCoordIdeal, RingHom.mem_ker, mConeMap]`.
+-/
 theorem X_mem_iff {K : Type} [Field K] (w : (Σ k, J k) → K) (k : B) (i : J k) :
     (X ⟨k, i⟩ : MRing J) ∈ mCoordIdeal w ↔ w ⟨k, i⟩ = 0 := by
   simp [mCoordIdeal, RingHom.mem_ker, mConeMap]
 
 variable {v : Place (ZMod p) K} {w : (Σ k, J k) → K} {W W' : Ideal (MRing J)}
 
+/- English proof (translation)
+Simplify using `using (hD (Pi.single k 1) (X ⟨k, i⟩) (X ⟨k, c k⟩) (homog_X k i) (homog_X k (c k)) (hc k)).1`.
+-/
 theorem Dom.le_chart (hD : Dom v w W) {c : ∀ k, J k} (hc : ∀ k, (X ⟨k, c k⟩ : MRing J) ∉ W) (k : B) (i : J k) :
     v.valuation (w ⟨k, i⟩) ≤ v.valuation (w ⟨k, c k⟩) := by
   classical
   simpa using (hD (Pi.single k 1) (X ⟨k, i⟩) (X ⟨k, c k⟩) (homog_X k i) (homog_X k (c k)) (hc k)).1
 
+/- English proof (translation)
+The claim follows from `le_antisymm (Finset.sup_le fun i _ => hD.le_chart hc k i) (Finset.le_sup (f := fun i => v.valuation (w ⟨k, i⟩)) (Finset.mem_univ _))`.
+-/
 theorem Dom.sup_eq (hD : Dom v w W) {c : ∀ k, J k} (hc : ∀ k, (X ⟨k, c k⟩ : MRing J) ∉ W) (k : B) :
     (Finset.univ.sup fun i => v.valuation (w ⟨k, i⟩)) = v.valuation (w ⟨k, c k⟩) :=
   le_antisymm (Finset.sup_le fun i _ => hD.le_chart hc k i)
     (Finset.le_sup (f := fun i => v.valuation (w ⟨k, i⟩)) (Finset.mem_univ _))
 
+/- English proof (translation)
+Simplify using `using (hD (Pi.single k 1) (X ⟨k, i⟩) (X ⟨k, c k⟩) (homog_X k i) (homog_X k (c k)) (hc k)).2 hi`.
+-/
 theorem Dom.lt_chart (hD : Dom v w W) {c : ∀ k, J k} (hc : ∀ k, (X ⟨k, c k⟩ : MRing J) ∉ W) (k : B) {i : J k}
     (hi : (X ⟨k, i⟩ : MRing J) ∈ W) : v.valuation (w ⟨k, i⟩) < v.valuation (w ⟨k, c k⟩) := by
   classical
   simpa using (hD (Pi.single k 1) (X ⟨k, i⟩) (X ⟨k, c k⟩) (homog_X k i) (homog_X k (c k)) (hc k)).2 hi
 
+/- English proof (translation)
+Take `⟨S, hS, hSe⟩` from `hW`. Establish `hSW : Ideal.span S ≤ W` using `hSe.ge`. Rewrite using `[hSe, Ideal.span_le]`. Introduce `f hf`. Take `⟨e, he⟩` from `hS f hf`.
+
+Assume the negation of the conclusion as `hn`. Establish `h1` using `(hD e f (chartMono c e) he (isMultiHomog_chartMono c e) (chartMono_notMem hWp hc e)).2 (hSW (Ideal.subset_span hf))`. Establish `h2` using `(hD' e (chartMono c e) f (isMultiHomog_chartMono c e) he hn).1`. Conclude with `absurd h1 (not_lt.2 h2)`.
+-/
 theorem Dom.le_of_dom (hD : Dom v w W) (hD' : Dom v w W') (hW : IsMultiHomogIdeal W) (hWp : W.IsPrime)
     {c : ∀ k, J k} (hc : ∀ k, (X ⟨k, c k⟩ : MRing J) ∉ W) : W ≤ W' := by
   obtain ⟨S, hS, hSe⟩ := hW
@@ -73,6 +90,9 @@ open MvPolynomial GroundTheory.FunctionField
 variable {B : Type} [Fintype B] {J : B → Type} [∀ k, Fintype (J k)]
   {p : ℕ} [Fact p.Prime] {K : Type} [Field K] [Algebra (ZMod p) K] [IsFunctionField (ZMod p) K]
 
+/- English proof (translation)
+Rewrite using `[← GroundTheory.Heights₂.Heights.Targets.CurveVerticalPointResidue.aeval_div w c g d hg, chartRingZ, Algebra.adjoin_range_eq_range_aeval]`. Conclude with `⟨g, rfl⟩`.
+-/
 theorem form_div_mem_chart {K : Type} [Field K] (w : (Σ k, J k) → K) (c : ∀ k, J k) {g : MRing J} {d : B → ℕ}
     (hg : IsMultiHomog g d) : aeval w g * (∏ k, w ⟨k, c k⟩ ^ d k)⁻¹ ∈ chartRingZ w c := by
   rw [← GroundTheory.Heights₂.Heights.Targets.CurveVerticalPointResidue.aeval_div w c g d hg, chartRingZ,
@@ -80,6 +100,11 @@ theorem form_div_mem_chart {K : Type} [Field K] (w : (Σ k, J k) → K) (c : ∀
   exact ⟨g, rfl⟩
 
 omit [Fact p.Prime] [Algebra (ZMod p) K] [IsFunctionField (ZMod p) K] in
+/- English proof (translation)
+Use `IsFractionRing.of_field _ _ fun z => ?_` and prove the remaining obligations. Take `⟨d, g, h, hg, hh, h0, hz⟩` from `hbir z`. Establish `hm : (∏ k, w ⟨k, c k⟩ ^ d k)⁻¹ ≠ 0` using `inv_ne_zero (Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hc k))`. Use `⟨⟨_, form_div_mem_chart w c hg⟩, ⟨_, form_div_mem_chart w c hh⟩, ?_⟩` and prove the remaining obligations. Use `show z = aeval w g * _ / (aeval w h * _)`.
+
+Rewrite using `[mul_div_mul_right _ _ hm, hz, mul_div_cancel_right₀ _ h0]`.
+-/
 theorem chart_isFractionRing (w : (Σ k, J k) → K) (hbir : Birational w) (c : ∀ k, J k)
     (hc : ∀ k, w ⟨k, c k⟩ ≠ 0) : IsFractionRing (chartRingZ w c) K := by
   refine IsFractionRing.of_field _ _ fun z => ?_
@@ -93,6 +118,13 @@ theorem chart_isFractionRing (w : (Σ k, J k) → K) (hbir : Birational w) (c : 
 include p in
 omit [Fintype B] [∀ k, Fintype (J k)] in
 
+/- English proof (translation)
+Establish `hpK : CharP K p` using `charP_of_injective_algebraMap (algebraMap (ZMod p) K).injective p`. Establish `hpA : CharP A p` using `(RingHom.charP_iff (algebraMap A K) (IsFractionRing.injective _ _) p).2 hpK`. Use `letI : Algebra (ZMod p) A := ZMod.algebra _ p`. Use `haveI : IsScalarTower (ZMod p) A K := IsScalarTower.of_algebraMap_eq fun x => DFunLike.congr_fun (Subsingleton.elim (algebraMap (ZMod p) K) ((algebraMap A K).comp (algebraMap (ZMod p) A))) x`. Use `haveI : IsScalarTower ℤ (ZMod p) A := IsScalarTower.of_algebraMap_eq fun x => by simp`.
+
+Use `haveI : Algebra.FiniteType (ZMod p) A := Algebra.FiniteType.of_restrictScalars_finiteType ℤ _ _`. Establish `hd` using `GroundTheory.Arith.Abelian.Jacobian.ringKrullDim_eq_trdeg_fractionRing (ZMod p) (A := A) K`. Rewrite `hd` using `[GroundTheory.FunctionField.trdeg_eq_one]`. Establish `hle : Ring.KrullDimLE 1 A`. Rewrite using `[Ring.krullDimLE_iff, hd]`.
+
+Simplify using the standard rewrite rules. Conclude with `Ring.krullDimLE_one_iff_of_noZeroDivisors.1 hle q h0 hq`.
+-/
 theorem prime_isMaximal_of_isFractionRing (A : Type) [CommRing A] [IsDomain A] [Algebra A K] [IsFractionRing A K]
     [Algebra.FiniteType ℤ A] (q : Ideal A) (hq : q.IsPrime) (h0 : q ≠ ⊥) : q.IsMaximal := by
   have hpK : CharP K p := charP_of_injective_algebraMap (algebraMap (ZMod p) K).injective p
@@ -112,6 +144,9 @@ theorem prime_isMaximal_of_isFractionRing (A : Type) [CommRing A] [IsDomain A] [
 
 include p in
 
+/- English proof (translation)
+Establish `hfr` using `chart_isFractionRing w hbir c hc`. Use `haveI : Algebra.FiniteType ℤ (chartRingZ w c) := by`. Use `(Subalgebra.fg_iff_finiteType _).1 ?_` and prove the remaining obligations. Conclude with `Subalgebra.fg_def.2 ⟨_, Set.finite_range _, rfl⟩`. Conclude with `prime_isMaximal_of_isFractionRing (p := p) (K := K) _ q hq h0`.
+-/
 theorem chart_prime_isMaximal (w : (Σ k, J k) → K) (hbir : Birational w) (c : ∀ k, J k)
     (hc : ∀ k, w ⟨k, c k⟩ ≠ 0) (q : Ideal (chartRingZ w c)) (hq : q.IsPrime) (h0 : q ≠ ⊥) : q.IsMaximal := by
   have hfr := chart_isFractionRing w hbir c hc
@@ -138,6 +173,27 @@ def IsRho {K : Type} [Field K] (w : (Σ k, J k) → K) (W : Ideal (MRing J))
         algebraMap (MRing J ⧸ mCoordIdeal w) (FractionRing (MRing J ⧸ mCoordIdeal w)) (Ideal.Quotient.mk _ u) →
       ρ x * aeval w v = aeval w u
 
+/- English proof (translation)
+Use `haveI := hV`. Use `haveI := hW`. Set `R` to `MRing J ⧸ mCoordIdeal w`. Set `P` to `MvPolynomial B K`. Set `E` to `FractionRing P`.
+
+Set `ι0 : R →+* P` to `Ideal.Quotient.lift (mCoordIdeal w) (mConeMap w : MRing J →+* P) (fun a ha => ha)`. Establish `hι0 : Function.Injective ι0` using `RingHom.lift_injective_of_ker_le_ideal _ _ (le_refl _)`. Set `ι : R →+* E` to `(algebraMap P E).comp ι0`. Establish `hι : Function.Injective ι` using `(IsFractionRing.injective P E).comp hι0`. Set `j : FractionRing R →+* E` to `IsFractionRing.lift hι`.
+
+Set `κ : K →+* E` to `(algebraMap P E).comp MvPolynomial.C`. Establish `hκ : Function.Injective κ` using `(IsFractionRing.injective P E).comp (C_injective _ _)`. Establish `hj : ∀ u, j (algebraMap R _ (Ideal.Quotient.mk _ u)) = algebraMap P E (mConeMap w u)` using `fun u => by`. Simplify using `[j, IsFractionRing.lift_algebraMap, ι, ι0]`. Both sides reduce to the same expression.
+
+Establish `key : ∀ (x : locRing (mCoordIdeal w) W) (u v : MRing J) (a : B → ℕ), IsMultiHomog u a → IsMultiHomog v a → v ∉ W → (x : FractionRing R) * algebraMap R (FractionRing R) (Ideal.Quotient.mk _ v) = algebraMap R (FractionRing R) (Ideal.Quotient.mk _ u) → j x * κ (aeval w v) = κ (aeval …`. Introduce `x u v a hu hv hvW hx`. Establish `h1` using `congrArg j hx`. Rewrite `h1` using `[map_mul, hj, hj, GlobalTheory.CompanionTheory.Ar.Small.ReadFinTest.mConeMap_form w hu, GlobalTheory.CompanionTheory.Ar.Small.ReadFinTest.mConeMap_form w hv, map_mul, map_mul]`. Establish `hT : algebraMap P E (∏ k, X k ^ a k) ≠ 0`.
+
+Introduce `h0`. Use `IsFractionRing.injective P E (h0.trans (map_zero _).symm)` as an intermediate fact. Conclude with `(Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (X_ne_zero k)) this`. Apply `mul_left_cancel₀ hT` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [κ, RingHom.comp_apply]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := h1`. Establish `hv0 : ∀ {v : MRing J} {a : B → ℕ}, IsMultiHomog v a → v ∉ W → aeval w v ≠ 0` using `fun {v a} hv hvW h0 => hvW (mem_of_aeval_eq w hVW (homog_zero a) hv rfl (by simp [h0]) W.zero_mem)`. Establish `hmem : ∀ x : locRing (mCoordIdeal w) W, j x ∈ κ.range`.
+
+Introduce `x`. Take `⟨u, v, a, hu, hv, hvW, hx⟩` from `(mem_locRing_iff hVW).1 x.2`. Use `⟨aeval w u / aeval w v, ?_⟩` and prove the remaining obligations. Establish `h1` using `key x u v a hu hv hvW hx`. Establish `h2 : κ (aeval w v) ≠ 0` using `fun h => hv0 hv hvW (hκ (h.trans (map_zero _).symm))`.
+
+Rewrite using `[map_div₀, ← h1, mul_div_cancel_right₀ _ h2]`. Set `ρ0 : locRing (mCoordIdeal w) W →+* κ.range` to `(j.comp (locRing (mCoordIdeal w) W).subtype).codRestrict κ.range (fun x => hmem x)`. Set `e : K ≃+* κ.range` to `RingEquiv.ofBijective κ.rangeRestrict ⟨fun a b h => hκ (congrArg Subtype.val h), κ.rangeRestrict_surjective⟩`. Use `⟨e.symm.toRingHom.comp ρ0, ?_⟩` and prove the remaining obligations. Introduce `x u v a hu hv hvW hx`.
+
+Establish `h3 : κ ((e.symm.toRingHom.comp ρ0) x) = j x`. Establish `: e ((e.symm.toRingHom.comp ρ0) x) = ρ0 x` using `by simp`. Conclude with `congrArg Subtype.val this`. Apply `hκ` to reduce the goal to its premises. Rewrite using `[map_mul, h3]`.
+
+Conclude with `key x u v a hu hv hvW hx`.
+-/
 theorem exists_rho {K : Type} [Field K] (w : (Σ k, J k) → K) (W : Ideal (MRing J)) (hV : (mCoordIdeal w).IsPrime)
     (hW : W.IsPrime) (hVW : mCoordIdeal w ≤ W) : ∃ ρ, IsRho w W ρ := by
   classical
@@ -208,10 +264,16 @@ variable {B : Type} [Fintype B] {J : B → Type} [∀ k, Fintype (J k)]
 section
 variable {K : Type} [Field K] {w : (Σ k, J k) → K} {W : Ideal (MRing J)}
 
+/- English proof (translation)
+Introduce `h0` and use `hvW (mem_of_aeval_eq w hVW (homog_zero a) hv rfl (by simp [h0]) W.zero_mem)`.
+-/
 theorem aeval_form_ne_zero (hVW : mCoordIdeal w ≤ W) {v : MRing J} {a : B → ℕ} (hv : IsMultiHomog v a) (hvW : v ∉ W) :
     aeval w v ≠ 0 := fun h0 =>
   hvW (mem_of_aeval_eq w hVW (homog_zero a) hv rfl (by simp [h0]) W.zero_mem)
 
+/- English proof (translation)
+Use `haveI := hV`. Use `haveI := hW`. Establish `hv0 : fracHom (mCoordIdeal w) v ≠ 0` using `fun h => hvW (hVW (fracHom_eq_zero_iff.1 h))`. Establish `hx : (fracHom (mCoordIdeal w) u / fracHom (mCoordIdeal w) v) * fracHom (mCoordIdeal w) v = fracHom (mCoordIdeal w) u` using `div_mul_cancel₀ _ hv0`. Conclude with `⟨⟨_, div_mem_locRing hVW hu hv hvW⟩, hx, hρ _ u v a hu hv hvW hx⟩`.
+-/
 theorem IsRho.div (hV : (mCoordIdeal w).IsPrime) (hW : W.IsPrime) (hVW : mCoordIdeal w ≤ W) {ρ} (hρ : IsRho w W ρ)
     {u v : MRing J} {a : B → ℕ} (hu : IsMultiHomog u a) (hv : IsMultiHomog v a) (hvW : v ∉ W) :
     ∃ x : locRing (mCoordIdeal w) W, (x : FractionRing (MRing J ⧸ mCoordIdeal w)) *
@@ -225,6 +287,13 @@ theorem IsRho.div (hV : (mCoordIdeal w).IsPrime) (hW : W.IsPrime) (hVW : mCoordI
     div_mul_cancel₀ _ hv0
   exact ⟨⟨_, div_mem_locRing hVW hu hv hvW⟩, hx, hρ _ u v a hu hv hvW hx⟩
 
+/- English proof (translation)
+Use `haveI := hV`. Use `haveI := hW`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨u, v, a, hu, hv, hvW, hxu⟩` from `(mem_locRing_iff hVW).1 x.2`.
+
+Establish `h1` using `hρ x u v a hu hv hvW hxu`. Rewrite `h1` using `[hx, zero_mul]`. Establish `h2 : u ∈ mCoordIdeal w` using `mem_of_aeval_eq w le_rfl (homog_zero a) hu rfl (by simp [← h1]) (Ideal.zero_mem _)`. Establish `hv0 : fracHom (mCoordIdeal w) v ≠ 0` using `fun h => hvW (hVW (fracHom_eq_zero_iff.1 h))`. Establish `h3 : (x : FractionRing (MRing J ⧸ mCoordIdeal w)) * fracHom (mCoordIdeal w) v = 0`.
+
+Rewrite using `[hxu]`. Conclude with `fracHom_eq_zero_iff.2 h2`. Conclude with `Subtype.ext ((mul_eq_zero.1 h3).resolve_right hv0)`.
+-/
 theorem IsRho.injective (hV : (mCoordIdeal w).IsPrime) (hW : W.IsPrime) (hVW : mCoordIdeal w ≤ W) {ρ} (hρ : IsRho w W ρ) :
     Function.Injective ρ := by
   haveI := hV
@@ -240,6 +309,13 @@ theorem IsRho.injective (hV : (mCoordIdeal w).IsPrime) (hW : W.IsPrime) (hVW : m
     rw [hxu]; exact fracHom_eq_zero_iff.2 h2
   exact Subtype.ext ((mul_eq_zero.1 h3).resolve_right hv0)
 
+/- English proof (translation)
+Use `letI := ρ.toAlgebra`. Use `haveI : FaithfulSMul (locRing (mCoordIdeal w) W) K := (faithfulSMul_iff_algebraMap_injective _ _).2 (hρ.injective hV hW hVW)`. Use `IsFractionRing.of_field _ _ fun z => ?_` and prove the remaining obligations. Take `⟨d, g, h, hg, hh, h0, hz⟩` from `hbir z`. Establish `hm` using `isMultiHomog_chartMono c d`.
+
+Establish `hmW` using `chartMono_notMem hW hc d`. Take `⟨x, -, hx⟩` from `hρ.div hV hW hVW hg hm hmW`. Take `⟨y, -, hy⟩` from `hρ.div hV hW hVW hh hm hmW`. Establish `hm0` using `aeval_form_ne_zero hVW hm hmW`. Use `⟨x, y, ?_⟩` and prove the remaining obligations.
+
+Use `show z = ρ x / ρ y`. Establish `hy0 : ρ y ≠ 0` using `fun h => h0 (by rw [← hy, h, zero_mul])`. Rewrite using `[eq_div_iff hy0]`. Apply `mul_right_cancel₀ hm0` to reduce the goal to its premises. Rewrite using `[mul_assoc, hy, mul_comm _ (aeval w h), hx, hz, mul_comm]`.
+-/
 theorem IsRho.isFractionRing (hbir : Birational w) (hV : (mCoordIdeal w).IsPrime) (hW : W.IsPrime)
     (hVW : mCoordIdeal w ≤ W) {c : ∀ k, J k} (hc : ∀ k, (X ⟨k, c k⟩ : MRing J) ∉ W) {ρ} (hρ : IsRho w W ρ) :
     letI := ρ.toAlgebra
@@ -266,6 +342,21 @@ end
 variable {p : ℕ} [Fact p.Prime] {K : Type} [Field K] [Algebra (ZMod p) K] [IsFunctionField (ZMod p) K]
   {w : (Σ k, J k) → K} {W : Ideal (MRing J)}
 
+/- English proof (translation)
+Use `haveI := hV`. Use `haveI := hW`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ e g h hg hh hhW`. Take `⟨x, hxf, hx⟩` from `hρ.div hV hW hVW hg hh hhW`.
+
+Establish `hh0` using `aeval_form_ne_zero hVW hh hhW`. Establish `hpos : 0 < v.valuation (aeval w h)` using `zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 hh0)`. Rewrite using `[← hx, map_mul]`. Use `⟨mul_le_of_le_one_left' (h1 x), fun hgW => ?_⟩` and prove the remaining obligations. Establish `hm : x ∈ maximalIdeal (locRing (mCoordIdeal w) W)` using `(mem_maximalIdeal_iff hVW x hg hh hhW hxf).2 hgW`.
+
+Conclude with `mul_lt_of_lt_one_left hpos (h2 x hm)`. Introduce `hD`. Establish `gen : ∀ a : locRing (mCoordIdeal w) W, ∃ (u t : MRing J) (e : B → ℕ), IsMultiHomog u e ∧ IsMultiHomog t e ∧ t ∉ W ∧ (a : FractionRing (MRing J ⧸ mCoordIdeal w)) * fracHom (mCoordIdeal w) t = fracHom (mCoordIdeal w) u` using `fun a => (mem_locRing_iff hVW).1 a.2`. Prove the components needed by the constructor for the conclusion. Introduce `a`.
+
+Take `⟨u, t, e, hu, ht, htW, ha⟩` from `gen a`. Establish `h1` using `hρ a u t e hu ht htW ha`. Establish `ht0` using `aeval_form_ne_zero hVW ht htW`. Establish `hpos : 0 < v.valuation (aeval w t)` using `zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 ht0)`. Establish `h2` using `(hD e u t hu ht htW).1`.
+
+Rewrite `h2` using `[← h1, map_mul]`. Conclude with `le_of_mul_le_mul_right (by simpa using h2) hpos`. Introduce `a ham`. Take `⟨u, t, e, hu, ht, htW, ha⟩` from `gen a`. Establish `h1` using `hρ a u t e hu ht htW ha`.
+
+Establish `ht0` using `aeval_form_ne_zero hVW ht htW`. Establish `hpos : 0 < v.valuation (aeval w t)` using `zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 ht0)`. Establish `huW : u ∈ W` using `(mem_maximalIdeal_iff hVW a hu ht htW ha).1 ham`. Establish `h2` using `(hD e u t hu ht htW).2 huW`. Rewrite `h2` using `[← h1, map_mul]`.
+
+Conclude with `lt_of_mul_lt_mul_right (by simpa using h2) (zero_le)`.
+-/
 theorem IsRho.dom_iff (hV : (mCoordIdeal w).IsPrime) (hW : W.IsPrime) (hVW : mCoordIdeal w ≤ W) {ρ} (hρ : IsRho w W ρ)
     [IsLocalRing (locRing (mCoordIdeal w) W)] (v : Place (ZMod p) K) :
     ((∀ a, v.valuation (ρ a) ≤ 1) ∧ ∀ a ∈ maximalIdeal (locRing (mCoordIdeal w) W), v.valuation (ρ a) < 1) ↔

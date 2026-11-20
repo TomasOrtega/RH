@@ -11,6 +11,9 @@ open GlobalTheory GlobalTheory.CM
 noncomputable section
 namespace GlobalTheory.LamCalc
 
+/- English proof (translation)
+Use `t.induction_on y ?_ tmul mul` and prove the remaining obligations. Establish `h` using `tmul 0 1`. Rewrite `h` using `[t.tmul_zero, MonObj.comp_one]`. Then use the resulting hypothesis.
+-/
 theorem isTensor_induction {S : Scheme.{0}} {O : Type} [CommRing O] {G A T : Over S} [GrpObj G] [IsCommMonObj G]
     [GrpObj A] [IsCommMonObj A] {a : OAct O G} {b : OAct O A} {M : Type} [AddCommGroup M] [Module O M]
     (t : Serre.IsTensor A b G a M) {P : (T ⟶ A) → Prop} (y : T ⟶ A)
@@ -19,6 +22,13 @@ theorem isTensor_induction {S : Scheme.{0}} {O : Type} [CommRing O] {G A T : Ove
   have h := tmul 0 1
   rwa [t.tmul_zero, MonObj.comp_one] at h
 
+/- English proof (translation)
+Introduce `S O _ G A _ _ _ _ a b M _ _ t A' _ _ b' M' _ _ t' B B' _ _ _ _ L L' f₁ f₂ g₁ g₂ hL hL' hT hT' _ _ _ _ h`. Establish `key : ∀ (T : Over S) (x : T ⟶ A) (y : T ⟶ A'), LBIso (cubeLB B ![x ≫ f₁, y ≫ f₂] L) (cubeLB B' ![x ≫ g₁, y ≫ g₂] L')`. Introduce `T x y`. Use `isTensor_induction t (P := fun x => LBIso (cubeLB B ![x ≫ f₁, y ≫ f₂] L) (cubeLB B' ![x ≫ g₁, y ≫ g₂] L')) x (fun m u => ?_) (fun x x' hx hx' => ?_)` and prove the remaining obligations. Use `isTensor_induction t' (P := fun y => LBIso (cubeLB B ![(u ≫ t.tmul m) ≫ f₁, y ≫ f₂] L) (cubeLB B' ![(u ≫ t.tmul m) ≫ g₁, y ≫ g₂] L')) y (fun m' v => ?_) (fun y y' hy hy' => ?_)` and prove the remaining obligations.
+
+Simplify using `only [Category.assoc]`. Conclude with `lbIso_of_lamEq (h m m') u v`. Simplify using `only [MonObj.mul_comp]`. Conclude with `lbIso_cubeLB_mul_right_of hL hL' hT hT' hy hy'`. Simplify using `only [MonObj.mul_comp]`.
+
+Conclude with `lbIso_cubeLB_mul_left_of hL hL' hT hT' hx hx'`. Conclude with `key _ (fst A A') (snd A A')`.
+-/
 theorem lamEq_of_tmul : ∀ (S : Scheme.{0}) (O : Type) [CommRing O] (G A : Over S) [GrpObj G] [IsCommMonObj G] [GrpObj A] [IsCommMonObj A] (a : OAct O G) (b : OAct O A) (M : Type) [AddCommGroup M] [Module O M] (t : Serre.IsTensor A b G a M) (A' : Over S) [GrpObj A'] [IsCommMonObj A'] (b' : OAct O A') (M' : Type) [AddCommGroup M'] [Module O M'] (t' : Serre.IsTensor A' b' G a M') (B B' : Over S) [GrpObj B] [IsCommMonObj B] [GrpObj B'] [IsCommMonObj B'] (L : LB B.left) (L' : LB B'.left) (f₁ : A ⟶ B) (f₂ : A' ⟶ B) (g₁ : A ⟶ B') (g₂ : A' ⟶ B'), L.IsLB → L'.IsLB → (∃ t : LB.Gen (Theta B L), t.IsGen) → (∃ t : LB.Gen (Theta B' L'), t.IsGen) → IsMonHom f₁ → IsMonHom f₂ → IsMonHom g₁ → IsMonHom g₂ →
   (∀ m m', LamEq L (t.tmul m ≫ f₁) (t'.tmul m' ≫ f₂) L' (t.tmul m ≫ g₁) (t'.tmul m' ≫ g₂)) → LamEq L f₁ f₂ L' g₁ g₂ := by
   intro S O _ G A _ _ _ _ a b M _ _ t A' _ _ b' M' _ _ t' B B' _ _ _ _ L L' f₁ f₂ g₁ g₂ hL hL' hT hT' _ _ _ _ h

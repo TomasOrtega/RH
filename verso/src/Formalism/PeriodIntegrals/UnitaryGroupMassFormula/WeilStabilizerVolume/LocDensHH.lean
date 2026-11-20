@@ -14,6 +14,11 @@ section Mat
 
 variable {A : Type} [CommRing A] (s : A →+* A)
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Formalism.UG.hform, Finset.mul_sum]`. Use `_ = ∑ p, ∑ k, ∑ q, s (Y i p) * Jm p q * (C j k * Y k q) := Finset.sum_congr rfl fun p _ => Finset.sum_comm`. Use `_ = ∑ k, ∑ p, ∑ q, s (Y i p) * Jm p q * (C j k * Y k q) := Finset.sum_comm`. Use `_ = ∑ k, Formalism.UG.hform s Jm (Y i) (Y k) * C j k := by`.
+
+Simplify using `only [Formalism.UG.hform, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => by ring`.
+-/
 theorem hform_mul_right {M a : ℕ} (Jm : Matrix (Fin M) (Fin M) A) (Y : Fin a → Fin M → A)
     (C : Matrix (Fin a) (Fin a) A) (i j : Fin a) :
     Formalism.UG.hform s Jm (Y i) (fun l => ∑ k, C j k * Y k l) =
@@ -29,6 +34,11 @@ theorem hform_mul_right {M a : ℕ} (Jm : Matrix (Fin M) (Fin M) A) (Y : Fin a �
         exact Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun p _ =>
           Finset.sum_congr rfl fun q _ => by ring
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Formalism.UG.hform, map_sum, map_mul, Finset.sum_mul]`. Use `_ = ∑ p, ∑ k, ∑ q, s (C i k) * s (Y k p) * Jm p q * Y j q := Finset.sum_congr rfl fun p _ => Finset.sum_comm`. Use `_ = ∑ k, ∑ p, ∑ q, s (C i k) * s (Y k p) * Jm p q * Y j q := Finset.sum_comm`. Use `_ = ∑ k, s (C i k) * Formalism.UG.hform s Jm (Y k) (Y j) := by`.
+
+Simplify using `only [Formalism.UG.hform, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => by ring`.
+-/
 theorem hform_mul_left {M a : ℕ} (Jm : Matrix (Fin M) (Fin M) A) (Y : Fin a → Fin M → A)
     (C : Matrix (Fin a) (Fin a) A) (i j : Fin a) :
     Formalism.UG.hform s Jm (fun l => ∑ k, C i k * Y k l) (Y j) =
@@ -44,6 +54,15 @@ theorem hform_mul_left {M a : ℕ} (Jm : Matrix (Fin M) (Fin M) A) (Y : Fin a �
         exact Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun p _ =>
           Finset.sum_congr rfl fun q _ => by ring
 
+/- English proof (translation)
+Use `set Ts := (Tinv.map s)ᵀ with hTsdef`. Establish `hC1 : ((h • (Tinv * Sm))ᵀ)ᵀ = h • (Tinv * Sm)` using `transpose_transpose _`. Establish `hC2 : ((h • (Tinv * Sm))ᵀ).map s = h • (Sm * Ts)`. Use extensionality with `i j`. Simplify using `only [hTsdef, Matrix.map_apply, Matrix.transpose_apply, Matrix.smul_apply, Matrix.mul_apply, smul_eq_mul, map_mul, map_sum, hsh, hS]`.
+
+Use `congr 1`. Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hC1, hC2, hΓ]`. Use `_ = h • ((Tm * Tinv) * Sm) + (πA * h) • (E0 * Tinv * Sm) + (h • (Sm * (Ts * Tm)) + (h * πA) • (Sm * Ts * E0)) := by`.
+
+Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_assoc, smul_smul]`. Apply the tactic sequence `try module`. Use `_ = (h + h) • Sm + πA • (h • (E0 * Tinv * Sm + Sm * Ts * E0)) := by`. Rewrite using `[hTT, hTs, Matrix.one_mul, Matrix.mul_one]`. Use `module`.
+
+Use `_ = _ := by rw [hh, one_smul]`.
+-/
 theorem pol_solve {a : ℕ} (h πA : A) (hh : h + h = 1) (hsh : s h = h)
     (Γ Tm Tinv Sm E0 : Matrix (Fin a) (Fin a) A) (hΓ : Γ = Tm + πA • E0)
     (hTT : Tm * Tinv = 1) (hTs : (Tinv.map s)ᵀ * Tm = 1) (hS : ∀ i k, s (Sm k i) = Sm i k) :
@@ -82,11 +101,20 @@ def intA (z : Fv F v ⊗[F] E) : Prop :=
 
 variable {b v}
 
+/- English proof (translation)
+Introduce `k` and use `by simp [zero_mem]`.
+-/
 theorem intA_zero : intA b v 0 := fun k => by simp [zero_mem]
 
+/- English proof (translation)
+Introduce `k` and use `by rw [map_add, Finsupp.add_apply]; exact add_mem (hz k) (hw k)`.
+-/
 theorem intA_add {z w : Fv F v ⊗[F] E} (hz : intA b v z) (hw : intA b v w) : intA b v (z + w) :=
   fun k => by rw [map_add, Finsupp.add_apply]; exact add_mem (hz k) (hw k)
 
+/- English proof (translation)
+Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simpa using intA_zero`. Consider the case `insert x t hx ih`. Rewrite using `[Finset.sum_insert hx]`. Conclude with `intA_add (hf x (Finset.mem_insert_self x t)) (ih fun i hi => hf i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem intA_sum {ι : Type} (t : Finset ι) (f : ι → Fv F v ⊗[F] E) (hf : ∀ i ∈ t, intA b v (f i)) :
     intA b v (∑ i ∈ t, f i) := by
   classical
@@ -97,10 +125,16 @@ theorem intA_sum {ι : Type} (t : Finset ι) (f : ι → Fv F v ⊗[F] E) (hf : 
     exact intA_add (hf x (Finset.mem_insert_self x t))
       (ih fun i hi => hf i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Introduce `k` and use `by rw [map_smul, Finsupp.smul_apply, smul_eq_mul]; exact mul_mem hc (hz k)`.
+-/
 theorem intA_smul {c : Fv F v} (hc : c ∈ v.adicCompletionIntegers F) {z : Fv F v ⊗[F] E}
     (hz : intA b v z) : intA b v (c • z) :=
   fun k => by rw [map_smul, Finsupp.smul_apply, smul_eq_mul]; exact mul_mem hc (hz k)
 
+/- English proof (translation)
+Introduce `m` and use `by have := PositiveNearLattice.crd_incl b (Fv F v) e m simp only [PositiveNearLattice.crd] at this rw [this] exact h m`.
+-/
 theorem intA_incl (e : E) (h : ∀ m, algebraMap F (Fv F v) (b.repr e m) ∈ v.adicCompletionIntegers F) :
     intA b v (inclR (Fv F v) e) := fun m => by
   have := PositiveNearLattice.crd_incl b (Fv F v) e m
@@ -108,8 +142,14 @@ theorem intA_incl (e : E) (h : ∀ m, algebraMap F (Fv F v) (b.repr e m) ∈ v.a
   rw [this]
   exact h m
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem incl_eq_tmul (e : E) : inclR (Fv F v) e = (1 : Fv F v) ⊗ₜ[F] e := rfl
 
+/- English proof (translation)
+Rewrite using `[PositiveNearLattice.eq_sum_crd b (Fv F v) z, PositiveNearLattice.eq_sum_crd b (Fv F v) w, Finset.sum_mul_sum]`. Use `intA_sum _ _ fun i _ => intA_sum _ _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_smul_comm, Algebra.TensorProduct.tmul_mul_tmul, one_mul, ← incl_eq_tmul]`. Conclude with `intA_smul (mul_mem (hz i) (hw j)) (intA_incl _ (hg i j))`.
+-/
 theorem intA_mul (hg : ∀ k l m, algebraMap F (Fv F v) (b.repr (b k * b l) m) ∈
       v.adicCompletionIntegers F)
     {z w : Fv F v ⊗[F] E} (hz : intA b v z) (hw : intA b v w) : intA b v (z * w) := by
@@ -118,14 +158,23 @@ theorem intA_mul (hg : ∀ k l m, algebraMap F (Fv F v) (b.repr (b k * b l) m) �
   rw [smul_mul_smul_comm, Algebra.TensorProduct.tmul_mul_tmul, one_mul, ← incl_eq_tmul]
   exact intA_smul (mul_mem (hz i) (hw j)) (intA_incl _ (hg i j))
 
+/- English proof (translation)
+Simplify using `[sigR, inclR, Algebra.TensorProduct.map_tmul]`.
+-/
 theorem sigR_incl (σ : E →ₐ[F] E) (e : E) :
     sigR (Fv F v) σ (inclR (Fv F v) e) = inclR (Fv F v) (σ e) := by
   simp [sigR, inclR, Algebra.TensorProduct.map_tmul]
 
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def, map_mul, sigR_algebraMap, ← Algebra.smul_def]`.
+-/
 theorem sigR_smul (σ : E →ₐ[F] E) (c : Fv F v) (z : Fv F v ⊗[F] E) :
     sigR (Fv F v) σ (c • z) = c • sigR (Fv F v) σ z := by
   rw [Algebra.smul_def, map_mul, sigR_algebraMap, ← Algebra.smul_def]
 
+/- English proof (translation)
+Rewrite using `[PositiveNearLattice.eq_sum_crd b (Fv F v) z, map_sum]`. Use `intA_sum _ _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[sigR_smul, ← incl_eq_tmul, sigR_incl]`. Conclude with `intA_smul (hz i) (intA_incl _ (hg i))`.
+-/
 theorem intA_sig (σ : E →ₐ[F] E)
     (hg : ∀ k m, algebraMap F (Fv F v) (b.repr (σ (b k)) m) ∈ v.adicCompletionIntegers F)
     {z : Fv F v ⊗[F] E} (hz : intA b v z) : intA b v (sigR (Fv F v) σ z) := by
@@ -134,6 +183,11 @@ theorem intA_sig (σ : E →ₐ[F] E)
   rw [sigR_smul, ← incl_eq_tmul, sigR_incl]
   exact intA_smul (hz i) (intA_incl _ (hg i))
 
+/- English proof (translation)
+Establish `h` using `HeightOneSpectrum.Support.finite (𝓞 F) x`. Use `Filter.eventually_cofinite.2 (h.subset fun v hv => ?_)` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq] at hv ⊢`. Rewrite `hv` using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Rewrite `hv` using `[not_le]`.
+
+Use `show 1 < v.valuation F x`. Rewrite using `[← HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Conclude with `hv`.
+-/
 theorem aaInt (x : F) : ∀ᶠ v in cofinite,
     algebraMap F (Fv F v) x ∈ v.adicCompletionIntegers F := by
   have h := HeightOneSpectrum.Support.finite (𝓞 F) x
@@ -153,6 +207,11 @@ def GoodV (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F)) (σ : 
   (∀ m, algebraMap F (Fv F v) (b.repr (1 / 2 : E) m) ∈ v.adicCompletionIntegers F) ∧
   (∀ i j m, algebraMap F (Fv F v) (b.repr (Tinv i j) m) ∈ v.adicCompletionIntegers F)
 
+/- English proof (translation)
+Establish `k1 : ∀ᶠ v in cofinite, ∀ k l m : Fin d, algebraMap F (Fv F v) (b.repr (b k * b l) m) ∈ v.adicCompletionIntegers F` using `Filter.eventually_all.2 fun k => Filter.eventually_all.2 fun l => Filter.eventually_all.2 fun m => aaInt _`. Establish `k2 : ∀ᶠ v in cofinite, ∀ k m : Fin d, algebraMap F (Fv F v) (b.repr (σ (b k)) m) ∈ v.adicCompletionIntegers F` using `Filter.eventually_all.2 fun k => Filter.eventually_all.2 fun m => aaInt _`. Establish `k3 : ∀ᶠ v in cofinite, ∀ (i j : Fin M) (m : Fin d), algebraMap F (Fv F v) (b.repr (J i j) m) ∈ v.adicCompletionIntegers F` using `Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => Filter.eventually_all.2 fun m => aaInt _`. Establish `k4 : ∀ᶠ v in cofinite, ∀ m : Fin d, algebraMap F (Fv F v) (b.repr (1 / 2 : E) m) ∈ v.adicCompletionIntegers F` using `Filter.eventually_all.2 fun m => aaInt _`. Establish `k5 : ∀ᶠ v in cofinite, ∀ (i j : Fin a) (m : Fin d), algebraMap F (Fv F v) (b.repr (Tinv i j) m) ∈ v.adicCompletionIntegers F` using `Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => Filter.eventually_all.2 fun m => aaInt _`.
+
+Use `filter_upwards [k1, k2, k3, k4, k5] with v h1 h2 h3 h4 h5`. Conclude with `⟨h1, h2, h3, h4, h5⟩`.
+-/
 theorem goodV_aa (b : Module.Basis (Fin d) F E) (σ : E →ₐ[F] E) {M a : ℕ}
     (J : Matrix (Fin M) (Fin M) E) (Tinv : Matrix (Fin a) (Fin a) E) :
     ∀ᶠ v in cofinite, GoodV b v σ J Tinv := by
@@ -179,6 +238,11 @@ theorem goodV_aa (b : Module.Basis (Fin d) F E) (σ : E →ₐ[F] E) {M a : ℕ}
 
 end Int
 
+/- English proof (translation)
+Use extensionality with `z`. Rewrite using `[AddSubgroup.mem_map, mem_smulSub]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩`. Take `⟨l, hl, rfl⟩` from `(mem_smulSub _ _ _).1 hw`.
+
+Conclude with `⟨D l, AddSubgroup.mem_map_of_mem _ hl, (hDs t l).symm⟩`. Introduce and unpack `⟨q, hq, rfl⟩`. Take `⟨l, hl, rfl⟩` from `AddSubgroup.mem_map.1 hq`. Conclude with `⟨t • l, (mem_smulSub _ _ _).2 ⟨l, hl, rfl⟩, hDs t l⟩`.
+-/
 theorem map_smulSub' {K V X : Type} [Field K] [AddCommGroup V] [Module K V] [AddCommGroup X]
     [Module K X] (D : V →+ X) (hDs : ∀ (t : K) w, D (t • w) = t • D w) (t : K)
     (L : AddSubgroup V) : (smulSub t L).map D = smulSub t (L.map D) := by
@@ -192,6 +256,69 @@ theorem map_smulSub' {K V X : Type} [Field K] [AddCommGroup V] [Module K V] [Add
     obtain ⟨l, hl, rfl⟩ := AddSubgroup.mem_map.1 hq
     exact ⟨t • l, (mem_smulSub _ _ _).2 ⟨l, hl, rfl⟩, hDs t l⟩
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ _ _ a ha1 ha2 X0 hT hdet d b`. Establish `: FiniteDimensional F E` using `Module.Finite.of_basis b`. Establish `hσ` using `sigma_invol σ hCM.2.2.2`. Use `set TE := gramE σ J X0 with hTE`. Establish `hu : IsUnit TE.det` using `isUnit_iff_ne_zero.2 hdet`.
+
+Use `filter_upwards [goodV_aa b σ J TE⁻¹] with v hg`. Take `⟨g1, g2, g3, g4, g5⟩` from `hg`. Introduce `y hy hyT`. Use `locallyCompact_Fv F v` as an intermediate fact. Establish `: IsModuleTopology (Fv F v) (Fv F v ⊗[F] E)` using `⟨rfl⟩`.
+
+Establish `: IsTopologicalAddGroup (Fv F v ⊗[F] E)` using `IsModuleTopology.topologicalAddGroup (Fv F v) (Fv F v ⊗[F] E)`. Establish `: T2Space (Fv F v ⊗[F] E)`. Take `⟨ι, _, ⟨h⟩⟩` from `PI.AdicCompletionValuation.exists_homeomorph_tens (F := F) (E := E) (Fv F v)`. Conclude with `h.isEmbedding.t2Space`. Establish `: T2Space (Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E))` using `inferInstanceAs (T2Space (Fin a → Fin a → Fv F v ⊗[F] E))`.
+
+Take `⟨hπ0, hπ, hπO⟩` from `unifV_spec v`. Use `set π := unifV v with hπdef`. Use `set s := sigR (Fv F v) σ with hsdef`. Use `set L := latSub b v a M with hLdef`. Establish `hLc : IsCompact (L : Set (Fin a → Fin M → Fv F v ⊗[F] E))` using `PositiveNearLattice.isCompact_latV b v a M`.
+
+Establish `hπL : ∀ w ∈ L, π • w ∈ L` using `fun w hw => LatFactsW.smul_mem_latSub b v hπO hw`. Establish `hyL : ∀ i l, intA b v (y i l)` using `fun i l => hy i l`. Set `D : (Fin a → Fin M → Fv F v ⊗[F] E) →+ HermR (Fv F v) σ a` to `{ toFun := fun W => ⟨gramB (Fv F v) σ J y W, gramB_mem (Fv F v) σ hσ J hJ.1 y W⟩ map_zero' := by`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i j`.
+
+Simplify using `[gramB, hR, Formalism.UG.hform]`. Use the proof step `map_add' := fun W W' => Subtype.ext (gramB_add_right (Fv F v) σ J y W W') }`. Establish `hDv : ∀ W, (D W : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) = gramB (Fv F v) σ J y W` using `fun _ => rfl`. Establish `hDc : Continuous D` using `((continuous_gramB (Fv F v) σ J).comp (Continuous.prodMk continuous_const continuous_id)).subtype_mk _`. Establish `hDs : ∀ (t : Fv F v) W, D (t • W) = t • D W`.
+
+Introduce `t W`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i j`. Use `show gramB (Fv F v) σ J y (t • W) i j = t • gramB (Fv F v) σ J y W i j`. Simplify using `only [gramB, Pi.smul_apply, hR_smul_left, hR_smul_right, smul_add]`.
+
+Establish `hJi : ∀ i j, intA b v (JR (Fv F v) J i j)` using `fun i j => intA_incl _ (g3 i j)`. Establish `hmul : ∀ {z w : Fv F v ⊗[F] E}, intA b v z → intA b v w → intA b v (z * w)` using `fun hz hw => intA_mul g1 hz hw`. Establish `hsig : ∀ {z : Fv F v ⊗[F] E}, intA b v z → intA b v (s z)` using `fun hz => intA_sig σ g2 hz`. Establish `hRi : ∀ x z : Fin M → Fv F v ⊗[F] E, (∀ l, intA b v (x l)) → (∀ l, intA b v (z l)) → intA b v (hR (Fv F v) σ J x z)`. Introduce `x z hx hz`.
+
+Establish `e : hR (Fv F v) σ J x z = ∑ i, ∑ j, s (x i) * JR (Fv F v) J i j * z j` using `rfl`. Rewrite using `[e]`. Conclude with `intA_sum _ _ fun i _ => intA_sum _ _ fun j _ => hmul (hmul (hsig (hx i)) (hJi i j)) (hz j)`. Establish `hgB : ∀ u w, u ∈ L → w ∈ L → (⟨gramB (Fv F v) σ J u w, gramB_mem (Fv F v) σ hσ J hJ.1 u w⟩ : HermR (Fv F v) σ a) ∈ hermO b v σ a`. Introduce `u w hu' hw' i j`.
+
+Conclude with `intA_add (hRi _ _ (hu' i) (hw' j)) (hRi _ _ (hw' i) (hu' j))`. Establish `hgR : ∀ w, w ∈ L → gramH (Fv F v) σ hσ J hJ.1 w ∈ hermO b v σ a`. Introduce `w hw' i j`. Conclude with `hRi _ _ (hw' i) (hw' j)`. Establish `hOsm : ∀ {c : Fv F v}, c ∈ v.adicCompletionIntegers F → ∀ S ∈ hermO b v σ a, c • S ∈ hermO b v σ a`.
+
+Introduce `c hc S hS i j`. Conclude with `intA_smul hc (hS i j)`. Use `set Tm : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E) := TE.map (inclR (Fv F v)) with hTm`. Use `set Ti : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E) := TE⁻¹.map (inclR (Fv F v)) with hTi`. Establish `hTT : Tm * Ti = 1`.
+
+Rewrite using `[hTm, hTi, ← Matrix.map_mul, Matrix.mul_nonsing_inv _ hu, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hTh : (TE.map (σ : E →+* E))ᵀ = TE`. Use extensionality with `i j`. Conclude with `hT i j`. Establish `hE1 : (TE⁻¹.map (σ : E →+* E))ᵀ * TE = 1`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_nonsing_inv _ hu, Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one]`. Establish `hTs : (Ti.map s)ᵀ * Tm = 1`. Establish `e : (Ti.map s)ᵀ = ((TE⁻¹.map (σ : E →+* E))ᵀ).map (inclR (Fv F v))`. Use extensionality with `i j`.
+
+Simplify using `[hTi, hsdef, sigR_incl]`. Rewrite using `[e, hTm, ← Matrix.map_mul, hE1, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hTii : ∀ i j, intA b v (Ti i j)` using `fun i j => intA_incl _ (g5 i j)`. Use `set h : Fv F v ⊗[F] E := inclR (Fv F v) (1 / 2 : E) with hhdef`. Establish `hh : h + h = 1` using `by rw [hhdef, ← map_add, add_halves, map_one]`.
+
+Establish `hsh : s h = h`. Rewrite using `[hsdef, hhdef, sigR_incl]`. Use `congr 1`. Rewrite using `[map_div₀, map_one, map_ofNat]`. Establish `hhi : intA b v h` using `intA_incl _ g4`.
+
+Establish `hyT' : gramH (Fv F v) σ hσ J hJ.1 y - hermOf (Fv F v) σ TE hT ∈ smulSub π (hermO b v σ a)`. Use `hyT` as an intermediate fact. Simplify using `only [hF, zero_add, pow_one] at this`. Conclude with `this`. Take `⟨E0h, hE0, hE0eq⟩` from `(mem_smulSub _ _ _).1 hyT'`.
+
+Use `set πA : Fv F v ⊗[F] E := algebraMap (Fv F v) (Fv F v ⊗[F] E) π with hπA`. Establish `hΓ : gramR (Fv F v) σ J y = Tm + πA • (E0h : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E))`. Establish `e` using `congrArg Subtype.val hE0eq`. Establish `e2 : π • (E0h : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) = gramR (Fv F v) σ J y - Tm` using `e`. Rewrite using `[hπA, algebraMap_smul, e2]`.
+
+Normalize the expressions using the abelian group laws. Establish `hbase : ∀ S ∈ hermO b v σ a, ∃ l ∈ L, S - D l ∈ smulSub π (hermO b v σ a)`. Introduce `S hS`. Use `set Sm : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E) := S.1 with hSm`. Establish `hSh : ∀ i k, s (Sm k i) = Sm i k` using `fun i k => S.2 i k`.
+
+Use `set C : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E) := (h • (Ti * Sm))ᵀ with hC`. Use `set W : Fin a → Fin M → Fv F v ⊗[F] E := fun j l => ∑ k, C j k * y k l with hW`. Establish `hCi : ∀ j k, intA b v (C j k)`. Introduce `j k`. Simplify using `only [hC, Matrix.transpose_apply, Matrix.smul_apply, Matrix.mul_apply, smul_eq_mul]`.
+
+Conclude with `hmul hhi (intA_sum _ _ fun m _ => hmul (hTii k m) (hS m j))`. Establish `hWL : W ∈ L` using `fun j l => intA_sum _ _ fun k _ => hmul (hCi j k) (hyL k l)`. Establish `hgW : gramB (Fv F v) σ J y W = gramR (Fv F v) σ J y * Cᵀ + C.map s * gramR (Fv F v) σ J y`. Use extensionality with `i j`. Simplify using `only [gramB, Matrix.add_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply]`.
+
+Rewrite using `[show hR (Fv F v) σ J (y i) (W j) = ∑ k, hR (Fv F v) σ J (y i) (y k) * C j k from hform_mul_right s (JR (Fv F v) J) y C i j, show hR (Fv F v) σ J (W i) (y j) = ∑ k, s (C i k) * hR (Fv F v) σ J (y k) (y j) from hform_mul_left s (JR (Fv F v) J) y C i j]`. Both sides reduce to the same expression. Establish `hsol` using `pol_solve s h πA hh hsh (gramR (Fv F v) σ J y) Tm Ti Sm E0h hΓ hTT hTs hSh`. Use `set R : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E) := h • ((E0h : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) * Ti * Sm + Sm * (Ti.map s)ᵀ * E0h) with hRdef`. Establish `hRi' : ∀ i j, intA b v (R i j)`.
+
+Introduce `i j`. Simplify using `only [hRdef, Matrix.smul_apply, Matrix.add_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, smul_eq_mul]`. Use `hmul hhi (intA_add (intA_sum _ _ fun k _ => hmul (intA_sum _ _ fun m _ => hmul (hE0 i m) (hTii m k)) (hS k j)) (intA_sum _ _ fun k _ => hmul (intA_sum _ _ fun m _ => hmul (hS i m) (hsig (hTii k m))) (hE0 k j)))` and prove the remaining obligations. Establish `hsol' : gramR (Fv F v) σ J y * Cᵀ + C.map s * gramR (Fv F v) σ J y = Sm + πA • R` using `hsol`. Establish `hDW : (D W : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) = Sm + π • R`.
+
+Rewrite using `[hDv, hgW, hsol', hπA, algebraMap_smul]`. Use `set Rh : HermR (Fv F v) σ a := π⁻¹ • (D W - S) with hRh`. Establish `hRhv : (Rh : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) = R` using `by show π⁻¹ • ((D W : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) - Sm) = R`. Rewrite using `[hDW, add_sub_cancel_left, inv_smul_smul₀ hπ0]`. Establish `hRhO : Rh ∈ hermO b v σ a`.
+
+Introduce `i j`. Use `show intA b v ((Rh : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) i j)`. Rewrite using `[hRhv]`. Conclude with `hRi' i j`. Use `⟨W, hWL, (mem_smulSub _ _ _).2 ⟨-Rh, (hermO b v σ a).neg_mem hRhO, ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[hRh, smul_neg, smul_inv_smul₀ hπ0, neg_sub]`. Establish `hreach` using `reach_of_approx π hπ L hLc hπL D hDc hDs (hermO b v σ a) (LatFactsW.isCompact_hermO b v σ a) hbase`. Establish `hDL : L.map D = hermO b v σ a`. Use `le_antisymm ?_ fun p hp => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨W, hW, rfl⟩`.
+
+Conclude with `hgB y W hy hW`. Take `⟨l, hl, e⟩` from `hreach p hp`. Conclude with `AddSubgroup.mem_map.2 ⟨l, hl, e⟩`. Use `⟨D, fun n => ?_, fun n Z hZ W hW => ?_⟩` and prove the remaining obligations. Rewrite using `[lamF, hF, map_smulSub' D hDs, hDL]`.
+
+Take `⟨z, hz, rfl⟩` from `(mem_smulSub _ _ _).1 hZ`. Take `⟨w, hw, rfl⟩` from `(mem_smulSub _ _ _).1 hW`. Rewrite using `[hF, mem_smulSub]`. Establish `hB : (⟨gramB (Fv F v) σ J z w, gramB_mem (Fv F v) σ hσ J hJ.1 z w⟩ : HermR (Fv F v) σ a) ∈ hermO b v σ a` using `hgB z w hz hw`. Establish `hG : π ^ n • gramH (Fv F v) σ hσ J hJ.1 w ∈ hermO b v σ a` using `hOsm (pow_mem hπO n) _ (hgR w hw)`.
+
+Use `⟨_, (hermO b v σ a).add_mem hB hG, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use `show π ^ (n + 1 + 1) • (gramB (Fv F v) σ J z w + π ^ n • gramR (Fv F v) σ J w) = gramR (Fv F v) σ J (y + unifV v ^ (0 + 1) • z + unifV v ^ (n + 1) • w) - gramR (Fv F v) σ J (y + unifV v ^ (0 + 1) • z) - gramB (Fv F v) σ J y (unifV v ^ (n + 1) • w)`. Establish `e2 : gramR (Fv F v) σ J (y + unifV v ^ (0 + 1) • z + unifV v ^ (n + 1) • w) - gramR (Fv F v) σ J (y + unifV v ^ (0 + 1) • z) - gramB (Fv F v) σ J y (unifV v ^ (n + 1) • w) = gramB (Fv F v) σ J (unifV v ^ (0 + 1) • z) (unifV v ^ (n + 1) • w) + gramR (Fv F v) σ J (unifV v ^ (n + 1) …`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.sub_apply, Matrix.add_apply, gramB, gramR, Pi.add_apply, hR_add_left, hR_add_right]`. Expand and normalize the polynomial expressions, which then agree. Establish `gBs : ∀ (t t' : Fv F v) (u u' : Fin a → Fin M → Fv F v ⊗[F] E), gramB (Fv F v) σ J (t • u) (t' • u') = (t * t') • gramB (Fv F v) σ J u u'`. Introduce `t t' u u'`. Use extensionality with `i j`.
+
+Simplify using `only [gramB, Pi.smul_apply, hR_smul_left, hR_smul_right, Matrix.smul_apply]`. Use `module`. Establish `gRs : ∀ (t : Fv F v) (u : Fin a → Fin M → Fv F v ⊗[F] E), gramR (Fv F v) σ J (t • u) = (t * t) • gramR (Fv F v) σ J u`. Introduce `t u`. Use extensionality with `i j`.
+
+Simplify using `only [gramR, Pi.smul_apply, hR_smul_left, hR_smul_right, Matrix.smul_apply]`. Use `module`. Rewrite using `[e2, gBs, gRs, ← hπdef]`. Use `module`.
+-/
 theorem hensAA_holds : HensAA := by
   intro F E _ _ _ _ _ σ hCM M J hJ _ _ a ha1 ha2 X0 hT hdet d b
   have : FiniteDimensional F E := Module.Finite.of_basis b

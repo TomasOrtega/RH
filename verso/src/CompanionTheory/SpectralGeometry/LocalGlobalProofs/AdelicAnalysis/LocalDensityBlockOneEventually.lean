@@ -15,6 +15,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.SW.GoodMass
 
+/- English proof (translation)
+Use `continuous_pi fun a => continuous_pi fun i => ?_` and prove the remaining obligations. Simplify using `only [actW, actTup, Matrix.mulVec, dotProduct]`. Use `continuous_finset_sum _ fun j _ => continuous_const.mul ?_` and prove the remaining obligations. Use `Fin.cases ?_ (fun a' => ?_) a` and prove the remaining obligations. Apply the tactic sequence `refine Fin.cases ?_ (fun j' => ?_) j <;> simpa [consTup] using continuous_const`.
+
+Use `Fin.cases ?_ (fun j' => ?_) j` and prove the remaining obligations. Simplify `continuous_const` using `[consTup]`. Establish `hc : Continuous fun X : Fin n → Fin M → R ⊗[F] E => X a' j'` using `(continuous_apply j').comp (continuous_apply a')`. Simplify `hc` using `[consTup]`.
+-/
 theorem continuous_act_consTup {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R]
     [Algebra F R] [TopologicalSpace R] (hring : IsTopologicalRing (R ⊗[F] E)) (σ : E →ₐ[F] E) {M n : ℕ}
     (J : Matrix (Fin (M + 1)) (Fin (M + 1)) E) (h : HA R σ J) :
@@ -30,6 +35,21 @@ theorem continuous_act_consTup {F E : Type} [Field F] [Field E] [Algebra F E] (R
         (continuous_apply j').comp (continuous_apply a')
       simpa [consTup] using hc
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ t ht n T hT hdetT hT' d b`. Take `⟨hdet, hherm, -, -⟩` from `BlockAlg.block_alg F E σ hCM M J t`. Establish `hND : IsHermND σ (blockOne (algebraMap F E t) J)` using `⟨hherm hJ.1, by`. Rewrite using `[hdet]`. Conclude with `mul_ne_zero (by simpa using ht) hJ.2⟩`.
+
+Use `filter_upwards [StageGood.stage_good F E σ hCM M J hJ t ht n T hT hdetT d b] with v hv`. Introduce `lam hlam m m₁ m' hm hm₁ hm' c hc`. Establish `hLoc` using `LocFv.isLocR_Fv F v`. Take `⟨i1, i2, i3, i4, i5, i6, -⟩` from `id hLoc`. Establish `: BorelSpace (Fv F v)` using `⟨rfl⟩`.
+
+Establish `hH` using `coord_measures_haar F E σ hCM (Fv F v) d b lam hlam`. Take `⟨hring, -, -, -, -, -, -, hB, -, -⟩` from `TopK.topTens_props F E σ hCM (Fv F v)`. Establish `hlat : ∀ n' M' : ℕ, MeasurableSet (latV b v : Set (Fin n' → Fin M' → Fv F v ⊗[F] E))`. Introduce `n' M'`. Use `haveI := hB n' M'`.
+
+Conclude with `((MeasProj.proj_props F E σ hCM d b n' M').2.2.2.1 v).2.measurableSet`. Take `⟨Ψ, -, hΨ, hint⟩` from `GlobalTheory.T.local_density_block_one_product F E σ hCM M J hJ t ht n T hT hdetT hT' (Fv F v) hLoc d b lam hlam m m₁ m' hm hm₁ hm' c hc ((latV b v).indicator 1) (measurable_one.indicator (hlat _ _))`. Use `set A := m' (hermOf (Fv F v) σ T hT) (latV b v) with hA`. Establish `hae : Ψ =ᵐ[m₁ (hermScal (Fv F v) σ (algebraMap F (Fv F v) t))] (latV b v).indicator (fun _ => A)` using `by filter_upwards [mem_ae_iff.2 (hm₁.1 (hermScal (Fv F v) σ (algebraMap F (Fv F v) t)))] with y hy`. Take `⟨hy1, hy2⟩` from `hy`.
+
+Establish `hg : gramR (Fv F v) σ (blockOne (algebraMap F E t) J) (fun _ : Fin 1 => (Fin.cons 1 (fun _ => 0) : Fin (M + 1) → Fv F v ⊗[F] E)) = gramR (Fv F v) σ (blockOne (algebraMap F E t) J) y` using `(StageGood.gram_first (Fv F v) σ J t).trans hy1.symm`. Take `⟨h, rfl⟩` from `GlobalTheory.T.witt_extension_artinian_ring F E σ hCM (M + 1) _ hND (Fv F v) 1 _ y hg (by rw [hg]; exact hy2)`. Rewrite using `[hΨ h]`. Use `haveI := hB n M`. Use `haveI := hB (n + 1) (M + 1)`.
+
+Establish `hS : MeasurableSet {X : Fin n → Fin M → Fv F v ⊗[F] E | actW (Fv F v) σ _ h (consTup X) ∈ latV b v}` using `(continuous_act_consTup (Fv F v) hring σ _ h).measurable (hlat _ _)`. Establish `hfun : (fun X : Fin n → Fin M → Fv F v ⊗[F] E => (latV b v).indicator (1 : (Fin (n + 1) → Fin (M + 1) → Fv F v ⊗[F] E) → ℝ≥0∞) (actW (Fv F v) σ _ h (consTup X))) = {X | actW (Fv F v) σ _ h (consTup X) ∈ latV b v}.indicator 1`. Use function extensionality and compare the values at `X`. Both sides reduce to the same expression. Rewrite using `[hfun, lintegral_indicator_one hS, hv _ _ m' (hH.2.1 n M) (hH.2.2 n) hm' h]`.
+
+Rewrite using `[← lintegral_indicator_one (hlat _ _), hint, lintegral_congr_ae hae, lintegral_indicator_const (hlat _ _)]`.
+-/
 theorem good_mass : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ t : F, t ≠ 0 → ∀ (n : ℕ) (T : Matrix (Fin n) (Fin n) E) (hT : ∀ a b, σ (T b a) = T a b), T.det ≠ 0 → ∀ (hT' : ∀ a b, σ (blockOne (algebraMap F E t) T b a) = blockOne (algebraMap F E t) T a b) (d : ℕ) (b : Module.Basis (Fin d) F E), ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∀ lam : Measure (Fv F v), lam.IsAddHaarMeasure → ∀ m m₁ m', IsGramFib (Fv F v) σ (blockOne (algebraMap F E t) J) (n + 1) (coordW (Fv F v) b lam (n + 1) (M + 1)) (coordHerm (Fv F v) σ b lam (n + 1)) m → IsGramFib (Fv F v) σ (blockOne (algebraMap F E t) J) 1 (coordW (Fv F v) b lam 1 (M + 1)) (coordHerm (Fv F v) σ b lam 1) m₁ → IsGramFib (Fv F v) σ J n (coordW (Fv F v) b lam n M) (coordHerm (Fv F v) σ b lam n) m' → ∀ c : ℝ≥0, (coordK (Fv F v) b lam).map (fun y => inclR (Fv F v) (algebraMap F E t) * y) = c • coordK (Fv F v) b lam → m (hermOf (Fv F v) σ _ hT') (latV b v) = (c : ℝ≥0∞) ^ n * (m' (hermOf (Fv F v) σ T hT) (latV b v) * m₁ (hermScal (Fv F v) σ (algebraMap F (Fv F v) t)) (latV b v)) := by
   intro F E _ _ _ _ _ σ hCM M J hJ t ht n T hT hdetT hT' d b
   obtain ⟨hdet, hherm, -, -⟩ := BlockAlg.block_alg F E σ hCM M J t

@@ -15,6 +15,15 @@ open GlobalTheory.HodgeAt
 noncomputable section
 namespace GlobalTheory.HodgeAt
 
+/- English proof (translation)
+Introduce `l _ P K L σ a r R hR g hg x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero`. Simplify using `only [map_zero, PhiS_zero, Pi.zero_apply]`. Conclude with `(Matrix.mulVec_zero _).symm`.
+
+Consider the case `add x y hx hy`. Rewrite using `[map_add, PhiS_add, hx, hy, PhiS_add]`. Rewrite using `[← Matrix.mulVec_add]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [Pi.add_apply, map_add]`. Consider the case `tmul v b`. Rewrite using `[GlobalTheory.DRFil.actVdR_tmul, P.PD_actdR, hR, PhiS_tmul, PhiS_tmul]`. Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply]`.
+
+Simplify using `only [IntermediateField.coe_sum, IntermediateField.coe_mul, map_sum, map_mul, Finset.sum_mul, P.actQdR_Om, hg, mul_assoc]`.
+-/
 theorem PhiS_act : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K L : FinExt l) (σ : GQ l) (a : ℕ) (r : ↥(GK K) →* GL (Fin a) ↥L.1) (R : Representation ↥L.1 ↥(GK K) (Fin a → ↥L.1)), (∀ g v, R g v = (r g).val *ᵥ v) → ∀ g : ↥(GK K), (∀ y : ↥L.1, (g : GQ l) (σ (y : Om l)) = σ (y : Om l)) → ∀ x : (Fin a → ↥L.1) ⊗[ℚ_[l]] P.R.BdR, PhiS P σ L a (actVdR (P.PD K) R g x) = ((r g).val.map fun y => algebraMap (Om l) P.R.BdR (σ (y : Om l))) *ᵥ fun i => P.actQdR (g : GQ l) (PhiS P σ L a x i) := by
   intro l _ P K L σ a r R hR g hg x
   induction x using TensorProduct.induction_on with

@@ -21,6 +21,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨f, hf, hc⟩` from `GlobalTheory.T.exists_injective_points_larger_field_galois K Ω Ω' j A`. Use `LinearMap.ext fun t => Tate.ext fun n => hf ?_` and prove the remaining obligations. Establish `e` using `congrArg (fun u => u.lev n) (LinearMap.congr_fun h1 (Tate.map l f t))`. Conclude with `(hc σ σ' h (t.lev n)).trans e`.
+-/
 theorem galTate_eq_one_of_embedding {K Ω Ω' : Type} [Field K] [Field Ω] [Field Ω'] [Algebra K Ω] [Algebra K Ω']
     (j : Ω →ₐ[K] Ω') (A : Over (Sp K)) [GrpObj A] [IsCommMonObj A] (l : ℕ) [Fact l.Prime]
     (σ : Ω ≃ₐ[K] Ω) (σ' : Ω' ≃ₐ[K] Ω') (h : ∀ x, σ' (j x) = j (σ x)) (h1 : galTate A l σ' = 1) :
@@ -30,6 +33,19 @@ theorem galTate_eq_one_of_embedding {K Ω Ω' : Type} [Field K] [Field Ω] [Fiel
   have e := congrArg (fun u => u.lev n) (LinearMap.congr_fun h1 (Tate.map l f t))
   exact (hc σ σ' h (t.lev n)).trans e
 
+/- English proof (translation)
+Use `haveI : IsSepClosed Ω' := IsSepClosure.sep_closed L`. Use `haveI : Algebra.IsSeparable K Ω := IsSepClosure.separable`. Use `haveI : IsGalois K Ω := inferInstance`. Set `j : Ω →ₐ[K] Ω'` to `IsSepClosed.lift`. Take `⟨V', hV'⟩` from `exists_isAbove W L Ω'`.
+
+Take `⟨hp, hm⟩` from `GlobalTheory.T.residue_perfect_and_char_alt R K L W hW`. Take `⟨hAL, hc⟩` from `GlobalTheory.T.isAbelianScheme_and_comm_baseChange_field K L A hA`. Establish `hT` using `(h.iff_tateUnramified hV' hAL l (hm l hl)).1 hg`. Establish `hV'' : IsAbove R K (V'.comap (j : Ω →+* Ω')).toSubring`. Unfold `IsAbove at hW hV' ⊢`.
+
+Rewrite using `[← hW, ← hV']`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `j (algebraMap K Ω x) ∈ V' ↔ algebraMap L Ω' (algebraMap K L x) ∈ V'`. Rewrite using `[j.commutes, ← IsScalarTower.algebraMap_apply]`. Take `⟨H, hH, hext⟩` from `GlobalTheory.T.exists_finiteIndex_subgroup_aut_extend_sepClosure K L Ω Ω' j`.
+
+Take `⟨g, hgV⟩` from `GlobalTheory.T.exists_galois_smul_eq_valuationSubring_over_dvr R K Ω V _ hV hV''`. Establish `key : ∀ σ ∈ inertia K (V'.comap (j : Ω →+* Ω')), σ ∈ H → galTate A l σ = 1`. Introduce `σ hσ hσH`. Take `⟨σ', hσ'⟩` from `hext σ hσH`. Establish `h1` using `GlobalTheory.T.inertia_lift_of_purelyInseparable_alt K L Ω Ω' j (GlobalTheory.T.sepClosure_exists_pow_mem_range_of_finiteDimensional K L Ω Ω' j) V' σ σ' hσ' hσ`.
+
+Establish `h2` using `(GlobalTheory.T.galoisRepresentationTateModule_baseChange_eq_one_iff K L Ω' A l σ').1 (hT σ' h1)`. Conclude with `galTate_eq_one_of_embedding j A l σ (σ'.restrictScalars K) hσ' h2`. Use `GlobalTheory.T.finite_image_of_map_eq_one_on_inf_finiteIndex' _ _ (galTate A l) (inertia K V) (H.comap (MulAut.conj g).toMonoidHom) ?_ ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Rewrite using `[Subgroup.index_comap_of_surjective _ (MulAut.conj g).surjective]`.
+
+Conclude with `hH.index_ne_zero`. Introduce `σ hσ hσH`. Establish `h1` using `key (g * σ * g⁻¹) (hgV ▸ GlobalTheory.T.inertia_conj_mem_smul' K Ω V g σ hσ) hσH`. Establish `e : σ = g⁻¹ * (g * σ * g⁻¹) * g` using `by group`. Rewrite using `[e, map_mul, map_mul, h1, _root_.mul_one, ← map_mul, inv_mul_cancel, map_one]`.
+-/
 theorem finite_image_inertia_of_goodReduction_baseChange (h : NeronOggShafarevichSt) (R K Ω : Type) [CommRing R]
     [IsDomain R] [IsDiscreteValuationRing R] [PerfectField (ResidueField R)] [Field K] [Algebra R K]
     [IsFractionRing R K] [Field Ω] [Algebra K Ω] [IsSepClosure K Ω] (V : ValuationSubring Ω)
@@ -71,6 +87,9 @@ theorem finite_image_inertia_of_goodReduction_baseChange (h : NeronOggShafarevic
     have e : σ = g⁻¹ * (g * σ * g⁻¹) * g := by group
     rw [e, map_mul, map_mul, h1, _root_.mul_one, ← map_mul, inv_mul_cancel, map_one]
 
+/- English proof (translation)
+Introduce `h R K Ω _ _ _ _ _ _ _ _ _ _ V hV A _ _ hA l _ hl hP`. Take `⟨L, W, _, _, _, _, _, _, _, _, hW, hg⟩` from `hP`. Conclude with `finite_image_inertia_of_goodReduction_baseChange h R K Ω V hV A hA l hl L W (SeparableClosure L) hW hg`.
+-/
 theorem finite_image_inertia_of_potentialGoodReduction : NeronOggShafarevichSt → ∀ (R K Ω : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [PerfectField (ResidueField R)] [Field K] [Algebra R K] [IsFractionRing R K] [Field Ω] [Algebra K Ω] [IsSepClosure K Ω] (V : ValuationSubring Ω), IsAbove R K V.toSubring → ∀ (A : Over (Sp K)) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → ∀ (l : ℕ) [Fact l.Prime], (l : ResidueField R) ≠ 0 → HasPotentialGoodReduction R K A → (galTate A l '' (inertia K V : Set (Ω ≃ₐ[K] Ω))).Finite := by
   intro h R K Ω _ _ _ _ _ _ _ _ _ _ V hV A _ _ hA l _ hl hP
   obtain ⟨L, W, _, _, _, _, _, _, _, _, hW, hg⟩ := hP

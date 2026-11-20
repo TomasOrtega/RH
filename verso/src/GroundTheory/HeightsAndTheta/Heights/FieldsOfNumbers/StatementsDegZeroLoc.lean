@@ -20,6 +20,9 @@ def degZeroLoc (P : Ideal (MRing ι F)) [P.IsPrime] (𝒲 : Set (Ideal (MRing ι
     x = algebraMap (MRing ι F ⧸ P) _ (Ideal.Quotient.mk P f) /
       algebraMap (MRing ι F ⧸ P) _ (Ideal.Quotient.mk P g)}
 
+/- English proof (translation)
+The claim follows from `Algebra.subset_adjoin ⟨b, f, g, hf, hg, hgP, hg𝒲, rfl⟩`.
+-/
 theorem div_mem_degZeroLoc (P : Ideal (MRing ι F)) [P.IsPrime] (𝒲 : Set (Ideal (MRing ι F)))
     {b : K → ℕ} {f g : MRing ι F} (hf : IsMultiHomog f b) (hg : IsMultiHomog g b) (hgP : g ∉ P)
     (hg𝒲 : ∀ W ∈ 𝒲, g ∉ W) :
@@ -38,6 +41,11 @@ def fibrePrimes (P' : Ideal (MRing ι' F)) (W : Ideal (MRing (fun k => ι' (j k)
     Set (Ideal (MRing ι' F)) :=
   {W' | IsMultiProjPrime W' ∧ P' ≤ W' ∧ contractPrime j W' = W}
 
+/- English proof (translation)
+Unfold `degZeroLoc`. Rewrite using `[AlgHom.map_adjoin, Algebra.adjoin_le_iff]`. Introduce and unpack `_ ⟨x, ⟨b, f, g, hf, hg, hgP, hgW, rfl⟩, rfl⟩`. Apply `Algebra.subset_adjoin` to reduce the goal to its premises. Use `⟨Function.extend j b 0, rename (blockIncl j ι') f, rename (blockIncl j ι') g, isMultiHomog_rename j ι' hf, isMultiHomog_rename j ι' hg, hgP, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `W' ⟨-, -, hc⟩ hgW'`. Apply `hgW W (Set.mem_singleton W)` to reduce the goal to its premises. Rewrite using `[← hc]`. Conclude with `hgW'`. Rewrite using `[map_div₀, contractFracMap_algebraMap, contractFracMap_algebraMap]`.
+-/
 theorem map_degZeroLoc_le (P' : Ideal (MRing ι' F)) [P'.IsPrime]
     (W : Ideal (MRing (fun k => ι' (j k)) F)) :
     (degZeroLoc (contractPrime j P') {W}).map (contractFracMap j P') ≤
@@ -65,6 +73,9 @@ instance degZeroLoc.algebraContract (P' : Ideal (MRing ι' F)) [P'.IsPrime]
     Algebra (degZeroLoc (contractPrime j P') {W}) (degZeroLoc P' (fibrePrimes j P' W)) :=
   (degZeroLocContract j P' W).toRingHom.toAlgebra
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem degZeroLoc.algebraMap_contract_coe (P' : Ideal (MRing ι' F)) [P'.IsPrime]
     (W : Ideal (MRing (fun k => ι' (j k)) F)) (x : degZeroLoc (contractPrime j P') {W}) :
     ((algebraMap (degZeroLoc (contractPrime j P') {W}) (degZeroLoc P' (fibrePrimes j P' W)) x :

@@ -24,6 +24,11 @@ open GlobalTheory.ShFam.Pad GlobalTheory.ArLieBase GlobalTheory.BalProj
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Over.w]`. Conclude with `hv.1`. Rewrite using `[← Category.assoc, hv.2, ← Over.comp_left]`. Use `congr 1`.
+
+Use `haveI := t.act.hom a`. Rewrite using `[Hom.one_def, Category.assoc, IsMonHom.one_hom]`.
+-/
 theorem tan_act {X : Scheme.{0}} (t : SAB H X) {S : Type} [CommRing S] {x0 : Sp S ⟶ X} (a : 𝓞 E)
     {v : Sp (DualNumber S) ⟶ t.G.left} (hv : IsTanAtG t x0 v) : IsTanAtG t x0 (v ≫ (t.act.act a).left) := by
   refine ⟨?_, ?_⟩
@@ -33,6 +38,11 @@ theorem tan_act {X : Scheme.{0}} (t : SAB H X) {S : Type} [CommRing S] {x0 : Sp 
     haveI := t.act.hom a
     rw [Hom.one_def, Category.assoc, IsMonHom.one_hom]
 
+/- English proof (translation)
+Use `t.act.hom a` as an intermediate fact. Establish `hu'` using `fun i => tan_act t a (hu i)`. Establish `h2 : IsCombAtG t x0 (fun i => u i ≫ (t.act.act a).left) cf (w ≫ (t.act.act a).left)`. Establish `h1` using `(isCombAtG_iff t x0 (fun j => ovT (hu j)) cf w).1 hw`. Use `(isCombAtG_iff t x0 (fun j => ovT (hu' j)) cf _).2 ?_` and prove the remaining obligations.
+
+Rewrite using `[← h1, ← Over.comp_left, combT_post]`. Use `congr 2`. Establish `h3` using `tanLinG u hu _ Bᵀ cf _ (fun i => hB i) h2`. Rewrite `h3` using `[Matrix.mulVec_transpose]`. Then use the resulting hypothesis.
+-/
 theorem comb_act_mat {X : Scheme.{0}} (t : SAB H X) {S : Type} [CommRing S] {x0 : Sp S ⟶ X} {m : ℕ}
     {u : Fin m → (Sp (DualNumber S) ⟶ t.G.left)} (hu : ∀ i, IsTanAtG t x0 (u i)) (a : 𝓞 E)
     {B : Matrix (Fin m) (Fin m) S} (hB : ∀ i, IsCombAtG t x0 u (B i) (u i ≫ (t.act.act a).left))
@@ -48,6 +58,9 @@ theorem comb_act_mat {X : Scheme.{0}} (t : SAB H X) {S : Type} [CommRing S] {x0 
   have h3 := tanLinG u hu _ Bᵀ cf _ (fun i => hB i) h2
   rwa [Matrix.mulVec_transpose] at h3
 
+/- English proof (translation)
+Establish `e` using `IsAffineOpen.SpecMap_appLE_fromSpec s (isAffineOpen_top (Spec (CommRingCat.of K))) U.2 (le_top : U.1 ≤ s ⁻¹ᵁ ⊤)`. Rewrite `e` using `[IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv]`. Rewrite using `[chart, ← e, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem affineOpenChart_comp_structure_eq_spMap {K : Type} [CommRing K] {X : Scheme.{0}} (s : X ⟶ Spec (CommRingCat.of K)) (U : X.affineOpens) :
     chart U ≫ s = spMap (fnHom s U.1) := by
   have e := IsAffineOpen.SpecMap_appLE_fromSpec s (isAffineOpen_top (Spec (CommRingCat.of K))) U.2
@@ -56,6 +69,19 @@ theorem affineOpenChart_comp_structure_eq_spMap {K : Type} [CommRing K] {X : Sch
   rw [chart, ← e, ← Spec.map_comp]
   rfl
 
+/- English proof (translation)
+Establish `h0 : (spMap ψ ≫ x) ≫ Z.s = spMap φ ≫ spMap β`. Rewrite using `[Category.assoc, hφ, Guard.sp_comp]`. Set `y : Sp K ⟶ gen Z` to `Limits.pullback.lift (spMap ψ ≫ x) (spMap φ) h0`. Establish `hy1 : y ≫ genι Z = spMap ψ ≫ x` using `Limits.pullback.lift_fst _ _ _`. Establish `hy2 : y ≫ genStr Z = spMap φ` using `Limits.pullback.lift_snd _ _ _`.
+
+Establish `hf` using `GlobalTheory.ShFam.EigLoc.exists_eigFrame E H Dw l Xo c _ _ Z K φ y hy2`. Rewrite `hf` using `[hy1]`. Take `⟨f⟩` from `hf`. Establish `hv : ∀ i, IsTanAtG Z.t (spMap ψ ≫ x) (spMap (dualMap ψ) ≫ e i)` using `fun i => GlobalTheory.FactorDepth.isTanAtG_map Z.t ψ (he.1 i)`. Establish `hb` using `he.2 K ψ`.
+
+Use `choose a ha using fun i => (hb _ (f.tan τ i)).exists`. Set `A : Matrix (Fin g) (Fin (Dw.mult τ)) K` to `fun j i => a i j`. Establish `heig : ∀ cf w, IsCombAtG Z.t (spMap ψ ≫ x) (f.v τ) cf w → ∀ b : 𝓞 E, w ≫ (Z.t.act.act b).left = spMap (epsMul (φ (embK c τ b))) ≫ w` using `fun cf w h1 b => by`. Rewrite using `[← (isCombAtG_iff Z.t _ (fun j => ovT (f.tan τ j)) _ _).1 h1]`. Use `Z.t.act.hom b` as an intermediate fact.
+
+Conclude with `congrArg (fun f => f.left) (combT_eig _ (fun j => ovT (f.tan τ j)) (Z.t.act.act b) _ (fun j => Over.OverMorphism.ext (f.eig τ j b)) cf)`. Establish `hi : Guard.Indep Z.t (spMap ψ ≫ x) (f.v τ)` using `fun cf cf' w h1 h2 => (f.basis τ w (Guard.comb_tan (f.tan τ) h1) (heig cf w h1)).unique h1 h2`. Establish `hinj` using `(Guard.indep_iff hv (Guard.indep_of_basis hv hb) A ha).1 hi`. Use `⟨LinearMap.range A.mulVecLin, ?_, fun cf w hw => ⟨fun h => ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[LinearMap.finrank_range_of_inj hinj, Module.finrank_fin_fun]`.
+
+Take `⟨b, hb', -⟩` from `f.basis τ w h.1 h.2`. Conclude with `⟨b, (hb w h.1).unique (tanLinG _ hv (f.v τ) A b w ha hb') hw⟩`. Introduce and unpack `⟨b, rfl⟩`. Take `⟨w', h1, h2⟩` from `Guard.exists_comb (f.tan τ) b`. Take `rfl : w' = w` from `Guard.comb_unique hv (tanLinG _ hv (f.v τ) A b w' ha h2) hw`.
+
+Conclude with `⟨h1, heig b w' h2⟩`.
+-/
 theorem exists_eig_subspace_gen {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O]
     {β : O →+* c.F} (Z : Model Xo c β) {R : Type} [CommRing R] (x : Sp R ⟶ Z.X) (τ : E →+* ℂ) {g : ℕ}
     (e : Fin g → (Sp (DualNumber R) ⟶ Z.t.G.left)) (he : GlobalTheory.LineNorm.IsTanBasis Z.t x e) (K : Type) [Field K]
@@ -95,9 +121,25 @@ theorem exists_eig_subspace_gen {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} 
     obtain rfl : w' = w := Guard.comb_unique hv (tanLinG _ hv (f.v τ) A b w' ha h2) hw
     exact ⟨h1, heig b w' h2⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_eigSp {O k : Type} [Field k] {n : ℕ} (B : O → Matrix (Fin n) (Fin n) k) (χ : O → k) (c : Fin n → k) :
     c ∈ eigSp B χ ↔ ∀ a, c ᵥ* B a = χ a • c := Iff.rfl
 
+/- English proof (translation)
+Set `φ : c.F →+* K` to `ψ.comp (fnHom Y.s U.1)`. Establish `he` using `GlobalTheory.LineNorm.isTanBasis_of_basis E H Y.X Y.t Γ(Y.X, U.1) (chart U) n v hv hb`. Establish `hφ : spMap ψ ≫ chart U ≫ Y.s = spMap (φ.comp (RingHom.id c.F))`. Rewrite using `[affineOpenChart_comp_structure_eq_spMap, Guard.sp_comp]`. Take `⟨V, hVr, hV⟩` from `exists_eig_subspace_gen Y (chart U) τ v he K ψ φ hφ`.
+
+Establish `hvK : ∀ i, IsTanAtG Y.t (spMap ψ ≫ chart U) (spMap (dualMap ψ) ≫ v i)` using `fun i => GlobalTheory.FactorDepth.isTanAtG_map Y.t ψ (hv i)`. Establish `hbK` using `he.2 K ψ`. Establish `hAK : ∀ a i, IsCombAtG Y.t (spMap ψ ≫ chart U) (fun j => spMap (dualMap ψ) ≫ v j) ((A a).map ψ i) ((spMap (dualMap ψ) ≫ v i) ≫ (Y.t.act.act a).left)` using `fun a i => by`. Rewrite using `[Category.assoc]`. Conclude with `GlobalTheory.LatDRFree.comb_map Y.t ψ (hA a i)`.
+
+Establish `key : eigSp (fun a => (A a).map ψ) (fun a => ψ (embR c.F c.conj (fnHom Y.s U.1) τ a)) = V`. Use extensionality with `cf`. Take `⟨w, -, hw⟩` from `Guard.exists_comb hvK cf`. Rewrite using `[← hV cf w hw]`. Establish `hs : ∀ a : 𝓞 E, ψ (embR c.F c.conj (fnHom Y.s U.1) τ a) • cf = fun k => φ (embK c τ a) * cf k` using `fun a => rfl`.
+
+Rewrite using `[mem_eigSp]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨Guard.comb_tan hvK hw, fun a => ?_⟩` and prove the remaining obligations. Establish `h1` using `comb_act_mat Y.t hvK a (hAK a) hw`.
+
+Rewrite `h1` using `[h a, hs a]`. Conclude with `Guard.comb_unique hvK h1 (Guard.comb_smul hvK hw (φ (embK c τ a)))`. Introduce and unpack `⟨-, h⟩ a`. Establish `h1` using `comb_act_mat Y.t hvK a (hAK a) hw`. Establish `h2` using `Guard.comb_smul hvK hw (φ (embK c τ a))`.
+
+Rewrite `h2` using `[← h a]`. Rewrite using `[hs a]`. Conclude with `(hbK _ (Guard.comb_tan hvK h1)).unique h1 h2`. Unfold `eigRank`. Rewrite using `[key, hVr]`.
+-/
 theorem eigRank_field {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
     (Y : Model Xo c (RingHom.id c.F)) (U : Y.X.affineOpens) (n : ℕ) (v : Fin n → (Sp (DualNumber Γ(Y.X, U.1)) ⟶ Y.t.G.left))
     (A : 𝓞 E → Matrix (Fin n) (Fin n) Γ(Y.X, U.1)) (hv : ∀ i, IsTanAtG Y.t (chart U) (v i))
@@ -141,6 +183,9 @@ theorem eigRank_field {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff
 
 end GlobalTheory.BalProjInt
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Y _ _ _ U n v A hv hb hA 𝔭 _ τ`. Conclude with `GlobalTheory.BalProjInt.eigRank_field Y U n v A hv hb hA _ _ τ`.
+-/
 theorem GlobalTheory.BalProjInt.eigRank_interior : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)), 1 ≤ Dw.p + Dw.q → SmoothOfRelativeDimension Dw.dim (genStr Y) → ReciprocityTheory.AnForm.R.FinalTheorems.Snc (genBdIdeal Y) → ∀ (U : Y.X.affineOpens) (n : ℕ) (v : Fin n → (Sp (DualNumber Γ(Y.X, U.1)) ⟶ Y.t.G.left)) (A : 𝓞 E → Matrix (Fin n) (Fin n) Γ(Y.X, U.1)), (∀ i, IsTanAtG Y.t (chart U) (v i)) → (∀ w, IsTanAtG Y.t (chart U) w → ∃! cf : Fin n → Γ(Y.X, U.1), IsCombAtG Y.t (chart U) v cf w) → (∀ a i, IsCombAtG Y.t (chart U) v (A a i) (v i ≫ (Y.t.act.act a).left)) → ∀ (𝔭 : PrimeSpectrum Γ(Y.X, U.1)), (chart U).base 𝔭 ∈ (interior Y : Set Y.X) → ∀ τ : E →+* ℂ, GlobalTheory.BalProj.eigRank (algebraMap Γ(Y.X, U.1) 𝔭.asIdeal.ResidueField) A (GlobalTheory.BalProj.embR c.F c.conj (GlobalTheory.BalProj.fnHom Y.s U.1) τ) = if τ (H.rt : E) = H.rt0 then Dw.p else Dw.q := by
   intro E _ _ _ H Dw l Xo c Y _ _ _ U n v A hv hb hA 𝔭 _ τ
   exact GlobalTheory.BalProjInt.eigRank_field Y U n v A hv hb hA _ _ τ

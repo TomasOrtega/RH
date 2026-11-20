@@ -7,6 +7,9 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MemLocLatOver
 
 namespace GlobalTheory.LevelIndex
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.IndefiniteRowSideFullHecke.SelfDualLatticeLevel.indexKU_iff.mp (GlobalTheory.LevelIndex.indexKU_of_selfDualOverBase (GlobalTheory.OverCompare.overLattice_iff_selfDualOverBase.mp GlobalTheory.OverLat.overLattice))`.
+-/
 theorem selfDualLatticeIndex_stabiliserLevelIndexFormula : GlobalTheory.IndefiniteRowSideFullHecke.SelfDualLatticeIndex.StabiliserLevelIndexFormula :=
   GlobalTheory.IndefiniteRowSideFullHecke.SelfDualLatticeLevel.indexKU_iff.mp
     (GlobalTheory.LevelIndex.indexKU_of_selfDualOverBase

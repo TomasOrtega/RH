@@ -14,6 +14,33 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK.Dbl GlobalTheory.Cont PositivityTheory.Rg.Sw
 namespace PositivityTheory.SiegelWeilFormula.Ald
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ d n h Y b j ε hn hs hb e1 e2 hj dd0 dd' h0 h'`. Establish `rdE : ∀ w, (GlobalTheory.TowU.reindexD dd0 (eK d.m h).symm).e w = ((dd0.e w).1 ∘ eK d.m h, (dd0.e w).2 ∘ eK d.m h)` using `fun w => by rw [GlobalTheory.TowU.reindexD_e, Equiv.symm_symm]`. Establish `hfr : ∀ g, inFrame d.b (j g) = blk h (inFrame b g) 1` using `fun g => eq_blk h _ _ (hj.2.1 g) (hj.2.2 g)`. Use `⟨fun w' => ?_, fun u v => ⟨_, LinearEquiv.apply_symm_apply _ _⟩, fun g w H1 H2 => ?_, fun g w' => ?_, fun u w' => ?_⟩` and prove the remaining obligations. Rewrite using `[rdE, adapted_e h0, frQ_emb, embQ_toCols₁, embQ_toCols₂, adapted_e h']`.
+
+Use `Prod.ext (funext fun q => ?_) (funext fun q => ?_)` and prove the remaining obligations. Break down `q with ⟨a, c, t⟩ | ⟨a, t⟩` into its components or cases. Conclude with `crdB_col _ _ _ a _ c t (extend_zero_embedded_column h _ a c)`. Conclude with `crdB_zero_col _ _ a _ t (extend_zero_last_column h _ a)`. Break down `q with ⟨a, c, t⟩ | ⟨a, t⟩` into its components or cases.
+
+Conclude with `Bf_col _ _ _ _ a _ c t (fun p => extend_zero_embedded_column h _ p c)`. Conclude with `Bf_zero_col _ _ _ a _ t (fun p => extend_zero_last_column h _ p)`. Use `set Q := frQ d.b w with hQdef`. Use `set Q' := Q.submatrix id (Sum.map (em0 h) (em0 h)) with hQ'def`. Establish `hw` using `adapted_e h0 w`.
+
+Establish `hz : dd0.e (embQ h Q' * (incM F d.b.1)ᵀ) = 0`. Rewrite using `[adapted_e h0, frQ_of, embQ_toCols₁, embQ_toCols₂]`. Use `Prod.ext (funext fun q => ?_) (funext fun q => ?_)` and prove the remaining obligations. Take `⟨a, c, t⟩` from `q`. Distinguish the cases in `hc : c = i0 h`.
+
+Substitute `hc` using the available equality. Conclude with `crdB_zero_col _ _ a _ t (extend_zero_last_column h _ a)`. Take `⟨c', rfl⟩` from `(ne_last_iff_mem_range h c).1 hc`. Establish `e3` using `congrFun H1 (a, c', t)`. Rewrite `e3` using `[rdE, hw]`.
+
+Use `(crdB_col _ _ _ a _ _ t ?_).trans e3` and prove the remaining obligations. Rewrite using `[extend_zero_embedded_column]`. Both sides reduce to the same expression. Take `⟨a, c, t⟩` from `q`. Distinguish the cases in `hc : c = i0 h`.
+
+Substitute `hc` using the available equality. Conclude with `Bf_zero_col _ _ _ a _ t (fun p => extend_zero_last_column h _ p)`. Take `⟨c', rfl⟩` from `(ne_last_iff_mem_range h c).1 hc`. Establish `e3` using `congrFun H2 (a, c', t)`. Rewrite `e3` using `[rdE, hw]`.
+
+Use `(Bf_col _ _ _ _ a _ _ t fun p => ?_).trans e3` and prove the remaining obligations. Rewrite using `[extend_zero_embedded_column]`. Both sides reduce to the same expression. Establish `hQ' : embQ h Q' = 0`. Use `(LinearEquiv.map_eq_zero_iff dd0.e).1 hz` as an intermediate fact.
+
+Rewrite using `[← frQ_of d.b (embQ h Q'), this, frQ, Matrix.zero_mul]`. Establish `hQv : ∀ a v', Q a (Sum.map (em0 h) (em0 h) v') = 0` using `fun a v' => by`. Use `congrFun (congrFun hQ' a) (Sum.map (em0 h) (em0 h) v')` as an intermediate fact. Rewrite `this` using `[embQ_map_apply]`. Then use the resulting hypothesis. Apply `frQ_injective d.b` to reduce the goal to its premises.
+
+Use `show frQ d.b (w * ((j g).1.1)ᵀ) = frQ d.b w`. Rewrite using `[frQ_mul_mat, hfr, ← hQdef]`. Use extensionality with `a u`. Rewrite using `[Matrix.mul_apply]`. Establish `hterm : ∀ v, Q a v * (blk h (inFrame b g) 1)ᵀ v u = Q a v * (1 : Matrix (Fin d.n ⊕ Fin d.n) _ (AE F E)) u v`.
+
+Introduce `v`. Break down `idx_cases h v with ⟨v', rfl⟩ | hv | hv` into its components or cases. Rewrite using `[hQv, zero_mul, zero_mul]`. Rewrite using `[Matrix.transpose_apply, (blk_out h _ v (by rw [hv]; exact Or.inl rfl) u).2]`. Rewrite using `[Matrix.transpose_apply, (blk_out h _ v (by rw [hv]; exact Or.inr rfl) u).2]`.
+
+Rewrite using `[Finset.sum_congr rfl fun v _ => hterm v]`. Simplify using `[Matrix.one_apply]`. Apply `frQ_injective d.b` to reduce the goal to its premises. Use `show frQ d.b (emb h b d.b w' * ((j g).1.1)ᵀ) = frQ d.b (emb h b d.b (w' * (g.1.1)ᵀ))`. Rewrite using `[frQ_mul_mat, frQ_emb, frQ_emb, frQ_mul_mat, hfr, embQ_mul_blk]`.
+
+Rewrite using `[emb_eq, emb_eq, frQ_left, ← embQ_mul_left, Matrix.mul_assoc]`.
+-/
 theorem chartFacts_k : _root_.PositivityTheory.SiegelWeilFormula.Ald.ChartFacts_k := by
   intro F E _ _ _ _ _ σ d n h Y b j ε hn hs hb e1 e2 hj dd0 dd' h0 h'
   have rdE : ∀ w, (GlobalTheory.TowU.reindexD dd0 (eK d.m h).symm).e w = ((dd0.e w).1 ∘ eK d.m h, (dd0.e w).2 ∘ eK d.m h) :=

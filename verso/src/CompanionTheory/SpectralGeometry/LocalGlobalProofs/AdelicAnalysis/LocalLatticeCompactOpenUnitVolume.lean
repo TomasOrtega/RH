@@ -11,6 +11,27 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.SW
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ d b n M v`. Take `⟨i1, i2, i3, i4, -⟩` from `GlobalTheory.T.completion_is_local_ring F v`. Take `⟨-, -, -, -, -, -, hH, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hσ (Fv F v)`. Set `f : Fv F v ⊗[F] E → Fin d → Fv F v` to `fun y k => (Algebra.TensorProduct.basis (Fv F v) b).repr y k`. Set `e : (Fv F v ⊗[F] E) ≃ₜ (Fin d → Fv F v)` to `(hH d b).homeomorph f`.
+
+Establish `hef : ∀ y, e y = f y` using `fun _ => rfl`. Set `O : Set (Fv F v)` to `(v.adicCompletionIntegers F : Set (Fv F v))`. Establish `hOo : IsOpen O` using `Valued.isOpen_valuationSubring _`. Establish `hOc : IsCompact O` using `isCompact_iff_compactSpace.2 (GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers F v)`. Set `P : Set (Fin d → Fv F v)` to `Set.pi Set.univ fun _ => O`.
+
+Set `B : Set (Fv F v ⊗[F] E)` to `e ⁻¹' P`. Establish `hBc : IsCompact B` using `(Homeomorph.isCompact_preimage e).2 (isCompact_univ_pi fun _ => hOc)`. Establish `hBo : IsOpen B` using `(Homeomorph.isOpen_preimage e).2 (isOpen_set_pi Set.finite_univ fun _ _ => hOo)`. Establish `hlat : latV (M` using `M) (n := n) b v = Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => B := by`. Use extensionality with `Y`.
+
+Simplify using `only [latV, Set.mem_setOf_eq, Set.mem_pi, Set.mem_univ, true_implies, B, P, Set.mem_preimage]`. Both sides reduce to the same expression. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hlat]`. Conclude with `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hBc`.
+
+Rewrite using `[hlat]`. Conclude with `isOpen_set_pi Set.finite_univ fun _ _ => isOpen_set_pi Set.finite_univ fun _ _ => hBo`. Introduce `a i k`. Simplify using the standard rewrite rules. Introduce and unpack `lam ⟨hHaar, h1⟩ haveI : BorelSpace (Fv F v) := ⟨rfl⟩ haveI : BorelSpace (Fv F v ⊗[F] E) := ⟨rfl⟩ haveI : SecondCountableTopology (Fin d → Fv F v) := inferInstance`.
+
+Establish `hme : MeasurableEmbedding f` using `e.measurableEmbedding`. Establish `hsurj : Function.Surjective f` using `e.surjective`. Use `haveI : SigmaFinite (coordK (Fv F v) b lam) := by`. Use `SigmaFinite.of_map _ hme.measurable.aemeasurable (f := f) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `SigmaFinite (Measure.map f (Measure.comap f _))`.
+
+Rewrite using `[hme.map_comap, hsurj.range_eq, Measure.restrict_univ]`. Use `infer_instance`. Establish `hK : coordK (Fv F v) b lam B = 1`. Express the relevant statement in the definitionally equal form `Measure.comap f _ B = 1`. Rewrite using `[hme.comap_apply]`.
+
+Establish `: f '' B = P` using `Set.image_preimage_eq _ hsurj`. Rewrite using `[this, Measure.pi_pi]`. Simplify using `only [Finset.prod_const]`. Express the relevant statement in the definitionally equal form `lam (v.adicCompletionIntegers F : Set (Fv F v)) ^ _ = 1`. Rewrite using `[h1, one_pow]`.
+
+Rewrite using `[hlat]`. Unfold `coordW`. Rewrite using `[Measure.pi_pi]`. Use `Finset.prod_eq_one fun _ _ => ?_` and prove the remaining obligations. Rewrite using `[Measure.pi_pi]`.
+
+Conclude with `Finset.prod_eq_one fun _ _ => hK`.
+-/
 theorem latV_compact_open_mass : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E), ∀ (n M : ℕ) (v : HeightOneSpectrum (𝓞 F)), IsCompact (latV (M := M) (n := n) b v) ∧ IsOpen (latV (M := M) (n := n) b v) ∧ (0 : Fin n → Fin M → Fv F v ⊗[F] E) ∈ latV b v ∧ ∀ lam : Measure (Fv F v), IsStdV v lam → coordW (Fv F v) b lam n M (latV b v) = 1 := by
   intro F E _ _ _ _ _ σ hσ d b n M v
   obtain ⟨i1, i2, i3, i4, -⟩ := GlobalTheory.T.completion_is_local_ring F v

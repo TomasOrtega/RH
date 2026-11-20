@@ -19,6 +19,17 @@ open ReciprocityTheory.ChartRestriction.G.Semi
 
 namespace GlobalTheory.TorsSpec
 
+/- English proof (translation)
+Introduce `S T f _ _ R _ u₁ u₂ h K _ k hk hku`. Set `g : Spec R ⟶ pullback f f` to `pullback.lift u₁ u₂ h`. Establish `hkg : k ≫ g = (k ≫ u₁) ≫ pullback.diagonal f`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `[g, pullback.lift_fst]`.
+
+Simplify using `[g, hku, pullback.lift_snd]`. Take `⟨x⟩ : Nonempty (Sp K)` from `(inferInstance : Nonempty (PrimeSpectrum K))`. Establish `hc : g (IsLocalRing.closedPoint R) ∈ Set.range (pullback.diagonal f)`. Use `⟨(k ≫ u₁) x, ?_⟩` and prove the remaining obligations. Rewrite using `[← hk x, ← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, hkg]`.
+
+Establish `hopen : IsOpen (Set.range (pullback.diagonal f))` using `(pullback.diagonal f).isOpenEmbedding.isOpen_range`. Establish `hr : Set.range g ⊆ Set.range (pullback.diagonal f)`. Introduce and unpack `_ ⟨y, rfl⟩`. Establish `hs : y ⤳ IsLocalRing.closedPoint R` using `IsLocalRing.specializes_closedPoint y`. Conclude with `(hs.map g.continuous).mem_open hopen hc`.
+
+Establish `hl` using `IsOpenImmersion.lift_fac (pullback.diagonal f) g hr`. Establish `h1 : u₁ = IsOpenImmersion.lift (pullback.diagonal f) g hr`. Establish `e : (IsOpenImmersion.lift (pullback.diagonal f) g hr ≫ pullback.diagonal f) ≫ pullback.fst f f = g ≫ pullback.fst f f` using `by rw [hl]`. Rewrite `e` using `[Category.assoc, pullback.diagonal_fst, Category.comp_id, pullback.lift_fst]`. Conclude with `e.symm`.
+
+Establish `h2 : u₂ = IsOpenImmersion.lift (pullback.diagonal f) g hr`. Establish `e : (IsOpenImmersion.lift (pullback.diagonal f) g hr ≫ pullback.diagonal f) ≫ pullback.snd f f = g ≫ pullback.snd f f` using `by rw [hl]`. Rewrite `e` using `[Category.assoc, pullback.diagonal_snd, Category.comp_id, pullback.lift_snd]`. Conclude with `e.symm`. Conclude with `h1.trans h2.symm`.
+-/
 theorem eq_of_unramified_of_closedPoint : ∀ {S T : Scheme.{0}} (f : T ⟶ S) [FormallyUnramified f]
     [LocallyOfFiniteType f] (R : CommRingCat.{0}) [IsLocalRing R] (u₁ u₂ : Spec R ⟶ T) (h : u₁ ≫ f = u₂ ≫ f)
     (K : Type) [Field K] (k : Sp K ⟶ Spec R) (hk : ∀ x, k x = IsLocalRing.closedPoint R)

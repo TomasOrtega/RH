@@ -15,33 +15,63 @@ open Formalism.IndefR.Eqv (psiT thetaC eq_thetaC)
 
 variable {D : D7} {n : ℕ}
 
+/- English proof (translation)
+Simplify using `only [reidx, Matrix.submatrix_mul_equiv]`.
+-/
 theorem reidx_mul (a b : M2 n) : reidx (a * b) = reidx a * reidx b := by
   simp only [reidx, Matrix.submatrix_mul_equiv]
 
+/- English proof (translation)
+The claim follows from `Matrix.submatrix_one_equiv _`.
+-/
 theorem reidx_one : reidx (1 : M2 n) = 1 := Matrix.submatrix_one_equiv _
 
+/- English proof (translation)
+Simplify using `only [reidx, Matrix.conjTranspose_submatrix]`.
+-/
 theorem reidx_conjTranspose (a : M2 n) : reidx aᴴ = (reidx a)ᴴ := by
   simp only [reidx, Matrix.conjTranspose_submatrix]
 
+/- English proof (translation)
+The claim follows from `continuous_id.matrix_submatrix _ _`.
+-/
 theorem continuous_reidx : Continuous (fun a : M2 n => reidx a) :=
   continuous_id.matrix_submatrix _ _
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Jst, blk4, reidx, JJ, Matrix.map_apply, Matrix.submatrix_apply]`. Apply the tactic sequence `rcases finSumFinEquiv.symm i with a | a <;> rcases finSumFinEquiv.symm j with b | b <;>`. Simplify using `[Matrix.fromBlocks, Matrix.one_apply]`.
+-/
 theorem Jst_map (τ : D.what₂.Tau) : (Jst D n).map (tauE D τ) = reidx (JJ n) := by
   ext i j
   simp only [Jst, blk4, reidx, JJ, Matrix.map_apply, Matrix.submatrix_apply]
   rcases finSumFinEquiv.symm i with a | a <;> rcases finSumFinEquiv.symm j with b | b <;>
     simp [Matrix.fromBlocks, Matrix.one_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mR_mul (a b : GR n) : mR (a * b) = mR a * mR b := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mR_one : mR (1 : GR n) = 1 := rfl
 
+/- English proof (translation)
+Rewrite using `[← mR_mul, mul_inv_cancel, mR_one]`.
+-/
 theorem mR_mul_inv (a : GR n) : mR a * mR a⁻¹ = 1 := by
   rw [← mR_mul, mul_inv_cancel, mR_one]
 
+/- English proof (translation)
+Rewrite using `[← mR_mul, inv_mul_cancel, mR_one]`.
+-/
 theorem mR_inv_mul (a : GR n) : mR a⁻¹ * mR a = 1 := by
   rw [← mR_mul, inv_mul_cancel, mR_one]
 
+/- English proof (translation)
+Establish `h : (mR y)ᴴ * JJ n * mR y = JJ n` using `y.2`. Rewrite using `[Jst_map, ← reidx_conjTranspose, ← reidx_mul, ← reidx_mul, h]`.
+-/
 theorem reidx_unitary (τ : D.what₂.Tau) (y : GR n) :
     (reidx (mR y))ᴴ * (Jst D n).map (tauE D τ) * reidx (mR y) = (Jst D n).map (tauE D τ) := by
   have h : (mR y)ᴴ * JJ n * mR y = JJ n := y.2
@@ -53,6 +83,9 @@ def iotaF (τ : D.what₂.Tau) (y : GR n) : G D n :=
       by rw [← atMN_mul, ← reidx_mul, mR_inv_mul, reidx_one, atMN_one]⟩,
     atMN_unitary D τ (Jst D n) _ (reidx_unitary τ y)⟩ : HR (AF D.host.F) D.sp.cm.sig (Jst D n))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_iotaF (τ : D.what₂.Tau) (y : GR n) : mat (iotaF τ y) = atMN D τ (reidx (mR y)) := rfl
 
 def iota (τ : D.what₂.Tau) : GR n →* G D n where
@@ -68,6 +101,11 @@ def iota (τ : D.what₂.Tau) : GR n →* G D n where
     show atMN D τ (reidx (mR (a * b))) = atMN D τ (reidx (mR a)) * atMN D τ (reidx (mR b))
     rw [mR_mul, reidx_mul, atMN_mul]
 
+/- English proof (translation)
+Establish `hm : Continuous fun y : GR n => mR y` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hmi : Continuous fun y : GR n => mR y⁻¹` using `hm.comp continuous_inv`. Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(continuous_atMN D τ).comp (continuous_reidx.comp hm)`.
+
+Conclude with `(continuous_atMN D τ).comp (continuous_reidx.comp hmi)`.
+-/
 theorem continuous_iota (τ : D.what₂.Tau) : Continuous (iota (D := D) (n := n) τ) := by
   have hm : Continuous fun y : GR n => mR y := Units.continuous_val.comp continuous_subtype_val
   have hmi : Continuous fun y : GR n => mR y⁻¹ := hm.comp continuous_inv
@@ -76,6 +114,11 @@ theorem continuous_iota (τ : D.what₂.Tau) : Continuous (iota (D := D) (n := n
   · exact (continuous_atMN D τ).comp (continuous_reidx.comp hm)
   · exact (continuous_atMN D τ).comp (continuous_reidx.comp hmi)
 
+/- English proof (translation)
+Introduce `D n θ τ hθ`. Take `rfl` from `eq_thetaC D hθ`. Use `⟨iota τ, continuous_iota τ, fun y => ⟨?_, fun τ' hτ' => ?_, ?_⟩⟩` and prove the remaining obligations. Establish `e` using `psi_atMN D τ τ (reidx (mR y))`. Rewrite `e` using `[if_pos rfl]`.
+
+Conclude with `e`. Establish `e` using `psi_atMN D τ τ' (reidx (mR y))`. Rewrite `e` using `[if_neg hτ']`. Conclude with `e`. Conclude with `fin_atMN D τ (reidx (mR y))`.
+-/
 theorem sEmb : SEmb := by
   intro D n θ τ hθ
   obtain rfl := eq_thetaC D hθ

@@ -15,6 +15,13 @@ open ReciprocityTheory.ChartRestriction.G.Out GlobalTheory.AlgConn
 
 namespace GlobalTheory.ZariskiConn
 
+/- English proof (translation)
+Use `preconnectedSpace_iff_clopen.2 fun U hU => ?_` and prove the remaining obligations. Take `⟨ε, he, hεU⟩` from `exists_idempotent_basicOpen_eq_of_isClopen Y U hU`. Break down `IsLocalRing.isUnit_or_isUnit_one_sub_self ε with h | h` into its components or cases. Use `right`. Rewrite using `[← hεU, Y.basicOpen_of_isUnit h]`.
+
+Both sides reduce to the same expression. Use `left`. Establish `h0 : ε = 0`. Establish `h1 : (1 - ε) * ε = 0` using `by rw [sub_mul, one_mul, he, sub_self]`. Conclude with `(h.mul_right_eq_zero).1 h1`.
+
+Rewrite using `[← hεU, h0, Scheme.basicOpen_zero]`. Both sides reduce to the same expression.
+-/
 theorem preconnectedSpace_of_isLocalRing (Y : Scheme.{0}) [IsLocalRing Γ(Y, ⊤)] : PreconnectedSpace Y := by
   refine preconnectedSpace_iff_clopen.2 fun U hU => ?_
   obtain ⟨ε, he, hεU⟩ := exists_idempotent_basicOpen_eq_of_isClopen Y U hU
@@ -29,6 +36,15 @@ theorem preconnectedSpace_of_isLocalRing (Y : Scheme.{0}) [IsLocalRing Γ(Y, ⊤
     rw [← hεU, h0, Scheme.basicOpen_zero]
     rfl
 
+/- English proof (translation)
+Use `haveI : Nontrivial (O ⧸ maximalIdeal O ^ (n + 1)) := Ideal.Quotient.nontrivial_iff.2 (ne_top_of_le_ne_top (maximalIdeal.isMaximal O).ne_top (Ideal.pow_le_self (Nat.succ_ne_zero n)))`. Establish `key : ∀ Q : PrimeSpectrum (O ⧸ maximalIdeal O ^ (n + 1)), thick O (maximalIdeal O) n Q = closedPoint O`. Introduce `Q`. Use `PrimeSpectrum.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Q.asIdeal.comap (Ideal.Quotient.mk _) = maximalIdeal O`.
+
+Establish `hp : (Q.asIdeal.comap (Ideal.Quotient.mk (maximalIdeal O ^ (n + 1)))).IsPrime` using `inferInstance`. Use `le_antisymm (le_maximalIdeal hp.ne_top) (hp.le_of_pow_le (n := n + 1) fun a ha => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ a ∈ Q.asIdeal`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.2 ha]`. Conclude with `Q.asIdeal.zero_mem`.
+
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Q, rfl⟩`. Conclude with `key Q`. Introduce and unpack `rfl`.
+
+Take `⟨M, hM⟩` from `Ideal.exists_maximal (O ⧸ maximalIdeal O ^ (n + 1))`. Conclude with `⟨⟨M, hM.isPrime⟩, key _⟩`.
+-/
 theorem range_thick (O : Type) [CommRing O] [IsLocalRing O] (n : ℕ) :
     Set.range (thick O (maximalIdeal O) n) = {closedPoint O} := by
   haveI : Nontrivial (O ⧸ maximalIdeal O ^ (n + 1)) :=
@@ -52,6 +68,27 @@ theorem range_thick (O : Type) [CommRing O] [IsLocalRing O] (n : ℕ) :
     obtain ⟨M, hM⟩ := Ideal.exists_maximal (O ⧸ maximalIdeal O ^ (n + 1))
     exact ⟨⟨M, hM.isPrime⟩, key _⟩
 
+/- English proof (translation)
+Set `ι : ∀ n, pullback f (thick O (maximalIdeal O) n) ⟶ Y` to `fun n => pullback.fst _ _`. Establish `hTn : ∀ n, Set.range (ι n) = f ⁻¹' {closedPoint O}` using `fun n => by`. Establish `h` using `Scheme.Pullback.range_fst f (thick O (maximalIdeal O) n)`. Rewrite `h` using `[range_thick]`. Conclude with `h`.
+
+Use `isPreconnected_closed_iff.2 fun A B hA hB hcov ⟨u, hu, huA⟩ ⟨u', hu', hu'B⟩ => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hcon`. Establish `hdis : ∀ y, y ∈ f ⁻¹' {closedPoint O} → y ∈ A → y ∈ B → False` using `fun y h1 h2 h3 => hcon ⟨y, h1, h2, h3⟩`. Establish `hAB : ∀ n, (ι n ⁻¹' A)ᶜ = ι n ⁻¹' B`. Introduce `n`.
+
+Use extensionality with `x`. Establish `hx : ι n x ∈ f ⁻¹' {closedPoint O}` using `by rw [← hTn n]; exact ⟨x, rfl⟩`. Conclude with `⟨fun h => (hcov hx).resolve_left h, fun h h' => hdis _ hx h' h⟩`. Establish `hclo : ∀ n, IsClopen (ι n ⁻¹' A)` using `fun n => ⟨hA.preimage (ι n).continuous, by rw [← isClosed_compl_iff, hAB n]; exact hB.preimage (ι n).continuous⟩`. Use `choose h hhp hhU using fun n => GlobalTheory.exists_hom_spec_prod_self_preimage_eq_clopen O _ (ι n ≫ f) _ (hclo n)`.
+
+Use `haveI : IsProper (Over.mk f).hom := hP`. Use `haveI : IsProper (Over.mk (twoπ O)).hom := isProper_twoπ O`. Establish `htr : ∀ n, thickMap O (maximalIdeal O) n (Over.mk f) ≫ ι (n + 1) = ι n` using `fun n => (pullback.lift_fst _ _ _).trans (Category.comp_id _)`. Establish `hc : ∀ n, thickMap O (maximalIdeal O) n (Over.mk f) ≫ h (n + 1) = h n`. Introduce `n`.
+
+Use `GlobalTheory.AlgConn.hom_ext_of_twoπ_of_basicOpen O _ _ _ ?_ ?_` and prove the remaining obligations. Use `(Category.assoc _ _ _).trans ?_` and prove the remaining obligations. Use `(congrArg (thickMap O (maximalIdeal O) n (Over.mk f) ≫ ·) (hhp (n + 1))).trans ?_` and prove the remaining obligations. Use `(Category.assoc _ _ _).symm.trans ?_` and prove the remaining obligations. Conclude with `(congrArg (· ≫ f) (htr n)).trans (hhp n).symm`.
+
+Use `TopologicalSpace.Opens.ext ?_` and prove the remaining obligations. Use `Eq.trans ?_ (hhU n).symm` and prove the remaining obligations. Use `Eq.trans (congrArg (thickMap O (maximalIdeal O) n (Over.mk f) ⁻¹' ·) (hhU (n + 1))) ?_` and prove the remaining obligations. Rewrite using `[← htr n]`. Both sides reduce to the same expression.
+
+Take `⟨g, hg, -⟩` from `GlobalTheory.Published.FormalAlgebraisation.Morphisms.existsUnique_thick GlobalTheory.FormalAlgMorphisms.formalAlgebraisation_morphisms hI (Over.mk f) (Over.mk (twoπ O)) h (fun n => hhp n) hc`. Establish `hW : IsClopen ((g.left ⁻¹ᵁ (Spec (.of (O × O))).basicOpen (fst1 O) : Y.Opens) : Set Y)` using `(isClopen_basicOpen_specProdSelfFirstIdempotent O).preimage g.left.continuous`. Establish `h0 : ι 0 ⁻¹' ((g.left ⁻¹ᵁ (Spec (.of (O × O))).basicOpen (fst1 O) : Y.Opens) : Set Y) = ι 0 ⁻¹' A`. Rewrite using `[← hhU 0, ← hg 0]`. Both sides reduce to the same expression.
+
+Rewrite `hu`, `hu'` using `[← hTn 0]`. Take `⟨x, rfl⟩` from `hu`. Take `⟨x', rfl⟩` from `hu'`. Break down `isClopen_iff.1 hW with hW0 | hW1` into its components or cases. Establish `hxA : x ∈ ι 0 ⁻¹' A` using `huA`.
+
+Rewrite `hxA` using `[← h0, hW0]`. Simplify using `at hxA`. Establish `hxA : x' ∈ ι 0 ⁻¹' ((g.left ⁻¹ᵁ (Spec (.of (O × O))).basicOpen (fst1 O) : Y.Opens) : Set Y)`. Rewrite using `[hW1]`. Discharge the goal by the elementary cases of `trivial`.
+
+Rewrite `hxA` using `[h0]`. Conclude with `hdis _ (by rw [← hTn 0]; exact ⟨x', rfl⟩) hxA hu'B`.
+-/
 theorem isPreconnected_closedFibre (O : Type) [CommRing O] [IsNoetherianRing O] [IsLocalRing O]
     (hI : IsAdicComplete (maximalIdeal O) O) (Y : Scheme.{0}) (f : Y ⟶ Spec (.of O)) [hP : IsProper f]
     [PreconnectedSpace Y] : _root_.IsPreconnected (f ⁻¹' {closedPoint O}) := by
@@ -112,6 +149,13 @@ theorem isPreconnected_closedFibre (O : Type) [CommRing O] [IsNoetherianRing O] 
     rw [h0] at hxA
     exact hdis _ (by rw [← hTn 0]; exact ⟨x', rfl⟩) hxA hu'B
 
+/- English proof (translation)
+Set `B : Type` to `X.presheaf.stalk x`. Set `O : Type` to `AdicCompletion (maximalIdeal B) B`. Use `haveI : IsNoetherianRing O := GlobalTheory.AdicNoeth.isNoetherianRing_adicCompletion B _`. Set `φ : X.presheaf.stalk x ⟶ CommRingCat.of O` to `CommRingCat.ofHom (algebraMap B O)`. Use `haveI : IsLocalHom φ.hom := inferInstanceAs (IsLocalHom (algebraMap B O))`.
+
+Use `haveI : Flat (Spec.map φ) := by`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`. Conclude with `RingHom.flat_algebraMap_iff.2 (AdicCompletion.flat_of_isNoetherian _)`. Use `haveI : Flat (X.fromSpecStalk x) := GlobalTheory.LocalRingGeneralisation.flat_fromSpecStalk X x`. Use `⟨O, inferInstance, inferInstance, inferInstance, inferInstance, Spec.map φ ≫ X.fromSpecStalk x, inferInstance, ?_⟩` and prove the remaining obligations.
+
+Use `(Scheme.Hom.comp_apply _ _ _).trans ?_` and prove the remaining obligations. Conclude with `(congrArg (X.fromSpecStalk x) (Spec_closedPoint (f := φ))).trans Scheme.fromSpecStalk_closedPoint`.
+-/
 theorem exists_complete_flat (X : Scheme.{0}) [IsAffine X] [IsLocallyNoetherian X] (x : X) :
     ∃ (O : Type) (_ : CommRing O) (_ : IsNoetherianRing O) (_ : IsLocalRing O),
       IsAdicComplete (maximalIdeal O) O ∧ ∃ g : Spec (.of O) ⟶ X, Flat g ∧ g (closedPoint O) = x := by
@@ -129,6 +173,17 @@ theorem exists_complete_flat (X : Scheme.{0}) [IsAffine X] [IsLocallyNoetherian 
   refine (Scheme.Hom.comp_apply _ _ _).trans ?_
   exact (congrArg (X.fromSpecStalk x) (Spec_closedPoint (f := φ))).trans Scheme.fromSpecStalk_closedPoint
 
+/- English proof (translation)
+Introduce `X Y f _ _ _ hf x`. Take `⟨O, _, _, _, hO, g, hg, hx⟩` from `exists_complete_flat X x`. Use `haveI : IsIso f.appTop := (ConcreteCategory.isIso_iff_bijective _).2 hf`. Establish `H` using `IsPullback.of_hasPullback f g`. Use `haveI : IsIso (pullback.snd f g).appTop := GlobalTheory.ProperFunctions.isIso_appTop_of_isPullback H`.
+
+Use `haveI : IsLocalRing Γ(pullback f g, ⊤) := ((Scheme.ΓSpecIso (.of O)).symm ≪≫ asIso (pullback.snd f g).appTop).commRingCatIsoToRingEquiv.isLocalRing`. Use `haveI := preconnectedSpace_of_isLocalRing (pullback f g)`. Establish `hc` using `isPreconnected_closedFibre O hO _ (pullback.snd f g)`. Establish `hw : ∀ y, f (pullback.fst f g y) = g (pullback.snd f g y)` using `fun y => by`. Rewrite using `[← Scheme.Hom.comp_apply, pullback.condition, Scheme.Hom.comp_apply]`.
+
+Establish `hR : pullback.fst f g '' (pullback.snd f g ⁻¹' {closedPoint O}) = f.base ⁻¹' {x}`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Establish `hy' : pullback.snd f g y = closedPoint O` using `hy`.
+
+Express the relevant statement in the definitionally equal form `f (pullback.fst f g y) = x`. Rewrite using `[hw, hy', hx]`. Introduce `hz`. Establish `h1 : f z = g (closedPoint O)` using `(show f z = x from hz).trans hx.symm`. Take `⟨y, hy1, hy2⟩` from `Scheme.Pullback.exists_preimage_pullback z _ h1`.
+
+Conclude with `⟨y, hy2, hy1⟩`. Rewrite using `[← hR]`. Conclude with `hc.image _ (pullback.fst f g).continuous.continuousOn`.
+-/
 theorem isPreconnected_fibre : ∀ (X Y : Scheme.{0}) (f : Y ⟶ X) [IsProper f] [IsAffine X]
     [IsLocallyNoetherian X], Function.Bijective f.appTop →
     ∀ x : X, _root_.IsPreconnected (f.base ⁻¹' {x}) := by

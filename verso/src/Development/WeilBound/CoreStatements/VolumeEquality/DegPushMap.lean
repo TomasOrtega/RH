@@ -12,6 +12,23 @@ open GroundTheory.Heights₂.Heights.NumbersDVR (pointIdeal pointConeMap intNum)
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ b, Fintype (ι b)]
 
+/- English proof (translation)
+Establish `hcomp : ∀ F : MRing ι, pointConeMap ℚ y (MvPolynomial.map (Int.castRingHom ℚ) F) = mConeMap y F`. Introduce `F`. Simplify using `only [pointConeMap, mConeMap, MvPolynomial.aeval_def, MvPolynomial.eval₂_map]`. Use `congr 1`. Conclude with `RingHom.ext_int _ _`.
+
+Establish `key : ∀ G : MvPolynomial (Σ b, ι b) ℚ, ∃ n : ℕ, 0 < n ∧ ∃ F : MRing ι, MvPolynomial.map (Int.castRingHom ℚ) F = (n : MvPolynomial (Σ b, ι b) ℚ) * G`. Introduce `G`. Proceed by induction on `G using MvPolynomial.induction_on with`. Consider the case `C a`. Use `⟨a.den, a.pos, C a.num, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_C, ← map_natCast (C : ℚ →+* MvPolynomial (Σ b, ι b) ℚ), ← C_mul, Rat.den_mul_eq_num]`. Both sides reduce to the same expression. Consider the case `add p q hp hq`. Take `⟨n, hn, F, hF⟩` from `hp`. Take `⟨n', hn', F', hF'⟩` from `hq`.
+
+Use `⟨n * n', Nat.mul_pos hn hn', C (n' : ℤ) * F + C (n : ℤ) * F', ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_mul, map_mul, hF, hF', map_C, map_C]`. Simplify using `only [eq_intCast, Int.cast_natCast, map_natCast, Nat.cast_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul_X p j hp`.
+
+Take `⟨n, hn, F, hF⟩` from `hp`. Conclude with `⟨n, hn, F * X j, by rw [map_mul, map_X, hF, mul_assoc]⟩`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `G hG`. Take `⟨n, hn, F, hF⟩` from `key G`.
+
+Establish `hG0 : pointConeMap ℚ y G = 0` using `hG`. Establish `hFker : F ∈ mCoordIdeal y` using `by show mConeMap y F = 0`. Rewrite using `[← hcomp, hF, map_mul, hG0, mul_zero]`. Establish `hGeq : G = C ((n : ℚ)⁻¹) * MvPolynomial.map (Int.castRingHom ℚ) F`. Rewrite using `[hF, ← mul_assoc, ← map_natCast (C : ℚ →+* MvPolynomial (Σ b, ι b) ℚ), ← C_mul, inv_mul_cancel₀ (by exact_mod_cast hn.ne'), C_1, one_mul]`.
+
+Rewrite using `[hGeq]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_map_of_mem _ hFker)`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `F hF`. Use `show pointConeMap ℚ y (MvPolynomial.map (Int.castRingHom ℚ) F) = 0`.
+
+Rewrite using `[hcomp]`. Conclude with `hF`.
+-/
 theorem pointIdeal_rat {Ω : Type} [Field Ω] [inst : Algebra ℚ Ω] (y : (Σ b, ι b) → Ω) :
     pointIdeal ℚ y = (mCoordIdeal y).map (MvPolynomial.map (Int.castRingHom ℚ)) := by
   have hcomp : ∀ F : MRing ι, pointConeMap ℚ y (MvPolynomial.map (Int.castRingHom ℚ) F) = mConeMap y F := by
@@ -56,6 +73,13 @@ theorem pointIdeal_rat {Ω : Type} [Field Ω] [inst : Algebra ℚ Ω] (y : (Σ b
     exact hF
 
 omit [Fintype K] [∀ b, Fintype (ι b)] in
+/- English proof (translation)
+Establish `h : (MvPolynomial.mapAlgHom i).comp (pointConeMap R y) = pointConeMap R (fun x => i (y x))`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `p`. Simplify using `[pointConeMap]`. Use extensionality with `F`.
+
+Express the relevant statement in the definitionally equal form `pointConeMap R (fun x => i (y x)) F = 0 ↔ pointConeMap R y F = 0`. Rewrite using `[← h, AlgHom.comp_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `h0`. Apply `MvPolynomial.map_injective (i : Ω₂ →+* Ω) i.toRingHom.injective` to reduce the goal to its premises.
+
+Rewrite using `[map_zero]`. Conclude with `h0`. Introduce `h0`. Rewrite using `[h0, map_zero]`.
+-/
 theorem pointIdeal_map {R Ω₂ Ω : Type} [CommRing R] [Field Ω₂] [Field Ω] [Algebra R Ω₂] [Algebra R Ω] (i : Ω₂ →ₐ[R] Ω)
     (y : (Σ b, ι b) → Ω₂) : pointIdeal R (fun x => i (y x)) = pointIdeal R y := by
   have h : (MvPolynomial.mapAlgHom i).comp (pointConeMap R y) = pointConeMap R (fun x => i (y x)) := by
@@ -73,6 +97,9 @@ theorem pointIdeal_map {R Ω₂ Ω : Type} [CommRing R] [Field Ω₂] [Field Ω]
   · intro h0
     rw [h0, map_zero]
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `h.2.1.2.2 b`. Use `⟨j, fun h0 => hj ?_⟩` and prove the remaining obligations. Use `show mConeMap y (X ⟨b, j⟩) = 0`. Simplify using `[mConeMap, h0]`.
+-/
 theorem ne_of_arith {Ω : Type} [Field Ω] {y : (Σ b, ι b) → Ω} {d : ℕ} (h : IsArithVar (mCoordIdeal y) d) (b : K) :
     ∃ j, y ⟨b, j⟩ ≠ 0 := by
   obtain ⟨j, hj⟩ := h.2.1.2.2 b
@@ -80,6 +107,13 @@ theorem ne_of_arith {Ω : Type} [Field Ω] {y : (Σ b, ι b) → Ω} {d : ℕ} (
   show mConeMap y (X ⟨b, j⟩) = 0
   simp [mConeMap, h0]
 
+/- English proof (translation)
+Use `choose c hc using hy`. Establish `htop` using `BirationalRatioClosure.full K ι Ω₂ y c hb hc`. Introduce and unpack `_ ⟨s, rfl⟩`. Establish `hs : s ∈ Subfield.closure (GroundTheory.Heights₂.Heights.coneRatios y c)` using `htop ▸ Subfield.mem_top s`. Establish `hle : Subfield.closure (GroundTheory.Heights₂.Heights.coneRatios y c) ≤ (fnField k fun x => i (y x)).toSubfield.comap i`.
+
+Rewrite using `[Subfield.closure_le]`. Introduce and unpack `_ ⟨p, rfl⟩`. Use `show i (y p / y ⟨p.1, c p.1⟩) ∈ (fnField k fun x => i (y x)).toSubfield`. Rewrite using `[map_div₀]`. Conclude with `IntermediateField.subset_adjoin k _ ⟨p, ⟨p.1, c p.1⟩, rfl, rfl⟩`.
+
+Conclude with `hle hs`.
+-/
 theorem range_le_fnField {Ω₂ Ω : Type} [Field Ω₂] [Field Ω] (i : Ω₂ →+* Ω) {y : (Σ b, ι b) → Ω₂} (hb : Birational y)
     (hy : ∀ b, ∃ j, y ⟨b, j⟩ ≠ 0) (k : Type) [Field k] [Algebra k Ω] :
     i.fieldRange ≤ (fnField k fun x => i (y x)).toSubfield := by
@@ -96,12 +130,24 @@ theorem range_le_fnField {Ω₂ Ω : Type} [Field Ω₂] [Field Ω] (i : Ω₂ �
     exact IntermediateField.subset_adjoin k _ ⟨p, ⟨p.1, c p.1⟩, rfl, rfl⟩
   exact hle hs
 
+/- English proof (translation)
+Use `letI : Algebra S T := (Subfield.inclusion h).toAlgebra`. Use `haveI : IsScalarTower S T Ω := IsScalarTower.of_algebraMap_eq fun x => rfl`. Conclude with `Module.Finite.of_restrictScalars_finite S T Ω`.
+-/
 private theorem finiteDimensional_of_subfield_le {Ω : Type} [Field Ω] (S T : Subfield Ω) (h : S ≤ T) [FiniteDimensional S Ω] :
     FiniteDimensional T Ω := by
   letI : Algebra S T := (Subfield.inclusion h).toAlgebra
   haveI : IsScalarTower S T Ω := IsScalarTower.of_algebraMap_eq fun x => rfl
   exact Module.Finite.of_restrictScalars_finite S T Ω
 
+/- English proof (translation)
+Establish `hQ : Algebra.trdeg ℚ Ω₂ = d` using `by haveI := IsLocalization.isAlgebraic ℚ (nonZeroDivisors ℤ)`. Establish `h` using `_root_.trdeg_add_eq ℤ ℚ (A := Ω₂)`. Rewrite `h` using `[_root_.trdeg_eq_zero, zero_add, hZ]`. Conclude with `h`. Use `letI : Algebra Ω₂ Ω := i.toAlgebra`.
+
+Use `haveI : IsScalarTower ℚ Ω₂ Ω := IsScalarTower.of_algebraMap_eq' (RingHom.ext_rat _ _)`. Use `letI : Algebra Ω₂ i.fieldRange := i.rangeRestrictField.toAlgebra`. Use `haveI : IsScalarTower Ω₂ i.fieldRange Ω := IsScalarTower.of_algebraMap_eq fun x => rfl`. Use `haveI : Module.Finite i.fieldRange Ω := Module.finite_of_finrank_pos hfin`. Use `haveI : Module.Finite Ω₂ i.fieldRange := by`.
+
+Use `Module.Finite.of_surjective (Algebra.linearMap Ω₂ i.fieldRange) ?_` and prove the remaining obligations. Introduce and unpack `⟨z, hz⟩`. Take `⟨x, rfl⟩` from `RingHom.mem_fieldRange.1 hz`. Conclude with `⟨x, Subtype.ext rfl⟩`. Use `haveI : Module.Finite Ω₂ Ω := Module.Finite.trans i.fieldRange Ω`.
+
+Establish `h` using `_root_.trdeg_add_eq ℚ Ω₂ (A := Ω)`. Rewrite `h` using `[_root_.trdeg_eq_zero (R := Ω₂) (A := Ω), add_zero, hQ]`. Conclude with `h.symm`.
+-/
 private theorem trdeg_eq_of_finrank_fieldRange_pos {Ω₂ Ω : Type} [Field Ω₂] [Field Ω] [Algebra ℚ Ω₂] [Algebra ℚ Ω] (i : Ω₂ →+* Ω)
     (d : ℕ) (hZ : Algebra.trdeg ℤ Ω₂ = d) (hfin : 0 < Module.finrank i.fieldRange Ω) :
     Algebra.trdeg ℚ Ω = d := by
@@ -125,6 +171,17 @@ private theorem trdeg_eq_of_finrank_fieldRange_pos {Ω₂ Ω : Type} [Field Ω�
   rw [_root_.trdeg_eq_zero (R := Ω₂) (A := Ω), add_zero, hQ] at h
   exact h.symm
 
+/- English proof (translation)
+Introduce `Ω₂ _ _ Ω _ _ i K _ ι _ y d hb har hfin`. Establish `hy : ∀ b, ∃ j, y ⟨b, j⟩ ≠ 0` using `ne_of_arith har`. Establish `hiy : ∀ b, ∃ j, i (y ⟨b, j⟩) ≠ 0` using `fun b => by`. Take `⟨j, hj⟩` from `hy b`. Conclude with `⟨j, (map_ne_zero i).2 hj⟩`.
+
+Use `haveI : FiniteDimensional i.fieldRange Ω := Module.finite_of_finrank_pos hfin`. Establish `hFD : ∀ (k : Type) [Field k] [Algebra k Ω], FiniteDimensional (fnField k fun x => i (y x)) Ω`. Introduce `k _ _`. Use `haveI := finiteDimensional_of_subfield_le i.fieldRange _ (range_le_fnField i hb hy k)`. Conclude with `this`.
+
+Establish `heq : (fnField ℚ fun x => i (y x)).toSubfield = i.fieldRange`. Use `le_antisymm ?_ (range_le_fnField i hb hy ℚ)` and prove the remaining obligations. Rewrite using `[fnField, IntermediateField.adjoin_toSubfield, Subfield.closure_le]`. Introduce and unpack `_ (⟨q, rfl⟩ | ⟨p, p', _, rfl⟩)`. Conclude with `RingHom.mem_fieldRange.2 ⟨algebraMap ℚ Ω₂ q, by simp⟩`.
+
+Conclude with `RingHom.mem_fieldRange.2 ⟨y p / y p', by rw [map_div₀]⟩`. Establish `hrank : Module.finrank (fnField ℚ fun x => i (y x)) Ω = Module.finrank i.fieldRange Ω`. Rewrite using `[show Module.finrank (fnField ℚ fun x => i (y x)) Ω = Module.finrank (fnField ℚ fun x => i (y x)).toSubfield Ω from rfl, heq]`. Establish `hpi : pointIdeal ℚ (fun x => i (y x)) = pointIdeal ℚ y` using `pointIdeal_map i.toRatAlgHom y`. Use `⟨⟨hiy, hFD ℚ, trdeg_eq_of_finrank_fieldRange_pos i d (FnFieldTrdeg.full K ι Ω₂ y d hb har) hfin⟩, hFD, fun a => ?_, fun a => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [num, inum]`. Rewrite using `[hrank, hpi]`. Simplify using `only [inum, GroundTheory.Heights₂.Heights.HilbertSamuel.genDeg]`. Rewrite using `[pointIdeal_rat]`.
+-/
 theorem numMap : NumMap := by
   intro Ω₂ _ _ Ω _ _ i K _ ι _ y d hb har hfin
   have hy : ∀ b, ∃ j, y ⟨b, j⟩ ≠ 0 := ne_of_arith har

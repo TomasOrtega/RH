@@ -24,15 +24,27 @@ def upperFace (e : κ ↪o ι) (i : ι) (A : Cube.{v} ι R) : Cube.{v} κ R :=
 
 variable (e : κ ↪o ι) (i : ι)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lowerFace_obj (A : Cube.{v} ι R) (s : Finset κ) :
     (lowerFace e A).obj s = A.obj (s.map e.toEmbedding) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem upperFace_obj (A : Cube.{v} ι R) (s : Finset κ) :
     (upperFace e i A).obj s = A.obj (insert i (s.map e.toEmbedding)) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem res_lowerFace (A : Cube.{v} ι R) {s t : Finset κ} (h : s ⊆ t) :
     res (lowerFace e A) h = res A (Finset.map_subset_map.2 h) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem res_upperFace (A : Cube.{v} ι R) {s t : Finset κ} (h : s ⊆ t) :
     res (upperFace e i A) h =
       res A (Finset.insert_subset_insert i (Finset.map_subset_map.2 h)) := rfl
@@ -41,6 +53,9 @@ def faceMap (A : Cube.{v} ι R) : lowerFace e A ⟶ upperFace e i A :=
   homMk (fun s => res A (Finset.subset_insert i (s.map e.toEmbedding)))
     fun _ _ => (res_res A _ _ _).trans (res_res A _ _ _).symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem faceMap_app (A : Cube.{v} ι R) (s : Finset κ) :
     ((faceMap e i A).app s).hom = res A (Finset.subset_insert i (s.map e.toEmbedding)) := rfl
 
@@ -50,18 +65,30 @@ def lowerFaceMap {A B : Cube.{v} ι R} (φ : A ⟶ B) : lowerFace e A ⟶ lowerF
 def upperFaceMap {A B : Cube.{v} ι R} (φ : A ⟶ B) : upperFace e i A ⟶ upperFace e i B :=
   homMk (fun s => (φ.app (insert i (s.map e.toEmbedding))).hom) fun _ _ => app_res φ _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lowerFaceMap_app {A B : Cube.{v} ι R} (φ : A ⟶ B) (s : Finset κ) :
     (lowerFaceMap e φ).app s = φ.app (s.map e.toEmbedding) := rfl
 
+/- English proof (translation)
+The claim follows from `rfl @[reassoc]`.
+-/
 theorem upperFaceMap_app {A B : Cube.{v} ι R} (φ : A ⟶ B) (s : Finset κ) :
     (upperFaceMap e i φ).app s = φ.app (insert i (s.map e.toEmbedding)) := rfl
 
 @[reassoc]
+/- English proof (translation)
+Use extensionality with `s x`. Conclude with `(app_res φ (Finset.subset_insert i (s.map e.toEmbedding)) x).symm`.
+-/
 theorem faceMap_naturality {A B : Cube.{v} ι R} (φ : A ⟶ B) :
     lowerFaceMap e φ ≫ faceMap e i B = faceMap e i A ≫ upperFaceMap e i φ := by
   ext s x
   exact (app_res φ (Finset.subset_insert i (s.map e.toEmbedding)) x).symm
 
+/- English proof (translation)
+Unfold `cubeSign`. Rewrite using `[Finset.filter_map, Finset.card_map]`. Use `congr 2`. Use extensionality with `j`. Simplify using the standard rewrite rules.
+-/
 theorem cubeSign_map (s : Finset κ) (k : κ) :
     cubeSign (s.map e.toEmbedding) (e k) = cubeSign s k := by
   unfold cubeSign
@@ -74,14 +101,25 @@ def upperSign (s : Finset κ) : ℤ :=
   (-1) ^ s.card * cubeSign (insert i (s.map e.toEmbedding)) i
 
 @[simp]
+/- English proof (translation)
+Rewrite using `[upperSign, mul_mul_mul_comm, cubeSign_mul_self, ← mul_pow]`. Simplify using the standard rewrite rules. Use the proof step `@[simp]`.
+-/
 theorem upperSign_mul_self (s : Finset κ) : upperSign e i s * upperSign e i s = 1 := by
   rw [upperSign, mul_mul_mul_comm, cubeSign_mul_self, ← mul_pow]; simp
 
 @[simp]
+/- English proof (translation)
+Rewrite using `[smul_smul, upperSign_mul_self, one_smul]`.
+-/
 theorem upperSign_smul_smul {M : Type*} [AddCommGroup M] (s : Finset κ) (x : M) :
     upperSign e i s • upperSign e i s • x = x := by
   rw [smul_smul, upperSign_mul_self, one_smul]
 
+/- English proof (translation)
+Establish `: (insert i (s.map e.toEmbedding)).filter (· < i) = s.map e.toEmbedding`. Rewrite using `[Finset.filter_insert, if_neg (lt_irrefl i), Finset.filter_true_of_mem]`. Introduce `j hj`. Take `⟨k, -, rfl⟩` from `Finset.mem_map.1 hj`. Conclude with `h k`.
+
+Rewrite using `[upperSign, cubeSign, this, Finset.card_map, ← mul_pow]`. Simplify using the standard rewrite rules.
+-/
 theorem upperSign_eq_one (h : ∀ k, e k < i) (s : Finset κ) : upperSign e i s = 1 := by
   have : (insert i (s.map e.toEmbedding)).filter (· < i) = s.map e.toEmbedding := by
     rw [Finset.filter_insert, if_neg (lt_irrefl i), Finset.filter_true_of_mem]
@@ -90,6 +128,11 @@ theorem upperSign_eq_one (h : ∀ k, e k < i) (s : Finset κ) : upperSign e i s 
     exact h k
   rw [upperSign, cubeSign, this, Finset.card_map, ← mul_pow]; simp
 
+/- English proof (translation)
+Rewrite using `[upperSign, cubeSign_eq_one_of_forall_le, mul_one]`. Introduce `j hj`. Break down `Finset.mem_insert.1 hj with rfl | hj` into its components or cases. Conclude with `le_rfl`. Take `⟨k, -, rfl⟩` from `Finset.mem_map.1 hj`.
+
+Conclude with `h k`.
+-/
 theorem upperSign_eq_pow (h : ∀ k, i ≤ e k) (s : Finset κ) :
     upperSign e i s = (-1) ^ s.card := by
   rw [upperSign, cubeSign_eq_one_of_forall_le, mul_one]
@@ -99,6 +142,9 @@ theorem upperSign_eq_pow (h : ∀ k, i ≤ e k) (s : Finset κ) :
   · obtain ⟨k, -, rfl⟩ := Finset.mem_map.1 hj
     exact h k
 
+/- English proof (translation)
+Rewrite using `[totalD_apply, Finset.sum_map]`. Use `Eq.trans ?_ (totalD_apply (lowerFace e A) _ s).symm` and prove the remaining obligations. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[res_congr A x (Finset.map_erase e.toEmbedding s k).symm _ (Finset.map_subset_map.2 (Finset.erase_subset k s))]`. Conclude with `congrArg (· • _) (cubeSign_map e s k)`.
+-/
 theorem totalD_map (A : Cube.{v} ι R) (x : ∀ t, A.obj t) (s : Finset κ) :
     totalD A x (s.map e.toEmbedding) =
       totalD (lowerFace e A) (fun s => x (s.map e.toEmbedding)) s := by
@@ -111,6 +157,9 @@ theorem totalD_map (A : Cube.{v} ι R) (x : ∀ t, A.obj t) (s : Finset κ) :
 
 variable {e i}
 
+/- English proof (translation)
+Introduce `h`. Take `⟨k, -, hk⟩` from `Finset.mem_map.1 h`. Establish `: i ∈ Set.range e` using `⟨k, hk⟩`. Simplify using `[he] at this`.
+-/
 theorem notMem_map_of_range_eq (he : Set.range e = {i}ᶜ) (s : Finset κ) :
     i ∉ s.map e.toEmbedding := by
   intro h
@@ -118,6 +167,11 @@ theorem notMem_map_of_range_eq (he : Set.range e = {i}ᶜ) (s : Finset κ) :
   have : i ∈ Set.range e := ⟨k, hk⟩
   simp [he] at this
 
+/- English proof (translation)
+Use extensionality with `j`. Simplify using `only [Finset.mem_map, Finset.mem_preimage]`. Use `⟨by rintro ⟨k, hk, rfl⟩; exact hk, fun hj => ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨k, rfl⟩ : j ∈ Set.range e := by`. Rewrite using `[he]`.
+
+Introduce and unpack `rfl`. Conclude with `ht hj`. Conclude with `⟨k, hj, rfl⟩`.
+-/
 theorem map_preimage_of_notMem (he : Set.range e = {i}ᶜ) {t : Finset ι} (ht : i ∉ t) :
     (t.preimage e e.injective.injOn).map e.toEmbedding = t := by
   ext j
@@ -127,6 +181,9 @@ theorem map_preimage_of_notMem (he : Set.range e = {i}ᶜ) {t : Finset ι} (ht :
     rw [he]; rintro rfl; exact ht hj
   exact ⟨k, hj, rfl⟩
 
+/- English proof (translation)
+Use extensionality with `k`. Establish `: e k ≠ i`. Establish `: e k ∈ Set.range e` using `⟨k, rfl⟩`. Simplify `this` using `[he]`. Simplify using `[this]`.
+-/
 theorem preimage_insert_map (he : Set.range e = {i}ᶜ) (s : Finset κ) :
     (insert i (s.map e.toEmbedding)).preimage e e.injective.injOn = s := by
   ext k
@@ -135,11 +192,17 @@ theorem preimage_insert_map (he : Set.range e = {i}ᶜ) (s : Finset κ) :
     simpa [he] using this
   simp [this]
 
+/- English proof (translation)
+Use extensionality with `k`. Simplify using the standard rewrite rules.
+-/
 theorem preimage_map_orderEmbedding (s : Finset κ) :
     (s.map e.toEmbedding).preimage e e.injective.injOn = s := by
   ext k
   simp
 
+/- English proof (translation)
+Distinguish the cases in `ht : i ∈ t`. Conclude with `Or.inr ⟨_, by rw [map_preimage_of_notMem he (Finset.notMem_erase i t), Finset.insert_erase ht]⟩`. Conclude with `Or.inl ⟨_, (map_preimage_of_notMem he ht).symm⟩`.
+-/
 theorem exists_eq_map_or_eq_insert (he : Set.range e = {i}ᶜ) (t : Finset ι) :
     (∃ s : Finset κ, t = s.map e.toEmbedding) ∨
       ∃ s : Finset κ, t = insert i (s.map e.toEmbedding) := by
@@ -148,10 +211,24 @@ theorem exists_eq_map_or_eq_insert (he : Set.range e = {i}ᶜ) (t : Finset ι) :
       Finset.insert_erase ht]⟩
   · exact Or.inl ⟨_, (map_preimage_of_notMem he ht).symm⟩
 
+/- English proof (translation)
+Rewrite using `[Finset.card_insert_of_notMem (notMem_map_of_range_eq he s), Finset.card_map]`.
+-/
 theorem card_insert_map (he : Set.range e = {i}ᶜ) (s : Finset κ) :
     (insert i (s.map e.toEmbedding)).card = s.card + 1 := by
   rw [Finset.card_insert_of_notMem (notMem_map_of_range_eq he s), Finset.card_map]
 
+/- English proof (translation)
+Establish `hi` using `notMem_map_of_range_eq he s`. Rewrite using `[totalD_apply, Finset.sum_insert hi, Finset.sum_map, smul_add, add_comm, res_congr A x (Finset.erase_insert hi) _ (Finset.subset_insert _ _), Finset.smul_sum]`. Use `congrArg₂ (· + ·) (Eq.trans (Finset.sum_congr rfl fun k hk => ?_) (totalD_apply (upperFace e i A) _ s).symm) ?_` and prove the remaining obligations. Establish `hki : e k ≠ i` using `fun h => hi (Finset.mem_map.2 ⟨k, hk, h⟩)`. Establish `h1 : (insert i (s.map e.toEmbedding)).erase (e k) = insert i ((s.erase k).map e.toEmbedding)`.
+
+Rewrite using `[Finset.erase_insert_of_ne hki.symm, Finset.map_erase]`. Both sides reduce to the same expression. Establish `h2` using `cubeSign_mul_erase (t := insert i (s.map e.toEmbedding)) (i := i) (j := e k) (Finset.mem_insert_self _ _) (Finset.mem_insert_of_mem (Finset.mem_map.2 ⟨k, hk, rfl⟩)) hki.symm`. Rewrite `h2` using `[h1, Finset.erase_insert hi, cubeSign_map]`. Establish `h3 : upperSign e i s * cubeSign (insert i (s.map e.toEmbedding)) (e k) = cubeSign s k * upperSign e i (s.erase k)`.
+
+Rewrite using `[upperSign, upperSign, ← Finset.card_erase_add_one hk, pow_succ]`. Establish `a1` using `cubeSign_mul_self (insert i (s.map e.toEmbedding)) i`. Establish `a2` using `cubeSign_mul_self (insert i ((s.erase k).map e.toEmbedding)) i`. Generalize the expression as in `cubeSign (insert i (s.map e.toEmbedding)) i = a at *`. Generalize the expression as in `cubeSign (insert i ((s.erase k).map e.toEmbedding)) i = b at *`.
+
+Generalize the expression as in `cubeSign (insert i (s.map e.toEmbedding)) (e k) = c at *`. Generalize the expression as in `cubeSign s k = f at *`. Generalize the expression as in `(-1 : ℤ) ^ (s.erase k).card = g`. Take the linear combination `(-(g * a * b)) * h2 + (g * f * b) * a1 + (g * a * c) * a2`. Use `Eq.trans (congrArg (fun y => upperSign e i s • cubeSign _ (e k) • y) (res_congr A x h1 _ (Finset.insert_subset_insert i (Finset.map_subset_map.2 (Finset.erase_subset k s))))) ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_smul, h3, ← smul_smul, ← map_zsmul]`. Both sides reduce to the same expression. Rewrite using `[upperSign, smul_smul, mul_assoc, cubeSign_mul_self, mul_one]`. Both sides reduce to the same expression.
+-/
 theorem totalD_insert_map (he : Set.range e = {i}ᶜ) (A : Cube.{v} ι R) (x : ∀ t, A.obj t)
     (s : Finset κ) :
     upperSign e i s • totalD A x (insert i (s.map e.toEmbedding)) =
@@ -204,6 +281,9 @@ def termLower (A : Cube.{v} ι R) (p : ℕ) : Term A p →ₗ[R] Term (lowerFace
     (φ := fun t : {t : Finset ι // t.card = p} => A.obj t.1)
     ⟨s.1.map e.toEmbedding, (Finset.card_map _).trans s.2⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem termLower_apply (A : Cube.{v} ι R) (p : ℕ) (x : Term A p)
     (s : {s : Finset κ // s.card = p}) :
     termLower e A p x s = x ⟨s.1.map e.toEmbedding, (Finset.card_map _).trans s.2⟩ := rfl
@@ -214,6 +294,9 @@ def termUpper (he : Set.range e = {i}ᶜ) (A : Cube.{v} ι R) (p : ℕ) :
     (φ := fun t : {t : Finset ι // t.card = p + 1} => A.obj t.1)
     ⟨insert i (s.1.map e.toEmbedding), by rw [card_insert_map he, s.2]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem termUpper_apply (he : Set.range e = {i}ᶜ) (A : Cube.{v} ι R) (p : ℕ) (x : Term A (p + 1))
     (s : {s : Finset κ // s.card = p}) :
     termUpper he A p x s = upperSign e i s.1 •
@@ -247,10 +330,18 @@ noncomputable def termSec (A : Cube.{v} ι R) (p : ℕ) :
 
 variable (he : Set.range e = {i}ᶜ) (A : Cube.{v} ι R)
 
+/- English proof (translation)
+Rewrite using `[termIncl, LinearMap.pi_apply, dif_neg ht]`. Both sides reduce to the same expression.
+-/
 theorem termIncl_apply_of_notMem {p : ℕ} (y : Term (upperFace e i A) p)
     (t : {t : Finset ι // t.card = p + 1}) (ht : i ∉ t.1) : termIncl e i A p y t = 0 := by
   rw [termIncl, LinearMap.pi_apply, dif_neg ht]; rfl
 
+/- English proof (translation)
+Rewrite using `[termIncl, LinearMap.pi_apply, dif_pos (Finset.mem_insert_self _ _)]`. Establish `key : ∀ (s' : Finset κ) (_ : s' = s.1) (h : insert i (s'.map e.toEmbedding) ⊆ insert i (s.1.map e.toEmbedding)), upperSign e i s' • res A h (extend (upperFace e i A) p y s') = upperSign e i s.1 • y s`. Introduce and unpack `_ rfl h`. Rewrite using `[extend_apply_of_eq _ y s.2]`. Conclude with `congrArg (upperSign e i s.1 • ·) (res_self A h _)`.
+
+Conclude with `key _ (preimage_insert_map he s.1) _`.
+-/
 theorem termIncl_apply_insert {p : ℕ} (y : Term (upperFace e i A) p)
     (s : {s : Finset κ // s.card = p}) :
     termIncl e i A p y ⟨insert i (s.1.map e.toEmbedding), by rw [card_insert_map he, s.2]⟩ =
@@ -264,12 +355,20 @@ theorem termIncl_apply_insert {p : ℕ} (y : Term (upperFace e i A) p)
     exact congrArg (upperSign e i s.1 • ·) (res_self A h _)
   exact key _ (preimage_insert_map he s.1) _
 
+/- English proof (translation)
+Rewrite using `[termSec, LinearMap.pi_apply, if_pos ht]`. Both sides reduce to the same expression.
+-/
 theorem termSec_apply_of_mem {p : ℕ} (y : Term (lowerFace e A) p)
     (t : {t : Finset ι // t.card = p}) (ht : i ∈ t.1) : termSec e i A p y t = 0 := by
   rw [termSec, LinearMap.pi_apply, if_pos ht]; rfl
 
 include he in
 
+/- English proof (translation)
+Rewrite using `[termSec, LinearMap.pi_apply, if_neg (notMem_map_of_range_eq he s.1)]`. Establish `key : ∀ (s' : Finset κ) (_ : s' = s.1) (h : s'.map e.toEmbedding ⊆ s.1.map e.toEmbedding), res A h (extend (lowerFace e A) p y s') = y s`. Introduce and unpack `_ rfl h`. Rewrite using `[extend_apply_of_eq _ y s.2]`. Conclude with `res_self A h _`.
+
+Conclude with `key _ (preimage_map_orderEmbedding s.1) _`. Use the proof step `@[simp]`.
+-/
 theorem termSec_apply_map {p : ℕ} (y : Term (lowerFace e A) p)
     (s : {s : Finset κ // s.card = p}) :
     termSec e i A p y ⟨s.1.map e.toEmbedding, (Finset.card_map _).trans s.2⟩ = y s := by
@@ -282,6 +381,9 @@ theorem termSec_apply_map {p : ℕ} (y : Term (lowerFace e A) p)
   exact key _ (preimage_map_orderEmbedding s.1) _
 
 @[simp]
+/- English proof (translation)
+Use function extensionality and compare the values at `s`. Rewrite using `[termUpper_apply, termIncl_apply_insert he]`. Conclude with `upperSign_smul_smul e i s.1 (y s)`.
+-/
 theorem termUpper_termIncl {p : ℕ} (y : Term (upperFace e i A) p) :
     termUpper he A p (termIncl e i A p y) = y := by
   funext s
@@ -290,23 +392,37 @@ theorem termUpper_termIncl {p : ℕ} (y : Term (upperFace e i A) p) :
 
 include he in
 
+/- English proof (translation)
+The claim follows from `funext fun s => termIncl_apply_of_notMem A y _ (notMem_map_of_range_eq he s.1)`.
+-/
 theorem termLower_termIncl {p : ℕ} (y : Term (upperFace e i A) p) :
     termLower e A (p + 1) (termIncl e i A p y) = 0 :=
   funext fun s => termIncl_apply_of_notMem A y _ (notMem_map_of_range_eq he s.1)
 
 include he in
 
+/- English proof (translation)
+The claim follows from `funext fun s => termSec_apply_map he A y s @[simp]`.
+-/
 theorem termLower_termSec {p : ℕ} (y : Term (lowerFace e A) p) :
     termLower e A p (termSec e i A p y) = y :=
   funext fun s => termSec_apply_map he A y s
 
 @[simp]
+/- English proof (translation)
+Use function extensionality and compare the values at `s`. Rewrite using `[termUpper_apply, termSec_apply_of_mem A y _ (Finset.mem_insert_self _ _), smul_zero]`. Both sides reduce to the same expression.
+-/
 theorem termUpper_termSec {p : ℕ} (y : Term (lowerFace e A) (p + 1)) :
     termUpper he A p (termSec e i A (p + 1) y) = 0 := by
   funext s
   rw [termUpper_apply, termSec_apply_of_mem A y _ (Finset.mem_insert_self _ _), smul_zero]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `⟨t, ht⟩`. Break down `exists_eq_map_or_eq_insert he t with ⟨s, rfl⟩ | ⟨s, rfl⟩` into its components or cases. Conclude with `congrFun h₂ ⟨s, (Finset.card_map _).symm.trans ht⟩`. Establish `hs : s.card = p` using `by rw [card_insert_map he] at ht; omega`. Establish `h` using `congrArg (upperSign e i s • ·) (congrFun h₁ ⟨s, hs⟩)`.
+
+Conclude with `(upperSign_smul_smul e i s _).symm.trans (h.trans (upperSign_smul_smul e i s _))`.
+-/
 theorem term_ext_faces {p : ℕ} {x y : Term A (p + 1)}
     (h₁ : termUpper he A p x = termUpper he A p y)
     (h₂ : termLower e A (p + 1) x = termLower e A (p + 1) y) : x = y := by
@@ -319,6 +435,11 @@ theorem term_ext_faces {p : ℕ} {x y : Term A (p + 1)}
 
 include he in
 
+/- English proof (translation)
+Introduce `x y h`. Use function extensionality and compare the values at `⟨t, ht⟩`. Break down `exists_eq_map_or_eq_insert he t with ⟨s, rfl⟩ | ⟨s, rfl⟩` into its components or cases. Conclude with `congrFun h ⟨s, (Finset.card_map _).symm.trans ht⟩`. Rewrite `ht` using `[card_insert_map he]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem termLower_zero_injective : Function.Injective (termLower e A 0) := by
   intro x y h
   funext ⟨t, ht⟩
@@ -326,15 +447,24 @@ theorem termLower_zero_injective : Function.Injective (termLower e A 0) := by
   · exact congrFun h ⟨s, (Finset.card_map _).symm.trans ht⟩
   · rw [card_insert_map he] at ht; omega
 
+/- English proof (translation)
+The claim follows from `term_ext_faces he A (by simp) (by simp [termLower_termSec he, termLower_termIncl he])`.
+-/
 theorem termIncl_add_termSec {p : ℕ} (x : Term A (p + 1)) :
     termIncl e i A p (termUpper he A p x) + termSec e i A (p + 1) (termLower e A (p + 1) x) = x :=
   term_ext_faces he A (by simp) (by simp [termLower_termSec he, termLower_termIncl he])
 
 include he in
 
+/- English proof (translation)
+The claim follows from `termLower_zero_injective he A (termLower_termSec he A _)`.
+-/
 theorem termSec_termLower_zero (x : Term A 0) : termSec e i A 0 (termLower e A 0 x) = x :=
   termLower_zero_injective he A (termLower_termSec he A _)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s`. Rewrite using `[termLower_apply, d_apply_eq_totalD A x _ (fun s => (extend_apply_of_eq A x s.2).symm), totalD_map]`. Conclude with `(d_apply_eq_totalD (lowerFace e A) (termLower e A p x) (fun s => extend A p x (s.map e.toEmbedding)) (fun s => (extend_apply_of_eq A x ((Finset.card_map _).trans s.2)).symm) s).symm`.
+-/
 theorem termLower_d {p : ℕ} (x : Term A p) :
     termLower e A (p + 1) (d A p x) = d (lowerFace e A) p (termLower e A p x) := by
   funext s
@@ -344,6 +474,11 @@ theorem termLower_d {p : ℕ} (x : Term A p) :
     (fun s => extend A p x (s.map e.toEmbedding))
     (fun s => (extend_apply_of_eq A x ((Finset.card_map _).trans s.2)).symm) s).symm
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s`. Rewrite using `[termUpper_apply, d_apply_eq_totalD A x _ (fun s => (extend_apply_of_eq A x s.2).symm), totalD_insert_map he]`. Use `congrArg₂ (· + ·) (d_apply_eq_totalD _ _ _ (fun s => ?_) s).symm ?_` and prove the remaining obligations. Conclude with `congrArg (upperSign e i s.1 • ·) (extend_apply_of_eq A x _).symm`. Rewrite using `[s.2, extend_apply_of_eq A x ((Finset.card_map _).trans s.2)]`.
+
+Both sides reduce to the same expression.
+-/
 theorem termUpper_d {p : ℕ} (x : Term A (p + 1)) :
     termUpper he A (p + 1) (d A (p + 1) x) = d (upperFace e i A) p (termUpper he A p x) +
       (-1 : ℤ) ^ (p + 1) • termMap (faceMap e i A) (p + 1) (termLower e A (p + 1) x) := by
@@ -355,6 +490,11 @@ theorem termUpper_d {p : ℕ} (x : Term A (p + 1)) :
   · rw [s.2, extend_apply_of_eq A x ((Finset.card_map _).trans s.2)]
     rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `⟨s, hs⟩`. Rewrite using `[termUpper_apply, d_apply_eq_totalD A x _ (fun s => (extend_apply_of_eq A x s.2).symm), totalD_insert_map he]`. Take `rfl` from `Finset.card_eq_zero.1 hs`. Use `(congrArg (· + _) (totalD_apply (upperFace e i A) _ ∅)).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_empty, zero_add, Finset.card_empty, pow_zero, one_smul, extend_apply_of_eq A x ((Finset.card_map _).trans hs)]`.
+
+Both sides reduce to the same expression.
+-/
 theorem termUpper_d_zero (x : Term A 0) :
     termUpper he A 0 (d A 0 x) = termMap (faceMap e i A) 0 (termLower e A 0 x) := by
   funext ⟨s, hs⟩
@@ -368,6 +508,9 @@ theorem termUpper_d_zero (x : Term A 0) :
 
 include he in
 
+/- English proof (translation)
+The claim follows from `term_ext_faces he A (by simp [termUpper_d, termLower_termIncl he]) (by simp [termLower_d, termLower_termIncl he])`.
+-/
 theorem d_termIncl {p : ℕ} (y : Term (upperFace e i A) p) :
     d A (p + 1) (termIncl e i A p y) = termIncl e i A (p + 1) (d (upperFace e i A) p y) :=
   term_ext_faces he A (by simp [termUpper_d, termLower_termIncl he])
@@ -375,6 +518,9 @@ theorem d_termIncl {p : ℕ} (y : Term (upperFace e i A) p) :
 
 include he in
 
+/- English proof (translation)
+Use `term_ext_faces he A ?_ (by simp [termLower_d, termLower_termSec he, termLower_termIncl he])` and prove the remaining obligations. Consider the cases of `p with`. Consider the case `zero => simp [termUpper_d_zero, termLower_termSec he]`. Consider the case `succ p => simp [termUpper_d, termLower_termSec he]`.
+-/
 theorem d_termSec {p : ℕ} (y : Term (lowerFace e A) p) :
     d A p (termSec e i A p y) = termSec e i A (p + 1) (d (lowerFace e A) p y) +
       termIncl e i A p ((-1 : ℤ) ^ p • termMap (faceMap e i A) p y) := by
@@ -386,9 +532,15 @@ theorem d_termSec {p : ℕ} (y : Term (lowerFace e A) p) :
 
 variable {A} {B : Cube.{v} ι R} (φ : A ⟶ B)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem termLower_termMap {p : ℕ} (x : Term A p) :
     termLower e B p (termMap φ p x) = termMap (lowerFaceMap e φ) p (termLower e A p x) := rfl
 
+/- English proof (translation)
+The claim follows from `funext fun s => (map_zsmul (φ.app (insert i (s.1.map e.toEmbedding))).hom _ _).symm`.
+-/
 theorem termUpper_termMap {p : ℕ} (x : Term A (p + 1)) :
     termUpper he B p (termMap φ (p + 1) x) =
       termMap (upperFaceMap e i φ) p (termUpper he A p x) :=
@@ -396,6 +548,9 @@ theorem termUpper_termMap {p : ℕ} (x : Term A (p + 1)) :
 
 include he in
 
+/- English proof (translation)
+The claim follows from `term_ext_faces he B (by simp [termUpper_termMap]) (by simp [termLower_termMap, termLower_termIncl he])`.
+-/
 theorem termMap_termIncl {p : ℕ} (y : Term (upperFace e i A) p) :
     termMap φ (p + 1) (termIncl e i A p y) =
       termIncl e i B p (termMap (upperFaceMap e i φ) p y) :=
@@ -414,8 +569,14 @@ def succEmbedding : (ComplexShape.up ℕ).Embedding (ComplexShape.up ℕ) :=
 instance succEmbedding_isRelIff : succEmbedding.IsRelIff :=
   inferInstanceAs (ComplexShape.embeddingUp'Add (1 : ℕ) 1).IsRelIff
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem succEmbedding_f (p : ℕ) : succEmbedding.f p = p + 1 := rfl
 
+/- English proof (translation)
+The claim follows from `Nat.succ_ne_zero p`.
+-/
 theorem succEmbedding_f_ne_zero (p : ℕ) : succEmbedding.f p ≠ 0 := Nat.succ_ne_zero p
 
 variable {R : Type u} [Ring R]
@@ -430,13 +591,22 @@ noncomputable abbrev shiftSuccHomologyIso (K : CochainComplex (ModuleCat.{v} R) 
     (shiftSucc K).homology (p + 1) ≅ K.homology p :=
   K.extendHomologyIso succEmbedding (succEmbedding_f p)
 
+/- English proof (translation)
+The claim follows from `K.isZero_extend_X _ 0 succEmbedding_f_ne_zero`.
+-/
 theorem isZero_shiftSucc_X_zero (K : CochainComplex (ModuleCat.{v} R) ℕ) :
     IsZero ((shiftSucc K).X 0) := K.isZero_extend_X _ 0 succEmbedding_f_ne_zero
 
+/- English proof (translation)
+The claim follows from `ShortComplex.isZero_homology_of_isZero_X₂ _ (isZero_shiftSucc_X_zero K)`.
+-/
 theorem isZero_shiftSucc_homology_zero (K : CochainComplex (ModuleCat.{v} R) ℕ) :
     IsZero ((shiftSucc K).homology 0) :=
   ShortComplex.isZero_homology_of_isZero_X₂ _ (isZero_shiftSucc_X_zero K)
 
+/- English proof (translation)
+The claim follows from `K.extend_d_eq _ (succEmbedding_f p) (succEmbedding_f (p + 1))`.
+-/
 theorem shiftSucc_d (K : CochainComplex (ModuleCat.{v} R) ℕ) (p : ℕ) :
     (shiftSucc K).d (p + 1) (p + 1 + 1) =
       (shiftSuccXIso K p).hom ≫ K.d p (p + 1) ≫ (shiftSuccXIso K (p + 1)).inv :=
@@ -456,14 +626,27 @@ def cubeLowerProj (A : Cube.{v} ι R) : cubeComplex A ⟶ cubeComplex (Cube.lowe
     rw [cubeComplex_d, cubeComplex_d]
     exact ModuleCat.hom_ext (LinearMap.ext fun x => (Cube.termLower_d A x).symm)
 
+/- English proof (translation)
+The claim follows from `rfl @[reassoc]`.
+-/
 theorem cubeLowerProj_f (A : Cube.{v} ι R) (p : ℕ) :
     (cubeLowerProj e A).f p = ModuleCat.ofHom (Cube.termLower e A p) := rfl
 
 @[reassoc]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cubeLowerProj_naturality {A B : Cube.{v} ι R} (φ : A ⟶ B) :
     cubeComplexMap φ ≫ cubeLowerProj e B =
       cubeLowerProj e A ≫ cubeComplexMap (Cube.lowerFaceMap e φ) := rfl
 
+/- English proof (translation)
+Establish `: ∀ p, IsIso ((cubeLowerProj e A).f p)` using `fun p => by`. Rewrite using `[ConcreteCategory.isIso_iff_bijective]`. Express the relevant statement in the definitionally equal form `Function.Bijective (Cube.termLower e A p)`. Establish `hb : Function.Bijective (fun s : {s : Finset κ // s.card = p} => (⟨s.1.map e.toEmbedding, (Finset.card_map _).trans s.2⟩ : {t : Finset ι // t.card = p}))`. Use `⟨fun s s' h => Subtype.ext (Finset.map_injective _ (congrArg Subtype.val h)), ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨t, ht⟩`. Establish `h : (t.preimage e e.injective.injOn).map e.toEmbedding = t`. Use extensionality with `j`. Take `⟨k, rfl⟩` from `he j`. Simplify using the standard rewrite rules.
+
+Conclude with `⟨⟨t.preimage e e.injective.injOn, by rw [← ht, ← h, Finset.card_map, h]⟩, Subtype.ext h⟩`. Conclude with `(Equiv.piCongrLeft (fun t : {t : Finset ι // t.card = p} => A.obj t.1) (Equiv.ofBijective _ hb)).symm.bijective`. Conclude with `HomologicalComplex.Hom.isIso_of_components _`.
+-/
 theorem isIso_cubeLowerProj (he : Function.Surjective e) (A : Cube.{v} ι R) :
     IsIso (cubeLowerProj e A) := by
   have : ∀ p, IsIso ((cubeLowerProj e A).f p) := fun p => by
@@ -517,10 +700,18 @@ noncomputable def cubeUpperIncl (A : Cube.{v} ι R) :
       congr 1
       exact ModuleCat.hom_ext (LinearMap.ext fun x => Cube.d_termIncl he A x)
 
+/- English proof (translation)
+The claim follows from `rfl @[reassoc]`.
+-/
 theorem cubeUpperIncl_f_succ (A : Cube.{v} ι R) (p : ℕ) :
     (cubeUpperIncl he A).f (p + 1) = (shiftSuccXIso _ p).hom ≫ cubeInclX e i A p := rfl
 
 @[reassoc]
+/- English proof (translation)
+Use `HomologicalComplex.hom_ext _ _ fun p => ?_` and prove the remaining obligations. Consider the cases of `p with`. Consider the case `zero => exact (isZero_shiftSucc_X_zero _).eq_of_src _ _`. Consider the case `succ p`. Rewrite using `[comp_f, comp_f, cubeUpperIncl_f_succ, cubeUpperIncl_f_succ, extendMap_f _ _ (succEmbedding_f p), Category.assoc, Category.assoc, Category.assoc, Iso.inv_hom_id_assoc]`.
+
+Use `congr 1`. Conclude with `ModuleCat.hom_ext (LinearMap.ext fun x => (Cube.termMap_termIncl he φ x).symm)`.
+-/
 theorem cubeUpperIncl_naturality {A B : Cube.{v} ι R} (φ : A ⟶ B) :
     extendMap (cubeComplexMap (Cube.upperFaceMap e i φ)) succEmbedding ≫ cubeUpperIncl he B =
       cubeUpperIncl he A ≫ cubeComplexMap φ := by
@@ -587,10 +778,24 @@ noncomputable def cubeFaceSplitting (A : Cube.{v} ι R) : ∀ p : ℕ,
         exact congrArg (fun y => Cube.termIncl e i A p y +
           Cube.termSec e i A (p + 1) (Cube.termLower e A (p + 1) x)) h }
 
+/- English proof (translation)
+The claim follows from `HomologicalComplex.shortExact_of_degreewise_shortExact _ fun p => (cubeFaceSplitting he A p).shortExact`.
+-/
 theorem cubeFaceSequence_shortExact (A : Cube.{v} ι R) : (cubeFaceSequence he A).ShortExact :=
   HomologicalComplex.shortExact_of_degreewise_shortExact _ fun p =>
     (cubeFaceSplitting he A p).shortExact
 
+/- English proof (translation)
+Set `L` to `cubeComplex (Cube.lowerFace e A)`. Set `U` to `cubeComplex (Cube.upperFace e i A)`. Set `φ : L ⟶ U` to `cubeComplexMap (Cube.faceMap e i A)`. Set `σ : L.X p ⟶ (cubeComplex A).X p` to `cubeSecX e i A p`. Establish `hσ : σ ≫ (cubeLowerProj e A).f p = 𝟙 _` using `ModuleCat.hom_ext (LinearMap.ext fun x => Cube.termLower_termSec he A x)`.
+
+Establish `hd : σ ≫ (cubeComplex A).d p (p + 1) = L.d p (p + 1) ≫ cubeSecX e i A (p + 1) + ((-1 : ℤ) ^ p • φ.f p) ≫ cubeInclX e i A p`. Rewrite using `[cubeComplex_d, cubeComplex_d]`. Conclude with `ModuleCat.hom_ext (LinearMap.ext fun x => Cube.d_termSec he A x)`. Establish `key` using `(cubeFaceSequence_shortExact he A).δ_eq p (p + 1) rfl (L.iCycles p) (L.iCycles_d p (p + 1)) (L.iCycles p ≫ σ) ((Category.assoc _ _ _).trans ((congrArg (L.iCycles p ≫ ·) hσ).trans (Category.comp_id _))) (L.iCycles p ≫ ((-1 : ℤ) ^ p • φ.f p) ≫ (shiftSuccXIso U p).inv) (by`. Express the relevant statement in the definitionally equal form `(L.iCycles p ≫ ((-1 : ℤ) ^ p • φ.f p) ≫ (shiftSuccXIso U p).inv) ≫ (cubeUpperIncl he A).f (p + 1) = (L.iCycles p ≫ σ) ≫ (cubeComplex A).d p (p + 1)`.
+
+Rewrite using `[cubeUpperIncl_f_succ, Category.assoc, Category.assoc, Iso.inv_hom_id_assoc, Category.assoc, hd, Preadditive.comp_add, iCycles_d_assoc, zero_comp, zero_add])`. Use the proof step `(p + 1 + 1) (by simp)`. Establish `h1 : L.liftCycles (L.iCycles p) (p + 1) (by simp) (L.iCycles_d p (p + 1)) = 𝟙 _`. Rewrite using `[← cancel_mono (L.iCycles p), liftCycles_i, Category.id_comp]`. Express the relevant statement in the definitionally equal form `L.liftCycles (L.iCycles p) (p + 1) _ _ ≫ L.homologyπ p ≫ _ = (shiftSucc U).liftCycles _ _ _ _ ≫ (shiftSucc U).homologyπ (p + 1) at key`.
+
+Rewrite `key` using `[h1, Category.id_comp]`. Express the relevant statement in the definitionally equal form `_ = (-1 : ℤ) ^ p • homologyMap φ p`. Rewrite using `[← cancel_epi (L.homologyπ p)]`. Use `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) key).trans ?_)` and prove the remaining obligations. Rewrite using `[Category.assoc, homologyπ_extendHomologyIso_hom, Preadditive.comp_zsmul, homologyπ_naturality, ← Preadditive.zsmul_comp, ← Category.assoc]`.
+
+Use `congr 1`. Rewrite using `[← cancel_mono (U.iCycles p), Category.assoc, extendCyclesIso_hom_iCycles, liftCycles_i_assoc, Category.assoc, Category.assoc, Iso.inv_hom_id, Category.comp_id, Preadditive.zsmul_comp, cyclesMap_i, Preadditive.comp_zsmul]`.
+-/
 theorem cubeFaceSequence_δ (A : Cube.{v} ι R) (p : ℕ) :
     (cubeFaceSequence_shortExact he A).δ p (p + 1) rfl ≫
         (shiftSuccHomologyIso (cubeComplex (Cube.upperFace e i A)) p).hom =
@@ -643,6 +848,13 @@ variable {C ι : Type*} [Category* C] [Abelian C] {c : ComplexShape ι}
 
 include hS₁ hS₂
 
+/- English proof (translation)
+Distinguish the cases in `hj : ∃ i, c.Rel i j`. Take `⟨i, hij⟩` from `hj`. Apply `mono_of_epi_of_mono_of_mono ((δ₀Functor ⋙ δ₀Functor).map (mapComposableArrows₅ φ hS₁ hS₂ i j hij))` to reduce the goal to its premises. Conclude with `(composableArrows₅_exact hS₁ i j hij).δ₀.δ₀`. Conclude with `(composableArrows₅_exact hS₂ i j hij).δ₀.δ₀`.
+
+Conclude with `h₃ _ hij`. Conclude with `h₁`. Conclude with `h₂`. Use `mono_of_mono_of_mono_of_mono (mapComposableArrows₂ φ j) (composableArrows₂_exact hS₁ j) ?_ h₁ h₂` and prove the remaining obligations. Use `hS₂.mono_f` as an intermediate fact.
+
+Apply `mono_homologyMap_of_mono_of_not_rel` to reduce the goal to its premises. Simplify using `using hj`.
+-/
 theorem mono_homologyMap_τ₂ (j : ι) (h₁ : Mono (homologyMap φ.τ₁ j))
     (h₂ : Mono (homologyMap φ.τ₃ j)) (h₃ : ∀ i, c.Rel i j → Epi (homologyMap φ.τ₃ i)) :
     Mono (homologyMap φ.τ₂ j) := by
@@ -661,6 +873,13 @@ theorem mono_homologyMap_τ₂ (j : ι) (h₁ : Mono (homologyMap φ.τ₁ j))
     apply mono_homologyMap_of_mono_of_not_rel
     simpa using hj
 
+/- English proof (translation)
+Distinguish the cases in `hi : ∃ j, c.Rel i j`. Take `⟨j, hij⟩` from `hi`. Apply `epi_of_epi_of_epi_of_mono ((δlastFunctor ⋙ δlastFunctor).map (mapComposableArrows₅ φ hS₁ hS₂ i j hij))` to reduce the goal to its premises. Conclude with `(composableArrows₅_exact hS₁ i j hij).δlast.δlast`. Conclude with `(composableArrows₅_exact hS₂ i j hij).δlast.δlast`.
+
+Conclude with `h₁`. Conclude with `h₂`. Conclude with `h₃ _ hij`. Use `epi_of_epi_of_epi_of_epi (mapComposableArrows₂ φ i) (composableArrows₂_exact hS₂ i) ?_ h₁ h₂` and prove the remaining obligations. Use `hS₁.epi_g` as an intermediate fact.
+
+Apply `epi_homologyMap_of_epi_of_not_rel` to reduce the goal to its premises. Simplify using `using hi`.
+-/
 theorem epi_homologyMap_τ₂ (i : ι) (h₁ : Epi (homologyMap φ.τ₁ i))
     (h₂ : Epi (homologyMap φ.τ₃ i)) (h₃ : ∀ j, c.Rel i j → Mono (homologyMap φ.τ₁ j)) :
     Epi (homologyMap φ.τ₂ i) := by
@@ -679,6 +898,11 @@ theorem epi_homologyMap_τ₂ (i : ι) (h₁ : Epi (homologyMap φ.τ₁ i))
     apply epi_homologyMap_of_epi_of_not_rel
     simpa using hi
 
+/- English proof (translation)
+Rewrite using `[quasiIso_iff]`. Introduce `i`. Rewrite using `[quasiIsoAt_iff_isIso_homologyMap]`. Use `mono_homologyMap_τ₂ φ hS₁ hS₂ i inferInstance inferInstance fun _ _ => inferInstance` as an intermediate fact. Use `epi_homologyMap_τ₂ φ hS₁ hS₂ i inferInstance inferInstance fun _ _ => inferInstance` as an intermediate fact.
+
+Apply `isIso_of_mono_of_epi` to reduce the goal to its premises.
+-/
 theorem quasiIso_τ₂ (h₁ : QuasiIso φ.τ₁) (h₃ : QuasiIso φ.τ₃) : QuasiIso φ.τ₂ := by
   rw [quasiIso_iff]
   intro i
@@ -696,12 +920,18 @@ variable {ι κ : Type} [LinearOrder ι] [LinearOrder κ] {R : Type u} [Ring R]
 
 include he
 
+/- English proof (translation)
+The claim follows from `quasiIso_τ₂ (cubeFaceSequenceMap he φ) (cubeFaceSequence_shortExact he A) (cubeFaceSequence_shortExact he B) ((quasiIso_extendMap_iff _ _).2 h₁) h₀`.
+-/
 theorem quasiIso_cubeComplexMap_of_faces {A B : Cube.{v} ι R} (φ : A ⟶ B)
     (h₀ : QuasiIso (cubeComplexMap (Cube.lowerFaceMap e φ)))
     (h₁ : QuasiIso (cubeComplexMap (Cube.upperFaceMap e i φ))) : QuasiIso (cubeComplexMap φ) :=
   quasiIso_τ₂ (cubeFaceSequenceMap he φ) (cubeFaceSequence_shortExact he A)
     (cubeFaceSequence_shortExact he B) ((quasiIso_extendMap_iff _ _).2 h₁) h₀
 
+/- English proof (translation)
+Rewrite using `[Iso.eq_comp_inv, Preadditive.smul_iso_hom, Units.smul_def, Preadditive.comp_zsmul, cubeFaceSequence_δ, smul_smul, Int.coe_negOnePow_natCast, ← mul_pow]`. Simplify using the standard rewrite rules.
+-/
 theorem cubeFaceSequence_δ_eq (A : Cube.{v} ι R) (p : ℕ) :
     (cubeFaceSequence_shortExact he A).δ p (p + 1) rfl =
       homologyMap (cubeComplexMap (Cube.faceMap e i A)) p ≫
@@ -710,17 +940,26 @@ theorem cubeFaceSequence_δ_eq (A : Cube.{v} ι R) (p : ℕ) :
     cubeFaceSequence_δ, smul_smul, Int.coe_negOnePow_natCast, ← mul_pow]
   simp
 
+/- English proof (translation)
+Rewrite using `[cubeFaceSequence_δ_eq]`. Conclude with `⟨fun h => @mono_of_mono _ _ _ _ _ _ _ h, fun _ => mono_comp _ _⟩`.
+-/
 theorem mono_cubeFaceSequence_δ_iff (A : Cube.{v} ι R) (p : ℕ) :
     Mono ((cubeFaceSequence_shortExact he A).δ p (p + 1) rfl) ↔
       Mono (homologyMap (cubeComplexMap (Cube.faceMap e i A)) p) := by
   rw [cubeFaceSequence_δ_eq]
   exact ⟨fun h => @mono_of_mono _ _ _ _ _ _ _ h, fun _ => mono_comp _ _⟩
 
+/- English proof (translation)
+Rewrite using `[cubeFaceSequence_δ_eq, epi_comp_iff_of_isIso]`.
+-/
 theorem epi_cubeFaceSequence_δ_iff (A : Cube.{v} ι R) (p : ℕ) :
     Epi ((cubeFaceSequence_shortExact he A).δ p (p + 1) rfl) ↔
       Epi (homologyMap (cubeComplexMap (Cube.faceMap e i A)) p) := by
   rw [cubeFaceSequence_δ_eq, epi_comp_iff_of_isIso]
 
+/- English proof (translation)
+Establish `hS` using `cubeFaceSequence_shortExact he A`. Rewrite using `[← mono_cubeFaceSequence_δ_iff he, exactAt_iff_isZero_homology]`. Conclude with `((hS.homology_exact₂ 0).isZero_X₂_iff.trans (and_iff_right ((isZero_shiftSucc_homology_zero _).eq_of_src _ _))).trans (hS.homology_exact₃ 0 (0 + 1) rfl).mono_g_iff.symm`.
+-/
 theorem cubeComplex_exactAt_zero_iff_faces (A : Cube.{v} ι R) :
     (cubeComplex A).ExactAt 0 ↔ Mono (homologyMap (cubeComplexMap (Cube.faceMap e i A)) 0) := by
   have hS := cubeFaceSequence_shortExact he A
@@ -729,6 +968,9 @@ theorem cubeComplex_exactAt_zero_iff_faces (A : Cube.{v} ι R) :
     (and_iff_right ((isZero_shiftSucc_homology_zero _).eq_of_src _ _))).trans
     (hS.homology_exact₃ 0 (0 + 1) rfl).mono_g_iff.symm
 
+/- English proof (translation)
+Establish `hS` using `cubeFaceSequence_shortExact he A`. Rewrite using `[← mono_cubeFaceSequence_δ_iff he, ← epi_cubeFaceSequence_δ_iff he, exactAt_iff_isZero_homology, (hS.homology_exact₃ (p + 1) (p + 1 + 1) rfl).mono_g_iff, (hS.homology_exact₁ p (p + 1) rfl).epi_f_iff]`. Conclude with `(hS.homology_exact₂ (p + 1)).isZero_X₂_iff`.
+-/
 theorem cubeComplex_exactAt_succ_iff_faces (A : Cube.{v} ι R) (p : ℕ) :
     (cubeComplex A).ExactAt (p + 1) ↔
       Epi (homologyMap (cubeComplexMap (Cube.faceMap e i A)) p) ∧
@@ -739,6 +981,15 @@ theorem cubeComplex_exactAt_succ_iff_faces (A : Cube.{v} ι R) (p : ℕ) :
     (hS.homology_exact₁ p (p + 1) rfl).epi_f_iff]
   exact (hS.homology_exact₂ (p + 1)).isZero_X₂_iff
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[quasiIso_iff]`. Introduce `p`. Rewrite using `[quasiIsoAt_iff_isIso_homologyMap]`.
+
+Use `((cubeComplex_exactAt_succ_iff_faces he A p).1 (h _)).1` as an intermediate fact. Establish `: Mono (homologyMap (cubeComplexMap (Cube.faceMap e i A)) p)`. Consider the cases of `p with`. Consider the case `zero => exact (cubeComplex_exactAt_zero_iff_faces he A).1 (h _)`. Consider the case `succ p => exact ((cubeComplex_exactAt_succ_iff_faces he A p).1 (h _)).2`.
+
+Apply `isIso_of_mono_of_epi` to reduce the goal to its premises. Introduce `h p`. Consider the cases of `p with`. Consider the case `zero => exact (cubeComplex_exactAt_zero_iff_faces he A).2 inferInstance`. Consider the case `succ p`.
+
+Conclude with `(cubeComplex_exactAt_succ_iff_faces he A p).2 ⟨inferInstance, inferInstance⟩`.
+-/
 theorem cubeComplex_acyclic_iff_quasiIso_faceMap (A : Cube.{v} ι R) :
     (cubeComplex A).Acyclic ↔ QuasiIso (cubeComplexMap (Cube.faceMap e i A)) := by
   constructor
@@ -758,12 +1009,18 @@ theorem cubeComplex_acyclic_iff_quasiIso_faceMap (A : Cube.{v} ι R) :
     | succ p =>
       exact (cubeComplex_exactAt_succ_iff_faces he A p).2 ⟨inferInstance, inferInstance⟩
 
+/- English proof (translation)
+The claim follows from `(cubeFaceSequence_shortExact he A).exactAt_X₂ (p + 1) ((extend_exactAt_iff _ _ (succEmbedding_f p)).2 h₁) h₀`.
+-/
 theorem cubeComplex_exactAt_succ_of_faces (A : Cube.{v} ι R) (p : ℕ)
     (h₀ : (cubeComplex (Cube.lowerFace e A)).ExactAt (p + 1))
     (h₁ : (cubeComplex (Cube.upperFace e i A)).ExactAt p) : (cubeComplex A).ExactAt (p + 1) :=
   (cubeFaceSequence_shortExact he A).exactAt_X₂ (p + 1)
     ((extend_exactAt_iff _ _ (succEmbedding_f p)).2 h₁) h₀
 
+/- English proof (translation)
+Rewrite using `[cubeComplex_acyclic_iff_quasiIso_faceMap he, quasiIso_iff]`. Conclude with `fun p => (quasiIsoAt_iff_exactAt _ p (h₀ p)).2 (h₁ p)`.
+-/
 theorem cubeComplex_acyclic_of_faces (A : Cube.{v} ι R)
     (h₀ : (cubeComplex (Cube.lowerFace e A)).Acyclic)
     (h₁ : (cubeComplex (Cube.upperFace e i A)).Acyclic) : (cubeComplex A).Acyclic := by
@@ -776,6 +1033,21 @@ section DegreeZero
 
 variable {ι : Type} [LinearOrder ι] {R : Type u} [Ring R]
 
+/- English proof (translation)
+Establish `h1 : QuasiIsoAt (cubeComplexMap φ) 0 ↔ IsIso (cyclesMap (cubeComplexMap φ) 0)`. Rewrite using `[quasiIsoAt_iff_isIso_homologyMap]`. Conclude with `((MorphismProperty.isomorphisms _).arrow_mk_iso_iff (Arrow.isoMk (CochainComplex.isoHomologyπ₀ (cubeComplex A)) (CochainComplex.isoHomologyπ₀ (cubeComplex B)) (homologyπ_naturality (cubeComplexMap φ) 0))).symm`. Set `j (X : Cube.{v} ι R) (x : (cubeComplex X).cycles 0) : X.obj ∅` to `Cube.termZeroEquiv X (((cubeComplex X).iCycles 0).hom x)`. Establish `hj (X : Cube.{v} ι R) : Function.Injective (j X)` using `(Cube.termZeroEquiv X).injective.comp ((ModuleCat.mono_iff_injective ((cubeComplex X).iCycles 0)).1 inferInstance)`.
+
+Establish `hr (X : Cube.{v} ι R) : Set.range (j X) = LinearMap.ker (Cube.aug X)`. Use extensionality with `a`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Establish `h` using `congr(($((cubeComplex X).iCycles_d 0 (0 + 1))).hom x)`.
+
+Rewrite `h` using `[cubeComplex_d]`. Conclude with `(Cube.d_zero_apply X _).symm.trans h`. Introduce `ha`. Establish `ha' : (Cube.termZeroEquiv X).symm a ∈ LinearMap.ker (Cube.d X 0)`. Rewrite using `[LinearMap.mem_ker, Cube.d_zero_apply, LinearEquiv.apply_symm_apply]`.
+
+Conclude with `ha`. Use `⟨(cubeCyclesIso X 0).inv.hom ⟨_, ha'⟩, ?_⟩` and prove the remaining obligations. Establish `h` using `congr(($((Iso.inv_comp_eq _).2 (cubeCyclesIso_hom_subtype X 0).symm)).hom ⟨_, ha'⟩)`. Conclude with `(congrArg (Cube.termZeroEquiv X) h).trans (LinearEquiv.apply_symm_apply _ a)`. Establish `hc (x : (cubeComplex A).cycles 0) : j B ((cyclesMap (cubeComplexMap φ) 0).hom x) = (φ.app ∅).hom (j A x)` using `congrArg (Cube.termZeroEquiv B) congr(($(cyclesMap_i (cubeComplexMap φ) 0)).hom x)`.
+
+Rewrite using `[h1, ConcreteCategory.isIso_iff_bijective, ← hr, ← hr]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`.
+
+Conclude with `⟨_, hc x⟩`. Introduce and unpack `_ ⟨x, rfl⟩ _ ⟨y, rfl⟩ hxy`. Conclude with `congrArg _ (h.1 (hj B ((hc x).trans (hxy.trans (hc y).symm))))`. Introduce and unpack `_ ⟨y, rfl⟩`. Take `⟨x, rfl⟩` from `h.2 y`.
+
+Conclude with `⟨_, ⟨x, rfl⟩, (hc x).symm⟩`. Introduce `h`. Use `⟨fun x y hxy => hj A (h.injOn ⟨x, rfl⟩ ⟨y, rfl⟩ ((hc x).symm.trans ((congrArg (j B) hxy).trans (hc y)))), fun y => ?_⟩` and prove the remaining obligations. Take `⟨_, ⟨x, rfl⟩, hx⟩` from `h.surjOn ⟨y, rfl⟩`. Conclude with `⟨x, hj B ((hc x).trans hx)⟩`.
+-/
 theorem quasiIsoAt_zero_cubeComplexMap_iff {A B : Cube.{v} ι R} (φ : A ⟶ B) :
     QuasiIsoAt (cubeComplexMap φ) 0 ↔ Set.BijOn (φ.app ∅).hom
       (LinearMap.ker (Cube.aug A)) (LinearMap.ker (Cube.aug B)) := by
@@ -824,6 +1096,9 @@ theorem quasiIsoAt_zero_cubeComplexMap_iff {A B : Cube.{v} ι R} (φ : A ⟶ B) 
     obtain ⟨_, ⟨x, rfl⟩, hx⟩ := h.surjOn ⟨y, rfl⟩
     exact ⟨x, hj B ((hc x).trans hx)⟩
 
+/- English proof (translation)
+Rewrite using `[cubeComplex_acyclic_iff_quasiIso_faceMap he, quasiIso_iff]`. Introduce `p`. Consider the cases of `p with`. Consider the case `zero => exact (quasiIsoAt_zero_cubeComplexMap_iff _).2 h`. Consider the case `succ p => exact (quasiIsoAt_iff_exactAt _ _ (h₀ p)).2 (h₁ p)`.
+-/
 theorem cubeComplex_acyclic_of_faces_of_bijOn {κ : Type} [LinearOrder κ] {e : κ ↪o ι} {i : ι}
     (he : Set.range e = {i}ᶜ) (A : Cube.{v} ι R)
     (h₀ : ∀ p, (cubeComplex (Cube.lowerFace e A)).ExactAt (p + 1))
@@ -837,6 +1112,9 @@ theorem cubeComplex_acyclic_of_faces_of_bijOn {κ : Type} [LinearOrder κ] {e : 
   | zero => exact (quasiIsoAt_zero_cubeComplexMap_iff _).2 h
   | succ p => exact (quasiIsoAt_iff_exactAt _ _ (h₀ p)).2 (h₁ p)
 
+/- English proof (translation)
+The claim follows from `cubeComplex_exactAt_of_bijective A i hA`.
+-/
 theorem cubeComplex_acyclic_of_bijective (A : Cube.{v} ι R) (i : ι)
     (hA : ∀ s : Finset ι, i ∉ s → Function.Bijective (Cube.res A (Finset.subset_insert i s))) :
     (cubeComplex A).Acyclic :=
@@ -856,6 +1134,9 @@ noncomputable def cechAugHomology (A : Cube.{v} ι R) : A.obj ∅ ⟶ (cechCompl
       exact ModuleCat.hom_ext (LinearMap.ext (Cube.d_aug A))) ≫
     (cechComplex A).homologyπ 0
 
+/- English proof (translation)
+Rewrite using `[cechAugHomology, Category.assoc, homologyπ_cechHomologyZeroIso_hom_assoc]`. Conclude with `(congrArg (_ ≫ ·) (cechCyclesIso_hom_subtype A 0)).trans (liftCycles_i _ _ _ _ _)`. Use the proof step `@[reassoc]`.
+-/
 theorem cechAugHomology_comp (A : Cube.{v} ι R) :
     cechAugHomology A ≫ (cechHomologyZeroIso A).hom ≫
       ModuleCat.ofHom (LinearMap.ker (Cube.d A 1)).subtype = ModuleCat.ofHom (Cube.aug A) := by
@@ -863,6 +1144,9 @@ theorem cechAugHomology_comp (A : Cube.{v} ι R) :
   exact (congrArg (_ ≫ ·) (cechCyclesIso_hom_subtype A 0)).trans (liftCycles_i _ _ _ _ _)
 
 @[reassoc]
+/- English proof (translation)
+Rewrite using `[cechAugHomology, cechAugHomology, Category.assoc, homologyπ_naturality, ← Category.assoc, ← Category.assoc]`. Use `congr 1`. Rewrite using `[← cancel_mono ((cechComplex B).iCycles 0), Category.assoc, Category.assoc, liftCycles_i, cyclesMap_i, liftCycles_i_assoc]`. Conclude with `ModuleCat.hom_ext (LinearMap.ext fun a => (Cube.termMap_aug φ a).symm)`.
+-/
 theorem cechAugHomology_naturality {A B : Cube.{v} ι R} (φ : A ⟶ B) :
     φ.app ∅ ≫ cechAugHomology B = cechAugHomology A ≫ homologyMap (cechComplexMap φ) 0 := by
   rw [cechAugHomology, cechAugHomology, Category.assoc, homologyπ_naturality, ← Category.assoc,
@@ -872,6 +1156,9 @@ theorem cechAugHomology_naturality {A B : Cube.{v} ι R} (φ : A ⟶ B) :
     cyclesMap_i, liftCycles_i_assoc]
   exact ModuleCat.hom_ext (LinearMap.ext fun a => (Cube.termMap_aug φ a).symm)
 
+/- English proof (translation)
+Rewrite using `[cechAugHomology, isIso_comp_right_iff, CochainComplex.isIso_liftCycles_iff, and_comm, cubeComplex_exactAt_zero_iff, cubeComplex_exactAt_one_iff, ShortComplex.ShortExact.moduleCat_exact_iff_function_exact, ModuleCat.mono_iff_injective]`. Use `and_congr Iff.rfl ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Function.Exact (Cube.aug A) ((cechComplex A).d 0 (0 + 1)).hom ↔ _`. Rewrite using `[cechComplex_d]`. Both sides reduce to the same expression.
+-/
 theorem isIso_cechAugHomology_iff (A : Cube.{v} ι R) :
     IsIso (cechAugHomology A) ↔ (cubeComplex A).ExactAt 0 ∧ (cubeComplex A).ExactAt 1 := by
   rw [cechAugHomology, isIso_comp_right_iff, CochainComplex.isIso_liftCycles_iff, and_comm,
@@ -887,6 +1174,11 @@ noncomputable def cechHomologySuccIso (A : Cube.{v} ι R) (p : ℕ) :
   (cechComplex A).homologyIsoSc' p (p + 1) (p + 2) (by simp) (by simp) ≪≫
     ((cubeComplex A).homologyIsoSc' (p + 1) (p + 2) (p + 3) (by simp) (by simp)).symm
 
+/- English proof (translation)
+Simplify using `only [isIso_cechAugHomology_iff, ← exactAt_iff_isZero_homology, cechComplex_exactAt_succ_iff_cube]`. Use `⟨fun h => ⟨⟨h _, h _⟩, fun _ => h _⟩, fun h p => ?_⟩` and prove the remaining obligations. Use `match p with`. Consider the case `0 => exact h.1.1`. Consider the case `1 => exact h.1.2`.
+
+Consider the case `p + 2 => exact h.2 p`.
+-/
 theorem cubeComplex_acyclic_iff_cech (A : Cube.{v} ι R) :
     (cubeComplex A).Acyclic ↔
       IsIso (cechAugHomology A) ∧ ∀ p, IsZero ((cechComplex A).homology (p + 1)) := by
@@ -898,6 +1190,9 @@ theorem cubeComplex_acyclic_iff_cech (A : Cube.{v} ι R) :
   | 1 => exact h.1.2
   | p + 2 => exact h.2 p
 
+/- English proof (translation)
+Rewrite using `[cubeComplex_acyclic_iff_cech, isIso_cechAugHomology_iff, cubeComplex_exactAt_zero_iff, cubeComplex_exactAt_one_iff, and_assoc]`. Simplify using `only [← exactAt_iff_isZero_homology, cechComplex_exactAt_succ_iff]`.
+-/
 theorem cubeComplex_acyclic_iff_exact (A : Cube.{v} ι R) :
     (cubeComplex A).Acyclic ↔ Function.Injective (Cube.aug A) ∧
       Function.Exact (Cube.aug A) (Cube.d A 1) ∧
@@ -906,6 +1201,9 @@ theorem cubeComplex_acyclic_iff_exact (A : Cube.{v} ι R) :
     cubeComplex_exactAt_one_iff, and_assoc]
   simp only [← exactAt_iff_isZero_homology, cechComplex_exactAt_succ_iff]
 
+/- English proof (translation)
+Rewrite using `[CochainComplex.quasiIsoAt₀_iff, ShortComplex.quasiIso_iff_of_zeros _ rfl rfl rfl, and_comm, cubeComplex_exactAt_zero_iff, cubeComplex_exactAt_one_iff, ShortComplex.ShortExact.moduleCat_exact_iff_function_exact, ModuleCat.mono_iff_injective]`. Express the relevant statement in the definitionally equal form `Function.Injective ((cechAug A).f 0).hom ∧ Function.Exact ((cechAug A).f 0).hom ((cechComplex A).d 0 (0 + 1)).hom ↔ _`. Rewrite using `[cechComplex_d, cechAug_f_zero]`. Both sides reduce to the same expression.
+-/
 theorem quasiIsoAt_zero_cechAug_iff (A : Cube.{v} ι R) :
     QuasiIsoAt (cechAug A) 0 ↔ (cubeComplex A).ExactAt 0 ∧ (cubeComplex A).ExactAt 1 := by
   rw [CochainComplex.quasiIsoAt₀_iff, ShortComplex.quasiIso_iff_of_zeros _ rfl rfl rfl, and_comm,
@@ -916,6 +1214,11 @@ theorem quasiIsoAt_zero_cechAug_iff (A : Cube.{v} ι R) :
   rw [cechComplex_d, cechAug_f_zero]
   rfl
 
+/- English proof (translation)
+Rewrite using `[cubeComplex_acyclic_iff_cech, isIso_cechAugHomology_iff, ← quasiIsoAt_zero_cechAug_iff, quasiIso_iff]`. Establish `h (p : ℕ) : QuasiIsoAt (cechAug A) (p + 1) ↔ IsZero ((cechComplex A).homology (p + 1))`. Rewrite using `[quasiIsoAt_iff_exactAt _ _ (CochainComplex.exactAt_succ_single_obj _ p), exactAt_iff_isZero_homology]`. Use `⟨fun H p => ?_, fun H => ⟨H 0, fun p => (h p).1 (H _)⟩⟩` and prove the remaining obligations. Consider the cases of `p with`.
+
+Consider the case `zero => exact H.1`. Consider the case `succ p => exact (h p).2 (H.2 p)`.
+-/
 theorem cubeComplex_acyclic_iff_quasiIso_cechAug (A : Cube.{v} ι R) :
     (cubeComplex A).Acyclic ↔ QuasiIso (cechAug A) := by
   rw [cubeComplex_acyclic_iff_cech, isIso_cechAugHomology_iff, ← quasiIsoAt_zero_cechAug_iff,
@@ -936,10 +1239,16 @@ variable {ι : Type} [LinearOrder ι] {R : Type u} [Ring R]
 
 abbrev otherDirections (i : ι) : {j : ι // j ≠ i} ↪o ι := OrderEmbedding.subtype _
 
+/- English proof (translation)
+Use extensionality with `j`. Conclude with `⟨by rintro ⟨k, rfl⟩; exact k.2, fun h => ⟨⟨j, h⟩, rfl⟩⟩`.
+-/
 theorem range_otherDirections (i : ι) : Set.range (otherDirections i) = {i}ᶜ := by
   ext j
   exact ⟨by rintro ⟨k, rfl⟩; exact k.2, fun h => ⟨⟨j, h⟩, rfl⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨cubeFaceSequence_shortExact he A, fun p => ⟨cubeFaceSplitting he A p⟩, cubeFaceSequence_δ he A⟩, cubeComplex_acyclic_of_bijective A i, fun _ φ => quasiIso_cubeComplexMap_of_faces he φ, cubeComplex_acyclic_iff_cech A⟩`.
+-/
 theorem cube_cone_of_faces {κ : Type} [LinearOrder κ] {e : κ ↪o ι} {i : ι}
     (he : Set.range e = {i}ᶜ) (A : Cube.{v} ι R) :
     (∃ hS : (ShortComplex.mk (cubeUpperIncl he A) (cubeLowerProj e A)
@@ -959,9 +1268,15 @@ theorem cube_cone_of_faces {κ : Type} [LinearOrder κ] {e : κ ↪o ι} {i : ι
     cubeComplex_acyclic_of_bijective A i, fun _ φ => quasiIso_cubeComplexMap_of_faces he φ,
     cubeComplex_acyclic_iff_cech A⟩
 
+/- English proof (translation)
+The claim follows from `cubeFaceSequence_shortExact _ A`.
+-/
 example (A : Cube.{v} ι R) (i : ι) : (cubeFaceSequence (range_otherDirections i) A).ShortExact :=
   cubeFaceSequence_shortExact _ A
 
+/- English proof (translation)
+The claim follows from `cubeFaceSequence_shortExact _ A`.
+-/
 example {n : ℕ} (A : Cube.{v} (Fin (n + 1)) R) (i : Fin (n + 1)) :
     (cubeFaceSequence (e := Fin.succAboveOrderEmb i) (Fin.range_succAbove i) A).ShortExact :=
   cubeFaceSequence_shortExact _ A

@@ -19,6 +19,17 @@ namespace GlobalTheory.SqTop
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `hH hP hK hM hL`. Take `⟨CF1, H1⟩` from `GlobalTheory.T.bottom_triangle_polynomial_factor hH hP hK hM hL`. Take `⟨CF2, H2⟩` from `GlobalTheory.T.bottom_triangle_integrals_ne_zero hP hK hM hL`. Use `⟨max CF1 CF2, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C1, x1, G1⟩` from `H1 ε CF (le_trans (le_max_left _ _) hCF)`.
+
+Take `⟨C2, x2, G2⟩` from `H2 ε CF (le_trans (le_max_right _ _) hCF)`. Use `⟨max C1 C2, max x1 x2, fun C hC D large₂ he hx hR T Lc μ₀ hμ G W _ i j => ?_⟩` and prove the remaining obligations. Take `⟨A, A', WW, X, hX⟩` from `GlobalTheory.RowTest.exists_bottomTri hμ G W i j`. Take `⟨Pi, p, p', J, hs, ⟨P', hP'⟩, hJ, hI, hI'⟩` from `G1 C (le_trans (le_max_left _ _) hC) D large₂ he (le_trans (le_max_left _ _) hx) hR T Lc μ₀ hμ G W i j A A' WW X hX`. Establish `hN` using `G2 C (le_trans (le_max_right _ _) hC) D large₂ he (le_trans (le_max_right _ _) hx) hR T Lc μ₀ hμ G W i j A A' WW X hX`.
+
+Use `choose lam hlam using hI`. Establish `hinj : ∀ t, Function.Injective (J t)` using `fun t => by`. Use `(hJ t).resolve_left fun h0 => ?_` and prove the remaining obligations. Take `⟨Q, h, hQ⟩` from `(hN t).2`. Conclude with `hQ (by rw [hI' t Q, h0]; rfl)`.
+
+Establish `hlam0 : ∀ t, lam t ≠ 0` using `fun t h0 => by`. Take `⟨Q, h, hQ⟩` from `(hN t).1`. Conclude with `hQ (by rw [hlam t Q, h0, zero_smul]; rfl)`. Establish `hF : GlobalTheory.ConstRatio.Factor X W.ψ W.θ lam` using `⟨hlam0, Pi, p, p', J, hs, hinj, fun t P h => (hX.integrable t).1 P h, hlam, fun t Q _ => hI' t Q, P', hP', fun t h => (hX.integrable t).2 P' h⟩`. Use `haveI : Nonempty T := ⟨μ₀⟩`.
+
+Conclude with `⟨A, A', WW, X, lam, hX, hF.isConst⟩`.
+-/
 theorem triEx_holds : GlobalTheory.Published.HoweDualityReal → GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree →
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → LNe → TriEx := by
   intro hH hP hK hM hL

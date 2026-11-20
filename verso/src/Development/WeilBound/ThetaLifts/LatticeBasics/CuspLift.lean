@@ -14,6 +14,9 @@ open PositivityTheory.ThKEnd (unipU IsCusp)
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ} {Y : Spc F E n}
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `hφ.2.2 N`. Use `⟨2 ^ N * max C 0, by positivity, fun T A hA hi hb h => ?_⟩` and prove the remaining obligations. Establish `q1 : 1 ≤ qht h` using `le_ciInf fun γ => h1 _`. Take `⟨γ, hγ⟩` from `exists_lt_of_ciInf_lt (f := fun γ : ratU σ Y.J => ht (γ.1 * h)) (a := 2 * qht h) (lt_two_mul_self (zero_lt_one.trans_le q1))`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem IsRapid.bound {φ : UA σ Y.J → ℂ} (hφ : IsRapid φ) (h1 : ∀ h : UA σ Y.J, 1 ≤ ht h) (N : ℕ) :
     ∃ M : ℝ, 0 ≤ M ∧ ∀ (T : UA σ Y.J → ℂ) (A : ℝ), 0 ≤ A → (∀ γ ∈ ratU σ Y.J, ∀ h, T (γ * h) = T h) →
       (∀ h, ‖T h‖ ≤ A * (ht h : ℝ) ^ N) → ∀ h, ‖T h‖ * ‖φ h‖ ≤ A * M := by
@@ -29,6 +32,11 @@ theorem IsRapid.bound {φ : UA σ Y.J → ℂ} (hφ : IsRapid φ) (h1 : ∀ h : 
 
 variable {K : Subgroup (G2 σ Y)} {a : G2 σ Y → ℝ} {χ : Chr F E} {s₀ : ℂ} {f : G2 σ Y → ℂ} {e : UA σ Y.J × UA σ Y.J →* G2 σ Y}
 
+/- English proof (translation)
+Take `⟨M, -, hM⟩` from `hφ.bound h2 N`. Use `⟨max C 0 * (c * b) ^ N * M, fun Ê hi hb h hh => hM (fun x => Ê (e (h, x))) _ (by positivity) (fun γ hγ x => ?_) fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← hi _ ((he 1 γ).rat (one_mem _) hγ) (e (h, x)), ← map_mul, Prod.mk_mul_mk, one_mul]`. Use `(hb _).trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, ← mul_pow]`.
+
+Establish `: ht2 (e (h, x)) ≤ c * b * ht x` using `(h1 _ _ _ (he h x)).trans (by rw [mul_assoc]; gcongr)`. Use `gcongr`. Use `exacts [le_max_left _ _, by exact_mod_cast this]`.
+-/
 theorem eis_bound (he : ∀ h h', IsEmb h h' (e (h, h'))) {c : ℝ≥0} (h1 : ∀ h h' x, IsEmb (σ := σ) (Y := Y) h h' x → ht2 x ≤ c * (ht h * ht h'))
     (h2 : ∀ h : UA σ Y.J, 1 ≤ ht h) {φ : UA σ Y.J → ℂ} (hφ : IsRapid φ) (C : ℝ) (N : ℕ) (b : ℝ≥0) :
     ∃ M : ℝ, ∀ Ê : G2 σ Y → ℂ, (∀ c ∈ rat2 σ Y, ∀ x, Ê (c * x) = Ê x) → (∀ x, ‖Ê x‖ ≤ C * (ht2 x : ℝ) ^ N) →
@@ -42,13 +50,54 @@ theorem eis_bound (he : ∀ h h', IsEmb h h' (e (h, h'))) {c : ℝ≥0} (h1 : �
     gcongr
     exacts [le_max_left _ _, by exact_mod_cast this]
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 theorem sfin {A : Type} [MeasurableSpace A] (μ : Measure A) [IsFiniteMeasure μ] : SFinite μ := inferInstance
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 theorem sfin' {A : Type} [Group A] [TopologicalSpace A] [LocallyCompactSpace A] [SecondCountableTopology A] [MeasurableSpace A]
     (μ : Measure A) [μ.IsHaarMeasure] : SFinite μ := inferInstance
 
 set_option synthInstance.maxHeartbeats 200000 in
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `s hs V v1 v2 κ 𝓜 k1 k2 h`. Use `haveI := GlobalTheory.Doubling.isTopologicalRing_tens (F := F) (E := E) (R := AF F)`. Take `⟨g, -⟩` from `hU F E σ hB.cm n Y (.inr hY.skew) d0 V`. Use `haveI := g.sc`. Use `haveI : IsFiniteMeasure (μ.restrict D) := isFiniteMeasure_restrict.2 fin.ne`.
+
+Use `haveI : IsFiniteMeasure (κ.restrict 𝓜) := isFiniteMeasure_restrict.2 (g.fin κ 𝓜 k1 k2).2.ne`. Use `haveI : SFinite (μ.restrict D) := sfin _`. Use `haveI : SFinite (κ.restrict 𝓜) := sfin _`. Use `haveI : SFinite μ := sfin' μ`. Take `⟨c, c1, -, c3⟩` from `hH F E σ n Y`.
+
+Take `⟨t₁, half⟩` from `hE.half`. Establish `cE : ∀ s ∈ U, Continuous (Ê s)` using `fun s hs => hE.cont.comp_continuous (f := fun x => (s, x)) (by fun_prop) fun _ => ⟨hs, trivial⟩`. Establish `iv : ∀ s ∈ U, ∀ γ ∈ rat2 σ Y, ∀ x, Ê s (γ * x) = Ê s x` using `fun s hs γ hγ x => An.ident hE.isOpen hE.conn (hE.hol _) (hE.hol _) (fun s hs => ⟨(half s hs).1, (hf.flat ha a0 s).eis_rat hχ (half s hs).2 hγ _⟩) hs`. Take `⟨Ω, hΩ, cov⟩` from `g.cov`. Take `⟨b, hb'⟩` from `hb _ ((hΩ.image continuous_subtype_val).image (continuous_mul_const h))`.
+
+Set `k : ℂ → unipU σ Y V × UA σ Y.J → ℂ` to `fun s y => Ê s (e (y.1.1 * h, y.2)) * detInv χ y.2 * φ y.2`. Establish `ck : ∀ s ∈ U, Continuous (k s)` using `fun s hs => (((cE s hs).comp (ce.comp (by fun_prop))).mul ((continuous_detInv hχ).comp continuous_snd)).mul (hφ.1.comp continuous_snd)`. Establish `bk : ∀ s ∈ U, ∃ ε > 0, ∃ M, ∀ s' ∈ U ∩ Metric.ball s ε, ∀ y, ‖k s' y‖ ≤ M` using `fun s hs => by`. Take `⟨ε, C, N, h0, hg⟩` from `hE.grow s hs`. Take `⟨M, hM⟩` from `eis_bound he c1 c3 hφ C N b`.
+
+Use `⟨ε, h0, M, fun s' hs' y => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, h1⟩` from `cov y.1`. Use `hM (Ê s') (iv s' hs'.1) (hg s' hs'.2) _ (hb' _ ⟨_, ⟨_, h1, rfl⟩, rfl⟩) y.2` as an intermediate fact. Rewrite `this` using `[show e ((γ * y.1).1 * h, y.2) = e (γ.1, 1) * e (y.1.1 * h, y.2) by simp [← map_mul, mul_assoc], iv s' hs'.1 _ ((he _ _).rat hγ (one_mem _))]`. Simplify `this` using `only [k, norm_mul, norm_detInv, mul_one]`.
+
+Establish `ik : ∀ s ∈ U, Integrable (k s) ((κ.restrict 𝓜).prod (μ.restrict D))` using `fun s hs => by`. Take `⟨ε, h0, M, hM⟩` from `bk s hs`. Conclude with `.of_bound (ck s hs).aestronglyMeasurable M (.of_forall (hM s ⟨hs, Metric.mem_ball_self h0⟩))`. Establish `hol : DifferentiableOn ℂ (fun s => ∫ y, k s y ∂(κ.restrict 𝓜).prod (μ.restrict D)) U` using `fun s hs => by`. Take `⟨ε, h0, M, hM⟩` from `bk s hs`.
+
+Establish `o` using `hE.isOpen.inter (Metric.isOpen_ball (x := s) (ε := ε))`. Conclude with `((An.diffOn_integral o (fun s hs => (ck s hs.1).aestronglyMeasurable) (fun y => (((hE.hol _).mul_const _).mul_const _).mono Set.inter_subset_left) fun S hS _ => ⟨M, fun s hs => hM s (hS hs)⟩).differentiableAt (o.mem_nhds ⟨hs, Metric.mem_ball_self h0⟩)).differentiableWithinAt`. Establish `l1 : Law (1 : Chr F E) ((0 : ℂ) + n / 2) fun x => (a x : ℂ) ^ ((0 : ℂ) + n / 2)` using `fun p t x hp => by beta_reduce`. Rewrite using `[ha.mul hp, Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg (absE_pos _).le (a0 x).le]`. Simplify using the standard rewrite rules.
+
+Establish `h1 : IsHecke F E (1 : Chr F E)` using `⟨continuous_const, fun _ => rfl⟩`. Take `⟨U₁, Ê₁, hE₁, -⟩` from `hE1 F E σ B n Y r _ hB hn (.inr hY) 1 h1 0 (fun x => by simp only [pow_zero, ite_self]; rfl) K a hS ha 0 (fun x => (a x : ℂ) ^ ((0 : ℂ) + n / 2)) ⟨(Complex.continuous_ofReal.comp ca).cpow continuous_const fun x => Complex.ofReal_mem_slitPlane.2 (a0 x), l1, by`. Use `FiniteDimensional.span_of_finite ℂ ((Set.finite_singleton fun x => (a x : ℂ) ^ ((0 : ℂ) + n / 2)).subset ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Use `funext fun x => ?_` and prove the remaining obligations.
+
+Take `⟨p, t, hp, k', hk', rfl⟩` from `ha.iwa x`. Use `show (a _ : ℂ) ^ _ = (a _ : ℂ) ^ _`. Simplify using `only [mul_assoc, ha.val p t hp _ (mul_mem hk' k.2), ha.val p t hp _ hk']⟩`. Take `⟨t₂, half₁⟩` from `hE₁.half`. Rewrite using `[← integral_prod (k s) (ik s hs)]`.
+
+Use `An.ident hE.isOpen hE.conn hol (differentiableOn_const 0) (t := max (max t₁ t₂) (t₀ - n / 2)) (fun s hs => ?_) hs` and prove the remaining obligations. Establish `s1` using `(le_max_left _ _).trans_lt hs`. Take `⟨u, sm⟩` from `half s ((le_max_left _ _).trans_lt s1)`. Establish `cs` using `continuous_flat (s₀ := s₀) cf ca a0 s`. Take `⟨C, hC⟩` from `(hf.flat (s₀ := s₀) ha a0 s).bound cs ha hK`.
+
+Establish `ez : (s - s₀ + (s₀ + n / 2)).re = s.re + n / 2` using `by simp; ring`. Rewrite `hC` using `[ez]`. Establish `i1 : Integrable (fun g => flat a f s₀ s (e (1, g))) μ` using `((hi (s.re + n / 2) (by have := (le_max_right _ _).trans_lt hs; linarith)).const_mul C).mono' (cs.comp (ce.comp (Continuous.prodMk_right 1))).aestronglyMeasurable (.of_forall fun g => hC _)`. Establish `i2` using `i1.mul_bdd (continuous_detInv hχ).aestronglyMeasurable (.of_forall fun g => (norm_detInv χ g).le)`. Take `⟨u₁, sm₁⟩` from `half₁ (s.re : ℂ) (by simpa using (le_max_right _ _).trans_lt s1)`.
+
+Take `⟨ε, C₁, N, h0, hg⟩` from `hE₁.grow _ u₁`. Establish `hfin : ∀ x, ∑' q : Cos σ Y, ∫⁻ y in D, ‖eisTerm (flat a f s₀ s) (e (x, y)) q * detInv χ y * φ y‖ₑ ∂μ ≠ ⊤` using `fun x => by`. Take `⟨M, hM⟩` from `eis_bound he c1 c3 hφ C₁ N (ht x)`. Establish `hM'` using `hM _ (fun c hc => (l1.flat ha a0 _).eis_rat h1 sm₁ hc) (hg _ (Metric.mem_ball_self h0)) x le_rfl`. Use `haveI : Countable (Cos σ Y) := by`.
+
+Conclude with `Set.countable_univ_iff.1 ((sm₁ 1).summable.countable_support.mono fun q _ => mul_ne_zero (Complex.cpow_ne_zero_iff.2 (.inl (Complex.ofReal_ne_zero.2 (a0 _).ne'))) (Complex.cpow_ne_zero_iff.2 (.inl (Complex.ofReal_ne_zero.2 (a0 _).ne'))))`. Rewrite using `[← lintegral_tsum (f := fun q y => ‖eisTerm (flat a f s₀ s) (e (x, y)) q * detInv χ y * φ y‖ₑ) fun q => (((cs.comp (continuous_const.mul (ce.comp (Continuous.prodMk_right x)))).mul (continuous_detInv hχ)).mul hφ.1).measurable.enorm.aemeasurable]`. Use `ne_top_of_le_ne_top (b := ∫⁻ _ in D, ENNReal.ofReal (max C 0 * M) ∂μ) (by rw [setLIntegral_const]; exact ENNReal.mul_ne_top ENNReal.ofReal_ne_top fin.ne) (lintegral_mono fun y => ?_)` and prove the remaining obligations. Establish `t1 : ∀ q : Cos σ Y, eisTerm (flat a (fun x => (a x : ℂ) ^ ((0 : ℂ) + n / 2)) 0 (s.re : ℂ)) (e (x, y)) q = ((a (q.out.1 * e (x, y)) ^ (s.re + n / 2) : ℝ) : ℂ)` using `fun q => by`. Rewrite using `[eisTerm, flat, ← Complex.cpow_add _ _ (Complex.ofReal_ne_zero.2 (a0 _).ne'), Complex.ofReal_cpow (a0 _).le]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `t2 : HasSum (fun q : Cos σ Y => a (q.out.1 * e (x, y)) ^ (s.re + n / 2)) (Ê₁ s.re (e (x, y))).re`. Simplify `Complex.hasSum_re (sm₁ (e (x, y)))` using `only [t1, Complex.ofReal_re]`.
+
+Establish `p0 : ∀ q : Cos σ Y, 0 ≤ max C 0 * (a (q.out.1 * e (x, y)) ^ (s.re + n / 2) * ‖φ y‖)` using `fun q => by`. Use `Real.rpow_nonneg (a0 (q.out.1 * e (x, y))).le (s.re + n / 2)` as an intermediate fact. Check the signs of the components of the expression. Establish `t3` using `(t2.mul_right ‖φ y‖).mul_left (max C 0)`. Use `(ENNReal.tsum_le_tsum fun q => ?_).trans ((ENNReal.ofReal_tsum_of_nonneg p0 t3.summable).symm.le.trans (ENNReal.ofReal_le_ofReal ?_))` and prove the remaining obligations.
+
+Rewrite using `[← ofReal_norm_eq_enorm, norm_mul, norm_mul, norm_detInv, mul_one, ← mul_assoc]`. Conclude with `ENNReal.ofReal_le_ofReal (mul_le_mul_of_nonneg_right ((hC _).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (Real.rpow_nonneg (a0 _).le _))) (norm_nonneg _))`. Rewrite using `[t3.tsum_eq]`. Conclude with `mul_le_mul_of_nonneg_left ((mul_le_mul_of_nonneg_right (Complex.re_le_norm _) (norm_nonneg _)).trans (hM' y)) (le_max_right _ _)`. Use `⟨u, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[integral_prod (k s) (ik s u)]`. Simplify using `only [k, fun x => unfoldC hO hU hB hY d0 hχ he ce cs (hf.flat ha a0 s) sm hμ hD i1 hφ hc x (hfin x)]`. Take `⟨b₀, hb₀⟩` from `hφ.2.2 0`. Rewrite using `[integral_integral_swap (f := fun (m : unipU σ Y V) g => flat a f s₀ s (e (1, g)) * detInv χ g * φ (m.1 * h * g)) ((i2.comp_snd _).mul_bdd (c := b₀) (hφ.1.comp (by fun_prop)).aestronglyMeasurable (.of_forall fun y => by simpa using hb₀ (y.1.1 * h * y.2)))]`. Simplify using `only [integral_const_mul, mul_assoc _ h, hc V v1 v2 κ 𝓜 k1 k2, mul_zero, integral_zero]`.
+-/
 theorem ct_zero (hO : OffOpen) (hU : PositivityTheory.ThKEnd.Grp.UnipUGood) (hE1 : EisContinues) (hH : HtEmb) {B : Base F E} {r s : ℕ}
     (hB : B.IsGood σ) (hn : 1 ≤ n) (hY : Y.IsSkew σ B r s) (d0 : Y.J.det ≠ 0) [LocallyCompactSpace (UA σ Y.J)]
     [SecondCountableTopology (UA σ Y.J)] [T2Space (UA σ Y.J)] (hb : ∀ Ω : Set (UA σ Y.J), IsCompact Ω → ∃ C : ℝ≥0, ∀ g ∈ Ω, ht g ≤ C)

@@ -12,6 +12,49 @@ open ModularForm (E₄ E₆)
 
 namespace GlobalTheory.SzMult
 
+/- English proof (translation)
+Introduce `l _ lam d σ p hd hd4 hld hA hB h3`. Establish `hlp : l.Prime` using `Fact.out`. Take `⟨hint, -, hmul, hmono, -, hl, -⟩` from `GlobalTheory.T.algebraicValuationAtLeast_basic_properties l lam`. Take `⟨-, hadd2, -, -, hZ, -⟩` from `GlobalTheory.QFam.SzSum.sz_ring l lam`. Establish `hne : ∀ n : ℕ, ¬ l ∣ n → (n : ℂ) ≠ 0`.
+
+Introduce `n hn h`. Apply `hn` to reduce the goal to its premises. Rewrite using `[Nat.cast_eq_zero.mp h]`. Conclude with `dvd_zero l`. Establish `hinv : ∀ n : ℕ, ¬ l ∣ n → Sz l lam 0 ((n : ℂ)⁻¹)`.
+
+Introduce `n hn`. Apply `hint n _ hn` to reduce the goal to its premises. Rewrite using `[mul_inv_cancel₀ (hne n hn)]`. Conclude with `isIntegral_one`. Establish `hnat : ∀ n : ℕ, Sz l lam 0 (n : ℂ)` using `fun n => by exact_mod_cast hZ n`.
+
+Establish `hm0 : ∀ (r : ℝ) (x y : ℂ), Sz l lam 0 x → Sz l lam r y → Sz l lam r (x * y)`. Introduce `r x y hx hy`. Simplify using `using hmul 0 r x y hx hy`. Establish `hcancel : ∀ (r : ℝ) (n : ℕ) (x : ℂ), ¬ l ∣ n → Sz l lam r ((n : ℂ) * x) → Sz l lam r x`. Introduce `r n x hn h`.
+
+Use `hm0 r _ _ (hinv n hn) h` as an intermediate fact. Rewrite `this` using `[← mul_assoc, inv_mul_cancel₀ (hne n hn), one_mul]`. Then use the resulting hypothesis. Establish `hkey : ∀ r : ℝ, 0 ≤ r → Sz l lam r (((d : ℂ) + 1) * p) → Sz l lam r (((2 * d : ℕ) : ℂ) * σ)`. Introduce `r hr h`. Establish `hB'` using `hmono 0 r _ hr hB`.
+
+Use `(hadd2 r _ _ h hB').2` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hmulk : ∀ (r : ℝ) (m k : ℕ), d + 1 = m * k → Sz l lam r ((m : ℂ) * p) → Sz l lam r (((d : ℂ) + 1) * p)`.
+
+Introduce `r m k hk h`. Use `hm0 r (k : ℂ) _ (hnat k) h` as an intermediate fact. Establish `e : ((d : ℂ) + 1) = (m : ℂ) * k` using `by exact_mod_cast hk`. Rewrite using `[e]`. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `h2 : l = 2`. Substitute `h2` using the available equality. Establish `hd2 : ¬ 2 ∣ d`. Introduce `h`.
+
+Use `(Nat.prime_dvd_prime_iff_eq Nat.prime_two hd).mp h` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `h4p : Sz 2 lam 0 (((4 : ℕ) : ℂ) * p)`. Apply `hcancel 0 3 _ (by norm_num)` to reduce the goal to its premises. Use `hA using 1` and compare the differences between its conclusion and the goal.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_pos rfl]`. Use `split_ifs with h43`. Take `⟨k, hk⟩ : 4 ∣ d + 1` from `by omega`.
+
+Establish `h1` using `hkey 0 le_rfl (hmulk 0 4 k hk h4p)`. Establish `h2s : Sz 2 lam 0 (((2 : ℕ) : ℂ) * σ)`. Apply `hcancel 0 d _ hd2` to reduce the goal to its premises. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `(hl 0 σ).mp h2s` as an intermediate fact. Evaluate the numerical expressions using `at this`. Conclude with `this`. Establish `h2p : Sz 2 lam 1 (((2 : ℕ) : ℂ) * p)`.
+
+Use `(hl 0 (((2 : ℕ) : ℂ) * p)).mp (by convert h4p using 1; push_cast; ring)` as an intermediate fact. Evaluate the numerical expressions using `at this ⊢`. Conclude with `this`. Take `⟨k, hk⟩ : 2 ∣ d + 1` from `by omega`. Establish `h1` using `hkey 1 zero_le_one (hmulk 1 2 k hk h2p)`.
+
+Establish `h2s : Sz 2 lam 1 (((2 : ℕ) : ℂ) * σ)`. Apply `hcancel 1 d _ hd2` to reduce the goal to its premises. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `(hl 1 σ).mp h2s` as an intermediate fact. Evaluate the numerical expressions using `at this`. Conclude with `this`. Rewrite using `[if_neg h2]`. Distinguish the cases in `h3' : l = 3`.
+
+Substitute `h3'` using the available equality. Establish `hd3` using `h3 rfl`. Establish `h3p : Sz 3 lam 0 (((3 : ℕ) : ℂ) * p)`. Apply `hcancel 0 4 _ (by norm_num)` to reduce the goal to its premises. Use `hA using 1` and compare the differences between its conclusion and the goal.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨k, hk⟩ : 3 ∣ d + 1` from `by omega`. Establish `h1` using `hkey 0 le_rfl (hmulk 0 3 k hk h3p)`. Conclude with `hcancel 0 (2 * d) σ (by omega) h1`.
+
+Establish `hl2 : ∀ n : ℕ, n.Prime → l ∣ n → l = n` using `fun n hn h => (Nat.prime_dvd_prime_iff_eq hlp hn).mp h`. Establish `h12 : ¬ l ∣ 12`. Introduce `h`. Break down `(Nat.Prime.dvd_mul hlp).mp (show l ∣ 2 * 2 * 3 from h) with h' | h'` into its components or cases. Apply the tactic sequence `rcases (Nat.Prime.dvd_mul hlp).mp h' with h'' | h'' <;>`.
+
+Conclude with `h2 (hl2 2 Nat.prime_two h'')`. Conclude with `h3' (hl2 3 Nat.prime_three h')`. Establish `h2d : ¬ l ∣ 2 * d`. Introduce `h`. Break down `(Nat.Prime.dvd_mul hlp).mp h with h' | h'` into its components or cases.
+
+Conclude with `h2 (hl2 2 Nat.prime_two h')`. Conclude with `hld (hl2 d hd h')`. Establish `hp : Sz l lam 0 p`. Apply `hcancel 0 12 p h12` to reduce the goal to its premises. Conclude with `hA` after adjusting the coercions.
+
+Establish `h1` using `hkey 0 le_rfl (hmulk 0 1 (d + 1) (by ring) (by simpa using hp))`. Conclude with `hcancel 0 (2 * d) σ h2d h1`.
+-/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (lam : algebraicClosure ℚ ℂ →+* ℂ_[l]) (d : ℕ) (σ p : ℂ), d.Prime → 4 < d → l ≠ d → Sz l lam 0 (12 * p) → Sz l lam 0 (-2 * (d : ℂ) * σ + ((d : ℂ) + 1) * p) → (l = 3 → d % 3 = 2) → Sz l lam (if l = 2 then (if d % 4 = 3 then 1 else 2) else 0) σ := by
   intro l _ lam d σ p hd hd4 hld hA hB h3
   have hlp : l.Prime := Fact.out

@@ -5,6 +5,33 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.CaDet
 
 open IsLocalRing UpperTheory.V.AlgebraTools
 
+/- English proof (translation)
+Introduce `P _ _ ι _ _ z m hcot c D _ _ φ _ l hlc hzl hm`. Set `ψ : MvPolynomial ι P →+* D` to `MvPolynomial.eval₂Hom φ l`. Establish `hψC : ∀ a, ψ (MvPolynomial.C a) = φ a` using `fun a => MvPolynomial.eval₂Hom_C φ l a`. Establish `hlam : ∀ j, ψ (UpperTheory.V.AlgebraTools.lam P c j) = l j`. Introduce `j`.
+
+Unfold `UpperTheory.V.AlgebraTools.lam`. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using `[hlc]`. Conclude with `MvPolynomial.eval₂Hom_X' φ l j`.
+
+Set `M0 : Ideal (MvPolynomial ι P)` to `Ideal.map MvPolynomial.C (maximalIdeal P)`. Use `haveI hM0 : M0.IsPrime := UpperTheory.V.AlgebraTools.isPrime_map_C (maximalIdeal P)`. Set `Q : Ideal (MvPolynomial ι P)` to `Ideal.comap ψ (maximalIdeal D)`. Use `haveI : Q.IsPrime := Ideal.comap_isPrime ψ (maximalIdeal D)`. Establish `hMQ : M0 ≤ Q`.
+
+Use `Ideal.map_le_iff_le_comap.mpr fun a ha => ?_` and prove the remaining obligations. Use `show ψ (MvPolynomial.C a) ∈ maximalIdeal D`. Rewrite using `[hψC]`. Conclude with `map_nonunit φ a ha`. Establish `hker : chartIdeal z m c ≤ RingHom.ker ψ`.
+
+Use `Ideal.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Break down `k with i | ⟨j, hj⟩` into its components or cases. Use `show ψ (((z.map MvPolynomial.C).mulVec (UpperTheory.V.AlgebraTools.lam P c)) i) = 0`. Establish `h` using `congrFun hzl i`.
+
+Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, Pi.zero_apply] at h ⊢`. Rewrite using `[map_sum]`. Simplify using `only [map_mul, hψC, hlam]`. Conclude with `h`. Use `show ψ (MvPolynomial.C (m j) - UpperTheory.V.AlgebraTools.lam P c j * MvPolynomial.C (m c)) = 0`.
+
+Rewrite using `[map_sub, map_mul, hψC, hψC, hlam, hm j, sub_self]`. Establish `hchartM : chartIdeal z m c ≤ M0`. Use `Ideal.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Break down `k with i | ⟨j, hj⟩` into its components or cases.
+
+Use `show ((z.map MvPolynomial.C).mulVec (UpperTheory.V.AlgebraTools.lam P c)) i ∈ M0`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply]`. Use `Ideal.sum_mem _ fun j _ => Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ ?_)` and prove the remaining obligations. Simplify using `using hcot.mem (Sum.inl (i, j))`. Use `show MvPolynomial.C (m j) - UpperTheory.V.AlgebraTools.lam P c j * MvPolynomial.C (m c) ∈ M0`.
+
+Use `Ideal.sub_mem _ (Ideal.mem_map_of_mem _ ?_) (Ideal.mul_mem_left _ _ (Ideal.mem_map_of_mem _ ?_))` and prove the remaining obligations. Simplify using `using hcot.mem (Sum.inr j)`. Simplify using `using hcot.mem (Sum.inr c)`. Establish `hprime` using `UpperTheory.V.AlgebraTools.chartIdeal_localization_isPrime P ι z m hcot c Q hMQ`. Establish `hsat : ∀ x, algebraMap (MvPolynomial ι P) (Localization.AtPrime Q) x ∈ Ideal.map (algebraMap (MvPolynomial ι P) (Localization.AtPrime Q)) (chartIdeal z m c) → ∃ t ∉ Q, t * x ∈ chartIdeal z m c`.
+
+Introduce `x hx`. Take `⟨t, ht, htx⟩` from `(IsLocalization.algebraMap_mem_map_algebraMap_iff (M := Q.primeCompl) (S := Localization.AtPrime Q) (chartIdeal z m c) x).mp hx`. Conclude with `⟨t, ht, htx⟩`. Introduce `f hf`. Take `⟨s, hs, hsf⟩` from `hf`.
+
+Establish `hmem` using `Ideal.mem_map_of_mem (algebraMap (MvPolynomial ι P) (Localization.AtPrime Q)) hsf`. Rewrite `hmem` using `[map_mul]`. Break down `hprime.mem_or_mem hmem with h | h` into its components or cases. It suffices to derive a contradiction. Take `⟨t, ht, hts⟩` from `hsat s h`.
+
+Break down `hM0.mem_or_mem (hchartM hts) with h' | h'` into its components or cases. Conclude with `ht (hMQ h')`. Conclude with `hs h'`. Take `⟨t, ht, htf⟩` from `hsat _ h`. Establish `h0 : ψ (t * MvPolynomial.C f) = 0` using `hker htf`.
+
+Rewrite `h0` using `[map_mul, hψC]`. Establish `hu : IsUnit (ψ t)`. Assume the negation of the conclusion as `hn`. Conclude with `ht ((IsLocalRing.mem_maximalIdeal _).mpr hn)`. Conclude with `(RingHom.mem_ker).mpr ((hu.mul_right_eq_zero).mp h0)`.
+-/
 theorem UpperTheory.V.AlgebraTools.genKer_le_ker :
     ∀ (P : Type) [CommRing P] [IsRegularLocalRing P] (ι : Type) [Fintype ι] [DecidableEq ι] (z : Matrix ι ι P) (m : ι → P),
       CotInd P (Sum.elim (fun ij : ι × ι => z ij.1 ij.2) m) →

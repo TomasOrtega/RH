@@ -20,12 +20,20 @@ namespace GlobalTheory.Cartier.RatSecDiv
 
 variable {X : Scheme.{0}} [IsIntegral X]
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun h => h.mul hu⟩` and prove the remaining obligations. Establish `e : a = a * u * u⁻¹` using `by rw [mul_assoc, mul_inv_cancel₀ hu.ne_zero, mul_one]`. Rewrite using `[e]`. Conclude with `h.mul hu.inv`.
+-/
 theorem unitAt_mul_unit_iff {x : X} {a u : X.functionField} (hu : UnitAt x u) :
     UnitAt x (a * u) ↔ UnitAt x a := by
   refine ⟨fun h => ?_, fun h => h.mul hu⟩
   have e : a = a * u * u⁻¹ := by rw [mul_assoc, mul_inv_cancel₀ hu.ne_zero, mul_one]
   rw [e]; exact h.mul hu.inv
 
+/- English proof (translation)
+Take `⟨g, g', hg, hg', hr, hu⟩` from `H x`. Establish `u : UnitAt x (((gi : X.functionField) / g) * ((g' : X.functionField) / rk))` using `(hg.iff_unitAt.1 hi).mul (hk.iff_unitAt.1 hg')`. Establish `e : h * (gi : X.functionField) / (rk : X.functionField) = h * (g : X.functionField) / (g' : X.functionField) * (((gi : X.functionField) / g) * ((g' : X.functionField) / rk))`. Use `g.ne_zero` as an intermediate fact. Use `g'.ne_zero` as an intermediate fact.
+
+Use `rk.ne_zero` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, unitAt_mul_unit_iff u]`. Conclude with `⟨hr.mul u.regAt, hu⟩`.
+-/
 theorem local_of {D D' : CartierDiv X} {V : X.Opens} {h : X.functionField}
     (H : ∀ x : X, ∃ g g' : X.functionFieldˣ, D.IsEqn x g ∧ D'.IsEqn x g' ∧
       RegAt x (h * (g : X.functionField) / (g' : X.functionField)) ∧
@@ -48,6 +56,21 @@ end GlobalTheory.Cartier.RatSecDiv
 
 open GlobalTheory.Cartier.RatSecDiv in
 
+/- English proof (translation)
+Introduce `X _ D D' L r hP V h H`. Establish `key (p : (LB.div (toLB D) L).ι) : ∃ a : Γ(X, (LB.div (toLB D) L).U p), ∀ hp, fnOf _ hp a = h * (p.1.1.2 : X.functionField) / (r p.2 : X.functionField)`. Distinguish the cases in `hp : genericPoint X ∈ (LB.div (toLB D) L).U p`. Take `⟨a, ha⟩` from `exists_fnOf_eq hp fun x hx => (local_of H (p.1.2.2 x hx.1) (hP.isEqn p.2 x hx.2)).1`. Conclude with `⟨a, fun _ => ha⟩`.
+
+Conclude with `⟨0, fun h' => (hp h').elim⟩`. Use `choose a ha using key`. Use `⟨⟨a, fun p q => fn_ext fun hpq => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hp : genericPoint X ∈ (LB.div (toLB D) L).U p` using `hpq.1`. Establish `hq : genericPoint X ∈ (LB.div (toLB D) L).U q` using `hpq.2`.
+
+Use `(fnOf_resG _ hpq _).trans (Eq.trans ?_ ((map_mul _ _ _).trans (congrArg _ (fnOf_resG _ hpq _))).symm)` and prove the remaining obligations. Rewrite using `[ha p hp, ha q hq]`. Establish `eL` using `hP.isRatSec p.2 q.2 (memInf hpq.1.2 hpq.2.2)`. Establish `e1 : fnOf _ (memInf hpq.1.1 hpq.2.1) ((toLB D).g p.1 q.1).val = (p.1.1.2 : X.functionField) / (q.1.1.2 : X.functionField)` using `fnOf_toLB_g _ _ _`. Establish `eg : fnOf _ hpq ((LB.div (toLB D) L).g p q).val = fnOf _ (memInf hpq.1.1 hpq.2.1) ((toLB D).g p.1 q.1).val * (fnOf _ (memInf hpq.1.2 hpq.2.2) (L.g p.2 q.2).val)⁻¹`.
+
+Express the relevant statement in the definitionally equal form `fnOf _ hpq ((res _ ((toLB D).g p.1 q.1) * (res _ (L.g p.2 q.2))⁻¹ : Γ(X, _)ˣ).val) = _`. Use `erw [Units.val_mul, map_mul, map_units_inv]`. Conclude with `congrArg₂ (· * ·) (fnOf_resG _ _ _) (congrArg _ (fnOf_resG _ _ _))`. Establish `eL' : fnOf _ (memInf hpq.1.2 hpq.2.2) (L.g p.2 q.2).val = (r p.2 : X.functionField) / (r q.2 : X.functionField)` using `(eq_div_of_mul_eq (r q.2).ne_zero eL.symm)`. Rewrite using `[eg, e1, eL']`.
+
+Use `(p.1.1.2).ne_zero` as an intermediate fact. Use `(q.1.1.2).ne_zero` as an intermediate fact. Use `(r p.2).ne_zero` as an intermediate fact. Use `(r q.2).ne_zero` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+
+Establish `hmem (p : (LB.div (toLB D) L).ι) (y : X) (hy : y ∈ (LB.div (toLB D) L).U p) : y ∈ X.basicOpen (a p) ↔ y ∈ V`. Rewrite using `[← unitAt_fnOf_iff hy (gen_mem hy), ha p (gen_mem hy)]`. Conclude with `(local_of H (p.1.2.2 y hy.1) (hP.isEqn p.2 y hy.2)).2`. Use `le_antisymm (iSup_le fun p y hy => (hmem p y (X.basicOpen_le _ hy)).1 hy) fun y hy => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `exists_chart (isLB_toLB D) y`.
+
+Take `⟨k, hk⟩` from `exists_chart hP.isLB y`. Conclude with `Opens.mem_iSup.2 ⟨(i, k), (hmem (i, k) y ⟨hi, hk⟩).2 hy⟩`.
+-/
 theorem GlobalTheory.Cartier.exists_sec_div_nonzeroLocus_eq :
     ∀ {X : Scheme.{0}} [IsIntegral X] (D D' : CartierDiv X) (L : LB X) (r : L.ι → X.functionFieldˣ),
     Presents D' L r → ∀ (V : X.Opens) (h : X.functionField),

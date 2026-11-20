@@ -26,6 +26,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 open GlobalTheory.EigTie (ResTied IsRowPar plRed resTied_of_plSide)
 open GlobalTheory.IndefiniteRowSideFullHecke.RayClassPrimeCounting (IsGaloisRepOf Zbar GalE OnW)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Take `⟨a1, a2, a3, a4⟩` from `_root_.GlobalTheory.ResLoc.exists_paired_point_of_thetaT_ne_zero hP hH hD X`. Establish `hpt : ∀ j, 1 ≤ j → j ≤ D.R.m → ∀ σ, D.what₂.isot j σ ≠ ⊥ → ∀ w, D.what₂.muAt w ≠ D.what₂.mu0 → ∃ (i : D.nd.Loc) (P : D.naut.AV i) (x : D.nd.X i), D.nd.w i = w ∧ GlobalTheory.ThetaExh.Pairs D.nd D.naut i σ P ∧ D.naut.ptV i P = some x`. Introduce `j h1 h2 σ hσ w hw`. Take `⟨i, rfl, rfl⟩` from `hloc w hw j h1 h2 σ hσ`. Take `⟨i', P, x, -, e, h⟩` from `a4 i σ (exists_thetaT_ne hd h1 h2 hσ (by rw [D.nd.mu_w i]; exact hpos _ hw _ h1 h2 σ hσ))`.
+
+Conclude with `⟨i', P, x, e, h⟩`. Use `clear X hd hpos hloc a4`. Take `⟨D₀, cf, jE, A, _, _, _, _, _, _, _, _, _, _, _, M, C, tp, _, _, big, L, Sp, Au, _, rfl⟩` from `b`. Conclude with `_root_.GlobalTheory.ResLoc.resTied_of_points_alt_alt (D := withLoc L) (GlobalTheory.ChebSplitDense.chebSplit hP.cheb D₀.nd) Rw (plL L A.pl) A.iota Au.iotaQC Au.kFbar (fun i σ w => (Au.locW i σ w).trans (congrFun (congrFun (eq_of_heq hRw) σ) w).symm) a1 hO a2 a3 hpt`.
+-/
 theorem resTied_of_tied_alt (hP : _root_.GlobalTheory.NRows.ThetaLocalInputsAlt) (hH : GlobalTheory.Published.HarishChandraFinite) (hD : GlobalTheory.Published.CuspRapidDecay)
     {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {D : D7} (b : _root_.GlobalTheory.HeightCounting.NormChoiceConstructed hL D) (X : _root_.GlobalTheory.NRows.LinkedData hL D) (hO : SumRepresentations.hypO D) (hd : DV.LamDef D)
     (hpos : ∀ v, TwistedAt D v → ∀ j, 1 ≤ j → j ≤ D.R.m → ∀ σ, D.what₂.isot j σ ≠ ⊥ → 0 < D.what₂.lamP (D.what₂.muTw v) j σ)
@@ -48,6 +53,9 @@ namespace GlobalTheory.ResLoc
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX NumberField IsDedekindDomain GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `hP hL`. Use `EvG.imp (_root_.GlobalTheory.HeightCounting.Up.Model.AtMem.and_z (_root_.GlobalTheory.HeightCounting.Up.Model.AtMem.and_z (_root_.GlobalTheory.T.exists_linked_data_pinned_at_layer hP hL) (_root_.GlobalTheory.T.lamP_muTw_pos_at_members hP hL)) (_root_.GlobalTheory.T.exists_loc_wit …` and prove the remaining obligations. Take `⟨⟨⟨X, -⟩, hpos⟩, hloc⟩` from `H kp w Z Wt p0 t nch n xd c hE hX hp`. Take `⟨e⟩` from `hE`. Conclude with `_root_.GlobalTheory.ResLoc.resTied_of_tied_alt hP.what₂ hP.hc hP.decay c.a.nt.toNBuilt X (e : _root_.GlobalTheory.HeightCounting.RealExpansionExtraData (D := (w.st Z).toD7) c.row t.r.z.geo xd).large.1 t.r.Y.lam hpos hloc Rw hRw`.
+-/
 theorem residual_ties_of_membership : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL fun _ _ _ _ w Z _ _ t nch n c => ∀ Rw : RowSide (w.D Z), HEq Rw.locR c.a.nt.A.row.locR → _root_.GlobalTheory.EigTie.ResTiedAlt (w.D Z) Rw := by
   intro hP hL
   refine EvG.imp (_root_.GlobalTheory.HeightCounting.Up.Model.AtMem.and_z (_root_.GlobalTheory.HeightCounting.Up.Model.AtMem.and_z (_root_.GlobalTheory.T.exists_linked_data_pinned_at_layer hP hL) (_root_.GlobalTheory.T.lamP_muTw_pos_at_members hP hL)) (_root_.GlobalTheory.T.exists_loc_with_place_and_index_at_member hP hL))
@@ -63,6 +71,9 @@ section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX NumberField IsDedekindDomain GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.ResLoc.residual_ties_of_membership | exact _root_.GlobalTheory.ResLoc.residual_ties_of_membership | (intros; apply _root_.GlobalTheory.ResLoc.residual_ties_of_membership <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.non_galois_residual_ties : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL fun _ _ _ _ w Z _ _ t nch n c => ∀ Rw : RowSide (w.D Z), HEq Rw.locR c.a.nt.A.row.locR → _root_.GlobalTheory.EigTie.ResTiedAlt (w.D Z) Rw := by
   first | exact @_root_.GlobalTheory.ResLoc.residual_ties_of_membership | exact _root_.GlobalTheory.ResLoc.residual_ties_of_membership | (intros; apply _root_.GlobalTheory.ResLoc.residual_ties_of_membership <;> assumption)
 end

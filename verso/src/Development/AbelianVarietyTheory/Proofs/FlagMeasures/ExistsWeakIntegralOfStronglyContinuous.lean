@@ -8,6 +8,17 @@ open scoped InnerProductSpace
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hint : ∀ y : H, Integrable (fun g => φ g • R g y) μ` using `fun y => (hφ.norm.mul_const ‖y‖).mono' (hφ.aestronglyMeasurable.smul (hc y).aestronglyMeasurable) (Filter.Eventually.of_forall fun g => by rw [norm_smul, hn])`. Set `Tl : H →ₗ[ℂ] H` to `{ toFun := fun y => ∫ g, φ g • R g y ∂μ map_add' := fun y z => by`. Simplify using `only [map_add, smul_add]`. Conclude with `integral_add (hint y) (hint z)`. Use the proof step `map_smul' := fun c y => by`.
+
+Simplify using `only [map_smul, RingHom.id_apply]`. Rewrite using `[← integral_smul]`. Use `congr 1`. Use extensionality with `g`. Rewrite using `[smul_comm] }`.
+
+Use `⟨Tl.mkContinuous (∫ g, ‖φ g‖ ∂μ) fun y => ?_, fun x y => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use extensionality with `g`. Rewrite using `[norm_smul, hn]`.
+
+Use `_ = (∫ g, ‖φ g‖ ∂μ) * ‖y‖ := integral_mul_const _ _`. Use `show ⟪x, ∫ g, φ g • R g y ∂μ⟫_ℂ = _`. Rewrite using `[← integral_inner (hint y)]`. Use `congr 1`. Use extensionality with `g`.
+
+Rewrite using `[inner_smul_right]`.
+-/
 theorem exists_weakIntegral_of_stronglyContinuous {X H : Type*} [TopologicalSpace X] [MeasurableSpace X]
     [OpensMeasurableSpace X] [SecondCountableTopology X]
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
@@ -42,6 +53,11 @@ theorem exists_weakIntegral_of_stronglyContinuous {X H : Type*} [TopologicalSpac
     ext g
     rw [inner_smul_right]
 
+/- English proof (translation)
+Introduce `I μf _ _ fund hfund R hR`. Take `⟨-, -, hn, hc⟩` from `GlobalTheory.T.rightRegularRepresentation_unitary_mul_continuous I μf fund hfund R hR`. Use `haveI := GlobalTheory.T.secondCountable_finiteAdelicUnitaryPoints I`. Use `⟨fun e he => ?_, fun φ hφ => ?_⟩` and prove the remaining obligations. Take `⟨T, hT⟩` from `exists_weakIntegral_of_stronglyContinuous μf (fun g => R (1, g)) (fun g F => hn _ F) (fun F => (hc F).comp (by fun_prop)) e he`.
+
+Conclude with `⟨T, he, hT⟩`. Take `⟨T, hT⟩` from `exists_weakIntegral_of_stronglyContinuous (I.muA μf) R hn hc φ hφ`. Conclude with `⟨T, hφ, hT⟩`.
+-/
 theorem AutInst_exists_isRConvF_and_isRConv : ∀ (I : AutInst) (μf : Measure I.Gf) [μf.IsHaarMeasure] [SigmaFinite μf] (fund : Set I.GA), I.IsFundDom (I.muA μf) fund → ∀ R : I.GA → (I.L2 μf fund →L[ℂ] I.L2 μf fund), I.IsRightReg μf fund R → (∀ e : I.Gf → ℂ, Integrable e μf → ∃ T, I.IsRConvF μf fund R e T) ∧ ∀ φ : I.GA → ℂ, Integrable φ (I.muA μf) → ∃ T, I.IsRConv μf fund R φ T := by
   intro I μf _ _ fund hfund R hR
   obtain ⟨-, -, hn, hc⟩ := GlobalTheory.T.rightRegularRepresentation_unitary_mul_continuous I μf fund hfund R hR

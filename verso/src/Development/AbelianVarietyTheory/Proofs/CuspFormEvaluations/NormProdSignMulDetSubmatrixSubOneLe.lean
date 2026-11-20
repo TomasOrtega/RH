@@ -8,6 +8,11 @@ open Matrix hiding gram
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.CuspFormEvaluationComplement.main`. Consider the case `exact _root_.GlobalTheory.CuspFormEvaluationComplement.main`. Consider the case `(apply _root_.GlobalTheory.CuspFormEvaluationComplement.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.CuspFormEvaluationComplement.main <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.CuspFormEvaluationComplement.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.CuspFormEvaluationComplement.main ..)`.
+-/
 theorem norm_multisetProd_sub_one_le_exp (s : Multiset ℂ) {t : ℝ} (ht : 0 ≤ t)
     (hs : ∀ μ ∈ s, ‖μ - 1‖ ≤ t) : ‖s.prod - 1‖ ≤ Real.exp (s.card * t) - 1 := by
   first
@@ -18,6 +23,17 @@ theorem norm_multisetProd_sub_one_le_exp (s : Multiset ℂ) {t : ℝ} (ht : 0 �
   | (intros; apply @_root_.GlobalTheory.CuspFormEvaluationComplement.main <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.CuspFormEvaluationComplement.main ..)
 
+/- English proof (translation)
+Establish `hs : ∀ μ ∈ (1 + M).charpoly.roots, ‖μ - 1‖ ≤ Fintype.card n * ε`. Introduce `μ hμ`. Establish `h1 : μ ∈ spectrum ℂ (1 + M)` using `mem_spectrum_of_isRoot_charpoly (Polynomial.isRoot_of_mem_roots hμ)`. Establish `h2 : μ - 1 ∈ spectrum ℂ M`. Rewrite `h1`, the goal using `[spectrum.mem_iff]`.
+
+Use `h1 using 2` and compare the differences between its conclusion and the goal. Rewrite using `[map_sub, map_one]`. Normalize the expressions using the abelian group laws. Rewrite `h2` using `[← Matrix.spectrum_toLin', ← Module.End.hasEigenvalue_iff_mem_spectrum]`. Take `⟨k, hk⟩` from `eigenvalue_mem_ball h2`.
+
+Rewrite `hk` using `[Metric.mem_closedBall, dist_eq_norm]`. Establish `h3` using `Finset.add_sum_erase Finset.univ (fun j => ‖M k j‖) (Finset.mem_univ k)`. Establish `h4 : ∑ j, ‖M k j‖ ≤ Fintype.card n * ε`. Simplify using `using Finset.sum_le_card_nsmul Finset.univ (fun j => ‖M k j‖) ε fun j _ => hM k j`. Establish `h5` using `norm_le_insert' (μ - 1) (M k k)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc : (1 + M).charpoly.roots.card = Fintype.card n`. Rewrite using `[← charpoly_natDegree_eq_dim (1 + M)]`. Conclude with `(IsAlgClosed.splits _).natDegree_eq_card_roots.symm`. Establish `h` using `norm_multisetProd_sub_one_le_exp _ (by positivity) hs`.
+
+Rewrite `h` using `[← det_eq_prod_roots_charpoly, hc]`. Then use the resulting hypothesis.
+-/
 theorem norm_det_one_add_sub_one_le_exp {n : Type*} [Fintype n] [DecidableEq n]
     (M : Matrix n n ℂ) {ε : ℝ} (hε : 0 ≤ ε) (hM : ∀ a b, ‖M a b‖ ≤ ε) :
     ‖(1 + M).det - 1‖ ≤ Real.exp (Fintype.card n * (Fintype.card n * ε)) - 1 := by
@@ -44,6 +60,17 @@ theorem norm_det_one_add_sub_one_le_exp {n : Type*} [Fintype n] [DecidableEq n]
   have h := norm_multisetProd_sub_one_le_exp _ (by positivity) hs
   rwa [← det_eq_prod_roots_charpoly, hc] at h
 
+/- English proof (translation)
+Establish `hstar : (1 + z : Matrix (Fin r) (Fin r) ℂ).map star = 1 + z.map star`. Use extensionality with `a b`. Apply the tactic sequence `by_cases h : a = b <;> simp [one_apply, h]`. Establish `heq : (1 + z)ᵀ * diagonal j * (1 + z).map star - diagonal j = zᵀ * diagonal j + diagonal j * z.map star + zᵀ * diagonal j * z.map star`. Rewrite using `[hstar]`.
+
+Simplify using `only [transpose_add, transpose_one]`. Use `noncomm_ring`. Rewrite using `[heq, Matrix.add_apply, Matrix.add_apply]`. Establish `h1 : ∀ a b, ‖(zᵀ * diagonal j) a b‖ ≤ δ` using `fun a b => by`. Rewrite using `[mul_diagonal, norm_mul, hj, mul_one]`.
+
+Conclude with `hz _ _`. Establish `h2 : ‖(diagonal j * z.map star) a b‖ ≤ δ`. Rewrite using `[diagonal_mul, norm_mul, hj, one_mul, map_apply, norm_star]`. Conclude with `hz _ _`. Establish `h3 : ‖(zᵀ * diagonal j * z.map star) a b‖ ≤ r * (δ * δ)`.
+
+Rewrite using `[mul_apply]`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Use `Finset.sum_le_card_nsmul Finset.univ (fun k => ‖(zᵀ * diagonal j) a k * z.map star k b‖) (δ * δ) fun k _ => by` as an intermediate fact. Rewrite using `[norm_mul, map_apply, norm_star]`. Conclude with `mul_le_mul (h1 _ _) (hz _ _) (norm_nonneg _) hδ`.
+
+Simplify using `using this`. Use `norm_add₃_le.trans ?_` and prove the remaining obligations. Use polynomial arithmetic with `[h1 a b]`.
+-/
 theorem norm_gram_sign_sub_le {r : ℕ} (j : Fin r → ℂ) (hj : ∀ a, ‖j a‖ = 1)
     (z : Matrix (Fin r) (Fin r) ℂ) {δ : ℝ} (hδ : 0 ≤ δ) (hr : r * δ ≤ 1) (hz : ∀ a b, ‖z a b‖ ≤ δ)
     (a b : Fin r) :
@@ -72,6 +99,17 @@ theorem norm_gram_sign_sub_le {r : ℕ} (j : Fin r → ℂ) (hj : ∀ a, ‖j a�
   refine norm_add₃_le.trans ?_
   nlinarith [h1 a b]
 
+/- English proof (translation)
+Establish `hi : (i : ℝ) ≤ r`. Use `Fintype.card_le_of_injective e he` as an intermediate fact. Simplify using `only [Fintype.card_fin] at this`. Conclude with `this` after adjusting the coercions. Establish `h1 : diagonal (fun a => j (e a)) * G.submatrix e e = 1 + diagonal (fun a => j (e a)) * (G - diagonal j).submatrix e e`.
+
+Use extensionality with `a b`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Apply the tactic sequence `rcases hj (e a) with h | h <;> simp [h]`. Simplify using `[h, he.eq_iff, diagonal_apply]`.
+
+Establish `h2` using `norm_det_one_add_sub_one_le_exp (diagonal (fun a => j (e a)) * (G - diagonal j).submatrix e e) hε (fun a b => by`. Rewrite using `[diagonal_mul, norm_mul, submatrix_apply]`. Apply the tactic sequence `rcases hj (e a) with h | h <;> simpa [h] using hG _ _)`. Rewrite `h2` using `[← h1, det_mul, det_diagonal, Fintype.card_fin]`. Establish `h3 : (i : ℝ) * (i * ε) ≤ (r : ℝ) ^ 2 * ε`.
+
+Rewrite using `[sq, mul_assoc]`. Use `gcongr`. Establish `h4` using `Real.exp_le_exp.2 h3`. Establish `h0 : 0 ≤ (r : ℝ) ^ 2 * ε` using `by positivity`. Establish `h5` using `Real.abs_exp_sub_one_le (x := (r : ℝ) ^ 2 * ε) (by rwa [abs_of_nonneg h0])`.
+
+Rewrite `h5` using `[abs_of_nonneg h0]`. Combine the linear relations using `[le_abs_self (Real.exp ((r : ℝ) ^ 2 * ε) - 1)]`.
+-/
 theorem norm_prod_sign_mul_det_submatrix_sub_one_le {r : ℕ} (j : Fin r → ℂ)
     (hj : ∀ a, j a = 1 ∨ j a = -1) (G : Matrix (Fin r) (Fin r) ℂ) {ε : ℝ} (hε : 0 ≤ ε)
     (hG : ∀ a b, ‖(G - diagonal j) a b‖ ≤ ε) (hr : (r : ℝ) ^ 2 * ε ≤ 1)
@@ -101,6 +139,13 @@ theorem norm_prod_sign_mul_det_submatrix_sub_one_le {r : ℕ} (j : Fin r → ℂ
   rw [abs_of_nonneg h0] at h5
   linarith [le_abs_self (Real.exp ((r : ℝ) ^ 2 * ε) - 1)]
 
+/- English proof (translation)
+Establish `h0 : 0 ≤ t` using `by linarith [norm_nonneg (d - 1)]`. Establish `h1` using `abs_le.1 ((Complex.abs_re_le_norm _).trans hd)`. Rewrite `h1` using `[Complex.sub_re, Complex.one_re]`. Establish `h2` using `abs_le.1 ((abs_norm_sub_norm_le d 1).trans hd)`. Rewrite `h2` using `[norm_one]`.
+
+Establish `hp : 0 < ‖d‖` using `by linarith`. Use `⟨by linarith, abs_le.2 ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `h3` using `Real.one_sub_inv_le_log_of_pos hp`. Establish `h4 : ‖d‖⁻¹ ≤ 1 + 3 * t`. Rewrite using `[inv_le_iff_one_le_mul₀ hp]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear relations using `[Real.log_le_sub_one_of_pos hp]`.
+-/
 theorem re_pos_and_abs_log_norm_le {d : ℂ} {t : ℝ} (ht : t ≤ 1 / 6) (hd : ‖d - 1‖ ≤ 2 * t) :
     0 < d.re ∧ |Real.log ‖d‖| ≤ 3 * t := by
   have h0 : 0 ≤ t := by linarith [norm_nonneg (d - 1)]
@@ -120,6 +165,9 @@ theorem re_pos_and_abs_log_norm_le {d : ℂ} {t : ℝ} (ht : t ≤ 1 / 6) (hd : 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [gram, hermC, ReciprocityTheory.ChartRestriction.G.FD.col, of_apply, mul_apply, transpose_apply, map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Both sides reduce to the same expression.
+-/
 theorem gram_eq_transpose_mul_mul_map_star {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
     (x : Matrix (Fin r) (Fin r) ℂ) : gram τ G x = xᵀ * G.map τ * x.map star := by
   ext a b
@@ -129,6 +177,9 @@ theorem gram_eq_transpose_mul_mul_map_star {r : ℕ} (τ : E →+* ℂ) (G : Mat
   rfl
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Establish `h : (x * A).map star = x.map star * A.map star` using `Matrix.map_mul (f := starRingEnd ℂ)`. Rewrite using `[gram_eq_transpose_mul_mul_map_star, gram_eq_transpose_mul_mul_map_star, h, transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem gram_mul_eq_transpose_mul_gram_mul {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
     (x A : Matrix (Fin r) (Fin r) ℂ) : gram τ G (x * A) = Aᵀ * gram τ G x * A.map star := by
   have h : (x * A).map star = x.map star * A.map star :=
@@ -136,6 +187,9 @@ theorem gram_mul_eq_transpose_mul_gram_mul {r : ℕ} (τ : E →+* ℂ) (G : Mat
   rw [gram_eq_transpose_mul_mul_map_star, gram_eq_transpose_mul_mul_map_star, h, transpose_mul]
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+The claim follows from `|Real.log ‖dmin X.Gm (rmul x A) τ i‖| ≤ 9 * ((r : ℝ) ^ 2 * δ) := by set j : Fin r → ℂ := fun a : Fin r => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ) with hjdef have hj : ∀ a, j a = 1 ∨ j a = -1 := fun a => by simp only [hjdef, sgn] split_ifs <;> simp have hj1 : ∀ a, ‖j a‖ = 1 := fun a => by rc …`.
+-/
 theorem dmin_rmul_near_one {r : ℕ} (X : Data E r) (x : Frame X.Ψ r)
     (hx : ∀ τ : X.Ψ, gram τ.1 X.Gm (mat x τ) =
       Matrix.diagonal fun a : Fin r => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ))
@@ -182,6 +236,15 @@ theorem dmin_rmul_near_one {r : ℕ} (X : Data E r) (x : Frame X.Ψ r)
       rw [dmin, lminor]
       linarith
 
+/- English proof (translation)
+Use `⟨∑ τ, ∑ i : Fin r, Real.log ‖dmin X.Gm y τ i.succ / dmin X.Gm y τ i.castSucc‖ * (-(la τ i : ℝ) / 2), ?_, fun P => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `(Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun τ _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `(Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations.
+
+Take `⟨h1, h2⟩` from `hy τ i.succ`. Take `⟨h3, h4⟩` from `hy τ i.castSucc`. Rewrite using `[norm_div, Real.log_div (norm_ne_zero_iff.2 h1) (norm_ne_zero_iff.2 h3), abs_mul, abs_div, abs_neg, abs_two]`. Establish `h5` using `abs_sub (Real.log ‖dmin X.Gm y τ i.succ‖) (Real.log ‖dmin X.Gm y τ i.castSucc‖)`. Use polynomial arithmetic with `[abs_nonneg (la τ i : ℝ)]`.
+
+Rewrite using `[Data.pnorm, Real.exp_sum]`. Use `congr 1`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Real.exp_sum]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Conclude with `Real.rpow_def_of_pos (norm_pos_iff.2 (div_ne_zero (hy τ _).1 (hy τ _).1)) _`.
+-/
 theorem exists_pnorm_eq_mul_exp {r : ℕ} (X : Data E r) (la : Wt X.Ψ r) (y : Frame X.Ψ r) {t : ℝ}
     (hy : ∀ τ i, dmin X.Gm y τ i ≠ 0 ∧ |Real.log ‖dmin X.Gm y τ i‖| ≤ t) :
     ∃ s : ℝ, |s| ≤ t * ∑ τ, ∑ i, |(la τ i : ℝ)| ∧
@@ -206,12 +269,20 @@ theorem exists_pnorm_eq_mul_exp {r : ℕ} (X : Data E r) (la : Wt X.Ψ r) (y : F
     exact Real.rpow_def_of_pos (norm_pos_iff.2 (div_ne_zero (hy τ _).1 (hy τ _).1)) _
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Use function extensionality and compare the values at `τ a b`. Simplify using `[rmul, mat, mul_apply]`.
+-/
 theorem rmul_one_frame {Ψ : Finset (E →+* ℂ)} {r : ℕ} (x : Frame Ψ r) :
     rmul x (fun _ a b => if a = b then 1 else 0) = x := by
   funext τ a b
   simp [rmul, mat, mul_apply]
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Use `differentiable_pi.2 fun τ => differentiable_pi.2 fun a => differentiable_pi.2 fun b => ?_` and prove the remaining obligations. Establish `: (fun z : Frame Ψ r => rmul x (I + z) τ a b) = fun z => ∑ k, x τ a k * (I τ k b + z τ k b)`. Use function extensionality and compare the values at `z`. Simplify using `[rmul, mat, mul_apply]`. Rewrite using `[this]`.
+
+Use `fun_prop`.
+-/
 theorem differentiable_rmul_add {Ψ : Finset (E →+* ℂ)} {r : ℕ} (x I : Frame Ψ r) :
     Differentiable ℂ fun z : Frame Ψ r => rmul x (I + z) := by
   refine differentiable_pi.2 fun τ => differentiable_pi.2 fun a => differentiable_pi.2 fun b => ?_
@@ -222,6 +293,29 @@ theorem differentiable_rmul_add {Ψ : Finset (E →+* ℂ)} {r : ℕ} (x I : Fra
   rw [this]
   fun_prop
 
+/- English proof (translation)
+Use `set L : ℝ := ∑ τ, ∑ i, |(la τ i : ℝ)| with hL`. Establish `hL0 : 0 ≤ L` using `by positivity`. Use `set I : Frame X.Ψ r := fun _ a b => if a = b then 1 else 0 with hI`. Establish `hxI : rmul x I = x` using `rmul_one_frame x`. Take `⟨hxd, hx0⟩` from `dmin_rmul_near_one X x hx I le_rfl (by norm_num) (by simp [hI])`.
+
+Rewrite `hxd`, `hx0` using `[hxI]`. Take `⟨s0, hs0, hs0'⟩` from `exists_pnorm_eq_mul_exp X la x hx0`. Establish `hPx : X.pnorm la P x = ‖P x‖`. Establish `: s0 = 0` using `by simpa using hs0`. Rewrite using `[hs0', this, Real.exp_zero, mul_one]`.
+
+Establish `hSx` using `hS x hxd`. Rewrite `hSx`, `hhalf` using `[hPx]`. Establish `hS0 : 0 ≤ S` using `(norm_nonneg _).trans hSx`. Break down `Nat.eq_zero_or_pos r with rfl | hr` into its components or cases. Establish `: rmul x A = x` using `Subsingleton.elim _ _`.
+
+Rewrite using `[this, hPx]`. Conclude with `⟨hxd, by linarith⟩`. Establish `hr' : (0 : ℝ) < r` using `by exact_mod_cast hr`. Take `⟨δ, hδ⟩ : ∃ δ : ℝ, δ = 1 / (100 * (r : ℝ) ^ 2 * (1 + L))` from `⟨_, rfl⟩`. Establish `hδ0 : 0 < δ` using `by rw [hδ]; positivity`.
+
+Establish `hδ1 : (r : ℝ) ^ 2 * δ * (1 + L) = 1 / 100` using `by rw [hδ]; field_simp`. Establish `hδ2 : 1 / (1000 * (r : ℝ) ^ 2 * (1 + L)) = δ / 10` using `by rw [hδ]; field_simp; norm_num`. Rewrite `hA` using `[hδ2]`. Establish `hrδ : 0 ≤ (r : ℝ) ^ 2 * δ` using `by positivity`. Establish `key : ∀ z : Frame X.Ψ r, ‖z‖ ≤ δ → rmul x (I + z) ∈ X.dom ∧ ∃ s : ℝ, |s| ≤ 0.09 ∧ X.pnorm la P (rmul x (I + z)) = ‖P (rmul x (I + z))‖ * Real.exp s`.
+
+Introduce `z hz`. Take `⟨h1, h2⟩` from `dmin_rmul_near_one X x hx (I + z) hδ0.le (by nlinarith) (fun τ a b => by`. Simplify using `only [hI, Pi.add_apply, add_sub_cancel_left]`. Conclude with `(norm_le_pi_norm (z τ a) b).trans ((norm_le_pi_norm (z τ) a).trans ((norm_le_pi_norm z τ).trans hz)))`. Take `⟨s, hs, hs'⟩` from `exists_pnorm_eq_mul_exp X la _ h2`.
+
+Conclude with `⟨h1, s, hs.trans (by rw [← hL]; nlinarith), hs' P⟩`. Establish `hexp : ∀ s : ℝ, |s| ≤ 0.09 → 0.91 ≤ Real.exp s` using `fun s hs => by`. Combine the linear relations using `[Real.add_one_le_exp s, (abs_le.1 hs).1]`. Establish `hsch` using `schwarz_ball_bound (Frame X.Ψ r) (fun z => P (rmul x (I + z))) δ (2.1 * S) hδ0 (hP.comp (differentiable_rmul_add x I).differentiableOn fun z hz => (key z (mem_ball_zero_iff.1 hz).le).1) (fun z hz => by`. Take `⟨h1, s, h2, h3⟩` from `key z (mem_ball_zero_iff.1 hz).le`.
+
+Establish `h4` using `hS _ h1`. Establish `h5` using `hexp s h2`. Simplify using `only [add_zero, hxI]`. Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations. Use polynomial arithmetic with `[norm_nonneg (P (rmul x (I + z)))])`.
+
+Establish `hz : ‖A - I‖ ≤ δ / 10`. Establish `h0 : 0 ≤ δ / 10` using `by positivity`. Conclude with `(pi_norm_le_iff_of_nonneg h0).2 fun τ => (pi_norm_le_iff_of_nonneg h0).2 fun a => (pi_norm_le_iff_of_nonneg h0).2 fun b => hA τ a b`. Take `⟨h1, s, h2, h3⟩` from `key (A - I) (by linarith)`. Establish `h4` using `hsch (A - I) (mem_ball_zero_iff.2 (by linarith))`.
+
+Simplify using `only [add_zero, hxI] at h4`. Rewrite `h1`, `h3`, `h4` using `[add_sub_cancel]`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `h5 : 2.1 * S * ‖A - I‖ / δ ≤ 0.21 * S`. Rewrite using `[div_le_iff₀ hδ0]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `h6` using `hexp s h2`. Establish `h7` using `norm_le_insert (P (rmul x A)) (P x)`. Rewrite using `[h3]`. Use polynomial arithmetic with `[norm_nonneg (P (rmul x A))]`.
+-/
 theorem pnorm_near_half_max {r : ℕ} (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (hP : DifferentiableOn ℂ P X.dom) (S : ℝ)
     (hS : ∀ x ∈ X.dom, X.pnorm la P x ≤ S) (x : Frame X.Ψ r)
     (hx : ∀ τ : X.Ψ, gram τ.1 X.Gm (mat x τ) = Matrix.diagonal fun a : Fin r => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ)) (hhalf : S / 2 ≤ X.pnorm la P x)

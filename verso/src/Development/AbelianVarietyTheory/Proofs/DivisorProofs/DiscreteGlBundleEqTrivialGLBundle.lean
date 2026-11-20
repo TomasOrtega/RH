@@ -6,6 +6,13 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace GlobalTheory.EtC
 
+/- English proof (translation)
+Use extensionality with `n U x`. Establish `h` using `congrArg (fun φ : (disc.obj F).obj (op (SimplexCategory.mk 0)) ⟶ (ofCat (glCat N)).obj n => ConcreteCategory.hom (φ.app U) x) (V.naturality (SimplexCategory.const n.unop (SimplexCategory.mk 0) 0).op)`. Simplify using `at h`. Use `show (ConcreteCategory.hom ((V.app n).app U)) x = _`. Rewrite using `[h]`.
+
+Generalize the expression as in `(ConcreteCategory.hom ((V.app (op (SimplexCategory.mk 0))).app U)) x = y`. Use `CategoryTheory.Functor.ext (fun i => rfl) ?_` and prove the remaining obligations. Introduce `i j f`. Express the relevant statement in the definitionally equal form `(y : Fin 1 ⥤ (glCat N).obj (Scheme.Γ.obj U)).map (𝟙 (0 : Fin 1)) = _`. Use `(CategoryTheory.Functor.map_id (y : Fin 1 ⥤ (glCat N).obj (Scheme.Γ.obj U)) 0).trans ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `𝟙 (SingleObj.star (GL (Fin N) (Scheme.Γ.obj U))) = eqToHom (rfl : SingleObj.star (GL (Fin N) (Scheme.Γ.obj U)) = _) ≫ 𝟙 (SingleObj.star (GL (Fin N) (Scheme.Γ.obj U))) ≫ eqToHom rfl`. Use `erw [Category.id_comp, Category.id_comp]`. Conclude with `(eqToHom_refl _ _).symm`.
+-/
 theorem disc_eq_trivV (N : ℕ) (F : PSh) (V : disc.obj F ⟶ ofCat (glCat N)) : V = trivV N (disc.obj F) := by
   ext n U x
   have h := congrArg

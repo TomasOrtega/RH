@@ -12,6 +12,9 @@ set_option linter.unusedSectionVars false
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
 
+/- English proof (translation)
+Establish `h` using `MvPolynomial.ringHom_ext (f := (aeval (fun p : Σ k, ι k => y p / y ⟨p.1, c p.1⟩) : MRing ι →ₐ[ℤ] Ω).toRingHom) (g := (eval (fun k => (y ⟨k, c k⟩)⁻¹)).comp (mConeMap y).toRingHom) (fun r => by simp) (fun p => by simp [mConeMap, div_eq_mul_inv])`. Conclude with `RingHom.congr_fun h f`.
+-/
 theorem aeval_chart_eq (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (f : MRing ι) :
     aeval (fun p => y p / y ⟨p.1, c p.1⟩) f = eval (fun k => (y ⟨k, c k⟩)⁻¹) (mConeMap y f) := by
   have h := MvPolynomial.ringHom_ext
@@ -20,12 +23,18 @@ theorem aeval_chart_eq (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (f : MRing ι
     (fun r => by simp) (fun p => by simp [mConeMap, div_eq_mul_inv])
   exact RingHom.congr_fun h f
 
+/- English proof (translation)
+Rewrite using `[aeval_chart_eq, ProjLine.mConeMap_eq_of_isMultiHomog y hf]`. Simplify using `only [map_mul, eval_C, map_prod, map_pow, eval_X]`.
+-/
 theorem aeval_chart_of_isMultiHomog (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) {f : MRing ι} {d : K → ℕ}
     (hf : IsMultiHomog f d) :
     aeval (fun p => y p / y ⟨p.1, c p.1⟩) f = aeval y f * ∏ k, (y ⟨k, c k⟩)⁻¹ ^ d k := by
   rw [aeval_chart_eq, ProjLine.mConeMap_eq_of_isMultiHomog y hf]
   simp only [map_mul, eval_C, map_prod, map_pow, eval_X]
 
+/- English proof (translation)
+Rewrite using `[aeval_chart_eq, show mConeMap y f = 0 from RingHom.mem_ker.mp hf, map_zero]`.
+-/
 theorem aeval_chart_eq_zero (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) {f : MRing ι} (hf : f ∈ mCoordIdeal y) :
     aeval (fun p => y p / y ⟨p.1, c p.1⟩) f = 0 := by
   rw [aeval_chart_eq, show mConeMap y f = 0 from RingHom.mem_ker.mp hf, map_zero]
@@ -40,6 +49,9 @@ variable {F}
 def pointOf (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (w : ↥(chartRingZ y c ⊔ intsIn F Ω) →+* ℂ) : (Σ k, ι k) → ℂ :=
   fun p => w (chartCoord F y c p)
 
+/- English proof (translation)
+Use `show (Subalgebra.val _) (aeval (chartCoord F y c) f) = _`. Rewrite using `[← AlgHom.comp_apply, MvPolynomial.comp_aeval]`. Both sides reduce to the same expression.
+-/
 theorem coe_aeval_chartCoord (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (f : MRing ι) :
     ((aeval (chartCoord F y c) f : ↥(chartRingZ y c ⊔ intsIn F Ω)) : Ω) =
       aeval (fun p => y p / y ⟨p.1, c p.1⟩) f := by
@@ -47,6 +59,9 @@ theorem coe_aeval_chartCoord (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (f : MR
   rw [← AlgHom.comp_apply, MvPolynomial.comp_aeval]
   rfl
 
+/- English proof (translation)
+Rewrite using `[eval_map]`. Establish `h` using `MvPolynomial.ringHom_ext (f := eval₂Hom (Int.castRingHom ℂ) (pointOf y c w)) (g := w.comp (aeval (chartCoord F y c) : MRing ι →ₐ[ℤ] _).toRingHom) (fun r => by simp) (fun p => by simp [pointOf])`. Conclude with `RingHom.congr_fun h f`.
+-/
 theorem eval_pointOf (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (w : ↥(chartRingZ y c ⊔ intsIn F Ω) →+* ℂ)
     (f : MRing ι) :
     eval (pointOf y c w) (map (Int.castRingHom ℂ) f) = w (aeval (chartCoord F y c) f) := by
@@ -56,6 +71,11 @@ theorem eval_pointOf (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (w : ↥(chartR
     (fun r => by simp) (fun p => by simp [pointOf])
   exact RingHom.congr_fun h f
 
+/- English proof (translation)
+Use `⟨fun k => ⟨c k, ?_⟩, fun f hf => ?_⟩` and prove the remaining obligations. Establish `h1 : chartCoord F y c ⟨k, c k⟩ = 1` using `Subtype.ext (by simp [chartCoord, hc k])`. Simplify using `[pointOf, h1]`. Rewrite using `[eval_pointOf]`. Establish `h0 : aeval (chartCoord F y c) f = 0` using `Subtype.ext (by rw [coe_aeval_chartCoord]; simpa using aeval_chart_eq_zero y c hf)`.
+
+Simplify using `[h0]`.
+-/
 theorem pointOf_mem (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0)
     (w : ↥(chartRingZ y c ⊔ intsIn F Ω) →+* ℂ) : pointOf y c w ∈ mcPts (mCoordIdeal y) := by
   refine ⟨fun k => ⟨c k, ?_⟩, fun f hf => ?_⟩
@@ -70,10 +90,16 @@ def intsMap {y : (Σ k, ι k) → Ω} {c : ∀ k, ι k} (w : ↥(chartRingZ y c 
   w.comp ((Subalgebra.inclusion (le_sup_right : intsIn F Ω ≤ chartRingZ y c ⊔ intsIn F Ω)).toRingHom.comp
     (((algebraMap F Ω).comp (algebraMap (𝓞 F) F)).toIntAlgHom.rangeRestrict).toRingHom)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem intsMap_apply {y : (Σ k, ι k) → Ω} {c : ∀ k, ι k} (w : ↥(chartRingZ y c ⊔ intsIn F Ω) →+* ℂ) (a : 𝓞 F) :
     intsMap w a = w ⟨algebraMap F Ω (algebraMap (𝓞 F) F a),
       le_sup_right (a := chartRingZ y c) (AlgHom.mem_range_self _ a)⟩ := rfl
 
+/- English proof (translation)
+Use `(RingHom.injective_iff_ker_eq_bot _).mpr (Ideal.eq_bot_of_comap_eq_bot (R := ℤ) ?_)` and prove the remaining obligations. Use `eq_bot_iff.2 fun n hn => ?_` and prove the remaining obligations. Rewrite using `[Ideal.mem_bot]`. Simplify `hn` using `[Ideal.mem_comap, RingHom.mem_ker]`.
+-/
 theorem intsMap_injective {y : (Σ k, ι k) → Ω} {c : ∀ k, ι k} (w : ↥(chartRingZ y c ⊔ intsIn F Ω) →+* ℂ) :
     Function.Injective (intsMap w) := by
   refine (RingHom.injective_iff_ker_eq_bot _).mpr (Ideal.eq_bot_of_comap_eq_bot (R := ℤ) ?_)
@@ -81,6 +107,13 @@ theorem intsMap_injective {y : (Σ k, ι k) → Ω} {c : ∀ k, ι k} (w : ↥(c
   rw [Ideal.mem_bot]
   simpa [Ideal.mem_comap, RingHom.mem_ker] using hn
 
+/- English proof (translation)
+Introduce `d g h θ hg hh hrel`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (𝓞 F) θ`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `hψb : intsMap w b ≠ 0` using `(map_ne_zero_iff _ (intsMap_injective w)).mpr hb0`. Establish `hB : algebraMap F Ω (algebraMap (𝓞 F) F b) ≠ 0` using `by simpa using hb0`.
+
+Rewrite using `[map_div₀, IsFractionRing.lift_algebraMap, IsFractionRing.lift_algebraMap, eval_pointOf, eval_pointOf, div_mul_eq_mul_div, eq_div_iff hψb, intsMap_apply, intsMap_apply, ← map_mul, ← map_mul]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [MulMemClass.coe_mul, coe_aeval_chartCoord]`. Rewrite using `[aeval_chart_of_isMultiHomog y c hg, aeval_chart_of_isMultiHomog y c hh, hrel, map_div₀]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem liesOver_pointOf (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (w : ↥(chartRingZ y c ⊔ intsIn F Ω) →+* ℂ) :
     LiesOver y (IsFractionRing.lift (K := F) (intsMap_injective w)) (pointOf y c w) := by
   intro d g h θ hg hh hrel
@@ -96,6 +129,11 @@ theorem liesOver_pointOf (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (w : ↥(ch
   rw [aeval_chart_of_isMultiHomog y c hg, aeval_chart_of_isMultiHomog y c hh, hrel, map_div₀]
   field_simp
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ F _ _ _ y hU c hc w w' hw`. Establish `hz : pointOf y c w = pointOf y c w'` using `funext fun p => RingHom.congr_fun hw ⟨y p / y ⟨p.1, c p.1⟩, Algebra.subset_adjoin (Set.mem_range_self p)⟩`. Take `⟨sg, -, huniq⟩` from `hU _ (pointOf_mem y c hc w)`. Establish `e1` using `huniq _ (liesOver_pointOf y c w)`. Establish `e2` using `huniq (IsFractionRing.lift (K := F) (intsMap_injective w')) (by rw [hz]; exact liesOver_pointOf y c w')`.
+
+Use extensionality with `x`. Break down `x with ⟨_, a, rfl⟩` into its components or cases. Use `show intsMap w a = intsMap w' a`. Rewrite using `[← IsFractionRing.lift_algebraMap (K := F) (intsMap_injective w) a, ← IsFractionRing.lift_algebraMap (K := F) (intsMap_injective w') a, e1, e2]`.
+-/
 theorem proof : Statement := by
   intro K _ ι _ Ω _ F _ _ _ y hU c hc w w' hw
   have hz : pointOf y c w = pointOf y c w' := funext fun p =>

@@ -13,6 +13,13 @@ open ReciprocityTheory.ChartRestriction.G.Pdiv GlobalTheory.HTLat GlobalTheory.C
 open scoped NNReal
 attribute [local instance] algPadicInt algPadicField towerPadic factPadic GlobalTheory.PadicComplexHost.isAdicComplete
 
+/- English proof (translation)
+Introduce `HT E _ _ _ H Dw l Xo c Z _ hsep p _ n x y hn hxy halg ch hW g e h he hd`. Establish `key : ∀ O : Subring ℂ_[p], O = (𝓞_ℂ_[p]).toSubring → ∀ (yb : Sp ↥O ⟶ Z.X), spMap O.subtype ≫ yb = y ≫ Z.j → AlgDef (spMap O.subtype ≫ yb) → ∀ ch : Dw.La → TorsChar Z.t yb (p ^ n), WeilLab Z O.subtype yb y (p ^ n) ch → ∀ (e : Fin g → (Sp (DualNumber ↥O) ⟶ Z.t.G.left)), IsTanBasis …`. Introduce and unpack `O rfl yb h1 h2 ch h3 e h4`. Conclude with `UpperTheory.p_adic_point_torsion_frame HT E H Dw l Xo c Z hsep p n yb y (by omega) h1 h2 ch h3 g e h4`. Establish `hO : intO ℂ_[p] = (𝓞_ℂ_[p]).toSubring`.
+
+Use extensionality with `z`. Conclude with `(GlobalTheory.PadicComplexHost.mem_iff_norm p z).symm`. Take `⟨b, hb1, hb2, hb3⟩` from `key _ hO x hxy halg ch hW e he`. Establish `hc` using `UpperTheory.torsion_character_integral_point E H Dw l Xo c Z hsep p n x y hn hxy ch hW g e h he hd`. Establish `hb1' : ∀ a i, ‖(h a i : ℂ_[p]) - pr Dw (b (Pi.single i 1)) a‖ ≤ (p : ℝ)⁻¹ ^ n` using `fun a i => hb1 a (h a) (hd a) i`.
+
+Conclude with `⟨b, ⟨hb1', UpperTheory.p_adic_lattice_membership_approximated E H Dw p n g (fun o i => (h o i : ℂ_[p])) b _ hn hb1' (fun cf => (hc cf).1) (fun cf => (hc cf).2), fun cf => (hc cf).2, hb3⟩, hb2⟩`.
+-/
 theorem UpperTheory.integral_p_adic_point_labels :
     GlobalTheory.IndefiniteRowSideFullHecke.HodgeTateKernel.HodgeTateKernelAtPoint → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c (algebraMap (𝓞 c.F) c.F)) [IsLocallyNoetherian Z.X], Z.X.IsSeparated → ∀ (p : ℕ) [Fact p.Prime] (n : ℕ) (x : Sp ↥(intO ℂ_[p]) ⟶ Z.X) (y : Sp ℂ_[p] ⟶ Xo.XF c), 2 ≤ n → spMap (intO ℂ_[p]).subtype ≫ x = y ≫ Z.j → AlgDef (spMap (intO ℂ_[p]).subtype ≫ x) → ∀ ch : Dw.La → TorsChar Z.t x (p ^ n), WeilLab Z (intO ℂ_[p]).subtype x y (p ^ n) ch → ∀ (g : ℕ) (e : Fin g → (Sp (DualNumber ↥(intO ℂ_[p])) ⟶ Z.t.G.left)) (h : Dw.La → Fin g → ↥(intO ℂ_[p])), IsTanBasis Z.t x e → (∀ a, DlogIs Z.t p n (ch a) e (h a)) → ∃ b : (Fin g → ℂ_[p]) →ₗ[ℂ_[p]] ℂ_[p] ⊗[ℤ] Dw.La, PtData Dw p n (fun o i => (h o i : ℂ_[p])) b (latCo Z.t p (spMap (intO ℂ_[p]).subtype ≫ x) (fun i => spMap (dualMap (intO ℂ_[p]).subtype) ≫ e i)) ∧ EigTo Dw Z.t (spMap (intO ℂ_[p]).subtype ≫ x) (fun i => spMap (dualMap (intO ℂ_[p]).subtype) ≫ e i) b := by
   intro HT E _ _ _ H Dw l Xo c Z _ hsep p _ n x y hn hxy halg ch hW g e h he hd

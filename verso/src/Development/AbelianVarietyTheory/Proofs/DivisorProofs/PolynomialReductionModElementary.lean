@@ -15,6 +15,21 @@ def artinSpan (R : Type*) [CommRing R] [Algebra R Q] (x : Fin N → Q) (j : ℕ)
   Submodule.span R {a | ∃ m : Fin N → ℕ, (∀ i, m i ≤ (i : ℕ)) ∧ (∀ i : Fin N, (i : ℕ) < j → m i = 0) ∧
     a = ∏ i, x i ^ m i}
 
+/- English proof (translation)
+Use `set A := Algebra.adjoin R (x '' {l | (j : ℕ) + 1 ≤ (l : ℕ)}) with hA`. Set `y : Fin N → A` to `fun l => if h : (j : ℕ) + 1 ≤ (l : ℕ) then ⟨x l, Algebra.subset_adjoin ⟨l, h, rfl⟩⟩ else 0`. Set `q : A[X]` to `∏ l ∈ Finset.Ioi j, (X - C (y l))`. Establish `hq : q.Monic` using `monic_prod_of_monic _ _ fun l _ => monic_X_sub_C _`. Establish `hqm : q.map (algebraMap A Q) = ∏ l ∈ Finset.Ioi j, (X - C (x l))`.
+
+Simplify using `only [q, Polynomial.map_prod]`. Use `Finset.prod_congr rfl fun l hl => ?_` and prove the remaining obligations. Establish `h : (j : ℕ) + 1 ≤ (l : ℕ)` using `Finset.mem_Ioi.1 hl`. Establish `h' : j < l` using `Finset.mem_Ioi.1 hl`. Simplify using `[y, h']`.
+
+Establish `hsplit : (∏ l ∈ Finset.Ioi j, (X - C (x l))) * ∏ l ∈ Finset.Iic j, (X - C (x l)) = (X : Q[X]) ^ N`. Rewrite using `[← hx, ← Finset.prod_union]`. Use `congr 1`. Use extensionality with `l`. Simplify using `[lt_or_ge]`.
+
+Rewrite using `[Finset.disjoint_left]`. Introduce `l h1 h2`. Conclude with `absurd (Finset.mem_Iic.1 h2) (not_le.2 (Finset.mem_Ioi.1 h1))`. Establish `hg : (X ^ N /ₘ q).map (algebraMap A Q) = ∏ l ∈ Finset.Iic j, (X - C (x l))`. Rewrite using `[map_divByMonic _ hq, Polynomial.map_pow, map_X, ← hsplit, hqm, mul_divByMonic_cancel_left]`.
+
+Conclude with `monic_prod_of_monic _ _ fun l _ => monic_X_sub_C _`. Establish `hinj : Function.Injective (algebraMap A Q)` using `Subtype.val_injective`. Use `⟨X ^ N /ₘ q, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply `monic_of_injective hinj` to reduce the goal to its premises. Rewrite using `[hg]`.
+
+Conclude with `monic_prod_of_monic _ _ fun l _ => monic_X_sub_C _`. Rewrite using `[← natDegree_map_eq_of_injective hinj, hg]`. Use `(natDegree_prod_le _ _).trans ?_` and prove the remaining obligations. Use `(Finset.sum_le_sum fun l _ => natDegree_X_sub_C_le (x l)).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Rewrite using `[aeval_def, ← eval_map, hg, eval_prod]`. Conclude with `Finset.prod_eq_zero (Finset.mem_Iic.2 le_rfl) (by simp)`.
+-/
 theorem exists_monic (x : Fin N → Q) (hx : ∏ l, (X - C (x l)) = (X : Q[X]) ^ N) (j : Fin N) :
     ∃ g : (Algebra.adjoin R (x '' {l | (j : ℕ) + 1 ≤ (l : ℕ)}))[X],
       g.Monic ∧ g.natDegree ≤ (j : ℕ) + 1 ∧ aeval (x j) g = 0 := by
@@ -55,6 +70,15 @@ theorem exists_monic (x : Fin N → Q) (hx : ∏ l, (X - C (x l)) = (X : Q[X]) ^
   · rw [aeval_def, ← eval_map, hg, eval_prod]
     exact Finset.prod_eq_zero (Finset.mem_Iic.2 le_rfl) (by simp)
 
+/- English proof (translation)
+Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem a h`. Take `⟨m, h1, h2, rfl⟩` from `h`. Use `Submodule.subset_span ⟨m + Pi.single j k, fun i => ?_, fun i hi => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hij : i = j`.
+
+Substitute `hij` using the available equality. Simplify using `[h2 i (Nat.lt_succ_self _), hk]`. Simplify using `[hij, h1 i]`. Establish `hij : i ≠ j` using `by rintro rfl; exact lt_irrefl _ hi`. Simplify using `[hij, h2 i (by omega)]`.
+
+Simplify using `only [Pi.add_apply, pow_add, Finset.prod_mul_distrib]`. Use `congr 1`. Apply the tactic sequence `rw [Finset.prod_eq_single j] <;> simp +contextual`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [add_mul]`.
+
+Conclude with `add_mem ha hb`. Consider the case `smul r a _ ha => rw [smul_mul_assoc]`. Conclude with `Submodule.smul_mem _ _ ha`.
+-/
 theorem mul_pow_mem (x : Fin N → Q) (j : Fin N) (k : ℕ) (hk : k ≤ (j : ℕ)) {a : Q}
     (ha : a ∈ artinSpan R x ((j : ℕ) + 1)) : a * x j ^ k ∈ artinSpan R x j := by
   classical
@@ -75,6 +99,23 @@ theorem mul_pow_mem (x : Fin N → Q) (j : Fin N) (k : ℕ) (hk : k ≤ (j : ℕ
   | add a b _ _ ha hb => rw [add_mul]; exact add_mem ha hb
   | smul r a _ ha => rw [smul_mul_assoc]; exact Submodule.smul_mem _ _ ha
 
+/- English proof (translation)
+Proceed by induction on `hj using Nat.decreasingInduction with`. Consider the case `self`. Introduce `a ha`. Establish `he : x '' {l | N ≤ (l : ℕ)} = ∅`. Rewrite using `[Set.image_eq_empty, Set.eq_empty_iff_forall_notMem]`.
+
+Introduce `l hl`. Conclude with `absurd l.2 (not_lt.2 hl)`. Rewrite `ha` using `[he, Algebra.adjoin_empty, Algebra.mem_bot]`. Take `⟨r, rfl⟩` from `ha`. Rewrite using `[Algebra.algebraMap_eq_smul_one]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, by simp, by simp, by simp⟩)`. Consider the case `of_succ j hjN ih`. Introduce `a ha`. Take `⟨g, hg1, hg2, hg3⟩` from `exists_monic (R := R) x hx ⟨j, hjN⟩`. Establish `he : x '' {l | j ≤ (l : ℕ)} = x '' {l | j + 1 ≤ (l : ℕ)} ∪ {x ⟨j, hjN⟩}`.
+
+Rewrite using `[← Set.image_singleton, ← Set.image_union]`. Use `congr 1`. Use extensionality with `l`. Simplify using `only [Set.mem_setOf_eq, Set.mem_union, Set.mem_singleton_iff, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite `ha` using `[he, Algebra.adjoin_union_eq_adjoin_adjoin, Subalgebra.mem_restrictScalars, ← Subalgebra.mem_toSubmodule, ← Submodule.span_range_natDegree_eq_adjoin hg1 hg3]`. Establish `key : ∀ b : Algebra.adjoin R (x '' {l | j + 1 ≤ (l : ℕ)}), b • a ∈ artinSpan R x j`. Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem a h`. Introduce `b`.
+
+Simplify using `only [Finset.coe_image, Finset.coe_range, Set.mem_image, Set.mem_Iio] at h`. Take `⟨k, hk, rfl⟩` from `h`. Conclude with `mul_pow_mem x ⟨j, hjN⟩ k (by simp only at hg2 ⊢; omega) (ih _ b.2)`. Consider the case `zero => simp`. Consider the case `add a c _ _ ha hc => intro b`.
+
+Rewrite using `[smul_add]`. Conclude with `add_mem (ha b) (hc b)`. Consider the case `smul r a _ ha => intro b`. Rewrite using `[smul_smul]`. Conclude with `ha _`.
+
+Simplify using `using key 1`.
+-/
 theorem adjoin_le_artinSpan (x : Fin N → Q) (hx : ∏ l, (X - C (x l)) = (X : Q[X]) ^ N)
     (j : ℕ) (hj : j ≤ N) :
     ∀ a ∈ Algebra.adjoin R (x '' {l | j ≤ (l : ℕ)}), a ∈ artinSpan R x j := by
@@ -117,6 +158,21 @@ end General
 
 open MvPolynomial in
 
+/- English proof (translation)
+Introduce `N P`. Use `set I : Ideal (MvPolynomial (Fin N) ℝ) := Ideal.span ((fun k => esymm (Fin N) ℝ k) '' Set.Icc 1 N) with hI`. Set `π` to `Ideal.Quotient.mkₐ ℝ I`. Set `x : Fin N → MvPolynomial (Fin N) ℝ ⧸ I` to `fun l => π (MvPolynomial.X l)`. Establish `hπ : π = MvPolynomial.aeval x`.
+
+Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `l`. Simplify using `[x]`. Establish `hes : ∀ k, 1 ≤ k → k ≤ N → (Finset.univ.val.map x).esymm k = 0`. Introduce `k h1 h2`.
+
+Rewrite using `[← aeval_esymm_eq_multiset_esymm (Fin N) ℝ k x, ← hπ]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span ⟨k, ⟨h1, h2⟩, rfl⟩)`. Establish `hx : ∏ l, (Polynomial.X - Polynomial.C (x l)) = Polynomial.X ^ N`. Establish `h` using `Multiset.prod_X_sub_X_eq_sum_esymm (Finset.univ.val.map x)`. Rewrite `h` using `[Multiset.map_map]`.
+
+Use `Eq.trans h ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single 0]`. Simplify using `[Multiset.esymm]`. Introduce `k hk hk0`. Rewrite using `[hes k (by omega) (by simpa [Nat.lt_succ_iff] using hk)]`.
+
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish `hP : π P ∈ artinSpan ℝ x 0`. Apply `adjoin_le_artinSpan x hx 0 (Nat.zero_le _)` to reduce the goal to its premises. Establish `: x '' {l | 0 ≤ (l : ℕ)} = Set.range x` using `by simp`.
+
+Rewrite using `[this, Algebra.adjoin_range_eq_range_aeval, hπ]`. Conclude with `⟨P, rfl⟩`. Establish `hle : artinSpan ℝ x 0 ≤ (Submodule.span ℝ {M : MvPolynomial (Fin N) ℝ | ∃ m : Fin N →₀ ℕ, (∀ i, m i ≤ (i : ℕ)) ∧ M = monomial m 1}).map π.toLinearMap`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨m, h1, -, rfl⟩`.
+
+Use `⟨monomial (Finsupp.equivFunOnFinite.symm m) 1, Submodule.subset_span ⟨_, fun i => by simpa using h1 i, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[AlgHom.toLinearMap_apply, hπ, aeval_monomial, map_one, one_mul, Finsupp.prod_fintype _ _ (by simp)]`. Simplify using the standard rewrite rules. Take `⟨S, hS, hSP⟩` from `hle hP`. Conclude with `⟨S, hS, Ideal.Quotient.eq.1 hSP.symm⟩`.
+-/
 theorem artin_monomials_span : ∀ (N : ℕ) (P : MvPolynomial (Fin N) ℝ), ∃ R ∈ Submodule.span ℝ {M : MvPolynomial (Fin N) ℝ | ∃ m : Fin N →₀ ℕ, (∀ i, m i ≤ (i : ℕ)) ∧ M = monomial m 1}, P - R ∈ Ideal.span ((fun k => esymm (Fin N) ℝ k) '' Set.Icc 1 N) := by
   classical
   intro N P

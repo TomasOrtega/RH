@@ -162,6 +162,11 @@ def ProdBound (C' Cl Cg cb Cu cT CT C0 Cn C : ℝ) : Prop :=
 
 end
 
+/- English proof (translation)
+Establish `h1 : ∑ i ∈ Finset.univ.map (⟨Fin.castLE hl, Fin.castLE_injective hl⟩ : Fin l ↪ Fin N), f i = ∑ i, f i`. Use `Finset.sum_subset (Finset.subset_univ _) ?_` and prove the remaining obligations. Introduce `i _ hi`. Use `hf i ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+
+Conclude with `hi (Finset.mem_map.2 ⟨⟨i.val, by omega⟩, Finset.mem_univ _, Fin.ext rfl⟩)`. Rewrite using `[← h1, Finset.sum_map]`. Apply the tactic sequence `try rfl`.
+-/
 theorem sum_castLE {N l : ℕ} (hl : l ≤ N) (f : Fin N → ℂ) (hf : ∀ i : Fin N, l ≤ i.val → f i = 0) :
     ∑ i, f i = ∑ i : Fin l, f (Fin.castLE hl i) := by
   classical
@@ -175,6 +180,17 @@ theorem sum_castLE {N l : ℕ} (hl : l ≤ N) (f : Fin N → ℂ) (hf : ∀ i : 
   rw [← h1, Finset.sum_map]
   try rfl
 
+/- English proof (translation)
+Unfold `leadMinor`. Establish `hLs : ∀ (i : Fin l) (a : Fin N), l ≤ a.val → L (Fin.castLE hl i) a = 0` using `fun i a ha => (hL (Fin.castLE hl i) a).1 (Fin.lt_iff_val_lt_val.2 (lt_of_lt_of_le i.isLt ha))`. Establish `hUs : ∀ (b : Fin N) (j : Fin l), l ≤ b.val → U b (Fin.castLE hl j) = 0` using `fun b j hb => (hU b (Fin.castLE hl j)).1 (Fin.lt_iff_val_lt_val.2 (lt_of_lt_of_le j.isLt hb))`. Establish `key : (L * P * U).submatrix (Fin.castLE hl) (Fin.castLE hl) = L.submatrix (Fin.castLE hl) (Fin.castLE hl) * P.submatrix (Fin.castLE hl) (Fin.castLE hl) * U.submatrix (Fin.castLE hl) (Fin.castLE hl)`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply]`. Rewrite using `[sum_castLE hl]`. Use `Finset.sum_congr rfl (fun b _ => ?_)` and prove the remaining obligations. Rewrite using `[sum_castLE hl]`. Introduce `a ha`.
+
+Rewrite using `[hLs i a ha, zero_mul]`. Introduce `b hb`. Rewrite using `[hUs b j hb, mul_zero]`. Establish `hLt : (L.submatrix (Fin.castLE hl) (Fin.castLE hl)).BlockTriangular OrderDual.toDual`. Introduce `i j hij`.
+
+Conclude with `(hL (Fin.castLE hl i) (Fin.castLE hl j)).1 (OrderDual.toDual_lt_toDual.mp hij)`. Establish `hUt : (U.submatrix (Fin.castLE hl) (Fin.castLE hl)).BlockTriangular id`. Introduce `i j hij`. Conclude with `(hU (Fin.castLE hl i) (Fin.castLE hl j)).1 hij`. Establish `h1 : ∏ i : Fin l, L.submatrix (Fin.castLE hl) (Fin.castLE hl) i i = 1` using `Finset.prod_eq_one (fun i _ => (hL (Fin.castLE hl i) (Fin.castLE hl i)).2 rfl)`.
+
+Establish `h2 : ∏ i : Fin l, U.submatrix (Fin.castLE hl) (Fin.castLE hl) i i = 1` using `Finset.prod_eq_one (fun i _ => (hU (Fin.castLE hl i) (Fin.castLE hl i)).2 rfl)`. Rewrite using `[key, Matrix.det_mul, Matrix.det_mul, Matrix.det_of_lowerTriangular (M := L.submatrix (Fin.castLE hl) (Fin.castLE hl)) hLt, Matrix.det_of_upperTriangular (M := U.submatrix (Fin.castLE hl) (Fin.castLE hl)) hUt, h1, h2, one_mul, mul_one]`.
+-/
 theorem leadMinor_cell {N : ℕ} (L P U : Matrix (Fin N) (Fin N) ℂ) (hL : IsLoUni L) (hU : IsUpUni U) (l : ℕ)
     (hl : l ≤ N) : leadMinor (L * P * U) l hl = leadMinor P l hl := by
   unfold leadMinor
@@ -209,6 +225,11 @@ theorem leadMinor_cell {N : ℕ} (L P U : Matrix (Fin N) (Fin N) ℂ) (hL : IsLo
     Matrix.det_of_upperTriangular (M := U.submatrix (Fin.castLE hl) (Fin.castLE hl)) hUt, h1, h2,
     one_mul, mul_one]
 
+/- English proof (translation)
+Unfold `leadMinor`. Establish `e : (ZhatO k r z z' g).submatrix (Fin.castLE hl) (Fin.castLE hl) = (Formalism.QuantumDeterminants.Zhat k r z z' g).submatrix (Fin.castLE hl) (Fin.castLE hl) * Matrix.diagonal (fun b : Fin l => (-1 : ℂ) ^ (r - (Fin.castLE hl b).val))`. Use extensionality with `a b`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_diagonal, ZhatO]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hp : Complex.normSq (∏ b : Fin l, (-1 : ℂ) ^ (r - (Fin.castLE hl b).val)) = 1`. Rewrite using `[map_prod]`. Conclude with `Finset.prod_eq_one (fun b _ => by rw [map_pow, Complex.normSq_neg, Complex.normSq_one, one_pow])`. Rewrite using `[e, Matrix.det_mul, Complex.normSq_mul, Matrix.det_diagonal]`. Simplify using `only [hp, mul_one]`.
+-/
 theorem normSq_leadMinor_ZhatO (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (g : Mx k r) (l : ℕ) (hl : l ≤ r + 1) :
     Complex.normSq (leadMinor (ZhatO k r z z' g) l hl) = Complex.normSq (leadMinor (Formalism.QuantumDeterminants.Zhat k r z z' g) l hl) := by
   unfold leadMinor
@@ -224,6 +245,11 @@ theorem normSq_leadMinor_ZhatO (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) 
   rw [e, Matrix.det_mul, Complex.normSq_mul, Matrix.det_diagonal]
   simp only [hp, mul_one]
 
+/- English proof (translation)
+Unfold `GfOfRelPt`. Introduce `z z' γ p hp`. Take `⟨-, ⟨L, U, hL, hU, hZ⟩, -⟩` from `hp`. Establish `hm : ∀ (l : ℕ) (hl : l ≤ D.R.rS + 1), Complex.normSq (leadMinor (Formalism.QuantumDeterminants.Zhat D.R.k D.R.rS z z' γ) l hl) = Complex.normSq (leadMinor (ptMat p) l hl)`. Introduce `l hl`.
+
+Rewrite using `[← normSq_leadMinor_ZhatO, hZ, leadMinor_cell L (ptMat p) U hL hU]`. Unfold `Gf Gpt`. Rewrite using `[← hm, ← hm]`. Both sides reduce to the same expression.
+-/
 theorem gfOfRelPt (D : D7) : GfOfRelPt D := by
   unfold GfOfRelPt
   intro z z' γ p hp

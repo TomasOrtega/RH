@@ -12,6 +12,9 @@ open MeasureTheory Matrix Formalism.QuantumDeterminants Formalism.MainNotions.S 
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Unfold `orbSqO orbSq`. Use `iSup_le fun g => iSup_le fun μR => iSup_le fun ν => iSup_le fun hg => ?_` and prove the remaining obligations. Rewrite using `[← OrbInt_turn L ka hc f g ν]`. Conclude with `le_iSup_of_le (tTi k r * g * tT k r) (le_iSup_of_le (μR.map (cA k r)) (le_iSup_of_le (ν.map (thP k r)) (le_iSup_of_le ⟨isPtRep_turn L ka hg.1, isRelStab_turn L ka hc hg.2.1, isRootMeas_turn L ka hka hc hg.2.2.1, isOrbQuot_turn L ka hg.2.2.2⟩ le_rfl)))`.
+-/
 theorem orbSqO_le_turn (L : LocBessel k r) (ka : ℝ) (hka : 0 < ka) (hc : L.c = ((2 * ka : ℝ) : ℂ))
     (f : Mx k r → (L.Wq →L[ℂ] L.Wp)) (p : Point ℂ (r + 1)) :
     orbSqO L f p ≤ orbSq (turnL L ka) (turnF L ka f) (turnPt p) := by

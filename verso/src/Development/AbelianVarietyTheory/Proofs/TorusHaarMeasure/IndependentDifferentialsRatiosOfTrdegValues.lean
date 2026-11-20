@@ -11,6 +11,11 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 
 namespace GlobalTheory.BigRec
 
+/- English proof (translation)
+Use `IntermediateField.adjoin_le_iff.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Establish `hk : a k / a q ∈ IntermediateField.adjoin K (Set.range fun k => a k / a q)` using `IntermediateField.subset_adjoin K _ ⟨k, rfl⟩`. Establish `hp : a p / a q ∈ IntermediateField.adjoin K (Set.range fun k => a k / a q)` using `IntermediateField.subset_adjoin K _ ⟨p, rfl⟩`. Establish `hkp` using `div_mem hk hp`.
+
+Rewrite `hkp` using `[div_div_div_cancel_right₀ hq]`. Then use the resulting hypothesis.
+-/
 theorem adjoin_div_le {K F κ : Type} [Field K] [Field F] [Algebra K F] (a : κ → F) (p q : κ) (hq : a q ≠ 0) :
     IntermediateField.adjoin K (Set.range fun k => a k / a p) ≤
       IntermediateField.adjoin K (Set.range fun k => a k / a q) := by
@@ -23,6 +28,11 @@ theorem adjoin_div_le {K F κ : Type} [Field K] [Field F] [Algebra K F] (a : κ 
   have hkp := div_mem hk hp
   rwa [div_div_div_cancel_right₀ hq] at hkp
 
+/- English proof (translation)
+Establish `hex : ∃ c : F, (AddMonoidAlgebra.single g a : AddMonoidAlgebra F Γ) = c • AddMonoidAlgebra.single g b` using `⟨a / b, by rw [AddMonoidAlgebra.smul_single', div_mul_cancel₀ a hb]⟩`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.T0.ratio, dif_pos hex]`. Establish `hc` using `hex.choose_spec`. Rewrite `hc` using `[AddMonoidAlgebra.smul_single']`. Establish `hv : a = hex.choose * b` using `by first`.
+
+Consider the case `exact AddMonoidAlgebra.single_injective g hc`. Consider the case `simpa using hc`. Conclude with `eq_div_of_mul_eq hb hv.symm`.
+-/
 theorem ratio_single {F Γ : Type} [Field F] [AddCommGroup Γ] (g : Γ) (a b : F) (hb : b ≠ 0) :
     ReciprocityTheory.ChartRestriction.G.T0.ratio (Ω := F) (AddMonoidAlgebra.single g a : AddMonoidAlgebra F Γ)
       (AddMonoidAlgebra.single g b) = a / b := by
@@ -37,6 +47,19 @@ theorem ratio_single {F Γ : Type} [Field F] [AddCommGroup Γ] (g : Γ) (a b : F
     | simpa using hc
   exact eq_div_of_mul_eq hb hv.symm
 
+/- English proof (translation)
+Unfold `A1Bigness`. Introduce `Z`. Establish `hfull : Algebra.trdeg c.F (Om Z) = d.D`. Unfold `FnTrdeg at htr`. Conclude with `htr Z`.
+
+Use `(GlobalTheory.trdegD_iff_exists_linearIndependent_D d Z hfull (hb Z)).mp ?_` and prove the remaining obligations. Unfold `ReciprocityTheory.ChartRestriction.G.AR.Up.TrdegD`. Take `⟨k₀, hk₀, htk⟩` from `hbig Z`. Establish `hwZ : ∀ k, d.w (e k) Z = AddMonoidAlgebra.single (wtZ a n) (evC hG Z (w k))`. Introduce `k`.
+
+Rewrite using `[hw k]`. Both sides reduce to the same expression. Use `set kc := e.symm (d.jc Z) with hkc`. Establish `hjc : d.jc Z = e kc` using `(e.apply_symm_apply _).symm`. Establish `hc0 : evC hG Z (w kc) ≠ 0`.
+
+Introduce `h0`. Apply `hb Z` to reduce the goal to its premises. Rewrite using `[hjc, hwZ, h0, AddMonoidAlgebra.single_zero]`. Establish `hrange : (Set.range fun j => ReciprocityTheory.ChartRestriction.G.T0.ratio (Ω` using `Om Z) (d.w j Z) (d.w (d.jc Z) Z)) = Set.range fun k => evC hG Z (w k) / evC hG Z (w kc) := by`. Rewrite using `[← e.surjective.range_comp]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `only [Function.comp]`. Rewrite using `[hjc, hwZ, hwZ]`. Conclude with `ratio_single _ _ _ hc0`.
+
+Rewrite using `[hrange]`. Establish `hsame : IntermediateField.adjoin c.F (Set.range fun k => evC hG Z (w k) / evC hG Z (w kc)) = IntermediateField.adjoin c.F (Set.range fun k => evC hG Z (w k) / evC hG Z (w k₀))` using `le_antisymm (adjoin_div_le (fun k => evC hG Z (w k)) kc k₀ hk₀) (adjoin_div_le (fun k => evC hG Z (w k)) k₀ kc hc0)`. Rewrite using `[hsame]`. Conclude with `htk`.
+-/
 theorem independent_differentials_ratios_of_trdeg_values {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} [Fintype (Comp Xo c)] (hG : GenFrEx Xo c)
     (d : ReciprocityTheory.ChartRestriction.G.T0.Data c.F (Comp Xo c) (fun Z => Om Z) (WTZ E) (fun Z => AC Z))
@@ -82,6 +105,11 @@ theorem independent_differentials_ratios_of_trdeg_values {E : Type} [Field E] [N
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `D T h j hj hG ka wL wF G _ d e hD hw hb hbig`. Establish `hpin : T.Q.PinDat`. Establish `hp` using `h.toLawsCore.pins`. Unfold `Par.Pins at hp`. Conclude with `hp.2.2.2`.
+
+Establish `htr` using `(GlobalTheory.FlagDim.fnFG_fnTrdeg_record D T.Q hpin j hj).2`. Rewrite `htr`, `hbig` using `[← hD]`. Conclude with `independent_differentials_ratios_of_trdeg_values hG d (fun k => (G.w k).1) e (wtA wL) wL.n htr hw hb hbig`.
+-/
 theorem independent_differentials_ratios_cusp_forms_trdeg : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (hG : GenFrEx (T.Q.Xo j) T.Q.c) (ka wL wF : WeightFamilies.Wt D j) (G : GlobalFamilyData (recPlus h j hj) ka wL wF) [Fintype (Comp (T.Q.Xo j) T.Q.c)] (d : ReciprocityTheory.ChartRestriction.G.T0.Data T.Q.c.F (Comp (T.Q.Xo j) T.Q.c) (fun Z => Om Z) (WTZ D.host.E) (fun Z => AC Z)) (e : Fin G.N ≃ Fin (d.N + 1)), d.D = WeightFamilies.dimY D j → (∀ k, d.w (e k) = valC hG (wtA wL) wL.n (G.w k).1) → (∀ Z, d.w (d.jc Z) Z ≠ 0) → (∀ Z : Comp (T.Q.Xo j) T.Q.c, ∃ k₀, evC hG Z (G.w k₀).1 ≠ 0 ∧ Algebra.trdeg T.Q.c.F (IntermediateField.adjoin T.Q.c.F (Set.range fun k => evC hG Z (G.w k).1 / evC hG Z (G.w k₀).1)) = WeightFamilies.dimY D j) → A1Bigness d := by
   intro D T h j hj hG ka wL wF G _ d e hD hw hb hbig
   have hpin : T.Q.PinDat := by

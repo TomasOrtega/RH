@@ -11,6 +11,11 @@ open Formalism.REAL (GlRel IsUnitary KHighest IsWeight)
 open PI.UpqRep (IsKFin IsKTypeOf IsKStableOn)
 open CompanionTheory.D.DSIC
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun a => ?_, fun a b hab he => ?_⟩` and prove the remaining obligations. Rewrite using `[← h, h1 a, map_smul]`. Rewrite using `[← h, h2 a b hab he, map_zero]`.
+
+Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun a => hι ?_, fun a b hab he => hι ?_⟩` and prove the remaining obligations. Rewrite using `[h, h1 a, map_smul]`. Rewrite using `[h, h2 a b hab he, map_zero]`.
+-/
 theorem kHighest_iff {n : ℕ} (ε : Fin n → Bool) {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W]
     [Module ℂ W] (ι : V →ₗ[ℂ] W) (hι : Function.Injective ι) (E' : Fin n → Fin n → Module.End ℂ V)
     (E : Fin n → Fin n → Module.End ℂ W) (h : ∀ a b v, ι (E' a b v) = E a b (ι v)) (μ : Fin n → ℝ) (v : V) :
@@ -25,6 +30,11 @@ theorem kHighest_iff {n : ℕ} (ε : Fin n → Bool) {V W : Type} [AddCommGroup 
     · rw [h, h1 a, map_smul]
     · rw [h, h2 a b hab he, map_zero]
 
+/- English proof (translation)
+Introduce `a b c d`. Use extensionality with `v`. Apply `hι` to reduce the goal to its premises. Use `LinearMap.congr_fun (hE a b c d) (ι v)` as an intermediate fact. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at this`.
+
+Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, map_sub, h]`. Rewrite using `[this]`. Apply the tactic sequence `split_ifs <;> simp [h]`.
+-/
 theorem glRel_of_inj {n : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W]
     [Module ℂ W] (ι : V →ₗ[ℂ] W) (hι : Function.Injective ι) (E' : Fin n → Fin n → Module.End ℂ V)
     (E : Fin n → Fin n → Module.End ℂ W) (h : ∀ a b v, ι (E' a b v) = E a b (ι v)) (hE : GlRel E) :
@@ -38,6 +48,23 @@ theorem glRel_of_inj {n : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [Add
   rw [this]
   split_ifs <;> simp [h]
 
+/- English proof (translation)
+Introduce `n ε H _ _ _ σ hσ hirr`. Take `⟨S, E, hS⟩` from `h1 n ε H σ hσ`. Take `⟨V₀, hV, hst⟩` from `h3 n ε H σ S E hσ hS`. Establish `hsm : ∀ v, IsKFin ε σ v → v ∈ S` using `fun v hv => (hS.mem v).2 (h2 n ε H σ hσ hirr v hv)`. Use `set D : Submodule ℂ H := V₀.map S.subtype with hD`.
+
+Establish `hmem : ∀ v, v ∈ D ↔ IsKFin ε σ v`. Introduce `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `(hV x).1 hx`.
+
+Introduce `hv`. Conclude with `⟨⟨v, hsm v hv⟩, (hV _).2 hv, rfl⟩`. Establish `hDS : D ≤ S` using `fun v hv => hsm v ((hmem v).1 hv)`. Set `ι : D →ₗ[ℂ] S` to `Submodule.inclusion hDS`. Establish `hι : Function.Injective ι` using `Submodule.inclusion_injective hDS`.
+
+Establish `hin : ∀ a b (v : D), (S.subtype ∘ₗ E a b ∘ₗ ι) v ∈ D` using `fun a b v => ⟨E a b (ι v), hst a b _ ((hV _).2 ((hmem _).1 v.2)), rfl⟩`. Set `E' : Fin n → Fin n → Module.End ℂ D` to `fun a b => LinearMap.codRestrict D (S.subtype ∘ₗ E a b ∘ₗ ι) (hin a b)`. Establish `hE' : ∀ a b v, ι (E' a b v) = E a b (ι v)` using `fun a b v => Subtype.ext rfl`. Establish `hT : ∀ T : Submodule ℂ H, FiniteDimensional ℂ T → IsKStableOn ε σ T → T ≤ D` using `fun T hf hs v hv => (hmem v).2 ⟨T, hf, hv, hs⟩`. Use `⟨D, E', hmem, fun X hX v => hS.real X hX (ι v), glRel_of_inj ι hι E' E hE' hS.gl, fun a b x y => hS.unit a b (ι x) (ι y), ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `x`. Take `⟨T, hf, hx, hs⟩` from `(hmem _).1 x.2`. Establish `hTD` using `hT T hf hs`. Establish `hTS : T ≤ S` using `hTD.trans hDS`. Establish `f1 : FiniteDimensional ℂ (T.comap S.subtype)` using `(Submodule.comapSubtypeEquivOfLe hTS).symm.finiteDimensional`.
+
+Establish `f2 : FiniteDimensional ℂ (T.comap D.subtype)` using `(Submodule.comapSubtypeEquivOfLe hTD).symm.finiteDimensional`. Establish `hk : KStab ε E (T.comap S.subtype)`. Rewrite using `[h4 n ε H σ S E hσ hS _ f1, Submodule.map_comap_subtype, inf_eq_right.2 hTS]`. Conclude with `hs`. Conclude with `⟨T.comap D.subtype, f2, fun a b hab v hv => hk a b hab (ι v) hv, hx⟩`.
+
+Introduce `μ T hty`. Establish `hTD` using `hT T hty.1 hty.2.1`. Take `⟨v, hv0, hvT, hv⟩` from `h5 n ε H σ S E hσ hS μ T hty (hTD.trans hDS)`. Use `⟨⟨v, hTD hvT⟩, fun h => hv0 (Subtype.ext (congrArg (fun z : D => (z : H)) h)), hvT, ?_⟩` and prove the remaining obligations. Conclude with `(kHighest_iff ε ι hι E' E hE' μ _).2 hv`.
+
+Introduce `μ x hx0 hx`. Conclude with `h6 n ε H σ S E hσ hS μ (ι x) (fun h => hx0 (hι (h.trans (map_zero ι).symm))) ((hmem _).1 x.2) ((kHighest_iff ε ι hι E' E hE' μ _).1 hx)`.
+-/
 theorem kModExists (h1 : SmMod) (h2 : KFinSm) (h3 : KFinStab) (h4 : StabLink) (h5 : HWofType) (h6 : TypeOfHW) :
     CompanionTheory.D.LK.KModExists := by
   intro n ε H _ _ _ σ hσ hirr

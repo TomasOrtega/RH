@@ -19,6 +19,27 @@ open GlobalTheory.Mem.R3.HasLabelling
 
 namespace GlobalTheory.NRows.LamUsedProof
 
+/- English proof (translation)
+Introduce `h1 h2 h3 h4 D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP hH hD μ hU0 i σ`. Establish `hU : Used0 D μ` using `hU0`. Take `⟨t, rfl⟩ : ∃ t, Y.tup t = μ` from `⟨_, Y.tupTie μ hU⟩`. Use `set θ := D.what₂.thetaP (Y.tup t) ((i : ℕ) + 1) with hθ`. Distinguish the cases in `hne : D.what₂.isot ((i : ℕ) + 1) σ = ⊥`.
+
+Use `⟨fun f hf => ?_, fun h => absurd hne h⟩` and prove the remaining obligations. Rewrite `hf` using `[hne, Submodule.mem_bot]`. Substitute `hf` using the available equality. Simplify using the standard rewrite rules. Take `⟨p, hL⟩` from `GlobalTheory.Mem.R3.LabProof.hasLab_exists h1 h2 h3 h4 D G Pl0 I0 T A3 Ks R F cG X0 Y Z hP hH hD σ`.
+
+Use `set c : ℝ := R.lam3 i t p A3.A.v0 with hc`. Establish `hpre : ∀ y ∈ D.what₂.isot ((i : ℕ) + 1) σ, ∃ x ∈ (LinearMap.ker θ)ᗮ, θ x = y ∧ ∀ x', ⟪θ x, θ x'⟫_ℂ = (c : ℂ) * ⟪x, x'⟫_ℂ`. Introduce `y hy`. Take `⟨x, rfl⟩` from `GlobalTheory.T.liftThetaMap_surjective_onto_cuspForms_usedTuple h1 h2 h3 h4 D G Pl0 I0 T A3 Ks R F cG X0 Y Z hP hH hD i t hU y`. Use `set K := (LinearMap.ker θ)ᗮ`.
+
+Establish `hx0 : x - K.starProjection x ∈ LinearMap.ker θ`. Use `K.sub_starProjection_mem_orthogonal x` as an intermediate fact. Rewrite `this` using `[Submodule.orthogonal_orthogonal]`. Then use the resulting hypothesis. Establish `he : θ (K.starProjection x) = θ x`. Rewrite `hx0` using `[LinearMap.mem_ker, map_sub, sub_eq_zero]`.
+
+Conclude with `hx0.symm`. Establish `hW : Y.mj.eW i (θ (K.starProjection x)) ∈ R.Wp3 i p`. Rewrite using `[he]`. Conclude with `hL.1 i ⟨θ x, hy, rfl⟩`. Conclude with `⟨K.starProjection x, K.starProjection_apply_mem x, he, GlobalTheory.T.liftThetaMap_inner_eq_lambda_labelPart_baseLevel h1 h2 h3 h4 D G Pl0 I0 T A3 Ks R F cG X0 Y Z hP hH hD i t p hU (K.starProjection x) (K.starProjection_apply_mem x) hW⟩`.
+
+Establish `heig : ∀ y ∈ D.what₂.isot ((i : ℕ) + 1) σ, D.what₂.thetaP (Y.tup t) ((i : ℕ) + 1) (D.what₂.thetaT (Y.tup t) ((i : ℕ) + 1) y) = ((c : ℝ) : ℂ) • y`. Introduce `y hy`. Take `⟨x, -, rfl, hx⟩` from `hpre y hy`. Establish `ha : LinearMap.adjoint θ (θ x) = (c : ℂ) • x`. Use `ext_inner_right ℂ fun x' => ?_` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.adjoint_inner_left, hx, inner_smul_left, Complex.conj_ofReal]`. Use `show θ (LinearMap.adjoint θ (θ x)) = (c : ℂ) • θ x`. Rewrite using `[ha, map_smul]`. Establish `hlam : D.what₂.lamP (Y.tup t) ((i : ℕ) + 1) σ = c` using `Y.tied.lift.lamP (Y.tup t) hU i σ c hne heig`. Use `⟨fun f hf => by rw [hlam]; exact heig f hf, fun _ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hlam]`. Take `⟨y, hy, hy0⟩` from `(Submodule.ne_bot_iff _).1 hne`. Take `⟨x, -, rfl, hx⟩` from `hpre y hy`. Establish `h` using `hx x`. Rewrite `h` using `[inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K]`.
+
+Establish `hyn : 0 < ‖θ x‖` using `norm_pos_iff.2 hy0`. Establish `h' : ‖θ x‖ ^ 2 = c * ‖x‖ ^ 2`. Apply the tactic sequence `have h2 : ((‖θ x‖ ^ 2 : ℝ) : ℂ) = ((c * ‖x‖ ^ 2 : ℝ) : ℂ) := by first | (push_cast; exact h) | (push_cast; simpa using h) | (simp only [RCLike.ofReal_pow, Complex.ofReal_pow, Complex.ofReal_mul] at h ⊢; exact h) | (rw [Complex.ofReal_pow, Complex.ofReal_mul, Complex.ofReal_pow]; …`. Conclude with `Complex.ofReal_injective h2`. Assume the negation of the conclusion as `hcn`.
+
+Use `push_neg at hcn`. Use polynomial arithmetic with `[sq_nonneg ‖x‖, sq_pos_of_pos hyn]`.
+-/
 theorem main : GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (X0 : BaseLevelRowSide D) (Y : Read (A3 := A3) R.toRealDat F.lv2 X0) (Z : ReadL R F X0 Y), Pins R F cG → Holds R F → HostHyp D → GlobalTheory.NRows.LamUsed D := by
   intro h1 h2 h3 h4 D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP hH hD μ hU0 i σ
   have hU : Used0 D μ := hU0

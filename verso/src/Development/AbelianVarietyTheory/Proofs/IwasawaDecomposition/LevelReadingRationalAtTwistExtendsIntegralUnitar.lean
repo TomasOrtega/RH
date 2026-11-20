@@ -12,11 +12,17 @@ noncomputable section
 
 namespace GlobalTheory.SeeSaw.TwLev.Approx
 
+/- English proof (translation)
+Use `HeightOneSpectrum.ext (Ideal.ext fun x => ?_)` and prove the remaining obligations. Rewrite using `[underPl_asIdeal, underPl_asIdeal, Ideal.mem_comap, Ideal.mem_comap, mem_conjP, rll_cO_algebraMap hc]`.
+-/
 theorem underPl_conjP {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     (hc : CMData F E) (P : HeightOneSpectrum (𝓞 E)) : underPl F (conjPrime₂ P) = underPl F P := by
   refine HeightOneSpectrum.ext (Ideal.ext fun x => ?_)
   rw [underPl_asIdeal, underPl_asIdeal, Ideal.mem_comap, Ideal.mem_comap, mem_conjP, rll_cO_algebraMap hc]
 
+/- English proof (translation)
+Introduce `P hP hP'`. Establish `h` using `hQ2 ⟨P, hP⟩ ⟨conjPrime₂ P, hP'⟩ (underPl_conjP hc P).symm`. Conclude with `hQ1 ⟨P, hP⟩ (congrArg Subtype.val h).symm`.
+-/
 theorem conjP_notMem {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     (hc : CMData F E) {Q : Finset (HeightOneSpectrum (𝓞 E))} (hQ1 : ∀ P : Q, conjPrime₂ P.1 ≠ P.1)
     (hQ2 : ∀ P P' : Q, underPl F P.1 = underPl F P'.1 → P = P') : ∀ P ∈ Q, conjPrime₂ P ∉ Q := by
@@ -24,6 +30,21 @@ theorem conjP_notMem {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
   have h := hQ2 ⟨P, hP⟩ ⟨conjPrime₂ P, hP'⟩ (underPl_conjP hc P).symm
   exact hQ1 ⟨P, hP⟩ (congrArg Subtype.val h).symm
 
+/- English proof (translation)
+Establish `hca : Formalism.UG.inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F) (algebraMap (𝓞 E) E a) * Formalism.UG.inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (algebraMap (𝓞 E) E a)⁻¹ = 1 := by`. Rewrite using `[← map_mul, mul_inv_cancel₀ (by simpa using ha), map_one]`. Establish `hs : ∀ i j, (u : Matrix (Fin n) (Fin n) (AfE F E)) i j = (1 : Matrix (Fin n) (Fin n) (AfE F E)) i j + Formalism.UG.inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F) (algebraMap (𝓞 E) E a) * (⟨_, h i j⟩ : Formalism.L2.Herm.intAf F E) := by`. Introduce `i j`. Use `show _ = _ + _ * (Formalism.UG.inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (algebraMap (𝓞 E) E a)⁻¹ * _)`.
+
+Rewrite using `[← mul_assoc, hca, one_mul]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨s, hs⟩ : ∃ s : Fin n → Fin n → Formalism.L2.Herm.intAf F E, ∀ i j, (u : Matrix (Fin n) (Fin n) (AfE F E)) i j = (1 : Matrix (Fin n) (Fin n) (AfE F E)) i j + Formalism.UG.inclE (F` from `F) (FiniteAdeleRing (𝓞 F) F) (algebraMap (𝓞 E) E a) * s i j := ⟨fun i j => ⟨_, h i j⟩, hs⟩`. Establish `hone : ∀ i j, (1 : Matrix (Fin n) (Fin n) (AfE F E)) i j ∈ Formalism.L2.Herm.intAf F E`. Introduce `i j`.
+
+Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`. Establish `hi : ∀ i j, (u : Matrix (Fin n) (Fin n) (AfE F E)) i j ∈ Formalism.L2.Herm.intAf F E`.
+
+Introduce `i j`. Rewrite using `[hs]`. Conclude with `add_mem (hone i j) (mul_mem (iA_mem a) (s i j).2)`. Establish `hSt` using `rlt_mem_St hc n hu hi`. Take `⟨y, hy, hred⟩` from `St_one_int hSt`.
+
+Use `⟨hSt, fun P hP => ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Rewrite using `[hred P i j]`. Establish `e : y i j = (1 : Matrix (Fin n) (Fin n) (Formalism.L2.Herm.intAf F E)) i j + oToS F E a * s i j`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hy, hs]`. Simplify using `only [Subring.coe_add, Subring.coe_mul]`. Use `congr 1`. Rewrite using `[Matrix.one_apply, Matrix.one_apply]`.
+
+Apply the tactic sequence `split_ifs <;> rfl`. Rewrite using `[e, map_add, map_mul, Formalism.L2.DIV.resS_oToS, Ideal.Quotient.eq_zero_iff_mem.2 hP, zero_mul, add_zero]`. Use `show _ = (1 : Matrix (Fin n) (Fin n) (kP P)) i j`. Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem red_eq_one {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     (hc : CMData F E) {n : ℕ} [NeZero n] (a : 𝓞 E) (ha : a ≠ 0) {u : GL (Fin n) (AfE F E)} (hu : u ∈ UAd hc n)
     (h : GlobalTheory.Mem.ColAd.CongOne a u) :
@@ -74,6 +95,27 @@ end GlobalTheory.SeeSaw.TwLev.Approx
 
 namespace GlobalTheory.SeeSaw.TwLev.Approx
 
+/- English proof (translation)
+Introduce `F E K _ _ _ _ _ _ _ hc n _ SG Q J hJ T f bad S Λ emb HQ lamQ hQ1 hQ2 hO hR`. Substitute `hJ` using the available equality. Use `letI := tensTopL (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F)`. Establish `hQc` using `conjP_notMem hc hQ1 hQ2`. Establish `h1U : (1 : UPts hc.sig (1 : Matrix (Fin n) (Fin n) E) (FiniteAdeleRing (𝓞 F) F)) ∈ {x : UPts hc.sig (1 : Matrix (Fin n) (Fin n) E) (FiniteAdeleRing (𝓞 F) F) | (x : GL _ _) ∈ S.U}` using `S.U.one_mem`.
+
+Take `⟨V, hV, hVsub⟩` from `(mem_nhds_subtype _ _ _).1 (S.U_open.mem_nhds h1U)`. Take `⟨m₀, hm₀, hm₀N⟩` from `GlobalTheory.T.congruenceOne_matrices_mem_nhds_one (F := F) (E := E) n (V ∩ {u | ∀ κ : S.U, κ.1 = u → S.chi κ = 1}) (Filter.inter_mem hV hO)`. Use `set m : ℕ := m₀ * ∏ w ∈ SG ∪ Q, Ideal.absNorm w.asIdeal with hm`. Establish `hmpos : 0 < m` using `Nat.mul_pos hm₀ (Finset.prod_pos fun w _ => Nat.pos_of_ne_zero (by rw [Ne, Ideal.absNorm_eq_zero_iff]; exact w.ne_bot))`. Establish `hmw : ∀ w ∈ SG ∪ Q, ((m : ℕ) : 𝓞 E) ∈ w.asIdeal`.
+
+Introduce `w hw`. Take `⟨k, hk⟩ : Ideal.absNorm w.asIdeal ∣ m` from `Dvd.dvd.mul_left (Finset.dvd_prod_of_mem _ hw) _`. Rewrite using `[hk, Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.absNorm_mem _)`. Introduce `z _ hz hzU`.
+
+Take `⟨g, hgU, hgR, hc1, hc2⟩` from `GlobalTheory.T.exists_rationalAtPrimes_unitary_congruentOne hc hQc m hmpos (fun P hP => hmw P (Finset.mem_union_right _ hP)) z hzU hz`. Use `set u := z⁻¹ * g with hu`. Establish `huU : u ∈ UAd hc n` using `mul_mem (inv_mem hzU) hgU`. Establish `huN` using `hm₀N m (Dvd.intro _ rfl) hmpos u hc1 hc2`. Establish `huS : u ∈ S.U` using `hVsub (a := ⟨u, huU⟩) huN.1`.
+
+Establish `hchiu : S.chi ⟨u, huS⟩ = 1` using `huN.2 ⟨u, huS⟩ rfl`. Take `⟨huSt, hred⟩` from `red_eq_one hc (m : 𝓞 E) (by exact_mod_cast hmpos.ne') huU hc1`. Establish `hzg : g = z * u` using `by rw [hu, mul_inv_cancel_left]`. Establish `hgSt : g ∈ St (1 : GL (Fin n) (AfE F E))` using `hzg ▸ mul_mem hz huSt`. Establish `hredg : ∀ w ∈ SG ∪ Q, redAt (1 : GL (Fin n) (AfE F E)) w ⟨g, hgSt⟩ = redAt 1 w ⟨z, hz⟩`.
+
+Introduce `w hw`. Establish `e : (⟨g, hgSt⟩ : St (1 : GL (Fin n) (AfE F E))) = ⟨z, hz⟩ * ⟨u, huSt⟩` using `Subtype.ext hzg`. Rewrite using `[e, map_mul, hred w (hmw w hw), mul_one]`. Take `⟨hiff, hchi⟩` from `hR g hgR hgSt hgU`. Establish `hgz : g ∈ S.U ↔ z ∈ S.U`.
+
+Rewrite using `[hzg]`. Conclude with `⟨fun h => by simpa using mul_mem h (inv_mem huS), fun h => mul_mem h huS⟩`. Establish `hSGr : ∀ w : SG, redAt (1 : GL (Fin n) (AfE F E)) w.1 ⟨g, hgSt⟩ = redAt 1 w.1 ⟨z, hz⟩` using `fun w => hredg w.1 (Finset.mem_union_left _ w.2)`. Establish `hQr : ∀ P : Q, redAt (1 : GL (Fin n) (AfE F E)) P.1 ⟨g, hgSt⟩ = redAt 1 P.1 ⟨z, hz⟩` using `fun P => hredg P.1 (Finset.mem_union_right _ P.2)`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hgz, hiff]`. Simplify using `only [hSGr, hQr]`. Introduce `hU h h'`. Establish `hgU' : g ∈ S.U` using `hgz.2 hU`. Establish `e1` using `hchi hgU' (fun w => (hSGr w).symm ▸ h w) (fun P => (hQr P).symm ▸ h' P)`.
+
+Establish `e2 : S.chi ⟨g, hgU'⟩ = S.chi ⟨z, hU⟩`. Establish `: (⟨g, hgU'⟩ : S.U) = ⟨z, hU⟩ * ⟨u, huS⟩` using `Subtype.ext hzg`. Rewrite using `[this, map_mul, hchiu, mul_one]`. Rewrite using `[← e2, e1]`. Use `congr 1`.
+
+Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[show (⟨_, (hSGr w).symm ▸ h w⟩ : (Λ w).H) = ⟨_, h w⟩ from Subtype.ext (hSGr w)]`. Use `Finset.prod_congr rfl fun P _ => ?_` and prove the remaining obligations. Rewrite using `[show (⟨_, (hQr P).symm ▸ h' P⟩ : HQ P) = ⟨_, h' P⟩ from Subtype.ext (hQr P)]`.
+-/
 theorem rd_all : ∀ {F E K : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] [Field K]
     (hc : CMData F E) {n : ℕ} [NeZero n] {SG Q : Finset (HeightOneSpectrum (𝓞 E))} {J : Matrix (Fin n) (Fin n) E}, J = 1 →
     ∀ {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))} (S : StepLevel F E hc.sig J T f bad)

@@ -20,6 +20,19 @@ private noncomputable def lin {F : Type} [Field F] [NumberField F] [IsTotallyRea
 
 end UpperTheory.ConvolutionTheory.R2.Fo
 
+/- English proof (translation)
+Introduce `F _ _ _ w i φ hφ`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨f, g, hg, rfl⟩` from `hG`. Establish `e : (fun v => cw w (v i) * schwartzBruhatTensorPi f g v) = schwartzBruhatTensorPi (SchwartzMap.smulLeftCLM ℂ (lin w i) f) g`.
+
+Use function extensionality and compare the values at `v`. Simplify using `only [schwartzBruhatTensorPi]`. Rewrite using `[SchwartzMap.smulLeftCLM_apply_apply (lin w i).hasTemperateGrowth, smul_eq_mul, mul_assoc]`. Use `congr 1`. Rewrite using `[e]`.
+
+Conclude with `schwartzBruhatTensorPi_mem _ hg`. Consider the case `zero`. Establish `e : (fun v => cw w (v i) * (0 : V4 F → ℂ) v) = 0`. Use function extensionality and compare the values at `v`. Simplify using the standard rewrite rules.
+
+Rewrite using `[e]`. Conclude with `zero_mem _`. Consider the case `add G H _ _ hG hH`. Establish `e : (fun v => cw w (v i) * (G + H) v) = (fun v => cw w (v i) * G v) + fun v => cw w (v i) * H v`. Use function extensionality and compare the values at `v`.
+
+Simplify using `[mul_add]`. Rewrite using `[e]`. Conclude with `add_mem hG hH`. Consider the case `smul c G _ hG`. Establish `e : (fun v => cw w (v i) * (c • G) v) = c • fun v => cw w (v i) * G v`.
+
+Use function extensionality and compare the values at `v`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ c hG`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.Fo.xEx :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (w : InfinitePlace F) (i : Fin 4) (φ : V4 F → ℂ), φ ∈ schwartzBruhatPi F (Fin 4) → (fun v => cw w (v i) * φ v) ∈ schwartzBruhatPi F (Fin 4) := by
   intro F _ _ _ w i φ hφ

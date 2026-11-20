@@ -6,6 +6,11 @@ open Formalism.BasicNotions MeasureTheory Filter Topology
 
 namespace GlobalTheory.ExpBallNhds
 
+/- English proof (translation)
+Establish `h : HasStrictFDerivAt (NormedSpace.exp : A → A) ((ContinuousLinearEquiv.refl ℂ A : A ≃L[ℂ] A) : A →L[ℂ] A) 0` using `hasStrictFDerivAt_exp_zero (𝕂 := ℂ) (𝔸 := A)`. Use `⟨⟨(h.toOpenPartialHomeomorph _).source, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `(h.toOpenPartialHomeomorph _).open_source.mem_nhds h.mem_toOpenPartialHomeomorph_source`. Use `(h.toOpenPartialHomeomorph _).injOn` as an intermediate fact. Simplify using `using this`.
+
+Use `h.map_nhds_eq_of_equiv` as an intermediate fact. Rewrite `this` using `[NormedSpace.exp_zero]`. Then use the resulting hypothesis.
+-/
 theorem exp_local_algebra (A : Type) [NormedRing A] [NormedAlgebra ℂ A] [CompleteSpace A] :
     (∃ S ∈ 𝓝 (0 : A), Set.InjOn (NormedSpace.exp : A → A) S) ∧
       Filter.map (NormedSpace.exp : A → A) (𝓝 0) = 𝓝 1 := by
@@ -19,6 +24,9 @@ theorem exp_local_algebra (A : Type) [NormedRing A] [NormedAlgebra ℂ A] [Compl
   · have := h.map_nhds_eq_of_equiv
     rwa [NormedSpace.exp_zero] at this
 
+/- English proof (translation)
+Set `: NormedRing (Matrix n n ℂ)` to `Matrix.linftyOpNormedRing`. Set `: NormedAlgebra ℂ (Matrix n n ℂ)` to `Matrix.linftyOpNormedAlgebra`. Establish `: CompleteSpace (Matrix n n ℂ)` using `FiniteDimensional.complete ℂ _`. Conclude with `exp_local_algebra (Matrix n n ℂ)`.
+-/
 theorem exp_local_matrix (n : Type) [Fintype n] [DecidableEq n] :
     (∃ S ∈ 𝓝 (0 : Matrix n n ℂ), Set.InjOn (NormedSpace.exp : Matrix n n ℂ → Matrix n n ℂ) S) ∧
       Filter.map (NormedSpace.exp : Matrix n n ℂ → Matrix n n ℂ) (𝓝 0) = 𝓝 1 := by
@@ -27,10 +35,16 @@ theorem exp_local_matrix (n : Type) [Fintype n] [DecidableEq n] :
   have : CompleteSpace (Matrix n n ℂ) := FiniteDimensional.complete ℂ _
   exact exp_local_algebra (Matrix n n ℂ)
 
+/- English proof (translation)
+Simplify using `[Formalism.UG.Jpq, Matrix.fromBlocks_multiply]`.
+-/
 theorem Jpq_mul_self (P Q : ℕ) : Formalism.UG.Jpq P Q * Formalism.UG.Jpq P Q = 1 := by
   simp [Formalism.UG.Jpq, Matrix.fromBlocks_multiply]
 
 open MeasureTheory Filter Topology in
+/- English proof (translation)
+Use `letI : NormedRing (Matrix n n ℂ) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℂ (Matrix n n ℂ) := Matrix.linftyOpNormedAlgebra`. Establish `hf : HasStrictFDerivAt (NormedSpace.exp : Matrix n n ℂ → Matrix n n ℂ) ((ContinuousLinearEquiv.refl ℂ (Matrix n n ℂ) : Matrix n n ℂ →L[ℂ] Matrix n n ℂ)) 0` using `hasStrictFDerivAt_exp_zero`. Conclude with `⟨hf.toOpenPartialHomeomorph _, hf.mem_toOpenPartialHomeomorph_source, hf.toOpenPartialHomeomorph_coe⟩`.
+-/
 private theorem exists_local_homeomorph_matrix_exp_source_zero {n : Type} [Fintype n] [DecidableEq n] :
     ∃ e : OpenPartialHomeomorph (Matrix n n ℂ) (Matrix n n ℂ),
       (0 : Matrix n n ℂ) ∈ e.source ∧ ⇑e = NormedSpace.exp := by
@@ -45,6 +59,27 @@ private theorem exists_local_homeomorph_matrix_exp_source_zero {n : Type} [Finty
 open MeasureTheory Filter Topology in
 open Matrix in
 
+/- English proof (translation)
+Introduce `P Q r hr`. Take `⟨e, h0, he⟩` from `exists_local_homeomorph_matrix_exp_source_zero (n := Fin P ⊕ Fin Q)`. Use `set J := _root_.Formalism.UG.Jpq P Q with hJ`. Establish `hJJ : J * J = 1`. Rewrite using `[hJ]`.
+
+Unfold `_root_.Formalism.UG.Jpq`. Simplify using `[fromBlocks_multiply]`. Establish `hJinv : J⁻¹ = J` using `Matrix.inv_eq_right_inv hJJ`. Establish `hJunit : IsUnit J` using `⟨⟨J, J, hJJ, hJJ⟩, rfl⟩`. Use `set σ : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ → Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ := fun X => -(J * Xᴴ * J) with hσ`.
+
+Establish `hσc : Continuous σ`. Rewrite using `[hσ]`. Conclude with `((continuous_const.matrix_mul continuous_id.matrix_conjTranspose).matrix_mul continuous_const).neg`. Establish `hσ0 : σ 0 = 0` using `by simp [hσ]`. Use `set N : Set (Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) := {X | ∑ i, ∑ j, ‖X i j‖ < r} with hN`.
+
+Establish `hNo : IsOpen N` using `isOpen_lt (by fun_prop) continuous_const`. Establish `hU : e.source ∩ σ ⁻¹' e.source ∩ N ∈ 𝓝 (0 : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ)`. Use `((e.open_source.inter (e.open_source.preimage hσc)).inter hNo).mem_nhds ⟨⟨h0, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show σ 0 ∈ e.source`. Rewrite using `[hσ0]`.
+
+Conclude with `h0`. Use `show ∑ i, ∑ j, ‖(0 : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) i j‖ < r`. Simplify using `using hr`. Establish `himg` using `e.image_mem_nhds h0 hU`. Rewrite `himg` using `[he, NormedSpace.exp_zero]`.
+
+Establish `hmat : Continuous (fun g : _root_.Formalism.BasicNotions.UpqT P Q => _root_.Formalism.BasicNotions.UpqT.mat g)` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hpre : (fun g : _root_.Formalism.BasicNotions.UpqT P Q => _root_.Formalism.BasicNotions.UpqT.mat g) ⁻¹' (NormedSpace.exp '' (e.source ∩ σ ⁻¹' e.source ∩ N)) ∈ 𝓝 (1 : _root_.Formalism.BasicNotions.UpqT P Q)` using `hmat.continuousAt.preimage_mem_nhds himg`. Use `filter_upwards [hpre] with g hg`. Take `⟨X, ⟨⟨hXs, hσXs⟩, hXN⟩, hgX⟩` from `hg`. Use `beta_reduce at hgX`.
+
+Establish `hgU : (_root_.Formalism.BasicNotions.UpqT.mat g)ᴴ * J * _root_.Formalism.BasicNotions.UpqT.mat g = J` using `g.2`. Establish `hexpσ : NormedSpace.exp (σ X) = NormedSpace.exp X`. Establish `hleft : J * (_root_.Formalism.BasicNotions.UpqT.mat g)ᴴ * J * _root_.Formalism.BasicNotions.UpqT.mat g = 1`. Rewrite using `[show J * (_root_.Formalism.BasicNotions.UpqT.mat g)ᴴ * J * _root_.Formalism.BasicNotions.UpqT.mat g = J * ((_root_.Formalism.BasicNotions.UpqT.mat g)ᴴ * J * _root_.Formalism.BasicNotions.UpqT.mat g) by simp only [mul_assoc], hgU, hJJ]`. Rewrite using `[hσ]`.
+
+Use `show NormedSpace.exp (-(J * Xᴴ * J)) = _`. Establish `hc` using `Matrix.exp_conj J Xᴴ hJunit`. Rewrite `hc` using `[hJinv]`. Rewrite using `[Matrix.exp_neg, hc, Matrix.exp_conjTranspose, hgX, Matrix.inv_eq_right_inv hleft]`. Establish `hσX : σ X = X` using `e.injOn hσXs hXs (by rw [he]; exact hexpσ)`.
+
+Establish `hJX : J * X = -(Xᴴ * J)` using `by conv_lhs => rw [← hσX]`. Rewrite using `[hσ]`. Use `show J * -(J * Xᴴ * J) = _`. Rewrite using `[mul_neg, ← mul_assoc, ← mul_assoc, hJJ, one_mul]`. Establish `hlie : X ∈ _root_.Formalism.BasicNotions.lieU P Q` using `by show Xᴴ * _root_.Formalism.UG.Jpq P Q + _root_.Formalism.UG.Jpq P Q * X = 0`.
+
+Rewrite using `[← hJ, hJX, add_neg_cancel]`. Conclude with `⟨⟨X, hlie⟩, hXN, hgX.symm⟩`.
+-/
 theorem _root_.GlobalTheory.ExpBallNhds.exp_ballU_mem_nhds : ∀ (P Q : ℕ) (r : ℝ), 0 < r →
     {g : _root_.Formalism.BasicNotions.UpqT P Q | ∃ X ∈ _root_.Formalism.BasicNotions.ballU P Q r,
       _root_.Formalism.BasicNotions.UpqT.mat g = NormedSpace.exp (X : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ)} ∈

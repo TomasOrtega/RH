@@ -44,6 +44,13 @@ def RatAt (i : Fin D.R.m) (ph : ℂ) (t : T0) : Prop :=
     ph • R.thG i t (R.jV i t x₀) =
       (R.FW i).j (sg0 D A) ((R.FW i).eOp (fun g => (idemOf A.X).coeff g) y)
 
+/- English proof (translation)
+Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_smul, hG i t x, ← map_smul, ← h, Arith.FormsL.eOp, LinearMap.sum_apply, map_sum, map_sum]`. Establish `key : ∀ g : G, (R.HW i (sg0 D A)).e ((R.FW i).j (sg0 D A) ((((idemOf A.X).coeff g * (((R.FW i).chi g)⁻¹ : D.what₂.LLˣ)) • (R.FW i).ρ g) y)) = RealDat.eC (A` using `A) (sg0 D A) g • actW R i _ g ((R.HW i (sg0 D A)).e ((R.FW i).j (sg0 D A) y)) := by`. Introduce `g`. Rewrite using `[LinearMap.smul_apply, map_smulₛₗ, map_smul, hρ g y, smul_smul, ← map_mul, mul_assoc, Units.inv_mul, mul_one]`.
+
+Both sides reduce to the same expression. Rewrite using `[Finset.sum_congr rfl fun g _ => key g]`. Generalize the expression as in `(R.HW i (sg0 D A)).e ((R.FW i).j (sg0 D A) y) = Φ`. Use extensionality with `v h`. Simplify using `[RealDat.eWf, gaL, actW, postOn, LinearMap.sum_apply, Finset.sum_apply]`.
+
+Apply the tactic sequence `first | rfl | exact Finset.sum_congr rfl fun _ _ => rfl`.
+-/
 theorem proj_clause (i : Fin D.R.m) (ph : ℂ) (t : T0) (hG : R.thP_thG)
     (hinj : Function.Injective (R.HW i (sg0 D A)).e)
     (hρ : RhoIs (sg0 D A) ((R.FW i).j (sg0 D A)) (R.HW i _).e (actW R i _) (R.FW i).chi (R.FW i).ρ)

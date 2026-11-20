@@ -14,6 +14,11 @@ section Abs
 variable {G V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
   [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha⟩`. Establish `ha' : (((a : G) * x : G) : G ⧸ I) = g` using `ha`. Conclude with `⟨a, a.2, _, QuotientGroup.eq.1 ha', by group⟩`. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`.
+
+Use `⟨⟨a, ha⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((a * x : G) : G ⧸ I) = _`. Conclude with `(QuotientGroup.mk_mul_of_mem _ hb).symm`.
+-/
 private theorem mem_orbit_iff (I : Subgroup G) (x g : G) :
     (g : G ⧸ I) ∈ MulAction.orbit I (x : G ⧸ I) ↔ ∃ a ∈ I, ∃ b ∈ I, g = a * x * b := by
   constructor
@@ -25,6 +30,9 @@ private theorem mem_orbit_iff (I : Subgroup G) (x g : G) :
     change ((a * x : G) : G ⧸ I) = _
     exact (QuotientGroup.mk_mul_of_mem _ hb).symm
 
+/- English proof (translation)
+Rewrite using `[UpperTheory.V.AlgebraTools.hk, (UpperTheory.V.AlgebraTools.hkApply ℂ G V ρ I I x h).1 v, UpperTheory.V.Hi.dc, finsum_set_coe_eq_finsum_mem (f := fun q : G ⧸ I => ρ q.out), finsum_mem_eq_finite_toFinset_sum _ h, LinearMap.sum_apply]`.
+-/
 private theorem hk_sum (ρ : Representation ℂ G V) (I : Subgroup G) (x : G)
     (h : (MulAction.orbit I (x : G ⧸ I)).Finite) (v : UpperTheory.V.Hi.fixd ρ I) :
     (UpperTheory.V.AlgebraTools.hk ρ I x v : V) = ∑ q ∈ Set.Finite.toFinset h, ρ q.out v := by
@@ -32,6 +40,37 @@ private theorem hk_sum (ρ : Representation ℂ G V) (I : Subgroup G) (x : G)
     finsum_set_coe_eq_finsum_mem (f := fun q : G ⧸ I => ρ q.out), finsum_mem_eq_finite_toFinset_sum _ h,
     LinearMap.sum_apply]
 
+/- English proof (translation)
+Establish `hx' : (MulAction.orbit I (x : G ⧸ I)).Finite` using `hx`. Use `set D : Set G := {g | ∃ a ∈ I, ∃ b ∈ I, g = a * x * b} with hD`. Set `C : G ⧸ I → Set G` to `fun q => (fun g => q.out⁻¹ * g) ⁻¹' (I : Set G)`. Establish `hC : ∀ q g, g ∈ C q ↔ (g : G ⧸ I) = q` using `fun q g => by show q.out⁻¹ * g ∈ I ↔ _`. Rewrite using `[← QuotientGroup.eq, QuotientGroup.out_eq']`.
+
+Conclude with `eq_comm`. Establish `hCo : ∀ q, IsOpen (C q)` using `fun q => hIo.preimage (continuous_const.mul continuous_id)`. Establish `hCc : ∀ q, IsCompact (C q)` using `fun q => (Homeomorph.mulLeft q.out⁻¹).isCompact_preimage.2 hIc`. Establish `hCm : ∀ q, m (C q) = 1` using `fun q => by rw [← hm]; exact measure_preimage_mul m _ _`. Establish `hU : D = ⋃ q ∈ Set.Finite.toFinset hx', C q`.
+
+Use extensionality with `g`. Simplify using `only [Set.mem_iUnion, Set.Finite.mem_toFinset, hC, exists_prop, exists_eq_right']`. Conclude with `(mem_orbit_iff I x g).symm`. Establish `hDc : IsCompact D`. Rewrite using `[hU]`.
+
+Conclude with `(Set.Finite.toFinset hx').isCompact_biUnion fun q _ => hCc q`. Establish `hDm : MeasurableSet D`. Rewrite using `[hU]`. Conclude with `Finset.measurableSet_biUnion _ fun q _ => (hCo q).measurableSet`. Establish `hI : ∀ a ∈ I, ∀ g ∈ D, a * g ∈ D`.
+
+Introduce and unpack `a ha _ ⟨b, hb, c, hc, rfl⟩`. Conclude with `⟨_, mul_mem ha hb, c, hc, by simp only [mul_assoc]⟩`. Take `⟨A, hA⟩` from `GlobalTheory.IwahoriTraceProof.exists_setOp m hρ hDc hDm`. Establish `e : ∀ φ : G → ℂ, (fun g => D.indicator (1 : G → ℂ) g * φ g) = D.indicator φ` using `fun φ => by`. Use function extensionality and compare the values at `g`.
+
+Apply the tactic sequence `by_cases h : g ∈ D <;> simp [h]`. Establish `hfix : ∀ v, A v ∈ UpperTheory.V.Hi.fixd ρ I` using `fun v a ha => by`. Rewrite using `[← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ]`. Introduce `l`. Rewrite using `[map_sub, sub_eq_zero, (hA v l).2]`.
+
+Use `(hA v (l ∘ₗ ρ a)).2.trans ?_` and prove the remaining obligations. Rewrite using `[← integral_indicator hDm, ← integral_indicator hDm, ← integral_mul_left_eq_self (D.indicator fun g => l (ρ g v)) a]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Distinguish the cases in `h : g ∈ D`.
+
+Simplify using `[h, hI a ha g h]`. Establish `: a * g ∉ D` using `fun h' => h (by simpa using hI _ (inv_mem ha) _ h')`. Simplify using `[h, this]`. Establish `hres : ∀ w : UpperTheory.V.Hi.fixd ρ I, A w = UpperTheory.V.AlgebraTools.hk ρ I x w` using `fun w => by`. Rewrite using `[hk_sum ρ I x hx', ← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ]`.
+
+Introduce `l`. Rewrite using `[map_sub, sub_eq_zero, (hA w l).2, map_sum]`. Establish `hsub : ∀ q ∈ Set.Finite.toFinset hx', C q ⊆ D` using `fun q hq => by`. Rewrite using `[hU]`. Conclude with `Set.subset_biUnion_of_mem (u := C) hq`.
+
+Use `conv_lhs => rw [hU]`. Rewrite using `[integral_biUnion_finset _ (fun q _ => (hCo q).measurableSet) (fun p _ q _ hpq => Set.disjoint_left.2 fun g hp hq => hpq (((hC p g).1 hp).symm.trans ((hC q g).1 hq))) (fun q hq => (hA w l).1.mono_set (hsub q hq))]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Establish `hconst : ∀ g ∈ C q, l (ρ g w) = l (ρ q.out w)` using `fun g hg => by`. Establish `h1 : q.out⁻¹ * g ∈ I` using `hg`.
+
+Establish `h2 : g = q.out * (q.out⁻¹ * g)` using `by group`. Rewrite using `[h2, map_mul, Module.End.mul_apply, w.2 _ h1]`. Rewrite using `[setIntegral_congr_fun (hCo q).measurableSet hconst, setIntegral_const, measureReal_def, hCm]`. Simplify using the standard rewrite rules. Establish `hle : LinearMap.range A ≤ UpperTheory.V.Hi.fixd ρ I`.
+
+Introduce and unpack `_ ⟨v, rfl⟩`. Conclude with `hfix v`. Use `⟨A, fun v l => ?_, Submodule.finiteDimensional_of_le hle, ?_⟩` and prove the remaining obligations. Rewrite using `[e, integral_indicator hDm, integrable_indicator_iff hDm]`. Conclude with `hA v l`.
+
+Use `haveI := Submodule.finiteDimensional_of_le hle`. Set `j` to `Submodule.inclusion hle`. Set `s : UpperTheory.V.Hi.fixd ρ I →ₗ[ℂ] LinearMap.range A` to `A.rangeRestrict ∘ₗ (UpperTheory.V.Hi.fixd ρ I).subtype`. Establish `h1 : UpperTheory.V.AlgebraTools.hk ρ I x = j ∘ₗ s`. Use `LinearMap.ext fun w => Subtype.ext ?_` and prove the remaining obligations.
+
+Conclude with `(hres w).symm`. Establish `h2 : A.restrict (p` using `LinearMap.range A) (q := LinearMap.range A) (fun v _ => LinearMap.mem_range_self A v) = s ∘ₗ j := by`. Use `LinearMap.ext fun w => Subtype.ext ?_` and prove the remaining obligations. Both sides reduce to the same expression. Rewrite using `[h1, h2]`.
+
+Conclude with `(LinearMap.trace_comp_comm' s j).symm`.
+-/
 private theorem hasTrace_hk (m : Measure G) [IsFiniteMeasureOnCompacts m] [m.IsMulLeftInvariant]
     {ρ : Representation ℂ G V} (hρ : GlobalTheory.PRep.IsSmooth ρ) {I : Subgroup G} (hIo : IsOpen (I : Set G))
     (hIc : IsCompact (I : Set G)) (hm : m I = 1) (x : G) (hx : UpperTheory.V.AlgebraTools.FinOrb I I x)
@@ -120,6 +159,17 @@ end Abs
 
 section Eig
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `hT`. Set `R : Representation ℂ (Multiplicative ℤ) W` to `(Units.coeHom _).comp (zpowersHom _ u)`. Take `⟨E, -, hE⟩` from `GlobalTheory.IwahoriTraceProof.exists_exponents (G := Multiplicative ℤ) _ W R rfl`. Establish `hR : ∀ j : ℕ, R (Multiplicative.ofAdd 1 ^ j) = (u : Module.End ℂ W) ^ j` using `fun j => by`. Rewrite using `[map_pow]`.
+
+Use `congr 1`. Use `⟨E.map fun χ => ((χ (Multiplicative.ofAdd 1) : ℂˣ) : ℂ), ?_, ?_, fun j => ?_⟩` and prove the remaining obligations. Introduce `h`. Take `⟨χ, -, h⟩` from `Multiset.mem_map.1 h`. Conclude with `(χ (Multiplicative.ofAdd 1)).ne_zero h`.
+
+Establish `h1` using `hE 1`. Rewrite `h1` using `[map_one, Module.End.one_eq_id, LinearMap.trace_id]`. Establish `h2 : (Module.finrank ℂ W : ℂ) = (E.card : ℂ)`. Rewrite using `[h1]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[Multiset.card_map]`. Conclude with `(Nat.cast_injective h2).symm`. Rewrite using `[← hR, hE, Multiset.map_map]`. Use `congr 1`. Use `Multiset.map_congr rfl fun χ _ => ?_` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem exists_powerSums {W : Type} [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
     (T : Module.End ℂ W) (hT : IsUnit T) :
     ∃ Z : Multiset ℂ, 0 ∉ Z ∧ Z.card = Module.finrank ℂ W ∧
@@ -152,6 +202,9 @@ section Loc
 
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] {n : ℕ}
 
+/- English proof (translation)
+Introduce `i j hij`. Establish `hp : 0 < ValuativeRel.valuation F (GLnLocal.uniformizer F : F)` using `GLnLocal.valuation_uniformizer_pos F`. Simplify using `only [Units.val_zpow_eq_zpow_val, map_zpow₀, Units.val_mk0]`. Conclude with `(zpow_le_zpow_iff_right_of_lt_one₀ hp (GLnLocal.valuation_uniformizer_lt_one F)).2 (ha hij)`.
+-/
 private theorem dom_pow (a : Fin n → ℤ) (ha : Antitone a) (h0 : (GLnLocal.uniformizer F : F) ≠ 0) :
     UpperTheory.V.AlgebraTools.Dom fun i => (Units.mk0 (GLnLocal.uniformizer F : F) h0) ^ a i := by
   intro i j hij
@@ -159,6 +212,21 @@ private theorem dom_pow (a : Fin n → ℤ) (ha : Antitone a) (h0 : (GLnLocal.un
   simp only [Units.val_zpow_eq_zpow_val, map_zpow₀, Units.val_mk0]
   exact (zpow_le_zpow_iff_right_of_lt_one₀ hp (GLnLocal.valuation_uniformizer_lt_one F)).2 (ha hij)
 
+/- English proof (translation)
+Substitute `hI` using the available equality. Establish `h0 : (GLnLocal.uniformizer F : F) ≠ 0` using `GLnLocal.uniformizer_ne_zero F`. Set `t : (Fin n → ℤ) → Fin n → Fˣ` to `fun a i => (Units.mk0 (GLnLocal.uniformizer F : F) h0) ^ a i`. Establish `hdiag : ∀ a, Cartan.diagPow F n a = diagT F (Fin n) (t a)` using `fun a => by`. Use extensionality with `i j`.
+
+Rewrite using `[val_diagT]`. Simplify using `[t, Cartan.diagPow]`. Establish `ht : ∀ a b, t (a + b) = t a * t b` using `fun a b => by`. Use function extensionality and compare the values at `i`. Simplify using `[t, _root_.zpow_add]`.
+
+Take `⟨hmul, hunit, -⟩` from `UpperTheory.V.AlgebraTools.domMul F n ⊤ ℂ V ρ`. Establish `hq : IsUnit ((GlobalTheory.SplitWeil.resCard F : ℕ) : ℂ)` using `(Nat.cast_ne_zero.2 (GlobalTheory.SplitWeil.one_lt_resCard F).ne_bot).isUnit`. Set `T` to `UpperTheory.V.AlgebraTools.hk ρ (UpperTheory.V.AlgebraTools.iwC F n ⊤) (diagT F (Fin n) (t ν))`. Establish `hdom : ∀ a, Antitone a → UpperTheory.V.AlgebraTools.Dom (t a)` using `fun a ha => dom_pow a ha h0`. Establish `hTu : IsUnit T` using `hunit hq _ (hdom ν hν)`.
+
+Establish `hone : UpperTheory.V.AlgebraTools.hk ρ (UpperTheory.V.AlgebraTools.iwC F n ⊤) (diagT F (Fin n) (t 0)) = 1`. Establish `hd0` using `hdom 0 (fun _ _ _ => le_rfl)`. Establish `h1` using `hmul _ _ hd0 hd0`. Rewrite `h1` using `[← ht, add_zero]`. Conclude with `(hunit hq _ hd0).mul_left_cancel (h1.trans (mul_one _).symm)`.
+
+Establish `hpow : ∀ j : ℕ, UpperTheory.V.AlgebraTools.hk ρ (UpperTheory.V.AlgebraTools.iwC F n ⊤) (diagT F (Fin n) (t (j • ν))) = T ^ j`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => simpa using hone`. Consider the case `succ j ih`.
+
+Establish `hj : Antitone (j • ν)` using `fun a b hab => by`. Simplify using `using mul_le_mul_of_nonneg_left (hν hab) (Int.natCast_nonneg j)`. Rewrite using `[pow_succ, ← ih, hmul _ _ (hdom _ hj) (hdom _ hν), ← ht, succ_nsmul]`. Take `⟨Z, hZ0, hZc, hZ⟩` from `exists_powerSums T hTu`. Use `⟨Z, hZ0, hZc, fun j => ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `hasTrace_hk m hρ hIo hIc hm (diagT F (Fin n) (t (j • ν))) ((UpperTheory.V.AlgebraTools.heckePairIwC F n ⊤).1 _)`. Rewrite `h` using `[hpow, hZ, ← hdiag]`. Conclude with `h`.
+-/
 private theorem iw_local [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)]
     (m : Measure (GL (Fin n) F)) [m.IsHaarMeasure] {I : Subgroup (GL (Fin n) F)}
     (hI : UpperTheory.V.AlgebraTools.iwC F n ⊤ = I) (hm : m I = 1) {V : Type} [AddCommGroup V] [Module ℂ V]
@@ -205,6 +273,9 @@ private theorem iw_local [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n
 
 end Loc
 
+/- English proof (translation)
+Introduce `K _ _ n w _ _ m _ hm σ ν hν hfd`. Use `haveI : FiniteDimensional ℂ (UpperTheory.V.Hi.fixd σ.ρ (GlobalTheory.SmGL.iwahori (w.adicCompletion K) (Fin n))) := hfd`. Conclude with `iw_local m (UpperTheory.V.AlgebraTools.memIwC _ n ⊤).2.1 hm σ.ρ σ.smooth (GLnLocal.isOpen_iwahori _ _) (GLnLocal.isCompact_iwahori _ _) ν hν`.
+-/
 theorem UpperTheory.ConvolutionTheory.C.iwPow :
     UpperTheory.ConvolutionTheory.C.IwPow := by
   intro K _ _ n w _ _ m _ hm σ ν hν hfd

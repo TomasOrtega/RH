@@ -13,6 +13,11 @@ namespace PositivityTheory.Rg.BcB.F.Inert
 
 namespace UniformizerValuation
 
+/- English proof (translation)
+Unfold `ordL`. Establish `h0 : Valued.v x ≠ 0` using `by rw [hx]; exact WithZero.coe_ne_zero`. Rewrite using `[dif_neg h0]`. Establish `hu : WithZero.unzero h0 = Multiplicative.ofAdd (-1 : ℤ)` using `WithZero.coe_injective ((WithZero.coe_unzero h0).trans hx)`. Rewrite using `[hu]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem ordL_eq_one {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {x : L}
     (hx : Valued.v x = ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ))) :
     ordL x = 1 := by
@@ -26,6 +31,13 @@ theorem ordL_eq_one {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ
 
 end UniformizerValuation
 
+/- English proof (translation)
+Introduce `E _ _ _ hU w hw`. Take `⟨-, -, -, h4, -⟩` from `GlobalTheory.T.placeConjugation_properties_cmField E hU w`. Take `⟨ϖ, q, hI, -⟩` from `(h4 hw).2.1`. Establish `hv : Valued.v ϖ = ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ))` using `hI.2.2.2.1`. Establish `h0 : ϖ ≠ 0`.
+
+Introduce `h`. Rewrite `hv` using `[h, map_zero]`. Conclude with `WithZero.coe_ne_zero hv.symm`. Use `⟨Units.mk0 ϖ h0, q, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `UniformizerValuation.ordL_eq_one hv`.
+
+Conclude with `hI.2.2.1`. Conclude with `hI`.
+-/
 theorem unifEx : UnifEx := by
   intro E _ _ _ hU w hw
   obtain ⟨-, -, -, h4, -⟩ := GlobalTheory.T.placeConjugation_properties_cmField E hU w

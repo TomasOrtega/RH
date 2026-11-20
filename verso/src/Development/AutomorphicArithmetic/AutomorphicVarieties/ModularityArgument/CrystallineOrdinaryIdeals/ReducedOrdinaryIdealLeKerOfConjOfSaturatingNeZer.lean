@@ -6,6 +6,17 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal Mod
 
 namespace GlobalTheory.OrdLoc
 
+/- English proof (translation)
+Introduce `l _ O _ _ _ D U S _ _ _ i α u hc hY hd`. Establish `hm : HasMult D.η (push i U.r.hom)` using `U.r.hasMult`. Take `⟨hcI, -, hcd⟩` from `GlobalTheory.T.ordinaryIdeal_saturators_conj_invariant D (push i U.r.hom) u hm`. Take `⟨hiI, -, hid⟩` from `GlobalTheory.T.ordinaryIdeal_saturators_map_algHom D i U.r.hom`. Take `⟨haI, -, had⟩` from `GlobalTheory.T.ordinaryIdeal_saturators_map_algHom D α U.r.hom`.
+
+Establish `hord : ordIdeal D U.r.hom ≤ IY D U` using `fun a ha => ⟨0, by simpa using ha⟩`. Establish `hbot : ordIdeal D (push i U.r.hom) = ⊥`. Rewrite using `[← hiI, eq_bot_iff, Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Simplify `hY (hord ha)` using `[Ideal.mem_comap]`.
+
+Establish `hα : ordIdeal D (push α U.r.hom) = ⊥` using `by rw [hc, hcI, hbot]`. Establish `hdel : α (del D U.r.hom) ≠ 0`. Rewrite using `[had, hc, hcd, ← hid]`. Conclude with `hd`. Introduce `x hx`.
+
+Take `⟨k, n, hn⟩` from `hx`. Establish `h1 : α (del D U.r.hom ^ n * x ^ k) ∈ ordIdeal D (push α U.r.hom)`. Rewrite using `[← haI]`. Conclude with `Ideal.mem_map_of_mem _ hn`. Rewrite `h1` using `[hα, Ideal.mem_bot, map_mul, map_pow, map_pow]`.
+
+Establish `h2 : α x ^ k = 0`. Break down `mul_eq_zero.1 h1 with h | h` into its components or cases. Conclude with `absurd (pow_eq_zero_iff'.1 h).1 hdel`. Conclude with `h`. Conclude with `RingHom.mem_ker.2 (pow_eq_zero_iff'.1 h2).1`.
+-/
 theorem icr_le_ker_of_conj : ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O] (D : Dat3 l O) (U : D.Univ) (S : Type) [CommRing S] [IsDomain S] [Algebra O S] (i α : U.R →ₐ[O] S) (u : GL (Fin 3) S), push α U.r.hom = conjBy u (push i U.r.hom) → GlobalTheory.OrdLoc.IY D U ≤ RingHom.ker i → i (GlobalTheory.OrdLoc.del D U.r.hom) ≠ 0 → GlobalTheory.OrdLoc.Icr D U ≤ RingHom.ker α := by
   intro l _ O _ _ _ D U S _ _ _ i α u hc hY hd
   have hm : HasMult D.η (push i U.r.hom) := U.r.hasMult

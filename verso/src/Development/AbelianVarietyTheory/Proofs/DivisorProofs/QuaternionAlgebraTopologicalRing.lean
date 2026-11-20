@@ -9,18 +9,35 @@ namespace GlobalTheory.QuatTop
 
 variable {R : Type} [CommRing R] [TopologicalSpace R] {a b : R}
 
+/- English proof (translation)
+The claim follows from `(continuous_apply (0 : Fin 4)).comp (continuous_induced_dom (f := (coords : ℍ[R, a, b] → Fin 4 → R)))`.
+-/
 theorem continuous_coord_re : Continuous (fun x : ℍ[R, a, b] => x.re) :=
   (continuous_apply (0 : Fin 4)).comp (continuous_induced_dom (f := (coords : ℍ[R, a, b] → Fin 4 → R)))
 
+/- English proof (translation)
+The claim follows from `(continuous_apply (1 : Fin 4)).comp (continuous_induced_dom (f := (coords : ℍ[R, a, b] → Fin 4 → R)))`.
+-/
 theorem continuous_coord_imI : Continuous (fun x : ℍ[R, a, b] => x.imI) :=
   (continuous_apply (1 : Fin 4)).comp (continuous_induced_dom (f := (coords : ℍ[R, a, b] → Fin 4 → R)))
 
+/- English proof (translation)
+The claim follows from `(continuous_apply (2 : Fin 4)).comp (continuous_induced_dom (f := (coords : ℍ[R, a, b] → Fin 4 → R)))`.
+-/
 theorem continuous_coord_imJ : Continuous (fun x : ℍ[R, a, b] => x.imJ) :=
   (continuous_apply (2 : Fin 4)).comp (continuous_induced_dom (f := (coords : ℍ[R, a, b] → Fin 4 → R)))
 
+/- English proof (translation)
+The claim follows from `(continuous_apply (3 : Fin 4)).comp (continuous_induced_dom (f := (coords : ℍ[R, a, b] → Fin 4 → R)))`.
+-/
 theorem continuous_coord_imK : Continuous (fun x : ℍ[R, a, b] => x.imK) :=
   (continuous_apply (3 : Fin 4)).comp (continuous_induced_dom (f := (coords : ℍ[R, a, b] → Fin 4 → R)))
 
+/- English proof (translation)
+Use `continuous_induced_rng.2 (continuous_pi fun i => ?_)` and prove the remaining obligations. Use `fin_cases i`. Conclude with `h0`. Conclude with `h1`. Conclude with `h2`.
+
+Conclude with `h3`.
+-/
 theorem continuous_of_coords {X : Type*} [TopologicalSpace X] {g : X → ℍ[R, a, b]}
     (h0 : Continuous fun x => (g x).re) (h1 : Continuous fun x => (g x).imI)
     (h2 : Continuous fun x => (g x).imJ) (h3 : Continuous fun x => (g x).imK) : Continuous g := by
@@ -31,6 +48,15 @@ theorem continuous_of_coords {X : Type*} [TopologicalSpace X] {g : X → ℍ[R, 
   · exact h2
   · exact h3
 
+/- English proof (translation)
+Establish `c0` using `(continuous_coord_re (R := R) (a := a) (b := b))`. Establish `c1` using `(continuous_coord_imI (R := R) (a := a) (b := b))`. Establish `c2` using `(continuous_coord_imJ (R := R) (a := a) (b := b))`. Establish `c3` using `(continuous_coord_imK (R := R) (a := a) (b := b))`. Establish `p0` using `c0.comp (continuous_fst (X := ℍ[R, a, b]) (Y := ℍ[R, a, b]))`.
+
+Establish `p1` using `c1.comp (continuous_fst (X := ℍ[R, a, b]) (Y := ℍ[R, a, b]))`. Establish `p2` using `c2.comp (continuous_fst (X := ℍ[R, a, b]) (Y := ℍ[R, a, b]))`. Establish `p3` using `c3.comp (continuous_fst (X := ℍ[R, a, b]) (Y := ℍ[R, a, b]))`. Establish `q0` using `c0.comp (continuous_snd (X := ℍ[R, a, b]) (Y := ℍ[R, a, b]))`. Establish `q1` using `c1.comp (continuous_snd (X := ℍ[R, a, b]) (Y := ℍ[R, a, b]))`.
+
+Establish `q2` using `c2.comp (continuous_snd (X := ℍ[R, a, b]) (Y := ℍ[R, a, b]))`. Establish `q3` using `c3.comp (continuous_snd (X := ℍ[R, a, b]) (Y := ℍ[R, a, b]))`. Establish `hadd : ContinuousAdd ℍ[R, a, b]` using `⟨continuous_of_coords (by simp only [QuaternionAlgebra.re_add]; exact p0.add q0) (by simp only [QuaternionAlgebra.imI_add]; exact p1.add q1) (by simp only [QuaternionAlgebra.imJ_add]; exact p2.add q2) (by simp only [QuaternionAlgebra.imK_add]; exact p3.add q3)⟩`. Establish `hmul : ContinuousMul ℍ[R, a, b]` using `⟨continuous_of_coords (by simp only [QuaternionAlgebra.re_mul]; fun_prop) (by simp only [QuaternionAlgebra.imI_mul]; fun_prop) (by simp only [QuaternionAlgebra.imJ_mul]; fun_prop) (by simp only [QuaternionAlgebra.imK_mul]; fun_prop)⟩`. Establish `hneg : ContinuousNeg ℍ[R, a, b]` using `⟨continuous_of_coords (by simp only [QuaternionAlgebra.re_neg]; exact c0.neg) (by simp only [QuaternionAlgebra.imI_neg]; exact c1.neg) (by simp only [QuaternionAlgebra.imJ_neg]; exact c2.neg) (by simp only [QuaternionAlgebra.imK_neg]; exact c3.neg)⟩`.
+
+Conclude with `{}`.
+-/
 theorem isTopologicalRing [IsTopologicalRing R] : IsTopologicalRing ℍ[R, a, b] := by
   have c0 := (continuous_coord_re (R := R) (a := a) (b := b))
   have c1 := (continuous_coord_imI (R := R) (a := a) (b := b))
@@ -58,6 +84,15 @@ theorem isTopologicalRing [IsTopologicalRing R] : IsTopologicalRing ℍ[R, a, b]
 end GlobalTheory.QuatTop
 
 open GlobalTheory.QuatTop in
+/- English proof (translation)
+Introduce `R _ _ _ a b`. Establish `c0` using `(continuous_coord_re (R := R) (a := a) (b := b))`. Establish `c1` using `(continuous_coord_imI (R := R) (a := a) (b := b))`. Establish `c2` using `(continuous_coord_imJ (R := R) (a := a) (b := b))`. Establish `c3` using `(continuous_coord_imK (R := R) (a := a) (b := b))`.
+
+Use `⟨isTopologicalRing, ?_, c0, fun _ => ?_⟩` and prove the remaining obligations. Unfold `nrm`. Use `fun_prop`. Establish `hinj : Function.Injective (coords : ℍ[R, a, b] → Fin 4 → R)`. Introduce `x y h`.
+
+Establish `e0` using `congrFun h 0`. Establish `e1` using `congrFun h 1`. Establish `e2` using `congrFun h 2`. Establish `e3` using `congrFun h 3`. Simplify using `[coords] at e0 e1 e2 e3`.
+
+Apply the tactic sequence `ext <;> assumption`. Conclude with `(Topology.IsEmbedding.mk ⟨rfl⟩ hinj).t2Space`.
+-/
 theorem GlobalTheory.quaternion_isTopologicalRing_nrm_re_t2 : ∀ (R : Type) [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] (a b : R), IsTopologicalRing ℍ[R, a, b] ∧ Continuous (nrm : ℍ[R, a, b] → R) ∧ Continuous (fun x : ℍ[R, a, b] => x.re) ∧ (T2Space R → T2Space ℍ[R, a, b]) := by
   intro R _ _ _ a b
   have c0 := (continuous_coord_re (R := R) (a := a) (b := b))

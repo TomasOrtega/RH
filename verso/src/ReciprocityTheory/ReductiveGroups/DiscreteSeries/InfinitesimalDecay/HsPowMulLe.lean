@@ -10,6 +10,17 @@ namespace ReciprocityTheory.ChartRestriction.DS.DecInf
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `hsq : Real.sqrt (S7.hs g) ≤ ∑ ab : Fin n × Fin n, ‖g ab.1 ab.2‖`. Establish `h1 : S7.hs g = ∑ ab : Fin n × Fin n, ‖g ab.1 ab.2‖ ^ 2`. Rewrite using `[S7.hs, ← Finset.univ_product_univ, Finset.sum_product]`. Establish `h2 : ∑ ab : Fin n × Fin n, ‖g ab.1 ab.2‖ ^ 2 ≤ (∑ ab : Fin n × Fin n, ‖g ab.1 ab.2‖) ^ 2`. Rewrite using `[sq (∑ ab : Fin n × Fin n, ‖g ab.1 ab.2‖), Finset.sum_mul]`.
+
+Use `Finset.sum_le_sum fun ab _ => ?_` and prove the remaining obligations. Rewrite using `[sq]`. Conclude with `mul_le_mul_of_nonneg_left (Finset.single_le_sum (f := fun ab : Fin n × Fin n => ‖g ab.1 ab.2‖) (fun (i : Fin n × Fin n) _ => norm_nonneg (g i.1 i.2)) (Finset.mem_univ ab)) (norm_nonneg (g ab.1 ab.2))`. Rewrite using `[h1, Real.sqrt_le_left (Finset.sum_nonneg fun _ _ => norm_nonneg _)]`. Conclude with `h2`.
+
+Establish `hpow : (∑ ab : Fin n × Fin n, ‖g ab.1 ab.2‖) ^ m = ∑ idx : Fin m → Fin n × Fin n, ∏ t, ‖g (idx t).1 (idx t).2‖`. Rewrite using `[← Fin.prod_const, Finset.prod_univ_sum]`. Both sides reduce to the same expression. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hpow, Finset.sum_mul]`.
+
+Conclude with `Finset.sum_congr rfl fun _ _ => mul_comm _ _`. Use `_ ≤ ∑ _idx : Fin m → Fin n × Fin n, A := Finset.sum_le_sum fun idx _ => h idx`. Use `_ = (n : ℝ) ^ (2 * m) * A := by`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fun, Fintype.card_prod, Fintype.card_fin, nsmul_eq_mul]`. Simplify using `only [Fintype.card_fin]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hs_pow_mul_le (m : ℕ) (g : Matrix (Fin n) (Fin n) ℂ) {c A : ℝ} (hc : 0 ≤ c)
     (h : ∀ idx : Fin m → Fin n × Fin n, c * ∏ t, ‖g (idx t).1 (idx t).2‖ ≤ A) :
     Real.sqrt (S7.hs g) ^ m * c ≤ (n : ℝ) ^ (2 * m) * A := by

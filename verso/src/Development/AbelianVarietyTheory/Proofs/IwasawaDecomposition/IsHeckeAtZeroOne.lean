@@ -22,11 +22,17 @@ namespace GlobalTheory.HeightCounting.RatSide.HeckeAtState
 
 open Formalism.BasicNotions.TH Formalism.IndefR.Mult
 
+/- English proof (translation)
+Use `⟨fun a ha => ⟨1, 1, by simpa using ha⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `g ⟨k, k', rfl⟩`. Conclude with `⟨1, ⟨Finset.mem_singleton_self _, by simpa using J.mul_mem k.2 k'.2⟩, fun a ha => Finset.mem_singleton.1 ha.1⟩`.
+-/
 theorem isDC_one' {G : Type} [Group G] (J : Subgroup G) : Formalism.IndefR.Bridge.IsDC J 1 {1} := by
   refine ⟨fun a ha => ⟨1, 1, by simpa using ha⟩, ?_⟩
   rintro g ⟨k, k', rfl⟩
   exact ⟨1, ⟨Finset.mem_singleton_self _, by simpa using J.mul_mem k.2 k'.2⟩, fun a ha => Finset.mem_singleton.1 ha.1⟩
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `GlobalTheory.MovedIdem.exists_isIdemAt P ((GlobalTheory.HeckeTieCompare.isSplitPl_iff P).1 hP)`. Take `⟨ϖ, h1, h2⟩` from `SetLike.exists_of_lt (Ideal.pow_lt_self P.asIdeal P.ne_bot P.isPrime.ne_top 2 le_rfl)`. Conclude with `⟨e, ϖ, he, h1, h2, GlobalTheory.HeckeParts.isHeckeElt_one V he.1 ϖ⟩`.
+-/
 theorem isHeckeAt_zero_one' {D : D7} (V : HSp D) {P : PlE D.host} (hP : Formalism.BasicNotions.IsSplitPl D.host P) :
     IsHeckeAt V P 0 1 := by
   obtain ⟨e, he⟩ := GlobalTheory.MovedIdem.exists_isIdemAt P ((GlobalTheory.HeckeTieCompare.isSplitPl_iff P).1 hP)
@@ -37,11 +43,17 @@ section
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type}
   [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.RationalHeckeScalars.heckeScalar, hkNorm, zpow_neg, zpow_natCast, inv_pow]`.
+-/
 theorem heckeScalar_eq (R : RealDat3 D A3 Ks) (i : Fin D.R.m) (P : PlE D.host) (k : ℕ) :
     GlobalTheory.IndefiniteRowSideFullHecke.RationalHeckeScalars.heckeScalar R.toRealDat i P k = hkNorm R i k P := by
   simp only [GlobalTheory.IndefiniteRowSideFullHecke.RationalHeckeScalars.heckeScalar, hkNorm, zpow_neg, zpow_natCast, inv_pow]
 end
 
+/- English proof (translation)
+Use extensionality with `v g`. Simplify using `[heckeOn, postOn, heckeLin]`.
+-/
 theorem heckeOn_one {D : D7} {V : HSp D} {S} (M : DSModel V S) (F : MMap M) : heckeOn M {1} F = F := by
   ext v g
   simp [heckeOn, postOn, heckeLin]
@@ -64,11 +76,27 @@ def famOf (R : RealDat3 D A3 Ks) (hq : ∀ i : Fin D.R.m, GlobalTheory.Indefinit
     Classical.choose (hq (idxOf D j) Pl h.2.1 k h.2.2)
   else 1
 
+/- English proof (translation)
+Unfold `famOf`. Rewrite using `[dif_neg (fun h => h.1 rfl)]`.
+-/
 theorem famOf_zero (R : RealDat3 D A3 Ks) (hq : ∀ i : Fin D.R.m, GlobalTheory.IndefiniteRowSideFullHecke.RationalHeckeScalars.RationalHecke R.toRealDat i) (j : ℕ)
     (Pl : PlE D.host) : famOf R hq j 0 Pl = 1 := by
   unfold famOf
   rw [dif_neg (fun h => h.1 rfl)]
 
+/- English proof (translation)
+Use `⟨famOf R hq, ?_, fun j Pl => famOf_zero R hq j Pl, ?_⟩` and prove the remaining obligations. Introduce `j _ _ k Pl y hy`. Express the relevant statement in the definitionally equal form `famOf R hq j k Pl y ∈ (R.FW (idxOf D j)).WK`. Unfold `famOf`. Use `split_ifs with h`.
+
+Conclude with `(Classical.choose_spec (hq (idxOf D j) Pl h.2.1 k h.2.2)).2 y hy`. Conclude with `hy`. Introduce `j k Pl α Rr _ _ hd y`. Establish `hg' : GlobalTheory.IndefiniteRowSideFullHecke.RationalHeckeScalars.GoodPlace R.toRealDat Pl` using `hg Pl hd.split hd.offS`. Distinguish the cases in `hk0 : k = 0`.
+
+Substitute `hk0` using the available equality. Establish `hr` using `(Classical.choose_spec (hq (idxOf D j) Pl hg' 0 (Nat.zero_le _))).1`. Establish `e1` using `(GlobalTheory.IndefiniteRowSideFullHecke.RationalHeckeScalars.readAs_iff _ _ _ _ _ _).1 (hr Rr ⟨α, hd.elt, hd.reps⟩) y`. Establish `e2` using `(GlobalTheory.IndefiniteRowSideFullHecke.RationalHeckeScalars.readAs_iff _ _ _ _ _ _).1 (hr {1} ⟨1, isHeckeAt_zero_one' _ hd.split, isDC_one' _⟩) y`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.RationalHeckeScalars.heckeScalar_zero, one_smul] at e1 e2`.
+
+Establish `e4` using `(e2.trans (heckeOn_one _ _)).symm.trans e1`. Establish `hn : hkNorm R (idxOf D j) 0 Pl = 1` using `by simp [hkNorm]`. Rewrite using `[famOf_zero, hn, one_smul]`. Conclude with `e4`. Establish `h : k ≠ 0 ∧ GlobalTheory.IndefiniteRowSideFullHecke.RationalHeckeScalars.GoodPlace R.toRealDat Pl ∧ k ≤ D.R.r` using `⟨hk0, hg', hd.le⟩`.
+
+Establish `e1` using `(GlobalTheory.IndefiniteRowSideFullHecke.RationalHeckeScalars.readAs_iff _ _ _ _ _ _).1 ((Classical.choose_spec (hq (idxOf D j) Pl h.2.1 k h.2.2)).1 Rr ⟨α, hd.elt, hd.reps⟩) y`. Establish `h1 : famOf R hq j k Pl = Classical.choose (hq (idxOf D j) Pl h.2.1 k h.2.2)`. Unfold `famOf`. Rewrite using `[dif_pos h]`. Rewrite using `[h1, ← heckeScalar_eq]`.
+
+Conclude with `e1`.
+-/
 theorem exists_heckeRd (R : RealDat3 D A3 Ks) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (kKs : Ks →+* ↥D.LL0)
     (hk : ∀ x : Ks, ((kKs x : ↥D.LL0) : D.what₂.LL) = algebraMap Ks D.what₂.LL x) (Sb : Finset (PlE D.host))
     (hq : ∀ i : Fin D.R.m, GlobalTheory.IndefiniteRowSideFullHecke.RationalHeckeScalars.RationalHecke R.toRealDat i)
@@ -109,6 +137,9 @@ end GlobalTheory.HeightCounting.RatSide.HeckeAtState
 
 namespace GlobalTheory.HeightCounting.RatSide.HeckeAtState
 
+/- English proof (translation)
+Introduce `hL hD hT hR`. Use `(GlobalTheory.T.rational_hecke_at_levels hL hD hT hR).trans (StepW.of_all fun K B f T w _ _ H P x l => ?_)` and prove the remaining obligations. Conclude with `exists_heckeRd x.m.z.R x.m.z.cG (kKsOf x) (hkOf x) (SbD (Dof x)) (H P x l) (GlobalTheory.T.isGoodSplitHeckePlace_of_split_not_excluded P x)`.
+-/
 theorem heckeAtState : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, GlobalTheory.Published.CuspRapidDecay → GlobalTheory.IndefiniteRowSideFullHecke.SplitOffDetection.HeckeTransform → GlobalTheory.HeckeSupSt.HeckeReadTie → StepW Start fun K B f T w => ∀ (P : Pre2 K w) (x : St P), LA hL x → ∃ hL' : ∀ j, ℕ → PlE (Dof x).host → Module.End (Dof x).what₂.LL ((SOf x).WL j), StabC (SOf x) hL' ∧ (∀ j Pl, hL' j 0 Pl = 1) ∧ HeckeRd x.m.z.R x.m.z.cG (kKsOf x) (hkOf x) (SbD (Dof x)) hL' := by
   intro hL hD hT hR
   refine (GlobalTheory.T.rational_hecke_at_levels hL hD hT hR).trans (StepW.of_all fun K B f T w _ _ H P x l => ?_)

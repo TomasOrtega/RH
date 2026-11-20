@@ -12,6 +12,13 @@ open scoped Classical
 
 namespace UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi
 
+/- English proof (translation)
+Establish `hc : (QuotientGroup.mk 1 : G ⧸ K).out ∈ K`. Establish `h : (QuotientGroup.mk (QuotientGroup.mk 1 : G ⧸ K).out : G ⧸ K) = QuotientGroup.mk 1` using `QuotientGroup.out_eq' _`. Simplify using `using QuotientGroup.eq.1 h`. Establish `hq : ∀ q : G ⧸ K, q ≠ QuotientGroup.mk 1 → q.out ∉ K`. Introduce `q hne hmem`.
+
+Apply `hne` to reduce the goal to its premises. Rewrite using `[← QuotientGroup.out_eq' q]`. Conclude with `QuotientGroup.eq.2 (by simpa using hmem)`. Unfold `Lv levOp`. Rewrite using `[finsum_eq_single _ (QuotientGroup.mk 1 : G ⧸ K) (fun q hne => by rw [Set.indicator_of_notMem (hq q hne), zero_smul]), Set.indicator_of_mem (show _ ∈ (K : Set G) from hc)]`.
+
+Simplify using `using hv ⟨_, hc⟩`.
+-/
 private theorem lv_unit {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ G V) (K : Subgroup G) (v : V) (hv : v ∈ fixed ρ K) :
     Lv ρ K ((K : Set G).indicator 1) v = v := by
@@ -30,6 +37,11 @@ private theorem lv_unit {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     Set.indicator_of_mem (show _ ∈ (K : Set G) from hc)]
   simpa using hv ⟨_, hc⟩
 
+/- English proof (translation)
+Establish `h : ∀ v ∈ M, L v ∈ M` using `fun v hv => by rw [hL v hv]; exact hv`. Establish `hid : L.restrict h = LinearMap.id`. Use extensionality with `v`. Simplify using `[LinearMap.restrict_apply, hL v.1 v.2]`. Unfold `trOn`.
+
+Rewrite using `[dif_pos h, hid]`. Conclude with `LinearMap.trace_id ℂ _`.
+-/
 private theorem trOn_of_id {V : Type} [AddCommGroup V] [Module ℂ V] (M : Submodule ℂ V)
     [FiniteDimensional ℂ M] (L : V →ₗ[ℂ] V) (hL : ∀ v ∈ M, L v = v) :
     trOn M L = (Module.finrank ℂ M : ℂ) := by
@@ -41,6 +53,11 @@ private theorem trOn_of_id {V : Type} [AddCommGroup V] [Module ℂ V] (M : Submo
   rw [dif_pos h, hid]
   exact LinearMap.trace_id ℂ _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Establish `h1 : ∀ w : Pl E, atW w ((g, 1) : Gf E n 0) = (qw n w false g, 1)` using `fun w => Prod.ext rfl (map_one (GeneralLinearGroup.map (pLoc E w)))`. Establish `h2 : ∀ w : Pl E, atW w (thP E n 0 (g, 1)) = (qw n w true g, 1)`. Introduce `w`. Use `Prod.ext rfl ?_` and prove the remaining obligations.
+
+Simplify using `[atW, thP]`. Unfold `finFn pf`. Simplify using `only [h1, h2]`. Both sides reduce to the same expression.
+-/
 private theorem finFn_one {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (S : Set (Pl E))
     (φ₁ φ₂ : ∀ w : Pl E, LF n 0 w) : (fun g => finFn S φ₁ φ₂ (g, 1)) = pf S (two φ₁ φ₂) := by
   funext g
@@ -54,6 +71,11 @@ private theorem finFn_one {E : Type} [Field E] [NumberField E] [IsCMField E] {n 
   simp only [h1, h2]
   rfl
 
+/- English proof (translation)
+Establish `hcl : IsClosed (M : Set (GLw n w))` using `M.isClosed_of_isOpen ho`. Establish `hcomp : IsCompact (M : Set (GLw n w))` using `(GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL (E := E) w n).2.of_isClosed_subset hcl hM`. Use `⟨hcomp.of_isClosed_subset (isClosed_tsupport _) (closure_minimal Set.support_indicator_subset hcl), fun k hk x => ?_⟩` and prove the remaining obligations. Establish `a1 : k * x ∈ M ↔ x ∈ M` using `M.mul_mem_cancel_left (hN hk)`. Establish `a2 : x * k ∈ M ↔ x ∈ M` using `M.mul_mem_cancel_right (hN hk)`.
+
+Simplify using `only [Set.indicator, SetLike.mem_coe, a1, a2, Pi.one_apply, and_self]`.
+-/
 private theorem ind_hecke {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (w : Pl E)
     (M N' : Subgroup (GLw n w)) (ho : IsOpen (M : Set (GLw n w))) (hM : M ≤ KGL w n) (hN : N' ≤ M) :
     IsHecke N' ((M : Set (GLw n w)).indicator 1) := by
@@ -66,6 +88,21 @@ private theorem ind_hecke {E : Type} [Field E] [NumberField E] [IsCMField E] {n 
   have a2 : x * k ∈ M ↔ x ∈ M := M.mul_mem_cancel_right (hN hk)
   simp only [Set.indicator, SetLike.mem_coe, a1, a2, Pi.one_apply, and_self]
 
+/- English proof (translation)
+Introduce `hAdm hZ hSeen hT E _ _ _ n S Z N hSec hSp hG π y B τ hB hτ`. Take `⟨hne, d₀, hd₀, hd⟩` from `hZ E n S Z N hSec hSp hG π y τ hτ`. Establish `hc : ∀ w ∈ Z, ∃ c : ℂ, c ≠ 0 ∧ ∀ φ₁ φ₂ : ∀ w : Pl E, LF n 0 w, (∀ b, IsHecke (N w) (two φ₁ φ₂ w b)) → GlobalTheory.BCT.trOn (fixed (τ w).ρ (N w)) (Lv (τ w).ρ (N w) (two φ₁ φ₂ w false) * Lv (τ w).ρ (N w) (two φ₁ φ₂ w true)) = c * trc (τ w).ρ (KGL w n) fun g => seen φ₁ φ₂ w (g, 1)` using `fun w hw => hSeen E n w (hSp w hw).2 (τ w) (N w) (hG w).1 (hG w).2.1`. Use `choose! c hc0 hc using hc`. Use `⟨?_, d₀ * ∏ w ∈ Z, c w, mul_ne_zero hd₀ (Finset.prod_ne_zero_iff.2 hc0), ?_⟩` and prove the remaining obligations.
+
+Set `φ₀ : ∀ w : Pl E, LF n 0 w` to `fun w p => (N w : Set (GLw n w)).indicator 1 p.1`. Establish `h2 : ∀ w b, two φ₀ φ₀ w b = (N w : Set (GLw n w)).indicator 1`. Introduce `w b`. Apply the tactic sequence `cases b <;> rfl`. Use `⟨φ₀, fun w _ N' hN' b => ?_, Finset.prod_ne_zero_iff.2 fun w hw h0 => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h2]`. Conclude with `ind_hecke w (N w) N' (hG w).1 (hG w).2.1 hN'`. Use `haveI : FiniteDimensional ℂ (fixed (τ w).ρ (N w)) := hAdm E n w (τ w) (N w) (hG w).1`. Establish `e` using `hc w hw φ₀ φ₀ fun b => by`. Rewrite using `[h2]`.
+
+Conclude with `ind_hecke w (N w) (N w) (hG w).1 (hG w).2.1 le_rfl`. Rewrite using `[h0, mul_zero, h2, h2, trOn_of_id _ _ fun v hv => by`. Rewrite `e` using `[Module.End.mul_apply, lv_unit _ _ v hv, lv_unit _ _ v hv]]`. Conclude with `hne w hw (Submodule.finrank_eq_zero.1 (Nat.cast_eq_zero.1 e))`. Introduce `φ₁ φ₂ hφ T hTZ e₁ e₂ hTE`.
+
+Take `⟨h1, h2, h3⟩` from `hT E n S Z N hSec hSp hG π y B hB φ₁ φ₂ hφ T hTZ e₁ e₂ hTE`. Establish `hF : ∀ w ∈ Z, ∀ b, two (intersection_update_fsHerm_neg_one Z ∅ φ₁ e₁) (intersection_update_fsHerm_neg_one Z ∅ φ₂ e₂) w b = two φ₁ φ₂ w b`. Introduce `w hw b`. Apply the tactic sequence `cases b <;> simp [two, intersection_update_fsHerm_neg_one, hw]`. Establish `hP : ∀ w ∈ Z, GlobalTheory.BCT.trOn (fixed (τ w).ρ (N w)) (Lv (τ w).ρ (N w) (two (intersection_update_fsHerm_neg_one Z ∅ φ₁ e₁) (intersection_update_fsHerm_neg_one Z ∅ φ₂ e₂) w false) * Lv (τ w).ρ (N w) (two (intersection_update_fsHerm_neg_one Z ∅ φ₁ e₁) (intersection_update_fsHe …`.
+
+Introduce `w hw`. Rewrite using `[hF w hw, hF w hw]`. Conclude with `hc w hw φ₁ φ₂ (hφ w hw)`. Rewrite using `[finFn_one S (intersection_update_fsHerm_neg_one Z T φ₁ e₁) (intersection_update_fsHerm_neg_one Z T φ₂ e₂)]`. Use `⟨h1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h3, smul_mul_assoc, map_smul, hd _ h2, smul_eq_mul, Finset.prod_congr rfl hP, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem levelTr_pf : UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.admitted → ZTr → SeenTr → TTr → LevelTr := by
   intro hAdm hZ hSeen hT E _ _ _ n S Z N hSec hSp hG π y B τ hB hτ
   obtain ⟨hne, d₀, hd₀, hd⟩ := hZ E n S Z N hSec hSp hG π y τ hτ

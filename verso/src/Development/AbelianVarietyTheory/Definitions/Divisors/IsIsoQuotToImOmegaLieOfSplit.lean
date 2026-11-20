@@ -24,8 +24,14 @@ namespace GlobalTheory.LieVB
 
 variable {S S' : Scheme.{0}}
 
+/- English proof (translation)
+The claim follows from `le_top`.
+-/
 theorem le_preimage_top {X Y : Scheme.{0}} (f : X ⟶ Y) (V : X.Opens) : V ≤ f ⁻¹ᵁ ⊤ := le_top
 
+/- English proof (translation)
+The claim follows from `congr($(Scheme.Hom.appLE_eq_app f (U := ⊤)) a)`.
+-/
 theorem appLE_top {X Y : Scheme.{0}} (f : X ⟶ Y) (a : Γ(Y, ⊤)) :
     f.appLE ⊤ ⊤ (le_preimage_top f ⊤) a = f.appTop a :=
   congr($(Scheme.Hom.appLE_eq_app f (U := ⊤)) a)
@@ -36,6 +42,9 @@ variable {T T' T'' : Over S}
 
 def sec (s : 𝟙_ (Over S) ⟶ T) : S ⟶ T.left := s.left
 
+/- English proof (translation)
+The claim follows from `Over.w s`.
+-/
 theorem sec_hom (s : 𝟙_ (Over S) ⟶ T) : sec s ≫ T.hom = 𝟙 S := Over.w s
 
 instance quasiCompact_sec (s : 𝟙_ (Over S) ⟶ T) [QuasiSeparated T.hom] : QuasiCompact (sec s) :=
@@ -47,21 +56,38 @@ variable {s : 𝟙_ (Over S) ⟶ T} {s' : 𝟙_ (Over S) ⟶ T'} {s'' : 𝟙_ (O
 def cotMap (φ : T' ⟶ T) (h : s' ≫ φ = s) : conormal (sec s) ⟶ conormal (sec s') :=
   map (sec_hom s') (Over.w φ) (congrArg (·.left) h)
 
+/- English proof (translation)
+The claim follows from `map_d _ _ _ _ _ _ _ _`.
+-/
 theorem cotMap_d (φ : T' ⟶ T) (h : s' ≫ φ = s) {V : S.Opens} {W : T.left.Opens}
     {W' : T'.left.Opens} (hW : V ≤ sec s ⁻¹ᵁ W) (hW' : V ≤ sec s' ⁻¹ᵁ W') (k : W' ≤ φ.left ⁻¹ᵁ W)
     (f : Γ(T.left, W)) : (cotMap φ h).app V (d (sec_hom s) hW f) =
       d (sec_hom s') hW' (φ.left.appLE W W' k f) := map_d _ _ _ _ _ _ _ _
 
+/- English proof (translation)
+The claim follows from `map_id _ (congrArg (·.left) hφ) _ _`.
+-/
 theorem cotMap_id {φ : T ⟶ T} (hφ : φ = 𝟙 T) (h : s ≫ φ = s) : cotMap φ h = 𝟙 _ :=
   map_id _ (congrArg (·.left) hφ) _ _
 
+/- English proof (translation)
+The claim follows from `map_comp (sec_hom s) _ _ _ _ _ _ (congrArg (·.left) hχ) _ _`.
+-/
 theorem cotMap_comp {φ : T' ⟶ T} {ψ : T'' ⟶ T'} (h : s' ≫ φ = s) (h' : s'' ≫ ψ = s')
     {χ : T'' ⟶ T} (hχ : ψ ≫ φ = χ) (h'' : s'' ≫ χ = s) : cotMap φ h ≫ cotMap ψ h' = cotMap χ h'' :=
   map_comp (sec_hom s) _ _ _ _ _ _ (congrArg (·.left) hχ) _ _
 
+/- English proof (translation)
+The claim follows from `map_eq_zero (sec_hom s) _ _ _ (congrArg (·.left) hφ)`.
+-/
 theorem cotMap_eq_zero {φ : T' ⟶ T} (hφ : toUnit T' ≫ s = φ) (h : s' ≫ φ = s) : cotMap φ h = 0 :=
   map_eq_zero (sec_hom s) _ _ _ (congrArg (·.left) hφ)
 
+/- English proof (translation)
+Establish `: QuasiSeparated (T ⊗ T').hom` using `inferInstanceAs (QuasiSeparated (pullback.fst T.hom T'.hom ≫ T.hom))`. Establish `c₁ : s' ≫ toUnit T' ≫ s = s` using `by simp`. Establish `c₂ : s ≫ toUnit T ≫ s' = s'` using `by simp`. Establish `d₁` using `Category.comp_id s`. Establish `d₂` using `Category.comp_id s'`.
+
+Use `prod_hom_ext (sec_hom s') (IsPullback.of_hasPullback T.hom T'.hom) (sec_hom (lift s s')) (Over.w (fst T T')) (Over.w (snd T T')) (congrArg (·.left) p₁) (congrArg (·.left) p₂) ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cotMap _ p₁ ≫ _ = cotMap _ p₁ ≫ _`. Rewrite using `[Preadditive.comp_add, reassoc_of% cotMap_comp p₁ i₁ (lift_fst _ _) d₁, reassoc_of% cotMap_comp p₁ i₂ (lift_fst _ _) c₁, cotMap_id rfl, cotMap_eq_zero rfl c₁, zero_comp, add_zero, Category.id_comp, Category.comp_id]`. Express the relevant statement in the definitionally equal form `cotMap _ p₂ ≫ _ = cotMap _ p₂ ≫ _`. Rewrite using `[Preadditive.comp_add, reassoc_of% cotMap_comp p₂ i₁ (lift_snd _ _) c₂, reassoc_of% cotMap_comp p₂ i₂ (lift_snd _ _) d₂, cotMap_id rfl, cotMap_eq_zero rfl c₂, zero_comp, zero_add, Category.id_comp, Category.comp_id]`.
+-/
 theorem cotMap_prod [QuasiSeparated T.hom] [QuasiSeparated T'.hom]
     (i₁ : s ≫ lift (𝟙 T) (toUnit T ≫ s') = lift s s') (i₂ : s' ≫ lift (toUnit T' ≫ s) (𝟙 T') = lift s s')
     (p₁ : lift s s' ≫ fst T T' = s) (p₂ : lift s s' ≫ snd T T' = s') :
@@ -83,6 +109,11 @@ theorem cotMap_prod [QuasiSeparated T.hom] [QuasiSeparated T'.hom]
       reassoc_of% cotMap_comp p₂ i₂ (lift_snd _ _) d₂, cotMap_id rfl, cotMap_eq_zero rfl c₂,
       zero_comp, zero_add, Category.id_comp, Category.comp_id]
 
+/- English proof (translation)
+Establish `hm : lift η η ≫ μ[G] = η` using `by simpa using lift_comp_one_left (𝟙 _) η[G]`. Establish `hl : s ≫ lift x y = lift η η` using `by rw [comp_lift, hx, hy]`. Establish `i₁ : η ≫ lift (𝟙 G) (toUnit G ≫ η) = lift η[G] η[G]` using `by simp`. Establish `i₂ : η ≫ lift (toUnit G ≫ η) (𝟙 G) = lift η[G] η[G]` using `by simp`. Establish `p₁` using `lift_fst η[G] η[G]`.
+
+Establish `p₂` using `lift_snd η[G] η[G]`. Establish `d` using `Category.comp_id η[G]`. Rewrite using `[← cotMap_comp hm hl (Hom.mul_def x y).symm, ← Category.id_comp (cotMap _ hl), ← cotMap_prod i₁ i₂ p₁ p₂, Preadditive.add_comp, Preadditive.comp_add, Category.assoc, Category.assoc, cotMap_comp p₁ hl (lift_fst x y) hx, cotMap_comp p₂ hl (lift_snd x y) hy, reassoc_of% cotMap_comp …`.
+-/
 theorem cotMap_mul {G : Over S} [GrpObj G] [QuasiSeparated G.hom] {x y : T ⟶ G} (hx : s ≫ x = η)
     (hy : s ≫ y = η) (h : s ≫ (x * y) = η) : cotMap (x * y) h = cotMap x hx + cotMap y hy := by
   have hm : lift η η ≫ μ[G] = η := by simpa using lift_comp_one_left (𝟙 _) η[G]
@@ -107,6 +138,9 @@ variable (G : Over S) [GrpObj G]
 
 abbrev unitSec : S ⟶ G.left := sec η[G]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem unitSec_eq_eSec : unitSec G = eSec G := rfl
 
 def omega : S.Modules := conormal (unitSec G)
@@ -120,21 +154,36 @@ section dUnit
 
 variable {U V V' : S.Opens} {W W' : G.left.Opens}
 
+/- English proof (translation)
+The claim follows from `resM_d _ h h' f`.
+-/
 theorem resM_dUnit (h : V ≤ unitSec G ⁻¹ᵁ W) (h' : V' ≤ V) (f : Γ(G.left, W)) :
     resM _ h' (dUnit G h f) = dUnit G (h'.trans h) f := resM_d _ h h' f
 
+/- English proof (translation)
+The claim follows from `d_resG _ h k f`.
+-/
 theorem dUnit_resG (h : V ≤ unitSec G ⁻¹ᵁ W') (k : W' ≤ W) (f : Γ(G.left, W)) :
     dUnit G h (resG _ k f) = dUnit G (h.trans ((unitSec G).preimage_mono k)) f := d_resG _ h k f
 
+/- English proof (translation)
+The claim follows from `d_mul _ h f g`.
+-/
 theorem dUnit_mul (h : V ≤ unitSec G ⁻¹ᵁ W) (f g : Γ(G.left, W)) : dUnit G h (f * g) =
     (unitSec G).appLE W V h f • dUnit G h g + (unitSec G).appLE W V h g • dUnit G h f :=
   d_mul _ h f g
 
+/- English proof (translation)
+The claim follows from `d_base _ h k a`.
+-/
 theorem dUnit_base (h : V ≤ unitSec G ⁻¹ᵁ W) (k : W ≤ G.hom ⁻¹ᵁ U) (a : Γ(S, U)) :
     dUnit G h (G.hom.appLE U W k a) = 0 := d_base _ h k a
 
 variable {G} in
 
+/- English proof (translation)
+The claim follows from `hom_ext _ H`.
+-/
 theorem omega_hom_ext {F : S.Modules} {φ ψ : omega G ⟶ F}
     (H : ∀ (W : G.left.Opens) (f : Γ(G.left, W)),
       φ.app _ (dUnit G (le_refl (unitSec G ⁻¹ᵁ W)) f) = ψ.app _ (dUnit G le_rfl f)) : φ = ψ :=
@@ -145,6 +194,9 @@ end dUnit
 def omegaHomEquiv (F : S.Modules) : (omega G ⟶ F) ≃ Der G.hom (unitSec G) F :=
   homEquivDer F (sec_hom η[G])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem omegaHomEquiv_app {F : S.Modules} (φ : omega G ⟶ F) {V : S.Opens} {W : G.left.Opens}
     (h : V ≤ unitSec G ⁻¹ᵁ W) (f : Γ(G.left, W)) :
     (omegaHomEquiv G F φ).app h f = φ.app V (dUnit G h f) := rfl
@@ -170,28 +222,46 @@ def omegaKaehlerEquiv {U : S.Opens} {W : G.left.Opens} (c : IsChart G.hom (unitS
 
 open scoped TensorProduct in
 
+/- English proof (translation)
+The claim follows from `c.kaehlerEquiv_d (sec_hom η[G]) a`.
+-/
 theorem omegaKaehlerEquiv_dUnit {U : S.Opens} {W : G.left.Opens}
     (c : IsChart G.hom (unitSec G) U W) (a : Γ(G.left, W)) :
     letI := c.algebra; letI := QCoh.appLEAlgebra (unitSec G) c.le
     omegaKaehlerEquiv G c (dUnit G c.le a) = 1 ⊗ₜ KaehlerDifferential.D _ _ a :=
   c.kaehlerEquiv_d (sec_hom η[G]) a
 
+/- English proof (translation)
+The claim follows from `isVB_conormal (sec_hom η[G]) g`.
+-/
 theorem isVB_omega (g : ℕ) [SmoothOfRelativeDimension g G.hom] : IsVB (omega G) g :=
   isVB_conormal (sec_hom η[G]) g
 
+/- English proof (translation)
+The claim follows from `(isVB_omega G g).dual`.
+-/
 theorem isVB_Lie (g : ℕ) [SmoothOfRelativeDimension g G.hom] : IsVB (Lie G) g :=
   (isVB_omega G g).dual
 
+/- English proof (translation)
+The claim follows from `exists_isFrame (sec_hom η[G]) x`.
+-/
 theorem exists_isFrame_omega [Smooth G.hom] (x : S) :
     ∃ (U : S.Opens) (n : ℕ) (s : Fin n → Γ(omega G, U)), x ∈ U ∧ IsFrame s :=
   exists_isFrame (sec_hom η[G]) x
 
+/- English proof (translation)
+The claim follows from `(exists_isVB_conormal (sec_hom η[G])).imp fun _ h => ⟨h, h.dual⟩`.
+-/
 theorem exists_isVB [Smooth G.hom] [PreconnectedSpace S] :
     ∃ g, IsVB (omega G) g ∧ IsVB (Lie G) g :=
   (exists_isVB_conormal (sec_hom η[G])).imp fun _ h => ⟨h, h.dual⟩
 
 omit [QuasiSeparated G.hom] in
 
+/- English proof (translation)
+The claim follows from `have := h.smooth exists_isVB G`.
+-/
 theorem exists_isVB_of_isSemiAbelian [h : IsSemiAbelian G] [PreconnectedSpace S] :
     ∃ g, IsVB (omega G) g ∧ IsVB (Lie G) g :=
   have := h.smooth
@@ -213,33 +283,63 @@ def omegaMap (φ : G ⟶ H) [IsMonHom φ] : omega H ⟶ omega G := cotMap φ (Is
 
 def lieMap (φ : G ⟶ H) [IsMonHom φ] : Lie G ⟶ Lie H := dualMap (omegaMap φ)
 
+/- English proof (translation)
+The claim follows from `cotMap_d _ _ _ _ _ _`.
+-/
 theorem omegaMap_dUnit (φ : G ⟶ H) [IsMonHom φ] {V : S.Opens} {W : H.left.Opens}
     {W' : G.left.Opens} (h : V ≤ unitSec H ⁻¹ᵁ W) (h' : V ≤ unitSec G ⁻¹ᵁ W')
     (k : W' ≤ φ.left ⁻¹ᵁ W) (f : Γ(H.left, W)) :
     (omegaMap φ).app V (dUnit H h f) = dUnit G h' (φ.left.appLE W W' k f) := cotMap_d _ _ _ _ _ _
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem omegaMap_congr {φ ψ : G ⟶ H} [IsMonHom φ] [IsMonHom ψ] (h : φ = ψ) :
     omegaMap φ = omegaMap ψ := by
   subst h; rfl
 
+/- English proof (translation)
+The claim follows from `cotMap_id rfl _`.
+-/
 @[simp] theorem omegaMap_id : omegaMap (𝟙 G) = 𝟙 _ := cotMap_id rfl _
 
+/- English proof (translation)
+The claim follows from `(cotMap_comp _ _ rfl _).symm`.
+-/
 theorem omegaMap_comp (φ : G ⟶ H) (ψ : H ⟶ K) [IsMonHom φ] [IsMonHom ψ] :
     omegaMap (φ ≫ ψ) = omegaMap ψ ≫ omegaMap φ := (cotMap_comp _ _ rfl _).symm
 
+/- English proof (translation)
+The claim follows from `cotMap_eq_zero rfl _`.
+-/
 theorem omegaMap_one [IsMonHom (1 : G ⟶ H)] : omegaMap (1 : G ⟶ H) = 0 := cotMap_eq_zero rfl _
 
+/- English proof (translation)
+The claim follows from `cotMap_mul _ _ _`.
+-/
 theorem omegaMap_mul [QuasiSeparated H.hom] (φ ψ : G ⟶ H) [IsMonHom φ] [IsMonHom ψ]
     [IsMonHom (φ * ψ)] : omegaMap (φ * ψ) = omegaMap φ + omegaMap ψ := cotMap_mul _ _ _
 
+/- English proof (translation)
+Rewrite using `[lieMap, omegaMap_id]`. Conclude with `dualMap_id`.
+-/
 @[simp] theorem lieMap_id : lieMap (𝟙 G) = 𝟙 _ := by rw [lieMap, omegaMap_id]; exact dualMap_id
 
+/- English proof (translation)
+Rewrite using `[lieMap, omegaMap_comp]`. Conclude with `dualMap_comp _ _`.
+-/
 theorem lieMap_comp (φ : G ⟶ H) (ψ : H ⟶ K) [IsMonHom φ] [IsMonHom ψ] :
     lieMap (φ ≫ ψ) = lieMap φ ≫ lieMap ψ := by rw [lieMap, omegaMap_comp]; exact dualMap_comp _ _
 
+/- English proof (translation)
+Rewrite using `[lieMap, omegaMap_one]`. Conclude with `dualMap_zero`.
+-/
 theorem lieMap_one [IsMonHom (1 : G ⟶ H)] : lieMap (1 : G ⟶ H) = 0 := by
   rw [lieMap, omegaMap_one]; exact dualMap_zero
 
+/- English proof (translation)
+Rewrite using `[lieMap, omegaMap_mul]`. Conclude with `dualMap_add _ _`.
+-/
 theorem lieMap_mul [QuasiSeparated H.hom] (φ ψ : G ⟶ H) [IsMonHom φ] [IsMonHom ψ]
     [IsMonHom (φ * ψ)] : lieMap (φ * ψ) = lieMap φ + lieMap ψ := by
   rw [lieMap, omegaMap_mul]; exact dualMap_add _ _
@@ -259,6 +359,11 @@ section Base
 variable {G H : Over S} {G' H' : Over S'} [GrpObj G] [GrpObj H] [GrpObj G'] [GrpObj H']
   {f : S' ⟶ S} {φ : G'.left ⟶ G.left} {ψ : H'.left ⟶ H.left}
 
+/- English proof (translation)
+Set `x` to `pushPt h.1.w (1 : 𝟙_ (Over S') ⟶ G')`. Establish `h₁ : x * x = x` using `Over.OverMorphism.ext ((h.2 _ 1 1 x x rfl rfl).trans (by rw [_root_.mul_one]; rfl))`. Establish `h₂` using `congrArg (·.left) (mul_eq_left.1 h₁)`. Establish `h₃ : (1 : 𝟙_ (Over S') ⟶ G') = η[G']` using `by rw [Hom.one_def]; simp`. Use `(congrArg (·.left ≫ φ) h₃).symm.trans (h₂.trans ?_)` and prove the remaining obligations.
+
+Conclude with `congrArg (· ≫ unitSec G) (Category.id_comp f)`.
+-/
 theorem unitSec_comp (h : IsGrpPullback G' G f φ) : unitSec G' ≫ φ = f ≫ unitSec G := by
   let x := pushPt h.1.w (1 : 𝟙_ (Over S') ⟶ G')
   have h₁ : x * x = x := Over.OverMorphism.ext ((h.2 _ 1 1 x x rfl rfl).trans
@@ -271,6 +376,9 @@ theorem unitSec_comp (h : IsGrpPullback G' G f φ) : unitSec G' ≫ φ = f ≫ u
 def omegaBase (h : IsGrpPullback G' G f φ) : (Scheme.Modules.pullback f).obj (omega G) ⟶ omega G' :=
   baseMap (sec_hom η[G']) h.1.w (unitSec_comp h)
 
+/- English proof (translation)
+The claim follows from `baseMap_d _ _ _ _ _ _ _ _ _`.
+-/
 theorem omegaBase_dUnit (h : IsGrpPullback G' G f φ) {V : S.Opens} {W : G.left.Opens}
     (hW : V ≤ unitSec G ⁻¹ᵁ W) {T : S'.Opens} (hT : T ≤ f ⁻¹ᵁ V) {W' : G'.left.Opens}
     (hW' : T ≤ unitSec G' ⁻¹ᵁ W') (k : W' ≤ φ ⁻¹ᵁ W) (a : Γ(G.left, W)) :
@@ -282,6 +390,9 @@ instance isIso_omegaBase [QuasiSeparated G.hom] (h : IsGrpPullback G' G f φ) :
   have : QuasiSeparated G'.hom := MorphismProperty.of_isPullback h.1 ‹_›
   isIso_baseMap (sec_hom η[G]) (sec_hom η[G']) h.1 _
 
+/- English proof (translation)
+The claim follows from `pullback_hom_ext (sec_hom η[H]) fun W b => by have e₁ : unitSec G ≫ a.left = unitSec H := congrArg (·.left) (IsMonHom.one_hom a) have e₂ : unitSec G' ≫ a'.left = unitSec H' := congrArg (·.left) (IsMonHom.one_hom a') have k₁ := (le_preimage_of_comp e₁).2 (le_refl (unitSec H ⁻¹ᵁ W) …`.
+-/
 theorem omegaBase_naturality (h : IsGrpPullback G' G f φ) (h' : IsGrpPullback H' H f ψ)
     (a : G ⟶ H) (a' : G' ⟶ H') [IsMonHom a] [IsMonHom a'] (w : a'.left ≫ ψ = φ ≫ a.left) :
     (Scheme.Modules.pullback f).map (omegaMap a) ≫ omegaBase h = omegaBase h' ≫ omegaMap a' :=
@@ -307,11 +418,19 @@ variable [QuasiSeparated G.hom] [QuasiSeparated H.hom]
 def lieBase (h : IsGrpPullback G' G f φ) : (Scheme.Modules.pullback f).obj (Lie G) ⟶ Lie G' :=
   theta f (omega G) ≫ dualMap (inv (omegaBase h))
 
+/- English proof (translation)
+The claim follows from `have := DualPull.isIso_theta f hg inferInstanceAs (IsIso (theta f (omega G) ≫ (dualIso (asIso (omegaBase h)).symm).hom))`.
+-/
 theorem isIso_lieBase (h : IsGrpPullback G' G f φ) {g : ℕ} (hg : IsVB (omega G) g) :
     IsIso (lieBase h) :=
   have := DualPull.isIso_theta f hg
   inferInstanceAs (IsIso (theta f (omega G) ≫ (dualIso (asIso (omegaBase h)).symm).hom))
 
+/- English proof (translation)
+Establish `e : inv (omegaBase h') ≫ (Scheme.Modules.pullback f).map (omegaMap a) = omegaMap a' ≫ inv (omegaBase h)`. Rewrite using `[IsIso.inv_comp_eq, ← Category.assoc, ← omegaBase_naturality h h' a a' w, Category.assoc, IsIso.hom_inv_id, Category.comp_id]`. Use `congrArg (theta f (omega G) ≫ dualMap ·) e` as an intermediate fact. Simplify using `only [dualMap_comp] at this`. Rewrite `this` using `[← Category.assoc, ← DualPull.theta_naturality]`.
+
+Conclude with `this`.
+-/
 theorem lieBase_naturality (h : IsGrpPullback G' G f φ) (h' : IsGrpPullback H' H f ψ)
     (a : G ⟶ H) (a' : G' ⟶ H') [IsMonHom a] [IsMonHom a'] (w : a'.left ≫ ψ = φ ≫ a.left) :
     (Scheme.Modules.pullback f).map (lieMap a) ≫ lieBase h' = lieBase h ≫ lieMap a' := by
@@ -324,6 +443,9 @@ theorem lieBase_naturality (h : IsGrpPullback G' G f φ) (h' : IsGrpPullback H' 
   rw [← Category.assoc, ← DualPull.theta_naturality] at this
   exact this
 
+/- English proof (translation)
+The claim follows from `(hg.pullback f).of_iso (asIso (omegaBase h))`.
+-/
 theorem isVB_omega_of_isGrpPullback (h : IsGrpPullback G' G f φ) {g : ℕ} (hg : IsVB (omega G) g) :
     IsVB (omega G') g := (hg.pullback f).of_iso (asIso (omegaBase h))
 
@@ -336,16 +458,25 @@ variable {O : Type} [CommRing O] {F : S.Modules} (ρ : O →+* End F) (σ : O �
 def dualImι : eigenIm (dualAct ρ) σ ⟶ dual (eigen ρ σ) :=
   eigenImι (dualAct ρ) σ ≫ dualMap (eigenMap σ (isEquivariant_toBidual ρ))
 
+/- English proof (translation)
+Rewrite using `[dualImι, eigenImπ_ι_assoc, eigenEval, Category.assoc, ← dualMap_comp, eigenMap_ι, dualMap_comp, toBidual_dual_comp_dualMap_assoc]`.
+-/
 @[reassoc] theorem eigenImπ_dualImι :
     eigenImπ (dualAct ρ) σ ≫ dualImι ρ σ = dualMap (eigenι ρ σ) := by
   rw [dualImι, eigenImπ_ι_assoc, eigenEval, Category.assoc, ← dualMap_comp, eigenMap_ι,
     dualMap_comp, toBidual_dual_comp_dualMap_assoc]
 
+/- English proof (translation)
+The claim follows from `have := h.isIso_toBidual_of_local_frames inferInstanceAs (Mono (eigenImι (dualAct ρ) σ ≫ (dualIso (eigenIso σ (φ := asIso (cartierDualToBidual F)) (isEquivariant_toBidual ρ))).hom))`.
+-/
 theorem mono_dualImι (h : IsVB F g) : Mono (dualImι ρ σ) :=
   have := h.isIso_toBidual_of_local_frames
   inferInstanceAs (Mono (eigenImι (dualAct ρ) σ ≫ (dualIso (eigenIso σ
     (φ := asIso (cartierDualToBidual F)) (isEquivariant_toBidual ρ))).hom))
 
+/- English proof (translation)
+The claim follows from `have := h.isIso_toBidual_of_local_frames have := isIso_eigenImι _ _ h' inferInstanceAs (IsIso (eigenImι (dualAct ρ) σ ≫ (dualIso (eigenIso σ (φ := asIso (cartierDualToBidual F)) (isEquivariant_toBidual ρ))).hom))`.
+-/
 theorem isIso_dualImι (h : IsVB F g) (h' : IsVB (eigenIm (dualAct ρ) σ) r) :
     IsIso (dualImι ρ σ) :=
   have := h.isIso_toBidual_of_local_frames
@@ -355,6 +486,9 @@ theorem isIso_dualImι (h : IsVB F g) (h' : IsVB (eigenIm (dualAct ρ) σ) r) :
 
 end DualIm
 
+/- English proof (translation)
+The claim follows from `map_eq_zero_iff _ (QCoh.injective_app_of_mono (eigenImIso σ (φ := asIso φ) h).hom V)`.
+-/
 theorem comp_eigenImMap_app_eq_zero_iff {O : Type} [CommRing O] {E F F' : S.Modules}
     {ρ : O →+* End F} {ρ' : O →+* End F'} {σ : O →+* Γ(S, ⊤)} (k : E ⟶ eigenIm ρ σ) {φ : F ⟶ F'}
     [IsIso φ] (h : IsEquivariant ρ ρ' φ) {V : S.Opens} {s : Γ(E, V)} :
@@ -377,14 +511,23 @@ def omegaAct : O →+* End (omega G) :=
       have : IsMonHom (i.act a * i.act b) := i.add a b ▸ i.hom _
       exact (@omegaMap_congr _ _ _ _ _ _ _ (i.hom _) _ (i.add a b)).trans (omegaMap_mul _ _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem act_omegaAct (a : O) : act (omegaAct i) a = @omegaMap _ _ _ _ _ (i.act a) (i.hom a) := rfl
 
 def lieAct : O →+* End (Lie G) := dualAct (omegaAct i)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem act_lieAct (a : O) : act (lieAct i) a = @lieMap _ _ _ _ _ (i.act a) (i.hom a) := rfl
 
 def omegaConjAct (c : O →+* O) : O →+* End (omega G) := (omegaAct i).comp c
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem act_omegaConjAct (c : O →+* O) (a : O) :
     act (omegaConjAct i c) a = @omegaMap _ _ _ _ _ (i.act (c a)) (i.hom _) := rfl
 
@@ -398,6 +541,9 @@ abbrev omegaQuot : S.Modules := eigenQuot (omegaAct i) σ
 
 def dualOmegaQuotIso : dual (omegaQuot i σ) ≅ lieSub i σ := dualQuotIso (omegaAct i) σ
 
+/- English proof (translation)
+The claim follows from `isEquivariant_toBidual _`.
+-/
 theorem isEquivariant_omegaIsoDualLie {g : ℕ} (h : IsVB (omega G) g) :
     IsEquivariant (omegaAct i) (dualAct (lieAct i)) (omegaIsoDualLie h).hom :=
   isEquivariant_toBidual _
@@ -409,6 +555,9 @@ def omegaSubIsoDualLieSub {g : ℕ} (h : IsVB (omega G) g)
     [IsIso (eigenι (lieAct i) σ ≫ eigenπ (lieAct i) σ)] : omegaSub i σ ≅ dual (lieSub i σ) :=
   omegaSubIso i σ h ≪≫ dualIso (asIso (eigenι (lieAct i) σ ≫ eigenπ (lieAct i) σ))
 
+/- English proof (translation)
+Rewrite using `[omegaSubIsoDualLieSub, omegaSubIso, Iso.trans_hom, Iso.trans_hom, dualIso_hom, asIso_hom, dualMap_comp, ← dualQuotIso_hom_ι, Iso.symm_hom, Category.assoc, Category.assoc, Iso.inv_hom_id_assoc, eigenIso_hom, eigenMap_ι_assoc]`.
+-/
 theorem omegaSubIsoDualLieSub_hom {g : ℕ} (h : IsVB (omega G) g)
     [IsIso (eigenι (lieAct i) σ ≫ eigenπ (lieAct i) σ)] : (omegaSubIsoDualLieSub i σ h).hom =
       eigenι (omegaAct i) σ ≫ (omegaIsoDualLie h).hom ≫ dualMap (eigenι (lieAct i) σ) := by
@@ -445,6 +594,9 @@ def omegaImι : omegaIm i σ ⟶ dual (lieSub i σ) := eigenImι (omegaAct i) σ
 
 instance mono_omegaImι : Mono (omegaImι i σ) := mono_eigenImι _ _
 
+/- English proof (translation)
+Establish `h` using `eigenImπ_ι (omegaAct i) σ`. Rewrite `h` using `[eigenEval]`. Conclude with `eq_of_heq (.trans (heq_comp (by rfl) (by rfl) (by rfl) (by rfl) (by rfl)) (.trans (heq_of_eq h) (heq_comp (by rfl) (by rfl) (by rfl) (by rfl) (by rfl))))`.
+-/
 @[reassoc] theorem eigenImπ_omegaImι : eigenImπ (omegaAct i) σ ≫ omegaImι i σ =
     cartierDualToBidual (omega G) ≫ dualMap (eigenι (lieAct i) σ) := by
   have h := eigenImπ_ι (omegaAct i) σ
@@ -455,16 +607,25 @@ instance mono_omegaImι : Mono (omegaImι i σ) := mono_eigenImι _ _
 def omegaImIso {r : ℕ} (h : IsVB (omegaIm i σ) r) : omegaIm i σ ≅ dual (lieSub i σ) :=
   @asIso _ _ _ _ (omegaImι i σ) (isIso_eigenImι _ _ h)
 
+/- English proof (translation)
+The claim follows from `@isIso_eigenImι_of_epi _ _ _ _ _ _ _ h e`.
+-/
 theorem isIso_omegaImι_of_epi {g : ℕ} (h : IsVB (omega G) g)
     [e : Epi (dualMap (eigenι (lieAct i) σ))] : IsIso (omegaImι i σ) :=
   @isIso_eigenImι_of_epi _ _ _ _ _ _ _ h e
 
 def dualOmegaImIso : dual (omegaIm i σ) ≅ lieSub i σ := dualImIso (omegaAct i) σ
 
+/- English proof (translation)
+The claim follows from `dualImIso_hom_ι (omegaAct i) σ`.
+-/
 @[reassoc] theorem dualOmegaImIso_hom_ι :
     (dualOmegaImIso i σ).hom ≫ eigenι (lieAct i) σ = dualMap (eigenImπ (omegaAct i) σ) :=
   dualImIso_hom_ι (omegaAct i) σ
 
+/- English proof (translation)
+The claim follows from `isVB_eigen_dualAct _ _ h`.
+-/
 theorem isVB_lieSub {r : ℕ} (h : IsVB (omegaIm i σ) r) : IsVB (lieSub i σ) r :=
   isVB_eigen_dualAct _ _ h
 
@@ -473,13 +634,22 @@ def omegaSubIsoDualLieIm {g : ℕ} (h : IsVB (omega G) g) : omegaSub i σ ≅ du
 
 def lieImι : lieIm i σ ⟶ dual (omegaSub i σ) := dualImι (omegaAct i) σ
 
+/- English proof (translation)
+The claim follows from `eigenImπ_dualImι (omegaAct i) σ`.
+-/
 @[reassoc] theorem eigenImπ_lieImι :
     eigenImπ (lieAct i) σ ≫ lieImι i σ = dualMap (eigenι (omegaAct i) σ) :=
   eigenImπ_dualImι (omegaAct i) σ
 
+/- English proof (translation)
+The claim follows from `mono_dualImι _ _ h`.
+-/
 theorem mono_lieImι {g : ℕ} (h : IsVB (omega G) g) : Mono (lieImι i σ) :=
   mono_dualImι _ _ h
 
+/- English proof (translation)
+The claim follows from `isIso_dualImι _ _ h h'`.
+-/
 theorem isIso_lieImι {g r : ℕ} (h : IsVB (omega G) g) (h' : IsVB (lieIm i σ) r) :
     IsIso (lieImι i σ) := isIso_dualImι _ _ h h'
 
@@ -495,6 +665,9 @@ def dualOmegaConjImIso {c : O →+* O} (hc : Function.Involutive c) :
     dual (eigenIm (omegaConjAct i c) σ) ≅ lieSub i (σ.comp c) :=
   dualIso (omegaConjImIso i σ hc).symm ≪≫ dualOmegaImIso i _
 
+/- English proof (translation)
+The claim follows from `have := mono_toBidual_of_isVectorBundle h ⟨isIso_quotToIm_of_split _ hτ j, isIso_quotToIm_of_split _ hτ j⟩`.
+-/
 theorem isIso_quotToIm_omega_lie_of_split {k κ : Type} [Field k] [Algebra k Γ(S, ⊤)] [Fintype κ]
     {τ : κ → (O →+* k)} (hτ : IsSplitBy τ) {g : ℕ} (h : IsVB (omega G) g) (j : κ) :
     IsIso (quotToIm (omegaAct i) (scal S (τ j))) ∧ IsIso (quotToIm (lieAct i) (scal S (τ j))) :=
@@ -503,6 +676,9 @@ theorem isIso_quotToIm_omega_lie_of_split {k κ : Type} [Field k] [Algebra k Γ(
 
 variable {i}
 
+/- English proof (translation)
+Introduce `a` and use `by have := i.hom a have := i'.hom a rw [act_omegaAct, act_omegaAct, ← omegaMap_comp, ← omegaMap_comp, omegaMap_congr (h a)]`.
+-/
 theorem isEquivariant_omegaMap {i' : OAct O H} (φ : G ⟶ H) [IsMonHom φ]
     (h : ∀ a, i.act a ≫ φ = φ ≫ i'.act a) : IsEquivariant (omegaAct i') (omegaAct i) (omegaMap φ) :=
   fun a => by
@@ -510,11 +686,17 @@ theorem isEquivariant_omegaMap {i' : OAct O H} (φ : G ⟶ H) [IsMonHom φ]
     have := i'.hom a
     rw [act_omegaAct, act_omegaAct, ← omegaMap_comp, ← omegaMap_comp, omegaMap_congr (h a)]
 
+/- English proof (translation)
+The claim follows from `isEquivariant_omegaMap (i := Serre.comapAct i c) φ h`.
+-/
 theorem isEquivariant_omegaMap_conj {i' : OAct O H} (c : O →+* O) (φ : G ⟶ H) [IsMonHom φ]
     (h : ∀ a, i.act (c a) ≫ φ = φ ≫ i'.act a) :
     IsEquivariant (omegaAct i') (omegaConjAct i c) (omegaMap φ) :=
   isEquivariant_omegaMap (i := Serre.comapAct i c) φ h
 
+/- English proof (translation)
+The claim follows from `(isEquivariant_omegaMap φ h).dual`.
+-/
 theorem isEquivariant_lieMap {i' : OAct O H} (φ : G ⟶ H) [IsMonHom φ]
     (h : ∀ a, i.act a ≫ φ = φ ≫ i'.act a) : IsEquivariant (lieAct i) (lieAct i') (lieMap φ) :=
   (isEquivariant_omegaMap φ h).dual
@@ -524,12 +706,18 @@ variable {G' : Over S'} [GrpObj G'] [QuasiSeparated G'.hom] {i' : OAct O G'} {f 
   (w : ∀ a, (i'.act a).left ≫ φ = φ ≫ (i.act a).left)
 include w
 
+/- English proof (translation)
+Introduce `a` and use `have := i.hom a have := i'.hom a omegaBase_naturality h h _ _ (w a)`.
+-/
 theorem isEquivariant_omegaBase :
     IsEquivariant (pullAct (omegaAct i) f) (omegaAct i') (omegaBase h) := fun a =>
   have := i.hom a
   have := i'.hom a
   omegaBase_naturality h h _ _ (w a)
 
+/- English proof (translation)
+Introduce `a` and use `have := i.hom a have := i'.hom a lieBase_naturality h h _ _ (w a)`.
+-/
 theorem isEquivariant_lieBase : IsEquivariant (pullAct (lieAct i) f) (lieAct i') (lieBase h) :=
   fun a =>
   have := i.hom a
@@ -553,6 +741,9 @@ def omegaSubBase : (Scheme.Modules.pullback f).obj (omegaSub i σ) ⟶
 def lieSubBase : (Scheme.Modules.pullback f).obj (lieSub i σ) ⟶ lieSub i' (f.appTop.hom.comp σ) :=
   pullbackEigenHom (lieAct i) σ f ≫ eigenMap _ (isEquivariant_lieBase h w)
 
+/- English proof (translation)
+Use `hτ.isIso_pullbackEigenHom (omegaAct i) f j` as an intermediate fact. Conclude with `inferInstanceAs (IsIso (pullbackEigenHom _ _ f ≫ (eigenIso _ (φ := asIso (omegaBase h)) (isEquivariant_omegaBase h w)).hom))`.
+-/
 theorem isIso_omegaSubBase {k κ : Type} [Field k] [Algebra k Γ(S, ⊤)] [Fintype κ]
     {τ : κ → (O →+* k)} (hτ : IsSplitBy τ) (j : κ) : IsIso (omegaSubBase (scal S (τ j)) h w) := by
   classical
@@ -560,6 +751,9 @@ theorem isIso_omegaSubBase {k κ : Type} [Field k] [Algebra k Γ(S, ⊤)] [Finty
   exact inferInstanceAs (IsIso (pullbackEigenHom _ _ f ≫
     (eigenIso _ (φ := asIso (omegaBase h)) (isEquivariant_omegaBase h w)).hom))
 
+/- English proof (translation)
+Use `hτ.isIso_pullbackEigenHom (lieAct i) f j` as an intermediate fact. Conclude with `inferInstanceAs (IsIso (pullbackEigenHom _ _ f ≫ (eigenIso _ (φ := @asIso _ _ _ _ (lieBase h) (isIso_lieBase h hg)) (isEquivariant_lieBase h w)).hom))`.
+-/
 theorem isIso_lieSubBase {k κ : Type} [Field k] [Algebra k Γ(S, ⊤)] [Fintype κ]
     {τ : κ → (O →+* k)} (hτ : IsSplitBy τ) {g : ℕ} (hg : IsVB (omega G) g) (j : κ) :
     IsIso (lieSubBase (scal S (τ j)) h w) := by
@@ -581,6 +775,9 @@ def omegaImBase : (Scheme.Modules.pullback f).obj (omegaIm i σ) ⟶
   haveI := mono_toBidual_of_isVectorBundle hg
   hε.pullbackImHom f hf ≫ eigenImMap _ (isEquivariant_omegaBase h w)
 
+/- English proof (translation)
+Simplify using `[omegaImBase]`.
+-/
 @[reassoc] theorem map_eigenImπ_omegaImBase :
     (Scheme.Modules.pullback f).map (eigenImπ _ σ) ≫ omegaImBase h w hg hf hε =
       omegaBase h ≫ eigenImπ _ _ := by
@@ -589,6 +786,9 @@ def omegaImBase : (Scheme.Modules.pullback f).obj (omegaIm i σ) ⟶
 instance epi_omegaImBase : Epi (omegaImBase h w hg hf hε) :=
   epi_of_epi_fac (map_eigenImπ_omegaImBase h w hg hf hε)
 
+/- English proof (translation)
+The claim follows from `have := mono_toBidual_of_isVectorBundle hg have := mono_toBidual_of_isVectorBundle (hg.pullback f) (comp_eigenImMap_app_eq_zero_iff (hε.pullbackImHom f hf) (isEquivariant_omegaBase h w)).trans (hε.pullbackImHom_app_eq_zero_iff f hf)`.
+-/
 theorem omegaImBase_app_eq_zero_iff {V : S'.Opens}
     {s : Γ((Scheme.Modules.pullback f).obj (omegaIm i σ), V)} :
     (omegaImBase h w hg hf hε).app V s = 0 ↔ resG S' (le_top : V ≤ ⊤) (f.appTop D) • s = 0 :=
@@ -597,6 +797,9 @@ theorem omegaImBase_app_eq_zero_iff {V : S'.Opens}
   (comp_eigenImMap_app_eq_zero_iff (hε.pullbackImHom f hf) (isEquivariant_omegaBase h w)).trans
     (hε.pullbackImHom_app_eq_zero_iff f hf)
 
+/- English proof (translation)
+The claim follows from `have := mono_toBidual_of_isVectorBundle hg have := mono_toBidual_of_isVectorBundle (hg.pullback f) have := hε.isIso_pullbackImHom f hf hr inferInstanceAs (IsIso (hε.pullbackImHom f hf ≫ (eigenImIso _ (φ := asIso (omegaBase h)) (isEquivariant_omegaBase h w)).hom))`.
+-/
 theorem isIso_omegaImBase {r : ℕ} (hr : IsVB (omegaIm i σ) r) :
     IsIso (omegaImBase h w hg hf hε) :=
   have := mono_toBidual_of_isVectorBundle hg
@@ -607,6 +810,11 @@ theorem isIso_omegaImBase {r : ℕ} (hr : IsVB (omegaIm i σ) r) :
 
 include hg hf hε in
 
+/- English proof (translation)
+Use `isIso_omegaImBase h w hg hf hε hr` as an intermediate fact. Use `DualPull.isIso_theta f hr` as an intermediate fact. Establish `e : eigenImπ _ _ ≫ inv (omegaImBase h w hg hf hε) = inv (omegaBase h) ≫ (Scheme.Modules.pullback f).map (eigenImπ _ σ)`. Rewrite using `[IsIso.comp_inv_eq, Category.assoc, map_eigenImπ_omegaImBase, IsIso.inv_hom_id_assoc]`. Establish `e' : (Scheme.Modules.pullback f).map (dualOmegaImIso i σ).hom ≫ lieSubBase σ h w = theta f _ ≫ (dualIso (asIso (omegaImBase h w hg hf hε)).symm).hom ≫ (dualOmegaImIso i' _).hom`.
+
+Rewrite using `[← cancel_mono (eigenι _ _), lieSubBase]`. Simplify using `only [Category.assoc, eigenMap_ι, dualOmegaImIso_hom_ι, dualIso_hom, Iso.symm_hom, asIso_inv]`. Rewrite using `[← dualMap_comp, e, dualMap_comp, ← Category.assoc (pullbackEigenHom _ _ _), pullbackEigenHom_ι, ← Functor.map_comp_assoc, dualOmegaImIso_hom_ι, lieBase, ← Category.assoc, DualPull.theta_naturality, Category.assoc]`. Conclude with `IsIso.of_isIso_fac_left e'`.
+-/
 theorem isIso_lieSubBase_of_isVB {r : ℕ} (hr : IsVB (omegaIm i σ) r) :
     IsIso (lieSubBase σ h w) := by
   have := isIso_omegaImBase h w hg hf hε hr
@@ -634,6 +842,9 @@ variable {ε : Lie G ⟶ Lie G} (hε : IsEigenProj (lieAct i) σ ε D)
 def lieImBase : (Scheme.Modules.pullback f).obj (lieIm i σ) ⟶ lieIm i' (f.appTop.hom.comp σ) :=
   hε.pullbackImHom f hf ≫ eigenImMap _ (isEquivariant_lieBase h w)
 
+/- English proof (translation)
+Simplify using `[lieImBase]`.
+-/
 @[reassoc] theorem map_eigenImπ_lieImBase :
     (Scheme.Modules.pullback f).map (eigenImπ _ σ) ≫ lieImBase h w hf hε =
       lieBase h ≫ eigenImπ _ _ := by
@@ -641,10 +852,16 @@ def lieImBase : (Scheme.Modules.pullback f).obj (lieIm i σ) ⟶ lieIm i' (f.app
 
 include hg
 
+/- English proof (translation)
+The claim follows from `have := isIso_lieBase h hg epi_of_epi_fac (map_eigenImπ_lieImBase h w hf hε)`.
+-/
 theorem epi_lieImBase : Epi (lieImBase h w hf hε) :=
   have := isIso_lieBase h hg
   epi_of_epi_fac (map_eigenImπ_lieImBase h w hf hε)
 
+/- English proof (translation)
+The claim follows from `have := isIso_lieBase h hg have := mono_toBidual_of_isVectorBundle (hg.dual.pullback f) (comp_eigenImMap_app_eq_zero_iff (hε.pullbackImHom f hf) (isEquivariant_lieBase h w)).trans (hε.pullbackImHom_app_eq_zero_iff f hf)`.
+-/
 theorem lieImBase_app_eq_zero_iff {V : S'.Opens}
     {s : Γ((Scheme.Modules.pullback f).obj (lieIm i σ), V)} :
     (lieImBase h w hf hε).app V s = 0 ↔ resG S' (le_top : V ≤ ⊤) (f.appTop D) • s = 0 :=
@@ -653,6 +870,9 @@ theorem lieImBase_app_eq_zero_iff {V : S'.Opens}
   (comp_eigenImMap_app_eq_zero_iff (hε.pullbackImHom f hf) (isEquivariant_lieBase h w)).trans
     (hε.pullbackImHom_app_eq_zero_iff f hf)
 
+/- English proof (translation)
+The claim follows from `have := isIso_lieBase h hg have := mono_toBidual_of_isVectorBundle (hg.dual.pullback f) have := hε.isIso_pullbackImHom f hf hr inferInstanceAs (IsIso (hε.pullbackImHom f hf ≫ (eigenImIso _ (φ := asIso (lieBase h)) (isEquivariant_lieBase h w)).hom))`.
+-/
 theorem isIso_lieImBase {r : ℕ} (hr : IsVB (lieIm i σ) r) : IsIso (lieImBase h w hf hε) :=
   have := isIso_lieBase h hg
   have := mono_toBidual_of_isVectorBundle (hg.dual.pullback f)
@@ -695,6 +915,9 @@ def epsCotEquiv : AugCot (TrivSqZeroExt.fstHom O O O) ≃ₗ[O] O :=
       have : AugCot.d (TrivSqZeroExt.fstHom O O O) (.inl a.fst) = 0 := AugCot.d_algebraMap _ a.fst
       simp [this])
 
+/- English proof (translation)
+The claim follows from `isFrame_d_Spec (R := .of O) (A := .of (DualNumber O)) (TrivSqZeroExt.fstHom O O O) _ rfl rfl ((Module.Basis.singleton (Fin 1) O).map (epsCotEquiv O).symm) (fun _ => DualNumber.eps) fun _ => by simp [epsCotEquiv]`.
+-/
 theorem isFrame_d_eps :
     IsFrame fun _ : Fin 1 => d (sec_hom (epsZero O)) (le_preimage_top _ ⊤) (epsFn O) :=
   isFrame_d_Spec (R := .of O) (A := .of (DualNumber O)) (TrivSqZeroExt.fstHom O O O) _ rfl rfl
@@ -704,11 +927,17 @@ theorem isFrame_d_eps :
 def epsIso : conormal (sec (epsZero O)) ≅ structureModule (Sp O) :=
   (isFrame_d_eps O).iso (isFrame_one ⊤)
 
+/- English proof (translation)
+The claim follows from `(isFrame_d_eps O).iso_hom_app (isFrame_one ⊤) 0`.
+-/
 theorem epsIso_d : (epsIso O).hom.app ⊤ (d (sec_hom (epsZero O)) (le_preimage_top _ _) (epsFn O)) =
     (1 : Γ(Sp O, ⊤)) := (isFrame_d_eps O).iso_hom_app (isFrame_one ⊤) 0
 
 variable {O}
 
+/- English proof (translation)
+Use `ext1`. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp]`. Use `congr 1`. Apply the tactic sequence `ext x <;> simp [dualScale]`.
+-/
 theorem epsZero_dualScale (a : O) : epsZero O ≫ ptMap (dualScale a) = epsZero O := by
   ext1
   change Spec.map _ ≫ Spec.map _ = Spec.map _
@@ -716,6 +945,9 @@ theorem epsZero_dualScale (a : O) : epsZero O ≫ ptMap (dualScale a) = epsZero 
   congr 1
   ext x <;> simp [dualScale]
 
+/- English proof (translation)
+The claim follows from `hom_ext_of_isFrame (isFrame_d_eps O) fun _ => by have e₁ : (ptMap (dualScale a)).left.appLE ⊤ ⊤ (le_preimage_top _ _) (epsFn O) = (specO O (DualNumber O)).hom.appLE ⊤ ⊤ (le_preimage_top _ _) (cst O a) * epsFn O := by refine congr($(Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHo …`.
+-/
 theorem cotMap_dualScale (a : O) :
     cotMap (ptMap (dualScale a)) (epsZero_dualScale a) = smulHom _ (cst O a) :=
   hom_ext_of_isFrame (isFrame_d_eps O) fun _ => by
@@ -735,6 +967,11 @@ theorem cotMap_dualScale (a : O) :
 
 variable {G H : Over (Sp O)} [GrpObj G] [GrpObj H]
 
+/- English proof (translation)
+Establish `h : (toUnit (specO O O)).left = 𝟙 (Sp O)`. Rewrite using `[Over.toUnit_left]`. Conclude with `Spec.map_id _`. Establish `h'` using `congrArg (·.left) x.2`. Simplify using `only [Over.comp_left, h] at h'`.
+
+Use `ext1`. Conclude with `h'.trans (Category.id_comp _)`.
+-/
 theorem epsZero_comp (x : LieG G) : epsZero O ≫ x.1 = η := by
   have h : (toUnit (specO O O)).left = 𝟙 (Sp O) := by
     rw [Over.toUnit_left]
@@ -747,10 +984,16 @@ theorem epsZero_comp (x : LieG G) : epsZero O ≫ x.1 = η := by
 def tangent (x : LieG G) : Γ(Lie G, ⊤) :=
   (homGlobalEquiv _ _).symm (cotMap x.1 (epsZero_comp x) ≫ (epsIso O).hom)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dualApp_tangent (x : LieG G) {V : (Sp O).Opens} (w : Γ(omega G, V)) :
     dualApp (tangent x) le_top w = (epsIso O).hom.app V ((cotMap x.1 (epsZero_comp x)).app V w) :=
   rfl
 
+/- English proof (translation)
+Use `(congrArg ((epsIso O).hom.app V) (cotMap_d x.1 (epsZero_comp x) h hV k f)).trans ?_` and prove the remaining obligations. Rewrite using `[e, map_add, d_base, zero_add, d_mul, d_base, smul_zero, add_zero, appLE_base (sec_hom _) _ _ le_rfl, resG_self, d_resG, ← resM_d _ (le_preimage_top _ ⊤) le_top, Scheme.Modules.Hom.app_smul, app_resM, epsIso_d]`. Conclude with `(congrArg (b * ·) (map_one (resG (Sp O) (le_top : V ≤ ⊤)))).trans (_root_.mul_one b)`.
+-/
 theorem dualApp_tangent_dUnit (x : LieG G) {V : (Sp O).Opens} {W : G.left.Opens}
     (h : V ≤ unitSec G ⁻¹ᵁ W) (f : Γ(G.left, W)) {T : (specO O (DualNumber O)).left.Opens}
     (hV : V ≤ sec (epsZero O) ⁻¹ᵁ T) (hT : T ≤ (specO O (DualNumber O)).hom ⁻¹ᵁ V)
@@ -764,12 +1007,18 @@ theorem dualApp_tangent_dUnit (x : LieG G) {V : (Sp O).Opens} {W : G.left.Opens}
     ← resM_d _ (le_preimage_top _ ⊤) le_top, Scheme.Modules.Hom.app_smul, app_resM, epsIso_d]
   exact (congrArg (b * ·) (map_one (resG (Sp O) (le_top : V ≤ ⊤)))).trans (_root_.mul_one b)
 
+/- English proof (translation)
+Establish `e` using `cotMap_mul (epsZero_comp x) (epsZero_comp y) (epsZero_comp ⟨_, h⟩)`. Use `dual_ext fun W _ s => ?_` and prove the remaining obligations. Conclude with `(congr((epsIso O).hom.app W (($e).app W s))).trans (map_add _ _ _)`.
+-/
 theorem tangent_mul [QuasiSeparated G.hom] (x y : LieG G) (h) :
     tangent ⟨x.1 * y.1, h⟩ = tangent x + tangent y := by
   have e := cotMap_mul (epsZero_comp x) (epsZero_comp y) (epsZero_comp ⟨_, h⟩)
   refine dual_ext fun W _ s => ?_
   exact (congr((epsIso O).hom.app W (($e).app W s))).trans (map_add _ _ _)
 
+/- English proof (translation)
+Establish `e` using `cotMap_comp (epsZero_comp x) (epsZero_dualScale a) rfl (epsZero_comp ⟨_, h⟩)`. Rewrite `e` using `[cotMap_dualScale]`. Use `dual_ext fun W _ s => ?_` and prove the remaining obligations. Conclude with `(congr((epsIso O).hom.app W (($e).app W s))).symm.trans ((epsIso O).hom.app_smul _ _)`.
+-/
 theorem tangent_scale (a : O) (x : LieG G) (h) :
     tangent ⟨ptMap (dualScale a) ≫ x.1, h⟩ = cst O a • tangent x := by
   have e := cotMap_comp (epsZero_comp x) (epsZero_dualScale a) rfl (epsZero_comp ⟨_, h⟩)
@@ -777,6 +1026,9 @@ theorem tangent_scale (a : O) (x : LieG G) (h) :
   refine dual_ext fun W _ s => ?_
   exact (congr((epsIso O).hom.app W (($e).app W s))).symm.trans ((epsIso O).hom.app_smul _ _)
 
+/- English proof (translation)
+Establish `e` using `cotMap_comp (IsMonHom.one_hom φ) (epsZero_comp x) rfl (epsZero_comp ⟨_, h⟩)`. Use `dual_ext fun W _ s => ?_` and prove the remaining obligations. Conclude with `(congr((epsIso O).hom.app W (($e).app W s))).symm`.
+-/
 theorem tangent_comp (φ : G ⟶ H) [IsMonHom φ] (x : LieG G) (h) :
     tangent ⟨x.1 ≫ φ, h⟩ = (lieMap φ).app ⊤ (tangent x) := by
   have e := cotMap_comp (IsMonHom.one_hom φ) (epsZero_comp x) rfl (epsZero_comp ⟨_, h⟩)
@@ -793,9 +1045,15 @@ def toOmega [QuasiSeparated G.hom] : Γ(omega G, ⊤) →+ Pdiv.omega G :=
         Iso.inv_hom_id_apply]⟩)
     fun _ _ => Subtype.ext (funext fun x => by simp only [map_add]; rfl)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toOmega_apply [QuasiSeparated G.hom] (w : Γ(omega G, ⊤)) (x : LieG G) :
     (toOmega G w).1 x = (Scheme.ΓSpecIso (.of O)).hom (dualApp (tangent x) le_top w) := rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (funext fun x => by rw [toOmega_apply, map_smul, smul_eq_mul, map_mul, Iso.inv_hom_id_apply] rfl)`.
+-/
 theorem toOmega_smul [QuasiSeparated G.hom] (a : O) (w : Γ(omega G, ⊤)) :
     toOmega G (cst O a • w) = a • toOmega G w := Subtype.ext (funext fun x => by
   rw [toOmega_apply, map_smul, smul_eq_mul, map_mul, Iso.inv_hom_id_apply]
@@ -817,10 +1075,16 @@ def dlogChar : X →+ Γ(omega (splitTorus S X), ⊤) :=
     rw [← SplitTorus.val_id, SplitTorus.val_add, SplitTorus.val_id, SplitTorus.val_id, dUnit_mul,
       h, h, one_smul, one_smul, add_comm]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dlogChar_apply (a : X) : dlogChar S X a = dUnit _ (le_preimage_top _ _) (Rosenlicht.chi X a) := rfl
 
 variable {X Y} in
 
+/- English proof (translation)
+The claim follows from `(omegaMap_dUnit _ (le_preimage_top _ _) (le_preimage_top _ _) (le_preimage_top _ _) _).trans (congrArg _ ((appLE_top _ _).trans (SplitTorus.torusMap_appTop_chi u b)))`.
+-/
 theorem omegaMap_dlogChar (u : Y →+ X) (b : Y) :
     (omegaMap (SplitTorus.torusMap S u)).app ⊤ (dlogChar S Y b) = dlogChar S X (u b) :=
   (omegaMap_dUnit _ (le_preimage_top _ _) (le_preimage_top _ _) (le_preimage_top _ _) _).trans
@@ -828,6 +1092,17 @@ theorem omegaMap_dlogChar (u : Y →+ X) (b : Y) :
 
 variable {X} {κ : Type} [Fintype κ] (b : Module.Basis κ ℤ X)
 
+/- English proof (translation)
+Set `ε` to `Bialgebra.counitAlgHom R (AddMonoidAlgebra R X)`. Establish `hε (x : X) : ε (single x 1) = 1` using `by simp [ε]`. Set `δ : X →+ AugCot ε` to `AddMonoidHom.mk' (fun x => AugCot.d ε (single x 1)) fun x y => by`. Rewrite using `[← _root_.mul_one (1 : R), ← AddMonoidAlgebra.single_mul_single, AugCot.d_mul, hε, hε]`. Simplify using `[add_comm]`.
+
+Set `D (i : κ) : AddMonoidAlgebra R X →ₗ[R] R` to `(AddMonoidAlgebra.basis X R).constr R fun x => (b.repr x i : R)`. Establish `hD (i : κ) (x : X) : D i (single x 1) = b.repr x i` using `Module.Basis.constr_basis _ _ _ x`. Establish `hmul (i : κ) (x y : AddMonoidAlgebra R X) : D i (x * y) = ε x • D i y + ε y • D i x`. Establish `: (LinearMap.mul R _).compr₂ (D i) = (LinearMap.lsmul R R).compl₁₂ ε.toLinearMap (D i) + ((LinearMap.lsmul R R).compl₁₂ ε.toLinearMap (D i)).flip` using `(AddMonoidAlgebra.basis X R).ext fun x => (AddMonoidAlgebra.basis X R).ext fun y => by`. Simplify using `[AddMonoidAlgebra.single_mul_single, hD, hε, add_comm]`.
+
+Conclude with `congr($this x y)`. Use `⟨.mk (v := fun i => δ (b i)) (LinearIndependent.of_pairwise_dual_eq_zero_one _ (fun i => AugCot.lift ε (D i) (hmul i)) (fun i j h => ?_) fun i => ?_) fun w _ => ?_, fun i => Module.Basis.mk_apply _ _ i⟩` and prove the remaining obligations. Simplify using `[δ, hD, h.symm]`. Simplify using `[δ, hD]`. Take `⟨a, rfl⟩` from `AugCot.d_surjective ε w`.
+
+Rewrite using `[← (AddMonoidAlgebra.basis X R).linearCombination_repr a, Finsupp.linearCombination_apply, map_finsuppSum]`. Use `Submodule.sum_mem _ fun x _ => ?_` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[map_smul]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `δ x ∈ _`. Rewrite using `[← b.sum_repr x, map_sum]`. Conclude with `Submodule.sum_mem _ fun i _ => by`. Rewrite using `[map_zsmul]`. Conclude with `zsmul_mem (Submodule.subset_span (Set.mem_range_self i)) _`.
+-/
 theorem exists_basis_augCot (R : Type) [CommRing R] :
     ∃ c : Module.Basis κ R (AugCot (Bialgebra.counitAlgHom R (AddMonoidAlgebra R X))),
       ∀ i, c i = AugCot.d _ (single (b i) 1) := by
@@ -864,6 +1139,11 @@ theorem exists_basis_augCot (R : Type) [CommRing R] :
       rw [map_zsmul]
       exact zsmul_mem (Submodule.subset_span (Set.mem_range_self i)) _
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `exists_basis_augCot b ZU`. Establish `: IsAffineHom (splitTorusAff ZU X).hom` using `inferInstanceAs (IsAffineHom (Spec.map _))`. Establish `h₁ : unitSec (splitTorusAff ZU X) = Spec.map (CommRingCat.ofHom (Bialgebra.counitAlgHom ZU (torusRing ZU X)).toRingHom)` using `one_spec_asOver_spec_left (R := ZU) (A := torusRing ZU X)`. Establish `h₀` using `isFrame_d_Spec (R := ZU) (A := torusRing ZU X) _ (sec_hom η[splitTorusAff ZU X]) rfl h₁ c _ hc`. Establish `h : IsGrpPullback (splitTorus S X) _ _ _` using `isGrpPullback_pullback (splitTorusAff ZU X) (toZ S)`.
+
+Establish `e (i : κ)` using `(omegaBase_dUnit h (le_preimage_top _ ⊤) (le_refl _) (le_preimage_top _ _) (le_preimage_top _ _) ((Scheme.ΓSpecIso (torusRing ZU X)).inv (single (b i) 1))).trans (congrArg (dUnit _ _) ((appLE_top _ _).trans (SplitTorus.chi_eq X (b i)).symm))`. Use `isIso_omegaBase h` as an intermediate fact. Use `(IsFrame.pullback (F := omega (splitTorusAff ZU X)) h₀ (toZ S)).map_iso (omegaBase h)` as an intermediate fact. Conclude with `(funext e) ▸ this`.
+-/
 theorem isFrame_dlogChar : IsFrame fun i => dlogChar S X (b i) := by
   obtain ⟨c, hc⟩ := exists_basis_augCot b ZU
   have : IsAffineHom (splitTorusAff ZU X).hom := inferInstanceAs (IsAffineHom (Spec.map _))
@@ -883,6 +1163,9 @@ theorem isFrame_dlogChar : IsFrame fun i => dlogChar S X (b i) := by
 def omegaTorusIso : omega (splitTorus S X) ≅ QCoh.freeModule S κ :=
   (isFrame_dlogChar S b).iso (isFrame_freeFrame S κ)
 
+/- English proof (translation)
+Use `isFrame_dlogChar S ((Module.Basis.singleton (Fin 1) ℤ).map ULift.moduleEquiv.symm) using 3 with i` and compare the differences between its conclusion and the goal. Simplify using the standard rewrite rules.
+-/
 theorem isFrame_Gm : IsFrame fun _ : Fin 1 => dlogChar S (ULift ℤ) (ULift.up 1) := by
   convert isFrame_dlogChar S ((Module.Basis.singleton (Fin 1) ℤ).map ULift.moduleEquiv.symm)
     using 3 with i
@@ -892,6 +1175,9 @@ def omegaGmIso : omega (Gm S) ≅ structureModule S := (isFrame_Gm S).iso (isFra
 
 def lieGmIso : Lie (Gm S) ≅ structureModule S := (isFrame_Gm S).dual.iso (isFrame_one ⊤)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, (isFrame_Gm S).isVB, (isFrame_Gm S).isVB.dual⟩`.
+-/
 theorem isVB_Gm : IsSemiAbelian (Gm S) ∧ IsVB (omega (Gm S)) 1 ∧ IsVB (Lie (Gm S)) 1 :=
   ⟨inferInstance, (isFrame_Gm S).isVB, (isFrame_Gm S).isVB.dual⟩
 
@@ -901,16 +1187,30 @@ section Examples
 
 variable {G : Over S} [GrpObj G] [QuasiSeparated G.hom]
 
+/- English proof (translation)
+Introduce `a` and use `congr($(RingHom.ext_int (omegaAct i) (scalarAct _ (Int.castRingHom _))) a)`.
+-/
 theorem actsThrough_omegaAct_int (i : OAct ℤ G) : ActsThrough (omegaAct i) (Int.castRingHom _) :=
   fun a => congr($(RingHom.ext_int (omegaAct i) (scalarAct _ (Int.castRingHom _))) a)
 
+/- English proof (translation)
+The claim follows from `(actsThrough_omegaAct_int i).dual`.
+-/
 theorem actsThrough_lieAct_int (i : OAct ℤ G) : ActsThrough (lieAct i) (Int.castRingHom _) :=
   (actsThrough_omegaAct_int i).dual
 
+/- English proof (translation)
+The claim follows from `(omegaMap_dlogChar S _ _).trans (map_neg _ _)`.
+-/
 example : (omegaMap (SplitTorus.torusMap S (-AddMonoidHom.id (ULift ℤ)))).app ⊤
     (dlogChar S _ (ULift.up 1)) = -dlogChar S _ (ULift.up 1) :=
   (omegaMap_dlogChar S _ _).trans (map_neg _ _)
 
+/- English proof (translation)
+Introduce `i`. Establish `h₁ : ActsThrough (lieAct i) ((Int.castRingHom _).comp (RingHom.fst ℤ ℤ))` using `fun a => actsThrough_lieAct_int (Serre.intAct (Gm S)) a.1`. Establish `h₂ : ActsThrough (omegaConjAct i (RingEquiv.prodComm (R` using `ℤ) (S := ℤ))) ((Int.castRingHom _).comp (RingHom.snd ℤ ℤ)) := fun a => actsThrough_omegaAct_int (Serre.intAct (Gm S)) a.2`. Use `h₁.isIso_eigenι` as an intermediate fact. Use `h₂.isIso_eigenι` as an intermediate fact.
+
+Conclude with `⟨(isVB_Gm S).2.2.of_iso (asIso (eigenι _ _)).symm, (isVB_Gm S).2.1.of_iso (asIso (eigenι _ _)).symm⟩`.
+-/
 example : let i := Serre.comapAct (Serre.intAct (Gm S)) (RingHom.fst ℤ ℤ)
     IsVB (lieSub i ((Int.castRingHom _).comp (RingHom.fst ℤ ℤ))) 1 ∧
       IsVB (eigen (omegaConjAct i (RingEquiv.prodComm (R := ℤ) (S := ℤ)))
@@ -926,9 +1226,15 @@ example : let i := Serre.comapAct (Serre.intAct (Gm S)) (RingHom.fst ℤ ℤ)
   exact ⟨(isVB_Gm S).2.2.of_iso (asIso (eigenι _ _)).symm,
     (isVB_Gm S).2.1.of_iso (asIso (eigenι _ _)).symm⟩
 
+/- English proof (translation)
+Introduce `h` and use `one_ne_zero ((isVB_Gm S).2.1.rank_unique (isVB_zero_iff.2 h))`.
+-/
 example [Nonempty S] : ¬IsZero (omega (Gm S)) := fun h =>
   one_ne_zero ((isVB_Gm S).2.1.rank_unique (isVB_zero_iff.2 h))
 
+/- English proof (translation)
+The claim follows from `have := mono_toBidual_of_isVectorBundle (isVB_Gm S).2.1 have := isIso_eigenImπ_of_actsThrough (actsThrough_omegaAct_int (Serre.intAct (Gm S))) have := isIso_eigenImπ_of_actsThrough (actsThrough_lieAct_int (Serre.intAct (Gm S))) ⟨(isVB_Gm S).2.1.of_iso (asIso (eigenImπ _ _)), (isV …`.
+-/
 example : IsVB (omegaIm (Serre.intAct (Gm S)) (Int.castRingHom _)) 1 ∧
     IsVB (lieIm (Serre.intAct (Gm S)) (Int.castRingHom _)) 1 :=
   have := mono_toBidual_of_isVectorBundle (isVB_Gm S).2.1
@@ -936,6 +1242,11 @@ example : IsVB (omegaIm (Serre.intAct (Gm S)) (Int.castRingHom _)) 1 ∧
   have := isIso_eigenImπ_of_actsThrough (actsThrough_lieAct_int (Serre.intAct (Gm S)))
   ⟨(isVB_Gm S).2.1.of_iso (asIso (eigenImπ _ _)), (isVB_Gm S).2.2.of_iso (asIso (eigenImπ _ _))⟩
 
+/- English proof (translation)
+Introduce `i`. Establish `h₁ : ActsThrough (omegaAct i) ((Int.castRingHom _).comp (Polynomial.evalRingHom 2))` using `fun a => actsThrough_omegaAct_int (Serre.intAct (Gm S)) (a.eval 2)`. Use `⟨isZero_eigenIm_of_actsThrough h₁ (a := .X) (by simpa [zeroChar] using h), fun h₀ => ?_⟩` and prove the remaining obligations. Establish `h₂` using `h₁.pullback f`. Rewrite `h₂` using `[show f.appTop.hom.comp ((Int.castRingHom _).comp (Polynomial.evalRingHom 2)) = f.appTop.hom.comp (zeroChar S) from Polynomial.ringHom_ext' (RingHom.ext_int _ _) (by simpa [zeroChar, map_ofNat] using h')]`.
+
+Use `isIso_eigenπ_of_actsThrough h₂` as an intermediate fact. Conclude with `one_ne_zero (((isVB_Gm S).2.1.pullback f).rank_unique (((isVB_zero_iff.2 h₀).pullback f).of_iso (asIso (eigenπ _ _) ≪≫ pullbackQuotIso _ _ f).symm))`.
+-/
 example (h : IsRegularFn (2 : Γ(S, ⊤))) (f : S' ⟶ S) [Nonempty S'] (h' : (2 : Γ(S', ⊤)) = 0) :
     let i := Serre.comapAct (Serre.intAct (Gm S)) (Polynomial.evalRingHom 2)
     IsZero (omegaIm i (zeroChar S)) ∧ ¬IsZero (omegaQuot i (zeroChar S)) := by

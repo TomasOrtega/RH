@@ -19,14 +19,31 @@ noncomputable section
 
 namespace GlobalTheory.FinPl
 
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (hy j)`.
+-/
 theorem matrix_mulVec_mem_adeleIdealSupportedOnPlaces {D : D7} {P : Pl D → Prop} {m n : ℕ} (A : Matrix (Fin m) (Fin n) (AE D))
     (y : Fin n → AE D) (hy : ∀ i, y i ∈ idAt D P) (i : Fin m) : (A *ᵥ y) i ∈ idAt D P := by
   simp only [Matrix.mulVec, dotProduct]
   exact Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (hy j)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `[colMul]`.
+-/
 theorem matrixColumnScaledByAdele_zero {D : D7} {m n : ℕ} (x : Mx D m n) (i : Fin n) : colMul x i 0 = 0 := by
   funext k; simp [colMul]
 
+/- English proof (translation)
+Introduce `D S S₀ ρ d L L₀ v g hM`. Establish `hpX : ∀ z : Fin S₀.rank → AE D, d.pX *ᵥ (d.j0 *ᵥ z) = 0` using `fun z => by`. Rewrite using `[Matrix.mulVec_mulVec, d.pX_j0, Matrix.zero_mulVec]`. Establish `hpY : ∀ z : Fin S₀.rank → AE D, d.pY *ᵥ (d.j0 *ᵥ z) = 0` using `fun z => by`. Rewrite using `[Matrix.mulVec_mulVec, d.pY_j0, Matrix.zero_mulVec]`.
+
+Establish `hp0 : ∀ z : Fin S₀.rank → AE D, d.p0 *ᵥ (d.j0 *ᵥ z) = z` using `fun z => by`. Rewrite using `[Matrix.mulVec_mulVec, d.p0_j0, Matrix.one_mulVec]`. Establish `key : ∀ z : Fin S₀.rank → AE D, d.j0 *ᵥ z ∈ latV S L (· = v) ↔ z ∈ latV S₀ L₀ (· = v)` using `fun z => by`. Rewrite using `[hM, hpX, hpY, hp0]`. Simplify using `only [Pi.zero_apply, matrixColumnScaledByAdele_zero, zero_mem, implies_true, true_and]`.
+
+Establish `hj : ∀ z : Fin S₀.rank → AE D, mt S (d.emb0 g) *ᵥ (d.j0 *ᵥ z) = d.j0 *ᵥ (mt S₀ g *ᵥ z)` using `fun z => by`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, d.wittDecomp_anisotropicEmbedding_inclAnisotropic]`. Prove the components needed by the constructor for the conclusion. Introduce `h z hz`. Rewrite using `[← key, ← key, ← hj]`.
+
+Conclude with `h _ (matrix_mulVec_mem_adeleIdealSupportedOnPlaces _ _ hz)`. Introduce `h y hy`. Establish `eX : d.pX *ᵥ (mt S (d.emb0 g) *ᵥ y) = d.pX *ᵥ y` using `by rw [Matrix.mulVec_mulVec, d.wittDecomp_projX_anisotropicEmbedding]`. Establish `eY : d.pY *ᵥ (mt S (d.emb0 g) *ᵥ y) = d.pY *ᵥ y` using `by rw [Matrix.mulVec_mulVec, d.wittDecomp_projY_anisotropicEmbedding]`. Establish `e0 : d.p0 *ᵥ (mt S (d.emb0 g) *ᵥ y) = mt S₀ g *ᵥ (d.p0 *ᵥ y)`.
+
+Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, d.wittDecomp_projAnisotropic_anisotropicEmbedding]`. Rewrite using `[hM y, hM (mt S (d.emb0 g) *ᵥ y), eX, eY, e0]`. Conclude with `and_congr Iff.rfl (and_congr Iff.rfl (h _ (matrix_mulVec_mem_adeleIdealSupportedOnPlaces _ _ hy)))`.
+-/
 theorem carriesLattice_wittEmbedding_iff_core : ∀ (D : D7) (S S₀ : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (L : GlobalTheory.FinPl.Lat S) (L₀ : GlobalTheory.FinPl.Lat S₀) (v : GlobalTheory.FinPl.Pl D) (g : GA D S₀), GlobalTheory.FinPl.MonoAt d L L₀ v → (GlobalTheory.FinPl.Moves S (d.emb0 g) L L (· = v) ↔ GlobalTheory.FinPl.Moves S₀ g L₀ L₀ (· = v)) := by
   intro D S S₀ ρ d L L₀ v g hM
   have hpX : ∀ z : Fin S₀.rank → AE D, d.pX *ᵥ (d.j0 *ᵥ z) = 0 := fun z => by

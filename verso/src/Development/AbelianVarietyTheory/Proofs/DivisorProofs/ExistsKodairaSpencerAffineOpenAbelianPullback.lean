@@ -29,6 +29,15 @@ namespace GlobalTheory.KSOpen
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Establish `h` using `isGrpPullback_pullback t.G f`. Take `⟨hL, hr, ⟨c', hc'⟩, hs⟩` from `Out.CubePf.cubePull S S' t.G _ (cubeMapOf h) t.PP t.cub`. Establish `hact : ∀ a, ((OAct.pullback f t.G t.act).act a).left ≫ pullback.fst t.G.hom f = pullback.fst t.G.hom f ≫ (t.act.act a).left` using `fun a => pullback.lift_fst _ _ _`. Establish `pa : ∀ {T : Over S'} (x : T ⟶ (Over.pullback f).obj t.G) a, pushPt h.1.w (x ≫ (OAct.pullback f t.G t.act).act a) = pushPt h.1.w x ≫ t.act.act a` using `fun x a => Over.OverMorphism.ext (by show (x.left ≫ _) ≫ _ = (x.left ≫ _) ≫ _`. Rewrite using `[Category.assoc, hact, Category.assoc])`.
+
+Use `⟨⟨(Over.pullback f).obj t.G, IsSemiAbelian.pullback f t.G t.semi, OAct.pullback f t.G t.act, (cubeMapOf h).rigLB t.PP hL hr, c', hs t.sym, fun a => ?_, ?_⟩, ⟨cubeMapOf h, h, rfl, hact, hc'⟩, ⟨ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull t.PP.L _ _ rfl⟩⟩` and prove the remaining obligations. Set `U` to `lift (pushPt h.1.w (fst ((Over.pullback f).obj t.G) ((Over.pullback f).obj t.G))) (pushPt h.1.w (snd ((Over.pullback f).obj t.G) ((Over.pullback f).obj t.G)))`. Use `LBIso.chartPull (chartPullLinComb t.PP.L _ _ _ _ U.left fun I => psum_push h _ _ U (fun i => ?_) I.down) (chartPullLinComb t.PP.L _ _ _ _ U.left fun I => psum_push h _ _ U (fun i => ?_) I.down) (t.adj a)` and prove the remaining obligations. Use `fin_cases i`. Conclude with `(pa _ a).trans (by simp [U])`.
+
+Simplify using `[U]`. Use `fin_cases i`. Simplify using `[U]`. Conclude with `(pa _ _).trans (by simp [U])`. Set `U` to `pushPt h.1.w (𝟙 ((Over.pullback f).obj t.G))`.
+
+Use `LBIso.chartPull (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull t.PP.L _ U.left (Category.id_comp _)) (chartPullLinComb t.PP.L _ _ _ _ U.left fun I => psum_push h _ _ U (fun i => ?_) I.down) t.prim` and prove the remaining obligations. Use `fin_cases i`. Simplify using `[U]`. Conclude with `(congrArg (pushPt h.1.w) (Category.id_comp _).symm).trans (pa _ _)`.
+-/
 theorem exists_pull_chart {S S' : Scheme.{0}} (f : S' ⟶ S) (t : SAB H S) :
     ∃ (t' : SAB H S') (m : SABMap t' t f), Nonempty (ChartPull t'.PP.L t.PP.L m.φ) := by
   have h := isGrpPullback_pullback t.G f
@@ -60,6 +69,9 @@ theorem exists_pull_chart {S S' : Scheme.{0}} (f : S' ⟶ S) (t : SAB H S) :
     · simp [U]
     · exact (congrArg (pushPt h.1.w) (Category.id_comp _).symm).trans (pa _ _)
 
+/- English proof (translation)
+Take `⟨n, -⟩` from `GlobalTheory.ObjMaps.exists_sab_cancel (g := 𝟙 S') m ((Category.id_comp f).symm ▸ m')`. Take `⟨w, hw, -⟩` from `n.lin`. Conclude with `⟨MorphismProperty.of_isPullback n.cart.1 hP, relAmple_pull n.cart.1 u.PP.isLB u'.PP.isLB ((isGen_iff w).1 hw) ⊤ (isAffineOpen_top S') (fun _ => trivial) hA, kTriv_pull n.cart u.PP.isLB u'.PP.isLB ((isGen_iff w).1 hw) hK⟩`.
+-/
 theorem proper_ample_kTriv {S S' : Scheme.{0}} [IsAffine S'] {f : S' ⟶ S} {t : SAB H S} {u u' : SAB H S'}
     (m : SABMap u t f) (m' : SABMap u' t f) (hP : IsProper u.G.hom) (hA : Out.RelAmple u.G u.PP.L)
     (hK : Out.KTriv u.G u.PP.L) : IsProper u'.G.hom ∧ Out.RelAmple u'.G u'.PP.L ∧ Out.KTriv u'.G u'.PP.L := by
@@ -69,17 +81,26 @@ theorem proper_ample_kTriv {S S' : Scheme.{0}} [IsAffine S'] {f : S' ⟶ S} {t :
     relAmple_pull n.cart.1 u.PP.isLB u'.PP.isLB ((isGen_iff w).1 hw) ⊤ (isAffineOpen_top S') (fun _ => trivial) hA,
     kTriv_pull n.cart u.PP.isLB u'.PP.isLB ((isGen_iff w).1 hw) hK⟩
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[← Scheme.Hom.appIso_hom']`. Conclude with `ConcreteCategory.bijective_of_isIso (j.appIso U').hom`.
+-/
 theorem bijective_appLE {X X' : Scheme.{0}} (j : X' ⟶ X) [IsOpenImmersion j] {U : X.Opens} {U' : X'.Opens}
     (h : j ''ᵁ U' = U) (e : U' ≤ j ⁻¹ᵁ U) : Function.Bijective (j.appLE U U' e).hom := by
   subst h
   rw [← Scheme.Hom.appIso_hom']
   exact ConcreteCategory.bijective_of_isIso (j.appIso U').hom
 
+/- English proof (translation)
+Rewrite using `[← Scheme.Hom.appLE_map m h (homOfLE e).op]`. Both sides reduce to the same expression.
+-/
 theorem resG_appLE {Y Z : Scheme.{0}} (m : Z ⟶ Y) (U : Y.Opens) {V V' : Z.Opens} (h : V ≤ m ⁻¹ᵁ U) (e : V' ≤ V)
     (r : Γ(Y, U)) : resG Z e ((m.appLE U V h).hom r) = (m.appLE U V' (e.trans h)).hom r := by
   rw [← Scheme.Hom.appLE_map m h (homOfLE e).op]
   rfl
 
+/- English proof (translation)
+Rewrite using `[Scheme.Hom.app_eq_appLE, ← CommRingCat.comp_apply, ← CommRingCat.comp_apply, Scheme.Hom.appLE_comp_appLE, Scheme.Hom.appLE_comp_appLE]`. Use `congr 3`.
+-/
 theorem app_appLE {X X' G G' : Scheme.{0}} {φ : G' ⟶ G} {p' : G' ⟶ X'} {p : G ⟶ X} {j : X' ⟶ X}
     (sq : φ ≫ p = p' ≫ j) {U : X.Opens} {U' : X'.Opens} (e : U' ≤ j ⁻¹ᵁ U) {O : G.Opens} (h : O ≤ p ⁻¹ᵁ U)
     (h' : φ ⁻¹ᵁ O ≤ p' ⁻¹ᵁ U') (r : Γ(X, U)) :
@@ -88,12 +109,36 @@ theorem app_appLE {X X' G G' : Scheme.{0}} {φ : G' ⟶ G} {p' : G' ⟶ X'} {p :
     Scheme.Hom.appLE_comp_appLE]
   congr 3
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.CechKS.valR_comp_app, ← GlobalTheory.CechKS.valR_resG z e hz]`. Both sides reduce to the same expression.
+-/
 theorem valR_comp_appLE {Y Z : Scheme.{0}} {S : Type} [CommRing S] (z : Sp S ⟶ Y) (m : Y ⟶ Z) {O : Z.Opens}
     {O' : Y.Opens} (e : O' ≤ m ⁻¹ᵁ O) (hz : ⊤ ≤ z ⁻¹ᵁ O') (f : Γ(Z, O)) :
     valR (z ≫ m) O f = valR z O' ((m.appLE O O' e).hom f) := by
   rw [GlobalTheory.CechKS.valR_comp_app, ← GlobalTheory.CechKS.valR_resG z e hz]
   rfl
 
+/- English proof (translation)
+Take `⟨J, W, c, d, hcov, hWc, hd, hl, hr⟩` from `h`. Take `⟨hoi, hrange⟩` from `GlobalTheory.sabMap_isOpenImmersion_opensRange E H X X' t t' j m`. Establish `sq : m.φ ≫ t.G.hom = t'.G.hom ≫ j` using `m.cart.1.w`. Rewrite `hcov` using `[inf_top_eq]`. Establish `hWU : ∀ i, W i ≤ t'.G.hom ⁻¹ᵁ U'.1` using `fun i => hcov ▸ le_iSup W i`.
+
+Establish `hpre : t'.G.hom ⁻¹ᵁ U'.1 = m.φ ⁻¹ᵁ (t.G.hom ⁻¹ᵁ U.1)`. Rewrite using `[← Scheme.Hom.comp_preimage, sq, Scheme.Hom.comp_preimage, ← hU, Scheme.Hom.preimage_image_eq]`. Establish `hle : ∀ i {O : t.G.left.Opens}, O ≤ m.φ ''ᵁ W i → m.φ ⁻¹ᵁ O ≤ W i` using `fun i O hO => (m.φ.preimage_mono hO).trans (m.φ.preimage_image_eq (W i)).le`. Use `choose d₂ hd₂ hd₂' using fun i => GlobalTheory.LogKS.isField_image _ _ m.φ (W i) (d i) (hd i)`. Use `⟨J, fun i => m.φ ''ᵁ W i, fun i => cp.idx (c i), d₂, ?_, fun i => ?_, hd₂, fun i hW r => ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Scheme.Hom.image_iSup, hcov, hpre, Scheme.Hom.image_preimage_eq_opensRange_inf, hrange, inf_eq_left.2 hUV, inf_eq_right]`. Apply `t.G.hom.preimage_mono` to reduce the goal to its premises. Rewrite using `[← hU]`. Conclude with `j.image_le_opensRange _`. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+
+Conclude with `cp.le _ (hWc i hy)`. Establish `hinj : Function.Injective (m.φ.app (m.φ ''ᵁ W i)).hom` using `(ConcreteCategory.bijective_of_isIso (m.φ.app (m.φ ''ᵁ W i))).1`. Apply `hinj` to reduce the goal to its premises. Establish `h1` using `hle i le_rfl`. Rewrite using `[hd₂' i _ le_rfl, app_appLE sq e hW (h1.trans (hWU i)), app_appLE sq e hW (h1.trans (hWU i)), ← hψ, ← hψ, ← hD, ← resG_appLE _ _ (hWU i) h1, (hd i).2.2 _ _ h1 le_rfl, hl i (hWU i), resG_appLE]`.
+
+Introduce `i i' O hO f S _ φ g₀ w hg hO₀ hT`. Establish `hOi : O ≤ m.φ ''ᵁ W i` using `hO.trans inf_le_left`. Establish `hOi' : O ≤ m.φ ''ᵁ W i'` using `hO.trans inf_le_right`. Take `⟨g₁, rfl⟩ : ∃ g₁ : Sp S ⟶ t'.G.left, g₁ ≫ m.φ = g₀` from `⟨IsOpenImmersion.lift m.φ g₀ (by`. Introduce and unpack `_ ⟨y, rfl⟩`.
+
+Take `⟨z, -, hz⟩` from `hOi (hO₀ (Set.mem_univ y))`. Conclude with `⟨z, hz⟩), IsOpenImmersion.lift_fac _ _ _⟩`. Take `⟨φ₁, rfl⟩ : ∃ φ₁ : Γ(X', U'.1) →+* S, φ₁.comp ψ.toRingHom = φ` from `⟨φ.comp ψ.symm.toRingHom, RingHom.ext fun r => by simp⟩`. Establish `hg₁ : g₁ ≫ t'.G.hom = spMap φ₁ ≫ chart U'`. Rewrite using `[← cancel_mono j, Category.assoc, ← sq, ← Category.assoc, hg, Category.assoc, hch, ← Category.assoc]`.
+
+Use `congr 1`. Conclude with `Spec.map_comp (CommRingCat.ofHom ψ.toRingHom) (CommRingCat.ofHom φ₁)`. Use `choose w₁ hw₁ hT₁ using fun a => GlobalTheory.TransLift.lift_isTranslate E H X X' t t' j m _ _ ψ.toRingHom (chart U) (chart U') hch (v a) (v' a) (hv a) (hv' a) (hvv a) S φ₁ g₁ hg₁ (w a) (hT a)`. Take `rfl : w = fun a => w₁ a ≫ m.φ` from `funext fun a => (hw₁ a).symm`. Establish `hO₁ : ⊤ ≤ g₁ ⁻¹ᵁ (m.φ ⁻¹ᵁ O)` using `hO₀`.
+
+Establish `key` using `hr i i' (m.φ ⁻¹ᵁ O) (le_inf (hle i hOi) (hle i' hOi')) ((m.φ.app O).hom f) S φ₁ g₁ w₁ hg₁ hO₁ hT₁`. Establish `hgc : ⊤ ≤ g₁ ⁻¹ᵁ (t'.PP.L.U (c i) ⊓ t'.PP.L.U (c i'))` using `hO₁.trans (g₁.preimage_mono (le_inf ((hle i hOi).trans (hWc i)) ((hle i' hOi').trans (hWc i'))))`. Establish `hwc : ∀ b, ⊤ ≤ w₁ b ⁻¹ᵁ (t'.PP.L.U (c i) ⊓ t'.PP.L.U (c i'))` using `fun b => GlobalTheory.CechKS.le_preimage_of_red (GlobalTheory.LogKS.IsTranslate.fst_comp E H X' t' _ S φ₁ (chart U') g₁ (v' b) (w₁ b) hg₁ (hv' b) (hT₁ b)) hgc`. Establish `hgp` using `GlobalTheory.chartPull_g_appLE _ _ _ _ m.φ cp (c i) (c i')`. Establish `hgi : ((t'.PP.L.g (c i) (c i'))⁻¹).val = (m.φ.appLE _ _ (le_inf (inf_le_left.trans (cp.le (c i))) (inf_le_right.trans (cp.le (c i'))))).hom ((t.PP.L.g (cp.idx (c i)) (cp.idx (c i')))⁻¹).val` using `Units.inv_eq_of_mul_eq_one_right (by rw [hgp, ← map_mul, Units.mul_inv, map_one])`.
+
+Rewrite using `[GlobalTheory.CechKS.valR_comp_app, map_sub, hd₂' i O hOi, hd₂' i' O hOi', key]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hgp, hgi]`. Use `congrArg₂ (· * ·) (congrArg₂ (· * ·) (by simp) (congrArg₂ (· * ·) (congrArg TrivSqZeroExt.snd ?_) ?_)) (congrArg TrivSqZeroExt.snd ?_)` and prove the remaining obligations. Conclude with `(valR_comp_appLE (w₁ b) m.φ _ (hwc b) _).symm`.
+
+Conclude with `(valR_comp_appLE g₁ m.φ _ hgc _).symm`. Conclude with `(GlobalTheory.CechKS.valR_comp_app (w₁ a) m.φ O f).symm`.
+-/
 theorem isKS_of_openImmersion {X X' : Scheme.{0}} {t : SAB H X} {t' : SAB H X'} {j : X' ⟶ X} [IsOpenImmersion j]
     (m : SABMap t' t j) (cp : ChartPull t'.PP.L t.PP.L m.φ) (V : X.Opens) (U : X.affineOpens) (hUV : U.1 ≤ V)
     (U' : X'.affineOpens) (hU : j ''ᵁ U'.1 = U.1) (ψ : Γ(X, U.1) ≃+* Γ(X', U'.1)) (e : U'.1 ≤ j ⁻¹ᵁ U.1)
@@ -169,10 +214,20 @@ def derivMap {A B : Type} [CommRing A] [CommRing B] (ψ : A ≃+* B) (D : Deriva
     ((ψ.toAddMonoidHom.comp D.toLinearMap.toAddMonoidHom).comp ψ.symm.toAddMonoidHom)) fun a b => by
       simp
 
+/- English proof (translation)
+Simplify using `[derivMap]`.
+-/
 theorem derivMap_apply {A B : Type} [CommRing A] [CommRing B] (ψ : A ≃+* B) (D : Derivation ℤ A A) (r : A) :
     derivMap ψ D (ψ r) = ψ (D r) := by
   simp [derivMap]
 
+/- English proof (translation)
+Introduce `E _ _ _ H X t V U hUV t' ⟨m'⟩ hP hA hK n v hv hb D`. Take `⟨u, m, ⟨cp⟩⟩` from `exists_pull_chart (chart U) t`. Take `⟨hP', hA', hK'⟩` from `proper_ample_kTriv m' m hP hA hK`. Use `haveI : IsOpenImmersion (chart U) := U.2.isOpenImmersion_fromSpec`. Set `U' : (Sp Γ(X, U.1)).affineOpens` to `⟨⊤, isAffineOpen_top _⟩`.
+
+Establish `hU : chart U ''ᵁ U'.1 = U.1` using `by show chart U ''ᵁ ⊤ = U.1`. Rewrite using `[Scheme.Hom.image_top_eq_opensRange]`. Conclude with `U.2.opensRange_fromSpec`. Establish `e : U'.1 ≤ chart U ⁻¹ᵁ U.1` using `U.2.fromSpec_preimage_self.ge`. Set `ψ : Γ(X, U.1) ≃+* Γ(Sp Γ(X, U.1), U'.1)` to `RingEquiv.ofBijective _ (bijective_appLE (chart U) hU e)`.
+
+Establish `hch : chart U' ≫ chart U = spMap ψ.toRingHom ≫ chart U` using `(IsAffineOpen.SpecMap_appLE_fromSpec (chart U) U.2 U'.2 e).symm`. Take `⟨v', hvv, hv', hb'⟩` from `GlobalTheory.SabTan.tanBasis_sabMap E H X _ t u (chart U) m _ _ ψ.toRingHom (chart U) (chart U') hch n v hv hb`. Take `⟨Θ, hΘ⟩` from `GlobalTheory.T.exists_cech_kodairaSpencer_class_abelianTriple E H _ u hP' hA' hK' U' n v' hv' hb' (derivMap ψ D)`. Conclude with `⟨_, isKS_of_openImmersion m cp V U hUV U' hU ψ e (fun _ => rfl) hch v v' hv hv' hvv D _ (derivMap_apply ψ D) Θ hΘ⟩`.
+-/
 theorem exists_isKS_of_pull : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Scheme.{0}) (t : SAB H X) (V : X.Opens) (U : X.affineOpens), U.1 ≤ V → ∀ (t' : SAB H (Sp Γ(X, U.1))), Nonempty (SABMap t' t (chart U)) → IsProper t'.G.hom → Out.RelAmple t'.G t'.PP.L → Out.KTriv t'.G t'.PP.L → ∀ (n : ℕ) (v : Fin n → (Sp (DualNumber Γ(X, U.1)) ⟶ t.G.left)), (∀ i, IsTanAtG t (chart U) (v i)) → (∀ w, IsTanAtG t (chart U) w → ∃! cf : Fin n → Γ(X, U.1), IsCombAtG t (chart U) v cf w) → ∀ D : Derivation ℤ Γ(X, U.1) Γ(X, U.1), ∃ Θ, IsKS t V U v D Θ := by
   intro E _ _ _ H X t V U hUV t' ⟨m'⟩ hP hA hK n v hv hb D
   obtain ⟨u, m, ⟨cp⟩⟩ := exists_pull_chart (chart U) t

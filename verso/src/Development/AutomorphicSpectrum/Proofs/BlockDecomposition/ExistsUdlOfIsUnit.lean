@@ -8,14 +8,23 @@ variable {R : Type*} [CommRing R]
 
 def ex (n : ℕ) : Fin n ⊕ Fin 1 ≃ Fin (n + 1) := finSumFinEquiv
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ex_inl {n : ℕ} (i : Fin n) : ex n (Sum.inl i) = i.castSucc := rfl
 
+/- English proof (translation)
+Establish `hk : k = 0` using `Subsingleton.elim _ _`. Substitute `hk` using the available equality. Use `ext`. Simplify using `[ex]`.
+-/
 theorem ex_inr {n : ℕ} (k : Fin 1) : ex n (Sum.inr k) = Fin.last n := by
   have hk : k = 0 := Subsingleton.elim _ _
   subst hk
   ext
   simp [ex]
 
+/- English proof (translation)
+Rewrite using `[fromBlocks_one]`. Simplify using `[Matrix.one_apply]`.
+-/
 theorem one_ex {n : ℕ} (i j : Fin n ⊕ Fin 1) :
     (1 : Matrix (Fin (n + 1)) (Fin (n + 1)) R) (ex n i) (ex n j) =
       fromBlocks (1 : Matrix (Fin n) (Fin n) R) 0 0 (1 : Matrix (Fin 1) (Fin 1) R) i j := by
@@ -33,6 +42,19 @@ def IsLo (I : Ideal R) {n : ℕ} (l : Matrix (Fin n) (Fin n) R) : Prop :=
 def IsDi (I : Ideal R) {n : ℕ} (d : Matrix (Fin n) (Fin n) R) : Prop :=
   (∀ i j, d i j - (1 : Matrix (Fin n) (Fin n) R) i j ∈ I) ∧ ∀ i j, i ≠ j → d i j = 0
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`. Take `⟨i, rfl⟩` from `(ex n).surjective i`. Take `⟨j, rfl⟩` from `(ex n).surjective j`. Rewrite using `[one_ex, submatrix_apply, Equiv.symm_apply_apply, Equiv.symm_apply_apply]`.
+
+Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Simplify using `using hu.1 i j`. Simplify using `using hx i j`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+
+Introduce `i j hij`. Take `⟨i, rfl⟩` from `(ex n).surjective i`. Take `⟨j, rfl⟩` from `(ex n).surjective j`. Rewrite using `[submatrix_apply, Equiv.symm_apply_apply, Equiv.symm_apply_apply]`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`.
+
+Simplify using `only [ex_inl, Fin.castSucc_lt_castSucc_iff] at hij`. Simplify using `using hu.2.1 i j hij`. Simplify using `only [ex_inl, ex_inr] at hij`. Conclude with `absurd hij (not_lt.mpr (Fin.le_last _))`. Simplify using the standard rewrite rules.
+
+Simplify using `only [ex_inr, lt_self_iff_false] at hij`. Introduce `i`. Take `⟨i, rfl⟩` from `(ex n).surjective i`. Rewrite using `[submatrix_apply, Equiv.symm_apply_apply]`. Break down `i with i | i` into its components or cases.
+
+Simplify using `using hu.2.2 i`. Simplify using the standard rewrite rules.
+-/
 theorem up_step {I : Ideal R} {n : ℕ} {u : Matrix (Fin n) (Fin n) R} (hu : IsUp I u)
     {x : Matrix (Fin n) (Fin 1) R} (hx : ∀ i k, x i k ∈ I) :
     IsUp I ((fromBlocks u x 0 1).submatrix (ex n).symm (ex n).symm) := by
@@ -64,6 +86,19 @@ theorem up_step {I : Ideal R} {n : ℕ} {u : Matrix (Fin n) (Fin n) R} (hu : IsU
     · simpa using hu.2.2 i
     · simp
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`. Take `⟨i, rfl⟩` from `(ex n).surjective i`. Take `⟨j, rfl⟩` from `(ex n).surjective j`. Rewrite using `[one_ex, submatrix_apply, Equiv.symm_apply_apply, Equiv.symm_apply_apply]`.
+
+Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Simplify using `using hl.1 i j`. Simplify using the standard rewrite rules. Simplify using `using hy i j`. Simplify using the standard rewrite rules.
+
+Introduce `i j hij`. Take `⟨i, rfl⟩` from `(ex n).surjective i`. Take `⟨j, rfl⟩` from `(ex n).surjective j`. Rewrite using `[submatrix_apply, Equiv.symm_apply_apply, Equiv.symm_apply_apply]`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`.
+
+Simplify using `only [ex_inl, Fin.castSucc_lt_castSucc_iff] at hij`. Simplify using `using hl.2.1 i j hij`. Simplify using the standard rewrite rules. Simplify using `only [ex_inl, ex_inr] at hij`. Conclude with `absurd hij (not_lt.mpr (Fin.le_last _))`.
+
+Simplify using `only [ex_inr, lt_self_iff_false] at hij`. Introduce `i`. Take `⟨i, rfl⟩` from `(ex n).surjective i`. Rewrite using `[submatrix_apply, Equiv.symm_apply_apply]`. Break down `i with i | i` into its components or cases.
+
+Simplify using `using hl.2.2 i`. Simplify using the standard rewrite rules.
+-/
 theorem lo_step {I : Ideal R} {n : ℕ} {l : Matrix (Fin n) (Fin n) R} (hl : IsLo I l)
     {y : Matrix (Fin 1) (Fin n) R} (hy : ∀ k j, y k j ∈ I) :
     IsLo I ((fromBlocks l 0 y 1).submatrix (ex n).symm (ex n).symm) := by
@@ -95,6 +130,15 @@ theorem lo_step {I : Ideal R} {n : ℕ} {l : Matrix (Fin n) (Fin n) R} (hl : IsL
     · simpa using hl.2.2 i
     · simp
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `i j`. Take `⟨i, rfl⟩` from `(ex n).surjective i`. Take `⟨j, rfl⟩` from `(ex n).surjective j`. Rewrite using `[one_ex, submatrix_apply, Equiv.symm_apply_apply, Equiv.symm_apply_apply]`.
+
+Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Simplify using `using hd.1 i j`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using `using ha i j`.
+
+Introduce `i j hij`. Take `⟨i, rfl⟩` from `(ex n).surjective i`. Take `⟨j, rfl⟩` from `(ex n).surjective j`. Rewrite using `[submatrix_apply, Equiv.symm_apply_apply, Equiv.symm_apply_apply]`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`.
+
+Establish `: i ≠ j` using `fun h => hij (by rw [h])`. Simplify using `using hd.2 i j this`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Conclude with `absurd (by rw [Subsingleton.elim i j]) hij`.
+-/
 theorem di_step {I : Ideal R} {n : ℕ} {d : Matrix (Fin n) (Fin n) R} (hd : IsDi I d)
     {a : Matrix (Fin 1) (Fin 1) R} (ha : ∀ k k', a k k' - (1 : Matrix (Fin 1) (Fin 1) R) k k' ∈ I) :
     IsDi I ((fromBlocks d 0 0 a).submatrix (ex n).symm (ex n).symm) := by
@@ -119,6 +163,9 @@ theorem di_step {I : Ideal R} {n : ℕ} {d : Matrix (Fin n) (Fin n) R} (hd : IsD
     · simp
     · exact absurd (by rw [Subsingleton.elim i j]) hij
 
+/- English proof (translation)
+Establish `h' : A = u * d * l + c * b * r` using `by rw [← h]; abel`. Simplify using `only [fromBlocks_multiply, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_one, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc c b a, hba, Matrix.mul_one, ← Matrix.mul_assoc a b r, hab, Matrix.one_mul]`. Rewrite using `[h', Matrix.mul_assoc c b r]`.
+-/
 theorem fromBlocks_udl {n : ℕ} (A : Matrix (Fin n) (Fin n) R) (c : Matrix (Fin n) (Fin 1) R)
     (r : Matrix (Fin 1) (Fin n) R) (a b : Matrix (Fin 1) (Fin 1) R) (hab : a * b = 1)
     (hba : b * a = 1) (u d l : Matrix (Fin n) (Fin n) R) (h : A - c * b * r = u * d * l) :
@@ -130,6 +177,37 @@ theorem fromBlocks_udl {n : ℕ} (A : Matrix (Fin n) (Fin n) R) (c : Matrix (Fin
   rw [Matrix.mul_assoc c b a, hba, Matrix.mul_one, ← Matrix.mul_assoc a b r, hab, Matrix.one_mul]
   rw [h', Matrix.mul_assoc c b r]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `g _`. Conclude with `⟨1, 1, 1, ⟨fun i => i.elim0, fun i => i.elim0, fun i => i.elim0⟩, ⟨fun i => i.elim0, fun i => i.elim0⟩, ⟨fun i => i.elim0, fun i => i.elim0, fun i => i.elim0⟩, Subsingleton.elim _ _⟩`. Consider the case `succ n ih`.
+
+Introduce `g hg`. Use `set A : Matrix (Fin n) (Fin n) R := fun i j => g i.castSucc j.castSucc with hA`. Use `set c : Matrix (Fin n) (Fin 1) R := fun i _ => g i.castSucc (Fin.last n) with hc`. Use `set r : Matrix (Fin 1) (Fin n) R := fun _ j => g (Fin.last n) j.castSucc with hr`. Use `set s : R := g (Fin.last n) (Fin.last n) with hs`.
+
+Establish `hs1 : s - 1 ∈ I` using `by simpa [hs] using hg (Fin.last n) (Fin.last n)`. Establish `hsu : IsUnit s` using `by simpa using hI _ hs1`. Take `⟨t, hst⟩` from `hsu.exists_right_inv`. Establish `hts : t * s = 1` using `by rw [mul_comm]; exact hst`. Establish `hcI : ∀ i k, c i k ∈ I` using `fun i k => by`.
+
+Use `hg i.castSucc (Fin.last n)` as an intermediate fact. Rewrite `this` using `[Matrix.one_apply_ne (Fin.castSucc_lt_last i).ne, sub_zero]`. Conclude with `this`. Establish `hrI : ∀ k j, r k j ∈ I` using `fun k j => by`. Use `hg (Fin.last n) j.castSucc` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.one_apply_ne (Fin.castSucc_lt_last j).ne', sub_zero]`. Conclude with `this`. Use `set a : Matrix (Fin 1) (Fin 1) R := fun _ _ => s with ha`. Use `set b : Matrix (Fin 1) (Fin 1) R := fun _ _ => t with hb`. Establish `hab : a * b = 1`.
+
+Use extensionality with `i j`. Rewrite using `[Subsingleton.elim i j, Matrix.mul_apply, Matrix.one_apply_eq]`. Simplify using `only [Finset.univ_unique, Finset.sum_singleton]`. Conclude with `hst`. Establish `hba : b * a = 1`.
+
+Use extensionality with `i j`. Rewrite using `[Subsingleton.elim i j, Matrix.mul_apply, Matrix.one_apply_eq]`. Simplify using `only [Finset.univ_unique, Finset.sum_singleton]`. Conclude with `hts`. Establish `hS : ∀ i j, (A - c * b * r) i j - (1 : Matrix (Fin n) (Fin n) R) i j ∈ I`.
+
+Introduce `i j`. Establish `h1 : A i j - (1 : Matrix (Fin n) (Fin n) R) i j ∈ I`. Use `hg i.castSucc j.castSucc` as an intermediate fact. Simplify `this` using `[hA, Matrix.one_apply]`. Establish `h2 : (c * b * r) i j ∈ I`.
+
+Simplify using `only [Matrix.mul_apply, Finset.univ_unique, Finset.sum_singleton]`. Conclude with `I.mul_mem_right _ (I.mul_mem_right _ (hcI i default))`. Establish `h3 : (A - c * b * r) i j - (1 : Matrix (Fin n) (Fin n) R) i j = (A i j - (1 : Matrix (Fin n) (Fin n) R) i j) - (c * b * r) i j`. Simplify using `only [Matrix.sub_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[h3]`. Conclude with `I.sub_mem h1 h2`. Take `⟨u, d, l, hu, hd, hl, hudl⟩` from `ih _ hS`. Establish `hcb : ∀ i k, (c * b) i k ∈ I` using `fun i k => by`. Simplify using `only [Matrix.mul_apply, Finset.univ_unique, Finset.sum_singleton]`.
+
+Conclude with `I.mul_mem_right _ (hcI i default)`. Establish `hbr : ∀ k j, (b * r) k j ∈ I` using `fun k j => by`. Simplify using `only [Matrix.mul_apply, Finset.univ_unique, Finset.sum_singleton]`. Conclude with `I.mul_mem_left _ (hrI default j)`. Establish `haI : ∀ k k', a k k' - (1 : Matrix (Fin 1) (Fin 1) R) k k' ∈ I` using `fun k k' => by`.
+
+Simplify `hs1` using `[ha, Matrix.one_apply, Subsingleton.elim k k']`. Use `⟨_, _, _, up_step hu hcb, di_step hd haI, lo_step hl hbr, ?_⟩` and prove the remaining obligations. Establish `hblock : g.submatrix (ex n) (ex n) = fromBlocks A c r a`. Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`.
+
+Rewrite using `[submatrix_apply, ex_inl, ex_inl]`. Both sides reduce to the same expression. Rewrite using `[submatrix_apply, ex_inl, ex_inr]`. Both sides reduce to the same expression. Rewrite using `[submatrix_apply, ex_inr, ex_inl]`.
+
+Both sides reduce to the same expression. Rewrite using `[submatrix_apply, ex_inr, ex_inr]`. Both sides reduce to the same expression. Establish `hg' : g = (fromBlocks A c r a).submatrix (ex n).symm (ex n).symm`. Rewrite using `[← hblock]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hg', fromBlocks_udl A c r a b hab hba u d l hudl]`. Simplify using `only [Matrix.submatrix_mul_equiv]`.
+-/
 theorem exists_udl_of_isUnit (I : Ideal R) (hI : ∀ x ∈ I, IsUnit (1 + x)) (n : ℕ) :
     ∀ g : Matrix (Fin n) (Fin n) R,
       (∀ i j, g i j - (1 : Matrix (Fin n) (Fin n) R) i j ∈ I) →
@@ -207,6 +285,13 @@ theorem exists_udl_of_isUnit (I : Ideal R) (hI : ∀ x ∈ I, IsUnit (1 + x)) (n
     rw [hg', fromBlocks_udl A c r a b hab hba u d l hudl]
     simp only [Matrix.submatrix_mul_equiv]
 
+/- English proof (translation)
+Introduce `R _ _ _ n ϖ m hϖ hm g hg`. Establish `hmem : ϖ ^ m ∈ IsLocalRing.maximalIdeal R` using `Ideal.pow_mem_of_mem _ ((IsLocalRing.mem_maximalIdeal _).mpr hϖ.not_isUnit) m (by omega)`. Establish `hle : Ideal.span {ϖ ^ m} ≤ IsLocalRing.maximalIdeal R` using `(Ideal.span_singleton_le_iff_mem _).mpr hmem`. Establish `hI : ∀ x ∈ Ideal.span {ϖ ^ m}, IsUnit (1 + x)`. Introduce `x hx`.
+
+Assume the negation of the conclusion as `hnu`. Establish `h1 : 1 + x ∈ IsLocalRing.maximalIdeal R` using `(IsLocalRing.mem_maximalIdeal _).mpr hnu`. Establish `h2 : (1 : R) ∈ IsLocalRing.maximalIdeal R`. Simplify using `using Ideal.sub_mem _ h1 (hle hx)`. Conclude with `(Ideal.ne_top_iff_one _).mp (IsLocalRing.maximalIdeal.isMaximal R).ne_top h2`.
+
+Take `⟨u, d, l, hu, hd, hl, h⟩` from `exists_udl_of_isUnit _ hI n g hg`. Conclude with `⟨u, d, l, hu.1, hd.1, hl.1, hu.2.1, hu.2.2, hd.2, hl.2.1, hl.2.2, h⟩`.
+-/
 theorem iwahori_udl : ∀ (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] (n : ℕ)
     (ϖ : R) (m : ℕ), Irreducible ϖ → 1 ≤ m → ∀ g : Matrix (Fin n) (Fin n) R,
     (∀ i j, g i j - (1 : Matrix (Fin n) (Fin n) R) i j ∈ Ideal.span {ϖ ^ m}) →

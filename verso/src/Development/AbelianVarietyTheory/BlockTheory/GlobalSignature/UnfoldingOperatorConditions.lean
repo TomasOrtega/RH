@@ -62,14 +62,29 @@ def UnfoldedBounds : Prop :=
     (∀ t : FC n' (c + 1) n c → E, Ψ (xx1 xj t) ≠ 0 → IntAt P ((qOf P : E) ^ D * chArg (xx1 xj t))) →
     unfoldingOperatorAtPlace P psi A B Ψ xj ≠ 0 → Concl P e' z Λ xj
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.psi_add P, h.psi_int P, h.psi_ne P⟩`.
+-/
 theorem condO_of_ok {X : Formalism.L2.Col.Fields} {SB : Finset (HeightOneSpectrum (𝓞 X.E))} {cst : LocCst X SB} (h : cst.Ok) (P : SB) :
     CondO P.1 (cst.psi P) (cst.D P) :=
   ⟨h.psi_add P, h.psi_int P, h.psi_ne P⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun x y _ _ => ψ.map_add_eq_mul x y, h1, h2⟩`.
+-/
 theorem condO_of_addChar {K : Type} [Field K] (P : HeightOneSpectrum (𝓞 E)) (ψ : AddChar E K)
     (h1 : ∀ x, IntAt P x → ψ x = 1) (h2 : ψ ((qOf P : E)⁻¹) ≠ 1) (D : ℕ) : CondO P ψ D :=
   ⟨fun x y _ _ => ψ.map_add_eq_mul x y, h1, h2⟩
 
+/- English proof (translation)
+Establish `hfin : Finite (𝓞 E ⧸ P.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot _ P.ne_bot`. Establish `h1 : (1 : 𝓞 E ⧸ P.asIdeal) ≠ 0` using `one_ne_zero`. Take `⟨χ, hχ⟩` from `(AddChar.exists_apply_ne_zero (α := 𝓞 E ⧸ P.asIdeal)).2 h1`. Establish `hq : (qOf P : E) ≠ 0`. Establish `: qOf P ≠ 0`.
+
+Unfold `qOf`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `P.ne_bot`. Conclude with `this` after adjusting the coercions. Establish `hqc : (qOf P : E) = algebraMap (𝓞 E) E ((qOf P : ℕ) : 𝓞 E)` using `by simp`.
+
+Use `⟨fun x => χ (redP P ((qOf P : E) * x)), fun x y hx hy => ?_, fun x hx => ?_, ?_⟩` and prove the remaining obligations. Rewrite `hx`, `hy` using `[pow_one]`. Simplify using `only [mul_add, reduction_add hx hy, AddChar.map_add_eq_mul]`. Establish `h0 : Ideal.Quotient.mk P.asIdeal ((qOf P : ℕ) : 𝓞 E) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.absNorm_mem _) show χ (redP P ((qOf P : E) * x)) = 1`. Rewrite using `[hqc, reduction_mul (IntAt.coe P _) hx, reduction_coe, h0, zero_mul, AddChar.map_zero_eq_one]`.
+
+Use `show χ (redP P ((qOf P : E) * (qOf P : E)⁻¹)) ≠ 1`. Rewrite using `[mul_inv_cancel₀ hq, ← map_one (algebraMap (𝓞 E) E), reduction_coe, map_one]`. Conclude with `hχ`.
+-/
 theorem exists_condO (P : HeightOneSpectrum (𝓞 E)) : ∃ psi : E → ℂ, CondO P psi 1 := by
   have hfin : Finite (𝓞 E ⧸ P.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot _ P.ne_bot
   have h1 : (1 : 𝓞 E ⧸ P.asIdeal) ≠ 0 := one_ne_zero
@@ -92,9 +107,15 @@ theorem exists_condO (P : HeightOneSpectrum (𝓞 E)) : ∃ psi : E → ℂ, Con
     rw [mul_inv_cancel₀ hq, ← map_one (algebraMap (𝓞 E) E), reduction_coe, map_one]
     exact hχ
 
+/- English proof (translation)
+Apply the tactic sequence `funext l; fin_cases l <;> simp [aux, eN]`.
+-/
 example : aux ℚ 2 3 1 = ![0, 0, 1, 0, 0] := by
   funext l; fin_cases l <;> simp [aux, eN]
 
+/- English proof (translation)
+Simplify using `[unfoldedCoordinate, aux, atN, eN]`.
+-/
 example : unfoldedCoordinate 2 3 2 (aux ℚ 2 3 2) = 1 := by
   simp [unfoldedCoordinate, aux, atN, eN]
 

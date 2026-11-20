@@ -18,6 +18,19 @@ variable {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι] [De
 
 omit [NumberField F] [IsTotallyReal F] [IsTotallyComplex E] in
 
+/- English proof (translation)
+Introduce `M μ _ x₀ hx₀ hiso`. Establish `: μ.IsMulRightInvariant` using `h₂ μ`. Establish `: CompactSpace M.stab` using `isCompact_iff_compactSpace.mp (h₃ M)`. Use `set κ : Measure M.stab := Measure.haarMeasure ⊤ with hκ`. Establish `: IsProbabilityMeasure κ` using `⟨by simpa using Measure.haarMeasure_self (K₀ := (⊤ : TopologicalSpace.PositiveCompacts M.stab))⟩`.
+
+Establish `hSK : Function.Surjective (HaarSK.mulMap (lineStab h v x₀) M.stab)`. Introduce `g`. Take `⟨p, k, hk, rfl, hp⟩` from `h₁ M x₀ hx₀ hiso g`. Conclude with `⟨(⟨p, hp⟩, ⟨k, hk⟩), rfl⟩`. Take `⟨c, -, hc⟩` from `HaarSK.exists_lintegral_eq μ (isClosed_lineStab h v x₀) (h₃ M) hSK (Measure.haar : Measure (lineStab h v x₀)) κ`.
+
+Take `⟨ν, τ, hν, hτ, -, hτx, hP⟩` from `h₄ x₀ hx₀ hiso Measure.haar`. Establish `hc0 : (c : ℝ≥0∞) ≠ 0`. Introduce `h0`. Establish `h1` using `hc 1 measurable_const`. Rewrite `h1` using `[h0, zero_mul]`.
+
+Simplify using `only [Pi.one_apply, lintegral_const, one_mul] at h1`. Conclude with `(Measure.IsOpenPosMeasure.open_pos Set.univ isOpen_univ Set.univ_nonempty) h1`. Use `hν` as an intermediate fact. Use `⟨(c : ℝ≥0∞) • ν, κ, τ, Measure.IsHaarMeasure.smul ν hc0 ENNReal.coe_ne_top, inferInstance, inferInstance, hτ, hτx, fun f hf => ?_⟩` and prove the remaining obligations. Establish `hφ : Measurable fun g : archUnitary h v => ∫⁻ k : M.stab, f (g * k) ∂κ` using `(hf.comp (measurable_fst.mul (measurable_subtype_coe.comp measurable_snd))).lintegral_prod_right'`.
+
+Establish `hPφ` using `hP _ hφ`. Rewrite using `[hc f hf, hPφ, ← lintegral_const_mul' _ _ ENNReal.coe_ne_top]`. Use `lintegral_congr fun b => ?_` and prove the remaining obligations. Establish `hswap : ∫⁻ x : vecFixGroup h v x₀, ∫⁻ k : M.stab, f ((x : archUnitary h v) * τ b * k) ∂κ ∂ν = ∫⁻ k : M.stab, ∫⁻ x : vecFixGroup h v x₀, f ((x : archUnitary h v) * (τ b * k)) ∂ν ∂κ`. Rewrite using `[lintegral_lintegral_swap]`.
+
+Simplify using `only [mul_assoc]`. Conclude with `(hf.comp (((measurable_subtype_coe.comp measurable_fst).mul_const (τ b)).mul (measurable_subtype_coe.comp measurable_snd))).aemeasurable`. Simplify using `only [lintegral_smul_measure, smul_eq_mul]`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.coe_ne_top, hswap]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem HaarParabolicCoordinates.proof (h : HermitianForm F E W) (v : Basis ι E W)
     (h₁ : ParabolicDecomposition.Statement h v) (h₂ : ArchUnimodular.Statement h v)
     (h₃ : MajorantStabCompact.Statement h v) (h₄ : LineStabHaar.Statement h v) :

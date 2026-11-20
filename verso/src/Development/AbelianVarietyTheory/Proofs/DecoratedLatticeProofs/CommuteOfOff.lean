@@ -28,6 +28,13 @@ open Formalism.L2.Col Formalism.L2.Ker Formalism.UG GlobalTheory.Mem.Chr GlobalT
 
 namespace GlobalTheory.PenLevTyp
 
+/- English proof (translation)
+Establish `key : ∀ w, bc (prV (E` using `E) w) (x * k) = bc (prV (E := E) w) (k * x) := fun w => by`. Rewrite using `[map_mul, map_mul]`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[hk, mul_one, one_mul]`.
+
+Rewrite using `[hx w hw, mul_one, one_mul]`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `r s`. Use `sub_eq_zero.1 (Formalism.UG.P.afsplit_inj _ fun w => ?_)` and prove the remaining obligations. Rewrite using `[map_sub, sub_eq_zero]`.
+
+Conclude with `congrArg (fun g : GL (Fin n) _ => g.1 r s) (key w)`.
+-/
 theorem commute_of_off {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     {v : HeightOneSpectrum (𝓞 F)} {x k : GL (Fin n) (AfE F E)} (hx : ∀ w, w ≠ v → bc (prV (E := E) w) x = 1)
     (hk : bc (prV (E := E) v) k = 1) : x * k = k * x := by
@@ -43,6 +50,11 @@ theorem commute_of_off {F E : Type} [Field F] [NumberField F] [Field E] [NumberF
   rw [map_sub, sub_eq_zero]
   exact congrArg (fun g : GL (Fin n) _ => g.1 r s) (key w)
 
+/- English proof (translation)
+Establish `e : ∀ i j, p.fr P (Pi.single j 1) i = p'.fr P (Pi.single j 1) i` using `fun i j => (algebraMap E (P.1.adicCompletion E)).injective ((h.fr P i j).symm.trans ((e0 i j).trans (h'.fr P i j)))`. Apply `LinearEquiv.toLinearMap_injective` to reduce the goal to its premises. Use `LinearMap.pi_ext fun j x => ?_` and prove the remaining obligations. Establish `hs : (Pi.single j x : Sp E n) = x • Pi.single j 1`. Rewrite using `[← Pi.single_smul', smul_eq_mul, mul_one]`.
+
+Simplify using `only [LinearEquiv.coe_coe]`. Rewrite using `[hs, map_smul, map_smul]`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, e]`.
+-/
 theorem fr_eq {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     {hc : Formalism.BasicNotions.CMData F E} {n : ℕ} {ST SG Q : Finset (HeightOneSpectrum (𝓞 E))} {g g' : GL (Fin n) (AfE F E)}
     {p p' : DecoF E n ST SG Q} (h : IsPtOf hc g p) (h' : IsPtOf hc g' p') (P : Q)
@@ -58,6 +70,11 @@ theorem fr_eq {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [
   funext i
   simp only [Pi.smul_apply, e]
 
+/- English proof (translation)
+Use `GlobalTheory.Mem.Col2.RatFrPt.exists_isPtOf_of_rat hc ST SG Q g' hg' fun P hP => ?_` and prove the remaining obligations. Set `f` to `p.fr ⟨P, hP⟩`. Use `⟨⟨LinearMap.toMatrix' f.toLinearMap, LinearMap.toMatrix' f.symm.toLinearMap, ?_, ?_⟩, fun r s => ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.toMatrix'_comp, LinearEquiv.comp_symm, LinearMap.toMatrix'_id]`. Rewrite using `[← LinearMap.toMatrix'_comp, LinearEquiv.symm_comp, LinearMap.toMatrix'_id]`.
+
+Rewrite using `[e0 P hP, h.fr ⟨P, hP⟩ r s]`. Simplify using `only [LinearMap.toMatrix'_apply, LinearEquiv.coe_coe]`. Both sides reduce to the same expression.
+-/
 theorem exists_pt {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     {hc : Formalism.BasicNotions.CMData F E} {n : ℕ} [NeZero n] {ST SG Q : Finset (HeightOneSpectrum (𝓞 E))} {g g' : GL (Fin n) (AfE F E)}
     {p : DecoF E n ST SG Q} (h : IsPtOf hc g p) (hg' : g' ∈ UAd hc n)
@@ -77,6 +94,25 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {sel : HeightOneSpectrum (𝓞
   {mu : Tup X.F X.E X.K S} {cst : LocCst X (rowSG Pr sel mu)} {mu' : Tup X.F X.E X.K S'} {cst' : LocCst X (rowSG Pr sel mu')}
   {u : Pr.Word} {j : ℕ}
 
+/- English proof (translation)
+Take `⟨y₀, hy₀, hY⟩` from `q.mem_ybSet h`. Establish `hd` using `q.1.1.deco.2`. Establish `hf` using `GlobalTheory.TopStep.liftFr_spec hd w`. Establish `h1 : ((qOf w.1 : ℕ) : X.E) • y₀ ∈ Formalism.HermitianLatticesTheory.localization₂ w.1.asIdeal q.1.1.deco.1.N`. Use `(Formalism.L2.Col.mem_locLat _ _ _ _).1 hy₀ ⟨w.1, Finset.mem_union_left _ w.2⟩` as an intermediate fact.
+
+Simplify `this` using `[w.2]`. Establish `h2 : ∀ z ∈ q.1.2, z - y₀ ∈ Formalism.HermitianLatticesTheory.localization₂ w.1.asIdeal q.1.1.deco.1.N` using `fun z hz => by`. Rewrite `hz` using `[hY, Set.mem_setOf_eq, Formalism.L2.Col.mem_locLat]`. Simplify `hz ⟨w.1, Finset.mem_union_left _ w.2⟩` using `[w.2]`. Establish `h3 : ∀ z ∈ q.1.2, z - y ∈ Formalism.HermitianLatticesTheory.localization₂ w.1.asIdeal q.1.1.deco.1.N` using `fun z hz => by`.
+
+Use `sub_mem (h2 z hz) (h2 y hy0)` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis. Establish `hq : ((qOf w.1 : ℕ) : X.E) • y ∈ Formalism.HermitianLatticesTheory.localization₂ w.1.asIdeal q.1.1.deco.1.N`. Use `add_mem h1 (GlobalTheory.TopStep.smul_mem_locP (GlobalTheory.TopStep.intAt_nat (qOf w.1)) (h2 y hy0))` as an intermediate fact. Rewrite `this` using `[← smul_add, add_sub_cancel]`. Then use the resulting hypothesis.
+
+Establish `hs : (q.1.1.deco.1.liftFr w).symm (((qOf w.1 : ℕ) : X.E) • y) ∈ stdAt X.E _ w.1` using `(hf.1 _).1 (by rw [LinearEquiv.apply_symm_apply]; exact hq)`. Use `⟨?_, by rw [← map_smul]; exact hs, ?_⟩` and prove the remaining obligations. Establish `hfr : frsF sel mu q.1.1 ⟨w.1, Finset.mem_union_left _ w.2⟩ = q.1.1.deco.1.liftFr w` using `dif_pos w.2`. Use extensionality with `z`. Simplify using `only [cosetIn, Set.mem_setOf_eq, if_pos w.2, pow_zero, inv_one, one_smul, hfr]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y', hy', hz⟩`. Establish `h1 : (q.1.1.deco.1.liftFr w).symm y' - (q.1.1.deco.1.liftFr w).symm y ∈ stdAt X.E (R.N j) w.1`. Rewrite using `[← map_sub]`. Conclude with `(hf.1 _).1 (by rw [LinearEquiv.apply_symm_apply]; exact h3 y' hy')`.
+
+Use `add_mem hz h1` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Conclude with `fun hz => ⟨y, hy0, hz⟩`. Establish `key : q.1.1.deco.1.be w (((qOf w.1 : ℕ) : X.E) • y) = redV w.1 (((qOf w.1 : ℕ) : X.E) • (q.1.1.deco.1.liftFr w).symm y)`. Rewrite using `[← map_smul, ← hf.2 _ hs, LinearEquiv.apply_symm_apply]`.
+
+Use extensionality with `v`. Simplify using `only [bar, Set.mem_setOf_eq, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Rewrite using `[← key]`.
+
+Establish `ht : z - y ∈ q.1.1.deco.1.at w.1` using `h3 z hz`. Establish `e : ((qOf w.1 : ℕ) : X.E) • z = ((qOf w.1 : ℕ) : X.E) • y + ((qOf w.1 : ℕ) : X.E) • (z - y)`. Rewrite using `[← smul_add, add_sub_cancel]`. Rewrite using `[e, hd.be_add w _ hq _ (GlobalTheory.TopStep.smul_mem_locP (GlobalTheory.TopStep.intAt_nat _) ht), GlobalTheory.TopStep.be_smul_int hd w (GlobalTheory.TopStep.intAt_nat _) ht, GlobalTheory.TopStep.reduction_absNorm_eq_zero, zero_smul, add_zero]`. Introduce and unpack `rfl`.
+
+Conclude with `⟨y, hy0, key.symm⟩`.
+-/
 theorem coset_at (q : PtAt R sel mu cst u j) (h : j + 1 = R.m) {y : Sp X.E (R.N j)} (hy0 : y ∈ q.1.2) (w : Pr.vGs) :
     cosetIn q ⟨w.1, Finset.mem_union_left _ w.2⟩ = {z | z - (q.1.1.deco.1.liftFr w).symm y ∈ stdAt X.E (R.N j) w.1} ∧
       ((qOf w.1 : ℕ) : X.E) • (q.1.1.deco.1.liftFr w).symm y ∈ stdAt X.E (R.N j) w.1 ∧
@@ -126,6 +162,9 @@ theorem coset_at (q : PtAt R sel mu cst u j) (h : j + 1 = R.m) {y : Sp X.E (R.N 
     · rintro rfl
       exact ⟨y, hy0, key.symm⟩
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `coset_at q h (q.repY_mem h) w`. Take `⟨h1', h2', h3'⟩` from `coset_at q' h (q'.repY_mem h) w`. Rewrite using `[h1, h1', h3, h3', Set.singleton_eq_singleton_iff]`. Conclude with `coset_eq_iff_redV hq h2 h2'`.
+-/
 theorem cos_iff_bar (h : j + 1 = R.m) (w : Pr.vGs) (hq : ((qOf w.1 : ℕ) : 𝓞 X.E) ∉ w.1.asIdeal ^ 2) (q : PtAt R sel mu cst u j)
     (q' : PtAt R sel mu' cst' u j) :
     cosetIn q ⟨w.1, Finset.mem_union_left _ w.2⟩ = cosetIn q' ⟨w.1, Finset.mem_union_left _ w.2⟩ ↔ bar q w = bar q' w := by
@@ -138,6 +177,11 @@ end Pt
 
 variable {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B X)
 
+/- English proof (translation)
+Establish `h1 : levGAt I.sel (I.tup a) (I.idx a) (I.Tp a) j b = (I.idx a).levG j (b.get hj)`. Unfold `levGAt`. Rewrite using `[← Idx.some_get b hj]`. Both sides reduce to the same expression. Establish `h2 : ∀ b', (I.idx a).levG j b' = colLevSym I.Ch j`.
+
+Rewrite using `[(hTw a).2]`. Conclude with `fun _ => rfl`. Rewrite using `[h1, h2]`.
+-/
 theorem levGAt_eq (hTw : I.IsTw) (a : I.ι) (j : ℕ) (hj : j < B.R.m) (b : Idx I.sel (I.tup a) (I.idx a) j) :
     levGAt I.sel (I.tup a) (I.idx a) (I.Tp a) j b = colLevSym I.Ch j := by
   have h1 : levGAt I.sel (I.tup a) (I.idx a) (I.Tp a) j b = (I.idx a).levG j (b.get hj) := by
@@ -151,6 +195,27 @@ theorem levGAt_eq (hTw : I.IsTw) (a : I.ι) (j : ℕ) (hj : j < B.R.m) (b : Idx 
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Establish `hy0 : IsPtOf B.sp.cm (y c * k (chOf c)) ((I.stp u a j).rep c).1.1` using `IsPtOf.of_extTo (I.Q_subset_SQ a) ((GlobalTheory.Mem.LevTwist.levOk_twists B X I hI).2.1.mono_right (I.Q_subset_SQ a)) (hR.pt c)`. Take `⟨g, hgd⟩ : ∃ g, g * TC.kStd X u (B.R.N j) = y c * k (chOf c)` from `⟨_, inv_mul_cancel_right _ _⟩`. Establish `hgx : g * x * TC.kStd X u (B.R.N j) = y c * x * k (chOf c)`. Rewrite using `[mul_assoc, hc₀, ← mul_assoc, hgd, mul_assoc, ← hc, mul_assoc]`. Rewrite `hy0` using `[← hgd]`.
+
+Establish `hg` using `dia_of_pt hPr u hy0`. Establish `hk : TC.kStd X u (B.R.N j) ∈ UAd B.sp.cm (B.R.N j)` using `(kStd_spec hPr u (B.R.N j)).1.choose_spec.1.uni`. Establish `e0 : ∀ P ∈ I.Q a, ∀ r s, adAt B.host.F P ((g * x * TC.kStd X u (B.R.N j)).1 r s) = adAt B.host.F P ((g * TC.kStd X u (B.R.N j)).1 r s)` using `fun P hP r s => by`. Establish `e' : (g * x * TC.kStd X u (B.R.N j)).1.map (adAt B.host.F P) = (g * TC.kStd X u (B.R.N j)).1.map (adAt B.host.F P)`. Rewrite using `[Units.val_mul, Units.val_mul, Units.val_mul, Matrix.map_mul, Matrix.map_mul, Matrix.map_mul, h1 P hP, Matrix.mul_one]`.
+
+Conclude with `congrFun (congrFun e' r) s`. Take `⟨q, hq⟩` from `exists_pt hy0 (mul_mem (mul_mem hg.1 hx) hk) e0`. Establish `hfr : ∀ P, q.fr P = ((I.stp u a j).rep c).1.1.fr P` using `fun P => fr_eq hq hy0 P (e0 P.1 P.2)`. Establish `hxq` using `dia_of_pt hPr u hq`. Establish `hΛ` using `levGAt_eq I hTw a j (by omega) c.1`.
+
+Rewrite using `[hR.lev c x q (by rw [← hgx]; exact hq)]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨κ, h1, h2, h3⟩`. Establish `e1 : κ.1 = 1` using `ufGL_inj B.sp.cm (B.R.N j) (h1.trans (map_one _).symm)`. Take `⟨hJ, hr⟩` from `red_of_act B.sp.cm (B.R.N j) (diaT (Pr := B.primes X) u) hg.1 hxq.1 κ.2.1.1 (by`.
+
+Rewrite using `[hg.2, hxq.2, ← h2]`. Use `show ((κ.1, κ.2.1.1) : UF B.fields.E (B.R.N j) × GLG B.fields.E (B.R.N j) (B.primes X).vGs) • _ = _`. Rewrite using `[e1]`. Use the proof step `rfl)`. Use `(mem_levU _ _ _ _ _).2 ⟨hJ, ?_⟩` and prove the remaining obligations.
+
+Establish `key : ∀ (Λ' : LevFam B.fields.E B.fields.K (B.R.N j) (B.primes X).vGs), Λ' = colLevSym I.Ch j → ∀ g : Λ'.grp, g.1 ∈ (colLevSym I.Ch j).grp`. Introduce and unpack `_ rfl g`. Conclude with `g.2`. Rewrite using `[hr]`. Use `inv_mem (mem_chG.2 ⟨key _ hΛ κ.2.1, (bar_ya_eq_iff (X := B.fields) _ _ κ _).1 (funext fun w => ?_)⟩)` and prove the remaining obligations.
+
+Conclude with `(cos_iff_bar hj w (hqG hPr w.1 w.2) _ _).1 (congrFun h3 _)`. Introduce `hxU`. Establish `h2` using `act_of_mem B.sp.cm (B.R.N j) _ (diaT (Pr := B.primes X) u) hg.1 ⟨x, hxU⟩`. Rewrite `h2` using `[hg.2, hxq.2]`. Establish `hm0` using `mem_chG.1 ((levRed B.sp.cm (B.R.N j) _ _ _ ⟨x, hxU⟩)⁻¹).2`.
+
+Establish `hm : ((levRed B.sp.cm (B.R.N j) _ _ _ ⟨x, hxU⟩)⁻¹).1 ∈ (levGAt I.sel (I.tup a) (I.idx a) (I.Tp a) j c.1).grp`. Rewrite using `[hΛ]`. Conclude with `hm0.1`. Establish `h3 : ((I.stp u a j).act c.1 (1, ⟨_, hm⟩, 1) ((I.stp u a j).rep c)).1.1 = q`. Use `Subtype.ext (Prod.ext h2.symm (funext fun P => ?_))` and prove the remaining obligations.
+
+Use `show (1 : _ ≃ₗ[B.fields.E] _) * ((I.stp u a j).rep c).1.1.fr P * (1 : _ ≃ₗ[B.fields.E] _) = q.fr P`. Rewrite using `[one_mul, mul_one, hfr]`. Use `⟨(1, ⟨_, hm⟩, 1), map_one (ufGL B.host.E (B.R.N j)), h3, funext fun P => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hP : P.1 ∈ (B.primes X).vGs`. Conclude with `(cos_iff_bar hj ⟨P.1, hP⟩ (hqG hPr P.1 hP) _ _).2 (congrFun ((bar_ya_eq_iff (X := B.fields) _ (levQAt I.sel (I.tup a) (I.idx a) (I.Tp a) j c.1) (1, ⟨_, hm⟩, 1) _).2 hm0.2) _)`.
+
+Establish `h4 : ((I.stp u a j).act c.1 (1, ⟨_, hm⟩, 1) ((I.stp u a j).rep c)).1.2 = ((I.stp u a j).rep c).1.2` using `Set.image_id _`. Unfold `cosetIn`. Rewrite using `[h3, h4]`. Unfold `frsF`. Rewrite using `[dif_neg hP, dif_neg hP, hfr]`.
+-/
 theorem mem_lev_iff (hI : I.Ok) (hTw : I.IsTw) (hPr : (B.primes X).Ok) (u : B.Word) (a : I.ι) (j : ℕ) (hj : j + 1 = B.R.m)
     [NeZero (B.R.N j)] {Ch : Type} {chOf : (I.stp u a j).Cl → Ch}
     {Lb : Ch → Submodule (𝓞 B.host.E) (Fin (B.R.N j) → B.host.E)} {U : Ch → Subgroup (TC.GA B (B.R.N j))} {chi : ∀ β, U β →* ℂˣ}

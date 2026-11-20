@@ -7,5 +7,8 @@ open scoped TensorProduct ComplexOrder
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SplitProjChart.chart_rdA | exact GlobalTheory.SplitProjChart.chart_rdA | (intros; apply GlobalTheory.SplitProjChart.chart_rdA <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.splitProjAdeleComponent_chart_properties : ∀ (D : D7) (v : FinPl D) (φ : SplitProj D v) (e : AE D), IsIdemOf φ e → GlobalTheory.SplitHecke.Chart e v (rdA φ) ∧ (∀ a : AE D, rdE φ (toEAf D a) = rdA φ a) ∧ (∀ x : D.host.E, rdA φ (incA D x) = rdQ φ x) ∧ Continuous (rdA φ) ∧ ∀ e', IsIdemOf φ e' → e' = e := by
   first | exact @GlobalTheory.SplitProjChart.chart_rdA | exact GlobalTheory.SplitProjChart.chart_rdA | (intros; apply GlobalTheory.SplitProjChart.chart_rdA <;> assumption)

@@ -19,6 +19,9 @@ namespace GlobalTheory.RowPar
 section Sat
 open Formalism.UG GlobalTheory.SatInd
 
+/- English proof (translation)
+Take `⟨f, hfS, hf0, U, hU, hUv, hH⟩` from `hs`. Use `⟨f, hfS, hf0, U, hU, hUv, fun h' hh' => ?_⟩` and prove the remaining obligations. Establish `hm : 2 * (n / 2) ≤ n` using `Nat.mul_div_le n 2`. Rewrite using `[GlobalTheory.T.inertHeckeOperator_indep_of_inertDatum L n v w Dv Dv' U _ h' hh'.1 f, hH _ (GlobalTheory.T.heckeAlgebra_comp_unitaryGroupAntidiagTransport_mem (gEquiv Dv Dv') (gEquiv_comm Dv Dv') (gEquiv_intL Dv Dv') n h' hh'), GlobalTheory.T.unitarySatake_invariant_antidiagTrans …`.
+-/
 theorem satAtS_indep {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {W : Type} [AddCommGroup W] [Module ℂ W]
     (S : Submodule ℂ (GAf L n → W)) {v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))} {w : HeightOneSpectrum (𝓞 L)}
     (Dv Dv' : InertDatum L n v w) (α : Fin (n / 2) → ℂ) (hs : NG.SatAtS S Dv α) : NG.SatAtS S Dv' α := by
@@ -37,11 +40,19 @@ section Loc
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open GlobalTheory.SmGL GlobalTheory.LocLanglands
 
+/- English proof (translation)
+The claim follows from `DFunLike.coe_injective ((HeightOneSpectrum.denseRange_algebraMap K v).equalizer hf hg (funext h))`.
+-/
 theorem ringHom_ext_adicCompletion {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K)) {R : Type} [Ring R]
     [TopologicalSpace R] [T2Space R] (f g : v.adicCompletion K →+* R) (hf : Continuous f) (hg : Continuous g)
     (h : ∀ y : K, f (algebraMap K _ y) = g (algebraMap K _ y)) : f = g :=
   DFunLike.coe_injective ((HeightOneSpectrum.denseRange_algebraMap K v).equalizer hf hg (funext h))
 
+/- English proof (translation)
+Establish `e : (i' : v.adicCompletion (maximalRealSubfield L) →+* w.adicCompletion L) = i`. Use `ringHom_ext_adicCompletion v _ _ hi' hi fun y => ?_` and prove the remaining obligations. Establish `h1` using `hix (algebraMap _ L y)`. Establish `h2` using `hix' (algebraMap _ L y)`. Rewrite `h1`, `h2` using `[AlgHom.commutes]`.
+
+Conclude with `h2.trans h1.symm`. Establish `e' : i' = i` using `RingEquiv.ext fun x => congrArg (fun f : v.adicCompletion (maximalRealSubfield L) →+* w.adicCompletion L => f x) e`. Use `⟨AlgHom.ext fun x => i.injective ?_, e'⟩` and prove the remaining obligations. Rewrite using `[hix, ← hix' x, e']`.
+-/
 theorem splitEmb_eq {L : Type} [Field L] [NumberField L] [IsCMField L] (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L)))
     (w : HeightOneSpectrum (𝓞 L)) (si si' : L →ₐ[maximalRealSubfield L] v.adicCompletion (maximalRealSubfield L))
     (i i' : v.adicCompletion (maximalRealSubfield L) ≃+* w.adicCompletion L) (hi : Continuous i) (hi' : Continuous i')
@@ -56,6 +67,13 @@ theorem splitEmb_eq {L : Type} [Field L] [NumberField L] [IsCMField L] (v : Heig
   refine ⟨AlgHom.ext fun x => i.injective ?_, e'⟩
   rw [hix, ← hix' x, e']
 
+/- English proof (translation)
+Take `⟨i, -, hi, hix, -⟩` from `hτ`. Take `⟨i', -, hi', hix', -⟩` from `hτ'`. Establish `hv : s'.v = s.v` using `HeightOneSpectrum.ext (by rw [← s'.w_under, ← s.w_under, h])`. Establish `key : ∀ (w : HeightOneSpectrum (𝓞 L)) (hw : s'.w = w) (j : s'.v.adicCompletion (maximalRealSubfield L) ≃+* w.adicCompletion L), Continuous j → (∀ x, j (s'.i x) = algebraMap L _ x) → s' = s`. Introduce `w hw j hj hjx`.
+
+Rewrite `hw` using `[h]`. Substitute `hw` using the available equality. Take `⟨v, si⟩` from `s`. Take `⟨v', si'⟩` from `s'`. Simplify using `only at hv`.
+
+Substitute `hv` using the available equality. Take `rfl` from `(splitEmb_eq _ _ si si' i j hi hj hix hjx).1`. Both sides reduce to the same expression. Conclude with `key _ rfl i' hi' hix'`.
+-/
 theorem splitPlace_eq_of_isLocS {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {W : Type} [AddCommGroup W]
     [Module ℂ W] (S S' : Submodule ℂ (GAf L n → W)) (s s' : SplitPlace L) (h : s'.w = s.w)
     (τ : IrrRep (GL (Fin n) (s.w.adicCompletion L))) (τ' : IrrRep (GL (Fin n) (s'.w.adicCompletion L)))
@@ -77,6 +95,29 @@ theorem splitPlace_eq_of_isLocS {L : Type} [Field L] [NumberField L] [IsCMField 
     rfl
   exact key _ rfl i' hi' hix'
 
+/- English proof (translation)
+Take `⟨i, T, hi, hix, hTi, hTS, hTe⟩` from `hτ`. Take `⟨i', T', hi', hix', hTi', hTS', hTe'⟩` from `hτ'`. Take `rfl` from `(splitEmb_eq s.v s.w s.i s.i i' i hi' hi hix' hix).2`. Take `⟨hdec, hcom, huniq⟩` from `GlobalTheory.T.unitaryFiniteAdeles_splitPlace_decomposition L n s`. Use `choose sec hsec using fun A => (huniq A).exists`.
+
+Establish `sec_eq : ∀ x : GAf L n, TrivOutside {s.v} x → sec (s.loc n x) = x` using `fun x hx => (huniq _).unique (hsec _) ⟨hx, rfl⟩`. Establish `triv_mul : ∀ x y : GAf L n, TrivOutside {s.v} x → TrivOutside {s.v} y → TrivOutside {s.v} (x * y)`. Introduce `x y hx hy v hv`. Establish `h1` using `hx v hv`. Establish `h2` using `hy v hv`.
+
+Simplify using `only [Subgroup.coe_mul, Units.val_mul]`. Rewrite using `[Matrix.map_mul, h1, h2, one_mul]`. Establish `triv_one : TrivOutside {s.v} (1 : GAf L n)`. Introduce `v _`. Simplify using `[Matrix.map_one]`.
+
+Set `sH : GL (Fin n) (s.v.adicCompletion (maximalRealSubfield L)) →* GAf L n` to `{ toFun := sec map_one' := (huniq 1).unique (hsec 1) ⟨triv_one, map_one _⟩ map_mul' := fun A B => (huniq (A * B)).unique (hsec (A * B)) ⟨triv_mul _ _ (hsec A).1 (hsec B).1, by rw [map_mul, (hsec A).2, (hsec B).2]⟩ }`. Set `ρ : Representation ℂ (GAf L n) π.S` to `{ toFun := fun g => (NG.rt L n g).restrict (fun f hf => π.stable g f hf) map_one' := LinearMap.ext fun f => Subtype.ext (funext fun x => by simp [NG.rt]) map_mul' := fun g h => LinearMap.ext fun f => Subtype.ext (funext fun x => by simp [NG.rt, mul_assoc]) }`. Establish `hρ : ρ.IsIrreducible`. Use `(GlobalTheory.CuspRep.isIrreducible_iff ρ).2 ⟨Submodule.nontrivial_iff_ne_bot.2 π.ne, fun U hU => ?_⟩` and prove the remaining obligations. Establish `hst : ∀ h, ∀ f ∈ U.map π.S.subtype, NG.rt L n h f ∈ U.map π.S.subtype`.
+
+Introduce and unpack `h _ ⟨u, hu, rfl⟩`. Conclude with `⟨ρ h u, hU h u hu, rfl⟩`. Break down `π.irr _ (Submodule.map_subtype_le _ _) hst with h0 | h1` into its components or cases. Use `left`. Conclude with `Submodule.map_injective_of_injective π.S.injective_subtype (h0.trans (Submodule.map_bot _).symm)`.
+
+Use `right`. Use `Submodule.map_injective_of_injective π.S.injective_subtype ?_` and prove the remaining obligations. Rewrite using `[h1, Submodule.map_subtype_top]`. Set `e : GL (Fin n) (s.v.adicCompletion (maximalRealSubfield L)) →* GL (Fin n) (s.w.adicCompletion L)` to `Matrix.GeneralLinearGroup.map i.toRingHom`. Establish `he : Function.Surjective e` using `fun B => ⟨Matrix.GeneralLinearGroup.map i.symm.toRingHom B, Units.ext (Matrix.ext fun a b => by simp [e])⟩`.
+
+Establish `hnt : ∀ τ₀ : IrrRep (GL (Fin n) (s.w.adicCompletion L)), Nontrivial τ₀.V` using `fun τ₀ => ((GlobalTheory.CuspRep.isIrreducible_iff τ₀.ρ).1 τ₀.irr).1`. Establish `key : ∀ (τ₀ : IrrRep (GL (Fin n) (s.w.adicCompletion L))) (T₀ : τ₀.V →ₗ[ℂ] (GAf L n → ℂ)), Function.Injective T₀ → (∀ a, T₀ a ∈ π.S) → (∀ x : GAf L n, TrivOutside {s.v} x → ∀ a, T₀ (τ₀.ρ (Matrix.GeneralLinearGroup.map i.toRingHom (s.loc n x)) a) = NG.rt L n x (T₀ a)) → ∃ f : Repr …`. Introduce `τ₀ T₀ hT₀ hS₀ he₀`. Use `⟨⟨LinearMap.codRestrict π.S T₀ hS₀, fun A => LinearMap.ext fun a => Subtype.ext ?_⟩, fun h0 => ?_⟩` and prove the remaining obligations. Establish `h1` using `he₀ (sec A) (hsec A).1 a`.
+
+Rewrite `h1` using `[(hsec A).2]`. Conclude with `h1`. Use `haveI := hnt τ₀`. Take `⟨a, ha⟩` from `exists_ne (0 : τ₀.V)`. Use `ha (hT₀ ?_)` and prove the remaining obligations.
+
+Establish `h2` using `congrArg (fun f : Representation.IntertwiningMap (τ₀.ρ.comp e) (ρ.comp sH) => (f a : GAf L n → ℂ)) h0`. Simplify using `using h2`. Take `⟨f, hf⟩` from `@key τ T hTi hTS hTe`. Take `⟨f', hf'⟩` from `key τ' T' hTi' hTS' hTe'`. Establish `hcomm : ∀ g, ∃ u, ∀ y, Commute ((sH u)⁻¹ * g) (sH y)`.
+
+Introduce `g`. Take `⟨x, y, hx, hy, rfl⟩` from `hdec g`. Use `⟨s.loc n x, fun B => ?_⟩` and prove the remaining obligations. Rewrite using `[show sH (s.loc n x) = x from sec_eq x hx, inv_mul_cancel_left]`. Conclude with `(hcom _ _ (hsec B).1 hy).symm`.
+
+Take `⟨φ⟩` from `(GlobalTheory.T.irreducibleRep_isotypic_of_centraliser_factor _ _ _ _ _ ρ sH (τ.ρ.comp e) (τ'.ρ.comp e) hρ (GlobalTheory.CuspRep.ParLaws.isIrreducible_comp τ.irr e he) (GlobalTheory.CuspRep.ParLaws.isIrreducible_comp τ'.irr e he) hcomm f hf).2 f' hf'`. Use `IrrRep.cl_eq_iff.2 ⟨Representation.Equiv.mk φ.toLinearEquiv fun B => ?_⟩` and prove the remaining obligations. Take `⟨A, rfl⟩` from `he B`. Conclude with `φ.isIntertwining' A`.
+-/
 theorem cl_eq_of_isLocS {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} (π : NG.FinTyp L n) (s : SplitPlace L)
     (τ τ' : IrrRep (GL (Fin n) (s.w.adicCompletion L))) (hτ : IsLocS π.S s τ) (hτ' : IsLocS π.S s τ') : τ.cl = τ'.cl := by
   obtain ⟨i, T, hi, hix, hTi, hTS, hTe⟩ := hτ
@@ -151,6 +192,13 @@ theorem cl_eq_of_isLocS {L : Type} [Field L] [NumberField L] [IsCMField L] {n : 
   obtain ⟨A, rfl⟩ := he B
   exact φ.isIntertwining' A
 
+/- English proof (translation)
+Take `⟨_, _, _, -, H⟩` from `GlobalTheory.CuspRep.ParLaws.isRec_locRec hL h`. Establish `hx : GlobalTheory.PRep.fixed (cls τ).rep (GlobalTheory.SplitWeil.KOne (w.adicCompletion E) (Fin (cls τ).1)) ≠ ⊥` using `GlobalTheory.LocLanglands.fixed_ne_bot_of_equiv (IrrRep.nonempty_equiv_rep τ).some.symm hf`. Take `⟨m, b, hb, hw⟩` from `(H.depth _).1 hx`. Rewrite using `[← hb, GlobalTheory.WeilDeligne.WD.tame_mk]`. Introduce `g hg`.
+
+Use `hw g ⟨GlobalTheory.WeilDeligne.Wild_le_Ine hg, fun x hx0 => ?_⟩` and prove the remaining obligations. Establish `h1` using `hg x hx0`. Establish `e : ((g : G E Ω) x - x) = ((g : G E Ω) x / x - 1) * x` using `by field_simp`. Rewrite using `[e, map_mul]`. Establish `h2 : (0 : _) < A.valuation x`.
+
+Rewrite using `[pos_iff_ne_zero]`. Conclude with `(Valuation.ne_zero_iff _).2 hx0`. Combine the equalities or inequalities in the displayed calculation. Conclude with `mul_lt_mul_of_pos_right h1 h2`. Use `_ = A.valuation x := one_mul _`.
+-/
 theorem tame_locRec {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} (hL : GlobalTheory.Published.LocalLanglandsGL) (h : IsPlaceOver A w) {n : ℕ}
     (τ : IrrRep (GL (Fin n) (w.adicCompletion E)))
@@ -172,6 +220,9 @@ theorem tame_locRec {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra 
         exact mul_lt_mul_of_pos_right h1 h2
     _ = A.valuation x := one_mul _
 
+/- English proof (translation)
+Take `⟨_, _, _, -, H⟩` from `GlobalTheory.CuspRep.ParLaws.isRec_locRec hL h`. Conclude with `H.dim _`.
+-/
 theorem lpDim_locRec {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} (hL : GlobalTheory.Published.LocalLanglandsGL) (h : IsPlaceOver A w) {n : ℕ}
     (τ : IrrRep (GL (Fin n) (w.adicCompletion E))) : (GlobalTheory.CuspRep.ParLaws.locRec hL h (cls τ)).lpDim = n := by
@@ -197,6 +248,9 @@ def parOf (σ : D.what₂.FT) (w : PlE D.host) :
   classical
   exact if h : Nonempty (LocAt D rep σ w) then parAt hL D rep h.some else (unrW D).par σ w
 
+/- English proof (translation)
+Take `⟨⟨s0, τ0⟩, hw, hl⟩` from `p`. Substitute `hs` using the available equality. Take `rfl` from `splitPlace_eq_of_isLocS _ _ s s0 hw τ τ0 hτ hl`. Use `show GlobalTheory.CuspRep.ParLaws.locRec hL (D.nd.plOm.2 _) (GlobalTheory.LocLanglands.cls τ0) = GlobalTheory.CuspRep.ParLaws.locRec hL (D.nd.plOm.2 _) (GlobalTheory.LocLanglands.cls τ)`. Rewrite using `[show GlobalTheory.LocLanglands.cls τ0 = GlobalTheory.LocLanglands.cls τ from congrArg (Sigma.mk _) (cl_eq_of_isLocS (rep σ) _ τ0 τ hl hτ)]`.
+-/
 theorem parAt_eq {σ : D.what₂.FT} {w : PlE D.host} (p : LocAt D rep σ w) (s : SplitPlace D.host.E) (hs : s.w = w)
     (τ : IrrRep (GL (Fin D.R.r) (s.w.adicCompletion D.host.E))) (hτ : IsLocS (rep σ).S s τ) :
     parAt hL D rep p = hs ▸ GlobalTheory.CuspRep.ParLaws.locRec hL (D.nd.plOm.2 s.w) (GlobalTheory.LocLanglands.cls τ) := by
@@ -208,6 +262,9 @@ theorem parAt_eq {σ : D.what₂.FT} {w : PlE D.host} (p : LocAt D rep σ w) (s 
   rw [show GlobalTheory.LocLanglands.cls τ0 = GlobalTheory.LocLanglands.cls τ from
     congrArg (Sigma.mk _) (cl_eq_of_isLocS (rep σ) _ τ0 τ hl hτ)]
 
+/- English proof (translation)
+Establish `h : Nonempty (LocAt D rep σ s.w)` using `⟨⟨⟨s, τ⟩, rfl, hτ⟩⟩`. Unfold `parOf`. Rewrite using `[dif_pos h]`. Conclude with `parAt_eq hL D rep _ s rfl τ hτ`.
+-/
 theorem parOf_eq (σ : D.what₂.FT) (s : SplitPlace D.host.E) (τ : IrrRep (GL (Fin D.R.r) (s.w.adicCompletion D.host.E)))
     (hτ : IsLocS (rep σ).S s τ) :
     parOf hL D rep σ s.w = GlobalTheory.CuspRep.ParLaws.locRec hL (D.nd.plOm.2 s.w) (GlobalTheory.LocLanglands.cls τ) := by
@@ -217,6 +274,11 @@ theorem parOf_eq (σ : D.what₂.FT) (s : SplitPlace D.host.E) (τ : IrrRep (GL 
   rw [dif_pos h]
   exact parAt_eq hL D rep _ s rfl τ hτ
 
+/- English proof (translation)
+Unfold `parOf`. Distinguish the cases in `h : Nonempty (LocAt D rep σ w)`. Rewrite using `[dif_pos h]`. Generalize the expression as in `h.some = p`. Take `⟨⟨s0, τ0⟩, hw, hl⟩` from `p`.
+
+Substitute `hw` using the available equality. Conclude with `lpDim_locRec hL _ τ0`. Rewrite using `[dif_neg h]`. Conclude with `(unrW D).dim σ w`.
+-/
 theorem parOf_dim (σ : D.what₂.FT) (w : PlE D.host) : (parOf hL D rep σ w).lpDim = D.R.r := by
   classical
   unfold parOf
@@ -229,6 +291,9 @@ theorem parOf_dim (σ : D.what₂.FT) (w : PlE D.host) : (parOf hL D rep σ w).l
   · rw [dif_neg h]
     exact (unrW D).dim σ w
 
+/- English proof (translation)
+Rewrite using `[parOf_eq hL D rep σ s τ hτ]`. Conclude with `tame_locRec hL _ τ hf`.
+-/
 theorem parOf_tame (σ : D.what₂.FT) (s : SplitPlace D.host.E) (τ : IrrRep (GL (Fin D.R.r) (s.w.adicCompletion D.host.E)))
     (hτ : IsLocS (rep σ).S s τ)
     (hf : GlobalTheory.PRep.fixed τ.ρ (GlobalTheory.SplitWeil.KOne (s.w.adicCompletion D.host.E) (Fin D.R.r)) ≠ ⊥) :
@@ -245,12 +310,20 @@ def satOf (S : Submodule ℂ (GAf L n → W)) (w : HeightOneSpectrum (𝓞 L)) :
   exact if h : ∃ (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (Dv : InertDatum L n v w) (α : Fin (n / 2) → ℂ),
       NG.OverPl w v ∧ NG.SatAtS S Dv α then Finset.univ.val.map h.choose_spec.choose_spec.choose else 0
 
+/- English proof (translation)
+Substitute `hv` using the available equality. Conclude with `satAtS_indep S Dv0 Dv α hs`.
+-/
 theorem satAtS_transfer (S : Submodule ℂ (GAf L n → W)) {w : HeightOneSpectrum (𝓞 L)}
     (v0 v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (Dv0 : InertDatum L n v0 w) (Dv : InertDatum L n v w)
     (hv : v0 = v) (α : Fin (n / 2) → ℂ) (hs : NG.SatAtS S Dv0 α) : NG.SatAtS S Dv α := by
   subst hv
   exact satAtS_indep S Dv0 Dv α hs
 
+/- English proof (translation)
+Take `⟨α, hα⟩` from `hα`. Establish `h : ∃ (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (Dv : InertDatum L n v w) (α : Fin (n / 2) → ℂ), NG.OverPl w v ∧ NG.SatAtS S Dv α` using `⟨v, Dv, α, hO, hα⟩`. Establish `hsp` using `h.choose_spec.choose_spec.choose_spec`. Use `⟨h.choose_spec.choose_spec.choose, satAtS_transfer S _ v _ Dv (HeightOneSpectrum.ext (hsp.1.symm.trans hO)) _ hsp.2, ?_⟩` and prove the remaining obligations. Unfold `satOf`.
+
+Rewrite using `[dif_pos h]`.
+-/
 theorem satOf_spec (S : Submodule ℂ (GAf L n → W)) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L)))
     (w : HeightOneSpectrum (𝓞 L)) (hO : NG.OverPl w v) (Dv : InertDatum L n v w) (hα : ∃ α, NG.SatAtS S Dv α) :
     ∃ α, NG.SatAtS S Dv α ∧ satOf S w = Finset.univ.val.map α := by
@@ -264,6 +337,11 @@ theorem satOf_spec (S : Submodule ℂ (GAf L n → W)) (v : HeightOneSpectrum (�
   unfold satOf
   rw [dif_pos h]
 
+/- English proof (translation)
+Introduce `hL D rep hD`. Use `⟨⟨parOf hL D rep, fun σ => satOf (rep σ).S, parOf_dim hL D rep, fun σ k v => ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Take `⟨s, τ, hs, hl, hf⟩` from `hD σ k v`. Rewrite using `[← hs]`. Conclude with `parOf_tame hL D rep σ s τ hl hf`.
+
+Introduce `σ s τ hτ`. Conclude with `parOf_eq hL D rep σ s τ hτ`. Introduce `σ v w hO Dv hα`. Conclude with `satOf_spec (rep σ).S v w hO Dv hα`.
+-/
 theorem exists_rowWD_rowTrue : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (rep : D.what₂.FT → NG.FinTyp D.host.E D.R.r), RowDepth D rep →
     ∃ Rw : RowWD D, RowTrue hL D rep Rw.par Rw.sat := by
   intro hL D rep hD

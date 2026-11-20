@@ -14,6 +14,11 @@ namespace GlobalTheory.CompanionTheory.MajC.TInt
 
 open Ad3.K Ad3.K.LC Ad3.K.LC.B GlobalTheory.CompanionTheory.TateC
 
+/- English proof (translation)
+Establish `hd : Measurable fun x : ℂ => ENNReal.ofReal (‖x‖ ^ 2)⁻¹` using `by fun_prop`. Establish `h2 : Integrable (fun a : ℂˣ => g a) mulC ↔ Integrable g (Measure.map (Units.val : ℂˣ → ℂ) mulC)` using `(val_measurableEmbedding.integrable_map_iff (g := g)).symm`. Rewrite using `[h2, map_val_mulC, nuC, integrable_withDensity_iff_integrable_smul' hd (ae_of_all _ fun x => ENNReal.ofReal_lt_top)]`. Use `integrable_congr (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Establish `: 0 ≤ (‖x‖ ^ 2)⁻¹` using `by positivity`.
+
+Simplify using `only [ENNReal.toReal_ofReal this]`.
+-/
 theorem integrable_mulC_real (g : ℂ → ℝ) :
     Integrable (fun a : ℂˣ => g a) mulC ↔ Integrable (fun x : ℂ => (‖x‖ ^ 2)⁻¹ • g x) volume := by
   have hd : Measurable fun x : ℂ => ENNReal.ofReal (‖x‖ ^ 2)⁻¹ := by fun_prop
@@ -26,6 +31,11 @@ theorem integrable_mulC_real (g : ℂ → ℝ) :
   have : 0 ≤ (‖x‖ ^ 2)⁻¹ := by positivity
   simp only [ENNReal.toReal_ofReal this]
 
+/- English proof (translation)
+Establish `h1 : ∫ a : ℂˣ, g a ∂mulC = ∫ x, g x ∂nuC`. Rewrite using `[← map_val_mulC, val_measurableEmbedding.integral_map]`. Rewrite using `[h1, nuC, integral_withDensity_eq_integral_toReal_smul₀ (by fun_prop) (by simp)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Establish `: 0 ≤ (‖x‖ ^ 2)⁻¹` using `by positivity`.
+
+Simplify using `only [ENNReal.toReal_ofReal this]`.
+-/
 theorem integral_mulC_real (g : ℂ → ℝ) :
     ∫ a : ℂˣ, g a ∂mulC = ∫ x : ℂ, (‖x‖ ^ 2)⁻¹ • g x := by
   have h1 : ∫ a : ℂˣ, g a ∂mulC = ∫ x, g x ∂nuC := by
@@ -35,6 +45,13 @@ theorem integral_mulC_real (g : ℂ → ℝ) :
   have : 0 ≤ (‖x‖ ^ 2)⁻¹ := by positivity
   simp only [ENNReal.toReal_ofReal this]
 
+/- English proof (translation)
+Establish `hr : 0 < ‖z‖` using `norm_pos_iff.2 hz`. Establish `hb` using `radial_bound (2 - 2 * σ) q ‖z‖ N (by linarith) hq hr (by linarith)`. Establish `e1 : ‖z‖ ^ (-(2 + (2 - 2 * σ))) = (‖z‖ ^ 2)⁻¹ * ‖z‖ ^ (2 * σ - 2)`. Rewrite using `[show -(2 + (2 - 2 * σ)) = (-2 : ℝ) + (2 * σ - 2) by ring, Real.rpow_add hr, Real.rpow_neg hr.le, Real.rpow_two]`. Establish `e2 : ‖z⁻¹‖ * q = q / ‖z‖`.
+
+Rewrite using `[norm_inv]`. Clear the denominators using the available nonvanishing facts. Establish `e3 : -(2 - 2 * σ) = 2 * σ - 2` using `by ring`. Establish `hk : kern (2 - 2 * σ) q z = (‖z‖ ^ 2)⁻¹ * min ((‖z‖ / q) ^ (2 - 2 * σ)) ((q / ‖z‖) ^ (2 - 2 * σ))` using `rfl`. Rewrite `hb` using `[e1, e3]`.
+
+Rewrite using `[e2, hk, div_eq_mul_inv, ← mul_assoc]`. Conclude with `hb`.
+-/
 theorem density_le (σ : ℝ) (hσ : σ < 1) (N : ℕ) (hN : 4 - 4 * σ ≤ N) (q : ℝ) (hq : 0 < q)
     (z : ℂ) (hz : z ≠ 0) :
     (‖z‖ ^ 2)⁻¹ * (‖z‖ ^ (2 * σ - 2) / (1 + ‖z⁻¹‖ * q) ^ N) ≤
@@ -54,10 +71,28 @@ theorem density_le (σ : ℝ) (hσ : σ < 1) (N : ℕ) (hN : 4 - 4 * σ ≤ N) (
   rw [e2, hk, div_eq_mul_inv, ← mul_assoc]
   exact hb
 
+/- English proof (translation)
+Unfold `kern`. Use `fun_prop`.
+-/
 theorem measurable_kern (s T : ℝ) : Measurable (kern s T) := by
   unfold kern
   fun_prop
 
+/- English proof (translation)
+Introduce `σ hσ N hN`. Take `⟨K, hK0, hK⟩` from `KernInt.lintegral_kern_le (2 - 2 * σ) (by linarith)`. Use `⟨K, fun q hq => ?_⟩` and prove the remaining obligations. Use `set g : ℂ → ℝ := fun z => ‖z‖ ^ (2 * σ - 2) / (1 + ‖z⁻¹‖ * q) ^ N with hg`. Establish `hkm` using `measurable_kern (2 - 2 * σ) q`.
+
+Establish `hk0 : ∀ z, 0 ≤ kern (2 - 2 * σ) q z` using `kern_nonneg' _ _ hq`. Establish `hfin : ∫⁻ z : ℂ, ENNReal.ofReal (kern (2 - 2 * σ) q z) < ⊤` using `(hK q hq).trans_lt ENNReal.ofReal_lt_top`. Establish `hkI : Integrable (kern (2 - 2 * σ) q) volume`. Use `⟨hkm.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_ofReal (ae_of_all _ hk0)]`.
+
+Conclude with `hfin`. Establish `hkint : ∫ z : ℂ, kern (2 - 2 * σ) q z ≤ K`. Rewrite using `[integral_eq_lintegral_of_nonneg_ae (ae_of_all _ hk0) hkm.aestronglyMeasurable]`. Conclude with `ENNReal.toReal_le_of_le_ofReal hK0 (hK q hq)`. Establish `hqp : 0 ≤ q ^ (2 * σ - 2)` using `(Real.rpow_pos_of_pos hq _).le`.
+
+Establish `hae : ∀ᵐ z : ℂ, z ≠ 0` using `compl_mem_ae_iff.2 (measure_singleton (0 : ℂ))`. Establish `hgm : Measurable fun z : ℂ => (‖z‖ ^ 2)⁻¹ • g z`. Simplify using `only [hg]`. Use `fun_prop`. Establish `hg0 : ∀ z : ℂ, 0 ≤ (‖z‖ ^ 2)⁻¹ • g z`.
+
+Introduce `z`. Establish `: 0 ≤ ‖z‖ ^ (2 * σ - 2)` using `Real.rpow_nonneg (norm_nonneg _) _`. Simplify using `only [hg, smul_eq_mul]`. Check the signs of the components of the expression. Establish `hle : ∀ᵐ z : ℂ, (‖z‖ ^ 2)⁻¹ • g z ≤ q ^ (2 * σ - 2) * kern (2 - 2 * σ) q z` using `by filter_upwards [hae] with z hz`.
+
+Conclude with `density_le σ hσ N hN q hq z hz`. Establish `hbI : Integrable (fun z : ℂ => q ^ (2 * σ - 2) * kern (2 - 2 * σ) q z) volume` using `hkI.const_mul _`. Establish `hI : Integrable (fun z : ℂ => (‖z‖ ^ 2)⁻¹ • g z) volume`. Use `hbI.mono' hgm.aestronglyMeasurable ?_` and prove the remaining obligations. Use `filter_upwards [hle] with z hz`.
+
+Rewrite using `[Real.norm_of_nonneg (hg0 z)]`. Conclude with `hz`. Use `⟨(integrable_mulC_real g).2 hI, ?_⟩` and prove the remaining obligations. Establish `e` using `integral_mulC_real g`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem tint : ∀ σ : ℝ, σ < 1 → ∀ N : ℕ, 4 - 4 * σ ≤ N → ∃ K : ℝ, ∀ q : ℝ, 0 < q →
     Integrable (fun t : ℂˣ => ‖(t : ℂ)‖ ^ (2 * σ - 2) / (1 + ‖(t : ℂ)⁻¹‖ * q) ^ N) Ad3.K.mulC ∧
     ∫ t : ℂˣ, ‖(t : ℂ)‖ ^ (2 * σ - 2) / (1 + ‖(t : ℂ)⁻¹‖ * q) ^ N ∂Ad3.K.mulC ≤

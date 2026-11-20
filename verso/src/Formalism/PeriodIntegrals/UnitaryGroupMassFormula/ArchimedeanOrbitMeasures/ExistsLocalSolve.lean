@@ -6,6 +6,9 @@ namespace PI.AprimeInfW
 
 open Topology Filter
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hf.localInverse F f' a, hf.localInverse_continuousAt, hf.localInverse_apply_image, hf.eventually_right_inverse⟩`.
+-/
 private theorem local_right_inverse_lemma {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [CompleteSpace E] (F : E → E) (f' : E ≃L[ℝ] E) (a : E)
     (hf : HasStrictFDerivAt F (f' : E →L[ℝ] E) a) :
@@ -13,6 +16,25 @@ private theorem local_right_inverse_lemma {E : Type} [NormedAddCommGroup E] [Nor
   ⟨hf.localInverse F f' a, hf.localInverse_continuousAt, hf.localInverse_apply_image,
     hf.eventually_right_inverse⟩
 
+/- English proof (translation)
+Establish `hs : ∀ a b : Fin N → ℝ, e.symm (a + b) = e.symm a + e.symm b` using `fun a b => e.injective (by rw [he]; simp)`. Set `b : (Fin N → ℝ) → (Fin N → ℝ) → (Fin N → ℝ)` to `fun z w => e (B (e.symm z) (e.symm w))`. Establish `hb1 : ∀ z z' w, b (z + z') w = b z w + b z' w` using `fun z z' w => by`. Simplify using `only [b]`. Rewrite using `[hs, hB1, he]`.
+
+Establish `hb2 : ∀ z w w', b z (w + w') = b z w + b z w'` using `fun z w w' => by`. Simplify using `only [b]`. Rewrite using `[hs, hB2, he]`. Establish `hpair : Continuous fun p : (Fin N → ℝ) × (Fin N → ℝ) => (e.symm p.1, e.symm p.2)` using `(e.symm.continuous.comp continuous_fst).prodMk (e.symm.continuous.comp continuous_snd)`. Establish `hbc : Continuous fun p : (Fin N → ℝ) × (Fin N → ℝ) => b p.1 p.2` using `e.continuous.comp (hBc.comp hpair)`.
+
+Establish `hb3 : ∀ (c : ℝ) z w, b (c • z) w = c • b z w` using `fun c z w => map_real_smul (AddMonoidHom.mk' (fun z => b z w) fun z z' => hb1 z z' w) (hbc.comp (continuous_id.prodMk continuous_const)) c z`. Establish `hb4 : ∀ (c : ℝ) z w, b z (c • w) = c • b z w` using `fun c z w => map_real_smul (AddMonoidHom.mk' (fun w => b z w) fun w w' => hb2 z w w') (hbc.comp (continuous_const.prodMk continuous_id)) c w`. Set `l : (Fin N → ℝ) → (Fin N → ℝ)` to `fun z => e (L (e.symm z))`. Establish `hl1 : ∀ z z', l (z + z') = l z + l z'` using `fun z z' => by`. Simplify using `only [l]`.
+
+Rewrite using `[hs, hL, he]`. Establish `hlc : Continuous l` using `e.continuous.comp (hLc.comp e.symm.continuous)`. Set `lc : (Fin N → ℝ) →L[ℝ] (Fin N → ℝ)` to `(AddMonoidHom.mk' l hl1).toRealLinearMap hlc`. Set `β₂ : (Fin N → ℝ) →ₗ[ℝ] (Fin N → ℝ) →ₗ[ℝ] (Fin N → ℝ)` to `LinearMap.mk₂ ℝ b hb1 hb3 hb2 hb4`. Set `βc : (Fin N → ℝ) →L[ℝ] (Fin N → ℝ) →L[ℝ] (Fin N → ℝ)` to `LinearMap.toContinuousLinearMap ((LinearMap.toContinuousLinearMap : ((Fin N → ℝ) →ₗ[ℝ] (Fin N → ℝ)) ≃ₗ[ℝ] ((Fin N → ℝ) →L[ℝ] (Fin N → ℝ))).toLinearMap ∘ₗ β₂)`.
+
+Establish `hF : ∀ z, e (B (e.symm z) (e.symm z) + L (e.symm z)) = βc z z + lc z` using `fun z => by`. Rewrite using `[he]`. Both sides reduce to the same expression. Establish `hD' : ∀ u, βc (e x0) u + βc u (e x0) + lc u = (2 : ℝ) • u` using `fun u => by show e (B (e.symm (e x0)) (e.symm u)) + e (B (e.symm u) (e.symm (e x0))) + e (L (e.symm u)) = (2 : ℝ) • u`. Rewrite using `[← he, ← he, e.symm_apply_apply, hD, he, e.apply_symm_apply, two_smul]`.
+
+Establish `hder : HasStrictFDerivAt (fun z => βc z z + lc z) ((2 : ℝ) • ContinuousLinearMap.id ℝ (Fin N → ℝ)) (e x0)`. Establish `h1` using `(βc.hasStrictFDerivAt_of_bilinear (hasStrictFDerivAt_id (e x0)) (hasStrictFDerivAt_id (e x0))).add lc.hasStrictFDerivAt`. Use `h1.congr_fderiv (ContinuousLinearMap.ext fun u => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = (2 : ℝ) • u`. Rewrite using `[← hD' u]`.
+
+Both sides reduce to the same expression. Set `f' : (Fin N → ℝ) ≃L[ℝ] (Fin N → ℝ)` to `ContinuousLinearEquiv.equivOfInverse ((2 : ℝ) • ContinuousLinearMap.id ℝ (Fin N → ℝ)) ((1 / 2 : ℝ) • ContinuousLinearMap.id ℝ (Fin N → ℝ)) (fun u => by simp [smul_smul]) (fun u => by simp [smul_smul])`. Establish `hf : HasStrictFDerivAt (fun z => e (B (e.symm z) (e.symm z) + L (e.symm z))) (f' : (Fin N → ℝ) →L[ℝ] (Fin N → ℝ)) (e x0)`. Establish `hfun : (fun z => e (B (e.symm z) (e.symm z) + L (e.symm z))) = fun z => βc z z + lc z`. Use function extensionality and compare the values at `hF`.
+
+Rewrite using `[hfun]`. Conclude with `hder.congr_fderiv (ContinuousLinearMap.ext fun u => rfl)`. Take `⟨φ, h1, h2, h3⟩` from `local_right_inverse_lemma _ f' (e x0) hf`. Simplify using `only [e.symm_apply_apply] at h1 h2 h3`. Use `⟨fun y => e.symm (φ (e y)), ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `e.symm.continuous.continuousAt.comp (h1.comp e.continuous.continuousAt)`. Simplify using `only [h2, e.symm_apply_apply]`. Conclude with `(e.continuous.continuousAt.tendsto.eventually h3).mono fun y hy => e.injective hy`.
+-/
 theorem exists_local_solve {V : Type} [AddCommGroup V] [TopologicalSpace V] {N : ℕ}
     (e : V ≃ₜ (Fin N → ℝ)) (he : ∀ x y, e (x + y) = e x + e y)
     (B : V → V → V) (hB1 : ∀ x x' y, B (x + x') y = B x y + B x' y)

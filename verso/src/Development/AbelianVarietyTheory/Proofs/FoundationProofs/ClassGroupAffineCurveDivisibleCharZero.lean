@@ -8,6 +8,15 @@ open Polynomial
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k K _ _ _ _ _ _ _ _ N hN c`. Break down `Nat.lt_or_ge N 2 with h | h` into its components or cases. Establish `: N = 1` using `by omega`. Substitute `this` using the available equality. Conclude with `⟨c, (pow_one c).symm⟩`.
+
+Use `set A := FunctionField.ringOfIntegers k K`. Establish `: Algebra.IsSeparable (RatFunc k) K` using `Algebra.IsAlgebraic.isSeparable_of_perfectField`. Establish `: Module.IsTorsionFree k[X] K` using `.trans_faithfulSMul k[X] (RatFunc k) K`. Establish `: Module.Free k[X] A` using `IsIntegralClosure.module_free k[X] (RatFunc k) K _`. Establish `: Module.Finite k[X] A` using `IsIntegralClosure.finite k[X] (RatFunc k) K _`.
+
+Establish `: IsDedekindDomain A` using `IsIntegralClosure.isDedekindDomain k[X] (RatFunc k) K _`. Use `letI : Algebra k A := ((algebraMap k[X] A).comp (algebraMap k k[X])).toAlgebra`. Establish `: IsScalarTower k k[X] A` using `IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Establish `: Algebra.FiniteType k A` using `Algebra.FiniteType.trans (S := k[X]) inferInstance inferInstance`. Take `⟨f, hf0, hf⟩` from `GlobalTheory.exists_integral_norm_natDegree_mod_eq_one k K N hN`.
+
+Establish `hdim : Module.finrank k (A ⧸ Ideal.span {f}) % N = 1 % N`. Rewrite using `[finrank_quotient_span_eq_natDegree_norm (Module.Free.chooseBasis k[X] A) hf0]`. Conclude with `hf`. Conclude with `GlobalTheory.T.classGroup_nthPower_of_congruent_points_mod k A N hN (GlobalTheory.T.function_field_class_group_powers k A N h) ⟨f, hf0, hdim⟩ c`.
+-/
 theorem classGroup_ringOfIntegers_divisible : GlobalTheory.NeedB.ClDiv := by
   intro k K _ _ _ _ _ _ _ _ N hN c
   rcases Nat.lt_or_ge N 2 with h | h

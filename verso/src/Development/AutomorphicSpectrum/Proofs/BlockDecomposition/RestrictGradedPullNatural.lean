@@ -24,6 +24,9 @@ variable {X Y : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of K)} {p : Y ⟶ Spec 
 abbrev Pt (q : X ⟶ Spec (CommRingCat.of K)) (B : Type) [CommRing B] : Type :=
   PtOver X q (Ideal.Quotient.mk (⊥ : Ideal K)) B
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (Prod.ext h1 ((cancel_mono V.ι).1 h2))`.
+-/
 theorem pt_ext (V : X.Opens) {B : Type} [CommRing B] {y y' : Pt (V.ι ≫ q) B} (h1 : y.1.1 = y'.1.1)
     (h2 : y.1.2 ≫ V.ι = y'.1.2 ≫ V.ι) : y = y' :=
   Subtype.ext (Prod.ext h1 ((cancel_mono V.ι).1 h2))
@@ -36,9 +39,15 @@ def liftPt (V : X.Opens) {B : Type} [CommRing B] (y : Pt q B) (h : ⊤ ≤ y.1.2
     rw [← Category.assoc, IsOpenImmersion.lift_fac]
     exact y.2⟩
 
+/- English proof (translation)
+The claim follows from `IsOpenImmersion.lift_fac _ _ _`.
+-/
 theorem liftPt_fac (V : X.Opens) {B : Type} [CommRing B] (y : Pt q B) (h : ⊤ ≤ y.1.2 ⁻¹ᵁ V) :
     (liftPt V y h).1.2 ≫ V.ι = y.1.2 := IsOpenImmersion.lift_fac _ _ _
 
+/- English proof (translation)
+Substitute `e` using the available equality. Use `pt_ext V rfl ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Spec.map φ ≫ (liftPt V y h).1.2) ≫ V.ι = (liftPt V _ h').1.2 ≫ V.ι`. Rewrite using `[Category.assoc, liftPt_fac, liftPt_fac]`. Both sides reduce to the same expression.
+-/
 theorem liftPt_map (V : X.Opens) {B B' : CommRingCat.{0}} (φ : B ⟶ B') (y : Pt q B) (y' : Pt q B')
     (h : ⊤ ≤ y.1.2 ⁻¹ᵁ V) (h' : ⊤ ≤ y'.1.2 ⁻¹ᵁ V)
     (e : (ptFun X q (Ideal.Quotient.mk (⊥ : Ideal K))).map φ y = y') :
@@ -49,6 +58,9 @@ theorem liftPt_map (V : X.Opens) {B B' : CommRingCat.{0}} (φ : B ⟶ B') (y : P
   rw [Category.assoc, liftPt_fac, liftPt_fac]
   rfl
 
+/- English proof (translation)
+Establish `e : Ideal.quotientMap J (RingHom.id B) hJ = RingHom.id (B ⧸ J)`. Use `ext`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `congrFun (congrArg (fun t => (ConcreteCategory.hom t : _ → _)) ((ptFun Z r (Ideal.Quotient.mk (⊥ : Ideal K))).map_id (CommRingCat.of (B ⧸ J)))) y`.
+-/
 theorem pt_id {Z : Scheme.{0}} {r : Z ⟶ Spec (CommRingCat.of K)} {B : Type} [CommRing B] (J : Ideal B) (hJ)
     (y : Pt r (B ⧸ J)) :
     (ptFun Z r (Ideal.Quotient.mk (⊥ : Ideal K))).map
@@ -74,6 +86,9 @@ def smH {T T' : Thick (smFun X q)} (φ : T.B →+* T'.B) (comm : ∀ r, φ (T.i 
     (hpt : (smFun X q).Pt.map (CommRingCat.ofHom (Ideal.quotientMap T'.J φ hle)) T.y = T'.y) : T ⟶ T' :=
   mkH (γ := dividedPowersBot K) (p := 0) (q := q) (κ := Ideal.Quotient.mk ⊥) (T := T) (T' := T') φ comm dp hle hpt
 
+/- English proof (translation)
+The claim follows from `hom_ext (γ := dividedPowersBot K) (p := 0) (q := q) (κ := Ideal.Quotient.mk ⊥) (T := T) (T' := T') h`.
+-/
 theorem sm_ext {T T' : Thick (smFun X q)} {f g : T ⟶ T'} (h : f.φ = g.φ) : f = g :=
   hom_ext (γ := dividedPowersBot K) (p := 0) (q := q) (κ := Ideal.Quotient.mk ⊥) (T := T) (T' := T') h
 
@@ -81,6 +96,9 @@ def liftT (V : X.Opens) (T : Thick (smFun X q)) (h : InV V T) : Thick (smFun V.t
   mkT (γ := dividedPowersBot K) (p := 0) (q := V.ι ≫ q) (κ := Ideal.Quotient.mk ⊥) T.B T.i T.J T.δ T.adm T.compat
     (liftPt V T.y h) T.w
 
+/- English proof (translation)
+Take `⟨-, V', hV', hT⟩` from `h`. Take `rfl` from `Set.mem_singleton_iff.1 hV'`. Conclude with `hT`.
+-/
 theorem inV_of {V : X.Opens} {s : ℕ} {T : Thick (smFun X q)} (h : KS q s {V} T) : InV V T := by
   obtain ⟨-, V', hV', hT⟩ := h
   obtain rfl := Set.mem_singleton_iff.1 hV'
@@ -110,6 +128,9 @@ section Equivalence
 
 variable {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of K)}
 
+/- English proof (translation)
+Use `Subtype.ext (Prod.ext (congrArg (fun z : Pt (V.ι ≫ q) B' => z.1.1) e) ?_)` and prove the remaining obligations. Establish `e2` using `congrArg (fun z : Pt (V.ι ≫ q) B' => z.1.2 ≫ V.ι) e`. Express the relevant statement in the definitionally equal form `(Spec.map φ ≫ (liftPt V y h).1.2) ≫ V.ι = (liftPt V y' h').1.2 ≫ V.ι at e2`. Rewrite `e2` using `[Category.assoc, liftPt_fac, liftPt_fac]`. Conclude with `e2`.
+-/
 theorem liftPt_unmap (V : X.Opens) {B B' : CommRingCat.{0}} (φ : B ⟶ B') (y : Pt q B) (y' : Pt q B')
     (h : ⊤ ≤ y.1.2 ⁻¹ᵁ V) (h' : ⊤ ≤ y'.1.2 ⁻¹ᵁ V)
     (e : (ptFun V.toScheme (V.ι ≫ q) (Ideal.Quotient.mk (⊥ : Ideal K))).map φ (liftPt V y h) = liftPt V y' h') :
@@ -131,6 +152,9 @@ instance mF_full (V : X.Opens) (s : ℕ) : (mF q V s).Full where
         (inV_of T.property) (inV_of T'.property) g.hom.pt)),
       ObjectProperty.hom_ext _ (sm_ext rfl)⟩
 
+/- English proof (translation)
+Introduce `x _`. Express the relevant statement in the definitionally equal form `(z ≫ V.ι) x ∈ V`. Rewrite using `[Scheme.Hom.comp_apply]`. Establish `hx : V.ι (z x) ∈ (V : Set X)` using `Scheme.Opens.range_ι V ▸ ⟨z x, rfl⟩`. Conclude with `hx`.
+-/
 theorem top_le_comp (V : X.Opens) {Z : Scheme.{0}} (z : Z ⟶ V.toScheme) : ⊤ ≤ (z ≫ V.ι) ⁻¹ᵁ V := by
   intro x _
   change (z ≫ V.ι) x ∈ V
@@ -143,6 +167,9 @@ def pushPt (V : X.Opens) {B : Type} [CommRing B] (y : Pt (V.ι ≫ q) B) : Pt q 
     rw [Category.assoc]
     exact y.2⟩
 
+/- English proof (translation)
+The claim follows from `pt_ext V rfl (liftPt_fac V (pushPt V y) h)`.
+-/
 theorem lift_push (V : X.Opens) {B : Type} [CommRing B] (y : Pt (V.ι ≫ q) B) (h : ⊤ ≤ (pushPt V y).1.2 ⁻¹ᵁ V) :
     liftPt V (pushPt V y) h = y :=
   pt_ext V rfl (liftPt_fac V (pushPt V y) h)
@@ -151,6 +178,9 @@ def downT (V : X.Opens) (T : Thick (smFun V.toScheme (V.ι ≫ q))) : Thick (smF
   mkT (γ := dividedPowersBot K) (p := 0) (q := q) (κ := Ideal.Quotient.mk ⊥) T.B T.i T.J T.δ T.adm T.compat
     (pushPt V T.y) T.w
 
+/- English proof (translation)
+The claim follows from `top_le_comp V _`.
+-/
 theorem down_inV (V : X.Opens) (T : Thick (smFun V.toScheme (V.ι ≫ q))) : InV V (downT V T) :=
   top_le_comp V _
 
@@ -164,6 +194,9 @@ def dnInv (V : X.Opens) (T : Thick (smFun V.toScheme (V.ι ≫ q))) (h : InV V (
   smH (T := T) (T' := liftT V (downT V T) h) (RingHom.id T.B) (fun _ => rfl) (DPMorphism.id T.δ).isDPMorphism
     (fun _ hx => hx) ((pt_id T.J _ _).trans (lift_push V T.y h).symm)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h1, V, rfl, h2⟩`.
+-/
 theorem ks_of {V : X.Opens} {s : ℕ} {T : Thick (smFun X q)} (h1 : TF 1 s T) (h2 : InV V T) : KS q s {V} T :=
   ⟨h1, V, rfl, h2⟩
 
@@ -181,6 +214,9 @@ instance mF_essSurj (V : X.Opens) (s : ℕ) : (mF q V s).EssSurj where
 
 instance mF_equiv (V : X.Opens) (s : ℕ) : (mF q V s).IsEquivalence := { }
 
+/- English proof (translation)
+The claim follows from `haveI : (mV q V s a).G.IsLeftAdjoint := inferInstanceAs (mF q V s).IsLeftAdjoint P.adj_mor (mV q V s a) (fun _ => Function.bijective_id) n`.
+-/
 theorem mV_bij (V : X.Opens) (s a n : ℕ) : Function.Bijective ((mV q V s a).pull n) :=
   haveI : (mV q V s a).G.IsLeftAdjoint := inferInstanceAs (mF q V s).IsLeftAdjoint
   P.adj_mor (mV q V s a) (fun _ => Function.bijective_id) n
@@ -193,6 +229,9 @@ variable {X Y : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of K)} {p : Y ⟶ Spec 
   (u : X ⟶ Y) (hu : u ≫ p = q) (V : X.Opens) (W : Y.Opens) (h : V ≤ u ⁻¹ᵁ W)
   (hh : u.resLE W V h ≫ (W.ι ≫ p) = V.ι ≫ q)
 
+/- English proof (translation)
+Use `pt_ext W rfl ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((liftPt V y hV).1.2 ≫ u.resLE W V h) ≫ W.ι = _`. Rewrite using `[Category.assoc, Scheme.Hom.resLE_comp_ι, ← Category.assoc, liftPt_fac, liftPt_fac]`. Both sides reduce to the same expression.
+-/
 theorem push_lift {B : CommRingCat.{0}} (y : Pt q B) (hV : ⊤ ≤ y.1.2 ⁻¹ᵁ V)
     (hW : ⊤ ≤ ((smMor u hu).pt.app B y : Pt p B).1.2 ⁻¹ᵁ W) :
     ((smMor (u.resLE W V h) hh).pt.app B (liftPt V y hV) : Pt (W.ι ≫ p) B) =
@@ -211,6 +250,11 @@ def etaN : (mV q V s a).G ⋙ (morU (pullM (u.resLE W V h) hh a) (U := KS (W.ι 
     ((pt_id T.obj.J _ _).trans (push_lift u hu V W h hh T.obj.y (inV_of T.property) (inV_of (hG _ T.property)))))
   naturality _ _ _ := ObjectProperty.hom_ext _ (sm_ext rfl)
 
+/- English proof (translation)
+Establish `e1` using `(P.pull_comp (σ'' := RingHom.id K) (morU (pullM (u.resLE W V h) hh a) (U := KS (W.ι ≫ p) s {⊤}) (U' := KS (V.ι ≫ q) s {⊤}) hG') (mV q V s a) n x).1`. Establish `e2` using `(P.pull_comp (σ'' := RingHom.id K) (mV p W s a) (morU (pullM u hu a) (U := KS p s {W}) (U' := KS q s {V}) hG) n x).1`. Use `e1.symm.trans (Eq.trans ?_ e2)` and prove the remaining obligations. Use `P.prism _ _ (etaN u hu V W h hh s a hG hG') (fun T z => ?_) n x` and prove the remaining obligations. Take `⟨z, hz⟩` from `z`.
+
+Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Both sides reduce to the same expression.
+-/
 theorem mV_nat (n : ℕ) (x) :
     (mV q V s a).pull n ((morU (pullM (u.resLE W V h) hh a) (U := KS (W.ι ≫ p) s {⊤}) (U' := KS (V.ι ≫ q) s {⊤}) hG').pull n x) =
       (morU (pullM u hu a) (U := KS p s {W}) (U' := KS q s {V}) hG).pull n ((mV p W s a).pull n x) := by
@@ -225,6 +269,9 @@ theorem mV_nat (n : ℕ) (x) :
 
 end Natural
 
+/- English proof (translation)
+Introduce `K _` and use `⟨@fun X q V s a => mV q V s a, @fun X q V s a n => mV_bij V s a n, @fun X Y q p u hu V W h hh s a hG hG' n x => mV_nat u hu V W h hh s a hG hG' n x⟩`.
+-/
 theorem open_thick : ∀ (K : Type) [CommRing K], ∃ m : ∀ {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) (V : X.Opens) (s a : ℕ),
     CH.Mor ((KS (V.ι ≫ q) s {⊤}).ι ⋙ HT.grT (smFun V.toScheme (V.ι ≫ q)) a) ((KS q s {V}).ι ⋙ HT.grT (smFun X q) a)
       (RingHom.id K),

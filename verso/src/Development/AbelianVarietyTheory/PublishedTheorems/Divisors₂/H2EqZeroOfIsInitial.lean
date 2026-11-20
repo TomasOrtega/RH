@@ -17,6 +17,9 @@ section Dual
 variable {S : Scheme.{0}} {A B A₁ B₁ : Over S} [GrpObj A] [GrpObj B] [GrpObj A₁] [GrpObj B₁]
   {P : LB (A ⊗ B).left} {P₁ : LB (A₁ ⊗ B₁).left}
 
+/- English proof (translation)
+Establish `hM : (ev P (fst A T) (snd A T ≫ x)).IsLB` using `pull_isLB h.isLB _`. Use `(h.univ T _ hM ((isAdditive_iff hM).2 fun Y a a' t ↦ ?_)).unique ((cls_eq_iff hM hM).1 rfl) ((cls_eq_iff hM (pull_isLB h.isLB _)).1 e)` and prove the remaining obligations. Simplify using `only [evc_ev h.isLB, lift_fst, lift_snd_assoc]`. Conclude with `(isAdditive_iff h.isLB).1 h.additive _ _ _ _`.
+-/
 theorem point_ext (h : IsDual A B P) {T : Over S} {x y : T ⟶ B}
     (e : evc h.isLB (fst A T) (snd A T ≫ x) = evc h.isLB (fst A T) (snd A T ≫ y)) : x = y := by
   have hM : (ev P (fst A T) (snd A T ≫ x)).IsLB := pull_isLB h.isLB _
@@ -25,6 +28,17 @@ theorem point_ext (h : IsDual A B P) {T : Over S} {x y : T ⟶ B}
   simp only [evc_ev h.isLB, lift_fst, lift_snd_assoc]
   exact (isAdditive_iff h.isLB).1 h.additive _ _ _ _
 
+/- English proof (translation)
+Establish `hM : (ev P₁ (fst A B₁ ≫ u) (snd A B₁)).IsLB` using `pull_isLB h₁.isLB _`. Take `⟨v, hv, hu⟩` from `h.univ B₁ _ hM ((isAdditive_iff hM).2 fun Y a a' t ↦ by`. Simplify using `only [evc_ev h₁.isLB, lift_fst_assoc, lift_snd, MonObj.mul_comp]`. Conclude with `(isAdditive_iff h₁.isLB).1 h₁.additive _ _ _ _)`. Establish `e` using `(cls_eq_iff hM (pull_isLB h.isLB _)).2 hv`.
+
+Establish `k : ∀ (Y : Over S) (a : Y ⟶ A) (b : Y ⟶ B₁), evc h.isLB a (b ≫ v) = evc h₁.isLB (a ≫ u) b` using `fun Y a b ↦ by`. Use `congrArg (CechPic.pull (lift a b).left) e` as an intermediate fact. Rewrite `this` using `[cls_ev h₁.isLB, cls_ev h.isLB, pull_evc, pull_evc]`. Simplify using `using this.symm`. Establish `add : ∀ {C D : Over S} [GrpObj C] [GrpObj D] {Q : LB (C ⊗ D).left} (hQ : Q.IsLB) (_ : IsDual D C (swap Q)) (Y : Over S) (a : Y ⟶ C) (b b' : Y ⟶ D), evc hQ a (b * b') = evc hQ a b + evc hQ a b'`.
+
+Introduce `C D _ _ Q hQ q Y a b b'`. Simplify `(isAdditive_iff q.isLB).1 q.additive Y b b' a` using `only [evc_swap hQ]`. Establish `m : ∀ (Y : Over S) (b b' : Y ⟶ B₁), (b * b') ≫ v = (b ≫ v) * (b' ≫ v)` using `fun Y b b' ↦ point_ext h (by`. Rewrite using `[← Category.assoc, k, MonObj.comp_mul, MonObj.comp_mul, add h₁.isLB h₁', add h.isLB h', ← Category.assoc, ← Category.assoc, k, k])`. Use `⟨v, ⟨?_, ?_⟩, (cls_eq_iff (pull_isLB h.isLB _) hM).1 e.symm, fun v' hv' ↦ hu v' ((cls_eq_iff hM (pull_isLB h.isLB _)).1 ((cls_eq_iff (pull_isLB h.isLB _) hM).2 hv').symm)⟩` and prove the remaining obligations.
+
+Use `m (𝟙_ _) 1 1` as an intermediate fact. Rewrite `this` using `[_root_.mul_one]`. Establish `e1 : (1 : 𝟙_ (Over S) ⟶ B₁) ≫ v = 1` using `left_eq_mul.1 this`. Simplify `e1` using `[Hom.one_def]`. Use `m (B₁ ⊗ B₁) (fst _ _) (snd _ _)` as an intermediate fact.
+
+Simplify `this` using `[Hom.mul_def, lift_fst_comp_snd_comp]`.
+-/
 theorem exists_dualHom (h : IsDual A B P) (h' : IsDual B A (swap P)) (h₁ : IsDual A₁ B₁ P₁)
     (h₁' : IsDual B₁ A₁ (swap P₁)) (u : A ⟶ A₁) [IsMonHom u] :
     ∃ v : B₁ ⟶ B, IsMonHom v ∧ LBIso (ev P (fst A B₁) (snd A B₁ ≫ v)) (ev P₁ (fst A B₁ ≫ u) (snd A B₁)) ∧
@@ -55,6 +69,11 @@ theorem exists_dualHom (h : IsDual A B P) (h' : IsDual B A (swap P)) (h₁ : IsD
   · have := m (B₁ ⊗ B₁) (fst _ _) (snd _ _)
     simpa [Hom.mul_def, lift_fst_comp_snd_comp] using this
 
+/- English proof (translation)
+Establish `key : ∀ {C D : Over S} [GrpObj C] [GrpObj D] {Q : LB (A ⊗ C).left} {Q' : LB (A ⊗ D).left} (q : IsDual A C Q) (q' : IsDual A D Q'), ∃ x : C ⟶ D, ∀ (Y : Over S) (a : Y ⟶ A) (b : Y ⟶ C), evc q'.isLB a (b ≫ x) = evc q.isLB a b`. Introduce `C D _ _ Q Q' q q'`. Take `⟨x, hx, -⟩` from `q'.univ C Q q.isLB q.additive`. Use `⟨x, fun Y a b ↦ ?_⟩` and prove the remaining obligations. Use `congrArg (CechPic.pull (lift a b).left) ((cls_eq_iff q.isLB (pull_isLB q'.isLB _)).2 hx)` as an intermediate fact.
+
+Rewrite `this` using `[cls_ev q'.isLB, pull_evc]`. Simplify `this.symm` using `[evc]`. Take `⟨x, hx⟩` from `key h h'`. Take `⟨y, hy⟩` from `key h' h`. Conclude with `⟨⟨x, y, point_ext h (by rw [← Category.assoc, hy, hx, Category.comp_id]), point_ext h' (by rw [← Category.assoc, hx, hy, Category.comp_id])⟩⟩`.
+-/
 theorem dual_unique {B' : Over S} [GrpObj B'] {P' : LB (A ⊗ B').left} (h : IsDual A B P) (h' : IsDual A B' P') :
     Nonempty (B ≅ B') := by
   have key : ∀ {C D : Over S} [GrpObj C] [GrpObj D] {Q : LB (A ⊗ C).left} {Q' : LB (A ⊗ D).left}
@@ -71,14 +90,25 @@ theorem dual_unique {B' : Over S} [GrpObj B'] {P' : LB (A ⊗ B').left} (h : IsD
   exact ⟨⟨x, y, point_ext h (by rw [← Category.assoc, hy, hx, Category.comp_id]),
     point_ext h' (by rw [← Category.assoc, hx, hy, Category.comp_id])⟩⟩
 
+/- English proof (translation)
+Establish `p` using `h.isPerfect h'`. Use `p.ker_left _ _ ((triv_ev_iff h.isLB _ _).2 ?_)` and prove the remaining obligations. Rewrite using `[← Category.comp_id (snd A B), e, MonObj.comp_one, evc_one_right h.isLB h.zero]`.
+-/
 theorem id_eq_one_of_dual (h : IsDual A B P) (h' : IsDual B A (swap P)) (e : 𝟙 B = 1) : 𝟙 A = 1 := by
   have p := h.isPerfect h'
   refine p.ker_left _ _ ((triv_ev_iff h.isLB _ _).2 ?_)
   rw [← Category.comp_id (snd A B), e, MonObj.comp_one, evc_one_right h.isLB h.zero]
 
+/- English proof (translation)
+The claim follows from `h.eq_one _ ((triv_ev_iff h.isLB _ _).2 (map_zero _))`.
+-/
 theorem id_eq_one_of_triv (h : IsDual A B (LB.triv _)) : 𝟙 B = 1 :=
   h.eq_one _ ((triv_ev_iff h.isLB _ _).2 (map_zero _))
 
+/- English proof (translation)
+Establish `hs : (swap (LB.triv (𝟙_ (Over S) ⊗ 𝟙_ (Over S)).left)).IsLB` using `pull_isLB (LB.isLB_triv _) _`. Establish `h0 : ∀ (Y : Over S) (a b : Y ⟶ 𝟙_ (Over S)), evc hs a b = 0` using `fun _ _ _ ↦ by`. Rewrite using `[evc_swap (LB.isLB_triv _)]`. Conclude with `map_zero _`. Use `⟨hs, (isAdditive_iff hs).2 fun _ _ _ _ ↦ by simp only [h0, add_zero], (triv_ev_iff hs _ _).2 (h0 _ _ _), fun T M hM ha ↦ ⟨toUnit T, ?_, fun _ _ ↦ toUnit_unique _ _⟩⟩` and prove the remaining obligations.
+
+Use `(cls_eq_iff hM (pull_isLB hs _)).1 ?_` and prove the remaining obligations. Establish `e` using `ha.evc_one hM (snd (𝟙_ (Over S)) T)`. Rewrite `e` using `[toUnit_unique 1 (fst _ T), evc, lift_fst_snd, Over.id_left, CechPic.pull_id]`. Rewrite using `[e, cls_ev hs, h0]`.
+-/
 theorem isDual_unit_swap : IsDual (𝟙_ (Over S)) (𝟙_ (Over S)) (swap (LB.triv _)) := by
   have hs : (swap (LB.triv (𝟙_ (Over S) ⊗ 𝟙_ (Over S)).left)).IsLB := pull_isLB (LB.isLB_triv _) _
   have h0 : ∀ (Y : Over S) (a b : Y ⟶ 𝟙_ (Over S)), evc hs a b = 0 := fun _ _ _ ↦ by
@@ -90,6 +120,9 @@ theorem isDual_unit_swap : IsDual (𝟙_ (Over S)) (𝟙_ (Over S)) (swap (LB.tr
   rw [toUnit_unique 1 (fst _ T), evc, lift_fst_snd, Over.id_left, CechPic.pull_id] at e
   rw [e, cls_ev hs, h0]
 
+/- English proof (translation)
+Take `⟨B, _, P, hB, hg, h, h'⟩` from `H _ _ (WeierstrassCurve.ellPolAV W).isAb`. Conclude with `⟨B, _, P, hB, hg 1 (WeierstrassCurve.ellPolAV W).smoothDim, h.isPerfect h'⟩`.
+-/
 theorem elliptic_dual (H : DualAbelianScheme) {R : Type} [CommRing R] (W : WeierstrassCurve R) [W.IsElliptic] :
     ∃ (B : Over (Sp R)) (_ : GrpObj B) (P : LB ((WeierstrassCurve.ellPolAV W).A ⊗ B).left), IsAbelianScheme B ∧
       SmoothOfRelativeDimension 1 B.hom ∧ IsPerfect _ B P := by
@@ -100,6 +133,11 @@ end Dual
 
 section Crystal
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `CatCoh.H2.mk_surjective F c`. Use `CatCoh.H2.mk_eq_zero.2 ⟨fun T T' φ ↦ z.1 T₀ T T' (h.to T) φ, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `T T' T'' φ ψ`. Use `z.2 (h.to T) φ ψ` as an intermediate fact. Rewrite `this` using `[h.to_comp]`.
+
+Rewrite using `[d1_apply]`. Take the linear combination `this`.
+-/
 theorem h2_eq_zero_of_isInitial {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R) {T₀ : C}
     (h : Limits.IsInitial T₀) (c : CatCoh.H2 F) : c = 0 := by
   obtain ⟨z, rfl⟩ := CatCoh.H2.mk_surjective F c
@@ -125,6 +163,11 @@ def baseThick (hκ : IsNilDP κ) (hπ : Function.Surjective π) (hI : RingHom.ke
   x := 𝟙 _
   w := Category.id_comp _
 
+/- English proof (translation)
+Establish `ex : ∀ T : Thick κ (spMap π), Nonempty (baseThick hκ hπ hI ⟶ T)` using `fun T ↦ by`. Take `⟨f, hf⟩` from `Spec.map_surjective T.x`. Establish `w` using `T.w`. Rewrite `w` using `[← hf, ← Spec.map_comp]`. Establish `w'` using `congrArg CommRingCat.Hom.hom (Spec.map_injective w)`.
+
+Conclude with `⟨⟨Algebra.ofId R T.B, f.hom, fun b ↦ RingHom.congr_fun w' b, T.dp, (Category.comp_id _).trans hf⟩⟩`. Conclude with `⟨Limits.IsInitial.ofUniqueHom (fun T ↦ (ex T).some) fun T m ↦ Thick.hom_ext fun b ↦ (m.φ.commutes b).trans ((ex T).some.φ.commutes b).symm⟩`.
+-/
 theorem nonempty_isInitial (hκ : IsNilDP κ) (hπ : Function.Surjective π) (hI : RingHom.ker π = I) :
     Nonempty (Limits.IsInitial (baseThick hκ hπ hI)) := by
   have ex : ∀ T : Thick κ (spMap π), Nonempty (baseThick hκ hπ hI ⟶ T) := fun T ↦ by
@@ -136,6 +179,9 @@ theorem nonempty_isInitial (hκ : IsNilDP κ) (hπ : Function.Surjective π) (hI
   exact ⟨Limits.IsInitial.ofUniqueHom (fun T ↦ (ex T).some) fun T m ↦ Thick.hom_ext fun b ↦
     (m.φ.commutes b).trans ((ex T).some.φ.commutes b).symm⟩
 
+/- English proof (translation)
+Take `⟨a⟩` from `nonempty_isInitial hκ hπ hI`. Take `⟨b⟩` from `nonempty_isInitial (isDPNilpotent_bot R) (π := RingHom.id R) Function.surjective_id ((RingHom.injective_iff_ker_eq_bot _).1 Function.injective_id)`. Conclude with `⟨⟨fun x y _ ↦ (H1.eq_zero_of_isInitial _ b x).trans (H1.eq_zero_of_isInitial _ b y).symm, fun y ↦ ⟨0, (map_zero _).trans (H1.eq_zero_of_isInitial _ a y).symm⟩⟩, ⟨fun x y _ ↦ (h2_eq_zero_of_isInitial _ b x).trans (h2_eq_zero_of_isInitial _ b y).symm, fun y ↦ ⟨0, (map_zero _).trans …`.
+-/
 theorem base_case (hκ : IsNilDP κ) (hπ : Function.Surjective π) (hI : RingHom.ker π = I)
     (m : IsMor (dp0 R) (spMap (RingHom.id R)) κ (spMap π) (RingHom.id R) (spMap π)) :
     Function.Bijective m.pull1 ∧ Function.Bijective m.pull2 := by
@@ -147,11 +193,17 @@ theorem base_case (hκ : IsNilDP κ) (hπ : Function.Surjective π) (hI : RingHo
     ⟨fun x y _ ↦ (h2_eq_zero_of_isInitial _ b x).trans (h2_eq_zero_of_isInitial _ b y).symm,
       fun y ↦ ⟨0, (map_zero _).trans (h2_eq_zero_of_isInitial _ a y).symm⟩⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by rw [show (m.pull1 : _ → _) = id from funext m.pullCohomologyOne_id]; exact Function.bijective_id, by rw [show (m.pull2 : _ → _) = id from funext m.pullCohomologyTwo_id]; exact Function.bijective_id⟩`.
+-/
 theorem trivial_case {X : Scheme.{0}} (s : X ⟶ Sp R) (m : IsMor (dp0 R) s (dp0 R) s (RingHom.id R) (𝟙 X)) :
     Function.Bijective m.pull1 ∧ Function.Bijective m.pull2 :=
   ⟨by rw [show (m.pull1 : _ → _) = id from funext m.pullCohomologyOne_id]; exact Function.bijective_id,
     by rw [show (m.pull2 : _ → _) = id from funext m.pullCohomologyTwo_id]; exact Function.bijective_id⟩
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.WeierstrassCurve.isGrpPullback_ellPolAV W (TrivSqZeroExt.fstHom R R R).toRingHom rfl`. Use `(WeierstrassCurve.ellPolAV W).isAb.smooth` as an intermediate fact. Use `(WeierstrassCurve.ellPolAV W).isAb.proper` as an intermediate fact. Conclude with `⟨_, IsMor.of_dividedPowersZeroIdeal _ (by rw [Cris.spMap_id, Category.comp_id]; exact h.1.w), H _ _ _ (isDPNilpotent_squareZero _) R _ (fun r ↦ ⟨TrivSqZeroExt.inl r, rfl⟩) rfl _ _ _ _ _ inferInstance inferInstance inferInstance h.1 _⟩`.
+-/
 theorem elliptic_crystal (H : CrystallineDeRham) (R : Type) [CommRing R] (W : WeierstrassCurve (DualNumber R))
     [W.IsElliptic] : ∃ (i : _) (m : IsMor (dp0 _) (WeierstrassCurve.ellPolAV W).A.hom (epsDP R)
       ((WeierstrassCurve.ellPolAV (W.map (TrivSqZeroExt.fstHom R R R).toRingHom)).A.hom ≫

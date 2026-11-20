@@ -17,6 +17,11 @@ namespace GlobalTheory.ActMatrix
 
 open MonoidalCategory CartesianMonoidalCategory MonObj
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Over.w]`. Conclude with `hv.1`. Rewrite using `[← Category.assoc, hv.2, ← Over.comp_left]`. Use `congr 1`.
+
+Use `haveI := t.act.hom a`. Rewrite using `[Hom.one_def, Category.assoc, IsMonHom.one_hom]`.
+-/
 theorem isTanAtG_act {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {X : Scheme.{0}} (t : SAB H X) {S : Type} [CommRing S] (x0 : Sp S ⟶ X) (a : 𝓞 E)
     {v : Sp (DualNumber S) ⟶ t.G.left} (hv : IsTanAtG t x0 v) : IsTanAtG t x0 (v ≫ (t.act.act a).left) := by
@@ -27,6 +32,9 @@ theorem isTanAtG_act {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Rec
     haveI := t.act.hom a
     rw [Hom.one_def, Category.assoc, IsMonHom.one_hom]
 
+/- English proof (translation)
+Introduce `E _ _ _ H X t U n v hv hb`. Use `⟨fun a i => Classical.choose (hb _ (isTanAtG_act t _ a (hv i))), fun a i => ?_⟩` and prove the remaining obligations. Conclude with `(Classical.choose_spec (hb _ (isTanAtG_act t _ a (hv i)))).1`.
+-/
 theorem actMatrix : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (t : SAB H X) (U : X.affineOpens) (n : ℕ) (v : Fin n → (Sp (DualNumber Γ(X, U.1)) ⟶ t.G.left)), (∀ i, IsTanAtG t (GlobalTheory.LogKS.chart U) (v i)) → (∀ w, IsTanAtG t (GlobalTheory.LogKS.chart U) w → ∃! cf : Fin n → Γ(X, U.1), IsCombAtG t (GlobalTheory.LogKS.chart U) v cf w) → ∃ A : 𝓞 E → Matrix (Fin n) (Fin n) Γ(X, U.1), ∀ a i, IsCombAtG t (GlobalTheory.LogKS.chart U) v (A a i) (v i ≫ (t.act.act a).left) := by
   intro E _ _ _ H X t U n v hv hb
   refine ⟨fun a i => Classical.choose (hb _ (isTanAtG_act t _ a (hv i))), fun a i => ?_⟩

@@ -19,6 +19,9 @@ variable {k : Type u} [Field k] {X : Scheme.{u}} [X.Over (Spec (.of k))] [IsInte
 namespace PrimeDivisor
 
 omit [IsLocallyNoetherian X] [IsNormalScheme X] in
+/- English proof (translation)
+The claim follows from `IsFractionRing.injective _ _`.
+-/
 lemma algebraMap_stalk_injective (x : X) :
     Function.Injective (algebraMap (X.presheaf.stalk x) X.functionField) :=
   IsFractionRing.injective _ _
@@ -51,6 +54,9 @@ noncomputable def divisorEquiv (hX : topologicalKrullDim X ≤ 1) :
   Finsupp.domCongr (placeEquiv hX)
 
 @[simp]
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Finsupp.equivMapDomain (placeEquiv hX) D (placeEquiv (k := k) hX Z) = D Z`. Rewrite using `[Finsupp.equivMapDomain_apply, Equiv.symm_apply_apply]`.
+-/
 lemma divisorEquiv_apply_toPlace (hX : topologicalKrullDim X ≤ 1) (D : WeilDivisor X)
     (Z : PrimeDivisor X) : divisorEquiv (k := k) hX D Z.toPlace = D Z := by
   change Finsupp.equivMapDomain (placeEquiv hX) D (placeEquiv (k := k) hX Z) = D Z
@@ -58,6 +64,11 @@ lemma divisorEquiv_apply_toPlace (hX : topologicalKrullDim X ≤ 1) (D : WeilDiv
 
 variable [IsFunctionField k X.functionField]
 
+/- English proof (translation)
+Rewrite using `[Divisor.mem_L]`. Prove the components needed by the constructor for the conclusion. Introduce `h Z`. Use `h Z.toPlace` as an intermediate fact. Rewrite `this` using `[PrimeDivisor.toPlace_valuation, divisorEquiv_apply_toPlace]`. Then use the resulting hypothesis.
+
+Introduce `h v`. Take `⟨Z, rfl⟩` from `PrimeDivisor.toPlace_surjective (k := k) hX v`. Rewrite using `[PrimeDivisor.toPlace_valuation, divisorEquiv_apply_toPlace]`. Conclude with `h Z`.
+-/
 theorem mem_L_divisorEquiv (hX : topologicalKrullDim X ≤ 1) (D : WeilDivisor X)
     (f : X.functionField) :
     f ∈ Divisor.L (divisorEquiv (k := k) hX D) ↔

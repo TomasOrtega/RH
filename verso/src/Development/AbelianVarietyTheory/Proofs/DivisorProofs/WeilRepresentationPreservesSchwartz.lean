@@ -28,6 +28,9 @@ namespace GlobalTheory.HeisSchA
 open GlobalTheory.Published.Metaplectic
 open scoped Classical
 
+/- English proof (translation)
+Rewrite `hU` using `[hf.nhds_eq_comap, map_zero, Filter.mem_comap]`. Take `⟨t, ht, hsub⟩` from `hU`. Take `⟨V, hV⟩` from `NonarchimedeanAddGroup.is_nonarchimedean t ht`. Conclude with `⟨V.comap f hf.continuous, fun x hx => hsub (hV hx)⟩`.
+-/
 theorem nonarch_of_isInducing {G S : Type} [AddGroup G] [TopologicalSpace G] [NonarchimedeanAddGroup G]
     [AddGroup S] [TopologicalSpace S] [IsTopologicalAddGroup S] (f : S →+ G) (hf : Topology.IsInducing f) :
     NonarchimedeanAddGroup S where
@@ -37,6 +40,9 @@ theorem nonarch_of_isInducing {G S : Type} [AddGroup G] [TopologicalSpace G] [No
     obtain ⟨V, hV⟩ := NonarchimedeanAddGroup.is_nonarchimedean t ht
     exact ⟨V.comap f hf.continuous, fun x hx => hsub (hV hx)⟩
 
+/- English proof (translation)
+Rewrite `hU` using `[nhds_pi, Filter.mem_pi]`. Take `⟨I, hI, t, ht, hs⟩` from `hU`. Use `choose K hK using fun i => NonarchimedeanAddGroup.is_nonarchimedean (G := G i) (t i) (ht i)`. Conclude with `⟨⟨AddSubgroup.pi I fun i => (K i : AddSubgroup (G i)), isOpen_set_pi hI fun i _ => (K i).isOpen⟩, fun x hx => hs fun i hi => hK i (hx i hi)⟩`.
+-/
 theorem nonarch_pi {ι : Type} {G : ι → Type} [∀ i, AddGroup (G i)] [∀ i, TopologicalSpace (G i)]
     [∀ i, NonarchimedeanAddGroup (G i)] : NonarchimedeanAddGroup (∀ i, G i) where
   is_nonarchimedean U hU := by
@@ -48,6 +54,9 @@ theorem nonarch_pi {ι : Type} {G : ι → Type} [∀ i, AddGroup (G i)] [∀ i,
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Use `haveI : ∀ v : HeightOneSpectrum (𝓞 F), NonarchimedeanAddGroup (v.adicCompletionIntegers F) := fun v => nonarch_of_isInducing (v.adicCompletionIntegers F).subtype.toAddMonoidHom Topology.IsInducing.subtypeVal`. Use `haveI := nonarch_pi (G := fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletionIntegers F)`. Set `f : (∀ v : HeightOneSpectrum (𝓞 F), v.adicCompletionIntegers F) →+ FiniteAdeleRing (𝓞 F) F` to `{ toFun := RestrictedProduct.structureMap (fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) Filter.cofinite map_zero' := rfl map_add' := fun _ _ => rfl }`. Conclude with `NonarchimedeanAddGroup.nonarchimedean_of_emb f (RestrictedProduct.isOpenEmbedding_structureMap (fun v => Valued.isOpen_integer _))`.
+-/
 theorem nonarch_finiteAdeleRing : NonarchimedeanAddGroup (FiniteAdeleRing (𝓞 F) F) := by
   haveI : ∀ v : HeightOneSpectrum (𝓞 F), NonarchimedeanAddGroup (v.adicCompletionIntegers F) := fun v =>
     nonarch_of_isInducing (v.adicCompletionIntegers F).subtype.toAddMonoidHom Topology.IsInducing.subtypeVal
@@ -63,6 +72,9 @@ theorem nonarch_finiteAdeleRing : NonarchimedeanAddGroup (FiniteAdeleRing (𝓞 
 def finChar (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) : AddChar (FiniteAdeleRing (𝓞 F) F) ℂ :=
   ψ.compAddMonoidHom (AddMonoidHom.inr (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F))
 
+/- English proof (translation)
+Use `haveI := nonarch_finiteAdeleRing (F := F)`. Conclude with `GlobalTheory.WeilM.isLocallyConstant_addChar _ (hψ.comp (continuous_const.prodMk continuous_id))`.
+-/
 theorem finChar_isLocallyConstant (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (hψ : Continuous ψ) :
     IsLocallyConstant (finChar ψ) := by
   haveI := nonarch_finiteAdeleRing (F := F)
@@ -74,15 +86,24 @@ def p2 : AdeleRing (𝓞 F) F →+* FiniteAdeleRing (𝓞 F) F := RingHom.snd _ 
 
 def mk (a : InfiniteAdeleRing F) (b : FiniteAdeleRing (𝓞 F) F) : AdeleRing (𝓞 F) F := (a, b)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem finChar_apply (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (z : FiniteAdeleRing (𝓞 F) F) :
     finChar ψ z = ψ (mk 0 z) := rfl
 
+/- English proof (translation)
+Rewrite using `[finChar_apply, ← AddChar.map_add_eq_mul]`. Use `congr 1`. Conclude with `Prod.ext (add_zero _).symm (zero_add _).symm`.
+-/
 theorem map_eq_mul (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (b : AdeleRing (𝓞 F) F) :
     ψ b = ψ (mk (p1 b) 0) * finChar ψ (p2 b) := by
   rw [finChar_apply, ← AddChar.map_add_eq_mul]
   congr 1
   exact Prod.ext (add_zero _).symm (zero_add _).symm
 
+/- English proof (translation)
+Introduce `u hu`. Establish `hu1 : p1 u = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact hu)`. Rewrite using `[smul_eq_mul]`. Conclude with `Prod.ext (show p1 u * b = 0 by rw [hu1, zero_mul]) (show p2 u * 0 = 0 from mul_zero _)`.
+-/
 theorem at_mk (b : InfiniteAdeleRing F) : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F) (mk b 0) := by
   intro u hu
   have hu1 : p1 u = 0 := (InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact hu)
@@ -97,6 +118,9 @@ def trL (c : κ → mixedEmbedding.mixedSpace F) : (κ → mixedEmbedding.mixedS
       map_add' := fun y y' => by rw [add_dotProduct, map_add]
       map_smul' := fun r y => by rw [smul_dotProduct, map_smul]; rfl }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem trL_apply (c y : κ → mixedEmbedding.mixedSpace F) :
     trL c y = Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (y ⬝ᵥ c) := rfl
 
@@ -104,6 +128,9 @@ def archS (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ) (c t : κ �
     SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ :=
   SchwartzMap.smulLeftCLM ℂ (fun y => eChar ((-trL c) y + -k)) (SchwartzMap.compSubConstCLM ℂ (-t) f)
 
+/- English proof (translation)
+Establish `htg : Function.HasTemperateGrowth (fun y => eChar ((-trL c) y + -k))` using `hasTemperateGrowth_eChar.comp ((-trL c).hasTemperateGrowth.add (Function.HasTemperateGrowth.const _))`. Rewrite using `[archS, SchwartzMap.smulLeftCLM_apply_apply htg, SchwartzMap.compSubConstCLM_apply, sub_neg_eq_add, smul_eq_mul]`.
+-/
 theorem archS_apply (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ) (c t : κ → mixedEmbedding.mixedSpace F)
     (k : ℝ) (y : κ → mixedEmbedding.mixedSpace F) :
     archS f c t k y = eChar ((-trL c) y + -k) * f (y + t) := by
@@ -115,6 +142,9 @@ def finS (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (g : (κ → FiniteAdeleRing 
     (d s : κ → FiniteAdeleRing (𝓞 F) F) (d₀ : FiniteAdeleRing (𝓞 F) F) : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ :=
   fun z => finChar ψ (z ⬝ᵥ d + d₀) * g (z + s)
 
+/- English proof (translation)
+Establish `hlin : Continuous fun z : κ → FiniteAdeleRing (𝓞 F) F => z ⬝ᵥ d + d₀` using `(continuous_id.dotProduct continuous_const).add continuous_const`. Use `⟨((finChar_isLocallyConstant ψ hψ).comp_continuous hlin).mul (hg.1.comp_continuous (continuous_add_right s)), ?_⟩` and prove the remaining obligations. Conclude with `(hg.2.comp_homeomorph (Homeomorph.addRight s)).mul_left`.
+-/
 theorem finS_mem (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (hψ : Continuous ψ) {g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ}
     (hg : g ∈ GlobalTheory.WeilM.SB (κ → FiniteAdeleRing (𝓞 F) F)) (d s : κ → FiniteAdeleRing (𝓞 F) F)
     (d₀ : FiniteAdeleRing (𝓞 F) F) : finS ψ g d s d₀ ∈ GlobalTheory.WeilM.SB (κ → FiniteAdeleRing (𝓞 F) F) := by
@@ -124,6 +154,19 @@ theorem finS_mem (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (hψ : Continuous ψ)
     (hg.1.comp_continuous (continuous_add_right s)), ?_⟩
   exact (hg.2.comp_homeomorph (Homeomorph.addRight s)).mul_left
 
+/- English proof (translation)
+Set `e` to `InfiniteAdeleRing.ringEquiv_mixedSpace F`. Set `q : AdeleRing (𝓞 F) F →+* mixedEmbedding.mixedSpace F` to `e.toRingHom.comp p1`. Set `h : AdeleRing (𝓞 F) F` to `⅟(2 : AdeleRing (𝓞 F) F) * (w.1 ⬝ᵥ w.2)`. Set `c : κ → mixedEmbedding.mixedSpace F` to `fun i => q (w.2 i)`. Set `t : κ → mixedEmbedding.mixedSpace F` to `fun i => q (w.1 i)`.
+
+Set `k : ℝ` to `Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (q h)`. Set `d : κ → FiniteAdeleRing (𝓞 F) F` to `fun i => p2 (w.2 i)`. Set `s : κ → FiniteAdeleRing (𝓞 F) F` to `fun i => p2 (w.1 i)`. Use `Submodule.subset_span ⟨archS f c t k, finS ψ g d s (p2 h), finS_mem ψ hψ.1 hg d s (p2 h), funext fun x => ?_⟩` and prove the remaining obligations. Set `y : κ → mixedEmbedding.mixedSpace F` to `fun i => q (x i)`.
+
+Set `z : κ → FiniteAdeleRing (𝓞 F) F` to `fun i => p2 (x i)`. Establish `h1 : (fun i => q ((x + w.1) i)) = y + t` using `funext fun i => map_add q (x i) (w.1 i)`. Establish `h2 : (fun i => p2 ((x + w.1) i)) = z + s` using `funext fun i => map_add p2 (x i) (w.1 i)`. Establish `h3 : ψ (x ⬝ᵥ w.2 + h) = eChar ((-trL c) y + -k) * finChar ψ (z ⬝ᵥ d + p2 h)`. Rewrite using `[map_eq_mul ψ, hψ.2.2 _ (at_mk _)]`.
+
+Use `congr 1`. Establish `e1 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F (mk (p1 (x ⬝ᵥ w.2 + h)) 0) = y ⬝ᵥ c + q h`. Express the relevant statement in the definitionally equal form `q (x ⬝ᵥ w.2 + h) = _`. Rewrite using `[map_add, RingHom.map_dotProduct]`. Both sides reduce to the same expression.
+
+Rewrite using `[e1, map_add, eChar_apply, ContinuousLinearMap.neg_apply, trL_apply]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_add, RingHom.map_dotProduct]`.
+
+Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `ψ (x ⬝ᵥ w.2 + h) * (f (fun i => q ((x + w.1) i)) * g (fun i => p2 ((x + w.1) i))) = archS f c t k y * (finChar ψ (z ⬝ᵥ d + p2 h) * g (z + s))`. Rewrite using `[h1, h2, h3, archS_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem schr_pureA_mem [Invertible (2 : AdeleRing (𝓞 F) F)] (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ)
     (hψ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ) (w : (κ → AdeleRing (𝓞 F) F) × (κ → AdeleRing (𝓞 F) F))
     (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ) {g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ}
@@ -160,6 +203,11 @@ theorem schr_pureA_mem [Invertible (2 : AdeleRing (𝓞 F) F)] (ψ : AddChar (Ad
   rw [h1, h2, h3, archS_apply]
   ring
 
+/- English proof (translation)
+Set `T : ((κ → AdeleRing (𝓞 F) F) → ℂ) →ₗ[ℂ] ((κ → AdeleRing (𝓞 F) F) → ℂ)` to `{ toFun := GlobalTheory.WeilM.schr ψ w map_add' := fun φ φ' => funext fun x => by simp only [GlobalTheory.WeilM.schr, Pi.add_apply]; ring map_smul' := fun a φ => funext fun x => by`. Simplify using `only [GlobalTheory.WeilM.schr, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]`. Use `ring }`. Establish `hle : GlobalTheory.WeilM.schA F κ ≤ (GlobalTheory.WeilM.schA F κ).comap T`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨f, g, hg, rfl⟩`. Conclude with `schr_pureA_mem ψ hψ w f hg`. Conclude with `fun Φ hΦ => hle hΦ`.
+-/
 theorem schr_mem_schA [Invertible (2 : AdeleRing (𝓞 F) F)] (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ)
     (hψ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ) (w : (κ → AdeleRing (𝓞 F) F) × (κ → AdeleRing (𝓞 F) F)) :
     ∀ Φ ∈ GlobalTheory.WeilM.schA F κ, GlobalTheory.WeilM.schr ψ w Φ ∈ GlobalTheory.WeilM.schA F κ := by
@@ -176,6 +224,9 @@ theorem schr_mem_schA [Invertible (2 : AdeleRing (𝓞 F) F)] (ψ : AddChar (Ade
 
 end GlobalTheory.HeisSchA
 
+/- English proof (translation)
+Introduce `M ψ hψ γ Φ hΦ` and use `GlobalTheory.HeisSchA.schr_mem_schA ψ hψ (M.co.e γ) Φ hΦ`.
+-/
 theorem GlobalTheory.HeisSchA.rho_mem_schA : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d} (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ X Y)
     (ψ : AddChar (AF F) ℂ), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ →

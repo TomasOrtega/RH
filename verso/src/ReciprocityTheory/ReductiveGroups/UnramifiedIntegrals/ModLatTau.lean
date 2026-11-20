@@ -7,9 +7,17 @@ open ModularForm EisensteinSeries ModularFormClass UpperHalfPlane Formalism.L2.T
 
 namespace ReciprocityTheory.ChartRestriction.L1
 
+/- English proof (translation)
+Simplify using `using L.indep.ne_zero 1`.
+-/
 theorem latTau_snd_ne (L : PeriodPair) : L.ω₂ ≠ 0 := by
   simpa using L.indep.ne_zero 1
 
+/- English proof (translation)
+Introduce `h`. Establish `h2` using `latTau_snd_ne L`. Take `⟨r, hr⟩ : ∃ r : ℝ, L.ω₁ / L.ω₂ = (r : ℂ)` from `⟨(L.ω₁ / L.ω₂).re, Complex.ext (by simp) (by simp [h])⟩`. Establish `h1 : L.ω₁ = (r : ℂ) * L.ω₂` using `by rw [← hr, div_mul_cancel₀ _ h2]`. Establish `h3` using `(LinearIndependent.pair_iff.mp L.indep) 1 (-r) (by rw [Complex.real_smul, Complex.real_smul, h1]; push_cast; ring)`.
+
+Evaluate the numerical expressions using `at h3`.
+-/
 theorem latTau_im_ne (L : PeriodPair) : (L.ω₁ / L.ω₂).im ≠ 0 := by
   intro h
   have h2 := latTau_snd_ne L
@@ -20,6 +28,15 @@ theorem latTau_im_ne (L : PeriodPair) : (L.ω₁ / L.ω₂).im ≠ 0 := by
     (by rw [Complex.real_smul, Complex.real_smul, h1]; push_cast; ring)
   norm_num at h3
 
+/- English proof (translation)
+Establish `h2` using `latTau_snd_ne L`. Break down `lt_or_gt_of_ne (latTau_im_ne L) with hneg | hpos` into its components or cases. Use `⟨L.ω₂, ⟨-(L.ω₁ / L.ω₂), by rw [Complex.neg_im]; linarith⟩, h2, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[PeriodPair.mem_lattice]`. Apply the tactic sequence `try simp only [UpperHalfPlane.coe_mk]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, n, rfl⟩`. Apply the tactic sequence `exact ⟨-m, n, by push_cast; field_simp; try ring⟩`. Introduce and unpack `⟨u, v, rfl⟩`. Apply the tactic sequence `exact ⟨-u, v, by push_cast; field_simp; try ring⟩`.
+
+Use `⟨L.ω₂, ⟨L.ω₁ / L.ω₂, hpos⟩, h2, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[PeriodPair.mem_lattice]`. Apply the tactic sequence `try simp only [UpperHalfPlane.coe_mk]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, n, rfl⟩`.
+
+Apply the tactic sequence `exact ⟨m, n, by field_simp; try ring⟩`. Introduce and unpack `⟨u, v, rfl⟩`. Apply the tactic sequence `exact ⟨u, v, by field_simp; try ring⟩`.
+-/
 theorem latTau (L : PeriodPair) : ∃ (c : ℂ) (τ : ℍ), IsTauOf L c τ := by
   have h2 := latTau_snd_ne L
   rcases lt_or_gt_of_ne (latTau_im_ne L) with hneg | hpos

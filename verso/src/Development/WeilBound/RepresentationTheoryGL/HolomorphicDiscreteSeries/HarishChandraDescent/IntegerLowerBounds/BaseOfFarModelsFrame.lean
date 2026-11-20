@@ -11,17 +11,28 @@ open ReciprocityTheory.ChartRestriction.DS PositivityTheory.UnitaryDecomposition
 
 namespace BaseIntegrality
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `h.2 a`. Conclude with `⟨2 * k + (m : ℤ) - 1, by push_cast; linarith⟩`.
+-/
 theorem two_mul_int {m : ℕ} {lam : Fin m → ℝ} (h : Formalism.QuantumDeterminants.IsHCParam lam) (a : Fin m) :
     ∃ z : ℤ, 2 * lam a = z := by
   obtain ⟨k, hk⟩ := h.2 a
   exact ⟨2 * k + (m : ℤ) - 1, by push_cast; linarith⟩
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `h.2 a`. Take `⟨k', hk'⟩` from `h'.2 a`. Conclude with `⟨k' - k, by push_cast; linarith⟩`.
+-/
 theorem diff_int {m : ℕ} {lam mu : Fin m → ℝ} (h : Formalism.QuantumDeterminants.IsHCParam lam) (h' : Formalism.QuantumDeterminants.IsHCParam mu) (a : Fin m) :
     ∃ z : ℤ, mu a - lam a = z := by
   obtain ⟨k, hk⟩ := h.2 a
   obtain ⟨k', hk'⟩ := h'.2 a
   exact ⟨k' - k, by push_cast; linarith⟩
 
+/- English proof (translation)
+Establish `hz : (0 : ℤ) ≤ z` using `by rw [hw] at h0; exact_mod_cast h0`. Establish `e : w = ((z.toNat : ℕ) : ℝ)`. Rewrite using `[hw]`. Use `Int.toNat_of_nonneg hz` as an intermediate fact. Conclude with `this.symm` after adjusting the coercions.
+
+Rewrite using `[e, Nat.floor_natCast]`.
+-/
 theorem floor_eq {w : ℝ} {z : ℤ} (hw : w = z) (h0 : 0 ≤ w) : ((⌊w⌋₊ : ℕ) : ℝ) = w := by
   have hz : (0 : ℤ) ≤ z := by rw [hw] at h0; exact_mod_cast h0
   have e : w = ((z.toNat : ℕ) : ℝ) := by
@@ -30,12 +41,20 @@ theorem floor_eq {w : ℝ} {z : ℤ} (hw : w = z) (h0 : 0 ≤ w) : ((⌊w⌋₊ 
     exact_mod_cast this.symm
   rw [e, Nat.floor_natCast]
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[hx, hy]`. Establish `h1 : zx < zy` using `by exact_mod_cast h`. Establish `h2 : (zx : ℝ) + 1 ≤ zy` using `by exact_mod_cast h1`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem one_le_of_int_lt {x y : ℝ} {zx zy : ℤ} (hx : x = zx) (hy : y = zy) (h : x < y) : 1 ≤ y - x := by
   rw [hx, hy] at h ⊢
   have h1 : zx < zy := by exact_mod_cast h
   have h2 : (zx : ℝ) + 1 ≤ zy := by exact_mod_cast h1
   linarith
 
+/- English proof (translation)
+Take `⟨ka, hka⟩` from `h.2 a`. Take `⟨kb, hkb⟩` from `h.2 b`. Establish `e : lam a - lam b = ((ka - kb : ℤ) : ℝ)` using `by push_cast; linarith`. Establish `hne : ka - kb ≠ 0` using `fun h0 => hab (h.1.injective (by rw [h0] at e; simpa [sub_eq_zero] using e))`. Rewrite using `[e, ← Int.cast_abs]`.
+
+Conclude with `Int.one_le_abs hne` after adjusting the coercions.
+-/
 theorem one_le_abs_sub {m : ℕ} {lam : Fin m → ℝ} (h : Formalism.QuantumDeterminants.IsHCParam lam) {a b : Fin m} (hab : a ≠ b) :
     1 ≤ |lam a - lam b| := by
   obtain ⟨ka, hka⟩ := h.2 a
@@ -45,6 +64,11 @@ theorem one_le_abs_sub {m : ℕ} {lam : Fin m → ℝ} (h : Formalism.QuantumDet
   rw [e, ← Int.cast_abs]
   exact_mod_cast Int.one_le_abs hne
 
+/- English proof (translation)
+Use `ReciprocityTheory.ChartRestriction.DS.G2.discrete_series_exists_large_gap m ε lam hl h hg (Or.inr ?_)` and prove the remaining obligations. Establish `hq : (ReciprocityTheory.ChartRestriction.DS.S7.q0 ε : ℝ) ≤ m`. Establish `: ReciprocityTheory.ChartRestriction.DS.S7.q0 ε ≤ m` using `(min_le_left _ _).trans (by unfold ReciprocityTheory.ChartRestriction.DS.pOf; exact (Finset.card_filter_le _ _).trans (by simp))`. Conclude with `this` after adjusting the coercions. Establish `hm0 : (0 : ℝ) ≤ m` using `Nat.cast_nonneg m`.
+
+Establish `h1` using `mul_le_mul_of_nonneg_left hq hm0`. Use `max_lt (by nlinarith) (by nlinarith)` and prove the remaining obligations.
+-/
 theorem ds_ex {m : ℕ} (ε : Fin m → Bool) (lam : Fin m → ℝ) (hl : Formalism.QuantumDeterminants.IsHCParam lam) (h : ℝ)
     (hg : Formalism.QuantumDeterminants.GapAtLeast ε lam h) (hh : 8 * (m : ℝ) ^ 2 + 2 * m < h) :
     ∃ (H : Type) (_ : NormedAddCommGroup H) (_ : InnerProductSpace ℂ H)
@@ -60,6 +84,91 @@ theorem ds_ex {m : ℕ} (ε : Fin m → Bool) (lam : Fin m → ℝ) (hl : Formal
 
 end BaseIntegrality
 
+/- English proof (translation)
+Introduce `hFar hMod hFr n ε lam ε' mu e hG hW`. Establish `hl2 : ∀ i, ∃ z : ℤ, 2 * lam i = z` using `BaseIntegrality.two_mul_int hG.hc`. Establish `hm2 : ∀ j, ∃ z : ℤ, 2 * mu j = z` using `BaseIntegrality.two_mul_int hG.hc'`. Take `⟨B, hBd⟩ : ∃ B : ℝ, B = ∑ i, |lam i| + ∑ j, |mu j|` from `⟨_, rfl⟩`. Establish `hs1 : 0 ≤ ∑ i, |lam i|` using `Finset.sum_nonneg fun _ _ => abs_nonneg _`.
+
+Establish `hs2 : 0 ≤ ∑ j, |mu j|` using `Finset.sum_nonneg fun _ _ => abs_nonneg _`. Establish `hB0 : 0 ≤ B` using `by rw [hBd]; linarith`. Establish `hlB : ∀ i, |lam i| ≤ B` using `fun i => by`. Use `Finset.single_le_sum (f := fun i => |lam i|) (fun i _ => abs_nonneg _) (Finset.mem_univ i)` as an intermediate fact. Rewrite using `[hBd]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmB : ∀ j, |mu j| ≤ B` using `fun j => by`. Use `Finset.single_le_sum (f := fun j => |mu j|) (fun j _ => abs_nonneg _) (Finset.mem_univ j)` as an intermediate fact. Rewrite using `[hBd]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Take `⟨K, hKB⟩ : ∃ K : ℕ, 2 * B + 1 ≤ (K : ℝ)` from `⟨⌈2 * B + 1⌉₊, Nat.le_ceil _⟩`. Take `⟨d, hd⟩ : ∃ d : Fin (n + 1) → ℝ, d = fun i => 2 * lam i + K` from `⟨_, rfl⟩`. Take `⟨d', hd'⟩ : ∃ d' : Fin n → ℝ, d' = fun j => 2 * mu j + K` from `⟨_, rfl⟩`. Establish `hdi : ∀ i, d i = 2 * lam i + K` using `fun i => by rw [hd]`. Establish `hdj : ∀ j, d' j = 2 * mu j + K` using `fun j => by rw [hd']`.
+
+Establish `hv : ∀ x, Sum.elim d d' x = 2 * Sum.elim lam mu x + K`. Introduce and unpack `(x | x)`. Conclude with `hdi x`. Conclude with `hdj x`. Establish `hne : ∀ a b, lam a ≠ mu b` using `fun a b h => by`.
+
+Take `⟨x, hx⟩` from `hG.hc.2 a`. Take `⟨y, hy⟩` from `hG.hc'.2 b`. Establish `: ((2 * y : ℤ) : ℝ) = (2 * x + 1 : ℤ)` using `by push_cast at *; linarith`. Establish `: 2 * y = 2 * x + 1` using `by exact_mod_cast this`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hinj : Function.Injective (Sum.elim lam mu)`. Introduce and unpack `(x | x) (y | y) h`. Conclude with `congrArg _ (hG.hc.1.injective h)`. Conclude with `absurd h (hne _ _)`. Conclude with `absurd h.symm (hne _ _)`.
+
+Conclude with `congrArg _ (hG.hc'.1.injective h)`. Establish `hinjd : Function.Injective (Sum.elim d d')` using `fun x y h => hinj (by rw [hv, hv] at h; linarith)`. Establish `hWd : HeWord ε d ε' d'`. Introduce `x y h1 h2`. Simplify using `only [hv] at h1 h2`.
+
+Use `hW x y (by linarith) fun z hz => h2 z ⟨by linarith [hz.1], by linarith [hz.2]⟩` and prove the remaining obligations. Establish `hDint : ∀ x, ∃ z : ℤ, Sum.elim d d' x = z`. Introduce and unpack `(x | x)`. Take `⟨z, hz⟩` from `hl2 x`. Conclude with `⟨z + K, by simp only [Sum.elim_inl]; rw [hdi, hz]; push_cast; ring⟩`.
+
+Take `⟨z, hz⟩` from `hm2 x`. Conclude with `⟨z + K, by simp only [Sum.elim_inr]; rw [hdj, hz]; push_cast; ring⟩`. Establish `hd'1 : ∀ a b, a < b → 1 ≤ d' a - d' b` using `fun a b hab => by`. Establish `h1` using `hG.hc'.1 hab`. Take `⟨za, hza⟩` from `hm2 a`.
+
+Take `⟨zb, hzb⟩` from `hm2 b`. Use `BaseIntegrality.one_le_of_int_lt hzb hza (by linarith)` as an intermediate fact. Rewrite using `[hdj, hdj]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hdpos : ∀ i, 1 ≤ d i` using `fun i => by`.
+
+Rewrite using `[hdi]`. Use `abs_le.1 (hlB i)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hd'pos : ∀ j, 1 ≤ d' j` using `fun j => by`. Rewrite using `[hdj]`.
+
+Use `abs_le.1 (hmB j)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨g, hg, -⟩` from `hFr n ε d ε' d' e hG.fits hinjd hWd`. Take `⟨C, t₀, hFar'⟩` from `hFar n ε ε' e lam d d' g hG.fits hg hd'1`. Take `⟨M, hMge⟩ : ∃ M : ℕ, 2 * |C| + 2 * B + 100 * ((n : ℝ) + 1) ^ 3 + |t₀| + 1 ≤ (M : ℝ)` from `⟨_, Nat.le_ceil _⟩`.
+
+Take `⟨m, hmdef⟩ : ∃ m : ℝ, m = M` from `⟨_, rfl⟩`. Rewrite `hMge` using `[← hmdef]`. Establish `hC0 : 0 ≤ |C|` using `abs_nonneg C`. Establish `hn3 : (0 : ℝ) ≤ ((n : ℝ) + 1) ^ 3` using `by positivity`. Establish `hT0 : 0 ≤ |t₀|` using `abs_nonneg t₀`.
+
+Establish `hm1 : 1 ≤ m` using `by linarith`. Take `⟨t, ht⟩ : ∃ t : ℝ, t = ((M ^ 2 : ℕ) : ℝ)` from `⟨_, rfl⟩`. Establish `htm : t = m ^ 2` using `by rw [ht, hmdef]; push_cast; ring`. Establish `ht0 : 0 ≤ t` using `by rw [htm]; positivity`. Establish `hsq : Real.sqrt t = m` using `by rw [htm]; exact Real.sqrt_sq (by linarith)`.
+
+Establish `htt0 : t₀ ≤ t`. Establish `: m ≤ m ^ 2` using `by nlinarith`. Use `le_abs_self t₀` as an intermediate fact. Rewrite using `[htm]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hhc : Formalism.QuantumDeterminants.IsHCParam (lam + t • d)`. Use `⟨fun a b hab => ?_, fun a => ?_⟩` and prove the remaining obligations. Establish `h1` using `hG.hc.1 hab`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, hdi]`. Use polynomial arithmetic with `[mul_nonneg ht0 (le_of_lt (sub_pos.2 h1))]`.
+
+Take `⟨k, hk⟩` from `hG.hc.2 a`. Take `⟨z, hz⟩` from `hl2 a`. Use `⟨k + ((M ^ 2 : ℕ) : ℤ) * (z + K), ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hdi, hz, ht]`.
+
+Move the coercions through the operations in `at hk ⊢`. Take the linear combination `hk`. Establish `hgap2 : Formalism.QuantumDeterminants.GapAtLeast ε (lam + t • d) (200 * ((n : ℝ) + 1) ^ 3)`. Introduce `a b hab`. Establish `h1` using `hG.gap a b hab`.
+
+Establish `e1 : (lam + t • d) a - (lam + t • d) b = (lam a - lam b) * (1 + 2 * t)`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, hdi]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, abs_mul, abs_of_pos (by linarith : (0 : ℝ) < 1 + 2 * t)]`. Use polynomial arithmetic with `[mul_nonneg (abs_nonneg (lam a - lam b)) ht0]`.
+
+Establish `hgapL : GapAtLeast ε (lam + t • d) (200 * ((n : ℝ) + 1) ^ 3)` using `hgap2`. Establish `hn0 : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Take `⟨Hπ, i1, i2, π, hπ⟩` from `BaseIntegrality.ds_ex ε (lam + t • d) hhc _ hgap2 (by push_cast; nlinarith)`. Establish `: CompleteSpace Hπ` using `hπ.1`. Take `⟨mu', hmc, hmb, hocc⟩` from `hFar' t htt0 hhc hgapL Hπ π hπ`.
+
+Establish `hmb' : ∀ j, |mu' j - t * d' j| ≤ |C| * m` using `fun j => by`. Use `hmb j` as an intermediate fact. Rewrite `this` using `[hsq]`. Conclude with `this.trans (mul_le_mul_of_nonneg_right (le_abs_self C) (by linarith))`. Establish `hgap' : Formalism.QuantumDeterminants.GapAtLeast ε' mu' (200 * ((n : ℝ) + 1) ^ 3)`.
+
+Introduce `a b hab`. Establish `hab' : a ≠ b` using `fun h => hab (by rw [h])`. Take `⟨za, hza⟩` from `hm2 a`. Take `⟨zb, hzb⟩` from `hm2 b`. Establish `hd2 : 2 ≤ |d' a - d' b|`.
+
+Establish `e0 : d' a - d' b = 2 * (mu a - mu b)` using `by rw [hdj, hdj]; ring`. Rewrite using `[e0, abs_mul, abs_two]`. Combine the linear relations using `[BaseIntegrality.one_le_abs_sub hG.hc' hab']`. Establish `e1` using `hmb' a`. Establish `e2` using `hmb' b`.
+
+Establish `e3 : |t * (d' a - d' b)| ≤ |mu' a - mu' b| + |mu' a - t * d' a| + |mu' b - t * d' b|`. Establish `: t * (d' a - d' b) = (mu' a - mu' b) - (mu' a - t * d' a) + (mu' b - t * d' b)` using `by ring`. Rewrite using `[this]`. Conclude with `(abs_add_le _ _).trans (add_le_add (abs_sub _ _) le_rfl)`. Rewrite `e3` using `[abs_mul, abs_of_nonneg ht0]`.
+
+Establish `e4 : 2 * t ≤ t * |d' a - d' b|` using `by nlinarith`. Establish `e5 : m * (|C| + 100 * ((n : ℝ) + 1) ^ 3) ≤ m * m` using `mul_le_mul_of_nonneg_left (by linarith) (by linarith)`. Establish `e6 : 100 * ((n : ℝ) + 1) ^ 3 ≤ m * (100 * ((n : ℝ) + 1) ^ 3)` using `le_mul_of_one_le_left (by positivity) hm1`. Rewrite `e4` using `[htm]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Take `⟨Hσ, j1, j2, σ, hσ⟩` from `BaseIntegrality.ds_ex ε' mu' hmc _ hgap' (by nlinarith)`. Establish `: CompleteSpace Hσ` using `hσ.1`. Take `⟨j, hj0, hj⟩` from `hocc Hσ σ hσ`. Establish `hGp : Gp ε (lam + t • d) ε' mu' e` using `{ fits := hG.fits, two := hG.two, neg := hG.neg, le := hG.le, hc := hhc, hc' := hmc, gap := hgap2, gap' := hgap' }`. Establish `hOcc` using `(hMod n ε (lam + t • d) ε' mu' e hGp).1 ⟨Hπ, Hσ, i1, i2, j1, j2, π, σ, hπ, hσ, j, hj0, hj⟩`.
+
+Take `⟨Wf, hWf⟩ : ∃ Wf : Fin (n + 1) ⊕ Fin n → ℝ, Wf = Sum.elim (fun i => t * d i) (fun j => mu' j - mu j)` from `⟨_, rfl⟩`. Establish `hWint : ∀ x, ∃ z : ℤ, Wf x = z`. Introduce and unpack `(i | j)`. Take `⟨z, hz⟩` from `hl2 i`. Conclude with `⟨((M ^ 2 : ℕ) : ℤ) * (z + K), by rw [hWf]; simp only [Sum.elim_inl]; rw [hdi, hz, ht]; push_cast; ring⟩`.
+
+Take `⟨z, hz⟩` from `BaseIntegrality.diff_int hG.hc' hmc j`. Conclude with `⟨z, by rw [hWf]; simp only [Sum.elim_inr]; exact hz⟩`. Establish `hr : ∀ x, |Wf x - t * Sum.elim d d' x| ≤ |C| * m + B`. Introduce and unpack `(i | j)`. Rewrite using `[hWf]`.
+
+Simplify using `only [Sum.elim_inl, sub_self, abs_zero]`. Check the signs of the components of the expression. Rewrite using `[hWf]`. Simplify using `only [Sum.elim_inr]`. Establish `h1` using `hmb' j`.
+
+Establish `h2` using `hmB j`. Establish `: mu' j - mu j - t * d' j = (mu' j - t * d' j) - mu j` using `by ring`. Rewrite using `[this]`. Conclude with `(abs_sub _ _).trans (add_le_add h1 h2)`. Establish `hDge : ∀ x, t ≤ t * Sum.elim d d' x`.
+
+Introduce and unpack `(i | j)`. Simplify using `only [Sum.elim_inl]`. Use polynomial arithmetic with `[hdpos i]`. Simplify using `only [Sum.elim_inr]`. Use polynomial arithmetic with `[hd'pos j]`.
+
+Establish `hm2' : m * (|C| + B + 1) ≤ m * m` using `mul_le_mul_of_nonneg_left (by linarith) (by linarith)`. Establish `hBm : B ≤ B * m` using `le_mul_of_one_le_right hB0 hm1`. Establish `hWnn : ∀ x, 0 ≤ Wf x`. Introduce `x`. Establish `h1` using `hr x`.
+
+Establish `h2` using `hDge x`. Establish `h3` using `(abs_le.1 h1).1`. Rewrite `h2` using `[htm]`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨a, ha⟩ : ∃ a : Fin (n + 1) ⊕ Fin n → ℕ, a = fun x => ⌊Wf x⌋₊` from `⟨_, rfl⟩`.
+
+Establish `haW : ∀ x, (a x : ℝ) = Wf x` using `fun x => by`. Take `⟨z, hz⟩` from `hWint x`. Rewrite using `[ha]`. Conclude with `BaseIntegrality.floor_eq hz (hWnn x)`. Use `⟨a, fun x y hxy => ?_, ?_⟩` and prove the remaining obligations.
+
+Break down `hxy.eq_or_lt with h | h` into its components or cases. Rewrite using `[hinj h]`. Establish `hlt : Sum.elim d d' x < Sum.elim d d' y` using `by rw [hv, hv]; linarith`. Take `⟨zx, hzx⟩` from `hDint x`. Take `⟨zy, hzy⟩` from `hDint y`.
+
+Establish `h1` using `BaseIntegrality.one_le_of_int_lt hzx hzy hlt`. Establish `h2` using `(abs_le.1 (hr x)).2`. Establish `h3` using `(abs_le.1 (hr y)).1`. Establish `h4 : t ≤ t * Sum.elim d d' y - t * Sum.elim d d' x`. Use `mul_le_mul_of_nonneg_left h1 ht0` as an intermediate fact.
+
+Rewrite `this` using `[mul_one, mul_sub]`. Conclude with `this`. Establish `h5 : m * (2 * |C| + 2 * B + 1) ≤ m * m` using `mul_le_mul_of_nonneg_left (by linarith) (by linarith)`. Establish `e5 : m * (2 * |C| + 2 * B + 1) = 2 * (|C| * m) + 2 * (B * m) + m` using `by ring`. Establish `hkey : 2 * (|C| * m) + 2 * B ≤ t`.
+
+Rewrite using `[htm, sq]`. Rewrite `h5` using `[e5]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hreal : (a x : ℝ) ≤ (a y : ℝ)`. Rewrite using `[haW, haW]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `Nat.cast_le.mp hreal`. Establish `e1 : (lam + fun i => (a (Sum.inl i) : ℝ)) = lam + t • d` using `funext fun i => by`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[haW, hWf]`.
+
+Simplify using `only [Sum.elim_inl]`. Establish `e2 : (mu + fun j => (a (Sum.inr j) : ℝ)) = mu'` using `funext fun j => by`. Simplify using `only [Pi.add_apply]`. Rewrite using `[haW, hWf]`. Simplify using `only [Sum.elim_inr]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2]`. Conclude with `hOcc`.
+-/
 theorem base_of_far_models_frame : Far → Models → Frame → Base := by
   intro hFar hMod hFr n ε lam ε' mu e hG hW
   have hl2 : ∀ i, ∃ z : ℤ, 2 * lam i = z := BaseIntegrality.two_mul_int hG.hc

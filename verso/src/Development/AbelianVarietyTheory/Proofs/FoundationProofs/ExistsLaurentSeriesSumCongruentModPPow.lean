@@ -9,6 +9,15 @@ noncomputable section
 
 namespace GlobalTheory.GeoFix
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (AdicCompletion.evalₐ (pI p) K x)`. Establish `hker : RingHom.ker (AdicCompletion.evalₐ (pI p) K) = (pI p ^ K).map (algebraMap (Lau p) (O0 p))`. Use extensionality with `y`. Rewrite using `[RingHom.mem_ker, ← Submodule.restrictScalars_mem (Lau p), ← Ideal.smul_top_eq_map, AdicCompletion.pow_smul_top_eq_ker_eval (Submodule.fg_span_singleton _), LinearMap.mem_ker]`. Establish `hle : (pI p ^ K • ⊤ : Ideal (Lau p)) ≤ pI p ^ K` using `by intro z hz; simpa using hz`.
+
+Rewrite using `[← AdicCompletion.factor_eval_eq_evalₐ (pI p) y hle]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨b, hb⟩` from `Submodule.Quotient.mk_surjective _ (AdicCompletion.eval (pI p) (Lau p) K y)`. Rewrite `h`, the goal using `[← hb]`.
+
+Establish `: b ∈ pI p ^ K` using `Ideal.Quotient.eq_zero_iff_mem.mp h`. Conclude with `(Submodule.Quotient.mk_eq_zero _).mpr (by simpa using this)`. Introduce `h`. Rewrite using `[h, map_zero]`. Establish `hmem : x - algebraMap (Lau p) (O0 p) a ∈ RingHom.ker (AdicCompletion.evalₐ (pI p) K)`.
+
+Rewrite using `[RingHom.mem_ker, map_sub, AlgHom.commutes, Ideal.Quotient.algebraMap_eq, ha, sub_self]`. Rewrite `hmem` using `[hker, Ideal.span_singleton_pow, Ideal.map_span, Set.image_singleton, map_pow, map_natCast, Ideal.mem_span_singleton']`. Take `⟨c, hc⟩` from `hmem`. Conclude with `⟨a, c, by rw [mul_comm, hc]; ring⟩`.
+-/
 theorem exists_lau_approx (p : ℕ) [Fact p.Prime] (K : ℕ) (x : O0 p) :
     ∃ (a : Lau p) (c : O0 p), x = algebraMap (Lau p) (O0 p) a + (p : O0 p) ^ K * c := by
   obtain ⟨a, ha⟩ := Ideal.Quotient.mk_surjective (AdicCompletion.evalₐ (pI p) K x)
@@ -32,6 +41,11 @@ theorem exists_lau_approx (p : ℕ) [Fact p.Prime] (K : ℕ) (x : O0 p) :
   obtain ⟨c, hc⟩ := hmem
   exact ⟨a, c, by rw [mul_comm, hc]; ring⟩
 
+/- English proof (translation)
+Introduce `p _ Ω _ _ T n ψ h d e b he K`. Use `choose a c hac using fun t => exists_lau_approx p K (b t)`. Use `⟨a, ∑ t, e t * ψ (c t), IsIntegral.sum _ fun t _ => IsIntegral.mul (he t) (isInt_psi h (c t)), ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.sum_sub_distrib, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hac t, map_add, map_mul, map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_cong_lau : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra (O0 p) Ω] (T : Tower p Ω) (n : ℕ) (ψ : O0 p →+* Ω), IsReb T n ψ → ∀ (d : ℕ) (e : Fin d → Ω) (b : Fin d → O0 p), (∀ t, IsInt p (e t)) → ∀ K : ℕ, ∃ a : Fin d → Lau p, Cong p K (∑ t, e t * ψ (b t)) (∑ t, e t * ψ (algebraMap (Lau p) (O0 p) (a t))) := by
   intro p _ Ω _ _ T n ψ h d e b he K
   choose a c hac using fun t => exists_lau_approx p K (b t)

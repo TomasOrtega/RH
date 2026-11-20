@@ -9,6 +9,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `G _ _ _ _ Γ _ μ _ 𝓕 h𝓕 k hk f hf hi`. Establish `hmp : MeasurePreserving (fun g : G => g * k) μ μ` using `⟨measurable_mul_const k, hk⟩`. Establish `hemb : MeasurableEmbedding (fun g : G => g * k)` using `measurableEmbedding_mulRight k`. Establish `h2 : IsFundamentalDomain Γ ((fun g : G => g * k) ⁻¹' 𝓕) μ`. Use `h𝓕.preimage_of_equiv hmp.quasiMeasurePreserving (e := id) Function.bijective_id ?_` and prove the remaining obligations.
+
+Introduce `γ g`. Simplify using `only [id, Subgroup.smul_def, smul_eq_mul, mul_assoc]`. Establish `hinv : ∀ (γ : Γ) (g : G), (fun g : G => f (g * k)) (γ • g) = (fun g : G => f (g * k)) g`. Introduce `γ g`. Simplify using `only [Subgroup.smul_def, smul_eq_mul, mul_assoc]`.
+
+Conclude with `hf γ γ.2 _`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h𝓕.integrableOn_iff h2 hinv]`. Conclude with `(hmp.integrableOn_comp_preimage hemb).2 hi`. Rewrite using `[h𝓕.setIntegral_eq h2 hinv]`.
+
+Conclude with `hmp.setIntegral_preimage_emb hemb f 𝓕`.
+-/
 theorem fundamentalDomain_setIntegral_mul_right :
     ∀ {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul₂ G] [MeasurableInv G] (Γ : Subgroup G) [Countable Γ] (μ : Measure G) [μ.IsMulLeftInvariant] (𝓕 : Set G), IsFundamentalDomain Γ 𝓕 μ → ∀ k : G, Measure.map (fun g => g * k) μ = μ → ∀ f : G → ℂ, (∀ γ ∈ Γ, ∀ g, f (γ * g) = f g) → IntegrableOn f 𝓕 μ → IntegrableOn (fun g => f (g * k)) 𝓕 μ ∧ ∫ g in 𝓕, f (g * k) ∂μ = ∫ g in 𝓕, f g ∂μ := by
   intro G _ _ _ _ Γ _ μ _ 𝓕 h𝓕 k hk f hf hi

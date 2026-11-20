@@ -17,6 +17,11 @@ namespace GlobalTheory.GalLoc.EigLoc
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `⟨⟨D, cf, jE, A, cg, au, rep, row, low, Pq, S, hk, eig, θ, Bs, M, C, tp, ch, mt, big, L, Sp, Au, ss, eq⟩, pack⟩` from `nt`. Substitute `eq` using the available equality. Take `⟨-, h2⟩` from `Sigma.mk.inj_iff.mp pack`. Take `⟨hcf, -⟩` from `Sigma.mk.inj_iff.mp (eq_of_heq h2)`. Substitute `hcf` using the available equality.
+
+Establish `hr : rep = rep'` using `eq_of_heq hrep`. Substitute `hr` using the available equality. Set `T : GlobalTheory.RowTie.WDTie (withLoc L).nd (withLoc L).naut` to `{ A.wdT with }`. Set `Rw : RowSide (withLoc L)` to `{ A.row with }`. Use `⟨Rw, HEq.rfl, ⟨{ T := T, lab := A.lab, chr := { A.chr with }, cg := { cg with }, A := { A.au with }, au := au, row := row }⟩⟩` and prove the remaining obligations.
+-/
 theorem parIn_loc {hL : GlobalTheory.Published.LocalLanglandsGL} {D' : D7} {cf' : CharFrame D'} {C' : NChoice D'}
     {tp' : TupTied D' cf' C'} (nt : NTrue hL D' cf' C' tp') (rep' : D'.what₂.FT → NG.FinTyp D'.host.E D'.R.r)
     (hrep : HEq nt.rep rep') :
@@ -34,6 +39,15 @@ theorem parIn_loc {hL : GlobalTheory.Published.LocalLanglandsGL} {D' : D7} {cf' 
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `⟨⟨D, cf, jE, A, cg, au, rep, row, low, Pq, S, hk, eig, θ, Bs, M, C, tp, ch, mt, big, L, Sp, Au, ss, eq⟩, pack⟩` from `nt`. Substitute `eq` using the available equality. Take `⟨-, h2⟩` from `Sigma.mk.inj_iff.mp pack`. Take `⟨hcf, -⟩` from `Sigma.mk.inj_iff.mp (eq_of_heq h2)`. Substitute `hcf` using the available equality.
+
+Establish `e1 : ratL L S = S'` using `eq_of_heq hS`. Substitute `e1` using the available equality. Establish `e2 : hk = hL'` using `eq_of_heq hh`. Substitute `e2` using the available equality. Establish `e3 : θ = θ'` using `eq_of_heq hθ`.
+
+Substitute `e3` using the available equality. Establish `e4 : eig = e` using `eq_of_heq he`. Substitute `e4` using the available equality. Use `⟨Sb, hS0, fun Rw hRw => ?_, hO⟩` and prove the remaining obligations. Establish `e5 : Rw.locR = Rw0.locR` using `(eq_of_heq hRw).trans (eq_of_heq hR0).symm`.
+
+Unfold `GlobalTheory.TwInputs.EigTrue at hT ⊢`. Rewrite using `[e5]`. Conclude with `hT`.
+-/
 theorem transport {hL : GlobalTheory.Published.LocalLanglandsGL} {D' : D7} {cf' : CharFrame D'} {C' : NChoice D'}
     {tp' : TupTied D' cf' C'} (nt : NTrue hL D' cf' C' tp') (Sb : Finset (PlE D'.host)) (hS0 : ∀ i, Sb ⊆ D'.ntw.S0 i)
     (e : ℕ → D'.what₂.FT → ℕ → PlE D'.host → ↥D'.LL0) (he : HEq nt.eig e)
@@ -71,6 +85,15 @@ namespace GlobalTheory.GalLoc.EigLoc
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `hN hS hL`. Establish `h2 : PrN → SerN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL fun _ _ _ _ w Z _ _ t _ _ c => ∀ Sb : Finset (PlE (w.D Z).host), (∀ i, Sb ⊆ (w.D Z).ntw.S0 i) → ∃ Sb' : Finset (PlE (w.D Z).host), Sb ⊆ Sb' ∧ (∀ i, Sb' ⊆ (w.D Z).ntw.S0 i) ∧ GlobalTheory.TwInputs.Eig.Low ( …` using `GlobalTheory.T.exists_enlarged_hecke_set`. Establish `h3 : PrN → SerN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL fun _ _ _ _ w Z _ _ t _ _ c => ∃ θ : ∀ kk : Fin 2, Multiplicative (ZMod ((w.D Z).host.g kk)) →* (↥(w.D Z).LL0)ˣ, HEq θ c.a.nt.θ ∧ GlobalTheory.HeightCounting.RatSide.LvlPsi t.r.z.R t.r.z.F t.r.z.cG θ` using `GlobalTheory.T.level_character_of_local_langlands`. Use `GlobalTheory.GalLoc.atMem_imp (GlobalTheory.GalLoc.atMem_and (h2 hN hS hL) (h3 hN hS hL)) ?_` and prove the remaining obligations. Introduce `K B f T w Z Wt p0 t nch n xd c hE H`.
+
+Take `⟨H2, H3⟩` from `H`. Take `⟨e⟩` from `hE`. Establish `e' : NMore (D` using `(w.st Z).toD7) c.row t.r.z.geo xd := e`. Take `⟨Sb, eg, hSb, heq, hAd⟩` from `e'.eig`. Take `⟨Sb', hsub, hS0, hlow, hrd⟩` from `H2 Sb hSb`.
+
+Take `⟨θ, hθ, hψ⟩` from `H3`. Take `⟨Rw0, hRw0, ⟨hpar⟩⟩` from `parIn_loc c.a.nt _ c.row.rep_eq`. Establish `hT` using `GlobalTheory.TwInputs.Eig.eigTrue hL t.r.Y t.r.z.pins.char.base.lev hpar.T Rw0 hpar.row hAd hsub hlow`. Establish `hO` using `GlobalTheory.TwInputs.Eig.eigOcc t.r.Y t.r.z.pins.char.base.lev t.r.intersectionNumber_baseChange.prim.unif t.r.z.pins.char.base.models.HW t.r.z.good.2 hψ hAd hsub hlow hrd`. Rewrite `hT` using `[t.r.z.lev.C]`.
+
+Conclude with `transport c.a.nt Sb' hS0 eg heq _ c.row.S_eq _ c.row.hL_eq θ hθ.symm Rw0 hRw0 hT hO`.
+-/
 theorem eig_at : PrN → SerN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL fun _ _ _ _ w Z _ _ t nch n c =>
     ∃ Sb : Finset (PlE c.a.nt.D.host), (∀ i, Sb ⊆ (withLoc c.a.nt.L).ntw.S0 i) ∧ (∀ Rw : RowSide (withLoc c.a.nt.L), HEq Rw.locR c.a.nt.A.row.locR → GlobalTheory.TwInputs.EigTrue (withLoc c.a.nt.L) (cfL c.a.nt.L c.a.nt.cf) Rw Sb c.a.nt.eig) ∧ GlobalTheory.TwInputs.EigOcc (withLoc c.a.nt.L) ({ c.a.nt.S with } : RatDat (withLoc c.a.nt.L).ntw) c.a.nt.θ c.a.nt.hL Sb c.a.nt.eig := by
   intro hN hS hL

@@ -13,6 +13,9 @@ section Series
 
 variable {R : Type*} [CommRing R]
 
+/- English proof (translation)
+Rewrite using `[subst_coe (HasSubst.of_constantCoeff_zero' (by rw [Polynomial.constantCoeff_coe, hq])), Polynomial.comp_eq_aeval]`. Establish `h` using `Polynomial.aeval_algHom_apply (Polynomial.coeToPowerSeries.algHom R) q p`. Simplify using `only [Polynomial.coeToPowerSeries.algHom_apply, Algebra.algebraMap_self, map_id] at h`. Conclude with `h.symm`.
+-/
 theorem coe_comp_eq_subst (p q : Polynomial R) (hq : q.coeff 0 = 0) :
     ((p.comp q : Polynomial R) : R⟦X⟧) = subst (q : R⟦X⟧) (p : R⟦X⟧) := by
   rw [subst_coe (HasSubst.of_constantCoeff_zero' (by rw [Polynomial.constantCoeff_coe, hq])),
@@ -21,11 +24,17 @@ theorem coe_comp_eq_subst (p q : Polynomial R) (hq : q.coeff 0 = 0) :
   simp only [Polynomial.coeToPowerSeries.algHom_apply, Algebra.algebraMap_self, map_id] at h
   exact h.symm
 
+/- English proof (translation)
+Use extensionality with `n`. Simplify using the standard rewrite rules.
+-/
 theorem map_coe_polynomial {S : Type*} [CommRing S] (φ : R →+* S) (p : Polynomial R) :
     PowerSeries.map φ (p : R⟦X⟧) = ((p.map φ : Polynomial S) : S⟦X⟧) := by
   ext n
   simp
 
+/- English proof (translation)
+Establish `hs` using `HasSubst.of_constantCoeff_zero' hG`. Use `conv_lhs => rw [F.eq_X_mul_shift_add_const]`. Rewrite using `[← coe_substAlgHom hs, map_add, map_mul, coe_substAlgHom hs, subst_X hs, subst_C]`. Express the relevant statement in the definitionally equal form `constantCoeff (G * _ + PowerSeries.C _) = _`. Rewrite using `[map_add, map_mul, hG, zero_mul, zero_add, constantCoeff_C]`.
+-/
 theorem constantCoeff_subst_of_constantCoeff_eq_zero {G : R⟦X⟧} (hG : constantCoeff G = 0)
     (F : R⟦X⟧) : constantCoeff (subst G F : R⟦X⟧) = constantCoeff F := by
   have hs := HasSubst.of_constantCoeff_zero' hG
@@ -34,6 +43,9 @@ theorem constantCoeff_subst_of_constantCoeff_eq_zero {G : R⟦X⟧} (hG : consta
   change constantCoeff (G * _ + PowerSeries.C _) = _
   rw [map_add, map_mul, hG, zero_mul, zero_add, constantCoeff_C]
 
+/- English proof (translation)
+Take `⟨W', rfl⟩` from `PowerSeries.X_dvd_iff.mpr hW`. Establish `hs` using `HasSubst.of_constantCoeff_zero' hG`. Use `⟨subst G W', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← coe_substAlgHom hs, map_mul, coe_substAlgHom hs, subst_X hs]`. Rewrite using `[constantCoeff_subst_of_constantCoeff_eq_zero hG, ← coeff_zero_eq_constantCoeff_apply, ← coeff_succ_X_mul]`.
+-/
 theorem exists_subst_eq_mul {G W : R⟦X⟧} (hG : constantCoeff G = 0) (hW : constantCoeff W = 0) :
     ∃ V : R⟦X⟧, (subst G W : R⟦X⟧) = G * V ∧ constantCoeff V = coeff 1 W := by
   obtain ⟨W', rfl⟩ := PowerSeries.X_dvd_iff.mpr hW
@@ -50,6 +62,9 @@ section Iterates
 variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
   {π : 𝒪[K]}
 
+/- English proof (translation)
+Establish `hq` using `one_lt_card_residueField' K`. Rewrite using `[ltPolyIter_succ, ltPoly, ltEisenstein, Polynomial.add_comp, Polynomial.mul_comp, Polynomial.C_comp, Polynomial.X_comp, Polynomial.X_pow_comp, mul_add, ← pow_succ', Nat.sub_add_cancel hq.le]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ltPolyIter_succ_eq_mul (π : 𝒪[K]) (k : ℕ) :
     ltPolyIter π (k + 1) = ltPolyIter π k * ltEisenstein π k := by
   have hq := one_lt_card_residueField' K
@@ -60,6 +75,9 @@ theorem ltPolyIter_succ_eq_mul (π : 𝒪[K]) (k : ℕ) :
 
 variable (hπ : Irreducible π)
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero`. Rewrite using `[pow_zero, lubinTateHom_self_one, Hom.toPowerSeries_id, ltPolyIter_zero, Polynomial.coe_X]`. Consider the case `succ k ih`. Rewrite using `[ltPolyIter_succ, coe_comp_eq_subst _ _ (coeff_zero_ltPolyIter π k), ih, pow_succ', lubinTateHom_mul hπ (isLubinTateSeries_ltPoly π) (isLubinTateSeries_ltPoly π) (isLubinTateSeries_ltPoly π), Hom.toPowerSeries_comp, lubinTateHom_self_uniformizer]`.
+-/
 theorem coe_ltPolyIter (k : ℕ) :
     ((ltPolyIter π k : Polynomial 𝒪[K]) : 𝒪[K]⟦X⟧) =
       (lubinTateHom hπ (isLubinTateSeries_ltPoly π) (isLubinTateSeries_ltPoly π)
@@ -80,25 +98,43 @@ def ltSeries (a : 𝒪[K]) : B⟦X⟧ :=
 
 variable {B}
 
+/- English proof (translation)
+Rewrite using `[ltSeries, powerSeries_constantCoeff_map, Hom.constantCoeff_eq_zero, map_zero]`.
+-/
 theorem constantCoeff_ltSeries (a : 𝒪[K]) : constantCoeff (ltSeries hπ B a) = 0 := by
   rw [ltSeries, powerSeries_constantCoeff_map, Hom.constantCoeff_eq_zero, map_zero]
 
+/- English proof (translation)
+Rewrite using `[ltSeries, coeff_map, coeff_one_lubinTateHom]`.
+-/
 theorem coeff_one_ltSeries (a : 𝒪[K]) : coeff 1 (ltSeries hπ B a) = algebraMap 𝒪[K] B a := by
   rw [ltSeries, coeff_map, coeff_one_lubinTateHom]
 
+/- English proof (translation)
+Rewrite using `[ltSeries, ltSeries, ltSeries, lubinTateHom_mul hπ (isLubinTateSeries_ltPoly π) (isLubinTateSeries_ltPoly π) (isLubinTateSeries_ltPoly π), Hom.toPowerSeries_comp]`. Conclude with `(map_subst (HasSubst.of_constantCoeff_zero' (Hom.constantCoeff_eq_zero _)) _).symm`.
+-/
 theorem subst_ltSeries (a b : 𝒪[K]) :
     (subst (ltSeries hπ B b) (ltSeries hπ B a) : B⟦X⟧) = ltSeries hπ B (a * b) := by
   rw [ltSeries, ltSeries, ltSeries, lubinTateHom_mul hπ (isLubinTateSeries_ltPoly π)
     (isLubinTateSeries_ltPoly π) (isLubinTateSeries_ltPoly π), Hom.toPowerSeries_comp]
   exact (map_subst (HasSubst.of_constantCoeff_zero' (Hom.constantCoeff_eq_zero _)) _).symm
 
+/- English proof (translation)
+The claim follows from `powerSeries_map_sigma_map_algebraMap φ _`.
+-/
 theorem map_ltSeries (φ : B →ₐ[𝒪[K]] B) (a : 𝒪[K]) :
     PowerSeries.map (φ : B →+* B) (ltSeries hπ B a) = ltSeries hπ B a :=
   powerSeries_map_sigma_map_algebraMap φ _
 
+/- English proof (translation)
+Rewrite using `[ltSeries, lubinTateHom_self_one, Hom.toPowerSeries_id, map_X]`.
+-/
 theorem ltSeries_one : ltSeries hπ B 1 = X := by
   rw [ltSeries, lubinTateHom_self_one, Hom.toPowerSeries_id, map_X]
 
+/- English proof (translation)
+Rewrite using `[ltSeries, ← coe_ltPolyIter hπ, map_coe_polynomial]`.
+-/
 theorem ltSeries_uniformizer_pow (k : ℕ) :
     ltSeries hπ B (π ^ k) = (((ltPolyIter π k).map (algebraMap 𝒪[K] B) : Polynomial B) : B⟦X⟧) := by
   rw [ltSeries, ← coe_ltPolyIter hπ, map_coe_polynomial]
@@ -119,10 +155,16 @@ abbrev ltEisB (m : ℕ) : Polynomial B :=
 
 variable (π B) in
 omit [IsDomain B] [IsDiscreteValuationRing B] in
+/- English proof (translation)
+The claim follows from `(ltEisenstein_monic π m).1.map _`.
+-/
 theorem monic_ltEisB (m : ℕ) : (ltEisB π B m).Monic :=
   (ltEisenstein_monic π m).1.map _
 
 omit [IsDomain B] [IsDiscreteValuationRing B] in
+/- English proof (translation)
+Rewrite using `[ltEisB, ltEisenstein, Polynomial.map_add, Polynomial.map_C, Polynomial.map_pow]`.
+-/
 theorem ltEisB_eq (m : ℕ) :
     ltEisB π B m = Polynomial.C (algebraMap 𝒪[K] B π) +
       ((ltPolyIter π m).map (algebraMap 𝒪[K] B)) ^ (Nat.card 𝓀[K] - 1) := by
@@ -130,6 +172,9 @@ theorem ltEisB_eq (m : ℕ) :
 
 include hπ hunr in
 
+/- English proof (translation)
+Establish `hmon` using `(ltEisenstein_monic π m).1`. Use `⟨⟨fun {n} hn => ?_⟩, hmon.map _⟩` and prove the remaining obligations. Rewrite `hn` using `[hmon.natDegree_map]`. Rewrite using `[Polynomial.coeff_map, ← hunr]`. Conclude with `Ideal.mem_map_of_mem _ ((isEisensteinAt_ltEisenstein hπ m).mem hn)`.
+-/
 theorem isDistinguishedAt_ltEisB (m : ℕ) : (ltEisB π B m).IsDistinguishedAt (maximalIdeal B) := by
   have hmon := (ltEisenstein_monic π m).1
   refine ⟨⟨fun {n} hn => ?_⟩, hmon.map _⟩
@@ -139,6 +184,9 @@ theorem isDistinguishedAt_ltEisB (m : ℕ) : (ltEisB π B m).IsDistinguishedAt (
 
 include hπ hunr in
 
+/- English proof (translation)
+Establish `hπB` using `irreducible_algebraMap hunr hπ`. Conclude with `(mul_eq_zero.mp h).resolve_left hπB.ne_zero`.
+-/
 theorem algebraMap_uniformizer_mul_eq_zero {c : B} (h : algebraMap 𝒪[K] B π * c = 0) : c = 0 := by
   have hπB := irreducible_algebraMap hunr hπ
   exact (mul_eq_zero.mp h).resolve_left hπB.ne_zero
@@ -149,6 +197,11 @@ section Coordinates
 
 variable {B : Type*} [CommRing B] {P : Polynomial B}
 
+/- English proof (translation)
+Establish `hTz : T z = ∑ j, ψ (pb.basis.repr z j) • pb.basis j` using `by conv_lhs => rw [← pb.basis.sum_repr z]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul, PowerBasis.coe_basis, map_pow, hgen, AdjoinRoot.algebraMap_eq, hof, hroot]`. Rewrite using `[hTz, map_sum]`.
+
+Simplify using `only [map_smul, Module.Basis.repr_self, Finsupp.coe_finsetSum, Finset.sum_apply, Finsupp.smul_apply, Finsupp.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+-/
 theorem repr_ringHom_eq (T : AdjoinRoot P →+* AdjoinRoot P) (ψ : B → B)
     (hof : ∀ b : B, T (AdjoinRoot.of P b) = AdjoinRoot.of P (ψ b))
     (hroot : T (AdjoinRoot.root P) = AdjoinRoot.root P) (pb : PowerBasis B (AdjoinRoot P))
@@ -177,6 +230,9 @@ variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchi
 
 include hπ hunr
 
+/- English proof (translation)
+Take `⟨V, hV, -⟩` from `exists_subst_eq_mul (constantCoeff_ltSeries hπ (π ^ (m + 1))) hF`. Rewrite using `[hV, map_mul, ltSeries_uniformizer_pow, ltPolyIter_succ_eq_mul, Polynomial.map_mul, Polynomial.coe_mul, map_mul, rootEval_self, mul_zero, zero_mul]`.
+-/
 theorem rootEval_subst_ltSeries_uniformizer_pow_succ {F : B⟦X⟧} (hF : constantCoeff F = 0) :
     rootEval (isDistinguishedAt_ltEisB hπ hunr m) (subst (ltSeries hπ B (π ^ (m + 1))) F) = 0 := by
   obtain ⟨V, hV, -⟩ := exists_subst_eq_mul (constantCoeff_ltSeries hπ (π ^ (m + 1))) hF
@@ -185,6 +241,9 @@ theorem rootEval_subst_ltSeries_uniformizer_pow_succ {F : B⟦X⟧} (hF : consta
 
 omit hπ hunr [IsDomain B] [IsDiscreteValuationRing B] [IsAdicComplete (maximalIdeal B) B] in
 
+/- English proof (translation)
+Establish `h : Polynomial.aeval (AdjoinRoot.root (ltEisB π B m)) (Polynomial.C (algebraMap 𝒪[K] B π) + ((ltPolyIter π m).map (algebraMap 𝒪[K] B)) ^ (Nat.card 𝓀[K] - 1)) = 0`. Rewrite using `[← ltEisB_eq, AdjoinRoot.aeval_eq, AdjoinRoot.mk_self]`. Rewrite `h` using `[map_add, Polynomial.aeval_C, map_pow]`. Rewrite using `[map_neg, eq_neg_of_add_eq_zero_right h]`. Both sides reduce to the same expression.
+-/
 theorem aeval_root_ltPolyIter_pow :
     Polynomial.aeval (AdjoinRoot.root (ltEisB π B m)) ((ltPolyIter π m).map (algebraMap 𝒪[K] B)) ^ (Nat.card 𝓀[K] - 1) =
       AdjoinRoot.of (ltEisB π B m) (-algebraMap 𝒪[K] B π) := by
@@ -198,6 +257,9 @@ theorem aeval_root_ltPolyIter_pow :
 
 omit [IsAdicComplete (maximalIdeal B) B] in
 
+/- English proof (translation)
+Establish `hq` using `one_lt_card_residueField' K`. Use `eq_zero_of_mul_eq_zero_of_pow_eq (monic_ltEisB π B m) (b := -algebraMap 𝒪[K] B π) (fun c hc => ?_) (by omega) (aeval_root_ltPolyIter_pow m) h` and prove the remaining obligations. Rewrite `hc` using `[neg_mul, neg_eq_zero]`. Conclude with `algebraMap_uniformizer_mul_eq_zero hπ hunr hc`.
+-/
 theorem eq_zero_of_aeval_root_ltPolyIter_mul {z : AdjoinRoot (ltEisB π B m)}
     (h : Polynomial.aeval (AdjoinRoot.root (ltEisB π B m)) ((ltPolyIter π m).map (algebraMap 𝒪[K] B)) * z = 0) : z = 0 := by
   have hq := one_lt_card_residueField' K
@@ -207,6 +269,9 @@ theorem eq_zero_of_aeval_root_ltPolyIter_mul {z : AdjoinRoot (ltEisB π B m)}
   rw [neg_mul, neg_eq_zero] at hc
   exact algebraMap_uniformizer_mul_eq_zero hπ hunr hc
 
+/- English proof (translation)
+Take `⟨V, hV, hV0⟩` from `exists_subst_eq_mul (constantCoeff_ltSeries hπ (π ^ m)) hW`. Rewrite `h` using `[hV, map_mul, ltSeries_uniformizer_pow, rootEval_coe, ← AdjoinRoot.aeval_eq]`. Establish `hu : IsUnit (rootEval (isDistinguishedAt_ltEisB hπ hunr m) V)` using `isUnit_rootEval _ (hV0 ▸ hW1)`. Establish `h'` using `eq_zero_of_aeval_root_ltPolyIter_mul hπ hunr m (z := rootEval (isDistinguishedAt_ltEisB hπ hunr m) V * z) (by rw [← mul_assoc, h])`. Conclude with `(hu.mul_right_eq_zero).mp h'`.
+-/
 theorem eq_zero_of_rootEval_subst_mul {W : B⟦X⟧} (hW : constantCoeff W = 0)
     (hW1 : IsUnit (coeff 1 W)) {z : AdjoinRoot (ltEisB π B m)}
     (h : rootEval (isDistinguishedAt_ltEisB hπ hunr m) (subst (ltSeries hπ B (π ^ m)) W) * z = 0) : z = 0 := by
@@ -216,6 +281,11 @@ theorem eq_zero_of_rootEval_subst_mul {W : B⟦X⟧} (hW : constantCoeff W = 0)
   have h' := eq_zero_of_aeval_root_ltPolyIter_mul hπ hunr m (z := rootEval (isDistinguishedAt_ltEisB hπ hunr m) V * z) (by rw [← mul_assoc, h])
   exact (hu.mul_right_eq_zero).mp h'
 
+/- English proof (translation)
+Establish `hs` using `constantCoeff_ltSeries (B := B) hπ a`. Establish `h1 : Polynomial.aeval (rootEval (isDistinguishedAt_ltEisB hπ hunr m) (ltSeries hπ B a)) ((ltPolyIter π (m + 1)).map (algebraMap 𝒪[K] B)) = 0`. Rewrite using `[← rootEval_subst_coe _ hs, ← ltSeries_uniformizer_pow hπ, subst_ltSeries, mul_comm, ← subst_ltSeries]`. Conclude with `rootEval_subst_ltSeries_uniformizer_pow_succ hπ hunr m hs`. Establish `h2 : Polynomial.aeval (rootEval (isDistinguishedAt_ltEisB hπ hunr m) (ltSeries hπ B a)) ((ltPolyIter π m).map (algebraMap 𝒪[K] B)) = rootEval (isDistinguishedAt_ltEisB hπ hunr m) (subst (ltSeries hπ B (π ^ m)) (ltSeries hπ B a))`.
+
+Rewrite using `[← rootEval_subst_coe _ hs, ← ltSeries_uniformizer_pow hπ, subst_ltSeries, subst_ltSeries, mul_comm]`. Rewrite `h1` using `[ltPolyIter_succ_eq_mul, Polynomial.map_mul, map_mul, h2]`. Conclude with `eq_zero_of_rootEval_subst_mul hπ hunr m (constantCoeff_ltSeries hπ a) (by rw [coeff_one_ltSeries]; exact ha.map _) h1`.
+-/
 theorem aeval_rootEval_ltSeries_eq_zero {a : 𝒪[K]} (ha : IsUnit a) :
     Polynomial.aeval (rootEval (isDistinguishedAt_ltEisB hπ hunr m) (ltSeries hπ B a)) (ltEisB π B m) = 0 := by
   have hs := constantCoeff_ltSeries (B := B) hπ a
@@ -234,6 +304,9 @@ theorem aeval_rootEval_ltSeries_eq_zero {a : 𝒪[K]} (ha : IsUnit a) :
 
 omit hπ hunr [IsDomain B] [IsDiscreteValuationRing B] [IsAdicComplete (maximalIdeal B) B] in
 
+/- English proof (translation)
+Rewrite using `[ltEisB, Polynomial.map_map, AlgHom.comp_algebraMap_of_tower]`.
+-/
 theorem map_map_ltEisB (φ : B →ₐ[𝒪[K]] B) :
     (ltEisB π B m).map (φ : B →+* B) = ltEisB π B m := by
   rw [ltEisB, Polynomial.map_map, AlgHom.comp_algebraMap_of_tower]
@@ -246,14 +319,25 @@ def twistFrob : AdjoinRoot (ltEisB π B m) →+* AdjoinRoot (ltEisB π B m) :=
       rw [← Polynomial.eval₂_map, map_map_ltEisB (K := K) (π := π) m φ]
       exact aeval_rootEval_ltSeries_eq_zero hπ hunr m (Units.isUnit _))
 
+/- English proof (translation)
+The claim follows from `AdjoinRoot.lift_of _`.
+-/
 theorem twistFrob_of (b : B) :
     twistFrob hπ hunr m φ u (AdjoinRoot.of (ltEisB π B m) b) = AdjoinRoot.of (ltEisB π B m) (φ b) :=
   AdjoinRoot.lift_of _
 
+/- English proof (translation)
+The claim follows from `AdjoinRoot.lift_root _`.
+-/
 theorem twistFrob_root :
     twistFrob hπ hunr m φ u (AdjoinRoot.root (ltEisB π B m)) = rootEval (isDistinguishedAt_ltEisB hπ hunr m) (ltSeries hπ B ((u⁻¹ : 𝒪[K]ˣ) : 𝒪[K])) :=
   AdjoinRoot.lift_root _
 
+/- English proof (translation)
+Establish `hs` using `HasSubst.of_constantCoeff_zero' (constantCoeff_ltSeries (B := B) hπ ((u⁻¹ : 𝒪[K]ˣ) : 𝒪[K]))`. Establish `key : (twistFrob hπ hunr m φ u).comp (rootEval (isDistinguishedAt_ltEisB hπ hunr m) : B⟦X⟧ →ₐ[B] AdjoinRoot (ltEisB π B m)).toRingHom = (rootEval (isDistinguishedAt_ltEisB hπ hunr m) : B⟦X⟧ →ₐ[B] AdjoinRoot (ltEisB π B m)).toRingHom.comp ((substAlgHom hs : B⟦X⟧ →ₐ[B] B⟦X⟧).toRing …`. Use `rootEval_ringHom_ext (isDistinguishedAt_ltEisB hπ hunr m) (fun b => ?_) ?_ ?_` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, rootEval_C, twistFrob_of, map_C, coe_substAlgHom, subst_C]`. Conclude with `(rootEval_C _ (φ b)).symm`.
+
+Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, rootEval_X, twistFrob_root, map_X, coe_substAlgHom, subst_X hs]`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, rootEval_X, twistFrob_root]`. Conclude with `rootEval_mem_span_root _ (constantCoeff_ltSeries hπ _)`. Use `congrArg (fun Φ : B⟦X⟧ →+* AdjoinRoot (ltEisB π B m) => Φ F) key` as an intermediate fact. Simplify `this` using `[coe_substAlgHom]`.
+-/
 theorem twistFrob_rootEval (F : B⟦X⟧) :
     twistFrob hπ hunr m φ u (rootEval (isDistinguishedAt_ltEisB hπ hunr m) F) =
       rootEval (isDistinguishedAt_ltEisB hπ hunr m) (subst (ltSeries hπ B ((u⁻¹ : 𝒪[K]ˣ) : 𝒪[K])) (PowerSeries.map (φ : B →+* B) F)) := by
@@ -275,6 +359,9 @@ theorem twistFrob_rootEval (F : B⟦X⟧) :
   have := congrArg (fun Φ : B⟦X⟧ →+* AdjoinRoot (ltEisB π B m) => Φ F) key
   simpa [coe_substAlgHom] using this
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => rw [Function.iterate_zero, id, pow_zero, ltSeries_one, rootEval_X]`. Consider the case `succ k ih`. Rewrite using `[Function.iterate_succ_apply', ih, twistFrob_rootEval, map_ltSeries, subst_ltSeries, pow_succ]`.
+-/
 theorem twistFrob_iterate_root (k : ℕ) :
     (twistFrob hπ hunr m φ u)^[k] (AdjoinRoot.root (ltEisB π B m)) = rootEval (isDistinguishedAt_ltEisB hπ hunr m) (ltSeries hπ B (((u⁻¹ : 𝒪[K]ˣ) : 𝒪[K]) ^ k)) := by
   induction k with
@@ -283,12 +370,18 @@ theorem twistFrob_iterate_root (k : ℕ) :
     rw [Function.iterate_succ_apply', ih, twistFrob_rootEval, map_ltSeries, subst_ltSeries,
       pow_succ]
 
+/- English proof (translation)
+Proceed by induction on `k generalizing b with`. Consider the case `zero => rfl`. Consider the case `succ k ih => rw [Function.iterate_succ_apply, twistFrob_of, ih, ← Function.iterate_succ_apply]`.
+-/
 theorem twistFrob_iterate_of (k : ℕ) (b : B) :
     (twistFrob hπ hunr m φ u)^[k] (AdjoinRoot.of (ltEisB π B m) b) = AdjoinRoot.of (ltEisB π B m) ((⇑φ)^[k] b) := by
   induction k generalizing b with
   | zero => rfl
   | succ k ih => rw [Function.iterate_succ_apply, twistFrob_of, ih, ← Function.iterate_succ_apply]
 
+/- English proof (translation)
+Establish `hTc : ⇑(twistFrob hπ hunr m φ u ^ N) = (twistFrob hπ hunr m φ u)^[N]` using `RingHom.coe_pow _ N`. Establish `h` using `repr_ringHom_eq (twistFrob hπ hunr m φ u ^ N) ((⇑φ)^[N]) (fun b => by rw [hTc, twistFrob_iterate_of]) (by rw [hTc, hN]) (AdjoinRoot.powerBasis' (monic_ltEisB π B m)) (AdjoinRoot.powerBasis'_gen _) z i`. Rewrite `h` using `[hTc]`. Then use the resulting hypothesis.
+-/
 theorem repr_twistFrob_iterate {N : ℕ} (hN : (twistFrob hπ hunr m φ u)^[N] (AdjoinRoot.root (ltEisB π B m)) =
       AdjoinRoot.root (ltEisB π B m))
     (z : AdjoinRoot (ltEisB π B m)) (i : Fin (AdjoinRoot.powerBasis' (monic_ltEisB π B m)).dim) :
@@ -315,6 +408,15 @@ variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchi
 
 include hφ in
 
+/- English proof (translation)
+Establish `hπ' : Irreducible ((u : 𝒪[K]) * π)` using `(irreducible_units_mul u).2 hπ`. Take `⟨θ, hθ1, -, hθφ, hθcomm, -⟩` from `exists_iso_lubinTateFormalGroup hunr φ hφ hπ u (isLubinTateSeries_ltPoly π) (isLubinTateSeries_ltPoly ((u : 𝒪[K]) * π))`. Use `set t := θ.hom.toPowerSeries with ht`. Establish `ht0 : constantCoeff t = 0` using `θ.hom.constantCoeff_eq_zero`. Establish `hmap : PowerSeries.map (φ : B →+* B) t = subst (ltSeries hπ B (u : 𝒪[K])) t` using `hθφ`.
+
+Establish `hcomm : ∀ a : 𝒪[K], (subst (ltSeries hπ B a) t : B⟦X⟧) = subst t (ltSeries hπ' B a)` using `fun a => congrArg Hom.toPowerSeries (hθcomm a)`. Establish `hs : ∀ a : 𝒪[K], HasSubst (ltSeries hπ B a)` using `fun a => HasSubst.of_constantCoeff_zero' (constantCoeff_ltSeries hπ a)`. Establish `hsub0 : ∀ a : 𝒪[K], constantCoeff (subst (ltSeries hπ B a) t : B⟦X⟧) = 0` using `fun a => by`. Rewrite using `[constantCoeff_subst_of_constantCoeff_eq_zero (constantCoeff_ltSeries hπ a), ht0]`. Establish `hval : ∀ k : ℕ, Polynomial.aeval (rootEval (isDistinguishedAt_ltEisB hπ hunr m) t) ((ltPolyIter ((u : 𝒪[K]) * π) k).map (algebraMap 𝒪[K] B)) = rootEval (isDistinguishedAt_ltEisB hπ hunr m) (subst (ltSeries hπ B (π ^ k)) (subst (ltSeries hπ B ((u : 𝒪[K]) ^ k)) t))`.
+
+Introduce `k`. Rewrite using `[← rootEval_subst_coe _ ht0, ← ltSeries_uniformizer_pow hπ', ← hcomm, mul_pow, ← subst_ltSeries, subst_comp_subst_apply (hs _) (hs _)]`. Use `⟨rootEval (isDistinguishedAt_ltEisB hπ hunr m) t, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[twistFrob_rootEval, hmap, subst_comp_subst_apply (hs _) (hs _), subst_ltSeries, Units.mul_inv, ltSeries_one, X_subst]`. Establish `h1` using `hval (m + 1)`.
+
+Rewrite `h1` using `[rootEval_subst_ltSeries_uniformizer_pow_succ hπ hunr m (hsub0 _), ltPolyIter_succ_eq_mul, Polynomial.map_mul, map_mul, hval m]`. Use `eq_zero_of_rootEval_subst_mul hπ hunr m (hsub0 _) ?_ h1` and prove the remaining obligations. Rewrite using `[coeff_one_subst ht0 (constantCoeff_ltSeries hπ _), coeff_one_ltSeries]`. Conclude with `hθ1.mul ((u.isUnit.pow m).map _)`.
+-/
 theorem exists_twistFrob_fixed_root :
     ∃ x : AdjoinRoot (ltEisB π B m), twistFrob hπ hunr m φ u x = x ∧
       Polynomial.aeval x (ltEisB ((u : 𝒪[K]) * π) B m) = 0 := by

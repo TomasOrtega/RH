@@ -11,6 +11,9 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 
 namespace GlobalTheory.BlochKatoTied
 
+/- English proof (translation)
+Introduce `l _ P AI hT K LL _`. Use `GlobalTheory.blochKatoDim_of_bkADim_of_fontCore l P K LL ?_ (GlobalTheory.Per.FontaineTied.fontCore_all_of_tied l P AI hT K) (GlobalTheory.LocalIntegers.good_integers l LL).1` and prove the remaining obligations. Introduce `LL' _ _ _ O _ _ hO A hdr`. Conclude with `(GlobalTheory.SeqDim.h1f_finrank l P AI hT K LL' O hO A hdr).2`.
+-/
 theorem blochKatoDim_of_tied : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P),
     LocTied l P AI → ∀ (K LL : FinExt l) [Fintype (↥K.1 →ₐ[ℚ_[l]] ↥LL.1)],
     BlochKatoDim (P.PD K) ↥LL.1 := by

@@ -15,6 +15,15 @@ noncomputable section
 
 namespace GlobalTheory.TiltUnique
 
+/- English proof (translation)
+Introduce `D T L sc G j hj δ δ' h h'`. Break down `Nat.even_or_odd j with he | ho` into its components or cases. Rewrite using `[h.2.1 he, h'.2.1 he]`. Take `⟨a, ha⟩` from `D.R.m_even`. Take `⟨b, hb⟩` from `ho`.
+
+Establish `h₂ : D.R.m - 1 - j = 2 * ((D.R.m - 1 - j) / 2)` using `by omega`. Take `⟨x1, x2, x3⟩` from `h.2.2 _ hj h₂`. Take `⟨y1, y2, y3⟩` from `h'.2.2 _ hj h₂`. Establish `k` using `(rowJac G j hj _ h₂).sum_eq_one`. Establish `e0 : HMul.hMul (mt _ δ) (rowJac G j hj _ h₂).j0 = HMul.hMul (mt _ δ') (rowJac G j hj _ h₂).j0` using `x1.trans y1.symm`.
+
+Establish `eX : HMul.hMul (mt _ δ) (rowJac G j hj _ h₂).jX = HMul.hMul (mt _ δ') (rowJac G j hj _ h₂).jX` using `x2.trans y2.symm`. Establish `eY : HMul.hMul (mt _ δ) (rowJac G j hj _ h₂).jY = HMul.hMul (mt _ δ') (rowJac G j hj _ h₂).jY` using `x3.trans y3.symm`. Establish `hm : mt _ δ = mt _ δ'`. Rewrite using `[← Matrix.mul_one (mt _ δ), ← Matrix.mul_one (mt _ δ')]`. Rewrite using `[← k]`.
+
+Simplify using `only [Matrix.mul_add, ← Matrix.mul_assoc, e0, eX, eY]`. Conclude with `Subtype.ext (Units.ext hm)`.
+-/
 theorem tilt_unique : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) {j : ℕ} (hj : j < D.R.m)
     (δ δ' : GA D (G.V (.grid D.R.m j))), IsTilt G j δ → IsTilt G j δ' → δ = δ' := by
   intro D T L sc G j hj δ δ' h h'

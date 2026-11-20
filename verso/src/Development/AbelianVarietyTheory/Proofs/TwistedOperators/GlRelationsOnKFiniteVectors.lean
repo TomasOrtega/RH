@@ -22,6 +22,13 @@ open PI.DSInfCharCap (actU Egl)
 
 namespace GlobalTheory.GKLie
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `a b`. Simplify using `only [Formalism.REAL.epow]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Consider the case `succ k ih`. Introduce `a b`. Simplify using `only [Formalism.REAL.epow, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← mul_assoc, ih, mul_assoc, h, ← mul_assoc]`.
+-/
 theorem epow_intertwine {A : Type} [Ring A] {n : ℕ} (E E' : Fin n → Fin n → A) (R : A)
     (h : ∀ a b, R * E a b = E' a b * R) : ∀ k a b, R * epow E k a b = epow E' k a b * R := by
   intro k
@@ -36,17 +43,26 @@ theorem epow_intertwine {A : Type} [Ring A] {n : ℕ} (E E' : Fin n → Fin n �
     refine Finset.sum_congr rfl fun c _ => ?_
     rw [← mul_assoc, ih, mul_assoc, h, ← mul_assoc]
 
+/- English proof (translation)
+Simplify using `only [etr, Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun a _ => epow_intertwine E E' R h k a a`.
+-/
 theorem etr_intertwine {A : Type} [Ring A] {n : ℕ} (E E' : Fin n → Fin n → A) (R : A)
     (h : ∀ a b, R * E a b = E' a b * R) (k : ℕ) : R * etr E k = etr E' k * R := by
   simp only [etr, Finset.mul_sum, Finset.sum_mul]
   exact Finset.sum_congr rfl fun a _ => epow_intertwine E E' R h k a a
 
+/- English proof (translation)
+Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[single_mul_single_same, one_mul]`. Conclude with `single_mul_single_of_ne _ _ _ _ h _`.
+-/
 theorem single_mul_single' {n : ℕ} (a b c d : Fin n) :
     (single a b (1 : ℂ)) * single c d 1 = if b = c then single a d 1 else 0 := by
   split_ifs with h
   · subst h; rw [single_mul_single_same, one_mul]
   · exact single_mul_single_of_ne _ _ _ _ h _
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[mul_apply, single_apply, Matrix.sum_apply, ite_and, ite_mul, Finset.sum_ite_eq', Finset.sum_ite_eq]`.
+-/
 theorem conj_single {n : ℕ} (P : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) :
     P * single a b 1 * P⁻¹ = ∑ c, ∑ d, (P c a * P⁻¹ b d) • single c d (1 : ℂ) := by
   ext i j
@@ -61,6 +77,11 @@ section Main
 variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
+/- English proof (translation)
+Establish `hPi : P⁻¹ * P = 1` using `nonsing_inv_mul P ((isUnit_iff_isUnit_det P).1 hP)`. Establish `hcb : ∀ X Y : Matrix (Fin n) (Fin n) ℂ, P * X * P⁻¹ * (P * Y * P⁻¹) = P * (X * Y) * P⁻¹`. Introduce `X Y`. Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc P⁻¹ P, hPi, one_mul]`.
+
+Introduce `a b c d`. Simplify using `only []`. Rewrite using `[← gAct_bracket, hcb, hcb, ← sub_mul, ← mul_sub, single_mul_single', single_mul_single']`. Apply the tactic sequence `split_ifs <;> simp [mul_sub, sub_mul]`.
+-/
 theorem gAct_conj_glRel (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) (hV : IsGKSub ε ρ (kFinVec ε ρ))
     (P : Matrix (Fin n) (Fin n) ℂ) (hP : IsUnit P) :
     GlRel (fun a b => gAct hρ hV (P * single a b 1 * P⁻¹)) := by
@@ -74,6 +95,9 @@ theorem gAct_conj_glRel (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε)
   rw [← gAct_bracket, hcb, hcb, ← sub_mul, ← mul_sub, single_mul_single', single_mul_single']
   split_ifs <;> simp [mul_sub, sub_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a b`. Rewrite using `[conj_single]`. Simplify using `only [map_sum, map_smul]`.
+-/
 theorem gAct_conj_sum (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) (hV : IsGKSub ε ρ (kFinVec ε ρ))
     (P : Matrix (Fin n) (Fin n) ℂ) :
     (fun a b => gAct hρ hV (P * single a b 1 * P⁻¹)) =
@@ -82,12 +106,18 @@ theorem gAct_conj_sum (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) �
   rw [conj_single]
   simp only [map_sum, map_smul]
 
+/- English proof (translation)
+Rewrite using `[gAct_conj_sum]`. Conclude with `GlobalTheory.T.gelfandTrace_conj_invertible_scalarMatrix (fun a b => gAct hρ hV (single a b 1)) P hP k`.
+-/
 theorem gAct_conj_etr (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) (hV : IsGKSub ε ρ (kFinVec ε ρ))
     (P : Matrix (Fin n) (Fin n) ℂ) (hP : IsUnit P) (k : ℕ) :
     etr (fun a b => gAct hρ hV (P * single a b 1 * P⁻¹)) k = etr (fun a b => gAct hρ hV (single a b 1)) k := by
   rw [gAct_conj_sum]
   exact GlobalTheory.T.gelfandTrace_conj_invertible_scalarMatrix (fun a b => gAct hρ hV (single a b 1)) P hP k
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp [PI.DSInfCharCap.dsigCW]`. Consider the case `cons x l ih`. Rewrite using `[List.map_cons, PI.DSInfCharCap.dsigCW.eq_2, ih, List.map_cons, List.prod_cons, Module.End.mul_apply, gAct_coe]`. Both sides reduce to the same expression.
+-/
 theorem dsigCW_eq (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) (hV : IsGKSub ε ρ (kFinVec ε ρ))
     (l : List (Fin n × Fin n)) (v : kFinVec ε ρ) :
     PI.DSInfCharCap.dsigCW ε ρ (l.map PI.DSInfCharCap.unitM) v =
@@ -99,6 +129,9 @@ theorem dsigCW_eq (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) (
       gAct_coe]
     rfl
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.T.freeAlgebra_lift_monoid_sum]`. Unfold `PI.DSInfCharCap.actU`. Simplify using `only [Finsupp.sum, LinearMap.sum_apply, LinearMap.smul_apply, Submodule.coe_sum, Submodule.coe_smul]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[dsigCW_eq hρ hV]`.
+-/
 theorem actU_eq (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) (hV : IsGKSub ε ρ (kFinVec ε ρ))
     (p : FreeAlgebra ℂ (Fin n × Fin n)) (v : kFinVec ε ρ) :
     actU ε ρ p (v : H) = ((FreeAlgebra.lift ℂ (fun ab : Fin n × Fin n => gAct hρ hV (single ab.1 ab.2 1)) p v :
@@ -121,6 +154,11 @@ section KPart
 variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
+/- English proof (translation)
+Take `⟨hu, hc⟩` from `hκ`. Establish `h1 : κᴴ * κ = 1`. Rewrite `hu` using `[Matrix.mem_unitaryGroup_iff']`. Simplify `hu` using `[Matrix.star_eq_conjTranspose]`. Use `⟨h1, Matrix.inv_eq_left_inv h1, hc, ?_⟩` and prove the remaining obligations.
+
+Use `congrArg conjTranspose hc` as an intermediate fact. Simplify `this.symm` using `[conjTranspose_mul, Jm_conjTranspose]`.
+-/
 theorem kset_facts {κ : Matrix (Fin n) (Fin n) ℂ} (hκ : κ ∈ Kset ε) :
     κᴴ * κ = 1 ∧ κ⁻¹ = κᴴ ∧ κ * Jm ε = Jm ε * κ ∧ κᴴ * Jm ε = Jm ε * κᴴ := by
   obtain ⟨hu, hc⟩ := hκ
@@ -131,6 +169,9 @@ theorem kset_facts {κ : Matrix (Fin n) (Fin n) ℂ} (hκ : κ ∈ Kset ε) :
   have := congrArg conjTranspose hc
   simpa [conjTranspose_mul, Jm_conjTranspose] using this.symm
 
+/- English proof (translation)
+Take `⟨_, hinv, hc, hc'⟩` from `kset_facts hκ`. Rewrite using `[hinv]`. Simplify using `only [PI.DSInfCharCap.thetaJ, conjTranspose_mul, conjTranspose_conjTranspose, mul_neg, neg_mul, mul_assoc]`. Rewrite using `[hc', ← mul_assoc (Jm ε) κ, ← hc, mul_assoc]`.
+-/
 theorem theta_kconj {κ : Matrix (Fin n) (Fin n) ℂ} (hκ : κ ∈ Kset ε) (Y : Matrix (Fin n) (Fin n) ℂ) :
     PI.DSInfCharCap.thetaJ ε (κ * Y * κ⁻¹) = κ * PI.DSInfCharCap.thetaJ ε Y * κ⁻¹ := by
   obtain ⟨_, hinv, hc, hc'⟩ := kset_facts hκ
@@ -138,12 +179,18 @@ theorem theta_kconj {κ : Matrix (Fin n) (Fin n) ℂ} (hκ : κ ∈ Kset ε) (Y 
   simp only [PI.DSInfCharCap.thetaJ, conjTranspose_mul, conjTranspose_conjTranspose, mul_neg, neg_mul, mul_assoc]
   rw [hc', ← mul_assoc (Jm ε) κ, ← hc, mul_assoc]
 
+/- English proof (translation)
+Unfold `cre`. Rewrite using `[theta_kconj hκ]`. Simplify using `only [mul_add, add_mul, smul_mul_assoc, mul_smul_comm]`.
+-/
 theorem cre_kconj {κ : Matrix (Fin n) (Fin n) ℂ} (hκ : κ ∈ Kset ε) (Y : Matrix (Fin n) (Fin n) ℂ) :
     cre ε (κ * Y * κ⁻¹) = κ * cre ε Y * κ⁻¹ := by
   unfold cre
   rw [theta_kconj hκ]
   simp only [mul_add, add_mul, smul_mul_assoc, mul_smul_comm]
 
+/- English proof (translation)
+Unfold `cim`. Rewrite using `[theta_kconj hκ]`. Simplify using `only [mul_sub, sub_mul, smul_mul_assoc, mul_smul_comm]`.
+-/
 theorem cim_kconj {κ : Matrix (Fin n) (Fin n) ℂ} (hκ : κ ∈ Kset ε) (Y : Matrix (Fin n) (Fin n) ℂ) :
     cim ε (κ * Y * κ⁻¹) = κ * cim ε Y * κ⁻¹ := by
   unfold cim
@@ -154,9 +201,15 @@ def kRes (hV : IsGKSub ε ρ (kFinVec ε ρ)) (κ : Matrix (Fin n) (Fin n) ℂ) 
     Module.End ℂ (kFinVec ε ρ) :=
   (ρ κ : H →ₗ[ℂ] H).restrict (fun x hx => hV.kStable κ hκ x hx)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem kRes_coe (hV : IsGKSub ε ρ (kFinVec ε ρ)) (κ : Matrix (Fin n) (Fin n) ℂ) (hκ : κ ∈ Kset ε)
     (v : kFinVec ε ρ) : ((kRes hV κ hκ v : kFinVec ε ρ) : H) = ρ κ v := rfl
 
+/- English proof (translation)
+Use `LinearMap.ext fun v => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, kRes_coe, gAct_coe, gAct_coe, kRes_coe, dsigC_eq, dsigC_eq, cre_kconj hκ, cim_kconj hκ, GlobalTheory.T.derivedRep_conj_maxCompact_intertwines n ε H ρ hρ κ hκ _ (cre_mem Y) v (hV.smooth v v.2), GlobalTheory.T.derivedRep_conj_maxCompact_ …`.
+-/
 theorem gAct_kconj (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) (hV : IsGKSub ε ρ (kFinVec ε ρ))
     {κ : Matrix (Fin n) (Fin n) ℂ} (hκ : κ ∈ Kset ε) (Y : Matrix (Fin n) (Fin n) ℂ) :
     kRes hV κ hκ * gAct hρ hV Y = gAct hρ hV (κ * Y * κ⁻¹) * kRes hV κ hκ := by
@@ -166,6 +219,9 @@ theorem gAct_kconj (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) 
     GlobalTheory.T.derivedRep_conj_maxCompact_intertwines n ε H ρ hρ κ hκ _ (cre_mem Y) v (hV.smooth v v.2),
     GlobalTheory.T.derivedRep_conj_maxCompact_intertwines n ε H ρ hρ κ hκ _ (cim_mem Y) v (hV.smooth v v.2), map_add, map_smul]
 
+/- English proof (translation)
+Establish `hw' : w = kRes hV κ hκ v` using `Subtype.ext (by rw [hw, kRes_coe])`. Establish `hU : IsUnit κ` using `(isUnit_iff_isUnit_det κ).2 (isUnit_det_of_left_inverse (kset_facts hκ).1)`. Establish `hint` using `etr_intertwine (fun a b => gAct hρ hV (single a b 1)) (fun a b => gAct hρ hV (κ * single a b 1 * κ⁻¹)) (kRes hV κ hκ) (fun a b => gAct_kconj hρ hV hκ _) k`. Rewrite `hint` using `[gAct_conj_etr hρ hV κ hU k]`. Rewrite using `[hw', ← kRes_coe hV κ hκ, ← Module.End.mul_apply, ← Module.End.mul_apply, hint]`.
+-/
 theorem etr_kequiv (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) (hV : IsGKSub ε ρ (kFinVec ε ρ))
     {κ : Matrix (Fin n) (Fin n) ℂ} (hκ : κ ∈ Kset ε) (k : ℕ) (v w : kFinVec ε ρ) (hw : (w : H) = ρ κ v) :
     ((etr (fun a b => gAct hρ hV (single a b 1)) k w : kFinVec ε ρ) : H) =
@@ -177,6 +233,11 @@ theorem etr_kequiv (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) 
   rw [gAct_conj_etr hρ hV κ hU k] at hint
   rw [hw', ← kRes_coe hV κ hκ, ← Module.End.mul_apply, ← Module.End.mul_apply, hint]
 
+/- English proof (translation)
+Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => intro u g _`. Simplify using `[Formalism.REAL.Eword]`. Consider the case `cons p l ih`.
+
+Introduce `u g hg`. Rewrite using `[Formalism.REAL.Eword.eq_2]`. Use `beta_reduce`. Rewrite using `[GlobalTheory.T.matrix_coefficient_derivative_formula n ε H ρ hρ _ (hV.smooth _ ((l.map fun ab : Fin n × Fin n => gAct hρ hV (single ab.1 ab.2 1)).prod u).2) w' _ (fun g' hg' => ih u g' hg') p.1 p.2 g hg]`. Rewrite using `[List.map_cons, List.prod_cons, Module.End.mul_apply, gAct_coe]`.
+-/
 theorem eword_coef (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) (hV : IsGKSub ε ρ (kFinVec ε ρ)) (w' : H) :
     ∀ (l : List (Fin n × Fin n)) (u : kFinVec ε ρ) (g : Matrix (Fin n) (Fin n) ℂ), inUJ ε g →
       Eword ε l (fun x => ⟪w', ρ x u⟫_ℂ) g =
@@ -192,6 +253,9 @@ theorem eword_coef (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) 
       gAct hρ hV (single ab.1 ab.2 1)).prod u).2) w' _ (fun g' hg' => ih u g' hg') p.1 p.2 g hg]
     rw [List.map_cons, List.prod_cons, Module.End.mul_apply, gAct_coe]
 
+/- English proof (translation)
+Establish `h1 : inUJ ε (1 : Matrix (Fin n) (Fin n) ℂ)` using `by simp [Formalism.REAL.inUJ]`. Unfold `GlobalTheory.Dec.gelf`. Rewrite using `[GlobalTheory.T.elementary_trace_power_cyclic_words]`. Simplify using `only [eword_coef hρ hV w' _ v 1 h1, hρ.1, ContinuousLinearMap.one_apply, LinearMap.sum_apply, Submodule.coe_sum, inner_sum]`.
+-/
 theorem gelf_coef (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) (hV : IsGKSub ε ρ (kFinVec ε ρ)) (w' : H) (m : ℕ)
     (v : kFinVec ε ρ) :
     GlobalTheory.Dec.gelf ε m (fun x => ⟪w', ρ x v⟫_ℂ) 1 =
@@ -202,6 +266,13 @@ theorem gelf_coef (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) (
   simp only [eword_coef hρ hV w' _ v 1 h1, hρ.1, ContinuousLinearMap.one_apply, LinearMap.sum_apply,
     Submodule.coe_sum, inner_sum]
 
+/- English proof (translation)
+Use `set T := etr (fun a b => gAct hρ hV (single a b 1)) (k + 1) with hT`. Establish `h1 : inUJ ε (1 : Matrix (Fin n) (Fin n) ℂ)` using `by simp [Formalism.REAL.inUJ]`. Establish `key : ∀ w' : kFinVec ε ρ, ⟪(w' : H), (T v : H)⟫_ℂ = gelfVal χ (k + 1) * ⟪(w' : H), (v : H)⟫_ℂ`. Introduce `w'`. Use `(hχ v w' v.2 w'.2).2 k 1 h1` as an intermediate fact.
+
+Rewrite `this` using `[gelf_coef hρ hV]`. Simplify `this` using `[hρ.1]`. Use `set z : kFinVec ε ρ := T v - gelfVal χ (k + 1) • v with hz`. Establish `hzH : (z : H) = (T v : H) - gelfVal χ (k + 1) • (v : H)`. Rewrite using `[hz, Submodule.coe_sub, Submodule.coe_smul]`.
+
+Establish `hzz : ⟪(z : H), (z : H)⟫_ℂ = 0` using `by conv_lhs => arg 3; rw [hzH]`. Rewrite using `[inner_sub_right, inner_smul_right, key z, sub_self]`. Establish `h0 : (z : H) = 0` using `inner_self_eq_zero.1 hzz`. Conclude with `sub_eq_zero.1 (Subtype.ext h0)`.
+-/
 theorem etr_infChar (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) (hV : IsGKSub ε ρ (kFinVec ε ρ)) (χ : Fin n → ℂ)
     (hχ : HasInfChar ε χ ρ) (k : ℕ) (v : kFinVec ε ρ) :
     etr (fun a b => gAct hρ hV (single a b 1)) (k + 1) v = gelfVal χ (k + 1) • v := by
@@ -223,6 +294,9 @@ theorem etr_infChar (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ)
 
 end KPart
 
+/- English proof (translation)
+Introduce `n ε H _ _ _ ρ hadm hV`. Establish `hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ` using `hadm.1`. Conclude with `⟨gAct hρ hV, fun X hX v => gAct_of_mem hρ hV hX v, fun P hP => ⟨gAct_conj_glRel hρ hV P hP, gAct_conj_etr hρ hV P hP⟩, fun p v => actU_eq hρ hV p v, fun κ hκ k v w hw => etr_kequiv hρ hV hκ k v w hw, fun χ hχ k v => etr_infChar hρ hV χ hχ k v⟩`.
+-/
 theorem kFin_glModule : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), IsAdmRep ε ρ → IsGKSub ε ρ (kFinVec ε ρ) → ∃ A : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] Module.End ℂ (kFinVec ε ρ), (∀ X ∈ lieSet ε, ∀ v, ((A X v : kFinVec ε ρ) : H) = dRep ρ X v) ∧ (∀ P : Matrix (Fin n) (Fin n) ℂ, IsUnit P → GlRel (fun a b => A (P * Matrix.single a b 1 * P⁻¹)) ∧ ∀ k : ℕ, etr (fun a b => A (P * Matrix.single a b 1 * P⁻¹)) k = etr (fun a b => A (Matrix.single a b 1)) k) ∧ (∀ (p : FreeAlgebra ℂ (Fin n × Fin n)) (v : kFinVec ε ρ), actU ε ρ p (v : H) = ((FreeAlgebra.lift ℂ (fun ab : Fin n × Fin n => A (Matrix.single ab.1 ab.2 1)) p v : kFinVec ε ρ) : H)) ∧ (∀ κ ∈ Kset ε, ∀ (k : ℕ) (v w : kFinVec ε ρ), (w : H) = ρ κ v → ((etr (fun a b => A (Matrix.single a b 1)) k w : kFinVec ε ρ) : H) = ρ κ ((etr (fun a b => A (Matrix.single a b 1)) k v : kFinVec ε ρ) : H)) ∧ ∀ χ : Fin n → ℂ, HasInfChar ε χ ρ → ∀ (k : ℕ) v, etr (fun a b => A (Matrix.single a b 1)) (k + 1) v = gelfVal χ (k + 1) • v := by
   intro n ε H _ _ _ ρ hadm hV
   have hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ := hadm.1

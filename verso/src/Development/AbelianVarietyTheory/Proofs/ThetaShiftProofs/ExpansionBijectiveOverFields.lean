@@ -21,20 +21,32 @@ section Pow
 variable {S : Type} [CommRing S] {X Y Z : Scheme.{0}} {L : LB X} {g : Y ⟶ X} {k : ℤ}
   {π : Y ⟶ Spec (CommRingCat.of S)}
 
+/- English proof (translation)
+The claim follows from `gs_add r z _ (mem_wchart.2 fun _ => hi) _ _`.
+-/
 theorem powVal_add (a b : SecOver π (LB.LinComb L (K := Fin 1) (fun _ => g) (fun _ => k))) (r : Z ⟶ Y) (z : Z)
     {i : L.ι} (hi : g (r z) ∈ L.U i) :
     powVal (a + b : SecOver π _) r z i = powVal a r z i + powVal b r z i :=
   gs_add r z _ (mem_wchart.2 fun _ => hi) _ _
 
+/- English proof (translation)
+The claim follows from `gs_smul π r z _ (mem_wchart.2 fun _ => hi) c _`.
+-/
 theorem powVal_smul (c : S) (a : SecOver π (LB.LinComb L (K := Fin 1) (fun _ => g) (fun _ => k))) (r : Z ⟶ Y)
     (z : Z) {i : L.ι} (hi : g (r z) ∈ L.U i) :
     powVal (c • a : SecOver π _) r z i = constVal (r ≫ π) z c * powVal a r z i :=
   gs_smul π r z _ (mem_wchart.2 fun _ => hi) c _
 
+/- English proof (translation)
+The claim follows from `gs_zero' r z _ (mem_wchart.2 fun _ => hi)`.
+-/
 theorem powVal_zero (r : Z ⟶ Y) (z : Z) {i : L.ι} (hi : g (r z) ∈ L.U i) :
     powVal (0 : SecOver π (LB.LinComb L (K := Fin 1) (fun _ => g) (fun _ => k))) r z i = 0 :=
   gs_zero' r z _ (mem_wchart.2 fun _ => hi)
 
+/- English proof (translation)
+The claim follows from `sec_ext' hL fun y J hJ => h y _ (hJ (𝟙 Y ≫ g))`.
+-/
 theorem powVal_ext (hL : L.IsLB) {a b : LB.Sec (LB.LinComb L (K := Fin 1) (fun _ => g) (fun _ => k))}
     (h : ∀ y i, g y ∈ L.U i → powVal a (𝟙 Y) y i = powVal b (𝟙 Y) y i) : a = b :=
   sec_ext' hL fun y J hJ => h y _ (hJ (𝟙 Y ≫ g))
@@ -46,6 +58,17 @@ section Iso
 variable {Y Y' X₁ X₂ Z₁ : Scheme.{0}} {L₁ : LB X₁} {L₂ : LB X₂} {f₁ : Y ⟶ X₁} {f₂ : Y ⟶ X₂}
   {w : LB.Iso (L₁.pull f₁) (L₂.pull f₂)} {m : Y' ⟶ Y} {k : ℕ} {g₁ : Z₁ ⟶ X₁} {h₁ : Y' ⟶ Z₁}
 
+/- English proof (translation)
+Establish `e₂ : 𝟙 Y' ≫ m ≫ f₂ = m ≫ f₂` using `Category.id_comp _`. Establish `e₃ : g₁ = (n ≫ m) ≫ f₁` using `by rw [Category.assoc, ← e₁, ← Category.assoc, hn, Category.id_comp]`. Use `⟨fun a => existsUnique_of_exists_of_unique ?_ fun b b' h h' => ?_, fun b => existsUnique_of_exists_of_unique ?_ fun a a' h h' => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `exists_move hL₁ hL₂ hw m k h₁ e₁ rfl a`. Conclude with `⟨b, (isoRelM_iff w m k h₁ e₁ _ e₂ a b).2 fun y i₂ i₁ a₂ a₁ => by`.
+
+Rewrite using `[Category.comp_id]`. Conclude with `hb _ _ y i₂ i₁ a₂ a₁⟩`. Use `powVal_ext hL₂ fun y i hi => ?_` and prove the remaining obligations. Take `⟨i₁, a₁⟩` from `exists_chart hL₁ (f₁ (m y))`. Use `((isoRelM_iff w m k h₁ e₁ _ e₂ a b).1 h _ (𝟙 _) y i i₁ hi a₁).trans ((isoRelM_iff w m k h₁ e₁ _ e₂ a b').1 h' _ (𝟙 _) y i i₁ hi a₁).symm` as an intermediate fact.
+
+Rewrite `this` using `[Category.comp_id]`. Then use the resulting hypothesis. Take `⟨a, ha⟩` from `exists_move_back hL₁ hL₂ hw (n ≫ m) k n (Category.assoc _ _ _).symm e₃ b`. Use `⟨a, (isoRelM_iff w m k h₁ e₁ _ e₂ a b).2 fun y i₂ i₁ a₂ a₁ => ?_⟩` and prove the remaining obligations. Establish `e : h₁ ≫ n ≫ m = m` using `by rw [← Category.assoc, hn', Category.id_comp]`. Establish `pt : (n ≫ m) (h₁ y) = m y` using `congrArg (fun q : Y' ⟶ Y => q y) e`.
+
+Use `ha _ h₁ y i₂ i₁ (pt.symm ▸ a₂) (pt.symm ▸ a₁)` as an intermediate fact. Rewrite `this` using `[hn', e]`. Simplify `this` using `only [Category.id_comp]`. Use `powVal_ext hL₁ fun y i hi => ?_` and prove the remaining obligations. Take `⟨i₂, a₂⟩` from `exists_chart hL₂ (f₂ (m (n y)))`.
+
+Establish `a₁ : f₁ (m (n y)) ∈ L₁.U i` using `by rw [e₃] at hi; exact hi`. Use `((isoRelM_iff w m k h₁ e₁ _ e₂ a b).1 h _ n y i₂ i a₂ a₁).symm.trans ((isoRelM_iff w m k h₁ e₁ _ e₂ a' b).1 h' _ n y i₂ i a₂ a₁)` as an intermediate fact. Rewrite `this` using `[hn]`. Conclude with `(Units.mul_right_inj _).1 this`.
+-/
 theorem isoRelM_bijective (hL₁ : L₁.IsLB) (hL₂ : L₂.IsLB) (hw : w.IsGen) (e₁ : h₁ ≫ g₁ = m ≫ f₁) (n : Z₁ ⟶ Y')
     (hn : n ≫ h₁ = 𝟙 _) (hn' : h₁ ≫ n = 𝟙 _) :
     (∀ a, ∃! b, GeneratorPullback.IsoRelM L₁ L₂ f₁ f₂ w m k g₁ h₁ a (m ≫ f₂) (𝟙 _) b) ∧
@@ -77,6 +100,9 @@ theorem isoRelM_bijective (hL₁ : L₁.IsLB) (hL₂ : L₂.IsLB) (hw : w.IsGen)
     rw [hn] at this
     exact (Units.mul_right_inj _).1 this
 
+/- English proof (translation)
+Use `(isoRelM_iff w m k h₁ h.1 _ h.2.1 _ _).2 fun y i₂ i₁ a₂ a₁ => ?_` and prove the remaining obligations. Establish `b₁ : g₁ ((𝟙 Y' ≫ h₁) y) ∈ L₁.U i₁` using `(congrArg (fun q : Y' ⟶ X₁ => q y) h.1 : g₁ (h₁ y) = f₁ (m y)).symm ▸ a₁`. Establish `b₂ : (m ≫ f₂) ((𝟙 Y' ≫ 𝟙 Y') y) ∈ L₂.U i₂` using `a₂`. Rewrite using `[powVal_add _ _ _ y b₁, powVal_add _ _ _ y b₂, powVal_smul _ _ _ y b₁, powVal_smul _ _ _ y b₂, (isoRelM_iff w m k h₁ h.1 _ h.2.1 _ _).1 h _ (𝟙 _) y i₂ i₁ a₂ a₁, (isoRelM_iff w m k h₁ h.1 _ h.2.1 _ _).1 h' _ (𝟙 _) y i₂ i₁ a₂ a₁, Category.assoc, Category.assoc, hπ, Category.id_comp …`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isoRelM_lin {S : Type} [CommRing S] {π₁ : Z₁ ⟶ Spec (CommRingCat.of S)}
     {π' : Y' ⟶ Spec (CommRingCat.of S)} (hπ : h₁ ≫ π₁ = π') (c : S)
     {a a' : SecOver π₁ (LB.LinComb L₁ (K := Fin 1) (fun _ => g₁) (fun _ => (k : ℤ)))}
@@ -100,6 +126,11 @@ section Data
 
 variable {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (F : Type) [Field F] [Algebra (FractionRing R) F]
 
+/- English proof (translation)
+Use `fin_cases i`. Conclude with `(Category.comp_id _).symm`. Use `congrArg (fun q => q.left) (Eq.symm ((MonObj.comp_mul (DegPre.prB D F) (𝟙 _) (cP D _ α)).trans ?_))` and prove the remaining obligations. Rewrite using `[comp_cP, Category.comp_id]`. Both sides reduce to the same expression.
+
+Conclude with `congrArg (fun q => q.left) (comp_cP D (DegPre.prB D F) α).symm`. Conclude with `congrArg (fun q : DegPre.BF D F ⟶ D.P.A => q.left) (MonObj.comp_one (M := D.P.A) (DegPre.prB D F)).symm`.
+-/
 theorem famφ_prB (α : D.X) (i : Fin 4) : DegPre.famφ D F α i = (DegPre.prB D F).left ≫ D.famφB α i := by
   fin_cases i
   · exact (Category.comp_id _).symm
@@ -110,12 +141,18 @@ theorem famφ_prB (α : D.X) (i : Fin 4) : DegPre.famφ D F α i = (DegPre.prB D
 
 variable [Algebra R F] [IsScalarTower R (FractionRing R) F]
 
+/- English proof (translation)
+Establish `e : jFK (R` using `R) F ≫ jK R = Spec.map (CommRingCat.ofHom (algebraMap R F)) := by`. Rewrite using `[jFK, jK, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← IsScalarTower.algebraMap_eq]`. Rewrite using `[← e]`. Conclude with `(Over.w (fst (TF (R := R) F) D.P.A)).symm`.
+-/
 theorem bf_hom : (DegPre.BF D F).hom = famBase D F ≫ Spec.map (CommRingCat.ofHom (algebraMap R F)) := by
   have e : jFK (R := R) F ≫ jK R = Spec.map (CommRingCat.ofHom (algebraMap R F)) := by
     rw [jFK, jK, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← IsScalarTower.algebraMap_eq]
   rw [← e]
   exact (Over.w (fst (TF (R := R) F) D.P.A)).symm
 
+/- English proof (translation)
+The claim follows from `(Over.w (DegPre.prB D F)).trans (bf_hom D F)`.
+-/
 theorem prB_hom : (DegPre.prB D F).left ≫ D.P.A.hom =
     famBase D F ≫ Spec.map (CommRingCat.ofHom (algebraMap R F)) :=
   (Over.w (DegPre.prB D F)).trans (bf_hom D F)
@@ -134,6 +171,15 @@ variable (D) in
 abbrev IntTerm (k : ℕ) (α : D.toPre.X) : Type :=
   SecOver D.toPre.P.A.hom (LB.LinComb D.toPre.P.L (D.toPre.famφB α) (DegPre.famε k))
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `expandsAt_val U e k σ f h`. Take `⟨S', hS'⟩` from `expandsAt_val U e k σ' f' h'`. Establish `hπ : fGl I G e ≫ G.hom = pGl U e ≫ D.toPre.P.A.hom` using `(Over.w (fstG I e G)).trans (Over.w (U.gt e).pG).symm`. Use `expandsAt_of_val U e k _ _ (S ∪ S') fun y J hJ => ?_` and prove the remaining obligations. Take `⟨z₁, v₁⟩` from `hS _ (𝟙 _) y J hJ`.
+
+Take `⟨z₂, v₂⟩` from `hS' _ (𝟙 _) y J hJ`. Simplify using `only [Category.id_comp] at z₁ v₁ z₂ v₂`. Use `⟨fun α hα => ?_, fun jL hj => ?_⟩` and prove the remaining obligations. Rewrite `hα` using `[Finset.mem_union, not_or]`. Rewrite using `[sval_add' hJ, sval_smul' hJ, z₁ α hα.1, z₂ α hα.2, mul_zero, add_zero]`.
+
+Establish `e₁ : sv U k (c • σ + σ' : IntSec U k) (fGl I G e) y jL = constVal (fGl I G e ≫ G.hom) y c * sv U k σ (fGl I G e) y jL + sv U k σ' (fGl I G e) y jL` using `(powVal_add _ _ _ y hj).trans (congrArg (· + _) (powVal_smul _ _ _ y hj))`. Establish `w₁` using `(v₁ jL hj).trans (Finset.sum_subset (Finset.subset_union_left (s₂ := S')) fun α _ hα => by rw [z₁ α hα, zero_mul])`. Establish `w₂` using `(v₂ jL hj).trans (Finset.sum_subset (Finset.subset_union_right (s₁ := S)) fun α _ hα => by rw [z₂ α hα, zero_mul])`. Rewrite using `[e₁, mul_add, mul_left_comm, w₁, w₂, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[sval_add' hJ, sval_smul' hJ, hπ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem expandsAt_lin (e k : ℕ) (c : R) {σ σ' : IntSec U k} {f f' : ∀ α, IntTerm D k α}
     (h : U.ExpandsAt e k σ f) (h' : U.ExpandsAt e k σ' f') :
     U.ExpandsAt e k (c • σ + σ' : IntSec U k) (fun α => (c • f α + f' α : IntTerm D k α)) := by
@@ -160,6 +206,9 @@ theorem expandsAt_lin (e k : ℕ) (c : R) {σ σ' : IntSec U k} {f f' : ∀ α, 
     rw [sval_add' hJ, sval_smul' hJ, hπ]
     ring
 
+/- English proof (translation)
+The claim follows from `expandsAt_of_val U e k _ _ ∅ fun y J hJ => ⟨fun _ _ => sval_zero' hJ _, fun jL hj => by rw [Finset.sum_empty] exact (congrArg _ (powVal_zero (π := G.hom) _ y hj)).trans (mul_zero _)⟩`.
+-/
 theorem expandsAt_zero (e k : ℕ) :
     U.ExpandsAt e k (0 : IntSec U k) (fun α => (0 : IntTerm D k α)) :=
   expandsAt_of_val U e k _ _ ∅ fun y J hJ => ⟨fun _ _ => sval_zero' hJ _, fun jL hj => by
@@ -179,6 +228,11 @@ def expansionPairs (k : ℕ) : Submodule R (IntSec U k × ∀ α, IntTerm D k α
     exact this
 
 include U in
+/- English proof (translation)
+Use `A.isAb.proper` as an intermediate fact. Establish `: IsIso U.gen.hom.left` using `⟨⟨U.gen.inv.left, by rw [← Over.comp_left, U.gen.hom_inv_id, Over.id_left], by rw [← Over.comp_left, U.gen.inv_hom_id, Over.id_left]⟩⟩`. Establish `: IsProper (pullback.snd G.hom (jK R))`. Establish `e : U.gen.hom.left ≫ A.A.hom = pullback.snd G.hom (jK R)` using `Over.w U.gen.hom`. Rewrite using `[← e]`.
+
+Use `infer_instance`. Establish `: IsLocallyNoetherian (pullback G.hom (jK R) : Scheme)` using `LocallyOfFiniteType.isLocallyNoetherian (pullback.snd G.hom (jK R))`. Establish `: CompactSpace (pullback G.hom (jK R) : Scheme)` using `QuasiCompact.compactSpace_of_compactSpace (pullback.snd G.hom (jK R))`. Establish `: IsNoetherian (pullback G.hom (jK R) : Scheme)` using `{}`. Use `infer_instance`.
+-/
 theorem noetherianSpace_generic : NoetherianSpace (pullback G.hom (jK R) : Scheme) := by
   have := A.isAb.proper
   have : IsIso U.gen.hom.left := ⟨⟨U.gen.inv.left, by rw [← Over.comp_left, U.gen.hom_inv_id, Over.id_left],
@@ -205,6 +259,9 @@ variable (A) in
 def abelianBase : (TFK (R := R) F ⊗ A.A).left ⟶ Spec (CommRingCat.of F) := (fst (TFK (R := R) F) A.A).left
 
 omit [GrpObj G] [IsCommMonObj G] in
+/- English proof (translation)
+The claim follows from `(IsPullback.of_hasPullback _ _).flip`.
+-/
 theorem isPullback_groupBase : IsPullback (snd (TFK (R := R) F) ((Over.pullback (jK R)).obj G)).left
     (groupBase G F) (pullback.snd G.hom (jK R))
     (Spec.map (CommRingCat.ofHom (algebraMap (FractionRing R) F))) := (IsPullback.of_hasPullback _ _).flip
@@ -227,6 +284,11 @@ def extendSec (k : ℕ) : SecOver (pullback.snd G.hom (jK R))
       →ₛₗ[algebraMap (FractionRing R) F] GroupSec U F k :=
   pullOver U.LG.L _ (isPullback_groupBase F).w (fun _ => rfl)
 
+/- English proof (translation)
+Establish `e₁` using `fun (σ : IntSec U k) (r : R) => secScal_iff (p := pullback.fst G.hom (jK R)) pullback.condition (fun _ => (Category.comp_id _).symm) U.LG.isLB v σ _ (algebraMap R (FractionRing R)) rfl r`. Establish `e₂` using `fun α (f : IntTerm D k α) (r : R) => secScal_iff (prB_hom D.toPre (FractionRing R)) (famφ_prB D.toPre (FractionRing R) α) D.toPre.P.isLB (famProj D.toPre _ k α s) f _ (algebraMap R (FractionRing R)) (bf_hom D.toPre (FractionRing R)) r`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, hr, σ, f, h₁, h₂, h₃⟩`. Conclude with `⟨r, hr, (σ, f), h₃, (e₁ σ r).1 h₁, fun α => (e₂ α (f α) r).1 (h₂ α)⟩`.
+
+Introduce and unpack `⟨r, hr, x, h₃, h₁, h₂⟩`. Conclude with `⟨r, hr, x.1, x.2, (e₁ x.1 r).2 h₁, fun α => (e₂ α (x.2 α) r).2 (h₂ α), h₃⟩`.
+-/
 theorem expands_iff (k : ℕ) (v : SecOver (pullback.snd G.hom (jK R))
     (LB.LinComb U.LG.L (K := Fin 1) (fun _ => pullback.fst G.hom (jK R)) (fun _ => (k : ℤ))))
     (s : Fam D.toPre (FractionRing R) k) : U.Expands k v s ↔ ∃ r : R, r ≠ 0 ∧ ∃ x ∈ expansionPairs U k,
@@ -243,6 +305,11 @@ theorem expands_iff (k : ℕ) (v : SecOver (pullback.snd G.hom (jK R))
   · rintro ⟨r, hr, x, h₃, h₁, h₂⟩
     exact ⟨r, hr, x.1, x.2, (e₁ x.1 r).2 h₁, fun α => (e₂ α (x.2 α) r).2 (h₂ α), h₃⟩
 
+/- English proof (translation)
+Establish `e₁` using `fun (n : ℕ) (c : Fin n → F) (σ : Fin n → IntSec U k) => secLin_iff U.LG.isLB v σ (UnifPre.gFK (G := G) F) c (fun i => extendSec U F k (genericSec U k (σ i))) (fun i y J hJ => (sval_pullOver _ _ _ _ hJ).trans ((sval_pullOver _ _ _ _ hJ).trans (congrArg (fun q => sval (σ i) q y J) …`. Establish `e₂` using `fun α (n : ℕ) (c : Fin n → F) (f : Fin n → IntTerm D k α) => secLin_iff D.toPre.P.isLB (famProj D.toPre F k α s) f (DegPre.prB D.toPre F).left c (fun i => termPull D.toPre (FractionRing R) F k α (genericTerm D k α (f i))) (fun i y J hJ => (sval_pullOver _ _ _ _ hJ).trans ((sval_p …`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, c, σ, f, h₃, h₁, h₂⟩`. Conclude with `⟨n, c, fun i => (σ i, f i), h₃, (e₁ n c σ).1 h₁, fun α => (e₂ α n c fun i => f i α).1 (h₂ α)⟩`.
+
+Introduce and unpack `⟨n, c, x, h₃, h₁, h₂⟩`. Conclude with `⟨n, c, fun i => (x i).1, fun i => (x i).2, h₃, (e₁ n c _).2 h₁, fun α => (e₂ α n c fun i => (x i).2 α).2 (h₂ α)⟩`.
+-/
 theorem expandsG_iff (k : ℕ) (v : GroupSec U F k) (s : Fam D.toPre F k) :
     U.ExpandsG F k v s ↔ ∃ (n : ℕ) (c : Fin n → F) (x : Fin n → IntSec U k × ∀ α, IntTerm D k α),
       (∀ i, x i ∈ expansionPairs U k) ∧ v = ∑ i, c i • extendSec U F k (genericSec U k (x i).1) ∧
@@ -265,6 +332,9 @@ theorem expandsG_iff (k : ℕ) (v : GroupSec U F k) (s : Fam D.toPre F k) :
     exact ⟨n, c, fun i => (x i).1, fun i => (x i).2, h₃, (e₁ n c _).2 h₁,
       fun α => (e₂ α n c fun i => (x i).2 α).2 (h₂ α)⟩
 
+/- English proof (translation)
+The claim follows from `have : NoetherianSpace ((Over.pullback (jK R)).obj G).left := noetherianSpace_generic U graph_bijective (expansionPairs U k) (genericSec U k) (genericTerm D k) (extendSec U F k) (isExtension_pullOver (isPullback_groupBase F) U.LG.isLB _ _) (termPull D.toPre (FractionRing R) F k) …`.
+-/
 theorem expandsG_bijective (hG : GlobalFnsSt) {k : ℕ} (hk : 1 ≤ k) (h : U.ExpBij k) :
     (∀ v : GroupSec U F k, ∃! s, U.ExpandsG F k v s) ∧ ∀ s, ∃! v : GroupSec U F k, U.ExpandsG F k v s :=
   have : NoetherianSpace ((Over.pullback (jK R)).obj G).left := noetherianSpace_generic U
@@ -273,6 +343,13 @@ theorem expandsG_bijective (hG : GlobalFnsSt) {k : ℕ} (hk : 1 ≤ k) (h : U.Ex
     (isExtension_termPull D.toPre _ F k) (famPull D.toPre _ F hG k) (isExtension_famPull D.toPre _ F hG hk)
     (famProj D.toPre _ k) (famProj D.toPre F k) (fun _ _ => rfl) _ (expands_iff U k) h _ (expandsG_iff U F k)
 
+/- English proof (translation)
+Take `⟨n, a, x, hx, e₁, e₂⟩` from `(expandsG_iff U F k v s).1 h`. Take `⟨n', a', x', hx', e₁', e₂'⟩` from `(expandsG_iff U F k v' s').1 h'`. Use `(expandsG_iff U F k _ _).2 ⟨n + n', Fin.append (fun i => c * a i) a', Fin.append x x', fun i => ?_, ?_, fun α => ?_⟩` and prove the remaining obligations. Use `Fin.addCases (fun i => ?_) (fun i => ?_) i` and prove the remaining obligations. Rewrite using `[Fin.append_left]`.
+
+Conclude with `hx i`. Rewrite using `[Fin.append_right]`. Conclude with `hx' i`. Rewrite using `[Fin.sum_univ_add, e₁, e₁', Finset.smul_sum]`. Simplify using `only [Fin.append_left, Fin.append_right, smul_smul]`.
+
+Rewrite using `[Fin.sum_univ_add, map_add, map_smul, e₂, e₂', Finset.smul_sum]`. Simplify using `only [Fin.append_left, Fin.append_right, smul_smul]`.
+-/
 theorem expandsG_lin (k : ℕ) (c : F) {v v' : GroupSec U F k} {s s' : Fam D.toPre F k}
     (h : U.ExpandsG F k v s) (h' : U.ExpandsG F k v' s') :
     U.ExpandsG F k (c • v + v' : GroupSec U F k) (c • s + s') := by
@@ -290,6 +367,9 @@ theorem expandsG_lin (k : ℕ) (c : F) {v v' : GroupSec U F k} {s s' : Fam D.toP
 
 variable {k : ℕ} {w : LB.Iso (A.L.pull U.gen.hom.left) (U.LG.L.pull (pullback.fst G.hom (jK R)))}
 
+/- English proof (translation)
+Take `⟨v, a, b⟩` from `h`. Take `⟨v', a', b'⟩` from `h'`. Establish `hπ : (U.genF F).left ≫ abelianBase A F = groupBase G F` using `congrArg (fun q => q.left) (lift_fst _ _ : U.genF F ≫ fst _ _ = _)`. Conclude with `⟨_, isoRelM_lin hπ c a a', expandsG_lin U F k c b b'⟩`.
+-/
 theorem expandsF_lin (c : F) {t t' : SecOver (abelianBase A F) (LPow A.A A.L (k : ℤ) (TFK (R := R) F))}
     {s s' : Fam D.toPre F k} (h : U.ExpandsF F k w t s) (h' : U.ExpandsF F k w t' s') :
     U.ExpandsF F k w (c • t + t' : SecOver (abelianBase A F) _) (c • s + s') := by
@@ -299,6 +379,15 @@ theorem expandsF_lin (c : F) {t t' : SecOver (abelianBase A F) (LPow A.A A.L (k 
     congrArg (fun q => q.left) (lift_fst _ _ : U.genF F ≫ fst _ _ = _)
   exact ⟨_, isoRelM_lin hπ c a a', expandsG_lin U F k c b b'⟩
 
+/- English proof (translation)
+Take `⟨g₁, g₂⟩` from `expandsG_bijective U F hG hk h`. Set `n : TFK (R` to `R) F ⊗ A.A ⟶ UnifPre.GF (G := G) F := lift (fst _ _) (snd _ _ ≫ U.gen.inv)`. Establish `hn : n ≫ U.genF F = 𝟙 _`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [n]`. Establish `hn' : U.genF F ≫ n = 𝟙 _`.
+
+Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [n]`. Take `⟨i₁, i₂⟩` from `isoRelM_bijective (k := k) (m := (snd (TFK (R := R) F) ((Over.pullback (jK R)).obj G)).left) (g₁ := (snd (TFK (R := R) F) A.A).left) (h₁ := (U.genF F).left) A.isLB U.LG.isLB hw (congrArg (fun q => q.left) (lift_snd _ _ : U.genF F ≫ snd _ _ = _)) n.left (congrArg (fun q => q.left) …`. Use `⟨fun t => existsUnique_of_exists_of_unique ?_ ?_, fun s => existsUnique_of_exists_of_unique ?_ ?_⟩` and prove the remaining obligations. Take `⟨v, hv⟩` from `(i₁ t).exists`. Take `⟨s, hs⟩` from `(g₁ v).exists`.
+
+Conclude with `⟨s, v, hv, hs⟩`. Introduce and unpack `s s' ⟨v, a, b⟩ ⟨v', a', b'⟩`. Take `rfl` from `(i₁ t).unique a a'`. Conclude with `(g₁ v).unique b b'`. Take `⟨v, hv⟩` from `(g₂ s).exists`.
+
+Take `⟨t, ht⟩` from `(i₂ v).exists`. Conclude with `⟨t, v, ht, hv⟩`. Introduce and unpack `t t' ⟨v, a, b⟩ ⟨v', a', b'⟩`. Take `rfl` from `(g₂ s).unique b b'`. Conclude with `(i₂ v).unique a a'`.
+-/
 theorem expandsF_bijective (hG : GlobalFnsSt) (hk : 1 ≤ k) (h : U.ExpBij k) (hw : w.IsGen) :
     (∀ t, ∃! s, U.ExpandsF F k w t s) ∧ ∀ s, ∃! t, U.ExpandsF F k w t s := by
   obtain ⟨g₁, g₂⟩ := expandsG_bijective U F hG hk h
@@ -331,9 +420,19 @@ namespace GlobalTheory
 
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.DVR FieldBaseChange
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ U F _ _ k hk _ hw` and use `expandsF_bijective U.toUnifPre F hG hk (U.expand k hk) hw`.
+-/
 theorem expansion_bijective_over_fields (hG : GlobalFnsSt) : Geo.Tor.ExpBijectiveUniformisation :=
   fun _ _ _ _ _ _ _ _ _ U F _ _ k hk _ hw => expandsF_bijective U.toUnifPre F hG hk (U.expand k hk) hw
 
+/- English proof (translation)
+Take `⟨h₁, h₂⟩` from `expandsF_bijective U.toUnifPre F hG hk (U.expand k hk) hw`. Use `choose f hf using fun t : SecOver (abelianBase A F) (LPow A.A A.L (k : ℤ) (TFK (R := R) F)) => (h₁ t).exists`. Establish `iff : ∀ t s, U.toUnifPre.ExpandsF F k w t s ↔ f t = s` using `fun t s => ⟨fun h => (h₁ t).unique (hf t) h, fun h => h ▸ hf t⟩`. Establish `lin : ∀ (c : F) t t', f (c • t + t') = c • f t + f t'` using `fun c t t' => (iff _ _).1 (expandsF_lin U.toUnifPre F c (hf t) (hf t'))`. Establish `f0 : f 0 = 0`.
+
+Use `lin 1 0 0` as an intermediate fact. Rewrite `this` using `[one_smul, one_smul, add_zero]`. Conclude with `left_eq_add.1 this`. Set `l : SecOver (abelianBase A F) (LPow A.A A.L (k : ℤ) (TFK (R` to `R) F)) →ₗ[F] Fam D.toPre F k := { toFun := f map_add' := fun t t' => by simpa only [one_smul] using lin 1 t t' map_smul' := fun c t => by simpa only [add_zero, f0, RingHom.id_apply] using lin c t 0 }`. Use `⟨LinearEquiv.ofBijective l ⟨fun t t' e => ?_, fun s => ?_⟩, iff⟩` and prove the remaining obligations.
+
+Conclude with `(h₂ (f t')).unique ((iff t _).2 e) (hf t')`. Take `⟨t, ht⟩` from `(h₂ s).exists`. Conclude with `⟨t, (iff t s).1 ht⟩`.
+-/
 theorem exists_linearEquiv_expandsF (hG : GlobalFnsSt) {R : Type} [CommRing R] [IsDomain R] {I : Ideal R}
     {D : DegData R I} {A : PolAV (Spec (CommRingCat.of (FractionRing R)))}
     {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] (U : Unif I D A G)

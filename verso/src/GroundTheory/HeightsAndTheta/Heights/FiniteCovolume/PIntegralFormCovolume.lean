@@ -10,6 +10,47 @@ noncomputable section
 variable (Q V K : Type*) [AddCommGroup Q] [Module ℚ Q] [NormedAddCommGroup V] [NormedSpace ℝ V]
   [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] [Fintype K]
 
+/- English proof (translation)
+Introduce `ψ e T μ hμ hT hli hrank`. Establish `: FiniteDimensional ℚ Q` using `Module.Finite.of_basis e`. Establish `hQ : finrank ℚ Q = Fintype.card K` using `finrank_eq_card_basis e`. Set `b₀ : Basis K ℝ V` to `basisOfLinearIndependentOfCardEqFinrank' _ hli hrank.symm`. Establish `hb₀ : ∀ i, b₀ i = ψ (e i)` using `fun i => by simp [b₀]`.
+
+Establish `hGe : (LinearMap.BilinForm.toMatrix e T).det ≠ 0` using `(LinearMap.BilinForm.nondegenerate_iff_det_ne_zero e).1 hT`. Use `⟨μ.real (ZSpan.fundamentalDomain b₀) ^ 2 / |((LinearMap.BilinForm.toMatrix e T).det : ℝ)|, ?_⟩` and prove the remaining obligations. Introduce `L k hk hfg hspan _ hdual`. Use `set M := AddSubgroup.toIntSubmodule L with hM`. Establish `: Module.Finite ℤ M` using `Module.Finite.iff_fg.2 ((Submodule.fg_iff_addSubgroup_fg M).2 hfg)`.
+
+Establish `: Module.IsTorsionFree ℤ Q` using `.trans_faithfulSMul ℤ ℚ Q`. Establish `hψq : ∀ (q : ℚ) (y : Q), ψ (q • y) = (q : ℝ) • ψ y` using `fun q y => by`. Simplify using `using map_ratCast_smul ψ ℚ ℝ q y`. Set `x₀` to `Module.Free.chooseBasis ℤ M`. Establish `hli₀ : LinearIndependent ℚ (M.subtype ∘ x₀)` using `(LinearIndependent.iff_fractionRing ℤ ℚ).1 (x₀.linearIndependent.map' M.subtype (Submodule.ker_subtype M))`.
+
+Establish `hspan₀ : Submodule.span ℤ (Set.range (M.subtype ∘ x₀)) = M`. Rewrite using `[Set.range_comp, Submodule.span_image, x₀.span_eq, Submodule.map_top, Submodule.range_subtype]`. Establish `hspanq : Submodule.span ℚ (Set.range (M.subtype ∘ x₀)) = ⊤`. Rewrite using `[← Submodule.span_span_of_tower ℤ, hspan₀]`. Conclude with `hspan`.
+
+Set `xq₀ : Basis _ ℚ Q` to `Basis.mk hli₀ hspanq.ge`. Set `σ` to `Fintype.equivOfCardEq ((finrank_eq_card_basis xq₀).symm.trans hQ)`. Set `x` to `x₀.reindex σ`. Set `xq` to `xq₀.reindex σ`. Establish `hxq : ∀ i, xq i = (x i : Q)` using `fun i => by simp [xq, x, xq₀]`.
+
+Establish `hspanx : Submodule.span ℤ (Set.range fun i => xq i) = M`. Establish `: (fun i => xq i) = M.subtype ∘ x` using `funext hxq`. Rewrite using `[this, Set.range_comp, Submodule.span_image, x.span_eq, Submodule.map_top, Submodule.range_subtype]`. Use `set P := e.toMatrix xq with hP`. Establish `hψe : ∀ y, ψ y = ∑ i, (e.repr y i : ℝ) • b₀ i` using `fun y => by`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hmat : b₀.toMatrix (fun j => ψ (xq j)) = P.map (Rat.cast : ℚ → ℝ)`. Use extensionality with `i j`. Rewrite using `[Basis.toMatrix_apply, hψe, b₀.repr_sum_self]`. Simplify using `[P, Basis.toMatrix_apply]`.
+
+Establish `hdetP : b₀.det (fun j => ψ (xq j)) = (P.det : ℝ)`. Rewrite using `[Basis.det_apply, hmat]`. Simplify using `using (RingHom.map_det (Rat.castHom ℝ) P).symm`. Establish `hP0 : P.det ≠ 0`. Rewrite using `[hP, ← Basis.det_apply]`.
+
+Conclude with `(e.isUnit_det xq).ne_zero`. Establish `hw : LinearIndependent ℝ (fun j => ψ (xq j))` using `((Basis.is_basis_iff_det b₀).2 (by rw [hdetP]; exact isUnit_iff_ne_zero.2 (by exact_mod_cast hP0))).1`. Set `bx : Basis K ℝ V` to `basisOfLinearIndependentOfCardEqFinrank' _ hw hrank.symm`. Establish `hL : AddSubgroup.toIntSubmodule (L.map ψ) = Submodule.span ℤ (Set.range bx)`. Express the relevant statement in the definitionally equal form `M.map ψ.toIntLinearMap = _`.
+
+Rewrite using `[← hspanx, Submodule.map_span, ← Set.range_comp]`. Use `congr 1`. Simplify using `[bx, Function.comp_def]`. Establish `hPk : P.det ^ 2 * |(LinearMap.BilinForm.toMatrix e T).det| ≤ |(k : ℚ)| ^ Fintype.card K`. Establish `hG : (LinearMap.BilinForm.toMatrix xq T).det = P.det ^ 2 * (LinearMap.BilinForm.toMatrix e T).det`.
+
+Rewrite using `[← LinearMap.BilinForm.toMatrix_mul_basis_toMatrix e xq T, det_mul, det_mul, det_transpose]`. Expand and normalize the polynomial expressions, which then agree. Use `set d := T.dualBasis hT xq`. Establish `hd : ∀ i j, T (d i) (xq j) = if j = i then 1 else 0` using `LinearMap.BilinForm.apply_dualBasis_left hT xq`. Establish `hc : ∀ i, ∃ c : K → ℤ, ∑ j, c j • xq j = k • d i`.
+
+Introduce `i`. Establish `hmem : k • d i ∈ L` using `hdual (d i) fun y hy => by`. Establish `hy' : y ∈ Submodule.span ℤ (Set.range fun j => xq j)` using `by rw [hspanx]; exact hy`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).1 hy'`. Conclude with `⟨c i, by simp [map_sum, hd]⟩`.
+
+Establish `hmem' : k • d i ∈ Submodule.span ℤ (Set.range fun j => xq j)`. Rewrite using `[hspanx]`. Conclude with `hmem`. Conclude with `(Submodule.mem_span_range_iff_exists_fun ℤ).1 hmem'`. Use `choose c₀ hc using hc`.
+
+Use `set c : Matrix K K ℤ := Matrix.of c₀ with hcdef`. Establish `hcG : c.map (Int.cast : ℤ → ℚ) * LinearMap.BilinForm.toMatrix xq T = (k : ℚ) • 1`. Use extensionality with `i l`. Establish `h1` using `congrArg (fun y => T y (xq l)) (hc i)`. Simplify using `[hd] at h1`.
+
+Rewrite using `[Matrix.mul_apply, Matrix.smul_apply, Matrix.one_apply]`. Simplify using `only [Matrix.map_apply, LinearMap.BilinForm.toMatrix_apply, hcdef, Matrix.of_apply]`. Simplify `h1` using `[zsmul_eq_mul, eq_comm]`. Establish `hdet` using `congrArg Matrix.det hcG`. Rewrite `hdet` using `[det_mul, det_smul, det_one, mul_one, hG]`.
+
+Establish `hcd : (c.map (Int.cast : ℤ → ℚ)).det = (c.det : ℚ)`. Simplify using `using (RingHom.map_det (Int.castRingHom ℚ) c).symm`. Rewrite `hdet` using `[hcd]`. Establish `hc0 : c.det ≠ 0`. Introduce and unpack `h0`.
+
+Rewrite `hdet` using `[h0, Int.cast_zero, zero_mul]`. Conclude with `pow_ne_zero _ (Int.cast_ne_zero.2 hk) hdet.symm`. Establish `h1 : (1 : ℚ) ≤ |(c.det : ℚ)|` using `by exact_mod_cast Int.one_le_abs hc0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[abs_mul, abs_pow, sq_abs]`.
+
+Use `_ ≤ |(c.det : ℚ)| * |P.det ^ 2 * (LinearMap.BilinForm.toMatrix e T).det| := le_mul_of_one_le_left (abs_nonneg _) h1`. Use `_ = |(k : ℚ)| ^ Fintype.card K := by rw [← abs_mul, hdet, abs_pow]`. Establish `hPkR : (P.det : ℝ) ^ 2 * |((LinearMap.BilinForm.toMatrix e T).det : ℝ)| ≤ |(k : ℝ)| ^ Fintype.card K` using `by exact_mod_cast hPk`. Rewrite using `[hL]`. Use `⟨inferInstance, inferInstance, ?_⟩` and prove the remaining obligations.
+
+Use `hμ` as an intermediate fact. Set `bZ : Basis K ℤ (Submodule.span ℤ (Set.range bx))` to `Basis.span (bx.linearIndependent.restrict_scalars' ℤ)`. Establish `hcoe : ((↑) ∘ bZ : K → V) = fun j => ψ (xq j)` using `funext fun i => by`. Simplify using `[bZ, Basis.span_apply, bx]`. Rewrite using `[ZLattice.covolume_eq_det_mul_measureReal _ μ bZ b₀, hcoe, hdetP, mul_pow, sq_abs, div_mul_eq_mul_div, le_div_iff₀ (abs_pos.2 (by exact_mod_cast hGe))]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem IntegralFormCovolume.proof : IntegralFormCovolume.Statement Q V K := by
   classical
   intro ψ e T μ hμ hT hli hrank

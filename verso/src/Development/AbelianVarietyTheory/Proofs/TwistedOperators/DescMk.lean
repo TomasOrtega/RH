@@ -15,10 +15,52 @@ noncomputable def desc {G : Type} [AddCommGroup G] [TopologicalSpace G] (Γ : Ad
     abel)
   continuous_toFun := hf.quotient_liftOn' _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem desc_mk {G : Type} [AddCommGroup G] [TopologicalSpace G] (Γ : AddSubgroup G)
     (f : G → ℂ) (hf : Continuous f) (hΓ : ∀ γ ∈ Γ, ∀ x, f (γ + x) = f x) (x : G) :
     desc Γ f hf hΓ (QuotientAddGroup.mk x) = f x := rfl
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ _ _ Γ _ K hK hcov A _ χ hc hmulx hadd hzero hnorm hker Φ hΦ hΦinv ε hε`. Establish `: CompactSpace (G ⧸ Γ)`. Use `⟨?_⟩` and prove the remaining obligations. Establish `hU : (Set.univ : Set (G ⧸ Γ)) = QuotientAddGroup.mk '' K`. Use extensionality with `q`.
+
+Use `QuotientAddGroup.induction_on q fun x => ?_` and prove the remaining obligations. Take `⟨γ, hγ, hk⟩` from `hcov x`. Use `⟨fun _ => ⟨γ + x, hk, ?_⟩, fun _ => Set.mem_univ _⟩` and prove the remaining obligations. Rewrite using `[QuotientAddGroup.eq]`. Establish `: -(γ + x) + x = -γ` using `by abel`.
+
+Rewrite using `[this]`. Conclude with `Γ.neg_mem hγ`. Rewrite using `[hU]`. Conclude with `hK.image continuous_quot_mk`. Establish `hχ0 : ∀ a, χ a 0 = 1` using `fun a => (hker 0).2 Γ.zero_mem a`.
+
+Establish `hinv : ∀ a, ∀ γ ∈ Γ, ∀ x, χ a (γ + x) = χ a x`. Introduce `a γ hγ x`. Rewrite using `[hmulx, (hker γ).2 hγ a, one_mul]`. Set `e : A → C(G ⧸ Γ, ℂ)` to `fun a => desc Γ (χ a) (hc a) (hinv a)`. Establish `he_apply : ∀ a x, e a (QuotientAddGroup.mk x) = χ a x` using `fun a x => desc_mk Γ (χ a) (hc a) (hinv a) x`.
+
+Establish `he_add : ∀ a b, e (a + b) = e a * e b`. Introduce `a b`. Use extensionality with `q`. Use `QuotientAddGroup.induction_on q fun x => ?_` and prove the remaining obligations. Rewrite using `[ContinuousMap.mul_apply, he_apply, he_apply, he_apply, hadd]`.
+
+Establish `he_zero : e 0 = 1`. Use extensionality with `q`. Use `QuotientAddGroup.induction_on q fun x => ?_` and prove the remaining obligations. Rewrite using `[ContinuousMap.one_apply, he_apply, hzero]`. Establish `he_star : ∀ a, star (e a) = e (-a)`.
+
+Introduce `a`. Use extensionality with `q`. Use `QuotientAddGroup.induction_on q fun x => ?_` and prove the remaining obligations. Rewrite using `[ContinuousMap.star_apply, he_apply, he_apply]`. Establish `h1 : χ (-a) x * χ a x = 1` using `by rw [← hadd, neg_add_cancel, hzero]`.
+
+Establish `h2 : χ a x * star (χ a x) = 1`. Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq, hnorm]`. Evaluate the numerical expressions. Take the linear combination `(-(star (χ a x))) * h1 + χ (-a) x * h2`. Set `S : Submodule ℂ C(G ⧸ Γ, ℂ)` to `Submodule.span ℂ (Set.range e)`.
+
+Establish `hone : (1 : C(G ⧸ Γ, ℂ)) ∈ S` using `he_zero ▸ Submodule.subset_span ⟨0, rfl⟩`. Establish `hmul : ∀ f g, f ∈ S → g ∈ S → f * g ∈ S`. Introduce `f g hf hg`. Establish `h` using `Submodule.mul_mem_mul hf hg`. Rewrite `h` using `[Submodule.span_mul_span]`.
+
+Use `(Submodule.span_le.mpr ?_) h` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨a, rfl⟩, _, ⟨b, rfl⟩, rfl⟩`. Conclude with `Submodule.subset_span ⟨a + b, he_add a b⟩`. Establish `hstar : ∀ f ∈ S, star f ∈ S`. Introduce `f hf`.
+
+Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨-a, (he_star a).symm⟩`. Consider the case `zero => rw [star_zero]`.
+
+Conclude with `S.zero_mem`. Consider the case `add x y _ _ hx hy => rw [star_add]`. Conclude with `S.add_mem hx hy`. Consider the case `smul c x _ hx => rw [star_smul]`. Conclude with `S.smul_mem _ hx`.
+
+Set `B : StarSubalgebra ℂ C(G ⧸ Γ, ℂ)` to `{ carrier := S mul_mem' := fun {f g} hf hg => hmul f g hf hg one_mem' := hone add_mem' := fun hf hg => S.add_mem hf hg zero_mem' := S.zero_mem algebraMap_mem' := fun c => by`. Rewrite using `[Algebra.algebraMap_eq_smul_one]`. Conclude with `S.smul_mem c hone`. Use the proof step `star_mem' := fun {f} hf => hstar f hf }`. Establish `hsep : B.SeparatesPoints`.
+
+Introduce `q₁ q₂`. Use `QuotientAddGroup.induction_on q₁ fun x => QuotientAddGroup.induction_on q₂ fun y => ?_` and prove the remaining obligations. Introduce `hne`. Establish `hex : ∃ a, χ a x ≠ χ a y`. Assume the negation of the conclusion as `hall`.
+
+Simplify using `only [not_exists, ne_eq, not_not] at hall`. Apply `hne` to reduce the goal to its premises. Rewrite using `[QuotientAddGroup.eq]`. Use `(hker _).1 fun a => ?_` and prove the remaining obligations. Rewrite using `[hmulx, ← hall a, ← hmulx, neg_add_cancel, hχ0 a]`.
+
+Take `⟨a, ha⟩` from `hex`. Use `⟨e a, ⟨e a, Submodule.subset_span ⟨a, rfl⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[he_apply, he_apply]` and apply the resulting hypothesis. Establish `hB` using `ContinuousMap.starSubalgebra_topologicalClosure_eq_top_of_separatesPoints B hsep`. Set `Φq : C(G ⧸ Γ, ℂ)` to `desc Γ Φ hΦ hΦinv`.
+
+Establish `hmem : Φq ∈ closure (B : Set C(G ⧸ Γ, ℂ))`. Rewrite using `[← StarSubalgebra.topologicalClosure_coe, hB]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨g, hg, hdist⟩` from `Metric.mem_closure_iff.mp hmem ε hε`. Take `⟨c, hcg⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.mp (show g ∈ S from hg)`.
+
+Use `⟨c.support, c, fun x => ?_⟩` and prove the remaining obligations. Establish `hval : ∑ a ∈ c.support, c a * χ a x = g (QuotientAddGroup.mk x)`. Rewrite using `[← hcg, Finsupp.sum, ContinuousMap.coe_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[ContinuousMap.smul_apply, he_apply, smul_eq_mul]`.
+
+Rewrite using `[hval, ← desc_mk Γ Φ hΦ hΦinv x]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem approx : ∀ (G : Type) [inst : AddCommGroup G] [inst_1 : TopologicalSpace G] [IsTopologicalAddGroup G] [T2Space G] [LocallyCompactSpace G] [SecondCountableTopology G] [inst_6 : MeasurableSpace G] [BorelSpace G] (Γ : AddSubgroup G) [DiscreteTopology ↥Γ] (K : Set G), IsCompact K → (∀ (x : G), ∃ γ ∈ Γ, γ + x ∈ K) → ∀ (A : Type) [inst_9 : AddCommGroup A] (χ : A → G → ℂ), (∀ (a : A), Continuous (χ a)) → (∀ (a : A) (x y : G), χ a (x + y) = χ a x * χ a y) → (∀ (a b : A) (x : G), χ (a + b) x = χ a x * χ b x) → (∀ (x : G), χ (0 : A) x = (1 : ℂ)) → (∀ (a : A) (x : G), ‖χ a x‖ = (1 : ℝ)) → (∀ (x : G), (∀ (a : A), χ a x = (1 : ℂ)) ↔ x ∈ Γ) → ∀ (Φ : G → ℂ), Continuous Φ → (∀ γ ∈ Γ, ∀ (x : G), Φ (γ + x) = Φ x) → ∀ (ε : ℝ), (0 : ℝ) < ε → ∃ (s : Finset A) (c : A → ℂ), ∀ (x : G), ‖Φ x - ∑ a ∈ s, c a * χ a x‖ ≤ ε := by
   intro G _ _ _ _ _ _ _ _ Γ _ K hK hcov A _ χ hc hmulx hadd hzero hnorm hker Φ hΦ hΦinv ε hε
 

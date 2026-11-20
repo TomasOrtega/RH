@@ -16,6 +16,9 @@ namespace RiemannTau
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Establish `h` using `trace_eq_sum_embeddings (K := ℚ) (L := E) ℂ (x := t)`. Rewrite `h` using `[eq_ratCast]`. Rewrite using `[h]`. Conclude with `Fintype.sum_equiv (RingHom.equivRatAlgHom E ℂ) _ _ (fun σ => rfl)`.
+-/
 theorem sum_embeddings_eq_trace (t : E) :
     ∑ σ : E →+* ℂ, σ t = ((Algebra.trace ℚ E t : ℚ) : ℂ) := by
   have h := trace_eq_sum_embeddings (K := ℚ) (L := E) ℂ (x := t)
@@ -23,6 +26,13 @@ theorem sum_embeddings_eq_trace (t : E) :
   rw [h]
   exact Fintype.sum_equiv (RingHom.equivRatAlgHom E ℂ) _ _ (fun σ => rfl)
 
+/- English proof (translation)
+Set `f : (E →+* ℂ) → (𝓞 E →* ℂ)` to `fun σ => ((σ.comp (algebraMap (𝓞 E) E) : 𝓞 E →+* ℂ) : 𝓞 E →* ℂ)`. Establish `finj : Function.Injective f`. Introduce `σ τ hst`. Establish `: σ.comp (algebraMap (𝓞 E) E) = τ.comp (algebraMap (𝓞 E) E)`. Use extensionality with `a`.
+
+Conclude with `DFunLike.congr_fun hst a`. Conclude with `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) this`. Establish `hli` using `(linearIndependent_monoidHom (𝓞 E) ℂ).comp f finj`. Rewrite `hli` using `[Fintype.linearIndependent_iff]`. Use `hli c ?_ σ` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `a`. Simplify `h a` using `[f, Finset.sum_apply, mul_comm]`.
+-/
 theorem coeff_eq_zero (c : (E →+* ℂ) → ℂ) (h : ∀ a : 𝓞 E, ∑ σ, c σ * σ (a : E) = 0) (σ : E →+* ℂ) :
     c σ = 0 := by
   let f : (E →+* ℂ) → (𝓞 E →* ℂ) := fun σ => ((σ.comp (algebraMap (𝓞 E) E) : 𝓞 E →+* ℂ) : 𝓞 E →* ℂ)
@@ -38,12 +48,36 @@ theorem coeff_eq_zero (c : (E →+* ℂ) → ℂ) (h : ∀ a : 𝓞 E, ∑ σ, c
   funext a
   simpa [f, Finset.sum_apply, mul_comm] using h a
 
+/- English proof (translation)
+Simplify using `only [hermForm, dotProduct, Matrix.mulVec, Finset.mul_sum, Pi.star_apply]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hermForm_eq_sum {g : ℕ} (M : Matrix (Fin g) (Fin g) ℂ) (z w : Fin g → ℂ) :
     hermForm M z w = ∑ j, ∑ k, z j * M j k * star (w k) := by
   simp only [hermForm, dotProduct, Matrix.mulVec, Finset.mul_sum, Pi.star_apply]
   refine Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_
   ring
 
+/- English proof (translation)
+Establish `h1 : ∀ (z : Fin g → ℂ) y, (hermForm T z (P y)).im = 0`. Introduce `z y`. Establish `hz : z ∈ Submodule.span ℝ (Set.range P)` using `hs ▸ Submodule.mem_top`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz => obtain ⟨x, rfl⟩ := hz`.
+
+Conclude with `h x y`. Consider the case `zero => simp [hermForm_eq_sum]`. Consider the case `add a b _ _ ha hb`. Establish `: hermForm T (a + b) (P y) = hermForm T a (P y) + hermForm T b (P y)`. Simplify using `only [hermForm_eq_sum, Pi.add_apply, add_mul, Finset.sum_add_distrib]`.
+
+Rewrite using `[this, Complex.add_im, ha, hb, add_zero]`. Consider the case `smul c a _ ha`. Establish `: hermForm T (c • a) (P y) = (c : ℂ) * hermForm T a (P y)`. Simplify using `only [hermForm_eq_sum, Pi.smul_apply, Finset.mul_sum, Complex.real_smul]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Complex.im_ofReal_mul, ha, mul_zero]`. Establish `h2 : ∀ (z w : Fin g → ℂ), (hermForm T z w).im = 0`. Introduce `z w`. Establish `hw : w ∈ Submodule.span ℝ (Set.range P)` using `hs ▸ Submodule.mem_top`.
+
+Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw => obtain ⟨y, rfl⟩ := hw`. Conclude with `h1 z y`. Consider the case `zero => simp [hermForm_eq_sum]`. Consider the case `add a b _ _ ha hb`.
+
+Establish `: hermForm T z (a + b) = hermForm T z a + hermForm T z b`. Simplify using `only [hermForm_eq_sum, Pi.add_apply, star_add, mul_add, Finset.sum_add_distrib]`. Rewrite using `[this, Complex.add_im, ha, hb, add_zero]`. Consider the case `smul c a _ ha`. Establish `: hermForm T z (c • a) = (c : ℂ) * hermForm T z a`.
+
+Simplify using `only [hermForm_eq_sum, Pi.smul_apply, Finset.mul_sum, Complex.real_smul, star_mul', Complex.star_def, Complex.conj_ofReal]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Complex.im_ofReal_mul, ha, mul_zero]`. Use extensionality with `j k`.
+
+Establish `e1 : hermForm T (Pi.single j 1) (Pi.single k 1) = T j k`. Simplify using `[hermForm_eq_sum, Pi.single_apply]`. Establish `e2 : hermForm T (Pi.single j Complex.I) (Pi.single k 1) = Complex.I * T j k`. Simplify using `[hermForm_eq_sum, Pi.single_apply]`. Establish `a1` using `h2 (Pi.single j 1) (Pi.single k 1)`.
+
+Establish `a2` using `h2 (Pi.single j Complex.I) (Pi.single k 1)`. Rewrite `a1` using `[e1]`. Rewrite `a2` using `[e2]`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `using a2`.
+
+Simplify using `using a1`.
+-/
 theorem matrix_eq_zero_of_im {g : ℕ} {La : Type} [AddCommGroup La] (P : La →+ (Fin g → ℂ))
     (hs : Submodule.span ℝ (Set.range P) = ⊤) (T : Matrix (Fin g) (Fin g) ℂ)
     (h : ∀ x y, (hermForm T (P x) (P y)).im = 0) : T = 0 := by
@@ -93,6 +127,15 @@ theorem matrix_eq_zero_of_im {g : ℕ} {La : Type} [AddCommGroup La] (P : La →
   · simpa using a2
   · simpa using a1
 
+/- English proof (translation)
+Establish `e1 : a • x = ∑ k, ((RingOfIntegers.basis E).repr a k) • (RingOfIntegers.basis E k • x)` using `by conv_lhs => rw [← (RingOfIntegers.basis E).sum_repr a]`. Rewrite using `[Finset.sum_smul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_assoc]`. Rewrite using `[e1, map_sum, LinearMap.sum_apply, sesq, Finset.mul_sum, map_sum]`.
+
+Use `push_cast`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `e2 : (a : E) * (((D.EF (RingOfIntegers.basis E k • x) y : ℤ) : E) * HT.dualInt E k) = ((D.EF (RingOfIntegers.basis E k • x) y : ℤ) : ℚ) • (HT.dualInt E k * (a : E))`. Rewrite using `[Rat.smul_def]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e3 : D.EF (((RingOfIntegers.basis E).repr a k) • (RingOfIntegers.basis E k • x)) y = ((RingOfIntegers.basis E).repr a k) * D.EF (RingOfIntegers.basis E k • x) y`. Rewrite using `[map_zsmul, LinearMap.smul_apply, smul_eq_mul]`. Rewrite using `[e2, map_smul, ← HT.LatTest.repr_eq_trace, e3]`. Use `push_cast`.
+
+Rewrite using `[smul_eq_mul, mul_comm]`.
+-/
 theorem trace_mul_sesq (D : Datum H) (a : 𝓞 E) (x y : D.La) :
     Algebra.trace ℚ E ((a : E) * sesq D x y) = ((D.EF (a • x) y : ℤ) : ℚ) := by
   classical
@@ -116,6 +159,11 @@ theorem trace_mul_sesq (D : Datum H) (a : 𝓞 E) (x y : D.La) :
   push_cast
   rw [smul_eq_mul, mul_comm]
 
+/- English proof (translation)
+Use `conv_rhs => rw [HT.LatTest.expand_dual ((a : E) * sesq D x y)]`. Rewrite using `[sesq]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `e1 : (a : E) * sesq D x y * integralBasis E k = ((RingOfIntegers.basis E k * a : 𝓞 E) : E) * sesq D x y`. Rewrite using `[integralBasis_apply]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, trace_mul_sesq, Rat.smul_def, mul_smul]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem sesq_smul_left (D : Datum H) (a : 𝓞 E) (x y : D.La) :
     sesq D (a • x) y = (a : E) * sesq D x y := by
   classical
@@ -131,6 +179,9 @@ theorem sesq_smul_left (D : Datum H) (a : 𝓞 E) (x y : D.La) :
   push_cast
   rfl
 
+/- English proof (translation)
+Simplify using `only [sesq, Finset.smul_sum, map_sum, LinearMap.sum_apply, Int.cast_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem sesq_sum_left (D : Datum H) {I : Type} (s : Finset I) (f : I → D.La) (y : D.La) :
     sesq D (∑ m ∈ s, f m) y = ∑ m ∈ s, sesq D (f m) y := by
   classical
@@ -145,6 +196,9 @@ namespace RiemannTau
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Establish `e : hermForm (Matrix.of fun j k => (ty j (a : E) - ty k (a : E)) * Hm j k) (P x) (P y) = hermForm Hm (P (a • x)) (P y) - hermForm Hm (P x) (P (H.bar a • y))`. Simplify using `only [hermForm_eq_sum, ← Finset.sum_sub_distrib, Matrix.of_apply, hlin, H.bar_eq, IsCMField.complexEmbedding_complexConj, star_mul', Complex.star_def, Complex.conj_conj]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Complex.sub_im, hEF, hEF, D.adj, sub_self]`.
+-/
 theorem im_twist (D : Datum H) {g : ℕ} (ty : Fin g → (E →+* ℂ)) (P : D.La →+ (Fin g → ℂ))
     (hlin : ∀ (a : 𝓞 E) x i, P (a • x) i = ty i (a : E) * P x i) (Hm : Matrix (Fin g) (Fin g) ℂ)
     (hEF : ∀ x y, (hermForm Hm (P x) (P y)).im = D.EF x y) (a : 𝓞 E) (x y : D.La) :
@@ -157,6 +211,11 @@ theorem im_twist (D : Datum H) {g : ℕ} (ty : Fin g → (E →+* ℂ)) (P : D.L
     ring
   rw [e, Complex.sub_im, hEF, hEF, D.adj, sub_self]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Apply `hjk` to reduce the goal to its premises. Use `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) ?_` and prove the remaining obligations. Use extensionality with `a`. Establish `h` using `matrix_eq_zero_of_im P hs _ (im_twist D ty P hlin Hm hEF a)`.
+
+Establish `h2` using `congrFun (congrFun h j) k`. Simplify using `only [Matrix.of_apply, Matrix.zero_apply, mul_eq_zero, hne, or_false] at h2`. Conclude with `sub_eq_zero.1 h2`.
+-/
 theorem block_diag (D : Datum H) {g : ℕ} (ty : Fin g → (E →+* ℂ)) (P : D.La →+ (Fin g → ℂ))
     (hlin : ∀ (a : 𝓞 E) x i, P (a • x) i = ty i (a : E) * P x i)
     (hs : Submodule.span ℝ (Set.range P) = ⊤) (Hm : Matrix (Fin g) (Fin g) ℂ)
@@ -171,6 +230,15 @@ theorem block_diag (D : Datum H) {g : ℕ} (ty : Fin g → (E →+* ℂ)) (P : D
   simp only [Matrix.of_apply, Matrix.zero_apply, mul_eq_zero, hne, or_false] at h2
   exact sub_eq_zero.1 h2
 
+/- English proof (translation)
+Simplify using `only [hermForm_eq_sum, Finset.mul_sum]`. Use `symm`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : ty j = ty k`. Rewrite using `[Finset.sum_eq_single (ty j)]`. Simplify using `[tyPart, h]`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `σ _ hσ`. Simplify using `[tyPart, Ne.symm hσ, hσ]`. Simplify using the standard rewrite rules. Rewrite using `[hb j k h]`. Simplify using `only [mul_zero, zero_mul]`.
+
+Conclude with `Finset.sum_const_zero`.
+-/
 theorem hermForm_smul_eq_sum {g : ℕ} (ty : Fin g → (E →+* ℂ)) (Hm : Matrix (Fin g) (Fin g) ℂ)
     (hb : ∀ j k, ty j ≠ ty k → Hm j k = 0) (a : E) (z w : Fin g → ℂ) :
     hermForm Hm (fun j => ty j a * z j) w =
@@ -193,10 +261,26 @@ theorem hermForm_smul_eq_sum {g : ℕ} (ty : Fin g → (E →+* ℂ)) (Hm : Matr
     simp only [mul_zero, zero_mul]
     exact Finset.sum_const_zero
 
+/- English proof (translation)
+Introduce `σ` and use `star_star σ`.
+-/
 theorem conjugate_involutive :
     Function.Involutive (ComplexEmbedding.conjugate : (E →+* ℂ) → (E →+* ℂ)) :=
   fun σ => star_star σ
 
+/- English proof (translation)
+Use `set h : (E →+* ℂ) → ℂ := fun σ => hermForm Hm (tyPart ty σ (P x)) (tyPart ty σ (P y)) with hh`. Establish `key : ∀ a : 𝓞 E, ∑ σ : E →+* ℂ, (h σ - star (h (ComplexEmbedding.conjugate σ)) - 2 * Complex.I * σ (sesq D x y)) * σ (a : E) = 0`. Introduce `a`. Establish `hA : hermForm Hm (P (a • x)) (P y) = ∑ σ : E →+* ℂ, σ (a : E) * h σ`. Rewrite using `[← hermForm_smul_eq_sum ty Hm hb (a : E) (P x) (P y)]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `j`. Conclude with `hlin a x j`. Establish `hstar : star (∑ σ : E →+* ℂ, σ (a : E) * h σ) = ∑ σ : E →+* ℂ, σ (a : E) * star (h (ComplexEmbedding.conjugate σ))`. Rewrite using `[star_sum, ← Equiv.sum_comp (conjugate_involutive (E := E)).toPerm]`.
+
+Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Simplify using `only [Function.Involutive.coe_toPerm, star_mul', ComplexEmbedding.conjugate_coe_eq, Complex.star_def, Complex.conj_conj]`. Establish `hIm : (hermForm Hm (P (a • x)) (P y)) - star (hermForm Hm (P (a • x)) (P y)) = 2 * Complex.I * ((D.EF (a • x) y : ℤ) : ℂ)`. Use `Complex.sub_conj (hermForm Hm (P (a • x)) (P y))` as an intermediate fact. Rewrite using `[Complex.star_def, this, hEF]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hTr : ((D.EF (a • x) y : ℤ) : ℂ) = ∑ σ : E →+* ℂ, σ (a : E) * σ (sesq D x y)`. Use `sum_embeddings_eq_trace ((a : E) * sesq D x y)` as an intermediate fact. Rewrite `this` using `[trace_mul_sesq]`.
+
+Simplify using `only [map_mul] at this`. Rewrite using `[this]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite `hIm` using `[hA, hstar, hTr, Finset.mul_sum, ← Finset.sum_sub_distrib, ← sub_eq_zero, ← Finset.sum_sub_distrib]`.
+
+Rewrite using `[← hIm]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Conclude with `sub_eq_zero.1 (coeff_eq_zero _ key τ)`.
+-/
 theorem component (D : Datum H) {g : ℕ} (ty : Fin g → (E →+* ℂ)) (P : D.La →+ (Fin g → ℂ))
     (hlin : ∀ (a : 𝓞 E) x i, P (a • x) i = ty i (a : E) * P x i) (Hm : Matrix (Fin g) (Fin g) ℂ)
     (hEF : ∀ x y, (hermForm Hm (P x) (P y)).im = D.EF x y)
@@ -240,6 +324,17 @@ theorem component (D : Datum H) {g : ℕ} (ty : Fin g → (E →+* ℂ)) (P : D.
     ring
   exact sub_eq_zero.1 (coeff_eq_zero _ key τ)
 
+/- English proof (translation)
+Use `haveI := D.fin`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Use `set n := Fintype.card I with hn`. Set `eq` to `Fintype.equivFin I`.
+
+Establish `hv : LinearIndependent (𝓞 E) (e ∘ eq.symm)` using `he.comp _ eq.symm.injective`. Establish `hcons : LinearIndependent (𝓞 E) (Fin.cons y (e ∘ eq.symm) : Fin n.succ → D.La)`. Use `hv.finCons' y _ ?_` and prove the remaining obligations. Introduce `c u hu hcu`. Assume the negation of the conclusion as `hc`.
+
+Establish `hu' : -u ∈ Submodule.span (𝓞 E) (Set.range e)`. Use `Submodule.neg_mem _ ?_` and prove the remaining obligations. Rewrite `hu` using `[Set.range_comp, eq.symm.surjective.range_eq, Set.image_univ]`. Conclude with `hu`. Take `⟨f, hf⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 E)).1 hu'`.
+
+Use `hno c f hc ?_` and prove the remaining obligations. Rewrite using `[hf]`. Conclude with `eq_neg_of_add_eq_zero_left hcu`. Use `hcons.fintype_card_le_finrank` as an intermediate fact. Rewrite `this` using `[D.rank, Fintype.card_fin]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_smul_eq_sum (D : Datum H) {I : Type} [Fintype I] (e : I → D.La)
     (hcard : Fintype.card I = D.p + D.q) (he : LinearIndependent (𝓞 E) e) (y : D.La) :
     ∃ (b : 𝓞 E) (c : I → 𝓞 E), b ≠ 0 ∧ b • y = ∑ n, c n • e n := by
@@ -266,6 +361,31 @@ theorem exists_smul_eq_sum (D : Datum H) {I : Type} [Fintype I] (e : I → D.La)
   rw [D.rank, Fintype.card_fin] at this
   omega
 
+/- English proof (translation)
+Introduce `hdet`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_vecMul_eq_zero_iff.2 hdet`. Take `⟨d, hd⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors (𝓞 E)) v`. Use `choose c hc using hd`. Establish `hd0 : ((d : 𝓞 E) : E) ≠ 0`.
+
+Use `nonZeroDivisors.ne_zero d.2` as an intermediate fact. Simplify using `using this`. Establish `hcv : ∀ m, (c m : E) = ((d : 𝓞 E) : E) * v m`. Introduce `m`. Use `hc m` as an intermediate fact.
+
+Rewrite `this` using `[Algebra.smul_def]`. Conclude with `this`. Use `set x : D.La := ∑ m, c m • e m with hx`. Establish `h0 : ∀ n, sesq D x (e n) = 0`. Introduce `n`.
+
+Establish `hvn` using `congrFun hv n`. Simplify using `only [Matrix.vecMul, dotProduct, Matrix.of_apply, Pi.zero_apply] at hvn`. Rewrite using `[hx, sesq_sum_left]`. Simplify using `only [sesq_smul_left, hcv, _root_.mul_assoc]`. Rewrite using `[← Finset.mul_sum, hvn, mul_zero]`.
+
+Establish `h1 : ∀ (a : 𝓞 E) n, D.EF (a • x) (e n) = 0`. Introduce `a n`. Use `trace_mul_sesq D a x (e n)` as an intermediate fact. Rewrite `this` using `[h0, mul_zero, map_zero]`. Conclude with `this.symm` after adjusting the coercions.
+
+Establish `h2 : ∀ y, sesq D x y = 0`. Introduce `y`. Take `⟨b, f, hb, hbf⟩` from `exists_smul_eq_sum D e hcard he y`. Establish `h3 : ∀ a : 𝓞 E, D.EF (a • x) (b • y) = 0`. Introduce `a`.
+
+Rewrite using `[hbf, map_sum]`. Use `Finset.sum_eq_zero fun n _ => ?_` and prove the remaining obligations. Take `⟨f', hf'⟩` from `H.bar.surjective (f n)`. Rewrite using `[← hf', ← D.adj, smul_smul]`. Conclude with `h1 _ n`.
+
+Take `⟨b', rfl⟩` from `H.bar.surjective b`. Establish `hb' : b' ≠ 0` using `fun h => hb (by simp [h])`. Establish `h4 : sesq D (b' • x) y = 0`. Rewrite using `[sesq]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations.
+
+Use `h3 (RingOfIntegers.basis E k)` as an intermediate fact. Rewrite `this` using `[← D.adj, smul_smul]`. Rewrite using `[smul_smul, mul_comm (RingOfIntegers.basis E k), this]`. Simplify using the standard rewrite rules. Rewrite `h4` using `[sesq_smul_left]`.
+
+Conclude with `(mul_eq_zero.1 h4).resolve_left (by simpa using hb')`. Establish `h5 : x = 0`. Apply `D.unimod.1` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use extensionality with `y`.
+
+Use `trace_mul_sesq D 1 x y` as an intermediate fact. Rewrite `this` using `[h2, mul_zero, map_zero, one_smul]`. Simplify using `only [LinearMap.zero_apply]`. Conclude with `this.symm` after adjusting the coercions. Establish `h6` using `Fintype.linearIndependent_iff.1 he c h5.symm.symm`.
+
+Apply `hv0` to reduce the goal to its premises. Use function extensionality and compare the values at `m`. Use `hcv m` as an intermediate fact. Rewrite `this` using `[h6 m]`. Simplify `this.symm` using `[hd0]`.
+-/
 theorem det_ne_zero (D : Datum H) {I : Type} [Fintype I] [DecidableEq I] (e : I → D.La)
     (hcard : Fintype.card I = D.p + D.q) (he : LinearIndependent (𝓞 E) e) :
     (Matrix.of fun m n => sesq D (e m) (e n)).det ≠ 0 := by
@@ -333,6 +453,9 @@ theorem det_ne_zero (D : Datum H) {I : Type} [Fintype I] [DecidableEq I] (e : I 
 
 end RiemannTau
 
+/- English proof (translation)
+Introduce `E _ _ _ H D g ty P Hm hP _ hEF`. Establish `hb` using `RiemannTau.block_diag D ty P hP.1 hP.2.2.2.1 Hm hEF`. Use `⟨hb, fun τ x y => RiemannTau.component D ty P hP.1 Hm hEF hb τ x y, ?_⟩` and prove the remaining obligations. Introduce `_ I _ _ e hcard he`. Conclude with `RiemannTau.det_ne_zero D e hcard he`.
+-/
 theorem riemann_tau_component : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (P : D.La →+ (Fin g → ℂ)) (Hm : Matrix (Fin g) (Fin g) ℂ), IsPeriod D ty P → Hm.IsHermitian → (∀ x y, (hermForm Hm (P x) (P y)).im = D.EF x y) → (∀ j k, ty j ≠ ty k → Hm j k = 0) ∧ (∀ (τ : E →+* ℂ) x y, hermForm Hm (tyPart ty τ (P x)) (tyPart ty τ (P y)) - star (hermForm Hm (tyPart ty (ComplexEmbedding.conjugate τ) (P x)) (tyPart ty (ComplexEmbedding.conjugate τ) (P y))) = 2 * Complex.I * τ (sesq D x y)) ∧ ∀ (r : ℕ) (I : Type) [Fintype I] [DecidableEq I] (e : I → D.La), Fintype.card I = D.p + D.q → LinearIndependent (𝓞 E) e → (Matrix.of fun m n => sesq D (e m) (e n)).det ≠ 0 := by
   intro E _ _ _ H D g ty P Hm hP _ hEF
   have hb := RiemannTau.block_diag D ty P hP.1 hP.2.2.2.1 Hm hEF

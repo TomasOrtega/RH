@@ -20,6 +20,21 @@ open GlobalTheory.Mum
 noncomputable section
 namespace GlobalTheory.Mum.TraitUnif
 
+/- English proof (translation)
+Introduce `R W _ _ _ _ _ _ φ hφ G _ _ A gen hgen`. Use `haveI : IsMonHom gen.hom := hgen`. Use `set gφ := IsFractionRing.map (K := FractionRing R) (L := FractionRing W) hφ with hgφ`. Establish `hsq : jK W ≫ spMap φ = spMap gφ ≫ jK R`. Simplify using `only [hgφ, jK, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+
+Use `congr 2`. Use extensionality with `x`. Simplify using `[IsFractionRing.map, IsLocalization.map_eq]`. Establish `hmono : Mono (jK R)`. Establish `: IsPreimmersion (jK R)` using `IsPreimmersion.of_isLocalization (nonZeroDivisors R)`.
+
+Use `infer_instance`. Set `GV` to `(Over.pullback (spMap φ)).obj G`. Establish `hβ` using `isGrpPullback_pullback G (spMap φ)`. Set `κ₁ : pullback GV.hom (jK W) ⟶ pullback G.hom (jK R)` to `pullback.lift (pullback.fst GV.hom (jK W) ≫ pullback.fst G.hom (spMap φ)) (pullback.snd GV.hom (jK W) ≫ spMap gφ) (by rw [Category.assoc, hβ.1.w, ← Category.assoc, pullback.condition, Category.assoc, hsq, Category.assoc])`. Establish `hκf : κ₁ ≫ pullback.fst G.hom (jK R) = pullback.fst GV.hom (jK W) ≫ pullback.fst G.hom (spMap φ)` using `pullback.lift_fst _ _ _`.
+
+Establish `w : κ₁ ≫ ((Over.pullback (jK R)).obj G).hom = ((Over.pullback (jK W)).obj GV).hom ≫ spMap gφ` using `pullback.lift_snd _ _ _`. Establish `hκ : IsGrpPullback ((Over.pullback (jK W)).obj GV) ((Over.pullback (jK R)).obj G) (spMap gφ) κ₁` using `(isGrpPullback_pullback G (jK R)).cancel (((isGrpPullback_pullback GV (jK W)).comp hβ).congr hsq hκf.symm) w`. Establish `hκA : IsGrpPullback ((Over.pullback (jK W)).obj GV) A.A (spMap gφ) (κ₁ ≫ gen.hom.left)` using `(hκ.comp (isGrpPullback_of_iso gen)).congr (Category.comp_id _) rfl`. Take `⟨P', g, hg, -, hmul, t, ht⟩` from `GlobalTheory.firstFiveLaws.1.polBaseChange _ _ (spMap gφ) A`. Establish `hP' : IsGrpPullback P'.A A.A (spMap gφ) g`.
+
+Use `⟨hg, fun T x y x₀ y₀ hx hy => ?_⟩` and prove the remaining obligations. Establish `ex : x₀ = toBase hg.w x` using `Over.OverMorphism.ext hx`. Establish `ey : y₀ = toBase hg.w y` using `Over.OverMorphism.ext hy`. Rewrite using `[ex, ey, ← hmul]`. Both sides reduce to the same expression.
+
+Take `⟨e, he, heq⟩` from `grpPullback_iso hκA hP'`. Use `⟨P', e, κ₁, he, hκf, ?_⟩` and prove the remaining obligations. Establish `h1 : LBIso (P'.L.pull e.hom.left) ((A.L.pull g).pull e.hom.left)` using `GlobalTheory.FamRep.lbIso_pull (LBIso.symm ⟨t, ht⟩) _`. Establish `h2 : LBIso ((A.L.pull g).pull e.hom.left) (A.L.pull (e.hom.left ≫ g))` using `GlobalTheory.FamRep.lbIso_pull_pull A.isLB g e.hom.left`. Establish `h3 : LBIso ((A.L.pull gen.hom.left).pull κ₁) (A.L.pull (κ₁ ≫ gen.hom.left))` using `GlobalTheory.FamRep.lbIso_pull_pull A.isLB gen.hom.left κ₁`.
+
+Rewrite `h2` using `[heq]`. Conclude with `LBIso.trans (pull_isLB P'.isLB _) (pull_isLB (pull_isLB A.isLB _) _) (pull_isLB (pull_isLB A.isLB _) _) h1 (LBIso.trans (pull_isLB (pull_isLB A.isLB _) _) (pull_isLB A.isLB _) (pull_isLB (pull_isLB A.isLB _) _) h2 h3.symm)`.
+-/
 theorem exists_generic_fibre_pull : ∀ (R W : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [CommRing W] [IsDomain W] [IsLocalRing W] (φ : R →+* W), Function.Injective φ → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (A : PolAV (Sp (FractionRing R))) (gen : ((Over.pullback (jK R)).obj G) ≅ A.A), IsMonHom gen.hom → ∃ (AW : PolAV (Sp (FractionRing W))) (genW : ((Over.pullback (jK W)).obj ((Over.pullback (spMap φ)).obj G)) ≅ AW.A) (κ₁ : pullback ((Over.pullback (spMap φ)).obj G).hom (jK W) ⟶ pullback G.hom (jK R)), IsMonHom genW.hom ∧ κ₁ ≫ pullback.fst G.hom (jK R) = pullback.fst ((Over.pullback (spMap φ)).obj G).hom (jK W) ≫ pullback.fst G.hom (spMap φ) ∧ LBIso (AW.L.pull genW.hom.left) ((A.L.pull gen.hom.left).pull κ₁) := by
   intro R W _ _ _ _ _ _ φ hφ G _ _ A gen hgen
   haveI : IsMonHom gen.hom := hgen
@@ -65,6 +80,19 @@ theorem exists_generic_fibre_pull : ∀ (R W : Type) [CommRing R] [IsDomain R] [
   exact LBIso.trans (pull_isLB P'.isLB _) (pull_isLB (pull_isLB A.isLB _) _) (pull_isLB (pull_isLB A.isLB _) _) h1
     (LBIso.trans (pull_isLB (pull_isLB A.isLB _) _) (pull_isLB A.isLB _) (pull_isLB (pull_isLB A.isLB _) _) h2 h3.symm)
 
+/- English proof (translation)
+Introduce `R R' _ _ _ _ _ _ ρ hρ G _ _ G₁ _ _ β β₂ κ₁ hβ hsqβ hκf L N PP hL hN hNL hExt`. Establish `hsq : jK R' ≫ spMap ρ = spMap (IsFractionRing.map (K` using `FractionRing R) (L := FractionRing R') hρ) ≫ jK R := by`. Simplify using `only [jK, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use extensionality with `x`.
+
+Simplify using `[IsFractionRing.map, IsLocalization.map_eq]`. Establish `hmono : Mono (jK R)`. Establish `: IsPreimmersion (jK R)` using `IsPreimmersion.of_isLocalization (nonZeroDivisors R)`. Use `infer_instance`. Establish `w : κ₁ ≫ ((Over.pullback (jK R)).obj G).hom = ((Over.pullback (jK R')).obj G₁).hom ≫ spMap (IsFractionRing.map (K` using `FractionRing R) (L := FractionRing R') hρ) := by`.
+
+Apply `(cancel_mono (jK R)).1` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc]`. Express the relevant statement in the definitionally equal form `κ₁ ≫ pullback.snd G.hom (jK R) ≫ jK R = pullback.snd G₁.hom (jK R') ≫ spMap (IsFractionRing.map (K := FractionRing R) (L := FractionRing R') hρ) ≫ jK R`. Rewrite using `[← pullback.condition, ← Category.assoc, hκf, Category.assoc, hβ.1.w, ← Category.assoc, pullback.condition, Category.assoc, hsq]`. Establish `hκ : IsGrpPullback ((Over.pullback (jK R')).obj G₁) ((Over.pullback (jK R)).obj G) (spMap (IsFractionRing.map (K` using `FractionRing R) (L := FractionRing R') hρ)) κ₁ := (isGrpPullback_pullback G (jK R)).cancel (((isGrpPullback_pullback G₁ (jK R')).comp hβ).congr hsq hκf.symm) w`.
+
+Establish `: IsCommMonObj ((Over.pullback (jK R)).obj G)` using `Functor.isCommMonObj_obj`. Establish `: IsCommMonObj ((Over.pullback (jK R')).obj G₁)` using `Functor.isCommMonObj_obj`. Take `⟨β₂κ, hsqκ, Hκ⟩` from `lbIso_lam_pull_of_isGrpPullback _ _ _ ((Over.pullback (jK R)).obj G) ((Over.pullback (jK R')).obj G₁) κ₁ hκ`. Take `⟨g₂, hg₂, -⟩` from `lbIso_lam_pull_of_isGrpPullback _ _ _ G ((Over.pullback (jK R)).obj G) _ (isGrpPullback_pullback G (jK R))`. Use `⟨pull_isLB hExt.1 β₂, fun κ₂ hκ₂ => ?_⟩` and prove the remaining obligations.
+
+Establish `H1` using `Hκ L N _ PP g₂ hL hN hExt.1 hNL (hExt.2 g₂ hg₂)`. Establish `e : β₂κ ≫ g₂ = κ₂ ≫ β₂`. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `show (β₂κ ≫ g₂) ≫ (fst G G).left = (κ₂ ≫ β₂) ≫ (fst G G).left`. Rewrite using `[Category.assoc, hg₂.1, ← Category.assoc, hsqκ.1, Category.assoc, hκf, Category.assoc, hsqβ.1, reassoc_of% hκ₂.1]`.
+
+Use `show (β₂κ ≫ g₂) ≫ (snd G G).left = (κ₂ ≫ β₂) ≫ (snd G G).left`. Rewrite using `[Category.assoc, hg₂.2, ← Category.assoc, hsqκ.2, Category.assoc, hκf, Category.assoc, hsqβ.2, reassoc_of% hκ₂.2]`. Conclude with `LBIso.trans (DVR.linComb_isLB _ hN _ _) (pull_isLB hExt.1 _) (pull_isLB (pull_isLB hExt.1 _) _) H1 (LBIso.chartPull (chartPullSame PP _ (fun _ => β₂) _ κ₂ fun _ => e) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull _ κ₂ κ₂ rfl) (GlobalTheory.PolBaseChange.lbIso_refl ( …`.
+-/
 theorem extLam_pull_square : ∀ (R R' : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [CommRing R'] [IsDomain R'] [IsLocalRing R'] (ρ : R →+* R'), Function.Injective ρ → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (G₁ : Over (Sp R')) [GrpObj G₁] [IsCommMonObj G₁] (β : G₁.left ⟶ G.left) (β₂ : (G2 G₁).left ⟶ (G2 G).left) (κ₁ : pullback G₁.hom (jK R') ⟶ pullback G.hom (jK R)), IsGrpPullback G₁ G (spMap ρ) β → Geo.Tor.IsSquare β β₂ → κ₁ ≫ pullback.fst G.hom (jK R) = pullback.fst G₁.hom (jK R') ≫ β → ∀ (L : LB ((Over.pullback (jK R)).obj G).left) (N : LB ((Over.pullback (jK R')).obj G₁).left) (PP : LB (G2 G).left), L.IsLB → N.IsLB → LBIso N (L.pull κ₁) → ExtLam G L PP → ExtLam G₁ N (PP.pull β₂) := by
   intro R R' _ _ _ _ _ _ ρ hρ G _ _ G₁ _ _ β β₂ κ₁ hβ hsqβ hκf L N PP hL hN hNL hExt
   have hsq : jK R' ≫ spMap ρ =
@@ -106,6 +134,15 @@ theorem extLam_pull_square : ∀ (R R' : Type) [CommRing R] [IsDomain R] [IsLoca
     (LBIso.chartPull (chartPullSame PP _ (fun _ => β₂) _ κ₂ fun _ => e) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull _ κ₂ κ₂ rfl)
       (GlobalTheory.PolBaseChange.lbIso_refl (pull_isLB hExt.1 β₂)))
 
+/- English proof (translation)
+Introduce `R _ _ _ hR G _ _ hG A gen hgen PP hPP`. Use `hR.1.1` as an intermediate fact. Use `hR.2` as an intermediate fact. Take `⟨V, _, _, _, φ, hV, hφ, hloc⟩` from `GlobalTheory.DvrDom.exists_cdvr_dominating R`. Take `⟨AV, genV, κ₁, hgenV, hκ, hLV⟩` from `exists_generic_fibre_pull R V φ hφ G A gen hgen`.
+
+Take `⟨βV₂, hsqV, -⟩` from `lbIso_lam_pull_of_isGrpPullback _ _ _ G _ _ (isGrpPullback_pullback G (spMap φ))`. Establish `hExtV` using `extLam_pull_square R V φ hφ G _ _ βV₂ κ₁ (isGrpPullback_pullback G (spMap φ)) hsqV hκ _ _ PP (pull_isLB A.isLB _) (pull_isLB AV.isLB _) hLV hPP`. Establish `hGV : IsSemiAbelian ((Over.pullback (spMap φ)).obj G)` using `IsSemiAbelian.pullback (spMap φ) G hG`. Take `⟨R', _, _, _, ρ, D₁, G₁, _, _, β, β₂, A₁, U₁, hR', hρ, hβ, hsq, hLam⟩` from `GlobalTheory.T.exists_uniformisation_finiteExt_sameMumfordBundle V hV _ hGV AV genV hgenV _ hExtV`. Establish `hρloc : IsLocalHom ρ` using `RingHom.IsIntegral.isLocalHom hρ.2.2.to_isIntegral hρ.2.1`.
+
+Use `⟨R', _, _, _, ρ.comp φ, G₁, _, _, β ≫ pullback.fst G.hom (spMap φ), β₂ ≫ βV₂, D₁, A₁, U₁, hR', hρ.2.1.comp hφ, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `RingHom.isLocalHom_comp ρ φ`. Use `(hβ.comp (isGrpPullback_pullback G (spMap φ))).congr ?_ rfl` and prove the remaining obligations. Simplify using `[spMap, Spec.map_comp]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, hsqV.1, ← Category.assoc, hsq.1, Category.assoc]`. Rewrite using `[Category.assoc, hsqV.2, ← Category.assoc, hsq.2, Category.assoc]`. Conclude with `LBIso.trans (DVR.linComb_isLB _ U₁.LG.isLB _ _) (pull_isLB (pull_isLB hPP.1 _) _) (pull_isLB hPP.1 _) hLam (GlobalTheory.FamRep.lbIso_pull_pull hPP.1 βV₂ β₂)`.
+-/
 theorem exists_trait_unif_lam : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (A : PolAV (Sp (FractionRing R))) (gen : ((Over.pullback (jK R)).obj G) ≅ A.A), IsMonHom gen.hom → ∀ PP : LB (G2 G).left, ExtLam G (A.L.pull gen.hom.left) PP → ∃ (W : Type) (_ : CommRing W) (_ : IsDomain W) (_ : IsLocalRing W) (φ : R →+* W) (GW : Over (Sp W)) (_ : GrpObj GW) (_ : IsCommMonObj GW) (βW : GW.left ⟶ G.left) (βW₂ : (G2 GW).left ⟶ (G2 G).left) (DW : DegData W (maximalIdeal W)) (AW : PolAV (Sp (FractionRing W))) (UW : Unif (maximalIdeal W) DW AW GW), GlobalTheory.LN.CDvr W ∧ Function.Injective φ ∧ IsLocalHom φ ∧ IsGrpPullback GW G (spMap φ) βW ∧ Geo.Tor.IsSquare βW βW₂ ∧ LBIso (abelian₂ GW UW.LG.L) (PP.pull βW₂) := by
   intro R _ _ _ hR G _ _ hG A gen hgen PP hPP
   have := hR.1.1

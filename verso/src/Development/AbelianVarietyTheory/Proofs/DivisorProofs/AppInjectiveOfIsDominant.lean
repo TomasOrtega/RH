@@ -15,6 +15,11 @@ variable {X Y Z : Scheme.{0}} {L : LB X} {k k' : ℕ}
 abbrev secGerm (u : Y ⟶ X) (y : Y) (s : H0 L k) (i : Fin 1 → L.ι) : Y.presheaf.stalk y :=
   gs u y (secChart L i) (s.f i)
 
+/- English proof (translation)
+Establish `key : ∀ (y : Y) (i i' : Fin 1 → L.ι) (hi : u y ∈ secChart L i) (hi' : v y ∈ secChart L i') (s : H0 L k) (t : H0 L k'), gs (𝟙 Y) y (u ⁻¹ᵁ secChart L i ⊓ v ⁻¹ᵁ secChart L i') ((Y.presheaf.map (homOfLE (inf_le_left : u ⁻¹ᵁ secChart L i ⊓ v ⁻¹ᵁ secChart L i' ≤ u ⁻¹ᵁ secChart L i)).op …`. Introduce `y i i' hi hi' s t`. Establish `hy : (𝟙 Y : Y ⟶ Y) y ∈ u ⁻¹ᵁ secChart L i ⊓ v ⁻¹ᵁ secChart L i'` using `⟨hi, hi'⟩`. Rewrite using `[gs_mul _ _ _ hy, gs_res _ _ _ hy, gs_res _ _ _ hy]`. Conclude with `congrArg₂ (· * ·) (gs_pull (𝟙 Y) u y _ hi _) (gs_pull (𝟙 Y) v y _ hi' _)`.
+
+Use `⟨fun h y i i' hi hi' => ?_, fun h i i' => fn_ext fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[← key y i i' hi hi', ← key y i i' hi hi', h i i']`. Rewrite using `[key y i i' hy.1 hy.2, key y i i' hy.1 hy.2]`. Conclude with `h y i i' hy.1 hy.2`.
+-/
 theorem secRatioEq_iff_germ {u v : Y ⟶ X} {s₁ s₂ : H0 L k} {t₁ t₂ : H0 L k'} :
     SecRatioEq L u v s₁ s₂ t₁ t₂ ↔ ∀ (y : Y) (i i' : Fin 1 → L.ι), u y ∈ secChart L i → v y ∈ secChart L i' →
       secGerm u y s₁ i * secGerm v y t₂ i' = secGerm u y s₂ i * secGerm v y t₁ i' := by
@@ -33,6 +38,9 @@ theorem secRatioEq_iff_germ {u v : Y ⟶ X} {s₁ s₂ : H0 L k} {t₁ t₂ : H0
   · rw [key y i i' hy.1 hy.2, key y i i' hy.1 hy.2]
     exact h y i i' hy.1 hy.2
 
+/- English proof (translation)
+Establish `hy : u y ∈ secChart L i ⊓ secChart L j` using `⟨hi, hj⟩`. Use `⟨gm u y (secChart L i ⊓ secChart L j) ((LB.LinComb L (K := Fin 1) (fun _ => 𝟙 X) (fun _ => (k : ℤ))).g i j), fun s => ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (gs u y (secChart L i ⊓ secChart L j)) (s.compat i j)`. Use `(gs_res u y inf_le_left hy _).symm.trans (h.trans ((gs_mul u y _ hy _ _).trans ?_))` and prove the remaining obligations. Conclude with `congrArg₂ (· * ·) (gs_unit u y _ hy _) (gs_res u y inf_le_right hy _)`.
+-/
 theorem exists_unit_secGerm (k : ℕ) (u : Y ⟶ X) (y : Y) {i j : Fin 1 → L.ι} (hi : u y ∈ secChart L i)
     (hj : u y ∈ secChart L j) :
     ∃ c : (Y.presheaf.stalk y)ˣ, ∀ s : H0 L k, secGerm u y s i = c.val * secGerm u y s j := by
@@ -43,6 +51,11 @@ theorem exists_unit_secGerm (k : ℕ) (u : Y ⟶ X) (y : Y) {i j : Fin 1 → L.�
   refine (gs_res u y inf_le_left hy _).symm.trans (h.trans ((gs_mul u y _ hy _ _).trans ?_))
   exact congrArg₂ (· * ·) (gs_unit u y _ hy _) (gs_res u y inf_le_right hy _)
 
+/- English proof (translation)
+Use `secRatioEq_iff_germ.2 fun y j j' hj hj' => ?_` and prove the remaining obligations. Take `⟨i, i', hi, hi', e⟩` from `h y`. Take `⟨c, hc⟩` from `exists_unit_secGerm k u y hj hi`. Take `⟨c', hc'⟩` from `exists_unit_secGerm k' v y hj' hi'`. Rewrite using `[hc, hc, hc', hc']`.
+
+Take the linear combination `(c.val * c'.val) * e`.
+-/
 theorem secRatioEq_of_exists_germ {u v : Y ⟶ X} {s₁ s₂ : H0 L k} {t₁ t₂ : H0 L k'}
     (h : ∀ y : Y, ∃ i i' : Fin 1 → L.ι, u y ∈ secChart L i ∧ v y ∈ secChart L i' ∧
       secGerm u y s₁ i * secGerm v y t₂ i' = secGerm u y s₂ i * secGerm v y t₁ i') :
@@ -54,6 +67,9 @@ theorem secRatioEq_of_exists_germ {u v : Y ⟶ X} {s₁ s₂ : H0 L k} {t₁ t�
   rw [hc, hc, hc', hc']
   linear_combination (c.val * c'.val) * e
 
+/- English proof (translation)
+Establish `key : ∀ a : Γ(X, secChart L i), gs (w ≫ u) z _ a = (w.stalkMap z).hom (gs u (w z) _ a)` using `fun a => by`. Rewrite using `[gs_eq u (w z) _ hi, ← gs_pull w u z _ hi, gs_eq w z _ hi]`. Conclude with `(Scheme.Hom.germ_stalkMap_apply w _ z hi _).symm`. Conclude with `key _`.
+-/
 theorem secGerm_comp (w : Z ⟶ Y) (u : Y ⟶ X) (z : Z) (s : H0 L k) {i : Fin 1 → L.ι} (hi : u (w z) ∈ secChart L i) :
     secGerm (w ≫ u) z s i = (w.stalkMap z).hom (secGerm u (w z) s i) := by
   have key : ∀ a : Γ(X, secChart L i), gs (w ≫ u) z _ a = (w.stalkMap z).hom (gs u (w z) _ a) := fun a => by
@@ -61,12 +77,20 @@ theorem secGerm_comp (w : Z ⟶ Y) (u : Y ⟶ X) (z : Z) (s : H0 L k) {i : Fin 1
     exact (Scheme.Hom.germ_stalkMap_apply w _ z hi _).symm
   exact key _
 
+/- English proof (translation)
+Use `secRatioEq_iff_germ.2 fun z i i' hi hi' => ?_` and prove the remaining obligations. Rewrite using `[secGerm_comp w u z _ hi, secGerm_comp w u z _ hi, secGerm_comp w v z _ hi', secGerm_comp w v z _ hi', ← map_mul, ← map_mul, secRatioEq_iff_germ.1 h (w z) i i' hi hi']`.
+-/
 theorem SecRatioEq.comp {u v : Y ⟶ X} {s₁ s₂ : H0 L k} {t₁ t₂ : H0 L k'} (h : SecRatioEq L u v s₁ s₂ t₁ t₂)
     (w : Z ⟶ Y) : SecRatioEq L (w ≫ u) (w ≫ v) s₁ s₂ t₁ t₂ := by
   refine secRatioEq_iff_germ.2 fun z i i' hi hi' => ?_
   rw [secGerm_comp w u z _ hi, secGerm_comp w u z _ hi, secGerm_comp w v z _ hi', secGerm_comp w v z _ hi',
     ← map_mul, ← map_mul, secRatioEq_iff_germ.1 h (w z) i i' hi hi']
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Apply `eq_zero_of_basicOpen_eq_bot` to reduce the goal to its premises. Assume the negation of the conclusion as `hne`. Take `⟨y, hy⟩` from `(TopologicalSpace.Opens.ne_bot_iff_nonempty _).1 hne`.
+
+Take `⟨z, hz⟩` from `w.denseRange.exists_mem_open (Y.basicOpen a).isOpen ⟨y, hy⟩`. Establish `hz' : z ∈ w ⁻¹ᵁ Y.basicOpen a` using `hz`. Rewrite `hz'` using `[Scheme.preimage_basicOpen, ha, Scheme.basicOpen_zero]`. Conclude with `hz'`.
+-/
 theorem app_injective_of_isDominant [IsReduced Y] (w : Z ⟶ Y) [IsDominant w] (W : Y.Opens) :
     Function.Injective (w.app W).hom := by
   rw [injective_iff_map_eq_zero]
@@ -79,6 +103,11 @@ theorem app_injective_of_isDominant [IsReduced Y] (w : Z ⟶ Y) [IsDominant w] (
   rw [Scheme.preimage_basicOpen, ha, Scheme.basicOpen_zero] at hz'
   exact hz'
 
+/- English proof (translation)
+Introduce `i i'`. Apply `app_injective_of_isDominant w` to reduce the goal to its premises. Use `fn_ext fun z hz => ?_` and prove the remaining obligations. Establish `hz' : w z ∈ u ⁻¹ᵁ secChart L i ⊓ v ⁻¹ᵁ secChart L i'` using `hz`. Rewrite using `[gs_pull (𝟙 Z) w z _ hz', gs_pull (𝟙 Z) w z _ hz', Category.id_comp, gs_mul _ _ _ hz', gs_mul _ _ _ hz', gs_res _ _ _ hz', gs_res _ _ _ hz', gs_res _ _ _ hz', gs_res _ _ _ hz']`.
+
+Conclude with `(congrArg₂ (· * ·) (gs_pull w u z _ hz'.1 _) (gs_pull w v z _ hz'.2 _)).trans ((secRatioEq_iff_germ.1 h z i i' hz'.1 hz'.2).trans (congrArg₂ (· * ·) (gs_pull w u z _ hz'.1 _) (gs_pull w v z _ hz'.2 _)).symm)`.
+-/
 theorem SecRatioEq.of_isDominant [IsReduced Y] (w : Z ⟶ Y) [IsDominant w] {u v : Y ⟶ X} {s₁ s₂ : H0 L k}
     {t₁ t₂ : H0 L k'} (h : SecRatioEq L (w ≫ u) (w ≫ v) s₁ s₂ t₁ t₂) : SecRatioEq L u v s₁ s₂ t₁ t₂ := by
   intro i i'

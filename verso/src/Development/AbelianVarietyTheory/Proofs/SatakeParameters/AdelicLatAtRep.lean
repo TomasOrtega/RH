@@ -9,6 +9,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 namespace GlobalTheory.TwU
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.LatticeBackSeam.latBack_seam_lat`. Consider the case `exact _root_.GlobalTheory.LatticeBackSeam.latBack_seam_lat`. Consider the case `(apply _root_.GlobalTheory.LatticeBackSeam.latBack_seam_lat <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.LatticeBackSeam.latBack_seam_lat <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.LatticeBackSeam.latBack_seam_lat <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.LatticeBackSeam.latBack_seam_lat ..)`.
+-/
 theorem latBack_seam_lat {D : D7} {X : Fields} (s : Seam D X) {n : ℕ} (N : Submodule (𝓞 X.E) (Sp X.E n)) :
     latBack s (s.lat N) = N := by
   first

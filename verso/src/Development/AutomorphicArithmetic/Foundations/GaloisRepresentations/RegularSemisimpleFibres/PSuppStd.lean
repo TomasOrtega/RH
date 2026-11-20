@@ -8,6 +8,11 @@ open GroundTheory.Global GroundTheory.Global.SemiLocal UpperTheory.V.Published U
 open scoped Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ N V _ _ π S hS`. Take `⟨t, x, hx, -⟩` from `id hS`. Establish `hsum` using `hS.sum_fst`. Establish `hd : ∑ a, (x a).fst = N`. Rewrite `hsum` using `[← hx, Multiset.map_map]`.
+
+Simplify `hsum` using `[Finset.sum_eq_multiset_sum]`. Set `τ : IrrRep (GL (Fin N) k)` to `⟨V, π, hS.isSmooth, hS.isIrreducible⟩`. Use `⟨t, x, hd, hx, ?_⟩` and prove the remaining obligations. Conclude with `SupportPerm.isSubquotient_prodIrr_of_hasSupport UpperTheory.Zero.LLC.Pr.zel UpperTheory.Zero.LLC.Pr.bz k N t τ x hd (hx ▸ hS)`.
+-/
 theorem UpperTheory.Gal.InertialTypesAlt.suppStd :
     SuppStd := by
   intro k _ _ _ _ _ N V _ _ π S hS

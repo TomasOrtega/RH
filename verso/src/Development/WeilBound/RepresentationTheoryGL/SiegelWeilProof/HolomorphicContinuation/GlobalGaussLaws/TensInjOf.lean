@@ -15,6 +15,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace PositivityTheory.Rg.Sw.Glob
 
+/- English proof (translation)
+Introduce `hAI D n V ψ χ θ μ ω H l s ν τ ε fr ι hC f g h`. Take `⟨σ, hσ⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hC.hθ`. Establish `hΨ` using `LocLawH.unitaryFinitePointsToGLFiniteAdeles_isUnitary θ V n l s τ`. Establish `hcls` using `hAI D n V θ l s τ ε fr hC.hθ hC.hs hC.hfr (LocLawH.cx_lne hC) _ hΨ`. Conclude with `LocLawH.tens_cancel hσ V l s τ hC.hfr.1 (h _ hcls)`.
+-/
 theorem tensInj_of : AwayIn → TensInj := by
   intro hAI D n V ψ χ θ μ ω H l s ν τ ε fr ι hC f g h
   obtain ⟨σ, hσ⟩ := GlobalTheory.RealLineAt.exists_inverse_chart hC.hθ
@@ -22,6 +25,11 @@ theorem tensInj_of : AwayIn → TensInj := by
   have hcls := hAI D n V θ l s τ ε fr hC.hθ hC.hs hC.hfr (LocLawH.cx_lne hC) _ hΨ
   exact LocLawH.tens_cancel hσ V l s τ hC.hfr.1 (h _ hcls)
 
+/- English proof (translation)
+Introduce `hU hTI D n V ψ χ θ μ ω H l s ν τ ε fr ι hC L hL y b hb hy f hf`. Use `hTI D n V ψ χ θ μ ω H l s ν τ ε fr ι hC _ _ fun Ψ hΨ => ?_` and prove the remaining obligations. Rewrite using `[← hL.2 y Ψ hΨ f hf]`. Use function extensionality and compare the values at `x`. Rewrite using `[hU D n V ψ χ θ μ ω H l s ν τ ε fr ι hC y b hb hy]`.
+
+Simplify using `only [tens, chN]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lawN_of : UnipTau → TensInj → LawN := by
   intro hU hTI D n V ψ χ θ μ ω H l s ν τ ε fr ι hC L hL y b hb hy f hf
   refine hTI D n V ψ χ θ μ ω H l s ν τ ε fr ι hC _ _ fun Ψ hΨ => ?_

@@ -11,6 +11,9 @@ open Polynomial Filter Topology
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a s ih => simp [norm_mul, ih]`.
+-/
 theorem norm_prod_map {β : Type*} (s : Multiset β) (f : β → PadicAlgCl l) :
     ‖(s.map f).prod‖ = (s.map fun a => ‖f a‖).prod := by
   induction s using Multiset.induction_on with
@@ -18,6 +21,17 @@ theorem norm_prod_map {β : Type*} (s : Multiset β) (f : β → PadicAlgCl l) :
   | cons a s ih => simp [norm_mul, ih]
 
 open Classical in
+/- English proof (translation)
+Establish `hl : Tendsto (fun n : ℕ => ‖(l : ℚ_[l])‖ ^ n) atTop (𝓝 0)` using `tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) Padic.norm_p_lt_one`. Establish `hev : ∀ᶠ n : ℕ in atTop, ∀ a ∈ (s.filter fun a => ¬ aeval a M = 0).toFinset, ‖(l : ℚ_[l])‖ ^ n < ‖aeval a M‖`. Rewrite using `[Filter.eventually_all_finset]`. Introduce `a ha`. Establish `: aeval a M ≠ 0` using `(Multiset.mem_filter.1 (Multiset.mem_toFinset.1 ha)).2`.
+
+Conclude with `(tendsto_order.1 hl).2 _ (norm_pos_iff.2 this)`. Use `filter_upwards [hev] with n hn`. Use `conv_lhs => rw [← Multiset.filter_add_not (fun a => aeval a M = 0) s]`. Rewrite using `[Multiset.map_add, Multiset.prod_add, norm_mul, norm_prod_map, norm_prod_map]`. Use `congr 1`.
+
+Rewrite using `[Multiset.map_congr rfl (g := fun _ => ‖(l : ℚ_[l])‖ ^ n), Multiset.map_const', Multiset.prod_replicate, ← pow_mul]`. Introduce `a ha`. Establish `h0 : aeval a M = 0` using `(Multiset.mem_filter.1 ha).2`. Rewrite using `[map_add, aeval_C, h0, zero_add, norm_algebraMap', norm_pow]`. Apply `congrArg` to reduce the goal to its premises.
+
+Apply `Multiset.map_congr rfl` to reduce the goal to its premises. Introduce `a ha`. Establish `hlt` using `hn a (Multiset.mem_toFinset.2 ha)`. Establish `hc : ‖algebraMap ℚ_[l] (PadicAlgCl l) ((l : ℚ_[l]) ^ n)‖ = ‖(l : ℚ_[l])‖ ^ n`. Rewrite using `[norm_algebraMap', norm_pow]`.
+
+Rewrite using `[map_add, aeval_C, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [hc]; exact hlt.ne'), hc, max_eq_left hlt.le]`.
+-/
 theorem eventually_norm_prod (s : Multiset (PadicAlgCl l)) (M : ℚ_[l][X]) :
     ∀ᶠ n : ℕ in atTop, ‖(s.map fun a => aeval a (M + C ((l : ℚ_[l]) ^ n))).prod‖ =
       ‖(l : ℚ_[l])‖ ^ (n * (s.filter fun a => aeval a M = 0).card) *
@@ -49,6 +63,15 @@ theorem eventually_norm_prod (s : Multiset (PadicAlgCl l)) (M : ℚ_[l][X]) :
       hc, max_eq_left hlt.le]
 
 open Classical in
+/- English proof (translation)
+Take `⟨N, hN⟩` from `eventually_atTop.1 ((eventually_norm_prod s M).and (eventually_norm_prod t M))`. Use `set x := ‖(l : ℚ_[l])‖ with hxdef`. Establish `hx0 : 0 < x` using `norm_pos_iff.2 (by exact_mod_cast (Fact.out : l.Prime).ne_zero)`. Establish `hx1 : x < 1` using `Padic.norm_p_lt_one`. Use `set k := (s.filter fun a => aeval a M = 0).card`.
+
+Use `set k' := (t.filter fun a => aeval a M = 0).card`. Use `set c := ((s.filter fun a => ¬ aeval a M = 0).map fun a => ‖aeval a M‖).prod`. Use `set c' := ((t.filter fun a => ¬ aeval a M = 0).map fun a => ‖aeval a M‖).prod`. Establish `hc' : 0 < c'` using `Multiset.prod_pos fun y hy => by`. Take `⟨a, ha, rfl⟩` from `Multiset.mem_map.1 hy`.
+
+Conclude with `norm_pos_iff.2 (Multiset.mem_filter.1 ha).2`. Establish `e1 : x ^ (N * k) * c = x ^ (N * k') * c'`. Rewrite using `[← (hN N le_rfl).1, ← (hN N le_rfl).2, h]`. Establish `e2 : x ^ ((N + 1) * k) * c = x ^ ((N + 1) * k') * c'`. Rewrite using `[← (hN (N + 1) (Nat.le_succ N)).1, ← (hN (N + 1) (Nat.le_succ N)).2, h]`.
+
+Establish `e3 : x ^ k * (x ^ (N * k') * c') = x ^ k' * (x ^ (N * k') * c')`. Combine the equalities or inequalities in the displayed calculation. Establish `hne : x ^ (N * k') * c' ≠ 0` using `by positivity`. Conclude with `pow_right_injective₀ hx0 hx1.ne (mul_right_cancel₀ hne e3)`.
+-/
 theorem card_filter_eq (s t : Multiset (PadicAlgCl l))
     (h : ∀ F : ℚ_[l][X], ‖(s.map fun a => aeval a F).prod‖ = ‖(t.map fun a => aeval a F).prod‖)
     (M : ℚ_[l][X]) :
@@ -76,6 +99,11 @@ theorem card_filter_eq (s t : Multiset (PadicAlgCl l))
   have hne : x ^ (N * k') * c' ≠ 0 := by positivity
   exact pow_right_injective₀ hx0 hx1.ne (mul_right_cancel₀ hne e3)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `hd : P.degree ≠ 0`. Introduce `hd`. Conclude with `hne (eq_one_of_monic_natDegree_zero hP (natDegree_eq_of_degree_eq_some hd))`. Take `⟨a, ha⟩` from `IsAlgClosed.exists_aeval_eq_zero (PadicAlgCl l) P hd`.
+
+Conclude with `h a (mem_aroots.2 ⟨hP.ne_zero, ha⟩)`.
+-/
 theorem monic_eq_one_of_no_root {P : ℚ_[l][X]} (hP : P.Monic)
     (h : ∀ a : PadicAlgCl l, a ∉ P.aroots (PadicAlgCl l)) : P = 1 := by
   by_contra hne
@@ -86,6 +114,11 @@ theorem monic_eq_one_of_no_root {P : ℚ_[l][X]} (hP : P.Monic)
   exact h a (mem_aroots.2 ⟨hP.ne_zero, ha⟩)
 
 open Classical in
+/- English proof (translation)
+Establish `hint : IsIntegral ℚ_[l] a` using `Algebra.IsIntegral.isIntegral a`. Establish `h1 : 0 < ((P.aroots (PadicAlgCl l)).filter fun b => aeval b (minpoly ℚ_[l] a) = 0).card` using `Multiset.card_pos_iff_exists_mem.2 ⟨a, Multiset.mem_filter.2 ⟨ha, minpoly.aeval _ _⟩⟩`. Rewrite `h1` using `[hc a]`. Take `⟨b, hb⟩` from `Multiset.card_pos_iff_exists_mem.1 h1`. Take `⟨hbQ, hbM⟩` from `Multiset.mem_filter.1 hb`.
+
+Conclude with `⟨b, hbQ, minpoly.eq_of_irreducible_of_monic (minpoly.irreducible hint) hbM (minpoly.monic hint)⟩`.
+-/
 theorem exists_root_minpoly_eq_of_card_eq (P Q : ℚ_[l][X]) (hQ : Q ≠ 0)
     (hc : ∀ a : PadicAlgCl l, ((P.aroots (PadicAlgCl l)).filter fun b => aeval b (minpoly ℚ_[l] a) = 0).card =
       ((Q.aroots (PadicAlgCl l)).filter fun b => aeval b (minpoly ℚ_[l] a) = 0).card)
@@ -100,6 +133,19 @@ theorem exists_root_minpoly_eq_of_card_eq (P Q : ℚ_[l][X]) (hQ : Q ≠ 0)
   exact ⟨b, hbQ, minpoly.eq_of_irreducible_of_monic (minpoly.irreducible hint) hbM (minpoly.monic hint)⟩
 
 open Classical in
+/- English proof (translation)
+Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `P Q hn hP hQ hc`. Distinguish the cases in `hr : ∃ a : PadicAlgCl l, a ∈ P.aroots (PadicAlgCl l)`. Take `⟨a, ha⟩` from `hr`.
+
+Establish `hint : IsIntegral ℚ_[l] a` using `Algebra.IsIntegral.isIntegral a`. Take `⟨b, hbQ, hab⟩` from `exists_root_minpoly_eq_of_card_eq P Q hQ.ne_zero hc a ha`. Establish `hMQ : minpoly ℚ_[l] a ∣ Q` using `by rw [hab]; exact minpoly.dvd _ _ (mem_aroots.1 hbQ).2`. Establish `hMP : minpoly ℚ_[l] a ∣ P` using `minpoly.dvd _ _ (mem_aroots.1 ha).2`. Establish `hM : (minpoly ℚ_[l] a).Monic` using `minpoly.monic hint`.
+
+Establish `hMpos` using `minpoly.natDegree_pos hint`. Take `⟨P', rfl⟩` from `hMP`. Take `⟨Q', rfl⟩` from `hMQ`. Establish `hP'` using `hM.of_mul_monic_left hP`. Establish `hQ'` using `hM.of_mul_monic_left hQ`.
+
+Establish `hdeg : (minpoly ℚ_[l] a * P').natDegree = (minpoly ℚ_[l] a).natDegree + P'.natDegree` using `hM.natDegree_mul hP'`. Rewrite using `[ih P'.natDegree (by omega) P' Q' rfl hP' hQ' ?_]`. Introduce `b`. Establish `h` using `hc b`. Rewrite `h` using `[aroots_mul hP.ne_zero, aroots_mul hQ.ne_zero, Multiset.filter_add, Multiset.filter_add, Multiset.card_add, Multiset.card_add]`.
+
+Use linear arithmetic over natural numbers and integers. Use `push_neg at hr`. Establish `hr' : ∀ b : PadicAlgCl l, b ∉ Q.aroots (PadicAlgCl l)`. Introduce `b hb`. Take `⟨a, haP, hab⟩` from `exists_root_minpoly_eq_of_card_eq Q P hP.ne_zero (fun c => (hc c).symm) b hb`.
+
+Establish `hint : IsIntegral ℚ_[l] b` using `Algebra.IsIntegral.isIntegral b`. Conclude with `hr a haP`. Rewrite using `[monic_eq_one_of_no_root hP hr, monic_eq_one_of_no_root hQ hr']`.
+-/
 theorem eq_of_card_filter (n : ℕ) : ∀ P Q : ℚ_[l][X], P.natDegree = n → P.Monic → Q.Monic →
     (∀ a : PadicAlgCl l, ((P.aroots (PadicAlgCl l)).filter fun b => aeval b (minpoly ℚ_[l] a) = 0).card =
       ((Q.aroots (PadicAlgCl l)).filter fun b => aeval b (minpoly ℚ_[l] a) = 0).card) → P = Q := by
@@ -134,6 +180,11 @@ theorem eq_of_card_filter (n : ℕ) : ∀ P Q : ℚ_[l][X], P.natDegree = n → 
       exact hr a haP
     rw [monic_eq_one_of_no_root hP hr, monic_eq_one_of_no_root hQ hr']
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `IsLocalization.integerNormalization_map_to_map (nonZeroDivisors ℤ) R`. Use `set G := IsLocalization.integerNormalization (nonZeroDivisors ℤ) R`. Establish `key : ∀ a : PadicAlgCl l, aeval a G = ((b : ℤ) : PadicAlgCl l) * aeval a (R.map (algebraMap ℚ ℚ_[l]))`. Introduce `a`. Rewrite using `[aeval_map_algebraMap, ← aeval_map_algebraMap ℚ a G, hb, map_zsmul, zsmul_eq_mul]`.
+
+Establish `hb0 : ((b : ℤ) : PadicAlgCl l) ≠ 0` using `Int.cast_ne_zero.2 (nonZeroDivisors.coe_ne_zero b)`. Establish `hG` using `h G`. Simplify using `only [key] at hG`. Rewrite `hG` using `[Multiset.prod_map_mul, Multiset.prod_map_mul, Multiset.map_const', Multiset.map_const', Multiset.prod_replicate, Multiset.prod_replicate, norm_mul, norm_mul, hst]`. Conclude with `mul_left_cancel₀ (by simpa using hb0) hG`.
+-/
 theorem norm_eq_rat (s t : Multiset (PadicAlgCl l)) (hst : Multiset.card s = Multiset.card t)
     (h : ∀ F : ℤ[X], ‖(s.map fun a => aeval a F).prod‖ = ‖(t.map fun a => aeval a F).prod‖)
     (R : ℚ[X]) :
@@ -151,6 +202,17 @@ theorem norm_eq_rat (s t : Multiset (PadicAlgCl l)) (hst : Multiset.card s = Mul
     Multiset.prod_replicate, Multiset.prod_replicate, norm_mul, norm_mul, hst] at hG
   exact mul_left_cancel₀ (by simpa using hb0) hG
 
+/- English proof (translation)
+Establish `hr : ∀ (n i : ℕ), ∃ q : ℚ, ‖F.coeff i - q‖ < 1 / ((n : ℝ) + 1)` using `fun n i => Padic.rat_dense l _ (by positivity)`. Use `choose r hr using hr`. Use `set D := F.natDegree`. Set `R : ℕ → ℚ[X]` to `fun n => ∑ i ∈ Finset.range (D + 1), C (r n i) * Polynomial.X ^ i`. Establish `hcoef : ∀ i, Tendsto (fun n => ((r n i : ℚ) : ℚ_[l])) atTop (𝓝 (F.coeff i))`.
+
+Introduce `i`. Rewrite using `[tendsto_iff_norm_sub_tendsto_zero]`. Use `squeeze_zero (fun _ => norm_nonneg _) (fun n => ?_) tendsto_one_div_add_atTop_nhds_zero_nat` and prove the remaining obligations. Rewrite using `[norm_sub_rev]`. Conclude with `(hr n i).le`.
+
+Establish `hval : ∀ a : PadicAlgCl l, Tendsto (fun n => aeval a ((R n).map (algebraMap ℚ ℚ_[l]))) atTop (𝓝 (aeval a F))`. Introduce `a`. Establish `e : ∀ n, aeval a ((R n).map (algebraMap ℚ ℚ_[l])) = ∑ i ∈ Finset.range (D + 1), algebraMap ℚ_[l] (PadicAlgCl l) ((r n i : ℚ) : ℚ_[l]) * a ^ i`. Introduce `n`. Rewrite using `[aeval_map_algebraMap]`.
+
+Simplify using `[R, map_sum]`. Simplify using `only [e]`. Rewrite using `[aeval_eq_sum_range]`. Simplify using `only [Algebra.smul_def]`. Conclude with `tendsto_finset_sum _ fun i _ => (((continuous_algebraMap ℚ_[l] (PadicAlgCl l)).tendsto _).comp (hcoef i)).mul_const _`.
+
+Establish `hs` using `(tendsto_multiset_prod s fun a _ => hval a).norm`. Establish `ht` using `(tendsto_multiset_prod t fun a _ => hval a).norm`. Conclude with `tendsto_nhds_unique hs (ht.congr fun n => (h (R n)).symm)`.
+-/
 theorem norm_eq_all (s t : Multiset (PadicAlgCl l))
     (h : ∀ R : ℚ[X], ‖(s.map fun a => aeval a (R.map (algebraMap ℚ ℚ_[l]))).prod‖ =
       ‖(t.map fun a => aeval a (R.map (algebraMap ℚ ℚ_[l]))).prod‖)
@@ -183,9 +245,15 @@ theorem norm_eq_all (s t : Multiset (PadicAlgCl l))
   have ht := (tendsto_multiset_prod t fun a _ => hval a).norm
   exact tendsto_nhds_unique hs (ht.congr fun n => (h (R n)).symm)
 
+/- English proof (translation)
+Rewrite using `[aroots_def, IsAlgClosed.card_roots_eq_natDegree, natDegree_map]`.
+-/
 theorem card_aroots (P : ℚ_[l][X]) : Multiset.card (P.aroots (PadicAlgCl l)) = P.natDegree := by
   rw [aroots_def, IsAlgClosed.card_roots_eq_natDegree, natDegree_map]
 
+/- English proof (translation)
+Introduce `l _ P Q hP hQ hdeg h`. Establish `hcard : Multiset.card (P.aroots (PadicAlgCl l)) = Multiset.card (Q.aroots (PadicAlgCl l))`. Rewrite using `[card_aroots, card_aroots, hdeg]`. Establish `hall` using `norm_eq_all _ _ (norm_eq_rat _ _ hcard h)`. Conclude with `eq_of_card_filter _ P Q rfl hP hQ fun a => card_filter_eq _ _ hall _`.
+-/
 theorem eq_of_norm_prod_aeval_eq : ∀ (l : ℕ) [Fact l.Prime] (P Q : Polynomial ℚ_[l]), P.Monic → Q.Monic →
     P.natDegree = Q.natDegree →
     (∀ F : Polynomial ℤ, ‖((P.aroots (PadicAlgCl l)).map (fun a => Polynomial.aeval a F)).prod‖ =

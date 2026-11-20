@@ -4,5 +4,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitChartAt
 open GlobalTheory.FlatModel
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FlatModel.restrictSt | exact GlobalTheory.FlatModel.restrictSt | (intros; apply GlobalTheory.FlatModel.restrictSt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.restriction_statement_holds : RestrictSt := by
   first | exact @GlobalTheory.FlatModel.restrictSt | exact GlobalTheory.FlatModel.restrictSt | (intros; apply GlobalTheory.FlatModel.restrictSt <;> assumption)

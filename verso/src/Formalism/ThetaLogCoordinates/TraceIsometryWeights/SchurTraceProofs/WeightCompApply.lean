@@ -6,21 +6,45 @@ open Formalism.GM.M Formalism.GM.DimensionMonotonicity MvPolynomial Finset
 
 variable {p : ℕ} [Fact p.Prime] {N r n : ℕ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `c`. Simplify using `only [Function.comp_apply, Pi.single_apply, e.injective.eq_iff]`.
+-/
 theorem single_comp_emb (e : Fin n ↪o Fin r) (a : Fin n) :
     (Pi.single (e a) (1 : ℤ) : Fin r → ℤ) ∘ e = Pi.single a 1 := by
   funext c
   simp only [Function.comp_apply, Pi.single_apply, e.injective.eq_iff]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Simplify using `[Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply]`.
+-/
 theorem weight_comp (LL : Letters N) (j : ℕ) (e : Fin n ↪o Fin r) (m : Fin N × Fin r →₀ ℕ) :
     Finsupp.weight (fun x => (wv LL j x) ∘ e) m = (Finsupp.weight (wv LL j) m) ∘ e := by
   funext a
   simp [Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply]
 
+/- English proof (translation)
+Rewrite using `[weight_comp, Function.comp_apply, weight_wv]`.
+-/
 theorem weight_comp_apply (LL : Letters N) (j : ℕ) (e : Fin n ↪o Fin r) (m : Fin N × Fin r →₀ ℕ) (a : Fin n) :
     Finsupp.weight (fun x => (wv LL j x) ∘ e) m a = wt LL j (e a) m := by
   rw [weight_comp, Function.comp_apply, weight_wv]
 
 open Formalism.GM.FrozenVariableComponents in
+/- English proof (translation)
+Rewrite using `[x.as_sum, map_sum]`. Use `Submodule.sum_mem _ fun d hd => ?_` and prove the remaining obligations. Establish `hdw : Finsupp.weight (fun x => (wv LL j x) ∘ e) d = ν` using `hx (mem_support_iff.mp hd)`. Rewrite using `[glAct_apply]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hij : (i : ℕ) < j`. Rewrite using `[if_pos hij]`. Distinguish the cases in `hv : LL.vec i`. Rewrite using `[if_pos hv]`. Use `wh_XD (K := ℚ_[p]) (fun x => (wv LL j x) ∘ e) (i, e b) (i, e a) d (coeff d x)` as an intermediate fact.
+
+Establish `e' : ν + dl a b = Finsupp.weight (fun x => (wv LL j x) ∘ e) d - (wv LL j (i, e b)) ∘ e + (wv LL j (i, e a)) ∘ e`. Rewrite using `[hdw]`. Simplify using `only [wv, hij, hv, if_true, dl, single_comp_emb]`. Normalize the expressions using the abelian group laws. Rewrite using `[e']`.
+
+Conclude with `this`. Rewrite using `[if_neg hv]`. Use `Submodule.neg_mem _ ?_` and prove the remaining obligations. Use `wh_XD (K := ℚ_[p]) (fun x => (wv LL j x) ∘ e) (i, e a) (i, e b) d (coeff d x)` as an intermediate fact. Establish `hn : ∀ c : Fin n, (-(Pi.single (e c) (1 : ℤ) : Fin r → ℤ)) ∘ e = -Pi.single c 1`.
+
+Introduce `c`. Rewrite using `[← single_comp_emb e c]`. Both sides reduce to the same expression. Establish `e' : ν + dl a b = Finsupp.weight (fun x => (wv LL j x) ∘ e) d - (wv LL j (i, e a)) ∘ e + (wv LL j (i, e b)) ∘ e`. Rewrite using `[hdw]`.
+
+Simplify using `only [wv, hij, hv, if_true, if_false, Bool.false_eq_true, dl, hn]`. Normalize the expressions using the abelian group laws. Rewrite using `[e']`. Conclude with `this`. Rewrite using `[if_neg hij]`.
+
+Conclude with `Submodule.zero_mem _`.
+-/
 theorem glAct_whe (LL : Letters N) (j : ℕ) (e : Fin n ↪o Fin r) (a b : Fin n) {ν : Fin n → ℤ}
     {x : MvPolynomial (Fin N × Fin r) ℚ_[p]}
     (hx : x ∈ weightedHomogeneousSubmodule ℚ_[p] (fun x => (wv LL j x) ∘ e) ν) :
@@ -121,12 +145,29 @@ noncomputable def GAe (p : ℕ) [Fact p.Prime] (LL : Letters N) (j : ℕ) (e : F
       intro d hd h'
       exact h (Finset.mem_image.mpr ⟨d, hd, h'⟩)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem GAe_E (LL : Letters N) (j : ℕ) (e : Fin n ↪o Fin r) (a b : Fin n) :
     (GAe p LL j e).E a b = glAct p LL j (e a) (e b) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem GAe_comp (LL : Letters N) (j : ℕ) (e : Fin n ↪o Fin r) (μ : Fin n → ℤ) :
     (GAe p LL j e).comp μ = weightedHomogeneousComponent (fun x => (wv LL j x) ∘ e) μ := rfl
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.mem_restrictSupport_iff]`. Unfold `GlW.IsWt`. Rewrite using `[GAe_comp]`. Prove the components needed by the constructor for the conclusion. Introduce `h m hm a`.
+
+Establish `hm' : coeff m x ≠ 0` using `mem_support_iff.mp hm`. Rewrite `hm'` using `[← h, coeff_weightedHomogeneousComponent]`. Establish `hw : Finsupp.weight (fun x => (wv LL j x) ∘ e) m = μ`. Assume the negation of the conclusion as `hne`. Conclude with `hm' (if_neg hne)`.
+
+Rewrite using `[← weight_comp_apply, hw]`. Introduce `h`. Use extensionality with `m`. Rewrite using `[coeff_weightedHomogeneousComponent]`. Use `split_ifs with hw`.
+
+Both sides reduce to the same expression. Assume the negation of the conclusion as `hne`. Apply `hw` to reduce the goal to its premises. Use function extensionality and compare the values at `a`. Rewrite using `[weight_comp_apply]`.
+
+Conclude with `h (mem_support_iff.mpr (Ne.symm hne)) a`.
+-/
 theorem GAe_isWt_iff (LL : Letters N) (j : ℕ) (e : Fin n ↪o Fin r) (μ : Fin n → ℤ)
     (x : MvPolynomial (Fin N × Fin r) ℚ_[p]) :
     (GAe p LL j e).IsWt μ x ↔ x ∈ MvPolynomial.restrictSupport ℚ_[p] {m | ∀ a, wt LL j (e a) m = μ a} := by
@@ -154,14 +195,25 @@ theorem GAe_isWt_iff (LL : Letters N) (j : ℕ) (e : Fin n ↪o Fin r) (μ : Fin
 
 noncomputable def enumC (Cs : Finset (Fin r)) : Fin Cs.card ↪o Fin r := Cs.orderEmbOfFin rfl
 
+/- English proof (translation)
+The claim follows from `Finset.orderEmbOfFin_mem Cs rfl a`.
+-/
 theorem enumC_mem (Cs : Finset (Fin r)) (a : Fin Cs.card) : enumC Cs a ∈ Cs :=
   Finset.orderEmbOfFin_mem Cs rfl a
 
+/- English proof (translation)
+Establish `h : c ∈ Set.range (Cs.orderEmbOfFin rfl)`. Rewrite using `[Finset.range_orderEmbOfFin]`. Conclude with `hc`. Conclude with `h`.
+-/
 theorem enumC_surj (Cs : Finset (Fin r)) {c : Fin r} (hc : c ∈ Cs) : ∃ a, enumC Cs a = c := by
   have h : c ∈ Set.range (Cs.orderEmbOfFin rfl) := by
     rw [Finset.range_orderEmbOfFin]; exact hc
   exact h
 
+/- English proof (translation)
+Rewrite using `[GAe_isWt_iff, WtSpC]`. Establish `: {m : Fin N × Fin r →₀ ℕ | ∀ c ∈ Cs, wt LL j c m = la c} = {m | ∀ a, wt LL j (enumC Cs a) m = (la ∘ enumC Cs) a}`. Use extensionality with `m`. Prove the components needed by the constructor for the conclusion. Introduce `h a`.
+
+Conclude with `h _ (enumC_mem Cs a)`. Introduce `h c hc`. Take `⟨a, rfl⟩` from `enumC_surj Cs hc`. Conclude with `h a`. Rewrite using `[this]`.
+-/
 theorem wtSpC_iff (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (la : Fin r → ℤ)
     (x : MvPolynomial (Fin N × Fin r) ℚ_[p]) :
     x ∈ WtSpC p LL j Cs la ↔ (GAe p LL j (enumC Cs)).IsWt (la ∘ enumC Cs) x := by
@@ -176,6 +228,13 @@ theorem wtSpC_iff (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (la : Fin r �
       exact h a
   rw [this]
 
+/- English proof (translation)
+Unfold `HWC GlW.IsHW`. Rewrite using `[Submodule.mem_inf, wtSpC_iff]`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker, GAe_E]`. Use `and_congr_right fun _ => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h a b hab`. Conclude with `h _ _ ⟨enumC_mem Cs a, enumC_mem Cs b, (enumC Cs).lt_iff_lt.mpr hab⟩`. Introduce and unpack `h c d ⟨hc, hd, hcd⟩`. Take `⟨a, rfl⟩` from `enumC_surj Cs hc`. Take `⟨b, rfl⟩` from `enumC_surj Cs hd`.
+
+Conclude with `h a b ((enumC Cs).lt_iff_lt.mp hcd)`.
+-/
 theorem hwc_iff (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (la : Fin r → ℤ)
     (x : MvPolynomial (Fin N × Fin r) ℚ_[p]) :
     x ∈ HWC p LL j Cs la ↔ (GAe p LL j (enumC Cs)).IsHW (la ∘ enumC Cs) x := by
@@ -191,6 +250,11 @@ theorem hwc_iff (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (la : Fin r →
     obtain ⟨b, rfl⟩ := enumC_surj Cs hd
     exact h a b ((enumC Cs).lt_iff_lt.mp hcd)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h a b x hx`. Conclude with `h _ (enumC_mem Cs a) _ (enumC_mem Cs b) x hx`. Introduce `h c hc d hd x hx`. Take `⟨a, rfl⟩` from `enumC_surj Cs hc`.
+
+Take `⟨b, rfl⟩` from `enumC_surj Cs hd`. Conclude with `h a b x hx`.
+-/
 theorem stableC_iff (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r))
     (S : Submodule ℚ_[p] (MvPolynomial (Fin N × Fin r) ℚ_[p])) :
     GlStableC p LL j Cs S ↔ (GAe p LL j (enumC Cs)).Stable S := by
@@ -202,6 +266,11 @@ theorem stableC_iff (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r))
     obtain ⟨b, rfl⟩ := enumC_surj Cs hd
     exact h a b x hx
 
+/- English proof (translation)
+Unfold `IsoC GlW.gS`. Use `congr 1`. Use extensionality with `S`. Simplify using `only [Set.mem_ofPred_eq, stableC_iff]`. Use `and_congr_left fun _ => ?_` and prove the remaining obligations.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h v hv`. Conclude with `h ((hwc_iff LL j Cs la v).mpr hv)`. Introduce `h v hv`. Conclude with `h ((hwc_iff LL j Cs la v).mp hv)`.
+-/
 theorem isoC_eq (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (la : Fin r → ℤ) :
     IsoC p LL j Cs la =
       (GAe p LL j (enumC Cs)).gS {v | (GAe p LL j (enumC Cs)).IsHW (la ∘ enumC Cs) v} := by
@@ -214,9 +283,17 @@ theorem isoC_eq (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (la : Fin r →
   · intro h v hv; exact h ((hwc_iff LL j Cs la v).mpr hv)
   · intro h v hv; exact h ((hwc_iff LL j Cs la v).mp hv)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Function.extend (enumC Cs) μ 0, Function.extend_comp (enumC Cs).injective μ 0⟩`.
+-/
 theorem exists_ext (Cs : Finset (Fin r)) (μ : Fin Cs.card → ℤ) : ∃ la : Fin r → ℤ, la ∘ enumC Cs = μ :=
   ⟨Function.extend (enumC Cs) μ 0, Function.extend_comp (enumC Cs).injective μ 0⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h c hc`. Take `⟨a, rfl⟩` from `enumC_surj Cs hc`. Conclude with `congrFun h a`. Introduce `h`.
+
+Use function extensionality and compare the values at `a`. Conclude with `h _ (enumC_mem Cs a)`.
+-/
 theorem comp_eq_iff (Cs : Finset (Fin r)) (la la' : Fin r → ℤ) :
     la ∘ enumC Cs = la' ∘ enumC Cs ↔ ∀ c ∈ Cs, la c = la' c := by
   constructor
@@ -227,10 +304,18 @@ theorem comp_eq_iff (Cs : Finset (Fin r)) (la la' : Fin r → ℤ) :
     funext a
     exact h _ (enumC_mem Cs a)
 
+/- English proof (translation)
+Introduce `a b _ hx` and use `glAct_pol LL L2 j (e a) (e b) hx`.
+-/
 theorem GAe_pol_stable (LL L2 : Letters N) (j : ℕ) (e : Fin n ↪o Fin r) :
     (GAe p LL j e).Stable (Pol p r L2) :=
   fun a b _ hx => glAct_pol LL L2 j (e a) (e b) hx
 
+/- English proof (translation)
+Use `⟨(pol_finite (r := r) L2).toFinset.image (Finsupp.weight (fun x => (wv LL j x) ∘ e)), fun x hx μ hμ => ?_⟩` and prove the remaining obligations. Use `show weightedHomogeneousComponent (fun x => (wv LL j x) ∘ e) μ x = 0`. Apply `weightedHomogeneousComponent_eq_zero'` to reduce the goal to its premises. Introduce `d hd h`. Apply `hμ` to reduce the goal to its premises.
+
+Rewrite using `[Finset.mem_image]`. Use `⟨d, ?_, h⟩` and prove the remaining obligations. Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `(MvPolynomial.mem_restrictSupport_iff ℚ_[p]).mp hx hd`.
+-/
 theorem GAe_pol_finW (LL L2 : Letters N) (j : ℕ) (e : Fin n ↪o Fin r) :
     (GAe p LL j e).FinW (Pol p r L2) := by
   classical
@@ -245,6 +330,13 @@ theorem GAe_pol_finW (LL L2 : Letters N) (j : ℕ) (e : Fin n ↪o Fin r) :
   rw [Set.Finite.mem_toFinset]
   exact (MvPolynomial.mem_restrictSupport_iff ℚ_[p]).mp hx hd
 
+/- English proof (translation)
+Unfold `wt Letters.total`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `push_cast`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Establish `h1 : m (i, c) ≤ L2.deg i`.
+
+Rewrite using `[← hm i]`. Conclude with `Finset.single_le_sum (f := fun c => m (i, c)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ c)`. Establish `h2 : m' (i, c) ≤ L2.deg i`. Rewrite using `[← hm' i]`. Conclude with `Finset.single_le_sum (f := fun c => m' (i, c)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ c)`.
+
+Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem wt_sub_le (LL L2 : Letters N) (j : ℕ) (c : Fin r) {m m' : Fin N × Fin r →₀ ℕ}
     (hm : MultiDeg L2 m) (hm' : MultiDeg L2 m') : wt LL j c m' - wt LL j c m ≤ (L2.total : ℤ) := by
   unfold wt Letters.total
@@ -259,6 +351,11 @@ theorem wt_sub_le (LL L2 : Letters N) (j : ℕ) (c : Fin r) {m m' : Fin N × Fin
     exact Finset.single_le_sum (f := fun c => m' (i, c)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ c)
   split_ifs <;> omega
 
+/- English proof (translation)
+Introduce `μ ν x y hx0 hy0 hx hy hμ hν c`. Rewrite `hμ`, `hν` using `[GAe_isWt_iff, MvPolynomial.mem_restrictSupport_iff]`. Take `⟨m, hm⟩` from `(MvPolynomial.support_nonempty).mpr hx0`. Take `⟨m', hm'⟩` from `(MvPolynomial.support_nonempty).mpr hy0`. Establish `d1 : MultiDeg L2 m` using `(MvPolynomial.mem_restrictSupport_iff ℚ_[p]).mp hx hm`.
+
+Establish `d2 : MultiDeg L2 m'` using `(MvPolynomial.mem_restrictSupport_iff ℚ_[p]).mp hy hm'`. Rewrite using `[← hμ hm c, ← hν hm' c, abs_le]`. Establish `a1` using `wt_sub_le LL L2 j (e c) d1 d2`. Establish `a2` using `wt_sub_le LL L2 j (e c) d2 d1`. Apply the tactic sequence `constructor <;> linarith`.
+-/
 theorem GAe_pol_bound (LL L2 : Letters N) (j : ℕ) (e : Fin n ↪o Fin r) :
     ∀ (μ ν : Fin n → ℤ) (x y : MvPolynomial (Fin N × Fin r) ℚ_[p]), x ≠ 0 → y ≠ 0 →
       x ∈ Pol p r L2 → y ∈ Pol p r L2 → (GAe p LL j e).IsWt μ x → (GAe p LL j e).IsWt ν y →
@@ -274,6 +371,11 @@ theorem GAe_pol_bound (LL L2 : Letters N) (j : ℕ) (e : Fin n ↪o Fin r) :
   have a2 := wt_sub_le LL L2 j (e c) d2 d1
   constructor <;> linarith
 
+/- English proof (translation)
+Rewrite using `[Pol, MvPolynomial.mem_restrictSupport_iff]`. Introduce `d hd`. Use `MvPolynomial.support_monomial_subset hd` as an intermediate fact. Rewrite `this` using `[Finset.mem_singleton]`. Substitute `this` using the available equality.
+
+Introduce `i`. Both sides reduce to the same expression.
+-/
 theorem monomial_mem_pol (LL : Letters N) (m : Fin N × Fin r →₀ ℕ) (a : ℚ_[p]) :
     monomial m a ∈ Pol p r (⟨LL.vec, fun i => ∑ c, m (i, c)⟩ : Letters N) := by
   classical

@@ -33,9 +33,17 @@ def conjLin {Y Y' : Type} (ι : (Y → ℂ) →ₗ[ℂ] (Y' → ℂ)) : (Y → �
   map_add' f g := by rw [star_add, map_add, star_add]
   map_smul' a f := by rw [star_smul, map_smul, star_smul, star_star]; rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hf.1.comp star, hf.2.comp_left (g := star) (star_zero ℂ)⟩`.
+-/
 theorem star_mem_SB {Y : Type} [TopologicalSpace Y] {f : Y → ℂ} (hf : f ∈ SB Y) : star f ∈ SB Y :=
   ⟨hf.1.comp star, hf.2.comp_left (g := star) (star_zero ℂ)⟩
 
+/- English proof (translation)
+Use `⟨fun φ hφ => star_mem_SB (h.mapsTo (star_mem_SB hφ)), fun φ hφ φ' hφ' e => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Establish `e' : ι (star φ) = ι (star φ')` using `star_injective e`. Conclude with `star_injective (h.injOn (star_mem_SB hφ) (star_mem_SB hφ') e')`. Take `⟨φ, hφ, e⟩` from `h.surjOn (star_mem_SB hg)`. Use `⟨star φ, star_mem_SB hφ, ?_⟩` and prove the remaining obligations.
+
+Use `show star (ι (star (star φ))) = g`. Rewrite using `[star_star, e, star_star]`.
+-/
 theorem conjLin_bijOn {Y Y' : Type} [TopologicalSpace Y] [TopologicalSpace Y'] (ι : (Y → ℂ) →ₗ[ℂ] (Y' → ℂ))
     (h : Set.BijOn ι (SB Y : Set (Y → ℂ)) (SB Y' : Set (Y' → ℂ))) :
     Set.BijOn (conjLin ι) (SB Y : Set (Y → ℂ)) (SB Y' : Set (Y' → ℂ)) := by
@@ -60,6 +68,13 @@ def colsHomeo (m a b k : Type) [TopologicalSpace k] :
     · exact (continuous_apply_apply i j).comp continuous_fst
     · exact (continuous_apply_apply i j).comp continuous_snd
 
+/- English proof (translation)
+Introduce `φ hφ`. Set `e : (κ ⊕ κ → k) ≃ₜ (κ → k) × (κ → k)` to `Homeomorph.sumArrowHomeomorphProdArrow`. Set `M₁ : GlobalTheory.SplitWeil.SB ((κ → k) × (κ → k)) →ₗ[ℂ] N` to `L₁ ∘ₗ (SB (κ ⊕ κ → k)).subtype ∘ₗ GlobalTheory.LocFlat.CFac.comapH e`. Set `M₂ : GlobalTheory.SplitWeil.SB ((κ → k) × (κ → k)) →ₗ[ℂ] N` to `L₂ ∘ₗ (SB (κ ⊕ κ → k)).subtype ∘ₗ GlobalTheory.LocFlat.CFac.comapH e`. Establish `hM : M₁ = M₂` using `LinearMap.ext_on_range (GlobalTheory.LocFlat.CFac.Span.span_prodSB_eq_top _ _) fun q => h q.1.1 q.1.2 q.2.1 q.2.2`.
+
+Use `LinearMap.congr_fun hM (GlobalTheory.LocFlat.CFac.comapH e.symm ⟨φ, hφ⟩)` as an intermediate fact. Establish `e2 : ((GlobalTheory.LocFlat.CFac.comapH e (GlobalTheory.LocFlat.CFac.comapH e.symm ⟨φ, hφ⟩)).1 : (κ ⊕ κ → k) → ℂ) = φ`. Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.LocFlat.CFac.comapH_apply, Homeomorph.symm_apply_apply]`. Simplify using `only [M₁, M₂, LinearMap.comp_apply, Submodule.subtype_apply] at this`.
+
+Rewrite using `[← e2]`. Conclude with `this`.
+-/
 theorem eqOn_SB_of_box {k : Type} [TopologicalSpace k] [T2Space k] [LocallyCompactSpace k] [TotallyDisconnectedSpace k]
     {κ : Type} [Fintype κ] {N : Type} [AddCommGroup N] [Module ℂ N] (L₁ L₂ : ((κ ⊕ κ → k) → ℂ) →ₗ[ℂ] N)
     (h : ∀ a ∈ SB (κ → k), ∀ b ∈ SB (κ → k), L₁ (boxFun a b) = L₂ (boxFun a b)) :
@@ -80,6 +95,9 @@ theorem eqOn_SB_of_box {k : Type} [TopologicalSpace k] [T2Space k] [LocallyCompa
   rw [← e2]
   exact this
 
+/- English proof (translation)
+Establish `e : ((GlobalTheory.DblScal.dsum c)⁻¹).val = Matrix.fromBlocks (c⁻¹).val 0 0 (c⁻¹).val` using `rfl`. Use `conv_lhs => rw [e, fromBlocks_transpose, ← Matrix.fromCols_toCols A, Matrix.mul_fromCols, Matrix.fromCols_mul_fromBlocks]`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 theorem coord_inl {m k : Type} [Fintype m] [DecidableEq m] [Field k] {d : ℕ} (B : Matrix m m k)
     (A : Matrix m (Fin d ⊕ Fin d) k) (c : GL (Fin d) k) :
     (B * A * ((GlobalTheory.DblScal.dsum c)⁻¹).valᵀ).submatrix id Sum.inl = B * A.toCols₁ * (c⁻¹).valᵀ := by
@@ -88,6 +106,9 @@ theorem coord_inl {m k : Type} [Fintype m] [DecidableEq m] [Field k] {d : ℕ} (
   ext i j
   simp
 
+/- English proof (translation)
+Establish `e : ((GlobalTheory.DblScal.dsum c)⁻¹).val = Matrix.fromBlocks (c⁻¹).val 0 0 (c⁻¹).val` using `rfl`. Use `conv_lhs => rw [e, fromBlocks_transpose, ← Matrix.fromCols_toCols A, Matrix.mul_fromCols, Matrix.fromCols_mul_fromBlocks]`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 theorem coord_inr {m k : Type} [Fintype m] [DecidableEq m] [Field k] {d : ℕ} (B : Matrix m m k)
     (A : Matrix m (Fin d ⊕ Fin d) k) (c : GL (Fin d) k) :
     (B * A * ((GlobalTheory.DblScal.dsum c)⁻¹).valᵀ).submatrix id Sum.inr = B * A.toCols₂ * (c⁻¹).valᵀ := by
@@ -96,6 +117,37 @@ theorem coord_inr {m k : Type} [Fintype m] [DecidableEq m] [Field k] {d : ℕ} (
   ext i j
   simp
 
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hpair v t b c ι hι dd hdd`. Establish `hψ1 : ∀ x, ‖B.ψ x‖ = 1` using `GlobalTheory.StdCharFromIsStd.norm_psi hpair.base.std`. Establish `hψc : Continuous B.ψ` using `hpair.base.std.1`. Establish `hψv : ∀ x, ‖GlobalTheory.LatVac.psiAt B.ψ v x‖ = 1` using `fun x => hψ1 _`. Use `haveI : LocallyCompactSpace (Matrix (Fin n) (Fin d) (Fv F v)) := inferInstanceAs (LocallyCompactSpace (Fin n → Fin d → Fv F v))`.
+
+Use `haveI : TotallyDisconnectedSpace (Matrix (Fin n) (Fin d) (Fv F v)) := inferInstanceAs (TotallyDisconnectedSpace (Fin n → Fin d → Fv F v))`. Take `⟨ιd, hbij, hprod⟩` from `GlobalTheory.T.totally_disconnected_product_locally_compact (Homeomorph.sumArrowHomeomorphProdArrow (X := Fv F v) (ι := Fin n × Fin d) (ι' := Fin n × Fin d)) (colsHomeo (Fin n) (Fin d) (Fin d) (Fv F v)) ι (conjLin ι) hι.bij (conjLin_bijOn ι hι.bij)`. Establish `hbox : ∀ φ₁ ∈ SB (Fin n × Fin d → Fv F v), ∀ φ₂ ∈ SB (Fin n × Fin d → Fv F v), ιd (boxFun φ₁ φ₂) = fun Y => ι φ₁ (Y.submatrix id Sum.inl) * star (ι (star φ₂) (Y.submatrix id Sum.inr))` using `fun φ₁ h₁ φ₂ h₂ => hprod φ₁ h₁ φ₂ h₂`. Establish `hsplit : ∀ u : Matrix (Fin n) (Fin d ⊕ Fin d) (AE F E), GlobalTheory.LatVac.locCo dd v u = (Sum.elim (GlobalTheory.LatVac.locCo M.co v u.toCols₁).1 (GlobalTheory.LatVac.locCo M.co v u.toCols₂).1, Sum.elim (GlobalTheory.LatVac.locCo M.co v u.toCols₁).2 (-(GlobalTheory.LatVac.locCo …`. Introduce `u`.
+
+Establish `e` using `hdd u.toCols₁ u.toCols₂`. Rewrite `e` using `[Matrix.fromCols_toCols]`. Use `Prod.ext (funext fun k => ?_) (funext fun k => ?_)` and prove the remaining obligations. Apply the tactic sequence `rcases k with k | k <;>`. Simplify using `[GlobalTheory.LatVac.locCo, e]`.
+
+Apply the tactic sequence `rcases k with k | k <;>`. Simplify using `[GlobalTheory.LatVac.locCo, e]`. Establish `hat1 : ∀ u : Matrix (Fin n) (Fin d ⊕ Fin d) (AE F E), At (evFin F v) u → At (evFin F v) u.toCols₁` using `fun u hu a ha => Matrix.ext fun i j => congrFun (congrFun (hu a ha) i) (Sum.inl j)`. Establish `hat2 : ∀ u : Matrix (Fin n) (Fin d ⊕ Fin d) (AE F E), At (evFin F v) u → At (evFin F v) u.toCols₂` using `fun u hu a ha => Matrix.ext fun i j => congrFun (congrFun (hu a ha) i) (Sum.inr j)`. Establish `hmap1 : ∀ (u : Matrix (Fin n) (Fin d ⊕ Fin d) (AE F E)) (π : AE F E →+* Fv F v), u.map π = 0 → u.toCols₁.map π = 0` using `fun u π h => Matrix.ext fun i j => congrFun (congrFun h i) (Sum.inl j)`.
+
+Establish `hmap2 : ∀ (u : Matrix (Fin n) (Fin d ⊕ Fin d) (AE F E)) (π : AE F E →+* Fv F v), u.map π = 0 → u.toCols₂.map π = 0` using `fun u π h => Matrix.ext fun i j => congrFun (congrFun h i) (Sum.inr j)`. Establish `hc1 : ∀ (u : Matrix (Fin n) (Fin d ⊕ Fin d) (AE F E)) (π : AE F E →+* Fv F v), (u.map π).toCols₁ = u.toCols₁.map π` using `fun u π => rfl`. Establish `hc2 : ∀ (u : Matrix (Fin n) (Fin d ⊕ Fin d) (AE F E)) (π : AE F E →+* Fv F v), (u.map π).toCols₂ = u.toCols₂.map π` using `fun u π => rfl`. Establish `hloc : ∀ u : Matrix (Fin n) (Fin d ⊕ Fin d) (AE F E), At (evFin F v) u → ∀ φ ∈ SB (Fin n × Fin d ⊕ Fin n × Fin d → Fv F v), ∀ φ₁, Acts (evFin F v) (dd.rho B.ψ u) φ φ₁ → φ₁ = schr (GlobalTheory.LatVac.psiAt B.ψ v) (GlobalTheory.LatVac.locCo dd v u) φ` using `fun u hu φ hφ φ₁ hA => GlobalTheory.TensUniq.eq_of_tens_eq v φ _ _ hφ fun r hr => (hA r hr).symm.trans (GlobalTheory.VacBridge.rho_acts_locCo dd B.ψ v u hu φ r hr)`. Establish `hschr : ∀ u : Matrix (Fin n) (Fin d ⊕ Fin d) (AE F E), ∀ a ∈ SB (Fin n × Fin d → Fv F v), ∀ b' ∈ SB (Fin n × Fin d → Fv F v), ιd (schr (GlobalTheory.LatVac.psiAt B.ψ v) (GlobalTheory.LatVac.locCo dd v u) (boxFun a b')) = fun Y => ι (schr (GlobalTheory.LatVac.psiAt B.ψ v) (GlobalT …`.
+
+Introduce `u a ha b' hb`. Establish `e0 : boxFun a b' = boxFun a (fun x => star ((star b') x))`. Use function extensionality and compare the values at `x`. Simplify using `[boxFun]`. Rewrite using `[hsplit u, e0, GlobalTheory.DblVacLine.schr_box _ hψv]`.
+
+Rewrite using `[hbox _ (GlobalTheory.SchrSB.schr_mem_SB B.ψ hψc v _ a ha) (fun x => star (schr (GlobalTheory.LatVac.psiAt B.ψ v) (GlobalTheory.LatVac.locCo M.co v u.toCols₂) (star b') x)) (star_mem_SB (GlobalTheory.SchrSB.schr_mem_SB B.ψ hψc v _ _ (star_mem_SB hb)))]`. Establish `e1 : (star fun x => star (schr (GlobalTheory.LatVac.psiAt B.ψ v) (GlobalTheory.LatVac.locCo M.co v u.toCols₂) (star b') x)) = schr (GlobalTheory.LatVac.psiAt B.ψ v) (GlobalTheory.LatVac.locCo M.co v u.toCols₂) (star b')`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Rewrite using `[e1]`.
+
+Use `⟨ιd, ⟨hbij, ?_, ?_⟩, hbox⟩` and prove the remaining obligations. Introduce `u hu hu0 φ hφ φ₁ hφ₁ hA Y`. Rewrite using `[hloc u hu φ hφ φ₁ hA]`. Use `set sh := (b⁻¹).val * u.map (piW t) * ((GlobalTheory.DblScal.dsum c)⁻¹).valᵀ`. Establish `key` using `eqOn_SB_of_box (ιd ∘ₗ schrLin (GlobalTheory.LatVac.psiAt B.ψ v) (GlobalTheory.LatVac.locCo dd v u)) (LinearMap.funLeft ℂ ℂ (fun Y => Y + sh) ∘ₗ ιd) (fun a ha b' hb => ?_) φ hφ`.
+
+Conclude with `congrFun key Y`. Use `show ιd (schr _ _ (boxFun a b')) = fun Y => ιd (boxFun a b') (Y + sh)`. Rewrite using `[hschr u a ha b' hb, hbox a ha b' hb]`. Use function extensionality and compare the values at `Y`. Establish `t1` using `hι.trans u.toCols₁ (hat1 u hu) (hmap1 u _ hu0) a ha _ (GlobalTheory.SchrSB.schr_mem_SB B.ψ hψc v _ a ha) (GlobalTheory.VacBridge.rho_acts_locCo M.co B.ψ v _ (hat1 u hu) a) (Y.submatrix id Sum.inl)`.
+
+Establish `t2` using `hι.trans u.toCols₂ (hat2 u hu) (hmap2 u _ hu0) _ (star_mem_SB hb) _ (GlobalTheory.SchrSB.schr_mem_SB B.ψ hψc v _ _ (star_mem_SB hb)) (GlobalTheory.VacBridge.rho_acts_locCo M.co B.ψ v _ (hat2 u hu) _) (Y.submatrix id Sum.inr)`. Establish `s1 : (Y + sh).submatrix id Sum.inl = Y.submatrix id Sum.inl + (b⁻¹).1 * u.toCols₁.map (piW t) * (c⁻¹).1ᵀ`. Rewrite using `[show (Y + sh).submatrix id Sum.inl = Y.submatrix id Sum.inl + sh.submatrix id Sum.inl from rfl, coord_inl, hc1]`. Establish `s2 : (Y + sh).submatrix id Sum.inr = Y.submatrix id Sum.inr + (b⁻¹).1 * u.toCols₂.map (piW t) * (c⁻¹).1ᵀ`. Rewrite using `[show (Y + sh).submatrix id Sum.inr = Y.submatrix id Sum.inr + sh.submatrix id Sum.inr from rfl, coord_inr, hc2]`.
+
+Rewrite using `[t1, t2]`. Use `beta_reduce`. Rewrite using `[s1, s2]`. Introduce `u hu hu0 φ hφ φ₁ hφ₁ hA x hx hx0`. Rewrite using `[hloc u hu φ hφ φ₁ hA]`.
+
+Use `set P := (b⁻¹).val * x.map (piW t) * ((GlobalTheory.DblScal.dsum c)⁻¹).valᵀ`. Use `set z := B.ψ (symp (cA σ) (-1) (incM F X.J) (dbl (incM F W.J)) x u)`. Establish `key` using `eqOn_SB_of_box (LinearMap.proj P ∘ₗ ιd ∘ₗ schrLin (GlobalTheory.LatVac.psiAt B.ψ v) (GlobalTheory.LatVac.locCo dd v u)) (z • (LinearMap.proj P ∘ₗ ιd)) (fun a ha b' hb => ?_) φ hφ`. Conclude with `key`. Use `show ιd (schr _ _ (boxFun a b')) P = z * ιd (boxFun a b') P`.
+
+Rewrite using `[hschr u a ha b' hb, hbox a ha b' hb]`. Establish `p1 : P.submatrix id Sum.inl = (b⁻¹).1 * x.toCols₁.map (piW t) * (c⁻¹).1ᵀ`. Rewrite using `[coord_inl, hc1]`. Establish `p2 : P.submatrix id Sum.inr = (b⁻¹).1 * x.toCols₂.map (piW t) * (c⁻¹).1ᵀ`. Rewrite using `[coord_inr, hc2]`.
+
+Establish `m1` using `hι.mult u.toCols₁ (hat1 u hu) (hmap1 u _ hu0) a ha _ (GlobalTheory.SchrSB.schr_mem_SB B.ψ hψc v _ a ha) (GlobalTheory.VacBridge.rho_acts_locCo M.co B.ψ v _ (hat1 u hu) a) x.toCols₁ (hat1 x hx) (hmap1 x _ hx0)`. Establish `m2` using `hι.mult u.toCols₂ (hat2 u hu) (hmap2 u _ hu0) _ (star_mem_SB hb) _ (GlobalTheory.SchrSB.schr_mem_SB B.ψ hψc v _ _ (star_mem_SB hb)) (GlobalTheory.VacBridge.rho_acts_locCo M.co B.ψ v _ (hat2 u hu) _) x.toCols₂ (hat2 x hx) (hmap2 x _ hx0)`. Use `beta_reduce`. Rewrite using `[p1, p2, m1, m2]`. Establish `hs : symp (cA σ) (-1) (incM F X.J) (dbl (incM F W.J)) x u = symp (cA σ) (-1) (incM F X.J) (incM F W.J) x.toCols₁ u.toCols₁ - symp (cA σ) (-1) (incM F X.J) (incM F W.J) x.toCols₂ u.toCols₂` using `by conv_lhs => rw [← Matrix.fromCols_toCols x, ← Matrix.fromCols_toCols u]`.
+
+Conclude with `GlobalTheory.DblVacLine.symp_dbl _ _ _ _ _ _ _ _`. Establish `hz : z = B.ψ (symp (cA σ) (-1) (incM F X.J) (incM F W.J) x.toCols₁ u.toCols₁) * star (B.ψ (symp (cA σ) (-1) (incM F X.J) (incM F W.J) x.toCols₂ u.toCols₂))`. Rewrite using `[GlobalTheory.DblVacLine.star_eq_neg B.ψ hψ1, ← AddChar.map_add_eq_mul, ← sub_eq_add_neg, ← hs]`. Rewrite using `[hz, star_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dblLin : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ)
     (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
     ∀ (v : Pl F) (t : E →ₐ[F] Fv F v) (b : GL (Fin n) (Fv F v)) (c : GL (Fin d) (Fv F v)), ∀ ι, M.IsLinW B.ψ t b c ι →

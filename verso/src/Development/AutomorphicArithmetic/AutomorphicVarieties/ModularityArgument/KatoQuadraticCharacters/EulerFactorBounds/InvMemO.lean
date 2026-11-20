@@ -3,6 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.HV GlobalTheory.Ord2 GlobalTheory.KZ GlobalTheory.K4 GlobalTheory.KA UpperTheory.Kd.K4 UpperTheory.V.Z.Kato.Sym UpperTheory.V.Z.Kato.Nb
 open scoped Matrix MatrixGroups Classical
 
+/- English proof (translation)
+Establish `hi : IsIntegral ℤ_[l] a` using `(Algebra.IsIntegral.isIntegral (R := ℤ_[l]) (⟨a, ha⟩ : c.O)).map c.O.val`. Establish `hq : IsIntegral ℚ_[l] a` using `Algebra.IsIntegral.isIntegral a`. Express the relevant statement in the definitionally equal form `spectralValue (minpoly ℚ_[l] a) ≤ 1`. Rewrite using `[spectralValue_le_one_iff (minpoly.monic hq)]`. Introduce `k`.
+
+Rewrite using `[minpoly.isIntegrallyClosed_eq_field_fractions' ℚ_[l] hi, Polynomial.coeff_map]`. Conclude with `PadicInt.norm_le_one _`.
+-/
 private theorem nle {l : ℕ} [Fact l.Prime] (c : Coef l) {a : Qbar l} (ha : a ∈ c.O) : ‖a‖ ≤ 1 := by
   have hi : IsIntegral ℤ_[l] a := (Algebra.IsIntegral.isIntegral (R := ℤ_[l]) (⟨a, ha⟩ : c.O)).map c.O.val
   have hq : IsIntegral ℚ_[l] a := Algebra.IsIntegral.isIntegral a
@@ -12,6 +17,11 @@ private theorem nle {l : ℕ} [Fact l.Prime] (c : Coef l) {a : Qbar l} (ha : a �
   rw [minpoly.isIntegrallyClosed_eq_field_fractions' ℚ_[l] hi, Polynomial.coeff_map]
   exact PadicInt.norm_le_one _
 
+/- English proof (translation)
+Establish `hu : IsUnit (p : ℤ_[l])`. Rewrite using `[PadicInt.isUnit_iff, PadicInt.norm_natCast_eq_one_iff]`. Conclude with `hp`. Take `⟨v, hv⟩` from `hu.exists_right_inv`. Establish `h` using `congrArg (algebraMap ℤ_[l] (Qbar l)) hv`.
+
+Rewrite `h` using `[map_mul, map_natCast, map_one]`. Rewrite using `[← eq_inv_of_mul_eq_one_right h]`. Conclude with `c.O.algebraMap_mem v`.
+-/
 private theorem inv_mem_O {l : ℕ} [Fact l.Prime] (c : Coef l) {p : ℕ} (hp : Nat.Coprime l p) :
     ((p : Qbar l))⁻¹ ∈ c.O := by
   have hu : IsUnit (p : ℤ_[l]) := by
@@ -23,6 +33,27 @@ private theorem inv_mem_O {l : ℕ} [Fact l.Prime] (c : Coef l) {p : ℕ} (hp : 
   rw [← eq_inv_of_mul_eq_one_right h]
   exact c.O.algebraMap_mem v
 
+/- English proof (translation)
+Introduce `l hl Ω _ _ _ ι e gN A W ε X pr N _ x c d gm ψ cf _ _ p n hp hn hd a δ ha hδ`. Take `⟨k, hk⟩` from `hd`. Establish `hpk : p = l ^ n * k + 1` using `by have := hp.pos; omega`. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Establish `hcop : Nat.Coprime l p`.
+
+Rewrite using `[hpk, pow_succ', mul_assoc]`. Simplify using the standard rewrite rules. Establish `hq` using `inv_mem_O cf hcop`. Establish `hp0 : (p : Qbar l) ≠ 0` using `Nat.cast_ne_zero.2 hp.ne_zero`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Unfold `eul`. Rewrite using `[← inv_pow, ← inv_pow]`. Conclude with `add_mem (sub_mem (one_mem _) (mul_mem ha (pow_mem hq _))) (mul_mem hδ (pow_mem hq _))`. Introduce `σ hψ he htr hdet`. Establish `hc : (cyclotomicCharacter Ω l σ.toRingEquiv : ℤ_[l]) = p`.
+
+Apply `Subtype.val_injective` to reduce the goal to its premises. Apply `(algebraMap ℚ_[l] (Qbar l)).injective` to reduce the goal to its premises. Establish `h : eps l σ = algebraMap ℚ_[l] (Qbar l) ((cyclotomicCharacter Ω l σ.toRingEquiv : ℤ_[l]) : ℚ_[l])` using `rfl`. Rewrite `h` using `[he]`. Use `h.symm.trans ?_` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Establish `hm : ((((cycMod (F` using `ℚ) (Ω := Ω) l 1 σ : ZMod (l ^ 1))).val : ℕ) : ZMod l) = 1 := by`. Establish `h : ((cycMod ℚ Ω l 1 σ : (ZMod (l ^ 1))ˣ) : ZMod (l ^ 1)) = PadicInt.toZModPow 1 (cyclotomicCharacter Ω l σ.toRingEquiv : ℤ_[l])` using `rfl`. Rewrite using `[h, hc, map_natCast, ZMod.val_natCast, pow_one, ZMod.natCast_mod, hpk]`. Simplify using the standard rewrite rules.
+
+Establish `hth : thK l e ψ σ = ((p : Qbar l) ^ e)⁻¹`. Unfold `thK`. Rewrite using `[hm, hψ, he, mul_one]`. Unfold `rhoK at htr hdet`. Rewrite `htr`, `hdet` using `[hth, inv_inv]`.
+
+Rewrite `htr` using `[Matrix.trace_smul, Matrix.trace_fin_two, smul_eq_mul]`. Rewrite `hdet` using `[Matrix.det_smul, Fintype.card_fin, ← pow_mul, mul_comm e 2, Matrix.det_fin_two]`. Establish `hdet'` using `mul_left_cancel₀ (pow_ne_zero _ hp0) hdet`. Establish `hpc : (p : Qbar l) = (l : Qbar l) ^ (m + 1) * k + 1` using `by exact_mod_cast hpk`. Establish `ho : (k : Qbar l) * (a * (p : Qbar l)⁻¹ ^ (e + 1) - δ * (p : Qbar l)⁻¹ ^ 2 * (1 + p)) ∈ cf.O` using `mul_mem (natCast_mem _ _) (sub_mem (mul_mem ha (pow_mem hq _)) (mul_mem (mul_mem hδ (pow_mem hq _)) (add_mem (one_mem _) (natCast_mem _ _))))`.
+
+Establish `key : eul l e p a δ - 1 * (mat W σ - 1).det = (l : Qbar l) ^ (m + 1) * ((k : Qbar l) * (a * (p : Qbar l)⁻¹ ^ (e + 1) - δ * (p : Qbar l)⁻¹ ^ 2 * (1 + p)))`. Rewrite using `[← mul_assoc, ← sub_eq_of_eq_add hpc, Matrix.det_fin_two]`. Simplify using `only [Matrix.sub_apply, Matrix.one_apply_eq, Matrix.one_apply_ne (show (0 : Fin 2) ≠ 1 by decide), Matrix.one_apply_ne (show (1 : Fin 2) ≠ 0 by decide), sub_zero]`. Unfold `eul`. Rewrite using `[← htr, ← hdet']`.
+
+Simplify using `only [inv_pow]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Unfold `GlobalTheory.Ord2.Cg`. Rewrite using `[key, norm_mul]`.
+
+Conclude with `mul_le_of_le_one_right (norm_nonneg _) (nle cf ho)`.
+-/
 theorem UpperTheory.V.Z.Kato.Nb.sEulCg :
     UpperTheory.V.Z.Kato.Nb.SEulCg := by
   intro l hl Ω _ _ _ ι e gN A W ε X pr N _ x c d gm ψ cf _ _ p n hp hn hd a δ ha hδ

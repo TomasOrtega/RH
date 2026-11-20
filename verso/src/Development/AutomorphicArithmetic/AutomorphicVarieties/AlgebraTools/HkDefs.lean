@@ -64,6 +64,13 @@ def sph (V : Type) [AddCommGroup V] [Module R V] [Module H V] [IsScalarTower R H
     rw [← algebraMap_smul H r v, ← mul_smul, ← Algebra.commutes, mul_smul, hv a c h, algebraMap_smul, algebraMap_smul,
       smul_comm]
 
+/- English proof (translation)
+Establish `cancel : ∀ a c : H, q • a = q • c → a = c`. Introduce `a c hac`. Take `⟨u, rfl⟩` from `hq`. Use `congrArg (fun z => ((u⁻¹ : Rˣ) : R) • z) hac` as an intermediate fact. Simplify `this` using `[smul_smul]`.
+
+Prove the components needed by the constructor for the conclusion. Apply `cancel` to reduce the goal to its premises. Rewrite using `[← mul_smul_comm, ← h, ← mul_assoc, ← mul_assoc, hT]`. Rewrite using `[add_mul, add_mul, smul_mul_assoc, smul_mul_assoc, smul_mul_assoc, smul_mul_assoc, one_mul, h]`. Rewrite using `[smul_add, smul_comm q (q - 1) x]`.
+
+Normalize the expressions using the abelian group laws. Apply `cancel` to reduce the goal to its premises. Use `symm`. Rewrite using `[smul_sub, ← smul_mul_assoc, ← h, mul_assoc (T * y), hT, mul_add, mul_smul_comm, mul_smul_comm, mul_one, h, smul_comm q (q - 1) x]`. Normalize the expressions using the abelian group laws.
+-/
 theorem rel_of_quad {H : Type} [Ring H] [Algebra R H] {q : R} (hq : IsUnit q) (T x y : H)
     (hT : T * T = (q - 1) • T + q • (1 : H)) (h : T * y * T = q • x) :
     T * x = y * T + (q - 1) • x ∧ T * y = x * T - (q - 1) • x := by

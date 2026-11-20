@@ -29,6 +29,11 @@ set_option synthInstance.maxHeartbeats 200000
 
 namespace UpperTheory.V.Hi.Up
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `GlobalTheory.T.splitPlace_unitaryLocalPoints_equiv_GL L n w hw`. Take `⟨τ, -, -, f, h0, h1, h2⟩` from `GlobalTheory.T.exists_admissible_localComponent_definiteUnitary L n ⟨σ, hσ⟩ w`. Use `⟨GlobalTheory.InertSatake.transport e τ, (GlobalTheory.InertSatake.transport e τ).irred, f, h0, h1, fun x v => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.InertSatake.transport_apply e τ x v` as an intermediate fact. Rewrite `this` using `[he]`.
+
+Conclude with `(congrArg f this).trans (h2 x v)`.
+-/
 theorem comp_ex {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {σ : Submodule ℂ (UA L n → ℂ)} (hσ : IsAutRepU σ)
     {w : Plc L} (hw : IsSplitAt w) :
     ∃ τ : SmIrr (GLw n w), IsCompAlong σ (locU n w) ((cLoc w).comp (locU n w).subtype) τ.ρ := by
@@ -44,6 +49,11 @@ section WD
 variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] {n : ℕ}
   {ι : Qbar l ≃+* ℂ} {w : Plc F} {A : ValuationSubring Ω} {h : IsPlaceOver A w}
 
+/- English proof (translation)
+Establish `e` using `hx.wdOf_eq hl`. Establish `e'` using `hx'.wdOf_eq hl`. Take `⟨t, ht, φ, hφ, N, b, hN, -⟩` from `hx`. Take `⟨t', ht', φ', hφ', N', b', hN', -⟩` from `hx'`. Use `Polynomial.map_injective ι.toRingHom ι.injective ?_` and prove the remaining obligations.
+
+Rewrite using `[← hN.charPol_wdOf hl ht ι g, ← hN'.charPol_wdOf hl ht' ι g, e, e']`.
+-/
 theorem wd_charpoly (hl : ((l : ℕ) : 𝓞 F) ∉ w.asIdeal) {r r' : G F Ω →* GL (Fin n) (Qbar l)} {x : WD h}
     (hx : IsWDOf ι r x) (hx' : IsWDOf ι r' x) (g : Weil h) :
     (r g : Matrix (Fin n) (Fin n) (Qbar l)).charpoly = (r' g : Matrix (Fin n) (Fin n) (Qbar l)).charpoly := by
@@ -54,6 +64,13 @@ theorem wd_charpoly (hl : ((l : ℕ) : 𝓞 F) ∉ w.asIdeal) {r r' : G F Ω →
   refine Polynomial.map_injective ι.toRingHom ι.injective ?_
   rw [← hN.charPol_wdOf hl ht ι g, ← hN'.charPol_wdOf hl ht' ι g, e, e']
 
+/- English proof (translation)
+Set `r' : G F Ω →* GL (Fin n) (Qbar l)` to `(MulAut.conj g).toMonoidHom.comp r`. Establish `hr' : ∀ s, r' s = g * r s * g⁻¹` using `fun s => rfl`. Establish `hx' : IsWDOf ι r' x` using `hx.of_conj hl g fun s => by rw [hr', inv_mul_cancel_right]`. Take `⟨t, ht, φ, hφ, N, a, hN, ha, rfl⟩` from `hx'`. Establish `hs : IsSmooth (r'.comp (Weil h).subtype)`.
+
+Use `.of_open (isOpen_iInter_of_finite hχ) (Set.mem_iInter.2 fun i => (χ i).ker.one_mem) fun σ hσ => Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(r' σ : Matrix (Fin n) (Fin n) (Qbar l)) = 1`. Rewrite using `[hr', hg σ]`. Simplify using `[fun i => show χ i σ = 1 from Set.mem_iInter.1 hσ i]`. Take `rfl : N = 0` from `hN.unique ht ((isMonodromy_zero_iff (h := h)).mpr hs)`.
+
+Use `⟨a, rfl, ?_, fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[ha.1, map_zero]`. Rewrite using `[IsFrobSS.ρ_ineIncl (ρ := hN.rep hl ht hφ ι) ha (hN.isSmooth_rep hl ht _ ι), hN.rep_apply, wdMat_zero, coe_ineIncl, hr', hg s, toEndC_apply, Matrix.diagonal_map (map_zero ι)]`. Both sides reduce to the same expression.
+-/
 theorem wd_type (hl : ((l : ℕ) : 𝓞 F) ∉ w.asIdeal) {r : G F Ω →* GL (Fin n) (Qbar l)} (χ : Fin n → Ine (F := F) A →* (Qbar l)ˣ)
     (hχ : ∀ i, IsOpen ((χ i).ker : Set (Ine (F := F) A))) (g : GL (Fin n) (Qbar l))
     (hg : ∀ s : Ine (F := F) A, ((g * r s * g⁻¹ : GL (Fin n) (Qbar l)) : Matrix (Fin n) (Fin n) (Qbar l)) =
@@ -77,6 +94,11 @@ theorem wd_type (hl : ((l : ℕ) : 𝓞 F) ∉ w.asIdeal) {r : G F Ω →* GL (F
 
 end WD
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `D.D A[X] (MonoidAlgebra.mapDomainRingHom A[X] φ _) = D.D A[X] _`. Use `congr 1`. Rewrite using `[map_sub]`. Use `congr 1`. Simplify using the standard rewrite rules.
+
+Proceed by induction on `y using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `single g r => simp`.
+-/
 theorem chi_comap {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Group H] (D : W.GDet n A G) (φ : H →* G) (y : MonoidAlgebra A H) :
     (D.comap φ).chi y = D.chi (MonoidAlgebra.mapDomainRingHom A φ y) := by
   change D.D A[X] (MonoidAlgebra.mapDomainRingHom A[X] φ _) = D.D A[X] _
@@ -97,6 +119,11 @@ variable {l : ℕ} [Fact l.Prime] {F : W.GFrame l} {c : Coef l} {n : ℕ} {r : R
 
 include hx
 
+/- English proof (translation)
+Establish `e` using `(AlgebraTools.Det.repApi (W.mat ρ)).2.1 g`. Rewrite `e` using `[← hx, chi_comap]`. Rewrite using `[← (AlgebraTools.Det.mapApi B.u.D (x : B.B →+* Qbar l)).1]`. Simplify using `only [MonoidAlgebra.mapRingHom_single, map_one]`. Simplify using `only [MonoidAlgebra.mapDomainRingHom_apply, MonoidAlgebra.mapDomain_single] at e`.
+
+Conclude with `e`.
+-/
 theorem chi_pt (g : Γ) : (B.u.D.chi (MonoidAlgebra.single (p g) 1)).map (x : B.B →+* Qbar l) =
     (ρ g : Matrix (Fin n) (Fin n) (Qbar l)).charpoly := by
   have e := (AlgebraTools.Det.repApi (W.mat ρ)).2.1 g
@@ -106,6 +133,11 @@ theorem chi_pt (g : Γ) : (B.u.D.chi (MonoidAlgebra.single (p g) 1)).map (x : B.
   simp only [MonoidAlgebra.mapDomainRingHom_apply, MonoidAlgebra.mapDomain_single] at e
   exact e
 
+/- English proof (translation)
+Rewrite using `[← chi_pt x p ρ hx, coeff_map, coeff_map]`. Use `pt_res x _ _ ?_` and prove the remaining obligations. Establish `e` using `(AlgebraTools.Det.mapApi B.u.D (Alg.res c.O B.B : B.B →+* ResidueField c.O)).1 (MonoidAlgebra.single (p g) 1)`. Rewrite `e` using `[B.u.red, MonoidAlgebra.mapRingHom_single, map_one, hP]`. Use `congrArg (·.coeff k) e` as an intermediate fact.
+
+Simplify using `only [coeff_map] at this`. Conclude with `this.symm`.
+-/
 theorem chi_cong (g : Γ) (P : c.O[X]) (hP : r.Dbar.chi (MonoidAlgebra.single (p g) 1) = P.map (residue c.O)) (k : ℕ) :
     ‖(ρ g : Matrix (Fin n) (Fin n) (Qbar l)).charpoly.coeff k - (P.map (algebraMap c.O (Qbar l))).coeff k‖ < 1 := by
   rw [← chi_pt x p ρ hx, coeff_map, coeff_map]
@@ -116,6 +148,21 @@ theorem chi_cong (g : Γ) (P : c.O[X]) (hP : r.Dbar.chi (MonoidAlgebra.single (p
   simp only [coeff_map] at this
   exact this.symm
 
+/- English proof (translation)
+Take `⟨-, hfin, -⟩` from `UpperTheory.V.abelian₂.dvr_finite l c.O`. Use `diag_of_cong (N := Nat.card (ResidueField c.O) - 1) ?_ _ (fun i g => ?_) (ρ.comp I.subtype) (fun g hg => ?_) fun g k => ?_` and prove the remaining obligations. Establish `h1 : IsUnit ((Nat.card (ResidueField c.O) - 1 : ℕ) : c.O)`. Rewrite using `[← residue_ne_zero_iff_isUnit, map_natCast, Nat.cast_pred Nat.card_pos]`. Use `letI := Fintype.ofFinite (ResidueField c.O)`.
+
+Simplify using `[Nat.card_eq_fintype_card]`. Use `pt_unit x (h1.map (algebraMap c.O B.B)).unit` as an intermediate fact. Rewrite `this` using `[IsUnit.unit_spec, map_natCast, map_natCast]`. Then use the resulting hypothesis. Rewrite using `[MonoidHom.comp_apply, ← map_pow]`. Conclude with `(congrArg _ (ht i _).2).trans (map_one _)`.
+
+Use `UpperTheory.eq_one_of_trace_translation_invariant_semisimple Γ (Qbar l) n ρ hs g fun h => ?_` and prove the remaining obligations. Establish `h1 : p g ∈ r.Ip u` using `⟨hI g g.2, Subgroup.mem_iInf.2 fun i => Units.ext (by`. Establish `h2 : (t i (p g) : c.O) = 1` using `Subtype.ext (congrArg Units.val (hg i))`. Rewrite using `[← (ht i _).1, h2, map_one, Units.val_one])⟩`. Establish `h2` using `congrArg x (B.u.I u _ h1 (p h))`.
+
+Establish `h3` using `(AlgebraTools.Det.repApi (W.mat ρ)).2.2.1 hn (MonoidAlgebra.single h 1 * (MonoidAlgebra.single (g : Γ) 1 - 1))`. Rewrite `h3` using `[← hx, W.GDet.tr, W.GDet.lam, chi_comap]`. Establish `h4` using `(AlgebraTools.Det.mapApi B.u.D (x : B.B →+* Qbar l)).2.1 1 (MonoidAlgebra.single (p h) 1 * (MonoidAlgebra.single (p g) 1 - 1))`. Rewrite `h4` using `[W.GDet.lam]`. Simplify using `only [map_mul, map_sub, map_one, MonoidAlgebra.mapRingHom_single] at h4`.
+
+Simplify using `only [map_mul, map_sub, map_one] at h3`. Simplify using `only [MonoidAlgebra.mapDomainRingHom_apply, MonoidAlgebra.mapDomain_single] at h3`. Establish `h5` using `h3.symm.trans (h4.trans (h2.trans (map_zero x)))`. Simplify using `only [W.GDet.repAlg, MonoidAlgebra.lift_single, one_smul] at h5`. Rewrite `h5` using `[mul_sub, mul_one, Matrix.trace_sub, sub_eq_zero, ← map_mul]`.
+
+Simplify `h5` using `[W.mat]`. Use `chi_cong x p ρ hx g (∏ i, (X - C (t i (p g) : c.O))) (by` as an intermediate fact. Rewrite using `[Resid.Dbar, (AlgebraTools.Det.repApi _).2.1, Polynomial.map_prod]`. Simplify using `only [Polynomial.map_sub, map_X, map_C, (ht _ _).1]`. Conclude with `Matrix.charpoly_diagonal _) k`.
+
+Simplify using `only [Polynomial.map_prod, Polynomial.map_sub, map_X, map_C] at this`. Conclude with `this`.
+-/
 theorem diag_pt (hn : 1 ≤ n) (hs : Formalism.MainNotions.N.IsSSRep ρ) (t : Fin n → F.G₀ →* c.Oˣ) (ht : r.IsTeich t) (u : F.St) (I : Subgroup Γ)
     (hI : ∀ g ∈ I, p g ∈ F.Iu u) : ∃ P : GL (Fin n) (Qbar l), ∀ g : I,
       ((P * ρ g * P⁻¹ : GL (Fin n) (Qbar l)) : Matrix (Fin n) (Fin n) (Qbar l)) =

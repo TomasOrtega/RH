@@ -11,6 +11,9 @@ open CategoryTheory
 
 namespace CrystallineSemistableComparison.HT
 
+/- English proof (translation)
+The claim follows from `@kFin_of (@Pb.finO'.2)`.
+-/
 theorem kFin : KFin := @kFin_of (@Pb.finO'.2)
 
 end CrystallineSemistableComparison.HT

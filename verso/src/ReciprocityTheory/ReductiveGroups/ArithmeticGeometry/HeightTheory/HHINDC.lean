@@ -40,13 +40,22 @@ noncomputable def AH (h : d.S1) (O : ∀ c, AddValuation (Ω c) (WithTop ℤ) �
       -Real.log (Nr c (ta c) P)) ∂(blockSphereProb d.D (d.N + 1))) +
     ∑ c, ∑ᶠ (p : Ideal (KTp K d.D d.N)) (_ : p ∈ d.HtOne), (d.anP h O c (ta c) p : ℝ) * h0 (d.gen p)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Hgt_eq_AH (h : d.S1) (G : WT) (ta : ∀ c, A c) :
     d.Hgt h G ta = d.AH h (fun c v f => d.ord c v G f) (fun c f P => d.nrm c G f P) ta := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem HgtMM_eq_AH (h : d.S1) (f : ∀ c, A c) :
     d.HgtMM h f = d.AH h (fun c v g => d.ordMM c v g) (fun c g P => d.nrm c d.wL g P / d.be c P) f :=
   rfl
 
+/- English proof (translation)
+Establish `hla : la.asIdeal = la'.asIdeal`. Use extensionality with `a`. Rewrite using `[← h1 a, h2 a]`. Conclude with `HeightOneSpectrum.ext hla`.
+-/
 theorem isOver_inj {c : ι} {v : AddValuation (Ω c) (WithTop ℤ)} {la la' : HeightOneSpectrum (𝓞 K)}
     (h1 : IsOver (K := K) v la) (h2 : IsOver (K := K) v la') : la = la' := by
   have hla : la.asIdeal = la'.asIdeal := by
@@ -54,6 +63,13 @@ theorem isOver_inj {c : ι} {v : AddValuation (Ω c) (WithTop ℤ)} {la la' : He
     rw [← h1 a, h2 a]
   exact HeightOneSpectrum.ext hla
 
+/- English proof (translation)
+Use `set s := {la : HeightOneSpectrum (𝓞 K) | ∃ w ∈ d.PlOver la c, O (d.Wres c w) ≠ 0}`. Establish `hF : ∀ la (hla : la ∈ s), d.admitted c (d.Wres c hla.choose) ∧ IsOver (K` using `K) (d.Wres c hla.choose) la ∧ O (d.Wres c hla.choose) ≠ 0 := by`. Introduce `la hla`. Establish `hs` using `(d.admissible_over_prime hd h la c _ hla.choose_spec.1)`. Conclude with `⟨hs.1, hs.2.1, hla.choose_spec.2⟩`.
+
+Establish `: Finite s`. Use `hO.to_subtype` as an intermediate fact. Use `Finite.of_injective (fun la : s => (⟨d.Wres c la.2.choose, (hF la la.2).1, (hF la la.2).2.2⟩ : {v | d.admitted c v ∧ O v ≠ 0})) ?_` and prove the remaining obligations. Introduce `la la' heq`. Establish `heq' : d.Wres c la.2.choose = d.Wres c la'.2.choose` using `congrArg Subtype.val heq`.
+
+Conclude with `Subtype.ext (isOver_inj (K := K) (hF la la.2).2.1 (heq' ▸ (hF la' la'.2).2.1))`. Conclude with `Set.toFinite s`.
+-/
 theorem la_fin (hd : d.AxH 𝒜) (h : d.S1) (c : ι) (O : AddValuation (Ω c) (WithTop ℤ) → ℤ)
     (hO : {v | d.admitted c v ∧ O v ≠ 0}.Finite) :
     {la : HeightOneSpectrum (𝓞 K) | ∃ w ∈ d.PlOver la c, O (d.Wres c w) ≠ 0}.Finite := by
@@ -93,12 +109,18 @@ namespace Data
 
 variable (d : Data K ι Ω WT A)
 
+/- English proof (translation)
+Break down `d.PlaceTrivialOrPositive hd h c p hp w hw.1 with h1 | h1` into its components or cases. Take `⟨b, hb, hb'⟩` from `hw.2`. Conclude with `absurd (h1 b hb) hb'`. Conclude with `h1.1`.
+-/
 theorem admissible_of_good_valuation (hd : d.AxH 𝒜) (h : d.S1) (c : ι) {p : Ideal (KTp K d.D d.N)} (hp : p ∈ d.HtOne)
     {w : AddValuation (OmS (Ω c) d.D d.N) (WithTop ℤ)} (hw : w ∈ d.GoodP c p) : d.admitted c (d.Wres c w) := by
   rcases d.PlaceTrivialOrPositive hd h c p hp w hw.1 with h1 | h1
   · obtain ⟨b, hb, hb'⟩ := hw.2; exact absurd (h1 b hb) hb'
   · exact h1.1
 
+/- English proof (translation)
+Establish `hva : v a ≠ ⊤` using `fun h0 => ha ((AddValuation.top_iff v).mp h0)`. Take `⟨n, hn⟩` from `WithTop.ne_top_iff_exists.mp hva`. Rewrite `hs`, the goal using `[← hn]`. Rewrite using `[WithTop.untopD_coe]`. Conclude with `hs` after adjusting the coercions.
+-/
 theorem shift {c : ι} {v : AddValuation (Ω c) (WithTop ℤ)} (hv : d.admitted c v) {a : Ω c} (ha : a ≠ 0)
     {x y : ℤ} (hs : ((y : ℤ) : WithTop ℤ) = v a + (x : WithTop ℤ)) : y = WithTop.untopD 0 (v a) + x := by
   have hva : v a ≠ ⊤ := fun h0 => ha ((AddValuation.top_iff v).mp h0)
@@ -107,10 +129,18 @@ theorem shift {c : ι} {v : AddValuation (Ω c) (WithTop ℤ)} (hv : d.admitted 
   rw [WithTop.untopD_coe]
   exact_mod_cast hs
 
+/- English proof (translation)
+The claim follows from `((d.norm_by_places hd h c).1 p hp).subset fun _ hw => hw.1`.
+-/
 theorem goodP_finite' (hd : d.AxH 𝒜) (h : d.S1) (c : ι) {p : Ideal (KTp K d.D d.N)} (hp : p ∈ d.HtOne) :
     (d.GoodP c p).Finite :=
   ((d.norm_by_places hd h c).1 p hp).subset fun _ hw => hw.1
 
+/- English proof (translation)
+Unfold `anP nPa`. Rewrite using `[← finsum_mem_add_distrib (d.goodP_finite' hd h c hp)]`. Use `finsum_mem_congr rfl fun w hw => ?_` and prove the remaining obligations. Establish `hv` using `d.admissible_of_good_valuation hd h c hp hw`. Rewrite using `[d.shift hv ha (hOs _ hv)]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem usage₆ (hd : d.AxH 𝒜) (h : d.S1) (O : ∀ c, AddValuation (Ω c) (WithTop ℤ) → A c → ℤ)
     (c : ι) (f : A c) (a : Ω c) (ha : a ≠ 0)
     (hOs : ∀ v, d.admitted c v → ((O c v (a • f) : ℤ) : WithTop ℤ) = v a + (O c v f : WithTop ℤ))
@@ -123,6 +153,15 @@ theorem usage₆ (hd : d.AxH 𝒜) (h : d.S1) (O : ∀ c, AddValuation (Ω c) (W
   rw [d.shift hv ha (hOs _ hv)]
   ring
 
+/- English proof (translation)
+Unfold `aNla`. Rewrite using `[← Finset.sum_add_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `c _`. Establish `hfin` using `(d.places_over_la hd h la c).1`.
+
+Unfold `nLa`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hfin, finsum_mem_eq_finite_toFinset_sum _ hfin, finsum_mem_eq_finite_toFinset_sum _ hfin]`. Use `push_cast`. Rewrite using `[← Finset.sum_add_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+
+Introduce `w hw`. Rewrite `hw` using `[Set.Finite.mem_toFinset]`. Establish `hv` using `(d.admissible_over_prime hd h la c w hw).1`. Rewrite using `[d.shift hv (ha c) (hOs c _ hv)]`. Use `push_cast`.
+
+Rewrite using `[d.Wres_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem aNla_smul (hd : d.AxH 𝒜) (h : d.S1) (O : ∀ c, AddValuation (Ω c) (WithTop ℤ) → A c → ℤ)
     (ta : ∀ c, A c) (a : ∀ c, Ω c) (ha : ∀ c, a c ≠ 0)
     (hOs : ∀ c v, d.admitted c v → ((O c v (a c • ta c) : ℤ) : WithTop ℤ) = v (a c) + (O c v (ta c) : WithTop ℤ))
@@ -168,11 +207,21 @@ namespace Data
 
 variable (d : Data K ι Ω WT A)
 
+/- English proof (translation)
+Simplify using `only [aI, ← finsum_neg_distrib]`.
+-/
 theorem neg_aI (Nr : ∀ c, A c → (Ω c →+* ℂ) → ℝ) (c : ι) (f : A c) (sg : K →+* ℂ)
     (z : BlockSphere d.D (d.N + 1)) :
     ∑ᶠ (P : Ω c →+* ℂ) (_ : P ∈ d.ST c sg (d.tOf z)), -Real.log (Nr c f P) = -d.aI Nr c f sg z := by
   simp only [aI, ← finsum_neg_distrib]
 
+/- English proof (translation)
+Establish `hae : d.aI Nr c (a • f) sg =ᵐ[blockSphereProb d.D (d.N + 1)] fun z => d.lsum c sg a z + d.aI Nr c f sg z` using `by filter_upwards [d.norm_at_sg hd h c sg] with z hz`. Unfold `aI lsum`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hz.1, finsum_mem_eq_finite_toFinset_sum _ hz.1, finsum_mem_eq_finite_toFinset_sum _ hz.1, ← Finset.sum_add_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `P _`.
+
+Rewrite using `[hNs, Real.log_mul (norm_ne_zero_iff.2 ((map_ne_zero P).2 ha)) (hN0 P)]`. Establish `hL : Integrable (d.lsum c sg a) (blockSphereProb d.D (d.N + 1))`. Use `(hI'.sub hI).congr ?_` and prove the remaining obligations. Use `filter_upwards [hae] with z hz`. Simplify using `only [Pi.sub_apply, hz]`.
+
+Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[d.neg_aI]`. Rewrite using `[integral_neg, integral_neg, integral_congr_ae hae, integral_add hL hI]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem nsg_smul (hd : d.AxH 𝒜) (h : d.S1) (Nr : ∀ c, A c → (Ω c →+* ℂ) → ℝ) (c : ι) (f : A c)
     (a : Ω c) (ha : a ≠ 0) (hNs : ∀ P, Nr c (a • f) P = ‖P a‖ * Nr c f P) (hN0 : ∀ P, Nr c f P ≠ 0)
     (sg : K →+* ℂ) (hI : Integrable (d.aI Nr c f sg) (blockSphereProb d.D (d.N + 1)))
@@ -198,6 +247,11 @@ theorem nsg_smul (hd : d.AxH 𝒜) (h : d.S1) (Nr : ∀ c, A c → (Ω c →+* �
   rw [integral_neg, integral_neg, integral_congr_ae hae, integral_add hL hI]
   ring
 
+/- English proof (translation)
+Introduce `la hla`. Assume the negation of the conclusion as `hno`. Apply `hla` to reduce the goal to its premises. Simplify using `only [Set.mem_iUnion, Set.mem_setOf_eq, not_exists, not_and, not_not] at hno`. Unfold `aNla`.
+
+Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Use `(finsum_mem_congr rfl fun w hw => ?_).trans (finsum_mem_zero _)` and prove the remaining obligations. Simplify using `[hno c w hw]`.
+-/
 theorem aNla_supp (hd : d.AxH 𝒜) (h : d.S1) (O : ∀ c, AddValuation (Ω c) (WithTop ℤ) → A c → ℤ)
     (ta : ∀ c, A c) :
     Function.support (d.aNla h O ta) ⊆
@@ -211,6 +265,13 @@ theorem aNla_supp (hd : d.AxH 𝒜) (h : d.S1) (O : ∀ c, AddValuation (Ω c) (
   refine (finsum_mem_congr rfl fun w hw => ?_).trans (finsum_mem_zero _)
   simp [hno c w hw]
 
+/- English proof (translation)
+Introduce `la hla`. Take `⟨w, hw, hw0⟩` from `exists_ne_zero_of_finsum_mem_ne_zero hla`. Establish `hv` using `(d.admissible_over_prime hd h la c w hw).1`. Establish `hs` using `d.shift hv ha (hOs _ hv)`. Distinguish the cases in `h0 : O c (d.Wres c w) f = 0`.
+
+Use `right`. Use `⟨w, hw, ?_⟩` and prove the remaining obligations. Rewrite using `[hs, h0, add_zero]`. Introduce `h1`. Apply `hw0` to reduce the goal to its premises.
+
+Rewrite using `[← d.Wres_apply, h1, mul_zero]`. Conclude with `Or.inl ⟨w, hw, h0⟩`.
+-/
 theorem nLa_supp (hd : d.AxH 𝒜) (h : d.S1) (O : ∀ c, AddValuation (Ω c) (WithTop ℤ) → A c → ℤ)
     (c : ι) (f : A c) (a : Ω c) (ha : a ≠ 0)
     (hOs : ∀ v, d.admitted c v → ((O c v (a • f) : ℤ) : WithTop ℤ) = v a + (O c v f : WithTop ℤ)) :
@@ -228,9 +289,15 @@ theorem nLa_supp (hd : d.AxH 𝒜) (h : d.S1) (O : ∀ c, AddValuation (Ω c) (W
     intro h1; apply hw0; rw [← d.Wres_apply, h1, mul_zero]
   · exact Or.inl ⟨w, hw, h0⟩
 
+/- English proof (translation)
+Simplify using `only [meanK, Finset.sum_sub_distrib, sub_div]`.
+-/
 theorem meanK_sub (F G : (K →+* ℂ) → ℝ) : meanK (fun sg => F sg - G sg) = meanK F - meanK G := by
   simp only [meanK, Finset.sum_sub_distrib, sub_div]
 
+/- English proof (translation)
+Simplify using `only [meanK]`. Rewrite using `[Finset.sum_comm, Finset.sum_div]`.
+-/
 theorem meanK_sum (F : ι → (K →+* ℂ) → ℝ) : meanK (fun sg => ∑ c, F c sg) = ∑ c, meanK (F c) := by
   simp only [meanK]
   rw [Finset.sum_comm, Finset.sum_div]

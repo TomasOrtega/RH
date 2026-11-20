@@ -18,11 +18,19 @@ def extMat (b : Fin r → Fin s) (c : Fin s) :
     simp only [Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]
     simp
 
+/- English proof (translation)
+Simplify using `[extMat, Equiv.sumCompl_symm_apply_of_pos (p := fun a => b a = c) i.2, Equiv.sumCompl_symm_apply_of_pos (p := fun a => b a = c) j.2]`.
+-/
 theorem extMat_in (b : Fin r → Fin s) (c : Fin s) (g : Matrix {i // b i = c} {i // b i = c} K)
     (i j : {i // b i = c}) : extMat b c g i.1 j.1 = g i j := by
   simp [extMat, Equiv.sumCompl_symm_apply_of_pos (p := fun a => b a = c) i.2,
     Equiv.sumCompl_symm_apply_of_pos (p := fun a => b a = c) j.2]
 
+/- English proof (translation)
+Apply the tactic sequence `by_cases hi : b i = c <;> by_cases hj : b j = c`. Conclude with `absurd ⟨hi, hj⟩ h`. Establish `: i ≠ j` using `fun e => hj (e ▸ hi)`. Simplify using `[extMat, Equiv.sumCompl_symm_apply_of_pos (p := fun a => b a = c) hi, Equiv.sumCompl_symm_apply_of_neg (p := fun a => b a = c) hj, this]`. Establish `: i ≠ j` using `fun e => hi (e ▸ hj)`.
+
+Simplify using `[extMat, Equiv.sumCompl_symm_apply_of_neg (p := fun a => b a = c) hi, Equiv.sumCompl_symm_apply_of_pos (p := fun a => b a = c) hj, this]`. Simplify using `[extMat, Equiv.sumCompl_symm_apply_of_neg (p := fun a => b a = c) hi, Equiv.sumCompl_symm_apply_of_neg (p := fun a => b a = c) hj, Matrix.one_apply]`.
+-/
 theorem extMat_out (b : Fin r → Fin s) (c : Fin s) (g : Matrix {i // b i = c} {i // b i = c} K) (i j : Fin r)
     (h : ¬ (b i = c ∧ b j = c)) : extMat b c g i j = (1 : Matrix (Fin r) (Fin r) K) i j := by
   by_cases hi : b i = c <;> by_cases hj : b j = c
@@ -47,23 +55,37 @@ def blockExt (b : Fin r → Fin s) (c : Fin s) :
     rw [extMat_out b c _ i j (fun e => hne (e.1.trans e.2.symm)),
       Matrix.one_apply_ne (fun e => hne (congrArg b e))]
 
+/- English proof (translation)
+The claim follows from `extMat_in b c _ i j`.
+-/
 theorem blockExt_in (b : Fin r → Fin s) (c : Fin s) (g : GL {i // b i = c} K) (i j : {i // b i = c}) :
     (((blockExt b c g : blockTri (κ := K) (natBlocks b)) : GL (Fin r) K) : Matrix (Fin r) (Fin r) K) i.1 j.1 =
       (g : Matrix _ _ K) i j :=
   extMat_in b c _ i j
 
+/- English proof (translation)
+The claim follows from `extMat_out b c _ i j h`.
+-/
 theorem blockExt_out (b : Fin r → Fin s) (c : Fin s) (g : GL {i // b i = c} K) (i j : Fin r)
     (h : ¬ (b i = c ∧ b j = c)) :
     (((blockExt b c g : blockTri (κ := K) (natBlocks b)) : GL (Fin r) K) : Matrix (Fin r) (Fin r) K) i j =
       (1 : Matrix (Fin r) (Fin r) K) i j :=
   extMat_out b c _ i j h
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `x y`. Conclude with `blockExt_in b c g x y`.
+-/
 theorem levi_blockExt_same (b : Fin r → Fin s) (c : Fin s) (g : GL {i // b i = c} K) :
     levi K b c (Subgroup.inclusion (blockTri_le_parab b) (blockExt b c g)) = g := by
   apply Units.ext
   ext x y
   exact blockExt_in b c g x y
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `x y`. Use `blockExt_out b c g x.1 y.1 (fun e => h (x.2.symm.trans e.1))` as an intermediate fact. Use `show (((blockExt b c g : blockTri (κ := K) (natBlocks b)) : GL (Fin r) K) : Matrix (Fin r) (Fin r) K) x.1 y.1 = (1 : Matrix _ _ K) x y`. Rewrite using `[this]`.
+
+Simplify using `[Matrix.one_apply, Subtype.ext_iff]`.
+-/
 theorem levi_blockExt_ne (b : Fin r → Fin s) {c c' : Fin s} (h : c' ≠ c) (g : GL {i // b i = c} K) :
     levi K b c' (Subgroup.inclusion (blockTri_le_parab b) (blockExt b c g)) = 1 := by
   apply Units.ext
@@ -76,6 +98,11 @@ theorem levi_blockExt_ne (b : Fin r → Fin s) {c c' : Fin s} (h : c' ≠ c) (g 
 
 variable (b : Fin r → Fin s) (lam : ∀ c : Fin s, FDRep ℂ (GL {i // b i = c} K))
 
+/- English proof (translation)
+Rewrite using `[leviTensor_apply]`. Use `congr 1`. Use function extensionality and compare the values at `c'`. Distinguish the cases in `h : c' = c`. Substitute `h` using the available equality.
+
+Rewrite using `[levi_blockExt_same, Function.update_self]`. Rewrite using `[levi_blockExt_ne b h, Function.update_of_ne h, map_one]`. Both sides reduce to the same expression.
+-/
 theorem leviTensor_blockExt (c : Fin s) (g : GL {i // b i = c} K) :
     leviTensor b lam (blockExt b c g) = PiTensorProduct.map
       (Function.update (fun c' => (LinearMap.id : (lam c' : Type) →ₗ[ℂ] (lam c' : Type))) c ((lam c).ρ g)) := by

@@ -22,6 +22,11 @@ open Formalism.MainNotions.S (AutInst uMat)
 
 def tauOf (I : AutInst) (v : InfinitePlace I.F) : EmbOver I.E v := ⟨I.φ v, RingHom.ext (I.φ_over v)⟩
 
+/- English proof (translation)
+Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x`. Rewrite using `[Formalism.L2.SG.AdBridge.thetaV_tmul]`.
+
+Both sides reduce to the same expression. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 theorem infEmb_comp_compInf (I : AutInst) (v : InfinitePlace I.F) :
     (infEmb (tauOf I v)).comp (compInf I.F I.E v) = Formalism.L2.SG.AdBridge.thetaV I v := by
   refine RingHom.ext fun z => ?_
@@ -32,6 +37,9 @@ theorem infEmb_comp_compInf (I : AutInst) (v : InfinitePlace I.F) :
     rfl
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
+/- English proof (translation)
+Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 (I.P_unit v)`. Rewrite using `[((GlobalTheory.HCFinU.bridgeS_isBridge I) x).1 v, Formalism.L2.SG.AdBridge.ofHAInf, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hd, Matrix.one_mul, Matrix.mul_nonsing_inv_cancel_right _ _ hd, GlobalTheory.Orb.archMat_apply, matHom_projArch, ← infEmb_comp_com …`. Use extensionality with `i j`. Both sides reduce to the same expression.
+-/
 theorem archMat_bridge (I : AutInst) (x : I.GA) (v : InfinitePlace I.F) :
     GlobalTheory.Orb.archMat I.cm.sig I.J (tauOf I v) (projArch I.cm.sig I.J v (GlobalTheory.HCFinU.bridgeS I I.cm.sig rfl x)) =
       I.P v * uMat (x.1 v) * (I.P v)⁻¹ := by
@@ -46,6 +54,15 @@ end GlobalTheory.HCFinSmooth
 namespace GlobalTheory.HCFinSmooth
 open Formalism.MainNotions.S (AutInst uMat)
 
+/- English proof (translation)
+Establish `h` using `((GlobalTheory.HCFinU.bridgeS_isBridge I) (y, 1)).2`. Use `show _ = _`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Establish `h2` using `congrFun (congrFun h i) j`.
+
+Simplify using `only [Formalism.L2.SG.AdBridge.ofHAFin, Matrix.map_apply, GlobalTheory.BridgeDict.tauF_apply] at h2`. Establish `h3` using `congrArg (Algebra.TensorProduct.comm I.F _ _).symm h2`. Rewrite `h3` using `[AlgEquiv.symm_apply_apply]`. Establish `h4 : I.fmat 1 = 1` using `rfl`. Rewrite `h3` using `[h4]`.
+
+Use `Eq.trans (?_ : _ = (Algebra.TensorProduct.map (sndA I.F) (AlgHom.id I.F I.E)) (Formalism.L2.SG.AdBridge.hmat I (GlobalTheory.HCFinU.bridgeS I I.cm.sig rfl (y, 1)) i j)) (h3.symm.trans ?_)` and prove the remaining obligations. Both sides reduce to the same expression. Distinguish the cases in `e : i = j`. Substitute `e` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[e]`.
+-/
 theorem mem_infPts_bridge (I : AutInst) (y : I.Ginf) :
     GlobalTheory.HCFinU.bridgeS I I.cm.sig rfl (y, 1) ∈ infPts I.cm.sig I.J := by
   have h := ((GlobalTheory.HCFinU.bridgeS_isBridge I) (y, 1)).2
@@ -70,9 +87,17 @@ namespace GlobalTheory.HCFinSmooth
 open Formalism.MainNotions.S (AutInst uMat)
 open GlobalTheory.ThKAdmAut (opNorm_le_exp dOp_nonneg)
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND I.F I.E I.cm).1`.
+-/
 theorem isCMExt_inst (I : AutInst) : IsCMExt I.F I.E I.cm.sig :=
   (GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND I.F I.E I.cm).1
 
+/- English proof (translation)
+Rewrite using `[normInf_eq_opNorm (isCMExt_inst I) (tauOf I v)]`. Establish `h1` using `archMat_bridge I (x, 1) v`. Rewrite `h1` using `[GlobalTheory.Orb.archMat_apply]`. Rewrite using `[h1]`. Establish `h2 : (opNorm (I.P v * uMat (x v) * (I.P v)⁻¹) : ℝ) ≤ opNorm (I.P v) * opNorm (uMat (x v)) * opNorm (I.P v)⁻¹`.
+
+Conclude with `(opNorm_mul_le _ _).trans (mul_le_mul' (opNorm_mul_le _ _) le_rfl)` after adjusting the coercions. Use `h2.trans ?_` and prove the remaining obligations. Rewrite using `[mul_right_comm]`. Conclude with `mul_le_mul (le_max_right _ _) (opNorm_le_exp _) (NNReal.coe_nonneg _) (by positivity)`.
+-/
 theorem normInf_bridge_le (I : AutInst) (x : I.Ginf) (v : InfinitePlace I.F) :
     (normInf I.F v (matHom _ I.cm.sig I.J (projArch I.cm.sig I.J v (GlobalTheory.HCFinU.bridgeS I I.cm.sig rfl (x, 1)))).1 : ℝ) ≤
       max 1 ((opNorm (I.P v) : ℝ) * opNorm (I.P v)⁻¹) * Real.exp (GlobalTheory.Count.dOp (uMat (x v))) := by
@@ -86,6 +111,13 @@ theorem normInf_bridge_le (I : AutInst) (x : I.Ginf) (v : InfinitePlace I.F) :
   rw [mul_right_comm]
   exact mul_le_mul (le_max_right _ _) (opNorm_le_exp _) (NNReal.coe_nonneg _) (by positivity)
 
+/- English proof (translation)
+Use `⟨∏ v, max 1 ((opNorm (I.P v) : ℝ) * opNorm (I.P v)⁻¹), by positivity, fun y => ?_⟩` and prove the remaining obligations. Establish `hfin : ∀ v, htFin I.F v (matHom _ I.cm.sig I.J (proj I.cm.sig I.J v (GlobalTheory.HCFinU.bridgeS I I.cm.sig rfl (y, 1)))) = 1` using `fun v => by rw [mem_infPts_iff_forall.1 (mem_infPts_bridge I y) v, map_one, htFin_one]`. Rewrite using `[height_eq, finprod_eq_one_of_forall_eq_one hfin, mul_one, GlobalTheory.Dec.dSum, Real.exp_sum, ← Finset.prod_mul_distrib, NNReal.coe_prod]`. Use `Finset.prod_le_prod (fun _ _ => NNReal.coe_nonneg _) fun v _ => ?_` and prove the remaining obligations. Rewrite using `[htInf, htOf, NNReal.coe_max, NNReal.coe_max]`.
+
+Use `max_le (one_le_mul_of_one_le_of_one_le (le_max_left _ _) (Real.one_le_exp (dOp_nonneg _))) (max_le (normInf_bridge_le I y v) ?_)` and prove the remaining obligations. Establish `h3` using `normInf_bridge_le I y⁻¹ v`. Establish `h4 : GlobalTheory.Count.dOp (uMat (y⁻¹ v)) = GlobalTheory.Count.dOp (uMat (y v))`. Rewrite using `[← GlobalTheory.Count.Cartan.dOp_inv (y v).2]`. Conclude with `congrArg GlobalTheory.Count.dOp (Matrix.coe_units_inv _)`.
+
+Establish `h5 : GlobalTheory.HCFinU.bridgeS I I.cm.sig rfl (y⁻¹, 1) = (GlobalTheory.HCFinU.bridgeS I I.cm.sig rfl (y, 1))⁻¹`. Rewrite using `[← map_inv, Prod.inv_mk, inv_one]`. Rewrite `h3` using `[h4, h5, map_inv, map_inv]`. Conclude with `h3`.
+-/
 theorem height_bridge_le (I : AutInst) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ y : I.Ginf,
       (height I.cm.sig I.J (GlobalTheory.HCFinU.bridgeS I I.cm.sig rfl (y, 1)) : ℝ) ≤ C * Real.exp (GlobalTheory.Dec.dSum I y) := by
@@ -113,6 +145,15 @@ open Formalism.MainNotions.S (AutInst uMat)
 
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra in
 
+/- English proof (translation)
+Establish `hcm` using `isCMExt_inst I`. Take `⟨v, Y, hY⟩` from `hγ`. Establish `hu : IsUnit (I.P v)` using `I.P_unit v`. Establish `hZ : ∀ t : ℝ, GlobalTheory.Orb.archMat I.cm.sig I.J (tauOf I v) (projArch I.cm.sig I.J v (GlobalTheory.HCFinU.bridgeS I I.cm.sig rfl (γ t, 1))) = NormedSpace.exp (t • (I.P v * Y * (I.P v)⁻¹))` using `fun t => by`. Rewrite using `[archMat_bridge, (hY t).1, ← Matrix.smul_mul, ← Matrix.mul_smul, Matrix.exp_conj _ _ hu]`.
+
+Use `⟨v, tauOf I v, I.P v * Y * (I.P v)⁻¹, GlobalTheory.ThK.OneParamLie.lie_of_archMat_eq_exp I.F I.E I.cm.sig hcm _ _ _ _ _ _ hZ, fun t => ⟨_, ?_, hZ t⟩⟩` and prove the remaining obligations. Use `GAd_ext _ _ (fun w => ?_) fun u => ?_` and prove the remaining obligations. Distinguish the cases in `e₁ : w = v`. Substitute `e₁` using the available equality. Rewrite using `[projArch_embArch_self]`.
+
+Rewrite using `[projArch_embArch_ne _ _ e₁]`. Apply `GlobalTheory.ThK.ZFinDerPol.archMat_inj hcm I.J (tauOf I w)` to reduce the goal to its premises. Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 (I.P_unit w)`. Rewrite using `[archMat_bridge, map_one]`. Use `show I.P w * uMat (γ t w) * (I.P w)⁻¹ = 1`.
+
+Rewrite using `[(hY t).2 w e₁]`. Use `show I.P w * 1 * (I.P w)⁻¹ = 1`. Rewrite using `[Matrix.mul_one, Matrix.mul_nonsing_inv _ hd]`. Rewrite using `[proj_embArch]`. Conclude with `mem_infPts_iff_forall.1 (mem_infPts_bridge I (γ t)) u`.
+-/
 theorem isRealLine_bridge (I : AutInst) {γ : ℝ → I.Ginf} (hγ : GlobalTheory.ThKAdmAut.IsLine I γ) :
     IsRealLine I.cm.sig I.J fun t => GlobalTheory.HCFinU.bridgeS I I.cm.sig rfl (γ t, 1) := by
   classical
@@ -143,6 +184,19 @@ end GlobalTheory.HCFinSmooth
 namespace GlobalTheory.HCFinSmooth
 open Formalism.MainNotions.S (AutInst uMat)
 
+/- English proof (translation)
+Introduce `I s hs φ hφ xf`. Substitute `hs` using the available equality. Use `set e := GlobalTheory.HCFinU.bridgeS I I.cm.sig rfl with he`. Use `⟨GlobalTheory.ThKAdmAut.smoothInf_of_lines fun k γ hγ x => ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `hφ.smooth k (fun i t => e (γ i t, 1)) (fun i => isRealLine_bridge I (hγ i)) (e (x, xf))`.
+
+Use `h1 using 2 with t` and compare the differences between its conclusion and the goal. Establish `h2 : ((x * (List.ofFn fun i => γ i (t i)).prod, xf) : I.GA) = (x, xf) * MonoidHom.inl _ _ (List.ofFn fun i => γ i (t i)).prod` using `by simp`. Establish `h3` using `map_list_prod (e.toMonoidHom.comp (MonoidHom.inl I.Ginf I.Gf)) (List.ofFn fun i => γ i (t i))`. Rewrite `h3` using `[List.map_ofFn]`. Rewrite using `[h2, map_mul]`.
+
+Use `congr 2`. Take `⟨N, hN⟩` from `hφ.growth`. Take `⟨C, hC⟩` from `hN [] (by simp)`. Take `⟨C', hC0, hC'⟩` from `height_bridge_le I`. Use `⟨max C 0 * (C' * height I.cm.sig I.J (e (1, xf))) ^ N, N, fun y => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : ‖φ (e (y, xf))‖ ≤ C * (height I.cm.sig I.J (e (y, xf)) : ℝ) ^ N` using `hC (e (y, xf))`. Establish `h2 : (height I.cm.sig I.J (e (y, xf)) : ℝ) ≤ C' * height I.cm.sig I.J (e (1, xf)) * Real.exp (GlobalTheory.Dec.dSum I y)`. Establish `e1 : e (y, xf) = e (y, 1) * e (1, xf)` using `by rw [← map_mul]; simp`. Establish `h3 : (height I.cm.sig I.J (e (y, xf)) : ℝ) ≤ height I.cm.sig I.J (e (y, 1)) * height I.cm.sig I.J (e (1, xf))`. Rewrite using `[e1]`.
+
+Conclude with `height_mul_le _ _ _ _` after adjusting the coercions. Use `h3.trans ?_` and prove the remaining obligations. Rewrite using `[mul_right_comm]`. Conclude with `mul_le_mul_of_nonneg_right (hC' y) (NNReal.coe_nonneg _)`. Establish `hCm : C * (height I.cm.sig I.J (e (y, xf)) : ℝ) ^ N ≤ max C 0 * (height I.cm.sig I.J (e (y, xf)) : ℝ) ^ N` using `mul_le_mul_of_nonneg_right (le_max_left _ _) (by positivity)`.
+
+Use `h1.trans (hCm.trans ?_)` and prove the remaining obligations. Rewrite using `[Real.exp_nat_mul, mul_assoc, ← mul_pow]`. Conclude with `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (NNReal.coe_nonneg _) h2 _) (le_max_right _ _)`.
+-/
 theorem smoothInf_growth_bridge : ∀ (I : Formalism.MainNotions.S.AutInst) (s : I.E →ₐ[I.F] I.E) (hs : s = I.cm.sig) (φ : GlobalTheory.AdelicU.GAd s I.J → ℂ), GlobalTheory.SiegelSet.IsSmoothModerate s I.J φ → ∀ xf : I.Gf, GlobalTheory.Dec.SmoothInf I (fun y => φ (GlobalTheory.HCFinU.bridgeS I s hs (y, xf))) ∧ ∃ C N : ℝ, ∀ y, ‖φ (GlobalTheory.HCFinU.bridgeS I s hs (y, xf))‖ ≤ C * Real.exp (N * GlobalTheory.Dec.dSum I y) := by
   intro I s hs φ hφ xf
   subst hs
@@ -177,5 +231,8 @@ theorem smoothInf_growth_bridge : ∀ (I : Formalism.MainNotions.S.AutInst) (s :
 
 end GlobalTheory.HCFinSmooth
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.HCFinSmooth.smoothInf_growth_bridge`.
+-/
 theorem _root_.GlobalTheory.T.smooth_moderate_growth_archimedean_restriction : ∀ (I : Formalism.MainNotions.S.AutInst) (s : I.E →ₐ[I.F] I.E) (hs : s = I.cm.sig) (φ : GlobalTheory.AdelicU.GAd s I.J → ℂ), GlobalTheory.SiegelSet.IsSmoothModerate s I.J φ → ∀ xf : I.Gf, GlobalTheory.Dec.SmoothInf I (fun y => φ (GlobalTheory.HCFinU.bridgeS I s hs (y, xf))) ∧ ∃ C N : ℝ, ∀ y, ‖φ (GlobalTheory.HCFinU.bridgeS I s hs (y, xf))‖ ≤ C * Real.exp (N * GlobalTheory.Dec.dSum I y) :=
   GlobalTheory.HCFinSmooth.smoothInf_growth_bridge

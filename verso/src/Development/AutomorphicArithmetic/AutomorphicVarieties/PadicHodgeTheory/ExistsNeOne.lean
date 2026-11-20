@@ -5,6 +5,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.C
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.Z1fMap
 open Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal TensorProduct Module UpperTheory.V.Loc Topology
 
+/- English proof (translation)
+Set `f : S →ₗ[E] (Z ⧸ B.comap Z.subtype)` to `(B.comap Z.subtype).mkQ ∘ₗ Submodule.inclusion hSZ`. Establish `hr : LinearMap.range f = (S.comap Z.subtype).map (B.comap Z.subtype).mkQ`. Rewrite using `[LinearMap.range_comp, Submodule.range_inclusion]`. Establish `hk : LinearMap.ker f = B.comap S.subtype`. Use extensionality with `x`.
+
+Simplify using `[f]`. Establish `eB` using `Submodule.comapSubtypeEquivOfLe hBS`. Establish `hkf : Module.Finite E ↥(LinearMap.ker f)`. Rewrite using `[hk]`. Conclude with `Module.Finite.equiv eB.symm`.
+
+Establish `hrf : Module.Finite E ↥(LinearMap.range f)` using `by rw [hr]; exact hQ`. Establish `hS : Module.Finite E S`. Rewrite using `[Module.finite_def]`. Use `Submodule.fg_of_fg_map_of_fg_inf_ker f ?_ ?_` and prove the remaining obligations. Rewrite using `[Submodule.map_top]`.
+
+Conclude with `Module.Finite.iff_fg.1 hrf`. Rewrite using `[top_inf_eq]`. Conclude with `Module.Finite.iff_fg.1 hkf`. Use `⟨hS, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.finrank_range_add_finrank_ker f, hr, hk, eB.finrank_eq]`.
+-/
 private theorem sandwich {E M : Type} [Field E] [AddCommGroup M] [Module E M] (B S Z : Submodule E M)
     (hBS : B ≤ S) (hSZ : S ≤ Z) [Module.Finite E B]
     [hQ : Module.Finite E ↥((S.comap Z.subtype).map (B.comap Z.subtype).mkQ)] :
@@ -28,6 +37,13 @@ private theorem sandwich {E M : Type} [Field E] [AddCommGroup M] [Module E M] (B
   refine ⟨hS, ?_⟩
   rw [← LinearMap.finrank_range_add_finrank_ker f, hr, hk, eB.finrank_eq]
 
+/- English proof (translation)
+Take `⟨U, hU, h⟩` from `h`. Take `⟨-, s, ⟨⟨g, hg, rfl⟩, hs⟩, hfin⟩` from `(cycInertia l).2 (U.map φ) (hφ.isOpenMap _ hU)`. Use `⟨g, fun h1 => hfin ?_⟩` and prove the remaining obligations. Establish `hinj : Function.Injective (algebraMap ℤ_[l] E)`. Rewrite using `[IsScalarTower.algebraMap_eq ℤ_[l] ℚ_[l] E]`.
+
+Conclude with `(algebraMap ℚ_[l] E).injective.comp Subtype.val_injective`. Establish `h2` using `h g hg hs`. Rewrite `h2` using `[h1]`. Establish `h3 : cyc l l (φ g) ^ w = 1`. Apply `Units.map_injective (f := (algebraMap ℤ_[l] E : ℤ_[l] →* E)) hinj` to reduce the goal to its premises.
+
+Rewrite using `[map_zpow, map_one]`. Conclude with `h2.symm`. Conclude with `isOfFinOrder_iff_zpow_eq_one.2 ⟨w, hw, h3⟩`.
+-/
 private theorem exists_ne_one {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G]
     (φ : G →* GQ l) (hφ : IsOpenEmbedding φ) {E : Type} [Field E] [Algebra ℚ_[l] E] [Algebra ℤ_[l] E]
     [IsScalarTower ℤ_[l] ℚ_[l] E] (κ : G →* Eˣ) (w : ℤ) (hw : w ≠ 0) (h : HasWeight φ κ w) :
@@ -46,6 +62,11 @@ private theorem exists_ne_one {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [Top
     exact h2.symm
   exact isOfFinOrder_iff_zpow_eq_one.2 ⟨w, hw, h3⟩
 
+/- English proof (translation)
+Establish `he : Ddr φ (resCoef ℚ_[l] ρ) = (Ddr φ ρ).restrictScalars ℚ_[l]`. Use extensionality with `x`. Simplify using `only [Ddr, Submodule.restrictScalars_mem, Submodule.mem_iInf, LinearMap.mem_ker]`. Both sides reduce to the same expression. Establish `h1 : finrank ℚ_[l] ↥(Ddr φ ρ) = φ.range.index * finrank ℚ_[l] E`.
+
+Unfold `IsDr at h`. Rewrite `h` using `[he]`. Conclude with `h`. Rewrite `h1` using `[← Module.finrank_mul_finrank ℚ_[l] E, mul_comm]`. Conclude with `Nat.eq_of_mul_eq_mul_right Module.finrank_pos h1`.
+-/
 private theorem finrank_ddr {l : ℕ} [Fact l.Prime] {G : Type} [Group G]
     (φ : G →* GQ l) {E : Type} [Field E] [Algebra ℚ_[l] E] [FiniteDimensional ℚ_[l] E]
     (ρ : Representation E G E) (h : IsDr φ ρ) : finrank E ↥(Ddr φ ρ) = φ.range.index := by
@@ -60,6 +81,25 @@ private theorem finrank_ddr {l : ℕ} [Fact l.Prime] {G : Type} [Group G]
   rw [← Module.finrank_mul_finrank ℚ_[l] E, mul_comm] at h1
   exact Nat.eq_of_mul_eq_mul_right Module.finrank_pos h1
 
+/- English proof (translation)
+Introduce `hP l _ G _ _ _ φ hφ E _ _ _ _ _ _ _ _ κ hκ w hw`. Establish `hc : ReciprocityTheory.Gal.ContAction (chRep κ)`. Establish `: (fun p : G × E => chRep κ p.1 p.2) = fun p => (κ p.1 : E) * p.2`. Use function extensionality and compare the values at `p`. Simplify using `[chRep]`.
+
+Unfold `ReciprocityTheory.Gal.ContAction`. Rewrite using `[this]`. Conclude with `(hκ.comp continuous_fst).mul continuous_snd`. Take `⟨hdr, hfil⟩` from `charFil φ hφ κ hκ w hw`. Take `⟨hfin, hdim⟩` from `bkDim hP φ hφ (chRep κ) hc hdr`.
+
+Establish `hBS` using `(z1fMap φ (chRep κ) (chRep κ)).1 hc`. Establish `hSZ : UpperTheory.V.Loc.finiteCocycles φ (chRep κ) ≤ ReciprocityTheory.Gal.Z1 (chRep κ)` using `fun c h => h.1`. Establish `hBf : Module.Finite E ↥(ReciprocityTheory.Gal.B1 (chRep κ))`. Unfold `ReciprocityTheory.Gal.B1`. Use `infer_instance`.
+
+Take `⟨hS, hSd⟩` from `sandwich _ _ _ hBS hSZ (hQ := hfin)`. Use `replace hSd : finrank E ↥(UpperTheory.V.Loc.finiteCocycles φ (chRep κ)) = finrank E ↥(finiteCohomology φ (chRep κ)) + finrank E ↥(ReciprocityTheory.Gal.B1 (chRep κ)) := hSd`. Establish `key : w ≠ 0 → ReciprocityTheory.Gal.H0 (chRep κ) = ⊥ ∧ finrank E ↥(ReciprocityTheory.Gal.B1 (chRep κ)) = 1`. Introduce `h0`. Take `⟨g, hg⟩` from `exists_ne_one φ hφ κ w h0 hw`.
+
+Establish `hz : ∀ m : E, chRep κ g m - m = 0 → m = 0`. Introduce `m hm`. Establish `h1 : ((κ g : E) - 1) * m = 0`. Rewrite using `[sub_mul, one_mul]`. Simplify `hm` using `[chRep]`.
+
+Break down `mul_eq_zero.1 h1 with h | h` into its components or cases. Conclude with `absurd (Units.val_eq_one.1 (sub_eq_zero.1 h)) hg`. Conclude with `h`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_bot_iff]`.
+
+Introduce `m hm`. Conclude with `hz m (sub_eq_zero.2 ((mem_riemannRochSpace_iff_regularAt_everywhere _ _).1 hm g))`. Unfold `ReciprocityTheory.Gal.B1`. Rewrite using `[LinearMap.finrank_range_of_inj, finrank_self]`. Rewrite using `[injective_iff_map_eq_zero]`.
+
+Introduce `m hm`. Conclude with `hz m (congrFun hm g)`. Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Take `⟨h0, hB⟩` from `key h.ne`. Rewrite `hdim` using `[h0, (hfil 0).1 (by omega), finrank_ddr φ _ hdr, finrank_bot, finrank_self]`.
+
+Use `⟨(Submodule.eq_of_le_of_finrank_eq hBS (by omega)).symm, hB⟩` and prove the remaining obligations. Take `⟨h0, hB⟩` from `key h.ne'`. Rewrite `hdim` using `[h0, (hfil 0).2 (by omega), finrank_bot, finrank_bot, finrank_self]`. Conclude with `⟨hS, by omega⟩`.
+-/
 theorem UpperTheory.V.Loc.z1fChar :
     LocalPublishedTheorems → ∀ {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (φ : G →* GQ l) (hφ : IsOpenEmbedding φ) {E : Type} [Field E] [Algebra ℚ_[l] E] [FiniteDimensional ℚ_[l] E] [Algebra ℤ_[l] E] [IsScalarTower ℤ_[l] ℚ_[l] E] [TopologicalSpace E] [IsModuleTopology ℚ_[l] E] [IsTopologicalRing E] (κ : G →* Eˣ), Continuous (fun g => (κ g : E)) → ∀ w : ℤ, HasWeight φ κ w → (w < 0 → UpperTheory.V.Loc.finiteCocycles φ (chRep κ) = ReciprocityTheory.Gal.B1 (chRep κ) ∧ finrank E ↥(ReciprocityTheory.Gal.B1 (chRep κ)) = 1) ∧ (0 < w → Module.Finite E ↥(UpperTheory.V.Loc.finiteCocycles φ (chRep κ)) ∧ finrank E ↥(UpperTheory.V.Loc.finiteCocycles φ (chRep κ)) = φ.range.index + 1) := by
   intro hP l _ G _ _ _ φ hφ E _ _ _ _ _ _ _ _ κ hκ w hw

@@ -19,6 +19,11 @@ variable {K : Type} [Fintype K] {ι ι' : K → Type} [∀ k, Fintype (ι k)] [�
 
 omit [Fintype K] in
 
+/- English proof (translation)
+Introduce `m hm k`. Rewrite `hm` using `[support_rename_of_injective (Equiv.sigmaCongrRight e).injective, Finset.mem_image]`. Take `⟨m0, hm0, rfl⟩` from `hm`. Establish `h1 : ∀ i : ι' k, Finsupp.mapDomain (Equiv.sigmaCongrRight e) m0 ⟨k, i⟩ = m0 ⟨k, (e k).symm i⟩`. Introduce `i`.
+
+Establish `: (⟨k, i⟩ : Σ k, ι' k) = Equiv.sigmaCongrRight e ⟨k, (e k).symm i⟩` using `by simp`. Rewrite using `[this, Finsupp.mapDomain_apply (Equiv.sigmaCongrRight e).injective]`. Simplify using `only [h1]`. Rewrite using `[Equiv.sum_comp (e k).symm (fun j => m0 ⟨k, j⟩)]`. Conclude with `hg m0 hm0 k`.
+-/
 theorem isMultiHomog_rename_sigma (e : ∀ k, ι k ≃ ι' k) {g : MRing ι} {a : K → ℕ}
     (hg : ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomog g a) :
     ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomog (rename (Equiv.sigmaCongrRight e) g : MRing ι') a := by
@@ -34,6 +39,21 @@ theorem isMultiHomog_rename_sigma (e : ∀ k, ι k ≃ ι' k) {g : MRing ι} {a 
   rw [Equiv.sum_comp (e k).symm (fun j => m0 ⟨k, j⟩)]
   exact hg m0 hm0 k
 
+/- English proof (translation)
+Take `⟨hne, ⟨hprime, ⟨S, hS, hPS⟩, hrel⟩, hhor, hdim⟩` from `hP`. Set `E : MRing ι ≃+* MRing ι'` to `(renameEquiv ℤ (Equiv.sigmaCongrRight e)).toRingEquiv`. Establish `hQ : P.comap (rename (Equiv.sigmaCongrRight e) : MRing ι →ₐ[ℤ] MRing ι') = P.map E.symm`. Rewrite using `[Ideal.map_symm]`. Both sides reduce to the same expression.
+
+Establish `hEs : ∀ g, E.symm g = rename (Equiv.sigmaCongrRight fun k => (e k).symm) g`. Introduce `g`. Use `show (renameEquiv ℤ (Equiv.sigmaCongrRight e)).symm g = _`. Rewrite using `[renameEquiv_symm, Equiv.sigmaCongrRight_symm]`. Both sides reduce to the same expression.
+
+Use `⟨hne, ⟨?_, ⟨E.symm '' S, ?_, ?_⟩, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Ideal.comap_isPrime _ _`. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Take `⟨a, ha⟩` from `hS g hg`. Conclude with `⟨a, by rw [hEs]; exact isMultiHomog_rename_sigma (fun k => (e k).symm) ha⟩`.
+
+Rewrite using `[hQ, hPS, Ideal.map_span]`. Introduce `k`. Take `⟨i, hi⟩` from `hrel k`. Use `⟨(e k).symm i, fun hj => hi ?_⟩` and prove the remaining obligations. Rewrite `hj` using `[Ideal.mem_comap]`.
+
+Simplify using `using hj`. Establish `h : Ideal.comap (C : ℤ →+* MRing ι) (P.comap (rename (Equiv.sigmaCongrRight e) : MRing ι →ₐ[ℤ] MRing ι')) = Ideal.comap (C : ℤ →+* MRing ι') P`. Use extensionality with `x`. Simplify using `only [Ideal.mem_comap, rename_C]`. Unfold `IsHorizontal`.
+
+Rewrite using `[h]`. Conclude with `hhor`. Rewrite using `[← hdim]`. Use `ringKrullDim_eq_of_ringEquiv (Ideal.quotientEquiv _ P E ?_)` and prove the remaining obligations. Use `show P = Ideal.map (E : MRing ι →+* MRing ι') (Ideal.comap (E : MRing ι →+* MRing ι') P)`.
+
+Conclude with `(Ideal.map_comap_of_surjective (E : MRing ι →+* MRing ι') E.surjective P).symm`.
+-/
 theorem isArithVar_comap_rename_sigma (e : ∀ k, ι k ≃ ι' k) {P : Ideal (MRing ι')} {d : ℕ}
     (hP : IsArithVar P d) :
     IsArithVar (P.comap (rename (Equiv.sigmaCongrRight e) : MRing ι →ₐ[ℤ] MRing ι')) d := by
@@ -88,10 +108,16 @@ def setIncrEquiv (q : FlBlock Ψ N) : IndefiniteRowSideFullHecke.LowerBoundFree.
 
 omit [Fintype Ψ] [DecidableEq Ψ] in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem flZIncr_eq : flZIncr Ψ N = Equiv.sigmaCongrRight (setIncrEquiv Ψ N) := rfl
 
 omit [Fintype Ψ] [DecidableEq Ψ] in
 
+/- English proof (translation)
+Rewrite using `[flZIncr_eq]`. Use `⟨Function.injective_id, (Equiv.sigmaCongrRight _).injective, fun _ => rfl, fun q _ => ?_⟩` and prove the remaining obligations. Conclude with `(Equiv.sigmaCongrRight (setIncrEquiv Ψ N)).surjective q`.
+-/
 theorem flZIncr_isBlockMap : IsBlockMap id (flZIncr Ψ N) := by
   rw [flZIncr_eq]
   refine ⟨Function.injective_id, (Equiv.sigmaCongrRight _).injective, fun _ => rfl, fun q _ => ?_⟩
@@ -99,6 +125,11 @@ theorem flZIncr_isBlockMap : IsBlockMap id (flZIncr Ψ N) := by
 
 end FlZArithVar
 
+/- English proof (translation)
+Introduce `Ψ _ _ _ N hN`. Establish `hA` using `FlagArithVar.proof Ψ N hN`. Establish `hI : IndefiniteRowSideFullHecke.LowerBoundFree.Nine.FlZIdeal Ψ N = imageZ (flZIncr Ψ N) (PFl Ψ N)`. Rewrite using `[h Ψ N, PFl]`. Conclude with `GroundTheory.Heights₂.Heights.Inter.BlockRatioAlgebraic.mCoordIdeal_comp_v (FlZArithVar.flZIncr_isBlockMap Ψ N) (yFl Ψ N)`.
+
+Rewrite using `[hI, imageZ, FlZArithVar.flZIncr_eq]`. Conclude with `FlZArithVar.isArithVar_comap_rename_sigma (FlZArithVar.setIncrEquiv Ψ N) hA`.
+-/
 theorem FlZArithVar.proof (h : FlZIdealEqCoord.Statement) : FlZArithVar.Statement := by
   intro Ψ _ _ _ N hN
   have hA := FlagArithVar.proof Ψ N hN

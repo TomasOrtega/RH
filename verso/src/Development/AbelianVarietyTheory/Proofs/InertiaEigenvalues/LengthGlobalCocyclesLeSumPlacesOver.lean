@@ -5,6 +5,9 @@ open Formalism Formalism.MainNotions Formalism.BasicNotions Formalism.BasicNotio
 
 namespace GlobalTheory.Cut.CountL
 
+/- English proof (translation)
+Establish `: RingHomSurjective σ` using `⟨hσ⟩`. Rewrite using `[← WithBot.coe_le_coe, Module.coe_length, Module.coe_length]`. Conclude with `Order.krullDim_le_of_strictMono (Submodule.map f) (Submodule.map_strictMono_of_injective hf)`.
+-/
 theorem length_le_of_semilinear {R S M N : Type*} [Ring R] [Ring S] [AddCommGroup M] [Module R M]
     [AddCommGroup N] [Module S N] {σ : R →+* S} (hσ : Function.Surjective σ) (f : M →ₛₗ[σ] N)
     (hf : Function.Injective f) : Module.length R M ≤ Module.length S N := by
@@ -12,6 +15,13 @@ theorem length_le_of_semilinear {R S M N : Type*} [Ring R] [Ring S] [AddCommGrou
   rw [← WithBot.coe_le_coe, Module.coe_length, Module.coe_length]
   exact Order.krullDim_le_of_strictMono (Submodule.map f) (Submodule.map_strictMono_of_injective hf)
 
+/- English proof (translation)
+Set `g : ↥C →ₛₗ[σ] (↥A ⧸ H.comap A.subtype)` to `(H.comap A.subtype).mkQ.comp ((f.domRestrict C).codRestrict A fun x => hC x x.2)`. Establish `hg : ∀ x : ↥C, x ∈ LinearMap.ker g → f x ∈ H` using `fun x hx => (Submodule.Quotient.mk_eq_zero (H.comap A.subtype)).1 hx`. Rewrite using `[Module.length_eq_add_of_exact (LinearMap.ker g).subtype (LinearMap.ker g).mkQ (Submodule.subtype_injective _) (Submodule.mkQ_surjective _) (LinearMap.exact_subtype_mkQ _)]`. Use `add_le_add ?_ ?_` and prove the remaining obligations. Use `Module.length_le_of_injective ((C.subtype.comp (LinearMap.ker g).subtype).codRestrict (C ⊓ H.comap f) fun x => ⟨x.1.2, hg x.1 x.2⟩) ?_` and prove the remaining obligations.
+
+Introduce `x y h`. Establish `h'` using `congrArg Subtype.val h`. Conclude with `Subtype.ext (Subtype.ext h')`. Use `length_le_of_semilinear hσ ((LinearMap.ker g).liftQ g le_rfl) ?_` and prove the remaining obligations. Rewrite using `[← LinearMap.ker_eq_bot]`.
+
+Conclude with `Submodule.ker_liftQ_eq_bot _ _ _ le_rfl`.
+-/
 theorem length_le_inf_comap_add {R S M N : Type*} [Ring R] [Ring S] [AddCommGroup M] [Module R M]
     [AddCommGroup N] [Module S N] {σ : R →+* S} (hσ : Function.Surjective σ) (f : M →ₛₗ[σ] N)
     (C : Submodule R M) (A H : Submodule S N) (hC : ∀ x ∈ C, f x ∈ A) :
@@ -34,6 +44,13 @@ theorem length_le_inf_comap_add {R S M N : Type*} [Ring R] [Ring S] [AddCommGrou
     rw [← LinearMap.ker_eq_bot]
     exact Submodule.ker_liftQ_eq_bot _ _ _ le_rfl
 
+/- English proof (translation)
+Proceed by induction on `Q using Finset.induction_on with`. Consider the case `empty => exact ⟨C, le_rfl, by simp, by simp⟩`. Consider the case `insert a s ha ih`. Take `⟨C₀, h₁, h₂, h₃⟩` from `ih`. Use `⟨C₀ ⊓ K a, inf_le_left.trans h₁, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `q hq`. Break down `Finset.mem_insert.1 hq with rfl | hq` into its components or cases. Conclude with `inf_le_right`. Conclude with `inf_le_left.trans (h₂ q hq)`. Rewrite using `[Finset.card_insert_of_notMem ha]`.
+
+Use `h₃.trans ((add_le_add le_rfl (h a C₀ h₁)).trans (le_of_eq ?_))` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_le_forall_le {R M ι : Type*} [Ring R] [AddCommGroup M] [Module R M]
     (K : ι → Submodule R M) (C : Submodule R M) (b : ℕ∞)
     (h : ∀ q, ∀ C₀ ≤ C, Module.length R ↥C₀ ≤ Module.length R ↥(C₀ ⊓ K q) + b) (Q : Finset ι) :
@@ -54,6 +71,13 @@ theorem exists_le_forall_le {R M ι : Type*} [Ring R] [AddCommGroup M] [Module R
       push_cast
       ring
 
+/- English proof (translation)
+Use `length_le_of_semilinear (σ := e.symm.toRingHom) e.symm.surjective (Submodule.mapQ (Ideal.span {(p : S)}) (Ideal.span {(p : R)}) e.symm.toRingHom.toSemilinearMap ?_) ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨y, rfl⟩` from `Ideal.mem_span_singleton'.1 hx`. Conclude with `Ideal.mem_span_singleton'.2 ⟨e.symm y, by show _ = e.symm (y * p) simp⟩`. Rewrite using `[injective_iff_map_eq_zero]`.
+
+Introduce `x hx`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `hx' : e.symm x ∈ Ideal.span {(p : R)}` using `(Submodule.Quotient.mk_eq_zero _).1 hx`. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.1 hx'`. Use `(Submodule.Quotient.mk_eq_zero _).2 (Ideal.mem_span_singleton'.2 ⟨e y, ?_⟩)` and prove the remaining obligations.
+
+Simplify using `using congrArg e hy`.
+-/
 theorem length_quot_natCast_le {R S : Type*} [CommRing R] [CommRing S] (e : R ≃+* S) (p : ℕ) :
     Module.length S (S ⧸ Ideal.span {(p : S)}) ≤ Module.length R (R ⧸ Ideal.span {(p : R)}) := by
   refine length_le_of_semilinear (σ := e.symm.toRingHom) e.symm.surjective
@@ -71,6 +95,11 @@ theorem length_quot_natCast_le {R S : Type*} [CommRing R] [CommRing S] (e : R �
     refine (Submodule.Quotient.mk_eq_zero _).2 (Ideal.mem_span_singleton'.2 ⟨e y, ?_⟩)
     simpa using congrArg e hy
 
+/- English proof (translation)
+Establish `h0 : Ideal.span {((p : ℕ) : 𝓞 E)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hp` after adjusting the coercions. Use `(Ideal.finite_factors h0).subset fun v hv => ?_` and prove the remaining obligations. Use `show v.asIdeal ∣ _`.
+
+Rewrite using `[Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`. Conclude with `hv`.
+-/
 theorem finite_placesOver (E : Type) [Field E] [NumberField E] (p : ℕ) (hp : p ≠ 0) :
     (placesOver E p).Finite := by
   have h0 : Ideal.span {((p : ℕ) : 𝓞 E)} ≠ 0 := by
@@ -99,6 +128,13 @@ noncomputable def locFunS {D : D7} (i : D.nd.Loc) {k : ℕ} (M : GE D.nd →* Ma
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `D i r Xs k M C e h`. Establish `hl : (D.nd.l i).Prime` using `Fact.out`. Establish `hfin` using `finite_placesOver D.host.E (D.nd.l i) hl.ne_zero`. Use `letI : Fintype ↥(placesOver D.host.E (D.nd.l i)) := hfin.fintype`. Take `⟨C', h₁, h₂, h₃⟩` from `exists_le_forall_le (fun q : ↥(placesOver D.host.E (D.nd.l i)) => (HfD (Br.PD D.loc D.nbr i q.1 q.2) (Br.locLat D.nbr i q.1 q.2 M)).comap (locFunS i M q.1 q.2)) C ((e : ℕ∞) * lenQ i ((D.nd.l i : ℕ) : D.nd.O i)) (by`.
+
+Introduce and unpack `⟨w, hw⟩ C₀ hC₀`. Use `(length_le_inf_comap_add (D.nbr i w hw).eO.surjective (locFunS i M w hw) C₀ (Submodule.span (Br.OLL D.nbr i w hw) (cutCoc i w hw r Xs M)) _ (fun f hf => (h w hw).2 f (hC₀ hf))).trans (add_le_add le_rfl ?_)` and prove the remaining obligations. Use `le_trans (h w hw).1 (mul_le_mul' le_rfl ?_)` and prove the remaining obligations. Unfold `lenOl lenQ`. Rewrite using `[Br.PD_p]`.
+
+Conclude with `length_quot_natCast_le (D.nbr i w hw).eO _) Finset.univ`. Use `⟨C', h₁, fun f hf w hw => h₂ ⟨w, hw⟩ (Finset.mem_univ _) hf, ?_⟩` and prove the remaining obligations. Rewrite `h₃` using `[Finset.card_univ, ← Nat.card_eq_fintype_card, Nat.card_coe_set_eq, ← mul_assoc]`. Rewrite using `[Nat.cast_mul]`. Conclude with `h₃`.
+-/
 theorem main : ∀ (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (Xs : Set (D.nd.X i)) (k : ℕ) (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i)) (C : Submodule (D.nd.O i) (GE D.nd → KOG (D.nd.O i) k)) (e : ℕ), (∀ (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i)), LocBound i w hw r Xs M e ∧ ∀ f ∈ C, InCut i r Xs M w hw f) → ∃ C' : Submodule (D.nd.O i) (GE D.nd → KOG (D.nd.O i) k), C' ≤ C ∧ (∀ f ∈ C', IsFinL i M f) ∧ Module.length (D.nd.O i) ↥C ≤ (((placesOver D.host.E (D.nd.l i)).ncard * e : ℕ) : ℕ∞) * lenQ i ((D.nd.l i : ℕ) : D.nd.O i) + Module.length (D.nd.O i) ↥C' := by
   intro D i r Xs k M C e h
   have hl : (D.nd.l i).Prime := Fact.out

@@ -9,9 +9,21 @@ namespace GlobalTheory.PSer.Laws
 
 variable (l : ℕ) [Fact l.Prime]
 
+/- English proof (translation)
+The claim follows from `Perfection.teichmuller_zero`.
+-/
 theorem untilt_zero : (0 : Fl l).untilt = 0 :=
   Perfection.teichmuller_zero
 
+/- English proof (translation)
+Introduce `l _`. Establish `hmul : ∀ x y : Fl l, sh (x * y) = sh x * sh y` using `fun x y => by`. Simplify using `only [sh, map_mul]`. Both sides reduce to the same expression. Establish `hpow : ∀ (x : Fl l) (n : ℕ), sh (x ^ n) = sh x ^ n` using `fun x n => by`.
+
+Simplify using `only [sh, map_pow]`. Use `norm_cast`. Use `⟨by simp [sh], by simp [sh, untilt_zero], hmul, hpow, fun x => (GlobalTheory.RingBasics.mem_OC _).1 (x.untilt).2, fun c hc => ?_, fun x y => ?_, fun x => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `GlobalTheory.MemLoc.FundOnto.untilt_surjective l ⟨c, (GlobalTheory.RingBasics.mem_OC c).2 hc⟩`. Conclude with `⟨x, by simp [sh, hx]⟩`.
+
+Establish `hm : (x + y).untilt - x.untilt - y.untilt ∈ Ideal.span {(l : OC l)}`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_sub, PreTilt.mk_untilt_eq_coeff_zero, PreTilt.mk_untilt_eq_coeff_zero, PreTilt.mk_untilt_eq_coeff_zero, map_add]`. Expand and normalize the polynomial expressions, which then agree. Use `(GlobalTheory.RingBasics.mem_span_pow_OC 1 _).1 (by rw [pow_one]; exact hm)` as an intermediate fact. Simplify `this` using `[sh]`.
+
+Establish `h2 : sh (-x) ^ 2 = sh x ^ 2` using `by rw [← hpow, ← hpow, neg_sq]`. Establish `h3 : ‖sh (-x)‖ ^ 2 = ‖sh x‖ ^ 2` using `by rw [← norm_pow, ← norm_pow, h2]`. Conclude with `(pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).1 h3`.
+-/
 theorem sh_laws : ∀ (l : ℕ) [Fact l.Prime], sh (1 : Fl l) = 1 ∧ sh (0 : Fl l) = 0 ∧
     (∀ x y : Fl l, sh (x * y) = sh x * sh y) ∧ (∀ (x : Fl l) (n : ℕ), sh (x ^ n) = sh x ^ n) ∧
     (∀ x : Fl l, ‖sh x‖ ≤ 1) ∧ (∀ c : ℂ_[l], ‖c‖ ≤ 1 → ∃ x : Fl l, sh x = c) ∧

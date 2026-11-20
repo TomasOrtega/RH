@@ -9,5 +9,8 @@ open GlobalTheory GlobalTheory.ZM GlobalTheory.ZH GlobalTheory.UMin GlobalTheory
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FiniteOverPSpace.isProjOver_and_isAmpleLB | exact GlobalTheory.FiniteOverPSpace.isProjOver_and_isAmpleLB | (intros; apply GlobalTheory.FiniteOverPSpace.isProjOver_and_isAmpleLB <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.finite_over_projectiveSpace_projective_ample_twist : ∀ (o : Type) [CommRing o] [IsNoetherianRing o] (n k : ℕ) (Z : Scheme.{0}) (p : Z ⟶ PSpace o n), 1 ≤ k → IsFinite p → IsProjOver (p ≫ PSpace.str o n) ∧ (lbPow ((ProjSpace.O1 o n).pull p) k).IsLB ∧ IsAmpleLB (lbPow ((ProjSpace.O1 o n).pull p) k) ∧ ∀ (Y : Scheme.{0}) (h : Y ⟶ Z), LBIso ((lbPow ((ProjSpace.O1 o n).pull p) k).pull h) (lbPow ((ProjSpace.O1 o n).pull (h ≫ p)) k) := by
   first | exact @GlobalTheory.FiniteOverPSpace.isProjOver_and_isAmpleLB | exact GlobalTheory.FiniteOverPSpace.isProjOver_and_isAmpleLB | (intros; apply GlobalTheory.FiniteOverPSpace.isProjOver_and_isAmpleLB <;> assumption)

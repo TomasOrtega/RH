@@ -10,6 +10,11 @@ open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees
 
 variable {n : ℕ} {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
 
+/- English proof (translation)
+Proceed by induction on `hu using Submonoid.closure_induction with`. Consider the case `mem u hu => obtain ⟨⟨a, b⟩, rfl⟩ := hu`. Conclude with `hW a b`. Consider the case `one => intro x hx`. Conclude with `hx`.
+
+Consider the case `mul u v _ _ hu hv => intro x hx`. Conclude with `hu _ (hv x hx)`.
+-/
 theorem v2rep_Umon_stable (E : GLOps n K V) (W : Submodule K V) (hW : IsStableUnderOperators E W) (u : Module.End K V)
     (hu : u ∈ Umon E) : ∀ x ∈ W, u x ∈ W := by
   induction hu using Submonoid.closure_induction with
@@ -17,6 +22,11 @@ theorem v2rep_Umon_stable (E : GLOps n K V) (W : Submodule K V) (hW : IsStableUn
   | one => intro x hx; exact hx
   | mul u v _ _ hu hv => intro x hx; exact hu _ (hv x hx)
 
+/- English proof (translation)
+Introduce `a b x hx`. Unfold `isotypicPartIn at hx ⊢`. Establish `h : Submodule.span K {x | ∃ u ∈ Umon E, ∃ v ∈ W, IsHWV E mu v ∧ x = u v} ≤ (Submodule.span K {x | ∃ u ∈ Umon E, ∃ v ∈ W, IsHWV E mu v ∧ x = u v}).comap (E a b)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `y ⟨u, hu, v, hv, hhw, rfl⟩`.
+
+Conclude with `Submodule.subset_span ⟨E a b * u, (Umon E).mul_mem (Submonoid.subset_closure ⟨(a, b), rfl⟩) hu, v, hv, hhw, rfl⟩`. Conclude with `h hx`.
+-/
 theorem v2rep_isoIn_stable (E : GLOps n K V) (W : Submodule K V) (mu : Fin n → ℤ) :
     IsStableUnderOperators E (isotypicPartIn E W mu) := by
   intro a b x hx
@@ -29,6 +39,9 @@ theorem v2rep_isoIn_stable (E : GLOps n K V) (W : Submodule K V) (mu : Fin n →
       ⟨E a b * u, (Umon E).mul_mem (Submonoid.subset_closure ⟨(a, b), rfl⟩) hu, v, hv, hhw, rfl⟩
   exact h hx
 
+/- English proof (translation)
+Introduce `a b x hx`. Conclude with `Submodule.iSup_induction (motive := fun y => E a b y ∈ ⨆ i, p i) p hx (fun i y hy => Submodule.mem_iSup_of_mem i (hp i a b y hy)) (by rw [map_zero]; exact zero_mem _) (fun y z hy hz => by rw [map_add]; exact add_mem hy hz)`.
+-/
 theorem v2rep_iSup_stable (E : GLOps n K V) {ι : Sort*} (p : ι → Submodule K V) (hp : ∀ i, IsStableUnderOperators E (p i)) :
     IsStableUnderOperators E (⨆ i, p i) := by
   intro a b x hx
@@ -40,9 +53,15 @@ theorem v2rep_iSup_stable (E : GLOps n K V) {ι : Sort*} (p : ι → Submodule K
 def restrictToStableSubmodule (E : GLOps n K V) (W : Submodule K V) (hW : IsStableUnderOperators E W) : GLOps n K W :=
   fun a b => (E a b).restrict (hW a b)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem v2rep_res_apply (E : GLOps n K V) (W : Submodule K V) (hW : IsStableUnderOperators E W) (a b : Fin n) (x : W) :
     ((restrictToStableSubmodule E W hW a b x : W) : V) = E a b x := rfl
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [weightSp, Submodule.mem_comap, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, Submodule.subtype_apply]`. Use `forall_congr' fun a => ?_` and prove the remaining obligations. Rewrite using `[← Submodule.coe_eq_zero, Submodule.coe_sub, Submodule.coe_smul, v2rep_res_apply]`. Simplify using the standard rewrite rules.
+-/
 theorem v2rep_res_weightSp (E : GLOps n K V) (W : Submodule K V) (hW : IsStableUnderOperators E W) (mu : Fin n → ℤ) :
     weightSp (restrictToStableSubmodule E W hW) mu = (weightSp E mu).comap W.subtype := by
   ext x
@@ -52,6 +71,17 @@ theorem v2rep_res_weightSp (E : GLOps n K V) (W : Submodule K V) (hW : IsStableU
   rw [← Submodule.coe_eq_zero, Submodule.coe_sub, Submodule.coe_smul, v2rep_res_apply]
   simp
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b c d`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Establish `h` using `v2rep_comm E hR a b c d (x : V)`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, Submodule.coe_sub, v2rep_res_apply]`. Rewrite using `[h, add_sub_cancel_left]`. Use `congr 1`. Apply the tactic sequence `split_ifs <;> simp [v2rep_res_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp [v2rep_res_apply]`. Introduce `x`. Conclude with `⟨⊤, inferInstance, Submodule.mem_top, fun _ _ _ _ => Submodule.mem_top⟩`. Rewrite using `[eq_top_iff]`. Introduce `y _`.
+
+Establish `h1` using `v2rep_graded E W (fun a => hW a a) y y.2 (hw y.2)`. Establish `h2 : (⨆ ν, weightSp E ν ⊓ W) = (⨆ ν, weightSp (restrictToStableSubmodule E W hW) ν).map W.subtype`. Rewrite using `[Submodule.map_iSup]`. Use `iSup_congr fun ν => ?_` and prove the remaining obligations. Rewrite using `[v2rep_res_weightSp, Submodule.map_comap_subtype, inf_comm]`.
+
+Rewrite `h1` using `[h2]`. Take `⟨y', hy', hyy⟩` from `Submodule.mem_map.1 h1`. Establish `: y' = y` using `Subtype.ext hyy`. Rewrite `hy'` using `[this]`. Then use the resulting hypothesis.
+-/
 theorem v2rep_res_isGLRep [CharZero K] (E : GLOps n K V) (hR : SatisfiesGLRelations E) (W : Submodule K V)
     [FiniteDimensional K W] (hW : IsStableUnderOperators E W) (hw : W ≤ ⨆ ν, weightSp E ν) : IsGLRep (restrictToStableSubmodule E W hW) := by
   refine ⟨?_, ?_, ?_⟩
@@ -79,6 +109,21 @@ theorem v2rep_res_isGLRep [CharZero K] (E : GLOps n K V) (hR : SatisfiesGLRelati
     have : y' = y := Subtype.ext hyy
     rwa [this] at hy'
 
+/- English proof (translation)
+Introduce `K V _ _ _ _ n E hR W hfd hW hw`. Use `hfd` as an intermediate fact. Use `set W' : Submodule K V := ⨆ mu, isotypicPartIn E W mu with hW'`. Establish `hW'st : IsStableUnderOperators E W'` using `v2rep_iSup_stable E _ fun mu => v2rep_isoIn_stable E W mu`. Take `⟨P2, hcompl, hP2⟩` from `h2 K W n (restrictToStableSubmodule E W hW) (v2rep_res_isGLRep E hR W hW hw) (W'.comap W.subtype) (fun a b x hx => hW'st a b x hx)`.
+
+Establish `hbot : P2 = ⊥`. Assume the negation of the conclusion as `hne`. Set `Z : Submodule K V` to `P2.map W.subtype`. Establish `hZW : Z ≤ W`. Introduce and unpack `_ ⟨y, _, rfl⟩`.
+
+Conclude with `y.2`. Establish `: FiniteDimensional K Z` using `Submodule.finiteDimensional_of_le hZW`. Establish `hZst : IsStableUnderOperators E Z`. Introduce and unpack `a b _ ⟨y, hy, rfl⟩`. Conclude with `⟨restrictToStableSubmodule E W hW a b y, hP2 a b y hy, rfl⟩`.
+
+Establish `hZne : Z ≠ ⊥`. Introduce `h`. Take `⟨y, hy, hy0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Establish `h5 : (y : V) ∈ Z` using `⟨y, hy, rfl⟩`. Rewrite `h5` using `[h]`.
+
+Conclude with `hy0 (Subtype.ext h5)`. Take `⟨mu, v, hvZ, hhw⟩` from `v2rep_exists_hwv E hR Z hZst (hZW.trans hw) hZne`. Take `⟨y, hy, rfl⟩` from `hvZ`. Establish `h1 : (y : V) ∈ W'` using `Submodule.mem_iSup_of_mem mu (Submodule.subset_span ⟨1, Submonoid.one_mem _, y, y.2, hhw, rfl⟩)`. Establish `h3 : y ∈ (W'.comap W.subtype) ⊓ P2` using `⟨h1, hy⟩`.
+
+Rewrite `h3` using `[hcompl.inf_eq_bot]`. Establish `h4 : y = 0` using `h3`. Conclude with `hhw.1 (by rw [h4]; rfl)`. Establish `htop : W'.comap W.subtype = ⊤`. Use `hcompl.sup_eq_top` as an intermediate fact.
+
+Rewrite `this` using `[hbot, sup_bot_eq]`. Then use the resulting hypothesis. Introduce `x hx`. Establish `: (⟨x, hx⟩ : W) ∈ W'.comap W.subtype` using `by rw [htop]; exact Submodule.mem_top`. Conclude with `this`.
+-/
 theorem stable_subspace_complete_reducibility (D : Formalism.BasicNotions.D7) (h2 : adm2 D) : StableSubspaceCompleteReducibility := by
   intro K V _ _ _ _ n E hR W hfd hW hw
   have := hfd

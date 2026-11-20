@@ -11,5 +11,8 @@ open Classical
 open ReciprocityTheory.ChartRestriction.G.Out
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ZH.exists_model_semiAbelian_of_geo | exact GlobalTheory.ZH.exists_model_semiAbelian_of_geo | (intros; apply GlobalTheory.ZH.exists_model_semiAbelian_of_geo <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_semiAbelianModel_of_geometricHalf : GlobalTheory.Published.SemistableReductionSt → ThmUSt → Laws → Laws2 → UTorsSt → ZHGeoSt → ZHSt := by
   first | exact @GlobalTheory.ZH.exists_model_semiAbelian_of_geo | exact GlobalTheory.ZH.exists_model_semiAbelian_of_geo | (intros; apply GlobalTheory.ZH.exists_model_semiAbelian_of_geo <;> assumption)

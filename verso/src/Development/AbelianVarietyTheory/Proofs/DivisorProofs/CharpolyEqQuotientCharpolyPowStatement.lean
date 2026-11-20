@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.TensorProductAct
 open scoped TensorProduct nonZeroDivisors
 open Polynomial
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.NilpFiltration.charpoly_eq_charpoly_mapQ_pow | exact GlobalTheory.NilpFiltration.charpoly_eq_charpoly_mapQ_pow | (intros; apply GlobalTheory.NilpFiltration.charpoly_eq_charpoly_mapQ_pow <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.charpoly_eq_quotient_charpoly_pow : ∀ (K : Type) [Field K] (X : Type) [AddCommGroup X] [Module K X] [FiniteDimensional K X]
     (t T : Module.End K X) (_ : Commute t T) (e : ℕ) (_ : 0 < e) (_ : t ^ e = 0)
     (_ : ∀ x, t x = 0 → x ∈ LinearMap.range (t ^ (e - 1)))

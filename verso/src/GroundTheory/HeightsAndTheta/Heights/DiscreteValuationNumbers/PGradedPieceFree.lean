@@ -8,6 +8,11 @@ open MvPolynomial
 
 universe u
 
+/- English proof (translation)
+Use `((Set.Finite.pi' fun v : (Σ k, ι k) => Set.finite_le_nat (m v.1)).preimage DFunLike.coe_injective.injOn).subset ?_` and prove the remaining obligations. Introduce `d hd`. Simplify using `only [Set.mem_ofPred_eq] at hd`. Simplify using `only [Set.mem_preimage, Set.mem_ofPred_eq]`. Introduce `v`.
+
+Rewrite using `[← hd, Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply]`. Distinguish the cases in `hv : v ∈ d.support`. Use `le_trans ?_ (Finset.single_le_sum (f := fun u => (d u • blockWeight ι u) v.1) (fun _ _ => Nat.zero_le _) hv)` and prove the remaining obligations. Simplify using `[blockWeight]`. Simplify using `[Finsupp.notMem_support_iff.mp hv]`.
+-/
 theorem finite_setOf_weight_blockWeight_eq {K : Type} [Fintype K] [DecidableEq K] (ι : K → Type)
     [∀ k, Fintype (ι k)] (m : K → ℕ) :
     {d : (Σ k, ι k) →₀ ℕ | Finsupp.weight (blockWeight ι) d = m}.Finite := by
@@ -24,6 +29,11 @@ theorem finite_setOf_weight_blockWeight_eq {K : Type} [Fintype K] [DecidableEq K
     simp [blockWeight]
   · simp [Finsupp.notMem_support_iff.mp hv]
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro y hy`. Simplify using `using hy`. Consider the case `succ n ih`.
+
+Introduce `y hy`. Apply `hP` to reduce the goal to its premises. Apply `ih` to reduce the goal to its premises. Rewrite `hy` using `[pow_succ, map_mul, mul_assoc]`. Then use the resulting hypothesis.
+-/
 theorem mem_of_C_pow_mul_mem {O : Type u} [CommRing O] {K : Type} {ι : K → Type}
     {P : Ideal (MRing ι O)} {ϖ : O} (hP : ∀ x, C ϖ * x ∈ P → x ∈ P) :
     ∀ (n : ℕ) (y : MRing ι O), C (ϖ ^ n) * y ∈ P → y ∈ P := by
@@ -36,6 +46,17 @@ theorem mem_of_C_pow_mul_mem {O : Type u} [CommRing O] {K : Type} {ι : K → Ty
     apply ih
     rwa [pow_succ, map_mul, mul_assoc] at hy
 
+/- English proof (translation)
+Introduce `O _ _ _ ϖ hϖ K _ _ ι _ P hP m`. Establish `hfg : (weightedHomogeneousSubmodule O (blockWeight ι) m).FG`. Rewrite using `[weightedHomogeneousSubmodule_eq_finsupp_supported, ← Module.Finite.iff_fg]`. Use `(finite_setOf_weight_blockWeight_eq ι m).to_subtype` as an intermediate fact. Conclude with `Module.Finite.of_basis (basisRestrictSupport O _)`.
+
+Establish `hfin : Module.Finite O (gradedPieceR P m)` using `Module.Finite.iff_fg.mpr (hfg.map _)`. Establish `htf : Module.IsTorsionFree O (gradedPieceR P m)`. Use `Module.IsTorsionFree.of_smul_eq_zero fun c x hcx => ?_` and prove the remaining obligations. Distinguish the cases in `hc : c = 0`. Conclude with `Or.inl hc`.
+
+Use `right`. Take `⟨n, w, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hc hϖ`. Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (x : MRing ι O ⧸ P)`. Establish `h1 : ((↑w * ϖ ^ n) • (x : MRing ι O ⧸ P)) = 0` using `congrArg Subtype.val hcx`. Rewrite `h1` using `[← hy, ← Ideal.Quotient.mkₐ_eq_mk O, ← map_smul, Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq_zero_iff_mem, smul_eq_C_mul]`.
+
+Establish `h2 : C (ϖ ^ n) * y ∈ P`. Use `P.mul_mem_left (C (↑w⁻¹ : O)) h1` as an intermediate fact. Rewrite `this` using `[← mul_assoc, ← map_mul, ← mul_assoc, Units.inv_mul, one_mul]`. Then use the resulting hypothesis. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hy, Submodule.coe_zero, Ideal.Quotient.eq_zero_iff_mem]`.
+
+Conclude with `mem_of_C_pow_mul_mem hP n y h2`. Conclude with `⟨Module.free_of_finite_type_torsion_free', hfin⟩`.
+-/
 theorem GradedPieceFree.proof : GradedPieceFree.Statement := by
   intro O _ _ _ ϖ hϖ K _ _ ι _ P hP m
   have hfg : (weightedHomogeneousSubmodule O (blockWeight ι) m).FG := by

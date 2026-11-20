@@ -12,18 +12,29 @@ section Alg
 
 variable {K : Type} [Field K] {τ a b : K}
 
+/- English proof (translation)
+Use `show (star x).re + a * (star x).im = x.re + b * x.im`. Rewrite using `[QuadraticAlgebra.re_star, QuadraticAlgebra.im_star]`. Take the linear combination `(-x.im) * hs`.
+-/
 private theorem ev_star (ha : a * a = τ * a - 1) (hb : b * b = τ * b - 1) (hs : a + b = τ)
     (x : Etau K τ) : ev ha (star x) = ev hb x := by
   show (star x).re + a * (star x).im = x.re + b * x.im
   rw [QuadraticAlgebra.re_star, QuadraticAlgebra.im_star]
   linear_combination (-x.im) * hs
 
+/- English proof (translation)
+Use `show ev ha ((z : Etau K τ) * star ((z⁻¹ : (Etau K τ)ˣ) : Etau K τ)) = _`. Rewrite using `[map_mul, ev_star ha hb hs, div_eq_mul_inv, ← map_inv, Units.val_mul]`. Both sides reduce to the same expression.
+-/
 private theorem ev_quo (ha : a * a = τ * a - 1) (hb : b * b = τ * b - 1) (hs : a + b = τ)
     (z : (Etau K τ)ˣ) : ev ha (quo z) = ((evU ha z / evU hb z : Kˣ) : K) := by
   show ev ha ((z : Etau K τ) * star ((z⁻¹ : (Etau K τ)ˣ) : Etau K τ)) = _
   rw [map_mul, ev_star ha hb hs, div_eq_mul_inv, ← map_inv, Units.val_mul]
   rfl
 
+/- English proof (translation)
+Establish `e1 : x.re + a * x.im = y.re + a * y.im` using `h1`. Establish `e2 : x.re + b * x.im = y.re + b * y.im` using `h2`. Establish `him : x.im = y.im`. Establish `e3 : (a - b) * (x.im - y.im) = 0` using `by linear_combination e1 - e2`. Break down `mul_eq_zero.mp e3 with h | h` into its components or cases.
+
+Conclude with `absurd (sub_eq_zero.mp h) hab`. Conclude with `sub_eq_zero.mp h`. Use `QuadraticAlgebra.ext ?_ him` and prove the remaining obligations. Rewrite `e1` using `[him]`. Take the linear combination `e1`.
+-/
 private theorem ev_ext (ha : a * a = τ * a - 1) (hb : b * b = τ * b - 1) (hab : a ≠ b)
     {x y : Etau K τ} (h1 : ev ha x = ev ha y) (h2 : ev hb x = ev hb y) : x = y := by
   have e1 : x.re + a * x.im = y.re + a * y.im := h1
@@ -37,6 +48,11 @@ private theorem ev_ext (ha : a * a = τ * a - 1) (hb : b * b = τ * b - 1) (hab 
   rw [him] at e1
   linear_combination e1
 
+/- English proof (translation)
+Establish `hne : a - b ≠ 0` using `sub_ne_zero.mpr hab`. Use `⟨⟨u - a * ((u - v) / (a - b)), (u - v) / (a - b)⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show (u - a * ((u - v) / (a - b))) + a * ((u - v) / (a - b)) = u`. Expand and normalize the polynomial expressions, which then agree. Use `show (u - a * ((u - v) / (a - b))) + b * ((u - v) / (a - b)) = v`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem ev_exists (ha : a * a = τ * a - 1) (hb : b * b = τ * b - 1) (hab : a ≠ b)
     (u v : K) : ∃ x : Etau K τ, ev ha x = u ∧ ev hb x = v := by
   have hne : a - b ≠ 0 := sub_ne_zero.mpr hab
@@ -47,6 +63,11 @@ private theorem ev_exists (ha : a * a = τ * a - 1) (hb : b * b = τ * b - 1) (h
     field_simp
     ring
 
+/- English proof (translation)
+Introduce `t`. Take `⟨x, hx1, hx2⟩` from `ev_exists ha hb hab (t : K) 1`. Take `⟨y, hy1, hy2⟩` from `ev_exists ha hb hab ((t⁻¹ : Kˣ) : K) 1`. Establish `hxy : x * y = 1` using `ev_ext ha hb hab (by rw [map_mul, map_one, hx1, hy1, Units.mul_inv]) (by rw [map_mul, map_one, hx2, hy2, mul_one])`. Use `⟨⟨x, y, hxy, by rw [mul_comm]; exact hxy⟩, ?_⟩` and prove the remaining obligations.
+
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[MonoidHom.div_apply, Units.val_div_eq_div_val]`. Use `show ev ha x / ev hb x = t`. Rewrite using `[hx1, hx2, div_one]`.
+-/
 private theorem ev_surj (ha : a * a = τ * a - 1) (hb : b * b = τ * b - 1) (hab : a ≠ b) :
     Function.Surjective (evU ha / evU hb) := by
   intro t
@@ -63,16 +84,25 @@ private theorem ev_surj (ha : a * a = τ * a - 1) (hb : b * b = τ * b - 1) (hab
 
 variable {O : Type} [CommRing O] [Algebra O K]
 
+/- English proof (translation)
+Use `show algebraMap O K r + a * 0 = algebraMap O K r`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem ev_algebraMap (ha : a * a = τ * a - 1) (r : O) :
     ev ha (algebraMap O (Etau K τ) r) = algebraMap O K r := by
   show algebraMap O K r + a * 0 = algebraMap O K r
   ring
 
+/- English proof (translation)
+Set `f : Etau K τ →ₐ[O] K` to `{ ev ha with commutes' := fun r => ev_algebraMap ha r }`. Conclude with `h.map f`.
+-/
 private theorem isIntegral_ev (ha : a * a = τ * a - 1) {w : Etau K τ} (h : IsIntegral O w) :
     IsIntegral O (ev ha w) := by
   let f : Etau K τ →ₐ[O] K := { ev ha with commutes' := fun r => ev_algebraMap ha r }
   exact h.map f
 
+/- English proof (translation)
+Use `⟨(X - C p) * (X - C q), (monic_X_sub_C p).mul (monic_X_sub_C q), ?_⟩` and prove the remaining obligations. Rewrite using `[eval₂_mul, eval₂_sub, eval₂_sub, eval₂_X, eval₂_C, eval₂_C]`. Apply `ev_ext ha hb hab` to reduce the goal to its premises. Rewrite using `[map_mul, map_sub, map_sub, ev_algebraMap, ev_algebraMap, h1, sub_self, zero_mul, map_zero]`. Rewrite using `[map_mul, map_sub, map_sub, ev_algebraMap, ev_algebraMap, h2, sub_self, mul_zero, map_zero]`.
+-/
 private theorem isIntegral_of_ev (ha : a * a = τ * a - 1) (hb : b * b = τ * b - 1) (hab : a ≠ b)
     {w : Etau K τ} {p q : O} (h1 : ev ha w = algebraMap O K p) (h2 : ev hb w = algebraMap O K q) :
     IsIntegral O w := by
@@ -84,6 +114,27 @@ private theorem isIntegral_of_ev (ha : a * a = τ * a - 1) (hb : b * b = τ * b 
 
 end Alg
 
+/- English proof (translation)
+Introduce `k _ _ _ _ O _ _ hO a ha1`. Establish `hl` using `root_left (K := k) a`. Establish `hr` using `root_right (K := k) a`. Establish `hs : (a : k) + ((a⁻¹ : kˣ) : k) = (a : k) + ((a⁻¹ : kˣ) : k)` using `rfl`. Establish `hs' : ((a⁻¹ : kˣ) : k) + (a : k) = (a : k) + ((a⁻¹ : kˣ) : k)` using `add_comm _ _`.
+
+Establish `hab : (a : k) ≠ ((a⁻¹ : kˣ) : k)`. Introduce `h`. Establish `h2 : valuation k (a : k) * valuation k (a : k) = 1`. Rewrite using `[← map_mul]`. Use `nth_rewrite 2 [h]`.
+
+Rewrite using `[Units.mul_inv, map_one]`. Establish `h3` using `pow_lt_one₀ zero_le' ha1 (n := 2) two_ne_zero`. Rewrite `h3` using `[sq, h2]`. Conclude with `lt_irrefl _ h3`. Establish `hint : (valuation k).Integers O` using `⟨hO.inj, fun x => (hO.range _).mp ⟨x, rfl⟩, fun r hr => (hO.range r).mpr hr⟩`.
+
+Use `⟨ev_surj hl hr hab, ?_, fun z => ⟨ev_quo hl hr hs z, ev_quo hr hl hs' z⟩⟩` and prove the remaining obligations. Use extensionality with `z`. Use `show (IsIntegral O (quo z) ∧ IsIntegral O (quo z⁻¹)) ↔ valuation k (((evU hl / evU hr) z : kˣ) : k) = 1`. Rewrite using `[MonoidHom.div_apply]`. Establish `q1 : ev hl (quo z) = ((evU hl z / evU hr z : kˣ) : k)` using `ev_quo hl hr hs z`.
+
+Establish `q2 : ev hr (quo z) = ((evU hr z / evU hl z : kˣ) : k)` using `ev_quo hr hl hs' z`. Establish `q3 : ev hl (quo z⁻¹) = ((evU hr z / evU hl z : kˣ) : k)`. Rewrite using `[ev_quo hl hr hs z⁻¹, map_inv, map_inv, inv_div_inv]`. Establish `q4 : ev hr (quo z⁻¹) = ((evU hl z / evU hr z : kˣ) : k)`. Rewrite using `[ev_quo hr hl hs' z⁻¹, map_inv, map_inv, inv_div_inv]`.
+
+Establish `hprod : valuation k ((evU hl z / evU hr z : kˣ) : k) * valuation k ((evU hr z / evU hl z : kˣ) : k) = 1`. Rewrite using `[← map_mul, ← Units.val_mul, div_mul_div_comm, mul_comm (evU hr z) (evU hl z), div_self', Units.val_one, map_one]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i1, i2⟩`. Establish `v1 : valuation k ((evU hl z / evU hr z : kˣ) : k) ≤ 1`.
+
+Use `hint.mem_of_integral (isIntegral_ev hl i1)` as an intermediate fact. Rewrite `this` using `[q1]`. Conclude with `(Valuation.mem_integer_iff _ _).mp this`. Establish `v2 : valuation k ((evU hr z / evU hl z : kˣ) : k) ≤ 1`. Use `hint.mem_of_integral (isIntegral_ev hl i2)` as an intermediate fact.
+
+Rewrite `this` using `[q3]`. Conclude with `(Valuation.mem_integer_iff _ _).mp this`. Use `le_antisymm v1 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Introduce `hv`.
+
+Establish `hv2 : valuation k ((evU hr z / evU hl z : kˣ) : k) = 1`. Rewrite `hprod` using `[hv, one_mul]`. Conclude with `hprod`. Take `⟨p, hp⟩` from `(hO.range _).mpr hv.le`. Take `⟨q, hq⟩` from `(hO.range _).mpr hv2.le`.
+
+Conclude with `⟨isIntegral_of_ev hl hr hab (q1.trans hp.symm) (q2.trans hq.symm), isIntegral_of_ev hl hr hab (q3.trans hq.symm) (q4.trans hp.symm)⟩`.
+-/
 theorem roots : Roots := by
   intro k _ _ _ _ O _ _ hO a ha1
   have hl := root_left (K := k) a

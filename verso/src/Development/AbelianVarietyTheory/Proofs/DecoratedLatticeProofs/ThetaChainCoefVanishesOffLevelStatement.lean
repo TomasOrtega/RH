@@ -7,5 +7,8 @@ open scoped TensorProduct InnerProductSpace ComplexConjugate
 open GlobalTheory.ChainOnto
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ChainOnto.CoefSuppPf.coefSupp | exact GlobalTheory.ChainOnto.CoefSuppPf.coefSupp | (intros; apply GlobalTheory.ChainOnto.CoefSuppPf.coefSupp <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.thetaChainCoef_vanishes_off_level : ∀ D : D7, CoefSupp D := by
   first | exact @GlobalTheory.ChainOnto.CoefSuppPf.coefSupp | exact GlobalTheory.ChainOnto.CoefSuppPf.coefSupp | (intros; apply GlobalTheory.ChainOnto.CoefSuppPf.coefSupp <;> assumption)

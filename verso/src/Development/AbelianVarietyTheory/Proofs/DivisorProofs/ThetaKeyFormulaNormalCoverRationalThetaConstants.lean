@@ -30,6 +30,9 @@ section Moves
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
   {S S' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {f : S' ⟶ S}
 
+/- English proof (translation)
+Rewrite using `[hasTh_iff, hasTh_iff]`. Conclude with `GlobalTheory.T.hasThetaConstantsTwoLevels_move_cartesian S t.G t.PP.L t.PP.rig t.PP.isLB t.PP.rigGen S' t'.G t'.PP.L t'.PP.rig f mm.φ t'.PP.isLB t'.PP.rigGen mm.cart (GlobalTheory.ModelSum.lbIso_of_map mm) m m N N K x c c`.
+-/
 theorem hasTh_of_sabMap (mm : SABMap t' t f) (m : ℕ) {K : Type} [Field K] (x : Sp K ⟶ S') {N : ℕ}
     (c : Fin N → K) :
     HasTh t'.G t'.PP.L t'.PP.rig m x c ↔ HasTh t.G t.PP.L t.PP.rig m (x ≫ f) c := by
@@ -37,6 +40,9 @@ theorem hasTh_of_sabMap (mm : SABMap t' t f) (m : ℕ) {K : Type} [Field K] (x :
   exact GlobalTheory.T.hasThetaConstantsTwoLevels_move_cartesian S t.G t.PP.L t.PP.rig t.PP.isLB t.PP.rigGen S' t'.G t'.PP.L t'.PP.rig f mm.φ t'.PP.isLB
     t'.PP.rigGen mm.cart (GlobalTheory.ModelSum.lbIso_of_map mm) m m N N K x c c
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.T.principallyPolarisedFibre_iff_of_grpPullback S S' t.G t.PP.L t'.G t'.PP.L f mm.φ t.PP.isLB t'.PP.isLB mm.cart (GlobalTheory.ModelSum.lbIso_of_map mm) g R x).1`.
+-/
 theorem polFib_of_sabMap (mm : SABMap t' t f) (g : ℕ) {R : Type} [CommRing R] (x : Sp R ⟶ S') :
     PolFib t'.G t'.PP.L g x ↔ PolFib t.G t.PP.L g (x ≫ f) :=
   (GlobalTheory.T.principallyPolarisedFibre_iff_of_grpPullback S S' t.G t.PP.L t'.G t'.PP.L f mm.φ t.PP.isLB t'.PP.isLB mm.cart
@@ -50,6 +56,31 @@ namespace GlobalTheory.UMin
 
 open GlobalTheory.CechPic in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c o _ m n f hm hm3 hmu hn hf Y g hYg Ω _ _ _ M π y d hZ hpt hth`. Take `⟨t, ⟨mt⟩⟩` from `GlobalTheory.ModelSum.exists_pull π Y.t`. Establish `hP : PCrd (M.pt ≫ (π ≫ g)) (symTup d)`. Establish `h1 : M.pt ≫ (π ≫ g) = y ≫ f` using `by rw [← Category.assoc, hpt, Category.assoc, hYg]`. Rewrite using `[h1]`.
+
+Conclude with `hf Ω y d hth`. Establish `hD : M.HasDiv d` using `GlobalTheory.T.hasDiv_of_hasDiv_thetaSymmetricFunctionsDegreeFactorial c.F Ω M (n + 1) d hZ (GlobalTheory.T.model_hasDiv_of_genericPoint_projectiveCoords c.F Ω o M n (π ≫ g) (symTup d) hP)`. Take `⟨h, -, hhP⟩` from `GlobalTheory.T.exists_projectiveSpace_map_of_model_hasDiv c.F Ω M n d hD`. Establish `hsym` using `GlobalTheory.T.symmetric_coordinates_O1_factorial_power c.F Ω o M n h (π ≫ g) d hhP hP`. Establish `hThO : HasTh Y.oF.t.G Y.oF.t.PP.L Y.oF.t.PP.rig m y d` using `(hasTh_of_sabMap Y.m0.toSABMap m y d).2 hth`.
+
+Establish `hThY : HasTh Y.t.G Y.t.PP.L Y.t.PP.rig m (M.pt ≫ π) d`. Rewrite using `[hpt]`. Conclude with `(hasTh_of_sabMap Y.m m y d).1 hThO`. Establish `hTh : HasTh t.G t.PP.L t.PP.rig m M.pt d` using `(hasTh_of_sabMap mt m M.pt d).2 hThY`. Establish `hPolO : PolFib Y.oF.t.G Y.oF.t.PP.L (Module.finrank ℚ E / 2 * (Dw.p + Dw.q)) y` using `(polFib_of_sabMap Y.m0.toSABMap _ y).2 (GlobalTheory.T.universalTriple_fibre_principallyPolarised_dimension E H Dw l Xo c Ω _)`.
+
+Establish `hPolY : PolFib Y.t.G Y.t.PP.L (Module.finrank ℚ E / 2 * (Dw.p + Dw.q)) (M.pt ≫ π)`. Rewrite using `[hpt]`. Conclude with `(polFib_of_sabMap Y.m _ y).1 hPolO`. Establish `hPol : PolFib t.G t.PP.L (Module.finrank ℚ E / 2 * (Dw.p + Dw.q)) M.pt` using `(polFib_of_sabMap mt _ M.pt).2 hPolY`. Establish `hmk : IsUnit (m : c.F)` using `isUnit_iff_ne_zero.2 (Nat.cast_ne_zero.2 (by omega))`.
+
+Take `⟨σ, hσ⟩` from `GlobalTheory.T.theta_coordinates_section_exists E H c.F Ω M t _ m n d h hZ hm hm3 hmk hPol hTh hhP`. Take `⟨hab, hop, hamp⟩` from `GlobalTheory.T.abelianLocus_eq_preimage_moduli_and_principal E H Dw l Xo c Y M.Z π t ⟨mt⟩`. Take `⟨hsmY, hvY⟩` from `GlobalTheory.T.modelSemiAbelian_relDim_cotangent_vectorBundle E H Dw l Xo c Y`. Establish `hsm : SmoothOfRelativeDimension (Module.finrank ℚ E / 2 * (Dw.p + Dw.q)) t.G.hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback mt.cart.1 hsmY`. Use `haveI := M.lft`.
+
+Use `haveI : IsLocallyNoetherian M.Z := LocallyOfFiniteType.isLocallyNoetherian M.s`. Establish `hne : ((⊤ : M.Z.Opens) : Set M.Z).Nonempty` using `⟨M.pt (IsLocalRing.closedPoint Ω), trivial⟩`. Use `haveI : CharZero Γ(M.Z, ⊤) := (M.res ⊤ hne).charZero`. Establish `hne2 : (abLocus t.G).Nonempty`. Use `⟨M.pt (IsLocalRing.closedPoint Ω), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hab]`. Use `show π (M.pt (IsLocalRing.closedPoint Ω)) ∈ Set.range Y.j`. Establish `hq` using `congrArg (fun φ : Sp Ω ⟶ Y.X => φ (IsLocalRing.closedPoint Ω)) hpt`. Conclude with `⟨y (IsLocalRing.closedPoint Ω), hq.symm⟩`. Establish `hδ : ((ProjSpace.O1 c.F n).pull h).IsLB` using `pull_isLB (ProjSpace.O1_isLB c.F n) h`.
+
+Use `Y.t.semi.separated` as an intermediate fact. Establish `hHY` using `hvY.isLB_det`. Establish `hHt` using `(GlobalTheory.LieVB.isVB_omega_of_isGrpPullback mt.cart hvY).isLB_det`. Establish `hkey : LBIso (lbPow ((ProjSpace.O1 c.F n).pull h) 8) (lbPow (GlobalTheory.SiegelTor.hodge t.G (Module.finrank ℚ E / 2 * (Dw.p + Dw.q))) 4)`. Break down `Nat.eq_zero_or_pos (Module.finrank ℚ E / 2 * (Dw.p + Dw.q)) with h0 | h0` into its components or cases.
+
+Establish `hn0 : n = 0`. Rewrite `hn` using `[h0]`. Simplify using `using hn`. Substitute `hn0` using the available equality. Use `(cls_eq_iff (isLB_lbPow hδ 8) (isLB_lbPow hHt 4)).1 ?_` and prove the remaining obligations.
+
+Establish `hz : cls _ hHt = 0` using `by revert hHt`. Rewrite using `[h0]`. Conclude with `fun hHt => KeySmall.cls_det_zero _ hHt`. Rewrite using `[cls_lbPow hδ, cls_lbPow hHt, hz, cls_pull (ProjSpace.O1_isLB c.F 0), KeySmall.cls_O1_zero, map_zero, nsmul_zero, nsmul_zero]`. Use `KeySmall.key_sab M.Z t _ _ σ h0 hZ inferInstance inferInstance (fun A _ ξ hξ => ?_) hsm hne2 hop hδ hamp (KeySmall.nzFib_of_geom σ hσ)` and prove the remaining obligations.
+
+Conclude with `KeySmall.mk_le_of_lft ((Cardinal.mk_le_of_injective (f := fun a : c.F => (a : ℂ)) Subtype.val_injective).trans_eq Cardinal.mk_complex) (ξ ≫ M.s)`. Establish `hO` using `ProjSpace.O1_isLB o n`. Establish `e1` using `(cls_eq_iff (pull_isLB hO (π ≫ g)) (isLB_lbPow hδ _)).2 hsym`. Establish `e2` using `(cls_eq_iff (isLB_lbPow hδ 8) (isLB_lbPow hHt 4)).2 hkey`. Establish `e3` using `(cls_eq_iff (pull_isLB hHY π) hHt).2 (GlobalTheory.HodgeGenDesc.lbIso_hodge_pull mt.cart hvY)`.
+
+Rewrite `e1` using `[cls_pull hO, pull_comp, cls_lbPow hδ]`. Rewrite `e2` using `[cls_lbPow hδ, cls_lbPow hHt]`. Rewrite `e3` using `[cls_pull hHY]`. Use `(cls_eq_iff (pull_isLB (isLB_lbPow (pull_isLB hO g) 8) π) (pull_isLB (isLB_lbPow hHY _) π)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_pull (isLB_lbPow (pull_isLB hO g) 8), cls_pull (isLB_lbPow hHY _), cls_lbPow (pull_isLB hO g), cls_lbPow hHY, map_nsmul, map_nsmul, cls_pull hO, e1, e3, smul_smul, mul_comm 8, ← smul_smul, e2, smul_smul, mul_comm]`.
+-/
 theorem key_on_cover : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (o : Type) [CommRing o] (m n : ℕ) (f : Xo.XF c ⟶ PSpace o n), Odd m → 3 ≤ m → IsUnit (m : o) → n + 1 = m ^ (4 * (Module.finrank ℚ E / 2 * (Dw.p + Dw.q))) → ThMap Xo.univ.t.G Xo.univ.t.PP.L Xo.univ.t.PP.rig m (pullback.fst _ _ : Xo.XF c ⟶ Xo.X) f → ∀ (Y : Model Xo c (RingHom.id c.F)) (g : Y.X ⟶ PSpace o n), Y.j ≫ g = f → ∀ (Ω : Type) [Field Ω] [CharZero Ω] [Algebra c.F Ω] (M : RatModel c.F Ω) (π : M.Z ⟶ Y.X) (y : Sp Ω ⟶ Xo.XF c) (d : Fin (n + 1) → Ω), Geo.Tor.IsNormalScheme M.Z → M.pt ≫ π = y ≫ Y.j → HasTh Xo.univ.t.G Xo.univ.t.PP.L Xo.univ.t.PP.rig m (y ≫ pullback.fst _ _) d → LBIso ((lbPow ((ProjSpace.O1 o n).pull g) 8).pull π) ((lbPow (GlobalTheory.SiegelTor.hodge Y.t.G (Module.finrank ℚ E / 2 * (Dw.p + Dw.q))) (4 * (n + 1).factorial)).pull π) := by
   intro E _ _ _ H Dw l Xo c o _ m n f hm hm3 hmu hn hf Y g hYg Ω _ _ _ M π y d hZ hpt hth
   obtain ⟨t, ⟨mt⟩⟩ := GlobalTheory.ModelSum.exists_pull π Y.t

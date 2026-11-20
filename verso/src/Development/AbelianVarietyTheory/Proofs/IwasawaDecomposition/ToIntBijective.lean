@@ -16,6 +16,9 @@ def fracO : IntermediateField ℚ D.what₂.LL := IntermediateField.adjoin ℚ (
 
 instance : NumberField (fracO D) := {}
 
+/- English proof (translation)
+The claim follows from `IntermediateField.subset_adjoin ℚ _ ⟨y, rfl⟩`.
+-/
 theorem otoLL_mem (y : D.what₂.O) : D.what₂.OtoLL y ∈ fracO D :=
   IntermediateField.subset_adjoin ℚ _ ⟨y, rfl⟩
 
@@ -32,8 +35,20 @@ def toInt (h : OTied D T C) : D.what₂.O →+* 𝓞 (fracO D) where
   map_zero' := by ext; simp
   map_add' a b := by ext; exact map_add D.what₂.OtoLL a b
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toInt_val (h : OTied D T C) (y : D.what₂.O) : ((toInt h y : fracO D) : D.what₂.LL) = D.what₂.OtoLL y := rfl
 
+/- English proof (translation)
+Use `⟨fun a b hab => h.inj ?_, fun z => ?_⟩` and prove the remaining obligations. Use `congrArg (fun w : 𝓞 (fracO D) => ((w : fracO D) : D.what₂.LL)) hab` as an intermediate fact. Simplify `this` using `[toInt_val]`. Use `set x : D.what₂.LL := ((z : fracO D) : D.what₂.LL) with hx`. Establish `hint : IsIntegral ℤ (T.jLL x)`.
+
+Set `f : (fracO D) →ₐ[ℤ] Qb` to `(T.jLL.comp (fracO D).val.toRingHom).toIntAlgHom`. Establish `hf : Function.Injective f` using `(T.jLL.comp (fracO D).val.toRingHom).injective`. Conclude with `(isIntegral_algHom_iff f hf).2 z.2`. Establish `hmem : T.jLL x ∈ KsQ D T C h.pieces`. Establish `hx' : x ∈ fracO D` using `(z : fracO D).2`.
+
+Establish `h1 : T.jLL x ∈ (fracO D).map T.jLL.toRatAlgHom` using `⟨x, hx', rfl⟩`. Rewrite `h1` using `[fracO, IntermediateField.adjoin_map]`. Use `(IntermediateField.adjoin_le_iff.2 ?_) h1` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨y, rfl⟩, rfl⟩`. Conclude with `((h.range _).1 ⟨y, rfl⟩).1`.
+
+Take `⟨y, hy⟩` from `(h.range _).2 ⟨hmem, hint⟩`. Use `⟨y, ?_⟩` and prove the remaining obligations. Use `ext`. Conclude with `T.jLL.injective hy`.
+-/
 theorem toInt_bijective (h : OTied D T C) : Function.Bijective (toInt h) := by
   refine ⟨fun a b hab => h.inj ?_, fun z => ?_⟩
   · have := congrArg (fun w : 𝓞 (fracO D) => ((w : fracO D) : D.what₂.LL)) hab

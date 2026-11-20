@@ -28,22 +28,40 @@ def genSec (a : 𝟙_ (Over (Sp R)) ⟶ G) : 𝟙_ (Over (Sp (FractionRing R))) 
   Over.homMk (pullback.lift (jK R ≫ a.left) (𝟙 _) (by
     rw [Category.assoc, Over.w a]; simp)) (pullback.lift_snd _ _ _)
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 theorem genSec_fst (a : 𝟙_ (Over (Sp R)) ⟶ G) :
     (genSec a).left ≫ pullback.fst G.hom (jK R) = jK R ≫ a.left :=
   pullback.lift_fst _ _ _
 
+/- English proof (translation)
+Rewrite using `[Over.comp_left, Category.assoc, genSec_fst, ← Category.assoc (pullback.fst G.hom (jK R)), pullback.condition]`. Both sides reduce to the same expression.
+-/
 theorem const_fst (a : 𝟙_ (Over (Sp R)) ⟶ G) :
     (toUnit ((Over.pullback (jK R)).obj G) ≫ genSec a).left ≫ pullback.fst G.hom (jK R) =
       pullback.fst G.hom (jK R) ≫ G.hom ≫ a.left := by
   rw [Over.comp_left, Category.assoc, genSec_fst, ← Category.assoc (pullback.fst G.hom (jK R)), pullback.condition]
   rfl
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext ((isGrpPullback_pullback G (jK R)).1.hom_ext h (by show x.left ≫ ((Over.pullback (jK R)).obj G).hom = y.left ≫ ((Over.pullback (jK R)).obj G).hom rw [Over.w, Over.w]))`.
+-/
 theorem hom_ext_gen {T : Over (Sp (FractionRing R))} {x y : T ⟶ (Over.pullback (jK R)).obj G}
     (h : x.left ≫ pullback.fst G.hom (jK R) = y.left ≫ pullback.fst G.hom (jK R)) : x = y :=
   Over.OverMorphism.ext ((isGrpPullback_pullback G (jK R)).1.hom_ext h (by
     show x.left ≫ ((Over.pullback (jK R)).obj G).hom = y.left ≫ ((Over.pullback (jK R)).obj G).hom
     rw [Over.w, Over.w]))
 
+/- English proof (translation)
+Establish `hp` using `(isGrpPullback_pullback G (jK R)).2`. Set `T : Over (Sp (FractionRing R))` to `𝟙_ _`. Set `x₀ : Over.mk (T.hom ≫ jK R) ⟶ G` to `toUnit _ ≫ a`. Establish `hx : x₀.left = (genSec a).left ≫ pullback.fst G.hom (jK R)`. Rewrite using `[genSec_fst]`.
+
+Both sides reduce to the same expression. Establish `e` using `hp T (genSec a) (genSec a) x₀ x₀ hx hx`. Establish `haa : x₀ * x₀ = toUnit _ ≫ η[G]`. Rewrite using `[← MonObj.comp_mul, ← sq, ha, Hom.one_def, ← Category.assoc, comp_toUnit]`. Use `set c := genSec a * genSec a with hc`.
+
+Set `y₀ : Over.mk (T.hom ≫ jK R) ⟶ G` to `toUnit _ ≫ η[G]`. Establish `hy : y₀.left = c.left ≫ pullback.fst G.hom (jK R)` using `by rw [show y₀ = x₀ * x₀ from haa.symm, e]`. Establish `e₂` using `hp T c c y₀ y₀ hy hy`. Establish `hyy : y₀ * y₀ = y₀`. Rewrite using `[show y₀ = 1 from Hom.one_def.symm, _root_.one_mul]`.
+
+Establish `hcc : c * c = c` using `hom_ext_gen (by rw [← e₂, hyy, hy])`. Conclude with `mul_eq_left.1 hcc`.
+-/
 theorem genSec_sq (a : 𝟙_ (Over (Sp R)) ⟶ G) (ha : a ^ 2 = 1) : genSec a * genSec a = 1 := by
   have hp := (isGrpPullback_pullback G (jK R)).2
   let T : Over (Sp (FractionRing R)) := 𝟙_ _
@@ -62,6 +80,11 @@ theorem genSec_sq (a : 𝟙_ (Over (Sp R)) ⟶ G) (ha : a ^ 2 = 1) : genSec a * 
   have hcc : c * c = c := hom_ext_gen (by rw [← e₂, hyy, hy])
   exact mul_eq_left.1 hcc
 
+/- English proof (translation)
+Establish `hp` using `(isGrpPullback_pullback G (jK R)).2`. Set `GK` to `(Over.pullback (jK R)).obj G`. Set `p : Over.mk (GK.hom ≫ jK R) ⟶ G` to `Over.homMk (pullback.fst G.hom (jK R)) pullback.condition`. Establish `e` using `hp GK (𝟙 GK) (toUnit GK ≫ genSec a) p (p ≫ toUnit G ≫ a) (by simp [p]) (by rw [const_fst]; rfl)`. Establish `e' : p * (p ≫ toUnit G ≫ a) = p ≫ ((toUnit G ≫ a) * 𝟙 G)`.
+
+Rewrite using `[MonObj.comp_mul, Category.comp_id, _root_.mul_comm]`. Rewrite `e` using `[e', Over.comp_left]`. Conclude with `e.symm`.
+-/
 theorem transl_fst [IsCommMonObj G] (a : 𝟙_ (Over (Sp R)) ⟶ G) :
     (GlobalTheory.PolTranslate.transl (genSec a)).left ≫ pullback.fst G.hom (jK R) =
       pullback.fst G.hom (jK R) ≫ ((toUnit G ≫ a) * 𝟙 G).left := by
@@ -77,6 +100,21 @@ theorem transl_fst [IsCommMonObj G] (a : 𝟙_ (Over (Sp R)) ⟶ G) :
 
 end
 
+/- English proof (translation)
+Introduce `R _ _ _ _ D A G _ _ _ U a ha P hP`. Use `haveI := U.gen_hom`. Use `haveI := A.isAb.comm`. Use `haveI : IsProper A.A.hom := A.isAb.proper`. Set `b` to `genSec a`.
+
+Set `a' : 𝟙_ (Over (Sp (FractionRing R))) ⟶ A.A` to `b ≫ U.gen.hom`. Establish `ha' : a' * a' = 1` using `by show (b ≫ U.gen.hom) * (b ≫ U.gen.hom) = 1`. Rewrite using `[← MonObj.mul_comp, genSec_sq a ha, Hom.one_def, Category.assoc, IsMonHom.one_hom, ← Hom.one_def]`. Set `A₂ : PolAV (Sp (FractionRing R))` to `{ A := A.A isAb := A.isAb g := A.g smoothDim := A.smoothDim L := GlobalTheory.RigidTranslate.rigTransl A.L a' isLB := LB.isLB_linComb A.isLB _ _ rigid := GlobalTheory.RigidTranslate.rigidified_rigTransl A.isLB sym := GlobalTheory.RigidTranslate.sym_rigTransl ha' A.isLB A.sym ampl …`. Use `⟨A₂, U.gen, U.gen_hom, ?_⟩` and prove the remaining obligations.
+
+Set `f` to `pullback.fst G.hom (jK R)`. Set `τ` to `((toUnit G ≫ a) * 𝟙 G).left`. Establish `hLG` using `U.LG.isLB`. Establish `hext : pull U.gen.hom.left (cls A.L A.isLB) = pull f (cls U.LG.L hLG)` using `(GlobalTheory.CechPic.cls_eq_iff (pull_isLB A.isLB _) (pull_isLB hLG _)).2 U.ext`. Establish `hP' : cls P.L.L P.L.isLB = pull τ (cls U.LG.L hLG)` using `(GlobalTheory.CechPic.cls_eq_iff P.L.isLB (pull_isLB hLG _)).2 hP`.
+
+Establish `hrig : pull (eSec G) (cls P.L.L P.L.isLB) = 0` using `(GlobalTheory.CechPic.cls_eq_zero_iff (pull_isLB P.L.isLB _)).2 ⟨P.L.rig, P.L.rigGen⟩`. Establish `ea : a.left = eSec G ≫ τ` using `by show a.left = (η[G] ≫ ((toUnit G ≫ a) * 𝟙 G)).left`. Establish `h1 : (η[G] : 𝟙_ (Over (Sp R)) ⟶ G) = 1` using `by rw [Hom.one_def, toUnit_unit, Category.id_comp]`. Rewrite using `[MonObj.comp_mul, ← Category.assoc, toUnit_unique (η[G] ≫ toUnit G) (𝟙 _), Category.id_comp, Category.comp_id, h1, _root_.mul_one]`. Establish `hgt : U.gen.hom.left ≫ (GlobalTheory.PolTranslate.transl a').left = (GlobalTheory.PolTranslate.transl b).left ≫ U.gen.hom.left`.
+
+Rewrite using `[← Over.comp_left, ← Over.comp_left, GlobalTheory.PolTranslate.comp_transl, GlobalTheory.PolTranslate.transl, MonObj.mul_comp, Category.id_comp]`. Both sides reduce to the same expression. Establish `hgc : U.gen.hom.left ≫ (toUnit A.A ≫ a').left = (toUnit _ ≫ b).left ≫ U.gen.hom.left`. Rewrite using `[GlobalTheory.RigidTranslate.comp_const, ← Over.comp_left]`. Both sides reduce to the same expression.
+
+Establish `h₁` using `pull_isLB (LB.isLB_linComb A.isLB (K := Fin 2) ![(GlobalTheory.PolTranslate.transl a').left, (toUnit A.A ≫ a').left] ![1, -1]) U.gen.hom.left`. Use `(GlobalTheory.CechPic.cls_eq_iff h₁ (pull_isLB P.L.isLB _)).1 ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.CechPic.cls_pull _ _ h₁, GlobalTheory.CechPic.cls_linComb A.isLB, GlobalTheory.CechPic.cls_pull P.L.isLB]`. Rewrite using `[Fin.sum_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, one_smul, neg_smul, ← sub_eq_add_neg, map_sub]`.
+
+Rewrite using `[← GlobalTheory.CechPic.pull_comp, ← GlobalTheory.CechPic.pull_comp, hgt, hgc, GlobalTheory.CechPic.pull_comp, GlobalTheory.CechPic.pull_comp, hext, ← GlobalTheory.CechPic.pull_comp, ← GlobalTheory.CechPic.pull_comp, transl_fst a, const_fst a, GlobalTheory.CechPic.pull_comp, Glob …`. Conclude with `LB.isLB_linComb A.isLB _ _`.
+-/
 theorem exists_translate_pol : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ U : Unif (maximalIdeal R) D A G, ∀ a : 𝟙_ (Over (Sp R)) ⟶ G, a ^ 2 = 1 → ∀ P : GlobalTheory.UU.CP G, LBIso P.L.L (U.LG.L.pull ((toUnit G ≫ a) * 𝟙 G).left) → ∃ (A₂ : PolAV (Sp (FractionRing R))) (gen₂ : (Over.pullback (jK R)).obj G ≅ A₂.A), IsMonHom gen₂.hom ∧ LBIso (A₂.L.pull gen₂.hom.left) (P.L.L.pull (pullback.fst G.hom (jK R))) := by
   intro R _ _ _ _ D A G _ _ _ U a ha P hP
   haveI := U.gen_hom

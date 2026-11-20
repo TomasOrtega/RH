@@ -19,6 +19,9 @@ def RegularClassWeightedOrbital : Prop :=
             wOrbInt (cent (rat V γ)) dt μ (rat V γ)
               (fun x => weight Φ (levelAll D.sp.cm.sig V.gram L a) (aP P) T x) f
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨wittIndex_plane D, exists_isGood _⟩`.
+-/
 example (D : D7) : wittIndex (CuspDecay.Model.plane D) = 1 ∧
     ∃ (Φ : WittFrame (CuspDecay.Model.plane D)) (L : _) (a : _), Φ.IsGood D.sp.cm L a :=
   ⟨wittIndex_plane D, exists_isGood _⟩

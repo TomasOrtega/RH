@@ -11,6 +11,9 @@ namespace GlobalTheory.CovolIndep
 variable {S X : Type} [Group S] [MeasurableSpace S] [MeasurableSpace X] [MulAction S X]
   [MeasurableSMul₂ S X]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.lintegral_mul_measure_inter_smul_preimage_of_invariant S X ν μ D hD E hE ψ hψ hinv`.
+-/
 theorem measure_mul_setLIntegral_eq [MeasurableInv S] (ν : Measure S) [SFinite ν] (μ : Measure X) [SFinite μ]
     [SMulInvariantMeasure S X μ] (D : Set X) (hD : MeasurableSet D) (E : Set S)
     (hE : MeasurableSet E) (ψ : X → ℝ≥0∞) (hψ : Measurable ψ)
@@ -18,6 +21,9 @@ theorem measure_mul_setLIntegral_eq [MeasurableInv S] (ν : Measure S) [SFinite 
     ν E * ∫⁻ x in D, ψ x ∂μ = ∫⁻ y, ψ y * ν (E ∩ {s | s⁻¹ • y ∈ D}) ∂μ :=
   GlobalTheory.T.lintegral_mul_measure_inter_smul_preimage_of_invariant S X ν μ D hD E hE ψ hψ hinv
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.lintegral_fundamentalDomain_unfold_refold_measure S X ν μ Γ D₁ D₂ hD₁ hD₂ E hE hEf ψ hψ hinv`.
+-/
 theorem lintegral_unfold_eq [MeasurableMul₂ S] [MeasurableInv S] (ν : Measure S) [SFinite ν]
     [ν.IsMulLeftInvariant] (μ : Measure X) [SFinite μ] [SMulInvariantMeasure S X μ]
     (Γ : Subgroup S) [Countable Γ] (D₁ D₂ : Set X) (hD₁ : MeasurableSet D₁)
@@ -27,6 +33,9 @@ theorem lintegral_unfold_eq [MeasurableMul₂ S] [MeasurableInv S] (ν : Measure
     ∫⁻ y, ψ y * ν (E ∩ {s | s⁻¹ • y ∈ D₁}) ∂μ = ∫⁻ y in D₂, ψ y * ν {s | s⁻¹ • y ∈ D₁} ∂μ :=
   GlobalTheory.T.lintegral_fundamentalDomain_unfold_refold_measure S X ν μ Γ D₁ D₂ hD₁ hD₂ E hE hEf ψ hψ hinv
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.ae_measure_smul_preimage_fundamentalDomain_eq S X ν μ Γ D hD hDf E hE`.
+-/
 theorem ae_measure_setOf_smul_mem_eq [MeasurableMul₂ S] [MeasurableInv S] (ν : Measure S) [SFinite ν]
     [ν.IsMulLeftInvariant] (μ : Measure X) [SFinite μ] [SMulInvariantMeasure S X μ]
     (Γ : Subgroup S) [Countable Γ] (D : Set X) (hD : MeasurableSet D)
@@ -34,6 +43,11 @@ theorem ae_measure_setOf_smul_mem_eq [MeasurableMul₂ S] [MeasurableInv S] (ν 
     ∀ᵐ y ∂μ, ν {s | s • y ∈ D} = ν E :=
   GlobalTheory.T.ae_measure_smul_preimage_fundamentalDomain_eq S X ν μ Γ D hD hDf E hE
 
+/- English proof (translation)
+Rewrite using `[measure_mul_setLIntegral_eq ν μ D₁ hD₁m E₂ hE₂m ψ hψ hinv, lintegral_unfold_eq ν μ Γ₂ D₁ D₂ hD₁m hD₂ E₂ hE₂m hE₂ ψ hψ hinv, ← lintegral_const_mul _ hψ]`. Use `lintegral_congr_ae (ae_restrict_of_ae ?_)` and prove the remaining obligations. Use `filter_upwards [ae_measure_setOf_smul_mem_eq ν μ Γ₁ D₁ hD₁m hD₁ E₁ hE₁] with y hy`. Establish `: ν {s : S | s⁻¹ • y ∈ D₁} = ν {s : S | s • y ∈ D₁}`. Express the relevant statement in the definitionally equal form `ν ({s : S | s • y ∈ D₁}⁻¹) = _`.
+
+Conclude with `Measure.measure_inv (μ := ν) _`. Rewrite using `[this, hy, mul_comm]`.
+-/
 theorem lintegral_mul_eq_of_measurable [MeasurableMul₂ S] [MeasurableInv S] (ν : Measure S)
     [SFinite ν] [ν.IsMulLeftInvariant] [ν.IsInvInvariant] (μ : Measure X) [SFinite μ]
     [SMulInvariantMeasure S X μ] (Γ₁ Γ₂ : Subgroup S) [Countable Γ₁] [Countable Γ₂]
@@ -57,6 +71,9 @@ namespace GlobalTheory.CovolIndep
 variable {S X : Type} [Group S] [MeasurableSpace S] [MeasurableSpace X] [MulAction S X]
   [MeasurableSMul₂ S X]
 
+/- English proof (translation)
+Establish `a₁` using `hD₁.nullMeasurableSet.toMeasurable_ae_eq`. Establish `a₂` using `hD₂.nullMeasurableSet.toMeasurable_ae_eq`. Establish `b₂` using `hE₂.nullMeasurableSet.toMeasurable_ae_eq`. Establish `key` using `lintegral_mul_eq_of_measurable ν μ Γ₁ Γ₂ (toMeasurable μ D₁) (toMeasurable μ D₂) E₁ (toMeasurable ν E₂) (measurableSet_toMeasurable _ _) (measurableSet_toMeasurable _ _) (measurableSet_toMeasurable _ _) (isFundamentalDomain_of_ae_eq hD₁ a₁) (isFundamentalDomain_of_ae_eq hD₂ a₂) h …`. Rewrite `key` using `[measure_toMeasurable, setLIntegral_congr a₁, setLIntegral_congr a₂]`. Then use the resulting hypothesis.
+-/
 theorem lintegral_mul_eq [MeasurableMul₂ S] [MeasurableInv S] (ν : Measure S)
     [SFinite ν] [ν.IsMulLeftInvariant] [ν.IsInvInvariant] (μ : Measure X) [SFinite μ]
     [SMulInvariantMeasure S X μ] (Γ₁ Γ₂ : Subgroup S) [Countable Γ₁] [Countable Γ₂]

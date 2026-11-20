@@ -12,6 +12,17 @@ namespace CellRay
 variable {O : Type} [CommRing O] {bar : O → O} {φ : InvFun O} {X : Type} [AddCommGroup X] [Module O X]
   [Module.Finite O X] {m' : ℕ}
 
+/- English proof (translation)
+Take `⟨N, ℓ, hN, h1, h2, h3⟩` from `hγ'.strict`. Establish `hsum : ∑ i, a i * (ℓ (β i) : ℝ) = ∑ j, b j * (ℓ (γ' j) : ℝ)`. Use `sum_mul_eq_zero_of_sum_toReal (X := X) (j := LinearMap.id) (fun _ _ h => h) ℓ (β := Sum.elim β γ') (c := Sum.elim a (-b)) (by` as an intermediate fact. Rewrite using `[Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, LinearMap.id_apply, Pi.neg_apply, neg_smul, Finset.sum_neg_distrib, hrel, add_neg_cancel])`.
+
+Rewrite `this` using `[Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, LinearMap.id_apply, Pi.neg_apply, neg_mul, Finset.sum_neg_distrib] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hφ : ∑ i, a i * φ.evalZ (β i) = ∑ j, b j * φ.evalZ (γ' j)`. Rewrite using `[← hlin, hrel]`.
+
+Conclude with `(linearOn_iff φ γ').1 hγ'.linear b hb`. Establish `hterm : ∑ i, a i * ((ℓ (β i) : ℝ) - N * φ.evalZ (β i)) = 0`. Simplify using `only [mul_sub, Finset.sum_sub_distrib]`. Rewrite using `[hsum, show ∑ i, a i * (N * φ.evalZ (β i)) = N * ∑ i, a i * φ.evalZ (β i) by`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun _ _ => by ring, hφ, Finset.mul_sum, sub_eq_zero]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => by rw [h1]; ring`. Establish `hnn : ∀ i ∈ Finset.univ, 0 ≤ a i * ((ℓ (β i) : ℝ) - N * φ.evalZ (β i))` using `fun i _ => mul_nonneg (ha i) (sub_nonneg.2 (h2 _ (hβ i) (hβp i)))`. Introduce `i hi`. Establish `h0` using `(Finset.sum_eq_zero_iff_of_nonneg hnn).1 hterm i (Finset.mem_univ _)`. Establish `he : (N : ℝ) * φ.evalZ (β i) = ℓ (β i)`.
+
+Break down `mul_eq_zero.1 h0 with h | h` into its components or cases. Conclude with `absurd h hi`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h3 _ (hβ i) (hβp i) he`.
+-/
 theorem inCell {n : ℕ} {γ' : Fin m' → LinearMap.BilinForm ℤ X} (hγ' : IsCell bar φ γ')
     {β : Fin n → LinearMap.BilinForm ℤ X} (hβ : ∀ i, β i ∈ balForms bar X) (hβp : ∀ i y, 0 ≤ β i y y)
     {a : Fin n → ℝ} {b : Fin m' → ℝ} (ha : ∀ i, 0 ≤ a i) (hb : ∀ j, 0 ≤ b j)
@@ -51,6 +62,31 @@ end GlobalTheory.PolFan
 
 open GlobalTheory.PolFan.CellRay in
 
+/- English proof (translation)
+Introduce `O _ bar φ X _ _ _ m n δ γ c hδ hγ hli hc hrel i`. Take `⟨k, d, hk, hkd⟩` from `inCell hγ hδ.mem hδ.nonneg (a := fun _ => (1 : ℝ)) (b := c) (fun _ => zero_le_one) hc ((linearOn_iff φ δ).1 hδ.linear (fun _ => 1) fun _ => zero_le_one) (by simpa using hrel) i one_ne_zero`. Establish `hB : ∀ j, ∃ (kj : ℕ) (e : Fin m → ℕ), 0 < kj ∧ (d j ≠ 0 → kj • γ j = ∑ l, e l • δ l)`. Introduce `j`. Distinguish the cases in `hd : d j = 0`.
+
+Conclude with `⟨1, 0, one_pos, fun h => absurd hd h⟩`. Apply the tactic sequence `obtain ⟨kj, e, hkj, he⟩ := inCell (a := fun j => (d j : ℝ)) (b := Pi.single i (k : ℝ)) hδ hγ.mem hγ.nonneg (fun j => Nat.cast_nonneg _) (fun l => by by_cases h : l = i <;> simp [h]) ((linearOn_iff φ γ).1 hγ.linear _ fun j => Nat.cast_nonneg _) (by`. Use `LinearMap.ext₂ fun a b => ?_` and prove the remaining obligations. Use `LinearMap.congr_fun₂ hkd a b` as an intermediate fact. Simplify using `only [LinearMap.smul_apply, LinearMap.sum_apply, toReal_apply, nsmul_eq_mul] at this ⊢`.
+
+Simplify using `only [Pi.single_apply, ite_smul, zero_smul, LinearMap.smul_apply, toReal_apply, smul_eq_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true, Nat.cast_ite, Nat.cast_zero, ite_mul, zero_mul]`. Conclude with `this.symm) j (by exact_mod_cast hd)` after adjusting the coercions. Conclude with `⟨kj, e, hkj, fun _ => he⟩`. Use `choose kk e hkk he using hB`. Use `set K := ∏ j, kk j with hKdef`.
+
+Set `Kj : Fin n → ℕ` to `fun j => ∏ j' ∈ Finset.univ.erase j, kk j'`. Establish `hK : ∀ j, kk j * Kj j = K` using `fun j => Finset.mul_prod_erase Finset.univ kk (Finset.mem_univ j)`. Establish `hKpos : 0 < K` using `Finset.prod_pos fun j _ => hkk j`. Establish `hKj : ∀ j, Kj j ≠ 0` using `fun j h => by`. Use `hK j` as an intermediate fact.
+
+Rewrite `this` using `[h, mul_zero]`. Use linear arithmetic over natural numbers and integers. Establish `hterm : ∀ j, (K * d j) • γ j = ∑ l, (d j * Kj j * e j l) • δ l`. Introduce `j`. Distinguish the cases in `hd : d j = 0`.
+
+Simplify using `[hd]`. Rewrite using `[← hK j, show kk j * Kj j * d j = (d j * Kj j) * kk j by ring, ← smul_smul, he j hd, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => by rw [smul_smul]`. Establish `key : (K * k) • δ i = ∑ l, (∑ j, d j * Kj j * e j l) • δ l`. Rewrite using `[← smul_smul, hkd, Finset.smul_sum]`.
+
+Simplify using `only [smul_smul, hterm]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun l _ => (Finset.sum_smul).symm`. Establish `hFG` using `Fintype.linearIndependent_iffₛ.1 hli (fun l => ((∑ j, d j * Kj j * e j l : ℕ) : ℤ)) (fun l => if l = i then ((K * k : ℕ) : ℤ) else 0) (by`. Simplify using `only [Nat.cast_smul_eq_nsmul, ite_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+
+Conclude with `key.symm)`. Establish `hoff : ∀ l, l ≠ i → ∀ j, d j * Kj j * e j l = 0`. Introduce `l hl j`. Use `hFG l` as an intermediate fact. Simplify using `only [if_neg hl, Nat.cast_eq_zero] at this`.
+
+Conclude with `(Finset.sum_eq_zero_iff.1 this) j (Finset.mem_univ _)`. Establish `hon : ∑ j, d j * Kj j * e j i ≠ 0`. Use `hFG i` as an intermediate fact. Rewrite `this` using `[if_pos rfl, Nat.cast_inj]`. Rewrite using `[this]`.
+
+Conclude with `(Nat.mul_pos hKpos hk).ne'`. Take `⟨j, -, hj⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hon`. Establish `hdj : d j ≠ 0` using `fun h => hj (by rw [h]; ring)`. Establish `hej : e j i ≠ 0` using `fun h => hj (by rw [h]; ring)`. Establish `hel : ∀ l, l ≠ i → e j l = 0` using `fun l hl => by`.
+
+Use `hoff l hl j` as an intermediate fact. Break down `Nat.mul_eq_zero.1 this with h | h` into its components or cases. Break down `Nat.mul_eq_zero.1 h with h' | h'` into its components or cases. Conclude with `absurd h' hdj`. Conclude with `absurd h' (hKj j)`.
+
+Conclude with `h`. Establish `hγj : kk j • γ j = e j i • δ i`. Rewrite using `[he j hdj, Finset.sum_eq_single i (fun l _ hl => by rw [hel l hl, zero_smul]) (by simp)]`. Conclude with `⟨j, e j i, kk j, Nat.pos_of_ne_zero hej, hkk j, hγj.symm⟩`.
+-/
 theorem GlobalTheory.PolFan.cell_gen_on_ray : ∀ (O : Type) [CommRing O] (bar : O → O) (φ : InvFun O) (X : Type) [AddCommGroup X]
     [Module O X] [Module.Finite O X] (m n : ℕ) (δ : Fin m → LinearMap.BilinForm ℤ X) (γ : Fin n → LinearMap.BilinForm ℤ X)
     (c : Fin n → ℝ), IsCell bar φ δ → IsCell bar φ γ → LinearIndependent ℤ δ → (∀ j, 0 ≤ c j) →

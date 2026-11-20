@@ -17,6 +17,11 @@ open GlobalTheory GlobalTheory.Points GlobalTheory.ArInt GlobalTheory.Cartier Gl
 
 namespace GlobalTheory.CompanionTheory.Ar.BaseZ
 
+/- English proof (translation)
+Introduce `H k _ X _ p D hX ι _ L`. Set `t : X ⟶ Sp ℤ` to `specZIsTerminal.from X`. Use `haveI : Module.Finite ℤ k := hX.finite`. Establish `hL : ∀ i τ, (wZ (L i) t τ).IsCInf` using `fun i τ => GlobalTheory.T.wZ_isCInf' k X p t (L i) τ`. Take `⟨Φ, hΦ⟩` from `H X t D (GlobalTheory.CompanionTheory.Ar.BaseZ.isArithVar_int k X p t D hX) ι (fun i => GlobalTheory.CompanionTheory.Ar.BaseZ.toZ (L i) t (hL i))`.
+
+Conclude with `⟨Φ, (GlobalTheory.T.toZ_isArFun_iff k X p t D hX ι L hL Φ).1 hΦ⟩`.
+-/
 theorem arFormExists_of_int :
     (∀ (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp ℤ) (D : ℕ), IsArithVar p D →
       ∀ (ι : Type) [Fintype ι] (L : ι → HermLB p), ∃ Φ, IsArFun L D Φ) → GlobalTheory.Published.ArFormExists := by

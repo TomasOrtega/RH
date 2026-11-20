@@ -12,6 +12,11 @@ noncomputable section
 
 namespace GlobalTheory.EntryTest
 
+/- English proof (translation)
+Establish `hker : LinearMap.ker P.mulVecLin = ⊥`. Establish `e` using `LinearMap.finrank_range_add_finrank_ker P.mulVecLin`. Rewrite `e` using `[← Matrix.rank, h, Module.finrank_fin_fun]`. Conclude with `Submodule.finrank_eq_zero.1 (by omega)`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective P.mulVecLin hker`.
+
+Use `⟨LinearMap.toMatrix' g, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.toMatrix'_toLin' P, ← LinearMap.toMatrix'_comp]`. Rewrite using `[show Matrix.toLin' P = P.mulVecLin from rfl, hg, LinearMap.toMatrix'_id]`.
+-/
 theorem exists_left_inv {K : Type} [Field K] {m n : ℕ} (P : Matrix (Fin m) (Fin n) K) (h : P.rank = n) :
     ∃ P' : Matrix (Fin n) (Fin m) K, P' * P = 1 := by
   have hker : LinearMap.ker P.mulVecLin = ⊥ := by
@@ -23,6 +28,11 @@ theorem exists_left_inv {K : Type} [Field K] {m n : ℕ} (P : Matrix (Fin m) (Fi
   rw [← LinearMap.toMatrix'_toLin' P, ← LinearMap.toMatrix'_comp]
   rw [show Matrix.toLin' P = P.mulVecLin from rfl, hg, LinearMap.toMatrix'_id]
 
+/- English proof (translation)
+Establish `hrange : LinearMap.range Q.mulVecLin = ⊤`. Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Rewrite using `[← Matrix.rank, h, Module.finrank_fin_fun]`. Take `⟨g, hg⟩` from `LinearMap.exists_rightInverse_of_surjective Q.mulVecLin hrange`. Use `⟨LinearMap.toMatrix' g, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← LinearMap.toMatrix'_toLin' Q, ← LinearMap.toMatrix'_comp]`. Rewrite using `[show Matrix.toLin' Q = Q.mulVecLin from rfl, hg, LinearMap.toMatrix'_id]`.
+-/
 theorem exists_right_inv {K : Type} [Field K] {m n : ℕ} (Q : Matrix (Fin m) (Fin n) K) (h : Q.rank = m) :
     ∃ Q' : Matrix (Fin n) (Fin m) K, Q * Q' = 1 := by
   have hrange : LinearMap.range Q.mulVecLin = ⊤ := by
@@ -35,6 +45,13 @@ theorem exists_right_inv {K : Type} [Field K] {m n : ℕ} (Q : Matrix (Fin m) (F
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h1 : V.gram⁻¹ * (V.gram * N * W.gram⁻¹) * W.gram = N`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (GlobalTheory.LatVac.gram_det_isUnit W), Matrix.mul_one, Matrix.nonsing_inv_mul_cancel_left _ _ (GlobalTheory.LatVac.gram_det_isUnit V)]`. Establish `hc : ∀ b c, cA D (((Matrix.of fun c b => star ((V.gram * N * W.gram⁻¹) b c) : Matrix (Fin W.rank) (Fin V.rank) D.host.E).map (incA D)) c b) = incA D ((V.gram * N * W.gram⁻¹) b c)`. Introduce `b c`. Rewrite using `[Matrix.map_apply, GlobalTheory.DualPairCheck.cA_incA, Matrix.of_apply, star_star]`.
+
+Unfold `hO`. Simplify using `only [hc]`. Generalize the expression as in `V.gram * N * W.gram⁻¹ = M at h1`. Substitute `h1` using the available equality. Simplify using `only [Matrix.mul_apply, map_sum, map_mul, Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `(Finset.sum_congr rfl fun c _ => Finset.sum_comm).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem hO_test (V W : HSp D) (N : Matrix (Fin V.rank) (Fin W.rank) D.host.E) (x : WO V W) :
     hO V W x ((Matrix.of fun c b => star ((V.gram * N * W.gram⁻¹) b c) :
       Matrix (Fin W.rank) (Fin V.rank) D.host.E).map (incA D)) = ∑ a, ∑ d, incA D (N a d) * x d a := by
@@ -55,6 +72,11 @@ theorem hO_test (V W : HSp D) (N : Matrix (Fin V.rank) (Fin W.rank) D.host.E) (x
   refine (Finset.sum_congr rfl fun c _ => Finset.sum_comm).trans ?_
   rw [Finset.sum_comm]
 
+/- English proof (translation)
+Establish `h1 : ∑ k, ∑ l, incA D (N k l) * GlobalTheory.IsoMean.emb V W P Q y l k = (N.map (incA D) * GlobalTheory.IsoMean.emb V W P Q y).trace`. Simplify using `[Matrix.trace, Matrix.mul_apply]`. Establish `h2 : N.map (incA D) * GlobalTheory.IsoMean.emb V W P Q y = N.map (incA D) * (P.map (incA D) * y) * Q.map (incA D)`. Simplify using `only [GlobalTheory.IsoMean.emb, Matrix.mul_assoc]`. Rewrite using `[h1, h2, Matrix.trace_mul_comm, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Matrix.map_mul, ← Matrix.map_mul, hN]`.
+
+Simplify using `[Matrix.trace, Matrix.mul_apply, Matrix.single_apply, ite_and]`.
+-/
 theorem sum_emb_single (V W : HSp D) {a b : ℕ} (P : Matrix (Fin W.rank) (Fin a) D.host.E)
     (Q : Matrix (Fin b) (Fin V.rank) D.host.E) (N : Matrix (Fin V.rank) (Fin W.rank) D.host.E) (i : Fin a) (j : Fin b)
     (e : D.host.E) (hN : Q * N * P = Matrix.single j i e) (y : Mx D a b) :
@@ -68,6 +90,11 @@ theorem sum_emb_single (V W : HSp D) {a b : ℕ} (P : Matrix (Fin W.rank) (Fin a
   rw [h1, h2, Matrix.trace_mul_comm, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Matrix.map_mul, ← Matrix.map_mul, hN]
   simp [Matrix.trace, Matrix.mul_apply, Matrix.single_apply, ite_and]
 
+/- English proof (translation)
+Introduce `D V W a b P Q hP hQ i j c`. Take `⟨P', hP'⟩` from `exists_left_inv P hP`. Take `⟨Q', hQ'⟩` from `exists_right_inv Q hQ`. Use `set N := Q' * Matrix.single j i (D.host.xi0⁻¹ * c) * P' with hNdef`. Establish `hN : Q * N * P = Matrix.single j i (D.host.xi0⁻¹ * c)`.
+
+Rewrite using `[hNdef, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hQ', Matrix.one_mul, Matrix.mul_assoc, hP', Matrix.mul_one]`. Use `⟨Matrix.of fun q p => star ((V.gram * N * W.gram⁻¹) p q), fun y r => ?_⟩` and prove the remaining obligations. Rewrite using `[← GlobalTheory.SplitScalar.symplOH_add_self, GlobalTheory.FinTranslate.symplOH_smul_right, ← mul_add, GlobalTheory.SplitScalar.symplOH_add_self]`. Use `congr 1`. Rewrite using `[symplO, hO_test, sum_emb_single V W P Q N i j _ hN y, ← mul_assoc, ← map_mul, mul_inv_cancel_left₀ (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D)]`.
+-/
 theorem entry : ∀ (D : D7) (V W : HSp D) (a b : ℕ) (P : Matrix (Fin W.rank) (Fin a) D.host.E) (Q : Matrix (Fin b) (Fin V.rank) D.host.E), P.rank = a → Q.rank = b → ∀ (i : Fin a) (j : Fin b) (c : D.host.E), ∃ m : Matrix (Fin W.rank) (Fin V.rank) D.host.E, ∀ (y : Mx D a b) (r : AF D.host.F), symplO V W (GlobalTheory.IsoMean.emb V W P Q y) (r • m.map (incA D)) = r * Algebra.trace (AF D.host.F) (AE D) (incA D c * y i j) := by
   intro D V W a b P Q hP hQ i j c
   obtain ⟨P', hP'⟩ := exists_left_inv P hP

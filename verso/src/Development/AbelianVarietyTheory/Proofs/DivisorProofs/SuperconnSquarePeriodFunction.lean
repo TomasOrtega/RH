@@ -17,8 +17,14 @@ namespace GlobalTheory.TorsionForm.CurvExt
 
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g n : ℕ}
 
+/- English proof (translation)
+The claim follows from `WithTop.coe_le_coe.2 le_top`.
+-/
 theorem two_le_infty : (2 : WithTop ℕ∞) ≤ ∞ := WithTop.coe_le_coe.2 le_top
 
+/- English proof (translation)
+Establish `e` using `superconn_add τ h β u (s₁ := fun _ => (0 : Ext (n + n + g))) (s₂ := fun _ => (0 : Ext (n + n + g))) (P := P) (differentiableAt_const _) (differentiableAt_const _)`. Simplify using `only [add_zero] at e`. Conclude with `left_eq_add.mp e`.
+-/
 theorem superconn_zero (τ : E → Matrix (Fin g) (Fin g) ℂ) (h : Pt E g → ℝ) (β : Fin n → E) (u : ℝ)
     (P : Pt E g) : superconn τ h β u (fun _ => (0 : Ext (n + n + g))) P = 0 := by
   have e := superconn_add τ h β u (s₁ := fun _ => (0 : Ext (n + n + g)))
@@ -26,6 +32,9 @@ theorem superconn_zero (τ : E → Matrix (Fin g) (Fin g) ℂ) (h : Pt E g → �
   simp only [add_zero] at e
   exact left_eq_add.mp e
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using superconn_zero τ h β u P`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.sum_insert ha]`. Rewrite using `[superconn_add τ h β u (hF a (Finset.mem_insert_self a s)) (DifferentiableAt.fun_sum fun k hk => hF k (Finset.mem_insert_of_mem hk)), ih fun k hk => hF k (Finset.mem_insert_of_mem hk)]`.
+-/
 theorem superconn_sum (τ : E → Matrix (Fin g) (Fin g) ℂ) (h : Pt E g → ℝ) (β : Fin n → E) (u : ℝ)
     {ι : Type} (s : Finset ι) {F : ι → Pt E g → Ext (n + n + g)} {P : Pt E g}
     (hF : ∀ k ∈ s, DifferentiableAt ℝ (F k) P) :
@@ -39,14 +48,23 @@ theorem superconn_sum (τ : E → Matrix (Fin g) (Fin g) ℂ) (h : Pt E g → �
       (DifferentiableAt.fun_sum fun k hk => hF k (Finset.mem_insert_of_mem hk)),
       ih fun k hk => hF k (Finset.mem_insert_of_mem hk)]
 
+/- English proof (translation)
+Simplify using `only [baseD, wedge_smul]`.
+-/
 theorem baseD_eq (β : Fin n → E) (φ : E → ℂ) (b : E) (w : Ext (n + n + g)) :
     baseD β φ b w = ∑ i, (d10 φ b (β i) • wedge (dt g i) w + d01 φ b (β i) • wedge (dtb g i) w) := by
   simp only [baseD, wedge_smul]
 
+/- English proof (translation)
+The claim follows from `(((wedgeL k).restrictScalars ℝ).differentiableAt).comp P hσ`.
+-/
 theorem differentiableAt_wedge {m : ℕ} (k : Fin m) {σ : Pt E g → Ext m} {P : Pt E g}
     (hσ : DifferentiableAt ℝ σ P) : DifferentiableAt ℝ (fun Q => wedge k (σ Q)) P :=
   (((wedgeL k).restrictScalars ℝ).differentiableAt).comp P hσ
 
+/- English proof (translation)
+Establish `hD : DifferentiableAt ℝ (fderiv ℝ φ) b` using `(hφ.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Unfold `d10`. Establish `h1 : DifferentiableAt ℝ (fun b' => fderiv ℝ φ b' v) b` using `hD.clm_apply (differentiableAt_const v)`. Establish `h2 : DifferentiableAt ℝ (fun b' => fderiv ℝ φ b' (Complex.I • v)) b` using `hD.clm_apply (differentiableAt_const _)`. Conclude with `(h1.sub (h2.const_smul Complex.I)).const_smul (1 / 2 : ℂ)`.
+-/
 theorem differentiableAt_d10 {φ : E → ℂ} {b : E} (hφ : ContDiffAt ℝ 2 φ b) (v : E) :
     DifferentiableAt ℝ (fun b' => d10 φ b' v) b := by
   have hD : DifferentiableAt ℝ (fderiv ℝ φ) b :=
@@ -57,6 +75,9 @@ theorem differentiableAt_d10 {φ : E → ℂ} {b : E} (hφ : ContDiffAt ℝ 2 φ
     hD.clm_apply (differentiableAt_const _)
   exact (h1.sub (h2.const_smul Complex.I)).const_smul (1 / 2 : ℂ)
 
+/- English proof (translation)
+Establish `hD : DifferentiableAt ℝ (fderiv ℝ φ) b` using `(hφ.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Unfold `d01`. Establish `h1 : DifferentiableAt ℝ (fun b' => fderiv ℝ φ b' v) b` using `hD.clm_apply (differentiableAt_const v)`. Establish `h2 : DifferentiableAt ℝ (fun b' => fderiv ℝ φ b' (Complex.I • v)) b` using `hD.clm_apply (differentiableAt_const _)`. Conclude with `(h1.add (h2.const_smul Complex.I)).const_smul (1 / 2 : ℂ)`.
+-/
 theorem differentiableAt_d01 {φ : E → ℂ} {b : E} (hφ : ContDiffAt ℝ 2 φ b) (v : E) :
     DifferentiableAt ℝ (fun b' => d01 φ b' v) b := by
   have hD : DifferentiableAt ℝ (fderiv ℝ φ) b :=
@@ -67,6 +88,9 @@ theorem differentiableAt_d01 {φ : E → ℂ} {b : E} (hφ : ContDiffAt ℝ 2 φ
     hD.clm_apply (differentiableAt_const _)
   exact (h1.add (h2.const_smul Complex.I)).const_smul (1 / 2 : ℂ)
 
+/- English proof (translation)
+Simplify using `only [baseD_eq]`. Use `DifferentiableAt.fun_sum fun i _ => ?_` and prove the remaining obligations. Conclude with `((differentiableAt_d10 hφ (β i)).comp P differentiableAt_fst).smul (differentiableAt_wedge _ hσ) |>.add (((differentiableAt_d01 hφ (β i)).comp P differentiableAt_fst).smul (differentiableAt_wedge _ hσ))`.
+-/
 theorem differentiableAt_baseD (β : Fin n → E) {φ : E → ℂ} {σ : Pt E g → Ext (n + n + g)} {P : Pt E g}
     (hφ : ContDiffAt ℝ 2 φ P.1) (hσ : DifferentiableAt ℝ σ P) :
     DifferentiableAt ℝ (fun Q => baseD β φ Q.1 (σ Q)) P := by
@@ -82,6 +106,13 @@ namespace GlobalTheory.TorsionForm.CurvExt
 
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g n : ℕ}
 
+/- English proof (translation)
+Establish `h10 : ∀ i, DifferentiableAt ℝ (fun Q : Pt E g => d10 φ Q.1 (β i)) P` using `fun i => (differentiableAt_d10 hφ (β i)).comp P differentiableAt_fst`. Establish `h01 : ∀ i, DifferentiableAt ℝ (fun Q : Pt E g => d01 φ Q.1 (β i)) P` using `fun i => (differentiableAt_d01 hφ (β i)).comp P differentiableAt_fst`. Establish `ef : (fun Q : Pt E g => baseD β φ Q.1 (σ Q)) = fun Q => ∑ i, (d10 φ Q.1 (β i) • wedge (dt g i) (σ Q) + d01 φ Q.1 (β i) • wedge (dtb g i) (σ Q))`. Use function extensionality and compare the values at `Q`. Conclude with `baseD_eq β φ Q.1 (σ Q)`.
+
+Rewrite using `[ef, superconn_sum τ h β u _ (F := fun i Q => d10 φ Q.1 (β i) • wedge (dt g i) (σ Q) + d01 φ Q.1 (β i) • wedge (dtb g i) (σ Q)) fun i _ => ((h10 i).smul (differentiableAt_wedge _ hσ)).add ((h01 i).smul (differentiableAt_wedge _ hσ))]`. Establish `hterm : ∀ i, superconn τ h β u (fun Q => d10 φ Q.1 (β i) • wedge (dt g i) (σ Q) + d01 φ Q.1 (β i) • wedge (dtb g i) (σ Q)) P = (baseD β (fun b' => d10 φ b' (β i)) P.1 (wedge (dt g i) (σ P)) + baseD β (fun b' => d01 φ b' (β i)) P.1 (wedge (dtb g i) (σ P))) - (d10 φ P.1 (β i) • wed …`. Introduce `i`. Rewrite using `[superconn_add τ h β u (s₁ := fun Q => d10 φ Q.1 (β i) • wedge (dt g i) (σ Q)) (s₂ := fun Q => d01 φ Q.1 (β i) • wedge (dtb g i) (σ Q)) ((h10 i).smul (differentiableAt_wedge _ hσ)) ((h01 i).smul (differentiableAt_wedge _ hσ))]`. Rewrite using `[GlobalTheory.T.superconn_base_smul_leibniz τ h β u (φ := fun b' => d10 φ b' (β i)) (σ := fun Q => wedge (dt g i) (σ Q)) (differentiableAt_d10 hφ (β i)) (differentiableAt_wedge _ hσ), GlobalTheory.T.superconn_base_smul_leibniz τ h β u (φ := fun b' => d01 φ b' (β i)) (σ := fun Q = …`.
+
+Rewrite using `[show dt g i = (i.castAdd n).castAdd g from rfl, show dtb g i = (i.natAdd n).castAdd g from rfl, GlobalTheory.T.superconn_wedge_anticomm τ h β u (i.castAdd n) hσ, GlobalTheory.T.superconn_wedge_anticomm τ h β u (i.natAdd n) hσ]`. Simplify using `only [smul_neg]`. Normalize the expressions using the abelian group laws. Rewrite using `[Finset.sum_congr rfl fun i _ => hterm i, Finset.sum_sub_distrib, GlobalTheory.T.base_curvature_terms_sum_zero β hφ (σ P), zero_sub, baseD_eq]`.
+-/
 theorem superconn_baseD (τ : E → Matrix (Fin g) (Fin g) ℂ) (h : Pt E g → ℝ) (β : Fin n → E) (u : ℝ)
     {φ : E → ℂ} {σ : Pt E g → Ext (n + n + g)} {P : Pt E g}
     (hφ : ContDiffAt ℝ 2 φ P.1) (hσ : DifferentiableAt ℝ σ P) :
@@ -121,6 +152,19 @@ end GlobalTheory.TorsionForm.CurvExt
 
 namespace GlobalTheory.TorsionForm.CurvExt
 
+/- English proof (translation)
+Introduce `E _ _ g n _ B τ hτ h hh hpos β u ψ hψ b hb f hf z`. Establish `hU : IsOpen (cov B g)` using `hτ.1.prod isOpen_univ`. Establish `hP0 : ((b, z) : Pt E g) ∈ cov B g` using `Set.mk_mem_prod hb (Set.mem_univ z)`. Take `⟨φ, σ, hk, hdec⟩` from `GlobalTheory.T.smooth_difference_period_decomposition (n := n) hτ.1 hψ hb hf`. Establish `hφb : ∀ k, φ k b = 0` using `fun k => (hk k).2.1`.
+
+Establish `hφ2 : ∀ k, ContDiffAt ℝ 2 (φ k) b` using `fun k => ((hk k).1.contDiffAt (hτ.1.mem_nhds hb)).of_le two_le_infty`. Establish `hφd : ∀ k, ∀ b' ∈ B, DifferentiableAt ℝ (φ k) b'` using `fun k b' hb' => ((hk k).1.contDiffAt (hτ.1.mem_nhds hb')).differentiableAt (by simp)`. Establish `hσd : ∀ k, ∀ P ∈ cov B g, DifferentiableAt ℝ (σ k) P` using `fun k P hP => ((hk k).2.2.contDiffAt (hU.mem_nhds hP)).differentiableAt (by simp)`. Establish `hsb : ContDiff ℝ ∞ (fun P : Pt E g => f (P.2 + ψ b))` using `hf.comp (contDiff_snd.add contDiff_const)`. Establish `hSσ : ∀ k, DifferentiableAt ℝ (superconn τ h β u (σ k)) (b, z)` using `fun k => ((GlobalTheory.T.contDiffOn_superconn' hτ hh hpos β u (hk k).2.2).contDiffAt (hU.mem_nhds hP0)).differentiableAt (by simp)`.
+
+Establish `hSsb : DifferentiableAt ℝ (superconn τ h β u fun P => f (P.2 + ψ b)) (b, z)` using `((GlobalTheory.T.contDiffOn_superconn' hτ hh hpos β u hsb.contDiffOn).contDiffAt (hU.mem_nhds hP0)).differentiableAt (by simp)`. Establish `inner : ∀ P ∈ cov B g, superconn τ h β u (fun P => f (P.2 + ψ P.1)) P = superconn τ h β u (fun P => f (P.2 + ψ b)) P + ∑ k, (φ k P.1 • superconn τ h β u (σ k) P + baseD β (φ k) P.1 (σ k P))`. Introduce `P hP`. Establish `e : (fun P : Pt E g => f (P.2 + ψ P.1)) =ᶠ[𝓝 P] fun Q => f (Q.2 + ψ b) + ∑ k, φ k Q.1 • σ k Q` using `Filter.eventually_of_mem (hU.mem_nhds hP) fun Q hQ => by show f (Q.2 + ψ Q.1) = f (Q.2 + ψ b) + _`. Rewrite using `[← hdec Q hQ]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[superconn_congr τ h β u e, superconn_add τ h β u (s₁ := fun Q => f (Q.2 + ψ b)) (s₂ := fun Q => ∑ k, φ k Q.1 • σ k Q) (hsb.differentiable (by simp) P) (DifferentiableAt.fun_sum fun k _ => ((hφd k P.1 hP.1).comp P differentiableAt_fst).smul (hσd k P hP)), superconn_sum τ h β u _ …`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun k _ => GlobalTheory.T.superconn_base_smul_leibniz τ h β u (hφd k P.1 hP.1) (hσd k P hP)`. Establish `d1 : ∀ k, DifferentiableAt ℝ (fun Q : Pt E g => φ k Q.1 • superconn τ h β u (σ k) Q) (b, z)` using `fun k => ((hφd k b hb).comp (b, z) differentiableAt_fst : DifferentiableAt ℝ (fun Q : Pt E g => φ k Q.1) (b, z)).smul (hSσ k)`.
+
+Establish `d2 : ∀ k, DifferentiableAt ℝ (fun Q : Pt E g => baseD β (φ k) Q.1 (σ k Q)) (b, z)` using `fun k => differentiableAt_baseD β (hφ2 k) (hσd k _ hP0)`. Establish `e2 : superconn τ h β u (fun P => f (P.2 + ψ P.1)) =ᶠ[𝓝 ((b, z) : Pt E g)] fun Q => superconn τ h β u (fun P => f (P.2 + ψ b)) Q + ∑ k, (φ k Q.1 • superconn τ h β u (σ k) Q + baseD β (φ k) Q.1 (σ k Q))` using `Filter.eventually_of_mem (hU.mem_nhds hP0) inner`. Rewrite using `[superconn_congr τ h β u e2, superconn_add τ h β u (s₁ := superconn τ h β u fun P => f (P.2 + ψ b)) (s₂ := fun Q => ∑ k, (φ k Q.1 • superconn τ h β u (σ k) Q + baseD β (φ k) Q.1 (σ k Q))) hSsb (DifferentiableAt.fun_sum fun k _ => (d1 k).add (d2 k)), superconn_sum τ h β u _ (F := …`. Rewrite using `[Finset.sum_eq_zero fun k _ => ?_, add_zero]`. Rewrite using `[superconn_add τ h β u (s₁ := fun Q => φ k Q.1 • superconn τ h β u (σ k) Q) (s₂ := fun Q => baseD β (φ k) Q.1 (σ k Q)) (d1 k) (d2 k), GlobalTheory.T.superconn_base_smul_leibniz τ h β u (hφd k b hb) (hSσ k), superconn_baseD τ h β u (hφ2 k) (hσd k _ hP0)]`.
+
+Simplify using `[hφb k]`.
+-/
 theorem superconn_sq_shift : ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g n : ℕ}
     [FiniteDimensional ℂ E] {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}, IsPeriodMap B τ →
     ∀ {h : Pt E g → ℝ}, ContDiffOn ℝ ∞ h (cov B g) → (∀ P ∈ cov B g, 0 < h P) →

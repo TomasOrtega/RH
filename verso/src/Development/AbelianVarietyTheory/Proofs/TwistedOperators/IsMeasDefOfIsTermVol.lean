@@ -14,9 +14,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 
 variable {D : D7} {T : Type}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.sigOK, fun τ => Or.inl (by rw [h.sig τ, h.rank, Nat.sub_zero])⟩`.
+-/
 theorem isDefiniteSpace_of_isV {X : LSp D} {ν : ℕ} (h : X.IsV ν 0) : GlobalTheory.IndefiniteRowSideFullHecke.ClassFunctionSumIntegral.IsDefiniteSpace X.sp :=
   ⟨h.sigOK, fun τ => Or.inl (by rw [h.sig τ, h.rank, Nat.sub_zero])⟩
 
+/- English proof (translation)
+Use `⟨fun j h => ⟨?_, S.isCO_levTop W t Φ β h, ?_⟩, fun i h => ⟨?_, S.isCO_levRow W t h, ?_⟩⟩` and prove the remaining obligations. Conclude with `isDefiniteSpace_of_isV (node_isV G hL (X := .top j) h.le)`. Establish `e` using `hM.1 j h`. Unfold `Vol.IsAt at e`. Rewrite `e` using `[if_pos (by simp [Node.neg])]`.
+
+Conclude with `e`. Establish `hV` using `node_isV G hL (X := .grid i D.R.m) ⟨h, le_rfl⟩`. Establish `e : Node.neg D.R.m (.grid i D.R.m) = 0` using `by simp [Node.neg]`. Rewrite `hV` using `[e]`. Conclude with `isDefiniteSpace_of_isV hV`.
+
+Establish `e` using `hM.2 i h`. Unfold `Vol.IsAt at e`. Rewrite `e` using `[if_pos (by simp [Node.neg])]`. Conclude with `e`.
+-/
 theorem isMeasDef_of_isTermVol {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T} (S : GridChoice W U)
     {μ₀ : T} (hL : L.Is μ₀) (t : T) (Φ : G.Datum) (β : CosFam G t) (M : Vol G) (hM : IsTermVol t S Φ β M) :
     (∀ j (h : j < D.R.m), GlobalTheory.IndefiniteRowSideFullHecke.ClassFunctionSumIntegral.IsDefiniteSpace (G.V (.top j)) ∧

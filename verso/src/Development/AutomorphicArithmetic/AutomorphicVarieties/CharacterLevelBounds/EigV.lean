@@ -6,6 +6,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.V.Chr
 
+/- English proof (translation)
+Introduce `k Ω _ _ _ _ _ l _ O _ _ _ _ _ e ψ U _ hU hker hind`. Take `⟨-, -, -, -, -, -, -, -, hunit⟩` from `dvrFacts l O`. Establish `hopen : IsOpen ((ψ⁻¹).ker : Set (G k Ω))`. Establish `hk : (ψ⁻¹).ker = ψ.ker`. Use extensionality with `g`.
+
+Simplify using `[MonoidHom.mem_ker]`. Rewrite using `[hk]`. Conclude with `Subgroup.isOpen_mono hker hU`. Establish `hcont` using `(contTw k Ω l).2.2 O ψ⁻¹ (-(e : ℤ)) hopen`. Unfold `eigL V VS`.
+
+Conclude with `selEigBase O (G k Ω) (QO l O) _ (rho l e ψ) ψ (tw_apply l e ψ) hcont U ⊤ le_top (fun u hu => hker hu) (hU.preimage continuous_subtype_val) (by rw [Subgroup.relIndex_top_right]; exact hunit _ hind) _ (conjStable_shaFam k Ω l)`.
+-/
 theorem UpperTheory.V.Chr.eigV :
     ∀ (k Ω : Type) [Field k] [NumberField k] [Field Ω] [Algebra k Ω] [IsAlgClosure k Ω] (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] (e : ℕ) (ψ : G k Ω →* Oˣ) (U : Subgroup (G k Ω)) [U.Normal],
           IsOpen (U : Set (G k Ω)) → U ≤ ψ.ker → ¬ l ∣ U.index → eigL l e U ψ = V l e ψ := by

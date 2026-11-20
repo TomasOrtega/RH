@@ -15,6 +15,21 @@ section Gen
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] {n : ℕ}
 
+/- English proof (translation)
+Take `⟨y, hy, hyr⟩` from `St_one_int hz`. Take `⟨y', hy', -⟩` from `St_one_int (inv_mem hz)`. Use `choose A hA using hr`. Establish `hmap : (z : Matrix (Fin n) (Fin n) (AfE F E)).map (adAt F P) = (Matrix.of A).map (algebraMap E (P.adicCompletion E))` using `Matrix.ext fun i j => hA i j`. Establish `hdet : IsUnit (Matrix.of A).det`.
+
+Use `isUnit_iff_ne_zero.2 fun h0 => ?_` and prove the remaining obligations. Establish `h1` using `congrArg Matrix.det hmap`. Rewrite `h1` using `[← RingHom.mapMatrix_apply, ← RingHom.mapMatrix_apply, ← RingHom.map_det, ← RingHom.map_det, h0, map_zero]`. Establish `hu : IsUnit (z : Matrix (Fin n) (Fin n) (AfE F E)).det` using `(Matrix.isUnit_iff_isUnit_det _).1 z.isUnit`. Conclude with `(hu.map (adAt F P)).ne_zero h1`.
+
+Use `set γ : GL (Fin n) E := Matrix.nonsingInvUnit (Matrix.of A) hdet with hγ`. Establish `hzγ : ∀ r s, adAt F P ((z : Matrix (Fin n) (Fin n) (AfE F E)) r s) = algebraMap E _ ((γ : Matrix (Fin n) (Fin n) E) r s)` using `fun r s => hA r s`. Establish `hzγ'` using `GlobalTheory.Mem.Col2.RatFrPt.adAt_inv hzγ`. Establish `hint : ∀ {x : AfE F E} {e : E}, x ∈ RInt F E → adAt F P x = algebraMap E _ e → IntAt P e` using `fun {x e} hx he => by`. Rewrite using `[GlobalTheory.CharValCompare.intAt_iff, ← valued_algebraMap, ← he]`.
+
+Conclude with `(mem_rInt_iff F E x).1 hx P`. Establish `h1 : ∀ i j, IntAt P ((γ : Matrix (Fin n) (Fin n) E) i j)` using `fun i j => hint (hy i j ▸ (y i j).2) (hzγ i j)`. Establish `h2 : ∀ i j, IntAt P (((γ⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) i j)` using `fun i j => hint (hy' i j ▸ (y' i j).2) (hzγ' i j)`. Establish `hmv : ∀ (N : Matrix (Fin n) (Fin n) E), (∀ i j, IntAt P (N i j)) → ∀ x : Sp E n, x ∈ stdAt E n P → N *ᵥ x ∈ stdAt E n P` using `fun N hN x hx => GlobalTheory.TopStep.mem_stdAt.2 fun i => by show IntAt P (∑ j, N i j * x j)`. Conclude with `GlobalTheory.TopStep.intAt_sum _ fun j _ => (hN i j).mul (GlobalTheory.TopStep.mem_stdAt.1 hx j)`.
+
+Establish `hc : GlobalTheory.Mem.Col2.RatFrPt.glEquiv γ ∈ GLint E n P` using `fun x => by`. Rewrite using `[GlobalTheory.Mem.Col2.RatFrPt.glEquiv_apply]`. Use `⟨fun h => ?_, hmv _ h1 x⟩` and prove the remaining obligations. Use `hmv _ h2 _ h` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+
+Use `⟨⟨_, hc⟩, fun i j => ?_, Units.ext (Matrix.ext fun i j => ?_)⟩` and prove the remaining obligations. Rewrite using `[hzγ, GlobalTheory.Mem.Col2.RatFrPt.glEquiv_single]`. Establish `hR` using `GlobalTheory.Mem.Col2.LevLiftPt.isRed_of_red P _ hc _ (fun x hx => GlobalTheory.TopStep.redV_apply ⟨_, hc⟩ hx) z (fun r s => by rw [LinearMap.toMatrix'_apply, hzγ]; congr 1; exact (GlobalTheory.Mem.Col2.RatFrPt.glEquiv_single γ r s).symm) i j`. Use `hR.unique ?_` and prove the remaining obligations. Rewrite using `[hyr P i j, hy i j]`.
+
+Use `GlobalTheory.Mem.Col2.PtExist.hasRes_redA (F := F) P (y i j).2` as an intermediate fact. Rewrite `this` using `[redA_int P (y i j).2]`. Then use the resulting hypothesis.
+-/
 theorem exists_glint_of_rat [NeZero n] (P : HeightOneSpectrum (𝓞 E)) {z : GL (Fin n) (AfE F E)} (hz : z ∈ St (1 : GL (Fin n) (AfE F E)))
     (hr : ∀ i j, ∃ e : E, adAt F P ((z : Matrix (Fin n) (Fin n) (AfE F E)) i j) = algebraMap E _ e) :
     ∃ c : GLint E n P, (∀ i j, adAt F P ((z : Matrix (Fin n) (Fin n) (AfE F E)) i j) = algebraMap E _ (c.1 (Pi.single j 1) i)) ∧
@@ -58,6 +73,17 @@ theorem exists_glint_of_rat [NeZero n] (P : HeightOneSpectrum (𝓞 E)) {z : GL 
     have := GlobalTheory.Mem.Col2.PtExist.hasRes_redA (F := F) P (y i j).2
     rwa [redA_int P (y i j).2] at this
 
+/- English proof (translation)
+Establish `hInt : ∀ {x : GL (Fin n) (AfE F E)} (hx : x ∈ St (1 : GL (Fin n) (AfE F E))) (i j : Fin n), (x : Matrix (Fin n) (Fin n) (AfE F E)) i j ∈ RInt F E ∧ ∀ w : HeightOneSpectrum (𝓞 E), HasRes w (adAt F w ((x : Matrix (Fin n) (Fin n) (AfE F E)) i j)) (((redAt 1 w ⟨x, hx⟩ : GL (Fin n) (𝓞 …`. Introduce `x hx i j`. Take `⟨y, hy, hr⟩` from `St_one_int hx`. Use `⟨hy i j ▸ (y i j).2, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[hr w i j, hy i j]`.
+
+Use `GlobalTheory.Mem.Col2.PtExist.hasRes_redA (F := F) w (y i j).2` as an intermediate fact. Rewrite `this` using `[redA_int w (y i j).2]`. Then use the resulting hypothesis. Establish `hzi : z⁻¹ ∈ St (1 : GL (Fin n) (AfE F E))` using `inv_mem hz`. Establish `hm` using `GlobalTheory.Mem.Col2.LevLiftPt.isPtOf_mul_fr (m := z⁻¹) hg (inv_mem hzU) (fun i j => (hInt hzi i j).1) (fun i j => by rw [inv_inv]; exact (hInt hz i j).1) (fun P hP => absurd hP (Finset.notMem_empty P)) (h := (fun w : SG => redAt 1 w.1 ⟨z, hz⟩)⁻¹) (fun w i j => ?_) c⁻¹ (fun P i …`. Rewrite `hm` using `[inv_inv]`. Then use the resulting hypothesis.
+
+Establish `e : ((fun w : SG => redAt 1 w.1 ⟨z, hz⟩)⁻¹ w) = redAt 1 w.1 ⟨z⁻¹, hzi⟩`. Rewrite using `[Pi.inv_apply, ← map_inv]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `(hInt hzi i j).2 w.1`.
+
+Rewrite using `[inv_inv, Pi.inv_apply, inv_inv, Units.val_mul, Matrix.mul_apply, map_sum]`. Establish `e : ∀ x, adAt F P.1 ((g : Matrix (Fin n) (Fin n) (AfE F E)) i x * (z : Matrix (Fin n) (Fin n) (AfE F E)) x j) = algebraMap E (P.1.adicCompletion E) (p.fr P (Pi.single x 1) i * (c P).1 (Pi.single j 1) x)` using `fun x => by`. Rewrite using `[map_mul, map_mul, hg.fr P, hcz P]`. Rewrite using `[Finset.sum_congr rfl fun x _ => e x, ← map_sum]`. Use `congrArg (algebraMap E (P.1.adicCompletion E)) ?_` and prove the remaining obligations.
+
+Use `show _ = (p.fr P) ((c P).1 (Pi.single j 1)) i`. Conclude with `(Finset.sum_congr rfl fun k _ => mul_comm _ _).trans (GlobalTheory.TopStep.apply_eq_sum (p.fr P).toLinearMap _ i).symm`.
+-/
 theorem isPtOf_mul_rat [NeZero n] {hcm : CMData F E} {SG Q : Finset (HeightOneSpectrum (𝓞 E))} {g z : GL (Fin n) (AfE F E)}
     {p : DecoF E n ∅ SG Q} (hg : IsPtOf hcm g p) (hzU : z ∈ UAd hcm n) (hz : z ∈ St (1 : GL (Fin n) (AfE F E))) (c : GLQ E n Q)
     (hcz : ∀ (P : Q) i j, adAt F P.1 ((z : Matrix (Fin n) (Fin n) (AfE F E)) i j) = algebraMap E _ ((c P).1 (Pi.single j 1) i)) :
@@ -91,6 +117,9 @@ theorem isPtOf_mul_rat [NeZero n] {hcm : CMData F E} {SG Q : Finset (HeightOneSp
     show _ = (p.fr P) ((c P).1 (Pi.single j 1)) i
     exact (Finset.sum_congr rfl fun k _ => mul_comm _ _).trans (GlobalTheory.TopStep.apply_eq_sum (p.fr P).toLinearMap _ i).symm
 
+/- English proof (translation)
+Use function extensionality and compare the values at `P`. Establish `e` using `congrArg (fun q : DecoF E n ST SG Q => q.fr P) h`. Express the relevant statement in the definitionally equal form `(1 : UF E n).1 * p.1.2 P * ((c P)⁻¹).1 = (1 : UF E n).1 * p.1.2 P * ((d P)⁻¹).1 at e`. Conclude with `inv_injective (Subtype.ext (mul_left_cancel e))`.
+-/
 theorem glq_free {ST SG Q : Finset (HeightOneSpectrum (𝓞 E))} {p : DecoF E n ST SG Q} {a b : GLG E n SG} {c d : GLQ E n Q}
     (h : ((1, a, c) : UF E n × GLG E n SG × GLQ E n Q) • p = ((1, b, d) : UF E n × GLG E n SG × GLQ E n Q) • p) : c = d := by
   funext P
@@ -104,6 +133,11 @@ section Blocks
 
 variable {κ : Type} [CommRing κ] {n r b : ℕ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Unfold `Formalism.L2.DIV.blk2`. Distinguish the cases in `hi : i.val < r`. Rewrite using `[if_pos hi, coarse_of_lt hi]`. Rewrite using `[if_neg hi, coarse_of_le (Nat.not_lt.mp hi)]`.
+
+Establish `: i.val - r < b` using `by have := i.2; omega`. Simplify using `[blkIdx, this]`.
+-/
 theorem coarseBlockIndex_eq_twoBlock (hn : n = r + b) : (fun i : Fin n => coarse r [b] i.val) = Formalism.L2.DIV.blk2 r := by
   funext i
   unfold Formalism.L2.DIV.blk2
@@ -113,11 +147,19 @@ theorem coarseBlockIndex_eq_twoBlock (hn : n = r + b) : (fun i : Fin n => coarse
     have : i.val - r < b := by have := i.2; omega
     simp [blkIdx, this]
 
+/- English proof (translation)
+Use `show (M : Matrix (Fin n) (Fin n) κ).BlockTriangular (fun i : Fin n => coarse r [b] i.val) ↔ (M : Matrix (Fin n) (Fin n) κ).BlockTriangular (Formalism.L2.DIV.blk2 r)`. Rewrite using `[coarseBlockIndex_eq_twoBlock hn]`.
+-/
 theorem mem_HQ_iff (hn : n = r + b) (M : GL (Fin n) κ) : M ∈ HQ κ n r b ↔ M ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blk2 r) := by
   show (M : Matrix (Fin n) (Fin n) κ).BlockTriangular (fun i : Fin n => coarse r [b] i.val) ↔
     (M : Matrix (Fin n) (Fin n) κ).BlockTriangular (Formalism.L2.DIV.blk2 r)
   rw [coarseBlockIndex_eq_twoBlock hn]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Formalism.L2.Col.blkDet_val]`. Establish `: ∀ β : Fin n → ℕ, β = Formalism.L2.DIV.blk2 r → ((M : Matrix (Fin n) (Fin n) κ).toSquareBlock β 1).det = ((M : Matrix (Fin n) (Fin n) κ).submatrix (Subtype.val : {a : Fin n // Formalism.L2.DIV.blk2 r a = 1} → Fin n) Subtype.val).det`. Introduce and unpack `_ rfl`. Both sides reduce to the same expression.
+
+Conclude with `this _ (coarseBlockIndex_eq_twoBlock hn)`.
+-/
 theorem blkDet_HQ (hn : n = r + b) (M : GL (Fin n) κ) (h1 : M ∈ HQ κ n r b) (h2 : M ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blk2 r)) :
     Formalism.L2.Col.blkDet n κ (coarse r [b]) 1 ⟨M, h1⟩ = Formalism.L2.DIV.blkDet (Formalism.L2.DIV.blk2 r) 1 ⟨M, h2⟩ := by
   apply Units.ext
@@ -134,6 +176,9 @@ section Chr
 
 variable {X : Fields} {n : ℕ} {SG Q : Finset (HeightOneSpectrum (𝓞 X.E))}
 
+/- English proof (translation)
+Establish `hc : (Θ.chr c : X.Kˣ) = ∏ P, (Θ P).lam ⟨c.1 P, c.2 P (Set.mem_univ P)⟩`. Rewrite using `[LevQFam.chr]`. Conclude with `piChar_apply _ _ c`. Rewrite using `[map_inv, map_inv, Units.val_mul, map_mul, Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val, map_inv₀, map_inv₀, LevFam.chr_apply, hc, Units.coe_prod, map_prod, Finset.prod_inv_distrib, Units.coe_prod, map_prod, Finset.prod_inv_distrib]`.
+-/
 theorem chr_inv_val (Λ : LevFam X.E X.K n SG) (Θ : LevQFam X.E X.K n Q) (emb : X.K →+* ℂ) (h : Λ.grp) (c : Θ.grp) :
     emb ((Λ.chr h⁻¹ * Θ.chr c⁻¹ : X.Kˣ) : X.K) =
       (∏ w, (emb (((Λ w).lam ⟨h.1 w, h.2 w (Set.mem_univ w)⟩ : X.Kˣ) : X.K))⁻¹) *
@@ -147,6 +192,9 @@ theorem chr_inv_val (Λ : LevFam X.E X.K n SG) (Θ : LevQFam X.E X.K n Q) (emb :
 variable {Pr : Primes X} {R : Ranks} {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} {S : Set ℕ}
   {mu : Tup X.F X.E X.K S}
 
+/- English proof (translation)
+Rewrite using `[levQX_lam]`. Express the relevant statement in the definitionally equal form `(emb (((lamQP (mu : Chr X.F X.E X.K) P.1 (R.N R.m - 1) R.r (R.m * R.t))⁻¹ ⟨_, k.2⟩ : X.Kˣ) : X.K))⁻¹ = _`. Rewrite using `[MonoidHom.inv_apply, Units.val_inv_eq_inv_val, map_inv₀, inv_inv, lamQP, lamQ_apply]`. Conclude with `congrArg (fun d => emb ((resChar (mu : Chr X.F X.E X.K) P.1 d : X.Kˣ) : X.K)) (blkDet_HQ hn _ _ hk)`.
+-/
 theorem levQX_lam_inv (emb : X.K →+* ℂ) (hn : R.N R.m - 1 = R.r + R.m * R.t) (P : QE sel (mu : Chr X.F X.E X.K))
     (k : (levQX R sel mu P).H) (hk : GlobalTheory.TopStep.redGL _ P.1 k.1 ∈ blockTri (blk2 R.r)) :
     (emb (((levQX R sel mu P).lam k : X.Kˣ) : X.K))⁻¹ =
@@ -159,6 +207,23 @@ theorem levQX_lam_inv (emb : X.K →+* ℂ) (hn : R.N R.m - 1 = R.r + R.m * R.t)
 end Chr
 
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Introduce `B X I hOk hPins l Z a bad S y lat st h c ξ hξ z hzA hz hzU`. Establish `hn : B.R.N B.R.m - 1 = B.R.r + B.R.m * B.R.t` using `Formalism.L2.Col.rank_X'_eq B.R`. Use `haveI : NeZero (B.R.N B.R.m - 1) := ⟨by`. Use `Formalism.L2.Col.rank_X'_eq B.R` as an intermediate fact. Use `B.R.m_add_three_le_k` as an intermediate fact.
+
+Unfold `Ranks.r at *`. Use the proof step `omega⟩`. Use `choose cc hcc hred using fun P : I.Q a => exists_glint_of_rat (F := B.host.F) P.1 hz (hzA P)`. Establish `hpt` using `isPtOf_mul_rat (h.pt c) hzU hz (cc : GLQ B.fields.E (B.R.N B.R.m - 1) (I.Q a)) hcc`. Use `set hv : GLG B.fields.E (B.R.N B.R.m - 1) (B.primes X).vGs := fun w => redAt 1 w.1 ⟨z, hz⟩ with hhv`.
+
+Establish `hΘ : ∀ P : I.Q a, cc P ∈ (levQX B.R I.sel (I.tup a) P).H ↔ redAt 1 P.1 ⟨z, hz⟩ ∈ blockTri (blk2 B.R.r)` using `fun P => by show GlobalTheory.TopStep.redGL _ P.1 (cc P) ∈ HQ _ _ B.R.r (B.R.m * B.R.t) ↔ _`. Rewrite using `[hred P]`. Conclude with `mem_HQ_iff hn _`. Use `⟨(h.lev c z _ hpt).trans ⟨?_, ?_⟩, fun hU h1 h2 => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨γ, a', c'⟩, hγ, e⟩`.
+
+Take `rfl : γ = 1` from `Subtype.ext ((toGLm _ _).injective (hγ.trans (map_one _).symm))`. Establish `e1 : a'.1 = hv⁻¹` using `glg_free e`. Establish `e2 : c'.1 = cc⁻¹` using `glq_free e`. Use `⟨fun w => ?_, fun P => (hΘ P).1 ?_⟩` and prove the remaining obligations. Use `a'.2 w (Set.mem_univ w)` as an intermediate fact.
+
+Rewrite `this` using `[e1]`. Conclude with `inv_mem_iff.1 this`. Use `c'.2 P (Set.mem_univ P)` as an intermediate fact. Rewrite `this` using `[e2]`. Conclude with `inv_mem_iff.1 this`.
+
+Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨(1, (⟨hv, fun w _ => h1 w⟩ : (rowTyG I.Ch I.Ps).grp)⁻¹, (⟨cc, fun P _ => (hΘ P).2 (h2 P)⟩ : (levQX B.R I.sel (I.tup a)).grp)⁻¹), by show ufGL _ _ 1 = 1; exact map_one _, rfl⟩`. Establish `hΛ : hv ∈ (rowTyG I.Ch I.Ps).grp` using `fun w _ => h1 w`. Establish `hQ : cc ∈ (levQX B.R I.sel (I.tup a)).grp` using `fun P _ => (hΘ P).2 (h2 P)`. Establish `key` using `h.chr c ⟨z, hU⟩ (1, (⟨hv, hΛ⟩ : (rowTyG I.Ch I.Ps).grp)⁻¹, (⟨cc, hQ⟩ : (levQX B.R I.sel (I.tup a)).grp)⁻¹) (by show ufGL _ _ 1 = 1; exact map_one _) hpt`.
+
+Use `key.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `B.embLL (((rowTyG I.Ch I.Ps).chr (⟨hv, hΛ⟩ : (rowTyG I.Ch I.Ps).grp)⁻¹ * (levQX B.R I.sel (I.tup a)).chr (⟨cc, hQ⟩ : (levQX B.R I.sel (I.tup a)).grp)⁻¹ : B.LLˣ) : B.LL) = _`. Use `(chr_inv_val (rowTyG I.Ch I.Ps) (levQX B.R I.sel (I.tup a)) B.embLL ⟨hv, hΛ⟩ ⟨cc, hQ⟩).trans ?_` and prove the remaining obligations. Use `congrArg₂ (· * ·) rfl (Finset.prod_congr rfl fun P _ => ?_)` and prove the remaining obligations. Establish `hP : GlobalTheory.TopStep.redGL _ P.1 (cc P) ∈ blockTri (blk2 B.R.r)` using `by rw [hred P]; exact h2 P`.
+
+Use `(levQX_lam_inv B.embLL hn P ⟨cc P, hQ P (Set.mem_univ P)⟩ hP).trans ((hξ P.1 P.2 _).symm.trans ?_)` and prove the remaining obligations. Establish `e : (⟨GlobalTheory.TopStep.redGL _ P.1 (cc P), hP⟩ : blockTri (blk2 B.R.r)) = ⟨redAt 1 P.1 ⟨z, hz⟩, h2 P⟩` using `Subtype.ext (hred P)`. Conclude with `congrArg (fun M => ((ξ P.1 (Formalism.L2.DIV.blkDet (blk2 B.R.r) 1 M) : ℂˣ) : ℂ)) e`.
+-/
 theorem rdLevOn_reads_tw : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l))
     (a : I.ι) {bad : Set (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))}
     (S : StepLevel (I.rec7 l Z).host.F (I.rec7 l Z).host.E (sigD (I.rec7 l Z)) (gramP (I.rec7 l Z)) 1 (I.rec7 l Z).R.f bad)

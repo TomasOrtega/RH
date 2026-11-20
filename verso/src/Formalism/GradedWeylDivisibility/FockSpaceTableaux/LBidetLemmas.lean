@@ -6,6 +6,9 @@ noncomputable section
 
 namespace Formalism.GradedWeylDivisibility
 
+/- English proof (translation)
+Unfold `dualWeyl`. Simplify using `only [Submodule.mem_inf, mem_weightedHomogeneousSubmodule, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, AlgHom.toLinearMap_apply, sub_eq_zero]`.
+-/
 theorem mem_dualWeyl_iff {R : Type*} [CommRing R] {r n : ℕ} {ν : Fin n → ℕ}
     {f : MvPolynomial (Fin r × Fin n) R} :
     f ∈ dualWeyl R r n ν ↔
@@ -15,6 +18,9 @@ theorem mem_dualWeyl_iff {R : Type*} [CommRing R] {r n : ℕ} {ν : Fin n → �
   simp only [Submodule.mem_inf, mem_weightedHomogeneousSubmodule, Submodule.mem_iInf,
     LinearMap.mem_ker, LinearMap.sub_apply, AlgHom.toLinearMap_apply, sub_eq_zero]
 
+/- English proof (translation)
+Rewrite `*` using `[mem_dualWeyl_iff]`. Use `⟨hf.1.mul hg.1, fun l j hlj => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, hf.2 l j hlj, hg.2 l j hlj]`.
+-/
 theorem dualWeyl_mul {R : Type*} [CommRing R] {r n : ℕ} {ν μ : Fin n → ℕ}
     {f g : MvPolynomial (Fin r × Fin n) R}
     (hf : f ∈ dualWeyl R r n ν) (hg : g ∈ dualWeyl R r n μ) :
@@ -23,12 +29,18 @@ theorem dualWeyl_mul {R : Type*} [CommRing R] {r n : ℕ} {ν μ : Fin n → ℕ
   refine ⟨hf.1.mul hg.1, fun l j hlj => ?_⟩
   rw [map_mul, map_mul, hf.2 l j hlj, hg.2 l j hlj]
 
+/- English proof (translation)
+Rewrite using `[mem_dualWeyl_iff]`. Use `⟨isWeightedHomogeneous_one _ _, fun l j _ => ?_⟩` and prove the remaining obligations. Rewrite using `[map_one, map_one]`.
+-/
 theorem one_mem_dualWeyl {R : Type*} [CommRing R] {r n : ℕ} :
     (1 : MvPolynomial (Fin r × Fin n) R) ∈ dualWeyl R r n 0 := by
   rw [mem_dualWeyl_iff]
   refine ⟨isWeightedHomogeneous_one _ _, fun l j _ => ?_⟩
   rw [map_one, map_one]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simpa using (one_mem_dualWeyl (R := R) (r := r) (n := n))`. Consider the case `succ k ih => rw [pow_succ, succ_nsmul]`. Conclude with `dualWeyl_mul ih hf`.
+-/
 theorem dualWeyl_pow {R : Type*} [CommRing R] {r n : ℕ} {ν : Fin n → ℕ}
     {f : MvPolynomial (Fin r × Fin n) R} (hf : f ∈ dualWeyl R r n ν) (k : ℕ) :
     f ^ k ∈ dualWeyl R r n (k • ν) := by
@@ -36,6 +48,9 @@ theorem dualWeyl_pow {R : Type*} [CommRing R] {r n : ℕ} {ν : Fin n → ℕ}
   | zero => simpa using (one_mem_dualWeyl (R := R) (r := r) (n := n))
   | succ k ih => rw [pow_succ, succ_nsmul]; exact dualWeyl_mul ih hf
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (one_mem_dualWeyl (R := R) (r := r) (n := n))`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha]`. Conclude with `dualWeyl_mul (hf a (Finset.mem_insert_self a s)) (ih fun i hi => hf i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem dualWeyl_prod {R : Type*} [CommRing R] {r n : ℕ} {ι : Type*} (s : Finset ι)
     (ν : ι → Fin n → ℕ) (f : ι → MvPolynomial (Fin r × Fin n) R)
     (hf : ∀ i ∈ s, f i ∈ dualWeyl R r n (ν i)) :
@@ -48,6 +63,9 @@ theorem dualWeyl_prod {R : Type*} [CommRing R] {r n : ℕ} {ι : Type*} (s : Fin
     exact dualWeyl_mul (hf a (Finset.mem_insert_self a s))
       (ih fun i hi => hf i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+The claim follows from `h ▸ hf`.
+-/
 theorem dualWeyl_of_eq {R : Type*} [CommRing R] {r n : ℕ} {ν μ : Fin n → ℕ}
     {f : MvPolynomial (Fin r × Fin n) R} (hf : f ∈ dualWeyl R r n ν) (h : ν = μ) :
     f ∈ dualWeyl R r n μ := h ▸ hf

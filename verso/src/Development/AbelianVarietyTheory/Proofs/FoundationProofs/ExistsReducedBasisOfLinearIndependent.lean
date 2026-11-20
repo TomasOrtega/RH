@@ -17,16 +17,25 @@ section Family
 
 variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] {d : ℕ}
 
+/- English proof (translation)
+Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (by norm_num), ← Real.rpow_natCast]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rpow_half_sq (d : ℕ) : ((2 : ℝ) ^ ((d : ℝ) / 2)) ^ 2 = 2 ^ d := by
   rw [← Real.rpow_natCast, ← Real.rpow_mul (by norm_num), ← Real.rpow_natCast]
   congr 1; push_cast; ring
 
+/- English proof (translation)
+Rewrite using `[norm_sq_comb b hb c]`. Conclude with `single_le_sum (f := fun j => nu b c j ^ 2 * ‖gs b j‖ ^ 2) (fun k _ => by positivity) (mem_univ j)`.
+-/
 theorem nu_sq_mul_le_norm_sq (b : Fin d → E) (hb : LinearIndependent ℝ b) (c : Fin d → ℝ)
     (j : Fin d) : nu b c j ^ 2 * ‖gs b j‖ ^ 2 ≤ ‖∑ l, c l • b l‖ ^ 2 := by
   rw [norm_sq_comb b hb c]
   exact single_le_sum (f := fun j => nu b c j ^ 2 * ‖gs b j‖ ^ 2)
     (fun k _ => by positivity) (mem_univ j)
 
+/- English proof (translation)
+The claim follows from `|⟪b i, ∑ l, (c l : ℝ) • b l⟫_ℝ| ≤ (d : ℝ) * (2 : ℝ) ^ ((d : ℝ) / 2) * ‖∑ l, (c l : ℝ) • b l‖ ^ 2 := by classical set x := ∑ l, (c l : ℝ) • b l with hx set s := (2 : ℝ) ^ ((d : ℝ) / 2) with hs have hs0 : 0 < s := by positivity by_cases hc : c = 0 · simp [hx, hc] obtain ⟨t, ht, hma …`.
+-/
 theorem abs_inner_le_of_isRed (b : Fin d → E) (hr : IsRed b) (c : Fin d → ℤ) (i : Fin d) :
     |⟪b i, ∑ l, (c l : ℝ) • b l⟫_ℝ| ≤
       (d : ℝ) * (2 : ℝ) ^ ((d : ℝ) / 2) * ‖∑ l, (c l : ℝ) • b l‖ ^ 2 := by
@@ -78,6 +87,19 @@ theorem abs_inner_le_of_isRed (b : Fin d → E) (hr : IsRed b) (c : Fin d → �
   refine (abs_sum_le_sum_abs _ _).trans ((sum_le_sum fun j _ => hterm j).trans_eq ?_)
   simp [mul_assoc]
 
+/- English proof (translation)
+Take `⟨w, hw0, hw⟩` from `babai b hr.1 c hN (t.val + 1) t.isLt`. Establish `h` using `hmin w`. Rewrite `h` using `[norm_sq_comb b hr.1, norm_sq_comb b hr.1, ← sum_filter_add_sum_filter_not univ (fun j : Fin d => j.val ≤ t.val), ← sum_filter_add_sum_filter_not univ (fun j : Fin d => j.val ≤ t.val)]`. Establish `e : ∑ j ∈ univ.filter (fun j : Fin d => ¬ j.val ≤ t.val), nu b (fun l => c l - N * w l) j ^ 2 * ‖gs b j‖ ^ 2 = ∑ j ∈ univ.filter (fun j : Fin d => ¬ j.val ≤ t.val), nu b c j ^ 2 * ‖gs b j‖ ^ 2`. Use `sum_congr rfl fun j hj => ?_` and prove the remaining obligations.
+
+Establish `hj' : ¬ j.val ≤ t.val` using `(mem_filter.1 hj).2`. Rewrite using `[nu_sub, nu_eq_zero_of b (fun l => (w l : ℝ)) j fun l hl => by`. Rewrite using `[hw0 l (by rw [Fin.le_def] at hl; omega), Int.cast_zero]]`. Simplify using the standard rewrite rules. Rewrite `h` using `[e, add_le_add_iff_right]`.
+
+Establish `h1 : nu b c t ^ 2 * ‖gs b t‖ ^ 2 ≤ ∑ j ∈ univ.filter (fun j : Fin d => j.val ≤ t.val), nu b c j ^ 2 * ‖gs b j‖ ^ 2` using `single_le_sum (f := fun j => nu b c j ^ 2 * ‖gs b j‖ ^ 2) (fun k _ => by positivity) (mem_filter.2 ⟨mem_univ _, le_rfl⟩)`. Establish `h2 : ∑ j ∈ univ.filter (fun j : Fin d => j.val ≤ t.val), nu b (fun l => c l - N * w l) j ^ 2 * ‖gs b j‖ ^ 2 ≤ (N / 2) ^ 2 * ∑ j ∈ univ.filter (fun j : Fin d => j.val ≤ t.val), ‖gs b j‖ ^ 2`. Rewrite using `[mul_sum]`. Use `sum_le_sum fun j hj => mul_le_mul_of_nonneg_right ?_ (sq_nonneg _)` and prove the remaining obligations. Rewrite using `[← sq_abs]`.
+
+Conclude with `pow_le_pow_left₀ (abs_nonneg _) (hw j (Nat.lt_succ_of_le (mem_filter.1 hj).2)) 2`. Establish `h3` using `sum_gs_le b hr.2.2 t.val t.isLt`. Establish `h4 : (2 : ℝ) ^ (t.val + 1) - 1 ≤ 2 ^ d`. Establish `: (2 : ℝ) ^ (t.val + 1) ≤ 2 ^ d` using `pow_le_pow_right₀ (by norm_num) t.isLt`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hg : 0 < ‖gs b t‖ ^ 2` using `by have := gs_ne_zero b hr.1 t; positivity`. Establish `h5 : nu b c t ^ 2 * ‖gs b t‖ ^ 2 ≤ ((N / 2) ^ 2 * 2 ^ d) * ‖gs b t‖ ^ 2`. Rewrite using `[mul_assoc]`. Conclude with `(h1.trans h).trans (h2.trans (mul_le_mul_of_nonneg_left (h3.trans (mul_le_mul_of_nonneg_right h4 hg.le)) (sq_nonneg _)))`. Use `abs_le_of_sq_le_sq ((le_of_mul_le_mul_right h5 hg).trans_eq ?_) (by positivity)` and prove the remaining obligations.
+
+Rewrite using `[Real.rpow_sub_one (by norm_num), mul_pow, div_pow, div_pow, rpow_half_sq]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem abs_nu_le_of_isRed (b : Fin d → E) (hr : IsRed b) (c : Fin d → ℝ) {N : ℝ} (hN : 0 < N)
     (hmin : ∀ w : Fin d → ℤ, ‖∑ l, c l • b l‖ ^ 2 ≤ ‖∑ l, (c l - N * w l) • b l‖ ^ 2)
     (t : Fin d) : |nu b c t| ≤ (2 : ℝ) ^ ((d : ℝ) / 2 - 1) * N := by
@@ -119,6 +141,9 @@ theorem abs_nu_le_of_isRed (b : Fin d → E) (hr : IsRed b) (c : Fin d → ℝ) 
   rw [Real.rpow_sub_one (by norm_num), mul_pow, div_pow, div_pow, rpow_half_sq]
   ring
 
+/- English proof (translation)
+Establish `h` using `coeff_bound b hr.1 hr.2.1 c (by positivity) (abs_nu_le_of_isRed b hr c hN hmin) i`. Establish `hd : (1 : ℝ) ≤ d` using `by exact_mod_cast i.pos`. Use `h.trans ?_` and prove the remaining obligations. Rewrite using `[C1, mul_assoc, mul_assoc]`. Conclude with `le_mul_of_one_le_left (by positivity) hd`.
+-/
 theorem abs_coeff_le_of_isRed (b : Fin d → E) (hr : IsRed b) (c : Fin d → ℝ) {N : ℝ} (hN : 0 < N)
     (hmin : ∀ w : Fin d → ℤ, ‖∑ l, c l • b l‖ ^ 2 ≤ ‖∑ l, (c l - N * w l) • b l‖ ^ 2)
     (i : Fin d) : |c i| ≤ C1 d * N := by
@@ -130,6 +155,15 @@ theorem abs_coeff_le_of_isRed (b : Fin d → E) (hr : IsRed b) (c : Fin d → �
 
 end Family
 
+/- English proof (translation)
+Introduce `d A hA`. Choose the witnesses or unpack the hypotheses as in `⟨B, hB⟩ : ∃ B : Matrix (Fin d) (Fin d) ℝ, A = Bᴴ * B := by`. Take `⟨B, hB⟩` from `CStarAlgebra.nonneg_iff_eq_star_mul_self.mp hA.posSemidef.nonneg`. Conclude with `⟨B, hB⟩`. Take `⟨e, hr⟩` from `exists_red_of (fB B) (fun e => (li_basis A B hA hB e).2) (hlow_of A B hA hB)`.
+
+Use `⟨e, fun i μ => ?_, fun N hN α hα i => ?_⟩` and prove the remaining obligations. Establish `h` using `abs_inner_le_of_isRed _ hr (fun l => e.repr μ l) i`. Rewrite `h` using `[← fB_expand B e μ]`. Rewrite using `[polar_eq A B hB, polar_eq A B hB, real_inner_self_eq_norm_sq]` and apply the resulting hypothesis. Use `abs_coeff_le_of_isRed _ hr (fun l => (e.repr α l : ℝ)) (by exact_mod_cast hN) (fun w => ?_) i` and prove the remaining obligations.
+
+Establish `h` using `hα (-e.equivFun.symm w)`. Rewrite `h` using `[Q_eq A B hB, Q_eq A B hB, fB_expand B e, fB_expand B e]`. Establish `e1 : ∀ l, ((e.repr (α + N • -e.equivFun.symm w) l : ℤ) : ℝ) = (e.repr α l : ℝ) - N * w l`. Introduce `l`. Establish `: e.repr (e.equivFun.symm w) l = w l` using `congrFun (e.equivFun.apply_symm_apply w) l`.
+
+Rewrite using `[map_add, map_smul, map_neg, Finsupp.add_apply, Finsupp.smul_apply, Finsupp.neg_apply, this]`. Move the coercions through the operations in `[smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e1] at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_reduced_basis_matrix : ExistsBoundedBasis := by
   intro d A hA
   obtain ⟨B, hB⟩ : ∃ B : Matrix (Fin d) (Fin d) ℝ, A = Bᴴ * B := by
@@ -158,6 +192,9 @@ section Lattice
 
 variable {X : Type*} [AddCommGroup X] {d : ℕ}
 
+/- English proof (translation)
+Use `conv_rhs => rw [← b.sum_repr x, ← b.sum_repr y, ← QuadraticMap.polarBilin_apply_apply]`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, QuadraticMap.polarBilin_apply_apply, ReciprocityTheory.ReducedBases.polar, toReal, dotProduct, mulVec, of_apply, mul_sum, Basis.equivFun_apply, zsmul_eq_mul]`. Rewrite using `[sum_comm]`. Conclude with `sum_congr rfl fun i _ => sum_congr rfl fun j _ => by ring`.
+-/
 theorem polar_equivFun (q : QuadraticMap ℤ X ℝ) (b : Basis (Fin d) ℤ X) (x y : X) :
     ReciprocityTheory.ReducedBases.polar (Matrix.of fun i j => QuadraticMap.polar q (b i) (b j))
       (b.equivFun x) (b.equivFun y) = QuadraticMap.polar q x y := by
@@ -168,10 +205,16 @@ theorem polar_equivFun (q : QuadraticMap ℤ X ℝ) (b : Basis (Fin d) ℤ X) (x
   rw [sum_comm]
   exact sum_congr rfl fun i _ => sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Rewrite using `[Q, polar_equivFun, QuadraticMap.polar_self, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem quadratic_equivFun (q : QuadraticMap ℤ X ℝ) (b : Basis (Fin d) ℤ X) (x : X) :
     Q (Matrix.of fun i j => QuadraticMap.polar q (b i) (b j)) (b.equivFun x) = q x := by
   rw [Q, polar_equivFun, QuadraticMap.polar_self, nsmul_eq_mul]; push_cast; ring
 
+/- English proof (translation)
+The claim follows from `|(e.repr α i : ℝ)| ≤ (d : ℝ) * (3 / 2 : ℝ) ^ d * (2 : ℝ) ^ ((d : ℝ) / 2 - 1) * N := by obtain ⟨e, h1, h2⟩ := exists_reduced_basis_matrix d _ hq refine ⟨e.map b.equivFun.symm, fun i μ => ?_, fun N hN α hα i => ?_⟩ · have h := h1 i (b.equivFun μ) rw [← polar_equivFun q b, ← polar_e …`.
+-/
 theorem exists_reduced_basis_of_posDef_gram (q : QuadraticMap ℤ X ℝ) (b : Basis (Fin d) ℤ X)
     (hq : (Matrix.of fun i j => QuadraticMap.polar q (b i) (b j)).PosDef) :
     ∃ e : Basis (Fin d) ℤ X,
@@ -189,6 +232,9 @@ theorem exists_reduced_basis_of_posDef_gram (q : QuadraticMap ℤ X ℝ) (b : Ba
     rw [← quadratic_equivFun q b, ← quadratic_equivFun q b] at h
     simpa only [map_add, map_smul, LinearEquiv.apply_symm_apply] using h
 
+/- English proof (translation)
+The claim follows from `|(e.repr α i : ℝ)| ≤ (d : ℝ) * (3 / 2 : ℝ) ^ d * (2 : ℝ) ^ ((d : ℝ) / 2 - 1) * N := exists_reduced_basis_of_posDef_gram q _ (posDef_gram_of_posDef_realExt (finBasisOfFinrankEq ℤ X hd) hq)`.
+-/
 theorem exists_reduced_basis_pairing_coord [Module.Free ℤ X] [Module.Finite ℤ X]
     (hd : finrank ℤ X = d) (q : QuadraticMap ℤ X ℝ) (hq : (realExt q).PosDef) :
     ∃ e : Basis (Fin d) ℤ X,
@@ -199,6 +245,11 @@ theorem exists_reduced_basis_pairing_coord [Module.Free ℤ X] [Module.Finite �
   exists_reduced_basis_of_posDef_gram q _
     (posDef_gram_of_posDef_realExt (finBasisOfFinrankEq ℤ X hd) hq)
 
+/- English proof (translation)
+Establish `hN0 : (0 : ℝ) < N` using `by linarith`. Rewrite `h` using `[QuadraticMap.polar_self, nsmul_eq_mul, abs_le]`. Establish `h1` using `mul_pos hN0 (mul_pos (sub_pos.2 hN) hμ)`. Establish `h2` using `mul_le_mul_of_nonneg_left h.1 hN0.le`. Establish `h3` using `mul_le_mul_of_nonneg_left h.2 hN0.le`.
+
+Simplify using `only [QuadraticMap.map_add q, QuadraticMap.polar_smul_right, QuadraticMap.polar_neg_left, QuadraticMap.map_smul, zsmul_eq_mul]`. Move the coercions through the operations in `at h2 h3 ⊢`. Apply the tactic sequence `constructor <;> nlinarith`.
+-/
 theorem lt_add_smul_of_abs_polar_le (q : QuadraticMap ℤ X ℝ) {e μ : X} {c : ℝ} {N : ℤ}
     (hc : 0 ≤ c) (hN : 2 * c < N) (hμ : 0 < q μ)
     (h : |QuadraticMap.polar q e μ| ≤ c * QuadraticMap.polar q μ μ) :
@@ -213,17 +264,28 @@ theorem lt_add_smul_of_abs_polar_le (q : QuadraticMap ℤ X ℝ) {e μ : X} {c :
   push_cast at h2 h3 ⊢
   constructor <;> nlinarith
 
+/- English proof (translation)
+Establish `: (d : ℝ) ≤ g` using `by exact_mod_cast h`. Use `gcongr`. Evaluate the numerical expressions.
+-/
 theorem pairing_const_mono {d g : ℕ} (h : d ≤ g) :
     (d : ℝ) * (2 : ℝ) ^ ((d : ℝ) / 2) ≤ (g : ℝ) * (2 : ℝ) ^ ((g : ℝ) / 2) := by
   have : (d : ℝ) ≤ g := by exact_mod_cast h
   gcongr; norm_num
 
+/- English proof (translation)
+Establish `: (d : ℝ) ≤ g` using `by exact_mod_cast h`. Apply the tactic sequence `gcongr <;> norm_num`.
+-/
 theorem coordinate_const_mono {d g : ℕ} (h : d ≤ g) :
     (d : ℝ) * (3 / 2 : ℝ) ^ d * (2 : ℝ) ^ ((d : ℝ) / 2 - 1) ≤
       (g : ℝ) * (3 / 2 : ℝ) ^ g * (2 : ℝ) ^ ((g : ℝ) / 2 - 1) := by
   have : (d : ℝ) ≤ g := by exact_mod_cast h
   gcongr <;> norm_num
 
+/- English proof (translation)
+Take `⟨e, h1, h2⟩` from `exists_reduced_basis_pairing_coord hd q hq`. Establish `hp` using `posDef_of_posDef_realExt hq`. Establish `h1' : ∀ (i : Fin d) (μ : X), |QuadraticMap.polar q (e i) μ| ≤ (g : ℝ) * (2 : ℝ) ^ ((g : ℝ) / 2) * QuadraticMap.polar q μ μ` using `fun i μ => by`. Use `(h1 i μ).trans (mul_le_mul_of_nonneg_right (pairing_const_mono hg) ?_)` and prove the remaining obligations. Rewrite using `[QuadraticMap.polar_self]`.
+
+Conclude with `nsmul_nonneg (hp.nonneg μ) 2`. Use `⟨e, h1', fun N hN α hα i => (h2 N hN α hα i).trans ?_, fun N hN i w hw => lt_add_smul_of_abs_polar_le q (by positivity) hN (hp w hw) (h1' i w)⟩` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (coordinate_const_mono hg) (by exact_mod_cast (by omega))`.
+-/
 theorem exists_reduced_basis_unique_min_of_le [Module.Free ℤ X] [Module.Finite ℤ X]
     (hd : finrank ℤ X = d) {g : ℕ} (hg : d ≤ g) (q : QuadraticMap ℤ X ℝ)
     (hq : (realExt q).PosDef) :

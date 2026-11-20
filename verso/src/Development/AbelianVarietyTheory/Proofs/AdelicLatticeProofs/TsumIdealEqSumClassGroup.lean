@@ -7,6 +7,13 @@ namespace GlobalTheory
 open NumberField IsDedekindDomain NumberField.mixedEmbedding MeasureTheory Complex Classical in
 open scoped ContDiff nonZeroDivisors in
 
+/- English proof (translation)
+Establish `hI0 : I ∈ (Ideal (𝓞 K))⁰` using `mem_nonZeroDivisors_of_ne_zero hI`. Establish `key : ∀ c, (I * (b c : Ideal (𝓞 K))).IsPrincipal ↔ ClassGroup.mk0 (b c) = (ClassGroup.mk0 ⟨I, hI0⟩)⁻¹`. Introduce `c`. Rewrite using `[eq_inv_iff_mul_eq_one, mul_comm, ← map_mul]`. Rewrite using `[ClassGroup.mk0_eq_one_iff]`.
+
+Both sides reduce to the same expression. Take `⟨c, hc⟩` from `hb.2 (ClassGroup.mk0 ⟨I, hI0⟩)⁻¹`. Use `⟨c, (key c).2 hc, fun c' hc' => hb.1 ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[(key c').1 hc']`.
+
+Conclude with `hc.symm`.
+-/
 theorem _root_.GlobalTheory.existsUnique_isPrincipal_mul_classRep {K : Type} [Field K] [NumberField K]
     (b : ClassGroup (𝓞 K) → (Ideal (𝓞 K))⁰)
     (hb : Function.Bijective (fun c => ClassGroup.mk0 (b c))) (I : Ideal (𝓞 K)) (hI : I ≠ ⊥) :
@@ -27,6 +34,15 @@ theorem _root_.GlobalTheory.existsUnique_isPrincipal_mul_classRep {K : Type} [Fi
 open NumberField IsDedekindDomain NumberField.mixedEmbedding MeasureTheory Complex Classical in
 open scoped ContDiff nonZeroDivisors in
 
+/- English proof (translation)
+Set `e : {I : Ideal (𝓞 K) // I ≠ ⊥ ∧ (I * B).IsPrincipal} → {J : Ideal (𝓞 K) // J ≠ ⊥ ∧ J.IsPrincipal ∧ J ≤ B}` to `fun I => ⟨I.1 * B, mul_ne_zero I.2.1 hB, I.2.2, Ideal.mul_le_inf.trans inf_le_right⟩`. Establish `he : Function.Bijective e`. Prove the components needed by the constructor for the conclusion. Introduce `I I' h`. Establish `h' : I.1 * B = I'.1 * B` using `congrArg Subtype.val h`.
+
+Conclude with `Subtype.ext (mul_right_cancel₀ hB h')`. Introduce `J`. Take `⟨I, hI⟩` from `Ideal.dvd_iff_le.2 J.2.2.2`. Establish `hI0 : I ≠ ⊥`. Introduce and unpack `rfl`.
+
+Conclude with `J.2.1 (by rw [hI, Ideal.mul_bot])`. Use `⟨⟨I, hI0, ?_⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm, ← hI]`. Conclude with `J.2.2.1`. Use `show I * B = J.1`.
+
+Rewrite using `[hI, mul_comm]`. Conclude with `(Equiv.ofBijective e he).tsum_eq (fun J => F J.1)`.
+-/
 theorem _root_.GlobalTheory.tsum_isPrincipal_mul_eq {K : Type} [Field K] [NumberField K]
     (B : Ideal (𝓞 K)) (hB : B ≠ ⊥) (F : Ideal (𝓞 K) → ℂ) :
     ∑' I : {I : Ideal (𝓞 K) // I ≠ ⊥ ∧ (I * B).IsPrincipal}, F (I * B) =

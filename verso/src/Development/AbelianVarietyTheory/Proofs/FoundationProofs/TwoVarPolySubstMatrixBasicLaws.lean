@@ -9,10 +9,18 @@ open MvPolynomial
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Simplify using `[slP]`.
+-/
 theorem slP_X (m : Matrix (Fin 2) (Fin 2) ℤ) (i : Fin 2) :
     slP (R := R) m (X i) = (m i 0 : R) • X 0 + (m i 1 : R) • X 1 := by
   simp [slP]
 
+/- English proof (translation)
+Establish `h : (slP (R` using `R) (m * m')) = (slP m').comp (slP m) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Simplify using `only [AlgHom.comp_apply, slP_X, map_add, map_smul, Matrix.mul_apply, Fin.sum_univ_two]`. Use `push_cast`.
+
+Simplify using `only [smul_add, add_smul, smul_smul, mul_comm]`. Normalize the expressions using the abelian group laws. Rewrite using `[h]`. Both sides reduce to the same expression.
+-/
 theorem polySlash_mul (m m' : Matrix (Fin 2) (Fin 2) ℤ) (p : MvPolynomial (Fin 2) R) :
     slP (m * m') p = slP m' (slP m p) := by
   have h : (slP (R := R) (m * m')) = (slP m').comp (slP m) := by
@@ -24,6 +32,11 @@ theorem polySlash_mul (m m' : Matrix (Fin 2) (Fin 2) ℤ) (p : MvPolynomial (Fin
     abel
   rw [h]; rfl
 
+/- English proof (translation)
+Establish `h : (slP (R` using `R) 1) = AlgHom.id R _ := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Apply the tactic sequence `fin_cases i <;> simp [slP_X]`. Rewrite using `[h]`.
+
+Both sides reduce to the same expression.
+-/
 theorem polySlash_one' (p : MvPolynomial (Fin 2) R) : slP 1 p = p := by
   have h : (slP (R := R) 1) = AlgHom.id R _ := by
     apply MvPolynomial.algHom_ext
@@ -31,6 +44,11 @@ theorem polySlash_one' (p : MvPolynomial (Fin 2) R) : slP 1 p = p := by
     fin_cases i <;> simp [slP_X]
   rw [h]; rfl
 
+/- English proof (translation)
+Use `IsHomogeneous.aeval (τ := Fin 2) (S := R) (n := 1) hp (fun i => (m i 0 : R) • X 0 + (m i 1 : R) • X 1) (fun i => by` as an intermediate fact. Apply `IsHomogeneous.add` to reduce the goal to its premises. Rewrite using `[smul_eq_C_mul]`. Conclude with `(isHomogeneous_X R 0).C_mul _`. Rewrite using `[smul_eq_C_mul]`.
+
+Conclude with `(isHomogeneous_X R 1).C_mul _)`. Rewrite `this` using `[one_mul]`. Simplify `this` using `[slP]`.
+-/
 theorem polySlash_isHomogeneous (m : Matrix (Fin 2) (Fin 2) ℤ) (w : ℕ) (p : MvPolynomial (Fin 2) R)
     (hp : p.IsHomogeneous w) : (slP m p).IsHomogeneous w := by
   have := IsHomogeneous.aeval (τ := Fin 2) (S := R) (n := 1) hp (fun i => (m i 0 : R) • X 0 + (m i 1 : R) • X 1) (fun i => by
@@ -40,6 +58,11 @@ theorem polySlash_isHomogeneous (m : Matrix (Fin 2) (Fin 2) ℤ) (w : ℕ) (p : 
   rw [one_mul] at this
   simpa [slP] using this
 
+/- English proof (translation)
+Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simp [slP]`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp`. Simplify using `only [map_mul, hp, slP_X, eval_X]`.
+
+Simplify using `[Matrix.mulVec, dotProduct, Fin.sum_univ_two]`.
+-/
 theorem eval_slP (m : Matrix (Fin 2) (Fin 2) ℤ) (u : Fin 2 → R) (p : MvPolynomial (Fin 2) R) :
     eval u (slP m p) = eval (m.map (Int.castRingHom R) *ᵥ u) p := by
   induction p using MvPolynomial.induction_on with
@@ -49,6 +72,11 @@ theorem eval_slP (m : Matrix (Fin 2) (Fin 2) ℤ) (u : Fin 2 → R) (p : MvPolyn
     simp only [map_mul, hp, slP_X, eval_X]
     simp [Matrix.mulVec, dotProduct, Fin.sum_univ_two]
 
+/- English proof (translation)
+Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simp [slP]`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp`. Simplify using `only [map_mul, hp, slP_X, map_X, map_add]`.
+
+Simplify using `[MvPolynomial.smul_eq_C_mul]`.
+-/
 theorem map_slP {S : Type} [CommRing S] (f : R →+* S) (m : Matrix (Fin 2) (Fin 2) ℤ) (p : MvPolynomial (Fin 2) R) :
     MvPolynomial.map f (slP m p) = slP m (MvPolynomial.map f p) := by
   induction p using MvPolynomial.induction_on with
@@ -58,10 +86,22 @@ theorem map_slP {S : Type} [CommRing S] (f : R →+* S) (m : Matrix (Fin 2) (Fin
     simp only [map_mul, hp, slP_X, map_X, map_add]
     simp [MvPolynomial.smul_eq_C_mul]
 
+/- English proof (translation)
+Simplify using `only [slP, h]`.
+-/
 theorem polySlash_congr (m m' : Matrix (Fin 2) (Fin 2) ℤ) (p : MvPolynomial (Fin 2) R)
     (h : ∀ i j, (m i j : R) = (m' i j : R)) : slP m p = slP m' p := by
   simp only [slP, h]
 
+/- English proof (translation)
+Establish `e : (slP (R` using `R) (-1)) = aeval fun i => (-1 : R) • X i := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Apply the tactic sequence `fin_cases i <;> simp [slP_X]`. Rewrite using `[e]`.
+
+Use `conv_lhs => rw [p.as_sum]`. Use `conv_rhs => rw [p.as_sum]`. Rewrite using `[map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun v hv => ?_` and prove the remaining obligations. Establish `hw` using `hp (mem_support_iff.mp hv)`.
+
+Rewrite using `[aeval_monomial]`. Simplify using `only [smul_pow, Finsupp.prod_pow]`. Establish `hw' : v 0 + v 1 = w`. Rewrite using `[← hw, Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Fin.sum_univ_two]; simp`. Rewrite using `[Finsupp.prod_fintype _ _ (by simp), Fin.prod_univ_two, monomial_eq, Finsupp.prod_fintype _ _ (by simp), Fin.prod_univ_two, ← hw']`.
+
+Simplify using `only [smul_eq_C_mul, algebraMap_eq, pow_add, map_mul, map_pow, map_neg, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem polySlash_neg_one (w : ℕ) (p : MvPolynomial (Fin 2) R) (hp : p.IsHomogeneous w) :
     slP (-1) p = (-1 : R) ^ w • p := by
   have e : (slP (R := R) (-1)) = aeval fun i => (-1 : R) • X i := by
@@ -87,6 +127,9 @@ end GlobalTheory.KZ.SlPLaws
 
 namespace GlobalTheory.KZ
 
+/- English proof (translation)
+Introduce `R _`. Conclude with `⟨SlPLaws.polySlash_mul, SlPLaws.polySlash_one', SlPLaws.polySlash_isHomogeneous, SlPLaws.eval_slP, fun S _ f => SlPLaws.map_slP f, fun m m' p h => SlPLaws.polySlash_congr m m' p h, fun w p hp => SlPLaws.polySlash_neg_one w p hp⟩`.
+-/
 theorem polySlash_laws : ∀ (R : Type) [CommRing R], (∀ (m m' : Matrix (Fin 2) (Fin 2) ℤ) (p : MvPolynomial (Fin 2) R), slP (m * m') p = slP m' (slP m p)) ∧ (∀ p : MvPolynomial (Fin 2) R, slP 1 p = p) ∧ (∀ (m : Matrix (Fin 2) (Fin 2) ℤ) (w : ℕ) (p : MvPolynomial (Fin 2) R), p.IsHomogeneous w → (slP m p).IsHomogeneous w) ∧ (∀ (m : Matrix (Fin 2) (Fin 2) ℤ) (u : Fin 2 → R) (p : MvPolynomial (Fin 2) R), MvPolynomial.eval u (slP m p) = MvPolynomial.eval (m.map (Int.castRingHom R) *ᵥ u) p) ∧ (∀ (S : Type) [CommRing S] (f : R →+* S) (m : Matrix (Fin 2) (Fin 2) ℤ) (p : MvPolynomial (Fin 2) R), MvPolynomial.map f (slP m p) = slP m (MvPolynomial.map f p)) ∧ (∀ (m m' : Matrix (Fin 2) (Fin 2) ℤ) (p : MvPolynomial (Fin 2) R), (∀ i j, (m i j : R) = (m' i j : R)) → slP m p = slP m' p) ∧ (∀ (w : ℕ) (p : MvPolynomial (Fin 2) R), p.IsHomogeneous w → slP (-1) p = (-1 : R) ^ w • p) := by
   intro R _
   exact ⟨SlPLaws.polySlash_mul, SlPLaws.polySlash_one', SlPLaws.polySlash_isHomogeneous, SlPLaws.eval_slP, fun S _ f => SlPLaws.map_slP f,

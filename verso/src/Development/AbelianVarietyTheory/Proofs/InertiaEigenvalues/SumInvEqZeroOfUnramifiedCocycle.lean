@@ -6,6 +6,11 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `⟨fun p => Quotient.liftOn₂' p.1 p.2 (fun a b => w (a, b)) ?_, ?_, fun g h => rfl⟩` and prove the remaining obligations. Introduce `a b a' b' ha hb`. Establish `e` using `h a b _ (QuotientGroup.leftRel_apply.1 ha) _ (QuotientGroup.leftRel_apply.1 hb)`. Simplify using `using e.symm`. Rewrite using `[((QuotientGroup.isOpenQuotientMap_mk (N := N)).prodMap (QuotientGroup.isOpenQuotientMap_mk (N := N))).isQuotientMap.continuous_iff]`.
+
+Conclude with `hw`.
+-/
 theorem exists_descend_pair_quotient {Γ M : Type} [Group Γ] [TopologicalSpace Γ]
     [IsTopologicalGroup Γ] [TopologicalSpace M] (N : Subgroup Γ) (w : Γ × Γ → M)
     (hw : Continuous w) (h : ∀ g h : Γ, ∀ n ∈ N, ∀ n' ∈ N, w (g * n, h * n') = w (g, h)) :
@@ -19,6 +24,15 @@ theorem exists_descend_pair_quotient {Γ M : Type} [Group Γ] [TopologicalSpace 
       (QuotientGroup.isOpenQuotientMap_mk (N := N))).isQuotientMap.continuous_iff]
     exact hw
 
+/- English proof (translation)
+Introduce `hPT F Ω _ _ _ _ _ _ l _ ζ hζ`. Take `⟨inv, hinv, H⟩` from `hPT.annihilators F Ω l 1 one_pos ζ hζ`. Use `⟨inv, hinv, fun S hS Av hA w hw wl hwl => ?_⟩` and prove the remaining obligations. Take `⟨μ, hμ⟩` from `exists_lift_cycMod (Ω := Ω) (r := 1) hS`. Take `⟨W, hWc, hW⟩` from `exists_descend_pair_quotient _ w.1 w.2.1 hw`.
+
+Establish `hmem : W ∈ Z2 (charRep μ)`. Use `⟨hWc, fun g h k => ?_⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective g`. Take `⟨h, rfl⟩` from `QuotientGroup.mk_surjective h`. Take `⟨k, rfl⟩` from `QuotientGroup.mk_surjective k`.
+
+Establish `e` using `w.2.2 g h k`. Establish `e2 : μ (g : G F Ω ⧸ _) = cycMod F Ω l 1 g` using `DFunLike.congr_fun hμ g`. Rewrite using `[← QuotientGroup.mk_mul, ← QuotientGroup.mk_mul, hW, hW, hW, hW, charRep_apply, e2]`. Conclude with `e`. Establish `e` using `(H S hS (fun v => Av v.1) (fun v => hA v.1) μ hμ).1 (Submodule.Quotient.mk ⟨W, hmem⟩)`.
+
+Rewrite using `[← Finset.sum_coe_sort]`. Use `Eq.trans (Finset.sum_congr rfl fun v _ => ?_) e` and prove the remaining obligations. Use `congrArg (inv (Av v.1)) ?_` and prove the remaining obligations. Use `congrArg Submodule.Quotient.mk (Subtype.ext (funext fun p => ?_))` and prove the remaining obligations. Conclude with `(hwl v.1 p.1 p.2).trans (hW _ _).symm`.
+-/
 theorem sum_inv_eq_zero_of_unramified_cocycle : PoitouTateTotallyComplex → ∀ (F Ω : Type) [Field F] [NumberField F] [IsTotallyComplex F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (ζ : Ω), IsPrimitiveRoot ζ (l ^ 1) → ∃ inv : InvFam F Ω l 1, IsLocalInvariants ζ inv ∧ ∀ S : Finset (HeightOneSpectrum (𝓞 F)), ContainsAbove S l → ∀ Av : HeightOneSpectrum (𝓞 F) → ValuationSubring Ω, (∀ v, IsPlaceOver (Av v) v) → ∀ w : Z2 (muRep F Ω l 1), (∀ g h : G F Ω, ∀ n ∈ NS Ω (S : Set (HeightOneSpectrum (𝓞 F))), ∀ n' ∈ NS Ω (S : Set (HeightOneSpectrum (𝓞 F))), w.1 (g * n, h * n') = w.1 (g, h)) → ∀ wl : ∀ v, Z2 (muLoc F l 1 (Av v)), (∀ v (g h : Dec (F := F) (Av v)), (wl v).1 (g, h) = w.1 ((g : G F Ω), (h : G F Ω))) → ∑ v ∈ S, inv (Av v) (Submodule.Quotient.mk (wl v)) = 0 := by
   intro hPT F Ω _ _ _ _ _ _ l _ ζ hζ
   obtain ⟨inv, hinv, H⟩ := hPT.annihilators F Ω l 1 one_pos ζ hζ

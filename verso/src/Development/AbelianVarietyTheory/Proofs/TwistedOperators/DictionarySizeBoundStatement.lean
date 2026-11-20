@@ -16,5 +16,8 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle (Tri)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.DictFree.dictAt_big | exact GlobalTheory.DictFree.dictAt_big | (intros; apply GlobalTheory.DictFree.dictAt_big <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.dictionary_size_bound : GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → Big fun ch => GlobalTheory.SumSize.DictAt ch := by
   first | exact @GlobalTheory.DictFree.dictAt_big | exact GlobalTheory.DictFree.dictAt_big | (intros; apply GlobalTheory.DictFree.dictAt_big <;> assumption)

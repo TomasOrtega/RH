@@ -5,5 +5,8 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.Cara
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.GaloisRepOfPolarizedPair
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.CaraianiLocalGlobal
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.galoisRepOfPolarizedCuspidal_iff_pair | exact GlobalTheory.galoisRepOfPolarizedCuspidal_iff_pair | (intros; apply GlobalTheory.galoisRepOfPolarizedCuspidal_iff_pair <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.local_global_of_gelfand_kazhdan : GlobalTheory.Published.GelfandKazhdanDual → (GlobalTheory.Published.CaraianiLocalGlobalDual → GlobalTheory.Published.CaraianiLocalGlobal) ∧ (GlobalTheory.Published.GaloisRepOfPolarizedPair → GlobalTheory.Published.GaloisRepOfPolarizedCuspidal) := by
   first | exact @GlobalTheory.galoisRepOfPolarizedCuspidal_iff_pair | exact GlobalTheory.galoisRepOfPolarizedCuspidal_iff_pair | (intros; apply GlobalTheory.galoisRepOfPolarizedCuspidal_iff_pair <;> assumption)

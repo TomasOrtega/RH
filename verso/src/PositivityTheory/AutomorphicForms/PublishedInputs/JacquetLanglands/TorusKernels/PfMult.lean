@@ -10,6 +10,9 @@ variable {F I Gf : Type} [Field F] [Group Gf] (D : Dat F I Gf)
 
 def A (δ : ℝ) (y : D.Y) : Set (PG F) := {γ : PG F | γ • y.1 = y.1 ∧ Near δ y.2 (γ • y.2 : D.Xs)}
 
+/- English proof (translation)
+Proceed by induction on `g using QuotientGroup.induction_on with`. Consider the case `H γ`. Rewrite using `[Dat.mk_smulX D γ z, Dat.mk_smulX D γ w]`. Simplify using `only [Near, Dat.act, hB.2.2.2.1]`.
+-/
 theorem near_smul (hB : B1b) (δ : ℝ) (g : PG F) (z w : D.Xs) :
     Near δ (g • z : D.Xs) (g • w : D.Xs) ↔ Near δ z w := by
   induction g using QuotientGroup.induction_on with
@@ -17,11 +20,19 @@ theorem near_smul (hB : B1b) (δ : ℝ) (g : PG F) (z w : D.Xs) :
     rw [Dat.mk_smulX D γ z, Dat.mk_smulX D γ w]
     simp only [Near, Dat.act, hB.2.2.2.1]
 
+/- English proof (translation)
+Simplify using `only [A, Set.mem_setOf_eq, Prod.smul_fst, Prod.smul_snd, mul_smul, inv_smul_smul, smul_left_cancel_iff, near_smul D hB]`.
+-/
 theorem mem_conj (hB : B1b) (δ : ℝ) (g γ : PG F) (y : D.Y) :
     g * γ * g⁻¹ ∈ A D δ (g • y) ↔ γ ∈ A D δ y := by
   simp only [A, Set.mem_setOf_eq, Prod.smul_fst, Prod.smul_snd, mul_smul, inv_smul_smul,
     smul_left_cancel_iff, near_smul D hB]
 
+/- English proof (translation)
+Use extensionality with `γ'`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨g⁻¹ * γ' * g, (mem_conj D hB δ g _ y).1 ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[show g * (g⁻¹ * γ' * g) * g⁻¹ = γ' by group]` and apply the resulting hypothesis.
+
+Use `show g * (g⁻¹ * γ' * g) * g⁻¹ = γ' group`. Introduce and unpack `⟨γ, hγ, rfl⟩`. Conclude with `(mem_conj D hB δ g γ y).2 hγ`.
+-/
 theorem A_conj (hB : B1b) (δ : ℝ) (g : PG F) (y : D.Y) :
     A D δ (g • y) = (fun γ => g * γ * g⁻¹) '' A D δ y := by
   ext γ'
@@ -34,20 +45,32 @@ theorem A_conj (hB : B1b) (δ : ℝ) (g : PG F) (y : D.Y) :
   · rintro ⟨γ, hγ, rfl⟩
     exact (mem_conj D hB δ g γ y).2 hγ
 
+/- English proof (translation)
+Introduce `a b h`. Simplify using `using h`.
+-/
 theorem conj_inj (g : PG F) : Function.Injective (fun γ : PG F => g * γ * g⁻¹) := by
   intro a b h
   simpa using h
 
+/- English proof (translation)
+Rewrite using `[A_conj D hB δ g y]`. Conclude with `⟨Set.finite_image_iff (conj_inj g).injOn, Set.ncard_image_of_injective _ (conj_inj g)⟩`.
+-/
 theorem fin_card (hB : B1b) (δ : ℝ) (g : PG F) (y : D.Y) :
     ((A D δ (g • y)).Finite ↔ (A D δ y).Finite) ∧ (A D δ (g • y)).ncard = (A D δ y).ncard := by
   rw [A_conj D hB δ g y]
   exact ⟨Set.finite_image_iff (conj_inj g).injOn, Set.ncard_image_of_injective _ (conj_inj g)⟩
 
+/- English proof (translation)
+Introduce `h`. Use `congrFun h 1` as an intermediate fact. Simplify using `at this`.
+-/
 theorem e01 : (![0, 1] : Fin 2 → F) ≠ 0 := by
   intro h
   have := congrFun h 1
   simp at this
 
+/- English proof (translation)
+Simplify using `[Dat.Ht]`.
+-/
 theorem Ht01 [Fintype I] (z : X I) (x : Gf) : D.Ht ![0, 1] z x = (∏ v, |(z v).1.im|) * D.hf ![0, 1] x := by
   simp [Dat.Ht]
 
@@ -55,6 +78,29 @@ end UpperTheory.Esk.ExponentialSlopeDerivatives
 
 open UpperTheory.Esk UpperTheory.Esk.ExponentialSlopeDerivatives
 
+/- English proof (translation)
+Introduce `hB hE F I Gf _ _ _ D hD δ c₀ hδ hc₀`. Take `⟨-, h2, h3, -, -, -, -, -, -, h10, -⟩` from `hE F I Gf D hD`. Take `⟨S, C, c, hc, hnorm⟩` from `hD.normal c₀ hc₀`. Establish `hcnt : ∀ x' : Gf, ∃ C' : ℝ, ∀ z : D.Xs, Sg C c z → (A D δ (((x' : Gf ⧸ D.H), z) : D.Om × D.Xs)).Finite ∧ ((A D δ (((x' : Gf ⧸ D.H), z) : D.Om × D.Xs)).ncard : ℝ) ≤ C' * (1 + ∏ v, |(z v).1.im|)` using `fun x' => hD.count ((x' : Gf ⧸ D.H)) δ C c hδ hc`. Use `choose C' hC' using hcnt`.
+
+Establish `hapos : ∀ x : Gf, 0 < D.hf ![0, 1] (D.rep ((x : Gf ⧸ D.H)))` using `fun x => hD.pos _ e01 _`. Establish `final : ∀ (N Cx P a H K : ℝ), N ≤ Cx * (1 + P) → 0 ≤ P → P * a = H → 0 < a → 0 ≤ H → max Cx 0 * (1 + 1 / a) ≤ K → N ≤ K * (1 + H)`. Introduce `N Cx P a H K hN hP hPa ha hH hK`. Establish `hP' : P = H / a` using `eq_div_of_mul_eq ha.ne' hPa`. Establish `h1 : N ≤ max Cx 0 * (1 + P)` using `hN.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (by linarith))`.
+
+Establish `h2 : 1 + P ≤ (1 + 1 / a) * (1 + H)`. Rewrite using `[hP']`. Establish `h0 : 0 ≤ 1 / a` using `by positivity`. Establish `he : (1 + 1 / a) * (1 + H) - (1 + H / a) = H + 1 / a` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hM : 0 ≤ max Cx 0` using `le_max_right _ _`. Combine the equalities or inequalities in the displayed calculation. Use `⟨∑ x ∈ S, max (C' x) 0 * (1 + 1 / D.hf ![0, 1] (D.rep ((x : Gf ⧸ D.H)))), ?_⟩` and prove the remaining obligations. Introduce `y s hs hy`. Take `⟨γ₀, hγ₀⟩` from `h10 s hs`.
+
+Establish `e1 : D.HtY ![0, 1] ((γ₀ : PG F) • y) = D.HtY s y`. Rewrite using `[h2 _ e01 γ₀ y, hγ₀]`. Establish `hn : c₀ ≤ D.Ht ![0, 1] ((γ₀ : PG F) • y).2 (D.rep ((γ₀ : PG F) • y).1)`. Rewrite `hy` using `[← e1]`. Conclude with `hy`.
+
+Take `⟨b, hb10, ⟨x', hx'S, h, hh, hbx⟩, hsg⟩` from `hnorm _ _ hn`. Establish `hb11 : b.val 1 1 ≠ 0`. Introduce `h0`. Apply `b.det_ne_zero` to reduce the goal to its premises. Rewrite using `[Matrix.det_fin_two]`.
+
+Simplify using `[h0, hb10]`. Establish `hvb : ![0, 1] ᵥ* b.val = b.val 1 1 • ![(0 : F), 1]`. Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [Matrix.vecMul, dotProduct, Fin.sum_univ_two, hb10]`. Establish `hsm : ∀ ω : D.Om, (b : PG F) • ω = (((D.j b * D.rep ω : Gf) : Gf ⧸ D.H) : D.Om)`.
+
+Introduce `ω`. Use `conv_lhs => rw [← QuotientGroup.out_eq' ω]`. Both sides reduce to the same expression. Establish `hy'' : (b : PG F) • ((γ₀ : PG F) • y) = (((x' : Gf ⧸ D.H), D.act b ((γ₀ : PG F) • y).2) : D.Om × D.Xs)`. Use `Prod.ext ?_ (D.mk_smulX b _)` and prove the remaining obligations.
+
+Use `show (b : PG F) • ((γ₀ : PG F) • y).1 = _`. Rewrite using `[hsm, hbx]`. Conclude with `QuotientGroup.eq.2 (by simpa using hh)`. Take `⟨f1, c1⟩` from `fin_card D hB δ (γ₀ : PG F) y`. Take `⟨f2, c2⟩` from `fin_card D hB δ (b : PG F) ((γ₀ : PG F) • y)`.
+
+Rewrite `f2`, `c2` using `[hy'']`. Take `⟨hfin, hle⟩` from `hC' x' _ hsg`. Use `⟨f1.1 (f2.1 hfin), ?_⟩` and prove the remaining obligations. Establish `hHt : D.HtY ![0, 1] (((x' : Gf ⧸ D.H), D.act b ((γ₀ : PG F) • y).2) : D.Om × D.Xs) = D.HtY s y`. Rewrite using `[← hy'', h2 _ e01 b _, hvb, h3 _ e01 _ hb11, e1]`.
+
+Establish `hP : D.HtY ![0, 1] (((x' : Gf ⧸ D.H), D.act b ((γ₀ : PG F) • y).2) : D.Om × D.Xs) = (∏ v, |((D.act b ((γ₀ : PG F) • y).2) v).1.im|) * D.hf ![0, 1] (D.rep ((x' : Gf ⧸ D.H)))` using `Ht01 D (D.act b ((γ₀ : PG F) • y).2) (D.rep ((x' : Gf ⧸ D.H)))`. Establish `hH : 0 ≤ D.HtY s y` using `by linarith`. Use `show ((A D δ y).ncard : ℝ) ≤ _`. Rewrite using `[← c1, ← c2]`. Conclude with `final _ _ _ _ _ _ hle (Finset.prod_nonneg fun v _ => abs_nonneg _) (hP.symm.trans hHt) (hapos x') hH (Finset.single_le_sum (f := fun x => max (C' x) 0 * (1 + 1 / D.hf ![0, 1] (D.rep ((x : Gf ⧸ D.H))))) (fun x _ => mul_nonneg (le_max_right _ _) (add_nonneg zero_le_one (one_div_non …`.
+-/
 theorem UpperTheory.Esk.pf_Mult : UpperTheory.Esk.B1b → UpperTheory.Esk.E0d → UpperTheory.Esk.Mult := by
   intro hB hE F I Gf _ _ _ D hD δ c₀ hδ hc₀
   obtain ⟨-, h2, h3, -, -, -, -, -, -, h10, -⟩ := hE F I Gf D hD

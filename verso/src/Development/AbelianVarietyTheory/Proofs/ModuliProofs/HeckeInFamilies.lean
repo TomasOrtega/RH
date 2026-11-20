@@ -17,6 +17,11 @@ open GlobalTheory.HkFam
 
 namespace GlobalTheory.HkFam
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo 𝔓 p i hr hA`. Use `⟨?_, fun S s o C j h₁ h₂ h₃ h₄ h₅ => GlobalTheory.T.existsUnique_heckeQuotient_reducedBase E H D l Xo 𝔓 p i S s o C j hr hA h₁ h₂ h₃ h₄ h₅⟩` and prove the remaining obligations. Take `⟨Z⟩` from `GlobalTheory.T.nonempty_heckeCorrespondenceScheme E H D l Xo 𝔓 p i hr hA`. Take `⟨a, b, c⟩` from `GlobalTheory.T.heckeCorrespondence_secondProjection_finite_etale E H D l Xo 𝔓 p i Z hr hA`. Take `⟨d, e⟩` from `GlobalTheory.T.heckeKernelScheme_geometric_points_eq_kernels E H D l Xo 𝔓 p i Z.toKerScheme hA`.
+
+Conclude with `⟨Z, a, b, fun h => ⟨e h, c h⟩, fun k _ _ y C hC => ⟨d k y C hC, fun z hz => pointQuot_snd E H D l Xo 𝔓 p i Z hA k z y C hz⟩⟩`.
+-/
 theorem heckeInFamilies : HeckeInFamilies := by
   intro E _ _ _ H D l Xo 𝔓 p i hr hA
   refine ⟨?_, fun S s o C j h₁ h₂ h₃ h₄ h₅ => GlobalTheory.T.existsUnique_heckeQuotient_reducedBase E H D l Xo 𝔓 p i S s o C j hr hA h₁ h₂ h₃ h₄ h₅⟩

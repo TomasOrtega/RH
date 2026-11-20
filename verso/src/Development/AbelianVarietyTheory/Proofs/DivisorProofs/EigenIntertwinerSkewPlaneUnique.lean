@@ -13,6 +13,17 @@ open scoped TensorProduct Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ B n d d₁ r s r' s' i₀ i₁ X W W₁ H' M M₁ hB hX hW hM hH hM₁ e e' he he'`. Take `⟨ei, ev, hei, hev, hloc⟩` from `he.loc`. Take `⟨ei', ev', hei', hev', hloc'⟩` from `he'.loc`. Establish `hfin : ∀ v, ∀ φ ∈ SB (Fin n × Fin d → Fv F v), ev' v φ = ev v φ` using `fun v φ hφ => GlobalTheory.T.eigen_intertwiner_local_factor hP F E σ B n d d₁ r s r' s' i₀ i₁ X W W₁ H' M M₁ hB hX hW hM hH hM₁ v (ev v) (ev' v) (GlobalTheory.T.finRel_local_factor_of_map_pure_eq_pure F E σ B n d d₁ r s r' s' i₀ i₁ X W W₁ H' M M₁ hB hX hW hM hH hM₁ e he ei ev hei …`. Take `⟨c, hc⟩` from `GlobalTheory.T.eigen_intertwiner_archimedean hP F E σ B n d d₁ r s r' s' i₀ i₁ X W W₁ H' M M₁ hB hX hW hM hH hM₁ ei ei' hei (GlobalTheory.T.eigen_intertwiner_skew_plane_unique_dual F E σ B n d d₁ r s r' s' i₀ i₁ X W W₁ H' M M₁ hB hX hW hM hH hM₁ e he ei ev hei hev hloc) (GlobalTh …`.
+
+Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Conclude with `hei' (by rw [hc, zero_smul])`. Use `⟨c, hc0, fun Φ hΦ => ?_⟩` and prove the remaining obligations. Unfold `PolData at hΦ`.
+
+Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, -, φ, hφ, hvac, rfl⟩` from `hx`. Rewrite using `[hloc' f φ hφ hvac, hloc f φ hφ hvac, hc]`. Establish `hfe : (fun v => ev' v (φ v)) = fun v => ev v (φ v)` using `funext fun v => hfin v _ (hφ v)`.
+
+Rewrite using `[hfe]`. Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, Pi.smul_apply, smul_eq_mul, ContinuousLinearMap.smul_apply, SchwartzMap.smul_apply, mul_assoc]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, map_add, hx, hy, smul_add]`.
+
+Consider the case `smul a x _ hx => rw [map_smul, map_smul, hx, smul_comm]`.
+-/
 theorem GlobalTheory.ThK.EvUniq.evZero_unique : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d d₁ r s r' s' i₀ i₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (M : Model σ X W)
     (M₁ : Model σ X W₁), B.IsGood σ → X.IsHerm σ B r s → W.IsSkew σ B r' s' → M.IsGood B.ψ → H'.IsAdapted σ B W W₁ i₀ i₁ →

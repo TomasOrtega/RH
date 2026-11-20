@@ -9,6 +9,11 @@ namespace GlobalTheory
 namespace Katz
 namespace WittHaus
 
+/- English proof (translation)
+Establish `h1` using `constantCoeff_subst_eq_zero ha ha' (f := f - C (constantCoeff f)) (by simp)`. Establish `h2 : subst a (C (constantCoeff f) : MvPowerSeries σ R) = C (constantCoeff f)`. Rewrite using `[← coe_substAlgHom ha]`. Conclude with `(substAlgHom ha).commutes (constantCoeff f)`. Rewrite `h1` using `[← coe_substAlgHom ha, map_sub, coe_substAlgHom ha, h2, map_sub, constantCoeff_C]`.
+
+Conclude with `sub_eq_zero.mp h1`.
+-/
 theorem constantCoeff_subst_of_zero' {σ τ R : Type} [CommRing R] {a : σ → MvPowerSeries τ R}
     (ha : HasSubst a) (ha' : ∀ i, constantCoeff (a i) = 0) (f : MvPowerSeries σ R) :
     constantCoeff (subst a f) = constantCoeff f := by
@@ -19,6 +24,9 @@ theorem constantCoeff_subst_of_zero' {σ τ R : Type} [CommRing R] {a : σ → M
   rw [← coe_substAlgHom ha, map_sub, coe_substAlgHom ha, h2, map_sub, constantCoeff_C] at h1
   exact sub_eq_zero.mp h1
 
+/- English proof (translation)
+Apply `WittVector.isUnit_of_coeff_zero_ne_zero` to reduce the goal to its premises. Introduce `h0`. Establish `: (WittVector.constantCoeff (u : WittVector p k)) = 0` using `h0`. Rewrite `this` using `[map_natCast, CharP.cast_eq_zero_iff k p]`. Conclude with `hu this`.
+-/
 theorem isUnit_natCast_of_not_dvd (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p] (u : ℕ)
     (hu : ¬ p ∣ u) : IsUnit (u : WittVector p k) := by
   apply WittVector.isUnit_of_coeff_zero_ne_zero
@@ -27,6 +35,13 @@ theorem isUnit_natCast_of_not_dvd (p : ℕ) [Fact p.Prime] (k : Type) [Field k] 
   rw [map_natCast, CharP.cast_eq_zero_iff k p] at this
   exact hu this
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `hf.2 0`. Establish `hμ : HasSubst (fun i => lift p (μ i))` using `hasSubst_of_constantCoeff_zero fun i => constantCoeff_lift p (h.const i)`. Establish `hX : HasSubst (fun i => (X (Sum.inl i) : MvPowerSeries (Fin d ⊕ Fin d) (Fr p k)))` using `hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _`. Establish `hY : HasSubst (fun i => (X (Sum.inr i) : MvPowerSeries (Fin d ⊕ Fin d) (Fr p k)))` using `hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _`. Establish `hc : coeff 0 (cob1 (fun i => lift p (μ i)) f) = - coeff 0 f`.
+
+Simplify using `only [coeff_zero_eq_constantCoeff_apply]`. Unfold `cob1 inL inR`. Rewrite using `[map_sub, map_sub, constantCoeff_subst_of_zero' hμ (fun i => constantCoeff_lift p (h.const i)), constantCoeff_subst_of_zero' hX (fun _ => constantCoeff_X _), constantCoeff_subst_of_zero' hY (fun _ => constantCoeff_X _)]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨-(1 * w), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_neg, ← hw, hc, neg_neg]`.
+-/
 theorem constantCoeff_int (p : ℕ) [Fact p.Prime] {k : Type} [Field k] [CharP k p] {d : ℕ}
     {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) k} (h : IsLaw μ) {f : MvPowerSeries (Fin d) (Fr p k)}
     (hf : f ∈ quasiLog p h) :
@@ -48,6 +63,25 @@ theorem constantCoeff_int (p : ℕ) [Fact p.Prime] {k : Type} [Field k] [CharP k
   refine ⟨-(1 * w), ?_⟩
   rw [map_neg, ← hw, hc, neg_neg]
 
+/- English proof (translation)
+Introduce `p _ k _ _ _ d μ h`. Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Proceed by induction on `x using Submodule.Quotient.induction_on with | _ f => ?_`. Establish `key : ∀ n : ℕ, ∃ g : quasiLog p h, (f : MvPowerSeries (Fin d) (Fr p k)) - ((p : WittVector p k) ^ n) • (g : MvPowerSeries (Fin d) (Fr p k)) ∈ intBy p k (Fin d) 1`. Introduce `n`.
+
+Establish `h1` using `(SModEq.sub_mem.mp (hx n))`. Rewrite `h1` using `[sub_zero, Ideal.span_singleton_pow, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Take `⟨b, -, hb⟩` from `h1`. Proceed by induction on `b using Submodule.Quotient.induction_on with | _ g => ?_`. Use `⟨g, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hb` using `[← Submodule.Quotient.mk_smul, ← sub_eq_zero, ← Submodule.Quotient.mk_sub, Submodule.Quotient.mk_eq_zero]`. Rewrite `hb` using `[Submodule.submoduleOf, Submodule.mem_comap]`. Use `neg_mem hb` as an intermediate fact. Simplify `this` using `[neg_sub]`. Rewrite using `[Submodule.Quotient.mk_eq_zero, Submodule.submoduleOf, Submodule.mem_comap, Submodule.subtype_apply]`.
+
+Introduce `α`. Distinguish the cases in `hα : α = 0`. Substitute `hα` using the available equality. Take `⟨w, hw⟩` from `constantCoeff_int p h f.2`. Conclude with `⟨w, by rw [one_mul]; exact hw⟩`.
+
+Take `⟨i, hi⟩ : ∃ i, α i ≠ 0` from `by by_contra! hc`. Conclude with `hα (Finsupp.ext hc)`. Take `⟨v, u, hu, hm⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hi p (Nat.Prime.ne_one Fact.out)`. Take `⟨g, hg⟩` from `key v`. Take `⟨w₁, hw₁⟩` from `hg α`.
+
+Take `⟨w₂, hw₂⟩` from `g.2.1 α i`. Take `⟨U, hU⟩` from `isUnit_natCast_of_not_dvd p k u hu`. Use `⟨w₁ + ↑U⁻¹ * w₂, ?_⟩` and prove the remaining obligations. Establish `hsm : coeff α (((p : WittVector p k) ^ v) • (g : MvPowerSeries (Fin d) (Fr p k))) = algebraMap _ (Fr p k) ((p : WittVector p k) ^ v) * coeff α (g : MvPowerSeries (Fin d) (Fr p k))`. Rewrite using `[← algebraMap_smul (Fr p k), LinearMap.map_smul, smul_eq_mul]`.
+
+Establish `hα' : ((α i : ℕ) : Fr p k) = algebraMap _ (Fr p k) ((p : WittVector p k) ^ v) * algebraMap _ (Fr p k) (U : WittVector p k)`. Rewrite using `[hU, ← map_mul, hm]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite `hw₁` using `[map_sub, hsm]`.
+
+Establish `e2 : algebraMap _ (Fr p k) ((p : WittVector p k) ^ v) * coeff α (g : MvPowerSeries (Fin d) (Fr p k)) = algebraMap _ (Fr p k) (↑U⁻¹ * w₂)`. Rewrite using `[map_mul, ← hw₂, hα']`. Establish `: algebraMap _ (Fr p k) (↑U⁻¹ : WittVector p k) * algebraMap _ (Fr p k) (U : WittVector p k) = 1`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Take the linear combination `(-(algebraMap _ (Fr p k) ((p : WittVector p k) ^ v) * coeff α (g : MvPowerSeries (Fin d) (Fr p k)))) * this`.
+
+Rewrite using `[one_mul, map_add, ← e2]`. Rewrite `hw₁` using `[one_mul]`. Take the linear combination `hw₁`.
+-/
 theorem haus : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p] [PerfectRing k p] (d : ℕ)
     (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) k) (h : IsLaw μ),
     IsHausdorff (Ideal.span {(p : WittVector p k)}) (Mod p h) := by

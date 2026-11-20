@@ -32,6 +32,15 @@ def RedGood (hxy : ∀ i, y i ≠ 0 → x i ≠ 0) (P : SubSystem k x Ω) (γ : 
 variable (hsp : primeOf (S := k) x ≤ primeOf (S := k) y) (hxy : ∀ i, y i ≠ 0 → x i ≠ 0)
 include hsp
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hz`. Use `Submodule.span_induction (p := fun z _ => ∃ q ∈ P.sub (liftChart hxy I), redAt k x y (q / γ) = z) ?_ ?_ ?_ ?_ hz` and prove the remaining obligations. Introduce and unpack `_ ⟨q, hq, rfl⟩`. Conclude with `⟨q, hq, rfl⟩`.
+
+Conclude with `⟨0, Submodule.zero_mem _, by rw [zero_div]; exact (locAt_zero hsp).2⟩`. Introduce and unpack `u v _ _ ⟨q, hq, rfl⟩ ⟨q', hq', rfl⟩`. Use `⟨q + q', Submodule.add_mem _ hq hq', ?_⟩` and prove the remaining obligations. Rewrite using `[add_div]`. Conclude with `(locAt_add hsp (hP I q hq) (hP I q' hq')).2`.
+
+Introduce and unpack `c u _ ⟨q, hq, rfl⟩`. Take `⟨a, ha, hac⟩` from `exists_redAt_eq hsp hxy I c.2`. Use `⟨a * q, ?_, ?_⟩` and prove the remaining obligations. Use `Submodule.smul_mem _ (⟨a, ha⟩ : chartRing k x (liftChart hxy I)) hq` as an intermediate fact. Rewrite `this` using `[chartRing_smul_def]`. Then use the resulting hypothesis.
+
+Rewrite using `[chartRing_smul_def, ← hac, mul_div_assoc]`. Conclude with `(locAt_mul hsp (chartRing_sub_locAt hsp hxy I ha).1 (hP I q hq)).2`. Introduce and unpack `⟨q, hq, rfl⟩`. Conclude with `Submodule.subset_span ⟨q, hq, rfl⟩`.
+-/
 theorem mem_redSys_iff {P : SubSystem k x Ω} {γ : Ω} (hP : RedGood hxy P γ) (I : Chart y) (z : K') :
     z ∈ (redSys hxy P γ).sub I ↔ ∃ q ∈ P.sub (liftChart hxy I), redAt k x y (q / γ) = z := by
   constructor
@@ -52,6 +61,13 @@ theorem mem_redSys_iff {P : SubSystem k x Ω} {γ : Ω} (hP : RedGood hxy P γ) 
         exact (locAt_mul hsp (chartRing_sub_locAt hsp hxy I ha).1 (hP I q hq)).2
   · rintro ⟨q, hq, rfl⟩; exact Submodule.subset_span ⟨q, hq, rfl⟩
 
+/- English proof (translation)
+Introduce `I z hz`. Use `Submodule.span_induction (p := fun z _ => z / (γ * δ) ∈ locAt k x y) ?_ ?_ ?_ ?_ hz` and prove the remaining obligations. Introduce and unpack `_ ⟨q, hq, p, hp, rfl⟩`. Establish `: q • p / (γ * δ) = q / δ * (p / γ)` using `by rw [smul_eq_mul]; ring`. Rewrite using `[this]`.
+
+Conclude with `(locAt_mul hsp (hQ I q hq) (hP I p hp)).1`. Rewrite using `[zero_div]`. Conclude with `(locAt_zero hsp).1`. Introduce `u v _ _ hu hv`. Rewrite using `[add_div]`.
+
+Conclude with `(locAt_add hsp hu hv).1`. Introduce `c u _ hu`. Rewrite using `[chartRing_smul_def, mul_div_assoc]`. Conclude with `(locAt_mul hsp (chartRing_sub_locAt hsp hxy I c.2).1 hu).1`.
+-/
 theorem redGood_twist {P Q : SubSystem k x Ω} {γ δ : Ω} (hP : RedGood hxy P γ)
     (hQ : RedGood hxy Q δ) : RedGood hxy (P.twist Q) (γ * δ) := by
   intro I z hz
@@ -65,6 +81,19 @@ theorem redGood_twist {P Q : SubSystem k x Ω} {γ δ : Ω} (hP : RedGood hxy P 
     rw [chartRing_smul_def, mul_div_assoc]
     exact (locAt_mul hsp (chartRing_sub_locAt hsp hxy I c.2).1 hu).1
 
+/- English proof (translation)
+Establish `hPQ` using `redGood_twist hsp hxy hP hQ`. Use `SubSystem.ext_sub fun I => le_antisymm ?_ ?_` and prove the remaining obligations. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Use `Submodule.span_induction (p := fun z _ => redAt k x y (z / (γ * δ)) ∈ ((redSys hxy P γ).twist (redSys hxy Q δ)).sub I) ?_ ?_ ?_ ?_ hz` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨q, hq, p, hp, rfl⟩`. Establish `: q • p / (γ * δ) = q / δ * (p / γ)` using `by rw [smul_eq_mul]; ring`. Rewrite using `[this, (locAt_mul hsp (hQ I q hq) (hP I p hp)).2]`. Conclude with `Submodule.subset_span ⟨_, Submodule.subset_span ⟨q, hq, rfl⟩, _, Submodule.subset_span ⟨p, hp, rfl⟩, rfl⟩`. Rewrite using `[zero_div, (locAt_zero hsp).2]`.
+
+Conclude with `Submodule.zero_mem _`. Introduce `u v hu hv ihu ihv`. Rewrite using `[add_div, (locAt_add hsp (hPQ I u hu) (hPQ I v hv)).2]`. Conclude with `Submodule.add_mem _ ihu ihv`. Introduce `c u hu ihu`.
+
+Rewrite using `[chartRing_smul_def, mul_div_assoc, (locAt_mul hsp (chartRing_sub_locAt hsp hxy I c.2).1 (hPQ I u hu)).2]`. Use `Submodule.smul_mem _ (⟨_, (chartRing_sub_locAt hsp hxy I c.2).2⟩ : chartRing k y I) ihu` as an intermediate fact. Rewrite `this` using `[chartRing_smul_def]`. Then use the resulting hypothesis. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨q', hq', p', hp', rfl⟩`.
+
+Take `⟨q, hq, rfl⟩` from `(mem_redSys_iff hsp hxy hQ I q').mp hq'`. Take `⟨p, hp, rfl⟩` from `(mem_redSys_iff hsp hxy hP I p').mp hp'`. Establish `: q • p / (γ * δ) = q / δ * (p / γ)` using `by rw [smul_eq_mul]; ring`. Use `Submodule.subset_span ⟨q • p, Submodule.subset_span ⟨q, hq, p, hp, rfl⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `redAt k x y (q • p / (γ * δ)) = redAt k x y (q / δ) * redAt k x y (p / γ)`.
+
+Rewrite using `[this, (locAt_mul hsp (hQ I q hq) (hP I p hp)).2]`.
+-/
 theorem redSys_twist {P Q : SubSystem k x Ω} {γ δ : Ω} (hP : RedGood hxy P γ)
     (hQ : RedGood hxy Q δ) :
     redSys hxy (P.twist Q) (γ * δ) = (redSys hxy P γ).twist (redSys hxy Q δ) := by
@@ -97,10 +126,20 @@ theorem redSys_twist {P Q : SubSystem k x Ω} {γ δ : Ω} (hP : RedGood hxy P �
     change redAt k x y (q • p / (γ * δ)) = redAt k x y (q / δ) * redAt k x y (p / γ)
     rw [this, (locAt_mul hsp (hQ I q hq) (hP I p hp)).2]
 
+/- English proof (translation)
+Introduce `I q hq`. Rewrite using `[div_one]`. Conclude with `(chartRing_sub_locAt hsp hxy I (res_mem_chartRing_of_mem_twistMod_zero hq)).1`.
+-/
 theorem redGood_twistSys_zero : RedGood hxy (twistSys k x 0) 1 := by
   intro I q hq
   rw [div_one]; exact (chartRing_sub_locAt hsp hxy I (res_mem_chartRing_of_mem_twistMod_zero hq)).1
 
+/- English proof (translation)
+Use `SubSystem.ext_sub fun I => le_antisymm ?_ ?_` and prove the remaining obligations. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨q, hq, rfl⟩`. Express the relevant statement in the definitionally equal form `redAt k x y (q / 1) ∈ twistMod k y 0 I`. Rewrite using `[div_one]`.
+
+Conclude with `res_mem_twistMod_zero_of_mem_chartRing (chartRing_sub_locAt hsp hxy I (res_mem_chartRing_of_mem_twistMod_zero hq)).2`. Introduce `z hz`. Take `⟨a, ha, rfl⟩` from `exists_redAt_eq hsp hxy I (res_mem_chartRing_of_mem_twistMod_zero hz)`. Conclude with `Submodule.subset_span ⟨a, res_mem_twistMod_zero_of_mem_chartRing ha, by`. Express the relevant statement in the definitionally equal form `redAt k x y (a / 1) = redAt k x y a`.
+
+Rewrite using `[div_one]⟩`.
+-/
 theorem redSys_twistSys_zero : redSys hxy (twistSys k x 0) 1 = twistSys k y 0 := by
   refine SubSystem.ext_sub fun I => le_antisymm ?_ ?_
   · refine Submodule.span_le.mpr ?_
@@ -115,6 +154,11 @@ theorem redSys_twistSys_zero : redSys hxy (twistSys k x 0) 1 = twistSys k y 0 :=
       change redAt k x y (a / 1) = redAt k x y a
       rw [div_one]⟩
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[pow_zero]`. Conclude with `⟨redGood_twistSys_zero hsp hxy, redSys_twistSys_zero hsp hxy⟩`. Consider the case `succ n ih`.
+
+Rewrite using `[pow_succ]`. Express the relevant statement in the definitionally equal form `RedGood hxy ((P.pow n).twist P) (γ ^ n * γ) ∧ redSys hxy ((P.pow n).twist P) (γ ^ n * γ) = ((redSys hxy P γ).pow n).twist (redSys hxy P γ)`. Conclude with `⟨redGood_twist hsp hxy ih.1 hP, by rw [redSys_twist hsp hxy ih.1 hP, ih.2]⟩`.
+-/
 theorem redSys_pow {P : SubSystem k x Ω} {γ : Ω} (hP : RedGood hxy P γ) (n : ℕ) :
     RedGood hxy (P.pow n) (γ ^ n) ∧ redSys hxy (P.pow n) (γ ^ n) = (redSys hxy P γ).pow n := by
   induction n with

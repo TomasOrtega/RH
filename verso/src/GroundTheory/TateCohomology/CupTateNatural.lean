@@ -14,6 +14,11 @@ section Naturality
 
 omit [Fintype G] in
 
+/- English proof (translation)
+Use extensionality with `t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul t b`. Proceed by induction on `t using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp [TensorProduct.zero_tmul]`. Consider the case `tmul i a => rfl`. Consider the case `add s t hs ht => simp only [TensorProduct.add_tmul, map_add] at hs ht ⊢`. Rewrite using `[hs, ht]`. Consider the case `add s t hs ht => rw [map_add, map_add, hs, ht]`.
+-/
 theorem augTensorRight_comm₁₂ {A A' B B' : Rep.{u} k G} (φ : A ⟶ A') (ψ : B ⟶ B') :
     ((augIdeal k G ◁ φ) ⊗ₘ ψ) ≫ ((augIdealι k G ▷ A') ▷ B') =
       ((augIdealι k G ▷ A) ▷ B) ≫ ((Rep.leftRegular k G ◁ φ) ⊗ₘ ψ) := by
@@ -29,6 +34,9 @@ theorem augTensorRight_comm₁₂ {A A' B B' : Rep.{u} k G} (φ : A ⟶ A') (ψ 
 
 omit [Fintype G] in
 
+/- English proof (translation)
+Rewrite using `[← tensorHom_id, ← tensorHom_id, tensorHom_comp_tensorHom, tensorHom_comp_tensorHom, augX_naturality, Category.comp_id, Category.id_comp]`.
+-/
 theorem augTensorRight_comm₂₃ {A A' B B' : Rep.{u} k G} (φ : A ⟶ A') (ψ : B ⟶ B') :
     ((Rep.leftRegular k G ◁ φ) ⊗ₘ ψ) ≫ (augX A' ▷ B') = (augX A ▷ B) ≫ (φ ⊗ₘ ψ) := by
   rw [← tensorHom_id, ← tensorHom_id, tensorHom_comp_tensorHom, tensorHom_comp_tensorHom,
@@ -36,6 +44,11 @@ theorem augTensorRight_comm₂₃ {A A' B B' : Rep.{u} k G} (φ : A ⟶ A') (ψ 
 
 omit [Fintype G] in
 
+/- English proof (translation)
+Use extensionality with `t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a t`. Proceed by induction on `t using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp [TensorProduct.tmul_zero]`. Consider the case `tmul i b => rfl`. Consider the case `add s t hs ht => simp only [TensorProduct.tmul_add, map_add] at hs ht ⊢`. Rewrite using `[hs, ht]`. Consider the case `add s t hs ht => rw [map_add, map_add, hs, ht]`.
+-/
 theorem augTensorLeft_comm₁₂ {A A' B B' : Rep.{u} k G} (φ : A ⟶ A') (ψ : B ⟶ B') :
     (φ ⊗ₘ (augIdeal k G ◁ ψ)) ≫ (A' ◁ (augIdealι k G ▷ B')) =
       (A ◁ (augIdealι k G ▷ B)) ≫ (φ ⊗ₘ (Rep.leftRegular k G ◁ ψ)) := by
@@ -51,6 +64,13 @@ theorem augTensorLeft_comm₁₂ {A A' B B' : Rep.{u} k G} (φ : A ⟶ A') (ψ :
 
 omit [Fintype G] in
 
+/- English proof (translation)
+Use extensionality with `t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a t`. Proceed by induction on `t using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp [TensorProduct.tmul_zero]`. Consider the case `tmul x b`. Express the relevant statement in the definitionally equal form `φ.hom a ⊗ₜ[k] (augX B').hom (x ⊗ₜ[k] ψ.hom b) = φ.hom a ⊗ₜ[k] ψ.hom ((augX B).hom (x ⊗ₜ[k] b))`. Rewrite using `[augX_tmul, augX_tmul, map_smul]`. Consider the case `add s t hs ht => simp only [TensorProduct.tmul_add, map_add] at hs ht ⊢`.
+
+Rewrite using `[hs, ht]`. Consider the case `add s t hs ht => rw [map_add, map_add, hs, ht]`.
+-/
 theorem augTensorLeft_comm₂₃ {A A' B B' : Rep.{u} k G} (φ : A ⟶ A') (ψ : B ⟶ B') :
     (φ ⊗ₘ (Rep.leftRegular k G ◁ ψ)) ≫ (A' ◁ augX B') = (A ◁ augX B) ≫ (φ ⊗ₘ ψ) := by
   ext t
@@ -82,12 +102,18 @@ noncomputable def augTensorLeftMap {A A' B B' : Rep.{u} k G} (φ : A ⟶ A') (ψ
   comm₁₂ := augTensorLeft_comm₁₂ φ ψ
   comm₂₃ := augTensorLeft_comm₂₃ φ ψ
 
+/- English proof (translation)
+The claim follows from `congr(($(TateCohomology.δ_naturality h₁ h₂ F i)).hom x).symm`.
+-/
 theorem tδ_map_apply {S₁ S₂ : ShortComplex (Rep.{u} k G)} (h₁ : S₁.ShortExact) (h₂ : S₂.ShortExact)
     (F : S₁ ⟶ S₂) (i : ℤ) (x : tateCohomology S₁.X₃ i) :
     (tδ h₂ i (i + 1) rfl).hom (((tateCohomologyFunctor i).map F.τ₃).hom x) =
       ((tateCohomologyFunctor (i + 1)).map F.τ₁).hom ((tδ h₁ i (i + 1) rfl).hom x) :=
   congr(($(TateCohomology.δ_naturality h₁ h₂ F i)).hom x).symm
 
+/- English proof (translation)
+The claim follows from `congr(($((TateCohomology.isoGroupCohomology n).hom.naturality φ)).hom x)`.
+-/
 theorem tateIsoH_map_apply {X Y : Rep.{u} k G} (φ : X ⟶ Y) (n : ℕ) [NeZero n]
     (x : tateCohomology X n) :
     (tateIsoH Y n n rfl).hom.hom (((tateCohomologyFunctor n).map φ).hom x) =

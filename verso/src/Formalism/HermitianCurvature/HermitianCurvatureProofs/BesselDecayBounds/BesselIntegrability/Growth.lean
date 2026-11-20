@@ -14,6 +14,9 @@ open Formalism.QuantumDeterminants Formalism.MainNotions.S
 
 def hsN {m : ℕ} (g : Matrix (Fin m) (Fin m) ℂ) : ℝ := Real.sqrt (∑ i, ∑ j, Complex.normSq (g i j))
 
+/- English proof (translation)
+The claim follows from `Real.sqrt_nonneg _`.
+-/
 theorem hsN_nonneg {m : ℕ} (g : Matrix (Fin m) (Fin m) ℂ) : 0 ≤ hsN g :=
   Real.sqrt_nonneg _
 
@@ -43,6 +46,13 @@ section Assembly
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Rewrite using `[EuclideanSpace.norm_eq]`. Unfold `hsN`. Apply `le_of_eq` to reduce the goal to its premises. Use `congr 1`. Rewrite using `[Fintype.sum_prod_type]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_bool]`. Simplify using `only [unrealify, Complex.normSq_mk, Real.norm_eq_abs, sq_abs]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_le_hsN (x : EuclideanSpace ℝ (Fin (2 * r + k + 1) × Fin (2 * r + k + 1) × Bool)) :
     ‖x‖ ≤ hsN (unrealify x) := by
   rw [EuclideanSpace.norm_eq]

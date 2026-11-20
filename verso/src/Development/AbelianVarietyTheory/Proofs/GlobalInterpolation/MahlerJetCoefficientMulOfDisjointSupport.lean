@@ -5,6 +5,27 @@ open GlobalTheory.MomN
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `V _ _ ι' _ _ u F H hF hH S T hST hFS hHT`. Prove the components needed by the constructor for the conclusion. Introduce `N ⟨p, hp, hNp⟩`. Rewrite using `[GlobalTheory.T.mahlerJetCoefficient_mul V ι' u F H hF hH N]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+
+Introduce `k _`. Establish `hpS : p ∉ S` using `fun h => hp (Finset.mem_union_left _ h)`. Establish `hpT : p ∉ T` using `fun h => hp (Finset.mem_union_right _ h)`. Distinguish the cases in `hk : k p = 0`. Rewrite using `[hHT _ ⟨p, hpT, by simp [hk, hNp]⟩, mul_zero]`.
+
+Rewrite using `[hFS _ ⟨p, hpS, hk⟩, zero_mul]`. Introduce `N hN`. Rewrite using `[GlobalTheory.T.mahlerJetCoefficient_mul V ι' u F H hF hH N]`. Rewrite using `[Finset.sum_eq_single (fun p => if p ∈ S then N p else 0)]`. Establish `hfun : (fun i => N i - (fun p => if p ∈ S then N p else 0) i) = (fun p => if p ∈ T then N p else 0)`.
+
+Use function extensionality and compare the values at `p`. Distinguish the cases in `hS : p ∈ S`. Establish `hT : p ∉ T` using `Finset.disjoint_left.mp hST hS`. Simplify using `only [hS, hT, if_true, if_false, Nat.sub_self]`. Distinguish the cases in `hT : p ∈ T`.
+
+Simplify using `only [hS, hT, if_true, if_false, Nat.sub_zero]`. Establish `h0 : N p = 0` using `hN p (by simp [hS, hT])`. Simplify using `only [hS, hT, if_false, h0, Nat.sub_zero]`. Conclude with `congrArg (fun g => GlobalTheory.MomN.mahler u F (fun p => if p ∈ S then N p else 0) * GlobalTheory.MomN.mahler u H g) hfun`. Introduce `k hk hne`.
+
+Assume the negation of the conclusion as `hprod`. Establish `h1 : GlobalTheory.MomN.mahler u F k ≠ 0` using `left_ne_zero_of_mul hprod`. Establish `h2 : GlobalTheory.MomN.mahler u H (fun i => N i - k i) ≠ 0` using `right_ne_zero_of_mul hprod`. Apply `hne` to reduce the goal to its premises. Use function extensionality and compare the values at `p`.
+
+Rewrite `hk` using `[Fintype.mem_piFinset]`. Establish `hkp : k p ≤ N p` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp (hk p))`. Distinguish the cases in `hS : p ∈ S`. Establish `hT : p ∉ T` using `Finset.disjoint_left.mp hST hS`. Establish `: N p - k p = 0`.
+
+Assume the negation of the conclusion as `h`. Conclude with `h2 (hHT _ ⟨p, hT, h⟩)`. Simplify using `only [hS, if_true]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [hS, if_false]`.
+
+Assume the negation of the conclusion as `h`. Conclude with `h1 (hFS _ ⟨p, hS, h⟩)`. Introduce `h`. It suffices to derive a contradiction. Apply `h` to reduce the goal to its premises.
+
+Rewrite using `[Fintype.mem_piFinset]`. Introduce `p`. Rewrite using `[Finset.mem_range]`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem mahler_mul_of_disjoint_support :
     ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] (ι' : Type) [Fintype ι'] [DecidableEq ι']
       (u : ι' → V) (F H : V → ℂ), ContDiff ℂ ⊤ F → ContDiff ℂ ⊤ H → ∀ (S T : Finset ι'), Disjoint S T →

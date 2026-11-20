@@ -21,6 +21,9 @@ open GlobalTheory.SqLevel
 
 variable {X Y Z : Scheme.{0}} {K : Type} [Fintype K]
 
+/- English proof (translation)
+Introduce `_ hy` and use `Set.mem_iInter.2 fun k => mem_sq.1 (Set.mem_iInter.1 hy k)`.
+-/
 theorem sq_chart_le (L : LB X) (φ : K → (Y ⟶ X)) (j : K → Fin 1 → L.ι) :
     LB.wchart (sqLB L) φ j ≤ LB.wchart L φ (fun k => j k 0) :=
   fun _ hy => Set.mem_iInter.2 fun k => mem_sq.1 (Set.mem_iInter.1 hy k)
@@ -29,11 +32,21 @@ def sqGen (L : LB X) (φ : K → (Y ⟶ X)) (ε : K → ℤ) (t : LB.Gen (LB.Lin
     LB.Gen (LB.LinComb (sqLB L) φ ε) :=
   ⟨fun j => res (sq_chart_le L φ j) (t.s (fun k => j k 0)) ^ 2⟩
 
+/- English proof (translation)
+Conclude with `(map_pow _ _ _).trans (congrArg (· ^ 2) (gm_res r z _ h _))`.
+-/
 theorem gm_sqGen {L : LB X} {φ : K → (Y ⟶ X)} {ε : K → ℤ} (t : LB.Gen (LB.LinComb L φ ε)) (r : Z ⟶ Y) (z : Z)
     (j : K → Fin 1 → L.ι) (h : r z ∈ LB.wchart (sqLB L) φ j) :
     gm r z _ ((sqGen L φ ε t).s j) = gm r z _ (t.s (fun k => j k 0)) ^ 2 := by
   exact (map_pow _ _ _).trans (congrArg (· ^ 2) (gm_res r z _ h _))
 
+/- English proof (translation)
+Introduce `(i : K → Fin 1 → L.ι) (j : K → Fin 1 → L.ι)`. Apply `unit_ext` to reduce the goal to its premises. Introduce `y hy`. Establish `hi` using `sq_chart_le L φ i hy.1`. Establish `hj` using `sq_chart_le L φ j hy.2`.
+
+Rewrite using `[gm_res (𝟙 _) y _ hy, map_mul, gm_res (𝟙 _) y _ hy, gm_sqGen t (𝟙 Y) y i hy.1, gm_sqGen t (𝟙 Y) y j hy.2]`. Use `(congrArg (· ^ 2) (gen_trans ht (𝟙 _) y hi hj)).trans ?_` and prove the remaining obligations. Use `(mul_pow _ _ 2).trans (congrArg (· * _) ?_)` and prove the remaining obligations. Use `Eq.trans ?_ (gm_linComb (sqLB L) φ ε (𝟙 _) y i j hy.1 hy.2).symm` and prove the remaining obligations. Rewrite using `[trF, ← Finset.prod_pow]`.
+
+Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[gm_sq_g L (𝟙 _ ≫ φ k) y (i k) (j k) (by simpa using Set.mem_iInter.1 hi k) (by simpa using Set.mem_iInter.1 hj k), ← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul, mul_comm]`.
+-/
 theorem sqGen_isGen {L : LB X} (hL : L.IsLB) {φ : K → (Y ⟶ X)} {ε : K → ℤ} {t : LB.Gen (LB.LinComb L φ ε)}
     (ht : t.IsGen) : (sqGen L φ ε t).IsGen := by
   intro (i : K → Fin 1 → L.ι) (j : K → Fin 1 → L.ι)
@@ -50,11 +63,17 @@ theorem sqGen_isGen {L : LB X} (hL : L.IsLB) {φ : K → (Y ⟶ X)} {ε : K → 
   rw [gm_sq_g L (𝟙 _ ≫ φ k) y (i k) (j k) (by simpa using Set.mem_iInter.1 hi k)
     (by simpa using Set.mem_iInter.1 hj k), ← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul, mul_comm]
 
+/- English proof (translation)
+The claim follows from `gm_sqGen t r z _ (hJ.mem φ r)`.
+-/
 theorem val_sqGen {L : LB X} {φ : K → (Y ⟶ X)} {ε : K → ℤ} (t : LB.Gen (LB.LinComb L φ ε)) {z : Z}
     {J : (Z ⟶ X) → Fin 1 → L.ι} (hJ : Good (sqLB L) z J) (r : Z ⟶ Y) :
     val (sqGen L φ ε t) r z J = val t r z (fun ψ => J ψ 0) ^ 2 :=
   gm_sqGen t r z _ (hJ.mem φ r)
 
+/- English proof (translation)
+Introduce `ψ` and use `mem_sq.1 (hJ ψ)`.
+-/
 theorem good_of_sq {L : LB X} {z : Z} {J : (Z ⟶ X) → Fin 1 → L.ι} (hJ : Good (sqLB L) z J) :
     Good L z (fun ψ => J ψ 0) := fun ψ => mem_sq.1 (hJ ψ)
 
@@ -64,6 +83,21 @@ namespace GlobalTheory
 
 open RigidIsoCube SqSym SqLevel in
 
+/- English proof (translation)
+Introduce `hG R _ _ _ I _ D D' A A' G _ _ _ U U' wL hw Z r z N N' hN hN'`. Use `U.smooth` as an intermediate fact. Establish `: IsDominant (jK R)` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).2 (((RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective R (FractionRing R))).le.trans bot_le)⟩`. Use `IsSchemeTheoreticallyDominant.of_isDominant (jK R)` as an intermediate fact. Establish `hg : IsPullback (U.gen.inv.left ≫ pullback.fst G.hom (jK R)) A.A.hom G.hom (jK R)`.
+
+Establish `: IsIso U.gen.inv.left` using `inferInstanceAs (IsIso ((Over.forget _).map U.gen.inv))`. Establish `s : IsPullback U.gen.inv.left A.A.hom (pullback.snd G.hom (jK R)) (𝟙 _)` using `IsPullback.of_horiz_isIso ⟨(Over.w U.gen.inv).trans (Category.comp_id _).symm⟩`. Simplify using `using s.paste_horiz (IsPullback.of_hasPullback G.hom (jK R))`. Establish `s₁ : Function.Surjective G.hom.appTop.hom` using `surjective_appTop_of_baseChange hg (eSec G) (Over.w η[G]) (hG _ _ A.isAb).2`. Establish `hL : (sqLB U.LG.L).IsLB` using `DVR.linComb_isLB _ U.LG.isLB _ _`.
+
+Establish `hL' : (sqLB U'.LG.L).IsLB` using `DVR.linComb_isLB _ U'.LG.isLB _ _`. Establish `pg` using `isoPullId_pgen hw (rfl : 𝟙 G.left = 𝟙 G.left)`. Establish `oi : eSec G ≫ (ι[G]).left = eSec G`. Establish `: η[G] ≫ ι[G] = η[G]` using `by simp`. Conclude with `congrArg (fun q => q.left) this`.
+
+Establish `key` using `pmaps_of_section pg hL hL' (φ' := ![(ι[G]).left, 𝟙 G.left]) (φ := ![(ι[G]).left, 𝟙 G.left]) (ε := ![1, -1]) (sqGen _ _ _ U'.symG) (sqGen_isGen U'.LG.isLB U'.symG_gen) (sqGen _ _ _ U.symG) (sqGen_isGen U.LG.isLB U.symG_gen) (fun _ => Category.comp_id _) G.hom (eSec G) (Over.w η[G] …`. Establish `a` using `val_corr (good_of_sq hJ) U.symG_rig (𝟙 _)`. Rewrite `a` using `[val_pull (good_of_sq hJ), val_one, Category.id_comp]`. Establish `b` using `val_corr (good_of_sq hJ') U'.symG_rig (𝟙 _)`. Rewrite `b` using `[val_pull (good_of_sq hJ'), val_one, Category.id_comp]`.
+
+Rewrite using `[val_sqGen _ hJ, val_sqGen _ hJ', a, b, Fin.prod_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, oi, Category.comp_id]`. Simplify using the standard rewrite rules. Use `set φ : Fin 2 → (G.left ⟶ G.left) := ![(ι[G]).left, 𝟙 G.left] with hφ`. Establish `m1 : ∀ k, (r ≫ φ k) z ∈ (sqLB U.LG.L).U (fun _ => N (r ≫ φ k))` using `fun k => mem_sq.2 (hN _)`.
+
+Establish `m2 : ∀ k, (r ≫ φ k) z ∈ (sqLB U'.LG.L).U (fun _ => N' (r ≫ φ k))` using `fun k => mem_sq.2 (hN' _)`. Establish `e` using `key Z r z (fun k _ => N (r ≫ φ k)) (fun k _ => N' (r ≫ φ k)) (fun k => by simpa using m1 k) (fun k => by simpa using m2 k)`. Establish `h1 : (r ≫ 𝟙 G.left) z ∈ LB.wchart (sqLB U.LG.L) φ (fun k _ => N (r ≫ φ k))` using `Set.mem_iInter.2 fun k => by simpa using m1 k`. Establish `h2 : r z ∈ LB.wchart (sqLB U'.LG.L) φ (fun k _ => N' (r ≫ φ k))` using `Set.mem_iInter.2 fun k => by simpa using m2 k`. Establish `e1` using `gm_sqGen U.symG (r ≫ 𝟙 G.left) z _ h1`.
+
+Establish `e2` using `gm_sqGen U'.symG r z _ h2`. Simplify using `only [Category.comp_id] at e1 e`. Conclude with `e1.symm.trans (e.trans (congrArg₂ (· * ·) (Finset.prod_congr rfl fun k _ => by rw [gw_isoPullId wL rfl _ z _ _ (m1 k) (m2 k)]) e2))`.
+-/
 theorem sq_iso_respects_symmetry_pointwise : GlobalFnsSt → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (I : Ideal R), AdmBase R I →
     ∀ (D D' : DegData R I) (A A' : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R)))
     [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (U : UnifPre I D A G) (U' : UnifPre I D' A' G)

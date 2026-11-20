@@ -18,6 +18,9 @@ namespace Mono
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
 
+/- English proof (translation)
+Establish `: {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} = ⋂ k, ⋃ i, {z | z ⟨k, i⟩ ≠ 0}`. Use extensionality with `z`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `isOpen_iInter_of_finite fun k => isOpen_iUnion fun i => isOpen_ne_fun (continuous_apply _) continuous_const`.
+-/
 theorem isOpen_relevant : IsOpen {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} := by
   have : {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} = ⋂ k, ⋃ i, {z | z ⟨k, i⟩ ≠ 0} := by
     ext z
@@ -26,14 +29,23 @@ theorem isOpen_relevant : IsOpen {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨
   exact isOpen_iInter_of_finite fun k => isOpen_iUnion fun i =>
     isOpen_ne_fun (continuous_apply _) continuous_const
 
+/- English proof (translation)
+The claim follows from `hA.continuousOn.continuousAt (isOpen_relevant.mem_nhds hz)`.
+-/
 theorem continuousAt_h {A : HermLine ι} (hA : IsSmoothHerm A) {z : (Σ k, ι k) → ℂ}
     (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) : ContinuousAt A.h z :=
   hA.continuousOn.continuousAt (isOpen_relevant.mem_nhds hz)
 
+/- English proof (translation)
+The claim follows from `MvPolynomial.continuous_eval _`.
+-/
 theorem continuous_evalC (g : MRing ι) :
     Continuous fun z : (Σ k, ι k) → ℂ => eval z (map (Int.castRingHom ℂ) g) :=
   MvPolynomial.continuous_eval _
 
+/- English proof (translation)
+Establish `hmem : g - g' ∈ mCoordIdeal y` using `by show mConeMap y (g - g') = 0`. Rewrite using `[map_sub, ProjLine.mConeMap_eq_of_isMultiHomog y hg, ProjLine.mConeMap_eq_of_isMultiHomog y hg', he, sub_self]`. Establish `h0` using `hz.2 _ hmem`. Rewrite `h0` using `[map_sub, map_sub, sub_eq_zero]`. Conclude with `h0`.
+-/
 theorem eval_eq_of_aeval_eq {y : (Σ k, ι k) → Ω} {d : K → ℕ} {g g' : MRing ι}
     (hg : IsMultiHomog g d) (hg' : IsMultiHomog g' d) (he : aeval y g = aeval y g')
     {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts (mCoordIdeal y)) :
@@ -46,6 +58,25 @@ theorem eval_eq_of_aeval_eq {y : (Σ k, ι k) → Ω} {d : K → ℕ} {g g' : MR
   rw [map_sub, map_sub, sub_eq_zero] at h0
   exact h0
 
+/- English proof (translation)
+Introduce `dg dh g h z hg hh hd he hz`. Take `⟨dg0, dh0, g0, h0, hg0, hh0, hd0, he0, hz0⟩` from `hLR K ι Ω y M.a n f z hf hz`. Take `⟨dg1, dh1, g1, h1, hg1, hh1, hd1, he1, hz1⟩` from `hLR K ι Ω y L.a n f' z hf' hz`. Establish `hLz : 0 < L.h z` using `L.pos z hz.1`. Establish `step1 : ‖eval z (map (Int.castRingHom ℂ) g1)‖ / (‖eval z (map (Int.castRingHom ℂ) h1)‖ * L.h z ^ n) ≤ c`.
+
+Establish `hVn : ({w | eval w (map (Int.castRingHom ℂ) h0) ≠ 0} ∩ {w | eval w (map (Int.castRingHom ℂ) h1) ≠ 0}) ∩ {w : (Σ k, ι k) → ℂ | ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0} ∈ 𝓝 z` using `(((isOpen_ne_fun (continuous_evalC h0) continuous_const).inter (isOpen_ne_fun (continuous_evalC h1) continuous_const)).inter isOpen_relevant).mem_nhds ⟨⟨hz0, hz1⟩, hz.1⟩`. Use `set S : Set ((Σ k, ι k) → ℂ) := (({w | eval w (map (Int.castRingHom ℂ) h0) ≠ 0} ∩ {w | eval w (map (Int.castRingHom ℂ) h1) ≠ 0}) ∩ {w : (Σ k, ι k) → ℂ | ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0}) ∩ (U ∩ mcPts (mCoordIdeal y)) with hS`. Establish `hcl : z ∈ closure S`. Rewrite using `[mem_closure_iff_nhds]`. Introduce `t ht`.
+
+Take `⟨w, ⟨hwt, hwV⟩, hwU⟩` from `mem_closure_iff_nhds.mp (hU hz) _ (Filter.inter_mem ht hVn)`. Conclude with `⟨w, hwt, hwV, hwU⟩`. Establish `: (𝓝[S] z).NeBot` using `mem_closure_iff_nhdsWithin_neBot.mp hcl`. Establish `hcont : ContinuousAt (fun w => ‖eval w (map (Int.castRingHom ℂ) g1)‖ / (‖eval w (map (Int.castRingHom ℂ) h1)‖ * L.h w ^ n)) z`. Use `ContinuousAt.div (continuous_evalC g1).norm.continuousAt (ContinuousAt.mul (continuous_evalC h1).norm.continuousAt ((continuousAt_h hL hz.1).pow n)) ?_` and prove the remaining obligations.
+
+Conclude with `mul_ne_zero (norm_ne_zero_iff.mpr hz1) (pow_ne_zero _ hLz.ne')`. Use `le_of_tendsto (x := 𝓝[S] z) (hcont.tendsto.mono_left nhdsWithin_le_nhds) ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with w hw`. Take `⟨⟨⟨hw0, hw1⟩, hwr⟩, hwU, hwP⟩` from `hw`. Establish `hb'` using `hb dg0 dh0 dg1 dh1 g0 h0 g1 h1 hg0 hh0 hd0 he0 hg1 hh1 hd1 he1 w ⟨hwU, hwP⟩ hw0 hw1`.
+
+Establish `hs` using `hsm dg0 dh0 g0 h0 w hg0 hh0 hd0 he0 hwP`. Establish `hden : 0 < ‖eval w (map (Int.castRingHom ℂ) h0)‖ * M.h w ^ n` using `mul_pos (norm_pos_iff.mpr hw0) (pow_pos (M.pos w hwr) n)`. Establish `hr : ‖eval w (map (Int.castRingHom ℂ) g0)‖ / (‖eval w (map (Int.castRingHom ℂ) h0)‖ * M.h w ^ n) ≤ 1` using `(div_le_one hden).mpr hs`. Combine the equalities or inequalities in the displayed calculation. Establish `hpos1 : 0 < ‖eval z (map (Int.castRingHom ℂ) h1)‖ * L.h z ^ n` using `mul_pos (norm_pos_iff.mpr hz1) (pow_pos hLz n)`.
+
+Establish `hb1 : ‖eval z (map (Int.castRingHom ℂ) g1)‖ ≤ c * (‖eval z (map (Int.castRingHom ℂ) h1)‖ * L.h z ^ n)` using `(div_le_iff₀ hpos1).mp step1`. Establish `hdeg : dg + dh1 = dg1 + dh`. Use function extensionality and compare the values at `k`. Establish `e1` using `hd k`. Establish `e2` using `hd1 k`.
+
+Establish `: ((dg k + dh1 k : ℕ) : ℤ) = ((dg1 k + dh k : ℕ) : ℤ)` using `by push_cast; linarith`. Conclude with `this` after adjusting the coercions. Establish `hm1 : IsMultiHomog (g * h1) (dg + dh1)` using `isMultiHomog_mul' hg hh1`. Establish `hm2 : IsMultiHomog (g1 * h) (dg + dh1)` using `by rw [hdeg]; exact isMultiHomog_mul' hg1 hh`. Establish `hval : aeval y (g * h1) = aeval y (g1 * h)`.
+
+Rewrite using `[map_mul, map_mul, he, he1]`. Expand and normalize the polynomial expressions, which then agree. Establish `hez` using `eval_eq_of_aeval_eq hm1 hm2 hval hz`. Simplify using `only [map_mul] at hez`. Establish `hkey : ‖eval z (map (Int.castRingHom ℂ) g)‖ * ‖eval z (map (Int.castRingHom ℂ) h1)‖ ≤ (c * (‖eval z (map (Int.castRingHom ℂ) h)‖ * L.h z ^ n)) * ‖eval z (map (Int.castRingHom ℂ) h1)‖`.
+
+Rewrite using `[← norm_mul, hez, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `le_of_mul_le_mul_right hkey (norm_pos_iff.mpr hz1)`.
+-/
 theorem bound_of_ptBoundOn (hLR : LocalRep.Statement) {y : (Σ k, ι k) → Ω} {M L : HermLine ι} {n : ℕ}
     {U : Set ((Σ k, ι k) → ℂ)} {c : ℝ} {f f' : Ω}
     (hL : IsSmoothHerm L) (hf : f ∈ chartLat y M.a n) (hf' : f' ∈ chartLat y L.a n)
@@ -121,6 +152,11 @@ theorem bound_of_ptBoundOn (hLR : LocalRep.Statement) {y : (Σ k, ι k) → Ω} 
       _ = _ := by ring
   exact le_of_mul_le_mul_right hkey (norm_pos_iff.mpr hz1)
 
+/- English proof (translation)
+Unfold `smallSectionCount`. Establish `: Finite {s : La' n // Q n (s : Ω)}` using `hfin.to_subtype`. Establish `hle : Nat.card {s : La n // P n (s : Ω)} ≤ Nat.card {s : La' n // Q n (s : Ω)}` using `Nat.card_le_card_of_injective (fun s => ⟨⟨φ s.1, (hmaps s.1 s.1.2 s.2).1⟩, (hmaps s.1 s.1.2 s.2).2⟩) (fun s t hst => by`. Establish `h1 : φ s.1 = φ t.1` using `congrArg (fun u : {s : La' n // Q n (s : Ω)} => ((u.1 : La' n) : Ω)) hst`. Conclude with `Subtype.ext (Subtype.ext (hinj s.1.2 t.1.2 h1)))`.
+
+Break down `Nat.eq_zero_or_pos (Nat.card {s : La n // P n (s : Ω)}) with h0 | hpos` into its components or cases. Rewrite using `[h0, Nat.cast_zero, Real.log_zero]`. Conclude with `Real.log_natCast_nonneg _`. Conclude with `Real.log_le_log (by exact_mod_cast hpos) (by exact_mod_cast hle)`.
+-/
 theorem smallSectionCount_le_of_injOn {P Q : ℕ → Ω → Prop} {La La' : ℕ → AddSubgroup Ω} {n : ℕ} (φ : Ω → Ω)
     (hinj : Set.InjOn φ (La n)) (hmaps : ∀ s ∈ La n, P n s → φ s ∈ La' n ∧ Q n (φ s))
     (hfin : {s : La' n | Q n (s : Ω)}.Finite) : smallSectionCount P La n ≤ smallSectionCount Q La' n := by
@@ -137,12 +173,20 @@ theorem smallSectionCount_le_of_injOn {P Q : ℕ → Ω → Prop} {La La' : ℕ 
     exact Real.log_natCast_nonneg _
   · exact Real.log_le_log (by exact_mod_cast hpos) (by exact_mod_cast hle)
 
+/- English proof (translation)
+The claim follows from `Nat.card_congr ((Equiv.subtypeSubtypeEquivSubtypeInter (· ∈ La) Q).trans ((Equiv.subtypeEquivRight h).trans (Equiv.subtypeSubtypeEquivSubtypeInter (· ∈ La') Q').symm))`.
+-/
 theorem card_eq_of_iff {La La' : AddSubgroup Ω} {Q Q' : Ω → Prop}
     (h : ∀ s, s ∈ La ∧ Q s ↔ s ∈ La' ∧ Q' s) :
     Nat.card {s : La // Q (s : Ω)} = Nat.card {s : La' // Q' (s : Ω)} :=
   Nat.card_congr ((Equiv.subtypeSubtypeEquivSubtypeInter (· ∈ La) Q).trans
     ((Equiv.subtypeEquivRight h).trans (Equiv.subtypeSubtypeEquivSubtypeInter (· ∈ La') Q').symm))
 
+/- English proof (translation)
+Establish `e : ∀ k, -((m : ℤ) * (Inter.hermZpow M a).a k) = -(((a * m : ℕ) : ℤ) * M.a k)`. Introduce `k`. Simplify using `only [Inter.hermZpow, Pi.smul_apply, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Use extensionality with `s`. Express the relevant statement in the definitionally equal form `(∀ c : ∀ k, ι k, (∀ k, y ⟨k, c k⟩ ≠ 0) → s * ∏ k, y ⟨k, c k⟩ ^ (-((m : ℤ) * (Inter.hermZpow M a).a k)) ∈ chartRingZ y c) ↔ (∀ c : ∀ k, ι k, (∀ k, y ⟨k, c k⟩ ≠ 0) → s * ∏ k, y ⟨k, c k⟩ ^ (-(((a * m : ℕ) : ℤ) * M.a k)) ∈ chartRingZ y c)`. Simplify using `only [e]`.
+-/
 theorem chartLat_hermZpow (y : (Σ k, ι k) → Ω) (M : HermLine ι) (a m : ℕ) :
     chartLat y (Inter.hermZpow M a).a m = chartLat y M.a (a * m) := by
   have e : ∀ k, -((m : ℤ) * (Inter.hermZpow M a).a k) = -(((a * m : ℕ) : ℤ) * M.a k) := by
@@ -157,6 +201,13 @@ theorem chartLat_hermZpow (y : (Σ k, ι k) → Ω) (M : HermLine ι) (a m : ℕ
       s * ∏ k, y ⟨k, c k⟩ ^ (-(((a * m : ℕ) : ℤ) * M.a k)) ∈ chartRingZ y c)
   simp only [e]
 
+/- English proof (translation)
+Establish `h1 : ∀ k, (m : ℤ) * (Inter.hermZpow M a).a k = ((a * m : ℕ) : ℤ) * M.a k`. Introduce `k`. Simplify using `only [Inter.hermZpow, Pi.smul_apply, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h2 : ∀ z, (Inter.hermZpow M a).h z ^ m = M.h z ^ (a * m)`. Introduce `z`. Use `show (M.h z ^ (a : ℤ)) ^ m = _`. Rewrite using `[zpow_natCast, pow_mul]`. Unfold `IsSmallH`.
+
+Simplify using `only [h1, h2]`.
+-/
 theorem isSmallH_hermZpow_iff (P : Ideal (MRing ι)) (y : (Σ k, ι k) → Ω) (M : HermLine ι) (a m : ℕ)
     (s : Ω) : IsSmallH P y (Inter.hermZpow M a) m s ↔ IsSmallH P y M (a * m) s := by
   have h1 : ∀ k, (m : ℤ) * (Inter.hermZpow M a).a k = ((a * m : ℕ) : ℤ) * M.a k := by
@@ -171,12 +222,22 @@ theorem isSmallH_hermZpow_iff (P : Ideal (MRing ι)) (y : (Σ k, ι k) → Ω) (
   unfold IsSmallH
   simp only [h1, h2]
 
+/- English proof (translation)
+Unfold `smallSectionCount`. Rewrite using `[card_eq_of_iff (fun s => by rw [chartLat_hermZpow, isSmallH_hermZpow_iff])]`.
+-/
 theorem smallSectionCount_tensorPower (y : (Σ k, ι k) → Ω) (M : HermLine ι) (a m : ℕ) :
     smallSectionCount (IsSmallH (mCoordIdeal y) y (Inter.hermZpow M a)) (chartLat y (Inter.hermZpow M a).a) m =
       smallSectionCount (IsSmallH (mCoordIdeal y) y M) (chartLat y M.a) (a * m) := by
   unfold smallSectionCount
   rw [card_eq_of_iff (fun s => by rw [chartLat_hermZpow, isSmallH_hermZpow_iff])]
 
+/- English proof (translation)
+Use `⟨Inter.isSmoothHerm_hermZpow h.1 _, fun z hz w hw => ?_⟩` and prove the remaining obligations. Establish `hf : (fun z => Real.log ((Inter.hermZpow M a).h z)) = (a : ℝ) • fun z => Real.log (M.h z)`. Use function extensionality and compare the values at `z`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Use `show Real.log (M.h z ^ (a : ℤ)) = (a : ℝ) * Real.log (M.h z)`.
+
+Rewrite using `[zpow_natCast, Real.log_pow]`. Establish `h0` using `h.2 z hz w hw`. Unfold `leviForm at h0 ⊢`. Rewrite using `[hf, fderiv_const_smul_field]`. Rewrite using `[fderiv_const_smul_field (𝕜 := ℝ) (f := fderiv ℝ fun z => Real.log (M.h z)) (a : ℝ)]`.
+
+Simplify using `only [Pi.smul_apply, FunLike.coe_smul, smul_eq_mul]`. Rewrite using `[← mul_add, mul_div_assoc]`. Conclude with `mul_nonneg (Nat.cast_nonneg a) h0`.
+-/
 theorem semipos_hermZpow {P0 P : Ideal (MRing ι)} {M : HermLine ι} (h : IsSemipositiveRel P0 P M) (a : ℕ) :
     IsSemipositiveRel P0 P (Inter.hermZpow M a) := by
   refine ⟨Inter.isSmoothHerm_hermZpow h.1 _, fun z hz w hw => ?_⟩
@@ -193,6 +254,11 @@ theorem semipos_hermZpow {P0 P : Ideal (MRing ι)} {M : HermLine ι} (h : IsSemi
   rw [← mul_add, mul_div_assoc]
   exact mul_nonneg (Nat.cast_nonneg a) h0
 
+/- English proof (translation)
+Rewrite using `[geoNum, geoNum]`. Use `split_ifs with h`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `e : (Fin.init fun _ : Fin 1 => c • b) = Fin.init fun _ : Fin 1 => b` using `Subsingleton.elim _ _`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, e]`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+-/
 theorem geoNum_one_smul (W : Ideal (MRing ι)) (c : ℤ) (b : K → ℤ) :
     geoNum 1 W (fun _ => c • b) = c * geoNum 1 W (fun _ => b) := by
   rw [geoNum, geoNum]
@@ -204,6 +270,9 @@ theorem geoNum_one_smul (W : Ideal (MRing ι)) (c : ℤ) (b : K → ℤ) :
     ring
   · simp
 
+/- English proof (translation)
+Introduce `W h1 h2 h3 h4`. Use `show 0 ≤ geoNum 1 W (fun _ => (a : ℤ) • M.a)`. Rewrite using `[geoNum_one_smul]`. Conclude with `mul_nonneg (Nat.cast_nonneg _) (h W h1 h2 h3 h4)`.
+-/
 theorem nef_hermZpow {P : Ideal (MRing ι)} {M : HermLine ι} (h : NefOnFibres P M.a) (a : ℕ) :
     NefOnFibres P (Inter.hermZpow M a).a := by
   intro W h1 h2 h3 h4
@@ -211,11 +280,35 @@ theorem nef_hermZpow {P : Ideal (MRing ι)} {M : HermLine ι} (h : NefOnFibres P
   rw [geoNum_one_smul]
   exact mul_nonneg (Nat.cast_nonneg _) (h W h1 h2 h3 h4)
 
+/- English proof (translation)
+Introduce `z` and use `by show M.h _ ^ (a : ℤ) = M.h z ^ (a : ℤ) rw [h z]`.
+-/
 theorem conj_hermZpow {M : HermLine ι} (h : IsConjInvariantH M) (a : ℕ) :
     IsConjInvariantH (Inter.hermZpow M a) := fun z => by
   show M.h _ ^ (a : ℤ) = M.h z ^ (a : ℤ)
   rw [h z]
 
+/- English proof (translation)
+Establish `hZ` using `Inter.isSmoothHerm_hermZpow hM (a : ℤ)`. Set `Lj : ℕ → Fin (D + 1) → HermLine ι` to `fun j i => if (i : ℕ) < j then Inter.hermZpow M a else M`. Establish `hs : ∀ j i, IsSmoothHerm (Lj j i)` using `fun j i => by`. Simplify using `only [Lj]`. Use `split_ifs`.
+
+Use `exacts [hZ, hM]`. Establish `step : ∀ j, j < D + 1 → I P (D + 1) (Lj (j + 1)) = a * I P (D + 1) (Lj j)`. Introduce `j hj`. Establish `e1 : Lj (j + 1) = Function.update (Lj j) ⟨j, hj⟩ (Inter.hermZpow M a)`. Use function extensionality and compare the values at `i`.
+
+Distinguish the cases in `hi : i = ⟨j, hj⟩`. Substitute `hi` using the available equality. Simplify using `[Lj]`. Rewrite using `[Function.update_of_ne hi]`. Establish `hij : (i : ℕ) ≠ j` using `fun h => hi (Fin.ext h)`.
+
+Simplify using `only [Lj]`. Distinguish the cases in `h1 : (i : ℕ) < j`. Rewrite using `[if_pos h1, if_pos (by omega)]`. Rewrite using `[if_neg h1, if_neg (by omega)]`. Establish `e0 : Lj j = Function.update (Lj j) ⟨j, hj⟩ M`.
+
+Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = ⟨j, hj⟩`. Substitute `hi` using the available equality. Simplify using `[Lj]`. Rewrite using `[Function.update_of_ne hi]`.
+
+Rewrite using `[e1, Inter.fam_update_eq_snoc hI hP (Lj j) (hs j) ⟨j, hj⟩ hZ]`. Use `conv_rhs => rw [e0, Inter.fam_update_eq_snoc hI hP (Lj j) (hs j) ⟨j, hj⟩ hM]`. Rewrite using `[Inter.fam_snoc_zpow hI hP _ (fun i => hs j _) hM (a : ℤ)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hall : ∀ j, j ≤ D + 1 → I P (D + 1) (Lj j) = (a : ℝ) ^ j * I P (D + 1) (Lj 0)`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro _`. Simplify using the standard rewrite rules.
+
+Consider the case `succ j ih`. Introduce `hj`. Rewrite using `[step j (by omega), ih (by omega), pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Establish `h0 : Lj 0 = fun _ => M`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[Lj]`. Establish `hD : Lj (D + 1) = fun _ => Inter.hermZpow M a`. Use function extensionality and compare the values at `i`. Simplify using `[Lj, i.2]`.
+
+Rewrite using `[← hD, hall (D + 1) le_rfl, h0]`.
+-/
 theorem fam_hermZpow {I : Ideal (MRing ι) → (m : ℕ) → (Fin m → HermLine ι) → ℝ} (hI : IsIntersectionFamily I)
     {P : Ideal (MRing ι)} {D : ℕ} (hP : IsArithVar P (D + 1)) {M : HermLine ι} (hM : IsSmoothHerm M) (a : ℕ) :
     I P (D + 1) (fun _ => Inter.hermZpow M a) = (a : ℝ) ^ (D + 1) * I P (D + 1) (fun _ => M) := by
@@ -265,15 +358,28 @@ theorem fam_hermZpow {I : Ideal (MRing ι) → (m : ℕ) → (Fin m → HermLine
     simp [Lj, i.2]
   rw [← hD, hall (D + 1) le_rfl, h0]
 
+/- English proof (translation)
+Use `show A.a + 0 = A.a`. Conclude with `add_zero _`.
+-/
 theorem constShift_a (A : HermLine ι) (t : ℝ) : (HermLine.constShift A t).a = A.a := by
   show A.a + 0 = A.a
   exact add_zero _
 
+/- English proof (translation)
+Use `show A.h z * Real.exp (-t) = _`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem constShift_h (A : HermLine ι) (t : ℝ) (z : (Σ k, ι k) → ℂ) :
     (HermLine.constShift A t).h z = Real.exp (-t) * A.h z := by
   show A.h z * Real.exp (-t) = _
   ring
 
+/- English proof (translation)
+Establish `hh : (HermLine.constShift A t).h = fun z => Real.exp (-t) * A.h z` using `funext (constShift_h A t)`. Use `⟨?_, fun z hz w hw => ?_⟩` and prove the remaining obligations. Unfold `IsSmoothHerm`. Rewrite using `[hh]`. Conclude with `contDiffOn_const.mul h.1`.
+
+Establish `hev : (fun z => Real.log ((HermLine.constShift A t).h z)) =ᶠ[𝓝 z] fun z => -t + Real.log (A.h z)` using `by filter_upwards [isOpen_relevant.mem_nhds hz.1] with z' hz'`. Rewrite using `[constShift_h, Real.log_mul (Real.exp_pos _).ne' (A.pos z' hz').ne', Real.log_exp]`. Establish `h2 : fderiv ℝ (fderiv ℝ fun z => Real.log ((HermLine.constShift A t).h z)) z = fderiv ℝ (fderiv ℝ fun z => Real.log (A.h z)) z`. Rewrite using `[hev.fderiv.fderiv_eq]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `x`. Conclude with `fderiv_const_add _`. Unfold `leviForm`. Rewrite using `[h2]`. Conclude with `h.2 z hz w hw`.
+-/
 theorem semipos_constShift {P0 P : Ideal (MRing ι)} {A : HermLine ι} (h : IsSemipositiveRel P0 P A) (t : ℝ) :
     IsSemipositiveRel P0 P (HermLine.constShift A t) := by
   have hh : (HermLine.constShift A t).h = fun z => Real.exp (-t) * A.h z := funext (constShift_h A t)
@@ -295,10 +401,22 @@ theorem semipos_constShift {P0 P : Ideal (MRing ι)} {A : HermLine ι} (h : IsSe
     rw [h2]
     exact h.2 z hz w hw
 
+/- English proof (translation)
+Introduce `z` and use `by rw [constShift_h, constShift_h, h z]`.
+-/
 theorem conj_constShift {A : HermLine ι} (h : IsConjInvariantH A) (t : ℝ) :
     IsConjInvariantH (HermLine.constShift A t) := fun z => by
   rw [constShift_h, constShift_h, h z]
 
+/- English proof (translation)
+Take `⟨q, w, hw, hgen, hsmall⟩` from `h.gen`. Use `⟨h.normalForm_baseLattice_le_dualSpan_sup_line, semipos_constShift h.semipos t, ?_, ⟨q, w, ?_, ?_, fun j => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[constShift_a]`. Conclude with `h.deg_pos`. Rewrite using `[constShift_a]`.
+
+Conclude with `hw`. Rewrite using `[constShift_a]`. Conclude with `hgen`. Introduce `dg dh g hh z hg hhh hd he hz`. Rewrite `hd` using `[constShift_a]`.
+
+Establish `h1` using `hsmall j dg dh g hh z hg hhh hd he hz`. Rewrite using `[constShift_h, pow_one]`. Rewrite `h1` using `[pow_one]`. Establish `hL` using `(L.pos z hz.1).le`. Establish `he1 : 1 ≤ Real.exp (-t)` using `Real.one_le_exp (by linarith)`.
+
+Use `h1.trans (mul_le_mul_of_nonneg_left ?_ (norm_nonneg _))` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem smallGen_constShift {P0 : Ideal (MRing ι)} {y : (Σ k, ι k) → Ω} {D : ℕ} {L : HermLine ι}
     (h : IsSmallGeneratedDatum P0 y D L) {t : ℝ} (ht : t ≤ 0) :
     IsSmallGeneratedDatum P0 y D (HermLine.constShift L t) := by
@@ -320,6 +438,9 @@ theorem smallGen_constShift {P0 : Ideal (MRing ι)} {y : (Σ k, ι k) → Ω} {D
     refine h1.trans (mul_le_mul_of_nonneg_left ?_ (norm_nonneg _))
     nlinarith
 
+/- English proof (translation)
+Introduce `s hs c hc`. Establish `h1` using `hs c hc`. Conclude with `isIntegral_algebraMap (R := chartRingZ y c) (A := Ω) (x := ⟨_, h1⟩)`.
+-/
 theorem chartLat_le_nm (y : (Σ k, ι k) → Ω) (a : K → ℤ) (τ : ℕ) : chartLat y a τ ≤ chartLatNm y a τ := by
   intro s hs c hc
   have h1 := hs c hc
@@ -329,6 +450,41 @@ end Mono
 
 open Mono in
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ _ y D M L' P0 P0' II a iota hD hII har hb hM hL hLc ha hio hbd`. Establish `hsmL : IsSmoothHerm L'` using `hL.semipos.1`. Establish `hsmM : IsSmoothHerm M` using `hM.semipos.1`. Establish `hfam : IsIntersectionFamily (II K ι)` using `hII K ι`. Establish `hF : (0 : ℝ) < ((D + 1).factorial : ℝ)` using `by exact_mod_cast Nat.factorial_pos _`.
+
+Establish `ha0 : (0 : ℝ) < (a : ℝ)` using `by exact_mod_cast ha`. Establish `hapos : (0 : ℝ) < (a : ℝ) ^ (D + 1)` using `pow_pos ha0 _`. Establish `key : ∀ η : ℝ, 0 < η → II K ι (mCoordIdeal y) (D + 1) (fun _ => M) ≤ II K ι (mCoordIdeal y) (D + 1) (fun _ => L') + ((D : ℝ) + 1) * η * geomDeg (mCoordIdeal y) L' D`. Introduce `η hη`. Establish `hLa : (HermLine.constShift L' (-η)).a = L'.a` using `constShift_a L' (-η)`.
+
+Establish `hLh : ∀ z, (HermLine.constShift L' (-η)).h z = Real.exp η * L'.h z` using `fun z => by`. Rewrite using `[constShift_h, neg_neg]`. Establish `hLsm : IsSmoothHerm (HermLine.constShift L' (-η))` using `(semipos_constShift hL.semipos (-η)).1`. Take `⟨n₀, O, -, hOd, hOb⟩` from `hbd η hη`. Take `⟨hfin, C, hC⟩` from `hPack K ι Ω y D (HermLine.constShift L' (-η)) (chartLat y (HermLine.constShift L' (-η)).a) har hb hLsm (fun τ => chartLat_le_nm y (HermLine.constShift L' (-η)).a τ)`.
+
+Establish `hG7` using `h7 K ι Ω y D (HermLine.constShift L' (-η)) P0' II hD hII har hb (smallGen_constShift hL (by linarith)) (conj_constShift hLc (-η))`. Establish `hG6` using `h6 K ι Ω y D (Inter.hermZpow M a) P0 II hD hII har hb hM.normalForm_baseLattice_le_dualSpan_sup_line (semipos_hermZpow hM.semipos a) (nef_hermZpow hM.nef a) (conj_hermZpow hM.conjInv a)`. Rewrite `hG6` using `[fam_hermZpow hfam har hsmM a]`. Establish `hCS'` using `hCS K ι (II K ι) (mCoordIdeal y) D L' (-η) hfam har hsmL`. Use `set v : ℕ → ℝ := fun n => smallSectionCount (IsSmallH (mCoordIdeal y) y (HermLine.constShift L' (-η))) (chartLat y (HermLine.constShift L' (-η)).a) n / ((n : ℝ) ^ (D + 1) / ((D + 1).factorial : ℝ)) with hv`.
+
+Establish `hv_bdd : ∀ n, v n ≤ |C| * ((D + 1).factorial : ℝ) * 2 ^ (D + 1)`. Introduce `n`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Rewrite using `[hv]`. Simplify using `only [Nat.cast_zero, ne_eq, Nat.add_eq_zero_iff, one_ne_zero, and_false, not_false_eq_true, zero_pow, zero_div, div_zero]`.
+
+Check the signs of the components of the expression. Establish `hn' : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `hnpos : (0 : ℝ) < (n : ℝ) ^ (D + 1) / ((D + 1).factorial : ℝ)` using `by positivity`. Rewrite using `[hv]`. Simplify using `only`.
+
+Rewrite using `[div_le_iff₀ hnpos]`. Establish `h1` using `(hC n).trans (mul_le_mul_of_nonneg_right (le_abs_self C) (by positivity))`. Establish `h2 : ((n : ℝ) + 1) ^ (D + 1) ≤ (2 * n) ^ (D + 1)` using `pow_le_pow_left₀ (by positivity) (by linarith) _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow]`.
+
+Clear the denominators using the available nonvanishing facts. Establish `hvB : IsBoundedUnder (· ≤ ·) atTop v` using `isBoundedUnder_of ⟨_, hv_bdd⟩`. Establish `hlimL : limsup v atTop ≤ II K ι (mCoordIdeal y) (D + 1) (fun _ => HermLine.constShift L' (-η))` using `hG7`. Establish `hcmp : ∀ n, n₀ ≤ n → a ∣ n → smallSectionCount (IsSmallH (mCoordIdeal y) y M) (chartLat y M.a) n ≤ smallSectionCount (IsSmallH (mCoordIdeal y) y (HermLine.constShift L' (-η))) (chartLat y (HermLine.constShift L' (-η)).a) n`. Introduce `n hn hdvd`.
+
+Take `⟨hinj, hmaps⟩` from `hio n hdvd`. Use `smallSectionCount_le_of_injOn (iota n) hinj (fun s hs hsm => ⟨?_, ?_⟩) (hfin n)` and prove the remaining obligations. Rewrite using `[hLa]`. Conclude with `hmaps hs`. Introduce `dg dh g h z hg hh hd he hz`.
+
+Rewrite `hd` using `[hLa]`. Establish `hbd'` using `bound_of_ptBoundOn hLR hsmL hs (hmaps hs) hsm hOd (hOb n hn hdvd s hs) (Real.exp_pos _).le dg dh g h z hg hh hd he hz`. Rewrite using `[hLh, mul_pow, ← Real.exp_nat_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hchain : ∀ ε : ℝ, 0 < ε → (a : ℝ) ^ (D + 1) * II K ι (mCoordIdeal y) (D + 1) (fun _ => M) ≤ (a : ℝ) ^ (D + 1) * (limsup v atTop + ε)`.
+
+Introduce `ε hε`. Use `hG6.trans ?_` and prove the remaining obligations. Unfold `arVolP`. Establish `hev1 : ∀ᶠ n in atTop, v n < limsup v atTop + ε` using `eventually_lt_of_limsup_lt (by linarith) hvB`. Establish `hten : Tendsto (fun m : ℕ => a * m) atTop atTop` using `tendsto_atTop_mono (fun m => Nat.le_mul_of_pos_left m ha) tendsto_id`.
+
+Establish `hev2 : ∀ᶠ m in atTop, v (a * m) < limsup v atTop + ε` using `hten.eventually hev1`. Use `limsup_le_of_le (isCoboundedUnder_le_of_le atTop (x := 0) fun m => div_nonneg (Real.log_natCast_nonneg _) (by positivity)) ?_` and prove the remaining obligations. Use `filter_upwards [hev2, eventually_ge_atTop (max n₀ 1)] with m hm hm1`. Establish `hm1' : 1 ≤ m` using `le_of_max_le_right hm1`. Establish `hmn : n₀ ≤ a * m` using `(le_of_max_le_left hm1).trans (Nat.le_mul_of_pos_left m ha)`.
+
+Rewrite using `[one_mul, smallSectionCount_tensorPower]`. Establish `hm1r : (1 : ℝ) ≤ m` using `by exact_mod_cast hm1'`. Establish `hmpos : (0 : ℝ) < (m : ℝ) ^ (D + 1) / ((D + 1).factorial : ℝ)` using `by positivity`. Establish `hc` using `hcmp (a * m) hmn (dvd_mul_right a m)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hv]`. Simplify using `only`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ ≤ (a : ℝ) ^ (D + 1) * (limsup v atTop + ε) := mul_le_mul_of_nonneg_left hm.le hapos.le`. Establish `hM_le : II K ι (mCoordIdeal y) (D + 1) (fun _ => M) ≤ limsup v atTop` using `le_of_forall_pos_le_add fun ε hε => le_of_mul_le_mul_left (hchain ε hε) hapos`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hCS']`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `le_of_forall_pos_le_add fun ε hε => ?_` and prove the remaining obligations. Use `set G := geomDeg (mCoordIdeal y) L' D`. Establish `hη0 : 0 < ε / (((D : ℝ) + 1) * (|G| + 1))` using `by positivity`. Use `(key _ hη0).trans ?_` and prove the remaining obligations. Establish `h1 : ((D : ℝ) + 1) * (ε / (((D : ℝ) + 1) * (|G| + 1))) * G ≤ ((D : ℝ) + 1) * (ε / (((D : ℝ) + 1) * (|G| + 1))) * (|G| + 1)` using `mul_le_mul_of_nonneg_left ((le_abs_self G).trans (by linarith)) (by positivity)`.
+
+Establish `h2 : ((D : ℝ) + 1) * (ε / (((D : ℝ) + 1) * (|G| + 1))) * (|G| + 1) = ε`. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem G3.proof (hLR : LocalRep.Statement) (hCS : ConstantShift.Statement) (h6 : ArithmeticVolumeBig.Statement)
     (h7 : G7.Statement) (hPack : PackingStatement) : G3.Statement := by
   intro K _ ι _ Ω _ _ y D M L' P0 P0' II a iota hD hII har hb hM hL hLc ha hio hbd

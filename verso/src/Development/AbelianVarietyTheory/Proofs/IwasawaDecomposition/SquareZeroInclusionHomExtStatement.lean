@@ -16,6 +16,9 @@ open GlobalTheory Formalism.L2.Pj GlobalTheory.Serre GlobalTheory.RayEv GlobalTh
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ExpCancel.cancel_incl | exact GlobalTheory.ExpCancel.cancel_incl | (intros; apply GlobalTheory.ExpCancel.cancel_incl <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.square_zero_inclusion_hom_ext : ∀ {X : Scheme.{0}} {G : Over X} {S : Type} [Field S] (x0 : Sp S ⟶ X)
     {A : Type} [CommRing A] [Algebra S A] [IsLocalRing A] (J : Ideal A) [Module Sᵐᵒᵖ J] [IsCentralScalar S J]
     (hJ : J ^ 2 = ⊥), Function.Injective (incl (S := S) J hJ) →

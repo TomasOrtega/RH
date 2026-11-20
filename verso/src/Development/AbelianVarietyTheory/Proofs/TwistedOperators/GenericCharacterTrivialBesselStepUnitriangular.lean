@@ -15,13 +15,32 @@ noncomputable section
 
 namespace GlobalTheory.AscFin.UniBF
 
+/- English proof (translation)
+Simplify using `only [psiE, map_add, AddChar.map_add_eq_mul]`.
+-/
 private theorem psiE_add_mul {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (a b : AE D) :
     psiE ψ (a + b) = psiE ψ a * psiE ψ b := by
   simp only [psiE, map_add, AddChar.map_add_eq_mul]
 
+/- English proof (translation)
+Simplify using `only [psiE, map_zero, AddChar.map_zero_eq_one]`.
+-/
 private theorem psiE_zero_one {D : D7} (ψ : AddChar (AF D.host.F) ℂ) : psiE ψ (0 : AE D) = 1 := by
   simp only [psiE, map_zero, AddChar.map_zero_eq_one]
 
+/- English proof (translation)
+Introduce `D hq T L μ0 hL sc G W Mv hM F hF ρ h u hu hx`. Establish `hA` using `GlobalTheory.T.genericCharacter_trivial_superdiagonal_off_exceptional D hq T L μ0 hL sc G W Mv hM F hF ρ h`. Establish `hB` using `GlobalTheory.T.additive_character_superdiag_trivial D hq T L μ0 hL sc G W Mv hM F hF ρ h`. Use `set N : Mx D ρ ρ := u.1.1 - 1 with hNdef`. Establish `hx' : (F.dB ρ h).extX _ ((F.dJ ρ h).jX ⬝ N) ∈ latRow G (2 * ρ + 1)`.
+
+Establish `e : xZero (F.dJ ρ h) ⬝ u.1.1 - xZero (F.dJ ρ h) = (F.dJ ρ h).jX ⬝ N`. Rewrite using `[hNdef, Matrix.mul_sub, Matrix.mul_one]`. Both sides reduce to the same expression. Rewrite using `[← e]`. Conclude with `hx`.
+
+Establish `hN : (F.dJ ρ h).pX ⬝ ((F.dB ρ h).extX _ ((F.dJ ρ h).jX ⬝ N) ⬝ (F.dB ρ h).jX) = N`. Rewrite using `[HypDec.extX_apply, Matrix.mul_assoc, HypDec.pX_jX, Matrix.mul_one, ← Matrix.mul_assoc, HypDec.pX_jX, Matrix.one_mul]`. Establish `key : ∀ i j : Fin ρ, j.1 = i.1 + 1 → psiE W.ψ (u.1.1 i j) = 1` using `fun i j hij => by`. Establish `hne : i ≠ j` using `fun e => by rw [e] at hij; omega`. Establish `e1 : u.1.1 i j = N i j` using `by rw [hNdef, Matrix.sub_apply, Matrix.one_apply_ne hne, sub_zero]`.
+
+Rewrite using `[e1]`. Use `GlobalTheory.FinPl.PsiUnit.psiE_eq_one_of_local W.ψ W.ψ_std.1.1 (hu i j) fun v _ => ?_` and prove the remaining obligations. Establish `ho` using `GlobalTheory.FinPlLoc.idem_mem_intAt (D := D) (· = v)`. Distinguish the cases in `hv : v ∈ G.pl.S0`. Use `hB _ hx' i j hij v hv _ ho` as an intermediate fact.
+
+Rewrite `this` using `[hN]`. Then use the resulting hypothesis. Use `hA _ hx' i j hij v hv _ ho` as an intermediate fact. Rewrite `this` using `[hN]`. Then use the resulting hypothesis. Unfold `psiUni upSum`. Use `Finset.sum_induction _ (fun x => psiE W.ψ x = 1) (fun a b ha hb => by rw [psiE_add_mul, ha, hb, one_mul]) (psiE_zero_one W.ψ) fun i _ => ?_` and prove the remaining obligations.
+
+Use `Finset.sum_induction _ (fun x => psiE W.ψ x = 1) (fun a b ha hb => by rw [psiE_add_mul, ha, hb, one_mul]) (psiE_zero_one W.ψ) fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with hij`. Conclude with `key i j hij`. Conclude with `psiE_zero_one W.ψ`.
+-/
 theorem psiUni_pcBF : OnStd fun {D} _ _ {sc} {G} W F => ∀ ρ (h : 2 * ρ + 2 ≤ D.R.m), ∀ u : UX D ρ,
     MxAt (fun _ => True) (u.1.1 - 1) → xZero (F.dJ ρ h) ⬝ u.1.1 - xZero (F.dJ ρ h) ∈ (pcBF W F ρ h).A₁ →
     psiUni W.ψ u.1 = 1 := by
@@ -56,6 +75,9 @@ theorem psiUni_pcBF : OnStd fun {D} _ _ {sc} {G} W F => ∀ ρ (h : 2 * ρ + 2 �
   · exact key i j hij
   · exact psiE_zero_one W.ψ
 
+/- English proof (translation)
+The claim follows from `psiUni_pcBF`.
+-/
 example : OnStd fun {D} _ _ {sc} {G} W F => ∀ ρ (h : 2 * ρ + 2 ≤ D.R.m), ∀ u : UX D ρ, MxAt (fun _ => True) (u.1.1 - 1) →
     xZero (F.dJ ρ h) ⬝ u.1.1 - xZero (F.dJ ρ h) ∈ (pcBF W F ρ h).A₁ → psiUni W.ψ u.1 = 1 := psiUni_pcBF
 

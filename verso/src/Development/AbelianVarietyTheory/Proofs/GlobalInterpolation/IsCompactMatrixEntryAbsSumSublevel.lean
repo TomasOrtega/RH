@@ -31,6 +31,15 @@ open scoped ENNReal NNReal Pointwise
 
 variable {P Q P' Q' : ℕ}
 
+/- English proof (translation)
+Set `φ : V ≃L[ℝ] (Fin (Module.finrank ℝ V) → ℝ)` to `(Module.finBasis ℝ V).equivFun.toContinuousLinearEquiv`. Prove the components needed by the constructor for the conclusion. Introduce `t r ht hr`. Set `m : Measure (Fin (Module.finrank ℝ V) → ℝ)` to `lam.map φ`. Use `haveI : m.IsAddHaarMeasure := φ.isAddHaarMeasure_map lam`.
+
+Establish `hm : ∀ ρ : ℝ, lam {x | N x < ρ} = m {z | N (φ.symm z) < ρ}` using `fun ρ => by`. Use `Eq.trans ?_ (Measure.map_apply φ.continuous.measurable (isOpen_lt (hc.comp φ.symm.continuous) continuous_const).measurableSet).symm` and prove the remaining obligations. Use `congr 1`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+
+Establish `e : {z | N (φ.symm z) < t * r} = t • {z | N (φ.symm z) < r}`. Use extensionality with `z`. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem₀ ht.ne', Set.mem_setOf_eq, Set.mem_setOf_eq, map_smul, hs _ _ (inv_pos.2 ht).le, inv_mul_lt_iff₀ ht]`. Rewrite using `[hm, hm, e, Measure.addHaar_smul_of_nonneg m ht.le]`. Simplify using the standard rewrite rules.
+
+Introduce `r hr`. Establish `h0 : N 0 = 0` using `by simpa using hs 0 0 le_rfl`. Conclude with `⟨(isOpen_lt hc continuous_const).measure_ne_zero lam ⟨0, by simpa [h0] using hr⟩, ((measure_mono fun x (hx : N x < r) => hx.le).trans_lt (hK r).measure_lt_top).ne⟩`.
+-/
 theorem addHaar_sublevel {V : Type} [AddCommGroup V] [Module ℝ V] [TopologicalSpace V]
     [IsTopologicalAddGroup V] [ContinuousSMul ℝ V] [T2Space V] [FiniteDimensional ℝ V]
     [MeasurableSpace V] [BorelSpace V] (lam : Measure V) [lam.IsAddHaarMeasure] (N : V → ℝ)
@@ -59,6 +68,9 @@ theorem addHaar_sublevel {V : Type} [AddCommGroup V] [Module ℝ V] [Topological
     exact ⟨(isOpen_lt hc continuous_const).measure_ne_zero lam ⟨0, by simpa [h0] using hr⟩,
       ((measure_mono fun x (hx : N x < r) => hx.le).trans_lt (hK r).measure_lt_top).ne⟩
 
+/- English proof (translation)
+Establish `h : IsCompact (Set.univ.pi fun _ : Fin P ⊕ Fin Q => Set.univ.pi fun _ : Fin P ⊕ Fin Q => Metric.closedBall (0 : ℂ) r)` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall _ _`. Use `IsCompact.of_isClosed_subset (X := Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) h (isClosed_le continuous_matrixEntryAbsSum continuous_const) fun Z hZ i _ j _ => ?_` and prove the remaining obligations. Rewrite using `[mem_closedBall_zero_iff]`. Use `le_trans ?_ hZ` and prove the remaining obligations. Conclude with `(Finset.single_le_sum (f := fun j => ‖Z i j‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun i => ∑ j, ‖Z i j‖) (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ i))`.
+-/
 theorem isCompact_matrixEntryAbsSum_sublevel (r : ℝ) :
     IsCompact {Z : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ | l1 Z ≤ r} := by
   have h : IsCompact (Set.univ.pi fun _ : Fin P ⊕ Fin Q => Set.univ.pi
@@ -72,6 +84,9 @@ theorem isCompact_matrixEntryAbsSum_sublevel (r : ℝ) :
     (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun i => ∑ j, ‖Z i j‖)
     (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ i))
 
+/- English proof (translation)
+Use `haveI : BorelSpace (lieU P Q) := ⟨rfl⟩`. Use `haveI := h.1`. Use `addHaar_sublevel lam (fun X => l1 (X : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ)) (continuous_matrixEntryAbsSum.comp continuous_subtype_val) (fun t x ht => ?_) fun r => ?_` and prove the remaining obligations. Simplify using `only [l1, Finset.mul_sum, SetLike.val_smul, Matrix.smul_apply, norm_smul, Real.norm_eq_abs, abs_of_nonneg ht]`. Conclude with `(Submodule.closed_of_finiteDimensional (lieU P Q)).isClosedEmbedding_subtypeVal.isCompact_preimage (isCompact_matrixEntryAbsSum_sublevel r)`.
+-/
 theorem ballU_props {lam : Measure (lieU P Q)} (h : IsOmegaLeb lam) :
     (∀ t r : ℝ, 0 < t → 0 < r → lam (ballU P Q (t * r)) =
       ENNReal.ofReal (t ^ Module.finrank ℝ (lieU P Q)) * lam (ballU P Q r)) ∧
@@ -85,6 +100,13 @@ theorem ballU_props {lam : Measure (lieU P Q)} (h : IsOmegaLeb lam) :
   · exact (Submodule.closed_of_finiteDimensional
       (lieU P Q)).isClosedEmbedding_subtypeVal.isCompact_preimage (isCompact_matrixEntryAbsSum_sublevel r)
 
+/- English proof (translation)
+Use `haveI : (volume : Measure (ℝ × Sp P Q)).IsAddHaarMeasure := Measure.prod.instIsAddHaarMeasure _ _`. Use `addHaar_sublevel volume tanGauge continuous_tanGauge (fun t x ht => ?_) fun r => ?_` and prove the remaining obligations. Simplify using `only [tanGauge, Prod.smul_fst, Prod.smul_snd, smul_eq_mul, abs_mul, abs_of_nonneg ht, Pi.smul_apply, norm_smul, Real.norm_eq_abs, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree. Use `(isCompact_closedBall (0 : ℝ × Sp P Q) |r|).of_isClosed_subset (isClosed_le continuous_tanGauge continuous_const) fun x hx => ?_` and prove the remaining obligations.
+
+Establish `hx : |x.1| + 2 * ∑ i, ‖x.2 i‖ ≤ r` using `hx`. Establish `h1 : 0 ≤ ∑ i, ‖x.2 i‖` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `h2` using `abs_nonneg x.1`. Establish `h3` using `le_abs_self r`. Rewrite using `[mem_closedBall_zero_iff, Prod.norm_def, max_le_iff, pi_norm_le_iff_of_nonneg (abs_nonneg r)]`.
+
+Use `⟨by rw [Real.norm_eq_abs]; linarith, fun i => ?_⟩` and prove the remaining obligations. Use `Finset.single_le_sum (f := fun i => ‖x.2 i‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ i)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem tanBall_props :
     (∀ t r : ℝ, 0 < t → 0 < r → (volume : Measure (ℝ × Sp P Q)) {x | tanGauge x < t * r} =
       ENNReal.ofReal (t ^ Module.finrank ℝ (ℝ × Sp P Q)) * volume {x : ℝ × Sp P Q | tanGauge x < r}) ∧
@@ -108,6 +130,9 @@ theorem tanBall_props :
       (Finset.mem_univ i)
     linarith
 
+/- English proof (translation)
+Take `⟨lam', h1, h2⟩` from `h`. Take `rfl` from `GlobalTheory.CompactDualUnique.isOmegaLeb_unique h1 hl`. Use `tendsto_div_of_squeeze (F := fun r => μ (expBall P Q r)) hc (ballU_props hl).1 h2 fun t ht => ?_` and prove the remaining obligations. Use `filter_upwards [GlobalTheory.T.unitaryExpLieBall_comparable_entryGauge P Q t ht] with r hr using ⟨measure_mono hr.1, measure_mono hr.2⟩`.
+-/
 theorem tendsto_gauge {μ : Measure (UpqT P Q)} {c : ℝ≥0∞} (hc : c ≠ ⊤) (h : OmegaDensity μ c)
     {lam : Measure (lieU P Q)} (hl : IsOmegaLeb lam) :
     Tendsto (fun r : ℝ => μ {g | gauge g < r} / lam (ballU P Q r)) (𝓝[>] 0) (𝓝 c) := by
@@ -117,6 +142,15 @@ theorem tendsto_gauge {μ : Measure (UpqT P Q)} {c : ℝ≥0∞} (hc : c ≠ ⊤
     fun t ht => ?_
   filter_upwards [GlobalTheory.T.unitaryExpLieBall_comparable_entryGauge P Q t ht] with r hr using ⟨measure_mono hr.1, measure_mono hr.2⟩
 
+/- English proof (translation)
+Use `tendsto_div_of_squeeze (F := fun r => (2 : ℝ≥0∞) ^ (P' + Q') * (volume : Measure (ℝ × Sp P' Q')) {x | tanGauge x < r}) (by simp) tanBall_props.1 ?_ fun t ht => ?_` and prove the remaining obligations. Use `tendsto_const_nhds.congr' ?_ filter_upwards [self_mem_nhdsWithin] with r hr` and prove the remaining obligations. Rewrite using `[mul_div_assoc, ENNReal.div_self (tanBall_props.2 r hr).1 (tanBall_props.2 r hr).2, mul_one]`. Use `filter_upwards [GlobalTheory.T.quadricPointGauge_polarCoordinates_compare_tangentGauge P Q P' Q' e t ht, Ioo_mem_nhdsGT one_pos] with r hr hr1`. Rewrite using `[GlobalTheory.T.hermitianNormFibreMeasure_eq_polar_coordinates P Q P' Q' e he fib hf _ (isOpen_lt (continuous_ptGauge e) continuous_const).measurableSet fun y hy h0 => ?_]`.
+
+Use `⟨mul_le_mul_right (measure_mono fun u hu => ?_) _, mul_le_mul_right (measure_mono fun u hu => (hr u hu.1).2 hu.2) _⟩` and prove the remaining obligations. Establish `h1 : u.1 ∈ Set.Ioo (-Real.pi) Real.pi`. Establish `h2 : |u.1| + 2 * ∑ i, ‖u.2 i‖ < t⁻¹ * r` using `hu`. Establish `h3 : 0 ≤ ∑ i, ‖u.2 i‖` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `h4 : t⁻¹ * r ≤ 1` using `mul_le_one₀ (inv_le_one_of_one_le₀ ht.le) hr1.1.le hr1.2.le`.
+
+Establish `h5` using `Real.pi_gt_three`. Conclude with `abs_lt.1 (by linarith)`. Conclude with `⟨h1, (hr u h1).1 hu⟩`. Establish `h2 : ‖y (e none) - 1‖ + 2 * ∑ i, ‖y (e (some i))‖ < r` using `hy`. Establish `h3 : 0 ≤ ∑ i, ‖y (e (some i))‖` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`.
+
+Rewrite `h2` using `[h0, zero_sub, norm_neg, norm_one]`. Combine the linear relations using `[hr1.2]`.
+-/
 theorem tendsto_fib (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q)) (he : SignCompat e)
     {fib : ℝ → Measure (Sp P Q)} (hf : IsDxDq fib) :
     Tendsto (fun r : ℝ => fib (sg (e none)) {y | ptGauge e y < r} /
@@ -146,6 +180,11 @@ theorem tendsto_fib (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q)) (he :
       rw [h0, zero_sub, norm_neg, norm_one] at h2
       linarith [hr1.2]
 
+/- English proof (translation)
+Establish `h1 : ∀ i, act g (baseVec e) i = UpqT.mat g i (e none)` using `fun i => by`. Simplify using `[act, baseVec]`. Establish `h2 : ∑ i, ‖(UpqT.mat g - 1) i (e none)‖ ≤ gauge g` using `Finset.sum_le_sum fun i _ => Finset.single_le_sum (f := fun j => ‖(UpqT.mat g - 1) i j‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ _)`. Rewrite `h2` using `[← e.sum_comp, Fintype.sum_option]`. Simplify using `only [Matrix.sub_apply, Matrix.one_apply, e.injective.eq_iff, if_true, reduceCtorEq, if_false, sub_zero] at h2`.
+
+Simplify using `only [ptGauge, h1]`. Combine the linear relations using `[norm_nonneg (UpqT.mat g (e none) (e none) - 1)]`.
+-/
 theorem ptGauge_act_le (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q)) (g : UpqT P Q) :
     ptGauge e (act g (baseVec e)) ≤ 2 * gauge g := by
   have h1 : ∀ i, act g (baseVec e) i = UpqT.mat g i (e none) := fun i => by
@@ -159,6 +198,31 @@ theorem ptGauge_act_le (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q)) (g
   simp only [ptGauge, h1]
   linarith [norm_nonneg (UpqT.mat g (e none) (e none) - 1)]
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.UpqTopology.upq_lcsc P Q`. Take `⟨i1', i2', i3', i4', i5', -⟩` from `GlobalTheory.UpqTopology.upq_lcsc P' Q'`. Use `haveI : BorelSpace (lieU P' Q') := ⟨rfl⟩`. Take `⟨σ, hσ, hσe⟩` from `GlobalTheory.T.exists_tangent_borelSection_quadric P Q P' Q' e`. Establish `⟨lam, hl, _⟩` using `h`.
+
+Establish `⟨lam', hl', _⟩` using `h'`. Use `haveI := hl'.1`. Use `haveI : LocallyCompactSpace (Matrix (Fin P' ⊕ Fin Q') (Fin P' ⊕ Fin Q') ℂ) := inferInstanceAs (LocallyCompactSpace ((Fin P' ⊕ Fin Q') → (Fin P' ⊕ Fin Q') → ℂ))`. Use `haveI : SecondCountableTopology (Matrix (Fin P' ⊕ Fin Q') (Fin P' ⊕ Fin Q') ℂ) := inferInstanceAs (SecondCountableTopology ((Fin P' ⊕ Fin Q') → (Fin P' ⊕ Fin Q') → ℂ))`. Use `haveI : LocallyCompactSpace (lieU P' Q') := (Submodule.closed_of_finiteDimensional (lieU P' Q')).isClosedEmbedding_subtypeVal.locallyCompactSpace`.
+
+Use `haveI : SecondCountableTopology (lieU P' Q') := TopologicalSpace.Subtype.secondCountableTopology _`. Use `set ν := fib (sg (e none)) with hν`. Use `haveI : IsFiniteMeasureOnCompacts ν := (GlobalTheory.T.hermitianNormFibreMeasure_finite_invariant P Q fib _ hf (sg_ne_zero _)).1`. Use `haveI : IsLocallyFiniteMeasure ν := isLocallyFiniteMeasure_of_isFiniteMeasureOnCompacts`. Establish `h1` using `GlobalTheory.T.tendsto_sublevel_density_prod_measure _ _ _ _ ν volume μ' lam' (ptGauge e) tanGauge gauge (fun X => l1 (X : Matrix (Fin P' ⊕ Fin Q') (Fin P' ⊕ Fin Q') ℂ)) _ a' (continuous_ptGauge e).measurable continuous_tanGauge.measurable continuous_gauge.measurable (continuous_ …`.
+
+Establish `h20 : (2 : ℝ≥0∞) ^ (P' + Q') ≠ 0` using `by simp`. Establish `h2t : (2 : ℝ≥0∞) ^ (P' + Q') ≠ ⊤` using `by simp`. Establish `h2 : Tendsto (fun r : ℝ => (ν.prod μ') {p | ptGauge e p.1 + gauge p.2 < r} / lam (ballU P Q r)) (𝓝[>] 0) (𝓝 a')`. Establish `h3` using `ENNReal.Tendsto.const_mul (a := ((2 : ℝ≥0∞) ^ (P' + Q'))⁻¹) h1 (Or.inr (ENNReal.inv_ne_top.2 h20))`. Rewrite `h3` using `[← mul_assoc, ENNReal.inv_mul_cancel h20 h2t, one_mul]`.
+
+Use `h3.congr fun r => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.unitaryLie_volume_ball_split_basis_vector P Q P' Q' e he lam lam' hl hl' r, div_eq_mul_inv, div_eq_mul_inv, ENNReal.mul_inv (Or.inl h20) (Or.inl h2t)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hm : Measurable fun p : Sp P Q × UpqT P' Q' => σ p.1 * j p.2` using `(hσ.1.comp measurable_fst).mul (hjc.measurable.comp measurable_snd)`. Establish `hS : ∀ r : ℝ, MeasurableSet {g : UpqT P Q | gauge g < r}` using `fun r => (isOpen_lt continuous_gauge continuous_const).measurableSet`.
+
+Establish `h4 : ∀ r : ℝ, (ν.prod μ') {p | gauge (σ p.1 * j p.2) < r} = κ * μ {g | gauge g < r}`. Introduce `r`. Rewrite using `[← lintegral_indicator_one (hS r), ← hκ σ hσ _ (measurable_one.indicator (hS r)), ← lintegral_indicator_one (s := {p : Sp P Q × UpqT P' Q' | gauge (σ p.1 * j p.2) < r}) (hm (hS r))]`. Conclude with `lintegral_prod _ (measurable_one.indicator (hm (hS r))).aemeasurable`. Establish `hae : ∀ᵐ p ∂(ν.prod μ'), qf p.1 = sg (e none)` using `(Measure.quasiMeasurePreserving_fst (μ := ν) (ν := μ')).ae (GlobalTheory.RealPlaceCompare.ae_qf hf _)`.
+
+Establish `h5 : Tendsto (fun r : ℝ => (ν.prod μ') {p | gauge (σ p.1 * j p.2) < r} / lam (ballU P Q r)) (𝓝[>] 0) (𝓝 a')`. Use `tendsto_div_of_squeeze ha' (ballU_props hl).1 h2 fun t ht => ?_` and prove the remaining obligations. Take `⟨δ, hδ, H⟩` from `GlobalTheory.T.quadricPointGauge_section_mul_block_compare P Q P' Q' e j hj t ht`. Establish `ht0 : 0 < t` using `by linarith`. Use `filter_upwards [Ioo_mem_nhdsGT (show 0 < min δ 1 / 2 by positivity)] with r hr`.
+
+Establish `hr1 : 2 * r < δ` using `by linarith [hr.2, min_le_left δ 1]`. Establish `hr2 : 2 * r < 1` using `by linarith [hr.2, min_le_right δ 1]`. Establish `key : ∀ p : Sp P Q × UpqT P' Q', qf p.1 = sg (e none) → ptGauge e p.1 < 2 * r → ptGauge e p.1 + gauge p.2 ≤ t * gauge (σ p.1 * j p.2) ∧ gauge (σ p.1 * j p.2) ≤ t * (ptGauge e p.1 + gauge p.2)` using `fun p hp hlt => by`. Establish `hne : p.1 (e none) ≠ -1` using `fun h0 => by`. Establish `h6 : ‖p.1 (e none) - 1‖ + 2 * ∑ i, ‖p.1 (e (some i))‖ < 2 * r` using `hlt`.
+
+Establish `h7 : 0 ≤ ∑ i, ‖p.1 (e (some i))‖` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `h8 : ‖(-1 - 1 : ℂ)‖ = 2` using `by norm_num`. Rewrite `h6` using `[h0, h8]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `H p.1 (σ p.1) (by linarith) (hσ.2 _ hp) (hσe _ hp hne).1 (hσe _ hp hne).2 p.2`.
+
+Use `⟨measure_mono_ae (hae.mono fun p hp hlt => ?_), measure_mono_ae (hae.mono fun p hp hlt => ?_)⟩` and prove the remaining obligations. Establish `hlt : ptGauge e p.1 + gauge p.2 < t⁻¹ * r` using `hlt`. Establish `h6 : t⁻¹ * r ≤ r` using `mul_le_of_le_one_left hr.1.le (inv_le_one_of_one_le₀ ht.le)`. Establish `h7 : 0 ≤ gauge p.2` using `weightAbsEntrySum_nonneg _`. Establish `h8` using `(key p hp (by linarith [hr.1])).2`.
+
+Conclude with `h8.trans_lt ((lt_inv_mul_iff₀ ht0).1 hlt)`. Establish `hlt : gauge (σ p.1 * j p.2) < r` using `hlt`. Establish `h6` using `ptGauge_act_le e (σ p.1 * j p.2)`. Rewrite `h6` using `[GlobalTheory.RealPlaceCompare.act_mul, hjs, hσ.2 _ hp]`. Conclude with `(key p hp (by linarith)).1.trans_lt (mul_lt_mul_of_pos_left hlt ht0)`.
+
+Establish `h6` using `ENNReal.Tendsto.const_mul (a := (κ : ℝ≥0∞)) (tendsto_gauge ha h hl) (Or.inr ENNReal.coe_ne_top)`. Use `tendsto_nhds_unique (h6.congr fun r => ?_) h5` and prove the remaining obligations. Rewrite using `[h4, mul_div_assoc]`.
+-/
 theorem const_mul_density (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q)) (he : SignCompat e)
     {fib : ℝ → Measure (Sp P Q)} (hf : IsDxDq fib) (j : UpqT P' Q' →* UpqT P Q)
     (hj : IsBlockEmb e j) (hjc : Continuous j) (hjs : ∀ g, act (j g) (baseVec e) = baseVec e)
@@ -249,6 +313,17 @@ theorem const_mul_density (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q))
   refine tendsto_nhds_unique (h6.congr fun r => ?_) h5
   rw [h4, mul_div_assoc]
 
+/- English proof (translation)
+Take `⟨a, ha0, hat, ha1, ha2⟩` from `c.trick P Q`. Take `⟨a', -, hat', ha1', ha2'⟩` from `c.trick P' Q'`. Use `haveI := c.haar P' Q'`. Use `haveI := c.haar (P' + Q') 0`. Use `haveI := c.prob (P' + Q')`.
+
+Use `haveI := c.prob (P + Q)`. Take `⟨κ, hκ⟩` from `GlobalTheory.T.invariant_measure_quadric_mul_haar_stabilizer P Q P' Q' _ _ j _ _ _ hjc hjr (GlobalTheory.T.hermitianNormFibreMeasure_finite_invariant P Q fib _ hf (sg_ne_zero _)).1 (GlobalTheory.RealPlaceCompare.ae_qf hf _) (GlobalTheory.T.hermitianNormFibreMeasure_finite_invaria …`. Establish `k1` using `const_mul_density e he hf j hj hjc.continuous (fun g => (hjr ▸ Set.mem_range_self g : j g ∈ {g | act g (baseVec e) = baseVec e})) hat hat' ha1 ha1' κ hκ`. Establish `hcard` using `card_eq e`. Set `e₀ : Option (Fin (P' + Q') ⊕ Fin 0) ≃ (Fin (P + Q) ⊕ Fin 0)` to `Fintype.equivOfCardEq (by simp [hcard])`.
+
+Establish `sg0 : ∀ {n : ℕ} (i : Fin n ⊕ Fin 0), sg i = 1` using `fun i => by`. Break down `i with i | i` into its components or cases. Both sides reduce to the same expression. Conclude with `i.elim0`. Establish `he₀ : SignCompat e₀` using `fun i => by rw [sg0, sg0]`.
+
+Take `⟨j₀, hj₀, hjc₀, hjr₀⟩` from `GlobalTheory.T.exists_unitaryBlockEmbedding_onto_stabiliser _ _ _ _ e₀ he₀`. Take `⟨⟨fib₀, hf₀⟩, hmass⟩` from `GlobalTheory.T.positiveDefiniteUnitSphereMass_proof (P + Q) (by omega)`. Take `⟨κ₀, hκ₀⟩` from `GlobalTheory.T.invariant_measure_quadric_mul_haar_stabilizer _ _ _ _ _ _ j₀ _ _ _ hjc₀ hjr₀ (GlobalTheory.T.hermitianNormFibreMeasure_finite_invariant _ _ fib₀ _ hf₀ (sg_ne_zero _)).1 (GlobalTheory.RealPlaceCompare.ae_qf hf₀ _) (GlobalTheory.T.hermitianNormFibreMeasure_finite_inv …`. Establish `k2` using `const_mul_density e₀ he₀ hf₀ j₀ hj₀ hjc₀.continuous (fun g => (hjr₀ ▸ Set.mem_range_self g : j₀ g ∈ {g | act g (baseVec e₀) = baseVec e₀})) hat hat' ha2 ha2' κ₀ hκ₀`. Take `⟨s₀, hs₀⟩` from `GlobalTheory.QuadricSection.exists_isSection _ _ _ _ (sg_ne_zero (e₀ none)) (qf_baseVec e₀)`.
+
+Establish `k3` using `hκ₀ s₀ hs₀ (fun _ => 1) measurable_const`. Simplify using `only [lintegral_const, measure_univ, mul_one, one_mul, sg0, hmass fib₀ hf₀] at k3`. Rewrite using `[hκ s hs f hfm, (ENNReal.mul_left_inj ha0 hat).1 (k1.trans k2.symm), k3]`.
+-/
 theorem formula_base (c : CDHaar) (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q))
     (he : SignCompat e) {fib : ℝ → Measure (Sp P Q)} (hf : IsDxDq fib)
     (j : UpqT P' Q' →* UpqT P Q) (hj : IsBlockEmb e j) (hjc : IsClosedEmbedding j)
@@ -292,6 +367,19 @@ theorem formula_base (c : CDHaar) (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕
   simp only [lintegral_const, measure_univ, mul_one, one_mul, sg0, hmass fib₀ hf₀] at k3
   rw [hκ s hs f hfm, (ENNReal.mul_left_inj ha0 hat).1 (k1.trans k2.symm), k3]
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.UpqTopology.upq_lcsc P Q`. Take `⟨j₀, hj₀, hjc₀, hjr₀⟩` from `GlobalTheory.T.exists_unitaryBlockEmbedding_onto_stabiliser _ _ _ _ e he`. Introduce `x₀ hx₀`. Prove the components needed by the constructor for the conclusion. Take `⟨s₀, hs₀⟩` from `GlobalTheory.QuadricSection.exists_isSection _ _ _ _ (sg_ne_zero (e none)) (qf_baseVec e)`.
+
+Take `⟨A, hA⟩` from `GlobalTheory.T.exists_isOrthogonalComplementIsometryEmbedding_translate _ _ _ _ e he j₀ hj₀ (s₀ x₀)`. Rewrite `hA` using `[hs₀.2 x₀ hx₀]`. Conclude with `⟨(A, _), hA⟩`. Introduce and unpack `⟨A, j⟩ hA`. Take `⟨g₀, hg₀, hj⟩` from `GlobalTheory.T.orthogonalComplement_unitary_embedding_conj_block _ _ _ _ e he j₀ hj₀ x₀ A j hx₀ hA`.
+
+Establish `hinv : act g₀⁻¹ x₀ = baseVec e`. Rewrite using `[← hg₀, ← GlobalTheory.RealPlaceCompare.act_mul, inv_mul_cancel, GlobalTheory.RealPlaceCompare.act_one]`. Use `⟨?_, GlobalTheory.RealPlaceCompare.exists_isDxDq P Q, fun fib hf => ⟨GlobalTheory.QuadricSection.exists_isSection _ _ _ _ (sg_ne_zero _) hx₀, fun s hs f hfm => ?_⟩⟩` and prove the remaining obligations. Use extensionality with `g`. Use `⟨?_, fun hg => ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨k, rfl⟩`. Conclude with `(hA.2.2 k).1`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : g₀⁻¹ * g * g₀ ∈ Set.range j₀ := by`. Rewrite using `[hjr₀]`. Express the relevant statement in the definitionally equal form `act _ _ = _`.
+
+Rewrite using `[GlobalTheory.RealPlaceCompare.act_mul, GlobalTheory.RealPlaceCompare.act_mul, hg₀, hg, hinv]`. Conclude with `⟨k, by change j k = g; rw [hj, hk]; group⟩`. Use `haveI := c.haar P Q haveI := GlobalTheory.UpqUnimodular.isMulRightInvariant_of_isHaarMeasure P Q _ (c.haar P Q)`. Establish `H` using `formula_base c e he hf j₀ hj₀ hjc₀ hjr₀ (s := fun y => s y * g₀) ⟨hs.1.mul_const g₀, fun y hy => by rw [GlobalTheory.RealPlaceCompare.act_mul, hg₀, hs.2 y hy]⟩ (f := fun g => f (g * g₀⁻¹)) (hfm.comp (measurable_mul_const _))`. Rewrite `H` using `[lintegral_mul_right_eq_self]`.
+
+Simplify using `only [hj, ← mul_assoc]`. Rewrite using `[H, ← mul_assoc, ENNReal.inv_mul_cancel (by simpa using cM_pos _) ENNReal.ofReal_ne_top, one_mul]`.
+-/
 theorem quotFormula (c : CDHaar) (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q))
     (he : SignCompat e) : QuotFormula c P Q P' Q' (sg (e none)) := by
   obtain ⟨i1, i2, i3, i4, i5, -⟩ := GlobalTheory.UpqTopology.upq_lcsc P Q
@@ -327,6 +415,13 @@ theorem quotFormula (c : CDHaar) (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ 
     rw [H, ← mul_assoc, ENNReal.inv_mul_cancel (by simpa using cM_pos _) ENNReal.ofReal_ne_top,
       one_mul]
 
+/- English proof (translation)
+Introduce `c P Q`. Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `let e : Option (Fin P ⊕ Fin Q) ≃ (Fin (P + 1) ⊕ Fin Q) := { toFun := fun o => o.elim (Sum.inl 0) (Sum.map Fin.succ id) invFun := Sum.elim (fun i => Fin.cases none (fun k => some (Sum.inl k)) i) (fun i => some (Sum.inr i)) left_inv := by rintro (_ | i | i) <;> simp right_inv := by`. Introduce and unpack `(i | i)`. Apply the tactic sequence `refine Fin.cases ?_ (fun k => ?_) i <;> simp`.
+
+Simplify using `}`. Apply the tactic sequence `exact quotFormula c e (by rintro (i | i) <;> rfl)`. Apply the tactic sequence `let e : Option (Fin P ⊕ Fin Q) ≃ (Fin P ⊕ Fin (Q + 1)) := { toFun := fun o => o.elim (Sum.inr 0) (Sum.map id Fin.succ) invFun := Sum.elim (fun i => some (Sum.inl i)) (fun i => Fin.cases none (fun k => some (Sum.inr k)) i) left_inv := by rintro (_ | i | i) <;> simp right_inv := by`. Introduce and unpack `(i | i)`. Simplify using the standard rewrite rules.
+
+Apply the tactic sequence `refine Fin.cases ?_ (fun k => ?_) i <;> simp }`. Apply the tactic sequence `exact quotFormula c e (by rintro (i | i) <;> rfl)`.
+-/
 theorem compactDualQuotient : CompactDualQuotient := by
   intro c P Q
   constructor

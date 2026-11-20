@@ -32,6 +32,13 @@ section Dat
 
 variable {k r : ℕ} {κ τ : ℝ}
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `L.hz`. Unfold `inWb Tz at *`. Use `⟨fun i hi => by simp [h1 i hi], ?_⟩` and prove the remaining obligations. Unfold `herm at *`. Establish `e : star ((τ : ℂ) • L.z) ⬝ᵥ Hpk k r *ᵥ ((τ : ℂ) • L.z) = ((τ : ℂ) * τ) * (star L.z ⬝ᵥ Hpk k r *ᵥ L.z)`.
+
+Rewrite using `[star_smul, Matrix.mulVec_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul, smul_eq_mul]`. Simplify using `only [Complex.star_def, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, ← Complex.ofReal_mul, Complex.re_ofReal_mul]`. Establish `hp : 0 < τ * τ` using `mul_pos hτ hτ`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem hzTr (L : LocBessel k r) (hτ : 0 < τ) : inWb k r ((τ : ℂ) • L.z) ∧ 0 < Tz k r ((τ : ℂ) • L.z) := by
   obtain ⟨h1, h2⟩ := L.hz
   unfold inWb Tz at *
@@ -46,6 +53,13 @@ theorem hzTr (L : LocBessel k r) (hτ : 0 < τ) : inWb k r ((τ : ℂ) • L.z) 
   have hp : 0 < τ * τ := mul_pos hτ hτ
   nlinarith
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `L.hz'`. Unfold `inWb Tz at *`. Use `⟨fun i hi => by simp [h1 i hi], ?_⟩` and prove the remaining obligations. Unfold `herm at *`. Establish `e : star ((τ : ℂ) • L.z') ⬝ᵥ Hpk k r *ᵥ ((τ : ℂ) • L.z') = ((τ : ℂ) * τ) * (star L.z' ⬝ᵥ Hpk k r *ᵥ L.z')`.
+
+Rewrite using `[star_smul, Matrix.mulVec_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul, smul_eq_mul]`. Simplify using `only [Complex.star_def, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, ← Complex.ofReal_mul, Complex.re_ofReal_mul]`. Establish `hp : 0 < τ * τ` using `mul_pos hτ hτ`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem hzTr' (L : LocBessel k r) (hτ : 0 < τ) : inWb k r ((τ : ℂ) • L.z') ∧ 0 < Tz k r ((τ : ℂ) • L.z') := by
   obtain ⟨h1, h2⟩ := L.hz'
   unfold inWb Tz at *
@@ -66,10 +80,22 @@ abbrev trDat (L : LocBessel k r) (κ τ : ℝ) (hκ : 0 < κ) (hτ : 0 < τ) : L
     ⟨isHaarOn_map_cjT hκ hτ L.hz.1 L.hμW.1, by rw [map_cjT_univ]; exact L.hμW.2⟩
     ⟨isHaarOn_map_cjT hκ hτ L.hz'.1 L.hμW'.1, by rw [map_cjT_univ]; exact L.hμW'.2⟩
 
+/- English proof (translation)
+Unfold `alphaPt tF`. Check the signs of the components of the expression.
+-/
 theorem alphaPt_pos (hκ : 0 < κ) (hτ : 0 < τ) (γ : Point ℂ (r + 1)) : 0 < alphaPt κ τ γ := by
   unfold alphaPt tF
   positivity
 
+/- English proof (translation)
+Unfold `IsPtRep`. Apply `and_congr (cj_mem_UH_iff hκ hτ g)` to reduce the goal to its premises. Use `show Zhat k r ((τ : ℂ) • L.z) ((τ : ℂ) • L.z') (cj k r κ τ g) = ptMat (ptTr κ τ hκ hτ γ) ↔ Zhat k r L.z L.z' g = ptMat γ`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Use extensionality with `a b`. Establish `h1 : Zhat k r ((τ : ℂ) • L.z) ((τ : ℂ) • L.z') (cj k r κ τ g) a b = ptMat (ptTr κ τ hκ hτ γ) a b`. Rewrite using `[h]`. Rewrite `h1` using `[Zhat_cj hκ hτ L.hz.1 L.hz'.1, ptMat_ptTr hκ hτ]`. Establish `hne : ((tF r κ τ a * tF r κ τ b : ℝ) : ℂ) ≠ 0`.
+
+Establish `hp : 0 < tF r κ τ a * tF r κ τ b`. Unfold `tF`. Check the signs of the components of the expression. Conclude with `hp.ne'` after adjusting the coercions. Conclude with `mul_left_cancel₀ hne h1`.
+
+Introduce `h`. Use extensionality with `a b`. Rewrite using `[Zhat_cj hκ hτ L.hz.1 L.hz'.1, ptMat_ptTr hκ hτ, h]`.
+-/
 theorem isPtRep_trDat (hκ : 0 < κ) (hτ : 0 < τ) (L : LocBessel k r) (γ : Point ℂ (r + 1)) (g : Mx k r) :
     IsPtRep (trDat L κ τ hκ hτ) (ptTr κ τ hκ hτ γ) (cj k r κ τ g) ↔ IsPtRep L γ g := by
   unfold IsPtRep
@@ -92,6 +118,21 @@ theorem isPtRep_trDat (hκ : 0 < κ) (hτ : 0 < τ) (L : LocBessel k r) (γ : Po
     ext a b
     rw [Zhat_cj hκ hτ L.hz.1 L.hz'.1, ptMat_ptTr hκ hτ, h]
 
+/- English proof (translation)
+Establish `hα` using `alphaPt_pos hκ hτ γ`. Use `set α := alphaPt κ τ γ with hαdef`. Establish `hpat : rootPat (ptTr κ τ hκ hτ γ) = rootPat γ` using `rootPat_ptTr hκ hτ γ`. Establish `hrel : ∀ g, IsRelStab (trDat L κ τ hκ hτ) (cj k r κ τ g) ↔ IsRelStab L g` using `fun g => isRelStab_iff hκ hτ L (trDat L κ τ hκ hτ) L.hz.1 L.hz'.1 rfl rfl rfl g`. Establish `hroot : ∀ g μR, IsRootMeas (trDat L κ τ hκ hτ) (ptTr κ τ hκ hτ γ) (cj k r κ τ g) (ENNReal.ofReal α • Measure.map (cjT k r κ τ) μR) ↔ IsRootMeas L γ g μR` using `fun g μR => IsRootMeas_trD_iff hκ hτ L _ _ _ _ _ _ _ hpat g μR`.
+
+Establish `hquot : ∀ g μR ν, IsOrbQuot (trDat L κ τ hκ hτ) (cj k r κ τ g) (ENNReal.ofReal α • Measure.map (cjT k r κ τ) μR) ((ENNReal.ofReal α)⁻¹ • Measure.map (phiP k r κ τ) ν) ↔ IsOrbQuot L g μR ν` using `fun g μR ν => IsOrbQuot_trD_iff hκ hτ L _ _ _ _ _ _ g μR ν hα`. Establish `key : ∀ g μR ν, IsPtRep L γ g → IsRelStab L g → IsRootMeas L γ g μR → IsOrbQuot L g μR ν → ENNReal.ofReal (hsNormSq (OrbInt (trDat L κ τ hκ hτ) F₁ (cj k r κ τ g) ((ENNReal.ofReal α)⁻¹ • Measure.map (phiP k r κ τ) ν))) = ENNReal.ofReal (α⁻¹ ^ 2 * ‖C‖ ^ 2) * ENNReal.ofReal (hsNormS …`. Introduce `g μR ν h1 h2 h3 h4`. Use `show ENNReal.ofReal (@hsNormSq L.Wp L.Wq _ _ _ _ _ (OrbInt (trDat L κ τ hκ hτ) F₁ (cj k r κ τ g) ((ENNReal.ofReal α)⁻¹ • Measure.map (phiP k r κ τ) ν))) = _`. Rewrite using `[OrbInt_trD hκ hτ L _ _ _ _ _ _ _ F₁ g _ ν, hO g μR ν h1 h2 h3 h4, smul_smul, hsNormSq_smul, ENNReal.toReal_inv, ENNReal.toReal_ofReal hα.le, ← ENNReal.ofReal_mul (by positivity)]`.
+
+Use `congr 1`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_inv, abs_of_pos hα, mul_pow]`. Unfold `orbSq`. Apply `le_antisymm` to reduce the goal to its premises. Use `iSup_le fun g₁ => iSup_le fun μR₁ => iSup_le fun ν₁ => iSup_le fun h => ?_` and prove the remaining obligations.
+
+Take `⟨g, rfl⟩ : ∃ g, g₁ = cj k r κ τ g` from `⟨cjI k r κ τ g₁, (cj_cjI hκ hτ g₁).symm⟩`. Take `⟨μR, rfl⟩ : ∃ μR, μR₁ = ENNReal.ofReal α • Measure.map (cjT k r κ τ) μR` from `⟨_, (map_cjT_cjIT_smul hκ hτ hα μR₁).symm⟩`. Take `⟨ν, rfl⟩ : ∃ ν, ν₁ = (ENNReal.ofReal α)⁻¹ • Measure.map (phiP k r κ τ) ν` from `⟨_, (use₉ hκ hτ hα ν₁).symm⟩`. Take `⟨h1, h2, h3, h4⟩` from `h`. Establish `h1'` using `(isPtRep_trDat hκ hτ L γ g).mp h1`.
+
+Establish `h2'` using `(hrel g).mp h2`. Establish `h3'` using `(hroot g μR).mp h3`. Establish `h4'` using `(hquot g μR ν).mp h4`. Rewrite using `[key g μR ν h1' h2' h3' h4']`. Use `gcongr`.
+
+Conclude with `le_iSup_of_le g (le_iSup_of_le μR (le_iSup_of_le ν (le_iSup_of_le ⟨h1', h2', h3', h4'⟩ le_rfl)))`. Repeatedly rewrite using `[ENNReal.mul_iSup]`. Use `iSup_le fun g => iSup_le fun μR => iSup_le fun ν => iSup_le fun h => ?_` and prove the remaining obligations. Take `⟨h1, h2, h3, h4⟩` from `h`. Rewrite using `[← key g μR ν h1 h2 h3 h4]`.
+
+Conclude with `le_iSup_of_le (cj k r κ τ g) (le_iSup_of_le (ENNReal.ofReal α • Measure.map (cjT k r κ τ) μR) (le_iSup_of_le ((ENNReal.ofReal α)⁻¹ • Measure.map (phiP k r κ τ) ν) (le_iSup_of_le ⟨(isPtRep_trDat hκ hτ L γ g).mpr h1, (hrel g).mpr h2, (hroot g μR).mpr h3, (hquot g μR ν).mpr h4⟩ le_r …`.
+-/
 theorem orbSq_trDat (hκ : 0 < κ) (hτ : 0 < τ) (L : LocBessel k r) (F F₁ : Mx k r → (L.Wq →L[ℂ] L.Wp))
     (γ : Point ℂ (r + 1)) (C : ℂ)
     (hO : ∀ (g : Mx k r) (μR : Measure (Mt k r)) (ν : Measure (PairSp k r)), IsPtRep L γ g → IsRelStab L g →
@@ -146,6 +187,19 @@ theorem orbSq_trDat (hκ : 0 < κ) (hτ : 0 < τ) (L : LocBessel k r) (F F₁ : 
         (le_iSup_of_le ⟨(isPtRep_trDat hκ hτ L γ g).mpr h1, (hrel g).mpr h2, (hroot g μR).mpr h3,
           (hquot g μR ν).mpr h4⟩ le_rfl)))
 
+/- English proof (translation)
+Unfold `jacBig tF`. Establish `key : ∀ n : ℕ, 2 * ∑ i ∈ Finset.range n, (n - i) = n * (n + 1)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`.
+
+Consider the case `succ n ih`. Rewrite using `[Finset.sum_range_succ]`. Establish `h2 : ∑ i ∈ Finset.range n, (n + 1 - i) = ∑ i ∈ Finset.range n, ((n - i) + 1)` using `Finset.sum_congr rfl fun i hi => by`. Use `Finset.mem_range.mp hi` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[h2, Finset.sum_add_distrib, Finset.sum_const, Finset.card_range, smul_eq_mul, mul_one]`. Establish `h3 : n + 1 - n = 1` using `by omega`. Rewrite using `[h3]`. Use polynomial arithmetic with `[ih]`. Establish `hsum : ∑ a : Fin r, 4 * (r - (a : ℕ)) = 2 * r * (r + 1)`.
+
+Rewrite using `[← Finset.mul_sum, Fin.sum_univ_eq_sum_range (fun i => r - i) r]`. Use `key r` as an intermediate fact. Use polynomial arithmetic with `[this]`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`.
+
+Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[mul_pow, ← pow_mul, mul_comm (r - (a : ℕ)) 4]`. Use `_ = τ ^ (4 * r) * κ ^ (∑ a : Fin r, 4 * (r - (a : ℕ))) * τ ^ 4 := by`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← pow_mul, Finset.prod_pow_eq_pow_sum]`. Use `_ = τ ^ (4 * (r + 1)) * κ ^ (2 * r * (r + 1)) := by`.
+
+Rewrite using `[hsum]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem jacBig_eq (r : ℕ) (κ τ : ℝ) : jacBig r κ τ = τ ^ (4 * (r + 1)) * κ ^ (2 * r * (r + 1)) := by
   unfold jacBig tF
   have key : ∀ n : ℕ, 2 * ∑ i ∈ Finset.range n, (n - i) = n * (n + 1) := by
@@ -178,6 +232,11 @@ theorem jacBig_eq (r : ℕ) (κ τ : ℝ) : jacBig r κ τ = τ ^ (4 * (r + 1)) 
         rw [hsum]
         ring
 
+/- English proof (translation)
+Unfold `wBig Wbig Mdim`. Rewrite using `[Fin.prod_univ_castSucc]`. Use `congr 1`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Fin.coe_castSucc, ← pow_mul]`.
+
+Use `congr 1`. Use linear arithmetic over natural numbers and integers. Simplify using `only [Fin.val_last, tF, Nat.sub_self, pow_zero, mul_one, Nat.mul_zero, zero_add]`. Rewrite using `[← pow_mul]`.
+-/
 theorem wBig_eq_Wbig (hk : 1 ≤ k) (r : ℕ) (κ τ : ℝ) : wBig k r κ τ = Wbig k r κ τ := by
   unfold wBig Wbig Mdim
   rw [Fin.prod_univ_castSucc]

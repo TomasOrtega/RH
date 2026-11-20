@@ -6,6 +6,47 @@ open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.
 
 namespace GlobalTheory.PDivGroup
 
+/- English proof (translation)
+Use `set I := augIdeal k A with hIdef`. Use `set J := augIdeal k B with hJdef`. Establish `hfJ : ∀ b ∈ J, f b ∈ I`. Introduce `b hb`. Establish `hb' : counit (R` using `k) b = 0 := hb`.
+
+Use `show counit (R := k) (f b) = 0`. Rewrite using `[CoalgHomClass.counit_comp_apply]`. Conclude with `hb'`. Establish `step1 : ∀ x ∈ I, ∃ b ∈ J, x - f b ∈ I ^ 2`. Introduce `x hx`.
+
+Take `⟨c, hc⟩` from `hf (AugCot.d (counitAlgHom k A) x)`. Take `⟨b0, rfl⟩` from `AugCot.d_surjective _ c`. Rewrite `hc` using `[cotMap_d]`. Use `set b := b0 - algebraMap k B (counit b0) with hb`. Establish `hbJ : b ∈ J` using `by show counit (R := k) b = 0`.
+
+Simplify using `[hb]`. Establish `hdb : AugCot.d (counitAlgHom k A) (f b) = AugCot.d (counitAlgHom k A) (f b0)`. Rewrite using `[hb, map_sub, AlgHomClass.commutes, map_sub, AugCot.d_algebraMap, sub_zero]`. Use `⟨b, hbJ, ?_⟩` and prove the remaining obligations. Establish `h1 : AugCot.d (counitAlgHom k A) (x - f b) = 0`.
+
+Rewrite using `[map_sub, hdb, ← hc, sub_self]`. Establish `hmem : x - f b ∈ I` using `I.sub_mem hx (hfJ b hbJ)`. Rewrite `h1` using `[AugCot.d_of_mem _ hmem, Ideal.toCotangent_eq_zero]`. Conclude with `h1`. Establish `step2 : ∀ m : ℕ, ∀ y ∈ I ^ (m + 1), ∃ b ∈ J ^ (m + 1), y - f b ∈ I ^ (m + 2)`.
+
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `y hy`. Rewrite `hy` using `[zero_add, pow_one]`.
+
+Take `⟨b, hb, h⟩` from `step1 y hy`. Conclude with `⟨b, by rwa [zero_add, pow_one], h⟩`. Consider the case `succ m ih`. Introduce `y hy`. Rewrite `hy` using `[pow_succ']`.
+
+Use `Submodule.mul_induction_on hy ?_ ?_` and prove the remaining obligations. Introduce `x hx z hz`. Take `⟨b1, hb1, hu⟩` from `step1 x hx`. Take `⟨b2, hb2, hv⟩` from `ih z hz`. Establish `hfb1 : f b1 ∈ I` using `hfJ b1 hb1`.
+
+Establish `hfb2 : f b2 ∈ I ^ (m + 1)`. Establish `: f b2 = z - (z - f b2)` using `by ring`. Rewrite using `[this]`. Conclude with `(I ^ (m + 1)).sub_mem hz (Ideal.pow_le_pow_right (by omega) hv)`. Use `⟨b1 * b2, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[pow_succ']`. Conclude with `Ideal.mul_mem_mul hb1 hb2`. Use `set u := x - f b1 set v := z - f b2`. Establish `hx' : x = f b1 + u` using `by simp [u]`. Establish `hz' : z = f b2 + v` using `by simp [v]`.
+
+Establish `: x * z - f (b1 * b2) = f b1 * v + u * f b2 + u * v`. Rewrite using `[hx', hz', map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Use `Ideal.add_mem _ (Ideal.add_mem _ ?_ ?_) ?_` and prove the remaining obligations.
+
+Rewrite using `[show m + 1 + 2 = 1 + (m + 2) by omega, pow_add, pow_one]`. Conclude with `Ideal.mul_mem_mul hfb1 hv`. Rewrite using `[show m + 1 + 2 = 2 + (m + 1) by omega, pow_add]`. Conclude with `Ideal.mul_mem_mul hu hfb2`. Rewrite using `[show m + 1 + 2 = 1 + (m + 2) by omega, pow_add, pow_one]`.
+
+Conclude with `Ideal.mul_mem_mul (Ideal.pow_le_self (by norm_num) hu) hv`. Introduce and unpack `y1 y2 ⟨b1, hb1, h1⟩ ⟨b2, hb2, h2⟩`. Use `⟨b1 + b2, Ideal.add_mem _ hb1 hb2, ?_⟩` and prove the remaining obligations. Establish `: y1 + y2 - f (b1 + b2) = (y1 - f b1) + (y2 - f b2)` using `by rw [map_add]; ring`. Rewrite using `[this]`.
+
+Conclude with `Ideal.add_mem _ h1 h2`. Establish `step3 : ∀ m : ℕ, ∀ x ∈ I, ∃ b : B, x - f b ∈ I ^ (m + 1)`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro x hx; exact ⟨0, by rw [map_zero, sub_zero, zero_add, pow_one]; exact hx⟩`.
+
+Consider the case `succ m ih`. Introduce `x hx`. Take `⟨b, hb⟩` from `ih x hx`. Take `⟨b', -, hb'⟩` from `step2 m _ hb`. Use `⟨b + b', ?_⟩` and prove the remaining obligations.
+
+Establish `: x - f (b + b') = x - f b - f b'` using `by rw [map_add]; ring`. Rewrite using `[this]`. Conclude with `hb'`. Use `haveI : IsNoetherianRing A := IsNoetherianRing.of_finite k A`. Establish `hnil : IsNilpotent I`.
+
+Use `(Ideal.FG.isNilpotent_iff_le_nilradical (IsNoetherian.noetherian I)).2 ?_` and prove the remaining obligations. Introduce `a ha`. Conclude with `(mem_nilradical).2 (hA a ha)`. Take `⟨N, hN⟩` from `hnil`. Establish `hI : ∀ x ∈ I, ∃ b : B, f b = x`.
+
+Introduce `x hx`. Take `⟨b, hb⟩` from `step3 N x hx`. Establish `: x - f b ∈ I ^ N` using `Ideal.pow_le_pow_right (by omega) hb`. Rewrite `this` using `[hN]`. Conclude with `⟨b, (sub_eq_zero.1 ((Submodule.mem_bot _).1 this)).symm⟩`.
+
+Introduce `a`. Establish `ha : a - algebraMap k A (counit a) ∈ I` using `by show counit (R := k) (a - algebraMap k A (counit a)) = 0`. Simplify using the standard rewrite rules. Take `⟨b, hb⟩` from `hI _ ha`. Use `⟨b + algebraMap k B (counit a), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_add, AlgHomClass.commutes, hb, sub_add_cancel]`.
+-/
 theorem surjective_of_cotangentPullback_surjective_nilAug {k A B : Type} [Field k] [CommRing A] [CommRing B]
     [Bialgebra k A] [Bialgebra k B] [Module.Finite k A] (f : B →ₐc[k] A)
     (hA : ∀ a ∈ augIdeal k A, IsNilpotent a) (hf : Function.Surjective (cotMap f)) :
@@ -108,6 +149,9 @@ theorem surjective_of_cotangentPullback_surjective_nilAug {k A B : Type} [Field 
   refine ⟨b + algebraMap k B (counit a), ?_⟩
   rw [map_add, AlgHomClass.commutes, hb, sub_add_cancel]
 
+/- English proof (translation)
+Introduce `p _ k _ _ G H q hG hq n`. Use `surjective_of_cotangentPullback_surjective_nilAug (q.app n) (hG n) fun w => ?_` and prove the remaining obligations. Take `⟨v, rfl⟩` from `G.omegaLevel_surjective n w`. Take `⟨u, rfl⟩` from `hq v`. Conclude with `⟨u.1 n, rfl⟩`.
+-/
 theorem app_surjective_of_omegaMap_surjective : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p] (G H : PDivGroup p k) (q : G ⟶ H), G.IsConn → Function.Surjective (omegaMap G H q) → ∀ n, Function.Surjective (q.app n) := by
   intro p _ k _ _ G H q hG hq n
   refine surjective_of_cotangentPullback_surjective_nilAug (q.app n) (hG n) fun w => ?_

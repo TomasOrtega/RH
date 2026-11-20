@@ -28,15 +28,27 @@ def ball (s : kˣ) : AddSubgroup k where
     simp only [cball, Set.mem_setOf_eq] at ha ⊢
     rwa [Valuation.map_neg]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_ball {s : kˣ} {a : k} : a ∈ ball s ↔ valuation k a ≤ valuation k (s : k) := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `mem_ball.2 (le_trans (mem_ball.1 ha) h)`.
+-/
 theorem ball_mono {s t : kˣ} (h : valuation k (s : k) ≤ valuation k (t : k)) {a : k} (ha : a ∈ ball s) :
     a ∈ ball t := mem_ball.2 (le_trans (mem_ball.1 ha) h)
 
+/- English proof (translation)
+Rewrite using `[mem_ball, map_mul, Units.val_mul, map_mul]`. Conclude with `mul_le_mul' ha hb`.
+-/
 theorem mul_mem_ball {s t : kˣ} {a b : k} (ha : a ∈ ball s) (hb : b ∈ ball t) : a * b ∈ ball (s * t) := by
   rw [mem_ball, map_mul, Units.val_mul, map_mul]
   exact mul_le_mul' ha hb
 
+/- English proof (translation)
+The claim follows from `isOpen_cball s`.
+-/
 theorem isOpen_ball (s : kˣ) : IsOpen ((ball s : AddSubgroup k) : Set k) := isOpen_cball s
 
 abbrev Q (s t : kˣ) : Type := ↥(ball t) ⧸ (ball s).addSubgroupOf (ball t)
@@ -49,6 +61,11 @@ instance finite_Q (s t : kˣ) : Finite (Q (k := k) s t) := by
 
 noncomputable instance (s t : kˣ) : Fintype (Q (k := k) s t) := Fintype.ofFinite _
 
+/- English proof (translation)
+Establish `h1 : (QuotientAddGroup.mk (Quotient.out q) : Q s t) = QuotientAddGroup.mk x`. Rewrite using `[← hq]`. Conclude with `QuotientAddGroup.out_eq' q`. Rewrite `h1` using `[QuotientAddGroup.eq]`. Use `⟨((Quotient.out q : ↥(ball t)) : k) - x, ?_, by ring⟩` and prove the remaining obligations.
+
+Establish `h2` using `AddSubgroup.mem_addSubgroupOf.1 (neg_mem h1)`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem out_eq_add {s t : kˣ} (x : ↥(ball t)) (q : Q s t) (hq : q = QuotientAddGroup.mk x) :
     ∃ h ∈ ball s, ((Quotient.out q : ↥(ball t)) : k) = (x : k) + h := by
   have h1 : (QuotientAddGroup.mk (Quotient.out q) : Q s t) = QuotientAddGroup.mk x := by
@@ -60,18 +77,32 @@ theorem out_eq_add {s t : kˣ} (x : ↥(ball t)) (q : Q s t) (hq : q = QuotientA
   push_cast
   ring
 
+/- English proof (translation)
+Take `⟨h, hh, he⟩` from `out_eq_add x q hq`. Rewrite using `[he, hg _ _ hh]`.
+-/
 theorem apply_out {M : Type} {s t : kˣ} (g : k → M) (hg : ∀ b, ∀ h ∈ ball s, g (b + h) = g b)
     (x : ↥(ball t)) (q : Q s t) (hq : q = QuotientAddGroup.mk x) :
     g ((Quotient.out q : ↥(ball t)) : k) = g x := by
   obtain ⟨h, hh, he⟩ := out_eq_add x q hq
   rw [he, hg _ _ hh]
 
+/- English proof (translation)
+The claim follows from `(Quotient.out q).2`.
+-/
 theorem out_mem {s t : kˣ} (q : Q s t) : ((Quotient.out q : ↥(ball t)) : k) ∈ ball t := (Quotient.out q).2
 
+/- English proof (translation)
+Take `⟨h, hh, he⟩` from `out_eq_add (s := s) (0 : ↥(ball t)) 0 rfl`. Rewrite using `[he]`. Simplify using `using hh`.
+-/
 theorem out_zero_mem {s t : kˣ} : ((Quotient.out (0 : Q s t) : ↥(ball t)) : k) ∈ ball s := by
   obtain ⟨h, hh, he⟩ := out_eq_add (s := s) (0 : ↥(ball t)) 0 rfl
   rw [he]; simpa using hh
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← QuotientAddGroup.out_eq' q, QuotientAddGroup.eq_zero_iff]`. Conclude with `AddSubgroup.mem_addSubgroupOf.2 h`. Introduce and unpack `rfl`.
+
+Conclude with `out_zero_mem`.
+-/
 theorem out_mem_iff {s t : kˣ} (q : Q s t) : ((Quotient.out q : ↥(ball t)) : k) ∈ ball s ↔ q = 0 := by
   constructor
   · intro h
@@ -84,9 +115,15 @@ variable {V : Type} [AddCommGroup V] [Module ℂ V]
 def avg (ψ : AddChar k Circle) (σ : k → V →ₗ[ℂ] V) (s t : kˣ) (ξ : k) : V →ₗ[ℂ] V :=
   ∑ q : Q s t, ((ψ (-(ξ * ((Quotient.out q : ↥(ball t)) : k))) : Circle) : ℂ) • σ ((Quotient.out q : ↥(ball t)) : k)
 
+/- English proof (translation)
+Rewrite using `[AddChar.map_add_eq_mul, Circle.coe_mul]`.
+-/
 theorem ch_add (ψ : AddChar k Circle) (a b : k) : ((ψ (a + b) : Circle) : ℂ) = (ψ a : ℂ) * (ψ b : ℂ) := by
   rw [AddChar.map_add_eq_mul, Circle.coe_mul]
 
+/- English proof (translation)
+Rewrite using `[← ch_add ψ, neg_add_cancel, AddChar.map_zero_eq_one, Circle.coe_one]`.
+-/
 theorem ch_neg_mul (ψ : AddChar k Circle) (a : k) : ((ψ (-a) : Circle) : ℂ) * (ψ a : ℂ) = 1 := by
   rw [← ch_add ψ, neg_add_cancel, AddChar.map_zero_eq_one, Circle.coe_one]
 
@@ -95,11 +132,20 @@ section Avg
 variable (ψ : AddChar k Circle) (σ : k → V →ₗ[ℂ] V) (hadd : ∀ a b, σ (a + b) = σ a * σ b)
 include hadd
 
+/- English proof (translation)
+Rewrite using `[← hadd, ← hadd, add_comm]`.
+-/
 theorem comm (a b : k) : σ a * σ b = σ b * σ a := by rw [← hadd, ← hadd, add_comm]
 
+/- English proof (translation)
+Simplify using `only [avg, Finset.sum_mul, Finset.mul_sum, smul_mul_assoc, mul_smul_comm, comm σ hadd]`.
+-/
 theorem avg_comm (s t : kˣ) (ξ : k) (b : k) : avg ψ σ s t ξ * σ b = σ b * avg ψ σ s t ξ := by
   simp only [avg, Finset.sum_mul, Finset.mul_sum, smul_mul_assoc, mul_smul_comm, comm σ hadd]
 
+/- English proof (translation)
+Rewrite using `[avg, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, mul_smul_comm, avg_comm ψ σ hadd]`.
+-/
 theorem avg_comm_avg (s t s' t' : kˣ) (ξ ξ' : k) :
     avg ψ σ s t ξ * avg ψ σ s' t' ξ' = avg ψ σ s' t' ξ' * avg ψ σ s t ξ := by
   rw [avg, Finset.sum_mul, Finset.mul_sum]
@@ -107,11 +153,23 @@ theorem avg_comm_avg (s t s' t' : kˣ) (ξ ξ' : k) :
   rw [smul_mul_assoc, mul_smul_comm, avg_comm ψ σ hadd]
 
 omit hadd in
+/- English proof (translation)
+Simplify using `only [avg, LinearMap.sum_apply, LinearMap.smul_apply]`. Conclude with `W.sum_mem fun q _ => W.smul_mem _ (hW _ _ hw)`.
+-/
 theorem avg_mem (W : Submodule ℂ V) (hW : ∀ a, ∀ w ∈ W, σ a w ∈ W) (s t : kˣ) (ξ : k) {w : V} (hw : w ∈ W) :
     avg ψ σ s t ξ w ∈ W := by
   simp only [avg, LinearMap.sum_apply, LinearMap.smul_apply]
   exact W.sum_mem fun q _ => W.smul_mem _ (hW _ _ hw)
 
+/- English proof (translation)
+Rewrite using `[← Module.End.mul_apply, ← avg_comm ψ σ hadd, Module.End.mul_apply]`. Set `g : k → V` to `fun b => ((ψ (-(ξ * b)) : Circle) : ℂ) • σ b y`. Establish `hg : ∀ b, ∀ h ∈ ball s, g (b + h) = g b`. Introduce `b h hh`. Simplify using `only [g, hadd, Module.End.mul_apply, hy h hh, mul_add, neg_add, ch_add ψ, hξ h hh]`.
+
+Establish `: ((ψ (-(ξ * h)) : Circle) : ℂ) = 1`. Use `ch_neg_mul ψ (ξ * h)` as an intermediate fact. Rewrite `this` using `[hξ h hh, Circle.coe_one, mul_one]`. Then use the resulting hypothesis. Rewrite using `[this, mul_one]`. Set `a' : ↥(ball t)` to `⟨a, ha⟩`.
+
+Establish `key : ∀ q : Q s t, ((ψ (-(ξ * ((Quotient.out q : ↥(ball t)) : k))) : Circle) : ℂ) • σ ((Quotient.out q : ↥(ball t)) : k) (σ a y) = ((ψ (ξ * a) : Circle) : ℂ) • g ((Quotient.out (q + QuotientAddGroup.mk a') : ↥(ball t)) : k)`. Introduce `q`. Rewrite using `[apply_out g hg (Quotient.out q + a') _ (by rw [QuotientAddGroup.mk_add, QuotientAddGroup.out_eq'])]`. Simplify using `only [g, AddSubgroup.coe_add, a', ← Module.End.mul_apply, ← hadd, smul_smul]`. Use `congr 1`.
+
+Rewrite using `[mul_add, neg_add, ch_add ψ, ← mul_assoc, mul_comm ((ψ (ξ * a) : Circle) : ℂ), mul_assoc]`. Rewrite using `[mul_comm ((ψ (ξ * a) : Circle) : ℂ), ch_neg_mul, mul_one]`. Simplify using `only [avg, LinearMap.sum_apply, LinearMap.smul_apply, key, ← Finset.smul_sum]`. Use `congr 1`. Conclude with `(Equiv.sum_comp (Equiv.addRight (QuotientAddGroup.mk a' : Q s t)) (fun q => g ((Quotient.out q : ↥(ball t)) : k)))`.
+-/
 theorem avg_eigen {s t : kˣ} {ξ : k} (hξ : ∀ h ∈ ball s, ψ (ξ * h) = 1) {y : V} (hy : ∀ h ∈ ball s, σ h y = y)
     {a : k} (ha : a ∈ ball t) : σ a (avg ψ σ s t ξ y) = ((ψ (ξ * a) : Circle) : ℂ) • avg ψ σ s t ξ y := by
   rw [← Module.End.mul_apply, ← avg_comm ψ σ hadd, Module.End.mul_apply]

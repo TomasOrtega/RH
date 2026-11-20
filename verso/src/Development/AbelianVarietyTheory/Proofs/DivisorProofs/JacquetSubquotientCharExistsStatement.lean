@@ -6,6 +6,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDetProdConstAt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WittRankLeSignatureSum
 open NumberField IsDedekindDomain MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.AdelicU GlobalTheory.SiegelSet GlobalTheory.UAut GlobalTheory.ThK.SquareIntegrability GlobalTheory.ThK.DetProd
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ThK.MidJacCell.midJac_detInd | exact GlobalTheory.ThK.MidJacCell.midJac_detInd | (intros; apply GlobalTheory.ThK.MidJacCell.midJac_detInd <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.jacquet_subquotient_char_exists : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
     GlobalTheory.Published.GeometricLemmaFiltration →
     ∀ (a a' l n : ℕ) (h : l + n ≤ a + a') (α β : kˣ →* ℂˣ), GlobalTheory.SplitWeil.IsUnram α → GlobalTheory.SplitWeil.IsUnram β →

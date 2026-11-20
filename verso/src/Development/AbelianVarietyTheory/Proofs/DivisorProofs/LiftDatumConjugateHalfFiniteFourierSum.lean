@@ -19,19 +19,33 @@ set_option maxHeartbeats 1600000
 
 namespace GlobalTheory.LiftFour
 
+/- English proof (translation)
+Conclude with `Matrix.ext fun p q => by simp only [dil, Matrix.map_apply, Matrix.add_apply, mul_add]`.
+-/
 theorem dil_add {D : D7} (i : Fin D.R.m) (a : D.host.E) (x y : WO (Vc D i) (Wc D i)) :
     dil i a (x + y) = dil i a x + dil i a y := by
   exact Matrix.ext fun p q => by simp only [dil, Matrix.map_apply, Matrix.add_apply, mul_add]
 
+/- English proof (translation)
+Introduce `p q` and use `by simp only [Matrix.add_apply, mul_add, hx p q, hy p q]`.
+-/
 theorem isHalf_add {D : D7} {m n : ℕ} {e : AE D} {x y : Mx D m n} (hx : IsHalf e x) (hy : IsHalf e y) :
     IsHalf e (x + y) := fun p q => by simp only [Matrix.add_apply, mul_add, hx p q, hy p q]
 
+/- English proof (translation)
+Introduce `p q` and use `by have h1 := hxy p q simp only [Matrix.add_apply, mul_add, hy p q] at h1 exact add_right_cancel h1`.
+-/
 theorem isHalf_of_add {D : D7} {m n : ℕ} {e : AE D} {x y : Mx D m n} (hxy : IsHalf e (x + y)) (hy : IsHalf e y) :
     IsHalf e x := fun p q => by
   have h1 := hxy p q
   simp only [Matrix.add_apply, mul_add, hy p q] at h1
   exact add_right_cancel h1
 
+/- English proof (translation)
+Establish `hu : incA D a⁻¹ * incA D a = 1` using `by rw [← RingHom.map_mul, inv_mul_cancel₀ ha, map_one]`. Prove the components needed by the constructor for the conclusion. Introduce `h p q`. Establish `h1 : e * (incA D a * x p q) = incA D a * x p q` using `h p q`. Take the linear combination `(incA D a⁻¹) * h1 - (e * x p q - x p q) * hu`.
+
+Introduce `h p q show e * (incA D a * x p q) = incA D a * x p q`. Rewrite using `[mul_left_comm, h p q]`.
+-/
 theorem isHalf_dil {D : D7} (i : Fin D.R.m) {e : AE D} {a : D.host.E} (ha : a ≠ 0) (x : WO (Vc D i) (Wc D i)) :
     IsHalf e (dil i a x) ↔ IsHalf e x := by
   have hu : incA D a⁻¹ * incA D a = 1 := by rw [← RingHom.map_mul, inv_mul_cancel₀ ha, map_one]
@@ -43,6 +57,11 @@ theorem isHalf_dil {D : D7} (i : Fin D.R.m) {e : AE D} {a : D.host.E} (ha : a �
     show e * (incA D a * x p q) = incA D a * x p q
     rw [mul_left_comm, h p q]
 
+/- English proof (translation)
+Establish `e : frMapO S T βS βT (a + b) = frMapO S T βS βT a + frMapO S T βS βT b`. Use extensionality with `p q`. Use `GlobalTheory.PlaceDatum.frMapO_add βS βT a b 1 p q` as an intermediate fact. Simplify using `using this`. Use extensionality with `p q`.
+
+Simplify using `only [redM, e, Matrix.add_apply, Matrix.of_apply]`. Rewrite using `[dif_pos (add_mem (ha p q) (hb p q)), dif_pos (ha p q), dif_pos (hb p q), ← map_add]`. Both sides reduce to the same expression.
+-/
 theorem redM_frMapO_add {D : D7} {S T : HSp D} (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D))
     (PP : Pl D.host.E) (a b : WO S T) (ha : IsIntM (frMapO S T βS βT a)) (hb : IsIntM (frMapO S T βS βT b)) :
     redM PP (frMapO S T βS βT (a + b)) = redM PP (frMapO S T βS βT a) + redM PP (frMapO S T βS βT b) := by
@@ -55,6 +74,41 @@ theorem redM_frMapO_add {D : D7} {S T : HSp D} (βS : GL (Fin S.rank) (EAf D)) (
   rw [dif_pos (add_mem (ha p q) (hb p q)), dif_pos (ha p q), dif_pos (hb p q), ← map_add]
   rfl
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F hC hG i hV ξR Q hQ hξ N hN hNQ eQ heQ ϖ hϖ hϖQ`. Use `letI : ∀ PP : Pl D.host.E, Fintype (kP PP) := fun PP => Fintype.ofFinite _`. Establish `hϖ' : (ϖ : D.host.E) ≠ 0`. Introduce `h; exact hϖ (by exact_mod_cast h)`. Establish `rV : (Vc D i).rank = D.R.r + D.R.t` using `D.sp.V_rank _ (Nat.le_add_left _ _) i.2`.
+
+Establish `rW : (Wc D i).rank = D.R.r` using `D.sp.W_rank _ (Nat.le_add_left _ _) i.2`. Establish `hrn : (Wc D i).rank ≤ (Vc D i).rank` using `by rw [rV, rW]; omega`. Take `⟨ψP, hψP, hchar⟩` from `GlobalTheory.T.exists_uniformizer_section_at_prime_set D G Pl0 T0 A Ks R F hC hG i hV Q hQ eQ heQ ϖ hϖ hϖQ`. Take `⟨c, hinv, hc⟩` from `GlobalTheory.T.residueMatrixDatum_fourierExpansion_gaussSum D Q (Vc D i).rank (Wc D i).rank hrn ψP ξR hψP hξ`. Use `choose yx hyh hyl hyr using GlobalTheory.T.exists_half_dilated_reduction_residueMatrices D G Pl0 T0 A Ks R F hC hG i hV Q hQ eQ heQ ϖ hϖ hϖQ`.
+
+Establish `hker` using `GlobalTheory.T.mem_lattice_iff_uniformiser_reduction_vanishes D G Pl0 T0 A Ks R F hC hG i hV Q hQ eQ heQ ϖ hϖ hϖQ`. Establish `h4a` using `GlobalTheory.T.mem_completedPairLattice_iff_adjointFrameMatrix_integral_conjHalf D G Pl0 T0 A Ks R F hC hG i hV Q hQ eQ heQ`. Establish `h4b` using `GlobalTheory.T.mem_completedPairLattice_iff_frameMatrix_integral_on_half D G Pl0 T0 A Ks R F hC hG i hV Q hQ eQ heQ`. Establish `hdm` using `GlobalTheory.T.completedPairLattice_dilation_mem_of_integer D G Pl0 T0 A Ks R i ϖ`. Establish `key : ∀ g : WO (Vc D i) (Wc D i) → ℂ, ∑ y ∈ Finset.univ.image yx, (∑ x ∈ Finset.univ.filter (fun x => yx x = y), c x) * g y = ∑ x, c x * g (yx x)`.
+
+Introduce `g`. Repeatedly rewrite using `[Finset.sum_mul]`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to (s := Finset.univ) (t := Finset.univ.image yx) (g := yx) (fun x _ => Finset.mem_image_of_mem yx (Finset.mem_univ x))]`. Use `Finset.sum_congr rfl fun y _ => Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Rewrite using `[(Finset.mem_filter.1 hx).2]`.
+
+Use `⟨Finset.univ.image yx, fun y => ∑ x ∈ Finset.univ.filter (fun x => yx x = y), c x, _, GlobalTheory.T.isUnitAwayFromLevel_prod_normalised_matrixGaussSum D Q (Vc D i).rank (Wc D i).rank hrn ψP ξR hψP hξ N hN hNQ, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Take `⟨x, -, rfl⟩` from `Finset.mem_image.1 hy`. Conclude with `hyh x`. Introduce `t`.
+
+Rewrite using `[key (fun y => R.ψ (symplO (Vc D i) (Wc D i) t y))]`. Distinguish the cases in `ht : IsHalf (cA D eQ) t`. Distinguish the cases in `hl : t ∈ lattice₂ R i`. Establish `hint` using `(h4a t ht).2 hl`. Rewrite using `[if_pos ⟨ht, hint⟩, halfInd, if_pos ⟨hl, ht⟩, one_mul, hinv]`.
+
+Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[hchar t (yx x) ht hl (hyh x) (hyl x), ← Finset.prod_attach Q]`. Use `congrArg _ (Finset.prod_congr rfl fun PP _ => ?_)` and prove the remaining obligations. Rewrite using `[hyr x PP]`. Rewrite using `[if_neg (fun h => hl ((h4a t ht).1 h.2)), halfInd, if_neg (fun h => hl h.1), zero_mul]`.
+
+Rewrite using `[if_neg (fun h => ht h.1), halfInd, if_neg (fun h => ht h.2), zero_mul]`. Introduce `t`. Rewrite using `[key (fun y => halfInd eQ (lattice₂ R i) (t + y)), flatDat]`. Distinguish the cases in `ht : IsHalf eQ t`. Establish `hdt : IsHalf eQ (dil i (ϖ : D.host.E) t)` using `(isHalf_dil i hϖ' t).2 ht`.
+
+Distinguish the cases in `hl : dil i (ϖ : D.host.E) t ∈ lattice₂ R i`. Establish `hint` using `(h4b _ hdt).2 hl`. Rewrite using `[if_pos ⟨hdt, hint⟩]`. Use `set ρt : ∀ PP : ↥Q, Matrix (Fin (Wc D i).rank) (Fin (Vc D i).rank) (kP PP.1) := fun PP => redM PP.1 (frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) (dil i (ϖ : D.host.E) t)) with hρt`. Establish `hterm : ∀ x, halfInd eQ (lattice₂ R i) (t + yx x) = if x = -ρt then 1 else 0`.
+
+Introduce `x`. Establish `hh : IsHalf eQ (t + yx x)` using `isHalf_add ht (hyh x)`. Establish `hdl : dil i (ϖ : D.host.E) (t + yx x) ∈ lattice₂ R i`. Rewrite using `[dil_add]`. Conclude with `add_mem hl (hyl x)`.
+
+Establish `hintx` using `(h4b _ ((isHalf_dil i hϖ' _).2 (hyh x))).2 (hyl x)`. Rewrite using `[halfInd]`. Distinguish the cases in `hx : x = -ρt`. Establish `hm : t + yx x ∈ lattice₂ R i`. Use `(hker _ hh hdl).2 fun PP hPP => ?_` and prove the remaining obligations.
+
+Rewrite using `[dil_add, redM_frMapO_add _ _ _ _ _ hint hintx, hyr x ⟨PP, hPP⟩, hx]`. Simplify using `[hρt]`. Rewrite using `[if_pos hx, if_pos ⟨hm, hh⟩]`. Rewrite using `[if_neg hx, if_neg]`. Introduce and unpack `⟨hm, -⟩`.
+
+Apply `hx` to reduce the goal to its premises. Use function extensionality and compare the values at `PP`. Establish `h0` using `(hker _ hh hdl).1 hm PP.1 PP.2`. Rewrite `h0` using `[dil_add, redM_frMapO_add _ _ _ _ _ hint hintx, hyr x PP]`. Rewrite using `[Pi.neg_apply, hρt]`.
+
+Conclude with `eq_neg_of_add_eq_zero_right h0`. Repeatedly rewrite using `[hterm, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_ite_eq' Finset.univ (-ρt) c, if_pos (Finset.mem_univ _)]`. Conclude with `hc ρt _ fun PP => rfl`. Rewrite using `[if_neg (fun h => hl ((h4b _ hdt).1 h.2))]`.
+
+Rewrite using `[mul_zero]`. Use `Finset.sum_eq_zero fun x _ => ?_` and prove the remaining obligations. Rewrite using `[halfInd, if_neg, mul_zero]`. Introduce and unpack `⟨hm, -⟩`. Apply `hl` to reduce the goal to its premises.
+
+Use `hdm _ hm` as an intermediate fact. Rewrite `this` using `[dil_add]`. Simplify using `using sub_mem this (hyl x)`. Rewrite using `[if_neg (fun h => ht ((isHalf_dil i hϖ' t).1 h.1))]`. Rewrite using `[mul_zero]`.
+
+Use `Finset.sum_eq_zero fun x _ => ?_` and prove the remaining obligations. Rewrite using `[halfInd, if_neg, mul_zero]`. Introduce and unpack `⟨-, hh⟩`. Conclude with `ht (isHalf_of_add hh (hyh x))`.
+-/
 theorem datum_conj_half_fourier : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (Ks : Type) [Field Ks]
     [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F → QGuard R → ∀ (i : Fin D.R.m), VStd D i → ∀ (ξR : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (Q : Finset (Pl D.host.E)),
     (∃ t, Q ⊆ R.Q t) → (∀ PP ∈ Q, ξR PP ≠ 1) → ∀ N : ℕ, N ≠ 0 → (∀ PP ∈ Q, (N : 𝓞 D.host.E) ∈ PP.asIdeal) →

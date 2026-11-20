@@ -9,6 +9,15 @@ namespace GlobalTheory.MomN.PeriodData
 
 variable {q : ℕ} [Fact q.Prime]
 
+/- English proof (translation)
+Take `⟨M, rfl, rfl, hok, a1, a2, a3, a4, a6⟩` from `GlobalTheory.T.exists_goodReduction_algebraic_weierstrass_model d q ι L hd h7 hL`. Take `⟨ω₀, hω₀⟩` from `GlobalTheory.T.exists_multiplicativeChart_at_splitPrime d q M hd h7 hs hL hok a1 a2 a3 a4 a6`. Take `⟨a, -, hω, hn⟩` from `GlobalTheory.T.exists_normalised_multiplicativeChart d q M ω₀ hd h7 hs hL hω₀`. Use `set ω := ω₀ * zc a`. Establish `hι : M.ι δ ≠ 0` using `by simpa using hδ0`.
+
+Use `⟨ω * M.ι δ, ?_, ?_, M, rfl, hL, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, (GenusOne.norm_root_eq M hok δ (hδ.trans hD.symm)).1, GenusOne.norm_period M ω hω]`. Rewrite using `[mul_div_cancel_right₀ _ hι]`. Establish `hN` using `GlobalTheory.T.norm_translate_powerComb_le_coprimeTranslation d q M ω θ hd h7 hs hL hω hθ`. Use `⟨fun t ht => ?_, GlobalTheory.T.weilOperator_theta_translate_shift_prime_to_q d q M ω θ hd h7 hs hL hω hθ hn, hN⟩` and prove the remaining obligations.
+
+Establish `hU` using `(GlobalTheory.T.cmLattice_heisenberg_relations_one_variable d hd.pos).2.1`. Establish `h0 : PrimeTo d q 0` using `⟨1, one_pos, Nat.coprime_one_left _, 0, 0, by simp⟩`. Use `hN 1 1 (fun _ => 1) (fun _ => 0) t 1 (fun _ => h0) ht (by simpa [hU] using GlobalTheory.T.cm_even_theta_series_chart_coeff_integral d q M ω θ hd h7 hs hL hω hθ)` as an intermediate fact. Simplify `this` using `[hU]`. Rewrite using `[mul_div_cancel_right₀ _ hι]`.
+
+Conclude with `hω`.
+-/
 theorem laws_and_chart (d : ℕ) (ι : ℂ ≃+* ℂ_[q]) (δ : ℂ) (θ : ℂ → ℂ) (L : PeriodPair)
     (hd : d.Prime) (h7 : d % 16 = 7) (hs : Split d q) (hL : IsOK d L)
     (hD : L.g₂ ^ 3 - 27 * L.g₃ ^ 2 = discr d) (hδ : δ ^ 12 = discr d) (hδ0 : δ ≠ 0) (hθ : IsTh d θ) :
@@ -35,6 +44,11 @@ end GlobalTheory.MomN.PeriodData
 
 namespace GlobalTheory.MomN
 
+/- English proof (translation)
+Introduce `d q _ ι hd h7 hs`. Take `⟨δ₀, hδ⟩` from `IsAlgClosed.exists_pow_nat_eq (discr d) (by norm_num : 0 < 12)`. Take `⟨⟨L, hL, hD⟩, θ, hθ⟩` from `GlobalTheory.T.exists_imagQuadOrder_pair_and_evenTheta d hd h7`. Establish `hδ0 : δ₀ ≠ 0` using `(GenusOne.thetaLaws_unit_period d q δ₀ hd h7 hs hδ).choose_spec.2.1`. Take `⟨Ω, hΩ, hT, hM⟩` from `PeriodData.laws_and_chart d ι δ₀ θ L hd h7 hs hL hD hδ hδ0 hθ`.
+
+Use `⟨δ₀, θ, Ω, hθ, hδ, hδ0, fun ι' => ?_, hΩ, hT, hM⟩` and prove the remaining obligations. Take `⟨Ω', h1, h2, -⟩` from `PeriodData.laws_and_chart d ι' δ₀ θ L hd h7 hs hL hD hδ hδ0 hθ`. Conclude with `⟨Ω', h1, h2⟩`.
+-/
 theorem exists_per : ∀ (d q : ℕ) [Fact q.Prime] (ι : ℂ ≃+* ℂ_[q]), d.Prime → d % 16 = 7 → Split d q →
     ∃ (δ₀ : ℂ) (θ : ℂ → ℂ) (Ω : ℂ_[q]), Per d ι δ₀ θ Ω := by
   intro d q _ ι hd h7 hs

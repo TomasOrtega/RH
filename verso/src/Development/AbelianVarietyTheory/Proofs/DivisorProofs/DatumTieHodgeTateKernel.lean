@@ -11,6 +11,9 @@ open GlobalTheory GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.
 
 namespace GlobalTheory.DetInv.FinrankMapAddFinrankInf
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.finrank_range_add_finrank_ker (f.domRestrict U), LinearMap.range_domRestrict, LinearMap.ker_domRestrict, add_comm, ← Submodule.finrank_map_subtype_eq, Submodule.map_comap_subtype, inf_comm]`.
+-/
 theorem finrank_map_add_finrank_inf {C V V' : Type} [Field C] [AddCommGroup V] [Module C V]
     [AddCommGroup V'] [Module C V'] [FiniteDimensional C V] (f : V →ₗ[C] V') (U : Submodule C V) :
     Module.finrank C U =
@@ -19,6 +22,35 @@ theorem finrank_map_add_finrank_inf {C V V' : Type} [Field C] [AddCommGroup V] [
     LinearMap.ker_domRestrict, add_comm, ← Submodule.finrank_map_subtype_eq,
     Submodule.map_comap_subtype, inf_comm]
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ _ _ _ _ _ E _ _ _ P ε h D φ hε T σ ψ r hσ hr a q x y g g' ha hq hx hy hg hg'`. Establish `hv` using `P.integers`. Take `⟨hE1, hE2, hE3, -⟩` from `(PadicInclusionHoms.eig_lattices_of_isTie p C v O E P ε h D φ hε T).2.2.2 σ ψ hσ`. Take `⟨m, k, hm, hk, hkg⟩` from `GlobalTheory.T.datum_tie_lattice_compatibility p C v O E P ε h D φ hε T σ ψ hσ q y g' hq hy hg'`. Use `haveI : FiniteDimensional C P.V := φ.symm.finiteDimensional`.
+
+Establish `hW : ∀ z, z ∈ P.W ↔ φ z ∈ LinearMap.ker (alC C D)` using `T.ker`. Establish `hxW : ∀ j, x j ∈ P.eigW (embO P.integers ψ)`. Introduce `j`. Establish `h1` using `P.wRec_le _ (hx.le (Submodule.subset_span ⟨j, rfl⟩))`. Use `⟨?_, h1.2⟩` and prove the remaining obligations.
+
+Take `⟨_, ⟨u, rfl⟩, hu⟩` from `(T.lie _).1 h1.1`. Use `(hW _).2 ?_` and prove the remaining obligations. Rewrite using `[(ker_bC_eq_range_alC_and_ker_alC_eq_range_bC p C v O hv ε hε _ h D).2, ← hu]`. Use `⟨incl C h u, funext fun i => ?_⟩` and prove the remaining obligations. Simplify using `[bC, redC, incl, Datum.bb, Matrix.mulVec, dotProduct, map_sum]`.
+
+Establish `hle : Submodule.span C (Set.range fun i => ∑ j, g i j • x j) ≤ Submodule.span C (Set.range x)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Establish `hle' : Submodule.span C (Set.range x) ≤ P.eigW (embO P.integers ψ)` using `Submodule.span_le.2 (Set.range_subset_iff.2 hxW)`.
+
+Establish `hsp : Submodule.span C (Set.range fun i => ∑ j, g i j • x j) = P.eigW (embO P.integers ψ)` using `Submodule.eq_of_le_of_finrank_eq (hle.trans hle') (by rw [finrank_span_eq_card hg.1, ha, Fintype.card_fin])`. Establish `hxi : LinearIndependent C x`. Rewrite using `[linearIndependent_iff_card_eq_finrank_span, Set.finrank, le_antisymm hle' (hsp.ge.trans hle), ha, Fintype.card_fin]`. Establish `hmap : ∀ {n : ℕ} (w : Fin n → P.V), Submodule.span O (Set.range fun i => φ (w i)) = (Submodule.span O (Set.range w)).map ((φ : P.V →ₗ[C] (Fin h → C)).restrictScalars O)`. Introduce `n w`.
+
+Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Establish `b1 : IsBasisOf C (lieSub C D σ) (fun i => φ (x i))` using `⟨hxi.map' (φ : P.V →ₗ[C] (Fin h → C)) φ.ker, by rw [hmap, hx, hE2]⟩`. Establish `b2 : IsBasisOf C (wQuot C D σ) (fun i => ∑ j, g i j • φ (x j))`. Establish `e : (fun i => ∑ j, g i j • φ (x j)) = fun i => φ (∑ j, g i j • x j)`.
+
+Use function extensionality and compare the values at `i`. Simplify using `only [map_sum, map_smul]`. Rewrite using `[e]`. Use `⟨hg.1.map' (φ : P.V →ₗ[C] (Fin h → C)) φ.ker, ?_⟩` and prove the remaining obligations. Rewrite using `[hmap, hg.2, hsp, wQuot, ← hE3]`.
+
+Use `le_antisymm ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, ⟨h1, h2⟩, rfl⟩`. Conclude with `⟨⟨z, h1, rfl⟩, (hW z).1 h2.1⟩`. Introduce and unpack `_ ⟨⟨z, h1, rfl⟩, h2⟩`. Use `⟨z, ⟨h1, (hW z).2 h2, ?_⟩, rfl⟩` and prove the remaining obligations.
+
+Take `⟨t, -, rfl⟩` from `h1`. Conclude with `EigenSplit.proj_mem (isSplitting_embO (E := E) hv) P.actV ψ t`. Establish `hs` using `hr a q _ g m k b1 b2 hm hk`. Use `⟨?_, right_ne_zero_of_mul_eq_one hkg, ?_⟩` and prove the remaining obligations. Rewrite using `[← hs, mul_assoc, ← map_mul, hkg, map_one, _root_.mul_one]`.
+
+Establish `e1 : LinearMap.ker (alC C D) ⊓ eig C (actT D) σ = (P.eigW (embO P.integers ψ)).map (φ : P.V →ₗ[C] (Fin h → C))`. Rewrite using `[← hE1]`. Use `le_antisymm ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨h1, z, h2, rfl⟩`. Conclude with `⟨z, ⟨(hW z).2 h1, h2⟩, rfl⟩`.
+
+Introduce and unpack `_ ⟨z, h1, rfl⟩`. Conclude with `⟨(hW z).1 h1.1, z, h1.2, rfl⟩`. Establish `e2 : (eig C (actT D) σ).map (alC C D) = Submodule.span C (Set.range fun i => ∑ j, k i j • m j)`. Use `le_antisymm ?_ (Submodule.span_le.2 ?_)` and prove the remaining obligations. Rewrite using `[← hE1]`.
+
+Introduce and unpack `_ ⟨_, ⟨z, hz, rfl⟩, rfl⟩`. Take `⟨c, hc, hcz⟩` from `P.exists_smul_mem_latT z`. Establish `hc' : algebraMap O C c ≠ 0` using `fun h0 => hc (hv.hom_inj (by rw [h0, map_zero]))`. Establish `h1` using `P.latTSub_le_latTQuot (σ := fun φ' : E →+* C => embO P.integers φ') (isSplitting_embO P.integers) ψ (x := algebraMap O C c • z) ((mem_eigSubLat _).2 ⟨by rwa [algebraMap_smul], Submodule.smul_mem _ _ hz⟩)`. Establish `h2 : alC C D (φ (algebraMap O C c • z)) ∈ alQuot C D σ` using `⟨_, hE3.le ⟨_, h1, rfl⟩, rfl⟩`.
+
+Rewrite `h2` using `[← hk.2, map_smul, map_smul]`. Conclude with `(Submodule.smul_mem_iff _ hc').1 (Submodule.span_le_restrictScalars O C _ h2)`. Introduce and unpack `_ ⟨i, rfl⟩`. Take `⟨z, hz, e⟩` from `hk.2.le (Submodule.subset_span ⟨i, rfl⟩)`. Conclude with `⟨z, hz.1, e⟩`.
+
+Rewrite using `[finrank_map_add_finrank_inf (alC C D), e1, e2, LinearEquiv.finrank_map_eq, ha, finrank_span_eq_card hk.1, Fintype.card_fin]`.
+-/
 theorem shift_eq_of_isTie : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [Algebra ℤ_[p] O] [Algebra ℤ_[p] C] [IsScalarTower ℤ_[p] O C] (E : Type) [Field E] [NumberField E] [StarRing (𝓞 E)] (P : Point p v O (𝓞 E)) (ε : PreTilt O p) (h : ℕ) (D : Datum ε h (ℤ_[p] ⊗[ℤ] 𝓞 E)) (φ : P.V ≃ₗ[C] (Fin h → C)), IsPrimitiveRoot (root ε).untilt p → IsTie P D (Algebra.TensorProduct.includeRight : 𝓞 E →ₐ[ℤ] ℤ_[p] ⊗[ℤ] 𝓞 E).toRingHom φ → ∀ (σ : ℤ_[p] ⊗[ℤ] 𝓞 E →+* O) (ψ : E →+* C) (r : NNReal), σ.comp (Algebra.TensorProduct.includeRight : 𝓞 E →ₐ[ℤ] ℤ_[p] ⊗[ℤ] 𝓞 E).toRingHom = embO P.integers ψ → IsShift C v D σ r → ∀ (a q : ℕ) (x : Fin a → P.V) (y : Fin q → P.V) (g : Matrix (Fin a) (Fin a) C) (g' : Matrix (Fin q) (Fin q) C), Module.finrank C (P.eigW (embO P.integers ψ)) = a → Module.finrank C (P.eigW ((embO P.integers ψ).comp (starRingEnd (𝓞 E)))) = q → Submodule.span O (Set.range x) = P.wRec (embO P.integers ψ) → Submodule.span O (Set.range y) = P.wRec ((embO P.integers ψ).comp (starRingEnd (𝓞 E))) → IsLatBasis C (open Classical in P.latTQuot (σ := fun φ' : E →+* C => embO P.integers φ') (isSplitting_embO P.integers) ψ) (fun i => ∑ j, g i j • x j) → IsLatBasis C (P.latTSub ((embO P.integers ψ).comp (starRingEnd (𝓞 E)))) (fun i => ∑ j, g' i j • y j) → v g.det = r * v g'.det ∧ g'.det ≠ 0 ∧ Module.finrank C (eig C (actT D) σ) = a + q := by
   intro p _ C _ _ _ v O _ _ _ _ _ _ _ E _ _ _ P ε h D φ hε T σ ψ r hσ hr a q x y g g' ha hq hx hy hg hg'
   classical

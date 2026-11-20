@@ -15,6 +15,13 @@ open GlobalTheory.BotPairSmall.BlockIdx
 
 variable (D : D7) (𝔪 : Ideal (𝓞 D.host.E))
 
+/- English proof (translation)
+Establish `e : inc D (r : D.host.E) - inc D (b : D.host.E) = inc D ((r - b : 𝓞 D.host.E) : D.host.E)`. Use `push_cast`. Rewrite using `[map_sub]`. Rewrite using `[Ideal.Quotient.eq, e]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Simplify using `using gen_mem_hatId D 𝔪 h (one_mem (OhE D))`. Introduce `h`. Take `⟨c, hc, e'⟩` from `(FractionalIdeal.mem_coeIdeal _).1 (GlobalTheory.HeisTranslate.mem_of_inc_mem_hatId h𝔪 h)`. Establish `: c = r - b` using `RingOfIntegers.coe_injective e'`.
+
+Conclude with `this ▸ hc`.
+-/
 theorem mk_eq_iff (h𝔪 : 𝔪 ≠ ⊥) (r b : 𝓞 D.host.E) :
     Ideal.Quotient.mk 𝔪 r = Ideal.Quotient.mk 𝔪 b ↔
       inc D (r : D.host.E) - inc D (b : D.host.E) ∈ hatId D 𝔪 := by
@@ -30,6 +37,19 @@ theorem mk_eq_iff (h𝔪 : 𝔪 ≠ ⊥) (r b : 𝓞 D.host.E) :
     have : c = r - b := RingOfIntegers.coe_injective e'
     exact this ▸ hc
 
+/- English proof (translation)
+Use `choose r hr using fun x : OhE D => exists_red D 𝔪 h𝔪 (x : AE D) x.2`. Establish `key : ∀ (x : OhE D) (b : 𝓞 D.host.E), Ideal.Quotient.mk 𝔪 (r x) = Ideal.Quotient.mk 𝔪 b ↔ (x : AE D) - inc D (b : D.host.E) ∈ hatId D 𝔪`. Introduce `x b`. Rewrite using `[mk_eq_iff D 𝔪 h𝔪]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Use `add_mem (hr x) h` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Introduce `h`. Use `sub_mem h (hr x)` as an intermediate fact.
+
+Rewrite `this` using `[sub_sub_sub_cancel_left]`. Then use the resulting hypothesis. Use `⟨{ toFun := fun x => Ideal.Quotient.mk 𝔪 (r x) map_one' := ?_ map_mul' := fun x y => ?_ map_zero' := ?_ map_add' := fun x y => ?_ }, key⟩` and prove the remaining obligations. Rewrite using `[← map_one (Ideal.Quotient.mk 𝔪), key]`. Simplify using the standard rewrite rules. Rewrite using `[← map_mul, key]`.
+
+Use `add_mem (mul_mem_hatId D 𝔪 y.2 (hr x)) (mul_mem_hatId D 𝔪 (VacMove.inc_int D (r x)) (hr y))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[← map_zero (Ideal.Quotient.mk 𝔪), key]`. Simplify using the standard rewrite rules. Rewrite using `[← map_add, key]`. Use `add_mem (hr x) (hr y)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use `push_cast`. Rewrite using `[map_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_redHom (h𝔪 : 𝔪 ≠ ⊥) : ∃ red : OhE D →+* 𝓞 D.host.E ⧸ 𝔪, ∀ (x : OhE D) (b : 𝓞 D.host.E),
     red x = Ideal.Quotient.mk 𝔪 b ↔ (x : AE D) - inc D (b : D.host.E) ∈ hatId D 𝔪 := by
   choose r hr using fun x : OhE D => exists_red D 𝔪 h𝔪 (x : AE D) x.2
@@ -79,6 +99,9 @@ def intMat (N : ℕ) : ↥(intG D N) →* Matrix (Fin N) (Fin N) (OhE D) where
     ext i j
     simp [Matrix.mul_apply]
 
+/- English proof (translation)
+Introduce `D 𝔪 h𝔪 N`. Take `⟨red, hred⟩` from `exists_redHom D 𝔪 h𝔪`. Conclude with `⟨((red.mapMatrix (m := Fin N)).toMonoidHom.comp (intMat D N)).toHomUnits, fun k i j b => hred (intMat D N k i j) b⟩`.
+-/
 theorem exists_levelRed : ∀ (D : D7) (𝔪 : Ideal (𝓞 D.host.E)), 𝔪 ≠ ⊥ → ∀ N : ℕ,
     ∃ ρ : ↥(intG D N) →* GL (Fin N) (𝓞 D.host.E ⧸ 𝔪), ∀ (k : ↥(intG D N)) (i j : Fin N) (b : 𝓞 D.host.E),
       ((ρ k : Matrix (Fin N) (Fin N) (𝓞 D.host.E ⧸ 𝔪)) i j = Ideal.Quotient.mk 𝔪 b ↔

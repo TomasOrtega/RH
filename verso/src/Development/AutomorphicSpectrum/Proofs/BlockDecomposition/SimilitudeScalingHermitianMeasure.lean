@@ -16,6 +16,13 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.SW.MassSimil.ScalModule
 
+/- English proof (translation)
+Use `haveI : (ν.map e).IsAddHaarMeasure := ContinuousAddEquiv.isAddHaarMeasure_map ν e`. Take `⟨b, hb⟩ : ∃ b : ℝ≥0, ν.map e = b • ν` from `⟨_, Measure.isAddLeftInvariant_eq_smul (ν.map e) ν⟩`. Establish `he : Measurable e` using `e.continuous.measurable`. Establish `h2 : ν.map (e ∘ e) = (b * b) • ν`. Rewrite using `[← Measure.map_map he he, hb, Measure.map_smul, hb, smul_smul]`.
+
+Take `⟨K, hK, hK0⟩` from `exists_compact_mem_nhds (0 : G)`. Establish `hpos : ν K ≠ 0` using `(Measure.measure_pos_of_mem_nhds ν hK0).ne'`. Establish `hfin : ν K ≠ ∞` using `hK.measure_lt_top.ne`. Establish `hbc : b * b = c`. Establish `h3 : ((b * b : ℝ≥0) • ν) K = (c • ν) K` using `by rw [← h2, h]`.
+
+Simplify using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul] at h3`. Conclude with `(ENNReal.mul_left_inj hpos hfin).1 h3` after adjusting the coercions. Rewrite using `[hb, ← hbc, NNReal.sqrt_mul_self]`.
+-/
 theorem map_eq_sqrt_smul {G : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G]
     [LocallyCompactSpace G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
     (e : G ≃ₜ+ G) (ν : Measure G) [ν.IsAddHaarMeasure] (c : ℝ≥0)
@@ -35,12 +42,18 @@ theorem map_eq_sqrt_smul {G : Type} [AddCommGroup G] [TopologicalSpace G] [IsTop
     exact_mod_cast (ENNReal.mul_left_inj hpos hfin).1 h3
   rw [hb, ← hbc, NNReal.sqrt_mul_self]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [scalH_coe, smul_smul, map_mul]`.
+-/
 theorem scalH_scalH {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
     (σ : E →ₐ[F] E) {n : ℕ} (a b : R) (S : HermR R σ n) :
     scalH R σ a (scalH R σ b S) = scalH R σ (a * b) S := by
   apply Subtype.ext
   simp only [scalH_coe, smul_smul, map_mul]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [scalH_coe, map_one, one_smul]`.
+-/
 theorem scalH_one {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
     (σ : E →ₐ[F] E) {n : ℕ} (S : HermR R σ n) : scalH R σ 1 S = S := by
   apply Subtype.ext
@@ -69,6 +82,13 @@ def scalEquiv {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [
 def oneByOne {F E : Type} [Field F] [Field E] [Algebra F E] (l : F) : Matrix (Fin 1) (Fin 1) E :=
   Matrix.of fun _ _ => algebraMap F E l
 
+/- English proof (translation)
+Establish `h1 : inclR R (algebraMap F E l) = algebraMap R (R ⊗[F] E) (algebraMap F R l)`. Rewrite using `[← IsScalarTower.algebraMap_apply]`. Conclude with `(Algebra.TensorProduct.includeRight : E →ₐ[F] R ⊗[F] E).commutes l`. Establish `h2 : sigR R σ (algebraMap R (R ⊗[F] E) (algebraMap F R l)) = algebraMap R (R ⊗[F] E) (algebraMap F R l)`. Simplify using `[sigR, Algebra.TensorProduct.algebraMap_apply]`.
+
+Use extensionality with `i j`. Simplify using `only [scalH_coe, cT, oneByOne, Matrix.mul_apply, Matrix.smul_apply, Matrix.map_apply, Matrix.transpose_apply, Matrix.of_apply, Finset.univ_unique, Finset.sum_singleton, smul_eq_mul, h1, h2]`. Establish `hi : i = default` using `Subsingleton.elim _ _`. Establish `hj : j = default` using `Subsingleton.elim _ _`. Substitute `hi hj` using the available equality.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem action_eq {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
     (σ : E →ₐ[F] E) (l : F) (S : HermR R σ 1) :
     ((scalH R σ (algebraMap F R l) (scalH R σ (algebraMap F R l) S) : HermR R σ 1) :
@@ -90,6 +110,13 @@ theorem action_eq {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [Com
   subst hi hj
   ring
 
+/- English proof (translation)
+Take `⟨hTR, hLC, hSC, hT2, -, -, -, -⟩` from `id hR`. Use `haveI := hTR`. Use `haveI := hLC`. Use `haveI := hSC`. Use `haveI := hT2`.
+
+Take `⟨iTR, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hcm R`. Use `haveI := iTR`. Take `⟨jLC, jSC, jT2, jB, -⟩` from `GlobalTheory.CompanionTheory.SW.HermTop.herm_top F E σ hcm R 1`. Use `haveI := jLC`. Use `haveI := jSC`.
+
+Use `haveI := jT2`. Use `haveI := jB`. Conclude with `map_eq_sqrt_smul (scalEquiv σ hcm R 1 l hl) ν c (h _ (action_eq R σ l))`.
+-/
 theorem local_scal {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) (R : Type) [CommRing R] [Algebra F R]
     [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R] (hR : IsLocR R) (l : F) (hl : l ≠ 0) (c : ℝ≥0)
@@ -113,6 +140,13 @@ theorem local_scal {F E : Type} [Field F] [NumberField F] [Field E] [NumberField
   haveI := jB
   exact map_eq_sqrt_smul (scalEquiv σ hcm R 1 l hl) ν c (h _ (action_eq R σ l))
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hcm l hl`. Establish `hdet : (oneByOne l : Matrix (Fin 1) (Fin 1) E).det ≠ 0`. Rewrite using `[Matrix.det_fin_one]`. Conclude with `(map_ne_zero (algebraMap F E)).2 hl`. Take `⟨ci, c, hu, hi, hv⟩` from `GlobalTheory.T.hermitian_matrix_euler_product F E σ hcm 1 (oneByOne l) hdet`.
+
+Use `haveI : BorelSpace (Ainf F) := ⟨rfl⟩`. Use `haveI : ∀ v, BorelSpace (Fv F v) := fun _ => ⟨rfl⟩`. Use `⟨NNReal.sqrt ci, fun v => NNReal.sqrt (c v), (PositivityTheory.PlacePermOperatorBicommutantSpan.up_alg F ci ci c c hu hu).2.2.2.2.2.1, ?_, ?_⟩` and prove the remaining obligations. Introduce `ν hν`. Conclude with `local_scal σ hcm (Ainf F) (GlobalTheory.CompanionTheory.SW.isLocR_Ainf F hcm.1) l hl ci ν hν (hi ν hν)`.
+
+Introduce `v ν hν`. Conclude with `local_scal σ hcm (Fv F v) (GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v) l hl (c v) ν hν (hv v ν hν)`.
+-/
 theorem scal_module : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ l : F, l ≠ 0 → ∃ (cinf : ℝ≥0) (c : HeightOneSpectrum (𝓞 F) → ℝ≥0), IsUnitProd cinf c ∧ (∀ ν : Measure (HermR (Ainf F) σ 1), ν.IsAddHaarMeasure → ν.map (GlobalTheory.CompanionTheory.SW.MassSimil.scalH (Ainf F) σ (algebraMap F (Ainf F) l)) = cinf • ν) ∧ ∀ v : HeightOneSpectrum (𝓞 F), ∀ ν : Measure (HermR (Fv F v) σ 1), ν.IsAddHaarMeasure → ν.map (GlobalTheory.CompanionTheory.SW.MassSimil.scalH (Fv F v) σ (algebraMap F (Fv F v) l)) = c v • ν := by
   intro F E _ _ _ _ _ σ hcm l hl
   have hdet : (oneByOne l : Matrix (Fin 1) (Fin 1) E).det ≠ 0 := by

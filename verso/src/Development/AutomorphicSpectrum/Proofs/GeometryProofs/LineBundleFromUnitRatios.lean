@@ -20,14 +20,25 @@ namespace GlobalTheory.CompanionTheory.Ar.Flat.GagaC.Transition
 
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X}
 
+/- English proof (translation)
+The claim follows from `TopCat.Presheaf.germ_res_apply X.presheaf (homOfLE h) q hq u.val`.
+-/
 theorem germ_res_val {U W : X.Opens} (h : W ≤ U) (u : Γ(X, U)ˣ) (q : X) (hq : q ∈ W) :
     X.presheaf.germ W q hq (res h u).val = X.presheaf.germ U q (h hq) u.val :=
   TopCat.Presheaf.germ_res_apply X.presheaf (homOfLE h) q hq u.val
 
+/- English proof (translation)
+The claim follows from `TopCat.Presheaf.section_ext X.sheaf U s t h`.
+-/
 theorem sec_ext {U : X.Opens} {s t : Γ(X, U)}
     (h : ∀ q (hq : q ∈ U), X.presheaf.germ U q hq s = X.presheaf.germ U q hq t) : s = t :=
   TopCat.Presheaf.section_ext X.sheaf U s t h
 
+/- English proof (translation)
+Distinguish the cases in `hne : (U : Set X).Nonempty`. Take `⟨s, hs, -⟩` from `RegSection.existsUnique_section X Ω ξ hξ U hU a hne fun q hq => (ha q hq).2.1`. Take `⟨t, ht, -⟩` from `RegSection.existsUnique_section X Ω ξ hξ U hU a⁻¹ hne fun q hq => (ha q hq).2.2`. Establish `st : s * t = 1` using `RegSection.section_eq hξ U hU _ _ fun q hq => by`. Rewrite using `[map_mul, map_mul, hs q hq, ht q hq, map_one, map_one, mul_inv_cancel₀ (ha q hq).1]`.
+
+Conclude with `⟨⟨s, t, st, by rw [mul_comm, st]⟩, hs⟩`. Conclude with `⟨1, fun q hq => (hne ⟨q, hq⟩).elim⟩`.
+-/
 theorem exists_unit_of_unitAt [IsLocallyNoetherian X] (hξ : IsCptGen ξ) (U : X.Opens)
     (hU : ∀ q ∈ U, genPt ξ ⤳ q) (a : Ω) (ha : ∀ q (hq : q ∈ U), unitAt ξ ⟨q, hU q hq⟩ a) :
     ∃ u : Γ(X, U)ˣ, ∀ q (hq : q ∈ U), genMap ξ ⟨q, hU q hq⟩ (X.presheaf.germ U q hq u.val) = a := by
@@ -39,6 +50,27 @@ theorem exists_unit_of_unitAt [IsLocallyNoetherian X] (hξ : IsCptGen ξ) (U : X
     exact ⟨⟨s, t, st, by rw [mul_comm, st]⟩, hs⟩
   · exact ⟨1, fun q hq => (hne ⟨q, hq⟩).elim⟩
 
+/- English proof (translation)
+Introduce `X Ω _ ξ _ I V T hξ hsome hnone hunit hcov`. Establish `hU : ∀ (i j : I), ∀ q ∈ V (some i) ⊓ V (some j), genPt ξ ⤳ q` using `fun i j q hq => hsome i q hq.1`. Establish `A` using `fun i j => exists_unit_of_unitAt hξ (V (some i) ⊓ V (some j)) (hU i j) (T j / T i) fun q hq => hunit i j q _ hq.1 hq.2`. Use `choose u hu using A`. Take `⟨g, hg₁, hg₂, hg₃⟩ : ∃ g : ∀ i j, Γ(X, V i ⊓ V j)ˣ, (∀ i j, g (some i) (some j) = u i j) ∧ (∀ j, g none j = 1) ∧ (∀ i, g (some i) none = 1)` from `⟨fun i j => match i, j with`.
+
+Consider the case `some i, some j => u i j`. Consider the case `none, _ => 1`. Consider the case `some _, none => 1, fun _ _ => rfl, fun _ => rfl, fun _ => rfl⟩`. Establish `val : ∀ (i j : I) {W : X.Opens} (h : W ≤ V (some i) ⊓ V (some j)) (q : X) (hq : q ∈ W) (hq' : genPt ξ ⤳ q), genMap ξ ⟨q, hq'⟩ (X.presheaf.germ W q hq (res h (u i j)).val) = T j / T i`. Introduce `i j W h q hq hq'`.
+
+Rewrite using `[germ_res_val]`. Conclude with `hu i j q (h hq)`. Use `⟨g, ⟨hcov, ?_, ?_⟩, fun i j q hq h => ?_⟩` and prove the remaining obligations. Introduce `i dsimp only`. Apply `Units.ext` to reduce the goal to its premises.
+
+Break down `i with _ | i` into its components or cases. Simplify using `only [hg₂, map_one]`. Apply `sec_ext` to reduce the goal to its premises. Introduce `q hq`. Establish `hq'` using `hsome i q hq`.
+
+Apply `hξ.inj ⟨q, hq'⟩` to reduce the goal to its premises. Rewrite using `[hg₁, val i i _ q hq hq', Units.val_one, map_one, map_one]`. Conclude with `div_self fun e => (hunit i i q hq' hq hq).1 (by simp [e])`. Introduce `i j k dsimp only`. Apply `Units.ext` to reduce the goal to its premises.
+
+Apply `sec_ext` to reduce the goal to its premises. Introduce and unpack `q ⟨⟨hi, hj⟩, hk⟩`. Establish `bad : ∀ a : I, q ∈ V none → q ∈ V (some a) → False` using `fun a h h' => hnone q h (hsome a q h')`. Apply the tactic sequence `rcases i with _ | i <;> rcases j with _ | j <;> rcases k with _ | k`. Simplify using `only [hg₂, map_one, _root_.mul_one]`.
+
+Conclude with `(bad _ hi hk).elim`. Conclude with `(bad _ hi hj).elim`. Conclude with `(bad _ hi hj).elim`. Conclude with `(bad _ hj hi).elim`. Conclude with `(bad _ hj hi).elim`.
+
+Conclude with `(bad _ hk hi).elim`. Establish `hq'` using `hsome i q hi`. Apply `hξ.inj ⟨q, hq'⟩` to reduce the goal to its premises. Establish `n₁` using `(hunit i j q hq' hi hj).1`. Establish `t₁ : T i ≠ 0` using `fun e => n₁ (by simp [e])`.
+
+Establish `t₂ : T j ≠ 0` using `fun e => n₁ (by simp [e])`. Simplify using `only [hg₁, Units.val_mul, map_mul]`. Establish `hW : q ∈ V (some i) ⊓ V (some j) ⊓ V (some k)` using `⟨⟨hi, hj⟩, hk⟩`. Establish `e₁` using `val i j (W := V (some i) ⊓ V (some j) ⊓ V (some k)) inf_le_left q hW hq'`. Establish `e₂` using `val j k (W := V (some i) ⊓ V (some j) ⊓ V (some k)) (le_inf (inf_le_left.trans inf_le_right) inf_le_right) q hW hq'`.
+
+Establish `e₃` using `val i k (W := V (some i) ⊓ V (some j) ⊓ V (some k)) (le_inf (inf_le_left.trans inf_le_left) inf_le_right) q hW hq'`. Use `(congrArg₂ (· * ·) e₁ e₂).trans (Eq.trans ?_ e₃.symm)` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Simplify `hu i j q h` using `only [hg₁]`.
+-/
 theorem exists_transition : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) [IsLocallyNoetherian X] (I : Type) (V : Option I → X.Opens) (T : I → Ω), IsCptGen ξ → (∀ i, ∀ q ∈ V (some i), genPt ξ ⤳ q) → (∀ q ∈ V none, ¬ genPt ξ ⤳ q) → (∀ (i j : I) (q : X) (hq : genPt ξ ⤳ q), q ∈ V (some i) → q ∈ V (some j) → unitAt ξ ⟨q, hq⟩ (T j / T i)) → (⨆ i, V i = ⊤) → ∃ g : ∀ i j, Γ(X, V i ⊓ V j)ˣ, (LB.mk (Option I) V g).IsLB ∧ ∀ (i j : I) (q : X) (hq : genPt ξ ⤳ q) (h : q ∈ V (some i) ⊓ V (some j)), genMap ξ ⟨q, hq⟩ (X.presheaf.germ _ q h (g (some i) (some j)).val) = T j / T i := by
   intro X Ω _ ξ _ I V T hξ hsome hnone hunit hcov
   have hU : ∀ (i j : I), ∀ q ∈ V (some i) ⊓ V (some j), genPt ξ ⤳ q := fun i j q hq => hsome i q hq.1

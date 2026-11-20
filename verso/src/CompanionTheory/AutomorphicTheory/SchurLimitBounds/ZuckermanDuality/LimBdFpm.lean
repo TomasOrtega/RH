@@ -11,6 +11,9 @@ namespace CompanionTheory.LimBd.Main
 
 open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.P Formalism.FourierDecayAlt.P.CutBP
 
+/- English proof (translation)
+The claim follows from `mul_mem_spanBox_of_gap`.
+-/
 theorem span_powers : SpanPow := mul_mem_spanBox_of_gap
 
 variable {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]

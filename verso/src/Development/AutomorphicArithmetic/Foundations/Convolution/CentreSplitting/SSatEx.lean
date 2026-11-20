@@ -15,6 +15,19 @@ open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalS
 open GlobalTheory.CuspRep (CuspSub GA Af Ad finGL locGL)
 open UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.Dp UpperTheory.V
 
+/- English proof (translation)
+Introduce `E _ _ _ n μ _ V hV w hne`. Take `⟨π, h, -⟩` from `exCusp E n μ V hV`. Take `⟨J, hi, hd, -, hJ'⟩` from `UpperTheory.ConvolutionTheory.Dp.locEmb E n μ π V h`. Establish `hρ : ∀ g v, ‖locOn h.summand w g v‖ = ‖v‖` using `fun g v => by`. Express the relevant statement in the definitionally equal form `‖RG μ (finGL E n (locGL E n w g)) (v : LL μ)‖ = ‖(v : LL μ)‖`.
+
+Conclude with `UnitaryRep.norm_map _ _ _`. Establish `hK` using `(GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL (E := E) w n).2`. Establish `hdense` using `UpperTheory.ConvolutionTheory.Dp.fixedDense _ _ _ (locOn h.summand w) (π.locRep w) J (GlobalTheory.LFun.KGL w n) hK hρ (π.isSmooth_locRep w) (hJ' w) hd`. Take `⟨v, hv, h0⟩` from `(Submodule.ne_bot_iff _).1 hne`. Establish `hfix : ∀ u ∈ GlobalTheory.LFun.KGL w n, locOn h.summand w u ⟨v, hv.1⟩ = ⟨v, hv.1⟩` using `fun u hu => by`.
+
+Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `localRepresentationL2 μ w u v = v`. Rewrite using `[← rhoLoc E n μ w u v]`. Establish `h2` using `hv.2`. Simplify using `only [UpperTheory.ConvolutionTheory.fixL, UpperTheory.ConvolutionTheory.fixF, SetLike.mem_coe, Submodule.mem_iInf] at h2`.
+
+Conclude with `h2 _ ⟨u, by exact (PositivityTheory.JacquetShalikaLocal.SatakeEigenvalues.KGL_eq w n).le hu, rfl⟩`. Establish `hs : GlobalTheory.LGrp.IsSpherical (π.locRep w) (GlobalTheory.LFun.KGL w n)`. Use `(Submodule.ne_bot_iff _).2 ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`.
+
+Establish `hsub : J '' {x | ∀ u ∈ GlobalTheory.LFun.KGL w n, π.locRep w u x = x} ⊆ {0}`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite using `[hno x (GlobalTheory.LGrp.mem_fixed.2 hx), map_zero]`. Both sides reduce to the same expression. Conclude with `h0 (congrArg Subtype.val (closure_minimal hsub isClosed_singleton (hdense _ hfix)))`.
+
+Take `⟨B, hB⟩` from `GlobalTheory.CompanionTheory.SatAe.exists_hasSatGL_locRep π w hs`. Conclude with `⟨_, (tsphVec E n μ w V hV B).1 ((satIff E n μ π V h w B).1 hB)⟩`.
+-/
 theorem UpperTheory.ConvolutionTheory.Dp.sSatEx :
     UpperTheory.ConvolutionTheory.Dp.SSatEx := by
   intro E _ _ _ n μ _ V hV w hne

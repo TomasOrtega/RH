@@ -8,6 +8,13 @@ namespace GroundTheory.Heights₂.Heights.AnalyticLimit
 open MeasureTheory
 open ReciprocityTheory.AnForm.M (FinHolAtlas LocPot mInt MIntegrable locDens)
 
+/- English proof (translation)
+Establish `hb0 : 0 < b` using `lt_of_lt_of_le (Real.exp_pos 1) hb`. Establish `hlb : 1 ≤ Real.log b` using `by rw [← Real.log_exp 1]; exact Real.log_le_log (Real.exp_pos 1) hb`. Establish `hB : 0 ≤ max B 0` using `le_max_right _ _`. Establish `hb1 : 1 ≤ b` using `le_trans (by linarith [Real.add_one_le_exp (1 : ℝ)]) hb`. Establish `h1 : a ≤ b * (1 + max B 0)`.
+
+Use `(abs_le.1 hab).2` as an intermediate fact. Use `le_max_left B 0` as an intermediate fact. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 hb1) hB]`. Combine the equalities or inequalities in the displayed calculation. Combine the linear relations using `[Real.log_le_sub_one_of_pos (show 0 < 1 + max B 0 by positivity)]`.
+
+Use `_ ≤ (1 + max B 0) * Real.log b := by nlinarith [mul_nonneg hB (sub_nonneg.2 hlb)]`.
+-/
 theorem log_le_of_abs_sub_le {B a b : ℝ} (hb : Real.exp 1 ≤ b) (ha : 0 < a) (hab : |a - b| ≤ B) :
     Real.log a ≤ (1 + max B 0) * Real.log b := by
   have hb0 : 0 < b := lt_of_lt_of_le (Real.exp_pos 1) hb
@@ -24,6 +31,51 @@ theorem log_le_of_abs_sub_le {B a b : ℝ} (hb : Real.exp 1 ≤ b) (ha : 0 < a) 
       linarith [Real.log_le_sub_one_of_pos (show 0 < 1 + max B 0 by positivity)]
     _ ≤ (1 + max B 0) * Real.log b := by nlinarith [mul_nonneg hB (sub_nonneg.2 hlb)]
 
+/- English proof (translation)
+Introduce `D B CE`. Use `set Bp := max B 0 with hBpdef`. Use `set R1 := max (Real.exp 1 + Bp) (2 * Bp)`. Use `⟨2 * (1 + Bp) * max CE 0 * R1, ?_⟩` and prove the remaining obligations. Introduce `X _ _ _ A Yo r r' T hYo hr hr' hre hr'e hB hdens hT`.
+
+Set `: MeasurableSpace X` to `borel X`. Establish `: BorelSpace X` using `⟨rfl⟩`. Establish `he` using `Real.exp_pos 1`. Establish `hBp : 0 ≤ Bp` using `le_max_right _ _`. Establish `hlog : ∀ x ∈ Yo, Real.log (r x) ≤ (1 + Bp) * Real.log (r' x)` using `fun x hx => log_le_of_abs_sub_le (hr'e x hx) (lt_of_lt_of_le he (hre x hx)) (hB x hx)`.
+
+Establish `hl' : ∀ x ∈ Yo, 1 ≤ Real.log (r' x)` using `fun x hx => by`. Rewrite using `[← Real.log_exp 1]`. Conclude with `Real.log_le_log he (hr'e x hx)`. Establish `hl : ∀ x ∈ Yo, 1 ≤ Real.log (r x)` using `fun x hx => by`. Rewrite using `[← Real.log_exp 1]`.
+
+Conclude with `Real.log_le_log he (hre x hx)`. Establish `key : ∀ R₀ R', Real.exp 1 ≤ R' → (∀ x ∈ Yo, R₀ ≤ r x → R' ≤ r' x) → mInt A T ((tail Yo r R₀).indicator fun x => Real.log (r x)) ≤ (1 + Bp) * mInt A T ((tail Yo r' R').indicator fun x => Real.log (r' x))`. Introduce `R₀ R' hR' hsub`. Use `mInt_le_mul_of_le A T Yo (hT R' hR').1 hdens (fun x => ?_) (fun x hx => Set.indicator_of_notMem (fun h => hx h.1) _) (fun x hx => Set.indicator_of_notMem (fun h => hx h.1) _) (fun x hx => ?_)` and prove the remaining obligations. Distinguish the cases in `h : x ∈ tail Yo r R₀`.
+
+Rewrite using `[Set.indicator_of_mem h]`. Combine the linear relations using `[hl x h.1]`. Rewrite using `[Set.indicator_of_notMem h]`. Distinguish the cases in `h : R₀ ≤ r x`. Rewrite using `[Set.indicator_of_mem (show x ∈ tail Yo r R₀ from ⟨hx, h⟩), Set.indicator_of_mem (show x ∈ tail Yo r' R' from ⟨hx, hsub x hx h⟩)]`.
+
+Conclude with `hlog x hx`. Rewrite using `[Set.indicator_of_notMem (show x ∉ tail Yo r R₀ from fun h' => h h'.2)]`. Distinguish the cases in `h' : R' ≤ r' x`. Rewrite using `[Set.indicator_of_mem (show x ∈ tail Yo r' R' from ⟨hx, h'⟩)]`. Use polynomial arithmetic with `[hl' x hx]`.
+
+Rewrite using `[Set.indicator_of_notMem (show x ∉ tail Yo r' R' from fun h'' => h' h''.2)]`. Simplify using the standard rewrite rules. Establish `hint : ∀ R₀, MIntegrable A T ((tail Yo r R₀).indicator fun x => Real.log (r x))`. Introduce `R₀ j K hK hKc`. Establish `htm : MeasurableSet (tail Yo r R₀)`.
+
+Establish `: tail Yo r R₀ = Yo \ (Yo ∩ r ⁻¹' Set.Iio R₀)`. Use extensionality with `x`. Simplify using `only [tail, Set.mem_ofPred_eq, Set.mem_sdiff, Set.mem_inter_iff, Set.mem_preimage, Set.mem_Iio, not_and, not_lt]`. Conclude with `⟨fun h => ⟨h.1, fun _ => h.2⟩, fun h => ⟨h.1, h.2 h.1⟩⟩`. Rewrite using `[this]`.
+
+Conclude with `hYo.measurableSet.diff (hr.isOpen_inter_preimage hYo isOpen_Iio).measurableSet`. Establish `hGc : ContinuousOn (fun x => Real.log (r x) / Real.log (r' x)) (tail Yo r R₀)` using `((hr.log fun x hx => (lt_of_lt_of_le he (hre x hx)).ne').div (hr'.log fun x hx => (lt_of_lt_of_le he (hr'e x hx)).ne') fun x hx => (lt_of_lt_of_le one_pos (hl' x hx)).ne').mono fun x hx => hx.1`. Establish `hGm : Measurable ((tail Yo r R₀).indicator fun x => Real.log (r x) / Real.log (r' x))`. Use `hGc.measurable_piecewise (continuousOn_const (c := (0 : ℝ))) htm` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `x`. Simplify using `[Set.indicator, Set.piecewise]`. Establish `hT' : MeasurableSet (A.chart j).target` using `(A.chart j).open_target.measurableSet`. Establish `hsm : AEMeasurable (fun y => (tail Yo r R₀).indicator (fun x => Real.log (r x) / Real.log (r' x)) ((A.chart j).symm y)) (volume.restrict K)` using `(hGm.comp_aemeasurable ((A.chart j).continuousOn_symm.aemeasurable hT')).mono_measure (Measure.restrict_mono hK le_rfl)`. Establish `hid : ∀ x, (tail Yo r R₀).indicator (fun x => Real.log (r x)) x = (tail Yo r R₀).indicator (fun x => Real.log (r x) / Real.log (r' x)) x * (tail Yo r' (Real.exp 1)).indicator (fun x => Real.log (r' x)) x`.
+
+Introduce `x`. Distinguish the cases in `h : x ∈ tail Yo r R₀`. Rewrite using `[Set.indicator_of_mem h, Set.indicator_of_mem h, Set.indicator_of_mem (show x ∈ tail Yo r' (Real.exp 1) from ⟨h.1, hr'e x h.1⟩), div_mul_cancel₀ _ (lt_of_lt_of_le one_pos (hl' x h.1)).ne']`. Rewrite using `[Set.indicator_of_notMem h, Set.indicator_of_notMem h, zero_mul]`. Establish `e1 : (fun y => (tail Yo r R₀).indicator (fun x => Real.log (r x)) ((A.chart j).symm y) * locDens A T j y) = fun y => (tail Yo r R₀).indicator (fun x => Real.log (r x) / Real.log (r' x)) ((A.chart j).symm y) * ((tail Yo r' (Real.exp 1)).indicator (fun x => Real.log (r' x)) ((A.cha …`.
+
+Use function extensionality and compare the values at `y`. Rewrite using `[hid, mul_assoc]`. Rewrite using `[e1]`. Use `Integrable.bdd_mul (c := 1 + Bp) ((hT (Real.exp 1) le_rfl).1 j K hK hKc) hsm.aestronglyMeasurable (ae_of_all _ fun y => ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs]`.
+
+Distinguish the cases in `h : (A.chart j).symm y ∈ tail Yo r R₀`. Rewrite using `[Set.indicator_of_mem h]`. Establish `h1` using `hl' _ h.1`. Establish `h3` using `hl _ h.1`. Rewrite using `[abs_of_nonneg (div_nonneg (by linarith) (by linarith)), div_le_iff₀ (by linarith)]`.
+
+Conclude with `hlog _ h.1`. Rewrite using `[Set.indicator_of_notMem h, abs_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `R₀ hR₀`. Use `⟨hint R₀, ?_⟩` and prove the remaining obligations.
+
+Establish `hlR : 1 ≤ Real.log R₀` using `by rw [← Real.log_exp 1]; exact Real.log_le_log he hR₀`. Establish `hR0 : 0 < R₀` using `lt_of_lt_of_le he hR₀`. Establish `hR1a : Real.exp 1 + Bp ≤ R1` using `le_max_left _ _`. Establish `hR1b : 2 * Bp ≤ R1` using `le_max_right _ _`. Establish `hCE : CE ≤ max CE 0` using `le_max_left _ _`.
+
+Establish `hCE0 : 0 ≤ max CE 0` using `le_max_right _ _`. Establish `he1 : 1 ≤ Real.exp 1` using `by linarith [Real.add_one_le_exp (1 : ℝ)]`. Establish `hL0 : 0 ≤ Real.log R₀ ^ (D + 1)` using `pow_nonneg (by linarith) _`. Establish `hL1 : 1 ≤ Real.log R₀ ^ (D + 1)` using `one_le_pow₀ hlR`. Establish `hBp1 : 0 ≤ 1 + Bp` using `by linarith`.
+
+Distinguish the cases in `hbig : R1 ≤ R₀`. Establish `hR' : Real.exp 1 ≤ R₀ - Bp` using `by linarith`. Establish `hpos : 0 < R₀ - Bp` using `by linarith`. Use `(key R₀ (R₀ - Bp) hR' fun x hx h => ?_).trans ?_` and prove the remaining obligations. Use `(abs_le.1 (hB x hx)).2` as an intermediate fact.
+
+Combine the linear relations using `[le_max_left B 0]`. Establish `hb` using `(hT (R₀ - Bp) hR').2`. Establish `hlog1 : 0 ≤ Real.log (R₀ - Bp)` using `Real.log_nonneg (by linarith)`. Establish `hpow : Real.log (R₀ - Bp) ^ (D + 1) ≤ Real.log R₀ ^ (D + 1)` using `pow_le_pow_left₀ hlog1 (Real.log_le_log hpos (by linarith)) _`. Establish `s1 : CE * Real.log (R₀ - Bp) ^ (D + 1) / (R₀ - Bp) ≤ max CE 0 * Real.log R₀ ^ (D + 1) / (R₀ - Bp)` using `div_le_div_of_nonneg_right (mul_le_mul hCE hpow (pow_nonneg hlog1 _) hCE0) hpos.le`.
+
+Establish `s2 : max CE 0 * Real.log R₀ ^ (D + 1) / (R₀ - Bp) ≤ max CE 0 * Real.log R₀ ^ (D + 1) * 2 / R₀`. Rewrite using `[div_le_div_iff₀ hpos hR0]`. Use polynomial arithmetic with `[mul_nonneg (mul_nonneg hCE0 hL0) (show 0 ≤ 2 * (R₀ - Bp) - R₀ by linarith)]`. Establish `s3 : 2 * (1 + Bp) * max CE 0 * Real.log R₀ ^ (D + 1) ≤ 2 * (1 + Bp) * max CE 0 * R1 * Real.log R₀ ^ (D + 1)`. Establish `h0 : 0 ≤ 2 * (1 + Bp) * max CE 0 * Real.log R₀ ^ (D + 1)` using `by positivity`.
+
+Use polynomial arithmetic with `[mul_nonneg h0 (show 0 ≤ R1 - 1 by linarith)]`. Combine the equalities or inequalities in the displayed calculation. Use `replace hbig := not_le.1 hbig`. Use `(key R₀ (Real.exp 1) le_rfl fun x hx _ => hr'e x hx).trans ?_` and prove the remaining obligations. Establish `hb` using `(hT (Real.exp 1) le_rfl).2`.
+
+Rewrite `hb` using `[Real.log_exp, one_pow, mul_one]`. Establish `s1 : CE / Real.exp 1 ≤ max CE 0`. Rewrite using `[div_le_iff₀ he]; nlinarith [mul_nonneg hCE0 (show 0 ≤ Real.exp 1 - 1 by linarith)]`. Establish `hZ : 0 ≤ (1 + Bp) * max CE 0` using `mul_nonneg hBp1 hCE0`. Establish `s2 : R₀ ≤ 2 * R1 * Real.log R₀ ^ (D + 1)` using `by nlinarith`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[le_div_iff₀ hR0]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left s2 hZ]`.
+-/
 theorem TailShift.proof : TailShift.Statement := by
   intro D B CE
   set Bp := max B 0 with hBpdef

@@ -11,6 +11,11 @@ def Factor.Alg {R : Type} [CommRing R] [IsDomain R] {D D' : DegPre R} (F : Facto
   (∃ b : ℕ, 0 < b ∧ Star.star F.e * F.e = b • (Star.star F.e * F.f * F.e)) ∧
     Star.star F.e * F.f * F.e = Star.star F.e * Star.star F.f * F.e ∧ ∃ g : F.O, g * (Star.star F.e * F.f * F.e) = F.e
 
+/- English proof (translation)
+Establish `hf : Wit.fac.f = 1` using `rfl`. Establish `hs : Star.star Wit.fac.e = Wit.fac.e` using `rfl`. Establish `hi` using `Wit.fac.idem`. Use `⟨⟨1, one_pos, ?_⟩, ?_, 1, ?_⟩` and prove the remaining obligations. Rewrite using `[hf, mul_one, one_smul]`.
+
+Rewrite using `[hf, star_one]`. Rewrite using `[hf, hs, mul_one, one_mul, hi]`.
+-/
 theorem Wit.fac_alg : Wit.fac.Alg := by
   have hf : Wit.fac.f = 1 := rfl
   have hs : Star.star Wit.fac.e = Wit.fac.e := rfl

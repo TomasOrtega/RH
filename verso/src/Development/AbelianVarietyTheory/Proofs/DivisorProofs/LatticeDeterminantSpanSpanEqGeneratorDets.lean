@@ -5,6 +5,27 @@ open NumberField
 
 namespace GlobalTheory.IdxTensor
 
+/- English proof (translation)
+Use `set T : Set F := {d | ∃ y : Fin p → Fin p → F, (∀ i, y i ∈ S) ∧ d = (Matrix.of y).det} with hT`. Apply `le_antisymm` to reduce the goal to its premises. Unfold `dets`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `d ⟨y, hy, rfl⟩`.
+
+Establish `key : ∀ s : Finset (Fin p), ∀ y : Fin p → Fin p → F, (∀ i, y i ∈ Submodule.span (𝓞 F) S) → (∀ i, i ∉ s → y i ∈ S) → (Matrix.of y).det ∈ Submodule.span (𝓞 F) T`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `y _ h`.
+
+Conclude with `Submodule.subset_span ⟨y, fun i => h i (Finset.notMem_empty i), rfl⟩`. Consider the case `insert a s ha ih`. Introduce `y hy hs`. Establish `upd : ∀ v, Matrix.of (Function.update y a v) = Matrix.updateRow (Matrix.of y) a v` using `fun v => rfl`. Establish `hv : ∀ v ∈ Submodule.span (𝓞 F) S, (Matrix.updateRow (Matrix.of y) a v).det ∈ Submodule.span (𝓞 F) T`.
+
+Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Rewrite using `[← upd]`. Apply `ih` to reduce the goal to its premises.
+
+Introduce `i`. Distinguish the cases in `h : i = a`. Substitute `h` using the available equality. Simplify using `using Submodule.subset_span hx`. Simplify `hy i` using `[Function.update_of_ne h]`.
+
+Introduce `i hi`. Distinguish the cases in `h : i = a`. Substitute `h` using the available equality. Simplify using `using hx`. Simplify `hs i (by simp [h, hi])` using `[Function.update_of_ne h]`.
+
+Consider the case `zero`. Rewrite using `[Matrix.det_eq_zero_of_row_eq_zero a (by intro j; simp)]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x z _ _ hx hz`. Rewrite using `[Matrix.det_updateRow_add]`.
+
+Conclude with `Submodule.add_mem _ hx hz`. Consider the case `smul r x _ hx`. Rewrite using `[← algebraMap_smul F r x, Matrix.det_updateRow_smul, ← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ r hx`. Use `hv (y a) (hy a)` as an intermediate fact.
+
+Rewrite `this` using `[← upd, Function.update_eq_self]`. Then use the resulting hypothesis. Conclude with `key Finset.univ y hy (by simp)`. Unfold `dets`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `d ⟨y, hy, rfl⟩`.
+
+Conclude with `⟨y, fun i => Submodule.subset_span (hy i), rfl⟩`.
+-/
 theorem dets_span_eq {F : Type} [Field F] [NumberField F] (p : ℕ) (S : Set (Fin p → F)) :
     GlobalTheory.IdxTensor.dets F p (Submodule.span (𝓞 F) S) =
       Submodule.span (𝓞 F) {d | ∃ y : Fin p → Fin p → F, (∀ i, y i ∈ S) ∧ d = (Matrix.of y).det} := by

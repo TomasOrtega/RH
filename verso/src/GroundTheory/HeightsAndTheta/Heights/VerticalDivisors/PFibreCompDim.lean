@@ -30,6 +30,11 @@ noncomputable def quotientResidueEquiv (hW : Ideal.map (C : O →+* MvPolynomial
       ← RingHom.ker_eq_comap_bot, this, sup_eq_left.mpr hW]
   (Ideal.quotEquivOfEq hker.symm).trans (RingHom.quotientKerEquivOfSurjective hψ)
 
+/- English proof (translation)
+Set `φ : MvPolynomial (Fin n) O →+* MvPolynomial (Fin n) v.asIdeal.ResidueField` to `MvPolynomial.map (algebraMap O v.asIdeal.ResidueField)`. Establish `hφ : Function.Surjective φ` using `MvPolynomial.map_surjective _ (Ideal.algebraMap_residueField_surjective _)`. Establish `hkerW : RingHom.ker φ ≤ W`. Rewrite using `[MvPolynomial.ker_map, Ideal.ker_algebraMap_residueField]`. Conclude with `hW`.
+
+Establish `: (W.map φ).IsPrime` using `Ideal.map_isPrime_of_surjective hφ hkerW`. Take `⟨m, hm, -⟩` from `GroundTheory.Arith.Abelian.Jacobian.exists_ringKrullDim_eq_trdeg (k := v.asIdeal.ResidueField) (A := MvPolynomial (Fin n) v.asIdeal.ResidueField ⧸ W.map φ)`. Conclude with `⟨m, (ringKrullDim_eq_of_ringEquiv (quotientResidueEquiv v W hW)).trans hm⟩`.
+-/
 theorem exists_ringKrullDim_quotient_eq_nat (hWp : W.IsPrime)
     (hW : Ideal.map (C : O →+* MvPolynomial (Fin n) O) v.asIdeal ≤ W) :
     ∃ m : ℕ, ringKrullDim (MvPolynomial (Fin n) O ⧸ W) = m := by
@@ -47,6 +52,17 @@ theorem exists_ringKrullDim_quotient_eq_nat (hWp : W.IsPrime)
 
 end Residue
 
+/- English proof (translation)
+Introduce `O _ _ F _ _ _ n P W v hP hPC hW`. Establish `key : ∀ (m : ℕ) (P W : Ideal (MvPolynomial (Fin n) O)), P.IsPrime → P.comap (C : O →+* MvPolynomial (Fin n) O) = ⊥ → W ∈ (P ⊔ Ideal.map (C : O →+* MvPolynomial (Fin n) O) v.asIdeal).minimalPrimes → ringKrullDim (MvPolynomial (Fin n) O ⧸ W) = m → ringKrullDim (MvPolynomial (Fin n) …`. Introduce `m`. Proceed by induction on `m using Nat.strong_induction_on with`. Consider the case `_ m ih`.
+
+Introduce `P W hP hPC hW hm`. Distinguish the cases in `hmax : W.IsMaximal`. Rewrite using `[hBase O F n P W v hP hPC hW hmax]`. Set `_` to `Ideal.Quotient.field W`. Conclude with `ringKrullDim_eq_zero_of_field _`.
+
+Take `⟨P', W', f, hfP, hP', hP'C, hW', hdim⟩` from `hCut O n P W v hP hPC hW hmax`. Establish `: W'.IsPrime` using `hW'.1.1`. Establish `: P'.IsPrime` using `hP'.1.1`. Take `⟨m', hm'⟩` from `exists_ringKrullDim_quotient_eq_nat v W' hW'.1.1 (le_sup_right.trans hW'.1.2)`. Establish `hmm : m' + 1 = m`.
+
+Rewrite `hdim` using `[hm', hm]`. Conclude with `hdim` after adjusting the coercions. Rewrite using `[hDrop O F n P P' f hP hP'C hfP hP', ← ih m' (by omega) P' W' hP'.1.1 hP'C hW' hm', hdim]`. Establish `: W.IsPrime` using `hW.1.1`. Take `⟨m, hm⟩` from `exists_ringKrullDim_quotient_eq_nat v W hW.1.1 (le_sup_right.trans hW.1.2)`.
+
+Rewrite using `[← ringKrullDim_eq_of_ringEquiv (quotientResidueEquiv v W (le_sup_right.trans hW.1.2))]`. Conclude with `key m P W hP hPC hW hm`.
+-/
 theorem FibreCompDim.proof (hBase : FibreClosedComponent.Statement) (hCut : FibreCut.Statement)
     (hDrop : GenericFibreDrop.Statement) : FibreCompDim.Statement := by
   intro O _ _ F _ _ _ n P W v hP hPC hW

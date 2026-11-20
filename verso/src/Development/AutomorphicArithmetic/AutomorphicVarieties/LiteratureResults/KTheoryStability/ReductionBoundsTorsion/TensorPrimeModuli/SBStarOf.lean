@@ -20,10 +20,16 @@ def zc (R : Type) [CommRing R] {l : ℕ} (hl : 0 < l) {n m : ℕ} (z : Chn (GL (
   | t + 1 => cmap (psi R l (lev l n t)) m (zc R hl z t) -
       ((l : ℝ) ^ (t + 2)) • cmap (stab R (lev l n t) (l * lev l n t) (Nat.le_mul_of_pos_left _ hl)) m (zc R hl z t)
 
+/- English proof (translation)
+The claim follows from `| 0 => le_rfl | t + 1 => (le_lev hl n t).trans (Nat.le_mul_of_pos_left _ hl)`.
+-/
 theorem le_lev {l : ℕ} (hl : 0 < l) (n : ℕ) : ∀ t, n ≤ lev l n t
   | 0 => le_rfl
   | t + 1 => (le_lev hl n t).trans (Nat.le_mul_of_pos_left _ hl)
 
+/- English proof (translation)
+The claim follows from `| 0 => hz | t + 1 => by have h := isCyc_zc hC R hl hz t have h1 : bd _ k (cmap (psi R l (lev l n t)) (k + 1) (zc R hl z t)) = 0 := isCyc_cmap hC _ h have h2 : bd _ k (cmap (stab R (lev l n t) (l * lev l n t) (Nat.le_mul_of_pos_left _ hl)) (k + 1) (zc R hl z t)) = 0 := isCyc_cmap …`.
+-/
 theorem isCyc_zc (hC : SChain) (R : Type) [CommRing R] {l : ℕ} (hl : 0 < l) {n k : ℕ}
     {z : Chn (GL (Fin n) R) (k + 1)} (hz : IsCyc z) : ∀ t, IsCyc (zc R hl z t)
   | 0 => hz
@@ -37,6 +43,9 @@ theorem isCyc_zc (hC : SChain) (R : Type) [CommRing R] {l : ℕ} (hl : 0 < l) {n
         (zc R hl z t)) = 0
     rw [map_sub, map_smul, h1, h2, smul_zero, sub_zero]
 
+/- English proof (translation)
+The claim follows from `| 0 => by simp only [Finset.range_zero, Finset.prod_empty, one_mul] rfl | t + 1 => by have hc := isCyc_zc hC R hl hz t have ih := wsys_zc hC ha hl hz t rw [Finset.prod_range_succ] change a (l * lev l n t) (cmap (psi R l (lev l n t)) (k + 1) (zc R hl z t) - ((l : ℝ) ^ (t + 2)) • c …`.
+-/
 theorem wsys_zc (hC : SChain) {R : Type} [CommRing R] {k j : ℕ} {a : ∀ n : ℕ, Chn (GL (Fin n) R) (k + 1) →ₗ[ℝ] ℝ}
     (ha : WSys R k j a) {l : ℕ} (hl : 0 < l) {n : ℕ} {z : Chn (GL (Fin n) R) (k + 1)} (hz : IsCyc z) :
     ∀ t, a (lev l n t) (zc R hl z t) = (∏ i ∈ Finset.range t, ((l : ℝ) ^ j - (l : ℝ) ^ (i + 2))) * a n z
@@ -54,6 +63,9 @@ theorem wsys_zc (hC : SChain) {R : Type} [CommRing R] {k j : ℕ} {a : ∀ n : �
     simp only [smul_eq_mul]
     ring
 
+/- English proof (translation)
+The claim follows from `| 0 => hx | t + 1 => by have ih := th_zc θ hθn hC R hl z hz x hx t have hc := isCyc_zc hC R hl hz t have hs : lev l n t ≤ l * lev l n t := Nat.le_mul_of_pos_left (lev l n t) hl change θ (GL (Fin (l * lev l n t)) R) ⟨zc R hl z (t + 1), isCyc_zc hC R hl hz (t + 1)⟩ = (1 : ℝ) ⊗ₜ[ℤ] …`.
+-/
 theorem th_zc {k : ℕ} (θ : ∀ (G : Type) [Group G], LinearMap.ker (bd G k) →ₗ[ℝ] ℝ ⊗[ℤ] grpH G (k + 1))
     (hθn : ∀ (G H : Type) [Group G] [Group H] (f : G →* H) (z : LinearMap.ker (bd G k)) (z' : LinearMap.ker (bd H k)),
       z'.1 = cmap f (k + 1) z.1 → θ H z' = LinearMap.baseChange ℝ (grpHMap f (k + 1)).hom (θ G z))

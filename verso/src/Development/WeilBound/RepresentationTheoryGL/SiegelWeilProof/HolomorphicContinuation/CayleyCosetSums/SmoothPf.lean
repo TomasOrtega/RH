@@ -25,10 +25,44 @@ def ConvUSt : Prop :=
       HasCompactSupport β → ∀ z ∈ U, ∀ (g : G) (y : GR n),
         ∫ u : GR n, Ê z (g * ι (y * u)) * tw m e μK β (mR u) ∂ν = cw m e ν μK β (z - s₀) * Ê z (g * ι y)
 
+/- English proof (translation)
+The claim follows from `(setIntegral_eq_integral_of_forall_compl_eq_zero hF).symm`.
+-/
 theorem integral_restrict_of_zero (ν : Measure (GR n)) {C : Set (GR n)} (_hCm : MeasurableSet C) {F : GR n → ℂ}
     (hF : ∀ u ∉ C, F u = 0) : ∫ u, F u ∂ν = ∫ u, F u ∂(ν.restrict C) :=
   (setIntegral_eq_integral_of_forall_compl_eq_zero hF).symm
 
+/- English proof (translation)
+Establish `hCm : MeasurableSet C` using `hC.isClosed.measurableSet`. Use `haveI : IsFiniteMeasure (ν.restrict C) := isFiniteMeasure_restrict.mpr hC.measure_lt_top.ne`. Establish `hdF : ∀ u, DifferentiableOn ℂ (F u) U`. Introduce `u`. Distinguish the cases in `hu : u ∈ C`.
+
+Conclude with `hd u hu`. Establish `h0 : F u = fun _ => 0` using `funext (hF0 u hu)`. Rewrite using `[h0]`. Conclude with `differentiableOn_const 0`. Establish `key : ∀ z ∈ U, ∃ R : ℝ≥0, 0 < R ∧ Metric.closedBall z (R : ℝ) ⊆ U`.
+
+Introduce `z hz`. Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.mp hU z hz`. Use `⟨(ε / 2).toNNReal, Real.toNNReal_pos.mpr (half_pos hε), ?_⟩` and prove the remaining obligations. Rewrite using `[Real.coe_toNNReal _ (half_pos hε).le]`. Conclude with `(Metric.closedBall_subset_ball (by linarith)).trans hball`.
+
+Establish `hint : ∀ (z : ℂ) (R : ℝ≥0), Metric.closedBall z (R : ℝ) ⊆ U → ∀ a : ℝ → ℂ, Continuous a → Integrable (fun p : ℝ × GR n => a p.1 • F p.2 (circleMap z R p.1)) ((volume.restrict (Set.uIoc (0 : ℝ) (2 * Real.pi))).prod (ν.restrict C))`. Introduce `z R hzR a ha`. Rewrite using `[Measure.prod_restrict]`. Establish `hc2 : ContinuousOn (fun p : ℝ × GR n => a p.1 • F p.2 (circleMap z R p.1)) (Set.Icc 0 (2 * Real.pi) ×ˢ C)`. Apply `ContinuousOn.smul (ha.comp continuous_fst).continuousOn` to reduce the goal to its premises.
+
+Establish `h1 : ContinuousOn (fun p : ℝ × GR n => (p.2, circleMap z R p.1)) (Set.Icc 0 (2 * Real.pi) ×ˢ C)` using `(continuous_snd.prodMk ((continuous_circleMap z R).comp continuous_fst)).continuousOn`. Use `hcont.comp h1 ?_` and prove the remaining obligations. Introduce and unpack `⟨θ, u⟩ ⟨_, hu⟩`. Conclude with `⟨hu, hzR (circleMap_mem_closedBall z R.coe_nonneg θ)⟩`. Conclude with `(hc2.integrableOn_compact (isCompact_Icc.prod hC)).mono_set (Set.prod_mono (Set.uIoc_subset_uIcc.trans (Set.uIcc_of_le (by positivity)).subset) subset_rfl)`.
+
+Establish `hfub : ∀ (z : ℂ) (R : ℝ≥0), Metric.closedBall z (R : ℝ) ⊆ U → ∀ a : ℝ → ℂ, Continuous a → (∫ θ in (0 : ℝ)..2 * Real.pi, a θ • ∫ u, F u (circleMap z R θ) ∂ν) = ∫ u, (∫ θ in (0 : ℝ)..2 * Real.pi, a θ • F u (circleMap z R θ)) ∂ν`. Introduce `z R hzR a ha`. Establish `e1 : ∀ θ, a θ • ∫ u, F u (circleMap z R θ) ∂ν = ∫ u, a θ • F u (circleMap z R θ) ∂(ν.restrict C)`. Introduce `θ`. Rewrite using `[integral_restrict_of_zero ν hCm (fun u hu => hF0 u hu (circleMap z R θ)), integral_smul]`.
+
+Repeatedly rewrite using `[e1]`. Rewrite using `[intervalIntegral_integral_swap (hint z R hzR a ha)]`. Conclude with `(integral_restrict_of_zero ν hCm (fun u hu => by simp [hF0 u hu])).symm`. Establish `hcirc : ∀ (z : ℂ) (R : ℝ≥0), Metric.closedBall z (R : ℝ) ⊆ U → ∀ k : ℂ → ℂ, Continuous (fun θ => k (circleMap z R θ)) → (∮ ζ in C(z, R), k ζ • ∫ u, F u ζ ∂ν) = ∫ u, (∮ ζ in C(z, R), k ζ • F u ζ) ∂ν`. Introduce `z R hzR k hk`.
+
+Simplify using `only [circleIntegral, deriv_circleMap, smul_smul]`. Conclude with `hfub z R hzR (fun θ => circleMap 0 R θ * Complex.I * k (circleMap z R θ)) (((continuous_circleMap 0 R).mul continuous_const).mul hk)`. Establish `hps : ∀ z ∈ U, ∃ R : ℝ≥0, 0 < R ∧ Metric.closedBall z (R : ℝ) ⊆ U ∧ HasFPowerSeriesOnBall (fun w => ∫ u, F u w ∂ν) (cauchyPowerSeries (fun w => ∫ u, F u w ∂ν) z R) z R`. Introduce `z hz`. Take `⟨R, hR, hzR⟩` from `key z hz`.
+
+Use `⟨R, hR, hzR, ?_⟩` and prove the remaining obligations. Establish `hci : CircleIntegrable (fun w => ∫ u, F u w ∂ν) z R`. Establish `h` using `(hint z R hzR (fun _ => 1) continuous_const).integral_prod_left`. Rewrite using `[CircleIntegrable, intervalIntegrable_iff]`. Use `h.congr (Eventually.of_forall fun θ => ?_)` and prove the remaining obligations.
+
+Simplify using `only [one_smul]`. Conclude with `(integral_restrict_of_zero ν hCm (fun u hu => hF0 u hu _)).symm`. Use `(hasFPowerSeriesOn_cauchy_integral hci hR).congr ?_` and prove the remaining obligations. Introduce `w hw`. Rewrite `hw` using `[Metric.emetric_ball_nnreal]`.
+
+Establish `hk : Continuous (fun θ => (circleMap z R θ - w)⁻¹)` using `((continuous_circleMap z R).sub continuous_const).inv₀ (fun θ => sub_ne_zero.mpr (circleMap_ne_mem_ball hw θ))`. Use `show (2 * ↑Real.pi * Complex.I)⁻¹ • (∮ ζ in C(z, R), (ζ - w)⁻¹ • ∫ u, F u ζ ∂ν) = ∫ u, F u w ∂ν`. Rewrite using `[hcirc z R hzR (fun ζ => (ζ - w)⁻¹) hk, ← integral_smul]`. Use `integral_congr_ae (Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Conclude with `Complex.two_pi_I_inv_smul_circleIntegral_sub_inv_smul_of_differentiable_on_off_countable Set.countable_empty hw ((hdF u).continuousOn.mono hzR) (fun x hx => (hdF u).differentiableAt (hU.mem_nhds (hzR (Metric.ball_subset_closedBall hx.1))))`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `z hz`. Take `⟨R, -, -, h⟩` from `hps z hz`. Conclude with `h.analyticAt.differentiableAt.differentiableWithinAt`. Introduce `z hz r`.
+
+Take `⟨R, hR, hzR, h⟩` from `hps z hz`. Establish `hFu : ∀ u, iteratedDeriv r (F u) z = r.factorial • cauchyPowerSeries (F u) z R r (fun _ => 1)`. Introduce `u`. Rewrite using `[iteratedDeriv_eq_iteratedFDeriv, ← (((hdF u).mono hzR).hasFPowerSeriesOnBall hR).factorial_smul]`. Establish `hne : ∀ θ, circleMap z R θ - z ≠ 0` using `fun θ => sub_ne_zero.mpr (fun h' => hR.ne' (by exact_mod_cast circleMap_eq_center_iff.mp h'))`.
+
+Establish `hG : cauchyPowerSeries (fun w => ∫ u, F u w ∂ν) z R r (fun _ => 1) = ∫ u, cauchyPowerSeries (F u) z R r (fun _ => 1) ∂ν`. Simplify using `only [cauchyPowerSeries_apply, smul_smul]`. Rewrite using `[hcirc z R hzR (fun ζ => (1 / (ζ - z)) ^ r * (ζ - z)⁻¹) (((continuous_const.div ((continuous_circleMap z R).sub continuous_const) hne).pow r).mul (((continuous_circleMap z R).sub continuous_const).inv₀ hne)), integral_smul]`. Rewrite using `[iteratedDeriv_eq_iteratedFDeriv, ← h.factorial_smul, integral_congr_ae (Eventually.of_forall hFu), hG]`. Simplify using `only [nsmul_eq_mul]`.
+
+Rewrite using `[integral_const_mul]`.
+-/
 theorem holInt (ν : Measure (GR n)) [ν.IsHaarMeasure] {C : Set (GR n)} (hC : IsCompact C) {U : Set ℂ} (hU : IsOpen U)
     (F : GR n → ℂ → ℂ) (hF0 : ∀ u ∉ C, ∀ z, F u z = 0)
     (hcont : ContinuousOn (fun y : GR n × ℂ => F y.1 y.2) (C ×ˢ U)) (hd : ∀ u ∈ C, DifferentiableOn ℂ (F u) U) :

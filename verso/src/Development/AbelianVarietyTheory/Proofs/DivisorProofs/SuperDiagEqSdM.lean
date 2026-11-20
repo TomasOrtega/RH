@@ -22,15 +22,27 @@ def nu (t : Vp E n) : Matrix (Fin n) (Fin n) (Cinf E) :=
 def sdM {R : Type} [CommRing R] (x : Matrix (Fin n) (Fin n) R) : R :=
   ∑ i : Fin n, ∑ j : Fin n with j.val = i.val + 1, x i j
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem superDiag_eq_sdM {R : Type} [CommRing R] (g : GL (Fin n) R) :
     GlobalTheory.Whittaker.superDiag g = sdM (g : Matrix (Fin n) (Fin n) R) := rfl
 
+/- English proof (translation)
+Simplify using `[nu, not_lt_of_gt h, ne_of_gt h]`.
+-/
 theorem nu_lower (t : Vp E n) {i j : Fin n} (h : j < i) : nu t i j = 0 := by
   simp [nu, not_lt_of_gt h, ne_of_gt h]
 
+/- English proof (translation)
+Simplify using `[nu]`.
+-/
 theorem nu_diag (t : Vp E n) (i : Fin n) : nu t i i = 1 := by
   simp [nu]
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_of_upperTriangular]`. Simplify using `[nu_diag]`. Introduce `i j h`. Conclude with `nu_lower t h`.
+-/
 theorem det_nu (t : Vp E n) : (nu t).det = 1 := by
   rw [Matrix.det_of_upperTriangular]
   · simp [nu_diag]
@@ -39,8 +51,14 @@ theorem det_nu (t : Vp E n) : (nu t).det = 1 := by
 def nuGL (t : Vp E n) : GL (Fin n) (Cinf E) :=
   Matrix.nonsingInvUnit (nu t) (by rw [det_nu]; exact isUnit_one)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem nuGL_val (t : Vp E n) : (nuGL t : Matrix (Fin n) (Fin n) (Cinf E)) = nu t := rfl
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.SmGL.mem_unipB (Cinf E)).2 ⟨fun _ _ h => nu_lower t h, nu_diag t⟩`.
+-/
 theorem nuGL_mem (t : Vp E n) : nuGL t ∈ GlobalTheory.SmGL.unipB (Cinf E) (Fin n) :=
   (GlobalTheory.SmGL.mem_unipB (Cinf E)).2 ⟨fun _ _ h => nu_lower t h, nu_diag t⟩
 

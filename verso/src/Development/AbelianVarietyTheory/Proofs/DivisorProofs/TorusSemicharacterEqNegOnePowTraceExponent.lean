@@ -27,12 +27,18 @@ open Formalism.MainNotions.TaylorLogMetric
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `τ0 : D.what₂.Tau` using `D.eTau.symm 1`. Apply `(tauE D τ0).injective` to reduce the goal to its premises. Rewrite using `[GlobalTheory.FockCompare.tauE_star]`. Conclude with `D.sp.cm.cmUnram.2.1 (tauE D τ0) x`.
+-/
 theorem sig_eq_star (x : D.host.E) : (D.sp.cm.sig : D.host.E →+* D.host.E) x = star x := by
   have τ0 : D.what₂.Tau := D.eTau.symm 1
   apply (tauE D τ0).injective
   rw [GlobalTheory.FockCompare.tauE_star]
   exact D.sp.cm.cmUnram.2.1 (tauE D τ0) x
 
+/- English proof (translation)
+Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [Formalism.UG.cT, Matrix.conjTranspose_apply, Matrix.transpose_apply, Matrix.map_apply]`. Use `show (D.sp.cm.sig : D.host.E →+* D.host.E) (A j i) = star (A j i)`. Conclude with `sig_eq_star _`.
+-/
 theorem cT_eq {m n : ℕ} (A : Matrix (Fin m) (Fin n) D.host.E) :
     Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) A = Aᴴ := by
   refine Matrix.ext fun i j => ?_
@@ -40,6 +46,11 @@ theorem cT_eq {m n : ℕ} (A : Matrix (Fin m) (Fin n) D.host.E) :
   show (D.sp.cm.sig : D.host.E →+* D.host.E) (A j i) = star (A j i)
   exact sig_eq_star _
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.LatVac.hRat, Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `conv_lhs => rw [Finset.sum_comm]`. Use `conv_lhs => arg 2`. Use extensionality with `c`.
+
+Rewrite using `[Finset.sum_comm]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem hRat_eq (S T : HSp D) (x y : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     GlobalTheory.LatVac.hRat S T x y = Matrix.trace (S.gram⁻¹ * yᴴ * T.gram * x) := by
   simp only [GlobalTheory.LatVac.hRat, Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply,
@@ -57,6 +68,15 @@ open Formalism.MainNotions.TaylorLogMetric
 
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite `hB`, `hB'` using `[cT_eq]`. Rewrite using `[hRat_eq]`. Use `set Bi := (B⁻¹ : GL (Fin S.rank) D.host.E).1 with hBi_def`. Establish `hBi : Bi * B.1 = 1` using `by rw [hBi_def, ← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `hSi : S.gram⁻¹ = B.1 * B.1ᴴ`.
+
+Establish `h1 : B.1 * (B.1ᴴ * S.gram) = 1` using `mul_eq_one_comm.1 hB`. Establish `h2 : (B.1 * B.1ᴴ) * S.gram = 1` using `by rw [Matrix.mul_assoc]; exact h1`. Conclude with `Matrix.inv_eq_left_inv h2`. Establish `hBB : B.1ᴴ * Biᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul, hBi, Matrix.conjTranspose_one]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hSi]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Matrix.trace (B.1 * (Mᴴ * (M * Bi))) := by rw [hBB, hB', Matrix.one_mul, Matrix.one_mul]`. Use `_ = Matrix.trace ((Mᴴ * M * Bi) * B.1) := by`.
+
+Rewrite using `[Matrix.trace_mul_comm]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Matrix.trace (Mᴴ * M) := by rw [Matrix.mul_assoc, hBi, Matrix.mul_one]`.
+-/
 theorem hRat_frames (S T : HSp D) (B : GL (Fin S.rank) D.host.E) (B' : GL (Fin T.rank) D.host.E)
     (hB : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) B.1 * S.gram * B.1 = 1)
     (hB' : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) B'.1 * T.gram * B'.1 = 1)
@@ -81,10 +101,18 @@ theorem hRat_frames (S T : HSp D) (B : GL (Fin S.rank) D.host.E) (B' : GL (Fin T
         rw [Matrix.trace_mul_comm]; simp only [Matrix.mul_assoc]
     _ = Matrix.trace (Mᴴ * M) := by rw [Matrix.mul_assoc, hBi, Matrix.mul_one]
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.Theta.tauE_sqrtMinusD D τ`.
+-/
 theorem embT_sqrt (τ : D.what₂.Tau) :
     embT D τ D.host.sqrtMinusD = Complex.I * (Real.sqrt D.host.d : ℂ) :=
   Formalism.L2.Theta.tauE_sqrtMinusD D τ
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `congrArg Complex.im (DFunLike.congr_fun h D.host.sqrtMinusD)`. Rewrite `h1` using `[RingHom.comp_apply, embT_sqrt, embT_sqrt]`. Use `Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.IO.sqrt_d_pos D` as an intermediate fact. Simplify using `at h1`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem embT_ne_conj (τ τ' : D.what₂.Tau) : embT D τ ≠ (starRingEnd ℂ).comp (embT D τ') := by
   intro h
   have h1 := congrArg Complex.im (DFunLike.congr_fun h D.host.sqrtMinusD)
@@ -93,6 +121,15 @@ theorem embT_ne_conj (τ τ' : D.what₂.Tau) : embT D τ ≠ (starRingEnd ℂ).
   simp at h1
   linarith
 
+/- English proof (translation)
+Establish `h` using `trace_eq_sum_embeddings ℂ (K := ℚ) (x := z)`. Set `e : D.what₂.Tau ⊕ D.what₂.Tau → (D.host.E →ₐ[ℚ] ℂ)` to `fun s => RingHom.equivRatAlgHom _ _ (Sum.elim (embT D) (fun τ => (starRingEnd ℂ).comp (embT D τ)) s)`. Establish `he : Function.Bijective e`. Use `(RingHom.equivRatAlgHom _ _).bijective.comp ⟨?_, fun σ => ?_⟩` and prove the remaining obligations. Introduce and unpack `(a | a) (b | b) hab`.
+
+Rewrite using `[Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.FL.embT_inj D hab]`. Conclude with `absurd hab (embT_ne_conj a b)`. Conclude with `absurd hab.symm (embT_ne_conj b a)`. Establish `: embT D a = embT D b` using `RingHom.ext fun x => (starRingEnd ℂ).injective (DFunLike.congr_fun hab x)`. Rewrite using `[Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.FL.embT_inj D this]`.
+
+Take `⟨τ, h | h⟩` from `Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.FL.emb_cases D σ`. Conclude with `⟨Sum.inl τ, h.symm⟩`. Conclude with `⟨Sum.inr τ, h.symm⟩`. Rewrite `h` using `[← Fintype.sum_bijective e he (fun s => e s z) (fun σ => σ z) fun _ => rfl, Fintype.sum_sum_type]`. Rewrite using `[show ((Algebra.trace ℚ D.host.E z : ℚ) : ℂ) = algebraMap ℚ ℂ (Algebra.trace ℚ D.host.E z) from rfl, h, ← Finset.sum_add_distrib]`.
+
+Both sides reduce to the same expression.
+-/
 theorem trace_split (z : D.host.E) :
     ((Algebra.trace ℚ D.host.E z : ℚ) : ℂ) = ∑ τ : D.what₂.Tau, (embT D τ z + starRingEnd ℂ (embT D τ z)) := by
   have h := trace_eq_sum_embeddings ℂ (K := ℚ) (x := z)
@@ -123,13 +160,24 @@ open Formalism.MainNotions.TaylorLogMetric
 
 variable {D : D7}
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.FockCompare.tauE_star τ x`.
+-/
 theorem embT_star (τ : D.what₂.Tau) (x : D.host.E) : embT D τ (star x) = starRingEnd ℂ (embT D τ x) :=
   GlobalTheory.FockCompare.tauE_star τ x
 
+/- English proof (translation)
+Establish `: Ideal.absNorm D.host.ccK ≠ 0` using `by rw [Ne, Ideal.absNorm_eq_zero_iff]; exact D.host.ccK_ne_bot`. Conclude with `this` after adjusting the coercions.
+-/
 theorem absNorm_ne : ((Ideal.absNorm D.host.ccK : ℕ) : ℂ) ≠ 0 := by
   have : Ideal.absNorm D.host.ccK ≠ 0 := by rw [Ne, Ideal.absNorm_eq_zero_iff]; exact D.host.ccK_ne_bot
   exact_mod_cast this
 
+/- English proof (translation)
+Establish `hN` using `absNorm_ne (D := D)`. Establish `hs : ((Real.sqrt D.host.d : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.IO.sqrt_d_pos D).ne'`. Establish `e : embT D τ (D.host.xi0 * ((1 + D.host.sqrtMinusD) / 2) ^ 2) = -1 / (((Ideal.absNorm D.host.ccK : ℕ) : ℂ) * (Complex.I * (Real.sqrt D.host.d : ℂ))) * ((1 + Complex.I * (Real.sqrt D.host.d : ℂ)) / 2) ^ 2`. Unfold `Formalism.BasicNotions.Host.xi0`. Simplify using `only [map_mul, map_div₀, map_neg, map_one, map_natCast, map_pow, map_add, map_ofNat, embT_sqrt]`.
+
+Rewrite using `[e]`. Simplify using `only [map_mul, map_div₀, map_neg, map_one, map_pow, map_add, map_natCast, Complex.conj_I, Complex.conj_ofReal, map_ofNat]`. Clear the denominators using the available nonvanishing facts. Put the polynomial expressions in normal form.
+-/
 theorem embT_c_add_conj (τ : D.what₂.Tau) :
     embT D τ (D.host.xi0 * ((1 + D.host.sqrtMinusD) / 2) ^ 2) +
       starRingEnd ℂ (embT D τ (D.host.xi0 * ((1 + D.host.sqrtMinusD) / 2) ^ 2)) =
@@ -155,6 +203,9 @@ open Formalism.MainNotions.TaylorLogMetric
 
 variable {D : D7}
 
+/- English proof (translation)
+Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply, map_sum, map_mul, embT_star, Complex.ofReal_sum, Complex.normSq_eq_conj_mul_self]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem embT_trace (τ : D.what₂.Tau) {m n : ℕ} (M : Matrix (Fin m) (Fin n) D.host.E) :
     embT D τ (Matrix.trace (Mᴴ * M)) =
       ((∑ i, ∑ j, Complex.normSq (embT D τ (M i j)) : ℝ) : ℂ) := by
@@ -162,6 +213,13 @@ theorem embT_trace (τ : D.what₂.Tau) {m n : ℕ} (M : Matrix (Fin m) (Fin n) 
     embT_star, Complex.ofReal_sum, Complex.normSq_eq_conj_mul_self]
   rw [Finset.sum_comm]
 
+/- English proof (translation)
+Establish `h : ((k : ℚ) : ℂ) = ((Algebra.trace ℚ D.host.E (D.host.xi0 * ((1 + D.host.sqrtMinusD) / 2) ^ 2 * Matrix.trace (Mᴴ * M)) : ℚ) : ℂ)` using `by rw [hk]`. Rewrite `h` using `[trace_split]`. Establish `h2 : ∀ τ : D.what₂.Tau, embT D τ (D.host.xi0 * ((1 + D.host.sqrtMinusD) / 2) ^ 2 * Matrix.trace (Mᴴ * M)) + starRingEnd ℂ (embT D τ (D.host.xi0 * ((1 + D.host.sqrtMinusD) / 2) ^ 2 * Matrix.trace (Mᴴ * M))) = -1 / ((Ideal.absNorm D.host.ccK : ℕ) : ℂ) * ((∑ i, ∑ j, Complex.normSq ( …`. Introduce `τ`. Rewrite using `[show embT D τ (D.host.xi0 * ((1 + D.host.sqrtMinusD) / 2) ^ 2 * Matrix.trace (Mᴴ * M)) = embT D τ (D.host.xi0 * ((1 + D.host.sqrtMinusD) / 2) ^ 2) * embT D τ (Matrix.trace (Mᴴ * M)) from map_mul _ _ _, embT_trace, map_mul (starRingEnd ℂ), Complex.conj_ofReal, ← add_mul, embT_c_a …`.
+
+Rewrite `h` using `[Finset.sum_congr rfl fun τ _ => h2 τ, ← Finset.mul_sum]`. Establish `hN` using `absNorm_ne (D := D)`. Establish `h3 : ((k : ℝ) : ℂ) = (((-(∑ τ : D.what₂.Tau, ∑ i, ∑ j, Complex.normSq (embT D τ (M i j))) / (Ideal.absNorm D.host.ccK : ℝ)) : ℝ) : ℂ)`. Use `push_cast`. Rewrite using `[show ((k : ℂ)) = ((k : ℚ) : ℂ) by push_cast; rfl, h]`.
+
+Clear the denominators using the available nonvanishing facts. Simplify using `only [Complex.ofReal_sum]`. Conclude with `h3` after adjusting the coercions.
+-/
 theorem k_eq {m n : ℕ} (M : Matrix (Fin m) (Fin n) D.host.E) (k : ℤ)
     (hk : (k : ℚ) = Algebra.trace ℚ D.host.E (D.host.xi0 * ((1 + D.host.sqrtMinusD) / 2) ^ 2 *
       Matrix.trace (Mᴴ * M))) :
@@ -197,6 +255,13 @@ open Formalism.MainNotions.TaylorLogMetric
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hA` using `GlobalTheory.MomDict.area_lamOf D D.host.ccK δ D.host.ccK_ne_bot`. Establish `hH : Hf D (tor0 D D.host.ccK δ) (δ • embV D (tor0 D D.host.ccK δ) M) (δ • embV D (tor0 D D.host.ccK δ) M) = (((Complex.normSq δ * ∑ τ : D.what₂.Tau, ∑ i, ∑ j, Complex.normSq (embT D τ (M i j))) / area (lamOf D D.host.ccK δ) : ℝ) : ℂ)`. Unfold `Hf`. Rewrite using `[Complex.ofReal_div]`. Use `congr 1`.
+
+Simplify using `only [embV, tor0, Pi.smul_apply, smul_eq_mul, Complex.mul_conj, Complex.normSq_mul, Complex.ofReal_sum, Complex.ofReal_mul, Finset.mul_sum]`. Rewrite using `[hH, Complex.ofReal_re, hA]`. Establish `hN : (0 : ℝ) < (Ideal.absNorm D.host.ccK : ℝ)`. Establish `: Ideal.absNorm D.host.ccK ≠ 0` using `by rw [Ne, Ideal.absNorm_eq_zero_iff]; exact D.host.ccK_ne_bot`. Conclude with `Nat.pos_of_ne_zero this` after adjusting the coercions.
+
+Establish `hs` using `Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.IO.sqrt_d_pos D`. Establish `hδ2 : 0 < Complex.normSq δ` using `Complex.normSq_pos.mpr hδ`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem qH_eq {m n : ℕ} (δ : ℂ) (hδ : δ ≠ 0) (M : Matrix (Fin m) (Fin n) D.host.E) :
     Real.sqrt D.host.d / 2 *
       (Hf D (tor0 D D.host.ccK δ) (δ • embV D (tor0 D D.host.ccK δ) M)
@@ -220,6 +285,11 @@ theorem qH_eq {m n : ℕ} (δ : ℂ) (hδ : δ ≠ 0) (M : Matrix (Fin m) (Fin n
   have hδ2 : 0 < Complex.normSq δ := Complex.normSq_pos.mpr hδ
   field_simp
 
+/- English proof (translation)
+Introduce `D S T B B' hB hB' δ hδ M k hk`. Rewrite `hk` using `[hRat_frames S T B B' hB hB' M]`. Establish `hk'` using `k_eq M k hk`. Establish `hq` using `qH_eq δ hδ M`. Establish `hr : Real.sqrt D.host.d / 2 * (Hf D (tor0 D D.host.ccK δ) (δ • embV D (tor0 D D.host.ccK δ) M) (δ • embV D (tor0 D D.host.ccK δ) M)).re = ((-k : ℤ) : ℝ)`.
+
+Rewrite using `[hq, Int.cast_neg, hk', neg_div, neg_neg]`. Unfold `al`. Rewrite using `[hr, round_intCast, _root_.zpow_neg]`. Conclude with `inv_mul_cancel₀ (zpow_ne_zero _ (by norm_num))`.
+-/
 theorem al_mul_neg_one_pow : ∀ {D : D7} (S T : HSp D) (B : GL (Fin S.rank) D.host.E) (B' : GL (Fin T.rank) D.host.E), Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) B.1 * S.gram * B.1 = 1 → Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) B'.1 * T.gram * B'.1 = 1 → ∀ (δ : ℂ), δ ≠ 0 → ∀ (M : Matrix (Fin T.rank) (Fin S.rank) D.host.E) (k : ℤ), (k : ℚ) = Algebra.trace ℚ D.host.E (D.host.xi0 * ((1 + D.host.sqrtMinusD) / 2) ^ 2 * GlobalTheory.LatVac.hRat S T (B'.1 * M * (B⁻¹ : GL (Fin S.rank) D.host.E).1) (B'.1 * M * (B⁻¹ : GL (Fin S.rank) D.host.E).1)) → Formalism.MainNotions.TaylorLogMetric.al D (Formalism.MainNotions.TaylorLogMetric.tor0 D D.host.ccK δ) (δ • Formalism.MainNotions.TaylorLogMetric.embV D (Formalism.MainNotions.TaylorLogMetric.tor0 D D.host.ccK δ) M) * (-1 : ℂ) ^ k = 1 := by
   intro D S T B B' hB hB' δ hδ M k hk
   rw [hRat_frames S T B B' hB hB' M] at hk

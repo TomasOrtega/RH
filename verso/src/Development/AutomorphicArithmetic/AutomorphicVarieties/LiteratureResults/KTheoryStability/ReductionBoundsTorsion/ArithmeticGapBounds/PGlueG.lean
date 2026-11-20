@@ -6,6 +6,9 @@ open MeasureTheory
 
 namespace PositivityTheory.KB.SpectralGap.GlueG
 
+/- English proof (translation)
+Establish `h1 : y * x⁻¹ ∈ H` using `QuotientGroup.rightRel_apply.1 (Quotient.exact hxy)`. Use `hF _ h1 x` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_right]`. Conclude with `this.symm`.
+-/
 theorem eq_of_mk_eq {Γ : Type} [Group Γ] (H : Subgroup Γ) {E : Type} (F : Γ → E)
     (hF : ∀ h ∈ H, ∀ γ, F (h * γ) = F γ) {x y : Γ}
     (hxy : (Quotient.mk (QuotientGroup.rightRel H) x) = Quotient.mk (QuotientGroup.rightRel H) y) :
@@ -15,6 +18,21 @@ theorem eq_of_mk_eq {Γ : Type} [Group Γ] (H : Subgroup Γ) {E : Type} (F : Γ 
   rw [inv_mul_cancel_right] at this
   exact this.symm
 
+/- English proof (translation)
+Establish `key : ∀ a b : A, (QuotientGroup.rightRel C) a b ↔ (QuotientGroup.rightRel H) (ψ a) (ψ b)`. Introduce `a b`. Rewrite using `[QuotientGroup.rightRel_apply, QuotientGroup.rightRel_apply, ← hC, map_mul, map_inv]`. Set `e0 : Quotient (QuotientGroup.rightRel C) → Quotient (QuotientGroup.rightRel H)` to `Quotient.map' ψ fun a b h => (key a b).1 h`. Establish `he0 : ∀ a, e0 (Quotient.mk _ a) = Quotient.mk _ (ψ a)` using `fun a => rfl`.
+
+Establish `hbij : Function.Bijective e0`. Prove the components needed by the constructor for the conclusion. Introduce `c c' hcc'`. Proceed by induction on `c using Quotient.inductionOn`. Proceed by induction on `c' using Quotient.inductionOn`.
+
+Rewrite `hcc'` using `[he0, he0]`. Conclude with `Quotient.sound ((key _ _).2 (Quotient.exact hcc'))`. Introduce `c`. Proceed by induction on `c using Quotient.inductionOn with`. Consider the case `h γ`.
+
+Take `⟨a, ha⟩` from `hs γ`. Conclude with `⟨Quotient.mk _ a, by`. Rewrite using `[he0]`. Conclude with `Quotient.sound (QuotientGroup.rightRel_apply.2 ha)⟩`. Set `e` to `Equiv.ofBijective e0 hbij`.
+
+Prove the components needed by the constructor for the conclusion. Rewrite using `[← finsum_comp_equiv e]`. Use `finsum_congr fun c => ?_` and prove the remaining obligations. Apply `eq_of_mk_eq H F hF` to reduce the goal to its premises. Use `show Quotient.mk _ (e0 c).out = _`.
+
+Rewrite using `[Quotient.out_eq]`. Use `conv_lhs => rw [← Quotient.out_eq c]`. Both sides reduce to the same expression. Unfold `Subgroup.index`. Rewrite using `[← Nat.card_congr (QuotientGroup.quotientRightRelEquivQuotientLeftRel C), ← Nat.card_congr (QuotientGroup.quotientRightRelEquivQuotientLeftRel H)]`.
+
+Conclude with `Nat.card_congr e`.
+-/
 theorem finsum_transfer {A Γ : Type} [Group A] [Group Γ] (ψ : A →* Γ) (H : Subgroup Γ) (C : Subgroup A)
     (hC : ∀ a, ψ a ∈ H ↔ a ∈ C) (hs : ∀ γ, ∃ a, γ * (ψ a)⁻¹ ∈ H)
     {E : Type} [AddCommMonoid E] (F : Γ → E) (hF : ∀ h ∈ H, ∀ γ, F (h * γ) = F γ) :
@@ -54,6 +72,13 @@ theorem finsum_transfer {A Γ : Type} [Group A] [Group Γ] (ψ : A →* Γ) (H :
       ← Nat.card_congr (QuotientGroup.quotientRightRelEquivQuotientLeftRel H)]
     exact Nat.card_congr e
 
+/- English proof (translation)
+Establish `key : ∀ a b : Γ, (QuotientGroup.rightRel H) a b ↔ (QuotientGroup.rightRel H) ((Equiv.mulRight γ₀) a) ((Equiv.mulRight γ₀) b)`. Introduce `a b`. Simplify using `only [QuotientGroup.rightRel_apply, Equiv.coe_mulRight, mul_inv_rev, mul_assoc, mul_inv_cancel_left]`. Set `e : Quotient (QuotientGroup.rightRel H) ≃ Quotient (QuotientGroup.rightRel H)` to `Quotient.congr (Equiv.mulRight γ₀) key`. Establish `h1 : ∀ c, F (e c).out = F (c.out * γ₀)`.
+
+Introduce `c`. Apply `eq_of_mk_eq H F hF` to reduce the goal to its premises. Rewrite using `[Quotient.out_eq]`. Use `conv_lhs => rw [← Quotient.out_eq c]`. Both sides reduce to the same expression.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem finsum_mul_right {Γ : Type} [Group Γ] (H : Subgroup Γ) {E : Type} [AddCommMonoid E] (F : Γ → E)
     (hF : ∀ h ∈ H, ∀ γ, F (h * γ) = F γ) (γ₀ : Γ) :
     ∑ᶠ c : Quotient (QuotientGroup.rightRel H), F (c.out * γ₀) =
@@ -75,6 +100,9 @@ theorem finsum_mul_right {Γ : Type} [Group Γ] (H : Subgroup Γ) {E : Type} [Ad
       = ∑ᶠ c : Quotient (QuotientGroup.rightRel H), F (e c).out := finsum_congr fun c => (h1 c).symm
     _ = _ := finsum_comp_equiv e (f := fun c => F c.out)
 
+/- English proof (translation)
+Establish `: H.FiniteIndex` using `⟨hH⟩`. Establish `: Finite (Quotient (QuotientGroup.rightRel H))` using `Finite.of_equiv _ (QuotientGroup.quotientRightRelEquivQuotientLeftRel H).symm`. Set `_` to `Fintype.ofFinite (Quotient (QuotientGroup.rightRel H))`. Repeatedly rewrite using `[finsum_eq_sum_of_fintype]`. Conclude with `continuous_finsetSum _ fun c _ => hF _`.
+-/
 theorem continuous_finsum_quot {Γ X : Type} [Group Γ] [TopologicalSpace X] (H : Subgroup Γ) (hH : H.index ≠ 0)
     (F : Γ → X → ℝ) (hF : ∀ γ, Continuous (F γ)) :
     Continuous fun x => ∑ᶠ c : Quotient (QuotientGroup.rightRel H), F c.out x := by
@@ -85,6 +113,15 @@ theorem continuous_finsum_quot {Γ X : Type} [Group Γ] [TopologicalSpace X] (H 
   simp_rw [finsum_eq_sum_of_fintype]
   exact continuous_finsetSum _ fun c _ => hF _
 
+/- English proof (translation)
+Establish `hmp : MeasurePreserving (fun x => q * x) μ μ` using `measurePreserving_mul_left μ q`. Establish `hemb : MeasurableEmbedding (fun x => q * x)` using `(MeasurableEquiv.mulLeft q).measurableEmbedding`. Establish `hmem : ∀ g : G₁, q⁻¹ * (g : S) * q ∈ G₂` using `fun g => by`. Rewrite using `[hq]`. Simplify using `[mul_assoc]`.
+
+Set `e : G₁ → G₂` to `fun g => ⟨q⁻¹ * g * q, hmem g⟩`. Establish `hbij : Function.Bijective e`. Prove the components needed by the constructor for the conclusion. Introduce `g g' h`. Establish `h'` using `congrArg (fun x : G₂ => (x : S)) h`.
+
+Simplify using `only [e, mul_left_inj, mul_right_inj] at h'`. Conclude with `Subtype.ext h'`. Introduce `h`. Use `⟨⟨q * h * q⁻¹, (hq h).1 h.2⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `[e, mul_assoc]`.
+
+Use `⟨hD.preimage_of_equiv hmp.quasiMeasurePreserving hbij ?_, measure_preimage_mul μ q D, fun u => ⟨hmp.integrableOn_comp_preimage hemb, hmp.setIntegral_preimage_emb hemb u D⟩⟩` and prove the remaining obligations. Introduce `g x`. Simplify using `[e, Subgroup.smul_def, mul_assoc]`.
+-/
 theorem fund_conj {S : Type} [Group S] [MeasurableSpace S] [MeasurableMul S] (μ : Measure S)
     [μ.IsMulLeftInvariant] (G₁ G₂ : Subgroup S) (q : S) (hq : ∀ y, y ∈ G₂ ↔ q * y * q⁻¹ ∈ G₁) (D : Set S)
     (hD : IsFundamentalDomain G₁ D μ) :

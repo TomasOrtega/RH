@@ -20,6 +20,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X : Sc
   {R : Type} [CommRing R] {ξ : Sp R ⟶ X} {q : ℕ} (P' : GlobalTheory.HTMap.FP t ξ q)
   {O : Type} [CommRing O] (x0 : R →+* O) (hu : IsUnit (x0 P'.f))
 
+/- English proof (translation)
+Set `x₀ : Over.mk (T.hom ≫ f) ⟶ G` to `Over.homMk ((1 : T ⟶ G').left ≫ π) (by show _ = T.hom ≫ f`. Rewrite using `[Category.assoc, hg.1.w, ← Category.assoc, Over.w])`. Establish `h` using `hg.2 T 1 1 x₀ x₀ rfl rfl`. Rewrite `h` using `[_root_.mul_one]`. Establish `e : x₀ * x₀ = x₀` using `Over.OverMorphism.ext h`.
+
+Establish `e' : x₀ = 1`. Use `congrArg (· * x₀⁻¹) e` as an intermediate fact. Simplify using `using this`. Conclude with `congrArg Over.Hom.left e'`.
+-/
 theorem one_left_π {S' S : Scheme.{0}} {G' : Over S'} [GrpObj G'] {G : Over S} [GrpObj G] {f : S' ⟶ S}
     {π : G'.left ⟶ G.left} (hg : IsGrpPullback G' G f π) (T : Over S') :
     (1 : T ⟶ G').left ≫ π = (1 : Over.mk (T.hom ≫ f) ⟶ G).left := by
@@ -34,6 +39,15 @@ theorem one_left_π {S' S : Scheme.{0}} {G' : Over S'} [GrpObj G'] {G : Over S} 
     simpa using this
   exact congrArg Over.Hom.left e'
 
+/- English proof (translation)
+Take `⟨β₀, h1, h2⟩` from `P'.fin.one O (lo P' x0 hu)`. Establish `hβ₀ : β₀.comp P'.str = (algebraMap O O).comp x0`. Rewrite using `[GlobalTheory.HTMap.FP.str, ← RingHom.comp_assoc, h1, lo_comp]`. Apply the tactic sequence `try rfl`. Establish `hid : (specO O O).hom = 𝟙 _`.
+
+Express the relevant statement in the definitionally equal form `Spec.map (CommRingCat.ofHom (algebraMap O O)) = _`. Rewrite using `[Algebra.algebraMap_self]`. Conclude with `Spec.map_id _`. Apply the tactic sequence `let c : S ⟶ specO O O := Over.homMk S.hom (by rw [hid, Category.comp_id]; try rfl)`. Use `⟨c ≫ ptOf P' x0 hu β₀ hβ₀, ?_⟩` and prove the remaining obligations.
+
+Establish `hz : ptOf P' x0 hu β₀ hβ₀ ≫ aH P' x0 hu hg.1 = 1`. Use `Over.OverMorphism.ext (hg.1.hom_ext ?_ ?_)` and prove the remaining obligations. Rewrite using `[ptOf_aH_π, h2, one_left_π hg]`. Use `(GlobalTheory.HTMap.one_of (G := t.G) (g := 𝟙 _) ?_).trans (Category.id_comp _)` and prove the remaining obligations. Rewrite using `[Category.id_comp, hid, Category.id_comp, GlobalTheory.HTMap.spc_assoc, lo_comp]`.
+
+Rewrite using `[Over.w, Over.w]`. Rewrite using `[Category.assoc, hz, MonObj.comp_one]`.
+-/
 theorem exists_unit {G' : Over (Sp O)} [GrpObj G'] {π : G'.left ⟶ t.G.left}
     (hg : IsGrpPullback G' t.G (spMap x0 ≫ ξ) π) (S : Over (Sp O)) :
     ∃ z : S ⟶ Hs P' x0 hu, z ≫ aH P' x0 hu hg.1 = 1 := by

@@ -14,6 +14,15 @@ namespace GlobalTheory.SiegelTransposeInverse
 
 open GlobalTheory.Doubling
 
+/- English proof (translation)
+Establish `h1 : blkMat e G (-G) * X = (p.submatrix e.symm e.symm).map c * blkMat e G (-G)`. Establish `h0 : Formalism.UG.cT c X = Q.map c` using `by rw [hXQ]; rfl`. Establish `h2 : (p.submatrix e.symm e.symm).map c * Q.map c = 1`. Rewrite using `[← Matrix.map_mul, hQ, Matrix.map_one _ (map_zero c) (map_one c)]`. Use `conv_rhs => rw [← hX, h0, Matrix.mul_assoc, ← Matrix.mul_assoc, h2, Matrix.one_mul]`.
+
+Establish `h3 : ∀ y : n → A, (p.submatrix e.symm e.symm).map c *ᵥ pairVec e y y = pairVec e (t.map c *ᵥ y) (t.map c *ᵥ y)`. Introduce `y`. Establish `h4` using `congrArg (fun M : Matrix (n ⊕ n) n A => M *ᵥ y) ((Matrix.map_mul (f := c) (L := p) (M := Matrix.fromRows (1 : Matrix n n A) 1)).symm.trans ((congrArg (fun M : Matrix (n ⊕ n) n A => M.map c) hp).trans Matrix.map_mul))`. Simplify using `only [Matrix.fromRows_map, Matrix.map_one _ (map_zero c) (map_one c), ← Matrix.mulVec_mulVec, Matrix.fromRows_mulVec, Matrix.one_mulVec] at h4`. Rewrite using `[← Matrix.submatrix_map, Matrix.submatrix_mulVec_equiv, pairVec, pairVec, ← h4]`.
+
+Establish `h7 : (Sum.elim y y ∘ ⇑e.symm) ∘ ⇑e.symm.symm = Sum.elim y y`. Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules. Rewrite using `[h7]`. Establish `h5 : blkMat e G⁻¹ (-G⁻¹) * blkMat e G (-G) = 1`.
+
+Rewrite using `[blkMat_mul, neg_mul_neg, Matrix.nonsing_inv_mul _ hG, blkMat_one]`. Establish `h6 : X = blkMat e G⁻¹ (-G⁻¹) * ((p.submatrix e.symm e.symm).map c * blkMat e G (-G))`. Rewrite using `[← h1, ← Matrix.mul_assoc, h5, Matrix.one_mul]`. Rewrite using `[h6]`. Simplify using `only [← Matrix.mulVec_mulVec, blkMat_mulVec, Matrix.neg_mulVec, Matrix.mulVec_neg, Matrix.one_mulVec, neg_neg, h3]`.
+-/
 theorem conj_mulVec_diag {A n ι : Type} [CommRing A] [Fintype n] [Fintype ι] [DecidableEq n] [DecidableEq ι]
     (e : n ⊕ n ≃ ι) (c : A →+* A) {G t : Matrix n n A} (hG : IsUnit G.det) {p : Matrix (n ⊕ n) (n ⊕ n) A}
     (hp : p * Matrix.fromRows (1 : Matrix n n A) 1 = Matrix.fromRows (1 : Matrix n n A) 1 * t)
@@ -45,6 +54,13 @@ theorem conj_mulVec_diag {A n ι : Type} [CommRing A] [Fintype n] [Fintype ι] [
   rw [h6]
   simp only [← Matrix.mulVec_mulVec, blkMat_mulVec, Matrix.neg_mulVec, Matrix.mulVec_neg, Matrix.one_mulVec, neg_neg, h3]
 
+/- English proof (translation)
+Establish `hK : KeepsDiag e Y` using `keepsDiag_of_mulVec fun w hw => by`. Take `⟨x, rfl⟩` from `(mem_diagSub e).1 hw`. Rewrite using `[hY]`. Conclude with `(pairVec_mem_diagSub e).2 rfl`. Use `⟨hK, ?_⟩` and prove the remaining obligations.
+
+Establish `hL : leviMat e Y = G⁻¹ * t.map c * G`. Use `Matrix.ext_of_mulVec_single fun j => ?_` and prove the remaining obligations. Establish `h` using `(hK.mulVec_diag (Pi.single j 1)).symm.trans (hY _)`. Use function extensionality and compare the values at `i`. Simplify `congrFun h (e (.inl i))` using `only [pairVec_inl]`.
+
+Rewrite using `[hL, Matrix.det_mul, Matrix.det_mul, mul_right_comm, ← Matrix.det_mul, Matrix.nonsing_inv_mul _ hG, Matrix.det_one, one_mul, RingHom.map_det, RingHom.mapMatrix_apply]`.
+-/
 theorem keepsDiag_and_det {A n ι : Type} [CommRing A] [Fintype n] [Fintype ι] [DecidableEq n] [DecidableEq ι]
     (e : n ⊕ n ≃ ι) (c : A →+* A) {G t : Matrix n n A} (hG : IsUnit G.det) {Y : Matrix ι ι A}
     (hY : ∀ u, Y *ᵥ pairVec e u u = pairVec e ((G⁻¹ * t.map c * G) *ᵥ u) ((G⁻¹ * t.map c * G) *ᵥ u)) :
@@ -63,6 +79,9 @@ theorem keepsDiag_and_det {A n ι : Type} [CommRing A] [Fintype n] [Fintype ι] 
     Matrix.det_one, one_mul, RingHom.map_det, RingHom.mapMatrix_apply]
 
 open GlobalTheory.DiagThetaRule in
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use `show Formalism.L2.Theta.mt (dblSp S) (epsD S) * Formalism.L2.Theta.mt (dblSp S) (epsD S) = 1`. Rewrite using `[mt_epsD, blkMat_mul, neg_mul_neg, Matrix.one_mul, blkMat_one]`.
+-/
 theorem epsD_mul_self {D : D7} (S : HSp D) : epsD S * epsD S = 1 := by
   apply Subtype.ext
   apply Units.ext
@@ -71,6 +90,13 @@ theorem epsD_mul_self {D : D7} (S : HSp D) : epsD S * epsD S = 1 := by
 
 open GlobalTheory.DiagThetaRule in
 
+/- English proof (translation)
+Establish `hG : IsUnit (JR (F` using `D.host.F) (AF D.host.F) S.gram).det := by`. Establish `h` using `((isHermND_gram S).2.isUnit).map (inclR (F := D.host.F) (E := D.host.E) (AF D.host.F))`. Rewrite `h` using `[RingHom.map_det, RingHom.mapMatrix_apply]`. Conclude with `h`. Establish `hX : Formalism.UG.cT (sigR (AF D.host.F) D.sp.cm.sig) (Formalism.L2.Theta.mt (dblSp S) g) * blkMat finSumFinEquiv (JR (F` using `D.host.F) (AF D.host.F) S.gram) (-(JR (F := D.host.F) (AF D.host.F) S.gram)) * Formalism.L2.Theta.mt (dblSp S) g = blkMat finSumFinEquiv (JR (F := D.host.F) (AF D.host.F) S.gram) (-(JR (F := D.host.F) (AF D.host.F) S.gram)) := by`.
+
+Rewrite using `[← JR_dblSp_gram]`. Conclude with `g.2`. Establish `hQ : p.1.1.submatrix finSumFinEquiv.symm finSumFinEquiv.symm * ((GlobalTheory.DblSchr.reG (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) finSumFinEquiv.symm (GlobalTheory.DblSchr.incM_JBd S JB) p)⁻¹).1.1 = 1`. Rewrite using `[← GlobalTheory.DblSchr.reG_val (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) finSumFinEquiv.symm (GlobalTheory.DblSchr.incM_JBd S JB) p]`. Conclude with `Units.mul_inv _`.
+
+Establish `hY` using `keepsDiag_and_det finSumFinEquiv (sigR (AF D.host.F) D.sp.cm.sig) hG (conj_mulVec_diag finSumFinEquiv (sigR (AF D.host.F) D.sp.cm.sig) hG hp hQ hg hX)`. Use `⟨⟨epsD S * g * epsD S, mem_siegelOf.2 hY.1⟩, ?_, Units.ext hY.2⟩` and prove the remaining obligations. Use `show epsD S * g = epsD S * g * epsD S * epsD S`. Rewrite using `[mul_assoc, epsD_mul_self, mul_one]`.
+-/
 theorem exists_siegel_conj (D : D7) (S : HSp D) (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E)
     (p : GlobalTheory.WeilM.UG (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) (GlobalTheory.WeilM.dbl (incM D.host.F JB)))
     (t : GL (Fin S.rank) (AF D.host.F ⊗[D.host.F] D.host.E))

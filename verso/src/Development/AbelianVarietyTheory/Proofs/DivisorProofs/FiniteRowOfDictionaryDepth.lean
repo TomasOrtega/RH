@@ -14,6 +14,13 @@ open GlobalTheory.SumSize
 
 namespace GlobalTheory.SumSize
 
+/- English proof (translation)
+Establish `hG : PairInt.PairIntRatK` using `GlobalTheory.T.pair_integral_ratio_of_norm_sums hP hI hD`. Take `⟨CF0, h⟩` from `BigC.and hG hd`. Use `⟨CF0, fun CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C0, h⟩` from `h CF hCF`. Use `⟨C0, fun ε C hC => ?_⟩` and prove the remaining obligations.
+
+Take `⟨x0, h⟩` from `h ε C hC`. Use `⟨x0, fun D large₂ he hx Γ _ _ Pl0 T A Ks _ _ _ R F hS ch h1 h2 h3 => ?_⟩` and prove the remaining obligations. Take `⟨⟨dl, hL, h⟩, hDe⟩` from `h D large₂ he hx Γ Pl0 T A Ks R F hS ch h1 h2 h3`. Use `⟨dl, hL, ?_⟩` and prove the remaining obligations. Introduce `t w hw Φ β d hO c i a v hv`.
+
+Take `⟨hβ, τ, hτ, hdτ⟩` from `hO`. Establish `hrat` using `(h3.isRatAt hβ hτ hdτ c).2 i`. Take `⟨hk, ⟨e, -, hPz, -⟩, hcos⟩` from `hτ`. Establish `hdep` using `(hDe t Φ β hβ).2`. Conclude with `h t (.chi i D.R.m) ⟨i.2, rfl⟩ w hw _ (d.2 i) hk ((hcos d hdτ).2 i) ((hPz d hdτ).2 i).2.2 ((hPz d hdτ).2 i).1 (fun l hl hlw => hdep w l hl hlw hw) _ _ hrat a v hv`.
+-/
 theorem finRowK (hP : GlobalTheory.FunPr.Hypotheses₂) (hI : ∀ D, GlobalTheory.NormSum.Inp D) (hD : DictK) (hd : DepthK) : FinRowK := by
   have hG : PairInt.PairIntRatK := GlobalTheory.T.pair_integral_ratio_of_norm_sums hP hI hD
   obtain ⟨CF0, h⟩ := BigC.and hG hd

@@ -11,6 +11,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AV.AbVar
 
+/- English proof (translation)
+Establish `e : (1 : Over.mk (𝟙 (Sp K)) ⟶ A.X) ≫ f.hom = 1`. Rewrite using `[CategoryTheory.Hom.one_def, CategoryTheory.Hom.one_def, Category.assoc, IsMonHom.one_hom]`. Unfold `origin`. Rewrite using `[← e, Over.comp_left]`. Both sides reduce to the same expression.
+-/
 theorem hom_left_origin {K : Type} [Field K] {A B : AbVar K} (f : A ⟶ B) : f.hom.left A.origin = B.origin := by
   have e : (1 : Over.mk (𝟙 (Sp K)) ⟶ A.X) ≫ f.hom = 1 := by
     rw [CategoryTheory.Hom.one_def, CategoryTheory.Hom.one_def, Category.assoc, IsMonHom.one_hom]
@@ -18,6 +21,17 @@ theorem hom_left_origin {K : Type} [Field K] {A B : AbVar K} (f : A ⟶ B) : f.h
   rw [← e, Over.comp_left]
   rfl
 
+/- English proof (translation)
+Introduce `K _ A B f d hd hf`. Take `⟨L, hL, amp, rfl⟩` from `hd`. Take `⟨N, hN, M, t, h0, h1⟩` from `GlobalTheory.T.exists_ampleSections_vanishing_origin_separating K B L hL amp`. Take `⟨a, ha⟩` from `GlobalTheory.T.exists_apply_ne_origin' K A B f hf`. Set `ιB` to `(B.X.hom ⁻¹ᵁ ⊤).ι`.
+
+Set `h : A.X.left ⟶ (B.X.hom ⁻¹ᵁ ⊤).toScheme` to `IsOpenImmersion.lift ιB f.hom.left (by`. Rewrite using `[Scheme.Opens.range_ι]`. Introduce `x _`. Use the proof step `trivial)`. Establish `hh : h ≫ ιB = f.hom.left` using `IsOpenImmersion.lift_fac _ _ _`.
+
+Establish `hpt : ∀ x, ιB (h x) = f.hom.left x` using `fun x => by rw [← hh]; rfl`. Take `⟨j, hj⟩` from `h1 (h a) (by rw [hpt]; exact ha)`. Set `s` to `ReciprocityTheory.ChartRestriction.G.DVR.pullSec L (fun _ : Fin N => ιB) (fun _ => 1) (t j) h`. Establish `hs : Out.nonzeroLocus s = h ⁻¹ᵁ Out.nonzeroLocus (t j)` using `GlobalTheory.nonzeroLocus_pullSec _ _ (t j) h`. Use `⟨N, _, LB.isLB_linComb hL _ _, s, hN, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[cls_linComb hL]`. Simplify using `only [hh, one_zsmul, Finset.sum_const, Finset.card_univ, Fintype.card_fin]`. Introduce `e`. Establish `: a ∈ Out.nonzeroLocus s` using `by rw [hs]; exact hj`. Rewrite `this` using `[e]`.
+
+Conclude with `this`. Introduce `ho`. Rewrite `ho` using `[hs]`. Conclude with `h0 j (h A.origin) (by rw [hpt, hom_left_origin]) ho`.
+-/
 theorem exists_sec_pull_ample_vanish_origin : ∀ (K : Type) [Field K] (A B : AbVar K) (f : A ⟶ B) (d : Pic B.X.left),
     IsAmpleCls d → f ≠ 0 → ∃ (m : ℕ) (M : LB A.X.left) (hM : M.IsLB) (s : LB.Sec M), 0 < m ∧
       cls M hM = m • CechPic.pull f.hom.left d ∧ Out.nonzeroLocus s ≠ ⊥ ∧ A.origin ∉ Out.nonzeroLocus s := by

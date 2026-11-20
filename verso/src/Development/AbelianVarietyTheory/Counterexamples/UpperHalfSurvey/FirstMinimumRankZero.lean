@@ -10,11 +10,19 @@ open scoped ComplexConjugate
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
 
+/- English proof (translation)
+Establish `h : τ.1 X.ξ0 ≠ 0` using `(map_ne_zero_iff τ.1 τ.1.injective).2 X.ξ0_ne`. Unfold `Data.c`. Check the signs of the components of the expression.
+-/
 theorem c_pos (τ : X.Ψ) : 0 < X.c τ := by
   have h : τ.1 X.ξ0 ≠ 0 := (map_ne_zero_iff τ.1 τ.1.injective).2 X.ξ0_ne
   unfold Data.c
   positivity
 
+/- English proof (translation)
+Establish `hv : Data.emb τ.1 ξ ≠ 0`. Introduce `h`. Apply `hξ` to reduce the goal to its premises. Use function extensionality and compare the values at `a`. Conclude with `(map_eq_zero_iff τ.1 τ.1.injective).1 (congrFun h a)`.
+
+Use `X.maj_pos hx τ hv` as an intermediate fact. Use `c_pos X τ` as an intermediate fact. Unfold `Data.tt`. Check the signs of the components of the expression.
+-/
 theorem tt_pos {x : Frame X.Ψ r} (hx : x ∈ X.dom) {ξ : Fin r → E} (hξ : ξ ≠ 0) (τ : X.Ψ) :
     0 < X.tt ξ x τ := by
   have hv : Data.emb τ.1 ξ ≠ 0 := by
@@ -27,6 +35,13 @@ theorem tt_pos {x : Frame X.Ψ r} (hx : x ∈ X.dom) {ξ : Fin r → E} (hξ : �
   unfold Data.tt
   positivity
 
+/- English proof (translation)
+Establish `he : X.IsIsoV (fun τ => Data.emb τ.1 ξ)`. Introduce `σ`. Use `⟨?_, fun h => hξ.2.2 ?_⟩` and prove the remaining obligations. Establish `h0` using `congrArg σ.1 hξ.2.1`. Simplify `h0` using `[herm, hermC, Data.emb, emb_cc]`.
+
+Use function extensionality and compare the values at `a`. Conclude with `(map_eq_zero_iff σ.1 σ.1.injective).1 (congrFun h a)`. Establish `h` using `(flowDomainCriterion_holds r X _ he x hx s).2 hs τ`. Establish `h' : X.tt ξ (X.flow ξ s x) τ = X.tt ξ x τ + (s τ).im` using `h`. Rewrite using `[← h']`.
+
+Simplify using `[Data.tt]`.
+-/
 theorem scaled_maj_flow {x : Frame X.Ψ r} (hx : x ∈ X.dom) {ξ : Fin r → E} (hξ : X.IsIso ξ)
     (s : X.Ψ → ℂ) (hs : X.flow ξ s x ∈ X.dom) (τ : X.Ψ) :
     X.c τ * X.maj (X.flow ξ s x) τ (Data.emb τ.1 ξ) = 1 / (X.tt ξ x τ + (s τ).im) := by
@@ -42,6 +57,19 @@ theorem scaled_maj_flow {x : Frame X.Ψ r} (hx : x ∈ X.dom) {ξ : Fin r → E}
   rw [← h']
   simp [Data.tt]
 
+/- English proof (translation)
+Establish `hcc : cc X.κ0 = -X.κ0`. Break down `X.κ0_xi with h | h` into its components or cases. Rewrite using `[h, cc_mul, X.ξ0_im]`. Establish `: cc (2 : E) = 2` using `map_ofNat _ 2`. Rewrite using `[this]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e : -(2 * X.ξ0) = 0 - 2 * X.ξ0` using `by ring`. Rewrite using `[h, e, cc_sub, cc_zero, cc_mul, X.ξ0_im]`. Establish `: cc (2 : E) = 2` using `map_ofNat _ 2`. Rewrite using `[this]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hre : (τ.1 X.κ0).re = 0`. Establish `h1 : conj (τ.1 X.κ0) = -(τ.1 X.κ0)` using `by rw [← emb_cc, hcc, map_neg]`. Establish `h2` using `congrArg Complex.re h1`. Simplify using `only [Complex.conj_re, Complex.neg_re] at h2`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hn : ‖τ.1 X.κ0‖ = X.c τ`. Unfold `Data.c`. Apply the tactic sequence `rcases X.κ0_xi with h | h <;> simp [h, map_ofNat]`. Establish `hk : τ.1 X.κ0 = -(I * X.c τ)`.
+
+Establish `h3 : ‖τ.1 X.κ0‖ = |(τ.1 X.κ0).im|` using `(Complex.abs_im_eq_norm.2 hre).symm`. Rewrite `h3` using `[abs_of_neg (X.κ0_sign τ)]`. Apply the tactic sequence `apply Complex.ext <;> simp [hre]`. Combine the linear equalities and inequalities to obtain the conclusion. Use extensionality with `a b`.
+
+Apply the tactic sequence `have h1 : τ.1 (if a = b then 1 else 0) = if a = b then 1 else 0 := by split_ifs <;> simp`. Simplify using `only [Data.flowMat, transvMat, Matrix.of_apply, Matrix.map_apply, map_add, map_mul, map_sum, h1, hk, emb_cc]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem flowMat_eq_transv (ξ : Fin r → E) (τ : X.Ψ) (s : E) :
     X.flowMat ξ τ (τ.1 s) = (transvMat X.Gm ξ (s * X.κ0)).map τ.1 := by
   have hcc : cc X.κ0 = -X.κ0 := by
@@ -70,6 +98,11 @@ theorem flowMat_eq_transv (ξ : Fin r → E) (τ : X.Ψ) (s : E) :
     h1, hk, emb_cc]
   ring
 
+/- English proof (translation)
+Establish `: {t | ∃ v ∈ Y.Λ, v ≠ 0 ∧ t = ∑ τ, Y.c τ * Y.maj x τ (Data.emb τ.1 v)} = (∅ : Set ℝ)`. Use extensionality with `t`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false]`. Introduce and unpack `⟨v, -, hv, -⟩`. Conclude with `hv (Subsingleton.elim _ _)`.
+
+Unfold `Data.la1 Data.firstMinimumSq`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+-/
 theorem first_minimum_rank_zero (Y : Data E 0) (x : Frame Y.Ψ 0) : Y.la1 x = 0 := by
   have : {t | ∃ v ∈ Y.Λ, v ≠ 0 ∧ t = ∑ τ, Y.c τ * Y.maj x τ (Data.emb τ.1 v)} = (∅ : Set ℝ) := by
     ext t

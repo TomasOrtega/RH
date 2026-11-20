@@ -76,6 +76,9 @@ def ThetaSquareIntegrable (D : D7) : Prop :=
       SquareIntegrable ψ V W ∧ HeisUnitary ψ V W ∧
         ∀ θ : InfFam D, IsInfFam θ → DerSkew ψ θ V W ∧ DerComm ψ θ V W ∧ FinRealComm ψ θ V W
 
+/- English proof (translation)
+Take `⟨ψ, θ, μ, 𝓕, U, f, h1, h2, h3, -, h5, h6, -⟩` from `GlobalTheory.Size.exists_theta_posSp D m n`. Conclude with `⟨ψ, θ, μ, 𝓕, f, h1, h2, h3.1, h3.2.1, h5.1, h6⟩`.
+-/
 example (D : D7) (m n : ℕ) : ∃ (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D)
     (μ : Measure (WO (GlobalTheory.Size.posSp D m) (GlobalTheory.Size.posSp D n))) (𝓕 : Set (WO (GlobalTheory.Size.posSp D m) (GlobalTheory.Size.posSp D n)))
     (f : WO (GlobalTheory.Size.posSp D m) (GlobalTheory.Size.posSp D n) → ℂ), IsStdChar D ψ (-1) ∧ IsInfFam θ ∧ μ.IsAddHaarMeasure ∧
@@ -84,6 +87,9 @@ example (D : D7) (m n : ℕ) : ∃ (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam
   obtain ⟨ψ, θ, μ, 𝓕, U, f, h1, h2, h3, -, h5, h6, -⟩ := GlobalTheory.Size.exists_theta_posSp D m n
   exact ⟨ψ, θ, μ, 𝓕, f, h1, h2, h3.1, h3.2.1, h5.1, h6⟩
 
+/- English proof (translation)
+Simplify using `only [symplAt, hermAt, GlobalTheory.Size.gramAt_posSp, inv_one, Matrix.one_mul, Matrix.mul_one, Matrix.mul_smul, Matrix.trace_smul, smul_eq_mul, Complex.mul_re, Complex.mul_im, Complex.I_re, Complex.I_im, hz]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 example (D : D7) (m n : ℕ) (τ : D.what₂.Tau) (z : Matrix (Fin (GlobalTheory.Size.posSp D n).rank) (Fin (GlobalTheory.Size.posSp D m).rank) ℂ)
     (hz : (zᴴ * z).trace.im = 0) :
     symplAt (GlobalTheory.Size.posSp D m) (GlobalTheory.Size.posSp D n) τ (Complex.I • z) z =

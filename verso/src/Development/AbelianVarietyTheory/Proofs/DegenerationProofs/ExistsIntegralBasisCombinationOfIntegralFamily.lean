@@ -25,6 +25,13 @@ open GlobalTheory.TestFibre
 
 namespace GlobalTheory.TestFibre
 
+/- English proof (translation)
+Use `haveI : NeZero (r * N) := ⟨(Nat.mul_pos hr hN).ne'⟩`. Establish `key : ∀ i, ∃ b : ZMod (r * N), r • b = a₀ i`. Introduce `i`. Establish `h1 : ((N * (a₀ i).val : ℕ) : ZMod (r * N)) = 0`. Use `congrFun h i` as an intermediate fact.
+
+Simplify `this` using `[nsmul_eq_mul]`. Rewrite `h1` using `[ZMod.natCast_eq_zero_iff, _root_.mul_comm N]`. Take `⟨d, hd⟩` from `Nat.dvd_of_mul_dvd_mul_right hN h1`. Use `⟨(d : ZMod (r * N)), ?_⟩` and prove the remaining obligations. Rewrite using `[nsmul_eq_mul, ← Nat.cast_mul, ← hd, ZMod.natCast_zmod_val]`.
+
+Use `choose a ha using key`. Conclude with `⟨a, funext ha⟩`.
+-/
 theorem exists_nsmul_of_nsmul_eq_zero {K : Type} {r N : ℕ} (hr : 0 < r) (hN : 0 < N) (a₀ : K → ZMod (r * N))
     (h : N • a₀ = 0) : ∃ a : K → ZMod (r * N), r • a = a₀ := by
   haveI : NeZero (r * N) := ⟨(Nat.mul_pos hr hN).ne'⟩
@@ -40,6 +47,11 @@ theorem exists_nsmul_of_nsmul_eq_zero {K : Type} {r N : ℕ} (hr : 0 < r) (hN : 
   choose a ha using key
   exact ⟨a, funext ha⟩
 
+/- English proof (translation)
+Substitute `hN` using the available equality. Take `⟨hL, h1, h2, h3', h4⟩` from `laws_all h h₂`. Take `⟨n, a, z, t, c', r, H, hs⟩` from `(GlobalTheory.T.valuation_nonneg_iff_span_multiplicationTranslates hL h1 h2 h3' h4 V hc ϖ hϖ D Q hQ F v hv A G hG U w₀ rig hw th' ϑ hϑ hP m hm hu h3 Φ).1 hΦ`. Use `⟨n, a, z, t, r, fun i => ?_, hs⟩` and prove the remaining obligations. Take `⟨ha, hz, hT, hE⟩` from `H i`.
+
+Conclude with `⟨ha, hz, hE, fun s₁ σ θ hs₁ hθ hσ => GlobalTheory.T.symmetricLift_normalisedPullback_theta_smul hL V A F rig hw.2.1 m hm th th' c hth s₁ σ (t i) (z i) θ (c' i) hz hs₁ hθ hσ hT⟩`.
+-/
 theorem exists_span_translates_of_eq_sq (h : Laws) (h₂ : Laws2) {V : Type} [CommRing V] [IsDomain V]
     [IsDiscreteValuationRing V] [CharZero V] (hc : IsAdicComplete (IsLocalRing.maximalIdeal V) V) {ϖ : V}
     (hϖ : Irreducible ϖ) {D : DegData V (IsLocalRing.maximalIdeal V)} {Q : D.toPre.X → ℤ} (hQ : QForm.IsQ D.toPre ϖ Q)
@@ -65,6 +77,11 @@ theorem exists_span_translates_of_eq_sq (h : Laws) (h₂ : Laws2) {V : Type} [Co
   exact ⟨ha, hz, hE, fun s₁ σ θ hs₁ hθ hσ =>
     GlobalTheory.T.symmetricLift_normalisedPullback_theta_smul hL V A F rig hw.2.1 m hm th th' c hth s₁ σ (t i) (z i) θ (c' i) hz hs₁ hθ hσ hT⟩
 
+/- English proof (translation)
+Introduce `j`. Establish `hmul : ∀ x y : F, (liftFun A.A _ (cF R (x * y)) : Γ((TFK (R` using `R) F ⊗ A.A).left, (LPow A.A A.L (k : ℤ) (TFK (R := R) F)).U j)) = liftFun A.A _ (cF R x) * liftFun A.A _ (cF R y) := by`. Introduce `x y`. Simplify using `only [liftFun, cF, map_mul]`. Establish `hone : (liftFun A.A _ (cF R (1 : F)) : Γ((TFK (R` using `R) F ⊗ A.A).left, (LPow A.A A.L (k : ℤ) (TFK (R := R) F)).U j)) = 1 := by`.
+
+Simplify using `only [liftFun, cF, map_one]`. Establish `h1 : t.f j = liftFun A.A _ (cF R c⁻¹) * σ.f j`. Rewrite using `[ht j, ← _root_.mul_assoc, ← hmul, inv_mul_cancel₀ hc, hone, _root_.one_mul]`. Rewrite using `[h1, hσ j, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => by rw [hmul, _root_.mul_assoc]`.
+-/
 theorem IsComb.of_eq_mul {R : Type} [CommRing R] [IsDomain R] {A : PolAV (Spec (CommRingCat.of (FractionRing R)))}
     {F : Type} [Field F] [Algebra (FractionRing R) F] {k : ℕ} {J : Type} [Fintype J] {s : J → SecA A F k} {b : J → F}
     {σ t : SecA A F k} (hσ : IsComb A s b σ) {c : F} (hc : c ≠ 0)
@@ -80,6 +97,27 @@ theorem IsComb.of_eq_mul {R : Type} [CommRing R] [IsDomain R] {A : PolAV (Spec (
   rw [h1, hσ j, Finset.mul_sum]
   exact Finset.sum_congr rfl fun l _ => by rw [hmul, _root_.mul_assoc]
 
+/- English proof (translation)
+Introduce `h h₂ _ o Ω _ _ _ _ S ρ p _ y₀ u l hy x rig e th s hx hs ϖ Q v lam hϖ hv hNorm w₀ th' ϑ c hw hϑ hP hth hc Φ hΦ`. Take `⟨hchar, hun, hadm, -⟩` from `GlobalTheory.T.uniformisedModel_valuation_data o Ω S ρ p y₀ u l hy`. Take `⟨hadd, -, hbij, -⟩` from `(GlobalTheory.T.uniformisedModel_torsionPoints_group_pairing h o Ω S ρ p y₀ u).2 x hx`. Take `⟨-, -, -, -, hpull, hact⟩` from `hs`. Take `⟨-, hQ, -, hle, -⟩` from `hNorm`.
+
+Establish `hN0 : 0 < S.N` using `lt_of_lt_of_le (by norm_num) S.N_ge`. Establish `hn3 : 3 ≤ ρ.n`. Establish `h2` using `ρ.n_prime.two_le`. Take `⟨d, hd⟩` from `ρ.n_odd`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hm3 : 3 ≤ ρ.n ^ ρ.k` using `hn3.trans (Nat.le_self_pow (by have := ρ.two_le; omega) _)`. Establish `hmu : IsUnit ((ρ.n ^ ρ.k : ℕ) : u.V)`. Rewrite using `[Nat.cast_pow]`. Conclude with `hun.pow _`. Take `⟨n, a, z, t, r, H, hΦs⟩` from `exists_span_translates_of_eq_sq h h₂ u.complete hϖ hQ hv u.semi u.U w₀ rig hw th th' ϑ hϑ hP c hth (ρ.n ^ ρ.k) ρ.n_odd.pow hmu hm3 S.N ρ.N_eq Φ hΦ`.
+
+Establish `hx0 : x 0 = 1`. Use `hadd 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_mul.1 this`. Establish `hxs : ∀ (k : ℕ) (b : S.Gam), x (k • b) = x b ^ k`.
+
+Introduce `k b`. Proceed by induction on `k with`. Consider the case `zero => rw [zero_nsmul, hx0, pow_zero]`. Consider the case `succ k ih => rw [succ_nsmul, hadd, ih, pow_succ]`. Establish `hpt : ∀ i, ∃ g : S.Gam, x (S.r • g) = z i`.
+
+Introduce `i`. Take `⟨a₀, ha₀, -⟩` from `hbij (z i) (by rw [_root_.mul_comm S.r, pow_mul, (H i).2.1, one_pow])`. Take `⟨a₁, -, hu₁⟩` from `hbij 1 (one_pow _)`. Establish `h0 : S.N • a₀ = 0` using `(hu₁ _ (by show x _ = 1; rw [hxs, ha₀, (H i).2.1])).trans (hu₁ 0 hx0).symm`. Take `⟨g, hg⟩` from `exists_nsmul_of_nsmul_eq_zero S.r_pos hN0 a₀ h0`.
+
+Conclude with `⟨g, by rw [← ha₀, ← hg]⟩`. Use `choose g hg using hpt`. Establish `ht : ∀ i, IsComb u.A s (fun j => c⁻¹ * y₀ (algebraMap o S.R (S.ρ (g i) j ρ.i₀))) (t i)`. Introduce `i`. Take `⟨θ, hθ, hθa⟩` from `hact (g i)`.
+
+Take `⟨σ, hσ, -⟩` from `(GlobalTheory.T.fibreSection_linearComb_exists_unique_thetaAction u.V u.A (PadicAlgCl p) S.N S.J s (fun _ => 0)).2.2.2.1 θ (s ρ.i₀)`. Rewrite `hθ` using `[hg]`. Conclude with `IsComb.of_eq_mul (hθa _ _ hσ) hc ((H i).2.2.2 _ σ θ hpull hθ hσ)`. Take `⟨σ, hσ⟩` from `(GlobalTheory.T.fibreSection_linearComb_exists_unique_thetaAction u.V u.A (PadicAlgCl p) S.N (Fin n) t a).1`. Use `⟨_, σ, fun j => ?_, (GlobalTheory.T.fibreSection_linearComb_exists_unique_thetaAction u.V u.A (PadicAlgCl p) S.N S.J s (fun _ => 0)).2.2.2.2 (Fin n) _ t a σ ht hσ, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Finset.mul_sum]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← _root_.mul_assoc, mul_inv_cancel_left₀ hc, norm_mul]`. Establish `h1 : ‖a i‖ ≤ 1`. Use `(hle (a i) 0).1 (by simpa using (H i).1)` as an intermediate fact.
+
+Simplify using `using this`. Conclude with `mul_le_one₀ (hy _) (norm_nonneg _) h1`. Rewrite using `[hΦs]`. Conclude with `(GlobalTheory.T.isFibreSectionLinearComb_iff_expansion_sum (laws_all h h₂).1 u.V _ hadm u.D u.A u.G u.semi u.U (PadicAlgCl p) S.N hN0 w₀ hw.1 (Fin n) t r a σ fun i => (H i).2.2.1).1 hσ`.
+-/
 theorem exists_isComb_expands_of_nuGe_zero : Laws → Laws2 → UTorsSt → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (l : u.Lab), (∀ a : o, ‖y₀ (algebraMap o S.R a)‖ ≤ 1) → ∀ (x : S.Gam → (TFK (R := u.V) (PadicAlgCl p) ⟶ u.A.A)) (rig : LB.Gen (u.A.L.pull (eSec u.A.A))) (e : ∀ a, FrameAt u.A (x a)) (th : SecA u.A (PadicAlgCl p) 1) (s : S.J → SecA u.A (PadicAlgCl p) S.N), PtsOver u x → SecsOver u x rig e th s → ∀ (ϖ : u.V) (Q : u.D.toPre.X → ℤ) (v : AddValuation (PadicAlgCl p) (WithTop ℚ)) (lam : ℝ), Irreducible ϖ → ValOver ϖ (PadicAlgCl p) v → NormIs u l ϖ Q v lam → ∀ (w₀ : W0 u.U.toUnifPre) (th' : SecA u.A (PadicAlgCl p) 1) (ϑ : Fam u.D.toPre (PadicAlgCl p) 1) (c : PadicAlgCl p), NormW u.U.toUnifPre w₀ rig → u.U.ExpandsF (PadicAlgCl p) 1 w₀ th' ϑ → Prim u.D Q v ϑ → (∀ j, th.f j = liftFun u.A.A _ (cF u.V c) * th'.f j) → c ≠ 0 → ∀ Φ : Fam u.D.toPre (PadicAlgCl p) S.N, NuGe u.D Q (PadicAlgCl p) v S.N Φ 0 → ∃ (b : S.J → PadicAlgCl p) (σ : SecA u.A (PadicAlgCl p) S.N), (∀ j, ‖c * b j‖ ≤ 1) ∧ IsComb u.A s b σ ∧ u.U.ExpandsF (PadicAlgCl p) S.N w₀ σ Φ := by
   intro h h₂ _ o Ω _ _ _ _ S ρ p _ y₀ u l hy x rig e th s hx hs ϖ Q v lam hϖ hv hNorm w₀ th' ϑ c hw hϑ hP hth hc Φ hΦ
   obtain ⟨hchar, hun, hadm, -⟩ := GlobalTheory.T.uniformisedModel_valuation_data o Ω S ρ p y₀ u l hy

@@ -21,11 +21,49 @@ namespace GlobalTheory.SquareTripleForm
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨e, -⟩` from `h`. Simplify using `using (Fintype.card_congr e).symm`.
+-/
 theorem hasSignature_add {n : ℕ} {J : Matrix (Fin n) (Fin n) ℂ} {a b : ℕ} (h : Formalism.UG.HasSignature J a b) :
     a + b = n := by
   obtain ⟨e, -⟩ := h
   simpa using (Fintype.card_congr e).symm
 
+/- English proof (translation)
+Introduce `D T L sc G μ₀ hL W t i j hS M hM`. Take `⟨e, Bs, Γ, X, om, om', hX, hY, -⟩` from `GlobalTheory.T.squareThetaTripleHypotheses_of_standing hL W t i j hS M hM`. Establish `hi` using `i.2`. Establish `hj` using `j.2`. Establish `nv : ∀ a b, a ≤ D.R.m → b ≤ D.R.m → (G.node (.grid a b)).IsV (rankV D a b) ((D.R.m - b) / 2)` using `fun a b ha hb => node_isV G hL (X := .grid a b) ⟨ha, hb⟩`.
+
+Establish `rW : (G.V (.grid (↑i + 1) (↑j + 1))).rank = rankV D (↑i + 1) (↑j + 1)` using `(nv _ _ (by omega) (by omega)).rank`. Establish `rW₁ : (G.V (.grid ↑i ↑j)).rank = rankV D ↑i ↑j` using `(nv _ _ (by omega) (by omega)).rank`. Establish `rV : (G.V (.grid ↑i (↑j + 1))).rank = rankV D ↑i (↑j + 1)` using `(nv _ _ (by omega) (by omega)).rank`. Establish `rV₁ : (G.V (.grid (↑i + 1) ↑j)).rank = rankV D (↑i + 1) ↑j` using `(nv _ _ (by omega) (by omega)).rank`. Establish `hrank : (GlobalTheory.Doubling.hsum (G.V (.grid ↑i (↑j + 1))) (G.V (.grid (↑i + 1) ↑j))).rank = (G.V (.grid (↑i + 1) (↑j + 1))).rank + (G.V (.grid ↑i ↑j)).rank` using `by show (G.V (.grid ↑i (↑j + 1))).rank + (G.V (.grid (↑i + 1) ↑j)).rank = _`.
+
+Rewrite using `[rW, rW₁, rV, rV₁]`. Simplify using `only [rankV]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨hχ, hχ0⟩` from `GlobalTheory.SquareChars.chi_hecke_res G hL i`. Establish `hμ` using `GlobalTheory.HeckeCharacterRestriction.isHecke_mu hL t j`.
+
+Establish `hμ0` using `GlobalTheory.HeckeCharacterRestriction.resEta_mu hL t j`. Establish `hη` using `GlobalTheory.SquareChars.isHeckeChar_pow' hL.eta.1 (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.eps G i j)`. Establish `hη1` using `GlobalTheory.SquareChars.resEta_pow' (GlobalTheory.HeckeCharacterRestriction.resEta_eta hL) (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.eps G i j)`. Take `⟨p1, p2⟩` from `GlobalTheory.SquareChars.rank_parity G hL i j`. Use `⟨GlobalTheory.SquareChars.isHeckeChar_mul' hμ hη, GlobalTheory.SquareChars.isHeckeChar_mul' hχ hη, resEta_parity (resEta_mul hμ0 hη1) (by rw [zero_add]; exact p2), resEta_parity (resEta_mul hχ0 hη1) (by rw [zero_add]; exact p1), hrank, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hrank]`. Conclude with `hY.geo.even`. Establish `sgn : ∀ a b (ha : a ≤ D.R.m) (hb : b ≤ D.R.m) τ, Formalism.UG.HasSignature (gramAt D (G.V (.grid a b)) τ) ((G.V (.grid a b)).rank - (D.R.m - b) / 2) ((D.R.m - b) / 2)`. Introduce `a b ha hb τ`. Establish `s` using `(nv a b ha hb).sigOK (tauE D τ)`.
+
+Rewrite `s` using `[(nv a b ha hb).sig, ← (nv a b ha hb).rank]`. Conclude with `s`. Establish `sgnN : ∀ a b (ha : a ≤ D.R.m) (hb : b ≤ D.R.m) τ, Formalism.UG.HasSignature (gramAt D (negSp (G.V (.grid a b))) τ) ((D.R.m - b) / 2) ((G.V (.grid a b)).rank - (D.R.m - b) / 2)`. Introduce `a b ha hb τ`. Establish `s` using `GlobalTheory.GridWeil.sigOK_neg (nv a b ha hb).sigOK (tauE D τ)`.
+
+Establish `e : (negSp (G.V (.grid a b))).sig (tauE D τ) = ((G.V (.grid a b)).sig (tauE D τ)).swap` using `rfl`. Rewrite `s` using `[e, (nv a b ha hb).sig, ← (nv a b ha hb).rank]`. Conclude with `s`. Take `⟨w⟩ : Nonempty (InfinitePlace D.host.F)` from `inferInstance`. Take `⟨τ₀, hτ₀, -⟩` from `hX.cart w`.
+
+Establish `tW : Formalism.UG.HasSignature (gramAt D (G.V (.grid (↑i + 1) (↑j + 1))) τ₀) ((G.V (.grid (↑i + 1) (↑j + 1))).rank - Γ.p) Γ.p`. Use `GlobalTheory.FunObj.hasSignature_of_hasSig_conj ?_` and prove the remaining obligations. Establish `hs` using `hY.geo.hV.sig w`. Rewrite `hs` using `[hX.JW, one_smul]`. Establish `hmap : (G.V (.grid (↑i + 1) (↑j + 1))).gram.map (Bs.emb w).1 = (gramAt D _ τ₀).map (starRingEnd ℂ)`.
+
+Use extensionality with `a b`. Simplify using `[gramAt, hτ₀]`. Rewrite `hs` using `[hmap]`. Conclude with `hs`. Establish `tW₁ : Formalism.UG.HasSignature (gramAt D (negSp (G.V (.grid ↑i ↑j))) τ₀) Γ.q ((G.V (.grid ↑i ↑j)).rank - Γ.q)`.
+
+Use `GlobalTheory.FunObj.hasSignature_of_hasSig_conj ?_` and prove the remaining obligations. Establish `hs` using `hY.geo.hV'.sig w`. Rewrite `hs` using `[hX.JW₁]`. Establish `hmap : ((-1 : D.host.E) • (G.V (.grid ↑i ↑j)).gram).map (Bs.emb w).1 = (gramAt D (negSp (G.V (.grid ↑i ↑j))) τ₀).map (starRingEnd ℂ)`. Use extensionality with `a b`.
+
+Simplify using `[gramAt, hτ₀, HSpace.gram]`. Rewrite `hs` using `[hmap]`. Conclude with `hs`. Establish `hp : Γ.p = (D.R.m - (↑j + 1)) / 2`. Establish `r1` using `sgn (↑i + 1) (↑j + 1) (by omega) (by omega) τ₀`.
+
+Establish `c1` using `hasSignature_add r1`. Establish `c2` using `hasSignature_add tW`. Establish `u` using `GlobalTheory.T.hasSignature_fst_unique_sylvester tW r1`. Use linear arithmetic over natural numbers and integers. Establish `hq : Γ.q = (D.R.m - ↑j) / 2` using `GlobalTheory.T.hasSignature_fst_unique_sylvester tW₁ (sgnN ↑i ↑j (by omega) (by omega) τ₀)`.
+
+Establish `h1` using `hY.geo.eBig`. Establish `h2` using `hY.geo.aBig`. Establish `h3` using `hY.geo.lt`. Simplify using `only [spW, spW₁] at h1 h2 h3`. Use `⟨(D.R.m - (↑j + 1)) / 2, (D.R.m - ↑j) / 2, fun τ => ⟨sgn _ _ (by omega) (by omega) τ, sgn _ _ (by omega) (by omega) τ, ?_⟩, by rw [← hp, ← hq]; omega, by rw [← hp, ← hq]; exact h2⟩` and prove the remaining obligations.
+
+Establish `sV` using `sgn ↑i (↑j + 1) (by omega) (by omega) τ`. Establish `sV₁` using `sgn (↑i + 1) ↑j (by omega) (by omega) τ`. Establish `cV` using `hasSignature_add sV`. Establish `cV₁` using `hasSignature_add sV₁`. Establish `s` using `GlobalTheory.Doubling.sigOK_hsum (nv ↑i (↑j + 1) (by omega) (by omega)).sigOK (nv (↑i + 1) ↑j (by omega) (by omega)).sigOK (tauE D τ)`.
+
+Establish `e : (GlobalTheory.Doubling.hsum (G.V (.grid ↑i (↑j + 1))) (G.V (.grid (↑i + 1) ↑j))).sig (tauE D τ) = (G.V (.grid ↑i (↑j + 1))).sig (tauE D τ) + (G.V (.grid (↑i + 1) ↑j)).sig (tauE D τ)` using `rfl`. Rewrite `s` using `[e, (nv ↑i (↑j + 1) (by omega) (by omega)).sig, (nv (↑i + 1) ↑j (by omega) (by omega)).sig]`. Simplify using `only [Prod.fst_add, Prod.snd_add] at s`. Establish `e3 : (GlobalTheory.Doubling.hsum (G.V (.grid ↑i (↑j + 1))) (G.V (.grid (↑i + 1) ↑j))).rank - ((D.R.m - (↑j + 1)) / 2 + (D.R.m - ↑j) / 2) = rankV D ↑i (↑j + 1) - (D.R.m - (↑j + 1)) / 2 + (rankV D (↑i + 1) ↑j - (D.R.m - ↑j) / 2)` using `by show (G.V (.grid ↑i (↑j + 1))).rank + (G.V (.grid (↑i + 1) ↑j)).rank - _ = _`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[e3]`. Conclude with `s`. Introduce `τ`. Use `⟨_, _, GlobalTheory.SquareExps.alpha_exp (G := G) hL t ↑i ↑j j.2 τ, GlobalTheory.SquareExps.beta_exp (G := G) hL ↑i ↑j i.2 τ, ?_⟩` and prove the remaining obligations. Establish `key` using `GlobalTheory.T.chiGridVertexRank_add_lt_two_exponent_add_centre sc.cGap τ ↑i ↑j i.2 j.2`.
+
+Rewrite using `[hrank, rW, rW₁]`. Move the coercions through the operations in `at key ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `GlobalTheory.T.squareTriple_finitePlaces_of_orientedRoutes hL W t i j hS M hM e Bs Γ X om om' hX hY`.
+-/
 theorem isTriple_of_standing : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T}, L.Is μ₀ → ∀ (W : G.Weil) (t : T) (i j : Fin D.R.m),
     SquareStanding G t → ∀ M : Vol G, M.Is t →
       GlobalTheory.SquareComm.IsTriple (G.V (.grid (↑i + 1) (↑j + 1))) (G.V (.grid ↑i ↑j)) (GlobalTheory.Doubling.hsum (G.V (.grid ↑i (↑j + 1))) (G.V (.grid (↑i + 1) ↑j))) (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.alpha G t i j) (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.beta G i j) := by

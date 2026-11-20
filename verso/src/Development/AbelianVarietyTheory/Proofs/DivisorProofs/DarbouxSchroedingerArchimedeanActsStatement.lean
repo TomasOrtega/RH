@@ -10,6 +10,9 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ArchSch
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ArchSch.darboux_rho_acts_sch | exact GlobalTheory.ArchSch.darboux_rho_acts_sch | (intros; apply GlobalTheory.ArchSch.darboux_rho_acts_sch <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.darboux_schroedinger_archimedean_acts : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] {V : Type} [AddCommGroup V] [Module (AF F) V]
     {B : V → V → AF F} (d : Darboux B κ) (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ z : V, At (evI F) z →
     ∀ f g : SInf F κ, ⇑g = sch (trP F κ) (arch F (d.e z).1) (arch F (d.e z).2) ⇑f → Acts (evI F) (d.rho ψ z) ⇑f ⇑g := by

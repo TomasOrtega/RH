@@ -8,6 +8,15 @@ noncomputable section
 
 namespace GlobalTheory.SphereMeanNull
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `MvPolynomial.ne_zero_iff.mp hg0`. Take `⟨z, hz1, hz⟩` from `exists_torus_coeff_le g s`. Use `set r : ℝ := (Real.sqrt n)⁻¹ with hrdef`. Establish `hnR : (0 : ℝ) < n` using `by exact_mod_cast hn`. Establish `hr : 0 < r` using `inv_pos.mpr (Real.sqrt_pos.mpr hnR)`.
+
+Establish `hr2 : r ^ 2 * n = 1`. Rewrite using `[hrdef, inv_pow, Real.sq_sqrt hnR.le, inv_mul_cancel₀ hnR.ne']`. Set `u : BlockSphere B n` to `fun b => ⟨WithLp.toLp 2 (fun j => (r : ℂ) * z (b, j)), by`. Rewrite using `[mem_sphere_zero_iff_norm, EuclideanSpace.norm_eq]`. Simplify using `only [norm_mul, Complex.norm_real, Real.norm_of_nonneg hr.le, hz1, mul_one]`.
+
+Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, mul_comm, hr2, Real.sqrt_one]⟩`. Establish `hbp : blockPoint u = fun p => (r : ℂ) * z p` using `rfl`. Establish `heval : eval (blockPoint u) g = (r : ℂ) ^ (∑ b, a b) * eval z g`. Rewrite using `[hbp]`. Conclude with `eval_mul_of_isMultiHomogeneous hg _ z`.
+
+Establish `hne : eval z g ≠ 0` using `norm_pos_iff.mp (lt_of_lt_of_le (norm_pos_iff.mpr hs) hz)`. Conclude with `⟨u, by rw [heval]; exact mul_ne_zero (pow_ne_zero _ (by exact_mod_cast hr.ne')) hne⟩`.
+-/
 theorem exists_blockSphere_eval_ne_zero {B n : ℕ} (hn : 0 < n) {a : Fin B → ℕ}
     {g : MvPolynomial (Fin B × Fin n) ℂ} (hg0 : g ≠ 0) (hg : IsMultiHomogeneous a g) :
     ∃ u : BlockSphere B n, eval (blockPoint u) g ≠ 0 := by
@@ -29,6 +38,9 @@ theorem exists_blockSphere_eval_ne_zero {B n : ℕ} (hn : 0 < n) {a : Fin B → 
   have hne : eval z g ≠ 0 := norm_pos_iff.mp (lt_of_lt_of_le (norm_pos_iff.mpr hs) hz)
   exact ⟨u, by rw [heval]; exact mul_ne_zero (pow_ne_zero _ (by exact_mod_cast hr.ne')) hne⟩
 
+/- English proof (translation)
+Introduce `B n a g hn hg0 hg`. Take `⟨u, hu⟩` from `exists_blockSphere_eval_ne_zero hn hg0 hg`. Conclude with `null_of_logBound hn ReciprocityTheory.MultiplicativeHeights.Closed.sphereLogIntegrable (blockSphere_logMean_bound ReciprocityTheory.MultiplicativeHeights.Closed.sj ReciprocityTheory.MultiplicativeHeights.Closed.sphereLogIntegrable hn B) a g u hg hu`.
+-/
 theorem blockSphereProb_zeroSet_eq_zero : ∀ (B n : ℕ) (a : Fin B → ℕ)
     (g : MvPolynomial (Fin B × Fin n) ℂ), 0 < n → g ≠ 0 → IsMultiHomogeneous a g →
     blockSphereProb B n {z | eval (blockPoint z) g = 0} = 0 := by

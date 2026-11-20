@@ -14,6 +14,9 @@ noncomputable section
 
 namespace GlobalTheory.DefOverIntegral
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `(IsAlgClosed.algebraMap_bijective_of_isIntegral (k := k₀) (K := integralClosure k₀ K)).2 ⟨x, hx⟩`. Establish `h1 : ((algebraMap k₀ (integralClosure k₀ K) a : integralClosure k₀ K) : K) = x` using `congrArg Subtype.val ha`. Establish `h2 : ((algebraMap k₀ (integralClosure k₀ K) a : integralClosure k₀ K) : K) = (a : K)` using `rfl`. Rewrite using `[← h1, h2]`. Conclude with `a.2`.
+-/
 theorem mem_of_isIntegral {K : Type} [Field K] (k₀ : Subfield K) (hk : IsAlgClosed k₀) {x : K}
     (hx : IsIntegral k₀ x) : x ∈ k₀ := by
   obtain ⟨a, ha⟩ := (IsAlgClosed.algebraMap_bijective_of_isIntegral (k := k₀)
@@ -23,6 +26,21 @@ theorem mem_of_isIntegral {K : Type} [Field K] (k₀ : Subfield K) (hk : IsAlgCl
   rw [← h1, h2]
   exact a.2
 
+/- English proof (translation)
+Introduce `X Y f _ K _ k₀ hk P ⟨Q₀, hQ⟩`. Set `g` to `pullback.snd f Q₀`. Set `Pt : Sp K ⟶ pullback f Q₀` to `pullback.lift P (spMap k₀.subtype) hQ.symm`. Use `haveI : IsAffine (pullback f Q₀) := isAffine_of_isAffineHom g`. Establish `hint : (g.app ⊤).hom.IsIntegral` using `g.isIntegral_app ⊤ (isAffineOpen_top _)`.
+
+Set `φc : Γ(pullback f Q₀, ⊤) ⟶ CommRingCat.of K` to `Pt.appTop ≫ (Scheme.ΓSpecIso (CommRingCat.of K)).hom`. Establish `hPt : Pt = Spec.map φc ≫ (pullback f Q₀).isoSpec.inv`. Establish `h` using `Scheme.isoSpec_inv_naturality Pt`. Rewrite `h` using `[Scheme.isoSpec_Spec_inv]`. Rewrite using `[Spec.map_comp, Category.assoc, h, ← Category.assoc, ← Spec.map_comp, Iso.inv_hom_id, Spec.map_id, Category.id_comp]`.
+
+Establish `hg : Pt ≫ g = spMap k₀.subtype` using `pullback.lift_snd _ _ _`. Establish `hcomp : g.appTop ≫ φc = (Scheme.ΓSpecIso (CommRingCat.of k₀)).hom ≫ CommRingCat.ofHom k₀.subtype`. Establish `h` using `congrArg Scheme.Hom.appTop hg`. Rewrite `h` using `[Scheme.Hom.comp_appTop]`. Simplify using `only [φc, ← Category.assoc, h]`.
+
+Conclude with `Scheme.ΓSpecIso_naturality _`. Establish `hmem : ∀ r, φc.hom r ∈ k₀`. Introduce `r`. Take `⟨p, hpm, hp⟩` from `hint r`. Use `mem_of_isIntegral k₀ hk ⟨p.map (Scheme.ΓSpecIso (CommRingCat.of k₀)).hom.hom, hpm.map _, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Polynomial.eval₂_map]`. Establish `e : (algebraMap k₀ K).comp (Scheme.ΓSpecIso (CommRingCat.of k₀)).hom.hom = φc.hom.comp (g.app ⊤).hom`. Use `congrArg CommRingCat.Hom.hom hcomp` as an intermediate fact. Conclude with `this.symm`. Rewrite using `[e]`.
+
+Establish `h3` using `Polynomial.hom_eval₂ p (g.app ⊤).hom φc.hom r`. Rewrite `h3` using `[hp]`. Conclude with `h3.symm.trans (RingHom.map_zero _)`. Set `φ₀ : Γ(pullback f Q₀, ⊤) →+* k₀` to `φc.hom.codRestrict k₀ hmem`. Use `⟨Spec.map (CommRingCat.ofHom φ₀) ≫ (pullback f Q₀).isoSpec.inv ≫ pullback.fst f Q₀, ?_⟩` and prove the remaining obligations.
+
+Establish `e2 : spMap k₀.subtype ≫ Spec.map (CommRingCat.ofHom φ₀) = Spec.map φc`. Rewrite using `[spMap, ← Spec.map_comp]`. Both sides reduce to the same expression. Rewrite using `[← Category.assoc, e2, ← Category.assoc, ← hPt]`. Conclude with `pullback.lift_fst _ _ _`.
+-/
 theorem defOver_of_isIntegralHom : ∀ {X Y : Scheme.{0}} (f : X ⟶ Y) [IsIntegralHom f] {K : Type} [Field K]
     (k₀ : Subfield K), IsAlgClosed k₀ → ∀ P : Sp K ⟶ X, GlobalTheory.UChart.DefOver k₀ (P ≫ f) → GlobalTheory.UChart.DefOver k₀ P := by
   intro X Y f _ K _ k₀ hk P ⟨Q₀, hQ⟩

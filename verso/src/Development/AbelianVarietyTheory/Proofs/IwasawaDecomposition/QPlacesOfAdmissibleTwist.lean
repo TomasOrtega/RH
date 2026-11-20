@@ -13,10 +13,30 @@ open GlobalTheory.TwistChoice (Reading ReadsAt)
 
 namespace GlobalTheory.LevCmp.ParaPlace
 
+/- English proof (translation)
+Introduce `y hy` and use `by rw [HChar.loc_mul, h y hy, h' y hy, one_mul]`.
+-/
 theorem unr_mul {L : Type} [Field L] [NumberField L] {χ χ' : HChar L} {u : HeightOneSpectrum (𝓞 L)}
     (h : χ.UnrAt u) (h' : χ'.UnrAt u) : (χ * χ').UnrAt u := fun y hy => by
   rw [HChar.loc_mul, h y hy, h' y hy, one_mul]
 
+/- English proof (translation)
+Introduce `_ hL`. Use `GlobalTheory.Mem.Top.Bl.StepW.of_all ?_` and prove the remaining obligations. Introduce `K B f T w _ _ _ P x l v i b ψ hA j htw hl hok`. Establish `hQ : QOf P v = T.Q v` using `GlobalTheory.HeightCounting.Up.Model.qOf_eq v`. Establish `h2` using `P.q.mu.tw v`.
+
+Introduce `u hu`. Take `⟨hg, w', hw'u, hun⟩` from `hu`. Establish `hmu : ((cfOf x).mu0 j).UnrAt w'` using `((cfOf x).isMu0 j).unr w' fun k hk => hg ⟨w', hw'u, k, hk⟩`. Establish `hxi : ¬ (T.xiTw f v).UnrAt w'`. Introduce `hx`.
+
+Rewrite `hx` using `[← h2]`. Conclude with `hun (unr_mul hmu hx)`. Unfold `TwDat.xiTw at hxi`. Use `set M := cell (D := Dof x) l.b.Bs.exp b hA j`. Establish `fin : ∀ P' : PlE (Dof x).host, (P' ∈ M.QP ∨ P' ∈ M.DP) → (w' = P' ∨ IsConjPl (Dof x).host w' P') → ∃ P' : PlE (Dof x).host, (P' ∈ M.QP ∨ P' ∈ M.DP) ∧ (M.sp P').v = u`.
+
+Introduce `P' hP' hc`. Use `⟨P', hP', ?_⟩` and prove the remaining obligations. Establish `hw` using `M.sp_w P' (hP'.elim Or.inl (fun h => Or.inr (Or.inl h)))`. Establish `hov : NG.OverPl P' u`. Establish `e` using `(GlobalTheory.PlacePair.comap_eq_iff (Dof x) w' P').2 hc`.
+
+Conclude with `e.symm.trans hw'u`. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Conclude with `(M.sp P').w_under.symm.trans (by rw [hw]; exact hov)`. Distinguish the cases in `hq : w' ∈ T.Q v`. Take `⟨P', hP', hc⟩` from `M.QP_cover w' (hQ ▸ hq)`.
+
+Conclude with `fin P' (Or.inl hP') (hc.imp Eq.symm id)`. Establish `hψ : (T.psi v).UnrAt w'` using `((T.psi_is v).ram w').2 hq`. Establish `hd` using `fun h => hxi (unr_mul h hψ)`. Establish `hp : w' ∈ (Dof x).ntw.pD i`. Rewrite using `[← Finset.mem_coe, (Dof x).ntw.pD_eq i, hl]`.
+
+Express the relevant statement in the definitionally equal form `w' ∈ placesOver B.host.E (if B.places.resChar v = B.host.pde then B.host.pde' else B.host.pde)`. Use `split_ifs at hd ⊢`. Assume the negation of the conclusion as `ho`. Conclude with `hd (f.isDel'.unr w' ho)`. Assume the negation of the conclusion as `ho`.
+
+Conclude with `hd (f.isDel.unr w' ho)`. Take `⟨P', hP', hc⟩` from `M.DP_cover w' hp`. Conclude with `fin P' (Or.inr hP') (hc.imp Eq.symm id)`.
+-/
 theorem main : PrN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AllSt fun _ B _ T w P x => ∀ (l : StrictHenselianAcyclic hL x) (v : B.places.Pl) (i : (Dof x).ntw.Tw) (b : Bool) (ψ : G (Dof x).host.E (Dof x).nd.Om →* ((Dof x).ntw.Ok i (T.k v))ˣ) (hA : NX.AdmTw (Dof x) i (T.k v) (QOf P v) ψ) (j : Fin (Dof x).R.m), TwistedAt (Dof x) v → (Dof x).ntw.l i = B.places.resChar v → IntegralHeckeForms.TwOK i (T.k v) (QOf P v) ψ → ∀ u ∈ qPl (Dof x) (eta (D := Dof x) (cfOf x) w.I.xi v j), ∃ P' : PlE (Dof x).host, (P' ∈ (cell (D := Dof x) l.b.Bs.exp b hA j).QP ∨ P' ∈ (cell (D := Dof x) l.b.Bs.exp b hA j).DP) ∧ ((cell (D := Dof x) l.b.Bs.exp b hA j).sp P').v = u := by
   intro _ hL
   refine GlobalTheory.Mem.Top.Bl.StepW.of_all ?_

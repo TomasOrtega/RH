@@ -26,6 +26,11 @@ namespace GlobalTheory.ResUnr
 
 open Formalism.L2.Host
 
+/- English proof (translation)
+Take `⟨n, d, h | h⟩` from `P.exists_primeCompl_mul_eq_or_mul_eq (K := E) k`. Use `⟨n, d, ?_, d.2, h⟩` and prove the remaining obligations. Rewrite using `[← HeightOneSpectrum.valuation_eq_one_iff_notMem (K := E), ← h, map_mul, hk, one_mul, HeightOneSpectrum.valuation_eq_one_iff_notMem]`. Conclude with `d.2`. Use `⟨d, n, d.2, ?_, h⟩` and prove the remaining obligations.
+
+Establish `h2` using `congrArg (P.valuation E) h`. Rewrite `h2` using `[map_mul, hk, one_mul, (HeightOneSpectrum.valuation_eq_one_iff_notMem (K := E) (r := (d : 𝓞 E)) P).2 d.2]`. Conclude with `(HeightOneSpectrum.valuation_eq_one_iff_notMem (K := E) P).1 h2`.
+-/
 theorem exists_int_div {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) (k : E)
     (hk : P.valuation E k = 1) :
     ∃ a s : 𝓞 E, a ∉ P.asIdeal ∧ s ∉ P.asIdeal ∧ k * algebraMap (𝓞 E) E s = algebraMap (𝓞 E) E a := by
@@ -39,6 +44,17 @@ theorem exists_int_div {E : Type} [Field E] [NumberField E] (P : HeightOneSpectr
     rw [map_mul, hk, one_mul, (HeightOneSpectrum.valuation_eq_one_iff_notMem (K := E) (r := (d : 𝓞 E)) P).2 d.2] at h2
     exact (HeightOneSpectrum.valuation_eq_one_iff_notMem (K := E) P).1 h2
 
+/- English proof (translation)
+Establish `hc : IsClopen {x : (PP.adicCompletion D.host.E)ˣ | IsUnitAt PP x}`. Use `(Valued.isClopen_sphere (PP.adicCompletion D.host.E) (r := 1) one_ne_zero).preimage (Units.continuous_val (M := PP.adicCompletion D.host.E))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Simplify using `[IsUnitAt]`.
+
+Establish `hK : ∀ k : D.host.Eˣ, PP.valuation D.host.E (k : D.host.E) = 1 → H₁.locK PP k = H₂.locK PP k`. Introduce `k hk`. Take `⟨a, s, ha, hs, hks⟩` from `exists_int_div PP (k : D.host.E) hk`. Use `haveI : PP.asIdeal.IsMaximal := PP.isMaximal`. Establish `hne : ∀ b : 𝓞 D.host.E, b ∉ PP.asIdeal → algebraMap (𝓞 D.host.E) D.host.E b ≠ 0` using `fun b hb h0 => hb (by rw [(IsFractionRing.injective (𝓞 D.host.E) D.host.E) (h0.trans (map_zero _).symm)]; exact PP.asIdeal.zero_mem)`.
+
+Establish `hq : ∀ b : 𝓞 D.host.E, b ∉ PP.asIdeal → (Ideal.Quotient.mk PP.asIdeal b : kP PP) ≠ 0` using `fun b hb h0 => hb (Ideal.Quotient.eq_zero_iff_mem.1 h0)`. Set `A : D.host.Eˣ` to `Units.mk0 _ (hne a ha)`. Set `S : D.host.Eˣ` to `Units.mk0 _ (hne s hs)`. Set `ua : (kP PP)ˣ` to `Units.mk0 _ (hq a ha)`. Set `us : (kP PP)ˣ` to `Units.mk0 _ (hq s hs)`.
+
+Establish `hkS : k * S = A` using `Units.ext hks`. Establish `e1 : H₁.locK PP A = H₂.locK PP A` using `((h₁ a A ua rfl rfl).symm.trans (h₂ a A ua rfl rfl))`. Establish `e2 : H₁.locK PP S = H₂.locK PP S` using `((h₁ s S us rfl rfl).symm.trans (h₂ s S us rfl rfl))`. Rewrite `e1` using `[← hkS, map_mul, map_mul, e2]`. Conclude with `mul_right_cancel e1`.
+
+Use `(GlobalTheory.Mem.Chr.Determ.denseRange_atFin PP).induction_on (p := fun x => IsUnitAt PP x → H₁.loc PP x = H₂.loc PP x) x ?_ (fun k hk => hK k ((PP.valuedAdicCompletion_eq_valuation' _).symm.trans hk)) hx` and prove the remaining obligations. Conclude with `isClosed_imp hc.2 (isClosed_eq (H₁.2.1.comp (GlobalTheory.Mem.Chr.Determ.continuous_localIdele PP)) (H₂.2.1.comp (GlobalTheory.Mem.Chr.Determ.continuous_localIdele PP)))`.
+-/
 theorem loc_eq_of_isRes {D : D7} {H₁ H₂ : Formalism.L2.Host.HChar D.host.E} {PP : Pl D.host.E} {ξ : (kP PP)ˣ →* ℂˣ}
     (h₁ : IsRes H₁ PP ξ) (h₂ : IsRes H₂ PP ξ) (x : (PP.adicCompletion D.host.E)ˣ) (hx : IsUnitAt PP x) :
     H₁.loc PP x = H₂.loc PP x := by
@@ -71,6 +87,9 @@ theorem loc_eq_of_isRes {D : D7} {H₁ H₂ : Formalism.L2.Host.HChar D.host.E} 
   exact isClosed_imp hc.2 (isClosed_eq (H₁.2.1.comp (GlobalTheory.Mem.Chr.Determ.continuous_localIdele PP))
     (H₂.2.1.comp (GlobalTheory.Mem.Chr.Determ.continuous_localIdele PP)))
 
+/- English proof (translation)
+Introduce `D c₁ c₂ H₁ H₂ PP ξ hc₁ hc₂ h₁ h₂ x hx`. Establish `e : GlobalTheory.LFun.locChar (c₁ * c₂⁻¹) PP x = GlobalTheory.LFun.locChar c₁ PP x * (GlobalTheory.LFun.locChar c₂ PP x)⁻¹`. Simplify using `only [GlobalTheory.LFun.locChar, MonoidHom.comp_apply, MonoidHom.mul_apply, MonoidHom.inv_apply, map_mul, map_inv]`. Rewrite using `[e, GlobalTheory.LFun.locChar_eq_of_chrEq hc₁, GlobalTheory.LFun.locChar_eq_of_chrEq hc₂, loc_eq_of_isRes h₁ h₂ x hx, mul_inv_cancel]`.
+-/
 theorem unrAt_div_of_isRes : ∀ (D : D7) (c₁ c₂ : (AE D)ˣ →* Circle) (H₁ H₂ : Formalism.L2.Host.HChar D.host.E) (PP : Pl D.host.E) (ξ : (kP PP)ˣ →* ℂˣ), ChrEq c₁ H₁ → ChrEq c₂ H₂ → IsRes H₁ PP ξ → IsRes H₂ PP ξ → GlobalTheory.LFun.UnrAt (F := D.host.F) (c₁ * c₂⁻¹) PP := by
   intro D c₁ c₂ H₁ H₂ PP ξ hc₁ hc₂ h₁ h₂ x hx
   have e : GlobalTheory.LFun.locChar (c₁ * c₂⁻¹) PP x = GlobalTheory.LFun.locChar c₁ PP x * (GlobalTheory.LFun.locChar c₂ PP x)⁻¹ := by

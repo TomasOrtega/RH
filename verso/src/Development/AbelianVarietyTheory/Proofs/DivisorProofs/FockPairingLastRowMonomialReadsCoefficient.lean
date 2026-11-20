@@ -18,26 +18,44 @@ def spl (K : Type) [Field K] (n : ℕ) : BP K n →+* MvPolynomial (Unit × Fin 
       ((rename (fun v : Fin (n + 1) × Fin (n + 1) => (((), v) : Unit × Fin (n + 1) × Fin (n + 1))) :
         _ →ₐ[K] _).toRingHom.comp (incl K n).toRingHom))
 
+/- English proof (translation)
+Unfold `coefOne`. Rewrite using `[GlobalTheory.BranchFormula.coefLast_eq_coeff]`. Simplify using `[spl, coeff_map]`.
+-/
 theorem coefOne_eq (b : Fin n → ℕ) (x : BP K n) :
     coefOne K n b (incl K n x) = coeff (GlobalTheory.BranchFormula.expOf fun _ : Unit => b) (spl K n x) := by
   unfold coefOne
   rw [GlobalTheory.BranchFormula.coefLast_eq_coeff]
   simp [spl, coeff_map]
 
+/- English proof (translation)
+Simplify using `[spl, incl, GlobalTheory.BranchFormula.splitLast]`.
+-/
 theorem spl_C (a : K) : spl K n (C a) = C (C a) := by
   simp [spl, incl, GlobalTheory.BranchFormula.splitLast]
 
+/- English proof (translation)
+Simplify using `[spl, incl, GlobalTheory.BranchFormula.splitLast]`.
+-/
 theorem spl_up (a s : Fin n) : spl K n (X (a.castSucc, s)) = C (X (a, s)) := by
   simp [spl, incl, GlobalTheory.BranchFormula.splitLast]
 
+/- English proof (translation)
+Simplify using `[spl, incl, GlobalTheory.BranchFormula.splitLast]`.
+-/
 theorem spl_last (s : Fin n) : spl K n (X (Fin.last n, s)) = X ((), s) := by
   simp [spl, incl, GlobalTheory.BranchFormula.splitLast]
 
 def lastV (n : ℕ) (p : Unit × Fin n) : Fin (n + 1) × Fin n := (Fin.last n, p.2)
 
+/- English proof (translation)
+Introduce `_ _ h` and use `Prod.ext rfl (Prod.ext_iff.1 h).2`.
+-/
 theorem lastV_inj : Function.Injective (lastV n) := fun _ _ h =>
   Prod.ext rfl (Prod.ext_iff.1 h).2
 
+/- English proof (translation)
+Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p u hp => simp [hp, pderiv_X_of_ne (h u)]`.
+-/
 theorem pderiv_rename_of_ne {σ τ : Type} (e : σ → τ) (v : τ) (h : ∀ u, e u ≠ v) (f : MvPolynomial σ K) :
     pderiv v (rename e f) = 0 := by
   induction f using MvPolynomial.induction_on with
@@ -45,12 +63,35 @@ theorem pderiv_rename_of_ne {σ τ : Type} (e : σ → τ) (v : τ) (h : ∀ u, 
   | add p q hp hq => simp [hp, hq]
   | mul_X p u hp => simp [hp, pderiv_X_of_ne (h u)]
 
+/- English proof (translation)
+The claim follows from `@fockL_C_left K _ starRingOfComm _ a g`.
+-/
 theorem fockB_C_left {σ : Type} (a : K) (g : MvPolynomial σ K) : fockB (C a) g = a * constantCoeff g :=
   @fockL_C_left K _ starRingOfComm _ a g
 
+/- English proof (translation)
+The claim follows from `(Fin.castSucc_injective n).prodMap Function.injective_id`.
+-/
 theorem emb_inj : Function.Injective (fun v : Fin n × Fin n => ((v.1.castSucc, v.2) : Fin (n + 1) × Fin n)) :=
   (Fin.castSucc_injective n).prodMap Function.injective_id
 
+/- English proof (translation)
+Proceed by induction on `x using MvPolynomial.induction_on generalizing β p with`. Consider the case `C a`. Rewrite using `[fockB_C_left, spl_C, coeff_C, map_mul, constantCoeff_rename, constantCoeff_monomial, emb, constantCoeff_rename]`. Distinguish the cases in `h : β = 0`. Substitute `h` using the available equality.
+
+Simplify using `[fockB_C_left]`. Rewrite using `[if_neg h, if_neg (Ne.symm h), ← fockBL_apply]`. Simplify using the standard rewrite rules. Consider the case `add f g hf hg`. Simplify using `only [← fockBL_apply, map_add, LinearMap.add_apply, coeff_add] at *`.
+
+Rewrite using `[hf, hg, mul_add]`. Consider the case `mul_X f v hf`. Take `⟨a, s⟩` from `v`. Rewrite using `[mul_comm f, fockB_X_mul, map_mul (spl K n), Derivation.leibniz, smul_eq_mul, smul_eq_mul]`. Proceed by induction on `a using Fin.lastCases with`.
+
+Consider the case `cast a`. Rewrite using `[pderiv_rename_of_ne (lastV n) (a.castSucc, s) (fun u h => (Fin.castSucc_lt_last a).ne' (Prod.ext_iff.1 h).1), mul_zero, add_zero, spl_up, coeff_C_mul, fockB_X_mul, ← hf]`. Use `congr 2`. Conclude with `pderiv_rename emb_inj (a, s) p`. Consider the case `last`.
+
+Establish `h1 : pderiv (Fin.last n, s) (emb K n p) = 0` using `pderiv_rename_of_ne _ _ (fun u h => (Fin.castSucc_lt_last u.1).ne (congrArg Prod.fst h)) p`. Establish `h2 : pderiv (Fin.last n, s) (rename (lastV n) (monomial β (1 : K))) = (β ((), s) : K) • rename (lastV n) (monomial (β - Finsupp.single ((), s) 1) (1 : K))`. Use `pderiv_rename (R := K) lastV_inj ((), s) (monomial β (1 : K))` as an intermediate fact. Rewrite `this` using `[pderiv_monomial]`. Rewrite using `[← map_smul, smul_monomial, smul_eq_mul, mul_comm]`.
+
+Conclude with `this`. Rewrite using `[h1, mul_zero, zero_add, h2, mul_comm, smul_mul_assoc, ← fockBL_apply, map_smul, fockBL_apply, hf, spl_last, coeff_X_mul', smul_eq_mul]`. Use `split_ifs with h`. Rewrite using `[← mul_assoc, ← Nat.cast_mul]`. Use `congr 2`.
+
+Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ ((), s)), ← Finset.mul_prod_erase _ (fun u => (β u).factorial) (Finset.mem_univ ((), s)), ← mul_assoc]`. Use `congr 1`. Simplify using `using Nat.mul_factorial_pred (Finsupp.mem_support_iff.1 h)`. Use `Finset.prod_congr rfl fun u hu => ?_` and prove the remaining obligations. Simplify using `[Finsupp.single_eq_of_ne (Finset.ne_of_mem_erase hu)]`.
+
+Rewrite using `[Finsupp.notMem_support_iff.1 h, ← fockBL_apply (0 : MvPolynomial (Fin n × Fin n) K)]`. Simplify using the standard rewrite rules.
+-/
 theorem key (x : BP K n) (β : Unit × Fin n →₀ ℕ) (p : MvPolynomial (Fin n × Fin n) K) :
     fockB x (rename (lastV n) (monomial β (1 : K)) * emb K n p) =
       ((∏ u, (β u).factorial : ℕ) : K) * fockB (coeff β (spl K n x)) p := by
@@ -96,22 +137,36 @@ theorem key (x : BP K n) (β : Unit × Fin n →₀ ℕ) (p : MvPolynomial (Fin 
       · rw [Finsupp.notMem_support_iff.1 h, ← fockBL_apply (0 : MvPolynomial (Fin n × Fin n) K)]
         simp
 
+/- English proof (translation)
+Rewrite using `[monomial_eq, C_1, one_mul, Finsupp.prod_fintype _ _ (by simp), map_prod, Fintype.prod_prod_type]`. Simplify using `[zmon, lastV]`.
+-/
 theorem zmon_eq (b : Fin n → ℕ) :
     zmon K n b = rename (lastV n) (monomial (GlobalTheory.BranchFormula.expOf fun _ : Unit => b) (1 : K)) := by
   rw [monomial_eq, C_1, one_mul, Finsupp.prod_fintype _ _ (by simp), map_prod, Fintype.prod_prod_type]
   simp [zmon, lastV]
 
+/- English proof (translation)
+Rewrite using `[monomial_eq, C_1, one_mul, Finsupp.prod_fintype _ _ (by simp), Fintype.prod_prod_type]`. Simplify using `[zmon, spl_last]`.
+-/
 theorem spl_zmon (b : Fin n → ℕ) :
     spl K n (zmon K n b) = monomial (GlobalTheory.BranchFormula.expOf fun _ : Unit => b) 1 := by
   rw [monomial_eq, C_1, one_mul, Finsupp.prod_fintype _ _ (by simp), Fintype.prod_prod_type]
   simp [zmon, spl_last]
 
+/- English proof (translation)
+Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C a => rw [emb, rename_C, spl_C]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp => rw [map_mul, map_mul, hp, bmF_emb_X, spl_up, map_mul]`.
+-/
 theorem spl_emb (q : MvPolynomial (Fin n × Fin n) K) : spl K n (emb K n q) = C q := by
   induction q using MvPolynomial.induction_on with
   | C a => rw [emb, rename_C, spl_C]
   | add p q hp hq => simp only [map_add, hp, hq]
   | mul_X p v hp => rw [map_mul, map_mul, hp, bmF_emb_X, spl_up, map_mul]
 
+/- English proof (translation)
+Introduce `K _ n b`. Establish `h1 : ∀ (x : BP K n) (p : MvPolynomial (Fin n × Fin n) K), fockB x (zmon K n b * emb K n p) = (bfact b : K) * fockB (coefOne K n b (incl K n x)) p`. Introduce `x p`. Rewrite using `[zmon_eq, key, coefOne_eq, Fintype.prod_prod_type]`. Simplify using `[bfact]`.
+
+Use `⟨h1, fun p q => ?_⟩` and prove the remaining obligations. Rewrite using `[h1, coefOne_eq, map_mul, spl_zmon, spl_emb, mul_comm (monomial _ _), coeff_C_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem fockB_zmon_emb : ∀ (K : Type) [Field K] (n : ℕ) (b : Fin n → ℕ), (∀ (x : BP K n) (p : MvPolynomial (Fin n × Fin n) K), fockB x (zmon K n b * emb K n p) = (bfact b : K) * fockB (coefOne K n b (incl K n x)) p) ∧ ∀ p q : MvPolynomial (Fin n × Fin n) K, fockB (zmon K n b * emb K n q) (zmon K n b * emb K n p) = (bfact b : K) * fockB q p := by
   intro K _ n b
   have h1 : ∀ (x : BP K n) (p : MvPolynomial (Fin n × Fin n) K), fockB x (zmon K n b * emb K n p) =

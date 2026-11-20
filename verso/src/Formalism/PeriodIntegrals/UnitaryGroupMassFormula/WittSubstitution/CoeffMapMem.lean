@@ -6,6 +6,9 @@ noncomputable section
 
 namespace PI.WfSubstProof
 
+/- English proof (translation)
+Set `g : MvPowerSeries σ S` to `fun e => ⟨MvPowerSeries.coeff e f, h e⟩`. Use `⟨g, ?_⟩` and prove the remaining obligations. Use extensionality with `e`. Rewrite using `[MvPowerSeries.coeff_map]`. Both sides reduce to the same expression.
+-/
 theorem exists_lift {A : Type} [CommRing A] (S : Subring A) {σ : Type} (f : MvPowerSeries σ A)
     (h : ∀ e, MvPowerSeries.coeff e f ∈ S) :
     ∃ g : MvPowerSeries σ S, MvPowerSeries.map S.subtype g = f := by
@@ -15,11 +18,23 @@ theorem exists_lift {A : Type} [CommRing A] (S : Subring A) {σ : Type} (f : MvP
   rw [MvPowerSeries.coeff_map]
   rfl
 
+/- English proof (translation)
+Rewrite using `[MvPowerSeries.coeff_map]`. Conclude with `(MvPowerSeries.coeff e g).2`.
+-/
 theorem coeff_map_mem {A : Type} [CommRing A] (S : Subring A) {σ : Type} (g : MvPowerSeries σ S)
     (e : σ →₀ ℕ) : MvPowerSeries.coeff e (MvPowerSeries.map S.subtype g) ∈ S := by
   rw [MvPowerSeries.coeff_map]
   exact (MvPowerSeries.coeff e g).2
 
+/- English proof (translation)
+Introduce `A _ S σ f a hf ha ha0 n`. Establish `hf' : ∀ e : Unit →₀ ℕ, MvPowerSeries.coeff e f ∈ S` using `fun e => by`. Establish `he : e = Finsupp.single () (e ())`. Use `ext`. Simplify using the standard rewrite rules.
+
+Rewrite using `[he]`. Conclude with `hf (e ())`. Take `⟨fS, rfl⟩` from `exists_lift S f hf'`. Take `⟨aS, rfl⟩` from `exists_lift S a ha`. Establish `haS0 : MvPowerSeries.constantCoeff aS = 0`.
+
+Establish `h0` using `ha0`. Rewrite `h0` using `[MvPowerSeries.constantCoeff_map]`. Conclude with `Subtype.val_injective h0`. Establish `hsub : PowerSeries.HasSubst aS` using `PowerSeries.HasSubst.of_constantCoeff_zero haS0`. Establish `key : PowerSeries.subst (MvPowerSeries.map S.subtype aS) (MvPowerSeries.map S.subtype fS : PowerSeries A) = MvPowerSeries.map S.subtype (PowerSeries.subst aS fS)` using `(PowerSeries.map_subst hsub fS).symm`.
+
+Rewrite using `[key]`. Conclude with `coeff_map_mem S _ n`.
+-/
 theorem substSub : PI.SubstSub := by
   intro A _ S σ f a hf ha ha0 n
   have hf' : ∀ e : Unit →₀ ℕ, MvPowerSeries.coeff e f ∈ S := fun e => by
@@ -41,6 +56,9 @@ theorem substSub : PI.SubstSub := by
   rw [key]
   exact coeff_map_mem S _ n
 
+/- English proof (translation)
+Introduce `p _ σ f a hf ha ha0 n`. Establish `h` using `substSub ℂ_[p] (ExpIntWProof.Wf p) σ f a (fun m => ExpIntWProof.mem_Wf.2 (hf _)) (fun m => ExpIntWProof.mem_Wf.2 (ha m)) ha0`. Conclude with `ExpIntWProof.mem_Wf.1 (h n)`.
+-/
 theorem wfSubst : PI.WfSubst := by
   intro p _ σ f a hf ha ha0 n
   have h := substSub ℂ_[p] (ExpIntWProof.Wf p) σ f a (fun m => ExpIntWProof.mem_Wf.2 (hf _))

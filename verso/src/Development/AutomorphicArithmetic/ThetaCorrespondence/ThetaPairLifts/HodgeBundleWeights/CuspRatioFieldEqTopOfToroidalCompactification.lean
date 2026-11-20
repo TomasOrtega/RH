@@ -25,6 +25,39 @@ open GlobalTheory.Vanishing.H0
 open GlobalTheory.CompHt (genVal genPoint)
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
+/- English proof (translation)
+Use `set L := GlobalTheory.DegVal.ratioField (genPoint Z (cuspOn U Z (wtOf Dw la 0))) with hL`. Use `haveI := c.fin`. Use `haveI : Countable c.F := (Module.finBasis ℚ c.F).equivFun.injective.countable`. Use `haveI : Countable (Om Z) := TwoPoint.countable_of_fg c.F (Om Z) ((FlagDim.fnFG_fnTrdeg E H Dw l Xo c).1 Z)`. Use `eq_top_iff.2 fun a _ => by_contra fun ha => ?_` and prove the remaining obligations.
+
+Use `haveI : CharZero L := charZero_of_injective_algebraMap (algebraMap c.F L).injective`. Take `⟨i₁, i₂, hi, hne⟩` from `TwoPoint.exists_two_embeddings L (Om Z) a (by rintro ⟨b, rfl⟩; exact ha b.2)`. Establish `hag : ∀ b ∈ L, i₁ b = i₂ b` using `fun b hb => RingHom.congr_fun hi ⟨b, hb⟩`. Establish `hV` using `GlobalTheory.VarFlag.isVariety₀_flag E H Dw l Xo c TF Z hF`. Set `M : Modif (str₀ TF.X Z) (U₀ TF.X Z) (dimFlag Dw)` to `Modif.refl hV.1 hV.2.1 (dense_U₀ TF.X Z)`.
+
+Use `haveI : IsAffineHom M.σ := inferInstanceAs (IsAffineHom (𝟙 (Y₀ TF.X Z)))`. Establish `hconn : GeometricallyConnected M.str`. Establish `e : M.str = str₀ TF.X Z` using `Category.id_comp (str₀ TF.X Z)`. Rewrite using `[e]`. Conclude with `hV.2.2`.
+
+Take `⟨ω⟩` from `GlobalTheory.CompHS.canId_nonempty hP.p5 E H Dw l Xo c TF.Y TF.X Z M (fun K _ _ y => _root_.GlobalTheory.FlagTan.kodaira_spencer_iso_flag_tangent_psi_set hP hG E H Dw l Xo c K y hpq)`. Take `⟨F, hFg⟩` from `_root_.GlobalTheory.T.cusp_germ_transfer_of_boundary hP hG E H Dw l Xo c TF Z r U hF M ω (la - FlagTan.kap Dw) la (by abel) hv`. Establish `h : GenFrEx Xo c` using `(Reg.genFrEx_and_genFromTest E H Dw l Xo c).1`. Take `⟨z, hz, hO⟩` from `exists_lift_genFr M h`. Establish `hzo : ptOf z ∈ M.off` using `(le_iff_ptOf_mem _ _).1 hO`.
+
+Establish `hη : M.σ (ptOf z) ∈ U₀ TF.X Z` using `M.off_eq.le hzo`. Establish `hU : ⊤ ≤ (z ≫ M.σ) ⁻¹ᵁ U₀ TF.X Z` using `(le_iff_ptOf_mem _ _).2 hη`. Establish `hB` using `LB.isLB_pull (isLB_L₀ TF.X Z (la - FlagTan.kap Dw)) M.σ`. Take `⟨j, hj⟩` from `exists_chart (isLB_tens M.K.isLB hB) (ptOf z)`. Establish `hj'` using `(le_iff_ptOf_mem z _).2 hj`.
+
+Take `⟨i, hi₀⟩` from `exists_chart (isLB_L₀ TF.X Z la) (M.σ (ptOf z))`. Establish `hi' : ⊤ ≤ (z ≫ M.σ) ⁻¹ᵁ (L₀ TF.X Z la).U i` using `(le_iff_ptOf_mem _ _).2 hi₀`. Take `⟨u, hu⟩` from `hFg (ptOf z) hzo j hj i hi₀`. Take `⟨T, hT, hTv⟩` from `exists_val_cuspSec TF.X Z U la h (z ≫ M.σ) (by rw [Category.assoc]; exact hz) hU i hi'`. Choose the witnesses or unpack the hypotheses as in `⟨T', hT', hval⟩ : ∃ T' : Om Z, T' ≠ 0 ∧ ∀ g, H0.val z j le_top hj' g = T' * genVal Z (F g).1 := by`.
+
+Use `⟨(Scheme.stalkClosedPointTo (R := CommRingCat.of (Om Z)) z).hom u.val * T, mul_ne_zero (u.isUnit.map _).ne_zero hT, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[val_eq_stalk z j le_top hj' (memTop _) hj, hu, mul_assoc, ← hTv, val_eq_stalk (z ≫ M.σ) i hU hi' hη hi₀, Scheme.stalkClosedPointTo_comp]`. Conclude with `map_mul (Scheme.stalkClosedPointTo (R := CommRingCat.of (Om Z)) z).hom _ _`. Set `σ : c.F →+* ℂ` to `i₁.comp (algebraMap c.F (Om Z))`. Establish `hσ : i₂.comp (algebraMap c.F (Om Z)) = σ` using `RingHom.ext fun k => (hag _ (L.algebraMap_mem k)).symm`.
+
+Set `ι : Fin 2 → (Om Z →+* ℂ)` to `![i₁, i₂]`. Establish `hι : ∀ n, (ι n).comp (algebraMap c.F (Om Z)) = σ` using `Fin.forall_fin_two.2 ⟨rfl, hσ⟩`. Establish `hstr : z ≫ M.str = spMap (algebraMap c.F (Om Z))` using `by show z ≫ (toFlag M ≫ flagStr TF.X) = _`. Rewrite using `[← Category.assoc, hz, ptY_str]`. Establish `hzz : spMap (ι 0) ≫ z ≠ spMap (ι 1) ≫ z` using `fun e => by`.
+
+Use `letI : Algebra c.F ℂ := σ.toAlgebra`. Use `eq_of_ptY_eq TF.X h Z (K := ℂ) ⟨i₁, RingHom.congr_fun (hι 0)⟩ ⟨i₂, RingHom.congr_fun (hι 1)⟩ (by` as an intermediate fact. Rewrite using `[← hz, ← Category.assoc, ← Category.assoc]`. Conclude with `congrArg (· ≫ toFlag M) e)`. Conclude with `hne (congrArg AlgHom.toRingHom this)`.
+
+Use `set std : AllWt.Weight Dw := GlobalTheory.CompHt.stdWt (Psi H) (Dw.p + Dw.q)`. Use `set m : ℕ := (dimFlag Dw + 2).choose 2`. Establish `hstd : GapGe 1 std` using `gapGe_std Dw`. Establish `nef : ∀ w : AllWt.Weight Dw, GapGe 0 w → letI` using `algebraΓOfHom M.str`. Use `IsNef c.F ((L₀ TF.X Z w).pull M.σ) := fun w hw => TwoPoint.nef_pull hN _ M.str M.σ hV.2.1 M.proj _ (_root_.GlobalTheory.NefWt.weight_line_bundle_isNef hP hN hLie E H Dw l Xo c TF Z hF w hw)`.
+
+Take `⟨mu, hmu0, m', hm', hA⟩` from `_root_.GlobalTheory.HSApp.hodge_bundle_ample_at_regular_point hP hN hSi hCh E H Dw l Xo c TF Z hF std hstd _ hη`. Establish `C` using `(common₀ TF.X Z).pull M.σ`. Establish `e₁` using `cls_common_add C (m' • std - mu) mu`. Rewrite `e₁` using `[sub_add_cancel]`. Use `replace e₁ := (cls_nsmul C m' std).symm.trans e₁`.
+
+Establish `e₂` using `cls_common_add C (m • std) (la - FlagTan.kap Dw - m • std)`. Rewrite `e₂` using `[add_sub_cancel]`. Use `replace e₂ := e₂.trans (congrArg (· + _) (cls_nsmul C m std))`. Establish `hk : ∀ n, ⊤ ≤ (spMap (ι n) ≫ z) ⁻¹ᵁ (tens M.K.bundle ((L₀ TF.X Z (la - FlagTan.kap Dw)).pull M.σ)).U j` using `fun n => (le_iff_ptOf_mem _ _).2 (by rw [ptOf_spMap_comp]; exact hj)`. Establish `main` using `fun (a : Fin 2 → ℂ) (ha : ∀ n, a n ≠ 0) => TwoPoint.separate_two (TwoPoint.separatesOnSmooth_of_pair hS) hN c.F σ M.X M.str (dimFlag Dw) M.proj hconn hD M.K _ _ _ _ _ _ _ _ _ _ m' m (nef std (hstd.mono zero_le_one)) (nef _ (gapGe_sub_std m _ hg)) (nef mu hmu0) le_rfl hm' e₁ e₂ (f …`.
+
+Establish `e : (spMap (ι n) ≫ z) s = ptOf z` using `congrArg z (Subsingleton.elim (α := PrimeSpectrum (Om Z)) _ _)`. Rewrite using `[e]`. Conclude with `AmplePull.ampleAt_pull _ _ M.σ _ (isLB_L₀ TF.X Z _) _ hA)`. Use the proof step `(fun _ => j) hk a ha`. Establish `hvι : ∀ n g, H0.val (spMap (ι n) ≫ z) j le_top (hk n) g = ι n (T' * genVal Z (F g).1)` using `fun n g => by`.
+
+Rewrite using `[← hval]`. Conclude with `GlobalTheory.CuspOnTor.val_spMap (ι n) z j le_top hj' le_top (hk n) g`. Distinguish the cases in `h0 : ∃ g₀, genVal Z (F g₀).1 ≠ 0`. Take `⟨g₀, hg₀⟩` from `h0`. Establish `hn : ∀ n, ι n (T' * genVal Z (F g₀).1) ≠ 0` using `fun n => (map_ne_zero _).2 (mul_ne_zero hT' hg₀)`.
+
+Use `main ![(i₁ (T' * genVal Z (F g₀).1))⁻¹, -(i₂ (T' * genVal Z (F g₀).1))⁻¹] (Fin.forall_fin_two.2 ⟨inv_ne_zero (hn 0), neg_ne_zero.2 (inv_ne_zero (hn 1))⟩) fun g => ?_` and prove the remaining obligations. Establish `e` using `hag (genVal Z (F g).1 / genVal Z (F g₀).1) (IntermediateField.subset_adjoin _ _ ⟨F g, F g₀, rfl⟩)`. Rewrite `e` using `[← mul_div_mul_left _ _ hT', map_div₀, map_div₀]`. Rewrite using `[Fin.sum_univ_two, hvι, hvι]`. Use `show (i₁ _)⁻¹ * i₁ _ + -(i₂ _)⁻¹ * i₂ _ = 0`.
+
+Rewrite using `[neg_mul, ← div_eq_inv_mul, ← div_eq_inv_mul, e, add_neg_cancel]`. Use `push_neg at h0`. Use `main (fun _ => 1) (fun _ => one_ne_zero) fun g => ?_` and prove the remaining obligations. Simplify using `[hvι, h0]`.
+-/
 theorem cuspRatioField_eq_top_of_toroidalCompactification (hP : _root_.GlobalTheory.CovTop.Hypotheses'') (hG : GlobalTheory.Published.GrothendieckDeformation) (hN : GlobalTheory.Published.NefNumerics)
     (hSi : GlobalTheory.Published.SiegelToroidalIntegral) (hCh : GlobalTheory.Published.ToroidalChartsForFan)
     (hLie : GlobalTheory.Published.SemiAbelianLieSeminegative) (hS : GlobalTheory.Published.PointSeparationPair) (TF : TorFlag Xo c)
@@ -127,6 +160,13 @@ end Geometry
 open NumberField GlobalTheory.AllWt GlobalTheory.CompHt GlobalTheory.DegCmp GlobalTheory.DegVal GlobalTheory.CovTop ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.L2.Pj Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta
 open scoped ENNReal NNReal
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `hX hG hQ hSi hP _ _ D T _ j hp hq Y e o hY u hu Z`. Establish `hf : 2 < Module.finrank ℚ D.host.E / 2`. Use `D.eight_le_f` as an intermediate fact. Rewrite using `[D.host.finrank_E']`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hD : 1 ≤ FlagTan.dimFlag (T.Q.Dw j)` using `Nat.mul_pos (by omega) (Nat.choose_pos (by omega))`. Take `⟨TF⟩` from `_root_.GlobalTheory.CompHS.TorFlagEx.nonempty_torFlag_alt hP _ _ _ _ Y.d.Xo₂ Y.d.c₂ hD`. Establish `htop` using `_root_.GlobalTheory.SepCusp.cuspRatioField_eq_top_of_toroidalCompactification hP hG hQ.nef hSi hX.ks.toroidalChartsForFan hX.lie hX.sep TF Z Y.U hY.geo hD (by omega) u (gapGe_sub_kap u hu) (GlobalTheory.HSApp.vanBd_le_space D T.toCore j Y e o hY hf Z TF u)`. Use `Y.d.c₂.fin` as an intermediate fact. Establish `: Countable Y.d.c₂.F` using `(Module.finBasis ℚ Y.d.c₂.F).equivFun.injective.countable`.
+
+Conclude with `exists_fg_complexPoint _ _ ((FlagDim.fnFG_fnTrdeg _ _ _ _ Y.d.Xo₂ Y.d.c₂).1 Z) _ htop`.
+-/
 theorem cusp_values_separate_general_points : GlobalTheory.CovTop.HypothesesX → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SiegelToroidalIntegral → _root_.GlobalTheory.CovTop.Hypotheses'' → GlobalTheory.Published.NadelVanishingAndNonKltDivisor → GlobalTheory.Published.Principalisation → ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j : ℕ, 1 ≤ (T.Q.Dw j).p → 1 ≤ (T.Q.Dw j).q → ∀ (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), Y.Good e o → ∀ (u : GlobalTheory.AllWt.Weight (T.Q.Dw j)), (∀ τ (a b : Fin ((T.Q.Dw j).p + (T.Q.Dw j).q)), (b : ℕ) = a + 1 → (((dimFlag (T.Q.Dw j) + 3) ^ 2 + 2 * ((T.Q.Dw j).p + (T.Q.Dw j).q) : ℕ) : ℤ) ≤ u τ a - u τ b) → ∀ Z : Comp Y.d.Xo₂ Y.d.c₂, ∃ (σ : Y.d.c₂.F →+* ℂ) (A B : Subalgebra Y.d.c₂.F (Om Z)), A.FG ∧ B.FG ∧ B ≤ A ∧ (∀ b ∈ B, b ∈ ratioField (genPoint Z (cuspOn Y.U Z (wtOf (T.Q.Dw j) u 0)))) ∧ IntermediateField.adjoin Y.d.c₂.F (A : Set (Om Z)) = ⊤ ∧ (∀ b ∈ B, b ≠ 0 → ∃ x : A →+* ℂ, (∀ k : Y.d.c₂.F, x (algebraMap Y.d.c₂.F A k) = σ k) ∧ (∀ hb : b ∈ A, x ⟨b, hb⟩ ≠ 0) ∧ ∀ y : A →+* ℂ, (∀ k : Y.d.c₂.F, y (algebraMap Y.d.c₂.F A k) = σ k) → (∀ a : A, (a : Om Z) ∈ B → y a = x a) → y = x) := by
   intro hX hG hQ hSi hP _ _ D T _ j hp hq Y e o hY u hu Z
   have hf : 2 < Module.finrank ℚ D.host.E / 2 := by
@@ -148,6 +188,9 @@ section
 open NumberField GlobalTheory.AllWt GlobalTheory.CompHt GlobalTheory.DegCmp GlobalTheory.DegVal GlobalTheory.CovTop ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.L2.Pj Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta
 open scoped ENNReal NNReal
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.SepCusp.cusp_values_separate_general_points | exact _root_.GlobalTheory.SepCusp.cusp_values_separate_general_points | (intros; apply _root_.GlobalTheory.SepCusp.cusp_values_separate_general_points <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.cusp_values_separate_generic_points : GlobalTheory.CovTop.HypothesesX → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SiegelToroidalIntegral → _root_.GlobalTheory.CovTop.Hypotheses'' → GlobalTheory.Published.NadelVanishingAndNonKltDivisor → GlobalTheory.Published.Principalisation → ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j : ℕ, 1 ≤ (T.Q.Dw j).p → 1 ≤ (T.Q.Dw j).q → ∀ (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), Y.Good e o → ∀ (u : GlobalTheory.AllWt.Weight (T.Q.Dw j)), (∀ τ (a b : Fin ((T.Q.Dw j).p + (T.Q.Dw j).q)), (b : ℕ) = a + 1 → (((dimFlag (T.Q.Dw j) + 3) ^ 2 + 2 * ((T.Q.Dw j).p + (T.Q.Dw j).q) : ℕ) : ℤ) ≤ u τ a - u τ b) → ∀ Z : Comp Y.d.Xo₂ Y.d.c₂, ∃ (σ : Y.d.c₂.F →+* ℂ) (A B : Subalgebra Y.d.c₂.F (Om Z)), A.FG ∧ B.FG ∧ B ≤ A ∧ (∀ b ∈ B, b ∈ ratioField (genPoint Z (cuspOn Y.U Z (wtOf (T.Q.Dw j) u 0)))) ∧ IntermediateField.adjoin Y.d.c₂.F (A : Set (Om Z)) = ⊤ ∧ (∀ b ∈ B, b ≠ 0 → ∃ x : A →+* ℂ, (∀ k : Y.d.c₂.F, x (algebraMap Y.d.c₂.F A k) = σ k) ∧ (∀ hb : b ∈ A, x ⟨b, hb⟩ ≠ 0) ∧ ∀ y : A →+* ℂ, (∀ k : Y.d.c₂.F, y (algebraMap Y.d.c₂.F A k) = σ k) → (∀ a : A, (a : Om Z) ∈ B → y a = x a) → y = x) := by
   first | exact @_root_.GlobalTheory.SepCusp.cusp_values_separate_general_points | exact _root_.GlobalTheory.SepCusp.cusp_values_separate_general_points | (intros; apply _root_.GlobalTheory.SepCusp.cusp_values_separate_general_points <;> assumption)
 end

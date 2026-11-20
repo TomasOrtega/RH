@@ -9,6 +9,15 @@ open NumberField Matrix
 open scoped TensorProduct
 open Formalism.MainNotions.S (AutInst)
 
+/- English proof (translation)
+Establish `H : ∃ y : ℤ, y ≠ 0 ∧ IsIntegral ℤ ((y : E) * x)`. Establish `hq : IsIntegral ℚ x` using `Algebra.IsIntegral.isIntegral x`. Use `first`. Consider the case `(obtain ⟨m, hm⟩ := IsIntegral.exists_multiple_integral_of_isLocalization (nonZeroDivisors ℤ) x hq`. Conclude with `⟨m, nonZeroDivisors.coe_ne_zero m, by rw [← zsmul_eq_mul]; exact hm⟩)`.
+
+Consider the case `(obtain ⟨m, hm⟩ := IsIntegral.exists_multiple_integral_of_isLocalization (Rₘ := ℚ) (nonZeroDivisors ℤ) x hq`. Conclude with `⟨m, nonZeroDivisors.coe_ne_zero m, by rw [← zsmul_eq_mul]; exact hm⟩)`. Consider the case `(obtain ⟨y, hy, h⟩ := ((IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 hq.isAlgebraic).exists_integral_multiple`. Conclude with `⟨y, hy, by rw [← zsmul_eq_mul]; exact h⟩)`. Take `⟨y, hy0, hint⟩` from `H`.
+
+Establish `hmem : (y : E) * x ∈ Formalism.UG.intOE E` using `RingHom.mem_range.2 ((IsIntegralClosure.isIntegral_iff (A := 𝓞 E)).1 hint)`. Take `⟨n, rfl | rfl⟩` from `Int.eq_nat_or_neg y`. Use `⟨n, Nat.one_le_iff_ne_zero.2 (by rintro rfl; simp at hy0), ?_⟩` and prove the remaining obligations. Simplify using `using hmem`. Use `⟨n, Nat.one_le_iff_ne_zero.2 (by rintro rfl; simp at hy0), ?_⟩` and prove the remaining obligations.
+
+Simplify using `using hmem`.
+-/
 private theorem exists_nat_mul_lemma {E : Type} [Field E] [NumberField E] (x : E) :
     ∃ d : ℕ, 1 ≤ d ∧ (d : E) * x ∈ Formalism.UG.intOE E := by
   have H : ∃ y : ℤ, y ≠ 0 ∧ IsIntegral ℤ ((y : E) * x) := by
@@ -29,6 +38,11 @@ private theorem exists_nat_mul_lemma {E : Type} [Field E] [NumberField E] (x : E
   · refine ⟨n, Nat.one_le_iff_ne_zero.2 (by rintro rfl; simp at hy0), ?_⟩
     simpa using hmem
 
+/- English proof (translation)
+Use `Finset.induction_on s ⟨1, le_rfl, by simp⟩ ?_` and prove the remaining obligations. Introduce `a s _ ih`. Take `⟨d, hd, hds⟩` from `ih`. Take `⟨e, he, hea⟩` from `exists_nat_mul_lemma a`. Use `⟨d * e, Nat.mul_pos hd he, fun x hx => ?_⟩` and prove the remaining obligations.
+
+Break down `Finset.mem_insert.1 hx with rfl | hx` into its components or cases. Rewrite using `[Nat.cast_mul, mul_assoc]`. Conclude with `mul_mem (natCast_mem _ d) hea`. Rewrite using `[Nat.cast_mul, mul_comm (d : E), mul_assoc]`. Conclude with `mul_mem (natCast_mem _ e) (hds x hx)`.
+-/
 theorem exists_nat_den {E : Type} [Field E] [NumberField E] (s : Finset E) :
     ∃ d : ℕ, 1 ≤ d ∧ ∀ x ∈ s, (d : E) * x ∈ Formalism.UG.intOE E := by
   classical
@@ -43,12 +57,26 @@ theorem exists_nat_den {E : Type} [Field E] [NumberField E] (s : Finset E) :
   · rw [Nat.cast_mul, mul_comm (d : E), mul_assoc]
     exact mul_mem (natCast_mem _ e) (hds x hx)
 
+/- English proof (translation)
+Use `first`. Consider the case `exact RingHom.mem_range_self _ a`. Consider the case `exact ⟨a, rfl⟩`.
+-/
 theorem algebraMap_mem_intOE {E : Type} [Field E] [NumberField E] (a : 𝓞 E) :
     algebraMap (𝓞 E) E a ∈ Formalism.UG.intOE E := by
   first
   | exact RingHom.mem_range_self _ a
   | exact ⟨a, rfl⟩
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `hL`. Take `⟨d, hd, hds⟩` from `exists_nat_den (S.biUnion fun v => Finset.univ.image v)`. Use `⟨d, hd, fun x hx i => ?_⟩` and prove the remaining obligations. Set `K : Submodule (𝓞 E) (Fin n → E)` to `{ carrier := {x | ∀ i, (d : E) * x i ∈ Formalism.UG.intOE E} add_mem' := by`. Introduce `a b ha hb i`.
+
+Rewrite using `[Pi.add_apply, mul_add]`. Conclude with `add_mem (ha i) (hb i)`. Use the proof step `zero_mem' := by`. Introduce `i`. Rewrite using `[Pi.zero_apply, mul_zero]`.
+
+Conclude with `zero_mem _`. Use the proof step `smul_mem' := by`. Introduce `r a ha i`. Rewrite using `[Pi.smul_apply, Algebra.smul_def, mul_left_comm]`. Conclude with `mul_mem (algebraMap_mem_intOE r) (ha i) }`.
+
+Establish `hSK : Submodule.span (𝓞 E) (S : Set (Fin n → E)) ≤ K`. Rewrite using `[Submodule.span_le]`. Introduce `v hv`. Use `show ∀ j, (d : E) * v j ∈ Formalism.UG.intOE E`. Introduce `j`.
+
+Conclude with `hds _ (Finset.mem_biUnion.2 ⟨v, Finset.mem_coe.1 hv, Finset.mem_image.2 ⟨j, Finset.mem_univ _, rfl⟩⟩)`. Rewrite `hx` using `[← hS]`. Conclude with `(show ∀ i, (d : E) * x i ∈ Formalism.UG.intOE E from hSK hx) i`.
+-/
 theorem exists_den_lat {E : Type} [Field E] [NumberField E] {n : ℕ}
     (L : Submodule (𝓞 E) (Fin n → E)) (hL : L.FG) :
     ∃ d : ℕ, 1 ≤ d ∧ ∀ x ∈ L, ∀ i, (d : E) * x i ∈ Formalism.UG.intOE E := by
@@ -80,6 +108,21 @@ theorem exists_den_lat {E : Type} [Field E] [NumberField E] {n : ℕ}
   rw [← hS] at hx
   exact (show ∀ i, (d : E) * x i ∈ Formalism.UG.intOE E from hSK hx) i
 
+/- English proof (translation)
+Establish `hnat : ∀ (d : ℕ) (v : Fin n → E), v ∈ L → (d : E) • v ∈ L` using `fun d v hv => by`. Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem hv d`. Set `K : Submodule E (Fin n → E)` to `{ carrier := {x | ∃ d : ℕ, 1 ≤ d ∧ (d : E) • x ∈ L} add_mem' := by`. Introduce and unpack `a b ⟨d1, h1, ha⟩ ⟨d2, h2, hb⟩`.
+
+Use `⟨d1 * d2, Nat.mul_pos h1 h2, ?_⟩` and prove the remaining obligations. Establish `e : ((d1 * d2 : ℕ) : E) • (a + b) = (d2 : E) • ((d1 : E) • a) + (d1 : E) • ((d2 : E) • b)`. Rewrite using `[smul_add, smul_smul, smul_smul, Nat.cast_mul, mul_comm (d2 : E) (d1 : E)]`. Rewrite using `[e]`. Conclude with `add_mem (hnat d2 _ ha) (hnat d1 _ hb)`.
+
+Use the proof step `zero_mem' := ⟨1, le_rfl, by rw [smul_zero]; exact L.zero_mem⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `r x ⟨d, hd, hx⟩`. Take `⟨d', hd', hr⟩` from `exists_nat_den ({r} : Finset E)`. Take `⟨s, hs⟩` from `RingHom.mem_range.1 (hr r (Finset.mem_singleton_self r))`.
+
+Use `⟨d' * d, Nat.mul_pos hd' hd, ?_⟩` and prove the remaining obligations. Establish `e : ((d' * d : ℕ) : E) • (r • x) = s • ((d : E) • x)`. Rewrite using `[← algebraMap_smul E s ((d : E) • x), hs, smul_smul, smul_smul, Nat.cast_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Conclude with `L.smul_mem s hx }`. Establish `hK : Submodule.span E (L : Set (Fin n → E)) ≤ K`. Rewrite using `[Submodule.span_le]`. Introduce `x hx`.
+
+Use `show ∃ d : ℕ, 1 ≤ d ∧ (d : E) • x ∈ L`. Conclude with `⟨1, le_rfl, by rw [Nat.cast_one, one_smul]; exact hx⟩`. Establish `hmem : Pi.single j (1 : E) ∈ Submodule.span E (L : Set (Fin n → E))`. Rewrite using `[hL]`. Conclude with `Submodule.mem_top`.
+
+Conclude with `hK hmem`.
+-/
 theorem exists_single_mem {E : Type} [Field E] [NumberField E] {n : ℕ}
     (L : Submodule (𝓞 E) (Fin n → E)) (hL : Submodule.span E (L : Set (Fin n → E)) = ⊤)
     (j : Fin n) : ∃ d : ℕ, 1 ≤ d ∧ (d : E) • Pi.single j (1 : E) ∈ L := by
@@ -117,6 +160,11 @@ theorem exists_single_mem {E : Type} [Field E] [NumberField E] {n : ℕ}
     exact Submodule.mem_top
   exact hK hmem
 
+/- English proof (translation)
+Take `⟨d, hd, hdL⟩` from `exists_den_lat L hF`. Use `choose e he1 he2 using fun j => exists_single_mem L hS j`. Use `⟨d * ∏ j, e j, Nat.mul_pos hd (Finset.prod_pos fun j _ => he1 j), fun x hx i => ?_, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_mul, mul_comm (d : E), mul_assoc]`. Conclude with `mul_mem (natCast_mem _ _) (hdL x hx i)`.
+
+Take `⟨m, hm⟩` from `Finset.dvd_prod_of_mem e (Finset.mem_univ j)`. Rewrite using `[hm, show d * (e j * m) = d * m * e j by ring, Nat.cast_mul, mul_smul, Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem (he2 j) _`.
+-/
 theorem exists_good_den {E : Type} [Field E] [NumberField E] {n : ℕ}
     (L : Submodule (𝓞 E) (Fin n → E)) (hF : L.FG)
     (hS : Submodule.span E (L : Set (Fin n → E)) = ⊤) :
@@ -137,6 +185,9 @@ section Loc
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact Subring.subset_closure (Or.inl ⟨⟨x, hx⟩, rfl⟩)`. Consider the case `(unfold Formalism.MainNotions.S.IntAf Formalism.UG.tensInt Formalism.UG.inclE`. Conclude with `Subring.subset_closure (Or.inl ⟨⟨x, hx⟩, rfl⟩))`.
+-/
 theorem inclE_mem_int (x : E) (hx : x ∈ Formalism.UG.intOE E) :
     Formalism.UG.inclE (F := F) (Formalism.MainNotions.S.Af F) x ∈ Formalism.MainNotions.S.IntAf F E := by
   first
@@ -144,6 +195,17 @@ theorem inclE_mem_int (x : E) (hx : x ∈ Formalism.UG.intOE E) :
   | (unfold Formalism.MainNotions.S.IntAf Formalism.UG.tensInt Formalism.UG.inclE
      exact Subring.subset_closure (Or.inl ⟨⟨x, hx⟩, rfl⟩))
 
+/- English proof (translation)
+Introduce `y hy`. Set `K : Submodule (Formalism.MainNotions.S.IntAf F E) (Fin n → E ⊗[F] Formalism.MainNotions.S.Af F)` to `{ carrier := {y | ∀ i, (c : E ⊗[F] Formalism.MainNotions.S.Af F) * y i ∈ Formalism.MainNotions.S.IntAf F E} add_mem' := by`. Introduce `a b ha hb i`. Rewrite using `[Pi.add_apply, mul_add]`. Conclude with `add_mem (ha i) (hb i)`.
+
+Use the proof step `zero_mem' := by`. Introduce `i`. Rewrite using `[Pi.zero_apply, mul_zero]`. Conclude with `zero_mem _`. Use the proof step `smul_mem' := by`.
+
+Introduce `r a ha i`. Rewrite using `[Pi.smul_apply, Subring.smul_def, smul_eq_mul, mul_left_comm]`. Conclude with `mul_mem r.2 (ha i) }`. Establish `hK : Formalism.MainNotions.S.lamAf (F` using `F) L ≤ K := by`. Unfold `Formalism.MainNotions.S.lamAf`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Use `show ∀ i, (c : E ⊗[F] Formalism.MainNotions.S.Af F) * Formalism.UG.inclE (F := F) (Formalism.MainNotions.S.Af F) ((x : Fin n → E) i) ∈ Formalism.MainNotions.S.IntAf F E`. Introduce `i`. Establish `h` using `inclE_mem_int (F := F) _ (hc x x.2 i)`.
+
+Rewrite `h` using `[map_mul, map_natCast]`. Conclude with `h`. Conclude with `hK hy`.
+-/
 theorem lat_den {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E)) (c : ℕ)
     (hc : ∀ x ∈ L, ∀ i, (c : E) * x i ∈ Formalism.UG.intOE E) :
     ∀ y ∈ Formalism.MainNotions.S.lamAf (F := F) L, ∀ i,
@@ -175,6 +237,11 @@ theorem lat_den {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E)) (c : ℕ)
     exact h
   exact hK hy
 
+/- English proof (translation)
+Establish `hx : (fun i => Formalism.UG.inclE (F` using `F) (Formalism.MainNotions.S.Af F) (((c : E) • Pi.single j (1 : E) : Fin n → E) i)) = Pi.single j (c : E ⊗[F] Formalism.MainNotions.S.Af F) := by`. Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[Pi.single_eq_of_ne h]`. Rewrite using `[← hx]`. Unfold `Formalism.MainNotions.S.lamAf`. Conclude with `Submodule.subset_span ⟨⟨_, hs j⟩, rfl⟩`.
+-/
 theorem single_mem_lat {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E)) (c : ℕ)
     (hs : ∀ j, (c : E) • Pi.single j (1 : E) ∈ L) (j : Fin n) :
     Pi.single j (c : E ⊗[F] Formalism.MainNotions.S.Af F) ∈ Formalism.MainNotions.S.lamAf (F := F) L := by
@@ -189,6 +256,11 @@ theorem single_mem_lat {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E)) (c : ℕ
   unfold Formalism.MainNotions.S.lamAf
   exact Submodule.subset_span ⟨⟨_, hs j⟩, rfl⟩
 
+/- English proof (translation)
+Establish `h : (fun i => (c : E ⊗[F] Formalism.MainNotions.S.Af F) * u i) = ∑ j, (⟨u j, hu j⟩ : Formalism.MainNotions.S.IntAf F E) • Pi.single j (c : E ⊗[F] Formalism.MainNotions.S.Af F)`. Use function extensionality and compare the values at `i`. Rewrite using `[Finset.sum_apply]`. Simplify using `[Pi.single_apply, Subring.smul_def, mul_comm]`. Rewrite using `[h]`.
+
+Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (single_mem_lat L c hs j)`.
+-/
 theorem int_vec_mem {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E)) (c : ℕ)
     (hs : ∀ j, (c : E) • Pi.single j (1 : E) ∈ L) (u : Fin n → E ⊗[F] Formalism.MainNotions.S.Af F)
     (hu : ∀ i, u i ∈ Formalism.MainNotions.S.IntAf F E) :
@@ -203,6 +275,9 @@ theorem int_vec_mem {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E)) (c : ℕ)
 
 end Loc
 
+/- English proof (translation)
+Take `⟨c, hc, h1, h2⟩` from `exists_good_den I.L I.L_fg I.L_span`. Conclude with `⟨c, hc, lat_den I.L c h1, fun u hu => int_vec_mem I.L c h2 u hu⟩`.
+-/
 theorem lat_data (I : AutInst) : ∃ c : ℕ, 1 ≤ c ∧
     (∀ y ∈ I.Lf, ∀ i, (c : I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F) * y i ∈ Formalism.MainNotions.S.IntAf I.F I.E) ∧
     ∀ u : Fin I.n → I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F, (∀ i, u i ∈ Formalism.MainNotions.S.IntAf I.F I.E) →
@@ -210,6 +285,11 @@ theorem lat_data (I : AutInst) : ∃ c : ℕ, 1 ≤ c ∧
   obtain ⟨c, hc, h1, h2⟩ := exists_good_den I.L I.L_fg I.L_span
   exact ⟨c, hc, lat_den I.L c h1, fun u hu => int_vec_mem I.L c h2 u hu⟩
 
+/- English proof (translation)
+Use `choose w hw hXw using hX`. Use `⟨fun i => (c : I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F) * ∑ k, w i k * ((c : I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F) * y k), h2 _ (fun i => ?_), ?_⟩` and prove the remaining obligations. Conclude with `sum_mem fun k _ => mul_mem (hw i k) (h1 y hy k)`. Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul, hXw]`.
+
+Simplify using `only [Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem matrix_entries_integral (I : AutInst) (c g : ℕ)
     (h1 : ∀ y ∈ I.Lf, ∀ i, (c : I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F) * y i ∈ Formalism.MainNotions.S.IntAf I.F I.E)
     (h2 : ∀ u : Fin I.n → I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F, (∀ i, u i ∈ Formalism.MainNotions.S.IntAf I.F I.E) →
@@ -228,6 +308,17 @@ theorem matrix_entries_integral (I : AutInst) (c g : ℕ)
     push_cast
     ring
 
+/- English proof (translation)
+Introduce `I g hg`. Take `⟨c, hc, h1, h2⟩` from `lat_data I`. Use `⟨g * c * c, Nat.mul_pos (Nat.mul_pos hg hc) hc, ?_⟩` and prove the remaining obligations. Introduce `M M' hMM' hM hM'`. Establish `hsm : ∀ z ∈ I.Lf, ((g : I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F) • z) ∈ I.Lf` using `fun z hz => I.Lf.smul_mem (⟨(g : I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F), natCast_mem _ g⟩ : Formalism.MainNotions.S.IntAf I.F I.E) hz`.
+
+Establish `hM'M : M' * M = 1` using `by first`. Consider the case `exact mul_eq_one_comm.1 hMM'`. Consider the case `exact Matrix.mul_eq_one_comm.1 hMM'`. Consider the case `(letI := Matrix.invertibleOfRightInverse M M' hMM'`. Conclude with `invOf_mul_self M)`.
+
+Use `⟨fun y => ⟨fun hy => ?_, fun hy => ?_⟩, fun y hy => matrix_entries_integral I c g h1 h2 (M - 1) hM y hy⟩` and prove the remaining obligations. Take `⟨z, hz, e⟩` from `matrix_entries_integral I c g h1 h2 (M - 1) hM y hy`. Establish `h3 : M *ᵥ y = y + (M - 1) *ᵥ y`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[h3, e]`. Conclude with `add_mem hy (hsm z hz)`. Take `⟨z, hz, e⟩` from `matrix_entries_integral I c g h1 h2 (M' - 1) hM' (M *ᵥ y) hy`. Establish `h3 : y = M *ᵥ y + (M' - 1) *ᵥ (M *ᵥ y)`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.mulVec_mulVec, hM'M, Matrix.one_mulVec]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[h3, e]`. Conclude with `add_mem hy (hsm z hz)`.
+-/
 theorem entries_integral_of_lattice : EntriesLat := by
   intro I g hg
   obtain ⟨c, hc, h1, h2⟩ := lat_data I

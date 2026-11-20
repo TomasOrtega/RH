@@ -12,9 +12,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} {S T : HSp D} {k : ℕ} {ψ : AddChar (AF D.host.F) ℂ}
 
+/- English proof (translation)
+Rewrite using `[← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one]`.
+-/
 theorem psi_neg_mul (a : AF D.host.F) : ψ (-a) * ψ a = 1 := by
   rw [← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `t`. Simplify using `only [Gf, heisO]`. Rewrite using `[add_assoc, hf.quasi γ (x + L t), symplOH_add_left, symplOH_add_right]`. Rewrite using `[← mul_assoc, ← AddChar.map_add_eq_mul, ← mul_assoc, ← AddChar.map_add_eq_mul]`. Use `congr 2`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem Gf_rat {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (L : (Fin k → ℝ) →+ WO S T)
     (γ : Matrix (Fin T.rank) (Fin S.rank) D.host.E) (x : WO S T) :
     Gf ψ L f (ratW T S γ + x) = fun t => ψ (-(symplOH S T (ratW T S γ) x)) * Gf ψ L f x t := by
@@ -25,6 +33,11 @@ theorem Gf_rat {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (L : (Fin k → 
   congr 2
   abel
 
+/- English proof (translation)
+Use function extensionality and compare the values at `t`. Establish `hr : eInf D • L t = L t` using `(wo_real_iff (L t)).mp (hL.2.1 t)`. Establish `hfy : ∀ y, f (y + u) = ψ (-(symplOH S T y u)) * f y`. Introduce `y`. Use `congrFun hfu y` as an intermediate fact.
+
+Simplify using `only [heisO] at this`. Rewrite using `[← this, ← mul_assoc, psi_neg_mul, one_mul]`. Simplify using `only [Gf, heisO]`. Rewrite using `[show x + u + L t = (x + L t) + u by abel, hfy, symplOH_add_left, symplOH_add_left, symplOH_fin_real u (L t) hu hr, symplOH_real_fin (L t) u hr hu, add_zero, add_zero]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Gf_fin {f : WO S T → ℂ} {L : (Fin k → ℝ) →+ WO S T} (hL : IsRealFrame L) (u : WO S T)
     (hu : eFin D • u = u) (hfu : heisO ψ S T u f = f) (x : WO S T) :
     Gf ψ L f (x + u) = fun t => ψ (-(symplOH S T x u)) * Gf ψ L f x t := by
@@ -40,6 +53,11 @@ theorem Gf_fin {f : WO S T → ℂ} {L : (Fin k → ℝ) →+ WO S T} (hL : IsRe
     symplOH_fin_real u (L t) hu hr, symplOH_real_fin (L t) u hr hu, add_zero, add_zero]
   ring
 
+/- English proof (translation)
+Establish `e : dH ψ L l f y = iteratedFDeriv ℝ n (Gf ψ L f y) 0 (fun i => Pi.single (l i) 1)` using `rfl`. Establish `e' : dH ψ L l f x = iteratedFDeriv ℝ n (Gf ψ L f x) 0 (fun i => Pi.single (l i) 1)` using `rfl`. Rewrite using `[e, e', h]`. Establish `h2 : (fun t => c * Gf ψ L f x t) = c • Gf ψ L f x` using `rfl`. Establish `hs' : ContDiff ℝ n (Gf ψ L f x)` using `hs.of_le (natCast_lt_inf n).le`.
+
+Rewrite using `[h2]`. Use `first`. Consider the case `(rw [iteratedFDeriv_const_smul_apply hs']; rfl)`. Consider the case `(rw [iteratedFDeriv_const_smul_apply hs'.contDiffAt]; rfl)`. Consider the case `(rw [iteratedFDeriv_const_smul_apply (hs.contDiffAt)]; rfl)`.
+-/
 theorem dH_smul_const {f : WO S T → ℂ} {L : (Fin k → ℝ) →+ WO S T} {n : ℕ} (l : Fin n → Fin k) {x y : WO S T}
     (c : ℂ) (h : Gf ψ L f y = fun t => c * Gf ψ L f x t) (hs : ContDiff ℝ ∞ (Gf ψ L f x)) :
     dH ψ L l f y = c * dH ψ L l f x := by

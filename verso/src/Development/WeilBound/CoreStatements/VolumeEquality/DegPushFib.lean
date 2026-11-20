@@ -19,6 +19,27 @@ def entPair : Ent (rk Ψ p q) → PairIx Ψ p q
       exact ⟨show p + (m : ℕ) < p + l by omega, iff_of_false (show ¬ p + (m : ℕ) < p by omega)
         (show ¬ p + (l : ℕ) < p by omega)⟩⟩)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, ⟨l, m⟩, h⟩ ⟨s', ⟨l', m'⟩, h'⟩ he`. Apply the tactic sequence `rcases s with τ | τ <;> rcases s' with τ' | τ'`. Simplify using `only [entPair, Prod.mk.injEq, Subtype.mk.injEq] at he`. Take `⟨rfl, h1, h2⟩` from `he`.
+
+Establish `e1'` using `congrArg Fin.val h1`. Establish `e2'` using `congrArg Fin.val h2`. Express the relevant statement in the definitionally equal form `(m : ℕ) = (m' : ℕ) at e1'`. Express the relevant statement in the definitionally equal form `(l : ℕ) = (l' : ℕ) at e2'`. Establish `e1 : m = m'` using `Fin.ext e1'`.
+
+Establish `e2 : l = l'` using `Fin.ext e2'`. Substitute `e1 e2` using the available equality. Both sides reduce to the same expression. Simplify using `only [entPair, Prod.mk.injEq, Subtype.mk.injEq] at he`. Take `⟨rfl, h1, h2⟩` from `he`.
+
+Establish `e : (m : ℕ) = p + (m' : ℕ)` using `congrArg Fin.val h1`. Establish `hm : (m : ℕ) < p` using `m.2`. Use linear arithmetic over natural numbers and integers. Simplify using `only [entPair, Prod.mk.injEq, Subtype.mk.injEq] at he`. Take `⟨rfl, h1, h2⟩` from `he`.
+
+Establish `e : p + (m : ℕ) = (m' : ℕ)` using `congrArg Fin.val h1`. Establish `hm : (m' : ℕ) < p` using `m'.2`. Use linear arithmetic over natural numbers and integers. Simplify using `only [entPair, Prod.mk.injEq, Subtype.mk.injEq] at he`. Take `⟨rfl, h1, h2⟩` from `he`.
+
+Establish `e1' : p + (m : ℕ) = p + (m' : ℕ)` using `congrArg Fin.val h1`. Establish `e2' : p + (l : ℕ) = p + (l' : ℕ)` using `congrArg Fin.val h2`. Establish `e1 : m = m'` using `Fin.ext (by omega)`. Establish `e2 : l = l'` using `Fin.ext (by omega)`. Substitute `e1 e2` using the available equality.
+
+Both sides reduce to the same expression. Introduce and unpack `⟨τ, ⟨a, b⟩, hab, hiff⟩`. Distinguish the cases in `hb : (b : ℕ) < p`. Establish `ha : (a : ℕ) < p` using `hiff.2 hb`. Use `⟨⟨Sum.inl τ, ⟨(⟨b, hb⟩, ⟨a, ha⟩), hab⟩⟩, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [entPair]`. Use `congr 1`. Establish `ha : ¬ (a : ℕ) < p` using `fun h => hb (hiff.1 h)`. Establish `hlt : (a : ℕ) < b` using `hab`. Establish `hb' : (b : ℕ) - p < q` using `by omega`.
+
+Establish `ha' : (a : ℕ) - p < q` using `by omega`. Use `⟨⟨Sum.inr τ, ⟨(⟨b - p, hb'⟩, ⟨a - p, ha'⟩), show (a : ℕ) - p < b - p by omega⟩⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [entPair]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `only [Prod.mk.injEq, Fin.ext_iff, Fin.natAdd]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem entPair_bij : Function.Bijective (entPair : Ent (rk Ψ p q) → PairIx Ψ p q) := by
   constructor
   · rintro ⟨s, ⟨l, m⟩, h⟩ ⟨s', ⟨l', m'⟩, h'⟩ he
@@ -71,6 +92,15 @@ theorem entPair_bij : Function.Bijective (entPair : Ent (rk Ψ p q) → PairIx �
 def dif {n : ℕ} (st : Fin n → K → ℤ) (m : Fin n) : K → ℤ :=
   st m - if h : 0 < (m : ℕ) then st ⟨m - 1, by omega⟩ else 0
 
+/- English proof (translation)
+Unfold `dif`. Use `beta_reduce`. Rewrite using `[Finset.Iic_eq_cons_Iio m, Finset.sum_cons]`. Use `split_ifs with h`. Establish `e : Finset.Iio m = Finset.Iic (⟨(m : ℕ) - 1, by omega⟩ : Fin n)`.
+
+Use extensionality with `x`. Simplify using `only [Finset.mem_Iio, Finset.mem_Iic, Fin.lt_iff_val_lt_val, Fin.le_iff_val_le_val]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e]`. Normalize the expressions using the abelian group laws.
+
+Establish `e : Finset.Iio m = ∅`. Use extensionality with `x`. Simplify using `only [Finset.mem_Iio, Finset.notMem_empty, iff_false, not_lt, Fin.le_iff_val_le_val]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e, Finset.sum_empty]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem dif_sum {n : ℕ} (g : Fin n → K → ℤ) (m : Fin n) : dif (fun m => ∑ m' ∈ Finset.Iic m, g m') m = g m := by
   unfold dif
   beta_reduce
@@ -93,6 +123,15 @@ def rootOf (st : ∀ s, Fin (rk Ψ p q s) → K → ℤ) (t : Ψ × Fin (p + q))
   if h : (t.2 : ℕ) < p then dif (st (.inl t.1)) ⟨t.2, h⟩
   else -dif (st (.inr t.1)) ⟨p + q - 1 - t.2, by have := t.2.2; show _ < q; omega⟩
 
+/- English proof (translation)
+Take `⟨τ, j⟩` from `t`. Unfold `rootOf`. Use `split_ifs with h`. Establish `e` using `dif_sum (grDeg x (Sum.inl τ)) ⟨(j : ℕ), h⟩`. Express the relevant statement in the definitionally equal form `dif (fun m => ∑ m' ∈ Finset.Iic m, grDeg x (Sum.inl τ) m') ⟨(j : ℕ), h⟩ = x (τ, j)`.
+
+Rewrite using `[e]`. Both sides reduce to the same expression. Establish `hj` using `j.2`. Establish `h' : ¬ (j : ℕ) < p` using `h`. Establish `e` using `dif_sum (grDeg x (Sum.inr τ)) ⟨p + q - 1 - (j : ℕ), by show _ < q; omega⟩`.
+
+Express the relevant statement in the definitionally equal form `-dif (fun m => ∑ m' ∈ Finset.Iic m, grDeg x (Sum.inr τ) m') ⟨p + q - 1 - (j : ℕ), _⟩ = x (τ, j)`. Rewrite using `[e]`. Simplify using `only [grDeg, neg_neg]`. Use `congr 2`. Apply `Fin.ext` to reduce the goal to its premises.
+
+Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rootOf_step (x : Ψ × Fin (p + q) → K → ℤ) (t : Ψ × Fin (p + q)) : rootOf (stepDeg x) t = x t := by
   obtain ⟨τ, j⟩ := t
   unfold rootOf
@@ -117,6 +156,11 @@ section
 variable {k : Type} [Field k] {Ω : Type} [Field Ω] [Algebra k Ω] [Fintype K] {ι : K → Type} [∀ b, Fintype (ι b)]
   {K' : Type} [Fintype K'] {ι' : K' → Type} [∀ b, Fintype (ι' b)] {y : (Σ b, ι b) → Ω} {y' : (Σ b, ι' b) → Ω}
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `hz b`. Establish `hv : O.valuation (z ⟨b, i⟩) ≠ 0`. Rewrite using `[Valuation.ne_zero_iff]`. Conclude with `hi`. Introduce `h0`.
+
+Establish `hle : O.valuation (z ⟨b, i⟩) ≤ Finset.univ.sup fun i : κ b => O.valuation (z ⟨b, i⟩)` using `Finset.le_sup (f := fun i : κ b => O.valuation (z ⟨b, i⟩)) (Finset.mem_univ i)`. Rewrite `hle` using `[h0]`. Conclude with `hv (le_antisymm hle zero_le')`.
+-/
 private theorem sup_valuation_ne_zero_of_exists_ne_zero {L : Type} [Field L] {J : Type} [Fintype J] {κ : J → Type} [∀ b, Fintype (κ b)]
     (O : ValuationSubring L) (z : (Σ b, κ b) → L) (hz : ∀ b, ∃ i, z ⟨b, i⟩ ≠ 0) (b : J) :
     (Finset.univ.sup fun i : κ b => O.valuation (z ⟨b, i⟩)) ≠ 0 := by
@@ -130,6 +174,9 @@ private theorem sup_valuation_ne_zero_of_exists_ne_zero {L : Type} [Field L] {J 
   rw [h0] at hle
   exact hv (le_antisymm hle zero_le')
 
+/- English proof (translation)
+Unfold `vdeg`. Rewrite using `[← Finset.prod_div_distrib]`. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.sub_apply, zpow_sub₀ (sup_valuation_ne_zero_of_exists_ne_zero O z hz b)]`.
+-/
 private theorem vdeg_sub' {L : Type} [Field L] {J : Type} [Fintype J] {κ : J → Type} [∀ b, Fintype (κ b)]
     (O : ValuationSubring L) (z : (Σ b, κ b) → L) (hz : ∀ b, ∃ i, z ⟨b, i⟩ ≠ 0) (a c : J → ℤ) :
     vdeg O z (a - c) = vdeg O z a / vdeg O z c := by
@@ -138,6 +185,9 @@ private theorem vdeg_sub' {L : Type} [Field L] {J : Type} [Fintype J] {κ : J �
   refine Finset.prod_congr rfl fun b _ => ?_
   rw [Pi.sub_apply, zpow_sub₀ (sup_valuation_ne_zero_of_exists_ne_zero O z hz b)]
 
+/- English proof (translation)
+Unfold `vdeg`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `b _`. Conclude with `zpow_ne_zero _ (sup_valuation_ne_zero_of_exists_ne_zero O z hz b)`.
+-/
 private theorem vdeg_ne_zero' {L : Type} [Field L] {J : Type} [Fintype J] {κ : J → Type} [∀ b, Fintype (κ b)]
     (O : ValuationSubring L) (z : (Σ b, κ b) → L) (hz : ∀ b, ∃ i, z ⟨b, i⟩ ≠ 0) (a : J → ℤ) :
     vdeg O z a ≠ 0 := by
@@ -146,6 +196,13 @@ private theorem vdeg_ne_zero' {L : Type} [Field L] {J : Type} [Fintype J] {κ : 
   intro b _
   exact zpow_ne_zero _ (sup_valuation_ne_zero_of_exists_ne_zero O z hz b)
 
+/- English proof (translation)
+Unfold `dif`. Use `split_ifs with hm`. Take `⟨ρ₁, hρ₁, h₁⟩` from `h m`. Take `⟨ρ₂, hρ₂, h₂⟩` from `h ⟨(m : ℕ) - 1, by omega⟩`. Use `⟨ρ₁ / ρ₂, div_ne_zero hρ₁ hρ₂, fun O hO => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[vdeg_sub' O y hy, vdeg_sub' O y' hy', h₁ O hO, h₂ O hO, map_div₀]`. Establish `hv : O.valuation ρ₂ ≠ 0`. Rewrite using `[Valuation.ne_zero_iff]`. Conclude with `hρ₂`. Establish `hw` using `vdeg_ne_zero' O y' hy' (st' ⟨(m : ℕ) - 1, by omega⟩)`.
+
+Clear the denominators using the available nonvanishing facts. Simplify using `using h m`.
+-/
 theorem valEq_dif (hy : ∀ b, ∃ i, y ⟨b, i⟩ ≠ 0) (hy' : ∀ b, ∃ i, y' ⟨b, i⟩ ≠ 0) {n : ℕ} {st : Fin n → K → ℤ}
     {st' : Fin n → K' → ℤ} (h : ∀ m, ValEq k y (st m) y' (st' m)) (m : Fin n) : ValEq k y (dif st m) y' (dif st' m) := by
   unfold dif
@@ -161,6 +218,9 @@ theorem valEq_dif (hy : ∀ b, ∃ i, y ⟨b, i⟩ ≠ 0) (hy' : ∀ b, ∃ i, y
     field_simp
   · simpa using h m
 
+/- English proof (translation)
+Unfold `vdeg`. Rewrite using `[← Finset.prod_inv_distrib]`. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.neg_apply, zpow_neg]`.
+-/
 private theorem vdeg_neg' {L : Type} [Field L] {J : Type} [Fintype J] {κ : J → Type} [∀ b, Fintype (κ b)]
     (O : ValuationSubring L) (z : (Σ b, κ b) → L) (a : J → ℤ) :
     vdeg O z (-a) = (vdeg O z a)⁻¹ := by
@@ -169,6 +229,11 @@ private theorem vdeg_neg' {L : Type} [Field L] {J : Type} [Fintype J] {κ : J �
   refine Finset.prod_congr rfl fun b _ => ?_
   rw [Pi.neg_apply, zpow_neg]
 
+/- English proof (translation)
+Unfold `rootOf`. Use `split_ifs with ht`. Conclude with `valEq_dif hy hy' (h _) _`. Take `⟨ρ, hρ, hh⟩` from `valEq_dif hy hy' (h (Sum.inr t.1)) ⟨p + q - 1 - (t.2 : ℕ), by have := t.2.2; show _ < q; omega⟩`. Use `⟨ρ⁻¹, inv_ne_zero hρ, fun O hO => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[vdeg_neg', vdeg_neg', hh O hO, map_inv₀, mul_inv]`.
+-/
 theorem valEq_root (hy : ∀ b, ∃ i, y ⟨b, i⟩ ≠ 0) (hy' : ∀ b, ∃ i, y' ⟨b, i⟩ ≠ 0) {st : ∀ s, Fin (rk Ψ p q s) → K → ℤ}
     {st' : ∀ s, Fin (rk Ψ p q s) → K' → ℤ} (h : ∀ s m, ValEq k y (st s m) y' (st' s m)) (t : Ψ × Fin (p + q)) :
     ValEq k y (rootOf st t) y' (rootOf st' t) := by
@@ -184,6 +249,11 @@ end
 def uConst (Ψ : Type) [Fintype Ψ] (p q : ℕ) : ℤ :=
   uNum (rk Ψ p q) fun j => fibDeg (rootOf fun s m => plDeg ⟨s, m⟩) ((Finite.equivFin (PairIx Ψ p q)).symm j)
 
+/- English proof (translation)
+Take `⟨ρ₁, hρ₁, h₁⟩` from `ha`. Take `⟨ρ₂, hρ₂, h₂⟩` from `hc`. Use `⟨ρ₁ / ρ₂, div_ne_zero hρ₁ hρ₂, fun O hO => ?_⟩` and prove the remaining obligations. Rewrite using `[vdeg_sub' O y hy, vdeg_sub' O y' hy', h₁ O hO, h₂ O hO, map_div₀]`. Establish `hv : O.valuation ρ₂ ≠ 0`.
+
+Rewrite using `[Valuation.ne_zero_iff]`. Conclude with `hρ₂`. Establish `hw` using `vdeg_ne_zero' O y' hy' c'`. Clear the denominators using the available nonvanishing facts.
+-/
 private theorem valEq_sub {k : Type} [Field k] {Ω : Type} [Field Ω] [Algebra k Ω] {K : Type} [Fintype K]
     {ι : K → Type} [∀ b, Fintype (ι b)] {K' : Type} [Fintype K'] {ι' : K' → Type} [∀ b, Fintype (ι' b)]
     {y : (Σ b, ι b) → Ω} {y' : (Σ b, ι' b) → Ω}
@@ -199,6 +269,21 @@ private theorem valEq_sub {k : Type} [Field k] {Ω : Type} [Field Ω] [Algebra k
   have hw := vdeg_ne_zero' O y' hy' c'
   field_simp
 
+/- English proof (translation)
+Establish `hne` using `plPt_ne u hu.1 hu.2.1`. Establish `hfd : FiniteDimensional (fnField k (plPt u)) Ω`. Rewrite using `[fnField_plPt u hu.1 hu.2.1]`. Conclude with `Module.finite_of_finrank_pos (by rw [hu.2.2.2.2]; exact hu.2.2.2.1)`. Establish `hcard : Nat.card (Ent (rk Ψ p q)) = r`.
+
+Rewrite using `[Nat.card_eq_of_bijective _ entPair_bij, Nat.card_congr e.symm, Nat.card_eq_fintype_card, Fintype.card_fin]`. Establish `hpt' : IsPt k (plPt u) r` using `⟨hne, hfd, by rw [trdeg_eq u hu, hcard]⟩`. Establish `hval : ∀ j, ValEq k y (fibDeg x (e j)) (plPt u) (fibDeg (rootOf fun s m => plDeg ⟨s, m⟩) (e j))`. Introduce `j`. Unfold `fibDeg`.
+
+Apply `valEq_sub hy.1 hne` to reduce the goal to its premises. Rewrite using `[← rootOf_step x]`. Conclude with `valEq_root hy.1 hne hv _`. Rewrite using `[← rootOf_step x]`. Conclude with `valEq_root hy.1 hne hv _`.
+
+Rewrite using `[hN k Ω K ι _ _ y (plPt u) r _ _ hy hpt' hval]`. Unfold `num`. Rewrite using `[fnField_plPt u hu.1 hu.2.1, hu.2.2.2.2, inum_plPt u hu]`. Unfold `uConst`. Use `congr 1`.
+
+Establish `hN' : Nat.card (PairIx Ψ p q) = r`. Rewrite using `[Nat.card_congr e.symm, Nat.card_eq_fintype_card, Fintype.card_fin]`. Unfold `uNum`. Use `set g : PairIx Ψ p q → (Σ s, Fin (rk Ψ p q s)) → ℤ := fibDeg (rootOf fun s m => plDeg ⟨s, m⟩) with hg`. Use `clear_value g`.
+
+Use `revert e`. Rewrite using `[← hN']`. Introduce `e hval`. Use `GroundTheory.Heights₂.Heights.FieldNumbers.IntNumSymm.proof ℚ (Σ s, Fin (rk Ψ p q s)) (PlIx (rk Ψ p q)) (RingHom.ker (MvPolynomial.aeval (genCone (rk Ψ p q)))) _ (fun j => g ((Finite.equivFin (PairIx Ψ p q)).symm j)) (e.trans (Finite.equivFin (PairIx Ψ p q)))` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules.
+-/
 theorem num_eq (hN : NumEq) [Fintype Ψ] (k : Type) [Field k] [CharZero k] (Ω : Type) [Field Ω] [Algebra k Ω] [Fintype K]
     (ι : K → Type) [∀ b, Fintype (ι b)] (y : (Σ b, ι b) → Ω) (u : ∀ s, Matrix (Fin (rk Ψ p q s)) (Fin (rk Ψ p q s)) Ω)
     (d r : ℕ) (x : Ψ × Fin (p + q) → K → ℤ) (e : Fin r ≃ PairIx Ψ p q) (hu : IsGenU k u d) (hy : IsPt k y r)
@@ -251,6 +336,25 @@ def reEnt (ε : Ψ' → Ψ) : Ent (rk Ψ' p q) → Ent (rk Ψ p q)
   | ⟨.inl τ, x⟩ => ⟨.inl (ε τ), x⟩
   | ⟨.inr τ, x⟩ => ⟨.inr (ε τ), x⟩
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, h5⟩` from `h`. Use `⟨?_, ?_, ?_, h4, ?_⟩` and prove the remaining obligations. Introduce and unpack `(τ | τ) m`. Conclude with `h1 (Sum.inl (ε τ)) m`. Conclude with `h1 (Sum.inr (ε τ)) m`.
+
+Introduce and unpack `(τ | τ) l m hlm`. Conclude with `h2 (Sum.inl (ε τ)) l m hlm`. Conclude with `h2 (Sum.inr (ε τ)) l m hlm`. Establish `e : (fun q : Ent (rk Ψ' p q) => reU ε u q.1 q.2.1.1 q.2.1.2) = (fun q : Ent (rk Ψ p q) => u q.1 q.2.1.1 q.2.1.2) ∘ reEnt ε`. Use function extensionality and compare the values at `⟨s, x⟩`.
+
+Apply the tactic sequence `rcases s with τ | τ <;> rfl`. Rewrite using `[e]`. Use `h3.comp _ ?_` and prove the remaining obligations. Introduce and unpack `⟨s, x⟩ ⟨s', x'⟩ he`. Apply the tactic sequence `rcases s with τ | τ <;> rcases s' with τ' | τ'`.
+
+Take `⟨hs, hx⟩` from `Sigma.mk.inj_iff.1 he`. Establish `ht : τ = τ'` using `ε.injective (Sum.inl.inj hs)`. Substitute `ht` using the available equality. Establish `hx' : x = x'` using `eq_of_heq hx`. Substitute `hx'` using the available equality.
+
+Both sides reduce to the same expression. Take `⟨hs, _⟩` from `Sigma.mk.inj_iff.1 he`. Conclude with `absurd hs Sum.inl_ne_inr`. Take `⟨hs, _⟩` from `Sigma.mk.inj_iff.1 he`. Conclude with `absurd hs Sum.inr_ne_inl`.
+
+Take `⟨hs, hx⟩` from `Sigma.mk.inj_iff.1 he`. Establish `ht : τ = τ'` using `ε.injective (Sum.inr.inj hs)`. Substitute `ht` using the available equality. Establish `hx' : x = x'` using `eq_of_heq hx`. Substitute `hx'` using the available equality.
+
+Both sides reduce to the same expression. Establish `e : (Set.range fun q : (s : Ψ' ⊕ Ψ') × Fin (rk Ψ' p q s) × Fin (rk Ψ' p q s) => reU ε u q.1 q.2.1 q.2.2) = Set.range fun q : (s : Ψ ⊕ Ψ) × Fin (rk Ψ p q s) × Fin (rk Ψ p q s) => u q.1 q.2.1 q.2.2`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨s, l, m⟩, rfl⟩`.
+
+Break down `s with τ | τ` into its components or cases. Conclude with `⟨⟨Sum.inl (ε τ), l, m⟩, rfl⟩`. Conclude with `⟨⟨Sum.inr (ε τ), l, m⟩, rfl⟩`. Introduce and unpack `⟨⟨s, l, m⟩, rfl⟩`. Break down `s with τ | τ` into its components or cases.
+
+Conclude with `⟨⟨Sum.inl (ε.symm τ), l, m⟩, congrArg (fun X => u (Sum.inl X) l m) (ε.apply_symm_apply τ)⟩`. Conclude with `⟨⟨Sum.inr (ε.symm τ), l, m⟩, congrArg (fun X => u (Sum.inr X) l m) (ε.apply_symm_apply τ)⟩`. Rewrite using `[e]`. Conclude with `h5`.
+-/
 theorem isGenU_reU {k : Type} [Field k] [Field Ω] [Algebra k Ω] (ε : Ψ' ≃ Ψ)
     (u : ∀ s, Matrix (Fin (rk Ψ p q s)) (Fin (rk Ψ p q s)) Ω) {d : ℕ} (h : IsGenU k u d) : IsGenU k (reU ε u) d := by
   obtain ⟨h1, h2, h3, h4, h5⟩ := h
@@ -304,10 +408,24 @@ end Fib
 
 open Fib
 
+/- English proof (translation)
+Introduce `Ψ _ p q k _ Ω _ _ u d h`. Rewrite using `[trdeg_eq u h, Nat.card_eq_of_bijective _ entPair_bij, Nat.card_eq_fintype_card]`.
+-/
 theorem trdegU : TrdegU := by
   intro Ψ _ p q k _ Ω _ _ u d h
   rw [trdeg_eq u h, Nat.card_eq_of_bijective _ entPair_bij, Nat.card_eq_fintype_card]
 
+/- English proof (translation)
+Introduce `hN`. Use `⟨fun n p q => uConst (Fin n) p q, ?_⟩` and prove the remaining obligations. Introduce `Ψ _ p q k _ _ Ω _ _ K _ ι _ y u d r x e hu hy hv`. Use `show _ = (d : ℤ) * uConst (Fin (Fintype.card Ψ)) p q`. Set `ε : Fin (Fintype.card Ψ) ≃ Ψ` to `(Fintype.equivFin Ψ).symm`.
+
+Set `x' : Fin (Fintype.card Ψ) × Fin (p + q) → K → ℤ` to `fun t => x (ε t.1, t.2)`. Set `e' : Fin r ≃ PairIx (Fin (Fintype.card Ψ)) p q` to `e.trans (Equiv.prodCongr ε (Equiv.refl _)).symm`. Establish `hu'` using `isGenU_reU ε u hu`. Establish `hv' : ∀ s m, ValEq k y (stepDeg x' s m) (plPt (reU ε u)) (plDeg ⟨s, m⟩)`. Introduce and unpack `(τ | τ) m`.
+
+Take `⟨ρ, hρ, h⟩` from `hv (Sum.inl (ε τ)) m`. Use `⟨ρ, hρ, fun O hO => ?_⟩` and prove the remaining obligations. Use `h O hO` as an intermediate fact. Rewrite `this`, the goal using `[vdeg_plDeg]`. Conclude with `this`.
+
+Take `⟨ρ, hρ, h⟩` from `hv (Sum.inr (ε τ)) m`. Use `⟨ρ, hρ, fun O hO => ?_⟩` and prove the remaining obligations. Use `h O hO` as an intermediate fact. Rewrite `this`, the goal using `[vdeg_plDeg]`. Conclude with `this`.
+
+Establish `h1` using `num_eq hN k Ω ι y (reU ε u) d r x' e' hu' hy hv'`. Rewrite using `[← h1]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `[e', x', fibDeg]`.
+-/
 theorem fibNum : NumEq → FibNum := by
   intro hN
   refine ⟨fun n p q => uConst (Fin n) p q, ?_⟩

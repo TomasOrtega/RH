@@ -5,6 +5,15 @@ open Submodule
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hx : x ∈ Submodule.span K (L : Set V)` using `hspan ▸ Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, Submonoid.one_mem _, by simpa using hy⟩`. Consider the case `zero => exact ⟨1, Submonoid.one_mem _, by simp⟩`. Consider the case `add y z _ _ hy hz`.
+
+Take `⟨a, ha, hay⟩` from `hy`. Take `⟨b, hb, hbz⟩` from `hz`. Use `⟨a * b, Submonoid.mul_mem _ ha hb, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, mul_comm a b, mul_smul, mul_comm b a, mul_smul a b z]`. Conclude with `L.add_mem (L.smul_mem b hay) (L.smul_mem a hbz)`.
+
+Consider the case `smul c y _ hy`. Take `⟨a, ha, hay⟩` from `hy`. Take `⟨⟨n, d⟩, hnd⟩` from `IsLocalization.mk'_surjective (nonZeroDivisors O) c`. Simplify using `only at hnd`. Substitute `hnd` using the available equality.
+
+Use `⟨a * d, Submonoid.mul_mem _ ha d.2, ?_⟩` and prove the remaining obligations. Establish `key : ((d : O) : O) • (IsLocalization.mk' K n d • y) = n • y`. Rewrite using `[← algebraMap_smul K (d : O), smul_smul, mul_comm, IsLocalization.mk'_spec, algebraMap_smul]`. Rewrite using `[mul_smul, key, smul_comm]`. Conclude with `L.smul_mem n hay`.
+-/
 theorem exists_nonZeroDivisor_smul_mem_of_span_eq_top_finlen {O K V : Type} [CommRing O] [IsDomain O]
     [Field K] [Algebra O K] [IsFractionRing O K] [AddCommGroup V] [Module K V] [Module O V]
     [IsScalarTower O K V] (L : Submodule O V) (hspan : Submodule.span K (L : Set V) = ⊤) (x : V) :
@@ -31,6 +40,25 @@ theorem exists_nonZeroDivisor_smul_mem_of_span_eq_top_finlen {O K V : Type} [Com
     rw [mul_smul, key, smul_comm]
     exact L.smul_mem n hay
 
+/- English proof (translation)
+Introduce `O K V _ _ _ _ _ _ _ _ _ _ L G B hL hdisj`. Distinguish the cases in `h : Submodule.span K (L : Set V) = ⊤ ∧ G ⊔ B = ⊤`. Use `swap`. Conclude with `Or.inr h`. Use `left`.
+
+Take `⟨hspan, hsup⟩` from `h`. Establish `hc : IsCompl G B` using `⟨hdisj, codisjoint_iff.mpr hsup⟩`. Use `set π : V →ₗ[O] V := (G.projection B hc).restrictScalars O with hπ`. Use `set up := G.restrictScalars O ⊓ (L ⊔ B.restrictScalars O) with hup`. Establish `hπfix : ∀ v ∈ G, π v = v` using `fun v hv => Submodule.projection_apply_of_mem_left hc hv`.
+
+Establish `hπzero : ∀ v ∈ B, π v = 0` using `fun v hv => Submodule.projection_apply_of_mem_right hc hv`. Establish `hπG' : ∀ v : V, π v ∈ G` using `fun v => Submodule.projection_apply_mem hc v`. Establish `hπB : ∀ v : V, v - π v ∈ B`. Introduce `v`. Establish `hv : v ∈ G ⊔ B` using `hsup ▸ Submodule.mem_top`.
+
+Take `⟨g, hg, b, hb, rfl⟩` from `Submodule.mem_sup.mp hv`. Rewrite using `[map_add, hπfix g hg, hπzero b hb, add_zero, add_sub_cancel_left]`. Conclude with `hb`. Establish `hmap : up = L.map π`. Use extensionality with `x`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hxG, hxLB⟩`. Take `⟨l, hl, b, hb, rfl⟩` from `Submodule.mem_sup.mp hxLB`. Use `⟨l, hl, ?_⟩` and prove the remaining obligations. Establish `h1 : π (l + b) = l + b` using `hπfix _ hxG`.
+
+Establish `h2 : π b = 0` using `hπzero b hb`. Rewrite `h1` using `[map_add, h2, add_zero]`. Conclude with `h1`. Introduce and unpack `⟨l, hl, rfl⟩`. Use `⟨hπG' l, ?_⟩` and prove the remaining obligations.
+
+Establish `: π l = l - (l - π l)` using `by abel`. Rewrite using `[this]`. Conclude with `Submodule.sub_mem _ (Submodule.mem_sup_left hl) (Submodule.mem_sup_right (hπB l))`. Establish `hfg : up.FG` using `hmap ▸ hL.map π`. Use `haveI : Module.Finite O up := Module.Finite.iff_fg.mpr hfg`.
+
+Establish `htors : Module.IsTorsion O (↥up ⧸ (L ⊓ G.restrictScalars O).comap up.subtype)`. Introduce `q`. Proceed by induction on `q using Submodule.Quotient.induction_on with`. Consider the case `H y`. Take `⟨a, ha, hay⟩` from `exists_nonZeroDivisor_smul_mem_of_span_eq_top_finlen (K := K) L hspan (y : V)`.
+
+Use `⟨⟨a, ha⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Submonoid.smul_def, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Use `⟨hay, ?_⟩` and prove the remaining obligations. Conclude with `(G.restrictScalars O).smul_mem a y.2.1`. Conclude with `Module.length_ne_top_iff.mpr (isFiniteLength_of_isTorsion htors)`.
+-/
 theorem finiteLength_projection_quotient :
     ∀ (O K V : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K] [IsFractionRing O K] [AddCommGroup V] [Module K V] [Module O V] [IsScalarTower O K V] (L : Submodule O V) (G B : Submodule K V), L.FG → Disjoint G B → Module.length O (↥(G.restrictScalars O ⊓ (L ⊔ B.restrictScalars O)) ⧸ (L ⊓ G.restrictScalars O).comap (G.restrictScalars O ⊓ (L ⊔ B.restrictScalars O)).subtype) ≠ ⊤ ∨ ¬ (Submodule.span K (L : Set V) = ⊤ ∧ G ⊔ B = ⊤) := by
   intro O K V _ _ _ _ _ _ _ _ _ _ L G B hL hdisj

@@ -19,6 +19,17 @@ variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : 
 
 include hG hB in
 
+/- English proof (translation)
+Establish `hker : ∀ z : Cech.Cochain (fun K : Chart x => ↥(((G.twist (B.pow n)).twist (twistSys S x c)).sub K)) i, Cech.d _ ((G.twist (B.pow n)).twist (twistSys S x c)).res i z = 0 → Cech.d _ locResS i (Fmap η M₀ n c hG hB i z) = 0`. Introduce `z hz`. Rewrite using `[← F_d, hz, Fmap_zero]`. Establish `hker' : ∀ (s : Cech.Cochain (locSys (MvPolynomial (Fin (r + 1)) S) N (TwM η M₀)) i) (hs : s ∈ Cech.Cdeg (locSys (MvPolynomial (Fin (r + 1)) S) N (TwM η M₀)) (degLoc (twGraded η M₀) c) i), Cech.d _ locResS i s = 0 → Cech.d _ ((G.twist (B.pow n)).twist (twistSys S x c)).res i (Gm η …`. Introduce `s hs h0`.
+
+Rewrite using `[← Gm_d η M₀ n c hG hB i s hs (by rw [h0]; exact Submodule.zero_mem _)]`. Use function extensionality and compare the values at `K`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `gm η M₀ n c (i + 1) (Cech.d _ locResS i s) K = 0`. Rewrite using `[h0, gm_zero]`.
+
+Set `f : LinearMap.ker (Cech.d (fun K : Chart x => ↥(((G.twist (B.pow n)).twist (twistSys S x c)).sub K)) ((G.twist (B.pow n)).twist (twistSys S x c)).res i) →+ Cech.cocyDeg (locSys (MvPolynomial (Fin (r + 1)) S) N (TwM η M₀)) (degLoc (twGraded η M₀) c) locResS i` to `{ toFun := fun z => ⟨Fmap η M₀ n c hG hB i z.1, Submodule.mem_inf.mpr ⟨LinearMap.mem_ker.mpr (hker z.1 (LinearMap.mem_ker.mp z.2)), Fmap_mem η M₀ n c hG hB i z.1⟩⟩ map_zero' := Subtype.ext (Fmap_zero η M₀ n c hG hB i) map_add' := fun a b => Subtype.ext (Fmap_add η M₀ n c hG hB i …`. Set `g : Cech.cocyDeg (locSys (MvPolynomial (Fin (r + 1)) S) N (TwM η M₀)) (degLoc (twGraded η M₀) c) locResS i →+ LinearMap.ker (Cech.d (fun K : Chart x => ↥(((G.twist (B.pow n)).twist (twistSys S x c)).sub K)) ((G.twist (B.pow n)).twist (twistSys S x c)).res i)` to `{ toFun := fun y => ⟨Gm η M₀ n c hG hB i y.1 (Submodule.mem_inf.mp y.2).2, LinearMap.mem_ker.mpr (hker' _ _ (LinearMap.mem_ker.mp (Submodule.mem_inf.mp y.2).1))⟩ map_zero' := Subtype.ext (funext fun K => Subtype.ext (gm_zero η M₀ n c i K)) map_add' := fun a b => Subtype.ext (fune …`. Use `quot_retract _ _ f g ?_ ?_ ?_` and prove the remaining obligations. Introduce `z hz`. Conclude with `F_bdry η M₀ n c hG hB i z.1 hz`.
+
+Introduce `y hy`. Conclude with `G_bdry η M₀ n c hG hB i y.1 (Submodule.mem_inf.mp y.2).2 hy`. Introduce `z`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `K`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `gm_Fmap η M₀ n c hG hB i z.1 K`.
+-/
 theorem twist_retract (i : ℕ) :
     ∃ (ι : ((G.twist (B.pow n)).twist (twistSys S x c)).H i →+ cohom (twGraded η M₀) i c)
       (π : cohom (twGraded η M₀) i c →+ ((G.twist (B.pow n)).twist (twistSys S x c)).H i),
@@ -65,6 +76,9 @@ theorem twist_retract (i : ℕ) :
 
 end Retract
 
+/- English proof (translation)
+Introduce `S _ _ Ω _ _ N x M₀ G B r η hG _ hB`. Use `⟨TwM η M₀, inferInstance, inferInstance, inferInstance, inferInstance, twGraded η M₀, inferInstance, ?_⟩` and prove the remaining obligations. Introduce `b c i`. Conclude with `twist_retract η M₀ b c hG hB i`.
+-/
 theorem TwistSplit.proof : TwistSplit.Statement := by
   intro S _ _ Ω _ _ N x M₀ G B r η hG _ hB
   refine ⟨TwM η M₀, inferInstance, inferInstance, inferInstance, inferInstance, twGraded η M₀, inferInstance, ?_⟩

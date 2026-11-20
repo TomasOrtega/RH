@@ -4,6 +4,33 @@ open MeasureTheory GlobalTheory.Grow
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `set T : Set G := {g | t⁻¹ * g ∈ K} with hT`. Use `set S : Set R := {r | t⁻¹ * ((r : G) * t) ∈ K} with hS`. Establish `hemb : Topology.IsClosedEmbedding (Subtype.val : R → G)` using `hR.isClosedEmbedding_subtypeVal`. Establish `hAo : ∀ h : G, IsOpen {r : R | t⁻¹ * ((r : G) * h) ∈ K}` using `fun h => hKo.preimage (continuous_const.mul (continuous_subtype_val.mul continuous_const))`. Establish `hAc : ∀ h : G, IsCompact {r : R | t⁻¹ * ((r : G) * h) ∈ K}` using `fun h => by`.
+
+Establish `h1 : IsCompact ((fun g : G => t⁻¹ * (g * h)) ⁻¹' (K : Set G))`. Establish `e : (fun g : G => t⁻¹ * (g * h)) ⁻¹' (K : Set G) = (fun g => t * g * h⁻¹) '' (K : Set G)`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce `hg; exact ⟨t⁻¹ * (g * h), hg, by group⟩`.
+
+Introduce and unpack `⟨k, hk, rfl⟩`. Simplify `hk` using `[mul_assoc]`. Rewrite using `[e]; exact hKc.image (by fun_prop)`. Conclude with `hemb.isCompact_preimage h1`. Establish `hTm : MeasurableSet T` using `(hKo.preimage (continuous_const.mul continuous_id)).measurableSet`.
+
+Establish `hμT : μ T = μ K` using `measure_preimage_mul μ t⁻¹ K`. Establish `hμK0 : μ K ≠ 0` using `(hKo.measure_pos μ ⟨1, K.one_mem⟩).ne'`. Establish `hμKt : μ K ≠ ⊤` using `hKc.measure_lt_top.ne`. Establish `hSo : IsOpen S` using `by simpa using hAo t`. Establish `hSc : IsCompact S` using `by simpa using hAc t`.
+
+Establish `hρS0 : ρ S ≠ 0` using `(hSo.measure_pos ρ ⟨1, by simp [hS]⟩).ne'`. Establish `hρSt : ρ S ≠ ⊤` using `hSc.measure_lt_top.ne`. Use `set c : ℝ := ρ.real S with hc`. Establish `hc0 : c ≠ 0` using `ENNReal.toReal_ne_zero.2 ⟨hρS0, hρSt⟩`. Establish `hμK : μ.real K ≠ 0` using `ENNReal.toReal_ne_zero.2 ⟨hμK0, hμKt⟩`.
+
+Use `⟨(μ.real K : ℂ) / (c : ℂ), div_ne_zero (by exact_mod_cast hμK) (by exact_mod_cast hc0), fun f hfl hfr hfs => ?_⟩` and prove the remaining obligations. Use `set a : ℂ := f t / (c : ℂ) with ha`. Use `⟨T.indicator fun _ => a, ?_, fun h => ?_, fun h => ?_, ?_⟩` and prove the remaining obligations. Conclude with `(integrable_indicator_iff hTm).2 (integrableOn_const (by rw [hμT]; exact hμKt))`. Establish `e : (fun r : R => T.indicator (fun _ => a) ((r : G) * h)) = {r : R | t⁻¹ * ((r : G) * h) ∈ K}.indicator fun _ => a`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `(integrable_indicator_iff (hAo h).measurableSet).2 (integrableOn_const (hAc h).measure_lt_top.ne)`. Establish `e : (fun r : R => T.indicator (fun _ => a) ((r : G) * h)) = {r : R | t⁻¹ * ((r : G) * h) ∈ K}.indicator fun _ => a`. Both sides reduce to the same expression.
+
+Rewrite using `[e, integral_indicator_const _ (hAo h).measurableSet]`. Distinguish the cases in `hne : ∃ s ∈ R, ∃ k ∈ K, h = s * t * k`. Take `⟨s, hs, k, hk, rfl⟩` from `hne`. Establish `eA : {r : R | t⁻¹ * ((r : G) * (s * t * k)) ∈ K} = (fun r : R => r * ⟨s, hs⟩) ⁻¹' S`. Use extensionality with `r`.
+
+Simplify using `only [hS, Set.mem_preimage, Set.mem_ofPred_eq, Subgroup.coe_mul]`. Establish `: t⁻¹ * ((r : G) * (s * t * k)) = t⁻¹ * ((r : G) * s * t) * k` using `by group`. Rewrite using `[this, Subgroup.mul_mem_cancel_right _ hk]`. Establish `e1 : ρ.real {r : R | t⁻¹ * ((r : G) * (s * t * k)) ∈ K} = c`. Rewrite using `[eA, hc, measureReal_def, measureReal_def, measure_preimage_mul_right]`.
+
+Establish `hc' : (c : ℂ) ≠ 0` using `by exact_mod_cast hc0`. Rewrite using `[e1, ha, mul_assoc, hfl s hs, hfr k hk, Complex.real_smul]`. Clear the denominators using the available nonvanishing facts. Establish `hf : f h = 0`. Assume the negation of the conclusion as `hf`.
+
+Conclude with `hne (hfs h hf)`. Establish `eA : {r : R | t⁻¹ * ((r : G) * h) ∈ K} = ∅`. Use extensionality with `r`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false]`. Introduce `hr`.
+
+Conclude with `hne ⟨(r : G)⁻¹, inv_mem r.2, t⁻¹ * ((r : G) * h), hr, by group⟩`. Rewrite using `[hf, eA]`. Simplify using the standard rewrite rules. Rewrite using `[integral_indicator_const _ hTm]`. Establish `e2 : μ.real T = μ.real K` using `by simp only [measureReal_def, hμT]`.
+
+Establish `hc' : (c : ℂ) ≠ 0` using `by exact_mod_cast hc0`. Rewrite using `[e2, ha, Complex.real_smul]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem quotientIntegral_oneDoubleCoset_eq_mul_value (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G]
     [LocallyCompactSpace G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (R K : Subgroup G)
     (hR : IsClosed (R : Set G)) (hKc : IsCompact (K : Set G)) (hKo : IsOpen (K : Set G))

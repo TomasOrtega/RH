@@ -6,6 +6,13 @@ open GlobalTheory.Mem.An
 
 namespace UpperTheory.T3
 
+/- English proof (translation)
+Establish `h34 : (1:ℝ) ≤ Y ^ ((3:ℝ)/4)` using `Real.one_le_rpow hY (by norm_num)`. Establish `hsplit : Y ^ ((9:ℝ)/10) = Y ^ ((3:ℝ)/20) * Y ^ ((3:ℝ)/4)`. Rewrite using `[← Real.rpow_add (by linarith)]`. Evaluate the numerical expressions. Establish `hr2 : (1:ℝ) ≤ r ^ 2` using `by nlinarith`.
+
+Establish `a : 3 * r + 1 ≤ 4 * r` using `by linarith`. Establish `b : 1 + 2 * r ^ 2 * (Y ^ ((3:ℝ)/4) + 1) ≤ 5 * r ^ 2 * Y ^ ((3:ℝ)/4)`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h34 (by linarith : (0:ℝ) ≤ r ^ 2)]`. Establish `key : (3 * r + 1) * (1 + 2 * r ^ 2 * (Y ^ ((3:ℝ)/4) + 1)) ≤ 20 * r ^ 3 * Y ^ ((3:ℝ)/4)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hsplit]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem excluded_lt {Y r : ℝ} (hY : 1 ≤ Y) (hr : 1 ≤ r) (h : 20 * r ^ 3 < Y ^ ((3 : ℝ) / 20)) :
     (3 * r + 1) * (1 + 2 * r ^ 2 * (Y ^ ((3 : ℝ) / 4) + 1)) < Y ^ ((9 : ℝ) / 10) := by
   have h34 : (1:ℝ) ≤ Y ^ ((3:ℝ)/4) := Real.one_le_rpow hY (by norm_num)
@@ -26,6 +33,15 @@ private theorem excluded_lt {Y r : ℝ} (hY : 1 ≤ Y) (hr : 1 ≤ r) (h : 20 * 
       ≤ 20 * r ^ 3 * Y ^ ((3:ℝ)/4) := key
     _ < Y ^ ((3:ℝ)/20) * Y ^ ((3:ℝ)/4) := mul_lt_mul_of_pos_right h (by linarith)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hYpos : (0:ℝ) < Y` using `by linarith`. Establish `hpos : (0:ℝ) < G.card` using `lt_of_lt_of_le (Real.rpow_pos_of_pos hYpos _) hc`. Establish `hGne : G.Nonempty`.
+
+Rewrite using `[← Finset.card_pos]`. Conclude with `hpos` after adjusting the coercions. Take `⟨g₁, hg₁⟩` from `hGne`. Establish `hS` using `GlobalTheory.choice_count Y r g₁ hY (by exact_mod_cast hr) (hG g₁ hg₁).1 (hG g₁ hg₁).2 G (by`. Introduce `g hg`.
+
+Use `⟨(hG g hg).1, (hG g hg).2, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hgg : g = g₁`. Rewrite using `[hgg]`. Conclude with `⟨g₁, by simp [Formalism.CyclotomicNorms.BB], by simp [Formalism.CyclotomicNorms.BB]⟩`. Conclude with `Set.not_disjoint_iff_nonempty_inter.mp (hne g hg g₁ hg₁ hgg))`.
+
+Establish `hlt` using `excluded_lt (by linarith) (by exact_mod_cast hr) h`. Conclude with `absurd (lt_of_le_of_lt hS hlt) (not_lt.mpr hc)`.
+-/
 private theorem exists_pair_disjoint {Y : ℝ} {r : ℕ} (hY : 2 ≤ Y) (hr : 1 ≤ r)
     (h : 20 * (r : ℝ) ^ 3 < Y ^ ((3 : ℝ) / 20)) (G : Finset ℕ) (hG : ∀ g ∈ G, Y ≤ g ∧ (g : ℝ) ≤ 2 * Y)
     (hc : Y ^ ((9 : ℝ) / 10) ≤ G.card) :
@@ -48,6 +64,17 @@ private theorem exists_pair_disjoint {Y : ℝ} {r : ℕ} (hY : 2 ≤ Y) (hr : 1 
   have hlt := excluded_lt (by linarith) (by exact_mod_cast hr) h
   exact absurd (lt_of_le_of_lt hS hlt) (not_lt.mpr hc)
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨n, hn⟩ : ∃ n : ℕ, 16 ≤ eps * n := by`. Use `⟨⌈16 / eps⌉₊, ?_⟩` and prove the remaining obligations. Use `Nat.le_ceil (16 / eps)` as an intermediate fact. Rewrite `this` using `[div_le_iff₀ he]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `⟨21 * (n.factorial : ℝ), fun x hx => ?_⟩` and prove the remaining obligations. Establish `hf : (1:ℝ) ≤ n.factorial` using `Nat.one_le_cast.mpr (Nat.factorial_pos n)`. Establish `hx1 : 1 ≤ x` using `by linarith`. Use `⟨hx1, ?_⟩` and prove the remaining obligations. Establish `hx0 : 0 ≤ x` using `by linarith`.
+
+Establish `h1` using `Real.pow_div_factorial_le_exp (x := x ^ eps) (Real.rpow_nonneg hx0 eps) n`. Establish `h2 : x ^ 16 ≤ (x ^ eps) ^ n`. Rewrite using `[← Real.rpow_natCast (x ^ eps), ← Real.rpow_mul hx0, ← Real.rpow_natCast x 16]`. Conclude with `Real.rpow_le_rpow_of_exponent_le hx1 (by push_cast; linarith)`. Establish `hfpos : (0:ℝ) < n.factorial` using `by linarith`.
+
+Establish `h3 : 21 * x ^ 15 ≤ x ^ 16 / n.factorial`. Rewrite using `[le_div_iff₀ hfpos]`. Establish `hx15 : 0 ≤ x ^ 15` using `by positivity`. Establish `e : x ^ 16 = x * x ^ 15` using `by ring`. Rewrite using `[e]`.
+
+Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hx hx15]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem poly_le_exp (eps : ℝ) (he : 0 < eps) :
     ∃ x₀ : ℝ, ∀ x ≥ x₀, 1 ≤ x ∧ 21 * x ^ 15 ≤ Real.exp (x ^ eps) := by
   obtain ⟨n, hn⟩ : ∃ n : ℕ, 16 ≤ eps * n := by
@@ -75,6 +102,25 @@ private theorem poly_le_exp (eps : ℝ) (he : 0 < eps) :
     _ ≤ (x ^ eps) ^ n / n.factorial := by gcongr
     _ ≤ Real.exp (x ^ eps) := h1
 
+/- English proof (translation)
+Introduce `hS eps he`. Take `⟨x₁, hx₁⟩` from `normPrimesN hS eps he`. Take `⟨x₂, hx₂⟩` from `poly_le_exp eps he`. Use `⟨max x₁ x₂, fun x hx N d k r hM hk hr hrx => ?_⟩` and prove the remaining obligations. Establish `hx1 : x ≥ x₁` using `le_trans (le_max_left _ _) hx`.
+
+Establish `hx2 : x ≥ x₂` using `le_trans (le_max_right _ _) hx`. Take `⟨hxone, hpoly⟩` from `hx₂ x hx2`. Use `set E := Real.exp (x ^ eps) with hEdef`. Establish `hk1 : (1:ℝ) ≤ k` using `by exact_mod_cast hk`. Establish `hE1 : 1 ≤ E` using `Real.one_le_exp (Real.rpow_nonneg (by linarith) _)`.
+
+Establish `hkE : 1 ≤ (k:ℝ) * E` using `one_le_mul_of_one_le_of_one_le hk1 hE1`. Establish `hEkE : E ≤ (k:ℝ) * E` using `le_mul_of_one_le_left (by linarith) hk1`. Use `set Y := ((k:ℝ) * E) ^ 8 with hYdef`. Establish `hkEY : (k:ℝ) * E ≤ Y` using `le_self_pow₀ hkE (by norm_num)`. Establish `hx15 : (1:ℝ) ≤ x ^ 15` using `one_le_pow₀ hxone`.
+
+Establish `hY2 : 2 ≤ Y` using `by linarith`. Establish `hY3 : (k:ℝ) * E ≤ Y ^ ((3:ℝ)/20)`. Rewrite using `[hYdef, ← Real.rpow_natCast, ← Real.rpow_mul (by linarith)]`. Combine the equalities or inequalities in the displayed calculation. Establish `hr3 : (r:ℝ) ^ 3 ≤ x ^ 15`.
+
+Establish `h5 : (r:ℝ) ≤ x ^ 5`. Rewrite using `[← Real.rpow_natCast]`. Conclude with `hrx` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation. Establish `hsmall : 20 * (r:ℝ) ^ 3 < Y ^ ((3:ℝ)/20)` using `by linarith`.
+
+Establish `hlog : 8 * x ^ eps ≤ Real.log Y`. Rewrite using `[hYdef, Real.log_pow, Real.log_mul (ne_of_gt (by linarith)) (ne_of_gt (by linarith)), hEdef, Real.log_exp]`. Use `Real.log_nonneg hk1` as an intermediate fact. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hcard` using `hx₁ x hx1 N d hM Y (by linarith) hlog`. Establish `hY0 : (0:ℝ) ≤ Y` using `by linarith`. Establish `hmem : ∀ p ∈ normPrimes d N Y (2 * Y), p.Prime ∧ Y ≤ (p:ℝ) ∧ (p:ℝ) ≤ 2 * Y ∧ NormOne d N p`. Introduce `p hp`. Simplify using `only [GlobalTheory.Mem.An.normPrimes, Finset.mem_filter, Finset.mem_Ioc] at hp`.
+
+Take `⟨⟨h1, h2⟩, hpr, hn⟩` from `hp`. Conclude with `⟨hpr, ((Nat.floor_lt hY0).mp h1).le, (Nat.le_floor_iff (by linarith)).mp h2, hn⟩`. Take `⟨a, ha, b, hb, hab, hdis⟩` from `exists_pair_disjoint hY2 hr hsmall (normPrimes d N Y (2 * Y)) (fun g hg => ⟨(hmem g hg).2.1, (hmem g hg).2.2.1⟩) hcard`. Use `⟨![a, b], ?_, by simpa using hab, by simpa using hdis⟩` and prove the remaining obligations. Introduce `i`.
+
+Use `fin_cases i`. Simplify using `using hmem a ha`. Simplify using `using hmem b hb`.
+-/
 theorem typePrimesN :
     ShortNorm → ∀ eps : ℝ, 0 < eps → ∃ x₀ : ℝ, ∀ x ≥ x₀, ∀ N d k r : ℕ, ModAt x eps N d → 1 ≤ k → 1 ≤ r → (r : ℝ) ≤ x ^ (5 : ℝ) →
       ∃ g : Fin 2 → ℕ, (∀ i, (g i).Prime ∧ ((k : ℝ) * Real.exp (x ^ eps)) ^ 8 ≤ (g i : ℝ) ∧ (g i : ℝ) ≤ 2 * ((k : ℝ) * Real.exp (x ^ eps)) ^ 8 ∧

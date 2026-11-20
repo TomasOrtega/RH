@@ -18,18 +18,36 @@ section Gel
 
 variable {n : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
+/- English proof (translation)
+The claim follows from `isOpen_ne_fun (Continuous.matrix_det continuous_id) continuous_const`.
+-/
 theorem isOpen_GLs : IsOpen (GLs n) :=
   isOpen_ne_fun (Continuous.matrix_det continuous_id) continuous_const
 
+/- English proof (translation)
+Establish `hm : ContDiff ℝ ∞ fun g : Mat n => g * X` using `(LinearMap.toContinuousLinearMap (LinearMap.mulRight ℝ X : Mat n →ₗ[ℝ] Mat n)).contDiff`. Conclude with `(hf.fderiv_of_isOpen isOpen_GLs (by simp)).clm_apply hm.contDiffOn`.
+-/
 theorem contDiffOn_Rd (X : Mat n) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) : ContDiffOn ℝ ∞ (Rd X f) (GLs n) := by
   have hm : ContDiff ℝ ∞ fun g : Mat n => g * X :=
     (LinearMap.toContinuousLinearMap (LinearMap.mulRight ℝ X : Mat n →ₗ[ℝ] Mat n)).contDiff
   exact (hf.fderiv_of_isOpen isOpen_GLs (by simp)).clm_apply hm.contDiffOn
 
+/- English proof (translation)
+The claim follows from `((contDiffOn_Rd _ hf).add ((contDiffOn_Rd _ hf).const_smul _)).const_smul _`.
+-/
 theorem contDiffOn_Eu (s : Bool) (a b : Fin n) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) :
     ContDiffOn ℝ ∞ (Eu s a b f) (GLs n) :=
   ((contDiffOn_Rd _ hf).add ((contDiffOn_Rd _ hf).const_smul _)).const_smul _
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero`. Introduce `a b f hf`. Use `show ContDiffOn ℝ ∞ (if a = b then f else 0) (GLs n)`. Distinguish the cases in `h : a = b`.
+
+Rewrite using `[if_pos h]`. Conclude with `hf`. Rewrite using `[if_neg h]`. Conclude with `(contDiffOn_const : ContDiffOn ℝ ∞ (fun _ : Mat n => (0 : V)) (GLs n))`. Consider the case `succ m ih`.
+
+Introduce `a b f hf`. Establish `e : Epow s (m + 1) a b f = fun x => ∑ c, Eu s a c (Epow s m c b f) x`. Use function extensionality and compare the values at `x`. Simplify using `only [Epow, Finset.sum_apply]`. Rewrite using `[e]`.
+
+Conclude with `ContDiffOn.sum fun c _ => contDiffOn_Eu s a c (ih c b hf)`.
+-/
 theorem contDiffOn_Epow (s : Bool) (m : ℕ) : ∀ (a b : Fin n) {f : Mat n → V}, ContDiffOn ℝ ∞ f (GLs n) →
     ContDiffOn ℝ ∞ (Epow s m a b f) (GLs n) := by
   induction m with
@@ -46,16 +64,25 @@ theorem contDiffOn_Epow (s : Bool) (m : ℕ) : ∀ (a b : Fin n) {f : Mat n → 
     rw [e]
     exact ContDiffOn.sum fun c _ => contDiffOn_Eu s a c (ih c b hf)
 
+/- English proof (translation)
+Introduce `g hg` and use `by have e : f₁ =ᶠ[𝓝 g] f₂ := Filter.eventually_of_mem (isOpen_GLs.mem_nhds hg) h simp only [Rd, e.fderiv_eq]`.
+-/
 theorem Rd_congr (X : Mat n) {f₁ f₂ : Mat n → V} (h : Set.EqOn f₁ f₂ (GLs n)) : Set.EqOn (Rd X f₁) (Rd X f₂) (GLs n) :=
   fun g hg => by
     have e : f₁ =ᶠ[𝓝 g] f₂ := Filter.eventually_of_mem (isOpen_GLs.mem_nhds hg) h
     simp only [Rd, e.fderiv_eq]
 
+/- English proof (translation)
+Introduce `g hg` and use `by simp only [Eu, Pi.smul_apply, Pi.add_apply, Rd_congr _ h hg]`.
+-/
 theorem Eu_congr (s : Bool) (a b : Fin n) {f₁ f₂ : Mat n → V} (h : Set.EqOn f₁ f₂ (GLs n)) :
     Set.EqOn (Eu s a b f₁) (Eu s a b f₂) (GLs n) :=
   fun g hg => by
     simp only [Eu, Pi.smul_apply, Pi.add_apply, Rd_congr _ h hg]
 
+/- English proof (translation)
+Establish `h : HasFDerivAt (fun x => ∑ j, φ j x • b j) (∑ j, (fderiv ℝ (φ j) g).smulRight (b j)) g` using `HasFDerivAt.fun_sum fun j _ => (hd j).hasFDerivAt.smul_const (b j)`. Simplify using `only [Rd, h.fderiv, ContinuousLinearMap.sum_apply, Finset.sum_apply, ContinuousLinearMap.smulRight_apply]`.
+-/
 theorem Rd_sum {ι : Type} [Fintype ι] (X : Mat n) (φ : ι → Mat n → ℂ) (b : ι → V) {g : Mat n}
     (hd : ∀ j, DifferentiableAt ℝ (φ j) g) :
     Rd X (fun x => ∑ j, φ j x • b j) g = ∑ j, Rd X (φ j) g • b j := by
@@ -63,6 +90,9 @@ theorem Rd_sum {ι : Type} [Fintype ι] (X : Mat n) (φ : ι → Mat n → ℂ) 
     HasFDerivAt.fun_sum fun j _ => (hd j).hasFDerivAt.smul_const (b j)
   simp only [Rd, h.fderiv, ContinuousLinearMap.sum_apply, Finset.sum_apply, ContinuousLinearMap.smulRight_apply]
 
+/- English proof (translation)
+Simplify using `only [Eu, Pi.smul_apply, Pi.add_apply, Rd_sum _ φ b hd]`. Rewrite using `[Finset.smul_sum, ← Finset.sum_add_distrib, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [smul_eq_mul, smul_add, add_smul, mul_smul]`.
+-/
 theorem Eu_sum {ι : Type} [Fintype ι] (s : Bool) (a c : Fin n) (φ : ι → Mat n → ℂ) (b : ι → V) {g : Mat n}
     (hd : ∀ j, DifferentiableAt ℝ (φ j) g) :
     Eu s a c (fun x => ∑ j, φ j x • b j) g = ∑ j, Eu s a c (φ j) g • b j := by
@@ -71,6 +101,13 @@ theorem Eu_sum {ι : Type} [Fintype ι] (s : Bool) (a c : Fin n) (φ : ι → Ma
   refine Finset.sum_congr rfl fun j _ => ?_
   simp only [smul_eq_mul, smul_add, add_smul, mul_smul]
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero`. Introduce `a c x _`. Distinguish the cases in `h : a = c`. Simplify using `[Epow, h]`.
+
+Simplify using `[Epow, h]`. Consider the case `succ m ih`. Introduce `a c x hx`. Simplify using `only [Epow, Finset.sum_apply]`. Establish `e : ∀ d, Eu s a d (Epow s m d c fun x => ∑ j, φ j x • b j) x = ∑ j, Eu s a d (Epow s m d c (φ j)) x • b j`.
+
+Introduce `d`. Rewrite using `[Eu_congr s a d (ih d c) hx]`. Conclude with `Eu_sum s a d _ b fun j => ((contDiffOn_Epow s m d c (hφ j)).contDiffAt (isOpen_GLs.mem_nhds hx)).differentiableAt (by simp)`. Simplify using `only [e, Finset.sum_smul]`. Conclude with `Finset.sum_comm`.
+-/
 theorem Epow_sum {ι : Type} [Fintype ι] (s : Bool) (φ : ι → Mat n → ℂ) (b : ι → V)
     (hφ : ∀ j, ContDiffOn ℝ ∞ (φ j) (GLs n)) (m : ℕ) : ∀ a c : Fin n,
     Set.EqOn (Epow s m a c (fun x => ∑ j, φ j x • b j)) (fun x => ∑ j, Epow s m a c (φ j) x • b j) (GLs n) := by
@@ -91,12 +128,18 @@ theorem Epow_sum {ι : Type} [Fintype ι] (s : Bool) (φ : ι → Mat n → ℂ)
     simp only [e, Finset.sum_smul]
     exact Finset.sum_comm
 
+/- English proof (translation)
+Simplify using `only [gel, Finset.sum_apply, Epow_sum s φ b hφ m _ _ hg, Finset.sum_smul]`. Conclude with `Finset.sum_comm`.
+-/
 theorem gel_sum {ι : Type} [Fintype ι] (s : Bool) (m : ℕ) (φ : ι → Mat n → ℂ) (b : ι → V)
     (hφ : ∀ j, ContDiffOn ℝ ∞ (φ j) (GLs n)) {g : Mat n} (hg : g ∈ GLs n) :
     gel s m (fun x => ∑ j, φ j x • b j) g = ∑ j, gel s m (φ j) g • b j := by
   simp only [gel, Finset.sum_apply, Epow_sum s φ b hφ m _ _ hg, Finset.sum_smul]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Introduce `s m g hg`. Rewrite using `[gel_sum s m φ b hφ hg, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[he j s m g hg, smul_eq_mul, mul_smul]`.
+-/
 theorem isEig_sum {ι : Type} [Fintype ι] (χ : Inf n) (φ : ι → Mat n → ℂ) (b : ι → V)
     (hφ : ∀ j, ContDiffOn ℝ ∞ (φ j) (GLs n)) (he : ∀ j, IsEig χ (φ j)) : IsEig χ (fun x => ∑ j, φ j x • b j) := by
   intro s m g hg
@@ -114,6 +157,11 @@ abbrev infU (n : ℕ) (y : InfinitePlace E → G n) : GL (Fin n) (Cinf E) :=
   Units.map (Matrix.piRingEquiv (n := Fin n) (β := fun _ : InfinitePlace E => ℂ)).symm.toMonoidHom
     (MulEquiv.piUnits.symm y)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j w`. Use `show (if w = v then t.val i j else (1 : Mat n) i j) = (((Pi.mulSingle v t : InfinitePlace E → G n) w : G n) : Mat n) i j`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[if_pos rfl, Pi.mulSingle_eq_same]`.
+
+Rewrite using `[if_neg hw, Pi.mulSingle_eq_of_ne hw, Units.val_one]`.
+-/
 theorem atW_val (v : InfinitePlace E) (t : G n) : atW v t.val = toL (infU n (Pi.mulSingle v t)).val := by
   funext i j w
   show (if w = v then t.val i j else (1 : Mat n) i j) = (((Pi.mulSingle v t : InfinitePlace E → G n) w : G n) : Mat n) i j
@@ -121,18 +169,27 @@ theorem atW_val (v : InfinitePlace E) (t : G n) : atW v t.val = toL (infU n (Pi.
   · subst hw; rw [if_pos rfl, Pi.mulSingle_eq_same]
   · rw [if_neg hw, Pi.mulSingle_eq_of_ne hw, Units.val_one]
 
+/- English proof (translation)
+Use `show chart φ g (atW v t.val) = _`. Rewrite using `[atW_val, chart_val]`. Both sides reduce to the same expression.
+-/
 theorem along_val (v : InfinitePlace E) (g : GA E n) (φ : GA E n → ℂ) (t : G n) :
     along v g φ t.val = φ (g * infP n (Pi.mulSingle v t)) := by
   show chart φ g (atW v t.val) = _
   rw [atW_val, chart_val]
   rfl
 
+/- English proof (translation)
+Simplify using `[infP]`.
+-/
 theorem infinitePart_one : infP (E := E) n 1 = 1 := by
   simp [infP]
 
 def unitOf {x : Mat n} (hx : x ∈ GLs n) : G n :=
   ((Matrix.isUnit_iff_isUnit_det x).2 (isUnit_iff_ne_zero.2 hx)).unit
 
+/- English proof (translation)
+The claim follows from `IsUnit.unit_spec _`.
+-/
 theorem unitOf_val {x : Mat n} (hx : x ∈ GLs n) : (unitOf hx).val = x :=
   IsUnit.unit_spec _
 
@@ -141,6 +198,11 @@ def atWL (v : InfinitePlace E) : Mat n →ₗ[ℝ] Lie E n where
   map_add' x y := by funext i j w; by_cases h : w = v <;> simp [h]
   map_smul' c x := by funext i j w; by_cases h : w = v <;> simp [h]
 
+/- English proof (translation)
+Establish `e : atW (a` using `n) v = fun x => atWL v x + atW v 0 := by`. Use function extensionality and compare the values at `x i j w`. Simplify using `only [atW, atWL, LinearMap.coe_mk, AddHom.coe_mk, Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[e]`.
+
+Conclude with `(LinearMap.toContinuousLinearMap (atWL (n := n) v)).contDiff.add contDiff_const`.
+-/
 theorem contDiff_atW (v : InfinitePlace E) : ContDiff ℝ ∞ (atW (a := n) v) := by
   have e : atW (a := n) v = fun x => atWL v x + atW v 0 := by
     funext x i j w
@@ -149,6 +211,9 @@ theorem contDiff_atW (v : InfinitePlace E) : ContDiff ℝ ∞ (atW (a := n) v) :
   rw [e]
   exact (LinearMap.toContinuousLinearMap (atWL (n := n) v)).contDiff.add contDiff_const
 
+/- English proof (translation)
+Establish `hm : Set.MapsTo (atW (a` using `n) v) (GLs n) (invSet E n) := fun x hx => by`. Rewrite using `[← unitOf_val hx, atW_val]`. Conclude with `val_mem_invSet _`. Conclude with `(hφ g).comp (contDiff_atW v).contDiffOn hm`.
+-/
 theorem contDiffOn_along (v : InfinitePlace E) (g : GA E n) {φ : GA E n → ℂ} (hφ : φ ∈ Sm E n) :
     ContDiffOn ℝ ∞ (along v g φ) (GLs n) := by
   have hm : Set.MapsTo (atW (a := n) v) (GLs n) (invSet E n) := fun x hx => by
@@ -156,6 +221,9 @@ theorem contDiffOn_along (v : InfinitePlace E) (g : GA E n) {φ : GA E n → ℂ
     exact val_mem_invSet _
   exact (hφ g).comp (contDiff_atW v).contDiffOn hm
 
+/- English proof (translation)
+Establish `e : (fun y : InfinitePlace E → G n => φ (g₀ * infP n y)) = fun y => chart φ g₀ (toL (infU n y).val)`. Use function extensionality and compare the values at `fun y => (chart_val φ g₀ _).symm`. Rewrite using `[e]`. Establish `hc : Continuous fun y : InfinitePlace E → G n => toL (infU (E` using `E) n y).val := continuous_pi fun i => continuous_pi fun j => continuous_pi fun w => (Units.continuous_val.matrix_elem i j).comp (continuous_apply w)`. Conclude with `(hφ g₀).continuousOn.comp_continuous hc fun y => val_mem_invSet _`.
+-/
 theorem sm_cont_infP {φ : GA E n → ℂ} (hφ : φ ∈ Sm E n) (g₀ : GA E n) :
     Continuous fun y : InfinitePlace E → G n => φ (g₀ * infP n y) := by
   have e : (fun y : InfinitePlace E → G n => φ (g₀ * infP n y)) = fun y => chart φ g₀ (toL (infU n y).val) :=
@@ -166,6 +234,11 @@ theorem sm_cont_infP {φ : GA E n → ℂ} (hφ : φ ∈ Sm E n) (g₀ : GA E n)
       (Units.continuous_val.matrix_elem i j).comp (continuous_apply w)
   exact (hφ g₀).continuousOn.comp_continuous hc fun y => val_mem_invSet _
 
+/- English proof (translation)
+Establish `h : Continuous fun t : G n => (Pi.mulSingle v t : InfinitePlace E → G n)`. Use `continuous_pi fun w => ?_` and prove the remaining obligations. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Simplify using `only [Pi.mulSingle_eq_same]`.
+
+Conclude with `continuous_id`. Simplify using `only [Pi.mulSingle_eq_of_ne hw]`. Conclude with `continuous_const`. Conclude with `(sm_cont_infP hφ g₀).comp h`.
+-/
 theorem loc_cont {φ : GA E n → ℂ} (hφ : φ ∈ Sm E n) (g₀ : GA E n) (v : InfinitePlace E) :
     Continuous fun t : G n => φ (g₀ * infP n (Pi.mulSingle v t)) := by
   have h : Continuous fun t : G n => (Pi.mulSingle v t : InfinitePlace E → G n) := by
@@ -181,6 +254,33 @@ section Loc
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
+/- English proof (translation)
+Use `set b := stdOrthonormalBasis ℂ M.V with hb`. Use `set φ : Ix M → Mat n → ℂ := fun j => along v g₀ (Φ j) with hφdef`. Establish `hφ : ∀ j, ContDiffOn ℝ ∞ (φ j) (GLs n)` using `fun j => contDiffOn_along v g₀ (hsm j)`. Use `set F : Mat n → M.V := fun x => ∑ j, φ j x • b j with hF`. Establish `hFs : ContDiffOn ℝ ∞ F (GLs n)` using `ContDiffOn.sum fun j _ => (hφ j).smul contDiffOn_const`.
+
+Establish `hCE : F ∈ CE M`. Use `⟨hFs, fun g hg u => ?_⟩` and prove the remaining obligations. Use `set t := unitOf hg`. Use `set hh := g₀ * infP n (Pi.mulSingle v t)`. Establish `e1 : g * u.1 = (t * Unitary.toUnits u).val` using `by rw [Units.val_mul, unitOf_val]; rfl`.
+
+Establish `e2 : ∀ j, φ j (g * u.1) = ∑ i, ent M (M.ρ u⁻¹) j i * Φ i hh`. Introduce `j`. Rewrite using `[e1]`. Use `show along v g₀ (Φ j) _ = _`. Rewrite using `[along_val, Pi.mulSingle_mul, infinitePart_mul, ← mul_assoc, heq]`.
+
+Establish `e3 : ∀ j, φ j g = Φ j hh`. Introduce `j`. Use `show along v g₀ (Φ j) g = _`. Rewrite using `[← unitOf_val hg, along_val]`. Simplify using `only [hF, e2, e3, map_sum, map_smul]`.
+
+Establish `e4 : ∀ i, M.ρ u⁻¹ (b i) = ∑ j, ent M (M.ρ u⁻¹) j i • b j` using `fun i => (b.sum_repr' _).symm`. Simplify using `only [e4, Finset.smul_sum, smul_smul, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+
+Establish `hEig : IsEig χ F` using `isEig_sum χ φ b hφ fun j => heig j g₀`. Establish `hact` using `(hMA n μ M k k val val T T hk hk).2.2.2 χ F hCE hEig 1 (by simp [GLs])`. Establish `hcont : ∀ j, Continuous fun t : G n => φ j t.val`. Introduce `j`. Establish `e : (fun t : G n => φ j t.val) = fun t => Φ j (g₀ * infP n (Pi.mulSingle v t))`.
+
+Use function extensionality and compare the values at `fun t => along_val v g₀ (Φ j) t`. Rewrite using `[e]`. Conclude with `loc_cont (hsm j) g₀ v`. Establish `hkc` using `mult_continuous hk`. Establish `hks` using `mult_hasCompactSupport hk`.
+
+Establish `hFc : Continuous fun t : G n => F t.val` using `continuous_finsetSum _ fun j _ => (hcont j).smul continuous_const`. Establish `hint : Integrable (fun y : G n => k y.val (F (1 * y.val))) μ`. Simplify using `only [one_mul]`. Use `(hkc.clm_apply hFc).integrable_of_hasCompactSupport ?_` and prove the remaining obligations. Conclude with `hks.mono fun y hy h0 => hy (by simp [h0])`.
+
+Establish `hin` using `congrArg (fun w : M.V => inner ℂ (b l) w) hact`. Simplify using `only [PositivityTheory.RgBcC.act] at hin`. Rewrite `hin` using `[← integral_inner hint]`. Establish `e5 : ∀ y : G n, inner ℂ (b l) (k y.val (F (1 * y.val))) = ∑ j, ent M (k y.val) l j * Φ j (g₀ * infP n (Pi.mulSingle v y))`. Introduce `y`.
+
+Simplify using `only [one_mul, hF, map_sum, map_smul, inner_sum, inner_smul_right]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Simplify using `only [ent, hb, hφdef, along_val]`. Simplify using `only [e5] at hin`.
+
+Rewrite `hin` using `[integral_finsetSum _ fun j _ => ?_]`. Rewrite using `[hin, inner_smul_right]`. Establish `e6 : inner ℂ (b l) (F 1) = φ l 1` using `b.orthonormal.inner_right_fintype _ l`. Rewrite using `[e6]`. Establish `e7 : φ l 1 = Φ l g₀`.
+
+Use `along_val v g₀ (Φ l) (1 : G n)` as an intermediate fact. Simplify using `only [Units.val_one, Pi.mulSingle_one, infinitePart_one, mul_one] at this`. Conclude with `this`. Rewrite using `[e7]`. Use `((mult_ent hk l j).1.mul (loc_cont (hsm j) g₀ v)).integrable_of_hasCompactSupport ?_` and prove the remaining obligations.
+
+Conclude with `(mult_ent hk l j).2.mul_right`.
+-/
 theorem loc_act (hMA : MultAlg) [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure]
     (M : KMod n) (k : Mat n → (M.V →L[ℂ] M.V)) (val : Inf n → ℂ) (T : ℝ) (hk : IsMult μ M k val T) (χ : Inf n)
     (v : InfinitePlace E) (Φ : Ix M → GA E n → ℂ) (hsm : ∀ j, Φ j ∈ Sm E n)

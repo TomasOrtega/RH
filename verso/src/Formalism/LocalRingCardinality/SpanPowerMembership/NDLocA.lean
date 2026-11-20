@@ -9,6 +9,19 @@ open NumberField IsDedekindDomain Polynomial Formalism.ConjugateSelfDual Recipro
 
 variable (l : ℕ) [hl : Fact l.Prime]
 
+/- English proof (translation)
+Establish `: CharZero Ω` using `(RingHom.charZero_iff j.injective).mpr inferInstance`. Rewrite using `[Metric.denseRange_iff]`. Introduce `a ε hε`. Establish `hint : IsIntegral ℚ_[l] a` using `Algebra.IsIntegral.isIntegral a`. Use `set f := minpoly ℚ_[l] a with hf`.
+
+Establish `fmon : f.Monic` using `minpoly.monic hint`. Establish `fa0 : aeval a f = 0` using `minpoly.aeval _ _`. Establish `hn : f.natDegree ≠ 0` using `(minpoly.natDegree_pos hint).ne'`. Establish `hε' : (ε / (max ‖a‖ 1)) ^ f.natDegree / (f.natDegree + 1) > 0` using `by positivity`. Establish `hd : DenseRange (algebraMap ℚ ℚ_[l])`.
+
+Use `Padic.denseRange_ratCast l` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `q`. Conclude with `eq_ratCast _ q`. Take `⟨g, gmon, gdeg, gcoeff⟩` from `exists_monic_and_natDegree_eq_and_norm_map_algebraMap_coeff_sub_lt hd fmon hε'`.
+
+Take `⟨b, hb, hab⟩` from `exists_aroots_norm_sub_lt_of_norm_coeff_sub_lt hε' fa0 fmon (gmon.map _) (gdeg ▸ (g.natDegree_map _)) gcoeff (IsAlgClosed.splits _)`. Establish `hab : ‖a - b‖ < ε`. Rewrite `hab` using `[← Real.rpow_natCast, ← mul_comm_div, div_self, one_mul, ← Real.rpow_mul (div_pos hε (by positivity)).le, mul_inv_cancel₀]`. Simplify `hab` using `[mul_assoc, div_mul_cancel₀ _ (by positivity : (max ‖a‖ 1) > 0).ne']`. Simplify using `[hn]`.
+
+Check the signs of the components of the expression. Establish `e : (g.map (algebraMap ℚ ℚ_[l])).map (algebraMap ℚ_[l] (PadicAlgCl l)) = (g.map (algebraMap ℚ Ω)).map j`. Rewrite using `[Polynomial.map_map, Polynomial.map_map]`. Use `congr 1`. Conclude with `Subsingleton.elim _ _`.
+
+Rewrite `hb` using `[Polynomial.aroots_def, e, Splits.roots_map (IsAlgClosed.splits _), Multiset.mem_map]`. Take `⟨c, -, rfl⟩` from `hb`. Conclude with `⟨c, by rw [dist_eq_norm]; exact hab⟩`.
+-/
 theorem denseRange_emb {Ω : Type} [Field Ω] [IsAlgClosed Ω] (j : Ω →+* PadicAlgCl l) :
     DenseRange j := by
   have : CharZero Ω := (RingHom.charZero_iff j.injective).mpr inferInstance
@@ -47,6 +60,9 @@ theorem denseRange_emb {Ω : Type} [Field Ω] [IsAlgClosed Ω] (j : Ω →+* Pad
 def ball : ValuationSubring (PadicAlgCl l) :=
   (Valued.v : Valuation (PadicAlgCl l) NNReal).valuationSubring
 
+/- English proof (translation)
+Rewrite using `[ball, Valuation.mem_valuationSubring_iff]`. Use `first`. Consider the case `exact Iff.rfl`. Consider the case `(rw [← NNReal.coe_le_coe]; rfl)`. Consider the case `simp`.
+-/
 theorem mem_ball (x : PadicAlgCl l) : x ∈ ball l ↔ ‖x‖ ≤ 1 := by
   rw [ball, Valuation.mem_valuationSubring_iff]
   first
@@ -58,9 +74,17 @@ variable {l} {Ω : Type} [Field Ω]
 
 def placeJ (j : Ω →+* PadicAlgCl l) : ValuationSubring Ω := (ball l).comap j
 
+/- English proof (translation)
+Rewrite using `[placeJ, ValuationSubring.mem_comap, mem_ball]`.
+-/
 theorem mem_placeJ (j : Ω →+* PadicAlgCl l) (x : Ω) : x ∈ placeJ j ↔ ‖j x‖ ≤ 1 := by
   rw [placeJ, ValuationSubring.mem_comap, mem_ball]
 
+/- English proof (translation)
+Distinguish the cases in `hy : y = 0`. Simplify using `[hy]`. Establish `hjy : j y ≠ 0` using `(map_ne_zero j).2 hy`. Establish `hpos : 0 < ‖j y‖` using `norm_pos_iff.2 hjy`. Establish `e1` using `(Valuation.one_lt_val_iff A.valuation (inv_ne_zero hy)).symm`.
+
+Rewrite `e1` using `[inv_inv]`. Rewrite using `[e1, ← not_le, ValuationSubring.valuation_le_one_iff, hj, map_inv₀, norm_inv, not_le]`. Use `first`. Consider the case `exact one_lt_inv₀ hpos`. Consider the case `(rw [one_lt_inv_iff₀]; simp [hpos])`.
+-/
 theorem val_lt_one_iff {A : ValuationSubring Ω} {j : Ω →+* PadicAlgCl l}
     (hj : ∀ x, x ∈ A ↔ ‖j x‖ ≤ 1) (y : Ω) : A.valuation y < 1 ↔ ‖j y‖ < 1 := by
   by_cases hy : y = 0
@@ -75,6 +99,9 @@ theorem val_lt_one_iff {A : ValuationSubring Ω} {j : Ω →+* PadicAlgCl l}
       | (rw [one_lt_inv_iff₀]; simp [hpos])
 
 variable (l) in
+/- English proof (translation)
+Establish `h : Prime ((l : ℕ) : ℤ)` using `Nat.prime_iff_prime_int.mp hl.out`. Rewrite using `[← MulEquiv.prime_iff Rat.ringOfIntegersEquiv.toMulEquiv]`. Simplify using `using h`.
+-/
 theorem prime_l : Prime ((l : ℕ) : 𝓞 ℚ) := by
   have h : Prime ((l : ℕ) : ℤ) := Nat.prime_iff_prime_int.mp hl.out
   rw [← MulEquiv.prime_iff Rat.ringOfIntegersEquiv.toMulEquiv]
@@ -87,15 +114,32 @@ def vQ : HeightOneSpectrum (𝓞 ℚ) where
   isPrime := (Ideal.span_singleton_prime (prime_l l).ne_zero).mpr (prime_l l)
   ne_bot := by rw [Ne, Ideal.span_singleton_eq_bot]; exact (prime_l l).ne_zero
 
+/- English proof (translation)
+Rewrite using `[show (vQ l).asIdeal = Ideal.span {((l : ℕ) : 𝓞 ℚ)} from rfl, Ideal.mem_span_singleton, ← map_dvd_iff Rat.ringOfIntegersEquiv]`. Simplify using the standard rewrite rules.
+-/
 theorem intCast_mem_vQ (n : ℤ) : ((n : ℤ) : 𝓞 ℚ) ∈ (vQ l).asIdeal ↔ ((l : ℕ) : ℤ) ∣ n := by
   rw [show (vQ l).asIdeal = Ideal.span {((l : ℕ) : 𝓞 ℚ)} from rfl, Ideal.mem_span_singleton,
     ← map_dvd_iff Rat.ringOfIntegersEquiv]
   simp
 
+/- English proof (translation)
+Rewrite using `[ValuationSubring.valuation_le_one_iff]`. Conclude with `intCast_mem A n`.
+-/
 theorem val_intCast_le_one (A : ValuationSubring Ω) (n : ℤ) : A.valuation (n : Ω) ≤ 1 := by
   rw [ValuationSubring.valuation_le_one_iff]
   exact intCast_mem A n
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hnd`. Establish `hp : Prime ((l : ℕ) : ℤ)` using `Nat.prime_iff_prime_int.mp hl.out`. Establish `hc : IsCoprime ((l : ℕ) : ℤ) n` using `(Irreducible.coprime_iff_not_dvd hp.irreducible).2 hnd`.
+
+Take `⟨u, w, huw⟩` from `hc`. Establish `h1 : A.valuation ((u : Ω) * ((l : ℕ) : Ω)) < 1`. Rewrite using `[map_mul]`. Conclude with `(mul_le_of_le_one_left' (val_intCast_le_one A u)).trans_lt hA`. Establish `h2 : A.valuation ((w : Ω) * (n : Ω)) < 1`.
+
+Rewrite using `[map_mul]`. Conclude with `(mul_le_of_le_one_left' (val_intCast_le_one A w)).trans_lt h`. Establish `h3` using `Valuation.map_add_lt A.valuation h1 h2`. Establish `h4 : ((u : Ω) * ((l : ℕ) : Ω)) + (w : Ω) * (n : Ω) = 1`. Use `congrArg (Int.cast (R := Ω)) huw` as an intermediate fact.
+
+Move the coercions through the operations in `at this`. Conclude with `this`. Rewrite `h3` using `[h4, map_one]`. Conclude with `lt_irrefl _ h3`. Introduce and unpack `⟨m, rfl⟩`.
+
+Use `push_cast`. Rewrite using `[map_mul]`. Conclude with `(mul_le_of_le_one_right' (val_intCast_le_one A m)).trans_lt hA`.
+-/
 theorem val_intCast_lt_one_iff (A : ValuationSubring Ω) (hA : A.valuation ((l : ℕ) : Ω) < 1) (n : ℤ) :
     A.valuation (n : Ω) < 1 ↔ ((l : ℕ) : ℤ) ∣ n := by
   constructor
@@ -122,6 +166,11 @@ theorem val_intCast_lt_one_iff (A : ValuationSubring Ω) (hA : A.valuation ((l :
     rw [map_mul]
     exact (mul_le_of_le_one_right' (val_intCast_le_one A m)).trans_lt hA
 
+/- English proof (translation)
+Unfold `IsPlaceOver`. Introduce `x`. Take `⟨n, rfl⟩ : ∃ n : ℤ, ((n : 𝓞 ℚ)) = x` from `⟨Rat.ringOfIntegersEquiv x, by`. Rewrite using `[← eq_intCast Rat.ringOfIntegersEquiv.symm, RingEquiv.symm_apply_apply]⟩`. Rewrite using `[intCast_mem_vQ, ← val_intCast_lt_one_iff A hA n]`.
+
+Use `first`. Consider the case `simp`. Consider the case `(push_cast; rfl)`. Consider the case `norm_cast`.
+-/
 theorem isPlaceOver_vQ [Algebra ℚ Ω] (A : ValuationSubring Ω) (hA : A.valuation ((l : ℕ) : Ω) < 1) :
     IsPlaceOver (F := ℚ) A (vQ l) := by
   unfold IsPlaceOver
@@ -135,6 +184,13 @@ theorem isPlaceOver_vQ [Algebra ℚ Ω] (A : ValuationSubring Ω) (hA : A.valuat
     | (push_cast; rfl)
     | norm_cast
 
+/- English proof (translation)
+Establish `: Algebra.IsAlgebraic ℚ Ω` using `IsAlgClosure.isAlgebraic`. Set `j0 : Ω →ₐ[ℚ] PadicAlgCl l` to `IsAlgClosed.lift`. Establish `h0 : (placeJ (j0 : Ω →+* PadicAlgCl l)).valuation ((l : ℕ) : Ω) < 1`. Rewrite using `[val_lt_one_iff (mem_placeJ _), map_natCast]`. Establish `h1 : ‖((l : ℕ) : PadicAlgCl l)‖ = ‖((l : ℕ) : ℚ_[l])‖`.
+
+Rewrite using `[← PadicAlgCl.norm_extends, map_natCast]`. Rewrite using `[h1]`. Conclude with `Padic.norm_p_lt_one`. Take `⟨σ, hσ⟩` from `exists_smul_eq_of_isPlaceOver (F := ℚ) (isPlaceOver_vQ _ h0) (isPlaceOver_vQ A hA)`. Use `⟨(j0 : Ω →+* PadicAlgCl l).comp ((σ⁻¹ : G ℚ Ω) : Ω →+* Ω), fun x => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hσ, ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, mem_placeJ]`. Both sides reduce to the same expression.
+-/
 theorem exists_emb [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (A : ValuationSubring Ω)
     (hA : A.valuation ((l : ℕ) : Ω) < 1) :
     ∃ j : Ω →+* PadicAlgCl l, ∀ x, x ∈ A ↔ ‖j x‖ ≤ 1 := by

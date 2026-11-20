@@ -27,14 +27,23 @@ def withI (M : AbF) : AbF := M.sup (AbF.cyc 4)
 
 def base2 (M : AbF) (q d : ℕ) : AbF := ((withI M).sup (AbF.quad q)).sup (AbF.quad d)
 
+/- English proof (translation)
+Simplify using `only [base2, withI, AbF.sup, AbF.cyc, AbF.quad]`. Rewrite using `[max_eq_left (by omega : 1 ≤ 4), max_eq_left (by omega : 1 ≤ q), max_eq_left (by omega : 1 ≤ d)]`.
+-/
 theorem modulus_adjoinISqrtNegPrimes (M : AbF) {q d : ℕ} (hq : 0 < q) (hd : 0 < d) : (base2 M q d).m = M.m * 4 * q * d := by
   simp only [base2, withI, AbF.sup, AbF.cyc, AbF.quad]
   rw [max_eq_left (by omega : 1 ≤ 4), max_eq_left (by omega : 1 ≤ q), max_eq_left (by omega : 1 ≤ d)]
 
 def CardLe (P : Type) (n : ℕ) : Prop := Finite P ∧ Nat.card P ≤ n
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, h.2.trans hn⟩`.
+-/
 theorem CardLe.mono {P : Type} {n n' : ℕ} (h : CardLe P n) (hn : n ≤ n') : CardLe P n' := ⟨h.1, h.2.trans hn⟩
 
+/- English proof (translation)
+Use `haveI := h.1`. Use `haveI : Finite P := Finite.of_injective f hf`. Conclude with `⟨inferInstance, (Nat.card_le_card_of_injective f hf).trans h.2⟩`.
+-/
 theorem CardLe.of_injective {P Q : Type} {n : ℕ} (h : CardLe Q n) (f : P → Q) (hf : Function.Injective f) : CardLe P n := by
   haveI := h.1
   haveI : Finite P := Finite.of_injective f hf
@@ -62,6 +71,13 @@ def OrbLe (V : Subgroup (G F Ω)) (p n : ℕ) : Prop :=
   ∃ T : Finset (ValuationSubring Ω), T.card ≤ n ∧ (∀ B ∈ T, B.valuation (p : Ω) < 1) ∧
     ∀ A : ValuationSubring Ω, A.valuation (p : Ω) < 1 → ∃ B ∈ T, ∃ v ∈ V, v • B = A
 
+/- English proof (translation)
+Use extensionality with `φ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3, -⟩`. Use `⟨h1, h2, ?_⟩` and prove the remaining obligations. Introduce and unpack `u ⟨A, -, hA⟩`.
+
+Conclude with `h3 A u hA`. Introduce and unpack `⟨h1, h2, h3⟩`. Use `⟨h1, h2, ?_, ?_⟩` and prove the remaining obligations. Introduce `A u hu`. Conclude with `h3 u ⟨A, by simp, hu⟩`.
+
+Introduce `A hA`. Simplify using `at hA`.
+-/
 theorem xDual_one (U : Subgroup (G F Ω)) (l : ℕ) : XDual 1 U (ZMod l) (ZMod l) = CharOff U (ineOff F Ω 1) l := by
   ext φ
   constructor
@@ -76,6 +92,9 @@ theorem xDual_one (U : Subgroup (G F Ω)) (l : ℕ) : XDual 1 U (ZMod l) (ZMod l
     · intro A hA
       simp at hA
 
+/- English proof (translation)
+Introduce and unpack `φ ⟨h1, h2, h3, -⟩`. Use `⟨h1, h2, ?_⟩` and prove the remaining obligations. Introduce and unpack `u ⟨A, -, hA⟩`. Conclude with `h3 A u hA`.
+-/
 theorem xDual_le_charOff (N N' : ℕ) (U : Subgroup (G F Ω)) (l : ℕ) :
     XDual N U (ZMod l) (ZMod l) ≤ CharOff U (ineOff F Ω N') l := by
   rintro φ ⟨h1, h2, h3, -⟩
@@ -83,9 +102,15 @@ theorem xDual_le_charOff (N N' : ℕ) (U : Subgroup (G F Ω)) (l : ℕ) :
   rintro u ⟨A, -, hA⟩
   exact h3 A u hA
 
+/- English proof (translation)
+The claim follows from `CardLe.mono h (Nat.pow_le_pow_right hl hr)`.
+-/
 theorem XRk.mono {l N : ℕ} {U : Subgroup (G F Ω)} {r r' : ℕ} (hl : 0 < l) (h : XRk l N U r) (hr : r ≤ r') : XRk l N U r' :=
   CardLe.mono h (Nat.pow_le_pow_right hl hr)
 
+/- English proof (translation)
+Establish `hle : XDual N U (ZMod l) (ZMod l) ≤ XDual 1 U (ZMod l) (ZMod l)`. Rewrite using `[xDual_one]`. Conclude with `xDual_le_charOff N 1 U l`. Conclude with `CardLe.of_injective h (Submodule.inclusion hle) (Submodule.inclusion_injective hle)`.
+-/
 theorem XRk.of_one {l : ℕ} {U : Subgroup (G F Ω)} {r : ℕ} (h : XRk l 1 U r) (N : ℕ) : XRk l N U r := by
   have hle : XDual N U (ZMod l) (ZMod l) ≤ XDual 1 U (ZMod l) (ZMod l) := by
     rw [xDual_one]
@@ -98,6 +123,9 @@ section
 
 variable (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω]
 
+/- English proof (translation)
+Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : CharZero Ω := (RingHom.charZero_iff (algebraMap ℚ Ω).injective).mp inferInstance`. Use `haveI : NeZero (m : Ω) := ⟨Nat.cast_ne_zero.mpr (NeZero.ne m)⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω m`. Conclude with `hζ.card_rootsOfUnity`.
+-/
 theorem card_roots (m : ℕ) [NeZero m] : Nat.card (rootsOfUnity m Ω) = m := by
   haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ
   haveI : CharZero Ω := (RingHom.charZero_iff (algebraMap ℚ Ω).injective).mp inferInstance
@@ -111,6 +139,11 @@ def galChar (m : ℕ) [NeZero m] : G ℚ Ω →* (ZMod m)ˣ where
   map_mul' g h := map_mul (modularCyclotomicCharacter Ω (card_roots Ω m)) g.toRingEquiv h.toRingEquiv
 
 variable {Ω} in
+/- English proof (translation)
+Establish `hζ0 : ζ ≠ 0`. Introduce and unpack `rfl`. Rewrite `hζ` using `[zero_pow (NeZero.ne m)]`. Conclude with `zero_ne_one hζ`. Establish `hmem : Units.mk0 ζ hζ0 ∈ rootsOfUnity m Ω`.
+
+Rewrite using `[mem_rootsOfUnity]`. Use `ext`. Simplify using `using hζ`. Conclude with `modularCyclotomicCharacter.spec Ω (card_roots Ω m) g.toRingEquiv hmem`.
+-/
 theorem galChar_spec (m : ℕ) [NeZero m] (g : G ℚ Ω) (ζ : Ω) (hζ : ζ ^ m = 1) : g ζ = ζ ^ (galChar Ω m g : ZMod m).val := by
   have hζ0 : ζ ≠ 0 := by
     rintro rfl

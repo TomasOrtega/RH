@@ -14,6 +14,11 @@ open GlobalTheory.AdForm
 
 namespace GlobalTheory.AdForm
 
+/- English proof (translation)
+Introduce `B X I _ _ l Z u k _ _ _ _ ι p β Q L hS i`. Take `⟨e, he⟩` from `hS.1`. Establish `hv` using `GlobalTheory.LocMod.LevelPlaces.splitPt_v_eq_under (p i) (he i)`. Establish `hT` using `GlobalTheory.ColNorms.BadPrimes.T_mem (GlobalTheory.BasePrimes.primes_ok B X).1 (e i).2`. Rewrite using `[hv]`.
+
+Use `show _ ∈ Ideal.under _ _`. Rewrite using `[Ideal.mem_under, map_natCast]`. Conclude with `hT`.
+-/
 theorem stdT_levelPrime_mem_v : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type)
     (p : ι → SplitPt (I.rec7 l Z) k) (β : ∀ j i, Frame (p i) ((I.rec7 l Z).sp.X j) (Fin ((I.rec7 l Z).sp.X j).rank))
     (Q : ∀ j, ι → Pair k (Fin ((I.rec7 l Z).sp.X j).rank)) (L : ∀ j, Lat ((I.rec7 l Z).sp.X j)),

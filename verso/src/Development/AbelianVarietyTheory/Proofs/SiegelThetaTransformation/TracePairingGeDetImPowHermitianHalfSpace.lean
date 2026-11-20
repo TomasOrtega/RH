@@ -9,6 +9,11 @@ namespace GlobalTheory.SW.TracePair
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Take `⟨σ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Distinguish the cases in `h : σ ∈ Ψ`. Conclude with `Finset.card_pos.2 ⟨σ, h⟩`. Use `Finset.card_pos.2 ⟨ComplexEmbedding.conjugate σ, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h'`.
+
+Conclude with `h ((hΨ σ).2 h')`.
+-/
 theorem card_pos {Ψ : Finset (E →+* ℂ)} (hΨ : IsType Ψ) : 0 < Ψ.card := by
   obtain ⟨σ⟩ : Nonempty (E →+* ℂ) := inferInstance
   by_cases h : σ ∈ Ψ
@@ -19,6 +24,9 @@ theorem card_pos {Ψ : Finset (E →+* ℂ)} (hΨ : IsType Ψ) : 0 < Ψ.card := 
 
 open Matrix NumberField in
 open scoped ComplexOrder in
+/- English proof (translation)
+Establish `h` using `Algebra.norm_eq_prod_embeddings ℚ ℂ x`. Rewrite `h` using `[eq_ratCast]`. Rewrite using `[h]`. Conclude with `Fintype.prod_equiv (RingHom.equivRatAlgHom E ℂ).symm _ _ (fun σ => rfl)`.
+-/
 private lemma ratCast_algebra_norm_eq_prod_embeddings {E : Type} [Field E] [NumberField E] (x : E) :
     ((Algebra.norm ℚ x : ℚ) : ℂ) = ∏ τ : E →+* ℂ, τ x := by
   have h := Algebra.norm_eq_prod_embeddings ℚ ℂ x
@@ -28,6 +36,23 @@ private lemma ratCast_algebra_norm_eq_prod_embeddings {E : Type} [Field E] [Numb
 
 open Matrix NumberField in
 open scoped ComplexOrder in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.SW.IsType at hΨ`. Establish `hreal : ∀ τ ∈ Ψ, ((τ d).re : ℂ) = τ d` using `fun τ hτ => Complex.ext (by simp) (by simpa using (Complex.pos_iff.1 (hpos τ hτ)).2)`. Establish `hconj : ∀ τ : E →+* ℂ, ComplexEmbedding.conjugate (ComplexEmbedding.conjugate τ) = τ`. Introduce `τ`. Use extensionality with `x`.
+
+Simplify using `[ComplexEmbedding.conjugate_coe_eq]`. Establish `hcompl : ∏ τ ∈ Ψᶜ, τ d = ∏ σ ∈ Ψ, ComplexEmbedding.conjugate σ d`. Use `Finset.prod_nbij' ComplexEmbedding.conjugate ComplexEmbedding.conjugate ?_ ?_ (fun τ _ => hconj τ) (fun τ _ => hconj τ) ?_` and prove the remaining obligations. Introduce `τ hτ`. Simplify using `only [Finset.mem_coe, Finset.mem_compl] at hτ ⊢`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hτ ((hΨ τ).2 h)`. Introduce `τ hτ`. Simplify using `only [Finset.mem_coe, Finset.mem_compl] at hτ ⊢`. Conclude with `(hΨ τ).1 hτ`.
+
+Introduce `τ _`. Rewrite using `[hconj]`. Establish `hconjΨ : ∏ σ ∈ Ψ, ComplexEmbedding.conjugate σ d = ∏ σ ∈ Ψ, σ d` using `Finset.prod_congr rfl fun σ hσ => by`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, ← hreal σ hσ, Complex.conj_ofReal]`. Establish `hprod : ∏ σ ∈ Ψ, σ d = ((∏ σ ∈ Ψ, (σ d).re : ℝ) : ℂ)`.
+
+Use `push_cast`. Conclude with `Finset.prod_congr rfl fun σ hσ => (hreal σ hσ).symm`. Establish `hall` using `ratCast_algebra_norm_eq_prod_embeddings d`. Rewrite `hall` using `[← Finset.prod_mul_prod_compl Ψ, hcompl, hconjΨ, hprod]`. Use `set r := ∏ σ ∈ Ψ, (σ d).re`.
+
+Establish `hr : 0 < r` using `Finset.prod_pos fun σ hσ => (Complex.pos_iff.1 (hpos σ hσ)).1`. Take `⟨m, hm⟩` from `IsIntegrallyClosed.isIntegral_iff.1 (Algebra.isIntegral_norm ℚ hd)`. Establish `hmr : (m : ℝ) = r * r`. Establish `h1 : ((m : ℚ) : ℂ) = (r : ℂ) * r`. Rewrite using `[← hall, ← hm]`.
+
+Both sides reduce to the same expression. Conclude with `h1` after adjusting the coercions. Establish `hm1 : (1 : ℝ) ≤ m`. Establish `: 0 < m` using `by exact_mod_cast (hmr ▸ mul_pos hr hr : (0 : ℝ) < m)`. Conclude with `this` after adjusting the coercions.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 private lemma one_le_prod_re_of_isType_of_isIntegral_pos {E : Type} [Field E] [NumberField E]
     (Ψ : Finset (E →+* ℂ)) (hΨ : _root_.GlobalTheory.SW.IsType Ψ) (d : E)
     (hd : IsIntegral ℤ d) (hpos : ∀ τ ∈ Ψ, 0 < τ d) :
@@ -76,6 +101,9 @@ private lemma one_le_prod_re_of_isType_of_isIntegral_pos {E : Type} [Field E] [N
 
 open Matrix NumberField in
 open scoped ComplexOrder in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.SW.Den _root_.GlobalTheory.SW.IntM at h`. Rewrite using `[det_apply]`. Use `IsIntegral.sum _ fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def]`. Conclude with `IsIntegral.smul _ (IsIntegral.prod _ fun i _ => h _ _)`.
+-/
 private lemma isIntegral_det_natCast_smul_of_den {E : Type} [Field E] {N : ℕ} (c : ℕ)
     (T : Matrix (Fin N) (Fin N) E) (h : _root_.GlobalTheory.SW.Den c T) :
     IsIntegral ℤ (((c : E) • T).det) := by
@@ -87,6 +115,9 @@ private lemma isIntegral_det_natCast_smul_of_den {E : Type} [Field E] {N : ℕ} 
 
 open Matrix NumberField in
 open scoped ComplexOrder in
+/- English proof (translation)
+Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 private lemma map_det_natCast_smul {E : Type} [Field E] {N : ℕ} (c : ℕ)
     (T : Matrix (Fin N) (Fin N) E) (τ : E →+* ℂ) :
     τ (((c : E) • T).det) = ((c : ℂ) • T.map τ).det := by
@@ -97,6 +128,17 @@ private lemma map_det_natCast_smul {E : Type} [Field E] {N : ℕ} (c : ℕ)
 
 open Matrix NumberField in
 open scoped ComplexOrder in
+/- English proof (translation)
+Use `set U : Matrix (Fin N) (Fin N) ℂ := hY.isHermitian.eigenvectorUnitary.1`. Use `set D : Matrix (Fin N) (Fin N) ℂ := diagonal (fun i => ((Real.sqrt (hY.isHermitian.eigenvalues i) : ℝ) : ℂ))`. Establish `hU : star U * U = 1` using `Unitary.coe_star_mul_self hY.isHermitian.eigenvectorUnitary`. Use `⟨D * star U, ?_, ?_⟩` and prove the remaining obligations. Establish `hD : Dᴴ = D` using `by simp [D, diagonal_conjTranspose]`.
+
+Establish `hDD : D * D = diagonal (RCLike.ofReal ∘ hY.isHermitian.eigenvalues)`. Rewrite using `[diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp_apply]`.
+
+Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt (hY.eigenvalues_pos i).le]`. Both sides reduce to the same expression. Use `conv_rhs => rw [hY.isHermitian.spectral_theorem]`. Rewrite using `[conjTranspose_mul, hD, star_eq_conjTranspose, conjTranspose_conjTranspose]`. Simplify using `only [Unitary.conjStarAlgAut_apply]`.
+
+Rewrite using `[← star_eq_conjTranspose, ← Matrix.mul_assoc, Matrix.mul_assoc U D D, hDD]`. Rewrite using `[det_mul]`. Use `mul_ne_zero ?_ ?_` and prove the remaining obligations. Rewrite using `[det_diagonal, Finset.prod_ne_zero_iff]`. Introduce `i _`.
+
+Conclude with `(Real.sqrt_pos.2 (hY.eigenvalues_pos i)).ne'` after adjusting the coercions. Establish `h1 : (star U).det * U.det = 1` using `by rw [← det_mul, hU, det_one]`. Conclude with `left_ne_zero_of_mul_eq_one h1`.
+-/
 private lemma exists_conjTranspose_mul_self_eq_of_posDef {N : ℕ} {Y : Matrix (Fin N) (Fin N) ℂ}
     (hY : Y.PosDef) : ∃ C : Matrix (Fin N) (Fin N) ℂ, Cᴴ * C = Y ∧ C.det ≠ 0 := by
   set U : Matrix (Fin N) (Fin N) ℂ := hY.isHermitian.eigenvectorUnitary.1
@@ -126,6 +168,9 @@ private lemma exists_conjTranspose_mul_self_eq_of_posDef {N : ℕ} {Y : Matrix (
 
 open Matrix NumberField in
 open scoped ComplexOrder in
+/- English proof (translation)
+Establish `hn : (0 : ℝ) < Fintype.card ι` using `by exact_mod_cast Fintype.card_pos`. Establish `h` using `Real.geom_mean_le_arith_mean_weighted Finset.univ (fun _ => 1 / (Fintype.card ι : ℝ)) x (fun _ _ => by positivity) (by simp [Finset.card_univ]) (fun i _ => hx i)`. Rewrite `h` using `[Real.finset_prod_rpow _ _ (fun i _ => hx i), ← Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma card_mul_prod_rpow_inv_card_le_sum {ι : Type*} [Fintype ι] [Nonempty ι] (x : ι → ℝ)
     (hx : ∀ i, 0 ≤ x i) :
     (Fintype.card ι : ℝ) * (∏ i, x i) ^ (1 / (Fintype.card ι : ℝ)) ≤ ∑ i, x i := by
@@ -139,6 +184,9 @@ private lemma card_mul_prod_rpow_inv_card_le_sum {ι : Type*} [Fintype ι] [None
 
 open Matrix NumberField in
 open scoped ComplexOrder in
+/- English proof (translation)
+Use `haveI : Nonempty (Fin N) := ⟨⟨0, hN⟩⟩`. Establish `h` using `card_mul_prod_rpow_inv_card_le_sum hP.isHermitian.eigenvalues (fun i => (hP.eigenvalues_pos i).le)`. Rewrite `h` using `[Fintype.card_fin]`. Rewrite using `[hP.isHermitian.det_eq_prod_eigenvalues, hP.isHermitian.trace_eq_sum_eigenvalues]`. Simplify `h` using `[← Complex.ofReal_prod, ← Complex.ofReal_sum]`.
+-/
 private lemma card_mul_det_rpow_le_trace_of_posDef {N : ℕ} (hN : 0 < N) {P : Matrix (Fin N) (Fin N) ℂ}
     (hP : P.PosDef) : (N : ℝ) * P.det.re ^ (1 / (N : ℝ)) ≤ P.trace.re := by
   haveI : Nonempty (Fin N) := ⟨⟨0, hN⟩⟩
@@ -150,6 +198,15 @@ private lemma card_mul_det_rpow_le_trace_of_posDef {N : ℕ} (hN : 0 < N) {P : M
 
 open Matrix NumberField in
 open scoped ComplexOrder in
+/- English proof (translation)
+Take `⟨C, rfl, hC⟩` from `exists_conjTranspose_mul_self_eq_of_posDef hY`. Establish `hinj : Function.Injective Cᴴ.mulVec`. Use `Matrix.mulVec_injective_iff_isUnit.2 ?_` and prove the remaining obligations. Rewrite using `[isUnit_iff_isUnit_det, det_conjTranspose]`. Conclude with `(star_ne_zero.2 hC).isUnit`.
+
+Establish `hP` using `hA.conjTranspose_mul_mul_same hinj`. Rewrite `hP` using `[conjTranspose_conjTranspose]`. Establish `htr : (A * (Cᴴ * C)).trace = (C * A * Cᴴ).trace`. Rewrite using `[← Matrix.mul_assoc, trace_mul_comm, Matrix.mul_assoc]`. Establish `hAim : A.det.im = 0` using `(Complex.pos_iff.1 hA.det_pos).2.symm`.
+
+Establish `hYim : (Cᴴ * C).det.im = 0` using `(Complex.pos_iff.1 hY.det_pos).2.symm`. Establish `hdet : (C * A * Cᴴ).det = A.det * (Cᴴ * C).det`. Simplify using `only [det_mul, det_conjTranspose]`. Expand and normalize the polynomial expressions, which then agree. Establish `hre : (C * A * Cᴴ).det.re = A.det.re * (Cᴴ * C).det.re`.
+
+Rewrite using `[hdet, Complex.mul_re, hAim, hYim]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[htr, ← hre]`. Conclude with `card_mul_det_rpow_le_trace_of_posDef hN hP`.
+-/
 private lemma card_mul_det_mul_det_rpow_le_trace_mul_of_posDef {N : ℕ} (hN : 0 < N) {A Y : Matrix (Fin N) (Fin N) ℂ}
     (hA : A.PosDef) (hY : Y.PosDef) :
     (N : ℝ) * (A.det.re * Y.det.re) ^ (1 / (N : ℝ)) ≤ (A * Y).trace.re := by
@@ -177,6 +234,29 @@ open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real Classical in
 variable {E : Type} [Field E] [NumberField E] in
 
+/- English proof (translation)
+Introduce `E _ _ _ Ψ hΨ N c hN hc`. Establish `hne : Ψ.Nonempty`. Take `⟨τ₀⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Distinguish the cases in `h : τ₀ ∈ Ψ`. Conclude with `⟨τ₀, h⟩`.
+
+Use `⟨ComplexEmbedding.conjugate τ₀, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h'`. Conclude with `h ((hΨ τ₀).2 h')`. Use `haveI : Nonempty Ψ := hne.to_subtype`. Establish `hn : 0 < Ψ.card` using `hne.card_pos`.
+
+Establish `hcR : (0 : ℝ) < c` using `by exact_mod_cast hc`. Establish `hNR : (0 : ℝ) < N` using `by exact_mod_cast hN`. Use `⟨(Ψ.card * N : ℝ) / c, by positivity, ?_⟩` and prove the remaining obligations. Introduce `T _ hden hpos Z hZ`. Establish `hY : ∀ τ : Ψ, (_root_.GlobalTheory.SW.imH (Z τ)).PosDef`.
+
+Simplify `hZ` using `[_root_.GlobalTheory.SW.Hn]`. Establish `hA : ∀ τ : Ψ, ((c : ℂ) • T.map τ.1).PosDef` using `fun τ => (hpos τ).smul (by exact_mod_cast hc)`. Use `set a : Ψ → ℝ := fun τ => ((c : ℂ) • T.map τ.1).det.re`. Use `set y : Ψ → ℝ := fun τ => (_root_.GlobalTheory.SW.imH (Z τ)).det.re`. Establish `ha : ∀ τ, 0 < a τ` using `fun τ => (Complex.pos_iff.1 (hA τ).det_pos).1`.
+
+Establish `hy : ∀ τ, 0 < y τ` using `fun τ => (Complex.pos_iff.1 (hY τ).det_pos).1`. Establish `hD : _root_.GlobalTheory.SW.detIm Z = ∏ τ, y τ` using `rfl`. Establish `hprod_a : 1 ≤ ∏ τ, a τ`. Establish `h` using `one_le_prod_re_of_isType_of_isIntegral_pos Ψ hΨ (((c : E) • T).det) (isIntegral_det_natCast_smul_of_den c T hden) (fun τ hτ => by`. Rewrite using `[map_det_natCast_smul]`.
+
+Conclude with `(hA ⟨τ, hτ⟩).det_pos)`. Establish `h' : ∏ τ, a τ = ∏ τ : Ψ, (τ.1 ((c : E) • T).det).re` using `Finset.prod_congr rfl fun τ _ => by simp only [a]; rw [map_det_natCast_smul]`. Rewrite using `[h', Finset.prod_coe_sort Ψ (fun τ => (τ ((c : E) • T).det).re)]`. Conclude with `h`. Establish `hsum : (c : ℝ) * ∑ τ : Ψ, (T.map τ.1 * _root_.GlobalTheory.SW.imH (Z τ)).trace.re = ∑ τ : Ψ, ((c : ℂ) • T.map τ.1 * _root_.GlobalTheory.SW.imH (Z τ)).trace.re`.
+
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_mul, trace_smul, smul_eq_mul]`. Simplify using the standard rewrite rules. Establish `hlow : ∀ τ : Ψ, (N : ℝ) * (a τ * y τ) ^ (1 / (N : ℝ)) ≤ ((c : ℂ) • T.map τ.1 * _root_.GlobalTheory.SW.imH (Z τ)).trace.re` using `fun τ => card_mul_det_mul_det_rpow_le_trace_mul_of_posDef hN (hA τ) (hY τ)`.
+
+Establish `hamgm` using `card_mul_prod_rpow_inv_card_le_sum (fun τ : Ψ => (a τ * y τ) ^ (1 / (N : ℝ))) (fun τ => by have := ha τ; have := hy τ; positivity)`. Rewrite `hamgm` using `[Fintype.card_coe, Real.finset_prod_rpow _ _ (fun τ _ => (mul_pos (ha τ) (hy τ)).le), ← Real.rpow_mul (Finset.prod_nonneg fun τ _ => (mul_pos (ha τ) (hy τ)).le), Finset.prod_mul_distrib, ← hD]`. Establish `he : 1 / (N : ℝ) * (1 / (Ψ.card : ℝ)) = 1 / ((Ψ.card * N : ℕ) : ℝ)`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite `hamgm` using `[he]`. Establish `hDnn : 0 ≤ _root_.GlobalTheory.SW.detIm Z`. Rewrite using `[hD]`. Conclude with `Finset.prod_nonneg fun τ _ => (hy τ).le`. Establish `hmono : _root_.GlobalTheory.SW.detIm Z ^ (1 / ((Ψ.card * N : ℕ) : ℝ)) ≤ ((∏ τ, a τ) * _root_.GlobalTheory.SW.detIm Z) ^ (1 / ((Ψ.card * N : ℕ) : ℝ))` using `Real.rpow_le_rpow hDnn (le_mul_of_one_le_left hDnn hprod_a) (by positivity)`.
+
+Establish `hchain : (Ψ.card * N : ℝ) * _root_.GlobalTheory.SW.detIm Z ^ (1 / ((Ψ.card * N : ℕ) : ℝ)) ≤ (c : ℝ) * ∑ τ : Ψ, (T.map τ.1 * _root_.GlobalTheory.SW.imH (Z τ)).trace.re`. Rewrite using `[hsum]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, mul_comm (N : ℝ)]`. Use `gcongr`.
+
+Use `_ ≤ (N : ℝ) * ∑ τ : Ψ, (a τ * y τ) ^ (1 / (N : ℝ)) := by gcongr`. Use `_ = ∑ τ : Ψ, (N : ℝ) * (a τ * y τ) ^ (1 / (N : ℝ)) := Finset.mul_sum _ _ _`. Use `_ ≤ _ := Finset.sum_le_sum fun τ _ => hlow τ`. Rewrite using `[div_mul_eq_mul_div, div_le_iff₀ hcR]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem _root_.GlobalTheory.SW.TracePair.trace_ge :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Finset (E →+* ℂ)),
       _root_.GlobalTheory.SW.IsType Ψ → ∀ N c : ℕ, 0 < N → 0 < c → ∃ k : ℝ, 0 < k ∧

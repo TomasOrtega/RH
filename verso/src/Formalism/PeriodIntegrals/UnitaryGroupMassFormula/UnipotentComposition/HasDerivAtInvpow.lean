@@ -10,6 +10,17 @@ open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.B Formalism.FourierDeca
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C a => simpa [pderiv_C] using hasDerivAt_const (0 : ℝ) a`. Consider the case `add p q hp hq`. Establish `hf : (fun t => eval (v t) (p + q)) = fun t => eval (v t) p + eval (v t) q`. Use function extensionality and compare the values at `t`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hf]`. Use `(hp.add hq).congr_deriv ?_` and prove the remaining obligations. Simplify using `[map_add, add_mul, Finset.sum_add_distrib]`. Consider the case `mul_X p i hp`.
+
+Establish `hf : (fun t => eval (v t) (p * X i)) = fun t => eval (v t) p * v t i`. Use function extensionality and compare the values at `t`. Simplify using the standard rewrite rules. Rewrite using `[hf]`. Use `(hp.mul (hv i)).congr_deriv ?_` and prove the remaining obligations.
+
+Use `symm`. Simplify using `only [Derivation.leibniz, smul_eq_mul, map_add, map_mul, eval_X, pderiv_X, add_mul, Finset.sum_add_distrib]`. Rewrite using `[show ∀ a b c d : ℂ, b = c → a = d → a + b = c + d from fun a b c d h1 h2 => by rw [h1, h2, add_comm]]`. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+
+Simplify using `[Pi.single_apply, apply_ite (eval (v 0)), mul_ite, ite_mul, Finset.sum_ite_eq, Finset.sum_ite_eq']`.
+-/
 theorem hasDerivAt_eval {σ : Type*} [Fintype σ] (v : ℝ → σ → ℂ) (v' : σ → ℂ)
     (hv : ∀ i, HasDerivAt (fun t => v t i) (v' i) 0) (q : MvPolynomial σ ℂ) :
     HasDerivAt (fun t => eval (v t) q) (∑ i, eval (v 0) (pderiv i q) * v' i) 0 := by
@@ -37,6 +48,13 @@ theorem hasDerivAt_eval {σ : Type*} [Fintype σ] (v : ℝ → σ → ℂ) (v' :
       · simp [Pi.single_apply, apply_ite (eval (v 0)), mul_ite, ite_mul, Finset.sum_ite_eq,
           Finset.sum_ite_eq']
 
+/- English proof (translation)
+Establish `h` using `crv_hasDerivAt (false, X) g`. Establish `hab : ∀ a b, HasDerivAt (fun t => crv (false, X) g t a b) ((g * X) a b) 0`. Introduce `a b`. Establish `h1` using `hasDerivAt_pi.1 h a`. Establish `h2` using `hasDerivAt_pi.1 h1 b`.
+
+Simplify `h2` using `[dirv]`. Break down `i with ⟨a, b⟩ | ⟨a, b⟩` into its components or cases. Use `(hab a b).congr_deriv ?_` and prove the remaining obligations. Simplify using `only [lin, map_sum, map_mul, eval_C, eval_X, vars, Sum.elim_inl, Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun c _ => mul_comm _ _`.
+
+Use `(hab a b).star.congr_deriv ?_` and prove the remaining obligations. Simplify using `only [lin, map_sum, map_mul, eval_C, eval_X, vars, Sum.elim_inr, Matrix.mul_apply, star_sum, star_mul']`. Conclude with `Finset.sum_congr rfl fun c _ => mul_comm _ _`.
+-/
 theorem crv_var {k r : ℕ} (X g : Mat k r) (i : Vr (2 * r + k + 1)) :
     HasDerivAt (fun t => vars (crv (false, X) g t) i) (eval (vars g) (lin X i)) 0 := by
   have h := crv_hasDerivAt (false, X) g
@@ -53,6 +71,9 @@ theorem crv_var {k r : ℕ} (X g : Mat k r) (i : Vr (2 * r + k + 1)) :
     simp only [lin, map_sum, map_mul, eval_C, eval_X, vars, Sum.elim_inr, Matrix.mul_apply, star_sum, star_mul']
     exact Finset.sum_congr rfl fun c _ => mul_comm _ _
 
+/- English proof (translation)
+Establish `h` using `hasDerivAt_eval (fun t => vars (crv (false, X) g t)) (fun i => eval (vars g) (lin X i)) (fun i => crv_var X g i) q`. Establish `h0 : crv (false, X) g 0 = g` using `by simp [crv]`. Rewrite `h` using `[h0]`. Use `h using 1` and compare the differences between its conclusion and the goal. Simplify using `only [dP, map_sum, map_mul]`.
+-/
 theorem hasDerivAt_poly {k r : ℕ} (X g : Mat k r) (q : MvPolynomial (Vr (2 * r + k + 1)) ℂ) :
     HasDerivAt (fun t => eval (vars (crv (false, X) g t)) q) (eval (vars g) (dP X q)) 0 := by
   have h := hasDerivAt_eval (fun t => vars (crv (false, X) g t)) (fun i => eval (vars g) (lin X i))
@@ -62,12 +83,18 @@ theorem hasDerivAt_poly {k r : ℕ} (X g : Mat k r) (q : MvPolynomial (Vr (2 * r
   convert h using 1
   simp only [dP, map_sum, map_mul]
 
+/- English proof (translation)
+Rewrite using `[qD, DjU, RingHom.map_det]`. Use `congr 1`. Use extensionality with `a b`. Simplify using `[zP, Zh, vars]`.
+-/
 theorem eval_qD {k j ρ : ℕ} (g : Mat k (j + ρ)) : eval (vars g) (qD k j ρ) = DjU k j ρ g := by
   rw [qD, DjU, RingHom.map_det]
   congr 1
   ext a b
   simp [zP, Zh, vars]
 
+/- English proof (translation)
+Rewrite using `[qDb, DjU, RingHom.map_det, show star (Zh k j ρ g).det = (starRingEnd ℂ) (Zh k j ρ g).det from rfl, RingHom.map_det]`. Use `congr 1`. Use extensionality with `a b`. Simplify using `[zPb, Zh, vars]`.
+-/
 theorem eval_qDb {k j ρ : ℕ} (g : Mat k (j + ρ)) : eval (vars g) (qDb k j ρ) = star (DjU k j ρ g) := by
   rw [qDb, DjU, RingHom.map_det, show star (Zh k j ρ g).det = (starRingEnd ℂ) (Zh k j ρ g).det from rfl,
     RingHom.map_det]
@@ -75,6 +102,13 @@ theorem eval_qDb {k j ρ : ℕ} (g : Mat k (j + ρ)) : eval (vars g) (qDb k j ρ
   ext a b
   simp [zPb, Zh, vars]
 
+/- English proof (translation)
+Establish `h2` using `((hasDerivAt_inv h0).pow a).comp (0 : ℝ) hc`. Establish `hf : (fun t => (c t)⁻¹ ^ a) = ((fun y => y⁻¹) ^ a) ∘ c`. Use function extensionality and compare the values at `t`. Simplify using `[Function.comp, Pi.pow_apply]`. Rewrite using `[hf]`.
+
+Use `h2.congr_deriv ?_` and prove the remaining obligations. Break down `a with _ | a` into its components or cases. Simplify using the standard rewrite rules. Simplify using `only [Nat.add_sub_cancel, inv_pow]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hasDerivAt_invpow {c : ℝ → ℂ} {c' : ℂ} (hc : HasDerivAt c c' 0) (h0 : c 0 ≠ 0) (a : ℕ) :
     HasDerivAt (fun t => (c t)⁻¹ ^ a) (-(a : ℂ) * c' * (c 0)⁻¹ ^ (a + 1)) 0 := by
   have h2 := ((hasDerivAt_inv h0).pow a).comp (0 : ℝ) hc
@@ -88,6 +122,13 @@ theorem hasDerivAt_invpow {c : ℝ → ℂ} {c' : ℂ} (hc : HasDerivAt c c' 0) 
     field_simp
     ring
 
+/- English proof (translation)
+Take `⟨q, a, b⟩` from `s`. Establish `hq` using `hasDerivAt_poly X g q`. Establish `hD : HasDerivAt (fun t => DjU k j ρ (crv (false, X) g t)) (eval (vars g) (dP X (qD k j ρ))) 0`. Simplify `hasDerivAt_poly X g (qD k j ρ)` using `only [eval_qD]`. Establish `hDb : HasDerivAt (fun t => star (DjU k j ρ (crv (false, X) g t))) (eval (vars g) (dP X (qDb k j ρ))) 0`.
+
+Simplify `hasDerivAt_poly X g (qDb k j ρ)` using `only [eval_qDb]`. Establish `h0 : crv (false, X) g 0 = g` using `by simp [crv]`. Establish `hD0 : DjU k j ρ (crv (false, X) g 0) ≠ 0` using `by rw [h0]; exact hg`. Establish `hDb0 : star (DjU k j ρ (crv (false, X) g 0)) ≠ 0` using `by rw [h0]; exact star_ne_zero.2 hg`. Establish `h` using `(hq.mul (hasDerivAt_invpow hD hD0 a)).mul (hasDerivAt_invpow hDb hDb0 b)`.
+
+Simplify using `only [h0] at h`. Use `h.congr_deriv ?_` and prove the remaining obligations. Simplify using `only [sv, map_mul, eval_C, Pi.mul_apply, h0]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hasDerivAt_sv {k j ρ : ℕ} (X g : Mat k (j + ρ)) (hg : DjU k j ρ g ≠ 0) (s : SC (2 * (j + ρ) + k + 1)) :
     HasDerivAt (fun t => sv k j ρ s (crv (false, X) g t))
       (sv k j ρ (dP X s.1, s.2.1, s.2.2) g

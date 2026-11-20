@@ -22,6 +22,17 @@ open NumberField
 
 namespace GlobalTheory.CompanionTheory.SiegelND.Integ.Hua
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ n hn ψ hψ μ hμ ν hν Q hQ`. Take `⟨hLC, hSC, hT2, -, -, -, -, -, -, -⟩` from `GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F`. Use `haveI := hLC`. Use `haveI := hSC`. Use `haveI := hT2`.
+
+Take `⟨hTR, -, hSC2, -, -, -, -, -, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (Af F)`. Use `haveI := hTR`. Use `haveI := hSC2`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) (Af F ⊗[F] E)) := inferInstanceAs (SecondCountableTopology (Fin n → Fin n → Af F ⊗[F] E))`. Use `haveI : SecondCountableTopology (HermR (Af F) σ n) := TopologicalSpace.Subtype.secondCountableTopology _`.
+
+Use `haveI : BorelSpace (HermR (Af F) σ n) := inferInstance`. Take `⟨U, hUo, hUc, hUp⟩` from `GlobalTheory.T.finite_adelic_integral_invariant_open_subgroup F E σ hCM M J n ψ hψ μ hμ Q hQ`. Take `⟨C, t, ht, hb⟩` from `GlobalTheory.T.finite_local_orbital_integral_bounded F E σ hCM M J hJ n ψ hψ μ hμ Q hQ`. Take `⟨τ, hτ, hc⟩` from `GlobalTheory.T.scaled_integral_hermitian_in_open_subgroup F E σ hCM n U hUo t ht`. Establish `hs : (n : ℝ) < (M : ℝ) / 2`.
+
+Establish `: ((2 * n : ℕ) : ℝ) < (M : ℝ)` using `by exact_mod_cast hn`. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsum` using `GlobalTheory.T.summable_periodic_bound_by_denominator F E σ n (U.comap (hermIn (Af F) σ n)) t ht τ hτ hc (fun c => ‖starLoc (Af F) σ J (psiFin F ψ) μ Q (hermIn (Af F) σ n c)‖) (fun _ => norm_nonneg _) (fun c l hl => by show ‖_‖ = ‖_‖`. Rewrite using `[map_add, hUp _ _ hl]) C ((M : ℝ) / 2) hb (GlobalTheory.T.summable_denominator_power_of_lt F E σ hCM n _ hs)`.
+
+Conclude with `GlobalTheory.T.summable_over_lattice_quotient_locally_constant _ _ ν U hUo hUc (hermIn (Af F) σ n) (GlobalTheory.T.hermitian_finite_adeles_dense_rational F E σ hCM n U hUo) _ (fun g u hu => hUp g u hu) hsum`.
+-/
 theorem integrable_starLoc_fin : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
   IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J →
   ∀ n : ℕ, 2 * n < M → ∀ ψ : AddChar (AF F) ℂ, IsCharAF F ψ →

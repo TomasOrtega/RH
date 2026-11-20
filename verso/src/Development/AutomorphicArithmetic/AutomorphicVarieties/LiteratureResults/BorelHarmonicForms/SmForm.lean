@@ -4,6 +4,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af UpperTheory.V.AlgRepEndIrreducible UpperTheory.V.Lit UpperTheory.V.Lit.Bor
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `E _ _ _ a Ξ r H G hH hG X x hx y hy`. Use `set c : ℂ := ((2 * r * ell E a (toL X.1) : ℝ) : ℂ) with hc`. Establish `hcc : starRingEnd ℂ c = c` using `Complex.conj_ofReal _`. Take `⟨h1, h2⟩` from `UpperTheory.V.Lit.Bor.tformAdj (Sm E a) Ξ.d H (sqSub E a r) G (Ξ.dmat (toL X.1)) (Ξ.dmat (toL X.1)) (lie E a (toL X.1)) (-lie E a (toL X.1) - c • 1)`. Establish `hX : star X.1 = X.1` using `X.2`.
+
+Establish `e1` using `h1 (by have := hG.adj X.1; rwa [hX] at this) x y`. Establish `e2` using `h2 (fun φ hφ ψ hψ => by`. Use `hH.skew (toL X.1) φ hφ ψ hψ` as an intermediate fact. Simplify using `only [LinearMap.sub_apply, LinearMap.neg_apply, LinearMap.smul_apply, Module.End.one_apply, map_sub, map_neg, LinearMap.map_smulₛₗ, hcc, smul_eq_mul]`. Rewrite `this` using `[← hc]`.
+
+Take the linear combination `this) x hx y hy`. Establish `e3 : smLie Ξ (toL X.1) y = smA Ξ (toL X.1) y + smB Ξ (toL X.1) y`. Simplify using `[smB]`. Establish `e4 : smAdj Ξ r (toL X.1) x = smB Ξ (toL X.1) x + (-lie E a (toL X.1) - c • (1 : Module.End ℂ (Sm E a))).rTensor _ x`. Rewrite using `[smAdj, adj_apply, smA_apply, LinearMap.rTensor_sub, LinearMap.rTensor_neg, LinearMap.rTensor_smul, Module.End.one_eq_id, LinearMap.rTensor_id, ← algebraMap_smul ℂ (2 * r * ell E a (toL X.1)) x]`.
+
+Simplify using `only [LinearMap.sub_apply, LinearMap.neg_apply, LinearMap.smul_apply, LinearMap.id_apply]`. Rewrite using `[show algebraMap ℝ ℂ (2 * r * ell E a (toL X.1)) = c from rfl]`. Normalize the expressions using the abelian group laws. Rewrite using `[e3, e4, map_add, map_add, LinearMap.add_apply, smA_apply, smB_apply, e1, e2, add_comm]`.
+-/
 theorem UpperTheory.V.Lit.Bor.smForm :
     UpperTheory.V.Lit.Bor.SmForm := by
   intro E _ _ _ a Ξ r H G hH hG X x hx y hy

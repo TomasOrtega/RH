@@ -10,6 +10,9 @@ def UnitSplit : Prop :=
     (∀ τ, τ ∈ Subgroup.zpowers σ) → (Module.finrank F E).Prime → ∀ n : ℕ, 0 < n → ∀ v : HeightOneSpectrum (𝓞 F), Split E v →
     MatchAt σ v 1 ((unitSet E n v).indicator 1) ((GLnLocal.integralGL (v.adicCompletion F) n : Set _).indicator 1)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ σ hσ hp n hn v hu`. Distinguish the cases in `h : Split E v`. Conclude with `hS F E σ hσ hp n hn v h`. Take `⟨w, hw⟩` from `placeUniq_holds F E hp v h`. Conclude with `placeUnit_holds hU F E σ hσ v w hw (hu w) n`.
+-/
 theorem locUnit_of (hU : PositivityTheory.Rg.Tf.Loc.BCFLUnit) (hS : UnitSplit) : LocUnit := by
   intro F E _ _ _ _ _ _ σ hσ hp n hn v hu
   by_cases h : Split E v

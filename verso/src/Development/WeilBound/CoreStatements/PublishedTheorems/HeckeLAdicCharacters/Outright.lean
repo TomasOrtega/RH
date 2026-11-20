@@ -4,6 +4,9 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LubinTatePeriod
 
 namespace HodgeLocalDeRhamField.HLdR
 
+/- English proof (translation)
+The claim follows from `PositivityTheory.SecR.Hladr2.field_of_leaves @GlobalTheory.CompanionTheory.LTPer.Tilt.tilt_period @GlobalTheory.T.lubin_tate_period_not_filtered`.
+-/
 theorem field_outright : GlobalTheory.Published.HeckeLAdicCharacterDeRham :=
   PositivityTheory.SecR.Hladr2.field_of_leaves @GlobalTheory.CompanionTheory.LTPer.Tilt.tilt_period @GlobalTheory.T.lubin_tate_period_not_filtered
 

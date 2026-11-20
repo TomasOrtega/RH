@@ -14,6 +14,9 @@ namespace GlobalTheory.Published.AbVarRed
 variable (K L Ω : Type) [Field K] [Field L] [Field Ω] [Algebra K L] [Algebra L Ω] [Algebra K Ω]
   [IsScalarTower K L Ω]
 
+/- English proof (translation)
+Rewrite using `[IsScalarTower.algebraMap_eq K L Ω]`. Use `show Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_algebraMap_tower :
     spMap (algebraMap K Ω) = spMap (algebraMap L Ω) ≫ spMap (algebraMap K L) := by
   rw [IsScalarTower.algebraMap_eq K L Ω]

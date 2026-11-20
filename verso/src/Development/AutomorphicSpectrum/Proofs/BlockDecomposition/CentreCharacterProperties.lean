@@ -18,6 +18,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CompanionTheory.FJE.CentralChar
 
+/- English proof (translation)
+Introduce `D ρ ψ hψ b₀`. Use `⟨fun z z' => ?_, GlobalTheory.CompanionTheory.PcB.chz_norm hψ b₀, fun z hz => ?_, GlobalTheory.CompanionTheory.PcB.continuous_chz hψ b₀⟩` and prove the remaining obligations. Establish `e : (HMul.hMul (b₀.1.map (incA D)) (z + z').1 : Mx D ρ ρ) = (HMul.hMul (b₀.1.map (incA D)) z.1 : Mx D ρ ρ) + (HMul.hMul (b₀.1.map (incA D)) z'.1 : Mx D ρ ρ)` using `Matrix.mul_add _ _ _`. Establish `hadd : ∀ a c : AE D, halfTr (a + c) = halfTr a + halfTr c` using `fun a c => by`. Simplify using `only [halfTr, trA, map_add, mul_add]`.
+
+Unfold `chz`. Rewrite using `[e, Matrix.trace_add, hadd, AddChar.map_add_eq_mul]`. Take `⟨Z, hZ⟩` from `hz`. Establish `hZ' : Z.map (incA D) = z.1` using `hZ`. Establish `e : Matrix.trace (HMul.hMul (b₀.1.map (incA D)) z.1 : Mx D ρ ρ) = incA D (Matrix.trace (b₀.1 * Z))`.
+
+Rewrite using `[← hZ', ← Matrix.map_mul]`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.map_apply, map_sum]`. Unfold `chz`. Rewrite using `[e, GlobalTheory.CompanionTheory.ThetaInv.halfTr_incA]`. Conclude with `hψ.2.2.1 _`.
+-/
 theorem chz_facts : ∀ {D : D7} {ρ : ℕ} (ψ : AddChar (AF D.host.F) ℂ), IsCharAF D.host.F ψ → ∀ b₀ : HermE D ρ,
     (∀ z z' : hermA D ρ, chz ψ b₀ (z + z') = chz ψ b₀ z * chz ψ b₀ z') ∧ (∀ z, ‖chz ψ b₀ z‖ = 1) ∧
       (∀ z ∈ ratHerm D ρ, chz ψ b₀ z = 1) ∧ Continuous (chz ψ b₀) := by

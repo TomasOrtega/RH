@@ -9,6 +9,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.AvgFree.UnitScale
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.MapPiScale.map_pi_scale μ g hg c hc0 hct h`.
+-/
 theorem map_pi_scale {ι : Type} [Fintype ι] {α : ι → Type} [∀ i, MeasurableSpace (α i)]
     (μ : ∀ i, Measure (α i)) [∀ i, SigmaFinite (μ i)] (g : ∀ i, α i → α i) (hg : ∀ i, Measurable (g i))
     (c : ι → ℝ≥0∞) (hc0 : ∀ i, c i ≠ 0) (hct : ∀ i, c i ≠ ⊤)
@@ -20,6 +23,37 @@ end GlobalTheory.CompanionTheory.AvgFree.UnitScale
 
 open GlobalTheory.CompanionTheory.AvgFree.UnitScale in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ d b v lv hlv s θ hθ n M l D hD`. Take `⟨r1, r2, r3, r4, -⟩` from `GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v`. Use `haveI := r1`. Use `haveI := r2`. Use `haveI := r3`.
+
+Use `haveI := r4`. Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Take `⟨a1, a2, a3, a4, -, -, -, -, -, -⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (Fv F v)`. Use `haveI := a1`. Use `haveI := a2`.
+
+Use `haveI := a3`. Use `haveI := a4`. Use `haveI := hlv.1`. Use `haveI : BorelSpace (Fv F v ⊗[F] E) := ⟨rfl⟩`. Take `⟨hK, -, -⟩` from `GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hσ (Fv F v) d b lv hlv.1`.
+
+Use `haveI := hK`. Use `set μ := GlobalTheory.CompanionTheory.SW.coordK (Fv F v) b lv with hμ`. Use `haveI : SigmaFinite μ := inferInstance`. Set `g : Fv F v ⊗[F] E → Fv F v ⊗[F] E` to `fun x => (s : Fv F v ⊗[F] E) * x`. Establish `hgm : Measurable g` using `(continuous_const.mul continuous_id).measurable`.
+
+Establish `hgs : Function.Surjective g` using `fun y => ⟨((s⁻¹ : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E) * y, by simp [g]⟩`. Establish `hθ0 : (θ : ℝ≥0∞) ≠ 0`. Introduce `h0`. Establish `h1` using `hθ Set.univ`. Rewrite `h1` using `[h0, zero_mul]`.
+
+Establish `h2 : (fun x => (s : Fv F v ⊗[F] E) * x) '' Set.univ = Set.univ` using `Set.image_univ_of_surjective hgs`. Rewrite `h1` using `[h2]`. Conclude with `(IsOpen.measure_pos μ isOpen_univ ⟨0, trivial⟩).ne' h1`. Establish `hθt : (θ : ℝ≥0∞) ≠ ⊤` using `ENNReal.coe_ne_top`. Establish `hmap : μ.map g = (θ : ℝ≥0∞)⁻¹ • μ`.
+
+Use extensionality with `Y hY`. Rewrite using `[Measure.map_apply hgm hY, Measure.smul_apply, smul_eq_mul]`. Establish `h1` using `hθ (g ⁻¹' Y)`. Establish `h2 : (fun x => (s : Fv F v ⊗[F] E) * x) '' (g ⁻¹' Y) = Y` using `Set.image_preimage_eq Y hgs`. Rewrite `h1` using `[h2]`.
+
+Rewrite using `[h1, ← mul_assoc, ENNReal.inv_mul_cancel hθ0 hθt, one_mul]`. Establish `hvec : (Measure.pi fun _ : Fin M => μ).map (fun x i => g (x i)) = ((θ : ℝ≥0∞)⁻¹ ^ M) • Measure.pi fun _ : Fin M => μ`. Use `map_pi_scale (fun _ : Fin M => μ) (fun _ => g) (fun _ => hgm) (fun _ => (θ : ℝ≥0∞)⁻¹) (fun _ => ENNReal.inv_ne_zero.2 hθt) (fun _ => ENNReal.inv_ne_top.2 hθ0) (fun _ => hmap)` as an intermediate fact. Simplify using `using this`. Establish `hvm : Measurable (fun (x : Fin M → Fv F v ⊗[F] E) i => g (x i))` using `measurable_pi_lambda _ fun i => hgm.comp (measurable_pi_apply i)`.
+
+Set `gV : Fin n → (Fin M → Fv F v ⊗[F] E) → (Fin M → Fv F v ⊗[F] E)` to `fun a => if a = l then (fun x i => g (x i)) else id`. Set `c : Fin n → ℝ≥0∞` to `fun a => if a = l then (θ : ℝ≥0∞)⁻¹ ^ M else 1`. Establish `hgV : ∀ a, Measurable (gV a)` using `fun a => by`. Distinguish the cases in `h : a = l`. Simplify `hvm` using `[gV, h]`.
+
+Simplify `measurable_id` using `[gV, h]`. Establish `hc0 : ∀ a, c a ≠ 0` using `fun a => by`. Distinguish the cases in `h : a = l`. Simplify `fun _ => hθt` using `[c, h, hθt]`. Simplify using `[c, h]`.
+
+Establish `hct : ∀ a, c a ≠ ⊤` using `fun a => by`. Distinguish the cases in `h : a = l`. Simplify `ENNReal.pow_ne_top (ENNReal.inv_ne_top.2 hθ0)` using `[c, h]`. Simplify using `[c, h]`. Establish `hmapV : ∀ a, (Measure.pi fun _ : Fin M => μ).map (gV a) = c a • Measure.pi fun _ : Fin M => μ` using `fun a => by`.
+
+Distinguish the cases in `h : a = l`. Simplify `hvec` using `[gV, c, h]`. Simplify using `[gV, c, h]`. Establish `htup` using `map_pi_scale (fun _ : Fin n => Measure.pi fun _ : Fin M => μ) gV hgV c hc0 hct hmapV`. Establish `hT : Measurable (fun (x : Fin n → Fin M → Fv F v ⊗[F] E) a => gV a (x a))` using `measurable_pi_lambda _ fun a => (hgV a).comp (measurable_pi_apply a)`.
+
+Establish `hset : {X : Fin n → Fin M → Fv F v ⊗[F] E | GlobalTheory.CompanionTheory.SW.rmul (Fv F v) X (dMat (Fv F v) l (s : Fv F v ⊗[F] E)) ∈ D} = (fun (x : Fin n → Fin M → Fv F v ⊗[F] E) a => gV a (x a)) ⁻¹' D`. Use extensionality with `X`. Establish `: GlobalTheory.CompanionTheory.SW.rmul (Fv F v) X (dMat (Fv F v) l (s : Fv F v ⊗[F] E)) = fun a => gV a (X a)`. Use function extensionality and compare the values at `a i`. Distinguish the cases in `h : a = l`.
+
+Substitute `h` using the available equality. Simplify using `[GlobalTheory.CompanionTheory.SW.rmul, dMat, Matrix.diagonal_apply, gV, g, mul_comm]`. Simplify using `[GlobalTheory.CompanionTheory.SW.rmul, dMat, Matrix.diagonal_apply, gV, h]`. Simplify using `[this]`. Establish `hprod : (∏ a, c a) = ((θ : ℝ≥0∞) ^ M)⁻¹`.
+
+Simplify using `[c, ENNReal.inv_pow]`. Use `show (Measure.pi fun _ : Fin n => Measure.pi fun _ : Fin M => μ) _ = _ * (Measure.pi fun _ : Fin n => Measure.pi fun _ : Fin M => μ) D`. Rewrite using `[hset, ← Measure.map_apply hT hD, htup, hprod, Measure.smul_apply, smul_eq_mul]`.
+-/
 theorem GlobalTheory.CompanionTheory.AvgFree.coordW_dMat_scale : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)) (lv : Measure (Fv F v)), GlobalTheory.CompanionTheory.SW.IsStdV v lv → ∀ (s : (Fv F v ⊗[F] E)ˣ) (θ : ℝ≥0), (∀ Y : Set (Fv F v ⊗[F] E), (GlobalTheory.CompanionTheory.SW.coordK (Fv F v) b lv) ((fun x => (s : (Fv F v ⊗[F] E)) * x) '' Y) = θ * (GlobalTheory.CompanionTheory.SW.coordK (Fv F v) b lv) Y) → ∀ (n M : ℕ) (l : Fin n) (D : Set (Fin n → Fin M → (Fv F v ⊗[F] E))), MeasurableSet D → (GlobalTheory.CompanionTheory.SW.coordW (Fv F v) b lv n M) {X | GlobalTheory.CompanionTheory.SW.rmul (Fv F v) X (dMat (Fv F v) l (s : (Fv F v ⊗[F] E))) ∈ D} = ((θ : ℝ≥0∞) ^ M)⁻¹ * (GlobalTheory.CompanionTheory.SW.coordW (Fv F v) b lv n M) D := by
   intro F E _ _ _ _ _ σ hσ d b v lv hlv s θ hθ n M l D hD
   obtain ⟨r1, r2, r3, r4, -⟩ := GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v

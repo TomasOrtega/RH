@@ -15,6 +15,9 @@ def dblR {R : Type} [CommRing R] {n : ℕ} (J : Matrix (Fin n) (Fin n) R) : Matr
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `rcases h1 : finSumFinEquiv.symm i with i' | i' <;> rcases h2 : finSumFinEquiv.symm j with j' | j' <;>`. Simplify using `[dblR, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM, GlobalTheory.WeilM.dbl, h1, h2]`.
+-/
 theorem incM_dblR {n : ℕ} (J : Matrix (Fin n) (Fin n) E) :
     incM F (dblR J) = (dbl (incM F J)).submatrix finSumFinEquiv.symm finSumFinEquiv.symm := by
   ext i j

@@ -8,11 +8,21 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Pk
 
 def reExp (f : List ℝ → ℝ) (l : List ℝ) : List ℝ := l.take 16 ++ f (l.take 16) :: l.drop 17
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem reExp_eq {eps : ℝ} (Fm : FamP eps) (f : List ℝ → ℝ) (CH : ℝ) :
     reExp f (Fm.cOut ++ Fm.cMid CH) = Fm.cOut ++ Fm.cMid (f Fm.cOut) := rfl
 
 def sharpThresholdTransform (K : TransportedAlt) : TransportedAlt := ⟨K.pre, K.t, K.mid, fun l => K.last (reExp K.mid l)⟩
 
+/- English proof (translation)
+Unfold `FamP.Large at h ⊢`. Take `⟨h1, -, h3, h4⟩` from `h`. Use `⟨h1, trivial, fun c hc => ?_, fun c hc => ?_⟩` and prove the remaining obligations. Break down `List.mem_cons.1 hc with rfl | hc'` into its components or cases. Conclude with `le_rfl`.
+
+Conclude with `h3 c (List.mem_cons_of_mem _ hc')`. Establish `e` using `h4 c hc`. Establish `e2 : (sharpThresholdTransform K).last (Fm.cOut ++ Fm.cMid CH) = K.last (Fm.cOut ++ Fm.cMid (K.mid Fm.cOut))` using `by show K.last (reExp K.mid (Fm.cOut ++ Fm.cMid CH)) = _`. Rewrite using `[reExp_eq]`. Rewrite `e` using `[e2]`.
+
+Conclude with `e`.
+-/
 theorem large_of_large_thresholds {eps : ℝ} {Fm : FamP eps} {K : TransportedAlt} {CH : ℝ} (h : Fm.Large (sharpThresholdTransform K) CH) :
     Fm.Large K (K.mid Fm.cOut) := by
   unfold FamP.Large at h ⊢
@@ -28,6 +38,11 @@ theorem large_of_large_thresholds {eps : ℝ} {Fm : FamP eps} {K : TransportedAl
     rw [e2] at e
     exact e
 
+/- English proof (translation)
+Unfold `Closed at h`. Take `⟨ε1, hε1, hK⟩` from `h`. Use `⟨fun eps l => if hh : 0 < eps ∧ eps ≤ ε1 then (Classical.choose (hK eps hh.1 hh.2)).mid l else 0, ?_⟩` and prove the remaining obligations. Unfold `Closed`. Use `⟨ε1, hε1, fun eps he he1 => ⟨sharpThresholdTransform (Classical.choose (hK eps he he1)), fun Fm CH hC hL => ?_⟩⟩` and prove the remaining obligations.
+
+Simplify using `only`. Rewrite using `[dif_pos ⟨he, he1⟩]`. Conclude with `Classical.choose_spec (hK eps he he1) Fm _ hC (large_of_large_thresholds hL)`.
+-/
 theorem closed_atMid {𝒞 : FamClass} {P : ∀ {eps : ℝ}, FamP eps → ℝ → Prop} (h : Closed 𝒞 P) :
     ∃ f : ℝ → List ℝ → ℝ, Closed 𝒞 fun {eps} Fm _ => P Fm (f eps Fm.cOut) := by
   classical
@@ -40,6 +55,13 @@ theorem closed_atMid {𝒞 : FamClass} {P : ∀ {eps : ℝ}, FamP eps → ℝ �
   rw [dif_pos ⟨he, he1⟩]
   exact Classical.choose_spec (hK eps he he1) Fm _ hC (large_of_large_thresholds hL)
 
+/- English proof (translation)
+Unfold `Closed at hP ⊢`. Take `⟨ε1, hε1, hK⟩` from `hP`. Use `⟨ε1, hε1, fun eps he he1 => ?_⟩` and prove the remaining obligations. Take `⟨K, hK'⟩` from `hK eps he he1`. Use `⟨⟨max K.pre (K0 eps).pre, K.t, fun l => max (K.mid l) ((K0 eps).mid l), fun l => max (K.last l) ((K0 eps).last l)⟩, fun Fm CH hC hL => ?_⟩` and prove the remaining obligations.
+
+Unfold `FamP.Large at hL`. Take `⟨h1, -, h3, h4⟩` from `hL`. Establish `hA : Fm.Large K CH`. Unfold `FamP.Large`. Conclude with `⟨fun c hc => le_trans (le_max_left _ _) (h1 c hc), trivial, fun c hc => le_trans (le_max_left _ _) (h3 c hc), fun c hc => le_trans (le_max_left _ _) (h4 c hc)⟩`.
+
+Establish `hB : Fm.Large (K0 eps) CH`. Unfold `FamP.Large`. Conclude with `⟨fun c hc => le_trans (le_max_right _ _) (h1 c hc), trivial, fun c hc => le_trans (le_max_right _ _) (h3 c hc), fun c hc => le_trans (le_max_right _ _) (h4 c hc)⟩`. Conclude with `h Fm CH hB (hK' Fm CH hC hA)`.
+-/
 theorem closed_largeE {𝒞 : FamClass} {P Q : ∀ {eps : ℝ}, FamP eps → ℝ → Prop} (K0 : ℝ → TransportedAlt) (hP : Closed 𝒞 P)
     (h : ∀ {eps : ℝ} (Fm : FamP eps) (CH : ℝ), Fm.Large (K0 eps) CH → P Fm CH → Q Fm CH) : Closed 𝒞 Q := by
   unfold Closed at hP ⊢

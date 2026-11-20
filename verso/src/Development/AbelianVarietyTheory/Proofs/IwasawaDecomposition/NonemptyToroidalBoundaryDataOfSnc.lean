@@ -15,6 +15,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.ShFam
 
+/- English proof (translation)
+Introduce `h`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Use `IsTotallyComplex.complexEmbedding_not_isReal (Formalism.L2.PjFree.relab c σ τ) ?_` and prove the remaining obligations. Rewrite using `[ComplexEmbedding.isReal_iff]`. Conclude with `RingHom.ext fun a => RingHom.congr_fun h _`.
+-/
 theorem conj_comp_ne_of_coeff {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {l : Level H} (c : Coeff l) (σ : c.F →+* ℂ) : (starRingEnd ℂ).comp σ ≠ σ := by
   intro h
@@ -23,6 +26,21 @@ theorem conj_comp_ne_of_coeff {E : Type} [Field E] [NumberField E] [IsCMField E]
   rw [ComplexEmbedding.isReal_iff]
   exact RingHom.ext fun a => RingHom.congr_fun h _
 
+/- English proof (translation)
+Establish `hp : IsProjOver (genStr Z)` using `ProjSpace.isProjOver_pullback_snd _ Z.proj`. Use `isProper_genStr Z` as an intermediate fact. Establish `: NumberField c.F` using `{ to_charZero := inferInstance, to_finiteDimensional := c.fin }`. Establish `hc` using `conj_comp_ne_of_coeff c`. Take `⟨m, C, hC, hE⟩` from `GlobalTheory.SncComponents.exists_compList_effCartier c.F (gen Z) (genStr Z) Dw.dim (genBd Z) hsnc`.
+
+Use `choose n hn hn' using fun i => GlobalTheory.T.exists_conj_invariant_divisor_norm c.F (gen Z) (genStr Z) Dw.dim (C i) hp hc (hE i)`. Take `⟨a, ha, ha'⟩` from `GlobalTheory.T.exists_conj_compatible_kaehler_forms c.F (gen Z) (genStr Z) Dw.dim hp`. Take `⟨h, hh, hh'⟩` from `GlobalTheory.T.exists_conj_compatible_lie_metric c.F (gen Z) (genStr Z) Dw.dim E H Z.X Z.t (genι Z) hp hc`. Use `choose K hK using fun q : (c.F →+* ℂ) × Fin m => GlobalTheory.T.ddc_log_norm_bounded_by_kaehler c.F (gen Z) (genStr Z) Dw.dim q.1 (C q.2) (n q.2 q.1) (a q.1) hp (hn q.2 q.1) (ha q.1)`. Take `⟨K₀, hK₀⟩` from `(Set.finite_range K).bddAbove`.
+
+Establish `hM : 0 ≤ max K₀ 0` using `le_max_right _ _`. Establish `hD : 0 < 2 * (m : ℝ) * max K₀ 0 + 1` using `by positivity`. Use `⟨{ m := m, cpt := C, cpt_list := hC, nrm := fun σ i => n i σ, nrm_div := fun σ i => hn i σ, nrm_conj := fun σ σ' j hj i z => hn' i σ σ' j hj z, kae := a, kae_kaehler := ha, kae_conj := ha', cst := Real.exp 1 / (2 * m * max K₀ 0 + 1), cst_pos := by positivity, cst_small := ?_, met …` and prove the remaining obligations. Introduce `σ i ch y hy hi ξ`. Distinguish the cases in `hξ : ξ = 0`.
+
+Establish `h1` using `hK (σ, i) ch y hy hi ξ`. Establish `h0 : a σ ch y ξ = 0`. Take `⟨W, φ, hW, -, -, e⟩` from `(ha σ).1 y`. Rewrite using `[e ch y hy hW, hξ]`. Simplify using `[ddcForm, AlgChart.levi, ReciprocityTheory.L2DbarEstimates.leviV]`.
+
+Rewrite `h1` using `[h0, mul_zero]`. Rewrite using `[h0, mul_zero]`. Conclude with `mul_nonpos_of_nonneg_of_nonpos (by positivity) h1`. Establish `hpos` using `((ha σ).2 ch y hy ξ hξ).le`. Establish `h1` using `(hK (σ, i) ch y hy hi ξ).trans (mul_le_mul_of_nonneg_right ((hK₀ ⟨(σ, i), rfl⟩).trans (le_max_left K₀ 0)) hpos)`.
+
+Use `(mul_le_mul_of_nonneg_left h1 (by positivity)).trans ?_` and prove the remaining obligations. Rewrite using `[← _root_.mul_assoc]`. Use `mul_le_mul_of_nonneg_right ?_ hpos` and prove the remaining obligations. Rewrite using `[mul_right_comm, ← mul_div_assoc, div_le_iff₀ hD]`. Use `Real.exp_pos 1` as an intermediate fact.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem nonempty_toroidal_boundary_data (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F)
     (Z : Model Xo c β) [SmoothOfRelativeDimension Dw.dim (genStr Z)]

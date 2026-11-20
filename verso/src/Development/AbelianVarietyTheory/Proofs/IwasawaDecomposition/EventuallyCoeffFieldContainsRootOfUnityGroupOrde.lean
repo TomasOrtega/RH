@@ -11,10 +11,20 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeR
 
 namespace GlobalTheory.HeightCounting.Up
 
+/- English proof (translation)
+The claim follows from `(((Complex.isPrimitiveRoot_exp n hn.ne').isIntegral hn).tower_top (A := ℚ)).isAlgebraic`.
+-/
 theorem isAlgebraic_exp_two_pi_div (n : ℕ) (hn : 0 < n) :
     IsAlgebraic ℚ (Complex.exp (2 * Real.pi * Complex.I / n)) :=
   (((Complex.isPrimitiveRoot_exp n hn.ne').isIntegral hn).tower_top (A := ℚ)).isAlgebraic
 
+/- English proof (translation)
+Establish `hLg : ∀ K : Ctx, large₂ K fun B f _ => KPx B f → ∀ (T : TwDat B) (w : ColW B f T) (Z : w.Lt), RootsLL (w.D Z)`. Introduce `K`. Use `⟨fun _ _ _ => ∅, fun _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, fun B _ _ _ _ => {Complex.exp (2 * Real.pi * Complex.I / B.restRowsFiniteGroupCard)}, by simp, ?_, ?_⟩` and prove the remaining obligations. Introduce `B _ _ _ _ z hz`. Rewrite `hz` using `[Finset.mem_singleton]`.
+
+Substitute `hz` using the available equality. Conclude with `isAlgebraic_exp_two_pi_div _ B.restRowsFiniteGroupCard_pos`. Introduce `B f T₀ _ hH _ _ _ T w Z`. Take `⟨x, hx⟩ : ∃ x : B.LL, B.embLL x = Complex.exp (2 * Real.pi * Complex.I / B.toPre.restRowsFiniteGroupCard)` from `hH.2 _ (Finset.mem_singleton_self _)`. Use `⟨x, ?_⟩` and prove the remaining obligations.
+
+Use `show IsPrimitiveRoot x B.toPre.restRowsFiniteGroupCard`. Rewrite using `[← IsPrimitiveRoot.map_iff_of_injective (f := B.embLL) B.embLL.injective, hx]`. Conclude with `Complex.isPrimitiveRoot_exp _ B.toPre.restRowsFiniteGroupCard_pos.ne'`. Conclude with `EvG.imp evG_good fun K _ _ _ _ _ => hLg K`.
+-/
 theorem rootsLL_evLgG :
     EvLgG fun K B f _ => KPx B f → ∀ (T : TwDat B) (w : ColW B f T) (Z : w.Lt), RootsLL (w.D Z) := by
   have hLg : ∀ K : Ctx, large₂ K fun B f _ => KPx B f → ∀ (T : TwDat B) (w : ColW B f T) (Z : w.Lt), RootsLL (w.D Z) := by

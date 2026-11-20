@@ -9,5 +9,8 @@ open GlobalTheory GlobalTheory.PDiv GlobalTheory.PDivGroup GlobalTheory.GroupBpl
 open GlobalTheory.DeRham (spOver spOver_comp)
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.GroupBplus.Aff.LevBij.level_bijective | exact GlobalTheory.GroupBplus.Aff.LevBij.level_bijective | (intros; apply GlobalTheory.GroupBplus.Aff.LevBij.level_bijective <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.level_structure_torsion_points_bijective : ∀ (R K : Type) [CommRing R] [Field K] [IsAlgClosed K] [Algebra R K] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (N : ℕ) (A : Type) [CommRing A] [HopfAlgebra R A] [Module.Finite R A] (θ : TorsPt G N A), IsLevel K θ → ∀ (B : Type) [CommRing B] [Algebra R B] [Algebra K B] [IsScalarTower R K B], Function.Bijective (θ.pt B) := by
   first | exact @GlobalTheory.GroupBplus.Aff.LevBij.level_bijective | exact GlobalTheory.GroupBplus.Aff.LevBij.level_bijective | (intros; apply GlobalTheory.GroupBplus.Aff.LevBij.level_bijective <;> assumption)

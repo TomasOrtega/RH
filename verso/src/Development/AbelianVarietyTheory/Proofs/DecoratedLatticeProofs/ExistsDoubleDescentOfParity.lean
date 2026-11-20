@@ -30,18 +30,42 @@ def vacSet (ψ : AddChar (AF D.host.F) ℂ) (p : Place D k) (FS : GlobalTheory.L
   {u | (∃ x : Matrix Y Y' k, (∀ r q, x r q ∈ 𝒪[k]) ∧ p.up FS FT x = u) ∨ (IsHalf (cA D p.e) u ∧
     ∀ x : Matrix Y Y' k, (∀ r q, x r q ∈ 𝒪[k]) → ψ (symplO S T (p.up FS FT x) u) = 1)}
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [add_mul, hu i j, ← hu i j, ← mul_assoc, mul_comm (cA D p.e), p.split.2.1, zero_mul, add_zero, hu i j]`.
+-/
 theorem isHalf_add_left (p : Place D k) {u : WO S T} (hu : IsHalf p.e u) : IsHalf (p.e + cA D p.e) u := fun i j => by
   rw [add_mul, hu i j, ← hu i j, ← mul_assoc, mul_comm (cA D p.e), p.split.2.1, zero_mul, add_zero, hu i j]
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [add_mul, hu i j, ← hu i j, ← mul_assoc, p.split.2.1, zero_mul, zero_add, hu i j]`.
+-/
 theorem isHalf_add_right (p : Place D k) {u : WO S T} (hu : IsHalf (cA D p.e) u) : IsHalf (p.e + cA D p.e) u := fun i j => by
   rw [add_mul, hu i j, ← hu i j, ← mul_assoc, p.split.2.1, zero_mul, zero_add, hu i j]
 
+/- English proof (translation)
+Break down `hu with ⟨x, -, rfl⟩ | h` into its components or cases. Conclude with `isHalf_add_left p (Witness.up_half p FS FT x)`. Conclude with `isHalf_add_right p h.1`.
+-/
 theorem isHalf_of_mem_vacSet {ψ : AddChar (AF D.host.F) ℂ} {p : Place D k} {FS : GlobalTheory.LocMod.Frame k S.rank Y'}
     {FT : GlobalTheory.LocMod.Frame k T.rank Y} {u : WO S T} (hu : u ∈ vacSet ψ p FS FT) : IsHalf (p.e + cA D p.e) u := by
   rcases hu with ⟨x, -, rfl⟩ | h
   · exact isHalf_add_left p (Witness.up_half p FS FT x)
   · exact isHalf_add_right p h.1
 
+/- English proof (translation)
+Take `⟨⟨ψk, hk⟩, hk', -⟩` from `GlobalTheory.LocChar.weil_char_split D k p ψ hψ`. Take `⟨he, hec, v, ε, hε, heq⟩` from `p.split`. Establish `he' : cA D p.e * cA D p.e = cA D p.e` using `by rw [← map_mul, he]`. Establish `heε : algebraMap (AF D.host.F) (Formalism.L2.Theta.AE D) ε * p.e = p.e` using `by rw [← heq]; linear_combination he + hec`. Establish `heε' : algebraMap (AF D.host.F) (Formalism.L2.Theta.AE D) ε * cA D p.e = cA D p.e`.
+
+Rewrite using `[← heq]`. Take the linear combination `he' + hec`. Establish `i1` using `fun x => infPart_half hε heε (up_mem p FS FT x)`. Establish `i2` using `fun x => infPart_half hε heε' (dual_mem p FS FT x)`. Establish `h0 : ∀ f, heisL S T ψ 0 f = f` using `fun f => GlobalTheory.LatVac.heisO_zero ψ f`.
+
+Set `P : Submodule ℂ (WO S T → ℂ)` to `thetaSub ψ S T ⊓ ⨅ u : U, LinearMap.eqLocus (heisL S T ψ u.1) LinearMap.id`. Establish `mP : ∀ f, f ∈ P ↔ IsThetaFunO ψ S T f ∧ ∀ u ∈ U, heisL S T ψ u f = f` using `fun f => by`. Simplify using `only [P, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_eqLocus, Subtype.forall]`. Both sides reduce to the same expression. Establish `sm : ∀ j : Matrix Y Y' k → WO S T, Continuous j → j 0 = 0 → (∀ x, (j x).map (infPart D) = 0) → ∀ f ∈ P, ∀ᶠ x in 𝓝 0, heisL S T ψ (j x) f = f` using `fun j hj j0 hi f hf => by`.
+
+Take `⟨U, hU, h⟩` from `IsThetaFunO.level ((mP f).1 hf).1`. Use `filter_upwards [(hU.preimage hj).mem_nhds (show j 0 ∈ U by rw [j0]; exact U.zero_mem)] with x hx`. Conclude with `h _ hx (hi x)`. Establish `st : ∀ w : WO S T, IsHalf (p.e + cA D p.e) w → w.map (infPart D) = 0 → ∀ f ∈ P, heisL S T ψ w f ∈ P` using `fun w hw hi f hf => (mP _).2 ⟨GlobalTheory.FinTranslate.isThetaFunO_heisO hψ.1.1 hψ.1.2.1 ((mP f).1 hf).1 hi, fun u hu => by`. Rewrite using `[heisL_comm, hU u hu w hw, AddChar.map_zero_eq_one, one_smul, ((mP f).1 hf).2 u hu]⟩`.
+
+Take `⟨g, hg, g0, h1, h2⟩` from `GlobalTheory.LocMod.Inhab.exists_vacuum (hk' ψk hk).1 (hk' ψk hk).2 (fun x => heisL S T ψ (p.up FS FT x)) (fun b => heisL S T ψ (dual p FS FT b)) (fun x x' f => by rw [up_add, heisL_half S T ψ (by rw [mul_comm, hec]) _ (up_mem p FS FT x) _ (up_mem p FS FT x')]) (fun x x' f => by …`. Establish `bx : ∀ x : Matrix Y Y' k, x ∈ GlobalTheory.LocMod.Inhab.box Y Y' (1 : kˣ) ↔ ∀ r q, x r q ∈ 𝒪[k]` using `fun x => by`. Express the relevant statement in the definitionally equal form `(∀ r q, valuation k (x r q) ≤ valuation k ((1 : kˣ) : k)) ↔ _`. Rewrite using `[Units.val_one, map_one]`. Both sides reduce to the same expression.
+
+Use `⟨g, ((mP g).1 hg).1, g0, ?_⟩` and prove the remaining obligations. Introduce and unpack `u (hu | ⟨x, hx, rfl⟩ | ⟨hu, hu'⟩)`. Conclude with `((mP g).1 hg).2 u hu`. Conclude with `h1 x ((bx x).2 hx)`. Take `⟨b, rfl⟩` from `exists_dual p FS FT hu`.
+
+Conclude with `h2 b fun x hx => (char_sympl p FS FT hk x b).symm.trans (hu' x ((bx x).1 hx))`.
+-/
 theorem exists_fixed_vacSet {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (p : Place D k)
     (FS : GlobalTheory.LocMod.Frame k S.rank Y') (FT : GlobalTheory.LocMod.Frame k T.rank Y) (U : Set (WO S T))
     (hU : ∀ u ∈ U, ∀ w, IsHalf (p.e + cA D p.e) w → symplO S T u w = 0) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (f0 : f ≠ 0)
@@ -89,6 +113,9 @@ theorem exists_fixed_vacSet {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D 
   · obtain ⟨b, rfl⟩ := exists_dual p FS FT hu
     exact h2 b fun x hx => (char_sympl p FS FT hk x b).symm.trans (hu' x ((bx x).1 hx))
 
+/- English proof (translation)
+Take `⟨Tm, h1, h2⟩` from `(GlobalTheory.T.localSchrodingerModel_uniq_transport_exists D k p Y Y' S T FS FT ψ hψ).2.2 f hf (fun x hx => h _ (Or.inl ⟨x, hx, rfl⟩)) fun y hy hy' => h _ (Or.inr ⟨hy, hy'⟩)`. Take `⟨O, hO, -⟩` from `PinModel.exists_isOne (k := k) (Y := Y) (Y' := Y')`. Conclude with `⟨Tm, O, h1, hO, h2 O hO⟩`.
+-/
 theorem exists_model_of_fixed {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (p : Place D k)
     (FS : GlobalTheory.LocMod.Frame k S.rank Y') (FT : GlobalTheory.LocMod.Frame k T.rank Y) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f)
     (h : ∀ u ∈ vacSet ψ p FS FT, heisO ψ S T u f = f) : ∃ Tm O, p.IsModel ψ FS FT Tm ∧ IsOne O ∧ Tm O = f := by
@@ -97,6 +124,11 @@ theorem exists_model_of_fixed {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar 
   obtain ⟨O, hO, -⟩ := PinModel.exists_isOne (k := k) (Y := Y) (Y' := Y')
   exact ⟨Tm, O, h1, hO, h2 O hO⟩
 
+/- English proof (translation)
+Take `⟨ε, hε, hs⟩` from `q.above`. Take `⟨ε', hε', hs'⟩` from `q'.above`. Take `⟨he, hec, -⟩` from `q'.split`. Establish `he' : cA D q'.e * cA D q'.e = cA D q'.e` using `by rw [← map_mul, he]`. Establish `h1 : q'.e + cA D q'.e ∈ GlobalTheory.FinPl.idAt D (· = q'.v)` using `((GlobalTheory.T.placeIdempotent_acts_on_supportedAndOff D q'.v ε' hε').1 _).2 (by rw [← hs']; linear_combination he + he' + 2 * hec)`.
+
+Rewrite using `[map_add, cA_cA, add_comm, hs]`. Use `(GlobalTheory.T.placeIdempotent_acts_on_supportedAndOff D q.v ε hε).2 _ ⟨h1.1, ?_⟩` and prove the remaining obligations. Establish `h2` using `h1.2`. Simplify using `only [SetLike.mem_coe, Submodule.mem_iInf] at h2 ⊢`. Conclude with `fun w => h2 ⟨w.1, fun e => w.2 fun e' => h (e'.symm.trans e)⟩`.
+-/
 theorem idem_orth {k' : Type} [Field k'] [ValuativeRel k'] [TopologicalSpace k'] [IsNonarchimedeanLocalField k']
     (q : GlobalTheory.FinPl.SplitPt D k) (q' : GlobalTheory.FinPl.SplitPt D k') (h : q.v ≠ q'.v) :
     cA D (q.e + cA D q.e) * (q'.e + cA D q'.e) = 0 := by
@@ -112,6 +144,13 @@ theorem idem_orth {k' : Type} [Field k'] [ValuativeRel k'] [TopologicalSpace k']
   simp only [SetLike.mem_coe, Submodule.mem_iInf] at h2 ⊢
   exact fun w => h2 ⟨w.1, fun e => w.2 fun e' => h (e'.symm.trans e)⟩
 
+/- English proof (translation)
+Establish `key : ∀ s : Finset ι, ∃ f, IsThetaFunO ψ S T f ∧ f ≠ 0 ∧ ∀ i ∈ s, ∀ u ∈ V i, heisO ψ S T u f = f` using `fun s => by`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Take `⟨f, hf, f0⟩` from `GlobalTheory.Mem.ThetaNonzero.exists_thetaO_ne_zero hψ S T`. Conclude with `⟨f, hf, f0, by simp⟩`.
+
+Consider the case `insert j s hj ih`. Take `⟨f, hf, f0, h⟩` from `ih`. Take `⟨g, hg, g0, h'⟩` from `step j {u | ∃ i ∈ s, u ∈ V i} (fun u ⟨i, hi, hu⟩ w hw => GlobalTheory.SplitScalar.symplO_eq_zero S T (ha i j fun e => hj (e ▸ hi)) (hV i u hu) hw) f hf f0 fun u ⟨i, hi, hu⟩ => h i hi u hu`. Use `⟨g, hg, g0, fun i hi u hu => h' u ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hi with rfl | hi` into its components or cases.
+
+Conclude with `Or.inr hu`. Conclude with `Or.inl ⟨i, hi, hu⟩`. Use `haveI := Fintype.ofFinite ι`. Take `⟨f, hf, f0, h⟩` from `key Finset.univ`. Conclude with `⟨f, hf, f0, fun i => h i (Finset.mem_univ i)⟩`.
+-/
 theorem exists_fixed_all {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {ι : Type} [Finite ι] (a : ι → AE D)
     (ha : ∀ i j, i ≠ j → cA D (a i) * a j = 0) (V : ι → Set (WO S T)) (hV : ∀ i, ∀ u ∈ V i, IsHalf (a i) u)
     (step : ∀ i (U : Set (WO S T)), (∀ u ∈ U, ∀ w, IsHalf (a i) w → symplO S T u w = 0) → ∀ f, IsThetaFunO ψ S T f → f ≠ 0 →
@@ -138,6 +177,9 @@ theorem exists_fixed_all {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ 
 
 end Vacua
 
+/- English proof (translation)
+Establish `ha : ∀ i j, i ≠ j → cA D ((Q i).q.e + cA D (Q i).q.e) * ((Q j).q.e + cA D (Q j).q.e) = 0` using `fun i j h => idem_orth _ _ fun e => h (hQ e)`. Take `⟨f₁, t₁, z₁, h₁⟩` from `exists_fixed_all hψ _ ha (fun i => vacSet ψ (ofSplit (Q i).q) (Q i).F.G₀ (Q i).F.G₁) (fun i u hu => isHalf_of_mem_vacSet hu) fun i U hU f hf f0 h => exists_fixed_vacSet hψ _ _ _ U hU hf f0 h`. Take `⟨f₂, t₂, z₂, h₂⟩` from `exists_fixed_all hψ _ ha (fun i => vacSet ψ (ofSplit (Q i).q) (Q i).F.G₁ (Q i).F.G₂) (fun i u hu => isHalf_of_mem_vacSet hu) fun i U hU f hf f0 h => exists_fixed_vacSet hψ _ _ _ U hU hf f0 h`. Conclude with `⟨f₁, f₂, z₁, z₂, t₁, t₂, fun i => ⟨exists_model_of_fixed hψ _ _ _ t₁ (h₁ i), exists_model_of_fixed hψ _ _ _ t₂ (h₂ i)⟩⟩`.
+-/
 theorem exists_vac {D : D7} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {σ : ℕ} {S : Dbl2 ψ σ} {ι : Type} [Finite ι]
     (Q : ι → QStep S) (hQ : Function.Injective fun i => (Q i).q.v) :
     ∃ f₁ f₂, f₁ ≠ 0 ∧ f₂ ≠ 0 ∧ IsThetaFunO ψ _ _ f₁ ∧ IsThetaFunO ψ _ _ f₂ ∧ ∀ i, (Q i).Vac f₁ f₂ := by
@@ -157,6 +199,13 @@ variable {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n']
 
 omit [MeasurableSpace k] [BorelSpace k] in
 
+/- English proof (translation)
+Distinguish the cases in `h : IsOpen ((L.lam.ker.map L.J.subtype : Subgroup (GL Y k)) : Set (GL Y k))`. Use `⟨(L.lam.ker.map L.J.subtype).comap (MulAut.conj α⁻¹).toMonoidHom, h.preimage ((continuous_const.mul continuous_id).mul continuous_const), fun A _ _ σ _ v hv u hu => ?_⟩` and prove the remaining obligations. Take `⟨j, hj, e⟩` from `hu`. Establish `e' : u * α = α * j`. Establish `e2 : (j : GL Y k) = α⁻¹ * u * α⁻¹⁻¹` using `e`.
+
+Simplify using `[e2, mul_assoc]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, e', map_mul, Module.End.mul_apply, hv, show L.lam j = 1 from hj, Units.val_one, one_smul]`. Use `⟨⊤, isOpen_univ, fun A _ _ σ hσ v hv u _ => ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `rfl : v = 0 := by`. Assume the negation of the conclusion as `v0`.
+
+Use `h (Subgroup.isOpen_of_mem_nhds _ (g := 1) (Filter.mem_of_superset ((hL.inter (hσ v)).mem_nhds ⟨L.J.one_mem, by simp⟩) fun g hg => ⟨⟨g, hg.1⟩, Units.ext ?_, rfl⟩))` and prove the remaining obligations. Conclude with `smul_left_injective ℂ v0 (((hv ⟨g, hg.1⟩).symm.trans hg.2).trans (one_smul ℂ v).symm)`. Simplify using the standard rewrite rules.
+-/
 theorem exists_open_fix {Y : Type} [Fintype Y] [DecidableEq Y] (L : Level (GL Y k)) (hL : IsOpen (L.J : Set (GL Y k))) (α : GL Y k) :
     ∃ U : Subgroup (GL Y k), IsOpen (U : Set (GL Y k)) ∧ ∀ (A : Type) [AddCommGroup A] [Module ℂ A] (σ : Representation ℂ (GL Y k) A),
       IsSmoothRep σ → ∀ v : A, (∀ j : L.J, σ (j : GL Y k) v = (L.lam j : ℂ) • v) → ∀ u ∈ U, σ u (σ α v) = σ α v := by
@@ -176,6 +225,9 @@ theorem exists_open_fix {Y : Type} [Fintype Y] [DecidableEq Y] (L : Level (GL Y 
       exact smul_left_injective ℂ v0 (((hv ⟨g, hg.1⟩).symm.trans hg.2).trans (one_smul ℂ v).symm)
     simp
 
+/- English proof (translation)
+Take `⟨U, hU, h⟩` from `exists_open_fix L hL α`. Take `⟨e, e', he⟩` from `GlobalTheory.T.exchangeToPositionOne_uniform_in_level k n c P h1 hP ψ hψ.continuous hψ.ne_one ν (isSelfDual_of_isUnitVol ν hψ hν) U hU`. Use `⟨e.mapDomain (· * α), fun A _ _ σ hσ l hl v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[(he A σ hσ l _ hl (h A σ hσ v hv)).1, GlobalTheory.PosOne.comb, GlobalTheory.PosOne.comb, Finsupp.sum_mapDomain_index (by simp) (fun _ _ _ => add_mul _ _ _)]`. Simplify using `only [map_mul, Module.End.mul_apply]`.
+-/
 theorem exists_isOneComb {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) {ν : Measure k} (hν : IsUnitVol ν) {P : ℕ} (h1 : 1 ≤ P)
     (hP : P ≤ c) (L : Level (GL (n ⊕ Fin c) k)) (hL : IsOpen (L.J : Set (GL (n ⊕ Fin c) k))) (α : GL (n ⊕ Fin c) k) :
     ∃ e, IsOneComb ψ ν P L α e := by
@@ -188,6 +240,13 @@ theorem exists_isOneComb {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) {ν :
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] in
 
+/- English proof (translation)
+Use `choose T hT using hf`. Set `m` to `DoubleCoset.mk (R k n c p) J`. Set `r` to `Function.update (fun x : DoubleCoset.Quotient (R k n c p : Set (GL (n ⊕ Fin c) k)) J => x.out) (m t₀) t₀`. Establish `hr : ∀ x, m (r x) = x` using `fun x => by`. Distinguish the cases in `h : x = m t₀`.
+
+Rewrite using `[h]`. Conclude with `congrArg m (Function.update_self ..)`. Conclude with `(congrArg m (Function.update_of_ne h ..)).trans (Quotient.out_eq' x)`. Use `⟨(insert t₀ (s.biUnion T)).image fun t => r (m t), Finset.mem_image.2 ⟨t₀, Finset.mem_insert_self _ _, Function.update_self ..⟩, fun i hi => ⟨?_, fun h hh => ?_⟩⟩` and prove the remaining obligations. Introduce `a ha b hb e`.
+
+Take `⟨a, -, rfl⟩` from `Finset.mem_image.1 ha`. Take `⟨b, -, rfl⟩` from `Finset.mem_image.1 hb`. Conclude with `congrArg r ((hr _).symm.trans (e.trans (hr _)))`. Take `⟨t, ht, e⟩` from `(hT i).2 h hh`. Conclude with `⟨_, Finset.mem_image_of_mem _ (Finset.mem_insert_of_mem (Finset.mem_biUnion.2 ⟨i, hi, ht⟩)), e.trans (hr _).symm⟩`.
+-/
 theorem exists_covers {ι V : Type} [Zero V] {p : ℕ} {J : Subgroup (GL (n ⊕ Fin c) k)} (s : Finset ι)
     (f : ι → GL (n ⊕ Fin c) k → V) (hf : ∀ i, ∃ T, Covers p J T (f i)) (t₀ : GL (n ⊕ Fin c) k) :
     ∃ T, t₀ ∈ T ∧ ∀ i ∈ s, Covers p J T (f i) := by
@@ -208,6 +267,9 @@ theorem exists_covers {ι V : Type} [Zero V] {p : ℕ} {J : Subgroup (GL (n ⊕ 
   · obtain ⟨t, ht, e⟩ := (hT i).2 h hh
     exact ⟨_, Finset.mem_image_of_mem _ (Finset.mem_insert_of_mem (Finset.mem_biUnion.2 ⟨i, hi, ht⟩)), e.trans (hr _).symm⟩
 
+/- English proof (translation)
+Take `⟨T, hT⟩` from `GlobalTheory.PosOne.covers_opE_finite k n n' (c + 1) 1 le_rfl (by omega) ψ hψ.continuous hψ.ne_one ν μ hμ J hJ ⟨om μ α 1 Φ.1, GlobalTheory.SplitWeil.om_mem_SB μ α 1 Φ.2⟩`. Use `⟨T, ?_⟩` and prove the remaining obligations. Use `hT using 2 with h` and compare the differences between its conclusion and the goal. Rewrite using `[GlobalTheory.StepData.flat, ← GlobalTheory.SplitWeil.om_mul, one_mul, mul_one]`.
+-/
 theorem exists_covers_flat {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) (ν : Measure k) [ν.IsAddHaarMeasure] {μ : kˣ →* ℂˣ}
     (hμ : IsOpen (μ.ker : Set kˣ)) {J : Subgroup (GL (n ⊕ Fin (c + 1)) k)} (hJ : IsOpen (J : Set (GL (n ⊕ Fin (c + 1)) k)))
     (Φ : SB (Matrix (n ⊕ Fin (c + 1)) (n' ⊕ Fin (c + 1 + 1)) k)) (α : GL (n' ⊕ Fin (c + 1 + 1)) k) :
@@ -220,6 +282,9 @@ theorem exists_covers_flat {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) (ν
 
 omit [BorelSpace k] in
 
+/- English proof (translation)
+The claim follows from `(SB _).smul_mem _ (GlobalTheory.RootEx.opE_mem_SB 1 ψ ν (GlobalTheory.SplitWeil.om_mem_SB μ h' h Φ.2))`.
+-/
 theorem xi_mem_SB (ψ : AddChar k Circle) (ν : Measure k) (μ : kˣ →* ℂˣ) (Φ : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k))
     (J : Subgroup (GL (n ⊕ Fin c) k)) (b : GL (n ⊕ Fin c) k) (h' : GL (n' ⊕ Fin (c + 1)) k) (h : GL (n ⊕ Fin c) k) :
     GlobalTheory.StepData.xi ψ ν μ Φ.1 J b h' h ∈ SB (Matrix n n' k) :=
@@ -227,6 +292,9 @@ theorem xi_mem_SB (ψ : AddChar k Circle) (ν : Measure k) (μ : kˣ →* ℂˣ)
 
 omit [MeasurableSpace k] [BorelSpace k] in
 
+/- English proof (translation)
+Take `⟨O, hO, z⟩` from `PinModel.exists_isOne (k := k) (Y := n) (Y' := n')`. Take `⟨d, h1, h2⟩` from `GlobalTheory.T.exists_heisenberg_combination_split_place_datum D k p n n' S T FS FT ψ hψ O ⟨Ξ, hΞ⟩ (by rintro rfl; exact zero_ne_one z)`. Use `⟨d, h1, fun Tm hT Φ₀ Φ h₀ h => ?_⟩` and prove the remaining obligations. Rewrite using `[show Φ = ⟨Ξ, hΞ⟩ from Subtype.ext h, show Φ₀ = O from Subtype.ext (h₀.trans hO.symm)]`. Conclude with `h2 Tm hT`.
+-/
 theorem exists_isCombAt {D : D7} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (p : Place D k) {S T : HSp D}
     (FS : GlobalTheory.LocMod.Frame k S.rank n') (FT : GlobalTheory.LocMod.Frame k T.rank n) {Ξ : Matrix n n' k → ℂ} (hΞ : Ξ ∈ SB (Matrix n n' k)) :
     ∃ d, p.IsCombAt ψ FS FT d Ξ := by
@@ -238,6 +306,9 @@ theorem exists_isCombAt {D : D7} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdCh
 
 omit [MeasurableSpace k] [BorelSpace k] in
 
+/- English proof (translation)
+Use extensionality with `g`. Simplify using `only [mem_prX, mem_Cgrp, inv_one, one_mul, mul_one]`. Conclude with `⟨fun ⟨_, hu, h⟩ => GlobalTheory.TwistVertex.mem_KO_of_mul_embX hu h.2, fun h => ⟨1, one_mem _, by`. Rewrite using `[one_mul]`. Conclude with `⟨Subgroup.mem_sup_left ⟨g, rfl⟩, GlobalTheory.TwistVertex.embX_mem_KO h⟩⟩⟩`.
+-/
 theorem prX_Cgrp_KO : prX (Cgrp (KO k (n ⊕ Fin c)) 1) = KO k n := by
   ext g
   simp only [mem_prX, mem_Cgrp, inv_one, one_mul, mul_one]
@@ -250,6 +321,15 @@ variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {σ : ℕ}
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use `haveI := hν.1`. Establish `hc2 : c + 1 = 2 * σ + 1` using `F.bes'.1`. Take `⟨gl₀, l₀⟩` from `Model.exists_gl q _ F.G₀`. Take `⟨gl₁, l₁⟩` from `Model.exists_gl q _ F.G₁`. Take `⟨gl₂, l₂⟩` from `Model.exists_gl q _ F.G₂`.
+
+Take `⟨D₁, dat₁⟩` from `exists_isCombAt hψ (ofSplit q) F.G₀ F.G₁ Φ₁.2`. Take `⟨D₂, dat₂⟩` from `exists_isCombAt hψ (ofSplit q) F.G₁ F.G₂ Φ₂.2`. Take `⟨A₁, g₁, cov₁⟩` from `exists_covers (Finset.univ : Finset Unit) _ (fun _ => exists_covers_flat hc ν o₁ co₁.1 Φ₁ α) γ₀`. Take `⟨A₂, g₂, cov₂⟩` from `exists_covers A₁ _ (fun γ => exists_covers_flat hc ν o₂ co₂.1 Φ₂ γ) β₀`. Use `choose d₁ ent₁ using fun γ : A₁ => exists_isCombAt hψ (ofSplit q) F.F₀ F.F₁ (xi_mem_SB ψk ν μ₁ Φ₁ L₁.J 1 α γ.1)`.
+
+Use `choose d₂ ent₂ using fun (γ : A₁) (β : A₂) => exists_isCombAt hψ (ofSplit q) F.F₁ F.F₂ (xi_mem_SB ψk ν μ₂ Φ₂ L₂.J 1 γ.1 β.1)`. Take `⟨e₀, one₀⟩` from `exists_isOneComb (P := σ + 1 + 1) hc hν (by omega) (by omega) L₀ op₀ α`. Use `choose e₂ one₂ using fun β : A₂ => exists_isOneComb (P := σ + 1) hc hν (by omega) (by omega) L₂ co₂.1 β.1`. Take `⟨m₁, a₁, b₁⟩` from `Model.exists_haar ν n₁`. Take `⟨m₂, a₂, b₂⟩` from `Model.exists_haar ν n₂`.
+
+Conclude with `⟨gl₀, gl₁, gl₂, l₀, l₁, l₂, D₁, D₂, dat₁, dat₂, A₁, A₂, cov₁ () (Finset.mem_univ _), cov₂, d₁, d₂, ent₁, ent₂, e₀, e₂, one₀, one₂, m₁, m₂, a₁, a₂, b₁, b₂, g₁, g₂, _, rfl⟩`.
+-/
 theorem exists_qstep (hψ : IsStdChar D ψ (-1)) (S : Dbl2 ψ σ) {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ν : Measure k) (hν : IsUnitVol ν)
     (q : GlobalTheory.FinPl.SplitPt D k) (ψk : AddChar k Circle) (hk : (ofSplit q).IsChar ψ ψk) (hc : HasConductor ψk 1)
@@ -288,6 +368,17 @@ def IsSpherical {S : Dbl2 ψ σ} (Q : QStep S) : Prop :=
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use `borelize k`. Take `⟨ν, hν⟩` from `GlobalTheory.SplitWeil.exists_isUnitVol (k := k)`. Use `haveI := hν.1`. Take `⟨F, -⟩` from `DblInhab.exists_dbl D k (ofSplit q) σ S.B S.J S.B' _ _ _ (Frame.ofGL 1) (Frame.ofGL 1) (Frame.ofGL 1) 1 one_ne_zero`. Take `⟨gl₀, l₀⟩` from `Model.exists_gl q _ F.G₀`.
+
+Take `⟨gl₁, l₁⟩` from `Model.exists_gl q _ F.G₁`. Take `⟨gl₂, l₂⟩` from `Model.exists_gl q _ F.G₂`. Take `⟨Φ₁, h₁, -⟩` from `PinModel.exists_isOne (k := k) (Y := Fin S.J.W₀.rank ⊕ Fin (2 * σ + 1 + 1)) (Y' := Fin S.B.A.rank ⊕ Fin (2 * σ + 1 + 1 + 1))`. Take `⟨Φ₂, h₂, -⟩` from `PinModel.exists_isOne (k := k) (Y := Fin S.B'.A.rank ⊕ Fin (2 * σ + 1)) (Y' := Fin S.J.W₀.rank ⊕ Fin (2 * σ + 1 + 1))`. Establish `e₁ : Φ₁.1 = Model.ind k _ _` using `h₁`.
+
+Establish `e₂ : Φ₂.1 = Model.ind k _ _` using `h₂`. Take `⟨m₁, a₁, b₁⟩` from `Model.exists_haar ν (Fin S.J.W₀.rank)`. Take `⟨m₂, a₂, b₂⟩` from `Model.exists_haar ν (Fin S.B'.A.rank)`. Take `⟨x₀, one₀⟩` from `exists_isOneComb (P := σ + 1 + 1) hc hν (by omega) (by omega) (Model.sph k (Fin S.B.A.rank ⊕ Fin (2 * σ + 1 + 1 + 1))) Model.isCO_sph.1 1`. Use `choose x₂ one₂ using fun β => exists_isOneComb (P := σ + 1) hc hν (by omega) (by omega) (Model.sph k (Fin S.B'.A.rank ⊕ Fin (2 * σ + 1))) Model.isCO_sph.1 β`.
+
+Conclude with `⟨{ k := k, ν := ν, unitVol := hν, q := q, ψk := ψk, char := hk, cond := hc, c := 2 * σ, F := F n₀ := Fin S.B.A.rank, n₁ := Fin S.J.W₀.rank, n₂ := Fin S.B'.A.rank gl₀ := gl₀, gl₁ := gl₁, gl₂ := gl₂, loc₀ := l₀, loc₁ := l₁, loc₂ := l₂, μ₁ := μ₁, μ₂ := μ₂, comp₁ := c₁, comp₂ := c₂ o …`. Rewrite using `[Finset.mem_singleton.1 γ.2, e₁]`. Conclude with `(congrArg _ (Model.xi_ind (c := 2 * σ + 1) hc hν μ₁)).mpr (PinModel.isCombAt_one _ ψ F.F₀ F.F₁)`. Use `ent₂ := fun γ β => by`. Rewrite using `[Finset.mem_singleton.1 γ.2, Finset.mem_singleton.1 β.2, e₂]`.
+
+Conclude with `(congrArg _ (Model.xi_ind (c := 2 * σ) hc hν μ₂)).mpr (PinModel.isCombAt_one _ ψ F.F₁ F.F₂)`. Use `e₀ := x₀, e₂ := fun β => x₂ β.1, one₀ := one₀, one₂ := fun β => one₂ β.1`. Use `m₁ := m₁, m₂ := m₂, haar₁ := a₁, haar₂ := a₂, vol₁ := b₁, vol₂ := b₂ }, rfl, h₁, h₂, rfl, rfl, rfl, rfl, rfl, rfl⟩`.
+-/
 theorem exists_spherical_at (hψ : IsStdChar D ψ (-1)) (S : Dbl2 ψ σ) {k : Type} [Field k] [ValuativeRel k]
     [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : GlobalTheory.FinPl.SplitPt D k) {ψk : AddChar k Circle}
     (hk : (ofSplit q).IsChar ψ ψk) (hc : HasConductor ψk 1) {μ₁ μ₂ : kˣ →* ℂˣ} (c₁ : (ofSplit q).IsComp S.χ₁⁻¹ μ₁)
@@ -335,6 +426,11 @@ theorem exists_spherical_at (hψ : IsStdChar D ψ (-1)) (S : Dbl2 ψ σ) {k : Ty
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField in
 
+/- English proof (translation)
+Establish `hev` using `(GlobalTheory.T.standard_character_conductor_almost_all D ψ hψ).and ((GlobalTheory.FinPl.AeUnit.eventually_incA_mul_mem_intAt D D.host.xi0).and ((GlobalTheory.FinPl.AeUnit.eventually_incA_mul_mem_intAt D D.host.xi0⁻¹).and ((DblInhab.eventually_isUnram D S.χ₁⁻¹ S.weila.hecS.1.inv) …`. Use `Filter.frequently_cofinite_iff_infinite.1 (((Filter.frequently_cofinite_iff_infinite.2 (GlobalTheory.T.infinitely_many_split_places D)).and_eventually hev).mono ?_)` and prove the remaining obligations. Introduce and unpack `v ⟨⟨e, ε, he, hε, hs⟩, a1, a2, a3, a4, a5⟩`. Take `⟨q, -, hq⟩` from `GlobalTheory.FinPl.SplitPoint.exists_splitPt D v e ε he hε hs`. Take `⟨⟨ψk, hk⟩, -, -, -, hc⟩` from `GlobalTheory.LocChar.weil_char_split D _ (ofSplit q) ψ hψ`.
+
+Take `⟨μ₁, c₁⟩` from `hc S.χ₁⁻¹`. Take `⟨μ₂, c₂⟩` from `hc S.χ₂⁻¹`. Rewrite using `[← hq]`. Conclude with `exists_spherical_at hψ S q hk (DblInhab.hasConductor q (by rw [hq]; exact a1) (by rw [hq]; exact a2) (by rw [hq]; exact a3) hk) c₁ c₂ (a4 _ q hq _ c₁) (a5 _ q hq _ c₂)`.
+-/
 theorem infinite_spherical (hψ : IsStdChar D ψ (-1)) (S : Dbl2 ψ σ) : {v | ∃ Q : QStep S, Q.q.v = v ∧ IsSpherical Q}.Infinite := by
   have hev := (GlobalTheory.T.standard_character_conductor_almost_all D ψ hψ).and ((GlobalTheory.FinPl.AeUnit.eventually_incA_mul_mem_intAt D D.host.xi0).and
     ((GlobalTheory.FinPl.AeUnit.eventually_incA_mul_mem_intAt D D.host.xi0⁻¹).and
@@ -351,6 +447,9 @@ theorem infinite_spherical (hψ : IsStdChar D ψ (-1)) (S : Dbl2 ψ σ) : {v | �
     (DblInhab.hasConductor q (by rw [hq]; exact a1) (by rw [hq]; exact a2) (by rw [hq]; exact a3) hk)
     c₁ c₂ (a4 _ q hq _ c₁) (a5 _ q hq _ c₂)
 
+/- English proof (translation)
+Take `⟨h₁, h₂, l₁, l₂, a, a₁, a₂, -⟩` from `h`. Establish `g : γ.1 = 1` using `Finset.mem_singleton.1 (a₁ ▸ γ.2)`. Establish `b : β.1 = 1` using `Finset.mem_singleton.1 (a₂ ▸ β.2)`. Rewrite using `[g, b, a, l₁, l₂, show Q.Φ₁.1 = Model.ind Q.k _ _ from h₁, show Q.Φ₂.1 = Model.ind Q.k _ _ from h₂]`. Conclude with `⟨Model.xi_ind Q.cond Q.unitVol _, Model.xi_ind Q.cond Q.unitVol _⟩`.
+-/
 theorem IsSpherical.xi_eq {S : Dbl2 ψ σ} {Q : QStep S} (h : IsSpherical Q) (γ : Q.A₁) (β : Q.A₂) :
     GlobalTheory.StepData.xi Q.ψk Q.ν Q.μ₁ Q.Φ₁.1 Q.L₁.J 1 Q.α γ.1 = Model.ind Q.k _ _ ∧
       GlobalTheory.StepData.xi Q.ψk Q.ν Q.μ₂ Q.Φ₂.1 Q.L₂.J 1 γ.1 β.1 = Model.ind Q.k _ _ := by
@@ -360,6 +459,11 @@ theorem IsSpherical.xi_eq {S : Dbl2 ψ σ} {Q : QStep S} (h : IsSpherical Q) (γ
   rw [g, b, a, l₁, l₂, show Q.Φ₁.1 = Model.ind Q.k _ _ from h₁, show Q.Φ₂.1 = Model.ind Q.k _ _ from h₂]
   exact ⟨Model.xi_ind Q.cond Q.unitVol _, Model.xi_ind Q.cond Q.unitVol _⟩
 
+/- English proof (translation)
+Take `⟨-, -, l₁, l₂, -, a₁, a₂, -⟩` from `h`. Use `⟨by simp [QStep.volJ, l₁, l₂, Model.sph], fun γ => ?_, fun β => ?_⟩` and prove the remaining obligations. Rewrite using `[QStep.w₁, show γ.1 = 1 from Finset.mem_singleton.1 (a₁ ▸ γ.2), l₁, Model.sph, prX_Cgrp_KO, Q.vol₁]`. Simplify using the standard rewrite rules. Rewrite using `[QStep.w₂, show β.1 = 1 from Finset.mem_singleton.1 (a₂ ▸ β.2), l₂, Model.sph, prX_Cgrp_KO, Q.vol₂]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem IsSpherical.constants {S : Dbl2 ψ σ} {Q : QStep S} (h : IsSpherical Q) :
     Q.volJ = 1 ∧ (∀ γ, Q.w₁ γ = 1) ∧ ∀ β, Q.w₂ β = 1 := by
   obtain ⟨-, -, l₁, l₂, -, a₁, a₂, -⟩ := h

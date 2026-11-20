@@ -16,6 +16,13 @@ open GlobalTheory.Poinc.Tors
 noncomputable section
 namespace GlobalTheory.Poinc.Tors.OneOver
 
+/- English proof (translation)
+Take `⟨z₀⟩` from `CoefBasic.exists_pt (R := R) (F := F)`. Take `⟨J₀, hJ₀⟩` from `CoefBasic.exists_good' D.P.isLB z₀`. Take `⟨wk, hwk, hv⟩` from `GlobalTheory.TorusExt.exists_gen_val D.P.isLB (DegPre.lineφ D F b) (DegPre.lineε k) hJ₀ (val w (𝟙 _) z₀ J₀ ^ k)`. Use `⟨wk, hwk, fun z J hJ => ?_⟩` and prove the remaining obligations. Take `rfl` from `CoefBasic.pt_eq z₀ z`.
+
+Establish `a₁` using `CoefBasic.val_tr hwk (𝟙 _) hJ hJ₀`. Establish `a₂` using `CoefBasic.val_tr hw (𝟙 _) hJ hJ₀`. Simplify using `only [Category.id_comp] at a₁ a₂`. Rewrite `a₁` using `[CoefBasic.prod_line k b (CoefBasic.trU D.P.L z₀ J J₀)]`. Rewrite `a₂` using `[CoefBasic.prod_line 1 b (CoefBasic.trU D.P.L z₀ J J₀)]`.
+
+Use `a₁.trans ?_` and prove the remaining obligations. Rewrite using `[hv, a₂]`. Simplify using `only [pow_one, mul_pow, inv_pow]`.
+-/
 theorem exists_frm_pow {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F]
     [Algebra (FractionRing R) F] {b : TF (R := R) F ⟶ D.P.A} (w : Frm D F 1 b) (hw : w.IsGen) (k : ℕ) :
     ∃ wk : Frm D F k b, wk.IsGen ∧ ∀ z J, Good D.P.L z J → val wk (𝟙 _) z J = val w (𝟙 _) z J ^ k := by
@@ -34,6 +41,9 @@ theorem exists_frm_pow {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : 
   rw [hv, a₂]
   simp only [pow_one, mul_pow, inv_pow]
 
+/- English proof (translation)
+Establish `hl` using `(GlobalTheory.AdicSum.sumF_calculus R I hI F Ix x x v v).2.1 h h (c - 1)`. Establish `e : (fun i => (c - 1) * x i + x i) = fun i => c * x i` using `funext fun i => by ring`. Rewrite `hl` using `[e, show (c - 1) * v + v = c * v by ring]`. Conclude with `(GlobalTheory.AdicSum.sumF_calculus R I hI F Ix (fun i => c * x i) x v' (c * v)).1 h' hl`.
+-/
 theorem sumF_scale {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} (hI : AdmBase R I) {F : Type} [Field F]
     [Algebra (FractionRing R) F] {Ix : Type} {x : Ix → F} {v v' c : F} (h : SumF I F x v)
     (h' : SumF I F (fun i => c * x i) v') : v' = c * v := by
@@ -42,6 +52,25 @@ theorem sumF_scale {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} (hI : AdmB
   rw [e, show (c - 1) * v + v = c * v by ring] at hl
   exact (GlobalTheory.AdicSum.sumF_calculus R I hI F Ix (fun i => c * x i) x v' (c * v)).1 h' hl
 
+/- English proof (translation)
+Introduce `hL R _ _ _ I hI D A G _ _ hG U F _ _ w₀ hw₀ g w w' x x' fr fr' hw hw' hfr hfr' H H'`. Take `⟨wk, hwk, hvk⟩` from `exists_frm_pow w hw 4`. Take `⟨wk', hwk', hvk'⟩` from `exists_frm_pow w' hw' 4`. Take `⟨c, hc, -, hcoef⟩` from `((CoefBasic.coef_basic R D.toPre F 4 g).2.2 wk hwk).2.2.1 wk' hwk'`. Establish `key : ∀ (t : SecA A F 4) (v v' : F), ValAt t x fr v → ValAt t x' fr' v' → v' = c * v`.
+
+Introduce `t v v' hv hv'`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : ∃ s, U.toUnifPre.ExpandsF F 4 w₀ t s := by`. Take `⟨e, he⟩` from `GlobalTheory.exists_linearEquiv_expandsF hL.1.globalFns U F (k := 4) (by norm_num) w₀ hw₀`. Conclude with `⟨e t, (he t _).2 rfl⟩`. Establish `h1` using `H 4 (by norm_num) wk hvk hwk t s v hs hv`.
+
+Establish `h2` using `H' 4 (by norm_num) wk' hvk' hwk' t s v' hs hv'`. Rewrite `h2` using `[show coef s g wk' = fun χ => c * coef s g wk χ from funext (hcoef s)]`. Conclude with `sumF_scale hI h1 h2`. Take `⟨M, s, hcov, haff⟩` from `(hL.1.ample _ A 4 le_rfl).2 ⊤ (isAffineOpen_top _)`. Use `choose r hr hsurj using fun i => (haff i).2`.
+
+Take `⟨i', hi⟩ : ∃ i' : A.A.left ⟶ (A.A.hom ⁻¹ᵁ ⊤).toScheme, i' ≫ (A.A.hom ⁻¹ᵁ ⊤).ι = 𝟙 _` from `⟨A.A.left.topIso.inv, A.A.left.topIso.inv_hom_id⟩`. Establish `sec : ∀ j, ∃ v : SecA A F 4, ∀ (Z : Scheme.{0}) (r : Z ⟶ (TFK (R` using `R) F ⊗ A.A).left) (z : Z) (J), Good A.L z J → sA v r z J = sval (L := A.L) (φ := fun _ : Fin 4 => (A.A.hom ⁻¹ᵁ ⊤).ι) (ε := fun _ => 1) (s j) (r ≫ (snd (TFK (R := R) F) A.A).left ≫ i') z J := fun j => by`. Take `⟨s', hs'⟩` from `exists_sec A.isLB (φ := fun _ : Fin 4 => (snd (TFK (R := R) F) A.A).left) (ε := fun _ => 1) (φ' := fun _ : Fin 1 => (snd (TFK (R := R) F) A.A).left) (ε' := fun _ => ((4 : ℕ) : ℤ)) (fun U _ f => by`. Simplify using `only [zpow_one, Finset.prod_const, Finset.card_univ, Fintype.card_fin, pow_one, zpow_natCast])`. Use the proof step `(VVRank.pullTo (L := A.L) (φ := fun _ : Fin 4 => (A.A.hom ⁻¹ᵁ ⊤).ι) (ε := fun _ => 1) (s j) ((snd (TFK (R := R) F) A.A).left ≫ i') (fun _ => by rw [Category.assoc, hi, Category.comp_id]))`.
+
+Conclude with `⟨s', fun Z r z J hJ => (hs' Z r z J hJ).trans (VVRank.sval_pullTo _ _ _ r z hJ)⟩`. Use `choose v hv using sec`. Use `choose a ha using fun j => GlobalTheory.OneBasis.exists_valAt A F hL.1 (v j) x hfr`. Use `choose a' ha' using fun j => GlobalTheory.OneBasis.exists_valAt A F hL.1 (v j) x' hfr'`. Establish `hrel : ∀ j, a' j = c * a j` using `fun j => key (v j) (a j) (a' j) (ha j) (ha' j)`.
+
+Establish `hf : (x.left ≫ i') ≫ (A.A.hom ∣_ ⊤) = (x'.left ≫ i') ≫ (A.A.hom ∣_ ⊤)`. Rewrite using `[← cancel_mono (⊤ : (Spec (CommRingCat.of (FractionRing R))).Opens).ι]`. Simplify using `only [Category.assoc, morphismRestrict_ι, reassoc_of% hi, Over.w]`. Establish `e : ∀ y : TFK (R` using `R) F ⟶ A.A, (ptSecT A.A y).left ≫ (snd (TFK (R := R) F) A.A).left ≫ i' = y.left ≫ i' := fun y => by`. Rewrite using `[← Category.assoc, ← Over.comp_left, ptSecT, lift_snd]`.
+
+Establish `key2 : x.left ≫ i' = x'.left ≫ i'`. Use `AutUniq.hom_eq_of_sval (L := A.L) (φ := fun _ : Fin 4 => (A.A.hom ⁻¹ᵁ ⊤).ι) (ε := fun _ => 1) s (A.A.hom ∣_ ⊤) _ _ hf hcov (fun i => (haff i).1) r hr hsurj fun z => ?_` and prove the remaining obligations. Take `⟨J, hJ⟩` from `CoefBasic.exists_good' A.isLB z`. Take `⟨κ, hκ⟩ : ∃ κ : F →+* (TFK (R` from `R) F).left.presheaf.stalk z, ∀ b, cst (R := R) F z b = κ b := ⟨CoefBasic.cstH (R := R) z, CoefBasic.cst_eq z⟩`. Use `⟨J, hJ, Units.map κ.toMonoidHom (Units.mk0 c hc) * val (powFrame A.A A.L x' fr' 4) (𝟙 _) z J * (val (powFrame A.A A.L x fr 4) (𝟙 _) z J)⁻¹, fun j => ?_⟩` and prove the remaining obligations.
+
+Establish `p` using `(hv j _ (ptSecT A.A x).left z J hJ).symm.trans (ha j z J hJ)`. Establish `q` using `(hv j _ (ptSecT A.A x').left z J hJ).symm.trans (ha' j z J hJ)`. Rewrite `p`, `q` using `[e]`. Rewrite using `[p, q, hrel j]`. Establish `hinv` using `Units.inv_mul (val (powFrame A.A A.L x fr 4) (𝟙 _) z J)`.
+
+Simplify using `only [Units.val_mul, Units.coe_map, Units.val_mk0, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe, hκ, map_mul, id] at hinv ⊢`. Take the linear combination `(-(κ c * (val (powFrame A.A A.L x' fr' 4) (𝟙 _) z J).val * κ (a j))) * hinv`. Use `congrArg (fun q => q ≫ (A.A.hom ⁻¹ᵁ ⊤).ι) key2` as an intermediate fact. Simplify using `only [Category.assoc, hi, Category.comp_id] at this`. Conclude with `Over.OverMorphism.ext this`.
+-/
 theorem eq_of_liesOver : LL → AllU fun {R} _ _ {I} {D} {A} {G} _ _ U => ∀ (F : Type) [Field F] [Algebra (FractionRing R) F] (w₀ : W0 U.toUnifPre), w₀.IsGen → ∀ (g : GtPtF D.toPre F) (w w' : Frm D.toPre F 1 g.b) (x x' : TFK (R := R) F ⟶ A.A) (fr : FrAt x) (fr' : FrAt x'), w.IsGen → w'.IsGen → fr.IsGen → fr'.IsGen → LiesOver U.toUnifPre w₀ g w x fr → LiesOver U.toUnifPre w₀ g w' x' fr' → x = x' := by
   intro hL R _ _ _ I hI D A G _ _ hG U F _ _ w₀ hw₀ g w w' x x' fr fr' hw hw' hfr hfr' H H'
   obtain ⟨wk, hwk, hvk⟩ := exists_frm_pow w hw 4

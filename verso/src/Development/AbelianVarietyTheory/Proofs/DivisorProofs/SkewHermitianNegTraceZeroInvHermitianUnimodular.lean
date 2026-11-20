@@ -22,14 +22,23 @@ section Gen
 
 variable {K : Type} [Field K] [StarRing K] {k : ℕ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [Pi.star_apply, Pi.smul_apply, smul_eq_mul, star_mul']`.
+-/
 theorem star_smul_vec (e : K) (a : Fin k → K) : star (e • a) = star e • star a := by
   funext i
   simp only [Pi.star_apply, Pi.smul_apply, smul_eq_mul, star_mul']
 
+/- English proof (translation)
+Rewrite using `[star_smul_vec, Matrix.mulVec_smul]`.
+-/
 theorem psi_smul (M : Matrix (Fin k) (Fin k) K) (e : K) (a : Fin k → K) :
     M *ᵥ star (e • a) = star e • (M *ᵥ star a) := by
   rw [star_smul_vec, Matrix.mulVec_smul]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_smul, star_smul_vec]`.
+-/
 theorem psiInv_smul (N : Matrix (Fin k) (Fin k) K) (e : K) (x : Fin k → K) :
     star (N *ᵥ (e • x)) = star e • star (N *ᵥ x) := by
   rw [Matrix.mulVec_smul, star_smul_vec]
@@ -40,19 +49,35 @@ variable (D : D7) {k : ℕ}
 
 def conjO (c : 𝓞 D.host.E) : 𝓞 D.host.E := ⟨star (c : D.host.E), int_cc D c.isIntegral_coe⟩
 
+/- English proof (translation)
+Establish `hc : ∀ z : D.host.E, ReciprocityTheory.ChartRestriction.G.FD.cc z = star z` using `fun _ => rfl`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.herm, dotProduct, Matrix.mulVec, Finset.mul_sum, Pi.star_apply, hc]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations.
+-/
 theorem herm_eq (G : Matrix (Fin k) (Fin k) D.host.E) (x y : Fin k → D.host.E) :
     ReciprocityTheory.ChartRestriction.G.FD.herm G x y = x ⬝ᵥ (G *ᵥ star y) := by
   have hc : ∀ z : D.host.E, ReciprocityTheory.ChartRestriction.G.FD.cc z = star z := fun _ => rfl
   simp only [ReciprocityTheory.ChartRestriction.G.FD.herm, dotProduct, Matrix.mulVec, Finset.mul_sum, Pi.star_apply, hc]
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem form_eq (J : Matrix (Fin k) (Fin k) D.host.E) (x y : Fin k → D.host.E) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form D.sp.cm.sig J x y = x ⬝ᵥ (J *ᵥ star y) := rfl
 
+/- English proof (translation)
+Rewrite using `[herm_eq, form_eq, Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul]`.
+-/
 theorem herm_smul (c : D.host.E) (J : Matrix (Fin k) (Fin k) D.host.E) (x y : Fin k → D.host.E) :
     ReciprocityTheory.ChartRestriction.G.FD.herm (c • J) x y = c * GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form D.sp.cm.sig J x y := by
   rw [herm_eq, form_eq, Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul]
 
+/- English proof (translation)
+Establish `h1 : (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ≠ 0` using `one_ne_zero`. Rewrite using `[Dinv, FractionalIdeal.mem_dual h1]`. Prove the components needed by the constructor for the conclusion. Introduce `h o`. Establish `h1` using `h (o : D.host.E) ((FractionalIdeal.mem_one_iff _).2 ⟨o, rfl⟩)`.
+
+Rewrite `h1` using `[Algebra.traceForm_apply, mul_comm]`. Take `⟨q, hq⟩` from `h1`. Rewrite using `[← hq]`. Conclude with `isIntegral_algebraMap`. Introduce `h a ha`.
+
+Take `⟨o, rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 ha`. Rewrite using `[Algebra.traceForm_apply, mul_comm]`. Conclude with `IsIntegrallyClosed.isIntegral_iff.1 (h o)`.
+-/
 theorem mem_Dinv_iff (w : D.host.E) :
     w ∈ Dinv D ↔ ∀ o : 𝓞 D.host.E, IsIntegral ℤ (Algebra.trace ℚ D.host.E (o * w)) := by
   have h1 : (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ≠ 0 := one_ne_zero
@@ -69,12 +94,18 @@ theorem mem_Dinv_iff (w : D.host.E) :
     rw [Algebra.traceForm_apply, mul_comm]
     exact IsIntegrallyClosed.isIntegral_iff.1 (h o)
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.WeilSchrodingerHerm.sesq_apply, Matrix.star_mulVec, star_star, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Conclude with `(Matrix.dotProduct_mulVec _ _ _).symm`.
+-/
 theorem sesq_psi (G M : Matrix (Fin k) (Fin k) D.host.E) (a b : Fin k → D.host.E) :
     GlobalTheory.WeilSchrodinger.sesq D G (M *ᵥ star b) (M *ᵥ star a) = b ⬝ᵥ ((Mᴴ * G * M) *ᵥ star a) := by
   rw [GlobalTheory.WeilSchrodingerHerm.sesq_apply, Matrix.star_mulVec, star_star, ← Matrix.mulVec_mulVec,
     ← Matrix.mulVec_mulVec]
   exact (Matrix.dotProduct_mulVec _ _ _).symm
 
+/- English proof (translation)
+Rewrite using `[herm_eq, herm_eq]`. Simplify using `only [dotProduct, Matrix.mulVec, star_sum, star_mul', Pi.star_apply, star_star, hG, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations.
+-/
 theorem herm_swap (G : Matrix (Fin k) (Fin k) D.host.E) (hG : ∀ i j, star (G i j) = G j i) (x y : Fin k → D.host.E) :
     ReciprocityTheory.ChartRestriction.G.FD.herm G y x = star (ReciprocityTheory.ChartRestriction.G.FD.herm G x y) := by
   rw [herm_eq, herm_eq]
@@ -100,14 +131,41 @@ def latQ (N : Matrix (Fin k) (Fin k) D.host.E) (L' : Submodule (𝓞 D.host.E) (
     rw [e, algebraMap_smul]
     exact L'.smul_mem _ hx
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_latQ {N : Matrix (Fin k) (Fin k) D.host.E} {L' : Submodule (𝓞 D.host.E) (Fin k → D.host.E)}
     {x : Fin k → D.host.E} : x ∈ latQ D N L' ↔ star (N *ᵥ x) ∈ L' := Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[mem_latQ, Matrix.mulVec_mulVec, hNM, Matrix.one_mulVec, star_star]`.
+-/
 theorem psi_mem_iff {M N : Matrix (Fin k) (Fin k) D.host.E} (hNM : N * M = 1)
     {L' : Submodule (𝓞 D.host.E) (Fin k → D.host.E)} (a : Fin k → D.host.E) :
     M *ᵥ star a ∈ latQ D N L' ↔ a ∈ L' := by
   rw [mem_latQ, Matrix.mulVec_mulVec, hNM, Matrix.one_mulVec, star_star]
 
+/- English proof (translation)
+Establish `hback : ∀ x : Fin k → D.host.E, M *ᵥ star (star (N *ᵥ x)) = x` using `fun x => by`. Rewrite using `[star_star, Matrix.mulVec_mulVec, hMN, Matrix.one_mulVec]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `hL'.fg`. Use `⟨s.image (fun a => M *ᵥ star a), le_antisymm ?_ ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Submodule.span_le]`. Introduce `y hy`. Rewrite `hy` using `[Finset.coe_image]`. Take `⟨a, ha, rfl⟩` from `hy`. Conclude with `(psi_mem_iff D hNM a).2 (hs ▸ Submodule.subset_span ha)`.
+
+Introduce `x hx`. Establish `hx' : star (N *ᵥ x) ∈ Submodule.span (𝓞 D.host.E) (s : Set (Fin k → D.host.E))` using `hs.symm ▸ hx`. Establish `key : ∀ a ∈ Submodule.span (𝓞 D.host.E) (s : Set (Fin k → D.host.E)), M *ᵥ star a ∈ Submodule.span (𝓞 D.host.E) ((s.image (fun a => M *ᵥ star a) : Finset (Fin k → D.host.E)) : Set (Fin k → D.host.E))`. Introduce `a ha`. Proceed by induction on `ha using Submodule.span_induction with`.
+
+Consider the case `mem a ha`. Apply `Submodule.subset_span` to reduce the goal to its premises. Rewrite using `[Finset.coe_image]`. Conclude with `⟨a, ha, rfl⟩`. Consider the case `zero => simp`.
+
+Consider the case `add a b _ _ iha ihb`. Rewrite using `[star_add, Matrix.mulVec_add]`. Conclude with `Submodule.add_mem _ iha ihb`. Consider the case `smul c a _ ih`. Rewrite using `[← algebraMap_smul D.host.E c a, psi_smul]`.
+
+Establish `e : star (algebraMap (𝓞 D.host.E) D.host.E c) = algebraMap (𝓞 D.host.E) D.host.E (conjO D c)` using `rfl`. Rewrite using `[e, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ ih`. Use `key _ hx'` as an intermediate fact. Rewrite `this` using `[hback]`. Then use the resulting hypothesis.
+
+Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `hx' : star (N *ᵥ x) ∈ Submodule.span D.host.E (L' : Set (Fin k → D.host.E))`. Rewrite using `[hL'.span_eq_top]`. Discharge the goal by the elementary cases of `trivial`.
+
+Establish `key : ∀ a ∈ Submodule.span D.host.E (L' : Set (Fin k → D.host.E)), M *ᵥ star a ∈ Submodule.span D.host.E ((latQ D N L' : Submodule (𝓞 D.host.E) (Fin k → D.host.E)) : Set (Fin k → D.host.E))`. Introduce `a ha`. Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem a ha => exact Submodule.subset_span ((psi_mem_iff D hNM a).2 ha)`. Consider the case `zero => simp`.
+
+Consider the case `add a b _ _ iha ihb`. Rewrite using `[star_add, Matrix.mulVec_add]`. Conclude with `Submodule.add_mem _ iha ihb`. Consider the case `smul c a _ ih`. Rewrite using `[psi_smul]`.
+
+Conclude with `Submodule.smul_mem _ _ ih`. Use `key _ hx'` as an intermediate fact. Rewrite `this` using `[hback]`. Then use the resulting hypothesis.
+-/
 theorem latQ_isLattice {M N : Matrix (Fin k) (Fin k) D.host.E} (hMN : M * N = 1) (hNM : N * M = 1)
     (L' : Submodule (𝓞 D.host.E) (Fin k → D.host.E)) (hL' : L'.IsLattice D.host.E) :
     (latQ D N L').IsLattice D.host.E := by
@@ -164,6 +222,15 @@ theorem latQ_isLattice {M N : Matrix (Fin k) (Fin k) D.host.E} (hMN : M * N = 1)
     have := key _ hx'
     rwa [hback] at this
 
+/- English proof (translation)
+Use `⟨localLattice_fg D Λ hΛ.fg, ?_⟩` and prove the remaining obligations. Establish `h0 : (D.host.AA⁻¹ : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ≠ 0` using `inv_ne_zero (Formalism.L2.Pj.AA_ne_zero hP D)`. Take `⟨b, hb, hb0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot (fun h => h0 (FractionalIdeal.coeToSubmodule_eq_bot.1 h))`. Rewrite using `[eq_top_iff]`. Introduce and unpack `v -`.
+
+Establish `hv0 : v ∈ Submodule.span D.host.E (Λ : Set (Fin k → D.host.E))` using `by rw [hΛ.span_eq_top]; trivial`. Establish `hv : b • v ∈ Submodule.span D.host.E ((lattice₂ D Λ : Submodule (𝓞 D.host.E) (Fin k → D.host.E)) : Set (Fin k → D.host.E))`. Proceed by induction on `hv0 using Submodule.span_induction with`. Consider the case `mem z hz => exact Submodule.subset_span (smul_mem_latP hP hb hz)`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy`. Rewrite using `[smul_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ ih`. Rewrite using `[smul_comm]`.
+
+Conclude with `Submodule.smul_mem _ _ ih`. Use `Submodule.smul_mem _ b⁻¹ hv` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hb0, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem localLattice_isLattice (hP : FactPrincipalDatum) (Λ : Submodule (𝓞 D.host.E) (Fin k → D.host.E))
     (hΛ : Λ.IsLattice D.host.E) : (lattice₂ D Λ).IsLattice D.host.E := by
   refine ⟨localLattice_fg D Λ hΛ.fg, ?_⟩
@@ -190,6 +257,11 @@ theorem localLattice_isLattice (hP : FactPrincipalDatum) (Λ : Submodule (𝓞 D
 
 variable (B : Base D.host.F D.host.E) {d : ℕ} (Y : Spc D.host.F D.host.E d) {r s : ℕ}
 
+/- English proof (translation)
+Take `⟨w⟩ : Nonempty (InfinitePlace D.host.F)` from `inferInstance`. Establish `h` using `GlobalTheory.WeilSchrodingerHerm.det_ne_zero_of_hasSig (hY.sig w)`. Introduce `h0`. Apply `h` to reduce the goal to its premises. Establish `hm : (Y.J.map (B.emb w).1).det = (B.emb w).1 Y.J.det` using `(RingHom.map_det _ _).symm`.
+
+Rewrite using `[Matrix.det_smul, hm, h0, map_zero, mul_zero]`.
+-/
 theorem det_J_ne_zero_skew (hY : Y.IsSkew D.sp.cm.sig B r s) : Y.J.det ≠ 0 := by
   obtain ⟨w⟩ : Nonempty (InfinitePlace D.host.F) := inferInstance
   have h := GlobalTheory.WeilSchrodingerHerm.det_ne_zero_of_hasSig (hY.sig w)
@@ -198,6 +270,43 @@ theorem det_J_ne_zero_skew (hY : Y.IsSkew D.sp.cm.sig B r s) : Y.J.det ≠ 0 := 
   have hm : (Y.J.map (B.emb w).1).det = (B.emb w).1 Y.J.det := (RingHom.map_det _ _).symm
   rw [Matrix.det_smul, hm, h0, map_zero, mul_zero]
 
+/- English proof (translation)
+Establish `hP : FactPrincipalDatum` using `Formalism.IndefR.Fin.factPrincipalDatum`. Establish `hξ : D.host.xi0 ≠ 0` using `Formalism.L2.Pj.cmHost_imaginaryGenerator_ne_zero hP D`. Establish `hsξ : star D.host.xi0 = -D.host.xi0` using `Formalism.IndefR.Datum.Brg.star_purely_imaginary_eq_neg`. Establish `hdet : Y.J.det ≠ 0` using `det_J_ne_zero_skew D B Y hY`. Establish `hu : IsUnit Y.J.det` using `isUnit_iff_ne_zero.2 hdet`.
+
+Establish `hsk : ∀ i j, star (Y.J j i) = -Y.J i j` using `fun i j => hY.skew i j`. Establish `hJ : Y.Jᴴ = -Y.J` using `Matrix.ext fun i j => by`. Rewrite using `[Matrix.conjTranspose_apply, Matrix.neg_apply]`. Conclude with `hsk i j`. Use `⟨hu, ?_⟩` and prove the remaining obligations.
+
+Use `set ξ := D.host.xi0 with hξdef`. Use `set G : Matrix (Fin d) (Fin d) D.host.E := -ξ • Y.J⁻¹ with hGdef`. Use `set G' : Matrix (Fin d) (Fin d) D.host.E := ξ⁻¹ • Y.J with hG'def`. Use `set M : Matrix (Fin d) (Fin d) D.host.E := (-ξ⁻¹) • Y.J with hMdef`. Establish `hMN : M * G = 1`.
+
+Rewrite using `[hMdef, hGdef, Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.mul_nonsing_inv _ hu, neg_mul_neg, inv_mul_cancel₀ hξ, one_smul]`. Establish `hNM : G * M = 1`. Rewrite using `[hMdef, hGdef, Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.nonsing_inv_mul _ hu, neg_mul_neg, mul_inv_cancel₀ hξ, one_smul]`. Establish `hJinv : (Y.Jᴴ)⁻¹ = -Y.J⁻¹`. Rewrite using `[hJ]`.
+
+Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[neg_mul_neg, Matrix.nonsing_inv_mul _ hu]`. Establish `hGh : Gᴴ = G`. Rewrite using `[hGdef, Matrix.conjTranspose_smul, Matrix.conjTranspose_nonsing_inv, hJinv, star_neg, hsξ, neg_neg, smul_neg, neg_smul]`. Establish `hsG : ∀ i j, star (G i j) = G j i` using `fun i j => by`.
+
+Use `congrFun (congrFun hGh j) i` as an intermediate fact. Rewrite `this` using `[Matrix.conjTranspose_apply]`. Then use the resulting hypothesis. Establish `hsG' : ∀ i j, star (G' i j) = G' j i` using `fun i j => by`. Rewrite using `[hG'def, Matrix.smul_apply, Matrix.smul_apply, smul_eq_mul, smul_eq_mul, star_mul', star_inv₀, hsξ]`. Establish `e : star (Y.J i j) = -Y.J j i` using `hsk j i`.
+
+Rewrite using `[e, inv_neg, neg_mul_neg]`. Establish `hMh : Mᴴ = -(ξ⁻¹ • Y.J)`. Rewrite using `[hMdef, Matrix.conjTranspose_smul, hJ, star_neg, star_inv₀, hsξ, inv_neg, neg_neg, smul_neg]`. Establish `hM : Mᴴ * G * M = -G'`. Rewrite using `[hMh, hGdef, hMdef, hG'def]`.
+
+Simplify using `only [Matrix.neg_mul, Matrix.smul_mul, Matrix.mul_smul, smul_smul]`. Rewrite using `[Matrix.mul_nonsing_inv _ hu, Matrix.one_mul]`. Rewrite using `[neg_mul_neg, inv_mul_cancel₀ hξ, one_smul]`. Establish `hkey : ∀ a b : Fin d → D.host.E, GlobalTheory.WeilSchrodinger.sesq D G (M *ᵥ star b) (M *ᵥ star a) = -ReciprocityTheory.ChartRestriction.G.FD.herm G' b a`. Introduce `a b`.
+
+Rewrite using `[sesq_psi, hM, Matrix.neg_mulVec, dotProduct_neg, herm_eq]`. Establish `hF : ∀ y, y ∈ Y.L ↔ ∀ z ∈ Y.L, ξ * ReciprocityTheory.ChartRestriction.G.FD.herm G' y z ∈ Dinv D`. Introduce `y`. Rewrite using `[hY.dual y]`. Use `forall₂_congr fun z _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hG'def, herm_smul, ← mul_assoc, mul_inv_cancel₀ hξ, one_mul, mem_Dinv_iff]`. Establish `hdetG : G.det ≠ 0`. Introduce `h0`. Establish `h1` using `congrArg Matrix.det hMN`. Rewrite `h1` using `[Matrix.det_mul, Matrix.det_one, h0, mul_zero]`.
+
+Conclude with `zero_ne_one h1`. Use `⟨latQ D G (lattice₂ D Y.L), latQ_isLattice D hMN hNM _ (localLattice_isLattice D hP Y.L hY.lat), ?_, ?_, ?_⟩` and prove the remaining obligations. Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Simplify using `only [GlobalTheory.WeilSchrodingerHerm.sesq_apply, starRingEnd_apply, dotProduct, Matrix.mulVec, star_sum, star_mul', star_star, Pi.star_apply, hsG, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations. Use `⟨fun x hx => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Establish `h1 : star x ᵥ* G = 0`. Use `dotProduct_eq_zero _ fun v => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.dotProduct_mulVec, ← GlobalTheory.WeilSchrodingerHerm.sesq_apply]`.
+
+Conclude with `hx v`. Establish `h2 : star x = 0` using `Matrix.eq_zero_of_vecMul_eq_zero hdetG h1`. Simplify using `using congrArg star h2`. Establish `h1 : G *ᵥ y = 0`. Use `dotProduct_eq_zero _ fun v => ?_` and prove the remaining obligations.
+
+Rewrite using `[dotProduct_comm]`. Use `hy (star v)` as an intermediate fact. Rewrite `this` using `[GlobalTheory.WeilSchrodingerHerm.sesq_apply, star_star]`. Then use the resulting hypothesis. Conclude with `Matrix.eq_zero_of_mulVec_eq_zero hdetG h1`. Use `show Formalism.E.hdual _ _ = _`.
+
+Establish `hback : ∀ x : Fin d → D.host.E, M *ᵥ star (star (G *ᵥ x)) = x` using `fun x => by`. Rewrite using `[star_star, Matrix.mulVec_mulVec, hMN, Matrix.one_mulVec]`. Use extensionality with `x`. Simplify using `only [Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.coe_restrictScalars, GlobalTheory.WeilSchrodingerHerm.mem_one_iff]`. Take `⟨a, rfl⟩ : ∃ a, x = M *ᵥ star a` from `⟨star (G *ᵥ x), (hback x).symm⟩`.
+
+Rewrite using `[psi_mem_iff D hNM]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `mem_dual_localLattice_of_forall hP G' Y.L hF` to reduce the goal to its premises. Introduce `b hb`.
+
+Establish `h1` using `h _ ((psi_mem_iff D hNM b).2 hb)`. Rewrite `h1` using `[hkey]`. Establish `h2 : IsIntegral ℤ (ReciprocityTheory.ChartRestriction.G.FD.herm G' b a)` using `by simpa using h1.neg`. Rewrite using `[herm_swap D G' hsG' b a]`. Conclude with `int_cc D h2`.
+
+Introduce `ha y hy`. Take `⟨b, rfl⟩ : ∃ b, y = M *ᵥ star b` from `⟨star (G *ᵥ y), (hback y).symm⟩`. Rewrite `hy` using `[psi_mem_iff D hNM]`. Rewrite using `[hkey]`. Conclude with `(localLattice_form_integral hP G' Y.L hF hy ha).neg`.
+-/
 theorem skew_to_herm (hY : Y.IsSkew D.sp.cm.sig B r s) :
     IsUnit Y.J.det ∧ ∃ L : Submodule (𝓞 D.host.E) (Fin d → D.host.E), L.IsLattice D.host.E ∧
       (GlobalTheory.WeilSchrodinger.sesq D (-D.host.xi0 • Y.J⁻¹)).IsSymm ∧
@@ -307,6 +416,9 @@ end GlobalTheory.WeilSchrodingerSkew
 
 end
 
+/- English proof (translation)
+Introduce `D B _ _ Y _ _ hY` and use `GlobalTheory.WeilSchrodingerSkew.skew_to_herm D B Y hY`.
+-/
 theorem GlobalTheory.WeilSchrodingerSkew.main : ∀ (D : D7) (B : Base D.host.F D.host.E), B.IsGood D.sp.cm.sig →
     ∀ (d : ℕ) (Y : Spc D.host.F D.host.E d) (r s : ℕ), Y.IsSkew D.sp.cm.sig B r s →
       IsUnit Y.J.det ∧ ∃ L : Submodule (𝓞 D.host.E) (Fin d → D.host.E), L.IsLattice D.host.E ∧

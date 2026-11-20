@@ -11,6 +11,11 @@ section Mat
 
 variable {ι : Type*} [Fintype ι] [DecidableEq ι] {H : Matrix ι ι ℂ} {a : ι → ℂ}
 
+/- English proof (translation)
+Use `matrix_ext_mulVec fun z => ?_` and prove the remaining obligations. Establish `h1 : hForm H a z = starRingEnd ℂ α * hForm H a (g *ᵥ z)`. Rewrite using `[← hForm_mulVec_of_unitary H hg a z, hga, hForm_smul_left]`. Establish `h2 : hForm H y z = hForm H y (g *ᵥ z)` using `by conv_lhs => rw [← hForm_mulVec_of_unitary H hg y z, hgy]`. Rewrite using `[← mulVec_mulVec, ← mulVec_mulVec, heisMat_mulVec, heisMat_mulVec, h1, h2, hForm_smul_left, Complex.conj_conj, Complex.normSq_eq_conj_mul_self]`.
+
+Simplify using `only [mulVec_add, mulVec_sub, mulVec_smul, hga, hgy]`. Use `module`.
+-/
 theorem heisMat_conj_scale {g : Matrix ι ι ℂ} (hg : gᴴ * H * g = H) {α : ℂ}
     (hga : g *ᵥ a = α • a) {y : ι → ℂ} (hgy : g *ᵥ y = y) (s : ℂ) :
     g * heisMat H a y s =
@@ -27,6 +32,11 @@ theorem heisMat_conj_scale {g : Matrix ι ι ℂ} (hg : gᴴ * H * g = H) {α : 
 
 omit [DecidableEq ι] in
 
+/- English proof (translation)
+Establish `e : hForm H (starRingEnd ℂ α • y) (starRingEnd ℂ α • y) = (Complex.normSq α : ℂ) * hForm H y y`. Rewrite using `[hForm_smul_left, hForm_smul_right, Complex.conj_conj, Complex.normSq_eq_conj_mul_self]`. Expand and normalize the polynomial expressions, which then agree. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `only [heisS, e, Complex.re_ofReal_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [heisS, Complex.im_ofReal_mul]`.
+-/
 theorem heisS_conj_smul (α : ℂ) (y : ι → ℂ) (t : ℝ) :
     heisS H (starRingEnd ℂ α • y) (Complex.normSq α * t) = (Complex.normSq α : ℂ) * heisS H y t := by
   have e : hForm H (starRingEnd ℂ α • y) (starRingEnd ℂ α • y) =
@@ -60,6 +70,11 @@ def heisScale (h : HermitianForm F E W) (v : Basis ι E W) (x₀ w₀ : W) (c : 
       r • (c w • (y : InfinitePlace E → ι → ℂ) w)
     rw [Pi.smul_apply, real_smul_vec, real_smul_vec, smul_comm]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `w`. Apply `Units.ext` to reduce the goal to its premises. Establish `hu` using `archUnitary_at_place g w`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, Pi.mul_apply, Pi.inv_apply, Units.val_mul]`.
+
+Rewrite using `[heisPoint_val, heisPoint_val, heisMatAt, heisMatAt, heisMat_conj_scale hu (hga w) (hgy w _ (p.1.2 w).1 (p.1.2 w).2), mul_assoc, Units.mul_inv, mul_one]`. Use `congr 1`. Conclude with `(heisS_conj_smul (α w) _ (p.2 w)).symm`.
+-/
 theorem heisPoint_torus (hp : IsHyperbolicPair h x₀ w₀) (g : archUnitary h v)
     (α : InfinitePlace E → ℂ)
     (hga : ∀ w, ((g : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ) *ᵥ vecAt v x₀ w =

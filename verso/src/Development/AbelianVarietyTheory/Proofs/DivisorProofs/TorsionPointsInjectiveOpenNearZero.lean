@@ -16,6 +16,9 @@ open GlobalTheory.OpenOmega
 
 namespace GlobalTheory.OpenOmega
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨t, rfl⟩`. Take `⟨s, rfl⟩` from `GlobalTheory.SqZeroPt.surjective_sec_zeroSec R M t`. Use `⟨s, ?_⟩` and prove the remaining obligations. Rewrite using `[← hz]`. Conclude with `Scheme.Hom.comp_apply (zeroSec R M).left z.left s`.
+-/
 theorem range_subset_range_unit {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] {M : Type} [AddCommGroup M]
     [Module R M] [Module Rᵐᵒᵖ M] [IsCentralScalar R M] (z : SpAlg R (TrivSqZeroExt R M) ⟶ G)
     (hz : zeroSec R M ≫ z = η[G]) : Set.range z.left ⊆ Set.range η[G].left := by
@@ -25,6 +28,9 @@ theorem range_subset_range_unit {R : Type} [CommRing R] {G : Over (Sp R)} [GrpOb
   rw [← hz]
   exact Scheme.Hom.comp_apply (zeroSec R M).left z.left s
 
+/- English proof (translation)
+Introduce `M _ _ _ _ z z' hz hz' e`. Take `⟨U, V, hU, hB⟩` from `h n`. Conclude with `(hB (TrivSqZeroExt R M)).injOn ((range_subset_range_unit z.1 hz).trans hU) ((range_subset_range_unit z'.1 hz').trans hU) e`.
+-/
 theorem ptInj_of_isOpenNearZero (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G]
     (GG : PDivGroup p R) (θ : TorsionMap G GG) (h : θ.IsOpenNearZero) (n : ℕ) : PtInj θ n := by
   intro M _ _ _ _ z z' hz hz' e

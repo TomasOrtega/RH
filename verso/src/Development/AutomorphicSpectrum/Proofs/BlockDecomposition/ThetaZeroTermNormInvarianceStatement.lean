@@ -22,6 +22,9 @@ open GroundTheory.Global.AdicLiesOver
 open GlobalTheory.CompanionTheory.FexTheta
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FexTheta.theta_zero_term_norm_diagonal_invariant | exact GlobalTheory.CompanionTheory.FexTheta.theta_zero_term_norm_diagonal_invariant | (intros; apply GlobalTheory.CompanionTheory.FexTheta.theta_zero_term_norm_diagonal_invariant <;> as …`.
+-/
 theorem _root_.GlobalTheory.T.theta_zero_term_norm_invariance : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → IsTotallyComplex K →
   ∀ (DK : DatK K) (c : HeckeCharacter K) (n : ℤ) (t : ℝ) (S : Finset (PlK K)), AdmK DK c n t S →
   ∀ M : ∀ v : Pl, LM c v, AdmM M → (∀ (v : Pl) (x : (Qv v)ˣ), (M v).ct x = 1) → ∀ (κ : Kˣ) (g : G2),

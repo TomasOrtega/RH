@@ -9,6 +9,11 @@ namespace GlobalTheory.CompanionTheory.Ar.TowerOfTest
 open AlgebraicGeometry CategoryTheory Limits NumberField GlobalTheory.CompanionTheory.Ar
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi
 
+/- English proof (translation)
+Establish `key : ∀ (x x' : X) (_ : x' = x) (φ : X.presheaf.stalk x ⟶ CommRingCat.of Ω) [IsIso φ] (φ' : X.presheaf.stalk x' ⟶ CommRingCat.of Ω'), ∃ i : Ω →+* Ω', Spec.map φ' ≫ X.fromSpecStalk x' = Spec.map (CommRingCat.ofHom i) ≫ Spec.map φ ≫ X.fromSpecStalk x`. Introduce `x x' e φ _ φ'`. Substitute `e` using the available equality. Use `⟨(inv φ ≫ φ').hom, ?_⟩` and prove the remaining obligations. Rewrite using `[CommRingCat.ofHom_hom, ← Category.assoc, ← Spec.map_comp, IsIso.hom_inv_id_assoc]`.
+
+Use `haveI : IsIso (Scheme.stalkClosedPointTo ξ) := (ConcreteCategory.isIso_iff_bijective _).2 h.bij`. Take `⟨i, hi⟩` from `@key _ _ e (Scheme.stalkClosedPointTo ξ) this (Scheme.stalkClosedPointTo ξ')`. Use `⟨i, ?_⟩` and prove the remaining obligations. Conclude with `(Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ').symm.trans (hi.trans (congrArg (Spec.map (CommRingCat.ofHom i) ≫ ·) (Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ)))`.
+-/
 theorem factor {X : Scheme.{0}} {Ω Ω' : Type} [Field Ω] [Field Ω'] (ξ : Spec (CommRingCat.of Ω) ⟶ X)
     (h : IsCptGen ξ) (ξ' : Spec (CommRingCat.of Ω') ⟶ X) (e : genPt ξ' = genPt ξ) :
     ∃ i : Ω →+* Ω', ξ' = Spec.map (CommRingCat.ofHom i) ≫ ξ := by
@@ -25,6 +30,9 @@ theorem factor {X : Scheme.{0}} {Ω Ω' : Type} [Field Ω] [Field Ω'] (ξ : Spe
   exact (Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ').symm.trans (hi.trans
     (congrArg (Spec.map (CommRingCat.ofHom i) ≫ ·) (Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ)))
 
+/- English proof (translation)
+Use `Spec.map_injective h` as an intermediate fact. Conclude with `congrArg CommRingCat.Hom.hom this`.
+-/
 theorem spec_inj {A B : Type} [CommRing A] [CommRing B] {f g : A →+* B}
     (h : Spec.map (CommRingCat.ofHom f) = Spec.map (CommRingCat.ofHom g)) : f = g := by
   have := Spec.map_injective h
@@ -35,6 +43,9 @@ def SplitOver {O F : Type} [CommRing O] [Field F] {X : Scheme.{0}} (s : X ⟶ Sp
   ∀ (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (cst : F →+* Ω), IsCptGen ξ →
     ξ ≫ s = Spec.map (CommRingCat.ofHom (cst.comp β)) → ∀ a : Ω, IsAlgebraic ℤ a → a ∈ cst.range
 
+/- English proof (translation)
+Establish `hb : Function.Bijective (Scheme.stalkClosedPointTo (𝟙 (Spec (CommRingCat.of K)))).hom` using `(ConcreteCategory.isIso_iff_bijective _).1 (by`. Unfold `Scheme.stalkClosedPointTo`. Conclude with `@IsIso.comp_isIso _ _ _ _ _ _ _ (by erw [Scheme.Hom.stalkMap_id]; exact IsIso.id _) inferInstance)`. Conclude with `⟨hb, fun p => hb.1.comp (CptInh.spec_inj _ p.2)⟩`.
+-/
 theorem isCptGen_id (K : Type) [Field K] : IsCptGen (𝟙 (Spec (CommRingCat.of K))) := by
   have hb : Function.Bijective (Scheme.stalkClosedPointTo (𝟙 (Spec (CommRingCat.of K)))).hom :=
     (ConcreteCategory.isIso_iff_bijective _).1 (by
@@ -42,6 +53,13 @@ theorem isCptGen_id (K : Type) [Field K] : IsCptGen (𝟙 (Spec (CommRingCat.of 
       exact @IsIso.comp_isIso _ _ _ _ _ _ _ (by erw [Scheme.Hom.stalkMap_id]; exact IsIso.id _) inferInstance)
   exact ⟨hb, fun p => hb.1.comp (CptInh.spec_inj _ p.2)⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h a ha`. Conclude with `h K (𝟙 _) j (isCptGen_id K) (by simp) a ha`. Introduce `h Ω _ ξ cst hξ hs a ha`. Take `⟨i, hi⟩` from `factor ξ hξ (𝟙 _) (Subsingleton.elim (α := PrimeSpectrum K) _ _)`.
+
+Establish `e : i.comp cst = j`. Apply `spec_inj` to reduce the goal to its premises. Establish `: Spec.map (CommRingCat.ofHom j) = Spec.map (CommRingCat.ofHom i) ≫ ξ ≫ Spec.map (CommRingCat.ofHom j)`. Rewrite using `[← Category.assoc, ← hi, Category.id_comp]`. Rewrite using `[this, hs, ← Spec.map_comp]`.
+
+Both sides reduce to the same expression. Take `⟨b, hb⟩` from `h (i a) (ha.algHom i.toIntAlgHom)`. Use `⟨b, i.injective ?_⟩` and prove the remaining obligations. Rewrite using `[← hb, ← e]`. Both sides reduce to the same expression.
+-/
 theorem splitOver_field (F K : Type) [Field F] [Field K] (j : F →+* K) :
     SplitOver (Spec.map (CommRingCat.ofHom j)) (RingHom.id F) ↔ ∀ a : K, IsAlgebraic ℤ a → a ∈ j.range := by
   constructor
@@ -59,10 +77,18 @@ theorem splitOver_field (F K : Type) [Field F] [Field K] (j : F →+* K) :
     refine ⟨b, i.injective ?_⟩
     rw [← hb, ← e]; rfl
 
+/- English proof (translation)
+The claim follows from `(splitOver_field F F _).2 fun a _ => ⟨a, rfl⟩`.
+-/
 theorem splitOver_self (F : Type) [Field F] :
     SplitOver (Spec.map (CommRingCat.ofHom (RingHom.id F))) (RingHom.id F) :=
   (splitOver_field F F _).2 fun a _ => ⟨a, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[splitOver_field]`. Introduce `h`. Establish `hI : IsAlgebraic ℤ Complex.I`. Use `⟨Polynomial.X ^ 2 + 1, ?_, by simp⟩` and prove the remaining obligations. Conclude with `(Polynomial.monic_X_pow_add_C (1 : ℤ) two_ne_zero).ne_zero`.
+
+Take `⟨b, hb⟩` from `h _ hI`. Use `congrArg Complex.im hb` as an intermediate fact. Simplify using `at this`.
+-/
 theorem not_splitOver_complex : ¬ SplitOver (Spec.map (CommRingCat.ofHom (algebraMap ℚ ℂ))) (RingHom.id ℚ) := by
   rw [splitOver_field]
   intro h
@@ -76,9 +102,21 @@ theorem not_splitOver_complex : ¬ SplitOver (Spec.map (CommRingCat.ofHom (algeb
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
   {Xo : Moduli D l} {c : Coeff l}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem splitComps_iff {O : Type} [CommRing O] {β : O →+* c.F} (Y : Model Xo c β) :
     SplitComps Y ↔ SplitOver Y.s β := Iff.rfl
 
+/- English proof (translation)
+Take `⟨o, -⟩` from `h`. Use `haveI := c.fin`. Use `haveI : NumberField c.F := {}`. Introduce `Ω _ ξ cst hξ hs a ha`. Take `⟨k, hk⟩` from `o.comp_onto (genPt ξ) (CptInh.nogen ξ hξ)`.
+
+Take `⟨i, hi⟩` from `factor ξ hξ (o.Fx k).ξf hk`. Set `R` to `o.Or 0 k`. Establish `e0 : ((R.g.comp i).comp cst).comp (algebraMap (𝓞 c.F) c.F) = R.𝔐.cst.comp (algebraMap (𝓞 c.F) c.F)`. Apply `spec_inj` to reduce the goal to its premises. Establish `h1` using `R.𝔐.cst_over`.
+
+Rewrite `h1` using `[← Category.assoc, R.g_over, hi, Category.assoc, Category.assoc, hs]`. Use `Eq.trans ?_ h1` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = Spec.map (CommRingCat.ofHom R.g) ≫ Spec.map (CommRingCat.ofHom i) ≫ Spec.map (CommRingCat.ofHom _)`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Both sides reduce to the same expression.
+
+Establish `e : (R.g.comp i).comp cst = R.𝔐.cst` using `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 c.F)) e0`. Take `⟨b, hb⟩` from `R.g_const (i a) (ha.algHom i.toIntAlgHom)`. Use `⟨b, (R.g.comp i).injective ?_⟩` and prove the remaining obligations. Rewrite `hb` using `[← e]`. Conclude with `hb`.
+-/
 theorem splitComps_of_isTowerOf {Y : Model Xo c (algebraMap (𝓞 c.F) c.F)}
     {T : Top.RootTower (CMType H) (D.p + D.q)} (h : IsTowerOf Y T) : SplitComps Y := by
   obtain ⟨o, -⟩ := h
@@ -102,6 +140,11 @@ theorem splitComps_of_isTowerOf {Y : Model Xo c (algebraMap (𝓞 c.F) c.F)}
   rw [← e] at hb
   exact hb
 
+/- English proof (translation)
+Take `⟨o, -⟩` from `h`. Establish `h1` using `T.j_pos`. Establish `h2` using `T.j_lt`. Rewrite `h1`, `h2` using `[o.j_eq]`. Take `⟨k⟩` from `T.neC`.
+
+Conclude with `⟨h1, by omega, ⟨genPt (o.Fx k).ξf⟩⟩`.
+-/
 theorem sign_pos_of_isTowerOf {Y : Model Xo c (algebraMap (𝓞 c.F) c.F)}
     {T : Top.RootTower (CMType H) (D.p + D.q)} (h : IsTowerOf Y T) : 1 ≤ D.p ∧ 1 ≤ D.q ∧ Nonempty Y.X := by
   obtain ⟨o, -⟩ := h
@@ -115,6 +158,9 @@ section
 variable {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β} {S : Finset ℕ} {Ω : Type} [Field Ω]
   {K : Type} [Fintype K] {J : K → Type} {y : (Σ k, J k) → Ω}
 
+/- English proof (translation)
+Take `⟨U, hU, b, hb, hf⟩` from `𝔐.vb s ⟨genPt 𝔐.ξ, specializes_rfl⟩ trivial`. Establish `hl` using `(hf _ trivial hU).1`. Rewrite using `[Subspace.dual_finrank_eq]`. Establish `: 𝔐.Vgen s = Submodule.span Ω (Set.range b)` using `hb.symm`. Rewrite using `[this, finrank_span_eq_card hl, Fintype.card_fin]`.
+-/
 theorem finrank_dual_Vgen (𝔐 : HodgeCpt Y S y) (s : CMType H ⊕ CMType H) :
     Module.finrank Ω (Module.Dual Ω (𝔐.Vgen s)) = labelRk D s := by
   obtain ⟨U, hU, b, hb, hf⟩ := 𝔐.vb s ⟨genPt 𝔐.ξ, specializes_rfl⟩ trivial
@@ -123,13 +169,22 @@ theorem finrank_dual_Vgen (𝔐 : HodgeCpt Y S y) (s : CMType H ⊕ CMType H) :
   have : 𝔐.Vgen s = Submodule.span Ω (Set.range b) := hb.symm
   rw [this, finrank_span_eq_card hl, Fintype.card_fin]
 
+/- English proof (translation)
+The claim follows from `Submodule.span_le.2 fun _ ⟨_, _, h⟩ => h.1`.
+-/
 theorem htOm_le (𝔐 : HodgeCpt Y S y) (n : ℕ) (q : Cpt 𝔐.ξ) : 𝔐.M.htOm 𝔐.t.PP.L n q ≤ 𝔐.M.omLat q :=
   Submodule.span_le.2 fun _ ⟨_, _, h⟩ => h.1
 
+/- English proof (translation)
+Introduce `_ hp` and use `absurd hp (Finset.notMem_empty _)`.
+-/
 theorem omVB_empty (𝔐 : HodgeCpt Y ∅ y) : 𝔐.OmVB := fun _ hp => absurd hp (Finset.notMem_empty _)
 
 end
 
+/- English proof (translation)
+The claim follows from `(o.S_iff B 2).2 ⟨Nat.prime_two, Or.inr T.two_mem⟩`.
+-/
 theorem two_mem_S {Y : Model Xo c (algebraMap (𝓞 c.F) c.F)} {T : Top.RootTower (CMType H) (D.p + D.q)}
     (o : TowerOrigin Y T) (B : ℕ) : 2 ∈ o.S B := (o.S_iff B 2).2 ⟨Nat.prime_two, Or.inr T.two_mem⟩
 

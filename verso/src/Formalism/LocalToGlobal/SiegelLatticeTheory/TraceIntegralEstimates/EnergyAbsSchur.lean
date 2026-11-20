@@ -18,29 +18,53 @@ variable {V V' : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteD
 def sand (σ : G → (HH →L[ℂ] HH)) (Y : V →L[ℂ] HH) (Y' : V' →L[ℂ] HH) (γ : G) : V' →L[ℂ] V :=
   (ContinuousLinearMap.adjoint Y).comp ((σ γ).comp Y')
 
+/- English proof (translation)
+Conclude with `ContinuousLinearMap.adjoint_inner_right Y a (σ γ (Y' b))`.
+-/
 theorem inner_sand (σ : G → (HH →L[ℂ] HH)) (Y : V →L[ℂ] HH) (Y' : V' →L[ℂ] HH) (γ : G) (a : V) (b : V') :
     ⟪a, sand σ Y Y' γ b⟫_ℂ = ⟪Y a, σ γ (Y' b)⟫_ℂ := by
   exact ContinuousLinearMap.adjoint_inner_right Y a (σ γ (Y' b))
 
+/- English proof (translation)
+Conclude with `((stdOrthonormalBasis ℂ E).sum_sq_norm_inner_right v).symm`.
+-/
 private theorem norm_sq_eq_sum_norm_inner_stdBasis_sq {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
     [FiniteDimensional ℂ E] (v : E) :
     ‖v‖ ^ 2 = ∑ i, ‖⟪stdOrthonormalBasis ℂ E i, v⟫_ℂ‖ ^ 2 := by
   exact ((stdOrthonormalBasis ℂ E).sum_sq_norm_inner_right v).symm
 
+/- English proof (translation)
+Use `show ∑ j, ‖A (stdOrthonormalBasis ℂ V' j)‖ ^ 2 = _`. Conclude with `Finset.sum_congr rfl fun j _ => norm_sq_eq_sum_norm_inner_stdBasis_sq _`.
+-/
 theorem hsA_eq (A : V' →L[ℂ] V) :
     hsA A = ∑ j, ∑ i, ‖⟪stdOrthonormalBasis ℂ V i, A (stdOrthonormalBasis ℂ V' j)⟫_ℂ‖ ^ 2 := by
   show ∑ j, ‖A (stdOrthonormalBasis ℂ V' j)‖ ^ 2 = _
   exact Finset.sum_congr rfl fun j _ => norm_sq_eq_sum_norm_inner_stdBasis_sq _
 
+/- English proof (translation)
+Rewrite using `[hsA_eq]`. Simplify using `only [inner_sand]`.
+-/
 theorem hsA_sand (σ : G → (HH →L[ℂ] HH)) (Y : V →L[ℂ] HH) (Y' : V' →L[ℂ] HH) (γ : G) :
     hsA (sand σ Y Y' γ) = ∑ j, ∑ i,
       ‖⟪Y (stdOrthonormalBasis ℂ V i), σ γ (Y' (stdOrthonormalBasis ℂ V' j))⟫_ℂ‖ ^ 2 := by
   rw [hsA_eq]
   simp only [inner_sand]
 
+/- English proof (translation)
+Rewrite using `[Complex.mul_conj, Complex.ofReal_re, Complex.sq_norm]`.
+-/
 theorem norm_sq_eq_re_mul_conj (z : ℂ) : ‖z‖ ^ 2 = (z * conj z).re := by
   rw [Complex.mul_conj, Complex.ofReal_re, Complex.sq_norm]
 
+/- English proof (translation)
+Take `⟨hI, hE⟩` from `hS.2 b a b a`. Establish `hfun : (fun γ => ‖⟪a, σ γ b⟫_ℂ‖ ^ 2) = fun γ => RCLike.re (⟪a, σ γ b⟫_ℂ * conj ⟪a, σ γ b⟫_ℂ)`. Use function extensionality and compare the values at `γ`. Conclude with `norm_sq_eq_re_mul_conj _`. Establish `h2 : ∫ γ, RCLike.re (⟪a, σ γ b⟫_ℂ * conj ⟪a, σ γ b⟫_ℂ) ∂μ = RCLike.re (⟪b, b⟫_ℂ * ⟪a, a⟫_ℂ / (d : ℂ))`.
+
+Rewrite using `[← hE]`. Conclude with `integral_re hI`. Establish `hsq : ∀ x : HH, ⟪x, x⟫_ℂ = ((‖x‖ ^ 2 : ℝ) : ℂ)`. Introduce `x`. Rewrite using `[inner_self_eq_norm_sq_to_K, Complex.ofReal_pow]`.
+
+Both sides reduce to the same expression. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hfun]`. Conclude with `hI.re`. Rewrite using `[hfun, h2, hsq a, hsq b, ← Complex.ofReal_mul, ← Complex.ofReal_div]`.
+
+Simplify using `only [RCLike.re_to_complex, Complex.ofReal_re]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem schur_sq {μ : Measure G} {σ : G → (HH →L[ℂ] HH)} {d : ℝ} (hS : IsSchur μ σ d) (a b : HH) :
     Integrable (fun γ => ‖⟪a, σ γ b⟫_ℂ‖ ^ 2) μ ∧
       ∫ γ, ‖⟪a, σ γ b⟫_ℂ‖ ^ 2 ∂μ = ‖a‖ ^ 2 * ‖b‖ ^ 2 / d := by
@@ -64,6 +88,13 @@ theorem schur_sq {μ : Measure G} {σ : G → (HH →L[ℂ] HH)} {d : ℝ} (hS :
     simp only [RCLike.re_to_complex, Complex.ofReal_re]
     ring
 
+/- English proof (translation)
+Establish `hterm : ∀ j i, Integrable (fun γ => ‖⟪Y (stdOrthonormalBasis ℂ V i), σ γ (Y' (stdOrthonormalBasis ℂ V' j))⟫_ℂ‖ ^ 2) μ ∧ ∫ γ, ‖⟪Y (stdOrthonormalBasis ℂ V i), σ γ (Y' (stdOrthonormalBasis ℂ V' j))⟫_ℂ‖ ^ 2 ∂μ = ‖Y (stdOrthonormalBasis ℂ V i)‖ ^ 2 * ‖Y' (stdOrthonormalBasis ℂ V' j)‖ …` using `fun j i => schur_sq hS _ _`. Establish `hInt : Integrable (fun γ => ∑ j, ∑ i, ‖⟪Y (stdOrthonormalBasis ℂ V i), σ γ (Y' (stdOrthonormalBasis ℂ V' j))⟫_ℂ‖ ^ 2) μ` using `integrable_finsetSum _ fun j _ => integrable_finsetSum _ fun i _ => (hterm j i).1`. Establish `hrow : ∀ j, ∫ γ, ∑ i, ‖⟪Y (stdOrthonormalBasis ℂ V i), σ γ (Y' (stdOrthonormalBasis ℂ V' j))⟫_ℂ‖ ^ 2 ∂μ = ∑ i, ‖Y (stdOrthonormalBasis ℂ V i)‖ ^ 2 * ‖Y' (stdOrthonormalBasis ℂ V' j)‖ ^ 2 / d`. Introduce `j`. Rewrite using `[integral_finsetSum _ fun i _ => (hterm j i).1]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => (hterm j i).2`. Establish `hval : ∫ γ, ∑ j, ∑ i, ‖⟪Y (stdOrthonormalBasis ℂ V i), σ γ (Y' (stdOrthonormalBasis ℂ V' j))⟫_ℂ‖ ^ 2 ∂μ = (∑ i, ‖Y (stdOrthonormalBasis ℂ V i)‖ ^ 2) * (∑ j, ‖Y' (stdOrthonormalBasis ℂ V' j)‖ ^ 2) / d`. Rewrite using `[integral_finsetSum _ fun j _ => integrable_finsetSum _ fun i _ => (hterm j i).1]`. Rewrite using `[Finset.sum_congr rfl fun j _ => hrow j]`. Simplify using `only [Finset.sum_mul_sum, Finset.sum_div]`.
+
+Conclude with `Finset.sum_comm`. Repeatedly rewrite using `[hsA_sand]`. Rewrite using `[← ofReal_integral_eq_lintegral_ofReal hInt (ae_of_all _ fun γ => Finset.sum_nonneg fun j _ => Finset.sum_nonneg fun i _ => sq_nonneg _), hval]`.
+-/
 theorem lintegral_hsA_sand {μ : Measure G} {σ : G → (HH →L[ℂ] HH)} {d : ℝ} (hS : IsSchur μ σ d)
     (Y : V →L[ℂ] HH) (Y' : V' →L[ℂ] HH) :
     ∫⁻ γ, ENNReal.ofReal (hsA (sand σ Y Y' γ)) ∂μ =

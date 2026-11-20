@@ -13,6 +13,11 @@ open GlobalTheory.KS
 
 namespace GlobalTheory.KS
 
+/- English proof (translation)
+Introduce `_ P₀ A' _ ρ j hc k y y₀ hk hy hy₀ hyj`. Use `letI := P₀.isAb.comm`. Establish `hu : IsUnit ((k : ℕ) : Γ(Sp ℂ, ⊤))`. Set `e : Γ(Sp ℂ, ⊤) ≃+* ℂ` to `(Scheme.ΓSpecIso (CommRingCat.of ℂ)).commRingCatIsoToRingEquiv`. Use `(MulEquiv.isUnit_map e.toMulEquiv).mp ?_` and prove the remaining obligations.
+
+Establish `he : e.toMulEquiv (k : Γ(Sp ℂ, ⊤)) = (k : ℂ)` using `map_natCast e k`. Rewrite using `[he]`. Conclude with `(Nat.cast_ne_zero.mpr hk).isUnit`. Conclude with `GlobalTheory.ConstTheta.torsion_const hc.1 hc.2.2 hu y y₀ hy hy₀ hyj.symm`.
+-/
 theorem torsion_section_const : Out.Laws → ∀ (P₀ : Out.PolAV (Sp ℂ)), ∀ (A' : Over (Sp (DualNumber ℂ))) [GrpObj A'] (ρ : A'.left ⟶ P₀.A.left) (j : P₀.A.left ⟶ A'.left), IsConst A' P₀.A ρ j → ∀ (k : ℕ) (y : Out.baseOver (Sp (DualNumber ℂ)) ⟶ A') (y₀ : Out.baseOver (Sp ℂ) ⟶ P₀.A), k ≠ 0 → y ^ k = 1 → y₀ ^ k = 1 → (spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom) ≫ y.left = y₀.left ≫ j → y.left ≫ ρ = (spMap (algebraMap ℂ (DualNumber ℂ))) ≫ y₀.left := by
   intro _ P₀ A' _ ρ j hc k y y₀ hk hy hy₀ hyj
   letI := P₀.isAb.comm

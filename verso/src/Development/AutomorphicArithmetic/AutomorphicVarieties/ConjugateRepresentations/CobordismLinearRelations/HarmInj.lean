@@ -9,6 +9,15 @@ open NumberField IsDedekindDomain Matrix Formalism.L2.Host GlobalTheory.CuspRep 
 open UpperTheory.V.Af UpperTheory.V.AlgRepEndIrreducible UpperTheory.V.Lit UpperTheory.V.Lit.Geo UpperTheory.V.Lit.Bor UpperTheory.V.Cj
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `E _ _ _ a ha π Ξ r n e he hr q ω ⟨⟨U, u1, u2, u3⟩, _, hco, hV⟩ ⟨U', v1, v2, v3⟩`. Consider the cases of `q with`. Consider the case `zero => exact v3`. Consider the case `succ q`. Establish `ho : IsOpen ((U ⊓ U' : Subgroup _) : Set (GL (Fin a) (Af E)))` using `u1.inter v1`.
+
+Establish `hc : IsCompact ((U ⊓ U' : Subgroup _) : Set (GL (Fin a) (Af E)))` using `u2.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ ho) fun k hk => hk.1`. Establish `hm` using `(levSub E a Ξ (q + 1)).2.1`. Establish `hL` using `(hm U (U ⊓ U') inf_le_left ω).1 u3`. Take `⟨η, hη, rfl⟩` from `(hm U' (U ⊓ U') inf_le_right ω).2 v3`. Establish `hR : Rapid (dCo (smLie Ξ) η)` using `fun X N => cuspRapid E a π Ξ (q + 1) _ hV [] X N`.
+
+Take `⟨χ, hχ⟩` from `twEx E a ha r`. Take `⟨G, hG⟩` from `admEx E a Ξ`. Establish `hd : IsData Ξ r χ G e` using `⟨hr, hχ, hG, he⟩`. Establish `hM : Moderate (dCo (smLie Ξ) η)` using `⟨0, fun X => by`. Take `⟨C, hC⟩` from `hR X 0`.
+
+Conclude with `⟨C, fun g => by simpa using hC g⟩⟩`. Establish `hP` using `pairFacts E a ha MeasureTheory.Measure.haar _ ho Ξ r χ G n e hd (q + 1)`. Conclude with `hP.2.2.1 _ hL (hP.1 _ _ hL hL hR hM) (g1 E a ha MeasureTheory.Measure.haar _ ho hc Ξ r χ G n e hd q _ η hL hη hR hco hM)`.
+-/
 theorem UpperTheory.V.Cj.harmInj :
     UpperTheory.V.Cj.HarmInj := by
   intro E _ _ _ a ha π Ξ r n e he hr q ω ⟨⟨U, u1, u2, u3⟩, _, hco, hV⟩ ⟨U', v1, v2, v3⟩

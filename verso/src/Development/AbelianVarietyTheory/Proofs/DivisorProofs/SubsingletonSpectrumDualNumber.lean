@@ -16,6 +16,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.DualOpen
 
+/- English proof (translation)
+Establish `key : ∀ (p : PrimeSpectrum (DualNumber K)) (x : DualNumber K), x ∈ p.asIdeal ↔ x.fst = 0`. Introduce `p x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Assume the negation of the conclusion as `h`.
+
+Establish `hu : IsUnit x` using `TrivSqZeroExt.isUnit_iff_isUnit_fst.2 (isUnit_iff_ne_zero.2 h)`. Conclude with `p.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hx hu)`. Introduce `h`. Establish `hsq : x * x = 0`. Apply the tactic sequence `refine TrivSqZeroExt.ext ?_ ?_ <;> simp [h]`.
+
+Conclude with `p.isPrime.mem_of_pow_mem 2 (by rw [pow_two, hsq]; exact p.asIdeal.zero_mem)`. Conclude with `⟨fun p q => PrimeSpectrum.ext (Ideal.ext fun x => by rw [key p x, key q x])⟩`.
+-/
 theorem subsingleton_spectrum_dualNumber (K : Type) [Field K] : Subsingleton (PrimeSpectrum (DualNumber K)) := by
   have key : ∀ (p : PrimeSpectrum (DualNumber K)) (x : DualNumber K), x ∈ p.asIdeal ↔ x.fst = 0 := by
     intro p x
@@ -30,11 +37,31 @@ theorem subsingleton_spectrum_dualNumber (K : Type) [Field K] : Subsingleton (Pr
       exact p.isPrime.mem_of_pow_mem 2 (by rw [pow_two, hsq]; exact p.asIdeal.zero_mem)
   exact ⟨fun p q => PrimeSpectrum.ext (Ideal.ext fun x => by rw [key p x, key q x])⟩
 
+/- English proof (translation)
+Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, h]`.
+-/
 private theorem spMap_comp_of_eq {R₁ R₂ R₂' R₃ : Type} [CommRing R₁] [CommRing R₂] [CommRing R₂'] [CommRing R₃]
     {f : R₁ →+* R₂} {g : R₂ →+* R₃} {f' : R₁ →+* R₂'} {g' : R₂' →+* R₃} (h : g.comp f = g'.comp f') :
     spMap g ≫ spMap f = spMap g' ≫ spMap f' := by
   simp only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, h]
 
+/- English proof (translation)
+Introduce `S A _ hA U _ M hM hInj hFC k _ s N hN u₀ h₀`. Take `⟨hpull, -, -, hcomp, hev⟩` from `GlobalTheory.T.additiveLineBundleFamily_calculus_rules S A`. Take `⟨ψ, hψ₁, hψ₂, hflat, hsurj⟩` from `GlobalTheory.T.dualNumber_fieldHom_flat_surjective k (AlgebraicClosure k) (algebraMap k (AlgebraicClosure k))`. Set `T : Over S` to `Over.mk (spMap (dnInl k) ≫ s)`. Use `haveI : IsNoetherianRing (DualNumber k) := inferInstance`.
+
+Use `haveI : IsLocallyNoetherian T.left := (inferInstance : IsLocallyNoetherian (Sp (DualNumber k)))`. Take `⟨G, π, hmono, -, hG⟩` from `GlobalTheory.T.exists_mono_finiteType_agreement_locus_injective_family S A hA T U N M hN hM hInj`. Use `haveI : Mono π.left := hmono`. Set `Y : Over S` to `Over.mk (spMap ψ ≫ spMap (dnInl k) ≫ s)`. Set `y : Y ⟶ T` to `Over.homMk (spMap ψ)`.
+
+Establish `hq : spMap ψ ≫ spMap (dnInl k) = spMap (dnInl (AlgebraicClosure k)) ≫ spMap (algebraMap k (AlgebraicClosure k))` using `spMap_comp_of_eq hψ₁`. Set `q : Y ⟶ Over.mk (spMap (algebraMap k (AlgebraicClosure k)) ≫ s)` to `Over.homMk (spMap (dnInl (AlgebraicClosure k))) ((reassoc_of% hq) s).symm`. Establish `hN' : Fam A (ev N (fst A Y) (snd A Y ≫ y))` using `hpull T Y N y hN`. Take `⟨W, hW⟩` from `hFC (AlgebraicClosure k) (spMap (algebraMap k (AlgebraicClosure k)) ≫ s) Y q _ hN'`. Set `Z : Over S` to `Over.mk (spMap (dnFst (AlgebraicClosure k)) ≫ Y.hom)`.
+
+Set `z : Z ⟶ Y` to `Over.homMk (spMap (dnFst (AlgebraicClosure k)))`. Establish `hr : spMap (dnFst (AlgebraicClosure k)) ≫ spMap ψ = spMap (algebraMap k (AlgebraicClosure k)) ≫ spMap (dnFst k)` using `spMap_comp_of_eq hψ₂`. Set `e : Z ⟶ Over.mk (spMap (dnFst k) ≫ spMap (dnInl k) ≫ s)` to `Over.homMk (spMap (algebraMap k (AlgebraicClosure k))) ((reassoc_of% hr) (spMap (dnInl k) ≫ s)).symm`. Establish `hez : e ≫ ptMap _ (dnFst k) = z ≫ y`. Use `ext`.
+
+Conclude with `hr.symm`. Establish `h₁ : Same A N M (z ≫ y) (e ≫ u₀)`. Rewrite using `[← hez]`. Conclude with `hcomp T U _ Z N M (ptMap _ (dnFst k)) u₀ e hN.isLB hM.isLB h₀`. Establish `h₂ : Same A (ev N (fst A Y) (snd A Y ≫ y)) M z (e ≫ u₀)` using `(hev T U Y Z N M y z _ hN.isLB hM.isLB).2 h₁`.
+
+Establish `hx : ∀ x, z.left x ∈ W` using `(hW Z z).1 ⟨_, h₂⟩`. Use `haveI : Subsingleton Y.left := subsingleton_spectrum_dualNumber (AlgebraicClosure k)`. Establish `x₀ : Z.left` using `IsLocalRing.closedPoint (AlgebraicClosure k)`. Establish `hall : ∀ x : Y.left, x ∈ W` using `fun x => by`. Rewrite using `[Subsingleton.elim x (z.left x₀)]`.
+
+Conclude with `hx x₀`. Take `⟨u', hu'⟩` from `(hW Y (𝟙 Y)).2 (fun x => hall _)`. Establish `h₃ : Same A N M y u'`. Use `(hev T U Y Y N M y (𝟙 Y) u' hN.isLB hM.isLB).1 hu'` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Then use the resulting hypothesis.
+
+Take `⟨z', hz'⟩` from `(hG Y y).1 ⟨u', h₃⟩`. Use `haveI : Flat (spMap ψ) := hflat`. Use `haveI : Surjective (spMap ψ) := hsurj`. Take `⟨w, hw⟩` from `GlobalTheory.T.exists_lift_mono_of_fpqc_cover_lift G.left T.left Y.left T.left π.left (𝟙 _) (spMap ψ) z' (by rw [Category.comp_id]; exact hz')`. Conclude with `(hG T (𝟙 T)).2 ⟨w, hw⟩`.
+-/
 theorem tanLift_of_fieldChart : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A], IsAbelianScheme A →
     ∀ (U : Over S) [LocallyOfFiniteType U.hom] (M : LB (A ⊗ U).left), Fam A M → Inj A M → FieldChart A M →
       TanLift A M := by

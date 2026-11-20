@@ -22,16 +22,30 @@ def SplitDetP : Prop :=
 
 variable {D : D7}
 
+/- English proof (translation)
+Simplify using `[L2.Theta.mt, map_mul]`.
+-/
 theorem mt_mul' (V : HSp D) (g g' : GA D V) :
     L2.Theta.mt V (g * g') = L2.Theta.mt V g * L2.Theta.mt V g' := by
   simp [L2.Theta.mt, map_mul]
 
+/- English proof (translation)
+Simplify using `[L2.Theta.mt, map_one]`.
+-/
 theorem mt_one' (V : HSp D) : L2.Theta.mt V 1 = 1 := by
   simp [L2.Theta.mt, map_one]
 
+/- English proof (translation)
+Simplify using `[cM, Matrix.map_mul]`.
+-/
 theorem cM_mul' {n : ℕ} (x y : Matrix (Fin n) (Fin n) (AE D)) : cM (x * y) = cM x * cM y := by
   simp [cM, Matrix.map_mul]
 
+/- English proof (translation)
+Unfold `actHom`. Use `split_ifs with hr`. Rewrite using `[mt_mul', mt_mul', cM_mul', Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[mt_mul', mt_mul', cM_mul', Matrix.transpose_mul]`.
+
+Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem actHom_mul' (V W : HSp D) (g g' : GA D V) (h h' : GA D W) (w : WA V W) :
     actHom V W g h (actHom V W g' h' w) = actHom V W (g * g') (h * h') w := by
   unfold actHom
@@ -39,6 +53,9 @@ theorem actHom_mul' (V W : HSp D) (g g' : GA D V) (h h' : GA D W) (w : WA V W) :
   · rw [mt_mul', mt_mul', cM_mul', Matrix.transpose_mul]; simp only [Matrix.mul_assoc]
   · rw [mt_mul', mt_mul', cM_mul', Matrix.transpose_mul]; simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Unfold `actHom`. Apply the tactic sequence `split_ifs <;> simp [mt_one', cM]`.
+-/
 theorem actHom_one' (V W : HSp D) (w : WA V W) : actHom V W 1 1 w = w := by
   unfold actHom
   split_ifs <;> simp [mt_one', cM]
@@ -48,6 +65,15 @@ section Scalar
 variable (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (χ χ' : (AE D)ˣ →* Circle)
     (ω ω' : GA D V × GA D W →* Module.End ℂ (Hth ψ V W))
 
+/- English proof (translation)
+Take `⟨c, hc, hT⟩` from `hS (ω' p * ω p⁻¹) (by`. Introduce `w₀ Φ Φ' hΦ`. Establish `h1` using `hω.om_heis p⁻¹.1 p⁻¹.2 w₀ Φ Φ' hΦ`. Simplify using `only [Prod.mk.eta] at h1`. Establish `h2` using `hω'.om_heis p.1 p.2 (actHom V W p⁻¹.1 p⁻¹.2 w₀) (ω p⁻¹ Φ) (ω p⁻¹ Φ') h1`.
+
+Simplify using `only [Prod.mk.eta, actHom_mul', Prod.fst_inv, Prod.snd_inv, mul_inv_cancel, actHom_one'] at h2`. Simplify `h2)` using `[Module.End.mul_apply]`. Use the proof step `(by`. Introduce `μ 𝓕 hμ h𝓕 Φ`. Simplify using `only [Module.End.mul_apply]`.
+
+Rewrite using `[hω'.om_unit μ 𝓕 hμ h𝓕 p (ω p⁻¹ Φ), hω.om_unit μ 𝓕 hμ h𝓕 p⁻¹ Φ])`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Establish `e1 : ω' p = (ω' p * ω p⁻¹) * ω p`. Rewrite using `[mul_assoc, ← map_mul, inv_mul_cancel, map_one, mul_one]`. Rewrite using `[e1]`.
+
+Use extensionality with `Φ : 1`. Simplify using `only [Module.End.mul_apply, LinearMap.smul_apply]`. Conclude with `hT (ω p Φ)`.
+-/
 theorem scalar_step (hS : SvNSchur ψ V W) (hω : IsWeilDatum ψ V W χ χ' ω)
     (hω' : IsWeilDatum ψ V W χ χ' ω') (p : GA D V × GA D W) : ∃ c : ℂ, ‖c‖ = 1 ∧ ω' p = c • ω p := by
   obtain ⟨c, hc, hT⟩ := hS (ω' p * ω p⁻¹) (by
@@ -69,9 +95,15 @@ theorem scalar_step (hS : SvNSchur ψ V W) (hω : IsWeilDatum ψ V W χ χ' ω)
   simp only [Module.End.mul_apply, LinearMap.smul_apply]
   exact hT (ω p Φ)
 
+/- English proof (translation)
+Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+-/
 theorem omega_inv_apply (p : GA D V × GA D W) (Φ : Hth ψ V W) : ω p (ω p⁻¹ Φ) = Φ := by
   rw [← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]
 
+/- English proof (translation)
+Take `⟨Φ, hΦ⟩` from `hΘ`. Use `congrArg (fun T : Module.End ℂ (Hth ψ V W) => ((T (ω p⁻¹ Φ) : Hth ψ V W) : WA V W → ℂ) 0) h` as an intermediate fact. Simplify using `only [LinearMap.smul_apply, omega_inv_apply, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul] at this`. Conclude with `mul_right_cancel₀ hΦ this`.
+-/
 theorem scalar_unique (hΘ : ThetaNZ ψ V W) (p : GA D V × GA D W) (c c' : ℂ)
     (h : c • ω p = c' • ω p) : c = c' := by
   obtain ⟨Φ, hΦ⟩ := hΘ
@@ -79,6 +111,11 @@ theorem scalar_unique (hΘ : ThetaNZ ψ V W) (p : GA D V × GA D W) (c c' : ℂ)
   simp only [LinearMap.smul_apply, omega_inv_apply, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul] at this
   exact mul_right_cancel₀ hΦ this
 
+/- English proof (translation)
+Take `⟨Φ, hΦ⟩` from `hΘ`. Establish `e` using `congrArg (fun T : Module.End ℂ (Hth ψ V W) => ((T Φ : Hth ψ V W) : WA V W → ℂ) 0) h`. Simplify using `only [LinearMap.smul_apply, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul] at e`. Rewrite `e` using `[hω'.om_aut γ hγ γ' hγ' Φ, hω.om_aut γ hγ γ' hγ' Φ]`. Establish `: c * (Φ : WA V W → ℂ) 0 = 1 * (Φ : WA V W → ℂ) 0` using `by rw [← e, one_mul]`.
+
+Conclude with `mul_right_cancel₀ hΦ this`.
+-/
 theorem scalar_rat (hΘ : ThetaNZ ψ V W) (hω : IsWeilDatum ψ V W χ χ' ω)
     (hω' : IsWeilDatum ψ V W χ χ' ω') (γ : GA D V) (hγ : γ ∈ GQ V) (γ' : GA D W) (hγ' : γ' ∈ GQ W) (c : ℂ)
     (h : ω' (γ, γ') = c • ω (γ, γ')) : c = 1 := by
@@ -89,6 +126,15 @@ theorem scalar_rat (hΘ : ThetaNZ ψ V W) (hω : IsWeilDatum ψ V W χ χ' ω)
   have : c * (Φ : WA V W → ℂ) 0 = 1 * (Φ : WA V W → ℂ) 0 := by rw [← e, one_mul]
   exact mul_right_cancel₀ hΦ this
 
+/- English proof (translation)
+Take `⟨Φ₀, hΦ₀⟩` from `hΘ`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `p₀`. Use `set Φ₁ := ω p₀⁻¹ Φ₀`. Set `f : GA D V × GA D W → ℂ` to `fun p => ((ω p Φ₁ : Hth ψ V W) : WA V W → ℂ) 0`.
+
+Set `g : GA D V × GA D W → ℂ` to `fun p => ((ω' p Φ₁ : Hth ψ V W) : WA V W → ℂ) 0`. Establish `hf : Continuous f` using `hω.om_cont Φ₁ 0`. Establish `hg : Continuous g` using `hω'.om_cont Φ₁ 0`. Establish `hf0 : f p₀ ≠ 0` using `by simp only [f, Φ₁, omega_inv_apply]; exact hΦ₀`. Establish `hgf : ∀ p, g p = c p * f p`.
+
+Introduce `p`. Simplify using `only [g, f, hc p, LinearMap.smul_apply, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul]`. Establish `hev : (fun p => g p / f p) =ᶠ[nhds p₀] c` using `by filter_upwards [hf.continuousAt.eventually_ne hf0] with p hp`. Rewrite using `[hgf p]`. Clear the denominators using the available nonvanishing facts.
+
+Conclude with `(hg.continuousAt.div hf.continuousAt hf0).congr hev`.
+-/
 theorem scalar_cont (hΘ : ThetaNZ ψ V W) (hω : IsWeilDatum ψ V W χ χ' ω)
     (hω' : IsWeilDatum ψ V W χ χ' ω') (c : GA D V × GA D W → ℂ) (hc : ∀ p, ω' p = c p • ω p) :
     Continuous c := by
@@ -108,11 +154,23 @@ theorem scalar_cont (hΘ : ThetaNZ ψ V W) (hω : IsWeilDatum ψ V W χ χ' ω)
     rw [hgf p]; field_simp
   exact (hg.continuousAt.div hf.continuousAt hf0).congr hev
 
+/- English proof (translation)
+Apply `scalar_unique ψ V W ω hΘ (p * q)` to reduce the goal to its premises. Rewrite using `[← hc, map_mul, map_mul, hc p, hc q, smul_mul_smul_comm]`.
+-/
 theorem scalar_mul (hΘ : ThetaNZ ψ V W) (c : GA D V × GA D W → ℂ) (hc : ∀ p, ω' p = c p • ω p)
     (p q : GA D V × GA D W) : c (p * q) = c p * c q := by
   apply scalar_unique ψ V W ω hΘ (p * q)
   rw [← hc, map_mul, map_mul, hc p, hc q, smul_mul_smul_comm]
 
+/- English proof (translation)
+Take `⟨ℓ, hinv, Φ, hΦ⟩` from `hF e he`. Take `⟨r, hr, hr1⟩` from `hω.om_split e he g h hg hh x y hx hy`. Take `⟨r', hr', hr1'⟩` from `hω'.om_split e he g h hg hh x y hx hy`. Establish `a1` using `hr1 ℓ hinv Φ`. Establish `a2` using `hr1' ℓ hinv Φ`.
+
+Rewrite `a2` using `[hc, LinearMap.smul_apply, map_smul, smul_eq_mul, a1]`. Establish `hs : ((splitFac V W χ χ' x y : Circle) : ℂ) ≠ 0` using `Circle.coe_ne_zero _`. Establish `key : c * (r : ℂ) = (r' : ℂ)`. Establish `hne : ((splitFac V W χ χ' x y : Circle) : ℂ) * ℓ Φ ≠ 0` using `mul_ne_zero hs hΦ`. Apply `mul_right_cancel₀ hne` to reduce the goal to its premises.
+
+Take the linear combination `a2`. Establish `hr0 : (r : ℂ) ≠ 0` using `by exact_mod_cast hr.ne'`. Establish `hc' : c = ((r' / r : ℝ) : ℂ)` using `by push_cast; rw [← key]; field_simp`. Rewrite `hc1`, the goal using `[hc']`. Rewrite `hc1` using `[Complex.norm_real, Real.norm_eq_abs, abs_of_pos (div_pos hr' hr)]`.
+
+Rewrite using `[hc1]`. Simplify using the standard rewrite rules.
+-/
 theorem scalar_split (hF : SplitFormsNZ ψ V W) (hω : IsWeilDatum ψ V W χ χ' ω) (hω' : IsWeilDatum ψ V W χ χ' ω')
     (e : AE D) (he : IsSplitIdem D e) (g : GA D V) (h : GA D W) (hg : SuppAt e V g) (hh : SuppAt e W h)
     (x y : (AE D)ˣ) (hx : IsDetAt e V g x) (hy : IsDetAt e W h y) (c : ℂ) (hc1 : ‖c‖ = 1)
@@ -148,6 +206,17 @@ def toCircle {G : Type*} [Group G] (f : G → ℂ) (hf1 : ∀ g, ‖f g‖ = 1) 
 def detU (hD : DeterminantInUnitaryOne) (V : HSp D) (g : GA D V) : FirstPropositionFrame D :=
   ⟨Units.mkOfMulEqOne _ _ (hD D V g), hD D V g⟩
 
+/- English proof (translation)
+Take `⟨lam, hlamc, hlam⟩` from `hCV (toCircle f hf1 h1 hmul) (Continuous.subtype_mk hcont _)`. Establish `key : ∀ (g : GA D V) (x : FirstPropositionFrame D), (((x : (AE D)ˣ)) : AE D) = (mt V g).det → f g = ((lam x : Circle) : ℂ)`. Introduce `g x hx`. Rewrite using `[← hlam g x hx]`. Both sides reduce to the same expression.
+
+Break down `Nat.eq_zero_or_pos V.rank with hn | hn` into its components or cases. Establish `hdet : (mt V g).det = 1`. Establish `: IsEmpty (Fin V.rank)` using `by rw [hn]; infer_instance`. Conclude with `Matrix.det_isEmpty`. Rewrite using `[key g 1 (by rw [hdet]; rfl), map_one, Circle.coe_one]`.
+
+Establish `hlam1 : ∀ x, lam x = 1`. Use `hU1 lam hlamc ?_ ?_` and prove the remaining obligations. Introduce `x q hxq`. Establish `hq : incA D q * cA D (incA D q) = 1` using `by rw [← hxq]; exact x.2`. Take `⟨γ, hγ, hdet⟩` from `hR D V hn q hq`.
+
+Establish `h2` using `key γ x (by rw [hdet, hxq])`. Rewrite `h2` using `[hrat γ hγ]`. Conclude with `Circle.ext (by rw [Circle.coe_one]; exact h2.symm)`. Introduce `e he x hx`. Take `⟨g, hgS, hgD, hdet⟩` from `hSp D V hn e he (x : (AE D)ˣ) x.2 hx`.
+
+Establish `h2` using `key g x hdet.symm`. Rewrite `h2` using `[hsplit e he g hgS hgD]`. Conclude with `Circle.ext (by rw [Circle.coe_one]; exact h2.symm)`. Rewrite using `[key g (detU hD V g) rfl, hlam1, Circle.coe_one]`.
+-/
 theorem side_trivial (hD : DeterminantInUnitaryOne) (hR : RatDetP) (hSp : SplitDetP) (V : HSp D) (hCV : CharDet V)
     (hU1 : SecondCharacterFact D) (f : GA D V → ℂ) (hf1 : ∀ g, ‖f g‖ = 1) (h1 : f 1 = 1)
     (hmul : ∀ g g', f (g * g') = f g * f g') (hcont : Continuous f) (hrat : ∀ γ ∈ GQ V, f γ = 1)
@@ -180,6 +249,23 @@ theorem side_trivial (hD : DeterminantInUnitaryOne) (hR : RatDetP) (hSp : SplitD
 
 end Side
 
+/- English proof (translation)
+Introduce `D ψ V W χ χ' ω ω' hS hΘ hF hCV hCW hU1 hω hω'`. Use `choose c hc1 hc using scalar_step ψ V W χ χ' ω ω' hS hω hω'`. Establish `cmul` using `scalar_mul ψ V W ω ω' hΘ c hc`. Establish `ccont` using `scalar_cont ψ V W χ χ' ω ω' hΘ hω hω' c hc`. Establish `crat : ∀ γ ∈ GQ V, ∀ γ' ∈ GQ W, c (γ, γ') = 1` using `fun γ hγ γ' hγ' => scalar_rat ψ V W χ χ' ω ω' hΘ hω hω' γ hγ γ' hγ' _ (hc _)`.
+
+Establish `csplit : ∀ e, IsSplitIdem D e → ∀ g h, SuppAt e V g → SuppAt e W h → (∃ x, IsDetAt e V g x) → (∃ y, IsDetAt e W h y) → c (g, h) = 1`. Introduce and unpack `e he g h hg hh ⟨x, hx⟩ ⟨y, hy⟩`. Conclude with `scalar_split ψ V W χ χ' ω ω' hF hω hω' e he g h hg hh x y hx hy _ (hc1 _) (hc _)`. Establish `h11 : c (1, 1) = 1` using `crat 1 (one_mem _) 1 (one_mem _)`. Establish `supp1 : ∀ (U : HSp D) (e : AE D), SuppAt e U (1 : GA D U)`.
+
+Introduce `U e i j`. Simplify using `[mt_one']`. Establish `det1 : ∀ (U : HSp D) (e : AE D), IsDetAt e U (1 : GA D U) 1`. Introduce `U e`. Simplify using `only [IsDetAt, mt_one', Matrix.det_one, Units.val_one, mul_one]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hV : ∀ g : GA D V, c (g, 1) = 1`. Use `side_trivial hD hR hSp V hCV hU1 (fun g => c (g, 1)) (fun g => hc1 _) h11 ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `g g'`. Rewrite using `[show ((g * g', (1 : GA D W)) : GA D V × GA D W) = (g, 1) * (g', 1) by simp, cmul]`.
+
+Conclude with `ccont.comp (continuous_id.prodMk continuous_const)`. Introduce `γ hγ`. Conclude with `crat γ hγ 1 (one_mem _)`. Introduce `e he g hg hx`. Conclude with `csplit e he g 1 hg (supp1 W e) hx ⟨1, det1 W e⟩`.
+
+Establish `hW : ∀ h : GA D W, c (1, h) = 1`. Use `side_trivial hD hR hSp W hCW hU1 (fun h => c (1, h)) (fun h => hc1 _) h11 ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `h h'`. Rewrite using `[show (((1 : GA D V), h * h') : GA D V × GA D W) = (1, h) * (1, h') by simp, cmul]`. Conclude with `ccont.comp (continuous_const.prodMk continuous_id)`.
+
+Introduce `γ hγ`. Conclude with `crat 1 (one_mem _) γ hγ`. Introduce `e he h hh hy`. Conclude with `csplit e he 1 h (supp1 V e) hh ⟨1, det1 V e⟩ hy`. Use `MonoidHom.ext fun p => ?_` and prove the remaining obligations.
+
+Establish `hp : c p = 1`. Apply the tactic sequence `rw [show p = (p.1, 1) * (1, p.2) by ext <;> simp, cmul, hV, hW, one_mul]`. Rewrite using `[hc p, hp, one_smul]`.
+-/
 theorem weil_datum_unique_of_determinants (hD : DeterminantInUnitaryOne) (hR : RatDetP) (hSp : SplitDetP) : ConsequenceOfAdmissibleConstants := by
   intro D ψ V W χ χ' ω ω' hS hΘ hF hCV hCW hU1 hω hω'
   choose c hc1 hc using scalar_step ψ V W χ χ' ω ω' hS hω hω'

@@ -7,14 +7,23 @@ namespace GlobalTheory.CompanionTheory.Ar.Sl.SelfDualCovol
 noncomputable def stdBasis (g : ℕ) : Module.Basis (Σ _ : Fin g, Fin 2) ℝ (Fin g → ℂ) :=
   Pi.basis fun _ => Complex.basisOneI
 
+/- English proof (translation)
+Simplify using `[stdBasis, Pi.basis_repr]`.
+-/
 theorem stdBasis_repr_zero {g : ℕ} (z : Fin g → ℂ) (j : Fin g) :
     (stdBasis g).repr z ⟨j, 0⟩ = (z j).re := by
   simp [stdBasis, Pi.basis_repr]
 
+/- English proof (translation)
+Simplify using `[stdBasis, Pi.basis_repr]`.
+-/
 theorem stdBasis_repr_one {g : ℕ} (z : Fin g → ℂ) (j : Fin g) :
     (stdBasis g).repr z ⟨j, 1⟩ = (z j).im := by
   simp [stdBasis, Pi.basis_repr]
 
+/- English proof (translation)
+Rewrite using `[Fintype.sum_sigma]`. Simplify using `only [Fin.sum_univ_two, stdBasis_repr_zero, stdBasis_repr_one, dotProduct, Complex.re_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[Complex.mul_re]`.
+-/
 theorem re_dotProduct_star {g : ℕ} (z w : Fin g → ℂ) :
     (z ⬝ᵥ star w).re = ∑ a, (stdBasis g).repr z a * (stdBasis g).repr w a := by
   rw [Fintype.sum_sigma]
@@ -22,6 +31,15 @@ theorem re_dotProduct_star {g : ℕ} (z w : Fin g → ℂ) :
   refine Finset.sum_congr rfl fun j _ => ?_
   simp [Complex.mul_re]
 
+/- English proof (translation)
+Establish `hset : ZSpan.fundamentalDomain (stdBasis g) = Set.pi Set.univ fun _ : Fin g => Complex.reProdIm (Set.Ico 0 1) (Set.Ico 0 1)`. Use extensionality with `z`. Simplify using `only [ZSpan.mem_fundamentalDomain, Set.mem_pi, Set.mem_univ, true_implies, Complex.mem_reProdIm]`. Prove the components needed by the constructor for the conclusion. Introduce `h j`.
+
+Conclude with `⟨by simpa [stdBasis_repr_zero] using h ⟨j, 0⟩, by simpa [stdBasis_repr_one] using h ⟨j, 1⟩⟩`. Introduce and unpack `h ⟨j, a⟩ fin_cases a`. Simplify `(h j).1` using `[stdBasis_repr_zero]`. Simplify `(h j).2` using `[stdBasis_repr_one]`. Establish `hsq : volume (Complex.reProdIm (Set.Ico (0 : ℝ) 1) (Set.Ico (0 : ℝ) 1)) = 1`.
+
+Establish `h` using `Complex.volume_preserving_equiv_real_prod.measure_preimage_equiv ((Set.Ico (0 : ℝ) 1) ×ˢ (Set.Ico (0 : ℝ) 1))`. Establish `h2 : Complex.measurableEquivRealProd ⁻¹' ((Set.Ico (0 : ℝ) 1) ×ˢ (Set.Ico (0 : ℝ) 1)) = Complex.reProdIm (Set.Ico (0 : ℝ) 1) (Set.Ico (0 : ℝ) 1)`. Use extensionality with `z`. Simplify using `[Complex.mem_reProdIm, Complex.measurableEquivRealProd]`. Rewrite `h` using `[h2]`.
+
+Rewrite using `[h, Measure.volume_eq_prod, Measure.prod_prod]`. Simplify using the standard rewrite rules. Rewrite using `[hset, measureReal_def, volume_pi_pi]`. Simplify using `[hsq]`.
+-/
 theorem volume_fundamentalDomain_stdBasis (g : ℕ) :
     volume.real (ZSpan.fundamentalDomain (stdBasis g)) = 1 := by
   have hset : ZSpan.fundamentalDomain (stdBasis g) =
@@ -50,6 +68,9 @@ theorem volume_fundamentalDomain_stdBasis (g : ℕ) :
   rw [hset, measureReal_def, volume_pi_pi]
   simp [hsq]
 
+/- English proof (translation)
+Introduce `h`. Take `⟨v, hv, hmv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr h`. Establish `hz : star v ≠ 0` using `by simpa using hv`. Use `hpos (star v) hz` as an intermediate fact. Simplify using `[hmv] at this`.
+-/
 theorem det_ne_zero_of_pos {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ}
     (hpos : ∀ z : Fin g → ℂ, z ≠ 0 → 0 < (z ⬝ᵥ Hm.mulVec (star z)).re) : Hm.det ≠ 0 := by
   intro h
@@ -58,6 +79,21 @@ theorem det_ne_zero_of_pos {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ}
   have := hpos (star v) hz
   simp [hmv] at this
 
+/- English proof (translation)
+Set `S : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)` to `(-Complex.I) • Matrix.toLin' Hm.transpose`. Set `SR : (Fin g → ℂ) →ₗ[ℝ] (Fin g → ℂ)` to `S.restrictScalars ℝ`. Set `M` to `LinearMap.toMatrix e e SR`. Set `P` to `e.toMatrix v`. Establish `hS : ∀ z w : Fin g → ℂ, (z ⬝ᵥ Hm.mulVec (star w)).im = (S z ⬝ᵥ star w).re`.
+
+Introduce `z w`. Establish `h1 : z ⬝ᵥ Hm.mulVec (star w) = Hm.transpose.mulVec z ⬝ᵥ star w`. Rewrite using `[Matrix.dotProduct_mulVec, Matrix.mulVec_transpose]`. Establish `h2 : S z = (-Complex.I) • Hm.transpose.mulVec z`. Simplify using `[S]`.
+
+Rewrite using `[h1, h2, smul_dotProduct]`. Simplify using `[Complex.mul_re]`. Establish `hM : ∀ z a, e.repr (SR z) a = ∑ c, M a c * e.repr z c`. Introduce `z a`. Use `LinearMap.toMatrix_mulVec_repr e e SR z` as an intermediate fact.
+
+Rewrite using `[← this]`. Both sides reduce to the same expression. Establish `hG : (Matrix.of fun i j => (v i ⬝ᵥ Hm.mulVec (star (v j))).im) = P.transpose * M.transpose * P`. Use extensionality with `i j`. Simplify using `only [Matrix.of_apply, hS, Matrix.mul_apply, Matrix.transpose_apply]`.
+
+Rewrite using `[he]`. Establish `: ∀ a, e.repr (S (v i)) a = ∑ c, M a c * e.repr (v i) c` using `fun a => hM (v i) a`. Simplify using `only [this, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `only [P, Module.Basis.toMatrix_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hdetM : M.det = Complex.normSq Hm.det`. Establish `h1 : M.det = LinearMap.det SR` using `LinearMap.det_toMatrix e SR`. Establish `h2 : LinearMap.det SR = Complex.normSq (LinearMap.det S)`. Rewrite using `[show LinearMap.det SR = Algebra.norm ℝ (LinearMap.det S) from LinearMap.det_restrictScalars, Algebra.norm_complex_apply]`.
+
+Rewrite using `[h1, h2]`. Simplify using `only [S, LinearMap.det_smul, LinearMap.det_toLin', Matrix.det_transpose, map_mul, map_pow]`. Simplify using the standard rewrite rules. Rewrite using `[hG, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, Matrix.det_transpose, hdetM, Module.Basis.det_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem det_gram {g : ℕ} {ι : Type*} [Fintype ι] [DecidableEq ι]
     (e : Module.Basis ι ℝ (Fin g → ℂ))
     (he : ∀ z w : Fin g → ℂ, (z ⬝ᵥ star w).re = ∑ a, e.repr z a * e.repr w a)
@@ -103,6 +139,9 @@ theorem det_gram {g : ℕ} {ι : Type*} [Fintype ι] [DecidableEq ι]
     Module.Basis.det_apply]
   ring
 
+/- English proof (translation)
+The claim follows from `|(Matrix.of fun i j => E (bR i) (bR j)).det| = 1 := by set G : Matrix ι ι ℝ := Matrix.of fun i j => E (bR i) (bR j) with hGdef have hunit : IsUnit G.det := isUnit_iff_ne_zero.mpr hdet let C : Matrix ι ι ℝ := G⁻¹ have hCG : C * G = 1 := Matrix.nonsing_inv_mul G hunit let w : ι → V …`.
+-/
 theorem abs_det_gram_eq_one {V ι : Type*} [AddCommGroup V] [Module ℝ V] [Fintype ι] [DecidableEq ι]
     (E : V →ₗ[ℝ] V →ₗ[ℝ] ℝ) (bR : Module.Basis ι ℝ V)
     (hdet : (Matrix.of fun i j => E (bR i) (bR j)).det ≠ 0)
@@ -158,9 +197,33 @@ noncomputable def imForm {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) :
       rw [this, Matrix.mulVec_smul, dotProduct_smul]
       simp)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem imForm_apply {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (z w : Fin g → ℂ) :
     imForm Hm z w = (z ⬝ᵥ Hm.mulVec (star w)).im := rfl
 
+/- English proof (translation)
+Introduce `g Λ Hm hd hs _ hpos hint hself Fd hFd`. Use `haveI := hd`. Use `haveI : IsZLattice ℝ Λ := ⟨hs⟩`. Use `haveI : Module.Free ℤ Λ := ZLattice.module_free ℝ Λ`. Use `haveI : Module.Finite ℤ Λ := ZLattice.module_finite ℝ Λ`.
+
+Set `e` to `stdBasis g`. Set `b0` to `Module.Free.chooseBasis ℤ Λ`. Set `b : Module.Basis (Σ _ : Fin g, Fin 2) ℤ Λ` to `b0.reindex ((b0.ofZLatticeBasis ℝ Λ).indexEquiv e)`. Set `bR` to `b.ofZLatticeBasis ℝ Λ`. Establish `hbR : ∀ i, bR i = (b i : Fin g → ℂ)` using `fun i => Module.Basis.ofZLatticeBasis_apply ℝ Λ b i`.
+
+Establish `hval : (Subtype.val ∘ ⇑b) = ⇑bR`. Use function extensionality and compare the values at `i`. Conclude with `(hbR i).symm`. Establish `hvol : (volume Fd).toReal = |e.det bR|`. Establish `h1` using `ZLattice.covolume_eq_measure_fundamentalDomain Λ volume hFd`.
+
+Establish `h2` using `ZLattice.covolume_eq_det_mul_measureReal Λ volume b e`. Rewrite `h2` using `[volume_fundamentalDomain_stdBasis, mul_one, hval]`. Rewrite using `[← h2, h1]`. Both sides reduce to the same expression. Establish `hGdet : (Matrix.of fun i j => imForm Hm (bR i) (bR j)).det = (e.det bR) ^ 2 * Complex.normSq Hm.det` using `det_gram e re_dotProduct_star Hm bR`.
+
+Establish `hD : e.det bR ≠ 0` using `(e.isUnit_det bR).ne_zero`. Establish `hN : Complex.normSq Hm.det ≠ 0`. Simplify using `using det_ne_zero_of_pos hpos`. Establish `hcomb : ∀ (w : Fin g → ℂ), (∀ j, ∃ k : ℤ, imForm Hm w (bR j) = k) → ∀ l ∈ Λ, ∃ k : ℤ, (w ⬝ᵥ Hm.mulVec (star l)).im = k`. Introduce `w hw l hl`.
+
+Use `choose k hk using hw`. Establish `hl' : l = ∑ j, ((b.repr ⟨l, hl⟩ j : ℤ) : ℝ) • bR j` using `by conv_lhs => rw [← bR.sum_repr l]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[show bR.repr l j = _ from Module.Basis.ofZLatticeBasis_repr_apply ℝ Λ b ⟨l, hl⟩ j]`. Use `⟨∑ j, b.repr ⟨l, hl⟩ j * k j, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← imForm_apply]`. Use `conv_lhs => rw [hl']`. Simplify using `[map_sum, hk]`. Establish `hone` using `abs_det_gram_eq_one (imForm Hm) bR (by rw [hGdet]; exact mul_ne_zero (pow_ne_zero 2 hD) hN) (fun i j => by`. Rewrite using `[hbR, hbR]`.
+
+Conclude with `hint _ (b i).2 _ (b j).2)`. Use the proof step `(fun w hw i => by`. Establish `hwΛ : w ∈ Λ` using `hself w (hcomb w hw)`. Conclude with `⟨b.repr ⟨w, hwΛ⟩ i, Module.Basis.ofZLatticeBasis_repr_apply ℝ Λ b ⟨w, hwΛ⟩ i⟩)`. Establish `hnn : 0 ≤ (e.det bR) ^ 2 * Complex.normSq Hm.det` using `mul_nonneg (sq_nonneg _) (Complex.normSq_nonneg _)`.
+
+Rewrite `hone` using `[hGdet, abs_of_nonneg hnn, Complex.normSq_eq_norm_sq]`. Rewrite using `[hvol]`. Establish `h0 : 0 ≤ |e.det bR| * ‖Hm.det‖` using `by positivity`. Use `(pow_eq_one_iff_of_nonneg h0 two_ne_zero).mp ?_` and prove the remaining obligations. Rewrite using `[mul_pow, sq_abs]`.
+
+Conclude with `hone`.
+-/
 theorem volume_mul_norm_det_eq_one :
     ∀ (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)) (Hm : Matrix (Fin g) (Fin g) ℂ),
       DiscreteTopology Λ → Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤ → Hm.IsHermitian →

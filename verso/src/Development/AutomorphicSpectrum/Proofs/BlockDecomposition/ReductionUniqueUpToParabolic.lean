@@ -6,6 +6,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Jp.RedUnique
 
+/- English proof (translation)
+Establish `hgb : g.1 = fromBlocks g.1.toBlocks₁₁ g.1.toBlocks₁₂ 0 g.1.toBlocks₂₂`. Rewrite using `[← hg, fromBlocks_toBlocks]`. Establish `hdet : g.1.det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).1 g.isUnit).ne_zero`. Rewrite `hdet` using `[hgb, det_fromBlocks_zero₂₁]`. Use `⟨GeneralLinearGroup.mkOfDetNeZero _ (left_ne_zero_of_mul hdet), GeneralLinearGroup.mkOfDetNeZero _ (right_ne_zero_of_mul hdet), g.1.toBlocks₁₂, ?_⟩` and prove the remaining obligations.
+
+Apply `Units.ext` to reduce the goal to its premises. Conclude with `hgb`.
+-/
 theorem exists_pM_of_low_zero {k : Type} [Field k] {n : ℕ} (g : GL (Ix n) k)
     (hg : g.1.toBlocks₂₁ = 0) :
     ∃ (a d : GL (Fin n) k) (b : Matrix (Fin n) (Fin n) k), g = pM a d b := by
@@ -19,6 +24,9 @@ theorem exists_pM_of_low_zero {k : Type} [Field k] {n : ℕ} (g : GL (Ix n) k)
   apply Units.ext
   exact hgb
 
+/- English proof (translation)
+Establish `h1 : ((pM a₁ d₁ b₁ : GL (Ix n) R)).1 = fromBlocks a₁.1 b₁ 0 d₁.1` using `rfl`. Establish `h2 : (((pM a₂ d₂ b₂)⁻¹ : GL (Ix n) R)).1 = fromBlocks (a₂⁻¹).1 (-((a₂⁻¹).1 * b₂ * (d₂⁻¹).1)) 0 (d₂⁻¹).1` using `rfl`. Rewrite using `[Units.val_mul, h1, h2, fromBlocks_multiply]`. Simplify using `[toBlocks_fromBlocks₂₁]`.
+-/
 theorem low_inv_mul_pM {R : Type} [CommRing R] {n : ℕ} (a₁ d₁ a₂ d₂ : GL (Fin n) R)
     (b₁ b₂ : Matrix (Fin n) (Fin n) R) :
     (((pM a₂ d₂ b₂)⁻¹ * pM a₁ d₁ b₁ : GL (Ix n) R)).1.toBlocks₂₁ = 0 := by
@@ -28,6 +36,17 @@ theorem low_inv_mul_pM {R : Type} [CommRing R] {n : ℕ} (a₁ d₁ a₂ d₂ : 
   rw [Units.val_mul, h1, h2, fromBlocks_multiply]
   simp [toBlocks_fromBlocks₂₁]
 
+/- English proof (translation)
+Introduce `O L _ _ _ _ _ _ n w κ h₁ h₂ r₁ r₂`. Take `⟨a₁, d₁, b₁, κ₁, e₁, rfl⟩` from `r₁`. Take `⟨a₂, d₂, b₂, κ₂, e₂, rfl⟩` from `r₂`. Take `⟨c, hcd⟩ : ∃ c : GL (Ix n) O, c = κ₂ * κ₁⁻¹` from `⟨_, rfl⟩`. Establish `hc : inL (L` using `L) c = (pM a₂ d₂ b₂)⁻¹ * pM a₁ d₁ b₁ := by`.
+
+Establish `e : pM a₁ d₁ b₁ * inL (L` using `L) κ₁ = pM a₂ d₂ b₂ * inL (L := L) κ₂ := e₁.symm.trans e₂`. Rewrite using `[hcd, map_mul, map_inv, eq_inv_mul_iff_mul_eq, ← mul_assoc, ← e, mul_inv_cancel_right]`. Establish `hlow : (inL (L` using `L) c).1.toBlocks₂₁ = 0 := by`. Rewrite using `[hc]`. Conclude with `low_inv_mul_pM _ _ _ _ _ _`.
+
+Establish `hO : ∀ i j, c.1 (Sum.inr i) (Sum.inl j) = 0`. Introduce `i j`. Establish `h0 : algebraMap O L (c.1 (Sum.inr i) (Sum.inl j)) = 0` using `congrFun (congrFun hlow i) j`. Conclude with `IsFractionRing.injective O L (h0.trans (map_zero _).symm)`. Establish `hk : (resK c).1.toBlocks₂₁ = 0`.
+
+Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `IsLocalRing.residue O (c.1 (Sum.inr i) (Sum.inl j)) = 0`. Rewrite using `[hO, map_zero]`. Take `⟨a, d, b, hp⟩` from `exists_pM_of_low_zero _ hk`. Use `⟨a, d, b, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hp, ← map_mul, hcd, inv_mul_cancel_right]`.
+-/
 theorem red_unique : ∀ (O L : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field L] [Algebra O L] [IsFractionRing O L]
     (n : ℕ) (w : Lˣ) (κ : GL (Ix n) O) (h₁ h₂ : GL (Ix n) (IsLocalRing.ResidueField O)),
     IsRed (O := O) w κ h₁ → IsRed (O := O) w κ h₂ →

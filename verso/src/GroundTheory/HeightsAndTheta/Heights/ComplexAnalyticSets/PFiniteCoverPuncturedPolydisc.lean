@@ -16,6 +16,11 @@ variable {e : ℕ}
 def strip (c : Fin (e + 1) → ℂ) (ρ : ℝ) : Set (Fin (e + 1) → ℂ) :=
   {u | (u 0).re < Real.log ρ ∧ ∀ i, i ≠ 0 → dist (u i) (c i) < ρ}
 
+/- English proof (translation)
+Introduce `x hx y hy a b ha hb hab`. Use `⟨?_, fun i hi => ?_⟩` and prove the remaining obligations. Use `convex_halfSpace_re_lt (r := Real.log ρ) hx.1 hy.1 ha hb hab` as an intermediate fact. Simplify using `using this`. Use `convex_ball (c i) ρ (hx.2 i hi) (hy.2 i hi) ha hb hab` as an intermediate fact.
+
+Simplify `this` using `[Metric.mem_ball]`.
+-/
 theorem convex_strip (c : Fin (e + 1) → ℂ) (ρ : ℝ) : Convex ℝ (strip c ρ) := by
   intro x hx y hy a b ha hb hab
   refine ⟨?_, fun i hi => ?_⟩
@@ -24,6 +29,11 @@ theorem convex_strip (c : Fin (e + 1) → ℂ) (ρ : ℝ) : Convex ℝ (strip c 
   · have := convex_ball (c i) ρ (hx.2 i hi) (hy.2 i hi) ha hb hab
     simpa [Metric.mem_ball] using this
 
+/- English proof (translation)
+Establish `h1 : IsOpen {u : Fin (e + 1) → ℂ | (u 0).re < Real.log ρ}` using `isOpen_lt (continuous_re.comp (continuous_apply 0)) continuous_const`. Establish `h2 : IsOpen {u : Fin (e + 1) → ℂ | ∀ i, i ≠ 0 → dist (u i) (c i) < ρ}`. Establish `: {u : Fin (e + 1) → ℂ | ∀ i, i ≠ 0 → dist (u i) (c i) < ρ} = ⋂ i ∈ ({0}ᶜ : Finset (Fin (e + 1))), {u | dist (u i) (c i) < ρ}`. Use extensionality with `u`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this]`. Conclude with `isOpen_biInter_finset fun i _ => isOpen_lt ((continuous_apply i).dist continuous_const) continuous_const`. Conclude with `h1.inter h2`.
+-/
 theorem isOpen_strip (c : Fin (e + 1) → ℂ) (ρ : ℝ) : IsOpen (strip c ρ) := by
   have h1 : IsOpen {u : Fin (e + 1) → ℂ | (u 0).re < Real.log ρ} :=
     isOpen_lt (continuous_re.comp (continuous_apply 0)) continuous_const
@@ -36,6 +46,9 @@ theorem isOpen_strip (c : Fin (e + 1) → ℂ) (ρ : ℝ) : IsOpen (strip c ρ) 
       isOpen_lt ((continuous_apply i).dist continuous_const) continuous_const
   exact h1.inter h2
 
+/- English proof (translation)
+Use `⟨by simp, fun i hi => ?_⟩` and prove the remaining obligations. Simplify using `[Function.update_of_ne hi, hρ]`.
+-/
 theorem base_mem_strip (c : Fin (e + 1) → ℂ) {ρ : ℝ} (hρ : 0 < ρ) :
     Function.update c 0 ((Real.log ρ - 1 : ℝ) : ℂ) ∈ strip c ρ := by
   refine ⟨by simp, fun i hi => ?_⟩
@@ -56,14 +69,23 @@ def shift (c : Fin (e + 1) → ℂ) (ρ : ℝ) (k : ℤ) (u : strip c ρ) : stri
     rw [Function.update_of_ne hi]
     exact u.2.2 i hi⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem shift_val (c : Fin (e + 1) → ℂ) (ρ : ℝ) (k : ℤ) (u : strip c ρ) :
     (shift c ρ k u).1 = Function.update u.1 0 (u.1 0 + k * (2 * π * I)) := rfl
 
+/- English proof (translation)
+Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Conclude with `continuous_subtype_val.update 0 (((continuous_apply 0).comp continuous_subtype_val).add continuous_const)`.
+-/
 theorem continuous_shift (c : Fin (e + 1) → ℂ) (ρ : ℝ) (k : ℤ) : Continuous (shift c ρ k) := by
   refine Continuous.subtype_mk ?_ _
   exact continuous_subtype_val.update 0
     (((continuous_apply 0).comp continuous_subtype_val).add continuous_const)
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [shift_val, Function.update_self, Function.update_idem]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem shift_shift (c : Fin (e + 1) → ℂ) (ρ : ℝ) (k l : ℤ) (u : strip c ρ) :
     shift c ρ k (shift c ρ l u) = shift c ρ (k + l) u := by
   apply Subtype.ext
@@ -71,12 +93,20 @@ theorem shift_shift (c : Fin (e + 1) → ℂ) (ρ : ℝ) (k l : ℤ) (u : strip 
   congr 1
   push_cast; ring
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[shift_val]`.
+-/
 theorem shift_zero (c : Fin (e + 1) → ℂ) (ρ : ℝ) (u : strip c ρ) : shift c ρ 0 u = u := by
   apply Subtype.ext
   simp [shift_val]
 
 variable {c : Fin (e + 1) → ℂ} {r : ℝ}
 
+/- English proof (translation)
+Use `⟨?_, by simp [exp_ne_zero]⟩` and prove the remaining obligations. Rewrite using `[Metric.mem_ball, dist_pi_lt_iff (hρ.trans_le hρr)]`. Introduce `i`. Break down `eq_or_ne i 0 with rfl | hi` into its components or cases. Simplify using `only [Function.update_self, hc, dist_zero_right, norm_exp]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Function.update_of_ne hi]`. Conclude with `(u.2.2 i hi).trans_le hρr`.
+-/
 theorem expMap_mem (hc : c 0 = 0) {ρ : ℝ} (hρ : 0 < ρ) (hρr : ρ ≤ r) (u : strip c ρ) :
     Function.update u.1 0 (exp (u.1 0)) ∈ Metric.ball c r ∩ {t : Fin (e + 1) → ℂ | t 0 ≠ 0} := by
   refine ⟨?_, by simp [exp_ne_zero]⟩
@@ -97,15 +127,28 @@ def expMap (hc : c 0 = 0) {ρ : ℝ} (hρ : 0 < ρ) (hρr : ρ ≤ r) :
     refine Continuous.subtype_mk ?_ _
     exact continuous_subtype_val.update 0 (((continuous_apply 0).comp continuous_subtype_val).cexp)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem expMap_val (hc : c 0 = 0) {ρ : ℝ} (hρ : 0 < ρ) (hρr : ρ ≤ r) (u : strip c ρ) :
     ((expMap hc hρ hρr u : _) : Fin (e + 1) → ℂ) = Function.update u.1 0 (exp (u.1 0)) := rfl
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[expMap_val, expMap_val, shift_val]`. Simplify using `only [Function.update_self, Function.update_idem, exp_add, exp_int_mul_two_pi_mul_I, mul_one]`.
+-/
 theorem expMap_shift (hc : c 0 = 0) {ρ : ℝ} (hρ : 0 < ρ) (hρr : ρ ≤ r) (k : ℤ) (u : strip c ρ) :
     expMap hc hρ hρr (shift c ρ k u) = expMap hc hρ hρr u := by
   apply Subtype.ext
   rw [expMap_val, expMap_val, shift_val]
   simp only [Function.update_self, Function.update_idem, exp_add, exp_int_mul_two_pi_mul_I, mul_one]
 
+/- English proof (translation)
+Establish `ht0 : t 0 ≠ 0` using `hw ▸ exp_ne_zero w`. Establish `hnorm : ‖t 0‖ < ρ`. Use `(dist_le_pi_dist t c 0).trans_lt ht` as an intermediate fact. Simplify `this` using `[hc]`. Establish `hre : w.re = Real.log ‖t 0‖` using `by rw [← hw, norm_exp, Real.log_exp]`.
+
+Establish `hlog : Real.log ‖t 0‖ < Real.log ρ` using `Real.log_lt_log (norm_pos_iff.2 ht0) hnorm`. Establish `hlogρ : Real.log ρ ≤ 0` using `Real.log_nonpos hρ0.le hρ1`. Use `⟨?_, fun i hi => ?_⟩` and prove the remaining obligations. Simplify using `only [Function.update_self, mul_re, natCast_re, natCast_im, zero_mul, sub_zero, hre]`. Establish `hk' : (1 : ℝ) ≤ k` using `by exact_mod_cast hk`.
+
+Use polynomial arithmetic with `[mul_nonpos_of_nonneg_of_nonpos (sub_nonneg.2 hk') (hlog.trans_le hlogρ).le]`. Rewrite using `[Function.update_of_ne hi]`. Conclude with `(dist_le_pi_dist t c i).trans_lt ht`.
+-/
 theorem mem_strip_of_exp (hc : c 0 = 0) {ρ : ℝ} (hρ0 : 0 < ρ) (hρ1 : ρ ≤ 1) {t : Fin (e + 1) → ℂ}
     (ht : t ∈ Metric.ball c ρ) {w : ℂ} (hw : exp w = t 0) {k : ℕ} (hk : 1 ≤ k) :
     Function.update t 0 (k * w) ∈ strip c ρ := by
@@ -127,6 +170,107 @@ end FiniteCoverPuncturedPolydisc
 
 open FiniteCoverPuncturedPolydisc in
 
+/- English proof (translation)
+Introduce `e N c r Y _ p hr hc hcov hfib`. Take `⟨ρ, hρ0, hρr, hρ1⟩ : ∃ ρ : ℝ, 0 < ρ ∧ ρ ≤ r ∧ ρ ≤ 1` from `⟨min r 1, lt_min hr one_pos, min_le_left _ _, min_le_right _ _⟩`. Establish `: Fact (0 < ρ)` using `⟨hρ0⟩`. Set `E` to `expMap hc hρ0 hρr`. Set `u₀ : strip c ρ` to `⟨_, base_mem_strip c hρ0⟩`.
+
+Establish `hlift : ∀ (a : strip c ρ) (y : Y), p y = E a → ∃ G : C(strip c ρ, Y), G a = y ∧ p ∘ G = E` using `fun a y h => (hcov.existsUnique_continuousMap_lifts E a y h).exists`. Establish `huniq : ∀ G₁ G₂ : C(strip c ρ, Y), p ∘ G₁ = E → p ∘ G₂ = E → ∀ a, G₁ a = G₂ a → G₁ = G₂` using `fun G₁ G₂ h1 h2 a ha => ContinuousMap.ext (congrFun (hcov.eq_of_comp_eq G₁.continuous G₂.continuous (h1.trans h2.symm) a ha))`. Set `F : Set Y` to `p ⁻¹' {E u₀}`. Establish `hFfin : F.Finite` using `Set.finite_of_encard_eq_coe (hfib (E u₀))`. Establish `: Finite F` using `hFfin.to_subtype`.
+
+Use `letI : Fintype F := Fintype.ofFinite F`. Establish `hcardF : Nat.card F = N`. Rewrite using `[Nat.card_coe_set_eq, Set.ncard_def, hfib]`. Simplify using the standard rewrite rules. Set `L : F → C(strip c ρ, Y)` to `fun y => Classical.choose (hlift u₀ y.1 y.2)`.
+
+Establish `hL0 : ∀ y : F, L y u₀ = y.1` using `fun y => (Classical.choose_spec (hlift u₀ y.1 y.2)).1`. Establish `hLp : ∀ y : F, p ∘ L y = E` using `fun y => (Classical.choose_spec (hlift u₀ y.1 y.2)).2`. Establish `hLp' : ∀ y : F, ∀ a, p (L y a) = E a` using `fun y a => congrFun (hLp y) a`. Establish `hLinj : ∀ y y' : F, ∀ a, L y a = L y' a → y = y'`. Introduce `y y' a h`.
+
+Use `huniq (L y) (L y') (hLp y) (hLp y') a h` as an intermediate fact. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hL0 y, ← hL0 y', this]`. Establish `hfibre : ∀ a (y : Y), p y = E a → ∃ y' : F, L y' a = y`. Introduce `a y h`.
+
+Take `⟨G, hGa, hGp⟩` from `hlift a y h`. Establish `hG0 : G u₀ ∈ F` using `by show p (G u₀) ∈ ({E u₀} : Set _)`. Rewrite using `[← Function.comp_apply (f := p), hGp]`. Both sides reduce to the same expression. Use `⟨⟨G u₀, hG0⟩, ?_⟩` and prove the remaining obligations.
+
+Use `huniq G (L ⟨G u₀, hG0⟩) hGp (hLp _) u₀ (hL0 ⟨G u₀, hG0⟩).symm` as an intermediate fact. Rewrite using `[← this, hGa]`. Establish `hEshift : ∀ k a, E (shift c ρ k a) = E a` using `expMap_shift hc hρ0 hρr`. Establish `hs_mem : ∀ y : F, L y (shift c ρ 1 u₀) ∈ F`. Introduce `y`.
+
+Use `show p _ ∈ ({E u₀} : Set _)`. Rewrite using `[hLp', hEshift]`. Both sides reduce to the same expression. Set `s : F → F` to `fun y => ⟨_, hs_mem y⟩`. Establish `hLs : ∀ y : F, ∀ a, L y (shift c ρ 1 a) = L (s y) a`.
+
+Introduce `y a`. Use `huniq ((L y).comp ⟨shift c ρ 1, continuous_shift c ρ 1⟩) (L (s y)) (by funext a; simp [hLp', hEshift]) (hLp _) u₀ (by rw [hL0]; rfl)` as an intermediate fact. Conclude with `DFunLike.congr_fun this a`. Establish `hs_inj : Function.Injective s`. Introduce `y y' h`.
+
+Apply `hLinj y y' u₀` to reduce the goal to its premises. Establish `e1 : shift c ρ 1 (shift c ρ (-1) u₀) = u₀`. Rewrite using `[shift_shift]`. Simplify using `[shift_zero]`. Rewrite using `[← e1, hLs, hLs, h]`.
+
+Set `σ : Equiv.Perm F` to `Equiv.ofBijective s (Finite.injective_iff_bijective.mp hs_inj)`. Establish `hσ : ∀ y, σ y = s y` using `fun y => rfl`. Establish `hLσ : ∀ k : ℤ, ∀ y : F, ∀ a, L y (shift c ρ k a) = L ((σ ^ k) y) a`. Introduce `k`. Proceed by induction on `k using Int.induction_on with`.
+
+Consider the case `zero => intro y a`. Simplify using `[shift_zero]`. Consider the case `succ k ih`. Introduce `y a`. Use `conv_lhs => rw [show ((k : ℤ) + 1) = 1 + k by ring, ← shift_shift c ρ 1 k]`.
+
+Rewrite using `[hLs, ih, zpow_add_one, Equiv.Perm.mul_apply, hσ]`. Consider the case `pred k ih`. Introduce `y a`. Establish `hy : y = s (σ⁻¹ y)` using `by rw [← hσ]; simp`. Use `conv_lhs => rw [hy]`.
+
+Rewrite using `[← hLs, shift_shift, show (1 : ℤ) + (-↑k - 1) = -↑k by ring, ih, zpow_sub_one, Equiv.Perm.mul_apply]`. Set `Q` to `MulAction.orbitRel.Quotient (Subgroup.zpowers σ) F`. Use `letI : Fintype Q := Fintype.ofFinite Q`. Set `m` to `Nat.card Q`. Set `eQ : Fin m ≃ Q` to `(Finite.equivFin Q).symm`.
+
+Set `rep : Fin m → F` to `fun b => (eQ b).out`. Set `ord : Fin m → ℕ` to `fun b => Function.minimalPeriod (σ • ·) (rep b)`. Establish `hper : ∀ b (k : ℤ), (σ ^ k) (rep b) = rep b ↔ (ord b : ℤ) ∣ k`. Introduce `b k`. Rewrite using `[← Equiv.Perm.smul_def]`.
+
+Conclude with `MulAction.zpow_smul_eq_iff_minimalPeriod_dvd`. Establish `hord : ∀ b, 1 ≤ ord b`. Introduce `b`. Establish `: Finite (MulAction.orbit (Subgroup.zpowers σ) (rep b))` using `Subtype.finite`. Conclude with `Nat.one_le_iff_ne_zero.2 (NeZero.ne (Function.minimalPeriod (σ • ·) (rep b)))`.
+
+Establish `hsame : ∀ b b' (k : ℤ), rep b = (σ ^ k) (rep b') → b = b'`. Introduce `b b' k h`. Apply `eQ.injective` to reduce the goal to its premises. Rewrite using `[← Quotient.out_eq (eQ b), ← Quotient.out_eq (eQ b')]`. Apply `Quotient.sound` to reduce the goal to its premises.
+
+Use `show MulAction.orbitRel _ _ (rep b) (rep b')`. Rewrite using `[MulAction.orbitRel_apply, MulAction.mem_orbit_iff]`. Conclude with `⟨⟨σ ^ k, Subgroup.zpow_mem_zpowers σ k⟩, h.symm⟩`. Establish `hrep : ∀ y : F, ∃ b, ∃ k : ℤ, y = (σ ^ k) (rep b)`. Introduce `y`.
+
+Use `⟨eQ.symm ⟦y⟧, ?_⟩` and prove the remaining obligations. Establish `h1 : rep (eQ.symm ⟦y⟧) = (⟦y⟧ : Q).out` using `by simp [rep]`. Establish `h2` using `Quotient.mk_out (s := MulAction.orbitRel (Subgroup.zpowers σ) F) y`. Establish `h3 : (⟦y⟧ : Q).out ∈ MulAction.orbit (Subgroup.zpowers σ) y`. Rewrite using `[← MulAction.orbitRel_apply]`.
+
+Conclude with `h2`. Take `⟨⟨g, hg⟩, hgy⟩` from `MulAction.mem_orbit_iff.1 h3`. Take `⟨j, rfl⟩` from `Subgroup.mem_zpowers_iff.1 hg`. Use `⟨-j, ?_⟩` and prove the remaining obligations. Rewrite using `[h1, ← hgy]`.
+
+Simplify using `[zpow_neg, Equiv.Perm.smul_def]`. Establish `hsum : ∑ b, ord b = N`. Rewrite using `[← hcardF]`. Establish `h1 : ∑ b, ord b = ∑ q : Q, Function.minimalPeriod (σ • ·) q.out` using `Equiv.sum_comp eQ (fun q => Function.minimalPeriod (σ • ·) q.out)`. Establish `h2 : ∀ q : Q, Function.minimalPeriod (σ • ·) q.out = Nat.card (MulAction.orbit (Subgroup.zpowers σ) q.out)`.
+
+Introduce `q`. Rewrite using `[MulAction.minimalPeriod_eq_card, Nat.card_eq_fintype_card]`. Rewrite using `[h1, Finset.sum_congr rfl (fun q _ => h2 q), Nat.card_congr (MulAction.selfEquivSigmaOrbits (Subgroup.zpowers σ) F), Nat.card_sigma]`. Establish `hpt : ∀ b (t : ↥(Metric.ball c ρ ∩ {t : Fin (e + 1) → ℂ | t 0 ≠ 0})) (w : ℂ), exp w = t.1 0 → Function.update t.1 0 (ord b * w) ∈ strip c ρ` using `fun b t w hw => mem_strip_of_exp hc hρ0 hρ1 t.2.1 hw (hord b)`. Set `ψ : Fin m → ↥(Metric.ball c ρ ∩ {t : Fin (e + 1) → ℂ | t 0 ≠ 0}) → Y` to `fun b t => L (rep b) ⟨_, hpt b t (log (t.1 0)) (exp_log t.2.2)⟩`.
+
+Establish `hψw : ∀ b t w (hw : exp w = t.1 0), ψ b t = L (rep b) ⟨_, hpt b t w hw⟩`. Introduce `b t w hw`. Take `⟨n, hn⟩` from `exp_eq_exp_iff_exists_int.1 (hw.trans (exp_log t.2.2).symm)`. Establish `hsh : (⟨_, hpt b t w hw⟩ : strip c ρ) = shift c ρ (ord b * n) ⟨_, hpt b t (log (t.1 0)) (exp_log t.2.2)⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `only [shift_val, Function.update_self, Function.update_idem, hn]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsh, hLσ, (hper b _).2 (dvd_mul_right _ _)]`.
+
+Establish `hψcont : ∀ b, Continuous (ψ b)`. Introduce `b`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `t₁`. Establish `hz : t₁.1 0 ≠ 0` using `t₁.2.2`.
+
+Establish `hw : ∀ t : ↥(Metric.ball c ρ ∩ {t : Fin (e + 1) → ℂ | t 0 ≠ 0}), exp (log (t₁.1 0) + log (t.1 0 / t₁.1 0)) = t.1 0`. Introduce `t`. Rewrite using `[exp_add, exp_log hz, exp_log (div_ne_zero t.2.2 hz)]`. Clear the denominators using the available nonvanishing facts. Establish `heq : ψ b = fun t => L (rep b) ⟨_, hpt b t _ (hw t)⟩` using `funext fun t => hψw b t _ (hw t)`.
+
+Rewrite using `[heq]`. Apply `(L (rep b)).continuous.continuousAt.comp` to reduce the goal to its premises. Rewrite using `[Topology.IsInducing.subtypeVal.continuousAt_iff]`. Apply `continuousAt_subtype_val.update 0` to reduce the goal to its premises. Apply `continuousAt_const.mul` to reduce the goal to its premises.
+
+Apply `continuousAt_const.add` to reduce the goal to its premises. Apply `ContinuousAt.clog` to reduce the goal to its premises. Conclude with `(((continuous_apply 0).comp continuous_subtype_val).div_const _).continuousAt`. Simplify using `[div_self hz]`. Establish `hpψ : ∀ b t, ((p (ψ b t) : Fin (e + 1) → ℂ)) = Function.update t.1 0 (t.1 0 ^ ord b)`.
+
+Introduce `b t`. Use `show ((p (L (rep b) _) : Fin (e + 1) → ℂ)) = _`. Rewrite using `[hLp', expMap_val]`. Simplify using `only [Function.update_self, Function.update_idem, exp_nat_mul, exp_log t.2.2]`. Establish `hrest : ∀ b b' t t', ψ b t = ψ b' t' → (∀ i, i ≠ 0 → t.1 i = t'.1 i) ∧ t.1 0 ^ ord b = t'.1 0 ^ ord b'`.
+
+Introduce `b b' t t' h`. Establish `hp` using `congrArg (fun y => ((p y : Fin (e + 1) → ℂ))) h`. Simplify using `only [hpψ] at hp`. Use `⟨fun i hi => ?_, by simpa using congrFun hp 0⟩` and prove the remaining obligations. Use `congrFun hp i` as an intermediate fact.
+
+Simplify `this` using `[Function.update_of_ne hi]`. Establish `hmeet : ∀ b b' t t', ψ b t = ψ b' t' → ∃ n : ℤ, (ord b' : ℂ) * log (t'.1 0) = ord b * log (t.1 0) + n * (2 * π * I) ∧ rep b = (σ ^ n) (rep b')`. Introduce `b b' t t' h`. Take `⟨hr', h0⟩` from `hrest b b' t t' h`. Establish `hexp : exp (ord b' * log (t'.1 0)) = exp (ord b * log (t.1 0))`.
+
+Rewrite using `[exp_nat_mul, exp_nat_mul, exp_log t.2.2, exp_log t'.2.2, h0]`. Take `⟨n, hn⟩` from `exp_eq_exp_iff_exists_int.1 hexp`. Use `⟨n, hn, ?_⟩` and prove the remaining obligations. Establish `hsh : (⟨_, hpt b' t' (log (t'.1 0)) (exp_log t'.2.2)⟩ : strip c ρ) = shift c ρ n ⟨_, hpt b t (log (t.1 0)) (exp_log t.2.2)⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `i`. Break down `eq_or_ne i 0 with rfl | hi` into its components or cases. Simplify using `[shift_val, hn]`. Simplify using `[shift_val, Function.update_of_ne hi, hr' i hi]`. Establish `h2 : ψ b' t' = L ((σ ^ n) (rep b')) ⟨_, hpt b t _ (exp_log t.2.2)⟩` using `by show L (rep b') _ = _`.
+
+Rewrite using `[hsh, hLσ]`. Conclude with `hLinj (rep b) ((σ ^ n) (rep b')) _ (h.trans h2)`. Establish `hψinj : ∀ b, Function.Injective (ψ b)`. Introduce `b t t' h`. Take `⟨hr', -⟩` from `hrest b b t t' h`.
+
+Take `⟨n, hn, h3⟩` from `hmeet b b t t' h`. Take `⟨j, hj⟩` from `(hper b n).1 h3.symm`. Establish `hm0 : (ord b : ℂ) ≠ 0`. Establish `: ord b ≠ 0` using `Nat.one_le_iff_ne_zero.1 (hord b)`. Conclude with `this` after adjusting the coercions.
+
+Establish `hlog : log (t'.1 0) = log (t.1 0) + j * (2 * π * I)`. Apply `mul_left_cancel₀ hm0` to reduce the goal to its premises. Rewrite using `[hn, hj]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Break down `eq_or_ne i 0 with rfl | hi` into its components or cases. Rewrite using `[← exp_log t.2.2, ← exp_log t'.2.2, hlog, exp_add, exp_int_mul_two_pi_mul_I, mul_one]`. Conclude with `hr' i hi`.
+
+Establish `hψdisj : ∀ b b', b ≠ b' → ∀ t t', ψ b t ≠ ψ b' t'`. Introduce `b b' hbb t t' h`. Take `⟨n, -, h3⟩` from `hmeet b b' t t' h`. Conclude with `hbb (hsame b b' n h3)`. Establish `hcover : ∀ y, dist ((p y : Fin (e + 1) → ℂ)) c < ρ ^ N → ∃ b t, ψ b t = y`.
+
+Introduce `y hy`. Establish `hs0 : (p y : Fin (e + 1) → ℂ) 0 ≠ 0` using `(p y).2.2`. Establish `hN : N ≠ 0`. Introduce `hN0`. Use `hfib (p y)` as an intermediate fact.
+
+Rewrite `this` using `[hN0, Nat.cast_zero, Set.encard_eq_zero]`. Conclude with `(Set.eq_empty_iff_forall_notMem.1 this) y rfl`. Establish `hρN : ρ ^ N ≤ ρ` using `pow_le_of_le_one hρ0.le hρ1 hN`. Establish `hsball : (p y : Fin (e + 1) → ℂ) ∈ Metric.ball c ρ` using `Metric.mem_ball.2 (hy.trans_le hρN)`. Set `a : strip c ρ` to `⟨_, mem_strip_of_exp hc hρ0 hρ1 hsball (exp_log hs0) le_rfl⟩`.
+
+Establish `hEa : p y = E a`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[expMap_val]`. Simplify using `[a, exp_log hs0]`. Take `⟨y', hy'⟩` from `hfibre a y hEa`.
+
+Take `⟨b, k, hk⟩` from `hrep y'`. Establish `hm1` using `hord b`. Establish `hm0 : (ord b : ℂ) ≠ 0`. Establish `: ord b ≠ 0` using `Nat.one_le_iff_ne_zero.1 hm1`. Conclude with `this` after adjusting the coercions.
+
+Set `w : ℂ` to `(log ((p y : Fin (e + 1) → ℂ) 0) + k * (2 * π * I)) / ord b`. Establish `hmw : (ord b : ℂ) * w = log ((p y : Fin (e + 1) → ℂ) 0) + k * (2 * π * I)`. Simplify using `only [w]`. Clear the denominators using the available nonvanishing facts. Set `t : Fin (e + 1) → ℂ` to `Function.update (p y : Fin (e + 1) → ℂ) 0 (exp w)`.
+
+Establish `hmN : ord b ≤ N` using `hsum ▸ Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ b)`. Establish `ht : t ∈ Metric.ball c ρ ∩ {t : Fin (e + 1) → ℂ | t 0 ≠ 0}`. Use `⟨?_, by simp [t, exp_ne_zero]⟩` and prove the remaining obligations. Rewrite using `[Metric.mem_ball, dist_pi_lt_iff hρ0]`. Introduce `i`.
+
+Break down `eq_or_ne i 0 with rfl | hi` into its components or cases. Simplify using `only [t, Function.update_self, hc, dist_zero_right, norm_exp]`. Establish `hre : (ord b : ℝ) * w.re = Real.log ‖(p y : Fin (e + 1) → ℂ) 0‖`. Use `congrArg re hmw` as an intermediate fact. Simplify `this` using `[mul_re, log_re]`.
+
+Establish `hsn : ‖(p y : Fin (e + 1) → ℂ) 0‖ < ρ ^ N`. Simplify `(dist_le_pi_dist _ c 0).trans_lt hy` using `[hc]`. Establish `hl : Real.log ‖(p y : Fin (e + 1) → ℂ) 0‖ < N * Real.log ρ`. Rewrite using `[← Real.log_pow]`. Conclude with `Real.log_lt_log (norm_pos_iff.2 hs0) hsn`.
+
+Establish `hlogρ : Real.log ρ ≤ 0` using `Real.log_nonpos hρ0.le hρ1`. Establish `hmpos : (0 : ℝ) < ord b` using `by exact_mod_cast hm1`. Establish `hmN' : (ord b : ℝ) ≤ N` using `by exact_mod_cast hmN`. Establish `hlt : w.re < Real.log ρ`. Assume the negation of the conclusion as `hcon`.
+
+Use `replace hcon := not_lt.1 hcon`. Use polynomial arithmetic with `[mul_le_mul_of_nonpos_right hmN' hlogρ, mul_le_mul_of_nonneg_left hcon hmpos.le]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [t, Function.update_of_ne hi]`. Conclude with `((dist_le_pi_dist _ c i).trans_lt hy).trans_le hρN`.
+
+Use `⟨b, ⟨t, ht⟩, ?_⟩` and prove the remaining obligations. Establish `hwt : exp w = (⟨t, ht⟩ : ↥(Metric.ball c ρ ∩ {t : Fin (e + 1) → ℂ | t 0 ≠ 0})).1 0`. Simplify using `[t]`. Rewrite using `[hψw b ⟨t, ht⟩ w hwt]`. Establish `hsh : (⟨_, hpt b ⟨t, ht⟩ w hwt⟩ : strip c ρ) = shift c ρ k a`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [shift_val, a, t, Function.update_idem, Function.update_self, hmw, Nat.cast_one, one_mul]`. Rewrite using `[hsh, hLσ, ← hk, hy']`. Conclude with `⟨m, ord, ρ, ψ, hρ0, hρ1, hsum, hord, hψcont, hpψ, hψinj, hψdisj, hcover⟩`.
+-/
 theorem FiniteCoverPuncturedPolydisc.proof : FiniteCoverPuncturedPolydisc.Statement := by
   intro e N c r Y _ p hr hc hcov hfib
   classical

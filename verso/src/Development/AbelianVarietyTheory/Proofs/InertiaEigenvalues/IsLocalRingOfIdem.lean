@@ -9,6 +9,31 @@ namespace GlobalTheory.UnitLemma.Orbit
 
 open GlobalTheory.UnitLemma Polynomial IsLocalRing ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hloc`. Take `⟨M1, hM1⟩` from `Ideal.exists_maximal S`. Establish `hex : ∃ M2 : Ideal S, M2.IsMaximal ∧ M2 ≠ M1`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+
+Conclude with `hloc (IsLocalRing.of_unique_max_ideal ⟨M1, hM1, fun M hM => h M hM⟩)`. Take `⟨M2, hM2, h12⟩` from `hex`. Use `set F := (finite_maximal_ideals_of_finite (R := R) S).toFinset.filter (· ≠ M1) with hF`. Establish `hmemF : ∀ N : Ideal S, N.IsMaximal → N ≠ M1 → N ∈ F`. Introduce `N hN hN1`.
+
+Rewrite using `[hF, Finset.mem_filter, Set.Finite.mem_toFinset]`. Conclude with `⟨hN, hN1⟩`. Establish `hcop : M1 ⊔ F.inf id = ⊤`. Assume the negation of the conclusion as `hne`. Establish `hle : F.inf id ≤ M1`.
+
+Rewrite using `[hM1.eq_of_le hne le_sup_left]`. Conclude with `le_sup_right`. Take `⟨N, hN, hNle⟩` from `(hM1.isPrime.inf_le').1 hle`. Rewrite `hN` using `[hF, Finset.mem_filter, Set.Finite.mem_toFinset]`. Conclude with `hN.2 ((hN.1 : N.IsMaximal).eq_of_le hM1.ne_top hNle)`.
+
+Establish `h1 : (1 : S) ∈ M1 ⊔ F.inf id` using `by rw [hcop]; exact Submodule.mem_top`. Take `⟨x, hx, y, hy, hxy⟩` from `Submodule.mem_sup.1 h1`. Establish `hx1 : ∀ N : Ideal S, N.IsMaximal → N ≠ M1 → x - 1 ∈ N`. Introduce `N hN hN1`. Establish `: y ∈ N` using `Finset.inf_le (f := id) (hmemF N hN hN1) hy`.
+
+Establish `: x - 1 = -y` using `by rw [← hxy]; ring`. Rewrite using `[this]; exact N.neg_mem (by assumption)`. Establish `hall : ∀ N : Ideal S, N.IsMaximal → x * x - x ∈ N`. Introduce `N hN`. Distinguish the cases in `hN1 : N = M1`.
+
+Substitute `hN1` using the available equality. Conclude with `Ideal.sub_mem _ (Ideal.mul_mem_left _ _ hx) hx`. Use `hx1 N hN hN1` as an intermediate fact. Establish `e : x * x - x = x * (x - 1)` using `by ring`. Rewrite using `[e]`.
+
+Conclude with `Ideal.mul_mem_left _ _ this`. Take `⟨k, hk, hkJ⟩` from `exists_pow_mem_map_maximalIdeal (R := R) S _ hall`. Establish `: IsAdicComplete ((maximalIdeal R).map (algebraMap R S)) S` using `isAdicComplete_finite_algebra S`. Take `⟨k', rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hk.ne'`. Take `⟨e, s, hee, hes⟩` from `exists_idempotent_henselian ((maximalIdeal R).map (algebraMap R S)) x k' hkJ`.
+
+Establish `hxx1 : x * x - x ∈ M1` using `hall M1 hM1`. Establish `hxx2 : x * x - x ∈ M2` using `hall M2 hM2`. Break down `hid e hee with h0 | h0` into its components or cases. Apply `hM2.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`.
+
+Establish `ha : -x ∈ M2`. Establish `: -x = s * (x * x - x)` using `by rw [← hes, h0]; ring`. Rewrite using `[this]`. Conclude with `Ideal.mul_mem_left _ _ hxx2`. Establish `hb` using `hx1 M2 hM2 h12`.
+
+Establish `: (1 : S) = -(x - 1) + -(-x)` using `by ring`. Rewrite using `[this]`. Conclude with `M2.add_mem (M2.neg_mem hb) (M2.neg_mem ha)`. Apply `hM1.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`.
+
+Establish `: (1 : S) = s * (x * x - x) + x` using `by rw [← hes, h0]; ring`. Rewrite using `[this]`. Conclude with `M1.add_mem (Ideal.mul_mem_left _ _ hxx1) hx`.
+-/
 theorem isLocalRing_of_idem {R : Type*} [CommRing R] [IsLocalRing R] [IsNoetherianRing R]
     [IsAdicComplete (maximalIdeal R) R] (S : Type*) [CommRing S] [Nontrivial S] [Algebra R S]
     [Module.Finite R S] (hid : ∀ e : S, e * e = e → e = 0 ∨ e = 1) : IsLocalRing S := by
@@ -68,6 +93,11 @@ theorem isLocalRing_of_idem {R : Type*} [CommRing R] [IsLocalRing R] [IsNoetheri
 
 variable {K : UQ}
 
+/- English proof (translation)
+Unfold `val`. Establish `: (IsDiscreteValuationRing.maximalIdeal K.O).valuation K.E (algebraMap K.O K.E u) = 1`. Rewrite using `[IsDedekindDomain.HeightOneSpectrum.valuation_eq_one_iff_notMem]`. Conclude with `fun h => (mem_maximalIdeal u).1 h hu`. Rewrite using `[this]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem val_unit (u : K.O) (hu : IsUnit u) : val K.O (algebraMap K.O K.E u) = 0 := by
   unfold val
   have : (IsDiscreteValuationRing.maximalIdeal K.O).valuation K.E (algebraMap K.O K.E u) = 1 := by
@@ -75,6 +105,13 @@ theorem val_unit (u : K.O) (hu : IsUnit u) : val K.O (algebraMap K.O K.E u) = 0 
     exact fun h => (mem_maximalIdeal u).1 h hu
   rw [this]; simp
 
+/- English proof (translation)
+Establish `h0 : aeval (LinearMap.mulLeft K.E B.g) (f.map (algebraMap K.O K.E)) = 0`. Use `Polynomial.aeval_algHom_apply (Algebra.lmul K.E B.A) B.g (f.map (algebraMap K.O K.E))` as an intermediate fact. Rewrite `this` using `[aeval_map_algebraMap K.E B.g f, hf, map_zero]`. Conclude with `this`. Distinguish the cases in `hz : f.map (algebraMap K.O K.E) = 0`.
+
+Rewrite using `[hz]`. Conclude with `dvd_zero _`. Establish `hP : B.P ≠ 0` using `hs.ne_zero`. Rewrite using `[UniqueFactorizationMonoid.dvd_iff_normalizedFactors_le_normalizedFactors hP hz, Multiset.le_iff_subset ((UniqueFactorizationMonoid.squarefree_iff_nodup_normalizedFactors hP).1 hs.squarefree)]`. Introduce `p hp`.
+
+Rewrite `hp` using `[Polynomial.mem_normalizedFactors_iff hP]`. Rewrite using `[Polynomial.mem_normalizedFactors_iff hz]`. Conclude with `⟨hp.1, hp.2.1, GlobalTheory.CuspGL.irreducible_dvd_of_dvd_charpoly_of_aeval_eq_zero _ _ _ hp.1 hp.2.2 h0⟩`.
+-/
 theorem charpoly_dvd_map_of_aeval_eq_zero (B : InvAlg K) (hs : B.P.Separable) (f : K.O[X]) (hf : aeval B.g f = 0) :
     B.P ∣ f.map (algebraMap K.O K.E) := by
   have h0 : aeval (LinearMap.mulLeft K.E B.g) (f.map (algebraMap K.O K.E)) = 0 := by
@@ -92,6 +129,9 @@ theorem charpoly_dvd_map_of_aeval_eq_zero (B : InvAlg K) (hs : B.P.Separable) (f
   rw [Polynomial.mem_normalizedFactors_iff hz]
   exact ⟨hp.1, hp.2.1, GlobalTheory.CuspGL.irreducible_dvd_of_dvd_charpoly_of_aeval_eq_zero _ _ _ hp.1 hp.2.2 h0⟩
 
+/- English proof (translation)
+Take `⟨m, hm, hm0⟩` from `hi`. Establish `hP : B.P.Monic` using `LinearMap.charpoly_monic _`. Take `⟨p, hp⟩` from `IsIntegrallyClosed.eq_map_mul_C_of_dvd K.E hm (charpoly_dvd_map_of_aeval_eq_zero B hs m hm0)`. Rewrite `hp` using `[hP.leadingCoeff, C_1, mul_one]`. Conclude with `⟨p, monic_of_injective (IsFractionRing.injective K.O K.E) (hp ▸ hP), hp⟩`.
+-/
 theorem exists_monic_map_eq_charpoly₂ (B : InvAlg K) (hs : B.P.Separable) (hi : IsIntegral K.O B.g) :
     ∃ p : K.O[X], p.Monic ∧ p.map (algebraMap K.O K.E) = B.P := by
   obtain ⟨m, hm, hm0⟩ := hi
@@ -100,6 +140,13 @@ theorem exists_monic_map_eq_charpoly₂ (B : InvAlg K) (hs : B.P.Separable) (hi 
   rw [hP.leadingCoeff, C_1, mul_one] at hp
   exact ⟨p, monic_of_injective (IsFractionRing.injective K.O K.E) (hp ▸ hP), hp⟩
 
+/- English proof (translation)
+Take `⟨p, hp, ep⟩` from `exists_monic_map_eq_charpoly₂ B hB iB`. Take `⟨q, hq, eq⟩` from `exists_monic_map_eq_charpoly₂ C hC iC`. Establish `hinj` using `IsFractionRing.injective K.O K.E`. Establish `d1 : p ∣ f` using `(map_dvd_map _ hinj hp).1 (ep ▸ charpoly_dvd_map_of_aeval_eq_zero B hB f h0)`. Establish `d2 : q ∣ 1 - f` using `(map_dvd_map _ hinj hq).1 (eq ▸ charpoly_dvd_map_of_aeval_eq_zero C hC (1 - f) (by simp [h1]))`.
+
+Establish `hc : IsCoprime p q`. Take `⟨a, ha⟩` from `d1`. Take `⟨b, hb⟩` from `d2`. Conclude with `⟨a, b, by linear_combination -ha - hb⟩`. Rewrite using `[← ep, ← eq, resultant_map_map, natDegree_map_eq_of_injective hinj, natDegree_map_eq_of_injective hinj]`.
+
+Conclude with `val_unit _ ((isUnit_resultant_iff_isCoprime hp).2 hc)`.
+-/
 theorem val_resultant (B C : InvAlg K) (hB : B.P.Separable) (hC : C.P.Separable) (iB : IsIntegral K.O B.g)
     (iC : IsIntegral K.O C.g) (f : K.O[X]) (h0 : aeval B.g f = 0) (h1 : aeval C.g f = 1) :
     val K.O (resultant B.P C.P) = 0 := by
@@ -125,6 +172,9 @@ def cut (B : InvAlg K) (e : B.A) (he : B.σ e = e) : InvAlg K where
     rw [← Ideal.Quotient.mk_algebraMap, ← Ideal.Quotient.mk_algebraMap, Ideal.quotientEquiv_mk, B.σ_alg]
   g := Ideal.Quotient.mk _ B.g
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `IsDiscreteValuationRing.exists_lift_of_le_one h`. Take `⟨b, hb⟩` from `K.c_int a`. Rewrite using `[hb]`. Conclude with `IsDedekindDomain.HeightOneSpectrum.valuation_le_one _ _`.
+-/
 theorem val_conj_le (x : K.E) (h : (IsDiscreteValuationRing.maximalIdeal K.O).valuation K.E x ≤ 1) :
     (IsDiscreteValuationRing.maximalIdeal K.O).valuation K.E (K.c x) ≤ 1 := by
   obtain ⟨a, rfl⟩ := IsDiscreteValuationRing.exists_lift_of_le_one h
@@ -132,6 +182,23 @@ theorem val_conj_le (x : K.E) (h : (IsDiscreteValuationRing.maximalIdeal K.O).va
   rw [hb]
   exact IsDedekindDomain.HeightOneSpectrum.valuation_le_one _ _
 
+/- English proof (translation)
+Use `set v := (IsDiscreteValuationRing.maximalIdeal K.O).valuation K.E with hv`. Establish `hc : ∀ y : K.E, y ≠ 0 → K.c y ≠ 0` using `fun y hy => by simpa using hy`. Establish `hmono : ∀ a b : K.E, b ≠ 0 → v a ≤ v b → v (K.c a) ≤ v (K.c b)`. Introduce `a b hb h`. Establish `h1 : v (a / b) ≤ 1`.
+
+Rewrite using `[map_div₀]`. Conclude with `div_le_one_of_le₀ h zero_le'`. Establish `h2` using `val_conj_le _ h1`. Rewrite `h2` using `[map_div₀, map_div₀, div_le_one₀ (zero_lt_iff.2 (by simpa using hb))]`. Conclude with `h2`.
+
+Take `⟨π, hπ⟩` from `(IsDiscreteValuationRing.maximalIdeal K.O).valuation_exists_uniformizer K.E`. Rewrite `hπ` using `[← hv]`. Establish `hπ0 : π ≠ 0`. Introduce and unpack `rfl`. Rewrite `hπ` using `[map_zero]`.
+
+Conclude with `WithZero.exp_ne_zero hπ.symm`. Establish `h1 : v (K.c π) < 1`. Assume the negation of the conclusion as `hn`. Use `hmono 1 (K.c π) (hc π hπ0) (by simpa using hn)` as an intermediate fact. Rewrite `this` using `[K.c_c, map_one, map_one, hπ, ← WithZero.exp_zero, WithZero.exp_le_exp]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `h2 : v (K.c π) ≤ v π`. Rewrite using `[hπ]`. Establish `h0 : v (K.c π) ≠ 0` using `by simpa using hπ0`. Rewrite `h1`, the goal using `[← WithZero.exp_log h0]`.
+
+Rewrite `h1` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Establish `h3 : v (K.c π) = v π` using `le_antisymm h2 (by simpa [K.c_c] using hmono _ _ hπ0 h2)`. Distinguish the cases in `hx : x = 0`.
+
+Simplify using `[hx]`. Establish `h0 : v x ≠ 0` using `by simpa using hx`. Establish `h4 : v x = v (π ^ (-WithZero.log (v x)))`. Rewrite using `[map_zpow₀, hπ, ← WithZero.exp_zsmul]`. Simplify using `[WithZero.exp_log h0]`.
+
+Establish `h5` using `le_antisymm (hmono _ _ (zpow_ne_zero _ hπ0) h4.le) (hmono _ _ hx h4.ge)`. Rewrite using `[h5, map_zpow₀, map_zpow₀, h3, ← map_zpow₀, ← h4]`.
+-/
 theorem valuation_conj (x : K.E) : (IsDiscreteValuationRing.maximalIdeal K.O).valuation K.E (K.c x) =
     (IsDiscreteValuationRing.maximalIdeal K.O).valuation K.E x := by
   set v := (IsDiscreteValuationRing.maximalIdeal K.O).valuation K.E with hv
@@ -171,6 +238,11 @@ theorem valuation_conj (x : K.E) : (IsDiscreteValuationRing.maximalIdeal K.O).va
   have h5 := le_antisymm (hmono _ _ (zpow_ne_zero _ hπ0) h4.le) (hmono _ _ hx h4.ge)
   rw [h5, map_zpow₀, map_zpow₀, h3, ← map_zpow₀, ← h4]
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Unfold `UQ.eta val`. Establish `hd' : (IsDiscreteValuationRing.maximalIdeal K.O).valuation K.E d ≠ 0` using `by simpa using hd`. Establish `hx' : (IsDiscreteValuationRing.maximalIdeal K.O).valuation K.E x ≠ 0` using `by simpa using hx`.
+
+Rewrite using `[map_mul, map_mul, valuation_conj, WithZero.log_mul (mul_ne_zero hd' hx') hd', WithZero.log_mul hd' hx']`. Generalize the expression as in `WithZero.log ((IsDiscreteValuationRing.maximalIdeal K.O).valuation K.E d) = a`. Generalize the expression as in `WithZero.log ((IsDiscreteValuationRing.maximalIdeal K.O).valuation K.E x) = b`. Rewrite using `[show -(a + b + a) = -b + 2 * (-a) by ring, zpow_add₀ (by norm_num), zpow_mul]`. Evaluate the numerical expressions.
+-/
 theorem eta_norm_mul (d x : K.E) (hd : d ≠ 0) : K.eta (d * x * K.c d) = K.eta x := by
   by_cases hx : x = 0
   · simp [hx]
@@ -183,6 +255,13 @@ theorem eta_norm_mul (d x : K.E) (hd : d ≠ 0) : K.eta (d * x * K.c d) = K.eta 
   rw [show -(a + b + a) = -b + 2 * (-a) by ring, zpow_add₀ (by norm_num), zpow_mul]
   norm_num
 
+/- English proof (translation)
+Use `set c := Module.finBasis K.E B.A`. Use `set M := c.toMatrix b with hM`. Establish `hb : ∀ i, b i = ∑ k, M k i • c k` using `fun i => (c.sum_toMatrix_smul_self b i).symm`. Establish `e : (Matrix.of fun i j => B.herm x (b i) (b j)) = M.transpose * (Matrix.of fun i j => B.herm x (c i) (c j)) * (K.c : K.E →+* K.E).mapMatrix M`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.mul_apply, Matrix.of_apply, Matrix.transpose_apply, RingHom.mapMatrix_apply, Matrix.map_apply, InvAlg.herm, RingHom.coe_coe]`. Rewrite using `[hb i, hb j, map_sum, Finset.mul_sum, map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.sum_mul, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Algebra.smul_def (M l j), map_mul B.σ, B.σ_alg, ← Algebra.smul_def, mul_smul_comm, mul_smul_comm, smul_mul_assoc, map_smul, map_smul]`. Simplify using `only [smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, ← RingHom.map_det]`. Conclude with `eta_norm_mul _ _ (c.isUnit_det b).ne_zero`.
+-/
 theorem eta_gram (B : InvAlg K) (x : B.A) (b : Module.Basis (Fin (Module.finrank K.E B.A)) K.E B.A) :
     K.eta (Matrix.of fun i j => B.herm x (b i) (b j)).det = K.eta (B.gramDet x) := by
   set c := Module.finBasis K.E B.A
@@ -208,6 +287,11 @@ section Orb
 
 variable {O : Type} [CommRing O] {A A' : Type} [CommRing A] [Algebra O A] [CommRing A'] [Algebra O A']
 
+/- English proof (translation)
+Unfold `mulLat`. Rewrite using `[Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Simplify using `using hz`.
+
+Introduce `h`. Conclude with `⟨_, h, by simp⟩`.
+-/
 theorem mem_mulLat (t : Aˣ) (L : Submodule O A) (y : A) : y ∈ mulLat O (t : A) L ↔ ((t⁻¹ : Aˣ) : A) * y ∈ L := by
   unfold mulLat
   rw [Submodule.mem_map]
@@ -217,6 +301,11 @@ theorem mem_mulLat (t : Aˣ) (L : Submodule O A) (y : A) : y ∈ mulLat O (t : A
   · intro h
     exact ⟨_, h, by simp⟩
 
+/- English proof (translation)
+Use extensionality with `s`. Express the relevant statement in the definitionally equal form `(∀ y, y ∈ mulLat O (t : A) L ↔ (s : A) * y ∈ mulLat O (t : A) L) ↔ ∀ y, y ∈ L ↔ (s : A) * y ∈ L`. Simplify using `only [mem_mulLat]`. Prove the components needed by the constructor for the conclusion. Introduce `h y`.
+
+Use `h ((t : A) * y)` as an intermediate fact. Rewrite `this` using `[Units.inv_mul_cancel_left, mul_left_comm, Units.inv_mul_cancel_left]`. Then use the resulting hypothesis. Introduce `h y`. Rewrite using `[mul_left_comm]`. Conclude with `h _`.
+-/
 theorem stabLat_mulLat (t : Aˣ) (L : Submodule O A) : stabLat O (mulLat O (t : A) L) = stabLat O L := by
   ext s
   change (∀ y, y ∈ mulLat O (t : A) L ↔ (s : A) * y ∈ mulLat O (t : A) L) ↔ ∀ y, y ∈ L ↔ (s : A) * y ∈ L
@@ -234,6 +323,9 @@ def orbWt (G : Subgroup Aˣ) (X : Set (Submodule O A)) : Orb O G X → ℚ :=
     rintro L M ⟨t, -, h⟩
     simp only [h, stabLat_mulLat])
 
+/- English proof (translation)
+Unfold `orbSum`. Use `finsum_congr fun o => ?_` and prove the remaining obligations. Use `conv_rhs => rw [← Quot.out_eq o]`. Rewrite using `[one_mul]`. Both sides reduce to the same expression.
+-/
 theorem orbSum_eq (G : Subgroup Aˣ) (X : Set (Submodule O A)) :
     orbSum O G X (fun _ => 1) = ∑ᶠ o, orbWt G X o := by
   unfold orbSum
@@ -242,6 +334,25 @@ theorem orbSum_eq (G : Subgroup Aˣ) (X : Set (Submodule O A)) :
   rw [one_mul]
   rfl
 
+/- English proof (translation)
+Rewrite using `[orbSum_eq, orbSum_eq]`. Use `set ψ := Units.mapEquiv φ.toMulEquiv with hψ`. Establish `hv : ∀ t : Aˣ, ((ψ t : A'ˣ) : A') = φ t` using `fun t => rfl`. Establish `hm : ∀ (L : Submodule O A) (y : A), φ y ∈ L.map φ.toLinearEquiv.toLinearMap ↔ y ∈ L`. Introduce `L y`.
+
+Rewrite using `[Submodule.mem_map_equiv]`. Simplify using the standard rewrite rules. Set `e : X ≃ X'` to `(Submodule.orderIsoMapComap φ.toLinearEquiv).toEquiv.subtypeEquiv hX`. Establish `he : ∀ L : X, (e L).1 = L.1.map φ.toLinearEquiv.toLinearMap` using `fun L => rfl`. Establish `hml : ∀ (t : Aˣ) (L : Submodule O A), (mulLat O (t : A) L).map φ.toLinearEquiv.toLinearMap = mulLat O ((ψ t : A'ˣ) : A') (L.map φ.toLinearEquiv.toLinearMap)`.
+
+Introduce `t L`. Use extensionality with `y`. Take `⟨y, rfl⟩` from `φ.surjective y`. Rewrite using `[hm, mem_mulLat, mem_mulLat, ← map_inv, hv, ← map_mul, hm]`. Set `q : Orb O G X ≃ Orb O G' X'` to `Quot.congr e (by`.
+
+Introduce `L M`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, h⟩`. Conclude with `⟨ψ t, (hG t).1 ht, by rw [he, he, h, hml]⟩`. Introduce and unpack `⟨t, ht, h⟩`.
+
+Take `⟨t, rfl⟩` from `ψ.surjective t`. Use `⟨t, (hG t).2 ht, ?_⟩` and prove the remaining obligations. Rewrite `h` using `[he, he, ← hml]`. Conclude with `Submodule.map_injective_of_injective φ.injective h)`. Rewrite using `[← finsum_comp_equiv q]`.
+
+Use `finsum_congr fun o => ?_` and prove the remaining obligations. Proceed by induction on `o using Quot.ind with`. Consider the case `mk L`. Express the relevant statement in the definitionally equal form `(((stabLat O (e L).1 ⊓ G').relIndex (intUnits O A' ⊓ G') : ℕ) : ℚ) = (((stabLat O L.1 ⊓ G).relIndex (intUnits O A ⊓ G) : ℕ) : ℚ)`. Establish `h1 : stabLat O L.1 ⊓ G = (stabLat O (e L).1 ⊓ G').comap ψ.toMonoidHom`.
+
+Use extensionality with `t`. Rewrite using `[Subgroup.mem_comap, Subgroup.mem_inf, Subgroup.mem_inf, hG]`. Use `and_congr_left' ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(∀ y, y ∈ L.1 ↔ (t : A) * y ∈ L.1) ↔ ∀ y, y ∈ (e L).1 ↔ φ t * y ∈ (e L).1`. Rewrite using `[φ.surjective.forall]`.
+
+Simplify using `only [he, ← map_mul, hm]`. Establish `h2 : intUnits O A ⊓ G = (intUnits O A' ⊓ G').comap ψ.toMonoidHom`. Use extensionality with `t`. Rewrite using `[Subgroup.mem_comap, Subgroup.mem_inf, Subgroup.mem_inf, hG]`. Use `and_congr_left' ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(IsIntegral O (t : A) ∧ IsIntegral O ((t⁻¹ : Aˣ) : A)) ↔ (IsIntegral O (φ t) ∧ IsIntegral O (φ ((t⁻¹ : Aˣ) : A)))`. Simplify using `only [isIntegral_algEquiv]`. Rewrite using `[h1, h2, Subgroup.relIndex_comap, Subgroup.map_comap_eq_self_of_surjective (f := ψ.toMonoidHom) ψ.surjective]`.
+-/
 theorem orbSum_equiv (φ : A ≃ₐ[O] A') (G : Subgroup Aˣ) (G' : Subgroup A'ˣ)
     (hG : ∀ t : Aˣ, t ∈ G ↔ Units.mapEquiv φ.toMulEquiv t ∈ G')
     (X : Set (Submodule O A)) (X' : Set (Submodule O A'))
@@ -303,6 +414,9 @@ namespace IsIso
 
 variable {B C : InvAlg K} {φ : B.A ≃ₐ[K.E] C.A}
 
+/- English proof (translation)
+Unfold `InvAlg.P`. Rewrite using `[← LinearEquiv.charpoly_conj φ.toLinearEquiv]`. Use `congr 1`. Use extensionality with `y`. Simplify using `[LinearEquiv.conj_apply, h.2]`.
+-/
 theorem charpoly_eq_of_isIso (h : IsIso φ) : C.P = B.P := by
   unfold InvAlg.P
   rw [← LinearEquiv.charpoly_conj φ.toLinearEquiv]
@@ -310,10 +424,18 @@ theorem charpoly_eq_of_isIso (h : IsIso φ) : C.P = B.P := by
   ext y
   simp [LinearEquiv.conj_apply, h.2]
 
+/- English proof (translation)
+Unfold `InvAlg.herm`. Rewrite using `[← h.1, ← map_mul, ← map_mul, Algebra.trace_eq_of_algEquiv]`.
+-/
 theorem herm_eq (h : IsIso φ) (x y z : B.A) : C.herm (φ x) (φ y) (φ z) = B.herm x y z := by
   unfold InvAlg.herm
   rw [← h.1, ← map_mul, ← map_mul, Algebra.trace_eq_of_algEquiv]
 
+/- English proof (translation)
+Establish `hr : Module.finrank K.E B.A = Module.finrank K.E C.A` using `φ.toLinearEquiv.finrank_eq`. Rewrite using `[← eta_gram C (φ x) (((Module.finBasis K.E B.A).map φ.toLinearEquiv).reindex (finCongr hr))]`. Use `congr 1`. Unfold `InvAlg.gramDet`. Rewrite using `[← Matrix.det_submatrix_equiv_self (finCongr hr)]`.
+
+Use `congr 1`. Use extensionality with `i j`. Simplify using `[h.herm_eq]`.
+-/
 theorem eta_eq (h : IsIso φ) (x : B.A) : K.eta (C.gramDet (φ x)) = K.eta (B.gramDet x) := by
   have hr : Module.finrank K.E B.A = Module.finrank K.E C.A := φ.toLinearEquiv.finrank_eq
   rw [← eta_gram C (φ x) (((Module.finBasis K.E B.A).map φ.toLinearEquiv).reindex (finCongr hr))]
@@ -324,6 +446,15 @@ theorem eta_eq (h : IsIso φ) (x : B.A) : K.eta (C.gramDet (φ x)) = K.eta (B.gr
   ext i j
   simp [h.herm_eq]
 
+/- English proof (translation)
+Establish `hm : ∀ (L : Submodule K.O B.A) (y : B.A), φ y ∈ L.map (φ.restrictScalars K.O).toLinearEquiv.toLinearMap ↔ y ∈ L`. Introduce `L y`. Rewrite using `[Submodule.mem_map_equiv]`. Simplify using the standard rewrite rules. Use `orbSum_equiv (φ.restrictScalars K.O) _ _ (fun t => ?_) _ _ (fun L => ?_)` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(t : B.A) * B.σ t = 1 ↔ φ t * C.σ (φ t) = 1`. Rewrite using `[← h.1, ← map_mul, map_eq_one_iff _ φ.injective]`. Use `and_congr (and_congr ?_ ?_) (and_congr ?_ ?_)` and prove the remaining obligations. Conclude with `(Submodule.fg_map_iff _ φ.injective).symm`. Rewrite using `[Submodule.map_coe]`.
+
+Express the relevant statement in the definitionally equal form `_ ↔ Submodule.span K.E (φ.toLinearEquiv.toLinearMap '' (L : Set B.A)) = ⊤`. Rewrite using `[← Submodule.map_span, Submodule.map_eq_top_iff]`. Rewrite using `[φ.surjective.forall]`. Simplify using `only [← h.2, ← map_mul, hm]`. Rewrite using `[φ.surjective.forall]`.
+
+Use `forall_congr' fun y => ?_` and prove the remaining obligations. Rewrite using `[φ.surjective.forall]`. Simplify using `only [hm, h.herm_eq]`.
+-/
 theorem N_eq (h : IsIso φ) (x : B.A) : C.N (φ x) = B.N x := by
   have hm : ∀ (L : Submodule K.O B.A) (y : B.A),
       φ y ∈ L.map (φ.restrictScalars K.O).toLinearEquiv.toLinearMap ↔ y ∈ L := by
@@ -345,10 +476,22 @@ theorem N_eq (h : IsIso φ) (x : B.A) : C.N (φ x) = B.N x := by
       rw [φ.surjective.forall]
       simp only [hm, h.herm_eq]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun y => Prod.ext (h.1 y.1) (h₂.1 y.2), Prod.ext h.2 h₂.2⟩`.
+-/
 theorem prod {B₂ C₂ : InvAlg K} {φ₂ : B₂.A ≃ₐ[K.E] C₂.A} (h : IsIso φ) (h₂ : IsIso φ₂) :
     IsIso (B := B.prod B₂) (C := C.prod C₂) (φ.prodCongr φ₂) :=
   ⟨fun y => Prod.ext (h.1 y.1) (h₂.1 y.2), Prod.ext h.2 h₂.2⟩
 
+/- English proof (translation)
+Use `set ψ := Units.mapEquiv φ.toMulEquiv with hψ`. Establish `hv : ∀ t : B.Aˣ, ((ψ t : C.Aˣ) : C.A) = φ t` using `fun t => rfl`. Set `e : {x : B.Aˣ // B.σ (x : B.A) = x} ≃ {x : C.Aˣ // C.σ (x : C.A) = x}` to `ψ.toEquiv.subtypeEquiv fun t => by`. Express the relevant statement in the definitionally equal form `_ ↔ C.σ (φ t) = φ t`. Rewrite using `[← h.1, φ.injective.eq_iff]`.
+
+Establish `he : ∀ x, (((e x).1 : C.Aˣ) : C.A) = φ x.1` using `fun x => rfl`. Set `q : B.Cl ≃ C.Cl` to `Quot.congr e (by`. Introduce `x y`. Rewrite using `[ψ.surjective.exists]`. Simplify using `only [he, hv, ← h.1, ← map_mul, φ.injective.eq_iff])`.
+
+Set `W : C.Cl → ℚ` to `Quot.lift (fun x => F x.1) (by`. Introduce and unpack `x y ⟨u, hu⟩`. Simplify using `only [hu, hF])`. Establish `hW : ∀ k : C.Cl, F k.rep = W k` using `fun k => by conv_rhs => rw [← Quot.out_eq k]`. Both sides reduce to the same expression.
+
+Rewrite using `[← finsum_comp_equiv q]`. Use `finsum_congr fun k => ?_` and prove the remaining obligations. Rewrite using `[hW]`. Use `conv_lhs => rw [← Quot.out_eq k]`. Both sides reduce to the same expression.
+-/
 theorem finsum_eq (h : IsIso φ) (F : C.A → ℚ) (hF : ∀ (x : C.A) (u : C.Aˣ), F (x * (u * C.σ (u : C.A))) = F x) :
     ∑ᶠ k : C.Cl, F k.rep = ∑ᶠ k : B.Cl, F (φ k.rep) := by
   set ψ := Units.mapEquiv φ.toMulEquiv with hψ
@@ -376,6 +519,9 @@ theorem finsum_eq (h : IsIso φ) (F : C.A → ℚ) (hF : ∀ (x : C.A) (u : C.A�
 
 end IsIso
 
+/- English proof (translation)
+Establish `: LinearMap.mulLeft K.E ((B₁.g, B₂.g) : B₁.A × B₂.A) = (LinearMap.mulLeft K.E B₁.g).prodMap (LinearMap.mulLeft K.E B₂.g)`. Apply the tactic sequence `ext <;> simp`. Establish `h2` using `LinearMap.charpoly_prodMap (LinearMap.mulLeft K.E B₁.g) (LinearMap.mulLeft K.E B₂.g)`. Rewrite `h2` using `[← this]`. Conclude with `h2`.
+-/
 theorem prod_P (B₁ B₂ : InvAlg K) : (B₁.prod B₂).P = B₁.P * B₂.P := by
   have : LinearMap.mulLeft K.E ((B₁.g, B₂.g) : B₁.A × B₂.A) =
       (LinearMap.mulLeft K.E B₁.g).prodMap (LinearMap.mulLeft K.E B₂.g) := by
@@ -384,22 +530,37 @@ theorem prod_P (B₁ B₂ : InvAlg K) : (B₁.prod B₂).P = B₁.P * B₂.P := 
   rw [← this] at h2
   exact h2
 
+/- English proof (translation)
+Rewrite using `[map_sub, map_one, he]`.
+-/
 theorem one_sub_fixed (B : InvAlg K) {e : B.A} (he : B.σ e = e) : B.σ (1 - e) = 1 - e := by
   rw [map_sub, map_one, he]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => rfl, rfl⟩`.
+-/
 theorem isIso_cut (B : InvAlg K) {e : B.A} (hi : IsIdempotentElem e) (he : B.σ e = e) :
     IsIso (B := B) (C := (cut B e he).prod (cut B (1 - e) (one_sub_fixed B he)))
       (AlgEquiv.prodQuotientOfIsIdempotentElem K.E hi hi.one_sub (by simp) (by simp [hi])) :=
   ⟨fun _ => rfl, rfl⟩
 
+/- English proof (translation)
+The claim follows from `congrArg (Ideal.Quotient.mk (Ideal.span {e})) h`.
+-/
 theorem cut_unitary (B : InvAlg K) (e : B.A) (he : B.σ e = e) (h : B.g * B.σ B.g = 1) :
     (cut B e he).g * (cut B e he).σ (cut B e he).g = 1 :=
   congrArg (Ideal.Quotient.mk (Ideal.span {e})) h
 
+/- English proof (translation)
+The claim follows from `aeval_algHom_apply (Ideal.Quotient.mkₐ K.O (Ideal.span {e})) B.g f`.
+-/
 theorem cut_aeval (B : InvAlg K) (e : B.A) (he : B.σ e = e) (f : K.O[X]) :
     aeval (cut B e he).g f = Ideal.Quotient.mk (Ideal.span {e}) (aeval B.g f) :=
   aeval_algHom_apply (Ideal.Quotient.mkₐ K.O (Ideal.span {e})) B.g f
 
+/- English proof (translation)
+Take `⟨p, hp, h0⟩` from `h`. Use `⟨p, hp, ?_⟩` and prove the remaining obligations. Rewrite using `[← aeval_def, cut_aeval, aeval_def, h0, map_zero]`. Both sides reduce to the same expression.
+-/
 theorem cut_integral (B : InvAlg K) (e : B.A) (he : B.σ e = e) (h : IsIntegral K.O B.g) :
     IsIntegral K.O (cut B e he).g := by
   obtain ⟨p, hp, h0⟩ := h
@@ -407,6 +568,21 @@ theorem cut_integral (B : InvAlg K) (e : B.A) (he : B.σ e = e) (h : IsIntegral 
   rw [← aeval_def, cut_aeval, aeval_def, h0, map_zero]
   rfl
 
+/- English proof (translation)
+Establish `hO : ∀ a : K.O, ∃ b : K.O, B.σ (algebraMap K.O B.A a) = algebraMap K.O B.A b`. Introduce `a`. Take `⟨b, hb⟩` from `K.c_int a`. Conclude with `⟨b, by rw [IsScalarTower.algebraMap_apply K.O K.E B.A, B.σ_alg, hb, ← IsScalarTower.algebraMap_apply]⟩`. Establish `hσi : IsIntegral K.O (B.σ B.g)`.
+
+Establish `hinj : Function.Injective (algebraMap K.O K.E)` using `IsFractionRing.injective _ _`. Use `choose τ' hτ' using K.c_int`. Set `cO : K.O →+* K.O` to `{ toFun := τ' map_one' := hinj (by rw [← hτ']; simp) map_mul' := fun a b => hinj (by simp [← hτ']) map_zero' := hinj (by rw [← hτ']; simp) map_add' := fun a b => hinj (by simp [← hτ']) }`. Use `IsIntegral.map_of_comp_eq cO (B.σ : B.A →+* B.A) ?_ hi` and prove the remaining obligations. Use extensionality with `a`.
+
+Express the relevant statement in the definitionally equal form `algebraMap K.O B.A (τ' a) = B.σ (algebraMap K.O B.A a)`. Rewrite using `[IsScalarTower.algebraMap_apply K.O K.E B.A a, B.σ_alg, hτ', ← IsScalarTower.algebraMap_apply]`. Establish `hg : B.σ B.g ∈ Algebra.adjoin K.O ({B.g} : Set B.A)`. Take `⟨p, hp, h0⟩` from `hσi`. Set `i : Invertible (B.σ B.g)` to `⟨B.g, hu, by rw [mul_comm, hu]⟩`.
+
+Establish `h1 : eval₂ (algebraMap K.O B.A) B.g p.reverse = 0` using `(eval₂_reverse_eq_zero_iff (algebraMap K.O B.A) (B.σ B.g) p).2 h0`. Rewrite `h1` using `[← X_mul_divX_add p.reverse, coeff_zero_reverse, hp.leadingCoeff, ← aeval_def]`. Simplify using `only [map_add, map_mul, aeval_X, map_one] at h1`. Establish `h2 : B.σ B.g = -aeval B.g p.reverse.divX`. Take the linear combination `B.σ B.g * h1 - aeval B.g p.reverse.divX * hu`.
+
+Rewrite using `[h2]`. Conclude with `neg_mem (aeval_mem_adjoin_singleton _ _)`. Proceed by induction on `hy using Algebra.adjoin_induction with`. Consider the case `mem x hx => rw [Set.mem_singleton_iff.1 hx]`. Conclude with `hg`.
+
+Consider the case `algebraMap a => obtain ⟨b, hb⟩ := hO a`. Rewrite using `[hb]`. Conclude with `Subalgebra.algebraMap_mem _ _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`.
+
+Consider the case `mul x y _ _ hx hy => rw [map_mul]`. Conclude with `mul_mem hx hy`.
+-/
 theorem adjoin_stable (B : InvAlg K) (hu : B.g * B.σ B.g = 1) (hi : IsIntegral K.O B.g) {y : B.A}
     (hy : y ∈ Algebra.adjoin K.O ({B.g} : Set B.A)) : B.σ y ∈ Algebra.adjoin K.O ({B.g} : Set B.A) := by
   have hO : ∀ a : K.O, ∃ b : K.O, B.σ (algebraMap K.O B.A a) = algebraMap K.O B.A b := by

@@ -13,6 +13,19 @@ section Vol
 variable {V : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup V] [T2Space V]
   [MeasurableSpace V] [BorelSpace V]
 
+/- English proof (translation)
+Use `hμ.1` as an intermediate fact. Use `set c : ℝ := μ.real (L : Set V) with hc`. Establish `hcl : IsClopen (L : Set V)` using `⟨AddSubgroup.isClosed_of_isOpen L hLo, hLo⟩`. Use `set Φ : V → ℂ := (L : Set V).indicator (fun _ => (1 : ℂ)) with hΦ`. Establish `hΦc : Continuous Φ`.
+
+Rewrite using `[hΦ, ← Set.piecewise_eq_indicator]`. Conclude with `continuous_const.piecewise (by simp [hcl.frontier_eq]) continuous_const`. Establish `hΦs : HasCompactSupport Φ` using `HasCompactSupport.intro hLc fun x hx => Set.indicator_of_notMem hx _`. Establish `hT : ∀ y, ∫ x, Φ x * χ x y ∂μ = (L' : Set V).indicator (fun _ => ((c : ℝ) : ℂ)) y`. Introduce `y`.
+
+Rewrite using `[hΦ, transform_indicator μ χ hχ L hLo y, hA]`. Establish `hI : Integrable (fun y => ∫ x, Φ x * χ x y ∂μ) μ`. Establish `e : (fun y => ∫ x, Φ x * χ x y ∂μ) = (L' : Set V).indicator (fun _ => ((c : ℝ) : ℂ))`. Use function extensionality and compare the values at `hT`. Rewrite using `[e, integrable_indicator_iff hL'o.measurableSet]`.
+
+Conclude with `integrableOn_const hL'c.measure_lt_top.ne`. Establish `h1` using `hμ.2 Φ hΦc hΦs hI 0`. Establish `e1 : (fun y => (∫ x, Φ x * χ x y ∂μ) * χ y 0) = (L' : Set V).indicator (fun _ => ((c : ℝ) : ℂ))`. Use function extensionality and compare the values at `y`. Rewrite using `[hT y, h0, mul_one]`.
+
+Rewrite `h1` using `[e1, integral_indicator_const _ hL'o.measurableSet, neg_zero, hΦ, Set.indicator_of_mem (SetLike.mem_coe.2 L.zero_mem)]`. Establish `h2 : μ.real (L' : Set V) * c = 1`. Rewrite `h1` using `[Complex.real_smul]`. Conclude with `h1` after adjusting the coercions. Rewrite using `[mul_comm]`.
+
+Conclude with `h2`.
+-/
 theorem vol_mul_vol_ann {μ : Measure V} {χ : V → V → ℂ} (hμ : SelfDual μ χ)
     (hχ : ∀ x t y, χ (t + x) y = χ t y * χ x y) (h0 : ∀ y, χ y 0 = 1) (L L' : AddSubgroup V)
     (hLc : IsCompact (L : Set V)) (hLo : IsOpen (L : Set V))
@@ -49,6 +62,11 @@ theorem vol_mul_vol_ann {μ : Measure V} {χ : V → V → ℂ} (hμ : SelfDual 
   rw [mul_comm]
   exact h2
 
+/- English proof (translation)
+Use `hμ.1` as an intermediate fact. Establish `h1` using `vol_mul_vol_ann hμ hχ h0 L L' hLc hLo hL'c hL'o hA`. Establish `h2` using `PI.VolStabSW.measure_eq_relIndex_mul μ L L' hle hL'o.measurableSet hLo.measurableSet hN`. Establish `h3 : μ.real (L' : Set V) = (L.relIndex L' : ℝ) * μ.real (L : Set V)`. Rewrite using `[measureReal_def, measureReal_def, h2, ENNReal.toReal_mul]`.
+
+Simplify using the standard rewrite rules. Rewrite `h1` using `[h3]`. Combine the linear relations using `[h1]`.
+-/
 theorem vol_sq_mul_index {μ : Measure V} {χ : V → V → ℂ} (hμ : SelfDual μ χ)
     (hχ : ∀ x t y, χ (t + x) y = χ t y * χ x y) (h0 : ∀ y, χ y 0 = 1) (L L' : AddSubgroup V)
     (hLc : IsCompact (L : Set V)) (hLo : IsOpen (L : Set V))
@@ -71,6 +89,13 @@ section Ann
 
 variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
 
+/- English proof (translation)
+Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy x hx`. Rewrite using `[← hC]`. Introduce `s hs'`.
+
+Take `⟨x', hx', h⟩` from `hs s hs' x hx`. Rewrite using `[← h y]`. Conclude with `hy x' hx'`. Introduce `hy x hx`. Establish `ht` using `(hC _).2 (hy x hx) 1 (one_mem _)`.
+
+Simplify using `using ht`.
+-/
 theorem ann_eq_cond {V : Type} (ψ0 : Fv F v → ℂ) (d : Fv F v) (B : V → V → Fv F v) (L : Set V)
     (hC : ∀ t : Fv F v, (∀ s ∈ v.adicCompletionIntegers F, ψ0 (s * t) = 1) ↔
       d * t ∈ v.adicCompletionIntegers F)

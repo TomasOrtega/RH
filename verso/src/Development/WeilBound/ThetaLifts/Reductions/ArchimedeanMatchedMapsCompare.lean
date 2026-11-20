@@ -13,6 +13,13 @@ open scoped Classical
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
   {a a' : ℕ} {B : Base F E} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W}
 
+/- English proof (translation)
+Establish `H` using `hH N N' h1.1.1 h2.1.1`. Take `⟨a1, a2, a3, a4, a5⟩` from `h1.1.1`. Take `⟨b1, -, -, b4, b5⟩` from `h2.1.1`. Establish `st : ∀ i, ∀ f ∈ N ⊔ N', ∀ y, RInf B o i f y → y ∈ N ⊔ N'` using `fun i f hf y hy => by`. Take `⟨A, hA⟩` from `exists_linop hO hL hQ hp i`.
+
+Take `⟨u, hu, w, hw, rfl⟩` from `Submodule.mem_sup.1 hf`. Rewrite using `[((hA ⟨u + w, add_mem (a1 hu) (b1 hw)⟩).2 y).1 hy, show (⟨u + w, add_mem (a1 hu) (b1 hw)⟩ : M.Pol B.ψ B.emb) = ⟨u, a1 hu⟩ + ⟨w, b1 hw⟩ from rfl, map_add]`. Establish `x1` using `((hA ⟨u, a1 hu⟩).2 _).2 rfl`. Establish `x2` using `((hA ⟨w, b1 hw⟩).2 _).2 rfl`. Break down `i with γ | k` into its components or cases.
+
+Use `exacts [Submodule.add_mem_sup (a4 γ γ.2 u hu _ x1) (b4 γ γ.2 w hw _ x2), Submodule.add_mem_sup (a5 k k.2 u hu _ x1) (b5 k k.2 w hw _ x2)]`. Conclude with `max_uniq ⟨sup_le a1 b1, fun γ hγ f hf y e => Submodule.mem_sup_left (a2 γ hγ f hf y e), fun k hk f hf y e => Submodule.mem_sup_left (a3 k hk f hf y e), fun γ hγ => st (.inl ⟨γ, hγ⟩), fun k hk => st (.inr ⟨k, hk⟩)⟩ H h1 h2`.
+-/
 theorem inf_uniq2 (hO : ArchOp) (hL : ArchLie) (hQ : ArchUniq) {n d : ℕ} {Y : Spc F E n}
     {W : Spc F E d} {M : Model σ Y W} {χ χ' : Chr F E} {o : Rep σ Y W} {r s r' s' : ℕ} (hp : IsPair B M χ χ' o r s r' s')
     (hH : PositivityTheory.ThKR.JoinAt B M o) {N N'}
@@ -35,6 +42,13 @@ theorem inf_uniq2 (hO : ArchOp) (hL : ArchLie) (hQ : ArchUniq) {n d : ℕ} {Y : 
     fun k hk f hf y e => Submodule.mem_sup_left (a3 k hk f hf y e), fun γ hγ => st (.inl ⟨γ, hγ⟩), fun k hk => st (.inr ⟨k, hk⟩)⟩
     H h1 h2
 
+/- English proof (translation)
+Establish `p1` using `pairV m.triple`. Establish `p2` using `pairV' m.triple`. Use `choose A hA using exists_linop hO hL hQ p1`. Use `choose A' hA' using exists_linop hO hL hQ p2`. Use `haveI := m₂.real.nontriv`.
+
+Establish `eqv : ∀ {R : RealMaps F a a'}, IsRealMaps B G om om' R → ∀ i (x : G.M.Pol B.ψ B.emb) (x' : G.M'.Pol B.ψ B.emb), R.p x = R.p' x' → R.p (A i x) = R.p' (A' i x')` using `fun h i x x' => by`. Establish `x1` using `((hA i x).2 _).2 rfl`. Establish `x2` using `((hA' i x').2 _).2 rfl`. Break down `i with γ | k` into its components or cases. Use `exacts [h.lie γ γ.2 x x.2 x' x'.2 _ _ x1 x2, h.cpt k k.2 x x.2 x' x'.2 _ _ x1 x2]`.
+
+Conclude with `schur_match _ _ R.p R.p' R₂.p R₂.p' m.real.quot.onto m.real.quot'.onto m₂.real.quot.onto m₂.real.quot'.onto (fun x hx => (ker_of_eq (inf_uniq2 hO hL hQ p1 (hH F E σ B a a' G X om om' m.triple).1 (maxInfP hO hL hQ m).1 (maxInfP hO hL hQ m₂).1) x hx).1) (ker_of_eq (inf_uniq2 hO hL …`.
+-/
 theorem archimedean_matched_maps_compare (hH : PositivityTheory.ThKR.JoinTri) (hO : ArchOp) (hL : ArchLie) (hQ : ArchUniq) (hC : PolCount)
     {R R₂ : RealMaps F a a'} {Rf : FinMaps F a a'} (m : IsMatched B G X om om' R Rf) (m₂ : IsMatched B G X om om' R₂ Rf) :
     ∃ (e : R.Pi →ₗ[ℂ] R₂.Pi) (c : ℂ), c ≠ 0 ∧ (∀ x ∈ G.M.Pol B.ψ B.emb, e (R.p x) = R₂.p x) ∧

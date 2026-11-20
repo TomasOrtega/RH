@@ -12,6 +12,11 @@ open GlobalTheory.FrameTransport
 
 namespace GlobalTheory.FrameTransport
 
+/- English proof (translation)
+Introduce `D V M hM`. Take `⟨g0, hg0⟩` from `GlobalTheory.FunObj.UA_le_range_finE V hM`. Take `⟨k, k1, k2⟩` from `GlobalTheory.UnitarySplit.ga_glue V 1 (finHom V g0) (one_mem _) (GlobalTheory.UnitarySplit.finHom_mem V g0)`. Use `⟨⟨k, MonoidHom.mem_ker.2 k1⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hg0]`.
+
+Express the relevant statement in the definitionally equal form `Formalism.UG.bc (Lev.swapAE D) (finHom V k) = Formalism.UG.bc (Lev.swapAE D) (finHom V g0)`. Rewrite using `[k2]`.
+-/
 theorem exists_finG_eq : ∀ {D : D7} (V : HSp D) (M : GL (Fin V.rank) (Lev.EAf D)), M ∈ UA D.sp.cm V.gram →
     ∃ g : GfC V, finG V g = M := by
   intro D V M hM

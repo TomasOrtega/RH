@@ -13,6 +13,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace PositivityTheory.Rg.Sw.Glob
 
+/- English proof (translation)
+Introduce `D ψ θ l hψ hθ hl τ`. Take `⟨ψ₀, h₀, lam, hlam, hψeq⟩` from `GlobalTheory.ThetaAllChar.exists_std hψ`. Establish `hsh : ψ = shift ψ₀ lam`. Use extensionality with `x`. Rewrite using `[hψeq]`.
+
+Both sides reduce to the same expression. Establish `hlamE : algebraMap D.host.F D.host.E lam ≠ 0` using `(map_ne_zero _).2 hlam`. Establish `hxi : D.host.xi0 ≠ 0` using `GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D`. Use `set μ' : D.host.E := -D.host.xi0 / algebraMap D.host.F D.host.E lam with hμ'`. Establish `hsk : IsSkew μ'`.
+
+Use `⟨div_ne_zero (neg_ne_zero.2 hxi) hlamE, ?_⟩` and prove the remaining obligations. Rewrite using `[hμ', star_div₀, star_neg, GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg, Formalism.IndefR.Eqv.star_algebraMapF]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨lam2, hlam2, -, l', hl', habs⟩` from `shift_char_realPar D ψ₀ h₀ θ hθ μ' hsk`. Establish `hl2 : lam2 = lam`.
+
+Apply `(algebraMap D.host.F D.host.E).injective` to reduce the goal to its premises. Rewrite using `[hlam2, hμ']`. Clear the denominators using the available nonvanishing facts. Rewrite `hl'` using `[hl2, ← hsh]`. Establish `heq : l = l'` using `GlobalTheory.StdUnn.RealPar.realPar_unique D ψ θ hθ l l' hl hl'`.
+
+Introduce `h`. Establish `e` using `habs τ`. Rewrite `e` using `[← heq, h, abs_zero]`. Establish `h1 : tauE D τ D.host.xi0 ≠ 0` using `(map_ne_zero _).2 hxi`. Establish `h2 : tauE D τ μ' ≠ 0` using `(map_ne_zero _).2 hsk.1`.
+
+Conclude with `div_ne_zero (norm_ne_zero_iff.2 h1) (norm_ne_zero_iff.2 h2) e.symm`.
+-/
 theorem lNe : LNe := by
   intro D ψ θ l hψ hθ hl τ
   obtain ⟨ψ₀, h₀, lam, hlam, hψeq⟩ := GlobalTheory.ThetaAllChar.exists_std hψ

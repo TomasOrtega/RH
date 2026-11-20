@@ -7,16 +7,29 @@ open NumberField IsDedekindDomain Formalism.BasicNotions
 
 namespace GlobalTheory.SplitValuePow
 
+/- English proof (translation)
+Unfold `Formalism.L2.Host.HChar.val Formalism.L2.Host.HChar.locK Formalism.L2.Host.HChar.loc`. Simplify using `only [MonoidHom.comp_apply, SubgroupClass.coe_pow, MonoidHom.pow_apply]`.
+-/
 theorem val_pow {L : Type} [Field L] [NumberField L] (χ : Formalism.L2.Host.HChar L) (N : ℕ) (w : HeightOneSpectrum (𝓞 L)) :
     (χ ^ N).val w = χ.val w ^ N := by
   unfold Formalism.L2.Host.HChar.val Formalism.L2.Host.HChar.locK Formalism.L2.Host.HChar.loc
   simp only [MonoidHom.comp_apply, SubgroupClass.coe_pow, MonoidHom.pow_apply]
 
+/- English proof (translation)
+Unfold `Formalism.L2.Host.HChar.inf`. Simplify using `only [MonoidHom.comp_apply, SubgroupClass.coe_pow, MonoidHom.pow_apply]`.
+-/
 theorem inf_pow {L : Type} [Field L] [NumberField L] (χ : Formalism.L2.Host.HChar L) (N : ℕ) (k : Lˣ) :
     (χ ^ N).inf k = χ.inf k ^ N := by
   unfold Formalism.L2.Host.HChar.inf
   simp only [MonoidHom.comp_apply, SubgroupClass.coe_pow, MonoidHom.pow_apply]
 
+/- English proof (translation)
+Introduce `D χ a p ha ha0 hp w hw hfin`. Take `⟨N, hN, hunr⟩` from `GlobalTheory.T.exists_pow_heckeChar_unramified_everywhere D.host.E χ`. Take `⟨n, hn2, hinf⟩` from `ha`. Establish `hn0 : ∀ τ, n τ ≠ 0` using `fun τ h => ha0 τ (by have := hn2 τ; rw [h] at this; push_cast at this; linarith)`. Establish `ht : ∀ v, (χ ^ N).TameAt v` using `fun v x hx _ => hunr v x hx`.
+
+Establish `hinf' : (χ ^ N).HasInf (Formalism.L2.Host.embPsi D.host) (fun g => (N : ℤ) * n (D.eTau.symm g))`. Introduce `k`. Rewrite using `[inf_pow, Units.val_pow_eq_pow_val, hinf k, ← Finset.prod_pow]`. Use `Fintype.prod_equiv D.eTau _ _ fun τ => ?_` and prove the remaining obligations. Use `show _ = _ ^ ((N : ℤ) * n (D.eTau.symm (D.eTau τ)))`.
+
+Rewrite using `[Equiv.symm_apply_apply, ← zpow_natCast, ← zpow_mul, mul_comm]`. Both sides reduce to the same expression. Use `GlobalTheory.SplitValue.not_isOfFinOrder_val D (χ ^ N) _ p ht hinf' (fun g => mul_ne_zero (by exact_mod_cast hN.ne') (hn0 _)) hp w hw ?_` and prove the remaining obligations. Rewrite using `[val_pow]`. Conclude with `hfin.pow`.
+-/
 theorem not_isOfFinOrder_val : ∀ (D : D7) (χ : Formalism.L2.Host.HChar D.host.E) (a : D.what₂.Tau → ℚ) (p : ℕ), χ.HasInfQ (Formalism.L2.Host.embTau D) a → (∀ τ, a τ ≠ 0) → GlobalTheory.IndefiniteRowSideFullHecke.IteratedLiftChains.SplitsCompletely D p → ∀ w : HeightOneSpectrum (𝓞 D.host.E), (p : 𝓞 D.host.E) ∈ w.asIdeal → ¬ IsOfFinOrder (χ.val w) := by
   intro D χ a p ha ha0 hp w hw hfin
   obtain ⟨N, hN, hunr⟩ := GlobalTheory.T.exists_pow_heckeChar_unramified_everywhere D.host.E χ

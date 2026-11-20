@@ -1,5 +1,32 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `O R K _ _ _ _ _ _ y hfin`. Take `⟨t', ht'⟩` from `hfin.fg_top`. Establish `hsurj : Function.Surjective y.rangeRestrict` using `y.rangeRestrict_surjective`. Take `⟨σ, hσ⟩` from `hsurj.hasRightInverse`. Take `⟨g, hg⟩ : (RingHom.ker y).FG` from `IsNoetherian.noetherian _`.
+
+Set `t : Finset R` to `t'.image σ`. Establish `h1 : ∀ a : R, ∃ b ∈ Submodule.span O (↑t : Set R), a - b ∈ RingHom.ker y`. Introduce `a`. Establish `hm : Submodule.map y.rangeRestrict.toLinearMap (Submodule.span O (↑t : Set R)) = ⊤`. Rewrite using `[Submodule.map_span, eq_top_iff, ← ht']`.
+
+Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce `z hz`. Conclude with `⟨σ z, Finset.mem_coe.2 (Finset.mem_image_of_mem σ hz), hσ z⟩`. Establish `hz : y.rangeRestrict a ∈ Submodule.map y.rangeRestrict.toLinearMap (Submodule.span O (↑t : Set R))`. Rewrite using `[hm]`.
+
+Conclude with `Submodule.mem_top`. Take `⟨b, hb, hab⟩` from `hz`. Use `⟨b, hb, ?_⟩` and prove the remaining obligations. Establish `hab' : y b = y a` using `congrArg Subtype.val hab`. Rewrite using `[RingHom.mem_ker, map_sub, hab', sub_self]`.
+
+Set `s : Finset R` to `t ∪ Finset.image₂ (· * ·) t g`. Establish `h2 : ∀ x ∈ g, ∀ b ∈ Submodule.span O (↑t : Set R), b * x ∈ Submodule.span O (↑s : Set R)`. Introduce `x hx b hb`. Proceed by induction on `hb using Submodule.span_induction with`. Consider the case `mem z hz`.
+
+Conclude with `Submodule.subset_span (Finset.mem_coe.2 (Finset.mem_union_right _ (Finset.mem_image₂_of_mem hz hx)))`. Consider the case `zero => rw [zero_mul]`. Conclude with `zero_mem _`. Consider the case `add u v _ _ hu hv => rw [add_mul]`. Conclude with `add_mem hu hv`.
+
+Consider the case `smul c u _ hu => rw [smul_mul_assoc]`. Conclude with `Submodule.smul_mem _ c hu`. Establish `h3 : ∀ x ∈ Ideal.span (↑g : Set R), ∀ r : R, ∃ b ∈ Submodule.span O (↑s : Set R), r * x - b ∈ RingHom.ker y ^ (2 : ℕ)`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+
+Consider the case `mem z hz`. Introduce `r`. Take `⟨b, hb, hrb⟩` from `h1 r`. Use `⟨b * z, h2 z hz b hb, ?_⟩` and prove the remaining obligations. Establish `hzI : z ∈ RingHom.ker y`.
+
+Rewrite using `[← hg]`. Conclude with `Ideal.subset_span hz`. Rewrite using `[← sub_mul, pow_two]`. Conclude with `Ideal.mul_mem_mul hrb hzI`. Consider the case `zero => intro r; exact ⟨0, zero_mem _, by rw [mul_zero, sub_zero]; exact zero_mem _⟩`.
+
+Consider the case `add u v _ _ hu hv`. Introduce `r`. Take `⟨b, hb, hb'⟩` from `hu r`. Take `⟨c, hc, hc'⟩` from `hv r`. Use `⟨b + c, add_mem hb hc, ?_⟩` and prove the remaining obligations.
+
+Establish `e : r * (u + v) - (b + c) = (r * u - b) + (r * v - c)` using `by ring`. Rewrite using `[e]`. Conclude with `add_mem hb' hc'`. Consider the case `smul c u _ hu`. Introduce `r`.
+
+Rewrite using `[smul_eq_mul, ← mul_assoc]`. Conclude with `hu (r * c)`. Use `⟨s, fun a => ?_⟩` and prove the remaining obligations. Take `⟨b, hb, hab⟩` from `h1 a`. Take `⟨c, hc, hc'⟩` from `h3 (a - b) (by rw [hg]; exact hab) 1`.
+
+Use `⟨b + c, add_mem (Submodule.span_mono ?_ hb) hc, ?_⟩` and prove the remaining obligations. Conclude with `Finset.coe_subset.2 Finset.subset_union_left`. Establish `e : a - (b + c) = 1 * (a - b) - c` using `by ring`. Rewrite using `[e]`. Conclude with `hc'`.
+-/
 theorem UpperTheory.Reformulated.B.Ra7.exists_span_mod_sq :
     ∀ {O R K : Type} [inst : CommRing O]
     [inst_1 : CommRing R] [inst_2 : Algebra O R] [IsNoetherianRing R] [inst_4 : CommRing K] [inst_5 : Algebra O K]

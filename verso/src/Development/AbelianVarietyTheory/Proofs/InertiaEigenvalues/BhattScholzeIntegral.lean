@@ -11,6 +11,15 @@ open scoped Formalism.Per NNReal
 
 namespace GlobalTheory.BSP
 
+/- English proof (translation)
+Introduce `l _ K P₀ e H`. Take `⟨a, ha⟩` from `GlobalTheory.T.etaleRealisation_indep_ainfModel l K P₀ e H`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `P AI hstd V _ _ _ _ _ _ _ ρ L hc hcr`. Take `⟨M, j₀, hj₀⟩` from `GlobalTheory.T.crystallineLattice_prismaticFCrystal_perfectPrism l K P AI hstd V ρ L hc hcr`.
+
+Take `⟨j, hj⟩` from `((ha M).2 ↥L.T (fun g => actT L g)).1 j₀ hj₀`. Conclude with `⟨M, j, hj⟩`. Introduce `T T' _ _ _ _ ρ ρ' E E' j j' hj hj' f hf`. Take `⟨j₀, hj₀, e₀⟩` from `((ha E).2 T ρ).2 j hj`. Take `⟨j₀', hj₀', e₀'⟩` from `((ha E').2 T' ρ').2 j' hj'`.
+
+Take `⟨u, hu⟩` from `GlobalTheory.T.exists_FCrystalHom_of_equivariantEtaleMap_ainf l K T ρ T' ρ' E E' j₀ j₀' hj₀ hj₀' f hf`. Use `⟨u, fun x => ?_, fun u' hu' => ?_⟩` and prove the remaining obligations. Conclude with `(e₀' _).symm.trans ((congrArg j₀' (u.u_tr a x).symm).trans ((hu _).trans (congrArg (f.lTensor (WCb l)) (e₀ x))))`. Use `GlobalTheory.T.fCrystalHom_eq_of_etale_realisation_perfectPrism l K T' ρ' E E' j₀' hj₀' u' u fun y => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `(ha E).1.2 y`.
+
+Conclude with `(congrArg j₀' (u'.u_tr a x)).trans ((e₀' _).trans ((hu' x).trans ((congrArg (f.lTensor (WCb l)) (e₀ x).symm).trans (hu _).symm)))`.
+-/
 theorem bhattScholzeIntegral : GlobalTheory.Published.BhattScholzeIntegral := by
   intro l _ K P₀ e H
   obtain ⟨a, ha⟩ := GlobalTheory.T.etaleRealisation_indep_ainfModel l K P₀ e H

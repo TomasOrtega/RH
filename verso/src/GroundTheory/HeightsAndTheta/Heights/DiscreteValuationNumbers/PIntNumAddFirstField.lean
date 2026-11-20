@@ -9,6 +9,11 @@ open MvPolynomial GroundTheory.Heights₂.Heights.FieldNumbers
 
 universe u
 
+/- English proof (translation)
+Unfold `mixedDiff`. Proceed by induction on `(List.ofFn bs) with`. Consider the case `nil => simpa using hh`. Consider the case `cons b l ih`. Establish `hs : Filter.Tendsto (fun m : K → ℤ => m - b) Filter.atTop Filter.atTop`.
+
+Simplify `Filter.tendsto_atTop_add_const_right Filter.atTop (-b) Filter.tendsto_id` using `[sub_eq_add_neg]`. Use `filter_upwards [ih, hs.eventually ih] with m h1 h2`. Simplify using `[List.foldr, diffStep, h1, h2]`.
+-/
 private lemma mixedDiff_eventually_zero {K : Type*} (h : (K → ℤ) → ℤ)
     (hh : ∀ᶠ m in Filter.atTop, h m = 0) {n : ℕ} (bs : Fin n → K → ℤ) :
     ∀ᶠ m in Filter.atTop, mixedDiff bs h m = 0 := by
@@ -22,6 +27,9 @@ private lemma mixedDiff_eventually_zero {K : Type*} (h : (K → ℤ) → ℤ)
     filter_upwards [ih, hs.eventually ih] with m h1 h2
     simp [List.foldr, diffStep, h1, h2]
 
+/- English proof (translation)
+Establish `hex : ∃ c, ∀ᶠ m in Filter.atTop, f m = c` using `⟨0, hf⟩`. Rewrite using `[eventualValue, dif_pos hex]`. Take `⟨m, h1, h2⟩` from `(hex.choose_spec.and hf).exists`. Rewrite using `[← h1, h2]`.
+-/
 private lemma eventualValue_of_eventually_zero {K : Type*} (f : (K → ℤ) → ℤ)
     (hf : ∀ᶠ m in Filter.atTop, f m = 0) : eventualValue f = 0 := by
   classical
@@ -30,6 +38,19 @@ private lemma eventualValue_of_eventually_zero {K : Type*} (f : (K → ℤ) → 
   obtain ⟨m, h1, h2⟩ := (hex.choose_spec.and hf).exists
   rw [← h1, h2]
 
+/- English proof (translation)
+Introduce `F _ K _ _ ι _ n G hG hGh hdim b₁ b₂ L`. Establish `hupd : ∀ b : K → ℤ, Matrix.vecCons b L = Function.update (Matrix.vecCons (0 : K → ℤ) L) 0 b` using `fun b => by`. Simplify using `[Matrix.vecCons, Fin.update_cons_zero]`. Distinguish the cases in `hrel : IsRelevant G`. Establish `hle : relDim G = ((n + 1 : ℕ) : WithBot (WithTop ℤ)) ∨ relDim G < ((n + 1 : ℕ) : WithBot (WithTop ℤ))`.
+
+Establish `hc : ((n + 1 : ℕ) : WithBot (WithTop ℤ)) = (((n + 1 : ℕ) : ℤ) : WithTop ℤ)`. Both sides reduce to the same expression. Unfold `relDim`. Generalize the expression as in `ringKrullDim (MRing ι F ⧸ G) = x at hdim ⊢`. Proceed by induction on `x using WithBot.recBotCoe with`.
+
+Consider the case `bot => exact Or.inr (WithBot.bot_lt_coe _)`. Consider the case `coe d`. Proceed by induction on `d using ENat.recTopCoe with`. Consider the case `top => exfalso; exact absurd hdim (by simp)`. Consider the case `coe e`.
+
+Establish `he : e < n + 2 + Fintype.card K`. Rewrite `hdim` using `[← WithBot.coe_natCast]`. Conclude with `WithBot.coe_lt_coe.1 hdim` after adjusting the coercions. Simplify using `only [WithBot.map_coe]`. Rewrite using `[hc]`.
+
+Use `show ((((e : ℤ) - Fintype.card K : ℤ) : WithTop ℤ) : WithBot (WithTop ℤ)) = _ ∨ ((((e : ℤ) - Fintype.card K : ℤ) : WithTop ℤ) : WithBot (WithTop ℤ)) < _`. Break down `(show (e : ℤ) - Fintype.card K ≤ ((n + 1 : ℕ) : ℤ) by omega).lt_or_eq with h | h` into its components or cases. Conclude with `Or.inr (WithBot.coe_lt_coe.2 (WithTop.coe_lt_coe.2 h))`. Conclude with `Or.inl (by rw [h])`. Break down `hle with heq | hlt` into its components or cases.
+
+Rewrite using `[hupd (b₁ + b₂), hupd b₁, hupd b₂]`. Conclude with `h1 F K ι G hGh hrel (n + 1) heq (Matrix.vecCons 0 L) 0 b₁ b₂`. Simplify using `only [(h2 F K ι G).2 hGh (n + 1) _ hlt, add_zero]`. Establish `hz` using `(h3 F K ι G hGh).2 hrel`. Simplify using `only [intNum, eventualValue_of_eventually_zero _ (mixedDiff_eventually_zero _ hz _), add_zero]`.
+-/
 theorem IntNumAddFirst.proof (h1 : FieldNumbers.IntNumAdd.Statement.{u})
     (h2 : FieldNumbers.IntNumZeroSlot.Statement.{u})
     (h3 : FieldNumbers.HilbDegreeBound.Statement.{u}) : IntNumAddFirst.Statement.{u} := by

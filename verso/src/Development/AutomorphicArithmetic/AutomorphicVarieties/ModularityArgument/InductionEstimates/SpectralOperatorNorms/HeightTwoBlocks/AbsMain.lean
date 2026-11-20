@@ -5,6 +5,9 @@ open scoped ComplexConjugate
 
 namespace UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.KX
 
+/- English proof (translation)
+Establish `hF' : IsFundamentalDomain Γ ((· * x) ⁻¹' D) μ` using `hF.preimage_of_equiv (measurePreserving_mul_right μ x).quasiMeasurePreserving (e := id) Function.bijective_id fun γ y => mul_assoc (γ : G) y x`. Rewrite using `[hF.setIntegral_eq hF' (f := fun m => h (m * x)) fun γ y => by show h (γ * y * x) = _`. Rewrite using `[mul_assoc, hh _ γ.2]]`. Conclude with `(measurePreserving_mul_right μ x).setIntegral_preimage_emb (MeasurableEquiv.mulRight x).measurableEmbedding h _`.
+-/
 theorem transl {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
     (Γ : Subgroup G) [Countable Γ] (μ : Measure G) [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] {D : Set G}
     (hF : IsFundamentalDomain Γ D μ) (h : G → ℂ) (hh : ∀ γ ∈ Γ, ∀ m, h (γ * m) = h m) (x : G) :
@@ -17,6 +20,9 @@ theorem transl {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] 
     rw [mul_assoc, hh _ γ.2]]
   exact (measurePreserving_mul_right μ x).setIntegral_preimage_emb (MeasurableEquiv.mulRight x).measurableEmbedding h _
 
+/- English proof (translation)
+Rewrite using `[integral_prod (fun m => h (m * x)) (Integrable.of_bound (hc.comp (continuous_mul_const x)).aestronglyMeasurable B (ae_of_all _ fun _ => hB _)), integral_prod _ (Integrable.of_bound hc.aestronglyMeasurable B (ae_of_all _ fun _ => hB _)), ← transl Γ μ hF (fun a => ∫ b in D, h (a, …`. Simplify `congrArg (fun f => ∫ b in D, f b ∂μ) (funext fun b => hh γ hγ 1 (one_mem _) a b)) x.1]` using `only [one_mul]`. Use `integral_congr_ae (ae_of_all _ fun a => ?_)` and prove the remaining obligations. Conclude with `transl Γ μ hF (fun b => h (a * x.1, b)) (fun γ hγ b => by simpa only [one_mul] using hh 1 (one_mem _) γ hγ (a * x.1) b) x.2`.
+-/
 theorem transl2 {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G] [MeasurableSpace G]
     [BorelSpace G] (Γ : Subgroup G) [Countable Γ] (μ : Measure G) [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] {D : Set G}
     (hF : IsFundamentalDomain Γ D μ) [IsFiniteMeasure (μ.restrict D)] (h : G × G → ℂ) (hc : Continuous h) (B : ℝ)
@@ -30,6 +36,13 @@ theorem transl2 {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   refine integral_congr_ae (ae_of_all _ fun a => ?_)
   exact transl Γ μ hF (fun b => h (a * x.1, b)) (fun γ hγ b => by simpa only [one_mul] using hh 1 (one_mem _) γ hγ (a * x.1) b) x.2
 
+/- English proof (translation)
+Establish `hH : Continuous fun z : G × M => conj (F z.2) * W (l z.2 * z.1)` using `by fun_prop`. Establish `hHb : ∀ C : Set G, IsCompact C → ∃ B : ℝ, ∀ m, ∀ g ∈ C, ‖conj (F m) * W (l m * g)‖ ≤ B` using `fun C hC => by`. Simplify `hb C hC` using `only [norm_mul, RCLike.norm_conj]`. Use `⟨fun g => ?_, cont_loc ν hH hHb, fun g => fix_swap ρ U hU hρ e he ν _ hH (fun C hC => ?_) g fun m => ?_⟩` and prove the remaining obligations. Take `⟨B, hB⟩` from `hHb _ (isCompact_singleton (x := g))`.
+
+Conclude with `Integrable.of_bound (hH.comp (Continuous.prodMk_right _)).aestronglyMeasurable B (ae_of_all _ fun m => hB m _ rfl)`. Take `⟨B, hB⟩` from `hHb C hC`. Conclude with `⟨B, ae_of_all _ hB⟩`. Simplify using `only`. Rewrite using `[← hf (l m * g), ← integral_const_mul]`.
+
+Conclude with `integral_congr_ae (ae_of_all _ fun h => by simp only [mul_assoc]; ring)`.
+-/
 theorem absI {G M : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G] [LocallyCompactSpace G]
     [MeasurableSpace G] [BorelSpace G] [TopologicalSpace M] [MeasurableSpace M] [BorelSpace M] (ν : Measure M) [IsFiniteMeasure ν]
     (l : M → G) (hl : Continuous l) (F : M → ℂ) (hF : Continuous F) (W : G → ℂ) (hW : Continuous W)
@@ -50,6 +63,17 @@ theorem absI {G M : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] 
     rw [← hf (l m * g), ← integral_const_mul]
     exact integral_congr_ae (ae_of_all _ fun h => by simp only [mul_assoc]; ring)
 
+/- English proof (translation)
+Use `haveI : SecondCountableTopology U := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI : SecondCountableTopology Kc := TopologicalSpace.Subtype.secondCountableTopology _`. Establish `hK : IsCompact (Kc : Set G)` using `isCompact_iff_compactSpace.2 ‹_›`. Establish `inner : ∀ (t : ℝ) (k : Kc), ∫ m, conj (f (l m * k)) * W (l m * (a t * k)) ∂ν = ∫ u : U, conj (I (a t₀ * ((u : G)⁻¹ * k))) * I (a t * ((u : G)⁻¹ * k)) ∂lam`. Introduce `t k`.
+
+Take `⟨B, hB⟩` from `hb _ (hK.image (continuous_const_mul (a t)))`. Simplify using `only [hv]`. Rewrite using `[swap_sec ν lam (fun z : M × U => F (z.1 * x z.2)) (fun u => I (a t₀ * ((u : G)⁻¹ * k))) (fun m => W (l m * (a t * k))) (by fun_prop) (by fun_prop) (by fun_prop) B fun m u => by`. Rewrite using `[key u]`. Conclude with `hB _ _ ⟨_, mul_mem (inv_mem (hUK u.2)) k.2, rfl⟩]`.
+
+Use `integral_congr_ae (ae_of_all _ fun u => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← htr (a t * ((u : G)⁻¹ * k)) (x u)]`. Use `congr 1`. Conclude with `integral_congr_ae (ae_of_all _ fun m => by simp only [← key u])`.
+
+Use `zero_cpt κ (h := fun k : Kc => I (a t₀ * k)) (by fun_prop) (zero_line (fun t => ∫ k : Kc, conj (I (a t₀ * k)) * I (a t * k) ∂κ) (cont_cpt κ (h := fun z : ℝ × Kc => conj (I (a t₀ * z.2)) * I (a z.1 * z.2)) (by fun_prop)) (fun β hβ hβc => ?_) t₀) k₀` and prove the remaining obligations. Rewrite using `[← h0 β hβ hβc]`. Use `integral_congr_ae (ae_of_all _ fun t => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← avg_cpt U _ hUK lam κ (fun g => conj (I (a t₀ * g)) * I (a t * g)) (by fun_prop), ← integral_const_mul]`.
+
+Use `integral_congr_ae (ae_of_all _ fun k => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← inner t k, ← integral_const_mul]`. Use `integral_congr_ae (ae_of_all _ fun m => ?_)` and prove the remaining obligations. Simplify using `only [map_mul, mul_assoc]`.
+-/
 theorem absMain {G M : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G]
     [MeasurableSpace G] [BorelSpace G] [Group M] [TopologicalSpace M] [IsTopologicalGroup M] [SecondCountableTopology M]
     [MeasurableSpace M] [BorelSpace M] (ν : Measure M) [IsFiniteMeasure ν] (Kc U : Subgroup G) [CompactSpace Kc] [CompactSpace U]

@@ -7,5 +7,8 @@ open NumberField MvPolynomial Filter Topology Formalism.BasicNotions Formalism.M
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ArInt
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SwapTrue.swapEq_true | exact GlobalTheory.SwapTrue.swapEq_true | (intros; apply GlobalTheory.SwapTrue.swapEq_true <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.swap_flag_arith_degree_chern : Hypotheses2 → HypothesesH → RegularAlteration → BunSt → ∀ G, Homog G → SwapFl G → OnObj fun _ O _ _ _ _ => ∀ B : ℝ, 2 ≤ B → ∀ R : ℝ, 2 ≤ R → SwapEq O.Y G (O.Y.arDeg (GlobalTheory.FlagAr.setB O.Y B) R) O.Y.chern := by
   first | exact @GlobalTheory.SwapTrue.swapEq_true | exact GlobalTheory.SwapTrue.swapEq_true | (intros; apply GlobalTheory.SwapTrue.swapEq_true <;> assumption)

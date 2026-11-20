@@ -28,6 +28,9 @@ section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.Frames.FramedBaseChange.exists_frMap GlobalTheory.lawsFieldsSeparately.2.1 E H Dw l Xo c S T φ y`.
+-/
 theorem exists_frMap_along {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T]
     (φ : S →ₐ[c.F] T) (y : FrPt Xo c S) : ∃ z : FrPt Xo c T, FrMap φ y z :=
   GlobalTheory.Frames.FramedBaseChange.exists_frMap GlobalTheory.lawsFieldsSeparately.2.1 E H Dw l Xo c S T φ y
@@ -35,6 +38,9 @@ theorem exists_frMap_along {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T
 variable {r : ℕ} {U : ∀ σ : c.F →+* ℂ, Formalism.L2.PjFree.Unf Xo c σ r} {xR : ℝ}
   {fn : ∀ σ : c.F →+* ℂ, FrPt Xo c (CAt σ) → Ix Dw → ℝ}
 
+/- English proof (translation)
+The claim follows from `|fn σ y' i| = cabs (t i : CAt σ) * |fn σ y i| := by obtain ⟨k, x, s, hx, hs⟩ := (GlobalTheory.FrameNorm.exists_unitFr_frBor E H Dw l Xo c σ r (U σ) hσ (hU σ hσ)).2 y have hc := (GlobalTheory.Frames.frBor_calculus E H Dw l Xo c (CAt σ) ((U σ).un k x) y y').2.2.1 s t hs hb rw [hp.1 …`.
+-/
 theorem abs_fn_frBor_good (hU : ∀ σ, Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf (U σ))
     (hp : FnPin U xR fn) {σ : c.F →+* ℂ} (hσ : Formalism.L2.PjFree.GoodEmb c σ) {t : Ix Dw → (CAt σ)ˣ}
     {y y' : FrPt Xo c (CAt σ)} (hb : FrBor t y y') (i : Ix Dw) :
@@ -45,6 +51,9 @@ theorem abs_fn_frBor_good (hU : ∀ σ, Formalism.L2.PjFree.GoodEmb c σ → For
   congr 1
   exact norm_mul (show ℂ from (t i : CAt σ)) (show ℂ from (s i : CAt σ))
 
+/- English proof (translation)
+The claim follows from `|fn σ y' i| = cabs (t i : CAt σ) * |fn σ y i| := by by_cases hσ : Formalism.L2.PjFree.GoodEmb c σ · exact abs_fn_frBor_good hU hp hσ hb i · have hg : Formalism.L2.PjFree.GoodEmb c ((starRingEnd ℂ).comp σ) := by have := Formalism.L2.PjFree.goodEmb_goodOf c σ unfold Formalism.L2.Pj …`.
+-/
 theorem abs_fn_frBor (hU : ∀ σ, Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf (U σ))
     (hp : FnPin U xR fn) {σ : c.F →+* ℂ} {t : Ix Dw → (CAt σ)ˣ}
     {y y' : FrPt Xo c (CAt σ)} (hb : FrBor t y y') (i : Ix Dw) :
@@ -67,6 +76,9 @@ theorem abs_fn_frBor (hU : ∀ σ, Formalism.L2.PjFree.GoodEmb c σ → Formalis
 def algOver {Z : Comp Xo c} (sg : c.F →+* ℂ) (P : Om Z →+* ℂ) (hP : sgOf P = sg) : Om Z →ₐ[c.F] CAt sg :=
   { P with commutes' := fun a => RingHom.congr_fun hP a }
 
+/- English proof (translation)
+The claim follows from `|fn _ y i| = ‖P (t i : Om Z)‖ * |fn sg w i| := by subst hP have hb' := frBorBC _ _ (PAlg P) t z g w y hb hw hy exact abs_fn_frBor hU hp hb' i`.
+-/
 theorem abs_fn_generic (hU : ∀ σ, Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf (U σ))
     (hp : FnPin U xR fn) {Z : Comp Xo c} {z g : FrPt Xo c (Om Z)} {t : Ix Dw → (Om Z)ˣ} (hb : FrBor t z g)
     (sg : c.F →+* ℂ) (P : Om Z →+* ℂ) (hP : sgOf P = sg) {w : FrPt Xo c (CAt sg)}
@@ -78,6 +90,17 @@ theorem abs_fn_generic (hU : ∀ σ, Formalism.L2.PjFree.GoodEmb c σ → Formal
 
 end
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c r U hU xR fn hx hp _ h yP hyP`. Establish `hne : FnNe Xo c fn` using `(GlobalTheory.FrameNorm.Comparison₂.ptNorm_eq_pnorm E H Dw l Xo c r U hU xR fn hx hp).1`. Establish `main : NrmAlong fn yP`. Introduce `Z sg G f _ _ X _ W Q hQ hQc`. Take `⟨C, ψ, z, t, hz, hb⟩` from `(GlobalTheory.Reg.evLaws_genFr_atlas E H Dw l Xo c).2.2.2 h (Om Z) (genFr h Z)`.
+
+Use `haveI := C.sm`. Establish `hsg : ∀ x : W, sgOf (Q x) = sg` using `fun x => hQ x x.2`. Use `choose w hw using fun x : W => exists_frMap_along (algOver sg (Q x) (hsg x)) z`. Establish `hQ' : ∀ a, Continuous (fun x : W => Q x a)` using `fun a => continuousOn_iff_continuous_restrict.1 (hQc a)`. Establish `hcont` using `GlobalTheory.FrameNorm.fn_continuousOn_smooth E H Dw l Xo c r U hU xR fn hx hp sg C.R C.y W Set.univ (fun x => (algOver sg (Q x) (hsg x)).comp ψ) w (fun a => (hQ' (ψ a)).continuousOn) (fun x _ => frMap_trans _ _ _ ψ _ C.y z (w x) hz (hw x))`.
+
+Establish `hfn : ∀ i, Continuous (fun x : W => |fn _ (yP Z (Q x)) i|)`. Introduce `i`. Establish `e : (fun x : W => |fn _ (yP Z (Q x)) i|) = fun x : W => ‖Q x (t i : Om Z)‖ * |fn sg (w x) i|`. Use function extensionality and compare the values at `fun x => abs_fn_generic hU hp hb sg (Q x) (hsg x) (hw x) (hyP Z (Q x)) i`. Rewrite using `[e]`.
+
+Conclude with `(hQ' _).norm.mul (continuousOn_univ.1 (hcont i))`. Rewrite using `[continuousOn_iff_continuous_restrict]`. Use `show Continuous (fun x : W => ‖Q x (f.coeff G)‖ * ∏ i, |fn _ (yP Z (Q x)) i| ^ (-exZ Dw G i))`. Use `(hQ' _).norm.mul (continuous_finset_prod _ fun i _ => ?_)` and prove the remaining obligations. Conclude with `(hfn i).zpow₀ _ fun x => Or.inl (abs_ne_zero.2 (hne _ _ _))`.
+
+Conclude with `⟨main, fun Dd N uL wR jc hst htr hw => nrmContOff_of h fn yP Dd N uL wR jc hst main hne htr (GlobalTheory.FlagDim.fnFG_fnTrdeg E H Dw l Xo c).1 hw⟩`.
+-/
 theorem nrmAlong_of_fnPin : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Formalism.L2.PjFree.Unf Xo c σ r), (∀ σ, Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf (U σ)) → ∀ (xR : ℝ) (fn : ∀ σ : c.F →+* ℂ, FrPt Xo c (CAt σ) → Ix Dw → ℝ), 0 < xR → FnPin U xR fn → ∀ [Fintype (Comp Xo c)], ∀ (h : GenFrEx Xo c) (yP : ∀ Z : Comp Xo c, ∀ P : Om Z →+* ℂ, FrPt Xo c (CAt (sgOf P))), (∀ Z, CBase h Z (yP Z)) → NrmAlong fn yP ∧ ∀ (Dd N : ℕ) (uL : WtR E) (wR : Fin (N + 1) → Rul Xo c) (jc : Comp Xo c → Fin (N + 1)), STLoc h Dd N uL wR jc → FnTrdeg Xo c Dd → (∀ Z, evC h Z (wR (jc Z)) ≠ 0) → NrmContOff h fn yP Dd N uL wR jc := by
   intro E _ _ _ H Dw l Xo c r U hU xR fn hx hp _ h yP hyP
   have hne : FnNe Xo c fn := (GlobalTheory.FrameNorm.Comparison₂.ptNorm_eq_pnorm E H Dw l Xo c r U hU xR fn hx hp).1

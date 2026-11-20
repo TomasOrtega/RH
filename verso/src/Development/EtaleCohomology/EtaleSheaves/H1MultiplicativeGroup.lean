@@ -32,6 +32,11 @@ def LeafDesc : Prop := Hyps → ∀ (A : Type) [CommRing A], ∃ e : ∀ U : Cov
   ∀ (U V : Cov A) (_g : U.B →ₐ[A] V.B) (x : H ℤ (sp A) Gm 1) (hU : x ∈ kerH A U) (hV : x ∈ kerH A V),
     (e U ⟨x, hU⟩ : Additive (CommRing.Pic A)) = e V ⟨x, hV⟩
 
+/- English proof (translation)
+Introduce `x hx`. Simplify using `only [kerH, AddMonoidHom.mem_ker] at hx ⊢`. Establish `h : spMap (algebraMap A V.B) = spMap (g : U.B →+* V.B) ≫ spMap (algebraMap A U.B)`. Simplify using `only [spMap]`. Rewrite using `[← Functor.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, AlgHom.comp_algebraMap]`.
+
+Rewrite using `[h, pull_comp, hx, map_zero]`.
+-/
 theorem kerH_mono (A : Type) [CommRing A] (U V : Cov A) (g : U.B →ₐ[A] V.B) : kerH A U ≤ kerH A V := by
   intro x hx
   simp only [kerH, AddMonoidHom.mem_ker] at hx ⊢
@@ -40,6 +45,19 @@ theorem kerH_mono (A : Type) [CommRing A] (U V : Cov A) (g : U.B →ₐ[A] V.B) 
     rw [← Functor.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, AlgHom.comp_algebraMap]
   rw [h, pull_comp, hx, map_zero]
 
+/- English proof (translation)
+Introduce `hH A _`. Take `⟨e, he⟩` from `hD hH A`. Use `choose U hU using hK hH A`. Establish `key : ∀ (x : H ℤ (sp A) Gm 1) (V : Cov A) (hV : x ∈ kerH A V), (e V ⟨x, hV⟩ : Additive (CommRing.Pic A)) = e (U x) ⟨x, hU x⟩`. Introduce `x V hV`.
+
+Take `⟨W, ⟨g1⟩, ⟨g2⟩⟩` from `hR A V (U x)`. Rewrite using `[he V W g1 x hV (kerH_mono A V W g1 hV), he (U x) W g2 x (hU x) (kerH_mono A (U x) W g2 (hU x))]`. Set `f : H ℤ (sp A) Gm 1 →+ Additive (CommRing.Pic A)` to `{ toFun := fun x => e (U x) ⟨x, hU x⟩ map_zero' := by`. Establish `h0 : (⟨0, hU 0⟩ : kerH A (U 0)) = 0` using `rfl`. Rewrite using `[h0, map_zero]`.
+
+Both sides reduce to the same expression. Use the proof step `map_add' := fun x y => by show (e (U (x + y)) ⟨x + y, hU _⟩ : Additive (CommRing.Pic A)) = e (U x) ⟨x, hU x⟩ + e (U y) ⟨y, hU y⟩`. Take `⟨W, ⟨g1⟩, ⟨g2⟩⟩` from `hR A (U x) (U y)`. Establish `hx` using `kerH_mono A _ W g1 (hU x)`. Establish `hy` using `kerH_mono A _ W g2 (hU y)`.
+
+Rewrite using `[← key x W hx, ← key y W hy, ← key (x + y) W (add_mem hx hy), ← AddSubgroup.coe_add, ← map_add]`. Use `rfl }`. Use `⟨AddEquiv.ofBijective f ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce `x y h`. Take `⟨W, ⟨g1⟩, ⟨g2⟩⟩` from `hR A (U x) (U y)`.
+
+Establish `hx` using `kerH_mono A _ W g1 (hU x)`. Establish `hy` using `kerH_mono A _ W g2 (hU y)`. Establish `h' : e W ⟨x, hx⟩ = e W ⟨y, hy⟩` using `Subtype.ext (by rw [key x W hx, key y W hy]; exact h)`. Conclude with `congrArg Subtype.val ((e W).injective h')`. Introduce `c`.
+
+Take `⟨V, hV⟩` from `hT A c`. Take `⟨⟨x, hx⟩, hxe⟩` from `(e V).surjective ⟨c, hV⟩`. Use `⟨x, ?_⟩` and prove the remaining obligations. Use `show (e (U x) ⟨x, hU x⟩ : Additive (CommRing.Pic A)) = c`. Rewrite using `[← key x V hx, hxe]`.
+-/
 theorem goal_of (hK : LeafKill) (hT : LeafTriv) (hR : LeafRefine) (hD : LeafDesc) : LateralTheory.E.LeafKumCut.EtaleFirstCohomologyMultiplicativeGroupPicard := by
   intro hH A _
   obtain ⟨e, he⟩ := hD hH A

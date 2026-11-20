@@ -12,6 +12,17 @@ open GlobalTheory.CompanionTheory.CenTheta
 
 namespace GlobalTheory.CompanionTheory.CenTheta
 
+/- English proof (translation)
+Establish `ha : 0 < |(a : ℝ)|` using `abs_pos.mpr a.ne_zero`. Establish `hq : (((|(a : ℝ)| : ℝ) : ℂ)) / ((‖(((|(a : ℝ)| : ℝ) : ℂ))‖ : ℝ) : ℂ) = 1`. Rewrite using `[Complex.norm_real, Real.norm_eq_abs, abs_abs]`. Conclude with `div_self (Complex.ofReal_ne_zero.mpr ha.ne')`. Establish `hpos : (0 : ℝ) < ‖(((|(a : ℝ)| : ℝ) : ℂ))‖ ^ 2`.
+
+Rewrite using `[Complex.norm_real, Real.norm_eq_abs, abs_abs]`. Check the signs of the components of the expression. Establish `hch : ‖chC n (Complex.I * t) (Units.mk0 ((|(a : ℝ)| : ℝ) : ℂ) (Complex.ofReal_ne_zero.mpr (abs_ne_zero.mpr a.ne_zero)))‖ = 1`. Unfold `chC`. Simplify using `only [Units.val_mk0]`.
+
+Rewrite using `[hq, one_zpow, one_mul, Complex.norm_cpow_eq_rpow_re_of_pos hpos]`. Simplify using the standard rewrite rules. Establish `hsg : ‖sgR (a : ℝ)‖ = 1`. Unfold `sgR`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Establish `hs : ‖(if 0 < (a : ℝ) then 1 else (-1 : ℂ) ^ n)‖ = 1` using `by split_ifs`. Simplify using the standard rewrite rules. Rewrite using `[norm_zpow]`. Simplify using the standard rewrite rules. Unfold `omR`.
+
+Rewrite using `[norm_mul, norm_mul, hch, hsg, hs]`. Simplify using the standard rewrite rules.
+-/
 theorem norm_omR (n : ℤ) (t : ℝ) (a : ℝˣ) : ‖omR n t a‖ = 1 := by
   have ha : 0 < |(a : ℝ)| := abs_pos.mpr a.ne_zero
   have hq : (((|(a : ℝ)| : ℝ) : ℂ)) / ((‖(((|(a : ℝ)| : ℝ) : ℂ))‖ : ℝ) : ℂ) = 1 := by

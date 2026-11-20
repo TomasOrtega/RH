@@ -1,5 +1,16 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `K V _ _ _ _ _ _ L hL x`. Establish `hx : x ∈ Submodule.span K (↑L : Set V)` using `hL ▸ Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, one_ne_zero, by rwa [one_smul]⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by rw [smul_zero]; exact L.zero_mem⟩`.
+
+Consider the case `add y z _ _ hy hz`. Take `⟨r, hr, hry⟩` from `hy`. Take `⟨s, hs, hsz⟩` from `hz`. Use `⟨r * s, mul_ne_zero hr hs, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`.
+
+Use `L.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`. Conclude with `L.smul_mem _ hry`. Rewrite using `[mul_smul]`. Conclude with `L.smul_mem _ hsz`.
+
+Consider the case `smul a y _ hy`. Take `⟨r, hr, hry⟩` from `hy`. Take `⟨⟨n, d⟩, hnd⟩` from `IsLocalization.surj (nonZeroDivisors (NumberField.RingOfIntegers K)) a`. Use `⟨r * d, mul_ne_zero hr (nonZeroDivisors.ne_zero d.2), ?_⟩` and prove the remaining obligations. Establish `h1 : (d : NumberField.RingOfIntegers K) • (a • y) = n • y`.
+
+Rewrite using `[← algebraMap_smul K (d : NumberField.RingOfIntegers K) (a • y), ← mul_smul, mul_comm, hnd, algebraMap_smul]`. Rewrite using `[mul_smul, h1, ← mul_smul, mul_comm, mul_smul]`. Conclude with `L.smul_mem _ hry`.
+-/
 theorem UpperTheory.Reformulated.B.ClearDenominatorsLattice.exists_integer_smul_mem_of_span_top :
     ∀ {K V : Type} [inst : Field K] [NumberField K] [inst_2 : AddCommGroup V]
     [inst_3 : _root_.Module K V] [inst_4 : _root_.Module (NumberField.RingOfIntegers K) V]

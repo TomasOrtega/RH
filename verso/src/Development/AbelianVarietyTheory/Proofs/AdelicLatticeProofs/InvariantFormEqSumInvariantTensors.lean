@@ -9,6 +9,29 @@ open scoped Kronecker ComplexOrder TensorProduct
 
 namespace GlobalTheory.ClassFin
 
+/- English proof (translation)
+Introduce `ι _ _ Γ hP hS n F hF hhom`. Take `⟨-, hinv, -, hp⟩` from `GlobalTheory.T.leftTranslateMatrixPoly_tensorForm_properties ι`. Take `⟨p, hpev, hpl, hpsurj⟩` from `hp n`. Take `⟨l, hl⟩` from `hpsurj F hhom`. Take `⟨R₁, h1a, -, -, h1d, -, -⟩` from `GlobalTheory.T.exists_reynolds_of_completelyReducible' ((Fin n → ι) → ℂ) ((fun g => Matrix.toLin' (tpow n g)ᵀ) '' Γ) (by`.
+
+Introduce `U hU`. Take `⟨U', hU', hc⟩` from `GlobalTheory.T.completelyReducible_kroneckerPower_transpose ι Γ hP hS n U (by`. Introduce and unpack `_ ⟨g, hg, rfl⟩ v hv`. Simplify `hU _ ⟨g, hg, rfl⟩ v hv)` using `[Matrix.toLin'_apply]`. Use `⟨U', ?_, hc⟩` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨g, hg, rfl⟩ v hv`. Simplify `hU' _ ⟨g, hg, rfl⟩ v hv)` using `[Matrix.toLin'_apply]`. Take `⟨R₂, -, h2b, h2c, -, -, -⟩` from `GlobalTheory.T.exists_reynolds_of_completelyReducible' (MvPolynomial (ι × ι) ℂ) ((fun g => (ltr g).toLinearMap) '' Γ) (by`. Introduce `U hU`. Take `⟨U', hU', hc⟩` from `GlobalTheory.T.leftTranslateMatrixPoly_completelyReducible ι Γ hP hS U (fun g hg f hf => hU _ ⟨g, hg, rfl⟩ f hf)`.
+
+Use `⟨U', ?_, hc⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, rfl⟩ v hv`. Conclude with `hU' g hg v hv)`. Establish `hfix : ∀ v, ∀ g ∈ Γ, R₁ v ᵥ* tpow n g = R₁ v`. Introduce `v g hg`.
+
+Use `h1a v _ ⟨g, hg, rfl⟩` as an intermediate fact. Simplify `this` using `[Matrix.toLin'_apply, Matrix.mulVec_transpose]`. Establish `hkill : ∀ b, ∀ x ∈ Submodule.span ℂ {x | ∃ s ∈ ((fun g => Matrix.toLin' (tpow n g)ᵀ) '' Γ), ∃ w, x = s w - w}, R₂ (p b x) = 0`. Introduce `b x hx`. Establish `hle : Submodule.span ℂ {x | ∃ s ∈ ((fun g => Matrix.toLin' (tpow n g)ᵀ) '' Γ), ∃ w, x = s w - w} ≤ LinearMap.ker (R₂ ∘ₗ p b)`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨g, hg, rfl⟩, w, rfl⟩`. Establish `h` using `h2c (p b w) _ ⟨g, hg, rfl⟩`. Simplify using `only [AlgHom.toLinearMap_apply, hpl] at h`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, LinearMap.comp_apply, map_sub, Matrix.toLin'_apply, Matrix.mulVec_transpose, h, sub_self]`.
+
+Conclude with `hle hx`. Establish `hb : ∀ b v, R₂ (p b v) = p b (R₁ v)`. Introduce `b v`. Establish `h0` using `hkill b _ (h1d v)`. Rewrite `h0` using `[map_sub, map_sub, sub_eq_zero]`.
+
+Rewrite using `[h0]`. Apply `h2b` to reduce the goal to its premises. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Simplify using `only [AlgHom.toLinearMap_apply, hpl, hfix v g hg]`. Establish `hRF : R₂ F = F`.
+
+Apply `h2b` to reduce the goal to its premises. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Conclude with `(hinv Γ F).1 hF g hg`. Establish `hF' : F = ∑ b, p b (R₁ (l b))`. Rewrite using `[← hRF, hl, map_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun b _ => hb b _`. Use `⟨fun b => R₁ (l b), fun b g hg => hfix _ g hg, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[hF']`. Simplify using `only [← hpev]`. Unfold `evC`.
+
+Rewrite using `[map_sum]`.
+-/
 theorem invariant_form_eq_sum_invariant_tensors : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (Γ : Set (Matrix ι ι ℂ)), IsPre Γ → SS Γ → ∀ (n : ℕ) (F : MvPolynomial (ι × ι) ℂ), IsInv Γ F → F.IsHomogeneous n → ∃ l : (Fin n → ι) → (Fin n → ι) → ℂ, (∀ b, ∀ g ∈ Γ, l b ᵥ* tpow n g = l b) ∧ ∀ y : Matrix ι ι ℂ, evC F y = ∑ b, (l b ᵥ* tpow n y) b := by
   intro ι _ _ Γ hP hS n F hF hhom
   obtain ⟨-, hinv, -, hp⟩ := GlobalTheory.T.leftTranslateMatrixPoly_tensorForm_properties ι

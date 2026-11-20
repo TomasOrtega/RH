@@ -31,25 +31,52 @@ open Formalism.L2.Col (IntAt)
 section Place
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : SplitPt D k)
 
+/- English proof (translation)
+Use `q.sec_pr 1` as an intermediate fact. Rewrite `this` using `[map_one, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem sec_one : q.sec 1 = q.e := by
   have := q.sec_pr 1
   rwa [map_one, mul_one] at this
 
+/- English proof (translation)
+Rewrite using `[← sec_one, q.pr_sec]`.
+-/
 theorem pr_e : q.pr q.e = 1 := by rw [← sec_one, q.pr_sec]
 
+/- English proof (translation)
+Rewrite using `[map_mul, pr_e, one_mul]`.
+-/
 theorem pr_e_mul (x : AE D) : q.pr (q.e * x) = q.pr x := by rw [map_mul, pr_e, one_mul]
 
+/- English proof (translation)
+The claim follows from `inf_le_inf_left _ (le_iInf fun w => iInf_le_of_le ⟨w.1, fun hw => w.2 (h _ hw)⟩ le_rfl)`.
+-/
 theorem idAt_mono {P P' : GlobalTheory.FinPl.Pl D → Prop} (h : ∀ v, P v → P' v) : idAt D P ≤ idAt D P' :=
   inf_le_inf_left _ (le_iInf fun w => iInf_le_of_le ⟨w.1, fun hw => w.2 (h _ hw)⟩ le_rfl)
 
+/- English proof (translation)
+Take `⟨h1, h2, -⟩` from `q.split`. Rewrite using `[add_mul, h1, mul_comm (cA D q.e), h2, add_zero]`.
+-/
 theorem add_mul_e : (q.e + cA D q.e) * q.e = q.e := by
   obtain ⟨h1, h2, -⟩ := q.split
   rw [add_mul, h1, mul_comm (cA D q.e), h2, add_zero]
 
+/- English proof (translation)
+Take `⟨ε, hε, hs⟩` from `q.above`. Conclude with `((GlobalTheory.T.placeIdempotent_acts_on_supportedAndOff D q.v ε hε).1 a).2 (hs ▸ h)`.
+-/
 theorem mem_idAt_of_supp {a : AE D} (h : (q.e + cA D q.e) * a = a) : a ∈ idAt D (· = q.v) := by
   obtain ⟨ε, hε, hs⟩ := q.above
   exact ((GlobalTheory.T.placeIdempotent_acts_on_supportedAndOff D q.v ε hε).1 a).2 (hs ▸ h)
 
+/- English proof (translation)
+Take `⟨k₀, _, _, _, _, q₀, he, hv, hi, hd⟩` from `GlobalTheory.LocMod.SplitCompl.exists_place D PP q.e h`. Use `⟨?_, fun a => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hv]`. Assume the negation of the conclusion as `hne`. Take `⟨ε, hε, hs⟩` from `q₀.above`.
+
+Establish `h0` using `(GlobalTheory.T.placeIdempotent_acts_on_supportedAndOff D q₀.v ε hε).2 q.e (idAt_mono (fun v (hv : v = q.v) => hv ▸ hne) (GlobalTheory.FrameGlob.e_mem_idAt q))`. Rewrite `h0` using `[← hs, he, add_mul_e]`. Use `pr_e q` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Conclude with `zero_ne_one this`.
+
+Rewrite using `[← hi, q.int_iff, q₀.int_iff]`. Express the relevant statement in the definitionally equal form `finPart D (q.sec (q.pr _)) ∈ _ ↔ finPart D (q₀.sec (q₀.pr _)) ∈ _`. Rewrite using `[q.sec_pr, q₀.sec_pr, he]`. Establish `hs : Function.Surjective (fun x => q.pr (q₀.sec x))` using `fun y => ⟨q₀.pr (q.sec y), by simp only [q₀.sec_pr, he, pr_e_mul, q.pr_sec]⟩`. Use `hs.denseRange.comp hd (q.cont_pr.comp q₀.cont_sec)` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `a`. Express the relevant statement in the definitionally equal form `q.pr _ = q.pr (q₀.sec (q₀.pr _))`. Rewrite using `[q₀.sec_pr, he, pr_e_mul]`.
+-/
 theorem place_facts {PP : Formalism.L2.DIV.Pl D.host.E} (h : IsIdemAt q.e PP) :
     q.v = PP.under (𝓞 D.host.F) ∧ (∀ a, (ofSplit q).pr a ∈ 𝒪[k] ↔ IntAt PP a) ∧ DenseRange (ofSplit q).pr := by
   obtain ⟨k₀, _, _, _, _, q₀, he, hv, hi, hd⟩ := GlobalTheory.LocMod.SplitCompl.exists_place D PP q.e h
@@ -76,12 +103,23 @@ theorem place_facts {PP : Formalism.L2.DIV.Pl D.host.E} (h : IsIdemAt q.e PP) :
 
 def prO : 𝓞 D.host.E →+* k := (q.pr.comp (incA D)).comp (algebraMap (𝓞 D.host.E) D.host.E)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem prO_apply (z : 𝓞 D.host.E) : prO q z = (ofSplit q).pr (z : D.host.E) := rfl
 
+/- English proof (translation)
+The claim follows from `(Valuation.mem_integer_iff _ _).1 (((place_facts q h).2.1 _).2 ⟨z, 1, (Ideal.ne_top_iff_one _).1 PP.isPrime.ne_top, by simp⟩)`.
+-/
 theorem prO_le {PP : Formalism.L2.DIV.Pl D.host.E} (h : IsIdemAt q.e PP) (z : 𝓞 D.host.E) : valuation k (prO q z) ≤ 1 :=
   (Valuation.mem_integer_iff _ _).1 (((place_facts q h).2.1 _).2
     ⟨z, 1, (Ideal.ne_top_iff_one _).1 PP.isPrime.ne_top, by simp⟩)
 
+/- English proof (translation)
+Distinguish the cases in `hz : z = 0`. Substitute `hz` using the available equality. Simplify using the standard rewrite rules. Establish `h0 : prO q z ≠ 0` using `(map_ne_zero (q.pr.comp (incA D))).2 (RingOfIntegers.coe_ne_zero_iff.2 hz)`. Rewrite using `[h.2 z hz, ← q.sec_pr, ← q.int_iff]`.
+
+Express the relevant statement in the definitionally equal form `(q.pr.comp (incA D)) _ ∉ _ ↔ _`. Rewrite using `[map_inv₀, Valuation.mem_integer_iff, map_inv₀, not_le]`. Conclude with `one_lt_inv₀ (a := valuation k (prO q z)) (zero_lt_iff.2 ((map_ne_zero _).2 h0))`.
+-/
 theorem prO_lt {PP : Formalism.L2.DIV.Pl D.host.E} (h : IsIdemAt q.e PP) (z : 𝓞 D.host.E) :
     z ∈ PP.asIdeal ↔ valuation k (prO q z) < 1 := by
   by_cases hz : z = 0
@@ -92,9 +130,17 @@ theorem prO_lt {PP : Formalism.L2.DIV.Pl D.host.E} (h : IsIdemAt q.e PP) (z : �
   rw [map_inv₀, Valuation.mem_integer_iff, map_inv₀, not_le]
   exact one_lt_inv₀ (a := valuation k (prO q z)) (zero_lt_iff.2 ((map_ne_zero _).2 h0))
 
+/- English proof (translation)
+The claim follows from `le_antisymm (prO_le q h z) (not_lt.1 (mt (prO_lt q h z).2 hz))`.
+-/
 theorem prO_eq_one {PP : Formalism.L2.DIV.Pl D.host.E} (h : IsIdemAt q.e PP) {z : 𝓞 D.host.E} (hz : z ∉ PP.asIdeal) :
     valuation k (prO q z) = 1 := le_antisymm (prO_le q h z) (not_lt.1 (mt (prO_lt q h z).2 hz))
 
+/- English proof (translation)
+Establish `he : q.e ∈ intAt D (· = q.v)` using `⟨GlobalTheory.FrameGlob.e_mem_idAt q, by rw [← sec_one]; exact (q.int_iff 1).1 (one_mem _)⟩`. Take `⟨h1, h2⟩` from `hu.1 q.e he`. Establish `h3` using `h1.2`. Establish `h4` using `h2.2`. Rewrite `h3`, `h4` using `[mul_comm, ← q.sec_pr, ← q.int_iff, Valuation.mem_integer_iff]`.
+
+Express the relevant statement in the definitionally equal form `valuation k ((q.pr.comp (incA D)) _) ≤ 1 at h4`. Rewrite `h4` using `[map_inv₀, map_inv₀]`. Conclude with `le_antisymm h3 ((inv_le_one₀ (zero_lt_iff.2 ((map_ne_zero _).2 h0))).1 h4)`.
+-/
 theorem xi_unit (hu : q.UnitAA) (h0 : (ofSplit q).xi ≠ 0) : valuation k (ofSplit q).xi = 1 := by
   have he : q.e ∈ intAt D (· = q.v) := ⟨GlobalTheory.FrameGlob.e_mem_idAt q, by rw [← sec_one]; exact (q.int_iff 1).1 (one_mem _)⟩
   obtain ⟨h1, h2⟩ := hu.1 q.e he
@@ -105,11 +151,19 @@ theorem xi_unit (hu : q.UnitAA) (h0 : (ofSplit q).xi ≠ 0) : valuation k (ofSpl
   rw [map_inv₀, map_inv₀] at h4
   exact le_antisymm h3 ((inv_le_one₀ (zero_lt_iff.2 ((map_ne_zero _).2 h0))).1 h4)
 
+/- English proof (translation)
+Establish `h` using `q.sec_pr (q.sec x * q.sec y)`. Rewrite `h` using `[map_mul, q.pr_sec, q.pr_sec, ← mul_assoc, ← GlobalTheory.FrameGlob.sec_eq_mul]`. Conclude with `h.symm`.
+-/
 theorem sec_mul (x y : k) : q.sec x * q.sec y = q.sec (x * y) := by
   have h := q.sec_pr (q.sec x * q.sec y)
   rw [map_mul, q.pr_sec, q.pr_sec, ← mul_assoc, ← GlobalTheory.FrameGlob.sec_eq_mul] at h
   exact h.symm
 
+/- English proof (translation)
+Establish `h1` using `sec_mul q x y`. Rewrite `h1` using `[h, sec_one]`. Establish `h2` using `GlobalTheory.FrameGlob.sec_eq_mul q x`. Establish `h3` using `GlobalTheory.FrameGlob.sec_eq_mul q y`. Establish `h4` using `q.split.1`.
+
+Take the linear combination `h1 + h2 + h3 + h4`.
+-/
 theorem idl_mul (x y : k) (h : x * y = 1) : (q.sec x + (1 - q.e)) * (q.sec y + (1 - q.e)) = 1 := by
   have h1 := sec_mul q x y
   rw [h, sec_one] at h1
@@ -121,10 +175,20 @@ theorem idl_mul (x y : k) (h : x * y = 1) : (q.sec x + (1 - q.e)) * (q.sec y + (
 def idl (x : kˣ) : (AE D)ˣ :=
   ⟨q.sec x + (1 - q.e), q.sec (x⁻¹ : kˣ) + (1 - q.e), idl_mul q _ _ x.mul_inv, idl_mul q _ _ x.inv_mul⟩
 
+/- English proof (translation)
+The claim follows from `Units.continuous_iff.2 ⟨(q.cont_sec.comp Units.continuous_val).add continuous_const, (q.cont_sec.comp Units.continuous_coe_inv).add continuous_const⟩`.
+-/
 theorem continuous_idl : Continuous (idl q) :=
   Units.continuous_iff.2 ⟨(q.cont_sec.comp Units.continuous_val).add continuous_const,
     (q.cont_sec.comp Units.continuous_coe_inv).add continuous_const⟩
 
+/- English proof (translation)
+Establish `one : finPart D 1 ∈ intAE D`. Rewrite using `[map_one]`. Conclude with `AddSubgroup.subset_closure ⟨1, fun v => by simp, 1, rfl⟩`. Establish `key : ∀ y : k, valuation k y ≤ 1 → finPart D (q.sec y + (1 - q.e)) ∈ intAE D` using `fun y hy => by`. Rewrite using `[RingHom.map_add, RingHom.map_sub, ← sec_one]`.
+
+Conclude with `add_mem ((q.int_iff y).1 hy) (sub_mem one ((q.int_iff 1).1 (one_mem _)))`. Use `hχ _ ?_ (key _ hx.le) (key _ (by simp [hx]))` and prove the remaining obligations. Establish `h1 : infPart D (q.sec x) = 0` using `(GlobalTheory.FrameGlob.sec_mem_idAt q x).1`. Establish `h2 : infPart D q.e = 0` using `(GlobalTheory.FrameGlob.e_mem_idAt q).1`. Express the relevant statement in the definitionally equal form `infPart D (q.sec x + (1 - q.e)) = 1`.
+
+Rewrite using `[RingHom.map_add, RingHom.map_sub, h1, h2, RingHom.map_one, zero_add, sub_zero]`.
+-/
 theorem unram_idl {χ : (AE D)ˣ →* Circle} (hχ : UnramEverywhere D χ) (x : kˣ) (hx : valuation k (x : k) = 1) : χ (idl q x) = 1 := by
   have one : finPart D 1 ∈ intAE D := by
     rw [map_one]
@@ -138,6 +202,25 @@ theorem unram_idl {χ : (AE D)ˣ →* Circle} (hχ : UnramEverywhere D χ) (x : 
   change infPart D (q.sec x + (1 - q.e)) = 1
   rw [RingHom.map_add, RingHom.map_sub, h1, h2, RingHom.map_one, zero_add, sub_zero]
 
+/- English proof (translation)
+Take `⟨-, hi, hd⟩` from `place_facts q h`. Establish `rat : ∀ (a : D.host.E) (y : kˣ), (y : k) = (ofSplit q).pr a → valuation k ((y : k) - 1) < 1 → χ (idl q y) = 1`. Introduce `a y hy hy1`. Establish `hv : valuation k (y : k) = 1` using `by simpa using Valuation.map_one_add_of_lt (valuation k) hy1`. Take `⟨r, s, hs, e⟩` from `(hi a).1 (by rw [← hy, Valuation.mem_integer_iff, hv])`.
+
+Establish `e' : prO q s * y = prO q r`. Rewrite using `[hy]`. Conclude with `((q.pr.comp (incA D)).map_mul _ _).symm.trans (congrArg (q.pr.comp (incA D)) e)`. Establish `hrs : r - s ∈ PP.asIdeal`. Rewrite using `[prO_lt q h, map_sub, ← e', ← mul_sub_one, map_mul, prO_eq_one q h hs, one_mul]`.
+
+Conclude with `hy1`. Establish `hs0 : (s : D.host.E) ≠ 0` using `RingOfIntegers.coe_ne_zero_iff.2 (by rintro rfl; exact hs (zero_mem _))`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Conclude with `y.ne_zero (hy.trans (q.pr.comp (incA D)).map_zero)`.
+
+Use `haveI := PP.isMaximal`. Use `letI := Ideal.Quotient.field PP.asIdeal`. Establish `hu : Ideal.Quotient.mk PP.asIdeal s ≠ 0` using `by rwa [Ne, Ideal.Quotient.eq_zero_iff_mem]`. Establish `h1` using `hr s (Units.mk0 _ hs0) (Units.mk0 _ hu) rfl rfl`. Establish `h2` using `hr r (Units.mk0 _ hs0 * Units.mk0 _ ha0) (Units.mk0 _ hu) e (Ideal.Quotient.eq.2 hrs).symm`.
+
+Rewrite `h2` using `[map_mul, ← h1, left_eq_mul]`. Establish `h3` using `hχ.2 PP q.e ⟨h.1.1, by`. Take `⟨ε, hε, hs⟩` from `q.above`. Conclude with `⟨q.v, ε, hε, Or.inl ⟨h.1.2.1, hs⟩⟩, h.2⟩ (Units.mk0 _ ha0) (idl q y) (by`. Express the relevant statement in the definitionally equal form `q.sec y + (1 - q.e) = 1 + q.e * (incA D a - 1)`.
+
+Rewrite using `[hy]`. Express the relevant statement in the definitionally equal form `q.sec (q.pr _) + _ = _`. Rewrite using `[q.sec_pr]`. Use the proof step `ring)`. Rewrite `h3` using `[h2]`.
+
+Conclude with `Circle.coe_injective h3`. Assume the negation of the conclusion as `hne`. Establish `hc : Continuous fun y => χ (idl q y)` using `hχ.1.1.comp (continuous_idl q)`. Establish `h1 : {y : kˣ | χ (idl q y) ≠ 1} ∈ nhds x` using `(isOpen_ne_fun hc continuous_const).mem_nhds hne`. Rewrite `h1` using `[Units.isEmbedding_val₀.isInducing.nhds_eq_comap, Filter.mem_comap]`.
+
+Take `⟨W, hW, hW'⟩` from `h1`. Establish `h2 : {y : k | valuation k (y - x) < 1} ∈ nhds (x : k)`. Rewrite using `[IsValuativeTopology.mem_nhds_iff']`. Conclude with `⟨1, by simp⟩`. Take `⟨a, ha1, ha2, ha3⟩` from `hd.mem_nhds (Filter.inter_mem hW (Filter.inter_mem h2 (isOpen_ne.mem_nhds x.ne_zero)))`.
+
+Use `hW' (a := Units.mk0 _ ha3) ha1 (rat a _ rfl ?_)` and prove the remaining obligations. Use `Valuation.map_add_lt (valuation k) ha2 hx` as an intermediate fact. Simplify using `using this`.
+-/
 theorem res_idl {PP : Formalism.L2.DIV.Pl D.host.E} (h : IsIdemAt q.e PP) {χ : (AE D)ˣ →* Circle} {H : Formalism.L2.Host.HChar D.host.E}
     {c : (Formalism.L2.DIV.kP PP)ˣ →* ℂˣ} (hχ : Formalism.IndefR.Links.ChrEq χ H) (hr : Formalism.IndefR.Links.IsRes H PP c) (x : kˣ)
     (hx : valuation k ((x : k) - 1) < 1) : χ (idl q x) = 1 := by
@@ -185,6 +268,15 @@ theorem res_idl {PP : Formalism.L2.DIV.Pl D.host.E} (h : IsIdemAt q.e PP) {χ : 
   have := Valuation.map_add_lt (valuation k) ha2 hx
   simpa using this
 
+/- English proof (translation)
+Introduce `x hx`. Establish `hv : valuation k (x : k) = 1` using `by simpa using Valuation.map_one_add_of_lt (valuation k) hx`. Take `⟨i, rfl⟩ : ∃ i, j = i + 1` from `⟨j - 1, by omega⟩`. Take `⟨H, hH, hr⟩` from `hc.res ⟨i, h2⟩`. Establish `e1` using `res_idl q h hH (hr PP hP) x hx`.
+
+Establish `e2` using `unram_idl q hc.chars.2.1 x hv`. Establish `e3 : c.chS (i + 1) (idl q x) = 1`. Unfold `GlobalTheory.ChainOnto.Com.chS Formalism.IndefR.Lift.chrStep`. Use `split_ifs`. Express the relevant statement in the definitionally equal form `c.μ (i + 1) (idl q x) * (c.η (idl q x))⁻¹ = 1`.
+
+Rewrite using `[e2, inv_one, mul_one]`. Conclude with `e1`. Conclude with `e1`. Use `Units.ext ((hμ x (idl q x) rfl).trans ?_)` and prove the remaining obligations. Rewrite using `[MonoidHom.inv_apply, e3]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem tame_comp {c : GlobalTheory.ChainOnto.Com D} (hc : c.Is) {PP : Formalism.L2.DIV.Pl D.host.E} (hP : PP ∈ c.Pg) (h : IsIdemAt q.e PP)
     {j : ℕ} (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) {μ : kˣ →* ℂˣ} (hμ : (ofSplit q).IsComp (c.chS j)⁻¹ μ) : IsTame μ := by
   intro x hx
@@ -204,6 +296,29 @@ theorem tame_comp {c : GlobalTheory.ChainOnto.Com D} (hc : c.Is) {PP : Formalism
   rw [MonoidHom.inv_apply, e3]
   simp
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `ValuativeRel.valuation_surjective (uniformizer k)`. Establish `t0 : t ≠ 0`. Introduce and unpack `rfl`. Conclude with `(uniformizer_pos (R := k)).ne (by simpa using ht)`. Establish `hu : ∀ x : k, valuation k x < 1 ↔ valuation k x ≤ valuation k t` using `fun x => by rw [ht, le_uniformizer_iff]`.
+
+Establish `tp : 0 < valuation k t` using `zero_lt_iff.2 ((map_ne_zero _).2 t0)`. Establish `triv : ∀ y : k, valuation k y < 1 → ψ (t⁻¹ * y) = 1` using `fun y hy => (hψ 1).2 (by simp) _ (by`. Rewrite using `[map_mul, map_inv₀, map_one, inv_mul_le_one₀ tp]`. Conclude with `(hu y).1 hy)`. Establish `near : ∀ y y' : k, valuation k (y - y') < 1 → ψ (t⁻¹ * y) = ψ (t⁻¹ * y')` using `fun y y' hy => by`.
+
+Rewrite using `[show t⁻¹ * y = t⁻¹ * (y - y') + t⁻¹ * y' by ring, AddChar.map_add_eq_mul, triv _ hy, one_mul]`. Establish `wd : ∀ z z' : 𝓞 D.host.E, Ideal.Quotient.mk PP.asIdeal z = Ideal.Quotient.mk PP.asIdeal z' → ψ (t⁻¹ * prO q z) = ψ (t⁻¹ * prO q z')` using `fun z z' e => near _ _ (by rw [← map_sub, ← prO_lt q h]; exact Ideal.Quotient.eq.1 e)`. Use `choose l hl using Ideal.Quotient.mk_surjective (I := PP.asIdeal)`. Set `α : AddChar (Formalism.L2.DIV.kP PP) ℂ` to `{ toFun := fun u => ψ (t⁻¹ * prO q (l u)) map_zero_eq_one' := by rw [wd _ 0 (by rw [hl, map_zero])]; simp map_add_eq_mul' := fun a b => by`. Rewrite using `[wd _ (l a + l b) (by rw [map_add, hl, hl, hl]), map_add, mul_add, AddChar.map_add_eq_mul, Circle.coe_mul] }`.
+
+Establish `hα : ∀ z, α (Ideal.Quotient.mk _ z) = ψ (t⁻¹ * prO q z)` using `fun z => congrArg (fun c : Circle => (c : ℂ)) (wd _ z (hl _))`. Use `haveI := PP.isMaximal`. Use `letI := Ideal.Quotient.field PP.asIdeal`. Use `haveI : Finite (𝓞 D.host.E ⧸ PP.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot _ PP.ne_bot`. Establish `hα1 : α ≠ 1`.
+
+Introduce `e`. Take `⟨-, hi, hd⟩` from `place_facts q h`. Take `⟨r, -, hr0, hr⟩` from `GlobalTheory.SymTieExists.exists_residue PP (q.pr.comp (incA D)) hi hd`. Establish `h1` using `(hψ t⁻¹).1 fun y hy => by`. Establish `hy' : valuation k (t * y) ≤ 1`.
+
+Rewrite using `[map_mul]`. Rewrite `hy` using `[map_inv₀]`. Conclude with `(mul_le_mul_right hy _).trans (mul_inv_cancel₀ tp.ne').le`. Set `z` to `l (r ⟨_, hy'⟩)`. Establish `hz : r ⟨prO q z, prO_le q h z⟩ = Ideal.Quotient.mk _ z`.
+
+Take `⟨r', s, hs, e1, e2⟩` from `GlobalTheory.SymTieExists.reduction_spec PP ((hi z).1 (prO_le q h z))`. Establish `e3 : s * z = r'` using `IsFractionRing.injective (𝓞 D.host.E) D.host.E (by rw [map_mul]; exact e1)`. Use `(hr _ _).trans (mul_left_cancel₀ (a := Ideal.Quotient.mk PP.asIdeal s) (by rwa [Ne, Ideal.Quotient.eq_zero_iff_mem]) ?_)` and prove the remaining obligations. Rewrite using `[e2, ← map_mul, e3]`. Establish `h2` using `(hr0 (⟨_, hy'⟩ - ⟨prO q z, prO_le q h z⟩)).1 (by rw [map_sub, hz, hl, sub_self])`.
+
+Establish `h3` using `near _ _ h2`. Rewrite `h3` using `[inv_mul_cancel_left₀ t0]`. Establish `h4` using `hα z`. Rewrite `h4` using `[e, ← h3]`. Conclude with `Circle.coe_injective h4.symm`.
+
+Rewrite `h1` using `[map_inv₀, Units.val_one, map_one, inv_le_one₀ tp]`. Conclude with `absurd ((hu t).2 le_rfl) (not_lt.2 h1)`. Use `letI := Fintype.ofFinite (𝓞 D.host.E ⧸ PP.asIdeal)`. Establish `hb : Function.Bijective α.mulShift` using `(Fintype.bijective_iff_injective_and_card _).2 ⟨AddChar.to_mulShift_inj_of_isPrimitive (AddChar.IsPrimitive.of_ne_one hα1), AddChar.card_eq.symm⟩`. Take `⟨c, rfl⟩` from `hb.2 ψ₀`.
+
+Establish `hw : l c ∉ PP.asIdeal` using `fun hw => h₀ (by`. Rewrite using `[← hl c, Ideal.Quotient.eq_zero_iff_mem.2 hw, AddChar.mulShift_zero])`. Establish `hw1` using `prO_eq_one q h hw`. Establish `hw0 : prO q (l c) ≠ 0` using `fun e => by simp [e] at hw1`. Use `⟨Units.mk0 t t0 * (Units.mk0 _ hw0)⁻¹, fun x => ?_, fun z => ?_⟩` and prove the remaining obligations.
+
+Simplify `hu x` using `[hw1]`. Rewrite using `[AddChar.mulShift_apply, show c * Ideal.Quotient.mk _ z = Ideal.Quotient.mk _ (l c * z) by rw [map_mul, hl], hα, (prO q).map_mul]`. Use `congrArg (fun c => (ψ c : ℂ)) ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_unif {PP : Formalism.L2.DIV.Pl D.host.E} (h : IsIdemAt q.e PP) {ψ : AddChar k Circle} (hψ : HasConductor ψ 1)
     {ψ₀ : AddChar (Formalism.L2.DIV.kP PP) ℂ} (h₀ : ψ₀ ≠ 1) : ∃ ϖ : kˣ, GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsUnif ϖ ∧
       ∀ z : 𝓞 D.host.E, (ψ (((ϖ⁻¹ : kˣ) : k) * prO q z) : ℂ) = ψ₀ (Ideal.Quotient.mk _ z) := by
@@ -272,6 +387,19 @@ theorem exists_unif {PP : Formalism.L2.DIV.Pl D.host.E} (h : IsIdemAt q.e PP) {�
     simp
     ring
 
+/- English proof (translation)
+Take `⟨gl, h1, h2⟩` from `GlobalTheory.T.exists_GL_embedding_unitaryAdelic_splitPlace_basis D k q S (Fin S.rank) 1 1 (mul_one _) (mul_one _)`. Take `⟨Λ, hΛ, hl, -⟩` from `(GlobalTheory.T.splitPlaceHermitianFrame_properties D k q S _ ⟨1, 1, mul_one _, mul_one _, gl, h1, h2⟩).2.2.2.1 L hL`. Set `b` to `(Module.finBasisOfFinrankEq 𝒪[k] Λ (Submodule.IsLattice.finrank_of_pi k Λ)).reindex ((finCongr (Fintype.card_fin _)).trans e.symm)`. Set `b'` to `b.extendOfIsLattice k`. Establish `hkey : ∀ c : Y → 𝒪[k], b'.equivFun.symm (fun i => (c i : k)) = ((∑ i, c i • b i : Λ) : _ → k)`.
+
+Introduce `c`. Rewrite using `[Module.Basis.equivFun_symm_apply, Submodule.coe_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Module.Basis.extendOfIsLattice_apply]`. Both sides reduce to the same expression.
+
+Use `⟨⟨LinearMap.toMatrix' b'.equivFun.symm.toLinearMap, LinearMap.toMatrix' b'.equivFun.toLinearMap, ?_, ?_⟩, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.toMatrix'_comp]`. Simplify using the standard rewrite rules. Rewrite using `[← LinearMap.toMatrix'_comp]`. Simplify using the standard rewrite rules.
+
+Establish `h3` using `hl (b'.equivFun.symm y)`. Simplify using `only [one_mulVec] at h3`. Simplify using `only [LinearMap.toMatrix'_mulVec, LinearEquiv.coe_coe]`. Rewrite using `[← h3]`. Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations.
+
+Establish `h2 : b'.equivFun.symm y = _` using `hkey fun i => ⟨y i, h i⟩`. Rewrite using `[h2]`. Conclude with `Subtype.property _`. Establish `h1` using `hkey (b.repr ⟨_, h⟩)`. Rewrite `h1` using `[b.sum_repr]`.
+
+Rewrite using `[← b'.equivFun.symm.injective h1]`. Conclude with `fun i => (b.repr ⟨_, h⟩ i).2`.
+-/
 theorem exists_latFrame (S : HSp D) (L : GlobalTheory.FinPl.Lat S) (hL : IsSelfDualC S L) (Y : Type) [Fintype Y] [DecidableEq Y]
     (e : Y ≃ Fin S.rank) : ∃ F : GlobalTheory.LocMod.Frame k S.rank Y, ∀ y : Y → k, (∀ i, y i ∈ 𝒪[k]) ↔
       (fun i => q.sec ((F.β *ᵥ y) i)) ∈ latV S L (· = q.v) := by
@@ -302,6 +430,13 @@ theorem exists_latFrame (S : HSp D) (L : GlobalTheory.FinPl.Lat S) (hL : IsSelfD
     rw [← b'.equivFun.symm.injective h1]
     exact fun i => (b.repr ⟨_, h⟩ i).2
 
+/- English proof (translation)
+Take `⟨π, h1, -, h2, -⟩` from `GlobalTheory.T.exists_finiteAdele_projection_integral_reduction D k q PP h`. Use `⟨Matrix.GeneralLinearGroup.map π β, fun b hb => ?_, fun y => ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `q.pr (((matHom S 1).val * b) i j) = π (β.val i j)`. Rewrite using `[map_one, Units.val_one, Matrix.one_mul, ← hb, ← h1]`.
+
+Both sides reduce to the same expression. Establish `h3 : (fun i => q.sec (y i)) ∈ latV S L (· = q.v) ↔ (fun i => toEAf D (q.sec (y i))) ∈ Formalism.L2.Herm.hatL (F` using `D.host.F) L := ⟨GlobalTheory.T.latticeCompletionAtPlaces_mem_completedHermitianLattice D S L _ _, GlobalTheory.T.mem_latticeCompletionAtPlaces_of_finPart_mem_hatLattice D S L _ _ fun i => GlobalTheory.FrameGlob.sec_mem_idAt q _⟩`. Rewrite using `[h3, hβ]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations. Establish `h4 : ∀ j, (1 - toEAf D q.e) * toEAf D (q.sec (y j)) = 0` using `fun j => by`.
+
+Rewrite using `[sub_mul, one_mul, ← map_mul, ← GlobalTheory.FrameGlob.sec_eq_mul, sub_self]`. Rewrite using `[h2, ← map_inv]`. Simplify using `only [mulVec, dotProduct, Finset.mul_sum, mul_left_comm (1 - toEAf D q.e), h4, mul_zero, Finset.sum_const_zero, zero_mem, true_and, map_sum, map_mul, h1, q.pr_sec]`. Both sides reduce to the same expression.
+-/
 theorem exists_topFrame {PP : Formalism.L2.DIV.Pl D.host.E} (h : IsIdemAt q.e PP) (S : HSp D) (L : GlobalTheory.FinPl.Lat S)
     (β : GL (Fin S.rank) (Lev.EAf D)) (hβ : Formalism.L2.DIV.IsFrame β L) : ∃ B : GL (Fin S.rank) k, MovedTo (ofSplit q) S 1 β B.val ∧
       ∀ y : Fin S.rank → k, (fun i => q.sec (y i)) ∈ latV S L (· = q.v) ↔ ∀ i, ((B⁻¹).val *ᵥ y) i ∈ 𝒪[k] := by
@@ -336,6 +471,11 @@ def Edge {l : ℕ} : Fin κ ⊕ Fin l → Fin κ ⊕ Fin l → Prop
   | .inr i, .inr j => j.val = i.val + 1
   | _, _ => False
 
+/- English proof (translation)
+Establish `ha` using `hπ (π.symm (e a))`. Establish `hb` using `hπ (π.symm (e b))`. Rewrite `ha`, `hb` using `[Equiv.apply_symm_apply, he]`. Unfold `symEdge`. Generalize the expression as in `(π.symm (e a)).val = x at ha ⊢`.
+
+Generalize the expression as in `(π.symm (e b)).val = y at hb ⊢`. Apply the tactic sequence `rcases a with ⟨a, h1⟩ | ⟨a, h1⟩ <;> rcases b with ⟨b, h2⟩ | ⟨b, h2⟩ <;>`. Apply the tactic sequence `simp only [framePos, Sum.elim_inl, Sum.elim_inr, FreeTop, Edge, Fin.lt_def] at ha hb ⊢ <;>`. Apply the tactic sequence `split_ifs at ha hb <;> (try simp only [iff_false]) <;> omega`.
+-/
 theorem sym_order {ρ : ℕ} (hρ : s + 1 = 2 * ρ + 1) (e : Fin κ ⊕ Fin (s + 1) ≃ Fin r) (he : ∀ a, (e a).val = framePos _ _ a)
     {π : Equiv.Perm (Fin r)} (hπ : IsSymOrd ρ κ π) (a b : Fin κ ⊕ Fin (s + 1)) :
     (¬ FreeTop ρ a b ↔ (π.symm (e b)).val ≤ (π.symm (e a)).val ∨
@@ -351,6 +491,13 @@ theorem sym_order {ρ : ℕ} (hρ : s + 1 = 2 * ρ + 1) (e : Fin κ ⊕ Fin (s +
     simp only [framePos, Sum.elim_inl, Sum.elim_inr, FreeTop, Edge, Fin.lt_def] at ha hb ⊢ <;>
     split_ifs at ha hb <;> (try simp only [iff_false]) <;> omega
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ i j (h | ⟨h3, h4, h5⟩)`. Break down `h.lt_or_eq with h | h` into its components or cases. Rewrite using `[unip_lower h1 h, one_apply_ne (fun e => by rw [e] at h; omega)]`. Take `rfl` from `Fin.ext h`.
+
+Rewrite using `[unip_diag h1, one_apply_eq]`. Rewrite using `[h2 i j h3 h4 h5, one_apply_ne (fun e => by rw [e] at h4; omega)]`. Introduce `h`. Use `⟨⟨fun i j hij => ?_, fun i => ?_⟩, fun i j h3 h4 h5 => ?_⟩` and prove the remaining obligations. Rewrite using `[h i j (Or.inl (le_of_lt hij)), one_apply_ne (fun e => by rw [e] at hij; exact lt_irrefl _ hij)]`.
+
+Rewrite using `[h i i (Or.inl le_rfl), one_apply_eq]`. Rewrite using `[h i j (Or.inr ⟨h3, h4, h5⟩), one_apply_ne (fun e => by rw [e] at h4; omega)]`.
+-/
 theorem mem_unipSym {F : Type} [CommRing F] {ρ : ℕ} (g : GL (Fin r) F) : g ∈ unipSym F r ρ κ ↔
     ∀ i j : Fin r, (j.val ≤ i.val ∨ (ρ ≤ i.val ∧ i.val < ρ + κ ∧ j.val = ρ + κ)) → g.val i j = (1 : Matrix _ _ F) i j := by
   constructor
@@ -373,6 +520,23 @@ variable (S : SymData k s κ) {O : Type} [CommRing O] {I : Ideal O} (pr : O →+
 
 include h1 h2 he hπ hg in
 
+/- English proof (translation)
+Use `choose l hl using Ideal.Quotient.mk_surjective (I := I)`. Establish `one : ∀ a b, (1 : Matrix _ _ k) a b = pr ((1 : Matrix _ _ O) a b) ∧ (1 : Matrix _ _ (O ⧸ I)) (π.symm (e a)) (π.symm (e b)) = Ideal.Quotient.mk I ((1 : Matrix _ _ O) a b)` using `fun a b => by`. Apply the tactic sequence `by_cases h : a = b <;> simp [one_apply, h]`. Rewrite using `[mem_unipSym]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨x, hx⟩ i j hij`. Take `⟨a, rfl⟩` from `(e.trans π.symm).surjective i`. Take `⟨b, rfl⟩` from `(e.trans π.symm).surjective j`. Establish `h3` using `((GlobalTheory.T.mem_level_iff_symmetricPosition_entry_pattern k s κ S x).1 x.2).2 a b ((sym_order S.odd e he hπ a b).1.2 hij)`. Establish `h4` using `Valuation.map_sub_lt _ h3 (hx a b _ (hl _))`.
+
+Rewrite `h4` using `[(one a b).1, sub_sub_sub_cancel_left, ← map_sub, ← h2, ← Ideal.Quotient.eq, hl]`. Use `(hg _ _).trans (Eq.trans ?_ (one a b).2.symm)` and prove the remaining obligations. Simplify using `only [Equiv.trans_apply, Equiv.apply_symm_apply]`. Conclude with `h4`. Introduce `h`.
+
+Set `Z : Matrix (Fin κ ⊕ Fin (s + 1)) (Fin κ ⊕ Fin (s + 1)) O` to `fun a b => l (g.val (e a) (e b))`. Set `p : O →+* 𝒪[k]` to `pr.codRestrict _ h1`. Establish `hd : IsUnit (p.mapMatrix Z).det`. Assume the negation of the conclusion as `hn`. Establish `h3` using `Valuation.Integer.not_isUnit_iff_valuation_lt_one.1 hn`.
+
+Rewrite `h3` using `[← RingHom.map_det]`. Establish `h4` using `Ideal.Quotient.eq_zero_iff_mem.2 ((h2 _).2 h3)`. Establish `h5 : (Ideal.Quotient.mk I).mapMatrix Z = g.val.submatrix e e` using `Matrix.ext fun a b => hl _`. Rewrite `h4` using `[RingHom.map_det, h5, det_submatrix_equiv_self]`. Establish `h6` using `(g.det).isUnit`.
+
+Rewrite `h6` using `[GeneralLinearGroup.val_det_apply, h4, isUnit_zero_iff]`. Establish `h7` using `(h2 1).1 (Ideal.Quotient.eq_zero_iff_mem.1 (by rw [map_one, ← h6]))`. Simplify using `at h7`. Set `x₀ : GL (Fin κ ⊕ Fin (s + 1)) 𝒪[k]` to `((isUnit_iff_isUnit_det _).2 hd).unit`. Establish `hx : ∀ a b z, Ideal.Quotient.mk I z = g.val (e a) (e b) → valuation k ((GeneralLinearGroup.map (algebraMap 𝒪[k] k) x₀).val a b - pr z) < 1` using `fun a b z hz => by`.
+
+Express the relevant statement in the definitionally equal form `valuation k (pr (Z a b) - pr z) < 1`. Rewrite using `[← map_sub, ← h2, ← Ideal.Quotient.eq, hl, hz]`. Use `⟨⟨_, (GlobalTheory.T.mem_level_iff_symmetricPosition_entry_pattern k s κ S _).2 ⟨⟨x₀, rfl⟩, fun a b hab => ?_⟩⟩, hx⟩` and prove the remaining obligations. Rewrite using `[(one a b).1]`. Use `hx a b _ ?_` and prove the remaining obligations.
+
+Rewrite using `[← (one a b).2, ← h _ _ ((sym_order S.odd e he hπ a b).1.1 hab), hg, Equiv.apply_symm_apply, Equiv.apply_symm_apply]`.
+-/
 theorem sym_grp : (∃ x : S.P.J, ∀ a b z, Ideal.Quotient.mk I z = g.val (e a) (e b) →
     valuation k ((x : GL (Fin κ ⊕ Fin (s + 1)) k).val a b - pr z) < 1) ↔ g' ∈ unipSym (O ⧸ I) r S.ρ κ := by
   choose l hl using Ideal.Quotient.mk_surjective (I := I)
@@ -416,6 +580,17 @@ theorem sym_grp : (∃ x : S.P.J, ∀ a b z, Ideal.Quotient.mk I z = g.val (e a)
 
 include he hπ hg in
 
+/- English proof (translation)
+Use `choose l hl using Ideal.Quotient.mk_surjective (I := I)`. Establish `h3 : edgeSum (symEdge S.ρ κ) g' = Ideal.Quotient.mk I (∑ a, ∑ b, if Edge a b then l (g.val (e a) (e b)) else 0)`. Rewrite using `[edgeSum, ← (e.trans π.symm).sum_comp, map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← (e.trans π.symm).sum_comp, map_sum]`.
+
+Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.trans_apply, (sym_order S.odd e he hπ a b).2, hg, Equiv.apply_symm_apply]`. Use `split_ifs`. Rewrite using `[hl]`. Rewrite using `[map_zero]`.
+
+Establish `h4 : GlobalTheory.RootEx.simpleSum (x : GL (Fin κ ⊕ Fin (s + 1)) k) + superSum Fin.val (x : GL (Fin κ ⊕ Fin (s + 1)) k).val.toBlocks₁₁ = ∑ a, ∑ b, if Edge a b then (x : GL (Fin κ ⊕ Fin (s + 1)) k).val a b else 0`. Simplify using `[GlobalTheory.RootEx.simpleSum, GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.superSum, Fintype.sum_sum_type, Edge, add_comm, toBlocks₁₁]`. Apply the tactic sequence `congr 1 <;> refine Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_ <;> exact @if_congr _ _ _ _ (_) _ _ _ _ Iff.rfl rfl rfl`. Rewrite using `[S.sym.2 x, h3, ← hψ, ← Circle.coe_mul, ← AddChar.map_add_eq_mul, ← mul_add, h4]`. Use `congrArg (fun c : Circle => (c : ℂ)) ?_` and prove the remaining obligations.
+
+Rewrite using `[← mul_inv_eq_one, ← AddChar.map_neg_eq_inv, ← AddChar.map_add_eq_mul, ← sub_eq_add_neg, ← mul_sub]`. Use `(S.cond 1).2 (by simp) _ ?_` and prove the remaining obligations. Rewrite using `[map_mul, Units.val_inv_eq_inv_val, map_inv₀, map_one, inv_mul_le_one₀ (by simp [zero_lt_iff]), ← S.unif, map_sum, ← Finset.sum_sub_distrib]`. Use `Valuation.map_sum_lt _ one_ne_zero fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum, ← Finset.sum_sub_distrib]`.
+
+Use `Valuation.map_sum_lt _ one_ne_zero fun b _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `hx a b _ (hl _)`. Simplify using the standard rewrite rules.
+-/
 theorem sym_chr (ψ₀ : AddChar (O ⧸ I) ℂ) (hψ : ∀ z, (S.ψ (((S.ϖ⁻¹ : kˣ) : k) * pr z) : ℂ) = ψ₀ (Ideal.Quotient.mk _ z))
     (x : S.P.J) (hx : ∀ a b z, Ideal.Quotient.mk I z = g.val (e a) (e b) →
       valuation k ((x : GL (Fin κ ⊕ Fin (s + 1)) k).val a b - pr z) < 1) :

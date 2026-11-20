@@ -15,16 +15,33 @@ namespace GlobalTheory.WeilInter
 
 variable {D : D7} {N N' : ℕ}
 
+/- English proof (translation)
+Take `⟨Lt, h1, -⟩` from `exists_lattice_of_adelic_point D N`. Establish `: L = Lt g`. Use extensionality with `x`. Rewrite using `[h x, (h1 g).1 x]`. Rewrite using `[this]`.
+
+Conclude with `(h1 g).2`.
+-/
 theorem sd_of_moves {g : GA D N} {L : Lat D N} (h : Moves D (g : GL (Fin N) (AE D)) L) : SD D L := by
   obtain ⟨Lt, h1, -⟩ := exists_lattice_of_adelic_point D N
   have : L = Lt g := by
     ext x; rw [h x, (h1 g).1 x]
   rw [this]; exact (h1 g).2
 
+/- English proof (translation)
+The claim follows from `Or.inr ⟨_, _, sd_of_moves h, sd_of_moves h', rfl⟩`.
+-/
 theorem klat (T : Tor D) {g : GA D N} {g' : GA D N'} {L : Lat D N} {L' : Lat D N'}
     (h : Moves D (g : GL (Fin N) (AE D)) L) (h' : Moves D (g' : GL (Fin N') (AE D)) L') :
     KLat D T (La D T L L') := Or.inr ⟨_, _, sd_of_moves h, sd_of_moves h', rfl⟩
 
+/- English proof (translation)
+Establish `e1 : ∀ x y : B₁, (QuotientAddGroup.mk x : B₁ ⧸ A₁.addSubgroupOf B₁) = QuotientAddGroup.mk y ↔ (x : V) - (y : V) ∈ A₁` using `fun x y => by`. Rewrite using `[QuotientAddGroup.eq_iff_sub_mem, AddSubgroup.mem_addSubgroupOf]`. Both sides reduce to the same expression. Establish `e2 : ∀ x y : B₂, (QuotientAddGroup.mk x : B₂ ⧸ A₂.addSubgroupOf B₂) = QuotientAddGroup.mk y ↔ (x : V) - (y : V) ∈ A₂` using `fun x y => by`. Rewrite using `[QuotientAddGroup.eq_iff_sub_mem, AddSubgroup.mem_addSubgroupOf]`.
+
+Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce `q q' hq`. Use `(e1 _ _).2 ((h1 _ _).2 ((e2 _ _).1 hq))` as an intermediate fact. Rewrite `this` using `[QuotientAddGroup.out_eq', QuotientAddGroup.out_eq']`. Then use the resulting hypothesis.
+
+Introduce `r`. Take `⟨y, rfl⟩` from `QuotientAddGroup.mk_surjective r`. Take `⟨x, hx⟩` from `h2 y`. Use `⟨QuotientAddGroup.mk x, ?_⟩` and prove the remaining obligations. Establish `h3` using `(h1 _ _).1 ((e1 (Quotient.out (QuotientAddGroup.mk x : B₁ ⧸ A₁.addSubgroupOf B₁)) x).1 (QuotientAddGroup.out_eq' _))`.
+
+Use `(e2 _ _).2 ?_` and prove the remaining obligations. Use `A₂.add_mem h3 hx` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis.
+-/
 theorem quot_bijective {V : Type} [AddCommGroup V] (A₁ A₂ B₁ B₂ : AddSubgroup V) (f : B₁ → B₂)
     (h1 : ∀ x y : B₁, (x : V) - (y : V) ∈ A₁ ↔ (f x : V) - (f y : V) ∈ A₂)
     (h2 : ∀ y : B₂, ∃ x : B₁, (f x : V) - (y : V) ∈ A₂) :
@@ -50,6 +67,9 @@ theorem quot_bijective {V : Type} [AddCommGroup V] (A₁ A₂ B₁ B₂ : AddSub
     have := A₂.add_mem h3 hx
     rwa [sub_add_sub_cancel] at this
 
+/- English proof (translation)
+Establish `h1` using `Wd_Wd D T v (u - v) G`. Rewrite `h1` using `[((hA.mem_ThSp G).1 hG).2 _ h, hB.2.1 v hv _ (B.sub_mem hu hv), one_smul, add_sub_cancel]`. Conclude with `h1.symm`.
+-/
 theorem wd_congr {T : Tor D} {A B : AddSubgroup (VC D N N')} (hA : Nice D T A) (hB : Nice D T B)
     {G : VC D N N' → ℂ} (hG : G ∈ ThSp D T A) {u v : VC D N N'} (hu : u ∈ B) (hv : v ∈ B) (h : u - v ∈ A) :
     Wd D T u G = Wd D T v G := by
@@ -57,6 +77,9 @@ theorem wd_congr {T : Tor D} {A B : AddSubgroup (VC D N N')} (hA : Nice D T A) (
   rw [((hA.mem_ThSp G).1 hG).2 _ h, hB.2.1 v hv _ (B.sub_mem hu hv), one_smul, add_sub_cancel] at h1
   exact h1.symm
 
+/- English proof (translation)
+Rewrite using `[hB.Iop_eq]`. Use function extensionality and compare the values at `z`. Rewrite using `[finsum_eq_sum_of_fintype, Pi.smul_apply, Finset.sum_apply, smul_eq_mul]`.
+-/
 theorem iop_sum {T : Tor D} (A : AddSubgroup (VC D N N')) {B : AddSubgroup (VC D N N')} (hB : Nice D T B)
     [Fintype (B ⧸ A.addSubgroupOf B)] (F : VC D N N' → ℂ) :
     Iop D T A B F = ((Real.sqrt ((A.addSubgroupOf B).index : ℝ))⁻¹ : ℂ) •
@@ -65,11 +88,19 @@ theorem iop_sum {T : Tor D} (A : AddSubgroup (VC D N N')) {B : AddSubgroup (VC D
   funext z
   rw [finsum_eq_sum_of_fintype, Pi.smul_apply, Finset.sum_apply, smul_eq_mul]
 
+/- English proof (translation)
+Use `⟨differentiable_const _, 1, Nat.one_pos, fun x _ => ?_⟩` and prove the remaining obligations. Use `Wd_smul D T (1 • x) 0 (0 : VC D N N' → ℂ)` as an intermediate fact. Rewrite `this` using `[zero_smul, zero_smul]`. Then use the resulting hypothesis.
+-/
 theorem zero_mem_TT (T : Tor D) : (0 : VC D N N' → ℂ) ∈ TT D T N N' := by
   refine ⟨differentiable_const _, 1, Nat.one_pos, fun x _ => ?_⟩
   have := Wd_smul D T (1 • x) 0 (0 : VC D N N' → ℂ)
   rwa [zero_smul, zero_smul] at this
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.sum_empty, Finset.sum_empty]`. Use `⟨zero_mem_TT _, ?_⟩` and prove the remaining obligations. Use `W.smul g g' 0 0 (zero_mem_TT _)` as an intermediate fact.
+
+Rewrite `this` using `[zero_smul, zero_smul]`. Then use the resulting hypothesis. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Conclude with `⟨hadd _ (hφ a) _ ih.1, by rw [W.add g g' _ (hφ a) _ ih.1, ih.2]⟩`.
+-/
 theorem om_sum {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {e0 : VC D N N' → ℂ} (W : WeilO D cc δ N N' e0)
     (hadd : ∀ F ∈ TT D (tor0 D cc δ) N N', ∀ G ∈ TT D (tor0 D cc δ) N N', F + G ∈ TT D (tor0 D cc δ) N N')
     (g : GA D N) (g' : GA D N') {ι : Type} (s : Finset ι) (φ : ι → VC D N N' → ℂ)
@@ -85,6 +116,19 @@ theorem om_sum {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {e0 : VC D N N' → ℂ} 
     rw [Finset.sum_insert ha, Finset.sum_insert ha]
     exact ⟨hadd _ (hφ a) _ ih.1, by rw [W.add g g' _ (hφ a) _ ih.1, ih.2]⟩
 
+/- English proof (translation)
+Introduce `D cc δ hc hδ N N' e0 W g h k g' h' k' L₁ L₂ M₁ M₂ L₁' L₂' M₁' M₂' a1 a1' a2 a2' b1 b1' b2 b2' F hF`. Take `⟨t1, t2, t3, -⟩` from `GlobalTheory.T.thetaFunctions_all_levels_closure D cc δ hc N N'`. Establish `hFT` using `t1 _ _ (sd_of_moves a1) (sd_of_moves a1') F hF`. Establish `hG` using `GlobalTheory.T.weilRepresentation_theta_moved_lattice D cc δ hc N N' e0 W g h g' h' L₁ L₂ L₁' L₂' a1 a1' a2 a2' F hF`. Take `⟨f, f1, f2, f3⟩` from `GlobalTheory.T.exists_thetaLattice_correspondence_weilOperator D cc δ hc hδ N N' e0 W g h k g' h' k' L₁ L₂ M₁ M₂ L₁' L₂' M₁' M₂' a1 a1' a2 a2' b1 b1' b2 b2' F hFT`.
+
+Establish `kA1` using `klat (tor0 D cc δ) a1 a1'`. Establish `kA2` using `klat (tor0 D cc δ) a2 a2'`. Establish `kB1` using `klat (tor0 D cc δ) b1 b1'`. Establish `kB2` using `klat (tor0 D cc δ) b2 b2'`. Establish `nA2` using `GlobalTheory.ThetaTriple.nice_of_klat hc kA2`.
+
+Establish `nB1` using `GlobalTheory.ThetaTriple.nice_of_klat hc kB1`. Establish `nB2` using `GlobalTheory.ThetaTriple.nice_of_klat hc kB2`. Use `haveI i1 := AddSubgroup.fintypeOfIndexNeZero (GlobalTheory.ThetaTriple.index_ne_zero hc kA1 kB1)`. Use `haveI i2 := AddSubgroup.fintypeOfIndexNeZero (GlobalTheory.ThetaTriple.index_ne_zero hc kA2 kB2)`. Establish `hb` using `quot_bijective _ _ _ _ f f2 f3`.
+
+Establish `hi : ((La D (tor0 D cc δ) L₁ L₁').addSubgroupOf (La D (tor0 D cc δ) M₁ M₁')).index = ((La D (tor0 D cc δ) L₂ L₂').addSubgroupOf (La D (tor0 D cc δ) M₂ M₂')).index` using `Nat.card_congr (Equiv.ofBijective _ hb)`. Establish `hW : ∀ x : La D (tor0 D cc δ) M₁ M₁', Wd D (tor0 D cc δ) (x : VC D N N') F ∈ TT D (tor0 D cc δ) N N'`. Introduce `x`. Take `⟨z, hz, -⟩` from `exists_pt_of_mem_La_moved D (GlobalTheory.InducedType.induced_type D).1 cc δ hc.1.1 N N' k k' M₁ M₁' b1 b1' x x.2`. Rewrite using `[hz]`.
+
+Conclude with `t2 z F hFT`. Take `⟨s1, s2⟩` from `om_sum W t3 g g' Finset.univ (fun q : La D (tor0 D cc δ) M₁ M₁' ⧸ (La D (tor0 D cc δ) L₁ L₁').addSubgroupOf (La D (tor0 D cc δ) M₁ M₁') => Wd D (tor0 D cc δ) ((Quotient.out q : La D (tor0 D cc δ) M₁ M₁') : VC D N N') F) (fun q => hW _)`. Rewrite using `[iop_sum _ nB1, iop_sum _ nB2, W.smul g g' _ _ s1, s2, hi]`. Use `congr 1`. Use `Fintype.sum_bijective _ hb _ _ fun q => ?_` and prove the remaining obligations.
+
+Rewrite using `[f1]`. Use `wd_congr nA2 nB2 hG (f _).2 (Subtype.property _) ?_` and prove the remaining obligations. Use `(QuotientAddGroup.out_eq' (QuotientAddGroup.mk (f (Quotient.out q)) : La D (tor0 D cc δ) M₂ M₂' ⧸ (La D (tor0 D cc δ) L₂ L₂').addSubgroupOf (La D (tor0 D cc δ) M₂ M₂'))).symm` as an intermediate fact. Rewrite `this` using `[QuotientAddGroup.eq_iff_sub_mem, AddSubgroup.mem_addSubgroupOf]`. Conclude with `this`.
+-/
 theorem om_iop : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Crv D cc δ → δ ≠ 0 → ∀ (N N' : ℕ) (e0 : VC D N N' → ℂ) (W : WeilO D cc δ N N' e0) (g h k : GA D N) (g' h' k' : GA D N') (L₁ L₂ M₁ M₂ : Lat D N) (L₁' L₂' M₁' M₂' : Lat D N'), Moves D (h : GL (Fin N) (AE D)) L₁ → Moves D (h' : GL (Fin N') (AE D)) L₁' → Moves D ((g * h : GA D N) : GL (Fin N) (AE D)) L₂ → Moves D ((g' * h' : GA D N') : GL (Fin N') (AE D)) L₂' → Moves D (k : GL (Fin N) (AE D)) M₁ → Moves D (k' : GL (Fin N') (AE D)) M₁' → Moves D ((g * k : GA D N) : GL (Fin N) (AE D)) M₂ → Moves D ((g' * k' : GA D N') : GL (Fin N') (AE D)) M₂' → ∀ F ∈ Th D (tor0 D cc δ) L₁ L₁', W.Om g g' (Iop D (tor0 D cc δ) (La D (tor0 D cc δ) L₁ L₁') (La D (tor0 D cc δ) M₁ M₁') F) = Iop D (tor0 D cc δ) (La D (tor0 D cc δ) L₂ L₂') (La D (tor0 D cc δ) M₂ M₂') (W.Om g g' F) := by
   intro D cc δ hc hδ N N' e0 W g h k g' h' k' L₁ L₂ M₁ M₂ L₁' L₂' M₁' M₂' a1 a1' a2 a2' b1 b1' b2 b2' F hF
   obtain ⟨t1, t2, t3, -⟩ := GlobalTheory.T.thetaFunctions_all_levels_closure D cc δ hc N N'

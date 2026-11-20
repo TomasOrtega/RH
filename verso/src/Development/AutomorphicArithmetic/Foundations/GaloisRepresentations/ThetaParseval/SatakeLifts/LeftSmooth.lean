@@ -4,6 +4,17 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Theta
 open NumberField IsDedekindDomain ValuativeRel GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.ThetaGL UpperTheory.Gal.TP.Loc
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n d Φ`. Take `⟨hlc, hcs⟩` from `Φ.2`. Establish `key : ∀ f : GL (Fin n) k → Matrix (Fin n) (Fin d) k → Matrix (Fin n) (Fin d) k, Continuous (fun p : GL (Fin n) k × Matrix (Fin n) (Fin d) k => f p.1 p.2) → (∀ X, f 1 X = X) → ∀ᶠ g in nhds (1 : GL (Fin n) k), ∀ X ∈ tsupport (Φ : Matrix (Fin n) (Fin d) k → ℂ), (Φ : Matrix (Fin n) ( …`. Introduce `f hf h1`. Apply `hcs.isCompact.eventually_forall_of_forall_eventually` to reduce the goal to its premises.
+
+Introduce `X₀ _`. Establish `e1` using `(hlc.comp_continuous hf).eventually_eq (1, X₀)`. Establish `e2` using `(hlc.comp_continuous (continuous_snd : Continuous (Prod.snd : GL (Fin n) k × Matrix (Fin n) (Fin d) k → _))).eventually_eq (1, X₀)`. Use `filter_upwards [e1, e2] with p hp1 hp2`. Simplify using `only [Function.comp] at hp1 hp2`.
+
+Rewrite using `[hp1, hp2, h1]`. Establish `hU1` using `key (fun g X => (g : Matrix (Fin n) (Fin n) k) * X) ((Units.continuous_val.comp continuous_fst).matrix_mul continuous_snd) (fun X => by simp)`. Establish `hU2` using `key (fun g X => ((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) * X) ((Units.continuous_coe_inv.comp continuous_fst).matrix_mul continuous_snd) (fun X => by simp)`. Use `filter_upwards [hU1, hU2] with g hg1 hg2`. Introduce `X`.
+
+Distinguish the cases in `hX : X ∈ tsupport (Φ : Matrix (Fin n) (Fin d) k → ℂ)`. Conclude with `hg1 X hX`. Distinguish the cases in `hgX : (g : Matrix (Fin n) (Fin n) k) * X ∈ tsupport (Φ : Matrix (Fin n) (Fin d) k → ℂ)`. Use `hg2 _ hgX` as an intermediate fact. Rewrite `this` using `[← Matrix.mul_assoc, ← Matrix.GeneralLinearGroup.coe_mul, inv_mul_cancel, Matrix.GeneralLinearGroup.coe_one, Matrix.one_mul]`.
+
+Conclude with `this.symm`. Rewrite using `[image_eq_zero_of_notMem_tsupport hX, image_eq_zero_of_notMem_tsupport hgX]`.
+-/
 theorem UpperTheory.Gal.TP.Loc.leftSmooth :
     UpperTheory.Gal.TP.Loc.LeftSmooth := by
   intro k _ _ _ _ n d Φ

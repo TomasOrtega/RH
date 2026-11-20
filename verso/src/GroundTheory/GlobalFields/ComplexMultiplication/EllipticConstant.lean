@@ -12,16 +12,25 @@ variable {E : Type*} [NormedAddCommGroup E]
 
 def limPunctured (f : ℂ → E) (z : ℂ) : E := limUnder (𝓝[≠] z) f
 
+/- English proof (translation)
+The claim follows from `(tendsto_nhdsWithin_of_tendsto_nhds h.tendsto).limUnder_eq`.
+-/
 lemma limPunctured_eq_of_continuousAt {f : ℂ → E} {z : ℂ} (h : ContinuousAt f z) :
     limPunctured f z = f z :=
   (tendsto_nhdsWithin_of_tendsto_nhds h.tendsto).limUnder_eq
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `tendsto_nhds_of_meromorphicOrderAt_nonneg hf ho`. Rewrite using `[limPunctured, hc.limUnder_eq]` and apply the resulting hypothesis.
+-/
 lemma tendsto_limPunctured [NormedSpace ℂ E] {f : ℂ → E} {z : ℂ} (hf : MeromorphicAt f z)
     (ho : 0 ≤ meromorphicOrderAt f z) :
     Tendsto f (𝓝[≠] z) (𝓝 (limPunctured f z)) := by
   obtain ⟨c, hc⟩ := tendsto_nhds_of_meromorphicOrderAt_nonneg hf ho
   rwa [limPunctured, hc.limUnder_eq]
 
+/- English proof (translation)
+Use `filter_upwards [(isOpen_analyticAt ℂ f).mem_nhds hw] with u hu`. Conclude with `limPunctured_eq_of_continuousAt hu.continuousAt`.
+-/
 lemma limPunctured_eventuallyEq_of_analyticAt [NormedSpace ℂ E] [CompleteSpace E] {f : ℂ → E} {w : ℂ} (hw : AnalyticAt ℂ f w) :
     limPunctured f =ᶠ[𝓝 w] f := by
   filter_upwards [(isOpen_analyticAt ℂ f).mem_nhds hw] with u hu
@@ -29,6 +38,11 @@ lemma limPunctured_eventuallyEq_of_analyticAt [NormedSpace ℂ E] [CompleteSpace
 
 variable [NormedSpace ℂ E]
 
+/- English proof (translation)
+Establish `hev : ∀ᶠ w in 𝓝[≠] z, AnalyticAt ℂ f w` using `hf.eventually_analyticAt`. Establish `heq : limPunctured f =ᶠ[𝓝[≠] z] f` using `hev.mono fun w hw ↦ (limPunctured_eventuallyEq_of_analyticAt hw).eq_of_nhds`. Apply `Complex.analyticAt_of_differentiable_on_punctured_nhds_of_continuousAt` to reduce the goal to its premises. Conclude with `hev.mono fun w hw ↦ hw.differentiableAt.congr_of_eventuallyEq (limPunctured_eventuallyEq_of_analyticAt hw)`. Rewrite using `[← continuousWithinAt_compl_self]`.
+
+Conclude with `(tendsto_limPunctured hf ho).congr' heq.symm`.
+-/
 lemma analyticAt_limPunctured [CompleteSpace E] {f : ℂ → E} {z : ℂ} (hf : MeromorphicAt f z)
     (ho : 0 ≤ meromorphicOrderAt f z) : AnalyticAt ℂ (limPunctured f) z := by
   have hev : ∀ᶠ w in 𝓝[≠] z, AnalyticAt ℂ f w := hf.eventually_analyticAt
@@ -42,6 +56,13 @@ lemma analyticAt_limPunctured [CompleteSpace E] {f : ℂ → E} {z : ℂ} (hf : 
 
 variable {L : PeriodPair}
 
+/- English proof (translation)
+Establish `h1 : Tendsto (fun w ↦ w - l) (𝓝[≠] (z + l)) (𝓝[≠] z)`. Use `tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within _ ?_ ?_` and prove the remaining obligations. Establish `: Tendsto (fun w ↦ w - l) (𝓝 (z + l)) (𝓝 (z + l - l))` using `(continuous_id.sub continuous_const).tendsto _`. Simplify using `using this.mono_left nhdsWithin_le_nhds`. Use `filter_upwards [self_mem_nhdsWithin] with w hw`.
+
+Introduce `h`. Apply `hw` to reduce the goal to its premises. Simplify using `only [mem_singleton_iff] at h ⊢`. Rewrite using `[← h]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h2` using `(tendsto_limPunctured hf ho).comp h1`. Establish `e : (f ∘ fun w ↦ w - l) = f` using `funext fun w ↦ hp.sub w hl`. Rewrite `h2` using `[e]`. Conclude with `h2.limUnder_eq`.
+-/
 lemma IsPeriodic.limPunctured_add {f : ℂ → E} (hp : IsPeriodic L f) {z l : ℂ}
     (hl : l ∈ L.lattice) (hf : MeromorphicAt f z) (ho : 0 ≤ meromorphicOrderAt f z) :
     limPunctured f (z + l) = limPunctured f z := by
@@ -62,6 +83,9 @@ lemma IsPeriodic.limPunctured_add {f : ℂ → E} (hp : IsPeriodic L f) {z l : �
 
 variable (L) in
 
+/- English proof (translation)
+Establish `hd : Differentiable ℂ (limPunctured f)` using `fun z ↦ (analyticAt_limPunctured (hf z) (ho z)).differentiableAt`. Establish `hFp : IsPeriodic L (limPunctured f)` using `fun z l hl ↦ hp.limPunctured_add hl (hf z) (ho z)`. Use `⟨limPunctured f 0, fun z hz ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[← limPunctured_eq_of_continuousAt hz.continuousAt]`. Conclude with `eq_of_differentiable_of_isPeriodic L hd hFp z 0`.
+-/
 theorem exists_const_of_meromorphicOrderAt_nonneg [CompleteSpace E] {f : ℂ → E} (hf : Meromorphic f)
     (hp : IsPeriodic L f) (ho : ∀ z, 0 ≤ meromorphicOrderAt f z) :
     ∃ c : E, ∀ z, AnalyticAt ℂ f z → f z = c := by
@@ -75,6 +99,9 @@ theorem exists_const_of_meromorphicOrderAt_nonneg [CompleteSpace E] {f : ℂ →
 
 variable (L) in
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `exists_const_of_meromorphicOrderAt_nonneg L hf hp ho`. Use `⟨c, ?_⟩` and prove the remaining obligations. Use `filter_upwards [(hf.meromorphicOn (s := univ)).analyticAt_mem_codiscreteWithin] with z hz`. Conclude with `hc z hz`.
+-/
 theorem exists_eventuallyEq_const_of_meromorphicOrderAt_nonneg [CompleteSpace E] {f : ℂ → E} (hf : Meromorphic f)
     (hp : IsPeriodic L f) (ho : ∀ z, 0 ≤ meromorphicOrderAt f z) :
     ∃ c : E, f =ᶠ[codiscrete ℂ] fun _ ↦ c := by

@@ -20,6 +20,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.BaseZ
 
+/- English proof (translation)
+Establish `hU : ⊤ ≤ (TopologicalSpace.Opens.map y.base).obj U` using `h.trans (fun z hz => hVU hz)`. Unfold `ReciprocityTheory.ChartRestriction.G.Geo.Tor.valR`. Rewrite using `[dif_pos h, dif_pos hU]`. Use `congr 1`. Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp, AlgebraicGeometry.Scheme.Hom.map_appLE]`.
+-/
 private theorem valR_restrict_eq_valR {A : Type} [CommRing A] {X : Scheme.{0}} (y : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp A ⟶ X)
     {U V : X.Opens} (hVU : V ≤ U) (h : ⊤ ≤ (TopologicalSpace.Opens.map y.base).obj V)
     (f : X.presheaf.obj (Opposite.op U)) :
@@ -31,6 +34,9 @@ private theorem valR_restrict_eq_valR {A : Type} [CommRing A] {X : Scheme.{0}} (
   congr 1
   rw [← RingHom.comp_apply, ← CommRingCat.hom_comp, AlgebraicGeometry.Scheme.Hom.map_appLE]
 
+/- English proof (translation)
+Establish `h1 : IsUnit (N : ℂ)` using `IsUnit.mk0 _ (Nat.cast_ne_zero.mpr hN)`. Establish `h2` using `h1.map (((ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ).presheaf.map (homOfLE (le_top : W ≤ ⊤)).op).hom.comp (AlgebraicGeometry.Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom)`. Simplify `h2` using `only [map_natCast]`.
+-/
 private theorem isUnit_natCast_sp_complex_sections (N : ℕ) (hN : N ≠ 0) (W : (ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ).Opens) :
     IsUnit (N : (ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ).presheaf.obj (Opposite.op W)) := by
   have h1 : IsUnit (N : ℂ) := IsUnit.mk0 _ (Nat.cast_ne_zero.mpr hN)
@@ -39,6 +45,11 @@ private theorem isUnit_natCast_sp_complex_sections (N : ℕ) (hN : N ≠ 0) (W :
       (AlgebraicGeometry.Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom)
   simpa only [map_natCast] using h2
 
+/- English proof (translation)
+Use `haveI := hU.isLocalization_basicOpen (N : X.presheaf.obj (Opposite.op U))`. Establish `hres : (algebraMap (X.presheaf.obj (Opposite.op U)) (X.presheaf.obj (Opposite.op (X.basicOpen (N : X.presheaf.obj (Opposite.op U)))))).Etale` using `RingHom.etale_algebraMap.mpr (Algebra.Etale.of_isLocalizationAway (N : X.presheaf.obj (Opposite.op U)))`. Establish `hcomp : ((algebraMap (X.presheaf.obj (Opposite.op U)) (X.presheaf.obj (Opposite.op (X.basicOpen (N : X.presheaf.obj (Opposite.op U)))))).comp (MvPolynomial.eval₂Hom φ x)).Etale` using `RingHom.Etale.stableUnderComposition (MvPolynomial.eval₂Hom φ x) (algebraMap _ _) hx hres`. Rewrite `hcomp` using `[MvPolynomial.comp_eval₂Hom]`. Establish `hunit : IsUnit ((N : X.presheaf.obj (Opposite.op (X.basicOpen (N : X.presheaf.obj (Opposite.op U))))))`.
+
+Simplify `IsLocalization.Away.algebraMap_isUnit (S := X.presheaf.obj (Opposite.op (X.basicOpen (N : X.presheaf.obj (Opposite.op U))))) (N : X.presheaf.obj (Opposite.op U))` using `only [map_natCast]`. Conclude with `(GlobalTheory.T.etale_polynomial_base_change_iff k _ N hNet _ hunit D _).mp hcomp`.
+-/
 private theorem etale_eval2Hom_basicOpen {k : Type} [CommRing k] {X : Scheme.{0}} {U : X.Opens}
     (hU : AlgebraicGeometry.IsAffineOpen U) (N : ℕ)
     (hNet : (Int.castRingHom (Localization.Away (N : k))).Etale)
@@ -65,6 +76,25 @@ private theorem etale_eval2Hom_basicOpen {k : Type} [CommRing k] {X : Scheme.{0}
         (N : X.presheaf.obj (Opposite.op U))
   exact (GlobalTheory.T.etale_polynomial_base_change_iff k _ N hNet _ hunit D _).mp hcomp
 
+/- English proof (translation)
+Take `⟨N, hN0, hNet⟩` from `GlobalTheory.T.etale_over_integers_localization k`. Take `⟨hemb, -⟩` from `GlobalTheory.T.sheet_isOpenEmbedding_range k X p t τ σ`. Use `haveI : Nonempty (GlobalTheory.CxPts p σ) := ⟨c.e.symm (0 : EuclideanSpace ℂ (Fin D))⟩`. Take `⟨E, hE, hEs, hEt⟩ : ∃ E : OpenPartialHomeomorph (GlobalTheory.CxPts p σ) (GlobalTheory.CxPts t τ), ⇑E = sheet t τ ∧ E.source = Set.univ ∧ E.target = Set.range (sheet t τ)` from `⟨_, Topology.IsOpenEmbedding.toOpenPartialHomeomorph_apply _ hemb, Topology.IsOpenEmbedding.toOpenPartialHomeomorph_source _ hemb, Topology.IsOpenEmbedding.toOpenPartialHomeomorph_target _ hemb⟩`. Establish `hleft : ∀ y : GlobalTheory.CxPts p σ, E.symm (sheet t τ y) = y`.
+
+Introduce `y`. Establish `h` using `E.left_inv (x := y) (by rw [hEs]; trivial)`. Rewrite `h` using `[hE]`. Then use the resulting hypothesis. Establish `hsrc : (E.symm.trans c.e).source = sheet t τ '' c.e.source`. Use extensionality with `z`.
+
+Rewrite using `[OpenPartialHomeomorph.trans_source, OpenPartialHomeomorph.symm_source, hEt]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨y, rfl⟩, hy⟩`. Conclude with `⟨y, by simpa [Set.mem_preimage, hleft] using hy, rfl⟩`. Introduce and unpack `⟨y, hy, rfl⟩`.
+
+Conclude with `⟨⟨y, rfl⟩, by simpa [Set.mem_preimage, hleft] using hy⟩`. Establish `hin : ∀ y ∈ c.e.source, ⊤ ≤ (TopologicalSpace.Opens.map (y.1).base).obj (X.basicOpen (N : X.presheaf.obj (Opposite.op c.U)))`. Introduce `y hy`. Rewrite using `[AlgebraicGeometry.Scheme.preimage_basicOpen, AlgebraicGeometry.Scheme.basicOpen_of_isUnit]`. Conclude with `c.source_subset hy`.
+
+Rewrite using `[map_natCast]`. Conclude with `isUnit_natCast_sp_complex_sections N hN0 _`. Establish `het` using `etale_eval2Hom_basicOpen c.affine N hNet (algX p c.U) c.x c.etale`. Use `⟨⟨E.symm.trans c.e, X.basicOpen (N : X.presheaf.obj (Opposite.op c.U)), c.affine.basicOpen _, fun a => algebraMap (X.presheaf.obj (Opposite.op c.U)) _ (c.x a), ?_, ?_, ?_, ?_⟩, hsrc, ?_⟩` and prove the remaining obligations. Establish `hZ : algX t (X.basicOpen (N : X.presheaf.obj (Opposite.op c.U))) = Int.castRingHom _` using `RingHom.ext_int _ _`.
+
+Rewrite using `[hZ]`. Conclude with `het`. Introduce `z hz`. Rewrite `hz` using `[hsrc]`. Take `⟨y, hy, rfl⟩` from `hz`.
+
+Conclude with `hin y hy`. Introduce `z hz a`. Rewrite `hz` using `[hsrc]`. Take `⟨y, hy, rfl⟩` from `hz`. Rewrite using `[OpenPartialHomeomorph.coe_trans, Function.comp_apply, hleft, c.apply_eq y hy a]`.
+
+Conclude with `(valR_restrict_eq_valR y.1 (X.basicOpen_le _) (hin y hy) (c.x a)).symm`. Introduce `W f`. Rewrite using `[OpenPartialHomeomorph.trans_target, OpenPartialHomeomorph.coe_trans_symm, OpenPartialHomeomorph.symm_symm, hE, OpenPartialHomeomorph.symm_target, hEs]`. Use `((c.holo W f).mono ?_).congr ?_` and prove the remaining obligations. Introduce and unpack `v ⟨⟨hv1, -⟩, hv2⟩`.
+
+Conclude with `⟨hv1, hv2⟩`. Introduce `v _`. Both sides reduce to the same expression. Introduce `y hy`. Rewrite using `[OpenPartialHomeomorph.coe_trans, Function.comp_apply, hleft]`.
+-/
 theorem algChart_toZ (k : Type) [CommRing k] [IsDomain k] [CharZero k] [Module.Finite ℤ k] (X : Scheme.{0}) (p : X ⟶ Sp k)
     (t : X ⟶ Sp ℤ) (τ : ℤ →+* ℂ) (σ : k →+* ℂ) (D : ℕ) (c : AlgChart p σ D) :
     ∃ c' : AlgChart t τ D, c'.e.source = sheet t τ '' c.e.source ∧ ∀ y ∈ c.e.source, c'.e (sheet t τ y) = c.e y := by

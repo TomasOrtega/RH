@@ -21,6 +21,11 @@ section Comparison₂
 
 variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Λ : ∀ j, LevFam X.E X.K (R.N j) Pr.vGs)
 
+/- English proof (translation)
+Introduce `i _ c c'`. Rewrite using `[Units.val_mul, Units.val_zpow_eq_zpow_val, Units.val_zpow_eq_zpow_val, map_mul, map_zpow₀, map_zpow₀, hpt, hpt, hF]`. Establish `ha : f (R.N i) (repN W Λ u i c) ≠ 0`. Rewrite using `[← hpt]`. Conclude with `(map_ne_zero σ₀).mpr (Units.ne_zero _)`.
+
+Establish `hb : f (R.N (i + 1)) (repN W Λ u (i + 1) c') ≠ 0`. Rewrite using `[← hpt]`. Conclude with `(map_ne_zero σ₀).mpr (Units.ne_zero _)`. Rewrite using `[zpow_neg, zpow_neg]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem chiDetTie_of_pt (σ₀ : X.K →+* ℂ) (Dc : DetChr X R.m) (hc : Formalism.BasicNotions.CMData X.F X.E) (Am : Formalism.L2.Ker.Amb X)
     (u : Pr.Word) (f : ∀ a : ℕ, Submodule (𝓞 X.E) (Sp X.E a) → ℂ)
     (hF : ∀ a b N N', Am.chiF a b N N' = f a N ^ (((b / 2 : ℕ) : ℤ)) * f b N' ^ (-((a / 2 : ℕ) : ℤ)))

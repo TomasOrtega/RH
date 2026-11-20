@@ -3,6 +3,9 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.RaisingLoweringRela
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+The claim follows from `pb_degTop_of_polyTop polynomial_top`.
+-/
 theorem degree_top : Formalism.FourierDecayAlt.KB.DegTop := pb_degTop_of_polyTop polynomial_top
 
 end Formalism.FourierDecayAlt.P

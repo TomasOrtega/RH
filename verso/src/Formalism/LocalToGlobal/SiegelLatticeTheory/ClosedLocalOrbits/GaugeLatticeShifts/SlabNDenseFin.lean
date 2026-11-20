@@ -18,18 +18,27 @@ section Alg
 variable {ι : Type*} [Fintype ι] [DecidableEq ι] {K : Type*} [CommRing K] [StarRing K] [Invertible (2 : K)]
 variable {J J' : Matrix ι ι K}
 
+/- English proof (translation)
+Unfold `sharp`. Rewrite using `[conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sharp_mul' (h : J * J' = 1) (A B : Matrix ι ι K) : sharp J J' (A * B) = sharp J J' B * sharp J J' A := by
   unfold sharp
   rw [conjTranspose_mul]
   calc J' * (Bᴴ * Aᴴ) * J = J' * Bᴴ * (J * J') * Aᴴ * J := by rw [h, Matrix.mul_one]; simp only [Matrix.mul_assoc]
     _ = _ := by simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => rw [pow_zero, pow_zero, sharp_one h']`. Consider the case `succ j ih => rw [pow_succ, sharp_mul' h, ih, pow_succ']`.
+-/
 theorem sharp_pow' (h : J * J' = 1) (h' : J' * J = 1) (A : Matrix ι ι K) (j : ℕ) :
     sharp J J' (A ^ j) = sharp J J' A ^ j := by
   induction j with
   | zero => rw [pow_zero, pow_zero, sharp_one h']
   | succ j ih => rw [pow_succ, sharp_mul' h, ih, pow_succ']
 
+/- English proof (translation)
+Unfold `geo`. Proceed by induction on `N with`. Consider the case `zero => simp [sharp]`. Consider the case `succ N ih => rw [Finset.sum_range_succ, Finset.sum_range_succ, sharp_add, ih, sharp_pow' h h']`.
+-/
 theorem sharp_geo (h : J * J' = 1) (h' : J' * J = 1) (A : Matrix ι ι K) (N : ℕ) :
     sharp J J' (geo N A) = geo N (sharp J J' A) := by
   unfold geo
@@ -39,6 +48,17 @@ theorem sharp_geo (h : J * J' = 1) (h' : J' * J = 1) (A : Matrix ι ι K) (N : �
 
 def icay (N : ℕ) (M : Matrix ι ι K) : Matrix ι ι K := (M - 1) * geo N (-((⅟2 : K) • (M - 1)))
 
+/- English proof (translation)
+Use `set A : Matrix ι ι K := (⅟2 : K) • (M - 1) with hA`. Use `set G := geo N (-A) with hG`. Establish `hAN : (-A) ^ N = 0` using `by rw [neg_pow, hT, mul_zero]`. Establish `hAG : (1 + A) * G = 1`. Use `mul_neg_geom_sum (-A) N` as an intermediate fact.
+
+Rewrite `this` using `[sub_neg_eq_add, hAN, sub_zero]`. Conclude with `this`. Establish `hZ2 : (⅟2 : K) • icay N M = A * G` using `by rw [icay, Matrix.smul_mul]`. Establish `h1 : 1 - A * G = G`. Establish `e : (1 + A) * G = G + A * G` using `by rw [Matrix.add_mul, Matrix.one_mul]`.
+
+Rewrite `hAG` using `[e]`. Rewrite using `[← hAG]`. Normalize the expressions using the abelian group laws. Establish `hgeo : (1 - (⅟2 : K) • icay N M) * geo N ((⅟2 : K) • icay N M) = 1`. Rewrite using `[geo, mul_neg_geom_sum, hZ, sub_zero]`.
+
+Rewrite `hgeo` using `[hZ2, h1]`. Establish `hg : geo N ((⅟2 : K) • icay N M) = 1 + A`. Combine the equalities or inequalities in the displayed calculation. Establish `hGA : G * (1 + A) = 1`. Use `geom_sum_mul_neg (-A) N` as an intermediate fact.
+
+Rewrite `this` using `[sub_neg_eq_add, hAN, sub_zero]`. Conclude with `this`. Unfold `cay`. Rewrite using `[hg, icay, ← hG, Matrix.mul_assoc, hGA, Matrix.mul_one]`. Normalize the expressions using the abelian group laws.
+-/
 theorem cay_icay {N : ℕ} {M : Matrix ι ι K} (hT : ((⅟2 : K) • (M - 1)) ^ N = 0)
     (hZ : ((⅟2 : K) • icay N M) ^ N = 0) : cay N (icay N M) = M := by
   set A : Matrix ι ι K := (⅟2 : K) • (M - 1) with hA
@@ -67,6 +87,21 @@ theorem cay_icay {N : ℕ} {M : Matrix ι ι K} (hT : ((⅟2 : K) • (M - 1)) ^
   rw [hg, icay, ← hG, Matrix.mul_assoc, hGA, Matrix.mul_one]
   abel
 
+/- English proof (translation)
+Use `set A : Matrix ι ι K := (⅟2 : K) • (M - 1) with hA`. Use `set B : Matrix ι ι K := (⅟2 : K) • (P - 1) with hB`. Establish `hsA : sharp J J' A = B` using `by rw [hA, hB, sharp_smul, star_half, sharp_sub, hS, sharp_one h']`. Establish `hAN : (-A) ^ N = 0` using `by rw [neg_pow, hT, mul_zero]`. Establish `hBN : (-B) ^ N = 0` using `by rw [neg_pow, hT', mul_zero]`.
+
+Establish `hAG : (1 + A) * geo N (-A) = 1`. Use `mul_neg_geom_sum (-A) N` as an intermediate fact. Rewrite `this` using `[sub_neg_eq_add, hAN, sub_zero]`. Conclude with `this`. Establish `hGB : geo N (-B) * (1 + B) = 1`.
+
+Use `geom_sum_mul_neg (-B) N` as an intermediate fact. Rewrite `this` using `[sub_neg_eq_add, hBN, sub_zero]`. Conclude with `this`. Establish `hQ : (P - 1) * (M - 1) = (1 + 1) - P - M`. Simplify using `only [Matrix.sub_mul, Matrix.mul_sub, Matrix.one_mul, Matrix.mul_one, hPM]`.
+
+Normalize the expressions using the abelian group laws. Establish `hH : (⅟2 : K) • ((P - 1) * (M - 1)) + (⅟2 : K) • ((P - 1) * (M - 1)) = (1 + 1) - P - M`. Rewrite using `[half_add_half', hQ]`. Establish `key : (P - 1) * (1 + A) = -((1 + B) * (M - 1))`. Establish `e1 : (P - 1) * (1 + A) = (P - 1) + (⅟2 : K) • ((P - 1) * (M - 1))`.
+
+Rewrite using `[Matrix.mul_add, Matrix.mul_one, hA, Matrix.mul_smul]`. Establish `e2 : (1 + B) * (M - 1) = (M - 1) + (⅟2 : K) • ((P - 1) * (M - 1))`. Rewrite using `[Matrix.add_mul, Matrix.one_mul, hB, Matrix.smul_mul]`. Rewrite using `[e1, e2]`. Use `eq_neg_of_add_eq_zero_left ?_` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hs : sharp J J' (icay N M) = geo N (-B) * (P - 1)`. Rewrite using `[icay, sharp_mul' h, sharp_geo h h', sharp_neg, hsA, sharp_sub, hS, sharp_one h']`. Rewrite using `[hs]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, hAG, Matrix.mul_one]`. Use `_ = -(geo N (-B) * (1 + B) * ((M - 1) * geo N (-A))) := by`. Rewrite using `[key]`. Simplify using `only [Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc]`. Use `_ = -icay N M := by rw [hGB, Matrix.one_mul, icay]`.
+-/
 theorem icay_skew (h : J * J' = 1) (h' : J' * J = 1) {N : ℕ} {M P : Matrix ι ι K} (hS : sharp J J' M = P)
     (hPM : P * M = 1) (hT : ((⅟2 : K) • (M - 1)) ^ N = 0) (hT' : ((⅟2 : K) • (P - 1)) ^ N = 0) :
     sharp J J' (icay N M) = -icay N M := by
@@ -115,6 +150,11 @@ variable {D : D7} (X : HidaSetting D)
 
 abbrev sA : RA X →+* RA X := Formalism.UG.sigR X.B.I.cm.sig (Af X.B.I.F)
 
+/- English proof (translation)
+Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => show Algebra.TensorProduct.map X.B.I.cm.sig (AlgHom.id X.B.I.F (Af X.B.I.F)) (Algebra.TensorProduct.map X.B.I.cm.sig (AlgHom.id X.B.I.F (Af X.B.I.F)) (a ⊗ₜ[X.B.I.F] b)) = a ⊗ₜ[X.B.I.F] b`. Rewrite using `[Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.map_tmul]`. Establish `e : X.B.I.cm.sig (X.B.I.cm.sig a) = a` using `star_star a`.
+
+Rewrite using `[e]`. Both sides reduce to the same expression. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 theorem sA_invol (r : RA X) : sA X (sA X r) = r := by
   induction r using TensorProduct.induction_on with
   | zero => simp
@@ -136,13 +176,22 @@ theorem sA_invol (r : RA X) : sA X (sA X r) = r := by
 
 attribute [local instance] starRA
 
+/- English proof (translation)
+The claim follows from `DictLat.sigR_inclE X.B.I e`.
+-/
 theorem star_ic (e : X.B.I.E) : star (ic X e) = ic X (star e) := DictLat.sigR_inclE X.B.I e
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [conjTranspose_apply, map_apply]`. Conclude with `star_ic X _`.
+-/
 theorem map_cT {m p : Type*} (M : Matrix m p X.B.I.E) : (M.map (ic X))ᴴ = (Mᴴ).map (ic X) := by
   ext i j
   simp only [conjTranspose_apply, map_apply]
   exact star_ic X _
 
+/- English proof (translation)
+Use extensionality with `i j`. Both sides reduce to the same expression.
+-/
 theorem cT_eqR {m p : Type} (M : Matrix m p (RA X)) :
     Formalism.UG.cT (Formalism.UG.sigR X.B.I.cm.sig (Af X.B.I.F)) M = Mᴴ := by
   ext i j
@@ -151,37 +200,66 @@ theorem cT_eqR {m p : Type} (M : Matrix m p (RA X)) :
 abbrev JA : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (RA X) := X.B.I.J.map (ic X)
 def JBf' : Matrix (Kap X) (Kap X) (RA X) := (JB' X).map (ic X)
 
+/- English proof (translation)
+Unfold `Bf Bf'`. Rewrite using `[← Matrix.map_mul, Bm_mul_Bm', Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem Bf_mul_Bf' : Bf X * Bf' X = 1 := by
   unfold Bf Bf'
   rw [← Matrix.map_mul, Bm_mul_Bm', Matrix.map_one _ (map_zero _) (map_one _)]
 
+/- English proof (translation)
+Unfold `Bf Bf'`. Rewrite using `[← Matrix.map_mul, Bm'_mul_Bm, Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem Bf'_mul_Bf : Bf' X * Bf X = 1 := by
   unfold Bf Bf'
   rw [← Matrix.map_mul, Bm'_mul_Bm, Matrix.map_one _ (map_zero _) (map_one _)]
 
+/- English proof (translation)
+Unfold `JBf JBf'`. Rewrite using `[← Matrix.map_mul, JB'_mul_JB, Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem JBf'_mul : JBf' X * JBf X = 1 := by
   unfold JBf JBf'
   rw [← Matrix.map_mul, JB'_mul_JB, Matrix.map_one _ (map_zero _) (map_one _)]
 
+/- English proof (translation)
+Unfold `JBf JBf'`. Rewrite using `[← Matrix.map_mul, JB_mul_JB', Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem JBf_mul : JBf X * JBf' X = 1 := by
   unfold JBf JBf'
   rw [← Matrix.map_mul, JB_mul_JB', Matrix.map_one _ (map_zero _) (map_one _)]
 
+/- English proof (translation)
+Introduce `i j h` and use `JB_graded X i j fun h0 => h (by simp [JBf, h0])`.
+-/
 theorem JBf_graded : Graded (lvk X) (2 * D.R.rS + 2) (JBf X) := fun i j h =>
   JB_graded X i j fun h0 => h (by simp [JBf, h0])
 
+/- English proof (translation)
+Introduce `i j h` and use `JB'_graded X i j fun h0 => h (by simp [JBf', h0])`.
+-/
 theorem JBf'_graded : Graded (lvk X) (2 * D.R.rS + 2) (JBf' X) := fun i j h =>
   JB'_graded X i j fun h0 => h (by simp [JBf', h0])
 
+/- English proof (translation)
+Unfold `JBf Bf`. Rewrite using `[JB_eq, Matrix.map_mul, Matrix.map_mul, map_cT]`.
+-/
 theorem JBf_eq : JBf X = (Bf X)ᴴ * JA X * Bf X := by
   unfold JBf Bf
   rw [JB_eq, Matrix.map_mul, Matrix.map_mul, map_cT]
 
+/- English proof (translation)
+Establish `hx : Formalism.UG.cT (Formalism.UG.sigR X.B.I.cm.sig (Af X.B.I.F)) (X.B.I.fmat x) * JA X * X.B.I.fmat x = JA X` using `x.2`. Rewrite `hx` using `[cT_eqR]`. Then use the resulting hypothesis.
+-/
 theorem fmat_unitary (x : X.B.I.Gf) : (X.B.I.fmat x)ᴴ * JA X * X.B.I.fmat x = JA X := by
   have hx : Formalism.UG.cT (Formalism.UG.sigR X.B.I.cm.sig (Af X.B.I.F)) (X.B.I.fmat x) * JA X * X.B.I.fmat x = JA X :=
     x.2
   rwa [cT_eqR] at hx
 
+/- English proof (translation)
+Establish `e : X.B.I.fmat (x * y) = X.B.I.fmat x * X.B.I.fmat y` using `rfl`. Unfold `Mf`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Bf_mul_Bf', Matrix.mul_one]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by simp only [Matrix.mul_assoc]`.
+-/
 theorem Mf_mul (x y : X.B.I.Gf) : Mf X (x * y) = Mf X x * Mf X y := by
   have e : X.B.I.fmat (x * y) = X.B.I.fmat x * X.B.I.fmat y := rfl
   unfold Mf
@@ -191,11 +269,19 @@ theorem Mf_mul (x y : X.B.I.Gf) : Mf X (x * y) = Mf X x * Mf X y := by
         rw [Bf_mul_Bf', Matrix.mul_one]; simp only [Matrix.mul_assoc]
     _ = _ := by simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `e : X.B.I.fmat 1 = 1` using `by simp [AutInst.fmat]`. Unfold `Mf`. Rewrite using `[e, Matrix.mul_one, Bf'_mul_Bf]`.
+-/
 theorem Mf_one : Mf X 1 = 1 := by
   have e : X.B.I.fmat 1 = 1 := by simp [AutInst.fmat]
   unfold Mf
   rw [e, Matrix.mul_one, Bf'_mul_Bf]
 
+/- English proof (translation)
+Establish `hh : (Bf' X)ᴴ * (Bf X)ᴴ = 1` using `by rw [← conjTranspose_mul, Bf_mul_Bf', conjTranspose_one]`. Establish `hu` using `fmat_unitary X x`. Rewrite using `[JBf_eq]`. Unfold `Mf`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (Bf X)ᴴ * ((X.B.I.fmat x)ᴴ * JA X * X.B.I.fmat x) * Bf X := by`. Rewrite using `[hh, Bf_mul_Bf', Matrix.mul_one, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hu]`.
+-/
 theorem Mf_unitary (x : X.B.I.Gf) : (Mf X x)ᴴ * JBf X * Mf X x = JBf X := by
   have hh : (Bf' X)ᴴ * (Bf X)ᴴ = 1 := by rw [← conjTranspose_mul, Bf_mul_Bf', conjTranspose_one]
   have hu := fmat_unitary X x
@@ -208,6 +294,9 @@ theorem Mf_unitary (x : X.B.I.Gf) : (Mf X x)ᴴ * JBf X * Mf X x = JBf X := by
         rw [hh, Bf_mul_Bf', Matrix.mul_one, Matrix.mul_one]; simp only [Matrix.mul_assoc]
     _ = _ := by rw [hu]
 
+/- English proof (translation)
+Establish `h1 : Mf X x * Mf X x⁻¹ = 1` using `by rw [← Mf_mul, mul_inv_cancel, Mf_one]`. Establish `h2` using `sharp_mul_self (JBf'_mul X) (Mf_unitary X x)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem Mf_inv (x : X.B.I.Gf) : Mf X x⁻¹ = sharp (JBf X) (JBf' X) (Mf X x) := by
   have h1 : Mf X x * Mf X x⁻¹ = 1 := by rw [← Mf_mul, mul_inv_cancel, Mf_one]
   have h2 := sharp_mul_self (JBf'_mul X) (Mf_unitary X x)

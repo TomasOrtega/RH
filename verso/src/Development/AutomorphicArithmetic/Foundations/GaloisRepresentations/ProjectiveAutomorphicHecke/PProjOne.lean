@@ -6,6 +6,11 @@ universe u v
 
 namespace UpperTheory.Gal.CertificateRingHomMap
 
+/- English proof (translation)
+Rewrite using `[MonoidAlgebra.lift_apply]`. Unfold `wop`. Use `congr 1`. Use function extensionality and compare the values at `w c`. Rewrite using `[FreeMonoid.lift_apply]`.
+
+Both sides reduce to the same expression.
+-/
 private theorem monoidAlgebra_lift_freeMonoid_eq_wop {F A J : Type*} [Field F] [Ring A] [Algebra F A] (T : J → A)
     (t : MonoidAlgebra F (FreeMonoid J)) :
     MonoidAlgebra.lift F A (FreeMonoid J) (FreeMonoid.lift T) t = wop T (t.coeff : List J →₀ F) := by
@@ -16,6 +21,9 @@ private theorem monoidAlgebra_lift_freeMonoid_eq_wop {F A J : Type*} [Field F] [
   rw [FreeMonoid.lift_apply]
   rfl
 
+/- English proof (translation)
+Unfold `wop`. Simplify using `only [Finsupp.sum, map_sum, map_smul, map_list_prod, List.map_map]`. Both sides reduce to the same expression.
+-/
 private theorem algHom_wop_eq_wop_comp {F A B J : Type*} [Field F] [Ring A] [Algebra F A] [Ring B]
     [Algebra F B] (φ : A →ₐ[F] B) (T : J → A) (t : List J →₀ F) :
     φ (wop T t) = wop (fun j => φ (T j)) t := by
@@ -23,6 +31,15 @@ private theorem algHom_wop_eq_wop_comp {F A B J : Type*} [Field F] [Ring A] [Alg
   simp only [Finsupp.sum, map_sum, map_smul, map_list_prod, List.map_map]
   rfl
 
+/- English proof (translation)
+Take `⟨r, hm, hndvd⟩` from `Polynomial.exists_eq_pow_rootMultiplicity_mul_and_not_dvd (minpoly F x) (minpoly.ne_zero hx) c`. Use `set k := Polynomial.rootMultiplicity c (minpoly F x)`. Establish `hcop : IsCoprime ((Polynomial.X - Polynomial.C c) ^ (k + 1)) r` using `((Polynomial.irreducible_X_sub_C c).coprime_iff_not_dvd.mpr hndvd).pow_left`. Take `⟨a, b, hab⟩` from `hcop`. Establish `h0 : Polynomial.aeval x (minpoly F x) = 0` using `minpoly.aeval F x`.
+
+Use `⟨b * r, ?_, ?_, k + 1, ?_⟩` and prove the remaining obligations. Use `congrArg (Polynomial.eval c) hab` as an intermediate fact. Simplify using `using this`. Establish `hid : (b * r) * (b * r) = b * r - a * b * (Polynomial.X - Polynomial.C c) * minpoly F x`. Rewrite using `[hm]`.
+
+Take the linear combination `(b * r) * hab`. Unfold `IsIdempotentElem`. Rewrite using `[← map_mul, hid]`. Simplify using `only [map_sub, map_mul, h0, mul_zero, sub_zero]`. Establish `hz : (Polynomial.X - Polynomial.C c) ^ (k + 1) * (b * r) = b * (Polynomial.X - Polynomial.C c) * minpoly F x`.
+
+Rewrite using `[hm]`. Expand and normalize the polynomial expressions, which then agree. Use `congrArg (Polynomial.aeval x) hz` as an intermediate fact. Simplify `this` using `[h0]`.
+-/
 private theorem exists_idempotent_aeval_nilpotent_sub_of_isIntegral {F D : Type*} [Field F] [CommRing D] [Algebra F D] (x : D)
     (hx : IsIntegral F x) (c : F) :
     ∃ q : Polynomial F, q.eval c = 1 ∧ IsIdempotentElem (Polynomial.aeval x q) ∧
@@ -49,6 +66,39 @@ private theorem exists_idempotent_aeval_nilpotent_sub_of_isIntegral {F D : Type*
     have := congrArg (Polynomial.aeval x) hz
     simpa [h0] using this
 
+/- English proof (translation)
+Introduce `F _ A _ _ _ J T hT θ`. Set `gen : J → F × A` to `fun j => (θ j, T j)`. Set `D` to `Algebra.adjoin F (Set.range gen)`. Establish `hcomm : ∀ a ∈ Set.range gen, ∀ b ∈ Set.range gen, a * b = b * a`. Introduce and unpack `_ ⟨i, rfl⟩ _ ⟨j, rfl⟩`.
+
+Conclude with `Prod.ext (mul_comm _ _) (hT i j)`. Use `letI : CommRing D := Algebra.adjoinCommRingOfComm F hcomm`. Use `haveI : Module.Finite F D := inferInstanceAs (Module.Finite F (Subalgebra.toSubmodule D))`. Set `χ : D →ₐ[F] F` to `(AlgHom.fst F F A).comp D.val`. Set `b` to `Module.finBasis F D`.
+
+Use `choose q hq1 hq2 N hN using fun i => exists_idempotent_aeval_nilpotent_sub_of_isIntegral (b i) (IsIntegral.of_finite F (b i)) (χ (b i))`. Set `z : D` to `∏ i, Polynomial.aeval (b i) (q i)`. Establish `hzid : IsIdempotentElem z`. Unfold `IsIdempotentElem`. Rewrite using `[← Finset.prod_mul_distrib]`.
+
+Conclude with `Finset.prod_congr rfl (fun i _ => hq2 i)`. Establish `hzχ : χ z = 1`. Rewrite using `[map_prod]`. Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `i _`.
+
+Rewrite using `[← Polynomial.aeval_algHom_apply, Polynomial.coe_aeval_eq_eval, hq1]`. Establish `hnil : ∀ d : D, IsNilpotent ((d - algebraMap F D (χ d)) * z)`. Set `L : D →ₗ[F] D` to `LinearMap.mulRight F z ∘ₗ (LinearMap.id - (Algebra.linearMap F D) ∘ₗ χ.toLinearMap)`. Establish `hL : ∀ d, L d = (d - algebraMap F D (χ d)) * z` using `fun d => rfl`. Set `S` to `((nilradical D).restrictScalars F).comap L`.
+
+Establish `hb : ∀ i, b i ∈ S`. Introduce `i`. Use `show L (b i) ∈ nilradical D`. Rewrite using `[hL]`. Establish `hsplit : z = Polynomial.aeval (b i) (q i) * ∏ j ∈ Finset.univ.erase i, Polynomial.aeval (b j) (q j)` using `(Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ i)).symm`.
+
+Rewrite using `[hsplit, ← mul_assoc]`. Apply `Ideal.mul_mem_right` to reduce the goal to its premises. Rewrite using `[mem_nilradical]`. Use `⟨N i + 1, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_pow, (hq2 i).pow_succ_eq, pow_succ', mul_assoc, hN i, mul_zero]`.
+
+Establish `hS : S = ⊤`. Rewrite using `[eq_top_iff, ← b.span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hb i`. Introduce `d`.
+
+Establish `hd : d ∈ S` using `hS ▸ Submodule.mem_top`. Rewrite using `[← mem_nilradical, ← hL]`. Conclude with `hd`. Set `Ψ` to `MonoidAlgebra.lift F (F × A) (FreeMonoid J) (FreeMonoid.lift gen)`. Establish `hD : D ≤ Ψ.range`.
+
+Apply `Algebra.adjoin_le` to reduce the goal to its premises. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `⟨MonoidAlgebra.of F _ (FreeMonoid.of j), by simp [Ψ, MonoidAlgebra.lift_of]⟩`. Take `⟨t, ht⟩` from `hD z.2`. Establish `ht' : MonoidAlgebra.lift F (F × A) (FreeMonoid J) (FreeMonoid.lift gen) t = z` using `ht`.
+
+Establish `hwθ : wop θ t.coeff = (z : F × A).1`. Establish `h1` using `algHom_wop_eq_wop_comp (AlgHom.fst F F A) gen t.coeff`. Rewrite `h1` using `[← monoidAlgebra_lift_freeMonoid_eq_wop, ht']`. Conclude with `h1.symm`. Establish `hwT : wop T t.coeff = (z : F × A).2`.
+
+Establish `h1` using `algHom_wop_eq_wop_comp (AlgHom.snd F F A) gen t.coeff`. Rewrite `h1` using `[← monoidAlgebra_lift_freeMonoid_eq_wop, ht']`. Conclude with `h1.symm`. Use `⟨t.coeff, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hwθ]`.
+
+Conclude with `hzχ`. Rewrite using `[hwT]`. Unfold `IsIdempotentElem`. Establish `h1` using `congrArg (fun x : D => (x : F × A).2) hzid`. Simplify using `using h1`.
+
+Introduce `j`. Set `d : D` to `⟨gen j, Algebra.subset_adjoin ⟨j, rfl⟩⟩`. Take `⟨M, hM⟩` from `hnil d`. Use `⟨M + 1, ?_⟩` and prove the remaining obligations. Establish `h2 : (d - algebraMap F D (θ j)) ^ (M + 1) * z = 0`.
+
+Establish `h3 : ((d - algebraMap F D (χ d)) * z) ^ (M + 1) = 0`. Rewrite using `[pow_succ, hM, zero_mul]`. Rewrite `h3` using `[mul_pow, hzid.pow_succ_eq]`. Conclude with `h3`. Establish `h4` using `congrArg ((AlgHom.snd F F A).comp D.val) h2`.
+
+Rewrite using `[hwT]`. Simplify `h4` using `[d, gen]`.
+-/
 theorem pProjOne_holds : ProjOne.{u} := by
   intro F _ A _ _ _ J T hT θ
   classical

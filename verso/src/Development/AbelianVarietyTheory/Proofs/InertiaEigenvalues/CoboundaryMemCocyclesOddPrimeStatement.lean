@@ -7,5 +7,8 @@ import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ConductorExpo
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BK GlobalTheory.BKReal GlobalTheory.BKGal GlobalTheory.Per Matrix
 open scoped Formalism.Per
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CobCont.main | exact GlobalTheory.CobCont.main | (intros; apply GlobalTheory.CobCont.main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.coboundary_mem_cocycles_odd_prime : ∀ (l : ℕ) [Fact l.Prime], l ≠ 2 → ∀ (LL : FinExt l) (T : QLat LL) (b : TW (OB l ↥(OL LL)) T) (c : Gl l → T.V), IsCobOf (sQ l) T b c → c ∈ continuousCocycles T.ρ := by
   first | exact @GlobalTheory.CobCont.main | exact GlobalTheory.CobCont.main | (intros; apply GlobalTheory.CobCont.main <;> assumption)

@@ -25,6 +25,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds (IsClassZe
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CMModel.exists_qbModel_of_subring | exact GlobalTheory.CMModel.exists_qbModel_of_subring | (intros; apply GlobalTheory.CMModel.exists_qbModel_of_subring <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.cm_uniformization_algebraic_model : GlobalTheory.Published.AbelianDualCrystal →
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (φ : I → E →+* ℂ) (c : Ideal (OF E))
     (L : Set E) (𝔠 : FracId (FR E)) (X : Obj (FR E) 𝔠 (Sp ℂ)) (U : Unif φ L 0 X),

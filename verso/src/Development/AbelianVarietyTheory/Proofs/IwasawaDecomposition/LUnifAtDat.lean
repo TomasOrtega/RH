@@ -22,6 +22,13 @@ open Formalism.IndefR.FWT Formalism.L2.Pj Formalism.IndefR.Mult
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `_ _ _`. Use `StepW.of_all fun K B f T w _ _ _ Z hX Wt z _ _ hEx hIn => ?_` and prove the remaining obligations. Establish `hch` using `z.pins.char`. Establish `hC : GlobalTheory.RealGeo.PreChar z.R.toRealDat` using `⟨hch.base.lev, hch.base.grp.red_R, hch.base.grp.red_L, hch.base.grp.record, hch.base.fam, hch.base.models, RealDat.chain_of_weak hch.base.chain hEx, RealDat.thP_of_weak hch.base.thP hEx⟩`. Establish `hχ : z.R.toRealDat.grp_chiW` using `hch.base.grp.chiW`.
+
+Establish `ht : TieIn z.core z.R.toRealDat z.geo.κ z.geo.v₀` using `⟨z.geo.fw.laws, z.geo.fw.alg_eq, z.geo.fw.kap, z.geo.fw.hv₀, z.geo.fw.chiR, z.geo.fw.x0⟩`. Establish `hp : z.core.pb = z.R.toRealDat.C.P.pb` using `GlobalTheory.PinsFixHalf.pb_eq_of_pins z.core z.R.toRealDat z.geo.κ z.geo.v₀ z.geo.O hC.lev z.geo.fw.laws z.geo.pins`. Establish `hx` using `GlobalTheory.T.exists_equivariant_unit_constants_goodEmbedding z.core z.R.toRealDat z.geo.κ z.geo.v₀ z.geo.O hC.lev ht hp z.geo.pins`. Establish `hU` using `hIn.jUnif`. Introduce `i σ`.
+
+Conclude with `⟨(GlobalTheory.TiedUnif.indep_span_of_tie z.geo.fw hC.models.HW z.geo.bar hU i σ).1, (GlobalTheory.TiedUnif.indep_span_of_tie z.geo.fw hC.models.HW z.geo.bar hU i σ).2, GlobalTheory.TiedUnif.rhoIs_of_eqAt z.geo.fw hC.models.HW hC.models.gW hχ z.geo.bar z.geo.rhoGeo hU i σ (fun h …`.
+-/
 theorem lUnif_atDat : GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Hk3.HoweUnram →
     GlobalTheory.Mem.Top.Bl.AtDat fun _ B f T w Z hX Wt z => z.R.toRealDat.LUnif := by
   intro _ _ _

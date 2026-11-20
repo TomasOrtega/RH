@@ -1,5 +1,8 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `a b c d h`. Rewrite `h` using `[Multiset.insert_eq_cons, Multiset.insert_eq_cons]`. Break down `Multiset.cons_eq_cons.mp h with ⟨h1, h2⟩ | ⟨_, cs, h2, h3⟩` into its components or cases. Conclude with `Or.inl ⟨h1, Multiset.singleton_inj.mp h2⟩`. Conclude with `Or.inr ⟨(Multiset.singleton_eq_cons_iff _ |>.mp h3).1.symm, (Multiset.singleton_eq_cons_iff _ |>.mp h2).1⟩`.
+-/
 theorem UpperTheory.Reformulated.B.PairCases.pair_cases :
     ∀ {a b c d : @Units Complex (@Semiring.toMonoid Complex Complex.instSemiring)},
       @Eq (Multiset (@Units Complex (@Semiring.toMonoid Complex Complex.instSemiring)))

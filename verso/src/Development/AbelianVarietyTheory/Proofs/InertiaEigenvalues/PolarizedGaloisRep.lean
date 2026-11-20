@@ -14,6 +14,35 @@ namespace GlobalTheory.Proof.SemisimpleRepresentationIntegralConjugate
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.IndefiniteRowSideFullHecke.DeterminantInTorus
 open scoped Pointwise Matrix
 
+/- English proof (translation)
+Set `col : Γ → Fin n → (Fin n → K)` to `fun g j i => (r g : Matrix (Fin n) (Fin n) K) i j`. Establish `hcol : ∀ g h j, col (g * h) j = (r g : Matrix (Fin n) (Fin n) K) *ᵥ col h j`. Introduce `g h j`. Use function extensionality and compare the values at `i`. Simplify using `[col, Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+
+Set `Λ : Submodule O (Fin n → K)` to `Submodule.span O (Set.range fun p : Γ × Fin n => col p.1 p.2)`. Establish `hst : ∀ g, ∀ v ∈ Λ, (r g : Matrix (Fin n) (Fin n) K) *ᵥ v ∈ Λ`. Introduce `g v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨p, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨(g * p.1, p.2), hcol _ _ _⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [Matrix.mulVec_add]`. Conclude with `Λ.add_mem hx hy`.
+
+Consider the case `smul a x _ hx => rw [Matrix.mulVec_smul]`. Conclude with `Λ.smul_mem a hx`. Establish `hfg : Λ.FG`. Establish `: Λ = Submodule.span O (Set.range fun p : (Γ ⧸ U) × Fin n => col p.1.out p.2)`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨⟨g, j⟩, rfl⟩`. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul U g`. Establish `hg : g = (QuotientGroup.mk g : Γ ⧸ U).out * (h⁻¹ : U)` using `by rw [hh]; simp`. Use `choose c hc using hU _ (h⁻¹).2`.
+
+Establish `: col g j = ∑ k, c k j • col (QuotientGroup.mk g : Γ ⧸ U).out k` using `by conv_lhs => rw [hg, hcol]`. Use function extensionality and compare the values at `i`. Simplify using `only [col, Matrix.mulVec, dotProduct, Finset.sum_apply, Pi.smul_apply]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [Algebra.smul_def, hc, mul_comm]`. Use `show col g j ∈ _`.
+
+Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨(_, k), rfl⟩)`. Conclude with `Submodule.span_mono (by rintro _ ⟨p, rfl⟩; exact ⟨(p.1.out, p.2), rfl⟩)`. Rewrite using `[this]`. Conclude with `Submodule.fg_span (Set.finite_range _)`.
+
+Establish `htop : Submodule.span K (Λ : Set (Fin n → K)) = ⊤`. Rewrite using `[eq_top_iff, ← (Pi.basisFun K (Fin n)).span_eq]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Use `Submodule.subset_span ⟨(1, j), ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `i`. Simplify using `[col, Matrix.one_apply, Pi.single_apply]`. Use `haveI : Λ.IsLattice K := ⟨hfg, htop⟩`. Use `haveI : Module.Free O Λ := Submodule.IsLattice.free K Λ`. Use `haveI : Module.Finite O Λ := Module.Finite.iff_fg.2 hfg`.
+
+Establish `hrk : Module.finrank O Λ = n`. Rewrite using `[Submodule.IsLattice.finrank_of_pi K Λ, Fintype.card_fin]`. Set `b : Module.Basis (Fin n) O Λ` to `Module.finBasisOfFinrankEq O Λ hrk`. Set `B` to `b.extendOfIsLattice K`. Set `e` to `Pi.basisFun K (Fin n)`.
+
+Set `P : GL (Fin n) K` to `⟨B.toMatrix e, e.toMatrix B, by simp, by simp⟩`. Use `⟨P, fun g i j => ?_⟩` and prove the remaining obligations. Establish `hB : ∀ j, B j = b j` using `fun j => b.extendOfIsLattice_apply K j`. Establish `h1 : ((P * r g * P⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) = LinearMap.toMatrix B B (Matrix.toLin' (r g : Matrix (Fin n) (Fin n) K))`. Rewrite using `[← basis_toMatrix_mul_linearMap_toMatrix_mul_basis_toMatrix B e B e]`.
+
+Simplify using `[P, e]`. Rewrite using `[h1, LinearMap.toMatrix_apply, Matrix.toLin'_apply, hB]`. Use `set v : Λ := ⟨_, hst g _ (b j).2⟩ with hv`. Use `⟨b.repr v i, ?_⟩` and prove the remaining obligations. Establish `h2 : (v : Fin n → K) = ∑ k, algebraMap O K (b.repr v k) • B k`.
+
+Establish `h3` using `congrArg Λ.subtype (b.sum_repr v)`. Rewrite `h3` using `[map_sum]`. Use `h3.symm.trans (Finset.sum_congr rfl fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[hB, algebraMap_smul]`. Both sides reduce to the same expression.
+
+Use `show _ = B.repr (v : Fin n → K) i`. Rewrite using `[h2, B.repr_sum_self]`.
+-/
 theorem exists_conj_integral {O K Γ : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K]
     [Algebra O K] [IsFractionRing O K] [Group Γ] (n : ℕ) (r : Γ →* GL (Fin n) K) (U : Subgroup Γ)
     [U.FiniteIndex]
@@ -89,6 +118,15 @@ theorem exists_conj_integral {O K Γ : Type} [CommRing O] [IsDomain O] [IsDiscre
   show _ = B.repr (v : Fin n → K) i
   rw [h2, B.repr_sum_self]
 
+/- English proof (translation)
+Set `e : (Fin n → k) ≃ₗ[k] (Fin n → k)` to `Matrix.toLin'OfInv (M := (h : Matrix (Fin n) (Fin n) k)) (M' := ((h⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)) (by simp) (by simp)`. Establish `he : ∀ v, e v = ((h⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) *ᵥ v` using `fun v => rfl`. Establish `key : ∀ g v, e ((ρ' g : Matrix (Fin n) (Fin n) k) *ᵥ v) = (ρ g : Matrix (Fin n) (Fin n) k) *ᵥ e v`. Introduce `g v`. Rewrite using `[he, he, hh, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Units.val_mul, ← Units.val_mul]`.
+
+Use `congr 2`. Use `group`. Introduce `W hW`. Take `⟨W', hW', hc⟩` from `hρ (W.map (e : (Fin n → k) →ₗ[k] (Fin n → k))) (by`. Introduce and unpack `g _ ⟨v, hv, rfl⟩`.
+
+Conclude with `⟨_, hW g v hv, key g v⟩)`. Use `⟨W'.comap (e : (Fin n → k) →ₗ[k] (Fin n → k)), fun g v hv => ?_, ?_⟩` and prove the remaining obligations. Use `show e _ ∈ W'`. Rewrite using `[key]`. Conclude with `hW' g _ hv`.
+
+Use `(Submodule.orderIsoMapComap e).symm.isCompl hc` as an intermediate fact. Establish `h2 : IsCompl ((W.map (e : (Fin n → k) →ₗ[k] (Fin n → k))).comap (e : (Fin n → k) →ₗ[k] (Fin n → k))) (W'.comap (e : (Fin n → k) →ₗ[k] (Fin n → k)))` using `this`. Rewrite `h2` using `[Submodule.comap_map_eq_of_injective e.injective]`. Then use the resulting hypothesis.
+-/
 theorem isSSRep_conj {Γ k : Type} [Group Γ] [Field k] {n : ℕ} {ρ ρ' : Γ →* GL (Fin n) k} (h : GL (Fin n) k)
     (hh : ∀ g, ρ' g = h * ρ g * h⁻¹) (hρ : IsSSRep ρ) : IsSSRep ρ' := by
   let e : (Fin n → k) ≃ₗ[k] (Fin n → k) := Matrix.toLin'OfInv (M := (h : Matrix (Fin n) (Fin n) k))
@@ -112,6 +150,9 @@ theorem isSSRep_conj {Γ k : Type} [Group Γ] [Field k] {n : ℕ} {ρ ρ' : Γ �
       (W'.comap (e : (Fin n → k) →ₗ[k] (Fin n → k))) := this
     rwa [Submodule.comap_map_eq_of_injective e.injective] at h2
 
+/- English proof (translation)
+The claim follows from `_root_.GlobalTheory.RetractionComplement.isSSRep_of_mapRep ι ρ hρ`.
+-/
 theorem isSSRep_of_mapRep {Γ k k' : Type} [Group Γ] [Field k] [Field k'] {n : ℕ} (ι : k →+* k')
     (ρ : Γ →* GL (Fin n) k) (hρ : IsSSRep (mapRep ι ρ)) : IsSSRep ρ :=
   _root_.GlobalTheory.RetractionComplement.isSSRep_of_mapRep ι ρ hρ
@@ -126,6 +167,15 @@ include hφ
 
 omit [IsDomain O] [IsDiscreteValuationRing O] in
 
+/- English proof (translation)
+Take `⟨p, hp, hx⟩ : IsIntegral ℤ_[l] x` from `Algebra.IsIntegral.isIntegral x`. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Establish `h0 : (φ x) ^ p.natDegree + ∑ i ∈ Finset.range p.natDegree, algebraMap ℚ_[l] (Qbar l) (p.coeff i : ℚ_[l]) * φ x ^ i = 0`. Use `congrArg φ hx` as an intermediate fact.
+
+Rewrite `this` using `[hp.as_sum, Polynomial.eval₂_add, Polynomial.eval₂_finset_sum]`. Simplify `this` using `[hφ]`. Establish `hpos : 0 < p.natDegree`. Assume the negation of the conclusion as `h`. Establish `h' : p.natDegree = 0` using `by omega`.
+
+Simplify using `[h'] at h0`. Establish `h1 : ‖∑ i ∈ Finset.range p.natDegree, algebraMap ℚ_[l] (Qbar l) (p.coeff i : ℚ_[l]) * φ x ^ i‖ ≤ ‖φ x‖ ^ (p.natDegree - 1)`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) fun i hi => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow, norm_algebraMap']`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[one_mul]`. Conclude with `pow_le_pow_right₀ hlt.le (by have := Finset.mem_range.1 hi; omega)`. Rewrite `h0` using `[← eq_neg_iff_add_eq_zero]`. Rewrite `h1` using `[← norm_neg, ← h0, norm_pow]`. Conclude with `absurd h1 (not_le.2 (pow_lt_pow_right₀ hlt (by omega)))`.
+-/
 theorem norm_le_one (x : O) : ‖φ x‖ ≤ 1 := by
   obtain ⟨p, hp, hx⟩ : IsIntegral ℤ_[l] x := Algebra.IsIntegral.isIntegral x
   by_contra hlt
@@ -152,12 +202,22 @@ theorem norm_le_one (x : O) : ‖φ x‖ ≤ 1 := by
   exact absurd h1 (not_le.2 (pow_lt_pow_right₀ hlt (by omega)))
 
 omit [IsDomain O] [IsDiscreteValuationRing O] in
+/- English proof (translation)
+Establish `h1` using `norm_le_one φ hφ u`. Establish `h2` using `norm_le_one φ hφ ↑u⁻¹`. Establish `h3 : ‖φ u‖ * ‖φ ↑u⁻¹‖ = 1` using `by rw [← norm_mul, ← map_mul]; simp`. Use polynomial arithmetic with `[norm_nonneg (φ u), norm_nonneg (φ ↑u⁻¹)]`.
+-/
 theorem norm_unit (u : Oˣ) : ‖φ u‖ = 1 := by
   have h1 := norm_le_one φ hφ u
   have h2 := norm_le_one φ hφ ↑u⁻¹
   have h3 : ‖φ u‖ * ‖φ ↑u⁻¹‖ = 1 := by rw [← norm_mul, ← map_mul]; simp
   nlinarith [norm_nonneg (φ u), norm_nonneg (φ ↑u⁻¹)]
 
+/- English proof (translation)
+Establish `hl : ‖φ (l : O)‖ < 1`. Use `hφ (l : ℤ_[l])` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Rewrite using `[this, norm_algebraMap']`. Conclude with `(PadicInt.norm_lt_one_iff_dvd (l : ℤ_[l])).2 dvd_rfl` after adjusting the coercions.
+
+Establish `hl0 : (l : O) ≠ 0`. Introduce `h`. Establish `: φ (l : O) = 0` using `by rw [h, map_zero]`. Rewrite `this` using `[map_natCast]`. Conclude with `(Fact.out : l.Prime).ne_zero (by exact_mod_cast this)`.
+
+Take `⟨k, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hl0 hϖ`. Rewrite `hl` using `[hu, map_mul, norm_mul, norm_unit φ hφ, one_mul, map_pow, norm_pow]`. Assume the negation of the conclusion as `h`. Conclude with `absurd hl (not_lt.2 (one_le_pow₀ (not_lt.1 h)))`.
+-/
 theorem norm_lt_one {ϖ : O} (hϖ : Irreducible ϖ) : ‖φ ϖ‖ < 1 := by
   have hl : ‖φ (l : O)‖ < 1 := by
     have := hφ (l : ℤ_[l])
@@ -174,6 +234,13 @@ theorem norm_lt_one {ϖ : O} (hϖ : Irreducible ϖ) : ‖φ ϖ‖ < 1 := by
   by_contra h
   exact absurd hl (not_lt.2 (one_le_pow₀ (not_lt.1 h)))
 
+/- English proof (translation)
+Rewrite using `[hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Establish `h0 : 0 < ‖φ ϖ‖` using `norm_pos_iff.2 ((map_ne_zero_iff φ hinj).2 hϖ.ne_zero)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Rewrite using `[map_mul, norm_mul, map_pow, norm_pow]`.
+
+Conclude with `mul_le_of_le_one_right (by positivity) (norm_le_one φ hφ y)`. Introduce `h`. Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Take `⟨j, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hx hϖ`.
+
+Rewrite `h` using `[map_mul, norm_mul, norm_unit φ hφ, one_mul, map_pow, norm_pow, pow_le_pow_iff_right_of_lt_one₀ h0 (norm_lt_one φ hφ hϖ)]`. Conclude with `Dvd.dvd.mul_left (pow_dvd_pow _ h) _`.
+-/
 theorem mem_pow_iff (hinj : Function.Injective φ) {ϖ : O} (hϖ : Irreducible ϖ) (k : ℕ) (x : O) :
     x ∈ IsLocalRing.maximalIdeal O ^ k ↔ ‖φ x‖ ≤ ‖φ ϖ‖ ^ k := by
   rw [hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.mem_span_singleton]
@@ -190,6 +257,11 @@ theorem mem_pow_iff (hinj : Function.Injective φ) {ϖ : O} (hϖ : Irreducible �
       pow_le_pow_iff_right_of_lt_one₀ h0 (norm_lt_one φ hφ hϖ)] at h
     exact Dvd.dvd.mul_left (pow_dvd_pow _ h) _
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `h0 : 0 < ‖φ ϖ‖` using `norm_pos_iff.2 ((map_ne_zero_iff φ hinj).2 hϖ.ne_zero)`. Establish `h1` using `norm_lt_one φ hφ hϖ`. Rewrite using `[IsTopologicalAddGroup.isInducing_iff_nhds_zero]`. Use `had.hasBasis_nhds_zero.eq_of_same_basis ?_` and prove the remaining obligations.
+
+Establish `hb : (nhds (0 : Qbar l)).HasBasis (fun _ : ℕ => True) (fun k => Metric.closedBall 0 (‖φ ϖ‖ ^ k))` using `Metric.nhds_basis_closedBall_pow h0 h1`. Use `hb.comap φ using 2 with k` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Simplify using `[mem_pow_iff φ hφ hinj hϖ]`.
+-/
 theorem isInducing [TopologicalSpace O] [IsTopologicalRing O] (had : IsAdic (IsLocalRing.maximalIdeal O))
     (hinj : Function.Injective φ) : Topology.IsInducing φ := by
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible O
@@ -205,6 +277,19 @@ theorem isInducing [TopologicalSpace O] [IsTopologicalRing O] (had : IsAdic (IsL
 
 end Topology
 
+/- English proof (translation)
+Set `φ` to `ι.comp (algebraMap O K)`. Use `⟨?_, fun h => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, rfl⟩`. Conclude with `norm_le_one φ hι y`. Take `⟨y, hy | hy⟩` from `ValuationRing.isInteger_or_isInteger O x |>.elim (fun ⟨y, hy⟩ => (⟨y, Or.inl hy⟩ : ∃ y : O, algebraMap O K y = x ∨ algebraMap O K y = x⁻¹)) (fun ⟨y, hy⟩ => ⟨y, Or.inr hy⟩)`.
+
+Conclude with `⟨y, hy⟩`. Distinguish the cases in `hx : x = 0`. Conclude with `⟨0, by simp [hx]⟩`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`.
+
+Conclude with `hx (by simpa using hy.symm)`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨j, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hy0 hϖ`. Establish `h1 : ‖φ y‖ = ‖ι x‖⁻¹` using `by show ‖ι (algebraMap O K y)‖ = _`. Rewrite using `[hy, map_inv₀, norm_inv]`.
+
+Establish `h2 : 1 ≤ ‖φ y‖`. Rewrite using `[h1]`. Conclude with `(one_le_inv₀ (norm_pos_iff.2 ((map_ne_zero ι).2 hx))).2 h`. Rewrite `h2` using `[hu, map_mul, norm_mul, norm_unit φ hι, one_mul, map_pow, norm_pow]`. Establish `hj : j = 0`.
+
+Assume the negation of the conclusion as `hj`. Conclude with `absurd h2 (not_le.2 (pow_lt_one₀ (norm_nonneg _) (norm_lt_one φ hι hϖ) hj))`. Rewrite `hu` using `[hj, pow_zero, mul_one]`. Use `⟨↑u⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[← inv_inv x, ← hy, hu]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem mem_range_iff {l : ℕ} [Fact l.Prime] {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] [Field K] [Algebra O K] [IsFractionRing O K] (ι : K →+* Qbar l)
     (hι : ∀ z : ℤ_[l], ι (algebraMap O K (algebraMap ℤ_[l] O z)) = algebraMap ℚ_[l] (Qbar l) (z : ℚ_[l]))
@@ -239,6 +324,13 @@ theorem mem_range_iff {l : ℕ} [Fact l.Prime] {O K : Type} [CommRing O] [IsDoma
   rw [← inv_inv x, ← hy, hu]
   simp
 
+/- English proof (translation)
+Use `isClosed_of_closure_subset fun f hf => ?_` and prove the remaining obligations. Establish `key` using `Ideal.iInf_pow_smul_eq_bot_of_isLocalRing (M := (X → O) ⧸ T) (IsLocalRing.maximalIdeal O) (IsLocalRing.maximalIdeal.isMaximal O).ne_top`. Use `show f ∈ T`. Rewrite using `[← Submodule.Quotient.mk_eq_zero, ← Submodule.mem_bot O, ← key, Submodule.mem_iInf]`. Introduce `k`.
+
+Establish `ho : IsOpen {t : X → O | ∀ x, f x - t x ∈ IsLocalRing.maximalIdeal O ^ k}`. Rewrite using `[Set.setOf_forall]`. Conclude with `isOpen_iInter_of_finite fun x => (((isAdic_iff.1 had).1 k).preimage (by fun_prop : Continuous fun t : X → O => f x - t x))`. Take `⟨t, ht, htT⟩` from `mem_closure_iff.1 hf _ ho (by simp)`. Establish `h1 : (Submodule.Quotient.mk f : (X → O) ⧸ T) = T.mkQ (f - t)`.
+
+Rewrite using `[map_sub, Submodule.mkQ_apply, Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero T).2 htT, sub_zero]`. Rewrite using `[h1, pi_eq_sum_univ (f - t), map_sum]`. Use `Submodule.sum_mem _ fun x _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem_smul (ht x) Submodule.mem_top`.
+-/
 theorem isClosed_submodule {O X : Type} [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [Fintype X]
     [TopologicalSpace O] [IsTopologicalRing O] (had : IsAdic (IsLocalRing.maximalIdeal O))
     (T : Submodule O (X → O)) : IsClosed (T : Set (X → O)) := by
@@ -261,6 +353,19 @@ theorem isClosed_submodule {O X : Type} [CommRing O] [IsLocalRing O] [IsNoetheri
   rw [map_smul]
   exact Submodule.smul_mem_smul (ht x) Submodule.mem_top
 
+/- English proof (translation)
+Establish `hG : IsGalois ℚ H.E` using `H.hostE_isGalois`. Use `v.isPrime` as an intermediate fact. Use `v.isMaximal` as an intermediate fact. Establish `h3` using `Ideal.card_stabilizer_eq (G := H.E ≃ₐ[ℚ] H.E) (v.asIdeal.under ℤ) v.asIdeal`. Rewrite `h3` using `[Ideal.ramificationIdxIn_eq_ramificationIdx _ v.asIdeal (H.E ≃ₐ[ℚ] H.E), Ideal.inertiaDegIn_eq_inertiaDeg _ v.asIdeal (H.E ≃ₐ[ℚ] H.E), he, hf]`.
+
+Establish `hbot : MulAction.stabilizer (H.E ≃ₐ[ℚ] H.E) v.asIdeal = ⊥` using `Subgroup.card_eq_one.1 h3`. Assume the negation of the conclusion as `hn`. Unfold `IsSplitPl at hn`. Use `push Not at hn`. Establish `hle : H.conj • v.asIdeal ≤ v.asIdeal`.
+
+Introduce `y hy`. Rewrite `hy` using `[Ideal.mem_pointwise_smul_iff_inv_smul_mem]`. Take `⟨z, hz, hzv⟩` from `hn _ hy`. Establish `e : z = y` using `RingOfIntegers.ext (hz.trans (H.conj.apply_symm_apply (y : H.E)))`. Conclude with `e ▸ hzv`.
+
+Establish `hmax : (H.conj • v.asIdeal).IsMaximal`. Use `Ideal.IsPrime.isMaximal inferInstance fun h0 => v.ne_bot ?_` and prove the remaining obligations. Rewrite using `[← inv_smul_smul H.conj v.asIdeal, h0, Ideal.smul_bot]`. Establish `heq : H.conj • v.asIdeal = v.asIdeal` using `hmax.eq_of_le v.isPrime.ne_top hle`. Establish `h1 : H.conj = 1` using `Subgroup.mem_bot.1 (hbot ▸ heq)`.
+
+Establish `hsq` using `H.sqrtMinusD_sq`. Establish `hc` using `H.conj_sqrtMinusD`. Rewrite `hc` using `[h1, AlgEquiv.one_apply]`. Establish `h0 : H.sqrtMinusD = 0` using `by linear_combination (1 / 2 : H.E) * hc`. Rewrite `hsq` using `[h0]`.
+
+Establish `h4 : (H.d : H.E) = 0` using `by linear_combination hsq`. Establish `h5 : H.d = 0` using `by exact_mod_cast h4`. Use `H.qd_big.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem isSplitPl_of_degree_one {R : Ranks} (H : Host R) (v : PlE H) (hf : v.asIdeal.inertiaDeg ℤ = 1)
     (he : v.asIdeal.ramificationIdx ℤ = 1) : IsSplitPl H v := by
   have hG : IsGalois ℚ H.E := H.hostE_isGalois
@@ -298,6 +403,23 @@ def frobSet (D : D7) (i : D.nd.Loc) : Set (GE D.nd) :=
   {σ | ∃ w, SplitOut D.nd i w ∧ ∃ B : ValuationSubring D.nd.Om,
     IsPlaceOver (F := D.host.E) B w ∧ IsFrob (F := D.host.E) B (normV w) σ}
 
+/- English proof (translation)
+Introduce `W hW`. Set `W₁ : Submodule k (Fin a → k)` to `W.comap (e.symm.toLinearMap ∘ₗ LinearMap.inl k _ _)`. Set `W₂ : Submodule k (Fin b → k)` to `W.map (LinearMap.snd k _ _ ∘ₗ e.toLinearMap)`. Take `⟨C₁, hC₁, hc₁⟩` from `h₁ W₁ fun g v hv => by`. Establish `h` using `hW g _ hv`.
+
+Use `show e.symm (_, 0) ∈ W`. Use `h using 1` and compare the differences between its conclusion and the goal. Rewrite using `[LinearEquiv.symm_apply_eq, he]`. Simplify using the standard rewrite rules. Take `⟨C₂, hC₂, hc₂⟩` from `h₂ W₂ (by`.
+
+Introduce and unpack `g _ ⟨v, hv, rfl⟩`. Conclude with `⟨_, hW g v hv, congrArg Prod.snd (he g v)⟩)`. Use `⟨(C₁.prod C₂).comap e.toLinearMap, fun g v hv => ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show e _ ∈ C₁.prod C₂`. Rewrite using `[he]`.
+
+Conclude with `⟨hC₁ g _ hv.1, hC₂ g _ hv.2⟩`. Rewrite using `[Submodule.disjoint_def]`. Introduce `v hv hv'`. Establish `h2 : (e v).2 = 0` using `Submodule.disjoint_def.1 hc₂.disjoint _ ⟨v, hv, rfl⟩ hv'.2`. Establish `h3 : e.symm ((e v).1, 0) = v` using `by rw [← h2]; simp`.
+
+Establish `h1 : (e v).1 = 0` using `Submodule.disjoint_def.1 hc₁.disjoint _ (show e.symm ((e v).1, 0) ∈ W by rwa [h3]) hv'.1`. Rewrite using `[← h3, h1]`. Conclude with `map_zero e.symm`. Rewrite using `[codisjoint_iff, eq_top_iff]`. Introduce and unpack `v -`.
+
+Take `⟨_, ⟨w, hw, rfl⟩, c₂, hc, h2⟩` from `Submodule.mem_sup.1 (show (e v).2 ∈ W₂ ⊔ C₂ by rw [hc₂.sup_eq_top]; trivial)`. Take `⟨w₁, hw₁, c₁, hc', h1⟩` from `Submodule.mem_sup.1 (show (e v).1 - (e w).1 ∈ W₁ ⊔ C₁ by rw [hc₁.sup_eq_top]; trivial)`. Use `Submodule.mem_sup.2 ⟨w + e.symm (w₁, 0), W.add_mem hw hw₁, e.symm (c₁, c₂), ?_, ?_⟩` and prove the remaining obligations. Use `show e (e.symm _) ∈ C₁.prod C₂`. Rewrite using `[e.apply_symm_apply]`.
+
+Conclude with `⟨hc', hc⟩`. Apply `e.injective` to reduce the goal to its premises. Establish `h2' : (e w).2 + c₂ = (e v).2` using `h2`. Use `ext1`. Simplify using `only [map_add, e.apply_symm_apply, Prod.fst_add]`.
+
+Rewrite using `[add_assoc, h1]`. Normalize the expressions using the abelian group laws. Simplify using `only [map_add, e.apply_symm_apply, Prod.snd_add]`. Rewrite using `[add_zero, h2']`.
+-/
 theorem isSSRep_of_prod {Γ k : Type} [Group Γ] [Field k] {n a b : ℕ} {ρ : Γ →* GL (Fin n) k}
     {ρ₁ : Γ →* GL (Fin a) k} {ρ₂ : Γ →* GL (Fin b) k} (e : (Fin n → k) ≃ₗ[k] (Fin a → k) × (Fin b → k))
     (he : ∀ g v, e ((ρ g : Matrix (Fin n) (Fin n) k) *ᵥ v) =
@@ -345,6 +467,11 @@ theorem isSSRep_of_prod {Γ k : Type} [Group Γ] [Field k] {n a b : ℕ} {ρ : �
       · simp only [map_add, e.apply_symm_apply, Prod.snd_add]
         rw [add_zero, h2']
 
+/- English proof (translation)
+Set `m : Γ →* Matrix (Fin (a + b)) (Fin (a + b)) k` to `{ toFun := fun g => Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks (ρ₁ g : Matrix (Fin a) (Fin a) k) 0 0 (ρ₂ g : Matrix (Fin b) (Fin b) k)) map_one' := by simp map_mul' := fun g g' => by simp [Matrix.fromBlocks_multiply] }`. Establish `hm : ∀ g, (m.toHomUnits g : Matrix (Fin (a + b)) (Fin (a + b)) k) = Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks (ρ₁ g : Matrix (Fin a) (Fin a) k) 0 0 (ρ₂ g : Matrix (Fin b) (Fin b) k))` using `fun g => rfl`. Use `⟨m.toHomUnits, ?_, ?_, fun g => ?_⟩` and prove the remaining obligations. Simplify using `only [hm]`. Conclude with `(c₁.matrix_fromBlocks continuous_const continuous_const c₂).matrix_reindex _ _`.
+
+Use `isSSRep_of_prod ((LinearEquiv.funCongrLeft k k finSumFinEquiv).trans (LinearEquiv.sumArrowLequivProdArrow _ _ k k)) (fun g v => ?_) h₁ h₂` and prove the remaining obligations. Rewrite using `[hm]`. Apply the tactic sequence `ext i <;>`. Apply the tactic sequence `simp [Matrix.submatrix_mulVec_equiv, Matrix.fromBlocks_mulVec, LinearMap.funLeft] <;> rfl`. Rewrite using `[hm, Matrix.charpoly_reindex, Matrix.charpoly_fromBlocks_zero₂₁]`.
+-/
 theorem exists_sum_rep {Γ k : Type} [Group Γ] [TopologicalSpace Γ] [Field k] [TopologicalSpace k] {a b : ℕ}
     (ρ₁ : Γ →* GL (Fin a) k) (ρ₂ : Γ →* GL (Fin b) k)
     (c₁ : Continuous fun g => (ρ₁ g : Matrix (Fin a) (Fin a) k))
@@ -397,6 +524,11 @@ def Realised (m : ℕ) (L : ∀ w, D.naut.LP w) : Prop :=
 
 variable {D i}
 
+/- English proof (translation)
+Take `⟨r, c, s, f⟩` from `h`. Take `⟨r', c', s', f'⟩` from `h'`. Take `⟨ρ, cρ, sρ, hρ⟩` from `exists_sum_rep r r' c c' s s'`. Use `⟨ρ, cρ, sρ, fun w hw hu B σ hB hσ => ?_⟩` and prove the remaining obligations. Take `⟨u, u'⟩` from `(D.naut.unr_sum _ _).1 hu`.
+
+Rewrite using `[hρ, Polynomial.map_mul, f w hw u B σ hB hσ, f' w hw u' B σ hB hσ, galPol, galPol, galPol, D.naut.lpTw_sum, D.naut.frobEig_sum _ _ ((D.naut.unr_tw _ _).2 u) ((D.naut.unr_tw _ _).2 u'), Multiset.map_add, Multiset.prod_add]`.
+-/
 theorem Realised.sum {m m' : ℕ} {L L' : ∀ w, D.naut.LP w} (h : Realised D i m L) (h' : Realised D i m' L') :
     Realised D i (m + m') fun w => D.naut.lpSum (L w) (L' w) := by
   obtain ⟨r, c, s, f⟩ := h

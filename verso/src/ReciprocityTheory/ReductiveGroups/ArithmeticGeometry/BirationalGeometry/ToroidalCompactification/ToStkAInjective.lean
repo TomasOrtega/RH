@@ -17,6 +17,11 @@ def toStkA (z : Sp A) : A →+* (Sp A).presheaf.stalk z :=
 
 abbrev cpt (A : Type) [CommRing A] [IsLocalRing A] : Sp A := IsLocalRing.closedPoint A
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `h (show cpt A ∈ (⊤ : (Sp A).Opens) from trivial)`. Introduce `h z _ first`. Consider the case `exact (IsLocalRing.specializes_closedPoint z).mem_open (x ⁻¹ᵁ U).isOpen h`.
+
+Consider the case `exact ((PrimeSpectrum.le_iff_specializes z (cpt A)).mp (IsLocalRing.le_maximalIdeal z.isPrime.ne_top)).mem_open (x ⁻¹ᵁ U).isOpen h`.
+-/
 theorem top_le_iff_cpt [IsLocalRing A] (x : Sp A ⟶ X) (U : X.Opens) : ⊤ ≤ x ⁻¹ᵁ U ↔ x (cpt A) ∈ U := by
   constructor
   · intro h
@@ -27,6 +32,11 @@ theorem top_le_iff_cpt [IsLocalRing A] (x : Sp A ⟶ X) (U : X.Opens) : ⊤ ≤ 
     | exact ((PrimeSpectrum.le_iff_specializes z (cpt A)).mp
         (IsLocalRing.le_maximalIdeal z.isPrime.ne_top)).mem_open (x ⁻¹ᵁ U).isOpen h
 
+/- English proof (translation)
+Establish `hz : x z ∈ U` using `ht (show z ∈ (⊤ : (Sp A).Opens) from trivial)`. Establish `e1 : ∀ c, (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom ((Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom c) = c` using `fun c => congrArg (fun f => CommRingCat.Hom.hom f c) (Iso.hom_inv_id (Scheme.ΓSpecIso (CommRingCat.of A)))`. Rewrite using `[valR, dif_pos ht, gm, dif_pos hz]`. Use `show ((Sp A).presheaf.germ ⊤ z trivial).hom ((Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom ((Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom ((x.appLE U ⊤ ht).hom a.val))) = ((Sp A).presheaf.germ (x ⁻¹ᵁ U) z hz).hom ((x.app U).hom a.val)`. Rewrite using `[e1]`.
+
+Conclude with `TopCat.Presheaf.germ_res_apply (Sp A).presheaf (homOfLE ht) z trivial ((x.app U).hom a.val)`.
+-/
 theorem toStkA_valR (x : Sp A ⟶ X) (U : X.Opens) (z : Sp A) (ht : ⊤ ≤ x ⁻¹ᵁ U) (a : Γ(X, U)ˣ) :
     toStkA z (valR x U a.val) = (gm x z U a).val := by
   have hz : x z ∈ U := ht (show z ∈ (⊤ : (Sp A).Opens) from trivial)
@@ -39,6 +49,11 @@ theorem toStkA_valR (x : Sp A ⟶ X) (U : X.Opens) (z : Sp A) (ht : ⊤ ≤ x �
   rw [e1]
   exact TopCat.Presheaf.germ_res_apply (Sp A).presheaf (homOfLE ht) z trivial ((x.app U).hom a.val)
 
+/- English proof (translation)
+Establish `e` using `AlgebraicGeometry.ΓSpecIso_hom_stalkClosedPointIso_inv (CommRingCat.of A)`. Establish `key : (Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ (Sp A).presheaf.germ ⊤ (cpt A) trivial = (AlgebraicGeometry.stalkClosedPointIso (CommRingCat.of A)).inv`. Rewrite using `[Iso.inv_comp_eq]`. Conclude with `e.symm`. Establish `h5 : ∀ c, (AlgebraicGeometry.stalkClosedPointIso (CommRingCat.of A)).hom.hom ((AlgebraicGeometry.stalkClosedPointIso (CommRingCat.of A)).inv.hom c) = c` using `fun c => congrArg (fun f => CommRingCat.Hom.hom f c) (Iso.inv_hom_id (AlgebraicGeometry.stalkClosedPointIso (CommRingCat.of A)))`.
+
+Introduce `a b hab`. Establish `h2 : (AlgebraicGeometry.stalkClosedPointIso (CommRingCat.of A)).inv.hom a = (AlgebraicGeometry.stalkClosedPointIso (CommRingCat.of A)).inv.hom b`. Rewrite using `[← key]`. Conclude with `hab`. Rewrite using `[← h5 a, ← h5 b, h2]`.
+-/
 theorem toStkA_injective [IsLocalRing A] : Function.Injective (toStkA (cpt A)) := by
   have e := AlgebraicGeometry.ΓSpecIso_hom_stalkClosedPointIso_inv (CommRingCat.of A)
   have key : (Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ (Sp A).presheaf.germ ⊤ (cpt A) trivial =
@@ -60,6 +75,15 @@ section GenR
 variable {A : Type} [CommRing A] [IsLocalRing A]
 variable {B B' B₀ : Scheme.{0}} {M : LB B} {M' : LB B'} {M₀ : LB B₀} {K : Type} [Fintype K] {ε : K → ℤ}
 
+/- English proof (translation)
+Unfold `GenRelR`. Use `and_congr_right fun hpt => forall_congr' fun j => forall_congr' fun j₀ => ?_` and prove the remaining obligations. Establish `hP_iff : (∀ k, ⊤ ≤ pt k ⁻¹ᵁ (LB.div (M₀.pull φ) M).U (fun _ => j₀ k, j k)) ↔ (∀ k, φ (pt k (cpt A)) ∈ M₀.U (j₀ k)) ∧ (∀ k, pt k (cpt A) ∈ M.U (j k))`. Simplify using `only [top_le_iff_cpt]`. Conclude with `⟨fun h => ⟨fun k => Set.mem_iInter.1 (h k).1 PUnit.unit, fun k => (h k).2⟩, fun h k => ⟨Set.mem_iInter.2 fun _ => h.1 k, h.2 k⟩⟩`.
+
+Rewrite using `[hP_iff, and_imp]`. Use `forall_congr' fun h1 => forall_congr' fun h2 => ?_` and prove the remaining obligations. Establish `hP : ∀ k, ⊤ ≤ pt k ⁻¹ᵁ (LB.div (M₀.pull φ) M).U (fun _ => j₀ k, j k)` using `hP_iff.2 ⟨h1, h2⟩`. Establish `hT : ⊤ ≤ (𝟙 (Sp A)) ⁻¹ᵁ (LB.LinComb M pt ε).U j` using `(top_le_iff_cpt _ _).2 (Set.mem_iInter.2 fun k => h2 k)`. Establish `hT₀ : ⊤ ≤ (𝟙 (Sp A)) ⁻¹ᵁ (LB.LinComb M₀ pt₀ ε).U j₀`.
+
+Use `(top_le_iff_cpt _ _).2 (Set.mem_iInter.2 fun k => ?_)` and prove the remaining obligations. Use `show pt₀ k ((𝟙 (Sp A)) (cpt A)) ∈ M₀.U (j₀ k)`. Rewrite using `[← hpt k]`. Conclude with `h1 k`. Establish `hW : ∀ k (u : Γ(B, (LB.div (M₀.pull φ) M).U (fun _ => j₀ k, j k))ˣ), toStkA (cpt A) (valR (pt k) _ u.val) = (gm (pt k) (cpt A) _ u).val` using `fun k u => toStkA_valR _ _ _ (hP k) u`.
+
+Rewrite using `[← (toStkA_injective (A := A)).eq_iff, map_mul, map_prod, toStkA_valR _ _ _ hT, toStkA_valR _ _ _ hT₀]`. Simplify using `only [hW, map_zpow]`. Rewrite using `[← Units.coe_prod, ← Units.val_mul, Units.val_inj, Units.val_inj]`. Simplify using `only [zpow_neg, Finset.prod_inv_distrib]`. Conclude with `eq_inv_mul_iff_mul_eq`.
+-/
 theorem genRelR_iff {φ : B ⟶ B₀} (w : LB.Iso M (M₀.pull φ)) {pt : K → (Sp A ⟶ B)} {pt₀ : K → (Sp A ⟶ B₀)}
     (t : LB.Gen (LB.LinComb M pt ε)) (t₀ : LB.Gen (LB.LinComb M₀ pt₀ ε)) :
     GenRelR w t t₀ ↔ (∀ k, pt k ≫ φ = pt₀ k) ∧ ∀ (j : K → M.ι) (j₀ : K → M₀.ι),
@@ -92,6 +116,19 @@ theorem genRelR_iff {φ : B ⟶ B₀} (w : LB.Iso M (M₀.pull φ)) {pt : K → 
   simp only [zpow_neg, Finset.prod_inv_distrib]
   exact eq_inv_mul_iff_mul_eq
 
+/- English proof (translation)
+Establish `hc' : ∀ k, pt' k ≫ Φ = pt k` using `fun k => (hc k).trans (Category.id_comp _)`. Establish `hcp : ∀ k, Φ (pt' k (cpt A)) = pt k (cpt A)` using `fun k => by rw [← hc' k]; rfl`. Establish `A' : ∀ (j : K → M.ι) (i : K → M'.ι) (j₀ : K → M₀.ι), (∀ k, φ (pt k (cpt A)) ∈ M₀.U (j₀ k)) → (∀ k, pt k (cpt A) ∈ M.U (j k)) → (∀ k, pt' k (cpt A) ∈ M'.U (i k)) → (∏ k, gw w' (pt' k) (cpt A) (j₀ k) (i k) ^ ε k) * gm (𝟙 _) (cpt A) (LB.wchart M' pt' i) (t'.s i) = (∏ k, gw w (pt k) …`. Introduce `j i j₀ h1 h2 h3`. Establish `eT : ∀ k, gw w' (pt' k) (cpt A) (j₀ k) (i k) = gw w (pt k) (cpt A) (j₀ k) (j k) * gw wD (pt' k) (cpt A) (j k) (i k)`.
+
+Introduce `k`. Establish `e` using `T (Sp A) (pt' k) (cpt A) (j₀ k) (j k) (i k) (by rw [hcp k]; exact h1 k) (by rw [hcp k]; exact h2 k) (h3 k)`. Rewrite using `[e, hc' k]`. Establish `eH` using `H (Sp A) (𝟙 _) (cpt A) j i (fun k => by show Φ (pt' k (cpt A)) ∈ M.U (j k); rw [hcp k]; exact h2 k) (fun k => h3 k)`. Simplify using `only [Category.id_comp] at eH`.
+
+Simplify using `only [eT, mul_zpow, Finset.prod_mul_distrib]`. Rewrite using `[eH, _root_.mul_assoc]`. Rewrite using `[genRelR_iff, genRelR_iff]`. Use `and_congr (by simp only [← Category.assoc, hc']) ⟨fun hyp i j₀ h1' h2' => ?_, fun hyp j j₀ h1 h2 => ?_⟩` and prove the remaining obligations. Establish `hj : ∀ k, ∃ a, pt k (cpt A) ∈ M.U a` using `fun k => by`.
+
+Establish `hx : pt k (cpt A) ∈ ⨆ a, M.U a` using `by rw [hM.cover]; trivial`. Conclude with `TopologicalSpace.Opens.mem_iSup.1 hx`. Use `choose j hj using hj`. Establish `h1 : ∀ k, φ (pt k (cpt A)) ∈ M₀.U (j₀ k)` using `fun k => by rw [← hcp k]; exact h1' k`. Rewrite using `[A' j i j₀ h1 hj h2']`.
+
+Conclude with `hyp j j₀ h1 hj`. Establish `hi : ∀ k, ∃ a, pt' k (cpt A) ∈ M'.U a` using `fun k => by`. Establish `hx : pt' k (cpt A) ∈ ⨆ a, M'.U a` using `by rw [hM'.cover]; trivial`. Conclude with `TopologicalSpace.Opens.mem_iSup.1 hx`. Use `choose i hi using hi`.
+
+Establish `h1' : ∀ k, (Φ ≫ φ) (pt' k (cpt A)) ∈ M₀.U (j₀ k)` using `fun k => by show φ (Φ (pt' k (cpt A))) ∈ M₀.U (j₀ k)`. Rewrite using `[hcp k]`. Conclude with `h1 k`. Rewrite using `[← A' j i j₀ h1 h2 hi]`. Conclude with `hyp i j₀ h1' hi`.
+-/
 theorem genRelR_transfer {φ : B ⟶ B₀} {Φ : B' ⟶ B} {w : LB.Iso M (M₀.pull φ)} {wD : LB.Iso M' (M.pull Φ)}
     {w' : LB.Iso M' (M₀.pull (Φ ≫ φ))} (T : Tri w wD w') (hM : M.IsLB) (hM' : M'.IsLB) {pt : K → (Sp A ⟶ B)}
     {pt' : K → (Sp A ⟶ B')} {pt₀ : K → (Sp A ⟶ B₀)} (hc : ∀ k, pt' k ≫ Φ = 𝟙 _ ≫ pt k)
@@ -141,6 +178,11 @@ section Pulls
 
 variable {X X' Y Y' Y'' : Scheme.{0}}
 
+/- English proof (translation)
+Distinguish the cases in `hz : r z ∈ h ⁻¹ᵁ V`. Establish `hz' : (r ≫ h) z ∈ V` using `hz`. Simplify using `only [gm, dif_pos hz, dif_pos hz']`. Use `first`. Consider the case `rfl`.
+
+Consider the case `(ext; simp [pullU, Scheme.comp_app])`. Establish `hz' : (r ≫ h) z ∉ V` using `hz`. Simplify using `only [gm, dif_neg hz, dif_neg hz', MonoidHom.one_apply]`.
+-/
 private theorem gm_pullU_eq_gm_comp {S T W : Scheme.{0}} (h : T ⟶ S) (r : W ⟶ T) (z : W) (V : S.Opens)
     (a : Γ(S, V)ˣ) : gm r z (h ⁻¹ᵁ V) (pullU h V a) = gm (r ≫ h) z V a := by
   by_cases hz : r z ∈ h ⁻¹ᵁ V
@@ -152,6 +194,9 @@ private theorem gm_pullU_eq_gm_comp {S T W : Scheme.{0}} (h : T ⟶ S) (r : W �
   · have hz' : (r ≫ h) z ∉ V := hz
     simp only [gm, dif_neg hz, dif_neg hz', MonoidHom.one_apply]
 
+/- English proof (translation)
+Distinguish the cases in `hz : r z ∈ LB.wchart L (fun k => h ≫ φ k) j`. Conclude with `(gm_res r z _ hz (pullU h _ (t.s j))).trans (gm_pullU_eq_gm_comp h r z _ _)`. Establish `hz' : (r ≫ h) z ∉ LB.wchart L φ j` using `fun H => hz (Set.mem_iInter.2 fun k => Set.mem_iInter.1 H k)`. Simplify using `only [gm, dif_neg hz, dif_neg hz', MonoidHom.one_apply]`. Both sides reduce to the same expression.
+-/
 theorem gm_pullGen' (L : LB X) {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ) (t : LB.Gen (LB.LinComb L φ ε))
     {Z Z' : Scheme.{0}} (h : Z ⟶ Y) (r : Z' ⟶ Z) (z : Z') (j : K → L.ι) :
     gm r z (LB.wchart L (fun k => h ≫ φ k) j) ((LB.pullGen L φ ε t h).s j) = gm (r ≫ h) z (LB.wchart L φ j) (t.s j) := by
@@ -161,6 +206,9 @@ theorem gm_pullGen' (L : LB X) {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε
     simp only [gm, dif_neg hz, dif_neg hz', MonoidHom.one_apply]
     rfl
 
+/- English proof (translation)
+Introduce `Z r z p q h1 h2`. Establish `e` using `H Z (r ≫ v) z p q (fun k => by simpa using h1 k) (fun k => by simpa using h2 k)`. Simplify using `only [Category.assoc, hv] at e`. Simplify using `only [Category.comp_id]`. Rewrite using `[gm_pullGen', gm_pullGen', e]`.
+-/
 theorem pmaps_pullGen {L : LB X} {L' : LB X'} {F : X' ⟶ X} {w : LB.Iso L' (L.pull F)} {K : Type} [Fintype K]
     {φ' : K → (Y' ⟶ X')} {φ : K → (Y ⟶ X)} {ε : K → ℤ} {a : LB.Gen (LB.LinComb L' φ' ε)}
     {t : LB.Gen (LB.LinComb L φ ε)} {h : Y' ⟶ Y} (H : PMaps w φ' φ ε a t h) (v : Y'' ⟶ Y') (v' : Y'' ⟶ Y)
@@ -175,22 +223,34 @@ theorem pmaps_pullGen {L : LB X} {L' : LB X'} {F : X' ⟶ X} {w : LB.Iso L' (L.p
 def pullCongr {L : LB X} {L' : LB X'} {F F' : X' ⟶ X} (h : F = F') (w : LB.Iso L' (L.pull F)) : LB.Iso L' (L.pull F') :=
   h ▸ w
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem gw_pullCongr {L : LB X} {L' : LB X'} {F F' : X' ⟶ X} (h : F = F') (w : LB.Iso L' (L.pull F)) {Z : Scheme.{0}}
     (f : Z ⟶ X') (z : Z) (j : L.ι) (k : L'.ι) : gw (pullCongr h w) f z j k = gw w f z j k := by
   subst h
   rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `hw`.
+-/
 theorem pgen_pullCongr {L : LB X} {L' : LB X'} {F F' : X' ⟶ X} (h : F = F') {w : LB.Iso L' (L.pull F)} (hw : PGen w) :
     PGen (pullCongr h w) := by
   subst h
   exact hw
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `H`.
+-/
 theorem pmaps_pullCongr {L : LB X} {L' : LB X'} {F F' : X' ⟶ X} (h : F = F') {w : LB.Iso L' (L.pull F)} {K : Type}
     [Fintype K] {φ' : K → (Y' ⟶ X')} {φ : K → (Y ⟶ X)} {ε : K → ℤ} {a : LB.Gen (LB.LinComb L' φ' ε)}
     {t : LB.Gen (LB.LinComb L φ ε)} {e : Y' ⟶ Y} (H : PMaps w φ' φ ε a t e) : PMaps (pullCongr h w) φ' φ ε a t e := by
   subst h
   exact H
 
+/- English proof (translation)
+Rewrite using `[← gm_res f y h₁ hy a, ← gm_res f y h₂ hy b, ← gm_res f y h₃ hy c, ← gm_res f y h₄ hy d, ← map_mul, ← map_mul, H]`.
+-/
 theorem gm_of_res_eq' {V U₁ U₂ U₃ U₄ : Y.Opens} {h₁ : V ≤ U₁} {h₂ : V ≤ U₂} {h₃ : V ≤ U₃}
     {h₄ : V ≤ U₄} {a : Γ(Y, U₁)ˣ} {b : Γ(Y, U₂)ˣ} {c : Γ(Y, U₃)ˣ} {d : Γ(Y, U₄)ˣ}
     (H : res h₁ a * res h₂ b = res h₃ c * res h₄ d) {Z : Scheme.{0}} (f : Z ⟶ Y) {y : Z} (hy : f y ∈ V) :
@@ -198,6 +258,9 @@ theorem gm_of_res_eq' {V U₁ U₂ U₃ U₄ : Y.Opens} {h₁ : V ≤ U₁} {h�
   rw [← gm_res f y h₁ hy a, ← gm_res f y h₂ hy b, ← gm_res f y h₃ hy c, ← gm_res f y h₄ hy d,
     ← map_mul, ← map_mul, H]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Take `rfl` from `eq_of_heq hw`. Both sides reduce to the same expression.
+-/
 theorem gw_heq {L : LB X} {L' : LB X'} {F F' : X' ⟶ X} (h : F = F') {w : LB.Iso L' (L.pull F)}
     {w' : LB.Iso L' (L.pull F')} (hw : HEq w w') {Z : Scheme.{0}} (f : Z ⟶ X') (z : Z) (j : L.ι) (k : L'.ι) :
     gw w f z j k = gw w' f z j k := by
@@ -205,6 +268,9 @@ theorem gw_heq {L : LB X} {L' : LB X'} {F F' : X' ⟶ X} (h : F = F') {w : LB.Is
   obtain rfl := eq_of_heq hw
   rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Take `rfl` from `eq_of_heq hw`. Conclude with `Iff.rfl`.
+-/
 theorem genRelR_heq {A : Type} [CommRing A] {B B₀ : Scheme.{0}} {M : LB B} {M₀ : LB B₀} {φ φ' : B ⟶ B₀} (h : φ = φ')
     {w : LB.Iso M (M₀.pull φ)} {w' : LB.Iso M (M₀.pull φ')} (hw : HEq w w') {K : Type} [Fintype K]
     {pt : K → (Sp A ⟶ B)} {pt₀ : K → (Sp A ⟶ B₀)} {ε : K → ℤ} (t : LB.Gen (LB.LinComb M pt ε))
@@ -217,6 +283,9 @@ end Pulls
 
 section Thick
 
+/- English proof (translation)
+Use `first`. Consider the case `exact inferInstance`. Consider the case `exact (IsClosedImmersion.spec_of_surjective _ Ideal.Quotient.mk_surjective).mono`. Consider the case `(haveI := IsClosedImmersion.spec_of_surjective (CommRingCat.ofHom (Ideal.Quotient.mk (I ^ (n + 1)))) Ideal.Quotient.mk_surjective infer_instance)`.
+-/
 theorem thick_mono (R : Type) [CommRing R] (I : Ideal R) (n : ℕ) : Mono (Out.thick R I n) := by
   first
   | exact inferInstance
@@ -225,6 +294,13 @@ theorem thick_mono (R : Type) [CommRing R] (I : Ideal R) (n : ℕ) : Mono (Out.t
         (CommRingCat.ofHom (Ideal.Quotient.mk (I ^ (n + 1)))) Ideal.Quotient.mk_surjective
      infer_instance)
 
+/- English proof (translation)
+Establish `hh' : h ≫ pullback.fst G'.hom (Out.thick R I n) = pullback.fst G.hom (Out.thick R I n) ≫ ψ.left` using `hh`. Use `haveI := thick_mono R I n`. Establish `m1 : ((Over.pullback (Out.thick R I n)).map ψ).left ≫ pullback.fst G'.hom (Out.thick R I n) = pullback.fst G.hom (Out.thick R I n) ≫ ψ.left` using `by first`. Consider the case `(simp [Over.pullback]; done)`. Consider the case `(simp [Over.pullback]; exact pullback.lift_fst _ _ _)`.
+
+Consider the case `exact pullback.lift_fst _ _ _`. Establish `m2 : ((Over.pullback (Out.thick R I n)).map ψ).left ≫ pullback.snd G'.hom (Out.thick R I n) = pullback.snd G.hom (Out.thick R I n)` using `by first`. Consider the case `(simp [Over.pullback]; done)`. Consider the case `(simp [Over.pullback]; exact pullback.lift_snd _ _ _)`. Consider the case `exact pullback.lift_snd _ _ _`.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[hh', m1]`. Rewrite using `[m2, ← cancel_mono (Out.thick R I n), Category.assoc, ← pullback.condition (f := G'.hom) (g := Out.thick R I n), reassoc_of% hh', Over.w ψ, pullback.condition (f := G.hom) (g := Out.thick R I n)]`.
+-/
 theorem thick_map_eq {R : Type} [CommRing R] {I : Ideal R} {n : ℕ} {G G' : Over (Sp R)} (ψ : G ⟶ G')
     (h : (Out.thickObj R I n G).left ⟶ (Out.thickObj R I n G').left)
     (hh : h ≫ (Out.fstG I n G').left = (Out.fstG I n G).left ≫ ψ.left) :

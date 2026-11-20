@@ -42,6 +42,11 @@ def ThetaGoodRange (R : RealDat D A Ks) (F : Face D A) : Prop :=
 def ThetaGoodRangeGap (R : RealDat D A Ks) (F : Face D A) : Prop :=
   R.Char F → ∀ (i : Fin D.R.m) (t : T), GoodRangeAt R i t
 
+/- English proof (translation)
+Establish `hcomp : e ∘ₗ f = p` using `LinearMap.ext hc`. Rewrite using `[← hcomp, LinearMap.range_comp]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[h, Submodule.map_comap_eq_self hle]`.
+
+Introduce `h`. Rewrite using `[← h, Submodule.comap_map_eq_of_injective hinj]`.
+-/
 theorem range_eq_comap_iff {X H M : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup H] [Module ℂ H] [AddCommGroup M]
     [Module ℂ M] (e : H →ₗ[ℂ] M) (f : X →ₗ[ℂ] H) (p : X →ₗ[ℂ] M) (U : Submodule ℂ M) (hinj : Function.Injective e)
     (hle : U ≤ LinearMap.range e) (hc : ∀ x, e (f x) = p x) :
@@ -56,6 +61,9 @@ theorem range_eq_comap_iff {X H M : Type} [AddCommGroup X] [Module ℂ X] [AddCo
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+The claim follows from `range_eq_comap_iff (R.HW i (sg0 D A)).e (R.thG i t) _ (R.Wat i (sg0 D A) R.triv) (hW i (sg0 D A)).1 (le_of_le_of_eq inf_le_left (hW i (sg0 D A)).2.1.symm) (fun x => hG i t x)`.
+-/
 theorem goodRangeAt_iff {R : RealDat D A Ks} (hW : R.models_HW) (hG : R.thP_thG) (i : Fin D.R.m) (t : T) :
     GoodRangeAt R i t ↔
       LinearMap.range (postOn (R.MW i (sg0 D A)) (R.eWf i (sg0 D A)) ∘ₗ R.thF i t) = R.Wat i (sg0 D A) R.triv :=

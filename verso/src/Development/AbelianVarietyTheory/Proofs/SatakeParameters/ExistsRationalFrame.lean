@@ -13,6 +13,9 @@ section Units
 
 variable {l : ℕ} [Fact l.Prime] {lam : (algebraicClosure ℚ ℂ) →+* ℂ_[l]}
 
+/- English proof (translation)
+Establish `h : x ∈ (NormedField.valuation (K` using `C)).integer := (Valuation.integer.integers (NormedField.valuation (K := C))).mem_of_integral hx.tower_top`. Rewrite `h` using `[Valuation.mem_integer_iff, NormedField.valuation_apply]`. Conclude with `h` after adjusting the coercions.
+-/
 theorem norm_le_one_of_isIntegral {C : Type} [NormedField C] [IsUltrametricDist C] {x : C} (hx : IsIntegral ℤ x) :
     ‖x‖ ≤ 1 := by
   have h : x ∈ (NormedField.valuation (K := C)).integer :=
@@ -20,6 +23,25 @@ theorem norm_le_one_of_isIntegral {C : Type} [NormedField C] [IsUltrametricDist 
   rw [Valuation.mem_integer_iff, NormedField.valuation_apply] at h
   exact_mod_cast h
 
+/- English proof (translation)
+Establish `hint : ∀ a : 𝓞 K, ‖ψ (a : K)‖ ≤ 1` using `fun a => norm_le_one_of_isIntegral (map_isIntegral_int ψ a.isIntegral_coe)`. Set `P : Ideal (𝓞 K)` to `{ carrier := {a | ‖ψ (a : K)‖ < 1} add_mem' := fun {a b} ha hb => by`. Establish `e : ((a + b : 𝓞 K) : K) = (a : K) + (b : K)` using `by simp`. Simplify using `only [Set.mem_ofPred_eq, e, map_add] at *`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt ha hb)`.
+
+Use the proof step `zero_mem' := by simp`. Use the proof step `smul_mem' := fun c a ha => by`. Establish `e : ((c * a : 𝓞 K) : K) = (c : K) * (a : K)` using `by simp`. Simplify using `only [Set.mem_ofPred_eq, smul_eq_mul, e, map_mul, norm_mul] at *`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) (hint c)).trans_lt ha }`.
+
+Establish `hP : ∀ a : 𝓞 K, a ∈ P ↔ ‖ψ (a : K)‖ < 1` using `fun _ => Iff.rfl`. Establish `hl : ((l : ℕ) : 𝓞 K) ∈ P`. Rewrite using `[hP]`. Establish `: (((l : ℕ) : 𝓞 K) : K) = (l : K)` using `by simp`. Rewrite using `[this, map_natCast]`.
+
+Establish `h2 : (l : ℂ_[l]) = algebraMap ℚ_[l] ℂ_[l] (l : ℚ_[l])` using `by simp`. Rewrite using `[h2, norm_algebraMap']`. Conclude with `Padic.norm_p_lt_one`. Establish `hpr : P.IsPrime`. Use `⟨fun h => ?_, fun {a b} h => ?_⟩` and prove the remaining obligations.
+
+Establish `: (1 : 𝓞 K) ∈ P` using `h ▸ Submodule.mem_top`. Rewrite `this` using `[hP]`. Simplify using `at this`. Rewrite using `[hP, hP]`. Rewrite `h` using `[hP]`.
+
+Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Establish `e : ((a * b : 𝓞 K) : K) = (a : K) * (b : K)` using `by simp`. Rewrite `h` using `[e, map_mul, norm_mul]`. Conclude with `absurd (one_le_mul_of_one_le_of_one_le hn.1 hn.2) (not_le.2 h)`.
+
+Establish `hne : P ≠ ⊥` using `fun h => by`. Rewrite `hl` using `[h, Ideal.mem_bot]`. Conclude with `(Fact.out : l.Prime).ne_zero (by exact_mod_cast hl)`. Use `⟨⟨P, hpr, hne⟩, hl, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨n, d, hnd⟩` from `HeightOneSpectrum.exists_primeCompl_mul_eq_of_integer (v := ⟨P, hpr, hne⟩) x hx`.
+
+Establish `hd : ‖ψ ((d : 𝓞 K) : K)‖ = 1` using `le_antisymm (hint _) (not_lt.1 d.2)`. Establish `h2` using `congrArg (fun t => ‖ψ t‖) hnd`. Simplify using `only [map_mul, norm_mul] at h2`. Establish `h3 : ‖ψ x‖ * ‖ψ ((d : 𝓞 K) : K)‖ = ‖ψ (n : K)‖` using `h2`. Rewrite `h3` using `[hd, mul_one]`.
+
+Rewrite using `[h3]`. Conclude with `hint n`.
+-/
 theorem exists_place {K : Type} [Field K] [NumberField K] (ψ : K →+* ℂ_[l]) :
     ∃ v : HeightOneSpectrum (𝓞 K), ((l : ℕ) : 𝓞 K) ∈ v.asIdeal ∧ ∀ x : K, v.valuation K x ≤ 1 → ‖ψ x‖ ≤ 1 := by
   have hint : ∀ a : 𝓞 K, ‖ψ (a : K)‖ ≤ 1 := fun a => norm_le_one_of_isIntegral (map_isIntegral_int ψ a.isIntegral_coe)
@@ -66,6 +88,9 @@ theorem exists_place {K : Type} [Field K] [NumberField K] (ψ : K →+* ℂ_[l])
   rw [hd, mul_one] at h3
   rw [h3]; exact hint n
 
+/- English proof (translation)
+The claim follows from `mem_algebraicClosure_iff.2 ((Algebra.IsAlgebraic.isAlgebraic (R := ℚ) x).algHom φ.toRatAlgHom)`.
+-/
 theorem emb_mem {K : Type} [Field K] [NumberField K] (φ : K →+* ℂ) (x : K) : φ x ∈ algebraicClosure ℚ ℂ :=
   mem_algebraicClosure_iff.2 ((Algebra.IsAlgebraic.isAlgebraic (R := ℚ) x).algHom φ.toRatAlgHom)
 
@@ -75,6 +100,11 @@ end Units
 
 section Rescale
 
+/- English proof (translation)
+Unfold `KM.applyAt0`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.smul_monomial, map_smul, smul_eq_mul, smul_eq_mul]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem applyAt0_smul {Lt : Type} (N0 N1 l : ℕ) [Fact l.Prime] (a : ℂ_[l])
     (Th : MvPowerSeries (Lt × Fin N0 × Fin N1) ℂ_[l]) (P : MvPolynomial (KM.XZ Lt N0 N1) ℤ) :
     KM.applyAt0 N0 N1 l (a • Th) P = a • KM.applyAt0 N0 N1 l Th P := by

@@ -19,27 +19,47 @@ variable {G E : Type} [Group G] [CommRing E]
 private def mR (X : Matrix (Fin 3) (Fin 3) E) : Matrix (Fin 3) (Fin 3) (DualNumber E) :=
   X.map fun a => TrivSqZeroExt.inr a
 
+/- English proof (translation)
+Apply the tactic sequence `ext a b <;> simp [mR, Matrix.mul_apply, Fin.sum_univ_three, TrivSqZeroExt.algebraMap_eq_inl, mul_comm]`.
+-/
 private theorem mul_mR (A X : Matrix (Fin 3) (Fin 3) E) :
     A.map (algebraMap E (DualNumber E)) * mR X = mR (A * X) := by
   ext a b <;> simp [mR, Matrix.mul_apply, Fin.sum_univ_three, TrivSqZeroExt.algebraMap_eq_inl, mul_comm]
 
+/- English proof (translation)
+Apply the tactic sequence `ext a b <;> simp [mR, Matrix.mul_apply, Fin.sum_univ_three, TrivSqZeroExt.algebraMap_eq_inl, mul_comm]`.
+-/
 private theorem mR_mul (A X : Matrix (Fin 3) (Fin 3) E) :
     mR X * A.map (algebraMap E (DualNumber E)) = mR (X * A) := by
   ext a b <;> simp [mR, Matrix.mul_apply, Fin.sum_univ_three, TrivSqZeroExt.algebraMap_eq_inl, mul_comm]
 
+/- English proof (translation)
+Apply the tactic sequence `ext a b <;> simp [mR]`.
+-/
 private theorem mR_add (X Y : Matrix (Fin 3) (Fin 3) E) : mR (X + Y) = mR X + mR Y := by
   ext a b <;> simp [mR]
 
+/- English proof (translation)
+Use extensionality with `a b`. Conclude with `congrArg TrivSqZeroExt.snd (congrFun (congrFun h a) b)`.
+-/
 private theorem mR_inj {X Y : Matrix (Fin 3) (Fin 3) E} (h : mR X = mR Y) : X = Y := by
   ext a b
   exact congrArg TrivSqZeroExt.snd (congrFun (congrFun h a) b)
 
+/- English proof (translation)
+Establish `h : (mR X).transpose = mR X.transpose` using `rfl`. Unfold `thetaLie`. Rewrite using `[h, ← Jmat_map (algebraMap E (DualNumber E)), mul_mR, mR_mul]`. Apply the tactic sequence `ext a b <;> simp [mR]`.
+-/
 private theorem theta_mR (X : Matrix (Fin 3) (Fin 3) E) : thetaLie (mR X) = mR (thetaLie X) := by
   have h : (mR X).transpose = mR X.transpose := rfl
   unfold thetaLie
   rw [h, ← Jmat_map (algebraMap E (DualNumber E)), mul_mR, mR_mul]
   ext a b <;> simp [mR]
 
+/- English proof (translation)
+Use `show (GG.map (algebraMap E (DualNumber E)) (r g)).adFun (mR X) = mR ((r g).adFun X)`. Unfold `GG.adFun`. Rewrite using `[← mR_mul, ← mul_mR, GG.map_right, GG.map_mat]`. Use `congr 2`. Use `split_ifs`.
+
+Both sides reduce to the same expression. Conclude with `theta_mR X`.
+-/
 private theorem ad_mR (r : G →* GG 3 E) (g : G) (X : Matrix (Fin 3) (Fin 3) E) :
     adRep ((GG.map (algebraMap E (DualNumber E))).comp r) g (mR X) = mR (adRep r g X) := by
   show (GG.map (algebraMap E (DualNumber E)) (r g)).adFun (mR X) = mR ((r g).adFun X)
@@ -50,6 +70,11 @@ private theorem ad_mR (r : G →* GG 3 E) (g : G) (X : Matrix (Fin 3) (Fin 3) E)
   · rfl
   · exact theta_mR X
 
+/- English proof (translation)
+Rewrite using `[eq_bot_iff, Ideal.mul_le]`. Introduce `a ha b hb`. Establish `ha' : a.fst = 0` using `ha`. Establish `hb' : b.fst = 0` using `hb`. Rewrite using `[Ideal.mem_bot]`.
+
+Apply the tactic sequence `ext <;> simp [ha', hb']`.
+-/
 private theorem sq_ker : RingHom.ker (TrivSqZeroExt.fstHom E E E : DualNumber E →+* E) *
     RingHom.ker (TrivSqZeroExt.fstHom E E E : DualNumber E →+* E) = ⊥ := by
   rw [eq_bot_iff, Ideal.mul_le]
@@ -59,6 +84,9 @@ private theorem sq_ker : RingHom.ker (TrivSqZeroExt.fstHom E E E : DualNumber E 
   rw [Ideal.mem_bot]
   ext <;> simp [ha', hb']
 
+/- English proof (translation)
+Introduce `g`. Use `⟨(h g).1, fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[(h g).2, MonoidHom.comp_apply, GG.map_mat, Matrix.add_mul, Matrix.one_mul, mR_mul]`. Apply the tactic sequence `ext <;> simp [mR, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 private theorem dualDef_of (r : G →* GG 3 E) (γ : G → Matrix (Fin 3) (Fin 3) E) (r' : G →* GG 3 (DualNumber E))
     (h : IsDeform ((GG.map (algebraMap E (DualNumber E))).comp r) (fun g => mR (γ g)) r') : DualDef r γ r' := by
   intro g
@@ -66,6 +94,9 @@ private theorem dualDef_of (r : G →* GG 3 E) (γ : G → Matrix (Fin 3) (Fin 3
   rw [(h g).2, MonoidHom.comp_apply, GG.map_mat, Matrix.add_mul, Matrix.one_mul, mR_mul]
   ext <;> simp [mR, TrivSqZeroExt.algebraMap_eq_inl]
 
+/- English proof (translation)
+Take `⟨r', h⟩` from `exists_isDeform (RingHom.ker (TrivSqZeroExt.fstHom E E E : DualNumber E →+* E)) ((GG.map (algebraMap E (DualNumber E))).comp r) (fun g => mR (γ g)) sq_ker (fun g a b => rfl) (fun g h => by simp only [hγ g h, mR_add, ad_mR])`. Conclude with `⟨r', dualDef_of r γ r' h⟩`.
+-/
 private theorem dualEx (r : G →* GG 3 E) (γ : G → Matrix (Fin 3) (Fin 3) E) (hγ : IsCoc r γ) :
     ∃ r', DualDef r γ r' := by
   obtain ⟨r', h⟩ := exists_isDeform (RingHom.ker (TrivSqZeroExt.fstHom E E E : DualNumber E →+* E))
@@ -73,6 +104,13 @@ private theorem dualEx (r : G →* GG 3 E) (γ : G → Matrix (Fin 3) (Fin 3) E)
     (fun g h => by simp only [hγ g h, mR_add, ad_mR])
   exact ⟨r', dualDef_of r γ r' h⟩
 
+/- English proof (translation)
+Take `⟨γ, h1, h2, h3⟩` from `exists_isCoc (RingHom.ker (TrivSqZeroExt.fstHom E E E : DualNumber E →+* E)) ((GG.map (algebraMap E (DualNumber E))).comp r) r' sq_ker (by`. Substitute `h` using the available equality. Use `MonoidHom.ext fun g => SemidirectProduct.ext (Units.ext ?_) rfl` and prove the remaining obligations. Use extensionality with `a b`. Use `Ideal.Quotient.eq.2 ?_` and prove the remaining obligations.
+
+Use `show TrivSqZeroExt.fst ((r' g).mat a b - algebraMap E (DualNumber E) ((r' g).mat a b).fst) = 0`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl])`. Establish `e : γ = fun g => mR ((γ g).map TrivSqZeroExt.snd)`. Use function extensionality and compare the values at `g`. Use extensionality with `a b`.
+
+Conclude with `h1 g a b`. Both sides reduce to the same expression. Use `⟨fun g => (γ g).map TrivSqZeroExt.snd, fun g h => mR_inj ?_, dualDef_of _ _ _ (e ▸ h3)⟩` and prove the remaining obligations. Rewrite using `[mR_add, ← ad_mR, ← congrFun e, ← congrFun e, ← congrFun e]`. Conclude with `h2 g h`.
+-/
 private theorem dualCoc (r : G →* GG 3 E) (r' : G →* GG 3 (DualNumber E))
     (h : (GG.map (TrivSqZeroExt.fstHom E E E : DualNumber E →+* E)).comp r' = r) :
     ∃ γ, IsCoc r γ ∧ DualDef r γ r' := by
@@ -105,6 +143,9 @@ variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscre
   (hPC : GlobalTheory.OrdLoc.PtsCr D U (GlobalTheory.OrdLoc.IY D U)) (hCP : GlobalTheory.OrdLoc.CrPts D U (GlobalTheory.OrdLoc.IY D U))
 
 include hx in
+/- English proof (translation)
+Unfold `Dat3.rz`. Rewrite using `[← (show push x U.r.hom = r0 D.η D.Ψ from hx)]`. Both sides reduce to the same expression.
+-/
 private theorem push_base : push ((Algebra.ofId O E).comp x) U.r.hom = D.rz E := by
   unfold Dat3.rz
   rw [← (show push x U.r.hom = r0 D.η D.Ψ from hx)]
@@ -115,12 +156,18 @@ section Pro
 variable {B : Type} [CommRing B] [Algebra ℚ_[l] B] [Module.Finite ℚ_[l] B] [Algebra O B] [Algebra ℤ_[l] B]
   [IsScalarTower ℤ_[l] O B] [IsScalarTower ℤ_[l] ℚ_[l] B]
 
+/- English proof (translation)
+The claim follows from `(ptCont U.R B f).1 _ _ (U.r.cont a b)`.
+-/
 private theorem push_cont (f : U.R →ₐ[O] B) (a b : Fin 3) : QCont l fun g => (push f U.r.hom g).mat a b :=
   (ptCont U.R B f).1 _ _ (U.r.cont a b)
 
 variable [Algebra E B] [IsScalarTower O E B] [IsScalarTower ℚ_[l] E B] (π : B →ₐ[E] E)
 
 include hx in
+/- English proof (translation)
+Rewrite using `[← push_base D U E x hx]`. Use `MonoidHom.ext fun g => SemidirectProduct.ext (Units.ext ?_) rfl` and prove the remaining obligations. Use extensionality with `a b`. Conclude with `hf _`.
+-/
 private theorem push_red (f : U.R →ₐ[O] B) (hf : ∀ a, π (f a) = algebraMap O E (x a)) :
     (GG.map (π : B →+* E)).comp (push f U.r.hom) = D.rz E := by
   rw [← push_base D U E x hx]
@@ -129,6 +176,9 @@ private theorem push_red (f : U.R →ₐ[O] B) (hf : ∀ a, π (f a) = algebraMa
   exact hf _
 
 include hx hPC in
+/- English proof (translation)
+The claim follows from `U.r.hasMult red := push_red D U E x hx π f hf cont := push_cont D U f cr := hPC B f hI`.
+-/
 private theorem inDcr_push (f : U.R →ₐ[O] B) (hf : ∀ a, π (f a) = algebraMap O E (x a))
     (hI : GlobalTheory.OrdLoc.IY D U ≤ RingHom.ker f) : D.InDcr (π : B →+* E) (push f U.r.hom) where
   mult := U.r.hasMult
@@ -139,12 +189,20 @@ private theorem inDcr_push (f : U.R →ₐ[O] B) (hf : ∀ a, π (f a) = algebra
 variable (hπ : ∀ a, π a = 0 → IsNilpotent a)
 
 include hx hπ in
+/- English proof (translation)
+The claim follows from `(unramified_lift_deformation D U E B π hπ ((Algebra.ofId O E).comp x) (push f U.r.hom) U.r.hasMult ((push_red D U E x hx π f hf).trans (push_base D U E x hx).symm) (push_cont D U f)).unique h rfl`.
+-/
 private theorem push_inj (f f' : U.R →ₐ[O] B) (hf : ∀ a, π (f a) = algebraMap O E (x a))
     (h : push f' U.r.hom = push f U.r.hom) : f' = f :=
   (unramified_lift_deformation D U E B π hπ ((Algebra.ofId O E).comp x) (push f U.r.hom) U.r.hasMult
     ((push_red D U E x hx π f hf).trans (push_base D U E x hx).symm) (push_cont D U f)).unique h rfl
 
 include hx hCP hπ in
+/- English proof (translation)
+Take `⟨f, hf, -⟩` from `unramified_lift_deformation D U E B π hπ ((Algebra.ofId O E).comp x) r hr.mult (hr.red.trans (push_base D U E x hx).symm) hr.cont`. Use `⟨f, hf, hCP E B π hπ f (hf ▸ hr), fun a => ?_⟩` and prove the remaining obligations. Establish `h` using `push_inj D U E x hx (AlgHom.id E E) (fun a h => by rw [show a = 0 from h]; exact IsNilpotent.zero) ((Algebra.ofId O E).comp x) ((π.restrictScalars O).comp f) (fun _ => rfl) (by`. Rewrite using `[push_base D U E x hx, ← hr.red, ← hf]`. Use the proof step `rfl)`.
+
+Conclude with `DFunLike.congr_fun h a`.
+-/
 private theorem exists_push (r : GQ l →* GG 3 B) (hr : D.InDcr (π : B →+* E) r) :
     ∃ f : U.R →ₐ[O] B, push f U.r.hom = r ∧ GlobalTheory.OrdLoc.IY D U ≤ RingHom.ker f ∧ ∀ a, π (f a) = algebraMap O E (x a) := by
   obtain ⟨f, hf, -⟩ := unramified_lift_deformation D U E B π hπ ((Algebra.ofId O E).comp x) r hr.mult
@@ -159,6 +217,9 @@ private theorem exists_push (r : GQ l →* GG 3 B) (hr : D.InDcr (π : B →+* E
 end Pro
 
 include hx hCP in
+/- English proof (translation)
+Introduce `a ha` and use `by have hd : D.InDcr ((AlgHom.id E E : E →ₐ[E] E) : E →+* E) (push ((Algebra.ofId O E).comp x) U.r.hom) := { mult := U.r.hasMult red := push_red D U E x hx (AlgHom.id E E) ((Algebra.ofId O E).comp x) (fun _ => rfl) cont := push_cont D U _ cr := by rw [push_base D U E x hx]; exact …`.
+-/
 private theorem le_ker [IsFractionRing O E] : GlobalTheory.OrdLoc.IY D U ≤ RingHom.ker x := fun a ha => by
   have hd : D.InDcr ((AlgHom.id E E : E →ₐ[E] E) : E →+* E) (push ((Algebra.ofId O E).comp x) U.r.hom) :=
     { mult := U.r.hasMult
@@ -190,15 +251,24 @@ private noncomputable def cochain : (U.R →ₗ[O] E) →ₗ[E] (GQ l → Matrix
     rw [Pi.smul_apply, ← Matrix.smul_mul]
     rfl
 
+/- English proof (translation)
+The claim follows from `Units.inv_mul_cancel_right _ _`.
+-/
 private theorem cochain_mul (δ : U.R →ₗ[O] E) (g : GQ l) :
     cochain D U E δ g * (D.rz E g).mat = (U.r.hom g).mat.map δ :=
   Units.inv_mul_cancel_right _ _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Conclude with `(Units.mul_left_inj (D.rz E g).left).1 ((cochain_mul D U E δ g).trans (h g).symm)`.
+-/
 private theorem cochain_eq (δ : U.R →ₗ[O] E) (γ : GQ l → Matrix (Fin 3) (Fin 3) E)
     (h : ∀ g, γ g * (D.rz E g).mat = (U.r.hom g).mat.map δ) : cochain D U E δ = γ := by
   funext g
   exact (Units.mul_left_inj (D.rz E g).left).1 ((cochain_mul D U E δ g).trans (h g).symm)
 
+/- English proof (translation)
+The claim follows from `TrivSqZeroExt.isNilpotent_iff_isNilpotent_fst.2 (by rw [show a.fst = 0 from h]; exact IsNilpotent.zero)`.
+-/
 private theorem nil_fst (a : DualNumber E) (h : TrivSqZeroExt.fstHom E E E a = 0) : IsNilpotent a :=
   TrivSqZeroExt.isNilpotent_iff_isNilpotent_fst.2 (by rw [show a.fst = 0 from h]; exact IsNilpotent.zero)
 
@@ -206,10 +276,16 @@ private instance : Module.Finite ℚ_[l] (DualNumber E) := inferInstanceAs (Modu
 
 variable [TopologicalSpace E] [IsModuleTopology ℚ_[l] E] [IsTopologicalRing E]
 
+/- English proof (translation)
+Unfold `QCont`. Rewrite using `[← eq_moduleTopology ℚ_[l] E]`.
+-/
 private theorem qcont_iff {X : Type} [TopologicalSpace X] (f : X → E) : QCont l f ↔ Continuous f := by
   unfold QCont
   rw [← eq_moduleTopology ℚ_[l] E]
 
+/- English proof (translation)
+Establish `h : QCont l f ↔ @Continuous X (E × E) _ (moduleTopology ℚ_[l] (E × E)) f` using `Iff.rfl`. Rewrite using `[h, ← eq_moduleTopology ℚ_[l] (E × E)]`. Conclude with `continuous_prodMk`.
+-/
 private theorem qcont_dual {X : Type} [TopologicalSpace X] (f : X → DualNumber E) :
     QCont l f ↔ Continuous (fun g => (f g).fst) ∧ Continuous fun g => (f g).snd := by
   have h : QCont l f ↔ @Continuous X (E × E) _ (moduleTopology ℚ_[l] (E × E)) f := Iff.rfl
@@ -217,11 +293,17 @@ private theorem qcont_dual {X : Type} [TopologicalSpace X] (f : X → DualNumber
   exact continuous_prodMk
 
 include hx in
+/- English proof (translation)
+Rewrite using `[← push_base D U E x hx]`. Conclude with `continuous_matrix fun a b => (qcont_iff E _).1 (push_cont D U _ a b)`.
+-/
 private theorem rz_cont : Continuous fun g => (D.rz E g).mat := by
   rw [← push_base D U E x hx]
   exact continuous_matrix fun a b => (qcont_iff E _).1 (push_cont D U _ a b)
 
 include hx in
+/- English proof (translation)
+Establish `h : ∀ g, (D.rz E g).left⁻¹ = (D.rz E g⁻¹).left` using `fun g => by show (Matrix.GeneralLinearGroup.map (algebraMap O E) (tor O (D.Ψ g)))⁻¹ = Matrix.GeneralLinearGroup.map (algebraMap O E) (tor O (D.Ψ g⁻¹))`. Simplify using `only [map_inv]`. Simplify using `only [h]`. Conclude with `(rz_cont D U E x hx).comp continuous_inv`.
+-/
 private theorem rz_inv_cont :
     Continuous fun g => (((D.rz E g).left⁻¹ : GL (Fin 3) E) : Matrix (Fin 3) (Fin 3) E) := by
   have h : ∀ g, (D.rz E g).left⁻¹ = (D.rz E g⁻¹).left := fun g => by
@@ -232,6 +314,27 @@ private theorem rz_inv_cont :
   exact (rz_cont D U E x hx).comp continuous_inv
 
 include hx hPC hCP in
+/- English proof (translation)
+Establish `hm : HasMult D.η (D.rz E)` using `fun _ => rfl`. Establish `hinj : Function.Injective ((cochain D U E).domRestrict T)`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce and unpack `⟨δ, hδ⟩ h0`. Establish `h1 : ∀ g, (U.r.hom g).mat.map δ = 0` using `fun g => by`.
+
+Rewrite using `[← cochain_mul, show cochain D U E δ = 0 from h0, Pi.zero_apply, Matrix.zero_mul]`. Establish `h2` using `push_inj D U E x hx (TrivSqZeroExt.fstHom E E E) (nil_fst E) (dualPt x (0 : U.R →ₗ[O] E) (by simp)) (dualPt x δ ((hT δ).1 hδ).1) (fun _ => rfl) (by`. Use `MonoidHom.ext fun g => SemidirectProduct.ext (Units.ext ?_) rfl` and prove the remaining obligations. Use extensionality with `a b`. Both sides reduce to the same expression.
+
+Conclude with `congrFun (congrFun (h1 g) a) b)`. Conclude with `Subtype.ext (LinearMap.ext fun a => congrArg TrivSqZeroExt.snd (DFunLike.congr_fun h2 a))`. Rewrite using `[← LinearMap.finrank_range_of_inj hinj, LinearMap.range_domRestrict]`. Use `congrArg (fun S : Submodule E (GQ l → Matrix (Fin 3) (Fin 3) E) => finrank E ↥S) ?_` and prove the remaining obligations. Use `le_antisymm ?_ fun γ hγ => ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨δ, hδ, rfl⟩`. Take `⟨h1, h2⟩` from `(hT δ).1 hδ`. Establish `hF` using `inDcr_push D U E x hx hPC (TrivSqZeroExt.fstHom E E E) (dualPt x δ h1) (fun _ => rfl) (fun a ha => TrivSqZeroExt.ext (by show algebraMap O E (x a) = 0`. Rewrite using `[show x a = 0 from hle ha, map_zero]) (h2 a ha))`. Take `⟨γ, hγ, hd⟩` from `dualCoc _ _ hF.red`.
+
+Establish `e : cochain D U E δ = γ` using `cochain_eq D U E δ γ fun g => by`. Use extensionality with `a b`. Conclude with `(congrArg TrivSqZeroExt.snd ((hd g).2 a b)).symm`. Establish `hc : Continuous (cochain D U E δ)` using `continuous_pi_iff.2 <| continuous_pi_iff.1 <| (continuous_matrix fun a b => ((qcont_dual E _).1 (hF.cont a b)).2).matrix_mul (rz_inv_cont D U E x hx)`. Rewrite `hc`, the goal using `[e]`.
+
+Conclude with `((dualCr D E _ hm (rz_cont D U E x hx) γ ⟨hc, hγ⟩ _ hd).1 hF.cr).2`. Take `⟨r', hd⟩` from `dualEx (D.rz E) γ hγ.1.2`. Establish `hr' : D.InDcr (TrivSqZeroExt.fstHom E E E : DualNumber E →+* E) r'` using `{ mult := fun g => (hd g).1 red := by`. Use `MonoidHom.ext fun g => SemidirectProduct.ext (Units.ext ?_) (hd g).1` and prove the remaining obligations. Use extensionality with `a b`.
+
+Conclude with `congrArg TrivSqZeroExt.fst ((hd g).2 a b)`. Use `cont := fun a b => by`. Rewrite using `[qcont_dual]`. Simplify using `only [fun g => (hd g).2 a b]`. Conclude with `⟨(rz_cont D U E x hx).matrix_elem a b, (hγ.1.1.matrix_mul (rz_cont D U E x hx)).matrix_elem a b⟩`.
+
+Use `cr := (dualCr D E _ hm (rz_cont D U E x hx) γ hγ.1 _ hd).2 ⟨(isType_and_isLocallyCrystalline_rz D E).2, hγ⟩ }`. Take `⟨F, hF, hFI, hFx⟩` from `exists_push D U E x hx hCP (TrivSqZeroExt.fstHom E E E) (nil_fst E) r' hr'`. Use `⟨(TrivSqZeroExt.sndHom E E).restrictScalars O ∘ₗ F.toLinearMap, (hT _).2 ⟨fun a b => ?_, fun a ha => ?_⟩, cochain_eq D U E _ γ fun g => ?_⟩` and prove the remaining obligations. Use `show (F (a * b)).snd = _ * (F b).snd + _ * (F a).snd`. Rewrite using `[← hFx, ← hFx, map_mul]`.
+
+Simplify using `[mul_comm]`. Use `show (F a).snd = 0`. Rewrite using `[show F a = 0 from hFI ha]`. Both sides reduce to the same expression. Use extensionality with `a b`.
+
+Substitute `hF` using the available equality. Conclude with `(congrArg TrivSqZeroExt.snd ((hd g).2 a b)).symm`.
+-/
 private theorem tangent (T : Submodule E (U.R →ₗ[O] E))
     (hT : ∀ δ, δ ∈ T ↔ (∀ a b, δ (a * b) = algebraMap O E (x a) * δ b + algebraMap O E (x b) * δ a) ∧
       ∀ a ∈ GlobalTheory.OrdLoc.IY D U, δ a = 0) (hle : GlobalTheory.OrdLoc.IY D U ≤ RingHom.ker x) :
@@ -295,6 +398,11 @@ end Main
 
 end GlobalTheory.OrdLoc.TangentDual
 
+/- English proof (translation)
+Introduce `hL l _ O _ _ _ _ _ _ _ D U E _ _ _ _ _ _ _ _ x hx T hT`. Take `⟨hPC, hCP⟩` from `GlobalTheory.T.saturatedOrdinaryIdeal_cuts_out_crystalline_locus hL D U`. Use `letI : TopologicalSpace E := moduleTopology ℚ_[l] E`. Use `haveI : IsModuleTopology ℚ_[l] E := ⟨rfl⟩`. Use `haveI : IsTopologicalRing E := IsModuleTopology.isTopologicalRing ℚ_[l] E`.
+
+Rewrite using `[GlobalTheory.OrdLoc.TangentDual.tangent D U E x hx hPC hCP T hT (GlobalTheory.OrdLoc.TangentDual.le_ker D U E x hx hCP), UpperTheory.finrank_local_cocycles_adjoint_unitaryThree_eq_twelve hL D E]`.
+-/
 theorem GlobalTheory.OrdLoc.tangent_finrank_eq_twelve :
     LocalPublishedTheorems → ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] [IsAdicComplete (maximalIdeal O) O] (D : Dat3 l O) (U : D.Univ) (E : Type) [Field E] [Algebra ℚ_[l] E] [Module.Finite ℚ_[l] E] [Algebra O E] [Algebra ℤ_[l] E] [IsScalarTower ℤ_[l] O E] [IsScalarTower ℤ_[l] ℚ_[l] E] [IsFractionRing O E] (x : U.R →ₐ[O] O), IsBase D.η D.Ψ U.r.hom x → ∀ T : Submodule E (U.R →ₗ[O] E), (∀ δ, δ ∈ T ↔ (∀ a b, δ (a * b) = algebraMap O E (x a) * δ b + algebraMap O E (x b) * δ a) ∧ ∀ a ∈ GlobalTheory.OrdLoc.IY D U, δ a = 0) → finrank E ↥T = 12 := by
   intro hL l _ O _ _ _ _ _ _ _ D U E _ _ _ _ _ _ _ _ x hx T hT

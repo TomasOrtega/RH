@@ -8,10 +8,18 @@ namespace Formalism.MainNotions.DIV.Proofs
 
 open Formalism.BasicNotions
 
+/- English proof (translation)
+Rewrite using `[← Nat.mod_mod_of_dvd N ha, h]`. Conclude with `Nat.mod_eq_of_lt h1`.
+-/
 theorem mod_eq_one_of_dvd {N M a : ℕ} (h : N % M = 1) (ha : a ∣ M) (h1 : 1 < a) : N % a = 1 := by
   rw [← Nat.mod_mod_of_dvd N ha, h]
   exact Nat.mod_eq_of_lt h1
 
+/- English proof (translation)
+Establish `hNodd : Odd N` using `Nat.odd_iff.2 (by omega)`. Establish `hdodd : Odd d` using `hd.odd_of_ne_two hd2`. Rewrite using `[jacobiSym.neg _ hNodd, ZMod.χ₄_nat_one_mod_four h4, one_mul, ← jacobiSym.quadratic_reciprocity_one_mod_four h4 hdodd]`. Establish `hm : (N : ℤ) % (d : ℤ) = 1`. Rewrite using `[← Int.natCast_mod, hdN]`.
+
+Both sides reduce to the same expression. Rewrite using `[jacobiSym.mod_left, hm, jacobiSym.one_left]`.
+-/
 theorem jacobi_neg_eq_one {d N : ℕ} (hd : d.Prime) (hd2 : d ≠ 2) (h4 : N % 4 = 1) (hdN : N % d = 1) :
     jacobiSym (-(d : ℤ)) N = 1 := by
   have hNodd : Odd N := Nat.odd_iff.2 (by omega)
@@ -23,6 +31,27 @@ theorem jacobi_neg_eq_one {d N : ℕ} (hd : d.Prime) (hd2 : d ≠ 2) (h4 : N % 4
     rfl
   rw [jacobiSym.mod_left, hm, jacobiSym.one_left]
 
+/- English proof (translation)
+Introduce `u p hp hE`. Distinguish the cases in `hpd : p = D.host.d`. Conclude with `Or.inl hpd`. Use `right`. Establish `hq` using `D.q_prime`.
+
+Establish `hd` using `D.d_prime`. Establish `hq8 : D.host.q % 8 = 3` using `D.host.hyp.2.2.1`. Establish `hd16 : D.host.d % 16 = 7` using `D.host.hyp.2.2.2.1`. Establish `hd2 : D.host.d ≠ 2` using `by omega`. Establish `hjac : ∀ N : ℕ, N % (D.host.QS * D.host.q * D.host.d) = 1 → jacobiSym (-(D.host.d : ℤ)) N = 1`.
+
+Introduce `N hN`. Conclude with `jacobi_neg_eq_one hd hd2 (mod_eq_one_of_dvd hN ((((show 4 ∣ 2 ^ (D.R.e + 2) from ⟨2 ^ D.R.e, by ring⟩).trans D.host.tower_dvd).mul_right _).mul_right _) (by norm_num)) (mod_eq_one_of_dvd hN (Dvd.intro_left _ rfl) hd.one_lt)`. Establish `key : p ∈ D.host.small ∨ p = D.host.q ∨ jacobiSym (-(D.host.d : ℤ)) p = 1`. Unfold `Formalism.MainNotions.LocalQuadraticParts.Exc at hE`. Break down `(Nat.Prime.dvd_mul hp).1 hE with h | hT` into its components or cases.
+
+Break down `(Nat.Prime.dvd_mul hp).1 h with h | hG` into its components or cases. Break down `(Nat.Prime.dvd_mul hp).1 h with h | hd'` into its components or cases. Break down `(Nat.Prime.dvd_mul hp).1 h with h2 | hq'` into its components or cases. Conclude with `Or.inl (Nat.mem_primeFactors.2 ⟨hp, h2, D.host.QS_pos.ne'⟩)`. Conclude with `Or.inr (Or.inl ((Nat.prime_dvd_prime_iff_eq hp hq).1 hq'))`.
+
+Conclude with `absurd ((Nat.prime_dvd_prime_iff_eq hp hd).1 hd') hpd`. Take `⟨g, hgm, hpg⟩` from `(Prime.dvd_finsetProd_iff hp.prime _).1 hG`. Establish `hgi : ∃ i, g = D.host.g i`. Simplify using `only [SizeData₂.gTypes, Finset.mem_insert, Finset.mem_singleton] at hgm`. Break down `hgm with h | h` into its components or cases.
+
+Conclude with `⟨0, h⟩`. Conclude with `⟨1, h⟩`. Take `⟨i, rfl⟩` from `hgi`. Establish `hpe` using `(Nat.prime_dvd_prime_iff_eq hp (D.host.g_prime i)).1 hpg`. Substitute `hpe` using the available equality.
+
+Conclude with `Or.inr (Or.inr (hjac _ (by have h := hg i; unfold LevelStarExponents.condE at h; exact h)))`. Establish `hpe` using `(Nat.prime_dvd_prime_iff_eq hp (D.mem u).A.T_prime).1 hT`. Substitute `hpe` using the available equality. Conclude with `Or.inr (Or.inr (hjac _ (D.T_mod_cond u)))`. Establish `hcls : D.host.cls p = PrimeClass.ram2 ∨ D.host.cls p = PrimeClass.ramQ ∨ D.host.cls p = PrimeClass.splitK`.
+
+Unfold `Host.cls primeClass`. Distinguish the cases in `h1 : p ∈ D.host.small`. Rewrite using `[if_pos h1]`. Conclude with `Or.inl rfl`. Distinguish the cases in `h2 : p = D.host.q`.
+
+Rewrite using `[if_neg h1, if_pos h2]`. Conclude with `Or.inr (Or.inl rfl)`. Rewrite using `[if_neg h1, if_neg h2, if_neg hpd, if_pos ((key.resolve_left h1).resolve_left h2)]`. Conclude with `Or.inr (Or.inr rfl)`. Introduce `hin`.
+
+Unfold `Formalism.MainNotions.InertK at hin`. Apply the tactic sequence `rcases hcls with h | h | h <;> rw [h] at hin <;> rcases hin with hin | hin <;> cases hin`.
+-/
 theorem excSplit_of_g_mod {D : D7} (L : SizeData₂ D) (hg : ∀ i, D.host.g i % LevelStarExponents.condE D = 1) :
     Formalism.MainNotions.J.ExcSplit L := by
   intro u p hp hE
@@ -75,6 +104,9 @@ theorem excSplit_of_g_mod {D : D7} (L : SizeData₂ D) (hg : ∀ i, D.host.g i %
   unfold Formalism.MainNotions.InertK at hin
   rcases hcls with h | h | h <;> rw [h] at hin <;> rcases hin with hin | hin <;> cases hin
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Fm.x1 + 1, fun x hx i => excSplit_of_g_mod (Fm.L x i) (Fm.params x (by linarith) i).g_mod⟩`.
+-/
 theorem excSplit_large {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) :
     ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, Formalism.MainNotions.J.ExcSplit (Fm.L x i) :=
   ⟨Fm.x1 + 1, fun x hx i => excSplit_of_g_mod (Fm.L x i) (Fm.params x (by linarith) i).g_mod⟩

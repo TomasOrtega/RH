@@ -32,6 +32,17 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Seco
   [MeasurableSpace G] [BorelSpace G] {Γ : Subgroup G} [DiscreteTopology Γ] {μ : Measure G} [μ.IsMulLeftInvariant]
   {X : Type*} [Countable X]
 
+/- English proof (translation)
+Use `set A : G → ℝ≥0∞ := fun g => ∑' x, ‖a g x‖ₑ with hAdef`. Establish `hAm : Measurable A` using `Measurable.ennreal_tsum fun x => (ha x).enorm`. Establish `hAq : Measurable (descend Γ A)` using `measurable_from_quotient.2 (by`. Rewrite using `[show descend Γ A ∘ Quotient.mk'' = A from hA.lift_descend]`. Conclude with `hAm)`.
+
+Establish `hae : ∀ᵐ q ∂GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ, descend Γ A q < ⊤` using `ae_lt_top hAq hfin.ne`. Establish `haeG : ∀ᵐ g ∂μ, A g < ⊤` using `by filter_upwards [ae_quotMeasure_iff.1 hae] with g hg`. Rewrite `hg` using `[hA.descend_mk]`. Then use the resulting hypothesis. Establish `hBm : AEStronglyMeasurable (fun g => ∑' x, a g x) μ`. Use `aestronglyMeasurable_of_tendsto_ae (Filter.atTop : Filter (Finset X)) (f := fun s g => ∑ x ∈ s, a g x) (fun s => ?_) ?_` and prove the remaining obligations.
+
+Conclude with `(Finset.measurable_sum s fun x _ => ha x).aestronglyMeasurable`. Use `filter_upwards [haeG] with g hg`. Conclude with `(GlobalTheory.CompanionTheory.ThetaOrbit.summable_of_tsum_enorm_lt_top hg).hasSum`. Establish `hGm : AEStronglyMeasurable (descend Γ fun g => ∑' x, a g x) (GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ)`. Rewrite using `[aestronglyMeasurable_quotMeasure_iff_lift, hL.lift_descend]`.
+
+Conclude with `hBm`. Use `⟨⟨hGm, ?_⟩, ?_⟩` and prove the remaining obligations. Use `(lintegral_mono fun q => ?_).trans_lt hfin show ‖∑' x, a q.out x‖ₑ ≤ ∑' x, ‖a q.out x‖ₑ` and prove the remaining obligations. Conclude with `enorm_tsum_le_tsum_enorm`. Use `filter_upwards [hae] with q hq`.
+
+Conclude with `GlobalTheory.CompanionTheory.ThetaOrbit.summable_of_tsum_enorm_lt_top hq`.
+-/
 theorem integrable_descend_tsum (a : G → X → ℂ) (ha : ∀ x, Measurable fun g => a g x)
     (hA : LeftInv Γ fun g => ∑' x, ‖a g x‖ₑ) (hL : LeftInv Γ fun g => ∑' x, a g x)
     (hfin : ∫⁻ q, descend Γ (fun g => ∑' x, ‖a g x‖ₑ) q ∂GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ < ⊤) :
@@ -62,6 +73,11 @@ theorem integrable_descend_tsum (a : G → X → ℂ) (ha : ∀ x, Measurable fu
   · filter_upwards [hae] with q hq
     exact GlobalTheory.CompanionTheory.ThetaOrbit.summable_of_tsum_enorm_lt_top hq
 
+/- English proof (translation)
+Establish `key` using `fun j => integrable_descend_tsum (μ := μ) (a j) (ha j) (hA j) (hL j) (hfin j)`. Establish `hae : ∀ᵐ q ∂GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ, ∀ j, Summable (a j q.out)` using `ae_all_iff.2 fun j => (key j).2`. Establish `hcongr : (descend Γ fun g => ∑' x, ∑ j, a j g x) =ᵐ[GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ] fun q => ∑ j, descend Γ (fun g => ∑' x, a j g x) q` using `by filter_upwards [hae] with q hq show ∑' x, ∑ j, a j q.out x = ∑ j, ∑' x, a j q.out x`. Conclude with `Summable.tsum_finsetSum fun j _ => hq j`. Repeatedly rewrite using `[average_eq]`.
+
+Rewrite using `[integral_congr_ae hcongr, integral_finsetSum _ fun j _ => (key j).1, Finset.smul_sum]`.
+-/
 theorem average_descend_finset_sum {N : ℕ} (a : Fin N → G → X → ℂ) (ha : ∀ j x, Measurable fun g => a j g x)
     (hA : ∀ j, LeftInv Γ fun g => ∑' x, ‖a j g x‖ₑ) (hL : ∀ j, LeftInv Γ fun g => ∑' x, a j g x)
     (hfin : ∀ j, ∫⁻ q, descend Γ (fun g => ∑' x, ‖a j g x‖ₑ) q ∂GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ < ⊤) :
@@ -84,6 +100,13 @@ variable {D : D7}
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `: BorelSpace (GA D V)` using `⟨rfl⟩`. Use `haveI := hν`. Use `haveI := GlobalTheory.ThetaTransformMeas.countable_field D.host.E`. Use `haveI : Countable (Matrix (Fin V.rank) (Fin r) D.host.E) := inferInstanceAs (Countable (Fin V.rank → Fin r → D.host.E))`. Establish `hrank : ∀ (δ : GL (Fin V.rank) D.host.E) (ξ : Matrix (Fin V.rank) (Fin r) D.host.E), (δ.1 * ξ).rank = ξ.rank` using `fun δ ξ => Matrix.rank_mul_eq_right_of_isUnit_det _ _ ((Matrix.isUnit_iff_isUnit_det _).1 δ.isUnit)`.
+
+Establish `hfin : ∀ j, ∫⁻ q, descend (GQ V) (fun g => ∑' x : {x : Matrix (Fin V.rank) (Fin r) D.host.E // x.rank = r ∧ gramQ V x = β.1}, ‖φs j (GlobalTheory.SiegelFormula.invPt V g x.1)‖ₑ) q ∂autMeasure V ν < ⊤` using `fun j => by`. Use `(lintegral_mono fun q => ?_).trans_lt (habs j)` and prove the remaining obligations. Conclude with `ENNReal.tsum_comp_le_tsum_of_injective Subtype.val_injective (fun ξ => ‖φs j (GlobalTheory.SiegelFormula.invPt V q.out ξ)‖ₑ)`. Establish `key` using `average_descend_finset_sum (Γ := GQ V) (μ := ν) (X := {x : Matrix (Fin V.rank) (Fin r) D.host.E // x.rank = r ∧ gramQ V x = β.1}) (fun j h x => φs j (GlobalTheory.SiegelFormula.invPt V h x.1)) (fun j x => ((hc j).comp (GlobalTheory.AbsThetaSemi.continuous_invPt V x.1)).measurable …`. Establish `e : IfrB V ν (∑ j, φs j) β = ⨍ q, descend (GQ V) (fun g => ∑' x : {x : Matrix (Fin V.rank) (Fin r) D.host.E // x.rank = r ∧ gramQ V x = β.1}, ∑ j, φs j (GlobalTheory.SiegelFormula.invPt V g x.1)) q ∂GlobalTheory.AutomorphicL2Unitary.quotMeasure (GQ V) ν`.
+
+Unfold `IfrB`. Simplify using `only [Finset.sum_apply]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `key`.
+-/
 theorem ifrB_finset_sum {V : HSp D} {ν : Measure (GA D V)} (hν : ν.IsHaarMeasure) {r : ℕ} (β : HermE D r)
     {N : ℕ} (φs : Fin N → Mx D V.rank r → ℂ) (hc : ∀ j, Continuous (φs j))
     (habs : ∀ j, GlobalTheory.SiegelFormula.absThetaInt V ν (φs j) < ⊤) :
@@ -121,6 +144,15 @@ theorem ifrB_finset_sum {V : HSp D} {ν : Measure (GA D V)} (hν : ν.IsHaarMeas
   rw [e]
   exact key
 
+/- English proof (translation)
+Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C c`. Use `Function.HasTemperateGrowth.const (E := D.what₂.Tau → Fin m → Fin n → ℂ) c using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`. Simplify using `[evalPoly]`.
+
+Consider the case `add p q hp hq`. Use `hp.add hq using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`. Simplify using `only [evalPoly, map_add, Pi.add_apply]`. Consider the case `mul_X p k hp`.
+
+Establish `hcoord : (fun z : D.what₂.Tau → Fin m → Fin n → ℂ => z k.1 k.2.1 k.2.2.1).HasTemperateGrowth` using `((ContinuousLinearMap.proj (R := ℝ) k.2.2.1).comp ((ContinuousLinearMap.proj (R := ℝ) k.2.1).comp (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : D.what₂.Tau => Fin m → Fin n → ℂ) k.1))).hasTemperateGrowth`. Establish `hk : (fun z : D.what₂.Tau → Fin m → Fin n → ℂ => if k.2.2.2 then conj (z k.1 k.2.1 k.2.2.1) else z k.1 k.2.1 k.2.2.1).HasTemperateGrowth` using `by split_ifs`. Conclude with `(Complex.conjCLE.toContinuousLinearMap.comp ((ContinuousLinearMap.proj (R := ℝ) k.2.2.1).comp ((ContinuousLinearMap.proj (R := ℝ) k.2.1).comp (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : D.what₂.Tau => Fin m → Fin n → ℂ) k.1)))).hasTemperateGrowth`. Conclude with `hcoord`. Establish `e : (fun z : D.what₂.Tau → Fin m → Fin n → ℂ => evalPoly (p * MvPolynomial.X k) (fun τ => Matrix.of (z τ))) = fun z => evalPoly p (fun τ => Matrix.of (z τ)) * (if k.2.2.2 then conj (z k.1 k.2.1 k.2.2.1) else z k.1 k.2.1 k.2.2.1)`.
+
+Use function extensionality and compare the values at `z`. Simplify using `only [evalPoly, map_mul, MvPolynomial.eval_X]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `hp.mul hk`.
+-/
 theorem hasTemperateGrowth_evalPoly {m n : ℕ} (p : MvPolynomial (D.what₂.Tau × Fin m × Fin n × Bool) ℂ) :
     (fun z : D.what₂.Tau → Fin m → Fin n → ℂ => evalPoly p (fun τ => Matrix.of (z τ))).HasTemperateGrowth := by
   induction p using MvPolynomial.induction_on with
@@ -152,6 +184,13 @@ theorem hasTemperateGrowth_evalPoly {m n : ℕ} (p : MvPolynomial (D.what₂.Tau
     rw [e]
     exact hp.mul hk
 
+/- English proof (translation)
+Take `⟨e, c, g, d, bs, gv, hpure, rfl⟩` from `h`. Take `⟨f, hf⟩` from `GlobalTheory.GaussSchwartz.exists_schwartz_gauss D n V l hl s hs`. Establish `hg` using `mem_SB_of_isPureFin bs g gv hpure`. Establish `h1 : (fun x : Mx D V.rank n => gauss V l s (fun τ => compAt θ τ x) * g (fun i j => finPart D (x i j))) ∈ schwartzA θ V.rank n`. Use `Submodule.subset_span ⟨f, g, hg, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `x`. Rewrite using `[hf]`. Both sides reduce to the same expression. Establish `h2` using `GlobalTheory.CompanionTheory.WSum.mul_mem_schwartzA D θ V.rank n _ (hasTemperateGrowth_evalPoly (MvPolynomial.monomial e c)) _ h1`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `x`. Rewrite using `[← mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem mem_schwartzA_of_isMonoFock {n : ℕ} {θ : InfFam D} {V : HSp D} {l : D.what₂.Tau → ℝ}
     {s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ} (hl : ∀ τ, l τ ≠ 0)
     (hs : ∀ τ, IsCartanInv (gramAt D V τ) (s τ)) {φ : Mx D V.rank n → ℂ} (h : IsMonoFock θ V l s φ) :
@@ -171,6 +210,11 @@ theorem mem_schwartzA_of_isMonoFock {n : ℕ} {θ : InfFam D} {V : HSp D} {l : D
   rw [← mul_assoc]
   rfl
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `GlobalTheory.StdUnn.Model.exists_levi (D := D) a`. Use `set c : ℂ := (χ (Matrix.GeneralLinearGroup.det a) : ℂ) * npow (absA D (Matrix.GeneralLinearGroup.det a)) ((V.rank : ℂ) / 2) with hcdef`. Establish `hc : c ≠ 0` using `mul_ne_zero (Circle.coe_ne_zero _) (GlobalTheory.Doubling.npow_ne_zero (GlobalTheory.CompanionTheory.IwaAd.absA_pos _) _)`. Establish `heq : (fun x : Mx D V.rank n => φ (HMul.hMul x a.1)) = c⁻¹ • (ω g ⟨φ, hφ⟩).1`. Use function extensionality and compare the values at `x`.
+
+Rewrite using `[Pi.smul_apply, hω.levi g a hg ⟨φ, hφ⟩ x, smul_eq_mul, ← hcdef, ← mul_assoc, inv_mul_cancel₀ hc, one_mul]`. Rewrite using `[heq]`. Conclude with `(schwartzA θ V.rank n).smul_mem _ (ω g ⟨φ, hφ⟩).2`.
+-/
 theorem mem_schwartzA_mul_right {n : ℕ} {V : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {χ : (AE D)ˣ →* Circle}
     {θ : InfFam D} {μ : Measure (Mx D V.rank n)} {ω : G D n →* Module.End ℂ (schwartzA θ V.rank n)}
     (hω : IsWeilSch ψ χ θ V μ ω) (a : GL (Fin n) (AE D)) {φ : Mx D V.rank n → ℂ} (hφ : φ ∈ schwartzA θ V.rank n) :
@@ -185,6 +229,11 @@ theorem mem_schwartzA_mul_right {n : ℕ} {V : HSp D} {ψ : AddChar (AF D.host.F
   rw [heq]
   exact (schwartzA θ V.rank n).smul_mem _ (ω g ⟨φ, hφ⟩).2
 
+/- English proof (translation)
+Introduce `D n V ψ χ θ μ ω H l s ν Φ hS hR β _hβ a N φs hφs`. Establish `hl : ∀ τ, l τ ≠ 0` using `GlobalTheory.ResAniso.VacSchwartz.realPar_ne_zero D θ hS.hθ ψ hS.hψ l hS.hl`. Establish `hmem : ∀ j, (fun x : Mx D V.rank n => φs j (HMul.hMul x a.1)) ∈ schwartzA θ V.rank n` using `fun j => mem_schwartzA_mul_right hS.hω a (mem_schwartzA_of_isMonoFock hl hS.hs (hφs j))`. Establish `hn : 1 ≤ n` using `by obtain ⟨h1, h2, -⟩ := hR; omega`. Use `Eq.trans (congrArg (fun f => IfrB V ν f β) ?_) (ifrB_finset_sum hS.hν β _ (fun j => (GlobalTheory.CompanionTheory.WeilTheta.schwartzA_continuous_and_dominated D θ hS.hθ _ _ _ (hmem j)).1) (fun j => hW D n V hn (Or.inr hR.2.2) θ hS.hθ ν hS.hν ⟨_, hmem j⟩))` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [Finset.sum_apply]`. Conclude with `map_sum (Pi.evalAddMonoidHom (fun _ : Mx D V.rank n => ℂ) _) φs Finset.univ`.
+-/
 theorem ifrBAdd_of_weilThetaConvergence (hW : GlobalTheory.Published.WeilThetaConvergence) : IfrBAdd := by
   intro D n V ψ χ θ μ ω H l s ν Φ hS hR β _hβ a N φs hφs
   have hl : ∀ τ, l τ ≠ 0 := GlobalTheory.ResAniso.VacSchwartz.realPar_ne_zero D θ hS.hθ ψ hS.hψ l hS.hl
@@ -200,6 +249,13 @@ theorem ifrBAdd_of_weilThetaConvergence (hW : GlobalTheory.Published.WeilThetaCo
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.TowerRestrict.lattice_Mx D V.rank n`. Use `haveI : BorelSpace (Mx D V.rank n) := ⟨rfl⟩`. Use `haveI := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)`. Establish `hphase : Continuous fun y : Mx D V.rank n => ψ (halfTr (Matrix.trace (HMul.hMul b.1 (GlobalTheory.StdUnn.inner V y y) : Mx D n n)))` using `hψ.1.comp (GlobalTheory.CompanionTheory.BigCellJ.continuous_halfTr.comp ((continuous_const.matrix_mul (GlobalTheory.CompanionTheory.BigCellJ.continuous_inner_self V n)).matrix_trace))`. Establish `hint : ∀ j, Integrable (fun y => φs j y * ψ (halfTr (Matrix.trace (HMul.hMul b.1 (GlobalTheory.StdUnn.inner V y y) : Mx D n n)))) μ` using `fun j => by`.
+
+Establish `hi` using `GlobalTheory.CompanionTheory.BigCellJ.integrable_schwartzA hθ hμ (hmem j)`. Use `hi.norm.mono' (hi.aestronglyMeasurable.mul hphase.aestronglyMeasurable) ?_` and prove the remaining obligations. Conclude with `Filter.Eventually.of_forall fun y => by rw [norm_mul, hψ.2.1, mul_one]`. Unfold `Jt`. Rewrite using `[← integral_finsetSum _ fun j _ => hint j]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[Finset.sum_apply, Finset.sum_mul]`.
+-/
 theorem jt_finset_sum {n : ℕ} {V : HSp D} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) {θ : InfFam D}
     (hθ : IsInfFam θ) {μ : Measure (Mx D V.rank n)} {𝓕 : Set (Mx D V.rank n)} (hμ : IsCovolOne (ratMx D V.rank n) μ 𝓕)
     {N : ℕ} (φs : Fin N → Mx D V.rank n → ℂ) (hmem : ∀ j, φs j ∈ schwartzA θ V.rank n) (b : hermA D n) :
@@ -222,6 +278,9 @@ theorem jt_finset_sum {n : ℕ} {V : HSp D} {ψ : AddChar (AF D.host.F) ℂ} (h�
   funext y
   rw [Finset.sum_apply, Finset.sum_mul]
 
+/- English proof (translation)
+Unfold `Jt`. Use `(norm_integral_le_integral_norm _).trans (le_of_eq ?_)` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[norm_mul, hψ.2.1, mul_one]`.
+-/
 theorem norm_jt_le {n : ℕ} {V : HSp D} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ)
     (μ : Measure (Mx D V.rank n)) (φ : Mx D V.rank n → ℂ) (b : hermA D n) :
     ‖Jt ψ V μ φ b‖ ≤ ∫ y, ‖φ y‖ ∂μ := by
@@ -231,6 +290,9 @@ theorem norm_jt_le {n : ℕ} {V : HSp D} {ψ : AddChar (AF D.host.F) ℂ} (hψ :
   funext y
   rw [norm_mul, hψ.2.1, mul_one]
 
+/- English proof (translation)
+Use `haveI := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)`. Conclude with `hψ.1.comp ((GlobalTheory.CompanionTheory.BigCellJ.continuous_halfTr.comp (continuous_const.matrix_mul continuous_subtype_val).matrix_trace).neg)`.
+-/
 theorem continuous_char_neg {n : ℕ} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (T : Mx D n n) :
     Continuous fun b : hermA D n => ψ (-halfTr (Matrix.trace (HMul.hMul T b.1 : Mx D n n))) := by
   haveI := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)
@@ -239,6 +301,15 @@ theorem continuous_char_neg {n : ℕ} {ψ : AddChar (AF D.host.F) ℂ} (hψ : Is
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨j1, j2, j3, j4, j5, -⟩` from `GlobalTheory.TowerRestrict.lattice_Mx D n n`. Use `haveI : BorelSpace (Mx D n n) := ⟨rfl⟩`. Use `haveI : SecondCountableTopology (hermA D n) := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI : BorelSpace (hermA D n) := Subtype.borelSpace _`. Establish `hchar` using `continuous_char_neg hψ T`.
+
+Establish `hterm : ∀ j, Integrable (fun b : hermA D n => npow (H (w * nb b * g)) (z - s0 V n) * Jt ψ V μ (φs j) b * ψ (-halfTr (Matrix.trace (HMul.hMul T b.1 : Mx D n n)))) lam` using `fun j => by`. Establish `hJc` using `GlobalTheory.CompanionTheory.BigCellJ.jt_continuous D n V ψ θ μ (φs j) hψ hθ ⟨𝓕, hμ⟩ (hmem j)`. Use `(hint.norm.mul_const (∫ y, ‖φs j y‖ ∂μ)).mono' ?_ ?_` and prove the remaining obligations. Conclude with `(hint.aestronglyMeasurable.mul hJc.aestronglyMeasurable).mul hchar.aestronglyMeasurable`. Use `Filter.Eventually.of_forall fun b => ?_` and prove the remaining obligations.
+
+Rewrite using `[norm_mul, norm_mul, hψ.2.1, mul_one]`. Conclude with `mul_le_mul_of_nonneg_left (norm_jt_le hψ μ (φs j) b) (norm_nonneg _)`. Unfold `whitT`. Rewrite using `[← integral_finsetSum _ fun j _ => hterm j]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `b`. Rewrite using `[jt_finset_sum hψ hθ hμ φs hmem b, Finset.mul_sum, Finset.sum_mul]`.
+-/
 theorem whitT_finset_sum {n : ℕ} {V : HSp D} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) {θ : InfFam D}
     (hθ : IsInfFam θ) {μ : Measure (Mx D V.rank n)} {𝓕 : Set (Mx D V.rank n)} (hμ : IsCovolOne (ratMx D V.rank n) μ 𝓕)
     (lam : Measure (hermA D n)) (nb : hermA D n → G D n) (w : G D n) (H : G D n → ℝ≥0) (T : Mx D n n) (g : G D n)
@@ -264,6 +335,15 @@ theorem whitT_finset_sum {n : ℕ} {V : HSp D} {ψ : AddChar (AF D.host.F) ℂ} 
   funext b
   rw [jt_finset_sum hψ hθ hμ φs hmem b, Finset.mul_sum, Finset.sum_mul]
 
+/- English proof (translation)
+Introduce `D n V ψ χ θ μ ω H l s ν Φ hS hR lam 𝓖 nb hCD w hw β hβ a g N φs hφs`. Establish `hl : ∀ τ, l τ ≠ 0` using `GlobalTheory.ResAniso.VacSchwartz.realPar_ne_zero D θ hS.hθ ψ hS.hψ l hS.hl`. Establish `hmem : ∀ j, φs j ∈ schwartzA θ V.rank n` using `fun j => mem_schwartzA_of_isMonoFock hl hS.hs (hφs j)`. Take `⟨𝓕, hμ⟩` from `hS.hμ`. Use `⟨((V.rank : ℝ) + n) / 2, fun z hz => ?_⟩` and prove the remaining obligations.
+
+Establish `hre : (z - s0 V n - (n : ℂ) / 2).re = z.re - (V.rank : ℝ) / 2`. Establish `e : z - s0 V n - (n : ℂ) / 2 = z - (((V.rank : ℝ) / 2 : ℝ) : ℂ)`. Unfold `s0`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e, Complex.sub_re, Complex.ofReal_re]`. Establish `hs' : (n : ℝ) / 2 < (z - s0 V n - (n : ℂ) / 2).re` using `by rw [hre]; linarith`. Establish `hint0` using `integrable_npow_height hS.hψ hS.hH hCD hw β hβ hs' g`. Establish `hexp : z - s0 V n - (n : ℂ) / 2 + (n : ℂ) / 2 = z - s0 V n` using `by ring`. Rewrite `hint0` using `[hexp]`.
+
+Conclude with `whitT_finset_sum hS.hψ hS.hθ hμ lam nb w H _ g z hint0 φs hmem`.
+-/
 theorem whitTAdd : WhitTAdd := by
   intro D n V ψ χ θ μ ω H l s ν Φ hS hR lam 𝓖 nb hCD w hw β hβ a g N φs hφs
   have hl : ∀ τ, l τ ≠ 0 := GlobalTheory.ResAniso.VacSchwartz.realPar_ne_zero D θ hS.hθ ψ hS.hψ l hS.hl

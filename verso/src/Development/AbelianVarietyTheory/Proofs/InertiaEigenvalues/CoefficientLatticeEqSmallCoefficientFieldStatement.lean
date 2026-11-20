@@ -14,5 +14,8 @@ open GlobalTheory.PlaceRead
 open GlobalTheory.HeightCounting.Up (PrN)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PlaceSmall.coefLat_eq_small | exact GlobalTheory.PlaceSmall.coefLat_eq_small | (intros; apply GlobalTheory.PlaceSmall.coefLat_eq_small <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.coefficient_lattice_eq_small_coefficient_field : ∀ (D : D7) (S T : HSp D) (B : Base S T), B.Good → ∀ O : Subring ℂ, intLL D ≤ O → ∀ h, B.coefLat D.what₂.embLL (labLL D) O h = B.coefLat (embLL0 D) (labLL0 D) O h := by
   first | exact @GlobalTheory.PlaceSmall.coefLat_eq_small | exact GlobalTheory.PlaceSmall.coefLat_eq_small | (intros; apply GlobalTheory.PlaceSmall.coefLat_eq_small <;> assumption)

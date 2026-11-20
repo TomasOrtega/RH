@@ -6,6 +6,27 @@ open GlobalTheory GlobalTheory.ChowHt GlobalTheory.Adelic GlobalTheory.HermTools
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨b, hbt, hsb, htb, hb⟩` from `exists_linearIndepOn_id_extension (s := Set.range v) (t := Set.range v ∪ Set.range w) (K := E) hv.linearIndepOn_id Set.subset_union_left`. Set `K : Finset (Fin d)` to `Finset.univ.filter (fun k => w k ∈ b ∧ w k ∉ Set.range v)`. Set `u : Fin n ⊕ K → M` to `Sum.elim v fun k : K => w k`. Establish `hK : ∀ k : K, w k ∈ b ∧ w k ∉ Set.range v` using `fun k => (Finset.mem_filter.1 k.2).2`. Establish `hu_inj : Function.Injective u`.
+
+Introduce and unpack `(i | i) (j | j) h`. Simplify using `only [u, Sum.elim_inl] at h`. Rewrite using `[hv.injective h]`. Simplify using `only [u, Sum.elim_inl, Sum.elim_inr] at h`. Conclude with `absurd ⟨i, h⟩ (hK j).2`.
+
+Simplify using `only [u, Sum.elim_inl, Sum.elim_inr] at h`. Conclude with `absurd ⟨j, h.symm⟩ (hK i).2`. Simplify using `only [u, Sum.elim_inr] at h`. Rewrite using `[Subtype.ext (hw.injective h)]`. Establish `hu_mem : ∀ x, u x ∈ b`.
+
+Introduce and unpack `(i | i)`. Conclude with `hsb ⟨i, rfl⟩`. Conclude with `(hK i).1`. Establish `hu_range : Set.range u = b`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `hu_mem x`. Introduce `x hx`. Distinguish the cases in `hxv : x ∈ Set.range v`. Take `⟨i, rfl⟩` from `hxv`.
+
+Conclude with `⟨Sum.inl i, rfl⟩`. Break down `hbt hx with ⟨i, rfl⟩ | ⟨k, rfl⟩` into its components or cases. Conclude with `absurd ⟨i, rfl⟩ hxv`. Establish `hk : k ∈ K` using `Finset.mem_filter.2 ⟨Finset.mem_univ _, hx, hxv⟩`. Conclude with `⟨Sum.inr ⟨k, hk⟩, rfl⟩`.
+
+Establish `hli : LinearIndependent E u` using `LinearIndependent.comp (show LinearIndependent E (fun x : b => (x : M)) from hb) (fun x => (⟨u x, hu_mem x⟩ : b)) (fun x y h => hu_inj (congrArg Subtype.val h))`. Use `⟨K, ?_, hli⟩` and prove the remaining obligations. Establish `hspan : Submodule.span E (Set.range u) = Submodule.span E (Set.range w)`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le, hu_range]`.
+
+Introduce `x hx`. Break down `hbt hx with ⟨i, rfl⟩ | ⟨k, rfl⟩` into its components or cases. Conclude with `hvw i`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Rewrite using `[Submodule.span_le, hu_range]`.
+
+Conclude with `Set.subset_union_right.trans htb`. Establish `h1` using `finrank_span_eq_card hli`. Establish `h2` using `finrank_span_eq_card hw`. Rewrite `h1` using `[hspan, h2]`. Simplify using `only [Fintype.card_sum, Fintype.card_fin, Fintype.card_coe] at h1`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem exchange_independent_completion (E M : Type) [Field E] [AddCommGroup M] [Module E M]
     (n d : ℕ) (v : Fin n → M) (w : Fin d → M) (hv : LinearIndependent E v)
     (hw : LinearIndependent E w) (hvw : ∀ k, v k ∈ Submodule.span E (Set.range w)) :

@@ -20,6 +20,11 @@ namespace GlobalTheory.CompHt.IndepPoint
 variable {p : ℕ} [Fact p.Prime] {C : Type} [Field C] {v : Valuation C ℝ≥0} {O : Type} [CommRing O]
   [Algebra O C] {Λ : Type} [CommRing Λ] [StarRing Λ] {P P' : Point p v O Λ}
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `id hR`. Set `ψ : (R ⧸ Ideal.span {(p : R) ^ m}) →ₐ[O] R'` to `Ideal.Quotient.liftₐ _ φ fun c hc => by`. Take `⟨d, rfl⟩` from `Ideal.mem_span_singleton'.mp hc`. Simplify using `[hm]`. Establish `e : ptMap φ = ptMap ψ ≫ ptMap (redR p O R m)`.
+
+Rewrite using `[TangentPow.ptMap_comp_ptMap]`. Both sides reduce to the same expression. Rewrite using `[e, Category.assoc, Category.assoc, h, P.cmp_nat _ _ (nilpR m)]`.
+-/
 theorem corr_nilp {R R' : Type} [CommRing R] [Algebra O R] [CommRing R'] [Algebra O R'] {x : specO O R ⟶ P.Gt}
     {y : specO O R ⟶ P.G} (h : Corr P x y) (φ : R →ₐ[O] R') (hR : IsNilpotent (p : R')) :
     P.cmp R' hR (ptMap φ ≫ x) = ptMap φ ≫ y := by
@@ -47,11 +52,17 @@ def tateIso {A B : Out.PolAV (Sp C)} (α : A.A ≅ B.A) [IsMonHom α.hom] : Tate
       change (t.lev n ≫ α.hom) ≫ α.inv = t.lev n
       simp)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lev_tateIso {A B : Out.PolAV (Sp C)} (α : A.A ≅ B.A) [IsMonHom α.hom] (t : TateA A p) (n : ℕ) :
     (tateIso p α t).lev n = t.lev n ≫ α.hom := rfl
 
 variable [IsAlgClosed C] [CharZero C]
 
+/- English proof (translation)
+Establish `hl : Out.Laws` using `GlobalTheory.firstFiveLaws.1`. Take `⟨w, hw⟩` from `hL`. Establish `h1 : (z ≫ α.hom) ^ k = 1` using `by rw [← MonObj.pow_comp, hz, MonObj.one_comp]`. Establish `h2 : (s ≫ α.hom) ^ k = 1` using `by rw [← MonObj.pow_comp, hs, MonObj.one_comp]`. Conclude with `(weilIs_iff hk hz hs _).1 ((GlobalTheory.weilIs_iso_iff hl.globalFns hl.cube A B α w hw k z s hz hs _).1 ((weilIs_iff hk h1 h2 _).2 rfl))`.
+-/
 theorem weil_iso {A B : Out.PolAV (Sp C)} (α : A.A ≅ B.A) [IsMonHom α.hom] (hL : LBIso A.L (B.L.pull α.hom.left))
     {k : ℕ} (hk : 1 ≤ k) {z s : ChTor.Pts A.A} (hz : z ^ k = 1) (hs : s ^ k = 1) :
     weil B k (z ≫ α.hom) (s ≫ α.hom) = weil A k z s := by
@@ -66,6 +77,9 @@ variable [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [Alge
 
 omit [Algebra ℤ_[p] O] in
 
+/- English proof (translation)
+The claim follows from `P.char_ext fun w => by have e1 : P'.toG ((w ≫ d) ≫ torsion.ι P'.Gt (p ^ n)) = P.toG (w ≫ torsion.ι P.Gt (p ^ n)) ≫ g := P.hom_ext_red fun m => by rw [Point.red_toG, ← Category.assoc _ (P.toG _), Point.red_toG, ← Category.assoc _ w, ← hd] simp only [Category.assoc] have e2 : P.toA …`.
+-/
 theorem weilChar_tateIso (α : P.A.A ≅ P'.A.A) [IsMonHom α.hom] (hL : LBIso P.A.L (P'.A.L.pull α.hom.left))
     (g : P.G ⟶ P'.G) (hgen : α.hom.left ≫ P'.gen = P.gen ≫ g.left) (t : P.T) {n : ℕ}
     {d : torsion P.Gt (p ^ n) ⟶ torsion P'.Gt (p ^ n)}
@@ -82,6 +96,13 @@ theorem weilChar_tateIso (α : P.A.A ≅ P'.A.A) [IsMonHom α.hom] (hL : LBIso P
   rw [← Category.assoc, P.isWeilChar_weilChar, P'.isWeilChar_weilChar, ← e2, lev_tateIso]
   exact congrArg Units.val (weil_iso α hL (one_le_ppow p n) (P.toA_pow w) (t.lev_pow n)).symm
 
+/- English proof (translation)
+Establish `key : ∀ (n : ℕ) (R : Type) [CommRing R] [Algebra O R], (p : R) ^ n = 0 → algebraMap O R ((dlogTv (P'.weilChar (tateIso p α t))).1 x') = algebraMap O R ((dlogTv (P.weilChar t)).1 x)` using `fun n R _ _ hR => by`. Take `⟨d, hd⟩` from `GlobalTheory.RaynaudTorsionMap.exists_torsion_map p C v O Λ P P' g hg (p ^ n) (one_le_ppow p n)`. Establish `hn : IsNilpotent (p : DualNumber R)` using `⟨n, by`. Rewrite using `[← map_natCast (algebraMap R (DualNumber R)), ← map_pow, hR, map_zero]⟩`. Establish `hw : _ = ptMap (dualBC (Algebra.ofId O R)) ≫ x.1` using `HodgeTateImage.lift_ι hR x`.
+
+Establish `h1` using `isAl_dlogTv (P.weilChar t) n _ hR x _ hw`. Establish `h2` using `isAl_dlogTv (P'.weilChar (tateIso p α t)) n _ hR x' (HodgeTateImage.lift hR x ≫ d) ((P'.cmp _ hn).injective (by`. Rewrite using `[Category.assoc, hd, hw, corr_nilp hx, corr_nilp hx', Category.assoc]))`. Rewrite `h2` using `[Category.assoc, ← weilChar_tateIso α hL g hgen t hd, h1]`. Simplify `(congrArg TrivSqZeroExt.snd h2).symm` using `[Algebra.algebraMap_eq_smul_one]`.
+
+Conclude with `HodgeTateImage.eq_of_forall (p := p) fun n => key n _ (HodgeTateImage.pow_quot n)`.
+-/
 theorem al₀_tateIso (α : P.A.A ≅ P'.A.A) [IsMonHom α.hom] (hL : LBIso P.A.L (P'.A.L.pull α.hom.left))
     (g : P.G ⟶ P'.G) (hg : IsMonHom g) (hgen : α.hom.left ≫ P'.gen = P.gen ≫ g.left)
     {x : LieG P.Gt} {x' : LieG P'.Gt} {y : specO O (DualNumber O) ⟶ P.G} (hx : Corr P x.1 y)
@@ -103,6 +124,13 @@ theorem al₀_tateIso (α : P.A.A ≅ P'.A.A) [IsMonHom α.hom] (hL : LBIso P.A.
 
 variable [Algebra ℤ_[p] C] [IsScalarTower ℤ_[p] O C] (e : P.T ≃ₗ[ℤ_[p]] P'.T)
 
+/- English proof (translation)
+Set `u : ℤ_[p]` to `P.eps.equiv.symm (P'.eps.equiv 1)`. Establish `h1 : ∀ s t, pairT P.A P.eps s t = u * pairT P'.A P'.eps (e s) (e t)` using `fun s t => by`. Rewrite using `[mul_comm, ← smul_eq_mul, ← map_smul, ← map_smul, smul_eq_mul, _root_.mul_one]`. Express the relevant statement in the definitionally equal form `P.eps.equiv.symm (weilT P.A p s t) = P.eps.equiv.symm (P'.eps.equiv (P'.eps.equiv.symm (weilT P'.A p (e s) (e t))))`. Rewrite using `[LinearEquiv.apply_symm_apply, he]`.
+
+Establish `h2 : ∀ (w : P.V) (t : P.T), P.pairV w (1 ⊗ₜ t) = P'.pairV (u • e.toLinearMap.baseChange C w) (1 ⊗ₜ e t)` using `fun w t => by`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, smul_add, LinearMap.add_apply, ha, hb]`. Consider the case `tmul c s`.
+
+Rewrite using `[LinearMap.baseChange_tmul, TensorProduct.smul_tmul', Point.pairV_tmul, Point.pairV_tmul, h1, mul_comm u, mul_smul, smul_mul_assoc]`. Both sides reduce to the same expression. Use `⟨u, fun x x' h => P'.eq_of_pairV fun t => ?_⟩` and prove the remaining obligations. Take `⟨t, rfl⟩` from `e.surjective t`. Rewrite using `[← h2, Point.pairV_bLie, Point.pairV_bLie, h]`.
+-/
 theorem exists_bLie_eq (he : ∀ s t, weilT P'.A p (e s) (e t) = weilT P.A p s t) :
     ∃ u : ℤ_[p], ∀ (x : LieG P.Gt) (x' : LieG P'.Gt), (∀ t, (P'.al₀ (e t)).1 x' = (P.al₀ t).1 x) →
       P'.bLie x' = u • e.toLinearMap.baseChange C (P.bLie x) := by
@@ -127,6 +155,11 @@ theorem exists_bLie_eq (he : ∀ s t, weilT P'.A p (e s) (e t) = weilT P.A p s t
 
 omit [IsAlgClosed C] [CharZero C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] in
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨_, ⟨x, rfl⟩, rfl⟩`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [map_add, map_add]`. Conclude with `Submodule.add_mem _ ha hb`.
+
+Consider the case `tmul c t => exact ⟨c ⊗ₜ e t, by rw [Point.inclT_tmul, Point.inclT_tmul]; rfl⟩`.
+-/
 theorem map_latT_le : P.latT.map ((e.toLinearMap.baseChange C).restrictScalars O) ≤ P'.latT := by
   rintro _ ⟨_, ⟨x, rfl⟩, rfl⟩
   induction x using TensorProduct.induction_on with
@@ -137,6 +170,9 @@ theorem map_latT_le : P.latT.map ((e.toLinearMap.baseChange C).restrictScalars O
 omit [IsAlgClosed C] [CharZero C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O]
   [Algebra ℤ_[p] O] [IsScalarTower ℤ_[p] O C] in
 
+/- English proof (translation)
+Introduce `a x` and use `by induction x using TensorProduct.induction_on with | zero => simp | add x y hx hy => simp only [map_add, hx, hy] | tmul c t => exact congrArg (c ⊗ₜ ·) (ha a t)`.
+-/
 theorem isEquivariant_baseChange (ha : ∀ a t, e (P.actT a t) = P'.actT a (e t)) :
     IsEquivariant P.actV P'.actV (e.toLinearMap.baseChange C) := fun a x => by
   induction x using TensorProduct.induction_on with
@@ -147,6 +183,11 @@ theorem isEquivariant_baseChange (ha : ∀ a t, e (P.actT a t) = P'.actT a (e t)
 omit [IsAlgClosed C] [CharZero C] [Algebra ℤ_[p] O] [Algebra ℤ_[p] C] [IsScalarTower ℤ_[p] O C]
   [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] in
 
+/- English proof (translation)
+Take `⟨xG, w, h1, h2, h3⟩` from `h`. Take `⟨xG', w', h1', h2', h3'⟩` from `h'`. Establish `e1 : w.left ≫ α.left = w'.left` using `hψ.hom_ext (by rw [Category.assoc, hα, h2, h2']) ((Over.w (w ≫ α)).trans (Over.w w').symm)`. Establish `: IsSchemeTheoreticallyDominant (spMap (dualMap (algebraMap O C)))` using `(schemeDominant_specMap_iff _).2 fun a b hab => TrivSqZeroExt.ext (P.integers.hom_inj (by simpa [dualMap] using congrArg TrivSqZeroExt.fst hab)) (P.integers.hom_inj (by simpa [dualMap, Algebra.algebraMap_eq_smul_one] using congrArg TrivSqZeroExt.snd hab))`. Use `P'.semi.separated` as an intermediate fact.
+
+Establish `e2 : xG.1 ≫ g = xG'.1` using `Over.OverMorphism.ext (ext_of_schDom P'.G.hom ((Over.w (xG.1 ≫ g)).trans (Over.w xG'.1).symm) _ (by`. Rewrite using `[← h3', ← e1, Over.comp_left, ← Category.assoc, ← h3, Category.assoc, Category.assoc, hgen]))`. Conclude with `⟨xG.1, h1, e2 ▸ h1'⟩`.
+-/
 theorem exists_corr {Y S : Scheme.{0}} {ψ : P.A.A.left ⟶ Y} {ψ' : P'.A.A.left ⟶ Y} {s : Y ⟶ S} {y : Sp C ⟶ S}
     (hψ : IsPullback ψ' P'.A.A.hom s y) (α : P.A.A ⟶ P'.A.A) (hα : α.left ≫ ψ' = ψ) (g : P.G ⟶ P'.G)
     (hgen : α.left ≫ P'.gen = P.gen ≫ g.left) {x : LieG P.Gt} {x' : LieG P'.Gt} {u : Sp (DualNumber C) ⟶ Y}
@@ -171,6 +212,17 @@ namespace GlobalTheory.CompHt
 
 open IndepPoint
 
+/- English proof (translation)
+Take `⟨α, g, hα, hg, h1, h2, h3, h4⟩` from `GlobalTheory.CompHt.pointOver_iso E H Dw l Xo p C v O T x₀ k kO kO' P P' ψ ψ' h h'`. Set `e : P.T ≃ₗ[ℤ_[p]] P'.T` to `tateIso p α`. Take `⟨r, hr⟩` from `exists_bLie_eq e fun s t => Tate.ext fun m => weil_iso α h4 (one_le_ppow p m) (s.lev_pow m) (t.lev_pow m)`. Establish `hb : ∀ j, P'.bLie (x' j) = r • e.toLinearMap.baseChange C (P.bLie (x j))` using `fun j => hr _ _ fun t => by`. Take `⟨y, hy, hy'⟩` from `exists_corr h'.isGrpPullback.1 α.hom h1 g h2 (hx j) (hx' j)`.
+
+Conclude with `al₀_tateIso α h4 g hg h2 hy hy' t`. Establish `he` using `isEquivariant_baseChange e fun b t => Tate.ext fun m => by`. Express the relevant statement in the definitionally equal form `(t.lev m ≫ P.oA.act b) ≫ α.hom = (t.lev m ≫ α.hom) ≫ P'.oA.act b`. Rewrite using `[Category.assoc, Category.assoc, h3]`. Establish `hs : ∑ j, a j • P'.bLie (x' j) = algebraMap ℤ_[p] O r • e.toLinearMap.baseChange C (∑ j, a j • P.bLie (x j))`.
+
+Rewrite using `[map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hb, map_smul, smul_comm, ← algebraMap_smul C (algebraMap ℤ_[p] O r), ← IsScalarTower.algebraMap_apply, algebraMap_smul]`. Rewrite using `[hs]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations.
+
+Unfold `htLat at ha ⊢`. Use `split_ifs at ha ⊢`. Use `eigQuotLat_mono _ _ _ (map_latT_le e) ?_` and prove the remaining obligations. Rewrite using `[← map_eigQuotLat _ _ he]`. Conclude with `Submodule.mem_map_of_mem ha`.
+
+Take `⟨ha1, ha2⟩` from `(mem_eigSubLat _).1 ha`. Use `(mem_eigSubLat _).2 ⟨map_latT_le e (Submodule.mem_map_of_mem ha1), mem_eigenSub.2 fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[← he, mem_eigenSub.1 ha2 b, map_smul]`.
+-/
 theorem sum_bLie_mem_htLat_of_pointOver {E : Type} [Field E] [NumberField E] [IsCMField E]
     {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {p : ℕ}
     [Fact p.Prime] {C : Type} [Field C] [IsAlgClosed C] [CharZero C] {v : Valuation C ℝ≥0} {O : Type} [CommRing O]
@@ -209,6 +261,9 @@ theorem sum_bLie_mem_htLat_of_pointOver {E : Type} [Field E] [NumberField E] [Is
     refine (mem_eigSubLat _).2 ⟨map_latT_le e (Submodule.mem_map_of_mem ha1), mem_eigenSub.2 fun b => ?_⟩
     rw [← he, mem_eigenSub.1 ha2 b, map_smul]
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c p _ C _ _ _ v O _ _ _ _ _ _ _ _ _ T x₀ k kO kO' P P' ψ ψ' h h' τ n u x x' hx hx' a`. Conclude with `⟨sum_bLie_mem_htLat_of_pointOver h h' τ hx hx' a, sum_bLie_mem_htLat_of_pointOver h' h τ hx' hx a⟩`.
+-/
 theorem sum_bLie_mem_htLat_iff_of_pointOver : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C ℝ≥0) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [Algebra ℤ_[p] O] [Algebra ℤ_[p] C] [IsScalarTower ℤ_[p] O C] [Algebra c.F C] [StarRing (𝓞 E)] (T : CDVR) (x₀ : Sp T.Fr ⟶ Xo.X) (k : T.Fr →+* C) (kO kO' : T.V →+* O) (P P' : Point p v O (𝓞 E)) (ψ : P.A.A.left ⟶ Xo.univ.t.G.left) (ψ' : P'.A.A.left ⟶ Xo.univ.t.G.left), PointOver P x₀ k kO ψ → PointOver P' x₀ k kO' ψ' → ∀ (τ : E →+* ℂ) (n : ℕ) (u : Fin n → (Sp (DualNumber C) ⟶ Xo.univ.t.G.left)) (x : Fin n → LieG P.Gt) (x' : Fin n → LieG P'.Gt), (∀ j, LieTie P ψ (x j) (u j)) → (∀ j, LieTie P' ψ' (x' j) (u j)) → ∀ a : Fin n → C, ∑ j, a j • P.bLie (x j) ∈ htLat c P τ ↔ ∑ j, a j • P'.bLie (x' j) ∈ htLat c P' τ := by
   intro E _ _ _ H Dw l Xo c p _ C _ _ _ v O _ _ _ _ _ _ _ _ _ T x₀ k kO kO' P P' ψ ψ' h h' τ n u x x' hx hx' a
   exact ⟨sum_bLie_mem_htLat_of_pointOver h h' τ hx hx' a, sum_bLie_mem_htLat_of_pointOver h' h τ hx' hx a⟩

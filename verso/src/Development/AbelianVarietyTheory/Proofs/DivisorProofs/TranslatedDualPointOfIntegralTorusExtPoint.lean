@@ -13,6 +13,15 @@ noncomputable section
 
 namespace GlobalTheory.MBLow
 
+/- English proof (translation)
+Introduce `V _ _ D C _ _ gm₀ gm hp mu`. Establish `hsq : spMap (dualMap (toF V C)) ≫ (epsR V).hom = (TE V C).hom`. Simplify using `only [epsR, TE, TF, jFK, jK, spMap, Over.mk_hom, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Apply the tactic sequence `ext r <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+
+Set `k : TE V C ⟶ epsR V` to `Over.homMk (spMap (dualMap (toF V C))) hsq`. Establish `hb : gm.b = k ≫ gm₀.b` using `by ext1`. Simplify `hp.1` using `[k]`. Use `set e : TE V C ⟶ TF (R := V) C := Over.homMk (spMap (algebraMap C (DualNumber C))) rfl with he`. Use `⟨?_, Over.w _, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : lift e gm.b ≫ DegPre.trF D C mu ≫ DegPre.prB D C = k ≫ padd D.P.A gm₀.b (toUnit _ ≫ D.c mu)`. Simplify using `only [DegPre.trF, DegPre.prB, lift_snd, padd, comp_lift_assoc, comp_lift, hb, Category.assoc, comp_toUnit_assoc]`. Establish `h2` using `congrArg CommaMorphism.left h1`. Simplify `h2` using `[k]`. Establish `h1 : lift e gm.b ≫ DegPre.trF D C mu ≫ fst _ _ = e`.
+
+Simplify using `[DegPre.trF]`. Establish `h2` using `congrArg CommaMorphism.left h1`. Simplify `h2` using `[he]`.
+-/
 theorem trF_dualPoint_of_isPull : ∀ (V : Type) [CommRing V] [IsDomain V] (D : DegPre V) (C : Type) [Field C] [Algebra (FractionRing V) C] (gm₀ : GtPt D (epsR V)) (gm : GtPt D (TE V C)), GtPt.IsPull (spMap (dualMap (toF V C))) gm₀ gm → ∀ mu : D.X, ((lift (Over.homMk (spMap (algebraMap C (DualNumber C))) rfl : TE V C ⟶ TF (R := V) C) gm.b).left ≫ (DegPre.trF D C mu).left) ≫ (DegPre.prB D C).left = spMap (dualMap (toF V C)) ≫ (padd D.P.A gm₀.b (toUnit _ ≫ D.c mu)).left ∧ (padd D.P.A gm₀.b (toUnit _ ≫ D.c mu)).left ≫ D.P.A.hom = spMap (algebraMap V (DualNumber V)) ∧ ((lift (Over.homMk (spMap (algebraMap C (DualNumber C))) rfl : TE V C ⟶ TF (R := V) C) gm.b).left ≫ (DegPre.trF D C mu).left) ≫ (fst (TF (R := V) C) D.P.A).left = spMap (algebraMap C (DualNumber C)) := by
   intro V _ _ D C _ _ gm₀ gm hp mu
   have hsq : spMap (dualMap (toF V C)) ≫ (epsR V).hom = (TE V C).hom := by

@@ -32,6 +32,19 @@ section Conc
 
 variable {D : D7} {X : HidaSetting D} (Y : Full X) (u : D.what₂.Word)
 
+/- English proof (translation)
+Take `⟨hrefl, hsymm, htrans⟩` from `h`. Establish `hset : ∀ t, t ∈ (genT (Y.tO u u)).ngSet ↔ t ∈ (Y.tO u u).genSet` using `fun t => by`. Simplify using `[PB.Terms.ngSet, PB.Terms.genSet, genT]`. Establish `hs0 : ∀ t t', (genT (Y.tO u u)).s0 t t' = 1 ↔ (Y.tO u u).s0 t t' = 1 ∧ (Y.tO u u).scal t t'` using `fun t t' => by`. Simplify using `only [genT]`.
+
+Apply the tactic sequence `split_ifs with hc <;> simp [hc]`. Introduce `t ht t' ht'`. Rewrite `ht`, `ht'` using `[hset]`. Express the relevant statement in the definitionally equal form `((Y.tO u u).rowOf t = (Y.tO u u).rowOf t' ∧ (genT (Y.tO u u)).s0 t t' = 1) ↔ clsG Y u t = clsG Y u t'`. Rewrite using `[hs0]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hrow, hs, hsc⟩`. Take `⟨hs', hsc'⟩` from `hsymm t ht t' ht' hrow hs hsc`. Use extensionality with `t''`. Simplify using `only [clsG, Set.mem_setOf_eq]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hg, hr, h1, h2⟩`. Conclude with `⟨hg, hr.trans hrow, htrans t' ht' t ht t'' hg hrow.symm hr.symm hs' hsc' h1 h2⟩`. Introduce and unpack `⟨hg, hr, h1, h2⟩`. Conclude with `⟨hg, hr.trans hrow.symm, htrans t ht t' ht' t'' hg hrow hr.symm hs hsc h1 h2⟩`.
+
+Introduce `hcl`. Establish `hmem : t' ∈ clsG Y u t'` using `⟨ht', rfl, (hrefl t' ht').1, (hrefl t' ht').2⟩`. Rewrite `hmem` using `[← hcl]`. Simplify using `only [clsG, Set.mem_setOf_eq] at hmem`. Take `⟨-, hr, h1, h2⟩` from `hmem`.
+
+Conclude with `⟨hr.symm, h1, h2⟩`.
+-/
 theorem classInputG_of (h : ScalEquivOn (Y.tO u u)) (νL νB : X.B.I.Ginf → Measure X.B.I.Ginf)
     (ng : PN.Pts D.host.E D.R.rS → ℝ) : PN.ClassInput (genT (Y.tO u u)) (NOfG Y u νL νB ng) := by
   obtain ⟨hrefl, hsymm, htrans⟩ := h
@@ -66,6 +79,15 @@ theorem classInputG_of (h : ScalEquivOn (Y.tO u u)) (νL νB : X.B.I.Ginf → Me
 def AmpVanishG (νL : X.B.I.Ginf → Measure X.B.I.Ginf) : Prop :=
   ∀ c γ ν, J2of Y u u νL γ = 0 → grpGC Y u c γ ν = 0
 
+/- English proof (translation)
+Establish `hJ : ∀ γ, 0 ≤ J2of Y u u νL γ` using `fun γ => by`. Unfold `J2of`. Apply the tactic sequence `split_ifs <;> positivity`. Use `⟨fun c γ ν => div_nonneg (sq_nonneg _) (hJ γ), fun γ => hJ γ, fun c γ ν => ?_⟩` and prove the remaining obligations. Establish `hset : (genT (Y.tO u u)).ngSet = (Y.tO u u).genSet`.
+
+Use extensionality with `t`. Simplify using `[PB.Terms.ngSet, PB.Terms.genSet, genT]`. Establish `hg : PN.grp (genT (Y.tO u u)) (NOfG Y u νL νB ng) c γ ν = grpGC Y u c γ ν`. Unfold `PN.grp grpGC`. Rewrite using `[hset]`.
+
+Both sides reduce to the same expression. Rewrite using `[hg]`. Express the relevant statement in the definitionally equal form `‖grpGC Y u c γ ν‖ ^ 2 ≤ a2GC Y u νL c γ ν * J2of Y u u νL γ`. Unfold `a2GC`. Break down `(hJ γ).eq_or_lt with h0 | hpos` into its components or cases.
+
+Rewrite using `[h c γ ν h0.symm, norm_zero]`. Simplify using the standard rewrite rules. Rewrite using `[div_mul_cancel₀ _ hpos.ne']`.
+-/
 theorem ampInputG_of_vanish (νL νB : X.B.I.Ginf → Measure X.B.I.Ginf) (ng : PN.Pts D.host.E D.R.rS → ℝ)
     (h : AmpVanishG Y u νL) : PN.AmpInput (genT (Y.tO u u)) (NOfG Y u νL νB ng) := by
   have hJ : ∀ γ, 0 ≤ J2of Y u u νL γ := fun γ => by
@@ -124,6 +146,15 @@ def StepNormOneG : Prop :=
         PN.IsPt (genT (Y.tO u u)) (NOfG Y u νL νB ng) γ →
         1 ≤ NGPt D.host.rdE ((Tu D u : ℕ) * (Tu D u : ℕ)) γ ∧ 1 ≤ NDPt D.host.rdE γ
 
+/- English proof (translation)
+Introduce `Cg cb Cw cT CT C0`. Take `⟨C'₀, Cl₀, hC⟩` from `h Cg cb Cw cT CT C0`. Use `⟨C'₀, Cl₀, fun C' Cl h1 h2 D large₂ X Y u hc νL νB ng γ hγ => ?_⟩` and prove the remaining obligations. Take `⟨hG, hD⟩` from `hC C' Cl h1 h2 D large₂ X Y u hc νL νB ng γ hγ`. Use `⟨hG, hD, ?_⟩` and prove the remaining obligations.
+
+Establish `key : ((X.B.g : ℝ) ^ ((2 * D.R.rS + 1) * Fintype.card (InfinitePlace D.host.E)))⁻¹ ≤ (X.B.g : ℝ) ^ D.R.f`. Break down `Nat.eq_zero_or_pos X.B.g with h0 | hpos` into its components or cases. Establish `hN : 0 < (2 * D.R.rS + 1) * Fintype.card (InfinitePlace D.host.E)` using `Nat.mul_pos (by omega) Fintype.card_pos`. Rewrite using `[h0, Nat.cast_zero, zero_pow hN.ne', inv_zero]`. Check the signs of the components of the expression.
+
+Establish `hg : (1 : ℝ) ≤ X.B.g` using `by exact_mod_cast hpos`. Conclude with `(inv_le_one_of_one_le₀ (one_le_pow₀ hg)).trans (one_le_pow₀ hg)`. Express the relevant statement in the definitionally equal form `HPt D.host.rdE (X.B.g : ℝ) ((Tu D u : ℕ) * (Tu D u : ℕ)) γ ≤ (X.B.g : ℝ) ^ D.R.f * NGPt D.host.rdE ((Tu D u : ℕ) * (Tu D u : ℕ)) γ * NDPt D.host.rdE γ`. Unfold `HPt`. Establish `hGD : 0 ≤ NGPt D.host.rdE ((Tu D u : ℕ) * (Tu D u : ℕ)) γ * NDPt D.host.rdE γ`.
+
+Use `mul_le_mul hG hD zero_le_one (zero_le_one.trans hG)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[mul_assoc, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right key hGD`.
+-/
 theorem stepHeightG_of_normOne (h : StepNormOneG) : StepHeightG := by
   intro Cg cb Cw cT CT C0
   obtain ⟨C'₀, Cl₀, hC⟩ := h Cg cb Cw cT CT C0
@@ -165,6 +196,17 @@ def StepAnalyticG : Prop :=
         PN.PointSumInput (genT (Y.tO u u)) (NOfG Y u νL νB ng) (A * (D.R.rS + 1) ^ 2)
           (Real.exp (CB * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 5 * D.R.f * Real.log large₂.sc.b) * Ire)
 
+/- English proof (translation)
+Take `⟨⟨hH, _, _⟩, _, _⟩` from `hc`. Unfold `Formalism.MainNotions.S.StandingHypotheses at hH`. Simplify using `only at hH`. Take `⟨-, -, h3, h4, -, -, -, -, -, -, h11, h12, h13, h14, h15, h16, -, -, h19, -, -, -, h23, -, h25⟩` from `hH`. Establish `hm2` using `D.R.two_le_m`.
+
+Establish `hk16 : (16 : ℝ) ≤ D.R.k`. Establish `: 2 ^ 4 ≤ D.R.m ^ 4` using `Nat.pow_le_pow_left hm2 4`. Establish `: 16 ≤ D.R.k` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `hL : 0 < large₂.sc.L`.
+
+Unfold `Formalism.BasicNotions.Scale.L`. Conclude with `Real.rpow_pos_of_pos (by linarith [large₂.sc.one_lt_alt]) _`. Establish `hb : 1 < large₂.sc.b`. Unfold `Formalism.BasicNotions.Scale.b`. Use `Real.add_one_lt_exp (ne_of_gt hL)` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hkb : (3 : ℝ) ≤ ((D.R.k : ℝ) * large₂.sc.b) ^ 8`. Establish `: (16 : ℝ) ≤ (D.R.k : ℝ) * large₂.sc.b` using `by nlinarith`. Conclude with `le_trans (by norm_num) (pow_le_pow_left₀ (by norm_num) this 8)`. Introduce `i`.
+
+Use `fin_cases i`. Conclude with `hkb.trans h12` after adjusting the coercions. Conclude with `hkb.trans h14` after adjusting the coercions.
+-/
 theorem g_ge_three {Cg cb Cw cT CT C0 C' Cl : ℝ} {D : D7} {large₂ : SizeData₂ D} {X : HidaSetting D} {Y : Full X}
     {u u' : D.what₂.Word} (hc : Formalism.L2.SG.NGCut.Ctx Cg cb Cw cT CT C0 C' Cl D large₂ X Y u u') :
     ∀ i, 3 ≤ D.host.g i := by
@@ -197,6 +239,17 @@ namespace Formalism.L2.SG.Pf
 
 open Formalism.L2.SG.Pf.MainEqSteps
 
+/- English proof (translation)
+Introduce `Cg cb Cw cT CT C0 A0`. Take `⟨C1, C0n, hA1⟩` from `hA Cg cb Cw cT CT C0`. Take `⟨CB, CSt, hCB, hCSt, a₀, b₀, hA2⟩` from `hA1 (C1 + C0n + 38)`. Take `⟨Cgs, CTs, hCg, hCT, s₀, t₀, hS2⟩` from `hS Cg cb Cw cT CT C0`. Take `⟨n₀, m₀, hN2⟩` from `hN Cg cb Cw cT CT C0`.
+
+Take `⟨p₀, q₀, hP2⟩` from `hP Cg cb Cw cT CT C0`. Take `⟨h₀, j₀, hH2⟩` from `hH Cg cb Cw cT CT C0`. Use `⟨C1, C0n, C1 + C0n + 38, CB, CSt, Cgs, CTs, hCB, hCSt, hCg, hCT, le_refl _, max a₀ (max s₀ (max n₀ (max p₀ h₀))), max b₀ (max t₀ (max m₀ (max q₀ j₀))), fun C' Cl h1 h2 D large₂ X Y u hHy hT => ?_⟩` and prove the remaining obligations. Establish `hc : Formalism.L2.SG.NGCut.Ctx Cg cb Cw cT CT C0 C' Cl D large₂ X Y u u` using `⟨hHy.1, hHy.2.1, hT⟩`. Establish `e1' : a₀ ≤ C'` using `le_trans (le_max_left _ _) h1`.
+
+Establish `e2' : b₀ ≤ Cl` using `le_trans (le_max_left _ _) h2`. Establish `f1 : s₀ ≤ C'` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) h1`. Establish `f2 : t₀ ≤ Cl` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) h2`. Establish `i1 : n₀ ≤ C'` using `le_trans (le_trans (le_max_left _ _) (le_trans (le_max_right _ _) (le_max_right _ _))) h1`. Establish `i2 : m₀ ≤ Cl` using `le_trans (le_trans (le_max_left _ _) (le_trans (le_max_right _ _) (le_max_right _ _))) h2`.
+
+Establish `j1 : p₀ ≤ C'` using `le_trans (le_trans (le_max_left _ _) (le_trans (le_max_right _ _) (le_trans (le_max_right _ _) (le_max_right _ _)))) h1`. Establish `j2 : q₀ ≤ Cl` using `le_trans (le_trans (le_max_left _ _) (le_trans (le_max_right _ _) (le_trans (le_max_right _ _) (le_max_right _ _)))) h2`. Establish `k1 : h₀ ≤ C'` using `le_trans (le_trans (le_max_right _ _) (le_trans (le_max_right _ _) (le_trans (le_max_right _ _) (le_max_right _ _)))) h1`. Establish `k2 : j₀ ≤ Cl` using `le_trans (le_trans (le_max_right _ _) (le_trans (le_max_right _ _) (le_trans (le_max_right _ _) (le_max_right _ _)))) h2`. Take `⟨P, iP, B, Irat, Ire, νL, νB, ng, cSt, e1, hBk, hL, hBq, c1, c2, c3, c4, hV, hLoc, hGen, hMeas, hSum⟩` from `hA2 C' Cl e1' e2' D large₂ X Y u hc`.
+
+Take `⟨hG, hdd, hNI, hFI⟩` from `hBk`. Use `⟨P, iP, B, cSt, e1, Irat, Ire, νL, νB, ng, hL, hBq, hG, hdd, hNI, hFI, Formalism.L2.SG.NGCut.ngSizes_of (hS2 C' Cl f1 f2 D large₂ X Y u u hc) c1 c2 c3 c4, ?_⟩` and prove the remaining obligations. Conclude with `⟨classInputG_of Y u (hC D X Y u (g_ge_three hc) hT) νL νB ng, ampInputG_of_vanish Y u νL νB ng hV, hN2 C' Cl i1 i2 D large₂ X Y u hc νL νB ng, hP2 C' Cl j1 j2 D large₂ X Y u hc νL νB ng, hLoc, hMeas, hGen, hH2 C' Cl k1 k2 D large₂ X Y u hc νL νB ng, hSum⟩`.
+-/
 theorem genCutC_of_steps (hS : Formalism.L2.SG.NGCut.StepSizes) (hC : StepClassG) (hN : StepNormalsG) (hP : StepPointsG)
     (hH : StepHeightG) (hA : StepAnalyticG) : GenCutC := by
   intro Cg cb Cw cT CT C0 A0
@@ -235,11 +288,17 @@ theorem genCutC_of_steps (hS : Formalism.L2.SG.NGCut.StepSizes) (hC : StepClassG
     hN2 C' Cl i1 i2 D large₂ X Y u hc νL νB ng, hP2 C' Cl j1 j2 D large₂ X Y u hc νL νB ng, hLoc, hMeas, hGen,
     hH2 C' Cl k1 k2 D large₂ X Y u hc νL νB ng, hSum⟩
 
+/- English proof (translation)
+The claim follows from `rowMainEqC_of_cut hCh Formalism.L2.SG.Pf.MainEqCut.meanAmplitudeGeneric_holds (genCutC_of_steps Formalism.L2.SG.NGCut.sizes_of_hypotheses hC hN hP (stepHeightG_of_normOne hO) hA)`.
+-/
 theorem rowMainEqC_of_steps2 (hCh : PN.NGChain) (hC : StepClassG) (hN : StepNormalsG) (hP : StepPointsG)
     (hO : StepNormOneG) (hA : StepAnalyticG) : RowMainEqC :=
   rowMainEqC_of_cut hCh Formalism.L2.SG.Pf.MainEqCut.meanAmplitudeGeneric_holds
     (genCutC_of_steps Formalism.L2.SG.NGCut.sizes_of_hypotheses hC hN hP (stepHeightG_of_normOne hO) hA)
 
+/- English proof (translation)
+The claim follows from `rowMainEqC_of_cut hCh Formalism.L2.SG.Pf.MainEqCut.meanAmplitudeGeneric_holds (genCutC_of_steps Formalism.L2.SG.NGCut.sizes_of_hypotheses hC hN hP hH hA)`.
+-/
 theorem rowMainEqC_of_steps (hCh : PN.NGChain) (hC : StepClassG) (hN : StepNormalsG) (hP : StepPointsG)
     (hH : StepHeightG) (hA : StepAnalyticG) : RowMainEqC :=
   rowMainEqC_of_cut hCh Formalism.L2.SG.Pf.MainEqCut.meanAmplitudeGeneric_holds

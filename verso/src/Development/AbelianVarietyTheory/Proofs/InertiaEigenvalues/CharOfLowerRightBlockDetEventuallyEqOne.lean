@@ -6,6 +6,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.BlockType
 
+/- English proof (translation)
+Introduce `k _ _ _ _ r t χ hχ`. Establish `hval : Topology.IsOpenEmbedding (Units.val : kˣ → k)` using `IsOpenUnits.isOpenEmbedding_unitsVal`. Establish `hV : IsOpen ((Units.val : kˣ → k) '' (χ.ker : Set kˣ))` using `hval.isOpenMap _ hχ`. Establish `hd : Continuous fun g : GL (Fin (r + t)) k => (g.val.submatrix (Fin.natAdd r) (Fin.natAdd r)).det` using `(Units.continuous_val.matrix_submatrix _ _).matrix_det`. Use `⟨(fun g : GL (Fin (r + t)) k => (g.val.submatrix (Fin.natAdd r) (Fin.natAdd r)).det) ⁻¹' ((Units.val : kˣ → k) '' (χ.ker : Set kˣ)), hV.preimage hd, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `⟨1, χ.ker.one_mem, ?_⟩` and prove the remaining obligations. Simplify using `only [Units.val_one]`. Rewrite using `[Matrix.submatrix_one _ (Fin.natAdd_injective t r), Matrix.det_one]`. Introduce and unpack `g ⟨u, hu, he⟩`. Rewrite using `[blockChar_eq χ g u he, MonoidHom.mem_ker.1 hu, Units.val_one]`.
+-/
 theorem blockChar_eventually_one : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (r t : ℕ) (χ : kˣ →* ℂˣ), GlobalTheory.SmGL.IsSmoothChar χ → ∃ U : Set (GL (Fin (r + t)) k), IsOpen U ∧ (1 : GL (Fin (r + t)) k) ∈ U ∧ ∀ g ∈ U, GlobalTheory.BlockType.blockChar χ g = 1 := by
   intro k _ _ _ _ r t χ hχ
   have hval : Topology.IsOpenEmbedding (Units.val : kˣ → k) := IsOpenUnits.isOpenEmbedding_unitsVal

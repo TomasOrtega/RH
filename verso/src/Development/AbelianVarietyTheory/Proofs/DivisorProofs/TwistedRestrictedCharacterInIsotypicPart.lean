@@ -6,6 +6,9 @@ open scoped Classical
 
 namespace GlobalTheory.Shin
 
+/- English proof (translation)
+Rewrite using `[LinearMap.trace_eq_matrix_trace ℂ (Pi.basisFun ℂ (Fin m)), LinearMap.toMatrix_eq_toMatrix', Matrix.trace]`. Simplify using `[LinearMap.toMatrix'_apply]`.
+-/
 theorem trace_fin_eq_sum_diag (m : ℕ) (A : (Fin m → ℂ) →ₗ[ℂ] (Fin m → ℂ)) :
     LinearMap.trace ℂ (Fin m → ℂ) A = ∑ i, A (Pi.single i 1) i := by
   rw [LinearMap.trace_eq_matrix_trace ℂ (Pi.basisFun ℂ (Fin m)), LinearMap.toMatrix_eq_toMatrix',
@@ -14,6 +17,13 @@ theorem trace_fin_eq_sum_diag (m : ℕ) (A : (Fin m → ℂ) →ₗ[ℂ] (Fin m 
 
 variable {G : Type} [Group G] [Fintype G]
 
+/- English proof (translation)
+Establish `hpos : (Nat.card G : ℂ) ≠ 0` using `by exact_mod_cast (Nat.card_pos (α := G)).ne'`. Use `haveI : Invertible (Nat.card G : ℂ) := invertibleOfNonzero hpos`. Establish `hfr` using `Representation.card_inv_mul_sum_char_eq_finrank (Representation.linHom σ ρ)`. Simplify using `only [Representation.char_linHom] at hfr`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Rewrite `hfr` using `[h, mul_zero]`. Apply `Submodule.finrank_eq_zero.mp` to reduce the goal to its premises. Conclude with `hfr.symm` after adjusting the coercions. Introduce `hb`.
+
+Rewrite `hfr` using `[hb, finrank_bot, Nat.cast_zero]`. Conclude with `(mul_eq_zero.mp hfr).resolve_left (inv_ne_zero hpos)`.
+-/
 theorem sum_char_inv_mul_char_eq_zero_iff {V W : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W] (σ : Representation ℂ G V) (ρ : Representation ℂ G W) :
     ∑ g, σ.character g⁻¹ * ρ.character g = 0 ↔ (Representation.linHom σ ρ).invariants = ⊥ := by
@@ -30,6 +40,9 @@ theorem sum_char_inv_mul_char_eq_zero_iff {V W : Type} [AddCommGroup V] [Module 
     rw [hb, finrank_bot, Nat.cast_zero] at hfr
     exact (mul_eq_zero.mp hfr).resolve_left (inv_ne_zero hpos)
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun F : V →ₗ[ℂ] W => F (σ g x)) (hp g)`. Simplify using `only [Representation.linHom_apply, LinearMap.comp_apply] at h`. Rewrite using `[← h, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+-/
 theorem comm_of_mem_invariants {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     (σ : Representation ℂ G V) (ρ : Representation ℂ G W) {p : V →ₗ[ℂ] W}
     (hp : p ∈ (Representation.linHom σ ρ).invariants) (g : G) (x : V) : p (σ g x) = ρ g (p x) := by
@@ -37,6 +50,19 @@ theorem comm_of_mem_invariants {V W : Type} [AddCommGroup V] [Module ℂ V] [Add
   simp only [Representation.linHom_apply, LinearMap.comp_apply] at h
   rw [← h, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]
 
+/- English proof (translation)
+Set `S : Subrepresentation ρ'` to `{ toSubmodule := LinearMap.range p apply_mem_toSubmodule := by`. Introduce and unpack `g _ ⟨x, rfl⟩`. Conclude with `⟨σ g x, comm_of_mem_invariants σ ρ' hp g x⟩ }`. Establish `hrange : ∀ y : V, y ∈ LinearMap.range p`. Break down `hirr.eq_bot_or_eq_top S with h | h` into its components or cases.
+
+It suffices to derive a contradiction. Apply `hp0` to reduce the goal to its premises. Use extensionality with `x`. Establish `hx : p x ∈ S.toSubmodule` using `⟨x, rfl⟩`. Establish `hb0 : (⊥ : Subrepresentation ρ').toSubmodule = ⊥` using `rfl`.
+
+Rewrite `hx` using `[h, hb0]`. Conclude with `(Submodule.mem_bot ℂ).mp hx`. Introduce `y`. Establish `ht : (⊤ : Subrepresentation ρ').toSubmodule = ⊤` using `rfl`. Establish `: y ∈ (⊤ : Subrepresentation ρ').toSubmodule` using `by rw [ht]; exact Submodule.mem_top`.
+
+Rewrite `this` using `[← h]`. Conclude with `this`. Rewrite using `[eq_bot_iff]`. Introduce `q hq`. Rewrite using `[Submodule.mem_bot]`.
+
+Establish `hqp : q ∘ₗ p ∈ (Representation.linHom σ ρ).invariants`. Introduce `g`. Use extensionality with `x`. Simplify using `only [Representation.linHom_apply, LinearMap.comp_apply]`. Rewrite using `[← comm_of_mem_invariants ρ' ρ hq, ← comm_of_mem_invariants σ ρ' hp, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+
+Rewrite `hqp` using `[hb, Submodule.mem_bot]`. Use extensionality with `y`. Take `⟨x, rfl⟩` from `hrange y`. Conclude with `LinearMap.congr_fun hqp x`.
+-/
 theorem invariants_bot_of_quot {U V W : Type} [AddCommGroup U] [Module ℂ U] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ G U) (ρ' : Representation ℂ G V)
     (ρ : Representation ℂ G W) (hirr : ρ'.IsIrreducible) {p : U →ₗ[ℂ] V}
@@ -77,6 +103,15 @@ theorem invariants_bot_of_quot {U V W : Type} [AddCommGroup U] [Module ℂ U] [A
   obtain ⟨x, rfl⟩ := hrange y
   exact LinearMap.congr_fun hqp x
 
+/- English proof (translation)
+Establish `hsum : ∀ f : (Fin m → ℂ) →ₗ[ℂ] V, ∑ g : G, Representation.linHom ρ₀ ρ g f = 0`. Introduce `f`. Establish `hm : ∑ g : G, Representation.linHom ρ₀ ρ g f ∈ (Representation.linHom ρ₀ ρ).invariants`. Introduce `h`. Rewrite using `[map_sum]`.
+
+Simplify using `only [← Module.End.mul_apply, ← map_mul]`. Conclude with `Fintype.sum_equiv (Equiv.mulLeft h) _ _ (fun _ => rfl)`. Rewrite `hm` using `[hbot]`. Conclude with `(Submodule.mem_bot ℂ).mp hm`. Use extensionality with `v`.
+
+Establish `key : ∀ i : Fin m, ∑ g : G, (B (ρ₀ g⁻¹ (Pi.single i 1))) i • ρ g v = 0`. Introduce `i`. Use `congrArg (fun F : (Fin m → ℂ) →ₗ[ℂ] V => F (Pi.single i 1)) (hsum (((LinearMap.proj i : (Fin m → ℂ) →ₗ[ℂ] ℂ) ∘ₗ B).smulRight v))` as an intermediate fact. Simplify `this` using `[Representation.linHom_apply, LinearMap.sum_apply]`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.zero_apply]`.
+
+Simplify using `only [trace_fin_eq_sum_diag, Finset.sum_smul, LinearMap.comp_apply]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_eq_zero (fun i _ => key i)`.
+-/
 theorem sum_trace_smul_eq_zero {m : ℕ} (ρ₀ : Representation ℂ G (Fin m → ℂ)) {V : Type} [AddCommGroup V]
     [Module ℂ V] (ρ : Representation ℂ G V) (hbot : (Representation.linHom ρ₀ ρ).invariants = ⊥)
     (B : (Fin m → ℂ) →ₗ[ℂ] (Fin m → ℂ)) :
@@ -105,6 +140,23 @@ end GlobalTheory.Shin
 
 namespace GlobalTheory.Shin
 
+/- English proof (translation)
+Introduce `G Γ _ _ _ _ φ s χ Y hχ hirr hY hne V _ _ _ ρ h`. Use `haveI : Fintype G := Fintype.ofFinite G`. Use `haveI : Finite (G ⋊[φ] Γ) := Finite.of_injective (fun x : G ⋊[φ] Γ => (x.left, x.right)) (fun x y hxy => SemidirectProduct.ext (congrArg Prod.fst hxy) (congrArg Prod.snd hxy))`. Take `⟨m, ρh, hρh⟩` from `hχ`. Take `⟨k, ρ', hρ'irr, hρ'⟩` from `hirr`.
+
+Take `⟨n, σ, hσ⟩` from `hY`. Establish `hχc : ∀ x, χ x = ρh.character x` using `fun x => by simpa using hρh x`. Establish `hYc : ∀ g, Y g = σ.character g` using `fun g => by simpa using hσ g`. Establish `h0c : ∀ g, χ (inl g) = ρ'.character g` using `fun g => by simpa using hρ' g`. Establish `hst : ∀ g, star (Y g) = σ.character g⁻¹` using `fun g => by`.
+
+Rewrite using `[star_virt_eq_inv G Y (AddSubgroup.subset_closure ⟨n, σ, hσ⟩) g, hYc]`. Rewrite `h`, `hne` using `[finsum_eq_sum_of_fintype]`. Establish `hb : (Representation.linHom σ ρ).invariants = ⊥`. Rewrite using `[← sum_char_inv_mul_char_eq_zero_iff]`. Simplify using `only [hst] at h`.
+
+Conclude with `h`. Establish `hne' : (Representation.linHom σ ρ').invariants ≠ ⊥`. Rewrite using `[Ne, ← sum_char_inv_mul_char_eq_zero_iff]`. Introduce `h'`. Apply `hne` to reduce the goal to its premises.
+
+Rewrite using `[← h']`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[hst, h0c, mul_comm]`. Take `⟨p, hp, hp0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne'`. Establish `hb'` using `invariants_bot_of_quot σ ρ' ρ hρ'irr hp hp0 hb`.
+
+Set `ρ₀ : Representation ℂ G (Fin m → ℂ)` to `ρh.comp (inl : G →* G ⋊[φ] Γ)`. Establish `hρ₀ : ∀ g, ρ₀.character g = ρ'.character g` using `fun g => by`. Rewrite using `[← h0c, hχc]`. Both sides reduce to the same expression. Establish `hb₀ : (Representation.linHom ρ₀ ρ).invariants = ⊥`.
+
+Rewrite using `[← sum_char_inv_mul_char_eq_zero_iff]`. Use `(sum_char_inv_mul_char_eq_zero_iff ρ' ρ).mpr hb'` as an intermediate fact. Simplify `this` using `only [hρ₀]`. Establish `hstf : ∀ g, star (χ (inl g * inr s)) = LinearMap.trace ℂ (Fin m → ℂ) (ρh (inr s⁻¹) ∘ₗ ρ₀ g⁻¹)` using `fun g => by`. Rewrite using `[star_virt_eq_inv (G ⋊[φ] Γ) χ (AddSubgroup.subset_closure ⟨m, ρh, hρh⟩), hχc, mul_inv_rev, ← map_inv, ← map_inv]`.
+
+Simplify using `only [Representation.character, map_mul]`. Both sides reduce to the same expression. Rewrite using `[finsum_eq_sum_of_fintype]`. Simplify using `only [hstf]`. Conclude with `sum_trace_smul_eq_zero ρ₀ ρ hb₀ _`.
+-/
 theorem kills_twist_of_pair_ne_zero : ∀ (G Γ : Type) [Group G] [Finite G] [Group Γ] [Fintype Γ]
     (φ : Γ →* MulAut G) (s : Γ), ∀ (χ : G ⋊[φ] Γ → ℂ) (Y : G → ℂ), IsChar ℂ ℂ χ →
     IsIrrChar ℂ ℂ (fun g => χ (inl g)) → IsChar ℂ ℂ Y → ∑ᶠ g, χ (inl g) * star (Y g) ≠ 0 →

@@ -6,6 +6,9 @@ namespace GlobalTheory.Tw.PhiConjugateTranspose
 
 variable {n : ℕ} {R : Type} [CommRing R]
 
+/- English proof (translation)
+Simplify using `only [Phi, of_apply]`. Use `congr 1`. Apply `propext` to reduce the goal to its premises. Rewrite using `[Fin.ext_iff, Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem phi_apply (i k : Fin n) : Phi n R i k = if k = i.rev then (-1 : R) ^ (i : ℕ) else 0 := by
   simp only [Phi, of_apply]
   congr 1
@@ -13,10 +16,18 @@ theorem phi_apply (i k : Fin n) : Phi n R i k = if k = i.rev then (-1 : R) ^ (i 
   rw [Fin.ext_iff, Fin.val_rev]
   omega
 
+/- English proof (translation)
+Simplify using `[mul_apply, phi_apply, ite_mul, mul_ite, Finset.sum_ite_eq', Finset.sum_ite_eq]`.
+-/
 theorem phi_conj_apply (A : Matrix (Fin n) (Fin n) R) (i j : Fin n) :
     (Phi n R * A * (Phi n R)ᵀ) i j = (-1 : R) ^ (i : ℕ) * A i.rev j.rev * (-1 : R) ^ (j : ℕ) := by
   simp [mul_apply, phi_apply, ite_mul, mul_ite, Finset.sum_ite_eq', Finset.sum_ite_eq]
 
+/- English proof (translation)
+Use `phi_conj_apply (n := n) (R := R) 1` as an intermediate fact. Use extensionality with `i j`. Establish `h` using `this i j`. Rewrite `h` using `[Matrix.mul_one]`. Rewrite using `[h, one_apply, one_apply]`.
+
+Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[← mul_pow]`. Simplify using `[hij]`.
+-/
 theorem phi_mul_transpose : Phi n R * (Phi n R)ᵀ = 1 := by
   have := phi_conj_apply (n := n) (R := R) 1
   ext i j
@@ -27,8 +38,16 @@ theorem phi_mul_transpose : Phi n R * (Phi n R)ᵀ = 1 := by
   · subst hij; simp [← mul_pow]
   · simp [hij]
 
+/- English proof (translation)
+The claim follows from `mul_eq_one_comm.mp phi_mul_transpose`.
+-/
 theorem phi_transpose_mul : (Phi n R)ᵀ * Phi n R = 1 := mul_eq_one_comm.mp phi_mul_transpose
 
+/- English proof (translation)
+Use extensionality with `i k`. Simplify using `only [mul_apply, phi_apply, Matrix.smul_apply, one_apply, smul_eq_mul, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true, Fin.rev_rev]`. Distinguish the cases in `h : k = i`. Substitute `h` using the available equality. Simplify using `only [if_true, mul_one]`.
+
+Rewrite using `[← pow_add, Fin.val_rev]`. Establish `hk` using `k.isLt`. Rewrite using `[show (k : ℕ) + (n - ((k : ℕ) + 1)) = n - 1 by omega]`. Simplify using `[h, Ne.symm h]`.
+-/
 theorem phi_mul_phi : Phi n R * Phi n R = ((-1 : R) ^ (n - 1)) • (1 : Matrix (Fin n) (Fin n) R) := by
   ext i k
   simp only [mul_apply, phi_apply, Matrix.smul_apply, one_apply, smul_eq_mul, ite_mul, zero_mul,
@@ -41,49 +60,90 @@ theorem phi_mul_phi : Phi n R * Phi n R = ((-1 : R) ^ (n - 1)) • (1 : Matrix (
     rw [show (k : ℕ) + (n - ((k : ℕ) + 1)) = n - 1 by omega]
   · simp [h, Ne.symm h]
 
+/- English proof (translation)
+The claim follows from `Matrix.inv_eq_left_inv phi_transpose_mul`.
+-/
 theorem phi_inv : (Phi n R)⁻¹ = (Phi n R)ᵀ := Matrix.inv_eq_left_inv phi_transpose_mul
 
+/- English proof (translation)
+The claim follows from `Matrix.inv_eq_left_inv phi_mul_transpose`.
+-/
 theorem phi_transpose_inv : ((Phi n R)ᵀ)⁻¹ = Phi n R := Matrix.inv_eq_left_inv phi_mul_transpose
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_inv_rev, Matrix.mul_inv_rev, phi_inv, phi_transpose_inv, Matrix.mul_assoc]`.
+-/
 theorem conj_inv (A : Matrix (Fin n) (Fin n) R) :
     (Phi n R * A * (Phi n R)ᵀ)⁻¹ = Phi n R * A⁻¹ * (Phi n R)ᵀ := by
   rw [Matrix.mul_inv_rev, Matrix.mul_inv_rev, phi_inv, phi_transpose_inv, Matrix.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[det_mul, det_mul, mul_comm (Phi n R).det, mul_assoc, ← det_mul, phi_mul_transpose, det_one, mul_one]`.
+-/
 theorem det_conj (A : Matrix (Fin n) (Fin n) R) : (Phi n R * A * (Phi n R)ᵀ).det = A.det := by
   rw [det_mul, det_mul, mul_comm (Phi n R).det, mul_assoc, ← det_mul, phi_mul_transpose, det_one, mul_one]
 
 variable [StarRing R]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [conjTranspose_apply, transpose_apply, Phi, of_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem phi_conjTranspose : (Phi n R)ᴴ = (Phi n R)ᵀ := by
   ext i j
   simp only [conjTranspose_apply, transpose_apply, Phi, of_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [conjTranspose_apply, transpose_apply, Phi, of_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem phi_transpose_conjTranspose : ((Phi n R)ᵀ)ᴴ = Phi n R := by
   ext i j
   simp only [conjTranspose_apply, transpose_apply, Phi, of_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[conjTranspose_mul, conjTranspose_mul, phi_conjTranspose, phi_transpose_conjTranspose, Matrix.mul_assoc]`.
+-/
 theorem conj_conjTranspose (A : Matrix (Fin n) (Fin n) R) :
     (Phi n R * A * (Phi n R)ᵀ)ᴴ = Phi n R * Aᴴ * (Phi n R)ᵀ := by
   rw [conjTranspose_mul, conjTranspose_mul, phi_conjTranspose, phi_transpose_conjTranspose, Matrix.mul_assoc]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem theta_eq (g : Matrix (Fin n) (Fin n) R) : theta g = Phi n R * (g⁻¹)ᴴ * (Phi n R)ᵀ := rfl
 
+/- English proof (translation)
+Simplify using `only [theta_eq, Matrix.mul_inv_rev, conjTranspose_mul, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (Phi n R)ᵀ (Phi n R), phi_transpose_mul, Matrix.one_mul]`.
+-/
 theorem theta_mul (g h : Matrix (Fin n) (Fin n) R) : theta (g * h) = theta g * theta h := by
   simp only [theta_eq, Matrix.mul_inv_rev, conjTranspose_mul, Matrix.mul_assoc]
   rw [← Matrix.mul_assoc (Phi n R)ᵀ (Phi n R), phi_transpose_mul, Matrix.one_mul]
 
+/- English proof (translation)
+Rewrite using `[theta_eq, inv_one, conjTranspose_one, Matrix.mul_one, phi_mul_transpose]`.
+-/
 theorem theta_one : theta (1 : Matrix (Fin n) (Fin n) R) = 1 := by
   rw [theta_eq, inv_one, conjTranspose_one, Matrix.mul_one, phi_mul_transpose]
 
+/- English proof (translation)
+Rewrite using `[theta_eq, det_conj, det_conjTranspose]`.
+-/
 theorem det_theta (g : Matrix (Fin n) (Fin n) R) : (theta g).det = star (g⁻¹).det := by
   rw [theta_eq, det_conj, det_conjTranspose]
 
+/- English proof (translation)
+Rewrite using `[isUnit_iff_isUnit_det, det_theta]`. Conclude with `(isUnit_nonsing_inv_det _ ((isUnit_iff_isUnit_det g).mp hg)).star`.
+-/
 theorem theta_isUnit {g : Matrix (Fin n) (Fin n) R} (hg : IsUnit g) : IsUnit (theta g) := by
   rw [isUnit_iff_isUnit_det, det_theta]
   exact (isUnit_nonsing_inv_det _ ((isUnit_iff_isUnit_det g).mp hg)).star
 
+/- English proof (translation)
+Establish `hd` using `(isUnit_iff_isUnit_det g).mp hg`. Rewrite using `[theta_eq (theta g), theta_eq g, conj_inv, conj_conjTranspose, ← conjTranspose_nonsing_inv, nonsing_inv_nonsing_inv _ hd, conjTranspose_conjTranspose]`. Establish `h2 : (Phi n R)ᵀ * (Phi n R)ᵀ = ((-1 : R) ^ (n - 1)) • (1 : Matrix (Fin n) (Fin n) R)`. Rewrite using `[← transpose_mul, phi_mul_phi, transpose_smul, transpose_one]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[phi_mul_phi, h2, Matrix.smul_mul, Matrix.one_mul, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_one, smul_smul, ← mul_pow]`. Simplify using the standard rewrite rules.
+-/
 theorem theta_theta {g : Matrix (Fin n) (Fin n) R} (hg : IsUnit g) : theta (theta g) = g := by
   have hd := (isUnit_iff_isUnit_det g).mp hg
   rw [theta_eq (theta g), theta_eq g, conj_inv, conj_conjTranspose, ← conjTranspose_nonsing_inv,
@@ -97,6 +157,11 @@ theorem theta_theta {g : Matrix (Fin n) (Fin n) R} (hg : IsUnit g) : theta (thet
         smul_smul, ← mul_pow]
       simp
 
+/- English proof (translation)
+Establish `: Invertible g` using `hg.invertible`. Establish `hi : (g⁻¹).BlockTriangular id` using `blockTriangular_inv_of_blockTriangular ht`. Introduce `i j hji`. Rewrite using `[theta_eq, phi_conj_apply, conjTranspose_apply, hi]`. Simplify using the standard rewrite rules.
+
+Simplify `hji` using `[Fin.rev_lt_rev]`.
+-/
 theorem theta_blockTriangular {g : Matrix (Fin n) (Fin n) R} (hg : IsUnit g) (ht : g.BlockTriangular id) :
     (theta g).BlockTriangular id := by
   have : Invertible g := hg.invertible
@@ -109,6 +174,15 @@ theorem theta_blockTriangular {g : Matrix (Fin n) (Fin n) R} (hg : IsUnit g) (ht
 end GlobalTheory.Tw.PhiConjugateTranspose
 
 open GlobalTheory.Tw.PhiConjugateTranspose in
+/- English proof (translation)
+Introduce `n R _ _`. Use `⟨phi_mul_transpose, fun g hg => ⟨theta_isUnit hg, theta_theta hg⟩, fun g h _ _ => theta_mul g h, ?_, ?_, fun g hg ht => theta_blockTriangular hg ht, ?_⟩` and prove the remaining obligations. Introduce `x δ hx _`. Establish `hxd` using `(isUnit_iff_isUnit_det x).mp hx`. Simplify using `only [nrm, twConj, theta_mul, theta_theta hx]`.
+
+Establish `h1 : theta x * theta x⁻¹ = 1` using `by rw [← theta_mul, mul_nonsing_inv _ hxd, theta_one]`. Combine the equalities or inequalities in the displayed calculation. Introduce `u δ hu hδ`. Establish `htd` using `(isUnit_iff_isUnit_det _).mp (theta_isUnit hδ)`. Simplify using `only [nrm, theta_mul, theta_theta hu]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_nonsing_inv _ htd, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = δ * theta δ * ((theta δ)⁻¹ * theta u * theta δ) * u := by simp only [Matrix.mul_assoc]`. Introduce `g hg`.
+
+Establish `hd` using `(isUnit_iff_isUnit_det g).mp hg`. Rewrite using `[det_theta, ← star_mul, ← det_mul, mul_nonsing_inv _ hd, det_one, star_one]`.
+-/
 theorem GlobalTheory.Tw.theta_props : ∀ (n : ℕ) (R : Type) [CommRing R] [StarRing R], (Phi n R * (Phi n R)ᵀ = 1) ∧ (∀ g : Matrix (Fin n) (Fin n) R, IsUnit g → IsUnit (theta g) ∧ theta (theta g) = g) ∧ (∀ g h : Matrix (Fin n) (Fin n) R, IsUnit g → IsUnit h → theta (g * h) = theta g * theta h) ∧ (∀ x δ : Matrix (Fin n) (Fin n) R, IsUnit x → IsUnit δ → nrm (twConj x δ) = x⁻¹ * nrm δ * x) ∧ (∀ u δ : Matrix (Fin n) (Fin n) R, IsUnit u → IsUnit δ → nrm (δ * theta u) = nrm δ * ((theta δ)⁻¹ * theta u * theta δ) * u) ∧ (∀ g : Matrix (Fin n) (Fin n) R, IsUnit g → g.BlockTriangular id → (theta g).BlockTriangular id) ∧ ∀ g : Matrix (Fin n) (Fin n) R, IsUnit g → (theta g).det * star g.det = 1 := by
   intro n R _ _
   refine ⟨phi_mul_transpose, fun g hg => ⟨theta_isUnit hg, theta_theta hg⟩, fun g h _ _ => theta_mul g h, ?_, ?_,

@@ -12,6 +12,11 @@ noncomputable section
 
 namespace GlobalTheory.WeylLatDualProof
 
+/- English proof (translation)
+Introduce `p _ Lt T _ _ e he N nu ν hrow hzero φ`. Establish `hY : ∀ s, (nu s).colLen 0 ≤ N` using `fun s => colLen_le_of_rowLen (hzero s N le_rfl)`. Establish `hν : ∀ s, ν (e s) = fun r : Fin N => (nu s).rowLen r` using `fun s => funext fun r => (hrow s r).symm`. Use `choose ι hι hdec b g c d Nc hNc h1 h2 h3 h4 h5 using fun s => GlobalTheory.T.dual_bases_colProd_alt GlobalTheory.T.columnMinorProducts_fock_reproducing_identity N (nu s) (hY s)`. Rewrite using `[GlobalTheory.T.integral_minors_iff_basis_alt p Lt N nu hY ι b c d h1 h2 φ]`.
+
+Establish `hfun : (fun y : T → Matrix (Fin N) (Fin N) ℂ_[p] => φ (WeylLatticeDuality.DeX N nu fun s => WeylLatticeDuality.colsOf (y (e s)))) = fun y => ∑ κ : (∀ s, ι s), φ (MvPolynomial.map (algebraMap ℚ ℂ_[p]) (∏ s, MvPolynomial.rename (sig N s) (b s (κ s)))) * ∏ s, MvPolynomial.eval (fun …`. Use function extensionality and compare the values at `fun y => GlobalTheory.T.phi_DeX_expand_alt p Lt T e N nu hY ι b g c h1 h3 φ y`. Rewrite using `[hfun, GlobalTheory.T.comb_mem_iff_alt p Lt T e he N ν ι b g Nc hNc h4 (fun s => by rw [hν s]; exact h5 s)]`.
+-/
 theorem mainProof : WeylLatticeDuality.Stmt := by
   intro p _ Lt T _ _ e he N nu ν hrow hzero φ
   classical

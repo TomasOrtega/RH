@@ -12,6 +12,9 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.UG
 def SplitsCompletely (E : Type) [Field E] [NumberField E] (p : ℕ) : Prop :=
   p.Prime ∧ (Formalism.BasicNotions.placesOver E p).ncard = Module.finrank ℚ E
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨D.host.g_prime i, D.nd.g_split i⟩`.
+-/
 theorem splitsCompletely_g (D : D7) (i : Fin 2) : SplitsCompletely D.host.E (D.host.g i) :=
   ⟨D.host.g_prime i, D.nd.g_split i⟩
 
@@ -22,6 +25,9 @@ def ColClassSet (D : D7) (L : LevelData D) (u : D.what₂.Word) : Type :=
       (UPts D.sp.cm.sig D.sp.gram0 (FiniteAdeleRing (𝓞 D.host.F) D.host.F)))
     ((L u).U.subgroupOf (UPts D.sp.cm.sig D.sp.gram0 (FiniteAdeleRing (𝓞 D.host.F) D.host.F)))
 
+/- English proof (translation)
+Use `letI := D.host.cmStar`. Conclude with `(Nat.card_eq_of_bijective _ (L u).y_bij).symm`.
+-/
 theorem card_colClassSet (D : D7) (L : LevelData D) (u : D.what₂.Word) :
     Nat.card (ColClassSet D L u) = Nat.card ((D.mem u).C.cls 0) := by
   letI := D.host.cmStar

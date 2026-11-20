@@ -11,6 +11,11 @@ noncomputable section
 namespace GlobalTheory.Mem.R3.LiftBrg.ActQ
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `X px I U L eG _ _ hL _ i t g`. Take `⟨c, hc⟩` from `hL.is.βV i`. Take `⟨κ, -, hpar, hr⟩` from `GlobalTheory.ParahoricLift.liftsExist (Vc X.toD7 i) (L.βV i) (L.datVt i t) _ _ hc (GlobalTheory.StepLifts.places_apart L hL.is t).1 (GlobalTheory.StepLifts.places_apart L hL.is t).2 (eG g)`. Use `⟨⟨(finHom (Vc X.toD7 i)).rangeRestrict κ, ⟨hpar, Subgroup.mem_top _⟩⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[redQ_apply]`.
+
+Use `show eG.symm (rTup (L.βV i) (L.datVt i t) (finE (Vc X.toD7 i) κ)) = g`. Rewrite using `[hr, MulEquiv.symm_apply_apply]`.
+-/
 theorem redQ_surjective : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (U : Set I.ι) (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)) (eG : Gc X.B px ≃* G0 L.Pg X.toD7.R.r), I.Ok → ValsIn I → LevOf X I U L → IsPlacewiseIdentity X (px := px) eG → ∀ (i : Fin X.toD7.R.m) (t : TupU I U), Function.Surjective (LiftBrg.ActQ.redQ X I U L eG i t) := by
   intro X px I U L eG _ _ hL _ i t g
   obtain ⟨c, hc⟩ := hL.is.βV i

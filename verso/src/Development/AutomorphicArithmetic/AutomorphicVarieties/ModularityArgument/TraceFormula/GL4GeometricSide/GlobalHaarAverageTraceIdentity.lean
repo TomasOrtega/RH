@@ -27,6 +27,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 namespace UpperTheory.V.Z.GSp4Splitting
 
+/- English proof (translation)
+The claim follows from `exists_global_hecke_theta_lift avgEx (absGlob multiFac lieStab projEx avgFacts (onePlace coreG lieStab projEx avgFacts (avgTr avgFacts))) lowIso2 heckeMem (rlEx petEx heckeMem) rlPair rlChar rlK rlTheta rlComm (rlHecke heckeMem) (rlSimple heckeMem lieStab rlK) rlFin (rlLow heckeM …`.
+-/
 theorem global_haarAverage_trace_identity : PositivityTheory.Rg.BcB.Desc.ThetaFixedGlobalCharacter :=
   exists_global_hecke_theta_lift avgEx (absGlob multiFac lieStab projEx avgFacts (onePlace coreG lieStab projEx avgFacts (avgTr avgFacts))) lowIso2 heckeMem
     (rlEx petEx heckeMem) rlPair rlChar rlK rlTheta rlComm (rlHecke heckeMem) (rlSimple heckeMem lieStab rlK) rlFin

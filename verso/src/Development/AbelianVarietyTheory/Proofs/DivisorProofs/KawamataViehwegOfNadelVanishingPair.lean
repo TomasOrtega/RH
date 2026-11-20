@@ -21,6 +21,19 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.QCoh
 
 namespace GlobalTheory.KVFromPair
 
+/- English proof (translation)
+Establish `hNl : N.IsLB`. Use `letI := algebraΓOfHom p`. Conclude with `h₁.isLB`. Take `⟨K₁, X₁, p₁, ψ, L₁, hc, hp₁, H, hL₁, e⟩` from `GlobalTheory.T.projectiveLineBundle_descends_to_countable_subfield k X p hp N hNl`. Establish `hsm : Smooth p` using `SmoothOfRelativeDimension.smooth D p`.
+
+Establish `hg : GeometricallyConnected p` using `GlobalTheory.geometricallyConnected_of_isAlgClosed p`. Take `⟨hs₁, hg₁⟩` from `GlobalTheory.T.smoothOfRelDim_geomConnected_descend_fieldExtension K₁ k X₁ X p₁ p ψ H D inferInstance hs hg`. Establish `hne : Nonempty X₁` using `⟨ψ (Classical.arbitrary X)⟩`. Establish `hP` using `LB.isLB_pull hL₁ ψ`. Establish `ec : cls N hNl = cls (L₁.pull ψ) hP` using `(cls_eq_iff _ _).2 e`.
+
+Establish `n₁` using `GlobalTheory.T.isNefLineBundle_of_baseChange_field K₁ k X₁ X p₁ p ψ H hp₁ L₁ hL₁ (by`. Use `letI := algebraΓOfHom p`. Conclude with `h₁.of_cls_eq hP ec.symm)`. Establish `b₁` using `(GlobalTheory.T.isBigLineBundle_pullback_fieldExtension_iff K₁ k X₁ X p₁ p ψ H hp₁ hp ((GlobalTheory.HSCore.VanishNumberField.topologicalKrullDim_eq_of_smooth p D hs).trans (GlobalTheory.HSCore.VanishNumberField.topologicalKrullDim_eq_of_smooth p₁ D hs₁).symm) L₁ hL₁).1 (by`. Use `letI := algebraΓOfHom p`.
+
+Conclude with `h₂.of_cls_eq hP ec.symm)`. Set `C : CanonLB p₁ D` to `CanonLB.all p₁ D`. Establish `v₁` using `GlobalTheory.T.kawamataViehweg_vanishing_complexEmbeddedField hN hV K₁ (GlobalTheory.KeyHouse.nonempty_ringHom_complex K₁) X₁ p₁ D hp₁ hg₁ C L₁ n₁ b₁ q hq`. Establish `hT` using `isLB_tens C.isLB hL₁`. Establish `v` using `(GlobalTheory.T.subsingleton_lineBundleCohomology_projBaseChange_iff K₁ k X₁ X p₁ p ψ H hp₁ hp _ hT q).2 v₁`.
+
+Establish `eK : cls K.bundle K.isLB = cls (C.bundle.pull ψ) (LB.isLB_pull C.isLB ψ)`. Take `⟨w, hw, -⟩` from `canonLB_baseChange K₁ k _ X₁ X p₁ p ψ D H C K`. Conclude with `(cls_eq_iff _ _).2 ⟨w, hw⟩`. Take `⟨i⟩` from `nonempty_twist_iso_of_cls_eq (GlobalTheory.structureModule X) (isLB_tens K.isLB hNl) (LB.isLB_pull hT ψ) (by`. Rewrite using `[cls_tens K.isLB hNl, cls_pull hT, cls_tens C.isLB hL₁, map_add, eK, ec, cls_pull C.isLB, cls_pull hL₁])`.
+
+Conclude with `(cohOn.mapIso Γ(X, ⊤) ⊤ q i).toEquiv.subsingleton_congr.2 v`.
+-/
 theorem subsingleton_coh_twist (hN : GlobalTheory.Published.NefNumerics) (hV : GlobalTheory.Published.NadelVanishingPair)
     (k : Type) [Field k] [IsAlgClosed k] [CharZero k] (X : Scheme.{0}) [IsIntegral X]
     (p : X ⟶ Sp k) (D : ℕ) [hs : SmoothOfRelativeDimension D p] (hp : IsProjOver p)
@@ -59,6 +72,9 @@ theorem subsingleton_coh_twist (hN : GlobalTheory.Published.NefNumerics) (hV : G
         cls_pull C.isLB, cls_pull hL₁])
   exact (cohOn.mapIso Γ(X, ⊤) ⊤ q i).toEquiv.subsingleton_congr.2 v
 
+/- English proof (translation)
+Introduce `hN hV k _ _ _ X a _ D hs hp K N h₁ h₂ q hq`. Establish `ha : a = algebraΓOfHom (strHom k X)` using `Algebra.algebra_ext _ _ (algebraMap_eq_strHom k X)`. Establish `v` using `subsingleton_coh_twist hN hV k X (strHom k X) D hp K N (ha ▸ h₁) (ha ▸ h₂) q hq`. Conclude with `(cohOn.mapIso Γ(X, ⊤) ⊤ q (Twist.unitTwistIso _)).toEquiv.subsingleton_congr.1 v`.
+-/
 theorem kawamataViehweg_of_nadelVanishingPair :
     GlobalTheory.Published.NefNumerics → GlobalTheory.Published.NadelVanishingPair → GlobalTheory.Published.KawamataViehweg := by
   intro hN hV k _ _ _ X a _ D hs hp K N h₁ h₂ q hq

@@ -13,6 +13,9 @@ namespace PositivityTheory.Rg.Rs.StrStepB
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
+/- English proof (translation)
+Introduce `x hx`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Complex.exp (s * GlobalTheory.Mem.Chr.CharModel.logNorm E (GlobalTheory.Mem.Chr.localIdele E w x)) = 1`. Rewrite using `[GlobalTheory.Mem.Chr.CharModel.logNorm_local w x 0 (by simpa [IsUnitAt] using hx)]`. Simplify using the standard rewrite rules.
+-/
 theorem absC_unrAt (s : ℂ) (w : HeightOneSpectrum (𝓞 E)) : (GlobalTheory.CuspRep.Model.absC E s).UnrAt w := by
   intro x hx
   apply Units.ext
@@ -20,6 +23,11 @@ theorem absC_unrAt (s : ℂ) (w : HeightOneSpectrum (𝓞 E)) : (GlobalTheory.Cu
   rw [GlobalTheory.Mem.Chr.CharModel.logNorm_local w x 0 (by simpa [IsUnitAt] using hx)]
   simp
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Complex.exp (s * GlobalTheory.Mem.Chr.CharModel.logNorm E (GlobalTheory.Mem.Chr.localIdele E w (atFin w (unif w)))) = _`. Establish `h0 : (Ideal.absNorm w.asIdeal : ℕ) ≠ 0` using `by simpa [Ideal.absNorm_eq_zero_iff] using w.ne_bot`. Rewrite using `[GlobalTheory.Mem.Chr.CharModel.logNorm_local w _ 1 (unif_spec w), Complex.cpow_def_of_ne_zero (by exact_mod_cast h0), ← Complex.natCast_log]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem absC_val (s : ℂ) (w : HeightOneSpectrum (𝓞 E)) :
     (((GlobalTheory.CuspRep.Model.absC E s).val w : ℂˣ) : ℂ) = ((Ideal.absNorm w.asIdeal : ℕ) : ℂ) ^ (-s) := by
   change Complex.exp (s * GlobalTheory.Mem.Chr.CharModel.logNorm E (GlobalTheory.Mem.Chr.localIdele E w (atFin w (unif w)))) = _
@@ -28,17 +36,26 @@ theorem absC_val (s : ℂ) (w : HeightOneSpectrum (𝓞 E)) :
     ← Complex.natCast_log]
   congr 1; push_cast; ring
 
+/- English proof (translation)
+Use `Subtype.ext (MonoidHom.ext fun x => Units.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Complex.exp ((s + t) * _) = Complex.exp (s * _) * Complex.exp (t * _)`. Rewrite using `[← Complex.exp_add, add_mul]`.
+-/
 theorem absC_add (s t : ℂ) :
     GlobalTheory.CuspRep.Model.absC E (s + t) = GlobalTheory.CuspRep.Model.absC E s * GlobalTheory.CuspRep.Model.absC E t := by
   refine Subtype.ext (MonoidHom.ext fun x => Units.ext ?_)
   change Complex.exp ((s + t) * _) = Complex.exp (s * _) * Complex.exp (t * _)
   rw [← Complex.exp_add, add_mul]
 
+/- English proof (translation)
+Use `Subtype.ext (MonoidHom.ext fun x => Units.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Complex.exp (0 * _) = 1`. Simplify using the standard rewrite rules.
+-/
 theorem absC_zero : GlobalTheory.CuspRep.Model.absC E 0 = 1 := by
   refine Subtype.ext (MonoidHom.ext fun x => Units.ext ?_)
   change Complex.exp (0 * _) = 1
   simp
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.SphGal.hasSatGL_twist E a π _ w B (absC_unrAt x w) h`.
+-/
 theorem hasSat_twist_absC {a : ℕ} (π : CuspSub E a) {w : HeightOneSpectrum (𝓞 E)} {B : Multiset ℂˣ}
     (h : (CG.mk π).HasSat w B) (x : ℂ) :
     ((CG.mk π).twist (GlobalTheory.CuspRep.Model.absC E x)).HasSat w (B.map (· * (GlobalTheory.CuspRep.Model.absC E x).val w)) :=
@@ -46,6 +63,11 @@ theorem hasSat_twist_absC {a : ℕ} (π : CuspSub E a) {w : HeightOneSpectrum (�
 
 abbrev dC (b : ℕ) : Lie E b := fun i j => if i = j then (1 : Cinf E) else 0
 
+/- English proof (translation)
+Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Establish `h1` using `GlobalTheory.CuspRep.SplitDeriv.hasDerivAt_splitCentre φ g 0`. Establish `h2 : (fun t : ℝ => φ.1 (g * splitCentre E b t)) = fun _ => φ.1 g` using `funext fun t => by`. Rewrite using `[← GlobalTheory.CuspRep.CuspidalL2GL.splitCentre_comm]`. Conclude with `h φ hφ t g`.
+
+Rewrite `h1` using `[h2, GlobalTheory.CuspRep.CuspidalL2GL.splitCentre_zero, mul_one]`. Rewrite using `[h1.unique (hasDerivAt_const 0 _)]`. Both sides reduce to the same expression.
+-/
 theorem lie_dC_eq_zero {b : ℕ} {ρ : CuspSub E b} (h : IsNormalised ρ) {φ : Sm E b} (hφ : φ ∈ ρ.V) :
     lie E b (dC b) φ = 0 := by
   refine Subtype.ext (funext fun g => ?_)
@@ -56,6 +78,11 @@ theorem lie_dC_eq_zero {b : ℕ} {ρ : CuspSub E b} (h : IsNormalised ρ) {φ : 
   rw [h1.unique (hasDerivAt_const 0 _)]
   rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `dchi (GlobalTheory.CuspRep.Model.absC E c) (Matrix.of (dC (E := E) b)).trace = _`. Rewrite using `[GlobalTheory.GKCoh.Tests.dchi_absC]`. Establish `e : ∀ w, (Matrix.of (dC (E` using `E) b)).trace w = b := fun w => by`. Simplify using `[Matrix.trace, dC, Finset.sum_apply]`. Simplify using `only [e, Complex.natCast_re]`.
+
+Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem opAdd_dC (c : ℂ) (b : ℕ) :
     opAdd (GlobalTheory.CuspRep.Model.absC E c) (.lie (dC b) : Op E b) = c * (2 * b * Fintype.card (InfinitePlace E)) := by
   change dchi (GlobalTheory.CuspRep.Model.absC E c) (Matrix.of (dC (E := E) b)).trace = _
@@ -67,6 +94,15 @@ theorem opAdd_dC (c : ℂ) (b : ℕ) :
   push_cast
   ring
 
+/- English proof (translation)
+Take `⟨T, hT⟩` from `e`. Use `Submodule.nontrivial_iff_ne_bot.2 ρ.ne_bot` as an intermediate fact. Take `⟨φ, hφ⟩` from `exists_ne (0 : ρ.V)`. Take `⟨ψ, hψ⟩` from `(ρ'.toTwist (GlobalTheory.CuspRep.Model.absC E c)).surjective (T φ)`. Establish `h1` using `hT (.lie (dC b)) φ`.
+
+Establish `h2 : ρ.op (.lie (dC b)) φ = 0` using `Subtype.ext (lie_dC_eq_zero h φ.2)`. Establish `h3 : ρ'.op (.lie (dC b)) ψ = 0` using `Subtype.ext (lie_dC_eq_zero h' ψ.2)`. Rewrite `h1` using `[h2, map_zero, ← hψ, CuspSub.op_toTwist, h3, opAdd_dC, smul_zero, zero_add]`. Establish `h4 : (c * (2 * b * Fintype.card (InfinitePlace E)) : ℂ) • ψ = 0` using `(ρ'.toTwist _).injective (h1.symm.trans (map_zero _).symm)`. Establish `hψ0 : ψ ≠ 0` using `fun e0 => hφ (T.injective (by rw [← hψ, e0, map_zero, map_zero]))`.
+
+Establish `hK : (2 * b * Fintype.card (InfinitePlace E) : ℂ) ≠ 0`. Establish `: 0 < Fintype.card (InfinitePlace E)` using `Fintype.card_pos`. Establish `hb' : (b : ℂ) ≠ 0` using `by exact_mod_cast (show b ≠ 0 by omega)`. Establish `hc' : (Fintype.card (InfinitePlace E) : ℂ) ≠ 0` using `by exact_mod_cast this.ne'`. Conclude with `mul_ne_zero (mul_ne_zero two_ne_zero hb') hc'`.
+
+Break down `smul_eq_zero.1 h4 with h5 | h5` into its components or cases. Conclude with `(mul_eq_zero.1 h5).resolve_right hK`. Conclude with `absurd h5 hψ0`.
+-/
 theorem eq_zero_of_iso_twist {b : ℕ} (hb : 1 ≤ b) {ρ ρ' : CuspSub E b} (h : IsNormalised ρ) (h' : IsNormalised ρ')
     {c : ℂ} (e : ρ.Iso (ρ'.twist (GlobalTheory.CuspRep.Model.absC E c))) : c = 0 := by
   obtain ⟨T, hT⟩ := e
@@ -89,6 +125,13 @@ theorem eq_zero_of_iso_twist {b : ℕ} (hb : 1 ≤ b) {ρ ρ' : CuspSub E b} (h 
   · exact (mul_eq_zero.1 h5).resolve_right hK
   · exact absurd h5 hψ0
 
+/- English proof (translation)
+Take `⟨rfl, e2⟩` from `Sigma.mk.inj_iff.1 e`. Establish `e3 : CG.mk ρ = CG.mk (ρ'.twist (GlobalTheory.CuspRep.Model.absC E (u' - u)))`. Use `congrArg (fun π : CG E b => π.twist (GlobalTheory.CuspRep.Model.absC E (-u))) (eq_of_heq e2)` as an intermediate fact. Simplify using `only [← CG.twist_mul, ← absC_add] at this`. Rewrite `this` using `[add_neg_cancel, absC_zero, CG.twist_one]`.
+
+Rewrite using `[this, CG.twist_mk, sub_eq_add_neg]`. Establish `hI : ρ.Iso (ρ'.twist (GlobalTheory.CuspRep.Model.absC E (u' - u)))` using `Quotient.exact e3`. Establish `h0` using `eq_zero_of_iso_twist hb h h' hI`. Take `rfl : u = u'` from `by linear_combination -h0`. Use `⟨rfl, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e3, sub_self, absC_zero, CuspSub.twist_one]`.
+-/
 theorem match_twist {b b' : ℕ} (hb : 1 ≤ b) (ρ : CuspSub E b) (ρ' : CuspSub E b') (h : IsNormalised ρ)
     (h' : IsNormalised ρ') {u u' : ℂ}
     (e : (⟨b, (CG.mk ρ).twist (GlobalTheory.CuspRep.Model.absC E u)⟩ : Σ c, CG E c) =

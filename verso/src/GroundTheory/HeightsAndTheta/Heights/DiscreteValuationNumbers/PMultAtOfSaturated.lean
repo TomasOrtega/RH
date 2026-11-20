@@ -9,12 +9,22 @@ section General
 
 variable {A : Type*} [CommRing A]
 
+/- English proof (translation)
+Use `⟨⟨‹Q.IsPrime›, hJQ⟩, fun W hW hWQ q hq => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, hsq⟩` from `hsat q hq`. Conclude with `(hW.1.mem_or_mem (hW.2 hsq)).resolve_left (fun h => hs (hWQ h))`.
+-/
 theorem mem_minimalPrimes_of_saturated (J Q : Ideal A) [Q.IsPrime] (hJQ : J ≤ Q)
     (hsat : ∀ q ∈ Q, ∃ s ∉ Q, s * q ∈ J) : Q ∈ J.minimalPrimes := by
   refine ⟨⟨‹Q.IsPrime›, hJQ⟩, fun W hW hWQ q hq => ?_⟩
   obtain ⟨s, hs, hsq⟩ := hsat q hq
   exact (hW.1.mem_or_mem (hW.2 hsq)).resolve_left (fun h => hs (hWQ h))
 
+/- English proof (translation)
+Use `⟨?_, LocalizedModule.map_surjective _ _ ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`. Introduce `x hx`. Proceed by induction on `x using LocalizedModule.induction_on with | h m s => ?_`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective m`.
+
+Rewrite `hx` using `[LinearMap.mem_ker, LocalizedModule.map_mk]`. Establish `haQ : a ∈ Q` using `localizedQuotient_mk_eq_zero Q a s hx`. Take `⟨t, ht, hta⟩` from `hsat a haQ`. Rewrite using `[Submodule.mem_bot, ← LocalizedModule.zero_mk (1 : Q.primeCompl), LocalizedModule.mk_eq]`. Use `⟨⟨t, ht⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[smul_zero, smul_zero, one_smul, Submonoid.smul_def, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hta`. Introduce `z`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Conclude with `⟨Ideal.Quotient.mk J a, rfl⟩`.
+-/
 theorem localizedQuot_map_bijective_of_saturated (J Q : Ideal A) [Q.IsPrime] (hJQ : J ≤ Q)
     (hsat : ∀ q ∈ Q, ∃ s ∉ Q, s * q ∈ J) :
     Function.Bijective (LocalizedModule.map Q.primeCompl
@@ -40,6 +50,9 @@ end General
 
 universe u
 
+/- English proof (translation)
+Introduce `R _ K ι J Q _ hJQ hsat`. Use `⟨mem_minimalPrimes_of_saturated J Q hJQ hsat, ?_⟩` and prove the remaining obligations. Unfold `multAt`. Rewrite using `[(LinearEquiv.ofBijective _ (localizedQuot_map_bijective_of_saturated J Q hJQ hsat)).length_eq, Module.length_eq_one_iff]`. Conclude with `localizedQuotient_isSimpleModule Q`.
+-/
 theorem MultAtOfSaturated.proof : MultAtOfSaturated.Statement.{u} := by
   intro R _ K ι J Q _ hJQ hsat
   refine ⟨mem_minimalPrimes_of_saturated J Q hJQ hsat, ?_⟩

@@ -5,6 +5,19 @@ namespace GroundTheory.Variant₂.N1
 
 open NumberField
 
+/- English proof (translation)
+Establish `hv : v ∈ Submodule.span K (X.lattice : Set (Fin i → K))`. Rewrite using `[X.span_eq]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by simpa using hx⟩`.
+
+Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha, hax⟩` from `hx`. Take `⟨b, hb, hby⟩` from `hy`. Use `⟨a * b, mul_ne_zero ha hb, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : (a * b) • x = b • (a • x)` using `by rw [mul_comm, mul_smul]`. Establish `h2 : (a * b) • y = a • (b • y)` using `by rw [mul_smul]`. Rewrite using `[smul_add, h1, h2]`. Conclude with `X.lattice.add_mem (X.lattice.smul_mem _ hax) (X.lattice.smul_mem _ hby)`. Consider the case `smul k x _ hx`.
+
+Take `⟨a, ha, hax⟩` from `hx`. Take `⟨p, q, hq, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) k`. Establish `hq0 : q ≠ 0` using `nonZeroDivisors.ne_zero hq`. Establish `hqK : algebraMap (𝓞 K) K q ≠ 0`. Rewrite using `[ne_eq, map_eq_zero_iff _ (IsFractionRing.injective (𝓞 K) K)]` and apply the resulting hypothesis.
+
+Use `⟨q * a, mul_ne_zero hq0 ha, ?_⟩` and prove the remaining obligations. Establish `key : (q * a) • ((algebraMap (𝓞 K) K p / algebraMap (𝓞 K) K q) • x) = p • (a • x)`. Use extensionality with `j`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Algebra.smul_def (R := 𝓞 K) (A := K), map_mul]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[key]`. Conclude with `X.lattice.smul_mem _ hax`.
+-/
 theorem exists_smul_mem_hermitianLattice {K : Type} [Field K] [NumberField K] {i : ℕ}
     (X : GroundTheory.Heights₂.Heights.HermLattice K i) (v : Fin i → K) :
     ∃ (c : NumberField.RingOfIntegers K), c ≠ 0 ∧ c • v ∈ X.lattice := by

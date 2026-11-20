@@ -2,10 +2,16 @@ import Formalism.PadicSubsetSums.CentralIdempotents.GaloisIrreducibility
 
 namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 
+/- English proof (translation)
+Rewrite using `[← pow_mod_orderOf x a, ← pow_mod_orderOf x b, show a % orderOf x = b % orderOf x from h]`.
+-/
 theorem pow_eq_pow_of_modEq_orderOf {M : Type*} [Monoid M] (x : M) {a b : ℕ}
     (h : a ≡ b [MOD orderOf x]) : x ^ a = x ^ b := by
   rw [← pow_mod_orderOf x a, ← pow_mod_orderOf x b, show a % orderOf x = b % orderOf x from h]
 
+/- English proof (translation)
+Establish `ht : 0 < Nat.totient m` using `Nat.totient_pos.mpr hm`. Take `⟨k, hk⟩ : ∃ k, Nat.totient m = k + 1` from `⟨Nat.totient m - 1, by omega⟩`. Rewrite using `[hk, pow_succ', Nat.gcd_mul_left]`. Establish `: Nat.gcd m (q ^ k) = 1` using `(Nat.Coprime.pow_right k hcop.symm)`. Rewrite using `[this, mul_one]`.
+-/
 theorem gcd_mul_pow_totient {q m : ℕ} (hm : 0 < m) (hcop : Nat.Coprime q m) :
     Nat.gcd (q * m) (q ^ Nat.totient m) = q := by
   have ht : 0 < Nat.totient m := Nat.totient_pos.mpr hm
@@ -14,6 +20,17 @@ theorem gcd_mul_pow_totient {q m : ℕ} (hm : 0 < m) (hcop : Nat.Coprime q m) :
   have : Nat.gcd m (q ^ k) = 1 := (Nat.Coprime.pow_right k hcop.symm)
   rw [this, mul_one]
 
+/- English proof (translation)
+Unfold `PrimeToPartSpec`. Introduce `M _ l x hl hx`. Use `set n := orderOf x with hn`. Use `set q := l ^ n.factorization l with hq`. Establish `hnpos : 0 < n` using `hx.orderOf_pos`.
+
+Establish `hqd : q ∣ n` using `Nat.ordProj_dvd n l`. Establish `hqpos : 0 < q` using `pow_pos hl.pos _`. Establish `hmpos : 0 < n / q` using `Nat.div_pos (Nat.le_of_dvd hnpos hqd) hqpos`. Establish `hcop : Nat.Coprime q (n / q)` using `Nat.Coprime.pow_left _ (Nat.coprime_ordCompl hl hnpos.ne')`. Establish `hnqm : n = q * (n / q)` using `(Nat.mul_div_cancel' hqd).symm`.
+
+Unfold `primeToPart`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hg : Nat.gcd n (q ^ Nat.totient (n / q)) = q`. Establish `h3` using `gcd_mul_pow_totient hmpos hcop`. Rewrite `h3` using `[← hnqm]`. Then use the resulting hypothesis.
+
+Rewrite using `[orderOf_pow' x (pow_pos hqpos _).ne', ← hn, hg]`. Use `⟨n.factorization l, ?_⟩` and prove the remaining obligations. Rewrite using `[← pow_mul]`. Apply `pow_eq_pow_of_modEq_orderOf` to reduce the goal to its premises. Rewrite using `[← hn]`.
+
+Establish `h1 : q ^ Nat.totient (n / q) ≡ 1 [MOD n / q]` using `Nat.ModEq.pow_totient hcop`. Establish `h2 : q * q ^ Nat.totient (n / q) ≡ q * 1 [MOD q * (n / q)]` using `Nat.ModEq.mul_left' q h1`. Rewrite `h2` using `[← hnqm, mul_one, mul_comm]`. Conclude with `h2.symm`.
+-/
 theorem prime_to_part_spec : PrimeToPartSpec := by
   unfold PrimeToPartSpec
   intro M _ l x hl hx

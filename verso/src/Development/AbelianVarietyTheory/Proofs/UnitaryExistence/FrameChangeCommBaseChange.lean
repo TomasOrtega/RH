@@ -14,23 +14,44 @@ namespace GlobalTheory.Frames.ChgBC
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 variable {Xo : Moduli Dw l}
 
+/- English proof (translation)
+Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+-/
 theorem spMap_comp_ring {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : B →+* C) (g : A →+* B) :
     spMap f ≫ spMap g = spMap (f.comp g) := by
   simp only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
+/- English proof (translation)
+Simplify using `only [spMap, CommRingCat.ofHom_id, Spec.map_id]`.
+-/
 theorem spMap_id (A : Type) [CommRing A] : spMap (RingHom.id A) = 𝟙 (Sp A) := by
   simp only [spMap, CommRingCat.ofHom_id, Spec.map_id]
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun a => by ext <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem dualMap_alg {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T) :
     (dualMap φ).comp (algebraMap S (DualNumber S)) = (algebraMap T (DualNumber T)).comp φ :=
   RingHom.ext fun a => by
     ext <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun x => by ext <;> simp [dualMap, epsMul, mul_comm]`.
+-/
 theorem dualMap_eps {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T) (a : S) :
     (dualMap φ).comp (epsMul a) = (epsMul (φ a)).comp (dualMap φ) :=
   RingHom.ext fun x => by
     ext <;> simp [dualMap, epsMul, mul_comm]
 
+/- English proof (translation)
+Take `⟨u, hu, hprod⟩` from `h`. Set `D : tEps x' ⟶ tEps x` to `Over.homMk (spMap (dualMap φ)) (by show spMap (dualMap φ) ≫ spMap (algebraMap S (DualNumber S)) ≫ x = spMap (algebraMap T (DualNumber T)) ≫ x'`. Rewrite using `[hx, ← Category.assoc, ← Category.assoc, spMap_comp_ring, spMap_comp_ring, dualMap_alg])`. Establish `hL : ∀ L : List (tEps x ⟶ Xo.univ.t.G), (L.map (D ≫ ·)).prod = D ≫ L.prod`. Introduce `L`.
+
+Proceed by induction on `L with`. Consider the case `nil => simp [MonObj.comp_one]`. Consider the case `cons a L ih => rw [List.map_cons, List.prod_cons, List.prod_cons, ih, MonObj.comp_mul]`. Use `⟨fun j => D ≫ u j, fun j => ?_, ?_⟩` and prove the remaining obligations. Use `show spMap (dualMap φ) ≫ (u j).left = spMap (epsMul (φ (cf j))) ≫ v' j`.
+
+Rewrite using `[hu j, hv j, ← Category.assoc, ← Category.assoc, spMap_comp_ring, spMap_comp_ring, dualMap_eps]`. Establish `e : (List.ofFn fun j => D ≫ u j) = (List.ofFn u).map (D ≫ ·)`. Rewrite using `[List.map_ofFn]`. Both sides reduce to the same expression. Rewrite using `[e, hL, Over.comp_left, hprod, hw]`.
+
+Both sides reduce to the same expression.
+-/
 theorem isCombAt_pull {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T) {x : Sp S ⟶ Xo.X}
     {x' : Sp T ⟶ Xo.X} (hx : x' = spMap φ ≫ x) {m : ℕ} {v : Fin m → (Sp (DualNumber S) ⟶ Xo.univ.t.G.left)}
     {v' : Fin m → (Sp (DualNumber T) ⟶ Xo.univ.t.G.left)} (hv : ∀ j, v' j = spMap (dualMap φ) ≫ v j)
@@ -54,6 +75,9 @@ theorem isCombAt_pull {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T) {x
     rw [e, hL, Over.comp_left, hprod, hw]
     rfl
 
+/- English proof (translation)
+Take `⟨u, hu, hprod⟩` from `h`. Take `⟨u', hu', hprod'⟩` from `h'`. Establish `e : u = u'` using `funext fun i => Over.OverMorphism.ext ((hu i).trans (hu' i).symm)`. Rewrite using `[← hprod, ← hprod', e]`.
+-/
 theorem isCombAt_unique {S : Type} [CommRing S] {x : Sp S ⟶ Xo.X} {m : ℕ}
     {v : Fin m → (Sp (DualNumber S) ⟶ Xo.univ.t.G.left)} {cf : Fin m → S}
     {w w' : Sp (DualNumber S) ⟶ Xo.univ.t.G.left} (h : IsCombAt x v cf w) (h' : IsCombAt x v cf w') : w = w' := by
@@ -62,6 +86,11 @@ theorem isCombAt_unique {S : Type} [CommRing S] {x : Sp S ⟶ Xo.X} {m : ℕ}
   have e : u = u' := funext fun i => Over.OverMorphism.ext ((hu i).trans (hu' i).symm)
   rw [← hprod, ← hprod', e]
 
+/- English proof (translation)
+Introduce `p hp`. Establish `hp' : ∀ k, p ∈ (snd (Over.mk x') Xo.univ.t.G).left.base ⁻¹' (Xo.univ.t.PP.L.U (i k) : Set _)` using `Set.mem_iInter.1 hp`. Establish `e` using `congrArg (fun f : Gx x' ⟶ Xo.univ.t.G.left => f.base p) hs`. Use `show pm.base p ∈ ⋂ k, (snd (Over.mk x) Xo.univ.t.G).left.base ⁻¹' (Xo.univ.t.PP.L.U (i k) : Set _)`. Use `Set.mem_iInter.2 fun k => ?_` and prove the remaining obligations.
+
+Use `show (pm ≫ (snd (Over.mk x) Xo.univ.t.G).left).base p ∈ (Xo.univ.t.PP.L.U (i k) : Set _)`. Rewrite using `[e]`. Conclude with `hp' k`.
+-/
 theorem ppx_le_cov {S T : Type} [CommRing S] [CommRing T] {x : Sp S ⟶ Xo.X} {x' : Sp T ⟶ Xo.X}
     (pm : Gx x' ⟶ Gx x)
     (hs : pm ≫ (snd (Over.mk x) Xo.univ.t.G).left = (snd (Over.mk x') Xo.univ.t.G).left)
@@ -76,6 +105,15 @@ theorem ppx_le_cov {S T : Type} [CommRing S] [CommRing T] {x : Sp S ⟶ Xo.X} {x
   rw [e]
   exact hp' k
 
+/- English proof (translation)
+Establish `key : ∀ (q : Gx x' ⟶ Sp S), q = (fst (Over.mk x') Xo.univ.t.G).left ≫ spMap φ → ∀ e : (PPx x').U i ≤ q ⁻¹ᵁ ⊤, q.appLE ⊤ ((PPx x').U i) e = (spMap φ).appTop ≫ (fst (Over.mk x') Xo.univ.t.G).left.appLE ⊤ _ (le_top)`. Introduce and unpack `q rfl e`. Conclude with `Scheme.Hom.comp_appLE _ _ _ _ _`. Establish `M : (fst (Over.mk x) Xo.univ.t.G).left.appTop ≫ (Gx x).presheaf.map (homOfLE le_top).op ≫ pm.appLE _ _ h = (spMap φ).appTop ≫ (fst (Over.mk x') Xo.univ.t.G).left.appTop ≫ (Gx x').presheaf.map (homOfLE le_top).op`. Rewrite using `[Scheme.Hom.map_appLE]`.
+
+Establish `e1 : (fst (Over.mk x) Xo.univ.t.G).left.appTop = (fst (Over.mk x) Xo.univ.t.G).left.appLE ⊤ ⊤ le_top` using `(Scheme.Hom.appLE_eq_app _).symm`. Rewrite using `[e1]`. Conclude with `(Scheme.Hom.appLE_comp_appLE _ _ _ _ _ _ _).trans ((key _ hf _).trans rfl)`. Establish `M'` using `congrArg (fun f => f.hom (toΓ S a)) M`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at M'`.
+
+Establish `N` using `congrArg (fun f => f.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom φ))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at N`. Use `show (pm.appLE _ _ h).hom (((Gx x).presheaf.map (homOfLE le_top).op).hom ((fst (Over.mk x) Xo.univ.t.G).left.appTop.hom (toΓ S a))) = ((Gx x').presheaf.map (homOfLE le_top).op).hom ((fst (Over.mk x') Xo.univ.t.G).left.appTop.hom (toΓ T (φ a)))`. Rewrite using `[M']`. Use `congr 2`.
+
+Conclude with `N.symm`.
+-/
 theorem scal_pull {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T) {x : Sp S ⟶ Xo.X} {x' : Sp T ⟶ Xo.X}
     (pm : Gx x' ⟶ Gx x)
     (hf : pm ≫ (fst (Over.mk x) Xo.univ.t.G).left = (fst (Over.mk x') Xo.univ.t.G).left ≫ spMap φ)
@@ -104,6 +142,9 @@ theorem scal_pull {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T) {x : S
   congr 2
   exact N.symm
 
+/- English proof (translation)
+Set `pm : Gx x' ⟶ Gx x` to `pullback.lift (pullback.fst (Over.mk x').hom Xo.univ.t.G.hom ≫ spMap φ) (pullback.snd (Over.mk x').hom Xo.univ.t.G.hom) (by show pullback.fst (Over.mk x').hom Xo.univ.t.G.hom ≫ spMap φ ≫ x = pullback.snd (Over.mk x').hom Xo.univ.t.G.hom ≫ Xo.univ.t.G.hom`. Rewrite using `[← hx]`. Conclude with `pullback.condition)`. Conclude with `⟨pm, pullback.lift_snd _ _ _, pullback.lift_fst _ _ _⟩`.
+-/
 theorem can_exists {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T) {x : Sp S ⟶ Xo.X} {x' : Sp T ⟶ Xo.X}
     (hx : x' = spMap φ ≫ x) :
     ∃ pm : Gx x' ⟶ Gx x, pm ≫ (snd (Over.mk x) Xo.univ.t.G).left = (snd (Over.mk x') Xo.univ.t.G).left ∧
@@ -118,11 +159,23 @@ theorem can_exists {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T) {x : 
         exact pullback.condition)
   exact ⟨pm, pullback.lift_snd _ _ _, pullback.lift_fst _ _ _⟩
 
+/- English proof (translation)
+The claim follows from `pullback.hom_ext (f := (Over.mk x).hom) (g := Xo.univ.t.G.hom) hf hs`.
+-/
 theorem gx_ext {S : Type} [CommRing S] {x : Sp S ⟶ Xo.X} {Z : Scheme.{0}} {p q : Z ⟶ Gx x}
     (hs : p ≫ (snd (Over.mk x) Xo.univ.t.G).left = q ≫ (snd (Over.mk x) Xo.univ.t.G).left)
     (hf : p ≫ (fst (Over.mk x) Xo.univ.t.G).left = q ≫ (fst (Over.mk x) Xo.univ.t.G).left) : p = q :=
   pullback.hom_ext (f := (Over.mk x).hom) (g := Xo.univ.t.G.hom) hf hs
 
+/- English proof (translation)
+Rewrite `hfC`, `hf` using `[spMap_id]`. Use `replace hfC : pmC ≫ (fst (Over.mk y) Xo.univ.t.G).left = (fst (Over.mk y') Xo.univ.t.G).left := hfC.trans (Category.comp_id _)`. Use `replace hf : pm ≫ (fst (Over.mk z) Xo.univ.t.G).left = (fst (Over.mk z') Xo.univ.t.G).left := hf.trans (Category.comp_id _)`. Establish `hcomp : pm ≫ pmA = pmB ≫ pmC`. Apply `gx_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, hsA, hs, Category.assoc, hsC, hsB]`. Rewrite using `[Category.assoc, hfA, Category.assoc, hfC]`. Conclude with `((Category.assoc _ _ _).symm.trans (congrArg (· ≫ spMap φ) hf)).trans hfB.symm`. Establish `hA` using `ppx_le_cov pmA hsA i`. Establish `hC` using `ppx_le_cov pmC hsC i`.
+
+Establish `key : ∀ (q : Gx z' ⟶ Gx y), q = pmB ≫ pmC → ∀ hh : (PPx z').U i ≤ q ⁻¹ᵁ (PPx y).U i, (q.appLE _ _ hh).hom (scal y a i * sy.f i) = (pmB.appLE _ _ hB).hom (sy'.f i)`. Introduce and unpack `q rfl hh`. Establish `e : (pmB ≫ pmC).appLE _ _ hh = pmC.appLE _ _ hC ≫ pmB.appLE _ _ hB` using `(Scheme.Hom.appLE_comp_appLE pmB pmC _ _ _ hC hB).symm`. Rewrite using `[e, CommRingCat.hom_comp, RingHom.comp_apply, haC i hC]`. Rewrite using `[← haA i hA, ← scal_pull φ pmA hfA i hA, ← map_mul (pmA.appLE _ _ hA).hom]`.
+
+Establish `e2` using `congrArg (fun f => f.hom (scal y a i * sy.f i)) (Scheme.Hom.appLE_comp_appLE pm pmA _ _ _ hA h)`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at e2`. Rewrite using `[e2]`. Conclude with `key _ hcomp _`.
+-/
 theorem square {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T) (a : S) {y y' : Sp S ⟶ Xo.X}
     {z z' : Sp T ⟶ Xo.X} (pmA : Gx z ⟶ Gx y) (pmB : Gx z' ⟶ Gx y') (pmC : Gx y' ⟶ Gx y) (pm : Gx z' ⟶ Gx z)
     (hsA : pmA ≫ (snd (Over.mk y) Xo.univ.t.G).left = (snd (Over.mk z) Xo.univ.t.G).left)
@@ -166,6 +219,15 @@ theorem square {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T) (a : S) {
   rw [e2]
   exact key _ hcomp _
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c S _ _ T _ _ φ y y' z z' g a hb hz`. Take `⟨hx, hcomb, pmC, hsC, hfC, haC⟩` from `hb`. Take `⟨hx1, hu1, pmA, hsA, hfA, haA⟩` from `hz`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx2, hu2, pmB, hsB, hfB, haB⟩`.
+
+Establish `hxz : z'.x = z.x` using `by rw [hx2, hx1, hx]`. Use `⟨hxz, fun τ i => isCombAt_pull φ.toRingHom hx1 (hu1 τ) (hu2 τ i) (hcomb τ i), ?_⟩` and prove the remaining obligations. Take `⟨pm, hs, hf⟩` from `can_exists (RingHom.id T) (x := z.x) (x' := z'.x) (by rw [spMap_id, Category.id_comp, hxz])`. Use `⟨pm, hs, hf, fun i h => ?_⟩` and prove the remaining obligations. Establish `hB` using `ppx_le_cov pmB hsB i`.
+
+Conclude with `(square φ.toRingHom a pmA pmB pmC pm hsA hfA hsB hfB hsC hfC hs hf y.s y'.s z.s haA haC i h hB).trans (haB i hB)`. Introduce and unpack `⟨hxz, hc2, pm, hs, hf, ha⟩`. Establish `hx2 : z'.x = spMap φ.toRingHom ≫ y'.x` using `by rw [hxz, hx1, hx]`. Use `⟨hx2, fun τ i => isCombAt_unique (hc2 τ i) (isCombAt_pull φ.toRingHom hx1 (hu1 τ) rfl (hcomb τ i)), ?_⟩` and prove the remaining obligations. Take `⟨pmB, hsB, hfB⟩` from `can_exists φ.toRingHom hx2`.
+
+Use `⟨pmB, hsB, hfB, fun i hB => ?_⟩` and prove the remaining obligations. Establish `h` using `ppx_le_cov pm hs i`. Conclude with `(square φ.toRingHom a pmA pmB pmC pm hsA hfA hsB hfB hsC hfC hs hf y.s y'.s z.s haA haC i h hB).symm.trans (ha i h)`.
+-/
 theorem frChg_baseChange : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (S : Type) [CommRing S] [Algebra c.F S] (T : Type) [CommRing T] [Algebra c.F T] (φ : S →ₐ[c.F] T) (y y' : FrPt Xo c S) (z z' : FrPt Xo c T) (g : (∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) S)) (a : S), FrChg g a y y' → FrMap φ y z → (FrMap φ y' z' ↔ FrChg (fun τ => (g τ).map φ) (φ a) z z') := by
   intro E _ _ _ H Dw l Xo c S _ _ T _ _ φ y y' z z' g a hb hz
   obtain ⟨hx, hcomb, pmC, hsC, hfC, haC⟩ := hb

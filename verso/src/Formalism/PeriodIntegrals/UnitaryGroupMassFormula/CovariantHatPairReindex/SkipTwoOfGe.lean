@@ -10,12 +10,24 @@ open Formalism.REAL Formalism.FourierDecayAlt.Q
 noncomputable def sgnL {r : ℕ} {α : Type*} [DecidableEq α] (x e : Fin r → α) : ℂ :=
   Matrix.det (Matrix.of fun k j => if x k = e j then (1 : ℂ) else 0)
 
+/- English proof (translation)
+Rewrite using `[← (Fin.consEquiv fun _ : Fin (r + 1) => α).sum_comp, Fintype.sum_prod_type]`. Both sides reduce to the same expression.
+-/
 theorem sum_fun_succ {r : ℕ} {α : Type*} [Fintype α] [DecidableEq α] {M : Type*} [AddCommMonoid M]
     (f : (Fin (r + 1) → α) → M) :
     ∑ x, f x = ∑ x0 : α, ∑ y : Fin r → α, f (Fin.cons x0 y) := by
   rw [← (Fin.consEquiv fun _ : Fin (r + 1) => α).sum_comp, Fintype.sum_prod_type]
   rfl
 
+/- English proof (translation)
+Unfold `sgnL`. Rewrite using `[Matrix.det_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def, zsmul_eq_mul]`. Use `congr 1`.
+
+Simplify using `only [Matrix.of_apply]`. Rewrite using `[Finset.prod_boole]`. Distinguish the cases in `h : x = e ∘ σ.symm`. Rewrite using `[if_pos h, if_pos]`. Introduce `i _`.
+
+Rewrite using `[h]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg h, if_neg]`. Introduce `H`. Apply `h` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `j`. Establish `h1` using `H (σ.symm j) (Finset.mem_univ _)`. Simplify using `using h1`.
+-/
 theorem sgnL_eq_sum {r : ℕ} {α : Type*} [DecidableEq α] (x e : Fin r → α) :
     sgnL x e = ∑ σ : Equiv.Perm (Fin r),
       ((Equiv.Perm.sign σ : ℤ) : ℂ) * (if x = e ∘ σ.symm then 1 else 0) := by
@@ -38,6 +50,9 @@ theorem sgnL_eq_sum {r : ℕ} {α : Type*} [DecidableEq α] (x e : Fin r → α)
     have h1 := H (σ.symm j) (Finset.mem_univ _)
     simpa using h1
 
+/- English proof (translation)
+Repeatedly rewrite using `[sgnL_eq_sum, Finset.sum_smul, mul_ite, mul_one, mul_zero, ite_smul, zero_smul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Conclude with `Fintype.sum_equiv (Equiv.inv _) _ _ (fun σ => by simp [Equiv.Perm.sign_inv, Equiv.Perm.inv_def])`.
+-/
 theorem sum_sgnL {r : ℕ} {α : Type*} [Fintype α] [DecidableEq α] {M : Type*} [AddCommGroup M]
     [Module ℂ M] (e : Fin r → α) (g : (Fin r → α) → M) :
     ∑ x, sgnL x e • g x = ∑ π : Equiv.Perm (Fin r), ((Equiv.Perm.sign π : ℤ) : ℂ) • g (e ∘ π) := by
@@ -46,6 +61,11 @@ theorem sum_sgnL {r : ℕ} {α : Type*} [Fintype α] [DecidableEq α] {M : Type*
   simp only [Finset.sum_ite_eq', Finset.mem_univ, if_true]
   exact Fintype.sum_equiv (Equiv.inv _) _ _ (fun σ => by simp [Equiv.Perm.sign_inv, Equiv.Perm.inv_def])
 
+/- English proof (translation)
+Rewrite using `[sum_sgnL]`. Establish `h1 : ∀ π : Equiv.Perm (Fin r), ((Equiv.Perm.sign π : ℤ) : ℂ) • F (e ∘ π) = F e`. Introduce `π`. Rewrite using `[hF, smul_smul]`. Establish `h2 : ((Equiv.Perm.sign π : ℤ) : ℂ) * ((Equiv.Perm.sign π : ℤ) : ℂ) = 1`.
+
+Rewrite using `[← Int.cast_mul, ← Units.val_mul, Int.units_mul_self]`. Simplify using the standard rewrite rules. Rewrite using `[h2, one_smul]`. Repeatedly rewrite using `[h1]`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_perm, Fintype.card_fin, ← Nat.cast_smul_eq_nsmul ℂ]`.
+-/
 theorem sum_sgnL_alt {r : ℕ} {α : Type*} [Fintype α] [DecidableEq α] {M : Type*} [AddCommGroup M]
     [Module ℂ M] (e : Fin r → α) (F : (Fin r → α) → M)
     (hF : ∀ (x : Fin r → α) (π : Equiv.Perm (Fin r)),
@@ -63,6 +83,19 @@ theorem sum_sgnL_alt {r : ℕ} {α : Type*} [Fintype α] [DecidableEq α] {M : T
   rw [Finset.sum_const, Finset.card_univ, Fintype.card_perm, Fintype.card_fin,
     ← Nat.cast_smul_eq_nsmul ℂ]
 
+/- English proof (translation)
+Establish `hexp : ∀ (x0 : α) (y : Fin r → α), sgnL (Fin.cons x0 y : Fin (r + 1) → α) e = ∑ j : Fin (r + 1), (-1 : ℂ) ^ (j : ℕ) * ((if x0 = e j then 1 else 0) * sgnL y (e ∘ j.succAbove))`. Introduce `x0 y`. Unfold `sgnL`. Rewrite using `[Matrix.det_succ_row_zero]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_assoc]`. Use `congr 2`. Apply the tactic sequence `all_goals first`. Consider the case `(simp [Matrix.of_apply]; done)`. Consider the case `(congr 1; ext k j'; simp [Matrix.submatrix_apply, Matrix.of_apply])`.
+
+Establish `step : ∀ (x0 : α) (y : Fin r → α), sgnL (Fin.cons x0 y : Fin (r + 1) → α) e • H (Fin.cons x0 y) = ∑ j : Fin (r + 1), if x0 = e j then ((-1 : ℂ) ^ (j : ℕ) • (sgnL y (e ∘ j.succAbove) • H (Fin.cons (e j) y))) else 0`. Introduce `x0 y`. Rewrite using `[hexp, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with h`.
+
+Substitute `h` using the available equality. Rewrite using `[one_mul, mul_smul]`. Rewrite using `[zero_mul, mul_zero, zero_smul]`. Rewrite using `[sum_fun_succ]`. Repeatedly rewrite using `[step]`.
+
+Use `conv_lhs => arg 2`. Use extensionality with `x0`. Rewrite using `[Finset.sum_comm]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_comm, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem sum_sgnL_succ {r : ℕ} {α : Type*} [Fintype α] [DecidableEq α] {M : Type*} [AddCommGroup M]
     [Module ℂ M] (e : Fin (r + 1) → α) (H : (Fin (r + 1) → α) → M) :
     ∑ x, sgnL x e • H x = ∑ j : Fin (r + 1), ((-1 : ℂ) ^ (j : ℕ)) •
@@ -99,6 +132,9 @@ theorem sum_sgnL_succ {r : ℕ} {α : Type*} [Fintype α] [DecidableEq α] {M : 
   refine Finset.sum_congr rfl fun y _ => ?_
   simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [skip2, Fin.succAbove, Fin.lt_def, Fin.coe_castSucc, Fin.val_succ] at h ⊢`. Apply the tactic sequence `split_ifs <;> (try simp only [Fin.coe_castSucc, Fin.val_succ, Fin.val_mk, Fin.lt_def] at *) <;> omega`.
+-/
 theorem skip_two_of_lt {m : ℕ} (j : Fin (m + 2)) (j' : Fin (m + 1)) (h : Fin.castSucc j' < j) :
     (fun k : Fin m => j.succAbove (j'.succAbove k)) = skip2 (Fin.castSucc j') j := by
   funext k
@@ -106,6 +142,9 @@ theorem skip_two_of_lt {m : ℕ} (j : Fin (m + 2)) (j' : Fin (m + 1)) (h : Fin.c
   simp only [skip2, Fin.succAbove, Fin.lt_def, Fin.coe_castSucc, Fin.val_succ] at h ⊢
   split_ifs <;> (try simp only [Fin.coe_castSucc, Fin.val_succ, Fin.val_mk, Fin.lt_def] at *) <;> omega
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [skip2, Fin.succAbove, Fin.lt_def, Fin.le_def, Fin.coe_castSucc, Fin.val_succ] at h ⊢`. Apply the tactic sequence `split_ifs <;> (try simp only [Fin.coe_castSucc, Fin.val_succ, Fin.val_mk, Fin.lt_def, Fin.le_def] at *) <;> omega`.
+-/
 theorem skip_two_of_ge {m : ℕ} (j : Fin (m + 2)) (j' : Fin (m + 1)) (h : j ≤ Fin.castSucc j') :
     (fun k : Fin m => j.succAbove (j'.succAbove k)) = skip2 j j'.succ := by
   funext k
@@ -113,6 +152,13 @@ theorem skip_two_of_ge {m : ℕ} (j : Fin (m + 2)) (j' : Fin (m + 1)) (h : j ≤
   simp only [skip2, Fin.succAbove, Fin.lt_def, Fin.le_def, Fin.coe_castSucc, Fin.val_succ] at h ⊢
   split_ifs <;> (try simp only [Fin.coe_castSucc, Fin.val_succ, Fin.val_mk, Fin.lt_def, Fin.le_def] at *) <;> omega
 
+/- English proof (translation)
+Use `(sum_sgnL_succ e (fun c => (β (c 0) * β' (c 1)) • F (fun k => c k.succ.succ))).trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h2` using `sum_sgnL_succ (e ∘ j.succAbove) (fun y : Fin (m + 1) → α => (β (e j) * β' (y 0)) • F (fun k => y k.succ))`. Simplify using `only [Fin.cons_zero, Fin.cons_one, Fin.cons_succ, Function.comp_apply] at h2 ⊢`. Rewrite using `[h2, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun j' _ => ?_` and prove the remaining obligations. Establish `h3 : ∑ z : Fin m → α, sgnL z ((e ∘ j.succAbove) ∘ j'.succAbove) • ((β (e j) * β' (e (j.succAbove j'))) • F z) = (β (e j) * β' (e (j.succAbove j'))) • ((m.factorial : ℂ) • F ((e ∘ j.succAbove) ∘ j'.succAbove))`. Repeatedly rewrite using `[smul_comm (sgnL _ _) (β (e j) * β' (e (j.succAbove j')))]`. Rewrite using `[← Finset.smul_sum, sum_sgnL_alt _ F hF]`. Rewrite using `[h3, smul_smul, smul_smul, smul_smul, pow_add]`.
+
+Use `congr 1`.
+-/
 theorem sum_two {m : ℕ} {α : Type*} [Fintype α] [DecidableEq α] {M : Type*} [AddCommGroup M]
     [Module ℂ M] (e : Fin (m + 2) → α) (F : (Fin m → α) → M)
     (hF : ∀ (x : Fin m → α) (π : Equiv.Perm (Fin m)),
@@ -137,6 +183,19 @@ theorem sum_two {m : ℕ} {α : Type*} [Fintype α] [DecidableEq α] {M : Type*}
   rw [h3, smul_smul, smul_smul, smul_smul, pow_add]
   congr 1
 
+/- English proof (translation)
+Establish `hR : ∀ i : Fin (m + 2), ∑ i' : Fin (m + 2), (if i < i' then ((-1 : ℂ) ^ ((i : ℕ) + (i' : ℕ)) * (β i' * β' i - β i * β' i')) • F (skip2 i i') else 0) = ∑ i' : Fin (m + 2), (if i < i' then ((-1 : ℂ) ^ ((i : ℕ) + (i' : ℕ)) * (β i' * β' i)) • F (skip2 i i') else 0) - ∑ i' : Fin (m + …`. Introduce `i`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i' _ => ?_` and prove the remaining obligations. Use `split_ifs`.
+
+Rewrite using `[mul_sub, sub_smul]`. Rewrite using `[sub_zero]`. Establish `hL : ∀ j : Fin (m + 2), ∑ j' : Fin (m + 1), ((-1 : ℂ) ^ ((j : ℕ) + (j' : ℕ)) * (β j * β' (j.succAbove j'))) • F (fun k => j.succAbove (j'.succAbove k)) = ∑ i : Fin (m + 2), (if i < j then ((-1 : ℂ) ^ ((i : ℕ) + (j : ℕ)) * (β j * β' i)) • F (skip2 i j) else 0) - ∑ i' : Fin (m + 2) …`. Introduce `j`. Rewrite using `[Fin.sum_univ_castSucc (f := fun i => if i < j then ((-1 : ℂ) ^ ((i : ℕ) + (j : ℕ)) * (β j * β' i)) • F (skip2 i j) else 0), Fin.sum_univ_succ (f := fun i' => if j < i' then ((-1 : ℂ) ^ ((j : ℕ) + (i' : ℕ)) * (β j * β' i')) • F (skip2 j i') else 0)]`.
+
+Simplify using `only [not_lt.mpr (Fin.le_last j), Fin.not_lt_zero, if_false, add_zero, zero_add]`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun j' _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : Fin.castSucc j' < j`. Establish `h' : ¬ j < j'.succ`.
+
+Rewrite using `[← Fin.le_castSucc_iff]`. Conclude with `not_le.mpr h`. Rewrite using `[if_pos h, if_neg h', sub_zero, Fin.succAbove_of_castSucc_lt _ _ h, skip_two_of_lt j j' h, Fin.val_castSucc]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hle : j ≤ Fin.castSucc j'` using `not_lt.mp h`. Establish `h' : j < j'.succ` using `Fin.le_castSucc_iff.mp hle`. Rewrite using `[if_neg h, if_pos h', zero_sub, Fin.succAbove_of_le_castSucc _ _ hle, skip_two_of_ge j j' hle, Fin.val_succ, ← neg_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[Finset.sum_congr rfl fun j _ => hL j, Finset.sum_sub_distrib, Finset.sum_congr rfl fun i _ => hR i, Finset.sum_sub_distrib]`. Use `congr 1`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem reindex_pairs {m : ℕ} {M : Type*} [AddCommGroup M] [Module ℂ M]
     (F : (Fin m → Fin (m + 2)) → M) (β β' : Fin (m + 2) → ℂ) :
     ∑ j : Fin (m + 2), ∑ j' : Fin (m + 1),

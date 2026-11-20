@@ -8,9 +8,36 @@ set_option linter.all false
 
 namespace Formalism.HermitianLatticeCounting.P
 
+/- English proof (translation)
+The claim follows from `Formalism.SLP.Final.torsionIndex`.
+-/
 theorem card_range_nsmul_mul_card_le : Formalism.HermitianLatticeCounting.LocalIntegralStructure.TorsionIndex := Formalism.SLP.Final.torsionIndex
+/- English proof (translation)
+The claim follows from `Formalism.SLP.GlobalBoundRefinements.Final.local_integral_entries_of_signature_preserving`.
+-/
 theorem unipotent_upper_entries : Formalism.HermitianLatticeCounting.LocalIntegralStructure.EntriesOfSignaturePreserving := Formalism.SLP.GlobalBoundRefinements.Final.local_integral_entries_of_signature_preserving
 
+/- English proof (translation)
+Introduce `K U _ _ _ _ σ hσ B hR hL r A A' hU hA hA' hsup`. Establish `mem : ∀ (S : Submodule K U) (x : U), x ∈ perpR B S ↔ ∀ a ∈ S, B a x = 0`. Introduce `S x`. Simplify using `[perpR, Submodule.mem_iInf]`. Establish `lower : ∀ S : Submodule K U, finrank K S = r + 1 → r + 1 ≤ finrank K (perpR B S)`.
+
+Introduce `S hS`. Set `bs` to `Module.finBasisOfFinrankEq K S hS`. Set `Φ : U →ₗ[K] (Fin (r + 1) → K)` to `{ toFun := fun x i => σ (B (bs i : U) x) map_add' := by intro x y; ext i; simp map_smul' := by intro k x; ext i; simp [hσ] }`. Establish `hker : LinearMap.ker Φ = perpR B S`. Use extensionality with `x`.
+
+Rewrite using `[LinearMap.mem_ker, mem]`. Prove the components needed by the constructor for the conclusion. Introduce `h a ha`. Establish `hi : ∀ i, B (bs i : U) x = 0`. Introduce `i`.
+
+Establish `h2 : σ (B (bs i : U) x) = 0` using `congrFun h i`. Conclude with `(map_eq_zero σ).mp h2`. Establish `h3 : a = ∑ i, (bs.repr ⟨a, ha⟩ i) • (bs i : U)`. Establish `h4` using `congrArg (S.subtype) (bs.sum_repr ⟨a, ha⟩)`. Rewrite `h4` using `[map_sum]`.
+
+Simplify `h4.symm` using `only [map_smul, Submodule.subtype_apply]`. Rewrite using `[h3]`. Simplify using `[hi]`. Introduce `h`. Use extensionality with `i show σ (B (bs i : U) x) = 0`.
+
+Rewrite using `[h _ (bs i).2, map_zero]`. Establish `h1` using `LinearMap.finrank_range_add_finrank_ker Φ`. Establish `hr : finrank K (LinearMap.range Φ) ≤ r + 1`. Simplify using `using Submodule.finrank_le (LinearMap.range Φ)`. Rewrite `h1` using `[hker]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hinf : perpR B A ⊓ perpR B A' = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Take `⟨h1, h2⟩` from `hx`.
+
+Establish `h1'` using `(mem A x).mp h1`. Establish `h2'` using `(mem A' x).mp h2`. Use `(Submodule.mem_bot K).mpr (hR x fun y => ?_)` and prove the remaining obligations. Establish `hy : y ∈ A ⊔ A'` using `by rw [hsup]; trivial`. Take `⟨a, ha, a', ha', rfl⟩` from `Submodule.mem_sup.mp hy`.
+
+Simplify using `[h1' a ha, h2' a' ha']`. Establish `hs` using `Submodule.finrank_sup_add_finrank_inf_eq (perpR B A) (perpR B A')`. Rewrite `hs` using `[hinf, finrank_bot, add_zero]`. Establish `hle` using `Submodule.finrank_le (perpR B A ⊔ perpR B A')`. Establish `l1` using `lower A hA`.
+
+Establish `l2` using `lower A' hA'`. Use `⟨by omega, by omega, ⟨disjoint_iff.mpr hinf, codisjoint_iff.mpr ?_⟩⟩` and prove the remaining obligations. Conclude with `Submodule.eq_top_of_finrank_eq (by omega)`.
+-/
 theorem orthogonal_complement_formula : PerpCompl := by
   intro K U _ _ _ _ σ hσ B hR hL r A A' hU hA hA' hsup
   have mem : ∀ (S : Submodule K U) (x : U), x ∈ perpR B S ↔ ∀ a ∈ S, B a x = 0 := by
@@ -58,6 +85,13 @@ theorem orthogonal_complement_formula : PerpCompl := by
   refine ⟨by omega, by omega, ⟨disjoint_iff.mpr hinf, codisjoint_iff.mpr ?_⟩⟩
   exact Submodule.eq_top_of_finrank_eq (by omega)
 
+/- English proof (translation)
+Introduce `R _ r Z`. Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `congrFun (congrFun (Matrix.adjugate_mul Z) (Fin.last r)) a`. Rewrite `h` using `[Matrix.mul_apply]`. Rewrite using `[h]`.
+
+Distinguish the cases in `ha : a = Fin.last r`. Substitute `ha` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply, ha, Ne.symm ha]`. Rewrite using `[Matrix.adjugate_fin_succ_eq_det_submatrix, Fin.succAbove_last]`.
+
+Establish `h2 : ((-1 : R) ^ ((Fin.last r : ℕ) + (Fin.last r : ℕ))) = 1`. Rewrite using `[← two_mul, pow_mul]`. Simplify using the standard rewrite rules. Rewrite using `[h2, one_mul]`.
+-/
 theorem cofactor_vector_formula : CofactorVec := by
   intro R _ r Z
   refine ⟨fun a => ?_, ?_⟩
@@ -80,6 +114,11 @@ open Matrix Polynomial
 section Gram
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Establish `hM : M + c • Matrix.single i j (1 : R) = M.updateRow i (M i + c • Pi.single j 1)`. Use extensionality with `a b`. Distinguish the cases in `ha : a = i`. Substitute `ha` using the available equality. Distinguish the cases in `hb : b = j`.
+
+Substitute `hb` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.single_apply, Pi.single_apply, hb, Ne.symm hb]`. Simplify using `[Matrix.single_apply, Matrix.updateRow_ne ha, ha, Ne.symm ha]`. Rewrite using `[hM, Matrix.det_updateRow_add, Matrix.det_updateRow_smul, Matrix.updateRow_eq_self, Matrix.adjugate_apply]`.
+-/
 lemma det_add_smul_single {n : Type} [Fintype n] [DecidableEq n] (M : Matrix n n R) (i j : n) (c : R) :
     (M + c • Matrix.single i j (1 : R)).det = M.det + c * M.adjugate j i := by
   have hM : M + c • Matrix.single i j (1 : R) = M.updateRow i (M i + c • Pi.single j 1) := by
@@ -94,6 +133,9 @@ lemma det_add_smul_single {n : Type} [Fintype n] [DecidableEq n] (M : Matrix n n
   rw [hM, Matrix.det_updateRow_add, Matrix.det_updateRow_smul, Matrix.updateRow_eq_self,
     Matrix.adjugate_apply]
 
+/- English proof (translation)
+Establish `h : (fromBlocks (0 : Matrix n n R) (1 : Matrix n n R) (1 : Matrix n n R) (0 : Matrix n n R)) = fromBlocks 1 1 0 1 * fromBlocks 1 0 (-1) 1 * fromBlocks 1 1 0 1 * fromBlocks (-1) 0 0 1`. Simplify using `[fromBlocks_multiply]`. Rewrite using `[h]`. Simplify using `[Matrix.det_mul, Matrix.det_fromBlocks_zero₂₁, Matrix.det_fromBlocks_zero₁₂, Matrix.det_neg]`.
+-/
 lemma det_swap_blocks_alt {n : Type} [Fintype n] [DecidableEq n] :
     (fromBlocks (0 : Matrix n n R) (1 : Matrix n n R) (1 : Matrix n n R) (0 : Matrix n n R)).det =
       (-1) ^ Fintype.card n := by
@@ -103,6 +145,17 @@ lemma det_swap_blocks_alt {n : Type} [Fintype n] [DecidableEq n] :
   rw [h]
   simp [Matrix.det_mul, Matrix.det_fromBlocks_zero₂₁, Matrix.det_fromBlocks_zero₁₂, Matrix.det_neg]
 
+/- English proof (translation)
+Use `set A := (-t) • Matrix.single l l (1 : R) with hA`. Use `set D := (-t') • Matrix.single l l (1 : R) with hD`. Use `set δ := W.det with hδ`. Establish `h : fromBlocks W A D Z * fromBlocks W.adjugate (-(W.adjugate * A)) 0 (δ • 1) = fromBlocks (δ • 1) 0 (D * W.adjugate) (δ • Z - D * W.adjugate * A)`. Rewrite using `[fromBlocks_multiply]`.
+
+Use `congr 1`. Simplify using `[mul_adjugate, hδ]`. Rewrite using `[Matrix.mul_neg, ← Matrix.mul_assoc, mul_adjugate]`. Simplify using `[hδ]`. Simplify using the standard rewrite rules.
+
+Simplify using `[Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws. Establish `hDA : D * W.adjugate * A = (t * t' * W.adjugate l l) • Matrix.single l l (1 : R)`. Rewrite using `[hA, hD]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, Matrix.single_mul_mul_single, smul_smul]`.
+
+Use extensionality with `a b`. Simplify using `[Matrix.single_apply]`. Establish `h2` using `congrArg det h`. Rewrite `h2` using `[det_mul, det_fromBlocks_zero₂₁, det_fromBlocks_zero₁₂, hDA, sub_eq_add_neg, ← neg_smul, det_add_smul_single, det_adjugate, det_smul, det_smul, adjugate_smul]`. Simplify using `only [Fintype.card_fin, add_tsub_cancel_right, det_one, mul_one, Matrix.smul_apply, smul_eq_mul] at h2`.
+
+Apply `(hreg.pow (2 * r + 1)).left` to reduce the goal to its premises. Simplify using `only`. Take the linear combination `h2`.
+-/
 lemma det_from_blocks_single_regular (r : ℕ) (W Z : Matrix (Fin (r + 1)) (Fin (r + 1)) R) (l : Fin (r + 1))
     (t t' : R) (hreg : IsRegular W.det) :
     (fromBlocks W ((-t) • Matrix.single l l (1 : R)) ((-t') • Matrix.single l l (1 : R)) Z).det =
@@ -132,6 +185,19 @@ lemma det_from_blocks_single_regular (r : ℕ) (W Z : Matrix (Fin (r + 1)) (Fin 
   simp only
   linear_combination h2
 
+/- English proof (translation)
+Set `φ : R[X] →+* R` to `Polynomial.evalRingHom (0 : R)`. Establish `hW : φ.mapMatrix (charmatrix (-W)) = W`. Use extensionality with `a b`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+
+Simplify using `[φ, charmatrix_apply]`. Simplify using `[φ, charmatrix_apply, hab]`. Establish `hZ : φ.mapMatrix (C.mapMatrix Z) = Z`. Use extensionality with `a b`. Simplify using `[φ]`.
+
+Establish `hs : ∀ c : R, φ.mapMatrix ((-(C c)) • Matrix.single l l (1 : R[X])) = (-c) • Matrix.single l l (1 : R)`. Introduce `c`. Use extensionality with `a b`. Distinguish the cases in `h : l = a ∧ l = b`. Take `⟨rfl, rfl⟩` from `h`.
+
+Simplify using `[φ]`. Simplify using `[φ, Matrix.single_apply, h]`. Establish `key` using `det_from_blocks_single_regular r (charmatrix (-W)) (C.mapMatrix Z) l (C t) (C t') (charpoly_monic (-W)).isRegular`. Establish `key2` using `congrArg φ key`. Rewrite `key2` using `[RingHom.map_det, RingHom.mapMatrix_apply, fromBlocks_map]`.
+
+Simplify using `only [← RingHom.mapMatrix_apply] at key2`. Rewrite `key2` using `[hW, hZ, hs, hs]`. Rewrite using `[key2]`. Establish `ha : ∀ M : Matrix (Fin (r + 1)) (Fin (r + 1)) R[X], φ (M.adjugate l l) = (φ.mapMatrix M).adjugate l l`. Introduce `M`.
+
+Rewrite using `[← RingHom.map_adjugate]`. Both sides reduce to the same expression. Simplify using `only [map_sub, map_mul, RingHom.map_det, ha, hW, hZ]`. Simplify using `[φ]`.
+-/
 lemma det_from_blocks_single (r : ℕ) (W Z : Matrix (Fin (r + 1)) (Fin (r + 1)) R) (l : Fin (r + 1))
     (t t' : R) :
     (fromBlocks W ((-t) • Matrix.single l l (1 : R)) ((-t') • Matrix.single l l (1 : R)) Z).det =
@@ -163,6 +229,19 @@ lemma det_from_blocks_single (r : ℕ) (W Z : Matrix (Fin (r + 1)) (Fin (r + 1))
   simp only [map_sub, map_mul, RingHom.map_det, ha, hW, hZ]
   simp [φ]
 
+/- English proof (translation)
+Introduce `R _ r Z W t t'`. Establish `hdiag : ∀ s : R, (Matrix.diagonal fun i : Fin (r + 1) => if i = Fin.last r then -s else 0) = (-s) • Matrix.single (Fin.last r) (Fin.last r) (1 : R)`. Introduce `s`. Use extensionality with `i j`. Distinguish the cases in `hi : i = Fin.last r`.
+
+Substitute `hi` using the available equality. Distinguish the cases in `hj : j = Fin.last r`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.diagonal_apply, Matrix.single_apply, Ne.symm hj]`.
+
+Simplify using `[Matrix.diagonal_apply, Matrix.single_apply, hi, Ne.symm hi]`. Establish `hS : Matrix.fromBlocks (Matrix.diagonal fun i : Fin (r + 1) => if i = Fin.last r then -t else 0) W Z (Matrix.diagonal fun i : Fin (r + 1) => if i = Fin.last r then -t' else 0) * Matrix.fromBlocks 0 1 1 0 = Matrix.fromBlocks W ((-t) • Matrix.single (Fin.last r) (Fin.last r) (1 : R …`. Rewrite using `[hdiag t, hdiag t', Matrix.fromBlocks_multiply]`. Simplify using the standard rewrite rules. Establish `hdetS` using `det_swap_blocks_alt (R := R) (n := Fin (r + 1))`.
+
+Establish `hB` using `det_from_blocks_single r W Z (Fin.last r) t t'`. Establish `hcW` using `(cofactor_vector_formula R r W).2`. Establish `hcZ` using `(cofactor_vector_formula R r Z).2`. Establish `h1` using `congrArg Matrix.det hS`. Rewrite `h1` using `[Matrix.det_mul, hdetS, Fintype.card_fin, hB, hcW, hcZ]`.
+
+Establish `hsq : ((-1 : R) ^ (r + 1)) * ((-1) ^ (r + 1)) = 1`. Rewrite using `[← mul_pow]`. Simplify using the standard rewrite rules. Establish `key : ∀ x : R, x * (-1) ^ (r + 1) = W.det * Z.det - t * t' * (W.submatrix Fin.castSucc Fin.castSucc).det * (Z.submatrix Fin.castSucc Fin.castSucc).det → x = (-1) ^ (r + 1) * (Z.det * W.det - t * t' * (Z.submatrix Fin.castSucc Fin.castSucc).det * (W.submatrix Fin.castSucc Fin.cast …`. Introduce `x hx`.
+
+Take the linear combination `((-1 : R) ^ (r + 1)) * hx - x * hsq`. Conclude with `key _ h1`.
+-/
 theorem gram_determinant_general : GramDetGen := by
   intro R _ r Z W t t'
   have hdiag : ∀ s : R, (Matrix.diagonal fun i : Fin (r + 1) => if i = Fin.last r then -s else 0) =
@@ -200,6 +279,13 @@ theorem gram_determinant_general : GramDetGen := by
     linear_combination ((-1 : R) ^ (r + 1)) * hx - x * hsq
   exact key _ h1
 
+/- English proof (translation)
+Introduce `r Z T T'`. Establish `h` using `gram_determinant_general ℂ r Z Z.conjTranspose (T : ℂ) (T' : ℂ)`. Rewrite using `[h, ← Matrix.conjTranspose_submatrix, Matrix.det_conjTranspose, Matrix.det_conjTranspose]`. Use `congr 1`. Establish `hs : ∀ z : ℂ, z * star z = ((‖z‖ ^ 2 : ℝ) : ℂ)`.
+
+Introduce `z`. Use `first`. Consider the case `exact Complex.mul_conj' z`. Consider the case `(rw [Complex.star_def, Complex.mul_conj']; push_cast; ring)`. Consider the case `(rw [Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq])`.
+
+Rewrite using `[mul_assoc ((T : ℂ) * (T' : ℂ)), hs, hs]`. Apply the tactic sequence `push_cast <;> ring`.
+-/
 theorem gram_determinant_formula : GramDet := by
   intro r Z T T'
   have h := gram_determinant_general ℂ r Z Z.conjTranspose (T : ℂ) (T' : ℂ)
@@ -216,6 +302,25 @@ theorem gram_determinant_formula : GramDet := by
 
 end Gram
 
+/- English proof (translation)
+Introduce `K V ι _ _ _ _ _ σ B v hdet`. Establish `right : ∀ c : ι → K, (∀ j, B (v j) (∑ i, c i • v i) = 0) → c = 0`. Introduce `c hc`. Establish `h1 : (Matrix.of fun i j => B (v i) (v j)).mulVec (fun i => σ (c i)) = 0`. Use function extensionality and compare the values at `j`.
+
+Establish `hj` using `hc j`. Rewrite `hj` using `[map_sum]`. Simplify using `only [LinearMap.map_smulₛₗ, smul_eq_mul] at hj`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, Pi.zero_apply]`. Rewrite using `[← hj]`.
+
+Conclude with `Finset.sum_congr rfl (fun i _ => mul_comm _ _)`. Establish `h2` using `Matrix.eq_zero_of_mulVec_eq_zero hdet h1`. Use function extensionality and compare the values at `i`. Establish `h3` using `congrFun h2 i`. Simplify using `only [Pi.zero_apply] at h3`.
+
+Conclude with `(map_eq_zero σ).1 h3`. Establish `left : ∀ c : ι → K, (∀ j, B (∑ i, c i • v i) (v j) = 0) → c = 0`. Introduce `c hc`. Establish `h1 : Matrix.vecMul c (Matrix.of fun i j => B (v i) (v j)) = 0`. Use function extensionality and compare the values at `j`.
+
+Establish `hj` using `hc j`. Rewrite `hj` using `[map_sum, LinearMap.sum_apply]`. Simplify using `only [LinearMap.map_smul, LinearMap.smul_apply, smul_eq_mul] at hj`. Simplify using `only [Matrix.vecMul, dotProduct, Matrix.of_apply, Pi.zero_apply]`. Conclude with `hj`.
+
+Conclude with `Matrix.eq_zero_of_vecMul_eq_zero hdet h1`. Establish `hli : LinearIndependent K v`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Establish `hg0` using `right g (fun j => by rw [hg, map_zero])`.
+
+Introduce `i`. Conclude with `congrFun hg0 i`. Use `⟨hli, finrank_span_eq_card hli, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx hB`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun K).1 hx`.
+
+Establish `hc` using `right c (fun j => hB (v j) (Submodule.subset_span ⟨j, rfl⟩))`. Simplify using `[hc]`. Introduce `x hx hB`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun K).1 hx`. Establish `hc` using `left c (fun j => hB (v j) (Submodule.subset_span ⟨j, rfl⟩))`.
+
+Simplify using `[hc]`.
+-/
 theorem gram_matrix_nondegenerate : GramNondeg := by
   intro K V ι _ _ _ _ _ σ B v hdet
   have right : ∀ c : ι → K, (∀ j, B (v j) (∑ i, c i • v i) = 0) → c = 0 := by
@@ -261,6 +366,21 @@ theorem gram_matrix_nondegenerate : GramNondeg := by
 
 end GramAll
 
+/- English proof (translation)
+Introduce `E _ _ α J hα hJ hint`. Establish `hle : FractionalIdeal.spanSingleton (𝓞 E)⁰ α * J ≤ 1`. Rewrite using `[FractionalIdeal.mul_le]`. Introduce `i hi j hj`. Rewrite `hi` using `[FractionalIdeal.mem_spanSingleton]`.
+
+Take `⟨z, rfl⟩` from `hi`. Take `⟨w, hw⟩` from `hint j hj`. Rewrite using `[FractionalIdeal.mem_one_iff]`. Use `⟨z * w, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, Algebra.smul_def, mul_assoc]`.
+
+Use `congr 1`. Take `⟨I, hI⟩` from `FractionalIdeal.le_one_iff_exists_coeIdeal.1 hle`. Establish `hne : FractionalIdeal.spanSingleton (𝓞 E)⁰ α * J ≠ 0` using `mul_ne_zero (FractionalIdeal.spanSingleton_ne_zero_iff.2 hα) hJ`. Establish `hI0 : I ≠ ⊥`. Introduce and unpack `rfl`.
+
+Apply `hne` to reduce the goal to its premises. Rewrite using `[← hI]`. Simplify using the standard rewrite rules. Establish `hn : FractionalIdeal.absNorm (FractionalIdeal.spanSingleton (𝓞 E)⁰ α) = |Algebra.norm ℚ α|` using `by first`. Consider the case `exact FractionalIdeal.absNorm_span_singleton (𝓞 E) α`.
+
+Consider the case `exact FractionalIdeal.absNorm_span_singleton α`. Consider the case `simp [FractionalIdeal.absNorm_span_singleton]`. Establish `hc : FractionalIdeal.absNorm ((I : FractionalIdeal (𝓞 E)⁰ E)) = (Ideal.absNorm I : ℚ)` using `by first`. Consider the case `exact FractionalIdeal.coeIdeal_absNorm I`. Consider the case `simp [FractionalIdeal.coeIdeal_absNorm]`.
+
+Consider the case `simp`. Establish `key : |Algebra.norm ℚ α| * FractionalIdeal.absNorm J = (Ideal.absNorm I : ℚ)`. Rewrite using `[← hn, ← map_mul, ← hI, hc]`. Rewrite using `[key]`. Establish `h0 : Ideal.absNorm I ≠ 0`.
+
+Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]` and apply the resulting hypothesis. Conclude with `Nat.one_le_iff_ne_zero.2 h0` after adjusting the coercions.
+-/
 theorem denominator_norm_fraction : DenomNormFrac := by
   intro E _ _ α J hα hJ hint
   have hle : FractionalIdeal.spanSingleton (𝓞 E)⁰ α * J ≤ 1 := by
@@ -299,12 +419,30 @@ theorem denominator_norm_fraction : DenomNormFrac := by
     rwa [Ne, Ideal.absNorm_eq_zero_iff]
   exact_mod_cast Nat.one_le_iff_ne_zero.2 h0
 
+/- English proof (translation)
+Rewrite using `[← pow_mul, div_pow, show e * f * 2 = 2 * f * e by ring]`. Use `congr 1`. Rewrite using `[show 2 * f * e = 2 * (e * f) by ring, pow_mul]`. Evaluate the numerical expressions.
+-/
 lemma pow_two_div_sq_identity (g : ℝ) (e f : ℕ) : ((2 / g) ^ (e * f)) ^ 2 = 4 ^ (e * f) / g ^ (2 * f * e) := by
   rw [← pow_mul, div_pow, show e * f * 2 = 2 * f * e by ring]
   congr 1
   rw [show 2 * f * e = 2 * (e * f) by ring, pow_mul]
   norm_num
 
+/- English proof (translation)
+Introduce `detM dLa₁ dLa₂ dPs₁ dPs₂ i₁ i₂ G0₁ G0₂ g e f hP₁ hP₂ hg hi₁ hi₂ hL₁ hL₂ hdet hG₁ hG₂ hgP`. Establish `hq : 0 < g ^ (2 * f * e)` using `pow_pos hg _`. Establish `hP : 0 < dPs₁ * dPs₂` using `mul_pos hP₁ hP₂`. Establish `hc : 0 ≤ (2 / g) ^ (e * f)` using `pow_nonneg (div_nonneg (by norm_num) hg.le) _`. Establish `ha : 0 ≤ dLa₁ * i₁ ^ 2` using `mul_nonneg hL₁ (sq_nonneg _)`.
+
+Establish `hb : 0 ≤ dLa₂ * i₂ ^ 2` using `mul_nonneg hL₂ (sq_nonneg _)`. Establish `hab : (dLa₁ * i₁ ^ 2) * (dLa₂ * i₂ ^ 2) ≤ G0₁ * G0₂` using `mul_le_mul hG₁ hG₂ hb (ha.trans hG₁)`. Establish `hG : 0 ≤ G0₁ * G0₂` using `(mul_nonneg ha hb).trans hab`. Establish `hF : 1 ≤ 4 ^ (e * f) * (dPs₁ * dPs₂) / g ^ (2 * f * e)`. Rewrite using `[← mul_assoc]`.
+
+Use `first`. Consider the case `exact (one_le_div hq).2 hgP`. Consider the case `exact (one_le_div₀ hq).2 hgP`. Consider the case `exact (le_div_iff₀ hq).2 (by rw [one_mul]; exact hgP)`. Establish `e1 : (detM * i₁ * i₂) ^ 2 = (dLa₁ * i₁ ^ 2) * (dLa₂ * i₂ ^ 2) / (dPs₁ * dPs₂)`.
+
+Rewrite using `[show (detM * i₁ * i₂) ^ 2 = detM ^ 2 * i₁ ^ 2 * i₂ ^ 2 by ring, hdet]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsq : (detM * i₁ * i₂) ^ 2 ≤ ((2 / g) ^ (e * f)) ^ 2 * (G0₁ * G0₂)`. Rewrite using `[pow_two_div_sq_identity g e f, e1]`. Establish `h4 : (dLa₁ * i₁ ^ 2) * (dLa₂ * i₂ ^ 2) ≤ 4 ^ (e * f) / g ^ (2 * f * e) * (G0₁ * G0₂) * (dPs₁ * dPs₂)`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `first`. Consider the case `exact (div_le_iff₀ hP).2 h4`. Consider the case `exact (div_le_iff hP).2 h4`. Distinguish the cases in `h : detM ≤ 0`.
+
+Establish `h0 : detM * i₁ * i₂ ≤ 0`. Rewrite using `[mul_assoc]`. Conclude with `mul_nonpos_iff.2 (Or.inr ⟨h, mul_nonneg hi₁ hi₂⟩)`. Conclude with `h0.trans (mul_nonneg hc (Real.sqrt_nonneg _))`. Establish `hL : 0 ≤ detM * i₁ * i₂` using `mul_nonneg (mul_nonneg (not_le.mp h).le hi₁) hi₂`.
+
+Establish `hs : Real.sqrt ((detM * i₁ * i₂) ^ 2) ≤ Real.sqrt (((2 / g) ^ (e * f)) ^ 2 * (G0₁ * G0₂))` using `by first`. Consider the case `exact Real.sqrt_le_sqrt hsq`. Consider the case `gcongr`. Rewrite `hs` using `[Real.sqrt_sq hL, Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq hc]`. Conclude with `hs`.
+-/
 theorem L4_arithmetic_square : DetIndexProductInequalitySq := by
   intro detM dLa₁ dLa₂ dPs₁ dPs₂ i₁ i₂ G0₁ G0₂ g e f hP₁ hP₂ hg hi₁ hi₂ hL₁ hL₂ hdet hG₁ hG₂ hgP
   have hq : 0 < g ^ (2 * f * e) := pow_pos hg _
@@ -349,6 +487,31 @@ theorem L4_arithmetic_square : DetIndexProductInequalitySq := by
     rw [Real.sqrt_sq hL, Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq hc] at hs
     exact hs
 
+/- English proof (translation)
+Introduce `detM dLa₁ dLa₂ dPs₁ dPs₂ P₁ P₂ dQ₁ dQ₂ i₁ i₂ G0₁ G0₂ g NT K₁ K₂ Nr₁ Nr₂ e f hP₁ hP₂ hQ₁ hQ₂ hg hi₁ hi₂ hL₁ hL₂ hNT hK₁ hK₂ hN₁ hN₂ hdet hd₁ hd₂ hG₁ hG₂ hT₁ hT₂ hgQ`. Establish `hq : 0 < g ^ (2 * f * e)` using `pow_pos hg _`. Establish `hc : 0 ≤ (2 / g) ^ (e * f)` using `pow_nonneg (div_nonneg (by norm_num) hg.le) _`. Establish `ha : 0 ≤ dLa₁ * i₁ ^ 2` using `mul_nonneg hL₁ (sq_nonneg _)`. Establish `hb : 0 ≤ dLa₂ * i₂ ^ 2` using `mul_nonneg hL₂ (sq_nonneg _)`.
+
+Establish `hA : dLa₁ * i₁ ^ 2 * Nr₁ ≤ G0₁`. Establish `h` using `mul_le_mul_of_nonneg_right hG₁ hN₁.le`. Rewrite `h` using `[div_mul_cancel₀ _ hN₁.ne']`. Then use the resulting hypothesis. Establish `hB : dLa₂ * i₂ ^ 2 * Nr₂ ≤ G0₂`. Establish `h` using `mul_le_mul_of_nonneg_right hG₂ hN₂.le`.
+
+Rewrite `h` using `[div_mul_cancel₀ _ hN₂.ne']`. Then use the resulting hypothesis. Establish `hk₂ : 0 < Nr₂ * K₂ ^ 2` using `mul_pos hN₂ (pow_pos hK₂ 2)`. Establish `hk₁ : 0 < Nr₁ * K₁ ^ 2` using `mul_pos hN₁ (pow_pos hK₁ 2)`. Establish `hp1 : NT ≤ P₁ * (Nr₂ * K₂ ^ 2)`. Establish `h` using `mul_le_mul_of_nonneg_right hT₁ hk₂.le`.
+
+Rewrite `h` using `[div_mul_cancel₀ _ hk₂.ne']`. Then use the resulting hypothesis. Establish `hp2 : NT ≤ P₂ * (Nr₁ * K₁ ^ 2)`. Establish `h` using `mul_le_mul_of_nonneg_right hT₂ hk₁.le`. Rewrite `h` using `[div_mul_cancel₀ _ hk₁.ne']`. Then use the resulting hypothesis. Establish `hG1 : 0 ≤ G0₁` using `le_trans (mul_nonneg ha hN₁.le) hA`.
+
+Establish `hG2 : 0 ≤ G0₂` using `le_trans (mul_nonneg hb hN₂.le) hB`. Establish `hG : 0 ≤ G0₁ * G0₂` using `mul_nonneg hG1 hG2`. Establish `hPP : 0 < P₁ * P₂` using `mul_pos hP₁ hP₂`. Establish `hF : 1 ≤ 4 ^ (e * f) * (dQ₁ * dQ₂) / g ^ (2 * f * e)`. Rewrite using `[← mul_assoc]`.
+
+Use `first`. Consider the case `exact (one_le_div hq).2 hgQ`. Consider the case `exact (one_le_div₀ hq).2 hgQ`. Establish `hNN : NT * NT ≤ (P₁ * (Nr₂ * K₂ ^ 2)) * (P₂ * (Nr₁ * K₁ ^ 2))` using `mul_le_mul hp1 hp2 hNT.le (le_trans hNT.le hp1)`. Establish `key : (dLa₁ * i₁ ^ 2) * (dLa₂ * i₂ ^ 2) * (NT * NT) ≤ (G0₁ * G0₂) * (K₁ * K₂) ^ 2 * (P₁ * P₂) * (4 ^ (e * f) * (dQ₁ * dQ₂) / g ^ (2 * f * e))`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hR : ((2 / g) ^ (e * f) * K₁ * K₂ / NT) ^ 2 * (G0₁ * G0₂) = ((G0₁ * G0₂) * (K₁ * K₂) ^ 2 * (P₁ * P₂) * (4 ^ (e * f) * (dQ₁ * dQ₂) / g ^ (2 * f * e)) / (NT * NT)) / ((P₁ * dQ₁) * (P₂ * dQ₂))`. Rewrite using `[show ((2 / g) ^ (e * f) * K₁ * K₂ / NT) ^ 2 = ((2 / g) ^ (e * f)) ^ 2 * (K₁ * K₂) ^ 2 / (NT * NT) by ring, pow_two_div_sq_identity]`. Apply the tactic sequence `field_simp [hP₁.ne', hP₂.ne', hQ₁.ne', hQ₂.ne', hNT.ne', hq.ne'] <;> ring`. Establish `hL2 : (detM * i₁ * i₂) ^ 2 = (dLa₁ * i₁ ^ 2) * (dLa₂ * i₂ ^ 2) / ((P₁ * dQ₁) * (P₂ * dQ₂))`.
+
+Rewrite using `[show (detM * i₁ * i₂) ^ 2 = detM ^ 2 * i₁ ^ 2 * i₂ ^ 2 by ring, hdet, hd₁, hd₂]`. Expand and normalize the polynomial expressions, which then agree. Establish `hPQ : 0 < (P₁ * dQ₁) * (P₂ * dQ₂)` using `mul_pos (mul_pos hP₁ hQ₁) (mul_pos hP₂ hQ₂)`. Establish `hNT2 : 0 < NT * NT` using `mul_pos hNT hNT`. Establish `hk : (dLa₁ * i₁ ^ 2) * (dLa₂ * i₂ ^ 2) ≤ (G0₁ * G0₂) * (K₁ * K₂) ^ 2 * (P₁ * P₂) * (4 ^ (e * f) * (dQ₁ * dQ₂) / g ^ (2 * f * e)) / (NT * NT)` using `(le_div_iff₀ hNT2).2 key`.
+
+Establish `hsq : (detM * i₁ * i₂) ^ 2 ≤ ((2 / g) ^ (e * f) * K₁ * K₂ / NT) ^ 2 * (G0₁ * G0₂)`. Rewrite using `[hL2, hR]`. Use `first`. Consider the case `exact div_le_div_of_nonneg_right hk hPQ.le`. Consider the case `exact (div_le_div_iff_of_pos_right hPQ).2 hk`.
+
+Consider the case `exact div_le_div_of_le_right hk hPQ`. Establish `hRc : 0 ≤ (2 / g) ^ (e * f) * K₁ * K₂ / NT` using `div_nonneg (mul_nonneg (mul_nonneg hc hK₁.le) hK₂.le) hNT.le`. Distinguish the cases in `h : detM ≤ 0`. Establish `h0 : detM * i₁ * i₂ ≤ 0`. Rewrite using `[mul_assoc]`.
+
+Conclude with `mul_nonpos_iff.2 (Or.inr ⟨h, mul_nonneg hi₁ hi₂⟩)`. Conclude with `h0.trans (div_nonneg (mul_nonneg (mul_nonneg (mul_nonneg hc (Real.sqrt_nonneg _)) hK₁.le) hK₂.le) hNT.le)`. Establish `hL : 0 ≤ detM * i₁ * i₂` using `mul_nonneg (mul_nonneg (not_le.mp h).le hi₁) hi₂`. Establish `hs : Real.sqrt ((detM * i₁ * i₂) ^ 2) ≤ Real.sqrt (((2 / g) ^ (e * f) * K₁ * K₂ / NT) ^ 2 * (G0₁ * G0₂))` using `by first`. Consider the case `exact Real.sqrt_le_sqrt hsq`.
+
+Consider the case `gcongr`. Rewrite `hs` using `[Real.sqrt_sq hL, Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq hRc]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem L5_arithmetic_square : DetIndexProductPlacesInequalitySq := by
   intro detM dLa₁ dLa₂ dPs₁ dPs₂ P₁ P₂ dQ₁ dQ₂ i₁ i₂ G0₁ G0₂ g NT K₁ K₂ Nr₁ Nr₂ e f
     hP₁ hP₂ hQ₁ hQ₂ hg hi₁ hi₂ hL₁ hL₂ hNT hK₁ hK₂ hN₁ hN₂ hdet hd₁ hd₂ hG₁ hG₂ hT₁ hT₂ hgQ

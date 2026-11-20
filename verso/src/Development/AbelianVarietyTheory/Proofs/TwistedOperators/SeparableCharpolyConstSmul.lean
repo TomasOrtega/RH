@@ -12,6 +12,17 @@ namespace GlobalTheory.CentralCharSU
 
 attribute [local instance] GlobalTheory.SqIntSU.locallyCompact_special GlobalTheory.SqIntSU.secondCountable_special
 
+/- English proof (translation)
+Set `q : Polynomial ℂ` to `Polynomial.C c⁻¹ * Polynomial.X`. Establish `key : (c • B).charpoly = Polynomial.C (c ^ Fintype.card (Fin n)) * B.charpoly.comp q`. Establish `h1 : B.charpoly.comp q = (B.charmatrix.map (Polynomial.compRingHom q)).det`. Use `RingHom.map_det (Polynomial.compRingHom q) B.charmatrix` as an intermediate fact. Rewrite using `[Matrix.charpoly, ← Polynomial.coe_compRingHom_apply, this]`.
+
+Both sides reduce to the same expression. Rewrite using `[h1, Polynomial.C_pow, ← Matrix.det_smul, Matrix.charpoly]`. Use `congr 1`. Use extensionality with `i j : 1`. Establish `hcc : Polynomial.C c * (Polynomial.C c⁻¹ * Polynomial.X) = (Polynomial.X : Polynomial ℂ)`.
+
+Rewrite using `[← mul_assoc, ← Polynomial.C_mul, mul_inv_cancel₀ hc, Polynomial.C_1, one_mul]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[q, mul_sub, hcc]`. Simplify using `[hij, q]`.
+
+Establish `hu : IsUnit (Polynomial.C (c ^ Fintype.card (Fin n)))` using `Polynomial.isUnit_C.mpr (isUnit_iff_ne_zero.mpr (pow_ne_zero _ hc))`. Establish `hu' : IsUnit (Polynomial.C c⁻¹)` using `Polynomial.isUnit_C.mpr (isUnit_iff_ne_zero.mpr (inv_ne_zero hc))`. Establish `h2 : IsCoprime (B.charpoly.comp q) (B.charpoly.derivative.comp q)` using `IsCoprime.map h (Polynomial.compRingHom q)`. Establish `hq : Polynomial.derivative q = Polynomial.C c⁻¹` using `by simp [q]`. Rewrite using `[key, Polynomial.separable_def, Polynomial.derivative_C_mul, Polynomial.derivative_comp, hq, isCoprime_mul_unit_left_left hu, isCoprime_mul_unit_left_right hu, isCoprime_mul_unit_left_right hu']`.
+
+Conclude with `h2`.
+-/
 theorem separable_charpoly_const_smul {n : ℕ} (B : Matrix (Fin n) (Fin n) ℂ) (c : ℂ) (hc : c ≠ 0)
     (h : B.charpoly.Separable) : (c • B).charpoly.Separable := by
   let q : Polynomial ℂ := Polynomial.C c⁻¹ * Polynomial.X
@@ -39,6 +50,13 @@ theorem separable_charpoly_const_smul {n : ℕ} (B : Matrix (Fin n) (Fin n) ℂ)
     isCoprime_mul_unit_left_left hu, isCoprime_mul_unit_left_right hu, isCoprime_mul_unit_left_right hu']
   exact h2
 
+/- English proof (translation)
+Establish `e : suMat ε (c * g) = ζ • suMat ε g`. Rewrite using `[map_mul, hc, Matrix.smul_mul, Matrix.one_mul]`. Distinguish the cases in `hζ : ζ = 0`. Establish `h01 : (0 : Matrix (Fin n) (Fin n) ℂ) = 1`. Establish `h` using `congrArg (· * suMat ε c⁻¹) hc`.
+
+Simplify using `only [← map_mul, mul_inv_cancel, map_one, hζ, zero_smul, zero_mul] at h`. Conclude with `h.symm`. Use `haveI := subsingleton_of_zero_eq_one h01`. Rewrite using `[Subsingleton.elim (suMat ε (c * g)) (suMat ε g)]` and apply the resulting hypothesis. Rewrite using `[e]`.
+
+Conclude with `separable_charpoly_const_smul _ ζ hζ hg`.
+-/
 theorem isRegSS_central_mul {n : ℕ} {ε : Fin n → Bool} {c : SUJ ε} {ζ : ℂ}
     (hc : suMat ε c = ζ • (1 : Matrix (Fin n) (Fin n) ℂ)) {g : SUJ ε} (hg : IsRegSS (suMat ε g)) :
     IsRegSS (suMat ε (c * g)) := by
@@ -54,9 +72,31 @@ theorem isRegSS_central_mul {n : ℕ} {ε : Fin n → Bool} {c : SUJ ε} {ζ : �
   · rw [e]
     exact separable_charpoly_const_smul _ ζ hζ hg
 
+/- English proof (translation)
+The claim follows from `(isInducing_suMat ε).continuous`.
+-/
 theorem continuous_suMat {n : ℕ} (ε : Fin n → Bool) : Continuous (suMat ε) :=
   (isInducing_suMat ε).continuous
 
+/- English proof (translation)
+Introduce `n ε μ _ V _ _ _ π h Θ hΘ c ζ χ hc hχ hv g hg`. Use `haveI := GlobalTheory.DSSU.borelSpace_SUJ ε`. Use `set ρ := suRep h with hρdef`. Establish `hρ : GlobalTheory.OpTrace.IsUnitaryRep ρ` using `GlobalTheory.Orb.isUnitaryRep_repVia h (suMat_mem ε) (continuous_suMat ε)`. Use `set Θ₂ : SUJ ε → ℂ := fun x => χ⁻¹ * Θ (c * x) with hΘ₂`.
+
+Establish `hli : LocallyIntegrable Θ₂ μ`. Establish `h0 : LocallyIntegrable (fun x => Θ (c * x)) μ`. Use `(locallyIntegrable_iff).2 fun K hK => ?_` and prove the remaining obligations. Establish `hpre : K = (c * ·) ⁻¹' ((c * ·) '' K)` using `(Set.preimage_image_eq K (mul_right_injective c)).symm`. Rewrite using `[hpre]`.
+
+Conclude with `((measurePreserving_mul_left μ c).integrableOn_comp_preimage (measurableEmbedding_mulLeft c)).2 ((locallyIntegrable_iff.1 hΘ.1) _ (hK.image (continuous_mul_left c)))`. Conclude with `h0.smul χ⁻¹`. Establish `hcont : ∀ s, IsRegSS (suMat ε s) → ContinuousAt Θ₂ s` using `fun s hs => continuousAt_const.mul ((hΘ.2.1 (c * s) (isRegSS_central_mul hc hs)).comp (continuous_mul_left c).continuousAt)`. Establish `hΘ₂c : IsCharFn (suMat ε) μ ρ Θ₂`. Use `⟨hli, hcont, fun f hf => ?_⟩` and prove the remaining obligations.
+
+Use `set f₂ : SUJ ε → ℂ := fun x => f (c⁻¹ * x) with hf₂`. Establish `hf₂m : f₂ ∈ CcMat (suMat ε)`. Take `⟨hs, Φ, hΦ, e⟩` from `hf`. Use `⟨hs.comp_homeomorph (Homeomorph.mulLeft c⁻¹), fun x => Φ (fun i j => ∑ k, suMat ε c⁻¹ i k * x k j), ?_, fun x => ?_⟩` and prove the remaining obligations. Use `hΦ.comp (contDiff_pi.2 fun i => contDiff_pi.2 fun j => ?_)` and prove the remaining obligations.
+
+Conclude with `ContDiff.sum fun k _ => contDiff_const.mul (contDiff_apply_apply ℝ ℂ k j)`. Rewrite using `[hf₂]`. Simplify using `only [e]`. Use `congr 1`. Establish `hfc : Continuous f` using `GlobalTheory.Orb.continuous_of_mem_ccSmooth (isInducing_suMat ε).continuous hf`.
+
+Establish `hf₂c : Continuous f₂` using `GlobalTheory.Orb.continuous_of_mem_ccSmooth (isInducing_suMat ε).continuous hf₂m`. Establish `hop : repOp ρ μ f₂ = χ • repOp ρ μ f`. Use extensionality with `v`. Rewrite using `[hρ.repOp_apply hf₂c hf₂m.1, ContinuousLinearMap.smul_apply, hρ.repOp_apply hfc hf.1, ← hv, ← (ρ c).integral_comp_comm (hρ.isRepOp hfc hf.1 v).1, ← integral_mul_left_eq_self (fun x => f₂ x • ρ x v) c]`. Use `integral_congr_ae (.of_forall fun x => ?_)` and prove the remaining obligations.
+
+Simplify using `[hf₂, map_mul, ContinuousLinearMap.mul_apply]`. Establish `hint : ∫ g, f g * Θ₂ g ∂μ = χ⁻¹ * ∫ g, f₂ g * Θ g ∂μ`. Rewrite using `[← integral_mul_left_eq_self (fun x => f₂ x * Θ x) c, ← integral_const_mul]`. Use `integral_congr_ae (.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `[hf₂, hΘ₂]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `ht` using `hΘ.2.2 f₂ hf₂m`. Rewrite `ht` using `[hop]`. Establish `he : repOp ρ μ f = χ⁻¹ • (χ • repOp ρ μ f)` using `by rw [smul_smul, inv_mul_cancel₀ hχ, one_smul]`. Rewrite using `[he, hint]`.
+
+Conclude with `⟨ht.1.smul _, by rw [GlobalTheory.OpTrace.trace_smul, ht.2]⟩`. Establish `hu` using `GlobalTheory.Orb.IsCharFn.unique (isInducing_suMat ε) hΘ₂c hΘ hg`. Simplify using `only [hΘ₂] at hu`. Rewrite using `[← hu]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem charFn_central_mul : ∀ (n : ℕ) (ε : Fin n → Bool) (μ : Measure (SUJ ε)) [μ.IsHaarMeasure] (V : Type)
     [NormedAddCommGroup V] [InnerProductSpace ℂ V] [CompleteSpace V] (π : Matrix (Fin n) (Fin n) ℂ → (V →L[ℂ] V))
     (h : IsURepOn (SUset ε) π) (Θ : SUJ ε → ℂ), IsCharFn (suMat ε) μ (suRep h) Θ → ∀ (c : SUJ ε) (ζ χ : ℂ),

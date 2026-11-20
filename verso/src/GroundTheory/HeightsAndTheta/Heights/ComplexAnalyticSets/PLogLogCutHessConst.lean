@@ -10,6 +10,11 @@ open MvPolynomial Filter Topology ReciprocityTheory.AnForm ReciprocityTheory.AnF
 
 noncomputable section
 
+/- English proof (translation)
+Establish `h2 : (fun z => φ z ^ 2 / 2) =ᶠ[𝓝 y] fun _ => c ^ 2 / 2` using `by filter_upwards [h] with z hz`. Rewrite using `[hz]`. Establish `hc : ∀ a : ℝ, hessC (fun _ : Fin D → ℂ => a) y = 0`. Introduce `a`. Use extensionality with `i j`.
+
+Simplify using `[hessC]`. Conclude with `⟨(hessC_congr' h).trans (hc c), (hessC_congr' h2).trans (hc _)⟩`.
+-/
 theorem hessC_of_eventually_const {D : ℕ} {φ : (Fin D → ℂ) → ℝ} {y : Fin D → ℂ} {c : ℝ}
     (h : φ =ᶠ[𝓝 y] fun _ => c) : hessC φ y = 0 ∧ hessC (fun z => φ z ^ 2 / 2) y = 0 := by
   have h2 : (fun z => φ z ^ 2 / 2) =ᶠ[𝓝 y] fun _ => c ^ 2 / 2 := by
@@ -21,16 +26,32 @@ theorem hessC_of_eventually_const {D : ℕ} {φ : (Fin D → ℂ) → ℝ} {y : 
     simp [hessC]
   exact ⟨(hessC_congr' h).trans (hc c), (hessC_congr' h2).trans (hc _)⟩
 
+/- English proof (translation)
+The claim follows from `Real.smoothTransition.zero_of_nonpos (by linarith)`.
+-/
 theorem cutStep_of_one_le {s : ℝ} (hs : 1 ≤ s) : cutStep s = 0 :=
   Real.smoothTransition.zero_of_nonpos (by linarith)
 
+/- English proof (translation)
+The claim follows from `Real.smoothTransition.one_of_one_le (by linarith)`.
+-/
 theorem cutStep_of_le_half {s : ℝ} (hs : s ≤ 1 / 2) : cutStep s = 1 :=
   Real.smoothTransition.one_of_one_le (by linarith)
 
+/- English proof (translation)
+The claim follows from `((AnalyticOnNhd.eval_mvPolynomial Q y (Set.mem_univ y)).continuousAt.norm).pow 2`.
+-/
 theorem continuousAt_normSq_eval {m : ℕ} (Q : MvPolynomial (Fin m) ℂ) (y : Fin m → ℂ) :
     ContinuousAt (fun z => ‖eval z Q‖ ^ 2) y :=
   ((AnalyticOnNhd.eval_mvPolynomial Q y (Set.mem_univ y)).continuousAt.norm).pow 2
 
+/- English proof (translation)
+Use `filter_upwards [(continuousAt_normSq_eval Q y).preimage_mem_nhds (Iio_mem_nhds hy)] with z hz`. Establish `hz : ‖eval z Q‖ ^ 2 < cutLevel k` using `hz`. Establish `hlt` using `(cutLevel_mem k).2`. Unfold `logLogCut`. Use `split_ifs with h0 h1`.
+
+Both sides reduce to the same expression. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hw0 : 0 < ‖eval z Q‖ ^ 2` using `lt_of_le_of_ne (by positivity) (Ne.symm h0)`. Establish `e1 : Real.log (‖eval z Q‖ ^ 2) < -Real.exp ((k : ℝ) + 1)` using `(Real.log_lt_iff_lt_exp hw0).2 hz`. Establish `e2 : (k : ℝ) + 1 < Real.log (-logAbsSq Q z)` using `(Real.lt_log_iff_exp_lt (by rw [logAbsSq]; linarith [Real.exp_pos ((k : ℝ) + 1)])).2 (by rw [logAbsSq]; linarith)`.
+
+Apply `cutStep_of_one_le` to reduce the goal to its premises. Rewrite using `[le_div_iff₀ (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem logLogCut_eventually_zero {m : ℕ} (Q : MvPolynomial (Fin m) ℂ) (k : ℕ) {y : Fin m → ℂ}
     (hy : ‖eval y Q‖ ^ 2 < cutLevel k) : logLogCut Q k =ᶠ[𝓝 y] fun _ => 0 := by
   filter_upwards [(continuousAt_normSq_eval Q y).preimage_mem_nhds (Iio_mem_nhds hy)] with z hz
@@ -50,6 +71,13 @@ theorem logLogCut_eventually_zero {m : ℕ} (Q : MvPolynomial (Fin m) ℂ) (k : 
     rw [le_div_iff₀ (by positivity)]
     linarith
 
+/- English proof (translation)
+Use `filter_upwards [(continuousAt_normSq_eval Q y).preimage_mem_nhds (Ioi_mem_nhds hy)] with z hz`. Establish `hz : Real.exp (-Real.exp (((k : ℝ) + 1) / 2)) < ‖eval z Q‖ ^ 2` using `hz`. Establish `hw0 : 0 < ‖eval z Q‖ ^ 2` using `lt_trans (Real.exp_pos _) hz`. Unfold `logLogCut`. Use `split_ifs with h0 h1`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Both sides reduce to the same expression. Establish `hw1 : ‖eval z Q‖ ^ 2 < 1` using `not_le.1 h1`. Establish `e1 : -Real.exp (((k : ℝ) + 1) / 2) < Real.log (‖eval z Q‖ ^ 2)` using `(Real.lt_log_iff_exp_lt hw0).2 hz`. Establish `e0 : Real.log (‖eval z Q‖ ^ 2) < 0` using `Real.log_neg hw0 hw1`.
+
+Establish `e2 : Real.log (-logAbsSq Q z) < ((k : ℝ) + 1) / 2` using `(Real.log_lt_iff_lt_exp (by rw [logAbsSq]; linarith)).2 (by rw [logAbsSq]; linarith)`. Apply `cutStep_of_le_half` to reduce the goal to its premises. Rewrite using `[div_le_iff₀ (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem logLogCut_eventually_one {m : ℕ} (Q : MvPolynomial (Fin m) ℂ) (k : ℕ) {y : Fin m → ℂ}
     (hy : Real.exp (-Real.exp (((k : ℝ) + 1) / 2)) < ‖eval y Q‖ ^ 2) :
     logLogCut Q k =ᶠ[𝓝 y] fun _ => 1 := by
@@ -70,6 +98,9 @@ theorem logLogCut_eventually_one {m : ℕ} (Q : MvPolynomial (Fin m) ℂ) (k : �
     rw [div_le_iff₀ (by positivity)]
     linarith
 
+/- English proof (translation)
+Use `filter_upwards [(continuousAt_normSq_eval Q y).preimage_mem_nhds (Ioo_mem_nhds h0 h1)] with z hz`. Establish `hz : ‖eval z Q‖ ^ 2 ∈ Set.Ioo (0 : ℝ) 1` using `hz`. Unfold `logLogCut`. Rewrite using `[if_neg hz.1.ne', if_neg (not_le.2 hz.2)]`.
+-/
 theorem logLogCut_eventually_step {m : ℕ} (Q : MvPolynomial (Fin m) ℂ) (k : ℕ) {y : Fin m → ℂ}
     (h0 : 0 < ‖eval y Q‖ ^ 2) (h1 : ‖eval y Q‖ ^ 2 < 1) :
     logLogCut Q k =ᶠ[𝓝 y] fun z => cutStep (Real.log (-logAbsSq Q z) / ((k : ℝ) + 1)) := by

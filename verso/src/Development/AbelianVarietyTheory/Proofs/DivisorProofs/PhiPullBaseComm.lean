@@ -9,6 +9,9 @@ set_option autoImplicit false
 
 namespace GlobalTheory.TorsionForm.OneVec
 
+/- English proof (translation)
+Rewrite using `[Finset.card_pair]`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem card_pair_castAdd_natAdd {n : ℕ} (i k : Fin n) :
     ({i.castAdd n, k.natAdd n} : Finset (Fin (n + n))).card = 2 := by
   rw [Finset.card_pair]
@@ -17,6 +20,9 @@ theorem card_pair_castAdd_natAdd {n : ℕ} (i k : Fin n) :
   simp at this
   omega
 
+/- English proof (translation)
+Use `revert h0 h1 h2`. Use `revert S`. Evaluate the decidable proposition.
+-/
 theorem card_of_ne_small (S : Finset (Fin (1 + 1))) (h0 : ¬ S = ∅)
     (h1 : ¬ S = {Fin.castAdd 1 (0 : Fin 1)}) (h2 : ¬ S = {Fin.natAdd 1 (0 : Fin 1)}) :
     S.card = 2 := by
@@ -24,6 +30,15 @@ theorem card_of_ne_small (S : Finset (Fin (1 + 1))) (h0 : ¬ S = ∅)
   revert S
   decide
 
+/- English proof (translation)
+Use function extensionality and compare the values at `S`. Use `show phi (pullBase a y) S = pullBase a (phi y) S`. Simplify using `only [phi, pullBase]`. Use `split_ifs with h0 h1 h2`. Substitute `h0` using the available equality.
+
+Simplify using the standard rewrite rules. Substitute `h1` using the available equality. Simplify using `[Finset.mul_sum]`. Substitute `h2` using the available equality. Simplify using `[Finset.mul_sum]`.
+
+Rewrite using `[card_of_ne_small S h0 h1 h2, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[card_pair_castAdd_natAdd]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem phi_pullBaseL {n : ℕ} (a : Fin n → ℂ) (y : Ext (n + n)) :
     phi (pullBaseL a y) = pullBaseL a (phi y) := by
   funext S

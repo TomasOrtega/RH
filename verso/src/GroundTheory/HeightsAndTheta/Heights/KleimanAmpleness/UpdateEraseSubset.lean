@@ -14,11 +14,17 @@ section Cells
 variable {S : Type} [CommRing S] {K : Type} [Fintype K] [LinearOrder K] {ι : K → Type}
   [∀ k, LinearOrder (ι k)] {Ω : Type} [Field Ω] [Algebra S Ω] {y : (Σ k, ι k) → Ω} {n : ℕ}
 
+/- English proof (translation)
+Simplify using `only [cellD, LinearMap.pi_apply, if_neg hI, LinearMap.zero_apply]`.
+-/
 theorem cellD_apply_of_not (s : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cell K ι n → Ω) (I : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cell K ι (n + 1))
     (hI : ¬ CellMeets y I.1) : cellD S y n s I = 0 := by
   simp only [cellD, LinearMap.pi_apply, if_neg hI, LinearMap.zero_apply]
 
 open Classical in
+/- English proof (translation)
+Simplify using `only [cellD, LinearMap.pi_apply, if_pos hI, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem cellD_apply_of (s : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cell K ι n → Ω) (I : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cell K ι (n + 1))
     (hI : CellMeets y I.1) :
     cellD S y n s I = ∑ k, ∑ i ∈ I.1 k,
@@ -31,6 +37,9 @@ theorem cellD_apply_of (s : ReciprocityTheory.ChartRestriction.G.ArakelovGeometr
   split_ifs <;> rfl
 
 omit [Fintype K] in
+/- English proof (translation)
+Break down `eq_or_ne l k with rfl | h` into its components or cases. Rewrite using `[Function.update_self]`. Conclude with `Finset.erase_subset _ _`. Rewrite using `[Function.update_of_ne h]`.
+-/
 theorem update_erase_subset (I : ∀ k, Finset (ι k)) (k : K) (i : ι k) (l : K) :
     Function.update I k ((I k).erase i) l ⊆ I l := by
   rcases eq_or_ne l k with rfl | h
@@ -38,15 +47,26 @@ theorem update_erase_subset (I : ∀ k, Finset (ι k)) (k : K) (i : ι k) (l : K
   · rw [Function.update_of_ne h]
 
 omit [Fintype K] [LinearOrder K] [∀ k, LinearOrder (ι k)] in
+/- English proof (translation)
+Introduce `k i hi` and use `hI' k i (h k hi)`.
+-/
 theorem cellMeets_of_subset {I I' : ∀ k, Finset (ι k)} (h : ∀ k, I k ⊆ I' k) (hI' : CellMeets y I') :
     CellMeets y I :=
   fun k i hi => hI' k i (h k hi)
 
 omit [LinearOrder K] [∀ k, LinearOrder (ι k)] in
+/- English proof (translation)
+Simplify using `[cellCOf, Submodule.mem_pi]`.
+-/
 theorem mem_cellCOf {G : (∀ k, Finset (ι k)) → Submodule S Ω} {s : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cell K ι n → Ω} :
     s ∈ cellCOf S G n ↔ ∀ c, s c ∈ G c.1 := by
   simp [cellCOf, Submodule.mem_pi]
 
+/- English proof (translation)
+Rewrite `hs`, the goal using `[mem_cellCOf]`. Introduce `I`. Distinguish the cases in `hI : CellMeets y I.1`. Rewrite using `[cellD_apply_of s I hI]`. Use `Submodule.sum_mem _ fun k _ => Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+
+Use `split_ifs with h`. Conclude with `zsmul_mem (hG _ _ h.1 I.2.1 (update_erase_subset I.1 k i) hI (hs ⟨_, h⟩)) _`. Conclude with `Submodule.zero_mem _`. Rewrite using `[cellD_apply_of_not s I hI]`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem cellD_mem (G : (∀ k, Finset (ι k)) → Submodule S Ω)
     (hG : ∀ I I' : ∀ k, Finset (ι k), (∀ k, (I k).Nonempty) → (∀ k, (I' k).Nonempty) → (∀ k, I k ⊆ I' k) →
       CellMeets y I' → G I ≤ G I')
@@ -62,6 +82,23 @@ theorem cellD_mem (G : (∀ k, Finset (ι k)) → Submodule S Ω)
   · rw [cellD_apply_of_not s I hI]
     exact Submodule.zero_mem _
 
+/- English proof (translation)
+Establish `hoff : ∑ l ∈ Finset.univ.filter (· < k₁), ((I l).card - 1) = 0` using `Finset.sum_eq_zero fun l hl => by rw [h1 l (ne_of_lt (Finset.mem_filter.1 hl).2), Nat.sub_self]`. Repeatedly rewrite using `[ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.faceSign, hoff, add_zero]`. Take `⟨a, b, hab, hI⟩` from `Finset.card_eq_two.mp h2`. Rewrite using `[hI, Finset.sum_pair hab]`. Break down `hab.lt_or_gt with h | h` into its components or cases.
+
+Establish `e1 : ({a, b} : Finset (ι k₁)).filter (· < a) = ∅`. Use extensionality with `z`. Simplify using `only [Finset.mem_filter, Finset.mem_insert, Finset.mem_singleton, Finset.notMem_empty, iff_false, not_and]`. Introduce and unpack `(rfl | rfl) hz`. Conclude with `lt_irrefl _ hz`.
+
+Conclude with `lt_asymm h hz`. Establish `e2 : ({a, b} : Finset (ι k₁)).filter (· < b) = {a}`. Use extensionality with `z`. Simplify using `only [Finset.mem_filter, Finset.mem_insert, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨rfl | rfl, hz⟩`. Both sides reduce to the same expression. Conclude with `absurd hz (lt_irrefl _)`. Introduce and unpack `rfl`. Conclude with `⟨Or.inl rfl, h⟩`.
+
+Simplify using `[e1, e2]`. Establish `e1 : ({a, b} : Finset (ι k₁)).filter (· < b) = ∅`. Use extensionality with `z`. Simplify using `only [Finset.mem_filter, Finset.mem_insert, Finset.mem_singleton, Finset.notMem_empty, iff_false, not_and]`. Introduce and unpack `(rfl | rfl) hz`.
+
+Conclude with `lt_asymm h hz`. Conclude with `lt_irrefl _ hz`. Establish `e2 : ({a, b} : Finset (ι k₁)).filter (· < a) = {b}`. Use extensionality with `z`. Simplify using `only [Finset.mem_filter, Finset.mem_insert, Finset.mem_singleton]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨rfl | rfl, hz⟩`. Conclude with `absurd hz (lt_irrefl _)`. Both sides reduce to the same expression. Introduce and unpack `rfl`.
+
+Conclude with `⟨Or.inr rfl, h⟩`. Simplify using `[e1, e2]`.
+-/
 theorem sum_faceSign_pair (I : ∀ k, Finset (ι k)) (k₁ : K) (h2 : (I k₁).card = 2)
     (h1 : ∀ l, l ≠ k₁ → (I l).card = 1) : ∑ i ∈ I k₁, ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.faceSign I k₁ i = 0 := by
   have hoff : ∑ l ∈ Finset.univ.filter (· < k₁), ((I l).card - 1) = 0 :=
@@ -103,6 +140,27 @@ theorem sum_faceSign_pair (I : ∀ k, Finset (ι k)) (k₁ : K) (h2 : (I k₁).c
         exact ⟨Or.inr rfl, h⟩
     simp [e1, e2]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `I`. Distinguish the cases in `hI : CellMeets y I.1`. Rewrite using `[cellD_apply_of z I hI, Pi.zero_apply]`. Establish `hsum : ∑ k, ((I.1 k).card - 1) = 1` using `I.2.2`. Establish `hpos : ∀ k, 1 ≤ (I.1 k).card` using `fun k => (I.2.1 k).card_pos`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨k₁, hk₁⟩ : ∃ k₁, (I.1 k₁).card - 1 ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Rewrite `hsum` using `[Finset.sum_eq_zero (fun k _ => h k)]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hsplit` using `Finset.add_sum_erase Finset.univ (fun k => (I.1 k).card - 1) (Finset.mem_univ k₁)`. Rewrite `hsplit` using `[hsum]`. Establish `h2 : (I.1 k₁).card = 2` using `by have := hpos k₁; omega`. Establish `hrest : ∑ l ∈ Finset.univ.erase k₁, ((I.1 l).card - 1) = 0` using `by omega`. Establish `h1 : ∀ l, l ≠ k₁ → (I.1 l).card = 1` using `fun l hl => by`.
+
+Use `(Finset.sum_eq_zero_iff.mp hrest) l (Finset.mem_erase.mpr ⟨hl, Finset.mem_univ _⟩)` as an intermediate fact. Use `hpos l` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.sum_eq_single k₁]`. Use `(Finset.sum_congr rfl (g := fun i => ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.faceSign I.1 k₁ i • a) fun i hi => ?_).trans (by rw [← Finset.sum_smul, sum_faceSign_pair I.1 k₁ h2 h1, zero_smul]) split_ifs with h` and prove the remaining obligations.
+
+Rewrite using `[hz ⟨_, h⟩ (cellMeets_of_subset (update_erase_subset I.1 k₁ i) hI)]`. It suffices to derive a contradiction. Apply `h` to reduce the goal to its premises. Establish `hc : ((I.1 k₁).erase i).card = 1` using `by rw [Finset.card_erase_of_mem hi, h2]`. Use `⟨fun l => ?_, Finset.sum_eq_zero fun l _ => ?_⟩` and prove the remaining obligations.
+
+Break down `eq_or_ne l k₁ with rfl | hl` into its components or cases. Rewrite using `[Function.update_self]; exact Finset.card_pos.mp (by omega)`. Rewrite using `[Function.update_of_ne hl]`. Conclude with `I.2.1 l`. Break down `eq_or_ne l k₁ with rfl | hl` into its components or cases.
+
+Rewrite using `[Function.update_self, hc, Nat.sub_self]`. Rewrite using `[Function.update_of_ne hl, h1 l hl, Nat.sub_self]`. Introduce `k _ hk`. Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations. Use `split_ifs with h`.
+
+It suffices to derive a contradiction. Establish `hne` using `h.1 k`. Rewrite `hne` using `[Function.update_self]`. Establish `hc : ((I.1 k).erase i).card = 0` using `by rw [Finset.card_erase_of_mem hi, h1 k hk]`. Rewrite `hc` using `[Finset.card_eq_zero]`.
+
+Rewrite `hne` using `[hc]`. Conclude with `Finset.not_nonempty_empty hne`. Both sides reduce to the same expression. Introduce `h`. Conclude with `absurd (Finset.mem_univ k₁) h`.
+
+Rewrite using `[cellD_apply_of_not z I hI]`. Both sides reduce to the same expression.
+-/
 theorem cellD_const (z : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cell K ι 0 → Ω) (a : Ω)
     (hz : ∀ c : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cell K ι 0, CellMeets y c.1 → z c = a) : cellD S y 0 z = 0 := by
   funext I
@@ -182,16 +240,25 @@ def DoubleCech.dsub (M : Kleiman.Chart x → (∀ k, Finset (ι k)) → Submodul
   Kleiman.Cech.Cdeg (fun _ : Kleiman.Chart x => ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cell K ι q → Ω) (fun J => cellCOf F (M J) q) p
 
 omit [LinearOrder K] [∀ k, LinearOrder (ι k)] in
+/- English proof (translation)
+Simplify using `[DoubleCech.dsub, Kleiman.Cech.Cdeg, Submodule.mem_pi]`.
+-/
 theorem DoubleCech.mem_dsub' {M : Kleiman.Chart x → (∀ k, Finset (ι k)) → Submodule F Ω} {q p : ℕ}
     {s : DoubleCech.Amb K ι Ω x q p} : s ∈ DoubleCech.dsub M q p ↔ ∀ J, s J ∈ cellCOf F (M J.1) q := by
   simp [DoubleCech.dsub, Kleiman.Cech.Cdeg, Submodule.mem_pi]
 
 omit [LinearOrder K] [∀ k, LinearOrder (ι k)] in
+/- English proof (translation)
+Simplify using `only [DoubleCech.mem_dsub', mem_cellCOf]`.
+-/
 theorem DoubleCech.mem_dsub {M : Kleiman.Chart x → (∀ k, Finset (ι k)) → Submodule F Ω} {q p : ℕ}
     {s : DoubleCech.Amb K ι Ω x q p} : s ∈ DoubleCech.dsub M q p ↔ ∀ J c, s J c ∈ M J.1 c.1 := by
   simp only [DoubleCech.mem_dsub', mem_cellCOf]
 
 omit [LinearOrder K] [∀ k, LinearOrder (ι k)] in
+/- English proof (translation)
+Unfold `DoubleCech.vert`. Rewrite using `[Kleiman.Cech.d_apply]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, LinearMap.id_apply]`.
+-/
 theorem DoubleCech.vert_apply {q p : ℕ} (s : DoubleCech.Amb K ι Ω x q p) (J : Kleiman.Cech.Idx (Kleiman.support x) (p + 1))
     (c : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cell K ι q) :
     DoubleCech.vert F K ι Ω x q p s J c =
@@ -202,6 +269,9 @@ theorem DoubleCech.vert_apply {q p : ℕ} (s : DoubleCech.Amb K ι Ω x q p) (J 
 
 omit [LinearOrder K] [∀ k, LinearOrder (ι k)] in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `J`. Rewrite using `[Kleiman.Cech.d_apply, DoubleCech.vert_apply]`. Both sides reduce to the same expression.
+-/
 theorem DoubleCech.d_eval {q p : ℕ} (s : DoubleCech.Amb K ι Ω x q p) (c : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cell K ι q) :
     Kleiman.Cech.d (fun _ : Kleiman.Chart x => Ω) (omegaRes F x) p (fun J => s J c) =
       fun J => DoubleCech.vert F K ι Ω x q p s J c := by
@@ -270,6 +340,9 @@ variable {F : Type} [Field F] {K : Type} [Fintype K] [LinearOrder K] {ι : K →
   {Ω : Type} [Field Ω] [Algebra F Ω] {N : ℕ} {x : Fin (N + 1) → Ω} {y : (Σ k, ι k) → Ω}
   {M : Kleiman.Chart x → (∀ k, Finset (ι k)) → Submodule F Ω}
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun s => Subtype.ext (Kleiman.Cech.mapC_d (ρ := fun _ _ _ => (LinearMap.id : (ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cell K ι q → Ω) →ₗ[F] _)) (ρ' := fun _ _ _ => (LinearMap.id : (ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cell K ι (q …`.
+-/
 theorem DoubleCech.comm (hMJ : ∀ (J J' : Kleiman.Chart x) I, J.1 ⊆ J'.1 → M J I ≤ M J' I)
     (hMI : ∀ J (I I' : ∀ k, Finset (ι k)), (∀ k, I k ⊆ I' k) → CellMeets y I' → M J I ≤ M J I') (p q : ℕ) :
     (DoubleCech.vD M hMJ (q + 1) p).comp (DoubleCech.hD y M hMI q p) =
@@ -279,6 +352,11 @@ theorem DoubleCech.comm (hMJ : ∀ (J J' : Kleiman.Chart x) I, J.1 ⊆ J'.1 → 
     (ρ' := fun _ _ _ => (LinearMap.id : (ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cell K ι (q + 1) → Ω) →ₗ[F] _))
     (fun _ => cellD F y q) (fun _ _ _ _ => rfl) p s.1).symm
 
+/- English proof (translation)
+Use `LinearMap.ext fun t => Subtype.ext (funext fun J => funext fun c => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(if CellMeets y c.1 then ((Kleiman.Cech.d (fun J => ↥(T.sub J)) T.res p t J : ↥(T.sub J.1)) : Ω) else 0) = DoubleCech.vert F K ι Ω x 0 p (fun J c => if CellMeets y c.1 then (t J : Ω) else 0) J c`. Rewrite using `[DoubleCech.vert_apply, Kleiman.Cech.d_apply]`. Distinguish the cases in `h : CellMeets y c.1`. Simplify using `only [h, if_true, Submodule.coe_sum]`.
+
+Both sides reduce to the same expression. Simplify using `[h]`.
+-/
 theorem DoubleCech.aug_chain (hMJ : ∀ (J J' : Kleiman.Chart x) I, J.1 ⊆ J'.1 → M J I ≤ M J' I)
     (T : Kleiman.SubSystem F x Ω) (hrow : ∀ J, CellAugExact F y (M J) ((T.sub J).restrictScalars F)) (p : ℕ) :
     (DoubleCech.aug y T M hrow (p + 1)).comp (Kleiman.Cech.d (fun J => ↥(T.sub J)) T.res p) =
@@ -293,6 +371,9 @@ theorem DoubleCech.aug_chain (hMJ : ∀ (J J' : Kleiman.Chart x) I, J.1 ⊆ J'.1
     rfl
   · simp [h]
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun _ => rfl`.
+-/
 theorem DoubleCech.col_chain (hMJ : ∀ (J J' : Kleiman.Chart x) I, J.1 ⊆ J'.1 → M J I ≤ M J' I)
     (hMI : ∀ J (I I' : ∀ k, Finset (ι k)), (∀ k, I k ⊆ I' k) → CellMeets y I' → M J I ≤ M J I')
     {B : (∀ k, Finset (ι k)) → Submodule F Ω} (hB : ∀ I, ¬ CellMeets y I → B I = ⊥)
@@ -303,6 +384,9 @@ theorem DoubleCech.col_chain (hMJ : ∀ (J J' : Kleiman.Chart x) I, J.1 ⊆ J'.1
       (DoubleCech.hD y M hMI q 0).comp (DoubleCech.colAug y B M hB hcol0 q) :=
   LinearMap.ext fun _ => rfl
 
+/- English proof (translation)
+Use `LinearMap.ker_eq_bot'.2 fun t ht => funext fun J => Subtype.ext ?_` and prove the remaining obligations. Establish `h` using `congrFun (congrFun (congrArg Subtype.val ht) J) c₀`. Express the relevant statement in the definitionally equal form `(if CellMeets y c₀.1 then (t J : Ω) else 0) = 0 at h`. Rewrite `h` using `[if_pos hc₀]`. Conclude with `h`.
+-/
 theorem DoubleCech.aug_inj (T : Kleiman.SubSystem F x Ω) (hrow : ∀ J, CellAugExact F y (M J) ((T.sub J).restrictScalars F))
     (c₀ : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cell K ι 0) (hc₀ : CellMeets y c₀.1) (p : ℕ) :
     LinearMap.ker (DoubleCech.aug y T M hrow p) = ⊥ := by
@@ -313,6 +397,13 @@ theorem DoubleCech.aug_inj (T : Kleiman.SubSystem F x Ω) (hrow : ∀ J, CellAug
   rw [if_pos hc₀] at h
   exact h
 
+/- English proof (translation)
+Use `le_antisymm (fun s hs => ?_) ?_` and prove the remaining obligations. Establish `hs' : ∀ J, cellD F y 0 (s.1 J) = 0` using `fun J => congrFun (congrArg Subtype.val (LinearMap.mem_ker.1 hs)) J`. Establish `hmem : ∀ J, s.1 J ∈ cellCOf F (M J.1) 0` using `DoubleCech.mem_dsub'.1 s.2`. Use `choose a ha hac using fun J => (hrow J.1).2.1 (s.1 J) (hmem J) (hs' J)`. Use `⟨fun J => ⟨a J, ha J⟩, Subtype.ext (funext fun J => funext fun c => ?_)⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(if CellMeets y c.1 then a J else 0) = s.1 J c`. Use `split_ifs with h`. Conclude with `(hac J c h).symm`. Establish `h0` using `mem_cellCOf.1 (hmem J) c`. Rewrite `h0` using `[hM J.1 c.1 h, Submodule.mem_bot]`.
+
+Conclude with `h0.symm`. Introduce and unpack `_ ⟨t, rfl⟩`. Rewrite using `[LinearMap.mem_ker]`. Conclude with `Subtype.ext (funext fun J => cellD_const _ (t J : Ω) fun c hc => if_pos hc)`.
+-/
 theorem DoubleCech.row_zero (hMI : ∀ J (I I' : ∀ k, Finset (ι k)), (∀ k, I k ⊆ I' k) → CellMeets y I' → M J I ≤ M J I')
     (hM : ∀ J I, ¬ CellMeets y I → M J I = ⊥)
     (T : Kleiman.SubSystem F x Ω) (hrow : ∀ J, CellAugExact F y (M J) ((T.sub J).restrictScalars F)) (p : ℕ) :
@@ -333,6 +424,11 @@ theorem DoubleCech.row_zero (hMI : ∀ J (I I' : ∀ k, Finset (ι k)), (∀ k, 
     rw [LinearMap.mem_ker]
     exact Subtype.ext (funext fun J => cellD_const _ (t J : Ω) fun c hc => if_pos hc)
 
+/- English proof (translation)
+Use `le_antisymm (fun s hs => ?_) ?_` and prove the remaining obligations. Establish `hs' : ∀ J, cellD F y (q + 1) (s.1 J) = 0` using `fun J => congrFun (congrArg Subtype.val (LinearMap.mem_ker.1 hs)) J`. Establish `hmem : ∀ J, s.1 J ∈ cellCOf F (M J.1) (q + 1)` using `DoubleCech.mem_dsub'.1 s.2`. Use `choose t ht htd using fun J => (hrow J.1).2.2 q (s.1 J) (hmem J) (hs' J)`. Conclude with `⟨⟨t, DoubleCech.mem_dsub'.2 ht⟩, Subtype.ext (funext fun J => htd J)⟩`.
+
+Introduce and unpack `_ ⟨t, rfl⟩`. Rewrite using `[LinearMap.mem_ker]`. Conclude with `Subtype.ext (funext fun J => hSq F K ι Ω y q (t.1 J))`.
+-/
 theorem DoubleCech.row_succ [∀ k, Fintype (ι k)] (hSq : CellDSq.Statement)
     (hMI : ∀ J (I I' : ∀ k, Finset (ι k)), (∀ k, I k ⊆ I' k) → CellMeets y I' → M J I ≤ M J I')
     (T : Kleiman.SubSystem F x Ω) (hrow : ∀ J, CellAugExact F y (M J) ((T.sub J).restrictScalars F)) (p q : ℕ) :
@@ -348,12 +444,24 @@ theorem DoubleCech.row_succ [∀ k, Fintype (ι k)] (hSq : CellDSq.Statement)
     exact Subtype.ext (funext fun J => hSq F K ι Ω y q (t.1 J))
 
 omit [LinearOrder K] [∀ k, LinearOrder (ι k)] in
+/- English proof (translation)
+The claim follows from `LinearMap.ker_eq_bot'.2 fun _ hb => Subtype.ext (funext fun c => congrFun (congrFun (congrArg Subtype.val hb) J₀) c)`.
+-/
 theorem DoubleCech.col_inj {B : (∀ k, Finset (ι k)) → Submodule F Ω} (hB : ∀ I, ¬ CellMeets y I → B I = ⊥)
     (hcol0 : ∀ I : ∀ k, Finset (ι k), (∀ k, (I k).Nonempty) → CellMeets y I → ∀ J, B I ≤ M J I)
     (J₀ : Kleiman.Cech.Idx (Kleiman.support x) 0) (q : ℕ) :
     LinearMap.ker (DoubleCech.colAug y B M hB hcol0 q) = ⊥ :=
   LinearMap.ker_eq_bot'.2 fun _ hb => Subtype.ext (funext fun c => congrFun (congrFun (congrArg Subtype.val hb) J₀) c)
 
+/- English proof (translation)
+Use `le_antisymm (fun s hs => ?_) ?_` and prove the remaining obligations. Establish `hex : ∀ c : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cell K ι q, ∃ b ∈ B c.1, ∀ J, s.1 J c = b`. Introduce `c`. Distinguish the cases in `h : CellMeets y c.1`. Use `(hcol c.1 c.2.1 h).2.1 (fun J => s.1 J c) ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[Kleiman.Cech.Cdeg, Submodule.mem_pi]`. Conclude with `fun J _ => DoubleCech.mem_dsub.1 s.2 J c`. Rewrite using `[DoubleCech.d_eval]`. Use function extensionality and compare the values at `J`. Conclude with `congrFun (congrFun (congrArg Subtype.val (LinearMap.mem_ker.1 hs)) J) c`.
+
+Use `⟨0, Submodule.zero_mem _, fun J => ?_⟩` and prove the remaining obligations. Establish `h0` using `DoubleCech.mem_dsub.1 s.2 J c`. Rewrite `h0` using `[hM J.1 c.1 h, Submodule.mem_bot]`. Conclude with `h0`. Use `choose b hb hbs using hex`.
+
+Conclude with `⟨⟨b, mem_cellCOf.2 hb⟩, Subtype.ext (funext fun J => funext fun c => (hbs c J).symm)⟩`. Introduce and unpack `_ ⟨b, rfl⟩`. Rewrite using `[LinearMap.mem_ker]`. Conclude with `Subtype.ext (Kleiman.Cech.d_zero_of_compat (ρ := fun _ _ _ => (LinearMap.id : (ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cell K ι q → Ω) →ₗ[F] _)) (fun _ => (b : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cell K ι q → Ω)) (fun _ _ _ => rfl))`.
+-/
 theorem DoubleCech.col_zero (hMJ : ∀ (J J' : Kleiman.Chart x) I, J.1 ⊆ J'.1 → M J I ≤ M J' I)
     (hM : ∀ J I, ¬ CellMeets y I → M J I = ⊥)
     {B : (∀ k, Finset (ι k)) → Submodule F Ω} (hB : ∀ I, ¬ CellMeets y I → B I = ⊥)
@@ -385,6 +493,19 @@ theorem DoubleCech.col_zero (hMJ : ∀ (J J' : Kleiman.Chart x) I, J.1 ⊆ J'.1 
       (fun _ => (b : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cell K ι q → Ω)) (fun _ _ _ => rfl))
 
 omit [LinearOrder K] [∀ k, LinearOrder (ι k)] in
+/- English proof (translation)
+Use `le_antisymm (fun s hs => ?_) ?_` and prove the remaining obligations. Establish `hex : ∀ c : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cell K ι q, ∃ t ∈ Kleiman.Cech.Cdeg (fun _ : Kleiman.Chart x => Ω) (fun J => M J c.1) p, Kleiman.Cech.d (fun _ : Kleiman.Chart x => Ω) (omegaRes F x) p t = fun J => s.1 J c`. Introduce `c`. Distinguish the cases in `h : CellMeets y c.1`. Use `(hcol c.1 c.2.1 h).2.2 p (fun J => s.1 J c) ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[Kleiman.Cech.Cdeg, Submodule.mem_pi]`. Conclude with `fun J _ => DoubleCech.mem_dsub.1 s.2 J c`. Rewrite using `[DoubleCech.d_eval]`. Use function extensionality and compare the values at `J`. Conclude with `congrFun (congrFun (congrArg Subtype.val (LinearMap.mem_ker.1 hs)) J) c`.
+
+Use `⟨0, Submodule.zero_mem _, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero]`. Use function extensionality and compare the values at `J`. Establish `h0` using `DoubleCech.mem_dsub.1 s.2 J c`. Rewrite `h0` using `[hM J.1 c.1 h, Submodule.mem_bot]`.
+
+Conclude with `h0.symm`. Use `choose t ht htd using hex`. Establish `htm : ∀ c J, t c J ∈ M J.1 c.1` using `fun c J => by`. Use `ht c` as an intermediate fact. Rewrite `this` using `[Kleiman.Cech.Cdeg, Submodule.mem_pi]`.
+
+Conclude with `this J (Set.mem_univ _)`. Use `⟨⟨fun J c => t c J, DoubleCech.mem_dsub.2 fun J c => htm c J⟩, Subtype.ext (funext fun J => funext fun c => ?_)⟩` and prove the remaining obligations. Establish `e` using `congrFun (DoubleCech.d_eval (F := F) (fun J c => t c J) c) J`. Conclude with `e.symm.trans (congrFun (htd c) J)`. Introduce and unpack `_ ⟨t, rfl⟩`.
+
+Rewrite using `[LinearMap.mem_ker]`. Conclude with `Subtype.ext (Kleiman.CechDSq.proof (N + 1) (Kleiman.support x) F (fun _ : Kleiman.Chart x => ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cell K ι q → Ω) (fun _ _ _ => LinearMap.id) (fun _ _ _ _ _ => LinearMap.id_comp _) p t.1)`.
+-/
 theorem DoubleCech.col_succ (hMJ : ∀ (J J' : Kleiman.Chart x) I, J.1 ⊆ J'.1 → M J I ≤ M J' I)
     (hM : ∀ J I, ¬ CellMeets y I → M J I = ⊥) {B : (∀ k, Finset (ι k)) → Submodule F Ω}
     (hcol : ∀ I : ∀ k, Finset (ι k), (∀ k, (I k).Nonempty) → CellMeets y I → CechAugExact F (fun J => M J I) (B I))
@@ -425,6 +546,11 @@ theorem DoubleCech.col_succ (hMJ : ∀ (J J' : Kleiman.Chart x) I, J.1 ⊆ J'.1 
 
 omit [Fintype K] [LinearOrder K] [∀ k, LinearOrder (ι k)] in
 
+/- English proof (translation)
+Introduce `I I' hne hne' hsub hm' m hm`. Establish `hmI : CellMeets y I` using `cellMeets_of_subset hsub hm'`. Establish `hall : ∀ J, m ∈ M J I'` using `fun J => hMI J I I' hsub hm' ((hcol I hne hmI).1 J hm)`. Take `⟨b, hb, hbJ⟩` from `(hcol I' hne' hm').2.1 (fun _ => m) (by rw [Kleiman.Cech.Cdeg, Submodule.mem_pi]; exact fun J _ => hall J.1) (Kleiman.Cech.d_zero_of_compat (fun _ => m) (fun _ _ _ => rfl))`. Rewrite using `[hbJ J₀]`.
+
+Conclude with `hb`.
+-/
 theorem DoubleCech.B_mono {B : (∀ k, Finset (ι k)) → Submodule F Ω}
     (hMI : ∀ J (I I' : ∀ k, Finset (ι k)), (∀ k, I k ⊆ I' k) → CellMeets y I' → M J I ≤ M J I')
     (hcol : ∀ I : ∀ k, Finset (ι k), (∀ k, (I k).Nonempty) → CellMeets y I → CechAugExact F (fun J => M J I) (B I))
@@ -447,10 +573,24 @@ section Ends
 variable {F : Type} [Field F] {K : Type} [Fintype K] [LinearOrder K] {ι : K → Type} [∀ k, LinearOrder (ι k)]
   {Ω : Type} [Field Ω] [Algebra F Ω] {N : ℕ} {x : Fin (N + 1) → Ω} {y : (Σ k, ι k) → Ω}
 
+/- English proof (translation)
+Apply the tactic sequence `cases n <;> exact ⟨LinearEquiv.refl F _⟩`.
+-/
 theorem DoubleCech.T_equiv (T : Kleiman.SubSystem F x Ω) (n : ℕ) :
     Nonempty (T.H n ≃ₗ[F] Staircase.H (fun p => Kleiman.Cech.d (fun J => ↥(T.sub J)) T.res p) n) := by
   cases n <;> exact ⟨LinearEquiv.refl F _⟩
 
+/- English proof (translation)
+Set `e0 : ↥(LinearMap.ker (DoubleCech.dC y B hBm n)) ≃ₗ[F] ↥(cellZOf F y B n)` to `{ toFun := fun z => ⟨z.1.1, z.1.2, congrArg Subtype.val (LinearMap.mem_ker.1 z.2)⟩ invFun := fun z => ⟨⟨z.1, z.2.1⟩, LinearMap.mem_ker.2 (Subtype.ext z.2.2)⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl left_inv := fun _ => rfl right_inv := fun _ => rfl }`. Use `⟨Submodule.Quotient.equiv _ _ e0 ?_⟩` and prove the remaining obligations. Consider the cases of `n with`. Consider the case `zero`. Use extensionality with `z`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩`. Establish `hw0 : (w : ↥(cellCOf F B 0)) = 0` using `(Submodule.mem_bot F).1 hw`. Use `show ((e0 w : ↥(cellZOf F y B 0)) : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cell K ι 0 → Ω) ∈ (⊥ : Submodule F _)`. Rewrite using `[Submodule.mem_bot]`.
+
+Conclude with `congrArg Subtype.val hw0`. Introduce `hz`. Use `⟨e0.symm z, ?_, e0.apply_symm_apply z⟩` and prove the remaining obligations. Use `show ((e0.symm z : ↥(LinearMap.ker (DoubleCech.dC y B hBm 0))) : ↥(cellCOf F B 0)) ∈ (⊥ : Submodule F _)`. Rewrite using `[Submodule.mem_bot]`.
+
+Conclude with `Subtype.ext ((Submodule.mem_bot F).1 hz)`. Consider the case `succ n`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, ⟨t, ht⟩, rfl⟩`.
+
+Conclude with `⟨t.1, t.2, congrArg Subtype.val ht⟩`. Introduce and unpack `⟨t, htm, htz⟩`. Use `⟨e0.symm z, ⟨⟨t, htm⟩, Subtype.ext htz⟩, e0.apply_symm_apply z⟩` and prove the remaining obligations.
+-/
 theorem DoubleCech.B_equiv {B : (∀ k, Finset (ι k)) → Submodule F Ω}
     (hBm : ∀ I I' : ∀ k, Finset (ι k), (∀ k, (I k).Nonempty) → (∀ k, (I' k).Nonempty) → (∀ k, I k ⊆ I' k) →
       CellMeets y I' → B I ≤ B I') (n : ℕ) :
@@ -487,6 +627,13 @@ theorem DoubleCech.B_equiv {B : (∀ k, Finset (ι k)) → Submodule F Ω}
 
 end Ends
 
+/- English proof (translation)
+Introduce `F _ K _ _ ι _ _ Ω _ _ y N x T B M hy hx hB hM hMJ hMI hcol hrow n`. Take `⟨j, hj⟩` from `hx`. Set `J₀ : Kleiman.Cech.Idx (Kleiman.support x) 0` to `⟨⟨{j}, Finset.singleton_nonempty j, Finset.singleton_subset_iff.2 ((Kleiman.mem_support x).2 hj)⟩, Finset.card_singleton j⟩`. Use `choose i hi using hy`. Set `c₀ : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cell K ι 0` to `⟨fun k => {i k}, fun k => Finset.singleton_nonempty _, by simp⟩`.
+
+Establish `hc₀ : CellMeets y c₀.1` using `fun k i' hi' => by`. Rewrite using `[Finset.mem_singleton.1 hi']`. Conclude with `hi k`. Establish `hcol0 : ∀ I : ∀ k, Finset (ι k), (∀ k, (I k).Nonempty) → CellMeets y I → ∀ J, B I ≤ M J I` using `fun I hI hm => (hcol I hI hm).1`. Establish `hBm` using `DoubleCech.B_mono hMI hcol J₀`.
+
+Take `⟨e⟩` from `hS F (fun p q => ↥(DoubleCech.dsub M q p)) (fun p q => DoubleCech.vD M hMJ q p) (fun p q => DoubleCech.hD y M hMI q p) (fun p => Kleiman.Cech.Cochain (fun J => ↥(T.sub J)) p) (fun p => Kleiman.Cech.d (fun J => ↥(T.sub J)) T.res p) (fun p => DoubleCech.aug y T M hrow p) (fun q => …`. Take `⟨eT⟩` from `DoubleCech.T_equiv T n`. Take `⟨eB⟩` from `DoubleCech.B_equiv hBm n`. Conclude with `⟨eT.trans (e.trans eB)⟩`.
+-/
 theorem DoubleCech.proof (hS : Staircase.Statement) (hSq : CellDSq.Statement) : DoubleCech.Statement := by
   intro F _ K _ _ ι _ _ Ω _ _ y N x T B M hy hx hB hM hMJ hMI hcol hrow n
   classical

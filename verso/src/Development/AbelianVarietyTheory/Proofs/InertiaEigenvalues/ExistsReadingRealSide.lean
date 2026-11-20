@@ -35,6 +35,13 @@ set_option maxHeartbeats 800000
 namespace GlobalTheory.MtRead
 variable {D : D7}
 
+/- English proof (translation)
+Use extensionality with `P`. Rewrite using `[mem_half, qpOf, Finset.mem_filter]`. Use `and_congr_right fun hP => (hch P (hs P hP)).trans ⟨?_, fun h => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨v', rfl⟩ v hv`. Take `rfl : v' = v` from `HeightOneSpectrum.ext ((hPq v').symm.trans hv)`.
+
+Conclude with `Or.inl rfl`. Set `v : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E))` to `P.under _`. Establish `hv : NG.OverPl P v` using `rfl`. Break down `h v hv with h | h` into its components or cases. Conclude with `⟨v, h.symm⟩`.
+
+Break down `(GlobalTheory.PlacePair.comap_eq_iff D P (Pq v)).1 (hv.trans (hPq v).symm) with e | e` into its components or cases. Conclude with `⟨v, e.symm⟩`. Conclude with `absurd (hc P hP _ e) h`.
+-/
 theorem half_eq_qpOf {ch : Set (Pl D.host.E)} {Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host}
     (hPq : ∀ v, NG.OverPl (Pq v) v) (hch : ∀ P, IsSplitPl D.host P → (P ∈ ch ↔ P ∈ Set.range Pq)) {s : Finset (PlE D.host)}
     (hs : ∀ P ∈ s, IsSplitPl D.host P) (hc : ∀ P ∈ s, ∀ P', Formalism.BasicNotions.IsConjPl D.host P P' → P' ∈ s) : half ch s = qpOf D Pq s := by
@@ -53,6 +60,13 @@ theorem half_eq_qpOf {ch : Set (Pl D.host.E)} {Pq : HeightOneSpectrum (𝓞 (max
       · exact ⟨v, e.symm⟩
       · exact absurd (hc P hP _ e) h
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun A hA σ hσ => ?_⟩` and prove the remaining obligations. Establish `h1` using `D.ntw.delta_tame i P hP`. Establish `h2 : Ideal.absNorm P.asIdeal ∣ 15 ^ Module.finrank ℤ (𝓞 D.host.E)`. Use `Ideal.absNorm_dvd_absNorm_of_le ((Ideal.span_singleton_le_iff_mem _).2 h)` as an intermediate fact. Rewrite `this` using `[Ideal.absNorm_span_natCast]`. Then use the resulting hypothesis.
+
+Establish `h3 : Nat.Coprime (Ideal.absNorm P.asIdeal) 15`. Rewrite using `[Nat.Coprime, Nat.gcd_comm, Nat.gcd_rec, h1]`. Both sides reduce to the same expression. Establish `h4` using `Nat.Coprime.eq_one_of_dvd (Nat.Coprime.pow_right _ h3) h2`. Conclude with `P.isPrime.ne_top (Ideal.absNorm_eq_one_iff.1 h4)`.
+
+Establish `h1` using `pow_card_eq_one' (x := (⟨D.ntw.delta i σ, σ, hσ, rfl⟩ : (Ine (F := D.host.E) A).map (D.ntw.delta i)))`. Rewrite `h1` using `[D.ntw.delta_15 i P hP A hA]`. Conclude with `congrArg Subtype.val h1`.
+-/
 theorem delta_tame (i : D.ntw.Tw) {P : PlE D.host} (hP : P ∈ D.ntw.pD i) : ((15 : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal ∧
     ∀ A : ValuationSubring D.nd.Om, IsPlaceOver A P → ∀ σ ∈ Ine (F := D.host.E) A, D.ntw.delta i σ ^ 15 = 1 := by
   refine ⟨fun h => ?_, fun A hA σ hσ => ?_⟩
@@ -69,6 +83,9 @@ theorem delta_tame (i : D.ntw.Tw) {P : PlE D.host} (hP : P ∈ D.ntw.pD i) : ((1
     rw [D.ntw.delta_15 i P hP A hA] at h1
     exact congrArg Subtype.val h1
 
+/- English proof (translation)
+Establish `: (ρ.ek i b k).comp (NX.toKk D i k) = ρ.e i b`. Use `IsLocalization.ringHom_ext (nonZeroDivisors (D.ntw.O i)) (RingHom.ext fun y => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, NX.toKk, IsFractionRing.map, IsLocalization.map_eq]`. Conclude with `hρ.ek_e i b k y`. Conclude with `RingHom.congr_fun this x`.
+-/
 theorem ek_toKk {ρ : Setup D.ntw} (hρ : ρ.Good) (i : D.ntw.Tw) (b : Bool) (k : ℕ) (x : FractionRing (D.ntw.O i)) :
     ρ.ek i b k (NX.toKk D i k x) = ρ.e i b x := by
   have : (ρ.ek i b k).comp (NX.toKk D i k) = ρ.e i b := by
@@ -83,6 +100,23 @@ variable {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T : Type} {A3 : FamIn3 D.wh
   [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat3 D A3 Ks} {cG : G0 R.Pg D.R.r ≃* G0g D.nd}
   {hF : D.host.F = maximalRealSubfield D.host.E} {ρ : Setup D.ntw}
 
+/- English proof (translation)
+Establish `h1 : 1 ≤ j.1 + 1` using `by omega`. Establish `h2 : j.1 + 1 ≤ D.R.m` using `j.2`. Take `⟨hn, -⟩` from `id hP`. Establish `hemb : ∀ t, NX.kEmb D i b t = (sideEmb D.ntw i b).comp (labLL0 D t)` using `fun t => rfl`. Establish `he : (fun t => (ρ.e i b).comp (NX.kEmb D i b t)) = tauE D`.
+
+Use function extensionality and compare the values at `t`. Rewrite using `[hemb, ← embLL0_labLL0]`. Conclude with `RingHom.ext fun x => hρ.e_LL0 i b _`. Use `choose lam0 hlam0 using fun t => X.rhoW_hw i (j.1 + 1) b t h1 h2`. Take `⟨lam, hlam, T₀, hT₀⟩` from `GlobalTheory.T.irreducible_weight_descends_to_polynomial_module D.host.E D.R.nV D.what₂.Tau _ (ρ.e i b) (NX.kEmb D i b) (by rw [he]; exact GlobalTheory.StdRat.tauE_injective D) (by`.
+
+Rewrite using `[he]`. Introduce `t t' h`. Conclude with `(GlobalTheory.StdRat.tauE_cm D _).1 ⟨t', rfl⟩ ⟨t, h⟩)`. Use the proof step `(by`. Rewrite using `[he]`.
+
+Introduce `σ`. Distinguish the cases in `h : ∃ t, tauE D t = σ`. Conclude with `h.imp fun _ h => Or.inl h.symm`. Take `⟨t, ht⟩` from `not_not.1 (mt (GlobalTheory.StdRat.tauE_cm D σ).2 h)`. Conclude with `⟨t, Or.inr (by rw [ht]; ext; simp)⟩)`.
+
+Use the proof step `(NX.cE D) (fun x => by`. Apply `D.host.φ₀.injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `D.host.φ₀ (D.host.conj x) = _`. Rewrite using `[IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply]) _ (X.rhoW i (j.1 + 1) b) (X.rhoW_irr i _ b h1 h2) lam0 hlam0`. Establish `hB : (ρ.B i j b).w.lam = FWT.lamV D j` using `GlobalTheory.BaseLiftWeight.lam_eq D T R.toLevCh A3.A.μ0 j _ hL (hρ.base i j b) (hp.mu0 i j b) (hp.ap i j b) (hp.am i j b)`.
+
+Establish `hw : ∀ t, (lam t).w = fun a : Fin D.R.nV => (FWT.lamV D j t).w (Fin.cast hn.symm a)` using `fun t => by`. Use `eq_of_infOf_eq (lam t).2 (fun a c h => (FWT.lamV D j t).2 h) ?_` and prove the remaining obligations. Establish `hi : D.naut.infG D.naut.etaT (embT D t) = {(1 / 2 : ℂ)}`. Use `(cs.infG D.naut.etaT (fun _ => 1 / 2) (by` as an intermediate fact. Rewrite using `[cs.etaT]`.
+
+Conclude with `⟨fun _ => 1, fun _ => by norm_num, cf.isEta.inf⟩) (D.eTau t)).1`. Rewrite using `[show (1 / 2 : ℂ) = ((1 / 2 : ℚ) : ℂ) by norm_num]`. Conclude with `this`. Rewrite using `[hlam, X.rhoW_wt i _ b t h1 h2 _ _ hi (hlam0 t), GlobalTheory.T.lift_weight_infinitesimal_character_eq_definite_param D j hn t]`. Both sides reduce to the same expression.
+
+Conclude with `GlobalTheory.T.exists_weightEmbedding_harmonicPolynomials_lattices D _ _ (ρ.B i j b) (hρ.base i j b) _ hF P hP hn _ _ (ρ.ek i b k) (NX.toKk D i k) (sideEmb D.ntw i b) (fun x => (ek_toKk hρ i b k _).trans (hρ.e_LL0 i b x)) (hρ.isCoefRing_k i b k) _ (X.rhoW i (j.1 + 1) b) lam (fun …`.
+-/
 theorem exists_wtMap {cf : CharFrame D} (X : NExpTied D) (cs : CharSide D cf) (hL : R.toLevCh.Is A3.A.μ0) (hρ : ρ.Good)
     (hp : RealPin R cG ρ) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool) (k : ℕ) (Q : Finset (PlE D.host))
     (ψ : G D.host.E D.nd.Om →* (D.ntw.Ok i k)ˣ) (P : principalLevelFrame.RowPsi (Vc D j) D.R.nV) (hP : IdFrame hF P)
@@ -135,6 +169,39 @@ end Cell
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `D cf Rw low Pq S hL eig θ Bs hτ hV hspl hPq Γ _ _ Pl0 I0 T A3 Ks _ _ _ R F cG hlev hC hK hF PV hPV ρ hρ hp hlv hch i j b k Q ψ hAd hT`. Establish `h1 : 1 ≤ j.1 + 1` using `by omega`. Establish `h2 : j.1 + 1 ≤ D.R.m` using `j.2`. Take `⟨plg, iso, hplg, -, -, hiso⟩` from `hK.grp`. Take `⟨τ, hτ⟩` from `hτ`.
+
+Establish `hB` using `hρ.base i j b`. Take `⟨hg, ha, -⟩` from `GlobalTheory.TwistGood.tw_good D D.nd D.ntw ρ hρ i j b k Q ψ hT`. Establish `hβ : (ρ.B i j b).F.βS = 1` using `(hp.frS i j b).trans (hK.beta.1 j)`. Establish `hplg' : ∀ kv, ((plg kv : R.Pg) : Pl D.host.E) = NX.pG D kv` using `hplg`. Establish `hPg : ∀ PP, PP ∈ (ρ.B i j b).G.Pg ↔ ∃ kv, PP = NX.pG D kv` using `fun PP => by`.
+
+Rewrite using `[hp.Pg]`. Conclude with `⟨fun h => ⟨plg.symm ⟨PP, h⟩, by rw [← hplg', Equiv.apply_symm_apply]⟩, fun ⟨kv, h⟩ => h ▸ hplg' kv ▸ (plg kv).2⟩`. Establish `hinj : Function.Injective (NX.pG D)` using `fun kv kv' h => plg.injective (Subtype.ext (by rw [hplg', hplg', h]))`. Establish `hQ : (ρ.tw i b k Q ψ).Q = (Bs.exp.mtV i (j.1 + 1) b k Q ψ h1 h2 hAd).QP`. Rewrite using `[(Bs.pq i _ b k Q ψ h1 h2 hAd).1]`.
+
+Conclude with `half_eq_qpOf hPq (hch i) hT.1 (GlobalTheory.TwistGood.ramExactly_conj D.ntw ψ _ hT.2.2.2.1 hT.2.2.2.2.2.1)`. Establish `hD : (ρ.B i j b).de.Q = (Bs.exp.mtV i (j.1 + 1) b k Q ψ h1 h2 hAd).DP`. Rewrite using `[(Bs.pq i _ b k Q ψ h1 h2 hAd).2, hρ.delta]`. Use `half_eq_qpOf hPq (hch i) (fun P hP => hspl P ?_) (GlobalTheory.TwistGood.ramExactly_conj D.ntw (D.ntw.delta i) _ (D.ntw.delta_anti i) (D.ntw.delta_ram i))` and prove the remaining obligations. Establish `h3 : P ∈ (D.ntw.pD i : Set _)` using `hP`.
+
+Rewrite `h3` using `[D.ntw.pD_eq]`. Use `split_ifs at h3`. Use `exacts [Or.inr h3, Or.inl h3]`. Establish `key : ∀ (kv : Σ k : Fin 2, D.nd.PlG k) (PP : R.Pg) (_ : (PP : Pl D.host.E) = NX.pG D kv) (is : ZMod (D.host.g kv.1) ≃+* kP PP.1), (∀ g, R.eG g PP = Formalism.UG.bc (is : ZMod (D.host.g kv.1) →+* kP PP.1) ((R.eG.trans cG) g kv)) → ∃ is' : ZMod (D.host.g kv.1) ≃+* kP (NX.pG D kv), …`. Introduce and unpack `kv ⟨PP, hPP⟩ rfl is h`.
+
+Use `⟨is, fun g _ a c => ?_⟩` and prove the remaining obligations. Use `h (R.eG.symm (cG.symm g))` as an intermediate fact. Rewrite `this` using `[MulEquiv.trans_apply, MulEquiv.apply_symm_apply, MulEquiv.apply_symm_apply]`. Conclude with `congrArg (fun x => x.val a c) this`. Use `choose is his using fun kv => key kv (plg kv) (hplg' kv) (iso kv) fun g => hiso g kv`.
+
+Establish `hgrp : ∀ (g : G0g D.nd) kv (h : NX.pG D kv ∈ (ρ.B i j b).G.Pg) (a c : Fin (Wc D j).rank), (ρ.eG i j b g ⟨NX.pG D kv, h⟩).val a c = is kv ((g kv).val (Fin.cast (FWT.rank_Wc j) a) (Fin.cast (FWT.rank_Wc j) c))` using `fun g kv h a c => (hp.grp i j b g _ h (hp.Pg i j b ▸ h) a c).trans (his kv g _ _ _)`. Use `⟨GlobalTheory.T.algebraicForms_levelGroup_eq_twistLevel D i j b k Q ψ _ _ _ _ _ _ _ hF (PV j) (hPV j) hβ hPg hinj hQ hD is _ hgrp (hlv.U_eq i j b) Bs.exp.U_eq, GlobalTheory.T.algebraicLevelCharacter_eq_twistLevelCharacter D i j b k Q ψ _ _ _ _ _ _ _ hF (PV j) (hPV j) hβ hPg hinj …` and prove the remaining obligations. Rewrite using `[← hQ, ← hD]`. Conclude with `ha.2.symm`. Introduce `kv x z hz`.
+
+Establish `hmem` using `(hPg _).2 ⟨kv, rfl⟩`. Establish `hz' : (z : kP (NX.pG D kv)) = Ideal.Quotient.mk _ (((x : ZMod (D.host.g kv.1)).val : ℕ) : 𝓞 D.host.E)` using `by haveI : NeZero (D.host.g kv.1) := ⟨(D.host.g_prime _).ne_zero⟩`. Rewrite using `[hz, map_natCast, ← map_natCast (is kv), ZMod.natCast_zmod_val]`. Establish `hu : ((((x : ZMod (D.host.g kv.1)).val : ℕ) : 𝓞 D.host.E) : D.host.E) ≠ 0` using `fun h => z.ne_zero (by`. Rewrite using `[hz', RingOfIntegers.coe_eq_zero_iff.1 h, map_zero])`.
+
+Rewrite using `[GlobalTheory.T.base_data_type_character_eq_local_component D _ _ _ hB (cf.mu0 j) (by rw [hp.mu0, ← hC]; exact hlev.mu0 j) _ hmem _ hu z hz', hτ i _ b kv x h1 h2, hρ.e_LL0, GlobalTheory.T.levelCharacters_typePlaces_eq_local_components hA D cf Rw low Pq S hL eig θ Bs hV τ hτ j kv …`. Introduce `PP hPP u hu z hz`. Rewrite `hPP` using `[← hQ]`. Establish `hl : ((D.ntw.l i : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal` using `(hAd.1 PP (mem_half.1 hPP).1).2`. Use `GlobalTheory.T.residue_character_artin_tame_galois_eq_tame_value hA D ρ.rc hρ.rc _ (ρ.eOk i b k) ψ hT.2.2.1 PP _ hl (fun _ _ σ _ => hAd.2.2.2.2.1 σ) (hg.split.isIdemAt hPP) _ (hg.res PP hPP) 1 u hu z hz` as an intermediate fact.
+
+Rewrite `this` using `[zpow_one]`. Rewrite using `[Bs.exp.sgnT_one]`. Conclude with `this`. Introduce `PP hPP u hu z hz`. Rewrite `hPP` using `[← hD]`.
+
+Establish `hde` using `hB.de`. Establish `hres` using `hde.res PP hPP`. Establish `hid` using `hde.split.isIdemAt hPP`. Establish `hchi : (ρ.B i j b).de.chi = GlobalTheory.SeriesTie.charOf ρ.rc ((ρ.eO i b).comp (algebraMap (D.ntw.O0 i) (D.ntw.O i))) (Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i))` using `by rw [hρ.delta]; rfl`. Rewrite `hres` using `[hchi]`.
+
+Establish `hPD : PP ∈ D.ntw.pD i`. Rewrite `hPP` using `[hρ.delta]`. Conclude with `(mem_half.1 hPP).1`. Take `⟨h15, hord⟩` from `delta_tame i hPD`. Establish `hval : ∀ y : D.ntw.O0 i, ρ.ek i b k (NX.ofO0 D i k y) = ((ρ.eO i b).comp (algebraMap (D.ntw.O0 i) (D.ntw.O i))) y` using `fun y => hρ.ek_e i b k _`.
+
+Rewrite using `[hval, Bs.exp.sgnT_one]`. Consider the cases of `b`. Establish `hk : IsOpen (((D.ntw.delta i)⁻¹).ker : Set (G D.host.E D.nd.Om))`. Use `D.ntw.delta_open i using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`.
+
+Simplify using `[MonoidHom.mem_ker]`. Use `GlobalTheory.T.residue_character_artin_tame_galois_eq_tame_value hA D ρ.rc hρ.rc _ _ (D.ntw.delta i)⁻¹ hk PP 15 h15 (fun A hA σ hσ => ⟨1, by rw [pow_one, MonoidHom.inv_apply, inv_pow, hord A hA σ hσ, inv_one]⟩) hid _ hres (-1) u hu z hz` as an intermediate fact. Establish `e1 : NX.tameVal (D.ntw.delta i)⁻¹ PP (-1) u = (NX.tameVal (D.ntw.delta i) PP (-1) u)⁻¹`. Unfold `NX.tameVal`. Use `split_ifs`.
+
+Both sides reduce to the same expression. Conclude with `inv_one.symm`. Rewrite `this` using `[e1, zpow_neg_one, map_units_inv, inv_inj]`. Conclude with `this`. Use `GlobalTheory.T.residue_character_artin_tame_galois_eq_tame_value hA D ρ.rc hρ.rc _ _ (D.ntw.delta i) (D.ntw.delta_open i) PP 15 h15 (fun A hA σ hσ => ⟨1, by rw [pow_one, hord A hA σ hσ]⟩) hid _ hres 1 u hu z hz` as an intermediate fact.
+
+Rewrite `this` using `[zpow_one]`. Conclude with `this`.
+-/
 theorem levMatch (hA : GlobalTheory.Published.GlobalArtinReciprocity) : ∀ (D : D7) (cf : CharFrame D) (Rw : RowSide D) (low : Finset ℕ) (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host) (S : RatDat D.ntw) (hL : ∀ j, ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j)) (eig : ℕ → D.what₂.FT → ℕ → PlE D.host → ↥D.LL0) (θ : ∀ kk : Fin 2, Multiplicative (ZMod (D.host.g kk)) →* (↥D.LL0)ˣ) (Bs : SideB D cf Rw low Pq S hL eig θ), TauTrue Bs.exp → ValLL0 D cf →
     (∀ v, v ∈ placesOver D.host.E D.host.pde ∨ v ∈ placesOver D.host.E D.host.pde' → IsSplitPl D.host v) →
     (∀ v, NG.OverPl (Pq v) v) →
@@ -243,6 +310,13 @@ theorem levMatch (hA : GlobalTheory.Published.GlobalArtinReciprocity) : ∀ (D :
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `hA D cf Rw low Pq S hL eig θ Bs hτ cs hV hspl hPq Γ _ _ Pl0 I0 T A3 Ks _ _ _ R F cG hlev hC hK hF PV hPV ρ hρ hp hlv hch`. Establish `cell : ∀ i (j : Fin D.R.m) b k Q ψ, ∃ r : D.nexp.MtV i ((j : ℕ) + 1) b k Q ψ →ₛₗ[ρ.ek i b k] (Bridge.Gf (Vc D j) → PolF D (Wc D j).rank (Vc D j).rank), ∀ hT : TwOK i k Q ψ, (Function.Injective r ∧ (∀ F ∈ ρ.mt i j b k Q ψ, F ∈ Set.range r) ∧ Submodule.span (FractionRing (D.ntw.Ok …`. Introduce `i j b k Q ψ`. Distinguish the cases in `hT : TwOK i k Q ψ`. Take `⟨hg, ha, -⟩` from `GlobalTheory.TwistGood.tw_good D D.nd D.ntw ρ hρ i j b k Q ψ hT`.
+
+Take `⟨ω, hω⟩` from `exists_wtMap Bs.exp cs hlev hρ hp i j b k Q ψ (PV j) (hPV j) (Bs.exp.mtV i (j.1 + 1) b k Q ψ (by omega) (by omega) (admissible_twist_of_twisting_character hT))`. Take `⟨r, r1, r2, r3, r4⟩` from `read_cell (ρ.B i j b) (hρ.base i j b) (ρ.tw i b k Q ψ) (frameEquiv (PV j)) (D.ntw.Ok i k) (ρ.ek i b k) (hρ.isCoefRing_k i b k) _ _ _ ω (GlobalTheory.T.frameKeepsMatrices_matches_rationalPoints D _ _ hF (PV j) (hPV j)).1 hω (levMatch hA D cf Rw low Pq S hL eig θ Bs hτ hV hspl hPq …`. Conclude with `⟨r, fun _ => ⟨⟨r1, r2, r3⟩, ω, hω.1, r4⟩⟩`. Conclude with `⟨0, fun h => absurd h hT⟩`. Use `choose r hr using cell`.
+
+Conclude with `⟨r, fun i j b k Q ψ hT => (hr i j b k Q ψ hT).1, fun i j b k Q ψ _ hT => (hr i j b k Q ψ hT).2⟩`.
+-/
 theorem exists_reading : GlobalTheory.Published.GlobalArtinReciprocity → ∀ (D : D7) (cf : CharFrame D) (Rw : RowSide D) (low : Finset ℕ) (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host) (S : RatDat D.ntw) (hL : ∀ j, ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j)) (eig : ℕ → D.what₂.FT → ℕ → PlE D.host → ↥D.LL0) (θ : ∀ kk : Fin 2, Multiplicative (ZMod (D.host.g kk)) →* (↥D.LL0)ˣ) (Bs : SideB D cf Rw low Pq S hL eig θ), TauTrue Bs.exp → CharSide D cf → ValLL0 D cf →
     (∀ v, v ∈ placesOver D.host.E D.host.pde ∨ v ∈ placesOver D.host.E D.host.pde' → IsSplitPl D.host v) →
     (∀ v, NG.OverPl (Pq v) v) →
@@ -284,6 +358,9 @@ theorem exists_reading : GlobalTheory.Published.GlobalArtinReciprocity → ∀ (
   choose r hr using cell
   exact ⟨r, fun i j b k Q ψ hT => (hr i j b k Q ψ hT).1, fun i j b k Q ψ _ hT => (hr i j b k Q ψ hT).2⟩
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_standard_frameKeepsMatrices`.
+-/
 theorem exists_idFrame : ∀ (D : D7) (hF : D.host.F = maximalRealSubfield D.host.E) (j : Fin D.R.m), FWT.VStd D j → ∃ P : principalLevelFrame.RowPsi (Vc D j) D.R.nV, IdFrame hF P ∧ GlobalTheory.Mem.R3.StdFrame hF P := GlobalTheory.T.exists_standard_frameKeepsMatrices
 
 end GlobalTheory.MtRead

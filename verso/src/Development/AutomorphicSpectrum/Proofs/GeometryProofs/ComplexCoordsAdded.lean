@@ -16,6 +16,9 @@ namespace GlobalTheory.CompanionTheory.Ar.FlagStep.CoordsRestrict
 
 variable {X X' : Scheme.{0}} {Ω₀ Ω : Type} [Field Ω₀] [Field Ω]
 
+/- English proof (translation)
+Take `⟨hA, s₁, hs₁, hr⟩` from `h₁`. Take `⟨hB, s₂, hs₂, ht⟩` from `h₂`. Establish `e : s₁ = s₂` using `hg.inj ⟨centre z, hA⟩ (hs₁.trans hs₂.symm)`. Rewrite using `[← hr, ← ht, e]`.
+-/
 theorem valAt_unique {ξ' : Spec (CommRingCat.of Ω) ⟶ X'} (hg : IsCptGen ξ')
     {z : Spec (CommRingCat.of ℂ) ⟶ X'} {a : Ω} {r t : ℂ} (h₁ : ValAt ξ' z a r) (h₂ : ValAt ξ' z a t) :
     r = t := by
@@ -24,6 +27,9 @@ theorem valAt_unique {ξ' : Spec (CommRingCat.of Ω) ⟶ X'} (hg : IsCptGen ξ')
   have e : s₁ = s₂ := hg.inj ⟨centre z, hA⟩ (hs₁.trans hs₂.symm)
   rw [← hr, ← ht, e]
 
+/- English proof (translation)
+Take `⟨hA, s₁, hs₁, hr⟩` from `h₁`. Take `⟨hB, s₂, hs₂, ht⟩` from `h₂`. Conclude with `⟨hA, s₁ * s₂, by rw [map_mul, hs₁, hs₂], (map_mul _ s₁ s₂).trans (congrArg₂ (· * ·) hr ht)⟩`.
+-/
 theorem valAt_mul {ξ' : Spec (CommRingCat.of Ω) ⟶ X'} {z : Spec (CommRingCat.of ℂ) ⟶ X'} {a b : Ω}
     {r t : ℂ} (h₁ : ValAt ξ' z a r) (h₂ : ValAt ξ' z b t) : ValAt ξ' z (a * b) (r * t) := by
   obtain ⟨hA, s₁, hs₁, hr⟩ := h₁
@@ -31,14 +37,27 @@ theorem valAt_mul {ξ' : Spec (CommRingCat.of Ω) ⟶ X'} {z : Spec (CommRingCat
   exact ⟨hA, s₁ * s₂, by rw [map_mul, hs₁, hs₂],
     (map_mul _ s₁ s₂).trans (congrArg₂ (· * ·) hr ht)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h, 1, map_one _, map_one _⟩`.
+-/
 theorem valAt_one {ξ' : Spec (CommRingCat.of Ω) ⟶ X'} {z : Spec (CommRingCat.of ℂ) ⟶ X'}
     (h : genPt ξ' ⤳ centre z) : ValAt ξ' z (1 : Ω) 1 :=
   ⟨h, 1, map_one _, map_one _⟩
 
+/- English proof (translation)
+Conclude with `IsUnit.of_map φ s (Ne.isUnit h)`.
+-/
 theorem isUnit_of_local {A : Type*} [CommRing A] (φ : A →+* ℂ) [IsLocalHom φ] (s : A) (h : φ s ≠ 0) :
     IsUnit s := by
   exact IsUnit.of_map φ s (Ne.isUnit h)
 
+/- English proof (translation)
+Take `⟨h, s, hs, hr'⟩` from `hv`. Establish `hu : IsUnit s` using `isUnit_of_local (Scheme.stalkClosedPointTo z).hom s (by rw [hr']; exact hr)`. Take `⟨u, rfl⟩` from `hu`. Establish `hinv : genMap ξ' ⟨centre z, h'⟩ ↑u⁻¹ * genMap ξ' ⟨centre z, h'⟩ ↑u = 1`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`.
+
+Establish `hne : genMap ξ' ⟨centre z, h'⟩ ↑u ≠ 0` using `fun h0 => by`. Rewrite `hinv` using `[h0, mul_zero]`. Conclude with `zero_ne_one hinv`. Use `⟨?_, ⟨↑u, hs⟩, ⟨↑u⁻¹, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← hs]`.
+
+Conclude with `hne`. Rewrite using `[← hs]`. Conclude with `eq_inv_of_mul_eq_one_left hinv`.
+-/
 theorem unitAt_of_valAt {ξ' : Spec (CommRingCat.of Ω) ⟶ X'} {z : Spec (CommRingCat.of ℂ) ⟶ X'}
     (h' : genPt ξ' ⤳ centre z) {a : Ω} {r : ℂ} (hr : r ≠ 0) (hv : ValAt ξ' z a r) :
     unitAt ξ' ⟨centre z, h'⟩ a := by
@@ -54,12 +73,20 @@ theorem unitAt_of_valAt {ξ' : Spec (CommRingCat.of Ω) ⟶ X'} {z : Spec (CommR
   · rw [← hs]; exact hne
   · rw [← hs]; exact eq_inv_of_mul_eq_one_left hinv
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem stalkSpecializes_comp_stalkClosedPointTo_congr {K : Type} [Field K] (g₁ g₂ : Spec (CommRingCat.of K) ⟶ X)
     (e : g₁ = g₂) {q : X} (h₁ : g₁ (IsLocalRing.closedPoint K) ⤳ q) (h₂ : g₂ (IsLocalRing.closedPoint K) ⤳ q) :
     X.presheaf.stalkSpecializes h₁ ≫ Scheme.stalkClosedPointTo g₁ =
       X.presheaf.stalkSpecializes h₂ ≫ Scheme.stalkClosedPointTo g₂ := by
   subst e; rfl
 
+/- English proof (translation)
+Use `TopCat.Presheaf.stalk_hom_ext _ fun U hU => ?_` and prove the remaining obligations. Rewrite using `[TopCat.Presheaf.germ_stalkSpecializes_assoc, TopCat.Presheaf.germ_stalkSpecializes_assoc, Scheme.germ_stalkClosedPointTo, Scheme.germ_stalkClosedPointTo_assoc]`. Simplify using `only [Iso.trans_hom, Functor.mapIso_hom, Iso.op_hom, eqToIso.hom, Category.assoc]`. Rewrite using `[← Scheme.ΓSpecIso_naturality]`. Simplify using `only [← Category.assoc]`.
+
+Use `congr 1`.
+-/
 private theorem stalkSpecializes_comp_stalkClosedPointTo_specMap_comp {K K' : Type} [Field K] [Field K'] (i : K →+* K')
     (g : Spec (CommRingCat.of K) ⟶ X) {q : X}
     (h₂ : (Spec.map (CommRingCat.ofHom i) ≫ g) (IsLocalRing.closedPoint K') ⤳ q)
@@ -74,6 +101,15 @@ private theorem stalkSpecializes_comp_stalkClosedPointTo_specMap_comp {K K' : Ty
   simp only [← Category.assoc]
   congr 1
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `RingHom.mem_range.1 ha`. Use `⟨(Scheme.stalkClosedPointTo (z ≫ f)).hom s, ⟨hp, s, hs, rfl⟩, h', (f.stalkMap (centre z)).hom s, ?_, ?_⟩` and prove the remaining obligations. Establish `h₁ : (ξ' ≫ f) (IsLocalRing.closedPoint Ω) ⤳ f (centre z)` using `f.base.hom.map_specializes h'`. Establish `h₂ : (Spec.map (CommRingCat.ofHom i) ≫ ξ) (IsLocalRing.closedPoint Ω) ⤳ f (centre z)`. Rewrite using `[← hd]`.
+
+Conclude with `h₁`. Establish `h'' : ξ' (IsLocalRing.closedPoint Ω) ⤳ centre z` using `h'`. Establish `hp'' : ξ (IsLocalRing.closedPoint Ω₀) ⤳ f (centre z)` using `hp`. Establish `key : f.stalkMap (centre z) ≫ X'.presheaf.stalkSpecializes h'' ≫ Scheme.stalkClosedPointTo ξ' = X.presheaf.stalkSpecializes hp'' ≫ Scheme.stalkClosedPointTo ξ ≫ CommRingCat.ofHom i`. Rewrite using `[← Category.assoc, ← Scheme.Hom.stalkSpecializes_stalkMap, Category.assoc, ← Scheme.stalkClosedPointTo_comp]`.
+
+Conclude with `(stalkSpecializes_comp_stalkClosedPointTo_congr (ξ' ≫ f) (Spec.map (CommRingCat.ofHom i) ≫ ξ) hd h₁ h₂).trans (stalkSpecializes_comp_stalkClosedPointTo_specMap_comp i ξ h₂ hp'')`. Use `congrArg (fun φ => φ.hom s) key` as an intermediate fact. Rewrite using `[← hs]`. Conclude with `this`. Rewrite using `[Scheme.stalkClosedPointTo_comp]`.
+
+Both sides reduce to the same expression.
+-/
 theorem valAt_of_regAt {ξ : Spec (CommRingCat.of Ω₀) ⟶ X} {ξ' : Spec (CommRingCat.of Ω) ⟶ X'} {f : X' ⟶ X}
     {i : Ω₀ →+* Ω} (hd : Dominates ξ' ξ f i) (z : Spec (CommRingCat.of ℂ) ⟶ X')
     (h' : genPt ξ' ⤳ centre z) (hp : genPt ξ ⤳ f (centre z)) {a : Ω₀}
@@ -98,6 +134,29 @@ theorem valAt_of_regAt {ξ : Spec (CommRingCat.of Ω₀) ⟶ X} {ξ' : Spec (Com
   · rw [Scheme.stalkClosedPointTo_comp]
     rfl
 
+/- English proof (translation)
+Introduce `X X' Ω₀ Ω _ _ _ ξ ξ' f K _ J _ y N x' z w hgen htie hcpt hgen' hd hc`. Take `⟨hc1, hc2⟩` from `hc`. Use `⟨fun k => hc1 (Sum.inr k), fun k c hu => ?_⟩` and prove the remaining obligations. Establish `hyA : ∀ j : J k, addY y x' ⟨Sum.inr k, j⟩ = algebraMap Ω₀ Ω (y ⟨k, j⟩)` using `fun j => rfl`. Take `⟨hy, hv⟩` from `hc2 (Sum.inr k) c hu`.
+
+Rewrite `hy` using `[hyA]`. Establish `hyc : y ⟨k, c⟩ ≠ 0` using `fun h0 => hy (by rw [h0, map_zero])`. Use `⟨hyc, fun j => ?_⟩` and prove the remaining obligations. Establish `hp : genPt ξ ⤳ f (centre z)` using `hgen _`. Establish `h' : genPt ξ' ⤳ centre z` using `hgen' _`.
+
+Take `⟨c₀, hc₀ne, hc₀⟩` from `htie.cover ⟨f (centre z), hp⟩`. Establish `hx0 : (∏ k', y ⟨k', c₀ k'⟩) ≠ 0` using `hc₀ne`. Establish `hy0 : y ⟨k, c₀ k⟩ ≠ 0` using `fun h0 => hx0 (Finset.prod_eq_zero (Finset.mem_univ k) h0)`. Establish `hprod : ∀ j : J k, (∏ k', y ⟨k', Function.update c₀ k j k'⟩) * y ⟨k, c₀ k⟩ = (∏ k', y ⟨k', c₀ k'⟩) * y ⟨k, j⟩`. Introduce `j`.
+
+Rewrite using `[← Finset.mul_prod_erase Finset.univ (fun k' => y ⟨k', Function.update c₀ k j k'⟩) (Finset.mem_univ k), ← Finset.mul_prod_erase Finset.univ (fun k' => y ⟨k', c₀ k'⟩) (Finset.mem_univ k)]`. Establish `e : ∏ x ∈ Finset.univ.erase k, y ⟨x, Function.update c₀ k j x⟩ = ∏ x ∈ Finset.univ.erase k, y ⟨x, c₀ x⟩` using `Finset.prod_congr rfl fun x hx => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hx)]`. Simplify using `only [Function.update_self]`. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hratio : ∀ j : J k, (∏ k', y ⟨k', Function.update c₀ k j k'⟩) / (∏ k', y ⟨k', c₀ k'⟩) = y ⟨k, j⟩ / y ⟨k, c₀ k⟩`. Introduce `j`. Rewrite using `[div_eq_div_iff hx0 hy0, hprod j, mul_comm]`. Establish `hreg : ∀ j : J k, y ⟨k, j⟩ / y ⟨k, c₀ k⟩ ∈ regAt ξ ⟨f (centre z), hp⟩` using `fun j => by`. Rewrite using `[← hratio j]`.
+
+Conclude with `hc₀ (Function.update c₀ k j)`. Take `⟨r₂, hr₂a, hr₂b⟩` from `valAt_of_regAt hd z h' hp (hreg c)`. Take `⟨r₀, hr₀, -⟩` from `hv (c₀ k)`. Rewrite `hr₀` using `[hyA, hyA]`. Establish `hmul` using `valAt_mul hr₂b hr₀`.
+
+Establish `hy0' : algebraMap Ω₀ Ω (y ⟨k, c₀ k⟩) ≠ 0` using `(map_ne_zero _).2 hy0`. Establish `hone : algebraMap Ω₀ Ω (y ⟨k, c⟩ / y ⟨k, c₀ k⟩) * (algebraMap Ω₀ Ω (y ⟨k, c₀ k⟩) / algebraMap Ω₀ Ω (y ⟨k, c⟩)) = 1`. Rewrite using `[map_div₀]`. Clear the denominators using the available nonvanishing facts. Rewrite `hmul` using `[hone]`.
+
+Establish `h1 : r₂ * r₀ = 1` using `valAt_unique hcpt hmul (valAt_one h')`. Establish `hr₂ne : r₂ ≠ 0` using `left_ne_zero_of_mul_eq_one h1`. Establish `hunit` using `unitAt_of_valAt hp hr₂ne hr₂a`. Establish `hinvreg : (y ⟨k, c⟩ / y ⟨k, c₀ k⟩)⁻¹ ∈ regAt ξ ⟨f (centre z), hp⟩` using `hunit.2.2`. Establish `hregjc : y ⟨k, j⟩ / y ⟨k, c⟩ ∈ regAt ξ ⟨f (centre z), hp⟩`.
+
+Establish `e : y ⟨k, j⟩ / y ⟨k, c⟩ = (y ⟨k, j⟩ / y ⟨k, c₀ k⟩) * (y ⟨k, c⟩ / y ⟨k, c₀ k⟩)⁻¹`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `Subring.mul_mem _ (hreg j) hinvreg`. Take `⟨r, hr1, hr2⟩` from `valAt_of_regAt hd z h' hp hregjc`.
+
+Take `⟨r', hr', hw⟩` from `hv j`. Rewrite `hr'` using `[hyA, hyA]`. Rewrite `hr2` using `[map_div₀]`. Establish `e3 : r = r'` using `valAt_unique hcpt hr2 hr'`. Use `⟨r, hr1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e3]`. Conclude with `hw`.
+-/
 theorem coordsAt_restrict : ∀ (X X' : Scheme.{0}) (Ω₀ Ω : Type) [Field Ω₀] [Field Ω] [Algebra Ω₀ Ω]
     (ξ : Spec (CommRingCat.of Ω₀) ⟶ X) (ξ' : Spec (CommRingCat.of Ω) ⟶ X') (f : X' ⟶ X)
     (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω₀) (N : ℕ) (x' : Fin (N + 1) → Ω)

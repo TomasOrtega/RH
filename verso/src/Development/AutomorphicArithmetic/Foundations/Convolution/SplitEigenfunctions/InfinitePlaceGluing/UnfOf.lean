@@ -14,6 +14,15 @@ open UpperTheory.ConvolutionTheory.R2.G (FS2 Rw nE row)
 
 open UpperTheory.ConvolutionTheory.RankTwoDescent
 
+/- English proof (translation)
+Introduce `E _ _ _ D P ω χ hC hω hχ M U`. Use `haveI := M.prob`. Use `haveI := U.prob`. Take `⟨c, hc0, hc⟩` from `UpperTheory.ideleCovering_lintegral_eq_const_mul_haar U`. Use `⟨(c : ℂ), by exact_mod_cast hc0, ?_⟩` and prove the remaining obligations.
+
+Introduce `φ hA Φ hΦ s hs`. Take `⟨hm, hI⟩` from `UpperTheory.unfoldedIntegrand_measurable_integrable_of_re_gt_four E D ω χ φ hA hω hχ M Φ hΦ s hs`. Take `⟨hsum, heq⟩` from `UpperTheory.integral_tsum_ideleCovering_eq_const_mul U c hc M.κ (Un.Hh D χ φ Φ s) hm hI`. Rewrite using `[← UpperTheory.integral_unfoldedIntegrand_eq_zetaIntegral E D χ φ M Φ s hI, ← heq]`. Unfold `Zs Ir`.
+
+Use `integral_congr_ae ?_` and prove the remaining obligations. Establish `hUU : ∀ᵐ u ∂U.υ, u ∈ UU` using `mem_ae_iff.2 U.supp`. Use `filter_upwards [hsum] with t ht`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae ?_` and prove the remaining obligations.
+
+Use `filter_upwards [ht, hUU] with u hu huU`. Rewrite using `[UpperTheory.setIntegral_restrict_mul_thetaKernel_eq_unfolded E D ω φ hA M Φ hΦ t u huU, ← integral_const_mul, ← integral_const_mul]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hu] with p hp`. Conclude with `UpperTheory.tsum_unfoldedIntegrand_ideleCovering_eq_exp_mul E D ω χ φ hA hχ Φ s t u huU p hp`.
+-/
 theorem UpperTheory.ConvolutionTheory.RankTwoDescent.unf_of :
     Unf := by
   intro E _ _ _ D P ω χ hC hω hχ M U

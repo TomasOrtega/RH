@@ -23,6 +23,17 @@ section
 variable {S S' : Scheme.{0}} {f : S' ⟶ S} {G B T : Over S} {G' B' : Over S'} [GrpObj G] [GrpObj B] [GrpObj G']
   [GrpObj B'] {φ : G'.left ⟶ G.left} {β : B'.left ⟶ B.left}
 
+/- English proof (translation)
+Establish `hc : r ≫ T.hom = (xe ≫ G'.hom) ≫ f`. Rewrite using `[Category.assoc, ← hG.1.w, reassoc_of% h₀, Over.w]`. Take `⟨eG, heG⟩` from `GlobalTheory.exists_mulEquiv_of_isGrpPullback hG _ _ hc`. Take `⟨eB, heB⟩` from `GlobalTheory.exists_mulEquiv_of_isGrpPullback hB _ _ hc`. Set `R : Over.mk (r ≫ T.hom) ⟶ T` to `Over.homMk r rfl`.
+
+Use `⟨_, R, fun x => eB (eG.symm (R ≫ x) ≫ q), ?_, fun x y => ?_, fun x => ?_, fun x b h => ?_, fun b h => ?_⟩` and prove the remaining obligations. Simplify using `only [MonObj.comp_one, map_one, MonObj.one_comp]`. Simplify using `only [MonObj.comp_mul, map_mul, MonObj.mul_comp]`. Simplify using `only [GrpObj.comp_inv, map_inv, GrpObj.inv_comp]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Use `(heB _).trans ((Category.assoc _ _ _).trans (h _ ?_))` and prove the remaining obligations. Use `(heG _).symm.trans ?_` and prove the remaining obligations. Rewrite using `[MulEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Set `xe' : Over.mk (xe ≫ G'.hom) ⟶ G'` to `Over.homMk xe rfl`.
+
+Establish `h₁ : eG xe' = R ≫ x₀` using `Over.OverMorphism.ext ((heG _).trans h₀)`. Establish `h₂ : eB (xe' ≫ q) = R ≫ b`. Rewrite using `[← h]`. Use `beta_reduce`. Rewrite using `[← h₁, MulEquiv.symm_apply_apply]`.
+
+Conclude with `(Category.assoc _ _ _).symm.trans ((heB (xe' ≫ q)).symm.trans (congrArg (fun z => z.left) h₂))`.
+-/
 theorem exists_imageHom (hG : IsGrpPullback G' G f φ) (hB : IsGrpPullback B' B f β) (q : G' ⟶ B') [IsMonHom q]
     {Z : Scheme.{0}} (r : Z ⟶ T.left) (xe : Z ⟶ G'.left) (x₀ : T ⟶ G) (h₀ : xe ≫ φ = r ≫ x₀.left) :
     ∃ (Y : Over S) (R : Y ⟶ T) (Φ : (T ⟶ G) → (Y ⟶ B)), Φ 1 = 1 ∧ (∀ x y, Φ (x * y) = Φ x * Φ y) ∧
@@ -54,6 +65,13 @@ theorem exists_imageHom (hG : IsGrpPullback G' G f φ) (hB : IsGrpPullback B' B 
 
 end
 
+/- English proof (translation)
+Introduce `V _ _ _ A G _ _ s t a W _ _ x x' b b'`. Establish `hG` using `fun e => isGrpPullback_pullback G (thick V (IsLocalRing.maximalIdeal V) e)`. Establish `hB` using `fun e => (a.b_pb e).1`. Establish `hq` using `fun e => (t.l e).Q.q_hom`. Use `⟨fun e Z r xe h => ?_, fun h₁ h₂ => ⟨fun e Z r xe h => ?_, fun e Z r xe h => ?_⟩⟩` and prove the remaining obligations.
+
+Take `⟨Y, R, Φ, e₁, -, -, -, k⟩` from `exists_imageHom (T := Over.mk (Spec.map (CommRingCat.ofHom (algebraMap V W)))) (hG e) (hB e) (t.l e).Q.q r xe _ h`. Conclude with `k 1 (by rw [e₁, MonObj.comp_one])`. Take `⟨Y, R, Φ, -, e₂, -, l, k⟩` from `exists_imageHom (T := Over.mk (Spec.map (CommRingCat.ofHom (algebraMap V W)))) (hG e) (hB e) (t.l e).Q.q r xe _ h`. Conclude with `k _ (by rw [e₂, l x b (h₁ e Z r), l x' b' (h₂ e Z r), MonObj.comp_mul])`. Take `⟨Y, R, Φ, -, -, e₃, l, k⟩` from `exists_imageHom (T := Over.mk (Spec.map (CommRingCat.ofHom (algebraMap V W)))) (hG e) (hB e) (t.l e).Q.q r xe _ h`.
+
+Conclude with `k _ (by rw [e₃, l x b (h₁ e Z r), GrpObj.comp_inv])`.
+-/
 theorem image_one_mul_inv : AllSet fun {V} _ _ _ {A} {G} _ _ s => ∀ (t : Tower s) (a : t.Alg) (W : Type) [CommRing W] [Algebra V W] (x x' : Over.mk (Spec.map (CommRingCat.ofHom (algebraMap V W))) ⟶ G) (b b' : Over.mk (Spec.map (CommRingCat.ofHom (algebraMap V W))) ⟶ a.B), (∀ (e : ℕ) (Z : Scheme.{0}) (r : Z ⟶ Spec (CommRingCat.of W)) (xe : Z ⟶ (thickObj V (IsLocalRing.maximalIdeal V) e G).left), xe ≫ (fstG _ e G).left = r ≫ ((1 : Over.mk (Spec.map (CommRingCat.ofHom (algebraMap V W))) ⟶ G)).left → xe ≫ (t.l e).Q.q.left ≫ a.b e = r ≫ ((1 : Over.mk (Spec.map (CommRingCat.ofHom (algebraMap V W))) ⟶ a.B)).left) ∧ ((∀ (e : ℕ) (Z : Scheme.{0}) (r : Z ⟶ Spec (CommRingCat.of W)) (xe : Z ⟶ (thickObj V (IsLocalRing.maximalIdeal V) e G).left), xe ≫ (fstG _ e G).left = r ≫ (x).left → xe ≫ (t.l e).Q.q.left ≫ a.b e = r ≫ (b).left) → (∀ (e : ℕ) (Z : Scheme.{0}) (r : Z ⟶ Spec (CommRingCat.of W)) (xe : Z ⟶ (thickObj V (IsLocalRing.maximalIdeal V) e G).left), xe ≫ (fstG _ e G).left = r ≫ (x').left → xe ≫ (t.l e).Q.q.left ≫ a.b e = r ≫ (b').left) → (∀ (e : ℕ) (Z : Scheme.{0}) (r : Z ⟶ Spec (CommRingCat.of W)) (xe : Z ⟶ (thickObj V (IsLocalRing.maximalIdeal V) e G).left), xe ≫ (fstG _ e G).left = r ≫ (x * x').left → xe ≫ (t.l e).Q.q.left ≫ a.b e = r ≫ (b * b').left) ∧ (∀ (e : ℕ) (Z : Scheme.{0}) (r : Z ⟶ Spec (CommRingCat.of W)) (xe : Z ⟶ (thickObj V (IsLocalRing.maximalIdeal V) e G).left), xe ≫ (fstG _ e G).left = r ≫ (x⁻¹).left → xe ≫ (t.l e).Q.q.left ≫ a.b e = r ≫ (b⁻¹).left)) := by
   intro V _ _ _ A G _ _ s t a W _ _ x x' b b'
   have hG := fun e => isGrpPullback_pullback G (thick V (IsLocalRing.maximalIdeal V) e)

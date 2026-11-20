@@ -28,6 +28,13 @@ section gen
 variable {k p ρ n : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Substitute `e` using the available equality. Rewrite `hz`, `hz'` using `[Formalism.FourierDecayAlt.P.Dx2.Tower.castV_rfl]`. Establish `hπ'' : ∀ y : B.Mat k ρ, Bj.π' y = B0.π' (U.embG k p ρ y)` using `fun y => by`. Rewrite using `[hπ' y, Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl, Formalism.FourierDecayAlt.P.Dx2.Tower.lev_eq_embG]`. Establish `hset : {x | x ∈ B.GV k (p + ρ) ∧ Dmin k (p + ρ) B0.z B0.z' x ⟨p, by omega⟩ ≠ 0} = {x | x ∈ B.GV k (p + ρ) ∧ U.DjU k p ρ x ≠ 0}`.
+
+Use extensionality with `x`. Use `show _ ∧ _ ↔ _ ∧ _`. Rewrite using `[Formalism.FourierDecayAlt.P.hat_z_minimum_degree k p ρ B0.z B0.z' x]`. Establish `hHc' : ContinuousOn H {x | x ∈ B.GV k (p + ρ) ∧ U.DjU k p ρ x ≠ 0}` using `hset ▸ hHc`. Establish `h` using `(Formalism.FourierDecayAlt.P.slice_integral_jacobian_factor hp σ d hd Bj B0 hz'.symm hπ'' hW' hW0' hNj hN0 g hg H hHc' R hR).2`.
+
+Establish `hF : D.castF (rfl : p + ρ = p + ρ) H = H` using `funext fun y => by`. Simplify using `only [D.castF, Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl]`. Establish `hV : ∀ v : Fin (2 * (p + ρ) + k + 1) → ℂ, D.castV (rfl : p + ρ = p + ρ).symm v = v` using `fun v => Formalism.FourierDecayAlt.P.Dx2.Tower.castV_rfl v`. Simplify using `only [Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl, hF, hV, ← hz, ← hz']`. Conclude with `h`.
+-/
 theorem jfSliceIntN (e : p + ρ = n) (hp : 1 ≤ p) (σ : Equiv.Perm (Fin p)) (d : Fin p → ℂ) (hd : ∀ i, d i ≠ 0)
     (Bj : B.RealPlaceData k ρ Wp Wq) (B0 : B.RealPlaceData k n Wp Wq)
     (hz : D.castV e (liftVec k p ρ Bj.z) = B0.z) (hz' : D.castV e (liftVec k p ρ Bj.z') = B0.z')
@@ -64,6 +71,9 @@ section pt
 
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Unfold `D.castF`. Rewrite using `[Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl, D.sliceAt, dif_pos hle]`. Both sides reduce to the same expression.
+-/
 theorem slice_eq {k r : ℕ} (z z' : Fin (2 * r + k + 1) → ℂ) (H : B.Mat k r → E) (a : C.LPt) (hle : D.ptSize a ≤ r)
     (h2 : r - D.ptSize a = r - D.ptSize a) (e : D.ptSize a + (r - D.ptSize a) = r) :
     D.castF h2 (D.sliceAt k r z z' H a) =
@@ -74,11 +84,17 @@ theorem slice_eq {k r : ℕ} (z z' : Fin (2 * r + k + 1) → ℂ) (H : B.Mat k r
   rw [Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl, D.sliceAt, dif_pos hle]
   rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Simplify using `only [Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl]`.
+-/
 theorem mMap_castM {k j a b : ℕ} (h : a = b) (Z : Matrix (Fin j) (Fin j) ℂ) (g : B.Mat k a) :
     U.mMap k j b Z (D.castM h g) = D.castM (by omega : j + a = j + b) (U.mMap k j a Z g) := by
   subst h
   simp only [Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl]
 
+/- English proof (translation)
+Rewrite using `[mMap_castM, Formalism.FourierDecayAlt.P.PBH.asm_castM_castM]`. Unfold `LevelPointCoordinates.x0 LevelPointCoordinates.zfull`. Establish `hM : D.castM (Formalism.FourierDecayAlt.P.PBH.hs' k j (r - (j + 1))) (U.mMap k j (1 + (r - (j + 1))) Z (U.mMap k 1 (r - (j + 1)) (Matrix.of fun _ _ => τ) γ)) = U.mMap k (j + 1) (r - (j + 1)) (U.blk2 Z 0 0 (Matrix.of fun _ _ => τ)) γ` using `Formalism.FourierDecayAlt.P.PBH.M2 (k := k) (ρ := r - (j + 1)) Z hZ τ hτ γ`. Rewrite using `[← hM, Formalism.FourierDecayAlt.P.PBH.asm_castM_castM]`.
+-/
 theorem pt_eq {k r j : ℕ} (hj : j + 1 ≤ r) (Z : Matrix (Fin j) (Fin j) ℂ) (hZ : IsUnit Z.det) (τ : ℂ) (hτ : τ ≠ 0)
     (γ : B.Mat k (r - (j + 1))) (e0 : j + (r - j) = r) (h1 : 1 + (r - (j + 1)) = r - j) :
     D.castM e0 (U.mMap k j (r - j) Z (D.castM h1 (U.mMap k 1 (r - (j + 1)) (Matrix.of fun _ _ => τ) γ))) =

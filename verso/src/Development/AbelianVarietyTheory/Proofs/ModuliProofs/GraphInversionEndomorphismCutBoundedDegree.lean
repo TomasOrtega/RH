@@ -26,17 +26,32 @@ namespace GlobalTheory.GraphCut
 abbrev graphLB {X : Scheme.{0}} (L : LB X) (f : X ⟶ X) (N : ℕ) : LB X :=
   LB.LinComb L (K := Fin 2) ![𝟙 X, f] ![(N : ℤ), (N : ℤ)]
 
+/- English proof (translation)
+Rewrite using `[cls_linComb hL, Fin.sum_univ_two]`. Simplify using `[pull_id]`.
+-/
 theorem cls_graphLB {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) (f : X ⟶ X) (N : ℕ) (h : (graphLB L f N).IsLB) :
     cls _ h = N • cls L hL + N • pull f (cls L hL) := by
   rw [cls_linComb hL, Fin.sum_univ_two]
   simp [pull_id]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Establish `h` using `Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom β)`. Conclude with `(congrArg (fun φ => φ.hom (u : o)) h).symm`.
+-/
 theorem unitS_spMap {o K : Type} [CommRing o] [CommRing K] (β : o →+* K) (u : oˣ) :
     unitS (spMap β) u = unitOn (Units.map β.toMonoidHom u) := by
   apply Units.ext
   have h := Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom β)
   exact (congrArg (fun φ => φ.hom (u : o)) h).symm
 
+/- English proof (translation)
+Establish `hi : ((𝟙 P.A)⁻¹ : P.A ⟶ P.A) = GrpObj.inv` using `by rw [Hom.inv_def, Category.id_comp]`. Rewrite using `[hi]`. Establish `hs : cls P.L P.isLB = pull (GrpObj.inv : P.A ⟶ P.A).left (cls P.L P.isLB)` using `(cls_eq_iff P.isLB (pull_isLB P.isLB _)).2 (GlobalTheory.T.principalPolarisation_volume_form_symmetric_ample H1 H2 K P).2.2.1`. Establish `hB : (graphLB P.L (GrpObj.inv : P.A ⟶ P.A).left N).IsLB` using `LB.isLB_linComb P.isLB _ _`. Establish `hc` using `cls_graphLB P.isLB _ N hB`.
+
+Rewrite `hc` using `[← hs]`. Use `⟨(cls_eq_iff hB (pull_isLB hB _)).1 ?_, fun e he => ?_⟩` and prove the remaining obligations. Rewrite using `[cls_pull hB, hc, map_add, map_nsmul, ← hs]`. Establish `h0 : SectionsHaveFiniteDimension P.A.hom (lbPow P.L (N * 2 * e)) ((N * 2 * e) ^ P.g)` using `GlobalTheory.PowSec.exists_basis_sections H1.globalSectionsRank K P (N * 2 * e) (Nat.succ_le_of_lt (by positivity))`. Rewrite using `[← mul_pow]`.
+
+Establish `h1 : (lbPow P.L (N * 2 * e)).IsLB` using `LB.isLB_linComb P.isLB _ _`. Establish `h2 : (lbPow (graphLB P.L (GrpObj.inv : P.A ⟶ P.A).left N) e).IsLB` using `LB.isLB_linComb hB _ _`. Use `((GlobalTheory.SecDim.lbPow_mul_and_pull_and_sectionsFiniteDim_iso_invariant K _ P.A.hom _ h1).2.1 _ h2 ((cls_eq_iff h1 h2).1 ?_)).1 _ h0` and prove the remaining obligations. Rewrite using `[cls_lbPow P.isLB, cls_lbPow hB, hc, ← add_nsmul, smul_smul]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vol_inv (H1 : Out.Laws) (H2 : Out.Laws2) (K : Type) [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K)) (N : ℕ)
     (hN : 1 ≤ N) :
     SymB (graphLB P.L ((𝟙 P.A)⁻¹ : P.A ⟶ P.A).left N) ∧
@@ -60,6 +75,17 @@ theorem vol_inv (H1 : Out.Laws) (H2 : Out.Laws2) (K : Type) [Field K] [IsAlgClos
     congr 1
     ring
 
+/- English proof (translation)
+Substitute `hk` using the available equality. Consider the cases of `i with`. Consider the case `none`. Use `⟨(N * 2) ^ g, Nat.pow_le_pow_left (Nat.mul_le_mul_left _ (Nat.le_add_right _ _)) _, ?_⟩` and prove the remaining obligations. Introduce `K _ _ β t f _ hf _`.
+
+Substitute `hf` using the available equality. Conclude with `vol_inv H1 H2 K t.pol N hN`. Consider the case `some i`. Take `⟨δ, hδ, H⟩` from `GlobalTheory.T.hilbertFunction_endomorphismGraph_of_torsionAction H1 H2 g N κ l m ((Mat i).map (Int.cast : ℤ → ZMod (l ^ m))) hN hl hlt`. Use `⟨δ, hδ.trans (Nat.pow_le_pow_left (Nat.mul_le_mul_left _ (by omega)) _), ?_⟩` and prove the remaining obligations.
+
+Introduce `K _ _ β t f hS hf hT`. Substitute `hf` using the available equality. Establish `hl0 : (l : K) ≠ 0`. Use `(b.unit.map β).ne_zero` as an intermediate fact. Rewrite `this` using `[map_natCast, Nat.cast_pow]`.
+
+Conclude with `fun h => this (by rw [h, zero_pow hm])`. Use `H K t.pol t.pt (Units.map β.toMonoidHom b.ζ) (t.act i) rfl hl0 (IsPrimitiveRoot.coe_units_iff.1 (b.prim K β)) hT (fun a a' => ?_) (t.hom i) ⟨hT.pos, (hS i).1⟩ (hS i).2` and prove the remaining obligations. Use `t.pairing a a'` as an intermediate fact. Rewrite `this` using `[unitS_spMap]`. Establish `e : unitOn ((Units.map β.toMonoidHom b.ζ) ^ Out.stdSymp g a a') = unitOn (Units.map β.toMonoidHom b.ζ) ^ Out.stdSymp g a a'` using `map_zpow (Units.map _) _ _`.
+
+Rewrite using `[e]`. Conclude with `this`.
+-/
 theorem exists_vol (H1 : Out.Laws) (H2 : Out.Laws2) (g : ℕ) (J : Type) (Mat : J → Matrix (Fin (2 * g)) (Fin (2 * g)) ℤ)
     (κ N l m k : ℕ) (hk : k = l ^ m) (hm : m ≠ 0) (hN : 1 ≤ N) (hl : l.Prime) (hlt : (N * (1 + κ)) ^ (2 * g) < k)
     (o : Type) [CommRing o] (b : TBase o k) (i : Option J) :
@@ -91,10 +117,16 @@ theorem exists_vol (H1 : Out.Laws) (H2 : Out.Laws2) (g : ℕ) (J : Type) (Mat : 
     rw [e]
     exact this
 
+/- English proof (translation)
+Rewrite using `[IsIso.comp_inv_eq, ← Over.comp_left, lift_snd]`.
+-/
 theorem lift_left_eq {S : Scheme.{0}} {A : Over S} [IsIso (snd (Over.mk (𝟙 S)) A).left] (y : Over.mk (𝟙 S) ⟶ A) :
     y.left ≫ inv (snd (Over.mk (𝟙 S)) A).left = (lift (𝟙 (Over.mk (𝟙 S))) y).left := by
   rw [IsIso.comp_inv_eq, ← Over.comp_left, lift_snd]
 
+/- English proof (translation)
+Consider the cases of `i with`. Consider the case `none => simp only [Option.elim_none, GrpObj.comp_inv, Category.comp_id, inv_pow]`. Consider the case `some i => haveI := t.hom i`. Conclude with `MonObj.pow_comp x m (t.act i)`.
+-/
 theorem pow_comp_graph {o : Type} [CommRing o] {S : Scheme.{0}} {g k : ℕ} {J : Type} {b : TBase o k} {s : S ⟶ Sp o}
     (t : TObj g k J b s) (i : Option J) {T : Over S} (x : T ⟶ t.A) (m : ℕ) :
     (x ^ m) ≫ i.elim (𝟙 t.A)⁻¹ t.act = (x ≫ i.elim (𝟙 t.A)⁻¹ t.act) ^ m := by
@@ -104,6 +136,31 @@ theorem pow_comp_graph {o : Type} [CommRing o] {S : Scheme.{0}} {g k : ℕ} {J :
     haveI := t.hom i
     exact MonObj.pow_comp x m (t.act i)
 
+/- English proof (translation)
+Introduce `H1 H2 g J _ Mat κ n hn hodd`. Establish `hn2 : 2 ≤ n` using `hn.two_le`. Use `haveI : NeZero ((n ^ 2) ^ 2) := ⟨by positivity⟩`. Take `⟨d, k₀, Hc⟩` from `GlobalTheory.T.abelianVariety_cut_out_bounded_degree_torsion H1 H2 g ((n ^ 2) ^ 2 * (2 + κ)) (Ix g ((n ^ 2) ^ 2) × Ix g ((n ^ 2) ^ 2))`. Use `⟨2 + k₀ + ((n ^ 2) ^ 2 * (1 + κ)) ^ (2 * g), fun j hj o _ b i => ?_⟩` and prove the remaining obligations.
+
+Establish `hjn : j < n ^ j` using `Nat.lt_pow_self hn2`. Establish `hdvd : n ^ 2 ∣ n ^ j` using `pow_dvd_pow n (by omega)`. Establish `hdvd2 : (n ^ 2) ^ 2 ∣ (n ^ j) ^ 2` using `pow_dvd_pow_of_dvd hdvd 2`. Use `haveI : NeZero ((n ^ j) ^ 2) := ⟨by positivity⟩`. Take `⟨δ, hδ, Hv⟩` from `exists_vol H1 H2 g J Mat κ ((n ^ 2) ^ 2) n (j * 2) ((n ^ j) ^ 2) (pow_mul n j 2).symm (by omega) (Nat.succ_le_of_lt (by positivity)) hn (lt_of_lt_of_le (lt_of_le_of_lt (by omega) hjn) (Nat.le_self_pow two_ne_zero _)) o b i`.
+
+Set `c : Ix g ((n ^ j) ^ 2) → Ix g ((n ^ 2) ^ 2)` to `fun a u => ZMod.castHom hdvd2 (ZMod ((n ^ 2) ^ 2)) (a u)`. Establish `hc : Function.Surjective c` using `fun a => by choose a' ha' using fun u => ZMod.castHom_surjective hdvd2 (a u)`. Conclude with `⟨a', funext ha'⟩`. Establish `hc' : ∀ a a', c a = c a' → ∀ u, (a u).val ≡ (a' u).val [MOD (n ^ 2) ^ 2]` using `fun a a' h u => by`. Use `congrFun h u` as an intermediate fact.
+
+Simplify using `only [c, ZMod.castHom_apply, ZMod.cast_eq_val] at this`. Conclude with `(ZMod.natCast_eq_natCast_iff _ _ _).1 this`. Take `⟨Q, HQ⟩` from `Hc δ hδ (Ix g ((n ^ j) ^ 2) × Ix g ((n ^ j) ^ 2)) (Prod.map c c) (hc.prodMap hc)`. Use `⟨Q, d, fun K _ _ β t σ p q f hS hf hE hpq => ?_⟩` and prove the remaining obligations. Take `⟨hiso, hLB, hVA, hpow, hper, hT, hsurj⟩` from `GlobalTheory.T.thetaSections_veryAmple_periodic H1 H2 o g (n ^ j) J b K β t (n ^ 2) σ hodd.pow hdvd (hn2.trans (Nat.le_self_pow two_ne_zero n)) hE`.
+
+Take `⟨hsym, hH⟩` from `Hv K β t f hS hf hT`. Establish `ha₂ : (lift (fst _ _) (snd (Over.mk (𝟙 (Sp K))) t.A ≫ f)).left ≫ (fst (Over.mk (𝟙 (Sp K))) t.A).left = (fst (Over.mk (𝟙 (Sp K))) t.A).left` using `by rw [← Over.comp_left, lift_fst]`. Establish `ha₂' : (lift (fst _ _) (snd (Over.mk (𝟙 (Sp K))) t.A ≫ f)).left ≫ (snd (Over.mk (𝟙 (Sp K))) t.A).left = (snd (Over.mk (𝟙 (Sp K))) t.A).left ≫ f.left` using `by rw [← Over.comp_left, lift_snd, Over.comp_left]`. Take `⟨M, th, hM, hMVA, hMiso, hid, hco, hMper⟩` from `GlobalTheory.ZV.GraphSystem.exists_product_system K _ _ _ _ _ (fst (Over.mk (𝟙 (Sp K))) t.A).left _ _ _ _ σ σ (𝟙 _) (lift (fst _ _) (snd (Over.mk (𝟙 (Sp K))) t.A ≫ f)).left hLB hLB hVA hVA inferInstance (Category.id_comp _) ha₂`. Set `e : (Over.mk (𝟙 (Sp K)) ⊗ t.A).left ≅ t.A.left` to `asIso (snd (Over.mk (𝟙 (Sp K))) t.A).left`.
+
+Establish `he : e.hom ≫ t.A.hom = (fst (Over.mk (𝟙 (Sp K))) t.A).left` using `((Over.w (snd (Over.mk (𝟙 (Sp K))) t.A)).trans (Over.w (fst (Over.mk (𝟙 (Sp K))) t.A)).symm).trans (Category.comp_id _)`. Establish `hB : (graphLB t.L f.left ((n ^ 2) ^ 2)).IsLB` using `LB.isLB_linComb t.isLB _ _`. Establish `hP : (lbPow t.L ((n ^ 2) ^ 2)).IsLB` using `LB.isLB_linComb t.isLB _ _`. Establish `c₁` using `(cls_eq_iff hLB (pull_isLB hP _)).2 hpow`. Rewrite `c₁` using `[cls_pull hP, cls_lbPow t.isLB]`.
+
+Establish `c₂` using `(cls_eq_iff (LB.isLB_div hM (pull_isLB hLB _)) (pull_isLB hLB _)).2 hMiso`. Rewrite `c₂` using `[cls_div hM (pull_isLB hLB _), cls_pull hLB, cls_pull hLB, pull_id, c₁, ← pull_comp, ha₂', pull_comp, sub_eq_iff_eq_add', ← map_add, map_nsmul, ← cls_graphLB t.isLB _ _ hB]`. Establish `c₃ : cls (M.pull e.inv) (pull_isLB hM _) = cls _ hB`. Rewrite using `[cls_pull hM, c₂, ← pull_comp]`. Conclude with `(congrArg (fun φ => pull φ (cls _ hB)) e.inv_hom_id).trans (pull_id _)`.
+
+Rewrite using `[hid, ← he]`. Use `HQ K t.pol rfl _ e M th (n ^ j) _ (fun h => t.lab h ^ n ^ j) _ hM ?_ (he ▸ hMVA) ?_ ?_ (by omega) ?_ hsurj ?_` and prove the remaining obligations. Use `(cls_eq_iff (pull_isLB hM _) (pull_isLB (pull_isLB hM _) _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_pull (pull_isLB hM _)]`. Conclude with `c₃.trans (((cls_eq_iff hB (pull_isLB hB _)).2 hsym).trans (congrArg (pull (GrpObj.inv : t.A ⟶ t.A).left) c₃.symm))`.
+
+Introduce `a a' h`. Conclude with `hMper a a' (hper _ _ (hc' _ _ (congrArg Prod.fst h))) (hper _ _ (hc' _ _ (congrArg Prod.snd h)))`. Introduce `m hm`. Establish `h1 : (lbPow (graphLB t.L f.left ((n ^ 2) ^ 2)) m).IsLB` using `LB.isLB_linComb hB _ _`. Establish `h2 : (lbPow M m).IsLB` using `LB.isLB_linComb hM _ _`.
+
+Establish `h3` using `((GlobalTheory.SecDim.lbPow_mul_and_pull_and_sectionsFiniteDim_iso_invariant K _ t.A.hom _ h1).2.2.2.2.2 _ e _).1 (hH m hm)`. Use `((GlobalTheory.SecDim.lbPow_mul_and_pull_and_sectionsFiniteDim_iso_invariant K _ _ _ (pull_isLB h1 e.hom)).2.1 _ h2 ((cls_eq_iff (pull_isLB h1 _) h2).1 ?_)).1 _ h3` and prove the remaining obligations. Rewrite using `[cls_pull h1, cls_lbPow hB, cls_lbPow hM, map_nsmul, c₂]`. Both sides reduce to the same expression. Use `(b.unit.map β).ne_zero` as an intermediate fact.
+
+Rewrite `this` using `[map_natCast, Nat.cast_pow]`. Conclude with `fun h => this (by rw [h, zero_pow two_ne_zero])`. Introduce `h`. Establish `hy : (t.lab h ^ n ^ j).left ≫ e.inv = (lift (𝟙 (Over.mk (𝟙 (Sp K)))) (t.lab h ^ n ^ j)).left` using `lift_left_eq _`. Establish `hy' : (lift (𝟙 (Over.mk (𝟙 (Sp K)))) (t.lab h ^ n ^ j)).left ≫ (lift (fst _ _) (snd (Over.mk (𝟙 (Sp K))) t.A ≫ f)).left = (lift (𝟙 (Over.mk (𝟙 (Sp K)))) ((t.lab h ≫ f) ^ n ^ j)).left`.
+
+Rewrite using `[← Over.comp_left, comp_lift, lift_fst, lift_snd_assoc, hf, pow_comp_graph]`. Use `hco K (lift (𝟙 (Over.mk (𝟙 (Sp K)))) (t.lab h ^ n ^ j)).left (p h) (q h) (by rw [Category.comp_id]; exact (hpq h).1) (by rw [hy']; exact (hpq h).2)` as an intermediate fact. Rewrite `this` using `[← hy]`. Conclude with `this`.
+-/
 theorem cutBy_graphIdeal : Out.Laws → Out.Laws2 → ∀ (g : ℕ) (J : Type) [Finite J] (Mat : J → Matrix (Fin (2 * g)) (Fin (2 * g)) ℤ) (κ n : ℕ), n.Prime → Odd n → ∃ j₀ : ℕ, ∀ j ≥ j₀, ∀ (o : Type) [CommRing o] (b : TBase o ((n ^ j) ^ 2)) (i : Option J), ∃ (Q : Polynomial ℚ) (d : ℕ), ∀ (K : Type) [Field K] [IsAlgClosed K] (β : o →+* K) (t : TObj g ((n ^ j) ^ 2) J b (spMap β)) σ (p q : Ix g ((n ^ j) ^ 2) → Ix g ((n ^ j) ^ 2) → K) (f : t.A ⟶ t.A), t.Shape Mat κ → f = i.elim (𝟙 t.A)⁻¹ t.act → t.Emb (n ^ 2) (Over.mk (𝟙 _)) σ → (∀ h, SecCoord _ σ (lift (𝟙 (Over.mk (𝟙 (Sp K)))) (t.lab h ^ n ^ j)).left (p h) ∧ SecCoord _ σ (lift (𝟙 (Over.mk (𝟙 (Sp K)))) ((t.lab h ≫ f) ^ n ^ j)).left (q h)) → CutBy (graphIdeal (fst (Over.mk (𝟙 (Sp K))) t.A).left _ σ (𝟙 _) _ σ (lift (fst _ _) (snd (Over.mk (𝟙 (Sp K))) t.A ≫ f)).left) Q d (fun h i => p h i.1 * q h i.2) := by
   intro H1 H2 g J _ Mat κ n hn hodd
   have hn2 : 2 ≤ n := hn.two_le

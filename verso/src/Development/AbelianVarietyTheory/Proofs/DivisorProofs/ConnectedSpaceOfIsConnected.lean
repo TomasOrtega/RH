@@ -19,11 +19,20 @@ def obj (A : AbVar K) {Y : Scheme.{0}} (π : Y ⟶ A.X.left) : Over (Sp K) := Ov
 
 def hom (A : AbVar K) {Y : Scheme.{0}} (π : Y ⟶ A.X.left) : obj A π ⟶ A.X := Over.homMk π rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem obj_left (A : AbVar K) {Y : Scheme.{0}} (π : Y ⟶ A.X.left) : (obj A π).left = Y := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem obj_hom (A : AbVar K) {Y : Scheme.{0}} (π : Y ⟶ A.X.left) :
     (obj A π).hom = π ≫ A.X.hom := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem hom_left (A : AbVar K) {Y : Scheme.{0}} (π : Y ⟶ A.X.left) : (hom A π).left = π := rfl
 
 end GlobalTheory.AV.EtCover

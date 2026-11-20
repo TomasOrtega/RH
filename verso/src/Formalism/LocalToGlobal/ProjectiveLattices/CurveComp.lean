@@ -24,6 +24,9 @@ def evCAlg (hG : GenFrEx Xo c) (hT : GenFromTest Xo c hG) (Z : Comp Xo c) : Rul 
     show evalAt _ _ (a • (1 : Rul Xo c)) (genFr hG Z) = _
     rw [evalAt_smul, evalAt_one _ _ _ (hT Z), mul_one]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma evCAlg_apply (hG : GenFrEx Xo c) (hT : GenFromTest Xo c hG) (Z : Comp Xo c) (f : Rul Xo c) :
     evCAlg hG hT Z f = evC hG Z f := rfl
 
@@ -39,6 +42,9 @@ abbrev RZ : Type := Kp X la N ⊗[X.Kl la] (X.Kl la ⊗[B.KO] Ω)
 def rzMap : Rp X la N →ₐ[Kp X la N] RZ X la N Ω :=
   Algebra.TensorProduct.map (AlgHom.id _ _) (Algebra.TensorProduct.map (AlgHom.id _ _) gF)
 
+/- English proof (translation)
+Use `show Algebra.TensorProduct.map (AlgHom.id _ _) (Algebra.TensorProduct.map (AlgHom.id _ _) gF) ((1 : Kp X la N) ⊗ₜ[X.Kl la] ((1 : X.Kl la) ⊗ₜ[B.KO] F)) = _`. Rewrite using `[Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.map_tmul]`. Both sides reduce to the same expression.
+-/
 lemma rzMap_emb (F : X.Forms) :
     rzMap X la N Ω gF (emb X la N F) = (1 : Kp X la N) ⊗ₜ ((1 : X.Kl la) ⊗ₜ gF F) := by
   show Algebra.TensorProduct.map (AlgHom.id _ _) (Algebra.TensorProduct.map (AlgHom.id _ _) gF)
@@ -53,6 +59,9 @@ abbrev RZs : Type := Localization.Away (rzMap X la N Ω gF (Formalism.MainNotion
 def lwZ : Lw X la w →+* RZs X la N Ω gF w :=
   Localization.awayMap (rzMap X la N Ω gF).toRingHom (Formalism.MainNotions.Gaps.EtaleWeightGaps.sec X la w 0)
 
+/- English proof (translation)
+Use `show (Localization.awayMap (rzMap X la N Ω gF).toRingHom (Formalism.MainNotions.Gaps.EtaleWeightGaps.sec X la w 0)) (algebraMap (Rp X la N) (Localization.Away (Formalism.MainNotions.Gaps.EtaleWeightGaps.sec X la w 0)) r) = _`. Conclude with `IsLocalization.map_eq _ _`.
+-/
 lemma lwZ_alg (r : Rp X la N) :
     lwZ X la N Ω gF w (algebraMap (Rp X la N) (Lw X la w) r) =
       algebraMap (RZ X la N Ω) (RZs X la N Ω gF w) (rzMap X la N Ω gF r) := by
@@ -67,6 +76,9 @@ def phiZ : ↥(Frac0 X la w) →ₐ[Kp X la N] RZs X la N Ω gF w where
     rw [IsScalarTower.algebraMap_apply (Kp X la N) (Rp X la N) (Lw X la w), lwZ_alg, AlgHom.commutes,
       ← IsScalarTower.algebraMap_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma phiZ_apply (x : ↥(Frac0 X la w)) : phiZ X la N Ω gF w x = lwZ X la N Ω gF w (x : Lw X la w) := rfl
 
 end Rec
@@ -79,6 +91,9 @@ variable {D : D7} {T : Top D} (j : ℕ)
 def formsEvR : AddMonoidAlgebra (T.R j) (Deg D j) →ₐ[T.Q.c.F] Om Z :=
   AddMonoidAlgebra.liftNCAlgHom (evCAlg hG hT Z) 1 (fun _ _ => Commute.all _ _)
 
+/- English proof (translation)
+Use `show AddMonoidAlgebra.liftNC (((evCAlg hG hT Z : T.R j →+* Om Z)) : T.R j →+ Om Z) ((1 : Multiplicative (Deg D j) →* Om Z) : Multiplicative (Deg D j) → Om Z) (AddMonoidAlgebra.single d f) = _`. Rewrite using `[AddMonoidAlgebra.liftNC_single]`. Simplify using `[evCAlg_apply]`.
+-/
 lemma formsEvR_single (d : Deg D j) (f : T.R j) :
     formsEvR j hG hT Z (AddMonoidAlgebra.single d f) = evC hG Z f := by
   show AddMonoidAlgebra.liftNC (((evCAlg hG hT Z : T.R j →+* Om Z)) : T.R j →+ Om Z)

@@ -6,6 +6,9 @@ open ValuativeRel Matrix GlobalTheory.SplitFlip GlobalTheory.FullRankCoinv Globa
 noncomputable section
 namespace GlobalTheory.NormalCore
 
+/- English proof (translation)
+Use extensionality with `X`. Simplify using `only [ebox, Set.mem_setOf_eq, Set.mem_preimage, of_apply, Valuation.mem_integer_iff, map_mul]`. Use `forall₂_congr fun i j => ?_` and prove the remaining obligations. Establish `h0 : 0 < valuation k ((ϖ ^ r i j : kˣ) : k)` using `zero_lt_iff.2 (by simp)`. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, inv_mul_le_iff₀ h0, mul_one]`.
+-/
 theorem ebox_eq_preimage {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {A D : Type} (ϖ : kˣ) (C : Matrix A D k) (r : A → D → ℕ) :
     ebox ϖ C r = (fun X : Matrix A D k => Matrix.of fun i j => (((ϖ ^ r i j)⁻¹ : kˣ) : k) * (X i j - C i j)) ⁻¹'
@@ -16,6 +19,11 @@ theorem ebox_eq_preimage {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace
   have h0 : 0 < valuation k ((ϖ ^ r i j : kˣ) : k) := zero_lt_iff.2 (by simp)
   rw [Units.val_inv_eq_inv_val, map_inv₀, inv_mul_le_iff₀ h0, mul_one]
 
+/- English proof (translation)
+Rewrite using `[ebox_eq_preimage]`. Use extensionality with `X`. Prove the components needed by the constructor for the conclusion. Introduce `hX`. Use `⟨_, hX, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `i j`. Simplify using `[← mul_assoc]`. Introduce and unpack `⟨Y, hY, rfl⟩`. Simplify `hY` using `[← mul_assoc]`.
+-/
 theorem ebox_eq_image {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {A D : Type} (ϖ : kˣ) (C : Matrix A D k) (r : A → D → ℕ) :
     ebox ϖ C r = (fun Y : Matrix A D k => Matrix.of fun i j => C i j + ((ϖ ^ r i j : kˣ) : k) * Y i j) ''
@@ -30,12 +38,18 @@ theorem ebox_eq_image {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
   · rintro ⟨Y, hY, rfl⟩
     simpa [← mul_assoc] using hY
 
+/- English proof (translation)
+Rewrite using `[ebox_eq_image]`. Conclude with `isCompact_intMatrix.image (by fun_prop)`.
+-/
 theorem isCompact_ebox {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {A D : Type} [Fintype A] [Fintype D] (ϖ : kˣ) (C : Matrix A D k) (r : A → D → ℕ) :
     IsCompact (ebox ϖ C r) := by
   rw [ebox_eq_image]
   exact isCompact_intMatrix.image (by fun_prop)
 
+/- English proof (translation)
+Take `⟨_, _⟩` from `GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Establish `: T2Space (Matrix A D k)` using `inferInstanceAs (T2Space (A → D → k))`. Use `⟨(isCompact_ebox ϖ C r).isClosed, ?_⟩` and prove the remaining obligations. Rewrite using `[ebox_eq_preimage]`. Conclude with `isOpen_intMatrix.preimage (by fun_prop)`.
+-/
 theorem isClopen_ebox (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (A D : Type) [Fintype A] [Fintype D] (ϖ : kˣ) (C : Matrix A D k) (r : A → D → ℕ) :
     IsClopen (ebox ϖ C r) := by

@@ -8,6 +8,21 @@ open scoped Formalism.Per NNReal
 
 namespace GlobalTheory.Per.RatSpan
 
+/- English proof (translation)
+Introduce `l _ P AI hT K V _ _ _ ρ hC y`. Establish `hreg` using `(tied_regular_and_onto l P AI hT).1`. Set `LL : FinExt l` to `⟨⊥, inferInstance⟩`. Set `e : (↥(LL.1)) ≃ₐ[ℚ_[l]] ℚ_[l]` to `IntermediateField.botEquiv ℚ_[l] (Om l)`. Use `letI iM : Module (↥(LL.1)) V := Module.compHom V e.toRingEquiv.toRingHom`.
+
+Use `haveI iT : IsScalarTower ℚ_[l] (↥(LL.1)) V := ⟨fun q x v => by show e (q • x) • v = q • (e x • v)`. Rewrite using `[show e (q • x) = q • e x from e.toLinearEquiv.map_smul q x, smul_eq_mul, mul_smul]⟩`. Use `haveI iF : FiniteDimensional (↥(LL.1)) V := Module.Finite.of_restrictScalars_finite ℚ_[l] (↥(LL.1)) V`. Set `ρ' : Representation (↥(LL.1)) (↥(GK K)) V` to `{ toFun := fun g => { toFun := ρ g, map_add' := (ρ g).map_add, map_smul' := fun x v => (ρ g).map_smul (e x) v } map_one' := by ext v; simp map_mul' := by intro g h; ext v; simp; rfl }`. Establish `hact : ∀ g (x : V ⊗[ℚ_[l]] P.R.B), actVB (P.PD K) ρ' g x = actVB (P.PD K) ρ g x`.
+
+Introduce `g x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => rfl`. Consider the case `add x z hx hz => rw [map_add, map_add, hx, hz]`.
+
+Establish `hmem : ∀ x : V ⊗[ℚ_[l]] P.R.B, x ∈ Dcris (P.PD K) ρ' ↔ x ∈ Dcris (P.PD K) ρ`. Introduce `x`. Simplify using `only [Dcris, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero, hact]`. Establish `hfr : ∀ (W : Type) [AddCommGroup W] [Module (↥(LL.1)) W] [Module ℚ_[l] W] [IsScalarTower ℚ_[l] (↥(LL.1)) W], Module.finrank (↥(LL.1)) W = Module.finrank ℚ_[l] W`. Introduce `W _ _ _ _`.
+
+Rewrite using `[← Module.finrank_mul_finrank ℚ_[l] (↥(LL.1)) W]`. Establish `: Module.finrank ℚ_[l] (↥(LL.1)) = 1` using `IntermediateField.finrank_bot`. Rewrite using `[this, one_mul]`. Set `eq : ↥(Dcris (P.PD K) ρ') ≃ₗ[ℚ_[l]] ↥(Dcris (P.PD K) ρ)` to `{ toFun := fun x => ⟨x.1, (hmem x.1).1 x.2⟩ invFun := fun x => ⟨x.1, (hmem x.1).2 x.2⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl left_inv := fun _ => rfl right_inv := fun _ => rfl }`. Establish `hC' : IsCrys (P.PD K) ρ'`.
+
+Unfold `IsCrys at hC ⊢`. Rewrite using `[hfr, hfr, eq.finrank_eq, hC]`. Take `⟨m, b, d, hd, hy⟩` from `TiedSpan.tied_crisSpan l P AI hT hreg K LL V ρ' hC' y`. Use `⟨m, b, d, fun i => (hmem _).1 (hd i), ?_⟩` and prove the remaining obligations. Rewrite using `[hy]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Proceed by induction on `d i using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v c => rfl`. Consider the case `add x z hx hz => rw [map_add, map_add, hx, hz]`.
+-/
 theorem crisSpan_rat : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K : FinExt l) (V : Type) [AddCommGroup V] [Module ℚ_[l] V] [FiniteDimensional ℚ_[l] V] (ρ : Representation ℚ_[l] ↥(GK K) V), IsCrys (P.PD K) ρ → ∀ y : V ⊗[ℚ_[l]] P.R.B, ∃ (m : ℕ) (b : Fin m → P.R.B) (d : Fin m → V ⊗[ℚ_[l]] P.R.B), (∀ i, d i ∈ Dcris (P.PD K) ρ) ∧ y = ∑ i, AlgebraTensorModule.map (LinearMap.id : V →ₗ[ℚ_[l]] V) (LinearMap.mulLeft ℚ_[l] (b i)) (d i) := by
   intro l _ P AI hT K V _ _ _ ρ hC y
   have hreg := (tied_regular_and_onto l P AI hT).1

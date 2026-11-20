@@ -15,6 +15,9 @@ variable {R A : Type} [CommRing R] [CommRing A] [Algebra R A] {ι : Type} [Finty
 noncomputable def prM (e : R) (he : e * e = e) (ι : Type) [Fintype ι] [DecidableEq ι] : Matrix ι ι A →* Matrix ι ι A :=
   _root_.UpperTheory.Reformulated.B.IdempotentMatrixMonoidHom.prM e he ι
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem prM_apply (e : R) (he : e * e = e) (M : Matrix ι ι A) : prM e he ι M = e • M + (1 - e) • 1 := rfl
 
 def prU (c : A →ₐ[R] A) (J : Matrix ι ι A) (e : R) (he : e * e = e) : UG c J →* UG c J :=
@@ -34,15 +37,28 @@ def prU (c : A →ₐ[R] A) (J : Matrix ι ι A) (e : R) (he : e * e = e) : UG c
       zero_smul, add_zero, zero_add, Matrix.one_mul, Matrix.mul_one, hg]
     rw [← add_smul, add_sub_cancel, one_smul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem prU_val (c : A →ₐ[R] A) (J : Matrix ι ι A) (e : R) (he : e * e = e) (g : UG c J) :
     (prU c J e he g).1.1 = e • g.1.1 + (1 - e) • 1 := rfl
 
+/- English proof (translation)
+Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Establish `h : Continuous (prM (A` using `A) e he ι) := (continuous_id.const_smul e).add continuous_const`. Conclude with `(Continuous.units_map _ h).comp continuous_subtype_val`.
+-/
 theorem continuous_prU [TopologicalSpace A] [ContinuousAdd A] [ContinuousConstSMul R A] (c : A →ₐ[R] A)
     (J : Matrix ι ι A) (e : R) (he : e * e = e) : Continuous (prU c J e he) := by
   refine Continuous.subtype_mk ?_ _
   have h : Continuous (prM (A := A) e he ι) := (continuous_id.const_smul e).add continuous_const
   exact (Continuous.units_map _ h).comp continuous_subtype_val
 
+/- English proof (translation)
+Set `I : Ideal A` to `Ideal.span {algebraMap R A e}`. Establish `h0 : Ideal.Quotient.mk I (algebraMap R A e) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span rfl)`. Establish `h1 : (Ideal.Quotient.mk I).mapMatrix (prM e he ι M) = 1`. Use extensionality with `i j`. Simplify using `only [prM_apply, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply]`.
+
+Simplify using `only [map_add, Algebra.smul_def, map_mul, map_sub, h0, map_one, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `h2 : (prM e he ι M).det - 1 ∈ I`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, RingHom.map_det, h1, Matrix.det_one, map_one, sub_self]`. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.1 h2`.
+
+Rewrite using `[← hy, Algebra.smul_def, mul_left_comm, ← map_mul, hu, map_zero, mul_zero]`.
+-/
 theorem smul_det_prM (e : R) (he : e * e = e) (M : Matrix ι ι A) {u : R} (hu : u * e = 0) :
     u • ((prM e he ι M).det - 1) = 0 := by
   let I : Ideal A := Ideal.span {algebraMap R A e}
@@ -58,11 +74,17 @@ theorem smul_det_prM (e : R) (he : e * e = e) (M : Matrix ι ι A) {u : R} (hu :
   obtain ⟨y, hy⟩ := Ideal.mem_span_singleton'.1 h2
   rw [← hy, Algebra.smul_def, mul_left_comm, ← map_mul, hu, map_zero, mul_zero]
 
+/- English proof (translation)
+Rewrite using `[prM_apply, prM_apply, Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_smul, h, Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem prM_mul {κ : Type} [Fintype κ] [DecidableEq κ] (e : R) (he : e * e = e) {M : Matrix ι ι A} {N : Matrix κ κ A}
     {D : Matrix ι κ A} (h : M * D = D * N) : prM e he ι M * D = D * prM e he κ N := by
   rw [prM_apply, prM_apply, Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.smul_mul, Matrix.mul_smul,
     Matrix.mul_smul, h, Matrix.one_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Rewrite `h` using `[smul_sub, sub_eq_zero]`. Rewrite using `[prM_apply, ← Matrix.fromBlocks_one, Matrix.fromBlocks_smul, Matrix.fromBlocks_smul, Matrix.fromBlocks_add, ← add_smul e (1 - e) (1 : Matrix ι ι A), ← h]`. Simplify using `only [← add_smul, add_sub_cancel, one_smul]`.
+-/
 theorem prM_fromBlocks (e : R) (he : e * e = e) {M : Matrix ι ι A} (h : (1 - e) • (M - 1) = 0) :
     prM e he (ι ⊕ ι) (Matrix.fromBlocks M 0 0 1) = Matrix.fromBlocks M 0 0 1 := by
   rw [smul_sub, sub_eq_zero] at h
@@ -80,8 +102,16 @@ variable (F) in
 
 def eInf : AF F := ((1 : InfiniteAdeleRing F), (0 : FiniteAdeleRing (𝓞 F) F))
 
+/- English proof (translation)
+The claim follows from `Prod.ext (one_mul (1 : InfiniteAdeleRing F)) (zero_mul (0 : FiniteAdeleRing (𝓞 F) F))`.
+-/
 theorem eInf_mul : eInf F * eInf F = eInf F := Prod.ext (one_mul (1 : InfiniteAdeleRing F)) (zero_mul (0 : FiniteAdeleRing (𝓞 F) F))
 
+/- English proof (translation)
+Establish `h0 : u.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact hu)`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show u.1 * 1 = 0`. Rewrite using `[h0, zero_mul]`. Use `show u.2 * 0 = 0`.
+
+Rewrite using `[mul_zero]`.
+-/
 theorem mul_eInf {u : AF F} (hu : evI F u = 0) : u * eInf F = 0 := by
   have h0 : u.1 = 0 := (InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact hu)
   refine Prod.ext ?_ ?_
@@ -90,10 +120,52 @@ theorem mul_eInf {u : AF F} (hu : evI F u = 0) : u * eInf F = 0 := by
   · show u.2 * 0 = 0
     rw [mul_zero]
 
+/- English proof (translation)
+Use `show InfiniteAdeleRing.ringEquiv_mixedSpace F (1 - 1) = 0`. Rewrite using `[sub_self, map_zero]`.
+-/
 theorem evI_one_sub_eInf : evI F (1 - eInf F) = 0 := by
   show InfiniteAdeleRing.ringEquiv_mixedSpace F (1 - 1) = 0
   rw [sub_self, map_zero]
 
+/- English proof (translation)
+Take `⟨-, dd, omd, hdd, ⟨-, hS, hR⟩, hres⟩` from `h`. Take `⟨-, dd₁, omd₁, hdd₁, ⟨-, hS₁, hR₁⟩, hres₁⟩` from `h₁`. Establish `hee : ∀ w, dd₁.e w = dd.e w` using `fun w => by`. Rewrite using `[← Matrix.fromCols_toCols w, hdd, hdd₁]`. Establish `hrho : ∀ w, dd₁.rho ψ w = dd.rho ψ w` using `fun w => by simp only [Darboux.rho, hee]`.
+
+Establish `inv_mul : ∀ (p : UG (cA σ) (dbl (incM F JB))) φ, omd p (omd p⁻¹ φ) = φ` using `fun p φ => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Take `⟨φz, hφz, hφz0⟩` from `GlobalTheory.T.exists_adelicSchwartz_ne_zero_at_origin F (κ ⊕ κ)`. Establish `key : ∀ p, ∃ c : ℂ, ∀ φ ∈ schA F (κ ⊕ κ), omd₁ p φ = c • omd p φ` using `fun p => by`. Take `⟨c, hc⟩` from `scalar_of_commute ψ hψ (omd p⁻¹ * omd₁ p) (fun l hl => by`.
+
+Rewrite using `[Module.End.mul_eq_comp, ← LinearMap.comp_assoc]`. Conclude with `hS₁.adm p _ (hS.adm p⁻¹ l hl))`. Use the proof step `(fun w φ hφ => by`. Take `⟨w', rfl⟩` from `dd.e.surjective w`. Establish `e1 : schr ψ (dd.e w') = dd.rho ψ w'` using `rfl`.
+
+Rewrite using `[e1, Module.End.mul_apply, Module.End.mul_apply]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨c, fun φ hφ => ?_⟩` and prove the remaining obligations. Use `congrArg (omd p) (hc φ hφ)` as an intermediate fact. Rewrite `this` using `[Module.End.mul_apply, inv_mul, map_smul]`. Then use the resulting hypothesis.
+
+Use `choose cf hcf using key`. Establish `hsp : ∀ p, ∀ φ ∈ schA F (κ ⊕ κ), omd p φ ∈ schA F (κ ⊕ κ)` using `fun p φ hφ => hS.pres p φ hφ`. Establish `huniq : ∀ p (c : ℂ), (∀ φ ∈ schA F (κ ⊕ κ), omd₁ p φ = c • omd p φ) → c = cf p` using `fun p c hc => by`. Establish `h1` using `hc _ (hsp p⁻¹ φz hφz)`. Rewrite `h1` using `[hcf p _ (hsp p⁻¹ φz hφz), inv_mul]`.
+
+Establish `h2` using `congrFun h1 0`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at h2`. Conclude with `(mul_right_cancel₀ hφz0 h2).symm`. Establish `hmul : ∀ p q, cf (p * q) = cf p * cf q` using `fun p q => (huniq (p * q) _ fun φ hφ => by`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hcf q φ hφ, map_smul, hcf p _ (hsp q φ hφ), smul_smul, mul_comm]).symm`.
+
+Establish `hone : cf 1 = 1` using `(huniq 1 1 fun φ _ => by simp).symm`. Set `cM : UG (cA σ) (dbl (incM F JB)) →* ℂ` to `{ toFun := cf, map_one' := hone, map_mul' := hmul }`. Set `c` to `cM.toHomUnits`. Establish `hcv : ∀ p, ((c p : ℂˣ) : ℂ) = cf p` using `fun p => rfl`. Establish `hcont_cf : Continuous cf`.
+
+Use `continuous_iff_continuousAt.2 fun p₀ => ?_` and prove the remaining obligations. Establish `hφ` using `hsp p₀⁻¹ φz hφz`. Establish `hf` using `hS.cont _ (evalZero_mem_adelicSchwartzAdmittedForms (κ ⊕ κ)) _ hφ`. Establish `hf₁` using `hS₁.cont _ (evalZero_mem_adelicSchwartzAdmittedForms (κ ⊕ κ)) _ hφ`. Simplify using `only [LinearMap.proj_apply] at hf hf₁`.
+
+Establish `h0 : omd p₀ (omd p₀⁻¹ φz) 0 ≠ 0` using `by rw [inv_mul]; exact hφz0`. Use `(hf₁.continuousAt.div hf.continuousAt h0).congr ?_` and prove the remaining obligations. Use `filter_upwards [hf.continuousAt.eventually_ne h0] with p hp`. Use `show omd₁ p _ 0 / omd p _ 0 = cf p`. Rewrite using `[hcf p _ hφ]`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Establish `hcont : Continuous c`. Use `Units.continuous_iff.2 ⟨hcont_cf, ?_⟩` and prove the remaining obligations. Establish `: (fun p => ((c p)⁻¹ : ℂˣ).val) = fun p => (cf p)⁻¹` using `funext fun p => by`.
+
+Rewrite using `[Units.val_inv_eq_inv_val, hcv]`. Rewrite using `[this]`. Conclude with `hcont_cf.inv₀ fun p => by rw [← hcv]; exact (c p).ne_zero`. Take `⟨l, hl, hlinv, φ₀, hφ₀, hl0⟩` from `GlobalTheory.T.exists_diagonalLagrangian_invariant_form F ψ κ`. Establish `hP : ∀ (p : UG (cA σ) (dbl (incM F JB))) (t : GL (Fin b) (AE F E)), ((p : GL (Fin b ⊕ Fin b) (AE F E)) : Matrix _ _ (AE F E)) * diagCols (Fin b) = diagCols (Fin b) * t.1 → χ (Matrix.GeneralLinearGroup.det t) = χ₁ (Matrix.GeneralLinearGroup.det t) → c p = 1` using `fun p t hpt hχt => by`.
+
+Establish `hφ` using `hsp p⁻¹ φ₀ hφ₀`. Establish `e1` using `hR l hl (fun z φ hφ => by`. Use `hlinv (d.e z).1 (d.e z).2 φ hφ using 2` and compare the differences between its conclusion and the goal. Conclude with `congrFun (dd_rho_diag hdd ψ z) φ) p t hpt _ hφ`. Establish `e2` using `hR₁ l hl (fun z φ hφ => by`.
+
+Use `hlinv (d.e z).1 (d.e z).2 φ hφ using 2` and compare the differences between its conclusion and the goal. Conclude with `congrFun (dd_rho_diag hdd₁ ψ z) φ) p t hpt _ hφ`. Rewrite `e1` using `[hχt, ← e2, hcf p _ hφ, inv_mul, map_smul, smul_eq_mul]`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[hcv, Units.val_one]`.
+
+Conclude with `mul_right_cancel₀ hl0 (by rw [one_mul]; exact e1.symm)`. Use `haveI : ContinuousAdd (AE F E) := IsModuleTopology.toContinuousAdd (AF F) (AE F E)`. Use `haveI : ContinuousSMul (AF F) (AE F E) := IsModuleTopology.toContinuousSMul (AF F) (AE F E)`. Set `π` to `prU (cA σ) (dbl (incM F JB)) (eInf F) eInf_mul`. Establish `hc1` using `GlobalTheory.T.doubledUnitary_character_trivial_of_siegel F E σ hσ b JB ε hJ hdet (c.comp π) (hcont.comp (continuous_prU _ _ _ _)) (fun p t hpt => by`.
+
+Use `hP (π p) (Units.map (prM (eInf F) eInf_mul (Fin b)) t) ?_ (hχ _ fun u hu => ?_)` and prove the remaining obligations. Conclude with `prM_mul (eInf F) eInf_mul hpt`. Conclude with `smul_det_prM (eInf F) eInf_mul t.1 (mul_eInf hu))`. Introduce `g hg Φ hΦ`. Take `⟨gd, hgd⟩` from `GlobalTheory.T.exists_unitaryDoubled_blockDiag_one (AF F) (AE F E) (cA σ) (Fin b) (incM F JB) g`.
+
+Establish `hπ : π gd = gd`. Use `Subtype.ext (Units.ext ?_)` and prove the remaining obligations. Establish `h0 : (1 - eInf F) • (g.1.1 - 1) = 0` using `hg _ evI_one_sub_eInf`. Use `show prM (eInf F) eInf_mul _ gd.1.1 = gd.1.1`. Rewrite using `[hgd]`.
+
+Conclude with `prM_fromBlocks _ _ h0`. Establish `hcf1 : cf gd = 1`. Use `congrArg (fun f => f gd) hc1` as an intermediate fact. Simplify using `only [MonoidHom.comp_apply, hπ, MonoidHom.one_apply] at this`. Rewrite using `[← hcv, this]`.
+
+Both sides reduce to the same expression. Take `⟨φ₂, hφ₂, hφ₂0⟩` from `GlobalTheory.T.exists_adelicSchwartz_ne_zero_at_origin F κ`. Establish `hb` using `GlobalTheory.T.productFunctionOnSumCoords_mem_adelicSchwartzSpace F κ κ Φ hΦ φ₂ hφ₂`. Establish `e` using `hres g gd hgd Φ hΦ φ₂ hφ₂`. Establish `e₁` using `hres₁ g gd hgd Φ hΦ φ₂ hφ₂`.
+
+Rewrite `e₁` using `[hcf gd _ hb, hcf1, one_smul, e]`. Use function extensionality and compare the values at `x`. Use `congrFun e₁ (Sum.elim x 0)` as an intermediate fact. Simplify using `only [boxFun, Sum.elim_comp_inl, Sum.elim_comp_inr] at this`. Conclude with `mul_right_cancel₀ hφ₂0 this`.
+-/
 theorem member_arch_eq (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) {a b : ℕ} (JA : Matrix (Fin a) (Fin a) E)
     (JB : Matrix (Fin b) (Fin b) E) (ε : ℤˣ) (hJ : ∀ i j, σ (JB j i) = ((ε : ℤ) : E) * JB i j) (hdet : JB.det ≠ 0)
     (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) {κ : Type} [Fintype κ]
@@ -207,6 +279,15 @@ theorem member_arch_eq (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) {a b : ℕ} (
   simp only [boxFun, Sum.elim_comp_inl, Sum.elim_comp_inr] at this
   exact mul_right_cancel₀ hφ₂0 this
 
+/- English proof (translation)
+Introduce `Φ hΦ`. Take `⟨hB, ⟨d', hd', hA⟩, -⟩` from `h`. Take `⟨hB₁, ⟨d'₁, hd'₁, hA₁⟩, -⟩` from `h₁`. Establish `eW : ∀ i j, σ (W.J j i) = (((-1 : ℤˣ) : ℤ) : E) * W.J i j` using `fun i j => by simp [hW i j]`. Establish `eX : ∀ i j, σ (X.J j i) = (((1 : ℤˣ) : ℤ) : E) * X.J i j` using `fun i j => by simp [hX i j]`.
+
+Establish `uB` using `member_arch_eq σ hσ X.J W.J (-1) eW hWd ψ hψ M.co χX χX₁ hχX _ _ hB hB₁`. Establish `he : d'₁.e = d'.e` using `LinearEquiv.ext fun y => by rw [← Matrix.transpose_transpose y, hd'₁, hd']`. Take `⟨e₁, f₁⟩` from `d'₁`. Take `⟨e₂, f₂⟩` from `d'`. Simplify using `only at he`.
+
+Substitute `he` using the available equality. Establish `uA` using `member_arch_eq σ hσ W.J X.J 1 eX hXd ψ hψ _ χW χW₁ hχW _ _ hA hA₁`. Establish `hx : ((g, k) : UA σ X.J × UA σ W.J) = (g, 1) * (1, k)` using `by simp`. Rewrite using `[hx, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply]`. Establish `h1 : om (1, k) Φ = om₁ (1, k) Φ` using `uB k hk Φ hΦ`.
+
+Rewrite using `[h1]`. Conclude with `uA g hg _ (hB₁.1.pres k Φ hΦ)`.
+-/
 theorem weil_arch_eq {σ : E →ₐ[F] E} (hσ : IsCMExt F E σ) {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W}
     {ψ : AddChar (AF F) ℂ} {χX χW χX₁ χW₁ : Chr F E} (hψ : IsStd ψ) (hX : ∀ i j, σ (X.J j i) = X.J i j) (hXd : X.J.det ≠ 0)
     (hW : ∀ i j, σ (W.J j i) = -W.J i j) (hWd : W.J.det ≠ 0)

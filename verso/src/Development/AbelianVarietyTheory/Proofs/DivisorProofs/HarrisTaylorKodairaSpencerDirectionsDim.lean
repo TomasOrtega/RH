@@ -11,6 +11,9 @@ open GlobalTheory.UPel.Sm GlobalTheory.Cris GlobalTheory.DeRham
 
 namespace GlobalTheory.HTCount
 
+/- English proof (translation)
+Establish `htr : (tr : E) = algebraMap k E r + algebraMap k E r'` using `by rw [← map_add, hs, map_intCast]`. Establish `hnm : (nm : E) = algebraMap k E r * algebraMap k E r'` using `by rw [← map_mul, hp, map_intCast]`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, _root_.mul_one, _root_.mul_one, sub_mul, mul_sub, mul_sub, hX, htr, hnm, ← Algebra.commutes r' X]`. Use `noncomm_ring`.
+-/
 theorem sub_smul_mul_sub_smul_eq_zero_of_quadratic {k E : Type*} [Field k] [Ring E] [Algebra k E] (X : E) (tr nm : ℤ) (r r' : k)
     (hX : X * X = (tr : E) * X - (nm : E)) (hs : r + r' = tr) (hp : r * r' = nm) :
     (X - r • (1 : E)) * (X - r' • (1 : E)) = 0 := by
@@ -24,6 +27,31 @@ end GlobalTheory.HTCount
 
 namespace GlobalTheory.HTCount
 
+/- English proof (translation)
+Introduce `p _ D R _ b N hN hNp k _ _ t o₀ β ht φ hφ`. Take `⟨hfd, hdim, hskew, hiso⟩` from `GlobalTheory.T.harrisTaylor_pairing_skew_hodge_lagrangian p D R b N hN hNp k t o₀ β ht φ hφ`. Establish `hnd` using `GlobalTheory.T.harrisTaylor_polarisation_pairing_nondegenerate p D R b N hN hNp k t o₀ β ht φ hφ`. Establish `hadj` using `GlobalTheory.T.harrisTaylor_crystal_action_adjoint p D R b N hN hNp k t o₀ β ht φ hφ`. Establish `hcount` using `GlobalTheory.T.harrisTaylor_rho_part_deformation_dim p D R b N hN hNp k t o₀ β ht`.
+
+Use `haveI := hfd`. Establish `hstab : ∀ a, ∀ x ∈ Fil o₀.A, crysAct o₀ a x ∈ Fil o₀.A` using `fun a x hx => by haveI := o₀.act.hom a`. Rewrite using `[crysAct_apply]`. Conclude with `push_mem_Fil _ hx`. Establish `hcomm : ∀ a, crysAct o₀ (algebraMap (𝓞 D.F) D.O D.ω) * crysAct o₀ a = crysAct o₀ a * crysAct o₀ (algebraMap (𝓞 D.F) D.O D.ω)` using `fun a => by`.
+
+Rewrite using `[← map_mul, ← map_mul, Algebra.commutes]`. Establish `hsurj : Function.Surjective (fun c : D.O => (D.star c).unop)` using `fun a => ⟨(D.star a).unop, D.star_star a⟩`. Establish `hbar : D.bar D.ω = (D.tr : 𝓞 D.F) - D.ω` using `by rw [← D.tr_eq]; ring`. Establish `hωsq : D.ω * D.ω = (D.tr : 𝓞 D.F) * D.ω - (D.nm : 𝓞 D.F)`. Rewrite using `[← D.tr_eq, ← D.nm_eq]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hw2 : algebraMap (𝓞 D.F) D.O D.ω * algebraMap (𝓞 D.F) D.O D.ω = (D.tr : D.O) * algebraMap (𝓞 D.F) D.O D.ω - (D.nm : D.O)`. Rewrite using `[← map_mul, hωsq, map_sub, map_mul, map_intCast, map_intCast]`. Establish `hstw : (D.star (algebraMap (𝓞 D.F) D.O D.ω)).unop = (D.tr : D.O) - algebraMap (𝓞 D.F) D.O D.ω`. Rewrite using `[D.star_F, MulOpposite.unop_op, hbar, map_sub, map_intCast]`.
+
+Establish `hrr : β b.ρ * ((D.tr : k) - β b.ρ) = (D.nm : k)`. Use `congrArg β b.ρ_root` as an intermediate fact. Simplify using `only [map_add, map_sub, map_mul, map_pow, map_intCast, map_zero] at this`. Take the linear combination `-this`. Establish `hsum : β b.ρ + ((D.tr : k) - β b.ρ) = (D.tr : k)` using `by ring`.
+
+Establish `hdisc : ((D.tr ^ 2 - 4 * D.nm : ℤ) : k) ≠ 0`. Establish `hp : p.Prime` using `Fact.out`. Establish `hnd : ¬ p ∣ (D.tr ^ 2 - 4 * D.nm).natAbs` using `fun h => D.disc_p (Int.ofNat_dvd_left.2 h)`. Establish `hcop : (D.tr ^ 2 - 4 * D.nm).natAbs.Coprime p` using `Nat.coprime_comm.1 ((Nat.Prime.coprime_iff_not_dvd hp).2 hnd)`. Establish `hu` using `(b.unit _ hcop).map β`.
+
+Rewrite `hu` using `[map_natCast]`. Introduce `h0`. Break down `Int.natAbs_eq (D.tr ^ 2 - 4 * D.nm) with e | e` into its components or cases. Rewrite `h0` using `[e, Int.cast_natCast]`. Conclude with `hu.ne_zero h0`.
+
+Rewrite `h0` using `[e, Int.cast_neg, Int.cast_natCast, neg_eq_zero]`. Conclude with `hu.ne_zero h0`. Establish `hne : β b.ρ ≠ (D.tr : k) - β b.ρ`. Introduce `h`. Apply `hdisc` to reduce the goal to its premises.
+
+Use `push_cast`. Take the linear combination `(2 * β b.ρ - (D.tr : k)) * h + 4 * hrr`. Establish `hZ : lieZ o₀ β ≤ LinearMap.range (crysAct o₀ (algebraMap (𝓞 D.F) D.O D.ω) - ((D.tr : k) - β b.ρ) • 1)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `z ⟨n, lam, c, y, ⟨y₀, rfl⟩, -, rfl⟩`.
+
+Use `Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ ⟨crysAct o₀ (algebraMap (𝓞 D.F) D.O (c l)) y₀, ?_⟩` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply]`. Use `congr 1`. Rewrite using `[sub_mul, mul_sub, hcomm, smul_mul_assoc, mul_smul_comm, _root_.one_mul, _root_.mul_one]`. Generalize the expression as in `lieZ o₀ β = Z at hZ hcount ⊢`.
+
+Generalize the expression as in `crysAct o₀ = ρ at hstab hcomm hadj hcount hZ ⊢`. Generalize the expression as in `algebraMap (𝓞 D.F) D.O D.ω = w at hw2 hstw hcomm hcount hZ`. Establish `hq` using `sub_smul_mul_sub_smul_eq_zero_of_quadratic (ρ w) D.tr D.nm (β b.ρ) ((D.tr : k) - β b.ρ) (by rw [← map_mul, hw2, map_sub, map_mul, map_intCast, map_intCast]) hsum hrr`. Establish `hwadj : ∀ x y, φ (ρ w x) y = φ x ((β b.ρ + ((D.tr : k) - β b.ρ)) • y - ρ w y)` using `fun x y => by`. Rewrite using `[hadj, hstw, map_sub, map_intCast, hsum, LinearMap.sub_apply, Module.End.intCast_apply, Int.cast_smul_eq_zsmul]`.
+
+Conclude with `GlobalTheory.T.kodairaSpencer_skew_dim_semisimple_two_roots k (HdR o₀.A) D.O ρ (fun c => (D.star c).unop) φ (Fil o₀.A) Z w (β b.ρ) ((D.tr : k) - β b.ρ) _ hsurj hadj hskew hnd hiso hdim hstab hcomm hq hne hwadj hZ hcount`.
+-/
 theorem ksDim_at_point : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : GlobalTheory.UPel.HT.Base D R) (N : ℕ), 3 ≤ N → N.Coprime p → ∀ (k : Type) [Field k] [IsAlgClosed k] (t : Sp k ⟶ Sp R) (o₀ : GlobalTheory.UPel.HT.Obj b N t) (β : R →+* k), t = spMap β → ∀ φ : LinearMap.BilinForm k (HdR o₀.A), GlobalTheory.AbDual.IsCorrForm (dp0 k) (𝟙 _) o₀.A o₀.A o₀.P φ → KSDim (GlobalTheory.HTCount.crysAct o₀) φ (Fil o₀.A) (GlobalTheory.HTCount.lieZ o₀ β) (D.a * (D.n - 1)) := by
   intro p _ D R _ b N hN hNp k _ _ t o₀ β ht φ hφ
   obtain ⟨hfd, hdim, hskew, hiso⟩ := GlobalTheory.T.harrisTaylor_pairing_skew_hodge_lagrangian p D R b N hN hNp k t o₀ β ht φ hφ

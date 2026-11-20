@@ -13,6 +13,9 @@ def IsSmoothL2 (ε : Fin n → Bool) (F : Matrix (Fin n) (Fin n) ℂ → ℂ) : 
   Formalism.REAL.SmoothOnG ε F ∧ ∀ w : List (Fin n × Fin n),
     MemLp (fun g : Formalism.REAL.UJ ε => Formalism.REAL.Eword ε w F (Formalism.MainNotions.S.umat g)) 2 (Formalism.REAL.muG ε)
 
+/- English proof (translation)
+The claim follows from `| [] => rfl | q :: w => by simp only [List.cons_append, Formalism.REAL.Eword] rw [eword_append_Eab ε F p w]`.
+-/
 theorem eword_append_Eab (ε : Fin n → Bool) (F : Matrix (Fin n) (Fin n) ℂ → ℂ) (p : Fin n × Fin n) :
     ∀ w : List (Fin n × Fin n),
       Formalism.REAL.Eword ε w (Formalism.REAL.Eab ε p.1 p.2 F) = Formalism.REAL.Eword ε (w ++ [p]) F
@@ -21,6 +24,9 @@ theorem eword_append_Eab (ε : Fin n → Bool) (F : Matrix (Fin n) (Fin n) ℂ �
       simp only [List.cons_append, Formalism.REAL.Eword]
       rw [eword_append_Eab ε F p w]
 
+/- English proof (translation)
+Use `⟨Formalism.REAL.smooth_lie_derivative a b hF.1, fun w => ?_⟩` and prove the remaining obligations. Establish `h` using `eword_append_Eab ε F (a, b) w`. Simplify using `only at h`. Rewrite using `[h]`. Conclude with `hF.2 _`.
+-/
 theorem IsSmoothL2.Eab {ε : Fin n → Bool} {F : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF : IsSmoothL2 ε F)
     (a b : Fin n) : IsSmoothL2 ε (Formalism.REAL.Eab ε a b F) := by
   refine ⟨Formalism.REAL.smooth_lie_derivative a b hF.1, fun w => ?_⟩
@@ -29,6 +35,13 @@ theorem IsSmoothL2.Eab {ε : Fin n → Bool} {F : Matrix (Fin n) (Fin n) ℂ →
   rw [h]
   exact hF.2 _
 
+/- English proof (translation)
+Establish `hint : ∀ w ∈ W, Integrable (fun g : Formalism.REAL.UJ ε => Real.exp (2 * (0:ℝ) * Formalism.REAL.hh (Formalism.REAL.toM g)) * ‖w (Formalism.REAL.toM g)‖ ^ 2) (Formalism.REAL.muG ε)`. Introduce `w hw`. Use `(hL2 w hw).integrable_norm_pow (by norm_num)` as an intermediate fact. Simplify using `using this`. Establish `key` using `r0bG n ε W c 0 hW le_rfl hsm hK hc hint`.
+
+Introduce `f hf`. Use `⟨hsm f hf, fun w => ?_⟩` and prove the remaining obligations. Take `⟨hs, hi, -⟩` from `key w [] f f hf hf`. Establish `hae : AEStronglyMeasurable (fun g : Formalism.REAL.UJ ε => Formalism.REAL.Eword ε w f (Formalism.MainNotions.S.umat g)) (Formalism.REAL.muG ε)` using `(Formalism.REAL.continuous_smooth_on_group_eval hs).aestronglyMeasurable`. Rewrite using `[memLp_two_iff_integrable_sq_norm hae]`.
+
+Simplify using `using hi`.
+-/
 theorem isSmoothL2_of_casimir_eigen (ε : Fin n → Bool) (W : Submodule ℂ (Matrix (Fin n) (Fin n) ℂ → ℂ)) (c : ℂ)
     (hW : FiniteDimensional ℂ W) (hsm : ∀ w ∈ W, Formalism.REAL.SmoothOnG ε w)
     (hK : ∀ w ∈ W, ∀ i j : Fin n, ε i = ε j → ∃ w' ∈ W, ∀ g, Formalism.REAL.inUJ ε g → Formalism.REAL.Eab ε i j w g = w' g)

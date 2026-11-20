@@ -15,6 +15,9 @@ noncomputable section
 
 namespace HookSum
 
+/- English proof (translation)
+Establish `h : (Finset.univ.filter fun j : Fin r => 1 ≤ (j : ℕ) ∧ (j : ℕ) ≤ m) = (Finset.Icc 1 m).attachFin (fun x hx => by rw [Finset.mem_Icc] at hx; omega)`. Use extensionality with `j`. Simplify using `[Finset.mem_attachFin]`. Rewrite using `[h, Finset.card_attachFin, Nat.card_Icc]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem card_filter_one_le_le (r m : ℕ) (hm : m < r) :
     (Finset.univ.filter fun j : Fin r => 1 ≤ (j : ℕ) ∧ (j : ℕ) ≤ m).card = m := by
   have h : (Finset.univ.filter fun j : Fin r => 1 ≤ (j : ℕ) ∧ (j : ℕ) ≤ m) =
@@ -24,6 +27,13 @@ theorem card_filter_one_le_le (r m : ℕ) (hm : m < r) :
   rw [h, Finset.card_attachFin, Nat.card_Icc]
   omega
 
+/- English proof (translation)
+Establish `h : (Finset.univ.filter fun i : Fin r => (i : ℕ) ≠ 0 ∧ hookShape r k l i = 1) = (Finset.univ.filter fun j : Fin r => 1 ≤ (j : ℕ) ∧ (j : ℕ) ≤ l)`. Apply `Finset.filter_congr` to reduce the goal to its premises. Introduce `i _`. Simplify using `only [hookShape]`. Distinguish the cases in `h0 : (i : ℕ) = 0`.
+
+Rewrite using `[if_pos h0]`. Use linear arithmetic over natural numbers and integers. Distinguish the cases in `h1 : (i : ℕ) ≤ l`. Rewrite using `[if_neg h0, if_pos h1]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[if_neg h0, if_neg h1]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[h, card_filter_one_le_le r l hl]`.
+-/
 theorem card_hookShape (r k l : ℕ) (hl : l < r) :
     (Finset.univ.filter fun i : Fin r => (i : ℕ) ≠ 0 ∧ hookShape r k l i = 1).card = l := by
   have h : (Finset.univ.filter fun i : Fin r => (i : ℕ) ≠ 0 ∧ hookShape r k l i = 1) =
@@ -38,6 +48,15 @@ theorem card_hookShape (r k l : ℕ) (hl : l < r) :
       · rw [if_neg h0, if_neg h1]; omega
   rw [h, card_filter_one_le_le r l hl]
 
+/- English proof (translation)
+Take `⟨r', rfl⟩ : ∃ r', r = r' + 1` from `⟨r - 1, by omega⟩`. Rewrite using `[Fin.sum_univ_succ]`. Establish `h0 : hookShape (r' + 1) k l 0 = k - l` using `by simp [hookShape]`. Establish `hs : ∀ i : Fin r', hookShape (r' + 1) k l i.succ = if (i : ℕ) < l then 1 else 0`. Introduce `i`.
+
+Simplify using `only [hookShape, Fin.val_succ]`. Distinguish the cases in `h : (i : ℕ) < l`. Rewrite using `[if_neg (by omega), if_pos (by omega), if_pos h]`. Rewrite using `[if_neg (by omega), if_neg (by omega), if_neg h]`. Rewrite using `[h0]`.
+
+Simplify using `only [hs]`. Use `congr 1`. Rewrite using `[Finset.sum_boole]`. Establish `h : (Finset.univ.filter fun i : Fin r' => (i : ℕ) < l) = (Finset.range l).attachFin (fun x hx => by rw [Finset.mem_range] at hx; omega)`. Use extensionality with `j`.
+
+Simplify using `[Finset.mem_attachFin]`. Rewrite using `[h, Finset.card_attachFin, Finset.card_range, Nat.cast_id]`.
+-/
 theorem sum_hookShape (r k l : ℕ) (hl : l < r) : ∑ i, hookShape r k l i = (k - l) + l := by
   obtain ⟨r', rfl⟩ : ∃ r', r = r' + 1 := ⟨r - 1, by omega⟩
   rw [Fin.sum_univ_succ]
@@ -58,6 +77,11 @@ theorem sum_hookShape (r k l : ℕ) (hl : l < r) : ∑ i, hookShape r k l i = (k
     simp [Finset.mem_attachFin]
   rw [h, Finset.card_attachFin, Finset.card_range, Nat.cast_id]
 
+/- English proof (translation)
+Rewrite using `[partitionsOf, Finset.mem_filter, Finset.Nat.mem_antidiagonalTuple]`. Use `⟨by rw [sum_hookShape r k l hlr]; omega, ?_⟩` and prove the remaining obligations. Introduce `i j hij`. Use `Fin.le_iff_val_le_val.mp hij` as an intermediate fact. Simplify using `only [hookShape]`.
+
+Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem hookShape_mem (r k l : ℕ) (hlr : l < r) (hlk : l < k) :
     hookShape r k l ∈ partitionsOf r k := by
   rw [partitionsOf, Finset.mem_filter, Finset.Nat.mem_antidiagonalTuple]
@@ -67,11 +91,47 @@ theorem hookShape_mem (r k l : ℕ) (hlr : l < r) (hlk : l < k) :
   simp only [hookShape]
   split_ifs <;> omega
 
+/- English proof (translation)
+Introduce `i hi`. Simplify using `only [hookShape]`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem hookShape_isHook (r k l : ℕ) : ∀ i : Fin r, (i : ℕ) ≠ 0 → hookShape r k l i ≤ 1 := by
   intro i hi
   simp only [hookShape]
   split_ifs <;> omega
 
+/- English proof (translation)
+Rewrite `hnu` using `[partitionsOf, Finset.mem_filter, Finset.Nat.mem_antidiagonalTuple]`. Take `⟨hsum, hA⟩` from `hnu`. Choose the witnesses or unpack the hypotheses as in `⟨r', rfl⟩ : ∃ r', r = r' + 1 := by`. Break down `r with _ | r'` into its components or cases. Simplify using `at hsum`.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `⟨r', rfl⟩`. Use `set S := (Finset.univ.filter fun i : Fin (r' + 1) => (i : ℕ) ≠ 0 ∧ nu i = 1) with hSdef`. Establish `down : ∀ i j : Fin (r' + 1), ((i : ℕ) ≠ 0 ∧ nu i = 1) → 1 ≤ (j : ℕ) → (j : ℕ) ≤ i → ((j : ℕ) ≠ 0 ∧ nu j = 1)`. Introduce `i j hi hj1 hji`.
+
+Establish `h1` using `hA j i (Fin.le_iff_val_le_val.mpr hji)`. Establish `h2` using `hh j (by omega)`. Conclude with `⟨by omega, by omega⟩`. Establish `hiff : ∀ i : Fin (r' + 1), ((i : ℕ) ≠ 0 ∧ nu i = 1) ↔ (1 ≤ (i : ℕ) ∧ (i : ℕ) ≤ l)`. Introduce `i`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hP`. Use `⟨by omega, ?_⟩` and prove the remaining obligations. Establish `hsub : (Finset.univ.filter fun j : Fin (r' + 1) => 1 ≤ (j : ℕ) ∧ (j : ℕ) ≤ i) ⊆ S`. Introduce `j hj`.
+
+Simplify using `only [hSdef, Finset.mem_filter, Finset.mem_univ, true_and] at hj ⊢`. Conclude with `down i j hP hj.1 hj.2`. Use `Finset.card_le_card hsub` as an intermediate fact. Rewrite `this` using `[card_filter_one_le_le (r' + 1) i i.isLt]`. Use linear arithmetic over natural numbers and integers.
+
+Introduce and unpack `⟨h1, h2⟩`. Assume the negation of the conclusion as `hP`. Establish `hsub : S ⊆ (Finset.univ.filter fun j : Fin (r' + 1) => 1 ≤ (j : ℕ) ∧ (j : ℕ) ≤ (i : ℕ) - 1)`. Introduce `j hj`. Simplify using `only [hSdef, Finset.mem_filter, Finset.mem_univ, true_and] at hj ⊢`.
+
+Use `⟨by omega, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hji`. Conclude with `hP (down j i hj (by omega) (by omega))`. Use `Finset.card_le_card hsub` as an intermediate fact. Rewrite `this` using `[card_filter_one_le_le (r' + 1) ((i : ℕ) - 1) (by omega)]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hlr : l < r' + 1`. Establish `hsub : S ⊆ (Finset.univ.filter fun j : Fin (r' + 1) => 1 ≤ (j : ℕ) ∧ (j : ℕ) ≤ r')`. Introduce `j hj`. Simplify using `only [hSdef, Finset.mem_filter, Finset.mem_univ, true_and] at hj ⊢`.
+
+Use `j.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `Finset.card_le_card hsub` as an intermediate fact. Rewrite `this` using `[card_filter_one_le_le (r' + 1) r' (by omega)]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hval : ∀ i : Fin (r' + 1), (i : ℕ) ≠ 0 → nu i = if (i : ℕ) ≤ l then 1 else 0`. Introduce `i hi0`. Establish `h` using `hiff i`. Establish `h1` using `hh i hi0`. Use `split_ifs with hil`.
+
+Conclude with `(h.mpr ⟨by omega, hil⟩).2`. Establish `: ¬ nu i = 1` using `fun h' => by have := (h.mp ⟨hi0, h'⟩).2; omega`. Use linear arithmetic over natural numbers and integers. Establish `hsucc : ∀ i : Fin r', nu i.succ = hookShape (r' + 1) k l i.succ`. Introduce `i`.
+
+Rewrite using `[hval i.succ (by simp)]`. Simplify using `[hookShape]`. Establish `hsumH` using `sum_hookShape (r' + 1) k l hlr`. Rewrite `hsum`, `hsumH` using `[Fin.sum_univ_succ]`. Establish `h0 : hookShape (r' + 1) k l 0 = k - l` using `by simp [hookShape]`.
+
+Simplify using `only [hsucc] at hsum`. Rewrite `hsumH` using `[h0]`. Establish `hnu0 : nu 0 + l = k` using `by omega`. Establish `hlk : l < k`. Assume the negation of the conclusion as `hlk`.
+
+Establish `hnu00 : nu 0 = 0` using `by omega`. Establish `hl1 : 1 ≤ l` using `by omega`. Take `⟨i1, hi1⟩ : ∃ i1 : Fin (r' + 1), (i1 : ℕ) = 1` from `⟨⟨1, by omega⟩, rfl⟩`. Establish `hP` using `(hiff i1).mpr ⟨by omega, by omega⟩`. Use `hA 0 i1 (Fin.zero_le _)` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Use `⟨hlr, hlk, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : (i : ℕ) = 0`. Establish `: i = 0` using `Fin.ext hi`.
+
+Substitute `this` using the available equality. Rewrite using `[h0]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hval i hi]`. Simplify using `[hookShape, hi]`.
+-/
 theorem hook_classification {r k : ℕ} (hk : 1 ≤ k) {nu : Fin r → ℕ}
     (hnu : nu ∈ partitionsOf r k) (hh : ∀ i : Fin r, (i : ℕ) ≠ 0 → nu i ≤ 1) {l : ℕ}
     (hl : (Finset.univ.filter fun i : Fin r => (i : ℕ) ≠ 0 ∧ nu i = 1).card = l) :
@@ -158,6 +218,17 @@ theorem hook_classification {r k : ℕ} (hk : 1 ≤ k) {nu : Fin r → ℕ}
   · rw [hval i hi]
     simp [hookShape, hi]
 
+/- English proof (translation)
+Simplify using `only [mul_ite, mul_zero]`. Rewrite using `[← Finset.sum_filter]`. Use `symm`. Apply `Finset.sum_nbij' (fun l => hookShape r k l) (fun nu => (Finset.univ.filter fun i : Fin r => (i : ℕ) ≠ 0 ∧ nu i = 1).card)` to reduce the goal to its premises. Introduce `l hl`.
+
+Rewrite `hl` using `[Finset.mem_range, lt_min_iff]`. Rewrite using `[Finset.mem_filter]`. Conclude with `⟨hookShape_mem r k l hl.1 hl.2, hookShape_isHook r k l⟩`. Introduce `nu hnu`. Rewrite `hnu` using `[Finset.mem_filter]`.
+
+Take `⟨h1, h2, -⟩` from `hook_classification hk hnu.1 hnu.2 rfl`. Rewrite using `[Finset.mem_range, lt_min_iff]`. Conclude with `⟨h1, h2⟩`. Introduce `l hl`. Rewrite `hl` using `[Finset.mem_range, lt_min_iff]`.
+
+Conclude with `card_hookShape r k l hl.1`. Introduce `nu hnu`. Rewrite `hnu` using `[Finset.mem_filter]`. Conclude with `(hook_classification hk hnu.1 hnu.2 rfl).2.2`. Introduce `l hl`.
+
+Rewrite `hl` using `[Finset.mem_range, lt_min_iff]`. Rewrite using `[card_hookShape r k l hl.1, mul_comm]`.
+-/
 theorem sum_hooks (r k : ℕ) (hk : 1 ≤ k) (g : (Fin r → ℕ) → ℚ) :
     ∑ nu ∈ partitionsOf r k, g nu *
         (if ∀ i : Fin r, (i : ℕ) ≠ 0 → nu i ≤ 1 then
@@ -190,6 +261,25 @@ theorem sum_hooks (r k : ℕ) (hk : 1 ≤ k) (g : (Fin r → ℕ) → ℚ) :
 
 end HookSum
 
+/- English proof (translation)
+Introduce `r a hr ha`. Take `⟨Q, hQ⟩` from `hD 1 r a .last`. Take `⟨C₀, hC₀, hJ, hT⟩` from `hF 1 r a .last le_rfl hr ha`. Establish `hfR : (numStandardTable (rectangle r a) : ℚ) ≠ 0` using `by exact_mod_cast (hR r a).ne'`. Establish `hJ' : fibreDegree 1 r a .last = C₀ * numStandardTable (rectangle r a)`.
+
+Rewrite using `[hJ]`. Establish `: ((r * a).factorial : ℚ) ≠ 0` using `by positivity`. Rewrite using `[one_mul, pow_one, pow_one]`. Clear the denominators using the available nonvanishing facts. Establish `hterm : ∀ k ∈ Finset.Icc 2 (r + a), restTerm 1 (r + a) Q k 0 (smallPowerSum 1 r a .last (k - 1) 0) = C₀ * ∑ l ∈ Finset.range (min r k), (-1 : ℚ) ^ l * symmetricGroupCharacter (fun i => a + hookShape r k l i) ((k - 1) :: List.replicate (r * a + 1) 1)`.
+
+Introduce `k hk`. Take `⟨hk2, hkN⟩` from `Finset.mem_Icc.mp hk`. Take `⟨S, hS1, hS2⟩` from `hT Q hQ k hk2 hkN 0`. Establish `hex` using `fun nu (hnu : nu ∈ partitionsOf r k) => hS (r + a) r k (by omega) hkN nu 1 (Or.inl rfl) (Top.antitone_of_mem_partitionsOf hnu) (Top.sum_of_mem_partitionsOf hnu)`. Use `choose! Sν hSν1 hSν2 using hex`.
+
+Establish `hSeq : S = ∑ nu ∈ partitionsOf r k, C (symmetricGroupCharacter (fun i => a + nu i) ((k - 1) :: List.replicate (r * a + 1) 1)) * Sν nu`. Apply `Flag.powerSumHom_injective` to reduce the goal to its premises. Rewrite using `[hS1, map_sum]`. Use `Finset.sum_congr rfl fun nu hnu => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hSν1 nu hnu]`.
+
+Simplify using `[powerSumHom, SmallBlock.sign]`. Establish `hk0 : (k : ℚ) ≠ 0` using `by exact_mod_cast (show k ≠ 0 by omega)`. Establish `hcoeff : (k : ℚ) * coeff (Finsupp.single (⟨k - 1, by omega⟩ : Fin (r + a)) 1) S = ∑ nu ∈ partitionsOf r k, symmetricGroupCharacter (fun i => a + nu i) ((k - 1) :: List.replicate (r * a + 1) 1) * (if ∀ i : Fin r, (i : ℕ) ≠ 0 → nu i ≤ 1 then (-1 : ℚ) ^ ((Finset.univ.filter fun i : …`. Rewrite using `[hSeq, coeff_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun nu hnu => ?_` and prove the remaining obligations.
+
+Rewrite using `[coeff_C_mul, hSν2 nu hnu, one_pow, one_mul]`. Use `split_ifs`. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Establish `hh` using `HookSum.sum_hooks r k (by omega) (fun nu => symmetricGroupCharacter (fun i => a + nu i) ((k - 1) :: List.replicate (r * a + 1) 1))`.
+
+Use `beta_reduce at hh`. Rewrite using `[hS2, ← hh, ← hcoeff]`. Establish `: ((r * a + 1).factorial : ℚ) ≠ 0` using `by positivity`. Simplify using `only [one_mul, Nat.sub_self, pow_zero, mul_one]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hsh` using `hSh r a hr ha Q hQ`. Establish `hlin` using `hL r a hr ha Q hQ`. Rewrite `hsh` using `[Finset.sum_congr rfl hterm, ← Finset.mul_sum]`. Rewrite `hlin` using `[hJ']`. Apply `mul_left_cancel₀ (mul_ne_zero hC₀ hfR)` to reduce the goal to its premises.
+
+Take the linear combination `(-(a : ℚ)) * hlin + (numStandardTable (rectangle r a) : ℚ) * hsh`.
+-/
 theorem HookCharacterSumIdentity.proof (hSh : ShiftSumRule.Statement)
     (hL : LinearTermValue.Statement) (hF : SameFactorFormula.Statement)
     (hS : SchurSignCoefficient.Statement) (hR : RectangleTablePos.Statement)

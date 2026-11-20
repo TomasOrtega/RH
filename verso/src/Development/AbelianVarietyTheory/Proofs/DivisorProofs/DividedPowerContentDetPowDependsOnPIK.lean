@@ -14,17 +14,26 @@ open GlobalTheory.DetPowShape
 noncomputable def intCoeff (i k : ℕ) (α : (Σ _ : Fin i, Fin i) →₀ ℕ) : ℤ :=
   (detZ i ^ k).coeff α * α.prod fun _ n => ((n.factorial : ℕ) : ℤ)
 
+/- English proof (translation)
+Rewrite using `[intCoeff, detPow_eq_map, MvPolynomial.coeff_map, Int.cast_mul, GlobalTheory.FGDepth.mfact]`. Apply the tactic sequence `congr 1 <;> simp [Finsupp.prod]`.
+-/
 theorem cast_intCoeff (C : Type) [Field C] (i k : ℕ) (α : (Σ _ : Fin i, Fin i) →₀ ℕ) :
     ((intCoeff i k α : ℤ) : C) = (detPow C i k).coeff α * GlobalTheory.FGDepth.mfact α := by
   rw [intCoeff, detPow_eq_map, MvPolynomial.coeff_map, Int.cast_mul, GlobalTheory.FGDepth.mfact]
   congr 1 <;> simp [Finsupp.prod]
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.mem_support_iff, MvPolynomial.mem_support_iff, detPow_eq_map, MvPolynomial.coeff_map]`. Simplify using the standard rewrite rules.
+-/
 theorem mem_support_iff' (C : Type) [Field C] [CharZero C] (i k : ℕ) (α) :
     α ∈ (detPow C i k).support ↔ α ∈ (detZ i ^ k).support := by
   rw [MvPolynomial.mem_support_iff, MvPolynomial.mem_support_iff, detPow_eq_map,
     MvPolynomial.coeff_map]
   simp
 
+/- English proof (translation)
+Rewrite using `[intCoeff]`. Use `mul_ne_zero (MvPolynomial.mem_support_iff.1 h) ?_` and prove the remaining obligations. Rewrite using `[Finsupp.prod]`. Use `Finset.prod_ne_zero_iff.2 fun a _ => ?_` and prove the remaining obligations. Conclude with `Nat.factorial_ne_zero _` after adjusting the coercions.
+-/
 theorem intCoeff_ne_zero (i k : ℕ) (α) (h : α ∈ (detZ i ^ k).support) : intCoeff i k α ≠ 0 := by
   rw [intCoeff]
   refine mul_ne_zero (MvPolynomial.mem_support_iff.1 h) ?_
@@ -32,6 +41,11 @@ theorem intCoeff_ne_zero (i k : ℕ) (α) (h : α ∈ (detZ i ^ k).support) : in
   refine Finset.prod_ne_zero_iff.2 fun a _ => ?_
   exact_mod_cast Nat.factorial_ne_zero _
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.addValuation_natCast_eq_padicValNat C v p hp hv m.natAbs (Int.natAbs_ne_zero.2 hm)`. Break down `Int.natAbs_eq m with h1 | h1` into its components or cases. Use `conv_lhs => rw [h1]`. Simplify using `using h`. Use `conv_lhs => rw [h1, Int.cast_neg, v.map_neg]`.
+
+Simplify using `using h`.
+-/
 theorem v_intCast (C : Type) [Field C] [CharZero C] (v : AddValuation C (WithTop ℝ)) (p : ℕ)
     (hp : p.Prime) (hv : v (p : C) = 1) (m : ℤ) (hm : m ≠ 0) :
     v (m : C) = (((padicValNat p m.natAbs : ℕ) : ℝ) : WithTop ℝ) := by
@@ -48,6 +62,17 @@ namespace GlobalTheory
 
 open GlobalTheory.DetPowShape GlobalTheory.DetPowContent in
 
+/- English proof (translation)
+Introduce `p hp i k`. Use `set S := (detZ i ^ k).support with hS`. Establish `hne : S.Nonempty`. Use `⟨∑ a : Fin i, Finsupp.single ⟨a, a⟩ k, ?_⟩` and prove the remaining obligations. Rewrite using `[← mem_support_iff' ℚ]`.
+
+Rewrite using `[MvPolynomial.mem_support_iff, (detPow_shape ℚ i k).2.2.1]`. Conclude with `one_ne_zero`. Set `f : ((Σ _ : Fin i, Fin i) →₀ ℕ) → ℕ` to `fun α => padicValNat p (intCoeff i k α).natAbs`. Take `⟨α0, hα0, hmin⟩` from `S.exists_min_image f hne`. Use `⟨(f α0 : ℝ), fun C _ _ v hv => ?_⟩` and prove the remaining obligations.
+
+Establish `hval : ∀ α ∈ S, GlobalTheory.FGDepth.toE (v ((detPow C i k).coeff α * GlobalTheory.FGDepth.mfact α)) = ((f α : ℝ) : EReal)`. Introduce `α hα`. Rewrite using `[← cast_intCoeff, v_intCast C v p hp hv _ (intCoeff_ne_zero i k α hα)]`. Both sides reduce to the same expression. Unfold `GlobalTheory.FGDepth.content`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Use `iInf₂_le_of_le α0 ((mem_support_iff' C i k α0).2 hα0) ?_` and prove the remaining obligations. Rewrite using `[hval α0 hα0]`. Use `le_iInf₂ fun α hα => ?_` and prove the remaining obligations. Establish `hα'` using `(mem_support_iff' C i k α).1 hα`.
+
+Rewrite using `[hval α hα']`. Conclude with `hmin α hα'` after adjusting the coercions.
+-/
 theorem detPow_content_const : ∀ (p : ℕ), p.Prime → ∀ i k : ℕ, ∃ κ : ℝ, ∀ (C : Type) [Field C]
     [CharZero C] (v : AddValuation C (WithTop ℝ)), v (p : C) = 1 →
       content v (detPow C i k) = (κ : EReal) := by

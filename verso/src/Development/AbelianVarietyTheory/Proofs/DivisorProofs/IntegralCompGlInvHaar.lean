@@ -19,6 +19,17 @@ section Gen
 
 open MeasureTheory Topology Matrix NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.GaugeEx GlobalTheory.ModuLR
 
+/- English proof (translation)
+Set `Mi : Matrix κ κ (Ainf F)` to `(fstA F).toRingHom.mapMatrix M`. Set `Mf : Matrix κ κ (Af F)` to `(sndA F).toRingHom.mapMatrix M`. Establish `hi : Mi.det = fstA F M.det` using `(RingHom.map_det _ _).symm`. Establish `hf : Mf.det = sndA F M.det` using `(RingHom.map_det _ _).symm`. Establish `hMi : IsUnit Mi.det` using `hi ▸ hM.map (fstA F)`.
+
+Establish `hMf : IsUnit Mf.det` using `hf ▸ hM.map (sndA F)`. Set `j : (κ → Ainf F) × (κ → Af F) →+ (κ → AF F)` to `zipHom κ (Ainf F) (Af F)`. Establish `hj : IsOpenEmbedding j` using `GlobalTheory.T.isOpenEmbedding_pairOfTuplesToTupleOfPairs κ (Ainf F) (Af F)`. Establish `s1 : addEquivAddHaarChar (mulVecCE M hM) = addEquivAddHaarChar (prodCE (mulVecCE Mi hMi) (mulVecCE Mf hMf))` using `GlobalTheory.T.addEquivAddHaarChar_eq_of_isOpenEmbedding_restrict _ _ j hj (mulVecCE M hM) (prodCE (mulVecCE Mi hMi) (mulVecCE Mf hMf)) fun p => by`. Use function extensionality and compare the values at `i`.
+
+Use `show (M *ᵥ j p) i = ((Mi *ᵥ p.1) i, (Mf *ᵥ p.2) i)`. Establish `e1 : fstA F ((M *ᵥ j p) i) = (Mi *ᵥ p.1) i`. Rewrite using `[show (fstA F) ((M *ᵥ j p) i) = (fstA F).toRingHom ((M *ᵥ j p) i) from rfl, RingHom.map_mulVec]`. Both sides reduce to the same expression. Establish `e2 : sndA F ((M *ᵥ j p) i) = (Mf *ᵥ p.2) i`.
+
+Rewrite using `[show (sndA F) ((M *ᵥ j p) i) = (sndA F).toRingHom ((M *ᵥ j p) i) from rfl, RingHom.map_mulVec]`. Both sides reduce to the same expression. Rewrite using `[← e1, ← e2]`. Both sides reduce to the same expression. Use `haveI : IsArtinianRing (Ainf F) := inferInstanceAs (IsArtinianRing (∀ v : InfinitePlace F, v.Completion))`.
+
+Use `haveI : IsReduced (Ainf F) := inferInstanceAs (IsReduced (∀ v : InfinitePlace F, v.Completion))`. Establish `s2 : addEquivAddHaarChar (mulVecCE Mi hMi) = modu (Ainf F) Mi.det` using `GlobalTheory.T.addEquivAddHaarChar_mulVec_artinian_reduced (Ainf F) inferInstance inferInstance κ Mi hMi`. Rewrite using `[s1, GlobalTheory.T.addEquivAddHaarChar_prodCongr, NNReal.coe_mul, s2, chi_Af F Mf hMf, hi, hf]`.
+-/
 theorem chi_adele (F : Type) [Field F] [NumberField F] {κ : Type} [Fintype κ] [DecidableEq κ]
     (M : Matrix κ κ (AF F)) (hM : IsUnit M.det) :
     (addEquivAddHaarChar (mulVecCE M hM) : ℝ) =
@@ -51,6 +62,13 @@ theorem chi_adele (F : Type) [Field F] [NumberField F] {κ : Type} [Fintype κ] 
     GlobalTheory.T.addEquivAddHaarChar_mulVec_artinian_reduced (Ainf F) inferInstance inferInstance κ Mi hMi
   rw [s1, GlobalTheory.T.addEquivAddHaarChar_prodCongr, NNReal.coe_mul, s2, chi_Af F Mf hMf, hi, hf]
 
+/- English proof (translation)
+Set `N : Matrix Unit Unit (AF F)` to `fun _ _ => M.det`. Establish `hdet : N.det = M.det` using `Matrix.det_unique N`. Establish `hN : IsUnit N.det` using `hdet ▸ hM`. Establish `htr` using `GlobalTheory.ModuLR.addEquivAddHaarChar_transport (GlobalTheory.ModuNorm.evalUnitCE (AF F)) (mulVecCE N hN)`. Establish `hext : ((GlobalTheory.ModuNorm.evalUnitCE (AF F)).symm.trans (mulVecCE N hN)).trans (GlobalTheory.ModuNorm.evalUnitCE (AF F)) = GlobalTheory.ModuNorm.mulUnitCE hM.unit`.
+
+Use extensionality with `x`. Use `show (N *ᵥ fun _ => x) () = M.det * x`. Simplify using `[Matrix.mulVec, dotProduct, N]`. Rewrite `htr` using `[hext]`. Rewrite using `[GlobalTheory.ModuNorm.distribHaarChar_eq_addEquivAddHaarChar, htr]`.
+
+Apply `NNReal.coe_injective` to reduce the goal to its premises. Rewrite using `[chi_adele, chi_adele, hdet]`.
+-/
 theorem addEquivAddHaarChar_mulVecCE_adele (F : Type) [Field F] [NumberField F] {κ : Type} [Fintype κ]
     [DecidableEq κ] (M : Matrix κ κ (AF F)) (hM : IsUnit M.det) :
     addEquivAddHaarChar (mulVecCE M hM) = distribHaarChar (AF F) hM.unit := by
@@ -94,12 +112,18 @@ def vecCoord : (Fin n → AE F E) ≃ₗ[AF F] (Fin n × Fin (Module.finrank F E
   map_add' u v := by funext p; simp
   map_smul' c u := by funext p; simp
 
+/- English proof (translation)
+Use `haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩`. Establish `hb : Continuous (tensBasis F E).equivFun` using `IsModuleTopology.continuous_of_linearMap (tensBasis F E).equivFun.toLinearMap`. Conclude with `continuous_pi fun p => (continuous_apply p.2).comp (hb.comp (continuous_apply p.1))`.
+-/
 theorem continuous_vecCoord : Continuous (vecCoord F E n) := by
   haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩
   have hb : Continuous (tensBasis F E).equivFun :=
     IsModuleTopology.continuous_of_linearMap (tensBasis F E).equivFun.toLinearMap
   exact continuous_pi fun p => (continuous_apply p.2).comp (hb.comp (continuous_apply p.1))
 
+/- English proof (translation)
+Use `haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : ContinuousAdd (AF F ⊗[F] E) := IsModuleTopology.toContinuousAdd (AF F) _`. Establish `hb : Continuous (tensBasis F E).equivFun.symm` using `IsModuleTopology.continuous_of_linearMap (tensBasis F E).equivFun.symm.toLinearMap`. Conclude with `continuous_pi fun i => hb.comp (continuous_pi fun k => continuous_apply (i, k))`.
+-/
 theorem continuous_vecCoord_symm : Continuous (vecCoord F E n).symm := by
   haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩
   haveI : ContinuousAdd (AF F ⊗[F] E) := IsModuleTopology.toContinuousAdd (AF F) _
@@ -118,6 +142,23 @@ end GlobalTheory.SiegelCov
 
 open GlobalTheory.GaugeEx in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ n μ hμ t f _`. Use `letI : MeasurableSpace (Fin n → AE F E) := borel _`. Use `haveI : BorelSpace (Fin n → AE F E) := ⟨rfl⟩`. Use `haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`.
+
+Use `haveI : Module.Free (AF F) (AF F ⊗[F] E) := Module.Free.of_basis (GlobalTheory.ModuLR.tensBasis F E)`. Use `haveI : Module.Finite (AF F) (AF F ⊗[F] E) := Module.Finite.of_basis (GlobalTheory.ModuLR.tensBasis F E)`. Set `Φ` to `GlobalTheory.SiegelCov.vecCoordCE F E n`. Use `haveI : LocallyCompactSpace (Fin n → AE F E) := Φ.toHomeomorph.isClosedEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology (Fin n → AE F E) := Φ.toHomeomorph.isInducing.secondCountableTopology`.
+
+Use `haveI : T2Space (Fin n → AE F E) := Φ.toHomeomorph.isEmbedding.t2Space`. Use `haveI : μ.IsAddHaarMeasure := hμ`. Use `set T : Matrix (Fin n) (Fin n) (AE F E) := ((t⁻¹ : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)) with hTdef`. Establish `hT : IsUnit T.det` using `(Matrix.isUnit_iff_isUnit_det T).1 (t⁻¹).isUnit`. Use `set L := GlobalTheory.ModuLR.mulVecCE T hT with hL`.
+
+Use `set Λ := LinearMap.toMatrix' ((GlobalTheory.SiegelCov.vecCoord F E n).toLinearMap ∘ₗ (Matrix.toLin' T).restrictScalars (AF F) ∘ₗ (GlobalTheory.SiegelCov.vecCoord F E n).symm.toLinearMap) with hΛdef`. Establish `hdet : Λ.det = Algebra.norm (AF F) T.det`. Rewrite using `[LinearMap.det_toMatrix', LinearMap.det_conj, LinearMap.det_restrictScalars, LinearMap.det_toLin']`. Establish `hΛ : IsUnit Λ.det` using `hdet ▸ hT.map (Algebra.norm (AF F))`. Establish `hc : GlobalTheory.ModuLR.mulVecCE Λ hΛ = (Φ.symm.trans L).trans Φ`.
+
+Use extensionality with `x`. Rewrite using `[GlobalTheory.ModuLR.mulVecCE_apply, LinearMap.toMatrix'_mulVec]`. Both sides reduce to the same expression. Establish `hχ : addEquivAddHaarChar L = distribHaarChar (AF F) hΛ.unit`. Rewrite using `[← GlobalTheory.SiegelCov.addEquivAddHaarChar_mulVecCE_adele, hc, GlobalTheory.ModuLR.addEquivAddHaarChar_transport]`.
+
+Establish `hu : hΛ.unit = (Units.map (Algebra.norm (AF F) : AE F E →* AF F) (Matrix.GeneralLinearGroup.det t))⁻¹`. Use `ext`. Rewrite using `[IsUnit.unit_spec, hdet, hTdef]`. Simplify using `[Matrix.GeneralLinearGroup.val_det_apply]`. Establish `key` using `addEquivAddHaarChar_smul_map μ L`.
+
+Use `set c := addEquivAddHaarChar L with hcdef`. Establish `hc0 : c ≠ 0` using `(addEquivAddHaarChar_pos L).ne'`. Establish `hmap : μ.map L = c⁻¹ • μ`. Combine the equalities or inequalities in the displayed calculation. Establish `hint : ∫ y, f (T *ᵥ y) ∂μ = ∫ y, f y ∂(μ.map L)` using `(integral_map_equiv L.toHomeomorph.toMeasurableEquiv f).symm`.
+
+Establish `hmodu : ((adeleClass F).modu (Units.map (Algebra.norm (AF F) : AE F E →* AF F) (Matrix.GeneralLinearGroup.det t)) : ℝ≥0) = c⁻¹`. Rewrite using `[hχ, hu, map_inv, inv_inv]`. Both sides reduce to the same expression. Use `show ∫ y, f (T *ᵥ y) ∂μ = _`. Rewrite using `[hint, hmap, integral_smul_nnreal_measure, hmodu, NNReal.smul_def, Complex.real_smul]`.
+-/
 theorem GlobalTheory.SiegelCov.integral_mulVec_inv : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ)
     (μ : @Measure (Fin n → AE F E) (borel _)), GlobalTheory.SiegelAvg.IsHaarB μ →
     ∀ (t : GL (Fin n) (AE F E)) (f : (Fin n → AE F E) → ℂ),

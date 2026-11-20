@@ -120,6 +120,13 @@ def PolExSt : Prop :=
         ∃ (Z : Model (Xo l) c (algebraMap (𝓞 c.F) c.F)) (BD : EffCartierData Z.X), DomAll s hg Z ∧ IsPol φ m Z BD ∧
           SmoothOfRelativeDimension D.dim (genStr Z) ∧ FinalTheorems.Snc (genBdIdeal Z) ∧ ∀ x ∈ genBd Z, HasToricChart Z x
 
+/- English proof (translation)
+Introduce `E _ _ _ H D h1 Xo`. Take `⟨s, φ, m, hm, htw, hpos, hhom, h⟩` from `hEx E H D h1 Xo`. Use `choose Z BD hdom hpol hsm hsnc htor using h`. Establish `hsupp` using `fun l c hg => hSu E H D l (Xo l) c _ _ (Z l c hg) (BD l c hg) φ (hD E H l c) hpos (hpol l c hg).1`. Establish `hN4` using `fun l c hg => hArc E H D Xo s l c hg (Z l c hg) (BD l c hg) φ m hhom (hdom l c hg) (hpol l c hg)`.
+
+Set `T : ∀ l c hg, TorModel (Z l c hg)` to `fun l c hg => selfTor (Z l c hg) (hsm l c hg) (hsnc l c hg) (htor l c hg) (BD l c hg) (fun x hx => (hsupp l c hg x).1 hx) (fun x hx => (hsupp l c hg _).2 (mem_genBd_iff.1 hx)) m hm`. Use `⟨s, ⟨⟨Z, fun l c hg => ⟨fun hA => ?_, hdom l c hg, hN4 l c hg⟩, T, fun l c hg => ⟨(hpol l c hg).2, ?_, ?_⟩, fun l c hg l₂ c₂ hg₂ b hl hb => ?_⟩⟩⟩` and prove the remaining obligations. Conclude with `hDe E H D Xo s l hg (fun c => Z l c hg) (fun c => BD l c hg) φ m hA htw (fun c => ⟨hdom l c hg, hpol l c hg⟩) c`. Conclude with `fun x hx => hHo E H D l (Xo l) c (Z l c hg) (hN4 l c hg) x ((hsupp l c hg x).1 hx)`. Conclude with `hSt E H D l (Xo l) c _ (T l c hg) φ htw (hpol l c hg)`.
+
+Conclude with `hTr E H D l l₂ _ _ c c₂ _ _ (T l c hg) (T l₂ c₂ hg₂) φ b h1 htw rfl (hpol l c hg) (hpol l₂ c₂ hg₂) hl hb`.
+-/
 theorem sysEx_of_pol (hD : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (l : Level H) (c : Coeff l),
       IsDedFrac (algebraMap (𝓞 c.F) c.F))
     (hSt : PolStableSt) (hTr : PolTransSt) (hSu : PolSuppSt) (hArc : PolArcSt) (hHo : HorizSt) (hDe : PolDescSt)

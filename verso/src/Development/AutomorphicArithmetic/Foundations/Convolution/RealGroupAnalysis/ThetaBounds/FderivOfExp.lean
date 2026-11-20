@@ -6,6 +6,17 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
+/- English proof (translation)
+Rewrite using `[hasFDerivAt_iff_isLittleO_nhds_zero, Asymptotics.isLittleO_iff]`. Introduce `c hc`. Take `⟨δ, hδ, hb⟩` from `Metric.continuousAt_iff.1 hG.continuousAt c hc`. Use `filter_upwards [Metric.ball_mem_nhds (0 : V) hδ] with X hX`. Establish `hX' : ‖X‖ < δ` using `by simpa using hX`.
+
+Establish `hv : ∀ s ∈ Set.Icc (0 : ℝ) 1, HasDerivWithinAt (fun s : ℝ => u (s • X) - (s : ℂ) * G 0 X) (G (s • X) X - G 0 X) (Set.Icc (0 : ℝ) 1) s`. Introduce `s _`. Establish `h1 : HasDerivAt (fun s : ℝ => (s : ℂ) * G 0 X) (G 0 X) s`. Simplify using `using (Complex.ofRealCLM.hasDerivAt (x := s)).mul_const (G 0 X)`. Conclude with `((h X s).sub h1).hasDerivWithinAt`.
+
+Establish `hbd : ∀ s ∈ Set.Icc (0 : ℝ) 1, ‖G (s • X) X - G 0 X‖ ≤ c * ‖X‖`. Introduce `s hs`. Establish `hs' : ‖s • X‖ < δ`. Rewrite using `[norm_smul, Real.norm_of_nonneg hs.1]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h2 : ‖G (s • X) - G 0‖ < c`. Simplify `hb (x := s • X) (by simpa [dist_eq_norm] using hs')` using `[dist_eq_norm]`. Combine the equalities or inequalities in the displayed calculation. Establish `key` using `Convex.norm_image_sub_le_of_norm_hasDerivWithin_le hv hbd (convex_Icc 0 1) (Set.left_mem_Icc.2 zero_le_one) (Set.right_mem_Icc.2 zero_le_one)`. Simplify using `only [zero_smul, one_smul, Complex.ofReal_zero, Complex.ofReal_one, zero_mul, one_mul, sub_zero, norm_one, mul_one] at key`.
+
+Establish `e : u (0 + X) - u 0 - G 0 X = u X - G 0 X - u 0` using `by rw [zero_add]; ring`. Rewrite using `[e]`. Conclude with `key`.
+-/
 private theorem fre_of_rays {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     (u : V → ℂ) (G : V → V →L[ℝ] ℂ) (hG : Continuous G)
     (h : ∀ (X : V) (s : ℝ), HasDerivAt (fun s : ℝ => u (s • X)) (G (s • X) X) s) :
@@ -40,6 +51,13 @@ private theorem fre_of_rays {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ 
   rw [e]
   exact key
 
+/- English proof (translation)
+Establish `hi` using `hε.to_localInverse`. Establish `h0` using `hε.localInverse_apply_image`. Use `set l := HasStrictFDerivAt.localInverse ε _ 0 hε`. Establish `h' : HasFDerivAt (f ∘ ε) L (l (ε 0))` using `by rw [h0]; exact h`. Establish `hc` using `h'.comp (ε 0) hi.hasFDerivAt`.
+
+Establish `e : L.comp (((ContinuousLinearEquiv.refl ℝ V).symm : V ≃L[ℝ] V) : V →L[ℝ] V) = L`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite `hc` using `[e]`. Use `hc.congr_of_eventuallyEq ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hε.eventually_right_inverse] with y hy`. Simplify using `only [Function.comp_apply]`. Rewrite using `[hy]`.
+-/
 private theorem fderiv_of_exp {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V] [CompleteSpace V]
     (f : V → ℂ) (ε : V → V) (L : V →L[ℝ] ℂ)
     (hε : HasStrictFDerivAt ε ((ContinuousLinearEquiv.refl ℝ V : V ≃L[ℝ] V) : V →L[ℝ] V) 0)
@@ -61,6 +79,11 @@ section
 open GroundTheory.Automorphic GroundTheory.Automorphic.AutomorphicForm
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
+/- English proof (translation)
+Use `letI : NormedRing (Matrix (Fin 2) (Fin 2) (Cinf E)) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℚ (Matrix (Fin 2) (Fin 2) (Cinf E)) := Matrix.linftyOpNormedAlgebra`. Use `letI : NormedAlgebra ℝ (Matrix (Fin 2) (Fin 2) (Cinf E)) := Matrix.linftyOpNormedAlgebra`. Use `haveI : CompleteSpace (Matrix (Fin 2) (Fin 2) (Cinf E)) := FiniteDimensional.complete ℝ _`. Use `letI : NormedAlgebra ℚ (ArchMatrix E 2) := NormedAlgebra.restrictScalars ℚ ℝ _`.
+
+Use `(Cm.archEq E 2).injective ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearEquiv.apply_symm_apply, Cm.archEq_toL]`. Establish `hc : Continuous (Cm.matEq E 2)` using `(Cm.archEq E 2).continuous`. Conclude with `NormedSpace.map_exp (Cm.matEq E 2) hc (Matrix.of Y)`.
+-/
 private theorem exp_eq (Y : Lie E 2) : toL (NormedSpace.exp (Matrix.of Y)) =
     (Cm.archEq E 2).symm (NormedSpace.exp (Cm.archEq E 2 Y)) := by
   letI : NormedRing (Matrix (Fin 2) (Fin 2) (Cinf E)) := Matrix.linftyOpNormedRing
@@ -75,6 +98,11 @@ private theorem exp_eq (Y : Lie E 2) : toL (NormedSpace.exp (Matrix.of Y)) =
 
 private noncomputable def expL (Y : Lie E 2) : Lie E 2 := (Cm.archEq E 2).symm (NormedSpace.exp (Cm.archEq E 2 Y))
 
+/- English proof (translation)
+Establish `h1 : HasStrictFDerivAt (fun x : ArchMatrix E 2 => NormedSpace.exp x) (1 : ArchMatrix E 2 →L[ℝ] ArchMatrix E 2) (Cm.archEq E 2 0)`. Rewrite using `[map_zero]`. Conclude with `hasStrictFDerivAt_exp_zero`. Establish `h2` using `((Cm.archEq E 2).symm.hasStrictFDerivAt.comp _ (h1.comp (0 : Lie E 2) (Cm.archEq E 2).hasStrictFDerivAt))`. Use `h2.congr_fderiv (ContinuousLinearMap.ext fun x => ?_)` and prove the remaining obligations.
+
+Conclude with `(Cm.archEq E 2).symm_apply_apply x`.
+-/
 private theorem expL_strict : HasStrictFDerivAt (expL (E := E))
     ((ContinuousLinearEquiv.refl ℝ (Lie E 2) : Lie E 2 ≃L[ℝ] Lie E 2) : Lie E 2 →L[ℝ] Lie E 2) 0 := by
   have h1 : HasStrictFDerivAt (fun x : ArchMatrix E 2 => NormedSpace.exp x) (1 : ArchMatrix E 2 →L[ℝ] ArchMatrix E 2)
@@ -84,27 +112,44 @@ private theorem expL_strict : HasStrictFDerivAt (expL (E := E))
   refine h2.congr_fderiv (ContinuousLinearMap.ext fun x => ?_)
   exact (Cm.archEq E 2).symm_apply_apply x
 
+/- English proof (translation)
+Use `letI : NormedAlgebra ℚ (ArchMatrix E 2) := NormedAlgebra.restrictScalars ℚ ℝ _`. Conclude with `(Cm.archEq E 2).symm.continuous.comp (NormedSpace.exp_continuous.comp (Cm.archEq E 2).continuous)`.
+-/
 private theorem expL_cont : Continuous (expL (E := E)) := by
   letI : NormedAlgebra ℚ (ArchMatrix E 2) := NormedAlgebra.restrictScalars ℚ ℝ _
   exact (Cm.archEq E 2).symm.continuous.comp (NormedSpace.exp_continuous.comp (Cm.archEq E 2).continuous)
 
+/- English proof (translation)
+Establish `: (ex Y 1).val = NormedSpace.exp (Matrix.of Y)`. Rewrite using `[ex, IsUnit.unit_spec, one_smul]`. Rewrite using `[this]`. Conclude with `exp_eq Y`.
+-/
 private theorem toL_ex (Y : Lie E 2) : toL (ex Y 1).val = expL Y := by
   have : (ex Y 1).val = NormedSpace.exp (Matrix.of Y) := by
     rw [ex, IsUnit.unit_spec, one_smul]
   rw [this]
   exact exp_eq Y
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `NormedSpace.exp ((1 : ℝ) • Matrix.of (s • X)) = NormedSpace.exp (s • Matrix.of X)`. Rewrite using `[one_smul]`. Both sides reduce to the same expression.
+-/
 private theorem ex_smul (X : Lie E 2) (s : ℝ) : ex (s • X) 1 = ex X s := by
   refine Units.ext ?_
   change NormedSpace.exp ((1 : ℝ) • Matrix.of (s • X)) = NormedSpace.exp (s • Matrix.of X)
   rw [one_smul]
   rfl
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `NormedSpace.exp ((0 : ℝ) • Matrix.of X) = 1`. Rewrite using `[zero_smul, NormedSpace.exp_zero]`.
+-/
 private theorem ex_zero (X : Lie E 2) : ex X 0 = 1 := by
   refine Units.ext ?_
   change NormedSpace.exp ((0 : ℝ) • Matrix.of X) = 1
   rw [zero_smul, NormedSpace.exp_zero]
 
+/- English proof (translation)
+Establish `h` using `(exPar E X).1 1 (-1)`. Rewrite `h` using `[add_neg_cancel, ex_zero]`. Establish `e : ex (-X) 1 = ex X (-1)`. Rewrite using `[← ex_smul X (-1), neg_one_smul]`. Rewrite using `[e]`.
+
+Conclude with `inv_eq_of_mul_eq_one_right h.symm`.
+-/
 private theorem ex_inv (X : Lie E 2) : (ex X 1)⁻¹ = ex (-X) 1 := by
   have h := (exPar E X).1 1 (-1)
   rw [add_neg_cancel, ex_zero] at h
@@ -113,6 +158,13 @@ private theorem ex_inv (X : Lie E 2) : (ex X 1)⁻¹ = ex (-X) 1 := by
   rw [e]
   exact inv_eq_of_mul_eq_one_right h.symm
 
+/- English proof (translation)
+Establish `hv : Continuous fun Y : Lie E 2 => (ex Y 1).val`. Establish `: (fun Y : Lie E 2 => (ex Y 1).val) = fun Y => Matrix.of (expL Y)`. Use function extensionality and compare the values at `Y`. Rewrite using `[← toL_ex]`. Both sides reduce to the same expression.
+
+Rewrite using `[this]`. Conclude with `expL_cont`. Use `Units.continuous_iff.2 ⟨hv, ?_⟩` and prove the remaining obligations. Establish `: (fun Y : Lie E 2 => ((ex Y 1)⁻¹).val) = fun Y => (ex (-Y) 1).val`. Use function extensionality and compare the values at `Y`.
+
+Rewrite using `[ex_inv]`. Express the relevant statement in the definitionally equal form `Continuous (fun Y : Lie E 2 => ((ex Y 1)⁻¹).val)`. Rewrite using `[this]`. Conclude with `hv.comp continuous_neg`.
+-/
 private theorem ex_cont : Continuous fun Y : Lie E 2 => ex Y 1 := by
   have hv : Continuous fun Y : Lie E 2 => (ex Y 1).val := by
     have : (fun Y : Lie E 2 => (ex Y 1).val) = fun Y => Matrix.of (expL Y) := by
@@ -128,6 +180,19 @@ private theorem ex_cont : Continuous fun Y : Lie E 2 => ex Y 1 := by
 
 end
 
+/- English proof (translation)
+Introduce `E _ _ _ Φ T hc hd g`. Set `G : Lie E 2 → Lie E 2 →L[ℝ] ℂ` to `fun Y => LinearMap.toContinuousLinearMap ((LinearMap.proj (g * infGL E 2 (ex Y 1))) ∘ₗ T)`. Establish `hGa : ∀ Y X, G Y X = T X (g * infGL E 2 (ex Y 1))` using `fun _ _ => rfl`. Establish `hG : Continuous G` using `continuous_clm_apply.2 fun X => by`. Simplify using `only [hGa]`.
+
+Conclude with `(hc X g).comp ex_cont`. Establish `hray : ∀ (X : Lie E 2) (s : ℝ), HasDerivAt (fun s : ℝ => Φ (g * infGL E 2 (ex (s • X) 1))) (G (s • X) X) s`. Introduce `X s`. Establish `h1` using `hd X (g * infGL E 2 (ex X s))`. Establish `h2 : HasDerivAt (fun r : ℝ => Φ (g * infGL E 2 (ex X s) * infGL E 2 (ex X (r - s)))) (T X (g * infGL E 2 (ex X s))) s` using `HasDerivAt.comp_sub_const s s (by simpa using h1)`.
+
+Rewrite using `[hGa, ex_smul]`. Use `h2.congr_of_eventuallyEq (Eventually.of_forall fun r => ?_)` and prove the remaining obligations. Simplify using `only [ex_smul]`. Rewrite using `[mul_assoc, ← map_mul, ← (exPar E X).1, add_sub_cancel]`. Establish `h1` using `fre_of_rays (fun Y => Φ (g * infGL E 2 (ex Y 1))) G hG hray`.
+
+Establish `h2 : HasFDerivAt (chart Φ g ∘ expL) (G 0) 0`. Use `h1.congr_of_eventuallyEq (Eventually.of_forall fun Y => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Rewrite using `[← toL_ex, chart_val]`. Establish `h3` using `fderiv_of_exp (chart Φ g) expL (G 0) expL_strict h2`.
+
+Establish `h0 : expL (0 : Lie E 2) = oneL E 2`. Rewrite using `[← toL_ex, ← zero_smul ℝ (0 : Lie E 2), ex_smul, ex_zero]`. Both sides reduce to the same expression. Rewrite `h3` using `[h0]`. Use `⟨h3.differentiableAt, fun X => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h3.fderiv, hGa, ← zero_smul ℝ (0 : Lie E 2), ex_smul, ex_zero, map_one, mul_one]`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.smFre :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E], SmFre E := by
   intro E _ _ _ Φ T hc hd g

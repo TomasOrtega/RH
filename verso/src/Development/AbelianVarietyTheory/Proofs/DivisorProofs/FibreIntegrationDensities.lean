@@ -11,6 +11,11 @@ open scoped ContDiff ComplexOrder Classical
 
 namespace GlobalTheory.BigCell
 
+/- English proof (translation)
+Establish `h1 : MeasurePreserving (fun z : V n => (WithLp.ofLp z : Fin n → ℂ)) volume volume` using `volume_preserving_ofLp_complex (Fin n)`. Establish `h2` using `h1.prod (measurePreserving_uncurry (κ := fun a => Low (r a)))`. Establish `h3` using `(volume_measurePreserving_sumPiEquivProdPi_symm (fun _ : Fin n ⊕ (Σ a, Low (r a)) => ℂ)).comp h2`. Establish `h4` using `(volume_preserving_arrowCongr' ε.symm (MeasurableEquiv.refl ℂ) (MeasurePreserving.id volume)).comp h3`. Establish `h5 : MeasurePreserving (MeasurableEquiv.toLp 2 (Fin D → ℂ)) volume volume` using `MeasurePreserving.symm (MeasurableEquiv.toLp 2 (Fin D → ℂ)).symm (volume_preserving_ofLp_complex (Fin D))`.
+
+Establish `h6` using `h5.comp h4`. Conclude with `h6`.
+-/
 theorem measurePreserving_pt {ι : Type} [Fintype ι] {r : ι → ℕ} {n D : ℕ}
     (ε : Fin D ≃ Fin n ⊕ (Σ a, Low (r a))) :
     MeasurePreserving (fun x : V n × (∀ a, Low (r a) → ℂ) => BigCell.pt ε x.1 x.2) volume volume := by
@@ -25,10 +30,20 @@ theorem measurePreserving_pt {ι : Type} [Fintype ι] {r : ι → ℕ} {n D : �
   have h6 := h5.comp h4
   exact h6
 
+/- English proof (translation)
+The claim follows from `(BigCell.baseL ε).continuous`.
+-/
 theorem continuous_base {ι : Type} {r : ι → ℕ} {n D : ℕ} (ε : Fin D ≃ Fin n ⊕ (Σ a, Low (r a))) :
     Continuous (BigCell.base ε) :=
   (BigCell.baseL ε).continuous
 
+/- English proof (translation)
+Establish `hm` using `(measurePreserving_pt ε).restrict_preimage ((continuous_base ε).measurable hK)`. Establish `hs : (fun x : V n × (∀ a, Low (r a) → ℂ) => BigCell.pt ε x.1 x.2) ⁻¹' (BigCell.base ε ⁻¹' K) = K ×ˢ Set.univ`. Use extensionality with `x`. Simplify using `[BigCell.base_pt]`. Rewrite `hm` using `[hs]`.
+
+Establish `hi` using `hm.integrable_comp_of_integrable hF`. Rewrite using `[← hm.map_eq, integral_map hm.measurable.aemeasurable (by rw [hm.map_eq]; exact hF.aestronglyMeasurable)]`. Rewrite `hi`, the goal using `[Measure.volume_eq_prod]`. Rewrite using `[setIntegral_prod (fun x : V n × (∀ a, Low (r a) → ℂ) => F (BigCell.pt ε x.1 x.2)) hi]`. Use `setIntegral_congr_fun hK fun z hz => ?_` and prove the remaining obligations.
+
+Simplify using `only [Measure.restrict_univ]`. Conclude with `hG z hz`.
+-/
 theorem setIntegral_base {ι : Type} [Fintype ι] {r : ι → ℕ} {n D : ℕ}
     (ε : Fin D ≃ Fin n ⊕ (Σ a, Low (r a))) {F : V D → ℝ} {G : V n → ℝ} {K : Set (V n)}
     (hK : MeasurableSet K) (hF : IntegrableOn F (BigCell.base ε ⁻¹' K))
@@ -56,6 +71,15 @@ variable {k : Type} [CommRing k] {B Y : Scheme.{0}} {q : B ⟶ Sp k} {p : Y ⟶ 
 
 omit [Fintype ι] in
 
+/- English proof (translation)
+Take `⟨h₁, h₂, h₃⟩` from `h`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨hy, hy'⟩, rfl⟩`. Conclude with `⟨_, hy, (h₃ y hy').symm⟩`.
+
+Introduce and unpack `⟨a, ha, hv⟩`. Establish `hvt : v ∈ c'.e.target`. Rewrite using `[h₂]`. Express the relevant statement in the definitionally equal form `BigCell.base ε v ∈ c.e.target`. Rewrite using `[← hv]`.
+
+Conclude with `c.e.map_source (hA ha)`. Establish `hy` using `c'.e.map_target hvt`. Use `⟨c'.e.symm v, ⟨?_, hy⟩, c'.e.right_inv hvt⟩` and prove the remaining obligations. Establish `h₄` using `h₃ _ hy`. Rewrite `h₄` using `[c'.e.right_inv hvt, ← hv]`.
+
+Establish `h₅ : PtsOver.map π w (spMap σ) (c'.e.symm v) ∈ c.e.source` using `(h₁ ▸ hy).1`. Use `c.e.injOn (hA ha) h₅ h₄` as an intermediate fact. Express the relevant statement in the definitionally equal form `PtsOver.map π w (spMap σ) (c'.e.symm v) ∈ A`. Rewrite using `[← this]`. Conclude with `ha`.
+-/
 theorem IsCell.image_eq (h : BigCell.IsCell ε π w c c') {A : Set (CxPts q σ)} (hA : A ⊆ c.e.source) :
     c'.e '' (PtsOver.map π w (spMap σ) ⁻¹' A ∩ c'.e.source) = BigCell.base ε ⁻¹' (c.e '' A) := by
   obtain ⟨h₁, h₂, h₃⟩ := h
@@ -81,6 +105,15 @@ theorem IsCell.image_eq (h : BigCell.IsCell ε π w c c') {A : Set (CxPts q σ)}
 
 omit [Fintype ι] in
 
+/- English proof (translation)
+Break down `A.eq_empty_or_nonempty with rfl | ⟨a, ha⟩` into its components or cases. Simplify using the standard rewrite rules. Establish `hne : c'.e.source.Nonempty`. Use `⟨c'.e.symm (BigCell.pt ε (c.e a) 0), c'.e.map_target ?_⟩` and prove the remaining obligations. Rewrite using `[h.2.1]`.
+
+Express the relevant statement in the definitionally equal form `BigCell.base ε _ ∈ c.e.target`. Rewrite using `[BigCell.base_pt]`. Conclude with `c.e.map_source (hA ha)`. Establish `hm : MeasurableSet (PtsOver.map π w (spMap σ) ⁻¹' A)` using `(PtsOver.continuous_map π w (spMap σ)).measurable hAm`. Rewrite using `[← h.image_eq hA, ← hρ.part_apply c' (hm.inter c'.e.open_source.measurableSet) Set.inter_subset_right, ← measure_inter_add_sdiff _ c'.e.open_source.measurableSet]`.
+
+Establish `h0 : part ρ (PtsOver.map π w (spMap σ) ⁻¹' A \ c'.e.source) = 0`. Use `measure_mono_null (fun y hy => ?_) (part_compl_ptsIn hp ρ c' hne)` and prove the remaining obligations. Introduce `hU`. Use `hy.2 ?_` and prove the remaining obligations. Rewrite using `[h.1]`.
+
+Conclude with `⟨hA hy.1, hU⟩`. Rewrite using `[h0, add_zero]`.
+-/
 theorem IsCell.part_preimage [IsIntegral Y] [SecondCountableTopology (CxPts p σ)] (h : BigCell.IsCell ε π w c c')
     (hp : IsArithVar p D) {ρ : AlgChart p σ D → CxPts p σ → ℝ} (hρ : IsDens ρ)
     {A : Set (CxPts q σ)} (hAm : MeasurableSet A) (hA : A ⊆ c.e.source) :
@@ -106,6 +139,17 @@ theorem IsCell.part_preimage [IsIntegral Y] [SecondCountableTopology (CxPts p σ
     exact ⟨hA hy.1, hU⟩
   rw [h0, add_zero]
 
+/- English proof (translation)
+Establish `hρ' : IsDens fun c y => -ρ c y` using `(isDens_zero.sub hρ).congr fun c y _ => by simp`. Establish `hg' : IsDens fun c y => -g c y` using `(isDens_zero.sub hg).congr fun c y _ => by simp`. Establish `g₁` using `ne_top_of_le_ne_top f₁ (measure_mono (Set.subset_univ (PtsOver.map π w (spMap σ) ⁻¹' A)))`. Establish `g₂` using `ne_top_of_le_ne_top f₂ (measure_mono (Set.subset_univ (PtsOver.map π w (spMap σ) ⁻¹' A)))`. Establish `g₃` using `ne_top_of_le_ne_top f₃ (measure_mono (Set.subset_univ A))`.
+
+Establish `g₄` using `ne_top_of_le_ne_top f₄ (measure_mono (Set.subset_univ A))`. Rewrite `g₁`, the goal using `[h.part_preimage hp hρ hAm hA]`. Rewrite `g₂`, the goal using `[h.part_preimage hp hρ' hAm hA]`. Rewrite `g₃`, the goal using `[hg.part_apply c hAm hA]`. Rewrite `g₄`, the goal using `[hg'.part_apply c hAm hA]`.
+
+Establish `hK : MeasurableSet (c.e '' A)` using `ChartGlue.measurableSet_image c.e hAm hA`. Establish `hKt : c.e '' A ⊆ c.e.target`. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Conclude with `c.e.map_source (hA ha)`. Establish `hT : BigCell.base ε ⁻¹' (c.e '' A) ⊆ c'.e.target`.
+
+Rewrite using `[h.2.1]`. Conclude with `fun v hv => hKt hv`. Establish `i₁` using `integrable_of_parts (((hρ.2 c').mono hT).aestronglyMeasurable ((continuous_base ε).measurable hK)) g₁ g₂`. Establish `i₂` using `integrable_of_parts (((hg.2 c).mono hKt).aestronglyMeasurable hK) g₃ g₄`. Establish `key` using `setIntegral_base ε hK i₁ fun z hz => hfib z (hKt hz)`.
+
+Rewrite `key` using `[integral_eq_lintegral_pos_part_sub_lintegral_neg_part i₁, integral_eq_lintegral_pos_part_sub_lintegral_neg_part i₂]`. Rewrite using `[← ENNReal.toReal_eq_toReal_iff' (ENNReal.add_ne_top.2 ⟨g₁, g₄⟩) (ENNReal.add_ne_top.2 ⟨g₂, g₃⟩), ENNReal.toReal_add g₁ g₄, ENNReal.toReal_add g₂ g₃]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem IsCell.part_add_part [IsIntegral Y] [SecondCountableTopology (CxPts q σ)] [SecondCountableTopology (CxPts p σ)]
     (h : BigCell.IsCell ε π w c c') (hp : IsArithVar p D) {ρ : AlgChart p σ D → CxPts p σ → ℝ}
     {g : AlgChart q σ n → CxPts q σ → ℝ} (hρ : IsDens ρ) (hg : IsDens g) (f₁ : part ρ Set.univ ≠ ⊤)
@@ -144,6 +188,17 @@ theorem IsCell.part_add_part [IsIntegral Y] [SecondCountableTopology (CxPts q σ
 
 end Cell
 
+/- English proof (translation)
+Introduce `k _ B Y q p π w ι _ r n D ε σ _ hq hp aq ap ρ g hρ hg hcov`. Use `haveI := CxPts.secondCountableTopology_of_isProjOver σ hq.isProjOver`. Use `haveI := CxPts.secondCountableTopology_of_isProjOver σ hp.isProjOver`. Establish `hρ' : IsDens fun c y => -ρ c y` using `(isDens_zero.sub hρ).congr fun c y _ => by simp`. Establish `hg' : IsDens fun c y => -g c y` using `(isDens_zero.sub hg).congr fun c y _ => by simp`.
+
+Establish `f1` using `part_univ_ne_top hp.isProjOver ap hρ`. Establish `f2` using `part_univ_ne_top hp.isProjOver ap hρ'`. Establish `f3` using `part_univ_ne_top hq.isProjOver aq hg`. Establish `f4` using `part_univ_ne_top hq.isProjOver aq hg'`. Use `set Φ := PtsOver.map π w (spMap σ) with hΦ`.
+
+Establish `hΦm : Measurable Φ` using `(PtsOver.continuous_map π w (spMap σ)).measurable`. Establish `key : (part ρ).map Φ + part (fun c y => -g c y) = (part (fun c y => -ρ c y)).map Φ + part g`. Use `ChartGlue.ext_of_cover (fun y => (hcov y).choose.e.source) (fun y => (hcov y).choose.e.open_source) (fun y => ⟨y, (hcov y).choose_spec.choose_spec.1⟩) fun y A hA hAy => ?_` and prove the remaining obligations. Take `⟨c', -, hcell, hfib⟩` from `(hcov y).choose_spec`. Rewrite using `[Measure.add_apply, Measure.add_apply, Measure.map_apply hΦm hA, Measure.map_apply hΦm hA]`.
+
+Conclude with `hcell.part_add_part hp hρ hg f1 f2 f3 f4 hfib hA hAy`. Establish `hu` using `congrArg (fun μ => μ Set.univ) key`. Simplify using `only [Measure.add_apply, Measure.map_apply hΦm MeasurableSet.univ, Set.preimage_univ] at hu`. Use `congrArg ENNReal.toReal hu` as an intermediate fact. Rewrite `this` using `[ENNReal.toReal_add f1 f4, ENNReal.toReal_add f2 f3]`.
+
+Simplify using `only [total]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem total_eq_of_cells : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (π : Y ⟶ B) (w : π ≫ q = p) (ι : Type) [Fintype ι] (r : ι → ℕ) (n D : ℕ) (ε : Fin D ≃ Fin n ⊕ (Σ a, Low (r a))) (σ : k →+* ℂ) [IsIntegral Y], IsArithVar q n → IsArithVar p D → Nonempty (AnRead q σ n) → Nonempty (AnRead p σ D) → ∀ (ρ : AlgChart p σ D → CxPts p σ → ℝ) (g : AlgChart q σ n → CxPts q σ → ℝ), IsDens ρ → IsDens g → (∀ y : CxPts q σ, ∃ (c : AlgChart q σ n) (c' : AlgChart p σ D), y ∈ c.e.source ∧ BigCell.IsCell ε π w c c' ∧ ∀ z ∈ c.e.target, ∫ u : ∀ a, Low (r a) → ℂ, ρ c' (c'.e.symm (BigCell.pt ε z u)) = g c (c.e.symm z)) → total ρ = total g := by
   intro k _ B Y q p π w ι _ r n D ε σ _ hq hp aq ap ρ g hρ hg hcov
   haveI := CxPts.secondCountableTopology_of_isProjOver σ hq.isProjOver

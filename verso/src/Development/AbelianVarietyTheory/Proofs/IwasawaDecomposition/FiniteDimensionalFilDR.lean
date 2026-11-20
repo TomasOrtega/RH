@@ -26,6 +26,11 @@ section Jumps
 variable {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
     (ρ : Representation LL G V)
 
+/- English proof (translation)
+Use `inf_le_inf_left _ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => exact ⟨v ⊗ₜ[Qp] ⟨b.1, PD.Fil_anti a b.2⟩, rfl⟩`.
+
+Consider the case `add x y hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+-/
 theorem filDR_succ_le (τ : K →ₐ[Qp] LL) (a : ℤ) : FildR PD ρ τ (a + 1) ≤ FildR PD ρ τ a := by
   refine inf_le_inf_left _ ?_
   rintro _ ⟨z, rfl⟩
@@ -36,14 +41,23 @@ theorem filDR_succ_le (τ : K →ₐ[Qp] LL) (a : ℤ) : FildR PD ρ τ (a + 1) 
 
 variable [FiniteDimensional LL ↥(DdR PD ρ)]
 
+/- English proof (translation)
+The claim follows from `Submodule.finiteDimensional_of_le (le_trans inf_le_left inf_le_left : FildR PD ρ τ a ≤ DdR PD ρ)`.
+-/
 theorem finiteDimensional_filDR (τ : K →ₐ[Qp] LL) (a : ℤ) : FiniteDimensional LL ↥(FildR PD ρ τ a) :=
   Submodule.finiteDimensional_of_le (le_trans inf_le_left inf_le_left : FildR PD ρ τ a ≤ DdR PD ρ)
 
+/- English proof (translation)
+The claim follows from `haveI := finiteDimensional_filDR PD ρ τ a Submodule.finrank_mono (filDR_succ_le PD ρ τ a)`.
+-/
 theorem finrank_filDR_succ_le (τ : K →ₐ[Qp] LL) (a : ℤ) :
     finrank LL ↥(FildR PD ρ τ (a + 1)) ≤ finrank LL ↥(FildR PD ρ τ a) :=
   haveI := finiteDimensional_filDR PD ρ τ a
   Submodule.finrank_mono (filDR_succ_le PD ρ τ a)
 
+/- English proof (translation)
+Use `finiteDimensional_filDR PD ρ τ a` as an intermediate fact. Use `not_congr ⟨fun h => by rw [multV, h, sub_self], fun h => ?_⟩` and prove the remaining obligations. Use `Submodule.eq_of_le_of_finrank_eq (filDR_succ_le PD ρ τ a) ?_` and prove the remaining obligations. Unfold `multV at h`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem isJumpV_iff (τ : K →ₐ[Qp] LL) (a : ℤ) : IsJumpV PD ρ τ a ↔ multV PD ρ τ a ≠ 0 := by
   have := finiteDimensional_filDR PD ρ τ a
   refine not_congr ⟨fun h => by rw [multV, h, sub_self], fun h => ?_⟩
@@ -51,6 +65,15 @@ theorem isJumpV_iff (τ : K →ₐ[Qp] LL) (a : ℤ) : IsJumpV PD ρ τ a ↔ mu
   unfold multV at h
   omega
 
+/- English proof (translation)
+Set `f : ℤ → ℕ` to `fun a => finrank LL ↥(FildR PD ρ τ a)`. Establish `hf : Antitone f` using `antitone_int_of_succ_le (finrank_filDR_succ_le PD ρ τ)`. Establish `hlt : ∀ a b, IsJumpV PD ρ τ a → a < b → f b < f a` using `fun a b ha hab => by`. Establish `h1` using `(isJumpV_iff PD ρ τ a).1 ha`. Establish `h2 : f b ≤ f (a + 1)` using `hf hab`.
+
+Establish `h3 : f (a + 1) ≤ f a` using `hf (by omega)`. Establish `h4 : (f a : ℤ) - f (a + 1) ≠ 0` using `h1`. Use linear arithmetic over natural numbers and integers. Use `Set.Finite.of_finite_image (f := f) ((Set.finite_Iic (finrank LL ↥(DdR PD ρ))).subset ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, -, rfl⟩`.
+
+Conclude with `Submodule.finrank_mono (le_trans inf_le_left inf_le_left : FildR PD ρ τ a ≤ DdR PD ρ)`. Introduce `a ha b hb hab`. Break down `lt_trichotomy a b with h | h | h` into its components or cases. Conclude with `absurd hab (hlt a b ha h).ne'`. Conclude with `h`.
+
+Conclude with `absurd hab (hlt b a hb h).ne`.
+-/
 theorem finite_jumps (τ : K →ₐ[Qp] LL) : {a | IsJumpV PD ρ τ a}.Finite := by
   let f : ℤ → ℕ := fun a => finrank LL ↥(FildR PD ρ τ a)
   have hf : Antitone f := antitone_int_of_succ_le (finrank_filDR_succ_le PD ρ τ)
@@ -69,6 +92,9 @@ theorem finite_jumps (τ : K →ₐ[Qp] LL) : {a | IsJumpV PD ρ τ a}.Finite :=
     · exact h
     · exact absurd hab (hlt b a hb h).ne
 
+/- English proof (translation)
+Use `⟨Finsupp.toMultiset (Finsupp.ofSupportFinite (fun a => (multV PD ρ τ a).toNat) ((finite_jumps PD ρ τ).subset fun a ha => (isJumpV_iff PD ρ τ a).2 fun h => ha (by simp [h]))), fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[Finsupp.count_toMultiset, Finsupp.ofSupportFinite_coe]`. Use `finrank_filDR_succ_le PD ρ τ a` as an intermediate fact. Conclude with `Int.toNat_of_nonneg (by unfold multV; omega)`.
+-/
 theorem exists_multiset_jumps (τ : K →ₐ[Qp] LL) :
     ∃ J : Multiset ℤ, ∀ a, (J.count a : ℤ) = multV PD ρ τ a := by
   refine ⟨Finsupp.toMultiset (Finsupp.ofSupportFinite (fun a => (multV PD ρ τ a).toNat)
@@ -80,6 +106,9 @@ theorem exists_multiset_jumps (τ : K →ₐ[Qp] LL) :
 
 end Jumps
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos m with rfl | hm` into its components or cases. Use `infer_instance`. Use `PD.finK` as an intermediate fact. Conclude with `Module.finite_of_finrank_pos (h ▸ Nat.mul_pos finrank_pos hm)`.
+-/
 theorem finiteDimensional_DdR {m : ℕ} [IsScalarTower Qp LL (Fin m → LL)]
     (ρ : Representation LL G (Fin m → LL)) (h : finrank LL ↥(DdR PD ρ) = finrank Qp K * m) :
     FiniteDimensional LL ↥(DdR PD ρ) := by
@@ -101,6 +130,9 @@ def vecCoord : (Fin m → LL') ≃ₗ[LL] (Fin (finrank LL LL') → Fin m → LL
 
 omit [Algebra Qp LL'] [IsScalarTower Qp LL LL'] in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Express the relevant statement in the definitionally equal form `(finBasis LL LL').repr (∑ j, algebraMap LL LL' (M k j) * x j) i = ∑ j, M k j * (finBasis LL LL').repr (x j) i`. Simplify using `[← Algebra.smul_def]`.
+-/
 theorem vecCoord_mulVec (M : Matrix (Fin m) (Fin m) LL) (x : Fin m → LL') (i : Fin (finrank LL LL')) :
     vecCoord LL LL' m ((M.map (algebraMap LL LL')).mulVec x) i = M.mulVec (vecCoord LL LL' m x i) := by
   funext k
@@ -110,6 +142,9 @@ theorem vecCoord_mulVec (M : Matrix (Fin m) (Fin m) LL) (x : Fin m → LL') (i :
 
 omit [Algebra Qp LL'] [IsScalarTower Qp LL LL'] in
 
+/- English proof (translation)
+The claim follows from `finrank_ext (finBasis LL LL') E S' S h`.
+-/
 theorem finrank_eq_of_coord {W W' : Type} [AddCommGroup W] [AddCommGroup W'] [Module LL W] [Module LL W']
     [Module LL' W'] [IsScalarTower LL LL' W'] (E : W' ≃ₗ[LL] (Fin (finrank LL LL') → W))
     (S' : Submodule LL' W') (S : Submodule LL W) (h : ∀ x, x ∈ S' ↔ ∀ i, E x i ∈ S) :
@@ -123,14 +158,25 @@ include hρ
 
 omit [Algebra Qp LL] [Algebra Qp LL'] [IsScalarTower Qp LL LL'] in
 
+/- English proof (translation)
+Take `⟨M, h1, h2⟩` from `hρ g`. Rewrite using `[h1, h2, vecCoord_mulVec]`.
+-/
 theorem vecCoord_rep (g : G) (x : Fin m → LL') (i : Fin (finrank LL LL')) :
     vecCoord LL LL' m (ρ' g x) i = ρ g (vecCoord LL LL' m x i) := by
   obtain ⟨M, h1, h2⟩ := hρ g
   rw [h1, h2, vecCoord_mulVec]
 
+/- English proof (translation)
+The claim follows from `finrank_eq_of_coord (tensCoord (vecCoord LL LL' m) B) _ _ (mem_Dcris_iff PD (vecCoord_rep hρ))`.
+-/
 theorem finrank_Dcris_ext : finrank LL' ↥(Dcris PD ρ') = finrank LL ↥(Dcris PD ρ) :=
   finrank_eq_of_coord (tensCoord (vecCoord LL LL' m) B) _ _ (mem_Dcris_iff PD (vecCoord_rep hρ))
 
+/- English proof (translation)
+Use `finrank_eq_of_coord (tensCoord (vecCoord LL LL' m) BdR) _ _ fun x => ?_` and prove the remaining obligations. Simplify using `only [DdR, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Rewrite using `[forall_comm]`. Use `forall_congr' fun g => ?_` and prove the remaining obligations. Rewrite using `[← (tensCoord (vecCoord LL LL' m) BdR).injective.eq_iff, funext_iff]`.
+
+Simplify using `only [tensCoord_actVdR PD (vecCoord_rep hρ)]`.
+-/
 theorem finrank_DdR_ext : finrank LL' ↥(DdR PD ρ') = finrank LL ↥(DdR PD ρ) := by
   refine finrank_eq_of_coord (tensCoord (vecCoord LL LL' m) BdR) _ _ fun x => ?_
   simp only [DdR, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply,
@@ -140,9 +186,15 @@ theorem finrank_DdR_ext : finrank LL' ↥(DdR PD ρ') = finrank LL ↥(DdR PD ρ
   rw [← (tensCoord (vecCoord LL LL' m) BdR).injective.eq_iff, funext_iff]
   simp only [tensCoord_actVdR PD (vecCoord_rep hρ)]
 
+/- English proof (translation)
+Simplify using `only [IsCrys, finrank_Dcris_ext PD hρ, finrank_fin_fun]`.
+-/
 theorem isCrys_ext_iff : IsCrys PD ρ' ↔ IsCrys PD ρ := by
   simp only [IsCrys, finrank_Dcris_ext PD hρ, finrank_fin_fun]
 
+/- English proof (translation)
+Establish `h` using `fun b => finrank_eq_of_coord (tensCoord (vecCoord LL LL' m) BdR) _ _ (mem_FildR_iff PD (vecCoord_rep hρ) τ τ' hτ b)`. Rewrite using `[multV, multV, h, h]`.
+-/
 theorem multV_ext (τ : K →ₐ[Qp] LL) (τ' : K →ₐ[Qp] LL') (hτ : ∀ c, τ' c = algebraMap LL LL' (τ c))
     (a : ℤ) : multV PD ρ' τ' a = multV PD ρ τ a := by
   have h := fun b => finrank_eq_of_coord (tensCoord (vecCoord LL LL' m) BdR) _ _
@@ -155,6 +207,9 @@ end Period
 
 variable {l : ℕ} [Fact l.Prime] (P : LocPrime l)
 
+/- English proof (translation)
+Rewrite using `[← PadicAlgCl.spectralNorm_eq, ← PadicAlgCl.spectralNorm_eq, spectralNorm, spectralNorm]`. Establish `h1` using `minpoly.algHom_eq (L.1.val.comp τ) (L.1.val.comp τ).toRingHom.injective x`. Establish `h2` using `minpoly.algHom_eq K.1.val K.1.val.toRingHom.injective x`. Conclude with `congrArg spectralValue (h1.trans h2.symm)`.
+-/
 theorem norm_algHom_finExt {K L : FinExt l} (τ : ↥K.1 →ₐ[ℚ_[l]] ↥L.1) (x : ↥K.1) :
     ‖((τ x : ↥L.1) : Om l)‖ = ‖(x : Om l)‖ := by
   rw [← PadicAlgCl.spectralNorm_eq, ← PadicAlgCl.spectralNorm_eq, spectralNorm, spectralNorm]
@@ -169,6 +224,11 @@ section Bridge
 
 variable {Gw : Subgroup (Ω ≃ₐ[E] Ω)} (Bw : LocBridge l E Ω Gw O) {m : ℕ}
 
+/- English proof (translation)
+Set `_ : Algebra ↥L₁.1 ↥L₂.1` to `(IntermediateField.inclusion h).toRingHom.toAlgebra`. Establish `: IsScalarTower ℚ_[l] ↥L₁.1 ↥L₂.1` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `L₂.2` as an intermediate fact. Establish `: FiniteDimensional ↥L₁.1 ↥L₂.1` using `Module.Finite.of_restrictScalars_finite ℚ_[l] _ _`. Establish `hρ : ∀ g, ∃ M : Matrix (Fin m) (Fin m) ↥L₁.1, (∀ x, Bw.repE L₁ r g x = M.mulVec x) ∧ ∀ x, Bw.repE L₂ (mapRep (IntermediateField.inclusion h).toRingHom r) g x = (M.map (algebraMap ↥L₁.1 ↥L₂.1)).mulVec x` using `fun g => ⟨r (Bw.e.symm g), fun _ => rfl, fun _ => rfl⟩`.
+
+Use `⟨isCrys_ext_iff _ hρ, ?_, exists_congr fun K' => exists_congr fun hK => isCrys_ext_iff _ fun g => hρ _, fun τ a => multV_ext _ hρ _ _ (fun _ => rfl) a⟩` and prove the remaining obligations. Rewrite using `[LocBridge.IsdRE, LocBridge.IsdRE, finrank_DdR_ext _ hρ]`.
+-/
 theorem local_ext {L₁ L₂ : FinExt l} (h : L₁.1 ≤ L₂.1) (r : ↥Gw →* GL (Fin m) ↥L₁.1) :
     (Bw.IsCrysE P L₂ (mapRep (IntermediateField.inclusion h).toRingHom r) ↔ Bw.IsCrysE P L₁ r) ∧
     (Bw.IsdRE P L₂ (mapRep (IntermediateField.inclusion h).toRingHom r) ↔ Bw.IsdRE P L₁ r) ∧
@@ -190,10 +250,22 @@ theorem local_ext {L₁ L₂ : FinExt l} (h : L₁.1 ≤ L₂.1) (r : ↥Gw →*
 
 variable {Bw} {r : ↥Gw →* GL (Fin m) (Om l)}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h₁.1.trans h, by rw [← h₁.2]; ext g i j; rfl⟩`.
+-/
 theorem IsModel.enlarge {L₁ L₂ : FinExt l} (h : L₁.1 ≤ L₂.1) {r₁ : ↥Gw →* GL (Fin m) ↥L₁.1}
     (h₁ : IsModel Bw r L₁ r₁) : IsModel Bw r L₂ (mapRep (IntermediateField.inclusion h).toRingHom r₁) :=
   ⟨h₁.1.trans h, by rw [← h₁.2]; ext g i j; rfl⟩
 
+/- English proof (translation)
+Use extensionality with `y`. Assume the negation of the conclusion as `hne`. Establish `hpos : 0 < ‖((τ₁ y : ↥L.1) : Om l) - (τ₂ y : ↥L.1)‖` using `norm_pos_iff.2 (sub_ne_zero.2 hne)`. Take `⟨_, ⟨x, rfl⟩, hx⟩` from `Metric.mem_closure_iff.1 (Bw.j_dense y.2) _ (half_pos hpos)`. Rewrite `hx` using `[dist_eq_norm]`.
+
+Use `set z : ↥Bw.Kw.1 := ⟨Bw.j (algebraMap E Ω x), Bw.j_E x⟩ with hz`. Establish `e : ((τ₁ y : ↥L.1) : Om l) - (τ₂ y : ↥L.1) = ((τ₁ (y - z) : ↥L.1) : Om l) - (τ₂ (y - z) : ↥L.1)`. Rewrite using `[map_sub, map_sub]`. Use `push_cast`. Rewrite using `[hz, ← h₁ x, ← h₂ x]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `norm_algHom_finExt τ₁ (y - z)`. Establish `h2` using `norm_algHom_finExt τ₂ (y - z)`. Establish `h3` using `norm_sub_le ((τ₁ (y - z) : ↥L.1) : Om l) (τ₂ (y - z) : ↥L.1)`. Establish `h4 : ‖((y - z : ↥Bw.Kw.1) : Om l)‖ < ‖((τ₁ y : ↥L.1) : Om l) - (τ₂ y : ↥L.1)‖ / 2` using `hx`.
+
+Rewrite `h3` using `[← e, h1, h2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem IsInduced.unique {τ : E →+* Om l} {L : FinExt l} {τ₁ τ₂ : ↥Bw.Kw.1 →ₐ[ℚ_[l]] ↥L.1}
     (h₁ : IsInduced Bw τ τ₁) (h₂ : IsInduced Bw τ τ₂) : τ₁ = τ₂ := by
   ext y
@@ -215,6 +287,11 @@ theorem IsInduced.unique {τ : E →+* Om l} {L : FinExt l} {τ₁ τ₂ : ↥Bw
   rw [← e, h1, h2] at h3
   linarith
 
+/- English proof (translation)
+Establish `l₁ : L₁.1 ≤ (supExt L₁ L₂).1` using `le_sup_left`. Establish `l₂ : L₂.1 ≤ (supExt L₁ L₂).1` using `le_sup_right`. Establish `e` using `IsModel.unique Bw r (h₁.enlarge l₁) (h₂.enlarge l₂)`. Take `⟨a₁, b₁, c₁, d₁⟩` from `local_ext P Bw l₁ r₁`. Take `⟨a₂, b₂, c₂, d₂⟩` from `local_ext P Bw l₂ r₂`.
+
+Rewrite `a₁`, `b₁`, `c₁`, `d₁` using `[e]`. Use `⟨a₁.symm.trans a₂, b₁.symm.trans b₂, c₁.symm.trans c₂, fun τ τ₁ τ₂ t₁ t₂ a => ?_⟩` and prove the remaining obligations. Establish `et : (IntermediateField.inclusion l₁).comp τ₁ = (IntermediateField.inclusion l₂).comp τ₂` using `IsInduced.unique (Bw := Bw) (τ := τ) (L := supExt L₁ L₂) t₁ t₂`. Rewrite using `[← d₁, ← d₂, et]`.
+-/
 theorem IsModel.local_iff {L₁ L₂ : FinExt l} {r₁ : ↥Gw →* GL (Fin m) ↥L₁.1}
     {r₂ : ↥Gw →* GL (Fin m) ↥L₂.1} (h₁ : IsModel Bw r L₁ r₁) (h₂ : IsModel Bw r L₂ r₂) :
     (Bw.IsCrysE P L₁ r₁ ↔ Bw.IsCrysE P L₂ r₂) ∧ (Bw.IsdRE P L₁ r₁ ↔ Bw.IsdRE P L₂ r₂) ∧
@@ -234,26 +311,44 @@ theorem IsModel.local_iff {L₁ L₂ : FinExt l} {r₁ : ↥Gw →* GL (Fin m) �
 
 variable {L : FinExt l} {r' : ↥Gw →* GL (Fin m) ↥L.1}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨_, _, h₁, h₂⟩ => (h₁.local_iff P h).1.1 h₂, fun h₂ => ⟨_, _, h, h₂⟩⟩`.
+-/
 theorem IsModel.isCrysAt_iff (h : IsModel Bw r L r') : IsCrysAt P Bw r ↔ Bw.IsCrysE P L r' :=
   ⟨fun ⟨_, _, h₁, h₂⟩ => (h₁.local_iff P h).1.1 h₂, fun h₂ => ⟨_, _, h, h₂⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨_, _, h₁, h₂⟩ => (h₁.local_iff P h).2.1.1 h₂, fun h₂ => ⟨_, _, h, h₂⟩⟩`.
+-/
 theorem IsModel.isdRAt_iff (h : IsModel Bw r L r') : IsdRAt P Bw r ↔ Bw.IsdRE P L r' :=
   ⟨fun ⟨_, _, h₁, h₂⟩ => (h₁.local_iff P h).2.1.1 h₂, fun h₂ => ⟨_, _, h, h₂⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨_, _, h₁, h₂⟩ => (h₁.local_iff P h).2.2.1.1 h₂, fun h₂ => ⟨_, _, h, h₂⟩⟩`.
+-/
 theorem IsModel.isPotCrysAt_iff (h : IsModel Bw r L r') : IsPotCrysAt P Bw r ↔ Bw.IsPotCrysE P L r' :=
   ⟨fun ⟨_, _, h₁, h₂⟩ => (h₁.local_iff P h).2.2.1.1 h₂, fun h₂ => ⟨_, _, h, h₂⟩⟩
 
+/- English proof (translation)
+Take `⟨_, _, h₁, -, τ₁, t₁, hc⟩` from `hJ`. Rewrite using `[hc, (h₁.local_iff P h).2.2.2 τ τ₁ τ' t₁ hτ]`.
+-/
 theorem IsJumpsAt.count_eq (h : IsModel Bw r L r') {τ : E →+* Om l} {τ' : ↥Bw.Kw.1 →ₐ[ℚ_[l]] ↥L.1}
     (hτ : IsInduced Bw τ τ') {J : Multiset ℤ} (hJ : IsJumpsAt P Bw r τ J) (a : ℤ) :
     (J.count a : ℤ) = Bw.multE P L r' τ' a := by
   obtain ⟨_, _, h₁, -, τ₁, t₁, hc⟩ := hJ
   rw [hc, (h₁.local_iff P h).2.2.2 τ τ₁ τ' t₁ hτ]
 
+/- English proof (translation)
+The claim follows from `haveI := finiteDimensional_DdR _ _ hd isJumpV_iff _ _ τ' a`.
+-/
 theorem isJumpE_iff (hd : Bw.IsdRE P L r') (τ' : ↥Bw.Kw.1 →ₐ[ℚ_[l]] ↥L.1) (a : ℤ) :
     Bw.IsJumpE P L r' τ' a ↔ Bw.multE P L r' τ' a ≠ 0 :=
   haveI := finiteDimensional_DdR _ _ hd
   isJumpV_iff _ _ τ' a
 
+/- English proof (translation)
+The claim follows from `haveI := finiteDimensional_DdR _ _ hd (exists_multiset_jumps _ (Bw.repE L r') τ').imp fun _ hJ => ⟨_, _, h, hd, τ', hτ, hJ⟩`.
+-/
 theorem IsModel.exists_isJumpsAt (h : IsModel Bw r L r') (hd : Bw.IsdRE P L r') {τ : E →+* Om l}
     {τ' : ↥Bw.Kw.1 →ₐ[ℚ_[l]] ↥L.1} (hτ : IsInduced Bw τ τ') : ∃ J, IsJumpsAt P Bw r τ J :=
   haveI := finiteDimensional_DdR _ _ hd
@@ -265,6 +360,9 @@ variable [NumberField E]
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Rewrite using `[hτ, norm_algHom_finExt, ← h x, hj.valuation_lt_one_iff]`.
+-/
 theorem IsInduced.norm_lt_one_iff {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)}
     {Bw : LocBridge l E Ω (Dec (F := E) A) O} (h : IsPlaceOver A w) (hj : Induces Bw) {τ : E →+* Om l}
     {L : FinExt l} {τ' : ↥Bw.Kw.1 →ₐ[ℚ_[l]] ↥L.1} (hτ : IsInduced Bw τ τ') (x : 𝓞 E) :
@@ -278,6 +376,11 @@ variable {pl : HeightOneSpectrum (𝓞 E) → ValuationSubring Ω}
   (hpl : ∀ w, IsPlaceOver (pl w) w) (hbr : ∀ w hw, Induces (br w hw))
 include hpl hbr
 
+/- English proof (translation)
+Take `⟨J, hJ⟩` from `h.exists_isJumpsAt P hd hτ`. Take `⟨w₂, hw₂, h₂⟩` from `isJumpsW_jumpsW P pl br r ⟨J, w, hw, hJ⟩`. Choose the witnesses or unpack the hypotheses as in `rfl : w₂ = w := by`. Take `⟨_, _, -, -, τ₂, t₂, -⟩` from `h₂`. Use extensionality with `x`.
+
+Rewrite using `[← t₂.norm_lt_one_iff (hpl w₂) (hbr w₂ hw₂), ← hτ.norm_lt_one_iff (hpl w) (hbr w hw)]`. Conclude with `h₂.count_eq P h hτ a`.
+-/
 theorem count_jumpsW {m : ℕ} {r : G E Ω →* GL (Fin m) (Om l)} {w : HeightOneSpectrum (𝓞 E)}
     {hw : w ∈ placesOver E l} {L : FinExt l} {r' : ↥(Dec (F := E) (pl w)) →* GL (Fin m) ↥L.1}
     (h : IsModel (br w hw) (resDec pl r w) L r') (hd : (br w hw).IsdRE P L r') {τ : E →+* Om l}
@@ -291,6 +394,9 @@ theorem count_jumpsW {m : ℕ} {r : G E Ω →* GL (Fin m) (Om l)} {w : HeightOn
     rw [← t₂.norm_lt_one_iff (hpl w₂) (hbr w₂ hw₂), ← hτ.norm_lt_one_iff (hpl w) (hbr w hw)]
   exact h₂.count_eq P h hτ a
 
+/- English proof (translation)
+Use `⟨(isCrysW_iff P pl br r hw).trans (h.isCrysAt_iff P), (isdRW_iff P pl br r hw).trans (h.isdRAt_iff P), (isPotCrysW_iff P pl br r hw).trans (h.isPotCrysAt_iff P), fun τ τ' hτ => ⟨fun hd a => ?_, fun hd a => count_jumpsW P hpl hbr h hd hτ a⟩⟩` and prove the remaining obligations. Rewrite using `[isJumpE_iff P hd, ← count_jumpsW P hpl hbr h hd hτ a, ← Multiset.count_ne_zero]`. Conclude with `Nat.cast_ne_zero.symm`.
+-/
 theorem local_of_isModel {m : ℕ} {r : G E Ω →* GL (Fin m) (Om l)} {w : HeightOneSpectrum (𝓞 E)}
     {hw : w ∈ placesOver E l} {L : FinExt l} {r' : ↥(Dec (F := E) (pl w)) →* GL (Fin m) ↥L.1}
     (h : IsModel (br w hw) (resDec pl r w) L r') :

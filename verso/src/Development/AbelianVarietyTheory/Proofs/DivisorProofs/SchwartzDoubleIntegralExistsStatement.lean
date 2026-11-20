@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzDoubleInteg
 import Mathlib
 open MeasureTheory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.schwartz_iterated_integral_of_dominated | exact GlobalTheory.schwartz_iterated_integral_of_dominated | (intros; apply GlobalTheory.schwartz_iterated_integral_of_dominated <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.schwartz_double_integral_exists : ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {α β : Type} [MeasurableSpace α] [MeasurableSpace β] (μα : Measure α) (μβ : Measure β) (Fm : α → β → SchwartzMap V ℂ),
     (∀ (m : ℕ) (t : V) (k : α), AEStronglyMeasurable (fun l => iteratedFDeriv ℝ m (Fm k l) t) μβ) →
     (∀ (m : ℕ) (t : V), AEStronglyMeasurable (fun k => ∫ l, iteratedFDeriv ℝ m (Fm k l) t ∂μβ) μα) →

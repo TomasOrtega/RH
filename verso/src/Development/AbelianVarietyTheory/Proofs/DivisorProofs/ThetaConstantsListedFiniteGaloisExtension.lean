@@ -17,6 +17,33 @@ attribute [local instance] Over.cartesianMonoidalCategory
 noncomputable section
 namespace GlobalTheory.UMin.GalTh
 
+/- English proof (translation)
+Introduce `S G _ _ L ρ hL hρ g m N Ω _ _ x θ hm hN hP`. Establish `hp : IsGrpPullback G G (𝟙 _) (𝟙 G.left)` using `@isGrpPullback_of_iso _ _ _ _ _ (Iso.refl G) (inferInstanceAs (IsMonHom (𝟙 G)))`. Establish `hid : LBIso L (L.pull (𝟙 _))` using `(GlobalTheory.PolBaseChange.lbIso_refl hL).chartPull (chartPullId _) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull _ _ _ rfl)`. Establish `fibBase : ∀ {R R' : Type} [CommRing R] [CommRing R'] (y : Sp R ⟶ S) (i : R →+* R'), PolFib G L g y → PolFib G L g (spMap i ≫ y)` using `fun y i h => (GlobalTheory.UMin.FibMove.polFib_move S S G L G L (𝟙 S) (𝟙 G.left) hL hL hp hid g _ y).2 _ i h`. Set `K` to `AlgebraicClosure Ω`.
+
+Set `ι₀ : Ω →+* K` to `algebraMap Ω K`. Use `haveI : CharZero K := charZero_of_injective_algebraMap (algebraMap Ω K).injective`. Establish `hm0 : m ≠ 0` using `hm.pos.ne'`. Establish `hmK : (m : K) ≠ 0` using `Nat.cast_ne_zero.2 hm0`. Establish `hPK : PolFib G L g (spMap ι₀ ≫ x)` using `fibBase x ι₀ hP`.
+
+Take `⟨ptK, cK, hK⟩` from `GlobalTheory.UMin.exists_thList S G L ρ hL hρ g m N K (spMap ι₀ ≫ x) (SecAt.pull G L θ ι₀) hm hmK hN hPK`. Take `⟨φ, hφ⟩` from `GlobalTheory.UMin.GalConj.thList_conj S G L ρ hL hρ g m N Ω K x θ ptK cK hm hmK hPK hK`. Take `⟨hfd, hgal, hdeg⟩` from `GlobalTheory.fixedField_ker_toPerm_finite_isGalois_finrank_dvd Ω K N φ`. Use `set Ω' := IntermediateField.fixedField φ.ker with hΩ'`. Establish `hfix : ∀ a, ∀ τ ∈ φ.ker, spMap (τ : K →+* K) ≫ (ptK a).left = (ptK a).left` using `fun a τ hτ => by`.
+
+Establish `h1` using `(hφ τ a).1`. Rewrite `h1` using `[MonoidHom.mem_ker.1 hτ, Equiv.Perm.one_apply]`. Then use the resulting hypothesis. Use `choose q hq using fun a => exists_descend φ.ker (ptK a).left (hfix a)`. Set `inc : Ω' →+* K` to `algebraMap Ω' K`. Set `j : Ω →+* Ω'` to `algebraMap Ω Ω'`.
+
+Establish `hincj : inc.comp j = ι₀` using `(IsScalarTower.algebraMap_eq Ω Ω' K).symm`. Establish `hqo : ∀ a, q a ≫ G.hom = spMap j ≫ x` using `fun a => sp_cancel inc _ _ (by`. Rewrite using `[← Category.assoc, hq a, Over.w (ptK a), ← Category.assoc, ← sp_comp, hincj]`. Use the proof step `rfl)`. Set `pt' : Fin N → (Over.mk (spMap j ≫ x) ⟶ G)` to `fun a => Over.homMk (q a) (hqo a)`.
+
+Set `u : Over.mk (spMap ι₀ ≫ x) ⟶ Over.mk (spMap j ≫ x)` to `Over.homMk (spMap inc) (by show spMap inc ≫ spMap j ≫ x = spMap ι₀ ≫ x`. Rewrite using `[← Category.assoc, ← sp_comp, hincj])`. Establish `hu : ∀ a, u ≫ pt' a = ptK a` using `fun a => Over.OverMorphism.ext (by simp [u, pt', hq a])`. Establish `hinj' : Function.Injective pt'` using `fun a b h => hK.1 (by rw [← hu a, ← hu b, h])`. Establish `htor : ∀ a, pt' a ^ (m ^ 2) = 1` using `fun a => by`.
+
+Establish `e : u ≫ pt' a ^ (m ^ 2) = u ≫ 1` using `by rw [MonObj.comp_pow, hu, (hK.2.1 a).1, MonObj.comp_one]`. Establish `e2` using `congrArg (fun f => f.left) e`. Simplify using `only [Over.comp_left] at e2`. Conclude with `Over.OverMorphism.ext (sp_cancel inc _ _ e2)`. Use `haveI : CharZero Ω' := charZero_of_injective_algebraMap (algebraMap Ω Ω').injective`.
+
+Establish `hm' : (m : Ω') ≠ 0` using `Nat.cast_ne_zero.2 hm0`. Establish `hP' : PolFib G L g (spMap j ≫ x)` using `fibBase x j hP`. Use `choose c' hc' using fun a => GlobalTheory.UMin.exists_thG_of_polFib_field S G L ρ hL hρ g m Ω' (spMap j ≫ x) (SecAt.pull G L θ j) (pt' a) hm hm' hP' (htor a)`. Establish `hT : ThList G L ρ m (spMap j ≫ x) (SecAt.pull G L θ j) pt' c'`. Use `⟨hinj', hc', fun K'' _ _ i p hpm => ?_⟩` and prove the remaining obligations.
+
+Establish `hm'' : (m : K'') ≠ 0` using `by rw [← map_natCast i]; exact (map_ne_zero i).2 hm'`. Take `⟨pt₂, c₂, h₂⟩` from `GlobalTheory.UMin.exists_thList S G L ρ hL hρ g m N K'' (spMap i ≫ spMap j ≫ x) (SecAt.pull G L (SecAt.pull G L θ j) i) hm hm'' hN (fibBase _ i hP')`. Set `w : Over.mk (spMap i ≫ spMap j ≫ x) ⟶ Over.mk (spMap j ≫ x)` to `Over.homMk (spMap i) rfl`. Establish `hv : ∀ a, ∃ b, w ≫ pt' a = pt₂ b` using `fun a => thList_exh h₂ _ (by rw [← MonObj.comp_pow, htor, MonObj.comp_one])`. Use `choose π hπ using hv`.
+
+Establish `hπi : Function.Injective π` using `fun a b h => hinj' (Over.OverMorphism.ext (sp_cancel i _ _ (by`. Use `congrArg (fun f => f.left) ((hπ a).trans ((congrArg pt₂ h).trans (hπ b).symm))` as an intermediate fact. Simplify `this)))` using `[w]`. Take `⟨b, hb⟩` from `thList_exh h₂ p hpm`. Take `⟨a, rfl⟩` from `(Finite.injective_iff_surjective.1 hπi) b`.
+
+Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[hb, ← hπ a]`. Both sides reduce to the same expression. Use `⟨Ω', inferInstance, inferInstance, pt', c', hfd, hgal, hdeg, hT, fun τ => ?_⟩` and prove the remaining obligations. Take `⟨pt'', -, h''⟩` from `GlobalTheory.UMin.ThPull.thList_pull S G L ρ hL hρ m N Ω' K inc (spMap j ≫ x) (SecAt.pull G L θ j) pt' c' hT`.
+
+Take `⟨pt₃, -, h₃⟩` from `thList_comp m j inc ι₀ hincj x θ pt'' _ h''`. Take `⟨φ', hφ'⟩` from `GlobalTheory.UMin.GalConj.thList_conj S G L ρ hL hρ g m N Ω K x θ pt₃ _ hm hmK hPK h₃`. Set `τ' : K ≃ₐ[Ω] K` to `τ.liftNormal K`. Use `⟨φ' τ', fun b => ?_⟩` and prove the remaining obligations. Apply `inc.injective` to reduce the goal to its premises.
+
+Conclude with `(AlgEquiv.liftNormal_commutes τ K (c' b)).symm.trans (hφ' τ' b).2`.
+-/
 theorem thList_galois : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (L : LB G.left) (ρ : LB.Gen (L.pull (eSec G))), L.IsLB → ρ.IsGen → ∀ (g m N : ℕ) (Ω : Type) [Field Ω] [CharZero Ω] (x : Sp Ω ⟶ S) (θ : SecAt G L x), Odd m → N = m ^ (4 * g) → PolFib G L g x → ∃ (Ω' : Type) (_ : Field Ω') (_ : Algebra Ω Ω') (pt : Fin N → (Over.mk (spMap (algebraMap Ω Ω') ≫ x) ⟶ G)) (c : Fin N → Ω'), FiniteDimensional Ω Ω' ∧ IsGalois Ω Ω' ∧ Module.finrank Ω Ω' ∣ N.factorial ∧ ThList G L ρ m (spMap (algebraMap Ω Ω') ≫ x) (SecAt.pull G L θ (algebraMap Ω Ω')) pt c ∧ ∀ τ : Ω' ≃ₐ[Ω] Ω', ∃ σ : Equiv.Perm (Fin N), ∀ a, τ (c a) = c (σ a) := by
   intro S G _ _ L ρ hL hρ g m N Ω _ _ x θ hm hN hP
   classical

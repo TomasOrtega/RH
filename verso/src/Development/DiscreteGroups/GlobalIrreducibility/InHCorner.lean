@@ -8,8 +8,24 @@ namespace DiscreteGroups.sglob.LConvKir
 
 variable {k : Type} [Field k] {m : ℕ}
 
+/- English proof (translation)
+The claim follows from `Units.ext (colM_zero c)`.
+-/
 theorem U_zero (c : Fin (m + 1)) : U c (0 : Fin (m + 1) → k) = 1 := Units.ext (colM_zero c)
 
+/- English proof (translation)
+Use `set c : Fin (m + 1) := ⟨j + 1, hj⟩ with hc`. Establish `hrow : ∀ q, (g : Matrix _ _ k) c q = (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) k) c q` using `fun q => hg c q (fun h => lt_irrefl _ h.1)`. Establish `hlow : ∀ p r : Fin (m + 1), ¬ p < c → r < c → (g : Matrix _ _ k) p r = 0` using `fun p r hp hr => by`. Rewrite using `[hg p r (fun h => hp (by rw [Fin.lt_def]; exact h.1)), Matrix.one_apply_ne (fun h => hp (by rw [h]; exact hr))]`. Use `Units.ext ?_` and prove the remaining obligations.
+
+Rewrite using `[Units.val_mul, Units.val_mul]`. Use `show (g : Matrix _ _ k) * colM c x = colM c _ * (g : Matrix _ _ k)`. Use extensionality with `p q`. Simplify using `only [colM, mul_add, add_mul, mul_one, one_mul, Matrix.add_apply]`. Use `congr 1`.
+
+Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Use `conv_rhs => rw [Finset.sum_eq_single c (fun b _ hb => by simp [hb]) (fun h => absurd (Finset.mem_univ c) h)]`. Distinguish the cases in `hq : q = c`. Rewrite using `[hq, hrow c, Matrix.one_apply_eq, mul_one]`. Distinguish the cases in `hp : p < c`.
+
+Rewrite using `[if_pos ⟨rfl, hp⟩]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Distinguish the cases in `hr : r < c`. Rewrite using `[if_pos ⟨rfl, hr⟩, if_pos hr]`. Rewrite using `[if_neg (fun h => hr h.2), if_neg hr]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[if_neg (fun h => hp h.2)]`. Use `Finset.sum_eq_zero fun r _ => ?_` and prove the remaining obligations. Distinguish the cases in `hr : r < c`. Rewrite using `[hlow p r hp hr, zero_mul]`.
+
+Rewrite using `[if_neg (fun h => hr h.2), mul_zero]`. Rewrite using `[hrow q, Matrix.one_apply_ne (Ne.symm hq), mul_zero]`. Use `Finset.sum_eq_zero fun r _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg (fun h => hq h.1), mul_zero]`.
+-/
 theorem conj_U (j : ℕ) (hj : j + 1 < m + 1) (g : GL (Fin (m + 1)) k) (hg : InH (j + 1) g)
     (x : Fin (m + 1) → k) :
     g * U ⟨j + 1, hj⟩ x = U ⟨j + 1, hj⟩ (fun p => ∑ r, (if r < (⟨j + 1, hj⟩ : Fin (m + 1)) then
@@ -45,6 +61,21 @@ theorem conj_U (j : ℕ) (hj : j + 1 < m + 1) (g : GL (Fin (m + 1)) k) (hg : InH
     refine Finset.sum_eq_zero fun r _ => ?_
     rw [if_neg (fun h => hq h.1), mul_zero]
 
+/- English proof (translation)
+Use `set jj : Fin (m + 1) := ⟨j, hj⟩ with hjj`. Set `y : Fin (m + 1) → k` to `fun p => (M : Matrix _ _ k) p jj`. Use `⟨y, U jj (-y) * M, ?_, ?_⟩` and prove the remaining obligations. Introduce `p q hpq show (colM jj (-y) * (M : Matrix (Fin (m + 1)) (Fin (m + 1)) k) : Matrix (Fin (m + 1)) (Fin (m + 1)) k) p q = _`. Rewrite using `[colM, add_mul, one_mul, Matrix.add_apply, Matrix.mul_apply]`.
+
+Simplify using `only [Matrix.of_apply]`. Rewrite using `[Finset.sum_eq_single jj (fun r _ hr => by simp [hr]) (fun h => absurd (Finset.mem_univ jj) h)]`. Rewrite using `[hrow q]`. Distinguish the cases in `hqj : q = jj`. Rewrite using `[hqj, Matrix.one_apply_eq, mul_one]`.
+
+Distinguish the cases in `hp : p < jj`. Rewrite using `[if_pos ⟨rfl, hp⟩, Matrix.one_apply_ne (ne_of_lt hp)]`. Simplify using `only [y, Pi.neg_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg (fun h => hp h.2), add_zero]`.
+
+Distinguish the cases in `hpe : p = jj`. Rewrite using `[hpe]`. Conclude with `hrow jj`. Use `hM p jj (fun h => hp ?_)` and prove the remaining obligations. Rewrite using `[Fin.lt_def]`.
+
+Rewrite `hpe` using `[Fin.ext_iff]`. Simplify using `[hjj] at h hpe ⊢`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Matrix.one_apply_ne (fun h => hqj h.symm), mul_zero, add_zero]`. Distinguish the cases in `hpe : p = jj`.
+
+Rewrite using `[hpe]`. Conclude with `hrow q`. Use `hM p q (fun h => hpq ⟨?_, ?_⟩)` and prove the remaining obligations. Rewrite `hpe` using `[Fin.ext_iff]`. Simplify using `[hjj] at hpe`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite `hqj` using `[Fin.ext_iff]`. Simplify using `[hjj] at hqj`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← mul_assoc, ← U_add, add_neg_cancel, U_zero, one_mul]`.
+-/
 theorem decomp (j : ℕ) (hj : j < m + 1) (M : GL (Fin (m + 1)) k) (hM : InH (j + 1) M)
     (hrow : ∀ q, (M : Matrix (Fin (m + 1)) (Fin (m + 1)) k) ⟨j, hj⟩ q = (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) k) ⟨j, hj⟩ q) :
     ∃ y h, InH j h ∧ M = U ⟨j, hj⟩ y * h := by
@@ -75,6 +106,15 @@ theorem decomp (j : ℕ) (hj : j < m + 1) (M : GL (Fin (m + 1)) k) (hM : InH (j 
         · rw [Fin.ext_iff] at hqj; simp [hjj] at hqj; omega
   · rw [← mul_assoc, ← U_add, add_neg_cancel, U_zero, one_mul]
 
+/- English proof (translation)
+Introduce `p q hpq`. Rewrite using `[corner, val_emb₂, Matrix.reindex_apply, Matrix.submatrix_apply]`. Proceed by induction on `p using Fin.addCases with`. Consider the case `left a`. Proceed by induction on `q using Fin.addCases with`.
+
+Consider the case `left b => exact absurd ⟨by simp, by simp⟩ hpq`. Consider the case `right b => simp [stdSum, Matrix.one_apply, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Consider the case `right a`. Proceed by induction on `q using Fin.addCases with`.
+
+Consider the case `left b => simp [stdSum, Matrix.one_apply, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Consider the case `right b`. Use `Subsingleton.elim a b` as an intermediate fact. Substitute `this` using the available equality.
+
+Simplify using `[stdSum]`.
+-/
 theorem InH_corner (g : GL (Fin m) k) : InH m (corner g) := by
   intro p q hpq
   rw [corner, val_emb₂, Matrix.reindex_apply, Matrix.submatrix_apply]

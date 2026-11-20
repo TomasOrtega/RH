@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeModelVacu
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DvdPowZeroIff
 open Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Hk3.IntWittMod.witt_mod_pow | exact GlobalTheory.Hk3.IntWittMod.witt_mod_pow | (intros; apply GlobalTheory.Hk3.IntWittMod.witt_mod_pow <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.integralWittTheorem_mod_uniformizerPow : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L) (σ : L →+* L) (q : ℕ),
     Formalism.UG.IsUnramInv ϖ σ q → Odd q → ∀ (n' : ℕ) (JT : GL (Fin n') L),
     JT ∈ Formalism.UG.GLint (Fin n') (Formalism.UG.intL L) →

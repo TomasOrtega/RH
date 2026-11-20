@@ -25,6 +25,11 @@ namespace GlobalTheory.SeeSawLaws
 
 open GlobalTheory.LocMod
 
+/- English proof (translation)
+Establish `hFL : FlatLaw D` using `GlobalTheory.T.flatThetaMaps_converge_thetaFunctions D`. Establish `hFLs : GlobalTheory.FinPl.FlatLaws D` using `GlobalTheory.T.flatMapsSatisfyFlatLaws_finitePlaces D`. Establish `hOm : OmLoc D` using `GlobalTheory.T.weilDatum_localModel_formula D`. Establish `hBF : FlatBF D` using `GlobalTheory.T.flatMap_besselToFourierJacobi_localModel D hFL hFLs hOm`. Establish `hFB : FlatFB D` using `GlobalTheory.T.flatMap_fourierJacobiToBessel_localModel D hFL hFLs hOm`.
+
+Establish `hC : ContrLoc D` using `GlobalTheory.T.lineContraction_splitPlace_localModel D GlobalTheory.LocFlat.contrFactor`. Establish `hS : GlobalTheory.LocFlat.SymCollapse` using `GlobalTheory.LocFlat.symCollapse_of_allPositions GlobalTheory.SymChain.allPositions_holds`. Introduce `k _ _ _ _ p s κ S t _ _ ψ hψ j c H σ B J B' F s₁ s₂ l vL hc T₁ T₂ hT₁ hT₂ Φ₁ Φ₂ hΦ₁ hΦ₂ h hh hne`. Conclude with `GlobalTheory.T.support_levelPlace_symmetricChain_secondHalf D hOm hBF hFB hC hS k p s κ S t ψ s₁.weil.std hψ j c H σ B J B' F s₁ s₂ l vL hc T₁ T₂ hT₁ hT₂ Φ₁ Φ₂ hΦ₁ hΦ₂ h hh hne`.
+-/
 theorem gsupp2_all (D : D7) : GlobalTheory.LocMod.GSupp2 D := by
   have hFL : FlatLaw D := GlobalTheory.T.flatThetaMaps_converge_thetaFunctions D
   have hFLs : GlobalTheory.FinPl.FlatLaws D := GlobalTheory.T.flatMapsSatisfyFlatLaws_finitePlaces D
@@ -36,11 +41,17 @@ theorem gsupp2_all (D : D7) : GlobalTheory.LocMod.GSupp2 D := by
   intro k _ _ _ _ p s κ S t _ _ ψ hψ j c H σ B J B' F s₁ s₂ l vL hc T₁ T₂ hT₁ hT₂ Φ₁ Φ₂ hΦ₁ hΦ₂ h hh hne
   exact GlobalTheory.T.support_levelPlace_symmetricChain_secondHalf D hOm hBF hFB hC hS k p s κ S t ψ s₁.weil.std hψ j c H σ B J B' F s₁ s₂ l vL hc T₁ T₂ hT₁ hT₂ Φ₁ Φ₂ hΦ₁ hΦ₂ h hh hne
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.flat_map_support_first_half_at_level_place D (GlobalTheory.T.weilDatum_localModel_formula D) (GlobalTheory.T.flatMap_besselToFourierJacobi_localModel D (GlobalTheory.T.flatThetaMaps_converge_thetaFunctions D) (GlobalTheory.T.flatMapsSatisfyFlatLaws_finitePlaces D) …`.
+-/
 theorem gsupp1_all (D : D7) : GlobalTheory.LocMod.GSupp1 D :=
   GlobalTheory.T.flat_map_support_first_half_at_level_place D (GlobalTheory.T.weilDatum_localModel_formula D)
     (GlobalTheory.T.flatMap_besselToFourierJacobi_localModel D (GlobalTheory.T.flatThetaMaps_converge_thetaFunctions D) (GlobalTheory.T.flatMapsSatisfyFlatLaws_finitePlaces D) (GlobalTheory.T.weilDatum_localModel_formula D))
     (GlobalTheory.LocFlat.symCollapse_of_allPositions GlobalTheory.SymChain.allPositions_holds)
 
+/- English proof (translation)
+Introduce `D c v n G hc hv hG`. Take `⟨a, ha, hval⟩` from `GlobalTheory.T.seeSaw_unfoldedValue_commonConstants_fixedLevel D c v n G hc hv hG`. Use `⟨a, ha, fun t ht hW hch => ⟨?_, hval t ht hW⟩⟩` and prove the remaining obligations. Establish `hs : GSupp (t` using `t) v := GlobalTheory.T.seeSaw_unfoldedSupport_fixedLevelPlaces D c v n G hc hv hG (gsupp1_all D) (gsupp2_all D) (GlobalTheory.T.flatThetaMaps_converge_thetaFunctions D) t ht hch`. Conclude with `hs`.
+-/
 theorem gLaws : ∀ (D : D7) (c : Comm D) (v : VCom c) (n : ℕ) (G : Fin n → GLoc v), c.Is → v.Is → GPin G → ∃ a : ℕ → ℂ, (∀ j, a j ≠ 0) ∧ ∀ t : Tup c, t.Is → WeilOK (t := t) v → (∀ i, (G i).Chars t) → GSupp (t := t) (v.withCG a) ∧ GValue (t := t) (v.withCG a) := by
   intro D c v n G hc hv hG
   obtain ⟨a, ha, hval⟩ := GlobalTheory.T.seeSaw_unfoldedValue_commonConstants_fixedLevel D c v n G hc hv hG

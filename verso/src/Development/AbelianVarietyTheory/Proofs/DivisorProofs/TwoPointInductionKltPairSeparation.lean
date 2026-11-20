@@ -14,6 +14,9 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.TopForm
 
 namespace GlobalTheory.PairStep
 
+/- English proof (translation)
+Rewrite using `[Finset.Icc_eq_cons_Ioc (by omega : i + 1 ≤ n), Finset.sum_cons]`. Establish `: ∑ e ∈ Finset.Icc (j + 1) n, (h e + ε) ≤ ∑ e ∈ Finset.Ioc (i + 1) n, (h e + ε)` using `Finset.sum_le_sum_of_subset_of_nonneg (fun e he => by simp only [Finset.mem_Icc, Finset.mem_Ioc] at he ⊢; omega) fun e _ _ => (hpos e).le`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem add_le_sum_Icc_of_lt (h : ℕ → ℚ) (ε : ℚ) (hpos : ∀ e, 0 < h e + ε) {n i j : ℕ}
     (hij : i < j) (hjn : j ≤ n) {d : ℚ} (hd : d ≤ ∑ e ∈ Finset.Icc (j + 1) n, (h e + ε)) :
     d + (h (i + 1) + ε) ≤ ∑ e ∈ Finset.Icc (i + 1) n, (h e + ε) := by
@@ -24,6 +27,9 @@ theorem add_le_sum_Icc_of_lt (h : ℕ → ℚ) (ε : ℚ) (hpos : ∀ e, 0 < h e
       fun e _ _ => (hpos e).le
   linarith
 
+/- English proof (translation)
+The claim follows from `Finset.sum_le_sum_of_subset_of_nonneg (Finset.Icc_subset_Icc (by omega) le_rfl) fun e _ _ => (hpos e).le`.
+-/
 theorem sum_Icc_le_sum_Icc_one (h : ℕ → ℚ) (ε : ℚ) (hpos : ∀ e, 0 < h e + ε) (n j : ℕ) :
     ∑ e ∈ Finset.Icc (j + 1) n, (h e + ε) ≤ ∑ e ∈ Finset.Icc 1 n, (h e + ε) :=
   Finset.sum_le_sum_of_subset_of_nonneg (Finset.Icc_subset_Icc (by omega) le_rfl)
@@ -33,6 +39,23 @@ end GlobalTheory.PairStep
 
 namespace GlobalTheory.PairStep
 
+/- English proof (translation)
+Introduce `hP hNV hNef X _ _ _ p n hproj hdim`. Use `letI := algebraΓOfHom p`. Introduce `Δ m G N ε h x₁ x₂ hΔ hklt hm hG hNa hc₁ hc₂ hne hh hint hε`. Establish `hpos : ∀ e, 0 < h e + ε` using `fun e => add_pos (hh e) hε`. Establish `hξ : ∀ x : X, genericPoint X ⤳ x` using `fun x => (genericPoint_spec X).specializes trivial`.
+
+Establish `hdimξ : topologicalKrullDim (closure ({genericPoint X} : Set X)) = n`. Rewrite using `[genericPoint_closure, IsHomeomorph.topologicalKrullDim_eq _ (Homeomorph.Set.univ X).isHomeomorph, hdim]`. Establish `hn : 1 ≤ n`. Take `⟨e, -, he, he1⟩` from `GlobalTheory.T.exists_topologicalKrullDim_closure_point_le X n (genericPoint X) hdim`. Establish `hen : e = n`.
+
+Rewrite `he` using `[hdimξ]`. Conclude with `he.symm` after adjusting the coercions. Substitute `hen` using the available equality. Distinguish the cases in `h₁ : x₁ = genericPoint X`. Conclude with `he1 x₂ (hξ x₂) fun h₂ => hne (h₁.trans h₂.symm)`.
+
+Conclude with `he1 x₁ (hξ x₁) h₁`. Take `⟨k, rfl⟩ : ∃ k, n = k + 1` from `⟨n - 1, by omega⟩`. Establish `key : ∀ j, j ≤ k → ∀ (D : X → ℚ) (d : ℚ), 0 ≤ d → d ≤ ∑ e ∈ Finset.Icc (j + 1) (k + 1), (h e + ε) → QNum p N d D → ((LcCut p (k + 1) (Δ + D) x₁ j ∧ ¬ KltAt p (k + 1) (Δ + D) x₂) ∨ (LcCut p (k + 1) (Δ + D) x₂ j ∧ ¬ KltAt p (k + 1) (Δ + D) x₁)) → ∃ (D : X → ℚ) (d : ℚ), d ≤ ∑ e ∈ Fi …`. Introduce `j`. Proceed by induction on `j using Nat.strong_induction_on with`.
+
+Consider the case `_ j ih`. Introduce `hjk D d hd0 hd hQ hcut`. Establish `hd1` using `hd.trans (sum_Icc_le_sum_Icc_one h ε hpos (k + 1) j)`. Break down `hcut with ⟨hc, hnk⟩ | ⟨hc, hnk⟩` into its components or cases. Break down `GlobalTheory.T.twoPoint_induction_step_logCanonical hP hNV hNef X p (k + 1) hproj hdim Δ m G N D d ε h x₁ x₂ j hΔ hklt hm hG hNa hc₁ hc₂ hne hh hint hε hQ hd0 hc hnk with h0 | ⟨i, D', d', hij, hd'0, hd', hQ', hc'⟩` into its components or cases.
+
+Conclude with `⟨D, d, hd1, hQ, Or.inl ⟨h0, hnk⟩⟩`. Conclude with `ih i hij (by omega) D' d' hd'0 (hd'.trans (add_le_sum_Icc_of_lt h ε hpos hij (by omega) hd)) hQ' hc'`. Break down `GlobalTheory.T.twoPoint_induction_step_logCanonical hP hNV hNef X p (k + 1) hproj hdim Δ m G N D d ε h x₂ x₁ j hΔ hklt hm hG hNa hc₂ hc₁ hne.symm hh (fun z e hz => hint z e hz.symm) hε hQ hd0 hc hnk with h0 | ⟨i, D', d', hij, hd'0, hd', hQ', hc'⟩` into its components or cases. Conclude with `⟨D, d, hd1, hQ, Or.inr ⟨h0, hnk⟩⟩`. Conclude with `ih i hij (by omega) D' d' hd'0 (hd'.trans (add_le_sum_Icc_of_lt h ε hpos hij (by omega) hd)) hQ' hc'.symm`.
+
+Establish `hlc : ∀ x, LcAt p (k + 1) (Δ + 0) x` using `fun x => by rw [add_zero]; exact (hklt x).lcAt`. Establish `hdimξ' : topologicalKrullDim (closure ({genericPoint X} : Set X)) = ((k + 1 : ℕ) : WithBot ℕ∞)` using `hdimξ`. Take `⟨D', d', hd'0, hd', hQ', hc'⟩` from `GlobalTheory.T.lc_cut_two_closed_points_one_centre hP hNV hNef X p (k + 1) hproj hdim Δ m G N 0 0 (h (k + 1)) x₁ x₂ (genericPoint X) k hΔ hklt hm hG hNa (qNum_zero_zero X p hproj N) le_rfl hc₁ hc₂ (hlc x₁) (hlc x₂) (hξ x₁) (hξ x₂) (Or.inl rfl) hdimξ' (hh _) (hint (genericPoint X) …`. Use `key k le_rfl D' d' hd'0 ?_ hQ' hc'` and prove the remaining obligations. Rewrite using `[Finset.Icc_self, Finset.sum_singleton]`.
+
+Combine the linear relations using `[hε]`.
+-/
 theorem two_point_induction : GlobalTheory.Published.Principalisation → GlobalTheory.Published.NadelVanishingPair →
     GlobalTheory.Published.NefNumerics → ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X]
     [GlobalTheory.IsNormalScheme X] (p : X ⟶ Sp ℂ) (n : ℕ), IsProjOver p → topologicalKrullDim X = n →

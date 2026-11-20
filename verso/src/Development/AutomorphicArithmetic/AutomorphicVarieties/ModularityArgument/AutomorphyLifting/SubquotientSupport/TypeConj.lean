@@ -20,6 +20,9 @@ variable {G V V' W W' : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddComm
 private def Cj (γ : ℂ ≃+* ℂ) (π : Representation ℂ G V) (π' : Representation ℂ G V') (f : V ≃+ V') : Prop :=
   (∀ (z : ℂ) v, f (z • v) = γ z • f v) ∧ ∀ g v, f (π g v) = π' g (f v)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun z v => f.injective (by rw [h.1]; simp), fun g v => f.injective (by rw [h.2]; simp)⟩`.
+-/
 private theorem Cj.symm {γ : ℂ ≃+* ℂ} {π : Representation ℂ G V} {π' : Representation ℂ G V'} {f : V ≃+ V'}
     (h : Cj γ π π' f) : Cj γ.symm π' π f.symm :=
   ⟨fun z v => f.injective (by rw [h.1]; simp), fun g v => f.injective (by rw [h.2]; simp)⟩
@@ -53,6 +56,11 @@ private def Cj.iso {γ : ℂ ≃+* ℂ} {π : Representation ℂ G V} {π' : Rep
     obtain ⟨v, rfl⟩ := f.surjective v
     exact H (show v ∈ h.pull S from hv), fun H v hv => H hv⟩
 
+/- English proof (translation)
+Take `⟨-, p, hp, hS⟩` from `h`. Set `q : π'.IntertwiningMap σ'` to `{ toFun := fun v => f (p (F.symm v)) map_add' := fun a b => by simp only [map_add] map_smul' := fun c a => by rw [hF.symm.1, map_smul, hf.1]; simp isIntertwining' := fun g => LinearMap.ext fun v => by show f (p (F.symm (π' g v))) = σ' g (f (p (F.symm v)))`. Rewrite using `[hF.symm.2, p.isIntertwining, hf.2] }`. Use `⟨hi, q, f.surjective.comp (hp.comp F.symm.surjective), fun S h => hF.iso.injective ?_⟩` and prove the remaining obligations. Rewrite using `[hS _ ((OrderIso.isCoatom_iff _ _).2 h)]`.
+
+Use `SetLike.ext fun y => ?_` and prove the remaining obligations. Use `show p y = 0 ↔ f (p (F.symm (F y))) = 0`. Simplify using the standard rewrite rules.
+-/
 private theorem cosocle_conj {γ : ℂ ≃+* ℂ} {π : Representation ℂ G V} {π' : Representation ℂ G V'} {F : V ≃+ V'}
     {σ : Representation ℂ G W} {σ' : Representation ℂ G W'} {f : W ≃+ W'} (hF : Cj γ π π' F) (hf : Cj γ σ σ' f)
     (hi : σ'.IsIrreducible) (h : IsCosocle σ π) : IsCosocle σ' π' := by
@@ -70,11 +78,17 @@ private theorem cosocle_conj {γ : ℂ ≃+* ℂ} {π : Representation ℂ G V} 
   show p y = 0 ↔ f (p (F.symm (F y))) = 0
   simp
 
+/- English proof (translation)
+Establish `h1` using `h.twist χ`. Rewrite `h1` using `[twist_twist, e, twist_one]`. Then use the resulting hypothesis.
+-/
 private theorem cosocle_move {π : Representation ℂ G V} {σ : Representation ℂ G W} {χ ψ : G →* ℂˣ}
     (h : IsCosocle (twist σ ψ) π) (e : χ * ψ = 1) : IsCosocle σ (twist π χ) := by
   have h1 := h.twist χ
   rwa [twist_twist, e, twist_one] at h1
 
+/- English proof (translation)
+Establish `h1` using `h.twist ψ`. Rewrite `h1` using `[twist_twist, mul_comm, e, twist_one]`. Then use the resulting hypothesis.
+-/
 private theorem cosocle_move' {π : Representation ℂ G V} {σ : Representation ℂ G W} {χ ψ : G →* ℂˣ}
     (h : IsCosocle σ (twist π χ)) (e : χ * ψ = 1) : IsCosocle (twist σ ψ) π := by
   have h1 := h.twist ψ
@@ -93,6 +107,9 @@ private def indMap {γ : ℂ ≃+* ℂ} {P : Subgroup G} {σ : Representation �
       funext x
       exact congrArg j (congrFun (congrArg Subtype.val hg') x))⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨{ toFun := indMap h invFun := indMap h.symm left_inv := fun φ => Subtype.ext (Subtype.ext (funext fun x => j.symm_apply_apply _)) right_inv := fun φ => Subtype.ext (Subtype.ext (funext fun x => j.apply_symm_apply _)) map_add' := fun φ ψ => Subtype.ext (Subtype.ext (funext fun x …`.
+-/
 private theorem smInd_conj {γ : ℂ ≃+* ℂ} {P : Subgroup G} {σ : Representation ℂ P V} {τ : Representation ℂ P W}
     {j : V ≃+ W} (h : Cj γ σ τ j) : ∃ F, Cj γ (smInd P σ) (smInd P τ) F :=
   ⟨{ toFun := indMap h
@@ -110,17 +127,35 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 private def cj {Γ : Type} [Group Γ] (γ : ℂ ≃+* ℂ) (χ : Γ →* ℂˣ) : Γ →* ℂˣ := (Units.map (γ : ℂ →* ℂ)).comp χ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem cj_val {Γ : Type} [Group Γ] (γ : ℂ ≃+* ℂ) (χ : Γ →* ℂˣ) (g : Γ) : (cj γ χ g : ℂ) = γ (χ g) := rfl
 
+/- English proof (translation)
+Rewrite using `[val_absPow, Complex.cpow_natCast, GlobalTheory.LGrp.nabs_eq_zpow]`. Simplify using the standard rewrite rules.
+-/
 private theorem cj_abs (γ : ℂ ≃+* ℂ) (m : ℕ) (x : kˣ) : γ (absPow k m x) = absPow k m x := by
   rw [val_absPow, Complex.cpow_natCast, GlobalTheory.LGrp.nabs_eq_zpow]
   simp
 
+/- English proof (translation)
+The claim follows from `Subgroup.isOpen_mono (H₁ := χ.ker) (fun g hg => by rw [MonoidHom.mem_ker] at hg ⊢ simp [cj, hg]) h`.
+-/
 private theorem cj_smooth (γ : ℂ ≃+* ℂ) {χ : kˣ →* ℂˣ} (h : IsSmoothChar χ) : IsSmoothChar (cj γ χ) :=
   Subgroup.isOpen_mono (H₁ := χ.ker) (fun g hg => by
     rw [MonoidHom.mem_ker] at hg ⊢
     simp [cj, hg]) h
 
+/- English proof (translation)
+Set `κ` to `(PiTensorProduct.constantBaseRingEquiv (Fin n) ℂ).toLinearEquiv`. Use `smInd_conj (j := (κ.toAddEquiv.trans γ.toAddEquiv).trans κ.symm.toAddEquiv) ⟨fun z v => ?_, fun p v => ?_⟩` and prove the remaining obligations. Use `show κ.symm (γ (κ (z • v))) = γ z • κ.symm (γ (κ v))`. Rewrite using `[map_smul, smul_eq_mul, map_mul, ← map_smul, smul_eq_mul]`. Apply `κ.injective show κ (κ.symm (γ (κ ((deltaHalf k _ (leviProj k e p) : ℂ) • piTensor _ (leviProj k e p) v)))) = κ ((deltaHalf k _ (leviProj k e p) : ℂ) • piTensor _ (leviProj k e p) (κ.symm (γ (κ v))))` to reduce the goal to its premises.
+
+Generalize the expression as in `leviProj k e p = l`. Establish `h1` using `fun χ t => GlobalTheory.PermPrin.constEquiv_piTensor_detRep (k := k) (n := n) χ l t`. Establish `h2 : ∀ t, PiTensorProduct.constantBaseRingEquiv (Fin n) ℂ t = κ t` using `fun _ => rfl`. Simplify using `only [h2] at h1`. Rewrite using `[κ.apply_symm_apply, κ.map_smul, κ.map_smul, h1, h1, κ.apply_symm_apply, smul_eq_mul, smul_eq_mul, ← mul_assoc, ← mul_assoc, map_mul, deltaHalf_apply, Units.coe_prod, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib, map_prod]`.
+
+Use `congr 1`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `h3 : ((modExp (fun _ : Fin n => Fin 1) a : ℤ) : ℂ) / 2 + ((n : ℂ) - 1) / 2 = ((n - 1 - a : ℕ) : ℂ)`. Rewrite using `[modExp_fin _ (fun _ => by simp), Nat.sub_sub, Nat.cast_sub (by omega)]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h4 : ∀ (x : kˣ) (c : ℂ), (absPow k (((modExp (fun _ : Fin n => Fin 1) a : ℤ) : ℂ) / 2) x : ℂ) * (c * absPow k (((n : ℂ) - 1) / 2) x) = c * absPow k ((n - 1 - a : ℕ) : ℂ) x` using `fun x c => by`. Rewrite using `[← h3, absPow_add, MonoidHom.mul_apply, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[MonoidHom.mul_apply, MonoidHom.mul_apply, Units.val_mul, Units.val_mul, h4, h4, map_mul, cj_abs, cj_val]`.
+-/
 private theorem prod_conj (γ : ℂ ≃+* ℂ) {n : ℕ} (e : (Σ _ : Fin n, Fin 1) ≃ Fin n) (ω : Fin n → kˣ →* ℂˣ) :
     ∃ F, Cj γ (multiProd e fun a => detRep (Fin 1) (ω a * absPow k (((n : ℂ) - 1) / 2)))
       (multiProd e fun a => detRep (Fin 1) (cj γ (ω a) * absPow k (((n : ℂ) - 1) / 2))) F := by
@@ -156,6 +191,13 @@ section Loc2
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `exists_uniformizer k`. Set `t : Fin n → ℝ` to `fun i => ‖(ω i ϖ : ℂ)‖`. Use `⟨Tuple.sort t, fun i j hij e => ?_⟩` and prove the remaining obligations. Establish `h1 : t (Tuple.sort t i) ≤ t (Tuple.sort t j)` using `Tuple.monotone_sort t hij.le`. Establish `h2 : nabs k ϖ < 1`.
+
+Rewrite using `[GlobalTheory.LGrp.nabs_eq_zpow, ord_eq_one hϖ, zpow_neg, zpow_one]`. Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast (Finite.one_lt_card : 1 < Nat.card 𝓀[k]))`. Establish `h3 : t (Tuple.sort t j) = t (Tuple.sort t i) * nabs k ϖ`. Simplify using `only [t]`. Rewrite using `[e, MonoidHom.mul_apply, Units.val_mul, norm_mul, val_absPow, Complex.cpow_one, Complex.norm_real, Real.norm_of_nonneg (nabs_pos' k ϖ).le]`.
+
+Establish `h4 : 0 < t (Tuple.sort t i)` using `norm_pos_iff.2 (Units.ne_zero _)`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 private theorem exists_order (ω : Fin n → kˣ →* ℂˣ) :
     ∃ p : Equiv.Perm (Fin n), ∀ i j, i < j → ω (p j) ≠ ω (p i) * absPow k 1 := by
   obtain ⟨ϖ, hϖ⟩ := exists_uniformizer k
@@ -172,6 +214,9 @@ private theorem exists_order (ω : Fin n → kˣ →* ℂˣ) :
   have h4 : 0 < t (Tuple.sort t i) := norm_pos_iff.2 (Units.ne_zero _)
   nlinarith
 
+/- English proof (translation)
+Use `⟨_, fun a => .single _ (IrrGL.isCusp_ofChar (ω a) (hω a)), ⟨rfl, fun i j hij hp => ho i j hij ?_⟩, fun a => (single_spec _).2.1⟩` and prove the remaining obligations. Take `⟨m, h1, h2, -, e⟩` from `Segment.precedes_iff.1 hp`. Take `rfl : m = 1` from `le_antisymm h2 h1`. Simplify using `only [Segment.single, Segment.first_ofFirst, IrrGL.nu, IrrGL.tw_ofChar, IrrGL.ofChar_inj] at e`. Simplify using `using e`.
+-/
 private theorem lfactors (ω : Fin n → kˣ →* ℂˣ) (hω : ∀ i, IsSmoothChar (ω i))
     (ho : ∀ i j, i < j → ω j ≠ ω i * absPow k 1) : ∃ 𝔪, LFactors 𝔪 fun a => IrrGL.ofChar (ω a) (hω a) := by
   refine ⟨_, fun a => .single _ (IrrGL.isCusp_ofChar (ω a) (hω a)), ⟨rfl, fun i j hij hp => ho i j hij ?_⟩,
@@ -181,15 +226,24 @@ private theorem lfactors (ω : Fin n → kˣ →* ℂˣ) (hω : ∀ i, IsSmoothC
   simp only [Segment.single, Segment.first_ofFirst, IrrGL.nu, IrrGL.tw_ofChar, IrrGL.ofChar_inj] at e
   simpa using e
 
+/- English proof (translation)
+Use `MonoidHom.ext fun x => Units.ext (γ.injective ?_)` and prove the remaining obligations. Establish `h1` using `cj_abs γ 1 x`. Rewrite `h1` using `[Nat.cast_one]`. Rewrite using `[← cj_val, h, MonoidHom.mul_apply, MonoidHom.mul_apply, Units.val_mul, Units.val_mul, map_mul, h1, cj_val]`.
+-/
 private theorem order_cj (γ : ℂ ≃+* ℂ) {χ ψ : kˣ →* ℂˣ} (h : cj γ χ = cj γ ψ * absPow k 1) : χ = ψ * absPow k 1 := by
   refine MonoidHom.ext fun x => Units.ext (γ.injective ?_)
   have h1 := cj_abs γ 1 x
   rw [Nat.cast_one] at h1
   rw [← cj_val, h, MonoidHom.mul_apply, MonoidHom.mul_apply, Units.val_mul, Units.val_mul, map_mul, h1, cj_val]
 
+/- English proof (translation)
+Simplify using `[IrrGL.ofChar]`.
+-/
 private theorem sum_deg (ω : Fin n → kˣ →* ℂˣ) (hω : ∀ i, IsSmoothChar (ω i)) :
     ∑ a, (IrrGL.ofChar (ω a) (hω a)).1 = n := by simp [IrrGL.ofChar]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(multiProdTwistEquiv _ _ hη).trans (multiProdEquiv _ fun a => (twistEquiv (equivRep (IrrRep.det (Fin 1) (ω a) (hω a))).symm _).trans (.mk (.refl ℂ ℂ) fun g => by refine LinearMap.ext fun x : ℂ => ?_ show (η _ : ℂ) • ofChar (detChar (Fin 1) (ω a)) g x = ofChar (detChar (Fin 1) (ω …`.
+-/
 private theorem twist_prod (ω : Fin n → kˣ →* ℂˣ) (hω : ∀ i, IsSmoothChar (ω i)) (hd : ∑ _ : Fin n, 1 = n)
     {η : kˣ →* ℂˣ} (hη : IsSmoothChar η) :
     Nonempty ((twist (prodIrr _ (sum_deg ω hω)) (detChar (Fin n) η)).Equiv
@@ -201,6 +255,11 @@ private theorem twist_prod (ω : Fin n → kˣ →* ℂˣ) (hω : ∀ i, IsSmoot
       rw [ofChar_apply, ofChar_apply, detChar_apply, detChar_apply, MonoidHom.mul_apply, Units.val_mul, smul_eq_mul]
       exact (mul_left_comm _ _ _).trans (mul_assoc _ _ _).symm))⟩
 
+/- English proof (translation)
+Establish `hc : ∀ a, HasSupport (IrrGL.ofChar (ω a) (hω a)).rep {IrrGL.ofChar (ω a) (hω a)}` using `fun a => hasSupport_self (IrrGL.isCusp_ofChar (ω a) (hω a))`. Establish `h1` using `GlobalTheory.CompanionTheory.Hypotheses₂.TD.hasSupport_of_isSubquotient_prodIrr hc π.irr hπ.isSubquotient`. Use `⟨_, h1.of_equiv (IrrGL.equivOf π.ρ π.smooth π.irr), fun y hy => Or.inl ?_⟩` and prove the remaining obligations. Take `⟨a, -, hy⟩` from `Multiset.mem_sum.1 hy`. Rewrite using `[Multiset.mem_singleton.1 hy]`.
+
+Both sides reduce to the same expression.
+-/
 private theorem good_cosocle (ω : Fin n → kˣ →* ℂˣ) (hω : ∀ i, IsSmoothChar (ω i)) (π : IrrRep (GL (Fin n) k))
     (hπ : IsCosocle π.ρ (prodIrr _ (sum_deg ω hω))) : UpperTheory.Zero.LLC.Good (cls π) := by
   have hc : ∀ a, HasSupport (IrrGL.ofChar (ω a) (hω a)).rep {IrrGL.ofChar (ω a) (hω a)} := fun a =>
@@ -211,6 +270,13 @@ private theorem good_cosocle (ω : Fin n → kˣ →* ℂˣ) (hω : ∀ i, IsSmo
   rw [Multiset.mem_singleton.1 hy]
   rfl
 
+/- English proof (translation)
+Establish `hd : ∑ _ : Fin n, 1 = n` using `by simp`. Establish `e1 : detChar (Fin n) (absPow k (((n : ℂ) - 1) / 2)) * detChar (Fin n) (absPow k s) = 1` using `MonoidHom.ext fun g => by`. Rewrite using `[MonoidHom.mul_apply, detChar_apply, detChar_apply, ← MonoidHom.mul_apply, ← absPow_add, hs, absPow_zero]`. Both sides reduce to the same expression. Establish `h1` using `cosocle_move h e1`.
+
+Establish `E` using `Classical.choice (twist_prod ω hω hd (isSmoothChar_absPow (((n : ℂ) - 1) / 2)))`. Establish `E'` using `Classical.choice (twist_prod (fun a => cj γ (ω a)) (fun a => cj_smooth γ (hω a)) hd (isSmoothChar_absPow (((n : ℂ) - 1) / 2)))`. Use `(prod_conj γ (stdBlocks (fun _ => 1) hd) ω).elim fun F hF => ?_` and prove the remaining obligations. Establish `h3` using `h1.of_equiv (.refl σ) E`. Establish `h2` using `cosocle_conj hF hf hi h3`.
+
+Establish `h4` using `h2.of_equiv (.refl σ') E'.symm`. Conclude with `cosocle_move' h4 e1`.
+-/
 private theorem cosocle_main (γ : ℂ ≃+* ℂ) {V V' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V']
     {σ : Representation ℂ (GL (Fin n) k) V} {σ' : Representation ℂ (GL (Fin n) k) V'} {f : V ≃+ V'}
     (hf : Cj γ σ σ' f) (hi : σ'.IsIrreducible) (ω : Fin n → kˣ →* ℂˣ) (hω : ∀ i, IsSmoothChar (ω i)) {s : ℂ}
@@ -240,6 +306,13 @@ section Gal
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w} {n : ℕ}
 
+/- English proof (translation)
+Establish `h1` using `Module.End.iSup_iInf_maxGenEigenspace_eq_top_of_iSup_maxGenEigenspace_eq_top_of_commute f (fun g k _ => hc g k) fun g => Module.End.iSup_maxGenEigenspace_eq_top _`. Simplify using `only [fun g => (hs g).isFinitelySemisimple.maxGenEigenspace_eq_eigenspace] at h1`. Set `T : Set (Fin n → ℂ)` to `{v | ∀ g, ∃ c : ℂ, f g v = c • v}`. Establish `h2 : ⊤ ≤ Submodule.span ℂ T`. Rewrite using `[← h1]`.
+
+Conclude with `iSup_le fun χ v hv => Submodule.subset_span fun g => ⟨χ g, Module.End.mem_eigenspace_iff.1 ((Submodule.mem_iInf _).1 hv g)⟩`. Set `B` to `Module.Basis.ofSpan h2`. Establish `h3` using `Module.Basis.ofSpan_subset h2`. Use `⟨B.reindex (B.indexEquiv (Pi.basisFun ℂ (Fin n))), fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.reindex_apply]`.
+
+Conclude with `h3 ⟨_, rfl⟩`.
+-/
 private theorem exists_basis {Γ : Type} (f : Γ → Module.End ℂ (Fin n → ℂ)) (hs : ∀ g, (f g).IsSemisimple)
     (hc : ∀ g k, Commute (f g) (f k)) :
     ∃ B : Module.Basis (Fin n) ℂ (Fin n → ℂ), ∀ j g, ∃ c : ℂ, f g (B j) = c • B j := by
@@ -257,6 +330,17 @@ private theorem exists_basis {Γ : Type} (f : Γ → Module.End ℂ (Fin n → �
   rw [Module.Basis.reindex_apply]
   exact h3 ⟨_, rfl⟩
 
+/- English proof (translation)
+Establish `hc : ∀ g k, Commute (b.ρ g) (b.ρ k)` using `fun g k => by`. Establish `h0 : deg ((k * g)⁻¹ * (g * k)) = 0` using `by simp [add_comm]; ring`. Establish `h1 : b.ρ ((k * g)⁻¹ * (g * k)) = 1`. Use `(hb ⟨_, deg_eq_zero_iff.1 h0⟩).trans ?_` and prove the remaining obligations. Establish `h3 : ∀ i, χ i (Subgroup.inclusion (Ine_le_Dec A) ⟨_, deg_eq_zero_iff.1 h0⟩) = 1` using `fun i => by`.
+
+Set `c` to `(χ i).comp (Subgroup.inclusion (Weil_le_Dec h))`. Use `show c ((k * g)⁻¹ * (g * k)) = 1`. Rewrite using `[map_mul, map_inv, map_mul, map_mul, mul_comm (c g), inv_mul_cancel]`. Simplify using `only [h3, Units.val_one, Matrix.diagonal_one, Matrix.toLin'_one]`. Both sides reduce to the same expression.
+
+Use `show _ = _`. Rewrite using `[← map_mul, ← map_mul, ← mul_inv_cancel_left (k * g) (g * k), map_mul, h1, mul_one]`. Take `⟨B, hB⟩` from `exists_basis b.ρ b.semisimple hc`. Use `choose c hc using hB`. Establish `inj : ∀ j (x y : ℂ), x • B j = y • B j → x = y` using `fun j x y e => smul_left_injective ℂ (B.ne_zero j) e`.
+
+Set `d : Fin n → Weil h →* ℂ` to `fun j => { toFun := c j map_one' := inj j _ _ (by rw [← hc]; simp) map_mul' := fun g k => inj j _ _ (by`. Rewrite using `[← hc, map_mul, Module.End.mul_apply, hc, map_smul, hc, smul_smul, mul_comm]) }`. Use `⟨B, fun j => (d j).toHomUnits, fun j => b.smooth.of_le fun g hg => Units.ext (inj j _ _ ?_), hc⟩` and prove the remaining obligations. Use `show c j g • B j = _`. Rewrite using `[← hc, hg]`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem exists_chars (b : WDRep h (Fin n → ℂ)) (χ : Fin n → Dec (F := E) A →* ℂˣ)
     (hb : ∀ s : ↥(Ine (F := E) A), b.ρ (ineIncl h s) =
       Matrix.toLin' (Matrix.diagonal fun i => (χ i (Subgroup.inclusion (Ine_le_Dec A) s) : ℂ))) :
@@ -287,6 +371,11 @@ private theorem exists_chars (b : WDRep h (Fin n → ℂ)) (χ : Fin n → Dec (
   rw [← hc, hg]
   simp
 
+/- English proof (translation)
+Establish `: B.equivFun.toLinearMap ∘ₗ b.ρ g = diagEnd (fun j => (ξ j g : ℂ)) ∘ₗ B.equivFun.toLinearMap` using `B.ext fun j => funext fun i => by`. Simplify using `only [LinearMap.comp_apply, hB, map_smul, diagEnd_apply, LinearEquiv.coe_coe, Pi.smul_apply, Module.Basis.equivFun_self, smul_eq_mul]`. Use `split_ifs with e`. Rewrite using `[e]`. Simplify using the standard rewrite rules.
+
+Conclude with `LinearMap.congr_fun this v`.
+-/
 private theorem equivFun_ρ (b : WDRep h (Fin n → ℂ)) (B : Module.Basis (Fin n) ℂ (Fin n → ℂ))
     (ξ : Fin n → Weil h →* ℂˣ) (hB : ∀ j g, b.ρ g (B j) = (ξ j g : ℂ) • B j) (g : Weil h) (v : Fin n → ℂ) :
     B.equivFun (b.ρ g v) = diagEnd (fun j => (ξ j g : ℂ)) (B.equivFun v) := by
@@ -299,6 +388,9 @@ private theorem equivFun_ρ (b : WDRep h (Fin n → ℂ)) (B : Module.Basis (Fin
       · simp
   exact LinearMap.congr_fun this v
 
+/- English proof (translation)
+The claim follows from `| 0, ξ, hξ => by rw [List.ofFn_zero] exact WD.sound ⟨.refl _ _, fun _ _ => Subsingleton.elim _ _, fun _ => Subsingleton.elim _ _⟩ | n + 1, ξ, hξ => by rw [List.ofFn_succ, SatakeLaw.sumList_cons, sumList_chars n (fun i => ξ i.succ), WD.lpOfChar, WD.lpSum_mk] refine WD.sound ⟨Satak …`.
+-/
 private theorem sumList_chars : ∀ (n : ℕ) (ξ : Fin n → Weil h →* ℂˣ) (hξ : ∀ j, GlobalTheory.WeilDeligne.IsSmooth (ξ j)),
     sumList (List.ofFn fun i => WD.lpOfChar h (ξ i) (hξ i)) = WD.mk (WDRep.ofChars h ξ hξ)
   | 0, ξ, hξ => by
@@ -310,6 +402,9 @@ private theorem sumList_chars : ∀ (n : ℕ) (ξ : Fin n → Weil h →* ℂˣ)
     · refine Fin.cases ?_ (fun j => ?_) i <;> simp [SatakeLaw.consEquiv]
     · refine Fin.cases ?_ (fun j => ?_) i <;> simp [SatakeLaw.consEquiv]
 
+/- English proof (translation)
+Take `⟨𝔪, h𝔪⟩` from `lfactors ω hω ho`. Rewrite using `[hrc.langlandsQuotient h𝔪 _ hπ, ← sumList_chars]`. Simplify using `only [H.one]`.
+-/
 private theorem rc_cosocle {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalArtin h a} {ε : EpsFamily A}
     {rc : IrrGL (w.adicCompletion E) → WD h} (hrc : IsRec h rc) (H : UpperTheory.V.Z.Win.LawsV a ha ε rc)
     (ω : Fin n → (w.adicCompletion E)ˣ →* ℂˣ) (hω : ∀ i, IsSmoothChar (ω i))
@@ -320,6 +415,17 @@ private theorem rc_cosocle {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLoca
   rw [hrc.langlandsQuotient h𝔪 _ hπ, ← sumList_chars]
   simp only [H.one]
 
+/- English proof (translation)
+Set `e : (Fin n → ℂ) ≃ₗ[ℂ] (Fin n → ℂ)` to `{ toFun := fun v i => γ (B.equivFun.symm (fun j => γ.symm (v j)) i) invFun := fun v i => γ (B.equivFun (fun j => γ.symm (v j)) i) map_add' := fun u v => funext fun i => by`. Establish `: (fun j => γ.symm ((u + v) j)) = (fun j => γ.symm (u j)) + fun j => γ.symm (v j)`. Use function extensionality and compare the values at `fun j => map_add _ _ _`. Rewrite using `[this, LinearEquiv.map_add]`. Conclude with `map_add γ _ _`.
+
+Use the proof step `map_smul' := fun c v => funext fun i => by`. Establish `: (fun j => γ.symm ((c • v) j)) = γ.symm c • fun j => γ.symm (v j)` using `funext fun j => map_mul _ _ _`. Rewrite using `[this, LinearEquiv.map_smul]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul, RingEquiv.apply_symm_apply, RingHom.id_apply]`. Use `left_inv := fun v => funext fun i => by`.
+
+Simplify using `only [RingEquiv.symm_apply_apply, LinearEquiv.apply_symm_apply, RingEquiv.apply_symm_apply]`. Use `right_inv := fun v => funext fun i => by`. Simplify using `only [RingEquiv.symm_apply_apply, LinearEquiv.symm_apply_apply, RingEquiv.apply_symm_apply] }`. Take `⟨h1, h2⟩ : (∀ σ v, e ((WDRep.ofChars h (fun j => cj γ (ξ j)) hξ).ρ σ v) = ((WDRep.ofChars h (fun j => cj γ (ξ j)) hξ).transport e).ρ σ (e v)) ∧ ((WDRep.ofChars h (fun j => cj γ (ξ j)) hξ).transport e).N = 0` from `⟨fun σ v => by show _ = e.conjAlgEquiv ℂ _ (e v) simp, map_zero (e.conjAlgEquiv ℂ)⟩`. Use `⟨_, (WD.sound (WDRep.iso_transport _ e)).symm, h2, fun s => LinearMap.ext fun v => ?_⟩` and prove the remaining obligations.
+
+Take `⟨v, rfl⟩` from `e.surjective v`. Rewrite using `[← h1]`. Use function extensionality and compare the values at `i`. Establish `h3` using `equivFun_ρ b B ξ hB (ineIncl h s) (B.equivFun.symm fun j => γ.symm (v j))`. Rewrite `h3` using `[LinearEquiv.apply_symm_apply, hb, ← LinearEquiv.eq_symm_apply]`.
+
+Establish `h4 : (fun j => γ.symm ((WDRep.ofChars h (fun j => cj γ (ξ j)) hξ).ρ (ineIncl h s) v j)) = diagEnd (fun j => (ξ j (ineIncl h s) : ℂ)) fun j => γ.symm (v j)` using `funext fun j => by`. Rewrite using `[WDRep.ofChars_ρ, diagEnd_apply, diagEnd_apply, map_mul, cj_val, γ.symm_apply_apply]`. Use `show γ (B.equivFun.symm (fun j => γ.symm ((WDRep.ofChars h (fun j => cj γ (ξ j)) hξ).ρ (ineIncl h s) v j)) i) = _`. Rewrite using `[h4, ← h3, Matrix.toLin'_apply, Matrix.toLin'_apply, Matrix.mulVec_diagonal, Matrix.mulVec_diagonal, map_mul]`. Both sides reduce to the same expression.
+-/
 private theorem type_conj (γ : ℂ ≃+* ℂ) (b : WDRep h (Fin n → ℂ)) (B : Module.Basis (Fin n) ℂ (Fin n → ℂ))
     (ξ : Fin n → Weil h →* ℂˣ) (hB : ∀ j g, b.ρ g (B j) = (ξ j g : ℂ) • B j) (χ : Fin n → Ine (F := E) A →* ℂˣ)
     (hb : ∀ s : ↥(Ine (F := E) A), b.ρ (ineIncl h s) = Matrix.toLin' (Matrix.diagonal fun i => (χ i s : ℂ)))
@@ -365,6 +471,17 @@ end Gal
 end UpperTheory.V.Z.Win.T2.TypeConj
 
 open UpperTheory.V.Z.Win.T2.TypeConj in
+/- English proof (translation)
+Introduce `P L Ω _ _ _ _ _ n w A h rc hrc γ σ σ' f hf1 hf2 χ _ ⟨b, hb, hN, hρ⟩`. Take `⟨a, ha, ε, H⟩` from `UpperTheory.V.Z.Win.toV hrc`. Use `haveI : CharZero (w.adicCompletion L) := algebraRat.charZero _`. Take `⟨B₀, ξ, hξ, hB₀⟩` from `exists_chars b χ hρ`. Use `choose ω₀ hω₀ e using fun j => ha.factor (ξ j) (hξ j)`.
+
+Take `⟨p, ho⟩` from `exists_order ω₀`. Set `ω` to `fun j => ω₀ (p j)`. Establish `hω : ∀ j, IsSmoothChar (ω j)` using `fun j => hω₀ _`. Set `B` to `B₀.reindex p.symm`. Establish `hB : ∀ j g, b.ρ g (B j) = ((ω j).comp a g : ℂ) • B j` using `fun j g => by`.
+
+Simplify using `only [B, ω, Module.Basis.reindex_apply, Equiv.symm_symm, hB₀, e]`. Establish `e0 : ((n : ℂ) - 1) / 2 + (((1 - (n : ℝ)) / 2 : ℝ) : ℂ) = 0` using `by push_cast; ring`. Set `tw : SmIrr (GLw n w) → IrrRep (GL (Fin n) (w.adicCompletion L))` to `fun τ => ⟨_, twist τ.ρ (detChar (Fin n) (absPow _ (((1 - (n : ℝ)) / 2 : ℝ) : ℂ))), isSmooth_twist τ.smooth (isSmoothChar_absPow _).detChar, isIrreducible_twist τ.irred _⟩`. Establish `htw : ∀ τ, algNorm τ = cls (tw τ)` using `fun τ => IrrGL.tw_of _ _ _ _ (isSmoothChar_absPow _)`. Take `⟨𝔪, h𝔪⟩` from `lfactors ω hω ho`.
+
+Take `⟨π, hπ⟩` from `P.loc.cos _ 𝔪 n n _ (sum_deg ω hω) h𝔪`. Establish `h1 : rc (cls π) = rc (cls (tw σ))`. Rewrite using `[rc_cosocle hrc H ω hω ho π hπ, ← htw, ← hb]`. Conclude with `(WD.sound ⟨B.equivFun, equivFun_ρ b B _ hB, fun v => by simp [hN]⟩).symm`. Establish `hG : UpperTheory.Zero.LLC.Good (cls π)` using `good_cosocle ω hω π hπ`.
+
+Take `⟨φ⟩` from `(IrrGL.of_eq_of (π := π.ρ) (σ := (tw σ).ρ) (hs := π.smooth) (hi := π.irr) (hs' := (tw σ).smooth) (hi' := (tw σ).irr)).1 (H.inj _ _ hG h1.symm).symm`. Establish `h2` using `cosocle_main γ ⟨hf1, hf2⟩ σ'.irred ω hω e0 (hπ.of_equiv φ (.refl _))`. Rewrite using `[htw, rc_cosocle hrc H _ _ (fun i j hij e => ho i j hij (order_cj γ e)) (tw σ') h2]`. Conclude with `type_conj γ b B _ hB _ hρ _`.
+-/
 theorem UpperTheory.V.Z.Win.T2.typeConj :
     type_of% @UpperTheory.V.Hi.typeConj := by
   intro P L Ω _ _ _ _ _ n w A h rc hrc γ σ σ' f hf1 hf2 χ _ ⟨b, hb, hN, hρ⟩

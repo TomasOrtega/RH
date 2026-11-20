@@ -13,6 +13,11 @@ open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.ThreeDimData
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Establish `hone : (1 : Mx k r) ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)` using `by show (1 : Mx k r)ᴴ * Formalism.QuantumDeterminants.Hpk k r * 1 = Formalism.QuantumDeterminants.Hpk k r`. Simplify using the standard rewrite rules. Use `Submodule.subset_span ⟨1, hone, ?_⟩` and prove the remaining obligations. Use `show σ 1 w0 = w0`. Rewrite using `[(MatrixMultiplicationContinuity.sigma_facts hds).1]`.
+
+Both sides reduce to the same expression.
+-/
 theorem cmHalfIntegralGenerator_mem_algebraicClosure {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
     {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {σ : Mx k r → (H →L[ℂ] H)}
     (hds : PI.UpqRep.IsDSHpk k r ε lam σ) (w0 : H) : w0 ∈ DDsp σ w0 := by
@@ -23,18 +28,43 @@ theorem cmHalfIntegralGenerator_mem_algebraicClosure {ε : Fin (2 * r + k + 1) �
   show σ 1 w0 = w0
   rw [(MatrixMultiplicationContinuity.sigma_facts hds).1]; rfl
 
+/- English proof (translation)
+Rewrite using `[← ofReal_norm_eq_enorm, ← ofReal_norm_eq_enorm, ← ofReal_norm_eq_enorm, ContinuousLinearMap.norm_smulRight_apply, innerSL_apply_norm, ENNReal.ofReal_mul (norm_nonneg _)]`.
+-/
 theorem enorm_smulRight {E F : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
     [NormedAddCommGroup F] [NormedSpace ℂ F] (a : E) (b : F) :
     ‖(innerSL ℂ a).smulRight b‖ₑ = ‖a‖ₑ * ‖b‖ₑ := by
   rw [← ofReal_norm_eq_enorm, ← ofReal_norm_eq_enorm, ← ofReal_norm_eq_enorm,
     ContinuousLinearMap.norm_smulRight_apply, innerSL_apply_norm, ENNReal.ofReal_mul (norm_nonneg _)]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact continuous_id`. Consider the case `fun_prop`. Consider the case `continuity`.
+-/
 theorem mt_cont : Continuous (fun y : Formalism.QuantumDeterminants.Mt k r => (Matrix.of y : Mx k r)) := by
   first
     | exact continuous_id
     | fun_prop
     | continuity
 
+/- English proof (translation)
+Take `⟨hPi, hPP, -⟩` from `MatrixMultiplicationContinuity.uh_inv hP`. Use `set Y : Mx k r := Q * γi * P⁻¹ with hY`. Establish `hYU : Y ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)` using `DDSmoothness.uh_mul (DDSmoothness.uh_mul hQ hγ) hPi`. Use `set F : Formalism.QuantumDeterminants.Mt k r → ℝ≥0∞ := fun x => ‖e1 (P * Matrix.of x)‖ₑ * ‖e2 (Q * (γi * Matrix.of x))‖ₑ with hF`. Establish `hFm : Measurable F`.
+
+Establish `c1 : Continuous (fun x : Formalism.QuantumDeterminants.Mt k r => e1 (P * Matrix.of x))` using `he1.comp (continuous_const.matrix_mul mt_cont)`. Establish `c2 : Continuous (fun x : Formalism.QuantumDeterminants.Mt k r => e2 (Q * (γi * Matrix.of x)))` using `he2.comp (continuous_const.matrix_mul (continuous_const.matrix_mul mt_cont))`. Conclude with `c1.measurable.enorm.mul c2.measurable.enorm`. Establish `hNI'` using `hNI k r`. Combine the equalities or inequalities in the displayed calculation.
+
+Apply `lintegral_mono_ae` to reduce the goal to its premises. Use `filter_upwards [hGc] with x hx`. Establish `e1x : P * Matrix.of (Formalism.QuantumDeterminants.lmulM P⁻¹ x) = Matrix.of x` using `by show P * (P⁻¹ * Matrix.of x) = Matrix.of x`. Rewrite using `[← Matrix.mul_assoc, hPP, Matrix.one_mul]`. Establish `e2x : Q * (γi * Matrix.of (Formalism.QuantumDeterminants.lmulM P⁻¹ x)) = Y * Matrix.of x` using `by show Q * (γi * (P⁻¹ * Matrix.of x)) = Q * γi * P⁻¹ * Matrix.of x`.
+
+Simplify using `only [Matrix.mul_assoc]`. Simplify using `only [hF]`. Rewrite using `[e1x, e2x]`. Establish `hYx : Y * Matrix.of x ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)` using `DDSmoothness.uh_mul hYU hx`. Establish `ht1 : 1 ≤ B.gN (Matrix.of x)` using `(hNI'.2 _ hx).2`.
+
+Establish `htp : 0 < B.gN (Matrix.of x)` using `lt_of_lt_of_le one_pos ht1`. Establish `hs1 : 1 ≤ B.gN (Y * Matrix.of x)` using `(hNI'.2 _ hYx).2`. Establish `hYp : 0 ≤ B.gN Y ^ (-b)` using `Real.rpow_nonneg (Real.sqrt_nonneg _) _`. Establish `bnd1 : ‖e1 (Matrix.of x)‖ ≤ |C1| * B.gN (Matrix.of x) ^ (-a)` using `(hb1 _ hx).trans (mul_le_mul_of_nonneg_right (le_abs_self _) (Real.rpow_nonneg htp.le _))`. Establish `bnd2 : ‖e2 (Y * Matrix.of x)‖ ≤ |C2| * (B.gN (Matrix.of x) ^ b * B.gN Y ^ (-b))`.
+
+Use `(hb2 _ hYx).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `key : |C1| * B.gN (Matrix.of x) ^ (-a) * (|C2| * (B.gN (Matrix.of x) ^ b * B.gN Y ^ (-b))) = (|C1| * |C2|) * B.gN Y ^ (-b) * B.gN (Matrix.of x) ^ (-(a - b))`. Establish `: B.gN (Matrix.of x) ^ (-a) * B.gN (Matrix.of x) ^ b = B.gN (Matrix.of x) ^ (-(a - b))`. Rewrite using `[← Real.rpow_add htp]`.
+
+Put the polynomial expressions in normal form. Combine the equalities or inequalities in the displayed calculation. Establish `hxp : 0 ≤ B.gN (Matrix.of x) ^ (-(a - b))` using `Real.rpow_nonneg htp.le _`. Establish `hC : 0 ≤ |C1| * |C2|` using `mul_nonneg (abs_nonneg _) (abs_nonneg _)`. Establish `L : ‖e1 (Matrix.of x)‖ₑ * ‖e2 (Y * Matrix.of x)‖ₑ = ENNReal.ofReal (‖e1 (Matrix.of x)‖ * ‖e2 (Y * Matrix.of x)‖)`.
+
+Rewrite using `[ENNReal.ofReal_mul (norm_nonneg _), ofReal_norm, ofReal_norm]`. Establish `R : ENNReal.ofReal (|C1| * |C2|) * ‖B.gN Y ^ (-b)‖ₑ * ‖B.gN (Matrix.of x) ^ (-(a - b))‖ₑ = ENNReal.ofReal ((|C1| * |C2|) * B.gN Y ^ (-b) * B.gN (Matrix.of x) ^ (-(a - b)))`. Rewrite using `[Real.enorm_eq_ofReal hYp, Real.enorm_eq_ofReal hxp, ENNReal.ofReal_mul (mul_nonneg hC hYp), ENNReal.ofReal_mul hC]`. Rewrite using `[L, R]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises.
+
+Rewrite using `[← key]`. Conclude with `mul_le_mul bnd1 bnd2 (norm_nonneg _) (mul_nonneg (abs_nonneg _) (Real.rpow_nonneg htp.le _))`. Use `_ = ENNReal.ofReal (|C1| * |C2|) * ‖B.gN Y ^ (-b)‖ₑ * ∫⁻ x, ‖B.gN (Matrix.of x) ^ (-(a - b))‖ₑ ∂μG := lintegral_const_mul' _ _ (by simp [ENNReal.mul_eq_top])`.
+-/
 theorem inner_bound (hNI : NormInv) {μG : Measure (Formalism.QuantumDeterminants.Mt k r)} (hG : B.IsHaarOn (B.GV k r) μG)
     (hGc : ∀ᵐ x ∂μG, Matrix.of x ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r))
     {e1 e2 : Mx k r → ℂ} (he1 : Continuous e1) (he2 : Continuous e2) {C1 C2 a b : ℝ}

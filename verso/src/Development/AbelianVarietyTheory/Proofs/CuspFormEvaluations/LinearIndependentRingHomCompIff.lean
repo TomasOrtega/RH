@@ -2,6 +2,9 @@ import Mathlib
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `letI : Algebra A F := φ.toAlgebra`. Use `haveI : FaithfulSMul A F := (faithfulSMul_iff_algebraMap_injective A F).2 hφ`. Conclude with `linearIndependent_algebraMap_comp_iff (R := A) (S := F) (v := c)`.
+-/
 theorem linearIndependent_ringHom_comp_iff {A F : Type} [CommRing A] [Field F] (φ : A →+* F)
     (hφ : Function.Injective φ) {ι μ : Type} [Finite μ] (c : ι → μ → A) :
     LinearIndependent F (fun i m => φ (c i m)) ↔ LinearIndependent A c := by
@@ -9,6 +12,11 @@ theorem linearIndependent_ringHom_comp_iff {A F : Type} [CommRing A] [Field F] (
   haveI : FaithfulSMul A F := (faithfulSMul_iff_algebraMap_injective A F).2 hφ
   exact linearIndependent_algebraMap_comp_iff (R := A) (S := F) (v := c)
 
+/- English proof (translation)
+Take `⟨κ, a, ha, hs, hl⟩` from `exists_linearIndependent' F (fun i m => φ (c i m))`. Use `haveI : Finite κ := Finite.of_injective a ha`. Use `letI : Fintype κ := Fintype.ofFinite κ`. Establish `h1 : LinearIndependent A (fun k => c (a k))` using `(linearIndependent_ringHom_comp_iff φ hφ (fun k => c (a k))).1 hl`. Establish `h2 : LinearIndependent F' (fun k m => ψ (c (a k) m))` using `(linearIndependent_ringHom_comp_iff ψ hψ (fun k => c (a k))).2 h1`.
+
+Rewrite using `[← hs, finrank_span_eq_card hl, ← finrank_span_eq_card h2]`. Apply `Submodule.finrank_mono` to reduce the goal to its premises. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨a k, rfl⟩`.
+-/
 theorem finrank_span_ringHom_comp_le {A F F' : Type} [CommRing A] [Field F] [Field F']
     (φ : A →+* F) (ψ : A →+* F') (hφ : Function.Injective φ) (hψ : Function.Injective ψ)
     {ι μ : Type} [Finite ι] [Finite μ] (c : ι → μ → A) :
@@ -27,6 +35,9 @@ theorem finrank_span_ringHom_comp_le {A F F' : Type} [CommRing A] [Field F] [Fie
   rintro _ ⟨k, rfl⟩
   exact ⟨a k, rfl⟩
 
+/- English proof (translation)
+The claim follows from `le_antisymm (finrank_span_ringHom_comp_le φ ψ hφ hψ c) (finrank_span_ringHom_comp_le ψ φ hψ hφ c)`.
+-/
 theorem finrank_span_ringHom_comp_eq {A F F' : Type} [CommRing A] [Field F] [Field F']
     (φ : A →+* F) (ψ : A →+* F') (hφ : Function.Injective φ) (hψ : Function.Injective ψ)
     {ι μ : Type} [Finite ι] [Finite μ] (c : ι → μ → A) :
@@ -35,6 +46,13 @@ theorem finrank_span_ringHom_comp_eq {A F F' : Type} [CommRing A] [Field F] [Fie
   le_antisymm (finrank_span_ringHom_comp_le φ ψ hφ hψ c)
     (finrank_span_ringHom_comp_le ψ φ hψ hφ c)
 
+/- English proof (translation)
+Establish `hle : Submodule.span F (Set.range fun i => v (some i)) ≤ Submodule.span F (Set.range v)`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨some k, rfl⟩`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Establish `: Submodule.span F (Set.range fun i => v (some i)) = Submodule.span F (Set.range v)`. Use `le_antisymm hle (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨_ | k, rfl⟩`. Conclude with `h`.
+
+Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Rewrite using `[this]`. Introduce `h`. Rewrite using `[Submodule.eq_of_le_of_finrank_eq hle h]`. Conclude with `Submodule.subset_span ⟨none, rfl⟩`.
+-/
 theorem mem_span_iff_finrank_option_eq {F V ι : Type} [Field F] [AddCommGroup V] [Module F V]
     [FiniteDimensional F V] (v : Option ι → V) :
     v none ∈ Submodule.span F (Set.range fun i => v (some i)) ↔
@@ -56,6 +74,13 @@ theorem mem_span_iff_finrank_option_eq {F V ι : Type} [Field F] [AddCommGroup V
     rw [Submodule.eq_of_le_of_finrank_eq hle h]
     exact Submodule.subset_span ⟨none, rfl⟩
 
+/- English proof (translation)
+Introduce `A F F' _ _ _ φ ψ hφ hψ ι μ _ _ c`. Use `⟨?_, fun q => ?_, finrank_span_ringHom_comp_eq φ ψ hφ hψ c⟩` and prove the remaining obligations. Rewrite using `[linearIndependent_ringHom_comp_iff φ hφ, linearIndependent_ringHom_comp_iff ψ hψ]`. Set `d : Option ι → μ → A` to `fun o => o.elim q c`. Establish `h1` using `mem_span_iff_finrank_option_eq (F := F) (fun o m => φ (d o m))`.
+
+Establish `h2` using `mem_span_iff_finrank_option_eq (F := F') (fun o m => ψ (d o m))`. Establish `e1` using `finrank_span_ringHom_comp_eq φ ψ hφ hψ c`. Establish `e2` using `finrank_span_ringHom_comp_eq φ ψ hφ hψ d`. Use `h1.trans (Iff.trans ?_ h2.symm)` and prove the remaining obligations. Rewrite using `[e2]`.
+
+Conclude with `e1 ▸ Iff.rfl`.
+-/
 theorem rank_indep_mem_embedding_invariant :
     ∀ (A F F' : Type) [CommRing A] [Field F] [Field F'] (φ : A →+* F) (ψ : A →+* F'), Function.Injective φ → Function.Injective ψ → ∀ (ι μ : Type) [Fintype ι] [Fintype μ] (c : ι → μ → A), (LinearIndependent F (fun i m => φ (c i m)) ↔ LinearIndependent F' (fun i m => ψ (c i m))) ∧ (∀ q : μ → A, (fun m => φ (q m)) ∈ Submodule.span F (Set.range fun i m => φ (c i m)) ↔ (fun m => ψ (q m)) ∈ Submodule.span F' (Set.range fun i m => ψ (c i m))) ∧ Module.finrank F (Submodule.span F (Set.range fun i m => φ (c i m))) = Module.finrank F' (Submodule.span F' (Set.range fun i m => ψ (c i m))) := by
   intro A F F' _ _ _ φ ψ hφ hψ ι μ _ _ c

@@ -23,6 +23,23 @@ abbrev resGen (G : Over (Sp R)) (L : LB G.left) (k : ℕ) :
         (LB.LinComb L (K := Fin 1) (fun _ => pullback.fst G.hom (spMap (algebraMap R K))) (fun _ => (k : ℤ))) :=
   pullOver L _ pullback.condition (fun _ => (Category.comp_id _).symm)
 
+/- English proof (translation)
+Set `e : FractionRing R ≃ₐ[R] K` to `FractionRing.algEquiv R K`. Establish `e₁ : spMap e.symm.toRingEquiv.toRingHom ≫ spMap (algebraMap R K) = Out.jK R`. Rewrite using `[← Spec.map_comp]`. Use `congr 1`. Use extensionality with `x`.
+
+Conclude with `e.symm.commutes x`. Establish `e₂ : spMap e.toRingEquiv.toRingHom ≫ Out.jK R = spMap (algebraMap R K)`. Rewrite using `[← Spec.map_comp]`. Use `congr 1`. Use extensionality with `x`.
+
+Conclude with `e.commutes x`. Establish `e₃ : spMap e.toRingEquiv.toRingHom ≫ spMap e.symm.toRingEquiv.toRingHom = 𝟙 _`. Rewrite using `[← Spec.map_comp, ← Spec.map_id]`. Use `congr 1`. Use extensionality with `x`.
+
+Conclude with `e.apply_symm_apply x`. Set `h : pullback G.hom (Out.jK R) ⟶ pullback G.hom (spMap (algebraMap R K))` to `pullback.lift (pullback.fst _ _) (pullback.snd _ _ ≫ spMap e.symm.toRingEquiv.toRingHom) (by rw [Category.assoc, e₁, pullback.condition])`. Set `h' : pullback G.hom (spMap (algebraMap R K)) ⟶ pullback G.hom (Out.jK R)` to `pullback.lift (pullback.fst _ _) (pullback.snd _ _ ≫ spMap e.toRingEquiv.toRingHom) (by rw [Category.assoc, e₂, pullback.condition])`. Establish `a₁ : h ≫ pullback.fst _ _ = pullback.fst _ _` using `pullback.lift_fst _ _ _`. Establish `a₂ : h ≫ pullback.snd _ _ = pullback.snd _ _ ≫ spMap e.symm.toRingEquiv.toRingHom` using `pullback.lift_snd _ _ _`.
+
+Establish `b₁ : h' ≫ pullback.fst _ _ = pullback.fst _ _` using `pullback.lift_fst _ _ _`. Establish `b₂ : h' ≫ pullback.snd _ _ = pullback.snd _ _ ≫ spMap e.toRingEquiv.toRingHom` using `pullback.lift_snd _ _ _`. Establish `hh : h' ≫ h = 𝟙 _`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, a₁, b₁, Category.id_comp]`.
+
+Rewrite using `[Category.assoc, a₂, reassoc_of% b₂, e₃, Category.id_comp, Category.comp_id]`. Set `s'` to `pullOver U.LG.L (fun _ : Fin 1 => (k : ℤ)) a₂ (φ' := fun _ => pullback.fst G.hom (Out.jK R)) (fun _ => a₁.symm) s`. Take `⟨F, ⟨r, hr, σ, f, H, -⟩, -⟩` from `(U.expand k hk).1 s'`. Use `⟨r, σ, hr, ?_⟩` and prove the remaining obligations. Establish `H'` using `(secScal_iff (π := G.hom) (pullback.condition (f := G.hom) (g := Out.jK R)) (fun _ => (Category.comp_id _).symm) U.LG.isLB s' σ _ (algebraMap R (FractionRing R)) rfl r).1 H`.
+
+Establish `H''` using `congrArg (pullOver U.LG.L (fun _ : Fin 1 => (k : ℤ)) b₂ (φ' := fun _ => pullback.fst G.hom (spMap (algebraMap R K))) (fun _ => b₁.symm)) H'`. Rewrite `H''` using `[map_smulₛₗ]`. Use `Eq.trans ?_ (H''.trans ?_)` and prove the remaining obligations. Use `sec_ext' U.LG.isLB fun y J hJ => ?_` and prove the remaining obligations. Use `(sval_pullOver _ _ _ _ hJ).trans (Eq.trans ?_ ((sval_pullOver _ _ _ _ hJ).trans (sval_pullOver _ _ _ _ hJ)).symm)` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, b₁]`. Use `congrArg₂ (· • ·) (e.commutes r) (sec_ext' U.LG.isLB fun y J hJ => ?_)` and prove the remaining obligations. Use `((sval_pullOver _ _ _ _ hJ).trans (sval_pullOver _ _ _ _ hJ)).trans ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hh, Category.comp_id]`.
+-/
 theorem exists_clear {I : Ideal R} {D : Out.DegData R I} {A : Out.PolAV (Sp (FractionRing R))} {G : Over (Sp R)}
     [GrpObj G] [IsCommMonObj G] (U : Out.Unif I D A G) (k : ℕ) (hk : 1 ≤ k)
     (s : SecOver (pullback.snd G.hom (spMap (algebraMap R K)))
@@ -81,10 +98,16 @@ end Clear
 section Frame
 variable {R K : Type} [CommRing R] [IsLocalRing R] [Field K] {Y Z : Scheme.{0}} {L : LB Z}
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `exists_chart hL (x (cpt R))`. Conclude with `⟨j, (top_le_iff_cpt x _).2 hj⟩`.
+-/
 theorem exists_chart_loc (hL : L.IsLB) (x : Sp R ⟶ Z) : ∃ j, ⊤ ≤ x ⁻¹ᵁ L.U j := by
   obtain ⟨j, hj⟩ := exists_chart hL (x (cpt R))
   exact ⟨j, (top_le_iff_cpt x _).2 hj⟩
 
+/- English proof (translation)
+Apply `toStkA_injective` to reduce the goal to its premises. Rewrite using `[map_mul, toStkA_valR x (L.U i ⊓ L.U j) _ (fun _ hz => ⟨hi hz, hj hz⟩), toStkA_valR x (L.U j ⊓ L.U k) _ (fun _ hz => ⟨hj hz, hk hz⟩), toStkA_valR x (L.U i ⊓ L.U k) _ (fun _ hz => ⟨hi hz, hk hz⟩), ← Units.val_mul, gm_cocycle hL x _ (hi trivial) (hj trivial) (hk trivial)]`.
+-/
 theorem valR_cocycle (hL : L.IsLB) (x : Sp R ⟶ Z) {i j k : L.ι} (hi : ⊤ ≤ x ⁻¹ᵁ L.U i) (hj : ⊤ ≤ x ⁻¹ᵁ L.U j)
     (hk : ⊤ ≤ x ⁻¹ᵁ L.U k) : valR x (L.U i ⊓ L.U j) (L.g i j).val * valR x (L.U j ⊓ L.U k) (L.g j k).val =
       valR x (L.U i ⊓ L.U k) (L.g i k).val := by
@@ -94,6 +117,11 @@ theorem valR_cocycle (hL : L.IsLB) (x : Sp R ⟶ Z) {i j k : L.ι} (hi : ⊤ ≤
     toStkA_valR x (L.U i ⊓ L.U k) _ (fun _ hz => ⟨hi hz, hk hz⟩), ← Units.val_mul,
     gm_cocycle hL x _ (hi trivial) (hj trivial) (hk trivial)]
 
+/- English proof (translation)
+Take `⟨j₀, h₀⟩` from `exists_chart_loc hL x`. Establish `h₀'` using `FormalValue.top_le_comp h₀ (spMap ρ)`. Use `⟨fun j => valR (spMap ρ ≫ x) (L.U j ⊓ L.U j₀) (L.g j j₀).val * ρ (τ j₀), ⟨fun j hj => ?_, fun j j' hj => ?_⟩, fun j hj => ?_⟩` and prove the remaining obligations. Conclude with `(FormalValue.isUnit_valR _ (L.U j ⊓ L.U j₀) (fun _ hz => ⟨hj hz, h₀' hz⟩) _).mul ((hτ.1 j₀ h₀).map ρ)`. Use `beta_reduce`.
+
+Rewrite using `[← _root_.mul_assoc, valR_cocycle hL _ (fun _ hz => (hj hz).1) (fun _ hz => (hj hz).2) h₀']`. Establish `hh : ⊤ ≤ x ⁻¹ᵁ (L.U j ⊓ L.U j₀)` using `fun _ hz => ⟨hj hz, h₀ hz⟩ beta_reduce`. Rewrite using `[hτ.2 j j₀ hh, map_mul, valR_spMap_comp ρ x _ hh]`.
+-/
 theorem exists_genFrm (hL : L.IsLB) (ρ : R →+* K) (x : Sp R ⟶ Z) (τ : L.ι → R) (hτ : IsFrm L x τ) :
     ∃ τ' : L.ι → K, IsFrm L (spMap ρ ≫ x) τ' ∧ ∀ j, ⊤ ≤ x ⁻¹ᵁ L.U j → τ' j = ρ (τ j) := by
   obtain ⟨j₀, h₀⟩ := exists_chart_loc hL x
@@ -107,10 +135,16 @@ theorem exists_genFrm (hL : L.IsLB) (ρ : R →+* K) (x : Sp R ⟶ Z) (τ : L.ι
     beta_reduce
     rw [hτ.2 j j₀ hh, map_mul, valR_spMap_comp ρ x _ hh]
 
+/- English proof (translation)
+Introduce `_ hz` and use `Set.mem_iInter.2 fun _ => hj hz`.
+-/
 theorem le_wchart {p : Y ⟶ Z} {A : Type} [CommRing A] {y : Sp A ⟶ Y} {j : L.ι} (hj : ⊤ ≤ (y ≫ p) ⁻¹ᵁ L.U j) :
     ⊤ ≤ y ⁻¹ᵁ LB.wchart L (fun _ : Fin 1 => p) (fun _ => j) :=
   fun _ hz => Set.mem_iInter.2 fun _ => hj hz
 
+/- English proof (translation)
+Apply `toStkA_injective` to reduce the goal to its premises. Establish `e` using `sec_trans s y (cpt R) (j := fun _ => i) (j' := fun _ => j) (le_wchart hi trivial) (le_wchart hj trivial)`. Rewrite using `[map_mul, map_pow, toStkA_valR (y ≫ p) (L.U i ⊓ L.U j) _ (fun _ hz => ⟨hi hz, hj hz⟩)]`. Use `(FormalValue.toStkA_valR_eq_gs y _ _ (le_wchart hi) _).trans (e.trans (congrArg₂ (· * ·) ?_ (FormalValue.toStkA_valR_eq_gs y _ _ (le_wchart hj) _).symm))` and prove the remaining obligations. Simplify using `[Geo.Tor.trF]`.
+-/
 theorem sval_trans' {p : Y ⟶ Z} {m : ℕ} (s : SecP L p m) (y : Sp R ⟶ Y) {i j : L.ι} (hi : ⊤ ≤ (y ≫ p) ⁻¹ᵁ L.U i)
     (hj : ⊤ ≤ (y ≫ p) ⁻¹ᵁ L.U j) :
     ArcPts.sval s y i = valR (y ≫ p) (L.U i ⊓ L.U j) (L.g i j).val ^ m * ArcPts.sval s y j := by
@@ -121,12 +155,18 @@ theorem sval_trans' {p : Y ⟶ Z} {m : ℕ} (s : SecP L p m) (y : Sp R ⟶ Y) {i
     (FormalValue.toStkA_valR_eq_gs y _ _ (le_wchart hj) _).symm))
   simp [Geo.Tor.trF]
 
+/- English proof (translation)
+Introduce `i hi`. Rewrite using `[sval_trans' s y hi hj, h, hτ.2 i j (fun _ hz => ⟨hi hz, hj hz⟩)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hasVal_of_chart {p : Y ⟶ Z} {m : ℕ} (s : SecP L p m) (y : Sp R ⟶ Y) {τ : L.ι → R} (hτ : IsFrm L (y ≫ p) τ)
     {r : R} {j : L.ι} (hj : ⊤ ≤ (y ≫ p) ⁻¹ᵁ L.U j) (h : ArcPts.sval s y j = r * τ j ^ m) : HasVal s y τ r := by
   intro i hi
   rw [sval_trans' s y hi hj, h, hτ.2 i j (fun _ hz => ⟨hi hz, hj hz⟩)]
   ring
 
+/- English proof (translation)
+Establish `h : ⊤ ≤ y ⁻¹ᵁ (LB.wchart L (K` using `PUnit) (fun _ => e) (fun _ => i) ⊓ LB.wchart L (K := PUnit) (fun _ => e) (fun _ => j)) := fun z hz => ⟨Set.mem_iInter.2 fun _ => hi hz, Set.mem_iInter.2 fun _ => hj hz⟩`. Establish `e1` using `congrArg (fun u => valR y _ u.val) (ht (fun _ => i) (fun _ => j))`. Use `(valR_res_unit y inf_le_left h _).symm.trans (e1.trans ((valR_mul_unit y h _ _).trans ?_))` and prove the remaining obligations. Conclude with `congrArg₂ (· * ·) ((valR_linComb_g y L e 1 _ _ h).trans (zpow_one _)) (valR_res_unit y inf_le_right h _)`.
+-/
 theorem valR_gen_trans (e : Y ⟶ Z) (t : LB.Gen (L.pull e)) (ht : t.IsGen) (y : Sp K ⟶ Y) (i j : L.ι)
     (hi : ⊤ ≤ (y ≫ e) ⁻¹ᵁ L.U i) (hj : ⊤ ≤ (y ≫ e) ⁻¹ᵁ L.U j) :
     valR y _ (t.s fun _ => i).val = valR (y ≫ e) _ (L.g i j).val * valR y _ (t.s fun _ => j).val := by
@@ -138,6 +178,9 @@ theorem valR_gen_trans (e : Y ⟶ Z) (t : LB.Gen (L.pull e)) (ht : t.IsGen) (y :
   exact congrArg₂ (· * ·) ((valR_linComb_g y L e 1 _ _ h).trans (zpow_one _)) (valR_res_unit y inf_le_right h _)
 
 omit [IsLocalRing R] in
+/- English proof (translation)
+Use `(valR_mul y _ (le_wchart hj) (Out.resTop _ (Out.scal π c)) _).trans (congrArg (· * _) ?_)` and prove the remaining obligations. Use `(valR_res y le_top (le_wchart hj) _).trans ((valR_comp y π ⊤ _).symm.trans ?_)` and prove the remaining obligations. Rewrite using `[hy, ← Spec.map_id]`. Conclude with `valR_specMap (A := CommRingCat.of R) (𝟙 _) c`.
+-/
 theorem sval_smul {p : Y ⟶ Z} {m : ℕ} (π : Y ⟶ Sp R) (c : R)
     (s : SecOver π (LB.LinComb L (K := Fin 1) (fun _ => p) (fun _ => (m : ℤ)))) (y : Sp R ⟶ Y) (hy : y ≫ π = 𝟙 _)
     {j : L.ι} (hj : ⊤ ≤ (y ≫ p) ⁻¹ᵁ L.U j) :
@@ -148,6 +191,9 @@ theorem sval_smul {p : Y ⟶ Z} {m : ℕ} (π : Y ⟶ Sp R) (c : R)
   exact valR_specMap (A := CommRingCat.of R) (𝟙 _) c
 
 omit [IsLocalRing R] in
+/- English proof (translation)
+Introduce `j hj` and use `by rw [sval_smul π c s y hy hj, h j hj, _root_.mul_assoc]`.
+-/
 theorem hasVal_smul {p : Y ⟶ Z} {m : ℕ} (π : Y ⟶ Sp R) (c : R)
     (s : SecOver π (LB.LinComb L (K := Fin 1) (fun _ => p) (fun _ => (m : ℤ)))) (y : Sp R ⟶ Y) (hy : y ≫ π = 𝟙 _)
     {τ : L.ι → R} {r : R} (h : HasVal (L := L) (p := p) (m := m) s y τ r) :
@@ -159,6 +205,11 @@ end Frame
 section Main
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} [StarRing (𝓞 E)]
 
+/- English proof (translation)
+Establish `hj' : ⊤ ≤ (y ≫ pullback.fst G.hom (spMap (algebraMap R K))) ⁻¹ᵁ L.U j`. Rewrite using `[hy]`. Conclude with `FormalValue.top_le_comp hj _`. Use `(valR_res y (wchart_eq (φ := fun _ : Fin 1 => 𝟙 G.left) (fun _ => (Category.comp_id _).symm) _).le (le_wchart hj') _).trans ((valR_comp y _ _ _).symm.trans ?_)` and prove the remaining obligations. Rewrite using `[hy]`.
+
+Conclude with `valR_spMap_comp _ x _ (le_wchart (p := 𝟙 G.left) hj) _`.
+-/
 theorem sval_resGen {R K : Type} [CommRing R] [Field K] [Algebra R K] (G : Over (Sp R)) (L : LB G.left) (k : ℕ)
     (σ : Out.H0 L k) (x : Sp R ⟶ G.left) (y : Sp K ⟶ pullback G.hom (spMap (algebraMap R K)))
     (hy : y ≫ pullback.fst _ _ = spMap (algebraMap R K) ≫ x) {j : L.ι} (hj : ⊤ ≤ x ⁻¹ᵁ L.U j) :
@@ -177,6 +228,33 @@ def ValsAt {V : Type} {Z : Scheme.{0}} {L : LB Z} (x : V → (Sp ℂ⟦X⟧ ⟶ 
     (algebraMap ℂ⟦X⟧ ℂ⸨X⸩) (valR (x v) (LB.wchart L (fun _ : Fin 1 => 𝟙 Z) (fun _ => jL)) (σ.f (fun _ => jL))) =
       f v * (algebraMap ℂ⟦X⟧ ℂ⸨X⸩) (τ v jL) ^ j
 
+/- English proof (translation)
+Substitute `hb` using the available equality. Establish `hL` using `t.PP.isLB`. Establish `hid : spMap (algebraMap ℂ⟦X⟧ ℂ⟦X⟧) = 𝟙 _` using `Spec.map_id _`. Set `q : Over.mk (spMap (algebraMap ℂ⟦X⟧ ℂ⸨X⸩)) ⟶ Over.mk (spMap (algebraMap ℂ⟦X⟧ ℂ⟦X⟧))` to `Over.homMk (spMap (algebraMap ℂ⟦X⟧ ℂ⸨X⸩)) (by show _ ≫ spMap (algebraMap ℂ⟦X⟧ ℂ⟦X⟧) = _`. Rewrite using `[hid]`.
+
+Conclude with `Category.comp_id _)`. Use `choose τ' hτ' eτ' using fun v => exists_genFrm hL (algebraMap ℂ⟦X⟧ ℂ⸨X⸩) (x v).left (τ v) (frm v)`. Establish `f₁ : ∀ v, fib (q ≫ x v) ≫ pullback.fst _ _ = spMap (algebraMap ℂ⟦X⟧ ℂ⸨X⸩) ≫ (x v).left` using `fun v => pullback.lift_fst _ _ _`. Establish `f₂ : ∀ v, fib (q ≫ x v) ≫ pullback.snd _ _ = 𝟙 _` using `fun v => pullback.lift_snd _ _ _`. Establish `key : ∀ {j : ℕ} (σ : Out.H0 t.PP.L j) (f : A.V → ℂ⸨X⸩), ValsAt (fun v => (x v).left) τ σ f → ∀ v, HasVal (L` using `t.PP.L) (p := pullback.fst t.G.hom (spMap (algebraMap ℂ⟦X⟧ ℂ⸨X⸩))) (m := j) (resGen t.G t.PP.L j σ) (fib (q ≫ x v)) (τ' v) (f v) := fun σ f h v => by`.
+
+Take `⟨j₀, h₀⟩` from `exists_chart_loc hL (x v).left`. Use `hasVal_of_chart _ _ (by rw [f₁]; exact hτ' v) (j := j₀) (by rw [f₁]; exact FormalValue.top_le_comp h₀ _) ?_` and prove the remaining obligations. Rewrite using `[sval_resGen t.G t.PP.L _ σ (x v).left _ (f₁ v) h₀, eτ' v j₀ h₀]`. Conclude with `h v j₀ h₀`. Establish `hsig : ∀ (j : ℕ) (α : A.X) (th : (Fin A.gB → ℂ) → ℂ), ∃ s : SecP t.PP.L (pullback.fst t.G.hom (spMap (algebraMap ℂ⟦X⟧ ℂ⸨X⸩))) j, ∀ [NeZero j], th ∈ A.Theta j α → ∀ v, HasVal s (fib (q ≫ x v)) (τ' v) (A.FSum j α th v)` using `fun j α th => by`.
+
+Distinguish the cases in `h : NeZero j ∧ th ∈ A.Theta j α`. Use `h.1` as an intermediate fact. Take `⟨m, σ, hσ⟩` from `sig j α th h.2`. Use `⟨(HahnSeries.single (-m : ℤ) (1 : ℂ) : ℂ⸨X⸩) • resGen t.G t.PP.L j σ, fun _ v => ?_⟩` and prove the remaining obligations. Establish `e` using `hasVal_smul _ (HahnSeries.single (-m : ℤ) (1 : ℂ) : ℂ⸨X⸩) _ _ (f₂ v) (key σ _ hσ v)`.
+
+Rewrite `e` using `[← _root_.mul_assoc, HahnSeries.single_mul_single, neg_add_cancel, _root_.mul_one, HahnSeries.single_zero_one, _root_.one_mul]`. Then use the resulting hypothesis. Conclude with `⟨DVR.SecOps.secZero, fun hth => absurd ⟨inferInstance, hth⟩ h⟩`. Use `choose sg hsg using hsig`. Establish `hcl : ∀ (j : ℕ) [NeZero j] (s : SecOver (pullback.snd t.G.hom (spMap (algebraMap ℂ⟦X⟧ ℂ⸨X⸩))) (LB.LinComb t.PP.L (K` using `Fin 1) (fun _ => pullback.fst t.G.hom (spMap (algebraMap ℂ⟦X⟧ ℂ⸨X⸩))) (fun _ => (j : ℤ)))), ∃ (c : ℂ⸨X⸩) (σ : Out.H0 t.PP.L j), c ≠ 0 ∧ s = c • resGen t.G t.PP.L j σ := fun j _ s => by`. Take `⟨r, σ, hr, e⟩` from `clear j NeZero.one_le s`.
+
+Establish `hr' : algebraMap ℂ⟦X⟧ ℂ⸨X⸩ r ≠ 0` using `fun h => hr (IsFractionRing.injective ℂ⟦X⟧ ℂ⸨X⸩ (h.trans (map_zero _).symm))`. Conclude with `⟨(algebraMap ℂ⟦X⟧ ℂ⸨X⸩ r)⁻¹, σ, inv_ne_zero hr', by rw [e, inv_smul_smul₀ hr']⟩`. Use `⟨{ x := fun v => q ≫ x v add := fun v v' => by rw [add, MonObj.comp_mul] lin := fun e v => by rw [lin, Category.assoc] τ := τ' frm := hτ' rig := fun j hj => ?_ sig := sg val := fun j _ α th hth v => hsg j α th hth v span := fun j _ s => ?_ sep := fun j _ s hs i => ?_ }, fun v => …` and prove the remaining obligations. Establish `h0 : x 0 = 1`. Use `add 0 0` as an intermediate fact.
+
+Rewrite `this` using `[add_zero]`. Conclude with `left_eq_mul.1 this`. Establish `h1 : (x 0).left = eSec t.G`. Rewrite using `[h0]`. Use `show spMap (algebraMap ℂ⟦X⟧ ℂ⟦X⟧) ≫ eSec t.G = _`.
+
+Rewrite using `[hid]`. Conclude with `Category.id_comp _`. Take `⟨j₀, h₀⟩` from `exists_chart_loc hL (x 0).left`. Establish `h₀'` using `FormalValue.top_le_comp h₀ (spMap (algebraMap ℂ⟦X⟧ ℂ⸨X⸩))`. Establish `hj' : ⊤ ≤ (spMap (algebraMap ℂ⟦X⟧ ℂ⸨X⸩) ≫ (x 0).left) ⁻¹ᵁ t.PP.L.U j` using `hj`.
+
+Rewrite using `[(hτ' 0).2 j j₀ (fun _ hz => ⟨hj' hz, h₀' hz⟩), eτ' 0 j₀ h₀, rig j₀ h₀]`. Rewrite `hj'`, `h₀'`, `h₀` using `[h1]`. Use `Eq.trans ?_ (valR_gen_trans (eSec t.G) t.PP.rig t.PP.rigGen (spMap (algebraMap ℂ⟦X⟧ ℂ⸨X⸩)) j j₀ hj' h₀').symm` and prove the remaining obligations. Use `congrArg₂ (· * ·) (by rw [h1]) ?_` and prove the remaining obligations. Use `(valR_spMap_comp _ (𝟙 (Sp ℂ⟦X⟧)) ((t.PP.L.pull (eSec t.G)).U (fun _ => j₀)) (fun _ hz => Set.mem_iInter.2 fun _ => h₀ hz) _).symm.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Category.comp_id]`. Take `⟨c, σ, -, rfl⟩` from `hcl j s`. Take `⟨f, ⟨n, r, α, th, h₁, h₂⟩, hf, -⟩` from `span j σ`. Use `⟨fun v => c * f v, ⟨n, fun i => c * r i, α, th, fun i => ⟨trivial, (h₁ i).2⟩, fun v => ?_⟩, fun v => hasVal_smul _ c _ _ (f₂ v) (key σ f hf v)⟩` and prove the remaining obligations. Simplify using `only [h₂, Finset.mul_sum, _root_.mul_assoc]`.
+
+Take `⟨c, σ, hc, rfl⟩` from `hcl j s`. Take `⟨f, -, hf, hz⟩` from `span j σ`. Establish `hσ : (show SecOver t.G.hom _ from σ) = 0` using `DVR.SecOps.sec_ext (hz fun v => by`. Take `⟨j₀, h₀⟩` from `exists_chart_loc hL (fib (q ≫ x v) ≫ pullback.fst _ _)`. Establish `e` using `(hasVal_smul _ c _ _ (f₂ v) (key σ f hf v) j₀ h₀).symm.trans (hs v j₀ h₀)`.
+
+Rewrite `h₀` using `[f₁]`. Rewrite `e` using `[zero_mul, mul_eq_zero, mul_eq_zero]`. Conclude with `(e.resolve_right (((hτ' v).1 j₀ h₀).pow j).ne_zero).resolve_left hc)`. Establish `e : c • resGen (K` using `ℂ⸨X⸩) t.G t.PP.L j σ = 0 := by`. Rewrite using `[show resGen (K := ℂ⸨X⸩) t.G t.PP.L j σ = 0 from (congrArg _ hσ).trans (map_zero _), smul_zero]`.
+
+Conclude with `congrArg (fun s => LB.Sec.f s i) e`. Take `rfl` from `eq_of_heq h`. Conclude with `eτ' v jL hj`.
+-/
 theorem exists_genPts (A : AnArc (𝓞 E)) (t : SAB H (Sp ℂ⟦X⟧)) (L : RigLB t.G) (hb : L = t.PP)
     (x : A.V → (Over.mk (spMap (algebraMap ℂ⟦X⟧ ℂ⟦X⟧)) ⟶ t.G)) (τ : A.V → L.L.ι → ℂ⟦X⟧)
     (add : ∀ v v', x (v + v') = x v * x v') (lin : ∀ (e : 𝓞 E) v, x (A.actV e v) = x v ≫ t.act.act e)

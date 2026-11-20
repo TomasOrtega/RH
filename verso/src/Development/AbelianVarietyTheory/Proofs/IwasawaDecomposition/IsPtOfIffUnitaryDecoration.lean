@@ -11,6 +11,23 @@ noncomputable section
 
 namespace GlobalTheory.Mem.Col2.PtDeco
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ hc n _ ST SG Q g p hQ`. Substitute `hQ` using the available equality. Establish `hlast : ∀ i : Fin n, i.1 + 1 = n → lastIdx n = i` using `fun i hi => Fin.ext (by simp [lastIdx]; omega)`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Establish `hg : g ∈ UAd hc n` using `h.uni`. Establish `hN : p.deco.1.N = Formalism.UG.CS.globLat g (stdLat E n)`. Establish `h1` using `Formalism.UG.P.global_lattice_one_holds F E (Fin n) p.deco.1.N (Module.Finite.iff_fg.2 p.deco.2.lat.fg) p.deco.2.lat.span_eq_top`. Use extensionality with `v`. Use `conv_lhs => rw [← h1]`.
+
+Establish `e1 : ∀ (x : GL (Fin n) (AfE F E)) (Λ : Submodule (𝓞 E) (Fin n → E)) (v : Fin n → E), v ∈ Formalism.UG.CS.globLat x Λ ↔ ((x⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) *ᵥ (fun i => Formalism.UG.inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F) (v i)) ∈ Formalism.L2.Herm.hatL (F := F) Λ := fun _ _ _ => Iff.rfl`. Rewrite using `[e1, e1, inv_one, Units.val_one, Matrix.one_mulVec]`. Conclude with `h.lat _`. Use `⟨hg, Deco.Ok.ext_on p.deco.2 (decorated_lattice_exists hc n ST SG g hg) hN (fun P x hx => ?_) (fun w x hx => ?_)⟩` and prove the remaining obligations. Establish `hx' : x ∈ Formalism.UG.CS.globLat g (stdLat E n)` using `hN ▸ hx`.
+
+Use `HasRes.unique (h.f P x hx (lastIdx n) (by simp [lastIdx]; have := NeZero.pos n; omega)) ?_` and prove the remaining obligations. Simplify using `only [decoRaw]`. Rewrite using `[if_pos (le_locP _ _ hx')]`. Conclude with `PtExist.hasRes_redA _ ((mem_globLat g x).1 hx' _)`. Establish `hx' : x ∈ Formalism.UG.CS.globLat g (stdLat E n)` using `hN ▸ hx`.
+
+Use function extensionality and compare the values at `i`. Use `HasRes.unique (h.be w x hx i) ?_` and prove the remaining obligations. Simplify using `only [decoRaw]`. Rewrite using `[if_pos (le_locP _ _ hx')]`. Conclude with `PtExist.hasRes_redA _ ((mem_globLat g x).1 hx' i)`.
+
+Introduce and unpack `⟨hg, hd⟩`. Establish `hN : p.deco.1.N = Formalism.UG.CS.globLat g (stdLat E n)` using `by rw [hd]; rfl`. Use `⟨hg, hN ▸ PtExist.carries_globLat g, fun P x hx i hi => ?_, fun w x hx i => ?_, fun P => absurd P.2 (Finset.notMem_empty _)⟩` and prove the remaining obligations. Rewrite `hx` using `[hN]`. Rewrite using `[hd]`.
+
+Simplify using `only [decoRaw]`. Rewrite using `[if_pos (le_locP _ _ hx), hlast i hi]`. Conclude with `PtExist.hasRes_redA _ ((mem_globLat g x).1 hx i)`. Rewrite `hx` using `[hN]`. Rewrite using `[hd]`.
+
+Simplify using `only [decoRaw]`. Rewrite using `[if_pos (le_locP _ _ hx)]`. Conclude with `PtExist.hasRes_redA _ ((mem_globLat g x).1 hx i)`.
+-/
 theorem isPtOf_iff_decoRaw : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (hc : Formalism.BasicNotions.CMData F E) (n : ℕ) [NeZero n] (ST SG Q : Finset (HeightOneSpectrum (𝓞 E))) (g : GL (Fin n) (AfE F E)) (p : DecoF E n ST SG Q), Q = ∅ → (IsPtOf hc g p ↔ g ∈ UAd hc n ∧ p.deco.1 = decoRaw ST SG g) := by
   intro F E _ _ _ _ _ _ hc n _ ST SG Q g p hQ
   subst hQ

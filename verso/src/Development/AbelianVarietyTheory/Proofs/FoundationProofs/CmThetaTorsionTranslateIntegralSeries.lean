@@ -20,6 +20,11 @@ noncomputable section
 
 namespace GlobalTheory.ThetaTransl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h n`. Conclude with `h (Finsupp.single () n)`. Introduce `h n`. Use `h (n ())` as an intermediate fact.
+
+Rewrite `this` using `[PowerSeries.coeff_def (s := n) rfl]`. Then use the resulting hypothesis.
+-/
 theorem intMv_iff {p : ℕ} [Fact p.Prime] (f : PowerSeries ℂ_[p]) : IntegralMv f ↔ GlobalTheory.EvenTheta.IntSer f := by
   constructor
   · intro h n; exact h (Finsupp.single () n)
@@ -27,6 +32,27 @@ theorem intMv_iff {p : ℕ} [Fact p.Prime] (f : PowerSeries ℂ_[p]) : IntegralM
     have := h (n ())
     rwa [PowerSeries.coeff_def (s := n) rfl] at this
 
+/- English proof (translation)
+Introduce `D p _ cc δ g hg t ht`. Establish `hg'` using `hg`. Take `⟨hcc, -, hδ, hΛ, -⟩` from `hg'`. Establish `hcrv : Crv D cc δ` using `⟨hcc, hδ⟩`. Establish `hG` using `(GlobalTheory.InducedType.induced_type D).1`.
+
+Take `⟨hlat, -, -, -, -⟩` from `GlobalTheory.CurveLattice.lattice_of_curve D hG cc δ hcrv`. Establish `huse` using `(GlobalTheory.ThetaConj.cmTheta_taylorCoeff_algebraic_and_conjugate D cc δ hcrv).1`. Rewrite `hlat`, `huse` using `[← hΛ]`. Establish `hlat' : GlobalTheory.EvenTheta.IsLat g.abelian₂` using `hlat`. Establish `hred` using `GlobalTheory.T.torsionPoint_padicAbscissa_norm_le_one D p cc δ g hg`.
+
+Establish `hun` using `GlobalTheory.T.thetaTranslateSeries_eq_const_mul_integral_one_series D p cc δ g hg hred`. Take `⟨n, hn, hnp, hnt⟩` from `ht.2`. Establish `hM : logc g t = 0`. Use `GlobalTheory.T.torsion_parallelogramLaw_periodic_vanish g.abelian₂ hlat' n hn (logc g) (fun s hs => by simp [logc, hs]) ?_ ?_ t hnt` and prove the remaining obligations. Introduce `s ω hs hω`.
+
+Distinguish the cases in `h1 : s ∈ g.abelian₂`. Simplify using `[logc, h1, add_mem h1 hω]`. Establish `h2 : s + ω ∉ g.abelian₂` using `fun h => h1 (by simpa using sub_mem h hω)`. Simplify using `only [logc, h1, h2, if_false]`. Rewrite using `[GlobalTheory.T.norm_thetaTranslateValueAtZeroPadic_periodic D p cc δ g hg s ω ⟨n, hn, hs⟩ hω]`.
+
+Introduce `P Q hP hQ hQ'`. Conclude with `GlobalTheory.T.thetaTranslateLogNorm_parallelogram_law D p cc δ g hg hred hun P Q ⟨n, hn, hnp, hP⟩ ⟨hQ', n, hn, hnp, hQ⟩`. Establish `hA : GlobalTheory.EvenTheta.AlgEnt (U1 g.abelian₂ t (sgStar g.abelian₂))` using `⟨by`. Use `hlat'.differentiable` as an intermediate fact. Unfold `U1`.
+
+Use the proof step `fun_prop, huse t ⟨n, hn, hnt⟩⟩`. Take `⟨hq, hc0⟩` from `(GlobalTheory.SerTransport.transport p g).2.2.1 _ hA`. Establish `hne : U1 g.abelian₂ t (sgStar g.abelian₂) 0 ≠ 0`. Simplify using `only [U1, zero_add, ne_eq, mul_eq_zero, Complex.exp_ne_zero, or_false]`. Conclude with `fun h => ht.1 ((hlat'.sg_eq_zero t).1 h)`.
+
+Establish `hcne : cval g t ≠ 0`. Unfold `cval lamC`. Rewrite using `[dif_pos hq]`. Conclude with `(map_ne_zero g.lam).2 fun h => hne (congrArg Subtype.val h)`. Establish `hc1 : ‖cval g t‖ = 1`.
+
+Simplify using `only [logc, ht.1, if_false] at hM`. Break down `Real.log_eq_zero.1 hM with h | h | h` into its components or cases. Conclude with `absurd (norm_eq_zero.1 h) hcne`. Conclude with `h`. Combine the linear relations using `[norm_nonneg (cval g t)]`.
+
+Take `⟨w, hw, -, hτ⟩` from `hun t ht`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[intMv_iff]`. Express the relevant statement in the definitionally equal form `GlobalTheory.EvenTheta.IntSer (tau g t)`. Introduce `k`.
+
+Rewrite using `[hτ, PowerSeries.coeff_C_mul, norm_mul, hc1, one_mul]`. Conclude with `hw k`. Rewrite using `[hc0]`. Conclude with `hc1`.
+-/
 theorem transl_holds : ∀ D : D7, GL3Theta.transl D := by
   intro D p _ cc δ g hg t ht
   have hg' := hg

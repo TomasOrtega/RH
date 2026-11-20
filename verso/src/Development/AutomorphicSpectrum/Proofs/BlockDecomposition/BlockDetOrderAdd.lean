@@ -14,6 +14,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.CompanionTheory.CtS
 
+/- English proof (translation)
+Establish `hdet : (Matrix.reindex (finSumFinEquiv.trans (finCongr h)) (finSumFinEquiv.trans (finCongr h)) (Matrix.fromBlocks m.1.val (m.1.val * X) 0 m.2.val)).det = m.1.val.det * m.2.val.det`. Rewrite using `[Matrix.det_reindex_self, Matrix.det_fromBlocks_zero₂₁]`. Establish `h1 : IsUnit m.1.val.det` using `(Matrix.isUnit_iff_isUnit_det _).1 m.1.isUnit`. Establish `h2 : IsUnit m.2.val.det` using `(Matrix.isUnit_iff_isUnit_det _).1 m.2.isUnit`. Establish `hu : IsUnit (Matrix.reindex (finSumFinEquiv.trans (finCongr h)) (finSumFinEquiv.trans (finCongr h)) (Matrix.fromBlocks m.1.val (m.1.val * X) 0 m.2.val))` using `(Matrix.isUnit_iff_isUnit_det _).2 (hdet ▸ h1.mul h2)`.
+
+Simplify using `only [blk]`. Rewrite using `[dif_pos hu, IsUnit.unit_spec]`. Conclude with `hdet`.
+-/
 theorem blk_val_det {E : Type} [Field E] [NumberField E] [IsCMField E] {n a b : ℕ} (h : a + b = n) (w : Pl E)
     (m : GLw a w × GLw b w) (X : Matrix (Fin a) (Fin b) (w.adicCompletion E)) :
     (blk h w m X).val.det = m.1.val.det * m.2.val.det := by
@@ -29,6 +34,9 @@ theorem blk_val_det {E : Type} [Field E] [NumberField E] [IsCMField E] {n a b : 
   rw [dif_pos hu, IsUnit.unit_spec]
   exact hdet
 
+/- English proof (translation)
+Introduce `E _ _ _ n a b h w m X`. Establish `h1 : IsUnit m.1.val.det` using `(Matrix.isUnit_iff_isUnit_det _).1 m.1.isUnit`. Establish `h2 : IsUnit m.2.val.det` using `(Matrix.isUnit_iff_isUnit_det _).1 m.2.isUnit`. Rewrite using `[blk_val_det, GlobalTheory.CompanionTheory.SwapInt.ordL_mul_of_ne h1.ne_zero h2.ne_zero]`.
+-/
 theorem ordL_blk_det : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n a b : ℕ) (h : a + b = n) (w : Pl E)
     (m : GLw a w × GLw b w) (X : Matrix (Fin a) (Fin b) (w.adicCompletion E)),
     ordL (blk h w m X).val.det = ordL m.1.val.det + ordL m.2.val.det := by

@@ -10,6 +10,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.PerSurj
 
+/- English proof (translation)
+Introduce `ex Λ hex hΛ`. Substitute `hex hΛ` using the available equality. Conclude with `h₀`.
+-/
 theorem isPer_transport {A : Over (Sp ℂ)} {g : ℕ} (ex₀ : (Fin g → ℂ) → (𝟙_ (Over (Sp ℂ)) ⟶ A))
     (Λ₀ : Submodule ℤ (Fin g → ℂ))
     (h₀ : ∀ p : Λ₀ →+ ℂ, ∃ x, IsPer ex₀ Λ₀ x p) :
@@ -19,6 +22,15 @@ theorem isPer_transport {A : Over (Sp ℂ)} {g : ℕ} (ex₀ : (Fin g → ℂ) �
   subst hex hΛ
   exact h₀
 
+/- English proof (translation)
+Introduce `p`. Take `⟨f, v, hfv⟩` from `GlobalTheory.T.exists_linear_sub_pi_hermitian_of_lattice_addHom g u.Λ H u.discrete u.full hAH.2.1 p`. Take `⟨hd, hr, hq⟩` from `GlobalTheory.T.appell_humbert_frame_log_derivative_quasi_periodic A g M u hA hM H χ hAH v`. Use `GlobalTheory.T.exists_cechClass_of_quasiPeriodic_holomorphic_cover A g M u hA M.ι M.U (fun i z => f z + fderiv ℂ (u.fr i) z v / u.fr i z) p hM.cover ?_ ?_ ?_` and prove the remaining obligations. Introduce `i`.
+
+Conclude with `f.differentiable.differentiableOn.add (hd i)`. Introduce `i j`. Establish `: ((fun z => f z + fderiv ℂ (u.fr i) z v / u.fr i z) - fun z => f z + fderiv ℂ (u.fr j) z v / u.fr j z) = ((fun z => fderiv ℂ (u.fr i) z v / u.fr i z) - fun z => fderiv ℂ (u.fr j) z v / u.fr j z)`. Use function extensionality and compare the values at `z`. Simplify using `only [Pi.sub_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `hr i j`. Introduce `i l z hz`. Rewrite using `[hq i l z hz, map_add, hfv l]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem surj_of_isAH (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ) (M : LB A.left) (u : HolUnif A M g)
     (hA : IsAbelianScheme A) (hM : M.IsLB) (H : Matrix (Fin g) (Fin g) ℂ) (χ : u.Λ → ℂ) (hAH : u.IsAH H χ) :
     ∀ p : u.Λ →+ ℂ, ∃ x, IsPer u.ex u.Λ x p := by
@@ -38,6 +50,9 @@ theorem surj_of_isAH (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ) (M : LB A.left) (u
     rw [hq i l z hz, map_add, hfv l]
     ring
 
+/- English proof (translation)
+Introduce `A _ g L u hA`. Take `⟨M, u', H, χ, hM, hex, hΛ, hAH⟩` from `GlobalTheory.AHExists.exists_isAH A g hA L u`. Conclude with `isPer_transport u'.ex u'.Λ (surj_of_isAH A g M u' hA hM H χ hAH) u.ex u.Λ hex.symm hΛ.symm`.
+-/
 theorem main : ∀ (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ) (L : LB A.left) (u : HolUnif A L g), IsAbelianScheme A → ∀ p : u.Λ →+ ℂ, ∃ x, IsPer u.ex u.Λ x p := by
   intro A _ g L u hA
   obtain ⟨M, u', H, χ, hM, hex, hΛ, hAH⟩ := GlobalTheory.AHExists.exists_isAH A g hA L u

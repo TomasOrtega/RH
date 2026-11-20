@@ -13,6 +13,9 @@ open GlobalTheory
 
 namespace GlobalTheory.CompanionTheory.MPDict.UnderExists
 
+/- English proof (translation)
+Introduce `m n z hz` and use `(GlobalTheory.CompanionTheory.MPDict.Under.existsUnique_isUnder m n z hz).exists`.
+-/
 theorem exists_isUnder : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ) (z : (Σ k, Bk n k) → ℂ), (∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) → ∃ y : CxPts (mpStr ℤ m n) σ₀, IsUnder y z :=
   fun m n z hz => (GlobalTheory.CompanionTheory.MPDict.Under.existsUnique_isUnder m n z hz).exists
 

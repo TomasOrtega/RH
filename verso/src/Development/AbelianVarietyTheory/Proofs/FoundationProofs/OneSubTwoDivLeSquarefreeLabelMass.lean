@@ -8,6 +8,19 @@ open Polynomial Classical GlobalTheory.BadShare
 
 namespace GlobalTheory.BadShare
 
+/- English proof (translation)
+Introduce `g hg N`. Establish `hg0 : (0 : ℝ) < g` using `by exact_mod_cast hg.out.pos`. Establish `hpow : (0 : ℝ) < (g : ℝ) ^ N` using `pow_pos hg0 N`. Establish `hterm : ∀ f ∈ sqSet g N, ((g : ℝ) ^ N)⁻¹ ≤ ((torusCard g f : ℝ))⁻¹`. Introduce `f hf`.
+
+Take `⟨h1, h2, -⟩` from `(GlobalTheory.T.squarefreeLabelTorusCard_bounds_and_mul g).1 N f hf`. Establish `h1' : (0 : ℝ) < (torusCard g f : ℝ)` using `by exact_mod_cast h1`. Establish `h2' : (torusCard g f : ℝ) ≤ (g : ℝ) ^ N` using `by exact_mod_cast h2`. Conclude with `inv_anti₀ h1' h2'`. Establish `hsum : ((sqSet g N).card : ℝ) * ((g : ℝ) ^ N)⁻¹ ≤ mass g N fun _ => True`.
+
+Establish `h` using `Finset.card_nsmul_le_sum (sqSet g N) (fun f => ((torusCard g f : ℝ))⁻¹) _ hterm`. Rewrite `h` using `[nsmul_eq_mul]`. Unfold `mass`. Simplify `h` using `only [Finset.filter_true]`. Use `le_trans ?_ hsum` and prove the remaining obligations.
+
+Break down `Nat.eq_zero_or_pos N with rfl | hN` into its components or cases. Establish `h1 : (1 : (ZMod g)[X]) ∈ sqSet g 0` using `(GlobalTheory.T.mem_monicSquarefreeUnitConstPolys_iff_monic_squarefree g 0 1).2 ⟨monic_one, natDegree_one, squarefree_one, by simp⟩`. Establish `hc : (1 : ℝ) ≤ ((sqSet g 0).card : ℝ)`. Conclude with `Finset.card_pos.2 ⟨_, h1⟩` after adjusting the coercions. Establish `: (0 : ℝ) ≤ 2 / (g : ℝ)` using `by positivity`.
+
+Simplify using `only [pow_zero, inv_one, mul_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc` using `GlobalTheory.T.card_monicSquarefreeUnitConstPolys_ge g N hN`. Take `⟨M, rfl⟩ : ∃ M, N = M + 1` from `⟨N - 1, by omega⟩`. Rewrite `hc` using `[Nat.add_sub_cancel]`.
+
+Establish `he : 1 - 2 / (g : ℝ) = ((g : ℝ) ^ (M + 1) - 2 * (g : ℝ) ^ M) * ((g : ℝ) ^ (M + 1))⁻¹`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[he]`. Conclude with `mul_le_mul_of_nonneg_right hc (inv_nonneg.2 hpow.le)`.
+-/
 theorem one_sub_two_div_le_mass_true :
     ∀ (g : ℕ) [Fact g.Prime], ∀ N : ℕ, 1 - 2 / (g : ℝ) ≤ mass g N fun _ => True := by
   intro g hg N

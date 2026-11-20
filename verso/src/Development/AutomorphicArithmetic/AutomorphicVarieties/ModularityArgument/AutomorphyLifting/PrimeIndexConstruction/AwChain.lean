@@ -9,6 +9,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 open NumberField UpperTheory.V UpperTheory.V.Af UpperTheory.V.Base UpperTheory.V.Sd GlobalTheory.CuspRep GlobalTheory.GalOfCusp Formalism.ConjugateSelfDual ReciprocityTheory.Gal
 
+/- English proof (translation)
+Establish `h : Continuous fun s => ((tw r χ s : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)`. Simplify using `only [tw_val]`. Conclude with `(Units.continuous_val.comp hχ).smul (Units.continuous_val.comp hr)`. Use `Units.continuous_iff.2 ⟨h, ?_⟩` and prove the remaining obligations. Establish `e : (fun s => (((tw r χ s)⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)) = (fun s => ((tw r χ s : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)) ∘ fun s => s⁻¹`.
+
+Use function extensionality and compare the values at `s`. Simplify using `only [Function.comp_apply, map_inv]`. Rewrite using `[e]`. Conclude with `h.comp continuous_inv`.
+-/
 private theorem contTwist {Γ k : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [Field k] [TopologicalSpace k]
     [IsTopologicalRing k] {n : ℕ} {r : Γ →* GL (Fin n) k} {χ : Γ →* kˣ} (hr : Continuous r) (hχ : Continuous χ) :
     Continuous (tw r χ) := by
@@ -23,6 +28,13 @@ private theorem contTwist {Γ k : Type} [Group Γ] [TopologicalSpace Γ] [IsTopo
   rw [e]
   exact h.comp continuous_inv
 
+/- English proof (translation)
+Introduce `hH F E M Ω _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hE l _ ι r κ hr hPR hκ hirr`. Use `haveI : Algebra.IsAlgebraic F Ω := IsAlgClosure.isAlgebraic`. Use `haveI : IsAlgClosure E Ω := ⟨IsAlgClosure.isAlgClosed F, Algebra.IsAlgebraic.tower_top (K := F) E⟩`. Use `haveI : Fact ((2 : ℕ) = 2) := ⟨rfl⟩`. Establish `hirrE : IsIrr (r.comp (galEmb F E Ω))` using `⟨hirr.1, fun _ _ _ => Submodule.mem_top, fun W hW hI => hirr.2.2 W hW fun g v hv => hI (galEmb E M Ω g) v hv⟩`.
+
+Establish `hW` using `UpperTheory.V.Z.Win.Birth.awReal F E Ω hE l ι r hr hirrE hPR`. Establish `hcE : Continuous (r.comp (galEmb F E Ω))` using `hr.comp (continuous_restrictScalarsHom F E Ω)`. Take `⟨π, hreg, hatt, -⟩` from `hPR`. Establish `hAut : IsAutC ι (r.comp (galEmb F E Ω))` using `upQuad hH.toClassicalTheorems F E Ω l ι hE 2 one_le_two r hr ⟨π, hreg, hatt⟩ hirrE`. Establish `hTw` using `UpperTheory.V.Z.Win.Birth.awTw E Ω l 2 le_rfl ι _ κ hκ hAut hW`.
+
+Establish `hAutT` using `twC hH.toClassicalTheorems E Ω l ι 2 _ κ hκ hAut`. Establish `e2 : (tw (r.comp (galEmb F E Ω)) κ).comp (galEmb E M Ω) = tw ((r.comp (galEmb F E Ω)).comp (galEmb E M Ω)) (κ.comp (galEmb E M Ω))` using `rfl`. Establish `hirrT : IsIrr ((tw (r.comp (galEmb F E Ω)) κ).comp (galEmb E M Ω))` using `e2 ▸ (shapeFacts l _ 2 _ _).2.2.2.2.2 hirr`. Conclude with `UpperTheory.V.Z.Win.Birth.awUp (Z.Bc.upCyc_of hH.toClassicalTheorems hH.cyc) E M Ω l ι 2 le_rfl _ (contTwist hcE hκ.1) hAutT hirrT hTw`.
+-/
 theorem UpperTheory.V.Z.Win.Birth.awChain :
     UpperTheory.V.Af.HypothesesH → UpperTheory.V.Z.Win.Birth.AwChain := by
   intro hH F E M Ω _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hE l _ ι r κ hr hPR hκ hirr

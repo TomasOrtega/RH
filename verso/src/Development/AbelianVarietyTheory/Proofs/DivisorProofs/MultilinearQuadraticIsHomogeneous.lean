@@ -7,6 +7,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `P _ g n M a`. Use `⟨∑ r : Fin g → Fin n × Fin n, MvPolynomial.C (M (fun k => a (r k).1 (r k).2)) * ∏ k, (MvPolynomial.X (r k).1 * MvPolynomial.X (r k).2), ?_, ?_⟩` and prove the remaining obligations. Apply `MvPolynomial.IsHomogeneous.sum` to reduce the goal to its premises. Introduce `r _`. Establish `hX : ∀ k, (MvPolynomial.X (R` using `ℤ) (r k).1 * MvPolynomial.X (r k).2).IsHomogeneous 2 := fun k => (MvPolynomial.isHomogeneous_X ℤ _).mul (MvPolynomial.isHomogeneous_X ℤ _)`.
+
+Establish `h` using `(MvPolynomial.isHomogeneous_C (Fin n) (M fun k => a (r k).1 (r k).2)).mul (MvPolynomial.IsHomogeneous.prod Finset.univ _ (fun _ => 2) (fun k _ => hX k))`. Use `h using 1` and compare the differences between its conclusion and the goal. Simplify using `[mul_comm]`. Introduce `m`. Establish `hx : (fun _ : Fin g => ∑ i, ∑ j, (m i * m j) • a i j) = fun _ => ∑ p : Fin n × Fin n, (m p.1 * m p.2) • a p.1 p.2`.
+
+Use function extensionality and compare the values at `_`. Conclude with `(Fintype.sum_prod_type' (fun i j => (m i * m j) • a i j)).symm`. Rewrite using `[hx, MultilinearMap.map_sum]`. Simplify using `only [map_sum, map_mul, MvPolynomial.eval_C, map_prod, MvPolynomial.eval_X]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[MultilinearMap.map_smul_univ, smul_eq_mul, mul_comm]`.
+-/
 theorem multilinear_quadratic_isHomogeneous : ∀ (P : Type) [AddCommGroup P] (g n : ℕ) (M : MultilinearMap ℤ (fun _ : Fin g => P) ℤ) (a : Fin n → Fin n → P), ∃ F : MvPolynomial (Fin n) ℤ, F.IsHomogeneous (2 * g) ∧ ∀ m : Fin n → ℤ, MvPolynomial.eval m F = M (fun _ => ∑ i, ∑ j, (m i * m j) • a i j) := by
   intro P _ g n M a
   refine ⟨∑ r : Fin g → Fin n × Fin n, MvPolynomial.C (M (fun k => a (r k).1 (r k).2)) *

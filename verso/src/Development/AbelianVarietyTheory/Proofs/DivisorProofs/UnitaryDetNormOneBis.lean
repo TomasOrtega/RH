@@ -10,6 +10,15 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThK.LiftConst
 namespace GlobalTheory.ThK.LiftConst
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n V r s hV g`. Establish `hg : (g.1.1)ᵀ * incM F V.J * (g.1.1).map (cA σ) = incM F V.J` using `g.2`. Establish `hd` using `congrArg Matrix.det hg`. Rewrite `hd` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose]`. Establish `hmap : ((g.1.1).map (cA σ)).det = cA σ (g.1.1).det` using `((RingHom.map_det (cA σ).toRingHom (g.1.1)).symm)`.
+
+Establish `hinc : (incM F V.J).det = inclR (F` using `F) (AF F) V.J.det := ((RingHom.map_det (inclR (F := F) (AF F)) V.J).symm)`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `hJ : V.J.det ≠ 0` using `GlobalTheory.SplitApprox.det_ne_zero_of_map V.J (B.emb w).1 (GlobalTheory.SplitApprox.det_ne_zero_of_hasSig (hV.sig w))`. Establish `hu : IsUnit (incM F V.J).det`. Rewrite using `[hinc]`.
+
+Conclude with `(isUnit_iff_ne_zero.mpr hJ).map _`. Rewrite `hd` using `[hmap]`. Use `show (g.1.1).det * cA σ (g.1.1).det = 1`. Apply `hu.mul_left_injective` to reduce the goal to its premises. Simplify using `only`.
+
+Take the linear combination `hd`.
+-/
 theorem det_mul_conj_det_eq_one : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n : ℕ) (V : Spc F E n) (r s : ℕ), V.IsHerm σ B r s → ∀ g : UA σ V.J, (mat g).det * cA σ (mat g).det = 1 := by
   intro F E _ _ _ _ _ σ B n V r s hV g

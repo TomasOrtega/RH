@@ -16,6 +16,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.ThetaPow
 
+/- English proof (translation)
+Establish `hmul : ∀ {T : Over (Spec (CommRingCat.of R))} (a b : T ⟶ D.P.A), padd D.P.A a b = a * b`. Introduce `T a b`. Unfold `padd`. Both sides reduce to the same expression. Establish `hc0 : D.c 0 = 1`.
+
+Establish `h2` using `D.c_add 0 0`. Rewrite `h2` using `[add_zero, hmul]`. Conclude with `mul_eq_left.mp h2.symm`. Establish `h1 : toUnit (DegPre.BF D F) ≫ D.c 0 = toUnit (DegPre.BF D F) ≫ η[D.P.A]`. Rewrite using `[hc0]`.
+
+Both sides reduce to the same expression. Establish `h3 : padd D.P.A (DegPre.prB D F) (toUnit (DegPre.BF D F) ≫ η[D.P.A]) = DegPre.prB D F`. Rewrite using `[hmul]`. Conclude with `mul_one _`. Establish `hφ : DegPre.famφ D F 0 = ![(DegPre.prB D F).left, (DegPre.prB D F).left, (toUnit (DegPre.BF D F) ≫ η[D.P.A]).left, (toUnit (DegPre.BF D F) ≫ η[D.P.A]).left]`.
+
+Unfold `DegPre.famφ`. Rewrite using `[h1, h3]`. Establish `hε : DegPre.famε k = ![(k : ℤ) - 1, 1, -1, 1]` using `rfl`. Rewrite using `[Fin.prod_univ_four, hφ, hε]`. Use `show h (DegPre.prB D F).left ^ ((k : ℤ) - 1) * h (DegPre.prB D F).left ^ (1 : ℤ) * h (toUnit (DegPre.BF D F) ≫ η[D.P.A]).left ^ (-1 : ℤ) * h (toUnit (DegPre.BF D F) ≫ η[D.P.A]).left ^ (1 : ℤ) = h (DegPre.prB D F).left ^ k`.
+
+Simplify using `only [zpow_neg, zpow_one]`. Rewrite using `[_root_.inv_mul_cancel_right, ← zpow_add_one, sub_add_cancel, zpow_natCast]`.
+-/
 theorem prod_fam_zero {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (F : Type) [Field F]
     [Algebra (FractionRing R) F] (k : ℕ) {U : Type} [CommGroup U]
     (h : ((DegPre.BF D F).left ⟶ D.P.A.left) → U) :
@@ -46,6 +57,19 @@ theorem prod_fam_zero {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (F : T
   simp only [zpow_neg, zpow_one]
   rw [_root_.inv_mul_cancel_right, ← zpow_add_one, sub_add_cancel, zpow_natCast]
 
+/- English proof (translation)
+Introduce `hT R _ _ D F _ _ n _`. Take `⟨s₀, hs₀⟩` from `GlobalTheory.FamFree.exists_sec_ne_zero (D := D) (F := F) hT (k := 1) le_rfl 0`. Establish `hF₁ : FormEq (DegPre.famφ D F 0) (DegPre.famε 1) (fun _ : PUnit => (DegPre.prB D F).left) (fun _ => (1 : ℤ))`. Introduce `U _ h`. Rewrite using `[prod_fam_zero D F 1 h]`.
+
+Simplify using the standard rewrite rules. Take `⟨θ, hθ⟩` from `exists_sec D.P.isLB hF₁ s₀`. Establish `hθne : ∃ j, θ.f j ≠ 0`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+
+Establish `g0 : ∀ {Y X : Scheme.{0}} (f : Y ⟶ X) (y : Y) (U : X.Opens), gs f y U 0 = 0`. Introduce `Y X f y U`. Unfold `gs`. Apply the tactic sequence `split <;> simp`. Apply `hs₀` to reduce the goal to its premises.
+
+Introduce `j`. Use `(sec_ext_val D.P.isLB (s' := H1.SectionArithmetic.secZero _) (fun y J hJ => ?_) j).trans rfl` and prove the remaining obligations. Rewrite using `[← hθ _ (𝟙 _) y J hJ]`. Conclude with `((congrArg (gs _ y _) (hc _)).trans (g0 _ _ _)).trans (g0 _ _ _).symm`. Set `P` to `H1.SectionArithmetic.powSec (L := D.P.L) (φ := fun _ : PUnit => (DegPre.prB D F).left) (ε := fun _ => (1 : ℤ)) (fun _ : Fin n => θ)`.
+
+Establish `hFn : FormEq (fun p : Fin n × PUnit => (DegPre.prB D F).left) (fun _ => (1 : ℤ)) (DegPre.famφ D F 0) (DegPre.famε n)`. Introduce `U _ h`. Rewrite using `[prod_fam_zero D F n h]`. Simplify using the standard rewrite rules. Take `⟨σ, hσ⟩` from `exists_sec D.P.isLB hFn P`.
+
+Use `⟨θ, σ, hθne, fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[hσ Z r z J hJ, H1.SectionArithmetic.sval_powSec _ r z hJ]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_theta_pow : SecTwistSt → ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (F : Type) [Field F] [Algebra (FractionRing R) F] (n : ℕ), 1 ≤ n → ∃ (θ : LB.Sec (D.P.L.pull (DegPre.prB D F).left)) (σ : LB.Sec (LB.LinComb D.P.L (DegPre.famφ D F 0) (DegPre.famε n))), (∃ j, θ.f j ≠ 0) ∧ ∀ (Z : Scheme.{0}) (r : Z ⟶ (DegPre.BF D F).left) (z : Z) (J : (Z ⟶ D.P.A.left) → D.P.L.ι), Good D.P.L z J → sval σ r z J = sval (L := D.P.L) (φ := fun _ : PUnit => (DegPre.prB D F).left) (ε := fun _ => 1) θ r z J ^ n := by
   intro hT R _ _ D F _ _ n _
   obtain ⟨s₀, hs₀⟩ := GlobalTheory.FamFree.exists_sec_ne_zero (D := D) (F := F) hT (k := 1) le_rfl 0

@@ -31,6 +31,9 @@ def powSec {Y : Scheme.{0}} {H : LB Y} (s : LB.Sec H) (u : ℕ) : LB.Sec (pw H (
   Nat.rec (motive := fun u : ℕ => LB.Sec (pw H (u : ℤ))) (oneSec H)
     (fun u σ => GlobalTheory.VeryAmpleGrowth.mulPw s u σ) u
 
+/- English proof (translation)
+The claim follows from `| 0 => by simp [powSec, oneSec]; rfl | u + 1 => by change s.f k * (show Γ(Y, H.U k) from (powSec s u).f k) = s.f k ^ (u + 1) rw [powSec_f s k u, pow_succ, mul_comm]`.
+-/
 theorem powSec_f {Y : Scheme.{0}} {H : LB Y} (s : LB.Sec H) (k : H.ι) :
     ∀ u : ℕ, (show Γ(Y, H.U k) from (powSec s u).f k) = s.f k ^ u
   | 0 => by simp [powSec, oneSec]; rfl
@@ -38,6 +41,13 @@ theorem powSec_f {Y : Scheme.{0}} {H : LB Y} (s : LB.Sec H) (k : H.ι) :
     change s.f k * (show Γ(Y, H.U k) from (powSec s u).f k) = s.f k ^ (u + 1)
     rw [powSec_f s k u, pow_succ, mul_comm]
 
+/- English proof (translation)
+Introduce `Y D J s i x hx u`. Take `⟨k₀, hk₀⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`. Use `⟨powSec (s i) u, TopologicalSpace.Opens.mem_iSup.2 ⟨k₀, ?_⟩⟩` and prove the remaining obligations. Establish `e` using `powSec_f (s i) k₀ u`. Express the relevant statement in the definitionally equal form `x ∈ Y.basicOpen (show Γ(Y, D.U k₀) from (powSec (s i) u).f k₀)`.
+
+Rewrite using `[e]`. Consider the cases of `u with`. Consider the case `zero`. Rewrite using `[pow_zero, Scheme.basicOpen_of_isUnit _ isUnit_one]`. Conclude with `Y.basicOpen_le _ hk₀`.
+
+Consider the case `succ n => rw [Scheme.basicOpen_pow _ _ (Nat.succ_pos n)]`. Conclude with `hk₀`.
+-/
 theorem exists_pw_sec_nonzero : ∀ {Y : Scheme.{0}} {D : LB Y} {J : Type} (s : J → LB.Sec D) (i : J) {x : Y}, x ∈ Out.nonzeroLocus (s i) → ∀ u : ℕ, ∃ σ : LB.Sec (pw D u), x ∈ Out.nonzeroLocus σ := by
   intro Y D J s i x hx u
   obtain ⟨k₀, hk₀⟩ := TopologicalSpace.Opens.mem_iSup.1 hx

@@ -3,6 +3,15 @@ import Development.AutomorphicArithmetic.CyclotomicBounds.ClassNumberBounds.Iner
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Bern UpperTheory.V.B4 UpperTheory.V.B5 UpperTheory.V.Odd
 
+/- English proof (translation)
+Introduce `E _ _ N hN ⟨φ⟩`. Use `haveI : NeZero N := ⟨hN.ne'⟩`. Use `haveI : NeZero (N : ℚ) := ⟨by exact_mod_cast hN.ne'⟩`. Use `haveI : IsCyclotomicExtension {N} ℚ (CyclotomicField N ℚ) := CyclotomicField.isCyclotomicExtension N ℚ`. Set `F` to `φ.fieldRange`.
+
+Establish `e : E ≃ₐ[ℚ] F` using `AlgEquiv.ofInjectiveField φ`. Establish `hrank : Module.finrank ℚ E = Module.finrank ℚ F` using `e.toLinearEquiv.finrank_eq`. Establish `hdisc : discr E = discr F` using `NumberField.discr_eq_discr_of_algEquiv E e`. Take `⟨hprod, -, -⟩` from `KStar.Ram.natAbs_discr_eq_finprod_conductor (N := N) (K := CyclotomicField N ℚ) F`. Take `⟨hcard, -⟩` from `KStar.Ram.card_fieldChars (N := N) (K := CyclotomicField N ℚ) F`.
+
+Prove the components needed by the constructor for the conclusion. Rewrite using `[hdisc, hprod, hrank, ← hcard] haveI : Fintype (KStar.Ram.fieldChars N F) := Fintype.ofFinite _`. Rewrite using `[finprod_eq_prod_of_fintype, Nat.card_eq_fintype_card, ← Finset.card_univ]`. Conclude with `Finset.prod_le_pow_card _ _ _ (fun ψ _ => Nat.le_of_dvd hN (DirichletCharacter.conductor_dvd_level _))`. Establish `hinj : Function.Injective φ.toLinearMap` using `(φ : E →+* CyclotomicField N ℚ).injective`.
+
+Establish `h` using `LinearMap.finrank_le_finrank_of_injective hinj`. Rewrite `h` using `[IsCyclotomicExtension.finrank (CyclotomicField N ℚ) (Polynomial.cyclotomic.irreducible_rat hN)]`. Conclude with `h.trans (Nat.totient_le N)`.
+-/
 theorem UpperTheory.V.Odd.logDisc :
     ∀ (E : Type) [Field E] [NumberField E] (N : ℕ), 0 < N → Nonempty (E →ₐ[ℚ] CyclotomicField N ℚ) → (discr E).natAbs ≤ N ^ Module.finrank ℚ E ∧ Module.finrank ℚ E ≤ N := by
   intro E _ _ N hN ⟨φ⟩

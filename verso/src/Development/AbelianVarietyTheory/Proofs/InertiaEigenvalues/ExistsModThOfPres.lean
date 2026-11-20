@@ -25,6 +25,13 @@ def RedN {l : ℕ} [Fact l.Prime] {P : LocPrime l} {H : LocHW l P} {S : TopSit P
     Prop :=
   ∀ i y, y ∈ N i ↔ ∃ x : ↥(DΔ (S.W H) T), (x : (S.W H).DD T) ∈ (S.W H).N T ∧ p.j T A q i x = y
 
+/- English proof (translation)
+Establish `hG : IsTopGal (P.PD S.K) S.emb S.D S.Γ` using `S.hyp.2.1`. Establish `: FiniteDimensional ℚ_[l] ↥S.LL.1` using `S.LL.2`. Establish `: IsDiscreteValuationRing S.O`. Unfold `TopSit.O Formalism.BasicNotions.Loc.OL`. Conclude with `GlobalTheory.isDiscreteValuationRing_integralClosure_padicInt l ↥S.LL.1`.
+
+Establish `: IsFractionRing S.O ↥S.LL.1`. Unfold `TopSit.O Formalism.BasicNotions.Loc.OL`. Conclude with `GlobalTheory.isFractionRing_integralClosure_padicInt l ↥S.LL.1`. Establish `hθ : IsCrysChar (P.PD S.K) S.emb S.Γ.χ₁⁻¹ (fun i => -S.D.w i)` using `(hC.2.1 S.Γ.T₀ S.D.U S.Γ.χ₁ S.D.w hG.2.1 hG.2.2.1).2`. Establish `hlam : Irreducible S.Γ.lam` using `S.hyp.1.2.2.2.2.2`.
+
+Establish `hpoly : ∀ (T : LocLat S.G ℚ_[l] ↥S.LL.1 S.O) (A : Ob k S.G) q (U : ZMod S.n → Multiset ℤ), Onto T A q → KerIs S.Γ.lam q → CrysWith (P.PD S.K) S.emb T.ρ U → ∀ N : Lats k S.n A.m, RedN p T A q N → ∀ (i : ZMod S.n) (s : ℕ), (∀ u ∈ U i, ∀ a : ℕ, a < s → (l : ℤ) ∣ (a : ℤ) - u → (a : ℤ …`. Introduce `T A q U hq hK hc N hN i s hs`. Conclude with `BaseLatticeE.ePoly_base H S k hk ι F τ γ p hι hτ hγ hQ T A q U hq hK hc N hN i s hs`. Conclude with `exists_real hθ hk hlam hC.1 hC.2.1 p.obj (fun T A q U hq hK hc => GlobalTheory.T.wachDeltaInvariants_reduction_isLattice H S k hk ι F τ γ p hι hτ hγ hQ T A q U hq hK hc) (fun T A q U hq hK hc N hN w w' hw => GlobalTheory.T.phiGamma_reduction_base_lattice_bounds H S k hk ι F τ γ p …`.
+-/
 theorem exists_modTh_of_pres {l : ℕ} [Fact l.Prime] {P : LocPrime l} {H : LocHW l P} {S : TopSit P} {k : Type}
     [Field k] [Algebra S.O k] [CharP k l] {R : RingPG k l} {ι : k⸨X⸩ →ₐ[k] k⸨X⸩} {F : DFun R S.n S.G}
     {τ : ZMod S.n → ZMod (Module.finrank ℚ_[l] ↥(K0 S.K))} {γ : (S.W H).Gam} (p : Pres (S.W H) F ι τ γ)
@@ -69,6 +76,11 @@ theorem exists_modTh_of_pres {l : ℕ} [Fact l.Prime] {P : LocPrime l} {H : LocH
         hc' Z C r V hr hKr hcr f g a b hb hs ha hb' hfa hgb N N' L hN hN' hL i)
     hG hC.2.2.1 (fun ω hω e h0 h1 => omega_pow_ne_one S k ω hω e h0 h1)
 
+/- English proof (translation)
+Introduce `l _ P AI H _ S hR hQ hC`. Unfold `TopSit.Real`. Introduce `k _ _ _ hk`. Establish `h1` using `@hR k _ _ _ hk`. Take `⟨R, ι, hι, F, τ, γ, hτ, hγ, hp⟩` from `h1`.
+
+Establish `h2` using `exists_modTh_of_pres (H := H) (S := S) (k := k) (R := R) (ι := ι) (F := F) (τ := τ) (γ := γ) hp.some hC hk hι hτ hγ hQ`. Conclude with `⟨R, ι, hι, F, h2⟩`.
+-/
 theorem real_of_presented : ∀ {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P) (H : LocHW l P)
     (E : LocFon l P AI H) (S : TopSit P), S.RealD H → GlobalTheory.WachUse.QN (S.W H) → S.CrysCalc → S.Real := by
   intro l _ P AI H _ S hR hQ hC

@@ -22,6 +22,17 @@ namespace GlobalTheory.HeisAverage
 
 open GlobalTheory.FockCompare GlobalTheory.OrientedHeis
 
+/- English proof (translation)
+Use `set g : R → R → ℂ := fun p v => (φ (-v) : ℂ) * K p (-v) with hgdef`. Establish `e : ∀ y, ∫ x, (φ x : ℂ) * K y x * G (y + x) ∂μ = convolution G (g y) (ContinuousLinearMap.mul ℝ ℂ) μ y`. Introduce `y`. Rewrite using `[convolution_def]`. Simplify using `only [ContinuousLinearMap.mul_apply', g, neg_sub]`.
+
+Rewrite using `[← integral_sub_right_eq_self (fun x => (φ x : ℂ) * K y x * G (y + x)) y]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Simplify using `only [add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hk : IsCompact (Neg.neg '' tsupport φ)` using `hφc.isCompact.image continuous_neg`. Establish `hgs : ∀ p, ∀ x, p ∈ (Set.univ : Set R) → x ∉ Neg.neg '' tsupport φ → g p x = 0`. Introduce `p x _ hx`. Establish `: -x ∉ tsupport φ` using `fun h => hx ⟨-x, h, neg_neg x⟩`. Simplify using `[g, image_eq_zero_of_notMem_tsupport this]`.
+
+Establish `hg : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (↿g) (Set.univ ×ˢ Set.univ)`. Apply `ContDiff.contDiffOn` to reduce the goal to its premises. Conclude with `(Complex.ofRealCLM.contDiff.comp (hφ.comp contDiff_snd.neg)).mul (hK.comp (contDiff_fst.prodMk contDiff_snd.neg))`. Establish `hc` using `contDiffOn_convolution_right_with_param_comp (μ := μ) (ContinuousLinearMap.mul ℝ ℂ) (s := Set.univ) (v := id) contDiffOn_id isOpen_univ hk hgs hG.locallyIntegrable hg`. Rewrite using `[funext e]`.
+
+Conclude with `contDiffOn_univ.1 hc`.
+-/
 theorem contDiff_integral_kernel {R : Type} [NormedAddCommGroup R] [NormedSpace ℝ R] [FiniteDimensional ℝ R]
     [MeasurableSpace R] [BorelSpace R] (μ : Measure R) [μ.IsAddHaarMeasure]
     (φ : R → ℝ) (hφ : ContDiff ℝ ∞ φ) (hφc : HasCompactSupport φ) (K : R → R → ℂ)
@@ -51,6 +62,13 @@ theorem contDiff_integral_kernel {R : Type} [NormedAddCommGroup R] [NormedSpace 
   rw [funext e]
   exact contDiffOn_univ.1 hc
 
+/- English proof (translation)
+Introduce `D θ σ h ψ hψ A T φ hφ hφc f hf w`. Use `haveI : (volume : Measure (Fin A.rank → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Use `haveI : (volume : Measure (Fin T.rank → Fin A.rank → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Use `haveI : (volume : Measure (RW T A)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Set `Bc : RW T A →L[ℝ] RW T A →L[ℝ] ℝ` to `LinearMap.toContinuousLinearMap ((LinearMap.toContinuousLinearMap : (RW T A →ₗ[ℝ] ℝ) ≃ₗ[ℝ] (RW T A →L[ℝ] ℝ)).toLinearMap ∘ₗ omO A T)`.
+
+Establish `hK : ContDiff ℝ ∞ fun p : RW T A × RW T A => Complex.exp (-(Real.pi * Complex.I) * (Complex.ofRealCLM (Bc (piW θ T A w + p.1) p.2)))` using `Complex.contDiff_exp.comp (contDiff_const.mul (Complex.ofRealCLM.contDiff.comp ((Bc.contDiff.comp (contDiff_const.add contDiff_fst)).clm_apply contDiff_snd)))`. Establish `hG : Continuous fun t : RW T A => f (w + iotaW σ T A t)` using `hf.comp (continuous_const.add (h.continuous_iota T A))`. Establish `key` using `contDiff_integral_kernel (volume : Measure (RW T A)) φ hφ hφc (fun y x => Complex.exp (-(Real.pi * Complex.I) * (Complex.ofRealCLM (Bc (piW θ T A w + y) x)))) hK _ hG`. Use `(congrArg (ContDiff ℝ ∞) ?_).mp key` and prove the remaining obligations. Use function extensionality and compare the values at `y`.
+
+Use `congrArg _ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Rewrite using `[heisO_iota h hψ, (piW θ T A).map_add, h.pi_iota, (iotaW σ T A).map_add, ← add_assoc, mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem sm_heisO_average : ∀ (D : D7) (θ : InfFam D) (σ : (D.what₂.Tau → ℂ) →+ AE D), GlobalTheory.FockCompare.Chart θ σ → ∀ (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (A T : HSp D) (φ : GlobalTheory.FockCompare.RW T A → ℝ), ContDiff ℝ ∞ φ → HasCompactSupport φ → ∀ (f : WO A T → ℂ), Continuous f → GlobalTheory.FockCompare.Sm (GlobalTheory.FockCompare.iotaW σ T A) (fun w => ∫ x, (φ x : ℂ) * heisO ψ A T (GlobalTheory.FockCompare.iotaW σ T A x) f w) := by
   intro D θ σ h ψ hψ A T φ hφ hφc f hf w
   haveI : (volume : Measure (Fin A.rank → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _

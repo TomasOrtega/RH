@@ -16,6 +16,11 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.ExpansionNonzero
 
+/- English proof (translation)
+Introduce `V _ _ _ hV D' A' G' _ _ U' U₀ _ σ' f' hf ⟨j, hj⟩`. Use `hV.1` as an intermediate fact. Use `U'.semi.smooth` as an intermediate fact. Establish `: IsReduced G'.left` using `isReduced_of_smooth_of_isReduced G'.hom`. Use `FibreNonzero.isIso_snd_left G'` as an intermediate fact.
+
+Establish `: IsReduced (𝟙_ _ ⊗ G').left` using `isReduced_of_isOpenImmersion (snd (𝟙_ _) G').left`. Establish `h : (𝟙_ _ ⊗ G').left.basicOpen (σ'.f j) ≠ ⊥` using `fun h => hj ((basicOpen_eq_bot_iff _).1 h)`. Take `⟨y, hy⟩` from `(TopologicalSpace.Opens.ne_bot_iff_nonempty _).1 h`. Use `GlobalTheory.SectionUnif.exists_term_ne_zero (IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top).ge U' 1 σ' f' hf y ?_` and prove the remaining obligations. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨j, hy⟩`.
+-/
 theorem exists_term_ne_zero : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], GlobalTheory.LN.CDvr V → ∀ (D' : DegData V (maximalIdeal V)) (A' : PolAV (Sp (FractionRing V))) (G' : Over (Sp V)) [GrpObj G'] [IsCommMonObj G'] (U' : GlobalTheory.UU.PreU (maximalIdeal V) D'.toPre A' G') (U₀ : Unif (maximalIdeal V) D' A' G'), GlobalTheory.LN.Under U' U₀.toUnifPre → ∀ (σ' : U'.SecGT (𝟙_ _) 1) (f' : ∀ α, GlobalTheory.UU.SecBT D'.toPre (𝟙_ _) 1 α), U'.ExpT (𝟙_ _) 1 σ' f' → (∃ j, σ'.f j ≠ 0) → ∃ α j, (f' α).f j ≠ 0 := by
   intro V _ _ _ hV D' A' G' _ _ U' U₀ _ σ' f' hf ⟨j, hj⟩
   have := hV.1

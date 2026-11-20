@@ -1,5 +1,12 @@
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.SphericalCoordinates.LevelChange
 
+/- English proof (translation)
+Establish `key : ∀ u : Sˣ, (σ (u : S)).unop * (σ ((u⁻¹ : Sˣ) : S)).unop = 1`. Introduce `u`. Rewrite using `[← MulOpposite.unop_mul, ← map_mul, Units.inv_mul, map_one, MulOpposite.unop_one]`. Establish `hb : b = ((x'⁻¹ : Sˣ) : S) * (algebraMap A S t' * (σ ((x'⁻¹ : Sˣ) : S)).unop)`. Rewrite using `[← hx']`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Units.inv_mul, key, one_mul, mul_one]`. Use `_ = _ := by simp only [mul_assoc]`. Rewrite `hx` using `[hb]`. Simplify using `only [mul_assoc, Algebra.left_comm] at hx`.
+
+Simplify using `only [Units.val_mul, map_mul, MulOpposite.unop_mul, mul_assoc]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Units.val_mul, map_mul, mul_assoc, hx]`. Use `_ = _ := Algebra.commutes _ _`.
+-/
 private theorem UpperTheory.Gal.W2.mul_inv_star_of_triv {S A : Type*} [Ring S] [CommRing A] [Algebra A S]
     (σ : S →+* Sᵐᵒᵖ) (b : S) (x x' : Sˣ) (t t' : Aˣ)
     (hx : (x : S) * b * (σ x).unop = algebraMap A S t)
@@ -28,6 +35,15 @@ open GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMid GlobalTheory.LKGe
 open scoped Matrix TensorProduct Classical
 open UpperTheory.Gal.W2
 
+/- English proof (translation)
+Introduce `hcore p _ D G L B D' j hpl f nu hw`. Take `⟨x, c, hxc, hread⟩` from `hcore p D G L B.β D' j hpl f nu hw`. Take `⟨t0, ht0⟩` from `B.trivAf.choose_spec`. Establish `hmem : ((trivX B * x⁻¹, t0 * c⁻¹) : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ) ∈ UPts G.star (AfP p)`. Rewrite using `[UPts, mem_uGroup]`.
+
+Conclude with `mul_inv_star_of_triv _ _ _ _ _ _ ht0 hxc`. Use `⟨⟨_, hmem⟩, ?_⟩` and prove the remaining obligations. Establish `hrd : ∀ w, rd L (trivX B) ⟨_, hmem⟩ w = rd L x 1 w`. Introduce `w`. Establish `hy : (((trivX B * x⁻¹)⁻¹ : (AfP p ⊗[ℚ] G.C)ˣ) : AfP p ⊗[ℚ] G.C) * (trivX B : AfP p ⊗[ℚ] G.C) = x`.
+
+Rewrite using `[← Units.val_mul]`. Use `congr 1`. Use `group`. Simplify using `only [rd, inv_one, map_one, Module.End.one_apply]`. Rewrite using `[← hy, map_mul, Module.End.mul_apply]`.
+
+Both sides reduce to the same expression. Introduce `n hn hcop`. Take `⟨h1, h2⟩` from `hread n hn hcop`. Conclude with `⟨fun w => by rw [hrd]; exact h1 w, fun a => by rw [hrd]; exact h2 a⟩`.
+-/
 theorem UpperTheory.Gal.W2.adOfWit_of :
     UpperTheory.Gal.W2.AdCore → UpperTheory.Gal.W2.AdOfWit := by
   intro hcore p _ D G L B D' j hpl f nu hw

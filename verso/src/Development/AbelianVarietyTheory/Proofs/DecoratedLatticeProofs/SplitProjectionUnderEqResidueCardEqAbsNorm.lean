@@ -25,6 +25,9 @@ noncomputable section
 
 namespace GlobalTheory.PlaceProjAt
 
+/- English proof (translation)
+Establish `h1 : ((algebraMap (𝓞 D.host.F) (𝓞 D.host.E) a : 𝓞 D.host.E) : D.host.E) = algebraMap D.host.F D.host.E (algebraMap (𝓞 D.host.F) D.host.F a)` using `by show algebraMap (𝓞 D.host.E) D.host.E _ = _`. Rewrite using `[← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Use `(h _).trans ?_` and prove the remaining obligations. Rewrite using `[h1, GlobalTheory.PlaceRed.rdQ_alg, ReciprocityTheory.Aut.adic_valued_algebraMap, HeightOneSpectrum.valuation_lt_one_iff_mem]`.
+-/
 theorem algebraMap_mem_iff {D : D7} {v : HeightOneSpectrum (𝓞 D.host.F)} (φ : SplitProj D v)
     (PP : Formalism.L2.DIV.Pl D.host.E) (h : IsProjAt φ PP) (a : 𝓞 D.host.F) :
     algebraMap (𝓞 D.host.F) (𝓞 D.host.E) a ∈ PP.asIdeal ↔ a ∈ v.asIdeal := by
@@ -35,6 +38,19 @@ theorem algebraMap_mem_iff {D : D7} {v : HeightOneSpectrum (𝓞 D.host.F)} (φ 
   refine (h _).trans ?_
   rw [h1, GlobalTheory.PlaceRed.rdQ_alg, ReciprocityTheory.Aut.adic_valued_algebraMap, HeightOneSpectrum.valuation_lt_one_iff_mem]
 
+/- English proof (translation)
+Introduce `D v φ PP h`. Establish `hmem` using `algebraMap_mem_iff φ PP h`. Establish `hv : v = PP.under (𝓞 D.host.F)`. Use `HeightOneSpectrum.ext (Ideal.ext fun a => ?_)` and prove the remaining obligations. Rewrite using `[← hmem]`.
+
+Both sides reduce to the same expression. Use `⟨hv, ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.LFun.SatBoundGL.resCard_completion v).trans ?_` and prove the remaining obligations. Set `f : 𝓞 D.host.F →+* 𝓞 D.host.E ⧸ PP.asIdeal` to `(Ideal.Quotient.mk PP.asIdeal).comp (algebraMap (𝓞 D.host.F) (𝓞 D.host.E))`. Establish `hker : RingHom.ker f = v.asIdeal`.
+
+Use extensionality with `a`. Rewrite using `[RingHom.mem_ker, ← hmem]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem`. Establish `hsurj : Function.Surjective f`. Introduce `y`.
+
+Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Take `⟨a, ha⟩` from `ReciprocityTheory.Aut.adic_exists_approx v (GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdQ φ (x : D.host.E)) (GlobalTheory.PlaceRed.rdQ_int φ x)`. Use `⟨a, ?_⟩` and prove the remaining obligations. Use `show Ideal.Quotient.mk PP.asIdeal (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) a) = Ideal.Quotient.mk PP.asIdeal x`. Rewrite using `[Ideal.Quotient.eq, ← neg_mem_iff, neg_sub]`.
+
+Use `(h _).2 ?_` and prove the remaining obligations. Establish `h1 : ((algebraMap (𝓞 D.host.F) (𝓞 D.host.E) a : 𝓞 D.host.E) : D.host.E) = algebraMap D.host.F D.host.E (algebraMap (𝓞 D.host.F) D.host.F a)` using `by show algebraMap (𝓞 D.host.E) D.host.E _ = _`. Rewrite using `[← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Rewrite using `[show ((x - algebraMap (𝓞 D.host.F) (𝓞 D.host.E) a : 𝓞 D.host.E) : D.host.E) = (x : D.host.E) - ((algebraMap (𝓞 D.host.F) (𝓞 D.host.E) a : 𝓞 D.host.E) : D.host.E) from map_sub (algebraMap (𝓞 D.host.E) D.host.E) _ _, ← GlobalTheory.PlaceRed.rdQh_apply, map_sub, GlobalTheory.PlaceR …`. Conclude with `ha`.
+
+Rewrite using `[Ideal.absNorm_apply, Ideal.absNorm_apply, Submodule.cardQuot_apply, Submodule.cardQuot_apply]`. Conclude with `Nat.card_congr ((Ideal.quotEquivOfEq hker.symm).trans (RingHom.quotientKerEquivOfSurjective hsurj)).toEquiv`.
+-/
 theorem under_resCard : ∀ (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) (φ : SplitProj D v) (PP : Pl D.host.E), IsProjAt φ PP → v = PP.under (𝓞 D.host.F) ∧ GlobalTheory.SplitWeil.resCard (Fv D.host.F v) = Ideal.absNorm PP.asIdeal := by
   intro D v φ PP h
   have hmem := algebraMap_mem_iff φ PP h

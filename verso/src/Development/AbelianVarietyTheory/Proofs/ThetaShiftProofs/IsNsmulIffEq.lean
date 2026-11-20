@@ -8,6 +8,11 @@ namespace GlobalTheory.TorusExt
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.DVR ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
+/- English proof (translation)
+Take `⟨s⟩` from `t`. Take `⟨s'⟩` from `t'`. Use `congr 1`. Use function extensionality and compare the values at `j`. Use `unit_ext (V := LB.wchart L φ j) fun y hy => ?_` and prove the remaining obligations.
+
+Use `choose I hI using fun χ : Y ⟶ X => exists_chart hL (χ y)`. Conclude with `(gen_trans ht (𝟙 Y) y hy (Good.mem hI φ (𝟙 Y))).trans ((congrArg _ (h y I hI)).trans (gen_trans ht' (𝟙 Y) y hy (Good.mem hI φ (𝟙 Y))).symm)`.
+-/
 theorem gen_ext_val {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     {t t' : LB.Gen (LB.LinComb L φ ε)} (ht : t.IsGen) (ht' : t'.IsGen)
     (h : ∀ y J, Good L y J → val t (𝟙 Y) y J = val t' (𝟙 Y) y J) : t = t' := by
@@ -29,6 +34,9 @@ abbrev tauVal (D : DegPre R) (F : Type) [Field F] [Algebra (FractionRing R) F] (
     (J : ((TF (R := R) F).left ⟶ D.P.A.left) → D.P.L.ι) : ((TF (R := R) F).left.presheaf.stalk y)ˣ :=
   val (D.tau x χ) ((𝟙 (TF (R := R) F) :).left ≫ jFK (R := R) F) y J
 
+/- English proof (translation)
+Take `⟨b, s, hs, h₀, hm⟩` from `g`. Take `⟨b', s', hs', h₀', hm'⟩` from `g'`. Take `rfl : b = b'` from `hb`. Take `rfl : s = s'` from `funext fun χ => gen_ext_val D.P.isLB (hs χ) (hs' χ) (h χ)`. Both sides reduce to the same expression.
+-/
 theorem gt_ext_val {g g' : GtPtF D F} (hb : g.b = g'.b)
     (h : ∀ χ y J, Good D.P.L y J → charVal g χ y J = charVal g' χ y J) : g = g' := by
   obtain ⟨b, s, hs, h₀, hm⟩ := g
@@ -37,31 +45,61 @@ theorem gt_ext_val {g g' : GtPtF D F} (hb : g.b = g'.b)
   obtain rfl : s = s' := funext fun χ => gen_ext_val D.P.isLB (hs χ) (hs' χ) (h χ)
   rfl
 
+/- English proof (translation)
+The claim follows from `gt_ext_val hb fun χ _ _ hJ => val_corr hJ (h χ) _`.
+-/
 theorem gt_ext {g g' : GtPtF D F} (hb : g.b = g'.b)
     (h : ∀ χ, LB.Gen.Corr D.P.L _ _ _ _ (g.s χ) (g'.s χ)) : g = g' :=
   gt_ext_val hb fun χ _ _ hJ => val_corr hJ (h χ) _
 
+/- English proof (translation)
+The claim follows from `(val_corr hJ g.s_zero _).trans (val_one _)`.
+-/
 theorem charVal_zero (g : GtPtF D F) {y J} (hJ : Good D.P.L y J) : charVal g 0 y J = 1 :=
   (val_corr hJ g.s_zero _).trans (val_one _)
 
+/- English proof (translation)
+Establish `e` using `gt_mul (𝟙 (TF (R := R) F)) hJ g χ χ'`. Rewrite `e` using `[Category.id_comp]`. Conclude with `e`.
+-/
 theorem charVal_add (g : GtPtF D F) {y J} (hJ : Good D.P.L y J) (χ χ' : D.X) :
     charVal g (χ + χ') y J * th D y J (cP D _ χ) (cP D _ χ') g.b = charVal g χ y J * charVal g χ' y J := by
   have e := gt_mul (𝟙 (TF (R := R) F)) hJ g χ χ'
   rw [Category.id_comp] at e
   exact e
 
+/- English proof (translation)
+The claim follows from `isAdd_iff g g' g''`.
+-/
 theorem isAdd_iff_val (g g' g'' : GtPtF D F) : g.IsAdd g' g'' ↔ g''.b = g.b * g'.b ∧ ∀ χ y J, Good D.P.L y J →
     charVal g'' χ y J * th D y J (cP D _ χ) g.b g'.b = charVal g χ y J * charVal g' χ y J := isAdd_iff g g' g''
 
+/- English proof (translation)
+The claim follows from `isZero_iff g`.
+-/
 theorem isZero_iff_val (g : GtPtF D F) : g.IsZero ↔ g.b = 1 ∧ ∀ χ y J, Good D.P.L y J → charVal g χ y J = 1 :=
   isZero_iff g
 
+/- English proof (translation)
+The claim follows from `isIota_iff x g`.
+-/
 theorem isIota_iff_val (x : D.X) (g : GtPtF D F) : GtPtF.IsIota x g ↔ g.b = cP D _ x ∧ ∀ χ y J, Good D.P.L y J →
     charVal g χ y J = tauVal D F x χ y J := isIota_iff x g
 
+/- English proof (translation)
+The claim follows from `pullGen_isGen _ _ _ _ D.cub.isGen _`.
+-/
 theorem cubAt_isGen (x x' w : TF (R := R) F ⟶ D.P.A) : (DegPre.cubAt D F x x' w).IsGen :=
   pullGen_isGen _ _ _ _ D.cub.isGen _
 
+/- English proof (translation)
+Establish `vv : ∀ χ y J, Good D.P.L y J → val (LB.mulGen D.P.L _ _ _ _ (LB.mulGen D.P.L _ _ _ _ (g.s χ) (g'.s χ)) (LB.invGen D.P.L _ _ (DegPre.cubAt D F (cP D _ χ) g.b g'.b))) (𝟙 (TF (R` using `R) F).left) y J = charVal g χ y J * charVal g' χ y J * (th D y J (cP D _ χ) g.b g'.b)⁻¹ := fun χ y J hJ => (val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (val_mul hJ _ _ _) ((val_inv _ _).trans (congrArg (·⁻¹) (val_cubAt hJ _ _ _))))`. Take `⟨g'', hb, hv⟩` from `exists_gt (g.b * g'.b) (fun χ => LB.mulGen D.P.L _ _ _ _ (LB.mulGen D.P.L _ _ _ _ (g.s χ) (g'.s χ)) (LB.invGen D.P.L _ _ (DegPre.cubAt D F (cP D _ χ) g.b g'.b))) (fun χ => mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ (g.isGen _) (g'.isGen _)) (invGen_isGen _ _ _ _ (cubA …`. Use `(prod_sum₂ (K := Fin 4 ⊕ Fin 4) (K' := thK) (U := U) _ (prod_sum₂ (K := Fin 4) (K' := Fin 4) (U := U) _ (prod_gt g.b χ h) (prod_gt g'.b χ h)) (prod_neg _ _ (prod_cub (cP D _ χ) g.b g'.b h))).trans ?_` and prove the remaining obligations. Rewrite using `[prod_gt, _root_.mul_assoc (cP D _ χ)]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Simplify using `only [ofMul_mul, ofMul_inv]`. Use the proof step `abel) (fun y J hJ => by`. Establish `C : IsCub (th D (T` using `TF (R := R) F) y J) := isCub_cubV D.cub hJ`. Use `(vv 0 y J hJ).trans ?_` and prove the remaining obligations. Rewrite using `[charVal_zero g hJ, charVal_zero g' hJ, cPoint_zero, C.face]; simp) (fun χ χ' y J hJ => by`.
+
+Establish `C : IsCub (th D (T` using `TF (R := R) F) y J) := isCub_cubV D.cub hJ`. Establish `e₁` using `congrArg Additive.ofMul (charVal_add g hJ χ χ')`. Establish `e₂` using `congrArg Additive.ofMul (charVal_add g' hJ χ χ')`. Establish `e₃` using `congrArg Additive.ofMul (C.compat (cP D _ χ) (cP D _ χ') g.b g'.b)`. Use `(congrArg₂ (· * ·) (vv _ y J hJ) rfl).trans (Eq.trans ?_ (congrArg₂ (· * ·) (vv _ y J hJ) (vv _ y J hJ)).symm)` and prove the remaining obligations.
+
+Rewrite using `[cPoint_add]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv] at e₁ e₂ e₃ ⊢`. Take the linear combination `(norm := abel) e₁ + e₂ - e₃)`. Conclude with `⟨g'', (isAdd_iff_val _ _ _).2 ⟨hb, fun χ y J hJ => (congrArg₂ (· * ·) ((hv χ y J hJ).trans (vv χ y J hJ)) rfl).trans (inv_mul_cancel_right _ _)⟩⟩`.
+-/
 theorem exists_add (g g' : GtPtF D F) : ∃ g'', g.IsAdd g' g'' := by
   have vv : ∀ χ y J, Good D.P.L y J → val (LB.mulGen D.P.L _ _ _ _ (LB.mulGen D.P.L _ _ _ _ (g.s χ) (g'.s χ))
       (LB.invGen D.P.L _ _ (DegPre.cubAt D F (cP D _ χ) g.b g'.b))) (𝟙 (TF (R := R) F).left) y J =
@@ -94,21 +132,41 @@ theorem exists_add (g g' : GtPtF D F) : ∃ g'', g.IsAdd g' g'' := by
   exact ⟨g'', (isAdd_iff_val _ _ _).2 ⟨hb, fun χ y J hJ =>
     (congrArg₂ (· * ·) ((hv χ y J hJ).trans (vv χ y J hJ)) rfl).trans (inv_mul_cancel_right _ _)⟩⟩
 
+/- English proof (translation)
+Take `⟨b, v⟩` from `(isAdd_iff_val _ _ _).1 e`. Take `⟨b', v'⟩` from `(isAdd_iff_val _ _ _).1 e'`. Conclude with `gt_ext_val (b.trans b'.symm) fun χ y J hJ => mul_right_cancel ((v χ y J hJ).trans (v' χ y J hJ).symm)`.
+-/
 theorem isAdd_unique {g g' h h' : GtPtF D F} (e : g.IsAdd g' h) (e' : g.IsAdd g' h') : h = h' := by
   obtain ⟨b, v⟩ := (isAdd_iff_val _ _ _).1 e
   obtain ⟨b', v'⟩ := (isAdd_iff_val _ _ _).1 e'
   exact gt_ext_val (b.trans b'.symm) fun χ y J hJ => mul_right_cancel ((v χ y J hJ).trans (v' χ y J hJ).symm)
 
+/- English proof (translation)
+Take `⟨b, v⟩` from `(isZero_iff_val _).1 e`. Take `⟨b', v'⟩` from `(isZero_iff_val _).1 e'`. Conclude with `gt_ext_val (b.trans b'.symm) fun χ y J hJ => (v χ y J hJ).trans (v' χ y J hJ).symm`.
+-/
 theorem isZero_unique {h h' : GtPtF D F} (e : h.IsZero) (e' : h'.IsZero) : h = h' := by
   obtain ⟨b, v⟩ := (isZero_iff_val _).1 e
   obtain ⟨b', v'⟩ := (isZero_iff_val _).1 e'
   exact gt_ext_val (b.trans b'.symm) fun χ y J hJ => (v χ y J hJ).trans (v' χ y J hJ).symm
 
+/- English proof (translation)
+Take `⟨b, v⟩` from `(isIota_iff_val _ _).1 e`. Take `⟨b', v'⟩` from `(isIota_iff_val _ _).1 e'`. Conclude with `gt_ext_val (b.trans b'.symm) fun χ y J hJ => (v χ y J hJ).trans (v' χ y J hJ).symm`.
+-/
 theorem isIota_unique {x : D.X} {h h' : GtPtF D F} (e : GtPtF.IsIota x h) (e' : GtPtF.IsIota x h') : h = h' := by
   obtain ⟨b, v⟩ := (isIota_iff_val _ _).1 e
   obtain ⟨b', v'⟩ := (isIota_iff_val _ _).1 e'
   exact gt_ext_val (b.trans b'.symm) fun χ y J hJ => (v χ y J hJ).trans (v' χ y J hJ).symm
 
+/- English proof (translation)
+Establish `vv : ∀ χ y J, Good D.P.L y J → val (LB.mulGen D.P.L _ _ _ _ (LB.invGen D.P.L _ _ (g.s χ)) (DegPre.cubAt D F (cP D _ χ) g.b g.b⁻¹)) (𝟙 (TF (R` using `R) F).left) y J = (charVal g χ y J)⁻¹ * th D y J (cP D _ χ) g.b g.b⁻¹ := fun χ y J hJ => (val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (val_inv _ _) (val_cubAt hJ _ _ _))`. Take `⟨g', hb, hv⟩` from `exists_gt g.b⁻¹ (fun χ => LB.mulGen D.P.L _ _ _ _ (LB.invGen D.P.L _ _ (g.s χ)) (DegPre.cubAt D F (cP D _ χ) g.b g.b⁻¹)) (fun χ => mulGen_isGen _ _ _ _ _ _ _ (invGen_isGen _ _ _ _ (g.isGen _)) (cubAt_isGen _ _ _)) (fun χ U _ h => by`. Use `(prod_sum₂ (K := Fin 4) (K' := thK) (U := U) _ (prod_neg _ _ (prod_gt g.b χ h)) (prod_cub (cP D _ χ) g.b g.b⁻¹ h)).trans ?_` and prove the remaining obligations. Rewrite using `[prod_gt, mul_inv_cancel_right, mul_inv_cancel]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Simplify using `only [ofMul_mul, ofMul_inv]`. Use the proof step `abel) (fun y J hJ => by`. Establish `C : IsCub (th D (T` using `TF (R := R) F) y J) := isCub_cubV D.cub hJ`. Use `(vv 0 y J hJ).trans ?_` and prove the remaining obligations. Rewrite using `[charVal_zero g hJ, cPoint_zero, C.face]; simp) (fun χ χ' y J hJ => by`.
+
+Establish `C : IsCub (th D (T` using `TF (R := R) F) y J) := isCub_cubV D.cub hJ`. Establish `e₁` using `congrArg Additive.ofMul (charVal_add g hJ χ χ')`. Establish `e₃` using `C.compat (cP D _ χ) (cP D _ χ') g.b g.b⁻¹`. Rewrite `e₃` using `[mul_inv_cancel, C.face₃, _root_.one_mul]`. Establish `e₄` using `congrArg Additive.ofMul e₃`.
+
+Use `(congrArg₂ (· * ·) (vv _ y J hJ) rfl).trans (Eq.trans ?_ (congrArg₂ (· * ·) (vv _ y J hJ) (vv _ y J hJ)).symm)` and prove the remaining obligations. Rewrite using `[cPoint_add]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv] at e₁ e₄ ⊢`. Take the linear combination `(norm := abel) e₄ - e₁)`.
+
+Conclude with `⟨g', hb, fun χ y J hJ => (hv χ y J hJ).trans (vv χ y J hJ)⟩`.
+-/
 theorem exists_neg (g : GtPtF D F) : ∃ g' : GtPtF D F, g'.b = g.b⁻¹ ∧ ∀ χ y J, Good D.P.L y J →
     charVal g' χ y J = (charVal g χ y J)⁻¹ * th D y J (cP D _ χ) g.b g.b⁻¹ := by
   have vv : ∀ χ y J, Good D.P.L y J → val (LB.mulGen D.P.L _ _ _ _ (LB.invGen D.P.L _ _ (g.s χ))
@@ -146,21 +204,39 @@ def gtZero (D : DegPre R) (F : Type) [Field F] [Algebra (FractionRing R) F] : Gt
 
 def gtNeg (g : GtPtF D F) : GtPtF D F := (exists_neg g).choose
 
+/- English proof (translation)
+The claim follows from `(exists_add g g').choose_spec`.
+-/
 theorem isAdd_gtAdd (g g' : GtPtF D F) : g.IsAdd g' (gtAdd g g') := (exists_add g g').choose_spec
 
+/- English proof (translation)
+The claim follows from `(exists_zero_gt (D := D) (F := F)).choose_spec`.
+-/
 theorem isZero_gtZero : (gtZero D F).IsZero := (exists_zero_gt (D := D) (F := F)).choose_spec
 
+/- English proof (translation)
+The claim follows from `(isAdd_gtAdd g g').1`.
+-/
 theorem gtAdd_b (g g' : GtPtF D F) : (gtAdd g g').b = g.b * g'.b := (isAdd_gtAdd g g').1
 
+/- English proof (translation)
+The claim follows from `((isAdd_iff_val _ _ _).1 (isAdd_gtAdd g g')).2 χ y J hJ`.
+-/
 theorem gtAdd_val (g g' : GtPtF D F) (χ : D.X) {y J} (hJ : Good D.P.L y J) :
     charVal (gtAdd g g') χ y J * th D y J (cP D _ χ) g.b g'.b = charVal g χ y J * charVal g' χ y J :=
   ((isAdd_iff_val _ _ _).1 (isAdd_gtAdd g g')).2 χ y J hJ
 
+/- English proof (translation)
+The claim follows from `isAdd_unique (isAdd_gtAdd g g') ((isAdd_iff_val _ _ _).2 ⟨(gtAdd_b g' g).trans (mul_comm _ _), fun χ y J hJ => by have C : IsCub (th D (T := TF (R := R) F) y J) := isCub_cubV D.cub hJ rw [C.s12, gtAdd_val g' g χ hJ, mul_comm]⟩)`.
+-/
 theorem gtAdd_comm (g g' : GtPtF D F) : gtAdd g g' = gtAdd g' g :=
   isAdd_unique (isAdd_gtAdd g g') ((isAdd_iff_val _ _ _).2 ⟨(gtAdd_b g' g).trans (mul_comm _ _), fun χ y J hJ => by
     have C : IsCub (th D (T := TF (R := R) F) y J) := isCub_cubV D.cub hJ
     rw [C.s12, gtAdd_val g' g χ hJ, mul_comm]⟩)
 
+/- English proof (translation)
+The claim follows from `gt_ext_val (by rw [gtAdd_b, gtAdd_b, gtAdd_b, gtAdd_b, _root_.mul_assoc]) fun χ y J hJ => by have C : IsCub (th D (T := TF (R := R) F) y J) := isCub_cubV D.cub hJ have s : ∀ a b c : TF (R := R) F ⟶ D.P.A, th D y J a b c = th D y J c a b := fun a b c => by rw [C.s12, C.s01] have c …`.
+-/
 theorem gtAdd_assoc (g g' g'' : GtPtF D F) : gtAdd (gtAdd g g') g'' = gtAdd g (gtAdd g' g'') :=
   gt_ext_val (by rw [gtAdd_b, gtAdd_b, gtAdd_b, gtAdd_b, _root_.mul_assoc]) fun χ y J hJ => by
     have C : IsCub (th D (T := TF (R := R) F) y J) := isCub_cubV D.cub hJ
@@ -180,12 +256,18 @@ theorem gtAdd_assoc (g g' g'' : GtPtF D F) : gtAdd (gtAdd g g') g'' = gtAdd g (g
     simp only [ofMul_mul] at a₁ a₂ a₃ a₄ a₅ ⊢
     linear_combination (norm := abel) a₁ + a₂ - a₃ - a₄ - a₅
 
+/- English proof (translation)
+Take `⟨b, v⟩` from `(isZero_iff_val _).1 (isZero_gtZero (D := D) (F := F))`. Conclude with `isAdd_unique (isAdd_gtAdd _ g) ((isAdd_iff_val _ _ _).2 ⟨by rw [b, _root_.one_mul], fun χ y J hJ => by`. Establish `C : IsCub (th D (T` using `TF (R := R) F) y J) := isCub_cubV D.cub hJ`. Rewrite using `[b, C.face₂, v χ y J hJ, mul_comm]⟩)`.
+-/
 theorem gtZero_add (g : GtPtF D F) : gtAdd (gtZero D F) g = g := by
   obtain ⟨b, v⟩ := (isZero_iff_val _).1 (isZero_gtZero (D := D) (F := F))
   exact isAdd_unique (isAdd_gtAdd _ g) ((isAdd_iff_val _ _ _).2 ⟨by rw [b, _root_.one_mul], fun χ y J hJ => by
     have C : IsCub (th D (T := TF (R := R) F) y J) := isCub_cubV D.cub hJ
     rw [b, C.face₂, v χ y J hJ, mul_comm]⟩)
 
+/- English proof (translation)
+Take `⟨b, v⟩` from `(isZero_iff_val _).1 (isZero_gtZero (D := D) (F := F))`. Take `⟨b', v'⟩ : (gtNeg g).b = g.b⁻¹ ∧ ∀ χ y J, Good D.P.L y J → charVal (gtNeg g) χ y J = (charVal g χ y J)⁻¹ * th D y J (cP D _ χ) g.b g.b⁻¹` from `(exists_neg g).choose_spec`. Conclude with `isAdd_unique (isAdd_gtAdd _ _) ((isAdd_iff_val _ _ _).2 ⟨by rw [b, b', mul_inv_cancel], fun χ y J hJ => by`. Rewrite using `[v χ y J hJ, v' χ y J hJ, b', _root_.one_mul, mul_inv_cancel_left]⟩)`.
+-/
 theorem gtAdd_neg (g : GtPtF D F) : gtAdd g (gtNeg g) = gtZero D F := by
   obtain ⟨b, v⟩ := (isZero_iff_val _).1 (isZero_gtZero (D := D) (F := F))
   obtain ⟨b', v'⟩ : (gtNeg g).b = g.b⁻¹ ∧ ∀ χ y J, Good D.P.L y J →
@@ -207,12 +289,25 @@ theorem gtAdd_neg (g : GtPtF D F) : gtAdd g (gtNeg g) = gtZero D F := by
 
 attribute [local instance] gtGroup
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => isAdd_unique h (isAdd_gtAdd g g'), fun h => h ▸ isAdd_gtAdd g g'⟩`.
+-/
 theorem isAdd_iff_eq (g g' g'' : GtPtF D F) : g.IsAdd g' g'' ↔ g'' = g + g' :=
   ⟨fun h => isAdd_unique h (isAdd_gtAdd g g'), fun h => h ▸ isAdd_gtAdd g g'⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => isZero_unique h isZero_gtZero, fun h => h ▸ isZero_gtZero⟩`.
+-/
 theorem isZero_iff_eq (g : GtPtF D F) : g.IsZero ↔ g = 0 :=
   ⟨fun h => isZero_unique h isZero_gtZero, fun h => h ▸ isZero_gtZero⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨gs, h₀, hs, rfl⟩`. Establish `key : ∀ i (hi : i < k + 1), gs ⟨i, hi⟩ = i • g`. Introduce `i`. Proceed by induction on `i with`.
+
+Consider the case `zero => exact fun _ => ((isZero_iff_eq _).1 h₀).trans (zero_nsmul g).symm`. Consider the case `succ i ih`. Conclude with `fun hi => ((isAdd_iff_eq _ _ _).1 (hs ⟨i, by omega⟩)).trans ((congrArg (· + g) (ih (by omega))).trans (succ_nsmul g i).symm)`. Conclude with `key k (Nat.lt_succ_self k)`. Introduce and unpack `rfl`.
+
+Conclude with `⟨fun i => i.val • g, (isZero_iff_eq _).2 (zero_nsmul g), fun i => (isAdd_iff_eq _ _ _).2 (succ_nsmul g i), rfl⟩`.
+-/
 theorem isNsmul_iff_eq (k : ℕ) (g h : GtPtF D F) : GtPtF.IsNsmul k g h ↔ h = k • g := by
   constructor
   · rintro ⟨gs, h₀, hs, rfl⟩
@@ -228,13 +323,25 @@ theorem isNsmul_iff_eq (k : ℕ) (g h : GtPtF D F) : GtPtF.IsNsmul k g h ↔ h =
     exact ⟨fun i => i.val • g, (isZero_iff_eq _).2 (zero_nsmul g),
       fun i => (isAdd_iff_eq _ _ _).2 (succ_nsmul g i), rfl⟩
 
+/- English proof (translation)
+The claim follows from `gtAdd_b g g'`.
+-/
 theorem add_b (g g' : GtPtF D F) : (g + g').b = g.b * g'.b := gtAdd_b g g'
 
+/- English proof (translation)
+The claim follows from `isZero_gtZero.1`.
+-/
 theorem zero_b : (0 : GtPtF D F).b = 1 := isZero_gtZero.1
 
+/- English proof (translation)
+The claim follows from `gtAdd_val g g' χ hJ`.
+-/
 theorem add_val (g g' : GtPtF D F) (χ : D.X) {y J} (hJ : Good D.P.L y J) :
     charVal (g + g') χ y J * th D y J (cP D _ χ) g.b g'.b = charVal g χ y J * charVal g' χ y J := gtAdd_val g g' χ hJ
 
+/- English proof (translation)
+The claim follows from `((isZero_iff_val _).1 isZero_gtZero).2 χ y J hJ`.
+-/
 theorem zero_val (χ : D.X) {y J} (hJ : Good D.P.L y J) : charVal (0 : GtPtF D F) χ y J = 1 :=
   ((isZero_iff_val _).1 isZero_gtZero).2 χ y J hJ
 
@@ -242,12 +349,30 @@ def gtProj (D : DegPre R) (F : Type) [Field F] [Algebra (FractionRing R) F] :
     GtPtF D F →+ Additive (TF (R := R) F ⟶ D.P.A) :=
   AddMonoidHom.mk' (fun g => Additive.ofMul g.b) fun g g' => congrArg Additive.ofMul (add_b g g')
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gtProj_apply (g : GtPtF D F) : gtProj D F g = Additive.ofMul g.b := rfl
 
+/- English proof (translation)
+The claim follows from `congrArg Additive.toMul (map_neg (gtProj D F) g)`.
+-/
 theorem neg_b (g : GtPtF D F) : (-g).b = g.b⁻¹ := congrArg Additive.toMul (map_neg (gtProj D F) g)
 
+/- English proof (translation)
+The claim follows from `congrArg Additive.toMul (map_nsmul (gtProj D F) k g)`.
+-/
 theorem nsmul_b (k : ℕ) (g : GtPtF D F) : (k • g).b = g.b ^ k := congrArg Additive.toMul (map_nsmul (gtProj D F) k g)
 
+/- English proof (translation)
+Establish `vv : ∀ χ y J, Good D.P.L y J → val (LB.pullGen D.P.L _ _ (D.tau x χ) (jFK (R` using `R) F)) (𝟙 (TF (R := R) F).left) y J = tauVal D F x χ y J := fun χ y J hJ => val_pull hJ _ _ _`. Establish `sy : ∀ {y J}, Good D.P.L y J → ∀ a b, tauVal D F a b y J = tauVal D F b a y J` using `fun hJ a b => tau_symm (𝟙 (TF (R := R) F)) hJ a b`. Establish `ml : ∀ {y J}, Good D.P.L y J → ∀ a a' b, tauVal D F (a + a') b y J * th D y J (cP D _ a) (cP D _ a') (cP D _ b) = tauVal D F a b y J * tauVal D F a' b y J` using `fun hJ a a' b => tau_mul (𝟙 (TF (R := R) F)) hJ hB a a' b`. Take `⟨g, hb, hv⟩` from `exists_gt (F := F) (cP D _ x) (fun χ => LB.pullGen D.P.L _ _ (D.tau x χ) (jFK (R := R) F)) (fun χ => pullGen_isGen _ _ _ _ (tau_isGen D x χ) _) (fun χ U _ h => by`. Establish `a : ∀ w : D.X, jFK (R` using `R) F ≫ ptK (D.c w) = (cP D (TF (R := R) F) w).left := fun w => (Category.assoc _ _ _).symm`.
+
+Establish `a₀ : jFK (R` using `R) F ≫ (toUnit (TK R)).left ≫ eSec D.P.A = (1 : TF (R := R) F ⟶ D.P.A).left := (Category.assoc _ _ _).symm`. Rewrite using `[prod_gt, ← cPoint_add, add_comm χ x, ← a, ← a, ← a, ← a₀]`. Simplify using `only [Fintype.prod_sum_type, Fintype.prod_unique, Sum.elim_inl, Sum.elim_inr, neg_neg, zpow_neg, zpow_one]`. Rewrite using `[mul_right_comm _ (h _) (h _)]) (fun y J hJ => by`. Establish `C : IsCub (th D (T` using `TF (R := R) F) y J) := isCub_cubV D.cub hJ`.
+
+Establish `t` using `ml hJ 0 0 x`. Rewrite `t` using `[add_zero, cPoint_zero, C.face, _root_.mul_one]`. Conclude with `(vv 0 y J hJ).trans ((sy hJ _ _).trans (mul_eq_left.1 t.symm))) (fun χ χ' y J hJ => by`. Use `(congrArg₂ (· * ·) (vv _ y J hJ) rfl).trans (Eq.trans ?_ (congrArg₂ (· * ·) (vv _ y J hJ) (vv _ y J hJ)).symm)` and prove the remaining obligations. Rewrite using `[sy hJ x, sy hJ x, sy hJ x]`.
+
+Conclude with `ml hJ _ _ _)`. Conclude with `⟨g, (isIota_iff_val _ _).2 ⟨hb, fun χ y J hJ => (hv χ y J hJ).trans (vv χ y J hJ)⟩⟩`.
+-/
 theorem exists_iota (hB : D.TauBimult) (x : D.X) : ∃ g : GtPtF D F, GtPtF.IsIota x g := by
   have vv : ∀ χ y J, Good D.P.L y J → val (LB.pullGen D.P.L _ _ (D.tau x χ) (jFK (R := R) F))
       (𝟙 (TF (R := R) F).left) y J = tauVal D F x χ y J := fun χ y J hJ => val_pull hJ _ _ _
@@ -283,13 +408,25 @@ def iota (hB : D.TauBimult) (F : Type) [Field F] [Algebra (FractionRing R) F] : 
     rw [v χ y J hJ, v' χ y J hJ, v'' χ y J hJ, b, b', C.s01, C.s12]
     exact tau_mul (𝟙 (TF (R := R) F)) hJ hB x x' χ
 
+/- English proof (translation)
+The claim follows from `(exists_iota hB x).choose_spec`.
+-/
 theorem isIota_iota (hB : D.TauBimult) (x : D.X) : GtPtF.IsIota x (iota hB F x) := (exists_iota hB x).choose_spec
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => isIota_unique h (isIota_iota hB x), fun h => h ▸ isIota_iota hB x⟩`.
+-/
 theorem isIota_iff_eq (hB : D.TauBimult) (x : D.X) (g : GtPtF D F) : GtPtF.IsIota x g ↔ g = iota hB F x :=
   ⟨fun h => isIota_unique h (isIota_iota hB x), fun h => h ▸ isIota_iota hB x⟩
 
+/- English proof (translation)
+The claim follows from `(isIota_iota hB x).1`.
+-/
 theorem iota_b (hB : D.TauBimult) (x : D.X) : (iota hB F x).b = cP D _ x := (isIota_iota hB x).1
 
+/- English proof (translation)
+The claim follows from `((isIota_iff_val _ _).1 (isIota_iota hB x)).2 χ y J hJ`.
+-/
 theorem iota_val (hB : D.TauBimult) (x χ : D.X) {y J} (hJ : Good D.P.L y J) :
     charVal (iota hB F x) χ y J = tauVal D F x χ y J := ((isIota_iff_val _ _).1 (isIota_iota hB x)).2 χ y J hJ
 

@@ -15,6 +15,15 @@ noncomputable section
 
 namespace GlobalTheory.UnramDict
 
+/- English proof (translation)
+Introduce `L _ _ _ n F U hU v w hw U0 hU0 σ b hb p hp φ hφU hfix x hK`. Take `rfl : w.under (𝓞 (maximalRealSubfield L)) = v` from `HeightOneSpectrum.ext hw`. Establish `hK1 : (p x).val ∈ GlobalTheory.LFun.KGL w n` using `(Subgroup.mem_subgroupOf.1 hK).2`. Establish `hK2 : cLoc w x.val ∈ GlobalTheory.LFun.KGL w n`. Establish `h : cLoc w x.val = b * (p x).val * b⁻¹` using `by rw [hp]; group`.
+
+Rewrite using `[h]`. Conclude with `mul_mem (mul_mem hb hK1) (inv_mem hb)`. Establish `hx` using `x.2`. Take `⟨y, hy⟩` from `F.onto x.val (Subgroup.mem_inf.1 hx).1`. Establish `hyU : y ∈ Umax L n` using `fun i j => mem_ALint F _ fun u => by`.
+
+Rewrite using `[← F.loc, hy]`. Conclude with `cLoc_entry_mem hx hK2 u i j`. Establish `hyt` using `trivOutside F (w := w) (y := y) (by rw [hy]; exact hx)`. Establish `hy0 : y ∈ U0` using `(hU0 y hyt).2 hyU`. Rewrite using `[← sub_eq_zero]`.
+
+Use `GlobalTheory.DefiniteDense.eq_zero_of_finU L n _ (hU.aut _ (U.sub_mem (hU.stable _ _ hφU) hφU)) fun z hz => ?_` and prove the remaining obligations. Take `⟨g, rfl⟩` from `F.onto z hz`. Express the relevant statement in the definitionally equal form `φ (F.j g * x.val) - φ (F.j g) = 0`. Rewrite using `[← hy, ← map_mul, sub_eq_zero]`. Conclude with `hfix g y hy0`.
+-/
 theorem fixed_of_mem_KU : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (F : FinIso L n) (U : Submodule ℂ (UA L n → ℂ)), IsAutRepU U → ∀ (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (w : HeightOneSpectrum (𝓞 L)), NG.OverPl w v → ∀ U0 : Subgroup (GAf L n), (∀ κ, TrivOutside {v} κ → (κ ∈ U0 ↔ κ ∈ Umax L n)) → ∀ (σ : w.adicCompletion L →+* w.adicCompletion L) (b : GL (Fin n) (w.adicCompletion L)), b ∈ GlobalTheory.LFun.KGL w n → ∀ p : locU n w →* Formalism.UG.GU σ n, (∀ x, (p x).val = b⁻¹ * cLoc w x.val * b) → ∀ φ ∈ U, (∀ g, ∀ κ ∈ U0, φ (F.j (g * κ)) = φ (F.j g)) → ∀ x : locU n w, p x ∈ Formalism.UG.KU σ n → RU L n x.val φ = φ := by
   intro L _ _ _ n F U hU v w hw U0 hU0 σ b hb p hp φ hφU hfix x hK
   obtain rfl : w.under (𝓞 (maximalRealSubfield L)) = v := HeightOneSpectrum.ext hw

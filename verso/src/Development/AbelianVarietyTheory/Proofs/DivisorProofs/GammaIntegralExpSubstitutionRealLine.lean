@@ -9,6 +9,11 @@ namespace GlobalTheory.HeckeMellin
 
 open Set
 
+/- English proof (translation)
+Establish `h` using `Complex.GammaIntegral_convergent hw`. Rewrite `h` using `[← mul_zero c, ← integrableOn_Ioi_comp_mul_left_iff _ _ hc]`. Use `(IntegrableOn.congr_fun (h.const_mul (1 / (c : ℂ) ^ (w - 1))) (fun t (ht : 0 < t) => ?_) measurableSet_Ioi)` and prove the remaining obligations. Rewrite using `[Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg hc.le ht.le, Complex.ofReal_exp]`. Use `push_cast`.
+
+Establish `hne : (c : ℂ) ^ (w - 1) ≠ 0`. Rewrite using `[Ne, Complex.cpow_eq_zero_iff, not_and_or]`. Conclude with `Or.inl (Complex.ofReal_ne_zero.mpr hc.ne')`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem integrableOn_cpow_mul_exp_neg_mul {w : ℂ} (hw : 0 < w.re) {c : ℝ} (hc : 0 < c) :
     IntegrableOn (fun x : ℝ => (x : ℂ) ^ (w - 1) * Complex.exp (-((c : ℂ) * x))) (Ioi 0) := by
   have h := Complex.GammaIntegral_convergent hw
@@ -22,6 +27,9 @@ theorem integrableOn_cpow_mul_exp_neg_mul {w : ℂ} (hw : 0 < w.re) {c : ℝ} (h
     exact Or.inl (Complex.ofReal_ne_zero.mpr hc.ne')
   field_simp
 
+/- English proof (translation)
+The claim follows from `|Real.exp t| • (((Real.exp t : ℝ) : ℂ) ^ (w - 1) * Complex.exp (-((c : ℂ) * (Real.exp t : ℝ)))) = Complex.exp (w * t) * Complex.exp (-(c * Real.exp t : ℝ)) := by rw [abs_of_pos (Real.exp_pos t), Complex.real_smul] have hne : ((Real.exp t : ℝ) : ℂ) ≠ 0 := Complex.ofReal_ne_zero.mp …`.
+-/
 theorem exp_smul_integrand (w : ℂ) (c t : ℝ) :
     |Real.exp t| • (((Real.exp t : ℝ) : ℂ) ^ (w - 1) * Complex.exp (-((c : ℂ) * (Real.exp t : ℝ)))) =
       Complex.exp (w * t) * Complex.exp (-(c * Real.exp t : ℝ)) := by
@@ -34,6 +42,15 @@ theorem exp_smul_integrand (w : ℂ) (c t : ℝ) :
   congr 2
   ring
 
+/- English proof (translation)
+Introduce `r hr w hw`. Use `set c : ℝ := 2 * Real.pi * r with hcdef`. Establish `hc : 0 < c` using `by positivity`. Use `set g : ℝ → ℂ := fun x => (x : ℂ) ^ (w - 1) * Complex.exp (-((c : ℂ) * x)) with hg`. Establish `himg : Real.exp '' univ = Ioi 0` using `by rw [image_univ, Real.range_exp]`.
+
+Establish `hder : ∀ x ∈ (univ : Set ℝ), HasDerivWithinAt Real.exp (Real.exp x) univ x` using `fun x _ => (Real.hasDerivAt_exp x).hasDerivWithinAt`. Establish `hinj : InjOn Real.exp univ` using `fun x _ y _ h => Real.exp_injective h`. Establish `hfun : (fun t : ℝ => |Real.exp t| • g (Real.exp t)) = fun t : ℝ => Complex.exp (w * t) * Complex.exp (-(c * Real.exp t : ℝ))`. Use function extensionality and compare the values at `t`. Conclude with `exp_smul_integrand w c t`.
+
+Prove the components needed by the constructor for the conclusion. Establish `h1` using `(integrableOn_image_iff_integrableOn_abs_deriv_smul MeasurableSet.univ hder hinj g).mp (by rw [himg]; exact integrableOn_cpow_mul_exp_neg_mul hw hc)`. Rewrite `h1` using `[hfun, integrableOn_univ]`. Conclude with `h1`. Establish `h2` using `integral_image_eq_integral_abs_deriv_smul MeasurableSet.univ hder hinj g`.
+
+Rewrite `h2` using `[himg, hfun, Measure.restrict_univ]`. Rewrite using `[← h2, hg, Complex.integral_cpow_mul_exp_neg_mul_Ioi hw hc, one_div, Complex.inv_cpow _ _ (by rw [Complex.arg_ofReal_of_nonneg hc.le]; exact Real.pi_pos.ne), Complex.cpow_neg, mul_comm]`.
+-/
 theorem gamma_integral_exp_substitution :
     ∀ (r : ℝ), 0 < r → ∀ w : ℂ, 0 < w.re → Integrable (fun t : ℝ => Complex.exp (w * t) * Complex.exp (-(2 * Real.pi * r * Real.exp t : ℝ))) ∧ ∫ t : ℝ, Complex.exp (w * t) * Complex.exp (-(2 * Real.pi * r * Real.exp t : ℝ)) = Complex.Gamma w * ((2 * Real.pi * r : ℝ) : ℂ) ^ (-w) := by
   intro r hr w hw

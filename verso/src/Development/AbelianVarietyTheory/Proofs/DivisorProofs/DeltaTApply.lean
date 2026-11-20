@@ -19,6 +19,9 @@ def botR (x : WOF F E nS (nT + nT)) : WOF F E nS nT := x.submatrix (finSumFinEqu
 def deltaT (f₁ f₂ : WOF F E nS nT → ℂ) : WOF F E nS (nT + nT) → ℂ :=
   fun x => f₁ (topR x) * conj (f₂ (-botR x))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem deltaT_apply (f₁ f₂ : WOF F E nS nT → ℂ) (x : WOF F E nS (nT + nT)) :
     deltaT f₁ f₂ x = f₁ (topR x) * conj (f₂ (-botR x)) := rfl
 

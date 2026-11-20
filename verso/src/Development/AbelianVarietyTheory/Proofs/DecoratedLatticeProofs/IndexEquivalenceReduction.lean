@@ -8,6 +8,23 @@ open scoped Classical
 
 namespace GlobalTheory.FunObj.TieLev
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero`. Use `⟨fun h => ⟨TypeDatum.le_KO _ h, fun a b hab => ?_, _, h, rfl⟩, fun ⟨_, _, x, hx, e⟩ => ?_⟩` and prove the remaining obligations. Use `Ix.blk_le a` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Express the relevant statement in the definitionally equal form `(reGL (ixZero R t)).symm g ∈ P.J`. Rewrite using `[show (reGL (ixZero R t)).symm g = x from Units.ext (by rw [reGL_symm_val, e]; rfl)]` and apply the resulting hypothesis. Consider the case `succ j ih`. Establish `e : g ∈ (P.iter t μ hμ (j + 1)).J ↔ (reGL (ixSucc R t j)).symm g ∈ (P.iter t μ hμ j).stepJ t` using `Iff.rfl`. Rewrite using `[e, TypeDatum.mem_stepJ_iff]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h0, ⟨u, hu, eu⟩, hC⟩`. Take `⟨-, h1, x, hx, ex⟩` from `(ih u).1 hu`. Use `⟨(reGL_symm_mem_KO _ _).1 h0, fun a b hab => ?_, x, hx, ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `(ixSucc R t j).surjective a`.
+
+Take `⟨b, rfl⟩` from `(ixSucc R t j).surjective b`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`. Rewrite `hab` using `[blk_ixSucc_inl, blk_ixSucc_inl]`. Use `h1 a b hab` as an intermediate fact. Rewrite `this` using `[eu]`.
+
+Conclude with `this`. Rewrite `hab` using `[blk_ixSucc_inl, blk_ixSucc_inr]`. Use `Ix.blk_le a` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `hC a b`.
+
+Conclude with `absurd hab (lt_irrefl _)`. Rewrite using `[ex, eu]`. Both sides reduce to the same expression. Introduce and unpack `⟨h0, h1, x, hx, ex⟩`. Establish `h0'` using `(reGL_symm_mem_KO (ixSucc R t j) g).2 h0`.
+
+Establish `hC : MaxM ((reGL (ixSucc R t j)).symm g).val.toBlocks₂₁` using `fun a b => h1 (ixSucc R t j (.inr a)) (ixSucc R t j (.inl b)) (by`. Rewrite using `[blk_ixSucc_inl, blk_ixSucc_inr]`. Conclude with `Nat.lt_succ_of_le (Ix.blk_le b))`. Take `⟨u, hu, eu⟩` from `(exists_diag_blocks h0' hC).1`. Use `⟨h0', ⟨u, (ih u).2 ⟨hu, fun a b hab => ?_, x, hx, ?_⟩, eu⟩, hC⟩` and prove the remaining obligations.
+
+Rewrite using `[eu]`. Conclude with `h1 (ixSucc R t j (.inl a)) (ixSucc R t j (.inl b)) (by rwa [blk_ixSucc_inl, blk_ixSucc_inl])`. Rewrite using `[ex, eu]`. Both sides reduce to the same expression.
+-/
 theorem mem_iter_gen {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {R t : Type} [Fintype R] [DecidableEq R] [Fintype t] [DecidableEq t]
     (P : TypeDatum k R) (μ : ℕ → kˣ →* ℂˣ) (hμ : ∀ j, IsTame (μ j)) (j : ℕ) (g : GL (Ix R t j) k) :
@@ -63,10 +80,16 @@ variable {R : Type} {r t j a : ℕ}
 def IsIxR (e₀ : R ≃ Fin r) (ea : Ix R (Fin t) j ≃ Fin a) : Prop :=
   a = r + j * t ∧ (∀ i, (ea (.inl i)).val = (e₀ i).val) ∧ ∀ c s, (ea (.inr (c, s))).val = r + (s.val + t * c.val)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, fun i => by simpa using h.2.1 (e₀ i), fun c s => by simpa using h.2.2 c s⟩`.
+-/
 theorem isIxR_of_isIx {e₀ : R ≃ Fin r} {ea : Ix R (Fin t) j ≃ Fin a}
     (h : GlobalTheory.FunObj.Comparison₂.IsIx ((Equiv.sumCongr e₀.symm (Equiv.refl (Fin j × Fin t))).trans ea)) : IsIxR e₀ ea :=
   ⟨h.1, fun i => by simpa using h.2.1 (e₀ i), fun c s => by simpa using h.2.2 c s⟩
 
+/- English proof (translation)
+Break down `i with i | ⟨c, s⟩` into its components or cases. Rewrite using `[Formalism.L2.DIV.blkOf, if_pos (by rw [h.2.1]; exact (e₀ i).2)]; rfl`. Rewrite using `[Formalism.L2.DIV.blkOf, h.2.2, if_neg (by omega), Nat.add_sub_cancel_left, Nat.add_mul_div_left _ _ s.pos, Nat.div_eq_of_lt s.2, zero_add]; rfl`.
+-/
 theorem IsIxR.blkOf {e₀ : R ≃ Fin r} {ea : Ix R (Fin t) j ≃ Fin a} (h : IsIxR e₀ ea) (i : Ix R (Fin t) j) :
     Formalism.L2.DIV.blkOf r t (ea i) = i.blk := by
   rcases i with i | ⟨c, s⟩
@@ -76,12 +99,18 @@ theorem IsIxR.blkOf {e₀ : R ≃ Fin r} {ea : Ix R (Fin t) j ≃ Fin a} (h : Is
 
 variable {b : ℕ} {e₀ : R ≃ Fin r} {ea : Ix R (Fin t) j ≃ Fin a} {eb : Ix R (Fin t) (j + 1) ≃ Fin b}
 
+/- English proof (translation)
+Break down `i with i | ⟨c, s⟩` into its components or cases. Conclude with `(hb.2.1 i).trans (ha.2.1 i).symm`. Conclude with `(hb.2.2 c.castSucc s).trans (ha.2.2 c s).symm`.
+-/
 theorem val_succ_inl (ha : IsIxR e₀ ea) (hb : IsIxR e₀ eb) (i : Ix R (Fin t) j) :
     (eb (ixSucc _ _ j (.inl i))).val = (ea i).val := by
   rcases i with i | ⟨c, s⟩
   · exact (hb.2.1 i).trans (ha.2.1 i).symm
   · exact (hb.2.2 c.castSucc s).trans (ha.2.2 c s).symm
 
+/- English proof (translation)
+Establish `h : (ea i).val < b ∧ (ea l).val < a` using `⟨val_succ_inl ha hb i ▸ (eb _).2, (ea l).2⟩`. Rewrite using `[topL, dif_pos h]`. Conclude with `congrArg₂ y (Fin.ext (val_succ_inl ha hb i).symm) rfl`.
+-/
 theorem topL_a {κ : Type} [Zero κ] (ha : IsIxR e₀ ea) (hb : IsIxR e₀ eb) (y : Matrix (Fin b) (Fin a) κ)
     (i l : Ix R (Fin t) j) : topL a y (ea i) (ea l) = y (eb (ixSucc _ _ j (.inl i))) (ea l) := by
   have h : (ea i).val < b ∧ (ea l).val < a := ⟨val_succ_inl ha hb i ▸ (eb _).2, (ea l).2⟩
@@ -101,6 +130,11 @@ variable {R : Type} {r t j a b : ℕ} {e₀ : R ≃ Fin r} {ea : Ix R (Fin t) j 
 
 omit [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
 
+/- English proof (translation)
+Use `⟨fun H i l => (h.ker _).1 (H _ _ ?_ (ea l).2), fun H i l hi _ => ?_⟩` and prove the remaining obligations. Use `hb.2.2 (Fin.last j) i` as an intermediate fact. Rewrite `this` using `[Fin.val_last, mul_comm]`. Conclude with `ha.1.le.trans (le_of_le_of_eq (by omega) this.symm)`. Take `⟨i, rfl⟩` from `eb.surjective i`.
+
+Take `⟨l, rfl⟩` from `ea.surjective l`. Take `⟨i | i, rfl⟩` from `(ixSucc _ _ j).surjective i`. Conclude with `absurd (val_succ_inl ha hb i ▸ hi) (ea i).2.not_ge`. Conclude with `(h.ker _).2 (H i l)`.
+-/
 theorem lowZero_a (h : GlobalTheory.FunObj.Comparison₂.IsRed φ ψ) (ha : IsIxR e₀ ea) (hb : IsIxR e₀ eb) (N : Matrix (Fin b) (Fin a) S) :
     LowZero a (N.map φ) ↔ MaxM (((N.map ψ).submatrix eb ea).submatrix (ixSucc _ _ j) id).toRows₂ := by
   refine ⟨fun H i l => (h.ker _).1 (H _ _ ?_ (ea l).2), fun H i l hi _ => ?_⟩
@@ -115,6 +149,11 @@ theorem lowZero_a (h : GlobalTheory.FunObj.Comparison₂.IsRed φ ψ) (ha : IsIx
 
 omit [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
 
+/- English proof (translation)
+Establish `hb : Function.Bijective fun s : Fin t => (⟨ea (.inr (c, s)), ha.blkOf _⟩ : {i : Fin a // Formalism.L2.DIV.blkOf r t i = c.val + 1})`. Use `⟨fun s s' h => by simpa using congrArg Subtype.val h, fun ⟨i, hi⟩ => ?_⟩` and prove the remaining obligations. Take `⟨i | ⟨c', s⟩, rfl⟩` from `ea.surjective i`. Conclude with `absurd ((ha.blkOf _).symm.trans hi) (Nat.succ_ne_zero _).symm`. Take `rfl : c' = c` from `Fin.ext (Nat.succ_injective ((ha.blkOf _).symm.trans hi))`.
+
+Conclude with `⟨s, rfl⟩`. Rewrite using `[Formalism.L2.DIV.diag_block_det_val _ hg, ← det_submatrix_equiv_self (Equiv.ofBijective _ hb)]`. Both sides reduce to the same expression.
+-/
 theorem diagonalBlock_det_blockTriangular (ha : IsIxR e₀ ea) {g : GL (Fin a) κ} (hg : g ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blkOf r t)) (c : Fin j) :
     (Formalism.L2.DIV.dBlk (Formalism.L2.DIV.blkOf r t) (c.val + 1) g : κ) = (Ix.diagonalBlockOfMatrix (g.val.submatrix ea ea) c).det := by
   have hb : Function.Bijective fun s : Fin t =>
@@ -129,6 +168,9 @@ theorem diagonalBlock_det_blockTriangular (ha : IsIxR e₀ ea) {g : GL (Fin a) �
 
 omit [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
 
+/- English proof (translation)
+Use extensionality with `i l`. Rewrite using `[submatrix_apply, Formalism.L2.DIV.upper_block_val_submatrix hr (Formalism.L2.DIV.blockTri_blkOf_le r t hbt), submatrix_apply, hg, show Fin.castLE hr (e₀ i) = ea (.inl i) from Fin.ext (ha.2.1 i).symm, show Fin.castLE hr (e₀ l) = ea (.inl l) from Fin.ext (ha.2.1 l).symm, topL_a ha …`. Both sides reduce to the same expression.
+-/
 theorem firstBlock_topBlockMatrix_reduction_eq (ha : IsIxR e₀ ea) (hb : IsIxR e₀ eb) (hr : r ≤ a) (N : Matrix (Fin b) (Fin a) S) {g : GL (Fin a) κ}
     (hg : g.val = topL a (N.map φ)) (hbt : g ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blkOf r t)) :
     (Formalism.L2.DIV.upperLeftBlock hr g).val.submatrix e₀ e₀ =
@@ -145,6 +187,25 @@ end GlobalTheory.FunObj.TieLev
 
 namespace GlobalTheory.FunObj.TieLev
 
+/- English proof (translation)
+Introduce `S κ k _ _ _ _ _ _ φ ψ h R _ _ r t j a b e₀ ea eb hA hB hr P μ hμ χ hχ Rd hRd N`. Establish `ha` using `isIxR_of_isIx hA`. Establish `hb` using `isIxR_of_isIx hB`. Use `set M := N.submatrix (fun i => eb (ixSucc _ _ j (.inl i))) ea with hM`. Establish `hy : (topL a (N.map φ)).submatrix ea ea = M.map φ` using `Matrix.ext (topL_a ha hb (N.map φ))`.
+
+Establish `e1 : ∀ g : GL (Fin a) κ, g.val = topL a (N.map φ) → (g ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blkOf r t) ↔ ∀ i l : Ix R (Fin t) j, l.blk < i.blk → valuation k (ψ (M i l)) < 1)` using `fun g hg => by`. Rewrite using `[Formalism.L2.DIV.mem_blockTri, hg, ea.surjective.forall₂]`. Use `forall₂_congr fun i l => ?_` and prove the remaining obligations. Rewrite using `[ha.blkOf, ha.blkOf, ← h.ker]`. Conclude with `imp_congr_right fun _ => iff_of_eq (congrArg (· = 0) (congrFun (congrFun hy i) l))`.
+
+Establish `e3 : (topL a (N.map φ)).det = (M.map φ).det` using `by rw [← hy, det_submatrix_equiv_self]`. Establish `hsub : ∀ g' : GL (Ix R (Fin t) j) k, g'.val = M.map ψ → g'.val.submatrix Sum.inl Sum.inl = (M.submatrix Sum.inl Sum.inl).map ψ` using `fun g' e => by rw [e]; rfl`. Use `⟨fun h0 => ?_, fun hlow g hg hbt x hx => ?_⟩` and prove the remaining obligations. Rewrite `h0` using `[TypeDatum.iterPhi, TypeDatum.Phi_ne_zero_iff]`. Take `⟨⟨g', hg', e'⟩, hlow⟩` from `h0`.
+
+Establish `e'' : g'.val = M.map ψ` using `e'`. Take `⟨k1, k2, x, hx, ex⟩` from `(mem_iter_gen P μ hμ j g').1 hg'`. Take `⟨g, hg⟩` from `(Matrix.isUnit_iff_isUnit_det _).2 (e3 ▸ (h.isUnit_det_iff M).2 ⟨g', k1, e''⟩)`. Establish `hbt : g ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blkOf r t)` using `(e1 g hg).2 fun i l hil => by`. Use `k2 i l hil` as an intermediate fact.
+
+Rewrite `this` using `[e'']`. Then use the resulting hypothesis. Use `⟨(lowZero_a h ha hb N).2 hlow, g, hg, hbt, ⟨x, hx⟩, (hRd ⟨x, hx⟩ _ _ (firstBlock_topBlockMatrix_reduction_eq ha hb hr N hg hbt)).2 ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `MaxM (x.val - _)`. Rewrite using `[ex, hsub g' e'', sub_self]`. Conclude with `maxM_zero`.
+
+Establish `hmx` using `(hRd x _ _ (firstBlock_topBlockMatrix_reduction_eq ha hb hr N hg hbt)).1 hx`. Take `⟨g', k1, e''⟩` from `(h.isUnit_det_iff M).1 (e3 ▸ hg ▸ (Matrix.isUnit_iff_isUnit_det _).1 g.isUnit)`. Establish `hx' : MaxM (g'.val.submatrix Sum.inl Sum.inl - (x : GL R k).val)` using `fun i l => by`. Rewrite using `[hsub g' e'', Matrix.sub_apply, ← neg_sub, Valuation.map_neg]`. Conclude with `hmx i l`.
+
+Take `⟨x', hx'J, ex'⟩` from `P.exists_of_congr x.2 hx'`. Establish `hJ : g' ∈ (P.iter (Fin t) μ hμ j).J` using `(mem_iter_gen P μ hμ j g').2 ⟨k1, fun i l hil => by rw [e'']; exact (e1 g hg).1 hbt i l hil, x', hx'J, ex'⟩`. Take `⟨g₀, D, e0, hD, el⟩` from `GlobalTheory.SymBridge.iter_lam_closed k R (Fin t) P μ hμ j ⟨g', hJ⟩`. Establish `hl : P.lam g₀ = P.lam x`. Establish `h5 : MaxM ((g₀ : GL R k).val - (x : GL R k).val)`.
+
+Rewrite using `[e0]`. Conclude with `hx'`. Use `P.lam_eq_one (x⁻¹ * g₀) (inv_mul_mem_KOne (P.le_KO x.2) h5)` as an intermediate fact. Rewrite `this` using `[map_mul, map_inv, inv_mul_eq_one]`. Conclude with `this.symm`.
+
+Establish `hblk : ∀ c : Fin j, μ (c.val + 1) (Matrix.GeneralLinearGroup.det (D c)) = χ (c.val + 1) (Formalism.L2.DIV.dBlk (Formalism.L2.DIV.blkOf r t) (c.val + 1) g)` using `fun c => ((hχ c c.2.le).det (Ix.diagonalBlockOfMatrix M c) (by rw [diagonalBlock_det_blockTriangular ha hbt c, hg, hy]; rfl) (by rw [Matrix.GeneralLinearGroup.val_det_apply, (hD c).2, e'']; rfl)).symm`. Establish `hdet : μ (j + 1) (Matrix.GeneralLinearGroup.det g') = χ (j + 1) (Matrix.GeneralLinearGroup.det g)` using `((hχ j le_rfl).det M (by rw [← hy, det_submatrix_equiv_self, ← hg]; rfl) (by rw [Matrix.GeneralLinearGroup.val_det_apply, e''])).symm`. Rewrite using `[TypeDatum.iterPhi, TypeDatum.Phi_of_mem (x := ((N.map ψ).submatrix eb ea).submatrix (ixSucc _ _ j) id) _ _ ⟨g', hJ⟩ e'' ((lowZero_a h ha hb N).1 hlow), el, hl, hdet, Units.val_mul, Units.coe_prod, Units.val_inv_eq_inv_val, Finset.prod_range]`. Simplify using `only [hblk]`.
+-/
 theorem iterPhi_read : ∀ (S κ k : Type) [CommRing S] [CommRing κ] [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (φ : S →+* κ) (ψ : S →+* k), GlobalTheory.FunObj.Comparison₂.IsRed φ ψ → ∀ (R : Type) [Fintype R] [DecidableEq R] (r t j a b : ℕ) (e₀ : R ≃ Fin r) (ea : Ix R (Fin t) j ≃ Fin a) (eb : Ix R (Fin t) (j + 1) ≃ Fin b), GlobalTheory.FunObj.Comparison₂.IsIx ((Equiv.sumCongr e₀.symm (Equiv.refl (Fin j × Fin t))).trans ea) → GlobalTheory.FunObj.Comparison₂.IsIx ((Equiv.sumCongr e₀.symm (Equiv.refl (Fin (j + 1) × Fin t))).trans eb) → ∀ (hr : r ≤ a) (P : TypeDatum k R) (μ : ℕ → kˣ →* ℂˣ) (hμ : ∀ c, IsTame (μ c)) (χ : ℕ → κˣ →* ℂˣ), (∀ c, c ≤ j → GlobalTheory.FunObj.Comparison₂.Compat φ ψ (χ (c + 1)) (μ (c + 1))) → ∀ Rd : P.J → GL (Fin r) κ → Prop, (∀ (x : P.J) (g : GL (Fin r) κ) (M : Matrix R R S), g.val.submatrix e₀ e₀ = M.map φ → (Rd x g ↔ MaxM ((x : GL R k).val - M.map ψ))) → ∀ N : Matrix (Fin b) (Fin a) S, (P.iterPhi (Fin t) μ hμ j ((N.map ψ).submatrix eb ea) ≠ 0 → LowZero a (N.map φ) ∧ ∃ g : GL (Fin a) κ, g.val = topL a (N.map φ) ∧ g ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blkOf r t) ∧ ∃ x, Rd x (Formalism.L2.DIV.upperLeftBlock hr g)) ∧ (LowZero a (N.map φ) → ∀ g : GL (Fin a) κ, g.val = topL a (N.map φ) → g ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blkOf r t) → ∀ x, Rd x (Formalism.L2.DIV.upperLeftBlock hr g) → P.iterPhi (Fin t) μ hμ j ((N.map ψ).submatrix eb ea) = (P.lam x : ℂ) * (∏ c ∈ Finset.range j, (χ (c + 1) (Formalism.L2.DIV.dBlk (Formalism.L2.DIV.blkOf r t) (c + 1) g) : ℂ)) * (χ (j + 1) (Matrix.GeneralLinearGroup.det g) : ℂ)⁻¹) := by
   intro S κ k _ _ _ _ _ _ φ ψ h R _ _ r t j a b e₀ ea eb hA hB hr P μ hμ χ hχ Rd hRd N
   have ha := isIxR_of_isIx hA

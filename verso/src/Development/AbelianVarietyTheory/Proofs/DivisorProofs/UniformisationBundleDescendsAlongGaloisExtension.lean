@@ -17,6 +17,13 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.GaloisPackageDescent
 
+/- English proof (translation)
+Introduce `R _ _ _ hR R' _ _ _ ρ hF hG D D' hD A' G' _ _ hS' U' a G _ _ β hS hβ hinv`. Take `⟨L, hL, hLi⟩` from `GlobalTheory.T.uniformisation_lineBundle_descends_galois R hR R' ρ hF hG D D' hD A' G' hS' U' a G β hS hβ hinv`. Take `⟨rig, hrig⟩` from `ReciprocityTheory.ChartRestriction.G.DVR.exists_gen_of_isLB_local (V := R) (L.pull (eSec G)) (ReciprocityTheory.ChartRestriction.G.DVR.linComb_isLB L hL _ _)`. Take `⟨c⟩` from `GlobalTheory.T.exists_cubicalStructure_descendedLineBundle R hR R' ρ hF hG D D' hD A' G' hS' U' a G β hS hβ hinv L hL hLi rig hrig`. Establish `hsym` using `GlobalTheory.T.isSymmetric_of_galoisPullback_uniformisationBundle R hR R' ρ hF hG D D' hD A' G' hS' U' a G β hS hβ hinv L hL hLi rig hrig`.
+
+Take `⟨A, gen, κ, hgen, -, -⟩` from `GlobalTheory.T.polarised_generic_fibre_descends_galois R hR R' ρ hF hG D D' hD A' G' hS' U' a G β hS hβ hinv`. Establish `: IsNoetherianRing R` using `hR.1.1`. Take `⟨hLaws, -⟩` from `GlobalTheory.firstFiveLaws`. Take `⟨P, hP, -⟩` from `GlobalTheory.UU.exists_cp_of_isSymmetric hLaws R A G hS gen hgen ⟨L, rig, hL, hrig⟩ c hsym`. Use `⟨P, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hP]`. Conclude with `hLi`.
+-/
 theorem exists_cp : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (R' : Type) [CommRing R'] [IsDomain R'] [IsLocalRing R'] (ρ : R →+* R'), FinExt ρ → IsGal ρ → ∀ (D : DegData R (maximalIdeal R)) (D' : DegData R' (maximalIdeal R')) (hD : IsPullDeg ρ D.toPre D'.toPre) (A' : PolAV (Sp (FractionRing R'))) (G' : Over (Sp R')) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ (U' : Unif (maximalIdeal R') D' A' G'), ∀ (a : GalAct ρ hD U') (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (β : G'.left ⟶ G.left), IsSemiAbelian G → IsGrpPullback G' G (spMap ρ) β → (∀ σ, a.act σ ≫ β = β) → ∃ P : GlobalTheory.UU.CP G, LBIso U'.LG.L (P.L.L.pull β) := by
   intro R _ _ _ hR R' _ _ _ ρ hF hG D D' hD A' G' _ _ hS' U' a G _ _ β hS hβ hinv
   obtain ⟨L, hL, hLi⟩ := GlobalTheory.T.uniformisation_lineBundle_descends_galois R hR R' ρ hF hG D D' hD A' G' hS' U' a G β hS hβ hinv

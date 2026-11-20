@@ -21,6 +21,15 @@ open GlobalTheory.Dict
 
 namespace GlobalTheory.Dict
 
+/- English proof (translation)
+Introduce `hci E _ _ _ H Dw l Xo c n d r U hr1 hU hlev hnab hunit hpin nab bad nV a hD hL f hf`. Take `⟨hsec, Λ, N, x0, P, hun, -, htr, hN, hx0, hP, hrule⟩` from `hf`. Use `(mem_cusp Xo c U a n f).2 ⟨hsec, fun σ hσ => Formalism.L2.PjFree.holCusp_mem_holSub _ _ fun k => ?_⟩` and prove the remaining obligations. Establish `hu` using `hU σ hσ`. Take `⟨W⟩` from `nonempty_uw hu`.
+
+Establish `hsd` using `(GlobalTheory.Dict.uw_lattice E H Dw l Xo c σ r (U σ) hσ hu hr1 W k).2.1`. Take `⟨Dc, hDe, hk⟩` from `GlobalTheory.Dict.exists_dic E H Dw l c σ r W.g n ((U σ).X k) a W.e hσ hu.1 (hu.2.1 k).1 (hu.2.1 k).2 hsd hD`. Take `⟨φ, hφ, hrd⟩` from `GlobalTheory.Dict.ShortRead.rdU_eq_thP hci E H Dw l Xo c n d σ r (U σ) hσ hu hr1 hlev hnab hunit hpin W k a hD Dc hDe Λ N _ x0 P hun htr hN hx0 hP.1 f hsec hrule`. Establish `hrn : r ≤ n` using `hu.1 ▸ (GlobalTheory.admissible_columns_le_and_harmonic_map_cover E H Dw l Xo c n d).1 _ x0 hx0`. Establish `hw : laU (U σ) a n k = wtOf ((U σ).X k) Dc.hr Dc.k Dc.k' n` using `Dc.wt_eq.symm`.
+
+Establish `hs` using `hu.2.2.2.2.1 a n hD f hsec k`. Rewrite `hs`, the goal using `[hw]`. Use `CuspClass.mem_SS_of_eq_thP E r ((U σ).X k) W.g Dw.p Dc.hr Dc.bas Dc.idx n Dc.sympl hD.2 Dc.k Dc.k' ?_ hrn φ hφ _ (Dc.mem P hP.1) _ hrd ?_` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos Dw.p with h0 | h0` into its components or cases. Conclude with `Or.inr h0`.
+
+Conclude with `Or.inl (hk hL h0)`. Conclude with `hs.2.2`.
+-/
 theorem shortInCusp_cusp : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (n : ℕ) (d : DeltaDat Xo c n) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Formalism.L2.PjFree.Unf Xo c σ r), 1 ≤ r → (∀ σ, Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf (U σ)) → d.IsLev → (∃ _ : StarRing (𝓞 E), IsNab d.Xo₂ d.c₂ d.nab₂) → UnitC d → (Dw.p + Dw.q ≤ n → ∃ ph ψ x₀, d.PhiPin ph ψ x₀) → ∀ (nab : NabV Xo c) (bad nV : ℕ) (a : (E →+* ℂ) × ℕ → ℕ), ShortInCusp Xo c nab bad nV (Formalism.L2.PjFree.cusp Xo c U) a n d := by
   intro hci E _ _ _ H Dw l Xo c n d r U hr1 hU hlev hnab hunit hpin nab bad nV a hD hL f hf
   obtain ⟨hsec, Λ, N, x0, P, hun, -, htr, hN, hx0, hP, hrule⟩ := hf

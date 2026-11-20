@@ -58,6 +58,9 @@ def extA {K : Type} [Field K] [NumberField K] [StarRing K] {m : ℕ} (A : FamIn 
   leftGroupActionLift j τ := Sum.rec (A.leftGroupActionLift j) (X.actL j) τ
   heckeL j τ := Sum.rec (A.heckeL j) (X.opL j) τ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem extA_comap {K : Type} [Field K] [NumberField K] [StarRing K] {m : ℕ} (A : FamIn K G Pl0 T m)
     (X : NewFam A N) : (extA A X).comap Sum.inl A.μ0 = A := rfl
 
@@ -164,6 +167,9 @@ def extR (R : RealDat D A Ks) {V : NewLev D N} {X : NewFam A N} (Y : NewReal R V
   err0 := R.err0
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem extR_comap (R : RealDat D A Ks) {V : NewLev D N} {X : NewFam A N} (Y : NewReal R V X) :
     (extR R Y).comap Sum.inl A.μ0 R.mu R.twPl R.FW R.kap R.lam R.err0 = R := rfl
 
@@ -187,6 +193,9 @@ def TieExt {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R 
     Bridge.FamTie (extR R Y).B R.pl (R.Sb : Set (Pl D.host.E)) (extR R Y).Q (labLL D) (fun τ => Bridge.lamRdef (Ptw D) τ)
       (fun i τ => Bridge.lamLdef (Vc D i).rank ((i : ℕ) + 1) τ) gramR c0R c0L
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem ioExt_ext {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) {V : NewLev D N}
     {X : NewFam A N} (Y : NewReal R V X) (h : IoExt R) : IoExt (extR R Y) := h
 
@@ -245,6 +254,11 @@ def omExt {i : Fin D.R.m} (O : OMDat T.toCore R i Unit (fun _ => A.μ0)) :
 variable {O : ∀ i, OMDat T.toCore R i Unit (fun _ => A.μ0)}
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Establish `hP` using `h.2`. Establish `h1` using `hP.lift`. Establish `h2` using `hP.tuple`. Use `⟨h.1, ⟨h1.field, h1.std, h1.v0, ?_, h1.lev⟩, fun t => ⟨(h2 t).reps, (h2 t).B, (h2 t).xi, (h2 t).phi, (h2 t).half⟩, hP.act, hP.bad, hP.reps, hP.ep, hP.io, hP.w, hP.cov, hP.cxi, hP.model₂⟩` and prove the remaining obligations. Take `⟨g, c, c', h3, h4⟩` from `h1.c0`.
+
+Conclude with `⟨g, c, c', hT _ _ _ h3, h4⟩`.
+-/
 theorem omPins_ext (hT : TieExt R Y) {i : Fin D.R.m} (h : OMPins T R κ v₀ O i) :
     OMPins T (extR R Y) κ v₀ (fun i => omExt Y (O i)) i := by
   have hP := h.2
@@ -257,15 +271,24 @@ theorem omPins_ext (hT : TieExt R Y) {i : Fin D.R.m} (h : OMPins T R κ v₀ O i
   exact ⟨g, c, c', hT _ _ _ h3, h4⟩
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem oneMapOf_ext {i : Fin D.R.m} (cc ph) :
     (omExt Y (O i)).OneMapOf (κ i) (v₀ i (sg0 D A)) cc ph ↔ (O i).OneMapOf (κ i) (v₀ i (sg0 D A)) cc ph := Iff.rfl
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Introduce `⟨cc, p, h'⟩` and use `(oneMapOf_ext Y _ _).2 (h ⟨cc, p, (oneMapOf_ext Y _ _).1 h'⟩)`.
+-/
 theorem phaseTie_ext {ph : Fin D.R.m → ℂ} {i : Fin D.R.m} (h : PhaseTie T R κ v₀ O ph i) :
     PhaseTie T (extR R Y) κ v₀ (fun i => omExt Y (O i)) ph i :=
   fun ⟨cc, p, h'⟩ => (oneMapOf_ext Y _ _).2 (h ⟨cc, p, (oneMapOf_ext Y _ _).1 h'⟩)
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨h.core, h.host, h.curve, h.split, h.chi⟩, fun h => ⟨h.core, h.host, h.curve, h.split, h.chi⟩⟩`.
+-/
 theorem fixBase_ext (i : Fin D.R.m) (τ : ℂ ≃+* ℂ) : GlobalTheory.ConjTwist.FixBase T (extR R Y) i τ ↔ GlobalTheory.ConjTwist.FixBase T R i τ :=
   ⟨fun h => ⟨h.core, h.host, h.curve, h.split, h.chi⟩, fun h => ⟨h.core, h.host, h.curve, h.split, h.chi⟩⟩
 

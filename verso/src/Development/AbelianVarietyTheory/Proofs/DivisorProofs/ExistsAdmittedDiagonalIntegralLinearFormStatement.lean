@@ -8,6 +8,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels NumberField IsDede
 open scoped Matrix
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.DiagLocal.exists_diag_form | exact GlobalTheory.DiagLocal.exists_diag_form | (intros; apply GlobalTheory.DiagLocal.exists_diag_form <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_admitted_diagonal_integral_linearForm : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (a a' : ℕ) (G : Geo σ a a') (ψ : AddChar (AF F) ℂ)
     (d' : Darboux (symp (cA σ) (-1) (incM F G.W.J) (incM F G.V'.J)) (Fin a' × Fin (a + a')))

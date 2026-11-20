@@ -4,6 +4,13 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Theta
 open NumberField IsDedekindDomain ValuativeRel GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.ThetaGL UpperTheory.Gal.TP.Loc
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n d ν b g h Ψ X`. Establish `hM : ((((GlobalTheory.SplitFlip.invT g)⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) * X * ((GlobalTheory.SplitFlip.invT h : GL (Fin d) k) : Matrix (Fin d) (Fin d) k)).transpose = ((h⁻¹ : GL (Fin d) k) : Matrix (Fin d) (Fin d) k) * X.transpose * (g : Matrix (Fin n) (Fin n) k)`. Rewrite using `[GlobalTheory.SplitFlip.invT_inv_val, GlobalTheory.SplitFlip.invT_val, Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_transpose, Matrix.mul_assoc]`. Establish `hg` using `nabs_pos k (Matrix.GeneralLinearGroup.det g)`. Establish `hh` using `nabs_pos k (Matrix.GeneralLinearGroup.det h)`.
+
+Unfold `GlobalTheory.SplitFlip.omA om`. Rewrite using `[GlobalTheory.SplitFlip.gdet_invT, GlobalTheory.SplitFlip.apow_inv]`. Use `beta_reduce`. Rewrite using `[hM]`. Simplify using `only [GlobalTheory.SplitFlip.apow, GlobalTheory.SplitFlip.gdet, Fintype.card_fin]`.
+
+Rewrite using `[Complex.ofReal_cpow hg.le, Complex.ofReal_cpow hh.le]`. Simplify using `only [map_inv, inv_inv, MonoidHom.mul_apply, MonoidHom.inv_apply, Units.val_mul, Units.val_inv_eq_inv_val, neg_div, neg_neg, Complex.ofReal_div, Complex.ofReal_neg, Complex.ofReal_natCast, Complex.ofReal_ofNat]`. Establish `hb : ((b (Matrix.GeneralLinearGroup.det g) : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem UpperTheory.Gal.TP.Loc.modelDict :
     UpperTheory.Gal.TP.Loc.ModelDict := by
   intro k _ _ _ _ n d ν b g h Ψ X

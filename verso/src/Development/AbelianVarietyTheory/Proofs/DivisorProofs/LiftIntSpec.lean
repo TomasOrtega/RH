@@ -6,6 +6,15 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N
 
 namespace GlobalTheory.IntDescend
 
+/- English proof (translation)
+Establish `h1 : ∀ g, φ (Function.invFun φ ((f g : Bˣ) : B)) = f g` using `fun g => Function.invFun_eq (hf g)`. Establish `hu : ∀ g, Function.invFun φ ((f g : Bˣ) : B) * Function.invFun φ ((f g⁻¹ : Bˣ) : B) = 1`. Introduce `g`. Apply `hφ` to reduce the goal to its premises. Rewrite using `[map_mul φ, h1, h1, map_one φ, ← Units.val_mul, ← map_mul f, mul_inv_cancel, map_one f, Units.val_one]`.
+
+Establish `hv : ∀ g, Function.invFun φ ((f g⁻¹ : Bˣ) : B) * Function.invFun φ ((f g : Bˣ) : B) = 1`. Introduce `g`. Apply `hφ` to reduce the goal to its premises. Rewrite using `[map_mul φ, h1, h1, map_one φ, ← Units.val_mul, ← map_mul f, inv_mul_cancel, map_one f, Units.val_one]`. Use `⟨MonoidHom.mk' (fun g => ⟨Function.invFun φ ((f g : Bˣ) : B), Function.invFun φ ((f g⁻¹ : Bˣ) : B), hu g, hv g⟩) ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `a b`. Apply `Units.ext` to reduce the goal to its premises. Apply `hφ` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `φ (Function.invFun φ ((f (a * b) : Bˣ) : B)) = φ (Function.invFun φ ((f a : Bˣ) : B) * Function.invFun φ ((f b : Bˣ) : B))`. Rewrite using `[h1, map_mul φ, h1, h1, map_mul f, Units.val_mul]`.
+
+Use extensionality with `g`. Conclude with `h1 g`.
+-/
 theorem lift_units {Γ A B : Type} [Group Γ] [Monoid A] [Monoid B] (φ : A →* B) (hφ : Function.Injective φ)
     (f : Γ →* Bˣ) (hf : ∀ g, ((f g : Bˣ) : B) ∈ Set.range φ) : ∃ f' : Γ →* Aˣ, (Units.map φ).comp f' = f := by
   classical
@@ -32,9 +41,15 @@ variable {l : ℕ} [Fact l.Prime] (LL : FinExt l)
 def liftInt (x : PadicAlgCl l) (hx : x ∈ LL.1 ∧ ‖x‖ ≤ 1) : ↥(OL LL) :=
   ⟨⟨x, hx.1⟩, (GlobalTheory.IntNormFinExt.mem_OL_iff_norm_le_one l LL ⟨x, hx.1⟩).2 hx.2⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem liftInt_spec (x : PadicAlgCl l) (hx : x ∈ LL.1 ∧ ‖x‖ ≤ 1) :
     ((LL.1.val.toRingHom).comp ((OL LL).val.toRingHom)) (liftInt LL x hx) = x := rfl
 
+/- English proof (translation)
+Introduce `a b h`. Conclude with `Subtype.ext (Subtype.ext h)`.
+-/
 theorem incl_injective : Function.Injective ((LL.1.val.toRingHom).comp ((OL LL).val.toRingHom)) := by
   intro a b h
   exact Subtype.ext (Subtype.ext h)
@@ -43,6 +58,15 @@ end GlobalTheory.IntDescend
 
 namespace GlobalTheory.IntDescend
 
+/- English proof (translation)
+Introduce `l _ LL Γ _`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `n f hf`. Establish `hinj : Function.Injective ((((LL.1.val.toRingHom).comp ((OL LL).val.toRingHom)).mapMatrix : Matrix (Fin n) (Fin n) ↥(OL LL) →+* Matrix (Fin n) (Fin n) (PadicAlgCl l)).toMonoidHom)`. Introduce `M N h`.
+
+Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Apply `incl_injective LL` to reduce the goal to its premises. Use `congrArg (fun P : Matrix (Fin n) (Fin n) (PadicAlgCl l) => P i j) h` as an intermediate fact. Simplify `this` using `only [RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe, RingHom.mapMatrix_apply, Matrix.map_apply]`. Establish `hr : ∀ g, ((f g : GL (Fin n) (PadicAlgCl l)) : Matrix (Fin n) (Fin n) (PadicAlgCl l)) ∈ Set.range ((((LL.1.val.toRingHom).comp ((OL LL).val.toRingHom)).mapMatrix : Matrix (Fin n) (Fin n) ↥(OL LL) →+* Matrix (Fin n) (Fin n) (PadicAlgCl l)).toMonoidHom)`.
+
+Introduce `g`. Use `⟨Matrix.of fun i j => liftInt LL _ (hf g i j), ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply]`. Conclude with `liftInt_spec LL _ (hf g i j)`.
+
+Conclude with `lift_units _ hinj f hr`. Introduce `χ hχ`. Use `lift_units _ (incl_injective LL) χ ?_` and prove the remaining obligations. Introduce `g`. Conclude with `⟨liftInt LL _ ⟨(hχ g).1, (hχ g).2.le⟩, liftInt_spec LL _ _⟩`.
+-/
 theorem descend : ∀ (l : ℕ) [Fact l.Prime] (LL : FinExt l) (Γ : Type) [Group Γ], (∀ (n : ℕ) (f : Γ →* GL (Fin n) (PadicAlgCl l)), (∀ g i j, (f g : Matrix (Fin n) (Fin n) (PadicAlgCl l)) i j ∈ LL.1 ∧ ‖(f g : Matrix (Fin n) (Fin n) (PadicAlgCl l)) i j‖ ≤ 1) → ∃ f' : Γ →* GL (Fin n) ↥(OL LL), (Matrix.GeneralLinearGroup.map ((LL.1.val.toRingHom).comp ((OL LL).val.toRingHom))).comp f' = f) ∧ ∀ χ : Γ →* (PadicAlgCl l)ˣ, (∀ g, ((χ g : (PadicAlgCl l)ˣ) : PadicAlgCl l) ∈ LL.1 ∧ ‖((χ g : (PadicAlgCl l)ˣ) : PadicAlgCl l)‖ = 1) → ∃ ψ : Γ →* (↥(OL LL))ˣ, (Units.map ((LL.1.val.toRingHom).comp ((OL LL).val.toRingHom)).toMonoidHom).comp ψ = χ := by
   intro l _ LL Γ _
   refine ⟨?_, ?_⟩

@@ -10,6 +10,11 @@ noncomputable section
 
 namespace GlobalTheory.Mem.FormSym
 
+/- English proof (translation)
+Simplify using `only [FiC, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hh, he'⟩`. Use `⟨h, hh, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+
+Take `⟨x', rfl⟩` from `he x`. Conclude with `congrFun he' x'`. Introduce and unpack `⟨h, hh, rfl⟩`. Conclude with `⟨h, hh, rfl⟩`.
+-/
 theorem mem_FiC_comp {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))}
     {ι : Type} [Fintype ι] (S : StepLevel F E σ J T f bad) (emb : ι → E →+* ℂ) (lam : ι → DomWeight n)
@@ -97,11 +102,17 @@ variable (A : AtTTied u) (L : LevelCompatibleLattices (D.fm u) (D.mem u).A.T A.r
       (fun c => clsCrd D u i hi c.1)) (β : Ch) (hβ : ∀ c, chOf c = β)
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Introduce `v c z hz` and use `h v β ⟨c, hβ c⟩ z hz`.
+-/
 theorem fvOfG (fMe : ∀ β v, (K β).lev.fM (A.eV v).1 (A.eV v).2 ≃+ (D.mem u).A.Fv v) (h : FvTieG L A.eV K fMe) :
     FvTie (lvOfG A L) (clsOfChart β hβ (K β)) (fMe β) :=
   fun v c z hz => h v β ⟨c, hβ c⟩ z hz
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Introduce `v c z hz`. Take `⟨_, γ, η, κ, h1, h2, h3, h4, h5, h6⟩` from `h v β ⟨c, hβ c⟩ z hz`. Use `⟨γ, η, κ, h1, h2, h3, h4, h5, fun g s s' hs => ?_⟩` and prove the remaining obligations. Rewrite `hs` using `[hY]`. Conclude with `h6 g s s' hs`.
+-/
 theorem upOfG (eY : (D.mem u).C.Y i ≃ Fr D i hi) (W : ValTied u A.eV i hi (clsOfChart β hβ (K β))) (hY : W.eY = eY)
     (h : UpNatTieG L eY A.eV K) : UpNatTie (lvOfG A L) (clsOfChart β hβ (K β)) W := by
   intro v c z hz
@@ -111,6 +122,9 @@ theorem upOfG (eY : (D.mem u).C.Y i ≃ Fr D i hi) (W : ValTied u A.eV i hi (cls
   exact h6 g s s' hs
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Introduce `v c g hg`. Take `⟨_, γ, η, κ, h1, h2, h3, h4, h6⟩` from `h v β ⟨c, hβ c⟩ g hg`. Use `⟨γ, η, κ, h1, h2, h3, h4, fun f s s' hs => ?_⟩` and prove the remaining obligations. Rewrite `hs` using `[hY]`. Conclude with `h6 f s s' hs`.
+-/
 theorem dnOfG (eY : (D.mem u).C.Y i ≃ Fr D i hi) (W : ValTied u A.eV i hi (clsOfChart β hβ (K β))) (hY : W.eY = eY)
     (h : DnNatTieG L eY A.eV K) : DnNatTie (lvOfG A L) (clsOfChart β hβ (K β)) W := by
   intro v c g hg
@@ -126,6 +140,9 @@ section Gen2
 variable {D : D7} {u : D.what₂.Word} {i : ℕ} {hi : i ≤ D.R.m}
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Introduce `s x Pc hPc o ho`. Rewrite `hPc` using `[hY]`. Conclude with `h s x Pc hPc o ho`.
+-/
 theorem normOfG {eV : (D.mem u).A.vT ≃ PlT D u} {K : ClsTied u i hi} (eY : (D.mem u).C.Y i ≃ Fr D i hi)
     (W : ValTied u eV i hi K) (hY : W.eY = eY) (h : NormTieG (D.fm u) eY) : NormTie W := by
   intro s x Pc hPc o ho
@@ -133,6 +150,9 @@ theorem normOfG {eV : (D.mem u).A.vT ≃ PlT D u} {K : ClsTied u i hi} (eY : (D.
   exact h s x Pc hPc o ho
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Introduce `w hw hs v x`. Rewrite using `[hY]`. Conclude with `h w hw hs v x`.
+-/
 theorem bwOfG (A : AtTTied u) {K : ClsTied u i hi} (eY : (D.mem u).C.Y i ≃ Fr D i hi)
     (W : ValTied u A.eV i hi K) (hY : W.eY = eY)
     (h : BwTieG (D.fm u) (D.mem u).A.T A.res eY (fun c => clsCrd D u i hi c)) : BwTie A W := by
@@ -144,6 +164,9 @@ end Gen2
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `rfl : chOf = fun _ => β` from `funext hβ`. Take `⟨k, hk⟩` from `h`. Use `⟨fun _ => k β, ⟨fun c c' => ⟨fun _ => (hk.key c c').1 rfl, fun _ => rfl⟩, fun _ => ?_, fun _ => hk.lb β, fun _ => hk.k_std β, fun _ => hk.k_off β, fun _ => hk.k_T β, hk.pt, hk.lev, hk.chr, hk.stab⟩⟩` and prove the remaining obligations. Take `⟨c, _⟩` from `hk.onto β`. Conclude with `⟨c, rfl⟩`.
+-/
 theorem readsK_one {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) {u : B.Word} {a : I.ι}
     {i : ℕ} {hi : i ≤ B.R.m} {bad : Set (HeightOneSpectrum (𝓞 B.host.F))} {Ch : Type} {chOf : (I.stp u a i).Cl → Ch}
     {K : ∀ β : Ch, LevelChart (I.rec7 l Z) (B.T u) bad i hi (fun c : {c // chOf c = β} => (I.chain l u a).stab i c.1)

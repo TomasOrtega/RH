@@ -12,6 +12,15 @@ namespace GlobalTheory.UnrTate
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Take `⟨⟨r, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (𝓞 E)⁰ x`. Establish `hs : (s : 𝓞 E) ≠ 0` using `nonZeroDivisors.coe_ne_zero s`. Establish `hr : r ≠ 0`. Introduce and unpack `rfl`. Conclude with `hx (by simp)`.
+
+Establish `hspan : ∀ {t : 𝓞 E}, t ≠ 0 → FractionalIdeal.count E w (FractionalIdeal.spanSingleton (𝓞 E)⁰ (algebraMap (𝓞 E) E t)) = -WithZero.log (w.valuation E (algebraMap (𝓞 E) E t))`. Introduce `t ht`. Rewrite using `[← FractionalIdeal.coeIdeal_span_singleton, FractionalIdeal.count_coe E w (by rwa [ne_eq, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]), HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_if_neg _ ht, WithZero.log_exp, neg_neg]`. Establish `hs' : algebraMap (𝓞 E) E s ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 E) E)).mpr hs`. Establish `e : IsLocalization.mk' E r s * algebraMap (𝓞 E) E s = algebraMap (𝓞 E) E r` using `IsLocalization.mk'_spec E r s`.
+
+Establish `e2` using `congrArg (FractionalIdeal.count E w) (congrArg (FractionalIdeal.spanSingleton (𝓞 E)⁰) e)`. Rewrite `e2` using `[← FractionalIdeal.spanSingleton_mul_spanSingleton, FractionalIdeal.count_mul E w ((FractionalIdeal.spanSingleton_ne_zero_iff).mpr hx) ((FractionalIdeal.spanSingleton_ne_zero_iff).mpr hs'), hspan hs, hspan hr]`. Establish `e3` using `congrArg (w.valuation E) e`. Rewrite `e3` using `[map_mul]`. Establish `hv1 : w.valuation E (algebraMap (𝓞 E) E s) ≠ 0` using `(map_ne_zero _).mpr hs'`.
+
+Establish `hv2 : w.valuation E (IsLocalization.mk' E r s) ≠ 0` using `(map_ne_zero _).mpr hx`. Rewrite `e2` using `[← e3, WithZero.log_mul hv2 hv1]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem count_spanSingleton_eq (w : HeightOneSpectrum (𝓞 E)) {x : E} (hx : x ≠ 0) :
     FractionalIdeal.count E w (FractionalIdeal.spanSingleton (𝓞 E)⁰ x) = -WithZero.log (w.valuation E x) := by
   obtain ⟨⟨r, s⟩, rfl⟩ := IsLocalization.mk'_surjective (𝓞 E)⁰ x
@@ -40,6 +49,11 @@ theorem count_spanSingleton_eq (w : HeightOneSpectrum (𝓞 E)) {x : E} (hx : x 
   rw [← e3, WithZero.log_mul hv2 hv1] at e2
   linarith
 
+/- English proof (translation)
+Distinguish the cases in `hy0 : y = 0`. Rewrite using `[hy0, map_zero]`. Conclude with `zero_le'`. Establish `hle : FractionalIdeal.spanSingleton (𝓞 E)⁰ y ≤ 𝔞` using `(FractionalIdeal.spanSingleton_le_iff_mem).2 hy`. Establish `hc` using `FractionalIdeal.count_mono E w ((FractionalIdeal.spanSingleton_ne_zero_iff).mpr hy0) hle`.
+
+Rewrite `hc` using `[count_spanSingleton_eq w hy0]`. Establish `hv : w.valuation E y ≠ 0` using `(map_ne_zero _).mpr hy0`. Rewrite using `[← WithZero.exp_log hv, WithZero.exp_le_exp]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem valuation_le_of_mem (w : HeightOneSpectrum (𝓞 E)) {𝔞 : FractionalIdeal (𝓞 E)⁰ E} {y : E} (hy : y ∈ 𝔞) :
     w.valuation E y ≤ WithZero.exp (-FractionalIdeal.count E w 𝔞) := by
   by_cases hy0 : y = 0
@@ -51,6 +65,13 @@ theorem valuation_le_of_mem (w : HeightOneSpectrum (𝓞 E)) {𝔞 : FractionalI
   rw [← WithZero.exp_log hv, WithZero.exp_le_exp]
   linarith
 
+/- English proof (translation)
+Rewrite using `[valAt_of_under h]`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨c, hc, x, hx, rfl⟩` from `hy`. Establish `h2 : Valued.v (algebraMap E (w.adicCompletion E) x) = w.valuation E x` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w x`.
+
+Rewrite using `[toCompl_tmul, map_mul, h2]`. Establish `h1 : Valued.v (complMap h c) ≤ 1` using `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (complMap_mem h hc)`. Conclude with `(mul_le_mul' h1 (valuation_le_of_mem w hx)).trans_eq (one_mul _)`. Consider the case `zero => rw [map_zero, map_zero]`. Conclude with `zero_le'`.
+
+Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `Valuation.map_add_le _ hy hz`. Consider the case `neg y _ hy => rw [map_neg, Valuation.map_neg]`. Conclude with `hy`.
+-/
 theorem valAt_le_of_mem_locId (v : Pl F) (𝔞 : FractionalIdeal (𝓞 E)⁰ E) {w : HeightOneSpectrum (𝓞 E)}
     (h : w.under (𝓞 F) = v) {y : Fv F v ⊗[F] E} (hy : y ∈ GlobalTheory.SnMass.locId v 𝔞) :
     valAt v w y ≤ WithZero.exp (-FractionalIdeal.count E w 𝔞) := by
@@ -68,6 +89,9 @@ theorem valAt_le_of_mem_locId (v : Pl F) (𝔞 : FractionalIdeal (𝓞 E)⁰ E) 
   | add y z _ _ hy hz => rw [map_add]; exact Valuation.map_add_le _ hy hz
   | neg y _ hy => rw [map_neg, Valuation.map_neg]; exact hy
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ v 𝔞 x hx w hw`. Establish `h` using `valAt_le_of_mem_locId v 𝔞 (mem_aboveF.1 hw) hx`. Rewrite `h` using `[valAt_eq_exp, WithZero.exp_le_exp]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem count_le_ordAt_of_mem_locId : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (v : Pl F) (𝔞 : FractionalIdeal (𝓞 E)⁰ E) (x : (Fv F v ⊗[F] E)ˣ), (x : Fv F v ⊗[F] E) ∈ GlobalTheory.SnMass.locId v 𝔞 → ∀ w ∈ Formalism.L2.Host.aboveF (L := E) F v, FractionalIdeal.count E w 𝔞 ≤ GlobalTheory.UnrTate.ordAt v w x := by
   intro F E _ _ _ _ _ v 𝔞 x hx w hw
   have h := valAt_le_of_mem_locId v 𝔞 (mem_aboveF.1 hw) hx

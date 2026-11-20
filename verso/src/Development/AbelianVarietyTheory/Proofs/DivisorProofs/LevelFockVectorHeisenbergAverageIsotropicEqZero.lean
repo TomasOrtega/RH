@@ -19,6 +19,13 @@ open GlobalTheory.IdemModTwo GlobalTheory.SplitHecke GlobalTheory.ThetaSupport
 
 variable {D : D7}
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `h0 : w (d j) ≠ 0` using `(Valuation.ne_zero_iff _).2 hj`. Establish `h1` using `val_row_lt w ((B * A) j) d j hj hd (hBA j)`. Establish `e1 : (B * A) j ⬝ᵥ d = B j ⬝ᵥ (A *ᵥ d)`.
+
+Express the relevant statement in the definitionally equal form `((B * A) *ᵥ d) j = (B *ᵥ (A *ᵥ d)) j`. Rewrite using `[Matrix.mulVec_mulVec]`. Establish `h2 : w ((B * A) j ⬝ᵥ d) < w (d j)`. Rewrite using `[e1]`. Use `Valuation.map_sum_lt _ h0 fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Valuation.map_mul]`. Conclude with `(mul_le_of_le_one_left' (hB j i)).trans_lt (h i)`. Establish `h3` using `Valuation.map_sub w ((B * A) j ⬝ᵥ d) ((B * A) j ⬝ᵥ d - d j)`. Rewrite `h3` using `[sub_sub_cancel]`. Conclude with `lt_irrefl _ (h3.trans_lt (max_lt h2 h1))`.
+-/
 theorem exists_val_ge {K Γ : Type} [Field K] [LinearOrderedCommGroupWithZero Γ] (w : Valuation K Γ) {n : ℕ}
     (A B : Matrix (Fin n) (Fin n) K) (hB : ∀ i k, w (B i k) ≤ 1)
     (hBA : ∀ i k, w ((B * A) i k - if i = k then 1 else 0) < 1) (d : Fin n → K) (j : Fin n) (hj : d j ≠ 0)
@@ -42,6 +49,71 @@ theorem exists_val_ge {K Γ : Type} [Field K] [LinearOrderedCommGroupWithZero Γ
 set_option maxHeartbeats 2000000 in
 open Classical in
 
+/- English proof (translation)
+Use `haveI : Fintype (kP PP) := Fintype.ofFinite _`. Take `⟨v, hv⟩` from `(isSplitIdem_iff e).1 he.1`. Establish `hπ` using `GlobalTheory.SplitChart.chart_comp hv`. Use `set π := GlobalTheory.SplitChart.comp hv with hπdef`. Take `⟨φ, hφ, hres⟩` from `exists_chart_levels he hπ`.
+
+Take `⟨x, hx, hx'⟩` from `exists_edge hψ v`. Take `⟨hi, -⟩` from `GlobalTheory.IdemRes.resS_idem_eq_one D e PP he`. Establish `hint : ∀ s : Formalism.L2.Herm.intAf D.host.F D.host.E, Valued.v (φ s) ≤ 1` using `fun s => by`. Take `⟨a, ha⟩` from `GlobalTheory.AdjDatumNe.toEAf_surjective (D := D) s`. Rewrite using `[← ha, hφ]`.
+
+Use `isInt_Ov.1 ((hπ.2.2.2 a).1 (GlobalTheory.PlaceDatum.finPart_mem_of_toEAf ?_))` and prove the remaining obligations. Rewrite using `[RingHom.map_mul, ha]`. Conclude with `mul_mem hi s.2`. Establish `hx0 : Valued.v x ≠ 0` using `fun h => by`. Rewrite `h` using `[map_eq_zero]`.
+
+Use `psiV_natCast ψ hv 0 x` as an intermediate fact. Rewrite `this` using `[Nat.cast_zero, zero_mul, pow_zero, ← h]`. Conclude with `hx this`. Set `d : Fin T.rank → Fv D.host.F v` to `(βT⁻¹).val.map φ *ᵥ (π ∘ c)`. Establish `hd : βT.val.map φ *ᵥ d = π ∘ c`.
+
+Rewrite using `[Matrix.mulVec_mulVec, ← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ φ.map_zero φ.map_one, Matrix.one_mulVec]`. Take `⟨i₀, hi₀⟩` from `hc`. Take `⟨j, -, hj⟩` from `Finset.univ.exists_max_image (fun i => Valued.v (d i)) ⟨i₀, Finset.mem_univ _⟩`. Establish `hj0 : d j ≠ 0` using `fun h => by`. Establish `h0 : d = 0` using `funext fun i => by`.
+
+Use `hj i (Finset.mem_univ _)` as an intermediate fact. Rewrite `this` using `[h, map_zero, le_zero_iff, map_eq_zero]`. Then use the resulting hypothesis. Rewrite `hd` using `[h0, Matrix.mulVec_zero]`. Conclude with `hi₀ ((hπ.2.1 _).1 (congrFun hd i₀).symm)`. Establish `hdj : Valued.v (d j) ≠ 0` using `(Valuation.ne_zero_iff _).2 hj0`.
+
+Establish `hξ : π (incA D D.host.xi0) ≠ 0` using `(_root_.map_ne_zero (π.comp (incA D))).2 (GlobalTheory.IndefiniteRowSideFullHecke.BesselData.embedding_xi_zero_ne_zero D)`. Set `rep : kP PP → 𝓞 D.host.E` to `fun κ => (Ideal.Quotient.mk_surjective κ).choose`. Establish `hrep : ∀ κ, Ideal.Quotient.mk PP.asIdeal (rep κ) = κ` using `fun κ => (Ideal.Quotient.mk_surjective κ).choose_spec`. Set `b : kP PP → Fv D.host.F v` to `fun κ => φ (oToS D.host.F D.host.E (rep κ))`. Establish `hb1 : ∀ κ, Valued.v (b κ) ≤ 1` using `fun κ => hint _`.
+
+Establish `hbres : ∀ (s : Formalism.L2.Herm.intAf D.host.F D.host.E) κ, resS D.host.F PP s = κ → Valued.v (φ s - b κ) < 1`. Introduce `s κ h`. Use `hres (s - oToS D.host.F D.host.E (rep κ)) (by rw [map_sub, Formalism.L2.DIV.resS_oToS, hrep, h, sub_self])` as an intermediate fact. Rewrite `this` using `[AddSubgroupClass.coe_sub, RingHom.map_sub]`. Then use the resulting hypothesis. Establish `hb0 : Valued.v (b 0) < 1`.
+
+Use `hbres 0 0 (map_zero _)` as an intermediate fact. Rewrite `this` using `[ZeroMemClass.coe_zero, map_zero, zero_sub, Valuation.map_neg]`. Then use the resulting hypothesis. Establish `hbadd : ∀ κ κ', Valued.v (b (κ + κ') - b κ - b κ') < 1`. Introduce `κ κ'`. Use `hbres (oToS D.host.F D.host.E (rep κ) + oToS D.host.F D.host.E (rep κ')) (κ + κ') (by` as an intermediate fact.
+
+Rewrite using `[map_add, Formalism.L2.DIV.resS_oToS, Formalism.L2.DIV.resS_oToS, hrep, hrep])`. Rewrite `this` using `[AddMemClass.coe_add, RingHom.map_add]`. Rewrite using `[← Valuation.map_neg, show -(b (κ + κ') - b κ - b κ') = b κ + b κ' - b (κ + κ') by ring]`. Conclude with `this`. Establish `he1 : π e = 1`.
+
+Use `(hπ.2.1 (1 - e)).2 (by rw [mul_sub, mul_one, hv.1, sub_self])` as an intermediate fact. Rewrite `this` using `[map_sub, map_one, sub_eq_zero, eq_comm]`. Then use the resulting hypothesis. Establish `hdense : ∀ y : Fv D.host.F v, Valued.v y ≤ 1 → ∃ κ, Valued.v (b κ - y) < 1`. Introduce `y hy`. Take `⟨a, rfl⟩` from `hπ.1 y`.
+
+Establish `hw : finPart D (e * a) ∈ intAE D` using `(hπ.2.2.2 a).2 (isInt_Ov.2 hy)`. Set `s : Formalism.L2.Herm.intAf D.host.F D.host.E` to `⟨toEAf D (e * a), GlobalTheory.IdemRes.toEAf_mem_of_finPart hw⟩`. Use `⟨resS D.host.F PP s, ?_⟩` and prove the remaining obligations. Establish `h1` using `hbres s _ rfl`. Establish `h2 : φ s = π a`.
+
+Express the relevant statement in the definitionally equal form `φ (toEAf D (e * a)) = π a`. Rewrite using `[hφ, map_mul, he1, one_mul]`. Rewrite using `[← Valuation.map_neg, neg_sub, ← h2]`. Conclude with `h1`. Set `s : Fv D.host.F v` to `-(x / (π (incA D D.host.xi0) * d j))`.
+
+Use `choose l₀ hl₀ using fun (κ : Fin T.rank → kP PP) (a : Fin S.rank) => hπ.1 (s * ∑ i, b (κ i) * φ ((βS⁻¹).val (Fin.castLE hr i) a))`. Set `eqv` to `Fintype.equivFin (Fin T.rank → kP PP)`. Use `⟨Fintype.card (Fin T.rank → kP PP), fun k a => e * l₀ (eqv.symm k) a, Fintype.card_pos, fun k a => by rw [← mul_assoc, hv.1], fun t ht ht' => ?_⟩` and prove the remaining obligations. Use `set U := (frMapAdj S T βS βT t).map φ with hUdef`. Establish `hU : U = (βS⁻¹).val.map φ * (adj S T t).map π * βT.val.map φ`.
+
+Establish `: (adj S T t).map π = ((adj S T t).map (toEAf D)).map φ` using `Matrix.ext fun a b => (hφ _).symm`. Rewrite using `[this, ← Matrix.map_mul, ← Matrix.map_mul]`. Both sides reduce to the same expression. Set `z : Fin T.rank → Fv D.host.F v` to `fun i => (U *ᵥ d) (Fin.castLE hr i)`. Establish `hUint : ∀ a b, Valued.v (U a b) ≤ 1` using `fun a b => hint ⟨_, ht a b⟩`.
+
+Establish `hz : ∀ i, Valued.v (z i) ≤ Valued.v (d j)` using `fun i => by show Valued.v (∑ k, U (Fin.castLE hr i) k * d k) ≤ _`. Use `Valuation.map_sum_le _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Valuation.map_mul]`. Conclude with `(mul_le_of_le_one_left' (hUint _ _)).trans (hj k (Finset.mem_univ _))`. Establish `hpair : ∀ κ, ψ (symplO S T t (vecMulVec c fun a => e * l₀ κ a)) = psiV D.host.F ψ v (x / d j * ∑ i, b (κ i) * z i)`.
+
+Introduce `κ`. Establish `h1 : π (l₀ κ ⬝ᵥ adj S T t *ᵥ c) = s * ∑ i, b (κ i) * z i`. Establish `h3 : π ∘ (adj S T t *ᵥ c) = (adj S T t).map π *ᵥ (π ∘ c)` using `funext fun a => RingHom.map_mulVec π _ _ a`. Establish `h4 : U *ᵥ d = (βS⁻¹).val.map φ *ᵥ ((adj S T t).map π *ᵥ (π ∘ c))`. Rewrite using `[hU, ← Matrix.mulVec_mulVec, hd, ← Matrix.mulVec_mulVec]`.
+
+Simplify using `only [z, h4]`. Rewrite using `[RingHom.map_dotProduct, h3]`. Generalize the expression as in `(adj S T t).map π *ᵥ (π ∘ c) = w`. Simplify using `only [dotProduct, Matrix.mulVec, Function.comp_apply, hl₀, Matrix.map_apply, Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Conclude with `Finset.sum_comm`.
+
+Rewrite using `[symplO_vecMulVec, char_trace ψ hv, ← hπdef, RingHom.map_neg, RingHom.map_mul, h1]`. Use `congr 1`. Simplify using `only [s]`. Clear the denominators using the available nonvanishing facts. Establish `hsmall : ∀ w', Valued.v w' < Valued.v (d j) → psiV D.host.F ψ v (x / d j * w') = 1` using `fun w' h => by`.
+
+Use `hx' _ ?_` and prove the remaining obligations. Establish `: x / d j * w' = x * (w' / d j)` using `by ring`. Rewrite using `[this, Valuation.map_mul, map_div₀]`. Conclude with `mul_lt_of_lt_one_right (zero_lt_iff.2 hx0) ((div_lt_one₀ (zero_lt_iff.2 hdj)).2 h)`. Establish `hterm : ∀ y i, Valued.v y < 1 → Valued.v (y * z i) < Valued.v (d j)` using `fun y i h => by`.
+
+Rewrite using `[Valuation.map_mul]`. Conclude with `(mul_le_mul_right (hz i) _).trans_lt (mul_lt_of_lt_one_left (zero_lt_iff.2 hdj) h)`. Set `χ : AddChar (Fin T.rank → kP PP) ℂ` to `{ toFun := fun κ => psiV D.host.F ψ v (x / d j * ∑ i, b (κ i) * z i) map_zero_eq_one' := hsmall _ (Valuation.map_sum_lt _ hdj fun i _ => hterm _ i hb0) map_add_eq_mul' := fun κ κ' => by`. Express the relevant statement in the definitionally equal form `psiV D.host.F ψ v (x / d j * ∑ i, b ((κ + κ') i) * z i) = psiV D.host.F ψ v (x / d j * ∑ i, b (κ i) * z i) * psiV D.host.F ψ v (x / d j * ∑ i, b (κ' i) * z i)`. Rewrite using `[← psiV_add ψ hv, ← mul_add, ← Finset.sum_add_distrib]`.
+
+Establish `e2 : ∑ i, b ((κ + κ') i) * z i = ∑ i, (b (κ i) * z i + b (κ' i) * z i) + ∑ i, (b (κ i + κ' i) - b (κ i) - b (κ' i)) * z i`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e2, mul_add, psiV_add ψ hv, hsmall _ (Valuation.map_sum_lt _ hdj fun i _ => hterm _ i (hbadd _ _)), mul_one] }`. Establish `hAB` using `Matrix.nonsing_inv_mul _ ht'`. Use `set Ab := topL T.rank (redM PP (frMapAdj S T βS βT t)) with hAb`. Set `A : Matrix (Fin T.rank) (Fin T.rank) (Fv D.host.F v)` to `fun i k => U (Fin.castLE hr i) k`. Set `B : Matrix (Fin T.rank) (Fin T.rank) (Fv D.host.F v)` to `fun i k => b (Ab⁻¹ i k)`.
+
+Establish `hBA : ∀ i k, Valued.v ((B * A) i k - if i = k then 1 else 0) < 1`. Introduce `i k`. Set `σ : Formalism.L2.Herm.intAf D.host.F D.host.E` to `∑ m, oToS D.host.F D.host.E (rep (Ab⁻¹ i m)) * ⟨frMapAdj S T βS βT t (Fin.castLE hr m) k, ht _ _⟩ - (if i = k then 1 else 0)`. Establish `hσ : resS D.host.F PP σ = 0`. Establish `h1` using `congrFun (congrFun hAB i) k`.
+
+Rewrite `h1` using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify using `only [σ, map_sub, map_sum, map_mul, Formalism.L2.DIV.resS_oToS, hrep]`. Rewrite using `[sub_eq_zero, apply_ite (resS D.host.F PP), map_one, map_zero, ← h1]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[hAb, topL, dif_pos ⟨(Fin.castLE hr m).2, k.2⟩, redM, dif_pos (ht _ _)]`.
+
+Both sides reduce to the same expression. Establish `h2` using `hres σ hσ`. Use `h2 using 2` and compare the differences between its conclusion and the goal. Simplify using `only [σ, AddSubgroupClass.coe_sub, AddSubmonoidClass.coe_finsetSum, Subring.coe_mul, RingHom.map_sub, map_sum, RingHom.map_mul]`. Rewrite using `[Matrix.mul_apply]`.
+
+Use `congr 1`. Apply the tactic sequence `split_ifs <;> simp`. Take `⟨i₁, hi₁⟩` from `exists_val_ge Valued.v A B (fun i k => hb1 _) hBA d j hj0 (fun i => hj i (Finset.mem_univ _))`. Establish `hzi : Valued.v (z i₁) = Valued.v (d j)` using `le_antisymm (hz i₁) hi₁`. Establish `hz0 : z i₁ ≠ 0` using `fun h => hdj (by rw [← hzi, h, map_zero])`.
+
+Take `⟨κ₀, hκ₀⟩` from `hdense (d j / z i₁) (by rw [map_div₀, hzi, div_self hdj])`. Establish `hχ : χ ≠ 1`. Introduce `h`. Establish `h1 : χ (Pi.single i₁ κ₀ : Fin T.rank → kP PP) = 1` using `by rw [h, AddChar.one_apply]`. Establish `e3 : ∑ i, b ((Pi.single i₁ κ₀ : Fin T.rank → kP PP) i) * z i = d j + ∑ i, (b ((Pi.single i₁ κ₀ : Fin T.rank → kP PP) i) * z i - if i = i₁ then d j else 0)`.
+
+Rewrite using `[Finset.sum_sub_distrib, Finset.sum_ite_eq', if_pos (Finset.mem_univ _)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hw : Valued.v (∑ i, (b ((Pi.single i₁ κ₀ : Fin T.rank → kP PP) i) * z i - if i = i₁ then d j else 0)) < Valued.v (d j)`. Use `Valuation.map_sum_lt _ hdj fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : i = i₁`.
+
+Substitute `hi` using the available equality. Rewrite using `[if_pos rfl, Pi.single_eq_same]`. Establish `: b κ₀ * z i - d j = (b κ₀ - d j / z i) * z i` using `by field_simp`. Rewrite using `[this, Valuation.map_mul, ← hzi]`. Conclude with `mul_lt_of_lt_one_left (zero_lt_iff.2 (hzi ▸ hdj)) hκ₀`.
+
+Rewrite using `[if_neg hi, sub_zero, Pi.single_eq_of_ne hi]`. Conclude with `hterm _ i hb0`. Express the relevant statement in the definitionally equal form `psiV D.host.F ψ v (x / d j * ∑ i, b ((Pi.single i₁ κ₀ : Fin T.rank → kP PP) i) * z i) = 1 at h1`. Rewrite `h1` using `[e3, mul_add, div_mul_cancel₀ x hj0, psiV_add ψ hv, hsmall _ hw, mul_one]`. Conclude with `hx h1`.
+
+Rewrite using `[← (Equiv.sum_comp eqv.symm (fun κ => χ κ)).trans (AddChar.sum_eq_zero_of_ne_one hχ)]`. Conclude with `Finset.sum_congr rfl fun k _ => hpair _`.
+-/
 theorem exists_sum_zero {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (S T : HSp D)
     (βS : GL (Fin S.rank) (Datum.EAf D)) (βT : GL (Fin T.rank) (Datum.EAf D)) {e : AE D} {PP : Pl D.host.E}
     (he : Formalism.L2.NTheta.IsIdemAt e PP) (c : Fin T.rank → AE D) (hc : ∃ i, e * c i ≠ 0) (hr : T.rank ≤ S.rank) :
@@ -226,6 +298,19 @@ theorem exists_sum_zero {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.
 set_option maxHeartbeats 1000000 in
 open Classical in
 
+/- English proof (translation)
+Take `⟨hv, e, he, ⟨Tm, hTm⟩, hall⟩` from `h`. Establish `ho` using `GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum he`. Establish `hinf` using `ho.conj.infPart_eq`. Establish `hSB` using `GlobalTheory.PlaceVec.isSBHalf_of_red hS.1 hT.1 hinf (frMapAdj S T βS βT) (GlobalTheory.PlaceVec.frMapAdj_add S T βS βT) (GlobalTheory.PlaceVec.frMapAdj_up S T βS βT) (GlobalTheory.PlaceVec.frMapAdj_down S T βS βT) (LT.Pg ∪ Q) (fun y => omegaG LT m y * omegaQ Q T.rank m (-1) y) f …`. Rewrite using `[GlobalTheory.PlaceDatum.omegaG_congr LT m y y' fun PP hPP => h PP (Finset.mem_union_left _ hPP), GlobalTheory.PlaceVec.omegaQ_congr Q _ m _ fun PP hPP => h PP (Finset.mem_union_right _ hPP)]`.
+
+Take `⟨⟨es, h1, h2⟩, -⟩` from `he`. Establish `hP` using `Finset.mem_union_left Q hPP`. Establish `h3 : es PP * ∑ j ∈ LT.Pg ∪ Q, es j = es PP` using `GlobalTheory.PlaceModelSum.mul_sum_orth (fun i hi => (h1 i hi).1) (fun i hi j hj hij => (GlobalTheory.PlaceModelSum.eq_or_mul_eq_zero (h1 i hi).1 (h1 j hj).1).resolve_left fun h => hij (GlobalTheory.PlaceVec.isIdemAt_inj (h1 j hj) (h ▸ h1 i hi))) hP`. Rewrite `h3` using `[← h2]`. Take `⟨n, l, hn, hl, hsum⟩` from `exists_sum_zero hv.1.1 S T βS βT (h1 PP hP) c (hc _ (h1 PP hP).1) hr`.
+
+Establish `hhalf : ∀ k, IsHalf e (vecMulVec c (l k))` using `fun k i j => by`. Rewrite using `[vecMulVec_apply, ← hl k j]`. Take the linear combination `(c i * l k j) * h3`. Use `⟨n, l, hn, fun k => Matrix.ext fun i j => by` and prove the remaining obligations. Rewrite using `[Matrix.map_apply, ← hhalf k i j, RingHom.map_mul, ho.infPart_eq, zero_mul]`.
+
+Use the proof step `rfl, ?_⟩`. Establish `hk : ∀ k, heisO ψ S T (vecMulVec c (l k)) f = Tm (fun t => ψ (symplO S T t (vecMulVec c (l k))) * GlobalTheory.FinZeta.levDatum S T βS βT LT Q m e t)` using `fun k => by`. Rewrite using `[hall Tm hTm, ← hTm.modul _ hSB _ (by rw [GlobalTheory.LatVac.cA_cA]; exact hhalf k)]`. Both sides reduce to the same expression. Rewrite using `[Finset.sum_congr rfl fun k _ => hk k, ← map_sum]`.
+
+Establish `hz : (∑ k, fun t => ψ (symplO S T t (vecMulVec c (l k))) * GlobalTheory.FinZeta.levDatum S T βS βT LT Q m e t) = 0`. Use function extensionality and compare the values at `t`. Rewrite using `[Finset.sum_apply, ← Finset.sum_mul, Pi.zero_apply]`. Distinguish the cases in `h0 : GlobalTheory.FinZeta.levDatum S T βS βT LT Q m e t = 0`. Rewrite using `[h0, mul_zero]`.
+
+Take `⟨-, hI, hU, -⟩` from `GlobalTheory.FinZeta.levDatum_ne_zero_spec S T βS βT LT Q m e t h0`. Rewrite using `[hsum t hI (hU PP (Or.inl hPP)), zero_mul]`. Rewrite using `[hz, map_zero]`.
+-/
 theorem exists_sum_heisO_eq_zero {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
     {sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ}
     {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)}
@@ -271,6 +356,23 @@ theorem exists_sum_heisO_eq_zero {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D
       rw [hsum t hI (hU PP (Or.inl hPP)), zero_mul]
   rw [hz, map_zero]
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F i t σ s P cμ cη m om BW f₀ f c io hD Q h g ξ hξ`. Take `⟨hcore, -, -, -, -, hω, -, hlv, hpt, -, -⟩` from `hD`. Establish `hL` using `hcore.lev`. Establish `hθ : IsInfFam R.θ` using `hcore.models.inf`. Take `⟨PP, hPP⟩` from `exists_mem_Pg hL`.
+
+Set `c' : Fin (Wc D i).rank → AE D` to `Formalism.L2.Theta.mt (Wc D i) g⁻¹ *ᵥ fun a => incA D (ξ a)`. Establish `hc : Formalism.L2.Theta.mt (Wc D i) g *ᵥ c' = fun a => incA D (ξ a)`. Rewrite using `[Matrix.mulVec_mulVec, mt_mul_inv, Matrix.one_mulVec]`. Take `⟨n, l, hn, hl0, hl⟩` from `exists_sum_heisO_eq_zero (GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hL.βV i)) (GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hL.βW i)) ((D.sp.W_rank _ (Nat.le_add_left _ _) i.2).trans_le (r_le_V i)) hPP hlv c' fun e he => by`. Assume the negation of the conclusion as `hn`.
+
+Use `push Not at hn`. Take `⟨v, π, hπ⟩` from `GlobalTheory.SplitChart.exists_chart e he`. Use `hξ.1 (funext fun a => ?_)` and prove the remaining obligations. Use `(map_eq_zero (π.comp (incA D))).1 ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, ← congrFun hc a, RingHom.map_mulVec]`.
+
+Establish `: π ∘ c' = 0` using `funext fun b => (hπ.2.1 _).2 (hn b)`. Rewrite using `[this, Matrix.mulVec_zero]`. Both sides reduce to the same expression. Use `⟨n, hn, fun k => l k ᵥ* Formalism.L2.Theta.mt (Vc D i) h⁻¹, ?_⟩` and prove the remaining obligations. Establish `hf : IsThetaFunO R.ψ (Vc D i) (Wc D i) f`.
+
+Use `hpt 1` as an intermediate fact. Rewrite `this` using `[GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.ptAt, GlobalTheory.FiniteFock.pureTensorO_one]`. Then use the resulting hypothesis. Establish `htr` using `GlobalTheory.FinTranslate.finite_translate D R.ψ R.θ _ _ hω.std hθ _ hf`. Establish `key : ∀ k, heisO R.ψ (Vc D i) (Wc D i) (along (Vc D i) (Wc D i) ξ (l k ᵥ* Formalism.L2.Theta.mt (Vc D i) h⁻¹)) (om (h, g) (GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.ptAt R i σ BW f Q)) = om (h, g) (GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.ptAt R …` using `fun k => by`. Establish `h1 : along (Vc D i) (Wc D i) ξ (l k ᵥ* Formalism.L2.Theta.mt (Vc D i) h⁻¹) = actO (Vc D i) (Wc D i) h g (vecMulVec c' (l k))`.
+
+Rewrite using `[actO, Matrix.mul_vecMulVec, hc, Matrix.vecMulVec_mul, along]`. Rewrite using `[h1, ← hω.om_heis h g _ _ (hpt Q)]`. Use `congrArg _ ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.ptAt, GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.ptAt, ((htr.2 _ (hl0 k)).2)]`. Rewrite using `[Finset.sum_congr rfl fun k _ => key k, ← map_sum]`.
+
+Establish `hs` using `GlobalTheory.SpecFac.pureTensorO_sum hω.std hθ (fun _ => 1) (R.BV i) (cart (R.MW i σ)) BW Finset.univ (fun _ => (1 : ℂ)) (fun k => heisO R.ψ (Vc D i) (Wc D i) (vecMulVec c' (l k)) f) (fun k _ => (htr.2 _ (hl0 k)).1) Q`. Simplify using `only [one_smul] at hs`. Establish `h0` using `GlobalTheory.FiniteFock.pureTensorO_smul R.ψ R.θ (Vc D i) (Wc D i) (fun _ => 1) (cart (R.MW i σ)) (R.BV i) BW 0 0 Q`. Rewrite `h0` using `[zero_smul, zero_smul]`. Express the relevant statement in the definitionally equal form `om (h, g) (∑ k, Datum.pureTensorO R.ψ R.θ (Vc D i) (Wc D i) (fun _ => 1) (cart (R.MW i σ)) (R.BV i) BW (heisO R.ψ (Vc D i) (Wc D i) (vecMulVec c' (l k)) f) Q) = 0`.
+
+Rewrite using `[← hs, hl, h0, map_zero]`.
+-/
 theorem sum_heisO_along_eq_zero_level : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), ∀ i t σ s P cμ cη m om BW f₀ f c io, IsLiftDataC R F i t σ s P cμ cη m om BW f₀ f c io → ∀ Q h g ξ, IsoVec (Wc D i) ξ → ∃ n : ℕ, 0 < n ∧ ∃ a : Fin n → Fin (Vc D i).rank → AE D, ∑ k, heisO R.ψ (Vc D i) (Wc D i) (along (Vc D i) (Wc D i) ξ (a k)) (om (h, g) (GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.ptAt R i σ BW f Q)) = 0 := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F i t σ s P cμ cη m om BW f₀ f c io hD Q h g ξ hξ
   obtain ⟨hcore, -, -, -, -, hω, -, hlv, hpt, -, -⟩ := hD

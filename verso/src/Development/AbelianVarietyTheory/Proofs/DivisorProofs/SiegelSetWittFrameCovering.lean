@@ -20,6 +20,19 @@ open scoped Classical
 noncomputable section
 namespace GlobalTheory.ThetaSoSiegel
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hpair co hco`. Take `⟨e, ei, ev, hei, hmaps, hheis, hSB, hvac, hstd, hpure, hbij⟩` from `GlobalTheory.T.darboux_coords_good_model F E σ B n d X W M r s r' s' hpair.base hpair.herm hpair.skew hpair.good co hco`. Set `M₁ : Model σ X W` to `⟨co, fun v => ev v (M.vac v), M.μ, M.dom⟩`. Establish `hM₁ : M₁.IsGood B.ψ` using `⟨hco, hvac, hstd, hpair.good.haar, hpair.good.dom⟩`. Establish `hne : ∃ f : SInf F (Fin n × Fin d), f ≠ 0`.
+
+Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Take `⟨φ, hφ, hθ⟩` from `GlobalTheory.ThetaSumNe.exists_mem_schA_thetaSum_ne_zero F (Fin n × Fin d)`. Establish `hle : schA F (Fin n × Fin d) ≤ ⊥`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `Φ ⟨f, g, -, rfl⟩`. Rewrite using `[hall f]`. Use `show pureA F 0 g = 0`. Use function extensionality and compare the values at `x`. Simplify using `[pureA]`.
+
+Establish `h0 : φ = 0` using `(Submodule.mem_bot ℂ).1 (hle hφ)`. Conclude with `hθ (by rw [h0]; simp [thetaSum])`. Establish `hev : IsEv B M M₁ 1 1 ∅ e`. Use `⟨hmaps, fun z Φ hΦ => ?_, fun u hu => hu.elim, ei, ev, ?_, fun v => ⟨rfl, hSB v⟩, hpure⟩` and prove the remaining obligations. Establish `h1 : incM F (1 : Matrix (Fin n) (Fin n) E) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`.
+
+Establish `h1' : incM F (1 : Matrix (Fin d) (Fin d) E) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Rewrite using `[h1, h1', Matrix.one_mul, Matrix.transpose_one, Matrix.mul_one]`. Conclude with `hheis z Φ hΦ`. Take `⟨f, hf⟩` from `hne`. Take `⟨g, rfl⟩` from `hei f`.
+
+Introduce `h`. Conclude with `hf (by rw [h]; rfl)`. Take `⟨om₁, hW, hint⟩` from `GlobalTheory.T.weil_eigen_bijective_schwartz F E σ B n d X W M χX χW om r s r' s' hpair M₁ hM₁ e hev hbij`. Take `⟨c₀, hc₀, hth⟩` from `GlobalTheory.T.weil_eigen_schwartz_surjective F E σ B n d X W M χX χW om r s r' s' hpair M₁ hM₁ e hev hbij`. Conclude with `⟨M₁, om₁, e, c₀, rfl, ⟨hpair.base, hpair.herm, hpair.skew, hM₁, hpair.hX, hpair.hW, hpair.resX, hpair.resW, hW⟩, hc₀, fun Φ hΦ => ⟨hmaps Φ hΦ, hth Φ hΦ, fun x => hint x Φ hΦ⟩, hM₁, hev⟩`.
+-/
 theorem change_ev : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W)
     (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
@@ -63,6 +76,19 @@ theorem change_ev : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Number
   exact ⟨M₁, om₁, e, c₀, rfl, ⟨hpair.base, hpair.herm, hpair.skew, hM₁, hpair.hX, hpair.hW, hpair.resX, hpair.resW, hW⟩,
     hc₀, fun Φ hΦ => ⟨hmaps Φ hΦ, hth Φ hΦ, fun x => hint x Φ hΦ⟩, hM₁, hev⟩
 
+/- English proof (translation)
+Establish `hm0 : (m : F) ≠ 0` using `by exact_mod_cast (Nat.one_le_iff_ne_zero.mp hm)`. Use `set b : 𝓞 F := ⟨(m : F) * ξ, hint⟩ with hb`. Establish `hb0 : b ≠ 0`. Introduce `h`. Establish `h2 : ((b : 𝓞 F) : F) = 0` using `by rw [h]; simp`.
+
+Conclude with `mul_ne_zero hm0 hξ h2`. Establish `key : 1 ≤ ‖mixedEmbedding F (b : F)‖`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `hlt : ∀ z : InfinitePlace F, z (b : F) < 1` using `fun z => by`.
+
+Establish `h1 : mixedEmbedding.normAtPlace z (mixedEmbedding F (b : F)) ≤ ‖mixedEmbedding F (b : F)‖`. Distinguish the cases in `hw : z.IsReal`. Rewrite using `[mixedEmbedding.normAtPlace_apply_of_isReal hw]`. Conclude with `(norm_le_pi_norm _ _).trans (norm_fst_le _)`. Establish `hc' : z.IsComplex` using `InfinitePlace.not_isReal_iff_isComplex.mp hw`.
+
+Rewrite using `[mixedEmbedding.normAtPlace_apply_of_isComplex hc']`. Conclude with `(norm_le_pi_norm _ _).trans (norm_snd_le _)`. Rewrite `h1` using `[mixedEmbedding.normAtPlace_apply]`. Conclude with `h1.trans_lt hc`. Set `w : InfinitePlace F` to `Classical.arbitrary _`.
+
+Use `InfinitePlace.one_le_of_lt_one (w := w) hb0 (fun z _ => hlt z)` as an intermediate fact. Conclude with `absurd (hlt w) (not_lt.mpr this)`. Establish `e1 : (b : F) = (m : F) * ξ` using `rfl`. Rewrite `key` using `[e1, map_mul, map_natCast]`. Rewrite using `[GlobalTheory.LatScaleSum.evI_algebraMap]`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `norm_nsmul_le`.
+-/
 theorem one_le_mul_norm_evI {F : Type} [Field F] [NumberField F] (m : ℕ) (ξ : F) (hξ : ξ ≠ 0) (hm : 1 ≤ m)
     (hint : IsIntegral ℤ ((m : F) * ξ)) : 1 ≤ (m : ℝ) * ‖evI F (algebraMap F (AF F) ξ)‖ := by
   have hm0 : (m : F) ≠ 0 := by exact_mod_cast (Nat.one_le_iff_ne_zero.mp hm)
@@ -97,6 +123,71 @@ theorem one_le_mul_norm_evI {F : Type} [Field F] [NumberField F] (m : ℕ) (ξ :
 
 open GlobalTheory.TorusTheta in
 
+/- English proof (translation)
+Take `⟨co, blk, hrat, hcard, hact⟩` from `GlobalTheory.T.witt_frame_darboux_coordinates F E σ B n d X W M χX χW om r s r' s' hP r₀ Xf Yf hWitt`. Take `⟨M₁, om₁, e, c₀, hco, hP₁, hc₀, he, hgood, hev⟩` from `change_ev F E σ B n d X W M χX χW om r s r' s' hP co hrat`. Establish `hsup` using `GlobalTheory.T.darboux_witt_frame_pair hKP F E σ B n d X W M χX χW om r s r' s' hP r₀ Xf Yf hWitt co blk hrat hcard hact M₁ e hco hgood hev`. Take `⟨N₀, k₃, C₃, hlat⟩` from `GlobalTheory.LatScaleSum.thetaSum_norm_le_pow F (Fin n × Fin d)`. Use `set K : ℕ := Module.finrank ℚ F * d + L with hKdef`.
+
+Use `set D : ℕ := r₀ * K with hDdef`. Take `⟨k₁, hdec₀⟩` from `GlobalTheory.ThetaUnifSiegel.decay_unif hP₁ (N₀ + D)`. Use `⟨k₁ + D + k₃, fun Φ hΦ hSo => ?_⟩` and prove the remaining obligations. Establish `heΦ` using `(he Φ hΦ).1`. Take `⟨C₁, hdec₁⟩` from `hdec₀ (e Φ) heΦ`.
+
+Establish `hdec : ∀ g h (x : Fin n × Fin d → AF F), ‖om₁ (g, h) (e Φ) x‖ * (1 + ‖fun i => evI F (x i)‖) ^ (N₀ + D) ≤ C₁ * ((ht g : ℝ) * ht h) ^ k₁` using `fun g h x => by`. Use `le_trans (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (add_nonneg zero_le_one (norm_nonneg _)) (add_le_add_right ?_ 1) (N₀ + D)) (norm_nonneg _)) (hdec₁ g h x)` and prove the remaining obligations. Conclude with `(pi_norm_le_iff_of_nonneg (Finset.sum_nonneg fun _ _ => norm_nonneg _)).2 fun i => Finset.single_le_sum (f := fun i => ‖evI F (x i)‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ i)`. Take `⟨C₂, hden⟩` from `GlobalTheory.ThetaUnifSiegel.denom_lin hP₁ heΦ`. Use `set c' : ℝ := min 1 c ^ r₀ with hc'def`.
+
+Establish `hc'0 : 0 < c'` using `pow_pos (lt_min one_pos hc) _`. Establish `hc'1 : c' ≤ 1` using `pow_le_one₀ (lt_min one_pos hc).le (min_le_left _ _)`. Use `set π₀ : ℝ := c' ^ r₀ with hπ₀def`. Establish `hπ₀ : 0 < π₀` using `pow_pos hc'0 _`. Use `⟨‖c₀‖⁻¹ * |C₃| * (c'⁻¹) ^ N₀ * |C₁| * (π₀⁻¹ + 1) ^ L * |C₂| ^ (D + k₃), ?_⟩` and prove the remaining obligations.
+
+Introduce `t htc a hta a' ha' y h`. Establish `tlow : ∀ i, c' ≤ t i` using `GlobalTheory.ThetaUnifSiegel.min_pow_le_of_mem_cone hc htc`. Establish `tpos : ∀ i, 0 < t i` using `fun i => hc'0.trans_le (tlow i)`. Use `set u : Fin n × Fin d → ℝ := fun j => (blk j).elim 1 t with hudef`. Establish `hulow : ∀ j, c' ≤ u j`.
+
+Introduce `j`. Simplify using `only [hudef]`. Consider the cases of `blk j with`. Consider the case `none => exact hc'1`. Consider the case `some i => exact tlow i`.
+
+Establish `hupos : ∀ j, 0 < u j` using `fun j => hc'0.trans_le (hulow j)`. Take `⟨κ, hκ, hom⟩` from `GlobalTheory.T.torus_action_model_coordinates F E σ B n d X W M₁ χX χW om₁ r s r' s' hP₁ a' u hupos (by rw [hco]; exact hact t tpos a hta a' ha')`. Establish `hΨ0 : om (y, h) Φ ∈ schA F (Fin n × Fin d)` using `(IsUWeilPair.isUSplitting hP.weil).pres _ _ hΦ`. Establish `hT : om (a', 1) (om (y, h) Φ) ∈ schA F (Fin n × Fin d)` using `(IsUWeilPair.isUSplitting hP.weil).pres _ _ hΨ0`. Take `⟨Ψ, hΨdef⟩ : ∃ Ψ, Ψ = om₁ (y, h) (e Φ)` from `⟨_, rfl⟩`.
+
+Establish `hΨ : Ψ ∈ schA F (Fin n × Fin d)` using `hΨdef ▸ (IsUWeilPair.isUSplitting hP₁.weil).pres _ _ heΦ`. Establish `hmul : ((a' * y, h) : UA σ X.J × UA σ W.J) = (a', 1) * (y, h)`. Apply the tactic sequence `ext <;> simp`. Establish `hsplit : om (a' * y, h) Φ = om (a', 1) (om (y, h) Φ)`. Rewrite using `[hmul, map_mul, Module.End.mul_apply]`.
+
+Establish `heT : e (om (a', 1) (om (y, h) Φ)) = om₁ (a', 1) Ψ`. Rewrite using `[(he _ hΨ0).2.2, (he Φ hΦ).2.2, hΨdef]`. Establish `hthT : thetaSum F (om (a', 1) (om (y, h) Φ)) = c₀⁻¹ * thetaSum F (om₁ (a', 1) Ψ)`. Rewrite using `[← heT, (he _ hT).2.1, ← mul_assoc, inv_mul_cancel₀ hc₀, one_mul]`. Establish `hfun : om₁ (a', 1) Ψ = fun x => κ * Ψ (fun j => infScale F (u j) * x j)` using `funext (hom Ψ hΨ)`.
+
+Establish `hkey : theta om Φ (a' * y) h = c₀⁻¹ * (κ * thetaSum F (fun x => Ψ (fun j => infScale F (u j) * x j)))` using `by show thetaSum F (om (a' * y, h) Φ) = _`. Rewrite using `[hsplit, hthT, hfun]`. Unfold `thetaSum`. Rewrite using `[tsum_mul_left]`. Use `set T : ℝ := ∏ i, t i with hTdef`.
+
+Establish `hT0 : 0 < T` using `Finset.prod_pos fun i _ => tpos i`. Establish `hκ' : ‖κ‖ = T ^ (Module.finrank ℚ F * d)`. Establish `h2 : ‖κ‖ ^ 2 = (∏ i, t i ^ (Module.finrank ℚ F * d)) ^ 2`. Rewrite using `[hκ]`. Conclude with `GlobalTheory.ThetaUnifSiegel.prod_elim_pow blk t _ d hcard`.
+
+Establish `hnn : 0 ≤ ∏ i, t i ^ (Module.finrank ℚ F * d)` using `Finset.prod_nonneg fun i _ => pow_nonneg (tpos i).le _`. Rewrite using `[hTdef, ← Finset.prod_pow]`. Conclude with `(pow_left_inj₀ (norm_nonneg _) hnn two_ne_zero).1 h2`. Establish `hκ0 : κ ≠ 0`. Introduce `h0`.
+
+Rewrite `hκ'` using `[h0, norm_zero]`. Conclude with `(pow_pos hT0 _).ne' hκ'.symm`. Use `set P : ℝ := (ht y : ℝ) * ht h with hPdef`. Establish `hP0 : 0 ≤ P` using `mul_nonneg (NNReal.coe_nonneg _) (NNReal.coe_nonneg _)`. Take `⟨m, hm1, hmC, hmint⟩` from `hden y h`.
+
+Establish `hm0 : (0 : ℝ) ≤ m` using `Nat.cast_nonneg m`. Establish `hmR : (1 : ℝ) ≤ m` using `by exact_mod_cast hm1`. Establish `hC₁P : 0 ≤ C₁ * P ^ k₁` using `le_trans (by positivity) (hdec y h 0)`. Use `set A : ℝ := (c'⁻¹) ^ N₀ * (|C₁| * P ^ k₁) * (m : ℝ) ^ D * (T ^ K)⁻¹ with hAdef`. Establish `hA0 : 0 ≤ A` using `by positivity`.
+
+Establish `hdecay : ∀ ξ : Fin n × Fin d → F, ‖Ψ (fun j => infScale F (u j) * (fun i => algebraMap F (AF F) (ξ i)) j)‖ * (1 + ‖fun i => evI F (algebraMap F (AF F) (ξ i))‖) ^ N₀ ≤ A`. Introduce `ξ`. Use `beta_reduce`. Distinguish the cases in `hz : Ψ (fun j => infScale F (u j) * algebraMap F (AF F) (ξ j)) = 0`. Rewrite using `[hz, norm_zero, zero_mul]`.
+
+Conclude with `hA0`. Establish `hblk : ∀ i : Fin r₀, ∃ j, blk j = some i ∧ ξ j ≠ 0`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Take `⟨i, hi⟩` from `hne`.
+
+Establish `h0` using `hsup Φ hΦ hSo (a' * y) h ξ ⟨i, hi⟩`. Rewrite `h0` using `[hsplit, heT, hfun]`. Conclude with `hz ((mul_eq_zero.1 h0).resolve_left hκ0)`. Use `set s0 : ℝ := ‖fun i => evI F (infScale F (u i) * algebraMap F (AF F) (ξ i))‖ with hs0`. Establish `hs00 : 0 ≤ s0` using `norm_nonneg _`.
+
+Establish `h1` using `hdec y h (fun j => infScale F (u j) * algebraMap F (AF F) (ξ j))`. Rewrite `h1` using `[← hΨdef]`. Establish `hti : ∀ i, t i ≤ m * (1 + s0)`. Introduce `i`. Take `⟨j, hj, hξj⟩` from `hblk i`.
+
+Establish `hint` using `hmint _ ξ (fun i => infScale_mul_snd F (u i) _) (by rw [hΨdef] at hz; exact hz) j`. Establish `h1le` using `one_le_mul_norm_evI m (ξ j) hξj hm1 hint`. Establish `huj : u j = t i` using `by simp only [hudef, hj, Option.elim_some]`. Establish `hsj : t i * ‖evI F (algebraMap F (AF F) (ξ j))‖ ≤ s0`. Use `norm_le_pi_norm (fun i => evI F (infScale F (u i) * algebraMap F (AF F) (ξ i))) j` as an intermediate fact.
+
+Rewrite `this` using `[evI_infScale_mul, norm_smul, Real.norm_of_nonneg (hupos j).le, huj]`. Conclude with `this`. Use polynomial arithmetic with `[tpos i, norm_nonneg (evI F (algebraMap F (AF F) (ξ j)))]`. Establish `hTK : T ^ K ≤ (m : ℝ) ^ D * (1 + s0) ^ D`. Establish `hTle : T ≤ ((m : ℝ) * (1 + s0)) ^ r₀`.
+
+Rewrite using `[hTdef]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `hnorm : c' * ‖fun i => evI F (algebraMap F (AF F) (ξ i))‖ ≤ s0`. Simplify using `only [hs0, evI_infScale_mul]`.
+
+Conclude with `GlobalTheory.ThetaUnifSiegel.mul_norm_le_norm_smul hc'0 u hulow _`. Establish `hpow : (1 + ‖fun i => evI F (algebraMap F (AF F) (ξ i))‖) ^ N₀ ≤ (c'⁻¹) ^ N₀ * (1 + s0) ^ N₀`. Establish `hi : 1 ≤ c'⁻¹` using `one_le_inv₀ hc'0 |>.2 hc'1`. Establish `h3 : ‖fun i => evI F (algebraMap F (AF F) (ξ i))‖ ≤ c'⁻¹ * s0`. Rewrite using `[le_inv_mul_iff₀ hc'0]`.
+
+Conclude with `hnorm`. Establish `hle : 1 + ‖fun i => evI F (algebraMap F (AF F) (ξ i))‖ ≤ c'⁻¹ * (1 + s0)` using `by nlinarith`. Establish `h4` using `pow_le_pow_left₀ (add_nonneg zero_le_one (norm_nonneg _)) hle N₀`. Rewrite `h4` using `[mul_pow]`. Then use the resulting hypothesis. Use `set v : ℝ := ‖Ψ (fun j => infScale F (u j) * algebraMap F (AF F) (ξ j))‖ with hv`.
+
+Establish `hv0 : 0 ≤ v` using `norm_nonneg _`. Establish `hmain : v * (1 + s0) ^ N₀ * T ^ K ≤ (m : ℝ) ^ D * (|C₁| * P ^ k₁)`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_left (h1.trans ?_) (by positivity)` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (le_abs_self _) (pow_nonneg hP0 _)`.
+
+Establish `hTK0 : 0 < T ^ K` using `pow_pos hT0 _`. Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts. Use `_ ≤ (c'⁻¹) ^ N₀ * ((m : ℝ) ^ D * (|C₁| * P ^ k₁)) * (T ^ K)⁻¹ := mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hmain (by positivity)) (inv_nonneg.2 hTK0.le)`. Use `_ = A := by rw [hAdef]; ring`.
+
+Establish `hint : ∀ ξ : Fin n × Fin d → F, Ψ (fun j => infScale F (u j) * (fun i => algebraMap F (AF F) (ξ i)) j) ≠ 0 → ∀ i, IsIntegral ℤ ((m : F) * ξ i)`. Introduce `ξ hne`. Rewrite `hne` using `[hΨdef]`. Conclude with `hmint _ ξ (fun i => infScale_mul_snd F (u i) _) hne`. Establish `hS` using `hlat A m (fun x => Ψ (fun j => infScale F (u j) * x j)) hm1 hdecay hint`.
+
+Use `set Q : ℝ := ‖thetaSum F (fun x => Ψ (fun j => infScale F (u j) * x j))‖ with hQ`. Establish `hQ' : Q ≤ |C₃| * A * (m : ℝ) ^ k₃` using `hS.trans (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_abs_self _) hA0) (pow_nonneg hm0 _))`. Establish `h1T : (1 + T) ^ L ≤ (π₀⁻¹ + 1) ^ L * T ^ L`. Establish `hπT : π₀ ≤ T`. Rewrite using `[hπ₀def, hTdef]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h1 : 1 ≤ π₀⁻¹ * T` using `by rw [le_inv_mul_iff₀ hπ₀, mul_one]; exact hπT`. Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ (by positivity) (by nlinarith) L`. Establish `hmk : (m : ℝ) ^ (D + k₃) ≤ |C₂| ^ (D + k₃) * P ^ (D + k₃)`.
+
+Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ hm0 (hmC.trans (mul_le_mul_of_nonneg_right (le_abs_self _) hP0)) _`. Establish `hTcancel : T ^ (Module.finrank ℚ F * d) * T ^ L * (T ^ K)⁻¹ = 1`. Rewrite using `[← pow_add, hKdef, mul_inv_cancel₀ (pow_pos hT0 _).ne']`. Rewrite using `[hkey, norm_mul, norm_mul, norm_inv, hκ', ← hQ]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hTf : 0 ≤ T ^ (Module.finrank ℚ F * d)` using `pow_nonneg hT0.le _`. Establish `hc0' : 0 ≤ ‖c₀‖⁻¹` using `inv_nonneg.2 (norm_nonneg _)`. Conclude with `mul_le_mul (mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left hQ' hTf) hc0') h1T (pow_nonneg (by linarith) _) (mul_nonneg hc0' (mul_nonneg hTf (mul_nonneg (mul_nonneg (abs_nonneg _) hA0) (pow_nonneg hm0 _))))`. Use `_ = ‖c₀‖⁻¹ * |C₃| * (c'⁻¹) ^ N₀ * |C₁| * (π₀⁻¹ + 1) ^ L * P ^ k₁ * (m : ℝ) ^ (D + k₃) * (T ^ (Module.finrank ℚ F * d) * T ^ L * (T ^ K)⁻¹) := by`.
+
+Rewrite using `[hAdef, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = ‖c₀‖⁻¹ * |C₃| * (c'⁻¹) ^ N₀ * |C₁| * (π₀⁻¹ + 1) ^ L * P ^ k₁ * (m : ℝ) ^ (D + k₃) := by`. Rewrite using `[hTcancel, mul_one]`. Use `_ ≤ ‖c₀‖⁻¹ * |C₃| * (c'⁻¹) ^ N₀ * |C₁| * (π₀⁻¹ + 1) ^ L * P ^ k₁ * (|C₂| ^ (D + k₃) * P ^ (D + k₃)) := by`.
+
+Conclude with `mul_le_mul_of_nonneg_left hmk (by positivity)`. Use `_ = _ := by rw [show k₁ + D + k₃ = k₁ + (D + k₃) by ring, pow_add]; ring`.
+-/
 theorem theta_torus_decay (hKP : GlobalTheory.ThK.KP) {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] {σ : E →ₐ[F] E} {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W}
     {χX χW : Chr F E} {om : Rep σ X W} {r s r' s' : ℕ} (hP : IsPair B M χX χW om r s r' s') {r₀ : ℕ}
@@ -293,6 +384,17 @@ theorem theta_torus_decay (hKP : GlobalTheory.ThK.KP) {F E : Type} [Field F] [Nu
         exact mul_le_mul_of_nonneg_left hmk (by positivity)
     _ = _ := by rw [show k₁ + D + k₃ = k₁ + (D + k₃) by ring, pow_add]; ring
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP r₀ Xf Yf hfr Ω C₀ K c hΩ hC₀ hK hc hconj hσ e he Cf _ L`. Take `⟨Bd, hBd⟩` from `GlobalTheory.ThetaUnifSiegel.ht_bdd ((1 : E) • X.J.map σ) hC₀ hK`. Take `⟨k₁, hk₁⟩` from `theta_torus_decay hKP hP hfr hc L`. Use `⟨k₁, fun Φ hΦ hSo => ?_⟩` and prove the remaining obligations. Take `⟨C₁, h₁⟩` from `hk₁ Φ hΦ hSo`.
+
+Use `⟨|C₁| * (max Bd 0) ^ k₁, fun h g _ p hp t htc a ha k hk hg => ?_⟩` and prove the remaining obligations. Take `⟨a', ha'⟩` from `GlobalTheory.ThetaUnifSiegel.transp hσ X.J a`. Establish `hy : ((a'⁻¹ * g : UA σ X.J) : GL (Fin n) (AE F E)) = HA.mat (AF F) σ ((1 : E) • X.J.map σ) ((a⁻¹ * p * a) * k)`. Establish `: (a⁻¹ * p * a) * k = a⁻¹ * (p * a * k)` using `by group`. Rewrite using `[this]`.
+
+Express the relevant statement in the definitionally equal form `(a' : GL (Fin n) (AE F E))⁻¹ * (g : GL (Fin n) (AE F E)) = _`. Rewrite using `[ha', hg]`. Both sides reduce to the same expression. Establish `hty : (ht (a'⁻¹ * g) : ℝ) ≤ max Bd 0`. Use `le_trans ?_ (le_max_left _ _)` and prove the remaining obligations.
+
+Use `show (heightGL F ((a'⁻¹ * g : UA σ X.J) : GL (Fin n) (AE F E)) : ℝ) ≤ Bd`. Rewrite using `[hy]`. Conclude with `hBd _ (hconj p hp t htc a ha) k hk`. Establish `hb` using `h₁ t htc a ha a' ha' (a'⁻¹ * g) h`. Rewrite `hb` using `[mul_inv_cancel_left]`.
+
+Establish `h0 : (0 : ℝ) ≤ (ht h : ℝ)` using `NNReal.coe_nonneg _`. Establish `hy0 : (0 : ℝ) ≤ (ht (a'⁻¹ * g) : ℝ)` using `NNReal.coe_nonneg _`. Use `hb.trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem theta_decay_height_pow : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W)
     (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' → ∀ (r₀ : ℕ) (Xf Yf : Matrix (Fin n) (Fin r₀) E),

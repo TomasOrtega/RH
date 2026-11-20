@@ -22,6 +22,9 @@ def mt0 (M : MtFam D) : MtFam0 D.host D.what₂ := fun μ j h1 h2 =>
   { wt := (M μ j h1 h2).wt, J := (M μ j h1 h2).J, χ := (M μ j h1 h2).χ, J_open := (M μ j h1 h2).J_open,
     real := (M μ j h1 h2).real, real_inj := (M μ j h1 h2).real_inj, real_range := (M μ j h1 h2).real_range }
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem genAt_iff (l : ℕ) (Q : Finset (PlE D.host)) (v : PlE D.host) (k : ℕ) :
     GenAt D l Q v k ↔ GenAt0 D.host l Q v k := Iff.rfl
 
@@ -97,6 +100,9 @@ def chiN (C : NChoice D) (tw : ∀ i : LocT B0, D.ntw.O0 (C.twI (wOf B0 i)) →+
   chi1N B0 C tw ps i * ((Units.map (algebraMap ℤ_[lOf B0 i] (OOf B0 i)).toMonoidHom).comp
     (cycZ (F := D.host.E) (Ω := D.nd.Om) (lOf B0 i))) ^ (-((c : ℤ) - 1))
 
+/- English proof (translation)
+Simplify using `[chiN]`.
+-/
 theorem chiN_one (C : NChoice D) (tw : ∀ i : LocT B0, D.ntw.O0 (C.twI (wOf B0 i)) →+* OOf B0 i)
     (ps : ∀ i : LocT B0, G D.host.E D.nd.Om →* (OOf B0 i)ˣ) (i : LocT B0) : chiN B0 C tw ps i 1 = chi1N B0 C tw ps i := by
   simp [chiN]
@@ -110,9 +116,17 @@ def gamN (D : D7) (v : PlE D.host) : G D.host.E D.nd.Om := by
 
 def PlGwDisj (D : D7) : Prop := ∀ k k' v v', D.naut.plGw k v = D.naut.plGw k' v' → k = k'
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.MemTame.exists_tameGenAt D.host.E D.nd.Om v (D.nd.plOm.1 v) (D.nd.plOm.2 v)`.
+-/
 theorem exists_tame (D : D7) (v : PlE D.host) : ∃ γ : G D.host.E D.nd.Om, TameGenAt (D.nd.plOm.1 v) γ :=
   GlobalTheory.MemTame.exists_tameGenAt D.host.E D.nd.Om v (D.nd.plOm.1 v) (D.nd.plOm.2 v)
 
+/- English proof (translation)
+Unfold `gamN`. Use `split_ifs with h h'`. Use `D.ntypes.tg_gen h.choose.1 h.choose.2` as an intermediate fact. Rewrite `this` using `[h.choose_spec]`. Then use the resulting hypothesis. Conclude with `h'.choose_spec`.
+
+Conclude with `absurd (exists_tame D v) h'`.
+-/
 theorem gamN_gen (D : D7) (v : PlE D.host) : TameGenAt (D.nd.plOm.1 v) (gamN D v) := by
   classical
   unfold gamN
@@ -122,6 +136,11 @@ theorem gamN_gen (D : D7) (v : PlE D.host) : TameGenAt (D.nd.plOm.1 v) (gamN D v
   · exact h'.choose_spec
   · exact absurd (exists_tame D v) h'
 
+/- English proof (translation)
+Establish `h : ∃ kv : (Σ k, D.nd.PlG k), D.naut.plGw kv.1 kv.2 = D.naut.plGw k v` using `⟨⟨k, v⟩, rfl⟩`. Unfold `gamN`. Rewrite using `[dif_pos h]`. Establish `key : ∀ kv : (Σ k, D.nd.PlG k), D.naut.plGw kv.1 kv.2 = D.naut.plGw k v → kv = ⟨k, v⟩`. Introduce and unpack `⟨k', v'⟩ e`.
+
+Take `rfl` from `hD k' k v' v e`. Take `rfl` from `D.naut.plGw_inj k' e`. Both sides reduce to the same expression. Rewrite using `[key _ h.choose_spec]`.
+-/
 theorem gamN_tg (D : D7) (hD : PlGwDisj D) (k : Fin 2) (v : D.nd.PlG k) : gamN D (D.naut.plGw k v) = D.ntypes.tg k v := by
   classical
   have h : ∃ kv : (Σ k, D.nd.PlG k), D.naut.plGw kv.1 kv.2 = D.naut.plGw k v := ⟨⟨k, v⟩, rfl⟩
@@ -273,6 +292,9 @@ def unitsLift {Γ O : Type} [Group Γ] [CommRing O] [IsDomain O] (f : Γ →* (F
     rw [(h (a * b)).choose_spec, Units.val_mul, map_mul (algebraMap O (FractionRing O)), (h a).choose_spec, (h b).choose_spec]
     simp
 
+/- English proof (translation)
+The claim follows from `(h g).choose_spec`.
+-/
 theorem unitsLift_spec {Γ O : Type} [Group Γ] [CommRing O] [IsDomain O] (f : Γ →* (FractionRing O)ˣ)
     (h : ∀ g, ∃ u : Oˣ, algebraMap O (FractionRing O) u = f g) (g : Γ) :
     algebraMap O (FractionRing O) (unitsLift f h g : O) = f g :=
@@ -315,16 +337,25 @@ def GenHyp (M : MtFam D) (Q : D.what₂.places.Pl → Finset (PlE D.host)) : Pro
     ∀ (v : PlE D.host) (k : ℕ) (s : SplitPlace D.host.E), GenAt D (D.what₂.places.resChar w) (Q w) v k →
       IsConjPl D.host v s.w → s.v ∉ B
 
+/- English proof (translation)
+The claim follows from `congrArg Subtype.val ((FractionRing.algEquiv ↥(Loc.OL (X.Kx j w)) ↥(X.Kx j w).1).commutes a)`.
+-/
 theorem iqC_alg (X : CoefIn D.what₂) (j : ℕ) (w : D.what₂.places.Pl) (a : OcC X j w) :
     iqC X j w (algebraMap (OcC X j w) (FractionRing (OcC X j w)) a) =
       (((show ↥(Loc.OL (X.Kx j w)) from a) : ↥(X.Kx j w).1) : Loc.Om (D.what₂.places.resChar w)) :=
   congrArg Subtype.val ((FractionRing.algEquiv ↥(Loc.OL (X.Kx j w)) ↥(X.Kx j w).1).commutes a)
 
+/- English proof (translation)
+The claim follows from `congrArg Subtype.val ((FractionRing.algEquiv ↥(Loc.OL (X.Kx j w)) ↥(X.Kx j w).1).apply_symm_apply (Formalism.BasicNotions.Examples₂.TwB.phiL (X.Kx j w) (X.E.emb w) (X.hKx j w) x))`.
+-/
 theorem iqC_ec (X : CoefIn D.what₂) (j : ℕ) (w : D.what₂.places.Pl) (x : D.what₂.LL) :
     iqC X j w (ecC X j w x) = X.E.emb w x :=
   congrArg Subtype.val ((FractionRing.algEquiv ↥(Loc.OL (X.Kx j w)) ↥(X.Kx j w).1).apply_symm_apply
     (Formalism.BasicNotions.Examples₂.TwB.phiL (X.Kx j w) (X.E.emb w) (X.hKx j w) x))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(FractionRing.algEquiv ↥(Loc.OL (X.Kx j w)) ↥(X.Kx j w).1).symm ⟨y, hy⟩, congrArg Subtype.val ((FractionRing.algEquiv ↥(Loc.OL (X.Kx j w)) ↥(X.Kx j w).1).apply_symm_apply ⟨y, hy⟩)⟩`.
+-/
 theorem iqC_surj (X : CoefIn D.what₂) (j : ℕ) (w : D.what₂.places.Pl) (y : Loc.Om (D.what₂.places.resChar w))
     (hy : y ∈ (X.Kx j w).1) : ∃ x, iqC X j w x = y :=
   ⟨(FractionRing.algEquiv ↥(Loc.OL (X.Kx j w)) ↥(X.Kx j w).1).symm ⟨y, hy⟩,

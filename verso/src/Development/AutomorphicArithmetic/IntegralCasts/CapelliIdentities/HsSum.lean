@@ -9,6 +9,11 @@ noncomputable def UpperTheory.Reformulated.B.Qh70.Hs :
         (g : ι → V) (w : V) ↦
       ∃ (c : ι → L), (∀ (S : ι), c S ∈ B) ∧ w = ∑ S ∈ P, c S • g S
 
+/- English proof (translation)
+Introduce `L V ι _ _ _ _ B P g α s f h`. Use `Finset.sum_induction f (UpperTheory.Reformulated.B.Qh70.Hs B P g) ?_ ?_ h` and prove the remaining obligations. Introduce and unpack `a b ⟨c, hc, rfl⟩ ⟨d, hd, rfl⟩`. Use `⟨fun S => c S + d S, fun S => B.add_mem (hc S) (hd S), ?_⟩` and prove the remaining obligations. Simplify using `only [add_smul, Finset.sum_add_distrib]`.
+
+Conclude with `⟨fun _ => 0, fun _ => B.zero_mem, by simp⟩`.
+-/
 theorem UpperTheory.Reformulated.B.Qh70.Hs_sum :
     ∀ {L V ι : Type} [inst : Field L] [inst_1 : Algebra ℂ L] [inst_2 : AddCommGroup V] [inst_3 : _root_.Module L V]
       {B : Subalgebra ℂ L} {P : Finset ι} {g : ι → V} {α : Type} (s : Finset α) (f : α → V),

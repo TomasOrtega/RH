@@ -19,6 +19,11 @@ section
 
 variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
 
+/- English proof (translation)
+Establish `hd` using `discreteTopology_span_range_of_linearIndependent u hu`. Use `⟨hd, ?_⟩` and prove the remaining obligations. Use `haveI := hd`. Establish `hZ : LinearIndependent ℤ u` using `hu.restrict_scalars' ℤ`. Rewrite using `[covol_eq_gram E (span ℤ (Set.range u)) ι (Basis.span hZ)]`.
+
+Simplify using `only [Basis.span_apply]`.
+-/
 theorem discreteTopology_span_range_and_covol {ι : Type*} [Fintype ι] [DecidableEq ι] (u : ι → E)
     (hu : LinearIndependent ℝ u) :
     DiscreteTopology (span ℤ (Set.range u)) ∧
@@ -30,6 +35,19 @@ theorem discreteTopology_span_range_and_covol {ι : Type*} [Fintype ι] [Decidab
   rw [covol_eq_gram E (span ℤ (Set.range u)) ι (Basis.span hZ)]
   simp only [Basis.span_apply]
 
+/- English proof (translation)
+Set `b₁` to `Module.finBasis ℤ L₁`. Set `b₂` to `Module.finBasis ℤ L₂`. Set `v₁ : Fin (Module.finrank ℤ L₁) → E` to `fun i => (b₁ i : E)`. Set `v₂ : Fin (Module.finrank ℤ L₂) → E` to `fun i => (b₂ i : E)`. Establish `hv₁ : LinearIndependent ℝ v₁` using `linearIndependent_coe_basis''' L₁ b₁`.
+
+Establish `hv₂ : LinearIndependent ℝ v₂` using `linearIndependent_coe_basis''' L₂ b₂`. Establish `horth : ∀ i j, inner ℝ (v₁ i) (v₂ j) = 0` using `fun i j => h _ (b₁ i).2 _ (b₂ j).2`. Establish `horth' : ∀ i j, inner ℝ (v₂ i) (v₁ j) = 0` using `fun i j => by`. Rewrite using `[real_inner_comm]`. Conclude with `horth j i`.
+
+Establish `hdisj : Disjoint (span ℝ (Set.range v₁)) (span ℝ (Set.range v₂))`. Apply `Submodule.IsOrtho.disjoint` to reduce the goal to its premises. Rewrite using `[Submodule.isOrtho_span]`. Introduce and unpack `_ ⟨i, rfl⟩ _ ⟨j, rfl⟩`. Conclude with `horth i j`.
+
+Establish `hli` using `hv₁.sum_type hv₂ hdisj`. Establish `hs₁ : span ℤ (Set.range v₁) = L₁` using `span_range_coe_basis' L₁ b₁`. Establish `hs₂ : span ℤ (Set.range v₂) = L₂` using `span_range_coe_basis' L₂ b₂`. Establish `hspan : span ℤ (Set.range (Sum.elim v₁ v₂)) = L₁ ⊔ L₂`. Rewrite using `[Set.Sum.elim_range, Submodule.span_union, hs₁, hs₂]`.
+
+Take `⟨hd, hc⟩` from `discreteTopology_span_range_and_covol _ hli`. Rewrite `hd`, `hc` using `[hspan]`. Use `⟨hd, ?_⟩` and prove the remaining obligations. Establish `hc₁ : covol L₁ = Real.sqrt (Matrix.gram ℝ v₁).det` using `covol_eq_gram E L₁ _ b₁`. Establish `hc₂ : covol L₂ = Real.sqrt (Matrix.gram ℝ v₂).det` using `covol_eq_gram E L₂ _ b₂`.
+
+Establish `hp₁ : 0 ≤ (Matrix.gram ℝ v₁).det` using `(det_gram_basis_pos L₁ b₁).le`. Establish `hg : Matrix.gram ℝ (Sum.elim v₁ v₂) = Matrix.fromBlocks (Matrix.gram ℝ v₁) 0 0 (Matrix.gram ℝ v₂)`. Apply the tactic sequence `ext (i | i) (j | j) <;> simp [Matrix.gram_apply, horth, horth']`. Rewrite using `[hc, hc₁, hc₂, hg, Matrix.det_fromBlocks_zero₂₁, Real.sqrt_mul hp₁]`.
+-/
 theorem discreteTopology_sup_and_covol_sup (L₁ L₂ : Submodule ℤ E) [DiscreteTopology L₁] [DiscreteTopology L₂]
     (h : ∀ x ∈ L₁, ∀ y ∈ L₂, inner ℝ x y = 0) :
     DiscreteTopology (L₁ ⊔ L₂ : Submodule ℤ E) ∧ covol (L₁ ⊔ L₂) = covol L₁ * covol L₂ := by
@@ -65,6 +83,13 @@ theorem discreteTopology_sup_and_covol_sup (L₁ L₂ : Submodule ℤ E) [Discre
     ext (i | i) (j | j) <;> simp [Matrix.gram_apply, horth, horth']
   rw [hc, hc₁, hc₂, hg, Matrix.det_fromBlocks_zero₂₁, Real.sqrt_mul hp₁]
 
+/- English proof (translation)
+Use `haveI := hL`. Distinguish the cases in `hN : N = ⊥`. Substitute `hN` using the available equality. Establish `h0 : covol (⊥ : Submodule ℤ E) = 1` using `(covol_basic_properties E).1`. Establish `hr : rk (⊥ : Submodule ℤ E) = 0` using `by simp [rk]`.
+
+Simplify using `[deg, h0, hr]`. Use `haveI : DiscreteTopology N := discreteTopology_of_le hNL`. Establish `hs : slope N ≤ muMax L` using `slopeLeMuMax_of (slopesBdd_of gram_det_le) E L N hL hNL hN`. Establish `hk : 0 < rk N` using `Module.finrank_pos_iff.mpr (Submodule.nontrivial_iff_ne_bot.mpr hN)`. Establish `hk' : (0 : ℝ) < (rk N : ℝ)` using `by exact_mod_cast hk`.
+
+Unfold `slope at hs`. Rewrite `hs` using `[div_le_iff₀ hk']`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem degree_le_rank_mul_maxSlope (L N : Submodule ℤ E) (hL : DiscreteTopology L) (hNL : N ≤ L) :
     deg N ≤ rk N * muMax L := by
   haveI := hL
@@ -81,6 +106,13 @@ theorem degree_le_rank_mul_maxSlope (L N : Submodule ℤ E) (hL : DiscreteTopolo
     rw [div_le_iff₀ hk'] at hs
     linarith
 
+/- English proof (translation)
+Use `haveI := hQ`. Distinguish the cases in `hQ0 : Q = ⊥`. Substitute `hQ0` using the available equality. Establish `h0 : covol (⊥ : Submodule ℤ E) = 1` using `(covol_basic_properties E).1`. Establish `hr : rk (⊥ : Submodule ℤ E) = 0` using `by simp [rk]`.
+
+Simplify using `[deg, h0, hr]`. Establish `hs` using `slopeInequality_of (slopeLeMuMax_of (slopesBdd_of gram_det_le)) E E Q M hQ hM hQ0 ψ 1 hinj (fun x => by simpa using hψ x)`. Rewrite `hs` using `[Real.log_one, add_zero]`. Establish `hk : 0 < rk Q` using `Module.finrank_pos_iff.mpr (Submodule.nontrivial_iff_ne_bot.mpr hQ0)`. Establish `hk' : (0 : ℝ) < (rk Q : ℝ)` using `by exact_mod_cast hk`.
+
+Unfold `slope at hs`. Rewrite `hs` using `[div_le_iff₀ hk']`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem degree_le_rank_mul_maxSlope_of_injective (Q M : Submodule ℤ E) (hQ : DiscreteTopology Q)
     (hM : DiscreteTopology M) (ψ : Q →ₗ[ℤ] M) (hinj : Function.Injective ψ)
     (hψ : ∀ x : Q, ‖((ψ x : M) : E)‖ ≤ ‖(x : E)‖) : deg Q ≤ rk Q * muMax M := by
@@ -101,6 +133,41 @@ theorem degree_le_rank_mul_maxSlope_of_injective (Q M : Submodule ℤ E) (hQ : D
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Use `haveI := h1`. Use `haveI := h2`. Use `haveI := hd`. Use `haveI hNd : DiscreteTopology N := discreteTopology_of_le hN`. Take `⟨P, hPdef⟩ : ∃ P : E →L[ℝ] E, P = (span ℝ (L₂ : Set E)).starProjection` from `⟨_, rfl⟩`.
+
+Establish `hortho : span ℝ (L₁ : Set E) ≤ (span ℝ (L₂ : Set E))ᗮ`. Rewrite using `[← Submodule.isOrtho_iff_le, Submodule.isOrtho_span]`. Introduce `x hx y hy`. Conclude with `h x hx y hy`. Establish `hP0 : ∀ x ∈ span ℝ (L₁ : Set E), P x = 0` using `fun x hx => by`.
+
+Rewrite using `[hPdef, Submodule.starProjection_apply_eq_zero_iff]`. Conclude with `hortho hx`. Establish `hP1 : ∀ x ∈ L₁, P x = 0` using `fun x hx => hP0 x (subset_span hx)`. Establish `hP2 : ∀ x ∈ L₂, P x = x` using `fun x hx => by`. Rewrite using `[hPdef, Submodule.starProjection_eq_self_iff]`.
+
+Conclude with `subset_span hx`. Establish `hP3 : ∀ x ∈ L₁ ⊔ L₂, P x ∈ L₂ ∧ x - P x ∈ L₁`. Introduce `x hx`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.mp hx`. Rewrite using `[map_add, hP1 y hy, hP2 z hz, zero_add, add_sub_cancel_right]`.
+
+Conclude with `⟨hz, hy⟩`. Establish `hPnorm : ∀ x, ‖P x‖ ≤ ‖x‖` using `fun x => by`. Rewrite using `[hPdef]`. Conclude with `Submodule.norm_starProjection_apply_le _ x`. Use `set K : Submodule ℤ E := N ⊓ L₁ with hK`.
+
+Establish `hKspan : span ℝ (K : Set E) ≤ span ℝ (L₁ : Set E)` using `Submodule.span_mono (fun x hx => hx.2)`. Establish `hsat : IsSaturated N K`. Use `⟨inf_le_left, fun x hx hxs => ⟨hx, ?_⟩⟩` and prove the remaining obligations. Establish `h0 : P x = 0` using `hP0 x (hKspan hxs)`. Use `(hP3 x (hN hx)).2` as an intermediate fact.
+
+Rewrite `this` using `[h0, sub_zero]`. Then use the resulting hypothesis. Take `⟨hQd, hrk, hdeg⟩` from `degree_quotient E N K hNd hsat`. Use `set Q := quot N K with hQ`. Establish `hPR : ∀ x ∈ N, P ((span ℝ (K : Set E))ᗮ.starProjection x) = P x`. Introduce `x hx`.
+
+Rewrite using `[Submodule.starProjection_orthogonal_val, map_sub]`. Establish `hS : (span ℝ (K : Set E)).starProjection x ∈ span ℝ (L₁ : Set E)`. Apply `hKspan` to reduce the goal to its premises. Rewrite using `[Submodule.starProjection_apply]`. Conclude with `SetLike.coe_mem _`.
+
+Rewrite using `[hP0 _ hS, sub_zero]`. Establish `hQmem : ∀ y ∈ Q, P y ∈ L₂`. Introduce `y hy`. Take `⟨x, hx, rfl⟩` from `Submodule.mem_map.mp hy`. Express the relevant statement in the definitionally equal form `P ((span ℝ (K : Set E))ᗮ.starProjection x) ∈ L₂`.
+
+Rewrite using `[hPR x hx]`. Conclude with `(hP3 x (hN hx)).1`. Set `ψ : Q →ₗ[ℤ] L₂` to `LinearMap.codRestrict L₂ ((P.toLinearMap.restrictScalars ℤ).comp Q.subtype) (fun y => hQmem y.1 y.2)`. Establish `hψ : ∀ y : Q, ((ψ y : L₂) : E) = P y` using `fun y => rfl`. Establish `hinj : Function.Injective ψ`.
+
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy0`. Establish `hPy : P y = 0`. Rewrite using `[← hψ, hy0]`. Both sides reduce to the same expression.
+
+Take `⟨y, hyQ⟩` from `y`. Take `⟨x, hx, rfl⟩` from `Submodule.mem_map.mp hyQ`. Express the relevant statement in the definitionally equal form `P ((span ℝ (K : Set E))ᗮ.starProjection x) = 0 at hPy`. Rewrite `hPy` using `[hPR x hx]`. Establish `hx1 : x ∈ L₁`.
+
+Use `(hP3 x (hN hx)).2` as an intermediate fact. Rewrite `this` using `[hPy, sub_zero]`. Then use the resulting hypothesis. Establish `hxK : x ∈ span ℝ (K : Set E)` using `subset_span ⟨hx, hx1⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(span ℝ (K : Set E))ᗮ.starProjection x = 0`.
+
+Rewrite using `[Submodule.starProjection_orthogonal_val, Submodule.starProjection_eq_self_iff.mpr hxK, sub_self]`. Establish `hnorm : ∀ y : Q, ‖((ψ y : L₂) : E)‖ ≤ ‖(y : E)‖` using `fun y => by`. Rewrite using `[hψ]`. Conclude with `hPnorm _`. Establish `hdK : deg K ≤ rk K * muMax L₁` using `degree_le_rank_mul_maxSlope L₁ K h1 inf_le_right`.
+
+Establish `hdQ : deg Q ≤ rk Q * muMax L₂` using `degree_le_rank_mul_maxSlope_of_injective Q L₂ hQd h2 ψ hinj hnorm`. Establish `hk : 0 < rk N` using `Module.finrank_pos_iff.mpr (Submodule.nontrivial_iff_ne_bot.mpr hN0)`. Establish `hk' : (0 : ℝ) < (rk N : ℝ)` using `by exact_mod_cast hk`. Establish `hK0 : (0 : ℝ) ≤ (rk K : ℝ)` using `Nat.cast_nonneg _`. Establish `hQ0 : (0 : ℝ) ≤ (rk Q : ℝ)` using `Nat.cast_nonneg _`.
+
+Establish `e1 : (rk K : ℝ) * muMax L₁ ≤ (rk K : ℝ) * max (muMax L₁) (muMax L₂)` using `mul_le_mul_of_nonneg_left (le_max_left _ _) hK0`. Establish `e2 : (rk Q : ℝ) * muMax L₂ ≤ (rk Q : ℝ) * max (muMax L₁) (muMax L₂)` using `mul_le_mul_of_nonneg_left (le_max_right _ _) hQ0`. Establish `hrk' : (rk N : ℝ) = (rk K : ℝ) + (rk Q : ℝ)` using `by exact_mod_cast hrk`. Unfold `slope`. Rewrite using `[div_le_iff₀ hk', hdeg, hrk']`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem slope_le_max_maxSlope (L₁ L₂ : Submodule ℤ E) (h1 : DiscreteTopology L₁)
     (h2 : DiscreteTopology L₂) (h : ∀ x ∈ L₁, ∀ y ∈ L₂, inner ℝ x y = 0)
     (hd : DiscreteTopology (L₁ ⊔ L₂ : Submodule ℤ E))
@@ -194,6 +261,15 @@ theorem slope_le_max_maxSlope (L₁ L₂ : Submodule ℤ E) (h1 : DiscreteTopolo
 
 end
 
+/- English proof (translation)
+Introduce `E _ _ _ L₁ L₂ h1 h2 h`. Use `haveI := h1`. Use `haveI := h2`. Take `⟨hd, hc⟩` from `discreteTopology_sup_and_covol_sup L₁ L₂ h`. Use `⟨hd, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `p1` using `covol_pos_of_discrete L₁`. Establish `p2` using `covol_pos_of_discrete L₂`. Unfold `deg`. Rewrite using `[hc, Real.log_mul p1.ne' p2.ne']`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `hL1 hL2`. Apply `le_antisymm` to reduce the goal to its premises. Use `show sSup (slopes (L₁ ⊔ L₂)) ≤ _`. Use `csSup_le ⟨_, L₁, le_sup_left, hL1, rfl⟩ ?_` and prove the remaining obligations. Introduce and unpack `t ⟨N, hN, hN0, rfl⟩`.
+
+Conclude with `slope_le_max_maxSlope L₁ L₂ h1 h2 h hd N hN hN0`. Establish `hmono` using `muMaxMono_of (slopesBdd_of gram_det_le)`. Conclude with `max_le (hmono E (L₁ ⊔ L₂) L₁ hd le_sup_left hL1) (hmono E (L₁ ⊔ L₂) L₂ hd le_sup_right hL2)`.
+-/
 theorem orthogonal_sum_slope : OrthSum := by
   intro E _ _ _ L₁ L₂ h1 h2 h
   haveI := h1

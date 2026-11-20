@@ -13,6 +13,11 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `q generalizing m with`. Consider the case `nil => simpa using hf`. Consider the case `cons X q ih`. Rewrite using `[List.foldr_cons]`. Establish `hq' : ∀ Y ∈ q, inLie k r Y` using `fun Y hY => hq Y (List.mem_cons_of_mem X hY)`.
+
+Establish `h1 : CkOn ((m + 1 + q.length : ℕ) : ℕ∞) (GV k r) f`. Establish `e : m + 1 + q.length = m + (X :: q).length` using `by simp only [List.length_cons]; omega`. Rewrite using `[e]`. Conclude with `hf`. Conclude with `CkOn_LdV (ih hq' (m + 1) h1) (hq X (by simp))`.
+-/
 lemma CkOn_Lw (q : List (Mat k r)) (hq : ∀ X ∈ q, inLie k r X) (m : ℕ) {f : Mat k r → ℂ}
     (hf : CkOn ((m + q.length : ℕ) : ℕ∞) (GV k r) f) : CkOn (m : ℕ∞) (GV k r) (q.foldr LdV f) := by
   induction q generalizing m with
@@ -25,6 +30,11 @@ lemma CkOn_Lw (q : List (Mat k r)) (hq : ∀ X ∈ q, inLie k r X) (m : ℕ) {f 
       rw [e]; exact hf
     exact CkOn_LdV (ih hq' (m + 1) h1) (hq X (by simp))
 
+/- English proof (translation)
+Proceed by induction on `q generalizing m with`. Consider the case `nil => simpa using hf`. Consider the case `cons X q ih`. Rewrite using `[List.foldr_cons]`. Establish `hq' : ∀ Y ∈ q, inLie k r Y` using `fun Y hY => hq Y (List.mem_cons_of_mem X hY)`.
+
+Establish `h1 : CkOn ((m + 1 + q.length : ℕ) : ℕ∞) (GV k r) f`. Establish `e : m + 1 + q.length = m + (X :: q).length` using `by simp only [List.length_cons]; omega`. Rewrite using `[e]`. Conclude with `hf`. Conclude with `CkOn_RdV (ih hq' (m + 1) h1) (hq X (by simp))`.
+-/
 lemma CkOn_Rw (q : List (Mat k r)) (hq : ∀ X ∈ q, inLie k r X) (m : ℕ) {f : Mat k r → ℂ}
     (hf : CkOn ((m + q.length : ℕ) : ℕ∞) (GV k r) f) : CkOn (m : ℕ∞) (GV k r) (q.foldr RdV f) := by
   induction q generalizing m with
@@ -37,6 +47,11 @@ lemma CkOn_Rw (q : List (Mat k r)) (hq : ∀ X ∈ q, inLie k r X) (m : ℕ) {f 
       rw [e]; exact hf
     exact CkOn_RdV (ih hq' (m + 1) h1) (hq X (by simp))
 
+/- English proof (translation)
+Proceed by induction on `q with`. Consider the case `nil => simpa using h`. Consider the case `cons X q ih`. Introduce `g hg`. Rewrite using `[List.foldr_cons, List.foldr_cons]`.
+
+Conclude with `LdV_congr (ih (fun Y hY => hq Y (List.mem_cons_of_mem X hY))) (hq X (by simp)) hg`.
+-/
 lemma Lw_congr (q : List (Mat k r)) (hq : ∀ X ∈ q, inLie k r X) {f₁ f₂ : Mat k r → ℂ}
     (h : ∀ g ∈ GV k r, f₁ g = f₂ g) : ∀ g ∈ GV k r, q.foldr LdV f₁ g = q.foldr LdV f₂ g := by
   induction q with
@@ -46,6 +61,11 @@ lemma Lw_congr (q : List (Mat k r)) (hq : ∀ X ∈ q, inLie k r X) {f₁ f₂ :
     rw [List.foldr_cons, List.foldr_cons]
     exact LdV_congr (ih (fun Y hY => hq Y (List.mem_cons_of_mem X hY))) (hq X (by simp)) hg
 
+/- English proof (translation)
+Proceed by induction on `q with`. Consider the case `nil => simpa using h`. Consider the case `cons X q ih`. Introduce `g hg`. Rewrite using `[List.foldr_cons, List.foldr_cons]`.
+
+Conclude with `RdV_congr (ih (fun Y hY => hq Y (List.mem_cons_of_mem X hY))) (hq X (by simp)) hg`.
+-/
 lemma Rw_congr (q : List (Mat k r)) (hq : ∀ X ∈ q, inLie k r X) {f₁ f₂ : Mat k r → ℂ}
     (h : ∀ g ∈ GV k r, f₁ g = f₂ g) : ∀ g ∈ GV k r, q.foldr RdV f₁ g = q.foldr RdV f₂ g := by
   induction q with
@@ -55,6 +75,13 @@ lemma Rw_congr (q : List (Mat k r)) (hq : ∀ X ∈ q, inLie k r X) {f₁ f₂ :
     rw [List.foldr_cons, List.foldr_cons]
     exact RdV_congr (ih (fun Y hY => hq Y (List.mem_cons_of_mem X hY))) (hq X (by simp)) hg
 
+/- English proof (translation)
+Proceed by induction on `q with`. Consider the case `nil => intro g _`. Both sides reduce to the same expression. Consider the case `cons X q ih`. Introduce `g hg`.
+
+Rewrite using `[List.foldr_cons, List.foldr_cons]`. Establish `hq' : ∀ Z ∈ q, inLie k r Z` using `fun Z hZ => hq Z (List.mem_cons_of_mem X hZ)`. Establish `h2 : CkOn ((2 : ℕ) : ℕ∞) (GV k r) (q.foldr LdV f)`. Apply `CkOn_Lw q hq' 2` to reduce the goal to its premises. Establish `e : 2 + q.length = (X :: q).length + 1` using `by simp only [List.length_cons]; omega`.
+
+Rewrite using `[e]`. Conclude with `hf`. Rewrite using `[← LR_comm h2 (hq X (by simp)) hY hg]`. Conclude with `LdV_congr (ih hq' (CkOn_mono (by simp only [List.length_cons]; omega) hf)) (hq X (by simp)) hg`.
+-/
 lemma comm1 (Y : Mat k r) (hY : inLie k r Y) (q : List (Mat k r)) (hq : ∀ X ∈ q, inLie k r X)
     (f : Mat k r → ℂ) (hf : CkOn ((q.length + 1 : ℕ) : ℕ∞) (GV k r) f) :
     ∀ g ∈ GV k r, RdV Y (q.foldr LdV f) g = q.foldr LdV (RdV Y f) g := by
@@ -71,6 +98,13 @@ lemma comm1 (Y : Mat k r) (hY : inLie k r Y) (q : List (Mat k r)) (hq : ∀ X �
     rw [← LR_comm h2 (hq X (by simp)) hY hg]
     exact LdV_congr (ih hq' (CkOn_mono (by simp only [List.length_cons]; omega) hf)) (hq X (by simp)) hg
 
+/- English proof (translation)
+Proceed by induction on `p with`. Consider the case `nil => intro g _`. Both sides reduce to the same expression. Consider the case `cons Y p ih`. Introduce `g hg`.
+
+Rewrite using `[List.foldr_cons, List.foldr_cons]`. Establish `hp' : ∀ Z ∈ p, inLie k r Z` using `fun Z hZ => hp Z (List.mem_cons_of_mem Y hZ)`. Rewrite using `[RdV_congr (ih hp' (CkOn_mono (by simp only [List.length_cons]; omega) hf)) (hp Y (by simp)) hg]`. Apply `comm1 Y (hp Y (by simp)) q hq (p.foldr RdV f) _ g hg` to reduce the goal to its premises. Apply `CkOn_Rw p hp' (q.length + 1)` to reduce the goal to its premises.
+
+Establish `e : q.length + 1 + p.length = (Y :: p).length + q.length` using `by simp only [List.length_cons]; omega`. Rewrite using `[e]`. Conclude with `hf`.
+-/
 lemma comm (p q : List (Mat k r)) (hp : ∀ X ∈ p, inLie k r X) (hq : ∀ X ∈ q, inLie k r X)
     (f : Mat k r → ℂ) (hf : CkOn ((p.length + q.length : ℕ) : ℕ∞) (GV k r) f) :
     ∀ g ∈ GV k r, p.foldr RdV (q.foldr LdV f) g = q.foldr LdV (p.foldr RdV f) g := by
@@ -86,6 +120,11 @@ lemma comm (p q : List (Mat k r)) (hp : ∀ X ∈ p, inLie k r X) (hq : ∀ X �
     have e : q.length + 1 + p.length = (Y :: p).length + q.length := by simp only [List.length_cons]; omega
     rw [e]; exact hf
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Simplify using `only [LdV, Pi.smul_apply]`. Establish `e : (fun t : ℝ => f (NormedSpace.exp (-((t : ℂ) • ((c : ℂ) • X))) * g)) = fun t => (fun s : ℝ => f (NormedSpace.exp (-((s : ℂ) • X)) * g)) (c * t)`. Use function extensionality and compare the values at `t`. Simplify using `only [smul_smul, Complex.ofReal_mul, mul_comm]`.
+
+Rewrite using `[e]`. Conclude with `(deriv_comp_mul_left c (fun s : ℝ => f (NormedSpace.exp (-((s : ℂ) • X)) * g)) 0).trans (by rw [mul_zero])`.
+-/
 lemma LdV_rsmul (c : ℝ) (X : Mat k r) (f : Mat k r → ℂ) : LdV ((c : ℂ) • X) f = c • LdV X f := by
   funext g
   simp only [LdV, Pi.smul_apply]
@@ -97,6 +136,11 @@ lemma LdV_rsmul (c : ℝ) (X : Mat k r) (f : Mat k r → ℂ) : LdV ((c : ℂ) �
   exact (deriv_comp_mul_left c (fun s : ℝ => f (NormedSpace.exp (-((s : ℂ) • X)) * g)) 0).trans
     (by rw [mul_zero])
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Simplify using `only [RdV, Pi.smul_apply]`. Establish `e : (fun t : ℝ => f (g * NormedSpace.exp ((t : ℂ) • ((c : ℂ) • X)))) = fun t => (fun s : ℝ => f (g * NormedSpace.exp ((s : ℂ) • X))) (c * t)`. Use function extensionality and compare the values at `t`. Simplify using `only [smul_smul, Complex.ofReal_mul, mul_comm]`.
+
+Rewrite using `[e]`. Conclude with `(deriv_comp_mul_left c (fun s : ℝ => f (g * NormedSpace.exp ((s : ℂ) • X))) 0).trans (by rw [mul_zero])`.
+-/
 lemma RdV_rsmul (c : ℝ) (X : Mat k r) (f : Mat k r → ℂ) : RdV ((c : ℂ) • X) f = c • RdV X f := by
   funext g
   simp only [RdV, Pi.smul_apply]
@@ -108,26 +152,41 @@ lemma RdV_rsmul (c : ℝ) (X : Mat k r) (f : Mat k r → ℂ) : RdV ((c : ℂ) �
   exact (deriv_comp_mul_left c (fun s : ℝ => f (g * NormedSpace.exp ((s : ℂ) • X))) 0).trans
     (by rw [mul_zero])
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Simplify using `only [LdV, Pi.smul_apply]`. Conclude with `deriv_const_smul_field (f := fun t : ℝ => f (NormedSpace.exp (-((t : ℂ) • X)) * g)) a`.
+-/
 lemma LdV_fsmul (a : ℝ) (X : Mat k r) (f : Mat k r → ℂ) : LdV X (a • f) = a • LdV X f := by
   funext g
   simp only [LdV, Pi.smul_apply]
   exact deriv_const_smul_field (f := fun t : ℝ => f (NormedSpace.exp (-((t : ℂ) • X)) * g)) a
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Simplify using `only [RdV, Pi.smul_apply]`. Conclude with `deriv_const_smul_field (f := fun t : ℝ => f (g * NormedSpace.exp ((t : ℂ) • X))) a`.
+-/
 lemma RdV_fsmul (a : ℝ) (X : Mat k r) (f : Mat k r → ℂ) : RdV X (a • f) = a • RdV X f := by
   funext g
   simp only [RdV, Pi.smul_apply]
   exact deriv_const_smul_field (f := fun t : ℝ => f (g * NormedSpace.exp ((t : ℂ) • X))) a
 
+/- English proof (translation)
+Proceed by induction on `q with`. Consider the case `nil => rfl`. Consider the case `cons X q ih => simp only [List.foldr_cons, ih, LdV_fsmul]`.
+-/
 lemma Lw_fsmul (a : ℝ) (q : List (Mat k r)) (f : Mat k r → ℂ) : q.foldr LdV (a • f) = a • q.foldr LdV f := by
   induction q with
   | nil => rfl
   | cons X q ih => simp only [List.foldr_cons, ih, LdV_fsmul]
 
+/- English proof (translation)
+Proceed by induction on `q with`. Consider the case `nil => rfl`. Consider the case `cons X q ih => simp only [List.foldr_cons, ih, RdV_fsmul]`.
+-/
 lemma Rw_fsmul (a : ℝ) (q : List (Mat k r)) (f : Mat k r → ℂ) : q.foldr RdV (a • f) = a • q.foldr RdV f := by
   induction q with
   | nil => rfl
   | cons X q ih => simp only [List.foldr_cons, ih, RdV_fsmul]
 
+/- English proof (translation)
+Proceed by induction on `q with`. Consider the case `nil => simp`. Consider the case `cons X q ih`. Simplify using `only [List.map_cons, List.foldr_cons, ih, LdV_rsmul, LdV_fsmul, List.length_cons, smul_smul, pow_succ']`. Rewrite using `[mul_comm (c ^ q.length) c]`.
+-/
 lemma Lw_scale (c : ℝ) (q : List (Mat k r)) (f : Mat k r → ℂ) :
     (q.map (fun X => (c : ℂ) • X)).foldr LdV f = c ^ q.length • q.foldr LdV f := by
   induction q with
@@ -137,6 +196,9 @@ lemma Lw_scale (c : ℝ) (q : List (Mat k r)) (f : Mat k r → ℂ) :
       pow_succ']
     rw [mul_comm (c ^ q.length) c]
 
+/- English proof (translation)
+Proceed by induction on `q with`. Consider the case `nil => simp`. Consider the case `cons X q ih`. Simplify using `only [List.map_cons, List.foldr_cons, ih, RdV_rsmul, RdV_fsmul, List.length_cons, smul_smul, pow_succ']`. Rewrite using `[mul_comm (c ^ q.length) c]`.
+-/
 lemma Rw_scale (c : ℝ) (q : List (Mat k r)) (f : Mat k r → ℂ) :
     (q.map (fun X => (c : ℂ) • X)).foldr RdV f = c ^ q.length • q.foldr RdV f := by
   induction q with
@@ -151,6 +213,11 @@ section th
 variable {γ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} (hE : IsUnit (embWb k r γ).det)
 include hE
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Simplify using `only [Function.comp]`. Unfold `LdV RdV`. Use `congr 1`. Use function extensionality and compare the values at `t`.
+
+Rewrite using `[Function.comp_apply, th_mul hE, th_exp hE, gbar_neg, gbar_rsmul, neg_neg]`.
+-/
 lemma LdV_th (f : Mat k r → ℂ) (X : Mat k r) : LdV X (f ∘ th k r γ) = RdV (gbar k r γ X) f ∘ th k r γ := by
   funext g
   simp only [Function.comp]
@@ -159,6 +226,11 @@ lemma LdV_th (f : Mat k r → ℂ) (X : Mat k r) : LdV X (f ∘ th k r γ) = RdV
   funext t
   rw [Function.comp_apply, th_mul hE, th_exp hE, gbar_neg, gbar_rsmul, neg_neg]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Simplify using `only [Function.comp]`. Unfold `LdV RdV`. Use `congr 1`. Use function extensionality and compare the values at `t`.
+
+Rewrite using `[Function.comp_apply, th_mul hE, th_exp hE, gbar_rsmul]`.
+-/
 lemma RdV_th (f : Mat k r → ℂ) (X : Mat k r) : RdV X (f ∘ th k r γ) = LdV (gbar k r γ X) f ∘ th k r γ := by
   funext g
   simp only [Function.comp]
@@ -167,12 +239,18 @@ lemma RdV_th (f : Mat k r → ℂ) (X : Mat k r) : RdV X (f ∘ th k r γ) = LdV
   funext t
   rw [Function.comp_apply, th_mul hE, th_exp hE, gbar_rsmul]
 
+/- English proof (translation)
+Proceed by induction on `v with`. Consider the case `nil => rfl`. Consider the case `cons X v ih => rw [List.foldr_cons, ih, RdV_th hE, List.map_cons, List.foldr_cons]`.
+-/
 lemma Rw_th (v : List (Mat k r)) (f : Mat k r → ℂ) :
     v.foldr RdV (f ∘ th k r γ) = (v.map (gbar k r γ)).foldr LdV f ∘ th k r γ := by
   induction v with
   | nil => rfl
   | cons X v ih => rw [List.foldr_cons, ih, RdV_th hE, List.map_cons, List.foldr_cons]
 
+/- English proof (translation)
+Proceed by induction on `u with`. Consider the case `nil => rfl`. Consider the case `cons X u ih => rw [List.foldr_cons, ih, LdV_th hE, List.map_cons, List.foldr_cons]`.
+-/
 lemma Lw_th (u : List (Mat k r)) (f : Mat k r → ℂ) :
     u.foldr LdV (f ∘ th k r γ) = (u.map (gbar k r γ)).foldr RdV f ∘ th k r γ := by
   induction u with
@@ -181,6 +259,11 @@ lemma Lw_th (u : List (Mat k r)) (f : Mat k r → ℂ) :
 
 end th
 
+/- English proof (translation)
+Rewrite using `[Matrix.norm_le_iff (by unfold gN; exact Real.sqrt_nonneg _)]`. Introduce `i j`. Unfold `gN`. Combine the equalities or inequalities in the displayed calculation. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises.
+
+Rewrite using `[← Complex.normSq_eq_norm_sq]`. Conclude with `(Finset.single_le_sum (f := fun j => Complex.normSq (A i j)) (fun j _ => Complex.normSq_nonneg _) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun i => ∑ j, Complex.normSq (A i j)) (fun i _ => Finset.sum_nonneg fun j _ => Complex.normSq_nonneg _) (Finset.mem_univ i))`.
+-/
 lemma norm_le_gN (A : Mat k r) : ‖A‖ ≤ gN A := by
   rw [Matrix.norm_le_iff (by unfold gN; exact Real.sqrt_nonneg _)]
   intro i j
@@ -194,6 +277,11 @@ lemma norm_le_gN (A : Mat k r) : ‖A‖ ≤ gN A := by
         (Finset.single_le_sum (f := fun i => ∑ j, Complex.normSq (A i j))
           (fun i _ => Finset.sum_nonneg fun j _ => Complex.normSq_nonneg _) (Finset.mem_univ i))
 
+/- English proof (translation)
+Unfold `gN`. Establish `hN : (0 : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ) * ‖A‖` using `by positivity`. Rewrite using `[← Real.sqrt_sq hN]`. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Establish `hij : ∀ i j, Complex.normSq (A i j) ≤ ‖A‖ ^ 2` using `fun i j => by`.
+
+Rewrite using `[Complex.normSq_eq_norm_sq]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (Matrix.norm_entry_le_entrywise_sup_norm A) 2`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma gN_le_norm (A : Mat k r) : gN A ≤ ((2 * r + k + 1 : ℕ) : ℝ) * ‖A‖ := by
   unfold gN
   have hN : (0 : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ) * ‖A‖ := by positivity
@@ -209,10 +297,18 @@ lemma gN_le_norm (A : Mat k r) : gN A ≤ ((2 * r + k + 1 : ℕ) : ℝ) * ‖A�
       simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
       ring
 
+/- English proof (translation)
+Unfold `gN`. Conclude with `Real.sqrt_nonneg _`.
+-/
 lemma gN_nonneg (A : Mat k r) : 0 ≤ gN A := by
   unfold gN
   exact Real.sqrt_nonneg _
 
+/- English proof (translation)
+Establish `hne : g ≠ 0`. Introduce and unpack `rfl`. Establish `h` using `isUnit_of_uh hg`. Rewrite `h` using `[Matrix.det_zero]`. Conclude with `not_isUnit_zero h`.
+
+Conclude with `lt_of_lt_of_le (norm_pos_iff.mpr hne) (norm_le_gN g)`.
+-/
 lemma gN_pos {g : Mat k r} (hg : g ∈ GV k r) : 0 < gN g := by
   have hne : g ≠ 0 := by
     rintro rfl
@@ -221,10 +317,20 @@ lemma gN_pos {g : Mat k r} (hg : g ∈ GV k r) : 0 < gN g := by
     exact not_isUnit_zero h
   exact lt_of_lt_of_le (norm_pos_iff.mpr hne) (norm_le_gN g)
 
+/- English proof (translation)
+Take `⟨C, -, hC⟩` from `(LinearMap.toContinuousLinearMap T).isBoundedLinearMap.bound`. Conclude with `⟨C, fun z => hC z⟩`.
+-/
 lemma lin_bound (T : Mat k r →ₗ[ℝ] Mat k r) : ∃ C, ∀ z, ‖T z‖ ≤ C * ‖z‖ := by
   obtain ⟨C, -, hC⟩ := (LinearMap.toContinuousLinearMap T).isBoundedLinearMap.bound
   exact ⟨C, fun z => hC z⟩
 
+/- English proof (translation)
+Establish `hC0 : 0 < C` using `by linarith`. Break down `le_or_gt 0 A with hA | hA` into its components or cases. Rewrite using `[abs_of_nonneg hA, ← Real.mul_rpow hC0.le hy.le]`. Conclude with `Real.rpow_le_rpow hx.le h1 hA`. Rewrite using `[abs_of_neg hA]`.
+
+Establish `h3 : y / C ≤ x`. Rewrite using `[div_le_iff₀ hC0]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpos : 0 < (y / C) ^ (-A)` using `Real.rpow_pos_of_pos (div_pos hy hC0) _`. Establish `key : (y / C) ^ (-A) ≤ x ^ (-A)` using `Real.rpow_le_rpow (div_pos hy hC0).le h3 (by linarith)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.rpow_neg (div_pos hy hC0).le, neg_neg, Real.div_rpow hy.le hC0.le, Real.rpow_neg hC0.le]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma rpow_cmp {x y C A : ℝ} (hx : 0 < x) (hy : 0 < y) (hC : 1 ≤ C) (h1 : x ≤ C * y) (h2 : y ≤ C * x) :
     x ^ A ≤ C ^ |A| * y ^ A := by
   have hC0 : 0 < C := by linarith
@@ -266,6 +372,9 @@ def TL (k r : ℕ) (γ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) : Mat k r →�
     rw [e1, gbar_rsmul, Matrix.conjTranspose_smul, Complex.star_def, Complex.conj_ofReal, Matrix.mul_smul,
       Matrix.smul_mul, Complex.coe_smul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma TL_apply (γ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (A : Mat k r) :
     TL k r γ A = Hpk k r * (gbar k r γ A)ᴴ * Hpk k r := rfl
 
@@ -274,6 +383,9 @@ section main
 variable {γ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} (hE : IsUnit (embWb k r γ).det) (hEG : embWb k r γ ∈ GV k r)
 include hE hEG
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `lin_bound (TL k r γ)`. Use `⟨((2 * r + k + 1 : ℕ) : ℝ) * max C 0, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hn : (0 : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ)` using `by positivity`. Rewrite using `[th_eq hE hEG hg]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma th_bound : ∃ C, ∀ g ∈ GV k r, gN (th k r γ g) ≤ C * gN g := by
   obtain ⟨C, hC⟩ := lin_bound (TL k r γ)
   refine ⟨((2 * r + k + 1 : ℕ) : ℝ) * max C 0, fun g hg => ?_⟩
@@ -287,6 +399,13 @@ lemma th_bound : ∃ C, ∀ g ∈ GV k r, gN (th k r γ g) ≤ C * gN g := by
         mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left (norm_le_gN g) (le_max_right _ _)) hn
     _ = ((2 * r + k + 1 : ℕ) : ℝ) * max C 0 * gN g := by ring
 
+/- English proof (translation)
+Introduce `g₀ hg₀`. Take `⟨U, f', hU, h0, hc, he⟩` from `hF (th k r γ g₀) (th_mem hE hEG hg₀)`. Establish `hT : Continuous (TL k r γ)` using `(TL k r γ).continuous_of_finiteDimensional`. Use `⟨(TL k r γ) ⁻¹' U, f' ∘ (TL k r γ), hU.preimage hT, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show TL k r γ g₀ ∈ U`.
+
+Rewrite using `[TL_apply, ← th_eq hE hEG hg₀]`. Conclude with `h0`. Conclude with `hc.comp ((LinearMap.toContinuousLinearMap (TL k r γ)).contDiff).contDiffOn (Set.mapsTo_preimage _ _)`. Introduce `g hgU hgG show F (th k r γ g) = f' (TL k r γ g)`. Rewrite using `[TL_apply, ← th_eq hE hEG hgG]`.
+
+Conclude with `he _ (by rw [th_eq hE hEG hgG]; exact hgU) (th_mem hE hEG hgG)`.
+-/
 lemma CkOn_th {m : ℕ} {F : Mat k r → ℂ} (hF : CkOn (m : ℕ∞) (GV k r) F) :
     CkOn (m : ℕ∞) (GV k r) (F ∘ th k r γ) := by
   intro g₀ hg₀
@@ -304,6 +423,31 @@ lemma CkOn_th {m : ℕ} {F : Mat k r → ℂ} (hF : CkOn (m : ℕ∞) (GV k r) F
 
 end main
 
+/- English proof (translation)
+Establish `hEG : embWb k r γ ∈ GV k r` using `emb_mem hγ.1`. Establish `hE : IsUnit (embWb k r γ).det` using `isUnit_of_uh hEG`. Use `⟨th_bound hE hEG, ?_⟩` and prove the remaining obligations. Introduce and unpack `A m F ⟨c, hCk, hb⟩`. Take `⟨C0, hC0⟩` from `th_bound hE hEG`.
+
+Take `⟨B, hB⟩` from `lin_bound (gbarL k r γ)`. Use `set C := max C0 1 with hCdef`. Use `set M := max B 1 with hMdef`. Establish `hC1 : 1 ≤ C` using `le_max_right _ _`. Establish `hM1 : 1 ≤ M` using `le_max_right _ _`.
+
+Establish `hM0 : 0 < M` using `by linarith`. Establish `hC0' : 0 < C` using `by linarith`. Use `set Yb : Mat k r → Mat k r := fun X => ((M⁻¹ : ℝ) : ℂ) • gbar k r γ X with hYb`. Establish `hgb : ∀ X, gbar k r γ X = ((M : ℝ) : ℂ) • Yb X`. Introduce `X`.
+
+Simplify using `only [hYb, smul_smul]`. Rewrite using `[← Complex.ofReal_mul, mul_inv_cancel₀ hM0.ne', Complex.ofReal_one, one_smul]`. Establish `hunit : ∀ X, unitLie k r X → unitLie k r (Yb X)`. Introduce `X hX`. Use `⟨lie_rsmul _ (lie_gbar hE hEG hX.1), fun i j => ?_⟩` and prove the remaining obligations.
+
+Establish `hXn : ‖X‖ ≤ 1` using `(Matrix.norm_le_iff zero_le_one).mpr hX.2`. Establish `h1 : ‖gbar k r γ X‖ ≤ M`. Use `hB X` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hYb, Matrix.smul_apply, smul_eq_mul, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (inv_pos.mpr hM0)]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `⟨M ^ m * C ^ |A| * max c 0, CkOn_th hE hEG hCk, ?_⟩` and prove the remaining obligations. Introduce `u v hu hv hlen g hg`. Establish `hthg` using `th_mem hE hEG hg`. Establish `huY : ∀ X ∈ u.map Yb, unitLie k r X`.
+
+Introduce `X hX`. Take `⟨Y, hY, rfl⟩` from `List.mem_map.mp hX`. Conclude with `hunit Y (hu Y hY)`. Establish `hvY : ∀ X ∈ v.map Yb, unitLie k r X`. Introduce `X hX`.
+
+Take `⟨Y, hY, rfl⟩` from `List.mem_map.mp hX`. Conclude with `hunit Y (hv Y hY)`. Establish `eu : u.map (gbar k r γ) = (u.map Yb).map (fun X => ((M : ℝ) : ℂ) • X)`. Rewrite using `[List.map_map]`. Conclude with `List.map_congr_left (fun X _ => hgb X)`.
+
+Establish `ev : v.map (gbar k r γ) = (v.map Yb).map (fun X => ((M : ℝ) : ℂ) • X)`. Rewrite using `[List.map_map]`. Conclude with `List.map_congr_left (fun X _ => hgb X)`. Establish `hFk : CkOn (((u.map Yb).length + (v.map Yb).length : ℕ) : ℕ∞) (GV k r) F` using `CkOn_mono (by simp only [List.length_map]; omega) hCk`. Establish `key : dLR u v (F ∘ th k r γ) g = (M ^ (u.length + v.length) : ℝ) • dLR (v.map Yb) (u.map Yb) F (th k r γ g)`.
+
+Unfold `dLR Rw`. Rewrite using `[Rw_th hE, Lw_th hE, eu, ev, Rw_scale, Lw_scale, Rw_fsmul, smul_smul, Function.comp_apply, Pi.smul_apply, comm _ _ (fun X hX => (huY X hX).1) (fun X hX => (hvY X hX).1) F hFk _ hthg, List.length_map, List.length_map, pow_add]`. Establish `hD` using `hb (v.map Yb) (u.map Yb) hvY huY (by simp only [List.length_map]; omega) _ hthg`. Establish `h2 : gN (th k r γ g) ≤ C * gN g` using `(hC0 g hg).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (gN_nonneg g))`. Establish `h1 : gN g ≤ C * gN (th k r γ g)`.
+
+Establish `h` using `hC0 _ hthg`. Rewrite `h` using `[th_th hE (isUnit_of_uh hg)]`. Conclude with `h.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (gN_nonneg _))`. Establish `hcmp` using `rpow_cmp (A := A) (gN_pos hg) (gN_pos hthg) hC1 h1 h2`. Establish `hMp : (0 : ℝ) ≤ M ^ (u.length + v.length)` using `pow_nonneg hM0.le _`.
+
+Establish `hCA : (0 : ℝ) ≤ C ^ |A|` using `Real.rpow_nonneg hC0'.le _`. Rewrite using `[key, norm_smul, Real.norm_eq_abs, abs_of_nonneg hMp]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem main (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (γ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ)
     (hγ : IsZFrame k r z γ) :
     (∃ C : ℝ, ∀ g ∈ GV k r, gN (th k r γ g) ≤ C * gN g) ∧
@@ -386,6 +530,9 @@ end ReciprocityTheory.ChartRestriction.DS.Mult1.InvCC
 
 namespace ReciprocityTheory.ChartRestriction.DS.Mult1
 
+/- English proof (translation)
+Introduce `k r Wp _ _ _ D X _ _ γ hγ`. Conclude with `InvCC.main k r D.z γ hγ`.
+-/
 theorem stInvCC : StInvCC := by
   intro k r Wp _ _ _ D X _ _ γ hγ
   exact InvCC.main k r D.z γ hγ

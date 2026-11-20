@@ -10,6 +10,11 @@ section General
 
 variable {R : Type*} [CommRing R] {σ τ M : Type*} [AddCommMonoid M]
 
+/- English proof (translation)
+Establish `hC : φ (C c) = C c`. Rewrite using `[← MvPolynomial.algebraMap_eq]`. Conclude with `φ.commutes c`. Rewrite using `[monomial_eq, map_mul, hC, Finsupp.prod, map_prod]`. Simplify using `only [map_pow]`.
+
+Establish `h` using `(isWeightedHomogeneous_C w' c).mul (IsWeightedHomogeneous.prod m.support (fun v => φ (X v) ^ m v) (fun v => m v • w v) (fun v _ => (hφ v).pow (m v)))`. Rewrite `h` using `[zero_add]`. Rewrite using `[Finsupp.weight_apply, Finsupp.sum]`. Conclude with `h`.
+-/
 theorem isWH_algHom_monomial (φ : MvPolynomial σ R →ₐ[R] MvPolynomial τ R) (w : σ → M) (w' : τ → M)
     (hφ : ∀ v, IsWeightedHomogeneous w' (φ (X v)) (w v)) (m : σ →₀ ℕ) (c : R) :
     IsWeightedHomogeneous w' (φ (monomial m c)) (Finsupp.weight w m) := by
@@ -25,6 +30,9 @@ theorem isWH_algHom_monomial (φ : MvPolynomial σ R →ₐ[R] MvPolynomial τ R
   rw [Finsupp.weight_apply, Finsupp.sum]
   exact h
 
+/- English proof (translation)
+Rewrite using `[f.as_sum, map_sum]`. Use `IsWeightedHomogeneous.sum _ _ _ fun s hs => ?_` and prove the remaining obligations. Establish `h` using `isWH_algHom_monomial φ w w' hφ s (coeff s f)`. Rewrite `h` using `[hf (mem_support_iff.mp hs)]`. Then use the resulting hypothesis.
+-/
 theorem isWH_algHom (φ : MvPolynomial σ R →ₐ[R] MvPolynomial τ R) (w : σ → M) (w' : τ → M)
     (hφ : ∀ v, IsWeightedHomogeneous w' (φ (X v)) (w v)) {f : MvPolynomial σ R} {d : M}
     (hf : IsWeightedHomogeneous w f d) : IsWeightedHomogeneous w' (φ f) d := by
@@ -33,6 +41,11 @@ theorem isWH_algHom (φ : MvPolynomial σ R →ₐ[R] MvPolynomial τ R) (w : σ
   have h := isWH_algHom_monomial φ w w' hφ s (coeff s f)
   rwa [hf (mem_support_iff.mp hs)] at h
 
+/- English proof (translation)
+Use extensionality with `d`. Rewrite using `[coeff_weightedHomogeneousComponent]`. Use `split_ifs with h`. Both sides reduce to the same expression. Assume the negation of the conclusion as `hd`.
+
+Conclude with `h (hp (Ne.symm hd))`.
+-/
 private theorem weightedHomogeneousComponent_self_of_isWH {w : σ → M} {p : MvPolynomial σ R} {m : M}
     (hp : IsWeightedHomogeneous w p m) : weightedHomogeneousComponent w m p = p := by
   classical
@@ -43,6 +56,11 @@ private theorem weightedHomogeneousComponent_self_of_isWH {w : σ → M} {p : Mv
   · by_contra hd
     exact h (hp (Ne.symm hd))
 
+/- English proof (translation)
+Use extensionality with `d`. Rewrite using `[coeff_weightedHomogeneousComponent, coeff_zero]`. Use `split_ifs with h`. Assume the negation of the conclusion as `hd`. Conclude with `hne ((hp hd).symm.trans h)`.
+
+Both sides reduce to the same expression.
+-/
 private theorem weightedHomogeneousComponent_eq_zero_of_isWH_ne {w : σ → M} {p : MvPolynomial σ R} {m μ : M}
     (hne : m ≠ μ) (hp : IsWeightedHomogeneous w p m) : weightedHomogeneousComponent w μ p = 0 := by
   classical
@@ -53,6 +71,11 @@ private theorem weightedHomogeneousComponent_eq_zero_of_isWH_ne {w : σ → M} {
     exact hne ((hp hd).symm.trans h)
   · rfl
 
+/- English proof (translation)
+Use `conv_lhs => rw [f.as_sum]`. Use `conv_rhs => rw [f.as_sum]`. Simplify using `only [map_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Establish `hs` using `isWH_algHom_monomial φ w w' hφ s (coeff s f)`.
+
+Establish `hm : IsWeightedHomogeneous w (monomial s (coeff s f)) (Finsupp.weight w s)` using `isWeightedHomogeneous_monomial w s (coeff s f) rfl`. Distinguish the cases in `h : Finsupp.weight w s = μ`. Substitute `h` using the available equality. Rewrite using `[weightedHomogeneousComponent_self_of_isWH hm, weightedHomogeneousComponent_self_of_isWH hs]`. Rewrite using `[weightedHomogeneousComponent_eq_zero_of_isWH_ne h hm, weightedHomogeneousComponent_eq_zero_of_isWH_ne h hs, map_zero]`.
+-/
 theorem algHom_weightedHomogeneousComponent (φ : MvPolynomial σ R →ₐ[R] MvPolynomial τ R)
     (w : σ → M) (w' : τ → M) (hφ : ∀ v, IsWeightedHomogeneous w' (φ (X v)) (w v)) (μ : M)
     (f : MvPolynomial σ R) :
@@ -72,6 +95,9 @@ theorem algHom_weightedHomogeneousComponent (φ : MvPolynomial σ R →ₐ[R] Mv
 
 end General
 
+/- English proof (translation)
+Simplify using `only [dualWeyl, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero, mem_weightedHomogeneousSubmodule, AlgHom.toLinearMap_apply]`.
+-/
 theorem rowst_mem_dualWeyl_iff {R : Type*} [CommRing R] {r n : ℕ} {ν : Fin n → ℕ}
     {f : MvPolynomial (Fin r × Fin n) R} :
     f ∈ dualWeyl R r n ν ↔ IsWeightedHomogeneous (colW r n) f ν ∧
@@ -83,6 +109,11 @@ def rowActO (R : Type*) [CommRing R] {r n : ℕ} (g : Matrix (Fin r) (Fin r) R) 
     MvPolynomial (Option (Fin r × Fin n)) R →ₐ[R] MvPolynomial (Option (Fin r × Fin n)) R :=
   aeval fun o => Option.elim o (X none) (fun v => ∑ b : Fin r, C (g v.1 b) * X (some (b, v.2)))
 
+/- English proof (translation)
+Establish `key : (colAddGen R l j).comp (rowAct R g) = (rowActO R g).comp (colAddGen R (r` using `r) l j) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨a, t⟩`. Simplify using `only [AlgHom.comp_apply, colAddGen, rowAct, rowActO, aeval_X, map_sum, map_mul, aeval_C, MvPolynomial.algebraMap_eq]`. Distinguish the cases in `h : t = j`.
+
+Simplify using `only [h, if_true, aeval_X, map_add, map_mul, Option.elim]`. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun b _ => by ring`. Simplify using `[h]`. Conclude with `DFunLike.congr_fun key f`.
+-/
 theorem colAddGen_rowAct {R : Type*} [CommRing R] {r n : ℕ} (g : Matrix (Fin r) (Fin r) R)
     (l j : Fin n) (f : MvPolynomial (Fin r × Fin n) R) :
     colAddGen R l j (rowAct R g f) = rowActO R g (colAddGen R l j f) := by
@@ -99,6 +130,9 @@ theorem colAddGen_rowAct {R : Type*} [CommRing R] {r n : ℕ} (g : Matrix (Fin r
     · simp [h]
   exact DFunLike.congr_fun key f
 
+/- English proof (translation)
+Establish `key : (rename (R` using `R) (some : Fin r × Fin n → Option (Fin r × Fin n))).comp (rowAct R g) = (rowActO R g).comp (rename some) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨a, t⟩`. Simplify using `[rowAct, rowActO, MvPolynomial.algebraMap_eq]`. Conclude with `DFunLike.congr_fun key f`.
+-/
 theorem rename_rowAct {R : Type*} [CommRing R] {r n : ℕ} (g : Matrix (Fin r) (Fin r) R)
     (f : MvPolynomial (Fin r × Fin n) R) :
     rename (some : Fin r × Fin n → Option (Fin r × Fin n)) (rowAct R g f) =
@@ -110,6 +144,9 @@ theorem rename_rowAct {R : Type*} [CommRing R] {r n : ℕ} (g : Matrix (Fin r) (
     simp [rowAct, rowActO, MvPolynomial.algebraMap_eq]
   exact DFunLike.congr_fun key f
 
+/- English proof (translation)
+Simplify using `only [rowAct, aeval_X]`. Use `IsWeightedHomogeneous.sum _ _ _ fun b _ => ?_` and prove the remaining obligations. Use `(isWeightedHomogeneous_C (colW r n) (g v.1 b)).mul (isWeightedHomogeneous_X (R := R) (colW r n) (b, v.2)) using 1` and compare the differences between its conclusion and the goal. Simplify using `[colW]`.
+-/
 theorem rowAct_X_isWH {R : Type*} [CommRing R] {r n : ℕ} (g : Matrix (Fin r) (Fin r) R)
     (v : Fin r × Fin n) : IsWeightedHomogeneous (colW r n) (rowAct R g (X v)) (colW r n v) := by
   simp only [rowAct, aeval_X]

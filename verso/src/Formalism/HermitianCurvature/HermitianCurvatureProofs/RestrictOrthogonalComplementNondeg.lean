@@ -25,12 +25,25 @@ variable {V : Type} [AddCommGroup V] [Module K V]
 def restrictFormAlt (h : V →ₛₗ[σ] V →ₗ[K] K) (W : Submodule K V) : W →ₛₗ[σ] W →ₗ[K] K :=
   h.domRestrict₁₂ W W
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma restrict_form_apply (h : V →ₛₗ[σ] V →ₗ[K] K) (W : Submodule K V) (u v : W) :
     restrictFormAlt h W u v = h u v := rfl
 
+/- English proof (translation)
+Introduce `u v` and use `hh u v`.
+-/
 lemma restrict_form_hermitian {h : V →ₛₗ[σ] V →ₗ[K] K} (hh : Herm h) (W : Submodule K V) :
     Herm (restrictFormAlt h W) := fun u v => hh u v
 
+/- English proof (translation)
+Introduce `w hw`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `hn` to reduce the goal to its premises. Introduce `z`. Establish `hz : z - h v z • v ∈ LinearMap.ker (h v)`.
+
+Simplify using `[LinearMap.mem_ker, hv]`. Establish `h1` using `hw ⟨_, hz⟩`. Establish `h2 : h w v = 0`. Rewrite using `[← hh v w]`. Use `w.2` as an intermediate fact.
+
+Rewrite `this` using `[LinearMap.mem_ker]`. Rewrite using `[this, map_zero]`. Rewrite `h1` using `[restrict_form_apply]`. Simplify `h1` using `[map_sub, h2]`.
+-/
 lemma restrict_orthogonal_complement_nondeg {h : V →ₛₗ[σ] V →ₗ[K] K} (hh : Herm h) (hn : Nondeg h) (v : V)
     (hv : h v v = 1) : Nondeg (restrictFormAlt h (LinearMap.ker (h v))) := by
   intro w hw
@@ -48,6 +61,9 @@ lemma restrict_orthogonal_complement_nondeg {h : V →ₛₗ[σ] V →ₗ[K] K} 
   rw [restrict_form_apply] at h1
   simpa [map_sub, h2] using h1
 
+/- English proof (translation)
+Establish `h1` using `LinearMap.finrank_range_add_finrank_ker (h v)`. Establish `hr : LinearMap.range (h v) = ⊤` using `LinearMap.range_eq_top.2 (fun c => ⟨c • v, by simp [hv]⟩)`. Rewrite `h1` using `[hr, finrank_top, finrank_self]`. Use linear arithmetic over natural numbers and integers.
+-/
 lemma finrank_orthogonal_unit_add_one [FiniteDimensional K V] (h : V →ₛₗ[σ] V →ₗ[K] K) (v : V) (hv : h v v = 1) :
     finrank K (LinearMap.ker (h v)) + 1 = finrank K V := by
   have h1 := LinearMap.finrank_range_add_finrank_ker (h v)
@@ -56,6 +72,19 @@ lemma finrank_orthogonal_unit_add_one [FiniteDimensional K V] (h : V →ₛₗ[�
   rw [hr, finrank_top, finrank_self] at h1
   omega
 
+/- English proof (translation)
+Establish `h1 : ∃ v, h v v ≠ 0`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Take `⟨u, v, huv⟩` from `hne`. Take `⟨l, hl⟩` from `hσ.trace_one`.
+
+Establish `h2` using `hcon (u + (l / h u v) • v)`. Establish `h3 : h (u + (l / h u v) • v) (u + (l / h u v) • v) = h u u + (l / h u v) * h u v + σ (l / h u v) * h v u + σ (l / h u v) * ((l / h u v) * h v v)`. Simplify using `only [map_add, LinearMap.add_apply, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, RingHom.id_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[h3, hcon u, hcon v, ← hh u v, ← map_mul, div_mul_cancel₀ _ huv]`.
+
+Simplify using `only [mul_zero, add_zero, zero_add] at h2`. Rewrite `h2` using `[hl]`. Conclude with `one_ne_zero h2`. Take `⟨v, hv⟩` from `h1`. Take `⟨y, hy⟩` from `hσ.norm_surj (h v v) (hh v v)`.
+
+Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Apply `hv` to reduce the goal to its premises. Rewrite using `[← hy]`. Simplify using the standard rewrite rules.
+
+Use `⟨y⁻¹ • v, ?_⟩` and prove the remaining obligations. Simplify using `only [map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, RingHom.id_apply]`. Rewrite using `[← hy, map_inv₀]`. Establish `: σ y ≠ 0`. Introduce `h0`.
+
+Apply `hv` to reduce the goal to its premises. Rewrite using `[← hy, h0, zero_mul]`. Clear the denominators using the available nonvanishing facts.
+-/
 lemma exists_unit_norm_vector (hσ : Inv σ) {h : V →ₛₗ[σ] V →ₗ[K] K} (hh : Herm h)
     (hne : ∃ u v, h u v ≠ 0) : ∃ v, h v v = 1 := by
   have h1 : ∃ v, h v v ≠ 0 := by
@@ -89,6 +118,13 @@ lemma exists_unit_norm_vector (hσ : Inv σ) {h : V →ₛₗ[σ] V →ₗ[K] K}
     rw [← hy, h0, zero_mul]
   field_simp
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `H`. Use `⟨by simpa using H 0 0, fun i => ?_, fun i j => ?_⟩` and prove the remaining obligations. Use `H 0 i.succ` as an intermediate fact. Simplify `this` using `[(Fin.succ_ne_zero i).symm]`.
+
+Use `H i.succ j.succ` as an intermediate fact. Simplify using `using this`. Introduce and unpack `⟨h1, h2, h3⟩ i j`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) i <;> refine Fin.cases ?_ (fun j => ?_) j`. Simplify using `using h1`.
+
+Simplify `h2 j` using `[(Fin.succ_ne_zero j).symm]`. Establish `: h (c i) v = 0` using `by rw [← hh v (c i), h2 i, map_zero]`. Simplify `this` using `[Fin.succ_ne_zero i]`. Simplify using `using h3 i j`.
+-/
 lemma orthonormal_cons_iff {h : V →ₛₗ[σ] V →ₗ[K] K} (hh : Herm h) {n : ℕ} (v : V) (c : Fin n → V) :
     Ortho h (Fin.cons v c : Fin (n + 1) → V) ↔ h v v = 1 ∧ (∀ i, h v (c i) = 0) ∧ Ortho h c := by
   constructor
@@ -108,6 +144,17 @@ lemma orthonormal_cons_iff {h : V →ₛₗ[σ] V →ₗ[K] K} (hh : Herm h) {n 
 
 end A1
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `V _ _ _ h _ _ hfin`. Conclude with `⟨finBasisOfFinrankEq K V hfin, fun i => i.elim0⟩`. Consider the case `succ n ih`.
+
+Introduce `V _ _ _ h hh hn hfin`. Establish `hnt : Nontrivial V` using `Module.nontrivial_of_finrank_pos (R := K) (by omega)`. Take `⟨u, hu⟩` from `exists_ne (0 : V)`. Establish `hne : ∃ u v, h u v ≠ 0`. Assume the negation of the conclusion as `hcon`.
+
+Use `push Not at hcon`. Conclude with `hu (hn u (hcon u))`. Take `⟨v, hv⟩` from `exists_unit_norm_vector hσ hh hne`. Establish `hW` using `finrank_orthogonal_unit_add_one h v hv`. Take `⟨bW, hbW⟩` from `ih (LinearMap.ker (h v)) (restrictFormAlt h _) (restrict_form_hermitian hh _) (restrict_orthogonal_complement_nondeg hh hn v hv) (by omega)`.
+
+Use `⟨Basis.mkFinCons v bW ?_ ?_, ?_⟩` and prove the remaining obligations. Introduce `c x hx hc`. Use `congrArg (h v) hc` as an intermediate fact. Rewrite `hx` using `[LinearMap.mem_ker]`. Simplify `this` using `[hv, hx]`.
+
+Introduce `z`. Conclude with `⟨-(h v z), by simp [LinearMap.mem_ker, hv]⟩`. Rewrite using `[Basis.coe_mkFinCons, orthonormal_cons_iff hh]`. Use `⟨hv, fun i => ?_, fun i j => hbW i j⟩` and prove the remaining obligations. Conclude with `LinearMap.mem_ker.1 (bW i).2`.
+-/
 theorem exists_orthonormal (hσ : Inv σ) (n : ℕ) : ∀ (V : Type) [AddCommGroup V] [Module K V]
     [FiniteDimensional K V] (h : V →ₛₗ[σ] V →ₗ[K] K), Herm h → Nondeg h → finrank K V = n →
     ∃ b : Basis (Fin n) K V, Ortho h b := by
@@ -138,6 +185,9 @@ theorem exists_orthonormal (hσ : Inv σ) (n : ℕ) : ∀ (V : Type) [AddCommGro
       refine ⟨hv, fun i => ?_, fun i j => hbW i j⟩
       exact LinearMap.mem_ker.1 (bW i).2
 
+/- English proof (translation)
+Use `conv_lhs => rw [← b.sum_equivFun v]`. Simplify using `only [map_sum, LinearMap.sum_apply, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, RingHom.id_apply, hb _ _]`. Simplify using `[mul_comm]`.
+-/
 lemma form_norm_orthonormal_coords {V : Type} [AddCommGroup V] [Module K V] {h : V →ₛₗ[σ] V →ₗ[K] K} {n : ℕ}
     (b : Basis (Fin n) K V) (hb : Ortho h b) (v : V) :
     h v v = ∑ i, σ (b.equivFun v i) * b.equivFun v i := by
@@ -146,6 +196,9 @@ lemma form_norm_orthonormal_coords {V : Type} [AddCommGroup V] [Module K V] {h :
     RingHom.id_apply, hb _ _]
   simp [mul_comm]
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `exists_orthonormal hσ n V h hh hn hfin`. Rewrite using `[← hs n]`. Conclude with `Nat.card_congr (Equiv.subtypeEquiv b.equivFun.toEquiv (fun v => by`. Rewrite using `[form_norm_orthonormal_coords b hb v]`. Use the proof step `rfl))`.
+-/
 lemma card_unit_norm_vectors (hσ : Inv σ) [Finite K] (s : ℕ → ℕ)
     (hs : ∀ n, Nat.card {w : Fin n → K // ∑ i, σ (w i) * w i = 1} = s n) (n : ℕ)
     (V : Type) [AddCommGroup V] [Module K V] [FiniteDimensional K V] (h : V →ₛₗ[σ] V →ₗ[K] K)
@@ -176,6 +229,13 @@ def orthonormalFrameEquiv {V : Type} [AddCommGroup V] [Module K V] {h : V →ₛ
     rcases p with ⟨⟨v, hv⟩, ⟨c, hc⟩⟩
     rfl
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `V _ _ _ h _ _ _`. Rewrite using `[Finset.prod_range_zero, Nat.card_eq_one_iff_unique]`. Conclude with `⟨⟨fun a b => Subtype.ext (Subsingleton.elim _ _)⟩, ⟨⟨Fin.elim0, fun i => i.elim0⟩⟩⟩`.
+
+Consider the case `succ n ih`. Introduce `V _ _ _ h hh hn hfin`. Establish `: Finite V` using `Module.finite_of_finite K`. Set `_ : Fintype {v : V // h v v = 1}` to `Fintype.ofFinite _`. Rewrite using `[Nat.card_congr (orthonormalFrameEquiv hh n), Nat.card_sigma]`.
+
+Establish `h1 : ∀ v : {v : V // h v v = 1}, Nat.card {c : Fin n → LinearMap.ker (h v.1) // Ortho (restrictFormAlt h (LinearMap.ker (h v.1))) c} = ∏ j ∈ Finset.range n, s (j + 1)`. Introduce `v`. Establish `hW` using `finrank_orthogonal_unit_add_one h v.1 v.2`. Conclude with `ih (LinearMap.ker (h v.1)) (restrictFormAlt h _) (restrict_form_hermitian hh _) (restrict_orthogonal_complement_nondeg hh hn v.1 v.2) (by omega)`. Rewrite using `[Finset.sum_congr rfl (fun v _ => h1 v), Finset.sum_const, Finset.card_univ, ← Nat.card_eq_fintype_card, card_unit_norm_vectors hσ s hs (n + 1) V h hh hn hfin, Finset.prod_range_succ, smul_eq_mul, mul_comm]`.
+-/
 theorem card_frames (hσ : Inv σ) [Finite K] (s : ℕ → ℕ)
     (hs : ∀ n, Nat.card {w : Fin n → K // ∑ i, σ (w i) * w i = 1} = s n) (n : ℕ) :
     ∀ (V : Type) [AddCommGroup V] [Module K V] [FiniteDimensional K V] (h : V →ₛₗ[σ] V →ₗ[K] K),
@@ -205,10 +265,16 @@ theorem card_frames (hσ : Inv σ) [Finite K] (s : ℕ → ℕ)
 section A2
 variable {V : Type} [AddCommGroup V] [Module K V]
 
+/- English proof (translation)
+Simplify using `[map_sum]`.
+-/
 lemma form_sum_right_alt (h : V →ₛₗ[σ] V →ₗ[K] K) {ι : Type} [Fintype ι] (u : V) (c : ι → K)
     (x : ι → V) : h u (∑ j, c j • x j) = ∑ j, c j * h u (x j) := by
   simp [map_sum]
 
+/- English proof (translation)
+Simplify using `[map_sum, LinearMap.sum_apply]`.
+-/
 lemma form_sum_left_alt (h : V →ₛₗ[σ] V →ₗ[K] K) {ι : Type} [Fintype ι] (u : V) (c : ι → K)
     (x : ι → V) : h (∑ j, c j • x j) u = ∑ j, σ (c j) * h (x j) u := by
   simp [map_sum, LinearMap.sum_apply]
@@ -216,11 +282,27 @@ lemma form_sum_left_alt (h : V →ₛₗ[σ] V →ₗ[K] K) {ι : Type} [Fintype
 def gramMatrix (h : V →ₛₗ[σ] V →ₗ[K] K) {ι : Type} (x : ι → V) : Matrix ι ι K :=
   Matrix.of fun i j => h (x i) (x j)
 
+/- English proof (translation)
+Rewrite using `[form_sum_right_alt]`. Simplify using `[gramMatrix, Matrix.mulVec, dotProduct, mul_comm]`.
+-/
 lemma gram_mulVec_eq (h : V →ₛₗ[σ] V →ₗ[K] K) {ι : Type} [Fintype ι] (x : ι → V) (c : ι → K)
     (i : ι) : (gramMatrix h x).mulVec c i = h (x i) (∑ j, c j • x j) := by
   rw [form_sum_right_alt]
   simp [gramMatrix, Matrix.mulVec, dotProduct, mul_comm]
 
+/- English proof (translation)
+Set `Φ : V →ₗ[K] (ι → K)` to `LinearMap.pi (fun i => h (x i))`. Establish `htop : LinearMap.range Φ = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨f, hf0, hf⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.2 hne)`. Establish `key : ∀ v, ∑ i, h (x i) v * f (fun j => if i = j then 1 else 0) = 0`.
+
+Introduce `v`. Establish `h1 : f (Φ v) = 0` using `hf ⟨v, rfl⟩`. Rewrite `h1` using `[LinearMap.pi_apply_eq_sum_univ f (Φ v)]`. Simplify `h1` using `[Φ]`. Establish `h2 : ∑ i, σ (f (fun j => if i = j then 1 else 0)) • x i = 0`.
+
+Apply `hn` to reduce the goal to its premises. Introduce `v`. Rewrite using `[form_sum_left_alt]`. Simplify using `only [hσ.invol]`. Use `Eq.trans ?_ (key v)` and prove the remaining obligations.
+
+Conclude with `Finset.sum_congr rfl (fun i _ => mul_comm _ _)`. Establish `hc` using `Fintype.linearIndependent_iff.1 hx _ h2`. Apply `hf0` to reduce the goal to its premises. Use `LinearMap.ext (fun w => ?_)` and prove the remaining obligations. Rewrite using `[LinearMap.pi_apply_eq_sum_univ f w]`.
+
+Use `Finset.sum_eq_zero (fun i _ => ?_)` and prove the remaining obligations. Establish `h3` using `hc i`. Rewrite `h3` using `[map_eq_zero]`. Rewrite using `[h3, smul_zero]`. Establish `: r ∈ LinearMap.range Φ` using `by rw [htop]; trivial`.
+
+Take `⟨m, hm⟩` from `this`. Conclude with `⟨m, fun i => by rw [← hm]; rfl⟩`.
+-/
 lemma form_functionals_surjective (hσ : Inv σ) (h : V →ₛₗ[σ] V →ₗ[K] K) (hn : Nondeg h) {ι : Type} [Fintype ι]
     [DecidableEq ι] (x : ι → V) (hx : LinearIndependent K x) (r : ι → K) :
     ∃ m, ∀ i, h (x i) m = r i := by
@@ -252,6 +334,13 @@ lemma form_functionals_surjective (hσ : Inv σ) (h : V →ₛₗ[σ] V →ₗ[K
   obtain ⟨m, hm⟩ := this
   exact ⟨m, fun i => by rw [← hm]; rfl⟩
 
+/- English proof (translation)
+Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc`. Establish `h1 : (gramMatrix h z).mulVec c = 0`. Use extensionality with `i`. Rewrite using `[gram_mulVec_eq, hc]`.
+
+Simplify using the standard rewrite rules. Establish `h2 : Function.Injective (gramMatrix h z).mulVec` using `Matrix.mulVec_injective_iff_isUnit.2 ((Matrix.isUnit_iff_isUnit_det _).2 hG)`. Establish `h3 : c = 0` using `h2 (by rw [h1, Matrix.mulVec_zero])`. Introduce `i`. Rewrite using `[h3]`.
+
+Both sides reduce to the same expression.
+-/
 lemma linearIndependent_of_gram_unit (h : V →ₛₗ[σ] V →ₗ[K] K) {κ : Type} [Fintype κ] [DecidableEq κ] (z : κ → V)
     (hG : IsUnit (gramMatrix h z).det) : LinearIndependent K z := by
   rw [Fintype.linearIndependent_iff]
@@ -266,12 +355,48 @@ lemma linearIndependent_of_gram_unit (h : V →ₛₗ[σ] V →ₗ[K] K) {κ : T
   intro i
   rw [h3]; rfl
 
+/- English proof (translation)
+Rewrite using `[form_sum_left_alt]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[form_sum_right_alt, Finset.mul_sum]`.
+-/
 lemma form_sum_expand (h : V →ₛₗ[σ] V →ₗ[K] K) {κ : Type} [Fintype κ] (b : κ → V) (c d : κ → K) :
     h (∑ i, c i • b i) (∑ j, d j • b j) = ∑ i, ∑ j, σ (c i) * (d j * h (b i) (b j)) := by
   rw [form_sum_left_alt]
   refine Finset.sum_congr rfl (fun i _ => ?_)
   rw [form_sum_right_alt, Finset.mul_sum]
 
+/- English proof (translation)
+Establish `hx : LinearIndependent K x` using `linearIndependent_of_gram_unit h x hG`. Set `Φ : V →ₗ[K] (Fin a → K)` to `LinearMap.pi (fun i => h (x i))`. Establish `hΦ : ∀ v i, Φ v i = h (x i) v` using `fun v i => rfl`. Establish `hsurj : LinearMap.range Φ = ⊤`. Rewrite using `[LinearMap.range_eq_top]`.
+
+Introduce `r`. Take `⟨m, hm⟩` from `form_functionals_surjective hσ h hn x hx r`. Conclude with `⟨m, funext hm⟩`. Set `W : Submodule K V` to `LinearMap.ker Φ`. Establish `hWmem : ∀ w, w ∈ W ↔ ∀ i, h (x i) w = 0`.
+
+Introduce `w`. Simplify using `only [W, LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `hw i`. Rewrite using `[← hΦ, hw]`.
+
+Both sides reduce to the same expression. Introduce `hw`. Use function extensionality and compare the values at `i`. Conclude with `hw i`. Establish `hfr : finrank K W = finrank K V - a`.
+
+Establish `h1 : finrank K (LinearMap.range Φ) + finrank K W = finrank K V` using `LinearMap.finrank_range_add_finrank_ker Φ`. Rewrite `h1` using `[hsurj, finrank_top, Module.finrank_fin_fun]`. Use linear arithmetic over natural numbers and integers. Establish `hdec : ∀ v, ∃ c : Fin a → K, v - ∑ j, c j • x j ∈ W`. Introduce `v`.
+
+Use `⟨(gramMatrix h x)⁻¹.mulVec (Φ v), ?_⟩` and prove the remaining obligations. Rewrite using `[hWmem]`. Introduce `i`. Rewrite using `[map_sub, ← gram_mulVec_eq, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hG, Matrix.one_mulVec, hΦ, sub_self]`. Set `hW : W →ₛₗ[σ] W →ₗ[K] K` to `h.domRestrict₁₂ W W`.
+
+Establish `hWh : Herm hW` using `fun u v => hh u v`. Establish `hWn : Nondeg hW`. Introduce `w hw`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `hn` to reduce the goal to its premises.
+
+Introduce `v`. Take `⟨c, hc⟩` from `hdec v`. Establish `h1 : h w (v - ∑ j, c j • x j) = 0` using `hw ⟨_, hc⟩`. Establish `h2 : h w (∑ j, c j • x j) = 0`. Rewrite using `[form_sum_right_alt]`.
+
+Use `Finset.sum_eq_zero (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[← hh (x j) w, (hWmem w).1 w.2 j]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[map_sub, h2, sub_zero]`. Conclude with `h1`.
+
+Take `⟨c, hc⟩` from `exists_orthonormal hσ _ W hW hWh hWn hfr`. Set `z : Fin a ⊕ Fin (finrank K V - a) → V` to `Sum.elim x (fun j => (c j : V))`. Establish `h12 : ∀ i j, h (x i) (c j : V) = 0` using `fun i j => (hWmem _).1 (c j).2 i`. Establish `h21 : ∀ i j, h (c j : V) (x i) = 0`. Introduce `i j`.
+
+Rewrite using `[← hh, h12]`. Simplify using the standard rewrite rules. Establish `h22 : ∀ j k, h (c j : V) (c k : V) = if j = k then 1 else 0` using `fun j k => hc j k`. Establish `hzG : gramMatrix h z = Matrix.fromBlocks (gramMatrix h x) 0 0 1`. Use extensionality with `i j`.
+
+Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Both sides reduce to the same expression. Simplify using `[gramMatrix, z, h12]`. Simplify using `[gramMatrix, z, h21]`. Simplify using `[gramMatrix, z, h22, Matrix.one_apply]`.
+
+Establish `hzli : LinearIndependent K z`. Apply `linearIndependent_of_gram_unit h` to reduce the goal to its premises. Rewrite using `[hzG, Matrix.det_fromBlocks_zero₂₁]`. Simplify using `using hG`. Establish `hcard : Fintype.card (Fin a ⊕ Fin (finrank K V - a)) = finrank K V`.
+
+Establish `h1` using `hx.fintype_card_le_finrank`. Simplify using `only [Fintype.card_fin] at h1`. Simplify using `only [Fintype.card_sum, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers. Establish `hsp` using `hzli.span_eq_top_of_card_eq_finrank' hcard`.
+
+Use `⟨Basis.mk hzli hsp.ge, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Simplify using `[z]`. Introduce `i j`. Simplify using `[z, h12]`.
+
+Introduce `i j`. Simplify using `[z, h21]`. Introduce `j k`. Simplify using `[z, h22]`.
+-/
 lemma extend_to_orthogonal_basis (hσ : Inv σ) [FiniteDimensional K V] (h : V →ₛₗ[σ] V →ₗ[K] K) (hh : Herm h)
     (hn : Nondeg h) {a : ℕ} (x : Fin a → V) (hG : IsUnit (gramMatrix h x).det) :
     ∃ b : Basis (Fin a ⊕ Fin (finrank K V - a)) K V, (∀ i, b (Sum.inl i) = x i) ∧
@@ -354,6 +479,19 @@ lemma extend_to_orthogonal_basis (hσ : Inv σ) [FiniteDimensional K V] (h : V �
   · intro i j; simp [z, h21]
   · intro j k; simp [z, h22]
 
+/- English proof (translation)
+Establish `hGy : IsUnit (gramMatrix h y).det`. Establish `: gramMatrix h y = gramMatrix h x`. Use extensionality with `i j`. Conclude with `(hxy i j).symm`. Rewrite using `[this]`.
+
+Conclude with `hG`. Take `⟨bx, hx1, hx2, hx3, hx4⟩` from `extend_to_orthogonal_basis hσ h hh hn x hG`. Take `⟨bY, hy1, hy2, hy3, hy4⟩` from `extend_to_orthogonal_basis hσ h hh hn y hGy`. Establish `hb : ∀ i j, h (bx i) (bx j) = h (bY i) (bY j)`. Introduce `i j`.
+
+Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Rewrite using `[hx1, hx1, hy1, hy1, hxy]`. Rewrite using `[hx2, hy2]`. Rewrite using `[hx3, hy3]`. Rewrite using `[hx4, hy4]`.
+
+Use `⟨bx.equiv bY (Equiv.refl _), ?_, ?_⟩` and prove the remaining obligations. Introduce `u v`. Establish `hg : ∀ w, bx.equiv bY (Equiv.refl _) w = ∑ i, bx.repr w i • bY i`. Introduce `w`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, Basis.equiv_apply]`. Both sides reduce to the same expression. Rewrite using `[hg, hg, form_sum_expand]`.
+
+Use `conv_rhs => rw [← bx.sum_repr u, ← bx.sum_repr v, form_sum_expand]`. Simplify using `only [hb]`. Introduce `i`. Rewrite using `[← hx1, Basis.equiv_apply, ← hy1]`. Both sides reduce to the same expression.
+-/
 lemma witt_extension_of_nondeg_gram (hσ : Inv σ) [FiniteDimensional K V] (h : V →ₛₗ[σ] V →ₗ[K] K) (hh : Herm h)
     (hn : Nondeg h) {a : ℕ} (x y : Fin a → V) (hG : IsUnit (gramMatrix h x).det)
     (hxy : ∀ i j, h (x i) (x j) = h (y i) (y j)) :
@@ -390,6 +528,21 @@ lemma witt_extension_of_nondeg_gram (hσ : Inv σ) [FiniteDimensional K V] (h : 
     rw [← hx1, Basis.equiv_apply, ← hy1]
     rfl
 
+/- English proof (translation)
+Take `⟨m0, hm0⟩` from `form_functionals_surjective hσ h hn x hx (fun i => if i = i0 then 1 else 0)`. Take `⟨l, hl⟩` from `hσ.trace_one`. Use `set u := ∑ j, N j • x j with hu`. Establish `hux : ∀ i, h u (x i) = 0`. Introduce `i`.
+
+Rewrite using `[← hh, hGN]`. Simplify using the standard rewrite rules. Establish `huu : h u u = 0` using `by conv_lhs => rw [hu]`. Rewrite using `[form_sum_left_alt]`. Conclude with `Finset.sum_eq_zero (fun j _ => by rw [hGN, mul_zero])`.
+
+Establish `hum : h u m0 = σ (N i0)`. Rewrite using `[hu, form_sum_left_alt]`. Simplify using `[hm0]`. Establish `hs : σ (N i0) ≠ 0`. Rewrite using `[Ne, map_eq_zero]`.
+
+Conclude with `hN`. Establish `hmu : h m0 u = N i0`. Rewrite using `[← hh u m0, hum, hσ.invol]`. Establish `ht : σ (h m0 m0) = h m0 m0` using `hh m0 m0`. Use `⟨m0 + (-(l * h m0 m0) / N i0) • u, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `i`. Rewrite using `[map_add, map_smul, hGN, smul_zero, add_zero, hm0]`. Simplify using `only [map_add, LinearMap.add_apply, map_smul, map_smulₛₗ, LinearMap.smul_apply, huu, hum, hmu, smul_eq_mul, map_div₀, map_neg, map_mul, ht]`. Establish `hl' : σ l = 1 - l` using `by rw [← hl]; ring`. Rewrite using `[hl']`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Introduce `hmem`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun K).1 hmem`. Establish `h1 : h u (∑ i, c i • x i) = 0`.
+
+Rewrite using `[form_sum_right_alt]`. Conclude with `Finset.sum_eq_zero (fun j _ => by rw [hux, mul_zero])`. Rewrite `h1` using `[hc, map_add, map_smul, huu, smul_zero, add_zero, hum]`. Conclude with `hs h1`.
+-/
 lemma exists_isotropic_completion (hσ : Inv σ) (h : V →ₛₗ[σ] V →ₗ[K] K) (hh : Herm h) (hn : Nondeg h) {a : ℕ}
     (x : Fin a → V) (hx : LinearIndependent K x) (N : Fin a → K) (i0 : Fin a) (hN : N i0 ≠ 0)
     (hGN : ∀ i, h (x i) (∑ j, N j • x j) = 0) :
@@ -430,6 +583,27 @@ lemma exists_isotropic_completion (hσ : Inv σ) (h : V →ₛₗ[σ] V →ₗ[K
     rw [hc, map_add, map_smul, huu, smul_zero, add_zero, hum] at h1
     exact hs h1
 
+/- English proof (translation)
+Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `a x y had hx hy hxy`. Distinguish the cases in `hG : IsUnit (gramMatrix h x).det`.
+
+Conclude with `witt_extension_of_nondeg_gram hσ h hh hn x y hG hxy`. It suffices to derive a contradiction. Rewrite `hG` using `[isUnit_iff_ne_zero, not_not]`. Take `⟨N, hN0, hN⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 hG`. Take `⟨i0, hi0⟩` from `Function.ne_iff.1 hN0`.
+
+Establish `hGN : ∀ i, h (x i) (∑ j, N j • x j) = 0`. Introduce `i`. Rewrite using `[← gram_mulVec_eq, hN]`. Both sides reduce to the same expression. Take `⟨m, -, -, hm⟩` from `exists_isotropic_completion hσ h hh hn x hx N i0 hi0 hGN`.
+
+Establish `hli : LinearIndependent K (Fin.snoc x m : Fin (a + 1) → V)` using `linearIndependent_finSnoc.2 ⟨hx, hm⟩`. Use `hli.fintype_card_le_finrank` as an intermediate fact. Simplify using `only [Fintype.card_fin] at this`. Use linear arithmetic over natural numbers and integers. Consider the case `succ d ih`.
+
+Introduce `a x y had hx hy hxy`. Distinguish the cases in `hG : IsUnit (gramMatrix h x).det`. Conclude with `witt_extension_of_nondeg_gram hσ h hh hn x y hG hxy`. Rewrite `hG` using `[isUnit_iff_ne_zero, not_not]`. Take `⟨N, hN0, hN⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 hG`.
+
+Take `⟨i0, hi0⟩` from `Function.ne_iff.1 hN0`. Establish `hGN : ∀ i, h (x i) (∑ j, N j • x j) = 0`. Introduce `i`. Rewrite using `[← gram_mulVec_eq, hN]`. Both sides reduce to the same expression.
+
+Establish `hGN' : ∀ i, h (y i) (∑ j, N j • y j) = 0`. Introduce `i`. Rewrite using `[form_sum_right_alt]`. Establish `h1` using `hGN i`. Rewrite `h1` using `[form_sum_right_alt]`.
+
+Simplify `h1` using `only [hxy]`. Take `⟨m, hm1, hm2, hm3⟩` from `exists_isotropic_completion hσ h hh hn x hx N i0 hi0 hGN`. Take `⟨m', hm1', hm2', hm3'⟩` from `exists_isotropic_completion hσ h hh hn y hy N i0 hi0 hGN'`. Take `⟨g, hg1, hg2⟩` from `ih (a + 1) (Fin.snoc x m : Fin (a + 1) → V) (Fin.snoc y m' : Fin (a + 1) → V) (by omega) (linearIndependent_finSnoc.2 ⟨hx, hm3⟩) (linearIndependent_finSnoc.2 ⟨hy, hm3'⟩) (by`. Introduce `i j`.
+
+Apply the tactic sequence `refine Fin.lastCases ?_ (fun i => ?_) i <;> refine Fin.lastCases ?_ (fun j => ?_) j`. Simplify using `only [Fin.snoc_last, hm2, hm2']`. Simplify using `only [Fin.snoc_last, Fin.snoc_castSucc]`. Rewrite using `[← hh, hm1, ← hh (y j), hm1']`. Simplify using `only [Fin.snoc_last, Fin.snoc_castSucc, hm1, hm1']`.
+
+Simplify using `only [Fin.snoc_castSucc, hxy])`. Use `⟨g, hg1, fun i => ?_⟩` and prove the remaining obligations. Use `hg2 i.castSucc` as an intermediate fact. Simplify `this` using `only [Fin.snoc_castSucc]`.
+-/
 lemma witt_extension_induction (hσ : Inv σ) [FiniteDimensional K V] (h : V →ₛₗ[σ] V →ₗ[K] K) (hh : Herm h)
     (hn : Nondeg h) : ∀ (d a : ℕ) (x y : Fin a → V), a + d = finrank K V →
     LinearIndependent K x → LinearIndependent K y →
@@ -488,6 +662,9 @@ lemma witt_extension_induction (hσ : Inv σ) [FiniteDimensional K V] (h : V →
 
 end A2
 
+/- English proof (translation)
+Establish `h1` using `hx.fintype_card_le_finrank`. Simplify using `only [Fintype.card_fin] at h1`. Conclude with `witt_extension_induction hσ h hh hn (finrank K V - a) a x y (by omega) hx hy hxy`.
+-/
 theorem witt (hσ : Inv σ) {V : Type} [AddCommGroup V] [Module K V] [FiniteDimensional K V]
     (h : V →ₛₗ[σ] V →ₗ[K] K) (hh : Herm h) (hn : Nondeg h) {a : ℕ} (x y : Fin a → V)
     (hx : LinearIndependent K x) (hy : LinearIndependent K y)
@@ -501,12 +678,20 @@ section PartC
 open Finset
 variable (K : Type) [Field K] [Fintype K] (q : ℕ)
 
+/- English proof (translation)
+Establish `h1 : 1 < Fintype.card K` using `Fintype.one_lt_card`. Rewrite `h1` using `[hq]`. Assume the negation of the conclusion as `h`. Apply the tactic sequence `interval_cases q <;> simp at h1`.
+-/
 theorem c_two_le (hq : Fintype.card K = q ^ 2) : 2 ≤ q := by
   have h1 : 1 < Fintype.card K := Fintype.one_lt_card
   rw [hq] at h1
   by_contra h
   interval_cases q <;> simp at h1
 
+/- English proof (translation)
+Take `⟨p, hp⟩` from `CharP.exists K`. Take `⟨n, hpp, hn⟩` from `FiniteField.card K p`. Establish `: ExpChar K p` using `ExpChar.prime hpp`. Establish `hdvd : q ∣ p ^ (n : ℕ)` using `by rw [← hn, hq]; exact Dvd.intro_left q (by ring)`. Take `⟨m, -, hm⟩` from `(Nat.dvd_prime_pow hpp).1 hdvd`.
+
+Use `⟨iterateFrobenius K p m, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[iterateFrobenius_def, hm]`.
+-/
 theorem c_exists_frob (hq : Fintype.card K = q ^ 2) : ∃ σ : K →+* K, ∀ x, σ x = x ^ q := by
   obtain ⟨p, hp⟩ := CharP.exists K
   obtain ⟨n, hpp, hn⟩ := FiniteField.card K p
@@ -516,9 +701,17 @@ theorem c_exists_frob (hq : Fintype.card K = q ^ 2) : ∃ σ : K →+* K, ∀ x,
   refine ⟨iterateFrobenius K p m, fun x => ?_⟩
   rw [iterateFrobenius_def, hm]
 
+/- English proof (translation)
+Rewrite using `[← pow_mul, ← sq, ← hq, FiniteField.pow_card]`.
+-/
 theorem c_pow_pow (hq : Fintype.card K = q ^ 2) (x : K) : (x ^ q) ^ q = x := by
   rw [← pow_mul, ← sq, ← hq, FiniteField.pow_card]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Apply `Finset.card_le_card` to reduce the goal to its premises. Introduce `x hx`. Simplify using `only [mem_filter, mem_univ, true_and] at hx`. Simplify using `[Polynomial.mem_nthRoots hn, hx]`.
+
+Use `_ ≤ Multiset.card (Polynomial.nthRoots n a) := Multiset.toFinset_card_le _`. Use `_ ≤ n := Polynomial.card_nthRoots n a`.
+-/
 theorem c_card_pow_le [DecidableEq K] (n : ℕ) (hn : 0 < n) (a : K) :
     (univ.filter (fun x : K => x ^ n = a)).card ≤ n := by
   calc (univ.filter (fun x : K => x ^ n = a)).card ≤ (Polynomial.nthRoots n a).toFinset.card := by
@@ -529,6 +722,25 @@ theorem c_card_pow_le [DecidableEq K] (n : ℕ) (hn : 0 < n) (a : K) :
     _ ≤ Multiset.card (Polynomial.nthRoots n a) := Multiset.toFinset_card_le _
     _ ≤ n := Polynomial.card_nthRoots n a
 
+/- English proof (translation)
+Establish `h2` using `c_two_le K q hq`. Take `⟨k, rfl⟩ : ∃ k, q = k + 2` from `⟨q - 2, by omega⟩`. Use `set G := univ.filter (fun c : K => c ^ (k + 1) = 1) with hG`. Establish `hGc : G.card ≤ k + 1` using `c_card_pow_le K (k + 1) (by omega) 1`. Use `set s := univ.filter (fun x : K => x ≠ 0) with hs`.
+
+Establish `hsc : s.card = (k + 2) ^ 2 - 1`. Rewrite using `[hs, Finset.filter_ne', Finset.card_erase_of_mem (mem_univ _), card_univ, hq]`. Establish `hmaps : ∀ x ∈ s, x ^ (k + 2 + 1) ∈ G`. Introduce `x hx`. Simplify using `only [hs, hG, mem_filter, mem_univ, true_and] at hx ⊢`.
+
+Rewrite using `[← pow_mul]`. Establish `h3 : (k + 2 + 1) * (k + 1) = Fintype.card K - 1`. Rewrite using `[hq]`. Establish `: (k + 2) ^ 2 = (k + 2 + 1) * (k + 1) + 1` using `by ring`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[h3]`. Conclude with `FiniteField.pow_card_sub_one_eq_one x hx`. Establish `hsum` using `Finset.card_eq_sum_card_fiberwise hmaps`. Establish `hle : ∀ b ∈ G, (s.filter (fun x => x ^ (k + 2 + 1) = b)).card ≤ k + 2 + 1` using `fun b _ => le_trans (card_le_card (by`. Introduce `x hx`.
+
+Simplify using `only [mem_filter, mem_univ, true_and] at hx ⊢`. Conclude with `hx.2)) (c_card_pow_le K (k + 2 + 1) (by omega) b)`. Establish `hcG : c ∈ G`. Simplify using `only [hG, mem_filter, mem_univ, true_and]`. Establish `: c * c ^ (k + 1) = c * 1` using `by rw [mul_one, ← pow_succ']; exact hc`.
+
+Conclude with `mul_left_cancel₀ hc0 this`. Establish `heq : s.filter (fun x => x ^ (k + 2 + 1) = c) = univ.filter (fun x => x ^ (k + 2 + 1) = c)`. Use extensionality with `x`. Simplify using `only [hs, mem_filter, mem_univ, true_and, and_iff_right_iff_imp]`. Introduce `hx h0`.
+
+Substitute `h0` using the available equality. Simplify using `at hx`. Conclude with `hc0 hx.symm`. Rewrite using `[← heq]`. Assume the negation of the conclusion as `hne`.
+
+Establish `hlt : (s.filter (fun x => x ^ (k + 2 + 1) = c)).card < k + 2 + 1` using `lt_of_le_of_ne (hle c hcG) hne`. Establish `h4 : ∑ b ∈ G, (s.filter (fun x => x ^ (k + 2 + 1) = b)).card < ∑ b ∈ G, (k + 2 + 1)` using `Finset.sum_lt_sum hle ⟨c, hcG, hlt⟩`. Rewrite `h4` using `[← hsum, hsc, sum_const, smul_eq_mul]`. Establish `h5 : G.card * (k + 2 + 1) ≤ (k + 1) * (k + 2 + 1)` using `Nat.mul_le_mul_right _ hGc`. Establish `h6 : (k + 2) ^ 2 = (k + 1) * (k + 2 + 1) + 1` using `by ring`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem c_fibre [DecidableEq K] (hq : Fintype.card K = q ^ 2) (c : K) (hc : c ^ q = c) (hc0 : c ≠ 0) :
     (univ.filter (fun x : K => x ^ (q + 1) = c)).card = q + 1 := by
   have h2 := c_two_le K q hq
@@ -575,6 +787,15 @@ theorem c_fibre [DecidableEq K] (hq : Fintype.card K = q ^ 2) (c : K) (hc : c ^ 
   have h6 : (k + 2) ^ 2 = (k + 1) * (k + 2 + 1) + 1 := by ring
   omega
 
+/- English proof (translation)
+Establish `h2` using `c_two_le K q hq`. Establish `hsub : univ.filter (fun x : K => x ^ q = x) ⊆ insert 0 (univ.filter (fun x : K => x ^ (q - 1) = 1))`. Introduce `x hx`. Simplify using `only [mem_filter, mem_univ, true_and, mem_insert] at hx ⊢`. Distinguish the cases in `h0 : x = 0`.
+
+Conclude with `Or.inl h0`. Use `right`. Establish `: x * x ^ (q - 1) = x * 1`. Rewrite using `[mul_one, ← pow_succ']`. Establish `: q - 1 + 1 = q` using `by omega`.
+
+Rewrite using `[this]`. Conclude with `hx`. Conclude with `mul_left_cancel₀ h0 this`. Establish `h3` using `c_card_pow_le K (q - 1) (by omega) 1`. Establish `h4` using `Finset.card_le_card hsub`.
+
+Establish `h5` using `Finset.card_insert_le (0 : K) (univ.filter (fun x : K => x ^ (q - 1) = 1))`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem c_fixed_card_le [DecidableEq K] (hq : Fintype.card K = q ^ 2) :
     (univ.filter (fun x : K => x ^ q = x)).card ≤ q := by
   have h2 := c_two_le K q hq
@@ -594,6 +815,21 @@ theorem c_fixed_card_le [DecidableEq K] (hq : Fintype.card K = q ^ 2) :
   have h5 := Finset.card_insert_le (0 : K) (univ.filter (fun x : K => x ^ (q - 1) = 1))
   omega
 
+/- English proof (translation)
+Establish `h2` using `c_two_le K q hq`. Take `⟨σ, hσ⟩` from `c_exists_frob K q hq`. Establish `hinv : ∀ x, σ (σ x) = x` using `fun x => by rw [hσ, hσ, c_pow_pow K q hq]`. Use `⟨σ, hσ, hinv, ?_, ?_⟩` and prove the remaining obligations. Introduce `c hc`.
+
+Distinguish the cases in `hc0 : c = 0`. Conclude with `⟨0, by simp [hc0]⟩`. Establish `h3` using `c_fibre K q hq c (by rw [← hσ]; exact hc) hc0`. Establish `h4 : (univ.filter (fun x : K => x ^ (q + 1) = c)).Nonempty`. Rewrite using `[← Finset.card_pos]`.
+
+Use linear arithmetic over natural numbers and integers. Take `⟨y, hy⟩` from `h4`. Simplify using `only [mem_filter, mem_univ, true_and] at hy`. Conclude with `⟨y, by rw [hσ, ← pow_succ]; exact hy⟩`. Establish `h3 : ∃ t : K, t + σ t ≠ 0`.
+
+Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `h11 : (1 : K) + 1 = 0` using `by simpa using hcon 1`. Establish `hall : ∀ t : K, t ^ q = t`. Introduce `t`.
+
+Establish `h5` using `hcon t`. Rewrite `h5` using `[hσ]`. Establish `h6 : t + t = 0`. Establish `: t + t = t * (1 + 1)` using `by ring`. Rewrite using `[this, h11, mul_zero]`.
+
+Establish `: t ^ q - t = (t + t ^ q) - (t + t)` using `by ring`. Rewrite `this` using `[h5, h6, sub_zero]`. Conclude with `sub_eq_zero.1 this`. Establish `h7` using `c_fixed_card_le K q hq`. Rewrite `h7` using `[Finset.filter_true_of_mem (fun x _ => hall x), card_univ, hq]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Take `⟨t, ht⟩` from `h3`. Use `⟨t / (t + σ t), ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, map_add, hinv, add_comm (σ t) t, ← add_div, div_self ht]`.
+-/
 theorem exists_sigma (hq : Fintype.card K = q ^ 2) :
     ∃ σ : K →+* K, (∀ x, σ x = x ^ q) ∧ Inv σ := by
   classical
@@ -631,6 +867,17 @@ theorem exists_sigma (hq : Fintype.card K = q ^ 2) :
     refine ⟨t / (t + σ t), ?_⟩
     rw [map_div₀, map_add, hinv, add_comm (σ t) t, ← add_div, div_self ht]
 
+/- English proof (translation)
+Rewrite using `[Finset.card_eq_sum_card_fiberwise (f := fun w => w 0) (t := univ) (fun _ _ => mem_univ _)]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Use `symm`. Use `Finset.card_bij (fun w _ => Fin.cons x w) ?_ ?_ ?_` and prove the remaining obligations. Introduce `w hw`.
+
+Simplify using `only [mem_filter, mem_univ, true_and] at hw ⊢`. Use `⟨?_, by simp⟩` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_succ]`. Simplify using `[hw]`. Introduce `w _ w' _ h`.
+
+Use function extensionality and compare the values at `i`. Establish `h1` using `congrFun h i.succ`. Simplify using `using h1`. Introduce `w hw`. Simplify using `only [mem_filter, mem_univ, true_and] at hw`.
+
+Use `⟨Fin.tail w, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [mem_filter, mem_univ, true_and]`. Establish `h1` using `hw.1`. Rewrite `h1` using `[Fin.sum_univ_succ, hw.2]`. Rewrite using `[← h1]`.
+
+Simplify using `[Fin.tail]`. Rewrite using `[← hw.2]`. Conclude with `Fin.cons_self_tail w`.
+-/
 theorem c_count_succ [DecidableEq K] (n : ℕ) (c : K) :
     (univ.filter (fun w : Fin (n + 1) → K => ∑ i, w i ^ q * w i = c)).card =
       ∑ x : K, (univ.filter (fun w : Fin n → K => ∑ i, w i ^ q * w i = c - x ^ q * x)).card := by
@@ -658,6 +905,13 @@ theorem c_count_succ [DecidableEq K] (n : ℕ) (c : K) :
     · rw [← hw.2]
       exact Fin.cons_self_tail w
 
+/- English proof (translation)
+Establish `h1 : univ.filter (fun x : K => c - x ^ q * x = 0) = univ.filter (fun x : K => x ^ (q + 1) = c)`. Use extensionality with `x`. Simplify using `only [mem_filter, mem_univ, true_and, pow_succ, sub_eq_zero]`. Conclude with `eq_comm`. Rewrite using `[h1]`.
+
+Distinguish the cases in `h0 : c = 0`. Rewrite using `[if_pos h0, h0]`. Establish `: univ.filter (fun x : K => x ^ (q + 1) = 0) = {0}`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this, card_singleton]`. Rewrite using `[if_neg h0]`. Conclude with `c_fibre K q hq c hc h0`.
+-/
 theorem c_nu [DecidableEq K] (hq : Fintype.card K = q ^ 2) (c : K) (hc : c ^ q = c) :
     (univ.filter (fun x : K => c - x ^ q * x = 0)).card = if c = 0 then 1 else q + 1 := by
   have h1 : univ.filter (fun x : K => c - x ^ q * x = 0) = univ.filter (fun x : K => x ^ (q + 1) = c) := by
@@ -674,6 +928,19 @@ theorem c_nu [DecidableEq K] (hq : Fintype.card K = q ^ 2) (c : K) (hc : c ^ q =
   · rw [if_neg h0]
     exact c_fibre K q hq c hc h0
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `c_exists_frob K q hq`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `c _`. Distinguish the cases in `h0 : c = 0`.
+
+Simplify using `[h0]`. Simplify using `[h0, Ne.symm h0]`. Consider the case `succ n ih`. Introduce `c hc`. Establish `hfix : ∀ x : K, (c - x ^ q * x) ^ q = c - x ^ q * x`.
+
+Introduce `x`. Rewrite using `[← hσ, map_sub, map_mul, hσ, hσ, hσ, hc, c_pow_pow K q hq, mul_comm]`. Rewrite using `[c_count_succ, Nat.cast_sum, Finset.mul_sum, Finset.sum_congr rfl (fun x _ => ih _ (hfix x)), Finset.sum_ite, sum_const, sum_const, c_nu K q hq c hc]`. Establish `h3 : ((univ.filter (fun x : K => ¬ (c - x ^ q * x = 0))).card : ℤ) = (q : ℤ) ^ 2 - (if c = 0 then 1 else q + 1 : ℕ)`. Establish `h4` using `Finset.card_filter_add_card_filter_not (s := (univ : Finset K)) (fun x : K => c - x ^ q * x = 0)`.
+
+Rewrite `h4` using `[c_nu K q hq c hc, card_univ, hq]`. Establish `h5 : (((if c = 0 then 1 else q + 1 : ℕ) + (univ.filter (fun x : K => ¬ (c - x ^ q * x = 0))).card : ℕ) : ℤ) = ((q ^ 2 : ℕ) : ℤ)` using `by rw [h4]`. Move the coercions through the operations in `at h5 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[nsmul_eq_mul, nsmul_eq_mul, h3]`.
+
+Distinguish the cases in `h0 : c = 0`. Simplify using `only [h0, if_true]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h0, if_false]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem c_count [DecidableEq K] (hq : Fintype.card K = q ^ 2) (n : ℕ) : ∀ c : K, c ^ q = c →
     (q : ℤ) * (univ.filter (fun w : Fin n → K => ∑ i, w i ^ q * w i = c)).card =
       if c = 0 then (q : ℤ) ^ (2 * n) + (-1) ^ n * (q - 1) * q ^ n else q ^ n * (q ^ n - (-1) ^ n) := by
@@ -708,6 +975,9 @@ theorem c_count [DecidableEq K] (hq : Fintype.card K = q ^ 2) (n : ℕ) : ∀ c 
       push_cast
       ring
 
+/- English proof (translation)
+Establish `h` using `c_count K q hq n 1 (one_pow q)`. Rewrite `h` using `[if_neg one_ne_zero]`. Rewrite using `[← h, Nat.card_eq_fintype_card, Fintype.card_subtype]`.
+-/
 theorem card_norm_one (hq : Fintype.card K = q ^ 2) (n : ℕ) :
     (q : ℤ) * Nat.card {w : Fin n → K // ∑ i, (w i) ^ q * w i = 1} = q ^ n * (q ^ n - (-1) ^ n) := by
   classical
@@ -723,6 +993,9 @@ open Matrix Formalism.FourierDecayAlt.S3
 noncomputable def hJ (σ : K →+* K) {n : ℕ} (J : Matrix (Fin n) (Fin n) K) :
     (Fin n → K) →ₛₗ[σ] (Fin n → K) →ₗ[K] K := Matrix.toLinearMapₛₗ₂' K σ (RingHom.id K) J
 
+/- English proof (translation)
+Unfold `hJ`. Rewrite using `[Matrix.toLinearMapₛₗ₂'_apply]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [RingHom.id_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma hJ_apply {n : ℕ} (J : Matrix (Fin n) (Fin n) K) (u v : Fin n → K) :
     hJ σ J u v = ∑ i, ∑ j, σ (u i) * J i j * v j := by
   unfold hJ
@@ -731,6 +1004,9 @@ lemma hJ_apply {n : ℕ} (J : Matrix (Fin n) (Fin n) K) (u v : Fin n → K) :
   simp only [RingHom.id_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Rewrite using `[hJ_apply]`. Simplify using `only [Matrix.mul_apply, fconj, Matrix.transpose_apply, Matrix.map_apply, hσ, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+-/
 lemma d_gram_entry {q : ℕ} (hσ : ∀ x, σ x = x ^ q) {n : ℕ} {α β : Type} [Fintype α] [Fintype β]
     (J : Matrix (Fin n) (Fin n) K) (X : Matrix (Fin n) α K) (Y : Matrix (Fin n) β K) (i : α) (j : β) :
     (fconj q X * J * Y) i j = hJ σ J (fun k => X k i) (fun k => Y k j) := by
@@ -738,19 +1014,33 @@ lemma d_gram_entry {q : ℕ} (hσ : ∀ x, σ x = x ^ q) {n : ℕ} {α β : Type
   simp only [Matrix.mul_apply, fconj, Matrix.transpose_apply, Matrix.map_apply, hσ, Finset.sum_mul]
   rw [Finset.sum_comm]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[fconj, hσ]`.
+-/
 lemma d_fconj_eq {q : ℕ} (hσ : ∀ x, σ x = x ^ q) {α β : Type} (X : Matrix α β K) :
     fconj q X = (X.map σ)ᵀ := by
   ext i j
   simp [fconj, hσ]
 
+/- English proof (translation)
+Rewrite using `[d_fconj_eq hσ, d_fconj_eq hσ, d_fconj_eq hσ, Matrix.map_mul, Matrix.transpose_mul]`.
+-/
 lemma d_fconj_mul {q : ℕ} (hσ : ∀ x, σ x = x ^ q) {α β γ : Type} [Fintype β] (X : Matrix α β K)
     (Y : Matrix β γ K) : fconj q (X * Y) = fconj q Y * fconj q X := by
   rw [d_fconj_eq hσ, d_fconj_eq hσ, d_fconj_eq hσ, Matrix.map_mul, Matrix.transpose_mul]
 
+/- English proof (translation)
+Rewrite using `[d_fconj_eq hσ, Matrix.map_one _ (map_zero σ) (map_one σ), Matrix.transpose_one]`.
+-/
 lemma d_fconj_one {q : ℕ} (hσ : ∀ x, σ x = x ^ q) {α : Type} [DecidableEq α] :
     fconj q (1 : Matrix α α K) = 1 := by
   rw [d_fconj_eq hσ, Matrix.map_one _ (map_zero σ) (map_one σ), Matrix.transpose_one]
 
+/- English proof (translation)
+Introduce `u v`. Rewrite using `[hJ_apply, hJ_apply, map_sum, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Establish `h1 : σ (J j i) = J i j`. Use `congrFun (congrFun hJh i) j` as an intermediate fact. Simplify `this` using `[fconj, hσ]`. Rewrite using `[map_mul, map_mul, hi.invol, h1]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma d_herm {q : ℕ} (hσ : ∀ x, σ x = x ^ q) (hi : Inv σ) {n : ℕ} (J : Matrix (Fin n) (Fin n) K)
     (hJh : fconj q J = J) : Herm (hJ σ J) := by
   intro u v
@@ -764,6 +1054,13 @@ lemma d_herm {q : ℕ} (hσ : ∀ x, σ x = x ^ q) (hi : Inv σ) {n : ℕ} (J : 
   rw [map_mul, map_mul, hi.invol, h1]
   ring
 
+/- English proof (translation)
+Introduce `u hu`. Establish `h1 : (fun i => σ (u i)) ᵥ* J = 0`. Use extensionality with `j`. Use `hu (Pi.single j 1)` as an intermediate fact. Rewrite `this` using `[hJ_apply]`.
+
+Simplify using `only [Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at this`. Simplify `this` using `[Matrix.vecMul, dotProduct]`. Establish `h2` using `Matrix.eq_zero_of_vecMul_eq_zero hJu.ne_zero h1`. Use extensionality with `i`. Use `congrFun h2 i` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 lemma d_nondeg {n : ℕ} (J : Matrix (Fin n) (Fin n) K) (hJu : IsUnit J.det) : Nondeg (hJ σ J) := by
   intro u hu
   have h1 : (fun i => σ (u i)) ᵥ* J = 0 := by
@@ -778,6 +1075,9 @@ lemma d_nondeg {n : ℕ} (J : Matrix (Fin n) (Fin n) K) (hJu : IsUnit J.det) : N
   have := congrFun h2 i
   simpa using this
 
+/- English proof (translation)
+Rewrite using `[linearIndependent_iff_card_eq_finrank_span, Fintype.card_fin]`. Establish `h1` using `Matrix.range_mulVecLin X`. Unfold `Matrix.rank at hX`. Rewrite `hX` using `[h1]`. Conclude with `hX.symm`.
+-/
 lemma d_li_of_rank {n a : ℕ} (X : Matrix (Fin n) (Fin a) K) (hX : X.rank = a) :
     LinearIndependent K (fun (i : Fin a) (k : Fin n) => X k i) := by
   rw [linearIndependent_iff_card_eq_finrank_span, Fintype.card_fin]
@@ -786,6 +1086,17 @@ lemma d_li_of_rank {n a : ℕ} (X : Matrix (Fin n) (Fin a) K) (hX : X.rank = a) 
   rw [h1] at hX
   exact hX.symm
 
+/- English proof (translation)
+Introduce `K _ _ q n a J X Y hq hJh hJu hX hY hXY`. Take `⟨σ, hσ, hi⟩` from `exists_sigma K q hq`. Take `⟨g, hg, hgx⟩` from `witt hi (hJ σ J) (d_herm hσ hi J hJh) (d_nondeg J hJu) (fun (i : Fin a) (k : Fin n) => X k i) (fun (i : Fin a) (k : Fin n) => Y k i) (d_li_of_rank X hX) (d_li_of_rank Y hY) (by`. Introduce `i j`. Apply the tactic sequence `rw [← d_gram_entry hσ, ← d_gram_entry hσ, hXY])`.
+
+Establish `hcol : ∀ (α : Type) [Fintype α] (Z : Matrix (Fin n) α K) (i : α), (fun k => (LinearMap.toMatrix' g.toLinearMap * Z) k i) = g (fun k => Z k i)`. Introduce `α _ Z i`. Establish `: g (fun k => Z k i) = LinearMap.toMatrix' g.toLinearMap *ᵥ (fun k => Z k i)`. Rewrite using `[LinearMap.toMatrix'_mulVec]`. Both sides reduce to the same expression.
+
+Rewrite using `[this]`. Use extensionality with `k`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Use `⟨LinearMap.toMatrix' g.toLinearMap, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+
+Apply the tactic sequence `have h1 := d_gram_entry hσ J (LinearMap.toMatrix' g.toLinearMap * 1) (LinearMap.toMatrix' g.toLinearMap * 1) i j`. Apply the tactic sequence `rw [hcol, hcol, hg, ← d_gram_entry hσ, d_fconj_one hσ] at h1`. Simplify using `using h1`. Use extensionality with `k i`. Use `congrFun (hcol _ X i) k` as an intermediate fact.
+
+Rewrite `this` using `[hgx]`. Conclude with `this`.
+-/
 theorem d_wittHerm : WittHerm := by
   intro K _ _ q n a J X Y hq hJh hJu hX hY hXY
   obtain ⟨σ, hσ, hi⟩ := exists_sigma K q hq
@@ -813,6 +1124,13 @@ theorem d_wittHerm : WittHerm := by
     rw [hgx] at this
     exact this
 
+/- English proof (translation)
+Unfold `densP`. Establish `h1 : Finset.Icc (1 : ℤ) b = (Finset.range b).image (fun i : ℕ => ((i : ℤ) + 1))`. Use extensionality with `x`. Simplify using `only [Finset.mem_Icc, Finset.mem_image, Finset.mem_range]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨h1, h2⟩`. Use `⟨(x - 1).toNat, by omega, by omega⟩` and prove the remaining obligations. Introduce and unpack `⟨i, hi, rfl⟩`. Use linear arithmetic over natural numbers and integers. Rewrite using `[h1, Finset.prod_image (by intro x _ y _ hxy; simpa using hxy)]`.
+
+Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h2 : ((i : ℤ) + 1) = ((i + 1 : ℕ) : ℤ)` using `by push_cast; ring`. Rewrite using `[h2, zpow_natCast, _root_.zpow_neg, zpow_natCast]`.
+-/
 lemma d_densP (η : ℤ) (q b : ℕ) :
     densP η q 1 b = ∏ i ∈ Finset.range b, (1 - (η : ℝ) ^ (i + 1) * ((q : ℝ) ^ (i + 1))⁻¹) := by
   unfold densP
@@ -829,6 +1147,15 @@ lemma d_densP (η : ℤ) (q b : ℕ) :
   have h2 : ((i : ℤ) + 1) = ((i + 1 : ℕ) : ℤ) := by push_cast; ring
   rw [h2, zpow_natCast, _root_.zpow_neg, zpow_natCast]
 
+/- English proof (translation)
+Rewrite using `[d_densP]`. Establish `hq' : (q : ℝ) ≠ 0` using `by positivity`. Proceed by induction on `b with`. Consider the case `zero => simp`. Consider the case `succ b ih`.
+
+Rewrite using `[Finset.prod_range_succ, Finset.prod_range_succ, Nat.cast_mul, ih]`. Establish `h1 : (q : ℝ) * s (b + 1) = q ^ (b + 1) * (q ^ (b + 1) - (-1) ^ (b + 1))`. Conclude with `hs (b + 1)` after adjusting the coercions. Establish `h2 : (s (b + 1) : ℝ) = q ^ b * (q ^ (b + 1) - (-1) ^ (b + 1))`. Apply `mul_left_cancel₀ hq'` to reduce the goal to its premises.
+
+Rewrite using `[h1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2]`. Establish `h3 : (b + 1) ^ 2 = b ^ 2 + b + (b + 1)` using `by ring`. Rewrite using `[h3, pow_add, pow_add]`.
+
+Generalize the expression as in `(∏ i ∈ Finset.range b, (1 - ((-1 : ℤ) : ℝ) ^ (i + 1) * ((q : ℝ) ^ (i + 1))⁻¹)) = Q`. Establish `h4 : (q : ℝ) ^ (b + 1) * (1 - ((-1 : ℤ) : ℝ) ^ (b + 1) * ((q : ℝ) ^ (b + 1))⁻¹) = q ^ (b + 1) - (-1) ^ (b + 1)`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(-(q : ℝ) ^ (b ^ 2) * Q * q ^ b) * h4`.
+-/
 lemma d_arith (q : ℕ) (hq : 0 < q) (s : ℕ → ℕ)
     (hs : ∀ n, (q : ℤ) * s n = q ^ n * (q ^ n - (-1) ^ n)) (b : ℕ) :
     ((∏ j ∈ Finset.range b, s (j + 1) : ℕ) : ℝ) = (q : ℝ) ^ (b ^ 2) * densP (-1) q 1 b := by
@@ -853,6 +1180,29 @@ lemma d_arith (q : ℕ) (hq : 0 < q) (s : ℕ → ℕ)
       field_simp
     linear_combination (-(q : ℝ) ^ (b ^ 2) * Q * q ^ b) * h4
 
+/- English proof (translation)
+Introduce `K _ _ q b J hq hJh hJu`. Take `⟨σ, hσ, hi⟩` from `exists_sigma K q hq`. Establish `hq0 : 0 < q`. Break down `Nat.eq_zero_or_pos q with h | h` into its components or cases. Substitute `h` using the available equality.
+
+Use `Fintype.card_pos (α := K)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `h`. Establish `hH` using `d_herm hσ hi J hJh`. Establish `hN : Nondeg (hJ σ J)` using `d_nondeg J hJu`.
+
+Take `⟨bs, hbs⟩` from `exists_orthonormal hi b (Fin b → K) (hJ σ J) hH hN (by simp)`. Use `set P : Matrix (Fin b) (Fin b) K := Matrix.of fun k i => bs i k with hP`. Establish `hPJ : fconj q P * J * P = 1`. Use extensionality with `i j`. Apply the tactic sequence `rw [d_gram_entry hσ, Matrix.one_apply]`.
+
+Conclude with `hbs i j`. Establish `hPu : IsUnit P.det`. Use `congrArg Matrix.det hPJ` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, Matrix.det_one]`. Conclude with `IsUnit.of_mul_eq_one _ (by rw [mul_comm]; exact this)`.
+
+Establish `hPP : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hPu`. Establish `hPP' : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul P hPu`. Establish `hJP : J = fconj q P⁻¹ * P⁻¹`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[d_fconj_mul hσ]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hPJ]; simp`. Set `e1 : {g : Matrix (Fin b) (Fin b) K // fconj q g * J * g = J} ≃ {Z : Matrix (Fin b) (Fin b) K // fconj q Z * J * Z = 1}` to `{ toFun := fun g => ⟨g.1 * P, by`. Rewrite using `[d_fconj_mul hσ]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [g.2, hPJ]⟩`. Use `invFun := fun Z => ⟨Z.1 * P⁻¹, by`. Rewrite using `[d_fconj_mul hσ]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `left_inv := fun g => by`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[Matrix.mul_assoc, hPP]`. Use `right_inv := fun Z => by`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `[Matrix.mul_assoc, hPP'] }`. Set `e2 : {Z : Matrix (Fin b) (Fin b) K // fconj q Z * J * Z = 1} ≃ {f : Fin b → (Fin b → K) // Ortho (hJ σ J) f}` to `{ toFun := fun Z => ⟨fun i k => Z.1 k i, by`. Introduce `i j`. Apply the tactic sequence `rw [← d_gram_entry hσ, Z.2, Matrix.one_apply]⟩`. Use `invFun := fun f => ⟨Matrix.of fun k i => f.1 i k, by`.
+
+Use extensionality with `i j`. Apply the tactic sequence `rw [d_gram_entry hσ, Matrix.one_apply]`. Conclude with `f.2 i j⟩`. Use `left_inv := fun Z => rfl`. Use `right_inv := fun f => rfl }`.
+
+Rewrite using `[Nat.card_congr (e1.trans e2), card_frames hi (fun n => Nat.card {w : Fin n → K // ∑ i, σ (w i) * w i = 1}) (fun _ => rfl) b (Fin b → K) (hJ σ J) hH hN (by simp)]`. Use `d_arith q hq0 (fun n => Nat.card {w : Fin n → K // ∑ i, σ (w i) * w i = 1}) ?_ b` and prove the remaining obligations. Introduce `n`. Use `card_norm_one K q hq n` as an intermediate fact. Simplify `this` using `only [hσ]`.
+-/
 theorem d_unitaryOrder : UnitaryOrder := by
   intro K _ _ q b J hq hJh hJu
   obtain ⟨σ, hσ, hi⟩ := exists_sigma K q hq
@@ -924,8 +1274,14 @@ end Formalism.FourierDecayAlt.P.S3x6
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+The claim follows from `S3x6.d_unitaryOrder`.
+-/
 theorem unitary_group_order : Formalism.FourierDecayAlt.S3.UnitaryOrder := S3x6.d_unitaryOrder
 
+/- English proof (translation)
+The claim follows from `S3x6.d_wittHerm`.
+-/
 theorem witt_hermitian_frames : Formalism.FourierDecayAlt.S3.WittHerm := S3x6.d_wittHerm
 
 end Formalism.FourierDecayAlt.P

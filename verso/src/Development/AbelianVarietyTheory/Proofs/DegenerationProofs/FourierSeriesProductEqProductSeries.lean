@@ -15,6 +15,17 @@ attribute [local instance] SplitExt.free SplitExt.finite MvPolynomial.gradedAlge
 
 namespace GlobalTheory.ZH.SeriesProd
 
+/- English proof (translation)
+Take `⟨N, hN, -, -, h⟩` from `h`. Choose the witnesses or unpack the hypotheses as in `⟨C, hC⟩ : ∃ C : ℝ, ∀ y ∈ N, ‖y‖ ≤ C := by`. Take `⟨T, rfl⟩` from `hN`. Use `⟨∑ t ∈ T, ‖t‖, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨c, -, rfl⟩` from `Submodule.mem_span_finset.1 hy`.
+
+Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun t _ => ?_)` and prove the remaining obligations. Rewrite using `[hs, norm_mul]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) (h1 _)`. Establish `hb : ∀ (n : ℕ) y, y ∈ I ^ n • N → ‖y‖ ≤ r ^ n * C`. Introduce `n y hy`.
+
+Rewrite `hy` using `[hI, Ideal.span_singleton_pow, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Take `⟨z, hz, rfl⟩` from `hy`. Rewrite using `[hs, norm_mul, map_pow, norm_pow]`. Conclude with `mul_le_mul (pow_le_pow_left₀ (norm_nonneg _) hϖ n) (hC z hz) (norm_nonneg _) (pow_nonneg hr0 n)`. Use `Metric.tendsto_atTop.2 fun ε hε => ?_` and prove the remaining obligations.
+
+Establish `ht : Filter.Tendsto (fun n : ℕ => r ^ n * C) Filter.atTop (nhds 0)`. Simplify using `using (tendsto_pow_atTop_nhds_zero_of_lt_one hr0 hr).mul_const C`. Take `⟨n, hn⟩` from `(ht.eventually (gt_mem_nhds hε)).exists`. Take `⟨S, hS⟩` from `h n`. Use `⟨S, fun T hT => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[dist_comm, dist_eq_norm]`. Conclude with `(hb n _ (hS T hT)).trans_lt hn`.
+-/
 theorem hasSum_of_sumI {R F Ix : Type} [CommRing R] [NormedField F] (φ : R →+* F)
     (h1 : ∀ a, ‖φ a‖ ≤ 1) (I : Ideal R) {r : ℝ} (hr0 : 0 ≤ r) (hr : r < 1) (ϖ : R) (hI : I = Ideal.span {ϖ})
     (hϖ : ‖φ ϖ‖ ≤ r) [Module R F] (hs : ∀ (a : R) (x : F), a • x = φ a * x) {x : Ix → F} {s : F}
@@ -43,6 +54,9 @@ theorem hasSum_of_sumI {R F Ix : Type} [CommRing R] [NormedField F] (φ : R →+
   rw [dist_comm, dist_eq_norm]
   exact (hb n _ (hS T hT)).trans_lt hn
 
+/- English proof (translation)
+Establish `: NonarchimedeanRing F` using `{ is_nonarchimedean := (IsUltrametricDist.nonarchimedeanAddGroup (M := F)).is_nonarchimedean }`. Set `e : X × X ≃ X × X` to `{ toFun := fun q => (q.2, q.1 - q.2) invFun := fun q => (q.1 + q.2, q.1) left_inv := fun q => by simp right_inv := fun q => by simp }`. Conclude with `((e.hasSum_iff.2 (ha.mul_of_nonarchimedean hb))).prod_fiberwise hc`.
+-/
 theorem hasSum_conv {F X : Type} [NormedField F] [IsUltrametricDist F] [AddCommGroup X] {a b c : X → F} {x y : F}
     (ha : HasSum a x) (hb : HasSum b y) (hc : ∀ α, HasSum (fun χ => a χ * b (α - χ)) (c α)) :
     HasSum c (x * y) := by
@@ -57,6 +71,13 @@ theorem hasSum_conv {F X : Type} [NormedField F] [IsUltrametricDist F] [AddCommG
 
 open GlobalTheory.FieldBaseChange GlobalTheory.UT
 
+/- English proof (translation)
+Establish `e₃ : g₁ = (n ≫ m) ≫ f₁` using `by rw [Category.assoc, ← h.1, ← Category.assoc, hn, Category.id_comp]`. Take `⟨i₂, a₂⟩` from `exists_chart hL₂ (f₂ (m (n y)))`. Establish `a₁ : f₁ (m (n y)) ∈ L₁.U i` using `by rw [e₃] at hi; exact hi`. Establish `v` using `(isoRelM_iff w m k h₁ h.1 _ h.2.1 a b).1 h _ n y i₂ i a₂ a₁`. Establish `v'` using `(isoRelM_iff w m k' h₁ h.1 _ h.2.1 a' b').1 h' _ n y i₂ i a₂ a₁`.
+
+Establish `v''` using `(isoRelM_iff w m (k + k') h₁ h.1 _ h.2.1 a'' b'').1 h'' _ n y i₂ i a₂ a₁`. Establish `e : powVal b'' (n ≫ 𝟙 _) y i₂ = powVal b (n ≫ 𝟙 _) y i₂ * powVal b' (n ≫ 𝟙 _) y i₂`. Rewrite using `[Category.comp_id]`. Conclude with `(congrArg (gs n y _) (hb fun _ => i₂)).trans (gs_mul n y _ (mem_wchart.2 fun _ => a₂) _ _)`. Rewrite `e` using `[v, v', v'', hn, zpow_natCast, zpow_natCast, zpow_natCast, pow_add, _root_.mul_mul_mul_comm, ← Units.val_mul]`.
+
+Conclude with `(Units.mul_right_inj _).1 e`.
+-/
 theorem mul_back {Y Y' X₁ X₂ Z₁ : Scheme.{0}} {L₁ : LB X₁} {L₂ : LB X₂} {f₁ : Y ⟶ X₁} {f₂ : Y ⟶ X₂}
     {w : LB.Iso (L₁.pull f₁) (L₂.pull f₂)} {m : Y' ⟶ Y} {k k' : ℕ} {g₁ : Z₁ ⟶ X₁} {h₁ : Y' ⟶ Z₁}
     (hL₂ : L₂.IsLB) (n : Z₁ ⟶ Y') (hn : n ≫ h₁ = 𝟙 _) {a a' a'' b b' b''}
@@ -83,6 +104,11 @@ theorem mul_back {Y Y' X₁ X₂ Z₁ : Scheme.{0}} {L₁ : LB X₁} {L₂ : LB 
 
 variable {R : Type} [CommRing R] [IsDomain R]
 
+/- English proof (translation)
+Take `⟨w'', h, hv⟩` from `exists_gen D.P.isLB (φ' := DegPre.lineφ D F b) (ε' := DegPre.lineε (k + k')) (fun U _ h => by`. Rewrite using `[Fintype.prod_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr]`. Rewrite using `[CoefBasic.prod_line, CoefBasic.prod_line, CoefBasic.prod_line, pow_add, pow_add, mul_inv, _root_.mul_mul_mul_comm])`. Use the proof step `(LB.mulGen D.P.L _ _ _ _ w w') (DVR.mulGen_isGen _ _ _ _ _ _ _ hw hw')`.
+
+Conclude with `⟨w'', h, fun z J hJ => (hv _ _ z J hJ).trans (val_mul hJ _ _ _)⟩`.
+-/
 theorem exists_frm_mul {D : DegPre R} {F : Type} [Field F] [Algebra (FractionRing R) F] {k k' : ℕ}
     {b : TF (R := R) F ⟶ D.P.A} {w : Frm D F k b} {w' : Frm D F k' b} (hw : w.IsGen) (hw' : w'.IsGen) :
     ∃ w'' : Frm D F (k + k') b, w''.IsGen ∧
@@ -96,6 +122,11 @@ theorem exists_frm_mul {D : DegPre R} {F : Type} [Field F] [Algebra (FractionRin
     (LB.mulGen D.P.L _ _ _ _ w w') (DVR.mulGen_isGen _ _ _ _ _ _ _ hw hw')
   exact ⟨w'', h, fun z J hJ => (hv _ _ z J hJ).trans (val_mul hJ _ _ _)⟩
 
+/- English proof (translation)
+Set `n : TFK (R` to `R) F ⊗ A.A ⟶ UnifPre.GF (G := G) F := lift (fst _ _) (snd _ _ ≫ U.gen.inv)`. Establish `hn : n ≫ U.genF F = 𝟙 _`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [n]`. Establish `hn' : U.genF F ≫ n = 𝟙 _`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [n]`.
+
+Establish `i₂` using `fun k => (isoRelM_bijective (k := k) (m := (snd (TFK (R := R) F) ((Over.pullback (jK R)).obj G)).left) (g₁ := (snd (TFK (R := R) F) A.A).left) (h₁ := (U.genF F).left) A.isLB U.LG.isLB hw (congrArg (fun q => q.left) (lift_snd _ _ : U.genF F ≫ snd _ _ = _)) n.left (congrArg (fun q …`. Take `⟨t, ht⟩` from `(i₂ k σ).exists`. Take `⟨t', ht'⟩` from `(i₂ k' σ').exists`. Take `⟨t'', ht''⟩` from `(i₂ (k + k') σ'').exists`. Conclude with `⟨t, t', t'', ⟨σ, ht, h⟩, ⟨σ', ht', h'⟩, ⟨σ'', ht'', h''⟩, fun z J hJ => mul_back U.LG.isLB n.left (congrArg (fun q => q.left) hn) ht ht' ht'' hb z _ (hJ (𝟙 _ ≫ _))⟩`.
+-/
 theorem exists_back {I : Ideal R} {D : DegData R I} {A : PolAV (Spec (CommRingCat.of (FractionRing R)))}
     {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] (U : UnifPre I D A G)
     (F : Type) [Field F] [Algebra (FractionRing R) F] {w : W0 U} (hw : w.IsGen) {k k' : ℕ}
@@ -123,6 +154,17 @@ theorem exists_back {I : Ideal R} {D : DegData R I} {A : PolAV (Spec (CommRingCa
   exact ⟨t, t', t'', ⟨σ, ht, h⟩, ⟨σ', ht', h'⟩, ⟨σ'', ht'', h''⟩, fun z J hJ =>
     mul_back U.LG.isLB n.left (congrArg (fun q => q.left) hn) ht ht' ht'' hb z _ (hJ (𝟙 _ ≫ _))⟩
 
+/- English proof (translation)
+Introduce `hL o Ω _ _ _ _ S ρ p _ y₀ u l k k' g w w' w'' hk hk' hw hw' hw''`. Take `⟨w₃, hw₃, hv⟩` from `exists_frm_mul hw hw'`. Take `⟨c, hc, -, hcoef⟩` from `((CoefBasic.coef_basic _ u.D.toPre (PadicAlgCl p) (k + k') g).2.2 w₃ hw₃).2.2.1 w'' hw''`. Use `⟨c, hc, fun σ σ' σ'' s s' s'' h h' h'' hb x x' hx hx' => ?_⟩` and prove the remaining obligations. Take `⟨w₀, hw₀⟩` from `u.U.ext`.
+
+Take `⟨t, t', t'', e, e', e'', hm⟩` from `exists_back u.U.toUnifPre (PadicAlgCl p) hw₀ h h' h'' hb`. Set `φ : u.V →+* PadicAlgCl p` to `(algebraMap (FractionRing u.V) (PadicAlgCl p)).comp (algebraMap u.V (FractionRing u.V))`. Establish `: CharZero u.V` using `φ.charZero`. Establish `hadm : AdmBase u.V (IsLocalRing.maximalIdeal u.V)` using `⟨inferInstance, inferInstance, inferInstance, u.complete⟩`. Establish `hS` using `GlobalTheory.T.product_of_sections_expands_to_convolution hL u.V _ hadm u.D u.A u.G u.semi u.U (PadicAlgCl p) w₀ hw₀ k k' (k + k') hk hk' rfl t t' t'' s s' s'' e e' e'' hm g w w' w₃ hw hw' hw₃ hv`.
+
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible u.V`. Establish `h1 : ∀ a, ‖φ a‖ ≤ 1` using `fun a => (u.norm_le _).2 ⟨a, rfl⟩`. Establish `hlt : ‖φ ϖ‖ < 1` using `lt_of_le_of_ne (h1 ϖ) fun e1 => by`. Take `⟨z, hz⟩` from `(u.norm_le (algebraMap u.V (FractionRing u.V) ϖ)⁻¹).1 (by`. Rewrite using `[map_inv₀, norm_inv]`.
+
+Conclude with `(congrArg (·⁻¹) e1).le.trans inv_one.le)`. Establish `h0 : algebraMap u.V (FractionRing u.V) ϖ ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective u.V (FractionRing u.V))).2 hϖ.ne_zero`. Use `hϖ.not_isUnit (IsUnit.of_mul_eq_one z (IsFractionRing.injective u.V (FractionRing u.V) ?_))` and prove the remaining obligations. Rewrite using `[map_mul, hz, map_one, mul_inv_cancel₀ h0]`. Establish `hsum` using `hasSum_conv hx hx' fun α =>`.
+
+Use `letI : Module u.V (PadicAlgCl p) := Module.compHom _ (algebraMap u.V (FractionRing u.V))`. Use `hasSum_of_sumI φ h1 _ (norm_nonneg _) hlt ϖ hϖ.maximalIdeal_eq le_rfl (fun a x => Algebra.smul_def (algebraMap u.V (FractionRing u.V) a) x) (hS α)`. Simplify using `only [hcoef, _root_.mul_assoc]`. Conclude with `hsum.mul_left c`.
+-/
 theorem main : GlobalTheory.UT.LL → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (l : u.Lab) (k k' : ℕ) (g : GtPtF u.D.toPre (PadicAlgCl p)) (w : GlobalTheory.UT.Frm u.D.toPre (PadicAlgCl p) k g.b) (w' : GlobalTheory.UT.Frm u.D.toPre (PadicAlgCl p) k' g.b) (w'' : GlobalTheory.UT.Frm u.D.toPre (PadicAlgCl p) (k + k') g.b), 1 ≤ k → 1 ≤ k' → w.IsGen → w'.IsGen → w''.IsGen → ∃ κ : PadicAlgCl p, κ ≠ 0 ∧ ∀ (σ : u.U.toUnifPre.SecGF (PadicAlgCl p) k) (σ' : u.U.toUnifPre.SecGF (PadicAlgCl p) k') (σ'' : u.U.toUnifPre.SecGF (PadicAlgCl p) (k + k')) s s' s'', u.U.toUnifPre.ExpandsG (PadicAlgCl p) k σ s → u.U.toUnifPre.ExpandsG (PadicAlgCl p) k' σ' s' → u.U.toUnifPre.ExpandsG (PadicAlgCl p) (k + k') σ'' s'' → (∀ j, (show Γ((UnifPre.GF (G := u.G) (PadicAlgCl p)).left, (LB.LinComb u.U.LG.L (K := Fin 1) (fun _ => UnifPre.gFK (G := u.G) (PadicAlgCl p)) (fun _ => ((k : ℕ) : ℤ))).U j) from σ''.f j) = σ.f j * (show Γ((UnifPre.GF (G := u.G) (PadicAlgCl p)).left, (LB.LinComb u.U.LG.L (K := Fin 1) (fun _ => UnifPre.gFK (G := u.G) (PadicAlgCl p)) (fun _ => ((k : ℕ) : ℤ))).U j) from σ'.f j)) → ∀ x x', HasSum (fun χ => GlobalTheory.UT.coef s g w χ) x → HasSum (fun χ => GlobalTheory.UT.coef s' g w' χ) x' → HasSum (fun χ => GlobalTheory.UT.coef s'' g w'' χ) (κ * x * x') := by
   intro hL o Ω _ _ _ _ S ρ p _ y₀ u l k k' g w w' w'' hk hk' hw hw' hw''
   obtain ⟨w₃, hw₃, hv⟩ := exists_frm_mul hw hw'

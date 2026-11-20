@@ -17,15 +17,32 @@ def intersection_update_fsHerm_neg_one (i0 k0 : Fin 2) : (ι → ℝ) →ₗ[ℝ
   map_smul' s p := by
     funext τ i k; simp only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply]; split_ifs <;> simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma position_apply (i0 k0 : Fin 2) (p : ι → ℝ) (τ : ι) (i k : Fin 2) :
     intersection_update_fsHerm_neg_one i0 k0 p τ i k = if i = i0 ∧ k = k0 then p τ else 0 := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ i k`. Simplify using `only [Finset.sum_apply, Fin.sum_univ_two]`. Apply the tactic sequence `fin_cases i <;> fin_cases k <;> simp [position_apply]`.
+-/
 lemma sum_position (y : ι → Fin 2 → Fin 2 → ℝ) :
     y = ∑ i0, ∑ k0, intersection_update_fsHerm_neg_one i0 k0 (fun τ => y τ i0 k0) := by
   funext τ i k
   simp only [Finset.sum_apply, Fin.sum_univ_two]
   fin_cases i <;> fin_cases k <;> simp [position_apply]
 
+/- English proof (translation)
+Establish `h1 : ∀ a b : Fin 2, |y τ a b| < 1` using `fun a b => by`. Establish `h` using `(norm_le_pi_norm (y τ a) b).trans ((norm_le_pi_norm (y τ) a).trans (norm_le_pi_norm y τ))`. Rewrite `h` using `[Real.norm_eq_abs]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hadd : ∀ a b : ℝ, |a| < 1 → |b| < 1 → ‖(a : ℂ) + I * b‖ < 2` using `fun a b ha hb => by`.
+
+Establish `e1 : ‖(a : ℂ)‖ = |a|` using `by simp`. Establish `e2 : ‖I * (b : ℂ)‖ = |b|` using `by simp`. Use `norm_add_le (a : ℂ) (I * b)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsub : ∀ a b : ℝ, |a| < 1 → |b| < 1 → ‖(a : ℂ) - I * b‖ < 2` using `fun a b ha hb => by`.
+
+Establish `e1 : ‖(a : ℂ)‖ = |a|` using `by simp`. Establish `e2 : ‖I * (b : ℂ)‖ = |b|` using `by simp`. Use `norm_sub_le (a : ℂ) (I * b)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [th]`.
+
+Use `split_ifs`. Establish `e1 : ‖(y τ i k : ℂ)‖ = |y τ i k|` using `by simp`. Use `h1 i k` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `hadd _ _ (h1 i k) (h1 k i)`.
+
+Conclude with `hsub _ _ (h1 k i) (h1 i k)`.
+-/
 lemma norm_th_lt {y : ι → Fin 2 → Fin 2 → ℝ} (hy : ‖y‖ < 1) (τ : ι) (i k : Fin 2) :
     ‖th y τ i k‖ < 2 := by
   have h1 : ∀ a b : Fin 2, |y τ a b| < 1 := fun a b => by
@@ -58,17 +75,26 @@ def cE : E := ((g * dEnat E : ℕ) : E) / 2
 
 def cr : ℝ := ((g * dEnat E : ℕ) : ℝ) / 2
 
+/- English proof (translation)
+Simplify using `only [cE, cr, map_div₀, map_natCast, map_ofNat]`. Apply the tactic sequence `try push_cast`. Apply the tactic sequence `try ring`.
+-/
 lemma emb_cE (τ : E →+* ℂ) : τ (cE (E := E) g) = (cr (E := E) g : ℂ) := by
   simp only [cE, cr, map_div₀, map_natCast, map_ofNat]
   try push_cast
   try ring
 
+/- English proof (translation)
+Establish `hd : 0 < dEnat E` using `Int.natAbs_pos.mpr (NumberField.discr_ne_zero E)`. Establish `h : (0:ℝ) < ((g * dEnat E : ℕ) : ℝ)` using `by exact_mod_cast Nat.mul_pos hg hd`. Use `show (0:ℝ) < ((g * dEnat E : ℕ) : ℝ) / 2`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma cr_pos (hg : 0 < g) : 0 < cr (E := E) g := by
   have hd : 0 < dEnat E := Int.natAbs_pos.mpr (NumberField.discr_ne_zero E)
   have h : (0:ℝ) < ((g * dEnat E : ℕ) : ℝ) := by exact_mod_cast Nat.mul_pos hg hd
   show (0:ℝ) < ((g * dEnat E : ℕ) : ℝ) / 2
   linarith
 
+/- English proof (translation)
+Establish `hd : 0 < dEnat E` using `Int.natAbs_pos.mpr (NumberField.discr_ne_zero E)`. Establish `h0` using `Nat.mul_pos hg hd`. Establish `h : (1:ℝ) ≤ ((g * dEnat E : ℕ) : ℝ)` using `by exact_mod_cast h0`. Use `show (1:ℝ) / 2 ≤ ((g * dEnat E : ℕ) : ℝ) / 2`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma cr_ge (hg : 0 < g) : (1 : ℝ) / 2 ≤ cr (E := E) g := by
   have hd : 0 < dEnat E := Int.natAbs_pos.mpr (NumberField.discr_ne_zero E)
   have h0 := Nat.mul_pos hg hd
@@ -76,9 +102,15 @@ lemma cr_ge (hg : 0 < g) : (1 : ℝ) / 2 ≤ cr (E := E) g := by
   show (1:ℝ) / 2 ≤ ((g * dEnat E : ℕ) : ℝ) / 2
   linarith
 
+/- English proof (translation)
+Simplify using `only [cc, cE, map_div₀, map_natCast, map_ofNat]`.
+-/
 lemma cc_cE : cc (cE (E := E) g) = cE g := by
   simp only [cc, cE, map_div₀, map_natCast, map_ofNat]
 
+/- English proof (translation)
+Introduce `τ i k`. Use `show τ.1 (β k i) = conj (τ.1 (β i k))`. Rewrite using `[← hβ i k]`. Conclude with `NumberField.IsCMField.complexEmbedding_complexConj E τ.1 (β i k)`.
+-/
 lemma embH_herm {β : Matrix (Fin 2) (Fin 2) E} (hβ : ∀ i k, cc (β i k) = β k i) :
     IsHermFam (X.embH β) := by
   intro τ i k
@@ -86,10 +118,16 @@ lemma embH_herm {β : Matrix (Fin 2) (Fin 2) E} (hβ : ∀ i k, cc (β i k) = β
   rw [← hβ i k]
   exact NumberField.IsCMField.complexEmbedding_complexConj E τ.1 (β i k)
 
+/- English proof (translation)
+Take `⟨β, hβ, -, rfl⟩` from `hb`. Conclude with `embH_herm X hβ`.
+-/
 lemma herm_of_LZ {b : X.Ψ → Fin 2 → Fin 2 → ℂ} (hb : b ∈ X.LZ g) : IsHermFam b := by
   obtain ⟨β, hβ, -, rfl⟩ := hb
   exact embH_herm X hβ
 
+/- English proof (translation)
+Use `⟨fun i k => cE g * Γ i k, fun i k => ?_, fun i k => ⟨Γ i k, hi i k, rfl⟩, rfl⟩` and prove the remaining obligations. Use `show cc (cE g * Γ i k) = cE g * Γ k i`. Rewrite using `[show cc (cE g * Γ i k) = cc (cE g) * cc (Γ i k) from map_mul _ _ _, cc_cE, hh]`.
+-/
 lemma mem_LZ_of (Γ : Matrix (Fin 2) (Fin 2) E) (hh : ∀ i k, cc (Γ i k) = Γ k i)
     (hi : ∀ i k, IsIntegral ℤ (Γ i k)) : X.embH (fun i k => cE g * Γ i k) ∈ X.LZ g := by
   refine ⟨fun i k => cE g * Γ i k, fun i k => ?_, fun i k => ⟨Γ i k, hi i k, rfl⟩, rfl⟩
@@ -118,6 +156,11 @@ def LZsub : AddSubgroup (X.Ψ → Fin 2 → Fin 2 → ℂ) where
       exact ⟨-γ, hγi.neg, by simp only [Matrix.neg_apply, e]; ring⟩
     · funext τ i k; simp [Data.embH]
 
+/- English proof (translation)
+Establish `key : ∀ j, (n j : ℂ) • ω j = n j • ω j` using `fun j => by first`. Consider the case `exact Int.cast_smul_eq_zsmul ℂ (n j) (ω j)`. Consider the case `exact Int.cast_smul_eq_zsmul (n j) (ω j)`. Consider the case `simp`. Rewrite using `[Finset.sum_congr rfl fun j _ => key j]`.
+
+Conclude with `(LZsub X g).sum_mem fun j _ => (LZsub X g).zsmul_mem (hω j) (n j)`.
+-/
 lemma LZ_sum {N : ℕ} {ω : Fin N → X.Ψ → Fin 2 → Fin 2 → ℂ} (hω : ∀ j, ω j ∈ X.LZ g)
     (n : Fin N → ℤ) : ∑ j, (n j : ℂ) • ω j ∈ X.LZ g := by
   have key : ∀ j, (n j : ℂ) • ω j = n j • ω j := fun j => by
@@ -131,6 +174,11 @@ lemma LZ_sum {N : ℕ} {ω : Fin N → X.Ψ → Fin 2 → Fin 2 → ℂ} (hω : 
 def Lc : Submodule ℤ (X.Ψ → Fin 2 → Fin 2 → ℝ) :=
   ((LZsub X g).map (kapL : (X.Ψ → Fin 2 → Fin 2 → ℂ) →ₗ[ℝ] _).toAddMonoidHom).toIntSubmodule
 
+/- English proof (translation)
+Use `first`. Consider the case `exact Iff.rfl`. Consider the case `constructor`. Introduce `h`. Take `⟨b, hb, e⟩` from `AddSubgroup.mem_map.mp (AddSubgroup.mem_toIntSubmodule.mp h)`.
+
+Conclude with `⟨b, hb, e⟩`. Introduce and unpack `⟨b, hb, e⟩`. Conclude with `AddSubgroup.mem_toIntSubmodule.mpr (AddSubgroup.mem_map.mpr ⟨b, hb, e⟩)`.
+-/
 lemma mem_Lc {y : X.Ψ → Fin 2 → Fin 2 → ℝ} : y ∈ Lc X g ↔ ∃ b ∈ X.LZ g, kap b = y := by
   first
   | exact Iff.rfl
@@ -141,6 +189,37 @@ lemma mem_Lc {y : X.Ψ → Fin 2 → Fin 2 → ℝ} : y ∈ Lc X g ↔ ∃ b ∈
     · rintro ⟨b, hb, e⟩
       exact AddSubgroup.mem_toIntSubmodule.mpr (AddSubgroup.mem_map.mpr ⟨b, hb, e⟩)
 
+/- English proof (translation)
+Establish `hS` using `NumberField.Embeddings.finite_of_norm_le E ℂ 4`. Establish `hpi : (Set.pi Set.univ fun _ : Fin 2 => Set.pi Set.univ fun _ : Fin 2 => {x : E | IsIntegral ℤ x ∧ ∀ φ : E →+* ℂ, ‖φ x‖ ≤ 4}).Finite` using `Set.Finite.pi fun _ => Set.Finite.pi fun _ => hS`. Use `(hpi.image fun γ => kap (X.embH fun i k => cE g * γ i k)).subset ?_` and prove the remaining obligations. Introduce and unpack `y ⟨hy, hn⟩`. Take `⟨b, ⟨β, hβ, hγ, rfl⟩, rfl⟩` from `(mem_Lc X g).mp hy`.
+
+Use `choose γ hγi hγe using hγ`. Establish `hcr` using `cr_ge (E := E) g hg`. Establish `hcr0` using `cr_pos (E := E) g hg`. Establish `hb : IsHermFam (X.embH β)` using `embH_herm X hβ`. Establish `hk : ∀ (τ : X.Ψ) (i k : Fin 2), |kap (X.embH β) τ i k| < 1` using `fun τ i k => by`.
+
+Establish `h` using `(norm_le_pi_norm (kap (X.embH β) τ i) k).trans ((norm_le_pi_norm (kap (X.embH β) τ) i).trans (norm_le_pi_norm (kap (X.embH β)) τ))`. Rewrite `h` using `[Real.norm_eq_abs]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hre : ∀ (τ : X.Ψ) (i k : Fin 2), |(τ.1 (β i k)).re| < 1 ∧ |(τ.1 (β i k)).im| < 1`. Introduce `τ`.
+
+Apply the tactic sequence `have h00 : |(τ.1 (β 0 0)).re| < 1 := by first | exact hk τ 0 0 | simpa [kap, Data.embH] using hk τ 0 0`. Apply the tactic sequence `have h01 : |(τ.1 (β 0 1)).re| < 1 := by first | exact hk τ 0 1 | simpa [kap, Data.embH] using hk τ 0 1`. Apply the tactic sequence `have h10 : |(τ.1 (β 0 1)).im| < 1 := by first | exact hk τ 1 0 | simpa [kap, Data.embH] using hk τ 1 0`. Apply the tactic sequence `have h11 : |(τ.1 (β 1 1)).re| < 1 := by first | exact hk τ 1 1 | simpa [kap, Data.embH] using hk τ 1 1`. Establish `e0 : τ.1 (β 0 0) = conj (τ.1 (β 0 0))` using `hb τ 0 0`.
+
+Establish `e1 : τ.1 (β 1 1) = conj (τ.1 (β 1 1))` using `hb τ 1 1`. Establish `e2 : τ.1 (β 1 0) = conj (τ.1 (β 0 1))` using `hb τ 0 1`. Establish `i0 : |(τ.1 (β 0 0)).im| < 1`. Establish `h` using `congrArg Complex.im e0`. Rewrite `h` using `[Complex.conj_im]`.
+
+Establish `h' : (τ.1 (β 0 0)).im = 0` using `by linarith`. Rewrite using `[h']`. Evaluate the numerical expressions. Establish `i1 : |(τ.1 (β 1 1)).im| < 1`. Establish `h` using `congrArg Complex.im e1`.
+
+Rewrite `h` using `[Complex.conj_im]`. Establish `h' : (τ.1 (β 1 1)).im = 0` using `by linarith`. Rewrite using `[h']`. Evaluate the numerical expressions. Establish `r2 : |(τ.1 (β 1 0)).re| < 1` using `by rw [e2, Complex.conj_re]; exact h01`.
+
+Establish `m2 : |(τ.1 (β 1 0)).im| < 1` using `by rw [e2, Complex.conj_im, abs_neg]; exact h10`. Use `Fin.forall_fin_two.mpr ⟨Fin.forall_fin_two.mpr ⟨?_, ?_⟩, Fin.forall_fin_two.mpr ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `⟨h00, i0⟩`. Conclude with `⟨h01, h10⟩`. Conclude with `⟨r2, m2⟩`.
+
+Conclude with `⟨h11, i1⟩`. Establish `hΨ : ∀ (τ : X.Ψ) (i k : Fin 2), ‖τ.1 (γ i k)‖ ≤ 4`. Introduce `τ i k`. Establish `h2 : ‖τ.1 (β i k)‖ < 2`. Establish `hn1` using `Complex.norm_le_abs_re_add_abs_im (τ.1 (β i k))`.
+
+Establish `hr` using `hre τ i k`. Combine the linear relations using `[hr.1, hr.2]`. Establish `e : τ.1 (β i k) = (cr (E` using `E) g : ℂ) * τ.1 (γ i k) := by`. Rewrite using `[hγe i k, map_mul]`. Use `congr 1`.
+
+Conclude with `emb_cE g τ.1`. Establish `en : ‖τ.1 (β i k)‖ = cr (E` using `E) g * ‖τ.1 (γ i k)‖ := by`. Rewrite using `[e, norm_mul]`. Use `congr 1`. Simplify using `[abs_of_pos hcr0]`.
+
+Rewrite `h2` using `[en]`. Use polynomial arithmetic with `[norm_nonneg (τ.1 (γ i k))]`. Use `⟨γ, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_pi, Set.mem_univ, true_implies, forall_const, Set.mem_setOf_eq]`. Introduce `i k`.
+
+Use `⟨hγi i k, fun φ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hφ : φ ∈ X.Ψ`. Conclude with `hΨ ⟨φ, hφ⟩ i k`. Establish `hc : ComplexEmbedding.conjugate φ ∈ X.Ψ`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hφ ((X.cmType φ).mpr h)`. Use `hΨ ⟨_, hc⟩ i k` as an intermediate fact. Simplify `this` using `[NumberField.ComplexEmbedding.conjugate_coe_eq]`. Establish `hfun : (fun i k => cE (E` using `E) g * γ i k) = β := by`. Use function extensionality and compare the values at `i k`.
+
+Conclude with `(hγe i k).symm`. Conclude with `congrArg (fun β' => kap (X.embH β')) hfun`.
+-/
 lemma finite_small (hg : 0 < g) : {y | y ∈ Lc X g ∧ ‖y‖ < 1}.Finite := by
   have hS := NumberField.Embeddings.finite_of_norm_le E ℂ 4
   have hpi : (Set.pi Set.univ fun _ : Fin 2 => Set.pi Set.univ fun _ : Fin 2 =>
@@ -245,6 +324,43 @@ instance Lc_discrete [Fact (0 < g)] : DiscreteTopology (Lc X g) := by
     rw [Metric.mem_ball, dist_zero_right]; exact lt_of_lt_of_le hq' (min_le_left _ _)
   exact hball this hmem
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Take `⟨f, hf0, hfS⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.mpr hne)`. Establish `hf : ∀ p : X.Ψ → ℝ, f p = ∑ τ, p τ * f (fun j => if τ = j then 1 else 0)`. Introduce `p`. Rewrite using `[LinearMap.pi_apply_eq_sum_univ f p]`.
+
+Simplify using `only [smul_eq_mul]`. Take `⟨lam, hlam⟩ : ∃ lam : X.Ψ → ℝ, ∀ p : X.Ψ → ℝ, f p = ∑ τ, p τ * lam τ` from `⟨_, hf⟩`. Establish `hinv : ∀ y : E, cc (cc y) = y`. Introduce `y`. Use `first`.
+
+Consider the case `exact NumberField.IsCMField.complexConj_apply_apply E y`. Consider the case `exact NumberField.IsCMField.complexConj_apply_apply y`. Consider the case `simp [cc]`. Establish `hvan : ∀ x : 𝓞 E, ∑ τ : X.Ψ, (τ.1 (x : E)).re * lam τ = 0`. Introduce `x`.
+
+Establish `hx : IsIntegral ℤ (x : E)` using `by first`. Consider the case `exact x.isIntegral_coe`. Consider the case `exact NumberField.RingOfIntegers.isIntegral_coe x`. Consider the case `exact x.2`. Establish `hcx : IsIntegral ℤ (cc (x : E))` using `by first`.
+
+Consider the case `exact hx.map ((IsCMField.complexConj E).toRingEquiv.toRingHom.toIntAlgHom)`. Consider the case `exact hx.map ((IsCMField.complexConj E).toAlgHom.restrictScalars ℤ)`. Establish `hr : cc ((x : E) + cc (x : E)) = (x : E) + cc (x : E)`. Rewrite using `[show cc ((x : E) + cc (x : E)) = cc (x : E) + cc (cc (x : E)) from map_add _ _ _, hinv, add_comm]`. Establish `hmem : (fun τ : X.Ψ => (τ.1 ((x : E) + cc (x : E))).re) ∈ Submodule.span ℝ {p : X.Ψ → ℝ | ∃ a : E, cc a = a ∧ IsIntegral ℤ a ∧ p = fun τ => (τ.1 a).re}` using `Submodule.subset_span ⟨_, hr, hx.add hcx, rfl⟩`.
+
+Establish `h` using `hfS hmem`. Rewrite `h` using `[LinearMap.mem_ker, hlam]`. Establish `e : ∀ τ : X.Ψ, (τ.1 ((x : E) + cc (x : E))).re = 2 * (τ.1 (x : E)).re`. Introduce `τ`. Rewrite using `[map_add, show τ.1 (cc (x : E)) = conj (τ.1 (x : E)) from NumberField.IsCMField.complexEmbedding_complexConj E τ.1 (x : E), Complex.add_re, Complex.conj_re]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e] at h`. Establish `h2 : ∑ τ : X.Ψ, 2 * (τ.1 (x : E)).re * lam τ = 2 * ∑ τ : X.Ψ, (τ.1 (x : E)).re * lam τ`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmh : ∀ φ ψ : 𝓞 E →+* ℂ, φ.toMonoidHom = ψ.toMonoidHom → φ = ψ` using `fun φ ψ h => RingHom.ext fun x => DFunLike.congr_fun h x`. Establish `hext : ∀ φ ψ : E →+* ℂ, φ.comp (algebraMap (𝓞 E) E) = ψ.comp (algebraMap (𝓞 E) E) → φ = ψ` using `fun φ ψ h => IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) h`. Establish `hcc : ∀ φ : E →+* ℂ, ComplexEmbedding.conjugate (ComplexEmbedding.conjugate φ) = φ`.
+
+Introduce `φ`. Use `first`. Consider the case `exact ComplexEmbedding.conjugate_conjugate φ`. Consider the case `exact star_star φ`. Consider the case `(ext y; simp [ComplexEmbedding.conjugate_coe_eq])`.
+
+Establish `hFinj : Function.Injective (Sum.elim (fun τ : X.Ψ => τ.1) (fun τ : X.Ψ => ComplexEmbedding.conjugate τ.1))`. Introduce and unpack `(τ | τ) (τ' | τ') h`. Conclude with `congrArg Sum.inl (Subtype.ext h)`. It suffices to derive a contradiction. Establish `h' : τ.1 = ComplexEmbedding.conjugate τ'.1` using `h`.
+
+Establish `h1 : ComplexEmbedding.conjugate τ'.1 ∈ X.Ψ`. Rewrite using `[← h']`. Conclude with `τ.2`. Conclude with `((X.cmType τ'.1).mp τ'.2) h1`. It suffices to derive a contradiction.
+
+Establish `h' : ComplexEmbedding.conjugate τ.1 = τ'.1` using `h`. Establish `h1 : ComplexEmbedding.conjugate τ.1 ∈ X.Ψ`. Rewrite using `[h']`. Conclude with `τ'.2`. Conclude with `((X.cmType τ.1).mp τ.2) h1`.
+
+Establish `h' : ComplexEmbedding.conjugate τ.1 = ComplexEmbedding.conjugate τ'.1` using `h`. Establish `h1 : τ.1 = τ'.1`. Establish `h2` using `congrArg ComplexEmbedding.conjugate h'`. Rewrite `h2` using `[hcc, hcc]`. Then use the resulting hypothesis. Conclude with `congrArg Sum.inr (Subtype.ext h1)`.
+
+Establish `hGinj : Function.Injective (fun t : X.Ψ ⊕ X.Ψ => ((Sum.elim (fun τ : X.Ψ => τ.1) (fun τ : X.Ψ => ComplexEmbedding.conjugate τ.1) t).comp (algebraMap (𝓞 E) E)).toMonoidHom)`. Introduce `t t' h`. Conclude with `hFinj (hext _ _ (hmh _ _ h))`. Establish `hli` using `(linearIndependent_monoidHom (𝓞 E) ℂ).comp _ hGinj`. Rewrite `hli` using `[Fintype.linearIndependent_iff]`.
+
+Establish `hzero` using `hli (Sum.elim (fun τ => (lam τ : ℂ)) (fun τ => (lam τ : ℂ))) (by`. Use function extensionality and compare the values at `x`. Establish `key : ∑ τ : X.Ψ, (lam τ : ℂ) * (τ.1 (x : E) + conj (τ.1 (x : E))) = 0`. Establish `h` using `hvan x`. Simplify using `only [Complex.add_conj]`.
+
+Establish `h3 : ∑ τ : X.Ψ, (lam τ : ℂ) * ((2 * (τ.1 (x : E)).re : ℝ) : ℂ) = ((2 * ∑ τ : X.Ψ, (τ.1 (x : E)).re * lam τ : ℝ) : ℂ)`. Use `push_cast`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[h3, h, mul_zero, Complex.ofReal_zero]`. Rewrite using `[Finset.sum_apply, Fintype.sum_sum_type]`. Use `show ∑ τ : X.Ψ, (lam τ : ℂ) * τ.1 (x : E) + ∑ τ : X.Ψ, (lam τ : ℂ) * (ComplexEmbedding.conjugate τ.1) (x : E) = 0`. Simplify using `only [ComplexEmbedding.conjugate_coe_eq, ← Finset.sum_add_distrib, ← mul_add]`. Conclude with `key)`.
+
+Establish `hl : ∀ τ, lam τ = 0` using `fun τ => by`. Establish `h` using `hzero (Sum.inl τ)`. Simplify using `using h`. Conclude with `hf0 (LinearMap.ext fun p => by rw [hlam]; simp [hl])`.
+-/
 lemma span_fixed_integral_real_parts : Submodule.span ℝ {p : X.Ψ → ℝ | ∃ a : E, cc a = a ∧ IsIntegral ℤ a ∧
     p = fun τ => (τ.1 a).re} = ⊤ := by
   classical
@@ -351,6 +467,11 @@ lemma span_fixed_integral_real_parts : Submodule.span ℝ {p : X.Ψ → ℝ | �
     simpa using h
   exact hf0 (LinearMap.ext fun p => by rw [hlam]; simp [hl])
 
+/- English proof (translation)
+Establish `hp : p ∈ Submodule.span ℝ {p : X.Ψ → ℝ | ∃ a : E, cc a = a ∧ IsIntegral ℤ a ∧ p = fun τ => (τ.1 a).re}`. Rewrite using `[span_fixed_integral_real_parts X]`. Conclude with `Submodule.mem_top`. Establish `hle : Submodule.span ℝ {p : X.Ψ → ℝ | ∃ a : E, cc a = a ∧ IsIntegral ℤ a ∧ p = fun τ => (τ.1 a).re} ≤ (Submodule.span ℝ (Lc X g : Set (X.Ψ → Fin 2 → Fin 2 → ℝ))).comap T`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨a, ha, hi, rfl⟩`. Conclude with `hT a ha hi`. Conclude with `hle hp`.
+-/
 lemma span_gen (T : (X.Ψ → ℝ) →ₗ[ℝ] (X.Ψ → Fin 2 → Fin 2 → ℝ))
     (hT : ∀ a : E, cc a = a → IsIntegral ℤ a →
       T (fun τ => (τ.1 a).re) ∈ Submodule.span ℝ (Lc X g : Set (X.Ψ → Fin 2 → Fin 2 → ℝ)))

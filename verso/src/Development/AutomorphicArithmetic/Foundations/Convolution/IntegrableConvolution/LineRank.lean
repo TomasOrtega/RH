@@ -17,6 +17,11 @@ section Avg
 
 variable {G X : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup X] [Module ℂ X]
 
+/- English proof (translation)
+Establish `h1 : χ 1 * χ 1 = χ 1 * 1`. Use `h.2.2 1 J.one_mem 1 J.one_mem` as an intermediate fact. Rewrite `this` using `[mul_one]`. Rewrite using `[mul_one]`. Conclude with `this.symm`.
+
+Establish `h2 : χ 1 ≠ 0` using `fun e => by`. Use `h.2.1 1 J.one_mem` as an intermediate fact. Rewrite `this` using `[e]`. Simplify using `at this`. Conclude with `mul_left_cancel₀ h2 h1`.
+-/
 private theorem chi_one {J : Subgroup G} {χ : G → ℂ} (h : IsChr J χ) : χ 1 = 1 := by
   have h1 : χ 1 * χ 1 = χ 1 * 1 := by
     have := h.2.2 1 J.one_mem 1 J.one_mem
@@ -29,11 +34,37 @@ private theorem chi_one {J : Subgroup G} {χ : G → ℂ} (h : IsChr J χ) : χ 
     simp at this
   exact mul_left_cancel₀ h2 h1
 
+/- English proof (translation)
+Rewrite using `[RCLike.mul_conj, h.2.1 j hj]`. Simplify using the standard rewrite rules.
+-/
 private theorem chi_conj {J : Subgroup G} {χ : G → ℂ} (h : IsChr J χ) {j : G} (hj : j ∈ J) :
     χ j * conj (χ j) = 1 := by
   rw [RCLike.mul_conj, h.2.1 j hj]
   simp
 
+/- English proof (translation)
+Use `haveI : CompactSpace J := isCompact_iff_compactSpace.1 hJ.1`. Establish `h1` using `chi_one hχ`. Set `H : Subgroup J` to `{ carrier := {j | ρ j.1 y = y ∧ χ j.1 = 1} mul_mem' := by`. Introduce and unpack `a b ⟨ha, ha'⟩ ⟨hb, hb'⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Use `show ρ (a.1 * b.1) y = y`. Rewrite using `[map_mul, Module.End.mul_apply, hb, ha]`. Use `show χ (a.1 * b.1) = 1`. Rewrite using `[hχ.2.2 _ a.2 _ b.2, ha', hb', one_mul]`. Use the proof step `one_mem' := ⟨by simp, h1⟩`.
+
+Use the proof step `inv_mem' := by`. Introduce and unpack `a ⟨ha, ha'⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show ρ a.1⁻¹ y = y conv_lhs => rw [← ha]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one]`.
+
+Both sides reduce to the same expression. Use `show χ a.1⁻¹ = 1`. Use `hχ.2.2 _ a.2 _ (J.inv_mem a.2)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, h1, ha', one_mul]`. Conclude with `this.symm }`.
+
+Establish `hHo : IsOpen (H : Set J)`. Establish `: (H : Set J) = Subtype.val ⁻¹' ({g | ρ g y = y} ∩ χ ⁻¹' {1})` using `rfl`. Rewrite using `[this]`. Conclude with `((hs y).inter (hχ.1.isOpen_fiber 1)).preimage continuous_subtype_val`. Use `haveI : Finite (J ⧸ H) := Subgroup.quotient_finite_of_isOpen H hHo`.
+
+Use `letI : Fintype (J ⧸ H) := Fintype.ofFinite _`. Use `⟨J ⧸ H, inferInstance, fun c => (c.out : J).1, ⟨QuotientGroup.mk 1⟩, fun c => c.out.2, fun j hj => ?_⟩` and prove the remaining obligations. Set `F : J ⧸ H → X` to `fun c => conj (χ (c.out : J).1) • ρ (c.out : J).1 y`. Establish `hF : ∀ a : J, F (QuotientGroup.mk a) = conj (χ a.1) • ρ a.1 y`. Introduce `a`.
+
+Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul H a`. Use `show conj (χ ((QuotientGroup.mk a : J ⧸ H).out : J).1) • ρ ((QuotientGroup.mk a : J ⧸ H).out : J).1 y = _`. Rewrite using `[hh]`. Use `show conj (χ (a.1 * h.1.1)) • ρ (a.1 * h.1.1) y = _`. Rewrite using `[hχ.2.2 _ a.2 _ h.1.2, h.2.2, mul_one, map_mul, Module.End.mul_apply, h.2.1]`.
+
+Establish `hact : ∀ (a : J) (c : J ⧸ H), F (a • c) = conj (χ a.1) • ρ a.1 (F c)`. Introduce `a c`. Proceed by induction on `c using QuotientGroup.induction_on with`. Consider the case `H b`. Establish `e : a • (QuotientGroup.mk b : J ⧸ H) = QuotientGroup.mk (a * b)` using `rfl`.
+
+Rewrite using `[e, hF, hF]`. Use `show conj (χ (a.1 * b.1)) • ρ (a.1 * b.1) y = _`. Rewrite using `[hχ.2.2 _ a.2 _ b.2, map_mul, map_mul, Module.End.mul_apply, map_smul, smul_smul]`. Use `show ρ j (∑ c, F c) = χ j • ∑ c, F c`. Set `a : J` to `⟨j, hj⟩`.
+
+Establish `hsum : ∑ c, F c = ∑ c, F (a • c)` using `(Equiv.sum_comp (MulAction.toPerm a) F).symm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hact, smul_smul]`. Use `show ρ j (F c) = (χ j * conj (χ j)) • ρ j (F c)`. Rewrite using `[chi_conj hχ hj, one_smul]`.
+
+Use `_ = χ j • ∑ c, F c := by rw [← Finset.smul_sum, ← hsum]`.
+-/
 private theorem exists_avg (ρ : Representation ℂ G X) (hs : ∀ x, IsOpen {g | ρ g x = x}) {J : Subgroup G}
     {χ : G → ℂ} (hJ : CO J) (hχ : IsChr J χ) (y : X) :
     ∃ (ι : Type) (_ : Fintype ι) (t : ι → G), Nonempty ι ∧ (∀ i, t i ∈ J) ∧
@@ -102,6 +133,19 @@ section Dense
 variable {G H X : Type*} [Group G] [TopologicalSpace G] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   [CompleteSpace H] [AddCommGroup X] [Module ℂ X]
 
+/- English proof (translation)
+Use `set I : Submodule ℂ H := Submodule.span ℂ {v | ∃ x y, v = R x (f₀ y)} with hI`. Establish `hIV : I ≤ V` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨x, y, rfl⟩`. Conclude with `hV.inv x _ (hf0V y))`. Establish `hWV : I.topologicalClosure ≤ V` using `Submodule.topologicalClosure_minimal _ hIV hV.closed`.
+
+Establish `hinvI : ∀ x, ∀ v ∈ I, R x v ∈ I`. Introduce `x v hv`. Establish `h : I ≤ I.comap (R x : H →ₗ[ℂ] H)` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨x', y, rfl⟩`. Conclude with `Submodule.subset_span ⟨x * x', y, (UnitaryRep.map_mul_apply _ _ _ _).symm⟩)`.
+
+Conclude with `h hv`. Establish `hinvW : R.IsInvariant I.topologicalClosure` using `fun x v hv => map_mem_closure (R x).continuous hv fun u hu => hinvI x u hu`. Establish `hW : I.topologicalClosure = V`. Break down `hV.irred _ hWV (Submodule.isClosed_topologicalClosure _) hinvW with h | h` into its components or cases. It suffices to derive a contradiction.
+
+Use `hf0 (LinearMap.ext fun y => ?_)` and prove the remaining obligations. Establish `h1 : f₀ y ∈ I.topologicalClosure` using `Submodule.le_topologicalClosure _ (Submodule.subset_span ⟨1, y, by simp⟩)`. Rewrite `h1` using `[h]`. Simplify using `using h1`. Conclude with `h`.
+
+Establish `hIQ : I ≤ LinearMap.ker (Q : H →ₗ[ℂ] H)` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨x, y, rfl⟩`. Conclude with `hQ x y)`. Establish `hWQ : V ≤ LinearMap.ker (Q : H →ₗ[ℂ] H)`. Rewrite using `[← hW]`.
+
+Conclude with `Submodule.topologicalClosure_minimal _ hIQ (ContinuousLinearMap.isClosed_ker Q)`. Conclude with `fun v hv => hWQ hv`.
+-/
 private theorem ker_gen (R : UnitaryRep G H) {W V : Submodule ℂ H} (hV : IsSummandOf R W V) {f₀ : X →ₗ[ℂ] H}
     (hf0 : f₀ ≠ 0) (hf0V : ∀ x, f₀ x ∈ V) (Q : H →L[ℂ] H) (hQ : ∀ x y, Q (R x (f₀ y)) = 0) :
     ∀ v ∈ V, Q v = 0 := by
@@ -135,6 +179,9 @@ private theorem ker_gen (R : UnitaryRep G H) {W V : Submodule ℂ H} (hV : IsSum
     exact Submodule.topologicalClosure_minimal _ hIQ (ContinuousLinearMap.isClosed_ker Q)
   exact fun v hv => hWQ hv
 
+/- English proof (translation)
+Use `show B (f (τ g x)) = A g (B (f x))`. Rewrite using `[hf, hB]`.
+-/
 private theorem inter_gen {G' : Type*} [Group G'] (τ : Representation ℂ G' X) (A : G' → H →L[ℂ] H) (B : H →L[ℂ] H)
     (hB : ∀ g v, B (A g v) = A g (B v)) (f : X →ₗ[ℂ] H) (hf : ∀ g x, f (τ g x) = A g (f x)) (g : G') (x : X) :
     ((B : H →ₗ[ℂ] H) ∘ₗ f) (τ g x) = A g (((B : H →ₗ[ℂ] H) ∘ₗ f) x) := by
@@ -147,15 +194,28 @@ section Main
 
 variable {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
 
+/- English proof (translation)
+Simplify using `only [eigL, Submodule.mem_iInf, LinearMap.mem_eqLocus, ContinuousLinearMap.coe_coe, LinearMap.smul_apply, LinearMap.id_apply]`.
+-/
 private theorem mem_eigL {w : Pl K} {J : Subgroup (Gw n w)} {χ : Gw n w → ℂ} {v : LL μ} :
     v ∈ eigL μ w J χ ↔ ∀ x ∈ J, rhoL μ w x v = χ x • v := by
   simp only [eigL, Submodule.mem_iInf, LinearMap.mem_eqLocus, ContinuousLinearMap.coe_coe, LinearMap.smul_apply,
     LinearMap.id_apply]
 
+/- English proof (translation)
+The claim follows from `UnitaryRep.inner_map_map _ _ _ _`.
+-/
 private theorem rhoL_inner (w : Pl K) (a : Gw n w) (u v : LL μ) :
     ⟪rhoL μ w a u, rhoL μ w a v⟫_ℂ = ⟪u, v⟫_ℂ :=
   UnitaryRep.inner_map_map _ _ _ _
 
+/- English proof (translation)
+Use `Submodule.eq_starProjection_of_mem_of_inner_eq_zero (Submodule.le_topologicalClosure _ hm) fun u hu => ?_` and prove the remaining obligations. Establish `h0 : x - z ∈ (eigL μ w J χ)ᗮ`. Rewrite using `[Submodule.mem_orthogonal]`. Introduce `u hu`. Establish `hu'` using `(mem_eigL μ).1 hu`.
+
+Establish `h1 : ∀ i, ⟪u, conj (χ (t i)) • rhoL μ w (t i) x⟫_ℂ = ⟪u, x⟫_ℂ` using `fun i => by`. Rewrite using `[inner_smul_right, ← inner_smul_left, ← hu' _ (ht i), rhoL_inner]`. Establish `hc : (Fintype.card ι : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Rewrite using `[inner_sub_right, hz, inner_smul_right, inner_sum, Finset.sum_congr rfl fun i _ => h1 i, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ← mul_assoc, inv_mul_cancel₀ hc, one_mul, sub_self]`. Rewrite `h0` using `[← Submodule.orthogonal_closure]`.
+
+Conclude with `(Submodule.mem_orthogonal' _ _).1 h0 u hu`.
+-/
 private theorem prj_avg {w : Pl K} {J : Subgroup (Gw n w)} {χ : Gw n w → ℂ} {ι : Type} [Fintype ι] [Nonempty ι]
     (t : ι → Gw n w) (ht : ∀ i, t i ∈ J) (x z : LL μ)
     (hz : z = (Fintype.card ι : ℂ)⁻¹ • ∑ i, conj (χ (t i)) • rhoL μ w (t i) x) (hm : z ∈ eigL μ w J χ) :
@@ -173,6 +233,13 @@ private theorem prj_avg {w : Pl K} {J : Subgroup (Gw n w)} {χ : Gw n w → ℂ}
   rw [← Submodule.orthogonal_closure] at h0
   exact (Submodule.mem_orthogonal' _ _).1 h0 u hu
 
+/- English proof (translation)
+Take `⟨A, u, rfl⟩` from `MultiplicityOne.exists_archProj_mul_finProj x`. Take `⟨-, h2, -, -, h5⟩` from `UpperTheory.ConvolutionTheory.Tf.locEmb K n w`. Establish `e : ∀ y : AdelicGLn.FiniteAdelicGL K n, finAt w (finEmb K n y) = AdelicGLn.finiteRestrictedEquiv K n y w` using `fun y => by show (AdelicGLn.finiteRestrictedEquiv K n (AdelicGLn.prodEquiv K n (finEmb K n y)).2) w = _`. Rewrite using `[prodEquiv_finEmb]`. Use `set a := finAt w (finEmb K n u) with ha`.
+
+Use `set u' := u * (AdelicGLn.localEmbedding w a)⁻¹ with hu'`. Establish `hu1 : finAt w (finEmb K n u') = 1`. Rewrite using `[e, hu', map_mul, map_inv, RestrictedProduct.mul_apply, RestrictedProduct.inv_apply, ← e, ← e, h2, ← ha, mul_inv_cancel]`. Use `⟨archProj K n A * MultiplicityOne.finProj K n u', a, ?_, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, ← map_mul, hu', inv_mul_cancel_right]`.
+
+Establish `h` using `h5 u' hu1 g`. Rewrite using `[mul_assoc, ← map_mul, ← h, map_mul, ← mul_assoc, ← mul_assoc, MultiplicityOne.finProj_mul_archProj_comm]`.
+-/
 private theorem exists_split (w : Pl K) (x : normOneGL K n) :
     ∃ (c : normOneGL K n) (a : Gw n w),
       x = c * MultiplicityOne.finProj K n (AdelicGLn.localEmbedding w a) ∧
@@ -195,6 +262,9 @@ private theorem exists_split (w : Pl K) (x : normOneGL K n) :
     rw [mul_assoc, ← map_mul, ← h, map_mul, ← mul_assoc, ← mul_assoc,
       MultiplicityOne.finProj_mul_archProj_comm]
 
+/- English proof (translation)
+Establish `h` using `UnitaryRep.map_mul_apply (rightRegularRep (rationalGLOne K n) μ) c (MultiplicityOne.finProj K n (AdelicGLn.localEmbedding w g)) v`. Establish `h'` using `UnitaryRep.map_mul_apply (rightRegularRep (rationalGLOne K n) μ) (MultiplicityOne.finProj K n (AdelicGLn.localEmbedding w g)) c v`. Rewrite `h` using `[hc g]`. Conclude with `h.symm.trans h'`.
+-/
 private theorem rho_comm {w : Pl K} {c : normOneGL K n}
     (hc : ∀ g : Gw n w, c * MultiplicityOne.finProj K n (AdelicGLn.localEmbedding w g) =
       MultiplicityOne.finProj K n (AdelicGLn.localEmbedding w g) * c) (g : Gw n w) (v : LL μ) :
@@ -207,6 +277,11 @@ private theorem rho_comm {w : Pl K} {c : normOneGL K n}
   rw [hc g] at h
   exact h.symm.trans h'
 
+/- English proof (translation)
+Take `⟨f₀, hf0, hf0V, hf0i⟩` from `hocc`. Use `ker_gen _ hV hf0 hf0V Q fun x y => ?_` and prove the remaining obligations. Take `⟨c, a, rfl, hc⟩` from `exists_split (n := n) w x`. Establish `h2` using `hQ _ (inter_gen π.ρ (rhoL μ w) (rightRegularRep (rationalGLOne K n) μ c) (rho_comm μ hc) f₀ hf0i) (π.ρ a y)`. Establish `e2 : rightRegularRep (rationalGLOne K n) μ (c * MultiplicityOne.finProj K n (AdelicGLn.localEmbedding w a)) (f₀ y) = rightRegularRep (rationalGLOne K n) μ c (f₀ (π.ρ a y))` using `(UnitaryRep.map_mul_apply _ c _ (f₀ y)).trans (congrArg _ (hf0i a y).symm)`.
+
+Rewrite using `[e2]`. Conclude with `h2`.
+-/
 private theorem ker_of_all {V : Submodule ℂ (LL μ)} (hV : IsSummand μ V) {w : Pl K} {π : SmIrr (Gw n w)}
     (hocc : Occurs μ V w π) (Q : LL μ →L[ℂ] LL μ)
     (hQ : ∀ f : π.V →ₗ[ℂ] LL μ, (∀ g x, f (π.ρ g x) = rhoL μ w g (f x)) → ∀ y, Q (f y) = 0) :
@@ -223,6 +298,25 @@ private theorem ker_of_all {V : Submodule ℂ (LL μ)} (hV : IsSummand μ V) {w 
 
 end Main
 
+/- English proof (translation)
+Introduce `K _ _ n μ _ V hV w π hocc J χ hJ hχ ⟨e, he⟩`. Use `set P := prj (eigL μ w J χ) with hP`. Set `IsE : π.V → Prop` to `fun x => ∀ g ∈ J, π.ρ g x = χ g • x`. Establish `hE : ∀ y, ∃ y', IsE y' ∧ ∀ f : π.V →ₗ[ℂ] LL μ, (∀ g x, f (π.ρ g x) = rhoL μ w g (f x)) → P (f y) = f y'`. Introduce `y`.
+
+Take `⟨ι, _, t, hne, ht, hav⟩` from `exists_avg π.ρ π.smooth hJ hχ y`. Establish `hy : IsE ((Fintype.card ι : ℂ)⁻¹ • ∑ i, conj (χ (t i)) • π.ρ (t i) y)` using `fun g hg => by`. Rewrite using `[map_smul, hav g hg, smul_comm]`. Use `⟨_, hy, fun f hf => ?_⟩` and prove the remaining obligations. Use `prj_avg μ t ht _ _ ?_ ((mem_eigL μ).2 fun g hg => ?_)` and prove the remaining obligations.
+
+Simplify using `only [map_smul, map_sum, hf]`. Rewrite using `[← hf, hy g hg, map_smul]`. Establish `he0 : ∃ e₀, IsE e₀ ∧ ∀ x, IsE x → ∃ c : ℂ, x = c • e₀`. Distinguish the cases in `h : IsE e`. Conclude with `⟨e, h, he⟩`.
+
+Use `⟨0, fun g _ => by simp, fun x hx => ⟨0, ?_⟩⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `he x hx`. Distinguish the cases in `hc : c = 0`. Simplify using `[hc]`. It suffices to derive a contradiction.
+
+Use `h fun g hg => ?_` and prove the remaining obligations. Establish `h1` using `hx g hg`. Rewrite `h1` using `[map_smul, smul_comm]`. Conclude with `smul_right_injective _ hc h1`. Take `⟨e₀, -, hall⟩` from `he0`.
+
+Introduce `g`. Take `⟨z, hz, hzf⟩` from `hE (π.ρ g e₀)`. Take `⟨κ, rfl⟩` from `hall z hz`. Establish `hloc : ∀ f : π.V →ₗ[ℂ] LL μ, (∀ g x, f (π.ρ g x) = rhoL μ w g (f x)) → ∀ y, P (rhoL μ w g (P (f y))) = κ • P (f y)`. Introduce `f hf y`.
+
+Take `⟨y', hy', hyf⟩` from `hE y`. Take `⟨l, rfl⟩` from `hall y' hy'`. Rewrite using `[hyf f hf, map_smul, map_smul, map_smul, ← hf, hzf f hf, map_smul, smul_comm]`. Set `Q : LL μ →L[ℂ] LL μ` to `P ∘L rhoL μ w g ∘L P - κ • P`. Establish `hQ : ∀ v ∈ V, Q v = 0` using `ker_of_all μ hV hocc Q fun f hf y => by show P (rhoL μ w g (P (f y))) - κ • P (f y) = 0`.
+
+Rewrite using `[hloc f hf, sub_self]`. Use `⟨κ, fun v hv => ?_⟩` and prove the remaining obligations. Establish `h1 : P v = v` using `Submodule.starProjection_eq_self_iff.2 (Submodule.le_topologicalClosure _ hv.2)`. Establish `h3 : P (rhoL μ w g (P v)) - κ • P v = 0` using `hQ v hv.1`. Rewrite `h3` using `[h1]`.
+
+Conclude with `sub_eq_zero.1 h3`.
+-/
 theorem lineRank : LineRank := by
   intro K _ _ n μ _ V hV w π hocc J χ hJ hχ ⟨e, he⟩
   classical

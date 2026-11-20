@@ -12,6 +12,25 @@ namespace UpperTheory.V.Z.Keep.OrdFlag2
 
 open Matrix
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨u, v, huv⟩ : ∃ u v : k, u * x + v * y = 1 := by`. Break down `hx with h | h` into its components or cases. Conclude with `⟨x⁻¹, 0, by field_simp; ring⟩`. Conclude with `⟨0, y⁻¹, by field_simp; ring⟩`. Establish `hd : u * q - v * p ≠ 0` using `fun e => by`.
+
+Establish `e1 : q = (u * q - v * p) * x` using `by linear_combination (-q) * huv + v * hpx`. Establish `e2 : p = -(u * q - v * p) * y` using `by linear_combination (-p) * huv + u * hpx`. Rewrite `e1` using `[e, zero_mul]`. Rewrite `e2` using `[e, neg_zero, zero_mul]`. Break down `hp with h | h` into its components or cases.
+
+Conclude with `h e2`. Conclude with `h e1`. Use `set d := u * q - v * p with hdd`. Set `Q0 : Matrix (Fin 2) (Fin 2) k` to `!![u, v; p, q]`. Set `Q1 : Matrix (Fin 2) (Fin 2) k` to `!![x, -v / d; y, u / d]`.
+
+Establish `hQ : Q0 * Q1 = 1`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Q0, Q1, Matrix.mul_apply, Fin.sum_univ_two]`. Take the linear combination `huv`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Take the linear combination `hpx`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hdd]`. Expand and normalize the polynomial expressions, which then agree.
+
+Set `Q : GL (Fin 2) k` to `⟨Q0, Q1, hQ, mul_eq_one_comm.1 hQ⟩`. Use `⟨Q, fun s => ?_⟩` and prove the remaining obligations. Establish `e : ((Q⁻¹ : GL (Fin 2) k) : Matrix (Fin 2) (Fin 2) k) = Q1` using `rfl`. Establish `e' : (Q : Matrix (Fin 2) (Fin 2) k) = Q0` using `rfl`. Rewrite using `[e, e']`.
+
+Establish `a0` using `h0 s`. Establish `a1` using `h1 s`. Establish `a2` using `h2 s`. Establish `a3` using `h3 s`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `[Q0, Q1, Matrix.mul_apply, Fin.sum_univ_two, Matrix.vecMul, dotProduct]`. Take the linear combination `x * a2 + y * a3 + b s * hpx`. Simplify using `[Q0, Q1, Matrix.mul_apply, Fin.sum_univ_two, Matrix.vecMul, dotProduct]`. Take the linear combination `u * a0 + v * a1 + a s * huv`. Simplify using `[Q0, Q1, Matrix.mul_apply, Fin.sum_univ_two, Matrix.vecMul, dotProduct]`.
+
+Clear the denominators using the available nonvanishing facts. Take the linear combination `(-v) * a2 + u * a3`.
+-/
 private theorem tri_of_lines {k H : Type} [Field k] (T : H → Matrix (Fin 2) (Fin 2) k) (a b : H → k) (x y p q : k)
     (hx : x ≠ 0 ∨ y ≠ 0) (hp : p ≠ 0 ∨ q ≠ 0) (hpx : p * x + q * y = 0)
     (h0 : ∀ s, T s 0 0 * x + T s 0 1 * y = a s * x) (h1 : ∀ s, T s 1 0 * x + T s 1 1 * y = a s * y)
@@ -65,6 +84,35 @@ namespace UpperTheory.V.Z.Keep.OrdFlag2
 
 open Matrix
 
+/- English proof (translation)
+Take `⟨P, hP⟩ : ∃ P : Matrix (Fin 3) (Fin 3) k, P = (g : Matrix (Fin 3) (Fin 3) k)` from `⟨_, rfl⟩`. Take `⟨I, hI⟩ : ∃ I : Matrix (Fin 3) (Fin 3) k, I = ((g⁻¹ : GL (Fin 3) k) : Matrix (Fin 3) (Fin 3) k)` from `⟨_, rfl⟩`. Establish `hPI : P * I = 1` using `by rw [hP, hI, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `hIP : I * P = 1` using `by rw [hP, hI, ← Units.val_mul, inv_mul_cancel, Units.val_one]`. Rewrite `ht` using `[← hP, ← hI]`.
+
+Establish `hcol : ∀ s i, (R s * I) i 0 = a s * I i 0` using `fun s i => by`. Take `⟨t1, t2, -, t4, -⟩` from `ht s`. Establish `e : R s * I = I * (P * R s * I)`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hIP, Matrix.one_mul]`. Rewrite using `[e, Matrix.mul_apply, Fin.sum_univ_three, t1, t2, t4]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hrow : ∀ s j, (P * R s) 2 j = c s * P 2 j` using `fun s j => by`. Take `⟨-, t2, t3, -, t5⟩` from `ht s`. Establish `e : P * R s = (P * R s * I) * P`. Rewrite using `[Matrix.mul_assoc _ I P, hIP, Matrix.mul_one]`.
+
+Rewrite using `[e, Matrix.mul_apply, Fin.sum_univ_three, t2, t3, t5]`. Expand and normalize the polynomial expressions, which then agree. Establish `hz : I 1 0 = 0`. Establish `h` using `hcol s0 1`. Take `⟨-, b2, b3, -, b5⟩` from `hb s0`.
+
+Rewrite `h` using `[Matrix.mul_apply, Fin.sum_univ_three, b2, b3, b5]`. Establish `h' : (a s0 - 1) * I 1 0 = 0` using `by linear_combination -h`. Conclude with `(mul_eq_zero.1 h').resolve_left (sub_ne_zero.2 h0)`. Establish `ht1 : P 2 1 = 0`. Establish `h` using `hrow s2 1`.
+
+Take `⟨b1, -, -, b4, b5⟩` from `hb s2`. Rewrite `h` using `[Matrix.mul_apply, Fin.sum_univ_three, b1, b4, b5]`. Establish `h' : (c s2 - 1) * P 2 1 = 0` using `by linear_combination -h`. Conclude with `(mul_eq_zero.1 h').resolve_left (sub_ne_zero.2 h2)`. Establish `e20 : P 2 0 * I 0 0 + P 2 2 * I 2 0 = 0`.
+
+Establish `h` using `congrFun (congrFun hPI 2) 0`. Rewrite `h` using `[Matrix.mul_apply, Fin.sum_univ_three, ht1, Matrix.one_apply_ne (by decide)]`. Take the linear combination `h`. Establish `e00 : P 0 0 * I 0 0 + P 0 2 * I 2 0 = 1`. Establish `h` using `congrFun (congrFun hPI 0) 0`.
+
+Rewrite `h` using `[Matrix.mul_apply, Fin.sum_univ_three, hz, Matrix.one_apply_eq]`. Take the linear combination `h`. Establish `e22 : P 2 0 * I 0 2 + P 2 2 * I 2 2 = 1`. Establish `h` using `congrFun (congrFun hPI 2) 2`. Rewrite `h` using `[Matrix.mul_apply, Fin.sum_univ_three, ht1, Matrix.one_apply_eq]`.
+
+Take the linear combination `h`. Establish `hx : I 0 0 ≠ 0 ∨ I 2 0 ≠ 0`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Rewrite `e00` using `[hc.1, hc.2]`.
+
+Simplify using `at e00`. Establish `hp : P 2 0 ≠ 0 ∨ P 2 2 ≠ 0`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Rewrite `e22` using `[hc.1, hc.2]`.
+
+Simplify using `at e22`. Use `tri_of_lines (fun s => corner (R s)) a c (I 0 0) (I 2 0) (P 2 0) (P 2 2) hx hp e20 (fun s => ?_) (fun s => ?_) (fun s => ?_) (fun s => ?_)` and prove the remaining obligations. Establish `h` using `hcol s 0`. Rewrite `h` using `[Matrix.mul_apply, Fin.sum_univ_three, hz]`. Use `show R s 0 0 * I 0 0 + R s 0 2 * I 2 0 = _`.
+
+Take the linear combination `h`. Establish `h` using `hcol s 2`. Rewrite `h` using `[Matrix.mul_apply, Fin.sum_univ_three, hz]`. Use `show R s 2 0 * I 0 0 + R s 2 2 * I 2 0 = _`. Take the linear combination `h`.
+
+Establish `h` using `hrow s 0`. Rewrite `h` using `[Matrix.mul_apply, Fin.sum_univ_three, ht1]`. Use `show P 2 0 * R s 0 0 + P 2 2 * R s 2 0 = _`. Take the linear combination `h`. Establish `h` using `hrow s 2`.
+
+Rewrite `h` using `[Matrix.mul_apply, Fin.sum_univ_three, ht1]`. Use `show P 2 0 * R s 0 2 + P 2 2 * R s 2 2 = _`. Take the linear combination `h`.
+-/
 private theorem flag_block {k H : Type} [Field k] (R : H → Matrix (Fin 3) (Fin 3) k) (a c : H → k) (g : GL (Fin 3) k)
     (hb : ∀ s, R s 0 1 = 0 ∧ R s 1 0 = 0 ∧ R s 1 2 = 0 ∧ R s 2 1 = 0 ∧ R s 1 1 = 1)
     (ht : ∀ s, ((g : Matrix (Fin 3) (Fin 3) k) * R s * ((g⁻¹ : GL (Fin 3) k) : Matrix (Fin 3) (Fin 3) k)) 1 0 = 0 ∧
@@ -146,6 +194,11 @@ private theorem flag_block {k H : Type} [Field k] (R : H → Matrix (Fin 3) (Fin
     show P 2 0 * R s 0 2 + P 2 2 * R s 2 2 = _
     linear_combination h
 
+/- English proof (translation)
+Establish `hfin : Finite χ.range` using `(UpperTheory.galois_rep_values_in_finite_extension F Ω _ M hM _ hχ).to_subtype`. Establish `hN : ∀ s, χ s ^ Nat.card χ.range = 1` using `fun s => congrArg Subtype.val (pow_card_eq_one' (x := (⟨_, s, rfl⟩ : χ.range)))`. Establish `hN0 : Nat.card χ.range ≠ 0` using `Nat.card_pos.ne'`. Take `⟨g, hg, hne⟩` from `UpperTheory.V.Ws.Pt.cycIne F Ω l A hv (d * Nat.card χ.range) (mul_ne_zero hd (by exact_mod_cast hN0))`. Use `⟨⟨g, Ine_le_Dec A hg⟩, fun e => hne ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `hI ⟨g, Ine_le_Dec A hg⟩ hg`. Rewrite `h1` using `[e]`. Establish `h2 : cycBar F Ω l g ^ d = (χ g)⁻¹` using `eq_inv_of_mul_eq_one_left h1.symm`. Rewrite using `[_root_.zpow_mul, h2, zpow_natCast, inv_pow, hN, inv_one]`.
+-/
 private theorem ne_one {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime]
     (A : ValuationSubring Ω) (hv : A.valuation (l : Ω) < 1) {M : ℕ} (hM : 1 ≤ M) (d : ℤ) (hd : d ≠ 0)
     (χ : G F Ω →* (Qbar l)ˣ) (hχ : Af.KillsMu M χ) (κ : ↥(Dec (F := F) A) →* (Qbar l)ˣ)
@@ -165,6 +218,27 @@ private theorem ne_one {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algeb
 
 end UpperTheory.V.Z.Keep.OrdFlag2
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ c _ N _ e ψ η σ g₁ B M hL L _ _ _ _ _ Φ C₀ k hΦ A _ _ r hr hbl h11 K _ _ _ _ _ hK W hW w hw`. Establish `hker : ∀ s : G K Ω, galEmb ℚ K Ω s ∈ η.ker` using `fun s => by`. Rewrite using `[hK, ← range_galEmb]`. Conclude with `⟨s, rfl⟩`. Set `j : G K Ω →* η.ker` to `(galEmb ℚ K Ω).codRestrict _ hker`.
+
+Set `ρ : G K Ω →* GL (Fin 3) (Qbar l)` to `(glPart η (UnitaryThreeInertia.push A.val r) hr.red.mult).comp j`. Establish `hρ : ∀ s, (ρ s).val = (UnitaryThreeInertia.push A.val r (galEmb ℚ K Ω s)).mat` using `fun s => rfl`. Take `⟨A', hA, κ, χ, hχ, ⟨g, hg⟩, hI⟩` from `UpperTheory.V.Z.Keep.ordFlag3 Ω l c N e ψ η σ g₁ B M hL L Φ C₀ k hΦ A r hr K hK ρ hρ w hw`. Establish `hv : A'.valuation (l : Ω) < 1`. Simplify using `using (hA _).2 hw`.
+
+Establish `hN : 1 ≤ N` using `Nat.one_le_iff_ne_zero.2 (NeZero.ne N)`. Establish `he : (e : ℤ) ≠ 0`. Use `hL.e_pos` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨s0, h0⟩` from `OrdFlag2.ne_one A' hv hN (e : ℤ) he (χ 0) (hχ 0) (κ 0) (hI 0)`.
+
+Take `⟨s2, h2⟩` from `OrdFlag2.ne_one A' hv hN (-(e : ℤ)) (neg_ne_zero.2 he) (χ 2) (hχ 2) (κ 2) (hI 2)`. Establish `hent : ∀ (s : G K Ω) (a b : Fin 3), Odd (wt a b) → (ρ s).val a b = 0` using `fun s a b h => by`. Rewrite using `[hρ, UnitaryThreeInertia.push, MonoidHom.comp_apply, GG.map_mat, Matrix.map_apply, hbl _ (hker s) a b h]`. Conclude with `map_zero _`. Establish `hmid : ∀ s : G K Ω, (ρ s).val 1 1 = 1` using `fun s => by`.
+
+Rewrite using `[hρ, UnitaryThreeInertia.push, MonoidHom.comp_apply, GG.map_mat, Matrix.map_apply, h11 _ (hker s)]`. Conclude with `map_one _`. Take `⟨Q, hQ⟩` from `OrdFlag2.flag_block (fun s : ↥(Dec (F := K) A') => (ρ s.1).val) (fun s => ((κ 0 s : (Qbar l)ˣ) : Qbar l)) (fun s => ((κ 2 s : (Qbar l)ˣ) : Qbar l)) g (fun s => ⟨hent _ _ _ (by decide), hent _ _ _ (by decide), hent _ _ _ (by decide), hent _ _ _ (by decide), hmid _⟩) (fun s => by`. Take `⟨t1, t2⟩` from `hg s`. Conclude with `⟨t1 1 0 (by decide), t1 2 0 (by decide), t1 2 1 (by decide), t2 0, t2 2⟩)`.
+
+Use `s0 s2 (fun e => h0 (Units.ext e)) (fun e => h2 (Units.ext e))`. Use `⟨A', hA, ![κ 0, κ 2], ![χ 0, χ 2], fun i => ?_, ⟨Q, fun s => ⟨fun i j hij => ?_, fun i => ?_⟩⟩, fun i s hs => ?_⟩` and prove the remaining obligations. Use `fin_cases i`. Conclude with `hχ 0`. Conclude with `hχ 2`.
+
+Establish `e1 : (Q * W s.1 * Q⁻¹ : GL (Fin 2) (Qbar l)).val = (Q : Matrix (Fin 2) (Fin 2) (Qbar l)) * corner (ρ s.1).val * ((Q⁻¹ : GL (Fin 2) (Qbar l)) : Matrix (Fin 2) (Fin 2) (Qbar l))`. Rewrite using `[Units.val_mul, Units.val_mul, hW, ← hρ]`. Apply the tactic sequence `have hij' : i = 1 ∧ j = 0 := by revert hij; fin_cases i <;> fin_cases j <;> simp`. Take `⟨rfl, rfl⟩` from `hij'`. Use `show (Q * W s.1 * Q⁻¹ : GL (Fin 2) (Qbar l)).val 1 0 = 0`.
+
+Rewrite using `[e1]`. Conclude with `(hQ s).1`. Establish `e1 : (Q * W s.1 * Q⁻¹ : GL (Fin 2) (Qbar l)).val = (Q : Matrix (Fin 2) (Fin 2) (Qbar l)) * corner (ρ s.1).val * ((Q⁻¹ : GL (Fin 2) (Qbar l)) : Matrix (Fin 2) (Fin 2) (Qbar l))`. Rewrite using `[Units.val_mul, Units.val_mul, hW, ← hρ]`. Use `fin_cases i`.
+
+Use `show (Q * W s.1 * Q⁻¹ : GL (Fin 2) (Qbar l)).val 0 0 = _`. Rewrite using `[e1]`. Conclude with `(hQ s).2.1`. Use `show (Q * W s.1 * Q⁻¹ : GL (Fin 2) (Qbar l)).val 1 1 = _`. Rewrite using `[e1]`.
+
+Conclude with `(hQ s).2.2`. Use `fin_cases i`. Conclude with `hI 0 s hs`. Conclude with `hI 2 s hs`.
+-/
 theorem UpperTheory.V.Z.Keep.ordFlag2 :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (c : Coef l) [CharP (ResidueField c.O) l] (N : ℕ) [NeZero N] (e : ℕ) (ψ : DirichletCharacter c.O N) (η : G ℚ Ω →* ℤˣ) (σ g₁ : G ℚ Ω) (B : ValuationSubring Ω) (M : ℕ), Pr.LinkHyp c N e η σ B M → ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] [Algebra L Ω] [IsAlgClosure L Ω] (Φ : Fr.Frame l (ResidueField c.O)) (C₀ : ℕ) (k : Pr.GalLink η (Chr.Psi l e (Chr.dirG ℚ Ω ψ)) σ g₁ B M L Φ), Φ.Ok C₀ → ∀ (A : Subalgebra c.O (PadicAlgCl l)) [IsDiscreteValuationRing A] [Module.Finite c.O A] (r : G ℚ Ω →* GG 3 A), Pr.OrdPt l η (Chr.Psi l e (Chr.dirG ℚ Ω ψ)) σ g₁ B r → Block η r → (∀ g ∈ η.ker, (r g).mat 1 1 = 1) → ∀ (K : Type) [Field K] [NumberField K] [IsCMField K] [Algebra K Ω] [IsAlgClosure K Ω], η.ker = galOf ℚ K Ω → ∀ W : G K Ω →* GL (Fin 2) (Qbar l), (∀ s, (W s).val = corner (UnitaryThreeInertia.push A.val r (galEmb ℚ K Ω s)).mat) → ∀ w : HeightOneSpectrum (𝓞 K), ((l : ℕ) : 𝓞 K) ∈ w.asIdeal → ∃ A' : ValuationSubring Ω, IsPlaceOver A' w ∧ ∃ κ, Af.FlagAt N ![(e : ℤ), -(e : ℤ)] W A' κ := by
   intro Ω _ _ _ l _ c _ N _ e ψ η σ g₁ B M hL L _ _ _ _ _ Φ C₀ k hΦ A _ _ r hr hbl h11 K _ _ _ _ _ hK W hW w hw

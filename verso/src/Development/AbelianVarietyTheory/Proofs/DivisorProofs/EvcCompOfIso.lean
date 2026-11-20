@@ -10,6 +10,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.DualCon.ProdGlue
 
+/- English proof (translation)
+Establish `e : cls Q hQ = CechPic.pull (A ◁ j).left (cls P hP)` using `((cls_eq_iff (pull_isLB hP _) hQ).2 h).symm.trans (cls_pull hP _ _)`. Rewrite using `[evc, evc, e, ← pull_comp, ← Over.comp_left, lift_whiskerLeft]`.
+-/
 theorem evc_comp_of_iso {S : Scheme.{0}} {A B' B Y : Over S} (j : B' ⟶ B) {P : LB (A ⊗ B).left} (hP : P.IsLB)
     {Q : LB (A ⊗ B').left} (hQ : Q.IsLB) (h : LBIso (P.pull (A ◁ j).left) Q) (a : Y ⟶ A) (u : Y ⟶ B') :
     evc hP a (u ≫ j) = evc hQ a u := by

@@ -70,6 +70,9 @@ def chi (d : ℕ) (s : ℝ) : Levi k (fun _ : Fin 2 => Fin d) →* ℂˣ :=
   ((detChar (Fin d) (absPow k (-(s : ℂ)))).comp (Pi.evalMonoidHom (fun _ : Fin 2 => GL (Fin d) k) 0)) *
     ((detChar (Fin d) (absPow k (s : ℂ))).comp (Pi.evalMonoidHom (fun _ : Fin 2 => GL (Fin d) k) 1))
 
+/- English proof (translation)
+Simplify using `[two_mul]`.
+-/
 theorem sum_two (d : ℕ) : ∑ _a : Fin 2, d = d + d := by simp [two_mul]
 
 def blk2 (d : ℕ) : (Σ _ : Fin 2, Fin d) ≃ Fin (d + d) := stdBlocks (fun _ : Fin 2 => d) (sum_two d)

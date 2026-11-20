@@ -9,6 +9,15 @@ noncomputable section
 
 namespace GlobalTheory.RightMulJac
 
+/- English proof (translation)
+Introduce `D t n μ₁ 𝓕₁ hμ a f`. Use `haveI : μ₁.IsAddHaarMeasure := hμ.1`. Use `haveI : BorelSpace (Mx D t n) := ⟨rfl⟩`. Establish `hkey` using `GlobalTheory.ModuLR.modu_lrMul D t n μ₁ hμ.1 1 a`. Simplify using `only [map_one, one_pow, one_mul, Matrix.GeneralLinearGroup.coe_one, Matrix.one_mul, ENNReal.coe_one] at hkey`.
+
+Use `set c : ℝ≥0 := absA D (Matrix.GeneralLinearGroup.det a) with hc`. Establish `hc0 : c ≠ 0`. Conclude with `((Group.isUnit (Matrix.GeneralLinearGroup.det a)).map (absA D)).ne_zero`. Establish `hcont : Continuous fun u : Mx D t n => (HMul.hMul (u : Matrix (Fin t) (Fin n) (AE D)) a.val : Mx D t n)` using `continuous_id.matrix_mul continuous_const`. Establish `hcont' : Continuous fun u : Mx D t n => (HMul.hMul (u : Matrix (Fin t) (Fin n) (AE D)) (a⁻¹).val : Mx D t n)` using `continuous_id.matrix_mul continuous_const`.
+
+Set `e : Mx D t n ≃ₜ Mx D t n` to `{ toFun := fun u => (HMul.hMul (u : Matrix (Fin t) (Fin n) (AE D)) a.val : Mx D t n) invFun := fun u => (HMul.hMul (u : Matrix (Fin t) (Fin n) (AE D)) (a⁻¹).val : Mx D t n) left_inv := fun u => by simp [Matrix.mul_assoc] right_inv := fun u => by simp [Matrix.mul_assoc] continuous …`. Establish `hemb : MeasurableEmbedding (fun u : Mx D t n => (HMul.hMul (u : Matrix (Fin t) (Fin n) (AE D)) a.val : Mx D t n))` using `e.measurableEmbedding`. Establish `hmap : μ₁.map (fun u : Mx D t n => (HMul.hMul (u : Matrix (Fin t) (Fin n) (AE D)) a.val : Mx D t n)) = ((c : ENNReal) ^ t)⁻¹ • μ₁` using `by conv_rhs => rw [hkey]`. Rewrite using `[smul_smul, ENNReal.inv_mul_cancel (by simp [hc0]) (by simp), one_smul]`. Rewrite using `[show (∫ x, f (x ⬝ a.1) ∂μ₁) = ∫ x, f ((fun u : Mx D t n => (HMul.hMul (u : Matrix (Fin t) (Fin n) (AE D)) a.val : Mx D t n)) x) ∂μ₁ from rfl, ← hemb.integral_map, hmap, integral_smul_measure]`.
+
+Rewrite using `[Complex.real_smul, npow]`. Use `congr 1`. Rewrite using `[ENNReal.toReal_inv, ENNReal.toReal_pow, ENNReal.coe_toReal, show (-(t : ℂ)) = ((-(t : ℝ) : ℝ) : ℂ) by push_cast; ring, ← Complex.ofReal_cpow (NNReal.coe_nonneg c), Real.rpow_neg (NNReal.coe_nonneg c), Real.rpow_natCast]`.
+-/
 theorem integral_mul_right : ∀ (D : D7) (t n : ℕ) (μ₁ : Measure (Mx D t n)) (𝓕₁ : Set (Mx D t n)),
     IsCovolOne (ratMx D t n) μ₁ 𝓕₁ →
     ∀ (a : GL (Fin n) (AE D)) (f : Mx D t n → ℂ),

@@ -29,6 +29,11 @@ open GlobalTheory.ThKSoDecay
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Use extensionality with `φ`. Simplify using `only [Model.SoLoc, Model.IsLinBar, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, ι, ⟨hb, ht, hm⟩, h3⟩`. Conclude with `⟨h1, ι, ⟨hb, ht, hm⟩, h3⟩`.
+
+Introduce and unpack `⟨h1, ι, ⟨hb, ht, hm⟩, h3⟩`. Conclude with `⟨h1, ι, ⟨hb, ht, hm⟩, h3⟩`.
+-/
 theorem soLoc_change {B : Base F E} {a b : ℕ} {G₁ : Geo σ a b} {V : Spc F E a} {V' : Spc F E b} {W₁' : Spc F E (a + b)}
     {v₁ : Pl F} (t : E →ₐ[F] Fv F v₁) :
     (reG G₁ V V' W₁').M'.SoLoc B.ψ t = G₁.M'.SoLoc B.ψ t := by
@@ -40,29 +45,66 @@ theorem soLoc_change {B : Base F E} {a b : ℕ} {G₁ : Geo σ a b} {V : Spc F E
   · rintro ⟨h1, ι, ⟨hb, ht, hm⟩, h3⟩
     exact ⟨h1, ι, ⟨hb, ht, hm⟩, h3⟩
 
+/- English proof (translation)
+Unfold `Model.So`. Rewrite using `[soLoc_change]`. Both sides reduce to the same expression.
+-/
 theorem so_change {B : Base F E} {a b : ℕ} {G₁ : Geo σ a b} {V : Spc F E a} {V' : Spc F E b} {W₁' : Spc F E (a + b)} :
     (reG G₁ V V' W₁').M'.So B.ψ B.τ₁ = G₁.M'.So B.ψ B.τ₁ := by
   unfold Model.So
   rw [soLoc_change]
   rfl
 
+/- English proof (translation)
+The claim follows from `NNReal.continuous_coe.comp ((GlobalTheory.Grow.continuous_heightGL F).comp continuous_subtype_val)`.
+-/
 theorem continuous_ht {d : ℕ} {J : Matrix (Fin d) (Fin d) E} : Continuous (fun h : UA σ J => (ht h : ℝ)) :=
   NNReal.continuous_coe.comp ((GlobalTheory.Grow.continuous_heightGL F).comp continuous_subtype_val)
 
 variable {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W} {χX χW : Chr F E} {om : Rep σ X W}
   {r s r' s' : ℕ}
 
+/- English proof (translation)
+Simplify using `only [theta, map_add]`. Conclude with `thetaSum_add F (hPair.weil.isUSplitting.pres _ _ hΦ) (hPair.weil.isUSplitting.pres _ _ hΨ)`.
+-/
 theorem theta_add (hPair : IsPair B M χX χW om r s r' s') {Φ Ψ : Fn F n d} (hΦ : Φ ∈ schA F _) (hΨ : Ψ ∈ schA F _) (g h) :
     theta om (Φ + Ψ) g h = theta om Φ g h + theta om Ψ g h := by
   simp only [theta, map_add]
   exact thetaSum_add F (hPair.weil.isUSplitting.pres _ _ hΦ) (hPair.weil.isUSplitting.pres _ _ hΨ)
 
+/- English proof (translation)
+Simplify using `only [theta, map_smul]`. Conclude with `thetaSum_smul F c _`.
+-/
 theorem theta_smul (c : ℂ) (Φ : Fn F n d) (g h) : theta om (c • Φ) g h = c * theta om Φ g h := by
   simp only [theta, map_smul]
   exact thetaSum_smul F c _
 
 open scoped Classical in
 
+/- English proof (translation)
+Introduce `Ψ hΨ`. Establish `hsch : M.So B.ψ B.τ₁ ≤ schA F _` using `GlobalTheory.ThKContSmall.so_le_schA hPair.good _`. Proceed by induction on `hΨ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, φ, h1, h2, h3, rfl⟩` from `hx`.
+
+Establish `hstd` using `(h2.and hPair.good.std).mono fun w hw => hw.1.trans hw.2`. Establish `hφ : (fun y : Fin n × Fin d → FiniteAdeleRing (𝓞 F) F => ∏ᶠ v, φ v fun i => evalV F v (y i)) ∈ SB (Fin n × Fin d → FiniteAdeleRing (𝓞 F) F)` using `⟨isLocallyConstant_finprod_evalV φ h1 hstd, GlobalTheory.AdelicCoordSupport.hasCompactSupport_finprod φ h1 hstd⟩`. Establish `hall : ∀ f' : SInf F (Fin n × Fin d), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f' φ ∈ M.So B.ψ B.τ₁` using `fun f' => Submodule.subset_span ⟨f', φ, h1, h2, h3, rfl⟩`. Take `⟨C, k, hC⟩` from `soDecayUnif hP F E σ B n d X W M χX χW om r s r' s' hPair _ hφ hall 0`. Establish `hD` using `GlobalTheory.PolDense.pol_dense F E σ B n d X W M χX χW om r s r' s' hPair`.
+
+Take `⟨u, hu, hlim⟩` from `mem_closure_iff_seq_limit.1 (hD f)`. Use `⟨fun j => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (u j) φ, fun j => ⟨Submodule.subset_span ⟨u j, hu j, φ, h1, h2, rfl⟩, hall _⟩, fun R => ?_⟩` and prove the remaining obligations. Establish `hsem : Tendsto (fun j => semK (Fin n × Fin d) k (f - u j)) atTop (𝓝 0)`. Establish `hc : Continuous (semK (F` using `F) (Fin n × Fin d) k) := Seminorm.continuous_finsetSup fun i _ => (schwartz_withSeminorms ℂ _ ℂ).continuous_seminorm i`. Establish `h0 : Tendsto (fun j => f - u j) atTop (𝓝 (f - f))` using `tendsto_const_nhds.sub hlim`.
+
+Rewrite `h0` using `[sub_self]`. Use `(hc.tendsto 0).comp h0` as an intermediate fact. Rewrite `this` using `[map_zero]`. Then use the resulting hypothesis. Establish `hb : Tendsto (fun j => |C| * semK (Fin n × Fin d) k (f - u j) * |R| ^ k) atTop (𝓝 0)`. Simplify using `using (hsem.const_mul |C|).mul_const (|R| ^ k)`.
+
+Rewrite using `[Metric.tendstoUniformlyOn_iff]`. Introduce `ε hε`. Use `filter_upwards [hb.eventually (gt_mem_nhds hε)] with j hj p hp`. Establish `e : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f - u j) φ + GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (u j) φ`. Use function extensionality and compare the values at `x`.
+
+Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, Pi.add_apply, SchwartzMap.sub_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[dist_eq_norm, e, theta_add hPair (hsch (hall _)) (hsch (hall _)), add_sub_cancel_right]`. Establish `h4` using `hC (f - u j) p.1 p.2`. Rewrite `h4` using `[pow_zero, mul_one]`.
+
+Use `lt_of_le_of_lt (h4.trans ?_) hj` and prove the remaining obligations. Establish `h5 : 0 ≤ semK (Fin n × Fin d) k (f - u j)` using `apply_nonneg _ _`. Establish `h6 : (ht p.2 : ℝ) ≤ |R|` using `le_trans hp (le_abs_self R)`. Use `gcongr`. Conclude with `le_abs_self C`.
+
+Consider the case `zero`. Use `⟨fun _ => 0, fun _ => Submodule.zero_mem _, fun R => ?_⟩` and prove the remaining obligations. Rewrite using `[Metric.tendstoUniformlyOn_iff]`. Introduce `ε hε`. Conclude with `Eventually.of_forall fun _ _ _ => by rw [dist_self]; exact hε`.
+
+Consider the case `add x y hx hy ihx ihy`. Take `⟨xs, hxs, hxl⟩` from `ihx`. Take `⟨ys, hys, hyl⟩` from `ihy`. Use `⟨fun k => xs k + ys k, fun k => Submodule.add_mem _ (hxs k) (hys k), fun R => ?_⟩` and prove the remaining obligations. Use `(hxl R).add (hyl R)` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k p`. Conclude with `theta_add hPair (hsch (hxs k).2) (hsch (hys k).2) _ _`. Use function extensionality and compare the values at `p`. Conclude with `theta_add hPair (hsch hx) (hsch hy) _ _`.
+
+Consider the case `smul c x hx ihx`. Take `⟨xs, hxs, hxl⟩` from `ihx`. Use `⟨fun k => c • xs k, fun k => Submodule.smul_mem _ c (hxs k), fun R => ?_⟩` and prove the remaining obligations. Use `(uniformContinuous_const_smul c).comp_tendstoUniformlyOn (hxl R)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `k p`. Conclude with `theta_smul c _ _ _`. Use function extensionality and compare the values at `p`. Conclude with `theta_smul c _ _ _`.
+-/
 theorem exists_approx_theta (hP : KP) (hPair : IsPair B M χX χW om r s r' s') : ∀ Ψ ∈ M.So B.ψ B.τ₁,
     ∃ Ψs : ℕ → Fn F n d, (∀ k, Ψs k ∈ PolData B M ⊓ M.So B.ψ B.τ₁) ∧ ∀ R : ℝ,
       TendstoUniformlyOn (fun k (p : UA σ X.J × UA σ W.J) => theta om (Ψs k) p.1 p.2) (fun p => theta om Ψ p.1 p.2) atTop
@@ -132,6 +174,23 @@ theorem exists_approx_theta (hP : KP) (hPair : IsPair B M χX χW om r s r' s') 
     · funext p
       exact theta_smul c _ _ _
 
+/- English proof (translation)
+Establish `hS : Φ ∈ schA F _` using `GlobalTheory.ThKContSmall.so_le_schA hPair.good _ hSo`. Establish `hB` using `(GlobalTheory.T.theta_basic_properties hP.base F E σ B _ _ _ _ _ _ _ _ _ _ _ _ hPair).1 Φ hS`. Take `⟨C, k, hC⟩` from `soDecay hP F E σ B _ _ _ _ _ _ _ _ _ _ _ _ hPair Φ hSo 0`. Use `haveI : BorelSpace (UA σ X.J) := ⟨rfl⟩`. Establish `hv` using `GlobalTheory.ThKContSmall.measure_dom_lt_top hP.siegelSetUnitary hPair.base hPair.herm hPair.good`.
+
+Use `haveI : IsFiniteMeasure (M.μ.restrict M.dom) := isFiniteMeasure_restrict.2 hv.ne`. Use `⟨fun h => ?_, ?_, fun γ hγ h => ?_⟩` and prove the remaining obligations. Use `Integrable.of_bound (hB.1.comp (continuous_id.prodMk continuous_const)).aestronglyMeasurable (C * (ht h : ℝ) ^ k) (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Establish `h1` using `hC g h`. Rewrite `h1` using `[pow_zero, mul_one]`. Then use the resulting hypothesis.
+
+Establish `hht : Continuous (fun h : UA σ W.J => (ht h : ℝ))` using `continuous_ht haveI : SecondCountableTopology (AF F) := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _ haveI : SecondCountableTopology (AE F E) := by`. Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`. Conclude with `e.secondCountableTopology`. Use `haveI hMat : SecondCountableTopology (Matrix (Fin d) (Fin d) (AE F E)) := inferInstanceAs (SecondCountableTopology (Fin d → Fin d → AE F E))`. Use `haveI : SecondCountableTopology (Matrix (Fin d) (Fin d) (AE F E))ᵐᵒᵖ := (MulOpposite.opHomeomorph (M := Matrix (Fin d) (Fin d) (AE F E))).symm.secondCountableTopology`.
+
+Use `haveI : SecondCountableTopology (GL (Fin d) (AE F E)) := Units.isEmbedding_embedProduct.secondCountableTopology`. Use `haveI : SecondCountableTopology (UA σ W.J) := (Topology.IsEmbedding.subtypeVal (p := fun x : GL (Fin d) (AE F E) => x ∈ GlobalTheory.WeilM.UG (cA σ) (incM F W.J))).secondCountableTopology`. Use `haveI : FirstCountableTopology (UA σ W.J) := TopologicalSpace.SecondCountableTopology.to_firstCountableTopology _`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `h₀`.
+
+Establish `hev : ∀ᶠ h in 𝓝 h₀, (ht h : ℝ) < ht h₀ + 1` using `hht.continuousAt.eventually_lt continuousAt_const (lt_add_one _)`. Unfold `Model.I`. Use `continuousAt_of_dominated (bound := fun _ => max C 0 * ((ht h₀ : ℝ) + 1) ^ k) ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `Eventually.of_forall fun h => (hB.1.comp (continuous_id.prodMk continuous_const)).aestronglyMeasurable`. Use `filter_upwards [hev] with h hh`.
+
+Use `Eventually.of_forall fun g => ?_` and prove the remaining obligations. Establish `h1` using `hC g h`. Rewrite `h1` using `[pow_zero, mul_one]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `integrable_const _`.
+
+Conclude with `Eventually.of_forall fun g => (hB.1.comp (continuous_const.prodMk continuous_id)).continuousAt`. Unfold `Model.I`. Use `integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Establish `e` using `hB.2.1 1 (one_mem _) γ hγ g h`. Rewrite `e` using `[one_mul]`.
+
+Conclude with `e`.
+-/
 theorem integral_basic (hP : KP) (hPair : IsPair B M χX χW om r s r' s') {Φ : Fn F n d} (hSo : Φ ∈ M.So B.ψ B.τ₁) :
     M.Conv om Φ ∧ Continuous (M.I om Φ) ∧ ∀ γ ∈ ratU σ W.J, ∀ h, M.I om Φ (γ * h) = M.I om Φ h := by
   have hS : Φ ∈ schA F _ := GlobalTheory.ThKContSmall.so_le_schA hPair.good _ hSo
@@ -188,6 +247,11 @@ theorem integral_basic (hP : KP) (hPair : IsPair B M χX χW om r s r' s') {Φ :
     rw [one_mul] at e
     exact e
 
+/- English proof (translation)
+Introduce `ε hε`. Establish `hc0 : 0 ≤ μ.real Set.univ` using `measureReal_nonneg`. Use `filter_upwards [hl (ε / (μ.real Set.univ + 1)) (by positivity)] with k hk y hy`. Rewrite using `[dist_eq_norm, ← integral_sub (hf y hy) (hfs k y hy)]`. Use `lt_of_le_of_lt (norm_integral_le_of_norm_le_const (C := ε / (μ.real Set.univ + 1)) (Eventually.of_forall fun x => ?_)) ?_` and prove the remaining obligations.
+
+Rewrite using `[← dist_eq_norm]`. Conclude with `(hk x y hy).le`. Rewrite using `[div_mul_eq_mul_div, div_lt_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem tendstoUniformlyOn_integral {α β : Type} [MeasurableSpace α] (μ : Measure α) [IsFiniteMeasure μ] (S : Set β)
     (fs : ℕ → α → β → ℂ) (f : α → β → ℂ) (hfs : ∀ k, ∀ y ∈ S, Integrable (fun x => fs k x y) μ)
     (hf : ∀ y ∈ S, Integrable (fun x => f x y) μ)
@@ -203,6 +267,21 @@ theorem tendstoUniformlyOn_integral {α β : Type} [MeasurableSpace α] (μ : Me
   · rw [div_mul_eq_mul_div, div_lt_iff₀ (by positivity)]
     nlinarith
 
+/- English proof (translation)
+Introduce `Ψ hΨ`. Take `⟨Ψs, hΨs, hl⟩` from `exists_approx_theta hP hPair Ψ hΨ`. Use `⟨Ψs, hΨs, fun μ _ h => ?_⟩` and prove the remaining obligations. Take `⟨K, hK, hKc⟩` from `hN`. Use `haveI : BorelSpace (UA σ W.J) := ⟨rfl⟩`.
+
+Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Establish `hv` using `GlobalTheory.ThKContSmall.measure_dom_lt_top hP.siegelSetUnitary hPair.base hPair.herm hPair.good`. Use `haveI : IsFiniteMeasure (M.μ.restrict M.dom) := isFiniteMeasure_restrict.2 hv.ne`. Establish `hm : Continuous fun u : N => u.1 * h` using `continuous_subtype_val.mul continuous_const`. Take `⟨R, hR⟩` from `hK.exists_bound_of_continuousOn (continuous_ht.comp hm).continuousOn`.
+
+Establish `hred : ∀ u : N, ∃ k ∈ K, ∀ Φ ∈ M.So B.ψ B.τ₁, M.I om Φ (u.1 * h) = M.I om Φ (k.1 * h)`. Introduce `u`. Take `⟨γ, hγ, hγu⟩` from `hKc u`. Use `⟨γ * u, hγu, fun Φ hΦ => ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.coe_mul, mul_assoc]`.
+
+Conclude with `((integral_basic hP hPair hΦ).2.2 γ.1 (Subgroup.mem_subgroupOf.1 hγ) _).symm`. Establish `hint : ∀ Φ ∈ M.So B.ψ B.τ₁, Integrable (fun u : N => M.I om Φ (u.1 * h)) μ`. Introduce `Φ hΦ`. Establish `hc : Continuous fun u : N => M.I om Φ (u.1 * h)` using `(integral_basic hP hPair hΦ).2.1.comp hm`. Take `⟨D, hD⟩` from `hK.exists_bound_of_continuousOn hc.continuousOn`.
+
+Use `Integrable.of_bound hc.aestronglyMeasurable D (Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Take `⟨k, hk, e⟩` from `hred u`. Rewrite using `[e Φ hΦ]`. Conclude with `hD k hk`. Establish `h1` using `tendstoUniformlyOn_integral (M.μ.restrict M.dom) {y : UA σ W.J | (ht y : ℝ) ≤ R} (fun k x y => theta om (Ψs k) x y) (fun x y => theta om Ψ x y) (fun k y _ => (integral_basic hP hPair (hΨs k).2).1 y) (fun y _ => (integral_basic hP hPair hΨ).1 y) (fun ε hε => by filter_upwards [Met …`.
+
+Conclude with `hk (x, y) hy)`. Establish `h2` using `tendstoUniformlyOn_integral μ (Set.univ : Set Unit) (fun k u _ => M.I om (Ψs k) (u.1 * h)) (fun u _ => M.I om Ψ (u.1 * h)) (fun k _ _ => hint _ (hΨs k).2) (fun _ _ => hint _ hΨ) (fun ε hε => by filter_upwards [h1 ε hε] with k hk u _ _`. Take `⟨κ, hκ, e⟩` from `hred u`. Rewrite using `[e _ hΨ, e _ (hΨs k).2]`. Conclude with `hk (κ.1 * h) ((le_abs_self _).trans (hR κ hκ)))`.
+
+Rewrite using `[Metric.tendsto_nhds]`. Introduce `ε hε`. Use `filter_upwards [h2 ε hε] with k hk`. Rewrite using `[dist_comm]`. Conclude with `hk () trivial`.
+-/
 theorem exists_approx_pair (hP : KP) (hPair : IsPair B M χX χW om r s r' s') (N : Subgroup (UA σ W.J))
     (hN : GlobalTheory.Cusp.Cocompact (ratU σ W.J) N) : ∀ Ψ ∈ M.So B.ψ B.τ₁,
     ∃ Ψs : ℕ → Fn F n d, (∀ k, Ψs k ∈ PolData B M ⊓ M.So B.ψ B.τ₁) ∧ ∀ (μ : Measure N) [IsFiniteMeasure μ] (h : UA σ W.J),
@@ -250,6 +329,11 @@ theorem exists_approx_pair (hP : KP) (hPair : IsPair B M χX χW om r s r' s') (
   rw [dist_comm]
   exact hk () trivial
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a b G₁ X om₁ om₁' _ V V' W₁' hT' e W₂ H₂ i₀ i₁ hH Ψ hΨ`. Establish `hN` using `GlobalTheory.UnipCocompact.cocompact_unip F E σ B a b (reG G₁ V V' W₁') X om₁ om₁' hT' e W₂ H₂ i₀ i₁ hH`. Take `⟨Ψs, hΨs, hl⟩` from `exists_approx_pair hKP (GlobalTheory.ThKContSmall.isPair_small hT') _ hN Ψ (by rw [so_change (G₁ := G₁) (V := V) (V' := V') (W₁' := W₁')]; exact hΨ)`. Use `⟨Ψs, fun k => ?_, fun μ 𝓕 _ _ h1 h => ?_⟩` and prove the remaining obligations. Rewrite using `[← so_change (G₁ := G₁) (V := V) (V' := V') (W₁' := W₁')]`.
+
+Conclude with `hΨs k`. Use `haveI : IsFiniteMeasure (μ.restrict 𝓕) := isFiniteMeasure_restrict.2 (by rw [h1]; exact ENNReal.one_ne_top)`. Conclude with `@hl (μ.restrict 𝓕) this h`.
+-/
 theorem approx_pol : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ) (G₁ : Geo σ a b) (X : Chars F E) (om₁ : Rep σ G₁.V G₁.W) (om₁' : Rep σ G₁.V' G₁.W), IsTriple B G₁ X om₁ om₁' →
     ∀ (V : Spc F E a) (V' : Spc F E b) (W₁' : Spc F E (a + b)), IsTriple B (reG G₁ V V' W₁') X om₁ om₁' →
     ∀ (e : ℕ) (W₂ : Spc F E e) (H₂ : Plane E (a + b) e) (i₀ i₁ : ℕ), H₂.IsAdapted σ B (reG G₁ V V' W₁').W W₂ i₀ i₁ →

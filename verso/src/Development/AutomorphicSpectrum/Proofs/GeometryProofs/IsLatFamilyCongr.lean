@@ -284,6 +284,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {F : Type} [Field F] {𝔐 : HodgeCpt Y S y} {p : ℕ} {G : GenTors 𝔐 p}
   {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra O Ω] {Sg : Type}
 
+/- English proof (translation)
+Rewrite using `[famD, dif_pos h]`.
+-/
 theorem famD_pos (e : Sg → CMType H ⊕ CMType H) (b : ∀ t, Fin (labelRk D t) → 𝔐.Li)
     (pq : (𝓞 E ⧸ Ideal.span {(p : 𝓞 E)}) →+* F) (sc : F →+ (𝓞 E ⧸ Ideal.span {(p : 𝓞 E)})) (w : O)
     (P : ∀ c' : ∀ k, J k, mseg y c' ≠ 0 → ChartPack G O c')
@@ -291,6 +294,11 @@ theorem famD_pos (e : Sg → CMType H ⊕ CMType H) (b : ∀ t, Fin (labelRk D t
     (h : mseg y c' ≠ 0) : famD e b pq sc w P i c' = chartD e b pq sc w (P c' h) (i c') := by
   rw [famD, dif_pos h]
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hA`. Use `⟨fun s hs a ha v hv => ?_, fun s t hs ht v hv => ?_⟩` and prove the remaining obligations. Rewrite `hv`, the goal using `[← h s hs]`. Conclude with `h1 s hs a ha v hv`. Rewrite `hv` using `[← h s hs]`.
+
+Rewrite using `[← h t ht]`. Conclude with `h2 s t hs ht v hv`.
+-/
 theorem isLatFamily_congr {V : Type} [AddCommGroup V] [Module Ω V] {o : Type} [CommRing o] [Algebra o Ω]
     {A B : (∀ k, J k) → AddSubgroup V} (h : ∀ c', mseg y c' ≠ 0 → A c' = B c') (hA : IsLatFamily o y A) :
     IsLatFamily o y B := by

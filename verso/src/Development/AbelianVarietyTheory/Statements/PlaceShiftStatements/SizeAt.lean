@@ -20,6 +20,11 @@ def SetAt : Prop := Closed FamHyp fun Fm _ => EvPt Fm fun x _ i p =>
 def AtPt (Q : ChP) : Prop := ∃ CF0 : ℝ, ∀ CF, CF0 ≤ CF → Closed FamHyp fun Fm _ => EvPt Fm fun _ _ _ p =>
   ∀ (G : Grid p CF) (W : G.Weil) (n : ℕ) (a : SlopeTestRemainingChoices p G W n), a.OK → Q a.ch
 
+/- English proof (translation)
+Take `⟨c, hQ⟩` from `hQ`. Use `⟨c, fun CF hCF => h.imp fun {eps} Fm _ _ a => ?_⟩` and prove the remaining obligations. Take `⟨x₀, hx₀⟩` from `hQ eps CF hCF`. Take `⟨x₁, a⟩` from `a`. Use `⟨max x₀ x₁, fun x hx hle i p hp G W n b hb => ?_⟩` and prove the remaining obligations.
+
+Conclude with `hx₀ _ (Fm.L x i) (Fm.L_eps x i) ((le_of_max_le_left hle).trans (Fm.L_x x i hx).ge) _ _ _ _ _ _ _ (a x hx (le_of_max_le_right hle) i p hp hb.eser) b.ch hb.is b.atScale`.
+-/
 theorem SetAt.atPt (h : SetAt) {Q : ChP} (hQ : Big Q) : AtPt Q := by
   obtain ⟨c, hQ⟩ := hQ
   refine ⟨c, fun CF hCF => h.imp fun {eps} Fm _ _ a => ?_⟩

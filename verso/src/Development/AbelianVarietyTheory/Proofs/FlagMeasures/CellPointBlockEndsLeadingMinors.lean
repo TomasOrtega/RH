@@ -13,12 +13,23 @@ noncomputable def minor (bs : List (ℂ × ℕ)) (m : ℕ) : ℂ := (Matrix.of f
 
 def ends (c : ℕ) (bs : List (ℂ × ℕ)) : List ℕ := ((bs.map Prod.snd).scanl (· + ·) c).tail
 
+/- English proof (translation)
+Simplify using `[ends]`.
+-/
 theorem ends_nil (c : ℕ) : ends c [] = [] := by simp [ends]
 
+/- English proof (translation)
+Apply the tactic sequence `cases bs <;> simp [ends]`.
+-/
 theorem ends_cons (c : ℕ) (t : ℂ) (s : ℕ) (bs : List (ℂ × ℕ)) :
     ends c ((t, s) :: bs) = (c + s) :: ends (c + s) bs := by
   cases bs <;> simp [ends]
 
+/- English proof (translation)
+Establish `: (Matrix.of fun a b : Fin s => if a.val + b.val + 1 = s then t else 0) = (Matrix.diagonal fun _ : Fin s => t).submatrix (Fin.revPerm : Equiv.Perm (Fin s)) id`. Use extensionality with `a b`. Simplify using `only [Matrix.of_apply, Matrix.submatrix_apply, Matrix.diagonal_apply, Fin.revPerm_apply, id, Fin.ext_iff, Fin.val_rev]`. Use `a.2` as an intermediate fact. Conclude with `if_congr (by omega) rfl rfl`.
+
+Rewrite using `[this, Matrix.det_permute]`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin s))) with h | h <;> simp [h, ht]`.
+-/
 theorem det_anti (t : ℂ) (ht : t ≠ 0) (s : ℕ) :
     (Matrix.of fun a b : Fin s => if a.val + b.val + 1 = s then t else 0).det ≠ 0 := by
   have : (Matrix.of fun a b : Fin s => if a.val + b.val + 1 = s then t else 0) =
@@ -31,6 +42,9 @@ theorem det_anti (t : ℂ) (ht : t ≠ 0) (s : ℕ) :
   rw [this, Matrix.det_permute]
   rcases Int.units_eq_one_or (Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin s))) with h | h <;> simp [h, ht]
 
+/- English proof (translation)
+Unfold `minor`. Rewrite using `[← Matrix.det_fromBlocks_zero₂₁ _ (0 : Matrix (Fin s) (Fin m) ℂ), ← Matrix.det_submatrix_equiv_self finSumFinEquiv]`. Use `congr 1`. Use extensionality with `a b`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp [ptEntry]`.
+-/
 theorem minor_cons (t : ℂ) (s : ℕ) (bs : List (ℂ × ℕ)) (m : ℕ) :
     minor ((t, s) :: bs) (s + m) =
       (Matrix.of fun a b : Fin s => if a.val + b.val + 1 = s then t else 0).det * minor bs m := by
@@ -41,6 +55,9 @@ theorem minor_cons (t : ℂ) (s : ℕ) (bs : List (ℂ × ℕ)) (m : ℕ) :
   ext a b
   rcases a with a | a <;> rcases b with b | b <;> simp [ptEntry]
 
+/- English proof (translation)
+Unfold `minor`. Use `Matrix.det_eq_zero_of_row_eq_zero ⟨0, h1⟩ fun j => ?_` and prove the remaining obligations. Use `j.2` as an intermediate fact. Simplify using `only [Matrix.of_apply, ptEntry]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`.
+-/
 theorem minor_lt (t : ℂ) (s : ℕ) (bs : List (ℂ × ℕ)) (m : ℕ) (h1 : 1 ≤ m) (h2 : m < s) :
     minor ((t, s) :: bs) m = 0 := by
   unfold minor
@@ -49,6 +66,17 @@ theorem minor_lt (t : ℂ) (s : ℕ) (bs : List (ℂ × ℕ)) (m : ℕ) (h1 : 1 
   simp only [Matrix.of_apply, ptEntry]
   split_ifs <;> first | rfl | omega
 
+/- English proof (translation)
+Proceed by induction on `bs generalizing c with`. Consider the case `nil => simp [ends_nil]`. Consider the case `cons p bs ih`. Take `⟨t, s⟩` from `p`. Establish `hs : 1 ≤ s` using `(h (t, s) (by simp)).2`.
+
+Take `⟨i1, i2, i3⟩` from `ih (fun b hb => h b (by simp [hb])) (c + s)`. Rewrite using `[ends_cons]`. Simplify using `only [List.map_cons, List.sum_cons, List.mem_cons, List.nodup_cons]`. Use `⟨?_, ⟨fun hm => ?_, i2⟩, fun _ => ?_⟩` and prove the remaining obligations. Introduce and unpack `x (rfl | hx)`.
+
+Use linear arithmetic over natural numbers and integers. Use `i1 x hx` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `i1 _ hm` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Distinguish the cases in `hb : bs = []`. Substitute `hb` using the available equality. Simplify using the standard rewrite rules. Use `right`. Rewrite using `[← add_assoc]`.
+
+Conclude with `i3 hb`.
+-/
 theorem ends_bd (bs : List (ℂ × ℕ)) (h : ∀ b ∈ bs, b.1 ≠ 0 ∧ 1 ≤ b.2) (c : ℕ) :
     (∀ x ∈ ends c bs, c < x ∧ x ≤ c + (bs.map Prod.snd).sum) ∧ (ends c bs).Nodup ∧
       (bs ≠ [] → c + (bs.map Prod.snd).sum ∈ ends c bs) := by
@@ -73,6 +101,19 @@ theorem ends_bd (bs : List (ℂ × ℕ)) (h : ∀ b ∈ bs, b.1 ≠ 0 ∧ 1 ≤ 
         rw [← add_assoc]
         exact i3 hb
 
+/- English proof (translation)
+Proceed by induction on `bs generalizing c l with`. Consider the case `nil`. Establish `: minor [] l = 0` using `Matrix.det_eq_zero_of_row_eq_zero ⟨0, hl⟩ fun j => by simp [ptEntry]`. Simplify using `[this, ends_nil]`. Consider the case `cons p bs ih`.
+
+Take `⟨t, s⟩` from `p`. Establish `ht : t ≠ 0` using `(h (t, s) (by simp)).1`. Establish `h' : ∀ b ∈ bs, b.1 ≠ 0 ∧ 1 ≤ b.2` using `fun b hb => h b (by simp [hb])`. Establish `hb` using `(ends_bd bs h' (c + s)).1`. Rewrite using `[ends_cons, List.mem_cons]`.
+
+Break down `lt_or_ge l s with hls | hls` into its components or cases. Rewrite using `[minor_lt t s bs l hl hls]`. Use `⟨fun h0 => absurd rfl h0, ?_⟩` and prove the remaining obligations. Introduce and unpack `(h1 | h1)`. Use linear arithmetic over natural numbers and integers.
+
+Use `hb _ h1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨m, rfl⟩` from `Nat.exists_eq_add_of_le hls`. Rewrite using `[minor_cons, mul_ne_zero_iff, and_iff_right (det_anti t ht s)]`. Break down `Nat.eq_zero_or_pos m with rfl | hm` into its components or cases.
+
+Simplify using `[minor]`. Rewrite using `[ih h' (c + s) m hm, add_assoc]`. Use `⟨Or.inr, ?_⟩` and prove the remaining obligations. Introduce and unpack `(h1 | h1)`. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `h1`.
+-/
 theorem minor_ne_iff (bs : List (ℂ × ℕ)) (h : ∀ b ∈ bs, b.1 ≠ 0 ∧ 1 ≤ b.2) (c l : ℕ) (hl : 1 ≤ l) :
     minor bs l ≠ 0 ↔ c + l ∈ ends c bs := by
   induction bs generalizing c l with
@@ -102,11 +143,19 @@ theorem minor_ne_iff (bs : List (ℂ × ℕ)) (h : ∀ b ∈ bs, b.1 ≠ 0 ∧ 1
         · omega
         · exact h1
 
+/- English proof (translation)
+Break down `le_total 1 x with h | h` into its components or cases. Conclude with `le_max_of_le_left h`. Conclude with `le_max_of_le_right ((one_le_inv₀ hx).2 h)`.
+-/
 theorem one_le_max_inv (x : ℝ) (hx : 0 < x) : 1 ≤ max x x⁻¹ := by
   rcases le_total 1 x with h | h
   · exact le_max_of_le_left h
   · exact le_max_of_le_right ((one_le_inv₀ hx).2 h)
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons x L ih`. Take `⟨i1, i2⟩` from `ih fun l hl => hf l (by simp [hl])`. Establish `hx : 1 ≤ f x` using `hf x (by simp)`.
+
+Establish `h1` using `Real.one_le_rpow hx ha`. Establish `h2` using `Real.rpow_le_rpow_of_exponent_le hx ha'`. Simplify using `only [List.map_cons, List.prod_cons]`. Conclude with `⟨one_le_mul_of_one_le_of_one_le h1 i1, mul_le_mul h2 i2 (by linarith) (by linarith)⟩`.
+-/
 theorem list_prod (L : List ℕ) (f : ℕ → ℝ) (hf : ∀ l ∈ L, 1 ≤ f l) (a a' : ℝ) (ha : 0 ≤ a) (ha' : a ≤ a') :
     1 ≤ (L.map fun l => f l ^ a).prod ∧ (L.map fun l => f l ^ a).prod ≤ (L.map fun l => f l ^ a').prod := by
   induction L with
@@ -119,11 +168,35 @@ theorem list_prod (L : List ℕ) (f : ℕ → ℝ) (hf : ∀ l ∈ L, 1 ≤ f l)
     simp only [List.map_cons, List.prod_cons]
     exact ⟨one_le_mul_of_one_le_of_one_le h1 i1, mul_le_mul h2 i2 (by linarith) (by linarith)⟩
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons x L ih => exact le_max_of_le_right ih`.
+-/
 theorem one_le_foldr (L : List ℝ) : 1 ≤ L.foldr max 1 := by
   induction L with
   | nil => simp
   | cons x L ih => exact le_max_of_le_right ih
 
+/- English proof (translation)
+Introduce `D z z' γ p hz hz' hT hT' hRel`. Take `⟨hU, ⟨L, U, hL, hU', hZ⟩, hG⟩` from `hRel`. Establish `hp` using `p.2.1`. Establish `hsum` using `p.2.2`. Take `⟨e1, e2, e3⟩` from `ends_bd p.1 hp 0`.
+
+Rewrite `e1`, `e3` using `[zero_add, hsum]`. Establish `key : ∀ (l : ℕ) (hl : l ≤ D.R.rS + 1), Complex.normSq (DminN z z' γ l) = Complex.normSq (minor p.1 l)`. Introduce `l hl`. Establish `h1` using `Formalism.MainNotions.S.Bridge.normSq_leadMinor_ZhatO D.R.k D.R.rS z z' γ l hl`. Rewrite `h1` using `[hZ, Formalism.MainNotions.S.Bridge.leadMinor_cell L (ptMat p) U hL hU' l hl]`.
+
+Rewrite using `[DminN, dif_pos (Nat.lt_succ_of_le hl)]`. Conclude with `h1.symm`. Establish `hiff : ∀ l : ℕ, 1 ≤ l → (DminN z z' γ l ≠ 0 ↔ l ∈ ptBlockEnds p)`. Introduce `l hl`. Distinguish the cases in `hl' : l ≤ D.R.rS + 1`.
+
+Establish `h2` using `minor_ne_iff p.1 hp 0 l hl`. Rewrite `h2` using `[zero_add]`. Rewrite using `[Ne, ← Complex.normSq_eq_zero, key l hl', Complex.normSq_eq_zero]`. Conclude with `h2`. Rewrite using `[DminN, dif_neg (by omega)]`.
+
+Conclude with `⟨fun h0 => absurd rfl h0, fun hm => absurd (e1 l hm).2 hl'⟩`. Establish `hG0 : 0 < Gf D.R.k D.R.rS z z' γ` using `lt_of_le_of_ne (Formalism.QuantumDeterminants.gNonneg D.R.k D.R.rS z z' hz hz' hT hT' γ hU) (Ne.symm hG)`. Use `⟨hiff, e2, fun l hl => e1 l hl, e3 fun h0 => ?_, ?_, hG0, ?_, fun b C C₂ hb hC hC2 => ?_⟩` and prove the remaining obligations. Rewrite `hsum` using `[h0]`. Simplify using `at hsum`.
+
+Simplify using `[DminN, Formalism.QuantumDeterminants.Dmin]`. Rewrite using `[DminN, dif_pos (by omega), ← Complex.normSq_eq_norm_sq]`. Use `mul_nonneg (mul_pos hT hT').le (Complex.normSq_nonneg (Formalism.QuantumDeterminants.Dmin D.R.k D.R.rS z z' γ ⟨D.R.rS, by omega⟩))` as an intermediate fact. Conclude with `sub_le_self _ this`. Establish `hm : (0 : ℝ) ≤ D.R.m` using `Nat.cast_nonneg _`.
+
+Establish `hr : (0 : ℝ) ≤ D.R.rS` using `Nat.cast_nonneg _`. Establish `ex : ∀ x : ℝ, 0 ≤ x → 0 ≤ C * x ∧ C * x ≤ C₂ * x` using `fun x hx => ⟨mul_nonneg hC hx, mul_le_mul_of_nonneg_right hC2 hx⟩`. Take `⟨p1, p2⟩` from `list_prod (ptBlockEnds p) (fun l => max ‖DminN z z' γ l‖ ‖DminN z z' γ l‖⁻¹) (fun l hl => one_le_max_inv _ (norm_pos_iff.2 ((hiff l (e1 l hl).1).2 hl))) _ _ (ex _ hm).1 (ex _ hm).2`. Establish `g` using `one_le_max_inv _ hG0`. Establish `a1` using `Real.one_le_rpow hb (ex _ (pow_nonneg hm 4)).1`.
+
+Establish `a2` using `Real.rpow_le_rpow_of_exponent_le hb (ex _ (pow_nonneg hm 4)).2`. Establish `g1` using `Real.one_le_rpow g (ex _ (pow_nonneg hm 2)).1`. Establish `g2` using `Real.rpow_le_rpow_of_exponent_le g (ex _ (pow_nonneg hm 2)).2`. Establish `c1` using `Real.one_le_rpow hb (ex _ hm).1`. Establish `c2` using `Real.rpow_le_rpow_of_exponent_le hb (ex _ hm).2`.
+
+Establish `f` using `one_le_foldr ((ptBlockEnds p).map fun l => max 1 ‖DminN z z' γ l‖⁻¹)`. Establish `q1` using `one_le_mul_of_one_le_of_one_le c1 f`. Establish `q2` using `mul_le_mul_of_nonneg_right c2 (zero_le_one.trans f)`. Use `⟨one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le a1 g1) p1, ?_, Real.one_le_rpow q1 (ex _ (pow_nonneg hr 3)).1, ?_⟩` and prove the remaining obligations. Conclude with `mul_le_mul (mul_le_mul a2 g2 (by linarith) (by linarith)) p2 (by linarith) (mul_nonneg (by linarith) (by linarith))`.
+
+Conclude with `(Real.rpow_le_rpow (by linarith) q2 (ex _ (pow_nonneg hr 3)).1).trans (Real.rpow_le_rpow_of_exponent_le (q1.trans q2) (ex _ (pow_nonneg hr 3)).2)`.
+-/
 theorem blockEnds_minors : ∀ (D : D7) (z z' : (Fin (2 * D.R.rS + D.R.k + 1) → ℂ)) (γ : MatKR D.R.k D.R.rS) (p : Point ℂ (D.R.rS + 1)), inWb D.R.k D.R.rS z → inWb D.R.k D.R.rS z' → 0 < Tz D.R.k D.R.rS z → 0 < Tz D.R.k D.R.rS z' → RelPt D z z' γ p → (∀ l : ℕ, 1 ≤ l → (DminN z z' γ l ≠ 0 ↔ l ∈ ptBlockEnds p)) ∧ (ptBlockEnds p).Nodup ∧ (∀ l ∈ ptBlockEnds p, 1 ≤ l ∧ l ≤ D.R.rS + 1) ∧ D.R.rS + 1 ∈ ptBlockEnds p ∧ DminN z z' γ 0 = 1 ∧ 0 < Gf D.R.k D.R.rS z z' γ ∧ Gf D.R.k D.R.rS z z' γ ≤ ‖DminN z z' γ (D.R.rS + 1)‖ ^ 2 ∧ ∀ b C C₂ : ℝ, 1 ≤ b → 0 ≤ C → C ≤ C₂ → 1 ≤ lossV b C D.R.m z z' γ p ∧ lossV b C D.R.m z z' γ p ≤ lossV b C₂ D.R.m z z' γ p ∧ 1 ≤ lossP b C D.R.m z z' γ p ∧ lossP b C D.R.m z z' γ p ≤ lossP b C₂ D.R.m z z' γ p := by
   intro D z z' γ p hz hz' hT hT' hRel
   obtain ⟨hU, ⟨L, U, hL, hU', hZ⟩, hG⟩ := hRel

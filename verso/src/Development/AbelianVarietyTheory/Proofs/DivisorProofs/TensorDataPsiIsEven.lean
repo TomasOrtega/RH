@@ -24,6 +24,9 @@ variable {X X' Y Y₀ : Scheme.{0}} {M : LB X} {M' : LB X'} {P : Type} [Fintype 
 def bwE (w : LB.Iso M' (LB.LinComb M pr εp)) {Z : Scheme.{0}} (ψ : Z ⟶ X') (z : Z) (jN : P → M.ι) (k : M'.ι) :
     (Z.presheaf.stalk z)ˣ := gm ψ z (LB.wchart M pr jN ⊓ M'.U k) (w.s (jN, k))
 
+/- English proof (translation)
+Establish `hm : ψ z ∈ LB.wchart M pr jN ⊓ M'.U k ⊓ (LB.wchart M pr jN' ⊓ M'.U k')` using `⟨⟨h₁, h₂⟩, h₁', h₂'⟩`. Establish `e` using `congrArg (gm ψ z (LB.wchart M pr jN ⊓ M'.U k ⊓ (LB.wchart M pr jN' ⊓ M'.U k'))) (hw (jN, k) (jN', k'))`. Establish `d` using `gm_div M' (LB.LinComb M pr εp) ψ z (jN, k) (jN', k') hm`. Establish `l` using `gm_linComb M pr εp ψ z jN jN' h₁ h₁'`. Use `(gm_res ψ z _ hm _).symm.trans (e.trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) (d.trans (congrArg₂ (· * ·) l rfl)) (gm_res ψ z _ hm _))))` and prove the remaining obligations.
+-/
 theorem bwE_trans {Z : Scheme.{0}} (w : LB.Iso M' (LB.LinComb M pr εp)) (hw : w.IsGen) (ψ : Z ⟶ X') (z : Z)
     {jN jN' : P → M.ι} {k k' : M'.ι} (h₁ : ψ z ∈ LB.wchart M pr jN) (h₁' : ψ z ∈ LB.wchart M pr jN')
     (h₂ : ψ z ∈ M'.U k) (h₂' : ψ z ∈ M'.U k') :
@@ -36,6 +39,9 @@ theorem bwE_trans {Z : Scheme.{0}} (w : LB.Iso M' (LB.LinComb M pr εp)) (hw : w
   refine (gm_res ψ z _ hm _).symm.trans (e.trans ((map_mul _ _ _).trans (congrArg₂ (· * ·)
     (d.trans (congrArg₂ (· * ·) l rfl)) (gm_res ψ z _ hm _))))
 
+/- English proof (translation)
+The claim follows from `(map_prod _ _ _).trans (Finset.prod_congr rfl fun a _ => (map_zpow _ _ _).trans (congrArg (· ^ ε a) ((gm_res r z _ hz _).trans (gm_pull r (φ a) z (LB.wchart M pr (jN a) ⊓ M'.U (jM a)) ⟨Set.mem_iInter.1 hz.1 a, Set.mem_iInter.1 hz.2 a⟩ _))))`.
+-/
 theorem gm_linCombIsoE (w : LB.Iso M' (LB.LinComb M pr εp)) {K : Type} [Fintype K] (φ : K → (Y ⟶ X')) (ε : K → ℤ)
     {Z : Scheme.{0}} (r : Z ⟶ Y) (z : Z) (jN : K → P → M.ι) (jM : K → M'.ι)
     (hz : r z ∈ LB.wchart (LB.LinComb M pr εp) φ jN ⊓ LB.wchart M' φ jM) :
@@ -53,12 +59,24 @@ def ratioE (w : LB.Iso M' (LB.LinComb M pr εp)) {φ' : K → (Y ⟶ X')} {φ : 
   (∏ a, bwE w (r ≫ φ' a) z (jN a) (jM a) ^ ε a) * gm r z (LB.wchart M' φ' jM) (t'.s jM) *
     (∏ i, gm (r ≫ ρ i) z (LB.wchart M φ (fun a => jN a i)) (t.s (fun a => jN a i)) ^ εp i)⁻¹
 
+/- English proof (translation)
+Introduce `y hy` and use `Set.mem_iInter.2 fun a => (congrArg (fun g : Y ⟶ X => g y ∈ M.U (jN a i)) (hψ i a)).mp (Set.mem_iInter.1 (Set.mem_iInter.1 hy a) i)`.
+-/
 theorem chart_leE {φ' : K → (Y ⟶ X')} {φ : K → (Y₀ ⟶ X)} {ρ : P → (Y ⟶ Y₀)}
     (hψ : ∀ i a, φ' a ≫ pr i = ρ i ≫ φ a) (jN : K → P → M.ι) (i : P) :
     LB.wchart (LB.LinComb M pr εp) φ' jN ≤ ρ i ⁻¹ᵁ LB.wchart M φ (fun a => jN a i) := fun y hy =>
   Set.mem_iInter.2 fun a => (congrArg (fun g : Y ⟶ X => g y ∈ M.U (jN a i)) (hψ i a)).mp
     (Set.mem_iInter.1 (Set.mem_iInter.1 hy a) i)
 
+/- English proof (translation)
+Establish `e₁ : ∀ a, bwE w (r ≫ φ' a) z (jN a) (jM a) = _` using `fun a => bwE_trans w hw (r ≫ φ' a) z (jN' := jN' a) (k' := jM' a) (Set.mem_iInter.1 h.1 a) (Set.mem_iInter.1 h'.1 a) (Set.mem_iInter.1 h.2 a) (Set.mem_iInter.1 h'.2 a)`. Establish `e₂` using `gen_trans ht' r z h.2 h'.2`. Establish `e₃ : ∀ i, gm (r ≫ ρ i) z (LB.wchart M φ (fun a => jN a i)) (t.s (fun a => jN a i)) = _` using `fun i => gen_trans ht (r ≫ ρ i) z (j' := fun a => jN' a i) (chart_leE hψ jN i h.1) (chart_leE hψ jN' i h'.1)`. Establish `e₄ : ∏ i, trF (L` using `M) φ ε (r ≫ ρ i) z (fun a => jN a i) (fun a => jN' a i) ^ εp i = ∏ a, (∏ i, gm ((r ≫ φ' a) ≫ pr i) z (M.U (jN a i) ⊓ M.U (jN' a i)) (M.g (jN a i) (jN' a i)) ^ εp i) ^ ε a := by`. Unfold `trF`.
+
+Repeatedly rewrite using `[← Finset.prod_zpow]`. Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun a _ => Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, hψ, ← zpow_mul, ← zpow_mul, mul_comm]`. Unfold `ratioE`.
+
+Rewrite using `[Finset.prod_congr rfl fun a _ => congrArg (· ^ ε a) (e₁ a), e₂, Finset.prod_congr rfl fun i _ => congrArg (· ^ εp i) (e₃ i)]`. Simplify using `only [mul_zpow, Finset.prod_mul_distrib] at e₄ ⊢`. Rewrite using `[e₄]`. Simplify using `only [inv_zpow, Finset.prod_inv_distrib, trF]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 theorem ratioE_trans (w : LB.Iso M' (LB.LinComb M pr εp)) (hw : w.IsGen) {φ' : K → (Y ⟶ X')}
     {φ : K → (Y₀ ⟶ X)} {ε : K → ℤ} {ρ : P → (Y ⟶ Y₀)} (hψ : ∀ i a, φ' a ≫ pr i = ρ i ≫ φ a)
     {t' : LB.Gen (LB.LinComb M' φ' ε)} (ht' : t'.IsGen) {t : LB.Gen (LB.LinComb M φ ε)} (ht : t.IsGen)
@@ -88,6 +106,9 @@ theorem ratioE_trans (w : LB.Iso M' (LB.LinComb M pr εp)) (hw : w.IsGen) {φ' :
   simp only [ofMul_mul, ofMul_inv]
   abel
 
+/- English proof (translation)
+Use `⟨@id (Γ(Y, LB.wchart (LB.LinComb M pr εp) φ' jN ⊓ LB.wchart M' φ' jM)ˣ) ((LB.linCombIso w φ' ε).s (jN, jM)) * res inf_le_right (t'.s jM) * (∏ i, res (inf_le_left.trans (chart_leE hψ jN i)) (pullU (ρ i) _ (t.s (fun a => jN a i))) ^ εp i)⁻¹, fun Z r z hz => ?_⟩` and prove the remaining obligations. Use `(map_mul _ _ _).trans (congrArg₂ (· * ·) ((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_linCombIsoE w φ' ε r z jN jM hz) (gm_res r z _ hz _))) ((map_inv _ _).trans (congrArg (·⁻¹) ((map_prod _ _ _).trans (Finset.prod_congr rfl fun i _ => ?_)))))` and prove the remaining obligations. Conclude with `(map_zpow _ _ _).trans (congrArg (· ^ εp i) ((gm_res r z _ hz _).trans (gm_pull r (ρ i) z _ (chart_leE hψ jN i hz.1) _)))`.
+-/
 theorem exists_ratioE (w : LB.Iso M' (LB.LinComb M pr εp)) {φ' : K → (Y ⟶ X')}
     {φ : K → (Y₀ ⟶ X)} {ε : K → ℤ} {ρ : P → (Y ⟶ Y₀)} (hψ : ∀ i a, φ' a ≫ pr i = ρ i ≫ φ a)
     (t' : LB.Gen (LB.LinComb M' φ' ε)) (t : LB.Gen (LB.LinComb M φ ε)) (jN : K → P → M.ι) (jM : K → M'.ι) :
@@ -105,6 +126,15 @@ theorem exists_ratioE (w : LB.Iso M' (LB.LinComb M pr εp)) {φ' : K → (Y ⟶ 
   exact (map_zpow _ _ _).trans (congrArg (· ^ εp i)
     ((gm_res r z _ hz _).trans (gm_pull r (ρ i) z _ (chart_leE hψ jN i hz.1) _)))
 
+/- English proof (translation)
+Use `choose u hu using fun q : (K → P → M.ι) × (K → M'.ι) => exists_ratioE w hψ t' t q.1 q.2`. Take `⟨s, hs⟩` from `glue_unit (⊤ : Y.Opens) (fun q : (K → P → M.ι) × (K → M'.ι) => LB.wchart (LB.LinComb M pr εp) φ' q.1 ⊓ LB.wchart M' φ' q.2) (fun _ => le_top) (fun y _ => by choose a ha using fun k i => exists_chart hM (pr i (φ' k y)) choose b hb using fun k => exists_chart hM' (φ' k y)`. Conclude with `Opens.mem_iSup.2 ⟨(a, b), Set.mem_iInter.2 fun k => Set.mem_iInter.2 (ha k), Set.mem_iInter.2 hb⟩) u`. Use the proof step `(fun q q' y hy => (hu q _ (𝟙 Y) y hy.1).trans ((ratioE_trans w hw hψ ht' ht (𝟙 Y) y hy.1 hy.2).trans (hu q' _ (𝟙 Y) y hy.2).symm))`. Take `⟨a, ha⟩` from `hp s.val`.
+
+Establish `key : ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) (J J'), Good M z J → Good M' z J' → ((∏ a, bwE w (r ≫ φ' a) z (fun i => J ((r ≫ φ' a) ≫ pr i)) (J' (r ≫ φ' a)) ^ ε a) * val t' r z J' * (∏ i, val t (r ≫ ρ i) z J ^ εp i)⁻¹).val = gs (r ≫ p) z ⊤ a`. Introduce `Z r z J J' hJ hJ'`. Establish `hm : r z ∈ LB.wchart (LB.LinComb M pr εp) φ' (fun a i => J ((r ≫ φ' a) ≫ pr i)) ⊓ LB.wchart M' φ' (fun a => J' (r ≫ φ' a))` using `⟨Set.mem_iInter.2 fun a => Set.mem_iInter.2 fun i => hJ ((r ≫ φ' a) ≫ pr i), hJ'.mem _ r⟩`. Establish `v : ∏ i, val t (r ≫ ρ i) z J ^ εp i = ∏ i, gm (r ≫ ρ i) z (LB.wchart M φ (fun a => J ((r ≫ φ' a) ≫ pr i))) (t.s (fun a => J ((r ≫ φ' a) ≫ pr i))) ^ εp i` using `Finset.prod_congr rfl fun i _ => congrArg (· ^ εp i) (val_of t _ z J _ (fun a => by rw [Category.assoc, Category.assoc, hψ]))`. Rewrite using `[v]`.
+
+Establish `w₁` using `(hu (fun a i => J ((r ≫ φ' a) ≫ pr i), fun a => J' (r ≫ φ' a)) Z r z hm).symm.trans ((congrArg (gm r z _) (hs _).symm).trans (gm_res r z le_top hm s))`. Conclude with `(congrArg Units.val w₁).trans ((gs_unit r z ⊤ trivial _).symm.trans ((congrArg (gs r z ⊤) ha.symm).trans (gs_pull r p z ⊤ trivial a)))`. Establish `a1 : a = 1` using `fn_ext fun y _ => by choose I hI using fun χ : S₀ ⟶ X => exists_chart hM (χ y) choose I' hI' using fun χ : S₀ ⟶ X' => exists_chart hM' (χ y)`. Use `key _ e y I I' hI hI'` as an intermediate fact. Rewrite `this` using `[h y I I' hI hI', mul_inv_cancel, he]`.
+
+Rewrite using `[← this, gs_eq _ y ⊤ trivial, map_one, map_one, Units.val_one]`. Use `key Z r z J J' hJ hJ'` as an intermediate fact. Rewrite `this` using `[a1, gs_eq _ z ⊤ trivial, map_one, map_one]`. Conclude with `mul_inv_eq_one.1 (Units.ext this)`.
+-/
 theorem box_uniqueE {S₀ : Scheme.{0}} (hM : M.IsLB) (hM' : M'.IsLB) (w : LB.Iso M' (LB.LinComb M pr εp))
     (hw : w.IsGen) {φ' : K → (Y ⟶ X')} {φ : K → (Y₀ ⟶ X)} {ε : K → ℤ} {ρ : P → (Y ⟶ Y₀)}
     (hψ : ∀ i a, φ' a ≫ pr i = ρ i ≫ φ a)
@@ -158,6 +188,13 @@ section Tens
 
 variable {R : Type} [CommRing R] [IsDomain R] {D D' : DegPre R} {r : ℕ} {W : Matrix (Fin r) (Fin r) ℤ}
 
+/- English proof (translation)
+Establish `h : ∀ f : D'.P.A ⟶ D.P.A, ι[D'.P.A] ≫ f = f⁻¹ → (ι[D'.P.A]).left ≫ f.left = f.left ≫ (ι[D.P.A]).left` using `fun f hf => by rw [← Over.comp_left, hf, Hom.inv_def, Over.comp_left]`. Establish `e : ι[D'.P.A] = (𝟙 D'.P.A)⁻¹` using `by rw [Hom.inv_def, Category.id_comp]`. Establish `hi : ∀ i, ι[D'.P.A] ≫ T.pr i = (T.pr i)⁻¹` using `fun i => by`. Use `T.pr_hom i` as an intermediate fact. Rewrite using `[e, GrpObj.inv_comp, Category.id_comp]`.
+
+Take `⟨⟨i, j⟩, m⟩` from `k`. Use `fin_cases m`. Conclude with `h (T.pr i * T.pr j) (by rw [MonObj.comp_mul, hi, hi, mul_inv])`. Conclude with `h _ (hi i)`. Conclude with `h _ (hi j)`.
+
+Conclude with `h (1 : D'.P.A ⟶ D.P.A) (by rw [MonObj.comp_one, inv_one])`.
+-/
 theorem inv_tensφ (T : Tens D D' W) (k : (Fin r × Fin r) × Fin 4) :
     (ι[D'.P.A]).left ≫ tensφ T.pr k = tensφ T.pr k ≫ (ι[D.P.A]).left := by
   have h : ∀ f : D'.P.A ⟶ D.P.A, ι[D'.P.A] ≫ f = f⁻¹ → (ι[D'.P.A]).left ≫ f.left = f.left ≫ (ι[D.P.A]).left :=
@@ -173,6 +210,13 @@ theorem inv_tensφ (T : Tens D D' W) (k : (Fin r × Fin r) × Fin 4) :
   · exact h _ (hi j)
   · exact h (1 : D'.P.A ⟶ D.P.A) (by rw [MonObj.comp_one, inv_one])
 
+/- English proof (translation)
+Establish `h1 : (η[D.P.A] : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ D.P.A) = 1`. Rewrite using `[Hom.one_def, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]`. Establish `h : ∀ f : D'.P.A ⟶ D.P.A, η[D'.P.A] ≫ f = 1 → eSec D'.P.A ≫ f.left = eSec D.P.A` using `fun f hf => by show η[D'.P.A].left ≫ f.left = η[D.P.A].left`. Rewrite using `[← Over.comp_left, hf, h1]`. Establish `hi : ∀ i, η[D'.P.A] ≫ T.pr i = 1` using `fun i => by`.
+
+Use `T.pr_hom i` as an intermediate fact. Rewrite using `[IsMonHom.one_hom, h1]`. Take `⟨⟨i, j⟩, m⟩` from `k`. Use `fin_cases m`. Conclude with `h (T.pr i * T.pr j) (by rw [MonObj.comp_mul, hi, hi, _root_.mul_one])`.
+
+Conclude with `h _ (hi i)`. Conclude with `h _ (hi j)`. Conclude with `h (1 : D'.P.A ⟶ D.P.A) (MonObj.comp_one _)`.
+-/
 theorem one_tensφ (T : Tens D D' W) (k : (Fin r × Fin r) × Fin 4) : eSec D'.P.A ≫ tensφ T.pr k = eSec D.P.A := by
   have h1 : (η[D.P.A] : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ D.P.A) = 1 := by
     rw [Hom.one_def, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]
@@ -189,6 +233,15 @@ theorem one_tensφ (T : Tens D D' W) (k : (Fin r × Fin r) × Fin 4) : eSec D'.P
   · exact h _ (hi j)
   · exact h (1 : D'.P.A ⟶ D.P.A) (MonObj.comp_one _)
 
+/- English proof (translation)
+Establish `p : ∀ {Z : Scheme.{0}} (r : Z ⟶ D'.P.A.left) {U : Type} [CommGroup U] (f : (Z ⟶ D'.P.A.left) → U), ∏ a : Fin 2, f (r ≫ (![(ι[D'.P.A]).left, 𝟙 D'.P.A.left] : Fin 2 → (D'.P.A.left ⟶ D'.P.A.left)) a) ^ (![1, -1] : Fin 2 → ℤ) a = f (r ≫ (ι[D'.P.A]).left) * (f r)⁻¹` using `fun r U _ f => by`. Simplify using `[Fin.prod_univ_two]`. Establish `hψ : ∀ k (a : Fin 2), (![(ι[D'.P.A]).left, 𝟙 D'.P.A.left] : Fin 2 → (D'.P.A.left ⟶ D'.P.A.left)) a ≫ tensφ T.pr k = tensφ T.pr k ≫ (![(ι[D.P.A]).left, 𝟙 D.P.A.left] : Fin 2 → (D.P.A.left ⟶ D.P.A.left)) a` using `fun k a => by fin_cases a`. Conclude with `inv_tensφ T k`. Simplify using the standard rewrite rules.
+
+Establish `key` using `box_uniqueE (pr := tensφ T.pr) (εp := tensε W) D.P.isLB D'.P.isLB T.w T.w_gen (ρ := tensφ T.pr) hψ D'.sym_gen D.sym_gen D'.P.A.hom (eSec D'.P.A) (Over.w η[D'.P.A]) (hG _ _ D'.P.isAb).2 (fun s I I' hI hI' => by`. Establish `q` using `p (Z := Spec (CommRingCat.of R)) (eSec D'.P.A) (fun ψ => bwE T.w ψ s (fun i => I (ψ ≫ tensφ T.pr i)) (I' ψ))`. Establish `o : eSec D'.P.A ≫ (ι[D'.P.A]).left = eSec D'.P.A` using `congrArg (fun m => m.left) (GrpObj.one_inv : η[D'.P.A] ≫ ι[D'.P.A] = η[D'.P.A])`. Rewrite `q` using `[o, mul_inv_cancel]`. Establish `v'` using `val_corr hI' D'.sym_rig (𝟙 _)`.
+
+Rewrite `v'` using `[val_pull hI', Category.id_comp, val_one]`. Establish `v` using `val_corr hI D.sym_rig (𝟙 _)`. Rewrite `v` using `[val_pull hI, Category.id_comp, val_one]`. Use `(congrArg₂ (· * ·) q v').trans (Eq.trans (by simp) (Finset.prod_eq_one fun k _ => ?_).symm)` and prove the remaining obligations. Rewrite using `[one_tensφ T k, v, one_zpow]) _ q y J J' hJ hJ'`.
+
+Conclude with `(congrArg₂ (· * ·) (p q (fun ψ => bwE T.w ψ y (fun i => J (ψ ≫ tensφ T.pr i)) (J' ψ))) rfl).symm.trans key`.
+-/
 theorem sym_tens (hG : GlobalFnsSt) (T : Tens D D' W) {Z : Scheme.{0}} (q : Z ⟶ D'.P.A.left) (y : Z) {J J'}
     (hJ : Good D.P.L y J) (hJ' : Good D'.P.L y J') :
     bwE T.w (q ≫ (ι[D'.P.A]).left) y (fun k => J ((q ≫ (ι[D'.P.A]).left) ≫ tensφ T.pr k))
@@ -226,26 +279,44 @@ section Main
 
 variable {R : Type} [CommRing R] [IsDomain R] {D D' : DegPre R} {r : ℕ} {W : Matrix (Fin r) (Fin r) ℤ}
 
+/- English proof (translation)
+Use `show (toUnit (TK R) ≫ D'.c x).left ≫ f.left = (toUnit (TK R) ≫ D.c a).left`. Rewrite using `[← Over.comp_left, hf]`.
+-/
 theorem pt_of (x : D'.X) (f : D'.P.A ⟶ D.P.A) (a : D.X)
     (hf : (toUnit (TK R) ≫ D'.c x) ≫ f = toUnit (TK R) ≫ D.c a) : D'.xK x ≫ f.left = D.xK a := by
   show (toUnit (TK R) ≫ D'.c x).left ≫ f.left = (toUnit (TK R) ≫ D.c a).left
   rw [← Over.comp_left, hf]
 
+/- English proof (translation)
+Rewrite using `[Category.assoc, T.c_pr]`.
+-/
 theorem cp (T : Tens D D' W) (x : D'.X) (i : Fin r) :
     (toUnit (TK R) ≫ D'.c x) ≫ T.pr i = toUnit (TK R) ≫ D.c (T.xe x i) := by
   rw [Category.assoc, T.c_pr]
 
+/- English proof (translation)
+The claim follows from `pt_of x _ _ (cp T x i)`.
+-/
 theorem pt_pr (T : Tens D D' W) (x : D'.X) (i : Fin r) : D'.xK x ≫ (T.pr i).left = D.xK (T.xe x i) :=
   pt_of x _ _ (cp T x i)
 
+/- English proof (translation)
+The claim follows from `pt_of x _ _ (by rw [MonObj.comp_mul, cp, cp, ← MonObj.comp_mul]; exact congrArg _ (D.c_add _ _).symm)`.
+-/
 theorem pt_mul (T : Tens D D' W) (x : D'.X) (i j : Fin r) :
     D'.xK x ≫ (T.pr i * T.pr j).left = D.xK (T.xe x i + T.xe x j) :=
   pt_of x _ _ (by rw [MonObj.comp_mul, cp, cp, ← MonObj.comp_mul]; exact congrArg _ (D.c_add _ _).symm)
 
+/- English proof (translation)
+Establish `c0 : D.c 0 = 1` using `mul_eq_left.1 ((D.c_add 0 0).symm.trans (congrArg D.c (add_zero 0)))`. Conclude with `pt_of x _ _ (by rw [MonObj.comp_one, c0, MonObj.comp_one])`.
+-/
 theorem pt_one (x : D'.X) : D'.xK x ≫ (1 : D'.P.A ⟶ D.P.A).left = D.xK 0 := by
   have c0 : D.c 0 = 1 := mul_eq_left.1 ((D.c_add 0 0).symm.trans (congrArg D.c (add_zero 0)))
   exact pt_of x _ _ (by rw [MonObj.comp_one, c0, MonObj.comp_one])
 
+/- English proof (translation)
+Substitute `h₁ h₂` using the available equality. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 theorem alg {U : Type} [CommGroup U] (A B S Pm Pp Q : U) (h₁ : A * B⁻¹ * S = Q) (h₂ : Pm * Q = Pp) :
     A * Pm * S = B * Pp := by
   subst h₁ h₂
@@ -255,6 +326,25 @@ theorem alg {U : Type} [CommGroup U] (A B S Pm Pp Q : U) (h₁ : A * B⁻¹ * S 
 
 end Main
 
+/- English proof (translation)
+Introduce `R _ _ _ _ D D' r W T x`. Use `corr_of_val D'.P.isLB fun y J' hJ' => ?_` and prove the remaining obligations. Use `choose J hJ using fun ψ : (TK R).left ⟶ D.toPre.P.A.left => exists_chart D.toPre.P.isLB (ψ y)`. Establish `hJ : Good D.toPre.P.L y J` using `hJ`. Rewrite using `[val_mul hJ', val_pull hJ', Category.id_comp]`.
+
+Establish `key` using `sym_tens GlobalTheory.globalFns_holds T (D'.xK x) y hJ hJ'`. Establish `b₁` using `T.psi x y J J' hJ hJ'`. Establish `b₂` using `T.psi (-x) y J J' hJ hJ'`. Establish `n : D'.xK (-x) = D'.xK x ≫ (ι[D'.P.A]).left` using `by show (toUnit (TK R) ≫ D'.c (-x)).left = _`. Rewrite using `[GlobalTheory.PsiEvenPull.c_neg, ← Category.assoc, Over.comp_left]`.
+
+Rewrite `key` using `[← n]`. Establish `ev : ∀ c, val (D.toPre.psi (-c)) (𝟙 _) y J * val D.toPre.sym (D.toPre.xK c) y J = val (D.toPre.psi c) (𝟙 _) y J` using `fun c => by`. Use `val_corr hJ (D.psi_even c) (𝟙 _)` as an intermediate fact. Rewrite `this` using `[val_mul hJ, val_pull hJ, Category.id_comp]`. Then use the resulting hypothesis. Establish `s0 : val D.toPre.sym (D.toPre.xK 0) y J = 1`.
+
+Use `ev 0` as an intermediate fact. Rewrite `this` using `[neg_zero]`. Conclude with `mul_eq_left.1 this`. Establish `tv : ∀ a b, val (D.toPre.tau a b) (𝟙 _) y J = val (D.toPre.psi (a + b)) (𝟙 _) y J * (val (D.toPre.psi a) (𝟙 _) y J)⁻¹ * (val (D.toPre.psi b) (𝟙 _) y J)⁻¹ * (val D.toPre.rigK (𝟙 _) y J)⁻¹` using `fun a b => by`. Unfold `DegPre.tau`.
+
+Rewrite using `[val_mul hJ, val_mul hJ, val_mul hJ, val_inv, val_inv, val_inv]`. Establish `term : ∀ i j, val (D.toPre.tau (T.xe (-x) i) (T.xe (-x) j)) (𝟙 _) y J * ∏ m : Fin 4, val D.toPre.sym (D'.xK x ≫ tensφ T.pr ((i, j), m)) y J ^ Oε m = val (D.toPre.tau (T.xe x i) (T.xe x j)) (𝟙 _) y J` using `fun i j => by`. Establish `hn : ∀ i, T.xe (-x) i = -T.xe x i` using `fun i => by rw [map_neg]; rfl`. Rewrite using `[hn, hn, tv, tv, Fin.prod_univ_four]`. Simplify using `only [tensφ, GlobalTheory.PolDeg.lamPts, Oε, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three, Matrix.head_cons, Matrix.tail_cons]`.
+
+Rewrite using `[pt_mul, pt_pr, pt_pr, pt_one, s0, ← neg_add, ← ev (T.xe x i + T.xe x j), ← ev (T.xe x i), ← ev (T.xe x j)]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_one]`. Normalize the expressions using the abelian group laws. Establish `Qe : ∏ k, val D.toPre.sym (D'.xK x ≫ tensφ T.pr k) y J ^ tensε W k = ∏ i, ∏ j, (∏ m : Fin 4, val D.toPre.sym (D'.xK x ≫ tensφ T.pr ((i, j), m)) y J ^ Oε m) ^ W i j`.
+
+Rewrite using `[Fintype.prod_prod_type, Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun i _ => Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_zpow]`. Use `Finset.prod_congr rfl fun m _ => ?_` and prove the remaining obligations. Simplify using `only [tensε]`.
+
+Rewrite using `[mul_comm (W i j), zpow_mul]`. Establish `E : (∏ i, ∏ j, val (D.toPre.tau (T.xe (-x) i) (T.xe (-x) j)) (𝟙 _) y J ^ W i j) * ∏ k, val D.toPre.sym (D'.xK x ≫ tensφ T.pr k) y J ^ tensε W k = ∏ i, ∏ j, val (D.toPre.tau (T.xe x i) (T.xe x j)) (𝟙 _) y J ^ W i j`. Rewrite using `[Qe, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib]`.
+
+Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_zpow, term]`. Rewrite using `[b₁, b₂]`. Conclude with `alg _ _ _ _ _ _ key E`.
+-/
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) →
     ∀ (D : DegData R (maximalIdeal R)) (D' : DegPre R) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ),
     Tens D.toPre D' W → D'.PsiEven := by

@@ -23,6 +23,11 @@ def constMul {R : Type} [CommRing R] {X : Scheme.{0}} (p : X ⟶ Sp R) {L : LB X
     rw [map_mul, map_mul, ThetaOnto.res_constFn, ThetaOnto.res_constFn, s.compat j k]
     ring
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hz`. Use `TopologicalSpace.Opens.mem_iSup.2 ⟨i, ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (constFn p (L.U i) a)` using `(ha.map _).map _`. Express the relevant statement in the definitionally equal form `z ∈ X.basicOpen (constFn p (L.U i) a * s.f i)`. Rewrite using `[Scheme.basicOpen_mul, Scheme.basicOpen_of_isUnit _ hu]`.
+
+Conclude with `⟨X.basicOpen_le _ hi, hi⟩`.
+-/
 theorem mem_nonzeroLocus_constMul {R : Type} [CommRing R] {X : Scheme.{0}} (p : X ⟶ Sp R) {L : LB X} {a : R}
     (ha : IsUnit a) (s : L.Sec) {z : X} (hz : z ∈ Out.nonzeroLocus s) : z ∈ Out.nonzeroLocus (constMul p a s) := by
   obtain ⟨i, hi⟩ := TopologicalSpace.Opens.mem_iSup.1 hz
@@ -32,12 +37,24 @@ theorem mem_nonzeroLocus_constMul {R : Type} [CommRing R] {X : Scheme.{0}} (p : 
   rw [Scheme.basicOpen_mul, Scheme.basicOpen_of_isUnit _ hu]
   exact ⟨X.basicOpen_le _ hi, hi⟩
 
+/- English proof (translation)
+Introduce `i z hz`. Express the relevant statement in the definitionally equal form `valAt' _ _ (constFn A.hom (L.U i) a * s.f i) = _`. Rewrite using `[valAt'_mul, valAt'_constFn _ _ (Over.w (u.ex z)) _ _ hz, h i z hz, _root_.mul_assoc]`.
+-/
 theorem isFn_constMul {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolUnif A L g) (a : ℂ) {s : L.Sec}
     {θ : (Fin g → ℂ) → ℂ} (h : u.IsFn s θ) : u.IsFn (constMul A.hom a s) (fun z => a * θ z) := by
   intro i z hz
   change valAt' _ _ (constFn A.hom (L.U i) a * s.f i) = _
   rw [valAt'_mul, valAt'_constFn _ _ (Over.w (u.ex z)) _ _ hz, h i z hz, _root_.mul_assoc]
 
+/- English proof (translation)
+Take `⟨u, h₁, h₂, h₃, h₄, h₅, h₆⟩` from `h`. Use `x.P.isAb.comm` as an intermediate fact. Take `⟨hex, -, -, -, hb⟩` from `LieComb.lieComb_algebra ℂ x.P.A x.P.g x.v x.basis.1`. Use `choose v hv using fun i => (hex (M⁻¹ i)).exists`. Use `⟨constMul x.P.A.hom c⁻¹ x.th, fun s => ?_, v, (hb M⁻¹ v x.basis hv).2 (Matrix.isUnit_nonsing_inv_det M hM.isUnit), u, h₁, h₂, h₃, h₄, ?_, fun i => ?_⟩` and prove the remaining obligations.
+
+Take `⟨z, hz, hz'⟩` from `x.th_ne s`. Conclude with `⟨z, hz, mem_nonzeroLocus_constMul _ (inv_ne_zero hc).isUnit _ hz'⟩`. Use `isFn_constMul u c⁻¹ h₅` as an intermediate fact. Simplify `this` using `only [inv_mul_cancel_left₀ hc, _root_.one_mul]`. Use `UnifDifferential.isDiff_of_isLieComb _ _ _ _ u _ x.v (M⁻¹ i) (v i) x.basis.1 h₆ (hv i)` as an intermediate fact.
+
+Establish `e : ∑ j, M⁻¹ i j • (2 * Real.pi * Complex.I : ℂ)⁻¹ • M j = (2 * Real.pi * Complex.I : ℂ)⁻¹ • (1 : Matrix (Fin x.P.g) (Fin x.P.g) ℂ) i`. Rewrite using `[← Matrix.nonsing_inv_mul M hM.isUnit]`. Use function extensionality and compare the values at `k`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Matrix.mul_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+
+Rewrite `this` using `[e]`. Conclude with `this`.
+-/
 theorem exists_normalAt_one (x : KeyIn ℂ) {τ M : Matrix (Fin x.P.g) (Fin x.P.g) ℂ} {a b : Fin x.P.g → ℂ} {c : ℂ}
     (hc : c ≠ 0) (hM : M.det ≠ 0) (h : KeyPow.NormalAt x τ M a b c) :
     ∃ th hth v hv, KeyPow.NormalAt ⟨x.P, x.g_pos, x.rig, x.rig_gen, th, hth, v, hv⟩ τ 1 a b 1 := by
@@ -61,6 +78,11 @@ theorem exists_normalAt_one (x : KeyIn ℂ) {τ M : Matrix (Fin x.P.g) (Fin x.P.
     rw [e] at this
     exact this
 
+/- English proof (translation)
+Introduce `hU x`. Take `⟨u, Hm, χ, -, hA, hR, hd, -⟩` from `hU x.P x.rig x.rig_gen`. Use `choose W hW using fun i => (hd _ (x.basis.1 i)).exists`. Take `⟨θ, hθ⟩` from `KeyPow.exists_isFn x.P.isLB u x.th`. Take `⟨Fd, hF⟩` from `KeyPow.exists_isAddFundamentalDomain u`.
+
+Take `⟨u', τ, M, a, b, c, h₁, h₂, ha, hb, h₃, h₄, hc, h₅, hM, h₆, -⟩` from `keyIn_normal_form_and_archimedean_constant hU x u Hm W χ θ Fd _ _ hA hR hθ hW hF rfl rfl`. Establish `hN : KeyPow.NormalAt x τ M a b c` using `⟨u', h₁, h₂, h₃, h₄, h₅, h₆⟩`. Take `⟨th, hth, v, hv, h⟩` from `exists_normalAt_one x hc hM hN`. Conclude with `⟨⟨τ, M, a, b, c, ⟨ha, hb⟩, hc, hM, hN⟩, th, hth, v, hv, τ, a, b, ⟨ha, hb⟩, h⟩`.
+-/
 theorem exists_normalAt :
     ThetaUnifAV → ∀ x : KeyIn ℂ, (∃ (τ M : Matrix (Fin x.P.g) (Fin x.P.g) ℂ) (a b : Fin x.P.g → ℂ) (c : ℂ), GlobalTheory.KeyPow.charHalf x.P.g a b ∧ c ≠ 0 ∧ M.det ≠ 0 ∧ GlobalTheory.KeyPow.NormalAt x τ M a b c) ∧ ∃ (th : x.P.L.Sec) (hth : _) (v : _) (hv : _) (τ : Matrix (Fin x.P.g) (Fin x.P.g) ℂ) (a b : Fin x.P.g → ℂ), GlobalTheory.KeyPow.charHalf x.P.g a b ∧ GlobalTheory.KeyPow.NormalAt ⟨x.P, x.g_pos, x.rig, x.rig_gen, th, hth, v, hv⟩ τ 1 a b 1 := by
   intro hU x

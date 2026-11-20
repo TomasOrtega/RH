@@ -13,6 +13,11 @@ open GlobalTheory GlobalTheory.TorsionForm
 
 namespace GlobalTheory.PeriodChart
 
+/- English proof (translation)
+Use `conv_lhs => rw [← Finset.univ_sum_single v]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `: Pi.single b (v b) = v b • (Pi.single b (1 : ℂ) : Fin g → ℂ)`. Rewrite using `[← Pi.single_smul, smul_eq_mul, _root_.mul_one]`.
+
+Rewrite using `[this, map_smul, smul_eq_mul]`.
+-/
 theorem clm_apply_eq_sum {g : ℕ} (L : (Fin g → ℂ) →L[ℂ] ℂ) (v : Fin g → ℂ) :
     L v = ∑ b, v b * L (Pi.single b 1) := by
   conv_lhs => rw [← Finset.univ_sum_single v]
@@ -22,12 +27,18 @@ theorem clm_apply_eq_sum {g : ℕ} (L : (Fin g → ℂ) →L[ℂ] ℂ) (v : Fin 
     rw [← Pi.single_smul, smul_eq_mul, _root_.mul_one]
   rw [this, map_smul, smul_eq_mul]
 
+/- English proof (translation)
+Use extensionality with `a b`. Use `h (Pi.single a 1) (Pi.single b 1)` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_single_one]`.
+-/
 theorem matrix_ext_sesq {g : ℕ} {A B : Matrix (Fin g) (Fin g) ℂ}
     (h : ∀ z w : Fin g → ℂ, z ⬝ᵥ A *ᵥ star w = z ⬝ᵥ B *ᵥ star w) : A = B := by
   ext a b
   have := h (Pi.single a 1) (Pi.single b 1)
   simpa [Matrix.mulVec_single_one] using this
 
+/- English proof (translation)
+Rewrite using `[Matrix.star_mulVec, ← Matrix.vecMul_transpose]`. Both sides reduce to the same expression.
+-/
 theorem map_star_mulVec_star {g : ℕ} (M : Matrix (Fin g) (Fin g) ℂ) (w : Fin g → ℂ) :
     M.map star *ᵥ star w = star (M *ᵥ w) := by
   rw [Matrix.star_mulVec, ← Matrix.vecMul_transpose]
@@ -37,6 +48,29 @@ end GlobalTheory.PeriodChart
 
 namespace GlobalTheory.PeriodChart
 
+/- English proof (translation)
+Introduce `k _ S p P h hh σ s τ₀ e hsym hpos hF U W hU f f' hs`. Take `⟨d⟩` from `(hh σ s).1`. Take `⟨F, hF1, hF2⟩` from `hF d`. Rewrite using `[(hh σ s).2 d U W hU f f' hs]`. Use `set M := LinearMap.toMatrix' F with hM`.
+
+Establish `hW : ⊤ ≤ (s.1 ≫ unitSec P.A) ⁻¹ᵁ W` using `fun x _ => by`. Rewrite using `[Scheme.Hom.comp_preimage]`. Establish `: x = IsLocalRing.closedPoint ℂ` using `Subsingleton.elim _ _`. Substitute `this` using the available equality. Conclude with `hU (mem_ptsIn.1 hs)`.
+
+Establish `chain : ∀ q : Γ(P.A.left, W), (fun a => fderiv ℂ (fun z => ev (P.A.hom ≫ p) σ W q (e z)) 0 (Pi.single a 1)) = d.cov W q ᵥ* M`. Introduce `q`. Establish `e1 : (fun z => ev (P.A.hom ≫ p) σ W q (e z)) = d.fn W q ∘ (LinearMap.toContinuousLinearMap F)`. Use function extensionality and compare the values at `z`. Simplify using `only [Function.comp_apply, LinearMap.coe_toContinuousLinearMap']`.
+
+Rewrite using `[PPAS.RiemannData.fn, hF1]`. Both sides reduce to the same expression. Establish `hd : HasFDerivAt (d.fn W q ∘ LinearMap.toContinuousLinearMap F) ((fderiv ℂ (d.fn W q) 0).comp (LinearMap.toContinuousLinearMap F)) 0`. Establish `h1 : HasFDerivAt (d.fn W q) (fderiv ℂ (d.fn W q) 0) ((LinearMap.toContinuousLinearMap F) 0)`. Rewrite using `[map_zero]`.
+
+Conclude with `(d.differentiableAt_fn q hW).hasFDerivAt`. Conclude with `h1.comp 0 (LinearMap.toContinuousLinearMap F).hasFDerivAt`. Use function extensionality and compare the values at `a`. Rewrite using `[e1, hd.fderiv, ContinuousLinearMap.comp_apply, LinearMap.coe_toContinuousLinearMap', clm_apply_eq_sum, Matrix.vecMul, dotProduct]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[PPAS.RiemannData.cov, hM, LinearMap.toMatrix'_apply, mul_comm]`. Rewrite using `[chain f, chain f']`. Use `set K' : Matrix (Fin P.g) (Fin P.g) ℂ := τ₀.map fun t => (t.im : ℂ) with hK'`. Use `set Q : Matrix (Fin P.g) (Fin P.g) ℂ := (τ₀.map Complex.im)⁻¹.map fun t => (t : ℂ) with hQ`. Establish `hQK : Q * K' = 1`.
+
+Establish `hK : K' = (τ₀.map Complex.im).map Complex.ofRealHom`. Rewrite using `[hK', Matrix.map_map]`. Both sides reduce to the same expression. Establish `hQ' : Q = (τ₀.map Complex.im)⁻¹.map Complex.ofRealHom` using `rfl`. Rewrite using `[hK, hQ', ← Matrix.map_mul, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 hpos.det_pos.ne'), Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Establish `hform : Mᵀ * d.H * M.map star = Q`. Use `matrix_ext_sesq fun z w => ?_` and prove the remaining obligations. Establish `h2` using `hF2 z w`. Rewrite `h2` using `[← LinearMap.toMatrix'_mulVec F z, ← LinearMap.toMatrix'_mulVec F w, ← hM, HermFrame.form, IndefiniteRowSideFullHecke.SiegelReframe.herm]`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, map_star_mulVec_star, Matrix.dotProduct_mulVec, Matrix.vecMul_transpose, h2, ← Matrix.dotProduct_mulVec]`.
+
+Establish `h1 : Mᵀ * (d.H * M.map star * K') = 1`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hform, hQK]`. Establish `h2 : (d.H * M.map star * K') * Mᵀ = 1` using `mul_eq_one_comm.1 h1`. Establish `hinv : (((1 / 2 : ℝ) : ℂ) • d.H)⁻¹ = M.map star * ((2 : ℂ) • K') * Mᵀ`. Use `Matrix.inv_eq_right_inv ?_` and prove the remaining obligations.
+
+Establish `e2 : M.map star * ((2 : ℂ) • K') * Mᵀ = (2 : ℂ) • (M.map star * K' * Mᵀ)`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[e2, Matrix.smul_mul, Matrix.mul_smul, smul_smul, ← Matrix.mul_assoc, ← Matrix.mul_assoc, h2]`. Evaluate the numerical expressions. Establish `hsymK : K'ᵀ = K'`.
+
+Rewrite using `[hK', ← Matrix.transpose_map, hsym]`. Rewrite using `[HermFrame.dualGram, hinv, Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_smul, hsymK, HermFrame.form, HermFrame.form, Matrix.star_vecMul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem dualRiemann_half_form_eq : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k) (P : PPAS S)
     (h : VMetric p (omega P.A) P.g), P.IsDualRiemann (1 / 2) h → ∀ (σ : k →+* ℂ) (s : CxPts p σ)
     (τ₀ : Matrix (Fin P.g) (Fin P.g) ℂ) (e : (Fin P.g → ℂ) → CxPts (P.A.hom ≫ p) σ),

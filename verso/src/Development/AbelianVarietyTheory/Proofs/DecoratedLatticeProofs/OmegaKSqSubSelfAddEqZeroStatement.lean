@@ -6,5 +6,8 @@ import Formalism.LocalToGlobal.TorsionIntegrality.TorsionTranslationPowers.State
 import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.StatementK
 open PowerSeries GlobalTheory.Honda Formalism.L2.Th1.CM
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.omegaK_quadratic | exact GlobalTheory.omegaK_quadratic | (intros; apply GlobalTheory.omegaK_quadratic <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.omegaK_sq_sub_self_add_eq_zero : ∀ d : ℕ, d % 4 = 3 → omegaK d ^ 2 - omegaK d + (((d + 1) / 4 : ℕ) : ℂ) = 0 := by
   first | exact @GlobalTheory.omegaK_quadratic | exact GlobalTheory.omegaK_quadratic | (intros; apply GlobalTheory.omegaK_quadratic <;> assumption)

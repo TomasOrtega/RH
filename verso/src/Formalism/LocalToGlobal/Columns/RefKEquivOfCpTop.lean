@@ -15,6 +15,9 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
   (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ}
   (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu))
 
+/- English proof (translation)
+The claim follows from `stepC_ok W Ch sel mu cst A u (m2 + 1) hm _ hT _ _ hq hs heqT`.
+-/
 theorem chTh_thTop_ok (A : Amb X) (u : Pr.Word) (m2 : ℕ) (hm : m2 + 1 < R.m) (hT : 0 < Pr.T u) (hq : MuqTie Ch sel mu cst)
     (hs : A.StepHyp (R.N (m2 + 1)) (R.N (m2 + 1 + 1)) (Sall sel mu u) (cAof sel mu cst * cBof sel mu cst u))
     (heqT : ThEquivP (stepT W Ch sel mu cst A u (m2 + 1) (W.lamTrue u (m2 + 1 + 1))) (Sall sel mu u) (cAof sel mu cst * cBof sel mu cst u)
@@ -31,6 +34,17 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {W : Wts X Pr.Word R} {Λ : �
   {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} {S : Set ℕ}
   {mu : Tup X.F X.E X.K S} {cst : LocCst X (rowSG Pr sel mu)} {hQ : QE sel (mu : Chr X.F X.E X.K) = ∅} {m2 : ℕ} {Am : Amb X} {u : Pr.Word}
 
+/- English proof (translation)
+Introduce `g g' p p'`. Establish `hmem : ∀ q : DecoSet X.E (R.N (m2 + 1)) (Pr.vT u) Pr.vGs, q.1.y0 R.k ∈ ybSet sel mu cst q.1.N` using `fun q => yOf_mem_ybSet sel mu cst hX hPr (pc_rowSG hQ) q _`. Establish `e : ∀ (q : DecoSet X.E (R.N (m2 + 1)) (Pr.vT u) Pr.vGs) (q' : ChPt (R` using `R) sel mu u (m2 + 1 + 1)), refK W Ch sel mu cst (oneIdx Λ (QE sel (mu : Chr X.F X.E X.K)) m2) (chTh W Ch sel mu cst Am u m2) (oneAl Λ sel mu m2) (m2 + 1) (liftQ hQ q) q' = cpTopK W Ch sel mu cst (chTh W Ch sel mu cst Am u m2) (m2 + 1) (liftQ hQ q) (q.1.y0 R.k) q' := by`. Introduce `q q'`. Unfold `refK cpTopK`.
+
+Rewrite using `[if_pos (show q.1.y0 R.k ∈ ybSet sel mu cst (liftQ hQ q : ChPt (R := R) sel mu u (m2 + 1)).deco.1.N from hmem q)]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Unfold `XiRef`. Rewrite using `[dif_neg (by omega), dif_neg (by omega), if_pos rfl]`.
+
+Both sides reduce to the same expression. Rewrite using `[e, e, lastVectorLine_equivariant hF, liftQ_oneG, liftQ_oneG]`. Establish `h` using `h2 (oneG Λ sel mu g) (oneG Λ sel mu g') (liftQ hQ p) (p.1.y0 R.k) (liftQ hQ p') (hmem p)`. Use `h.trans ?_` and prove the remaining obligations. Establish `h1'` using `frmRho_oneG (W := W) (u := u) (sel := sel) (mu := mu) g'`.
+
+Establish `h2'` using `frmRho_oneG (W := W) (u := u) (sel := sel) (mu := mu) g⁻¹`. Use `show (frmRho (colValF W sel mu u (m2 + 1 + 1)) (Λ (m2 + 1 + 1)) _ (oneG Λ sel mu g')) ∘ₗ _ ∘ₗ (frmRho (colValF W sel mu u (m2 + 1)) (Λ (m2 + 1)) _ (oneG Λ sel mu g)⁻¹) = _`. Establish `h3 : (oneG Λ sel mu g)⁻¹ = oneG Λ sel mu g⁻¹`. Unfold `oneG`. Simplify using the standard rewrite rules.
+
+Rewrite using `[h3, h1', h2']`. Both sides reduce to the same expression.
+-/
 theorem refKEquiv_of_cpTop (hX : X.Ok) (hPr : Pr.Ok) (hF : FixE (R := R) Λ m2)
     (hY : YbHyp (R := R) sel mu cst (oneIdx Λ (QE sel (mu : Chr X.F X.E X.K)) m2) u m2 (oneAl Λ sel mu m2 (m2 + 1) le_rfl))
     (h2 : CpTopEquivOn W Ch sel mu cst (oneIdx Λ (QE sel (mu : Chr X.F X.E X.K)) m2) (chTh W Ch sel mu cst Am u m2)

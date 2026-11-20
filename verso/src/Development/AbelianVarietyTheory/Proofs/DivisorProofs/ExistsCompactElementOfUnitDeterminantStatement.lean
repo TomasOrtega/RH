@@ -25,6 +25,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SplitDetStab.exists_mem_KAt_det_eq | exact GlobalTheory.SplitDetStab.exists_mem_KAt_det_eq | (intros; apply GlobalTheory.SplitDetStab.exists_mem_KAt_det_eq <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_compact_element_of_unit_determinant : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),
     IsTriple B G X om om' → ∀ u : (Fv F B.v₁)ˣ, ValuativeRel.valuation (Fv F B.v₁) (u : Fv F B.v₁) = 1 →

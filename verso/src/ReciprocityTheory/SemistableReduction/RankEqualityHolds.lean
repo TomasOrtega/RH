@@ -5,6 +5,19 @@ namespace ReciprocityTheory.MultiplicativeHeights
 
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `K L V _ _ _ _ _ _ W ι v hvW hspan`. Establish `hU : Submodule.span K (Set.range v) = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨f, hf0, hf⟩` from `Submodule.exists_dual_map_eq_bot_of_lt_top (lt_top_iff_ne_top.mpr hne) inferInstance`. Set `g : L ⊗[K] V →ₗ[L] L` to `(Algebra.linearMap K L ∘ₗ f).liftBaseChange L`.
+
+Establish `hv : ∀ i, f (v i) = 0`. Introduce `i`. Establish `: f (v i) ∈ (Submodule.span K (Set.range v)).map f` using `Submodule.mem_map_of_mem (Submodule.subset_span ⟨i, rfl⟩)`. Rewrite `this` using `[hf]`. Conclude with `(Submodule.mem_bot K).mp this`.
+
+Establish `hg : g = 0`. Establish `hle : Submodule.span L (Set.range fun i => (1 : L) ⊗ₜ[K] v i) ≤ LinearMap.ker g`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Simplify using `[g, hv i]`.
+
+Rewrite `hle` using `[hspan, top_le_iff, LinearMap.ker_eq_top]`. Conclude with `hle`. Apply `hf0` to reduce the goal to its premises. Use extensionality with `x`. Establish `h1 : g ((1 : L) ⊗ₜ[K] x) = 0` using `by rw [hg]; rfl`.
+
+Establish `h2 : g ((1 : L) ⊗ₜ[K] x) = algebraMap K L (f x)`. Simplify using `[g]`. Rewrite `h1` using `[h2]`. Simplify using `using (FaithfulSMul.algebraMap_injective K L) (h1.trans (map_zero _).symm)`. Use `⟨?_, hU⟩` and prove the remaining obligations.
+
+Rewrite using `[eq_top_iff, ← hU, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hvW i`.
+-/
 theorem rank_equality_holds : RankStatement := by
   intro K L V _ _ _ _ _ _ W ι v hvW hspan
   have hU : Submodule.span K (Set.range v) = ⊤ := by

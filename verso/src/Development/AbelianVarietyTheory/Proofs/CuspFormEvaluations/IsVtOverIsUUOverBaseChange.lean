@@ -12,6 +12,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.VtBaseChange
 
+/- English proof (translation)
+Establish `e1 : (h ▷ A).left ≫ (snd T A).left = (snd T' A).left` using `GlobalTheory.VVRank.whisker_snd_left A h`. Establish `e2 : (snd T' A).left ≫ (mulA A N).left = (snd T' A ^ N).left`. Unfold `mulA`. Rewrite using `[← Over.comp_left, MonObj.comp_pow, Category.comp_id]`. Establish `hm0 : mulT A T' N ≫ (h ▷ A) = (h ▷ A) ≫ mulT A T N`.
+
+Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify using `[mulT]`. Simplify using `[mulT, MonObj.comp_pow]`. Establish `hm : (mulT A T' N).left ≫ (h ▷ A).left = (h ▷ A).left ≫ (mulT A T N).left`. Rewrite using `[← Over.comp_left, hm0, Over.comp_left]`.
+
+Take `⟨α', gα', vα'⟩` from `GlobalTheory.VVRank.exists_gen_pullTo (φ' := ![(snd T' A).left, (snd T' A ^ N).left]) α₀ g₀ (snd T' A).left (by intro k; fin_cases k; exacts [Category.comp_id _, e2])`. Use `⟨α', ?_, ?_⟩` and prove the remaining obligations. Use `corr_of_val hL fun y J hJ => ?_` and prove the remaining obligations. Rewrite using `[vα' _ (𝟙 _) y J hJ, val_pull hJ]`. Take `rfl` from `GlobalTheory.TwistBaseChange.eq_pullS_of_isPullSec A 1 h hs`.
+
+Use `GlobalTheory.VVRank.isTwistPull_of_sv A hL gα' fun y J hJ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.VVRank.sv_pullS A _ h s₁ _ y hJ, GlobalTheory.VVRank.sv_of_isTwistPull A tw _ y hJ, GlobalTheory.VVRank.sv_pullS A _ h s _ y hJ, vα' _ (𝟙 _) y J hJ, val_corr hJ cα, val_pull hJ]`. Simplify using `only [Category.id_comp, e1, hm]`.
+-/
 theorem exists_mulTwist {S : Scheme.{0}} (A : Over S) [GrpObj A] {L : LB A.left} (hL : L.IsLB) (N : ℕ) {T T' : Over S}
     (h : T' ⟶ T) {s : LB.Sec (LPow A L 1 T)} {s' : LB.Sec (LPow A L 1 T')}
     (hs : IsPullSec A L 1 (h ▷ A) (whiskerRight_snd _ _) s s')
@@ -45,6 +54,15 @@ theorem exists_mulTwist {S : Scheme.{0}} (A : Over S) [GrpObj A] {L : LB A.left}
       GlobalTheory.VVRank.sv_pullS A _ h s _ y hJ, vα' _ (𝟙 _) y J hJ, val_corr hJ cα, val_pull hJ]
     simp only [Category.id_comp, e1, hm]
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo N I T T' h s s' hs F F' hF`. Establish `hL : Xo.univ.t.PP.L.IsLB` using `Xo.univ.t.PP.isLB`. Use `⟨fun t hV => ?_, fun x₁ x₂ hU => ?_⟩` and prove the remaining obligations. Unfold `IsVtOver at hV ⊢`. Take `⟨t₀, α₀, α, s₁, U, ht, hok, g₀, hnm, cα, tw, hsym, hact⟩` from `hV`.
+
+Take `⟨α', cα', tw'⟩` from `exists_mulTwist Xo.univ.t.G hL N h hs g₀ cα tw`. Take `⟨U', -, -, hsym', hact'⟩` from `GlobalTheory.T.exists_symLift_pullback_isActOf _ Xo.univ.t.G Xo.univ.t.PP.L hL _ T T' h U`. Use `⟨h ≫ t₀, α₀, α', _, U', ?_, ?_, g₀, hnm, cα', tw', hsym' _ _ hsym, hact' _ _ _ _ hact (GlobalTheory.VVRank.isPullSec_pullS _ _ h s₁) hF⟩` and prove the remaining obligations. Rewrite using `[← MonObj.comp_pow, ht]`. Unfold `KilledBy at hok ⊢`.
+
+Introduce `a ha`. Rewrite using `[Category.assoc, hok a ha, MonObj.comp_one]`. Unfold `IsUUOver at hU ⊢`. Take `⟨α₀, α, s₁, s₂, U₁, U₂, g₀, hnm, cα, tw, hsym₁, hact₁, hsym₂, hact₂⟩` from `hU`. Take `⟨α', cα', tw'⟩` from `exists_mulTwist Xo.univ.t.G hL N h hs g₀ cα tw`.
+
+Take `⟨U₁', -, -, hsym₁', hact₁'⟩` from `GlobalTheory.T.exists_symLift_pullback_isActOf _ Xo.univ.t.G Xo.univ.t.PP.L hL _ T T' h U₁`. Take `⟨U₂', -, -, hsym₂', hact₂'⟩` from `GlobalTheory.T.exists_symLift_pullback_isActOf _ Xo.univ.t.G Xo.univ.t.PP.L hL _ T T' h U₂`. Conclude with `⟨α₀, α', _, _, U₁', U₂', g₀, hnm, cα', tw', hsym₁' _ _ hsym₁, hact₁' _ _ _ _ hact₁ (GlobalTheory.VVRank.isPullSec_pullS _ _ h s₁) (GlobalTheory.VVRank.isPullSec_pullS _ _ h s₂), hsym₂' _ _ hsym₂, hact₂' _ _ _ _ hact₂ (GlobalTheory.VVRank.isPullSec_pullS _ _ h s₂) hF⟩`.
+-/
 theorem isVtOver_isUUOver_baseChange : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (N : ℕ) (I : Ideal (𝓞 E)) (T T' : Over Xo.X) (h : T' ⟶ T) (s : LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L 1 T)) (s' : LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L 1 T')), IsPullSec Xo.univ.t.G Xo.univ.t.PP.L 1 (h ▷ Xo.univ.t.G) (whiskerRight_snd _ _) s s' → ∀ (F : LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) T)) (F' : LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) T')), IsPullSec Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) (h ▷ Xo.univ.t.G) (whiskerRight_snd _ _) F F' → (∀ t : T ⟶ Xo.univ.t.G, IsVtOver Xo.univ.t.G Xo.univ.t.PP N (KilledBy Xo I) s t F → IsVtOver Xo.univ.t.G Xo.univ.t.PP N (KilledBy Xo I) s' (h ≫ t) F') ∧ ∀ x₁ x₂ : T ⟶ Xo.univ.t.G, IsUUOver Xo.univ.t.G Xo.univ.t.PP N s x₁ x₂ F → IsUUOver Xo.univ.t.G Xo.univ.t.PP N s' (h ≫ x₁) (h ≫ x₂) F' := by
   intro E _ _ _ H Dw l Xo N I T T' h s s' hs F F' hF
   have hL : Xo.univ.t.PP.L.IsLB := Xo.univ.t.PP.isLB

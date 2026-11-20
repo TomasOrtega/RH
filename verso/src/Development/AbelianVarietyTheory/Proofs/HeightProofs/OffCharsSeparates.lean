@@ -15,6 +15,9 @@ variable {D : D7}
 
 variable {X : ThetaX D} {T : ThetaTied D X}
 
+/- English proof (translation)
+Establish `k : ∀ χ, IsHeckeChar D (T.eChr χ)` using `fun χ => ((Set.ext_iff.1 T.eChr_range _).1 ⟨χ, rfl⟩).1`. Conclude with `⟨fun h => ⟨h.resA, h.resB⟩, fun h => ⟨k χ, k χ', h.1, h.2⟩⟩`.
+-/
 theorem split_iff (V W : HSp D) (χ χ' : X.Chr) : SplittingKernelQuotients.IsSplitting V W (T.eChr χ) (T.eChr χ') ↔
     ResEta D (T.eChr χ) V.rank ∧ ResEta D (T.eChr χ') W.rank := by
   have k : ∀ χ, IsHeckeChar D (T.eChr χ) := fun χ =>
@@ -79,34 +82,55 @@ section FromRel
 variable {C : SplittingKernelQuotients.Core T} {ev : ∀ V W, X.Sch V W →ₗ[ℂ] (WA V W → ℂ)}
   {om : ∀ V W, X.Chr → X.Chr → (GA D V × GA D W →* Module.End ℂ (X.Sch V W))}
 
+/- English proof (translation)
+Rewrite using `[((R A B hr).2.2 χA χB hs g h).1]`. Simplify using `[SplittingKernelQuotients.Core.omUp, LinearEquiv.conj_apply]`.
+-/
 theorem Rel.up (R : Rel C ev om) {A B : HSp D} (hr : A.rank < B.rank) {χA χB} (hs) (g h) (Φ) :
     C.eUp A B hr.le (om A B χA χB (g, h) Φ) = C.om A B hr.le χA χB hs (g, h) (C.eUp A B hr.le Φ) := by
   rw [((R A B hr).2.2 χA χB hs g h).1]
   simp [SplittingKernelQuotients.Core.omUp, LinearEquiv.conj_apply]
 
+/- English proof (translation)
+Rewrite using `[((R A B hr).2.2 χA χB hs g h).2]`. Simplify using `[SplittingKernelQuotients.Core.omDn, LinearEquiv.conj_apply]`.
+-/
 theorem Rel.dn (R : Rel C ev om) {A B : HSp D} (hr : A.rank < B.rank) {χA χB} (hs) (g h) (Φ) :
     C.eDn A B hr (om B A χB χA (h, g) Φ) = C.om A B hr.le χA χB hs (g, h) (C.eDn A B hr Φ) := by
   rw [((R A B hr).2.2 χA χB hs g h).2]
   simp [SplittingKernelQuotients.Core.omDn, LinearEquiv.conj_apply]
 
+/- English proof (translation)
+Rewrite using `[ev_zero (R A B hr).1, R.up hr hs]`. Both sides reduce to the same expression.
+-/
 theorem Rel.kernUp (R : Rel C ev om) {A B : HSp D} (hr : A.rank < B.rank) {χA χB} (hs) (g h) (Φ) :
     ev A B (om A B χA χB (g, h) Φ) 0 = SplittingKernelQuotients.kern (C.om A B hr.le χA χB hs) (C.eUp A B hr.le Φ) g h := by
   rw [ev_zero (R A B hr).1, R.up hr hs]; rfl
 
+/- English proof (translation)
+Rewrite using `[ev_zero (R A B hr).2.1, R.dn hr hs]`. Both sides reduce to the same expression.
+-/
 theorem Rel.kernDn (R : Rel C ev om) {A B : HSp D} (hr : A.rank < B.rank) {χA χB} (hs) (g h) (Φ) :
     ev B A (om B A χB χA (h, g) Φ) 0 = SplittingKernelQuotients.kern (C.om A B hr.le χA χB hs) (C.eDn A B hr Φ) g h := by
   rw [ev_zero (R A B hr).2.1, R.dn hr hs]; rfl
 
+/- English proof (translation)
+Rewrite using `[(kap A B).surjective.forall, Subtype.ext_iff, ← (R A B hr).1, ← (R A B hr).2.1, funext_iff]`. Both sides reduce to the same expression.
+-/
 theorem Rel.transpose_iff (R : Rel C ev om) {A B : HSp D} (hr : A.rank < B.rank) (Φ : X.Sch A B) (Φ' : X.Sch B A) :
     (∀ x : WA A B, ev B A Φ' xᵀ = ev A B Φ x) ↔ C.eDn A B hr Φ' = C.eUp A B hr.le Φ := by
   rw [(kap A B).surjective.forall, Subtype.ext_iff, ← (R A B hr).1, ← (R A B hr).2.1, funext_iff]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← R.transpose_iff hr]`. Conclude with `⟨fun h x => (h xᵀ).symm, fun h x => (h xᵀ).symm⟩`.
+-/
 theorem Rel.transpose_iff' (R : Rel C ev om) {A B : HSp D} (hr : A.rank < B.rank) (Φ : X.Sch A B) (Φ' : X.Sch B A) :
     (∀ x : WA B A, ev A B Φ xᵀ = ev B A Φ' x) ↔ C.eDn A B hr Φ' = C.eUp A B hr.le Φ := by
   rw [← R.transpose_iff hr]
   exact ⟨fun h x => (h xᵀ).symm, fun h x => (h xᵀ).symm⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Use `LinearMap.ext fun Φ => (C.eUp A B hr.le).injective ?_` and prove the remaining obligations. Rewrite using `[R.up hr hs', H, LinearMap.smul_apply, LinearMap.smul_apply, map_smul, R.up hr hs]`. Use `LinearMap.ext fun Φ => (C.eDn A B hr).injective ?_` and prove the remaining obligations. Rewrite using `[R.dn hr hs', H, LinearMap.smul_apply, LinearMap.smul_apply, map_smul, R.dn hr hs]`.
+-/
 theorem Rel.smul (R : Rel C ev om) {A B : HSp D} (hr : A.rank < B.rank) {χA χB χA' χB' hs hs' g h} {c : ℂ}
     (H : C.om A B hr.le χA' χB' hs' (g, h) = c • C.om A B hr.le χA χB hs (g, h)) :
     om A B χA' χB' (g, h) = c • om A B χA χB (g, h) ∧ om B A χB' χA' (h, g) = c • om B A χB χA (h, g) := by
@@ -116,6 +140,9 @@ theorem Rel.smul (R : Rel C ev om) {A B : HSp D} (hr : A.rank < B.rank) {χA χB
   · refine LinearMap.ext fun Φ => (C.eDn A B hr).injective ?_
     rw [R.dn hr hs', H, LinearMap.smul_apply, LinearMap.smul_apply, map_smul, R.dn hr hs]
 
+/- English proof (translation)
+Use `⟨⟨x, (isDetRoot_iff V g x).1 hx⟩, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `(GlobalTheory.Member.isDetRoot_laws D V).2.1 g x y hx ((isDetRoot_iff V g y).2 hy)`. Take `⟨η, hη⟩` from `h0.1`. Rewrite using `[map_mul, h0.2 η hη, pow_zero, mul_one]`.
+-/
 theorem tilde_val {χ : (AE D)ˣ →* Circle} (h0 : ResEta D χ 0) (V : HSp D) (g : GA D V) {x : (AE D)ˣ}
     (hx : IsDetRoot V g x) : HeisenbergWeilMatrices.IsTildeVal D χ (HeisenbergWeilMatrices.detA V g) (χ x) := by
   refine ⟨⟨x, (isDetRoot_iff V g x).1 hx⟩, fun y hy => ?_⟩
@@ -123,25 +150,44 @@ theorem tilde_val {χ : (AE D)ˣ →* Circle} (h0 : ResEta D χ 0) (V : HSp D) (
   obtain ⟨η, hη⟩ := h0.1
   rw [map_mul, h0.2 η hη, pow_zero, mul_one]
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `h.1`. Rewrite using `[← h.2 x hx, div_self', MonoidHom.one_apply]`.
+-/
 theorem tilde_one {χ : (AE D)ˣ →* Circle} {u c} (h : HeisenbergWeilMatrices.IsTildeVal D (χ / χ) u c) : c = 1 := by
   obtain ⟨x, hx⟩ := h.1
   rw [← h.2 x hx, div_self', MonoidHom.one_apply]
 
+/- English proof (translation)
+Rewrite `h` using `[map_mul, mul_div_cancel_left]`. Conclude with `(h.2 x ((isDetRoot_iff V g x).1 hx)).symm`.
+-/
 theorem tilde_mul {χ ν : X.Chr} {V : HSp D} {g : GA D V} {x c} (hx : IsDetRoot V g x)
     (h : HeisenbergWeilMatrices.IsTildeVal D (T.eChr (χ * ν) / T.eChr χ) (HeisenbergWeilMatrices.detA V g) c) : c = T.eChr ν x := by
   rw [map_mul, mul_div_cancel_left] at h
   exact (h.2 x ((isDetRoot_iff V g x).1 hx)).symm
 
+/- English proof (translation)
+Take `⟨cg, ch, h1, h2, h3⟩` from `H A B hr χA χB χA (χB * ν) hs hs' g h`. Rewrite `h3` using `[tilde_one h2, tilde_mul hx h1, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem Twist.target (H : Twist C) (A B : HSp D) (hr : A.rank < B.rank) (χA χB ν hs hs' g h x) (hx : IsDetRoot A g x) :
     C.om A B hr.le χA (χB * ν) hs' (g, h) = (((T.eChr ν x)⁻¹ : Circle) : ℂ) • C.om A B hr.le χA χB hs (g, h) := by
   obtain ⟨cg, ch, h1, h2, h3⟩ := H A B hr χA χB χA (χB * ν) hs hs' g h
   rwa [tilde_one h2, tilde_mul hx h1, mul_one] at h3
 
+/- English proof (translation)
+Take `⟨cg, ch, h1, h2, h3⟩` from `H A B hr χA χB (χA * ν) χB hs hs' g h`. Rewrite `h3` using `[tilde_one h1, tilde_mul hx h2, inv_one, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem Twist.source (H : Twist C) (A B : HSp D) (hr : A.rank < B.rank) (χA χB ν hs hs' g h x) (hx : IsDetRoot B h x) :
     C.om A B hr.le (χA * ν) χB hs' (g, h) = ((T.eChr ν x : Circle) : ℂ) • C.om A B hr.le χA χB hs (g, h) := by
   obtain ⟨cg, ch, h1, h2, h3⟩ := H A B hr χA χB (χA * ν) χB hs hs' g h
   rwa [tilde_one h1, tilde_mul hx h2, inv_one, one_mul] at h3
 
+/- English proof (translation)
+Introduce `H A B hr χA χB χA' χB' hs hs' g h`. Take `⟨x, hx⟩` from `GlobalTheory.RecDict.exists_isDetRoot D A g`. Take `⟨y, hy⟩` from `GlobalTheory.RecDict.exists_isDetRoot D B h`. Establish `z : ∀ {χ χ' : X.Chr} {n}, ResEta D (T.eChr χ) n → ResEta D (T.eChr χ') n → ResEta D (T.eChr (χ' / χ)) 0` using `fun {χ χ' n} h h' => by`. Rewrite using `[div_eq_mul_inv, map_mul, map_inv]`.
+
+Conclude with `resEta_parity (resEta_mul h' (resEta_inv h)) (by omega)`. Establish `hA` using `z hs.resA hs'.resA`. Establish `hB` using `z hs.resB hs'.resB`. Establish `e1` using `H.twW_up A B χA' χB (χB' / χB) hr hs'.resA hs.resB hB g h x hx`. Establish `e2` using `H.twV_up A B χA χB (χA' / χA) hr hs.resA hs.resB hA g h y hy`.
+
+Rewrite `e1`, `e2` using `[mul_div_cancel]`. Use `⟨_, _, map_div T.eChr _ _ ▸ tilde_val hB A g hx, map_div T.eChr _ _ ▸ tilde_val hA B h hy, ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun f => ?_` and prove the remaining obligations. Take `⟨Φ, rfl⟩` from `(C.eUp A B hr.le).surjective f`. Rewrite using `[LinearMap.smul_apply, ← R.up hr hs, ← R.up hr hs', e1, e2, smul_smul, LinearMap.smul_apply, map_smul, Circle.coe_mul, map_div, map_div]`.
+-/
 theorem Rel.twist (R : Rel C ev om) : TwRule T om → Twist C := by
   intro H A B hr χA χB χA' χB' hs hs' g h
   obtain ⟨x, hx⟩ := GlobalTheory.RecDict.exists_isDetRoot D A g
@@ -161,6 +207,9 @@ theorem Rel.twist (R : Rel C ev om) : TwRule T om → Twist C := by
   rw [LinearMap.smul_apply, ← R.up hr hs, ← R.up hr hs', e1, e2, smul_smul, LinearMap.smul_apply, map_smul,
     Circle.coe_mul, map_div, map_div]
 
+/- English proof (translation)
+Establish `m : ∀ {χ ν : X.Chr} {n}, ResEta D (T.eChr χ) n → ResEta D (T.eChr ν) 0 → ResEta D (T.eChr (χ * ν)) n` using `fun h h' => by rw [map_mul]; exact resEta_mul h h'`. Conclude with `⟨fun V W χ χ' ν hr h1 h2 h0 g h x hx => (R.smul hr (H.target V W hr χ χ' ν ((split_iff _ _ _ _).2 ⟨h1, h2⟩) ((split_iff _ _ _ _).2 ⟨h1, m h2 h0⟩) g h x hx)).1, fun V W χ χ' ν hr h1 h2 h0 g h x hx => (R.smul hr (H.source V W hr χ χ' ν ((split_iff _ _ _ _).2 ⟨h1, h2⟩) ((split_iff _ …`.
+-/
 theorem Rel.twRule (R : Rel C ev om) (H : Twist C) : TwRule T om := by
   have m : ∀ {χ ν : X.Chr} {n}, ResEta D (T.eChr χ) n → ResEta D (T.eChr ν) 0 → ResEta D (T.eChr (χ * ν)) n :=
     fun h h' => by rw [map_mul]; exact resEta_mul h h'
@@ -173,10 +222,16 @@ theorem Rel.twRule (R : Rel C ev om) (H : Twist C) : TwRule T om := by
     fun V W χ χ' ν hr h1 h2 h0 g h x hx => (R.smul hr (H.target W V hr χ' χ ν ((split_iff _ _ _ _).2 ⟨h2, h1⟩)
       ((split_iff _ _ _ _).2 ⟨h2, m h1 h0⟩) h g x hx)).2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨R.twist, R.twRule⟩`.
+-/
 theorem Rel.twRule_iff (R : Rel C ev om) : TwRule T om ↔ Twist C := ⟨R.twist, R.twRule⟩
 
 end FromRel
 
+/- English proof (translation)
+Set `L : S →ₗ[ℂ] HeisenbergWeilMatrices.Theta ψ A B` to `LinearMap.codRestrict _ (LinearMap.funLeft ℂ ℂ κ ∘ₗ ev) fun Φ => (theta_iff hκ hψ _).1 ((Set.ext_iff.1 hr _).1 ⟨Φ, rfl⟩)`. Use `⟨LinearEquiv.ofBijective L ⟨fun Φ Φ' h => hi (κ.surjective.injective_comp_right (congrArg Subtype.val h)), fun f => ?_⟩, fun _ => rfl⟩` and prove the remaining obligations. Establish `e : ((f : WA A B → ℂ) ∘ κ.symm) ∘ κ = f` using `funext fun x => congrArg (f : WA A B → ℂ) (κ.symm_apply_apply x)`. Take `⟨Φ, hΦ⟩` from `(Set.ext_iff.1 hr _).2 ((theta_iff hκ hψ _).2 (e.symm ▸ f.2))`. Conclude with `⟨Φ, Subtype.ext ((congrArg (· ∘ κ) hΦ).trans e)⟩`.
+-/
 theorem exists_equiv {A B V W : HSp D} {κ : WA A B ≃+ WA V W} {σ} (hκ : IsChange κ σ) {ψ : AddChar (AF D.host.F) ℂ}
     (hψ : Continuous ψ) {S : Type} [AddCommGroup S] [Module ℂ S] (ev : S →ₗ[ℂ] (WA V W → ℂ)) (hi : Function.Injective ev)
     (hr : Set.range ev = {f | IsThetaFun ψ V W f}) : ∃ E : S ≃ₗ[ℂ] HeisenbergWeilMatrices.Theta ψ A B, ∀ Φ, ev Φ ∘ κ = E Φ := by
@@ -188,6 +243,11 @@ theorem exists_equiv {A B V W : HSp D} {κ : WA A B ≃+ WA V W} {σ} (hκ : IsC
   obtain ⟨Φ, hΦ⟩ := (Set.ext_iff.1 hr _).2 ((theta_iff hκ hψ _).2 (e.symm ▸ f.2))
   exact ⟨Φ, Subtype.ext ((congrArg (· ∘ κ) hΦ).trans e)⟩
 
+/- English proof (translation)
+Use extensionality with `f`. Rewrite using `[Set.mem_ofPred_eq, theta_iff hκ hψ]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Φ, rfl⟩`. Rewrite using `[hE]`.
+
+Conclude with `(E Φ).2`. Introduce `h`. Take `⟨Φ, hΦ⟩` from `E.surjective ⟨_, h⟩`. Conclude with `⟨Φ, κ.surjective.injective_comp_right ((hE Φ).trans (congrArg Subtype.val hΦ))⟩`.
+-/
 theorem range_eq {A B V W : HSp D} {κ : WA A B ≃+ WA V W} {σ} (hκ : IsChange κ σ) {ψ : AddChar (AF D.host.F) ℂ}
     (hψ : Continuous ψ) {S : Type} [AddCommGroup S] [Module ℂ S] {ev : S →ₗ[ℂ] (WA V W → ℂ)}
     {E : S ≃ₗ[ℂ] HeisenbergWeilMatrices.Theta ψ A B} (hE : ∀ Φ, ev Φ ∘ κ = E Φ) : Set.range ev = {f | IsThetaFun ψ V W f} := by
@@ -200,6 +260,9 @@ theorem range_eq {A B V W : HSp D} {κ : WA A B ≃+ WA V W} {σ} (hκ : IsChang
     obtain ⟨Φ, hΦ⟩ := E.surjective ⟨_, h⟩
     exact ⟨Φ, κ.surjective.injective_comp_right ((hE Φ).trans (congrArg Subtype.val hΦ))⟩
 
+/- English proof (translation)
+Unfold `splitFac`. Rewrite using `[if_pos hr, mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem scalar_eq {A B : HSp D} (hr : A.rank ≤ B.rank) (c c' : (AE D)ˣ →* Circle) {v e} (he : HeisenbergWeilMatrices.IsSplitIdem D v e)
     (g : GA D A) (h : GA D B) : HeisenbergWeilMatrices.splitScalar A B c c' he (g, h) = (HeisenbergWeilMatrices.splitMod A B v e (g, h) : ℂ) *
       (splitFac A B c c' (HeisenbergWeilMatrices.atIdem he.idem (HeisenbergWeilMatrices.detA A g)) (HeisenbergWeilMatrices.atIdem he.idem (HeisenbergWeilMatrices.detA B h)) : ℂ) := by
@@ -207,6 +270,13 @@ theorem scalar_eq {A B : HSp D} (hr : A.rank ≤ B.rank) (c c' : (AE D)ˣ →* C
   rw [if_pos hr, mul_comm]
   rfl
 
+/- English proof (translation)
+Establish `h1 : ∀ V W : HSp D, ∃ ev : X.Sch V W →ₗ[ℂ] (WA V W → ℂ), Function.Injective ev ∧ (∀ hr : V.rank < W.rank, ∀ Φ, ev Φ ∘ kap V W = C.eUp V W hr.le Φ) ∧ ∀ hr : W.rank < V.rank, ∀ Φ, ev Φ ∘ kapT W V = C.eDn W V hr Φ`. Introduce `V W`. Break down `le_or_gt V.rank W.rank with h | h` into its components or cases. Use `⟨LinearMap.funLeft ℂ ℂ (kap V W).symm ∘ₗ (Submodule.subtype _) ∘ₗ (C.eUp V W h).toLinearMap, fun Φ Φ' e => (C.eUp V W h).injective (Subtype.ext ((kap V W).symm.surjective.injective_comp_right e)), fun _ Φ => funext fun x => congrArg (C.eUp V W h Φ : WA V W → ℂ) ((kap V W).symm_ap …` and prove the remaining obligations. Use `⟨LinearMap.funLeft ℂ ℂ (kapT W V).symm ∘ₗ (Submodule.subtype _) ∘ₗ (C.eDn W V h).toLinearMap, fun Φ Φ' e => (C.eDn W V h).injective (Subtype.ext ((kapT W V).symm.surjective.injective_comp_right e)), fun hr => absurd h (not_lt.2 hr.le), fun _ Φ => funext fun x => congrArg (C.eDn W …` and prove the remaining obligations.
+
+Establish `h2 : ∀ (V W : HSp D) (χ χ' : X.Chr), ∃ om : GA D V × GA D W →* Module.End ℂ (X.Sch V W), (∀ (hr : V.rank < W.rank) hs g h, om (g, h) = C.omUp V W hr.le χ χ' hs (g, h)) ∧ ∀ (hr : W.rank < V.rank) hs g h, om (g, h) = C.omDn W V hr χ' χ hs (h, g)`. Introduce `V W χ χ'`. Distinguish the cases in `hs : SplittingKernelQuotients.IsSplitting V W (T.eChr χ) (T.eChr χ')`. Break down `le_or_gt V.rank W.rank with h | h` into its components or cases. Conclude with `⟨(C.eUp V W h).symm.conjRingEquiv.toMonoidHom.comp (C.om V W h χ χ' hs), fun _ _ _ _ => rfl, fun hr => absurd h (not_le.2 hr)⟩`.
+
+Conclude with `⟨((C.eDn W V h).symm.conjRingEquiv.toMonoidHom.comp (C.om W V h.le χ' χ hs.symm)).comp MulEquiv.prodComm.toMonoidHom, fun hr => absurd h (not_lt.2 hr.le), fun _ _ _ _ => rfl⟩`. Conclude with `⟨1, fun _ h => absurd h hs, fun _ h => absurd h.symm hs⟩`. Use `choose ev h11 h12 h13 using h1`. Use `choose om h21 h22 using h2`. Conclude with `⟨ev, om, h11, fun A B hr => ⟨h12 A B hr, h13 B A hr, fun χA χB hs g h => ⟨h21 A B χA χB hr hs g h, h22 B A χB χA hr hs h g⟩⟩⟩`.
+-/
 theorem exists_rel (C : SplittingKernelQuotients.Core T) : ∃ ev om, (∀ V W, Function.Injective (ev V W)) ∧ Rel C ev om := by
   classical
   have h1 : ∀ V W : HSp D, ∃ ev : X.Sch V W →ₗ[ℂ] (WA V W → ℂ), Function.Injective ev ∧
@@ -243,6 +313,9 @@ section Build
 variable {C : SplittingKernelQuotients.Core T} {ev : ∀ V W, X.Sch V W →ₗ[ℂ] (WA V W → ℂ)}
   {om : ∀ V W, X.Chr → X.Chr → (GA D V × GA D W →* Module.End ℂ (X.Sch V W))}
 
+/- English proof (translation)
+Rewrite using `[(isDetAt_iff he.idem A g x).1 hx, (isDetAt_iff he.idem B h y).1 hy, ← scalar_eq hr.le]`. Conclude with `(C.om_weil A B hr.le χ χ' hs).split v e he (g, h) ((suppAt_iff he A g).1 hg) ((suppAt_iff he B h).1 hh)`.
+-/
 theorem Rel.splitUp (R : Rel C ev om) {A B : HSp D} (hr : A.rank < B.rank) {χ χ'}
     (hs : SplittingKernelQuotients.IsSplitting A B (T.eChr χ) (T.eChr χ')) {v e} (he : HeisenbergWeilMatrices.IsSplitIdem D v e) {g h}
     (hg : SuppAt e A g) (hh : SuppAt e B h) {x y} (hx : IsDetAt e A g x) (hy : IsDetAt e B h y) :
@@ -322,10 +395,22 @@ def Rel.tied (R : Rel C ev om) (hi : ∀ V W, Function.Injective (ev V W)) (tw :
 
 end Build
 
+/- English proof (translation)
+Take `⟨ev, om, hi, R⟩` from `exists_rel C`. Conclude with `⟨R.tied hi tw, rfl, R⟩`.
+-/
 theorem exists_tied (C : SplittingKernelQuotients.Core T) (tw : Twist C) : ∃ Wl : WeilTied D X T, Match Wl C := by
   obtain ⟨ev, om, hi, R⟩ := exists_rel C
   exact ⟨R.tied hi tw, rfl, R⟩
 
+/- English proof (translation)
+Establish `hκ` using `isChange_kap hr.le`. Use `⟨fun p => ?_, fun p f => ?_, fun f w => ?_, fun g hg h hh f => ?_, fun v e he p hg hh => ?_⟩` and prove the remaining obligations. Conclude with `(impl_iff hκ hE (hN p) p.1 p.2).1 (Wl.om_heis A B χA χB hr.ne hs.resA hs.resB p.1 p.2)`. Take `⟨Φ, rfl⟩` from `E.surjective f`. Rewrite using `[← hN]`.
+
+Conclude with `(unit_iff hκ hE Wl.ψ_std.1 hr.le _ _).1 fun μ 𝓕 hμ hF => Wl.om_unit A B χA χB hr.ne hs.resA hs.resB μ 𝓕 hμ hF p Φ`. Take `⟨Φ, rfl⟩` from `E.surjective f`. Use `(Wl.om_cont A B χA χB hr.ne hs.resA hs.resB Φ (kap A B w)).congr fun p => ?_` and prove the remaining obligations. Rewrite using `[← hN, ← hE]`. Both sides reduce to the same expression.
+
+Take `⟨Φ, rfl⟩` from `E.surjective f`. Rewrite using `[← hN]`. Conclude with `(ev_zero hE _).symm.trans ((Wl.om_aut A B χA χB hr.ne hs.resA hs.resB g hg h hh Φ).trans (ev_zero hE _))`. Take `⟨g, h⟩` from `p`. Rewrite using `[scalar_eq hr.le]`.
+
+Conclude with `(actsBy_iff hκ hE (hN _) e _).1 (hm A B χA χB hr hs.resA hs.resB v e he g h ((suppAt_iff he A g).2 hg) ((suppAt_iff he B h).2 hh) _ _ ((isDetAt_iff he.idem A g _).2 rfl) ((isDetAt_iff he.idem B h _).2 rfl))`.
+-/
 theorem isWeil_of_tied (Wl : WeilTied D X T) (hm : ExactModulus Wl) {A B : HSp D} (hr : A.rank < B.rank) {χA χB}
     (hs : SplittingKernelQuotients.IsSplitting A B (T.eChr χA) (T.eChr χB)) {E : X.Sch A B ≃ₗ[ℂ] HeisenbergWeilMatrices.Theta Wl.ψ A B}
     (hE : ∀ Φ, Wl.evS A B Φ ∘ kap A B = E Φ) {N : SplittingKernelQuotients.Rep Wl.ψ A B}
@@ -348,6 +433,21 @@ theorem isWeil_of_tied (Wl : WeilTied D X T) (hm : ExactModulus Wl) {A B : HSp D
     exact (actsBy_iff hκ hE (hN _) e _).1 (hm A B χA χB hr hs.resA hs.resB v e he g h ((suppAt_iff he A g).2 hg)
       ((suppAt_iff he B h).2 hh) _ _ ((isDetAt_iff he.idem A g _).2 rfl) ((isDetAt_iff he.idem B h _).2 rfl))
 
+/- English proof (translation)
+Establish `h1 : ∀ A B : HSp D, A.rank ≤ B.rank → ∃ E : X.Sch A B ≃ₗ[ℂ] HeisenbergWeilMatrices.Theta Wl.ψ A B, (A.rank = B.rank → P A B fun Φ => (E Φ : WA A B → ℂ)) ∧ (A.rank < B.rank → ∀ Φ, Wl.evS A B Φ ∘ kap A B = E Φ) ∧ ∀ χA χB, SplittingKernelQuotients.IsSplitting A B (T.eChr χA) (T.eChr …`. Introduce `A B hle`. Break down `hle.eq_or_lt with hr | hr` into its components or cases. Take `⟨E, hP, hE⟩` from `he A B hr`. Use `⟨E, fun _ => hP, fun h => absurd hr h.ne, fun χA χB hs => ?_⟩` and prove the remaining obligations.
+
+Take `⟨om, ho⟩` from `hE χA χB hs`. Conclude with `⟨om, fun h => absurd hr h.ne, ho⟩`. Take `⟨E, hE⟩` from `exists_equiv (isChange_kap hle) Wl.ψ_std.1.1 _ (Wl.evS_inj A B) (Wl.evS_range A B hr.ne)`. Use `⟨E, fun h => absurd h hr.ne, fun _ => hE, fun χA χB hs => ?_⟩` and prove the remaining obligations. Take `⟨N, hN⟩ : ∃ N : SplittingKernelQuotients.Rep Wl.ψ A B, ∀ p Φ, E (Wl.om A B χA χB p Φ) = N p (E Φ)` from `⟨E.conjRingEquiv.toMonoidHom.comp (Wl.om A B χA χB), fun p Φ => congrArg (fun y => E (Wl.om A B χA χB p y)) (E.symm_apply_apply Φ).symm⟩`.
+
+Use `⟨N, fun _ => hN, isWeil_of_tied Wl hm hr hs hE hN, fun hsig Φ φ h => ?_⟩` and prove the remaining obligations. Establish `k : ∀ g, SplittingKernelQuotients.kern N (E Φ) g h = Wl.evS A B (Wl.om A B χA χB (g, h) Φ) 0` using `fun g => by`. Rewrite using `[ev_zero hE, hN]`. Both sides reduce to the same expression. Establish `c` using `hc A B χA χB hr.ne hs.resA hs.resB hsig`.
+
+Simplify using `only [k]`. Conclude with `⟨c.1, fun m hv => ⟨c.2 m hv Φ φ h, Wl.th A B χA χB hr.ne hs.resA hs.resB hsig m.1 m.2 hv Φ φ h⟩⟩`. Use `choose eUp h10 h11 om h12 h13 h14 using h1`. Use `choose eDn h2 using fun (A B : HSp D) (hr : A.rank < B.rank) => exists_equiv (isChange_kapT hr) Wl.ψ_std.1.1 _ (Wl.evS_inj B A) (Wl.evS_range B A hr.ne')`. Establish `dn : ∀ (A B : HSp D) (hr : A.rank < B.rank) χA χB hs g h Φ, eDn A B hr (Wl.om B A χB χA (h, g) Φ) = om A B hr.le χA χB hs (g, h) (eDn A B hr Φ)`.
+
+Introduce `A B hr χA χB hs g h Φ`. Establish `t : ∀ Φ Φ', (∀ x : WA A B, Wl.evS B A Φ' xᵀ = Wl.evS A B Φ x) ↔ eDn A B hr Φ' = eUp A B hr.le Φ`. Introduce `Φ Φ'`. Rewrite using `[(kap A B).surjective.forall, Subtype.ext_iff, ← h11 A B hr.le hr, ← h2, funext_iff]`. Both sides reduce to the same expression.
+
+Take `⟨Φ₀, h0⟩` from `(eUp A B hr.le).surjective (eDn A B hr Φ)`. Rewrite using `[← h0, ← h12 A B hr.le χA χB hs hr, ← t]`. Conclude with `Wl.om_swap A B χA χB hr.ne hs.resA hs.resB g h Φ₀ Φ ((t _ _).2 h0.symm)`. Use `⟨⟨Wl.ψ, (stdChar_iff _).1 Wl.ψ_std, eUp, eDn, om, h13, h14, fun A B hr χA χB hs hsig Φ G g => ?_⟩, ⟨rfl, fun A B hr => ⟨h11 A B hr.le hr, h2 A B hr, fun χA χB hs g h => ⟨?_, ?_⟩⟩⟩, fun A B hr => h10 A B hr.le hr⟩` and prove the remaining obligations. Establish `k : ∀ h, SplittingKernelQuotients.kern (om A B hr.le χA χB hs) (eDn A B hr Φ) g h = Wl.evS B A (Wl.om B A χB χA (h, g) Φ) 0` using `fun h => by rw [ev_zero (h2 A B hr), dn A B hr χA χB hs]; rfl`.
+
+Establish `c` using `hc B A χB χA hr.ne' hs.resB hs.resA hsig`. Simplify using `only [k]`. Conclude with `⟨c.1, fun m hv => ⟨c.2 m hv Φ G g, Wl.th B A χB χA hr.ne' hs.resB hs.resA hsig m.1 m.2 hv Φ G g⟩⟩`. Conclude with `LinearMap.ext fun Φ => (LinearEquiv.eq_symm_apply _).2 (h12 A B hr.le χA χB hs hr _ Φ)`. Conclude with `LinearMap.ext fun Φ => (LinearEquiv.eq_symm_apply _).2 (dn A B hr χA χB hs g h Φ)`.
+-/
 theorem exists_core_with (Wl : WeilTied D X T) (hm : ExactModulus Wl) (hc : Converges Wl)
     {P : ∀ A B : HSp D, (X.Sch A B → WA A B → ℂ) → Prop} (he : EqualRankWith T Wl.ψ P) :
     ∃ C : SplittingKernelQuotients.Core T, Match Wl C ∧
@@ -400,6 +500,9 @@ theorem exists_core_with (Wl : WeilTied D X T) (hm : ExactModulus Wl) (hc : Conv
   · exact LinearMap.ext fun Φ => (LinearEquiv.eq_symm_apply _).2 (h12 A B hr.le χA χB hs hr _ Φ)
   · exact LinearMap.ext fun Φ => (LinearEquiv.eq_symm_apply _).2 (dn A B hr χA χB hs g h Φ)
 
+/- English proof (translation)
+The claim follows from `(exists_core_with Wl hm hc (P := fun _ _ _ => True) fun A B hr => (he A B hr).imp fun _ h => ⟨trivial, h⟩).imp fun _ h => h.1`.
+-/
 theorem exists_core (Wl : WeilTied D X T) (hm : ExactModulus Wl) (hc : Converges Wl) (he : EqualRank T Wl.ψ) :
     ∃ C : SplittingKernelQuotients.Core T, Match Wl C :=
   (exists_core_with Wl hm hc (P := fun _ _ _ => True) fun A B hr => (he A B hr).imp fun _ h => ⟨trivial, h⟩).imp

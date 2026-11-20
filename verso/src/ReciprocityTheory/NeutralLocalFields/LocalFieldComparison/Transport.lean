@@ -20,11 +20,19 @@ def DualityFor (χ : G →* Rˣ) (rho : Representation R G M) (hrho : ContAction
     Function.Bijective (cupH1H1TwistedDual χ rho (MonoidHom.id _) (hrho.comp' continuous_id)).flip ∧
     Function.Bijective (cup20 χ rho (MonoidHom.id _))
 
+/- English proof (translation)
+Unfold `ReciprocityTheory.Gal.ContAction at h ⊢`. Conclude with `h.comp ((map_continuous e).prodMap continuous_id)`.
+-/
 theorem contAction_comp (e : G ≃ₜ* G') {rho : Representation R G' M} (h : ContAction rho) :
     ContAction (rho.comp (e : G →* G')) := by
   unfold ReciprocityTheory.Gal.ContAction at h ⊢
   exact h.comp ((map_continuous e).prodMap continuous_id)
 
+/- English proof (translation)
+Establish `hinv : Representation.invariants (rho.comp (e : G →* G')) = rho.invariants`. Use extensionality with `v`. Simplify using `only [Representation.mem_invariants, MonoidHom.comp_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `h g'`.
+
+Simplify using `using h (e.symm g')`. Introduce `h g`. Conclude with `h _`. Unfold `H0`. Rewrite using `[hinv]`.
+-/
 theorem card_H0_comp_equiv (e : G ≃ₜ* G') (rho : Representation R G' M) :
     Nat.card (H0 (rho.comp (e : G →* G'))) = Nat.card (H0 rho) := by
   have hinv : Representation.invariants (rho.comp (e : G →* G')) = rho.invariants := by
@@ -38,6 +46,25 @@ theorem card_H0_comp_equiv (e : G ≃ₜ* G') (rho : Representation R G' M) :
   unfold H0
   rw [hinv]
 
+/- English proof (translation)
+Set `φ : (G' → M) ≃ₗ[R] (G → M)` to `LinearEquiv.funCongrLeft R M e.toMulEquiv.toEquiv`. Establish `hd : ∀ m, d0 (rho.comp (e : G →* G')) m = φ (d0 rho m)` using `fun m => rfl`. Establish `hZ : (Z1 rho).map φ.toLinearMap = Z1 (rho.comp (e : G →* G'))`. Use extensionality with `f`. Simplify using `only [Submodule.mem_map]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨hyc, hy⟩, rfl⟩`. Use `⟨hyc.comp (map_continuous e), fun g h => ?_⟩` and prove the remaining obligations. Use `show y (e (g * h)) = y (e g) + rho (e g) (y (e h))`. Rewrite using `[map_mul]`.
+
+Conclude with `hy (e g) (e h)`. Introduce and unpack `⟨hfc, hf⟩`. Use `⟨f ∘ e.symm, ⟨hfc.comp (map_continuous e.symm), fun g h => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `h2` using `hf (e.symm g) (e.symm h)`. Simplify using `only [Function.comp_apply, map_mul]`.
+
+Simplify `h2` using `[MonoidHom.comp_apply]`. Use function extensionality and compare the values at `g show f (e.symm (e g)) = f g`. Simplify using the standard rewrite rules. Establish `hB : (B1 rho).map φ.toLinearMap = B1 (rho.comp (e : G →* G'))`. Unfold `B1`.
+
+Rewrite using `[← LinearMap.range_comp]`. Use `congr 1`. Set `fZ : Z1 rho ≃ₗ[R] Z1 (rho.comp (e : G →* G'))` to `(φ.submoduleMap (Z1 rho)).trans (LinearEquiv.ofEq _ _ hZ)`. Unfold `H1`. Use `(Nat.card_congr (Submodule.Quotient.equiv _ _ fZ ?_).toEquiv).symm` and prove the remaining obligations.
+
+Use extensionality with `w`. Simplify using `only [Submodule.mem_map, Submodule.mem_comap, Submodule.coe_subtype]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Rewrite using `[← hB]`.
+
+Conclude with `⟨z, hz, rfl⟩`. Introduce `hw`. Rewrite `hw` using `[← hB]`. Take `⟨y, hy, hyw⟩` from `hw`. Use `⟨fZ.symm w, ?_, fZ.apply_symm_apply w⟩` and prove the remaining obligations.
+
+Establish `h3 : ((fZ.symm w : Z1 rho) : G' → M) = y`. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[show φ y = (w : G → M) from hyw]`. Conclude with `congrArg Subtype.val (fZ.apply_symm_apply w)`. Rewrite using `[h3]`.
+
+Conclude with `hy`.
+-/
 theorem card_H1_comp_equiv (e : G ≃ₜ* G') (rho : Representation R G' M) :
     Nat.card (H1 (rho.comp (e : G →* G'))) = Nat.card (H1 rho) := by
   let φ : (G' → M) ≃ₗ[R] (G → M) := LinearEquiv.funCongrLeft R M e.toMulEquiv.toEquiv
@@ -84,6 +111,29 @@ theorem card_H1_comp_equiv (e : G ≃ₜ* G') (rho : Representation R G' M) :
     rw [h3]
     exact hy
 
+/- English proof (translation)
+Set `φ1 : (G' → M) ≃ₗ[R] (G → M)` to `LinearEquiv.funCongrLeft R M e.toMulEquiv.toEquiv`. Set `φ : (G' × G' → M) ≃ₗ[R] (G × G → M)` to `LinearEquiv.funCongrLeft R M (e.toMulEquiv.toEquiv.prodCongr e.toMulEquiv.toEquiv)`. Establish `hZ : (Z2 rho).map φ.toLinearMap = Z2 (rho.comp (e : G →* G'))`. Use extensionality with `f`. Simplify using `only [Submodule.mem_map]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨hyc, hy⟩, rfl⟩`. Use `⟨hyc.comp ((map_continuous e).prodMap (map_continuous e)), fun g h k => ?_⟩` and prove the remaining obligations. Use `show rho (e g) (y (e h, e k)) - y (e (g * h), e k) + y (e g, e (h * k)) - y (e g, e h) = 0`. Rewrite using `[map_mul, map_mul]`.
+
+Conclude with `hy (e g) (e h) (e k)`. Introduce and unpack `⟨hfc, hf⟩`. Use `⟨fun q => f (e.symm q.1, e.symm q.2), ⟨hfc.comp (((map_continuous e.symm).comp continuous_fst).prodMk ((map_continuous e.symm).comp continuous_snd)), fun g h k => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `h2` using `hf (e.symm g) (e.symm h) (e.symm k)`. Simplify using `only [map_mul]`.
+
+Simplify `h2` using `[MonoidHom.comp_apply]`. Use function extensionality and compare the values at `q show f (e.symm (e q.1), e.symm (e q.2)) = f q`. Simplify using the standard rewrite rules. Establish `hC : (contMaps R M G').map φ1.toLinearMap = contMaps R M G`. Use extensionality with `f`.
+
+Simplify using `only [Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `(show Continuous y from hy).comp (map_continuous e)`. Introduce `hf`.
+
+Use `⟨f ∘ e.symm, (show Continuous f from hf).comp (map_continuous e.symm), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Use `show f (e.symm (e g)) = f g`. Simplify using the standard rewrite rules. Establish `hcomm : φ.toLinearMap ∘ₗ d1 rho = d1 (rho.comp (e : G →* G')) ∘ₗ φ1.toLinearMap`.
+
+Use `LinearMap.ext fun c => funext fun p => ?_` and prove the remaining obligations. Use `show rho (e p.1) (c (e p.2)) - c (e p.1 * e p.2) + c (e p.1) = rho (e p.1) (c (e p.2)) - c (e (p.1 * p.2)) + c (e p.1)`. Rewrite using `[map_mul]`. Establish `hB : (B2 rho).map φ.toLinearMap = B2 (rho.comp (e : G →* G'))`. Unfold `B2`.
+
+Rewrite using `[← Submodule.map_comp, hcomm, Submodule.map_comp, hC]`. Set `fZ : Z2 rho ≃ₗ[R] Z2 (rho.comp (e : G →* G'))` to `(φ.submoduleMap (Z2 rho)).trans (LinearEquiv.ofEq _ _ hZ)`. Unfold `H2`. Use `(Nat.card_congr (Submodule.Quotient.equiv _ _ fZ ?_).toEquiv).symm` and prove the remaining obligations. Use extensionality with `w`.
+
+Simplify using `only [Submodule.mem_map, Submodule.mem_comap, Submodule.coe_subtype]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Rewrite using `[← hB]`. Conclude with `⟨z, hz, rfl⟩`.
+
+Introduce `hw`. Rewrite `hw` using `[← hB]`. Take `⟨y, hy, hyw⟩` from `hw`. Use `⟨fZ.symm w, ?_, fZ.apply_symm_apply w⟩` and prove the remaining obligations. Establish `h3 : ((fZ.symm w : Z2 rho) : G' × G' → M) = y`.
+
+Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[show φ y = (w : G × G → M) from hyw]`. Conclude with `congrArg Subtype.val (fZ.apply_symm_apply w)`. Rewrite using `[h3]`. Conclude with `hy`.
+-/
 theorem card_H2_comp_equiv (e : G ≃ₜ* G') (rho : Representation R G' M) :
     Nat.card (H2 (rho.comp (e : G →* G'))) = Nat.card (H2 rho) := by
   let φ1 : (G' → M) ≃ₗ[R] (G → M) := LinearEquiv.funCongrLeft R M e.toMulEquiv.toEquiv
@@ -148,6 +198,35 @@ theorem card_H2_comp_equiv (e : G ≃ₜ* G') (rho : Representation R G' M) :
     rw [h3]
     exact hy
 
+/- English proof (translation)
+Set `φk : ∀ k : ℕ, ((Fin k → G') → M) ≃ₗ[R] ((Fin k → G) → M)` to `fun k => LinearEquiv.funCongrLeft R M (Equiv.piCongrRight fun _ => e.toMulEquiv.toEquiv)`. Establish `hC : ∀ k, (Cn rho k).map (φk k).toLinearMap = Cn (rho.comp (e : G →* G')) k`. Introduce `k`. Unfold `Cn`. Use extensionality with `f`.
+
+Simplify using `only [Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `(show Continuous y from hy).comp (continuous_pi fun i => (map_continuous e).comp (continuous_apply i))`. Introduce `hf`.
+
+Use `⟨fun x => f (fun i => e.symm (x i)), (show Continuous f from hf).comp (continuous_pi fun i => (map_continuous e.symm).comp (continuous_apply i)), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Use `show f (fun i => e.symm (e (g i))) = f g`. Simplify using the standard rewrite rules. Establish `hd : ∀ k, (φk (k + 1)).toLinearMap ∘ₗ dn rho k = dn (rho.comp (e : G →* G')) k ∘ₗ (φk k).toLinearMap`.
+
+Introduce `k`. Use `LinearMap.ext fun f => funext fun g => ?_` and prove the remaining obligations. Use `show dn rho k f (fun i => e (g i)) = dn (rho.comp (e : G →* G')) k (fun x => f (fun i => e (x i))) g`. Unfold `dn`. Simplify using `only [LinearMap.coe_mk, AddHom.coe_mk, MonoidHom.comp_apply]`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 2`. Use function extensionality and compare the values at `i`. Simplify using `only [Fin.contractNth]`.
+
+Apply the tactic sequence `split_ifs <;> simp [map_mul]`. Establish `hZ : (Zn rho (m + 1)).map (φk (m + 1)).toLinearMap = Zn (rho.comp (e : G →* G')) (m + 1)`. Unfold `Zn`. Use extensionality with `f`. Simplify using `only [Submodule.mem_map, Submodule.mem_inf, LinearMap.mem_ker, LinearEquiv.coe_coe]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨hyC, hyK⟩, rfl⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hC]`. Conclude with `⟨y, hyC, rfl⟩`.
+
+Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `⟨hfC, hfK⟩`. Use `⟨(φk (m + 1)).symm f, ⟨?_, ?_⟩, (φk (m + 1)).apply_symm_apply f⟩` and prove the remaining obligations. Rewrite `hfC` using `[← hC]`. Take `⟨y, hy, hyf⟩` from `hfC`.
+
+Rewrite using `[← hyf]`. Simplify using `using hy`. Apply `(φk (m + 1 + 1)).injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hB : (Bn rho (m + 1)).map (φk (m + 1)).toLinearMap = Bn (rho.comp (e : G →* G')) (m + 1)` using `by show (Submodule.map (dn rho m) (Cn rho m)).map (φk (m + 1)).toLinearMap = Submodule.map (dn (rho.comp (e : G →* G')) m) (Cn (rho.comp (e : G →* G')) m)`. Rewrite using `[← Submodule.map_comp, hd m, Submodule.map_comp, hC m]`. Set `fZ : Zn rho (m + 1) ≃ₗ[R] Zn (rho.comp (e : G →* G')) (m + 1)` to `((φk (m + 1)).submoduleMap (Zn rho (m + 1))).trans (LinearEquiv.ofEq _ _ hZ)`. Unfold `Hn`. Use `⟨(Submodule.Quotient.equiv _ _ fZ ?_).toEquiv.symm⟩` and prove the remaining obligations.
+
+Use extensionality with `w`. Simplify using `only [Submodule.mem_map, Submodule.mem_comap, Submodule.coe_subtype]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Rewrite using `[← hB]`.
+
+Conclude with `⟨z, hz, rfl⟩`. Introduce `hw`. Rewrite `hw` using `[← hB]`. Take `⟨y, hy, hyw⟩` from `hw`. Use `⟨fZ.symm w, ?_, fZ.apply_symm_apply w⟩` and prove the remaining obligations.
+
+Establish `h3 : ((fZ.symm w : Zn rho (m + 1)) : (Fin (m + 1) → G') → M) = y`. Apply `(φk (m + 1)).injective` to reduce the goal to its premises. Rewrite using `[show φk (m + 1) y = (w : (Fin (m + 1) → G) → M) from hyw]`. Conclude with `congrArg Subtype.val (fZ.apply_symm_apply w)`. Rewrite using `[h3]`.
+
+Conclude with `hy`.
+-/
 private theorem nonempty_Hn_comp_equiv (e : G ≃ₜ* G') (rho : Representation R G' M) (m : ℕ) :
     Nonempty (Hn (rho.comp (e : G →* G')) (m + 1) ≃ Hn rho (m + 1)) := by
   let φk : ∀ k : ℕ, ((Fin k → G') → M) ≃ₗ[R] ((Fin k → G) → M) := fun k =>
@@ -230,6 +309,13 @@ private theorem nonempty_Hn_comp_equiv (e : G ≃ₜ* G') (rho : Representation 
     rw [h3]
     exact hy
 
+/- English proof (translation)
+Take `⟨h0, h1, h2, h3⟩` from `h`. Use `⟨?_, ?_, ?_, fun n hn => ?_⟩` and prove the remaining obligations. Use `haveI := h0`. Conclude with `Nat.finite_of_card_ne_zero (by rw [← card_H0_comp_equiv e rho]; exact Nat.card_pos.ne')`. Use `haveI := h1`.
+
+Conclude with `Nat.finite_of_card_ne_zero (by rw [← card_H1_comp_equiv e rho]; exact Nat.card_pos.ne')`. Use `haveI := h2`. Conclude with `Nat.finite_of_card_ne_zero (by rw [← card_H2_comp_equiv e rho]; exact Nat.card_pos.ne')`. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Take `⟨f⟩` from `nonempty_Hn_comp_equiv e rho m`.
+
+Use `haveI := h3 (m + 1) hn`. Conclude with `f.symm.subsingleton`.
+-/
 theorem FinCd2.of_comp (e : G ≃ₜ* G') {rho : Representation R G' M} (h : FinCd2 (rho.comp (e : G →* G'))) :
     FinCd2 rho := by
   obtain ⟨h0, h1, h2, h3⟩ := h
@@ -245,6 +331,11 @@ theorem FinCd2.of_comp (e : G ≃ₜ* G') {rho : Representation R G' M} (h : Fin
     haveI := h3 (m + 1) hn
     exact f.symm.subsingleton
 
+/- English proof (translation)
+Take `⟨⟨h0⟩, h1, h2, h3, h4⟩` from `h`. Use `⟨⟨(equivH2OfIso e (charRep χ) (charRep (χ.comp (e : G →* G'))) (fun _ _ => rfl)).trans h0⟩, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `bijective_of_iso (equivH0OfIso e (rho.comp (MonoidHom.id G')) ((rho.comp (e : G →* G')).comp (MonoidHom.id G)) (fun _ _ => rfl)) (equivH2OfIso e _ _ (twDual_compat e χ rho)) (equivH2OfIso e ((charRep χ).comp (MonoidHom.id G')) ((charRep (χ.comp (e : G →* G'))).comp (MonoidHom.id …`. Conclude with `bijective_of_iso (equivH1OfIso e _ _ (twDual_compat e χ rho)) (equivH1OfIso e (rho.comp (MonoidHom.id G')) ((rho.comp (e : G →* G')).comp (MonoidHom.id G)) (fun _ _ => rfl)) (equivH2OfIso e ((charRep χ).comp (MonoidHom.id G')) ((charRep (χ.comp (e : G →* G'))).comp (MonoidHom.id …`. Conclude with `bijective_flip_of_iso (equivH1OfIso e _ _ (twDual_compat e χ rho)) (equivH1OfIso e (rho.comp (MonoidHom.id G')) ((rho.comp (e : G →* G')).comp (MonoidHom.id G)) (fun _ _ => rfl)) (equivH2OfIso e ((charRep χ).comp (MonoidHom.id G')) ((charRep (χ.comp (e : G →* G'))).comp (MonoidHo …`.
+
+Conclude with `bijective_of_iso (equivH2OfIso e (rho.comp (MonoidHom.id G')) ((rho.comp (e : G →* G')).comp (MonoidHom.id G)) (fun _ _ => rfl)) (equivH0OfIso e _ _ (twDual_compat e χ rho)) (equivH2OfIso e ((charRep χ).comp (MonoidHom.id G')) ((charRep (χ.comp (e : G →* G'))).comp (MonoidHom.id …`.
+-/
 theorem DualityFor.of_comp (e : G ≃ₜ* G') (χ : G' →* Rˣ) {rho : Representation R G' M} (hrho : ContAction rho)
     (h : DualityFor (χ.comp (e : G →* G')) (rho.comp (e : G →* G')) (contAction_comp e hrho)) :
     DualityFor χ rho hrho := by

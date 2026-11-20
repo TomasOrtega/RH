@@ -7,6 +7,27 @@ open GlobalTheory.PRep PositivityTheory.SphericalProduct
 
 namespace GlobalTheory.CompanionTheory.Cass
 
+/- English proof (translation)
+Introduce `G _ _ _ D V _ _ π hadm t ht U hU w hw`. Establish `hA2` using `GlobalTheory.T.jacquet_projection_hecke_holds G D V π hadm.1 t ht.1 U hU`. Take `⟨j, v₀, hv₀⟩` from `GlobalTheory.T.jacquet_vector_lift_dominant G D V π hadm.1 t ht w hw`. Use `haveI : FiniteDimensional ℂ (fixed π D.J) := hadm.2 D.J D.isOpen_J D.isCompact_J`. Set `L : fixed π D.J →ₗ[ℂ] Jacquet π D.N` to `(Submodule.mkQ _).comp (Submodule.subtype _)`.
+
+Establish `hL : ∀ v : fixed π D.J, L v = D.proj π (v : V)` using `fun _ => rfl`. Set `I : Submodule ℂ (Jacquet π D.N)` to `LinearMap.range L`. Use `haveI : FiniteDimensional ℂ I := LinearMap.finiteDimensional_range L`. Set `A : Module.End ℂ (Jacquet π D.N)` to `D.piN π t`. Establish `hinj : Function.Injective A`.
+
+Introduce `x y hxy`. Establish `h : ∀ z, D.piN π t⁻¹ (A z) = z`. Introduce `z`. Express the relevant statement in the definitionally equal form `D.piN π t⁻¹ (D.piN π t z) = z`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[← h x, ← h y, hxy]`. Establish `hmaps : ∀ x ∈ I, A x ∈ I`. Introduce and unpack `_ ⟨v, rfl⟩`. Conclude with `⟨U v, by rw [hL, hL]; exact hA2 v⟩`.
+
+Set `A' : I →ₗ[ℂ] I` to `A.restrict hmaps`. Establish `hinj' : Function.Injective A'`. Introduce `x y hxy`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises.
+
+Conclude with `congrArg Subtype.val hxy`. Establish `hsurj : Function.Surjective A'` using `LinearMap.injective_iff_surjective.1 hinj'`. Establish `hback : ∀ x, A x ∈ I → x ∈ I`. Introduce `x hx`. Take `⟨i, hi⟩` from `hsurj ⟨A x, hx⟩`.
+
+Establish `: A (i : Jacquet π D.N) = A x` using `congrArg Subtype.val hi`. Rewrite using `[← hinj this]`. Conclude with `i.2`. Establish `hpow : ∀ (n : ℕ) x, D.piN π (t ^ n) x ∈ I → x ∈ I`. Introduce `n`.
+
+Proceed by induction on `n with`. Consider the case `zero => intro x hx`. Simplify using `using hx`. Consider the case `succ n ih`. Introduce `x hx`.
+
+Apply `ih` to reduce the goal to its premises. Apply `hback` to reduce the goal to its premises. Rewrite `hx` using `[pow_succ', map_mul, Module.End.mul_apply]`. Conclude with `hx`. Take `⟨v, hv⟩` from `hpow j w ⟨v₀, by rw [hL]; exact hv₀⟩`.
+
+Conclude with `⟨v, by rw [← hL]; exact hv⟩`.
+-/
 theorem jacquet_projection_surjective : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (D : PositivityTheory.SphericalProduct.CassData G), ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ G V), IsAdmissible π → ∀ t : D.T, D.IsStrDom t → ∀ U : Module.End ℂ (fixed π D.J), PositivityTheory.Lbc.IsHeckeOpG π D.J (t : G) U → ∀ w ∈ fixed (D.piN π) D.JT, ∃ v : fixed π D.J, D.proj π (v : V) = w := by
   intro G _ _ _ D V _ _ π hadm t ht U hU w hw
   have hA2 := GlobalTheory.T.jacquet_projection_hecke_holds G D V π hadm.1 t ht.1 U hU

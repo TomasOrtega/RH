@@ -9,6 +9,9 @@ open GroundTheory.Heights₂.Heights.LowerBoundFree GroundTheory.Heights₂.Heig
 
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.FamEx
 
+/- English proof (translation)
+Introduce `E _ _ _ H l c κ a b h`. Conclude with `LabelCount.labelEmb_injective c (RingHom.ext fun x => κ.injective (RingHom.congr_fun h x))`.
+-/
 theorem labelEmb_comp_injective : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (l : Tor.Level H)
     (c : Coeff l) (κ : c.F →+* ℂ), Function.Injective fun lab : CMType H ⊕ CMType H => κ.comp (labelEmb c lab) := by
   intro E _ _ _ H l c κ a b h

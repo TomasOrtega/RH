@@ -18,6 +18,9 @@ section Gen
 variable {C : Type} [Field C] {R : Type} [CommRing R] [Algebra R C] {F : Type} [Field F]
 variable {N Q : Type} [AddCommGroup N] [AddCommGroup Q] [Module F N] [Module F Q]
 
+/- English proof (translation)
+Rewrite using `[stepOrder, invFun_eq M ψ.toAddMonoidHom hψ _ (fun x => by simp), ← Submodule.map_comp]`. Use `congr 1`. Use extensionality with `g a`. Simplify using `[LinearMap.funLeft]`.
+-/
 lemma stepOrder_eq (M : Submodule R (N → C)) (ψ : N →ₗ[F] Q) (hψ : Function.Surjective ψ)
     (t : N) :
     stepOrder M (LinearMap.ker ψ) t = (M.comap (LinearMap.funLeft R C ψ)).map
@@ -27,11 +30,19 @@ lemma stepOrder_eq (M : Submodule R (N → C)) (ψ : N →ₗ[F] Q) (hψ : Funct
   ext g a
   simp [LinearMap.funLeft]
 
+/- English proof (translation)
+Introduce `a b h`. Conclude with `smul_left_injective F ht (by simpa using h)`.
+-/
 lemma span_inj {t : Q} (ht : t ≠ 0) :
     Function.Injective (LinearMap.toSpanSingleton F Q t) := by
   intro a b h
   exact smul_left_injective F ht (by simpa using h)
 
+/- English proof (translation)
+Establish `hs : {j : Fin n | (j : ℕ) < (i : ℕ) + 1} = insert i {j : Fin n | (j : ℕ) < (i : ℕ)}`. Use extensionality with `j`. Simplify using `only [Set.mem_setOf_eq, Set.mem_insert_iff, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Unfold `flagSub`.
+
+Rewrite using `[hs, Set.image_insert_eq, Submodule.span_insert]`.
+-/
 lemma flagSub_succ {n : ℕ} (b : Module.Basis (Fin n) F N) (i : Fin n) :
     flagSub b ((i : ℕ) + 1) = Submodule.span F {b i} ⊔ flagSub b i := by
   have hs : {j : Fin n | (j : ℕ) < (i : ℕ) + 1} = insert i {j : Fin n | (j : ℕ) < (i : ℕ)} := by
@@ -41,12 +52,30 @@ lemma flagSub_succ {n : ℕ} (b : Module.Basis (Fin n) F N) (i : Fin n) :
   unfold flagSub
   rw [hs, Set.image_insert_eq, Submodule.span_insert]
 
+/- English proof (translation)
+The claim follows from `b.linearIndependent.notMem_span_image (by simp)`.
+-/
 lemma notMem_flagSub {n : ℕ} (b : Module.Basis (Fin n) F N) (i : Fin n) :
     b i ∉ flagSub b i :=
   b.linearIndependent.notMem_span_image (by simp)
 
 variable {v : Valuation C NNReal}
 
+/- English proof (translation)
+Take `⟨B, hB, rfl⟩` from `hc`. Rewrite using `[Matrix.det_eq_elem_of_subsingleton B 0]`. Establish `hr : Set.range (fun (j x : T) => B x j) = {fun x => B x 0}`. Use extensionality with `g`. Simplify using `only [Set.mem_range, Set.mem_singleton_iff]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, rfl⟩`. Rewrite using `[Subsingleton.elim j 0]`. Introduce and unpack `rfl`. Conclude with `⟨0, rfl⟩`.
+
+Establish `h1 : (1 : T → C) ∈ Submodule.span R {fun x => B x 0}`. Rewrite using `[← hr, ← hB]`. Conclude with `A.one_mem`. Establish `hmem : (fun x => B x 0) ∈ A.carrier`. Rewrite using `[hB, hr]`.
+
+Conclude with `Submodule.mem_span_singleton_self _`. Rewrite `h1` using `[Submodule.mem_span_singleton]`. Take `⟨r, hr1⟩` from `h1`. Take `⟨s, hs⟩` from `A.le_int hmem 0`. Establish `e1` using `congrFun hr1 0`.
+
+Simplify using `only [Pi.smul_apply, Pi.one_apply, Algebra.smul_def] at e1`. Establish `e2` using `congrArg v e1`. Rewrite `e2` using `[map_mul, map_one]`. Establish `hr'` using `hv.map_le_one r`. Establish `hs' : v (B 0 0) ≤ 1`.
+
+Establish `h3 : (algebraMap R C) s = B 0 0` using `hs`. Rewrite using `[← h3]`. Conclude with `hv.map_le_one s`. Use `le_antisymm hs' ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`.
+
+Use `push_neg at hlt`. Establish `h0 : (0 : NNReal) ≤ v (B 0 0)` using `by positivity`. Use `mul_lt_one_of_nonneg_of_lt_one_right hr' h0 hlt` as an intermediate fact. Rewrite `this` using `[e2]`. Conclude with `lt_irrefl _ this`.
+-/
 lemma colen_trivial [IsAlgClosed C] [CharZero C] (hv : v.Integers R) {T : Type} [AddCommGroup T]
     [Fintype T] [DecidableEq T] [Subsingleton T] (A : HopfOrder (C := C) R T) (c : NNReal)
     (hc : HasColen R v A.carrier c) : c = 1 := by
@@ -86,6 +115,43 @@ lemma colen_trivial [IsAlgClosed C] [CharZero C] (hv : v.Integers R) {T : Type} 
   rw [e2] at this
   exact lt_irrefl _ this
 
+/- English proof (translation)
+Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `i hi Q _ _ _ _ ψ hψ hker c hc`. Rewrite `hi` using `[Nat.add_zero]`.
+
+Establish `htop : LinearMap.ker ψ = ⊤`. Rewrite using `[hker, hi]`. Unfold `flagSub`. Establish `hu : {j : Fin n | (j : ℕ) < n} = Set.univ`. Use extensionality with `j`.
+
+Simplify using `[j.isLt]`. Rewrite using `[hu, Set.image_univ, b.span_eq]`. Use `haveI : Subsingleton Q := by`. Prove the components needed by the constructor for the conclusion. Introduce `x y`.
+
+Take `⟨x', rfl⟩` from `hψ x`. Take `⟨y', rfl⟩` from `hψ y`. Establish `hx : x' ∈ LinearMap.ker ψ`. Rewrite using `[htop]`. Discharge the goal by the elementary cases of `trivial`.
+
+Establish `hy : y' ∈ LinearMap.ker ψ`. Rewrite using `[htop]`. Discharge the goal by the elementary cases of `trivial`. Rewrite `hx`, `hy` using `[LinearMap.mem_ker]`. Rewrite using `[hx, hy]`.
+
+Take `⟨AQ, hAQ⟩` from `exists_quo hv AA ψ.toAddMonoidHom hψ`. Establish `hc1 : c = 1` using `colen_trivial hv AQ c (by rw [hAQ]; exact hc)`. Establish `he : Finset.univ.filter (fun j : Fin n => i ≤ (j : ℕ)) = ∅`. Use extensionality with `j`. Use `j.isLt` as an intermediate fact.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.notMem_empty, iff_false]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hc1, he, Finset.prod_empty, one_pow, one_pow]`. Consider the case `succ d ih`. Introduce `i hi Q _ _ _ _ ψ hψ hker c hc`.
+
+Establish `hin : i < n` using `by omega`. Set `ii : Fin n` to `⟨i, hin⟩`. Establish `hii : (ii : ℕ) = i` using `rfl`. Establish `hbi : ψ (b ii) ≠ 0`. Introduce `h0`.
+
+Apply `notMem_flagSub b ii` to reduce the goal to its premises. Rewrite using `[hii, ← hker]`. Conclude with `h0`. Set `L : Submodule F Q` to `Submodule.span F {ψ (b ii)}`. Use `haveI : Fintype (Q ⧸ L) := Fintype.ofFinite _`.
+
+Set `ψ' : N →ₗ[F] Q ⧸ L` to `L.mkQ.comp ψ`. Establish `hψ' : Function.Surjective ψ'` using `L.mkQ_surjective.comp hψ`. Establish `hker' : LinearMap.ker ψ' = flagSub b (i + 1)`. Rewrite using `[LinearMap.ker_comp, L.ker_mkQ]`. Establish `hL : L = Submodule.map ψ (Submodule.span F {b ii})`.
+
+Rewrite using `[Submodule.map_span, Set.image_singleton]`. Rewrite using `[hL, Submodule.comap_map_eq, hker, ← hii, flagSub_succ b ii]`. Take `⟨AQ, hAQ⟩` from `exists_quo hv AA ψ.toAddMonoidHom hψ`. Take `⟨AQ', hAQ'⟩` from `exists_quo hv AA ψ'.toAddMonoidHom hψ'`. Take `⟨cQ, hcQ⟩` from `ReciprocityTheory.PGsh.Up.hasColen_of_lat v AQ'.lat`.
+
+Rewrite `hcQ` using `[hAQ']`. Establish `ih'` using `ih (i + 1) (by omega) (Q ⧸ L) ψ' hψ' hker' cQ hcQ`. Establish `hst : stepOrder AA.carrier (flagSub b i) (b ii) = (AA.carrier.comap (LinearMap.funLeft R C ψ)).map (LinearMap.funLeft R C (LinearMap.toSpanSingleton F Q (ψ (b ii))))`. Rewrite using `[← hker]`. Conclude with `stepOrder_eq AA.carrier ψ hψ (b ii)`.
+
+Establish `h3 : HasColen R v (stepOrder AA.carrier (flagSub b i) (b ii)) (cs ii)` using `hcs ii`. Rewrite `h3` using `[hst]`. Establish `hrange : (LinearMap.toSpanSingleton F Q (ψ (b ii))).toAddMonoidHom.range = (L.mkQ.toAddMonoidHom).ker`. Use extensionality with `x`. Simplify using `[L, Submodule.Quotient.mk_eq_zero, Submodule.mem_span_singleton]`.
+
+Establish `hses` using `colen_ses hv AQ (LinearMap.toSpanSingleton F Q (ψ (b ii))).toAddMonoidHom (span_inj hbi) L.mkQ.toAddMonoidHom L.mkQ_surjective hrange c cQ (cs ii) (by rw [hAQ]; exact hc) (by`. Establish `hcm : Submodule.comap (LinearMap.funLeft R C ⇑L.mkQ.toAddMonoidHom) AQ.carrier = Submodule.comap (LinearMap.funLeft R C ⇑ψ') AA.carrier`. Rewrite using `[hAQ]`. Use extensionality with `h`. Both sides reduce to the same expression.
+
+Rewrite using `[hcm]`. Conclude with `hcQ)`. Use the proof step `(by rw [hAQ]; exact h3)`. Establish `hcard : Fintype.card Q = Fintype.card (Q ⧸ L) * Fintype.card F`. Establish `h1` using `Submodule.card_eq_card_quotient_mul_card L`.
+
+Establish `h2 : Nat.card L = Nat.card F` using `Nat.card_congr (LinearEquiv.toSpanNonzeroSingleton F Q _ hbi).toEquiv.symm`. Rewrite `h1` using `[h2]`. Simplify using `only [Nat.card_eq_fintype_card] at h1`. Rewrite using `[h1, mul_comm]`. Establish `hprod : ∏ j ∈ Finset.univ.filter (fun j : Fin n => i ≤ (j : ℕ)), cs j = cs ii * ∏ j ∈ Finset.univ.filter (fun j : Fin n => i + 1 ≤ (j : ℕ)), cs j`.
+
+Establish `hs : Finset.univ.filter (fun j : Fin n => i ≤ (j : ℕ)) = insert ii (Finset.univ.filter (fun j : Fin n => i + 1 ≤ (j : ℕ)))`. Use extensionality with `j`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Fin.ext_iff, hii]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hs, Finset.prod_insert]`.
+
+Simplify using `[hii]`. Rewrite using `[hses, hprod, hcard, ih']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma flag_ind [IsAlgClosed C] [CharZero C] (hv : v.Integers R) [Fintype F] [DecidableEq F]
     [Fintype N] [DecidableEq N] (AA : HopfOrder (C := C) R N) {n : ℕ}
     (b : Module.Basis (Fin n) F N) (cs : Fin n → NNReal)
@@ -197,6 +263,21 @@ lemma flag_ind [IsAlgClosed C] [CharZero C] (hv : v.Integers R) [Fintype F] [Dec
 
 end Gen
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v R _ _ hv hp F _ _ _ _ f hf N _ _ _ _ AA hst K t ht`. Use `haveI : Fintype (N ⧸ K) := Fintype.ofFinite _`. Establish `hsurj : Function.Surjective K.mkQ` using `K.mkQ_surjective`. Establish `hne : K.mkQ t ≠ 0`. Simplify `ht` using `[Submodule.Quotient.mk_eq_zero]`.
+
+Establish `heq` using `stepOrder_eq AA.carrier K.mkQ hsurj t`. Rewrite `heq` using `[K.ker_mkQ]`. Take `⟨AQ, hAQ⟩` from `exists_quo hv AA K.mkQ.toAddMonoidHom hsurj`. Take `⟨S, hS⟩` from `exists_res hv AQ (LinearMap.toSpanSingleton F (N ⧸ K) (K.mkQ t)).toAddMonoidHom (span_inj hne)`. Use `⟨⟨S, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hS, hAQ, heq]`. Both sides reduce to the same expression. Rewrite using `[hS, hAQ]`. Conclude with `fstable_map _ (fstable_comap _ hst K.mkQ) _`. Unfold `stepOrder stepOrderRes`.
+
+Use extensionality with `h`. Prove the components needed by the constructor for the conclusion. Introduce `hh`. Take `⟨g, hg, rfl⟩` from `Submodule.mem_map.mp hh`. Conclude with `⟨g, hg.1, fun a k hk => hg.2 _ _ hk⟩`.
+
+Introduce and unpack `⟨g, hg, hgh⟩`. Take `⟨g', hg', hg'e⟩` from `invres p C v R hv hp N AA K.toAddSubgroup (Submodule.span F {t} ⊔ K).toAddSubgroup (by`. Introduce `x hx`. Conclude with `Submodule.mem_sup_right hx) g hg`. Use the proof step `(by`.
+
+Introduce `x hx k hk`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.mp hx`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.mp hy`. Rewrite using `[add_assoc, hgh a _ (K.add_mem hz hk), hgh a z hz])`. Use `Submodule.mem_map.mpr ⟨g', hg', ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `a`. Use `show g' (a • t) = h a`. Rewrite using `[hg'e (a • t) (Submodule.mem_sup_left (Submodule.mem_span_singleton.mpr ⟨a, rfl⟩))]`. Simplify using `using hgh a 0 K.zero_mem`.
+-/
 theorem step : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → v (p : C) < 1 → ∀ (F : Type) [Field F] [Fintype F] [DecidableEq F] [CharP F p] (f : ℕ), Fintype.card F = p ^ f → ∀ (N : Type) [AddCommGroup N] [Module F N] [Fintype N] [DecidableEq N] (AA : HopfOrder (C := C) R N), FStable F AA.carrier → ∀ (K : Submodule F N) (t : N), t ∉ K → (∃ S : HopfOrder (C := C) R F, S.carrier = stepOrder AA.carrier K t ∧ FStable F S.carrier) ∧ stepOrder AA.carrier K t = stepOrderRes AA.carrier K t := by
   intro p _ C _ _ _ v R _ _ hv hp F _ _ _ _ f hf N _ _ _ _ AA hst K t ht
   classical
@@ -237,6 +318,15 @@ theorem step : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C]
       rw [hg'e (a • t) (Submodule.mem_sup_left (Submodule.mem_span_singleton.mpr ⟨a, rfl⟩))]
       simpa using hgh a 0 K.zero_mem
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v R _ _ hv hp F _ _ _ _ f hf N _ _ _ _ AA hst n b cs cN hcs hN`. Establish `h0 : LinearMap.ker (LinearMap.id : N →ₗ[F] N) = flagSub b 0`. Rewrite using `[LinearMap.ker_id]`. Unfold `flagSub`. Simplify using the standard rewrite rules.
+
+Establish `hid : HasColen R v (AA.carrier.comap (LinearMap.funLeft R C (LinearMap.id : N →ₗ[F] N))) cN`. Establish `he : AA.carrier.comap (LinearMap.funLeft R C (LinearMap.id : N →ₗ[F] N)) = AA.carrier`. Use extensionality with `h`. Both sides reduce to the same expression. Rewrite using `[he]`.
+
+Conclude with `hN`. Establish `key` using `flag_ind hv AA b cs hcs n 0 (by omega) N LinearMap.id (fun x => ⟨x, rfl⟩) h0 cN hid`. Establish `hu : Finset.univ.filter (fun j : Fin n => 0 ≤ (j : ℕ)) = Finset.univ`. Use extensionality with `j`. Simplify using the standard rewrite rules.
+
+Rewrite `key` using `[hu]`. Rewrite using `[← hf]`. Conclude with `key`.
+-/
 theorem flag_colen : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → v (p : C) < 1 → ∀ (F : Type) [Field F] [Fintype F] [DecidableEq F] [CharP F p] (f : ℕ), Fintype.card F = p ^ f → ∀ (N : Type) [AddCommGroup N] [Module F N] [Fintype N] [DecidableEq N] (AA : HopfOrder (C := C) R N), FStable F AA.carrier → ∀ (n : ℕ) (b : Module.Basis (Fin n) F N), ∀ (cs : Fin n → NNReal) (cN : NNReal), (∀ i : Fin n, HasColen R v (stepOrder AA.carrier (flagSub b i) (b i)) (cs i)) → HasColen R v AA.carrier cN → cN ^ (p ^ f) = (∏ i, cs i) ^ Fintype.card N := by
   intro p _ C _ _ _ v R _ _ hv hp F _ _ _ _ f hf N _ _ _ _ AA hst n b cs cN hcs hN
   have h0 : LinearMap.ker (LinearMap.id : N →ₗ[F] N) = flagSub b 0 := by

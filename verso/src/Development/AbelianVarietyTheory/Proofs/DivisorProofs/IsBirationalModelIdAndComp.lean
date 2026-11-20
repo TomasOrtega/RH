@@ -14,6 +14,9 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 
 namespace GlobalTheory.HSNef
 
+/- English proof (translation)
+The claim follows from `rfl deg := Scheme.Hom.residueDegree_id _ compat y a := by simp only [RingHom.id_apply, Scheme.Hom.stalkMap_id] rfl`.
+-/
 theorem isModel_id (X : Scheme.{0}) [IsIntegral X] : IsModel (𝟙 X) (RingHom.id X.functionField) where
   gen := rfl
   deg := Scheme.Hom.residueDegree_id _
@@ -21,6 +24,11 @@ theorem isModel_id (X : Scheme.{0}) [IsIntegral X] : IsModel (𝟙 X) (RingHom.i
     simp only [RingHom.id_apply, Scheme.Hom.stalkMap_id]
     rfl
 
+/- English proof (translation)
+Use `show π (π' (genericPoint Z)) = genericPoint X`. Rewrite using `[h'.gen, h.gen]`. Use `deg := by`. Rewrite using `[GlobalTheory.CurveDegreesCompare.residueDegree_comp π' π (genericPoint Z), h'.deg]`. Rewrite using `[h'.gen, h.deg]`.
+
+Use `compat z a := by`. Use `(congrArg φ' (h.compat (π' z) a)).trans ((h'.compat z _).trans ?_)` and prove the remaining obligations. Rewrite using `[Scheme.Hom.stalkMap_comp]`. Both sides reduce to the same expression.
+-/
 theorem IsModel.comp {X Y Z : Scheme.{0}} [IsIntegral X] [IsIntegral Y] [IsIntegral Z] {π : Y ⟶ X} {π' : Z ⟶ Y}
     {φ : X.functionField →+* Y.functionField} {φ' : Y.functionField →+* Z.functionField}
     (h : IsModel π φ) (h' : IsModel π' φ') : IsModel (π' ≫ π) (φ'.comp φ) where
@@ -35,6 +43,9 @@ theorem IsModel.comp {X Y Z : Scheme.{0}} [IsIntegral X] [IsIntegral Y] [IsInteg
     rw [Scheme.Hom.stalkMap_comp]
     rfl
 
+/- English proof (translation)
+Introduce `X _ _ _ _ _ _ _ _ _` and use `⟨isModel_id X, fun h h' => h.comp h'⟩`.
+-/
 theorem isModel_id_and_comp : ∀ (X Y Z : Scheme.{0}) [IsIntegral X] [IsIntegral Y] [IsIntegral Z] (π : Y ⟶ X) (π' : Z ⟶ Y)
     (φ : X.functionField →+* Y.functionField) (φ' : Y.functionField →+* Z.functionField),
     IsModel (𝟙 X) (RingHom.id _) ∧ (IsModel π φ → IsModel π' φ' → IsModel (π' ≫ π) (φ'.comp φ)) :=

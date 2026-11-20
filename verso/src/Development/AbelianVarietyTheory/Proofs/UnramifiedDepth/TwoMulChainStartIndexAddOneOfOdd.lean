@@ -21,9 +21,15 @@ def chainMat {Z I : Type} [Fintype I] (D : Data C Z I) (s : ℕ) : I → I → C
     (fun s p e c0 => ∑ c ∈ Finset.univ.filter (fun c => D.lev c = s ∧ s < Kn D.i),
       (D.l : C) * D.al c 2 e * p c c0 ^ (D.l ^ 2)) s
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem chainMat_zero {Z I : Type} [Fintype I] (D : Data C Z I) (e c0 : I) :
     chainMat D 0 e c0 = if e = c0 then 1 else 0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem chainMat_succ {Z I : Type} [Fintype I] (D : Data C Z I) (s : ℕ) (e c0 : I) :
     chainMat D (s + 1) e c0 = ∑ c ∈ Finset.univ.filter (fun c => D.lev c = s ∧ s < Kn D.i),
       (D.l : C) * D.al c 2 e * chainMat D s c c0 ^ (D.l ^ 2) := rfl
@@ -42,6 +48,9 @@ def Adapted {G : Cart V d I J} (S : Sys G) {Z : Type} (D : Data C Z I) (a : ZMod
 open Classical in
 variable {C : Type} [Field C] in
 variable {V : _root_.Formalism.L2.FormalSeriesBounds.VF C} {d : ℕ} {I J : Type} [Fintype I] [Fintype J] in
+/- English proof (translation)
+Take `⟨k, rfl⟩` from `hi`. Unfold `_root_.Formalism.BaseCaseIdentities.s0 _root_.Formalism.BaseCaseIdentities.Kn`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem _root_.GlobalTheory.MainTerm.chainStartIndex_lt_chainLength_of_odd {i : ℕ} (hi : Odd i) : _root_.Formalism.BaseCaseIdentities.s0 i < _root_.Formalism.BaseCaseIdentities.Kn i := by
   obtain ⟨k, rfl⟩ := hi
   unfold _root_.Formalism.BaseCaseIdentities.s0 _root_.Formalism.BaseCaseIdentities.Kn
@@ -50,6 +59,9 @@ theorem _root_.GlobalTheory.MainTerm.chainStartIndex_lt_chainLength_of_odd {i : 
 open Classical in
 variable {C : Type} [Field C] in
 variable {V : _root_.Formalism.L2.FormalSeriesBounds.VF C} {d : ℕ} {I J : Type} [Fintype I] [Fintype J] in
+/- English proof (translation)
+Take `⟨k, rfl⟩` from `hi`. Unfold `_root_.Formalism.BaseCaseIdentities.s0`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem _root_.GlobalTheory.MainTerm.two_mul_chainStartIndex_add_one_of_odd {i : ℕ} (hi : Odd i) : 2 * _root_.Formalism.BaseCaseIdentities.s0 i + 1 = i := by
   obtain ⟨k, rfl⟩ := hi
   unfold _root_.Formalism.BaseCaseIdentities.s0
@@ -58,6 +70,9 @@ theorem _root_.GlobalTheory.MainTerm.two_mul_chainStartIndex_add_one_of_odd {i :
 open Classical in
 variable {C : Type} [Field C] in
 variable {V : _root_.Formalism.L2.FormalSeriesBounds.VF C} {d : ℕ} {I J : Type} [Fintype I] [Fintype J] in
+/- English proof (translation)
+Take `⟨k, rfl⟩` from `hi`. Unfold `_root_.Formalism.BaseCaseIdentities.s0 _root_.Formalism.BaseCaseIdentities.Kn`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem _root_.GlobalTheory.MainTerm.Kn_eq {i : ℕ} (hi : Odd i) :
     _root_.Formalism.BaseCaseIdentities.Kn i = _root_.Formalism.BaseCaseIdentities.s0 i + 1 := by
   obtain ⟨k, rfl⟩ := hi
@@ -73,6 +88,9 @@ variable {C : Type} [Field C] in
 variable {V : _root_.Formalism.L2.FormalSeriesBounds.VF C} {d : ℕ} {I J : Type} [Fintype I] [Fintype J] in
 variable {G : _root_.Formalism.L2.FormalSeriesBounds.Cart V d I J} {S : _root_.Formalism.L2.FormalSeriesBounds.Sys G} {Z : Type} {D : _root_.Formalism.BaseCaseIdentities.Data C Z I} {a : ZMod d}
   {i : ℕ} in
+/- English proof (translation)
+Establish `h` using `G.bound0 0 (S.cur c) (S.mem c) (Sum.inl x)`. Rewrite `h` using `[S.cur_zero_inl]`. Simplify using `using h`.
+-/
 theorem _root_.GlobalTheory.MainTerm.tan_int (S : _root_.Formalism.L2.FormalSeriesBounds.Sys G) (c x : I) : V.Ge 0 (S.tan c x) := by
   have h := G.bound0 0 (S.cur c) (S.mem c) (Sum.inl x)
   rw [S.cur_zero_inl] at h
@@ -83,6 +101,9 @@ variable {C : Type} [Field C] in
 variable {V : _root_.Formalism.L2.FormalSeriesBounds.VF C} {d : ℕ} {I J : Type} [Fintype I] [Fintype J] in
 variable {G : _root_.Formalism.L2.FormalSeriesBounds.Cart V d I J} {S : _root_.Formalism.L2.FormalSeriesBounds.Sys G} {Z : Type} {D : _root_.Formalism.BaseCaseIdentities.Data C Z I} {a : ZMod d}
   {i : ℕ} in
+/- English proof (translation)
+Rewrite using `[← S.cur_zero_inl]`. Conclude with `S.pure c 0 (Sum.inl x) (by simpa using h)`.
+-/
 theorem _root_.GlobalTheory.MainTerm.tan_pure (S : _root_.Formalism.L2.FormalSeriesBounds.Sys G) (c x : I)
     (h : G.ty (Sum.inl x) ≠ G.ty (Sum.inl c)) : S.tan c x = 0 := by
   rw [← S.cur_zero_inl]
@@ -93,6 +114,9 @@ variable {C : Type} [Field C] in
 variable {V : _root_.Formalism.L2.FormalSeriesBounds.VF C} {d : ℕ} {I J : Type} [Fintype I] [Fintype J] in
 variable {G : _root_.Formalism.L2.FormalSeriesBounds.Cart V d I J} {S : _root_.Formalism.L2.FormalSeriesBounds.Sys G} {Z : Type} {D : _root_.Formalism.BaseCaseIdentities.Data C Z I} {a : ZMod d}
   {i : ℕ} in
+/- English proof (translation)
+Take `⟨-, -, -, hal, -⟩` from `h`. Rewrite using `[hal c 1 x le_rfl]`. Simplify using `[D.al_one c hc]`.
+-/
 theorem _root_.GlobalTheory.MainTerm.Adapted.al_one
     (h : _root_.GlobalTheory.MainTerm.Adapted S D a i) {c : I} (hc : D.good c) (x : I) : S.al c 1 x = 0 := by
   obtain ⟨-, -, -, hal, -⟩ := h
@@ -104,6 +128,9 @@ variable {C : Type} [Field C] in
 variable {V : _root_.Formalism.L2.FormalSeriesBounds.VF C} {d : ℕ} {I J : Type} [Fintype I] [Fintype J] in
 variable {G : _root_.Formalism.L2.FormalSeriesBounds.Cart V d I J} {S : _root_.Formalism.L2.FormalSeriesBounds.Sys G} {Z : Type} {D : _root_.Formalism.BaseCaseIdentities.Data C Z I} {a : ZMod d}
   {i : ℕ} in
+/- English proof (translation)
+Unfold `_root_.Formalism.L2.FormalSeriesBounds.Cart.Good`. Conclude with `⟨S.curve c, fun x => _root_.GlobalTheory.MainTerm.Adapted.al_one h hc x⟩`.
+-/
 theorem _root_.GlobalTheory.MainTerm.Adapted.good (h : _root_.GlobalTheory.MainTerm.Adapted S D a i)
     {c : I} (hc : D.good c) :
     G.Good (G.ty (Sum.inl c)) (S.tan c) (S.cur c) := by
@@ -115,6 +142,11 @@ variable {C : Type} [Field C] in
 variable {V : _root_.Formalism.L2.FormalSeriesBounds.VF C} {d : ℕ} {I J : Type} [Fintype I] [Fintype J] in
 variable {G : _root_.Formalism.L2.FormalSeriesBounds.Cart V d I J} {S : _root_.Formalism.L2.FormalSeriesBounds.Sys G} {Z : Type} {D : _root_.Formalism.BaseCaseIdentities.Data C Z I} {a : ZMod d}
   {i : ℕ} in
+/- English proof (translation)
+Take `⟨hv, hl, -, -, -⟩` from `h`. Establish `h2` using `D.al_good c hc 2 e (by norm_num)`. Establish `hge : V.Ge (-1) (D.al c 2 e)`. Unfold `_root_.Formalism.L2.FormalSeriesBounds.VF.Ge`. Rewrite using `[← hv]`.
+
+Use `le_trans (le_of_eq ?_) h2` and prove the remaining obligations. Evaluate the numerical expressions. Rewrite using `[hl]`. Conclude with `hge.l_mul.mono (by norm_num)`.
+-/
 theorem _root_.GlobalTheory.MainTerm.Adapted.l_mul_al_two_int
     (h : _root_.GlobalTheory.MainTerm.Adapted S D a i) {c : I} (hc : D.good c) (e : I) :
     V.Ge 0 ((D.l : C) * D.al c 2 e) := by
@@ -133,6 +165,9 @@ variable {C : Type} [Field C] in
 variable {V : _root_.Formalism.L2.FormalSeriesBounds.VF C} {d : ℕ} {I J : Type} [Fintype I] [Fintype J] in
 variable {G : _root_.Formalism.L2.FormalSeriesBounds.Cart V d I J} {S : _root_.Formalism.L2.FormalSeriesBounds.Sys G} {Z : Type} {D : _root_.Formalism.BaseCaseIdentities.Data C Z I} {a : ZMod d}
   {i : ℕ} in
+/- English proof (translation)
+Establish `h` using `G.bound0 1 (S.cur c) (S.mem c) (Sum.inr κ)`. Conclude with `h.l_mul.mono (by norm_num)`.
+-/
 theorem _root_.GlobalTheory.MainTerm.l_mul_be_one_int (S : _root_.Formalism.L2.FormalSeriesBounds.Sys G) (c : I) (κ : J) :
     V.Ge 0 ((V.l : C) * S.be c 1 κ) := by
   have h := G.bound0 1 (S.cur c) (S.mem c) (Sum.inr κ)
@@ -143,6 +178,13 @@ variable {C : Type} [Field C] in
 variable {V : _root_.Formalism.L2.FormalSeriesBounds.VF C} {d : ℕ} {I J : Type} [Fintype I] [Fintype J] in
 variable {G : _root_.Formalism.L2.FormalSeriesBounds.Cart V d I J} {S : _root_.Formalism.L2.FormalSeriesBounds.Sys G} {Z : Type} {D : _root_.Formalism.BaseCaseIdentities.Data C Z I} {a : ZMod d}
   {i : ℕ} in
+/- English proof (translation)
+Proceed by induction on `s generalizing e with`. Consider the case `zero`. Rewrite using `[_root_.GlobalTheory.MainTerm.chainMat_zero]`. Use `split_ifs`. Conclude with `_root_.Formalism.L2.FormalSeriesBounds.VF.Ge.one`.
+
+Conclude with `_root_.Formalism.L2.FormalSeriesBounds.VF.Ge.zero 0`. Consider the case `succ s ih`. Rewrite using `[_root_.GlobalTheory.MainTerm.chainMat_succ]`. Use `_root_.Formalism.L2.FormalSeriesBounds.VF.Ge.sum fun c hc => ?_` and prove the remaining obligations. Rewrite `hc` using `[Finset.mem_filter]`.
+
+Establish `hgood : D.good c` using `D.pure_good c (by rw [hc.2.1]; exact hc.2.2)`. Conclude with `_root_.Formalism.L2.FormalSeriesBounds.VF.Ge.mul_int (_root_.GlobalTheory.MainTerm.Adapted.l_mul_al_two_int h hgood e) ((ih c).pow _)`.
+-/
 theorem _root_.GlobalTheory.MainTerm.Adapted.chainMat_int
     (h : _root_.GlobalTheory.MainTerm.Adapted S D a i) (s : ℕ) (e c0 : I) :
     V.Ge 0 (_root_.GlobalTheory.MainTerm.chainMat D s e c0) := by
@@ -165,6 +207,9 @@ variable {C : Type} [Field C] in
 variable {V : _root_.Formalism.L2.FormalSeriesBounds.VF C} {d : ℕ} {I J : Type} [Fintype I] [Fintype J] in
 variable {G : _root_.Formalism.L2.FormalSeriesBounds.Cart V d I J} {S : _root_.Formalism.L2.FormalSeriesBounds.Sys G} {Z : Type} {D : _root_.Formalism.BaseCaseIdentities.Data C Z I} {a : ZMod d}
   {i : ℕ} in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.MainTerm.mainVec`. Use `_root_.Formalism.L2.FormalSeriesBounds.VF.Ge.mul_int ((_root_.Formalism.L2.FormalSeriesBounds.VF.Ge.one (V := V)).neg.pow _) (_root_.Formalism.L2.FormalSeriesBounds.VF.Ge.sum fun c _ => ?_)` and prove the remaining obligations. Use `_root_.Formalism.L2.FormalSeriesBounds.VF.Ge.mul_int ((_root_.GlobalTheory.MainTerm.Adapted.chainMat_int h _ c c0).pow _) ?_` and prove the remaining obligations. Rewrite using `[h.2.1]`. Conclude with `_root_.GlobalTheory.MainTerm.l_mul_be_one_int S c κ`.
+-/
 theorem _root_.GlobalTheory.MainTerm.Adapted.mainVec_int
     (h : _root_.GlobalTheory.MainTerm.Adapted S D a i) (c0 : I) (κ : J) :
     V.Ge 0 (_root_.GlobalTheory.MainTerm.mainVec S D c0 κ) := by
@@ -181,6 +226,15 @@ variable {C : Type} [Field C] in
 variable {V : _root_.Formalism.L2.FormalSeriesBounds.VF C} {d : ℕ} {I J : Type} [Fintype I] [Fintype J] in
 variable {G : _root_.Formalism.L2.FormalSeriesBounds.Cart V d I J} {S : _root_.Formalism.L2.FormalSeriesBounds.Sys G} {Z : Type} {D : _root_.Formalism.BaseCaseIdentities.Data C Z I} {a : ZMod d}
   {i : ℕ} in
+/- English proof (translation)
+Take `⟨-, -, hi, -, hty⟩` from `h`. Unfold `_root_.GlobalTheory.MainTerm.mainVec`. Use `mul_eq_zero_of_right _ (Finset.sum_eq_zero fun c hc => ?_)` and prove the remaining obligations. Rewrite `hc` using `[Finset.mem_filter]`. Take `⟨-, hlev, hlt⟩` from `hc`.
+
+Establish `hodd : Odd i` using `hi ▸ D.i_odd`. Establish `hc'` using `hty c (by rw [hlev, hi]; rwa [hi] at hlt)`. Establish `h2 : ((i : ℕ) : ZMod d) = ((2 * _root_.Formalism.BaseCaseIdentities.s0 i + 1 : ℕ) : ZMod d)`. Rewrite using `[_root_.GlobalTheory.MainTerm.two_mul_chainStartIndex_add_one_of_odd hodd]`. Establish `hbe : S.be c 1 κ = 0`.
+
+Unfold `_root_.Formalism.L2.FormalSeriesBounds.Sys.be`. Apply `S.pure c 1 (Sum.inr κ)` to reduce the goal to its premises. Rewrite using `[hc', hlev, hi]`. Introduce `heq`. Apply `hκ` to reduce the goal to its premises.
+
+Rewrite using `[heq, h2]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hbe]`. Simplify using the standard rewrite rules.
+-/
 theorem _root_.GlobalTheory.MainTerm.Adapted.mainVec_pure
     (h : _root_.GlobalTheory.MainTerm.Adapted S D a i) (c0 : I) (κ : J)
     (hκ : G.ty (Sum.inr κ) ≠ a + (i : ZMod d)) : _root_.GlobalTheory.MainTerm.mainVec S D c0 κ = 0 := by
@@ -210,6 +264,13 @@ variable {C : Type} [Field C] in
 variable {V : _root_.Formalism.L2.FormalSeriesBounds.VF C} {d : ℕ} {I J : Type} [Fintype I] [Fintype J] in
 variable {G : _root_.Formalism.L2.FormalSeriesBounds.Cart V d I J} {S : _root_.Formalism.L2.FormalSeriesBounds.Sys G} {Z : Type} {D : _root_.Formalism.BaseCaseIdentities.Data C Z I} {a : ZMod d}
   {i : ℕ} in
+/- English proof (translation)
+Take `⟨-, hl, hi, -, -⟩` from `h`. Establish `hl0 : D.l ≠ 0` using `by have := D.l_ge; omega`. Unfold `_root_.GlobalTheory.MainTerm.mainVec`. Rewrite using `[hi]`. Establish `hs : _root_.Formalism.BaseCaseIdentities.s0 1 = 0` using `rfl`.
+
+Establish `hk : _root_.Formalism.BaseCaseIdentities.Kn 1 = 1` using `rfl`. Rewrite using `[hs, hk, Finset.sum_eq_single c0]`. Simplify using `[_root_.GlobalTheory.MainTerm.chainMat_zero, hl]`. Introduce `b _ hb`. Simplify using `[_root_.GlobalTheory.MainTerm.chainMat_zero, hb, zero_pow hl0]`.
+
+Introduce `hc0`. Simplify using `[hc] at hc0`.
+-/
 theorem _root_.GlobalTheory.MainTerm.Adapted.mainVec_level_one
     (h : _root_.GlobalTheory.MainTerm.Adapted S D a 1) {c0 : I} (hc : D.lev c0 = 0) (κ : J) :
     _root_.GlobalTheory.MainTerm.mainVec S D c0 κ = -((V.l : C) * S.be c0 1 κ) := by
@@ -232,6 +293,13 @@ variable {V : _root_.Formalism.L2.FormalSeriesBounds.VF C} {d : ℕ} {I J : Type
 variable {G : _root_.Formalism.L2.FormalSeriesBounds.Cart V d I J} {S : _root_.Formalism.L2.FormalSeriesBounds.Sys G} {Z : Type} {D : _root_.Formalism.BaseCaseIdentities.Data C Z I} {a : ZMod d}
   {i : ℕ} in
 
+/- English proof (translation)
+Establish `hu : V.v (Matrix.of S.tan).det = 0` using `S.unimod`. Establish `hdet : (Matrix.of S.tan).det ≠ 0`. Introduce `h0`. Rewrite `hu` using `[h0, AddValuation.map_zero]`. Simplify using `at hu`.
+
+Establish `hint : ∀ x y, V.Ge 0 (Matrix.of S.tan x y)` using `fun x y => _root_.GlobalTheory.MainTerm.tan_int S x y`. Unfold `_root_.Formalism.L2.FormalSeriesBounds.IsSat`. Use `⟨fun c x => _root_.GlobalTheory.MainTerm.tan_int S _ _, fun x c' => (Matrix.of S.tan)⁻¹ x (em c'), fun x c' => _root_.Formalism.L2.FormalSeriesBounds.inv_int (Matrix.of S.tan) hint hu x (em c'), fun c c' => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrFun (congrFun (Matrix.mul_nonsing_inv (Matrix.of S.tan) (isUnit_iff_ne_zero.2 hdet)) (em c)) (em c')`. Rewrite `h1` using `[Matrix.mul_apply, Matrix.one_apply]`.
+
+Simplify `h1` using `[em.injective.eq_iff]`.
+-/
 theorem _root_.GlobalTheory.MainTerm.isSat_tan (S : _root_.Formalism.L2.FormalSeriesBounds.Sys G) {N : ℕ} (em : Fin N ↪ I) :
     _root_.Formalism.L2.FormalSeriesBounds.IsSat V (fun δ => S.tan (em δ)) := by
   have hu : V.v (Matrix.of S.tan).det = 0 := S.unimod

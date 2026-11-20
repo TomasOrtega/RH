@@ -23,11 +23,17 @@ open ValuativeRel
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Unfold `ord`. Use `set φ := IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt k`. Rewrite using `[neg_le_neg_iff, WithZero.log_le_log (by simp) (by simp), map_le_map_iff]`.
+-/
 theorem val_le_iff_ord (x s : kˣ) : valuation k (x : k) ≤ valuation k (s : k) ↔ ord k s ≤ ord k x := by
   unfold ord
   set φ := IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt k
   rw [neg_le_neg_iff, WithZero.log_le_log (by simp) (by simp), map_le_map_iff]
 
+/- English proof (translation)
+Set `o : kˣ →* Multiplicative ℤ` to `MonoidHom.mk' (fun x => .ofAdd (ord k x)) fun x y => by`. Rewrite using `[ord_mul, ofAdd_add]`. Establish `h` using `map_zpow o x n`. Establish `h2 : Multiplicative.toAdd (o (x ^ n)) = Multiplicative.toAdd ((o x) ^ n)` using `by rw [h]`. Simplify `h2` using `[o, toAdd_zpow]`.
+-/
 theorem ord_zpow (x : kˣ) (n : ℤ) : ord k (x ^ n) = n * ord k x := by
   let o : kˣ →* Multiplicative ℤ := MonoidHom.mk' (fun x => .ofAdd (ord k x)) fun x y => by
     rw [ord_mul, ofAdd_add]

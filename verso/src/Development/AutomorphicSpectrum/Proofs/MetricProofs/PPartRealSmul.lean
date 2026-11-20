@@ -17,11 +17,19 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Ψ : Type} [Fintype
   [AddCommGroup Λ] [Module (𝓞 E) Λ] {F : UnivFam E Ψ j j' n g Λ} (C : LatEmb F) (R : RiemLat E g Λ) (τ : Ψ)
 
 open Classical in
+/- English proof (translation)
+Simplify using `only [LatEmb.pPart, smul_add, Pi.single_add, map_add, smul_sub]`. Normalize the expressions using the abelian group laws.
+-/
 theorem pPart_add (y y' : Fin (j + j') → ℂ) : C.pPart R τ (y + y') = C.pPart R τ y + C.pPart R τ y' := by
   simp only [LatEmb.pPart, smul_add, Pi.single_add, map_add, smul_sub]
   abel
 
 open Classical in
+/- English proof (translation)
+Establish `h1 : ∀ y : Fin (j + j') → ℂ, C.perExt R (Pi.single τ (r • y)) = (r : ℂ) • C.perExt R (Pi.single τ y)`. Introduce `y`. Rewrite using `[Pi.single_smul, map_smul]`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+
+Establish `h2 : Complex.I • r • y = r • Complex.I • y` using `smul_comm _ _ _`. Simplify using `only [LatEmb.pPart, h2, h1, smul_sub]`. Simplify using `only [smul_smul]`. Apply the tactic sequence `congr 2 <;> ring_nf`.
+-/
 theorem pPart_real_smul (r : ℝ) (y : Fin (j + j') → ℂ) : C.pPart R τ (r • y) = (r : ℂ) • C.pPart R τ y := by
   have h1 : ∀ y : Fin (j + j') → ℂ, C.perExt R (Pi.single τ (r • y)) = (r : ℂ) • C.perExt R (Pi.single τ y) := by
     intro y
@@ -33,6 +41,11 @@ theorem pPart_real_smul (r : ℝ) (y : Fin (j + j') → ℂ) : C.pPart R τ (r �
   congr 2 <;> ring_nf
 
 open Classical in
+/- English proof (translation)
+Establish `h : Complex.I • Complex.I • y = -y` using `by simp [smul_smul]`. Establish `h2 : C.perExt R (Pi.single τ (-y)) = - C.perExt R (Pi.single τ y)`. Rewrite using `[Pi.single_neg, map_neg]`. Simplify using `only [LatEmb.pPart, h, h2]`. Use extensionality with `k`.
+
+Simplify using `only [Pi.smul_apply, Pi.sub_apply, Pi.neg_apply, smul_eq_mul]`. Take the linear combination `(1 / 2 * (C.perExt R (Pi.single τ (Complex.I • y))) k) * Complex.I_mul_I`.
+-/
 theorem pPart_I_smul (y : Fin (j + j') → ℂ) : C.pPart R τ (Complex.I • y) = Complex.I • C.pPart R τ y := by
   have h : Complex.I • Complex.I • y = -y := by simp [smul_smul]
   have h2 : C.perExt R (Pi.single τ (-y)) = - C.perExt R (Pi.single τ y) := by
@@ -55,6 +68,11 @@ def pPartL : (Fin (j + j') → ℂ) →ₗ[ℂ] (Fin g → ℂ) where
     conv_rhs => rw [← Complex.re_add_im a]
     rw [add_smul, mul_smul]
 
+/- English proof (translation)
+Establish `hs : Sum.elim v x = ∑ i, v i • (Sum.elim (Pi.single i 1) 0 : Sg j j' → ℂ) + ∑ b, x b • (Sum.elim 0 (Pi.single b 1) : Sg j j' → ℂ)`. Use extensionality with `(i | b)`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Express the relevant statement in the definitionally equal form `pPartL C R τ _ = ∑ i, v i • pPartL C R τ _ + ∑ b, x b • pPartL C R τ _`.
+
+Rewrite using `[hs, Matrix.mulVec_add, map_add, Matrix.mulVec_sum, Matrix.mulVec_sum, map_sum, map_sum]`. Simplify using `[Matrix.mulVec_smul]`.
+-/
 theorem pPart_elim (A : Matrix (Fin (j + j')) (Sg j j') ℂ) (v : Fin j → ℂ) (x : Fin j' → ℂ) :
     C.pPart R τ (A *ᵥ Sum.elim v x) =
       ∑ i, v i • C.pPart R τ (A *ᵥ Sum.elim (Pi.single i 1) 0) +

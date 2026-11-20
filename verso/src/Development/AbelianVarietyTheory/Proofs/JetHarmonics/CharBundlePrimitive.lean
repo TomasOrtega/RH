@@ -20,10 +20,18 @@ variable {R : Type} [CommRing R] [IsDomain R] (D : DegPre R)
 
 abbrev charBundle (χ : D.X) : LB D.P.A.left := LB.LinComb D.P.L (D.Oφ (𝟙 D.P.A) χ) Oε
 
+/- English proof (translation)
+The claim follows from `(WeightPf.Oφ_comp x (𝟙 _) χ k).trans (by rw [Category.comp_id])`.
+-/
 theorem comp_Oφ_id {T : Over (Spec (CommRingCat.of R))} (x : T ⟶ D.P.A) (χ : D.X) (k : Fin 4) :
     x.left ≫ D.Oφ (𝟙 D.P.A) χ k = D.Oφ x χ k :=
   (WeightPf.Oφ_comp x (𝟙 _) χ k).trans (by rw [Category.comp_id])
 
+/- English proof (translation)
+Use `((refines_self _ _).linComb (fun _ : PUnit => eSec D.P.A) (fun _ => 1)).exists_gen D.P.isLB (fun U _ h => ?_) _ isGen_one` and prove the remaining obligations. Use `(Fintype.prod_empty _).trans (Eq.symm ?_)` and prove the remaining obligations. Establish `e : (η[D.P.A] : 𝟙_ _ ⟶ D.P.A) = 1` using `by simp [Hom.one_def]`. Rewrite using `[Fintype.prod_prod_type, Fintype.prod_unique]`. Simplify using `only [_root_.mul_one, eSec, comp_Oφ_id]`.
+
+Use `(prod_O D η[D.P.A] χ h).trans ?_` and prove the remaining obligations. Rewrite using `[e, _root_.mul_one]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_one]`. Normalize the expressions using the abelian group laws.
+-/
 theorem charBundle_rig (χ : D.X) : ∃ t : LB.Gen ((charBundle D χ).pull (eSec D.P.A)), t.IsGen := by
   refine ((refines_self _ _).linComb (fun _ : PUnit => eSec D.P.A) (fun _ => 1)).exists_gen D.P.isLB
     (fun U _ h => ?_) _ isGen_one
@@ -37,6 +45,11 @@ theorem charBundle_rig (χ : D.X) : ∃ t : LB.Gen ((charBundle D χ).pull (eSec
   simp only [ofMul_mul, ofMul_inv, ofMul_one]
   abel
 
+/- English proof (translation)
+Use `(((refines_self _ _).div (refines_self _ _)).div (refines_self _ _)).exists_gen D.P.isLB (fun U _ h => ?_) _ (DVR.pullGen_isGen _ _ _ _ D.cub.isGen (lift (toUnit _ ≫ D.c χ) (lift (toUnit _ ≫ D.c χ') (𝟙 D.P.A))).left)` and prove the remaining obligations. Use `(prod_cub (toUnit _ ≫ D.c χ) (toUnit _ ≫ D.c χ') (𝟙 D.P.A) h).trans (Eq.symm ?_)` and prove the remaining obligations. Rewrite using `[Fintype.prod_sum_type, Fintype.prod_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib]`. Use `(congrArg₂ (· * ·) (congrArg₂ (· * ·) (prod_O D (𝟙 D.P.A) _ h) (congrArg (·⁻¹) (prod_O D (𝟙 D.P.A) _ h))) (congrArg (·⁻¹) (prod_O D (𝟙 D.P.A) _ h))).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[c_add]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 theorem charBundle_add (χ χ' : D.X) :
     ∃ t : LB.Iso (charBundle D χ') (LB.div (charBundle D (χ + χ')) (charBundle D χ)), t.IsGen := by
   refine (((refines_self _ _).div (refines_self _ _)).div (refines_self _ _)).exists_gen D.P.isLB (fun U _ h => ?_)
@@ -51,6 +64,11 @@ theorem charBundle_add (χ χ' : D.X) :
   simp only [ofMul_mul, ofMul_inv]
   abel
 
+/- English proof (translation)
+Use `(refines_self _ _).exists_gen D.P.isLB (fun U _ h => ?_) _ isGen_one` and prove the remaining obligations. Use `(Fintype.prod_empty _).trans (Eq.symm ((prod_O D (𝟙 D.P.A) _ h).trans ?_))` and prove the remaining obligations. Rewrite using `[c_zero, _root_.one_mul]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_one]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem charBundle_zero : ∃ t : LB.Gen (charBundle D 0), t.IsGen := by
   refine (refines_self _ _).exists_gen D.P.isLB (fun U _ h => ?_) _ isGen_one
   refine (Fintype.prod_empty _).trans (Eq.symm ((prod_O D (𝟙 D.P.A) _ h).trans ?_))
@@ -59,6 +77,11 @@ theorem charBundle_zero : ∃ t : LB.Gen (charBundle D 0), t.IsGen := by
   simp only [ofMul_mul, ofMul_inv, ofMul_one]
   abel
 
+/- English proof (translation)
+Use `((refines_self _ _).linComb _ _).exists_gen D.P.isLB (fun U _ h => ?_) _ (DVR.pullGen_isGen _ _ _ _ D.cub.isGen (lift (toUnit _ ≫ D.c χ) (lift (x2 D.P.A 0) (x2 D.P.A 1))).left)` and prove the remaining obligations. Use `(prod_cub (toUnit _ ≫ D.c χ) (x2 D.P.A 0) (x2 D.P.A 1) h).trans (Eq.symm ?_)` and prove the remaining obligations. Rewrite using `[Fintype.prod_prod_type]`. Simplify using `only [zpow_mul, Finset.prod_zpow, comp_Oφ_id]`. Use `(prod_square (x2 D.P.A) (fun x => ∏ k, h (D.Oφ x χ k) ^ Oε k)).trans ?_` and prove the remaining obligations.
+
+Use `(congrArg₂ (· * ·) (congrArg₂ (· * ·) (congrArg₂ (· * ·) (prod_O D _ _ h) (congrArg (·⁻¹) (prod_O D _ _ h))) (congrArg (·⁻¹) (prod_O D _ _ h))) (prod_O D _ _ h)).trans ?_` and prove the remaining obligations. Rewrite using `[_root_.mul_one, ← _root_.mul_assoc (toUnit _ ≫ D.c χ)]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 theorem charBundle_primitive (χ : D.X) : ∃ t : LB.Gen (abelian₂ D.P.A (charBundle D χ)), t.IsGen := by
   refine ((refines_self _ _).linComb _ _).exists_gen D.P.isLB (fun U _ h => ?_)
     _ (DVR.pullGen_isGen _ _ _ _ D.cub.isGen (lift (toUnit _ ≫ D.c χ) (lift (x2 D.P.A 0) (x2 D.P.A 1))).left)
@@ -85,6 +108,11 @@ def splitExt : SplitExt (Spec (CommRingCat.of R)) where
 
 variable {D} {H : Over (Spec (CommRingCat.of R))} [GrpObj H] [IsCommMonObj H]
 
+/- English proof (translation)
+Take `⟨d⟩` from `h`. Use `nonempty_gtCoord_of_isGt hG R I D e H (GtBaseChange.extBC (thick R I e) (splitExt D)) (Iso.refl _) (AddEquiv.refl _) (inferInstanceAs (IsMonHom (𝟙 (thickObj R I e D.P.A)))) (fun χ => ?_) (GtBaseChange.isGt_extBC _ _ H d)` and prove the remaining obligations. Use `((refines_self _ _).div ((refines_self (D.Oφ (𝟙 D.P.A) χ) Oε).linComb (fun _ : PUnit => pullback.fst D.P.A.hom (thick R I e)) (fun _ => 1))).exists_gen D.P.isLB (fun U _ h => ?_) _ isGen_one` and prove the remaining obligations. Use `(Fintype.prod_empty _).trans (Eq.symm ((Fintype.prod_sum_type _).trans ?_))` and prove the remaining obligations. Simplify using `only [Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib]`.
+
+Rewrite using `[Fintype.prod_prod_type, mul_inv_eq_one, eq_comm, Fintype.prod_unique]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[_root_.mul_one]`. Establish `e₀ : ((Over.map (thick R I e)).map (𝟙 (thickObj R I e D.P.A)) ≫ D.prBe I e).left = pullback.fst D.P.A.hom (thick R I e)` using `Category.id_comp _`. Conclude with `congrArg (fun q => h (q ≫ D.Oφ (𝟙 D.P.A) χ k) ^ Oε k) e₀.symm`.
+-/
 theorem nonempty_gtCoord (hG : GlobalFnsSt) (h : (splitExt D).IsGt H) (I : Ideal R) (e : ℕ) :
     Nonempty (GtCoord I D e H) := by
   obtain ⟨d⟩ := h
@@ -111,6 +139,21 @@ instance isIso_thick_bot : IsIso (thick R ⊥ 0) := by
 instance isIso_fstG_bot : IsIso (fstG (⊥ : Ideal R) 0 H).left :=
   inferInstanceAs (IsIso (pullback.fst H.hom (thick R ⊥ 0)))
 
+/- English proof (translation)
+Take `⟨c⟩` from `nonempty_gtCoord hG h ⊥ 0`. Set `j` to `inv (fstG (⊥ : Ideal R) 0 H).left`. Establish `hj : j ≫ (thickObj R ⊥ 0 H).hom ≫ thick R ⊥ 0 = H.hom` using `(congrArg (j ≫ ·) (Over.w (fstG (⊥ : Ideal R) 0 H)).symm).trans (IsIso.inv_hom_id_assoc _ _)`. Use `choose φ hφ using fun T (x : T ⟶ H) => TorusCoord.exists_isPointOf c (T := T) (x.left ≫ j) (by rw [Category.assoc, hj, Over.w])`. Establish `bij : ∀ T, Function.Bijective (φ T)` using `fun T => by`.
+
+Use `⟨fun x x' e => Over.OverMorphism.ext ((cancel_mono j).1 ((hφ T x).unique_left c (e ▸ hφ T x'))), fun ξ => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `TorusCoord.exists_point c (T.hom ≫ inv (thick R ⊥ 0)) (by simp) ξ`. Use `⟨Over.homMk (y ≫ (fstG (⊥ : Ideal R) 0 H).left) ((Category.assoc _ _ _).trans ((congrArg (y ≫ ·) (Over.w (fstG (⊥ : Ideal R) 0 H))).trans (hy.comp_hom c))), (hφ T _).unique_right c ?_⟩` and prove the remaining obligations. Establish `: (y ≫ (fstG (⊥ : Ideal R) 0 H).left) ≫ j = y` using `by simp [j]`. Conclude with `this.symm ▸ hy`.
+
+Use `⟨fun T => Equiv.ofBijective _ (bij T), fun T' T k x => (hφ T x).isPull c ?_, fun T x x' => ?_⟩` and prove the remaining obligations. Use `hφ T' (k ≫ x)` as an intermediate fact. Rewrite `this` using `[Over.comp_left, Category.assoc]`. Then use the resulting hypothesis. Take `⟨T, ⟨⟨⟩⟩, s⟩` from `T`. Express the relevant statement in the definitionally equal form `T ⟶ Spec (CommRingCat.of R) at s`.
+
+Take `⟨σ, rfl⟩ : ∃ σ, s = σ ≫ thick R ⊥ 0` from `⟨s ≫ inv (thick R ⊥ 0), by simp⟩`. Set `Z : Over (Spec (CommRingCat.of (R ⧸ (⊥ : Ideal R) ^ (0 + 1))))` to `Over.mk σ`. Take `⟨a, ha⟩` from `FormalPoint.exists_lift_fstG (Z := Z) x`. Take `⟨a', ha'⟩` from `FormalPoint.exists_lift_fstG (Z := Z) x'`. Establish `key : ∀ (b : Z ⟶ thickObj R ⊥ 0 H) (w : (Over.map (thick R ⊥ 0)).obj Z ⟶ H), (Over.map (thick R ⊥ 0)).map b ≫ fstG ⊥ 0 H = w → φ _ w = TorusCoord.pointsEquiv c Z b`.
+
+Introduce and unpack `b _ rfl`. Use `((TorusCoord.toGtPt_eq_iff c b _).2 ?_).symm` and prove the remaining obligations. Establish `e : ((Over.map (thick R ⊥ 0)).map b ≫ fstG ⊥ 0 H).left ≫ j = b.left`. Rewrite using `[Over.comp_left, Category.assoc, IsIso.hom_inv_id, Category.comp_id]`. Both sides reduce to the same expression.
+
+Conclude with `e ▸ hφ _ _`. Establish `e₁` using `key a x ha`. Establish `e₂` using `key a' x' ha'`. Establish `e₃` using `key (a * a') (x * x') (by rw [FormalPoint.map_mul_fstG, ha, ha'])`. Use `TorusCoord.isAdd_pointsEquiv c hG a a'` as an intermediate fact.
+
+Rewrite `this` using `[← e₁, ← e₂, ← e₃]`. Conclude with `this`.
+-/
 theorem exists_points (hG : GlobalFnsSt) (h : (splitExt D).IsGt H) :
     ∃ Φ : ∀ T, (T ⟶ H) ≃ GtPt D T,
       (∀ (T' T : Over (Spec (CommRingCat.of R))) (k : T' ⟶ T) (x : T ⟶ H),

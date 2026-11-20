@@ -25,38 +25,65 @@ def c1 (p q : ℤ) (P : M2 n) : ℂ := P.toBlocks₂₂.det ^ (-p) * P.toBlocks�
 
 def c2 (p q : ℤ) (P : M2 n) : ℂ := P.toBlocks₂₂.det ^ (p - n) * P.toBlocks₂₂.det ^ q * P.toBlocks₁₁.det ^ (n : ℤ)
 
+/- English proof (translation)
+Unfold `InG at *`. Rewrite using `[conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem inG_mul {a b : M2 n} (ha : InG a) (hb : InG b) : InG (a * b) := by
   unfold InG at *
   rw [conjTranspose_mul]
   calc bᴴ * aᴴ * JJ n * (a * b) = bᴴ * (aᴴ * JJ n * a) * b := by simp only [Matrix.mul_assoc]
     _ = JJ n := by rw [ha, hb]
 
+/- English proof (translation)
+The claim follows from `isUnit_det_of_inG' hg`.
+-/
 theorem isUnit_det_of_inG {g : M2 n} (hg : InG g) : IsUnit g.det := isUnit_det_of_inG' hg
 
+/- English proof (translation)
+Introduce `g hg` and use `by refine ⟨isUnit_det_of_inG' hg, det_first_cayley_block_ne_zero hg, det_second_cayley_block_ne_zero hg, ?_⟩ rw [inverse_first_block_eq_of_group hg, det_conjTranspose] exact star_ne_zero.2 (det_first_cayley_block_ne_zero hg)`.
+-/
 theorem gset_sub_dom : GSet n ⊆ Dom n := fun g hg => by
   refine ⟨isUnit_det_of_inG' hg, det_first_cayley_block_ne_zero hg, det_second_cayley_block_ne_zero hg, ?_⟩
   rw [inverse_first_block_eq_of_group hg, det_conjTranspose]
   exact star_ne_zero.2 (det_first_cayley_block_ne_zero hg)
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun i => continuous_pi fun j => (continuous_apply (Sum.inl j)).comp (continuous_apply (Sum.inr i))`.
+-/
 theorem continuous_toBlocks₂₁' : Continuous (fun x : M2 n => x.toBlocks₂₁) :=
   continuous_pi fun i => continuous_pi fun j => (continuous_apply (Sum.inl j)).comp (continuous_apply (Sum.inr i))
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun i => continuous_pi fun j => (continuous_apply (Sum.inr j)).comp (continuous_apply (Sum.inr i))`.
+-/
 theorem continuous_toBlocks₂₂' : Continuous (fun x : M2 n => x.toBlocks₂₂) :=
   continuous_pi fun i => continuous_pi fun j => (continuous_apply (Sum.inr j)).comp (continuous_apply (Sum.inr i))
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun i => continuous_pi fun j => (continuous_apply (Sum.inl j)).comp (continuous_apply (Sum.inl i))`.
+-/
 theorem continuous_toBlocks₁₁' : Continuous (fun x : M2 n => x.toBlocks₁₁) :=
   continuous_pi fun i => continuous_pi fun j => (continuous_apply (Sum.inl j)).comp (continuous_apply (Sum.inl i))
 
+/- English proof (translation)
+Use `show Continuous (fun x : M2 n => Complex.I • x.toBlocks₂₁ + x.toBlocks₂₂)`. Conclude with `((continuous_const (y := Complex.I)).smul (continuous_toBlocks₂₁' (n := n))).add (continuous_toBlocks₂₂' (n := n))`.
+-/
 theorem continuous_first_cayley_block_map : Continuous (fun x : M2 n => u1 x) := by
   show Continuous (fun x : M2 n => Complex.I • x.toBlocks₂₁ + x.toBlocks₂₂)
   exact ((continuous_const (y := Complex.I)).smul (continuous_toBlocks₂₁' (n := n))).add
     (continuous_toBlocks₂₂' (n := n))
 
+/- English proof (translation)
+Use `show Continuous (fun x : M2 n => -(Complex.I • x.toBlocks₂₁) + x.toBlocks₂₂)`. Conclude with `((continuous_const (y := Complex.I)).smul (continuous_toBlocks₂₁' (n := n))).neg.add (continuous_toBlocks₂₂' (n := n))`.
+-/
 theorem continuous_second_cayley_block_map : Continuous (fun x : M2 n => u2 x) := by
   show Continuous (fun x : M2 n => -(Complex.I • x.toBlocks₂₁) + x.toBlocks₂₂)
   exact ((continuous_const (y := Complex.I)).smul (continuous_toBlocks₂₁' (n := n))).neg.add
     (continuous_toBlocks₂₂' (n := n))
 
+/- English proof (translation)
+Establish `h : ContinuousOn (fun x : Matrix m m ℂ => (x.det)⁻¹ • x.adjugate) {x | x.det ≠ 0}` using `((continuous_id.matrix_det).continuousOn.inv₀ fun x hx => hx).smul continuous_id.matrix_adjugate.continuousOn`. Use `h.congr fun x hx => ?_` and prove the remaining obligations. Simplify using `only [Matrix.inv_def, Ring.inverse_eq_inv']`.
+-/
 theorem continuousOn_inv' {m : Type} [Fintype m] [DecidableEq m] :
     ContinuousOn (fun x : Matrix m m ℂ => x⁻¹) {x | x.det ≠ 0} := by
   have h : ContinuousOn (fun x : Matrix m m ℂ => (x.det)⁻¹ • x.adjugate) {x | x.det ≠ 0} :=
@@ -64,6 +91,11 @@ theorem continuousOn_inv' {m : Type} [Fintype m] [DecidableEq m] :
   refine h.congr fun x hx => ?_
   simp only [Matrix.inv_def, Ring.inverse_eq_inv']
 
+/- English proof (translation)
+Establish `h1 : ContinuousOn (fun x : M2 n => x⁻¹) {x | x.det ≠ 0}` using `continuousOn_inv'`. Establish `h11 : ContinuousOn (fun x : M2 n => x⁻¹.toBlocks₁₁) {x | x.det ≠ 0}` using `(continuous_toBlocks₁₁' (n := n)).comp_continuousOn h1`. Establish `h21 : ContinuousOn (fun x : M2 n => x⁻¹.toBlocks₂₁) {x | x.det ≠ 0}` using `(continuous_toBlocks₂₁' (n := n)).comp_continuousOn h1`. Use `show ContinuousOn (fun x : M2 n => x⁻¹.toBlocks₁₁ + Complex.I • x⁻¹.toBlocks₂₁) _`. Use `ContinuousOn.add h11 ?_` and prove the remaining obligations.
+
+Conclude with `fun x hx => (h21 x hx).const_smul Complex.I`.
+-/
 theorem continuousOn_inverse_first_block : ContinuousOn (fun x : M2 n => ub1 x) {x | x.det ≠ 0} := by
   have h1 : ContinuousOn (fun x : M2 n => x⁻¹) {x | x.det ≠ 0} := continuousOn_inv'
   have h11 : ContinuousOn (fun x : M2 n => x⁻¹.toBlocks₁₁) {x | x.det ≠ 0} :=
@@ -74,14 +106,25 @@ theorem continuousOn_inverse_first_block : ContinuousOn (fun x : M2 n => ub1 x) 
   refine ContinuousOn.add h11 ?_
   exact fun x hx => (h21 x hx).const_smul Complex.I
 
+/- English proof (translation)
+Establish `h : ContinuousOn (fun x : M2 n => (u2 x)⁻¹) {x | (u2 x).det ≠ 0}` using `continuousOn_inv'.comp continuous_second_cayley_block_map.continuousOn fun x hx => hx`. Conclude with `h.mul continuous_first_cayley_block_map.continuousOn`.
+-/
 theorem continuousOn_wM : ContinuousOn (fun x : M2 n => wM x) {x | (u2 x).det ≠ 0} := by
   have h : ContinuousOn (fun x : M2 n => (u2 x)⁻¹) {x | (u2 x).det ≠ 0} :=
     continuousOn_inv'.comp continuous_second_cayley_block_map.continuousOn fun x hx => hx
   exact h.mul continuous_first_cayley_block_map.continuousOn
 
+/- English proof (translation)
+The claim follows from `(continuous_id.matrix_submatrix _ _).matrix_det`.
+-/
 theorem continuous_minorOn (s : Finset (Fin n)) : Continuous (fun M : Matrix (Fin n) (Fin n) ℂ => minorOn s M) :=
   (continuous_id.matrix_submatrix _ _).matrix_det
 
+/- English proof (translation)
+Establish `hdet : Continuous (fun x : M2 n => x.det)` using `continuous_id.matrix_det`. Establish `h0 : IsOpen {x : M2 n | x.det ≠ 0}` using `isOpen_ne_fun hdet continuous_const`. Establish `e : Dom n = ({x : M2 n | x.det ≠ 0} ∩ (fun x => ub1 x) ⁻¹' {M | M.det ≠ 0}) ∩ ({x | (u1 x).det ≠ 0} ∩ {x | (u2 x).det ≠ 0})`. Use extensionality with `x`. Simplify using `only [Dom, Set.mem_setOf_eq, Set.mem_inter_iff, Set.mem_preimage, isUnit_iff_ne_zero]`.
+
+The claim follows by propositional logic. Rewrite using `[e]`. Use `IsOpen.inter (continuousOn_inverse_first_block.isOpen_inter_preimage h0 (isOpen_ne_fun continuous_id.matrix_det continuous_const)) (IsOpen.inter ?_ ?_)` and prove the remaining obligations. Conclude with `isOpen_ne_fun continuous_first_cayley_block_map.matrix_det continuous_const`. Conclude with `isOpen_ne_fun continuous_second_cayley_block_map.matrix_det continuous_const`.
+-/
 theorem isOpen_dom : IsOpen (Dom n) := by
   have hdet : Continuous (fun x : M2 n => x.det) := continuous_id.matrix_det
   have h0 : IsOpen {x : M2 n | x.det ≠ 0} := isOpen_ne_fun hdet continuous_const
@@ -96,16 +139,27 @@ theorem isOpen_dom : IsOpen (Dom n) := by
   · exact isOpen_ne_fun continuous_first_cayley_block_map.matrix_det continuous_const
   · exact isOpen_ne_fun continuous_second_cayley_block_map.matrix_det continuous_const
 
+/- English proof (translation)
+Establish `h` using `isUnit_det_of_inG' hP.1`. Rewrite `h` using `[det_par hP.2]`. Conclude with `(isUnit_of_mul_isUnit_right h).ne_zero`.
+-/
 theorem det_lower_right_parabolic_ne_zero {P : M2 n} (hP : InP P) : P.toBlocks₂₂.det ≠ 0 := by
   have h := isUnit_det_of_inG' hP.1
   rw [det_par hP.2] at h
   exact (isUnit_of_mul_isUnit_right h).ne_zero
 
+/- English proof (translation)
+Establish `h` using `isUnit_det_of_inG' hP.1`. Rewrite `h` using `[det_par hP.2]`. Conclude with `(isUnit_of_mul_isUnit_left h).ne_zero`.
+-/
 theorem det_upper_left_parabolic_ne_zero {P : M2 n} (hP : InP P) : P.toBlocks₁₁.det ≠ 0 := by
   have h := isUnit_det_of_inG' hP.1
   rw [det_par hP.2] at h
   exact (isUnit_of_mul_isUnit_left h).ne_zero
 
+/- English proof (translation)
+Take `⟨h0, h1, h2, h3⟩` from `hx`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[det_mul]`. Conclude with `(isUnit_det_of_inG' hP.1).mul h0`. Rewrite using `[automorphy_first_mul_parabolic x hP.2, det_mul]`.
+
+Conclude with `mul_ne_zero (det_lower_right_parabolic_ne_zero hP) h1`. Rewrite using `[automorphy_second_mul_parabolic x hP.2, det_mul]`. Conclude with `mul_ne_zero (det_lower_right_parabolic_ne_zero hP) h2`. Rewrite using `[inverse_first_block_mul_parabolic hP.2 (isUnit_det_of_inG' hP.1), det_mul, det_nonsing_inv, Ring.inverse_eq_inv']`. Conclude with `mul_ne_zero h3 (inv_ne_zero (det_upper_left_parabolic_ne_zero hP))`.
+-/
 theorem mul_mem_dom {P x : M2 n} (hP : InP P) (hx : x ∈ Dom n) : P * x ∈ Dom n := by
   obtain ⟨h0, h1, h2, h3⟩ := hx
   refine ⟨?_, ?_, ?_, ?_⟩
@@ -115,23 +169,41 @@ theorem mul_mem_dom {P x : M2 n} (hP : InP P) (hx : x ∈ Dom n) : P * x ∈ Dom
   · rw [inverse_first_block_mul_parabolic hP.2 (isUnit_det_of_inG' hP.1), det_mul, det_nonsing_inv, Ring.inverse_eq_inv']
     exact mul_ne_zero h3 (inv_ne_zero (det_upper_left_parabolic_ne_zero hP))
 
+/- English proof (translation)
+Establish `hD : IsUnit P.toBlocks₂₂` using `(Matrix.isUnit_iff_isUnit_det _).2 (isUnit_iff_ne_zero.2 (det_lower_right_parabolic_ne_zero hP))`. Rewrite using `[wM, wM, automorphy_first_mul_parabolic x hP.2, automorphy_second_mul_parabolic x hP.2, Matrix.mul_inv_rev, Matrix.mul_assoc, ← Matrix.mul_assoc (P.toBlocks₂₂)⁻¹, Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).1 hD), Matrix.one_mul]`.
+-/
 theorem wM_mul_par {P : M2 n} (hP : InP P) (x : M2 n) : wM (P * x) = wM x := by
   have hD : IsUnit P.toBlocks₂₂ := (Matrix.isUnit_iff_isUnit_det _).2 (isUnit_iff_ne_zero.2 (det_lower_right_parabolic_ne_zero hP))
   rw [wM, wM, automorphy_first_mul_parabolic x hP.2, automorphy_second_mul_parabolic x hP.2, Matrix.mul_inv_rev, Matrix.mul_assoc,
     ← Matrix.mul_assoc (P.toBlocks₂₂)⁻¹, Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).1 hD),
     Matrix.one_mul]
 
+/- English proof (translation)
+Simplify using `only [hF, wM_mul_par hP, f0, c1, automorphy_first_mul_parabolic x hP.2, automorphy_second_mul_parabolic x hP.2, det_mul, mul_zpow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hF_law (j : ℕ) (p q : ℤ) {P x : M2 n} (hP : InP P) (hx : x ∈ Dom n) :
     hF j p q (P * x) = c1 p q P * hF j p q x := by
   simp only [hF, wM_mul_par hP, f0, c1, automorphy_first_mul_parabolic x hP.2, automorphy_second_mul_parabolic x hP.2, det_mul, mul_zpow]
   ring
 
+/- English proof (translation)
+Simplify using `only [fV, c2, automorphy_first_mul_parabolic x hP.2, automorphy_second_mul_parabolic x hP.2, inverse_first_block_mul_parabolic hP.2 (isUnit_det_of_inG' hP.1), det_mul, det_nonsing_inv, Ring.inverse_eq_inv', mul_zpow, _root_.inv_zpow', neg_neg, zpow_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fV_law (p q : ℤ) {P x : M2 n} (hP : InP P) (hx : x ∈ Dom n) :
     fV p q (P * x) = c2 p q P * fV p q x := by
   simp only [fV, c2, automorphy_first_mul_parabolic x hP.2, automorphy_second_mul_parabolic x hP.2, inverse_first_block_mul_parabolic hP.2 (isUnit_det_of_inG' hP.1), det_mul,
     det_nonsing_inv, Ring.inverse_eq_inv', mul_zpow, _root_.inv_zpow', neg_neg, zpow_natCast]
   ring
 
+/- English proof (translation)
+Establish `hd` using `det_lower_right_parabolic_ne_zero hP`. Establish `hrel : star P.toBlocks₁₁.det * P.toBlocks₂₂.det = 1`. Use `congrArg Matrix.det (par_rel hP.1 hP.2)` as an intermediate fact. Rewrite `this` using `[det_mul, det_conjTranspose, det_one]`. Then use the resulting hypothesis. Establish `ha : P.toBlocks₁₁.det = (star P.toBlocks₂₂.det)⁻¹`.
+
+Establish `h2 : star (star P.toBlocks₁₁.det * P.toBlocks₂₂.det) = 1` using `by rw [hrel, star_one]`. Rewrite `h2` using `[star_mul, star_star]`. Conclude with `eq_inv_of_mul_eq_one_right h2`. Establish `hn : ((‖P.toBlocks₂₂.det‖ ^ (-(2 * (n : ℤ))) : ℝ) : ℂ) = (P.toBlocks₂₂.det * star P.toBlocks₂₂.det) ^ (-(n : ℤ))`. Rewrite using `[Complex.star_def, Complex.mul_conj, ← Complex.ofReal_zpow, Complex.normSq_eq_norm_sq]`.
+
+Use `congr 1`. Rewrite using `[← zpow_natCast, ← _root_.zpow_mul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hn, c1, c2, ha, mul_zpow]`. Use `set d := P.toBlocks₂₂.det`. Establish `e : d ^ (-p) * d ^ (-q) * (d ^ (p - n) * d ^ q * (star d)⁻¹ ^ (n : ℤ)) = (d ^ (-p) * d ^ (-q) * d ^ (p - n) * d ^ q) * (star d)⁻¹ ^ (n : ℤ)` using `by ring`. Rewrite using `[e, ← zpow_add₀ hd, ← zpow_add₀ hd, ← zpow_add₀ hd, show -p + -q + (p - (n : ℤ)) + q = -(n : ℤ) by ring, _root_.inv_zpow']`.
+-/
 theorem modulus_characters_product (p q : ℤ) {P : M2 n} (hP : InP P) :
     c1 p q P * c2 p q P = ((‖(P.toBlocks₂₂).det‖ ^ (-(2 * (n : ℤ))) : ℝ) : ℂ) := by
   have hd := det_lower_right_parabolic_ne_zero hP
@@ -156,6 +228,9 @@ theorem modulus_characters_product (p q : ℤ) {P : M2 n} (hP : InP P) :
   rw [e, ← zpow_add₀ hd, ← zpow_add₀ hd, ← zpow_add₀ hd,
     show -p + -q + (p - (n : ℤ)) + q = -(n : ℤ) by ring, _root_.inv_zpow']
 
+/- English proof (translation)
+Establish `h1 : u1 k ∈ unitaryGroup (Fin n) ℂ` using `Matrix.mem_unitaryGroup_iff.2 (first_cayley_block_unitary hk)`. Establish `h2 : u2 k ∈ unitaryGroup (Fin n) ℂ` using `Matrix.mem_unitaryGroup_iff.2 (second_cayley_block_unitary hk)`. Establish `hi : (u2 k)⁻¹ = star (u2 k)` using `Matrix.inv_eq_right_inv (second_cayley_block_unitary hk)`. Rewrite using `[wM, hi]`. Conclude with `Submonoid.mul_mem _ (Matrix.mem_unitaryGroup_iff.2 (by rw [star_star]; exact Matrix.mem_unitaryGroup_iff'.1 h2)) h1`.
+-/
 theorem wM_mem_unitary {k : M2 n} (hk : InK k) : wM k ∈ unitaryGroup (Fin n) ℂ := by
   have h1 : u1 k ∈ unitaryGroup (Fin n) ℂ := Matrix.mem_unitaryGroup_iff.2 (first_cayley_block_unitary hk)
   have h2 : u2 k ∈ unitaryGroup (Fin n) ℂ := Matrix.mem_unitaryGroup_iff.2 (second_cayley_block_unitary hk)
@@ -163,6 +238,11 @@ theorem wM_mem_unitary {k : M2 n} (hk : InK k) : wM k ∈ unitaryGroup (Fin n) �
   rw [wM, hi]
   exact Submonoid.mul_mem _ (Matrix.mem_unitaryGroup_iff.2 (by rw [star_star]; exact Matrix.mem_unitaryGroup_iff'.1 h2)) h1
 
+/- English proof (translation)
+Establish `h1` using `det_first_cayley_block_ne_zero hk.1`. Establish `h2` using `det_second_cayley_block_ne_zero hk.1`. Establish `hs : (u1 k).det * star (u1 k).det = 1`. Use `congrArg Matrix.det (first_cayley_block_unitary hk)` as an intermediate fact. Rewrite `this` using `[det_mul, det_conjTranspose, det_one]`. Then use the resulting hypothesis.
+
+Establish `hs' : star (u1 k).det ≠ 0` using `star_ne_zero.2 h1`. Rewrite using `[f0, fV, inverse_first_block_eq_of_group hk.1, det_conjTranspose]`. Establish `e : (u1 k).det ^ (-p) * (u2 k).det ^ (-q) * ((u1 k).det ^ (p - n) * (u2 k).det ^ q * star (u1 k).det ^ (-(n : ℤ))) = ((u1 k).det ^ (-p) * (u1 k).det ^ (p - n)) * ((u2 k).det ^ (-q) * (u2 k).det ^ q) * star (u1 k).det ^ (-(n : ℤ))` using `by ring`. Rewrite using `[e, ← zpow_add₀ h1, ← zpow_add₀ h2, show -p + (p - (n : ℤ)) = -(n : ℤ) by ring, show -q + q = 0 by ring, zpow_zero, mul_one, ← mul_zpow, hs, _root_.one_zpow]`.
+-/
 theorem scalar_section_mul_conjugate_section {k : M2 n} (hk : InK k) (p q : ℤ) : f0 p q k * fV p q k = 1 := by
   have h1 := det_first_cayley_block_ne_zero hk.1
   have h2 := det_second_cayley_block_ne_zero hk.1
@@ -177,11 +257,29 @@ theorem scalar_section_mul_conjugate_section {k : M2 n} (hk : InK k) (p q : ℤ)
   rw [e, ← zpow_add₀ h1, ← zpow_add₀ h2, show -p + (p - (n : ℤ)) = -(n : ℤ) by ring, show -q + q = 0 by ring,
     zpow_zero, mul_one, ← mul_zpow, hs, _root_.one_zpow]
 
+/- English proof (translation)
+Establish `hi : u⁻¹ = star u` using `Matrix.inv_eq_left_inv (Matrix.mem_unitaryGroup_iff'.1 hu)`. Rewrite using `[hi, minorOn, minorOn, Matrix.star_eq_conjTranspose, ← conjTranspose_submatrix, det_conjTranspose]`.
+-/
 theorem minorOn_inv_of_unitary {u : Matrix (Fin n) (Fin n) ℂ} (hu : u ∈ unitaryGroup (Fin n) ℂ) (s : Finset (Fin n)) :
     minorOn s u⁻¹ = star (minorOn s u) := by
   have hi : u⁻¹ = star u := Matrix.inv_eq_left_inv (Matrix.mem_unitaryGroup_iff'.1 hu)
   rw [hi, minorOn, minorOn, Matrix.star_eq_conjTranspose, ← conjTranspose_submatrix, det_conjTranspose]
 
+/- English proof (translation)
+Establish `hmA : ∀ a : Fin n, a ∈ blkA j ↔ (a : ℕ) < j` using `fun a => by simp [blkA]`. Establish `hmB : ∀ a : Fin n, a ∈ blkB j ↔ ¬ (a : ℕ) < j` using `fun a => by simp [blkB, blkA]`. Establish `dP : (1 + P').det = 1`. Rewrite using `[Matrix.det_of_upperTriangular]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations.
+
+Establish `: P' i i = 0`. Assume the negation of the conclusion as `h0`. Use `hP i i h0` as an intermediate fact. Conclude with `((hmB i).1 this.2) ((hmA i).1 this.1)`. Simplify using `[this]`.
+
+Introduce `a b hba`. Establish `hab : a ≠ b` using `fun h => (lt_irrefl _ (h ▸ hba))`. Simplify using `only [Matrix.add_apply, Matrix.one_apply_ne hab, zero_add]`. Assume the negation of the conclusion as `h0`. Use `hP a b h0` as an intermediate fact.
+
+Conclude with `((hmB b).1 this.2) (lt_trans (Fin.lt_def.1 hba) ((hmA a).1 this.1))`. Establish `dS : (1 + S').det = 1`. Rewrite using `[← det_transpose, Matrix.transpose_add, Matrix.transpose_one, Matrix.det_of_upperTriangular]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Establish `: S' i i = 0`.
+
+Assume the negation of the conclusion as `h0`. Use `hS i i h0` as an intermediate fact. Conclude with `((hmB i).1 this.1) ((hmA i).1 this.2)`. Simplify using `[this]`. Introduce `a b hba`.
+
+Establish `hab : a ≠ b` using `fun h => (lt_irrefl _ (h ▸ hba))`. Simplify using `only [Matrix.add_apply, Matrix.one_apply_ne hab, zero_add, Matrix.transpose_apply]`. Assume the negation of the conclusion as `h0`. Use `hS b a h0` as an intermediate fact. Conclude with `((hmB b).1 this.1) (lt_trans (Fin.lt_def.1 hba) ((hmA a).1 this.2))`.
+
+Take `⟨e1, e2⟩` from `hU n x (1 + P') 0 0 (1 + S')`. Rewrite using `[f0, f0, e1, e2]`. Simplify using `only [Matrix.mul_zero, add_zero, zero_add, det_mul, dP, dS, mul_one]`.
+-/
 theorem scalar_section_compact_block_invariant (hU : UAct) (j : ℕ) (p q : ℤ) (x : M2 n)
     (P' S' : Matrix (Fin n) (Fin n) ℂ) (hP : ∀ a b, P' a b ≠ 0 → a ∈ blkA j ∧ b ∈ blkB j)
     (hS : ∀ a b, S' a b ≠ 0 → a ∈ blkB j ∧ b ∈ blkA j) : f0 p q (x * mX (1 + P') 0 0 (1 + S')) = f0 p q x := by
@@ -219,11 +317,23 @@ theorem scalar_section_compact_block_invariant (hU : UAct) (j : ℕ) (p q : ℤ)
   rw [f0, f0, e1, e2]
   simp only [Matrix.mul_zero, add_zero, zero_add, det_mul, dP, dS, mul_one]
 
+/- English proof (translation)
+Establish `h1 : u1 (1 : M2 n) = 1` using `by simp [u1, ← fromBlocks_one]`. Establish `h2 : u2 (1 : M2 n) = 1` using `by simp [u2, ← fromBlocks_one]`. Rewrite using `[wM, h1, h2, inv_one, Matrix.one_mul]`.
+-/
 theorem wM_one : wM (1 : M2 n) = 1 := by
   have h1 : u1 (1 : M2 n) = 1 := by simp [u1, ← fromBlocks_one]
   have h2 : u2 (1 : M2 n) = 1 := by simp [u2, ← fromBlocks_one]
   rw [wM, h1, h2, inv_one, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `hw : Continuous (fun k => wM (ι k))` using `continuousOn_wM.comp_continuous hι fun k => by`. Take `⟨g, hg⟩ : InK (ι k)` from `(hK (ι k)).2 ⟨k, rfl⟩`. Conclude with `det_second_cayley_block_ne_zero g`. Establish `hc : Continuous (fun k => ‖minorOn (blkA j) (wM (ι k))‖ ^ 2 * ‖minorOn (blkB j) (wM (ι k))‖ ^ 2)` using `(((continuous_minorOn _).comp hw).norm.pow 2).mul (((continuous_minorOn _).comp hw).norm.pow 2)`. Establish `hm1 : ∀ s : Finset (Fin n), minorOn s (1 : Matrix (Fin n) (Fin n) ℂ) = 1` using `fun s => by`.
+
+Rewrite using `[minorOn]`. Establish `: (1 : Matrix (Fin n) (Fin n) ℂ).submatrix (fun i : s => (i : Fin n)) (fun i : s => (i : Fin n)) = 1`. Use extensionality with `a b`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Establish `h' : (a : Fin n) ≠ b` using `fun e => h (Subtype.ext e)`. Rewrite using `[Matrix.submatrix_apply, Matrix.one_apply_ne h', Matrix.one_apply_ne h]`. Rewrite using `[this, det_one]`. Use `hc.integral_pos_of_hasCompactSupport_nonneg_nonzero (IsCompact.of_isClosed_subset isCompact_univ (isClosed_tsupport _) (Set.subset_univ _)) (fun k => by positivity) (x := 1) ?_` and prove the remaining obligations.
+
+Rewrite using `[map_one, wM_one, hm1, hm1]`. Evaluate the numerical expressions.
+-/
 theorem pos_int (j : ℕ) (Kg : Type) [Group Kg] [TopologicalSpace Kg] [IsTopologicalGroup Kg] [CompactSpace Kg]
     [MeasurableSpace Kg] [BorelSpace Kg] (μ : Measure Kg) [μ.IsHaarMeasure] (ι : Kg →* M2 n) (hι : Continuous ι)
     (hK : ∀ g, InK g ↔ ∃ k, ι k = g) :
@@ -248,6 +358,9 @@ theorem pos_int (j : ℕ) (Kg : Type) [Group Kg] [TopologicalSpace Kg] [IsTopolo
     (fun k => by positivity) (x := 1) ?_
   rw [map_one, wM_one, hm1, hm1]; norm_num
 
+/- English proof (translation)
+Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `x0 hx0`. Establish `key : ∀ k ∈ (Set.univ : Set Kg), ∀ᶠ z : M2 n × Kg in nhds (x0, k), ι z.2 * z.1 ∈ Dom n` using `fun k _ => ((hι.comp continuous_snd).mul continuous_fst).continuousAt.preimage_mem_nhds (isOpen_dom.mem_nhds (hx0 k))`. Establish `h` using `isCompact_univ.eventually_forall_of_forall_eventually (P := fun (x : M2 n) (k : Kg) => ι k * x ∈ Dom n) key`. Use `filter_upwards [h] with x hx k using hx k (Set.mem_univ k)`.
+-/
 theorem isOpen_domK (Kg : Type) [TopologicalSpace Kg] [CompactSpace Kg] (ι : Kg → M2 n) (hι : Continuous ι) :
     IsOpen {x : M2 n | ∀ k, ι k * x ∈ Dom n} := by
   rw [isOpen_iff_mem_nhds]

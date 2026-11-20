@@ -74,6 +74,11 @@ def NormNe : Prop :=
     vNormSq ε (lowK ε (μ + Pi.single s 1)) ≠ vNormSq ε (lowK ε (μ + Pi.single s' 1)) ∧
     vNormSq ε (lowK ε (μ - Pi.single s 1)) ≠ vNormSq ε (lowK ε (μ - Pi.single s' 1))
 
+/- English proof (translation)
+Establish `key : ∀ s, ∃ (H : Type) (_ : NormedAddCommGroup H) (_ : InnerProductSpace ℂ H) (_ : CompleteSpace H) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), IsHCParam (ν s) → IsDS ε (ν s) σ`. Introduce `s`. Distinguish the cases in `h : IsHCParam (ν s)`. Take `⟨H, i1, i2, σ, hσ⟩` from `hE n ε (ν s) h`. Conclude with `⟨H, i1, i2, hσ.1, σ, fun _ => hσ⟩`.
+
+Conclude with `⟨ℂ, inferInstance, inferInstance, inferInstance, fun _ => 0, fun h' => absurd h' h⟩`. Use `choose Hs i1 i2 i3 σs hσ using key`. Conclude with `⟨{ Hs := Hs, nH := i1, iH := i2, cH := i3, σs := σs }, hσ⟩`.
+-/
 theorem fam_of (hE : PI.DSExist) {n : ℕ} (ε : Fin n → Bool) (ν : Fin n → Fin n → ℝ) :
     ∃ F : Fam n, ∀ s, IsHCParam (ν s) → IsDS ε (ν s) (F.σs s) := by
   classical
@@ -87,6 +92,11 @@ theorem fam_of (hE : PI.DSExist) {n : ℕ} (ε : Fin n → Bool) (ν : Fin n →
   choose Hs i1 i2 i3 σs hσ using key
   exact ⟨{ Hs := Hs, nH := i1, iH := i2, cH := i3, σs := σs }, hσ⟩
 
+/- English proof (translation)
+Introduce `n ε μ H _ _ _ σ hμ hσ hg`. Take `⟨F, hF⟩` from `fam_of hE ε (fun s => μ + Pi.single s 1)`. Use `⟨{ Sm := Finset.univ.filter fun s => IsHCParam (μ + Pi.single s 1) Hs := F.Hs, σs := F.σs ds := fun s hs => ⟨(Finset.mem_filter.1 hs).2, hF s (Finset.mem_filter.1 hs).2⟩ inequiv := fun s hs s' hs' hne => hI n ε (μ + Pi.single s 1) (μ + Pi.single s' 1) (hN n ε μ hμ s s' hne).1 (F. …` and prove the remaining obligations. Take `⟨ι, i1, sI, vI, wI, h1, h2⟩` from `hT n ε μ H σ hμ hσ hg F hF v w x y hv hw`. Conclude with `⟨ι, i1, sI, vI, wI, fun i => ⟨Finset.mem_filter.2 ⟨Finset.mem_univ _, (h1 i).1⟩, (h1 i).2⟩, h2⟩`.
+
+Use `ofSum := fun s hs v w hv hw => hO n ε μ H σ hμ hσ hg s (Finset.mem_filter.1 hs).2 (F.Hs s) (F.σs s) (hF s (Finset.mem_filter.1 hs).2) v w hv hw }, fun s => ?_⟩`. Simplify using the standard rewrite rules.
+-/
 theorem zuck_of (hE : PI.DSExist) (hI : Ineq) (hN : NormNe) (hT : ToSum) (hO : OfSum) : Zuck := by
   classical
   intro n ε μ H _ _ _ σ hμ hσ hg
@@ -104,6 +114,11 @@ theorem zuck_of (hE : PI.DSExist) (hI : Ineq) (hN : NormNe) (hT : ToSum) (hO : O
               hO n ε μ H σ hμ hσ hg s (Finset.mem_filter.1 hs).2 (F.Hs s) (F.σs s) (hF s (Finset.mem_filter.1 hs).2) v w hv hw }, fun s => ?_⟩
   simp
 
+/- English proof (translation)
+Introduce `n ε μ H _ _ _ σ hμ hσ hg`. Take `⟨F, hF⟩` from `fam_of hE ε (fun s => μ - Pi.single s 1)`. Use `⟨{ Sm := Finset.univ.filter fun s => IsHCParam (μ - Pi.single s 1) Hs := F.Hs, σs := F.σs ds := fun s hs => ⟨(Finset.mem_filter.1 hs).2, hF s (Finset.mem_filter.1 hs).2⟩ inequiv := fun s hs s' hs' hne => hI n ε (μ - Pi.single s 1) (μ - Pi.single s' 1) (hN n ε μ hμ s s' hne).2 (F. …` and prove the remaining obligations. Take `⟨ι, i1, sI, vI, wI, h1, h2⟩` from `hT n ε μ H σ hμ hσ hg F hF v w x y hv hw`. Conclude with `⟨ι, i1, sI, vI, wI, fun i => ⟨Finset.mem_filter.2 ⟨Finset.mem_univ _, (h1 i).1⟩, (h1 i).2⟩, h2⟩`.
+
+Use `ofSum := fun s hs v w hv hw => hO n ε μ H σ hμ hσ hg s (Finset.mem_filter.1 hs).2 (F.Hs s) (F.σs s) (hF s (Finset.mem_filter.1 hs).2) v w hv hw }, fun s => ?_⟩`. Simplify using the standard rewrite rules.
+-/
 theorem zuckDual_of (hE : PI.DSExist) (hI : Ineq) (hN : NormNe) (hT : ToSumd) (hO : OfSumd) : ZuckDual := by
   classical
   intro n ε μ H _ _ _ σ hμ hσ hg

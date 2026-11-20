@@ -9,6 +9,11 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
 
 variable [MeasurableSpace E] [BorelSpace E]
 
+/- English proof (translation)
+Use `⟨max C 0 * (1 + |K|) ^ k, fun x y hxy => ?_⟩` and prove the remaining obligations. Establish `hx : 0 ≤ ‖x‖` using `norm_nonneg _`. Establish `h2 : 1 + ‖y‖ ≤ (1 + |K|) * (1 + ‖x‖)`. Establish `h3 : K * ‖x‖ ≤ |K| * ‖x‖` using `mul_le_mul_of_nonneg_right (le_abs_self K) hx`. Establish `h4 : 0 ≤ |K|` using `abs_nonneg K`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `h3 : (1 + ‖x‖) ^ (-(k : ℝ)) ≤ (1 + |K|) ^ k * (1 + ‖y‖) ^ (-(k : ℝ))`. Rewrite using `[Real.rpow_neg (by positivity), Real.rpow_neg (by positivity), Real.rpow_natCast, Real.rpow_natCast, ← div_eq_mul_inv, inv_eq_one_div, div_le_div_iff₀ (by positivity) (by positivity), one_mul]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma decay_comp_of_norm_le (g : E → ℂ) (k : ℕ) (C : ℝ)
     (hC : ∀ y, ‖g y‖ ≤ C * (1 + ‖y‖) ^ (-(k : ℝ))) (K : ℝ) :
     ∃ C' : ℝ, ∀ x y : E, ‖y‖ ≤ K * ‖x‖ → ‖g x‖ ≤ C' * (1 + ‖y‖) ^ (-(k : ℝ)) := by
@@ -31,6 +36,15 @@ lemma decay_comp_of_norm_le (g : E → ℂ) (k : ℕ) (C : ℝ)
         mul_le_mul_of_nonneg_left h3 (le_max_right _ _)
     _ = max C 0 * (1 + |K|) ^ k * (1 + ‖y‖) ^ (-(k : ℝ)) := by ring
 
+/- English proof (translation)
+Establish `hev : ∀ᶠ A in 𝓝 A₀, ∀ y, ‖y‖ ≤ (2 * M) * ‖A y‖` using `by filter_upwards [Metric.ball_mem_nhds A₀ (show (0 : ℝ) < 1 / (2 * M) by positivity)] with A hA y`. Rewrite `hA` using `[Metric.mem_ball, dist_eq_norm]`. Establish `e1 : A₀ y = A y - (A - A₀) y` using `by simp`. Establish `h2 : ‖A₀ y‖ ≤ ‖A y‖ + 1 / (2 * M) * ‖y‖`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h3 : M * (1 / (2 * M) * ‖y‖) = ‖y‖ / 2` using `by field_simp`. Establish `h4` using `hA₀ y`. Establish `h5 : M * ‖A₀ y‖ ≤ M * ‖A y‖ + ‖y‖ / 2`. Rewrite using `[← h3, ← mul_add]`. Conclude with `mul_le_mul_of_nonneg_left h2 hM.le`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨C', hC'⟩` from `decay_comp_of_norm_le g k C hC (2 * M)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hev] with A hA`. Conclude with `(hW.const_mul C').mono' (hg.comp A.continuous).aestronglyMeasurable (ae_of_all _ fun y => hC' _ _ (hA y))`.
+
+Use `tendsto_integral_filter_of_dominated_convergence (fun y => C' * (1 + ‖y‖) ^ (-(k : ℝ))) ?_ ?_ (hW.const_mul C') (ae_of_all _ fun y => ?_)` and prove the remaining obligations. Conclude with `Eventually.of_forall fun A => (hg.comp A.continuous).aestronglyMeasurable`. Use `filter_upwards [hev] with A hA`. Conclude with `ae_of_all _ fun y => hC' _ _ (hA y)`. Conclude with `(hg.comp (continuous_id.clm_apply continuous_const)).continuousAt.tendsto`.
+-/
 theorem integrable_continuousAt_clm_comp (m : Measure E) (k : ℕ)
     (hW : Integrable (fun y : E => (1 + ‖y‖) ^ (-(k : ℝ))) m)
     (g : E → ℂ) (hg : Continuous g) (C : ℝ) (hC : ∀ y, ‖g y‖ ≤ C * (1 + ‖y‖) ^ (-(k : ℝ)))
@@ -68,6 +82,17 @@ end GlobalTheory.CompanionTheory.PushFam
 
 namespace GlobalTheory.CompanionTheory.PushFam
 
+/- English proof (translation)
+Introduce `N X _ μ' hμ' n c O hO hcO hfin hL g hg hdecay`. Use `haveI := hμ'`. Use `set k : ℕ := N + 1 with hk`. Use `set W : (Fin N → ℝ) → ℝ := fun y => (1 + ‖y‖) ^ (-(k : ℝ)) with hWdef`. Establish `hWnonneg : ∀ y, 0 ≤ W y` using `fun y => by positivity`.
+
+Establish `hWμ : Integrable W μ'` using `integrable_one_add_norm (by rw [Module.finrank_fin_fun, hk]; push_cast; linarith)`. Establish `hWmeas : Measurable W` using `(measurable_const.add measurable_norm).pow_const _`. Take `⟨s0, hs0O, hs0fin⟩` from `hfin (fun y => ENNReal.ofReal (W y)) (ENNReal.measurable_ofReal.comp hWmeas) ((hasFiniteIntegral_iff_ofReal (ae_of_all _ hWnonneg)).1 hWμ.2).ne O hO ⟨c, hcO⟩`. Establish `hWm : Integrable W (n s0)` using `⟨hWmeas.aestronglyMeasurable, (hasFiniteIntegral_iff_ofReal (ae_of_all _ hWnonneg)).2 (lt_top_iff_ne_top.2 hs0fin)⟩`. Take `⟨L, Linv, Λ, hLc, _hLinvc, hΛc, hinv, hpush⟩` from `hL s0 hs0O`.
+
+Take `⟨C, hC⟩` from `hdecay k`. Establish `hA₀ : ∀ y, ‖y‖ ≤ (‖Linv c‖ + 1) * ‖L c y‖` using `fun y => by`. Combine the equalities or inequalities in the displayed calculation. Take `⟨hint, hcont⟩` from `integrable_continuousAt_clm_comp (n s0) k hWm g hg C hC (L c) (‖Linv c‖ + 1) (by positivity) hA₀`. Establish `hint' : ∀ᶠ s in 𝓝 c, Integrable (fun y => g (L s y)) (n s0)` using `hLc.eventually hint`.
+
+Establish `hO' : O ∈ 𝓝 c` using `hO.mem_nhds hcO`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hint', hO'] with s hs hsO`. Rewrite using `[hpush s hsO]`. Conclude with `((integrable_map_measure hg.aestronglyMeasurable (L s).continuous.aemeasurable).2 hs).smul_measure_nnreal`.
+
+Establish `hH : ContinuousAt (fun s => (Λ s : ℝ) • ∫ y, g (L s y) ∂(n s0)) c` using `(NNReal.continuous_coe.continuousAt.comp hΛc).smul (ContinuousAt.comp (f := L) (g := fun A : (Fin N → ℝ) →L[ℝ] (Fin N → ℝ) => ∫ y, g (A y) ∂(n s0)) hcont hLc)`. Use `hH.congr ?_` and prove the remaining obligations. Use `filter_upwards [hO'] with s hs`. Rewrite using `[hpush s hs, integral_smul_nnreal_measure, integral_map (L s).continuous.aemeasurable hg.aestronglyMeasurable, NNReal.smul_def]`.
+-/
 theorem integrable_continuousAt_of_linear_push : PositivityTheory.PfSWUS.SchInf.FamCont := by
   intro N X _ μ' hμ' n c O hO hcO hfin hL g hg hdecay
   haveI := hμ'

@@ -2,6 +2,13 @@ import Mathlib
 
 namespace GlobalTheory.UniformScalarBound
 
+/- English proof (translation)
+Take `⟨S, rfl⟩` from `hA`. Use `choose! f hf0 hfB using fun x (hx : x ∈ S) => h x (Submodule.subset_span hx)`. Use `⟨∏ g ∈ S, f g, Finset.prod_ne_zero_iff.mpr (fun g hg => hf0 g hg), ?_⟩` and prove the remaining obligations. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+
+Consider the case `mem y hy`. Rewrite using `[← Finset.mul_prod_erase S f hy, mul_comm, mul_smul]`. Conclude with `B.smul_mem _ (hfB y hy)`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`.
+
+Conclude with `B.add_mem hx hy`. Consider the case `smul a x _ hx => rw [smul_comm]`. Conclude with `B.smul_mem a hx`.
+-/
 theorem uniform_scalar {R V : Type} [CommRing R] [IsDomain R] [AddCommGroup V] [Module R V]
     (A B : Submodule R V) (hA : A.FG) (h : ∀ x ∈ A, ∃ s : R, s ≠ 0 ∧ s • x ∈ B) :
     ∃ s : R, s ≠ 0 ∧ ∀ x ∈ A, s • x ∈ B := by
@@ -18,6 +25,9 @@ theorem uniform_scalar {R V : Type} [CommRing R] [IsDomain R] [AddCommGroup V] [
   | add x y _ _ hx hy => rw [smul_add]; exact B.add_mem hx hy
   | smul a x _ hx => rw [smul_comm]; exact B.smul_mem a hx
 
+/- English proof (translation)
+Introduce `A B hA h` and use `uniform_scalar A B hA h`.
+-/
 theorem main : ∀ {R V : Type} [inst : CommRing R] [IsDomain R] [inst_2 : AddCommGroup V]
     [inst_3 : Module R V] (A B : Submodule R V), Submodule.FG A →
     (∀ x ∈ A, ∃ (s : R), s ≠ (0 : R) ∧ s • x ∈ B) →

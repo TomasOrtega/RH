@@ -16,6 +16,23 @@ def IsGenFam (Ω G : Type) [Field Ω] [Field G] [Algebra Ω G] {S : Type} {r : S
 def revInv {G : Type} [Field G] {r : ℕ} (u : Matrix (Fin r) (Fin r) G) : Matrix (Fin r) (Fin r) G :=
   (u.transpose⁻¹).submatrix Fin.rev Fin.rev
 
+/- English proof (translation)
+Establish `hdiag : ∀ s (a : Fin (r s)), genU Ω r s a a = 1` using `fun s a => by`. Simplify using `[genU]`. Establish `habove : ∀ s (a b : Fin (r s)), a < b → genU Ω r s a b = 0` using `fun s a b h => by`. Simplify using `[genU, not_lt.2 h.le, h.ne]`. Establish `hbelow : ∀ q : Σ σ, {lk : Fin (r σ) × Fin (r σ) // lk.2 < lk.1}, genU Ω r q.1 q.2.1.1 q.2.1.2 = algebraMap (MvPolynomial (GenIx r) Ω) (GenField Ω r) (MvPolynomial.X (R` using `Ω) (σ := GenIx r) q) := fun q => by`.
+
+Simplify using `only [genU]`. Conclude with `dif_pos q.2.2`. Use `⟨hdiag, habove, ?_, ?_⟩` and prove the remaining obligations. Establish `hinj : Function.Injective (IsScalarTower.toAlgHom Ω (MvPolynomial (GenIx r) Ω) (GenField Ω r))`. Rewrite using `[IsScalarTower.coe_toAlgHom']`.
+
+Conclude with `IsFractionRing.injective _ _`. Establish `hX` using `(MvPolynomial.algebraicIndependent_X (GenIx r) Ω).map' hinj`. Establish `hfun : (fun q : Σ σ, {lk : Fin (r σ) × Fin (r σ) // lk.2 < lk.1} => genU Ω r q.1 q.2.1.1 q.2.1.2) = (IsScalarTower.toAlgHom Ω (MvPolynomial (GenIx r) Ω) (GenField Ω r)) ∘ MvPolynomial.X`. Use function extensionality and compare the values at `q`. Conclude with `hbelow q`.
+
+Rewrite using `[hfun]`. Conclude with `hX`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `hXmem : ∀ q : Σ σ, {lk : Fin (r σ) × Fin (r σ) // lk.2 < lk.1}, algebraMap (MvPolynomial (GenIx r) Ω) (GenField Ω r) (MvPolynomial.X (R` using `Ω) (σ := GenIx r) q) ∈ IntermediateField.adjoin Ω (Set.range fun q : Σ σ, Fin (r σ) × Fin (r σ) => genU Ω r q.1 q.2.1 q.2.2) := by`.
+
+Introduce `q`. Rewrite using `[← hbelow q]`. Conclude with `IntermediateField.subset_adjoin _ _ ⟨⟨q.1, q.2.1⟩, rfl⟩`. Establish `hA : ∀ a : MvPolynomial (GenIx r) Ω, algebraMap (MvPolynomial (GenIx r) Ω) (GenField Ω r) a ∈ IntermediateField.adjoin Ω (Set.range fun q : Σ σ, Fin (r σ) × Fin (r σ) => genU Ω r q.1 q.2.1 q.2.2)`. Introduce `a`.
+
+Proceed by induction on `a using MvPolynomial.induction_on`. Name the introduced variables `c`. Rewrite using `[← MvPolynomial.algebraMap_eq, ← IsScalarTower.algebraMap_apply]`. Conclude with `IntermediateField.algebraMap_mem _ c`. Name the introduced variables `p q hp hq`.
+
+Rewrite using `[map_add]`. Conclude with `add_mem hp hq`. Name the introduced variables `p i hp`. Rewrite using `[map_mul]`. Conclude with `mul_mem hp (hXmem i)`.
+
+Take `⟨a, b, _, rfl⟩` from `IsFractionRing.div_surjective (A := MvPolynomial (GenIx r) Ω) x`. Conclude with `div_mem (hA a) (hA b)`.
+-/
 theorem genU_isGenFam (Ω : Type) [Field Ω] {S : Type} (r : S → ℕ) : IsGenFam Ω (GenField Ω r) (genU Ω r) := by
   have hdiag : ∀ s (a : Fin (r s)), genU Ω r s a a = 1 := fun s a => by
     simp [genU]

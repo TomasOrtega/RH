@@ -21,8 +21,16 @@ section Mat
 
 variable {α β : Type} [Fintype α]
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem val_inl (j : Fin r) : ((stdSum (rfl : r + t = r + t) (Sum.inl j) : Fin (r + t)) : ℕ) = j := by simp
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (stdSum (rfl : r + t = r + t) (Sum.inl j))]`. Simplify using `[eMat]`. Introduce `l _ hl`. Establish `: (l : ℕ) ≠ j` using `fun h => hl (Fin.ext (by simp [h]))`. Simplify using `[eMat, this]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem mul_eMat (X : Matrix α (Fin (r + t)) k) (i : α) (j : Fin r) :
     (X * eMat k r t) i j = X i (stdSum (rfl : r + t = r + t) (Sum.inl j)) := by
   rw [Matrix.mul_apply, Finset.sum_eq_single (stdSum (rfl : r + t = r + t) (Sum.inl j))]
@@ -32,6 +40,11 @@ theorem mul_eMat (X : Matrix α (Fin (r + t)) k) (i : α) (j : Fin r) :
     simp [eMat, this]
   · simp
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Simplify using `[eMat]`. Introduce `l _ hl`. Establish `: (i : ℕ) ≠ l` using `fun h => hl (Fin.ext h.symm)`. Simplify using `[eMat, this]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem eMat_mul_inl (Y : Matrix (Fin r) β k) (i : Fin r) (j : β) :
     (eMat k r t * Y) (stdSum (rfl : r + t = r + t) (Sum.inl i)) j = Y i j := by
   rw [Matrix.mul_apply, Finset.sum_eq_single i]
@@ -41,6 +54,9 @@ theorem eMat_mul_inl (Y : Matrix (Fin r) β k) (i : Fin r) (j : β) :
     simp [eMat, this]
   · simp
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Establish `: r + (i : ℕ) ≠ l` using `by omega`. Simplify using `[eMat, this]`.
+-/
 theorem eMat_mul_inr (Y : Matrix (Fin r) β k) (i : Fin t) (j : β) :
     (eMat k r t * Y) (stdSum (rfl : r + t = r + t) (Sum.inr i)) j = 0 := by
   rw [Matrix.mul_apply]
@@ -53,6 +69,15 @@ open scoped TensorProduct Topology in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {r t : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] in
 
+/- English proof (translation)
+Establish `hE : ∀ (i : Fin (r + t)) (j : Fin r), _root_.GlobalTheory.GodementJacquet.eMat k r t i j = if i = Fin.castAdd t j then 1 else 0`. Introduce `i j`. Simplify using `[_root_.GlobalTheory.GodementJacquet.eMat, Fin.ext_iff]`. Establish `hlow : ∀ (i : Fin t) (j : Fin r), (p : GL (Fin (r + t)) k).val (Fin.natAdd r i) (Fin.castAdd t j) = 0`. Introduce `i j`.
+
+Use `(_root_.GlobalTheory.SmGL.mem_parab_two k).1 p.2 i j` as an intermediate fact. Simplify `this` using `[_root_.GlobalTheory.SmGL.stdSum]`. Establish `hL : ∀ (i j : Fin r), (_root_.GlobalTheory.SmGL.leviProj k (_root_.GlobalTheory.SmGL.two (_root_.GlobalTheory.SmGL.stdSum (rfl : r + t = r + t))) p false : GL (Fin r) k).val i j = (p : GL (Fin (r + t)) k).val (Fin.castAdd t i) (Fin.castAdd t j)`. Introduce `i j`. Rewrite using `[_root_.GlobalTheory.SmGL.leviProj_apply]`.
+
+Both sides reduce to the same expression. Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, hE, hL, mul_ite, ite_mul, mul_one, one_mul, mul_zero, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) i` and prove the remaining obligations. Simplify using `[eq_comm]`.
+
+Rewrite using `[hlow]`. Use `(Finset.sum_eq_zero fun x _ => ?_).symm` and prove the remaining obligations. Rewrite using `[if_neg]`. Simplify using `only [Fin.ext_iff, Fin.coe_natAdd, Fin.coe_castAdd]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem _root_.GlobalTheory.GodementJacquet.parab_mul_eMat
     (p : _root_.GlobalTheory.SmGL.parab k
       (_root_.GlobalTheory.SmGL.two (_root_.GlobalTheory.SmGL.stdSum (rfl : r + t = r + t)))) :
@@ -92,10 +117,18 @@ section Coef
 
 variable {σ : Representation ℂ (GL (Fin r) k) V} {Bf : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ}
 
+/- English proof (translation)
+Use `conv_lhs => rw [← h]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+-/
 theorem fix_inv {g : GL (Fin r) k} {v : V} (h : σ g v = v) : σ g⁻¹ v = v := by
   conv_lhs => rw [← h]
   rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]
 
+/- English proof (translation)
+Use `IsLocallyConstant.continuous ((IsLocallyConstant.iff_eventually_eq _).2 fun g₀ => ?_)` and prove the remaining obligations. Establish `hc : Continuous fun g : GL (Fin r) k => g * g₀⁻¹` using `continuous_mul_right _`. Establish `h1 : {g : GL (Fin r) k | σ g v = v} ∈ 𝓝 ((fun g : GL (Fin r) k => g * g₀⁻¹) g₀)` using `(hσ v).mem_nhds (by simp)`. Use `filter_upwards [hc.continuousAt.preimage_mem_nhds h1] with g hg`. Establish `hg' : σ (g * g₀⁻¹) v = v` using `hg`.
+
+Establish `h2 : g⁻¹ = g₀⁻¹ * (g * g₀⁻¹)⁻¹` using `by group`. Simplify using `only [coef]`. Rewrite using `[h2, map_mul, Module.End.mul_apply, fix_inv hg']`.
+-/
 theorem continuous_coef (hσ : IsSmooth σ) (v w : V) : Continuous (coef σ Bf v w) := by
   refine IsLocallyConstant.continuous ((IsLocallyConstant.iff_eventually_eq _).2 fun g₀ => ?_)
   have hc : Continuous fun g : GL (Fin r) k => g * g₀⁻¹ := continuous_mul_right _
@@ -107,6 +140,9 @@ theorem continuous_coef (hσ : IsSmooth σ) (v w : V) : Continuous (coef σ Bf v
   simp only [coef]
   rw [h2, map_mul, Module.End.mul_apply, fix_inv hg']
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.T.hermitian_norm_sq_le_re_mul_re_of_posDef V Bf hs hp (σ g⁻¹ v) w`. Rewrite `h` using `[hu]`. Conclude with `Real.le_sqrt_of_sq_le h`.
+-/
 theorem norm_coef_le (hs : ∀ v w, Bf w v = starRingEnd ℂ (Bf v w)) (hp : ∀ v, v ≠ 0 → 0 < (Bf v v).re)
     (hu : ∀ g v w, Bf (σ g v) (σ g w) = Bf v w) (v w : V) (g : GL (Fin r) k) :
     ‖coef σ Bf v w g‖ ≤ √((Bf v v).re * (Bf w w).re) := by
@@ -118,6 +154,11 @@ end Coef
 
 section Law
 
+/- English proof (translation)
+Rewrite using `[Real.mul_rpow ha.le hg.le, Real.mul_rpow (mul_pos ha hd).le hh.le, Real.mul_rpow ha.le hd.le]`. Establish `: a ^ ((r + t) / 2) * a ^ (-r / 2) = a ^ (t / 2)`. Rewrite using `[← Real.rpow_add ha]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[← this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rpow_identity {a d g h : ℝ} (ha : 0 < a) (hd : 0 < d) (hg : 0 < g) (hh : 0 < h) (r t : ℝ) :
     (a * g) ^ ((r + t) / 2) * (a * d * h) ^ (-r / 2) =
       a ^ (t / 2) * d ^ (-r / 2) * (g ^ ((r + t) / 2) * h ^ (-r / 2)) := by
@@ -129,6 +170,23 @@ theorem rpow_identity {a d g h : ℝ} (ha : 0 < a) (hd : 0 < d) (hg : 0 < g) (hh
   rw [← this]
   ring
 
+/- English proof (translation)
+Use `set a : GL (Fin r) k := leviProj k (two (stdSum (rfl : r + t = r + t))) p false with ha`. Use `set d : GL (Fin t) k := leviProj k (two (stdSum (rfl : r + t = r + t))) p true with hd`. Establish `hl : leviProj k (two (stdSum (rfl : r + t = r + t))) p = leviTwo k (Fin r) (Fin t) (a, d)`. Use function extensionality and compare the values at `x`. Apply the tactic sequence `cases x <;> rfl`.
+
+Establish `hdet : Matrix.GeneralLinearGroup.det (p : GL (Fin (r + t)) k) = Matrix.GeneralLinearGroup.det a * Matrix.GeneralLinearGroup.det d`. Rewrite using `[det_parab, Fintype.prod_bool, mul_comm]`. Establish `hx : (((p : GL (Fin (r + t)) k) * h)⁻¹ : GL (Fin (r + t)) k).val * eMat k r t * (a * g).val = (h⁻¹ : GL (Fin (r + t)) k).val * eMat k r t * g.val`. Establish `h1` using `parab_mul_eMat p`. Establish `h2 : ((p : GL (Fin (r + t)) k)⁻¹ : GL (Fin (r + t)) k).val * eMat k r t * a.val = eMat k r t`.
+
+Rewrite using `[Matrix.mul_assoc, ← h1, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`. Establish `h3 : ((p : GL (Fin (r + t)) k)⁻¹ : GL (Fin (r + t)) k).val * (eMat k r t * a.val * g.val) = eMat k r t * g.val`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h2]`. Rewrite using `[mul_inv_rev, Units.val_mul, Units.val_mul, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (eMat k r t), h3, Matrix.mul_assoc]`. Establish `hR` using `rpow_identity (nabs_pos' k (Matrix.GeneralLinearGroup.det a)) (nabs_pos' k (Matrix.GeneralLinearGroup.det d)) (nabs_pos' k (Matrix.GeneralLinearGroup.det g)) (nabs_pos' k (Matrix.GeneralLinearGroup.det h)) (r : ℝ) (t : ℝ)`.
+
+Establish `hR'` using `congrArg (fun x : ℝ => (x : ℂ)) hR`. Simplify using `only [Complex.ofReal_mul] at hR'`. Establish `hn : (μ (Matrix.GeneralLinearGroup.det a) : ℂ) ≠ 0` using `Units.ne_zero _`. Establish `hn2 : (μ (Matrix.GeneralLinearGroup.det d) : ℂ) ≠ 0` using `Units.ne_zero _`. Establish `hn3 : (μ (Matrix.GeneralLinearGroup.det h) : ℂ) ≠ 0` using `Units.ne_zero _`.
+
+Rewrite using `[hl, deltaHalf_two]`. Simplify using `only [om]`. Rewrite using `[hx]`. Establish `e1 : (absPow k ((t : ℂ) / 2) (Matrix.GeneralLinearGroup.det a) : ℂ) = ((nabs k (Matrix.GeneralLinearGroup.det a) ^ ((t : ℝ) / 2) : ℝ) : ℂ)`. Rewrite using `[show ((t : ℂ) / 2) = (((t : ℝ) / 2 : ℝ) : ℂ) by simp]`.
+
+Conclude with `val_absPow_ofReal k _ _`. Establish `e2 : (absPow k (-(r : ℂ) / 2) (Matrix.GeneralLinearGroup.det d) : ℂ) = ((nabs k (Matrix.GeneralLinearGroup.det d) ^ (-(r : ℝ) / 2) : ℝ) : ℂ)`. Rewrite using `[show (-(r : ℂ) / 2) = ((-(r : ℝ) / 2 : ℝ) : ℂ) by simp]`. Conclude with `val_absPow_ofReal k _ _`. Simplify using `only [map_mul, hdet, nabs_mul', Units.val_mul, e1, e2, Fintype.card_fin, Nat.cast_add, Units.val_inv_eq_inv_val, mul_inv]`.
+
+Establish `hinv` using `mul_inv_cancel₀ hn`. Generalize the expression as in `(μ (Matrix.GeneralLinearGroup.det a) : ℂ) = a' at *`. Generalize the expression as in `(μ (Matrix.GeneralLinearGroup.det d) : ℂ) = d' at *`. Generalize the expression as in `(μ (Matrix.GeneralLinearGroup.det h) : ℂ) = h' at *`. Generalize the expression as in `(μ (Matrix.GeneralLinearGroup.det g) : ℂ) = g' at *`.
+
+Generalize the expression as in `Φ ((h⁻¹ : GL (Fin (r + t)) k).val * eMat k r t * g.val) = y at *`. Generalize the expression as in `((((nabs k (Matrix.GeneralLinearGroup.det a) * nabs k (Matrix.GeneralLinearGroup.det g)) ^ (((r : ℝ) + (t : ℝ)) / 2)) : ℝ) : ℂ) = x1 at *`. Generalize the expression as in `((((nabs k (Matrix.GeneralLinearGroup.det a) * nabs k (Matrix.GeneralLinearGroup.det d) * nabs k (Matrix.GeneralLinearGroup.det h)) ^ (-(r : ℝ) / 2)) : ℝ) : ℂ) = x2 at *`. Take the linear combination `(g' * d'⁻¹ * h'⁻¹ * y * x1 * x2) * hinv + (g' * d'⁻¹ * h'⁻¹ * y) * hR'`.
+-/
 theorem om_parab (μ : kˣ →* ℂˣ) (p : parab k (two (stdSum (rfl : r + t = r + t))))
     (g : GL (Fin r) k) (h : GL (Fin (r + t)) k) (Φ : Matrix (Fin (r + t)) (Fin r) k → ℂ) :
     om μ ((leviProj k (two (stdSum (rfl : r + t = r + t))) p false : GL (Fin r) k) * g)
@@ -195,6 +253,9 @@ variable [MeasurableSpace (GL (Fin r) k)] [BorelSpace (GL (Fin r) k)] [SecondCou
   {m : Measure (GL (Fin r) k)} {μ : kˣ →* ℂˣ} {σ : Representation ℂ (GL (Fin r) k) V}
   {Bf : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ}
 
+/- English proof (translation)
+The claim follows from `hf.mul_bdd (c := √((Bf v v).re * (Bf w w).re)) (continuous_coef hσ v w).aestronglyMeasurable (ae_of_all _ (norm_coef_le hs hp hu v w))`.
+-/
 theorem integrable_mul_coef (hσ : IsSmooth σ) (hs : ∀ v w, Bf w v = starRingEnd ℂ (Bf v w))
     (hp : ∀ v, v ≠ 0 → 0 < (Bf v v).re) (hu : ∀ g v w, Bf (σ g v) (σ g w) = Bf v w)
     {f : GL (Fin r) k → ℂ} (hf : Integrable f m) (v w : V) :
@@ -206,6 +267,9 @@ variable (hσ : IsSmooth σ) (hs : ∀ v w, Bf w v = starRingEnd ℂ (Bf v w))
     (hp : ∀ v, v ≠ 0 → 0 < (Bf v v).re) (hu : ∀ g v w, Bf (σ g v) (σ g w) = Bf v w)
 include hσ hs hp hu
 
+/- English proof (translation)
+Simplify using `only [gjInt]`. Rewrite using `[← integral_add (integrable_mul_coef hσ hs hp hu hf _ _) (integrable_mul_coef hσ hs hp hu hf _ _)]`. Use `integral_congr_ae (ae_of_all _ fun g => ?_)` and prove the remaining obligations. Simplify using `[coef, mul_add]`.
+-/
 theorem gjInt_add_left {Φ : Matrix (Fin (r + t)) (Fin r) k → ℂ} {h : GL (Fin (r + t)) k}
     (hf : Integrable (fun g => om μ g h Φ (eMat k r t)) m) (v v' w : V) :
     gjInt m μ σ Bf Φ h (v + v') w = gjInt m μ σ Bf Φ h v w + gjInt m μ σ Bf Φ h v' w := by
@@ -214,6 +278,9 @@ theorem gjInt_add_left {Φ : Matrix (Fin (r + t)) (Fin r) k → ℂ} {h : GL (Fi
   refine integral_congr_ae (ae_of_all _ fun g => ?_)
   simp [coef, mul_add]
 
+/- English proof (translation)
+Simplify using `only [gjInt]`. Rewrite using `[← integral_add (integrable_mul_coef hσ hs hp hu hf _ _) (integrable_mul_coef hσ hs hp hu hf _ _)]`. Use `integral_congr_ae (ae_of_all _ fun g => ?_)` and prove the remaining obligations. Simplify using `[coef, mul_add]`.
+-/
 theorem gjInt_add_right {Φ : Matrix (Fin (r + t)) (Fin r) k → ℂ} {h : GL (Fin (r + t)) k}
     (hf : Integrable (fun g => om μ g h Φ (eMat k r t)) m) (v w w' : V) :
     gjInt m μ σ Bf Φ h v (w + w') = gjInt m μ σ Bf Φ h v w + gjInt m μ σ Bf Φ h v w' := by
@@ -222,6 +289,9 @@ theorem gjInt_add_right {Φ : Matrix (Fin (r + t)) (Fin r) k → ℂ} {h : GL (F
   refine integral_congr_ae (ae_of_all _ fun g => ?_)
   simp [coef, mul_add]
 
+/- English proof (translation)
+Simplify using `only [gjInt]`. Rewrite using `[← integral_add (integrable_mul_coef hσ hs hp hu hf _ _) (integrable_mul_coef hσ hs hp hu hg _ _)]`. Use `integral_congr_ae (ae_of_all _ fun g => ?_)` and prove the remaining obligations. Simplify using `only [om, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gjInt_add_fun {Φ Ψ : Matrix (Fin (r + t)) (Fin r) k → ℂ} {h : GL (Fin (r + t)) k}
     (hf : Integrable (fun g => om μ g h Φ (eMat k r t)) m)
     (hg : Integrable (fun g => om μ g h Ψ (eMat k r t)) m) (v w : V) :
@@ -233,6 +303,9 @@ theorem gjInt_add_fun {Φ Ψ : Matrix (Fin (r + t)) (Fin r) k → ℂ} {h : GL (
   ring
 
 omit hσ hs hp hu [BorelSpace (GL (Fin r) k)] [SecondCountableTopology (GL (Fin r) k)] in
+/- English proof (translation)
+Simplify using `only [gjInt]`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (ae_of_all _ fun g => ?_)` and prove the remaining obligations. Simplify using `only [coef, map_smul, LinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gjInt_smul_left (Φ : Matrix (Fin (r + t)) (Fin r) k → ℂ) (h : GL (Fin (r + t)) k) (c : ℂ) (v w : V) :
     gjInt m μ σ Bf Φ h (c • v) w = c * gjInt m μ σ Bf Φ h v w := by
   simp only [gjInt]
@@ -242,6 +315,9 @@ theorem gjInt_smul_left (Φ : Matrix (Fin (r + t)) (Fin r) k → ℂ) (h : GL (F
   ring
 
 omit hσ hs hp hu [BorelSpace (GL (Fin r) k)] [SecondCountableTopology (GL (Fin r) k)] in
+/- English proof (translation)
+Simplify using `only [gjInt]`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (ae_of_all _ fun g => ?_)` and prove the remaining obligations. Simplify using `only [coef, LinearMap.map_smulₛₗ, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gjInt_smul_right (Φ : Matrix (Fin (r + t)) (Fin r) k → ℂ) (h : GL (Fin (r + t)) k) (c : ℂ) (v w : V) :
     gjInt m μ σ Bf Φ h v (c • w) = starRingEnd ℂ c * gjInt m μ σ Bf Φ h v w := by
   simp only [gjInt]
@@ -251,6 +327,9 @@ theorem gjInt_smul_right (Φ : Matrix (Fin (r + t)) (Fin r) k → ℂ) (h : GL (
   ring
 
 omit hσ hs hp hu [BorelSpace (GL (Fin r) k)] [SecondCountableTopology (GL (Fin r) k)] in
+/- English proof (translation)
+Simplify using `only [gjInt]`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (ae_of_all _ fun g => ?_)` and prove the remaining obligations. Simplify using `only [om, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gjInt_smul_fun (Φ : Matrix (Fin (r + t)) (Fin r) k → ℂ) (h : GL (Fin (r + t)) k) (c : ℂ) (v w : V) :
     gjInt m μ σ Bf (c • Φ) h v w = c * gjInt m μ σ Bf Φ h v w := by
   simp only [gjInt]
@@ -261,6 +340,9 @@ theorem gjInt_smul_fun (Φ : Matrix (Fin (r + t)) (Fin r) k → ℂ) (h : GL (Fi
 
 omit hσ hs hp hu [BorelSpace (GL (Fin r) k)] [SecondCountableTopology (GL (Fin r) k)] in
 
+/- English proof (translation)
+Simplify using `only [gjInt]`. Use `integral_congr_ae (ae_of_all _ fun g => ?_)` and prove the remaining obligations. Use `om_mul μ g 1 h h₀ Φ` as an intermediate fact. Rewrite `this` using `[mul_one]`. Simplify using `only [this]`.
+-/
 theorem gjInt_translate (Φ : Matrix (Fin (r + t)) (Fin r) k → ℂ) (h h₀ : GL (Fin (r + t)) k) (v w : V) :
     gjInt m μ σ Bf (om μ 1 h₀ Φ) h v w = gjInt m μ σ Bf Φ (h * h₀) v w := by
   simp only [gjInt]
@@ -277,6 +359,11 @@ variable [MeasurableSpace (GL (Fin r) k)] [BorelSpace (GL (Fin r) k)] [SecondCou
   {m : Measure (GL (Fin r) k)} {μ : kˣ →* ℂˣ} {σ : Representation ℂ (GL (Fin r) k) V}
   {Bf : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ}
 
+/- English proof (translation)
+Simplify using `only [gjInt]`. Rewrite using `[← integral_mul_right_eq_self (μ := m) (fun x => om μ x h Φ (eMat k r t) * coef σ Bf v (σ g₀⁻¹ w) x) g₀]`. Use `integral_congr_ae (ae_of_all _ fun g => ?_)` and prove the remaining obligations. Establish `h1` using `om_mul μ g g₀ h 1 Φ`. Rewrite `h1` using `[mul_one]`.
+
+Simplify using `only [h1, coef]`. Rewrite using `[mul_inv_rev, map_mul, Module.End.mul_apply, hu]`.
+-/
 theorem gjInt_shift [m.IsMulRightInvariant] (hu : ∀ g v w, Bf (σ g v) (σ g w) = Bf v w)
     (Φ : Matrix (Fin (r + t)) (Fin r) k → ℂ) (h : GL (Fin (r + t)) k) (g₀ : GL (Fin r) k) (v w : V) :
     gjInt m μ σ Bf (om μ g₀ 1 Φ) h v w = gjInt m μ σ Bf Φ h v (σ g₀⁻¹ w) := by
@@ -289,6 +376,11 @@ theorem gjInt_shift [m.IsMulRightInvariant] (hu : ∀ g v w, Bf (σ g v) (σ g w
   simp only [h1, coef]
   rw [mul_inv_rev, map_mul, Module.End.mul_apply, hu]
 
+/- English proof (translation)
+Simplify using `only [gjInt]`. Rewrite using `[← integral_mul_left_eq_self (μ := m) (fun x => om μ x ((p : GL (Fin (r + t)) k) * h) Φ (eMat k r t) * coef σ Bf v w x) (leviProj k (two (stdSum (rfl : r + t = r + t))) p false : GL (Fin r) k), ← integral_const_mul]`. Use `integral_congr_ae (ae_of_all _ fun g => ?_)` and prove the remaining obligations. Establish `h1` using `om_parab μ p g h Φ`. Simplify using `only [coef]`.
+
+Rewrite using `[mul_inv_rev, map_mul, Module.End.mul_apply]`. Use `(congrArg (· * _) h1).trans ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gjInt_law [m.IsMulLeftInvariant] (Φ : Matrix (Fin (r + t)) (Fin r) k → ℂ)
     (p : parab k (two (stdSum (rfl : r + t = r + t)))) (h : GL (Fin (r + t)) k) (v w : V) :
     gjInt m μ σ Bf Φ ((p : GL (Fin (r + t)) k) * h) v w =
@@ -309,6 +401,11 @@ theorem gjInt_law [m.IsMulLeftInvariant] (Φ : Matrix (Fin (r + t)) (Fin r) k �
   ring
 
 omit [MeasurableSpace (GL (Fin r) k)] [BorelSpace (GL (Fin r) k)] [SecondCountableTopology (GL (Fin r) k)] in
+/- English proof (translation)
+Proceed by induction on `x with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, smul_add]`. Consider the case `tmul v z => show TensorProduct.rid ℂ V (extTensor σ (detRep (Fin t) μ) ((leviTwo k (Fin r) (Fin t)).symm g) (v ⊗ₜ z)) = _`. Rewrite using `[extTensor_tmul]`.
+
+Simplify using `[leviTwo, detRep, smul_smul]`.
+-/
 theorem rid_leviRep (μ : kˣ →* ℂˣ) (σ : Representation ℂ (GL (Fin r) k) V)
     (g : Levi k (Two (Fin r) (Fin t))) (x : V ⊗[ℂ] ℂ) :
     TensorProduct.rid ℂ V (leviRep t μ σ g x) =
@@ -335,10 +432,16 @@ def rawF (Φ : SB (Matrix (Fin (r + t)) (Fin r) k)) (h : GL (Fin (r + t)) k) (w 
      map_smul' := fun c v => gjInt_smul_left _ _ c v w } : V →ₗ[ℂ] ℂ) ∘ₗ
     (TensorProduct.rid ℂ V).toLinearMap
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rawF_apply (Φ : SB (Matrix (Fin (r + t)) (Fin r) k)) (h : GL (Fin (r + t)) k) (w : V)
     (x : V ⊗[ℂ] ℂ) :
     rawF hσ hs hp hu hI Φ h w x = gjInt m μ σ Bf Φ.1 h (TensorProduct.rid ℂ V x) w := rfl
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Use `show rawF hσ hs hp hu hI Φ ((p : GL (Fin (r + t)) k) * h) w x = (deltaHalf k (Two (Fin r) (Fin t)) (leviProj k (two (stdSum (rfl : r + t = r + t))) p) : ℂ) * rawF hσ hs hp hu hI Φ h w (leviRep t μ σ (leviProj k (two (stdSum (rfl : r + t = r + t))) p)⁻¹ x)`. Rewrite using `[rawF_apply, rawF_apply, rid_leviRep, gjInt_law, gjInt_smul_left]`. Simplify using `only [Pi.inv_apply, map_inv, Units.val_inv_eq_inv_val]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rawF_law (Φ : SB (Matrix (Fin (r + t)) (Fin r) k))
     (p : parab k (two (stdSum (rfl : r + t = r + t)))) (h : GL (Fin (r + t)) k) (w : V) :
     rawF hσ hs hp hu hI Φ ((p : GL (Fin (r + t)) k) * h) w =
@@ -354,6 +457,9 @@ theorem rawF_law (Φ : SB (Matrix (Fin (r + t)) (Fin r) k))
   simp only [Pi.inv_apply, map_inv, Units.val_inv_eq_inv_val]
   ring
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[rawF_apply, rawF_apply, ← gjInt_translate, h₁]`.
+-/
 theorem rawF_translate (Φ : SB (Matrix (Fin (r + t)) (Fin r) k)) (h h₀ : GL (Fin (r + t)) k) (w : V)
     (h₁ : om μ 1 h₀ Φ.1 = Φ.1) :
     rawF hσ hs hp hu hI Φ (h * h₀) w = rawF hσ hs hp hu hI Φ h w := by
@@ -361,6 +467,9 @@ theorem rawF_translate (Φ : SB (Matrix (Fin (r + t)) (Fin r) k)) (h h₀ : GL (
   rw [rawF_apply, rawF_apply, ← gjInt_translate, h₁]
 
 omit [MeasurableSpace (GL (Fin r) k)] [BorelSpace (GL (Fin r) k)] [SecondCountableTopology (GL (Fin r) k)] in
+/- English proof (translation)
+Establish `h` using `(om_isSmoothRepresentation k (Fin r) (Fin (r + t)) μ hμ).2.2.2.2 Φ.1 Φ.2`. Establish `hc : Continuous fun h₀ : GL (Fin (r + t)) k => ((1 : GL (Fin r) k), h₀)` using `continuous_const.prodMk continuous_id`. Conclude with `(h.preimage hc).mem_nhds (om_one μ Φ.1)`.
+-/
 theorem eventually_stab (hμ : IsSmoothChar μ) (Φ : SB (Matrix (Fin (r + t)) (Fin r) k)) :
     ∀ᶠ h₀ : GL (Fin (r + t)) k in 𝓝 1, om μ 1 h₀ Φ.1 = Φ.1 := by
   have h := (om_isSmoothRepresentation k (Fin r) (Fin (r + t)) μ hμ).2.2.2.2 Φ.1 Φ.2
@@ -368,6 +477,11 @@ theorem eventually_stab (hμ : IsSmoothChar μ) (Φ : SB (Matrix (Fin (r + t)) (
     continuous_const.prodMk continuous_id
   exact (h.preimage hc).mem_nhds (om_one μ Φ.1)
 
+/- English proof (translation)
+Use `mem_smoothPart_of_nhds ?_` and prove the remaining obligations. Establish `hc : Continuous fun g : Levi k (Two (Fin r) (Fin t)) => h⁻¹ * leviEmb k (two (stdSum (rfl : r + t = r + t))) g * h` using `(continuous_const.mul (continuous_leviEmb k _)).mul continuous_const`. Establish `h1 : ∀ᶠ g : Levi k (Two (Fin r) (Fin t)) in 𝓝 1, om μ 1 (h⁻¹ * leviEmb k (two (stdSum (rfl : r + t = r + t))) g * h) Φ.1 = Φ.1` using `(hc.tendsto' 1 1 (by simp)).eventually (eventually_stab hμ Φ)`. Establish `h2 : ∀ᶠ g : Levi k (Two (Fin r) (Fin t)) in 𝓝 1, deltaHalf k (Two (Fin r) (Fin t)) g = 1` using `(isSmoothChar_deltaHalf k).mem_nhds (one_mem _)`. Use `filter_upwards [h1, h2] with g hg hd`.
+
+Establish `law` using `rawF_law hσ hs hp hu hI Φ ⟨_, leviEmb_mem_parab k _ g⟩ h w`. Rewrite `law` using `[leviProj_leviEmb, hd, Units.val_one, one_smul]`. Establish `tr` using `rawF_translate hσ hs hp hu hI Φ h _ w hg`. Rewrite `tr` using `[show h * (h⁻¹ * leviEmb k (two (stdSum (rfl : r + t = r + t))) g * h) = leviEmb k (two (stdSum (rfl : r + t = r + t))) g * h by group]`. Conclude with `law.symm.trans tr`.
+-/
 theorem rawF_mem (hμ : IsSmoothChar μ) (Φ : SB (Matrix (Fin (r + t)) (Fin r) k))
     (h : GL (Fin (r + t)) k) (w : V) :
     rawF hσ hs hp hu hI Φ h w ∈ smoothPart (leviRep t μ σ).dual := by
@@ -397,6 +511,9 @@ def famF (hμ : IsSmoothChar μ) (Φ : SB (Matrix (Fin (r + t)) (Fin r) k)) (w :
       refine Subtype.ext (funext fun x => Subtype.ext ?_)
       exact rawF_translate hσ hs hp hu hI Φ x g w hg)⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem famF_apply (hμ : IsSmoothChar μ) (Φ : SB (Matrix (Fin (r + t)) (Fin r) k)) (w : V)
     (h : GL (Fin (r + t)) k) (x : V ⊗[ℂ] ℂ) :
     ((famF hσ hs hp hu hI hμ Φ w).1.1 h).1 x =
@@ -404,26 +521,44 @@ theorem famF_apply (hμ : IsSmoothChar μ) (Φ : SB (Matrix (Fin (r + t)) (Fin r
 
 omit [MeasurableSpace (GL (Fin r) k)] [BorelSpace (GL (Fin r) k)] [SecondCountableTopology (GL (Fin r) k)]
   [m.IsMulLeftInvariant] in
+/- English proof (translation)
+The claim follows from `Subtype.ext (Subtype.ext (funext fun h => Subtype.ext (LinearMap.ext (H h))))`.
+-/
 theorem indExt {F₁ F₂ : IndSp (two (stdSum (rfl : r + t = r + t))) (contra (leviRep t μ σ))}
     (H : ∀ h x, (F₁.1.1 h).1 x = (F₂.1.1 h).1 x) : F₁ = F₂ :=
   Subtype.ext (Subtype.ext (funext fun h => Subtype.ext (LinearMap.ext (H h))))
 
+/- English proof (translation)
+The claim follows from `indExt fun h x => gjInt_add_fun hσ hs hp hu (hI h Φ.1 Φ.2) (hI h Ψ.1 Ψ.2) _ w`.
+-/
 theorem famF_add_fun (hμ : IsSmoothChar μ) (Φ Ψ : SB (Matrix (Fin (r + t)) (Fin r) k)) (w : V) :
     famF hσ hs hp hu hI hμ (Φ + Ψ) w = famF hσ hs hp hu hI hμ Φ w + famF hσ hs hp hu hI hμ Ψ w :=
   indExt fun h x => gjInt_add_fun hσ hs hp hu (hI h Φ.1 Φ.2) (hI h Ψ.1 Ψ.2) _ w
 
+/- English proof (translation)
+The claim follows from `indExt fun h x => gjInt_smul_fun _ h c _ w`.
+-/
 theorem famF_smul_fun (hμ : IsSmoothChar μ) (c : ℂ) (Φ : SB (Matrix (Fin (r + t)) (Fin r) k)) (w : V) :
     famF hσ hs hp hu hI hμ (c • Φ) w = c • famF hσ hs hp hu hI hμ Φ w :=
   indExt fun h x => gjInt_smul_fun _ h c _ w
 
+/- English proof (translation)
+The claim follows from `indExt fun h x => gjInt_add_right hσ hs hp hu (hI h Φ.1 Φ.2) _ w w'`.
+-/
 theorem famF_add_right (hμ : IsSmoothChar μ) (Φ : SB (Matrix (Fin (r + t)) (Fin r) k)) (w w' : V) :
     famF hσ hs hp hu hI hμ Φ (w + w') = famF hσ hs hp hu hI hμ Φ w + famF hσ hs hp hu hI hμ Φ w' :=
   indExt fun h x => gjInt_add_right hσ hs hp hu (hI h Φ.1 Φ.2) _ w w'
 
+/- English proof (translation)
+The claim follows from `indExt fun h x => gjInt_smul_right _ h c _ w`.
+-/
 theorem famF_smul_right (hμ : IsSmoothChar μ) (c : ℂ) (Φ : SB (Matrix (Fin (r + t)) (Fin r) k)) (w : V) :
     famF hσ hs hp hu hI hμ Φ (c • w) = starRingEnd ℂ c • famF hσ hs hp hu hI hμ Φ w :=
   indExt fun h x => gjInt_smul_right _ h c _ w
 
+/- English proof (translation)
+The claim follows from `indExt fun h x => by show gjInt m μ σ Bf Φ.1 (h * h₀) _ w = gjInt m μ σ Bf Φ'.1 h _ w rw [hΦ, gjInt_translate]`.
+-/
 theorem famF_translate (hμ : IsSmoothChar μ) (Φ Φ' : SB (Matrix (Fin (r + t)) (Fin r) k))
     (h₀ : GL (Fin (r + t)) k) (hΦ : Φ'.1 = om μ 1 h₀ Φ.1) (w : V) :
     parInd (two (stdSum (rfl : r + t = r + t))) (contra (leviRep t μ σ)) h₀
@@ -432,6 +567,9 @@ theorem famF_translate (hμ : IsSmoothChar μ) (Φ Φ' : SB (Matrix (Fin (r + t)
     show gjInt m μ σ Bf Φ.1 (h * h₀) _ w = gjInt m μ σ Bf Φ'.1 h _ w
     rw [hΦ, gjInt_translate]
 
+/- English proof (translation)
+The claim follows from `indExt fun h x => by show gjInt m μ σ Bf Φ'.1 h _ w = gjInt m μ σ Bf Φ.1 h _ _ rw [hΦ, gjInt_shift hu]`.
+-/
 theorem famF_shift [m.IsMulRightInvariant] (hμ : IsSmoothChar μ)
     (Φ Φ' : SB (Matrix (Fin (r + t)) (Fin r) k)) (g₀ : GL (Fin r) k)
     (hΦ : Φ'.1 = om μ g₀ 1 Φ.1) (w : V) :
@@ -446,6 +584,11 @@ section Abstract
 
 variable {Bf : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ}
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hab`. Establish `h1` using `hp (a - b) (sub_ne_zero.2 hab)`. Establish `h2 : Bf (a - b) (a - b) = 0`. Rewrite using `[Bf.map_sub a b, LinearMap.sub_apply, h, sub_self]`. Rewrite `h1` using `[h2]`.
+
+Simplify using `at h1`.
+-/
 theorem form_injective (hp : ∀ v, v ≠ 0 → 0 < (Bf v v).re) (a b : V) (h : ∀ w, Bf a w = Bf b w) :
     a = b := by
   by_contra hab
@@ -455,6 +598,11 @@ theorem form_injective (hp : ∀ v, v ≠ 0 → 0 < (Bf v v).re) (a b : V) (h : 
   rw [h2] at h1
   simp at h1
 
+/- English proof (translation)
+Establish `hL : ∀ Φ f, ∃ u : V, ∀ w, P (F Φ w) f = Bf u w` using `fun Φ f => hR Φ f { toFun := fun w => P (F Φ w) f map_add' := fun w w' => by simp [h3] map_smul' := fun c w => by simp [h4] } fun _ => rfl`. Use `choose u hu' using hL`. Establish `huniq` using `form_injective hp`. Use `⟨LinearMap.mk₂ ℂ u (fun Φ Φ' f => huniq _ _ fun w => ?_) (fun c Φ f => huniq _ _ fun w => ?_) (fun Φ f f' => huniq _ _ fun w => ?_) (fun c Φ f => huniq _ _ fun w => ?_), fun Φ f w => (hu' Φ f w).symm⟩` and prove the remaining obligations. Simplify using `[← hu', h1]`.
+
+Simplify using `[← hu', h2]`. Simplify using `[← hu']`. Simplify using `[← hu']`.
+-/
 theorem abstract_pairing {S A X : Type} [AddCommGroup S] [Module ℂ S] [AddCommGroup A] [Module ℂ A]
     [AddCommGroup X] [Module ℂ X] (hp : ∀ v, v ≠ 0 → 0 < (Bf v v).re)
     (P : A →ₗ[ℂ] X →ₗ[ℂ] ℂ) (F : S → V → A)
@@ -478,6 +626,11 @@ theorem abstract_pairing {S A X : Type} [AddCommGroup S] [Module ℂ S] [AddComm
   · simp [← hu']
   · simp [← hu']
 
+/- English proof (translation)
+Use `⟨(smoothPart π.dual).subtype ∘ₗ Ψ.toLinearEquiv.toLinearMap, fun h a f => ?_, fun a h => ?_⟩` and prove the remaining obligations. Establish `e1 : Ψ.toLinearEquiv (I h a) = contra π h (Ψ.toLinearEquiv a)` using `LinearMap.congr_fun (Ψ.isIntertwining' h) a show (Ψ.toLinearEquiv (I h a)).1 _ = (Ψ.toLinearEquiv a).1 f`. Rewrite using `[e1]`. Use `show (Ψ.toLinearEquiv a).1 (π h⁻¹ _) = _`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+
+Establish `: Ψ.toLinearEquiv a = 0` using `Subtype.ext (LinearMap.ext h)`. Conclude with `(LinearEquiv.map_eq_zero_iff _).1 this`.
+-/
 theorem abstract_equiv {H A X : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
     [AddCommGroup A] [Module ℂ A] [AddCommGroup X] [Module ℂ X]
     (I : Representation ℂ H A) (π : Representation ℂ H X) (Ψ : I.Equiv (contra π)) :
@@ -509,6 +662,13 @@ variable [MeasurableSpace (GL (Fin r) k)] [BorelSpace (GL (Fin r) k)] [SecondCou
 
 omit [MeasurableSpace (GL (Fin r) k)] [BorelSpace (GL (Fin r) k)] [SecondCountableTopology (GL (Fin r) k)] in
 
+/- English proof (translation)
+Establish `h` using `(om_isSmoothRepresentation k (Fin r) (Fin (r + t)) μ hμ).2.2.2.2 Φ.1 Φ.2`. Establish `hc : Continuous fun g : GL (Fin r) k => (g, (1 : GL (Fin (r + t)) k))` using `continuous_id.prodMk continuous_const`. Use `⟨{ carrier := {g | om μ g 1 Φ.1 = Φ.1} one_mem' := om_one μ Φ.1 mul_mem' := fun {x y} hx hy => ?_ inv_mem' := fun {x} hx => ?_ }, h.preimage hc, fun s hs => hs⟩` and prove the remaining obligations. Use `om_mul μ x y (1 : GL (Fin (r + t)) k) 1 Φ.1` as an intermediate fact. Rewrite `this` using `[mul_one]`.
+
+Use `show om μ (x * y) 1 Φ.1 = Φ.1`. Rewrite using `[this, show om μ y 1 Φ.1 = Φ.1 from hy]`. Conclude with `hx`. Use `om_mul μ x⁻¹ x (1 : GL (Fin (r + t)) k) 1 Φ.1` as an intermediate fact. Rewrite `this` using `[mul_one, inv_mul_cancel, om_one, show om μ x 1 Φ.1 = Φ.1 from hx]`.
+
+Conclude with `this.symm`.
+-/
 theorem exists_stab (hμ : IsSmoothChar μ) (Φ : SB (Matrix (Fin (r + t)) (Fin r) k)) :
     ∃ S : Subgroup (GL (Fin r) k), IsOpen (S : Set (GL (Fin r) k)) ∧ ∀ s ∈ S, om μ s 1 Φ.1 = Φ.1 := by
   have h := (om_isSmoothRepresentation k (Fin r) (Fin (r + t)) μ hμ).2.2.2.2 Φ.1 Φ.2
@@ -527,6 +687,17 @@ theorem exists_stab (hμ : IsSmoothChar μ) (Φ : SB (Matrix (Fin (r + t)) (Fin 
     rw [mul_one, inv_mul_cancel, om_one, show om μ x 1 Φ.1 = Φ.1 from hx] at this
     exact this.symm
 
+/- English proof (translation)
+Take `⟨B, hB⟩` from `abstract_pairing hp P (famF hσ hs hp hu hI hμ) (famF_add_fun hσ hs hp hu hI hμ) (fun c Φ w => famF_smul_fun hσ hs hp hu hI hμ c Φ w) (famF_add_right hσ hs hp hu hI hμ) (fun c Φ w => famF_smul_right hσ hs hp hu hI hμ c Φ w) (fun Φ f L hL => by`. Take `⟨S, hSo, hS⟩` from `exists_stab (t := t) hμ Φ`. Use `GlobalTheory.T.unitary_admissible_matrix_coefficient k r V σ Bf hadm hs hp hu L S hSo fun s hsS w => ?_` and prove the remaining obligations. Use `famF_shift hσ hs hp hu hI hμ Φ Φ s⁻¹ (hS _ (inv_mem hsS)).symm w` as an intermediate fact. Rewrite `this` using `[inv_inv]`.
+
+Rewrite using `[hL, hL, ← this])`. Use `⟨B, fun h0 => hne (hQ _ fun f => ?_), fun g h Φ Φ' hΦ' f => form_injective hp _ _ fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[← hB, h0]`. Simplify using the standard rewrite rules. Establish `hw : Bf (σ g (B Φ f)) w = Bf (B Φ f) (σ g⁻¹ w)`.
+
+Rewrite using `[← hu g (B Φ f) (σ g⁻¹ w), ← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Set `Φ₁ : SB (Matrix (Fin (r + t)) (Fin r) k)` to `⟨om μ g 1 Φ.1, om_mem_SB μ g 1 Φ.2⟩`. Establish `h1 : Φ'.1 = om μ 1 h Φ₁.1`. Use `om_mul μ 1 g h 1 Φ.1` as an intermediate fact. Rewrite `this` using `[one_mul, mul_one]`.
+
+Conclude with `hΦ'.trans this`. Establish `e1 : Bf (B Φ' (parInd (two (stdSum (rfl : r + t = r + t))) (leviRep t μ σ) h f)) w = P (famF hσ hs hp hu hI hμ Φ' w) (parInd (two (stdSum (rfl : r + t = r + t))) (leviRep t μ σ) h f)` using `hB Φ' _ w`. Establish `e2 : Bf (B Φ f) (σ g⁻¹ w) = P (famF hσ hs hp hu hI hμ Φ (σ g⁻¹ w)) f` using `hB Φ f _`. Establish `e3` using `famF_shift hσ hs hp hu hI hμ Φ Φ₁ g rfl w`. Establish `e4` using `famF_translate hσ hs hp hu hI hμ Φ₁ Φ' h h1 w`.
+
+Use `e1.trans (Eq.trans ?_ (hw.trans e2).symm)` and prove the remaining obligations. Conclude with `(congrArg (fun a => P a (parInd (two (stdSum (rfl : r + t = r + t))) (leviRep t μ σ) h f)) e4).symm.trans ((hP h _ f).trans (congrArg (fun a => P a f) e3))`.
+-/
 theorem exists_pairing (hμ : IsSmoothChar μ) (hadm : IsAdmissible σ)
     (P : IndSp (two (stdSum (rfl : r + t = r + t))) (contra (leviRep t μ σ)) →ₗ[ℂ]
       IndSp (two (stdSum (rfl : r + t = r + t))) (leviRep t μ σ) →ₗ[ℂ] ℂ)
@@ -581,6 +752,27 @@ variable [MeasurableSpace (GL (Fin r) k)] [BorelSpace (GL (Fin r) k)] [SecondCou
     Φ ∈ SB (Matrix (Fin (r + t)) (Fin r) k) →
     Integrable (fun g : GL (Fin r) k => om μ g h Φ (eMat k r t)) m)
 
+/- English proof (translation)
+Use `set S : Set (GL (Fin r) k) := {g | σ g v = v ∧ μ (Matrix.GeneralLinearGroup.det g) = 1 ∧ nabs k (Matrix.GeneralLinearGroup.det g) = 1} with hSdef`. Establish `hS1 : S ∈ 𝓝 (1 : GL (Fin r) k)` using `by filter_upwards [(hσ v).mem_nhds (by simp), eventually_det_trivial (Fin r) hμ] with g h1 h2`. Conclude with `⟨h1, h2⟩`. Take `⟨Φ, hΦ, hΦ1, h01, hΦS⟩` from `GlobalTheory.T.exists_schwartz_bump_near_identity k r t (interior S) isOpen_interior (mem_interior_iff_mem_nhds.2 hS1)`. Use `⟨⟨Φ, hΦ⟩, fun h0 => ?_⟩` and prove the remaining obligations.
+
+Establish `hcont : Continuous fun g : GL (Fin r) k => Φ (eMat k r t * g.val)` using `(hΦ.1.comp_continuous (continuous_const.matrix_mul Units.continuous_val)).continuous`. Use `set φ : GL (Fin r) k → ℝ := fun g => (Φ (eMat k r t * g.val)).re with hφ`. Establish `hom : ∀ g : GL (Fin r) k, om μ g 1 Φ (eMat k r t) = (φ g : ℂ)`. Introduce `g`. Establish `hm : ((1 : GL (Fin (r + t)) k)⁻¹ : GL (Fin (r + t)) k).val * eMat k r t * g.val = eMat k r t * g.val`.
+
+Simplify using the standard rewrite rules. Simplify using `only [om, hm]`. Distinguish the cases in `hg : Φ (eMat k r t * g.val) = 0`. Simplify using `[hφ, hg]`. Take `⟨-, h2, h3⟩` from `interior_subset (hΦS g hg)`.
+
+Establish `h4 : Φ (eMat k r t * g.val) = 1` using `(h01 _).resolve_left hg`. Simplify using `[hφ, h2, h3, h4, nabs_one]`. Establish `hint : Integrable φ m`. Use `(hI 1 Φ hΦ).re` as an intermediate fact. Use `this.congr (ae_of_all _ fun g => ?_)` and prove the remaining obligations.
+
+Simplify using `[hom g]`. Establish `hnn : 0 ≤ φ` using `fun g => by`. Apply the tactic sequence `rcases h01 (eMat k r t * g.val) with h | h <;> simp [hφ, h]`. Establish `hpos : 0 < ∫ g, φ g ∂m`. Use `(integral_pos_iff_support_of_nonneg hnn hint).2 ?_` and prove the remaining obligations.
+
+Establish `hc : Continuous φ` using `Complex.continuous_re.comp hcont`. Use `hc.isOpen_support.measure_pos m ⟨1, ?_⟩` and prove the remaining obligations. Establish `: eMat k r t * (1 : GL (Fin r) k).val = eMat k r t` using `by simp`. Simplify using `[hφ, this, hΦ1]`. Establish `hval : gjInt m μ σ Bf Φ 1 v v = ((∫ g, φ g ∂m : ℝ) : ℂ) * Bf v v`.
+
+Rewrite using `[← integral_complex_ofReal, ← integral_mul_const]`. Use `integral_congr_ae (ae_of_all _ fun g => ?_)` and prove the remaining obligations. Use `show om μ g 1 Φ (eMat k r t) * coef σ Bf v v g = (φ g : ℂ) * Bf v v`. Rewrite using `[hom g]`. Distinguish the cases in `hg : Φ (eMat k r t * g.val) = 0`.
+
+Simplify using `[hφ, hg]`. Take `⟨h1, -, -⟩` from `interior_subset (hΦS g hg)`. Simplify using `only [coef]`. Rewrite using `[fix_inv h1]`. Establish `hz : gjInt m μ σ Bf Φ 1 v v = 0`.
+
+Establish `h1` using `famF_apply hσ hs hp hu hI hμ ⟨Φ, hΦ⟩ v 1 (v ⊗ₜ (1 : ℂ))`. Rewrite `h1` using `[h0]`. Simplify using `using h1.symm`. Rewrite `hz` using `[hval]`. Break down `mul_eq_zero.1 hz with h | h` into its components or cases.
+
+Conclude with `hpos.ne' (by exact_mod_cast h)`. Use `hp v hv` as an intermediate fact. Simplify using `[h] at this`.
+-/
 theorem exists_famF_ne_zero (hμ : IsSmoothChar μ) {v : V} (hv : v ≠ 0) :
     ∃ Φ : SB (Matrix (Fin (r + t)) (Fin r) k), famF hσ hs hp hu hI hμ Φ v ≠ 0 := by
   set S : Set (GL (Fin r) k) := {g | σ g v = v ∧ μ (Matrix.GeneralLinearGroup.det g) = 1 ∧
@@ -642,6 +834,17 @@ end GlobalTheory.GodementJacquet
 
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.ThetaGL GlobalTheory.Published in
 
+/- English proof (translation)
+Introduce `hBZ k _ _ _ _ r t μ V _ _ σ hrt hμ hμu hσ hirr huni`. Take `⟨hadmAll, -, -, hIC⟩` from `hBZ k`. Establish `hadm` using `hadmAll (Fin r) V σ hσ hirr`. Take `⟨Bf, hs, hp, hu⟩` from `huni`. Establish `hV : ∃ v : V, v ≠ 0`.
+
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Use `haveI : IsSimpleOrder (Subrepresentation σ) := hirr`. Use `bot_ne_top (α := Subrepresentation σ) (Subrepresentation.toSubmodule_injective ?_)` and prove the remaining obligations. Use extensionality with `x`.
+
+Rewrite using `[hc x]`. Conclude with `⟨fun _ => zero_mem _, fun _ => zero_mem _⟩`. Take `⟨v, hv⟩` from `hV`. Use `borelize k`. Use `haveI := GlobalTheory.SplitWeil.t2Space k`.
+
+Take `⟨i1, i2, i3, -, -, -, i7, i8⟩` from `volGL_haar k (Fin r) (MeasureTheory.Measure.addHaar : MeasureTheory.Measure k)`. Establish `hI` using `fun h Φ hΦ => GlobalTheory.T.theta_integral_integrable k (MeasureTheory.Measure.addHaar : MeasureTheory.Measure k) r t μ hrt.le hμ hμu h Φ hΦ`. Establish `hρ : IsSmooth (GlobalTheory.GodementJacquet.leviRep t μ σ)` using `isSmooth_comp (isSmooth_extTensor hσ ((isSmooth_ofChar_iff _).2 hμ.detChar)) _ ((continuous_apply false).prodMk (continuous_apply true))`. Take `⟨Ψ⟩` from `hIC.nonempty_equiv (GlobalTheory.SmGL.two (stdSum (rfl : r + t = r + t))) hρ`. Take `⟨P, hP, hQ⟩` from `GlobalTheory.GodementJacquet.abstract_equiv _ _ Ψ`.
+
+Take `⟨Φ₀, hne⟩` from `GlobalTheory.GodementJacquet.exists_famF_ne_zero hσ hs hp hu hI hμ hv`. Conclude with `GlobalTheory.GodementJacquet.exists_pairing hσ hs hp hu hI hμ hadm P hP hQ Φ₀ v hne`.
+-/
 theorem GlobalTheory.GodementJacquet.thetaPair_prod_det : BernsteinZelevinskyFiniteness → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (r t : ℕ) (μ : kˣ →* ℂˣ) (V : Type) [AddCommGroup V] [Module ℂ V] (σ : Representation ℂ (GL (Fin r) k) V), r < t → IsSmoothChar μ → IsUnitaryChar μ → IsSmooth σ → σ.IsIrreducible → IsUnitarisable σ → ThetaPair μ σ (prod₂ σ (detRep (Fin t) μ)) := by
   intro hBZ k _ _ _ _ r t μ V _ _ σ hrt hμ hμu hσ hirr huni
   obtain ⟨hadmAll, -, -, hIC⟩ := hBZ k

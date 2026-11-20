@@ -10,17 +10,33 @@ namespace GlobalTheory.RankTw
 
 open GlobalTheory.RowCopy GlobalTheory.NRows
 
+/- English proof (translation)
+The claim follows from `Or.inr ⟨D.nd.w i, (D.nd.mu_w i).trans ((D.what₂.muAt_or _).resolve_left (D.nd.w_tw i)).symm⟩`.
+-/
 theorem used_loc (D : D7) (i : D.nd.Loc) : D.nd.mu i = D.what₂.mu0 ∨ ∃ w, D.nd.mu i = D.what₂.muAt w :=
   Or.inr ⟨D.nd.w i, (D.nd.mu_w i).trans ((D.what₂.muAt_or _).resolve_left (D.nd.w_tw i)).symm⟩
 
+/- English proof (translation)
+Take `⟨k, rfl⟩ : ∃ k, j = k + 1` from `⟨j - 1, by omega⟩`. Conclude with `h μ hμ ⟨k, by omega⟩`.
+-/
 theorem lamPos_of_used {D : D7} (h : LamUsed D) {μ} (hμ : μ = D.what₂.mu0 ∨ ∃ w, μ = D.what₂.muAt w) {j : ℕ}
     (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) : LamPos D μ j := by
   obtain ⟨k, rfl⟩ : ∃ k, j = k + 1 := ⟨j - 1, by omega⟩
   exact h μ hμ ⟨k, by omega⟩
 
+/- English proof (translation)
+The claim follows from `lamPos_of_used h (used_loc D i) (D.nd.j_range i).1 (D.nd.j_range i).2`.
+-/
 theorem lamLoc {D : D7} (h : LamUsed D) (i : D.nd.Loc) : LamPos D (D.nd.mu i) (D.nd.j i) :=
   lamPos_of_used h (used_loc D i) (D.nd.j_range i).1 (D.nd.j_range i).2
 
+/- English proof (translation)
+Establish `hs : Function.Surjective (D.what₂.thetaP μ j ∘ₗ D.what₂.thetaT μ j)`. Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← hI.submodule_iSup_eq_top, iSup_le_iff]`. Introduce `σ f hf`. Distinguish the cases in `h0 : D.what₂.isot j σ = ⊥`. Rewrite `hf` using `[h0]`.
+
+Rewrite using `[(Submodule.mem_bot ℂ).1 hf]`. Conclude with `zero_mem _`. Establish `hl : ((D.what₂.lamP μ j σ : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast ((h σ).2 h0).ne'`. Use `⟨((D.what₂.lamP μ j σ : ℝ) : ℂ)⁻¹ • f, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, LinearMap.comp_apply, (h σ).1 f hf, smul_smul, inv_mul_cancel₀ hl, one_smul]`.
+
+Establish `hi` using `LinearMap.injective_iff_surjective.2 hs`. Rewrite `hi` using `[LinearMap.coe_comp]`. Conclude with `hi.of_comp`.
+-/
 theorem up_injective {D : D7} {μ} {j : ℕ} (h : LamPos D μ j) (hI : DirectSum.IsInternal (D.what₂.isot j)) :
     Function.Injective (D.what₂.thetaT μ j) := by
   have hs : Function.Surjective (D.what₂.thetaP μ j ∘ₗ D.what₂.thetaT μ j) := by
@@ -37,6 +53,11 @@ theorem up_injective {D : D7} {μ} {j : ℕ} (h : LamPos D μ j) (hI : DirectSum
   rw [LinearMap.coe_comp] at hi
   exact hi.of_comp
 
+/- English proof (translation)
+Introduce `j hj w hw`. Take `⟨h1, h2⟩` from `Finset.mem_Icc.1 hj`. Establish `e : D.what₂.muTw w = D.what₂.muAt w` using `((D.what₂.muAt_or w).resolve_left hw).symm`. Establish `a` using `up_injective (lamPos_of_used h (Or.inr ⟨w, e⟩) h1 h2) (hI j h1 h2)`. Establish `b` using `up_injective (lamPos_of_used h (Or.inl rfl) h1 h2) (hI j h1 h2)`.
+
+Unfold `SizeData₂.zeroSpaceRankAtPlace SizeData₂.dZ0 Rows.Data.Zj`. Rewrite using `[LinearMap.finrank_range_of_inj a, LinearMap.finrank_range_of_inj b]`.
+-/
 theorem rank_of {D : D7} (hI : SumRepresentations.adm8 D) (h : LamUsed D) (L : SizeData₂ D) : TwistedPlaces.adm3 L := by
   intro j hj w hw
   obtain ⟨h1, h2⟩ := Finset.mem_Icc.1 hj
@@ -46,6 +67,9 @@ theorem rank_of {D : D7} (hI : SumRepresentations.adm8 D) (h : LamUsed D) (L : S
   unfold SizeData₂.zeroSpaceRankAtPlace SizeData₂.dZ0 Rows.Data.Zj
   rw [LinearMap.finrank_range_of_inj a, LinearMap.finrank_range_of_inj b]
 
+/- English proof (translation)
+Introduce `_ hI h` and use `⟨GlobalTheory.RankTw.lamLoc h, GlobalTheory.RankTw.rank_of hI h⟩`.
+-/
 theorem main : ∀ D : D7, Formalism.MainNotions.SumRepresentations.adm8 D → GlobalTheory.NRows.LamUsed D →
     (∀ i : D.nd.Loc, GlobalTheory.RowCopy.LamPos D (D.nd.mu i) (D.nd.j i)) ∧ ∀ L : SizeData₂ D, Formalism.MainNotions.TwistedPlaces.adm3 L :=
   fun _ hI h => ⟨GlobalTheory.RankTw.lamLoc h, GlobalTheory.RankTw.rank_of hI h⟩

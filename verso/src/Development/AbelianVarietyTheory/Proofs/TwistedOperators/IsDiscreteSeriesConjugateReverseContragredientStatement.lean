@@ -15,5 +15,8 @@ open scoped TensorProduct InnerProductSpace ComplexConjugate
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.ArchRec
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ArchRec.isDS_conj_rev | exact GlobalTheory.ArchRec.isDS_conj_rev | (intros; apply GlobalTheory.ArchRec.isDS_conj_rev <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isDiscreteSeries_conjugate_reverse_contragredient : ∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (σ : Mn n → (H →L[ℂ] H)), IsDS ε lam σ → IsDS (fun a => ε a.rev) (fun a => -lam a.rev) (fun g => σ ((g.map (starRingEnd ℂ)).submatrix Fin.rev Fin.rev)) := by
   first | exact @GlobalTheory.ArchRec.isDS_conj_rev | exact GlobalTheory.ArchRec.isDS_conj_rev | (intros; apply GlobalTheory.ArchRec.isDS_conj_rev <;> assumption)

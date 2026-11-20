@@ -11,30 +11,48 @@ section Lin
 
 variable {R : Type} [CommRing R] {k M : ℕ}
 
+/- English proof (translation)
+Unfold `Rel at *`. Rewrite using `[map_add, h1, h2, mul_add]`.
+-/
 theorem rel_add {f g f' g' : MvPolynomial (Fin k × Fin k) R} (h1 : Rel R k M f f') (h2 : Rel R k M g g') :
     Rel R k M (f + g) (f' + g') := by
   unfold Rel at *
   rw [map_add, h1, h2, mul_add]
 
+/- English proof (translation)
+Unfold `Rel at *`. Rewrite using `[map_smul, h, mul_smul_comm]`.
+-/
 theorem rel_smul {f f' : MvPolynomial (Fin k × Fin k) R} (c : R) (h : Rel R k M f f') :
     Rel R k M (c • f) (c • f') := by
   unfold Rel at *
   rw [map_smul, h, mul_smul_comm]
 
+/- English proof (translation)
+Unfold `Rel`. Simplify using the standard rewrite rules.
+-/
 theorem rel_zero : Rel R k M (0 : MvPolynomial (Fin k × Fin k) R) 0 := by
   unfold Rel
   simp
 
+/- English proof (translation)
+Unfold `Rel at *`. Rewrite using `[map_mul, map_natCast, h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rel_natMul {f f' : MvPolynomial (Fin k × Fin k) R} (n : ℕ) (h : Rel R k M f f') :
     Rel R k M ((n : MvPolynomial (Fin k × Fin k) R) * f) ((n : MvPolynomial (Fin k × Fin k) R) * f') := by
   unfold Rel at *
   rw [map_mul, map_natCast, h]
   ring
 
+/- English proof (translation)
+Simplify using `only [rowDiv, map_add, Polynomial.coeff_add]`.
+-/
 theorem rowDiv_add (a b : Fin k) (j : ℕ) (f g : MvPolynomial (Fin k × Fin k) R) :
     rowDiv R a b j (f + g) = rowDiv R a b j f + rowDiv R a b j g := by
   simp only [rowDiv, map_add, Polynomial.coeff_add]
 
+/- English proof (translation)
+Simplify using `only [rowDiv, map_smul, Polynomial.coeff_smul]`.
+-/
 theorem rowDiv_smul (a b : Fin k) (j : ℕ) (c : R) (f : MvPolynomial (Fin k × Fin k) R) :
     rowDiv R a b j (c • f) = c • rowDiv R a b j f := by
   simp only [rowDiv, map_smul, Polynomial.coeff_smul]
@@ -44,6 +62,11 @@ def rowDivL (a b : Fin k) (j : ℕ) : MvPolynomial (Fin k × Fin k) R →ₗ[R] 
   map_add' := rowDiv_add a b j
   map_smul' := rowDiv_smul a b j
 
+/- English proof (translation)
+Establish `key : weyl R k k le_rfl ν ≤ (weyl R k k le_rfl ν).comap (rowDivL a b j)`. Unfold `weyl`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨w, rfl⟩`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap]`.
+
+Conclude with `Submodule.subset_span ⟨(a, b, j) :: w, rfl⟩`. Conclude with `key hf`.
+-/
 theorem weyl_rowDiv {ν : Fin k → ℕ} (a b : Fin k) (j : ℕ) {f : MvPolynomial (Fin k × Fin k) R}
     (hf : f ∈ weyl R k k le_rfl ν) : rowDiv R a b j f ∈ weyl R k k le_rfl ν := by
   have key : weyl R k k le_rfl ν ≤ (weyl R k k le_rfl ν).comap (rowDivL a b j) := by
@@ -54,11 +77,20 @@ theorem weyl_rowDiv {ν : Fin k → ℕ} (a b : Fin k) (j : ℕ) {f : MvPolynomi
     exact Submodule.subset_span ⟨(a, b, j) :: w, rfl⟩
   exact key hf
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem applyWord_nil {ν : MvPolynomial (Fin k × Fin k) R} : applyWord R [] ν = ν := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem applyWord_cons (x : Fin k × Fin k × ℕ) (w : List (Fin k × Fin k × ℕ)) (f : MvPolynomial (Fin k × Fin k) R) :
     applyWord R (x :: w) f = rowDiv R x.1 x.2.1 x.2.2 (applyWord R w f) := rfl
 
+/- English proof (translation)
+Break down `hu with rfl | rfl` into its components or cases. Rewrite using `[one_mul]`. Conclude with `hx`. Rewrite using `[neg_one_mul]`. Conclude with `S.neg_mem hx`.
+-/
 theorem mem_of_pm {S : Submodule R (MvPolynomial (Fin k × Fin k) R)} {x : MvPolynomial (Fin k × Fin k) R}
     (u : MvPolynomial (Fin k × Fin k) R) (hu : u = 1 ∨ u = -1) (hx : x ∈ S) : u * x ∈ S := by
   rcases hu with rfl | rfl
@@ -67,6 +99,9 @@ theorem mem_of_pm {S : Submodule R (MvPolynomial (Fin k × Fin k) R)} {x : MvPol
 
 end Lin
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => exact hMh R k ν`. Consider the case `cons x w ih => exact hMd R k x.1 x.2.1 x.2.2 _ ih`.
+-/
 private theorem mh_applyWord_hw (hMh : MHhw) (hMd : MHdiv)
     (R : Type) [CommRing R] (k : ℕ) (ν : Fin k → ℕ) (w : List (Fin k × Fin k × ℕ)) :
     MH R (applyWord R w (hw R (le_refl k) ν)) := by
@@ -74,6 +109,23 @@ private theorem mh_applyWord_hw (hMh : MHhw) (hMd : MHdiv)
   | nil => exact hMh R k ν
   | cons x w ih => exact hMd R k x.1 x.2.1 x.2.2 _ ih
 
+/- English proof (translation)
+Establish `hCu : ∀ u : R, (u = 1 ∨ u = -1) → (C u : MvPolynomial (Fin (m + 1) × Fin (m + 1)) R) = 1 ∨ (C u : MvPolynomial (Fin (m + 1) × Fin (m + 1)) R) = -1`. Introduce `u hu`. Break down `hu with rfl | rfl` into its components or cases. Use `left`. Conclude with `C_1`.
+
+Use `right`. Rewrite using `[C_neg, C_1]`. Establish `key : ∀ w : List (Fin (m + 1) × Fin (m + 1) × ℕ), ∃ f' ∈ weyl R (m + 1) (m + 1) le_rfl (nuOf (lamStar lam)), Rel R (m + 1) (expM lam) (applyWord R w (hw R le_rfl (nuOf lam))) f'`. Introduce `w`. Proceed by induction on `w with`.
+
+Consider the case `nil`. Take `⟨u, hu, hrel⟩` from `h4 R m lam hl`. Conclude with `⟨C u * low R (nuOf (lamStar lam)), mem_of_pm _ (hCu u hu) (hL R (m + 1) _), hrel⟩`. Consider the case `cons x w ih`. Take `⟨f', hf', hrel⟩` from `ih`.
+
+Take `⟨a, b, j⟩` from `x`. Rewrite using `[applyWord_cons]`. Simplify using `only`. Break down `eq_or_ne a b with rfl | hab` into its components or cases. Take `⟨d, hd⟩` from `mh_applyWord_hw hMh hMd R (m + 1) (nuOf lam) w a`.
+
+Rewrite using `[hD R (m + 1) a j d _ hd]`. Use `⟨((d.choose j : ℕ) : MvPolynomial (Fin (m + 1) × Fin (m + 1)) R) * f', ?_, (rel_natMul (h := hrel)) _⟩` and prove the remaining obligations. Rewrite using `[← nsmul_eq_mul]`. Conclude with `nsmul_mem hf' _`. Conclude with `⟨(-1) ^ j * rowDiv R b a j f', mem_of_pm _ (neg_one_pow_eq_or _ j) (weyl_rowDiv b a j hf'), h1 R (m + 1) (expM lam) a b j _ f' hab hrel⟩`.
+
+Introduce `f hf`. Set `S : Submodule R (MvPolynomial (Fin (m + 1) × Fin (m + 1)) R)` to `{ carrier := {f | ∃ f' ∈ weyl R (m + 1) (m + 1) le_rfl (nuOf (lamStar lam)), Rel R (m + 1) (expM lam) f f'} add_mem' := by`. Introduce and unpack `f g ⟨f', hf', h⟩ ⟨g', hg', h'⟩`. Conclude with `⟨f' + g', Submodule.add_mem _ hf' hg', (rel_add h) h'⟩`. Use the proof step `zero_mem' := ⟨0, Submodule.zero_mem _, rel_zero⟩`.
+
+Use the proof step `smul_mem' := by`. Introduce and unpack `c f ⟨f', hf', h⟩`. Conclude with `⟨c • f', Submodule.smul_mem _ c hf', (rel_smul (h := h)) c⟩ }`. Establish `hle : weyl R (m + 1) (m + 1) le_rfl (nuOf lam) ≤ S`. Unfold `weyl`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `key w`. Conclude with `hle hf`.
+-/
 theorem core1 (h1 : W1) (hMh : MHhw) (hMd : MHdiv) (hD : Diag) (hL : LowMem) (h4 : W4hw)
     (R : Type) [CommRing R] (m : ℕ) (lam : Fin (m + 1) → ℤ) (hl : Antitone lam) :
     ∀ f ∈ weyl R (m + 1) (m + 1) le_rfl (nuOf lam), ∃ f' ∈ weyl R (m + 1) (m + 1) le_rfl (nuOf (lamStar lam)),
@@ -131,27 +183,45 @@ section Top
 
 variable {K : Type} [Field K]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[lamStar]`.
+-/
 theorem lamStar_lamStar {m : ℕ} (lam : Fin (m + 1) → ℤ) : lamStar (lamStar lam) = lam := by
   funext i
   simp [lamStar]
 
+/- English proof (translation)
+Introduce `i j hij`. Simplify using `only [lamStar]`. Conclude with `neg_le_neg (h (Fin.rev_le_rev.mpr hij))`.
+-/
 theorem antitone_lamStar {m : ℕ} {lam : Fin (m + 1) → ℤ} (h : Antitone lam) : Antitone (lamStar lam) := by
   intro i j hij
   simp only [lamStar]
   exact neg_le_neg (h (Fin.rev_le_rev.mpr hij))
 
+/- English proof (translation)
+Rewrite using `[det_transpose]`. Conclude with `isUnit_nonsing_inv_det g hg`.
+-/
 theorem isUnit_invT {n : ℕ} {g : Matrix (Fin n) (Fin n) K} (hg : IsUnit g.det) : IsUnit ((g⁻¹)ᵀ).det := by
   rw [det_transpose]
   exact isUnit_nonsing_inv_det g hg
 
+/- English proof (translation)
+Establish `h1 : IsUnit (gᵀ).det` using `by rwa [det_transpose]`. Rewrite using `[transpose_nonsing_inv g, nonsing_inv_nonsing_inv _ h1, transpose_transpose]`.
+-/
 theorem invT_invT {n : ℕ} {g : Matrix (Fin n) (Fin n) K} (hg : IsUnit g.det) : (((g⁻¹)ᵀ)⁻¹)ᵀ = g := by
   have h1 : IsUnit (gᵀ).det := by rwa [det_transpose]
   rw [transpose_nonsing_inv g, nonsing_inv_nonsing_inv _ h1, transpose_transpose]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[revCol, Matrix.mul_apply, Matrix.one_apply]`.
+-/
 theorem revCol_eq {m : ℕ} (A : Matrix (Fin (m + 1)) (Fin (m + 1)) K) : revCol A = A * revCol 1 := by
   ext i j
   simp [revCol, Matrix.mul_apply, Matrix.one_apply]
 
+/- English proof (translation)
+Rewrite using `[← revCol_eq]`. Use extensionality with `i j`. Simplify using `only [revCol, submatrix_apply]`. Rewrite using `[Fin.rev_rev]`. Both sides reduce to the same expression.
+-/
 theorem revCol_one_mul_self {m : ℕ} : (revCol (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) K)) * revCol 1 = 1 := by
   rw [← revCol_eq]
   ext i j
@@ -159,6 +229,11 @@ theorem revCol_one_mul_self {m : ℕ} : (revCol (1 : Matrix (Fin (m + 1)) (Fin (
   rw [Fin.rev_rev]
   rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [revCol, transpose_apply, submatrix_apply, id_eq, one_apply]`. Establish `h : (j = i.rev) ↔ (i = j.rev)` using `⟨fun h => by rw [h, Fin.rev_rev], fun h => by rw [h, Fin.rev_rev]⟩`. Distinguish the cases in `hij : i = j.rev`. Rewrite using `[if_pos hij, if_pos (h.mpr hij)]`.
+
+Rewrite using `[if_neg hij, if_neg (fun h' => hij (h.mp h'))]`.
+-/
 theorem revCol_one_transpose {m : ℕ} : (revCol (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) K))ᵀ = revCol 1 := by
   ext i j
   simp only [revCol, transpose_apply, submatrix_apply, id_eq, one_apply]
@@ -168,6 +243,11 @@ theorem revCol_one_transpose {m : ℕ} : (revCol (1 : Matrix (Fin (m + 1)) (Fin 
   · rw [if_pos hij, if_pos (h.mpr hij)]
   · rw [if_neg hij, if_neg (fun h' => hij (h.mp h'))]
 
+/- English proof (translation)
+Establish `hP : IsUnit (revCol (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) K)).det`. Establish `h : (revCol (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) K)).det * (revCol (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) K)).det = 1`. Rewrite using `[← det_mul, revCol_one_mul_self, det_one]`. Conclude with `⟨⟨_, _, h, h⟩, rfl⟩`. Rewrite using `[revCol_eq, det_mul]`.
+
+Conclude with `(isUnit_invT hz).mul hP`.
+-/
 theorem isUnit_revInv {m : ℕ} {z : Matrix (Fin (m + 1)) (Fin (m + 1)) K} (hz : IsUnit z.det) :
     IsUnit (revCol (z⁻¹)ᵀ).det := by
   have hP : IsUnit (revCol (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) K)).det := by
@@ -178,6 +258,9 @@ theorem isUnit_revInv {m : ℕ} {z : Matrix (Fin (m + 1)) (Fin (m + 1)) K} (hz :
   rw [revCol_eq, det_mul]
   exact (isUnit_invT hz).mul hP
 
+/- English proof (translation)
+Establish `hP : revCol (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) K) * revCol 1 = 1` using `revCol_one_mul_self`. Establish `hPinv : (revCol (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) K))⁻¹ = revCol 1` using `inv_eq_left_inv hP`. Rewrite using `[revCol_eq ((z⁻¹)ᵀ), Matrix.mul_inv_rev, hPinv, transpose_mul, invT_invT hz, revCol_one_transpose, revCol_eq (z * revCol 1), mul_assoc, hP, mul_one]`.
+-/
 theorem revInv_revInv {m : ℕ} {z : Matrix (Fin (m + 1)) (Fin (m + 1)) K} (hz : IsUnit z.det) :
     revCol ((revCol (z⁻¹)ᵀ)⁻¹)ᵀ = z := by
   have hP : revCol (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) K) * revCol 1 = 1 :=
@@ -187,6 +270,11 @@ theorem revInv_revInv {m : ℕ} {z : Matrix (Fin (m + 1)) (Fin (m + 1)) K} (hz :
   rw [revCol_eq ((z⁻¹)ᵀ), Matrix.mul_inv_rev, hPinv, transpose_mul, invT_invT hz,
     revCol_one_transpose, revCol_eq (z * revCol 1), mul_assoc, hP, mul_one]
 
+/- English proof (translation)
+Break down `hS K m with h | h` into its components or cases. Use `left`. Rewrite using `[h, _root_.one_zpow]`. Rewrite using `[h]`. Break down `Int.even_or_odd n with he | ho` into its components or cases.
+
+Use `left`. Conclude with `he.neg_one_zpow`. Use `right`. Conclude with `ho.neg_one_zpow`.
+-/
 theorem sgn_zpow_pm (hS : SgnPM) (m : ℕ) (n : ℤ) : sgnK K m ^ n = 1 ∨ sgnK K m ^ n = -1 := by
   rcases hS K m with h | h
   · left
@@ -198,6 +286,11 @@ theorem sgn_zpow_pm (hS : SgnPM) (m : ℕ) (n : ℤ) : sgnK K m ^ n = 1 ∨ sgnK
     · right
       exact ho.neg_one_zpow
 
+/- English proof (translation)
+Unfold `Rel at h₁ h₂`. Establish `hd : IsHomogeneous (F₁ - F₂) D`. Rewrite `d₁`, `d₂`, the goal using `[← mem_homogeneousSubmodule]`. Conclude with `Submodule.sub_mem _ d₁ d₂`. Establish `h0 : dualSub K (m + 1) (F₁ - F₂) = 0`.
+
+Rewrite using `[map_sub, h₁, h₂, sub_self]`. Conclude with `sub_eq_zero.mp (hU K (m + 1) D (F₁ - F₂) hd h0)`.
+-/
 private theorem eq_of_rel_of_isHomogeneous_of_uniq (hU : Uniq) {m M D : ℕ}
     {F F₁ F₂ : MvPolynomial (Fin (m + 1) × Fin (m + 1)) K}
     (h₁ : Rel K (m + 1) M F F₁) (h₂ : Rel K (m + 1) M F F₂)
@@ -210,6 +303,21 @@ private theorem eq_of_rel_of_isHomogeneous_of_uniq (hU : Uniq) {m M D : ℕ}
     rw [map_sub, h₁, h₂, sub_self]
   exact sub_eq_zero.mp (hU K (m + 1) D (F₁ - F₂) hd h0)
 
+/- English proof (translation)
+Introduce `F hF`. Distinguish the cases in `hl : Antitone lam`. Use `swap`. Unfold `Dl0 at hF`. Rewrite `hF` using `[if_neg hl, Submodule.mem_bot]`.
+
+Substitute `hF` using the available equality. Conclude with `⟨0, Submodule.zero_mem _, fun z _ => by simp⟩`. Establish `hl'` using `antitone_lamStar hl`. Unfold `Dl0 at hF`. Rewrite `hF` using `[if_pos hl]`.
+
+Simplify using `only [Submodule.mem_iInf] at hF`. Establish `hbal` using `hB m lam hl`. Establish `hhom : ∀ f' ∈ weyl O (m + 1) (m + 1) le_rfl (nuOf (lamStar lam)), IsHomogeneous f' (degW (nuOf (lamStar lam)))` using `fun f' hf' => hH O (m + 1) _ f' hf'`. Take `⟨F', -, hrel, hF'hom⟩` from `hG O K m lam g hg hbal hhom (hC O m lam hl) F (hF g ⟨hg, rfl⟩)`. Establish `hF'lat : F' ∈ Dl0 O m (lamStar lam) (colSpan O (g⁻¹)ᵀ)`.
+
+Unfold `Dl0`. Rewrite using `[if_pos hl']`. Simplify using `only [Submodule.mem_iInf]`. Introduce and unpack `g' ⟨hg', hspan⟩`. Establish `hh : IsUnit ((g'⁻¹)ᵀ).det` using `isUnit_invT hg'`.
+
+Establish `hspan' : colSpan O g = colSpan O (g'⁻¹)ᵀ`. Use `hDB O K m (g⁻¹)ᵀ g' (isUnit_invT hg) hg' hspan` as an intermediate fact. Rewrite `this` using `[invT_invT hg]`. Then use the resulting hypothesis. Take `⟨F'', hF''mem, hrel'', hF''hom⟩` from `hG O K m lam (g'⁻¹)ᵀ hh hbal hhom (hC O m lam hl) F (hF _ ⟨hh, hspan'⟩)`. Rewrite `hF''mem` using `[invT_invT hg']`.
+
+Rewrite using `[eq_of_rel_of_isHomogeneous_of_uniq hU hrel hrel'' hF'hom hF''hom]`. Conclude with `hF''mem`. Use `⟨C (sgnK K m ^ lamStar lam (Fin.last m)) * F', ?_, fun z hz => hE K m _ _ _ _ F F' hbal hrel hF'hom z hz⟩` and prove the remaining obligations. Break down `sgn_zpow_pm (K := K) hS m (lamStar lam (Fin.last m)) with h | h` into its components or cases. Rewrite using `[h, C_1, one_mul]`.
+
+Conclude with `hF'lat`. Rewrite using `[h, C_neg, C_1, neg_one_mul]`. Conclude with `Submodule.neg_mem _ hF'lat`.
+-/
 theorem dir1 (hC : ∀ (R : Type) [CommRing R] (m : ℕ) (lam : Fin (m + 1) → ℤ), Antitone lam →
       ∀ f ∈ weyl R (m + 1) (m + 1) le_rfl (nuOf lam), ∃ f' ∈ weyl R (m + 1) (m + 1) le_rfl (nuOf (lamStar lam)),
         Rel R (m + 1) (expM lam) f f')
@@ -258,6 +366,11 @@ theorem dir1 (hC : ∀ (R : Type) [CommRing R] (m : ℕ) (lam : Fin (m + 1) → 
   · rw [h, C_neg, C_1, neg_one_mul]
     exact Submodule.neg_mem _ hF'lat
 
+/- English proof (translation)
+Introduce `g hg`. Use `⟨dir1 hC1 hH hB hE hU hDB hS hG O m lam g hg, ?_⟩` and prove the remaining obligations. Introduce `F' hF'`. Establish `hfw` using `dir1 hC1 hH hB hE hU hDB hS hG O m (lamStar lam) ((g⁻¹)ᵀ) (isUnit_invT hg)`. Rewrite `hfw` using `[lamStar_lamStar, invT_invT hg]`.
+
+Take `⟨F, hF, hid⟩` from `hfw F' hF'`. Use `⟨F, hF, fun z hz => ?_⟩` and prove the remaining obligations. Use `hid (revCol (z⁻¹)ᵀ) (isUnit_revInv hz)` as an intermediate fact. Rewrite `this` using `[revInv_revInv hz]`. Conclude with `this.symm`.
+-/
 theorem oddFact_of (hC1 : ∀ (R : Type) [CommRing R] (m : ℕ) (lam : Fin (m + 1) → ℤ), Antitone lam →
       ∀ f ∈ weyl R (m + 1) (m + 1) le_rfl (nuOf lam), ∃ f' ∈ weyl R (m + 1) (m + 1) le_rfl (nuOf (lamStar lam)),
         Rel R (m + 1) (expM lam) f f')
@@ -275,6 +388,9 @@ theorem oddFact_of (hC1 : ∀ (R : Type) [CommRing R] (m : ℕ) (lam : Fin (m + 
   rw [revInv_revInv hz] at this
   exact this.symm
 
+/- English proof (translation)
+The claim follows from `oddFact_of (fun R _ m lam hl => core1 h1 hMh hMd hD hL h4 R m lam hl) hH hB hE hU hDB hS hG O m lam`.
+-/
 theorem oddDualWeyl_of (h1 : W1) (hMh : MHhw) (hMd : MHdiv) (hD : Diag) (hL : LowMem) (h4 : W4hw)
     (hH : HomW) (hB : Bk) (hE : EV) (hU : Uniq) (hDB : DualB) (hS : SgnPM) (hG : GStep)
     (O : Type) [CommRing O] [Algebra O K] (m : ℕ) (lam : Fin (m + 1) → ℤ) : OddFact (K := K) O m lam := oddFact_of

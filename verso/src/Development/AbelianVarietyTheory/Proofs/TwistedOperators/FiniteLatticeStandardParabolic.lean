@@ -14,12 +14,22 @@ namespace GlobalTheory.AscFin.PieceA
 
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `i j`. Simplify using `only [Matrix.mul_apply]`. Conclude with `Ideal.sum_mem _ fun l _ => Ideal.mul_mem_right _ _ (ha i l)`.
+-/
 theorem mxAt_mul_right {m n k : ℕ} {a : Mx D m n} (ha : MxAt (fun _ => True) a) (M : Mx D n k) :
     MxAt (fun _ => True) (a ⬝ M) := by
   intro i j
   simp only [Matrix.mul_apply]
   exact Ideal.sum_mem _ fun l _ => Ideal.mul_mem_right _ _ (ha i l)
 
+/- English proof (translation)
+Use `haveI : T2Space (AE D) := (Formalism.IndefR.Eqv.ae_facts D).2.1`. Establish `hc : Continuous (d.extX W)` using `by show Continuous fun a : Mx D W.rank ρ => a ⬝ d.pX`. Conclude with `continuous_id.matrix_mul continuous_const`. Establish `hinv : ∀ a : Mx D W.rank ρ, d.extX W a ⬝ d.jX = a` using `fun a => by`. Rewrite using `[GlobalTheory.MixModel.HypDec.extX_apply, Matrix.mul_assoc, GlobalTheory.MixModel.HypDec.pX_jX, Matrix.mul_one]`.
+
+Use `⟨fun a ha => ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hinv a]`. Conclude with `mxAt_mul_right (hΓ.fin _ ha) _`. Establish `hK : IsCompact ((fun w : WO V W => w ⬝ d.jX) '' (Γ : Set (WO V W)))` using `hΓ.cpt.image (continuous_id.matrix_mul continuous_const)`. Use `hK.of_isClosed_subset (hΓ.cpt.isClosed.preimage hc) ?_` and prove the remaining obligations.
+
+Introduce `a ha`. Conclude with `⟨_, ha, hinv a⟩`. Take `⟨U, hU, h0, hUA⟩` from `hΓ.opn`. Use `⟨d.extX W ⁻¹' U, hU.preimage hc, by simpa using h0, fun a ha haf => ?_⟩` and prove the remaining obligations. Conclude with `hUA _ ha (by rw [GlobalTheory.MixModel.HypDec.extX_apply]; exact mxAt_mul_right haf _)`.
+-/
 theorem finLat_comap_extX {V V₀ W : HSp D} {ρ : ℕ} (d : GlobalTheory.MixModel.HypDec V V₀ ρ) {Γ : AddSubgroup (WO V W)}
     (hΓ : FinLat Γ) : FinLat (Γ.comap (d.extX W)) := by
   haveI : T2Space (AE D) := (Formalism.IndefR.Eqv.ae_facts D).2.1
@@ -46,6 +56,9 @@ namespace GlobalTheory.AscFin
 
 open GlobalTheory.AscFin.PieceA
 
+/- English proof (translation)
+Establish `H` using `GlobalTheory.T.grid_lattices_compact_selfDual_splitting`. Unfold `OnStd at H ⊢`. Use `delta All at H ⊢`. Introduce `D hD T L μ0 hL sc G W M hM F hF ρ h`. Conclude with `finLat_comap_extX _ ((H D hD T L μ0 hL sc G W M hM F hF).1 (2 * ρ + 1) (by omega)).1`.
+-/
 theorem finLat_pcBF_A₁ : OnStd fun {D} _ _ {sc} {G} W F => ∀ ρ (h : 2 * ρ + 2 ≤ D.R.m), FinLat (pcBF W F ρ h).A₁ := by
   have H := GlobalTheory.T.grid_lattices_compact_selfDual_splitting
   unfold OnStd at H ⊢

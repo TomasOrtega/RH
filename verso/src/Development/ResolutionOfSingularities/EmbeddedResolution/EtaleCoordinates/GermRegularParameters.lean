@@ -13,6 +13,9 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Set `instSt : Algebra Γ(X, U) (X.presheaf.stalk x)` to `(X.presheaf.germ U x hx).hom.toAlgebra`. Establish `instLoc : IsLocalization.AtPrime (X.presheaf.stalk x) (hU.primeIdealOf ⟨x, hx⟩).asIdeal` using `hU.isLocalization_stalk ⟨x, hx⟩`. Conclude with `IsLocalization.AtPrime.to_map_mem_maximal_iff (X.presheaf.stalk x) (hU.primeIdealOf ⟨x, hx⟩).asIdeal s`.
+-/
 theorem germ_mem_maximalIdeal_iff {X : Scheme.{u}} {U : X.Opens} (hU : IsAffineOpen U)
     (x : X) (hx : x ∈ U) (s : Γ(X, U)) :
     X.presheaf.germ U x hx s ∈ IsLocalRing.maximalIdeal (X.presheaf.stalk x) ↔
@@ -27,6 +30,17 @@ theorem germ_mem_maximalIdeal_iff {X : Scheme.{u}} {U : X.Opens} (hU : IsAffineO
 variable {X : Scheme.{u}} {k : Type u} [Field k] {p : X ⟶ Spec (CommRingCat.of k)}
   {U : X.Opens} {m : ℕ}
 
+/- English proof (translation)
+Set `instAlg : Algebra (CoordPolynomialRing k m) Γ(X, U)` to `c.algebra`. Establish `instEt : Algebra.Etale (CoordPolynomialRing k m) Γ(X, U)` using `c.algebra_etale hU`. Set `instSt : Algebra Γ(X, U) (X.presheaf.stalk x)` to `(X.presheaf.germ U x hx).hom.toAlgebra`. Establish `instLoc : IsLocalization.AtPrime (X.presheaf.stalk x) (hU.primeIdealOf ⟨x, hx⟩).asIdeal` using `hU.isLocalization_stalk ⟨x, hx⟩`. Establish `halg : ∀ t : Γ(X, U), algebraMap Γ(X, U) (X.presheaf.stalk x) t = X.presheaf.germ U x hx t` using `fun _ => rfl`.
+
+Establish `hcoord : ∀ j : Fin m, etaleChartCoord k m Γ(X, U) j = c.coord j`. Introduce `j`. Use `show c.coordRingHom (MvPolynomial.X (ULift.up j : ULift.{u} (Fin m))) = c.coord j`. Conclude with `c.coordRingHom_X j`. Establish `hq : ∀ j ∈ J₀, etaleChartCoord k m Γ(X, U) j ∈ (hU.primeIdealOf ⟨x, hx⟩).asIdeal`.
+
+Introduce `j hj`. Rewrite using `[hcoord j]`. Conclude with `(germ_mem_maximalIdeal_iff hU x hx (c.coord j)).mp (hJ₀ j hj)`. Take `⟨d, f, hf1, hf2, hf3, hf4⟩` from `exists_regularSystemOfParameters_containing_etaleChartCoords k m Γ(X, U) (hU.primeIdealOf ⟨x, hx⟩).asIdeal (X.presheaf.stalk x) J₀ hq`. Use `⟨d, f, ?_, ?_, ?_, hf4⟩` and prove the remaining obligations.
+
+Introduce `i`. Conclude with `(germ_mem_maximalIdeal_iff hU x hx (f i)).mpr (hf1 i)`. Introduce `j hj`. Take `⟨i, hi⟩` from `hf2 j hj`. Conclude with `⟨i, by rw [hi, hcoord j]⟩`.
+
+Simplify `hf3` using `only [halg]`.
+-/
 theorem exists_sections_span_eq_maximalIdeal_with_coords (hU : IsAffineOpen U)
     (c : EtaleChart p U m) (x : X) (hx : x ∈ U) (J₀ : Finset (Fin m))
     (hJ₀ : ∀ j ∈ J₀, X.presheaf.germ U x hx (c.coord j) ∈
@@ -65,6 +79,9 @@ theorem exists_sections_span_eq_maximalIdeal_with_coords (hU : IsAffineOpen U)
     exact ⟨i, by rw [hi, hcoord j]⟩
   · simpa only [halg] using hf3
 
+/- English proof (translation)
+Take `⟨d, f, -, h2, h3, h4⟩` from `exists_sections_span_eq_maximalIdeal_with_coords hU c x hx J₀ (fun j hj => (germ_mem_maximalIdeal_iff hU x hx (c.coord j)).mpr (hJ₀ j hj))`. Conclude with `⟨d, f, h2, h3, h4⟩`.
+-/
 theorem exists_isRegularParameterSystem_with_coords_of_mem_prime (hU : IsAffineOpen U)
     (c : EtaleChart p U m) (x : X) (hx : x ∈ U) (J₀ : Finset (Fin m))
     (hJ₀ : ∀ j ∈ J₀, c.coord j ∈ (hU.primeIdealOf ⟨x, hx⟩).asIdeal) :
@@ -77,6 +94,9 @@ theorem exists_isRegularParameterSystem_with_coords_of_mem_prime (hU : IsAffineO
       (fun j hj => (germ_mem_maximalIdeal_iff hU x hx (c.coord j)).mpr (hJ₀ j hj))
   exact ⟨d, f, h2, h3, h4⟩
 
+/- English proof (translation)
+The claim follows from `exists_isRegularParameterSystem_with_coords_of_mem_prime hU c x hx J₀ (fun j hj => (germ_mem_maximalIdeal_iff hU x hx (c.coord j)).mp (hJ₀ j hj))`.
+-/
 theorem exists_isRegularParameterSystem_with_coords_of_germ_mem
     (hU : IsAffineOpen U) (c : EtaleChart p U m) (x : X) (hx : x ∈ U) (J₀ : Finset (Fin m))
     (hJ₀ : ∀ j ∈ J₀, X.presheaf.germ U x hx (c.coord j) ∈

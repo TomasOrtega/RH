@@ -10,6 +10,17 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 namespace GlobalTheory.CompanionTheory.ModelS
 
+/- English proof (translation)
+Introduce `n lev hlev g hg`. Establish `hdet : g.det ≠ 0` using `hg`. Establish `hu : IsUnit gᴴ`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_conjTranspose]`. Conclude with `isUnit_iff_ne_zero.2 (by simpa using hdet)`.
+
+Take `⟨k, hk, b, hb, ht⟩` from `GlobalTheory.CompanionTheory.QR.exists_unitary_mul_blockTriangular gᴴ hu`. Establish `hg' : g = bᴴ * kᴴ`. Rewrite using `[← Matrix.conjTranspose_mul, ← hb, Matrix.conjTranspose_conjTranspose]`. Establish `hkH : kᴴ ∈ Matrix.unitaryGroup (Fin n) ℂ`. Rewrite using `[Matrix.mem_unitaryGroup_iff]`.
+
+Use `(Matrix.mem_unitaryGroup_iff').1 hk` as an intermediate fact. Simplify `this` using `[Matrix.star_eq_conjTranspose]`. Use `⟨bᴴ, ⟨?_, ?_⟩, ⟨kᴴ, hkH⟩, hg'⟩` and prove the remaining obligations. Introduce `h0`. Apply `hdet` to reduce the goal to its premises.
+
+Rewrite using `[hg', Matrix.det_mul]`. Establish `h0' : (bᴴ).det = 0` using `h0`. Rewrite using `[h0', zero_mul]`. Introduce `a c hac`. Establish `hlt : a < c`.
+
+Assume the negation of the conclusion as `hn`. Conclude with `absurd (hlev (not_lt.1 hn)) (not_le.2 hac)`. Establish `: b c a = 0` using `ht hlt`. Simplify using `[Matrix.conjTranspose_apply, this]`.
+-/
 theorem exists_Pb_mul_unitary : ∀ (n : ℕ) (lev : Fin n → ℕ), Monotone lev → ∀ g ∈ GLs n,
     ∃ p ∈ GlobalTheory.CompanionTheory.ModelS.Pb lev, ∃ k : Matrix.unitaryGroup (Fin n) ℂ, g = p * k.1 := by
   intro n lev hlev g hg

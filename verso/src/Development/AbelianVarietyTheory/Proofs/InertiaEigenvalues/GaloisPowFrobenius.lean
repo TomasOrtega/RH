@@ -14,6 +14,25 @@ namespace GlobalTheory.FrobAction
 
 open GlobalTheory.BKReal
 
+/- English proof (translation)
+Introduce `l hl a _ g`. Take `⟨z, ω, hω, hz, -⟩` from `exists_gen l a`. Establish `h1` using `one_lt_pow_l l a`. Establish `hmem : ∀ y : Fq l a, Per.σF g (Fq.val l a y) ∈ resSub l a` using `fun y => by`. Rewrite using `[mem_resSub, ← map_pow, ← map_pow, Fq.pow_card]`.
+
+Set `φ : Fq l a →+* Fq l a` to `((Per.σF g).comp (Fq.val l a)).codRestrict (resSub l a) hmem`. Establish `hφ : ∀ y, Fq.val l a (φ y) = Per.σF g (Fq.val l a y)` using `fun _ => rfl`. Use `letI : Algebra (ZMod l) (Fq l a) := ZMod.algebra _ _`. Use `haveI : Fintype (Fq l a) := Fintype.ofFinite _`. Set `ψ : Fq l a →ₐ[ZMod l] Fq l a` to `{ φ with commutes' := fun r => by haveI : NeZero l := ⟨hl.out.ne_zero⟩`.
+
+Take `⟨n, rfl⟩` from `ZMod.natCast_zmod_surjective r`. Simplify using `only [RingHom.toMonoidHom_eq_coe, OneHom.toFun_eq_coe, MonoidHom.toOneHom_coe, MonoidHom.coe_coe, map_natCast] }`. Establish `hb : Function.Bijective ψ` using `Finite.injective_iff_bijective.1 ψ.toRingHom.injective`. Take `⟨n, hn⟩` from `(FiniteField.bijective_frobeniusAlgEquivOfAlgebraic_pow (ZMod l) (Fq l a)).2 (AlgEquiv.ofBijective ψ hb)`. Establish `hfr : ∀ (k : ℕ) (y : Fq l a), (FiniteField.frobeniusAlgEquivOfAlgebraic (ZMod l) (Fq l a) ^ k) y = y ^ l ^ k` using `fun k y => by`.
+
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ', AlgEquiv.mul_apply, ih, FiniteField.frobeniusAlgEquivOfAlgebraic_apply, ZMod.card, ← pow_mul, ← pow_succ]`. Establish `hφz : φ z = z ^ l ^ (n : ℕ)`.
+
+Use `congrArg (fun e : Fq l a ≃ₐ[ZMod l] Fq l a => e z) hn` as an intermediate fact. Simplify using `only [hfr] at this`. Conclude with `this.symm`. Establish `hrank : Module.finrank (ZMod l) (Fq l a) = a`. Establish `h2` using `Module.card_eq_pow_finrank (K := ZMod l) (V := Fq l a)`.
+
+Rewrite `h2` using `[ZMod.card, ← Nat.card_eq_fintype_card, card_Fq]`. Conclude with `(Nat.pow_right_injective hl.out.two_le h2).symm`. Establish `key : ∀ y : OCb l, ((PreTilt.untilt (Per.σF g y) : Per.OC l) : ℂ_[l]) = Per.σC g ((PreTilt.untilt y : Per.OC l) : ℂ_[l])` using `fun y => by`. Rewrite using `[GlobalTheory.RingBasics.untilt_σF]`. Conclude with `GlobalTheory.RingIface.sigO_coe l g _`.
+
+Establish `hu` using `GlobalTheory.MemLoc.IsTiltOf.untilt_eq hz`. Establish `hgω : g ω = ω ^ l ^ (n : ℕ)`. Apply `(algebraMap (Om l) ℂ_[l]).injective` to reduce the goal to its premises. Establish `h3` using `key (Fq.val l a z)`. Rewrite `h3` using `[← hφ, hφz, map_pow, map_pow, SubmonoidClass.coe_pow, hu, GlobalTheory.RingBasics.σC_coe]`.
+
+Rewrite using `[map_pow]`. Conclude with `h3.symm`. Use `⟨((n : ℕ) : ZMod a), fun x hx => ?_⟩` and prove the remaining obligations. Establish `hval : (((n : ℕ) : ZMod a)).val = n` using `ZMod.val_natCast_of_lt (lt_of_lt_of_eq n.2 hrank)`. Rewrite using `[hval]`.
+
+Break down `eq_or_ne x 0 with rfl | hx0` into its components or cases. Rewrite using `[map_zero, zero_pow (pow_pos hl.out.pos _).ne']`. Establish `h4 : x ^ (l ^ a - 1) = 1` using `mul_right_cancel₀ hx0 (by rw [← pow_succ, Nat.sub_add_cancel h1.le, hx, one_mul]) haveI : NeZero (l ^ a - 1) := ⟨by omega⟩`. Take `⟨k, -, rfl⟩` from `hω.eq_pow_of_pow_eq_one h4`. Rewrite using `[map_pow, hgω, ← pow_mul, ← pow_mul, mul_comm]`.
+-/
 theorem galois_pow_frobenius : ∀ (l : ℕ) [Fact l.Prime] (a : ℕ) [NeZero a] (g : GQ l),
     ∃ m : ZMod a, ∀ x : Om l, x ^ l ^ a = x → g x = x ^ l ^ m.val := by
   intro l hl a _ g
@@ -74,5 +93,8 @@ theorem galois_pow_frobenius : ∀ (l : ℕ) [Fact l.Prime] (a : ℕ) [NeZero a]
 
 end GlobalTheory.FrobAction
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.FrobAction.galois_pow_frobenius`.
+-/
 example : ∀ (l : ℕ) [Fact l.Prime] (a : ℕ) [NeZero a] (g : GQ l), ∃ m : ZMod a, ∀ x : Om l, x ^ l ^ a = x → g x = x ^ l ^ m.val :=
   GlobalTheory.FrobAction.galois_pow_frobenius

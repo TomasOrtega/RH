@@ -10,6 +10,11 @@ open CategoryTheory AlgebraicGeometry TensorProduct GroundTheory.PAdicHodge Glob
 
 namespace GlobalTheory.CompanionTheory.CrisDP
 
+/- English proof (translation)
+Introduce `l _ K r n`. Set `F₀ : WittVector l r.k →+* (base l).Acr0` to `(algebraMap (base l).W (base l).Acr0).comp ((base l).sW.comp (WittVector.map r.s))`. Use `RL.pd_mor (Ideal.Quotient.mk _) ((base l).mkAcr n) (Ideal.span {(l : WittVector l r.k)}) (base l).PFil0 (Wc.pd l r.k n) (B.DD true (base l) n) F₀ (Mid.wn r n) Ideal.Quotient.mk_surjective (pdI_l l (witt_unit l r.k)) (Wc.isPd l r.k n) ((base l).isPd_pdPFil n) ?_ ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hx`.
+
+Rewrite using `[map_mul, map_natCast]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_sup_left (Ideal.mem_span_singleton_self _))`. Introduce `a`. Rewrite using `[Mid.wn_mk]`. Conclude with `(base l).cris_algebraMap n (WittVector.map r.s a)`.
+-/
 theorem wn_isDPMorphism : ∀ {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (r : Res l K) (n : ℕ),
     IsDPMorphism (Wc.pd l r.k n) (B.DD true (base l) n) (Mid.wn r n) := by
   intro l _ K r n

@@ -3,16 +3,27 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.N
 
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspRep UpperTheory.V.Sd UpperTheory.V.Af UpperTheory.V.Af.Nf
 
+/- English proof (translation)
+Establish `h : differentIdeal ℤ (𝓞 ℚ) = ⊤`. Rewrite using `[← Ideal.absNorm_eq_one_iff, absNorm_differentIdeal ℚ (𝓞 ℚ), discr_rat]`. Both sides reduce to the same expression. Rewrite using `[h, ordI, ← Ideal.one_eq_top, Associates.mk_one, Associates.factors_one, Associates.count_zero w.associates_irreducible]`.
+-/
 private theorem ord_diff (w : HeightOneSpectrum (𝓞 ℚ)) : ordI w (differentIdeal ℤ (𝓞 ℚ)) = 0 := by
   have h : differentIdeal ℤ (𝓞 ℚ) = ⊤ := by
     rw [← Ideal.absNorm_eq_one_iff, absNorm_differentIdeal ℚ (𝓞 ℚ), discr_rat]; rfl
   rw [h, ordI, ← Ideal.one_eq_top, Associates.mk_one, Associates.factors_one, Associates.count_zero w.associates_irreducible]
 
+/- English proof (translation)
+Rewrite using `[← Ideal.finprod_heightOneSpectrum_factorization hI, ← Ideal.finprod_heightOneSpectrum_factorization hJ]`. Use `finprod_congr fun w => ?_` and prove the remaining obligations. Conclude with `congrArg (fun n => w.asIdeal ^ n) (h w)`.
+-/
 private theorem eq_of_ord {I J : Ideal (𝓞 ℚ)} (hI : I ≠ ⊥) (hJ : J ≠ ⊥) (h : ∀ w, ordI w I = ordI w J) : I = J := by
   rw [← Ideal.finprod_heightOneSpectrum_factorization hI, ← Ideal.finprod_heightOneSpectrum_factorization hJ]
   refine finprod_congr fun w => ?_
   exact congrArg (fun n => w.asIdeal ^ n) (h w)
 
+/- English proof (translation)
+Establish `h1 : Valued.v (pLoc ℚ w (u : Af ℚ)) ≤ 1` using `Subring.mem_iInf.1 hu.1 w`. Establish `h2 : Valued.v (pLoc ℚ w ((u⁻¹ : (Af ℚ)ˣ) : Af ℚ)) ≤ 1` using `Subring.mem_iInf.1 hu.2 w`. Establish `h3 : Valued.v (pLoc ℚ w (u : Af ℚ)) * Valued.v (pLoc ℚ w ((u⁻¹ : (Af ℚ)ˣ) : Af ℚ)) = 1`. Rewrite using `[← map_mul, ← map_mul, Units.mul_inv, map_one, map_one]`. Use `le_antisymm h1 ?_` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem val_unit {u : (Af ℚ)ˣ} (hu : IsZU u) (w : HeightOneSpectrum (𝓞 ℚ)) :
     Valued.v (pLoc ℚ w (u : Af ℚ)) = 1 := by
   have h1 : Valued.v (pLoc ℚ w (u : Af ℚ)) ≤ 1 := Subring.mem_iInf.1 hu.1 w
@@ -24,6 +35,9 @@ private theorem val_unit {u : (Af ℚ)ˣ} (hu : IsZU u) (w : HeightOneSpectrum (
     _ ≤ Valued.v (pLoc ℚ w (u : Af ℚ)) * 1 := mul_le_mul_right h2 _
     _ = _ := mul_one _
 
+/- English proof (translation)
+Use `and_congr_right fun _ => forall_congr' fun w => ?_` and prove the remaining obligations. Establish `h : Valued.v (pLoc ℚ w (algebraMap ℚ (Af ℚ) q)) = w.valuation ℚ q` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w q`. Rewrite using `[map_mul, map_mul, val_unit hu, mul_one, h, ord_diff, Nat.cast_zero, zero_sub]`.
+-/
 private theorem genD_iff (q : ℚ) {u : (Af ℚ)ˣ} (hu : IsZU u) (𝔪 : Ideal (𝓞 ℚ)) :
     GenD (algebraMap ℚ (Af ℚ) q * (u : Af ℚ)) 𝔪 ↔
       𝔪 ≠ ⊥ ∧ ∀ w : HeightOneSpectrum (𝓞 ℚ), w.valuation ℚ q = WithZero.exp (-(ordI w 𝔪 : ℤ)) := by
@@ -32,12 +46,28 @@ private theorem genD_iff (q : ℚ) {u : (Af ℚ)ˣ} (hu : IsZU u) (𝔪 : Ideal 
     HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w q
   rw [map_mul, map_mul, val_unit hu, mul_one, h, ord_diff, Nat.cast_zero, zero_sub]
 
+/- English proof (translation)
+Rewrite using `[← map_natCast (algebraMap (𝓞 ℚ) ℚ) n, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_if_neg w (Nat.cast_ne_zero.2 hn)]`. Both sides reduce to the same expression.
+-/
 private theorem val_nat {n : ℕ} (hn : n ≠ 0) (w : HeightOneSpectrum (𝓞 ℚ)) :
     w.valuation ℚ (n : ℚ) = WithZero.exp (-(ordI w (Ideal.span {(n : 𝓞 ℚ)}) : ℤ)) := by
   rw [← map_natCast (algebraMap (𝓞 ℚ) ℚ) n, HeightOneSpectrum.valuation_of_algebraMap,
     HeightOneSpectrum.intValuation_if_neg w (Nat.cast_ne_zero.2 hn)]
   rfl
 
+/- English proof (translation)
+Introduce `a q hq u hu`. Distinguish the cases in `hd : q.den = 1`. Rewrite using `[if_pos hd]`. Establish `hnum : 0 < q.num` using `Rat.num_pos.2 hq`. Establish `hn : q.num.toNat ≠ 0` using `by omega`.
+
+Establish `hqn : q = (q.num.toNat : ℚ)`. Rewrite using `[← Int.cast_natCast, Int.toNat_of_nonneg hnum.le]`. Conclude with `((Rat.den_eq_one_iff q).1 hd).symm`. Establish `hb : Ideal.span {((q.num.toNat : ℕ) : 𝓞 ℚ)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`.
+
+Conclude with `Nat.cast_ne_zero.2 hn`. Establish `hv : ∀ w : HeightOneSpectrum (𝓞 ℚ), w.valuation ℚ q = WithZero.exp (-(ordI w (Ideal.span {((q.num.toNat : ℕ) : 𝓞 ℚ)}) : ℤ))` using `fun w => by`. Rewrite using `[← val_nat hn w, ← hqn]`. Establish `hex : ∃ 𝔪, GenD (algebraMap ℚ (Af ℚ) q * (u : Af ℚ)) 𝔪` using `⟨_, (genD_iff q hu _).2 ⟨hb, hv⟩⟩`. Take `⟨h1, h2⟩` from `(genD_iff q hu _).1 hex.choose_spec`.
+
+Establish `he : hex.choose = Ideal.span {((q.num.toNat : ℕ) : 𝓞 ℚ)}` using `eq_of_ord h1 hb fun w => by`. Use `WithZero.exp_injective ((h2 w).symm.trans (hv w))` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[UpperTheory.V.Sd.coefAt, dif_pos hex, he, Ideal.absNorm_span_natCast, RingOfIntegers.rank, Module.finrank_self, pow_one]`. Rewrite using `[if_neg hd, UpperTheory.V.Sd.coefAt, dif_neg]`.
+
+Introduce and unpack `⟨𝔪, h⟩`. Take `⟨r, hr⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 ℚ) ℚ q fun w => by`. Rewrite using `[((genD_iff q hu _).1 h).2 w, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Take `⟨m, rfl⟩` from `Rat.ringOfIntegersEquiv.symm.surjective r`.
+
+Apply `hd` to reduce the goal to its premises. Rewrite using `[← hr, eq_intCast Rat.ringOfIntegersEquiv.symm m, map_intCast]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.Af.Nf.coefAt :
     UpperTheory.V.Af.Nf.CoefAt := by
   intro a q hq u hu

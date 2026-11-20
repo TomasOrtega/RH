@@ -7,6 +7,9 @@ open NumberField MvPolynomial Filter Topology Formalism.BasicNotions Formalism.M
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ArInt
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SwapBundle.swapFl_bundle | exact GlobalTheory.SwapBundle.swapFl_bundle | (intros; apply GlobalTheory.SwapBundle.swapFl_bundle <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.flag_bundle_hermitian_metric_grading : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (d D : ℕ),
     IsArithVar q d → IsArithVar p D → ∀ (π : Y ⟶ B) (w : π ≫ q = p) (ι : Type) [Fintype ι] (E : ι → B.Modules) (r : ι → ℕ)
     (h : ∀ a, VMetric q (E a) (r a)) (H : ∀ a, (h a).IsCInf)

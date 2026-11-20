@@ -27,6 +27,13 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.EX GlobalTheory.E
 
 namespace GlobalTheory.Fc.S0.StageU
 
+/- English proof (translation)
+Introduce `P hR hL cDep A hA hN hF hL3`. Take `⟨hP, hMem, hEx⟩` from `GlobalTheory.T.linked_bundle_construction_exists P hR hL cDep A hA`. Take `⟨_, prN, serN, _⟩` from `GlobalTheory.T.local_langlands_hypotheses_of_literature P.litN P.toHypothesesX`. Establish `hOL` using `GlobalTheory.Fc.S0.ontoX_and_lamLow_of_classicalTheoremsUE P`. Establish `hO` using `GlobalTheory.T.open_first_parameters_of_hypothesesUE P hL cDep`.
+
+Establish `hNrow` using `GlobalTheory.NLink.Final.main P.nLink prN P.toHypothesesX serN P.depthZeroWild' P.depthZeroSupport' P.localFiniteness P.localTateDuality P.localEulerChar hL cDep hN`. Establish `hmono` using `GlobalTheory.Glob.open_and_linked_of_stronger_extension hL (GlobalTheory.HeightCounting.Up.NEl hL cDep) (NEa hL (GlobalTheory.HeightCounting.Up.NEo hL cDep) A) SExt.none (geoCl anyGeometry) (fun _ _ _ _ _ _ _ _ _ _ _ _ _ x => ⟨x.1.1⟩)`. Establish `hO'` using `hmono.2 hO`. Establish `hN' : RL.At (prmR (NEa hL (GlobalTheory.HeightCounting.Up.NEo hL cDep) A) SExt.none (geoCl anyGeometry)) (fun Q L => R1.PredicateAtBundlePoints Q L S0.NL)` using `hmono.1 (fun 𝒜 _ => S0.NL (Cp.D3 3 𝒜)) hNrow`. Establish `hAll` using `GlobalTheory.Fc.AllAtMemberStage0.allRows_of_open0 P.globalArtinReciprocity P.siegelWeilUnitaryConvergent2 P.discreteSeriesCover P.harishChandraModules P.cuspRapidDecay P.casselmanWallach P.discreteSeriesClassification hOL.1 hOL.2 hL _ _ _ S0.NL hO' hL3 hF hN'`.
+
+Conclude with `GlobalTheory.Fc.nonempty_hyps_of_allRows hP GlobalTheory.ThinScaleLiterature.litThin GlobalTheory.wuDecayOfGap GlobalTheory.rowsFinDim_link GlobalTheory.rowsPos_typeP (GlobalTheory.rowNGP_of_siegelWeil P.siegelWeilUnitaryConvergent2) (GlobalTheory.rowMainEqP_of_siegelWeil P.siege …`.
+-/
 theorem nonempty_hyps_of_classicalTheoremsUE : S0.HypothesesUE → S0.RowRat → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (cDep : ℝ) (A : GroupRetwisting.AtP), EvLgG A → RL.At (prm1 hL cDep) (fun Q L => R1.PredicateAtBundlePoints Q L fun 𝒞 => Formalism.MainNotions.Closed 𝒞 fun Fm _ => GlobalTheory.NLink.BoundAtTwoAndThreeForFamily Fm) → RL.At (prmR (NEa hL (GlobalTheory.HeightCounting.Up.NEo hL cDep) A) SExt.none (geoCl anyGeometry)) S0.FunctorialityCondition → RL.At (prmR (NEa hL (GlobalTheory.HeightCounting.Up.NEo hL cDep) A) SExt.none (geoCl anyGeometry)) S0.CovolumeBound' → Nonempty (Hyps S0.NL DRS) := by
   intro P hR hL cDep A hA hN hF hL3
   obtain ⟨hP, hMem, hEx⟩ := GlobalTheory.T.linked_bundle_construction_exists P hR hL cDep A hA

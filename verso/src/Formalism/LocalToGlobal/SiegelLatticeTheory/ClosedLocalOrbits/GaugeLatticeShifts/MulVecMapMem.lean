@@ -29,15 +29,35 @@ def supSub (k r a : ℕ) : Submodule ℂ (Vk k r) where
     simp only [Set.mem_ofPred_eq] at hv
     simp [hv i hi]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 lemma mem_supSub {a : ℕ} {v : Vk k r} :
     v ∈ supSub k r a ↔ ∀ i : Fin (2 * r + k + 1), a ≤ i.val → v i = 0 := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `mem_supSub.2 fun i hi => mem_supSub.1 hv i (le_trans h hi)`.
+-/
 lemma supSub_mono {a b : ℕ} (h : a ≤ b) {v : Vk k r} (hv : v ∈ supSub k r a) : v ∈ supSub k r b :=
   mem_supSub.2 fun i hi => mem_supSub.1 hv i (le_trans h hi)
 
+/- English proof (translation)
+Simplify using `[Formalism.QuantumDeterminants.bvec, Matrix.mulVec, dotProduct, Pi.single_apply]`.
+-/
 lemma colEntry (A : Mk k r) (i j : Fin (2 * r + k + 1)) : (A *ᵥ Formalism.QuantumDeterminants.bvec j) i = A i j := by
   simp [Formalism.QuantumDeterminants.bvec, Matrix.mulVec, dotProduct, Pi.single_apply]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Rewrite using `[SetLike.mem_coe, mem_supSub]`. Introduce `i hi`.
+
+Establish `hb' : b.1 < a` using `hb`. Simplify using `only [stdX, Formalism.QuantumDeterminants.bvec]`. Rewrite using `[Pi.single_apply, if_neg]`. Introduce `h`. Establish `h2 : i.val = b.val` using `congrArg Fin.val h`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `v hv`. Rewrite using `[← Finset.univ_sum_single v]`. Use `Submodule.sum_mem _ (fun i _ => ?_)` and prove the remaining obligations. Distinguish the cases in `h : i.val < a`.
+
+Establish `hi : i = Formalism.QuantumDeterminants.eI k r ⟨i.val, by omega⟩` using `Fin.ext rfl`. Establish `e : Pi.single i (v i) = v i • stdX k r ⟨i.val, by omega⟩`. Rewrite using `[stdX, ← hi]`. Use extensionality with `j`. Simplify using `[Formalism.QuantumDeterminants.bvec, Pi.single_apply]`.
+
+Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, h, rfl⟩)`. Rewrite using `[mem_supSub.1 hv i (by omega), Pi.single_zero]`. Conclude with `Submodule.zero_mem _`.
+-/
 lemma span_eq (a : ℕ) (ha : a ≤ r) :
     Submodule.span ℂ (stdX k r '' {b | b.1 < a}) = supSub k r a := by
   apply le_antisymm
@@ -63,6 +83,11 @@ lemma span_eq (a : ℕ) (ha : a ≤ r) :
     · rw [mem_supSub.1 hv i (by omega), Pi.single_zero]
       exact Submodule.zero_mem _
 
+/- English proof (translation)
+Rewrite using `[Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hyw⟩`. Rewrite `hyw` using `[Matrix.mulVecLin_apply]`. Establish `h2 : P⁻¹ *ᵥ (P *ᵥ y) = P⁻¹ *ᵥ (P *ᵥ w)` using `by rw [hyw]`.
+
+Rewrite `h2` using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hP, Matrix.one_mulVec, Matrix.one_mulVec]`. Conclude with `h2 ▸ hy`. Introduce `hw`. Conclude with `⟨w, hw, by simp⟩`.
+-/
 lemma mulVec_map_mem (P : Mk k r) (hP : IsUnit P.det) (S : Submodule ℂ (Vk k r)) (w : Vk k r) :
     P *ᵥ w ∈ S.map P.mulVecLin ↔ w ∈ S := by
   rw [Submodule.mem_map]
@@ -76,6 +101,9 @@ lemma mulVec_map_mem (P : Mk k r) (hP : IsUnit P.det) (S : Submodule ℂ (Vk k r
   · intro hw
     exact ⟨w, hw, by simp⟩
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Use `congr 1`. Rewrite using `[mul_sub, sub_mul, one_mul, mul_one, ← mul_assoc, ← mul_assoc, Matrix.mul_nonsing_inv _ hP, one_mul]`.
+-/
 lemma transport (P U : Mk k r) (hP : IsUnit P.det) (w : Vk k r) :
     (U - 1) *ᵥ (P *ᵥ w) = P *ᵥ ((P⁻¹ * U * P - 1) *ᵥ w) := by
   rw [Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]
@@ -85,6 +113,17 @@ lemma transport (P U : Mk k r) (hP : IsUnit P.det) (w : Vk k r) :
 def InSstd (g : Mk k r) (zH : Vk k r) : Prop :=
   (∀ a : Fin r, (g - 1) *ᵥ stdX k r a ∈ supSub k r a.1) ∧ (g - 1) *ᵥ zH ∈ supSub k r r
 
+/- English proof (translation)
+Establish `hsp : ∀ a : ℕ, a ≤ r → ∀ w, P *ᵥ w ∈ Formalism.L2.SG.HidaSetting.spanLt (fun a => P *ᵥ stdX k r a) a ↔ w ∈ supSub k r a`. Introduce `a ha w`. Establish `: Formalism.L2.SG.HidaSetting.spanLt (fun a => P *ᵥ stdX k r a) a = (Submodule.span ℂ (stdX k r '' {b | b.1 < a})).map P.mulVecLin`. Rewrite using `[Formalism.L2.SG.HidaSetting.spanLt, Submodule.map_span, ← Set.image_comp]`. Both sides reduce to the same expression.
+
+Rewrite using `[this, mulVec_map_mem P hP, span_eq a ha]`. Simplify using `only [Formalism.L2.SG.HidaSetting.InS, InSstd]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations.
+
+Use `h1 a` as an intermediate fact. Rewrite `this` using `[transport P U hP]`. Conclude with `(hsp a.1 a.2.le _).1 this`. Rewrite `h2` using `[transport P U hP]`. Conclude with `(hsp r le_rfl _).1 h2`.
+
+Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[transport P U hP]`. Conclude with `(hsp a.1 a.2.le _).2 (h1 a)`. Rewrite using `[transport P U hP]`.
+
+Conclude with `(hsp r le_rfl _).2 h2`.
+-/
 lemma inS_transport (P : Mk k r) (hP : IsUnit P.det) (zH : Vk k r) (U : Mk k r) :
     Formalism.L2.SG.HidaSetting.InS (fun a => P *ᵥ stdX k r a) (P *ᵥ zH) U ↔ InSstd (P⁻¹ * U * P) zH := by
   have hsp : ∀ a : ℕ, a ≤ r → ∀ w, P *ᵥ w ∈ Formalism.L2.SG.HidaSetting.spanLt (fun a => P *ᵥ stdX k r a) a ↔
@@ -105,6 +144,11 @@ lemma inS_transport (P : Mk k r) (hP : IsUnit P.det) (zH : Vk k r) (U : Mk k r) 
     · rw [transport P U hP]; exact (hsp a.1 a.2.le _).2 (h1 a)
     · rw [transport P U hP]; exact (hsp r le_rfl _).2 h2
 
+/- English proof (translation)
+Rewrite `hv` using `[← span_eq r le_rfl]`. Establish `hle : Submodule.span ℂ (stdX k r '' {b | b.1 < r}) ≤ LinearMap.ker (A - 1).mulVecLin`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, _, rfl⟩`. Simplify using `[hA b]`.
+
+Use `hle hv` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, Matrix.mulVecLin_apply, Matrix.sub_mulVec, Matrix.one_mulVec, sub_eq_zero]`. Conclude with `this`.
+-/
 lemma fixX (A : Mk k r) (hA : ∀ b, A *ᵥ stdX k r b = stdX k r b) (v : Vk k r) (hv : v ∈ supSub k r r) :
     A *ᵥ v = v := by
   rw [← span_eq r le_rfl] at hv
@@ -116,12 +160,20 @@ lemma fixX (A : Mk k r) (hA : ∀ b, A *ᵥ stdX k r b = stdX k r b) (v : Vk k r
   rw [LinearMap.mem_ker, Matrix.mulVecLin_apply, Matrix.sub_mulVec, Matrix.one_mulVec, sub_eq_zero] at this
   exact this
 
+/- English proof (translation)
+Simplify using `only [Formalism.QuantumDeterminants.Hpk, Fin.ext_iff]`.
+-/
 lemma Hpk_apply' (i j : Fin (2 * r + k + 1)) : Formalism.QuantumDeterminants.Hpk k r i j =
     if i.val < r ∧ i.val + j.val = 2 * r + k then 1
     else if j.val < r ∧ i.val + j.val = 2 * r + k then 1
     else if r ≤ i.val ∧ i.val ≤ r + k ∧ i.val = j.val then (if i.val = r + k then -1 else 1) else 0 := by
   simp only [Formalism.QuantumDeterminants.Hpk, Fin.ext_iff]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single ⟨2 * r + k - p.val, by omega⟩]`. Rewrite using `[Hpk_apply', if_pos ⟨hp, by show p.val + (2 * r + k - p.val) = 2 * r + k; omega⟩, one_mul]`. Introduce `q _ hq`. Establish `: q.val ≠ 2 * r + k - p.val` using `fun h => hq (Fin.ext h)`. Rewrite using `[Hpk_apply', if_neg (by omega), if_neg (by omega), if_neg (by omega), zero_mul]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 lemma HpkMul (A : Mk k r) (p : Fin (2 * r + k + 1)) (hp : p.val < r) (j : Fin (2 * r + k + 1)) :
     (Formalism.QuantumDeterminants.Hpk k r * A) p j = A ⟨2 * r + k - p.val, by omega⟩ j := by
   rw [Matrix.mul_apply, Finset.sum_eq_single ⟨2 * r + k - p.val, by omega⟩]
@@ -131,10 +183,20 @@ lemma HpkMul (A : Mk k r) (p : Fin (2 * r + k + 1)) (hp : p.val < r) (j : Fin (2
     rw [Hpk_apply', if_neg (by omega), if_neg (by omega), if_neg (by omega), zero_mul]
   · intro h; exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Rewrite using `[Hpk_apply', if_neg (by omega), if_neg (by omega), if_neg (by omega)]`.
+-/
 lemma HpkZero (p : Fin (2 * r + k + 1)) (hp : p.val < r) (j : Fin (2 * r + k + 1)) (hj : j.val ≤ r + k) :
     Formalism.QuantumDeterminants.Hpk k r p j = 0 := by
   rw [Hpk_apply', if_neg (by omega), if_neg (by omega), if_neg (by omega)]
 
+/- English proof (translation)
+Establish `a1 : D * H * (1 - D) = 0` using `by rw [hDH, mul_assoc, mul_sub, mul_one, hDD, sub_self, mul_zero]`. Establish `a2 : (1 - D) * H * D = 0`. Rewrite using `[mul_assoc, ← hDH, ← mul_assoc, sub_mul, one_mul, hDD, sub_self, zero_mul]`. Establish `a3 : D * H * D = H * D` using `by rw [hDH, mul_assoc, hDD]`. Establish `a4 : (1 - D) * H * (1 - D) = H * (1 - D)`.
+
+Establish `: (1 - D) * H * (1 - D) = H * (1 - D) - D * H * (1 - D)` using `by noncomm_ring`. Rewrite using `[this, a1, sub_zero]`. Establish `a5 : D * gs * H * D * g * D = H * D`. Establish `e : D * gs * H * D * g * D = D * (gs * H * g) * D - D * gs * (H * (1 - D)) * g * D` using `by noncomm_ring`. Rewrite using `[e, hHg, a3, hH1]`.
+
+Establish `e2 : D * gs * (S * H + H * S) * g * D = (D * gs * S) * H * g * D + D * gs * H * (S * g * D)` using `by noncomm_ring`. Rewrite using `[e2, hgS, hSg]`. Use `noncomm_ring`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma ring_key {R : Type*} [Ring R] (D H g gs S : R) (hDD : D * D = D) (hDH : D * H = H * D)
     (hHg : gs * H * g = H) (hH1 : H * (1 - D) = S * H + H * S) (hSg : S * g * D = 0)
     (hgS : D * gs * S = 0) : (D * gs * D + (1 - D)) * H * (D * g * D + (1 - D)) = H := by
@@ -163,6 +225,9 @@ def dS (k r : ℕ) : Fin (2 * r + k + 1) → ℂ := fun i => if r + k < i.val th
 def hW (g : Mk k r) : Mk k r := Matrix.of fun i j =>
   if (r ≤ i.val ∧ i.val ≤ r + k) ∧ (r ≤ j.val ∧ j.val ≤ r + k) then g i j else if i = j then 1 else 0
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [hW, Matrix.of_apply, Matrix.add_apply, Matrix.sub_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.one_apply, Matrix.diagonal_apply, dW]`. Break down `eq_or_ne i j with rfl | hij` into its components or cases. Apply the tactic sequence `by_cases hi : r ≤ i.val ∧ i.val ≤ r + k <;> simp [hi]`. Apply the tactic sequence `by_cases hi : r ≤ i.val ∧ i.val ≤ r + k <;> by_cases hj : r ≤ j.val ∧ j.val ≤ r + k <;> simp [hi, hj, hij]`.
+-/
 lemma hW_eq (g : Mk k r) :
     hW g = diagonal (dW k r) * g * diagonal (dW k r) + (1 - diagonal (dW k r)) := by
   ext i j
@@ -172,12 +237,78 @@ lemma hW_eq (g : Mk k r) :
   · by_cases hi : r ≤ i.val ∧ i.val ≤ r + k <;> simp [hi]
   · by_cases hi : r ≤ i.val ∧ i.val ≤ r + k <;> by_cases hj : r ≤ j.val ∧ j.val ≤ r + k <;> simp [hi, hj, hij]
 
+/- English proof (translation)
+Rewrite using `[diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `hd i`.
+-/
 lemma diag_ct (d : Fin (2 * r + k + 1) → ℂ) (hd : ∀ i, star (d i) = d i) : (diagonal d)ᴴ = diagonal d := by
   rw [diagonal_conjTranspose]; congr 1; funext i; exact hd i
 
+/- English proof (translation)
+Apply the tactic sequence `unfold dW; split_ifs <;> simp`.
+-/
 lemma dW_star (i : Fin (2 * r + k + 1)) : star (dW k r i) = dW k r i := by unfold dW; split_ifs <;> simp
+/- English proof (translation)
+Apply the tactic sequence `unfold dS; split_ifs <;> simp`.
+-/
 lemma dS_star (i : Fin (2 * r + k + 1)) : star (dS k r i) = dS k r i := by unfold dS; split_ifs <;> simp
 
+/- English proof (translation)
+Establish `G1 : ∀ (a : Fin r) (i : Fin (2 * r + k + 1)), a.val ≤ i.val → g i (Formalism.QuantumDeterminants.eI k r a) = if i.val = a.val then 1 else 0`. Introduce `a i hi`. Use `mem_supSub.1 (hI.1 a) i hi` as an intermediate fact. Rewrite `this` using `[Matrix.sub_mulVec, Matrix.one_mulVec, Pi.sub_apply, stdX, colEntry, sub_eq_zero]`. Rewrite using `[this, Formalism.QuantumDeterminants.bvec, Pi.single_apply]`.
+
+Distinguish the cases in `h : i.val = a.val`. Rewrite using `[if_pos (Fin.ext h), if_pos h]`. Rewrite using `[if_neg (fun e => h (congrArg Fin.val e)), if_neg h]`. Establish `G2 : ∀ i : Fin (2 * r + k + 1), r ≤ i.val → (g *ᵥ zH) i = zH i`. Introduce `i hi`.
+
+Use `mem_supSub.1 hI.2 i hi` as an intermediate fact. Rewrite `this` using `[Matrix.sub_mulVec, Matrix.one_mulVec, Pi.sub_apply, sub_eq_zero]`. Then use the resulting hypothesis. Establish `G3 : ∀ (a : ℕ) (ha : a < r) (j : Fin (2 * r + k + 1)), j.val ≤ r + k → g ⟨2 * r + k - a, by omega⟩ j = 0`. Introduce `a`. Proceed by induction on `a using Nat.strong_induction_on with`.
+
+Consider the case `_ a IH`. Introduce `ha j hj`. Establish `hh` using `congrFun (congrFun hg (Formalism.QuantumDeterminants.eI k r ⟨a, ha⟩)) j`. Rewrite `hh` using `[HpkZero (Formalism.QuantumDeterminants.eI k r ⟨a, ha⟩) ha j hj, Matrix.mul_assoc, Matrix.mul_apply, Finset.sum_eq_single (Formalism.QuantumDeterminants.eI k r ⟨a, ha⟩)]`. Rewrite `hh` using `[Matrix.conjTranspose_apply, G1 ⟨a, ha⟩ (Formalism.QuantumDeterminants.eI k r ⟨a, ha⟩) le_rfl, if_pos (show (Formalism.QuantumDeterminants.eI k r ⟨a, ha⟩).val = (⟨a, ha⟩ : Fin r).val from rfl), star_one, one_mul, HpkMul g _ ha j]`.
+
+Conclude with `hh`. Introduce `p _ hp`. Establish `hpv : p.val ≠ a` using `fun h => hp (Fin.ext h)`. Rewrite using `[Matrix.conjTranspose_apply]`. Distinguish the cases in `hpa : a ≤ p.val`.
+
+Rewrite using `[G1 ⟨a, ha⟩ p hpa, if_neg (show ¬ p.val = (⟨a, ha⟩ : Fin r).val from hpv), star_zero, zero_mul]`. Rewrite using `[HpkMul g p (by omega) j, IH p.val (by omega) (by omega) j hj, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Establish `G3' : ∀ i j : Fin (2 * r + k + 1), r + k < i.val → j.val ≤ r + k → g i j = 0`.
+
+Introduce `i j hi hj`. Establish `e : i = ⟨2 * r + k - (2 * r + k - i.val), by omega⟩` using `Fin.ext (by have := i.isLt; show i.val = 2 * r + k - (2 * r + k - i.val); omega)`. Rewrite using `[e]; exact G3 _ (by have := i.isLt; omega) j hj`. Establish `hDD : diagonal (dW k r) * diagonal (dW k r) = diagonal (dW k r)`. Apply the tactic sequence `rw [diagonal_mul_diagonal]; congr 1; funext i; unfold dW; split_ifs <;> simp`.
+
+Establish `hDH : diagonal (dW k r) * Formalism.QuantumDeterminants.Hpk k r = Formalism.QuantumDeterminants.Hpk k r * diagonal (dW k r)`. Use extensionality with `i j`. Rewrite using `[diagonal_mul, mul_diagonal, Hpk_apply']`. Unfold `dW`. Apply the tactic sequence `split_ifs <;> first | (exfalso; omega) | simp`.
+
+Establish `hH1 : Formalism.QuantumDeterminants.Hpk k r * (1 - diagonal (dW k r)) = diagonal (dS k r) * Formalism.QuantumDeterminants.Hpk k r + Formalism.QuantumDeterminants.Hpk k r * diagonal (dS k r)`. Use extensionality with `i j`. Rewrite using `[mul_sub, mul_one, Matrix.sub_apply, Matrix.add_apply, mul_diagonal, diagonal_mul, mul_diagonal, Hpk_apply']`. Unfold `dW dS`. Apply the tactic sequence `split_ifs <;> first | (exfalso; omega) | simp`.
+
+Establish `hSg : diagonal (dS k r) * g * diagonal (dW k r) = 0`. Use extensionality with `i j`. Rewrite using `[mul_diagonal, diagonal_mul, Matrix.zero_apply]`. Unfold `dS dW`. Use `split_ifs with h1 h2`.
+
+Rewrite using `[G3' i j h1 h2.2]`. Simplify using the standard rewrite rules. Apply the tactic sequence `all_goals simp`. Establish `hgS : diagonal (dW k r) * gᴴ * diagonal (dS k r) = 0`. Use `congrArg conjTranspose hSg` as an intermediate fact.
+
+Rewrite `this` using `[conjTranspose_mul, conjTranspose_mul, diag_ct _ dW_star, diag_ct _ dS_star, conjTranspose_zero, ← mul_assoc]`. Conclude with `this`. Establish `hU : (hW g)ᴴ * Formalism.QuantumDeterminants.Hpk k r * hW g = Formalism.QuantumDeterminants.Hpk k r`. Rewrite using `[hW_eq, conjTranspose_add, conjTranspose_mul, conjTranspose_mul, conjTranspose_sub, conjTranspose_one, diag_ct _ dW_star, ← mul_assoc]`. Conclude with `ring_key _ _ _ _ _ hDD hDH hg hH1 hSg hgS`.
+
+Establish `hX : ∀ b : Fin r, hW g *ᵥ stdX k r b = stdX k r b`. Introduce `b`. Use extensionality with `i`. Rewrite using `[stdX, colEntry]`. Simplify using `only [hW, Matrix.of_apply]`.
+
+Rewrite using `[if_neg (fun h => absurd h.2.1 (by show ¬ r ≤ b.val; have := b.isLt; omega)), Formalism.QuantumDeterminants.bvec, Pi.single_apply]`. Establish `hSx : ∀ b : Fin r, hW g *ᵥ Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.esI k r b) = Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.esI k r b)`. Introduce `b`. Use extensionality with `i`. Rewrite using `[colEntry]`.
+
+Simplify using `only [hW, Matrix.of_apply]`. Rewrite using `[if_neg (fun h => absurd h.2.2 (by show ¬ 2 * r + k - b.val ≤ r + k; have := b.isLt; omega)), Formalism.QuantumDeterminants.bvec, Pi.single_apply]`. Establish `hZ : hW g *ᵥ zH = zH`. Use extensionality with `i`. Distinguish the cases in `hi : r ≤ i.val ∧ i.val ≤ r + k`.
+
+Establish `G` using `G2 i hi.1`. Simplify using `only [Matrix.mulVec, dotProduct] at G ⊢`. Rewrite using `[← G]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j _`.
+
+Simplify using `only [hW, Matrix.of_apply]`. Distinguish the cases in `hj : r ≤ j.val ∧ j.val ≤ r + k`. Rewrite using `[if_pos ⟨hi, hj⟩]`. Rewrite using `[if_neg (fun h => hj h.2), hz j (by omega), mul_zero, mul_zero]`. Simplify using `[Matrix.mulVec, dotProduct, hW, hi]`.
+
+Take `⟨hinv, hinvDef⟩ : ∃ M : Mk k r, M = Formalism.QuantumDeterminants.Hpk k r * (hW g)ᴴ * Formalism.QuantumDeterminants.Hpk k r` from `⟨_, rfl⟩`. Establish `hih : hinv * hW g = 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hinvDef]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = 1 := by rw [hU, Formalism.QuantumDeterminants.GBasic.Hpk_sq]`. Establish `hhi : hW g * hinv = 1` using `mul_eq_one_comm.1 hih`. Establish `hinvX : ∀ v ∈ supSub k r r, hinv *ᵥ v = v`. Use `fixX hinv (fun b => ?_)` and prove the remaining obligations. Use `conv_lhs => rw [← hX b]`.
+
+Rewrite using `[Matrix.mulVec_mulVec, hih, Matrix.one_mulVec]`. Establish `hinvU : hinvᴴ * Formalism.QuantumDeterminants.Hpk k r * hinv = Formalism.QuantumDeterminants.Hpk k r`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = Formalism.QuantumDeterminants.Hpk k r := by rw [hhi, conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`. Establish `hmU : (hinv * g)ᴴ * Formalism.QuantumDeterminants.Hpk k r * (hinv * g) = Formalism.QuantumDeterminants.Hpk k r`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = Formalism.QuantumDeterminants.Hpk k r := by rw [hinvU, hg]`. Use `⟨hW g, ⟨hU, fun a => ⟨hX a, hSx a⟩, hZ⟩, hinv * g, ⟨hmU, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `a i hai`. Establish `hg1 : g *ᵥ stdX k r a ∈ supSub k r r`. Rewrite using `[mem_supSub]`.
+
+Introduce `i' hi'`. Rewrite using `[stdX, colEntry, G1 a i' (by have := a.isLt; omega), if_neg (by have := a.isLt; omega)]`. Use `congrFun (show (hinv * g) *ᵥ stdX k r a = g *ᵥ stdX k r a by` as an intermediate fact. Rewrite using `[← Matrix.mulVec_mulVec]`. Conclude with `hinvX _ hg1) i`.
+
+Rewrite `this` using `[stdX, colEntry, colEntry]`. Rewrite using `[this, G1 a i hai]`. Distinguish the cases in `hia : i.val = a.val`. Rewrite using `[if_pos hia, if_pos (Fin.ext hia)]`. Rewrite using `[if_neg hia, if_neg (fun h => hia (congrArg Fin.val h))]`.
+
+Introduce `i j hj1 hj2 hi`. Establish `hx : g *ᵥ Formalism.QuantumDeterminants.bvec j - hW g *ᵥ Formalism.QuantumDeterminants.bvec j ∈ supSub k r r`. Rewrite using `[mem_supSub]`. Introduce `i' hi'`. Rewrite using `[Pi.sub_apply, colEntry, colEntry]`.
+
+Simplify using `only [hW, Matrix.of_apply]`. Distinguish the cases in `hw : r ≤ i'.val ∧ i'.val ≤ r + k`. Rewrite using `[if_pos ⟨hw, hj1, hj2⟩, sub_self]`. Rewrite using `[if_neg (fun h => hw h.1), if_neg (fun h => hw (by rw [h]; exact ⟨hj1, hj2⟩)), sub_zero, G3' i' j (by omega) hj2]`. Establish `hm : (hinv * g) *ᵥ Formalism.QuantumDeterminants.bvec j = Formalism.QuantumDeterminants.bvec j + (g *ᵥ Formalism.QuantumDeterminants.bvec j - hW g *ᵥ Formalism.QuantumDeterminants.bvec j)`.
+
+Establish `e : g *ᵥ Formalism.QuantumDeterminants.bvec j = hW g *ᵥ Formalism.QuantumDeterminants.bvec j + (g *ᵥ Formalism.QuantumDeterminants.bvec j - hW g *ᵥ Formalism.QuantumDeterminants.bvec j)` using `by abel`. Rewrite using `[← Matrix.mulVec_mulVec]`. Use `conv_lhs => rw [e]`. Rewrite using `[Matrix.mulVec_add, hinvX _ hx, Matrix.mulVec_mulVec, hih, Matrix.one_mulVec]`. Use `congrFun hm i` as an intermediate fact.
+
+Rewrite `this` using `[colEntry, Pi.add_apply, mem_supSub.1 hx i hi, add_zero, Formalism.QuantumDeterminants.bvec, Pi.single_apply]`. Conclude with `this`. Rewrite using `[← Matrix.mul_assoc, hhi, Matrix.one_mul]`.
+-/
 lemma fwd (g : Mk k r) (zH : Vk k r) (hg : gᴴ * Formalism.QuantumDeterminants.Hpk k r * g = Formalism.QuantumDeterminants.Hpk k r)
     (hz : Formalism.QuantumDeterminants.inWb k r zH) (hI : InSstd g zH) : g ∈ Formalism.QuantumDeterminants.Sset k r zH := by
   have G1 : ∀ (a : Fin r) (i : Fin (2 * r + k + 1)), a.val ≤ i.val →
@@ -325,6 +456,21 @@ lemma fwd (g : Mk k r) (zH : Vk k r) (hg : gᴴ * Formalism.QuantumDeterminants.
     exact this
   · rw [← Matrix.mul_assoc, hhi, Matrix.one_mul]
 
+/- English proof (translation)
+Take `⟨h, ⟨_, hfix, hhz⟩, m, ⟨_, hm2, hm3⟩, rfl⟩` from `hs`. Establish `hfX : ∀ b, h *ᵥ stdX k r b = stdX k r b` using `fun b => (hfix b).1`. Establish `hfixX` using `fixX h hfX`. Prove the components needed by the constructor for the conclusion. Introduce `a`.
+
+Establish `hx : m *ᵥ stdX k r a - stdX k r a ∈ supSub k r a.1`. Rewrite using `[mem_supSub]`. Introduce `i hi`. Rewrite using `[Pi.sub_apply, stdX, colEntry, hm2 a i hi, Formalism.QuantumDeterminants.bvec, Pi.single_apply, sub_self]`. Establish `hms : h *ᵥ (m *ᵥ stdX k r a) = m *ᵥ stdX k r a`.
+
+Establish `e : m *ᵥ stdX k r a = stdX k r a + (m *ᵥ stdX k r a - stdX k r a)` using `by abel`. Rewrite using `[e, Matrix.mulVec_add, hfX a, hfixX _ (supSub_mono a.isLt.le hx)]`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, ← Matrix.mulVec_mulVec, hms]`. Conclude with `hx`. Establish `hy : m *ᵥ zH - zH ∈ supSub k r r`.
+
+Rewrite using `[mem_supSub]`. Introduce `i hi`. Rewrite using `[Pi.sub_apply, sub_eq_zero]`. Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[Finset.sum_eq_single i]`.
+
+Distinguish the cases in `hw : i.val ≤ r + k`. Rewrite using `[hm3 i i hi hw hi, if_pos rfl, one_mul]`. Rewrite using `[hz i (Or.inr (by omega)), mul_zero]`. Introduce `j _ hji`. Distinguish the cases in `hjw : r ≤ j.val ∧ j.val ≤ r + k`.
+
+Rewrite using `[hm3 i j hjw.1 hjw.2 hi, if_neg (Ne.symm hji), zero_mul]`. Rewrite using `[hz j (by omega), mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Establish `hmz : h *ᵥ (m *ᵥ zH) = m *ᵥ zH`.
+
+Establish `e : m *ᵥ zH = zH + (m *ᵥ zH - zH)` using `by abel`. Rewrite using `[e, Matrix.mulVec_add, hhz, hfixX _ hy]`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, ← Matrix.mulVec_mulVec, hmz]`. Conclude with `hy`.
+-/
 lemma bwd (s : Mk k r) (zH : Vk k r) (hz : Formalism.QuantumDeterminants.inWb k r zH) (hs : s ∈ Formalism.QuantumDeterminants.Sset k r zH) :
     InSstd s zH := by
   obtain ⟨h, ⟨_, hfix, hhz⟩, m, ⟨_, hm2, hm3⟩, rfl⟩ := hs
@@ -359,6 +505,11 @@ lemma bwd (s : Mk k r) (zH : Vk k r) (hz : Formalism.QuantumDeterminants.inWb k 
     rw [Matrix.sub_mulVec, Matrix.one_mulVec, ← Matrix.mulVec_mulVec, hmz]
     exact hy
 
+/- English proof (translation)
+Rewrite using `[← hP]`. Establish `h1 : ∀ X : Mk k r, (P⁻¹)ᴴ * (Pᴴ * X) = X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, ← conjTranspose_mul, Matrix.mul_nonsing_inv _ hPu, conjTranspose_one, Matrix.one_mul]`. Establish `h2 : ∀ X : Mk k r, P * (P⁻¹ * X) = X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hPu, Matrix.one_mul]`.
+
+Establish `h3 : ∀ X : Mk k r, Uᴴ * (Formalism.REAL.Jm ε * (U * X)) = Formalism.REAL.Jm ε * X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hu]`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc, h1, h2, h3]`.
+-/
 lemma gUH {ε : Fin (2 * r + k + 1) → Bool} (P : Mk k r) (hPu : IsUnit P.det)
     (hP : Pᴴ * Formalism.REAL.Jm ε * P = Formalism.QuantumDeterminants.Hpk k r) (U : Mk k r)
     (hu : Uᴴ * Formalism.REAL.Jm ε * U = Formalism.REAL.Jm ε) :
@@ -374,6 +525,11 @@ lemma gUH {ε : Fin (2 * r + k + 1) → Bool} (P : Mk k r) (hPu : IsUnit P.det)
 
 end SetCorrespondence
 
+/- English proof (translation)
+Introduce `r k ε e z zH P hP hPu he hzW hzP _hT u`. Establish `hE : e = fun a => P *ᵥ SetCorrespondence.stdX k r a` using `funext fun a => (he a).symm`. Substitute `hE` using the available equality. Substitute `hzP` using the available equality. Establish `hu : (Formalism.MainNotions.S.uMat u)ᴴ * Formalism.REAL.Jm ε * Formalism.MainNotions.S.uMat u = Formalism.REAL.Jm ε` using `u.2`.
+
+Use `show Formalism.L2.SG.HidaSetting.InS _ _ (Formalism.MainNotions.S.uMat u) ↔ _`. Rewrite using `[SetCorrespondence.inS_transport P hPu zH (Formalism.MainNotions.S.uMat u)]`. Conclude with `⟨SetCorrespondence.fwd _ zH (SetCorrespondence.gUH P hPu hP (Formalism.MainNotions.S.uMat u) hu) hzW, SetCorrespondence.bwd _ zH hzW⟩`.
+-/
 theorem setCorr_holds : SetCorr := by
   intro r k ε e z zH P hP hPu he hzW hzP _hT u
   have hE : e = fun a => P *ᵥ SetCorrespondence.stdX k r a := funext fun a => (he a).symm

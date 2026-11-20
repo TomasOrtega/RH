@@ -17,6 +17,11 @@ def IsBasisAway (a : R) (P Q : Submodule R M) (s : Set M) : Prop :=
 def HasBasisAway (a : R) (P Q : Submodule R M) : Prop :=
   ∃ s : Set M, IsBasisAway a P Q s
 
+/- English proof (translation)
+Take `⟨s, h1, h2, h3⟩` from `h`. Take `⟨c, rfl⟩` from `hab`. Use `⟨s, h1, h2, fun m hm => ?_⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `h3 m hm`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mul_comm, mul_pow, mul_smul]`. Conclude with `smul_mem _ _ hn`.
+-/
 theorem HasBasisAway.of_dvd {a b : R} {P Q : Submodule R M} (h : HasBasisAway a P Q)
     (hab : a ∣ b) : HasBasisAway b P Q := by
   obtain ⟨s, h1, h2, h3⟩ := h
@@ -27,10 +32,22 @@ theorem HasBasisAway.of_dvd {a b : R} {P Q : Submodule R M} (h : HasBasisAway a 
   rw [mul_comm, mul_pow, mul_smul]
   exact smul_mem _ _ hn
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Set.empty_subset _, linearIndepOn_empty _ _, fun m hm => ⟨0, by simpa using hm⟩⟩`.
+-/
 theorem isBasisAway_empty (a : R) (P : Submodule R M) : IsBasisAway a P P ∅ :=
   ⟨Set.empty_subset _, linearIndepOn_empty _ _, fun m hm =>
     ⟨0, by simpa using hm⟩⟩
 
+/- English proof (translation)
+Take `⟨s1, s2, s3⟩` from `hs`. Take `⟨t1, t2, t3⟩` from `ht`. Establish `t2' : LinearIndepOn R (factor hPQ ∘ P.mkQ) t` using `t2`. Use `⟨Set.union_subset (s1.trans hQU) t1, ?_, fun m hm => ?_⟩` and prove the remaining obligations. Use `s2.union (LinearIndepOn.of_comp _ t2') ?_` and prove the remaining obligations.
+
+Establish `hd : Disjoint (span R (Set.range fun x : t => P.mkQ x)) (LinearMap.ker (factor hPQ))` using `range_ker_disjoint (f := factor hPQ) t2'`. Rewrite `hd` using `[← Set.image_eq_range]`. Use `(hd.mono_right ?_).symm` and prove the remaining obligations. Rewrite using `[span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+
+Simplify using `using s1 hx`. Take `⟨n, hn⟩` from `t3 m hm`. Take `⟨q, hq, x, hx, e⟩` from `mem_sup.1 hn`. Take `⟨k, hk⟩` from `s3 q hq`. Use `⟨k + n, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[pow_add, mul_smul, ← e, smul_add, span_union, ← sup_assoc]`. Conclude with `add_mem_sup hk (smul_mem _ _ hx)`.
+-/
 theorem IsBasisAway.union {a : R} {P Q U : Submodule R M} {s t : Set M} (hPQ : P ≤ Q)
     (hQU : Q ≤ U) (hs : IsBasisAway a P Q s) (ht : IsBasisAway a Q U t) :
     IsBasisAway a P U (s ∪ t) := by
@@ -53,6 +70,9 @@ theorem IsBasisAway.union {a : R} {P Q U : Submodule R M} {s t : Set M} (hPQ : P
     rw [pow_add, mul_smul, ← e, smul_add, span_union, ← sup_assoc]
     exact add_mem_sup hk (smul_mem _ _ hx)
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `hs`. Take `⟨t, ht⟩` from `ht`. Conclude with `⟨_, hs.union hPQ hQU ht⟩`.
+-/
 theorem HasBasisAway.trans {a : R} {P Q U : Submodule R M} (hPQ : P ≤ Q)
     (hQU : Q ≤ U) (hs : HasBasisAway a P Q) (ht : HasBasisAway a Q U) :
     HasBasisAway a P U := by
@@ -60,6 +80,13 @@ theorem HasBasisAway.trans {a : R} {P Q U : Submodule R M} (hPQ : P ≤ Q)
   obtain ⟨t, ht⟩ := ht
   exact ⟨_, hs.union hPQ hQU ht⟩
 
+/- English proof (translation)
+Use `choose s hs using h`. Set `t : ℕ → Set M` to `fun d => Nat.rec ∅ (fun d t => t ∪ s d) d`. Establish `ht : ∀ d, IsBasisAway a (F 0) (F d) (t d)`. Introduce `d`. Proceed by induction on `d with`.
+
+Consider the case `zero => exact isBasisAway_empty a _`. Consider the case `succ d ih => exact ih.union (hF (Nat.zero_le d)) (hF (Nat.le_succ d)) (hs d)`. Establish `hmono : Monotone t` using `monotone_nat_of_le_succ fun d => Set.subset_union_left`. Use `⟨⋃ d, t d, Set.iUnion_subset fun d => (ht d).1.trans (le_iSup F d), ?_, fun m hm => ?_⟩` and prove the remaining obligations. Conclude with `linearIndepOn_iUnion_of_directed hmono.directed_le fun d => (ht d).2.1`.
+
+Take `⟨d, hd⟩` from `(mem_iSup_of_directed F hF.directed_le).1 hm`. Take `⟨n, hn⟩` from `(ht d).2.2 m hd`. Conclude with `⟨n, (sup_le_sup_left (span_mono (Set.subset_iUnion t d)) (F 0) :) hn⟩`.
+-/
 theorem HasBasisAway.iSup {a : R} (F : ℕ → Submodule R M) (hF : Monotone F)
     (h : ∀ d, HasBasisAway a (F d) (F (d + 1))) : HasBasisAway a (F 0) (⨆ d, F d) := by
   choose s hs using h
@@ -76,6 +103,15 @@ theorem HasBasisAway.iSup {a : R} (F : ℕ → Submodule R M) (hF : Monotone F)
     obtain ⟨n, hn⟩ := (ht d).2.2 m hd
     exact ⟨n, (sup_le_sup_left (span_mono (Set.subset_iUnion t d)) (F 0) :) hn⟩
 
+/- English proof (translation)
+Take `⟨s, -, h2, h3⟩` from `h`. Use `⟨φ '' s, ?_, ?_, fun m hm => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, -, rfl⟩`. Conclude with `mem_sup_right ⟨x, rfl⟩`. Apply `LinearIndepOn.image_of_comp` to reduce the goal to its premises.
+
+Establish `hinj : LinearMap.ker (mapQ (P.comap φ) P φ le_rfl) = ⊥`. Rewrite using `[mapQ, ker_liftQ_eq_bot]`. Rewrite using `[LinearMap.ker_comp, ker_mkQ]`. Conclude with `LinearIndependent.map' h2 _ hinj`. Take `⟨p, hp, _, ⟨x, rfl⟩, rfl⟩` from `mem_sup.1 hm`.
+
+Take `⟨n, hn⟩` from `h3 x trivial`. Take `⟨q, hq, y, hy, e⟩` from `mem_sup.1 hn`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, ← map_smul, ← e, map_add, ← add_assoc]`. Use `add_mem_sup (add_mem (smul_mem _ _ hp) hq) ?_` and prove the remaining obligations.
+
+Rewrite using `[← map_span]`. Conclude with `mem_map_of_mem hy`.
+-/
 theorem HasBasisAway.map {a : R} (φ : X →ₗ[R] M) (P : Submodule R M)
     (h : HasBasisAway a (P.comap φ) ⊤) : HasBasisAway a P (P ⊔ LinearMap.range φ) := by
   obtain ⟨s, -, h2, h3⟩ := h
@@ -96,6 +132,15 @@ theorem HasBasisAway.map {a : R} (φ : X →ₗ[R] M) (P : Submodule R M)
     rw [← map_span]
     exact mem_map_of_mem hy
 
+/- English proof (translation)
+Take `⟨s, -, h2, h3⟩` from `h`. Take `⟨σ, hσ⟩` from `hπ.hasRightInverse`. Use `⟨σ '' s, Set.subset_univ _, ?_, fun m _ => ?_⟩` and prove the remaining obligations. Apply `LinearIndepOn.image_of_comp` to reduce the goal to its premises. Apply `LinearIndepOn.of_comp (mapQ (LinearMap.ker π) ⊥ π le_rfl)` to reduce the goal to its premises.
+
+Establish `: (mapQ (LinearMap.ker π) ⊥ π le_rfl) ∘ (LinearMap.ker π).mkQ ∘ σ = (⊥ : Submodule R M).mkQ`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `(⊥ : Submodule R M).mkQ (π (σ x)) = _`. Rewrite using `[hσ x]`. Rewrite using `[this]` and apply the resulting hypothesis.
+
+Take `⟨n, hn⟩` from `h3 (π m) trivial`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `: s = π '' (σ '' s)`. Rewrite using `[Set.image_image]`. Simplify using `[hσ _]`.
+
+Rewrite `hn` using `[bot_sup_eq, this, ← map_span, ← map_smul]`. Rewrite using `[sup_comm, ← comap_map_eq]`. Conclude with `hn`.
+-/
 theorem HasBasisAway.comap {a : R} (π : X →ₗ[R] M) (hπ : Function.Surjective π)
     (h : HasBasisAway a (⊥ : Submodule R M) ⊤) : HasBasisAway a (LinearMap.ker π) ⊤ := by
   obtain ⟨s, -, h2, h3⟩ := h
@@ -118,15 +163,24 @@ theorem HasBasisAway.comap {a : R} (π : X →ₗ[R] M) (hπ : Function.Surjecti
     rw [sup_comm, ← comap_map_eq]
     exact hn
 
+/- English proof (translation)
+Use `HasBasisAway.map (a := a) P.mkQ ⊥ (by simpa using h)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem HasBasisAway.quotient {a : R} {P : Submodule R M} (h : HasBasisAway a P ⊤) :
     HasBasisAway a (⊥ : Submodule R (M ⧸ P)) ⊤ := by
   have := HasBasisAway.map (a := a) P.mkQ ⊥ (by simpa using h)
   simpa using this
 
+/- English proof (translation)
+The claim follows from `LinearIndepOn.of_comp (⊥ : Submodule R M).mkQ h.2.1`.
+-/
 theorem IsBasisAway.linearIndepOn {a : R} {s : Set M}
     (h : IsBasisAway a (⊥ : Submodule R M) ⊤ s) : LinearIndepOn R id s :=
   LinearIndepOn.of_comp (⊥ : Submodule R M).mkQ h.2.1
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis R M`. Use `⟨Set.range b, Set.subset_univ _, ?_, fun m _ => ⟨0, by simp⟩⟩` and prove the remaining obligations. Conclude with `LinearIndependent.map' b.linearIndependent.linearIndepOn_id (⊥ : Submodule R M).mkQ (ker_mkQ _)`.
+-/
 theorem hasBasisAway_of_free [Module.Free R M] (a : R) :
     HasBasisAway a (⊥ : Submodule R M) ⊤ := by
   let b := Module.Free.chooseBasis R M
@@ -134,6 +188,15 @@ theorem hasBasisAway_of_free [Module.Free R M] (a : R) :
   exact LinearIndependent.map' b.linearIndependent.linearIndepOn_id (⊥ : Submodule R M).mkQ
     (ker_mkQ _)
 
+/- English proof (translation)
+Use `⟨Module.Basis.mk (v := f ∘ fun x : s => (x : M)) (LinearIndependent.of_isLocalizedModule Rₛ S f h.linearIndepOn) ?_⟩` and prove the remaining obligations. Establish `key : ∀ (c : S) (y : Mₛ), (c : R) • y ∈ span Rₛ (Set.range (f ∘ fun x : s => (x : M))) → y ∈ span Rₛ (Set.range (f ∘ fun x : s => (x : M)))`. Introduce `c y hy`. Take `⟨u, hu⟩` from `IsLocalization.map_units Rₛ c`. Rewrite `hy` using `[← algebraMap_smul Rₛ, ← hu]`.
+
+Conclude with `(smul_mem_iff_of_isUnit _ u.isUnit).1 hy`. Introduce `y _`. Take `⟨⟨m, c⟩, hm⟩` from `IsLocalizedModule.surj S f y`. Apply `key c` to reduce the goal to its premises. Take `⟨n, hn⟩` from `h.2.2 m trivial`.
+
+Apply `key ⟨a ^ n, pow_mem ha n⟩` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `a ^ n • (c • y) ∈ _`. Rewrite using `[hm, ← map_smul]`. Rewrite `hn` using `[bot_sup_eq]`. Use `mem_map_of_mem (f := f) hn` as an intermediate fact.
+
+Rewrite `this` using `[map_span]`. Establish `h2` using `span_subset_span R Rₛ _ this`. Rewrite using `[Set.range_comp, Subtype.range_coe]` and apply the resulting hypothesis.
+-/
 theorem IsBasisAway.exists_basis {a : R} {s : Set M}
     (h : IsBasisAway a (⊥ : Submodule R M) ⊤ s) (S : Submonoid R) (ha : a ∈ S)
     (Rₛ : Type*) [CommRing Rₛ] [Algebra R Rₛ] [IsLocalization S Rₛ]
@@ -161,6 +224,9 @@ theorem IsBasisAway.exists_basis {a : R} {s : Set M}
   have h2 := span_subset_span R Rₛ _ this
   rwa [Set.range_comp, Subtype.range_coe]
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `h`. Take `⟨b⟩` from `hs.exists_basis S ha Rₛ f`. Conclude with `.of_basis b`.
+-/
 theorem HasBasisAway.free_of_isLocalizedModule {a : R}
     (h : HasBasisAway a (⊥ : Submodule R M) ⊤) (S : Submonoid R) (ha : a ∈ S)
     (Rₛ : Type*) [CommRing Rₛ] [Algebra R Rₛ] [IsLocalization S Rₛ]
@@ -170,11 +236,17 @@ theorem HasBasisAway.free_of_isLocalizedModule {a : R}
   obtain ⟨b⟩ := hs.exists_basis S ha Rₛ f
   exact .of_basis b
 
+/- English proof (translation)
+The claim follows from `h.free_of_isLocalizedModule (.powers a) (Submonoid.mem_powers a) _ (LocalizedModule.mkLinearMap _ M)`.
+-/
 theorem HasBasisAway.free_away {a : R} (h : HasBasisAway a (⊥ : Submodule R M) ⊤) :
     Module.Free (Localization.Away a) (LocalizedModule.Away a M) :=
   h.free_of_isLocalizedModule (.powers a) (Submonoid.mem_powers a) _
     (LocalizedModule.mkLinearMap _ M)
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `h`. Use `.of_basis (Module.Basis.mk hs.linearIndepOn ?_)` and prove the remaining obligations. Introduce `m _`. Take `⟨n, hn⟩` from `hs.2.2 m trivial`. Simplify using `using hn`.
+-/
 theorem HasBasisAway.free (h : HasBasisAway (1 : R) (⊥ : Submodule R M) ⊤) :
     Module.Free R M := by
   obtain ⟨s, hs⟩ := h
@@ -183,6 +255,15 @@ theorem HasBasisAway.free (h : HasBasisAway (1 : R) (⊥ : Submodule R M) ⊤) :
   obtain ⟨n, hn⟩ := hs.2.2 m trivial
   simpa using hn
 
+/- English proof (translation)
+Take `⟨s, hs, hs'⟩` from `exists_maximal_linearIndepOn R (id : M → M)`. Establish `ht : Module.IsTorsion R (M ⧸ span R s)`. Introduce `x`. Take `⟨x, rfl⟩` from `mkQ_surjective _ x`. Distinguish the cases in `hx : x ∈ s`.
+
+Conclude with `⟨1, by simpa using subset_span hx⟩`. Take `⟨c, hc, hcx⟩` from `hs' x hx`. Use `⟨⟨c, mem_nonZeroDivisors_of_ne_zero hc⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `c • (span R s).mkQ x = 0`. Rewrite using `[← map_smul, mkQ_apply, Quotient.mk_eq_zero]`.
+
+Simplify using `using hcx`. Take `⟨a, ha, ha0⟩` from `annihilator_top_inter_nonZeroDivisors ht`. Use `⟨a, nonZeroDivisors.ne_zero ha0, s, Set.subset_univ _, LinearIndependent.map' hs (⊥ : Submodule R M).mkQ (ker_mkQ _), fun m _ => ⟨1, ?_⟩⟩` and prove the remaining obligations. Use `mem_annihilator.1 ha ((span R s).mkQ m) trivial` as an intermediate fact. Rewrite `this` using `[← map_smul, mkQ_apply, Quotient.mk_eq_zero]`.
+
+Simplify using `using this`.
+-/
 theorem exists_hasBasisAway_of_finite [IsDomain R] [Module.Finite R M] :
     ∃ a : R, a ≠ 0 ∧ HasBasisAway a (⊥ : Submodule R M) ⊤ := by
   obtain ⟨s, hs, hs'⟩ := exists_maximal_linearIndepOn R (id : M → M)
@@ -214,9 +295,15 @@ noncomputable def powerChain (t : Module.End T M) (N : Submodule T M) : ℕ → 
   | 0 => N
   | d + 1 => powerChain t N d ⊔ N.map (t ^ (d + 1))
 
+/- English proof (translation)
+The claim follows from `monotone_nat_of_le_succ fun _ => le_sup_left`.
+-/
 theorem powerChain_mono (t : Module.End T M) (N : Submodule T M) : Monotone (powerChain t N) :=
   monotone_nat_of_le_succ fun _ => le_sup_left
 
+/- English proof (translation)
+Proceed by induction on `d with`. Consider the case `zero => simp [powerChain]`. Consider the case `succ d ih => conv_lhs => rw [powerChain, Submodule.map_sup, ← Submodule.map_comp, ← Module.End.mul_eq_comp, ← pow_succ']`. Conclude with `sup_le_sup_right ih _`.
+-/
 theorem map_powerChain_le (t : Module.End T M) (N : Submodule T M) (d : ℕ) :
     (powerChain t N d).map t ≤ powerChain t N (d + 1) := by
   induction d with
@@ -226,6 +313,17 @@ theorem map_powerChain_le (t : Module.End T M) (N : Submodule T M) (d : ℕ) :
       ← pow_succ']
     exact sup_le_sup_right ih _
 
+/- English proof (translation)
+Set `K : ℕ → Submodule T N` to `fun d => (powerChain t N d).comap ((t ^ (d + 1)) ∘ₗ N.subtype)`. Establish `hK : Monotone K` using `monotone_nat_of_le_succ fun d x hx => by`. Use `map_powerChain_le t N d (mem_map_of_mem hx)` as an intermediate fact. Simplify `this` using `[K, pow_succ' t (d + 1)]`. Take `⟨n, hn⟩` from `monotone_stabilizes_iff_noetherian.2 inferInstance ⟨K, hK⟩`.
+
+Use `choose a ha0 ha using H`. Use `⟨∏ i ∈ Finset.range (n + 1), a (K i), Finset.prod_ne_zero_iff.2 fun i _ => ha0 _, ?_⟩` and prove the remaining obligations. Use `HasBasisAway.iSup (fun d => (powerChain t N d).restrictScalars R) (fun i j hij => powerChain_mono t N hij) fun d => ?_` and prove the remaining obligations. Establish `hdvd : a (K d) ∣ ∏ i ∈ Finset.range (n + 1), a (K i)`. Break down `le_total d n with h | h` into its components or cases.
+
+Conclude with `Finset.dvd_prod_of_mem _ (Finset.mem_range.2 (Nat.lt_succ_of_le h))`. Establish `: K n = K d` using `hn d h`. Rewrite using `[← this]`. Conclude with `Finset.dvd_prod_of_mem _ (Finset.mem_range.2 (Nat.lt_succ_self n))`. Establish `h1` using `((ha (K d)).of_dvd hdvd).comap ((K d).mkQ.restrictScalars R) (K d).mkQ_surjective`.
+
+Establish `e1 : LinearMap.ker ((K d).mkQ.restrictScalars R) = ((powerChain t N d).restrictScalars R).comap (((t ^ (d + 1)) ∘ₗ N.subtype).restrictScalars R)`. Use extensionality with `x`. Conclude with `Quotient.mk_eq_zero (K d)`. Rewrite `h1` using `[e1]`. Establish `h2` using `HasBasisAway.map _ _ h1`.
+
+Establish `e2 : LinearMap.range (((t ^ (d + 1)) ∘ₗ N.subtype).restrictScalars R) = (N.map (t ^ (d + 1))).restrictScalars R`. Use extensionality with `x`. Conclude with `⟨by rintro ⟨y, rfl⟩; exact ⟨y, y.2, rfl⟩, by rintro ⟨y, hy, rfl⟩; exact ⟨⟨y, hy⟩, rfl⟩⟩`. Rewrite `h2` using `[e2, ← restrictScalars_sup]`. Conclude with `h2`.
+-/
 theorem exists_hasBasisAway_powerChain [IsDomain R] (t : Module.End T M) (N : Submodule T M)
     [IsNoetherian T N]
     (H : ∀ K : Submodule T N, ∃ a : R, a ≠ 0 ∧ HasBasisAway a (⊥ : Submodule R (N ⧸ K)) ⊤) :
@@ -277,6 +375,31 @@ def QuotientsFreeAway (T : Type u) [CommRing T] [Algebra A T] : Prop :=
 
 variable {R A}
 
+/- English proof (translation)
+Introduce `M _ _ _ _ _ _ _ N hN`. Use `letI : Algebra R B := ((algebraMap A B).comp (algebraMap R A)).toAlgebra`. Use `haveI : IsScalarTower R A B := .of_algebraMap_eq' rfl`. Use `letI : Module B M := Module.compHom M (algebraMap B T)`. Use `haveI : IsScalarTower B T M := IsScalarTower.of_compHom B T M`.
+
+Use `haveI : IsScalarTower A B M := .of_algebraMap_smul fun r x => by`. Express the relevant statement in the definitionally equal form `algebraMap B T (algebraMap A B r) • x = _`. Rewrite using `[← IsScalarTower.algebraMap_apply, algebraMap_smul]`. Use `haveI : IsScalarTower R B M := .of_algebraMap_smul fun r x => by`. Rewrite using `[IsScalarTower.algebraMap_apply R A B, algebraMap_smul, algebraMap_smul]`.
+
+Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := T) (M := M)`. Take `⟨s', rfl⟩` from `hN`. Set `M₀ : Submodule B M` to `span B (s ∪ s' : Set M)`. Use `haveI : Module.Finite B M₀ := Module.Finite.span_of_finite B (s.finite_toSet.union s'.finite_toSet)`. Set `τ : Module.End B M` to `(LinearMap.lsmul T M t).restrictScalars B`.
+
+Take `⟨a, ha0, ha⟩` from `exists_hasBasisAway_powerChain (R := R) τ M₀ fun K => by`. Simplify using `using H (M₀ ⧸ K) ⊥ fg_bot`. Establish `htop : (⨆ d, (powerChain τ M₀ d).restrictScalars R) = ⊤`. Establish `hdir` using `(powerChain_mono τ M₀).directed_le`. Establish `key : ∀ (c : T), ∀ x ∈ ⨆ d, powerChain τ M₀ d, c • x ∈ ⨆ d, powerChain τ M₀ d`.
+
+Introduce `c`. Establish `hc : c ∈ Algebra.adjoin B {t}` using `ht ▸ Algebra.mem_top`. Proceed by induction on `hc using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Introduce `x hx`.
+
+Take `rfl : y = t` from `hy`. Take `⟨d, hd⟩` from `(mem_iSup_of_directed _ hdir).1 hx`. Conclude with `mem_iSup_of_mem (d + 1) (map_powerChain_le τ M₀ d (mem_map_of_mem hd))`. Consider the case `algebraMap r => exact fun x hx => smul_mem _ r hx`. Consider the case `add y z _ _ hy hz => exact fun x hx => add_smul y z x ▸ add_mem (hy x hx) (hz x hx)`.
+
+Consider the case `mul y z _ _ hy hz => exact fun x hx => mul_smul y z x ▸ hy _ (hz x hx)`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `hx : x ∈ span T (s : Set M)` using `hs ▸ mem_top`. Establish `: x ∈ ⨆ d, powerChain τ M₀ d`.
+
+Proceed by induction on `hx using span_induction with`. Consider the case `mem y hy => exact mem_iSup_of_mem 0 (subset_span (Or.inl hy))`. Consider the case `zero => exact zero_mem _`. Consider the case `add y z _ _ hy hz => exact add_mem (hy trivial) (hz trivial)`. Consider the case `smul c y _ hy => exact key c y (hy trivial)`.
+
+Take `⟨d, hd⟩` from `(mem_iSup_of_directed _ hdir).1 this`. Conclude with `mem_iSup_of_mem d hd`. Rewrite `ha` using `[htop]`. Establish `hle : span A (s' : Set M) ≤ M₀.restrictScalars A` using `span_le.2 fun x hx => subset_span (Or.inr hx)`. Take `⟨b, hb0, hb⟩` from `H M₀ ((span A (s' : Set M)).comap (M₀.subtype.restrictScalars A)) (by`.
+
+Apply `fg_of_fg_map_injective (M₀.subtype.restrictScalars A) Subtype.val_injective` to reduce the goal to its premises. Rewrite using `[map_comap_eq_of_le]`. Conclude with `⟨s', rfl⟩`. Introduce `x hx`. Conclude with `⟨⟨x, hle hx⟩, rfl⟩)`.
+
+Establish `hb'` using `HasBasisAway.map (M₀.subtype.restrictScalars R) ((span A (s' : Set M)).restrictScalars R) hb`. Establish `he : (span A (s' : Set M)).restrictScalars R ⊔ LinearMap.range (M₀.subtype.restrictScalars R) = M₀.restrictScalars R`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `sup_le (fun x hx => hle hx) (by rintro _ ⟨x, rfl⟩; exact x.2)`. Conclude with `fun x hx => mem_sup_right ⟨⟨x, hx⟩, rfl⟩`.
+
+Rewrite `hb'` using `[he]`. Conclude with `⟨a * b, mul_ne_zero ha0 hb0, (hb'.of_dvd (dvd_mul_left b a)).trans (fun x hx => hle hx) le_top (ha.of_dvd (dvd_mul_right a b))⟩`.
+-/
 theorem QuotientsFreeAway.step {B : Type*} {T : Type*} [CommRing B] [CommRing T] [Algebra A B]
     [Algebra A T] [Algebra B T] [IsScalarTower A B T] [IsNoetherianRing B] (t : T)
     (ht : Algebra.adjoin B {t} = ⊤) (H : QuotientsFreeAway.{_, v} R A B) :
@@ -344,6 +467,23 @@ theorem QuotientsFreeAway.step {B : Type*} {T : Type*} [CommRing B] [CommRing T]
   exact ⟨a * b, mul_ne_zero ha0 hb0, (hb'.of_dvd (dvd_mul_left b a)).trans (fun x hx => hle hx)
     le_top (ha.of_dvd (dvd_mul_right a b))⟩
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨n, f, hf⟩ : ∃ (n : ℕ) (f : Fin n → T), Algebra.adjoin A (Set.range f) = ⊤ := by`. Take `⟨s, hs⟩` from `hT.out`. Use `⟨s.card, fun i => s.equivFin.symm i, ?_⟩` and prove the remaining obligations. Rewrite using `[← hs]`. Use `congr 1`.
+
+Use extensionality with `x`. Simplify using `only [Set.mem_range, SetLike.mem_coe]`. Conclude with `⟨by rintro ⟨i, rfl⟩; exact (s.equivFin.symm i).2, fun hx => ⟨s.equivFin ⟨x, hx⟩, by simp⟩⟩`. Use `clear hT`. Proceed by induction on `n generalizing T with`.
+
+Consider the case `zero`. Introduce `M _ _ _ _ _ _ _ N _`. Establish `hsurj : Function.Surjective (algebraMap A T)`. Introduce `y`. Establish `: y ∈ Algebra.adjoin A (Set.range f)` using `hf ▸ Algebra.mem_top`.
+
+Rewrite `this` using `[Set.range_eq_empty, Algebra.adjoin_empty]`. Conclude with `Algebra.mem_bot.1 this`. Use `haveI : Module.Finite A T := Module.Finite.of_surjective (Algebra.linearMap A T) hsurj`. Use `haveI : Module.Finite A M := Module.Finite.trans T M`. Take `⟨a, ha0, ha⟩` from `H (M ⧸ N)`.
+
+Use `⟨a, ha0, ?_⟩` and prove the remaining obligations. Establish `e1 : LinearMap.ker (N.mkQ.restrictScalars R) = N.restrictScalars R`. Use extensionality with `x`. Conclude with `Quotient.mk_eq_zero N`. Conclude with `e1 ▸ ha.comap (N.mkQ.restrictScalars R) N.mkQ_surjective`.
+
+Consider the case `succ n ih`. Set `B` to `Algebra.adjoin A (Set.range (Fin.tail f))`. Set `g : Fin n → B` to `fun i => ⟨Fin.tail f i, Algebra.subset_adjoin ⟨i, rfl⟩⟩`. Establish `hg : Algebra.adjoin A (Set.range g) = ⊤`. Rewrite using `[← Algebra.adjoin_adjoin_coe_preimage (R := A) (s := Set.range (Fin.tail f))]`.
+
+Use `congr 1`. Use extensionality with `x`. Simplify using `[g, Subtype.ext_iff]`. Use `haveI : Algebra.FiniteType A B := ⟨⟨(Set.finite_range g).toFinset, by simpa using hg⟩⟩`. Use `haveI : IsNoetherianRing B := Algebra.FiniteType.isNoetherianRing A B`.
+
+Use `QuotientsFreeAway.step (B := B) (f 0) ?_ (ih B g hg)` and prove the remaining obligations. Apply `Subalgebra.restrictScalars_injective A` to reduce the goal to its premises. Rewrite using `[← Algebra.adjoin_union_eq_adjoin_adjoin, Subalgebra.restrictScalars_top, ← hf, Fin.range_fin_succ, Set.union_singleton]`.
+-/
 theorem quotientsFreeAway_of_finiteType [IsNoetherianRing A]
     (H : ∀ (M : Type v) [AddCommGroup M] [Module R M] [Module A M] [IsScalarTower R A M]
       [Module.Finite A M], ∃ a : R, a ≠ 0 ∧ HasBasisAway a (⊥ : Submodule R M) ⊤)
@@ -390,12 +530,18 @@ theorem quotientsFreeAway_of_finiteType [IsNoetherianRing A]
     rw [← Algebra.adjoin_union_eq_adjoin_adjoin, Subalgebra.restrictScalars_top, ← hf,
       Fin.range_fin_succ, Set.union_singleton]
 
+/- English proof (translation)
+The claim follows from `haveI : Module.Finite R M := Module.Finite.trans A M exists_hasBasisAway_of_finite`.
+-/
 theorem exists_hasBasisAway_of_finite_algebra [Module.Finite R A]
     (M : Type v) [AddCommGroup M] [Module R M] [Module A M] [IsScalarTower R A M]
     [Module.Finite A M] : ∃ a : R, a ≠ 0 ∧ HasBasisAway a (⊥ : Submodule R M) ⊤ :=
   haveI : Module.Finite R M := Module.Finite.trans A M
   exists_hasBasisAway_of_finite
 
+/- English proof (translation)
+Simplify using `using quotientsFreeAway_of_finiteType (R := R) (A := R) exists_hasBasisAway_of_finite_algebra A M ⊥ fg_bot`.
+-/
 theorem exists_hasBasisAway_of_finiteType [IsNoetherianRing R] [Algebra.FiniteType R A]
     (M : Type v) [AddCommGroup M] [Module R M] [Module A M] [IsScalarTower R A M]
     [Module.Finite A M] : ∃ a : R, a ≠ 0 ∧ HasBasisAway a (⊥ : Submodule R M) ⊤ := by
@@ -408,6 +554,9 @@ section BaseChange
 
 variable {R : Type*} [CommRing R] {M : Type*} [AddCommGroup M] [Module R M]
 
+/- English proof (translation)
+Take `⟨b⟩` from `h.exists_basis (.powers a) (Submonoid.mem_powers a) (Localization.Away a) (TensorProduct.mk R (Localization.Away a) M 1)`. Use `letI : Algebra (Localization.Away a) R' := (IsLocalization.Away.lift a ha).toAlgebra`. Use `haveI : IsScalarTower R (Localization.Away a) R' := .of_algebraMap_eq fun r => (IsLocalization.Away.lift_eq a ha r).symm`. Conclude with `⟨(b.baseChange R').map (AlgebraTensorModule.cancelBaseChange R _ R' R' M)⟩`.
+-/
 theorem IsBasisAway.exists_basis_tensor {a : R} {s : Set M}
     (h : IsBasisAway a (⊥ : Submodule R M) ⊤ s) (R' : Type*) [CommRing R'] [Algebra R R']
     (ha : IsUnit (algebraMap R R' a)) : Nonempty (Module.Basis s R' (R' ⊗[R] M)) := by
@@ -418,6 +567,9 @@ theorem IsBasisAway.exists_basis_tensor {a : R} {s : Set M}
     .of_algebraMap_eq fun r => (IsLocalization.Away.lift_eq a ha r).symm
   exact ⟨(b.baseChange R').map (AlgebraTensorModule.cancelBaseChange R _ R' R' M)⟩
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `h`. Take `⟨b⟩` from `hs.exists_basis_tensor R' ha`. Conclude with `.of_basis b`.
+-/
 theorem HasBasisAway.free_tensor {a : R} (h : HasBasisAway a (⊥ : Submodule R M) ⊤)
     (R' : Type*) [CommRing R'] [Algebra R R'] (ha : IsUnit (algebraMap R R' a)) :
     Module.Free R' (R' ⊗[R] M) := by
@@ -425,6 +577,9 @@ theorem HasBasisAway.free_tensor {a : R} (h : HasBasisAway a (⊥ : Submodule R 
   obtain ⟨b⟩ := hs.exists_basis_tensor R' ha
   exact .of_basis b
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `h`. Take `⟨b⟩` from `hs.exists_basis_tensor R' ha`. Take `rfl : s = ∅` from `Set.eq_empty_of_forall_notMem fun x hx => b.ne_zero ⟨x, hx⟩ (Subsingleton.elim _ _)`. Simplify using `using hs.2.2 m trivial`.
+-/
 theorem HasBasisAway.exists_pow_smul_eq_zero {a : R} (h : HasBasisAway a (⊥ : Submodule R M) ⊤)
     (R' : Type*) [CommRing R'] [Nontrivial R'] [Algebra R R'] (ha : IsUnit (algebraMap R R' a))
     [Subsingleton (R' ⊗[R] M)] (m : M) : ∃ n : ℕ, a ^ n • m = 0 := by
@@ -442,6 +597,9 @@ universe v
 
 variable (R : Type*) [CommRing R] [IsDomain R] [IsNoetherianRing R]
 
+/- English proof (translation)
+The claim follows from `haveI : IsNoetherianRing A₀ := Algebra.FiniteType.isNoetherianRing R A₀ quotientsFreeAway_of_finiteType (R := R) (A := A₀) exists_hasBasisAway_of_finiteType A M N hN`.
+-/
 theorem exists_hasBasisAway_quotient (A₀ : Type*) [CommRing A₀] [Algebra R A₀]
     [Algebra.FiniteType R A₀] (A : Type*) [CommRing A] [Algebra A₀ A] [Algebra.FiniteType A₀ A]
     {M : Type v} [AddCommGroup M] [Module R M] [Module A₀ M] [Module A M] [IsScalarTower R A₀ M]
@@ -452,6 +610,11 @@ theorem exists_hasBasisAway_quotient (A₀ : Type*) [CommRing A₀] [Algebra R A
 
 variable {R}
 
+/- English proof (translation)
+Use `letI : Algebra A₀ A := φ.toRingHom.toAlgebra`. Use `haveI : IsScalarTower R A₀ A := .of_algebraMap_eq fun r => (φ.commutes r).symm`. Use `haveI : Algebra.FiniteType A₀ A := .of_restrictScalars_finiteType R A₀ A`. Take `⟨a, ha0, ha⟩` from `exists_hasBasisAway_quotient R A₀ A (span A₀ {(1 : A)}) (fg_span_singleton _)`. Establish `e : (span A₀ {(1 : A)}).restrictScalars R = LinearMap.range φ.toLinearMap`.
+
+Use extensionality with `x`. Simplify using `only [restrictScalars_mem, mem_span_singleton, Algebra.smul_def, mul_one]`. Both sides reduce to the same expression. Rewrite `ha` using `[e]`. Conclude with `⟨a, ha0, ha.quotient⟩`.
+-/
 theorem exists_hasBasisAway_coker {A₀ : Type*} [CommRing A₀] [Algebra R A₀]
     [Algebra.FiniteType R A₀] {A : Type*} [CommRing A] [Algebra R A] [Algebra.FiniteType R A]
     (φ : A₀ →ₐ[R] A) :
@@ -479,6 +642,11 @@ section Chain
 
 variable {R : Type*} [CommRing R] {M : Type*} [AddCommGroup M] [Module R M]
 
+/- English proof (translation)
+Use `HasBasisAway.iSup (a := 1) F hF fun d => by` as an intermediate fact. Establish `h1` using `(hasBasisAway_of_free (M := F (d + 1) ⧸ (F d).submoduleOf (F (d + 1))) 1).comap ((F d).submoduleOf (F (d + 1))).mkQ (mkQ_surjective _)`. Rewrite `h1` using `[ker_mkQ]`. Establish `h2` using `HasBasisAway.map (F (d + 1)).subtype (F d) h1`. Rewrite `h2` using `[range_subtype, sup_eq_right.2 (hF (Nat.le_succ d))]`. Then use the resulting hypothesis.
+
+Rewrite `this` using `[htop]`. Conclude with `this.quotient.free`.
+-/
 theorem free_quotient_of_chain (F : ℕ → Submodule R M) (hF : Monotone F) (htop : ⨆ d, F d = ⊤)
     (h : ∀ d, Module.Free R (F (d + 1) ⧸ (F d).submoduleOf (F (d + 1)))) :
     Module.Free R (M ⧸ F 0) := by
@@ -491,6 +659,11 @@ theorem free_quotient_of_chain (F : ℕ → Submodule R M) (hF : Monotone F) (ht
   rw [htop] at this
   exact this.quotient.free
 
+/- English proof (translation)
+Use `haveI := free_quotient_of_chain F hF htop h`. Establish `h1` using `(hasBasisAway_of_free (M := M ⧸ F 0) (1 : R)).comap (F 0).mkQ (mkQ_surjective _)`. Rewrite `h1` using `[ker_mkQ]`. Establish `h2` using `HasBasisAway.map (a := 1) (F 0).subtype ⊥ (by`. Rewrite using `[comap_bot, ker_subtype]`.
+
+Conclude with `hasBasisAway_of_free 1)`. Rewrite `h2` using `[range_subtype, bot_sup_eq]`. Conclude with `(h2.trans bot_le le_top h1).free`.
+-/
 theorem free_of_chain (F : ℕ → Submodule R M) (hF : Monotone F) (htop : ⨆ d, F d = ⊤)
     (h0 : Module.Free R (F 0))
     (h : ∀ d, Module.Free R (F (d + 1) ⧸ (F d).submoduleOf (F (d + 1)))) :
@@ -510,6 +683,9 @@ section Statements
 
 variable (R : Type*) [CommRing R] [IsDomain R] [IsNoetherianRing R]
 
+/- English proof (translation)
+Take `⟨a, ha0, ha⟩` from `exists_hasBasisAway_of_finiteType (R := R) (A := S) M`. Conclude with `⟨a, ha0, fun b hb => (ha.of_dvd hb).free_away⟩`.
+-/
 theorem exists_forall_dvd_free_away (S : Type*) [CommRing S] [Algebra R S]
     [Algebra.FiniteType R S] (M : Type*) [AddCommGroup M] [Module R M] [Module S M]
     [IsScalarTower R S M] [Module.Finite S M] :
@@ -518,6 +694,9 @@ theorem exists_forall_dvd_free_away (S : Type*) [CommRing S] [Algebra R S]
   obtain ⟨a, ha0, ha⟩ := exists_hasBasisAway_of_finiteType (R := R) (A := S) M
   exact ⟨a, ha0, fun b hb => (ha.of_dvd hb).free_away⟩
 
+/- English proof (translation)
+Take `⟨a, ha0, ha⟩` from `exists_forall_dvd_free_away R S M`. Conclude with `⟨a, ha0, ha a dvd_rfl⟩`.
+-/
 theorem exists_free_away (S : Type*) [CommRing S] [Algebra R S]
     [Algebra.FiniteType R S] (M : Type*) [AddCommGroup M] [Module R M] [Module S M]
     [IsScalarTower R S M] [Module.Finite S M] :
@@ -525,6 +704,9 @@ theorem exists_free_away (S : Type*) [CommRing S] [Algebra R S]
   obtain ⟨a, ha0, ha⟩ := exists_forall_dvd_free_away R S M
   exact ⟨a, ha0, ha a dvd_rfl⟩
 
+/- English proof (translation)
+Take `⟨a, ha0, ha⟩` from `exists_hasBasisAway_of_finiteType (R := R) (A := S) M`. Conclude with `⟨a, ha0, fun R' _ _ h => ha.free_tensor R' h⟩`.
+-/
 theorem exists_free_tensor_of_isUnit.{w} (S : Type*) [CommRing S] [Algebra R S]
     [Algebra.FiniteType R S] (M : Type*) [AddCommGroup M] [Module R M] [Module S M]
     [IsScalarTower R S M] [Module.Finite S M] :
@@ -533,6 +715,9 @@ theorem exists_free_tensor_of_isUnit.{w} (S : Type*) [CommRing S] [Algebra R S]
   obtain ⟨a, ha0, ha⟩ := exists_hasBasisAway_of_finiteType (R := R) (A := S) M
   exact ⟨a, ha0, fun R' _ _ h => ha.free_tensor R' h⟩
 
+/- English proof (translation)
+Take `⟨a, ha0, ha⟩` from `exists_hasBasisAway_of_finiteType (R := R) (A := S) S`. Conclude with `⟨a, ha0, ha.free_of_isLocalizedModule (.powers a) (Submonoid.mem_powers a) _ (IsScalarTower.toAlgHom R S (Localization (Algebra.algebraMapSubmonoid S (Submonoid.powers a)))).toLinearMap⟩`.
+-/
 theorem exists_free_localization_away (S : Type*) [CommRing S] [Algebra R S]
     [Algebra.FiniteType R S] :
     ∃ a : R, a ≠ 0 ∧ Module.Free (Localization.Away a)
@@ -542,6 +727,9 @@ theorem exists_free_localization_away (S : Type*) [CommRing S] [Algebra R S]
     (IsScalarTower.toAlgHom R S
       (Localization (Algebra.algebraMapSubmonoid S (Submonoid.powers a)))).toLinearMap⟩
 
+/- English proof (translation)
+Take `⟨a, ha0, ha⟩` from `exists_hasBasisAway_quotient R A₀ A N hN`. Conclude with `⟨a, ha0, fun b hb => (ha.quotient.of_dvd hb).free_away⟩`.
+-/
 theorem exists_free_away_quotient (A₀ : Type*) [CommRing A₀] [Algebra R A₀]
     [Algebra.FiniteType R A₀] (A : Type*) [CommRing A] [Algebra A₀ A] [Algebra.FiniteType A₀ A]
     {M : Type*} [AddCommGroup M] [Module R M] [Module A₀ M] [Module A M] [IsScalarTower R A₀ M]
@@ -554,12 +742,24 @@ theorem exists_free_away_quotient (A₀ : Type*) [CommRing A₀] [Algebra R A₀
 variable {R} {A₀ : Type*} [CommRing A₀] [Algebra R A₀] [Algebra.FiniteType R A₀]
   {A : Type*} [CommRing A] [Algebra R A] [Algebra.FiniteType R A] (φ : A₀ →ₐ[R] A)
 
+/- English proof (translation)
+Take `⟨a, ha0, ha⟩` from `exists_hasBasisAway_coker φ`. Conclude with `⟨a, ha0, ha.free_away⟩`.
+-/
 theorem exists_free_away_coker :
     ∃ a : R, a ≠ 0 ∧ Module.Free (Localization.Away a)
       (LocalizedModule.Away a (A ⧸ LinearMap.range φ.toLinearMap)) := by
   obtain ⟨a, ha0, ha⟩ := exists_hasBasisAway_coker φ
   exact ⟨a, ha0, ha.free_away⟩
 
+/- English proof (translation)
+Take `⟨a, ha0, ha⟩` from `exists_hasBasisAway_coker φ`. Take `⟨K, _, _, _, hK, hsurj⟩` from `h a ha0`. Use `⟨a, ha0, fun y => ?_⟩` and prove the remaining obligations. Use `haveI : Subsingleton (K ⊗[R] (A ⧸ LinearMap.range φ.toLinearMap)) := by`. Use `subsingleton_of_forall_eq 0 fun z => ?_` and prove the remaining obligations.
+
+Take `⟨z, rfl⟩` from `LinearMap.lTensor_surjective K (LinearMap.range φ.toLinearMap).mkQ_surjective z`. Take `⟨z, rfl⟩` from `hsurj z`. Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `tmul c x`.
+
+Establish `: (LinearMap.range φ.toLinearMap).mkQ (φ x) = 0` using `(Submodule.Quotient.mk_eq_zero _).2 ⟨x, rfl⟩`. Rewrite using `[Algebra.TensorProduct.map_tmul, LinearMap.lTensor_tmul, this, tmul_zero]`. Consider the case `add z w hz hw => rw [map_add, map_add, hz, hw, add_zero]`. Take `⟨n, hn⟩` from `ha.exists_pow_smul_eq_zero K hK ((LinearMap.range φ.toLinearMap).mkQ y)`. Rewrite `hn` using `[← map_smul, mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
+
+Conclude with `⟨n, hn⟩`.
+-/
 theorem exists_pow_smul_mem_range_of_surjective_baseChange.{w}
     (h : ∀ a : R, a ≠ 0 → ∃ (K : Type w) (_ : CommRing K) (_ : Nontrivial K) (_ : Algebra R K),
       IsUnit (algebraMap R K a) ∧
@@ -584,6 +784,9 @@ theorem exists_pow_smul_mem_range_of_surjective_baseChange.{w}
   rw [← map_smul, mkQ_apply, Submodule.Quotient.mk_eq_zero] at hn
   exact ⟨n, hn⟩
 
+/- English proof (translation)
+Use `exists_pow_smul_mem_range_of_surjective_baseChange φ fun a ha => ?_` and prove the remaining obligations. Take `⟨x, hxD, hxa⟩` from `hD.exists_mem_open (PrimeSpectrum.basicOpen a).isOpen ⟨⟨⊥, Ideal.isPrime_bot⟩, by simpa using ha⟩`. Use `⟨x.asIdeal.ResidueField, inferInstance, inferInstance, inferInstance, ?_, h x hxD⟩` and prove the remaining obligations. Rewrite using `[isUnit_iff_ne_zero, Ne, Ideal.algebraMap_residueField_eq_zero]`. Conclude with `hxa`.
+-/
 theorem exists_pow_smul_mem_range_of_dense {D : Set (PrimeSpectrum R)} (hD : Dense D)
     (h : ∀ x ∈ D, Function.Surjective (Algebra.TensorProduct.map
       (AlgHom.id x.asIdeal.ResidueField x.asIdeal.ResidueField) φ)) :
@@ -595,6 +798,9 @@ theorem exists_pow_smul_mem_range_of_dense {D : Set (PrimeSpectrum R)} (hD : Den
   rw [isUnit_iff_ne_zero, Ne, Ideal.algebraMap_residueField_eq_zero]
   exact hxa
 
+/- English proof (translation)
+Take `⟨a, ha0, ha⟩` from `exists_pow_smul_mem_range_of_dense φ hD h`. Use `⟨a, ha0, Localization.awayMap_surjective_iff.2 fun y => ?_⟩` and prove the remaining obligations. Take `⟨n, x, hx⟩` from `ha y`. Conclude with `⟨x, n, by simp [hx, Algebra.smul_def]⟩`.
+-/
 theorem exists_awayMap_surjective_of_dense {D : Set (PrimeSpectrum R)} (hD : Dense D)
     (h : ∀ x ∈ D, Function.Surjective (Algebra.TensorProduct.map
       (AlgHom.id x.asIdeal.ResidueField x.asIdeal.ResidueField) φ)) :
@@ -605,6 +811,13 @@ theorem exists_awayMap_surjective_of_dense {D : Set (PrimeSpectrum R)} (hD : Den
   obtain ⟨n, x, hx⟩ := ha y
   exact ⟨x, n, by simp [hx, Algebra.smul_def]⟩
 
+/- English proof (translation)
+Take `⟨a, ha0, ha⟩` from `exists_pow_smul_mem_range_of_dense φ hD h`. Use `⟨a, ha0, fun R' _ _ hu z => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `z ∈ (Algebra.TensorProduct.map (AlgHom.id R' R') φ).range`. Proceed by induction on `z with`. Consider the case `zero => exact zero_mem _`.
+
+Consider the case `tmul c y`. Take `⟨n, x, hx⟩` from `ha y`. Take `⟨u, hu⟩` from `(hu.pow n).exists_left_inv`. Use `⟨(c * u) ⊗ₜ x, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map (AlgHom.id R' R') φ _ = _`.
+
+Rewrite using `[Algebra.TensorProduct.map_tmul, hx, ← smul_tmul, Algebra.smul_def, map_pow, AlgHom.id_apply, mul_comm, mul_assoc, hu, mul_one]`. Consider the case `add z w hz hw => exact add_mem hz hw`.
+-/
 theorem exists_baseChange_surjective_of_dense.{w} {D : Set (PrimeSpectrum R)} (hD : Dense D)
     (h : ∀ x ∈ D, Function.Surjective (Algebra.TensorProduct.map
       (AlgHom.id x.asIdeal.ResidueField x.asIdeal.ResidueField) φ)) :
@@ -627,6 +840,9 @@ theorem exists_baseChange_surjective_of_dense.{w} {D : Set (PrimeSpectrum R)} (h
 
 end Statements
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ _ F hF htop h0 h => free_of_chain F hF htop h0 h, fun S _ _ _ M _ _ _ _ _ => exists_free_away R S M, fun _ _ _ _ _ _ _ _ φ => ⟨exists_free_away_coker φ, fun _ hD h => exists_awayMap_surjective_of_dense φ hD h⟩⟩`.
+-/
 theorem generic_freeness.{u, v} (R : Type u) [CommRing R] [IsDomain R] [IsNoetherianRing R] :
     (∀ (M : Type v) [AddCommGroup M] [Module R M] (F : ℕ → Submodule R M), Monotone F →
       ⨆ d, F d = ⊤ → Module.Free R (F 0) →

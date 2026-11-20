@@ -25,6 +25,9 @@ variable {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toPre}
 
 abbrev lineZ (D : D7) : HSp D := Examples₂.posSpace (E := D.host.E) Examples₂.star_isIntegral 1
 
+/- English proof (translation)
+Take `⟨hs, -, h2, -⟩` from `hI.spaces`. Establish `key : ∀ S : HSp (I.rec7 l Z), ∀ n, S = Examples₂.posSpace hs n → S.gram = 1`. Introduce and unpack `_ n rfl`. Conclude with `gram_pos hs n`. Conclude with `key _ _ h2`.
+-/
 theorem gram_X' {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} (hI : I.Ok) : (I.rec7 l Z).sp.X'.gram = 1 := by
   obtain ⟨hs, -, h2, -⟩ := hI.spaces
   have key : ∀ S : HSp (I.rec7 l Z), ∀ n, S = Examples₂.posSpace hs n → S.gram = 1 := by
@@ -47,6 +50,11 @@ def xgeo {I : TC B X} (l : I.Laws) (Z : TC.Later B (I.cols l)) (hI : I.Ok)
     (Λ : GlobalTheory.FinPl.Lat (I.rec7 l Z).sp.X') : XGeo (I.rec7 l Z) :=
   ⟨fun _ => stdSp _, vac, lineZ _, oTop l Z hI, zeta I l Z u, 1, Λ⟩
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun z : 𝓞 B.host.E => (z : B.host.E)) (l.pr.piT_norm u)`. Rewrite using `[gram_pos, Matrix.one_mulVec]`. Simplify using `only [dotProduct, zeta, piE, Pi.star_apply, Finset.sum_const, Finset.card_univ, Fintype.card_fin]`. Simplify using `only [map_mul, map_natCast] at h`. Rewrite using `[show (lineZ (I.rec7 l Z)).rank = 1 from rfl, one_smul]`.
+
+Conclude with `(mul_comm _ _).trans h`.
+-/
 theorem norm_zeta {I : TC B X} (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) :
     star (zeta I l Z u) ⬝ᵥ (lineZ (I.rec7 l Z)).gram *ᵥ zeta I l Z u = ((((I.rec7 l Z).mem u).A.T : ℕ) : (I.rec7 l Z).host.E) := by
   have h := congrArg (fun z : 𝓞 B.host.E => (z : B.host.E)) (l.pr.piT_norm u)
@@ -56,6 +64,9 @@ theorem norm_zeta {I : TC B X} (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.W
   rw [show (lineZ (I.rec7 l Z)).rank = 1 from rfl, one_smul]
   exact (mul_comm _ _).trans h
 
+/- English proof (translation)
+Use `⟨rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_zeta]`. Use `(l.pr.T_prime u).ne_zero` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+-/
 theorem isLineVec_zeta {I : TC B X} (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) :
     IsLineVec (lineZ (I.rec7 l Z)) (zeta I l Z u) := by
   refine ⟨rfl, ?_⟩
@@ -63,6 +74,13 @@ theorem isLineVec_zeta {I : TC B X} (l : I.Laws) (Z : TC.Later B (I.cols l)) (u 
   have := (l.pr.T_prime u).ne_zero
   exact_mod_cast this
 
+/- English proof (translation)
+Take `⟨c, -, -, -, h4, h5⟩` from `h`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `h5 x hx` as an intermediate fact.
+
+Rewrite `this` using `[one_pow, Nat.cast_one, one_smul]`. Rewrite using `[← SetLike.mem_coe, GlobalTheory.PlaceModel.coe_latFrame]`. Conclude with `this`. Introduce `hx`. Rewrite `hx` using `[← SetLike.mem_coe, GlobalTheory.PlaceModel.coe_latFrame]`.
+
+Use `h4 x hx` as an intermediate fact. Rewrite `this` using `[one_pow, Nat.cast_one, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem eq_latFrame_of_isSDFrame {D : D7} {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)}
     (h : IsSDFrame V β Λ 1) : Λ = GlobalTheory.PlaceModel.latFrame V := by
   obtain ⟨c, -, -, -, h4, h5⟩ := h

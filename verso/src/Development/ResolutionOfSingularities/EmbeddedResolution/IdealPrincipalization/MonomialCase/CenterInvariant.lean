@@ -18,9 +18,15 @@ namespace MonomialCenter
 def sortedIndices {n : ℕ} (J : Finset (Fin n)) : List ℕ :=
   (J.sort (· ≤ ·)).map Fin.val
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sortedIndices_eq_map_sort {n : ℕ} (J : Finset (Fin n)) :
     sortedIndices J = (J.sort (· ≤ ·)).map Fin.val := rfl
 
+/- English proof (translation)
+Simplify using `[sortedIndices, List.mem_map, Finset.mem_sort]`.
+-/
 theorem mem_sortedIndices {n : ℕ} (J : Finset (Fin n)) (a : ℕ) :
     a ∈ sortedIndices J ↔ ∃ j ∈ J, (j : ℕ) = a := by
   simp [sortedIndices, List.mem_map, Finset.mem_sort]
@@ -50,15 +56,27 @@ def centerInvariant {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ) (L : List 
   rank := minIndexCard I m L
   value := maxCandidateOrder I m L
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem centerInvariant_indices {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
     (L : List Y.IdealSheafData) : (centerInvariant I m L).positions = lexMaxIndices I m L := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem centerInvariant_depth {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
     (L : List Y.IdealSheafData) : (centerInvariant I m L).rank = minIndexCard I m L := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem centerInvariant_order {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
     (L : List Y.IdealSheafData) : (centerInvariant I m L).value = maxCandidateOrder I m L := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem centerInvariant_sortedIndices {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
     (L : List Y.IdealSheafData) :
     (centerInvariant I m L).sortedIndices = sortedIndices (lexMaxIndices I m L) := rfl

@@ -15,10 +15,16 @@ section
 
 variable {Γ H A Z V J : Type} [Group Γ] [Group H] [Group A] [Group Z] [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Simplify using `[rop, Finsupp.sum, Finset.sum_add_distrib, smul_add]`.
+-/
 private theorem rop_add (r : H →₀ ℂ) (Φ Ψ : H → V) : rop r (Φ + Ψ) = rop r Φ + rop r Ψ := by
   funext g
   simp [rop, Finsupp.sum, Finset.sum_add_distrib, smul_add]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Simplify using `only [rop, Finsupp.sum, Pi.smul_apply, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun u _ => smul_comm _ _ _`.
+-/
 private theorem rop_smul (r : H →₀ ℂ) (a : ℂ) (Φ : H → V) : rop r (a • Φ) = a • rop r Φ := by
   funext g
   simp only [rop, Finsupp.sum, Pi.smul_apply, Finset.smul_sum]
@@ -37,6 +43,19 @@ private def eigForms (ι : Γ →* H) (K : Subgroup H) (ξ : Representation ℂ 
     rintro a b ⟨hb, hb'⟩
     exact ⟨Submodule.smul_mem _ a hb, fun j => by rw [rop_smul, hb', smul_comm]⟩
 
+/- English proof (translation)
+Establish `key : ∀ u, c u = 1 → rop r Φ u = θ • Φ u`. Introduce `u hu`. Rewrite using `[hres u hu, ← hφ u hu]`. Use `Finsupp.sum_congr fun u' hu' => ?_` and prove the remaining obligations. Rewrite using `[hres _ (by rw [map_mul, hu, hr u' hu', one_mul])]`.
+
+Use function extensionality and compare the values at `g`. Distinguish the cases in `hg : ∃ γ u k, c u = 1 ∧ k ∈ K ∧ g = ι γ * u * k`. Take `⟨γ, u, k, hu, hk, rfl⟩` from `hg`. Establish `h1` using `hform.2 k hk (ι γ * u)`. Establish `h2` using `hΦ.2 k hk (ι γ * u)`.
+
+Establish `h3` using `hform.1 γ u`. Establish `h4` using `hΦ.1 γ u`. Rewrite using `[h1, h3, Pi.smul_apply, h2, h4, key u hu, map_smul]`. Establish `h0 : ∀ g', (¬ ∃ γ u k, c u = 1 ∧ k ∈ K ∧ g' = ι γ * u * k) → Φ g' = 0`. Introduce `g' hg'`.
+
+Assume the negation of the conclusion as `hne`. Conclude with `hg' (hsupp g' hne)`. Establish `h1 : ∀ u' ∈ r.support, Φ (g * u') = 0`. Introduce `u' hu'`. Apply `h0` to reduce the goal to its premises.
+
+Introduce and unpack `⟨γ, u, k, hu, hk, he⟩`. Use `hg ⟨γ, u * (k * u'⁻¹ * k⁻¹), k, ?_, hk, ?_⟩` and prove the remaining obligations. Simplify using `[map_mul, map_inv, hu, hr u' hu']`. Establish `: g = ι γ * u * k * u'⁻¹` using `by rw [← he]; group`. Rewrite using `[this]`.
+
+Use `group`. Rewrite using `[Pi.smul_apply, h0 g hg, smul_zero]`. Unfold `rop`. Conclude with `Finset.sum_eq_zero fun u' hu' => by show r u' • Φ (g * u') = 0`. Rewrite using `[h1 u' hu', smul_zero]`.
+-/
 private theorem ext_eig_at {ι : Γ →* H} {K : Subgroup H} {ξ : Representation ℂ Γ V} {c : H →* A} {φ Φ : H → V}
     (hΦ : Φ ∈ forms ι K ξ) (hres : ∀ u, c u = 1 → Φ u = φ u)
     (hsupp : ∀ g, Φ g ≠ 0 → ∃ γ u k, c u = 1 ∧ k ∈ K ∧ g = ι γ * u * k)
@@ -76,6 +95,19 @@ private theorem ext_eig_at {ι : Γ →* H} {K : Subgroup H} {ξ : Representatio
 
 end
 
+/- English proof (translation)
+Introduce `hZ hC Γ H A Z V _ _ _ _ _ _ ι K ξ _ c ζ hζ φ hφ hne J r θ hr hforms heig`. Take `⟨Φ₀, hΦ₀, hres, hsupp⟩` from `hZ Γ H A V ι K ξ c φ hφ`. Establish `hM0 : Φ₀ ∈ eigForms ι K ξ r θ` using `⟨hΦ₀, fun j => ext_eig_at hΦ₀ hres hsupp (hr j) (hforms j Φ₀ hΦ₀) (heig j)⟩`. Establish `hMle : eigForms ι K ξ r θ ≤ forms ι K ξ` using `fun Φ h => h.1`. Establish `hMne : eigForms ι K ξ r θ ≠ ⊥`.
+
+Introduce `hb`. Take `⟨u, hu, hu'⟩` from `hne`. Establish `h0 : Φ₀ = 0`. Establish `: Φ₀ ∈ (⊥ : Submodule ℂ (H → V))` using `hb ▸ hM0`. Simplify using `using this`.
+
+Apply `hu'` to reduce the goal to its premises. Rewrite using `[← hres u hu, h0]`. Both sides reduce to the same expression. Establish `hstable : ∀ Φ ∈ eigForms ι K ξ r θ, ∀ z, (fun g => Φ (g * ζ z)) ∈ eigForms ι K ξ r θ`. Introduce and unpack `Φ ⟨hΦ, hΦ'⟩ z`.
+
+Use `⟨⟨fun γ g => ?_, fun k hk g => ?_⟩, fun j => ?_⟩` and prove the remaining obligations. Use `show Φ (ι γ * g * ζ z) = ξ γ (Φ (g * ζ z))`. Rewrite using `[mul_assoc, hΦ.1]`. Use `show Φ (g * k * ζ z) = Φ (g * ζ z)`. Rewrite using `[mul_assoc, ← hζ z k, ← mul_assoc, hΦ.2 k hk]`.
+
+Use function extensionality and compare the values at `g`. Establish `h` using `congrFun (hΦ' j) (g * ζ z)`. Rewrite `h`, the goal using `[Pi.smul_apply]`. Rewrite using `[← h]`. Unfold `rop`.
+
+Use `Finsupp.sum_congr fun u _ => ?_` and prove the remaining obligations. Use `show (r j) u • Φ (g * u * ζ z) = (r j) u • Φ (g * ζ z * u)`. Rewrite using `[mul_assoc g u, ← hζ z u, ← mul_assoc]`. Take `⟨Φ, hΦ, hΦ0, ψ, hψ⟩` from `hC Γ H Z V ι K ξ ζ hζ (eigForms ι K ξ r θ) hMle hMne hstable`. Conclude with `⟨Φ, hΦ.1, hΦ0, hΦ.2, ψ, hψ⟩`.
+-/
 theorem pExtEig_holds : ExtZero → CentralEig → ExtEig := by
   intro hZ hC Γ H A Z V _ _ _ _ _ _ ι K ξ _ c ζ hζ φ hφ hne J r θ hr hforms heig
   obtain ⟨Φ₀, hΦ₀, hres, hsupp⟩ := hZ Γ H A V ι K ξ c φ hφ

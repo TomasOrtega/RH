@@ -15,21 +15,33 @@ open GlobalTheory.Twist (resM app_resM)
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ}
   {E L L' : X.Modules} {r : ℕ} (h : Met p σ E r)
 
+/- English proof (translation)
+The claim follows from `(H.gram ![s₁, s₂] hy 0 1).contDiffAt_chart c hc`.
+-/
 theorem contDiffAt_form (H : h.IsCInf) {U : X.Opens} (s₁ s₂ : Γ(E, U)) {y : CxPts p σ}
     (hy : y ∈ ptsIn p σ U) {D : ℕ} (c : AlgChart p σ D) (hc : y ∈ c.e.source) :
     ContDiffAt ℝ ∞ (fun v => h.form s₁ s₂ (c.e.symm v)) (c.e y) :=
   (H.gram ![s₁, s₂] hy 0 1).contDiffAt_chart c hc
 
+/- English proof (translation)
+The claim follows from `Complex.reCLM.contDiff.contDiffAt.comp _ (contDiffAt_form h H s₁ s₂ hy c hc)`.
+-/
 theorem contDiffAt_re_form (H : h.IsCInf) {U : X.Opens} (s₁ s₂ : Γ(E, U)) {y : CxPts p σ}
     (hy : y ∈ ptsIn p σ U) {D : ℕ} (c : AlgChart p σ D) (hc : y ∈ c.e.source) :
     ContDiffAt ℝ ∞ (fun v => (h.form s₁ s₂ (c.e.symm v)).re) (c.e y) :=
   Complex.reCLM.contDiff.contDiffAt.comp _ (contDiffAt_form h H s₁ s₂ hy c hc)
 
+/- English proof (translation)
+The claim follows from `(Complex.pos_iff.1 (((h.restrict hl hL).posDef ⟨U, fun _ => t, ht⟩ y hy).diag_pos (i := 0))).1`.
+-/
 theorem re_form_pos {l : L ⟶ E} (hl : IsSubbundle l) (hL : IsVB L 1) {U : X.Opens} (t : Γ(L, U))
     (ht : IsFrame (fun _ : Fin 1 => t)) {y : CxPts p σ} (hy : y ∈ ptsIn p σ U) :
     0 < (h.form (l.app U t) (l.app U t) y).re :=
   (Complex.pos_iff.1 (((h.restrict hl hL).posDef ⟨U, fun _ => t, ht⟩ y hy).diag_pos (i := 0))).1
 
+/- English proof (translation)
+Establish `key (s t : Γ(E, W)) (f : Γ(X, W)) : h.form s (f • t) z = starRingEnd ℂ (ev p σ W f z) * h.form s t z`. Rewrite using `[← h.conj_form, h.form_smul_left, map_mul, h.conj_form]`. Rewrite using `[← h.form_resM y₁ y₂ hW₂ hz, e₁, e₂, h.form_smul_left, key, h.form_resM _ _ hW hz]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem form_eq_of_resM {U U₂ W : X.Opens} (hW : W ≤ U) (hW₂ : W ≤ U₂) (x₁ x₂ : Γ(E, U))
     (y₁ y₂ : Γ(E, U₂)) (f₁ f₂ : Γ(X, W)) (e₁ : resM E hW₂ y₁ = f₁ • resM E hW x₁)
     (e₂ : resM E hW₂ y₂ = f₂ • resM E hW x₂) (z : CxPts p σ) (hz : z ∈ ptsIn p σ W) :
@@ -40,6 +52,9 @@ theorem form_eq_of_resM {U U₂ W : X.Opens} (hW : W ≤ U) (hW₂ : W ≤ U₂)
   rw [← h.form_resM y₁ y₂ hW₂ hz, e₁, e₂, h.form_smul_left, key, h.form_resM _ _ hW hz]
   ring
 
+/- English proof (translation)
+Use `⟨(ht.basis (inf_le_left : U ⊓ U₂ ≤ U)).repr (resM L inf_le_right s) 0, ?_⟩` and prove the remaining obligations. Use `(ht.basis (inf_le_left : U ⊓ U₂ ≤ U)).sum_repr (resM L inf_le_right s)` as an intermediate fact. Rewrite `this` using `[Fin.sum_univ_one, IsFrame.basis_apply]`. Conclude with `this.symm`.
+-/
 theorem exists_eq_smul {U U₂ : X.Opens} (t : Γ(L, U)) (ht : IsFrame (fun _ : Fin 1 => t))
     (s : Γ(L, U₂)) : ∃ f : Γ(X, U ⊓ U₂),
       resM L (inf_le_right : U ⊓ U₂ ≤ U₂) s = f • resM L (inf_le_left : U ⊓ U₂ ≤ U) t := by
@@ -48,6 +63,9 @@ theorem exists_eq_smul {U U₂ : X.Opens} (t : Γ(L, U)) (ht : IsFrame (fun _ : 
   rw [Fin.sum_univ_one, IsFrame.basis_apply] at this
   exact this.symm
 
+/- English proof (translation)
+Take `⟨f, hf⟩` from `exists_eq_smul t ht s`. Conclude with `⟨f, by rw [← app_resM, hf, Scheme.Modules.Hom.app_smul, app_resM]⟩`.
+-/
 theorem exists_app_eq_smul (l : L ⟶ E) {U U₂ : X.Opens} (t : Γ(L, U))
     (ht : IsFrame (fun _ : Fin 1 => t)) (s : Γ(L, U₂)) : ∃ f : Γ(X, U ⊓ U₂),
       resM E (inf_le_right : U ⊓ U₂ ≤ U₂) (l.app U₂ s) =
@@ -57,6 +75,19 @@ theorem exists_app_eq_smul (l : L ⟶ E) {U U₂ : X.Opens} (t : Γ(L, U))
 
 variable {l : L ⟶ E} {l' : L' ⟶ E}
 
+/- English proof (translation)
+Take `⟨f, hf⟩` from `exists_app_eq_smul l t ht s`. Take `⟨g, hg⟩` from `exists_app_eq_smul l' t' ht' s'`. Establish `hW : y ∈ ptsIn p σ (U ⊓ U₂)` using `mem_ptsIn_inf.2 ⟨hy, hy₂⟩`. Establish `hN : ∀ᶠ v in 𝓝 (c.e y), c.e.symm v ∈ ptsIn p σ (U ⊓ U₂)` using `eventually_of_mem ((ChartGlue.isOpen_over c.e (isOpen_ptsIn (U ⊓ U₂))).mem_nhds (ChartGlue.mem_over c.e hc hW)) fun _ hv => hv.2`. Establish `hre (a b : ℂ) : (a * starRingEnd ℂ a * b).re = ‖a‖ ^ 2 * b.re`.
+
+Rewrite using `[Complex.mul_conj, Complex.re_ofReal_mul, Complex.normSq_eq_norm_sq]`. Establish `ef` using `form_eq_of_resM h inf_le_left inf_le_right _ _ _ _ f f hf hf`. Establish `eg` using `form_eq_of_resM h inf_le_left inf_le_right _ _ _ _ g g hg hg`. Establish `eq` using `form_eq_of_resM h inf_le_left inf_le_right _ _ _ _ g f hg hf`. Establish `e0` using `c.e.left_inv hc`.
+
+Establish `hpos₂` using `re_form_pos h hl hL s hs hy₂`. Establish `hpos₂'` using `re_form_pos h hl' hL' s' hs' hy₂`. Use `GlobalTheory.CurveDens.angleForm_frame_indep _ n _ _ _ _ _ _ (fun v => ev p σ (U ⊓ U₂) f (c.e.symm v)) (fun v => ev p σ (U ⊓ U₂) g (c.e.symm v)) ξ (c.e y) ((contDiffAt_re_form h H _ _ hy c hc).differentiableAt (by simp)) ((contDiffAt_re_form h H _ _ hy c hc).differentiableAt (by …` and prove the remaining obligations. Simplify using `only [e0]`. Introduce `h0`.
+
+Rewrite `hpos₂` using `[ef _ hW, h0]`. Simplify using `at hpos₂`. Simplify using `only [e0]`. Introduce `h0`. Rewrite `hpos₂'` using `[eg _ hW, h0]`.
+
+Simplify using `at hpos₂'`. Use `filter_upwards [hN] with v hv`. Rewrite using `[ef _ hv, hre]`. Use `filter_upwards [hN] with v hv`. Rewrite using `[eg _ hv, hre]`.
+
+Use `filter_upwards [hN] with v hv`. Rewrite using `[eq _ hv]`.
+-/
 theorem angleForm_frames (H : h.IsCInf) (hl : IsSubbundle l) (hl' : IsSubbundle l')
     (hL : IsVB L 1) (hL' : IsVB L' 1) (n : ℕ) {U U₂ : X.Opens} (t : Γ(L, U)) (t' : Γ(L', U))
     (s : Γ(L, U₂)) (s' : Γ(L', U₂)) (ht : IsFrame (fun _ : Fin 1 => t))
@@ -106,6 +137,9 @@ theorem angleForm_frames (H : h.IsCInf) (hl : IsSubbundle l) (hl' : IsSubbundle 
   · filter_upwards [hN] with v hv
     rw [eq _ hv]
 
+/- English proof (translation)
+Rewrite using `[ContinuousLinearMap.det, ← LinearMap.det_toMatrix (EuclideanSpace.basisFun (Fin 1) ℂ).toBasis, Matrix.det_unique]`. Use extensionality with `i`. Simplify using `[LinearMap.toMatrix_apply, Subsingleton.elim i 0]`.
+-/
 theorem apply_single_eq_det_smul (A : EuclideanSpace ℂ (Fin 1) →L[ℂ] EuclideanSpace ℂ (Fin 1)) :
     A (EuclideanSpace.single 0 1) = A.det • EuclideanSpace.single 0 1 := by
   rw [ContinuousLinearMap.det, ← LinearMap.det_toMatrix (EuclideanSpace.basisFun (Fin 1) ℂ).toBasis,
@@ -117,6 +151,21 @@ end GlobalTheory.AngleGlue
 
 open GlobalTheory.Twist (resM)
 
+/- English proof (translation)
+Introduce `k _ X p σ V L L' r h l l' H hl hl' hL hL' n`. Set `W : CxPts p σ → X.Opens` to `fun y => (hL.pick y).U ⊓ (hL'.pick y).U`. Set `T : ∀ y, Γ(L, W y)` to `fun y => resM L inf_le_left ((hL.pick y).e 0)`. Set `T' : ∀ y, Γ(L', W y)` to `fun y => resM L' inf_le_right ((hL'.pick y).e 0)`. Establish `hT : ∀ y, IsFrame (fun _ : Fin 1 => T y)` using `fun y => by`.
+
+Use `(hL.pick y).isFrame.res (inf_le_left : W y ≤ _)` as an intermediate fact. Use `this using 2 with i` and compare the differences between its conclusion and the goal. Rewrite using `[Subsingleton.elim i 0]`. Establish `hT' : ∀ y, IsFrame (fun _ : Fin 1 => T' y)` using `fun y => by`. Use `(hL'.pick y).isFrame.res (inf_le_right : W y ≤ _)` as an intermediate fact.
+
+Use `this using 2 with i` and compare the differences between its conclusion and the goal. Rewrite using `[Subsingleton.elim i 0]`. Establish `hW : ∀ y, y ∈ ptsIn p σ (W y)` using `fun y => mem_ptsIn_inf.2 ⟨hL.mem_pick y, hL'.mem_pick y⟩`. Use `⟨fun c y => angleForm n (fun v => (h.form (l.app (W y) (T y)) (l.app (W y) (T y)) (c.e.symm v)).re) (fun v => (h.form (l'.app (W y) (T' y)) (l'.app (W y) (T' y)) (c.e.symm v)).re) (fun v => h.form (l'.app (W y) (T' y)) (l.app (W y) (T y)) (c.e.symm v)) (EuclideanSpace.single 0 1) …` and prove the remaining obligations. Introduce `c y hc`.
+
+Establish `e0` using `c.e.left_inv hc`. Establish `hG` using `(GlobalTheory.CurveDens.angleForm_props _ n (fun v => (h.form (l.app (W y) (T y)) (l.app (W y) (T y)) (c.e.symm v)).re) (fun v => (h.form (l'.app (W y) (T' y)) (l'.app (W y) (T' y)) (c.e.symm v)).re) (fun v => h.form (l'.app (W y) (T' y)) (l.app (W y) (T y)) (c.e.symm v)) (Euclid …`. Use `hG.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [(ChartGlue.isOpen_over c.e (isOpen_ptsIn (W y))).mem_nhds (ChartGlue.mem_over c.e hc (hW y))] with v hv`. Use `GlobalTheory.AngleGlue.angleForm_frames h H hl hl' hL hL' n (T y) (T' y) (T (c.e.symm v)) (T' (c.e.symm v)) (hT y) (hT' y) (hT _) (hT' _) c (c.e.map_target hv.1) hv.2 (hW _) (EuclideanSpace.single 0 1)` as an intermediate fact.
+
+Conclude with `this.trans (by rw [c.e.right_inv hv.1])`. Introduce `c c' y hc hc'`. Establish `e0` using `c.e.left_inv hc`. Establish `e0'` using `c'.e.left_inv hc'`. Establish `hN` using `(ChartGlue.isOpen_over c.e c'.e.open_source).mem_nhds (ChartGlue.mem_over c.e hc hc')`.
+
+Establish `hφz : (c'.e ∘ c.e.symm) (c.e y) = c'.e y` using `congrArg c'.e e0`. Establish `hφ : DifferentiableAt ℂ (c'.e ∘ c.e.symm) (c.e y)` using `(c.holo_trans c').differentiableAt hN`. Establish `step1` using `GlobalTheory.CurveDens.angleForm_frame_indep _ n (fun v => (h.form (l.app (W y) (T y)) (l.app (W y) (T y)) (c.e.symm v)).re) (fun v => (h.form (l'.app (W y) (T' y)) (l'.app (W y) (T' y)) (c.e.symm v)).re) (fun v => (h.form (l.app (W y) (T y)) (l.app (W y) (T y)) (c'.e.symm ((c'.e …`. Establish `step2` using `(GlobalTheory.CurveDens.angleForm_props _ n (fun w => (h.form (l.app (W y) (T y)) (l.app (W y) (T y)) (c'.e.symm w)).re) (fun w => (h.form (l'.app (W y) (T' y)) (l'.app (W y) (T' y)) (c'.e.symm w)).re) (fun w => h.form (l'.app (W y) (T' y)) (l.app (W y) (T y)) (c'.e.symm w)) (Euc …`. Establish `step3` using `(GlobalTheory.CurveDens.angleForm_props _ n (fun w => (h.form (l.app (W y) (T y)) (l.app (W y) (T y)) (c'.e.symm w)).re) (fun w => (h.form (l'.app (W y) (T' y)) (l'.app (W y) (T' y)) (c'.e.symm w)).re) (fun w => h.form (l'.app (W y) (T' y)) (l.app (W y) (T y)) (c'.e.symm w)) (Euc …`.
+
+Rewrite `step2` using `[hφz, GlobalTheory.AngleGlue.apply_single_eq_det_smul]`. Conclude with `step1.symm.trans (step2.trans step3)`. Introduce `U t t' ht ht' c y hc hy`. Conclude with `GlobalTheory.AngleGlue.angleForm_frames h H hl hl' hL hL' n t t' (T y) (T' y) ht ht' (hT y) (hT' y) c hc hy (hW y) _`.
+-/
 theorem GlobalTheory.angleForm_global : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ) (V L L' : X.Modules) (r : ℕ) (h : Met p σ V r) (l : L ⟶ V) (l' : L' ⟶ V), h.IsCInf → IsSubbundle l → IsSubbundle l' → IsVB L 1 → IsVB L' 1 → ∀ n : ℕ, ∃ m : AlgChart p σ 1 → CxPts p σ → ℂ, (∀ c : AlgChart p σ 1, ∀ y ∈ c.e.source, ContDiffAt ℝ 1 (fun v => m c (c.e.symm v)) (c.e y)) ∧ (∀ (c c' : AlgChart p σ 1) (y : CxPts p σ), y ∈ c.e.source → y ∈ c'.e.source → m c y = ChartGlue.transDet c.e c'.e y * m c' y) ∧ ∀ (U : X.Opens) (t : Γ(L, U)) (t' : Γ(L', U)), IsFrame (fun _ : Fin 1 => t) → IsFrame (fun _ : Fin 1 => t') → ∀ c : AlgChart p σ 1, ∀ y ∈ c.e.source, y ∈ ptsIn p σ U → m c y = angleForm n (fun v => (h.form (l.app U t) (l.app U t) (c.e.symm v)).re) (fun v => (h.form (l'.app U t') (l'.app U t') (c.e.symm v)).re) (fun v => h.form (l'.app U t') (l.app U t) (c.e.symm v)) (EuclideanSpace.single 0 1) (c.e y) := by
   intro k _ X p σ V L L' r h l l' H hl hl' hL hL' n
   let W : CxPts p σ → X.Opens := fun y => (hL.pick y).U ⊓ (hL'.pick y).U

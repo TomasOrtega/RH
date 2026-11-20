@@ -11,6 +11,31 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.BZCore
 
+/- English proof (translation)
+Use `letI : MeasurableSpace k := borel k`. Use `haveI : BorelSpace k := ⟨rfl⟩`. Use `haveI := GlobalTheory.SplitWeil.secondCountable k`. Use `haveI := GlobalTheory.SplitWeil.t2Space k`. Set `ν : Measure k` to `Measure.addHaar`.
+
+Use `haveI : ν.IsAddHaarMeasure := inferInstanceAs (Measure.addHaar : Measure k).IsAddHaarMeasure`. Use `haveI hμ : (piHaar ν d).IsAddHaarMeasure := GlobalTheory.CompanionTheory.MirStable.isAddHaar_piHaar ν d`. Establish `hfin : ∀ L : COSub k d, piHaar ν d (L.sub : Set (Fin d → k)) ≠ ⊤` using `fun L => L.isCompact.measure_lt_top.ne`. Establish `hne : ∀ L : COSub k d, piHaar ν d (L.sub : Set (Fin d → k)) ≠ 0` using `fun L => L.isOpen.measure_ne_zero _ ⟨0, L.sub.zero_mem⟩`. Use `⟨fun L => (piHaar ν d (L.sub : Set (Fin d → k))).toReal, fun L => ENNReal.toReal_pos (hne L) (hfin L), ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `L' L S hle hS`. Establish `hU : (L.sub : Set (Fin d → k)) = ⋃ s ∈ S, {y | y - s ∈ L'.sub}`. Use extensionality with `y`. Simplify using `only [Set.mem_iUnion, Set.mem_setOf_eq, SetLike.mem_coe, exists_prop]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hy`. Take `⟨s, ⟨hs, hys⟩, -⟩` from `hS.2 y hy`. Conclude with `⟨s, hs, hys⟩`. Introduce and unpack `⟨s, hs, hys⟩`. Use `L.sub.add_mem (hle hys) (hS.1 s hs)` as an intermediate fact.
+
+Simplify using `using this`. Establish `hdisj : Set.PairwiseDisjoint (S : Set (Fin d → k)) fun s => {y | y - s ∈ L'.sub}`. Introduce `s hs t ht hst`. Use `Set.disjoint_left.2 fun y hys hyt => hst ?_` and prove the remaining obligations. Establish `hy : y ∈ L.sub`.
+
+Use `L.sub.add_mem (hle hys) (hS.1 s hs)` as an intermediate fact. Simplify using `using this`. Conclude with `(hS.2 y hy).unique ⟨hs, hys⟩ ⟨ht, hyt⟩`. Establish `hcos : ∀ s : Fin d → k, piHaar ν d {y | y - s ∈ L'.sub} = piHaar ν d (L'.sub : Set (Fin d → k))`. Introduce `s`.
+
+Establish `: {y | y - s ∈ L'.sub} = (fun y => y + (-s)) ⁻¹' (L'.sub : Set (Fin d → k))`. Use extensionality with `y`. Simplify using `[sub_eq_add_neg]`. Rewrite using `[this, measure_preimage_add_right]`. Establish `hm : piHaar ν d (L.sub : Set (Fin d → k)) = (S.card : ENNReal) * piHaar ν d (L'.sub : Set (Fin d → k))`.
+
+Rewrite using `[hU, measure_biUnion_finset hdisj fun s _ => (isClopen_coset L' s).isOpen.measurableSet]`. Simplify using `[hcos]`. Use `show (piHaar ν d (L.sub : Set (Fin d → k))).toReal = _`. Rewrite using `[hm, ENNReal.toReal_mul, ENNReal.toReal_natCast]`. Introduce `g L`.
+
+Establish `hI` using `setIntegral_inv_mulVec ν d g ((L.act g).sub : Set (Fin d → k)) (fun _ => (1 : ℂ))`. Establish `hset : {y | (g : Matrix (Fin d) (Fin d) k) *ᵥ y ∈ ((L.act g).sub : Set (Fin d → k))} = (L.sub : Set (Fin d → k))`. Use extensionality with `y`. Conclude with `COSub.mulVec_mem_act g`. Rewrite `hI` using `[hset, setIntegral_const, setIntegral_const]`.
+
+Simplify using `only [Measure.real, Complex.real_smul, mul_one] at hI`. Establish `hn` using `nabs_pos' k (Matrix.GeneralLinearGroup.det g)`. Establish `hd : ((dpow d (-2) g : ℂˣ) : ℂ) = (((nabs k (Matrix.GeneralLinearGroup.det g)) ^ (-2 : ℝ) : ℝ) : ℂ)`. Simplify using `only [dpow, detChar_apply]`. Conclude with `val_absPow_ofReal k (-2) _`.
+
+Rewrite using `[hd, hI]`. Establish `hr : (nabs k (Matrix.GeneralLinearGroup.det g)) ^ (-2 : ℝ) = ((nabs k (Matrix.GeneralLinearGroup.det g)) ^ 2)⁻¹`. Rewrite using `[Real.rpow_neg hn.le, Real.rpow_two]`. Rewrite using `[hr]`. Establish `hn' : ((nabs k (Matrix.GeneralLinearGroup.det g) : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hn.ne'`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_vol_cosub {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (d : ℕ) :
     ∃ vol : COSub k d → ℝ, (∀ L, 0 < vol L) ∧
       (∀ (L' L : COSub k d) (S : Finset (Fin d → k)), L'.sub ≤ L.sub → IsReps L' L S →

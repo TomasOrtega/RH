@@ -2,6 +2,37 @@ import Mathlib
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `h1 : ∀ (q : Ideal R) [q.IsPrime], ∃ g ∉ q, ∃ a : R, ∀ (k : Type) [Field k] [IsAlgClosed k] [Algebra K k] (φ : R →ₐ[K] k), RingHom.ker φ ≤ q → φ g * W k φ = φ a`. Introduce `q _`. Take `⟨b, hb⟩` from `hW q`. Take `⟨⟨a, g⟩, hg⟩` from `IsLocalization.surj q.primeCompl b`. Use `⟨g, g.2, a, fun k _ _ _ φ hφ => ?_⟩` and prove the remaining obligations.
+
+Establish `hu : ∀ y : q.primeCompl, IsUnit (φ y)` using `fun y => IsUnit.mk0 _ fun h => y.2 (hφ h)`. Set `ψ : Localization.AtPrime q →ₐ[K] k` to `IsLocalization.liftAlgHom (M := q.primeCompl) hu`. Establish `hψ : ∀ x : R, ψ (algebraMap R _ x) = φ x` using `fun x => by`. Simplify using `[ψ, IsLocalization.liftAlgHom_apply]`. Establish `hc : ψ.comp (IsScalarTower.toAlgHom K R (Localization.AtPrime q)) = φ`.
+
+Use extensionality with `x`. Simplify using `using hψ x`. Establish `h2` using `hb k ψ`. Rewrite `h2` using `[hc]`. Establish `h3` using `congrArg ψ hg`.
+
+Simplify using `only [map_mul, hψ] at h3`. Rewrite using `[h2, mul_comm]`. Conclude with `h3`. Set `I : Ideal R` to `{ carrier := {g | ∃ a : R, ∀ (k : Type) [Field k] [IsAlgClosed k] [Algebra K k] (φ : R →ₐ[K] k), RingHom.ker φ ∈ minimalPrimes R → φ g * W k φ = φ a} zero_mem' := ⟨0, fun k _ _ _ φ _ => by simp⟩ add_mem' := by`. Introduce and unpack `g g' ⟨a, ha⟩ ⟨a', ha'⟩`.
+
+Conclude with `⟨a + a', fun k _ _ _ φ h => by`. Rewrite using `[map_add, map_add, add_mul, ha k φ h, ha' k φ h]⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c g ⟨a, ha⟩`. Conclude with `⟨c * a, fun k _ _ _ φ h => by`.
+
+Rewrite using `[smul_eq_mul, map_mul, map_mul, mul_assoc, ha k φ h]⟩ }`. Establish `hI : I = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨q, hq, hIq⟩` from `Ideal.exists_le_maximal I hne`. Use `haveI := hq.isPrime`.
+
+Take `⟨g, hg, a, ha⟩` from `h1 q`. Establish `hfin` using `minimalPrimes.finite_of_isNoetherianRing R`. Set `S : Finset (Ideal R)` to `hfin.toFinset.filter fun m => ¬ m ≤ q`. Establish `hS : ¬ S.inf id ≤ q`. Rewrite using `[Ideal.IsPrime.inf_le' inferInstance]`.
+
+Introduce and unpack `⟨m, hm, hmq⟩`. Conclude with `(Finset.mem_filter.1 hm).2 hmq`. Take `⟨h, hh, hhq⟩` from `Set.not_subset.1 hS`. Establish `hmem : h * g ∈ I`. Use `⟨h * a, fun k _ _ _ φ hφ => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hle : RingHom.ker φ ≤ q`. Rewrite using `[map_mul, map_mul, mul_assoc, ha k φ hle]`. Establish `hm : RingHom.ker φ ∈ S` using `Finset.mem_filter.2 ⟨hfin.mem_toFinset.2 hφ, hle⟩`. Establish `h0 : φ h = 0` using `(Finset.inf_le (f := id) hm : S.inf id ≤ RingHom.ker φ) hh`. Simplify using `[h0]`.
+
+Break down `hq.isPrime.mem_or_mem (hIq hmem) with h' | h'` into its components or cases. Conclude with `hhq h'`. Conclude with `hg h'`. Take `⟨r, hr⟩ : (1 : R) ∈ I` from `hI ▸ Submodule.mem_top`. Use `⟨r, fun k _ _ _ φ => ?_⟩` and prove the remaining obligations.
+
+Use `haveI hp : (RingHom.ker φ).IsPrime := RingHom.ker_isPrime φ`. Take `⟨g, hg, a, ha⟩` from `h1 (RingHom.ker φ)`. Take `⟨m, hm, hmq⟩` from `Ideal.exists_minimalPrimes_le (I := (⊥ : Ideal R)) (J := RingHom.ker φ) bot_le`. Use `haveI : m.IsPrime := hm.1.1`. Set `k'` to `AlgebraicClosure (FractionRing (R ⧸ m))`.
+
+Set `ψ : R →ₐ[K] k'` to `(IsScalarTower.toAlgHom K (R ⧸ m) k').comp (Ideal.Quotient.mkₐ K m)`. Establish `hinj : Function.Injective (algebraMap (R ⧸ m) k')`. Rewrite using `[IsScalarTower.algebraMap_eq (R ⧸ m) (FractionRing (R ⧸ m)) k']`. Conclude with `(algebraMap (FractionRing (R ⧸ m)) k').injective.comp (IsFractionRing.injective _ _)`. Establish `hker : RingHom.ker ψ = m`.
+
+Use extensionality with `x`. Rewrite using `[RingHom.mem_ker, ← Ideal.Quotient.eq_zero_iff_mem, ← map_eq_zero_iff _ hinj]`. Both sides reduce to the same expression. Establish `e1` using `hr k' ψ (by rw [hker]; exact hm)`. Establish `e2` using `ha k' ψ (by rw [hker]; exact hmq)`.
+
+Establish `e3 : g * r - a ∈ m`. Rewrite using `[← hker, RingHom.mem_ker, map_sub, map_mul, ← e1, ← e2, map_one, one_mul, sub_self]`. Establish `e4 : φ (g * r - a) = 0` using `hmq e3`. Establish `e5` using `ha k φ le_rfl`. Rewrite `e4` using `[map_sub, map_mul, ← e5, sub_eq_zero]`.
+
+Conclude with `(mul_left_cancel₀ hg e4).symm`.
+-/
 theorem exists_eq_of_locally_fraction_on_generisations
     (K : Type) [Field K] (R : Type) [CommRing R] [IsNoetherianRing R] [Algebra K R]
     (W : ∀ (k : Type) [Field k] [IsAlgClosed k] [Algebra K k], (R →ₐ[K] k) → k)

@@ -16,6 +16,9 @@ noncomputable section
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `haveI : Algebra.FormallyEtale A R := Algebra.FormallyEtale.of_isLocalization P.primeCompl`. Establish `hb` using `KaehlerDifferential.isBaseChange_of_formallyEtale F A R`. Use `⟨(hb.lift D.liftKaehlerDifferential).compDer (KaehlerDifferential.D F R), fun a => ?_⟩` and prove the remaining obligations. Use `show hb.lift D.liftKaehlerDifferential (KaehlerDifferential.D F R (algebraMap A R a)) = D a`. Rewrite using `[← KaehlerDifferential.map_D F F A R, hb.lift_eq, Derivation.liftKaehlerDifferential_comp_D]`.
+-/
 theorem derivation_extend_localization_atPrime (F A R : Type) [CommRing F] [CommRing A] [CommRing R]
     [Algebra F A] [Algebra A R] [Algebra F R] [IsScalarTower F A R] (P : Ideal A) [P.IsPrime]
     [IsLocalization.AtPrime R P] (D : Derivation F A R) :

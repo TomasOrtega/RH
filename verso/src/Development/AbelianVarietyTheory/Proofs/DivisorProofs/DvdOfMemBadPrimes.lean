@@ -12,6 +12,11 @@ open GlobalTheory.IndefiniteRowSideFullHecke.DifferentConjugateDefects NumberFie
 
 namespace GlobalTheory.BadLog
 
+/- English proof (translation)
+Establish `h1 : ∏ p ∈ B, p ∣ N` using `(Finset.prod_dvd_prod_of_subset _ _ (fun p => p) fun p hp => Nat.mem_primeFactors.2 ⟨(h p hp).1, (h p hp).2, hN⟩).trans (Nat.prod_primeFactors_dvd N)`. Establish `h0 : ∀ p ∈ B, (p : ℝ) ≠ 0` using `fun p hp => by exact_mod_cast (h p hp).1.ne_zero`. Unfold `logSum`. Rewrite using `[← Real.log_prod h0, ← Nat.cast_prod]`. Use `Real.log_le_log ?_ (by exact_mod_cast Nat.le_of_dvd (Nat.pos_of_ne_zero hN) h1)` and prove the remaining obligations.
+
+Conclude with `Finset.prod_pos fun p hp => (h p hp).1.pos` after adjusting the coercions.
+-/
 theorem logSum_le_log {B : Finset ℕ} {N : ℕ} (hN : N ≠ 0) (h : ∀ p ∈ B, p.Prime ∧ p ∣ N) : logSum B ≤ Real.log N := by
   have h1 : ∏ p ∈ B, p ∣ N :=
     (Finset.prod_dvd_prod_of_subset _ _ (fun p => p) fun p hp =>
@@ -24,6 +29,25 @@ theorem logSum_le_log {B : Finset ℕ} {N : ℕ} (hN : N ≠ 0) (h : ∀ p ∈ B
 
 variable {D : D7} {L : SizeData₂ D}
 
+/- English proof (translation)
+Establish `hn : 0 < D.R.n` using `D.R.ord_pos`. Establish `h1` using `D.R.two_le_m`. Establish `h2` using `D.R.m_add_three_le_k`. Establish `hf : (1 : ℝ) ≤ D.R.f` using `by exact_mod_cast (by unfold Ranks.f; omega : 1 ≤ D.R.f)`. Establish `hr : (1 : ℝ) ≤ D.R.r` using `by exact_mod_cast (by unfold Ranks.r; omega : 1 ≤ D.R.r)`.
+
+Establish `hk : (1 : ℝ) ≤ D.R.k` using `by exact_mod_cast (by omega : 1 ≤ D.R.k)`. Establish `hL : 1 ≤ L.sc.L` using `Real.one_le_rpow L.sc.one_lt_alt.le L.sc.eps_pos.le`. Establish `hb : 0 < L.sc.b` using `Real.exp_pos _`. Establish `hc0 : LevelStarExponents.condE D ≠ 0`. Unfold `LevelStarExponents.condE`.
+
+Conclude with `mul_ne_zero (mul_ne_zero D.host.QS_pos.ne' D.host.hyp.1.ne_zero) D.host.hyp.2.1.ne_zero`. Establish `hc1 : (1 : ℝ) ≤ LevelStarExponents.condE D` using `by exact_mod_cast Nat.one_le_iff_ne_zero.2 hc0`. Establish `hc : Real.log (LevelStarExponents.condE D) ≤ L.sc.L`. Establish `ht : (1 : ℝ) ≤ (D.R.t : ℝ) ^ 150` using `one_le_pow₀ L.t_win.1`. Establish `a : (LevelStarExponents.condE D : ℝ) ^ 36 ≤ L.sc.b ^ ((1 : ℝ) / 2)` using `(le_mul_of_one_le_right (by positivity) ht).trans P.condE_le`.
+
+Establish `b` using `Real.log_le_log (by positivity) a`. Rewrite `b` using `[Real.log_pow, Real.log_rpow hb, Scale.b, Real.log_exp]`. Move the coercions through the operations in `at b`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨Y, y1, -, y3, y4⟩` from `P.g_Y`.
+
+Establish `hY : 0 < Y` using `lt_of_lt_of_le (by positivity) y1`. Establish `hg0 : ∀ i, (0 : ℝ) < D.host.g i` using `fun i => hY.trans_le (y4 i).1`. Establish `l2 : Real.log 2 ≤ 1` using `by linarith [Real.log_le_sub_one_of_pos (show (0 : ℝ) < 2 by norm_num)]`. Establish `l15 : Real.log 15 ≤ 14` using `by linarith [Real.log_le_sub_one_of_pos (show (0 : ℝ) < 15 by norm_num)]`. Establish `hg : ∀ i, Real.log (D.host.g i) ≤ 1 + |P.CYL| * L.sc.L` using `fun i => by`.
+
+Establish `a` using `Real.log_le_log (hg0 i) (y4 i).2`. Rewrite `a` using `[Real.log_mul two_ne_zero hY.ne']`. Establish `b : P.CYL * L.sc.L ≤ |P.CYL| * L.sc.L` using `mul_le_mul_of_nonneg_right (le_abs_self _) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hz : L.sc.L ≤ zBase L`.
+
+Unfold `zBase`. Conclude with `le_mul_of_one_le_left (by linarith) (one_le_mul_of_one_le_of_one_le hf hr)`. Use `⟨mul_ne_zero (mul_ne_zero hc0 (mul_ne_zero ?_ ?_)) (by norm_num), ?_⟩` and prove the remaining obligations. Conclude with `(hg0 0).ne'` after adjusting the coercions. Conclude with `(hg0 1).ne'` after adjusting the coercions.
+
+Establish `a0` using `hg0 0`. Establish `a1` using `hg0 1`. Use `push_cast`. Rewrite using `[Real.log_mul (by positivity) (by norm_num), Real.log_mul (by positivity) (by positivity), Real.log_mul a0.ne' a1.ne']`. Use `le_trans ?_ (mul_le_mul_of_nonneg_left hz (by positivity))` and prove the remaining obligations.
+
+Combine the linear relations using `[hg 0, hg 1]`.
+-/
 theorem log_level_le (P : ParameterChoice' D L) :
     LevelStarExponents.condE D * (D.host.g 0 * D.host.g 1) * 15 ≠ 0 ∧
     Real.log ((LevelStarExponents.condE D * (D.host.g 0 * D.host.g 1) * 15 : ℕ) : ℝ) ≤ (2 * |P.CYL| + 17) * zBase L := by
@@ -71,6 +95,15 @@ theorem log_level_le (P : ParameterChoice' D L) :
   refine le_trans ?_ (mul_le_mul_of_nonneg_left hz (by positivity))
   linarith [hg 0, hg 1]
 
+/- English proof (translation)
+Take `⟨hp, h'⟩` from `mem_badPrimes.1 hp`. Use `⟨hp, ?_⟩` and prove the remaining obligations. Establish `hM : Y.d.l₂.M = D.host.g 0 * D.host.g 1 * 15 ^ e` using `by rw [← h.pd, h.lev.1.2.1, hQ.2.1.1]`. Establish `key : ∀ a, a ∣ LevelStarExponents.condE D → a ∣ LevelStarExponents.condE D * (D.host.g 0 * D.host.g 1) * 15` using `fun a ha => (ha.mul_right _).mul_right _`. Establish `cD : ∀ a : ℕ, a.Prime → (a : ℤ) ∣ NumberField.discr D.host.E → a ∣ LevelStarExponents.condE D` using `D.host.der.discr_primes.1`.
+
+Establish `c2 : 2 ∣ LevelStarExponents.condE D` using `cD 2 Nat.prime_two D.host.der.discr_primes.2.1`. Establish `cd : D.host.d ∣ LevelStarExponents.condE D` using `cD _ D.host.hyp.2.1 D.host.der.discr_primes.2.2`. Break down `h' with rfl | h' | h' | h' | h'` into its components or cases. Conclude with `key _ c2`. Rewrite using `[h', hQ.1.1]`.
+
+Conclude with `key _ cd`. Conclude with `key _ (cD p hp (Int.natCast_dvd.2 h'))`. Rewrite `h'` using `[hM]`. Break down `(Nat.Prime.dvd_mul hp).1 h' with h' | h'` into its components or cases. Conclude with `(h'.mul_left _).mul_right _`.
+
+Conclude with `(hp.dvd_of_dvd_pow h').mul_left _`. Rewrite `h'` using `[h.lev.2]`. Conclude with `absurd (Nat.dvd_one.1 h') hp.ne_one`.
+-/
 theorem dvd_of_mem_badPrimes {T : Core D} (hQ : T.Q.Pins) {j : ℕ} {Y : Deep T j} {e : ℕ} {o : ℝ} (h : Y.Good e o)
     {p : ℕ} (hp : p ∈ badPrimes T.Q.H Y.d.l₂) : p.Prime ∧ p ∣ LevelStarExponents.condE D * (D.host.g 0 * D.host.g 1) * 15 := by
   obtain ⟨hp, h'⟩ := mem_badPrimes.1 hp
@@ -92,6 +125,9 @@ theorem dvd_of_mem_badPrimes {T : Core D} (hQ : T.Q.Pins) {j : ℕ} {Y : Deep T 
   · rw [h.lev.2] at h'
     exact absurd (Nat.dvd_one.1 h') hp.ne_one
 
+/- English proof (translation)
+Introduce `h` and use `Closed.imp h fun Fm _ _ _ => ⟨2 * |Fm.CYL| + 17, by positivity, 0, fun x hx _ ι p _ i _ Y hY => by obtain ⟨a, b⟩ := log_level_le (Fm.params x hx ι) rw [Fm.params_CYL] at b exact (logSum_le_log a fun q hq => dvd_of_mem_badPrimes p.fw.laws.pins hY.1 hq).trans b⟩`.
+-/
 theorem logSum_badPrimes_le : Size → Covers fun Fm x _ ι p _ Y _ C => logSum (badPrimes p.T.Q.H Y.d.l₂) ≤ C * zBase (Fm.L x ι) :=
   fun h => Closed.imp h fun Fm _ _ _ => ⟨2 * |Fm.CYL| + 17, by positivity, 0, fun x hx _ ι p _ i _ Y hY => by
     obtain ⟨a, b⟩ := log_level_le (Fm.params x hx ι)

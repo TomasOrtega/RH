@@ -18,6 +18,9 @@ section Perm
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[Equiv.sum_comp f (fun m => if m = j then (if i = m then (1 : R) else 0) else 0)]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_perm_one (R : Type) [CommRing R] (f : Equiv.Perm (Fin n)) (i j : Fin n) :
     (∑ k, if f k = j then (if i = f k then (1 : R) else 0) else 0) = if i = j then 1 else 0 := by
   rw [Equiv.sum_comp f (fun m => if m = j then (if i = m then (1 : R) else 0) else 0)]
@@ -33,10 +36,16 @@ def pmat (R : Type) [CommRing R] (f : Equiv.Perm (Fin n)) : GL (Fin n) R where
     ext i j
     simpa [Matrix.mul_apply, Matrix.one_apply, Equiv.eq_symm_apply] using sum_perm_one R f.symm i j
 
+/- English proof (translation)
+Use extensionality with `i j`. Both sides reduce to the same expression.
+-/
 theorem pmat_inv (R : Type) [CommRing R] (f : Equiv.Perm (Fin n)) : (pmat R f)⁻¹ = pmat R f.symm := by
   ext i j
   rfl
 
+/- English proof (translation)
+Rewrite using `[pmat_inv, Units.val_mul, Units.val_mul]`. Use `show ((1 : Matrix (Fin n) (Fin n) R).submatrix id f.symm * (g : Matrix (Fin n) (Fin n) R) * (1 : Matrix (Fin n) (Fin n) R).submatrix id f) a b = _`. Simplify using `[Matrix.mul_apply, Matrix.one_apply, Equiv.eq_symm_apply]`.
+-/
 theorem conj_pmat (R : Type) [CommRing R] (f : Equiv.Perm (Fin n)) (g : GL (Fin n) R) (a b : Fin n) :
     (((pmat R f)⁻¹ * g * pmat R f : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) a b = (g : Matrix (Fin n) (Fin n) R) (f a) (f b) := by
   rw [pmat_inv, Units.val_mul, Units.val_mul]
@@ -44,6 +53,9 @@ theorem conj_pmat (R : Type) [CommRing R] (f : Equiv.Perm (Fin n)) (g : GL (Fin 
     (1 : Matrix (Fin n) (Fin n) R).submatrix id f) a b = _
   simp [Matrix.mul_apply, Matrix.one_apply, Equiv.eq_symm_apply]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Simplify using `only [Formalism.UG.bc, pmat] at *`. Apply the tactic sequence `by_cases h : i = f j <;> simp [Matrix.one_apply, h]`.
+-/
 theorem bc_pmat {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (f : Equiv.Perm (Fin n)) :
     Formalism.UG.bc φ (pmat R f) = pmat S f := by
   apply Units.ext
@@ -51,6 +63,9 @@ theorem bc_pmat {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (f : Equ
   simp only [Formalism.UG.bc, pmat] at *
   by_cases h : i = f j <;> simp [Matrix.one_apply, h]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `show ((1 : Matrix (Fin n) (Fin n) R).submatrix id f.symm *ᵥ v) i = v (f i)`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.one_apply, Equiv.eq_symm_apply]`.
+-/
 theorem pmat_mulVec (R : Type) [CommRing R] (f : Equiv.Perm (Fin n)) (v : Fin n → R) :
     ((pmat R f.symm : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) *ᵥ v = fun i => v (f i) := by
   funext i
@@ -65,12 +80,20 @@ open scoped TensorProduct
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
+/- English proof (translation)
+Use `show β * intGL F E n σ * intGL F E n y * (β * intGL F E n σ)⁻¹ = β * intGL F E n (σ * y * σ⁻¹) * β⁻¹`. Rewrite using `[map_mul, map_mul, map_inv]`. Use `group`.
+-/
 theorem frGL_mul_int (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (σ y : GL (Fin n) (intAf F E)) :
     frGL (β * intGL F E n σ) y = frGL β (σ * y * σ⁻¹) := by
   show β * intGL F E n σ * intGL F E n y * (β * intGL F E n σ)⁻¹ = β * intGL F E n (σ * y * σ⁻¹) * β⁻¹
   rw [map_mul, map_mul, map_inv]
   group
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [St, MonoidHom.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨σ * y * σ⁻¹, (frGL_mul_int β σ y).symm⟩`.
+
+Introduce and unpack `⟨y, rfl⟩`. Use `⟨σ⁻¹ * y * σ, ?_⟩` and prove the remaining obligations. Rewrite using `[frGL_mul_int]`. Use `congr 1`. Use `group`.
+-/
 theorem St_mul_int (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (σ : GL (Fin n) (intAf F E)) :
     St (β * intGL F E n σ) = St β := by
   ext x
@@ -84,6 +107,11 @@ theorem St_mul_int (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (σ : GL 
     congr 1
     group
 
+/- English proof (translation)
+Distinguish the cases in `hx : x ∈ St β`. Take `⟨y, rfl⟩` from `MonoidHom.mem_range.mp hx`. Establish `hy : frGL β y = frGL (β * intGL F E n σ) (σ⁻¹ * y * σ)`. Rewrite using `[frGL_mul_int]`. Use `congr 1`.
+
+Use `group`. Rewrite using `[redFn_frGL β PP y, hy, redFn_frGL]`. Simplify using `only [map_mul, map_inv]`. Establish `hx' : x ∉ St (β * intGL F E n σ)` using `by rwa [St_mul_int]`. Simplify using `[redFn, ext1, hx, hx']`.
+-/
 theorem redFn_mul_int (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (σ : GL (Fin n) (intAf F E)) (PP : Pl E)
     (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) :
     redFn (β * intGL F E n σ) PP x = (Formalism.UG.bc (resS F PP) σ)⁻¹ * redFn β PP x * Formalism.UG.bc (resS F PP) σ := by
@@ -98,6 +126,11 @@ theorem redFn_mul_int (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (σ : 
   · have hx' : x ∉ St (β * intGL F E n σ) := by rwa [St_mul_int]
     simp [redFn, ext1, hx, hx']
 
+/- English proof (translation)
+Unfold `Formalism.L2.DIV.IsFrame at h ⊢`. Introduce `x`. Establish `e : (((β * intGL F E n (pmat _ f))⁻¹ : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) *ᵥ x = fun i => (((β⁻¹ : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) *ᵥ x) (f i)`. Rewrite using `[_root_.mul_inv_rev, Units.val_mul, ← Matrix.mulVec_mulVec, ← map_inv (intGL F E n) (pmat _ f), pmat_inv]`. Unfold `intGL`.
+
+Rewrite using `[bc_pmat, pmat_mulVec]`. Rewrite using `[h x, e]`. Conclude with `⟨fun hx i => hx (f i), fun hx i => by simpa using hx (f.symm i)⟩`.
+-/
 theorem isFrame_mul_pmat {β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} {Λ : Submodule (𝓞 E) (Fin n → E)} (h : IsFrame β Λ)
     (f : Equiv.Perm (Fin n)) : IsFrame (β * intGL F E n (pmat _ f)) Λ := by
   unfold Formalism.L2.DIV.IsFrame at h ⊢
@@ -118,6 +151,9 @@ section Level
 
 variable {D : D7}
 
+/- English proof (translation)
+Apply `upper_block_val_submatrix` to reduce the goal to its premises. Rewrite using `[mem_blockTri]`. Introduce `i j hij`. Establish `hi : i.val < r` using `lt_of_lt_of_le i.isLt hn`. Simplify using `[blk2, hi] at hij`.
+-/
 theorem rankBlock_val_eq_submatrix_of_le_rank {κ : Type} [CommRing κ] {n r : ℕ} (hr : r ≤ n) (hn : n ≤ r) (M : GL (Fin n) κ) :
     ((upperLeftBlock hr M : GL (Fin r) κ) : Matrix (Fin r) (Fin r) κ) =
       (M : Matrix (Fin n) (Fin n) κ).submatrix (Fin.castLE hr) (Fin.castLE hr) := by
@@ -127,6 +163,9 @@ theorem rankBlock_val_eq_submatrix_of_le_rank {κ : Type} [CommRing κ] {n r : �
   have hi : i.val < r := lt_of_lt_of_le i.isLt hn
   simp [blk2, hi] at hij
 
+/- English proof (translation)
+Rewrite using `[mem_blockTri]`. Introduce `i j hij`. Establish `hi : i.val < r` using `lt_of_lt_of_le i.isLt hn`. Simplify using `[blkOf, hi] at hij`.
+-/
 theorem blockTri_all {κ : Type} [CommRing κ] {n r : ℕ} (t : ℕ) (hn : n ≤ r) (M : GL (Fin n) κ) :
     M ∈ blockTri (blkOf r t) := by
   rw [mem_blockTri]
@@ -137,12 +176,20 @@ theorem blockTri_all {κ : Type} [CommRing κ] {n r : ℕ} (t : ℕ) (hn : n ≤
 def fperm {n r : ℕ} (hr : r ≤ n) (hn : n ≤ r) (π : Equiv.Perm (Fin r)) : Equiv.Perm (Fin n) :=
   ((finCongr (le_antisymm hr hn)).symm.trans π.symm).trans (finCongr (le_antisymm hr hn))
 
+/- English proof (translation)
+Establish `h1 : (finCongr (le_antisymm hr hn)).symm (Fin.castLE hr (π a)) = π a` using `Fin.ext (by simp)`. Simplify using `only [fperm, Equiv.trans_apply, h1, Equiv.symm_apply_apply]`. Conclude with `Fin.ext (by simp)`.
+-/
 theorem fperm_castLE {n r : ℕ} (hr : r ≤ n) (hn : n ≤ r) (π : Equiv.Perm (Fin r)) (a : Fin r) :
     fperm hr hn π (Fin.castLE hr (π a)) = Fin.castLE hr a := by
   have h1 : (finCongr (le_antisymm hr hn)).symm (Fin.castLE hr (π a)) = π a := Fin.ext (by simp)
   simp only [fperm, Equiv.trans_apply, h1, Equiv.symm_apply_apply]
   exact Fin.ext (by simp)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `PP`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`. Use `show (upperLeftBlock L.hr (redFn (β * intGL _ _ n (pmat _ (fperm L.hr hn π))) PP.1 x)).1 (π a) (π b) = (upperLeftBlock L.hr (redFn β PP.1 x)).1 a b`. Rewrite using `[rankBlock_val_eq_submatrix_of_le_rank L.hr hn, rankBlock_val_eq_submatrix_of_le_rank L.hr hn, redFn_mul_int, bc_pmat]`.
+
+Simplify using `only [Matrix.submatrix_apply]`. Rewrite using `[conj_pmat, fperm_castLE, fperm_castLE]`.
+-/
 theorem reord_rTup {n : ℕ} (L : LevDat D.host.E ℂ n) (hn : n ≤ L.r) (β : GL (Fin n) (EAf D))
     (π : Equiv.Perm (Fin L.r)) (x : GL (Fin n) (EAf D)) :
     reord π (rTup (β * intGL _ _ n (pmat _ (fperm L.hr hn π))) L x) = rTup β L x := by
@@ -155,6 +202,9 @@ theorem reord_rTup {n : ℕ} (L : LevDat D.host.E ℂ n) (hn : n ≤ L.r) (β : 
   simp only [Matrix.submatrix_apply]
   rw [conj_pmat, fperm_castLE, fperm_castLE]
 
+/- English proof (translation)
+Establish `h` using `D.sp.Y_rank 0 (Nat.zero_le _)`. Use `show (D.sp.Y (min 0 D.R.m)).rank ≤ D.R.r`. Rewrite using `[Nat.zero_min, h]`. Use `show D.R.r + 0 * D.R.t ≤ D.R.r`. Simplify using the standard rewrite rules.
+-/
 theorem rank_zeroth_component_eq : (Yc D 0).rank ≤ D.R.r := by
   have h := D.sp.Y_rank 0 (Nat.zero_le _)
   show (D.sp.Y (min 0 D.R.m)).rank ≤ D.R.r
@@ -172,6 +222,11 @@ def r0 {T : Type} (Lc : LevCh D T) (β : GL (Fin (Yc D 0).rank) (EAf D)) (x : GL
     G0 Lc.Pg D.R.r :=
   fun PP => upperLeftBlock (r_le_Y 0) (redFn β PP.1 x)
 
+/- English proof (translation)
+Establish `hP : (Lc.dat0 P).P = P` using `by simp [LevCh.dat0, datY]`. Establish `hblk : ∀ PP ∈ (Lc.dat0 P).Pg, redFn β PP (finE (Yc D 0) κ) ∈ blockTri (blkOf (Lc.dat0 P).r (Lc.dat0 P).t)` using `fun PP _ => blockTri_all _ (rank_zeroth_component_eq (D := D)) _`. Establish `hQ : ∀ PP ∈ (Lc.dat0 P).Q, redFn β PP (finE (Yc D 0) κ) ∈ blockTri (blk2 (Lc.dat0 P).r)`. Introduce `PP h`. Simplify using `[LevCh.dat0, datY] at h`.
+
+Rewrite using `[Formalism.IndefR.Links.levS, Formalism.IndefR.Lev.levG, SetLike.mem_coe, Formalism.IndefR.Lev.mem_levA, Formalism.L2.DIV.mem_lev, Formalism.L2.DIV.mem_parLev, hP]`. Conclude with `⟨fun ⟨h1, ⟨h2, h3, _, _⟩, h4⟩ => ⟨⟨h1, h2, h3⟩, h4⟩, fun ⟨⟨h1, h2, h3⟩, h4⟩ => ⟨h1, ⟨h2, h3, hblk, hQ⟩, h4⟩⟩`.
+-/
 theorem mem_levelSubgroup_principalDatum_iff {T : Type} (Lc : LevCh D T) (P : LevelP Lc.Pg D.R.r ℂ) (β : GL (Fin (Yc D 0).rank) (EAf D))
     (κ : GA D (Yc D 0)) :
     κ ∈ levS (Yc D 0) β (Lc.dat0 P) ↔
@@ -189,6 +244,11 @@ theorem mem_levelSubgroup_principalDatum_iff {T : Type} (Lc : LevCh D T) (P : Le
   exact ⟨fun ⟨h1, ⟨h2, h3, _, _⟩, h4⟩ => ⟨⟨h1, h2, h3⟩, h4⟩,
     fun ⟨⟨h1, h2, h3⟩, h4⟩ => ⟨h1, ⟨h2, h3, hblk, hQ⟩, h4⟩⟩
 
+/- English proof (translation)
+Establish `hs : (Lc.dat0 P).s = 0` using `rfl`. Establish `hQ : (Lc.dat0 P).Q = ∅` using `rfl`. Establish `hP : (Lc.dat0 P).P = P` using `by simp [LevCh.dat0, datY]`. Rewrite using `[Formalism.IndefR.Lev.levChi, levFn, hs, hQ, hP]`. Simplify using `only [Finset.range_zero, Finset.prod_empty, Finset.prod_const_one, mul_one]`.
+
+Both sides reduce to the same expression.
+-/
 theorem principalRowLevelCharacter_trivial {T : Type} (Lc : LevCh D T) (P : LevelP Lc.Pg D.R.r ℂ) (β : GL (Fin (Yc D 0).rank) (EAf D))
     (κ : GA D (Yc D 0)) :
     levChi (Yc D 0) β (Lc.dat0 P) κ = ((ext1 P.H P.chi (r0 Lc β (finE (Yc D 0) κ)) : ℂˣ) : ℂ) := by
@@ -199,6 +259,13 @@ theorem principalRowLevelCharacter_trivial {T : Type} (Lc : LevCh D T) (P : Leve
   simp only [Finset.range_zero, Finset.prod_empty, Finset.prod_const_one, mul_one]
   rfl
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_levelSubgroup_principalDatum_iff, mem_levelSubgroup_principalDatum_iff, hSt, hH, hkey]`. Rewrite using `[principalRowLevelCharacter_trivial, principalRowLevelCharacter_trivial]`. Distinguish the cases in `hg : r0 Lc β₂ (finE (Yc D 0) κ) ∈ P.H`. Establish `hg' : r0 Lc β₃ (finE (Yc D 0) κ) ∈ P'.H`.
+
+Rewrite using `[← hkey]`. Conclude with `(hH _).1 hg`. Establish `e : (⟨reord π (r0 Lc β₂ (finE (Yc D 0) κ)), (hH _).1 hg⟩ : P'.H) = ⟨r0 Lc β₃ (finE (Yc D 0) κ), hg'⟩` using `Subtype.ext (hkey _)`. Rewrite using `[extendOne_of_mem _ hg, extendOne_of_mem _ hg', hchi _ hg ((hH _).1 hg), e]`. Establish `hg' : r0 Lc β₃ (finE (Yc D 0) κ) ∉ P'.H`.
+
+Rewrite using `[← hkey]`. Conclude with `fun h => hg ((hH _).2 h)`. Unfold `ext1`. Rewrite using `[dif_neg hg, dif_neg hg']`.
+-/
 theorem level_eq_of_reord {T : Type} (Lc : LevCh D T) (P P' : LevelP Lc.Pg D.R.r ℂ) (π : Equiv.Perm (Fin D.R.r))
     (hH : ∀ g, g ∈ P.H ↔ reord π g ∈ P'.H) (hchi : ∀ g hg hg', P.chi ⟨g, hg⟩ = P'.chi ⟨reord π g, hg'⟩)
     (β₂ β₃ : GL (Fin (Yc D 0).rank) (EAf D)) (hSt : St β₂ = St β₃)
@@ -223,6 +290,9 @@ theorem level_eq_of_reord {T : Type} (Lc : LevCh D T) (P P' : LevelP Lc.Pg D.R.r
 
 end Main
 
+/- English proof (translation)
+Introduce `D T Lc P P' π hH hchi β₃ hβ`. Conclude with `⟨β₃ * intGL _ _ _ (pmat _ (fperm (Lc.dat0 P).hr (rank_zeroth_component_eq (D := D)) π)), isFrame_mul_pmat hβ _, fun κ => level_eq_of_reord Lc P P' π hH hchi _ β₃ (St_mul_int _ _) (fun x => reord_rTup (Lc.dat0 P) (rank_zeroth_component_eq (D := D)) β₃ π x) κ⟩`.
+-/
 theorem exists_frame_reord : ∀ {D : D7} {T : Type} (Lc : LevCh D T) (P P' : LevelP Lc.Pg D.R.r ℂ) (π : Equiv.Perm (Fin D.R.r)), (∀ g, g ∈ P.H ↔ reord π g ∈ P'.H) → (∀ g hg hg', P.chi ⟨g, hg⟩ = P'.chi ⟨reord π g, hg'⟩) → ∀ β₃ : GL (Fin (Yc D 0).rank) (EAf D), IsFrame β₃ (Formalism.L2.Herm.crdLat (Yc D 0) (Yc D 0).L0) → ∃ β₂ : GL (Fin (Yc D 0).rank) (EAf D), IsFrame β₂ (Formalism.L2.Herm.crdLat (Yc D 0) (Yc D 0).L0) ∧ ∀ κ : GA D (Yc D 0), (κ ∈ levS (Yc D 0) β₂ (Lc.dat0 P) ↔ κ ∈ levS (Yc D 0) β₃ (Lc.dat0 P')) ∧ levChi (Yc D 0) β₂ (Lc.dat0 P) κ = levChi (Yc D 0) β₃ (Lc.dat0 P') κ := by
   intro D T Lc P P' π hH hchi β₃ hβ
   exact ⟨β₃ * intGL _ _ _ (pmat _ (fperm (Lc.dat0 P).hr (rank_zeroth_component_eq (D := D)) π)), isFrame_mul_pmat hβ _,

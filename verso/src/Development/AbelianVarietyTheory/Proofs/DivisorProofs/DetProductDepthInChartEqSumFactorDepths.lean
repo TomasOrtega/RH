@@ -17,9 +17,17 @@ variable {C : Type} [Field C] {v : AddValuation C (WithTop ℝ)} {κ : Type} [Fi
 
 omit [Fintype κ] in
 
+/- English proof (translation)
+The claim follows from `constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero (by simp)) (by simp) ((isExp_expOf _).1 _)`.
+-/
 theorem constantCoeff_expAlong (x : Σ b, Fin (d b)) : constantCoeff (expAlong G u x) = 0 :=
   constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero (by simp)) (by simp) ((isExp_expOf _).1 _)
 
+/- English proof (translation)
+Establish `hs : HasSubst (expAlong G u)` using `hasSubst_of_constantCoeff_zero (constantCoeff_expAlong G u)`. Establish `h0 : constantCoeff (subst (expAlong G u) (f - (constantCoeff f) • 1)) = 0` using `constantCoeff_subst_eq_zero hs (constantCoeff_expAlong G u) (by simp)`. Rewrite `h0` using `[← coe_substAlgHom hs, map_sub, map_smul, map_one, coe_substAlgHom hs]`. Unfold `derivAt0`. Rewrite using `[MvPolynomial.support_one, Finset.sum_singleton]`.
+
+Simplify `h0` using `[mfact, sub_eq_zero]`.
+-/
 theorem derivAt0_one_subst (f : MvPowerSeries (Σ b, Fin (d b)) C) :
     derivAt0 1 (subst (expAlong G u) f) = constantCoeff f := by
   classical
@@ -31,6 +39,11 @@ theorem derivAt0_one_subst (f : MvPowerSeries (Σ b, Fin (d b)) C) :
   rw [MvPolynomial.support_one, Finset.sum_singleton]
   simpa [mfact, sub_eq_zero] using h0
 
+/- English proof (translation)
+Unfold `depth`. Use `le_antisymm (iInf_le_of_le ⟨1, fun α => ?_⟩ ?_) (le_iInf fun f => ?_)` and prove the remaining obligations. Apply the tactic sequence `unfold IsIntV; rw [coeff_one]; split_ifs <;> simp`. Rewrite using `[derivAt0_one_subst, map_one, AddValuation.map_one]`. Both sides reduce to the same expression.
+
+Rewrite using `[derivAt0_one_subst]`. Establish `h : (0 : WithTop ℝ) ≤ v (constantCoeff f.1)` using `f.2 0`. Conclude with `WithBot.coe_le_coe.2 h`.
+-/
 theorem depth_one : depth G u 1 = 0 := by
   classical
   unfold depth
@@ -41,6 +54,11 @@ theorem depth_one : depth G u 1 = 0 := by
     have h : (0 : WithTop ℝ) ≤ v (constantCoeff f.1) := f.2 0
     exact WithBot.coe_le_coe.2 h
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using depth_one G u`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, ← ih]`. Use `GlobalTheory.T.formalGroupOperatorDepth_mul_disjoint_columns C v κ d G ι u {b | col b = a} _ _ (hP a) fun x hx h => ?_` and prove the remaining obligations.
+
+Take `⟨f, hf, hxf⟩` from `Finset.mem_biUnion.1 (MvPolynomial.vars_prod _ hx)`. Conclude with `ha ((show col x.1 = a from h) ▸ hP f x hxf ▸ hf)`.
+-/
 theorem depth_prod [CharZero C] [DecidableEq κ] [∀ b, DecidableEq (ι b)] {F : Type} (col : κ → F)
     (P : F → MvPolynomial (Σ b, ι b) C) (hP : ∀ f, ∀ x ∈ (P f).vars, col x.1 = f) (s : Finset F) :
     depth G u (∏ f ∈ s, P f) = ∑ f ∈ s, depth G u (P f) := by
@@ -53,6 +71,11 @@ theorem depth_prod [CharZero C] [DecidableEq κ] [∀ b, DecidableEq (ι b)] {F 
     obtain ⟨f, hf, hxf⟩ := Finset.mem_biUnion.1 (MvPolynomial.vars_prod _ hx)
     exact ha ((show col x.1 = a from h) ▸ hP f x hxf ▸ hf)
 
+/- English proof (translation)
+Rewrite using `[depth_prod _ _ (fun b : (Σ f : F, Fin (r f)) => b.1)]`. Use `Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations. Establish `h` using `GlobalTheory.T.differentialOperatorDepth_restrict_columns C v (Σ f : F, Fin (r f)) (fun _ => n) (fun _ => G₀) (fun b => Fin (r b.1)) (fun b => w b.1) (Fin (r f)) ⟨fun b => ⟨f, b⟩, fun _ _ h => eq_of_heq (Sigma.mk.inj h).2⟩ (detPow C (r f) (cx f))`. Unfold `detDepth`. Use `Eq.trans ?_ (h.trans ?_)` and prove the remaining obligations.
+
+Use `congr 1`. Use `congr 1`. Introduce `f x hx`. Take `⟨z, -, rfl⟩` from `Finset.mem_image.1 (MvPolynomial.vars_rename _ _ hx)`. Both sides reduce to the same expression.
+-/
 theorem depth_prod_detPow [CharZero C] {n : ℕ} (G₀ : LogFGL v n) {F : Type} [Fintype F] (r : F → ℕ)
     (w : ∀ f, Fin (r f) → Fin n → C) (cx : F → ℕ) :
     depth (fun _ : (Σ f : F, Fin (r f)) => G₀) (fun b => w b.1)
@@ -78,6 +101,9 @@ end General
 open AlgebraicGeometry CategoryTheory NumberField IsDedekindDomain
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.CharDepth GlobalTheory.FactorDepth
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c`. Use `letI := H.starRing`. Introduce `p _ T io y Ch X cx`. Conclude with `depth_prod_detPow (fgl Ch X) rk (frame Ch X) cx`.
+-/
 theorem nuProdC_eq_sum : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), letI := H.starRing; ∀ (p : ℕ) [Fact p.Prime] (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (Ch : IntegralChartA3 Xo c T io y) (X : ValExt T p) (cx : Lt1 Dw → ℕ), nuProdC Ch X cx = ∑ f : Lt1 Dw, nuFacC Ch X f (cx f) := by
   intro E _ _ _ H Dw l Xo c
   letI := H.starRing

@@ -9,6 +9,11 @@ namespace GlobalTheory.IntBall.Cutoff
 
 noncomputable section
 
+/- English proof (translation)
+Use `set v : EuclideanSpace ℂ n := EuclideanSpace.single b (1 : ℂ)`. Establish `h1` using `(LinearMap.toContinuousLinearMap (Matrix.toEuclideanLin Z)).le_opNorm v`. Establish `hv : ‖v‖ = 1` using `by simp [v]`. Rewrite `h1` using `[hv, mul_one]`. Establish `h2` using `PiLp.norm_apply_le (Matrix.toEuclideanLin Z v) a`.
+
+Establish `h3 : (Matrix.toEuclideanLin Z v) a = Z a b`. Simplify using `[v, Matrix.toEuclideanLin_apply, Matrix.mulVec_single]`. Rewrite `h2` using `[h3]`. Conclude with `h2.trans h1`.
+-/
 theorem norm_entry_le_opNorm {m n : Type} [Fintype m] [Fintype n] [DecidableEq n]
     (Z : Matrix m n ℂ) (a : m) (b : n) :
     ‖Z a b‖ ≤ ‖LinearMap.toContinuousLinearMap (Matrix.toEuclideanLin Z)‖ := by
@@ -22,11 +27,17 @@ theorem norm_entry_le_opNorm {m n : Type} [Fintype m] [Fintype n] [DecidableEq n
   rw [h3] at h2
   exact h2.trans h1
 
+/- English proof (translation)
+The claim follows from `Finset.prod_nonneg fun k _ => zpow_nonneg (norm_nonneg _) _`.
+-/
 theorem gB_nonneg {r : ℕ} (p0 : ℕ) (w : Low r → ℂ) : 0 ≤ gB p0 w :=
   Finset.prod_nonneg fun k _ => zpow_nonneg (norm_nonneg _) _
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Introduce `p hb ha`. Establish `he : zOf X z τ p = zBlock X z τ ⟨p.1.1, ha⟩ ⟨p.1.2, hb⟩`. Simplify using `[zBlock, nmat, zOf, p.2]`. Rewrite using `[he]`. Conclude with `((norm_entry_le_opNorm _ _ _).trans (hz τ).le)`.
+-/
 theorem zOf_mem_cut (X : Data E r) {z : V (nd X)} (hz : z ∈ Om X) (τ : X.Ψ) :
     zOf X z τ ∈ {w : Low r → ℂ | ∀ p : Low r, (p.1.2 : ℕ) < X.p0 → X.p0 ≤ (p.1.1 : ℕ) → ‖w p‖ ≤ 1} := by
   intro p hb ha
@@ -35,6 +46,9 @@ theorem zOf_mem_cut (X : Data E r) {z : V (nd X)} (hz : z ∈ Om X) (τ : X.Ψ) 
   rw [he]
   exact ((norm_entry_le_opNorm _ _ _).trans (hz τ).le)
 
+/- English proof (translation)
+Introduce `E _ _ _ r X z hz`. Rewrite using `[bnd, ENNReal.ofReal_prod_of_nonneg (fun τ _ => gB_nonneg _ _)]`. Use `le_of_eq (Finset.prod_congr rfl fun τ _ => ?_)` and prove the remaining obligations. Rewrite using `[hB, Set.indicator_of_mem (zOf_mem_cut X hz τ)]`.
+-/
 theorem ofReal_bnd_le : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r)
     (z : V (nd X)), z ∈ Om X → ENNReal.ofReal (bnd X z) ≤ ∏ τ, hB X.p0 (zOf X z τ) := by
   intro E _ _ _ r X z hz

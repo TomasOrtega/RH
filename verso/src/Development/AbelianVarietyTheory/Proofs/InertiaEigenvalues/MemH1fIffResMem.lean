@@ -7,6 +7,11 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 
 namespace GlobalTheory.NL.FiniteRestrictionH1f
 
+/- English proof (translation)
+Introduce `D HW F l _ K s LL h T _ κ`. Establish `hfin` using `GKs_finiteIndex (D.loc l) K LL _ ((HW l).W K s LL h)`. Use `(mem_H1fT_iff_res ((D.loc l).PD K) T ((HW l).W K s LL h).GKs κ).trans ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hx, hc⟩`.
+
+Conclude with `⟨c, ⟨c.2, c.2.1, hx⟩, hc⟩`. Introduce and unpack `⟨c, ⟨-, -, hx⟩, hc⟩`. Conclude with `⟨c, hx, hc⟩`.
+-/
 theorem mem_H1f_iff_res_mem : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW),
     Pr2b D HW F := by
   intro D HW F l _ K s LL h T _ κ

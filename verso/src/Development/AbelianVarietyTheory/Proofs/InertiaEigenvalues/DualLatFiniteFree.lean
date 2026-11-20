@@ -4,6 +4,25 @@ open Formalism.RepresentationBoundsCohomology.LOC
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce and unpack `⟨⟨s, hs⟩, hspan⟩ hb`. Establish `hsT : ∀ x ∈ s, x ∈ T` using `fun x hx => hs ▸ Submodule.subset_span hx`. Establish `hmem : ∀ (f : dualLat b T) (x : s), ∃ o : O, algebraMap O (FractionRing O) o = b x f` using `fun f x => Submodule.mem_one.mp (f.2 x (hsT x x.2))`. Set `g0 : dualLat b T → s → O` to `fun f x => Classical.choose (hmem f x)`. Establish `hg0 : ∀ f x, algebraMap O (FractionRing O) (g0 f x) = b x f` using `fun f x => Classical.choose_spec (hmem f x)`.
+
+Establish `hinj : Function.Injective (algebraMap O (FractionRing O))` using `IsFractionRing.injective O (FractionRing O)`. Set `g : dualLat b T →ₗ[O] (s → O)` to `{ toFun := g0 map_add' := fun f f' => by`. Use function extensionality and compare the values at `x`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[Pi.add_apply, map_add, hg0, hg0, hg0, Submodule.coe_add, map_add]`.
+
+Use the proof step `map_smul' := fun c f => by`. Use function extensionality and compare the values at `x`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[Pi.smul_apply, smul_eq_mul, map_mul, hg0, hg0, Submodule.coe_smul, map_smul, RingHom.id_apply, Algebra.smul_def] }`. Establish `ginj : Function.Injective g`.
+
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `f hf`. Establish `h0 : ∀ x ∈ s, b x f = 0` using `fun x hx => by`. Rewrite using `[← hg0 f ⟨x, hx⟩]`. Establish `: g0 f ⟨x, hx⟩ = 0` using `congrFun hf ⟨x, hx⟩`.
+
+Rewrite using `[this, map_zero]`. Establish `hT0 : T ≤ LinearMap.ker (b.flip (f : V'))`. Introduce `x hx`. Rewrite `hx` using `[← hs]`. Use `(Submodule.span_le.mpr ?_ : Submodule.span O (s : Set V) ≤ _) hx` and prove the remaining obligations.
+
+Introduce `y hy`. Simplify using `using h0 y hy`. Set `ψ : V →ₗ[FractionRing O] FractionRing O` to `(b.flip (f : V')).extendScalarsOfIsLocalization (nonZeroDivisors O) (FractionRing O)`. Establish `hψ : ψ = 0`. Establish `: Submodule.span (FractionRing O) (T : Set V) ≤ LinearMap.ker ψ`.
+
+Rewrite using `[Submodule.span_le]`. Introduce `x hx`. Use `hT0 hx` as an intermediate fact. Simplify `this` using `[ψ]`. Rewrite `this` using `[hspan, top_le_iff, LinearMap.ker_eq_top]`.
+
+Conclude with `this`. Take `⟨f0, _, huniq⟩` from `hb 0`. Establish `e1 : (f : V') = f0` using `huniq _ (fun x => by`. Use `congrArg (fun φ => φ x) hψ` as an intermediate fact. Simplify `this)` using `[ψ]`.
+
+Establish `e2 : (0 : V') = f0` using `huniq _ (fun x => by simp)`. Conclude with `Subtype.ext (e1.trans e2.symm)`. Establish `hfin : Module.Finite O (dualLat b T)` using `Module.Finite.of_injective g ginj`. Establish `htf : Module.IsTorsionFree O (dualLat b T)` using `Function.Injective.moduleIsTorsionFree g ginj (fun c m => g.map_smul c m)`. Conclude with `⟨hfin, Module.free_of_finite_type_torsion_free'⟩`.
+-/
 theorem dualLat_finite_free {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {V V' : Type} [AddCommGroup V] [Module O V] [Module (FractionRing O) V]
     [IsScalarTower O (FractionRing O) V] [AddCommGroup V'] [Module O V']

@@ -16,6 +16,9 @@ variable {ι δ}
 def dpowC (h : DPClosed ι δ) (n : ℕ) (x : A) : A := by
   classical exact if hx : ι x ∈ J then Classical.choose (h x hx n) else 0
 
+/- English proof (translation)
+Rewrite using `[dpowC, dif_pos hx]`. Conclude with `Classical.choose_spec (h x hx n)`.
+-/
 theorem dpowC_spec (h : DPClosed ι δ) {n : ℕ} {x : A} (hx : ι x ∈ J) : ι (dpowC h n x) = δ.dpow n (ι x) := by
   rw [dpowC, dif_pos hx]; exact Classical.choose_spec (h x hx n)
 
@@ -41,6 +44,9 @@ def dpComap (hι : Function.Injective ι) (h : DPClosed ι δ) : DividedPowers (
     have h1 : ι (dpowC h n x) ∈ J := by rw [dpowC_spec h hx]; exact δ.dpow_mem hn hx
     rw [dpowC_spec h h1, dpowC_spec h hx, δ.dpow_comp hn hx, map_mul, map_natCast, dpowC_spec h hx])
 
+/- English proof (translation)
+The claim follows from `dpowC_spec h hx`.
+-/
 theorem dpComap_dpow (hι : Function.Injective ι) (h : DPClosed ι δ) {n : ℕ} {x : A} (hx : ι x ∈ J) :
     ι ((dpComap hι h).dpow n x) = δ.dpow n (ι x) := dpowC_spec h hx
 
@@ -61,16 +67,25 @@ instance : CommRing (A f ξ l M) := inferInstanceAs (CommRing ↥(sub f ξ l M))
 
 def ι : A f ξ l M →+* B := (sub f ξ l M).subtype
 
+/- English proof (translation)
+The claim follows from `Subtype.val_injective`.
+-/
 theorem ι_injective : Function.Injective (ι f ξ l M) := Subtype.val_injective
 
 def ofW : W →+* A f ξ l M := f.codRestrict (sub f ξ l M) fun w => Subring.subset_closure (Or.inl ⟨w, rfl⟩)
 
 instance : Algebra W (A f ξ l M) := (ofW f ξ l M).toAlgebra
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ι_ofW (w : W) : ι f ξ l M (ofW f ξ l M w) = f w := rfl
 
 def dpA (i : ℕ) : A f ξ l M := ⟨dpE f ξ l M i, Subring.subset_closure (Or.inr ⟨i, rfl⟩)⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ι_dpA (i : ℕ) : ι f ξ l M (dpA f ξ l M i) = dpE f ξ l M i := rfl
 
 def IB : Ideal B := Ideal.span {f ξ}
@@ -81,6 +96,9 @@ def I : Ideal (A f ξ l M) := (IB f ξ).comap (ι f ξ l M)
 
 def γ (h : DPClosed (ι f ξ l M) (γB f ξ)) : DividedPowers (I f ξ l M) := dpComap (ι_injective f ξ l M) h
 
+/- English proof (translation)
+The claim follows from `dpComap_dpow _ h hx`.
+-/
 theorem ι_γ (h : DPClosed (ι f ξ l M) (γB f ξ)) {n : ℕ} {x : A f ξ l M} (hx : x ∈ I f ξ l M) :
     ι f ξ l M ((γ f ξ l M h).dpow n x) = (γB f ξ).dpow n (ι f ξ l M x) := dpComap_dpow _ h hx
 
@@ -106,6 +124,9 @@ variable {W B W' B' : Type} [CommRing W] [CommRing B] [Algebra ℚ B] [CommRing 
 def map (g : B →+* B') (h : ∀ x ∈ sub f ξ l M, g x ∈ sub f' ξ' l M) : A f ξ l M →+* A f' ξ' l M :=
   g.restrict (sub f ξ l M) (sub f' ξ' l M) h
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ι_map (g : B →+* B') (h : ∀ x ∈ sub f ξ l M, g x ∈ sub f' ξ' l M) (x : A f ξ l M) :
     ι f' ξ' l M (map f ξ f' ξ' l M g h x) = g (ι f ξ l M x) := rfl
 

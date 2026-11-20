@@ -14,6 +14,35 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL
 open GlobalTheory.SplitFlip
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n d ν hnd hsm hun Bf hA hM hS g Ψ₁ Ψ₂ Ψ₂' hΨ`. Use `letI : MeasurableSpace k := borel k`. Use `haveI : BorelSpace k := ⟨rfl⟩`. Set `F : (Matrix (Fin n) (Fin d) k → ℂ) → Matrix (Fin n) (Fin d) k → ℂ` to `fun Ψ Y => smallF (haarVol (GlobalTheory.SplitWeil.KO k (Fin n))) ν Ψ Y`. Establish `hlin : ∀ Ψ ∈ GlobalTheory.FullRankCoinv.fullRk k n d, ∀ Ψ' ∈ GlobalTheory.FullRankCoinv.fullRk k n d, ∀ c : ℂ, F (c • Ψ + Ψ') = c • F Ψ + F Ψ'`.
+
+Introduce `Ψ hΨ Ψ' hΨ' c`. Use function extensionality and compare the values at `Y`. Establish `i1` using `(GlobalTheory.FullRankCoinv.integrable_fibre n d ν hsm Ψ hΨ Y).const_mul c`. Establish `i2` using `GlobalTheory.FullRankCoinv.integrable_fibre n d ν hsm Ψ' hΨ' Y`. Simplify using `only [F, smallF, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[← integral_const_mul, ← integral_add i1 i2]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Expand and normalize the polynomial expressions, which then agree. Establish `hloc` using `GlobalTheory.T.fullRank_invariant_form_transport k n d ν hnd.le hsm Bf hA hS`.
+
+Take `⟨Λ, hΛ⟩` from `GlobalTheory.T.fullRank_form_linear_extension k n d F Bf hlin hloc`. Establish `hrt : ∀ (h : GL (Fin d) k) (Ψ : Matrix (Fin n) (Fin d) k → ℂ), Ψ ∈ GlobalTheory.FullRankCoinv.fullRk k n d → (fun Y => Ψ (Y * h.1)) ∈ GlobalTheory.FullRankCoinv.fullRk k n d`. Introduce `h Ψ hΨ`. Use `⟨?_, fun Y hY => hΨ.2 _ ?_⟩` and prove the remaining obligations. Establish `h1 : (fun X => Ψ (X * h.1)) ∈ GlobalTheory.SplitWeil.SB (Matrix (Fin n) (Fin d) k)`.
+
+Simplify using `using comp_mul_mem_SB (1 : GL (Fin n) k) h hΨ.1`. Conclude with `h1`. Rewrite using `[Matrix.rank_mul_eq_left_of_isUnit_det _ _ ((Matrix.isUnit_iff_isUnit_det _).1 h.isUnit)]` and apply the resulting hypothesis. Establish `hΛM : ∀ h : GL (Fin d) k, ∃ m : ℝ, 0 < m ∧ ∀ φ ∈ GlobalTheory.FullRankCoinv.fullRk k n d, (m : ℂ) * Λ (fun Y => φ (Y * h.1)) = Λ φ`. Introduce `h`.
+
+Take `⟨m, hm, hmB⟩` from `hM h`. Use `⟨m, hm, fun φ hφ => ?_⟩` and prove the remaining obligations. Establish `hsp` using `GlobalTheory.T.fullRank_in_span_smallF_products k n d ν hnd.le hsm φ hφ`. Use `clear hφ`. Proceed by induction on `hsp using Submodule.span_induction with`.
+
+Consider the case `mem x hx`. Take `⟨A, hA', B, hB', rfl⟩` from `hx`. Establish `e1` using `hmB ⟨A, hA'⟩ ⟨_, hrt h A hA'⟩ ⟨B, hB'⟩ ⟨_, hrt h B hB'⟩ rfl rfl`. Rewrite `e1` using `[hΛ, hΛ]`. Rewrite using `[← e1]`.
+
+Use `congr 2`. Use function extensionality and compare the values at `Y`. Simplify using `only [F, smallF, Matrix.mul_assoc]`. Consider the case `zero => show (m : ℂ) * Λ 0 = Λ 0`. Simplify using the standard rewrite rules.
+
+Consider the case `add x y _ _ hx hy`. Express the relevant statement in the definitionally equal form `(m : ℂ) * Λ ((fun Y => x (Y * h.1)) + (fun Y => y (Y * h.1))) = Λ (x + y)`. Rewrite using `[map_add, map_add, mul_add, hx, hy]`. Consider the case `smul c x _ hx`. Express the relevant statement in the definitionally equal form `(m : ℂ) * Λ (c • (fun Y => x (Y * h.1))) = Λ (c • x)`.
+
+Rewrite using `[map_smul, map_smul, smul_eq_mul, smul_eq_mul, mul_left_comm, hx]`. Establish `hL` using `GlobalTheory.T.quasi_invariant_functional_det_power k n d hnd Λ hΛM`. Establish `hprod` using `GlobalTheory.T.smallF_conj_product_mem_fullRank k n d ν hnd.le hsm Ψ₁.1 Ψ₁.2 Ψ₂.1 Ψ₂.2`. Rewrite using `[hΛ, hΛ, hΨ, ← hL g _ hprod, ← smul_eq_mul, ← map_smul]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `Y`. Establish `hF` using `smallF_mul_left (haarVol (GlobalTheory.SplitWeil.KO k (Fin n))) ν Ψ₁.1 (invT g⁻¹) Y`. Establish `hv : (invT g⁻¹).val = (g.1)ᵀ` using `by rw [invT_val, inv_inv]`. Establish `hdet : gdet (invT g⁻¹) = gdet g` using `by rw [gdet_invT, show gdet g⁻¹ = (gdet g)⁻¹ from map_inv _ _, inv_inv]`. Rewrite `hF` using `[hv, hdet, Fintype.card_fin]`.
+
+Establish `hν1 : (ν (gdet g) : ℂ) * (starRingEnd ℂ) (ν (gdet g) : ℂ) = 1`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, hun]`. Simplify using the standard rewrite rules. Establish `ha : (starRingEnd ℂ) (apow (gdet g) ((d : ℂ) / 2)) = apow (gdet g) ((d : ℂ) / 2)`. Establish `h0 : (0 : ℝ) ≤ (GlobalTheory.SplitWeil.nabs k (gdet g) : ℝ)` using `NNReal.coe_nonneg _`.
+
+Rewrite using `[apow, show ((d : ℂ) / 2) = (((d : ℝ) / 2 : ℝ) : ℂ) by push_cast; ring, ← Complex.ofReal_cpow h0, Complex.conj_ofReal]`. Establish `haa : apow (gdet g) ((d : ℂ) / 2) * apow (gdet g) ((d : ℂ) / 2) = apow (gdet g) (d : ℂ)`. Rewrite using `[← apow_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [F, GlobalTheory.FullRankCoinv.lact, Pi.smul_apply, smul_eq_mul, map_mul]`. Rewrite using `[← hF, ha, ← haa]`. Take the linear combination `(apow (gdet g) ((d : ℂ) / 2) * apow (gdet g) ((d : ℂ) / 2) * smallF (haarVol (GlobalTheory.SplitWeil.KO k (Fin n))) ν Ψ₁.1 ((g.1)ᵀ * Y) * (starRingEnd ℂ) (Ψ₂.1 ((g.1)ᵀ * Y))) * hν1`.
+-/
 theorem GlobalTheory.FullRankCoinv.form_diag_right_invariant : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n d : ℕ) (ν : kˣ →* ℂˣ), n < d → GlobalTheory.SmGL.IsSmoothChar ν → GlobalTheory.SmGL.IsUnitaryChar ν →
     ∀ Bf : GlobalTheory.FullRankCoinv.fullRk k n d →ₗ[ℂ] GlobalTheory.FullRankCoinv.fullRk k n d →ₗ⋆[ℂ] ℂ,

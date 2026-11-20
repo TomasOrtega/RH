@@ -11,6 +11,15 @@ noncomputable section
 
 universe u
 
+/- English proof (translation)
+Introduce `O _ _ _ K _ _ ι _ J _ P n hP N u hu hu' c x hx hxP W hWmin hWrel`. Use `hP.multiProj.isPrime` as an intermediate fact. Introduce `𝔫 h𝔫`. Establish `hW : W.IsPrime` using `hWmin.1.1`. Establish `hPW : P ≤ W` using `le_sup_left.trans hWmin.1.2`.
+
+Take `⟨V, hBV, hnV⟩` from `Ideal.image_subset_nonunits_valuationSubring 𝔫 h𝔫.ne_top`. Take `⟨W', hp, hh, hr, hb, hc, hloc⟩` from `exists_blowUp_centre (J := J) P W hP.multiProj.multiHomog hW hPW hWrel N u hu hu' V ((homLocRing_le_blowUpOverLoc P W u).trans hBV)`. Establish `h : blowUpOverLoc P W u ≤ blowUpLocRing P u W'` using `iInf₂_le W' ⟨hp, hh, hr, hb, hc⟩`. Use `⟨W', hp, hh, hr, hb, hc, h, fun y hy hunit => ?_⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `hunit`.
+
+Take `⟨hyV, hymax⟩` from `(ValuationSubring.mem_nonunits_iff_exists_mem_maximalIdeal (A := V)).1 (hnV ⟨y, hy, rfl⟩)`. Establish `hinv : ((w⁻¹ : (blowUpLocRing P u W')ˣ) : FractionRing (MRing ι O ⧸ P)) ∈ V` using `hloc ((w⁻¹ : (blowUpLocRing P u W')ˣ) : blowUpLocRing P u W').2`. Establish `hmul : (y : FractionRing (MRing ι O ⧸ P)) * ((w⁻¹ : (blowUpLocRing P u W')ˣ) : _) = 1`. Establish `h1` using `congrArg Subtype.val w.mul_inv`. Rewrite `h1` using `[hw]`.
+
+Conclude with `h1`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 hymax (IsUnit.of_mul_eq_one ⟨_, hinv⟩ (Subtype.ext hmul))`.
+-/
 theorem BlowUpOverLocCentreDom.proof : BlowUpOverLocCentreDom.Statement.{u} := by
   intro O _ _ _ K _ _ ι _ J _ P n hP N u hu hu' c x hx hxP W hWmin hWrel
   have := hP.multiProj.isPrime

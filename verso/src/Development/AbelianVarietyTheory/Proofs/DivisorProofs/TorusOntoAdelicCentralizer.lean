@@ -8,6 +8,21 @@ noncomputable section
 
 namespace GlobalTheory.CentAway
 
+/- English proof (translation)
+Set `ad : B →ₗ[ℚ] B` to `LinearMap.mulRight ℚ γ - LinearMap.mulLeft ℚ γ`. Establish `hex : Function.Exact f.toLinearMap ad`. Introduce `x`. Simplify using `only [ad, LinearMap.sub_apply, LinearMap.mulRight_apply, LinearMap.mulLeft_apply, sub_eq_zero, AlgHom.toLinearMap_apply]`. Conclude with `hcent x`.
+
+Establish `hmap : ∀ y, Algebra.TensorProduct.map (AlgHom.id R R) f y = LinearMap.lTensor R f.toLinearMap y`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul t a => simp`.
+
+Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Establish `had : ∀ y : R ⊗[ℚ] B, y * ((1 : R) ⊗ₜ[ℚ] γ) - ((1 : R) ⊗ₜ[ℚ] γ) * y = LinearMap.lTensor R ad y`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul t b`. Simplify using `[ad, Algebra.TensorProduct.tmul_mul_tmul, TensorProduct.tmul_sub]`. Consider the case `add x y hx hy => rw [map_add, ← hx, ← hy]`. Use `noncomm_ring`. Establish `hex'` using `Module.Flat.lTensor_exact R hex`.
+
+Use `⟨?_, fun y => ?_⟩` and prove the remaining obligations. Establish `h` using `Module.Flat.lTensor_preserves_injective_linearMap (M := R) f.toLinearMap hf`. Introduce `a b hab`. Rewrite `hab` using `[hmap, hmap]`. Conclude with `h hab`.
+
+Rewrite using `[← sub_eq_zero, had, hex' y]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`. Conclude with `⟨z, hmap z⟩`. Introduce and unpack `⟨z, rfl⟩`.
+
+Conclude with `⟨z, (hmap z).symm⟩`.
+-/
 theorem flat_centralizer (R B L : Type) [CommRing R] [Algebra ℚ R] [Ring B] [Algebra ℚ B] [Ring L] [Algebra ℚ L]
     (γ : B) (f : L →ₐ[ℚ] B) (hf : Function.Injective f)
     (hcent : ∀ x : B, x * γ = γ * x ↔ x ∈ Set.range f) :
@@ -52,9 +67,19 @@ def incl (R : Type) [CommRing R] [Algebra ℚ R] {G : HTGroup p} (P : Pair G) :
     R ⊗[ℚ] algF P →ₐ[R] R ⊗[ℚ] G.C :=
   Algebra.TensorProduct.map (AlgHom.id R R) ((algF P).val.restrictScalars ℚ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem incl_tmul (R : Type) [CommRing R] [Algebra ℚ R] {G : HTGroup p} (P : Pair G) (a : R) (m : algF P) :
     incl R P (a ⊗ₜ m) = a ⊗ₜ (m : G.C) := rfl
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.CentSep.centralizer_eq_adjoin G.F G.C G.n G.rankC (P.γ : G.C) P.reg.2 P.reg.1`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hm : x ∈ Subalgebra.centralizer G.F {(P.γ : G.C)}`. Rewrite using `[Subalgebra.mem_centralizer_iff]`.
+
+Introduce `g hg`. Rewrite using `[Set.mem_singleton_iff.1 hg]`. Conclude with `hx.symm`. Rewrite `hm` using `[h]`. Conclude with `⟨⟨x, hm⟩, rfl⟩`.
+
+Introduce and unpack `⟨m, rfl⟩`. Establish `hm : (m : G.C) ∈ Subalgebra.centralizer G.F {(P.γ : G.C)}` using `by rw [h]; exact m.2`. Rewrite `hm` using `[Subalgebra.mem_centralizer_iff]`. Conclude with `(hm _ (Set.mem_singleton _)).symm`.
+-/
 theorem cent_iff {G : HTGroup p} (P : Pair G) (x : G.C) :
     x * P.γ = P.γ * x ↔ x ∈ Set.range ((algF P).val.restrictScalars ℚ) := by
   have h := GlobalTheory.CentSep.centralizer_eq_adjoin G.F G.C G.n G.rankC (P.γ : G.C) P.reg.2 P.reg.1
@@ -72,10 +97,18 @@ theorem cent_iff {G : HTGroup p} (P : Pair G) (x : G.C) :
     rw [Subalgebra.mem_centralizer_iff] at hm
     exact (hm _ (Set.mem_singleton _)).symm
 
+/- English proof (translation)
+The claim follows from `flat_centralizer R G.C (algF P) (P.γ : G.C) _ Subtype.val_injective (cent_iff P)`.
+-/
 theorem incl_facts (R : Type) [CommRing R] [Algebra ℚ R] {G : HTGroup p} (P : Pair G) :
     Function.Injective (incl R P) ∧ ∀ y : R ⊗[ℚ] G.C, y * inC G R P.γ = inC G R P.γ * y ↔ y ∈ Set.range (incl R P) :=
   flat_centralizer R G.C (algF P) (P.γ : G.C) _ Subtype.val_injective (cent_iff P)
 
+/- English proof (translation)
+Take `⟨φ, hφ⟩` from `LinearMap.exists_leftInverse_of_injective (Algebra.linearMap ℚ (algF P)) (LinearMap.ker_eq_bot.2 (algebraMap ℚ (algF P)).injective)`. Establish `h1 : φ 1 = 1`. Use `LinearMap.congr_fun hφ 1` as an intermediate fact. Simplify using `using this`. Use `⟨(TensorProduct.AlgebraTensorModule.rid ℚ R R).toLinearMap ∘ₗ TensorProduct.AlgebraTensorModule.lTensor R R φ, fun a => ?_⟩` and prove the remaining obligations.
+
+Simplify using `[Algebra.TensorProduct.algebraMap_apply, h1]`.
+-/
 theorem exists_retr (R : Type) [CommRing R] [Algebra ℚ R] {G : HTGroup p} (P : Pair G) :
     ∃ π : R ⊗[ℚ] algF P →ₗ[R] R, ∀ a, π (algebraMap R _ a) = a := by
   obtain ⟨φ, hφ⟩ := LinearMap.exists_leftInverse_of_injective (Algebra.linearMap ℚ (algF P))
@@ -87,12 +120,20 @@ theorem exists_retr (R : Type) [CommRing R] [Algebra ℚ R] {G : HTGroup p} (P :
     TensorProduct.AlgebraTensorModule.lTensor R R φ, fun a => ?_⟩
   simp [Algebra.TensorProduct.algebraMap_apply, h1]
 
+/- English proof (translation)
+Take `⟨π, hπ⟩` from `exists_retr R P`. Introduce `a b h`. Rewrite using `[← hπ a, ← hπ b, h]`.
+-/
 theorem alg_inj (R : Type) [CommRing R] [Algebra ℚ R] {G : HTGroup p} (P : Pair G) :
     Function.Injective (algebraMap R (R ⊗[ℚ] algF P)) := by
   obtain ⟨π, hπ⟩ := exists_retr R P
   intro a b h
   rw [← hπ a, ← hπ b, h]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a m`. Rewrite using `[incl_tmul, starT_tmul]`. Simplify using `only [extC, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, incl_tmul, hc, inC, RingHom.coe_coe, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one, sh]`.
+
+Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, map_add, MulOpposite.unop_add, mul_add, add_mul]`.
+-/
 theorem incl_extC (R : Type) [CommRing R] [Algebra ℚ R] {G : HTGroup p} (P : Pair G) (c : algF P →ₐ[ℚ] algF P)
     (hc : ∀ m : algF P, ((c m : algF P) : G.C) = (P.β : G.C) * sh G (m : G.C) * ((P.β⁻¹ : G.Cˣ) : G.C))
     (z : R ⊗[ℚ] algF P) :
@@ -106,6 +147,11 @@ theorem incl_extC (R : Type) [CommRing R] [Algebra ℚ R] {G : HTGroup p} (P : P
       Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one, sh]
   | add x y hx hy => rw [map_add, map_add, hx, hy, map_add, map_add, MulOpposite.unop_add, mul_add, add_mul]
 
+/- English proof (translation)
+Establish `h1` using `congrArg (incl R P) hy`. Rewrite `h1` using `[map_mul, incl_extC R P c hc, AlgHom.commutes]`. Establish `hb : inC G R ((P.β⁻¹ : G.Cˣ) : G.C) * inC G R P.β = 1` using `by rw [← map_mul, Units.inv_mul, map_one]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc, hb, mul_one]`.
+
+Use `_ = _ := by rw [h1]`.
+-/
 theorem incl_sim (R : Type) [CommRing R] [Algebra ℚ R] {G : HTGroup p} (P : Pair G) (c : algF P →ₐ[ℚ] algF P)
     (hc : ∀ m : algF P, ((c m : algF P) : G.C) = (P.β : G.C) * sh G (m : G.C) * ((P.β⁻¹ : G.Cˣ) : G.C))
     (y : R ⊗[ℚ] algF P) (s : R) (hy : y * extC R c y = algebraMap R _ s) :
@@ -131,11 +177,17 @@ variable (R : Type) [CommRing R] [Algebra ℚ R] {G : HTGroup p} (P : Pair G) (c
 
 def nu (y : simR R (extC R c)) : Rˣ := (mem_simR.1 y.2).choose
 
+/- English proof (translation)
+The claim follows from `(mem_simR.1 y.2).choose_spec`.
+-/
 theorem nu_spec (y : simR R (extC R c)) :
     ((y : (R ⊗[ℚ] algF P)ˣ) : R ⊗[ℚ] algF P) * extC R c ((y : (R ⊗[ℚ] algF P)ˣ) : R ⊗[ℚ] algF P) =
       algebraMap R _ ((nu R P c y : Rˣ) : R) :=
   (mem_simR.1 y.2).choose_spec
 
+/- English proof (translation)
+The claim follows from `Units.ext (alg_inj R P (by rw [← nu_spec, h]))`.
+-/
 theorem nu_eq (y : simR R (extC R c)) (s : Rˣ)
     (h : ((y : (R ⊗[ℚ] algF P)ˣ) : R ⊗[ℚ] algF P) * extC R c ((y : (R ⊗[ℚ] algF P)ˣ) : R ⊗[ℚ] algF P) =
       algebraMap R _ (s : R)) : nu R P c y = s :=

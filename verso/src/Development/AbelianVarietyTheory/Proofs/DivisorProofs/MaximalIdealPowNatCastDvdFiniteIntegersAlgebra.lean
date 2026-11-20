@@ -4,6 +4,23 @@ namespace GlobalTheory
 
 open IsLocalRing
 
+/- English proof (translation)
+Introduce `p hp C _ _ v O _ _ hv A _ _ _ _ a ha`. Use `set J : Ideal O := (maximalIdeal A).comap (algebraMap O A) with hJdef`. Use `haveI : J.IsMaximal := Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (maximalIdeal A)`. Establish `hJp : ∀ c ∈ J, ∃ k : ℕ, (p : O) ∣ c ^ k`. Introduce `c hc`.
+
+Establish `hlt : v (algebraMap O C c) < 1`. Use `lt_of_le_of_ne (hv.map_le_one c) ?_` and prove the remaining obligations. Introduce `h1`. Establish `hu : IsUnit c` using `hv.isUnit_of_one' h1`. Establish `: IsUnit (algebraMap O A c)` using `hu.map _`.
+
+Conclude with `(maximalIdeal.isMaximal A).ne_top (Ideal.eq_top_of_isUnit_mem _ hc this)`. Establish `hp0 : 0 < v (algebraMap O C (p : O))`. Rewrite using `[map_natCast]`. Conclude with `(Valuation.pos_iff v).2 (Nat.cast_ne_zero.2 hp)`. Take `⟨k, hk⟩` from `NNReal.exists_pow_lt_of_lt_one hp0 hlt`.
+
+Use `⟨k, hv.dvd_of_le ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow, map_pow]`. Conclude with `hk.le`. Establish `hI : J.map (algebraMap O A) ≤ (Ideal.span {(p : A)}).radical`. Rewrite using `[Ideal.map_le_iff_le_comap]`.
+
+Introduce `c hc`. Take `⟨k, d, hd⟩` from `hJp c hc`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.mem_span_singleton]`. Use `⟨algebraMap O A d, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← map_pow, hd, map_mul, map_natCast]`. Establish `ha' : a ∈ (J.map (algebraMap O A)).radical`. Rewrite using `[Ideal.radical_eq_sInf, Ideal.mem_sInf]`. Introduce and unpack `Q ⟨hQ, hQp⟩`. Establish `hle : J ≤ Q.comap (algebraMap O A)` using `Ideal.map_le_iff_le_comap.1 hQ`.
+
+Establish `hQc : Q.comap (algebraMap O A) = J` using `((inferInstance : J.IsMaximal).eq_of_le (Ideal.IsPrime.comap (algebraMap O A)).ne_top hle).symm`. Use `haveI : (Q.comap (algebraMap O A)).IsMaximal := by rw [hQc]; infer_instance`. Use `haveI : Q.IsMaximal := Ideal.isMaximal_of_isIntegral_of_isMaximal_comap Q this`. Rewrite using `[IsLocalRing.eq_maximalIdeal this]`. Conclude with `ha`.
+
+Establish `h2 : a ∈ (Ideal.span {(p : A)}).radical`. Use `Ideal.radical_mono hI ha'` as an intermediate fact. Rewrite `this` using `[Ideal.radical_idem]`. Then use the resulting hypothesis. Take `⟨N, hN⟩` from `h2`. Conclude with `⟨N, Ideal.mem_span_singleton.1 hN⟩`.
+-/
 theorem maxIdeal_pow_dvd_natCast_of_integers :
     ∀ (p : ℕ), p ≠ 0 → ∀ (C : Type) [Field C] [CharZero C] (v : Valuation C NNReal) (O : Type)
       [CommRing O] [Algebra O C], v.Integers O → ∀ (A : Type) [CommRing A] [Algebra O A]

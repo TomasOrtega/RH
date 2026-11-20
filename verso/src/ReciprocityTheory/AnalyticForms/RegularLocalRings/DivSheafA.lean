@@ -8,6 +8,9 @@ noncomputable section
 
 universe u
 
+/- English proof (translation)
+Rewrite using `[← G.map_ideal h, Ideal.map_map, ← CommRingCat.hom_comp]`. Use `first`. Consider the case `(congr 2; exact (TopCat.Presheaf.germ_res W.presheaf _ x hx).symm)`. Consider the case `(erw [TopCat.Presheaf.germ_res])`. Consider the case `simp [TopCat.Presheaf.germ_res]`.
+-/
 lemma map_germ_ideal_eq_of_le {W : Scheme.{u}} (G : W.IdealSheafData) {U V : W.affineOpens} (h : U ≤ V)
     (x : W) (hx : x ∈ U.1) :
     Ideal.map (W.presheaf.germ V.1 x (h hx)).hom (G.ideal V) =
@@ -18,6 +21,15 @@ lemma map_germ_ideal_eq_of_le {W : Scheme.{u}} (G : W.IdealSheafData) {U V : W.a
   | (erw [TopCat.Presheaf.germ_res])
   | simp [TopCat.Presheaf.germ_res]
 
+/- English proof (translation)
+Unfold `FinalTheorems.stalkId`. Apply `le_antisymm` to reduce the goal to its premises. Use `iSup₂_le fun U' hx' => ?_` and prove the remaining obligations. Establish `hxi : x ∈ U.1 ⊓ U'.1` using `by first`. Consider the case `exact ⟨hx, hx'⟩`.
+
+Consider the case `exact TopologicalSpace.Opens.mem_inf.mpr ⟨hx, hx'⟩`. Consider the case `simp [hx, hx']`. Take `⟨O, hO, hxO, hOle⟩ : ∃ O ∈ W.affineOpens, x ∈ O ∧ O ≤ U.1 ⊓ U'.1` from `by first`. Consider the case `(obtain ⟨f, hf1, hf2⟩ := U.2.exists_basicOpen_le (V := U'.1) ⟨x, hx'⟩ hx`. Conclude with `⟨W.basicOpen f, U.2.basicOpen f, hf2, le_inf (W.basicOpen_le f) hf1⟩)`.
+
+Consider the case `exact (TopologicalSpace.Opens.isBasis_iff_nbhd.mp (AlgebraicGeometry.isBasis_affine_open W)) hxi`. Consider the case `exact (TopologicalSpace.Opens.isBasis_iff_nbhd.mp W.isBasis_affineOpens) hxi`. Set `U'' : W.affineOpens` to `⟨O, hO⟩`. Establish `h1 : U'' ≤ U` using `(le_inf_iff.mp hOle).1`. Establish `h2 : U'' ≤ U'` using `(le_inf_iff.mp hOle).2`.
+
+Conclude with `((map_germ_ideal_eq_of_le G h2 x hxO).trans (map_germ_ideal_eq_of_le G h1 x hxO).symm).le`. Conclude with `le_iSup₂ (f := fun (U : W.affineOpens) (hx : x ∈ U.1) => Ideal.map (W.presheaf.germ U.1 x hx).hom (G.ideal U)) U hx`.
+-/
 lemma ds_stalkId_eq_map {W : Scheme.{u}} (G : W.IdealSheafData) (U : W.affineOpens) (x : W)
     (hx : x ∈ U.1) :
     FinalTheorems.stalkId G x = Ideal.map (W.presheaf.germ U.1 x hx).hom (G.ideal U) := by
@@ -42,6 +54,47 @@ lemma ds_stalkId_eq_map {W : Scheme.{u}} (G : W.IdealSheafData) (U : W.affineOpe
   · exact le_iSup₂ (f := fun (U : W.affineOpens) (hx : x ∈ U.1) =>
       Ideal.map (W.presheaf.germ U.1 x hx).hom (G.ideal U)) U hx
 
+/- English proof (translation)
+Take `⟨sI, hsI⟩` from `IsNoetherian.noetherian I`. Take `⟨sJ, hsJ⟩` from `IsNoetherian.noetherian (LinearMap.ker (LinearMap.mulRight R a))`. Establish `key : ∀ i ∈ I, ∃ c ∈ P.primeCompl, c * i ∈ Ideal.span {a}`. Introduce `i hi`. Establish `hi' : algebraMap R S i ∈ Ideal.span {algebraMap R S a}`.
+
+Rewrite using `[← hmap]`. Conclude with `Ideal.mem_map_of_mem _ hi`. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.mp hi'`. Take `⟨⟨r, s⟩, rfl⟩` from `IsLocalization.mk'_surjective P.primeCompl y`. Establish `e : algebraMap R S (r * a) = algebraMap R S (↑s * i)`.
+
+Rewrite using `[map_mul, map_mul, ← hy, ← IsLocalization.mk'_spec S r s]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨d, hd⟩` from `IsLocalization.exists_of_eq (M := P.primeCompl) e`. Conclude with `⟨↑d * ↑s, P.primeCompl.mul_mem d.2 s.2, Ideal.mem_span_singleton'.mpr ⟨↑d * r, by linear_combination hd⟩⟩`. Establish `key2 : ∀ j ∈ LinearMap.ker (LinearMap.mulRight R a), ∃ d ∈ P.primeCompl, d * j = 0`.
+
+Introduce `j hj`. Rewrite `hj` using `[LinearMap.mem_ker, LinearMap.mulRight_apply]`. Establish `h1 : algebraMap R S j * algebraMap R S a = 0` using `by rw [← map_mul, hj, map_zero]`. Establish `h2 : algebraMap R S j = algebraMap R S 0`. Rewrite using `[map_zero]`.
+
+Use `first`. Consider the case `exact (mul_right_mem_nonZeroDivisors_eq_zero_iff hnzd).mp h1`. Consider the case `exact (mul_cancel_right_mem_nonZeroDivisors hnzd).mp (by rw [zero_mul]; exact h1)`. Consider the case `exact (mem_nonZeroDivisors_iff.mp hnzd).1 _ h1`. Consider the case `exact mem_nonZeroDivisors_iff.mp hnzd _ h1`.
+
+Consider the case `exact hnzd.1 _ h1`. Consider the case `exact hnzd _ h1`. Take `⟨d, hd⟩` from `IsLocalization.exists_of_eq (M := P.primeCompl) h2`. Conclude with `⟨d, d.2, by rw [hd, mul_zero]⟩`. Use `choose! cI hcP hcA using key`.
+
+Use `choose! dJ hdP hdA using key2`. Establish `memI : ∀ i ∈ sI, i ∈ I` using `fun i hi => by`. Rewrite using `[← hsI]`. Conclude with `Submodule.subset_span (Finset.mem_coe.mpr hi)`. Establish `memJ : ∀ j ∈ sJ, j ∈ LinearMap.ker (LinearMap.mulRight R a)` using `fun j hj => by`.
+
+Rewrite using `[← hsJ]`. Conclude with `Submodule.subset_span (Finset.mem_coe.mpr hj)`. Take `⟨C, hC⟩ : ∃ C : R, C = ∏ i ∈ sI, cI i` from `⟨_, rfl⟩`. Take `⟨D, hD⟩ : ∃ D : R, D = ∏ j ∈ sJ, dJ j` from `⟨_, rfl⟩`. Establish `hCP : C ∈ P.primeCompl`.
+
+Rewrite using `[hC]`. Conclude with `prod_mem fun i hi => hcP i (memI i hi)`. Establish `hDP : D ∈ P.primeCompl`. Rewrite using `[hD]`. Conclude with `prod_mem fun j hj => hdP j (memJ j hj)`.
+
+Establish `hDk : ∀ x ∈ LinearMap.ker (LinearMap.mulRight R a), D * x = 0`. Establish `hle : LinearMap.ker (LinearMap.mulRight R a) ≤ LinearMap.ker (LinearMap.mulLeft R D)`. Rewrite using `[← hsJ, Submodule.span_le]`. Introduce `j hj`. Establish `hj' : j ∈ sJ` using `Finset.mem_coe.mp hj`.
+
+Establish `hj0 : dJ j * j = 0` using `hdA j (memJ j hj')`. Take `⟨e, he⟩ : dJ j ∣ D` from `by rw [hD]; exact Finset.dvd_prod_of_mem dJ hj'`. Use `show j ∈ LinearMap.ker (LinearMap.mulLeft R D)`. Rewrite using `[LinearMap.mem_ker, LinearMap.mulLeft_apply, he]`. Take the linear combination `e * hj0`.
+
+Introduce `x hx`. Establish `hx'` using `hle hx`. Rewrite `hx'` using `[LinearMap.mem_ker, LinearMap.mulLeft_apply]`. Then use the resulting hypothesis. Use `⟨C * D, P.primeCompl.mul_mem hCP hDP, ?_⟩` and prove the remaining obligations. Introduce `T _ _ _`.
+
+Establish `hunit : IsUnit (algebraMap R T (C * D))` using `IsLocalization.map_units T (⟨C * D, Submonoid.mem_powers _⟩ : Submonoid.powers (C * D))`. Prove the components needed by the constructor for the conclusion. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.map_le_iff_le_comap, ← hsI, Submodule.span_le]`. Introduce `i hi`.
+
+Establish `hi' : i ∈ sI` using `Finset.mem_coe.mp hi`. Establish `hcu : IsUnit (algebraMap R T (cI i))`. Use `isUnit_of_dvd_unit (map_dvd _ ?_) hunit` and prove the remaining obligations. Rewrite using `[hC]`. Conclude with `(Finset.dvd_prod_of_mem cI hi').trans (dvd_mul_right _ _)`.
+
+Take `⟨r, hr⟩` from `Ideal.mem_span_singleton'.mp (hcA i (memI i hi'))`. Establish `e1 : algebraMap R T (cI i) * algebraMap R T i = algebraMap R T r * algebraMap R T a`. Rewrite using `[← map_mul, ← map_mul, hr]`. Use `show algebraMap R T i ∈ Ideal.span {algebraMap R T a}`. Use `Ideal.mem_span_singleton'.mpr ⟨↑hcu.unit⁻¹ * algebraMap R T r, ?_⟩` and prove the remaining obligations.
+
+Apply `hcu.mul_left_cancel` to reduce the goal to its premises. Take the linear combination `(algebraMap R T r * algebraMap R T a) * hcu.mul_val_inv - e1`. Conclude with `Ideal.span_le.mpr (Set.singleton_subset_iff.mpr (Ideal.mem_map_of_mem _ ha))`. Establish `H : ∀ z : T, z * algebraMap R T a = 0 → z = 0`. Introduce `z hz`.
+
+Take `⟨⟨r, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (Submonoid.powers (C * D)) z`. Establish `e1 : algebraMap R T (r * a) = algebraMap R T 0`. Rewrite using `[map_zero, map_mul, ← IsLocalization.mk'_spec T r s]`. Take the linear combination `(algebraMap R T ↑s) * hz`. Take `⟨⟨_, k, rfl⟩, hk⟩` from `IsLocalization.exists_of_eq (M := Submonoid.powers (C * D)) e1`.
+
+Establish `hk' : (C * D) ^ k * (r * a) = 0` using `hk.trans (mul_zero _)`. Establish `hmem : (C * D) ^ k * r ∈ LinearMap.ker (LinearMap.mulRight R a)`. Rewrite using `[LinearMap.mem_ker, LinearMap.mulRight_apply, mul_assoc]`. Conclude with `hk'`. Establish `h0` using `hDk _ hmem`.
+
+Rewrite using `[IsLocalization.mk'_eq_zero_iff]`. Use `⟨⟨(C * D) ^ (k + 1), k + 1, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show (C * D) ^ (k + 1) * r = 0`. Take the linear combination `C * h0`. Use `first`.
+
+Consider the case `exact mem_nonZeroDivisors_iff.mpr H`. Consider the case `exact mem_nonZeroDivisors_iff_right.mpr H`. Consider the case `exact mem_nonZeroDivisors_iff.mpr ⟨H, fun z hz => H z (by rw [mul_comm]; exact hz)⟩`. Consider the case `exact ⟨H, fun z hz => H z (by rw [mul_comm]; exact hz)⟩`. Consider the case `exact H`.
+-/
 lemma ds_spread {R S : Type*} [CommRing R] [IsNoetherianRing R] [CommRing S] [Algebra R S]
     (P : Ideal R) [P.IsPrime] [IsLocalization.AtPrime S P] (I : Ideal R) (a : R) (ha : a ∈ I)
     (hmap : I.map (algebraMap R S) = Ideal.span {algebraMap R S a})
@@ -148,6 +201,21 @@ lemma ds_spread {R S : Type*} [CommRing R] [IsNoetherianRing R] [CommRing S] [Al
     | exact ⟨H, fun z hz => H z (by rw [mul_comm]; exact hz)⟩
     | exact H
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hsub : Ideal.span A ≤ IsLocalRing.maximalIdeal S * Ideal.span {t}`. Rewrite using `[Ideal.span_le]`. Introduce `y hy`.
+
+Establish `hyt : y ∈ Ideal.span {t}` using `by rw [← hA]; exact Ideal.subset_span hy`. Take `⟨r, hr⟩` from `Ideal.mem_span_singleton'.mp hyt`. Establish `hr' : r ∈ IsLocalRing.maximalIdeal S`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`.
+
+Conclude with `hcon y hy hu.unit (by rw [hu.unit_spec, hr])`. Use `show y ∈ IsLocalRing.maximalIdeal S * Ideal.span {t}`. Rewrite using `[← hr]`. Conclude with `Ideal.mul_mem_mul hr' (Ideal.mem_span_singleton_self t)`. Establish `ht : t ∈ IsLocalRing.maximalIdeal S * Ideal.span {t}`.
+
+Apply `hsub` to reduce the goal to its premises. Rewrite using `[hA]`. Conclude with `Ideal.mem_span_singleton_self t`. Take `⟨m, hm, hmt⟩ : ∃ m ∈ IsLocalRing.maximalIdeal S, m * t = t` from `by first`. Consider the case `exact Ideal.mem_mul_span_singleton.mp ht`.
+
+Consider the case `(obtain ⟨m, hm, hmt⟩ := Ideal.mem_span_singleton_mul.mp (by rwa [mul_comm] at ht)`. Conclude with `⟨m, hm, by rw [mul_comm]; exact hmt⟩)`. Establish `h1 : (1 - m) * t = 0` using `by rw [sub_mul, one_mul, hmt, sub_self]`. Establish `h2 : 1 - m = 0` using `by first`. Consider the case `exact (mul_right_mem_nonZeroDivisors_eq_zero_iff ht0).mp h1`.
+
+Consider the case `exact (mul_cancel_right_mem_nonZeroDivisors ht0).mp (by rw [zero_mul]; exact h1)`. Consider the case `exact (mem_nonZeroDivisors_iff.mp ht0).1 _ h1`. Consider the case `exact mem_nonZeroDivisors_iff.mp ht0 _ h1`. Consider the case `exact ht0.1 _ h1`. Consider the case `exact ht0 _ h1`.
+
+Establish `hm1 : m = 1` using `(sub_eq_zero.mp h2).symm`. Rewrite `hm` using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, hm1]`. Conclude with `hm isUnit_one`.
+-/
 lemma ds_gen_of_span {S : Type*} [CommRing S] [IsLocalRing S] (A : Set S) (t : S)
     (ht0 : t ∈ nonZeroDivisors S) (hA : Ideal.span A = Ideal.span {t}) :
     ∃ y ∈ A, ∃ c : Sˣ, y = c * t := by
@@ -194,6 +262,11 @@ def dsK (x : W) : Ideal (W.presheaf.stalk x) :=
 
 variable {V g}
 
+/- English proof (translation)
+Unfold `dsK`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `iInf₂_le c hc`. Use `le_iInf₂ fun c' hc' => ?_` and prove the remaining obligations. Take `⟨u, hu⟩` from `hg c c' x hc hc'`.
+
+Rewrite using `[Ideal.span_singleton_le_span_singleton]`. Conclude with `⟨↑u, by rw [hu, mul_comm]⟩`.
+-/
 lemma dsK_eq (hg : ∀ c c' (x : W) (hx : x ∈ V c) (hx' : x ∈ V c'), ∃ u : (W.presheaf.stalk x)ˣ,
       W.presheaf.germ (V c) x hx (g c) = u * W.presheaf.germ (V c') x hx' (g c'))
     {x : W} (c) (hc : x ∈ V c) :
@@ -213,6 +286,9 @@ def dsJ (U : W.affineOpens) : Ideal Γ(W, U) :=
 
 variable {V g}
 
+/- English proof (translation)
+Unfold `dsJ`. Simplify using `only [Submodule.mem_iInf, Ideal.mem_comap]`. Apply the tactic sequence `all_goals exact Iff.rfl`.
+-/
 lemma mem_dsJ {U : W.affineOpens} {f : Γ(W, U)} :
     f ∈ dsJ V g U ↔ ∀ x (hx : x ∈ U.1), W.presheaf.germ U.1 x hx f ∈ dsK V g x := by
   unfold dsJ
@@ -225,6 +301,25 @@ section LocGen
 
 variable {W : Scheme.{u}} {ι' : Type*} {V : ι' → W.Opens} {g : ∀ c, Γ(W, V c)}
 
+/- English proof (translation)
+Set `Q : Ideal Γ(X, O)` to `Submodule.comap (LinearMap.mulRight Γ(X, O) a) (Ideal.span {h})`. Establish `hQ : ∀ r, r ∈ Q ↔ r * a ∈ Ideal.span {h}` using `fun r => by`. Simplify using `only [Q, Submodule.mem_comap, LinearMap.mulRight_apply]`. It suffices to establish `hs : s ∈ Q.radical by`. Take `⟨m, hm⟩` from `hs`.
+
+Conclude with `⟨m, (hQ _).mp hm⟩`. Rewrite using `[Ideal.radical_eq_sInf, Submodule.mem_sInf]`. Introduce and unpack `p ⟨hQp, hp⟩`. Assume the negation of the conclusion as `hsp`. Take `⟨x, hx⟩ : ∃ x : O, hO.primeIdealOf x = ⟨p, hp⟩` from `by first`.
+
+Consider the case `(refine ⟨hO.isoSpec.inv (⟨p, hp⟩ : PrimeSpectrum Γ(X, O)), ?_⟩`. Conclude with `congrArg (fun f : Spec Γ(X, O) ⟶ Spec Γ(X, O) => f (⟨p, hp⟩ : PrimeSpectrum Γ(X, O))) hO.isoSpec.inv_hom_id)`. Consider the case `(refine ⟨hO.isoSpec.inv.base (⟨p, hp⟩ : PrimeSpectrum Γ(X, O)), ?_⟩`. Simplify using `[IsAffineOpen.primeIdealOf, ← Scheme.Hom.comp_apply]`. Use the proof step `done)`.
+
+Consider the case `(refine ⟨hO.isoSpec.inv (⟨p, hp⟩ : PrimeSpectrum Γ(X, O)), ?_⟩ show hO.isoSpec.hom (hO.isoSpec.inv _) = _`. Rewrite using `[← Scheme.Hom.comp_apply, Iso.inv_hom_id]`. Apply the tactic sequence `try rfl`. Use the proof step `done)`. Consider the case `(refine ⟨hO.isoSpec.inv (⟨p, hp⟩ : PrimeSpectrum Γ(X, O)), ?_⟩`.
+
+Simplify using `only [IsAffineOpen.primeIdealOf]`. Rewrite using `[← Scheme.Hom.comp_apply, Iso.inv_hom_id]`. Apply the tactic sequence `try rfl`. Apply the tactic sequence `try simp`. Use the proof step `done)`.
+
+Establish `hL` using `hO.isLocalization_stalk x`. Establish `hxp : (hO.primeIdealOf x).asIdeal = p` using `by rw [hx]`. Establish `hsu : IsUnit (X.presheaf.germ O x x.2 s)` using `(IsLocalization.AtPrime.isUnit_to_map_iff (X.presheaf.stalk x) (hO.primeIdealOf x).asIdeal s).mpr (by show s ∉ (hO.primeIdealOf x).asIdeal; rw [hxp]; exact hsp)`. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.mp (hloc x x.2 hsu)`. Take `⟨⟨b, u⟩, rfl⟩` from `IsLocalization.mk'_surjective (hO.primeIdealOf x).asIdeal.primeCompl y`.
+
+Establish `hy' : IsLocalization.mk' (X.presheaf.stalk x) b u * algebraMap Γ(X, O) (X.presheaf.stalk x) h = algebraMap Γ(X, O) (X.presheaf.stalk x) a` using `hy`. Establish `e : algebraMap Γ(X, O) (X.presheaf.stalk x) (↑u * a) = algebraMap Γ(X, O) (X.presheaf.stalk x) (b * h)`. Rewrite using `[map_mul, map_mul, ← IsLocalization.mk'_spec (X.presheaf.stalk x) b u]`. Take the linear combination `-(algebraMap Γ(X, O) (X.presheaf.stalk x) ↑u) * hy'`. Take `⟨v, hv⟩` from `IsLocalization.exists_of_eq (M := (hO.primeIdealOf x).asIdeal.primeCompl) e`.
+
+Establish `hvu : (v : Γ(X, O)) * (u : Γ(X, O)) ∈ Q`. Rewrite using `[hQ]; exact Ideal.mem_span_singleton'.mpr ⟨(v : Γ(X, O)) * b, by linear_combination -hv⟩`. Establish `hvu' : (v : Γ(X, O)) * (u : Γ(X, O)) ∉ p`. Rewrite using `[← hxp]`. Conclude with `(hO.primeIdealOf x).asIdeal.primeCompl.mul_mem v.2 u.2`.
+
+Conclude with `hvu' (hQp hvu)`.
+-/
 private lemma exists_pow_mul_mem_span_of_germ_mem {X : Scheme.{u}} {O : X.Opens} (hO : IsAffineOpen O)
     (s a h : Γ(X, O))
     (hloc : ∀ (x : X) (hx : x ∈ O), IsUnit (X.presheaf.germ O x hx s) →
@@ -279,6 +374,19 @@ private lemma exists_pow_mul_mem_span_of_germ_mem {X : Scheme.{u}} {O : X.Opens}
     rw [← hxp]; exact (hO.primeIdealOf x).asIdeal.primeCompl.mul_mem v.2 u.2
   exact hvu' (hQp hvu)
 
+/- English proof (translation)
+Establish `hOU : W.basicOpen t ≤ U.1` using `W.basicOpen_le t`. Establish `hO : IsAffineOpen (W.basicOpen t)` using `U.2.basicOpen t`. Set `ρ` to `W.presheaf.map (homOfLE hOU).op`. Set `g' : Γ(W, W.basicOpen t)` to `W.presheaf.map (homOfLE htc).op (g c)`. Establish `gU : ∀ z (hz : z ∈ W.basicOpen t) (f : Γ(W, U)), W.presheaf.germ (W.basicOpen t) z hz (ρ f) = W.presheaf.germ U.1 z (hOU hz) f` using `fun z hz f => TopCat.Presheaf.germ_res_apply _ _ _ _ _`.
+
+Establish `gV : ∀ z (hz : z ∈ W.basicOpen t), W.presheaf.germ (W.basicOpen t) z hz g' = W.presheaf.germ (V c) z (htc hz) (g c)` using `fun z hz => TopCat.Presheaf.germ_res_apply _ _ _ _ _`. Establish `hK : ∀ z (hz : z ∈ W.basicOpen t), dsK V g z = Ideal.span {W.presheaf.germ (W.basicOpen t) z hz g'}`. Introduce `z hz`. Rewrite using `[gV z hz]`. Conclude with `dsK_eq hg c (htc hz)`.
+
+Take `⟨m, hm⟩` from `exists_pow_mul_mem_span_of_germ_mem hO (ρ s) (ρ a) g' (by`. Introduce `z hz hu`. Rewrite using `[← hK z hz, gU z hz]`. Apply `ha z (hOU hz)` to reduce the goal to its premises. Establish `hu' : IsUnit (W.presheaf.germ U.1 z (hOU hz) s)` using `by rw [← gU z hz]; exact hu`.
+
+Use `first`. Consider the case `exact (Scheme.mem_basicOpen W s z (hOU hz)).mpr hu'`. Consider the case `exact (W.mem_basicOpen s z (hOU hz)).mpr hu'`. Consider the case `simpa [Scheme.mem_basicOpen] using hu')`. Use `⟨m, fun z hz => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hK z hz, ← gU z hz]`. Use `first`. Consider the case `rw [map_mul, map_pow]`. Consider the case `simp only [map_mul, map_pow]`. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.mp hm`.
+
+Rewrite using `[← hy, map_mul]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)`.
+-/
 lemma ds_local (hg : ∀ c c' (x : W) (hx : x ∈ V c) (hx' : x ∈ V c'), ∃ u : (W.presheaf.stalk x)ˣ,
       W.presheaf.germ (V c) x hx (g c) = u * W.presheaf.germ (V c') x hx' (g c'))
     {U : W.affineOpens} (s a : Γ(W, U))

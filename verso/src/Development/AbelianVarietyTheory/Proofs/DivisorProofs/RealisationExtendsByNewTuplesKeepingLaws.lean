@@ -29,11 +29,17 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 N : Type} {A : FamIn 
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.ψ, h.θ, h.sT, h.BS, h.BT, h.ΛS, h.ΛT, h.βS, h.βT, h.vac, h.Pg, h.mu0, h.eta, h.lam, h.delta, h.p, h.q, h.c⟩`.
+-/
 theorem baseOf_ext {B : Base (Vc D j) (Wc D j)} (h : BaseOf R j B) : BaseOf (extR R Y) j B :=
   ⟨h.ψ, h.θ, h.sT, h.BS, h.BT, h.ΛS, h.ΛT, h.βS, h.βT, h.vac, h.Pg, h.mu0, h.eta, h.lam, h.delta, h.p, h.q, h.c⟩
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Use `⟨fun τ h => (fixBase_ext Y j τ).2 h, fun τ ζ Φ Φ' h => ?_, ?_⟩` and prove the remaining obligations. Conclude with `(h)`. Conclude with `(by with_unfolding_all exact ((Ext.refl (T := T) (R := R) (κ := κ) (v₀ := v₀) (O := O) (j := j)).2.2 :))`.
+-/
 theorem ext_ext : Ext T R κ v₀ O j (extR R Y) v₀ (fun i => omExt Y (O i)) := by
   refine ⟨fun τ h => (fixBase_ext Y j τ).2 h, fun τ ζ Φ Φ' h => ?_, ?_⟩
   · exact (h)
@@ -43,6 +49,11 @@ end
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `h1 _ _ h4 h5 D G _ _ Pl0 T0 A T _ R F κ v₀ O ph j B hH hL N _ χ xi Q xiR hV hi hn hQ`. Use `obt ⟨hC, hfin, ⟨hfw⟩, hio, hg, hp, hph, hB⟩ := hL`. Set `V : NewLev D N` to `⟨χ, xi, Q, xiR⟩`. Establish `hL' : (extL R.toLevCh V).Is (.inl A.μ0)` using `extL_is hC.lev hV hi hn hQ`. Use `obt ⟨X, Y0, h0⟩ := fam_stage (GlobalTheory.SideLevel.sideReal_moreLevel) hC hL' hV`.
+
+Use `obt ⟨Y, hC', hT⟩ := core_ext h4 GlobalTheory.HcPort.print_harishChandraModules h1 h5 (GlobalTheory.Chain.ParOfNodeGap.chainPar_of_nodeGap D hH.nodeGap) hC hL' Y0 h0`. Establish `hg' : QGuard (extR R Y)` using `⟨Sum.rec hg.1 fun n => (hV n).half, Sum.rec hg.2 fun n => (hV n).guard⟩`. Conclude with `⟨T0 ⊕ N, extA A X, extR R Y, extF F X, v₀, fun i => omExt Y (O i), ⟨hC', inferInstance, ⟨fwExt Y hfw⟩, ioExt_ext R Y hio, hg', omPins_ext Y hT hp, phaseTie_ext Y hph, baseOf_ext Y hB⟩, ext_ext Y, fun n => ⟨.inr n, rfl, rfl⟩⟩`.
+-/
 theorem extend_tuples : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt →
   GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.CasselmanWallach →
   ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} (T : CoreJ D)

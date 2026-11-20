@@ -17,11 +17,17 @@ noncomputable section
 
 namespace GlobalTheory.ScalW.Conj
 
+/- English proof (translation)
+Use `conv_lhs => rw [← h]`. Rewrite using `[Matrix.mulVec_mulVec, Formalism.L2.SG.PoincareInHH.Cut.fmat_inv_mul X, Matrix.one_mulVec]`.
+-/
 theorem fixInv {D : D7} (X : HidaSetting D) (u : D.what₂.Word) (v : VA X.B.I)
     (h : X.B.I.fmat (X.xu u) *ᵥ v = v) : X.B.I.fmat (X.xu u)⁻¹ *ᵥ v = v := by
   conv_lhs => rw [← h]
   rw [Matrix.mulVec_mulVec, Formalism.L2.SG.PoincareInHH.Cut.fmat_inv_mul X, Matrix.one_mulVec]
 
+/- English proof (translation)
+Introduce `D X u y`. Establish `hE : ∀ a, X.B.I.fmat (X.xu u)⁻¹ *ᵥ GlobalTheory.ScalW.eV X a = GlobalTheory.ScalW.eV X a` using `fun a => fixInv X u _ (X.xu_fix u a).1`. Establish `hF : ∀ a, X.B.I.fmat (X.xu u)⁻¹ *ᵥ GlobalTheory.ScalW.fV X a = GlobalTheory.ScalW.fV X a` using `fun a => fixInv X u _ (X.xu_fix u a).2`. Simplify using `only [GlobalTheory.ScalW.prj, GlobalTheory.St.G.FrameClose.hA_move, hE, hF, Matrix.mulVec_sub, Matrix.mulVec_add, Matrix.mulVec_sum, Matrix.mulVec_smul]`.
+-/
 theorem prj_conj : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word) (y : VA X.B.I), X.B.I.fmat (X.xu u)⁻¹ *ᵥ GlobalTheory.ScalW.prj X u (X.B.I.fmat (X.xu u) *ᵥ y) = ∑ a, hA X.B.I (GlobalTheory.ScalW.fV X a) y • GlobalTheory.ScalW.eV X a + ∑ a, hA X.B.I (GlobalTheory.ScalW.eV X a) y • GlobalTheory.ScalW.fV X a - divN X.B.I (D.mem u).A.T (hA X.B.I (X.B.I.fmat (X.xu u)⁻¹ *ᵥ GlobalTheory.ScalW.zV X u) y) • (X.B.I.fmat (X.xu u)⁻¹ *ᵥ GlobalTheory.ScalW.zV X u) := by
   intro D X u y
   have hE : ∀ a, X.B.I.fmat (X.xu u)⁻¹ *ᵥ GlobalTheory.ScalW.eV X a = GlobalTheory.ScalW.eV X a :=

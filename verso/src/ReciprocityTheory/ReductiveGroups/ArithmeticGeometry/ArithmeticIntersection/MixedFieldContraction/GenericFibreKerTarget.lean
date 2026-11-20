@@ -20,6 +20,9 @@ def IsPullHerm (κ : K → K') (v : (Σ k, ι k) → (Σ k', ι' k')) (A : HermL
     Prop :=
   A'.a = pullDeg κ A.a ∧ ∀ z' : (Σ k', ι' k') → ℂ, A'.h z' = A.h fun p => z' (v p)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Function.injective_id, Function.injective_id, fun _ => rfl, fun q _ => ⟨q, rfl⟩⟩`.
+-/
 theorem isBlockMap_id : IsBlockMap (ι := ι) (ι' := ι) id id :=
   ⟨Function.injective_id, Function.injective_id, fun _ => rfl, fun q _ => ⟨q, rfl⟩⟩
 
@@ -77,6 +80,11 @@ def inlV : (Σ k, ι k) → (Σ k, Sum.elim ι ι₂ k) := fun p => ⟨Sum.inl p
 
 def inrV : (Σ k, ι₂ k) → (Σ k, Sum.elim ι ι₂ k) := fun p => ⟨Sum.inr p.1, p.2⟩
 
+/- English proof (translation)
+Use `⟨Sum.inl_injective, ?_, fun _ => rfl, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨k, i⟩ ⟨k', i'⟩ h`. Consider the cases of `h`. Both sides reduce to the same expression. Introduce and unpack `⟨k', i⟩ ⟨k, rfl⟩`.
+
+Conclude with `⟨⟨k, i⟩, rfl⟩`.
+-/
 theorem isBlockMap_inl : IsBlockMap Sum.inl (inlV (ι := ι) (ι₂ := ι₂)) := by
   refine ⟨Sum.inl_injective, ?_, fun _ => rfl, ?_⟩
   · rintro ⟨k, i⟩ ⟨k', i'⟩ h
@@ -85,6 +93,11 @@ theorem isBlockMap_inl : IsBlockMap Sum.inl (inlV (ι := ι) (ι₂ := ι₂)) :
   · rintro ⟨k', i⟩ ⟨k, rfl⟩
     exact ⟨⟨k, i⟩, rfl⟩
 
+/- English proof (translation)
+Use `⟨Sum.inr_injective, ?_, fun _ => rfl, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨k, i⟩ ⟨k', i'⟩ h`. Consider the cases of `h`. Both sides reduce to the same expression. Introduce and unpack `⟨k', i⟩ ⟨k, rfl⟩`.
+
+Conclude with `⟨⟨k, i⟩, rfl⟩`.
+-/
 theorem isBlockMap_inr : IsBlockMap Sum.inr (inrV (ι := ι) (ι₂ := ι₂)) := by
   refine ⟨Sum.inr_injective, ?_, fun _ => rfl, ?_⟩
   · rintro ⟨k, i⟩ ⟨k', i'⟩ h
@@ -125,6 +138,11 @@ def blkOf (b : Fin 2) : Unit → Fin 2 := fun _ => b
 
 def blkV (κ : Type*) (b : Fin 2) : (Σ _ : Unit, κ) → (Σ _ : Fin 2, κ) := fun p => ⟨b, p.2⟩
 
+/- English proof (translation)
+Use `⟨fun _ _ _ => Subsingleton.elim _ _, ?_, fun _ => rfl, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨u, i⟩ ⟨u', i'⟩ h`. Consider the cases of `u`. Consider the cases of `u'`. Consider the cases of `h`.
+
+Both sides reduce to the same expression. Introduce and unpack `⟨k', i⟩ ⟨u, rfl⟩`. Conclude with `⟨⟨u, i⟩, rfl⟩`.
+-/
 theorem isBlockMap_blkV (κ : Type*) (b : Fin 2) :
     IsBlockMap (ι := fun _ : Unit => κ) (ι' := fun _ : Fin 2 => κ) (blkOf b) (blkV κ b) := by
   refine ⟨fun _ _ _ => Subsingleton.elim _ _, ?_, fun _ => rfl, ?_⟩

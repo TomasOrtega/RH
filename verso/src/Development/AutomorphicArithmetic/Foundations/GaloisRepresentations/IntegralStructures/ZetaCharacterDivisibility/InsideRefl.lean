@@ -29,6 +29,9 @@ def Covers (r : Γ →* GL (Fin a) k) (ρ : Γ →* GL (Fin d) k) : Prop :=
   ∃ (m : ℕ) (B : Matrix (Fin a × Fin m) (Fin d) k), B.rank = d ∧
     ∀ g : Γ, Matrix.kronecker (r g : Matrix (Fin a) (Fin a) k) (1 : Matrix (Fin m) (Fin m) k) * B = B * (ρ g : Matrix (Fin d) (Fin d) k)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, by simp, fun g => by simp⟩`.
+-/
 theorem inside_refl (r : Γ →* GL (Fin a) k) : Inside r r := ⟨1, by simp, fun g => by simp⟩
 
 end Alg
@@ -123,6 +126,9 @@ def PhiOfDiv : Prop :=
     ∀ w : HeightOneSpectrum (𝓞 E), IsSplitAt w → ∀ B, SatU U w B → GenericMul B → PhiKilled ι ρ w a B →
       CrysAt r w ∧ PhiPol ι r w B
 
+/- English proof (translation)
+Introduce `P AI hT A hA O _ _ _ Bw hj σ n`. Unfold `GlobalTheory.CongPhi.phiSum`. Rewrite using `[h P AI hT A hA O Bw hj σ]`.
+-/
 theorem PhiPol.phiAt {ι : Qbar l ≃+* ℂ} {r : G E Ω →* GL (Fin a) (Qbar l)} {w : HeightOneSpectrum (𝓞 E)} {B : Multiset ℂˣ}
     (h : PhiPol ι r w B) : PhiAt ι r w B := by
   intro P AI hT A hA O _ _ _ Bw hj σ n

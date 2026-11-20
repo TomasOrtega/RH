@@ -16,6 +16,15 @@ open GlobalTheory.LiftRows
 
 namespace GlobalTheory.InertEigScalar
 
+/- English proof (translation)
+Establish `h1 : Formalism.HermitianLatticesTheory.conjIdeal (K` using `D.host.E) P.asIdeal = P.asIdeal.map (Formalism.DivisionValues.cO D.host.E) := by`. Unfold `Formalism.HermitianLatticesTheory.conjIdeal`. Use `show _ = Ideal.span _`. Use `congr 1`. Use extensionality with `r`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hr⟩`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `_ = (algebraMap (𝓞 D.host.E) D.host.E r)`.
+
+Rewrite using `[hr]`. Both sides reduce to the same expression. Introduce and unpack `⟨s, hs, rfl⟩`. Conclude with `⟨s, hs, rfl⟩`. Rewrite using `[h1]`.
+
+Conclude with `congrArg HeightOneSpectrum.asIdeal hc`.
+-/
 theorem conjIdeal_eq_of_conjPl {D : D7} (P : Pl D.host.E) (hc : conjPl P = P) :
     Formalism.HermitianLatticesTheory.conjIdeal (K := D.host.E) P.asIdeal = P.asIdeal := by
   have h1 : Formalism.HermitianLatticesTheory.conjIdeal (K := D.host.E) P.asIdeal = P.asIdeal.map (Formalism.DivisionValues.cO D.host.E) := by
@@ -37,6 +46,27 @@ theorem conjIdeal_eq_of_conjPl {D : D7} (P : Pl D.host.E) (hc : conjPl P = P) :
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s _hOk hC _hEx _hH _hPG j c h hh _hN P hP hc d hd`. Establish `hlab` using `(GlobalTheory.T.isSphericalDoubleCosetLabel_iff_decreasing (Vc D j) P d).1 hd`. Take `⟨s', hs2, hsp, hspos, rfl⟩` from `(GlobalTheory.Hk3.labIn_selfDual_iff (Vc D j).rank d).1 ⟨hlab.1, hlab.2.1, hlab.2.2 hc⟩`. Establish `hPg : P ∉ R.Pg` using `fun hm => (hP P (Or.inl hm)).1 rfl`. Establish `hPQ : P ∉ R.Q A3.A.fam.μ0` using `fun hm => (hP P (Or.inr hm)).1 rfl`.
+
+Establish `hfix` using `conjIdeal_eq_of_conjPl P hc`. Establish `hSb : P ∉ R.Sb`. Establish `e : R.Sb = R.Pg` using `hC.allPl`. Rewrite using `[e]`. Conclude with `hPg`.
+
+Establish `hoff : Formalism.IndefR.Bridge.InertOff P (R.Sb : Set (Pl D.host.E))` using `⟨hfix, fun hm => hSb (Finset.mem_coe.1 hm)⟩`. Establish `honto : R.in_onto` using `hC.inert.onto`. Establish `hex : ∃ Q, R.plI Q = P` using `honto P hoff`. Take `⟨Q, hQ⟩` from `hex`. Establish `hQok : Q ∈ A3.okI A3.A.fam.μ0`.
+
+Use `(hC.inert.tie.okI A3.A.fam.μ0 Q).2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hQ]`. Conclude with `hfix`. Rewrite using `[hQ, hC.allPl]`. Simplify using `only [Set.mem_union, Finset.mem_coe]`.
+
+The claim follows by propositional logic. Substitute `hQ` using the available equality. Establish `hLt : R.in_L` using `hC.inert.hL`. Establish `hn` using `hLt j A3.A.fam.μ0`. Take `⟨Comparison₂⟩` from `hn`.
+
+Set `inR' : ↥(A3.okI A3.A.fam.μ0) × List ℕ → Prop` to `fun k => Formalism.L2.Col.InertTypeOk (Vc D j).rank k.2 ∧ R.plI k.1 = R.plI Q`. Set `Tie' : Bridge.HeckeTie (Bridge.ratF (Vc D j)) (R.B.L j A3.A.fam.μ0).pres (A3.heckeLI j A3.A.fam.μ0) inR' (fun k => GlobalTheory.Hk3.IsLabElt (Vc D j) (R.plI k.1) (GlobalTheory.Hk3.labIn (Vc D j).rank k.2)) (fun k => GlobalTheory.Hk3.IsLocElt (Vc D j) (R.plI k.1))` to `{ hx := Comparison₂.hx, hA := Comparison₂.hA, hx_ok := fun i hi => Comparison₂.hx_ok i hi.1, hA_loc := fun i hi => Comparison₂.hA_loc i hi.1, chi_loc := fun i hi => Comparison₂.chi_loc i hi.1, hDC := fun i hi => Comparison₂.hDC i hi.1, op_eq := fun i hi => Comparison₂.op_eq i hi. …`. Set `k : ↥(A3.okI A3.A.fam.μ0) × List ℕ` to `(⟨Q, hQok⟩, s')`. Establish `hk : inR' k` using `⟨⟨hsp, hspos, hs2⟩, rfl⟩`. Establish `hin : ∀ i, inR' i → GlobalTheory.Hk3.Good R.toRealDat A3.A.fam.μ0 (R.plI i.1) ∧ conjPl (R.plI i.1) = R.plI i.1 ∧ (GlobalTheory.Hk3.labIn (Vc D j).rank i.2).Pairwise (fun a b => b ≤ a)`.
+
+Introduce and unpack `⟨Q', t'⟩ ⟨hty, hpl⟩`. Simplify using `only at hpl ⊢`. Rewrite using `[hpl]`. Conclude with `⟨hP, hc, ((GlobalTheory.Hk3.labIn_selfDual_iff _ _).2 ⟨t', hty.2.2, hty.1, hty.2.1, rfl⟩).2.1⟩`. Establish `key` using `(GlobalTheory.InertHeckeLift.inert_lifts R.toRealDat F.lv2 hC.base.lev hC.base.fam hC.base.models j A3.A.fam.μ0 _ (fun k => R.plI k.1) (fun k => GlobalTheory.Hk3.labIn (Vc D j).rank k.2) (A3.heckeLI j A3.A.fam.μ0) inR' hin Tie' k hk).2.2.2 h hh`.
+
+Establish `hK : (R.toCx3 F).KFormL` using `Formalism.IndefR.Links.RealDat3.kFormL_of (F := F) hC.base.models`. Establish `hop : (R.toCx3 F).opLC j A3.A.fam.μ0 (Sum.inl (Sum.inr k)) = Tw.map (twAt D.what₂.embLL A3.A.v0) (h (R.plI Q) (Finsupp.single (GlobalTheory.Hk3.labIn (Vc D j).rank s') 1))`. Apply `LinearMap.ext_on_range (hK j A3.A.fam.μ0).2` to reduce the goal to its premises. Introduce `b`. Rewrite using `[← Formalism.IndefR.Cx.CxData.jL_opL (R.toCx3 F) hK]`.
+
+Use `show Tw.mk (twAt D.what₂.embLL A3.A.v0) (R.jV j A3.A.fam.μ0 (A3.heckeLI j A3.A.fam.μ0 k _)) = Tw.mk (twAt D.what₂.embLL A3.A.v0) (h (R.plI Q) _ (R.jV j A3.A.fam.μ0 _))`. Conclude with `congrArg (Tw.mk (twAt D.what₂.embLL A3.A.v0)) (key _)`. Use `⟨cj (twAt D.what₂.embLL A3.A.v0) (c (Sum.inr k)), fun x hx => ?_⟩` and prove the remaining obligations. Establish `hx' : (R.toCx3 F).opLC j A3.A.fam.μ0 (Sum.inl (Sum.inr k)) x = c (Sum.inr k) • x` using `(Formalism.IndefR.U2.mem_eigPart.1 hx) (Sum.inr k)`. Rewrite `hx'` using `[hop]`.
+
+Conclude with `congrArg (Tw.out (s := twAt D.what₂.embLL A3.A.v0)) hx'`.
+-/
 theorem inert_label_scalar : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) {s : ℕ}, A3.fam3.Ok3 s → R.WeakCharacterisation F → R.toRealDat.ExAt → (∀ j t, (A3.A.fam.L j t).OkH ∧ (A3.liftI j t).InertRationalAdjoint) → R.PGEquiv F → ∀ (j : Fin D.R.m) (c : (A3.liftI j A3.A.fam.μ0).OpIx → ℂ) (h : Pl D.host.E → (List ℤ →₀ ℂ) → Module.End ℂ (R.HV j A3.A.fam.μ0).H), GlobalTheory.Hk3.IsOpsV R.toRealDat j A3.A.fam.μ0 h → GlobalTheory.Hk3.NormalFam (GlobalTheory.Hk3.Good R.toRealDat A3.A.fam.μ0) h → ∀ (P : Pl D.host.E), GlobalTheory.Hk3.Good R.toRealDat A3.A.fam.μ0 P → conjPl P = P → ∀ d, GlobalTheory.Hk3.IsLab (Vc D j) P d → ∃ a : ℂ, ∀ x ∈ U2.eigPart (U2.liftHeckeOperators A3 (R.toCx3 F) j) c, h P (Finsupp.single d 1) (Tw.out (s := twAt D.what₂.embLL A3.A.v0) x) = a • (Tw.out (s := twAt D.what₂.embLL A3.A.v0) x : (R.HV j A3.A.fam.μ0).H) := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s _hOk hC _hEx _hH _hPG j c h hh _hN P hP hc d hd
   have hlab := (GlobalTheory.T.isSphericalDoubleCosetLabel_iff_decreasing (Vc D j) P d).1 hd

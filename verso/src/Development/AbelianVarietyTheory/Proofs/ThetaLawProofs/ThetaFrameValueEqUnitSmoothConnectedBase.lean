@@ -26,6 +26,11 @@ namespace GlobalTheory.RootConst
 
 open GlobalTheory.AffinePoints
 
+/- English proof (translation)
+Establish `hc` using `isConnected_basicOpen_complexPoints_of_dense (exists_isConnected_principalOpen noetherNormalization_primitive (isConnected_unramified_cover_of_irreducible isConnected_and_dense_compl_hypersurface exists_mvPolynomial_of_poly_bound_off_hypersurface)) (principalOpen_dense_complexPoi …`. Use `⟨(isEmbedding_coe (R := ℂ) (A := S) (C := ℂ)).isInducing.isPreconnected_image.1 ?_⟩` and prove the remaining obligations. Use `hc.isPreconnected using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨y, -, rfl⟩`. Conclude with `⟨_, rfl, by simp⟩`. Introduce and unpack `⟨φ, rfl, -⟩`. Conclude with `⟨φ, trivial, rfl⟩`.
+-/
 theorem preconnectedSpace_algHom (S : Type) [CommRing S] [IsDomain S] [Algebra ℂ S]
     [Algebra.FiniteType ℂ S] : PreconnectedSpace (S →ₐ[ℂ] ℂ) := by
   have hc := isConnected_basicOpen_complexPoints_of_dense
@@ -43,6 +48,9 @@ theorem preconnectedSpace_algHom (S : Type) [CommRing S] [IsDomain S] [Algebra �
   · rintro ⟨φ, rfl, -⟩
     exact ⟨φ, trivial, rfl⟩
 
+/- English proof (translation)
+Use `RingHom.ker_isPrime p` as an intermediate fact. Take `⟨s, hs, J, K, _, _, ⟨Q⟩⟩` from `Algebra.IsSmoothAt.exists_notMem_isStandardSmooth ℂ (RingHom.ker p)`. Establish `H : Algebra.IsStandardSmoothOfRelativeDimension Q.dimension ℂ (Localization.Away s)` using `Q.isStandardSmoothOfRelativeDimension rfl`. Conclude with `⟨Q.dimension, exists_isAlgebraicChart_of_away s (Localization.Away s) p hs⟩`.
+-/
 theorem exists_chart (S : Type) [CommRing S] [Algebra ℂ S] [Algebra.Smooth ℂ S] (p : S →ₐ[ℂ] ℂ) :
     ∃ (d : ℕ) (e : OpenPartialHomeomorph (S →ₐ[ℂ] ℂ) (Fin d → ℂ)),
       IsAlgebraicChart e ∧ p ∈ e.source := by
@@ -53,6 +61,11 @@ theorem exists_chart (S : Type) [CommRing S] [Algebra ℂ S] [Algebra.Smooth ℂ
     Q.isStandardSmoothOfRelativeDimension rfl
   exact ⟨Q.dimension, exists_isAlgebraicChart_of_away s (Localization.Away s) p hs⟩
 
+/- English proof (translation)
+Use `continuous_iff_continuousAt.2 fun p => ?_` and prove the remaining obligations. Take `⟨d, e, he, hp⟩` from `exists_chart S p`. Establish `h1` using `h d e.target e.symm e.open_target fun a => (he.analyticOnNhd a).differentiableOn`. Establish `h2 : ContinuousOn t e.source` using `(h1.comp e.continuousOn e.mapsTo).congr fun q hq => by`. Simplify using `only [Function.comp_apply, e.left_inv hq]`.
+
+Conclude with `h2.continuousAt (e.open_source.mem_nhds hp)`.
+-/
 theorem continuous_of_holomorphic_families (S : Type) [CommRing S] [Algebra ℂ S]
     [Algebra.Smooth ℂ S] (t : (S →ₐ[ℂ] ℂ) → ℂ)
     (h : ∀ (m : ℕ) (B : Set (Fin m → ℂ)) (s : (Fin m → ℂ) → (S →ₐ[ℂ] ℂ)), IsOpen B →
@@ -66,6 +79,9 @@ theorem continuous_of_holomorphic_families (S : Type) [CommRing S] [Algebra ℂ 
       simp only [Function.comp_apply, e.left_inv hq]
   exact h2.continuousAt (e.open_source.mem_nhds hp)
 
+/- English proof (translation)
+Establish `hfin : {z : ℂ | z ^ N = 1}.Finite`. Use `(Polynomial.nthRootsFinset N (1 : ℂ)).finite_toSet.subset fun z hz => ?_` and prove the remaining obligations. Conclude with `Finset.mem_coe.2 ((Polynomial.mem_nthRootsFinset hN 1).2 hz)`. Conclude with `isPreconnected_univ.constant_of_mapsTo hfin.isDiscrete hu.continuousOn (fun z _ => h z) trivial trivial`.
+-/
 theorem eq_of_pow_eq_one {X : Type*} [TopologicalSpace X] [PreconnectedSpace X] {u : X → ℂ}
     (hu : Continuous u) {N : ℕ} (hN : 1 ≤ N) (h : ∀ x, u x ^ N = 1) (x y : X) : u x = u y := by
   have hfin : {z : ℂ | z ^ N = 1}.Finite := by
@@ -74,6 +90,11 @@ theorem eq_of_pow_eq_one {X : Type*} [TopologicalSpace X] [PreconnectedSpace X] 
   exact isPreconnected_univ.constant_of_mapsTo hfin.isDiscrete hu.continuousOn
     (fun z _ => h z) trivial trivial
 
+/- English proof (translation)
+Introduce `hL hT hI S _ _ _ _ y N r t s₀ hN hx hpow h0 s`. Use `preconnectedSpace_algHom S` as an intermediate fact. Establish `ht : Continuous t` using `continuous_of_holomorphic_families S t fun m B σ hB hσ => GlobalTheory.T.continuousOn_thetaFrameValue_holomorphicFamily hL hT hI S y m B σ (fun p => t (σ p)) hB hσ fun p _ => hx (σ p)`. Establish `hr : ∀ q : S →ₐ[ℂ] ℂ, q r ≠ 0` using `fun q => (r.isUnit.map q).ne_zero`. Establish `hu : Continuous fun q : S →ₐ[ℂ] ℂ => t q / q r` using `ht.div (continuous_eval _) hr`.
+
+Establish `h1` using `eq_of_pow_eq_one hu hN (fun q => by rw [div_pow, hpow, div_self (pow_ne_zero N (hr q))]) s s₀`. Rewrite `h1` using `[h0, div_self (hr s₀)]`. Conclude with `(div_eq_one_iff_eq (hr s)).1 h1`.
+-/
 theorem value_eq_unit_of_pow_eq : Out.Laws → ThetaUnifAV → Key.Chi.InversionStatement → ∀ (S : Type) [CommRing S] [IsDomain S] [Algebra ℂ S] [Algebra.Smooth ℂ S] (y : KeyIn S) (N : ℕ) (r : Sˣ) (t : (S →ₐ[ℂ] ℂ) → ℂ) (s₀ : S →ₐ[ℂ] ℂ), 1 ≤ N → (∀ s, ∃ x : KeyIn ℂ, KeyPB x y s.toRingHom ∧ (∃ (τ M : Matrix (Fin x.P.g) (Fin x.P.g) ℂ) (a b : Fin x.P.g → ℂ) (c : ℂ), charHalf _ a b ∧ c ≠ 0 ∧ NormalAt x τ M a b c ∧ t s = M.det ^ 4 / c ^ 8)) → (∀ s, t s ^ N = s r ^ N) → t s₀ = s₀ r → ∀ s, t s = s r := by
   intro hL hT hI S _ _ _ _ y N r t s₀ hN hx hpow h0 s
   have := preconnectedSpace_algHom S

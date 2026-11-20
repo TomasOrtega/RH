@@ -9,6 +9,17 @@ open scoped InnerProductSpace
 
 namespace Formalism.L2.GlobalTheoryTheory.TraceIntegrality.LT
 
+/- English proof (translation)
+Use `set K := Submodule.span ℝ {l : W | l ∈ Λ ∧ ‖l‖ ≤ 3 * μ} with hK`. Assume the negation of the conclusion as `hne`. Establish `hKo : Kᗮ ≠ ⊥`. Introduce `h`. Conclude with `hne (Submodule.orthogonal_eq_bot_iff.mp h)`.
+
+Take `⟨u, hu, hu0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hKo`. Establish `hun : 0 < ‖u‖` using `norm_pos_iff.mpr hu0`. Use `set x : W := (2 * μ / ‖u‖) • u with hx`. Establish `hxn : ‖x‖ = 2 * μ`. Rewrite using `[hx, norm_smul, Real.norm_of_nonneg (by positivity)]`.
+
+Clear the denominators using the available nonvanishing facts. Establish `hxK : x ∈ Kᗮ` using `Submodule.smul_mem _ _ hu`. Take `⟨l, hl, hd⟩` from `hcov x`. Establish `hln : ‖l‖ ≤ 3 * μ`. Establish `: ‖l‖ ≤ ‖x‖ + ‖x - l‖`.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlK : l ∈ K` using `Submodule.subset_span ⟨hl, hln⟩`. Establish `horth : ⟪l, x⟫_ℝ = 0` using `Submodule.inner_right_of_mem_orthogonal hlK hxK`. Establish `hsq : ‖x - l‖ ^ 2 = ‖x‖ ^ 2 + ‖l‖ ^ 2`.
+
+Rewrite using `[@norm_sub_sq_real, real_inner_comm, horth]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : ‖x - l‖ ^ 2 ≤ μ ^ 2` using `pow_le_pow_left₀ (norm_nonneg _) hd 2`. Use polynomial arithmetic with `[sq_nonneg ‖l‖]`.
+-/
 theorem span_short_of_cover {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℝ W] [FiniteDimensional ℝ W]
     (Λ : Submodule ℤ W) (μ : ℝ) (hμ : 0 < μ) (hcov : ∀ x : W, ∃ l ∈ Λ, ‖x - l‖ ≤ μ) :
     Submodule.span ℝ {l : W | l ∈ Λ ∧ ‖l‖ ≤ 3 * μ} = ⊤ := by
@@ -38,6 +49,11 @@ theorem span_short_of_cover {W : Type} [NormedAddCommGroup W] [InnerProductSpace
   have h1 : ‖x - l‖ ^ 2 ≤ μ ^ 2 := pow_le_pow_left₀ (norm_nonneg _) hd 2
   nlinarith [sq_nonneg ‖l‖]
 
+/- English proof (translation)
+Establish `hμ : 0 < (finrank ℝ W : ℝ) / 2 / lam + 1` using `by positivity`. Use `span_short_of_cover Λ _ hμ fun x ↦ ?_` and prove the remaining obligations. Take `⟨l, hl, hle⟩` from `transference_covering W Λ lam hlam hd x`. Use `⟨l, hl, ?_⟩` and prove the remaining obligations. Rewrite `hle` using `[← le_div_iff₀ hlam]`.
+
+Establish `: (finrank ℝ W : ℝ) / 2 / lam = (finrank ℝ W : ℝ) / 2 / lam` using `rfl`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem span_short_of_dual {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℝ W] [FiniteDimensional ℝ W]
     (Λ : Submodule ℤ W) [DiscreteTopology Λ] [IsZLattice ℝ Λ] (lam : ℝ) (hlam : 0 < lam)
     (hd : ∀ y : W, y ≠ 0 → (∀ x ∈ Λ, ∃ n : ℤ, ⟪x, y⟫_ℝ = (n : ℝ)) → lam ≤ ‖y‖) :

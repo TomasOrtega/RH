@@ -11,6 +11,9 @@ open Classical
 set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 1600000
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.BaseCmp.liftKer_of_ne | exact GlobalTheory.BaseCmp.liftKer_of_ne | (intros; apply GlobalTheory.BaseCmp.liftKer_of_ne <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.tameKernel_vector_unit_mul_dilated_flat : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (Ks : Type) [Field Ks]
     [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F →
     QGuard R → ∀ (i : Fin D.R.m), VStd D i → ∀ (ξ : Formalism.L2.Host.HChar D.host.E) (χ : (AE D)ˣ →* Circle)

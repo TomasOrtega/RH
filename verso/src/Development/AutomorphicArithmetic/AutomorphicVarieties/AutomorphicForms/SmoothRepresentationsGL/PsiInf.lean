@@ -8,6 +8,11 @@ open UpperTheory.V UpperTheory.V.Af.Smo
 open UpperTheory.V.TR (Rinf Lie chart infGL pInf sInf toL lmul oneL invSet CuspSub)
 open scoped SchwartzMap FourierTransform RealInnerProductSpace ContDiff Topology
 
+/- English proof (translation)
+Introduce `E _ _ _ x`. Establish `h : GroundTheory.Global.adelicChar E (sInf E x) = 𝐞 (-∑ v, x v)`. Establish `e : sInf E x = GroundTheory.Global.infiniteAdeleInl (TR.infEq E x)` using `rfl`. Rewrite using `[e, GroundTheory.Global.adelicChar_infiniteAdeleInl, ← Finset.sum_neg_distrib, GroundTheory.Global.addChar_map_finsetSum]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[GroundTheory.Global.infiniteAdelicChar_apply_of_isReal (IsTotallyReal.isReal w)]`. Establish `e2 : InfinitePlace.Completion.extensionEmbeddingOfIsReal (IsTotallyReal.isReal w) (TR.infEq E x w) = x w` using `(InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal w)).apply_symm_apply (x w)`. Rewrite using `[e2]`. Conclude with `congrArg (fun z : Circle => (z : ℂ)) h`.
+-/
 theorem UpperTheory.V.Af.Smo.psiInf :
     UpperTheory.V.Af.Smo.PsiInf := by
   intro E _ _ _ x

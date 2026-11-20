@@ -13,6 +13,11 @@ section Index
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
   [Finite (IsLocalRing.ResidueField O)]
 
+/- English proof (translation)
+Establish `hl` using `GlobalTheory.length_quotient_range_mulVecLin_eq_addVal_det A`. Establish `hne : Module.length O ((Fin r → O) ⧸ LinearMap.range A.mulVecLin) ≠ ⊤`. Rewrite using `[hl, ne_eq, IsDiscreteValuationRing.addVal_eq_top_iff]`. Conclude with `hA`. Establish `hfl` using `Module.length_ne_top_iff.mp hne`.
+
+Take `⟨n, hn, hc⟩` from `GlobalTheory.exists_length_eq_and_card_eq_pow_of_isFiniteLength O _ hfl`. Conclude with `⟨n, by rw [← hl, hn], hc⟩`.
+-/
 theorem index_range_eq_pow {r : ℕ} (A : Matrix (Fin r) (Fin r) O) (hA : A.det ≠ 0) :
     ∃ n : ℕ, IsDiscreteValuationRing.addVal O A.det = n ∧
       (LinearMap.range A.mulVecLin).toAddSubgroup.index =
@@ -25,12 +30,18 @@ theorem index_range_eq_pow {r : ℕ} (A : Matrix (Fin r) (Fin r) O) (hA : A.det 
   obtain ⟨n, hn, hc⟩ := GlobalTheory.exists_length_eq_and_card_eq_pow_of_isFiniteLength O _ hfl
   exact ⟨n, by rw [← hl, hn], hc⟩
 
+/- English proof (translation)
+Take `⟨n, -, hc⟩` from `index_range_eq_pow A hA`. Rewrite using `[hc]`. Conclude with `pow_ne_zero _ Nat.card_pos.ne'`.
+-/
 theorem index_range_ne_zero {r : ℕ} (A : Matrix (Fin r) (Fin r) O) (hA : A.det ≠ 0) :
     (LinearMap.range A.mulVecLin).toAddSubgroup.index ≠ 0 := by
   obtain ⟨n, -, hc⟩ := index_range_eq_pow A hA
   rw [hc]
   exact pow_ne_zero _ Nat.card_pos.ne'
 
+/- English proof (translation)
+Take `⟨n, hn, hc⟩` from `index_range_eq_pow A hA`. Take `⟨m, hm, hd⟩` from `index_range_eq_pow A.transpose (by rwa [Matrix.det_transpose])`. Rewrite `hm` using `[Matrix.det_transpose, hn]`. Establish `: n = m` using `by exact_mod_cast hm`. Rewrite using `[hc, hd, this]`.
+-/
 theorem index_range_transpose {r : ℕ} (A : Matrix (Fin r) (Fin r) O) (hA : A.det ≠ 0) :
     (LinearMap.range A.transpose.mulVecLin).toAddSubgroup.index =
       (LinearMap.range A.mulVecLin).toAddSubgroup.index := by
@@ -40,6 +51,21 @@ theorem index_range_transpose {r : ℕ} (A : Matrix (Fin r) (Fin r) O) (hA : A.d
   have : n = m := by exact_mod_cast hm
   rw [hc, hd, this]
 
+/- English proof (translation)
+Establish `hfin : Finite ((Fin r → O) ⧸ M)` using `Nat.finite_of_card_ne_zero hM`. Establish `hinf : Infinite O`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_infinite_iff_finite]`. Conclude with `IsDiscreteValuationRing.not_isField O (Finite.isField_of_domain O)`.
+
+Establish `htors : Module.finrank O ((Fin r → O) ⧸ M) = 0`. Apply `Module.finrank_eq_zero_of_rank_eq_zero` to reduce the goal to its premises. Rewrite using `[rank_eq_zero_iff]`. Introduce `x`. Take `⟨a, b, hab, he⟩` from `Finite.exists_ne_map_eq_of_infinite (fun c : O => c • x)`.
+
+Conclude with `⟨a - b, sub_ne_zero.mpr hab, by rw [sub_smul, he, sub_self]⟩`. Establish `hrank : Module.finrank O M = r`. Use `Submodule.finrank_quotient_add_finrank M` as an intermediate fact. Simplify `this` using `[htors]`. Set `b` to `Module.finBasisOfFinrankEq O M hrank`.
+
+Set `B : Matrix (Fin r) (Fin r) O` to `Matrix.of fun i j => (b j : Fin r → O) i`. Establish `hB : LinearMap.range B.mulVecLin = M`. Rewrite using `[Matrix.range_mulVecLin]`. Establish `h1 : Set.range B.col = Subtype.val '' (Set.range b)`. Use extensionality with `v`.
+
+Simplify using `only [Set.mem_range, Set.mem_image, exists_exists_eq_and]`. Both sides reduce to the same expression. Establish `h2 : Submodule.span O (Subtype.val '' (Set.range b)) = (Submodule.span O (Set.range b)).map M.subtype` using `(Submodule.map_span M.subtype _).symm`. Rewrite using `[h1, h2, b.span_eq, Submodule.map_top, Submodule.range_subtype]`. Use `⟨B, ?_, hB⟩` and prove the remaining obligations.
+
+Introduce `h0`. Establish `hl` using `GlobalTheory.length_quotient_range_mulVecLin_eq_addVal_det B`. Rewrite `hl` using `[h0, IsDiscreteValuationRing.addVal_zero, hB]`. Take `⟨n, hn, -⟩` from `GlobalTheory.exists_length_eq_and_card_eq_pow O ((Fin r → O) ⧸ M)`. Rewrite `hl` using `[hn]`.
+
+Conclude with `ENat.coe_ne_top n hl`.
+-/
 theorem exists_matrix_of_index_ne_zero {r : ℕ} (M : Submodule O (Fin r → O))
     (hM : M.toAddSubgroup.index ≠ 0) :
     ∃ B : Matrix (Fin r) (Fin r) O, B.det ≠ 0 ∧ LinearMap.range B.mulVecLin = M := by
@@ -95,13 +121,28 @@ abbrev lat (X : Matrix (Fin r) (Fin r) K) : Submodule O (Fin r → K) :=
 
 variable {O K}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem incl_apply (x : Fin r → O) (i : Fin r) : incl O K r x i = algebraMap O K (x i) := rfl
 
+/- English proof (translation)
+Introduce `x y h`. Use function extensionality and compare the values at `i`. Conclude with `IsFractionRing.injective O K (congrFun h i)`.
+-/
 theorem incl_injective : Function.Injective (incl O K r) := by
   intro x y h
   funext i
   exact IsFractionRing.injective O K (congrFun h i)
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Use `⟨Pi.single i 1, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`.
+
+Rewrite using `[incl_apply, Pi.basisFun_apply]`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne h]`.
+
+Introduce and unpack `_ ⟨x, rfl⟩`. Establish `: incl O K r x = ∑ i, x i • (Pi.basisFun K (Fin r)) i`. Use function extensionality and compare the values at `j`. Simplify using `[incl_apply, Finset.sum_apply, Pi.single_apply, Algebra.smul_def]`. Rewrite using `[this]`.
+
+Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+-/
 theorem stdLat_eq_range : stdLat O K r = LinearMap.range (incl O K r) := by
   apply le_antisymm
   · rw [Submodule.span_le]
@@ -120,6 +161,11 @@ theorem stdLat_eq_range : stdLat O K r = LinearMap.range (incl O K r) := by
     exact Submodule.sum_mem _ fun i _ =>
       Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
 
+/- English proof (translation)
+Rewrite using `[lat, stdLat_eq_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨x, rfl⟩, rfl⟩`. Conclude with `⟨x, rfl⟩`. Introduce and unpack `⟨x, rfl⟩`.
+
+Conclude with `⟨_, ⟨x, rfl⟩, rfl⟩`.
+-/
 theorem mem_lat {X : Matrix (Fin r) (Fin r) K} {v : Fin r → K} :
     v ∈ lat O K X ↔ ∃ x : Fin r → O, X.mulVec (incl O K r x) = v := by
   rw [lat, stdLat_eq_range]
@@ -129,12 +175,26 @@ theorem mem_lat {X : Matrix (Fin r) (Fin r) K} {v : Fin r → K} :
   · rintro ⟨x, rfl⟩
     exact ⟨_, ⟨x, rfl⟩, rfl⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Rewrite using `[incl_apply]`. Conclude with `(RingHom.map_mulVec (algebraMap O K) A x i).symm`.
+-/
 theorem map_mulVec_incl (A : Matrix (Fin r) (Fin r) O) (x : Fin r → O) :
     (A.map (algebraMap O K)).mulVec (incl O K r x) = incl O K r (A.mulVec x) := by
   funext i
   rw [incl_apply]
   exact (RingHom.map_mulVec (algebraMap O K) A x i).symm
 
+/- English proof (translation)
+Establish `hc : ∀ j, ∃ y : Fin r → O, incl O K r y = X.mulVec (Pi.single j 1)`. Introduce `j`. Establish `h1 : X.mulVec (Pi.single j 1) ∈ lat O K X`. Rewrite using `[mem_lat]`. Use `⟨Pi.single j 1, ?_⟩` and prove the remaining obligations.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[incl_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne hij]`. Establish `h2` using `h h1`. Rewrite `h2` using `[stdLat_eq_range]`. Conclude with `h2`.
+
+Use `choose y hy using hc`. Use `⟨Matrix.of fun i j => y j i, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Use `congrFun (hy j) i` as an intermediate fact. Rewrite `this` using `[incl_apply]`.
+
+Simplify using `using this`.
+-/
 theorem exists_int_matrix (X : Matrix (Fin r) (Fin r) K) (h : lat O K X ≤ stdLat O K r) :
     ∃ X₀ : Matrix (Fin r) (Fin r) O, X₀.map (algebraMap O K) = X := by
   classical
@@ -167,6 +227,9 @@ variable {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
   [Field K] [Algebra O K] [IsFractionRing O K] {r : ℕ}
 
 omit [IsDiscreteValuationRing O] in
+/- English proof (translation)
+Establish `h : (stdLat O K r).toAddSubgroup = (⊤ : AddSubgroup (Fin r → O)).map (incl O K r).toAddMonoidHom`. Use extensionality with `v`. Rewrite using `[Submodule.mem_toAddSubgroup, stdLat_eq_range]`. Simplify using the standard rewrite rules. Rewrite using `[h, ← AddSubgroup.relIndex_comap, AddSubgroup.relIndex_top_right]`.
+-/
 theorem relIndex_stdLat (H : AddSubgroup (Fin r → K)) :
     H.relIndex (stdLat O K r).toAddSubgroup =
       (H.comap (incl O K r).toAddMonoidHom).index := by
@@ -178,6 +241,9 @@ theorem relIndex_stdLat (H : AddSubgroup (Fin r → K)) :
   rw [h, ← AddSubgroup.relIndex_comap, AddSubgroup.relIndex_top_right]
 
 omit [IsDiscreteValuationRing O] in
+/- English proof (translation)
+Establish `h1 : (B.map (algebraMap O K)).det = algebraMap O K B.det` using `(RingHom.map_det (algebraMap O K) B).symm`. Rewrite using `[h1]`. Conclude with `fun h => hB (IsFractionRing.injective O K (by simpa using h))`.
+-/
 theorem det_map_ne_zero (B : Matrix (Fin r) (Fin r) O) (hB : B.det ≠ 0) :
     (B.map (algebraMap O K)).det ≠ 0 := by
   have h1 : (B.map (algebraMap O K)).det = algebraMap O K B.det :=
@@ -186,6 +252,29 @@ theorem det_map_ne_zero (B : Matrix (Fin r) (Fin r) O) (hB : B.det ≠ 0) :
   exact fun h => hB (IsFractionRing.injective O K (by simpa using h))
 
 omit [IsDiscreteValuationRing O] in
+/- English proof (translation)
+Establish `hGi : ((g⁻¹ : GL (Fin r) K) : Matrix (Fin r) (Fin r) K) * (g : Matrix (Fin r) (Fin r) K) = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `hGG : (g : Matrix (Fin r) (Fin r) K) * ((g⁻¹ : GL (Fin r) K) : Matrix (Fin r) (Fin r) K) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Generalize the expression as in `hG : (g : Matrix (Fin r) (Fin r) K) = G at *`.
+
+Generalize the expression as in `hGinv : ((g⁻¹ : GL (Fin r) K) : Matrix (Fin r) (Fin r) K) = Gi at *`. Establish `hle : lat O K (Gi * B.map (algebraMap O K)) ≤ stdLat O K r`. Introduce `v hv`. Take `⟨x, rfl⟩` from `mem_lat.1 hv`. Establish `h1 : B.mulVec x ∈ (lat O K G).comap (incl O K r)`.
+
+Rewrite using `[h]`. Conclude with `⟨x, rfl⟩`. Take `⟨y, hy⟩` from `mem_lat.1 (Submodule.mem_comap.1 h1)`. Rewrite using `[stdLat_eq_range]`. Use `⟨y, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Matrix.mulVec_mulVec, map_mulVec_incl, ← hy, Matrix.mulVec_mulVec, hGi, Matrix.one_mulVec]`. Take `⟨A, hA⟩` from `exists_int_matrix _ hle`. Establish `hdet : A.det ≠ 0`. Introduce `h0`. Establish `h1 : (A.map (algebraMap O K)).det = algebraMap O K A.det` using `(RingHom.map_det (algebraMap O K) A).symm`.
+
+Rewrite `h1` using `[h0, map_zero, hA, Matrix.det_mul]`. Establish `h2 : Gi.det ≠ 0`. Introduce `h3`. Use `congrArg Matrix.det hGi` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h3, zero_mul, Matrix.det_one]`.
+
+Conclude with `zero_ne_one this`. Conclude with `(mul_ne_zero h2 (det_map_ne_zero B hB)) h1`. Use `⟨A, hA, hdet, ?_⟩` and prove the remaining obligations. Establish `hmap : (lat O K G).toAddSubgroup = (stdLat O K r).toAddSubgroup.map G.mulVecLin.toAddMonoidHom`. Use extensionality with `v`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hmap, ← AddSubgroup.relIndex_comap, relIndex_stdLat]`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [AddSubgroup.mem_comap, LinearMap.toAddMonoidHom_coe, Submodule.mem_toAddSubgroup, LinearMap.mem_range, Matrix.mulVecLin_apply]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Rewrite `hx` using `[stdLat_eq_range]`. Take `⟨y, hy⟩` from `hx`. Establish `h1 : y ∈ (lat O K G).comap (incl O K r)`.
+
+Use `Submodule.mem_comap.2 (mem_lat.2 ⟨x, hy.symm⟩)` and prove the remaining obligations. Rewrite `h1` using `[h]`. Take `⟨z, rfl⟩` from `h1`. Use `⟨z, incl_injective (K := K) ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mulVec_incl, hA, ← Matrix.mulVec_mulVec]`.
+
+Rewrite `hy` using `[Matrix.mulVecLin_apply, ← map_mulVec_incl (K := K)]`. Rewrite using `[hy, Matrix.mulVec_mulVec, hGi, Matrix.one_mulVec]`. Introduce and unpack `⟨z, rfl⟩`. Rewrite using `[stdLat_eq_range]`. Use `⟨B.mulVec z, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← map_mulVec_incl, ← map_mulVec_incl, hA, Matrix.mulVec_mulVec, ← mul_assoc, hGG, one_mul]`.
+-/
 theorem exists_dual (B : Matrix (Fin r) (Fin r) O) (hB : B.det ≠ 0) (g : GL (Fin r) K)
     (h : (lat O K (g : Matrix (Fin r) (Fin r) K)).comap (incl O K r) =
       LinearMap.range B.mulVecLin) :
@@ -261,6 +350,19 @@ variable {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 omit [IsDiscreteValuationRing O] in
 
+/- English proof (translation)
+Establish `hcol : ∀ j, ∃ u : Fin r → O, A₀.transpose.mulVec u = A₁.transpose.mulVec (Pi.single j 1)` using `fun j => by`. Take `⟨u, hu⟩` from `hr (LinearMap.mem_range_self A₁.transpose.mulVecLin (Pi.single j 1))`. Conclude with `⟨u, hu⟩`. Use `choose u hu using hcol`. Set `U : Matrix (Fin r) (Fin r) O` to `Matrix.of fun i j => u j i`.
+
+Establish `hU : A₁.transpose = A₀.transpose * U`. Use extensionality with `i j`. Use `congrFun (hu j) i` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_single_one]`. Rewrite using `[Matrix.mul_apply]`.
+
+Simplify `this.symm` using `[Matrix.mulVec, dotProduct, U]`. Establish `hU' : A₁ = U.transpose * A₀`. Rewrite using `[← Matrix.transpose_transpose A₁, hU, Matrix.transpose_mul, Matrix.transpose_transpose]`. Establish `hdetB : IsUnit (B.map (algebraMap O K)).det` using `(det_map_ne_zero B hB).isUnit`. Establish `hmap : ((g₁⁻¹ : GL (Fin r) K) : Matrix (Fin r) (Fin r) K) = U.transpose.map (algebraMap O K) * ((g₀⁻¹ : GL (Fin r) K) : Matrix (Fin r) (Fin r) K)`.
+
+Establish `h2 : ((g₁⁻¹ : GL (Fin r) K) : Matrix (Fin r) (Fin r) K) * B.map (algebraMap O K) = U.transpose.map (algebraMap O K) * ((g₀⁻¹ : GL (Fin r) K) : Matrix (Fin r) (Fin r) K) * B.map (algebraMap O K)`. Rewrite using `[← h₁, hU', Matrix.map_mul, h₀, mul_assoc]`. Establish `h3` using `congrArg (· * (B.map (algebraMap O K))⁻¹) h2`. Simplify `h3` using `only [mul_assoc, Matrix.mul_nonsing_inv _ hdetB, mul_one]`. Establish `hg : (g₀ : Matrix (Fin r) (Fin r) K) = (g₁ : Matrix (Fin r) (Fin r) K) * U.transpose.map (algebraMap O K)`.
+
+Establish `e₁ : (g₁ : Matrix (Fin r) (Fin r) K) * ((g₁⁻¹ : GL (Fin r) K) : Matrix (Fin r) (Fin r) K) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `e₀ : ((g₀⁻¹ : GL (Fin r) K) : Matrix (Fin r) (Fin r) K) * (g₀ : Matrix (Fin r) (Fin r) K) = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hmap, mul_assoc, mul_assoc, e₀, mul_one]`. Introduce `v hv`. Take `⟨x, rfl⟩` from `mem_lat.1 hv`. Use `mem_lat.2 ⟨U.transpose.mulVec x, ?_⟩` and prove the remaining obligations. Rewrite using `[hg, ← Matrix.mulVec_mulVec, map_mulVec_incl]`.
+-/
 theorem lat_le_of_range_transpose_le (B : Matrix (Fin r) (Fin r) O) (hB : B.det ≠ 0)
     (g₀ g₁ : GL (Fin r) K) (A₀ A₁ : Matrix (Fin r) (Fin r) O)
     (h₀ : A₀.map (algebraMap O K) =
@@ -311,6 +413,15 @@ theorem lat_le_of_range_transpose_le (B : Matrix (Fin r) (Fin r) O) (hB : B.det 
 
 variable [Finite (IsLocalRing.ResidueField O)]
 
+/- English proof (translation)
+Use `choose! A hA₁ hA₂ hA₃ using fun g (hg : g ∈ S) => exists_dual B hB g (hS g hg)`. Set `f : GL (Fin r) K → Submodule O (Fin r → O)` to `fun g => LinearMap.range (A g).transpose.mulVecLin`. Establish `hf : Set.InjOn f S` using `fun g hg g' hg' he => by`. Establish `hg₀ : g ∈ S` using `hg`. Establish `hg₁ : g' ∈ S` using `hg'`.
+
+Use `hinj g hg₀ g' hg₁ (le_antisymm ?_ ?_)` and prove the remaining obligations. Conclude with `lat_le_of_range_transpose_le B hB g g' _ _ (hA₁ g hg₀) (hA₁ g' hg₁) he.ge`. Conclude with `lat_le_of_range_transpose_le B hB g' g _ _ (hA₁ g' hg₁) (hA₁ g hg₀) he.le`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun g hg => ?_` and prove the remaining obligations.
+
+Rewrite using `[hA₃ g hg]`. Simplify using `only [f]`. Rewrite using `[index_range_transpose _ (hA₂ g hg)]`. Use `_ = ∑ N ∈ S.image f, ((N.toAddSubgroup.index : ℕ) : ℝ) ^ (-σ) := (Finset.sum_image (f := fun N : Submodule O (Fin r → O) => ((N.toAddSubgroup.index : ℕ) : ℝ) ^ (-σ)) hf).symm`. Use `_ ≤ _ := GlobalTheory.T.sum_sublattice_index_rpow_le_solomon O r σ hσ _ (by`.
+
+Introduce `N hN`. Take `⟨g, hg, rfl⟩` from `Finset.mem_image.1 hN`. Conclude with `index_range_ne_zero _ (by rw [Matrix.det_transpose]; exact hA₂ g hg))`.
+-/
 theorem sum_over_fiber_le (σ : ℝ) (hσ : (r : ℝ) - 1 < σ) (B : Matrix (Fin r) (Fin r) O)
     (hB : B.det ≠ 0) (S : Finset (GL (Fin r) K))
     (hinj : ∀ g ∈ S, ∀ g' ∈ S, lat O K (g : Matrix (Fin r) (Fin r) K) =
@@ -347,6 +458,29 @@ theorem sum_over_fiber_le (σ : ℝ) (hσ : (r : ℝ) - 1 < σ) (B : Matrix (Fin
 
 end Final
 
+/- English proof (translation)
+Introduce `O K _ _ _ _ _ _ _ r σ hσ C hC`. Express the relevant statement in the definitionally equal form `∑ g ∈ C, ((((lat O K (g : Matrix (Fin r) (Fin r) K)).toAddSubgroup.relIndex (stdLat O K r).toAddSubgroup : ℕ) : ℝ) * (((stdLat O K r).toAddSubgroup.relIndex (lat O K (g : Matrix (Fin r) (Fin r) K)).toAddSubgroup : ℕ) : ℝ)) ^ (-σ) ≤ _`. Generalize the expression as in `hZ : (∏ i ∈ Finset.range r, (1 - (Nat.card (IsLocalRing.ResidueField O) : ℝ) ^ ((i : ℝ) - σ))⁻¹) = Z`. Establish `hZ0 : 0 ≤ Z`. Use `GlobalTheory.T.sum_sublattice_index_rpow_le_solomon O r σ hσ ∅ (by simp)` as an intermediate fact.
+
+Simplify `this` using `[hZ]`. Set `Mg : GL (Fin r) K → Submodule O (Fin r → O)` to `fun g => (lat O K (g : Matrix (Fin r) (Fin r) K)).comap (incl O K r)`. Establish `hI : ∀ g : GL (Fin r) K, (lat O K (g : Matrix (Fin r) (Fin r) K)).toAddSubgroup.relIndex (stdLat O K r).toAddSubgroup = (Mg g).toAddSubgroup.index` using `fun g => by`. Rewrite using `[relIndex_stdLat]`. Both sides reduce to the same expression.
+
+Set `I2 : GL (Fin r) K → ℝ` to `fun g => (((stdLat O K r).toAddSubgroup.relIndex (lat O K (g : Matrix (Fin r) (Fin r) K)).toAddSubgroup : ℕ) : ℝ) ^ (-σ)`. Establish `hterm : ∀ g : GL (Fin r) K, ((((lat O K (g : Matrix (Fin r) (Fin r) K)).toAddSubgroup.relIndex (stdLat O K r).toAddSubgroup : ℕ) : ℝ) * (((stdLat O K r).toAddSubgroup.relIndex (lat O K (g : Matrix (Fin r) (Fin r) K)).toAddSubgroup : ℕ) : ℝ)) ^ (-σ) = (((Mg g).toAddSubgroup.index …` using `fun g => by`. Rewrite using `[hI, Real.mul_rpow (Nat.cast_nonneg _) (Nat.cast_nonneg _)]`. Establish `hzero : ∀ g : GL (Fin r) K, (Mg g).toAddSubgroup.index = 0 → (((Mg g).toAddSubgroup.index : ℕ) : ℝ) ^ (-σ) * I2 g = 0`. Introduce `g hg`.
+
+Break down `Nat.eq_zero_or_pos r with rfl | hr` into its components or cases. Establish `: Subsingleton (Fin 0 → O)` using `inferInstance`. Rewrite `hg` using `[AddSubgroup.index_eq_zero_iff_infinite]`. Conclude with `absurd hg (by simp [not_infinite_iff_finite]; infer_instance)`. Establish `hσ0 : 0 < σ`.
+
+Establish `: (1 : ℝ) ≤ r` using `by exact_mod_cast hr`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hg, Nat.cast_zero, Real.zero_rpow (by linarith), zero_mul]`. Simplify using `only [hterm]`. Set `C'` to `C.filter fun g => (Mg g).toAddSubgroup.index ≠ 0`.
+
+Establish `h1 : ∑ g ∈ C, (((Mg g).toAddSubgroup.index : ℕ) : ℝ) ^ (-σ) * I2 g = ∑ g ∈ C', (((Mg g).toAddSubgroup.index : ℕ) : ℝ) ^ (-σ) * I2 g`. Conclude with `(Finset.sum_filter_of_ne (p := fun g => (Mg g).toAddSubgroup.index ≠ 0) fun g _ hne hg => hne (hzero g hg)).symm`. Rewrite using `[h1, ← Finset.sum_fiberwise_of_maps_to (s := C') (t := C'.image Mg) (g := Mg) (fun g hg => Finset.mem_image_of_mem _ hg)]`. Establish `hfib : ∀ M ∈ C'.image Mg, ∑ g ∈ C' with Mg g = M, (((Mg g).toAddSubgroup.index : ℕ) : ℝ) ^ (-σ) * I2 g ≤ ((M.toAddSubgroup.index : ℕ) : ℝ) ^ (-σ) * Z`. Introduce `M hM`.
+
+Take `⟨g₀, hg₀, rfl⟩` from `Finset.mem_image.1 hM`. Establish `hne : (Mg g₀).toAddSubgroup.index ≠ 0` using `(Finset.mem_filter.1 hg₀).2`. Take `⟨B, hB, hBM⟩` from `exists_matrix_of_index_ne_zero _ hne`. Establish `h2 : ∑ g ∈ C' with Mg g = Mg g₀, (((Mg g).toAddSubgroup.index : ℕ) : ℝ) ^ (-σ) * I2 g = (((Mg g₀).toAddSubgroup.index : ℕ) : ℝ) ^ (-σ) * ∑ g ∈ C' with Mg g = Mg g₀, I2 g`. Rewrite using `[Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun g hg => ?_` and prove the remaining obligations. Rewrite using `[(Finset.mem_filter.1 hg).2]`. Rewrite using `[h2]`. Use `mul_le_mul_of_nonneg_left ?_ (Real.rpow_nonneg (Nat.cast_nonneg _) _)` and prove the remaining obligations. Rewrite using `[← hZ]`.
+
+Use `sum_over_fiber_le σ hσ B hB _ ?_ ?_` and prove the remaining obligations. Introduce `g hg g' hg' he`. Conclude with `hC g (Finset.mem_filter.1 (Finset.mem_filter.1 hg).1).1 g' (Finset.mem_filter.1 (Finset.mem_filter.1 hg').1).1 he`. Introduce `g hg`. Rewrite using `[hBM]`.
+
+Conclude with `(Finset.mem_filter.1 hg).2`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_right ?_ hZ0` and prove the remaining obligations. Rewrite using `[← hZ]`. Use `GlobalTheory.T.sum_sublattice_index_rpow_le_solomon O r σ hσ _ ?_` and prove the remaining obligations.
+
+Introduce `M hM`. Take `⟨g, hg, rfl⟩` from `Finset.mem_image.1 hM`. Conclude with `(Finset.mem_filter.1 hg).2`. Use `_ = Z ^ 2 := (sq Z).symm`.
+-/
 theorem sum_index_pairs_le : ∀ (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Finite (IsLocalRing.ResidueField O)] [Field K] [Algebra O K] [IsFractionRing O K] (r : ℕ) (σ : ℝ), (r : ℝ) - 1 < σ → ∀ C : Finset (GL (Fin r) K), (∀ g ∈ C, ∀ g' ∈ C, (Submodule.span O (Set.range (Pi.basisFun K (Fin r)))).map (((g : Matrix (Fin r) (Fin r) K).mulVecLin).restrictScalars O) = (Submodule.span O (Set.range (Pi.basisFun K (Fin r)))).map (((g' : Matrix (Fin r) (Fin r) K).mulVecLin).restrictScalars O) → g = g') → ∑ g ∈ C, (((((Submodule.span O (Set.range (Pi.basisFun K (Fin r)))).map (((g : Matrix (Fin r) (Fin r) K).mulVecLin).restrictScalars O)).toAddSubgroup.relIndex (Submodule.span O (Set.range (Pi.basisFun K (Fin r)))).toAddSubgroup : ℕ) : ℝ) * (((Submodule.span O (Set.range (Pi.basisFun K (Fin r)))).toAddSubgroup.relIndex ((Submodule.span O (Set.range (Pi.basisFun K (Fin r)))).map (((g : Matrix (Fin r) (Fin r) K).mulVecLin).restrictScalars O)).toAddSubgroup : ℕ) : ℝ)) ^ (-σ) ≤ (∏ i ∈ Finset.range r, (1 - (Nat.card (IsLocalRing.ResidueField O) : ℝ) ^ ((i : ℝ) - σ))⁻¹) ^ 2 := by
   intro O K _ _ _ _ _ _ _ r σ hσ C hC
   classical

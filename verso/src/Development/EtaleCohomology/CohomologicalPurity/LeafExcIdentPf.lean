@@ -5,6 +5,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC CochainCo
 
 namespace LateralTheory.CohomologicalPurity
 
+/- English proof (translation)
+Break down `x.mk_surjective with ⟨z, rfl⟩` into its components or cases. Simplify using `only [HK.pull, HK.pre, cpre_mk]`. Rewrite using `[← CohomologyClass.mk_sub]`. Use `congr 1`. Use `ext1`.
+
+Simplify using `[zcomp, Cochain.ofHom_sub, Cochain.sub_comp]`.
+-/
 theorem HK.pull_sub' (R : Type) [CommRing R] {K L : Cx R} (f g : K ⟶ L) (F : Shv R) (n : ℤ)
     (x : HK R L F n) : HK.pull R (f - g) F n x = HK.pull R f F n x - HK.pull R g F n x := by
   rcases x.mk_surjective with ⟨z, rfl⟩
@@ -14,6 +19,9 @@ theorem HK.pull_sub' (R : Type) [CommRing R] {K L : Cx R} (f g : K ⟶ L) (F : S
   ext1
   simp [zcomp, Cochain.ofHom_sub, Cochain.sub_comp]
 
+/- English proof (translation)
+Establish `h` using `HK.pull_sub' R (0 : K ⟶ L) 0 F n x`. Rewrite `h` using `[sub_self, sub_self]`. Conclude with `h`.
+-/
 theorem HK.pull_zero' (R : Type) [CommRing R] {K L : Cx R} (F : Shv R) (n : ℤ)
     (x : HK R L F n) : HK.pull R (0 : K ⟶ L) F n x = 0 := by
   have h := HK.pull_sub' R (0 : K ⟶ L) 0 F n x
@@ -26,11 +34,17 @@ def secC (q : ℕ) (P : Arrow Spc) :
     rw [Preadditive.comp_sub, Category.comp_id, ← Category.assoc, ← Functor.map_comp, dbl.inr_fold,
       CategoryTheory.Functor.map_id, Category.id_comp, sub_self])
 
+/- English proof (translation)
+Simplify using `[secC]`.
+-/
 theorem pi_secC (q : ℕ) (P : Arrow Spc) :
     cokernel.π ((chains (ZMod q)).map (dbl.inr P)) ≫ secC q P =
       𝟙 _ - (chains (ZMod q)).map (dbl.fold P) ≫ (chains (ZMod q)).map (dbl.inr P) := by
   simp [secC]
 
+/- English proof (translation)
+Rewrite using `[← cancel_epi (cokernel.π _), ← Category.assoc, pi_secC, Category.comp_id, Preadditive.sub_comp, Category.id_comp, Category.assoc, cokernel.condition, Limits.comp_zero, sub_zero]`.
+-/
 theorem secC_pi (q : ℕ) (P : Arrow Spc) :
     secC q P ≫ cokernel.π ((chains (ZMod q)).map (dbl.inr P)) = 𝟙 _ := by
   rw [← cancel_epi (cokernel.π _), ← Category.assoc, pi_secC, Category.comp_id, Preadditive.sub_comp,
@@ -59,6 +73,11 @@ def eEquiv (q : ℕ) (n i : ℤ) (P : Arrow Spc) :
     rw [← HK.pull_comp', pi_secC, HK.pull_sub', HK.pull_id', HK.pull_comp', hy, map_zero, sub_zero]
   map_add' := map_add _
 
+/- English proof (translation)
+Introduce `q n i`. Use `⟨eEquiv q n i, fun {P' P} φ x => ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `HK.pull (ZMod q) ((chains (ZMod q)).map (dbl.map φ)) (tw q i) n (HK.pull (ZMod q) (cokernel.π ((chains (ZMod q)).map (dbl.inr P))) (tw q i) n x) = HK.pull (ZMod q) (cokernel.π ((chains (ZMod q)).map (dbl.inr P'))) (tw q i) n (HK.pull (ZMod q) (cokC q φ) (tw q i) n x)`. Rewrite using `[← HK.pull_comp', ← HK.pull_comp']`.
+
+Use `congr 2`. Simplify using `[cokC]`.
+-/
 theorem EtaleExcIdent : LeafExcIdent := by
   intro q n i
   refine ⟨eEquiv q n i, fun {P' P} φ x => ?_⟩

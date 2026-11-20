@@ -25,8 +25,16 @@ variable (Y : FBChart C V O dd) (p : ∀ o, PairData Y d (I o))
 
 def Mu : WVO I → Fin dd → C := fun w i => (p w.1).u w.2.1 w.2.2 i
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem expAll_eq (x : Fin dd) : expAll Y p x = MvPowerSeries.subst (linS (Mu Y p)) (un1 (Y.ex x)) := rfl
 
+/- English proof (translation)
+Unfold `exZero`. Use `split_ifs`. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply] show MvPowerSeries.coeff ((0 : Fin dd →₀ ℕ).mapDomain fun x : Fin dd => ((0 : Fin 1), x)) (Y.ex q.2) = 0`. Rewrite using `[Finsupp.mapDomain_zero, MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Conclude with `Y.ex_const _`.
+
+Conclude with `map_zero _`.
+-/
 theorem cc_exZero (q : Fin 2 × Fin dd) : MvPowerSeries.constantCoeff (exZero Y q) = 0 := by
   unfold exZero
   split_ifs
@@ -36,10 +44,18 @@ theorem cc_exZero (q : Fin 2 × Fin dd) : MvPowerSeries.constantCoeff (exZero Y 
     exact Y.ex_const _
   · exact map_zero _
 
+/- English proof (translation)
+Rewrite using `[← MvPowerSeries.coe_substAlgHom (Formalism.L2.FormalSeriesBounds.VP.hs ha), map_zero]`.
+-/
 theorem subst_zero' {σ τ : Type} [Finite σ] {a : σ → MvPowerSeries τ C}
     (ha : ∀ s, MvPowerSeries.constantCoeff (a s) = 0) : MvPowerSeries.subst a (0 : MvPowerSeries σ C) = 0 := by
   rw [← MvPowerSeries.coe_substAlgHom (Formalism.L2.FormalSeriesBounds.VP.hs ha), map_zero]
 
+/- English proof (translation)
+Unfold `rowOf`. Rewrite using `[Formalism.L2.FormalSeriesBounds.pderiv_subst (Formalism.L2.FormalSeriesBounds.VP.og (fun v => MvPowerSeries.constantCoeff_X _))]`. Distinguish the cases in `h : b' = b`. Substitute `h` using the available equality. Simplify using `[MvPowerSeries.pderiv_X, Pi.single_apply, Prod.ext_iff]`.
+
+Simplify using `[MvPowerSeries.pderiv_X, Pi.single_apply, Prod.ext_iff, h]`.
+-/
 theorem pderiv_rowOf {n : ℕ} (b b' : Fin n) (w : WVO I) (E : MvPowerSeries (WVO I) C) :
     MvPowerSeries.pderiv C (b, w) (rowOf b' E) = if b' = b then rowOf b (MvPowerSeries.pderiv C w E) else 0 := by
   unfold rowOf
@@ -49,6 +65,9 @@ theorem pderiv_rowOf {n : ℕ} (b b' : Fin n) (w : WVO I) (E : MvPowerSeries (WV
     simp [MvPowerSeries.pderiv_X, Pi.single_apply, Prod.ext_iff]
   · simp [MvPowerSeries.pderiv_X, Pi.single_apply, Prod.ext_iff, h]
 
+/- English proof (translation)
+Break down `q with ⟨i, j⟩` into its components or cases. Use `fin_cases i`. Simplify using `[ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.pt]`. Simplify using the standard rewrite rules.
+-/
 theorem constantCoeff_two_points_zero {n : ℕ} (b : Fin n) (q : Fin 2 × Fin dd) :
     MvPowerSeries.constantCoeff ((![pt C dd b, 0] : Fin 2 → Pt C n dd) q.1 q.2) = 0 := by
   rcases q with ⟨i, j⟩
@@ -56,6 +75,17 @@ theorem constantCoeff_two_points_zero {n : ℕ} (b : Fin n) (q : Fin 2 × Fin dd
   · simp [ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.pt]
   · simp
 
+/- English proof (translation)
+Establish `hl : ∀ w, MvPowerSeries.constantCoeff (linS (Mu Y p) w) = 0` using `fun w => (Formalism.L2.FormalSeriesBounds.ordGE_one_iff _).1 (Formalism.L2.FormalSeriesBounds.ordGE_linS _ w)`. Establish `h1 : MvPowerSeries.HasSubst (fun q : Fin 2 × Fin dd => ((![pt C dd b, 0] : Fin 2 → Pt C n dd) q.1 q.2))` using `Formalism.L2.FormalSeriesBounds.VP.hs (fun q => constantCoeff_two_points_zero b q)`. Establish `h2 : MvPowerSeries.HasSubst (fun q : Fin n × Fin dd => rowOf q.1 (expAll Y p q.2))` using `Formalism.L2.FormalSeriesBounds.VP.hs (fun q => cc_pullPt Y p q)`. Establish `h3 : MvPowerSeries.HasSubst (exZero Y)` using `Formalism.L2.FormalSeriesBounds.VP.hs (cc_exZero Y)`. Establish `h4 : MvPowerSeries.HasSubst (linS (Mu Y p))` using `Formalism.L2.FormalSeriesBounds.VP.hs hl`.
+
+Establish `h5 : MvPowerSeries.HasSubst (fun w : WVO I => (MvPowerSeries.X (b, w) : MvPowerSeries (Fin n × WVO I) C))` using `Formalism.L2.FormalSeriesBounds.VP.hs (fun w => MvPowerSeries.constantCoeff_X _)`. Establish `h6 : MvPowerSeries.HasSubst (fun q => MvPowerSeries.subst (linS (Mu Y p)) (exZero Y q))` using `Formalism.L2.FormalSeriesBounds.VP.hs (fun q => Formalism.L2.FormalSeriesBounds.constantCoeff_subst_zero hl (cc_exZero Y q))`. Unfold `pullN ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.ev`. Use `conv_rhs => unfold rowOf`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply h1 h2, MvPowerSeries.subst_comp_subst_apply h3 h4, MvPowerSeries.subst_comp_subst_apply h6 h5]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `q`. Break down `q with ⟨i, j⟩` into its components or cases. Use `fin_cases i`. Simplify using `only [Fin.zero_eta, Fin.isValue, Matrix.cons_val_zero, ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.pt]`.
+
+Rewrite using `[MvPowerSeries.subst_X h2]`. Simplify using `only [exZero, if_true]`. Rewrite using `[← expAll_eq]`. Both sides reduce to the same expression. Simplify using `only [Fin.mk_one, Fin.isValue, Matrix.cons_val_one, Matrix.cons_val_fin_one, Pi.zero_apply]`.
+
+Simplify using `only [exZero, one_ne_zero, if_false]`. Rewrite using `[subst_zero' (fun q => cc_pullPt Y p q), subst_zero' hl, subst_zero' (fun w => MvPowerSeries.constantCoeff_X _)]`.
+-/
 theorem pullback_log_coords_eval_zero {n : ℕ} (b : Fin n) (G : PS C 2 dd) :
     pullN Y p (ev (n := n) ![pt C dd b, 0] G) =
       rowOf b (MvPowerSeries.subst (linS (Mu Y p)) (MvPowerSeries.subst (exZero Y) G)) := by
@@ -90,6 +120,11 @@ theorem pullback_log_coords_eval_zero {n : ℕ} (b : Fin n) (G : PS C 2 dd) :
     simp only [exZero, one_ne_zero, if_false]
     rw [subst_zero' (fun q => cc_pullPt Y p q), subst_zero' hl, subst_zero' (fun w => MvPowerSeries.constantCoeff_X _)]
 
+/- English proof (translation)
+Unfold `pullN`. Rewrite using `[Formalism.L2.FormalSeriesBounds.pderiv_subst (Formalism.L2.FormalSeriesBounds.VP.og (fun q => cc_pullPt Y p q))]`. Simplify using `only [pderiv_rowOf]`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single b]`. Simplify using the standard rewrite rules.
+
+Introduce `a _ hab`. Simplify using `[hab]`. Simplify using the standard rewrite rules.
+-/
 theorem pderiv_pullN {n : ℕ} (b : Fin n) (w : WVO I) (F : PS C n dd) :
     MvPowerSeries.pderiv C (b, w) (pullN Y p F) =
       ∑ j : Fin dd, rowOf b (MvPowerSeries.pderiv C w (expAll Y p j)) *
@@ -104,6 +139,19 @@ theorem pderiv_pullN {n : ℕ} (b : Fin n) (w : WVO I) (F : PS C n dd) :
 
 end VP
 
+/- English proof (translation)
+Introduce `n b c F`. Establish `hP : MvPowerSeries.HasSubst (fun q : Fin n × Fin dd => rowOf q.1 (expAll Y p q.2))` using `VP.hs (fun q => VP.cc_pullPt Y p q)`. Establish `hR : MvPowerSeries.HasSubst (fun w : WVO I => (MvPowerSeries.X (b, w) : MvPowerSeries (Fin n × WVO I) C))` using `VP.hs (fun w => MvPowerSeries.constantCoeff_X _)`. Establish `hpull : ∀ G : PS C n dd, pullN Y p G = MvPowerSeries.substAlgHom hP G` using `fun G => by`. Rewrite using `[MvPowerSeries.coe_substAlgHom]`.
+
+Both sides reduce to the same expression. Establish `hrow : ∀ G : MvPowerSeries (WVO I) C, rowOf b G = MvPowerSeries.substAlgHom hR G` using `fun G => by`. Rewrite using `[MvPowerSeries.coe_substAlgHom]`. Both sides reduce to the same expression. Establish `key : ∀ j : Fin dd, ∑ w : WVO I, c w • rowOf b (MvPowerSeries.pderiv C w (expAll Y p j)) = ∑ i : Fin dd, (∑ w : WVO I, c w * (p w.1).u w.2.1 w.2.2 i) • rowOf b (MvPowerSeries.subst (linS (VP.Mu Y p)) (MvPowerSeries.subst (exZero Y) (MvPowerSeries.pderiv C ((1 : Fin 2), i) (Y.B.FK …`.
+
+Introduce `j`. Establish `e1 : ∀ w, MvPowerSeries.pderiv C w (expAll Y p j) = ∑ i : Fin dd, VP.Mu Y p w i • MvPowerSeries.subst (linS (VP.Mu Y p)) (MvPowerSeries.subst (exZero Y) (MvPowerSeries.pderiv C ((1 : Fin 2), i) (Y.B.FK C j)))`. Introduce `w`. Rewrite using `[VP.expAll_eq, Formalism.L2.FormalSeriesBounds.pderiv_subst_linS]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hE i j]`.
+
+Simplify using `only [e1, hrow, map_sum, map_smul, Finset.smul_sum, smul_smul, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Both sides reduce to the same expression. Simplify using `only [VP.pderiv_pullN]`. Unfold `DofN`.
+
+Simplify using `only [← MvPowerSeries.smul_eq_C_mul]`. Rewrite using `[hpull, map_sum]`. Simplify using `only [map_mul, map_sum, map_smul]`. Simplify using `only [← hpull, VP.pullback_log_coords_eval_zero]`. Simplify using `only [Finset.smul_sum]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [← smul_mul_assoc, ← Finset.sum_mul]`. Use `congr 1`. Rewrite using `[key j]`.
+-/
 theorem dpull_of_ode {Y : FBChart C V O dd} (p : ∀ o, PairData Y d (I o)) (hE : ExpODESt Y) : DPullSt Y p := by
   intro n b c F
   have hP : MvPowerSeries.HasSubst (fun q : Fin n × Fin dd => rowOf q.1 (expAll Y p q.2)) :=
@@ -142,6 +190,9 @@ theorem dpull_of_ode {Y : FBChart C V O dd} (p : ∀ o, PairData Y d (I o)) (hE 
   congr 1
   rw [key j]
 
+/- English proof (translation)
+The claim follows from `logCoord_of_dpull (dpull_of_ode p hE)`.
+-/
 theorem logCoord_of_ode {Y : FBChart C V O dd} (p : ∀ o, PairData Y d (I o)) (hE : ExpODESt Y) : LogCoordSt Y p := logCoord_of_dpull (dpull_of_ode p hE)
 
 end Formalism.L2.FormalSeriesBounds

@@ -2,6 +2,27 @@ import Mathlib
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `A _ Fn Γ U S C hΓ hU hdec hfin`. Use `set T := Submodule.span ℂ (Set.range fun s : A => fun t => Fn (t * s)) with hT`. Establish `hinv : ∀ g ∈ T, (∀ γ ∈ Γ, ∀ t, g (γ * t) = g t) ∧ (∀ u ∈ U, ∀ t, g (t * u) = g t)`. Introduce `g hg`. Proceed by induction on `hg using Submodule.span_induction with`.
+
+Consider the case `mem x hx`. Take `⟨s, rfl⟩` from `hx`. Use `⟨fun γ hγ t => ?_, fun u hu t => ?_⟩` and prove the remaining obligations. Use `show Fn (γ * t * s) = Fn (t * s)`. Rewrite using `[mul_assoc]`.
+
+Conclude with `hΓ γ hγ _`. Use `show Fn (t * u * s) = Fn (t * s)`. Rewrite using `[mul_right_comm]`. Conclude with `hU u hu _`. Consider the case `zero => exact ⟨fun _ _ _ => rfl, fun _ _ _ => rfl⟩`.
+
+Consider the case `add x y _ _ hx hy`. Conclude with `⟨fun γ hγ t => by simp [hx.1 γ hγ t, hy.1 γ hγ t], fun u hu t => by simp [hx.2 u hu t, hy.2 u hu t]⟩`. Consider the case `smul r x _ hx`. Conclude with `⟨fun γ hγ t => by simp [hx.1 γ hγ t], fun u hu t => by simp [hx.2 u hu t]⟩`. Set `L : (A → ℂ) →ₗ[ℂ] (C → S → ℂ)` to `{ toFun := fun g c a => g (c.1 * a.1) map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`.
+
+Establish `hinj : ∀ g ∈ T, ∀ h ∈ T, L g = L h → g = h`. Introduce `g hg h hh hgh`. Use function extensionality and compare the values at `t`. Take `⟨γ, hγ, c, hc, a, ha, u, hu, rfl⟩` from `hdec t`. Establish `rd : ∀ f ∈ T, f (γ * c * a * u) = f (c * a)` using `fun f hf => by`.
+
+Rewrite using `[(hinv f hf).2 u hu, mul_assoc, (hinv f hf).1 γ hγ]`. Rewrite using `[rd g hg, rd h hh]`. Conclude with `congrFun (congrFun hgh ⟨c, hc⟩) ⟨a, ha⟩`. Set `W : Submodule ℂ (S → ℂ)` to `⨆ p : C × C, Submodule.span ℂ (Set.range fun a : S => fun a' : S => Fn (p.1.1 * p.2.1 * a' * a))`. Use `haveI : ∀ p : C × C, FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun a : S => fun a' : S => Fn (p.1.1 * p.2.1 * a' * a))) := fun p => hfin _`.
+
+Use `haveI : FiniteDimensional ℂ W := Submodule.finiteDimensional_iSup _`. Set `Φ : (C → W) →ₗ[ℂ] (C → S → ℂ)` to `LinearMap.pi fun c => W.subtype ∘ₗ LinearMap.proj c`. Establish `hle : T ≤ (LinearMap.range Φ).comap L`. Rewrite using `[hT, Submodule.span_le]`. Introduce and unpack `x ⟨s, rfl⟩`.
+
+Establish `hW : ∀ c : C, (fun a' : S => Fn (c.1 * a'.1 * s)) ∈ W`. Introduce `c`. Take `⟨γ0, hγ0, c0, hc0, a0, ha0, u0, hu0, rfl⟩` from `hdec s`. Establish `key : ∀ t, Fn (γ0 * t * u0) = Fn t` using `fun t => by rw [hU u0 hu0, hΓ γ0 hγ0]`. Establish `e : (fun a' : S => Fn (c.1 * a'.1 * (γ0 * c0 * a0 * u0))) = fun a' : S => Fn ((c.1 * c0) * a'.1 * a0)`.
+
+Use function extensionality and compare the values at `a'`. Rewrite using `[← key (c.1 * c0 * a'.1 * a0)]`. Use `congr 1`. The two sides agree by associativity and commutativity. Rewrite using `[e]`.
+
+Conclude with `Submodule.mem_iSup_of_mem (c, ⟨c0, hc0⟩) (Submodule.subset_span ⟨⟨a0, ha0⟩, rfl⟩)`. Conclude with `⟨fun c => ⟨_, hW c⟩, rfl⟩`. Set `f : T →ₗ[ℂ] LinearMap.range Φ` to `LinearMap.codRestrict _ (L ∘ₗ T.subtype) (fun x => hle x.2)`. Conclude with `Module.Finite.of_injective f (fun x y hxy => Subtype.ext (hinj x.1 x.2 y.1 y.2 (congrArg Subtype.val hxy)))`.
+-/
 theorem translates_span_finiteDimensional_of_double_coset :
     ∀ (A : Type) [CommGroup A] (Fn : A → ℂ) (Γ U S : Set A) (C : Finset A),
       (∀ γ ∈ Γ, ∀ t, Fn (γ * t) = Fn t) → (∀ u ∈ U, ∀ t, Fn (t * u) = Fn t) →

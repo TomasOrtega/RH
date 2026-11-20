@@ -11,6 +11,11 @@ open scoped NumberField.AdeleRing Classical
 
 namespace GlobalTheory.CompanionTheory.MajHeightK
 
+/- English proof (translation)
+Establish `h0` using `norm_nonneg (y 0)`. Establish `h1` using `norm_nonneg (y 1)`. Establish `h2` using `norm_nonneg (y 2)`. Rewrite using `[Reduction.euclidNorm, Fin.sum_univ_three, Fin.sum_univ_three]`. Use `Real.sqrt_le_iff.2 ⟨by positivity, ?_⟩` and prove the remaining obligations.
+
+Use polynomial arithmetic with `[mul_nonneg h0 h1, mul_nonneg h0 h2, mul_nonneg h1 h2]`.
+-/
 theorem euclidNorm_le_sum {E : Type*} [NormedField E] (y : Fin 3 → E) :
     Reduction.euclidNorm y ≤ ∑ i, ‖y i‖ := by
   have h0 := norm_nonneg (y 0)
@@ -22,6 +27,11 @@ theorem euclidNorm_le_sum {E : Type*} [NormedField E] (y : Fin 3 → E) :
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Establish `h` using `InfinitePlace.card_add_two_mul_card_eq_rank K`. Rewrite `h` using `[IsTotallyComplex.nrRealPlaces_eq_zero K, h2]`. Establish `hcomplex : InfinitePlace.nrComplexPlaces K = 1` using `by omega`. Establish `hcard : Fintype.card (InfinitePlace K) = 1`. Use `InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces K` as an intermediate fact.
+
+Rewrite `this` using `[IsTotallyComplex.nrRealPlaces_eq_zero K, hcomplex]`. Use linear arithmetic over natural numbers and integers. Take `⟨a, ha⟩` from `Fintype.card_eq_one_iff.1 hcard`. Rewrite using `[ha w, ha w']`.
+-/
 theorem eq_of_quadratic (h2 : Module.finrank ℚ K = 2) (hc : IsTotallyComplex K)
     (w w' : InfinitePlace K) : w' = w := by
   have h := InfinitePlace.card_add_two_mul_card_eq_rank K
@@ -34,6 +44,11 @@ theorem eq_of_quadratic (h2 : Module.finrank ℚ K = 2) (hc : IsTotallyComplex K
   obtain ⟨a, ha⟩ := Fintype.card_eq_one_iff.1 hcard
   rw [ha w, ha w']
 
+/- English proof (translation)
+Establish `hmult : w.mult = 2` using `InfinitePlace.mult_isComplex ⟨w, hc.isComplex w⟩`. Establish `huniv : (Finset.univ : Finset (InfinitePlace K)) = {w}`. Use extensionality with `w'`. Simplify using `[eq_of_quadratic h2 hc w w']`. Rewrite using `[huniv, Finset.prod_singleton, hmult]`.
+
+Use `pow_le_pow_left₀ (Reduction.euclidNorm_nonneg _) ((euclidNorm_le_sum _).trans (le_of_eq ?_)) 2` and prove the remaining obligations. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Reduction.infComp_ratVec, InfinitePlace.Completion.norm_coe]`. Both sides reduce to the same expression.
+-/
 theorem infPart_le (h2 : Module.finrank ℚ K = 2) (hc : IsTotallyComplex K)
     (w : InfinitePlace K) (y : Fin 3 → K) :
     ∏ w' : InfinitePlace K,
@@ -49,6 +64,9 @@ theorem infPart_le (h2 : Module.finrank ℚ K = 2) (hc : IsTotallyComplex K)
   rw [Reduction.infComp_ratVec, InfinitePlace.Completion.norm_coe]
   rfl
 
+/- English proof (translation)
+Use `Reduction.norm_le_one_of_mem v ?_` and prove the remaining obligations. Rewrite using `[Reduction.finComp_ratVec]`. Use `(coe_mem_adicCompletionIntegers_iff v (a : K)).2 ?_` and prove the remaining obligations. Conclude with `HeightOneSpectrum.valuation_le_one v a`.
+-/
 theorem norm_coe_le_one (v : HeightOneSpectrum (𝓞 K)) (a : 𝓞 K) :
     ‖Reduction.finComp v (Reduction.ratVec (fun _ : Fin 1 => (a : K))) 0‖ ≤ 1 := by
   refine Reduction.norm_le_one_of_mem v ?_
@@ -56,6 +74,11 @@ theorem norm_coe_le_one (v : HeightOneSpectrum (𝓞 K)) (a : 𝓞 K) :
   refine (coe_mem_adicCompletionIntegers_iff v (a : K)).2 ?_
   exact HeightOneSpectrum.valuation_le_one v a
 
+/- English proof (translation)
+Use `finprod_induction (f := fun v : HeightOneSpectrum (𝓞 K) => ‖Reduction.finComp v (Reduction.ratVec y)‖) (fun x : ℝ => 0 ≤ x ∧ x ≤ 1) ⟨zero_le_one, le_rfl⟩ (fun a b ha hb => ⟨mul_nonneg ha.1 hb.1, mul_le_one₀ ha.2 hb.1 hb.2⟩) (fun v => ⟨norm_nonneg _, (pi_norm_le_iff_of_nonneg zero …` as an intermediate fact. Take `⟨a, ha⟩` from `hy i`. Establish `h` using `norm_coe_le_one v a`. Rewrite `h` using `[Reduction.finComp_ratVec]`. Rewrite using `[Reduction.finComp_ratVec, ← ha]`.
+
+Conclude with `h⟩)`. Conclude with `this.2`.
+-/
 theorem finPart_le_one (y : Fin 3 → K) (hy : ∀ i, ∃ a : 𝓞 K, (a : K) = y i) :
     ∏ᶠ v : HeightOneSpectrum (𝓞 K), ‖Reduction.finComp v (Reduction.ratVec y)‖ ≤ 1 := by
   have := finprod_induction (f := fun v : HeightOneSpectrum (𝓞 K) =>
@@ -70,6 +93,17 @@ theorem finPart_le_one (y : Fin 3 → K) (hy : ∀ i, ∃ a : 𝓞 K, (a : K) = 
       exact h⟩)
   exact this.2
 
+/- English proof (translation)
+Introduce `K _ _ h2 hc w M hM z hz`. Distinguish the cases in `h0 : z = 0`. Substitute `h0` using the available equality. Establish `h` using `infPart_le h2 hc w (0 : Fin 3 → K)`. Establish `hnn : 0 ≤ ∏ w' : InfinitePlace K, Reduction.euclidNorm (Reduction.infComp w' (Reduction.ratVec (0 : Fin 3 → K))) ^ w'.mult` using `Finset.prod_nonneg fun _ _ => pow_nonneg (Reduction.euclidNorm_nonneg _) _`.
+
+Establish `hz0 : ∏ w' : InfinitePlace K, Reduction.euclidNorm (Reduction.infComp w' (Reduction.ratVec (0 : Fin 3 → K))) ^ w'.mult = 0` using `le_antisymm (by simpa using h) hnn`. Rewrite using `[Reduction.adelicNorm, hz0, zero_mul]`. Simplify using the standard rewrite rules. Establish `hMK : (M : K) ≠ 0` using `by exact_mod_cast hM.ne'`. Establish `hscale : Reduction.adelicNorm (Reduction.ratVec z : Fin 3 → 𝔸[K]) = Reduction.adelicNorm (Reduction.ratVec ((M : K) • z) : Fin 3 → 𝔸[K])`.
+
+Rewrite using `[Reduction.ratVec_smul, Reduction.adelicNorm_smul_rat (Reduction.hasFiniteContent_ratVec h0) hMK]`. Rewrite using `[hscale, Reduction.adelicNorm]`. Establish `hinf` using `infPart_le h2 hc w ((M : K) • z)`. Establish `hfin` using `finPart_le_one ((M : K) • z) (fun i => by simpa using hz i)`. Establish `hsum : (∑ i, w (((M : K) • z) i)) ^ 2 = (M : ℝ) ^ 2 * (∑ i, w (z i)) ^ 2`.
+
+Rewrite using `[← mul_pow, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[map_mul]`. Rewrite using `[← hsum]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem adelicNorm_ratVec_le : ∀ (K : Type) [Field K] [NumberField K],
     Module.finrank ℚ K = 2 → IsTotallyComplex K → ∀ (w : InfinitePlace K) (M : ℕ), 0 < M →
     ∀ z : Fin 3 → K, (∀ i, ∃ a : 𝓞 K, (a : K) = (M : K) * z i) →

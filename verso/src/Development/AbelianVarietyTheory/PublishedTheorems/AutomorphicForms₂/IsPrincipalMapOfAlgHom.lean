@@ -22,10 +22,20 @@ variable {K : Type} [Field K] [NumberField K] [IsTotallyComplex K]
 
 omit [NumberField K] in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun φ => IsTotallyComplex.complexEmbedding_not_isReal (Complex.ofRealHom.comp φ) (ComplexEmbedding.isReal_iff.2 (RingHom.ext fun x => Complex.conj_ofReal _))⟩`.
+-/
 theorem isEmpty_realEmb : IsEmpty (K →+* ℝ) :=
   ⟨fun φ => IsTotallyComplex.complexEmbedding_not_isReal (Complex.ofRealHom.comp φ)
     (ComplexEmbedding.isReal_iff.2 (RingHom.ext fun x => Complex.conj_ofReal _))⟩
 
+/- English proof (translation)
+Establish `hc : ∀ J : Ideal (𝓞 K), IsCoprime J ⊤` using `fun J => by`. Rewrite using `[← Ideal.one_eq_top]`. Conclude with `isCoprime_one_right`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨α, β, ⟨-, hβ, -⟩, h⟩`.
+
+Take `⟨c, rfl⟩ : β ∣ α` from `Ideal.span_singleton_le_span_singleton.1 (h ▸ Ideal.mul_le_right)`. Rewrite `h` using `[← Ideal.span_singleton_mul_span_singleton, mul_comm]`. Conclude with `⟨c, mul_left_cancel₀ (by simpa using hβ) h⟩`. Introduce and unpack `⟨a, rfl⟩`. Use `isEmpty_realEmb (K := K)` as an intermediate fact.
+
+Conclude with `⟨a, 1, ⟨fun h => hI (by simp [h]), one_ne_zero, hc _, hc _, trivial, fun φ => isEmptyElim φ⟩, by simp⟩`.
+-/
 theorem exists_rayPair_top_iff {I : Ideal (𝓞 K)} (hI : I ≠ ⊥) :
     (∃ α β : 𝓞 K, RayPair ⊤ α β ∧ I * Ideal.span {β} = Ideal.span {α}) ↔ I.IsPrincipal := by
   have hc : ∀ J : Ideal (𝓞 K), IsCoprime J ⊤ := fun J => by
@@ -39,6 +49,11 @@ theorem exists_rayPair_top_iff {I : Ideal (𝓞 K)} (hI : I ≠ ⊥) :
     have := isEmpty_realEmb (K := K)
     exact ⟨a, 1, ⟨fun h => hI (by simp [h]), one_ne_zero, hc _, hc _, trivial, fun φ => isEmptyElim φ⟩, by simp⟩
 
+/- English proof (translation)
+Establish `hc : ∀ J : Ideal (𝓞 K), IsCoprime J ⊤` using `fun J => by`. Rewrite using `[← Ideal.one_eq_top]`. Conclude with `isCoprime_one_right`. Establish `hp : ∀ 𝔭 : HeightOneSpectrum (𝓞 K), ¬ 𝔭.asIdeal ∣ ⊤` using `fun 𝔭 h => 𝔭.isPrime.ne_top (top_le_iff.1 (Ideal.le_of_dvd h))`. Simplify using `only [IsRayField, hp, hc, not_false_eq_true, forall_const, true_and]`.
+
+Use `and_congr_right' (and_congr_right' (and_congr_right' (forall₂_congr fun I hI => ?_)))` and prove the remaining obligations. Rewrite using `[exists_rayPair_top_iff hI]`.
+-/
 theorem isRayField_top_iff (L : Type) [Field L] [NumberField L] [Algebra K L] : IsRayField K L ⊤ ↔
     IsAbelianGalois K L ∧ (∀ 𝔭 : HeightOneSpectrum (𝓞 K), UnramIn L 𝔭) ∧
       Subgroup.closure {σ : L ≃ₐ[K] L | ∃ 𝔭 : HeightOneSpectrum (𝓞 K), IsFrob L 𝔭 σ} = ⊤ ∧
@@ -51,6 +66,11 @@ theorem isRayField_top_iff (L : Type) [Field L] [NumberField L] [Algebra K L] : 
   refine and_congr_right' (and_congr_right' (and_congr_right' (forall₂_congr fun I hI => ?_)))
   rw [exists_rayPair_top_iff hI]
 
+/- English proof (translation)
+Establish `h1 : ∀ (I : Ideal (𝓞 K)) (χ : (K ≃ₐ[K] K) →* ℂˣ), heckeIdeal K χ I = 1` using `fun I χ => by`. Rewrite using `[Subsingleton.elim χ 1]`. Simplify using `[heckeIdeal, heckeVal_one]`. Rewrite using `[isRayField_top_iff]`. Use `⟨fun h => ⟨fun I => ?_⟩, fun h => ⟨inferInstance, fun _ σ _ => Subsingleton.elim _ _, Subsingleton.elim _ _, fun I _ => iff_of_true (h1 I) (h.principal I)⟩⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hI : I = ⊥`. Rewrite using `[hI]`. Use `infer_instance`. Conclude with `(h.2.2.2 I hI).1 (h1 I)`.
+-/
 theorem isRayField_self_top_iff : IsRayField K K ⊤ ↔ IsPrincipalIdealRing (𝓞 K) := by
   have h1 : ∀ (I : Ideal (𝓞 K)) (χ : (K ≃ₐ[K] K) →* ℂˣ), heckeIdeal K χ I = 1 := fun I χ => by
     rw [Subsingleton.elim χ 1]
@@ -62,12 +82,18 @@ theorem isRayField_self_top_iff : IsRayField K K ⊤ ↔ IsPrincipalIdealRing (�
   · rw [hI]; infer_instance
   · exact (h.2.2.2 I hI).1 (h1 I)
 
+/- English proof (translation)
+The claim follows from `have := IsCyclotomicExtension.Rat.isTotallyComplex (n := 3) (CyclotomicField 3 ℚ) (by norm_num) ⟨this, isRayField_self_top_iff.2 (IsCyclotomicExtension.Rat.three_pid _)⟩`.
+-/
 example : IsTotallyComplex (CyclotomicField 3 ℚ) ∧ IsRayField (CyclotomicField 3 ℚ) (CyclotomicField 3 ℚ) ⊤ :=
   have := IsCyclotomicExtension.Rat.isTotallyComplex (n := 3) (CyclotomicField 3 ℚ) (by norm_num)
   ⟨this, isRayField_self_top_iff.2 (IsCyclotomicExtension.Rat.three_pid _)⟩
 
 omit [NumberField K] [IsTotallyComplex K] in
 
+/- English proof (translation)
+Establish `e : algebraMap (𝓞 K) (𝓞 M) = (RingOfIntegers.mapRingHom f.toRingHom).comp (algebraMap (𝓞 K) (𝓞 L))` using `RingHom.ext fun x => RingOfIntegers.ext (f.commutes x).symm`. Take `⟨a, ha⟩` from `h`. Rewrite using `[e, ← Ideal.map_map, ha]`. Conclude with `⟨_, by rw [Ideal.submodule_span_eq, Ideal.map_span, Set.image_singleton, Ideal.submodule_span_eq]⟩`.
+-/
 theorem isPrincipal_map_of_algHom {L M : Type} [Field L] [Algebra K L] [Field M] [Algebra K M] (f : L →ₐ[K] M)
     {𝔞 : Ideal (𝓞 K)} (h : (𝔞.map (algebraMap (𝓞 K) (𝓞 L))).IsPrincipal) :
     (𝔞.map (algebraMap (𝓞 K) (𝓞 M))).IsPrincipal := by
@@ -86,10 +112,16 @@ open GlobalTheory.HilbertClass
 variable {K L M : Type} [Field K] [NumberField K] [IsTotallyComplex K] [Field L] [NumberField L] [Algebra K L]
   [Field M] [Algebra K M]
 
+/- English proof (translation)
+The claim follows from `isPrincipal_map_of_algHom f (H K L h 𝔞)`.
+-/
 theorem PrincipalIdealSt.of_algHom (H : PrincipalIdealSt) (h : IsRayField K L ⊤) (f : L →ₐ[K] M)
     (𝔞 : Ideal (𝓞 K)) : (𝔞.map (algebraMap (𝓞 K) (𝓞 M))).IsPrincipal :=
   isPrincipal_map_of_algHom f (H K L h 𝔞)
 
+/- English proof (translation)
+Take `⟨L₀, _, _, _, h₀⟩` from `rayField_iff.1 hR K ⊤ top_ne_bot`. Use `h.1` as an intermediate fact. Use `h₀.1` as an intermediate fact. Take `⟨g⟩` from `nonempty_algHom_of_isRay_of_dvd (L := L) (L' := L₀) h𝔮 (Ideal.dvd_iff_le.2 le_top) h.2 h₀.2`. Conclude with `H.of_algHom h₀ (f.comp g) 𝔞`.
+-/
 theorem PrincipalIdealSt.of_isRayField (H : PrincipalIdealSt) (hR : RayField) {𝔮 : Ideal (𝓞 K)} (h𝔮 : 𝔮 ≠ ⊥)
     (h : IsRayField K L 𝔮) (f : L →ₐ[K] M) (𝔞 : Ideal (𝓞 K)) :
     (𝔞.map (algebraMap (𝓞 K) (𝓞 M))).IsPrincipal := by
@@ -99,6 +131,9 @@ theorem PrincipalIdealSt.of_isRayField (H : PrincipalIdealSt) (hR : RayField) {�
   obtain ⟨g⟩ := nonempty_algHom_of_isRay_of_dvd (L := L) (L' := L₀) h𝔮 (Ideal.dvd_iff_le.2 le_top) h.2 h₀.2
   exact H.of_algHom h₀ (f.comp g) 𝔞
 
+/- English proof (translation)
+Use `h.numberField` as an intermediate fact. Set `` to `algOf φ R h.emb_mem`. Set `` to `algOf φ N fun x => hle (h.emb_mem x)`. Conclude with `H.of_isRayField hR h𝔮 h.isRayField { (IntermediateField.inclusion hle).toRingHom with commutes' := fun _ => rfl } 𝔞`.
+-/
 theorem PrincipalIdealSt.of_isRayFieldIn (H : PrincipalIdealSt) (hR : RayField) {E : Type} [Field E] [NumberField E]
     [IsTotallyComplex E] {φ : E →+* ℂ} {𝔮 : Ideal (𝓞 E)} (h𝔮 : 𝔮 ≠ ⊥) {R N : IntermediateField ℚ ℂ}
     (h : IsRayFieldIn φ 𝔮 R) (hle : R ≤ N) (𝔞 : Ideal (𝓞 E)) :

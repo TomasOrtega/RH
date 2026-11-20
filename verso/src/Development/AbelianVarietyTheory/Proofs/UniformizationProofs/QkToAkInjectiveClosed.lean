@@ -16,6 +16,9 @@ open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCate
 open scoped CategoryTheory.Obj in
 attribute [local instance] Over.cartesianMonoidalCategory in
 
+/- English proof (translation)
+The claim follows from `_root_.GlobalTheory.TorsionMapInj.qkToAk_injective _root_.GlobalTheory.abelianSchemeLaws_all.1 _root_.GlobalTheory.abelianSchemeLaws_all.2`.
+-/
 theorem _root_.GlobalTheory.TorsionMapInj.qkToAk_injective_closed : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.QkToAkInjSt :=
   _root_.GlobalTheory.TorsionMapInj.qkToAk_injective _root_.GlobalTheory.abelianSchemeLaws_all.1 _root_.GlobalTheory.abelianSchemeLaws_all.2
 

@@ -34,6 +34,9 @@ def colTens (φ : SB (n → k)) : SB (Matrix n n' k) →ₗ[ℂ] SB (Matrix n (n
   map_add' Ξ Ξ' := by ext x; simp [add_mul]
   map_smul' c Ξ := by ext x; simp [mul_assoc]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem colTens_apply (φ : SB (n → k)) (Ξ : SB (Matrix n n' k)) (x : Matrix n (n' ⊕ Unit) k) :
     (colTens φ Ξ).1 x = Ξ.1 x.toCols₁ * φ.1 (fun r => x r (Sum.inr ())) := rfl
 
@@ -54,6 +57,9 @@ def rowTens (φ : SB (n → k)) : SB (Matrix n'' n k) →ₗ[ℂ] SB (Matrix (n'
   map_add' Ξ Ξ' := by ext x; simp [add_mul]
   map_smul' c Ξ := by ext x; simp [mul_assoc]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem rowTens_apply (φ : SB (n → k)) (Ξ : SB (Matrix n'' n k)) (x : Matrix (n'' ⊕ Unit) n k) :
     (rowTens φ Ξ).1 x = Ξ.1 x.toRows₁ * φ.1 (x (Sum.inr ())) := rfl
 
@@ -62,6 +68,9 @@ end Tens
 section Bil
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ}
 
+/- English proof (translation)
+Unfold `Link.κ GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.ofAdj`. Establish `h : Continuous fun w : WO S L' => giA S ⬝ (adj (rat l.τ ⬝ w) ⬝ gA B.L)` using `Continuous.matrix_mul continuous_const (Continuous.matrix_mul (GlobalTheory.MixModel.continuous_adj.comp (continuous_const.matrix_mul continuous_id)) continuous_const)`. Conclude with `h.const_smul ((incA D) (-D.host.xi0⁻¹))`.
+-/
 theorem continuous_kappa {ρ : ℕ} {B : BesLev D ρ} {L' : HSp D} {ζ' : Fin L'.rank → D.host.E}
     (l : Link B L' ζ') (S : HSp D) : Continuous (l.κ S) := by
   unfold Link.κ GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.ofAdj
@@ -70,6 +79,11 @@ theorem continuous_kappa {ρ : ℕ} {B : BesLev D ρ} {L' : HSp D} {ζ' : Fin L'
       (GlobalTheory.MixModel.continuous_adj.comp (continuous_const.matrix_mul continuous_id)) continuous_const)
   exact h.const_smul ((incA D) (-D.host.xi0⁻¹))
 
+/- English proof (translation)
+Use `haveI : ∀ m n, BorelSpace (Mx D m n) := fun _ _ => ⟨rfl⟩`. Use `haveI : IsFiniteMeasure (vL.μ.restrict vL.𝓕) := ⟨by rw [Measure.restrict_apply_univ, vL.covol.2.2]; exact ENNReal.one_lt_top⟩`. Take `⟨C₁, hC₁⟩` from `GlobalTheory.IsoMean.isThetaFunO_bounded _ _ ψ hψ Ξ₁ h₁`. Take `⟨C₂, hC₂⟩` from `GlobalTheory.IsoMean.isThetaFunO_bounded _ _ ψ hψ Ξ₂ h₂`. Establish `hc : Continuous fun w => Ξ₂ ((B'.o.resT S).symm (v, w)) * Ξ₁ ((B.o.resS S).symm (u, l.κ S w))` using `(h₂.cont.comp ((OrthDec.continuous_resT_symm _ _).comp (Continuous.prodMk continuous_const continuous_id))).mul (h₁.cont.comp ((OrthDec.continuous_resS_symm _ _).comp (Continuous.prodMk continuous_const (continuous_kappa l S))))`.
+
+Use `(integrable_const (C₂ * C₁)).mono' hc.aestronglyMeasurable (ae_of_all _ fun w => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hC₂ _) (hC₁ _) (norm_nonneg _) ((norm_nonneg _).trans (hC₂ 0))`.
+-/
 theorem integrable_contr (hψ : IsStdChar D ψ (-1)) {ρ σ : ℕ} {B : BesLev D ρ} {B' : BesLev D σ}
     (l : Link B B'.L B'.ζ) (S : HSp D) (vL : VolM D B'.L.rank S.rank) {Ξ₁ : WO B.V₀ S → ℂ} {Ξ₂ : WO S B'.V₀ → ℂ}
     (h₁ : IsThetaFunO ψ B.V₀ S Ξ₁) (h₂ : IsThetaFunO ψ S B'.V₀ Ξ₂) (u : WO B.A S) (v : WO S B'.A) :
@@ -113,6 +127,9 @@ def contrBil (hψ : IsStdChar D ψ (-1)) {ρ σ : ℕ} {B : BesLev D ρ} {B' : B
       simp only [GlobalTheory.Unf.contr, map_smul, Pi.smul_apply, smul_eq_mul]
       rw [← integral_const_mul]; congr 1; funext w; ring)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem contrBil_apply (hψ : IsStdChar D ψ (-1)) {ρ σ : ℕ} {B : BesLev D ρ} {B' : BesLev D σ}
     (l : Link B B'.L B'.ζ) (S : HSp D) (vL : VolM D B'.L.rank S.rank) {M₁ M₂ : Type} [AddCommGroup M₁] [Module ℂ M₁]
     [AddCommGroup M₂] [Module ℂ M₂] (T₁ : M₁ →ₗ[ℂ] (WO B.V₀ S → ℂ)) (T₂ : M₂ →ₗ[ℂ] (WO S B'.V₀ → ℂ))
@@ -125,6 +142,13 @@ end GlobalTheory.ContractionLocal
 
 namespace GlobalTheory.ContractionLocal
 
+/- English proof (translation)
+Use `haveI : T2Space k := GlobalTheory.SplitWeil.t2Space k`. Use `haveI := hν`. Use `haveI := GlobalTheory.SplitWeil.secondCountable k`. Set `L` to `GlobalTheory.LatPair.stdLat k n`. Establish `hc` using `GlobalTheory.FinPl.Comm.fpair_ne_zero ψk hψ (-1) (Or.inr rfl) (Measure.pi fun _ => ν) L`.
+
+Use `set c := GlobalTheory.FinPl.Comm.fpair ψk (-1) (Measure.pi fun _ => ν) (GlobalTheory.FinPl.vecInd L) (GlobalTheory.FinPl.dualInd L)`. Use `⟨⟨_, GlobalTheory.FinPl.Comm.vecInd_mem L⟩, c⁻¹ • ⟨_, GlobalTheory.FinPl.Comm.dualInd_mem L⟩, ?_⟩` and prove the remaining obligations. Establish `e : c = ∫ u, (GlobalTheory.FinPl.dualInd L u) * GlobalTheory.StepData.hat ψk ν (-1) (GlobalTheory.FinPl.vecInd L) u ∂(Measure.pi fun _ => ν)`. Simplify using `only [c, GlobalTheory.FinPl.Comm.fpair, GlobalTheory.StepData.hat]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `u`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [SetLike.val_smul, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Rewrite using `[integral_const_mul, ← e, inv_mul_cancel₀ hc]`.
+-/
 theorem exists_normPair {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [MeasurableSpace k] [BorelSpace k] (ψk : AddChar k Circle) (ν : Measure k) (hψ : Continuous ψk)
     (hν : ν.IsAddHaarMeasure) (n : Type) [Fintype n] [DecidableEq n] :
@@ -143,6 +167,13 @@ theorem exists_normPair {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace 
   simp only [SetLike.val_smul, Pi.smul_apply, smul_eq_mul, mul_assoc]
   rw [integral_const_mul, ← e, inv_mul_cancel₀ hc]
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.LocFlat.contr, colTens_apply, rowTens_apply, Matrix.toCols₁_fromCols, Matrix.toRows₁_fromRows, GlobalTheory.StepData.hat]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `u`. Establish `h1 : (Matrix.fromRows q.2 (Matrix.of fun _ : Unit => u)) (Sum.inr ()) = u` using `rfl`.
+
+Establish `h2 : ∀ y : n → k, (fun r => Matrix.fromCols q.1 (Matrix.of fun r (_ : Unit) => y r) r (Sum.inr ())) = y` using `fun y => rfl`. Simplify using `only [h1, h2]`. Rewrite using `[show (∫ y, Ξ₁.1 q.1 * φ₀.1 y * ((ψk ((-1) * (u ⬝ᵥ y)) : Circle) : ℂ) ∂(Measure.pi fun _ => ν)) = Ξ₁.1 q.1 * ∫ y, φ₀.1 y * ((ψk ((-1) * (u ⬝ᵥ y)) : Circle) : ℂ) ∂(Measure.pi fun _ => ν) by`. Rewrite using `[← integral_const_mul]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `y`. Use the proof step `ring]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem contr_tens {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [MeasurableSpace k] [BorelSpace k] (ψk : AddChar k Circle) (ν : Measure k)
     {n n' n'' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] [Fintype n''] [DecidableEq n'']

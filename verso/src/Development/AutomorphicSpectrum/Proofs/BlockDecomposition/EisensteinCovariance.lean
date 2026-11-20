@@ -19,6 +19,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CompanionTheory.EisCovar
 
+/- English proof (translation)
+Introduce `D n V ψ χ θ μ ω hS γ hγ v Φ Ψ hΨ`. Take `⟨-, -, -, -, -, -, ⟨𝓕, hC⟩, hW⟩` from `hS`. Establish `hF : FieldGen D.host.E (D.sp.cm.sig : D.host.E →+* D.host.E) n` using `FieldGenPf.fieldGen_of_bruhat hB D.host.E _ (fun x => star_star x) two_ne_zero n`. Conclude with `Transfer.ratPts_transfer hR D n hF (CovAt ψ V ω) (fun _ _ h₁ h₂ => covAt_mul h₁ h₂) (fun g a h => covAt_levi D n V ψ χ θ μ ω hW g a h) (fun g b hb h => covAt_unip D n V ψ χ θ μ ω hW g b hb h) (fun g h => covAt_weyl D n V ψ χ θ μ ω hW hC.1 g h) γ hγ v Φ Ψ hΨ`.
+-/
 theorem covar_of (hB : Bruhat) (hR : RatPts) : Covar := by
   intro D n V ψ χ θ μ ω hS γ hγ v Φ Ψ hΨ
   obtain ⟨-, -, -, -, -, -, ⟨𝓕, hC⟩, hW⟩ := hS
@@ -29,6 +32,9 @@ theorem covar_of (hB : Bruhat) (hR : RatPts) : Covar := by
     (fun g b hb h => covAt_unip D n V ψ χ θ μ ω hW g b hb h)
     (fun g h => covAt_weyl D n V ψ χ θ μ ω hW hC.1 g h) γ hγ v Φ Ψ hΨ
 
+/- English proof (translation)
+The claim follows from `covar_of GlobalTheory.CompanionTheory.BruhatCell.bruhat GlobalTheory.CompanionTheory.RatPtsUnn.ratPtsUnn`.
+-/
 theorem covar : Covar :=
   covar_of GlobalTheory.CompanionTheory.BruhatCell.bruhat GlobalTheory.CompanionTheory.RatPtsUnn.ratPtsUnn
 

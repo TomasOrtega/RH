@@ -16,6 +16,9 @@ noncomputable section
 
 namespace GlobalTheory.IdealPull
 
+/- English proof (translation)
+Use `show (Y.presheaf.germ V y hy).hom (resG Y hV ((t.app U).hom a)) = _`. Rewrite using `[germ_resG]`. Conclude with `(Scheme.Hom.germ_stalkMap_apply t U y _ a).symm`.
+-/
 theorem germ_appLE {X Y : Scheme.{0}} (t : Y ⟶ X) (U : X.Opens) (V : Y.Opens) (hV : V ≤ t ⁻¹ᵁ U)
     (y : Y) (hy : y ∈ V) (a : Γ(X, U)) :
     (Y.presheaf.germ V y hy).hom ((t.appLE U V hV).hom a) =
@@ -24,6 +27,31 @@ theorem germ_appLE {X Y : Scheme.{0}} (t : Y ⟶ X) (U : X.Opens) (V : Y.Opens) 
   rw [germ_resG]
   exact (Scheme.Hom.germ_stalkMap_apply t U y _ a).symm
 
+/- English proof (translation)
+Introduce `Y₀ Y₁ _ t I y U hx n b hb hgerm U' f hyU' hf0 hU' V hV hyV`. Take `⟨_, ⟨W, hWa, rfl⟩, hxW, hWU⟩` from `Y₀.isBasis_affineOpens.exists_subset_of_mem_open hx U.isOpen`. Establish `hWU' : W ≤ U` using `hWU`. Take `⟨_, ⟨V₀, hV₀a, rfl⟩, hyV₀, hV₀le⟩` from `Y₁.isBasis_affineOpens.exists_subset_of_mem_open (show y ∈ U'.1 ⊓ t ⁻¹ᵁ W from ⟨hyU', hxW⟩) (U'.1 ⊓ t ⁻¹ᵁ W).isOpen`. Establish `hV₀U' : V₀ ≤ U'.1` using `fun z hz => (hV₀le hz).1`.
+
+Establish `hV₀W : V₀ ≤ t ⁻¹ᵁ W` using `fun z hz => (hV₀le hz).2`. Set `R` to `Y₁.presheaf.stalk y`. Set `g : R` to `(Y₁.presheaf.germ U'.1 y hyU').hom f`. Set `β : Fin n → R` to `fun k => (t.stalkMap y).hom ((Y₀.presheaf.germ U (t y) hx).hom (b k))`. Establish `hI1 : (I.comap t).ideal ⟨V₀, hV₀a⟩ = Ideal.span {resG Y₁ hV₀U' f}`.
+
+Rewrite using `[← (I.comap t).map_ideal (U := ⟨V₀, hV₀a⟩) (V := U') hV₀U', hU', Ideal.map_span, Set.image_singleton]`. Both sides reduce to the same expression. Establish `hI2` using `GlobalTheory.Principalise.comapIdealAffine I t ⟨W, hWa⟩ ⟨V₀, hV₀a⟩ hV₀W`. Establish `hgf : (Y₁.presheaf.germ V₀ y hyV₀).hom (resG Y₁ hV₀U' f) = g` using `germ_resG _ _ _ _`. Establish `hc : ∀ k, ∃ c : R, β k = c * g`.
+
+Introduce `k`. Establish `hmem : (t.appLE W V₀ hV₀W).hom (resG Y₀ hWU' (b k)) ∈ (I.comap t).ideal ⟨V₀, hV₀a⟩`. Rewrite using `[hI2]`. Conclude with `Ideal.mem_map_of_mem _ (hb k ⟨W, hWa⟩ hWU')`. Rewrite `hmem` using `[hI1, Ideal.mem_span_singleton']`.
+
+Take `⟨c, hc⟩` from `hmem`. Use `⟨(Y₁.presheaf.germ V₀ y hyV₀).hom c, ?_⟩` and prove the remaining obligations. Use `congrArg (Y₁.presheaf.germ V₀ y hyV₀).hom hc` as an intermediate fact. Rewrite `this` using `[map_mul, hgf, germ_appLE, germ_resG]`. Conclude with `this.symm`.
+
+Use `choose c hcβ using hc`. Establish `hgmem : g ∈ Ideal.span (Set.range β)`. Establish `hmem : resG Y₁ hV₀U' f ∈ (I.comap t).ideal ⟨V₀, hV₀a⟩`. Rewrite using `[hI1]`. Conclude with `Ideal.mem_span_singleton_self _`.
+
+Rewrite `hmem` using `[hI2]`. Establish `h2` using `Ideal.mem_map_of_mem (Y₁.presheaf.germ V₀ y hyV₀).hom hmem`. Rewrite `h2` using `[hgf, Ideal.map_map]`. Use `(Ideal.map_le_iff_le_comap.2 ?_) h2` and prove the remaining obligations. Introduce `a ha`.
+
+Rewrite using `[Ideal.mem_comap, RingHom.comp_apply, germ_appLE]`. Establish `h3` using `Ideal.mem_map_of_mem (t.stalkMap y).hom (hgerm ⟨W, hWa⟩ hxW a ha)`. Rewrite `h3` using `[Ideal.map_span, ← Set.range_comp]`. Conclude with `h3`. Establish `hfK : algebraMap R Y₁.functionField g = fnOf U'.1 (gen_mem hyU') f` using `algebraMap_germ hyU' f`.
+
+Establish `hg0 : g ≠ 0` using `fun h => hf0 (by rw [← hfK, h, map_zero])`. Establish `hFk : ∀ k, fnOf V (gen_mem hyV) (t.appLE U V hV (b k)) / fnOf U'.1 (gen_mem hyU') f = algebraMap R Y₁.functionField (c k)`. Introduce `k`. Rewrite using `[← algebraMap_germ hyV, ← hfK, germ_appLE]`. Express the relevant statement in the definitionally equal form `algebraMap R _ (β k) / _ = _`.
+
+Rewrite using `[hcβ k, map_mul, mul_div_assoc, div_self (hfK ▸ hf0), mul_one]`. Use `⟨fun k => hFk k ▸ ⟨c k, rfl⟩, ?_⟩` and prove the remaining obligations. Take `⟨e, he⟩` from `(Submodule.mem_span_range_iff_exists_fun R).1 hgmem`. Establish `hsum : ∑ k, e k * c k = 1`. Establish `: (∑ k, e k * c k) * g = 1 * g`.
+
+Rewrite using `[one_mul, Finset.sum_mul]`. Use `conv_rhs => rw [← he]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [hcβ k, smul_eq_mul, mul_assoc]`. Conclude with `mul_right_cancel₀ hg0 this`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, IsUnit (c k) := by`.
+
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `: (1 : R) ∈ IsLocalRing.maximalIdeal R` using `hsum ▸ Ideal.sum_mem _ fun k _ => Ideal.mul_mem_left _ _ ((IsLocalRing.mem_maximalIdeal _).2 (hcon k))`. Conclude with `(Ideal.ne_top_iff_one _).1 (IsLocalRing.maximalIdeal.isMaximal R).ne_top this`. Conclude with `⟨k, c k, hk, (hFk k).symm⟩`.
+-/
 theorem regAt_and_unitAt_div_gen : ∀ (Y₀ Y₁ : Scheme.{0}) [IsIntegral Y₁] (t : Y₁ ⟶ Y₀) (I : Y₀.IdealSheafData) (y : Y₁) (U : Y₀.Opens) (hx : t y ∈ U) (n : ℕ) (b : Fin n → Γ(Y₀, U)), (∀ (k : Fin n) (W : Y₀.affineOpens) (h : W.1 ≤ U), resG Y₀ h (b k) ∈ I.ideal W) → (∀ (W : Y₀.affineOpens) (hxW : t y ∈ W.1) (a : Γ(Y₀, W.1)), a ∈ I.ideal W → Y₀.presheaf.germ W.1 (t y) hxW a ∈ Ideal.span (Set.range fun k => Y₀.presheaf.germ U (t y) hx (b k))) → ∀ (U' : Y₁.affineOpens) (f : Γ(Y₁, U'.1)) (hyU' : y ∈ U'.1), fnOf U'.1 (gen_mem hyU') f ≠ 0 → (I.comap t).ideal U' = Ideal.span {f} → ∀ (V : Y₁.Opens) (hV : V ≤ t ⁻¹ᵁ U) (hyV : y ∈ V), (∀ k, RegAt y (fnOf V (gen_mem hyV) (t.appLE U V hV (b k)) / fnOf U'.1 (gen_mem hyU') f)) ∧ ∃ k, UnitAt y (fnOf V (gen_mem hyV) (t.appLE U V hV (b k)) / fnOf U'.1 (gen_mem hyU') f) := by
   intro Y₀ Y₁ _ t I y U hx n b hb hgerm U' f hyU' hf0 hU' V hV hyV
   obtain ⟨_, ⟨W, hWa, rfl⟩, hxW, hWU⟩ := Y₀.isBasis_affineOpens.exists_subset_of_mem_open hx U.isOpen

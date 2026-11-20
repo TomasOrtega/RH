@@ -9,6 +9,9 @@ namespace PI.WGL.Adj
 
 open Formalism.BasicNotions MvPolynomial
 
+/- English proof (translation)
+Unfold `Formalism.REAL.fockF`. Use `Finset.sum_subset hS ?_` and prove the remaining obligations. Introduce `m _ hm`. Simplify using `only [MvPolynomial.mem_support_iff, not_not] at hm`. Simplify using `[hm]`.
+-/
 theorem fockF_eq_sum_of_subset {σ : Type} (f g : MvPolynomial σ ℂ) (S : Finset (σ →₀ ℕ))
     (hS : f.support ⊆ S) :
     Formalism.REAL.fockF f g =
@@ -19,6 +22,9 @@ theorem fockF_eq_sum_of_subset {σ : Type} (f g : MvPolynomial σ ℂ) (S : Fins
   simp only [MvPolynomial.mem_support_iff, not_not] at hm
   simp [hm]
 
+/- English proof (translation)
+Rewrite using `[fockF_eq_sum_of_subset (f + f') g _ MvPolynomial.support_add, fockF_eq_sum_of_subset f g _ Finset.subset_union_left, fockF_eq_sum_of_subset f' g _ Finset.subset_union_right, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fockF_add_left {σ : Type} [DecidableEq σ] (f f' g : MvPolynomial σ ℂ) :
     Formalism.REAL.fockF (f + f') g = Formalism.REAL.fockF f g + Formalism.REAL.fockF f' g := by
   rw [fockF_eq_sum_of_subset (f + f') g _ MvPolynomial.support_add,
@@ -28,6 +34,9 @@ theorem fockF_add_left {σ : Type} [DecidableEq σ] (f f' g : MvPolynomial σ �
   refine Finset.sum_congr rfl fun m _ => ?_
   rw [MvPolynomial.coeff_add]; ring
 
+/- English proof (translation)
+Unfold `Formalism.REAL.fockF`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_add, star_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fockF_add_right {σ : Type} (f g g' : MvPolynomial σ ℂ) :
     Formalism.REAL.fockF f (g + g') = Formalism.REAL.fockF f g + Formalism.REAL.fockF f g' := by
   unfold Formalism.REAL.fockF
@@ -35,37 +44,61 @@ theorem fockF_add_right {σ : Type} (f g g' : MvPolynomial σ ℂ) :
   refine Finset.sum_congr rfl fun m _ => ?_
   rw [MvPolynomial.coeff_add, star_add]; ring
 
+/- English proof (translation)
+The claim follows from `Formalism.GradedWeylDivisibility.fockPos _ _ (Formalism.GradedWeylDivisibility.hwNe ℂ N N le_rfl lam.natW)`.
+-/
 theorem den_pos {N : ℕ} (lam : DomWeight N) :
     0 < (Formalism.REAL.fockF (extremal ℂ N lam) (extremal ℂ N lam)).re ∧
       (Formalism.REAL.fockF (extremal ℂ N lam) (extremal ℂ N lam)).im = 0 :=
   Formalism.GradedWeylDivisibility.fockPos _ _ (Formalism.GradedWeylDivisibility.hwNe ℂ N N le_rfl lam.natW)
 
+/- English proof (translation)
+The claim follows from `Complex.ext (by simp) (by simp [(den_pos lam).2])`.
+-/
 theorem den_eq {N : ℕ} (lam : DomWeight N) :
     Formalism.REAL.fockF (extremal ℂ N lam) (extremal ℂ N lam) =
       (((Formalism.REAL.fockF (extremal ℂ N lam) (extremal ℂ N lam)).re : ℝ) : ℂ) :=
   Complex.ext (by simp) (by simp [(den_pos lam).2])
 
+/- English proof (translation)
+Unfold `normFock`. Rewrite using `[← den_eq]`.
+-/
 theorem nf_eq {N : ℕ} (lam : DomWeight N) (f g : MvPolynomial (Fin N × Fin N) ℂ) :
     normFock lam f g = Formalism.REAL.fockF f g /
       (((Formalism.REAL.fockF (extremal ℂ N lam) (extremal ℂ N lam)).re : ℝ) : ℂ) := by
   unfold normFock; rw [← den_eq]
 
+/- English proof (translation)
+Rewrite using `[nf_eq, nf_eq, Formalism.GradedWeylDivisibility.fockHerm, star_div₀, Complex.star_def, Complex.conj_ofReal]`.
+-/
 theorem nf_herm {N : ℕ} (lam : DomWeight N) (f g : MvPolynomial (Fin N × Fin N) ℂ) :
     normFock lam g f = star (normFock lam f g) := by
   rw [nf_eq, nf_eq, Formalism.GradedWeylDivisibility.fockHerm, star_div₀, Complex.star_def, Complex.conj_ofReal]
 
+/- English proof (translation)
+Unfold `normFock`. Rewrite using `[fockF_add_left, add_div]`.
+-/
 theorem nf_add_left {N : ℕ} (lam : DomWeight N) (f f' g : MvPolynomial (Fin N × Fin N) ℂ) :
     normFock lam (f + f') g = normFock lam f g + normFock lam f' g := by
   unfold normFock; rw [fockF_add_left, add_div]
 
+/- English proof (translation)
+Unfold `normFock`. Rewrite using `[fockF_add_right, add_div]`.
+-/
 theorem nf_add_right {N : ℕ} (lam : DomWeight N) (f g g' : MvPolynomial (Fin N × Fin N) ℂ) :
     normFock lam f (g + g') = normFock lam f g + normFock lam f g' := by
   unfold normFock; rw [fockF_add_right, add_div]
 
+/- English proof (translation)
+Unfold `normFock`. Rewrite using `[PI.WHw.bC_smul_left, mul_div_assoc]`.
+-/
 theorem nf_smul_left {N : ℕ} (lam : DomWeight N) (c : ℂ) (f g : MvPolynomial (Fin N × Fin N) ℂ) :
     normFock lam (c • f) g = c * normFock lam f g := by
   unfold normFock; rw [PI.WHw.bC_smul_left, mul_div_assoc]
 
+/- English proof (translation)
+Unfold `normFock`. Rewrite using `[PI.WHw.bC_smul_right, mul_div_assoc]`.
+-/
 theorem nf_smul_right {N : ℕ} (lam : DomWeight N) (c : ℂ) (f g : MvPolynomial (Fin N × Fin N) ℂ) :
     normFock lam f (c • g) = star c * normFock lam f g := by
   unfold normFock; rw [PI.WHw.bC_smul_right, mul_div_assoc]
@@ -76,15 +109,24 @@ def nfL {N : ℕ} (lam : DomWeight N) (g : MvPolynomial (Fin N × Fin N) ℂ) :
   map_add' f f' := nf_add_left lam f f' g
   map_smul' c f := by simp [nf_smul_left]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem nfL_apply {N : ℕ} (lam : DomWeight N) (g f : MvPolynomial (Fin N × Fin N) ℂ) :
     nfL lam g f = normFock lam f g := rfl
 
+/- English proof (translation)
+Rewrite using `[← nfL_apply, map_sum]`. Simplify using `[nfL_apply]`.
+-/
 theorem nf_sum_smul_left {N : ℕ} (lam : DomWeight N) {ι : Type} (S : Finset ι) (a : ι → ℂ)
     (v : ι → MvPolynomial (Fin N × Fin N) ℂ) (g : MvPolynomial (Fin N × Fin N) ℂ) :
     normFock lam (∑ k ∈ S, a k • v k) g = ∑ k ∈ S, a k * normFock lam (v k) g := by
   rw [← nfL_apply, map_sum]
   simp [nfL_apply]
 
+/- English proof (translation)
+Rewrite using `[nf_herm, nf_sum_smul_left, star_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[star_mul', ← nf_herm]`.
+-/
 theorem nf_sum_smul_right {N : ℕ} (lam : DomWeight N) {ι : Type} (S : Finset ι) (a : ι → ℂ)
     (v : ι → MvPolynomial (Fin N × Fin N) ℂ) (f : MvPolynomial (Fin N × Fin N) ℂ) :
     normFock lam f (∑ k ∈ S, a k • v k) = ∑ k ∈ S, star (a k) * normFock lam f (v k) := by
@@ -92,15 +134,24 @@ theorem nf_sum_smul_right {N : ℕ} (lam : DomWeight N) {ι : Type} (S : Finset 
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [star_mul', ← nf_herm]
 
+/- English proof (translation)
+Rewrite using `[nf_herm, ← nfL_apply, map_sub, star_sub, nfL_apply, nfL_apply, ← nf_herm, ← nf_herm]`.
+-/
 theorem nf_sub_right {N : ℕ} (lam : DomWeight N) (f g g' : MvPolynomial (Fin N × Fin N) ℂ) :
     normFock lam f (g - g') = normFock lam f g - normFock lam f g' := by
   rw [nf_herm, ← nfL_apply, map_sub, star_sub, nfL_apply, nfL_apply, ← nf_herm, ← nf_herm]
 
+/- English proof (translation)
+Use `nf_smul_right lam 0 f 0` as an intermediate fact. Simplify using `using this`.
+-/
 theorem nf_zero_right {N : ℕ} (lam : DomWeight N) (f : MvPolynomial (Fin N × Fin N) ℂ) :
     normFock lam f 0 = 0 := by
   have := nf_smul_right lam 0 f 0
   simpa using this
 
+/- English proof (translation)
+Rewrite using `[nf_eq, Complex.div_ofReal_im]`. Distinguish the cases in `hf : f = 0`. Substitute `hf` using the available equality. Simplify using `[Formalism.REAL.fockF]`. Rewrite using `[(Formalism.GradedWeylDivisibility.fockPos _ f hf).2, zero_div]`.
+-/
 theorem nf_self_im {N : ℕ} (lam : DomWeight N) (f : MvPolynomial (Fin N × Fin N) ℂ) :
     (normFock lam f f).im = 0 := by
   rw [nf_eq, Complex.div_ofReal_im]
@@ -108,27 +159,44 @@ theorem nf_self_im {N : ℕ} (lam : DomWeight N) (f : MvPolynomial (Fin N × Fin
   · subst hf; simp [Formalism.REAL.fockF]
   · rw [(Formalism.GradedWeylDivisibility.fockPos _ f hf).2, zero_div]
 
+/- English proof (translation)
+Rewrite using `[nf_eq, Complex.div_ofReal_re]`. Conclude with `div_pos (Formalism.GradedWeylDivisibility.fockPos _ f hf).1 (den_pos lam).1`.
+-/
 theorem nf_self_re_pos {N : ℕ} (lam : DomWeight N) (f : MvPolynomial (Fin N × Fin N) ℂ) (hf : f ≠ 0) :
     0 < (normFock lam f f).re := by
   rw [nf_eq, Complex.div_ofReal_re]
   exact div_pos (Formalism.GradedWeylDivisibility.fockPos _ f hf).1 (den_pos lam).1
 
+/- English proof (translation)
+Distinguish the cases in `hf : f = 0`. Substitute `hf` using the available equality. Rewrite using `[nf_zero_right]`. Simplify using the standard rewrite rules. Conclude with `(nf_self_re_pos lam f hf).le`.
+-/
 theorem nf_self_re_nonneg {N : ℕ} (lam : DomWeight N) (f : MvPolynomial (Fin N × Fin N) ℂ) :
     0 ≤ (normFock lam f f).re := by
   by_cases hf : f = 0
   · subst hf; rw [nf_zero_right]; simp
   · exact (nf_self_re_pos lam f hf).le
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hf`. Use `nf_self_re_pos lam f hf` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `at this`.
+-/
 theorem nf_self_eq_zero {N : ℕ} (lam : DomWeight N) (f : MvPolynomial (Fin N × Fin N) ℂ)
     (h : normFock lam f f = 0) : f = 0 := by
   by_contra hf
   have := nf_self_re_pos lam f hf
   rw [h] at this; simp at this
 
+/- English proof (translation)
+The claim follows from `Complex.ext (by simp) (by simp [nf_self_im])`.
+-/
 theorem nf_self_eq_re {N : ℕ} (lam : DomWeight N) (f : MvPolynomial (Fin N × Fin N) ℂ) :
     normFock lam f f = (((normFock lam f f).re : ℝ) : ℂ) :=
   Complex.ext (by simp) (by simp [nf_self_im])
 
+/- English proof (translation)
+Unfold `normFock`. Use `div_self ?_` and prove the remaining obligations. Introduce `h0`. Use `(den_pos lam).1` as an intermediate fact. Rewrite `this` using `[h0]`.
+
+Simplify using `at this`.
+-/
 theorem nf_extremal {N : ℕ} (lam : DomWeight N) :
     normFock lam (extremal ℂ N lam) (extremal ℂ N lam) = 1 := by
   unfold normFock
@@ -149,6 +217,9 @@ def nfCore {N : ℕ} (lam : DomWeight N) : InnerProductSpace.Core ℂ (MvPolynom
     rw [nf_smul_right, starRingEnd_apply]
   definite x hx := nf_self_eq_zero lam x hx
 
+/- English proof (translation)
+Use `letI : PreInnerProductSpace.Core ℂ (MvPolynomial (Fin N × Fin N) ℂ) := (nfCore lam).toCore`. Conclude with `InnerProductSpace.Core.inner_mul_inner_self_le x y`.
+-/
 theorem nf_cauchy_schwarz {N : ℕ} (lam : DomWeight N) (x y : MvPolynomial (Fin N × Fin N) ℂ) :
     ‖normFock lam y x‖ * ‖normFock lam x y‖ ≤ (normFock lam x x).re * (normFock lam y y).re := by
   letI : PreInnerProductSpace.Core ℂ (MvPolynomial (Fin N × Fin N) ℂ) := (nfCore lam).toCore
@@ -170,6 +241,11 @@ def frameCore (n : ℕ) (sg : DomWeight n) : InnerProductSpace.Core ℂ (nablaSq
     have := nf_self_eq_zero sg (x : MvPolynomial (Fin n × Fin n) ℂ) hx
     exact Subtype.ext this
 
+/- English proof (translation)
+Use `letI : NormedAddCommGroup (nablaSq ℂ n sg) := @InnerProductSpace.Core.toNormedAddCommGroup ℂ _ _ _ _ (frameCore n sg)`. Use `letI : InnerProductSpace ℂ (nablaSq ℂ n sg) := InnerProductSpace.ofCore (frameCore n sg).toCore`. Use `haveI : FiniteDimensional ℂ (nablaSq ℂ n sg) := PI.WHw.bC_fd n n sg.natW`. Set `b` to `stdOrthonormalBasis ℂ (nablaSq ℂ n sg)`. Use `⟨Module.finrank ℂ (nablaSq ℂ n sg), fun k => (b k : MvPolynomial (Fin n × Fin n) ℂ), fun k => (b k).2, fun s hs => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `congrArg Subtype.val (b.sum_repr' ⟨s, hs⟩)`. Rewrite `h1` using `[Submodule.coe_sum]`. Conclude with `h1.symm`.
+-/
 theorem exists_frame (n : ℕ) (sg : DomWeight n) :
     ∃ (d : ℕ) (b : Fin d → MvPolynomial (Fin n × Fin n) ℂ), (∀ k, b k ∈ nablaSq ℂ n sg) ∧
       ∀ s ∈ nablaSq ℂ n sg, s = ∑ k, normFock sg s (b k) • b k := by

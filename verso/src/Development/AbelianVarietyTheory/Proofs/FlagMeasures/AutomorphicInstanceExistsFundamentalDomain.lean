@@ -10,6 +10,11 @@ open Topology Filter
 
 namespace GlobalTheory.FundExists
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.MeasurableFundamentalDomain.exists_measurable_fundamental_domain`. Consider the case `exact _root_.GlobalTheory.MeasurableFundamentalDomain.exists_measurable_fundamental_domain`. Consider the case `(apply _root_.GlobalTheory.MeasurableFundamentalDomain.exists_measurable_fundamental_domain <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.MeasurableFundamentalDomain.exists_measurable_fundamental_domain <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.MeasurableFundamentalDomain.exists_measurable_fundamental_domain <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.MeasurableFundamentalDomain.exists_measurable_fundamental_domain ..)`.
+-/
 theorem exists_strict_domain {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [T2Space G] [LocallyCompactSpace G] [SecondCountableTopology G] [MeasurableSpace G]
     [OpensMeasurableSpace G] (Γ : Subgroup G) [Countable Γ]
@@ -24,6 +29,13 @@ theorem exists_strict_domain {G : Type} [Group G] [TopologicalSpace G] [IsTopolo
   | (intros; apply @_root_.GlobalTheory.MeasurableFundamentalDomain.exists_measurable_fundamental_domain <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.MeasurableFundamentalDomain.exists_measurable_fundamental_domain ..)
 
+/- English proof (translation)
+Introduce `I μf _ _`. Take `⟨h1, h2, h3, -⟩` from `GlobalTheory.CongTop.adelic_topology I`. Take `⟨Γ, hΓ, hc, hfin, -⟩` from `GlobalTheory.RatDiscrete.rational_points I`. Rewrite `hfin` using `[← hΓ]`. Take `⟨D, hD, hcov, hinj⟩` from `exists_strict_domain Γ hfin`.
+
+Use `⟨D, hD, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hΓ]`. Conclude with `hcov`. Rewrite using `[← hΓ]`. Introduce `γ hγ hne`.
+
+Establish `: (fun y => γ * y) '' D ∩ D = ∅`. Use `Set.eq_empty_of_forall_notMem ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨y, hy, rfl⟩, hγy⟩`. Conclude with `hne (hinj γ hγ y hy hγy)`. Rewrite using `[this, measure_empty]`.
+-/
 theorem exists_isFundDom : ∀ (I : AutInst) (μf : Measure I.Gf) [μf.IsHaarMeasure] [SigmaFinite μf],
     ∃ fund, I.IsFundDom (I.muA μf) fund := by
   intro I μf _ _

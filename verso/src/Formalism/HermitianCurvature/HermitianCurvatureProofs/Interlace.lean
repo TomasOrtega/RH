@@ -4,12 +4,18 @@ namespace Formalism.FourierDecayAlt.P.Interlace
 
 open Finset Formalism.FourierDecayAlt.I
 
+/- English proof (translation)
+Introduce `i hi`. Take `⟨a, b, c, d⟩` from `h i hi`. Conclude with `⟨b, a, d, c⟩`.
+-/
 lemma interlaces_swap {k : ℕ} {u u' ρ : ℕ → ℝ} (h : Interlaces k u u' ρ) :
     Interlaces k u' u ρ := by
   intro i hi
   obtain ⟨a, b, c, d⟩ := h i hi
   exact ⟨b, a, d, c⟩
 
+/- English proof (translation)
+Introduce `i j hi hij hjk`. Proceed by induction on `j, hij using Nat.le_induction with`. Consider the case `base => exact le_refl _`. Consider the case `succ n hn ih => exact (h n (by omega) hjk).trans (ih (by omega))`.
+-/
 lemma antitone_on {f : ℕ → ℝ} {k : ℕ} (h : ∀ i, 1 ≤ i → i + 1 ≤ k → f (i + 1) ≤ f i) :
     ∀ i j, 1 ≤ i → i ≤ j → j ≤ k → f j ≤ f i := by
   intro i j hi hij hjk
@@ -17,12 +23,26 @@ lemma antitone_on {f : ℕ → ℝ} {k : ℕ} (h : ∀ i, 1 ≤ i → i + 1 ≤ 
   | base => exact le_refl _
   | succ n hn ih => exact (h n (by omega) hjk).trans (ih (by omega))
 
+/- English proof (translation)
+Introduce `i h1 h2`. Take `⟨a, b, c, d⟩` from `h i (mem_Icc.2 ⟨h1, by omega⟩)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma u_step {k : ℕ} {u u' ρ : ℕ → ℝ} (h : Interlaces k u u' ρ) :
     ∀ i, 1 ≤ i → i + 1 ≤ k → u (i + 1) ≤ u i := by
   intro i h1 h2
   obtain ⟨a, b, c, d⟩ := h i (mem_Icc.2 ⟨h1, by omega⟩)
   linarith
 
+/- English proof (translation)
+Establish `hu` using `antitone_on (u_step h)`. Establish `hu'` using `antitone_on (u_step (interlaces_swap h))`. Establish `hcard : (filter (fun i => ¬ i < l) (Icc 1 (k - 1))).card = k - l`. Establish `: filter (fun i => ¬ i < l) (Icc 1 (k - 1)) = Icc l (k - 1)`. Use extensionality with `i`.
+
+Simplify using `only [mem_filter, mem_Icc]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[this, Nat.card_Icc]`. Use linear arithmetic over natural numbers and integers. Establish `key : (-1 : ℝ) ^ (k - l) * xpoly k ρ (Y + e) = ∏ i ∈ Icc 1 (k - 1), ((if i < l then (1 : ℝ) else -1) * (Y + e + ρ i))`.
+
+Rewrite using `[prod_mul_distrib, prod_ite, prod_const_one, one_mul, prod_const, hcard]`. Both sides reduce to the same expression. Rewrite using `[key]`. Apply `prod_pos` to reduce the goal to its premises. Introduce `i hi`.
+
+Establish `hi'` using `mem_Icc.1 hi`. Take `⟨a, b, c, d⟩` from `h i hi`. Use `split_ifs with hil`. Use `hu' (i + 1) l (by omega) (by omega) hlk` as an intermediate fact. Rewrite using `[one_mul]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `hu l i hl1 (by omega) (by omega)` as an intermediate fact. Rewrite using `[neg_one_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma sign_core (k : ℕ) (u u' ρ : ℕ → ℝ) (l : ℕ) (Y : ℝ) (hl1 : 1 ≤ l) (hlk : l ≤ k)
     (h : Interlaces k u u' ρ) (hA : u l + 2 ≤ -Y ∧ -Y ≤ u' l - 2) (e : ℝ)
     (he : -1 ≤ e ∧ e ≤ 1) :
@@ -48,6 +68,11 @@ lemma sign_core (k : ℕ) (u u' ρ : ℕ → ℝ) (l : ℕ) (Y : ℝ) (hl1 : 1 �
   · have := hu l i hl1 (by omega) (by omega)
     rw [neg_one_mul]; linarith
 
+/- English proof (translation)
+Introduce `k u u' ρ l Y hl1 hlk h hc e he`. Establish `he' : -1 ≤ e ∧ e ≤ 1`. Simplify using `only [mem_insert, mem_singleton] at he`. Apply the tactic sequence `rcases he with rfl | rfl | rfl <;> norm_num`. Break down `hc with hA | hB` into its components or cases.
+
+Conclude with `sign_core k u u' ρ l Y hl1 hlk h hA e he'`. Conclude with `sign_core k u' u ρ l Y hl1 hlk (interlaces_swap h) hB e he'`.
+-/
 theorem interlaceSign : InterlaceSign := by
   intro k u u' ρ l Y hl1 hlk h hc e he
   have he' : -1 ≤ e ∧ e ≤ 1 := by
@@ -57,6 +82,15 @@ theorem interlaceSign : InterlaceSign := by
   · exact sign_core k u u' ρ l Y hl1 hlk h hA e he'
   · exact sign_core k u' u ρ l Y hl1 hlk (interlaces_swap h) hB e he'
 
+/- English proof (translation)
+Establish `hu` using `antitone_on (u_step h)`. Establish `hu'` using `antitone_on (u_step (interlaces_swap h))`. Establish `hl : l ∈ Icc 1 k` using `mem_Icc.2 ⟨hl1, hlk⟩`. Rewrite using `[← mul_prod_erase _ _ hl]`. Apply `mul_neg_of_neg_of_pos` to reduce the goal to its premises.
+
+Apply the tactic sequence `apply mul_neg_of_neg_of_pos <;> linarith`. Apply `prod_pos` to reduce the goal to its premises. Introduce `i hi`. Establish `hne` using `ne_of_mem_erase hi`. Establish `hi'` using `mem_Icc.1 (mem_of_mem_erase hi)`.
+
+Break down `lt_or_gt_of_ne hne with hil | hil` into its components or cases. Take `⟨a, b, c, d⟩` from `h i (mem_Icc.2 ⟨hi'.1, by omega⟩)`. Establish `h1` using `hu' (i + 1) l (by omega) (by omega) hlk`. Establish `h2` using `hu' i l hi'.1 (by omega) hlk`. Apply the tactic sequence `apply mul_pos <;> linarith`.
+
+Take `⟨j, rfl⟩ : ∃ j, i = j + 1` from `⟨i - 1, by omega⟩`. Take `⟨a, b, c, d⟩` from `h j (mem_Icc.2 ⟨by omega, by omega⟩)`. Establish `h1` using `hu l (j + 1) hl1 (by omega) hi'.2`. Establish `h2` using `hu l j hl1 (by omega) (by omega)`. Apply the tactic sequence `apply mul_pos_of_neg_of_neg <;> linarith`.
+-/
 lemma q_core (k : ℕ) (u u' ρ : ℕ → ℝ) (l : ℕ) (Y : ℝ) (hl1 : 1 ≤ l) (hlk : l ≤ k)
     (h : Interlaces k u u' ρ) (hA : u l + 2 ≤ -Y ∧ -Y ≤ u' l - 2) :
     ∏ i ∈ Icc 1 k, ((Y + 1/2 + u i) * (Y + 1/2 + u' i)) < 0 := by
@@ -81,6 +115,11 @@ lemma q_core (k : ℕ) (u u' ρ : ℕ → ℝ) (l : ℕ) (Y : ℝ) (hl1 : 1 ≤ 
       have h2 := hu l j hl1 (by omega) (by omega)
       apply mul_pos_of_neg_of_neg <;> linarith
 
+/- English proof (translation)
+Introduce `k u u' ρ l Y T T' hl1 hlk h hc hT hT'`. Establish `hTT : 0 < T * T'` using `mul_pos hT hT'`. Establish `hP : ∏ i ∈ Icc 1 k, ((Y + 1/2 + u i) * (Y + 1/2 + u' i)) < 0`. Break down `hc with hA | hB` into its components or cases. Conclude with `q_core k u u' ρ l Y hl1 hlk h hA`.
+
+Use `q_core k u' u ρ l Y hl1 hlk (interlaces_swap h) hB` as an intermediate fact. Rewrite `this` using `[prod_congr rfl (fun i _ => mul_comm (Y + 1/2 + u' i) (Y + 1/2 + u i))]`. Then use the resulting hypothesis. Unfold `qpoly`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem qPositive : QPositive := by
   intro k u u' ρ l Y T T' hl1 hlk h hc hT hT'
   have hTT : 0 < T * T' := mul_pos hT hT'
@@ -92,6 +131,9 @@ theorem qPositive : QPositive := by
   unfold qpoly
   nlinarith
 
+/- English proof (translation)
+The claim follows from `|(∏ i ∈ Icc 1 k, (Y + 1/2 + u i)) * (∏ i ∈ Icc 1 k, (Y + 1/2 + u' i))| := by have hu := antitone_on (u_step h) have hu' := antitone_on (u_step (interlaces_swap h)) set g : ℕ → ℝ := fun j => |Y + 1/2 + u j| * |Y + 1/2 + u' j| with hg have hl : l ∈ Icc 1 k := mem_Icc.2 ⟨hl1, hlk⟩ h …`.
+-/
 lemma ratio_core (k : ℕ) (u u' ρ : ℕ → ℝ) (l : ℕ) (Y : ℝ) (hl1 : 1 ≤ l) (hlk : l ≤ k)
     (h : Interlaces k u u' ρ) (hA : u l + 2 ≤ -Y ∧ -Y ≤ u' l - 2) :
     xpoly k ρ (Y + 1) ^ 2 * (|Y + 1/2 + u l| * |Y + 1/2 + u' l|) ≤
@@ -140,6 +182,9 @@ lemma ratio_core (k : ℕ) (u u' ρ : ℕ → ℝ) (l : ℕ) (Y : ℝ) (hl1 : 1 
       rw [abs_of_neg (by linarith), abs_of_neg (by linarith)]
       nlinarith
 
+/- English proof (translation)
+Introduce `k u u' ρ l Y hl1 hlk h hc`. Break down `hc with hA | hB` into its components or cases. Conclude with `ratio_core k u u' ρ l Y hl1 hlk h hA`. Use `ratio_core k u' u ρ l Y hl1 hlk (interlaces_swap h) hB` as an intermediate fact. Rewrite `this` using `[mul_comm (|Y + 1/2 + u' l|), mul_comm (∏ i ∈ Icc 1 k, (Y + 1/2 + u' i))]`. Then use the resulting hypothesis.
+-/
 theorem interlaceRatio : InterlaceRatio := by
   intro k u u' ρ l Y hl1 hlk h hc
   rcases hc with hA | hB
@@ -149,6 +194,15 @@ theorem interlaceRatio : InterlaceRatio := by
 
 end Formalism.FourierDecayAlt.P.Interlace
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.Interlace.interlaceSign`.
+-/
 theorem Formalism.FourierDecayAlt.P.interlacing_sign : Formalism.FourierDecayAlt.I.InterlaceSign := Formalism.FourierDecayAlt.P.Interlace.interlaceSign
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.Interlace.qPositive`.
+-/
 theorem Formalism.FourierDecayAlt.P.q_positive_interlacing : Formalism.FourierDecayAlt.I.QPositive := Formalism.FourierDecayAlt.P.Interlace.qPositive
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.Interlace.interlaceRatio`.
+-/
 theorem Formalism.FourierDecayAlt.P.interlacing_ratio : Formalism.FourierDecayAlt.I.InterlaceRatio := Formalism.FourierDecayAlt.P.Interlace.interlaceRatio

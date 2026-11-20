@@ -9,6 +9,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisCochains.GLi
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
+/- English proof (translation)
+Establish `hl : l.Prime` using `Fact.out`. Establish `hmax : (Ideal.span {(l : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.1 hl).irreducible`. Establish `hsum` using `Ideal.sum_ramification_inertia_eq_finrank (Ideal.span {(l : ℤ)}) (𝓞 F)`. Rewrite `hsum` using `[RingOfIntegers.rank]`. Establish `hover : ∀ v, (pl v).asIdeal ∈ (Ideal.span {(l : ℤ)}).primesOver (𝓞 F)` using `fun v => by`.
+
+Use `⟨(pl v).isPrime, ⟨hmax.eq_of_le (Ideal.comap_ne_top _ (pl v).isPrime.ne_top) ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_le_iff_mem, Ideal.mem_comap]`. Simplify using `using hm v`. Set `e : V → (Ideal.span {(l : ℤ)}).primesOver (𝓞 F)` to `fun v => ⟨(pl v).asIdeal, hover v⟩`. Establish `he : Function.Injective e` using `fun a b h => hi (HeightOneSpectrum.ext (congrArg Subtype.val h))`.
+
+Rewrite using `[← hsum]`. Use `le_trans (le_of_eq ?_) (Finset.sum_le_sum_of_subset (Finset.subset_univ (Finset.univ.map ⟨e, he⟩)))` and prove the remaining obligations. Rewrite using `[Finset.sum_map]`. Both sides reduce to the same expression.
+-/
 private theorem sum_deg (l : ℕ) [Fact l.Prime] (F : Type) [Field F] [NumberField F] {V : Type} [Fintype V]
     (pl : V → HeightOneSpectrum (𝓞 F)) (hi : Function.Injective pl) (hm : ∀ v, ((l : ℕ) : 𝓞 F) ∈ (pl v).asIdeal) :
     ∑ v, locDeg (pl v) ≤ Module.finrank ℚ F := by
@@ -29,6 +36,13 @@ private theorem sum_deg (l : ℕ) [Fact l.Prime] (F : Type) [Field F] [NumberFie
   rw [Finset.sum_map]
   rfl
 
+/- English proof (translation)
+Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap F Ω).injective`. Use `haveI : Algebra.IsAlgebraic F Ω := IsAlgClosure.isAlgebraic`. Use `haveI : IsGalois F Ω := {}`. Use `letI : Algebra F ℂ := w.embedding.toAlgebra`. Set `j : Ω →ₐ[F] ℂ` to `IsAlgClosed.lift`.
+
+Establish `hr : ComplexEmbedding.IsReal w.embedding` using `InfinitePlace.isReal_iff.1 (IsTotallyReal.isReal w)`. Set `cj : ℂ →ₐ[F] ℂ` to `{ starRingEnd ℂ with commutes' := fun x => RingHom.congr_fun hr x }`. Use `letI : Algebra Ω ℂ := j.toRingHom.toAlgebra`. Use `haveI : IsScalarTower F Ω ℂ := IsScalarTower.of_algebraMap_eq fun x => (j.commutes x).symm`. Use `⟨(cj.comp j).restrictNormal' Ω, j.toRingHom, fun x => ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `AlgHom.restrictNormal_commutes (cj.comp j) Ω x`. Rewrite using `[show j.toRingHom.comp (algebraMap F Ω) = w.embedding from RingHom.ext fun x => j.commutes x]`. Conclude with `w.mk_embedding`.
+-/
 private theorem cc_ex {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] [IsTotallyReal F] (w : InfinitePlace F) : ∃ c : G F Ω, IsCCAt w c := by
   haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap F Ω).injective
   haveI : Algebra.IsAlgebraic F Ω := IsAlgClosure.isAlgebraic
@@ -44,6 +58,11 @@ private theorem cc_ex {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebr
   · rw [show j.toRingHom.comp (algebraMap F Ω) = w.embedding from RingHom.ext fun x => j.commutes x]
     exact w.mk_embedding
 
+/- English proof (translation)
+Use `continuous_prod_of_discrete_right.2 fun m => ?_` and prove the remaining obligations. Use `IsLocallyConstant.continuous ((IsLocallyConstant.iff_exists_open _).2 fun g => ?_)` and prove the remaining obligations. Use `⟨(fun x => g⁻¹ * x) ⁻¹' (ρ.ker : Set G), h.preimage (by fun_prop), by simp, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hx' : ρ (g⁻¹ * x) = 1` using `hx`. Establish `: ρ x = ρ g` using `by rw [← mul_inv_cancel_left g x, map_mul, hx', mul_one]`.
+
+Simplify using `only [this]`.
+-/
 private theorem contAct {k G M : Type} [CommRing k] [Group G] [TopologicalSpace G] [AddCommGroup M] [Module k M]
     [TopologicalSpace M] [DiscreteTopology M] [IsTopologicalGroup G] (ρ : Representation k G M)
     (h : IsOpen (ρ.ker : Set G)) : ContAction ρ := by
@@ -54,6 +73,11 @@ private theorem contAct {k G M : Type} [CommRing k] [Group G] [TopologicalSpace 
   have : ρ x = ρ g := by rw [← mul_inv_cancel_left g x, map_mul, hx', mul_one]
   simp only [this]
 
+/- English proof (translation)
+Establish `hl : l.Prime` using `Fact.out`. Use `haveI : (Ideal.span {(l : ℤ)}).IsMaximal := PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.1 hl).irreducible`. Take `⟨P, hP, hov⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 F) (Ideal.span {(l : ℤ)})`. Establish `hm : ((l : ℕ) : 𝓞 F) ∈ P`. Establish `: (l : ℤ) ∈ P.under ℤ` using `by rw [← hov.over]; exact Ideal.mem_span_singleton_self _`.
+
+Simplify `this` using `[Ideal.mem_comap]`. Use `⟨⟨P, hP.isPrime, fun h => ?_⟩, hm⟩` and prove the remaining obligations. Rewrite `hm` using `[h, Ideal.mem_bot]`. Conclude with `hl.ne_zero (by exact_mod_cast hm)`.
+-/
 private theorem ex_above (l : ℕ) [Fact l.Prime] (F : Type) [Field F] [NumberField F] :
     ∃ w : HeightOneSpectrum (𝓞 F), ((l : ℕ) : 𝓞 F) ∈ w.asIdeal := by
   have hl : l.Prime := Fact.out
@@ -67,6 +91,27 @@ private theorem ex_above (l : ℕ) [Fact l.Prime] (F : Type) [Field F] [NumberFi
   rw [h, Ideal.mem_bot] at hm
   exact hl.ne_zero (by exact_mod_cast hm)
 
+/- English proof (translation)
+Introduce `hP F Ω _ _ _ _ _ l _ hF S K Γ _ _ _ _ _ _ π hg honly V ι A hA k W _ _ _ _ _ _ ρ b m e hop hb hdual hm he`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap F Ω).injective`. Use `haveI : IsGalois F Ω := {}`. Use `letI : Fintype V := Fintype.ofEquiv S ι.symm`. Use `letI : TopologicalSpace W := ⊥`.
+
+Use `haveI : DiscreteTopology W := ⟨rfl⟩`. Use `letI : ∀ v, TopologicalSpace (W ⧸ b v) := fun _ => ⊥`. Use `haveI : ∀ v, DiscreteTopology (W ⧸ b v) := fun _ => ⟨rfl⟩`. Use `haveI : ∀ v, CompactSpace (Dec (F := F) (A v)) := fun v => isCompact_iff_compactSpace.1 (isClosed_Dec (A v)).isCompact`. Establish `hρ : ContAction ρ` using `contAct ρ hop`.
+
+Use `choose c hc using fun w : InfinitePlace F => cc_ex (Ω := Ω) w`. Establish `hA' : ∀ w : S, IsPlaceOver (A (ι.symm w)) w.1` using `fun w => by simpa using hA (ι.symm w)`. Establish `hD : Loc.H0dual (GC.cycF F Ω l k) (ρ.comp π) = ⊥` using `(Submodule.eq_bot_iff _).2 fun f hf => hdual f hf`. Set `d : ∀ v, Dec (F` to `F) (A v) →* Γ := fun v => π.comp (Dec (F := F) (A v)).subtype`. Establish `hdc : ∀ v, Continuous (d v)` using `fun v => hg.cont.comp continuous_subtype_val`.
+
+Set `τ : ∀ v, Representation k (Dec (F` to `F) (A v)) (W ⧸ b v) := fun v => Representation.quotient (ρ.comp (d v)) (b v) fun g X hX => hb v g.1 g.2 X hX`. Establish `hτq : ∀ v s m, (b v).mkQ (ρ (d v s) m) = τ v s ((b v).mkQ m)` using `fun _ _ _ => rfl`. Establish `hτ : ∀ v, ContAction (τ v)` using `fun v => by`. Use `continuous_prod_of_discrete_right.2 fun m => ?_` and prove the remaining obligations. Take `⟨m, rfl⟩` from `(b v).mkQ_surjective m`.
+
+Conclude with `(continuous_of_discreteTopology (f := (b v).mkQ)).comp (hρ.comp ((hdc v).prodMk continuous_const))`. Establish `hE` using `fun v => GC.locEuler hP.lf hP.lt hP.le F Ω l (ι v).1 (A v) (hA v) k (W ⧸ b v) (τ v) (hτ v)`. Take `⟨f1, f2, -⟩` from `GC.H2_galois_quotient_eq hP F Ω l hF S K Γ π hg k W ρ hρ _ hc _ hA'`. Establish `hO` using `GC.H2_galois_quotient_surjective hP F Ω l hF S K Γ π hg k W ρ hρ _ hc _ hA' hD (fun w => W ⧸ b (ι.symm w)) (fun w => τ (ι.symm w)) (fun w => (b (ι.symm w)).mkQ) (fun w => hτq (ι.symm w)) fun w => (b (ι.symm w)).mkQ_surjective`. Establish `hC` using `GC.coneCount l Γ V (fun v => Dec (F := F) (A v)) d hdc k W ρ hρ (fun v => W ⧸ b v) τ (fun v => (b v).mkQ) hτq (fun v => (b v).mkQ_surjective) f1 f2 fun v => (hE v).1`.
+
+Establish `hbq : (fun v => LinearMap.ker (b v).mkQ) = b` using `funext fun v => Submodule.ker_mkQ _`. Rewrite `hC` using `[hbq]`. Take `⟨-, g2, hC⟩` from `hC`. Use `⟨g2, ?_⟩` and prove the remaining obligations. Establish `hK` using `Submodule.finrank_mono (s := ⨅ v, LinearMap.ker (compatiblePairH2 ρ (τ v) (d v) (hdc v) (b v).mkQ continuous_of_discreteTopology (hτq v))) (t := ⨅ w : S, LinearMap.ker (compatiblePairH2 ρ (τ (ι.symm w)) (π.comp (Dec (F := F) (A (ι.symm w))).subtype) (hdc (ι.symm w)) (b (ι.symm w) …`.
+
+Establish `s2 : ∑ w : S, Module.finrank k (H2 (τ (ι.symm w))) = ∑ v, Module.finrank k (H2 (τ v))` using `ι.symm.sum_comp fun v => Module.finrank k (H2 (τ v))`. Establish `sR : ∑ w : InfinitePlace F, Module.finrank k (LinearMap.ker (ρ (π (c w)) - 1)) ≤ Module.finrank ℚ F * e`. Use `Finset.sum_le_card_nsmul Finset.univ (fun w : InfinitePlace F => Module.finrank k (LinearMap.ker (ρ (π (c w)) - 1))) e fun w _ => he _ (by obtain ⟨j, hj, -⟩ := hc w; exact ⟨j, hj⟩)` as an intermediate fact. Use `this.trans (Nat.mul_le_mul_right _ ?_)` and prove the remaining obligations. Rewrite using `[Finset.card_univ, InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, ← InfinitePlace.card_add_two_mul_card_eq_rank]`.
+
+Use linear arithmetic over natural numbers and integers. Take `⟨w0, hw0⟩` from `ex_above l F`. Take `⟨q, hq⟩ : ∃ q, q + m = Module.finrank k W` from `⟨_, by rw [← hm (ι.symm ⟨w0, hg.above _ hw0⟩)]; exact Submodule.finrank_quotient_add_finrank _⟩`. Establish `hloc : ∀ v, Module.finrank k (H1 (τ v)) = Module.finrank k (H0 (τ v)) + Module.finrank k (H2 (τ v)) + locDeg (ι v).1 * q` using `fun v => by`. Establish `a1` using `(b v).finrank_quotient_add_finrank`.
+
+Rewrite `a1` using `[hm v, ← hq]`. Rewrite using `[(hE v).2.2.1 (honly _ (ι v).2), Nat.add_right_cancel a1]`. Establish `hsum` using `Finset.sum_congr (s₁ := Finset.univ) rfl fun v _ => hloc v`. Rewrite `hsum` using `[Finset.sum_add_distrib, Finset.sum_add_distrib, ← Finset.sum_mul]`. Establish `hdeg` using `Nat.mul_le_mul_right q (sum_deg l F (fun v => (ι v).1) (fun x y h => ι.injective (Subtype.ext h)) fun v => honly _ (ι v).2)`.
+
+Rewrite `hO` using `[s2, ← hq, mul_add]`. Express the relevant statement in the definitionally equal form `Module.finrank k (Fr.coneH2 d ρ b) + _ + _ ≤ Module.finrank k (Fr.H1C d ρ b) + _`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem UpperTheory.V.Ws.X1.ecG :
     GC.Hypotheses₂ → ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime], IsTotallyReal F → ∀ (S : Finset (HeightOneSpectrum (𝓞 F))) (K : Subgroup (G F Ω)) (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] [T2Space Γ] [TotallyDisconnectedSpace Γ] (π : G F Ω →* Γ), GC.GLink l S K π → (∀ w ∈ S, ((l : ℕ) : 𝓞 F) ∈ w.asIdeal) → ∀ (V : Type) (ι : V ≃ S) (A : V → ValuationSubring Ω), (∀ v, IsPlaceOver (A v) (ι v).1) → ∀ (k W : Type) [Field k] [Finite k] [CharP k l] [AddCommGroup W] [Module k W] [Module.Finite k W] (ρ : Representation k Γ W) (b : V → Submodule k W) (m e : ℕ), IsOpen (ρ.ker : Set Γ) → (∀ v, ∀ s ∈ Dec (F := F) (A v), ∀ X ∈ b v, ρ (π s) X ∈ b v) → (∀ f : W →ₗ[k] k, (∀ g X, f (ρ (π g) X) = (GC.cycF F Ω l k g : k) * f X) → f = 0) → (∀ v, Module.finrank k (b v) = m) → (∀ g : G F Ω, IsCC g → Module.finrank k (LinearMap.ker (ρ (π g) - 1)) ≤ e) → Module.Finite k (Fr.coneH2 (fun v => π.comp (Dec (F := F) (A v)).subtype) ρ b) ∧ Module.finrank k (Fr.coneH2 (fun v => π.comp (Dec (F := F) (A v)).subtype) ρ b) + Module.finrank k (Fr.coneH0 ρ b) + Module.finrank ℚ F * m ≤ Module.finrank k (Fr.H1C (fun v => π.comp (Dec (F := F) (A v)).subtype) ρ b) + Module.finrank ℚ F * e := by
   intro hP F Ω _ _ _ _ _ l _ hF S K Γ _ _ _ _ _ _ π hg honly V ι A hA k W _ _ _ _ _ _ ρ b m e hop hb hdual hm he

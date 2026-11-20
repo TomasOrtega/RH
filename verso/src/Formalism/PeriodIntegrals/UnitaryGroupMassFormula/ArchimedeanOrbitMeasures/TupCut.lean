@@ -39,12 +39,24 @@ def PsiDet {D : D7} (X : HidaSetting D) (u' : D.what₂.Word)
     (volume : Measure (EuclideanSpace ℝ ι × EuclideanSpace ℝ η)).map Φ = ENNReal.ofReal Dv • volume ∧
     Real.sqrt |(matI X).det| / (Dv * cν) = tVal X u'
 
+/- English proof (translation)
+Establish `ht : 0 < Tw u'`. Unfold `Tw`. Conclude with `(D.mem u').A.T_prime.pos` after adjusting the coercions. Conclude with `pow_pos ht _`.
+-/
 theorem tVal_pos {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) : 0 < tVal X u' := by
   have ht : 0 < Tw u' := by
     unfold Tw
     exact_mod_cast (D.mem u').A.T_prime.pos
   exact pow_pos ht _
 
+/- English proof (translation)
+Establish `hs` using `h1.hasStrictFDerivAt (by norm_num)`. Rewrite `hs` using `[hd]`. Establish `hev` using `h1.eventually (by simp)`. Establish `hPc : (hs.toOpenPartialHomeomorph f : E → F) = f` using `hs.toOpenPartialHomeomorph_coe`. Establish `hsrc : (hs.toOpenPartialHomeomorph f).source ∈ 𝓝 z0` using `(hs.toOpenPartialHomeomorph f).open_source.mem_nhds hs.mem_toOpenPartialHomeomorph_source`.
+
+Use `⟨(hs.toOpenPartialHomeomorph f).source ∩ {z | ContDiffAt ℝ 1 f z}, inter_mem hsrc hev, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Conclude with `((Φ.symm.hasFDerivAt).comp z (((show ContDiffAt ℝ 1 f z from hz.2).differentiableAt one_ne_zero).hasFDerivAt)).hasFDerivWithinAt`. Introduce `z hz z' hz' e`. Establish `e' : f z = f z'` using `Φ.symm.injective e`.
+
+Rewrite `e'` using `[← hPc]`. Conclude with `(hs.toOpenPartialHomeomorph f).injOn hz.1 hz'.1 e'`. Establish `hfd` using `h1.continuousAt_fderiv (by norm_num)`. Establish `hc2 : ContinuousAt (fun z => (Φ.symm : F →L[ℝ] E).comp (fderiv ℝ f z)) z0` using `continuousAt_const.clm_comp hfd`. Conclude with `continuous_abs.continuousAt.comp (ContinuousLinearMap.continuous_det.continuousAt.comp hc2)`.
+
+Rewrite using `[hd]`. Conclude with `Φ.coe_symm_comp_coe`.
+-/
 theorem loc_glue {E F : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [NormedAddCommGroup F] [NormedSpace ℝ F] [CompleteSpace F] (f : E → F) (z0 : E) (Φ : E ≃L[ℝ] F)
     (h1 : ContDiffAt ℝ 1 f z0) (hd : fderiv ℝ f z0 = (Φ : E →L[ℝ] F)) :
@@ -74,6 +86,27 @@ theorem loc_glue {E F : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [Finite
     exact Φ.coe_symm_comp_coe
 
 open Classical in
+/- English proof (translation)
+Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X`. Use `haveI : BorelSpace (TupI X) := PI.AprimeInfT.borelSpace_tup (F := X.B.I.F) (E := X.B.I.E) (Ainf X.B.I.F) (D.R.rS + 1 + D.R.rS)`. Use `haveI : BorelSpace (HmI X) := ⟨rfl⟩`. Take `⟨Φ, Dv, hd, hDv, hvol, harith⟩` from `h2`. Use `set z0 : EuclideanSpace ℝ ι × EuclideanSpace ℝ η := ((0 : EuclideanSpace ℝ ι), eH (TI X u' hT)) with hz0`.
+
+Use `set f := PsiC X u' a κ eH with hf`. Establish `hdetM : (matI X).det ≠ 0` using `matNDH_holds X u' ψ hT μinf νinf fibInf hP`. Establish `hsq : 0 < Real.sqrt |(matI X).det|` using `Real.sqrt_pos.2 (abs_pos.2 hdetM)`. Establish `hcH : 0 < cν`. Assume the negation of the conclusion as `hne`.
+
+Establish `h0 : cν = 0`. Break down `(not_lt.1 hne).lt_or_eq with h | h` into its components or cases. It suffices to derive a contradiction. Establish `hz : ENNReal.ofReal cν = 0` using `ENNReal.ofReal_of_nonpos h.le`. Use `tVal_pos X u'` as an intermediate fact.
+
+Rewrite `this` using `[← harith]`. Establish `hneg : Real.sqrt |(matI X).det| / (Dv * cν) < 0` using `div_neg_of_pos_of_neg hsq (mul_neg_of_pos_of_neg hDv h)`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h`. Use `tVal_pos X u'` as an intermediate fact.
+
+Rewrite `this` using `[← harith, h0, mul_zero, div_zero]`. Conclude with `lt_irrefl _ this`. Establish `hvs : (volume : Measure (EuclideanSpace ℝ (KapI X))).map Φ.symm = (ENNReal.ofReal Dv)⁻¹ • volume`. Establish `e1 : (volume : Measure (EuclideanSpace ℝ ι × EuclideanSpace ℝ η)) = ((volume : Measure (EuclideanSpace ℝ ι × EuclideanSpace ℝ η)).map Φ).map Φ.symm`. Rewrite using `[Measure.map_map Φ.symm.continuous.measurable Φ.continuous.measurable]`.
+
+Establish `: (Φ.symm ∘ Φ : _ → _) = id` using `funext fun z => Φ.symm_apply_apply z`. Rewrite using `[this, Measure.map_id]`. Rewrite `e1` using `[hvol, Measure.map_smul]`. Establish `hD0 : ENNReal.ofReal Dv ≠ 0` using `by simpa using hDv`. Rewrite using `[e1, smul_smul, ENNReal.inv_mul_cancel hD0 ENNReal.ofReal_ne_top, one_smul]`.
+
+Use `set eT : TupI X ≃ₜ (EuclideanSpace ℝ ι × EuclideanSpace ℝ η) := (tupCoord X).trans Φ.symm.toHomeomorph with heT`. Establish `hμ : μinf.map eT = ENNReal.ofReal (Real.sqrt |(matI X).det| / Dv) • volume`. Establish `e : (eT : TupI X → _) = Φ.symm ∘ tupCoord X` using `rfl`. Rewrite using `[e, ← Measure.map_map Φ.symm.continuous.measurable (tupCoord X).continuous.measurable, densMu_holds X u' ψ hT μinf νinf fibInf hP, Measure.map_smul, hvs, smul_smul, ENNReal.ofReal_div_of_pos hDv, div_eq_mul_inv]`. Take `⟨U, hUn, hder, hinj, hcont, hbase⟩` from `loc_glue f z0 Φ h1 hd`.
+
+Establish `hPsi : PsiM X u' a κ eT eH = Φ.symm ∘ f` using `rfl`. Take `⟨Ω₁, hΩ₁, hΩ₁n, hnear⟩` from `nearFacts_of isOpen_units_tens X u' ψ hT μinf νinf fibInf hP Ω a hC`. Use `⟨η, inferInstance, eT, eH, Real.sqrt |(matI X).det| / Dv, cν, fun z => (Φ.symm : EuclideanSpace ℝ (KapI X) →L[ℝ] (EuclideanSpace ℝ ι × EuclideanSpace ℝ η)).comp (fderiv ℝ f z), U, div_pos hsq hDv, hcH, hμ, hν, hUn, ?_, ?_, hcont, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hPsi]`. Conclude with `hder`.
+
+Rewrite using `[hPsi]`. Conclude with `hinj`. Use `filter_upwards [hΩ₁n] with T hT1`. Conclude with `⟨(hnear T hT1).1, (hnear T hT1).2 _ (hC.2.2.2 T (hΩ₁ hT1))⟩`. Establish `hid : (ContinuousLinearMap.id ℝ (EuclideanSpace ℝ ι × EuclideanSpace ℝ η)).det = 1`.
+
+Rewrite using `[ContinuousLinearMap.det, ContinuousLinearMap.coe_id, LinearMap.det_id]`. Simplify using `only []`. Rewrite using `[hbase, hid, abs_one, mul_one, div_div]`. Conclude with `harith`.
+-/
 theorem tupJac_of_pieces {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (ψ : AddChar (AF X.B.I.F) ℂ) hT
     (μinf : Measure (TupI X)) (νinf : Measure (HmI X)) fibInf (hP : PushHyp X u' ψ hT μinf νinf fibInf)
     (Ω : Set (HmI X)) (a : HmI X → MfI X) (hC : IsChart X u' hT Ω a) {ι : Type} [Fintype ι]
@@ -147,6 +180,9 @@ def TupPieces : Prop := ∀ {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (
     (L : EuclideanSpace ℝ ι →ₗ[ℝ] (NumberField.InfinitePlace X.B.I.F → Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ)),
     StdConj X hb u' c S → LieCompl X S L → PolarChartContDiffAt X u' hT a (kap0 X hb c L) eH ∧ PsiDet X u' hT a (kap0 X hb c L) eH cν
 
+/- English proof (translation)
+Introduce `D X u' ψ hT μinf νinf fibInf hP`. Take `⟨Ω, a, hC, η, hη, eH, cν, hν, hJ⟩` from `h X u' ψ hT μinf νinf fibInf hP`. Use `⟨Ω, a, hC, fun hb c S ι _ L hc hL => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hJ hb c S L hc hL`. Conclude with `tupJac_of_pieces X u' ψ hT μinf νinf fibInf hP Ω a hC _ eH cν hν h1 h2`.
+-/
 theorem tupStd_of_pieces (h : TupPieces) : TupStd := by
   intro D X u' ψ hT μinf νinf fibInf hP
   obtain ⟨Ω, a, hC, η, hη, eH, cν, hν, hJ⟩ := h X u' ψ hT μinf νinf fibInf hP

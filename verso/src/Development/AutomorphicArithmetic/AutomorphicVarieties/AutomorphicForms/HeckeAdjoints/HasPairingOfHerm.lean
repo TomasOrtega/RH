@@ -12,11 +12,17 @@ namespace UpperTheory.V.Af.Gk
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyReal E] {a : ℕ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Apply the tactic sequence `by_cases h : IsUnit (Matrix.of x) <;> simp [chart, h]`.
+-/
 theorem chart_conj (φ : GA E a → ℂ) (g : GA E a) :
     chart (fun x => starRingEnd ℂ (φ x)) g = Complex.conjCLE ∘ chart φ g := by
   funext x
   by_cases h : IsUnit (Matrix.of x) <;> simp [chart, h]
 
+/- English proof (translation)
+Introduce `g` and use `by rw [chart_conj] exact Complex.conjCLE.contDiff.comp_contDiffOn (hφ g)`.
+-/
 theorem conj_mem_Sm {φ : GA E a → ℂ} (hφ : φ ∈ Sm E a) : (fun x => starRingEnd ℂ (φ x)) ∈ Sm E a := fun g => by
   rw [chart_conj]
   exact Complex.conjCLE.contDiff.comp_contDiffOn (hφ g)
@@ -31,10 +37,21 @@ def conjFn : Sm E a ≃ₗ⋆[ℂ] Sm E a where
   left_inv _ := Subtype.ext <| funext fun _ => Complex.conj_conj _
   right_inv _ := Subtype.ext <| funext fun _ => Complex.conj_conj _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem conjFn_apply (φ : Sm E a) (g : GA E a) : (conjFn E a φ).1 g = starRingEnd ℂ (φ.1 g) := rfl
 
+/- English proof (translation)
+The claim follows from `(conjFn E a).left_inv φ`.
+-/
 @[simp] theorem conjFn_conjFn (φ : Sm E a) : conjFn E a (conjFn E a φ) = φ := (conjFn E a).left_inv φ
 
+/- English proof (translation)
+Consider the cases of `o with`. Consider the case `fin k => rfl`. Consider the case `cpt k => rfl`. Consider the case `lie X`. Use `Subtype.ext <| funext fun g => ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `fderiv ℝ (chart (fun x => starRingEnd ℂ (φ.1 x)) g) _ X = starRingEnd ℂ (fderiv ℝ (chart φ.1 g) _ X)`. Rewrite using `[chart_conj, ContinuousLinearEquiv.comp_fderiv]`. Both sides reduce to the same expression.
+-/
 theorem act_conjFn (o : Op E a) (φ : Sm E a) : act o (conjFn E a φ) = conjFn E a (act o φ) := by
   cases o with
   | fin k => rfl
@@ -105,6 +122,13 @@ def HermEx : Prop :=
   ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (a : ℕ), 1 ≤ a → ∀ π : TR.CuspSub F a,
     (∀ φ ∈ π.V, TR.lie F a (oneL F a) φ = 0) → ∃ H, IsHerm π H
 
+/- English proof (translation)
+Set `S : π.V ≃ₗ⋆[ℂ] π.V` to `π.toDual.trans D`. Establish `hS : ∀ o φ, S (π.op o φ) = π.op (invTOp o) (S φ)` using `fun o φ => by`. Express the relevant statement in the definitionally equal form `D (π.toDual _) = π.op _ (D (π.toDual φ))`. Rewrite using `[← hD, CuspSub.op_toDual, invTOp_invTOp]`. Use `⟨H ∘ₛₗ S.toLinearMap, fun φ h => S.injective ((hH.definite _ (h (S φ))).trans (map_zero S).symm), fun ψ h => hH.definite _ ?_, fun k φ ψ => ?_, fun k φ ψ => ?_, fun X φ ψ => ?_⟩` and prove the remaining obligations.
+
+Simplify using `using h (S.symm ψ)`. Express the relevant statement in the definitionally equal form `H (S _) _ = H (S φ) ψ`. Rewrite using `[hS]`. Conclude with `hH.fin _ _ _`. Express the relevant statement in the definitionally equal form `H (S _) _ = H (S φ) ψ`.
+
+Rewrite using `[hS]`. Conclude with `hH.cpt _ _ _`. Express the relevant statement in the definitionally equal form `H (S _) _ + H (S φ) _ = 0`. Rewrite using `[hS]`. Conclude with `hH.lie _ _ _`.
+-/
 theorem hasPairing_of_herm {π : TR.CuspSub E a} {H : π.V →ₗ⋆[ℂ] π.V →ₗ[ℂ] ℂ} (hH : IsHerm π H)
     (D : π.dual.V ≃ₗ⋆[ℂ] π.V) (hD : ∀ o φ, D (π.dual.op o φ) = π.op o (D φ)) : HasPairing π := by
   let S : π.V ≃ₗ⋆[ℂ] π.V := π.toDual.trans D
@@ -124,6 +148,13 @@ theorem hasPairing_of_herm {π : TR.CuspSub E a} {H : π.V →ₗ⋆[ℂ] π.V �
     rw [hS]
     exact hH.lie _ _ _
 
+/- English proof (translation)
+Introduce `F _ _ _ a π`. Express the relevant statement in the definitionally equal form `HasPairing π`. Break down `Nat.eq_zero_or_pos a with rfl | ha` into its components or cases. Conclude with `h6 F π`. Take `⟨χ, hχ⟩` from `h4 F a ha π`.
+
+Use `h5 F a π χ ?_` and prove the remaining obligations. Generalize the expression as in `π.twist χ = π at hχ`. Take `⟨H, hH⟩` from `h7 F a ha π hχ`. Take `⟨π', C, hC⟩` from `h1 F a π`. Take `⟨T, hT⟩` from `smo F a ha π.dual π' ((h3 F a π).mono fun w ⟨B, hB⟩ => ⟨_, hB.dual, h2 F a w _ _ (π.locRep w) (π'.locRep w) H C hH.definite (fun g => hH.fin (locGL F a w g)) (fun g => hC (.fin (locGL F a w g))) B hB⟩)`.
+
+Use `hasPairing_of_herm hH (T.trans C.symm) fun o φ => C.injective ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `C (C.symm (T _)) = C (π.op o (C.symm (T φ)))`. Rewrite using `[hC, C.apply_symm_apply, C.apply_symm_apply, hT]`.
+-/
 theorem gelfandKazhdan_of (h1 : ConjSub) (h2 : SatConj) (h3 : SatAE) (h4 : UnitTwist) (h5 : PairOfTwist) (h6 : PairZero)
     (h7 : HermEx) (smo : Published.StrongMultOneReal) : Published.GelfandKazhdanReal := by
   intro F _ _ _ a π

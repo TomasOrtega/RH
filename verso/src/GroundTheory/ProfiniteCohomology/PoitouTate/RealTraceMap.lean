@@ -17,6 +17,9 @@ variable {K : FiniteSubfield} (S : Set (HeightOneSpectrum (𝓞 K.1)))
   (ιs : ∀ v : S, ℚ̄ →ₐ[K.1] AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1))
   (N : ℕ) [NeZero N] [Fintype S]
 
+/- English proof (translation)
+The claim follows from `QZ.exists_comp_eq_of_ker_le _ _ fun ξ hξ => gsSumInvReal_eq_zero_of S ιr ιs N ξ hξ`.
+-/
 theorem exists_gsTraceQZ :
     ∃ χ : tateCompactCohomologyRes (gsFinFamily S ιs) (gsRealFamily S ιr) (gsRoots S N) 3 →+ QZ,
       χ.comp (ptTLocalToCompact (gsFinFamily S ιs) (gsRealFamily S ιr) (gsRoots S N) 2).hom.toAddMonoidHom =
@@ -26,12 +29,18 @@ theorem exists_gsTraceQZ :
 def gsTraceQZ : tateCompactCohomologyRes (gsFinFamily S ιs) (gsRealFamily S ιr) (gsRoots S N) 3 →+ QZ :=
   Classical.choose (exists_gsTraceQZ S ιr ιs N)
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec (exists_gsTraceQZ S ιr ιs N)`.
+-/
 theorem gsTraceQZ_comp :
     (gsTraceQZ S ιr ιs N).comp
         (ptTLocalToCompact (gsFinFamily S ιs) (gsRealFamily S ιr) (gsRoots S N) 2).hom.toAddMonoidHom =
       gsSumInvReal S ιr ιs N :=
   Classical.choose_spec (exists_gsTraceQZ S ιr ιs N)
 
+/- English proof (translation)
+The claim follows from `(map_nsmul (gsTraceQZ S ιr ιs N) N z).symm.trans ((congrArg (gsTraceQZ S ιr ιs N) (nsmul_tateCompactCohomologyRes_eq_zero (gsFinFamily S ιs) (gsRealFamily S ιr) (nsmul_gsRoots S N) 3 z)).trans (map_zero _))`.
+-/
 theorem nsmul_gsTraceQZ
     (z : tateCompactCohomologyRes (gsFinFamily S ιs) (gsRealFamily S ιr) (gsRoots S N) 3) :
     N • gsTraceQZ S ιr ιs N z = 0 :=
@@ -42,6 +51,9 @@ theorem nsmul_gsTraceQZ
 def gsTrace : tateCompactCohomologyRes (gsFinFamily S ιs) (gsRealFamily S ιr) (gsRoots S N) 3 →+ ZMod N :=
   zmodOfQZ (gsTraceQZ S ιr ιs N) (nsmul_gsTraceQZ S ιr ιs N)
 
+/- English proof (translation)
+The claim follows from `(zmodToQZ_zmodOfQZ _ _ _).trans (DFunLike.congr_fun (gsTraceQZ_comp S ιr ιs N) ξ)`.
+-/
 theorem gsTrace_localToCompact (ξ : ptTLocal (gsFinFamily S ιs) (gsRealFamily S ιr) (gsRoots S N) 2) :
     zmodToQZ N (gsTrace S ιr ιs N
       ((ptTLocalToCompact (gsFinFamily S ιs) (gsRealFamily S ιr) (gsRoots S N) 2).hom ξ)) =

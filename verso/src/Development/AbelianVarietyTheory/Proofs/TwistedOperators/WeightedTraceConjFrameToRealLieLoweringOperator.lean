@@ -13,6 +13,13 @@ noncomputable section
 
 namespace GlobalTheory.AdSpan.ConjHol
 
+/- English proof (translation)
+Use `set Sg : Matrix (Fin T.rank) (Fin T.rank) ℂ := diagonal fun a : Fin T.rank => ((sgn C.X.p0 (a : ℕ) : ℝ) : ℂ) with hSg`. Establish `hSS : Sg * Sg = 1`. Rewrite using `[hSg, diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+
+Unfold `sgn`. Apply the tactic sequence `split_ifs <;> norm_num`. Establish `h` using `hZ σ`. Establish `h2 : Sg * ((mat Z σ)ᴴ * Sg + Sg * mat Z σ) = 0` using `by rw [h, Matrix.mul_zero]`. Rewrite `h2` using `[Matrix.mul_add, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hSS, Matrix.one_mul]`.
+
+Establish `h3` using `congrArg trace h2`. Rewrite `h3` using `[trace_add, trace_zero, Matrix.mul_assoc, trace_mul_comm, Matrix.mul_assoc, hSS, Matrix.mul_one, trace_conjTranspose]`. Conclude with `eq_neg_of_add_eq_zero_left h3`.
+-/
 theorem star_trace_mat_of_unitLie {D : D7} {S T : HSp D} (C : Ctx S T) {Z : Frame C.X.Ψ T.rank}
     (hZ : Z ∈ GlobalTheory.HolRead.unitLie C.X) (σ : C.X.Ψ) : star (trace (mat Z σ)) = -trace (mat Z σ) := by
   set Sg : Matrix (Fin T.rank) (Fin T.rank) ℂ := diagonal fun a : Fin T.rank => ((sgn C.X.p0 (a : ℕ) : ℝ) : ℂ) with hSg
@@ -30,6 +37,17 @@ theorem star_trace_mat_of_unitLie {D : D7} {S T : HSp D} (C : Ctx S T) {Z : Fram
     trace_conjTranspose] at h3
   exact eq_neg_of_add_eq_zero_left h3
 
+/- English proof (translation)
+Establish `e : mat Z σ + I • mat Z' σ = mat (GlobalTheory.HolRead.unitFr (C.m.e ρ) c d) σ` using `by rw [← h]; rfl`. Establish `e0 : trace (mat Z σ) + I * trace (mat Z' σ) = 0`. Use `congrArg trace e` as an intermediate fact. Rewrite `this` using `[trace_add, trace_smul, smul_eq_mul, GlobalTheory.HolRead.AdExt.mat_unitFr]`. Rewrite using `[this]`.
+
+Use `split_ifs`. Simplify using `[Matrix.trace, Matrix.single, hcd.ne']`. Simplify using the standard rewrite rules. Establish `a` using `star_trace_mat_of_unitLie C hZ σ`. Establish `b` using `star_trace_mat_of_unitLie C hZ' σ`.
+
+Establish `e1` using `congrArg star e0`. Rewrite `e1` using `[star_add, star_mul', a, b, star_zero, Complex.star_def, Complex.conj_I]`. Establish `hy : trace (mat Z' σ) = 0`. Establish `: (2 * I) * trace (mat Z' σ) = 0` using `by linear_combination e0 + e1`. Break down `mul_eq_zero.1 this with h2 | h2` into its components or cases.
+
+It suffices to derive a contradiction. Simplify using `at h2`. Conclude with `h2`. Use `⟨?_, hy⟩` and prove the remaining obligations. Rewrite `e0` using `[hy, mul_zero, add_zero]`.
+
+Conclude with `e0`.
+-/
 theorem trace_mat_eq_zero_of_add_I {D : D7} {S T : HSp D} (C : Ctx S T) (ρ : D.what₂.Tau) (c d : Fin T.rank) (hcd : c < d)
     {Z Z' : Frame C.X.Ψ T.rank} (hZ : Z ∈ GlobalTheory.HolRead.unitLie C.X) (hZ' : Z' ∈ GlobalTheory.HolRead.unitLie C.X)
     (h : Z + I • Z' = GlobalTheory.HolRead.unitFr (C.m.e ρ) c d) (σ : C.X.Ψ) :
@@ -55,6 +73,15 @@ theorem trace_mat_eq_zero_of_add_I {D : D7} {S T : HSp D} (C : Ctx S T) (ρ : D.
   rw [hy, mul_zero, add_zero] at e0
   exact e0
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `∑ ρ, (m ρ : ℂ) * trace ((toLieC C R B W) ρ).1 = 0`. Use `Finset.sum_eq_zero fun ρ _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(m ρ : ℂ) * trace ((GlobalTheory.HolRead.AdExt.toLie R B (fun ρ => C.m.e ρ) (conjL W)) ρ).1 = 0`. Rewrite using `[GlobalTheory.HolRead.AdExt.toLie_val, mat_conjL]`. Establish `hN : trace ((mat W (C.m.e ρ)).map (starRingEnd ℂ)) = 0`.
+
+Establish `: trace ((mat W (C.m.e ρ)).map (starRingEnd ℂ)) = starRingEnd ℂ (trace (mat W (C.m.e ρ)))`. Simplify using `[Matrix.trace, map_sum]`. Rewrite using `[this, hW, map_zero]`. Use `set N := (mat W (C.m.e ρ)).map (starRingEnd ℂ)`. Establish `hM : trace (B ρ * N * (B ρ)⁻¹) = 0`.
+
+Rewrite using `[trace_mul_cycle, nonsing_inv_mul _ (isUnit_det_B C hB ρ), Matrix.one_mul, hN]`. Establish `hC : trace (conjAt T ρ (B ρ * N * (B ρ)⁻¹)) = 0`. Unfold `conjAt`. Rewrite using `[trace_neg, trace_mul_cycle, mul_nonsing_inv _ (R.1 ρ).2, Matrix.one_mul, trace_conjTranspose, hM, star_zero, neg_zero]`. Rewrite using `[trace_smul, trace_add, hM, hC]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem trLin_toLieC_of_trace {D : D7} {S T : HSp D} (C : Ctx S T) (R : GlobalTheory.SmoothForms.RealPoints C.θ T) (B : C.Bas)
     (hB : C.IsB B) (m : D.what₂.Tau → ℤ) (W : Frame C.X.Ψ T.rank) (hW : ∀ σ, trace (mat W σ) = 0) :
     trLin T m (toLieC C R B W) = 0 := by
@@ -76,6 +103,9 @@ theorem trLin_toLieC_of_trace {D : D7} {S T : HSp D} (C : Ctx S T) (R : GlobalTh
   rw [trace_smul, trace_add, hM, hC]
   simp
 
+/- English proof (translation)
+Introduce `D S T C R B hB m ρ c d hcd Z Z' hZ hZ' h`. Rewrite using `[trLin_toLieC_of_trace C R B hB m Z (fun σ => (trace_mat_eq_zero_of_add_I C ρ c d hcd hZ hZ' h σ).1), trLin_toLieC_of_trace C R B hB m Z' (fun σ => (trace_mat_eq_zero_of_add_I C ρ c d hcd hZ hZ' h σ).2), mul_zero, add_zero]`.
+-/
 theorem trLin_toLieC_unitFr : ∀ (D : D7) (S T : HSp D) (C : Ctx S T) (R : GlobalTheory.SmoothForms.RealPoints C.θ T) (B : C.Bas), C.IsB B → ∀ (m : D.what₂.Tau → ℤ) (ρ : D.what₂.Tau) (c d : Fin T.rank), c < d → ∀ (Z Z' : Frame C.X.Ψ T.rank), Z ∈ GlobalTheory.HolRead.unitLie C.X → Z' ∈ GlobalTheory.HolRead.unitLie C.X → Z + I • Z' = GlobalTheory.HolRead.unitFr (C.m.e ρ) c d → GlobalTheory.AdSpan.ConjHol.trLin T m (GlobalTheory.AdSpan.ConjHol.toLieC C R B Z) + I * GlobalTheory.AdSpan.ConjHol.trLin T m (GlobalTheory.AdSpan.ConjHol.toLieC C R B Z') = 0 := by
   intro D S T C R B hB m ρ c d hcd Z Z' hZ hZ' h
   rw [trLin_toLieC_of_trace C R B hB m Z (fun σ => (trace_mat_eq_zero_of_add_I C ρ c d hcd hZ hZ' h σ).1),

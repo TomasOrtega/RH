@@ -10,6 +10,9 @@ open CategoryTheory AlgebraicGeometry GlobalTheory.LogCris DividedPowers GlobalT
 
 namespace CrystallineSemistableComparison.Om
 
+/- English proof (translation)
+The claim follows from `@h`.
+-/
 theorem hdg_iso (h : ∀ (K : Type) [Field K] [CharZero K],
     ∃ e : ∀ {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) [Smooth q] [IsProper q] (a j : ℕ),
       HT.Hdg q a (a + j) ≃ₗ[K] HodgeC q a j,

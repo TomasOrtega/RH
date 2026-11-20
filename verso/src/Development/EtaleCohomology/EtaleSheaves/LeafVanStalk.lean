@@ -25,6 +25,15 @@ def LeafVanV : Prop := Hyps → ∀ (q : ℕ) [NeZero q] (i : ℤ) {B W Y S : Sc
   (∀ x : S, s x ∉ Set.range ι) → ∀ m : ℤ, Subsingleton (Ht q (sch.obj (pullback p s)) m i) →
   Subsingleton (Hrel (ZMod q) (sch.map (prS p ι s)) (tw q i) m)
 
+/- English proof (translation)
+Introduce `hH q _ k _ hq i B W Y0 Y1 Y2 b ι _ V hV' p g1 g2 hp _ _ hSHV U m hm y`. Use `hS hH q k hq i b ι p hp U m ?_ y` and prove the remaining obligations. Introduce `A _ t hA`. Take `⟨hHen, _⟩` from `hA`. Distinguish the cases in `hx : (t ≫ U.hom) (IsLocalRing.closedPoint A) ∈ Set.range ι`.
+
+Conclude with `hW hH q k hq i b ι p hp A (t ≫ U.hom) ⟨hHen, ‹_›⟩ ⟨IsLocalRing.closedPoint A, fun z => IsLocalRing.specializes_closedPoint z, hx⟩ m`. Establish `hall : ∀ z : Sp A, (t ≫ U.hom) z ∈ (V : Set B)`. Introduce `z`. Establish `hz : (t ≫ U.hom) z ⤳ (t ≫ U.hom) (IsLocalRing.closedPoint A)` using `(IsLocalRing.specializes_closedPoint z).map (t ≫ U.hom).continuous`. Establish `hxV : (t ≫ U.hom) (IsLocalRing.closedPoint A) ∈ (V : Set B)` using `by rw [hV']; exact hx`.
+
+Conclude with `hz.mem_open V.isOpen hxV`. Establish `hrange : Set.range (t ≫ U.hom : Sp A ⟶ B) ⊆ (V : Set B)` using `by rintro _ ⟨z, rfl⟩; exact hall z`. Establish `hmiss : ∀ z : Sp A, (t ≫ U.hom) z ∉ Set.range ι`. Introduce `z hz`. Use `hall z` as an intermediate fact.
+
+Rewrite `this` using `[hV']`. Conclude with `this hz`. Conclude with `hV hH q i ι p (t ≫ U.hom) hmiss m ((hSHV A (t ≫ U.hom) ⟨hHen, ‹_›⟩ hrange).1 m (by omega))`.
+-/
 theorem LeafVan0_of (hS : LeafVanStalk) (hW : LeafVanW) (hV : LeafVanV) : LeafVan0 := by
   intro hH q _ k _ hq i B W Y0 Y1 Y2 b ι _ V hV' p g1 g2 hp _ _ hSHV U m hm y
   refine hS hH q k hq i b ι p hp U m ?_ y

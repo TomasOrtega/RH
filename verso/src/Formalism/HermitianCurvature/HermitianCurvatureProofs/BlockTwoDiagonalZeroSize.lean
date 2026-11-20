@@ -19,6 +19,11 @@ def gI (β c : ℂ) {p : ℕ} (Ψ : G.Mat (p + 1) → V) (H : G.Mat p) (y : AB p
 
 def Psc (β c : ℂ) {p : ℕ} (Ψ : G.Mat (p + 1) → V) (H : G.Mat p) : V := ∫ y, gI β c Ψ H y
 
+/- English proof (translation)
+Use extensionality with `i j`. Take `⟨i', rfl⟩` from `finSumFinEquiv.surjective i`. Take `⟨j', rfl⟩` from `finSumFinEquiv.surjective j`. Break down `i' with i' | i'` into its components or cases. Break down `j' with j' | j'` into its components or cases.
+
+Simplify using `[blk2, Matrix.one_apply]`. Conclude with `j'.elim0`. Conclude with `i'.elim0`.
+-/
 theorem block_two_one_lower_zero {p : ℕ} (a : Fin 0 → Fin p → ℂ) :
     (blk2 (1 : Matrix (Fin p) (Fin p) ℂ) 0 (Matrix.of a) 1 : Matrix (Fin (p + 0)) (Fin (p + 0)) ℂ) = 1 := by
   ext i j
@@ -30,6 +35,11 @@ theorem block_two_one_lower_zero {p : ℕ} (a : Fin 0 → Fin p → ℂ) :
     · exact j'.elim0
   · exact i'.elim0
 
+/- English proof (translation)
+Use extensionality with `i j`. Take `⟨i', rfl⟩` from `finSumFinEquiv.surjective i`. Take `⟨j', rfl⟩` from `finSumFinEquiv.surjective j`. Break down `i' with i' | i'` into its components or cases. Break down `j' with j' | j'` into its components or cases.
+
+Simplify using `[blk2, Matrix.one_apply]`. Conclude with `j'.elim0`. Conclude with `i'.elim0`.
+-/
 theorem block_two_one_upper_zero {p : ℕ} (b : Fin p → Fin 0 → ℂ) :
     (blk2 (1 : Matrix (Fin p) (Fin p) ℂ) (Matrix.of b) 0 1 : Matrix (Fin (p + 0)) (Fin (p + 0)) ℂ) = 1 := by
   ext i j
@@ -41,6 +51,11 @@ theorem block_two_one_upper_zero {p : ℕ} (b : Fin p → Fin 0 → ℂ) :
     · exact j'.elim0
   · exact i'.elim0
 
+/- English proof (translation)
+Use extensionality with `i j`. Take `⟨i', rfl⟩` from `finSumFinEquiv.surjective i`. Take `⟨j', rfl⟩` from `finSumFinEquiv.surjective j`. Break down `i' with i' | i'` into its components or cases. Break down `j' with j' | j'` into its components or cases.
+
+Simplify using `[blk2]`. Both sides reduce to the same expression. Conclude with `j'.elim0`. Conclude with `i'.elim0`.
+-/
 theorem block_two_diagonal_zero_size {p : ℕ} (H : Matrix (Fin p) (Fin p) ℂ) (Z : Matrix (Fin 0) (Fin 0) ℂ) :
     (blk2 H 0 0 Z : Matrix (Fin (p + 0)) (Fin (p + 0)) ℂ) = H := by
   ext i j
@@ -53,17 +68,29 @@ theorem block_two_diagonal_zero_size {p : ℕ} (H : Matrix (Fin p) (Fin p) ℂ) 
     · exact j'.elim0
   · exact i'.elim0
 
+/- English proof (translation)
+Unfold `Zj`. Rewrite using `[block_two_one_lower_zero, block_two_one_upper_zero, block_two_diagonal_zero_size, Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem zj_zero {p : ℕ} (a : Fin 0 → Fin p → ℂ) (b : Fin p → Fin 0 → ℂ) (H : Matrix (Fin p) (Fin p) ℂ)
     (Z : Matrix (Fin 0) (Fin 0) ℂ) : (Zj a b H Z : Matrix (Fin (p + 0)) (Fin (p + 0)) ℂ) = H := by
   unfold Zj
   rw [block_two_one_lower_zero, block_two_one_upper_zero, block_two_diagonal_zero_size, Matrix.one_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Unfold `cornerA`. Simplify using the standard rewrite rules.
+-/
 theorem cornerA_zero {p : ℕ} (a : Fin 0 → Fin p → ℂ) : cornerA a = 0 := by
   unfold cornerA; simp
 
+/- English proof (translation)
+Unfold `cornerB`. Simplify using the standard rewrite rules.
+-/
 theorem cornerB_zero {p : ℕ} (b : Fin p → Fin 0 → ℂ) : cornerB b = 0 := by
   unfold cornerB; simp
 
+/- English proof (translation)
+Rewrite using `[Measure.volume_eq_prod, measureReal_def, ← Set.univ_prod_univ, Measure.prod_prod]`. Rewrite using `[volume_pi, volume_pi, Measure.pi_univ, Measure.pi_univ]`. Simplify using `[volume_pi, Measure.pi_univ]`.
+-/
 theorem vol_univ_zero (p : ℕ) : (volume : Measure ((Fin 0 → Fin p → ℂ) × (Fin p → Fin 0 → ℂ))).real Set.univ = 1 := by
   rw [Measure.volume_eq_prod, measureReal_def, ← Set.univ_prod_univ, Measure.prod_prod]
   rw [volume_pi, volume_pi, Measure.pi_univ, Measure.pi_univ]
@@ -87,6 +114,19 @@ instance sfVU {p : ℕ} (σ : Equiv.Perm (Fin p)) : SigmaFinite (volume : Measur
   have h2 : SigmaFinite (volume : Measure (G.UT p → ℂ)) := inferInstance
   rw [Measure.volume_eq_prod]; exact Measure.prod.instSigmaFinite
 
+/- English proof (translation)
+Take `⟨hs, hc, _⟩` from `hΨ`. Establish `hcont : Continuous Ψ` using `hs.continuous`. Take `⟨M, hM⟩` from `hcont.bounded_above_of_compact_support hc`. Take `⟨R, hR⟩` from `hc.isCompact.isBounded.exists_norm_le`. Use `set R' := max R 0 with hR'`.
+
+Use `set M' := max M 0 with hM'`. Use `⟨M' * (1 + R') ^ E, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_zero]`. Conclude with `contDiff_zero.2 hcont`. Introduce `i hi Z`.
+
+Establish `hi0 : i = 0` using `Nat.le_zero.1 hi`. Substitute `hi0` using the available equality. Rewrite using `[norm_iteratedFDeriv_zero]`. Establish `h1 : (0 : ℝ) < 1 + ‖Z‖` using `by positivity`. Establish `hpow : (1 + ‖Z‖) ^ E * (1 + ‖Z‖) ^ (-E) = 1`.
+
+Rewrite using `[Real.rpow_neg h1.le, mul_inv_cancel₀ (Real.rpow_pos_of_pos h1 E).ne']`. Distinguish the cases in `hZ : Z ∈ tsupport Ψ`. Establish `hZR : ‖Z‖ ≤ R'` using `le_trans (hR Z hZ) (le_max_left _ _)`. Establish `hle : (1 + ‖Z‖) ^ E ≤ (1 + R') ^ E` using `Real.rpow_le_rpow h1.le (by linarith) hE`. Establish `hneg : 0 ≤ (1 + ‖Z‖) ^ (-E)` using `(Real.rpow_pos_of_pos h1 _).le`.
+
+Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_left _ (le_max_right _ _)` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_right hle hneg`. Use `_ = M' * (1 + R') ^ E * (1 + ‖Z‖) ^ (-E) := by ring`. Rewrite using `[image_eq_zero_of_notMem_tsupport hZ, norm_zero]`.
+
+Establish `: 0 ≤ (1 + R') ^ E` using `Real.rpow_nonneg (by positivity) E`. Establish `: 0 ≤ (1 + ‖Z‖) ^ (-E)` using `(Real.rpow_pos_of_pos h1 _).le`. Establish `: 0 ≤ M'` using `le_max_right _ _`. Check the signs of the components of the expression.
+-/
 theorem decay0 {n : ℕ} {Ψ : G.Mat n → V} (hΨ : KCls Ψ) (E : ℝ) (hE : 0 ≤ E) :
     ∃ K : ℝ, DecayAll 0 (fun _ => E) K Ψ := by
   obtain ⟨hs, hc, _⟩ := hΨ
@@ -120,6 +160,11 @@ theorem decay0 {n : ℕ} {Ψ : G.Mat n → V} (hΨ : KCls Ψ) (E : ℝ) (hE : 0 
       have : 0 ≤ M' := le_max_right _ _
       positivity
 
+/- English proof (translation)
+Use `set E : ℝ := 10 * ((p + 1 : ℕ) : ℝ) ^ 3 + 1 with hEdef`. Establish `hE : 0 ≤ E` using `by positivity`. Take `⟨Cst, hC⟩` from `Formalism.FourierDecayAlt.P.top_cells p 1 β σ d hd le_rfl 0 (fun _ => E) (by`. Introduce `i _`. Establish `hn : (0 : ℝ) < ((p + 1 : ℕ) : ℝ)` using `by positivity`.
+
+Rewrite using `[lt_div_iff₀ (by positivity)]`. Use the proof step `nlinarith)`. Take `⟨K, hK⟩` from `decay0 hΨ E hE`. Conclude with `(hC V Ψ K hK).1 (fun _ _ => c)`.
+-/
 theorem integrable_one [CompleteSpace V] (β c : ℂ) {p : ℕ} (σ : Equiv.Perm (Fin p)) (d : Fin p → ℂ)
     (hd : ∀ i, d i ≠ 0) {Ψ : G.Mat (p + 1) → V} (hΨ : KCls Ψ) :
     Integrable (fun η : XiH p 1 σ => psiH β σ η • Ψ (ZjH σ d η (fun _ _ => c))) (muXiH p 1 σ) := by
@@ -133,6 +178,9 @@ theorem integrable_one [CompleteSpace V] (β c : ℂ) {p : ℕ} (σ : Equiv.Perm
   obtain ⟨K, hK⟩ := decay0 hΨ E hE
   exact (hC V Ψ K hK).1 (fun _ _ => c)
 
+/- English proof (translation)
+Unfold `psiH`. Rewrite using `[← Formalism.FourierDecayAlt.P.G8.psi_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem psiH_one (β : ℂ) {p : ℕ} (σ : Equiv.Perm (Fin p)) (η : XiH p 1 σ) :
     psiH β σ η = G.psi β (subS (wP σ * lowW σ η.2.1 * (wP σ)⁻¹) + supS (G.upper η.2.2)) *
       G.psi β (cornerA η.1.1 + cornerB η.1.2) := by
@@ -141,11 +189,25 @@ theorem psiH_one (β : ℂ) {p : ℕ} (σ : Equiv.Perm (Fin p)) (η : XiH p 1 σ
   congr 1
   ring
 
+/- English proof (translation)
+Unfold `psiH`. Rewrite using `[cornerA_zero, cornerB_zero, add_zero, add_zero]`.
+-/
 theorem psiH_zero (β : ℂ) {p : ℕ} (σ : Equiv.Perm (Fin p)) (η : XiH p 0 σ) :
     psiH β σ η = G.psi β (subS (wP σ * lowW σ η.2.1 * (wP σ)⁻¹) + supS (G.upper η.2.2)) := by
   unfold psiH
   rw [cornerA_zero, cornerB_zero, add_zero, add_zero]
 
+/- English proof (translation)
+Establish `hint` using `integrable_one β c σ d hd hΨ`. Use `set X : (LW σ → ℂ) × (G.UT p → ℂ) → ℂ := fun vu => G.psi β (subS (wP σ * lowW σ vu.1 * (wP σ)⁻¹) + supS (G.upper vu.2)) with hX`. Establish `eL : (fun η : XiH p 1 σ => psiH β σ η • Ψ (ZjH σ d η (fun _ _ => c))) = fun η => X η.2 • gI β c Ψ (headH σ d η.2.1 η.2.2) η.1`. Use function extensionality and compare the values at `η`. Rewrite using `[psiH_one, mul_smul]`.
+
+Both sides reduce to the same expression. Establish `eR : (fun η : XiH p 0 σ => psiH β σ η • Psc β c Ψ (ZjH σ d η (fun x => x.elim0))) = fun η => X η.2 • Psc β c Ψ (headH σ d η.2.1 η.2.2)`. Use function extensionality and compare the values at `η`. Rewrite using `[psiH_zero]`. Unfold `ZjH`.
+
+Rewrite using `[zj_zero]`. Unfold `PhiTop muXiH`. Rewrite using `[eL, eR]`. Rewrite `hint` using `[eL]`. Unfold `muXiH at hint`.
+
+Rewrite `hint`, the goal using `[Measure.volume_eq_prod]`. Rewrite using `[integral_prod_symm _ hint]`. Rewrite using `[Measure.volume_eq_prod (α := (Fin 0 → Fin p → ℂ) × (Fin p → Fin 0 → ℂ))]`. Rewrite using `[integral_fun_snd (fun vu : (LW σ → ℂ) × (G.UT p → ℂ) => X vu • Psc β c Ψ (headH σ d vu.1 vu.2))]`. Rewrite using `[vol_univ_zero, one_smul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `vu`. Use `show ∫ x, X vu • gI β c Ψ (headH σ d vu.1 vu.2) x = X vu • ∫ x, gI β c Ψ (headH σ d vu.1 vu.2) x`. Conclude with `integral_smul _ _`.
+-/
 theorem phiTop_freeze [CompleteSpace V] (β c : ℂ) {p : ℕ} (σ : Equiv.Perm (Fin p)) (d : Fin p → ℂ)
     (hd : ∀ i, d i ≠ 0) {Ψ : G.Mat (p + 1) → V} (hΨ : KCls Ψ) :
     PhiTop (p := p) (s := 1) β σ d Ψ (fun _ _ => c) =
@@ -186,21 +248,33 @@ open MeasureTheory Filter Topology Formalism.FourierDecayAlt Formalism.FourierDe
 
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
+/- English proof (translation)
+Rewrite using `[Formalism.FourierDecayAlt.P.level_z_affine]`. Simplify using `[blk2]`.
+-/
 theorem zj_apply_ll {p : ℕ} (a : Fin 1 → Fin p → ℂ) (b : Fin p → Fin 1 → ℂ) (H : Matrix (Fin p) (Fin p) ℂ)
     (C : Matrix (Fin 1) (Fin 1) ℂ) (i j : Fin p) : Zj a b H C (Fin.castAdd 1 i) (Fin.castAdd 1 j) = H i j := by
   rw [Formalism.FourierDecayAlt.P.level_z_affine]
   simp [blk2]
 
+/- English proof (translation)
+Rewrite using `[Formalism.FourierDecayAlt.P.level_z_affine]`. Simplify using `[blk2]`.
+-/
 theorem zj_apply_lr {p : ℕ} (a : Fin 1 → Fin p → ℂ) (b : Fin p → Fin 1 → ℂ) (H : Matrix (Fin p) (Fin p) ℂ)
     (C : Matrix (Fin 1) (Fin 1) ℂ) (i : Fin p) : Zj a b H C (Fin.castAdd 1 i) (Fin.natAdd p 0) = (H * Matrix.of b) i 0 := by
   rw [Formalism.FourierDecayAlt.P.level_z_affine]
   simp [blk2]
 
+/- English proof (translation)
+Rewrite using `[Formalism.FourierDecayAlt.P.level_z_affine]`. Simplify using `[blk2]`.
+-/
 theorem zj_apply_rl {p : ℕ} (a : Fin 1 → Fin p → ℂ) (b : Fin p → Fin 1 → ℂ) (H : Matrix (Fin p) (Fin p) ℂ)
     (C : Matrix (Fin 1) (Fin 1) ℂ) (j : Fin p) : Zj a b H C (Fin.natAdd p 0) (Fin.castAdd 1 j) = (Matrix.of a * H) 0 j := by
   rw [Formalism.FourierDecayAlt.P.level_z_affine]
   simp [blk2]
 
+/- English proof (translation)
+Unfold `Zj`. Rewrite using `[Matrix.det_mul, Matrix.det_mul, Formalism.FourierDecayAlt.P.Ux3.block2_det_lower_triangular, Formalism.FourierDecayAlt.P.Ux3.block2_det_lower_triangular, Formalism.FourierDecayAlt.P.Ux3.block2_det_upper_triangular]`. Simplify using the standard rewrite rules.
+-/
 theorem det_zj {p s : ℕ} (a : Fin s → Fin p → ℂ) (b : Fin p → Fin s → ℂ) (H : Matrix (Fin p) (Fin p) ℂ)
     (C : Matrix (Fin s) (Fin s) ℂ) : (Zj a b H C).det = H.det * C.det := by
   unfold Zj
@@ -208,13 +282,24 @@ theorem det_zj {p s : ℕ} (a : Fin s → Fin p → ℂ) (b : Fin p → Fin s �
     Formalism.FourierDecayAlt.P.Ux3.block2_det_upper_triangular]
   simp
 
+/- English proof (translation)
+Unfold `G.detM`. Conclude with `Continuous.matrix_det continuous_id`.
+-/
 theorem cont_detM (n : ℕ) : Continuous (fun H : G.Mat n => G.detM H) := by
   unfold G.detM
   exact Continuous.matrix_det continuous_id
 
+/- English proof (translation)
+The claim follows from `le_trans (norm_le_pi_norm (Z i) j) (norm_le_pi_norm Z i)`.
+-/
 theorem entry_le {n : ℕ} (Z : G.Mat n) (i j : Fin n) : ‖Z i j‖ ≤ ‖Z‖ :=
   le_trans (norm_le_pi_norm (Z i) j) (norm_le_pi_norm Z i)
 
+/- English proof (translation)
+Take `⟨_, hc, hdet⟩` from `hΨ`. Take `⟨R, hR⟩` from `hc.isCompact.isBounded.exists_norm_le`. Distinguish the cases in `hne : (tsupport Ψ).Nonempty`. Take `⟨Z₀, hZ₀, hmin⟩` from `hc.isCompact.exists_isMinOn hne ((continuous_norm.comp (cont_detM n)).continuousOn)`. Use `⟨max R 0, ‖G.detM Z₀‖, le_max_right _ _, norm_pos_iff.2 (hdet Z₀ hZ₀), fun Z hZ => ⟨le_trans (hR Z hZ) (le_max_left _ _), hmin hZ⟩⟩` and prove the remaining obligations.
+
+Use `⟨0, 1, le_rfl, one_pos, fun Z hZ => absurd ⟨Z, hZ⟩ hne⟩` and prove the remaining obligations.
+-/
 theorem supp_bounds {n : ℕ} {Ψ : G.Mat n → V} (hΨ : KCls Ψ) :
     ∃ R δ : ℝ, 0 ≤ R ∧ 0 < δ ∧ ∀ Z ∈ tsupport Ψ, ‖Z‖ ≤ R ∧ δ ≤ ‖G.detM Z‖ := by
   obtain ⟨_, hc, hdet⟩ := hΨ
@@ -228,6 +313,9 @@ theorem supp_bounds {n : ℕ} {Ψ : G.Mat n → V} (hΨ : KCls Ψ) :
 
 def Sset (p : ℕ) (R δ' : ℝ) : Set (G.Mat p) := {H | ‖H‖ ≤ R ∧ δ' ≤ ‖G.detM H‖}
 
+/- English proof (translation)
+Apply `Metric.isCompact_of_isClosed_isBounded` to reduce the goal to its premises. Conclude with `(isClosed_le continuous_norm continuous_const).inter (isClosed_le continuous_const (continuous_norm.comp (cont_detM p)))`. Conclude with `(Metric.isBounded_closedBall (x := (0 : G.Mat p)) (r := R)).subset fun H hH => by`. Simplify `hH.1` using `[Metric.mem_closedBall, dist_zero_right]`.
+-/
 theorem isCompact_Sset (p : ℕ) (R δ' : ℝ) : IsCompact (Sset p R δ') := by
   apply Metric.isCompact_of_isClosed_isBounded
   · exact (isClosed_le continuous_norm continuous_const).inter
@@ -235,6 +323,15 @@ theorem isCompact_Sset (p : ℕ) (R δ' : ℝ) : IsCompact (Sset p R δ') := by
   · exact (Metric.isBounded_closedBall (x := (0 : G.Mat p)) (r := R)).subset fun H hH => by
       simpa [Metric.mem_closedBall, dist_zero_right] using hH.1
 
+/- English proof (translation)
+Establish `hcont : ∀ i j, ContinuousOn (fun H : G.Mat p => ((Matrix.of H)⁻¹ : Matrix (Fin p) (Fin p) ℂ) i j) (Sset p R δ')`. Introduce `i j`. Establish `e : (fun H : G.Mat p => ((Matrix.of H)⁻¹ : Matrix (Fin p) (Fin p) ℂ) i j) = fun H => (G.detM H)⁻¹ * (Matrix.of H).adjugate i j`. Use function extensionality and compare the values at `H`. Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv']`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Use `ContinuousOn.mul ?_ ((Continuous.matrix_adjugate continuous_id).matrix_elem i j).continuousOn` and prove the remaining obligations. Use `(cont_detM p).continuousOn.inv₀ fun H hH => ?_` and prove the remaining obligations. Conclude with `norm_pos_iff.1 (lt_of_lt_of_le hδ hH.2)`.
+
+Establish `hb : ∀ i j, ∃ C : ℝ, ∀ H ∈ Sset p R δ', ‖((Matrix.of H)⁻¹ : Matrix (Fin p) (Fin p) ℂ) i j‖ ≤ C` using `fun i j => (isCompact_Sset p R δ').exists_bound_of_continuousOn (hcont i j)`. Use `choose C hC using hb`. Use `⟨∑ i, ∑ j, max (C i j) 0, by positivity, fun H hH i j => ?_⟩` and prove the remaining obligations. Use `le_trans (hC i j H hH) (le_trans (le_max_left _ 0) ?_)` and prove the remaining obligations. Establish `h1 : max (C i j) 0 ≤ ∑ j', max (C i j') 0` using `Finset.single_le_sum (f := fun j' => max (C i j') 0) (fun _ _ => le_max_right _ _) (Finset.mem_univ j)`.
+
+Establish `h2 : ∑ j', max (C i j') 0 ≤ ∑ i', ∑ j', max (C i' j') 0` using `Finset.single_le_sum (f := fun i' => ∑ j', max (C i' j') 0) (fun _ _ => Finset.sum_nonneg fun _ _ => le_max_right _ _) (Finset.mem_univ i)`. Conclude with `le_trans h1 h2`.
+-/
 theorem inv_bound (p : ℕ) (R δ' : ℝ) (hδ : 0 < δ') : ∃ M : ℝ, 0 ≤ M ∧
     ∀ H ∈ Sset p R δ', ∀ i j, ‖((Matrix.of H)⁻¹ : Matrix (Fin p) (Fin p) ℂ) i j‖ ≤ M := by
   have hcont : ∀ i j, ContinuousOn (fun H : G.Mat p => ((Matrix.of H)⁻¹ : Matrix (Fin p) (Fin p) ℂ) i j)
@@ -261,6 +358,19 @@ theorem inv_bound (p : ℕ) (R δ' : ℝ) (hδ : 0 < δ') : ∃ M : ℝ, 0 ≤ M
       (fun _ _ => Finset.sum_nonneg fun _ _ => le_max_right _ _) (Finset.mem_univ i)
   exact le_trans h1 h2
 
+/- English proof (translation)
+Establish `hΨne : Ψ (Zj y.1 y.2 (Matrix.of H) (Matrix.of fun _ _ => c)) ≠ 0`. Introduce `h`. Apply `hne` to reduce the goal to its premises. Unfold `gI`. Rewrite using `[h, smul_zero]`.
+
+Take `⟨h1, h2⟩` from `hb _ (subset_tsupport _ hΨne)`. Use `set Z : G.Mat (p + 1) := Zj y.1 y.2 (Matrix.of H) (Matrix.of fun _ _ => c) with hZ`. Establish `hdet : G.detM Z = G.detM H * c`. Unfold `G.detM`. Rewrite using `[hZ]`.
+
+Use `show (Zj y.1 y.2 (Matrix.of H) (Matrix.of fun _ _ => c)).det = _`. Rewrite using `[det_zj]`. Simplify using `[Matrix.det_unique]`. Use `⟨⟨?_, ?_⟩, fun j => ?_, fun i => ?_⟩` and prove the remaining obligations. Use `(pi_norm_le_iff_of_nonneg hR).2 fun i => (pi_norm_le_iff_of_nonneg hR).2 fun j => ?_` and prove the remaining obligations.
+
+Use `entry_le Z (Fin.castAdd 1 i) (Fin.castAdd 1 j)` as an intermediate fact. Rewrite `this` using `[hZ, zj_apply_ll]`. Conclude with `le_trans this h1`. Distinguish the cases in `hc : c = 0`. It suffices to derive a contradiction.
+
+Rewrite `h2` using `[hdet, hc, mul_zero, norm_zero]`. Conclude with `absurd h2 (not_le.2 hδ)`. Rewrite using `[div_le_iff₀ (norm_pos_iff.2 hc), ← norm_mul, ← hdet]`. Conclude with `h2`. Use `entry_le Z (Fin.natAdd p 0) (Fin.castAdd 1 j)` as an intermediate fact.
+
+Rewrite `this` using `[hZ, zj_apply_rl]`. Conclude with `le_trans this h1`. Use `entry_le Z (Fin.castAdd 1 i) (Fin.natAdd p 0)` as an intermediate fact. Rewrite `this` using `[hZ, zj_apply_lr]`. Conclude with `le_trans this h1`.
+-/
 theorem gI_ne {β c : ℂ} {p : ℕ} {Ψ : G.Mat (p + 1) → V} {R δ : ℝ} (hR : 0 ≤ R) (hδ : 0 < δ)
     (hb : ∀ Z ∈ tsupport Ψ, ‖Z‖ ≤ R ∧ δ ≤ ‖G.detM Z‖) {H : G.Mat p} {y : AB p} (hne : gI β c Ψ H y ≠ 0) :
     H ∈ Sset p R (δ / ‖c‖) ∧ (∀ j, ‖(Matrix.of y.1 * Matrix.of H) 0 j‖ ≤ R) ∧
@@ -300,6 +410,19 @@ open MeasureTheory Filter Topology Formalism.FourierDecayAlt Formalism.FourierDe
 
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
+/- English proof (translation)
+Take `⟨hS, ha, hbb⟩` from `gI_ne hR hδ hb hne`. Establish `hpos : 0 < δ / ‖c‖` using `div_pos hδ (norm_pos_iff.2 hc)`. Establish `hdet : IsUnit (Matrix.of H).det` using `isUnit_iff_ne_zero.2 (norm_pos_iff.1 (lt_of_lt_of_le hpos hS.2))`. Establish `hRM : 0 ≤ (p : ℝ) * R * M` using `by positivity`. Rewrite using `[norm_prod_le_iff]`.
+
+Prove the components needed by the constructor for the conclusion. Use `(pi_norm_le_iff_of_nonneg hRM).2 fun i => (pi_norm_le_iff_of_nonneg hRM).2 fun j => ?_` and prove the remaining obligations. Establish `e : y.1 i j = ∑ k, (Matrix.of y.1 * Matrix.of H) i k * ((Matrix.of H)⁻¹ : Matrix (Fin p) (Fin p) ℂ) k j`. Rewrite using `[← Matrix.mul_apply, Matrix.mul_nonsing_inv_cancel_right _ _ hdet]`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Establish `hi : i = 0` using `Subsingleton.elim i 0`. Substitute `hi` using the available equality. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul]`.
+
+Conclude with `mul_le_mul (ha k) (hM H hS k j) (norm_nonneg _) hR`. Use `_ = p * R * M := by simp; ring`. Use `(pi_norm_le_iff_of_nonneg hRM).2 fun i => (pi_norm_le_iff_of_nonneg hRM).2 fun j => ?_` and prove the remaining obligations. Establish `e : y.2 i j = ∑ k, ((Matrix.of H)⁻¹ : Matrix (Fin p) (Fin p) ℂ) i k * (Matrix.of H * Matrix.of y.2) k j`. Rewrite using `[← Matrix.mul_apply, Matrix.nonsing_inv_mul_cancel_left _ _ hdet]`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Establish `hj : j = 0` using `Subsingleton.elim j 0`. Substitute `hj` using the available equality. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[norm_mul, mul_comm R M]`. Conclude with `mul_le_mul (hM H hS i k) (hbb k) (norm_nonneg _) hM0`. Use `_ = p * R * M := by simp; ring`.
+-/
 theorem y_bound {β c : ℂ} {p : ℕ} {Ψ : G.Mat (p + 1) → V} {R δ M : ℝ} (hR : 0 ≤ R) (hδ : 0 < δ) (hc : c ≠ 0)
     (hb : ∀ Z ∈ tsupport Ψ, ‖Z‖ ≤ R ∧ δ ≤ ‖G.detM Z‖) (hM0 : 0 ≤ M)
     (hM : ∀ H ∈ Sset p R (δ / ‖c‖), ∀ i j, ‖((Matrix.of H)⁻¹ : Matrix (Fin p) (Fin p) ℂ) i j‖ ≤ M)
@@ -336,6 +459,11 @@ theorem y_bound {β c : ℂ} {p : ℕ} {Ψ : G.Mat (p + 1) → V} {R δ M : ℝ}
           rw [norm_mul, mul_comm R M]; exact mul_le_mul (hM H hS i k) (hbb k) (norm_nonneg _) hM0
       _ = p * R * M := by simp; ring
 
+/- English proof (translation)
+Establish `e : (fun q : G.Mat p × AB p => fun (i j : Fin (p + 1)) => Zj q.2.1 q.2.2 (Matrix.of q.1) C i j) = fun q => fun (i j : Fin (p + 1)) => blk2 (Matrix.of q.1) (Matrix.of q.1 * Matrix.of q.2.2) (Matrix.of q.2.1 * Matrix.of q.1) (Matrix.of q.2.1 * Matrix.of q.1 * Matrix.of q.2.2 + C) i …`. Use function extensionality and compare the values at `q`. Rewrite using `[Formalism.FourierDecayAlt.P.level_z_affine]`. Rewrite using `[e]`. Use `contDiff_pi.2 fun i => contDiff_pi.2 fun j => ?_` and prove the remaining obligations.
+
+Take `⟨i', rfl⟩` from `finSumFinEquiv.surjective i`. Take `⟨j', rfl⟩` from `finSumFinEquiv.surjective j`. Apply the tactic sequence `rcases i' with i' | i' <;> rcases j' with j' | j' <;>`. Apply the tactic sequence `simp only [blk2, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.mul_apply, Matrix.add_apply, Matrix.of_apply] <;> fun_prop`.
+-/
 theorem contDiff_zj (p : ℕ) (C : Matrix (Fin 1) (Fin 1) ℂ) :
     ContDiff ℝ (⊤ : ℕ∞) (fun q : G.Mat p × AB p =>
       fun (i j : Fin (p + 1)) => Zj q.2.1 q.2.2 (Matrix.of q.1) C i j) := by
@@ -352,12 +480,22 @@ theorem contDiff_zj (p : ℕ) (C : Matrix (Fin 1) (Fin 1) ℂ) :
       Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.mul_apply,
       Matrix.add_apply, Matrix.of_apply] <;> fun_prop
 
+/- English proof (translation)
+Unfold `G.psi`. Establish `h1 : ContDiff ℝ (⊤ : ℕ∞) (fun w : ℂ => (((β * w).re : ℝ) : ℂ))` using `Complex.ofRealCLM.contDiff.comp (Complex.reCLM.contDiff.comp (contDiff_const.mul contDiff_id))`. Conclude with `Complex.contDiff_exp.comp (contDiff_const.mul h1)`.
+-/
 theorem contDiff_psi (β : ℂ) : ContDiff ℝ (⊤ : ℕ∞) (fun w : ℂ => G.psi β w) := by
   unfold G.psi
   have h1 : ContDiff ℝ (⊤ : ℕ∞) (fun w : ℂ => (((β * w).re : ℝ) : ℂ)) :=
     Complex.ofRealCLM.contDiff.comp (Complex.reCLM.contDiff.comp (contDiff_const.mul contDiff_id))
   exact Complex.contDiff_exp.comp (contDiff_const.mul h1)
 
+/- English proof (translation)
+Distinguish the cases in `hp : 0 < p`. Establish `e : (fun q : G.Mat p × AB p => cornerA q.2.1 + cornerB q.2.2) = fun q => q.2.1 0 ⟨p - 1, by omega⟩ + q.2.2 ⟨p - 1, by omega⟩ 0`. Use function extensionality and compare the values at `q`. Simplify using `[cornerA, cornerB, hp]`. Rewrite using `[e]`.
+
+Use `fun_prop`. Establish `e : (fun q : G.Mat p × AB p => cornerA q.2.1 + cornerB q.2.2) = fun _ => 0`. Use function extensionality and compare the values at `q`. Simplify using `[cornerA, cornerB, hp]`. Rewrite using `[e]`.
+
+Conclude with `contDiff_const`.
+-/
 theorem contDiff_corner (p : ℕ) :
     ContDiff ℝ (⊤ : ℕ∞) (fun q : G.Mat p × AB p => cornerA q.2.1 + cornerB q.2.2) := by
   by_cases hp : 0 < p
@@ -369,6 +507,9 @@ theorem contDiff_corner (p : ℕ) :
       funext q; simp [cornerA, cornerB, hp]
     rw [e]; exact contDiff_const
 
+/- English proof (translation)
+Unfold `gI`. Conclude with `((contDiff_psi β).comp (contDiff_corner p)).smul (hΨ.1.comp (contDiff_zj p _))`.
+-/
 theorem contDiff_gI (β c : ℂ) {p : ℕ} {Ψ : G.Mat (p + 1) → V} (hΨ : KCls Ψ) :
     ContDiff ℝ (⊤ : ℕ∞) (fun q : G.Mat p × AB p => gI β c Ψ q.1 q.2) := by
   unfold gI
@@ -395,6 +536,19 @@ instance haarAB (p : ℕ) : (volume : Measure (AB p)).IsAddHaarMeasure := by
 instance lfAB (p : ℕ) : IsLocallyFiniteMeasure (volume : Measure (AB p)) :=
   isLocallyFiniteMeasure_of_isFiniteMeasureOnCompacts
 
+/- English proof (translation)
+Take `⟨R, δ, hR, hδ, hb⟩` from `supp_bounds hΨ`. Take `⟨M, hM0, hM⟩` from `inv_bound p R (δ / ‖c‖) (div_pos hδ (norm_pos_iff.2 hc))`. Use `set k : Set (AB p) := Metric.closedBall 0 (p * R * M) with hkdef`. Establish `hk : IsCompact k` using `isCompact_closedBall _ _`. Use `set g : G.Mat p → AB p → V := fun H y => gI β c Ψ H (-y) with hgdef`.
+
+Establish `hgs : ∀ H y, H ∈ (Set.univ : Set (G.Mat p)) → y ∉ k → g H y = 0`. Introduce `H y _ hy`. Assume the negation of the conclusion as `hne`. Apply `hy` to reduce the goal to its premises. Use `y_bound hR hδ hc hb hM0 hM hne` as an intermediate fact.
+
+Rewrite `this` using `[norm_neg]`. Simplify `this` using `[hkdef, Metric.mem_closedBall, dist_zero_right]`. Establish `hg : ContDiffOn ℝ (⊤ : ℕ∞) (Function.uncurry g) (Set.univ ×ˢ Set.univ)`. Establish `h` using `(contDiff_gI β c hΨ).comp (contDiff_fst.prodMk contDiff_snd.neg)`. Conclude with `h.contDiffOn`.
+
+Establish `hconv` using `contDiffOn_convolution_right_with_param (μ := (volume : Measure (AB p))) (f := fun _ : AB p => (1 : ℝ)) (ContinuousLinearMap.lsmul ℝ ℝ) isOpen_univ hk hgs (locallyIntegrable_const 1) hg`. Rewrite `hconv` using `[Set.univ_prod_univ, contDiffOn_univ]`. Establish `hc2` using `hconv.comp (contDiff_id.prodMk (contDiff_const (c := (0 : AB p))))`. Establish `e : ((fun q : G.Mat p × AB p => ((fun _ : AB p => (1 : ℝ)) ⋆[ContinuousLinearMap.lsmul ℝ ℝ, volume] g q.1) q.2) ∘ fun H : G.Mat p => (id H, (0 : AB p))) = Psc β c Ψ`. Use function extensionality and compare the values at `H`.
+
+Simplify using `only [Function.comp, id]`. Rewrite using `[convolution_def]`. Unfold `Psc`. Use `integral_congr_ae (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `only [hgdef, zero_sub, neg_neg, ContinuousLinearMap.lsmul_apply, one_smul]`.
+
+Rewrite `hc2` using `[e]`. Conclude with `hc2`.
+-/
 theorem contDiff_Psc [CompleteSpace V] (β c : ℂ) {p : ℕ} {Ψ : G.Mat (p + 1) → V} (hΨ : KCls Ψ) (hc : c ≠ 0) :
     ContDiff ℝ (⊤ : ℕ∞) (Psc β c Ψ) := by
   obtain ⟨R, δ, hR, hδ, hb⟩ := supp_bounds hΨ
@@ -428,6 +582,15 @@ theorem contDiff_Psc [CompleteSpace V] (β c : ℂ) {p : ℕ} {Ψ : G.Mat (p + 1
   rw [e] at hc2
   exact hc2
 
+/- English proof (translation)
+Take `⟨R, δ, hR, hδ, hb⟩` from `supp_bounds hΨ`. Establish `hpos : 0 < δ / ‖c‖` using `div_pos hδ (norm_pos_iff.2 hc)`. Establish `hsupp : Function.support (Psc β c Ψ) ⊆ Sset p R (δ / ‖c‖)`. Introduce `H hH`. Assume the negation of the conclusion as `hS`.
+
+Apply `hH` to reduce the goal to its premises. Establish `h0 : ∀ y, gI β c Ψ H y = 0` using `fun y => by`. Assume the negation of the conclusion as `hne`. Conclude with `hS (gI_ne hR hδ hb hne).1`. Use `show ∫ y, gI β c Ψ H y = 0`.
+
+Simplify using `[h0]`. Establish `hcl : IsClosed (Sset p R (δ / ‖c‖))` using `(isCompact_Sset p R _).isClosed`. Establish `hts : tsupport (Psc β c Ψ) ⊆ Sset p R (δ / ‖c‖)` using `closure_minimal hsupp hcl`. Use `⟨contDiff_Psc β c hΨ hc, ?_, fun H hH => ?_⟩` and prove the remaining obligations. Conclude with `(isCompact_Sset p R _).of_isClosed_subset (isClosed_tsupport _) hts`.
+
+Conclude with `norm_pos_iff.1 (lt_of_lt_of_le hpos (hts hH).2)`.
+-/
 theorem kcls_Psc [CompleteSpace V] (β c : ℂ) {p : ℕ} {Ψ : G.Mat (p + 1) → V} (hΨ : KCls Ψ) (hc : c ≠ 0) :
     KCls (Psc β c Ψ) := by
   obtain ⟨R, δ, hR, hδ, hb⟩ := supp_bounds hΨ
@@ -451,6 +614,9 @@ end Formalism.FourierDecayAlt.P.PBJ.Frz
 
 namespace Formalism.FourierDecayAlt.P.PBJ
 
+/- English proof (translation)
+Introduce `β p V _ _ _ Ψ hΨ c hc`. Use `⟨Frz.Psc β c Ψ, Frz.kcls_Psc β c hΨ hc, fun σ d hd => ?_⟩` and prove the remaining obligations. Conclude with `Frz.phiTop_freeze β c σ d hd hΨ`.
+-/
 theorem freeze_last_entry : FreezeLast := by
   intro β p V _ _ _ Ψ hΨ c hc
   refine ⟨Frz.Psc β c Ψ, Frz.kcls_Psc β c hΨ hc, fun σ d hd => ?_⟩

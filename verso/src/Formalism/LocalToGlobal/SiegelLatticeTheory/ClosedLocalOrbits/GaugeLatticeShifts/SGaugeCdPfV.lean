@@ -18,6 +18,11 @@ section Alg
 
 variable (ε : Fin n → Bool) (e : Fin P ⊕ Fin Q ≃ Fin n)
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Apply the tactic sequence `by_cases h : i = j <;>`. Simplify using `[Formalism.UG.Jpq, Formalism.REAL.Jm, Matrix.diagonal_apply, Matrix.one_apply, h, h1, h2, e.injective.eq_iff]`. Simplify using `[Formalism.UG.Jpq, Formalism.REAL.Jm, Matrix.diagonal_apply, e.injective.eq_iff]`.
+
+Simplify using `[Formalism.UG.Jpq, Formalism.REAL.Jm, Matrix.diagonal_apply, e.injective.eq_iff]`. Apply the tactic sequence `by_cases h : i = j <;>`. Simplify using `[Formalism.UG.Jpq, Formalism.REAL.Jm, Matrix.diagonal_apply, Matrix.one_apply, h, h1, h2, e.injective.eq_iff]`.
+-/
 theorem jpq_eq (h1 : ∀ i, ε (e (Sum.inl i)) = true) (h2 : ∀ j, ε (e (Sum.inr j)) = false) :
     Formalism.UG.Jpq P Q = (Formalism.REAL.Jm ε).submatrix e e := by
   ext i j
@@ -29,6 +34,13 @@ theorem jpq_eq (h1 : ∀ i, ε (e (Sum.inl i)) = true) (h2 : ∀ j, ε (e (Sum.i
   · by_cases h : i = j <;>
       simp [Formalism.UG.Jpq, Formalism.REAL.Jm, Matrix.diagonal_apply, Matrix.one_apply, h, h1, h2, e.injective.eq_iff]
 
+/- English proof (translation)
+Use `show (X.submatrix e e)ᴴ * Formalism.UG.Jpq P Q + Formalism.UG.Jpq P Q * X.submatrix e e = 0 ↔ _`. Rewrite using `[jpq_eq ε e h1 h2, Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv]`. Unfold `Formalism.REAL.inG`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Use extensionality with `i j`. Use `congrFun (congrFun h (e.symm i)) (e.symm j)` as an intermediate fact. Simplify using `using this`. Introduce `h`. Use extensionality with `i j`.
+
+Use `congrFun (congrFun h (e i)) (e j)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem mem_lieU_iff (h1 : ∀ i, ε (e (Sum.inl i)) = true) (h2 : ∀ j, ε (e (Sum.inr j)) = false)
     (X : Matrix (Fin n) (Fin n) ℂ) : X.submatrix e e ∈ Formalism.BasicNotions.lieU P Q ↔ Formalism.REAL.inG ε X := by
   show (X.submatrix e e)ᴴ * Formalism.UG.Jpq P Q + Formalism.UG.Jpq P Q * X.submatrix e e = 0 ↔ _
@@ -44,6 +56,9 @@ theorem mem_lieU_iff (h1 : ∀ i, ε (e (Sum.inl i)) = true) (h2 : ∀ j, ε (e 
     have := congrFun (congrFun h (e i)) (e j)
     simpa using this
 
+/- English proof (translation)
+Rewrite using `[linT_apply]`. Conclude with `inG_of_gLie ε _`.
+-/
 theorem inG_linT (t : EL ε) : Formalism.REAL.inG ε (linT ε t) := by
   rw [linT_apply]
   exact inG_of_gLie ε _
@@ -59,9 +74,15 @@ def phiL : EL ε →ₗ[ℝ] Formalism.BasicNotions.lieU P Q where
     apply Subtype.ext
     simp [Matrix.submatrix_smul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem phiL_coe (t : EL ε) : ((phiL ε e h1 h2 t : Formalism.BasicNotions.lieU P Q) : Matrix ι ι ℂ) = (linT ε t).submatrix e e := rfl
 
 include h1 h2 in
+/- English proof (translation)
+Use `(mem_lieU_iff ε e h1 h2 _).1 ?_` and prove the remaining obligations. Simplify `Y.2` using `[Matrix.submatrix_submatrix]`.
+-/
 theorem inG_back (Y : Formalism.BasicNotions.lieU P Q) :
     Formalism.REAL.inG ε ((Y : Matrix ι ι ℂ).submatrix e.symm e.symm) := by
   refine (mem_lieU_iff ε e h1 h2 _).1 ?_
@@ -81,19 +102,35 @@ def phiE : EL ε ≃ₗ[ℝ] Formalism.BasicNotions.lieU P Q :=
 
 def phiC : EL ε ≃L[ℝ] Formalism.BasicNotions.lieU P Q := (phiE ε e h1 h2).toContinuousLinearEquiv
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem phiC_coe (t : EL ε) : ((phiC ε e h1 h2 t : Formalism.BasicNotions.lieU P Q) : Matrix ι ι ℂ) = (linT ε t).submatrix e e := rfl
 
+/- English proof (translation)
+Rewrite using `[phiC_coe]`. Conclude with `Fintype.sum_equiv e _ _ (fun i => Fintype.sum_equiv e _ _ (fun j => rfl))`.
+-/
 theorem l1_entries_coordinate_chart (t : EL ε) :
     ∑ i, ∑ j, ‖((phiC ε e h1 h2 t : Formalism.BasicNotions.lieU P Q) : Matrix ι ι ℂ) i j‖ = ∑ a, ∑ b, ‖linT ε t a b‖ := by
   rw [phiC_coe]
   exact Fintype.sum_equiv e _ _ (fun i => Fintype.sum_equiv e _ _ (fun j => rfl))
 
+/- English proof (translation)
+Use extensionality with `t`. Use `show (∑ i, ∑ j, ‖((phiC ε e h1 h2 t : Formalism.BasicNotions.lieU P Q) : Matrix ι ι ℂ) i j‖ < r) ↔ _`. Rewrite using `[l1_entries_coordinate_chart]`. Both sides reduce to the same expression.
+-/
 theorem preimage_ballU (r : ℝ) : (phiC ε e h1 h2) ⁻¹' Formalism.BasicNotions.ballU P Q r = l1B ε r := by
   ext t
   show (∑ i, ∑ j, ‖((phiC ε e h1 h2 t : Formalism.BasicNotions.lieU P Q) : Matrix ι ι ℂ) i j‖ < r) ↔ _
   rw [l1_entries_coordinate_chart]
   rfl
 
+/- English proof (translation)
+Unfold `Cd.hs2`. Rewrite using `[phiC_coe]`. Establish `e1 : ∑ i, ∑ j, Complex.normSq ((linT ε t).submatrix e e i j) = ∑ a, ∑ b, Complex.normSq (linT ε t a b)` using `Fintype.sum_equiv e _ _ (fun i => Fintype.sum_equiv e _ _ (fun j => rfl))`. Rewrite using `[e1, linT_apply]`. Establish `hnorm : ‖t‖ = ‖(((obG ε).repr.symm t : gLie ε) : EuclideanSpace ℝ (Fin n × Fin n × Bool))‖`.
+
+Rewrite using `[← LinearIsometryEquiv.norm_map (obG ε).repr.symm t]`. Both sides reduce to the same expression. Rewrite using `[hnorm, EuclideanSpace.norm_eq, Real.sq_sqrt (Finset.sum_nonneg fun _ _ => sq_nonneg _)]`. Simplify using `only [Fintype.sum_prod_type, Fintype.sum_bool, Real.norm_eq_abs, sq_abs, Formalism.MainNotions.S.unrealify, Complex.normSq_mk]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hilbert_schmidt_coordinate_chart (t : EL ε) :
     Cd.hs2 ((phiC ε e h1 h2 t : Formalism.BasicNotions.lieU P Q) : Matrix ι ι ℂ) = ‖t‖ ^ 2 := by
   unfold Cd.hs2
@@ -125,6 +162,9 @@ def mL : EL ε × EL ε →ₗ[ℝ] Matrix ι ι ℂ where
     simp only [Prod.smul_fst, Prod.smul_snd, map_smul, Submodule.coe_smul, RingHom.id_apply, smul_add]
     rw [smul_comm c Complex.I]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mL_apply (p : EL ε × EL ε) : mL ε e h1 h2 p = ((phiC ε e h1 h2 p.1 : Formalism.BasicNotions.lieU P Q) : Matrix ι ι ℂ) +
     Complex.I • ((phiC ε e h1 h2 p.2 : Formalism.BasicNotions.lieU P Q) : Matrix ι ι ℂ) := rfl
 
@@ -139,9 +179,17 @@ def rL : Matrix ι ι ℂ →ₗ[ℝ] EuclideanSpace ℝ ((ι × ι) × Fin 2) w
     ext p
     by_cases h : p.2 = 0 <;> simp [h]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rL_apply (Z : Matrix ι ι ℂ) (p : (ι × ι) × Fin 2) :
     rL Z p = if p.2 = 0 then (Z p.1.1 p.1.2).re else (Z p.1.1 p.1.2).im := rfl
 
+/- English proof (translation)
+Rewrite using `[EuclideanSpace.norm_eq, Real.sq_sqrt (Finset.sum_nonneg fun _ _ => sq_nonneg _)]`. Simplify using `only [rL_apply, Real.norm_eq_abs, sq_abs]`. Rewrite using `[Fintype.sum_prod_type, Fintype.sum_prod_type]`. Unfold `Cd.hs2`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Simplify using `[Fin.sum_univ_two, Complex.normSq_apply, sq]`.
+-/
 theorem norm_rL_sq (Z : Matrix ι ι ℂ) : ‖rL Z‖ ^ 2 = Cd.hs2 Z := by
   rw [EuclideanSpace.norm_eq, Real.sq_sqrt (Finset.sum_nonneg fun _ _ => sq_nonneg _)]
   simp only [rL_apply, Real.norm_eq_abs, sq_abs]
@@ -158,8 +206,26 @@ variable (ε : Fin n → Bool) (e : Fin P ⊕ Fin Q ≃ Fin n)
 def gL : WithLp 2 (EL ε × EL ε) →ₗ[ℝ] EuclideanSpace ℝ ((ι × ι) × Fin 2) :=
   rL.comp ((mL ε e h1 h2).comp (WithLp.linearEquiv 2 ℝ (EL ε × EL ε)).toLinearMap)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gL_apply (w : WithLp 2 (EL ε × EL ε)) : gL ε e h1 h2 w = rL (mL ε e h1 h2 (WithLp.ofLp w)) := rfl
 
+/- English proof (translation)
+Set `s : ι → ℂ` to `Sum.elim (fun _ => 1) (fun _ => -1)`. Establish `hJ : Formalism.UG.Jpq P Q = Matrix.diagonal s`. Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Apply the tactic sequence `by_cases h : i = j <;> simp [Formalism.UG.Jpq, Matrix.diagonal_apply, Matrix.one_apply, h, s]`.
+
+Simplify using `[Formalism.UG.Jpq, Matrix.diagonal_apply, s]`. Simplify using `[Formalism.UG.Jpq, Matrix.diagonal_apply, s]`. Apply the tactic sequence `by_cases h : i = j <;> simp [Formalism.UG.Jpq, Matrix.diagonal_apply, Matrix.one_apply, h, s]`. Establish `hss : ∀ j, s j * s j = 1`. Introduce `j`.
+
+Apply the tactic sequence `rcases j with j | j <;> simp [s]`. Establish `key : ∀ {M : Matrix ι ι ℂ}, M ∈ Formalism.BasicNotions.lieU P Q → ∀ j k, star (M j k) = -(s k * s j * M k j)`. Introduce `M hM j k`. Establish `h` using `congrFun (congrFun (show Mᴴ * Formalism.UG.Jpq P Q + Formalism.UG.Jpq P Q * M = 0 from hM) k) j`. Rewrite `h` using `[hJ]`.
+
+Simplify using `only [Matrix.add_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply, Matrix.zero_apply] at h`. Take the linear combination `(s j) * h - star (M j k) * hss j`. Establish `hT : (∑ j, ∑ k, A j k * star (B j k)).im = 0`. Establish `h1 : star (∑ j, ∑ k, A j k * star (B j k)) = ∑ j, ∑ k, A j k * star (B j k)`. Simplify using `only [star_sum, star_mul', star_star]`.
+
+Simplify using `only [key hA, key hB]`. Use `conv_lhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Conclude with `Complex.conj_eq_iff_im.1 h1`.
+
+Establish `hpt : ∀ j k, Complex.normSq ((A + Complex.I • B) j k) = Complex.normSq (A j k) + Complex.normSq (B j k) + 2 * (A j k * star (B j k)).im`. Introduce `j k`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, Complex.normSq_apply, Complex.add_re, Complex.add_im, Complex.mul_re, Complex.mul_im, Complex.I_re, Complex.I_im, Complex.star_def, Complex.conj_re, Complex.conj_im]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsum : ∑ j, ∑ k, (A j k * star (B j k)).im = 0`.
+
+Rewrite using `[← hT, Complex.im_sum]`. Simplify using `only [Complex.im_sum]`. Unfold `Cd.hs2`. Simplify using `only [hpt, Finset.sum_add_distrib, ← Finset.mul_sum, hsum, mul_zero, add_zero]`.
+-/
 private theorem cross_lemma {A B : Matrix ι ι ℂ} (hA : A ∈ Formalism.BasicNotions.lieU P Q) (hB : B ∈ Formalism.BasicNotions.lieU P Q) :
     Cd.hs2 (A + Complex.I • B) = Cd.hs2 A + Cd.hs2 B := by
   let s : ι → ℂ := Sum.elim (fun _ => 1) (fun _ => -1)
@@ -201,6 +267,9 @@ private theorem cross_lemma {A B : Matrix ι ι ℂ} (hA : A ∈ Formalism.Basic
   unfold Cd.hs2
   simp only [hpt, Finset.sum_add_distrib, ← Finset.mul_sum, hsum, mul_zero, add_zero]
 
+/- English proof (translation)
+Establish `hsq : ‖gL ε e h1 h2 w‖ ^ 2 = ‖w‖ ^ 2`. Rewrite using `[gL_apply, norm_rL_sq, mL_apply, cross_lemma (phiC ε e h1 h2 _).2 (phiC ε e h1 h2 _).2, hilbert_schmidt_coordinate_chart, hilbert_schmidt_coordinate_chart, WithLp.prod_norm_sq_eq_of_L2]`. Both sides reduce to the same expression. Conclude with `(pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).1 hsq`.
+-/
 theorem norm_gL (w : WithLp 2 (EL ε × EL ε)) : ‖gL ε e h1 h2 w‖ = ‖w‖ := by
   have hsq : ‖gL ε e h1 h2 w‖ ^ 2 = ‖w‖ ^ 2 := by
     rw [gL_apply, norm_rL_sq, mL_apply, cross_lemma (phiC ε e h1 h2 _).2 (phiC ε e h1 h2 _).2, hilbert_schmidt_coordinate_chart, hilbert_schmidt_coordinate_chart,
@@ -208,12 +277,23 @@ theorem norm_gL (w : WithLp 2 (EL ε × EL ε)) : ‖gL ε e h1 h2 w‖ = ‖w�
     rfl
   exact (pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).1 hsq
 
+/- English proof (translation)
+Simplify using `[Formalism.UG.Jpq, Matrix.fromBlocks_multiply, Matrix.fromBlocks_one]`.
+-/
 private theorem jpq_sq_lemma : Formalism.UG.Jpq P Q * Formalism.UG.Jpq P Q = 1 := by
   simp [Formalism.UG.Jpq, Matrix.fromBlocks_multiply, Matrix.fromBlocks_one]
 
+/- English proof (translation)
+Simplify using `[Formalism.UG.Jpq, Matrix.fromBlocks_conjTranspose]`.
+-/
 private theorem jpq_herm_lemma_2 : (Formalism.UG.Jpq P Q)ᴴ = Formalism.UG.Jpq P Q := by
   simp [Formalism.UG.Jpq, Matrix.fromBlocks_conjTranspose]
 
+/- English proof (translation)
+Establish `jj' : ∀ X : Matrix ι ι ℂ, Formalism.UG.Jpq P Q * (Formalism.UG.Jpq P Q * X) = X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, jpq_sq_lemma, Matrix.one_mul]`. Use `show _ * Formalism.UG.Jpq P Q + Formalism.UG.Jpq P Q * _ = 0`. Simplify using `only [Matrix.conjTranspose_smul, Matrix.conjTranspose_sub, Matrix.conjTranspose_mul, jpq_herm_lemma_2, Matrix.conjTranspose_conjTranspose, Matrix.smul_mul, Matrix.mul_smul, Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_assoc, jj', jpq_sq_lemma, Matrix.mul_one]`. Establish `hs : star (1 / 2 : ℂ) = 1 / 2` using `by simp`.
+
+Rewrite using `[hs, ← smul_add]`. Establish `: Zᴴ * Formalism.UG.Jpq P Q - Formalism.UG.Jpq P Q * Z + (Formalism.UG.Jpq P Q * Z - Zᴴ * Formalism.UG.Jpq P Q) = 0` using `by abel`. Rewrite using `[this, smul_zero]`.
+-/
 theorem a_mem (Z : Matrix ι ι ℂ) :
     ((1 / 2 : ℂ) • (Z - Formalism.UG.Jpq P Q * Zᴴ * Formalism.UG.Jpq P Q)) ∈ Formalism.BasicNotions.lieU P Q := by
   have jj' : ∀ X : Matrix ι ι ℂ, Formalism.UG.Jpq P Q * (Formalism.UG.Jpq P Q * X) = X := fun X => by
@@ -227,6 +307,11 @@ theorem a_mem (Z : Matrix ι ι ℂ) :
   have : Zᴴ * Formalism.UG.Jpq P Q - Formalism.UG.Jpq P Q * Z + (Formalism.UG.Jpq P Q * Z - Zᴴ * Formalism.UG.Jpq P Q) = 0 := by abel
   rw [this, smul_zero]
 
+/- English proof (translation)
+Establish `jj' : ∀ X : Matrix ι ι ℂ, Formalism.UG.Jpq P Q * (Formalism.UG.Jpq P Q * X) = X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, jpq_sq_lemma, Matrix.one_mul]`. Use `show _ * Formalism.UG.Jpq P Q + Formalism.UG.Jpq P Q * _ = 0`. Simplify using `only [Matrix.conjTranspose_smul, Matrix.conjTranspose_add, Matrix.conjTranspose_mul, jpq_herm_lemma_2, Matrix.conjTranspose_conjTranspose, Matrix.smul_mul, Matrix.mul_smul, Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc, jj', jpq_sq_lemma, Matrix.mul_one]`. Apply the tactic sequence `have hs : star (-(Complex.I / 2)) = Complex.I / 2 := by first | (simp [Complex.conj_I]; done) | (simp [Complex.conj_I]; ring)`.
+
+Rewrite using `[hs, neg_smul, add_comm (Formalism.UG.Jpq P Q * Z) (Zᴴ * Formalism.UG.Jpq P Q), add_neg_cancel]`.
+-/
 theorem b_mem (Z : Matrix ι ι ℂ) :
     ((-(Complex.I / 2)) • (Z + Formalism.UG.Jpq P Q * Zᴴ * Formalism.UG.Jpq P Q)) ∈ Formalism.BasicNotions.lieU P Q := by
   have jj' : ∀ X : Matrix ι ι ℂ, Formalism.UG.Jpq P Q * (Formalism.UG.Jpq P Q * X) = X := fun X => by
@@ -239,6 +324,9 @@ theorem b_mem (Z : Matrix ι ι ℂ) :
     first | (simp [Complex.conj_I]; done) | (simp [Complex.conj_I]; ring)
   rw [hs, neg_smul, add_comm (Formalism.UG.Jpq P Q * Z) (Zᴴ * Formalism.UG.Jpq P Q), add_neg_cancel]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.add_apply, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul]`. Take the linear combination `(-(Z i j + (Formalism.UG.Jpq P Q * Zᴴ * Formalism.UG.Jpq P Q) i j) / 2) * Complex.I_sq`.
+-/
 theorem ab_sum (Z : Matrix ι ι ℂ) :
     (1 / 2 : ℂ) • (Z - Formalism.UG.Jpq P Q * Zᴴ * Formalism.UG.Jpq P Q) +
       Complex.I • ((-(Complex.I / 2)) • (Z + Formalism.UG.Jpq P Q * Zᴴ * Formalism.UG.Jpq P Q)) = Z := by
@@ -246,6 +334,13 @@ theorem ab_sum (Z : Matrix ι ι ℂ) :
   simp only [Matrix.add_apply, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul]
   linear_combination (-(Z i j + (Formalism.UG.Jpq P Q * Zᴴ * Formalism.UG.Jpq P Q) i j) / 2) * Complex.I_sq
 
+/- English proof (translation)
+Introduce `y`. Set `Z : Matrix ι ι ℂ` to `fun i j => (y ((i, j), 0) : ℂ) + (y ((i, j), 1) : ℂ) * Complex.I`. Set `A : Formalism.BasicNotions.lieU P Q` to `⟨_, a_mem Z⟩`. Set `B : Formalism.BasicNotions.lieU P Q` to `⟨_, b_mem Z⟩`. Use `⟨WithLp.toLp 2 ((phiC ε e h1 h2).symm A, (phiC ε e h1 h2).symm B), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[gL_apply, WithLp.ofLp_toLp, mL_apply]`. Simplify using `only [ContinuousLinearEquiv.apply_symm_apply]`. Rewrite using `[show ((A : Matrix ι ι ℂ) + Complex.I • (B : Matrix ι ι ℂ)) = Z from ab_sum Z]`. Use extensionality with `p`. Rewrite using `[rL_apply]`.
+
+Break down `p with ⟨⟨i, j⟩, k⟩` into its components or cases. Apply the tactic sequence `fin_cases k <;> simp [Z]`.
+-/
 theorem gL_surj : Function.Surjective (gL ε e h1 h2) := by
   intro y
   let Z : Matrix ι ι ℂ := fun i j => (y ((i, j), 0) : ℂ) + (y ((i, j), 1) : ℂ) * Complex.I
@@ -263,6 +358,9 @@ theorem gL_surj : Function.Surjective (gL ε e h1 h2) := by
 def gI : WithLp 2 (EL ε × EL ε) ≃ₗᵢ[ℝ] EuclideanSpace ℝ ((ι × ι) × Fin 2) :=
   LinearIsometryEquiv.ofSurjective { toLinearMap := gL ε e h1 h2, norm_map' := norm_gL ε e h1 h2 } (gL_surj ε e h1 h2)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gI_apply (w : WithLp 2 (EL ε × EL ε)) : gI ε e h1 h2 w = gL ε e h1 h2 w := rfl
 
 end Iso2
@@ -278,6 +376,11 @@ variable (ε : Fin n → Bool) (e : Fin P ⊕ Fin Q ≃ Fin n)
 
 def aF (p : EL ε × EL ε) : (ι × ι) → ℂ := Formalism.BasicNotions.entries (mL ε e h1 h2 p)
 
+/- English proof (translation)
+Establish `hA` using `(PiLp.volume_preserving_ofLp (Fin m)).prod (PiLp.volume_preserving_ofLp (Fin m))`. Establish `hB` using `measurePreserving_sumPiEquivProdPi_symm (fun _ : Fin m ⊕ Fin m => (volume : Measure ℝ))`. Establish `hC` using `PiLp.volume_preserving_toLp (Fin m ⊕ Fin m)`. Establish `hJ` using `(PiLp.sumPiLpEquivProdLpPiLp (𝕜 := ℝ) 2 (fun _ : Fin m ⊕ Fin m => ℝ)).measurePreserving`. Use `hJ.comp (hC.comp (hB.comp hA))` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `all_goals first | rfl | (funext p; rfl)`.
+-/
 private theorem mpT_lemma (m : ℕ) :
     MeasurePreserving (WithLp.toLp 2 : EuclideanSpace ℝ (Fin m) × EuclideanSpace ℝ (Fin m) →
       WithLp 2 (EuclideanSpace ℝ (Fin m) × EuclideanSpace ℝ (Fin m)))
@@ -290,6 +393,11 @@ private theorem mpT_lemma (m : ℕ) :
   convert this using 1
   all_goals first | rfl | (funext p; rfl)
 
+/- English proof (translation)
+Establish `hT` using `mpT_lemma (dimL ε)`. Establish `hG` using `(gI ε e h1 h2).measurePreserving`. Use `MeasurePreserving.comp hC (hG.comp hT)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `p`.
+
+Use function extensionality and compare the values at `k`. Simplify using `only [Function.comp_apply, gI_apply, gL_apply, WithLp.ofLp_toLp, aF, Formalism.BasicNotions.entries, rL_apply]`. Simplify using `[Complex.re_add_im]`.
+-/
 theorem mp_aF (hC : MpCF (ι × ι)) :
     MeasurePreserving (aF ε e h1 h2) ((volume : Measure (EL ε)).prod volume) volume := by
   have hT := mpT_lemma (dimL ε)
@@ -301,6 +409,25 @@ theorem mp_aF (hC : MpCF (ι × ι)) :
   simp only [Function.comp_apply, gI_apply, gL_apply, WithLp.ofLp_toLp, aF, Formalism.BasicNotions.entries, rL_apply]
   simp [Complex.re_add_im]
 
+/- English proof (translation)
+Introduce `h1 h2 lam hlam r`. Establish `hcl : IsClosed ((Formalism.BasicNotions.lieU P Q : Submodule ℝ (Matrix ι ι ℂ)) : Set (Matrix ι ι ℂ))`. Establish `: ((Formalism.BasicNotions.lieU P Q : Submodule ℝ (Matrix ι ι ℂ)) : Set (Matrix ι ι ℂ)) = {X | Xᴴ * Formalism.UG.Jpq P Q + Formalism.UG.Jpq P Q * X = 0}` using `rfl`. Rewrite using `[this]`. Conclude with `isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).add (continuous_const.matrix_mul continuous_id)) continuous_const`.
+
+Use `haveI : LocallyCompactSpace (Matrix ι ι ℂ) := inferInstanceAs (LocallyCompactSpace (ι → ι → ℂ))`. Use `haveI : SecondCountableTopology (Matrix ι ι ℂ) := inferInstanceAs (SecondCountableTopology (ι → ι → ℂ))`. Use `haveI : SecondCountableTopology (Formalism.BasicNotions.lieU P Q) := TopologicalSpace.Subtype.secondCountableTopology ((Formalism.BasicNotions.lieU P Q : Submodule ℝ (Matrix ι ι ℂ)) : Set (Matrix ι ι ℂ))`. Use `haveI : LocallyCompactSpace (Formalism.BasicNotions.lieU P Q) := hcl.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI := hlam.1`.
+
+Establish `hφm : Measurable (phiC ε e h1 h2)` using `(phiC ε e h1 h2).continuous.measurable`. Use `haveI hH : ((volume : Measure (EL ε)).map (phiC ε e h1 h2)).IsAddHaarMeasure := by first`. Consider the case `infer_instance`. Consider the case `exact (phiC ε e h1 h2).isAddHaarMeasure_map volume`. Take `⟨c, hc⟩ : ∃ c : ℝ≥0, lam = c • (volume : Measure (EL ε)).map (phiC ε e h1 h2)` from `⟨_, Measure.isAddLeftInvariant_eq_smul lam _⟩`.
+
+Establish `hνν : ((volume : Measure (EL ε)).map (phiC ε e h1 h2)).prod ((volume : Measure (EL ε)).map (phiC ε e h1 h2)) = ((volume : Measure (EL ε)).prod volume).map (Prod.map (phiC ε e h1 h2) (phiC ε e h1 h2))` using `Measure.map_prod_map _ _ hφm hφm`. Establish `hA : Continuous fun ab : Formalism.BasicNotions.lieU P Q × Formalism.BasicNotions.lieU P Q => (ab.1 : Matrix ι ι ℂ)` using `continuous_subtype_val.comp continuous_fst`. Establish `hB : Continuous fun ab : Formalism.BasicNotions.lieU P Q × Formalism.BasicNotions.lieU P Q => (ab.2 : Matrix ι ι ℂ)` using `continuous_subtype_val.comp continuous_snd`. Establish `hF' : Continuous (fun ab : Formalism.BasicNotions.lieU P Q × Formalism.BasicNotions.lieU P Q => (ab.1 : Matrix ι ι ℂ) + Complex.I • (ab.2 : Matrix ι ι ℂ))` using `hA.add (hB.const_smul Complex.I)`. Establish `hF : Measurable (fun ab : Formalism.BasicNotions.lieU P Q × Formalism.BasicNotions.lieU P Q => Formalism.BasicNotions.entries ((ab.1 : Matrix ι ι ℂ) + Complex.I • (ab.2 : Matrix ι ι ℂ)))` using `(continuous_pi fun k : ι × ι => hF'.matrix_elem k.1 k.2).measurable`.
+
+Establish `h` using `hlam.2`. Rewrite `h` using `[hc, Measure.prod_smul_left, Measure.prod_smul_right, hνν, Measure.map_smul, Measure.map_smul, Measure.map_map hF (hφm.prodMap hφm)]`. Express the relevant statement in the definitionally equal form `c • c • Measure.map (aF ε e h1 h2) ((volume : Measure (EL ε)).prod volume) = volume at h`. Rewrite `h` using `[(mp_aF ε e h1 h2 hC).map_eq]`. Establish `hK : 0 < volume (Metric.closedBall (0 : (ι × ι) → ℂ) 1)` using `Metric.measure_closedBall_pos _ _ one_pos`.
+
+Establish `hK' : volume (Metric.closedBall (0 : (ι × ι) → ℂ) 1) ≠ ⊤` using `(isCompact_closedBall _ _).measure_lt_top.ne`. Establish `hx : 0 < (volume (Metric.closedBall (0 : (ι × ι) → ℂ) 1)).toReal` using `ENNReal.toReal_pos hK.ne' hK'`. Establish `hv` using `congrArg (fun μ : Measure ((ι × ι) → ℂ) => (μ (Metric.closedBall 0 1)).toReal) h`. Simplify using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul, ENNReal.toReal_mul, ENNReal.coe_toReal] at hv`. Establish `hcc : ((c : ℝ) * c) = 1`.
+
+Establish `h3 : ((c : ℝ) * c) * (volume (Metric.closedBall (0 : (ι × ι) → ℂ) 1)).toReal = 1 * (volume (Metric.closedBall (0 : (ι × ι) → ℂ) 1)).toReal`. Rewrite using `[one_mul]`. Take the linear combination `hv`. Conclude with `mul_right_cancel₀ hx.ne' h3`. Establish `hc1 : c = 1`.
+
+Establish `h0 : (0 : ℝ) ≤ c` using `c.2`. Establish `: (c : ℝ) = 1` using `by nlinarith`. Conclude with `this` after adjusting the coercions. Establish `hballm : MeasurableSet (Formalism.BasicNotions.ballU P Q r)`. Apply `IsOpen.measurableSet` to reduce the goal to its premises.
+
+Apply `isOpen_lt _ continuous_const` to reduce the goal to its premises. Conclude with `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => (continuous_subtype_val.matrix_elem i j).norm`. Rewrite using `[hc, hc1, one_smul, Measure.map_apply hφm hballm, preimage_ballU]`.
+-/
 theorem lamVol_of (hC : MpCF (ι × ι)) : LamVol ε e := by
   intro h1 h2 lam hlam r
   have hcl : IsClosed ((Formalism.BasicNotions.lieU P Q : Submodule ℝ (Matrix ι ι ℂ)) : Set (Matrix ι ι ℂ)) := by

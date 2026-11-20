@@ -9,6 +9,13 @@ attribute [-instance] GlobalTheory.CompHt.fintypePsi
 
 namespace GlobalTheory.CompanionTheory.Ar.Plug
 
+/- English proof (translation)
+Introduce `hAIS hU hMB hResK hSA hFHT hGaga hQ hZ hNef`. Establish `hLLD` using `GlobalTheory.CompanionTheory.Ar.Giv.lineOfLargeDegree_of_use hAIS hU hMB hResK`. Establish `hG : Top.Given` using `GlobalTheory.CompanionTheory.Ar.Link.given_of_use hAIS hU hMB hResK hSA hFHT hGaga hLLD`. Establish `hTC` using `GlobalTheory.CompanionTheory.Ar.Link.good_tower_volume_theorem_bis hAIS hU hMB hResK hSA hFHT hGaga hLLD hQ hZ`. Establish `hHS : Prov.HS`.
+
+Unfold `Top.Given at hG`. Conclude with `hG.2.2.2.2.2.2.2.2.2.2.1`. Establish `hG6 : ReciprocityTheory.ChartRestriction.G.Geo.BirationalPullbackPushforwardFormula`. Unfold `Prov.HS at hHS`. Conclude with `hHS.2.2.2.2.1`.
+
+Conclude with `GlobalTheory.CompanionTheory.Ar.Plug.deepStR_of_volume hNef hG hAIS hG6 hTC.1 hTC.2`.
+-/
 theorem deepStR_of_use : ReciprocityTheory.ChartRestriction.G.Geo.ArithIntersectionSystemStatement → PositivityTheory.MbHsUse.HSUse → ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.MoriwakiBigStatement → ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKStatement → GlobalTheory.Published.SemiAbelianHomExtension → HT.FarguesHodgeTate → Flat.GagaSections → GR.QuotientByFiniteFlatStatement → GR.ZarhinStatement → Pub.NefRR → Plug.DeepStR := by
   intro hAIS hU hMB hResK hSA hFHT hGaga hQ hZ hNef
   have hLLD := GlobalTheory.CompanionTheory.Ar.Giv.lineOfLargeDegree_of_use hAIS hU hMB hResK

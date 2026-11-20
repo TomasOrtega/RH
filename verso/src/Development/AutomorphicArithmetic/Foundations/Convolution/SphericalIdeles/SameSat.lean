@@ -22,6 +22,13 @@ section SlopeTestRemainingChoices
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   [IsTotallyComplex F] [IsTotallyComplex E] {n : ℕ}
 
+/- English proof (translation)
+Use `Filter.Eventually.mono H fun w hw f hf => ?_` and prove the remaining obligations. Take `⟨B, hB, hB'⟩` from `hw f hf`. Establish `hf' : Ideal.absNorm w.asIdeal = Ideal.absNorm (w.under (𝓞 F)).asIdeal ^ f` using `hf`. Establish `hv : χ'.val w = χ.val (w.under (𝓞 F)) ^ f`. Apply `Units.ext` to reduce the goal to its premises.
+
+Rewrite using `[Units.val_pow_eq_pow_val, (Sph.powSat F χ s h _).2, (Sph.powSat E χ' s h' w).2, hf', Nat.cast_pow, ← Complex.cpow_nat_mul, Complex.natCast_cpow_natCast_mul]`. Use `⟨B.map (· * χ.val (w.under (𝓞 F))), ?_, ?_⟩` and prove the remaining obligations. Use `satake_twist_holds F n (CG.mk π) χ _ B (Sph.powSat F χ s h _).1 hB` as an intermediate fact. Rewrite `this` using `[CG.twist_mk]`. Then use the resulting hypothesis. Use `satake_twist_holds E n (CG.mk P) χ' w _ (Sph.powSat E χ' s h' w).1 hB'` as an intermediate fact.
+
+Rewrite `this` using `[CG.twist_mk]`. Express the relevant statement in the definitionally equal form `(CG.mk (P.twist χ')).HasSat w _`. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `[Multiset.map_map, hv, mul_pow]`.
+-/
 private theorem bc_tw {χ : HChar F} {χ' : HChar E} {s : ℂ} (h : IsPow χ s) (h' : IsPow χ' s)
     (π : CuspSub F n) (P : CuspSub E n) (H : WeakBC (Cusp.cx π).sat (Cusp.cx P).sat) :
     WeakBC (Cusp.cx (π.twist χ)).sat (Cusp.cx (P.twist χ')).sat := by
@@ -41,6 +48,11 @@ private theorem bc_tw {χ : HChar F} {χ' : HChar E} {s : ℂ} (h : IsPow χ s) 
     convert this using 1
     simp [Multiset.map_map, hv, mul_pow]
 
+/- English proof (translation)
+Establish `hN` using `(places F E hp).2.2.2.2.1`. Use `filter_upwards [H, H'] with w a b`. Take `⟨B, hB, hB'⟩` from `a _ (hN w)`. Take `⟨C, hC, hC'⟩` from `b _ (hN w)`. Take `rfl` from `hB.unique hC`.
+
+Conclude with `⟨_, hB', hC'⟩`.
+-/
 private theorem same_sat [IsGalois F E] (hp : (Module.finrank F E).Prime) (π : CuspSub F n) {sat sat' : Pl E → Multiset ℂˣ → Prop}
     (H : WeakBC (CG.mk π).HasSat sat) (H' : WeakBC (CG.mk π).HasSat sat') :
     ∀ᶠ w : Pl E in cofinite, ∃ B, sat w B ∧ sat' w B := by
@@ -53,6 +65,17 @@ private theorem same_sat [IsGalois F E] (hp : (Module.finrank F E).Prime) (π : 
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ _ σ hσ hp n hn μE _ μF _ π P hW`. Take `⟨χ, ⟨s, hχ⟩, V, hV⟩` from `Dp.exTwist F n μF π hn`. Take `⟨hex, -⟩` from `powTwist F E`. Take `⟨χ', hχ'⟩` from `(hex s).2`. Take `⟨c1, -, c3, c4, c5, θ, hθ, -⟩` from `carryLift F E σ hσ hp n hn μE μF`.
+
+Establish `hlow : ∀ m, 1 ≤ m → m < n → LiftPlus E F m` using `fun m hm _ => Sph.liftAll F E σ hσ hp m hm`. Establish `hW'` using `bc_tw hχ hχ' π P hW`. Establish `hOff : ∀ Λ t, AtAE μF V Λ t → OffAll F n (bcInf (K` using `E) Λ) (bcSat t) := by`. Introduce `Λ t hAt`. Assume the negation of the conclusion as `hc`.
+
+Take `⟨ι, _, m, Q, hm, hι, hQ⟩` from `c4 _ V Λ t hV hAt (famParts F E σ hσ hp n hn hlow _ _ hc)`. Establish `hs` using `same_sat hp (π.twist χ) hW' hQ`. Conclude with `R.partA_holds E n (CG.mk (P.twist χ')) ι m Q hn hm hι (hs.mono fun w ⟨B, h1, B', h2, h3⟩ => ⟨B, B', h1, h2, h3.symm⟩)`. Take `⟨Λ, t, hAt⟩` from `c1 V hV.summand`. Take `⟨V', hV', hst, hAt'⟩` from `coreLift ci Sph.gm F E σ hσ hp n hn μE μF θ hθ V Λ t hV.summand hAt (hOff Λ t hAt)`.
+
+Take `⟨P', hP', -⟩` from `Dp.exCusp E n μE V' hV'`. Establish `hl` using `c3 _ P' V V' Λ t _ _ hV hP' hAt hAt' rfl (Filter.Eventually.of_forall fun _ => rfl)`. Establish `e : P' = P.twist χ'` using `Sph.smoEq E n hn P' (P.twist χ') (same_sat hp (π.twist χ) hl.1 hW')`. Rewrite `hP'` using `[e]`. Use `⟨s, χ, χ', V, V', θ, hχ, hχ', hV, hP', hθ, hst, hW', hOff, fun Λ' t' h => ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hc`. Conclude with `c5 _ V' Λ' t' hP' h (famParts F E σ hσ hp n hn hlow _ _ hc)`.
+-/
 theorem UpperTheory.ConvolutionTheory.Sph.norm :
     UpperTheory.ConvolutionTheory.Sph.Norm := by
   intro F E _ _ _ _ _ _ _ _ σ hσ hp n hn μE _ μF _ π P hW

@@ -2,6 +2,13 @@ import Mathlib
 
 namespace Bl.FirstLemmaC
 
+/- English proof (translation)
+Introduce `G _ _ _ L hL t hK`. Establish `: DiscreteTopology (G ⧸ L)` using `QuotientGroup.discreteTopology hL`. Establish `hfin : ((QuotientGroup.mk : G → G ⧸ L) '' closure (Subgroup.zpowers t : Set G)).Finite` using `(hK.image QuotientGroup.continuous_mk).finite_of_discrete`. Use `hfin.to_subtype` as an intermediate fact. Set `f : ℕ → ((QuotientGroup.mk : G → G ⧸ L) '' closure (Subgroup.zpowers t : Set G))` to `fun n => ⟨QuotientGroup.mk (t ^ n), t ^ n, subset_closure (Subgroup.npow_mem_zpowers t n), rfl⟩`.
+
+Take `⟨a, b, hab, he⟩` from `Finite.exists_ne_map_eq_of_infinite f`. Establish `h2 : (t ^ a)⁻¹ * t ^ b ∈ L` using `QuotientGroup.eq.mp (congrArg Subtype.val he)`. Break down `lt_or_gt_of_ne hab with h | h` into its components or cases. Take `⟨c, rfl⟩` from `Nat.exists_eq_add_of_lt h`. Use `⟨c + 1, Nat.succ_pos c, ?_⟩` and prove the remaining obligations.
+
+Rewrite `h2` using `[add_assoc, pow_add, inv_mul_cancel_left]`. Then use the resulting hypothesis. Take `⟨c, rfl⟩` from `Nat.exists_eq_add_of_lt h`. Establish `h3` using `L.inv_mem h2`. Use `⟨c + 1, Nat.succ_pos c, ?_⟩` and prove the remaining obligations. Rewrite `h3` using `[mul_inv_rev, inv_inv, add_assoc, pow_add, inv_mul_cancel_left]`. Then use the resulting hypothesis.
+-/
 theorem goal1 :
   ∀ {G : Type} [inst : Group.{0} G] [inst_1 : TopologicalSpace.{0} G] [IsTopologicalGroup.{0} G] (L : Subgroup.{0} G),
   IsOpen.{0} (SetLike.coe.{0, 0} L) →

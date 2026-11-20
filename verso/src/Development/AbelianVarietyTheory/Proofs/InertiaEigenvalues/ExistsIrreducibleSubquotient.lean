@@ -14,9 +14,17 @@ def gen (ρ : Representation ℂ G V) (x : V) : Subrepresentation ρ where
       exact Submodule.subset_span ⟨g * h, by simp⟩
     exact h ⟨v, hv, rfl⟩
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨1, by simp⟩`.
+-/
 theorem self_mem_gen (ρ : Representation ℂ G V) (x : V) : x ∈ (gen ρ x).toSubmodule :=
   Submodule.subset_span ⟨1, by simp⟩
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff]`. Introduce and unpack `⟨v, hv⟩ -`. Establish `h : (gen ρ x).toSubmodule ≤ M.toSubmodule.map (gen ρ x).toSubmodule.subtype`. Express the relevant statement in the definitionally equal form `Submodule.span ℂ _ ≤ _`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `⟨_, M.apply_mem_toSubmodule g hx, rfl⟩`. Take `⟨w, hw, rfl⟩` from `h hv`. Conclude with `hw`.
+-/
 theorem eq_top_of_mem (ρ : Representation ℂ G V) (x : V) (M : Subrepresentation (gen ρ x).toRepresentation)
     (hx : (⟨x, self_mem_gen ρ x⟩ : (gen ρ x).toSubmodule) ∈ M.toSubmodule) : M.toSubmodule = ⊤ := by
   rw [eq_top_iff]
@@ -29,6 +37,15 @@ theorem eq_top_of_mem (ρ : Representation ℂ G V) (x : V) (M : Subrepresentati
   obtain ⟨w, hw, rfl⟩ := h hv
   exact hw
 
+/- English proof (translation)
+Establish `key` using `zorn_le_nonempty₀ {N : Subrepresentation ρ | x ∉ N.toSubmodule} ?_ ⊥ hx`. Take `⟨m, -, hm⟩` from `key`. Conclude with `⟨m, hm⟩`. Introduce `c hc hch y hy`. Establish `hne : (Subrepresentation.toSubmodule '' c).Nonempty` using `⟨_, y, hy, rfl⟩`.
+
+Establish `hd : DirectedOn (· ≤ ·) (Subrepresentation.toSubmodule '' c)`. Introduce and unpack `_ ⟨a, ha, rfl⟩ _ ⟨b, hb, rfl⟩`. Take `⟨d, hd, h1, h2⟩` from `hch.directedOn a ha b hb`. Conclude with `⟨_, ⟨d, hd, rfl⟩, h1, h2⟩`. Use `⟨⟨sSup (Subrepresentation.toSubmodule '' c), fun g v hv => ?_⟩, fun h => ?_, fun z hz => ?_⟩` and prove the remaining obligations.
+
+Rewrite `hv`, the goal using `[Submodule.mem_sSup_of_directed hne hd]`. Take `⟨_, ⟨a, ha, rfl⟩, hv⟩` from `hv`. Conclude with `⟨_, ⟨a, ha, rfl⟩, a.apply_mem_toSubmodule g hv⟩`. Take `⟨_, ⟨a, ha, rfl⟩, hv⟩` from `(Submodule.mem_sSup_of_directed hne hd).1 h`. Conclude with `hc ha hv`.
+
+Conclude with `(le_sSup ⟨z, hz, rfl⟩ : z.toSubmodule ≤ sSup (Subrepresentation.toSubmodule '' c))`.
+-/
 theorem exists_maximal (ρ : Representation ℂ G V) (x : V) (hx : x ≠ 0) :
     ∃ M : Subrepresentation ρ, Maximal (fun N : Subrepresentation ρ => x ∉ N.toSubmodule) M := by
   have key := zorn_le_nonempty₀ {N : Subrepresentation ρ | x ∉ N.toSubmodule} ?_ ⊥ hx
@@ -51,9 +68,23 @@ theorem exists_maximal (ρ : Representation ℂ G V) (x : V) (hx : x ≠ 0) :
 noncomputable def quot (ρ : Representation ℂ G V) (M : Subrepresentation ρ) : Representation ℂ G (V ⧸ M.toSubmodule) :=
   ρ.quotient M.toSubmodule fun g _ hv => M.apply_mem_toSubmodule g hv
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem quot_mk (ρ : Representation ℂ G V) (M : Subrepresentation ρ) (g : G) (v : V) :
     quot ρ M g (M.toSubmodule.mkQ v) = M.toSubmodule.mkQ (ρ g v) := rfl
 
+/- English proof (translation)
+Establish `hx0 : M.toSubmodule.mkQ x ≠ 0` using `fun h => hM.1 ((Submodule.Quotient.mk_eq_zero _).1 h)`. Use `haveI : Nontrivial (Subrepresentation (quot ρ M)) := ⟨⟨⊥, ⊤, fun h => hx0 (by`. Establish `h1 : M.toSubmodule.mkQ x ∈ (⊤ : Subrepresentation (quot ρ M)).toSubmodule` using `Submodule.mem_top`. Rewrite `h1` using `[← h]`. Conclude with `h1)⟩⟩`.
+
+Use `⟨fun T => ?_⟩` and prove the remaining obligations. Set `T' : Subrepresentation ρ` to `⟨T.toSubmodule.comap M.toSubmodule.mkQ, fun g v hv => T.apply_mem_toSubmodule g hv⟩`. Distinguish the cases in `hx : x ∈ T'.toSubmodule`. Use `right`. Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises.
+
+Use `eq_top_iff.2 fun w _ => ?_` and prove the remaining obligations. Take `⟨v, rfl⟩` from `M.toSubmodule.mkQ_surjective w`. Establish `: v ∈ T'.toSubmodule` using `by rw [hcyc T' hx]; trivial`. Conclude with `this`. Use `left`.
+
+Establish `hle : M ≤ T'` using `fun v hv => by`. Express the relevant statement in the definitionally equal form `M.toSubmodule.mkQ v ∈ T.toSubmodule`. Establish `: M.toSubmodule.mkQ v = 0` using `(Submodule.Quotient.mk_eq_zero _).2 hv`. Rewrite using `[this]`. Conclude with `zero_mem _`.
+
+Establish `hge : T' ≤ M` using `hM.2 hx hle`. Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises. Use `eq_bot_iff.2 fun w hw => ?_` and prove the remaining obligations. Take `⟨v, rfl⟩` from `M.toSubmodule.mkQ_surjective w`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 (hge (show v ∈ T' from hw))`.
+-/
 theorem quot_irreducible (ρ : Representation ℂ G V) (x : V)
     (hcyc : ∀ N : Subrepresentation ρ, x ∈ N.toSubmodule → N.toSubmodule = ⊤) (M : Subrepresentation ρ)
     (hM : Maximal (fun N : Subrepresentation ρ => x ∉ N.toSubmodule) M) : (quot ρ M).IsIrreducible := by
@@ -83,6 +114,13 @@ theorem quot_irreducible (ρ : Representation ℂ G V) (x : V)
     obtain ⟨v, rfl⟩ := M.toSubmodule.mkQ_surjective w
     exact (Submodule.Quotient.mk_eq_zero _).2 (hge (show v ∈ T' from hw))
 
+/- English proof (translation)
+Set `x' : (gen ρ x).toSubmodule` to `⟨x, self_mem_gen ρ x⟩`. Establish `hx' : x' ≠ 0` using `fun h => hx (congrArg Subtype.val h)`. Take `⟨M, hM⟩` from `exists_maximal (gen ρ x).toRepresentation x' hx'`. Use `⟨_, inferInstance, inferInstance, quot _ M, M.toSubmodule.mkQ x', quot_irreducible _ x' (eq_top_of_mem ρ x) M hM, ⟨gen ρ x, ⟨M.toSubmodule.mkQ, fun g => LinearMap.ext fun v => (quot_mk _ M g v).symm⟩, M.toSubmodule.mkQ_surjective⟩, fun h => hM.1 ((Submodule.Quotient.mk_eq_zero _) …` and prove the remaining obligations. Establish `h' : ∑ i ∈ s, c i • (gen ρ x).toRepresentation (f i) x' = b • x'`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[AddSubmonoidClass.coe_finsetSum]`. Conclude with `h`. Establish `h2` using `congrArg M.toSubmodule.mkQ h'`. Rewrite `h2` using `[map_sum, map_smul]`.
+
+Simplify `h2` using `only [map_smul, quot_mk]`.
+-/
 theorem exists_irreducible_subquotient (G V : Type) [Group G] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V) (x : V)
     (hx : x ≠ 0) :
     ∃ (Y : Type) (_ : AddCommGroup Y) (_ : Module ℂ Y) (τ : Representation ℂ G Y) (y : Y),

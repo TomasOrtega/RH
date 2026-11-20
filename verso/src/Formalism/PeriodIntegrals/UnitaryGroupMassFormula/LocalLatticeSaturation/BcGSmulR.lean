@@ -21,6 +21,11 @@ def fP (f : (Fin n → K) →ₗ[K] K) : (Fin n → S) →ₗ[S] S where
   map_smul' c y := by simp [Finset.mul_sum, mul_assoc]
 
 omit [IsDedekindDomain R] [IsFractionRing R K] in
+/- English proof (translation)
+Establish `hx : x = ∑ k, x k • (fun j => if k = j then (1 : K) else 0)`. Use function extensionality and compare the values at `i`. Simplify using `[Finset.sum_apply]`. Use `show ∑ k, φ (x k) * φ (f fun j => if k = j then 1 else 0) = φ (f x)`. Use `conv_rhs => rw [hx]`.
+
+Rewrite using `[map_sum, map_sum]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, map_mul]`.
+-/
 lemma baseChange_apply_baseChange (f : (Fin n → K) →ₗ[K] K) (x : Fin n → K) : fP φ f (bcG φ x) = φ (f x) := by
   have hx : x = ∑ k, x k • (fun j => if k = j then (1 : K) else 0) := by
     funext i
@@ -32,15 +37,50 @@ lemma baseChange_apply_baseChange (f : (Fin n → K) →ₗ[K] K) (x : Fin n →
   rw [map_smul, smul_eq_mul, map_mul]
 
 omit [IsDedekindDomain R] [IsFractionRing R K] in
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[bcG, map_sub]`.
+-/
 lemma bcG_sub (x y : Fin n → K) : bcG φ (x - y) = bcG φ x - bcG φ y := by
   funext i
   simp [bcG, map_sub]
 
 omit [IsDedekindDomain R] [IsFractionRing R K] in
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[bcG, Algebra.smul_def, map_mul]`.
+-/
 lemma bcG_smulR (r : R) (x : Fin n → K) : bcG φ (r • x) = φ (algebraMap R K r) • bcG φ x := by
   funext i
   simp [bcG, Algebra.smul_def, map_mul]
 
+/- English proof (translation)
+Use `set I : FractionalIdeal R⁰ K := ⟨Λ.map (f.restrictScalars R), hI⟩ with hIdef`. Distinguish the cases in `hI0 : I = 0`. Establish `hv : ∀ v ∈ Λ, f v = 0`. Introduce `v hv`. Establish `hmem : f v ∈ (I : Submodule R K)` using `Submodule.mem_map_of_mem (f := f.restrictScalars R) hv`.
+
+Rewrite `hmem` using `[hI0, FractionalIdeal.coe_zero, Submodule.mem_bot]`. Conclude with `hmem`. Establish `he : Λ ⊓ (LinearMap.ker f).restrictScalars R = Λ`. Use `inf_eq_left.mpr (fun v hv' => ?_)` and prove the remaining obligations. Simplify using `only [Submodule.restrictScalars_mem, LinearMap.mem_ker]`.
+
+Conclude with `hv v hv'`. Rewrite using `[he]`. Conclude with `hx`. Establish `hmul : I * I⁻¹ = 1` using `mul_inv_cancel₀ hI0`. Establish `hmul' : I⁻¹ * I = 1` using `by rw [mul_comm]; exact hmul`.
+
+Use `set M := latG φ O (Λ ⊓ (LinearMap.ker f).restrictScalars R) with hMdef`. Establish `claim : ∀ t ∈ (I : Submodule R K) * ((I⁻¹ : FractionalIdeal R⁰ K) : Submodule R K), φ t • x ∈ M`. Introduce `t ht`. Use `Submodule.mul_induction_on (C := fun t => φ t • x ∈ M) ht ?_ ?_` and prove the remaining obligations. Introduce `a ha b hb`.
+
+Take `⟨lam, hlam, hfl⟩` from `Submodule.mem_map.mp ha`. Establish `hab : a * b ∈ (1 : FractionalIdeal R⁰ K)`. Rewrite using `[← hmul]`. Conclude with `FractionalIdeal.mul_mem_mul (FractionalIdeal.mem_coe.mp ha) (FractionalIdeal.mem_coe.mp hb)`. Take `⟨r1, hr1⟩` from `(FractionalIdeal.mem_one_iff R⁰).mp hab`.
+
+Establish `hgen : ∀ y ∈ latG φ O Λ, φ (a * b) • y - (fP φ f y * φ b) • bcG φ lam ∈ M`. Introduce `y hy`. Unfold `latG at hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`.
+
+Take `⟨v, hv, rfl⟩` from `hy`. Establish `hfv : f v ∈ (I : Submodule R K)` using `Submodule.mem_map_of_mem (f := f.restrictScalars R) hv`. Establish `hbf : b * f v ∈ (1 : FractionalIdeal R⁰ K)`. Rewrite using `[← hmul']`. Conclude with `FractionalIdeal.mul_mem_mul (FractionalIdeal.mem_coe.mp hb) (FractionalIdeal.mem_coe.mp hfv)`.
+
+Take `⟨r2, hr2⟩` from `(FractionalIdeal.mem_one_iff R⁰).mp hbf`. Establish `hfl' : f lam = a` using `hfl`. Establish `hwΛ : r1 • v - r2 • lam ∈ Λ` using `Λ.sub_mem (Λ.smul_mem r1 hv) (Λ.smul_mem r2 hlam)`. Establish `hwk : f (r1 • v - r2 • lam) = 0`. Rewrite using `[map_sub, LinearMap.map_smul_of_tower, LinearMap.map_smul_of_tower, Algebra.smul_def, Algebra.smul_def, hr1, hr2, hfl']`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hw : bcG φ (r1 • v - r2 • lam) = φ (a * b) • bcG φ v - (fP φ f (bcG φ v) * φ b) • bcG φ lam`. Rewrite using `[bcG_sub, bcG_smulR, bcG_smulR, hr1, hr2, baseChange_apply_baseChange, map_mul, map_mul, mul_comm (φ b)]`. Rewrite using `[← hw]`. Apply `Submodule.subset_span` to reduce the goal to its premises.
+
+Conclude with `⟨r1 • v - r2 • lam, ⟨hwΛ, hwk⟩, rfl⟩`. Consider the case `zero => simpa using M.zero_mem`. Consider the case `add y z _ _ hy hz`. Establish `e : φ (a * b) • (y + z) - (fP φ f (y + z) * φ b) • bcG φ lam = (φ (a * b) • y - (fP φ f y * φ b) • bcG φ lam) + (φ (a * b) • z - (fP φ f z * φ b) • bcG φ lam)`. Rewrite using `[map_add, add_mul, add_smul, smul_add]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `M.add_mem hy hz`. Consider the case `smul o y _ hy`. Establish `e : φ (a * b) • (o • y) - (fP φ f (o • y) * φ b) • bcG φ lam = o • (φ (a * b) • y - (fP φ f y * φ b) • bcG φ lam)`.
+
+Rewrite using `[Subring.smul_def, Subring.smul_def, map_smul, smul_eq_mul, smul_sub, smul_smul, smul_smul, smul_smul]`. Apply the tactic sequence `congr 2 <;> ring`. Rewrite using `[e]`. Conclude with `M.smul_mem o hy`. Use `hgen x hx` as an intermediate fact.
+
+Rewrite `this` using `[h0, zero_mul, zero_smul, sub_zero]`. Then use the resulting hypothesis. Introduce `t1 t2 h1 h2`. Simplify using `only [map_add, add_smul]`. Conclude with `M.add_mem h1 h2`. Establish `h1 : (1 : K) ∈ (I : Submodule R K) * ((I⁻¹ : FractionalIdeal R⁰ K) : Submodule R K)`.
+
+Rewrite using `[← FractionalIdeal.coe_mul, hmul]`. Conclude with `FractionalIdeal.one_mem_one _`. Use `claim 1 h1` as an intermediate fact. Rewrite `this` using `[map_one, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem step (Λ : Submodule R (Fin n → K)) (f : (Fin n → K) →ₗ[K] K)
     (hI : IsFractional R⁰ (Λ.map (f.restrictScalars R)))
     {x : Fin n → S} (hx : x ∈ latG φ O Λ) (h0 : fP φ f x = 0) :

@@ -14,6 +14,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 
 namespace GlobalTheory.EtaJoin.SpecAll
 
+/- English proof (translation)
+Introduce `D M HT HR AV Tn HS CS TC HE II UnitaryCharacterOfReals PZ GF i`. Establish `SU : SplitUnif D` using `GlobalTheory.SplitConjPlace.splitEx_all D`. Establish `hZ : ZSpec D i` using `GlobalTheory.EtaJoin.TypeSum.main D M i HT AV SU (GlobalTheory.T.gramClass_vacuumCombination_orbitSum_mod_lower D M AV i (CS i)) (TC i) II PZ (GlobalTheory.T.every_heckeRow_good_at_goodPointLocalisation D M HT AV Tn HS UnitaryCharacterOfReals GF i)`. Establish `hT : TypeTie D i` using `GlobalTheory.T.typeSpace_projection_to_pointEigenspaces D M i HT HR AV SU (GlobalTheory.T.sphericalHeckeScalarOnTypeSpaces_all_places D M HT AV i) HE`. Conclude with `GlobalTheory.EtaJoin.SpecProj.specPr_of_zSpec_typeTie D i hZ hT`.
+-/
 theorem specPr_all : ∀ (D : D7) (M : MtFam D), HeckeTied D M → HeckeRational D M → AVTied D M →
     ∀ Tn : NormalizedLocalCompatibility D M, HeckeStdTw Tn.B → (∀ i : D.nd.Loc, ClassSum (M.loc i)) →
     (∀ i : D.nd.Loc, ThetaCut D (D.nd.mu i) (D.nd.j i)) → D.nd.EigSpan → Rows.IsotInternal D.what₂ →

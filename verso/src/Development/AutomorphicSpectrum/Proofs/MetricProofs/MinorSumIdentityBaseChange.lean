@@ -9,6 +9,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.PB.MinorAny
 
+/- English proof (translation)
+Unfold `minorIJ`. Use `split_ifs with e`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Conclude with `(map_zero f).symm`.
+-/
 theorem minorIJ_map {R S : Type} [CommRing R] [CommRing S] {N : ℕ} (f : R →+* S)
     (A : Matrix (Fin N) (Fin N) R) (I J : Finset (Fin N)) :
     minorIJ (A.map f) I J = f (minorIJ A I J) := by
@@ -24,6 +27,11 @@ def gap {N : ℕ} {Ω : Type} [Field Ω] (T : Matrix (Fin N) (Fin N) Ω) (c₀ c
   algebraMap Ω S c₀ * ∑ I, algebraMap Ω S (coef I) * minorIJ (T.map (algebraMap Ω S) * h) I J -
     algebraMap Ω S c₁ * ∑ I, algebraMap Ω S (u I) * minorIJ h I J
 
+/- English proof (translation)
+Establish `hm : ∀ (M : Matrix (Fin N) (Fin N) S) (I J : Finset (Fin N)), f (minorIJ M I J) = minorIJ (M.map f.toRingHom) I J` using `fun M I J => (minorIJ_map f.toRingHom M I J).symm`. Establish `hT : (T.map (algebraMap Ω S) * h).map f.toRingHom = T.map (algebraMap Ω S') * h.map f.toRingHom`. Rewrite using `[Matrix.map_mul, Matrix.map_map]`. Use `congr 1`. Use `congr 1`.
+
+Use function extensionality and compare the values at `x`. Conclude with `f.commutes x`. Simplify using `only [gap, map_sub, map_mul, map_sum, AlgHom.commutes, hm, hT]`.
+-/
 theorem gap_map {N : ℕ} {Ω : Type} [Field Ω] (T : Matrix (Fin N) (Fin N) Ω) (c₀ c₁ : Ω)
     (coef u : Finset (Fin N) → Ω) (J : Finset (Fin N)) {S S' : Type} [CommRing S] [Algebra Ω S]
     [CommRing S'] [Algebra Ω S'] (f : S →ₐ[Ω] S') (h : Matrix (Fin N) (Fin N) S) :
@@ -39,6 +47,19 @@ theorem gap_map {N : ℕ} {Ω : Type} [Field Ω] (T : Matrix (Fin N) (Fin N) Ω)
     exact f.commutes x
   simp only [gap, map_sub, map_mul, map_sum, AlgHom.commutes, hm, hT]
 
+/- English proof (translation)
+Introduce `Ω _ _ N j T c₀ c₁ coef u J hyp S _ _ h hh`. Establish `hT : T.map (algebraMap Ω Ω) = T` using `Matrix.ext fun _ _ => rfl`. Establish `key : ∀ M : Matrix (Fin N) (Fin N) Ω, IsBlockDiag j M → gap T c₀ c₁ coef u J Ω M = 0`. Introduce `M hM`. Simplify using `only [gap, hT]`.
+
+Conclude with `sub_eq_zero.mpr (hyp M hM)`. Set `G : Matrix (Fin N) (Fin N) (MvPolynomial (Fin N × Fin N) Ω)` to `Matrix.of fun a b => if ((a : ℕ) < N - j ↔ (b : ℕ) < N - j) then X (a, b) else 0`. Establish `hP : gap T c₀ c₁ coef u J (MvPolynomial (Fin N × Fin N) Ω) G = 0`. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `x`.
+
+Use `show aeval x (gap T c₀ c₁ coef u J (MvPolynomial (Fin N × Fin N) Ω) G) = aeval x 0`. Rewrite using `[map_zero, gap_map]`. Apply `key` to reduce the goal to its premises. Introduce `a b hab`. Simplify using `only [G, Matrix.map_apply, Matrix.of_apply, if_neg hab, map_zero]`.
+
+Establish `hG : G.map (aeval (fun p : Fin N × Fin N => h p.1 p.2)).toRingHom = h`. Use extensionality with `a b`. Simplify using `only [G, Matrix.map_apply, Matrix.of_apply]`. Use `split_ifs with hab`. Simplify using `[aeval_X]`.
+
+Rewrite using `[map_zero]`. Conclude with `(hh a b hab).symm`. Establish `hz` using `congrArg (aeval (fun p : Fin N × Fin N => h p.1 p.2)) hP`. Rewrite `hz` using `[gap_map, hG, map_zero]`. Simplify using `only [gap] at hz`.
+
+Conclude with `sub_eq_zero.mp hz`.
+-/
 theorem minor_any : ∀ (Ω : Type) [Field Ω] [Infinite Ω] (N j : ℕ) (T : Matrix (Fin N) (Fin N) Ω) (c₀ c₁ : Ω) (coef u : Finset (Fin N) → Ω) (J : Finset (Fin N)), (∀ h : Matrix (Fin N) (Fin N) Ω, IsBlockDiag j h → c₀ * ∑ I, coef I * minorIJ (T * h) I J = c₁ * ∑ I, u I * minorIJ h I J) → ∀ (S : Type) [CommRing S] [Algebra Ω S] (h : Matrix (Fin N) (Fin N) S), IsBlockDiag j h → algebraMap Ω S c₀ * ∑ I, algebraMap Ω S (coef I) * minorIJ (T.map (algebraMap Ω S) * h) I J = algebraMap Ω S c₁ * ∑ I, algebraMap Ω S (u I) * minorIJ h I J := by
   intro Ω _ _ N j T c₀ c₁ coef u J hyp S _ _ h hh
   have hT : T.map (algebraMap Ω Ω) = T := Matrix.ext fun _ _ => rfl

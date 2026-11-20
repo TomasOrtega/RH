@@ -36,6 +36,9 @@ open scoped Matrix
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ}
 
+/- English proof (translation)
+Establish `hri : ∀ v, (a : Matrix (Fin r) (Fin r) E) *ᵥ (((a⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ v) = v` using `fun v => by rw [Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Use `⟨rfl, rfl, rfl, fun u v => ?_, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hb.iso, ← ha.iso, hri, hri]`. Rewrite using `[Units.val_mul, ← Matrix.mulVec_mulVec, ← hb.lat, ha.lat, hri]`.
+-/
 theorem isMatch_div {X X' : Data E r} {a b : GL (Fin r) E} (ha : IsMatch X X' a) (hb : IsMatch X X' b) :
     IsMatch X' X' (b * a⁻¹) := by
   have hri : ∀ v, (a : Matrix (Fin r) (Fin r) E) *ᵥ (((a⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ v) = v :=
@@ -45,6 +48,9 @@ theorem isMatch_div {X X' : Data E r} {a b : GL (Fin r) E} (ha : IsMatch X X' a)
   · rw [Units.val_mul, ← Matrix.mulVec_mulVec, ← hb.lat, ha.lat, hri]
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Express the relevant statement in the definitionally equal form `((b * a⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * ((a : Matrix (Fin r) (Fin r) E).map τ.1 * mat z τ) = (b : Matrix (Fin r) (Fin r) E).map τ.1 * mat z τ`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.map_mul, ← Units.val_mul, inv_mul_cancel_right]`.
+-/
 theorem lact_div {Ψ : Finset (E →+* ℂ)} (a b : GL (Fin r) E) (z : Frame Ψ r) :
     lact (b * a⁻¹) (castFr rfl (lact a z)) = lact b z := by
   funext τ
@@ -56,6 +62,11 @@ variable {U : Formalism.L2.PjFree.Unf Xo c σ r} {g : ℕ} {e : Fin g ≃ Σ τ 
   {F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => Formalism.L2.PjFree.relab c σ (e j).1)}
   {ik : U.Comp → Fin F.n} {φ : ∀ k, (F.Di (ik k)).La ≃ₗ[𝓞 E] (U.X k).Λ}
 
+/- English proof (translation)
+Take `⟨y', hy⟩` from `(GlobalTheory.exists_unique_frMove E H Dw l Xo c ρ ν hm.1 _ (U.un k x)).1`. Take `⟨a₁, b₁⟩` from `GlobalTheory.T.moveMatch_of_markRel_of_isLevMove E H Dw l Xo c σ r U g e F ik φ hσ hpq hA hP k k₁ δ₁ h₁ γ ρ ν m₁ hm x y' hy`. Take `⟨a₂, b₂⟩` from `GlobalTheory.T.moveMatch_of_markRel_of_isLevMove E H Dw l Xo c σ r U g e F ik φ hσ hpq hA hP k k₂ δ₂ h₂ γ ρ ν m₂ hm x y' hy`. Take `⟨t₀, ht⟩` from `exists_frBor_gen _ _ (a₂.symm.trans a₁) (b₂.symm.trans b₁)`. Take `⟨_, -, _, -, he⟩` from `(hU.2.2.2.1 k₁ k₂ _ _).1 ⟨_, ht⟩`.
+
+Conclude with `(congrArg Sigma.fst he).symm`.
+-/
 theorem comp_unique (hσ : Formalism.L2.PjFree.GoodEmb c σ) (hU : Formalism.L2.PjFree.IsUnf U) (hpq : 1 ≤ Dw.p + Dw.q)
     (hA : l.A = 1) (hP : Pinned U e F ik φ) {k k₁ k₂ : U.Comp} {δ₁ δ₂ : GL (Fin r) E}
     (h₁ : IsMatch (U.X k) (U.X k₁) δ₁) (h₂ : IsMatch (U.X k) (U.X k₂) δ₂) {γ : Dw.La →ₗ[𝓞 E] Dw.La}
@@ -69,6 +80,11 @@ theorem comp_unique (hσ : Formalism.L2.PjFree.GoodEmb c σ) (hU : Formalism.L2.
   obtain ⟨_, -, _, -, he⟩ := (hU.2.2.2.1 k₁ k₂ _ _).1 ⟨_, ht⟩
   exact (congrArg Sigma.fst he).symm
 
+/- English proof (translation)
+Take `⟨ε, hε, hc⟩` from `GlobalTheory.T.exists_const_mul_reading_of_moved_section_at_frame E H Dw l Xo c σ r U U hσ hU hU k k' δ₀ h₀ ρ ν hm.1 (GlobalTheory.T.moveMatch_of_markRel_of_isLevMove E H Dw l Xo c σ r U g e F ik φ hσ hpq hA hP k k' δ₀ h₀ γ ρ ν m₀ hm) (fun x y' t hx hy ht => GlobalTheory.LevelCus …`. Use `⟨ε, hε, fun w hw f hf f' hf' hv k₁ k₁' δ h hk m x hx => ?_⟩` and prove the remaining obligations. Substitute `hk` using the available equality. Take `rfl : k₁' = k'` from `comp_unique hσ hU hpq hA hP h h₀ hm m m₀ ⟨x, hx⟩`. Take `⟨ν₀, hν₀, hy₀⟩` from `(GlobalTheory.MoveCalc.frMove_calculus E H Dw l Xo c).1`.
+
+Establish `hm₀ : IsLevMove (𝟙 Xo.X) ν₀ LinearMap.id LinearMap.id` using `⟨Category.id_comp _, fun a => by rw [hν₀]; exact (Category.comp_id _).trans (Category.id_comp _).symm, fun a => by rw [hν₀]; exact (Category.comp_id _).trans (Category.id_comp _).symm⟩`. Use `hex k₁' _ (isMatch_div h₀ h) _ ν₀ hm₀.1 (GlobalTheory.T.moveMatch_of_markRel_of_isLevMove E H Dw l Xo c σ r U g e F ik φ hσ hpq hA hP _ _ _ _ _ _ _ (m₀.div m) hm₀) w n hw f hf f hf (fun y y' hy => by` as an intermediate fact. Rewrite using `[(GlobalTheory.exists_unique_frMove E H Dw l Xo c _ ν₀ hm₀.1 _ y).2 y y' ν₀ rfl (hy₀ _ y) hy]) _ (h₀.mem_dom hx)`. Rewrite using `[hc w hw f hf f' hf' hv x hx, this, lact_div]`.
+-/
 theorem exists_const (hσ : Formalism.L2.PjFree.GoodEmb c σ) (hU : Formalism.L2.PjFree.IsUnf U) (hpq : 1 ≤ Dw.p + Dw.q)
     (hA : l.A = 1) (hP : Pinned U e F ik φ)
     (hex : ∀ (k : U.Comp) (δ : GL (Fin r) E) (h : IsMatch (U.X k) (U.X k) δ) (ρ : Xo.X ⟶ Xo.X)

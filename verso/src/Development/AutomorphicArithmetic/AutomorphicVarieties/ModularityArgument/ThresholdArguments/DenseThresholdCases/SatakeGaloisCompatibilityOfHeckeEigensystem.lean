@@ -10,6 +10,11 @@ set_option synthInstance.maxHeartbeats 200000
 
 section
 open UpperTheory.V.Af UpperTheory.V.Af.Gu
+/- English proof (translation)
+Introduce `PH E _ _ _ a π`. Establish `P` using `PH.toClassicalTheorems`. Use `⟨fun w σ hσ B => (_root_.UpperTheory.V.Af.satake_local_of_printed_results P E a w σ).2 _ π.finPart ((_root_.UpperTheory.V.Af.local_comp_complex_of_printed_results P E a π w).2 σ hσ) B, ?_⟩` and prove the remaining obligations. Conclude with `ExLib.eventually_sat (_root_.UpperTheory.V.Af.satake_local_of_printed_results P) π.finPart π.isSmooth_finPart fun w =>`. Set `⟨⟨σ, hσ⟩, hi⟩` to `_root_.UpperTheory.V.Af.local_comp_complex_of_printed_results P E a π w`.
+
+Use the proof step `⟨σ, hi σ hσ⟩`.
+-/
 theorem UpperTheory.satake_galois_link_of_printed_hida :
     _root_.UpperTheory.V.Af.HypothesesH' → SatLink := by
   intro PH E _ _ _ a π

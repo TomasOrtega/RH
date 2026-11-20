@@ -10,6 +10,13 @@ namespace GlobalTheory.Mass.Hyperplane
 section Refl
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
 
+/- English proof (translation)
+Set `f : K → V →ₗ[K] V` to `fun c => LinearMap.id - (c • h v).smulRight v`. Establish `hf : ∀ c x, f c x = x - (c * h v x) • v` using `fun c x => by simp [f]`. Establish `key : ∀ c d : K, c + d = c * d * h v v → f c ∘ₗ f d = LinearMap.id`. Introduce `c d hcd`. Use extensionality with `x`.
+
+Rewrite using `[LinearMap.comp_apply, hf, hf, map_sub, map_smul, smul_eq_mul, sub_sub, ← add_smul]`. Establish `: d * h v x + c * (h v x - d * h v x * h v v) = 0` using `by linear_combination (h v x) * hcd`. Rewrite using `[this, zero_smul, sub_zero, LinearMap.id_apply]`. Use `⟨LinearEquiv.ofLinear (f a) (f (star a)) (key _ _ ha) (key _ _ (by linear_combination ha)), ?_, fun x => hf _ x, fun x => hf _ x⟩` and prove the remaining obligations. Introduce `x y`.
+
+Express the relevant statement in the definitionally equal form `h (f a x) (f a y) = h x y`. Rewrite using `[hf, hf]`. Simplify using `only [map_sub, map_smul, LinearMap.map_smulₛₗ, LinearMap.sub_apply, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, star_mul', hs]`. Take the linear combination `(-(h x v * h v y)) * ha`.
+-/
 theorem exists_refl (h : V →ₗ⋆[K] V →ₗ[K] K) (hs : ∀ x y, star (h x y) = h y x) (v : V) (a : K)
     (ha : a + star a = a * star a * h v v) :
     ∃ g ∈ isom h, (∀ x, g x = x - (a * h v x) • v) ∧ ∀ x, g.symm x = x - (star a * h v x) • v := by
@@ -30,6 +37,37 @@ theorem exists_refl (h : V →ₗ⋆[K] V →ₗ[K] K) (hs : ∀ x y, star (h x 
     starRingEnd_apply, star_mul', hs]
   linear_combination (-(h x v * h v y)) * ha
 
+/- English proof (translation)
+Establish `hI' : ∀ a ∈ A, ∀ x ∈ I, x * a ∈ I` using `fun a ha x hx => mul_comm a x ▸ hI a ha x hx`. Establish `one : (1 : K) ∉ I` using `fun H => h1 (by simpa using hI _ (hh u hu w hw) 1 H)`. Establish `hd : e + star e ∉ I` using `fun H => one (by`. Use `I.add_mem (I.sub_mem H he) he'` as an intermediate fact. Simplify using `using this)`.
+
+Establish `hd0 : e + star e ≠ 0` using `fun H => hd (H ▸ I.zero_mem)`. Establish `hds : star (e + star e) = e + star e` using `by rw [star_add, star_star, add_comm]`. Establish `hdi : (e + star e)⁻¹ ∈ A` using `hU _ (A.add_mem heA (hA e heA)) hd (by rw [hds]; exact hd)`. Choose the witnesses or unpack the hypotheses as in `⟨θ, hθA, hθI, hθ⟩ : ∃ θ ∈ A, θ ∈ I ∧ star θ = 1 - θ := by`. Use `⟨e * (e + star e)⁻¹, A.mul_mem heA hdi, hI' _ hdi _ he, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[star_mul', star_inv₀, hds]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hθ' : 1 - θ ∈ A` using `A.sub_mem A.one_mem hθA`. Use `set v : V := θ • (u - u') + (1 - θ) • w with hv`.
+
+Establish `hvΛ : v ∈ Λ` using `Λ.add_mem (hΛ _ hθA _ (Λ.sub_mem hu hu')) (hΛ _ hθ' _ hw)`. Establish `l1 : ∀ x ∈ Λ, h v x - (h u x - h u' x) ∈ I`. Introduce `x hx`. Establish `: h v x - (h u x - h u' x) = θ * (h w x - (h u x - h u' x))`. Simplify using `only [hv, map_add, map_sub, LinearMap.map_smulₛₗ, LinearMap.sub_apply, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, hθ, map_one]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `hI' _ (A.sub_mem (hh _ hw _ hx) (A.sub_mem (hh _ hu _ hx) (hh _ hu' _ hx))) _ hθI`. Establish `l2 : ∀ x ∈ Λ, h x v - h x w ∈ I`. Introduce `x hx`.
+
+Establish `: h x v - h x w = θ * (h x (u - u') - h x w)`. Simplify using `only [hv, map_add, map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `hI' _ (A.sub_mem (hh _ hx _ (Λ.sub_mem hu hu')) (hh _ hx _ hw)) _ hθI`.
+
+Use `set n := h v v with hn`. Use `set γ := h u' v with hγ`. Establish `hnA : n ∈ A` using `hh _ hvΛ _ hvΛ`. Establish `hγA : γ ∈ A` using `hh _ hu' _ hvΛ`. Establish `hns : star n = n` using `hs v v`.
+
+Use `set b := (1 - θ) * (-γ) + θ * (n + star γ) with hb`. Establish `hbs : star b = θ * (-star γ) + (1 - θ) * (n + γ)`. Simplify using `only [hb, star_add, star_mul', star_sub, star_neg, star_one, star_star, hθ, hns]`. Expand and normalize the polynomial expressions, which then agree. Establish `hbA : b ∈ A` using `A.add_mem (A.mul_mem hθ' (A.neg_mem hγA)) (A.mul_mem hθA (A.add_mem hnA (hA _ hγA)))`.
+
+Establish `hbγ : b + γ ∈ I`. Establish `: b + γ = θ * (γ + n + star γ)` using `by rw [hb]; ring`. Rewrite using `[this]`. Conclude with `hI' _ (A.add_mem (A.add_mem hγA hnA) (hA _ hγA)) _ hθI`. Establish `hbI : b ∉ I` using `fun H => h2 (by`.
+
+Use `I.sub_mem (I.sub_mem hbγ H) (l2 _ hu')` as an intermediate fact. Simplify `this)` using `[hγ]`. Establish `hbI' : star b ∉ I` using `fun H => h1 (by`. Establish `h3 : θ * (γ + n + star γ) ∈ I` using `hI' _ (A.add_mem (A.add_mem hγA hnA) (hA _ hγA)) _ hθI`. Use `I.sub_mem (I.sub_mem (I.add_mem H h3) (l1 _ hvΛ)) (l2 _ hu)` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hbs]`. Use the proof step `ring)`. Establish `hb0 : b ≠ 0` using `fun H => hbI (H ▸ I.zero_mem)`. Establish `hb0' : star b ≠ 0` using `fun H => hbI' (H ▸ I.zero_mem)`.
+
+Establish `haA : b⁻¹ ∈ A` using `hU b hbA hbI hbI'`. Take `⟨g, hg, g1, g2⟩` from `exists_refl h hs v b⁻¹ (by`. Establish `: h v v = b + star b` using `by rw [hbs, hb, ← hn]; ring`. Rewrite using `[this, star_inv₀]`. Clear the denominators using the available nonvanishing facts.
+
+Use the proof step `ring)`. Use `⟨g, hg, fun x hx => ?_, fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[g1]`. Conclude with `Λ.sub_mem hx (hΛ _ (A.mul_mem haA (hh _ hvΛ _ hx)) _ hvΛ)`. Rewrite using `[g2]`.
+
+Conclude with `Λ.sub_mem hx (hΛ _ (A.mul_mem (hA _ haA) (hh _ hvΛ _ hx)) _ hvΛ)`. Establish `: h u' (g x) - h u x = (h v x - (h u x - h u' x)) - (b⁻¹ * h v x) * (b + γ)`. Rewrite using `[g1, map_sub, map_smul, smul_eq_mul, ← hγ]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[this]`. Conclude with `I.sub_mem (l1 x hx) (hI _ (A.mul_mem haA (hh _ hvΛ _ hx)) _ hbγ)`.
+-/
 theorem exists_move (h : V →ₗ⋆[K] V →ₗ[K] K) (hs : ∀ x y, star (h x y) = h y x) (A : Subring K)
     (I : AddSubgroup K) (Λ : AddSubgroup V) (hA : ∀ a ∈ A, star a ∈ A) (hI : ∀ a ∈ A, ∀ x ∈ I, a * x ∈ I)
     (hU : ∀ a ∈ A, a ∉ I → star a ∉ I → a⁻¹ ∈ A) (e : K) (heA : e ∈ A) (he : e ∈ I) (he' : 1 - star e ∈ I)
@@ -117,12 +155,25 @@ variable {K : Type} [Field K] [StarRing K]
 
 noncomputable def cj (K : Type) [Field K] [StarRing K] : 𝓞 K →+* 𝓞 K := RingOfIntegers.mapRingHom (starRingEnd K)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cj_coe (s : 𝓞 K) : algebraMap (𝓞 K) K (cj K s) = star (algebraMap (𝓞 K) K s) := rfl
 
+/- English proof (translation)
+Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Rewrite using `[cj_coe, cj_coe, star_star]`.
+-/
 theorem cj_cj (s : 𝓞 K) : cj K (cj K s) = s := by
   apply RingOfIntegers.coe_injective
   rw [cj_coe, cj_coe, star_star]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hs`. Proceed by induction on `hs using Submonoid.closure_induction with`. Consider the case `mem x hx => exact ⟨hx.1, hx.2 _ (cj_coe x)⟩`. Consider the case `one => rw [map_one]`.
+
+Conclude with `⟨hP.one_notMem, hP.one_notMem⟩`. Consider the case `mul x y _ _ hx hy`. Rewrite using `[map_mul]`. Conclude with `⟨fun H => (hP.mem_or_mem H).elim hx.1 hy.1, fun H => (hP.mem_or_mem H).elim hx.2 hy.2⟩`. Introduce and unpack `⟨h1, h2⟩`.
+
+Use `Submonoid.subset_closure ⟨h1, fun t ht => ?_⟩` and prove the remaining obligations. Rewrite `ht` using `[← cj_coe]`. Rewrite using `[RingOfIntegers.coe_injective ht]`. Conclude with `h2`.
+-/
 theorem mem_hcompl {P : Ideal (𝓞 K)} (hP : P.IsPrime) (s : 𝓞 K) :
     s ∈ hcompl (K := K) P ↔ s ∉ P ∧ cj K s ∉ P := by
   constructor
@@ -139,6 +190,11 @@ theorem mem_hcompl {P : Ideal (𝓞 K)} (hP : P.IsPrime) (s : 𝓞 K) :
     rw [RingOfIntegers.coe_injective ht]
     exact h2
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[conjIdeal, Ideal.span_le]`. Introduce and unpack `r ⟨s, hs, hr⟩`. Rewrite `hr` using `[← cj_coe]`. Rewrite using `[RingOfIntegers.coe_injective hr]`.
+
+Express the relevant statement in the definitionally equal form `cj K (cj K s) ∈ P`. Rewrite using `[cj_cj]` and apply the resulting hypothesis. Introduce `r hr`. Use `Ideal.subset_span ⟨cj K r, hr, ?_⟩` and prove the remaining obligations. Rewrite using `[cj_coe, star_star]`.
+-/
 theorem conjIdeal_eq (P : Ideal (𝓞 K)) : conjIdeal (K := K) P = P.comap (cj K) := by
   apply le_antisymm
   · rw [conjIdeal, Ideal.span_le]
@@ -151,6 +207,11 @@ theorem conjIdeal_eq (P : Ideal (𝓞 K)) : conjIdeal (K := K) P = P.comap (cj K
     refine Ideal.subset_span ⟨cj K r, hr, ?_⟩
     rw [cj_coe, star_star]
 
+/- English proof (translation)
+Rewrite `hc` using `[conjIdeal_eq]`. Establish `hm : (P.comap (cj K)).IsMaximal` using `Ideal.comap_isMaximal_of_surjective _ fun s => ⟨cj K s, cj_cj s⟩`. Use `hP.coprime_of_ne hm hc.symm` as an intermediate fact. Take `⟨e, he, f, hf, hef⟩` from `Submodule.mem_sup.1 (this ▸ Submodule.mem_top : (1 : 𝓞 K) ∈ P ⊔ P.comap (cj K))`. Use `⟨e, he, ?_⟩` and prove the remaining obligations.
+
+Establish `: 1 - cj K e = cj K f` using `by rw [← map_one (cj K), ← hef, map_add]; ring`. Rewrite using `[this]`. Conclude with `hf`.
+-/
 theorem exists_idem {P : Ideal (𝓞 K)} (hP : P.IsMaximal) (hc : conjIdeal (K := K) P ≠ P) :
     ∃ e ∈ P, 1 - cj K e ∈ P := by
   rw [conjIdeal_eq] at hc
@@ -163,6 +224,9 @@ theorem exists_idem {P : Ideal (𝓞 K)} (hP : P.IsMaximal) (hc : conjIdeal (K :
   rw [this]
   exact hf
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(∃ s ∈ hcompl (K := K) P, s • x ∈ (1 : Submodule (𝓞 K) K)) ↔ _`. Simplify using `only [Submodule.mem_one, Algebra.smul_def]`.
+-/
 theorem mem_locR {P : Ideal (𝓞 K)} {x : K} :
     x ∈ locR (K := K) P ↔ ∃ s ∈ hcompl (K := K) P, ∃ r : 𝓞 K, algebraMap _ K r = algebraMap _ K s * x := by
   change (∃ s ∈ hcompl (K := K) P, s • x ∈ (1 : Submodule (𝓞 K) K)) ↔ _
@@ -184,22 +248,34 @@ def locRing (P : Ideal (𝓞 K)) : Subring K where
 
 def locId (P : Ideal (𝓞 K)) : Submodule (𝓞 K) K := loc (K := K) P (Submodule.map (Algebra.linearMap (𝓞 K) K) P)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(∃ s ∈ hcompl (K := K) P, s • x ∈ Submodule.map (Algebra.linearMap (𝓞 K) K) P) ↔ _`. Simplify using `only [Submodule.mem_map, Algebra.smul_def, Algebra.linearMap_apply]`.
+-/
 theorem mem_locId {P : Ideal (𝓞 K)} {x : K} :
     x ∈ locId P ↔ ∃ s ∈ hcompl (K := K) P, ∃ r ∈ P, algebraMap _ K r = algebraMap _ K s * x := by
   change (∃ s ∈ hcompl (K := K) P, s • x ∈ Submodule.map (Algebra.linearMap (𝓞 K) K) P) ↔ _
   simp only [Submodule.mem_map, Algebra.smul_def, Algebra.linearMap_apply]
 
+/- English proof (translation)
+Rewrite `hs`, the goal using `[mem_hcompl hP]`. Rewrite using `[cj_cj]`. Conclude with `hs.symm`.
+-/
 theorem cj_mem_hcompl {P : Ideal (𝓞 K)} (hP : P.IsPrime) {s : 𝓞 K} (hs : s ∈ hcompl (K := K) P) :
     cj K s ∈ hcompl (K := K) P := by
   rw [mem_hcompl hP] at hs ⊢
   rw [cj_cj]
   exact hs.symm
 
+/- English proof (translation)
+Take `⟨s, hs, r, hr⟩` from `mem_locR.1 hx`. Conclude with `mem_locR.2 ⟨cj K s, cj_mem_hcompl hP hs, cj K r, by rw [cj_coe, cj_coe, hr, star_mul']⟩`.
+-/
 theorem star_mem_locR {P : Ideal (𝓞 K)} (hP : P.IsPrime) {x : K} (hx : x ∈ locR (K := K) P) :
     star x ∈ locR (K := K) P := by
   obtain ⟨s, hs, r, hr⟩ := mem_locR.1 hx
   exact mem_locR.2 ⟨cj K s, cj_mem_hcompl hP hs, cj K r, by rw [cj_coe, cj_coe, hr, star_mul']⟩
 
+/- English proof (translation)
+Take `⟨s, hs, r, hr⟩` from `mem_locR.1 ha`. Take `⟨t, ht, q, hqP, hq⟩` from `mem_locId.1 hx`. Use `mem_locId.2 ⟨s * t, Submonoid.mul_mem _ hs ht, r * q, P.mul_mem_left _ hqP, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, hr, hq]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mul_mem_locId {P : Ideal (𝓞 K)} {a x : K} (ha : a ∈ locR (K := K) P) (hx : x ∈ locId P) :
     a * x ∈ locId P := by
   obtain ⟨s, hs, r, hr⟩ := mem_locR.1 ha
@@ -208,6 +284,9 @@ theorem mul_mem_locId {P : Ideal (𝓞 K)} {a x : K} (ha : a ∈ locR (K := K) P
   rw [map_mul, map_mul, hr, hq]
   ring
 
+/- English proof (translation)
+Take `⟨s, hs, r, hr⟩` from `mem_locR.1 ha`. Establish `ha0 : a ≠ 0` using `fun H => h1 (H ▸ Submodule.zero_mem _)`. Use `mem_locR.2 ⟨r, (mem_hcompl hP r).2 ⟨fun H => h1 (mem_locId.2 ⟨s, hs, r, H, hr⟩), fun H => h2 (mem_locId.2 ⟨cj K s, cj_mem_hcompl hP hs, cj K r, H, by rw [cj_coe, cj_coe, hr, star_mul']⟩)⟩, s, ?_⟩` and prove the remaining obligations. Rewrite using `[hr]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem inv_mem_locR {P : Ideal (𝓞 K)} (hP : P.IsPrime) {a : K} (ha : a ∈ locR (K := K) P) (h1 : a ∉ locId P)
     (h2 : star a ∉ locId P) : a⁻¹ ∈ locR (K := K) P := by
   obtain ⟨s, hs, r, hr⟩ := mem_locR.1 ha
@@ -217,6 +296,11 @@ theorem inv_mem_locR {P : Ideal (𝓞 K)} (hP : P.IsPrime) {a : K} (ha : a ∈ l
   rw [hr]
   field_simp
 
+/- English proof (translation)
+Rewrite using `[mem_locId]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, q, hq, e⟩`. Rewrite `e` using `[← map_mul]`. Rewrite `hq` using `[RingOfIntegers.coe_injective e]`.
+
+Conclude with `(hP.mem_or_mem hq).resolve_left ((mem_hcompl hP s).1 hs).1`. Conclude with `fun hr => ⟨1, Submonoid.one_mem _, r, hr, by simp⟩`.
+-/
 theorem coe_mem_locId {P : Ideal (𝓞 K)} (hP : P.IsPrime) {r : 𝓞 K} : algebraMap _ K r ∈ locId P ↔ r ∈ P := by
   rw [mem_locId]
   constructor
@@ -228,6 +312,11 @@ theorem coe_mem_locId {P : Ideal (𝓞 K)} (hP : P.IsPrime) {r : 𝓞 K} : algeb
 
 variable {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Take `⟨s, hs, r, hr⟩` from `mem_locR.1 ha`. Take `⟨t, ht, hq⟩` from `hx`. Use `⟨t * s, Submonoid.mul_mem _ ht hs, ?_⟩` and prove the remaining obligations. Establish `: (t * s) • a • x = r • t • x`. Rewrite using `[smul_comm r t x, mul_smul, ← algebraMap_smul K r, hr, mul_smul, algebraMap_smul]`.
+
+Rewrite using `[this]`. Conclude with `M.smul_mem _ hq`.
+-/
 theorem smul_mem_loc {P : Ideal (𝓞 K)} {M : Submodule (𝓞 K) V} {a : K} {x : V} (ha : a ∈ locR (K := K) P)
     (hx : x ∈ loc (K := K) P M) : a • x ∈ loc (K := K) P M := by
   obtain ⟨s, hs, r, hr⟩ := mem_locR.1 ha
@@ -238,10 +327,18 @@ theorem smul_mem_loc {P : Ideal (𝓞 K)} {M : Submodule (𝓞 K) V} {a : K} {x 
   rw [this]
   exact M.smul_mem _ hq
 
+/- English proof (translation)
+Simplify using `[dualAt, Submodule.mem_iInf]`.
+-/
 theorem mem_dualAt (h : V →ₗ⋆[K] V →ₗ[K] K) {P : Ideal (𝓞 K)} {M : Submodule (𝓞 K) V} {x : V} :
     x ∈ dualAt h P M ↔ ∀ y ∈ M, h y x ∈ locR (K := K) P := by
   simp [dualAt, Submodule.mem_iInf]
 
+/- English proof (translation)
+Establish `h1 : (LinearMap.range h).dualCoannihilator = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Rewrite `hx` using `[Submodule.mem_dualCoannihilator]`. Conclude with `hn.2 x fun y => hx _ ⟨y, rfl⟩`.
+
+Establish `h2` using `Subspace.dualCoannihilator_dualAnnihilator_eq (W := LinearMap.range h)`. Rewrite `h2` using `[h1, Submodule.dualAnnihilator_bot]`. Establish `h3 : f ∈ LinearMap.range h` using `h2 ▸ Submodule.mem_top`. Conclude with `h3`.
+-/
 theorem exists_rep [FiniteDimensional K V] (h : V →ₗ⋆[K] V →ₗ[K] K) (hn : h.Nondegenerate) (f : V →ₗ[K] K) :
     ∃ y, h y = f := by
   have h1 : (LinearMap.range h).dualCoannihilator = ⊥ := by
@@ -258,6 +355,15 @@ variable [NumberField K]
 
 omit [StarRing K] in
 
+/- English proof (translation)
+Establish `hflat : Module.Flat (𝓞 K) M`. Rewrite using `[IsDedekindDomain.flat_iff_torsion_eq_bot, eq_bot_iff]`. Introduce and unpack `x ⟨a, ha⟩`. Establish `h2 : (algebraMap (𝓞 K) K a) • (x : V) = 0`. Rewrite using `[algebraMap_smul]`.
+
+Conclude with `congrArg Subtype.val ha`. Establish `h3 : algebraMap (𝓞 K) K a ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors a.2`. Conclude with `Subtype.ext ((smul_eq_zero.1 h2).resolve_left h3)`. Establish `: Module.FinitePresentation (𝓞 K) M` using `Module.finitePresentation_of_finite _ _`. Establish `: Module.Projective (𝓞 K) M` using `Module.Flat.projective_of_finitePresentation`.
+
+Take `⟨ψ, hψ⟩` from `Module.projective_lifting_property (Submodule.mkQ P) (φ.toLinearMap ∘ₗ (L.comap M.subtype).mkQ) (Submodule.mkQ_surjective P)`. Use `GlobalTheory.UnimodQuot.isLocalizedModule_subtype hM` as an intermediate fact. Establish `hu : ∀ x : nonZeroDivisors (𝓞 K), IsUnit (algebraMap (𝓞 K) (Module.End (𝓞 K) K) x)` using `fun x => IsLocalizedModule.map_units (S := nonZeroDivisors (𝓞 K)) (Algebra.linearMap (𝓞 K) K) x`. Use `⟨LinearMap.extendScalarsOfIsLocalization (nonZeroDivisors (𝓞 K)) K (IsLocalizedModule.lift (nonZeroDivisors (𝓞 K)) M.subtype (Algebra.linearMap (𝓞 K) K ∘ₗ ψ) hu), ψ, fun y => IsLocalizedModule.lift_apply (nonZeroDivisors (𝓞 K)) M.subtype _ hu y, fun y => ?_⟩` and prove the remaining obligations. Establish `e : Submodule.mkQ P (ψ y) = φ ((L.comap M.subtype).mkQ y)` using `LinearMap.congr_fun hψ y`.
+
+Rewrite using `[← Submodule.Quotient.mk_eq_zero, ← Submodule.mkQ_apply, e, LinearEquiv.map_eq_zero_iff, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Both sides reduce to the same expression.
+-/
 theorem exists_form {M L : Submodule (𝓞 K) V} (hM : Submodule.IsLattice K M) {P : Ideal (𝓞 K)}
     (φ : (↥M ⧸ L.comap M.subtype) ≃ₗ[𝓞 K] (𝓞 K ⧸ P)) :
     ∃ (f : V →ₗ[K] K) (ψ : M →ₗ[𝓞 K] 𝓞 K), (∀ y : M, f y = algebraMap (𝓞 K) K (ψ y)) ∧
@@ -284,6 +390,17 @@ theorem exists_form {M L : Submodule (𝓞 K) V} (hM : Submodule.IsLattice K M) 
     Submodule.Quotient.mk_eq_zero]
   rfl
 
+/- English proof (translation)
+Take `⟨f, ψ, hf, hψ⟩` from `exists_form hM φ`. Take `⟨u, rfl⟩` from `exists_rep h hn f`. Establish `e : ∀ (s : 𝓞 K) (x : V) (hx : s • x ∈ M), algebraMap _ K (ψ ⟨_, hx⟩) = algebraMap _ K s * h u x`. Introduce `s x hx`. Rewrite using `[← hf]`.
+
+Express the relevant statement in the definitionally equal form `h u (s • x) = _`. Rewrite using `[← algebraMap_smul K s, map_smul, smul_eq_mul]`. Use `⟨u, ?_, ?_, fun x => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← hU, mem_dualAt]`. Introduce and unpack `y ⟨s, hs', hy⟩`.
+
+Rewrite using `[← hs]`. Conclude with `star_mem_locR hP (mem_locR.2 ⟨s, hs', _, e s y hy⟩)`. Take `⟨y, hy⟩` from `(L.comap M.subtype).mkQ_surjective (φ.symm 1)`. Use `⟨y, ⟨1, Submonoid.one_mem _, by simp⟩, fun H => ?_⟩` and prove the remaining obligations. Rewrite `H` using `[hf, coe_mem_locId hP, hψ]`.
+
+Establish `: (L.comap M.subtype).mkQ y = 0` using `(Submodule.Quotient.mk_eq_zero _).2 H`. Rewrite `this` using `[hy, LinearEquiv.map_eq_zero_iff]`. Conclude with `hP.one_notMem (Ideal.Quotient.eq_zero_iff_mem.1 this)`. Introduce and unpack `⟨s, hs', hx⟩`. Conclude with `⟨⟨s, hs', hL hx⟩, mem_locId.2 ⟨s, hs', _, (hψ ⟨_, hL hx⟩).2 hx, e s x (hL hx)⟩⟩`.
+
+Introduce and unpack `⟨⟨s, hs', hx⟩, H⟩`. Use `⟨s, hs', (hψ ⟨_, hx⟩).1 ?_⟩` and prove the remaining obligations. Rewrite using `[← coe_mem_locId hP, e]`. Conclude with `mul_mem_locId (mem_locR.2 ⟨1, Submonoid.one_mem _, s, by simp⟩) H`.
+-/
 theorem exists_vec [FiniteDimensional K V] (h : V →ₗ⋆[K] V →ₗ[K] K) (hs : ∀ x y, star (h x y) = h y x)
     (hn : h.Nondegenerate) {M L : Submodule (𝓞 K) V} (hM : Submodule.IsLattice K M) {P : Ideal (𝓞 K)}
     (hP : P.IsPrime) (hU : IsUnimodularAt h P M) (hL : L ≤ M)
@@ -317,6 +434,23 @@ theorem exists_vec [FiniteDimensional K V] (h : V →ₗ⋆[K] V →ₗ[K] K) (h
 
 end Local
 
+/- English proof (translation)
+Introduce `K V _ _ _ _ _ _ _ _ h _ hsy hn M hM P hP hc hU L L' hL hL' ⟨φ⟩ ⟨φ'⟩`. Establish `hs : ∀ x y, star (h x y) = h y x` using `fun x y => hsy.eq x y`. Establish `hp` using `hP.isPrime`. Take `⟨u, hu, ⟨w₁, hw₁, k₁⟩, hLu⟩` from `exists_vec h hs hn hM hp hU hL φ`. Take `⟨u', hu', ⟨w₂, hw₂, k₂⟩, hLu'⟩` from `exists_vec h hs hn hM hp hU hL' φ'`.
+
+Take `⟨w, hw, h1, h2⟩ : ∃ w ∈ loc (K` from `K) P M, h u w ∉ locId P ∧ h u' w ∉ locId P := by`. Distinguish the cases in `a : h u' w₁ ∈ locId P`. Distinguish the cases in `b : h u w₂ ∈ locId P`. Use `⟨w₁ + w₂, Submodule.add_mem _ hw₁ hw₂, fun H => k₁ ?_, fun H => k₂ ?_⟩` and prove the remaining obligations. Rewrite `H` using `[map_add]`.
+
+Simplify using `using Submodule.sub_mem _ H b`. Rewrite `H` using `[map_add]`. Simplify using `using Submodule.sub_mem _ H a`. Conclude with `⟨w₂, hw₂, b, k₂⟩`. Conclude with `⟨w₁, hw₁, k₁, a⟩`.
+
+Take `⟨e, he, he'⟩` from `exists_idem hP hc`. Take `⟨g, hg, g1, g2, g3⟩` from `exists_move h hs (locRing P) (locId P).toAddSubgroup (loc (K := K) P M).toAddSubgroup (fun a ha => star_mem_locR hp ha) (fun a ha x hx => mul_mem_locId ha hx) (fun a ha => inv_mem_locR hp ha) (algebraMap _ K e) (mem_locR.2 ⟨1, Submonoid.one_mem _, e, by simp⟩) ((coe_mem_locId hp) …`. Use `(coe_mem_locId hp).2 he'` as an intermediate fact. Rewrite using `[map_sub, map_one, cj_coe] at this)` and apply the resulting hypothesis. Use the proof step `(fun a ha x hx => smul_mem_loc ha hx) (fun x hx y hy => by`.
+
+Establish `: y ∈ dualAt h P (loc (K` using `K) P M) := by rw [hU]; exact hy`. Conclude with `(mem_dualAt h).1 this x hx) u u' w hu hu' hw h1 h2`. Use `⟨g, hg, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `g1 y hy`. Conclude with `fun hx => ⟨g.symm x, g2 x hx, g.apply_symm_apply x⟩`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨y, hy, rfl⟩`. Take `⟨a, b⟩` from `(hLu y).1 hy`. Use `(hLu' _).2 ⟨g1 y a, ?_⟩` and prove the remaining obligations. Use `Submodule.add_mem (locId P) (g3 y a) b` as an intermediate fact. Simplify using `using this`.
+
+Introduce `hx`. Take `⟨a, b⟩` from `(hLu' x).1 hx`. Use `⟨g.symm x, (hLu _).2 ⟨g2 x a, ?_⟩, g.apply_symm_apply x⟩` and prove the remaining obligations. Use `Submodule.sub_mem (locId P) b (g3 _ (g2 x a))` as an intermediate fact. Simplify using `using this`.
+-/
 theorem main : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (h : V →ₗ⋆[K] V →ₗ[K] K), IsCMUnram K → h.IsSymm → h.Nondegenerate → ∀ (M : Submodule (𝓞 K) V), Submodule.IsLattice K M → ∀ P : Ideal (𝓞 K), P.IsMaximal → conjIdeal (K := K) P ≠ P → IsUnimodularAt h P M → ∀ L L' : Submodule (𝓞 K) V, L ≤ M → L' ≤ M → Nonempty ((↥M ⧸ L.comap M.subtype) ≃ₗ[𝓞 K] (𝓞 K ⧸ P)) → Nonempty ((↥M ⧸ L'.comap M.subtype) ≃ₗ[𝓞 K] (𝓞 K ⧸ P)) → ∃ g ∈ isom h, gmap g (loc (K := K) P M) = loc (K := K) P M ∧ gmap g (loc (K := K) P L) = loc (K := K) P L' := by
   intro K V _ _ _ _ _ _ _ _ h _ hsy hn M hM P hP hc hU L L' hL hL' ⟨φ⟩ ⟨φ'⟩
   have hs : ∀ x y, star (h x y) = h y x := fun x y => hsy.eq x y

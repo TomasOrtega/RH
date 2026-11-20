@@ -26,16 +26,25 @@ variable {D : D7} {S T : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {χS χT : (AE 
   {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
   {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)}
 
+/- English proof (translation)
+Introduce `h0` and use `by have := AddChar.map_add_eq_mul ψ t (-t) rw [add_neg_cancel, AddChar.map_zero_eq_one, h0, zero_mul] at this exact one_ne_zero this`.
+-/
 theorem psi_ne_zero (ψ : AddChar (AF D.host.F) ℂ) (t : AF D.host.F) : ψ t ≠ 0 := fun h0 => by
   have := AddChar.map_add_eq_mul ψ t (-t)
   rw [add_neg_cancel, AddChar.map_zero_eq_one, h0, zero_mul] at this
   exact one_ne_zero this
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `only [heisO, Finset.sum_apply, Finset.mul_sum]`.
+-/
 theorem heisO_sum' {ι : Type} (s : Finset ι) (w : WO S T) (f : ι → WO S T → ℂ) :
     heisO ψ S T w (∑ x ∈ s, f x) = ∑ x ∈ s, heisO ψ S T w (f x) := by
   funext z
   simp only [heisO, Finset.sum_apply, Finset.mul_sum]
 
+/- English proof (translation)
+Introduce `h` and use `by have e : om (1, g⁻¹) (om (1, g) v) = v := by rw [← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul, inv_mul_cancel] exact congrFun (congrArg _ (map_one om)) v rw [h, map_zero] at e exact hv e.symm`.
+-/
 theorem om_ne_zero (g : GA D T) {v : WO S T → ℂ} (hv : v ≠ 0) : om (1, g) v ≠ 0 := fun h => by
   have e : om (1, g⁻¹) (om (1, g) v) = v := by
     rw [← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul, inv_mul_cancel]
@@ -43,6 +52,17 @@ theorem om_ne_zero (g : GA D T) {v : WO S T → ℂ} (hv : v ≠ 0) : om (1, g) 
   rw [h, map_zero] at e
   exact hv e.symm
 
+/- English proof (translation)
+Take `⟨ε, -, hε⟩` from `(GlobalTheory.LatVac.latO_selfDual_approx_sign D ψ S T ΛS ΛT hW.std hS hT).2.2 v hv _ hwx`. Establish `hs` using `hε v hv`. Establish `hsa : actO S T 1 a⁻¹ (w - x) ∈ latO S T ΛS ΛT fun _ => True`. Rewrite using `[act_sub]`. Conclude with `sub_mem hw (hΔ.1 x hx).1`.
+
+Establish `h1 : heisO ψ S T (w - x) (om (1, a) v) = ε • om (1, a) v`. Rewrite using `[hE, GlobalTheory.LatVac.heisO_smul, heisO_sum', smul_comm ε κ]`. Use `congr 1`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun x' hx' => ?_` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.SplitScalar.heisO_comm, hs, GlobalTheory.LatVac.heisO_smul, ← Formalism.IndefR.Eqv.symplO_actO S T 1 a⁻¹, GlobalTheory.LatVac.char_sympl_eq_one hW.std hS hT hsa (hΔ.1 x' hx').1, one_smul]`. Establish `h2 : heisO ψ S T x (om (1, a) v) = om (1, a) v`. Use `hW.om_heis 1 a (actO S T 1 a⁻¹ x) v hf` as an intermediate fact. Rewrite `this` using `[hv.2 e he _ (hΔ.1 x hx).1 (GlobalTheory.SplitHecke.isHalf_actO _ _ (hΔ.1 x hx).2), ← act_mul, mul_inv_cancel, act_one]`. Conclude with `this.symm`.
+
+Establish `h3` using `fun f => GlobalTheory.SplitScalar.heisO_heisO ψ S T x (w - x) f`. Simplify using `only [add_sub_cancel] at h3`. Establish `h4` using `h3 (om (1, a) v)`. Rewrite `h4` using `[h1, GlobalTheory.LatVac.heisO_smul, h2, hχ, smul_smul]`. Establish `h5 : ε = ψ (symplOH S T x (w - x)) * χ` using `smul_left_injective ℂ (om_ne_zero a hv0) h4`.
+
+Establish `h6` using `h3 v`. Rewrite `h6` using `[hs, GlobalTheory.LatVac.heisO_smul, h5, mul_smul]`. Conclude with `(smul_right_injective _ (psi_ne_zero ψ _) h6).symm`.
+-/
 theorem heis_vac_eq (hW : IsWeilDatumO ψ S T χS χT om) (hS : IsSelfDualC S ΛS) (hT : IsSelfDualC T ΛT)
     {v : WO S T → ℂ} (hf : IsThetaFunO ψ S T v) (hv : IsLatVac (heisO ψ S T) (latO S T ΛS ΛT fun _ => True) v)
     (hv0 : v ≠ 0) {e : AE D} (he : IsSplitIdem D e) {a : GA D T} {Δ : Finset (WO S T)}
@@ -75,6 +95,9 @@ theorem heis_vac_eq (hW : IsWeilDatumO ψ S T χS χT om) (hS : IsSelfDualC S Λ
   rw [hs, GlobalTheory.LatVac.heisO_smul, h5, mul_smul] at h6
   exact (smul_right_injective _ (psi_ne_zero ψ _) h6).symm
 
+/- English proof (translation)
+Rewrite using `[act_sub, GlobalTheory.RawLift.Move.actO_one_left, GlobalTheory.RawLift.Move.actO_one_left, hM, GlobalTheory.FrameChangeRead.map_incA_mul_realPt]`. Use `congr 1`. Conclude with `(Matrix.map_mul (f := incA D)).symm`.
+-/
 theorem actO_fin_rat {δ : GA D T} {M : Matrix (Fin T.rank) (Fin T.rank) D.host.E}
     (hM : Formalism.L2.Theta.mt T δ = M.map (incA D)) (Y : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     actO S T 1 δ (ratW T S Y - realPt S T Y) = ratW T S (M * Y) - realPt S T (M * Y) := by
@@ -83,12 +106,18 @@ theorem actO_fin_rat {δ : GA D T} {M : Matrix (Fin T.rank) (Fin T.rank) D.host.
   congr 1
   exact (Matrix.map_mul (f := incA D)).symm
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [ratW, realPt, Matrix.sub_apply, Matrix.map_apply, Matrix.of_apply, map_sub, TensorProduct.tmul_sub]`. Normalize the expressions using the abelian group laws.
+-/
 theorem fin_sub (Y Z : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     ratW T S (Y - Z) - realPt S T (Y - Z) = (ratW T S Y - realPt S T Y) - (ratW T S Z - realPt S T Z) := by
   ext i j
   simp only [ratW, realPt, Matrix.sub_apply, Matrix.map_apply, Matrix.of_apply, map_sub, TensorProduct.tmul_sub]
   abel
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [ratW, realPt, Matrix.sub_apply, Matrix.neg_apply, Matrix.map_apply, Matrix.of_apply, map_neg, TensorProduct.tmul_neg]`. Normalize the expressions using the abelian group laws.
+-/
 theorem fin_neg (Y : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     -(ratW T S (-Y) - realPt S T (-Y)) = ratW T S Y - realPt S T Y := by
   ext i j
@@ -96,15 +125,32 @@ theorem fin_neg (Y : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     TensorProduct.tmul_neg]
   abel
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [realPt, Matrix.neg_apply, Matrix.of_apply, TensorProduct.tmul_neg]`.
+-/
 theorem realPt_neg (Y : Matrix (Fin T.rank) (Fin S.rank) D.host.E) : realPt S T (-Y) = -realPt S T Y := by
   ext i j
   simp only [realPt, Matrix.neg_apply, Matrix.of_apply, TensorProduct.tmul_neg]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [realPt, Matrix.sub_apply, Matrix.of_apply, TensorProduct.tmul_sub]`.
+-/
 theorem realPt_sub (X Y : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     realPt S T (X - Y) = realPt S T X - realPt S T Y := by
   ext i j
   simp only [realPt, Matrix.sub_apply, Matrix.of_apply, TensorProduct.tmul_sub]
 
+/- English proof (translation)
+Establish `hΘ` using `hW.om_pres (1, g) v hf`. Establish `h1` using `congrArg (om (1, g)) h`. Establish `hgx : actO S T 1 g x = (ratW T S ℓ - realPt S T ℓ) + actO S T 1 g u`. Rewrite using `[hx]`. Use `(map_add (GlobalTheory.SplitHecke.actAdd S T 1 g) _ _).trans ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `actO S T 1 g (actO S T 1 g⁻¹ _) + actO S T 1 g u = _`. Rewrite using `[← act_mul, mul_inv_cancel, act_one]`. Rewrite `h1` using `[map_smul, hW.om_heis _ _ _ _ hf, hW.om_heis _ _ _ _ hf, ← act_mul, mul_inv_cancel, act_one, hgx]`. Establish `h2 : heisO ψ S T (actO S T 1 g u) (om (1, g) v) = om (1, g) v`. Rewrite using `[← hW.om_heis _ _ _ _ hf, hu]`.
+
+Establish `h3` using `GlobalTheory.SplitScalar.heisO_heisO ψ S T (ratW T S ℓ - realPt S T ℓ) (actO S T 1 g u) (om (1, g) v)`. Rewrite `h3` using `[h2]`. Establish `h4` using `GlobalTheory.AHPhase.theta_realPt_add hΘ X (-ℓ)`. Rewrite `h4` using `[fin_neg, ← sub_eq_add_neg, h3, realPt_neg, symplOH_neg_right]`. Rewrite using `[GlobalTheory.AHPhase.theta_realPt_add hΘ X Y, h1, h4]`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Establish `h5 : ψ (-(symplOH S T (realPt S T ℓ) (realPt S T (X - ℓ)) + symplOH S T (ratW T S ℓ - realPt S T ℓ) (actO S T 1 g u))) * (ψ (-symplOH S T (realPt S T X) (realPt S T ℓ)) * ψ (symplOH S T (ratW T S ℓ - realPt S T ℓ) (actO S T 1 g u))) = 1`. Rewrite using `[← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul, realPt_sub, sub_eq_add_neg (realPt S T X), symplOH_add_right, symplOH_neg_right, symplOH_self, symplOH_skew (S := S) (T := T) (realPt S T X) (realPt S T ℓ)]`. Use `AddChar.map_zero_eq_one ψ using 2` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+
+Take the linear combination `(-(ψ (symplOH S T (realPt S T X) (realPt S T Y)) * χ * heisO ψ S T (ratW T S ℓ - realPt S T ℓ + actO S T 1 g u) (om (1, g) v) (realPt S T X))) * h5`.
+-/
 theorem theta_shift (hW : IsWeilDatumO ψ S T χS χT om) {v : WO S T → ℂ} (hf : IsThetaFunO ψ S T v) (g : GA D T)
     (X Y ℓ : Matrix (Fin T.rank) (Fin S.rank) D.host.E) {x u : WO S T} (hu : heisO ψ S T u v = v)
     (hx : x = actO S T 1 g⁻¹ (ratW T S ℓ - realPt S T ℓ) + u) {χ : ℂ}
@@ -151,6 +197,17 @@ section Geo
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ} {U : Unf Xo c σ r}
 
+/- English proof (translation)
+Apply `mul_right_cancel₀ hz` to reduce the goal to its premises. Rewrite using `[show t₀ * (Complex.exp (-(Real.pi / 2 * hermForm Hm z z)) * θ') * fr z = Complex.exp (-(Real.pi / 2 * hermForm Hm z z)) * (t₀ * θ' * fr z) by ring, h, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Establish `hs` using `hermForm_swap hH z (lam m)`. Establish `hsc : hermForm Hm z (lam m) - star (hermForm Hm z (lam m)) = 2 * ((hermForm Hm z (lam m)).im : ℂ) * Complex.I`.
+
+Rewrite using `[show star (hermForm Hm z (lam m)) = (starRingEnd ℂ) (hermForm Hm z (lam m)) from rfl, Complex.sub_conj]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e : -(↑Real.pi / 2 * hermForm Hm (z + lam m) (z + lam m)) + (↑Real.pi * hermForm Hm z (lam m) + ↑Real.pi / 2 * hermForm Hm (lam m) (lam m)) = ↑Real.pi * Complex.I * ((hermForm Hm z (lam m)).im : ℂ) + -(↑Real.pi / 2 * hermForm Hm z z)`. Rewrite using `[hermForm_add_left, hermForm_add_right, hermForm_add_right, hs]`.
+
+Take the linear combination `(↑Real.pi / 2 : ℂ) * hsc`. Establish `e2` using `congrArg Complex.exp e`. Rewrite `e2` using `[Complex.exp_add, Complex.exp_add (↑Real.pi * Complex.I * _)]`. Establish `h1` using `hχ m`. Establish `h2` using `Complex.exp_ne_zero (↑Real.pi * Complex.I * ((hermForm Hm z (lam m)).im : ℂ))`.
+
+Rewrite using `[hfr m]`. Generalize the expression as in `Complex.exp (-(↑Real.pi / 2 * hermForm Hm (z + lam m) (z + lam m))) = A at e2 ⊢`. Generalize the expression as in `Complex.exp (↑Real.pi * hermForm Hm z (lam m) + ↑Real.pi / 2 * hermForm Hm (lam m) (lam m)) = B at e2 ⊢`. Generalize the expression as in `Complex.exp (↑Real.pi * Complex.I * ((hermForm Hm z (lam m)).im : ℂ)) = C at e2 h2 ⊢`. Generalize the expression as in `Complex.exp (-(↑Real.pi / 2 * hermForm Hm z z)) = A' at e2 ⊢`.
+
+Clear the denominators using the available nonvanishing facts. Take the linear combination `(-(θ (z + lam m) * fr (z + lam m))) * e2`.
+-/
 theorem gform {g n : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHermitian) (t₀ θ' : ℂ) (θ : (Fin g → ℂ) → ℂ)
     (fr : (Fin g → ℂ) → ℂ) (z : Fin g → ℂ) (lam : Fin n → Fin g → ℂ) (χ : Fin n → ℂ) (hχ : ∀ m, χ m ≠ 0)
     (hz : fr z ≠ 0)
@@ -188,6 +245,19 @@ theorem gform {g n : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHermitian
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hU' : Formalism.L2.PjFree.IsUnf (Formalism.L2.PjFree.Unf.ofPj U)` using `hU`. Take `⟨_, _, _, _, _, g, e, F, ik, φ, hiso, hpt⟩` from `hU`. Take `⟨Pm, h1, h2, h3, h4, h5⟩` from `hpt k x`. Take `⟨Pm', h1', h2', h3', h4', h5'⟩` from `hpt k' x'`. Set `W : UnfAt U k x` to `⟨g, e, F, ik, φ, hiso, Pm, h1, h2, h3, h4, h5⟩`.
+
+Set `W' : UnfAt U k' x'` to `⟨g, e, F, ik, φ, hiso, Pm', h1', h2', h3', h4', h5'⟩`. Take `⟨Y⟩` from `nonempty_unitAt W hu`. Take `⟨Y'⟩` from `nonempty_unitAt W' hu'`. Use `⟨W, Y, W', Y', fun j j' hj => congrArg e (Fin.ext hj), fun hH => ?_⟩` and prove the remaining obligations. Establish `hHm : Y'.Hm = Y.Hm`.
+
+Use extensionality with `j₁ j₂`. Conclude with `hH j₁ j₂ j₁ j₂ rfl rfl`. Take `⟨wm, -, hw2, hw3, hw4⟩` from `GlobalTheory.HeckeLiftReps.hecke_lift_reps E H Dw l Xo c σ r (Formalism.L2.PjFree.Unf.ofPj U) hσ hU' P p i k k' x x' C z t hA hK hz hb ht g e F ik Pm Pm' h2 h2' h3 h3' h4 h4' Y.Hm Y.χl Y.fr Y.θ Y.herm Y.pos Y.c1 Y.c2 Y.c3 Y.c4 Y.c5 Y.c6 Y.c7 Y'.Hm Y'.χl Y'.fr Y'.θ hHm Y'.herm Y'. …`. Use `choose β hβ using hw2`. Establish `hv : ∀ m, pv W' (φ k' (β m) : Fin r → E) = Pm' (β m)` using `fun m => pv_lat W' (β m)`.
+
+Establish `hrel : ∀ u u', (∀ τ j, perFr (U.X k') x'.1 u τ j = perFr (U.X k) x.1 u' τ j) → pv W' u = pv W u'` using `fun u u' h => funext fun j => h _ _`. Use `⟨fun m => (φ k' (β m) : Fin r → E), fun m => ⟨β m, (hv m).symm⟩, fun m m' u' hu ⟨a, ha⟩ => ?_, fun u u' hu => ?_⟩` and prove the remaining obligations. Use `hw3 m m' a ?_` and prove the remaining obligations. Rewrite using `[hβ, hβ, ← hv, ← hv]`. Conclude with `((map_sub (pvHom W') _ _).symm.trans (hrel _ _ hu)).trans ha.symm`.
+
+Establish `hp0 : (p : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hA.2.2.1.ne_zero`. Take `⟨j, hj, hs⟩` from `hw4 ((p : ℂ)⁻¹ • pv W' u)`. Simplify using `only [smul_add, smul_inv_smul₀ hp0, hβ] at hj hs`. Establish `key` using `gform Y'.herm _ _ Y.θ (Y'.fr j) (pv W' u) (fun m => Pm' (β m)) (fun m => Y'.χl (Pm' (β m))) (fun m h0 => by have := (Y'.c6 (β m) j 0).1; rw [show Y'.χl (W'.Pm (β m)) = 0 from h0] at this; simp at this) (Y'.c3 j _ hj) (fun m => (Y'.c6 (β m) j _).2 hj) hs`. Use `key.trans (Finset.sum_congr rfl fun m _ => ?_)` and prove the remaining obligations.
+
+Establish `e1 : pv W (u' m) = pv W' u + Pm' (β m)`. Rewrite using `[← hrel _ _ (hu m), ← hv]`. Conclude with `map_add (pvHom W') _ _`. Simplify using `only [ahG, hv, e1, hHm]`.
+-/
 theorem geo_sum (hσ : GoodEmb c σ) (hU : IsUnf U) {P : Ideal (𝓞 E)} {p i : ℕ} {k k' : U.Comp} (x : (U.X k).dom)
     (x' : (U.X k').dom) (hu : ∀ τ' i', ‖dmin (U.X k).Gm x.1 τ' i'‖ = 1) (hu' : ∀ τ' i', ‖dmin (U.X k').Gm x'.1 τ' i'‖ = 1)
     (C : Subgroup (Over.mk (U.un k x).x ⟶ Xo.univ.t.G)) (z : FrPt Xo c (CAt σ)) (t : Ix Dw → (CAt σ)ˣ)
@@ -240,6 +310,17 @@ theorem geo_sum (hσ : GoodEmb c σ) (hU : IsUnf U) {P : Ideal (𝓞 E)} {p i : 
 
 end Geo
 
+/- English proof (translation)
+Use `⟨P.isMaximal, ?_, hp, hpP, hM⟩` and prove the remaining obligations. Establish `hQ : Formalism.HermitianLatticesTheory.conjIdeal (K` using `D.host.E) P.asIdeal = P.asIdeal.map (Hh.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) := by`. Unfold `Formalism.HermitianLatticesTheory.conjIdeal`. Rewrite using `[Ideal.map]`. Use `congr 1`.
+
+Use extensionality with `r`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, e⟩`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises.
+
+Use `show ((Hh.bar s : 𝓞 D.host.E) : D.host.E) = (r : D.host.E)`. Rewrite using `[Hh.bar_eq]`. Conclude with `e.symm`. Introduce and unpack `⟨s, hs, rfl⟩`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations.
+
+Use `show ((Hh.bar s : 𝓞 D.host.E) : D.host.E) = _`. Rewrite using `[Hh.bar_eq]`. Both sides reduce to the same expression. Rewrite using `[← hQ]`. Establish `hmax : (P.asIdeal.map (Hh.bar : 𝓞 D.host.E →+* 𝓞 D.host.E)).IsMaximal` using `Ideal.map_isMaximal_of_equiv Hh.bar`.
+
+Rewrite `hmax` using `[← hQ]`. Assume the negation of the conclusion as `hne`. Establish `hle : Formalism.HermitianLatticesTheory.conjIdeal (K` using `D.host.E) P.asIdeal ≤ P.asIdeal := le_sup_right.trans ((P.isMaximal.eq_of_le hne le_sup_left).symm.le)`. Conclude with `hc (hmax.eq_of_le P.isMaximal.ne_top hle)`.
+-/
 theorem isAdmissibleSplitHeckePrime_of_conj_ne {D : D7} {Hh : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level Hh)
     (P : Formalism.L2.DIV.Pl D.host.E) (p : ℕ) (hc : Formalism.HermitianLatticesTheory.conjIdeal (K := D.host.E) P.asIdeal ≠ P.asIdeal) (hp : p.Prime)
     (hpP : (p : 𝓞 D.host.E) ∈ P.asIdeal) (hM : ¬ p ∣ l.M') : GlobalTheory.HkFam.admitted l P.asIdeal p := by
@@ -280,6 +361,13 @@ section Columns
 
 variable {D : D7} {i : Fin D.R.m} {b : Matrix (Fin (Vc D i).rank) (Fin (Vc D i).rank) D.host.E}
 
+/- English proof (translation)
+Use `⟨Matrix.of fun s j => ∑ c, V c (Fin.cast (rank_Wc i) s) * ∑ k, star (b k c) * (Vc D i).gram k j, fun a => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `m`. Simplify using `only [colB, Matrix.of_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Establish `: ∀ c, ∑ n, (V c (Fin.cast (rank_Wc i) (Fin.cast (rank_Wc i).symm m)) * ∑ k, star (b k c) * (Vc D i).gram k n) * b n a = V c m * if c = a then 1 else 0` using `fun c => by`.
+
+Rewrite using `[← hb.1 c a, Finset.sum_comm, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, Finset.sum_mul]`. Both sides reduce to the same expression. Simplify using `only [this]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem exists_colB (hb : IsONLatBasis (Vc D i) b) (V : Fin (Vc D i).rank → Fin D.R.r → D.host.E) :
     ∃ Y : Matrix (Fin (Wc D i).rank) (Fin (Vc D i).rank) D.host.E, ∀ c, colB b Y c = V c := by
   classical
@@ -296,14 +384,23 @@ theorem exists_colB (hb : IsONLatBasis (Vc D i) b) (V : Fin (Vc D i).rank → Fi
   simp only [this]
   simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `m`. Simplify using `only [colB, Matrix.add_apply, add_mul, Finset.sum_add_distrib, Pi.add_apply]`.
+-/
 theorem colB_add (X Y : Matrix (Fin (Wc D i).rank) (Fin (Vc D i).rank) D.host.E) (c : Fin (Vc D i).rank) :
     colB b (X + Y) c = colB b X c + colB b Y c := by
   funext m; simp only [colB, Matrix.add_apply, add_mul, Finset.sum_add_distrib, Pi.add_apply]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `m`. Simplify using `only [colB, Matrix.sub_apply, sub_mul, Finset.sum_sub_distrib, Pi.sub_apply]`.
+-/
 theorem colB_sub (X Y : Matrix (Fin (Wc D i).rank) (Fin (Vc D i).rank) D.host.E) (c : Fin (Vc D i).rank) :
     colB b (X - Y) c = colB b X c - colB b Y c := by
   funext m; simp only [colB, Matrix.sub_apply, sub_mul, Finset.sum_sub_distrib, Pi.sub_apply]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `m`. Simplify using `only [colB, Matrix.mul_apply, Matrix.mulVec, dotProduct, Finset.sum_mul, Finset.mul_sum, mul_assoc]`. Conclude with `Finset.sum_comm`.
+-/
 theorem colB_mul (M : Matrix (Fin (Wc D i).rank) (Fin (Wc D i).rank) D.host.E)
     (Z : Matrix (Fin (Wc D i).rank) (Fin (Vc D i).rank) D.host.E) (c : Fin (Vc D i).rank) :
     colB b (M * Z) c = fun m => (M.mulVec fun s => ∑ n, Z s n * b n c) (Fin.cast (rank_Wc i).symm m) := by
@@ -316,6 +413,9 @@ end Columns
 set_option maxHeartbeats 2000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+The claim follows from `inferInstanceAs (IsAlgClosed ℂ) ∀ a ∈ Rc, ∀ (C : hkKer (Xo := T.Q.Xo ((i : ℕ) + 1)) P.asIdeal p k (CAt σ) ((T.U ((i : ℕ) + 1) σ).un (GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.dictW T i σ hV h).1 ⟨(GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatt …`.
+-/
 theorem theta_prod_eq_phased_sum : ∀ (D : D7), GlobalTheory.IndefiniteRowSideFullHecke.HeckePrimeDetection.HeckePointLaws → GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.SplitLinearModel D → GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.VacFixed D →
     ∀ (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m)
     (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A)

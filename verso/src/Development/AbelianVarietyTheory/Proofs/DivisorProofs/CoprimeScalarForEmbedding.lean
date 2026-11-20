@@ -21,6 +21,13 @@ section Gen
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H}
 
+/- English proof (translation)
+Establish `hrep : ∀ q : LevQ Dw l, (Submodule.Quotient.mk (levRep q) : LevQ Dw l) = q` using `fun q => Classical.choose_spec (Submodule.Quotient.mk_surjective _ q)`. Establish `e : m * pairL (l` using `l) x (fun b => levRep (q b)) = pairL (l := l) x (fun b => m • levRep (q b)) := by`. Unfold `pairL`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_comm, map_zsmul, smul_eq_mul]`. Rewrite using `[e]`. Use `GlobalTheory.LevelPairing.pairL_congr _ _ _ _ (fun b => by simp) fun b => ?_` and prove the remaining obligations. Rewrite using `[← Submodule.Quotient.eq, hrep]`. Use `Eq.trans ?_ (map_zsmul (Submodule.mkQ _) m (levRep (q b))).symm` and prove the remaining obligations.
+
+Rewrite using `[Submodule.mkQ_apply, hrep, Pi.smul_apply]`.
+-/
 theorem pairL_levRep_zsmul {n : ℕ} (x : Fin n → Dw.La) (m : ℤ) (q : Fin n → LevQ Dw l) :
     (l.M : ℤ) ∣ pairL (l := l) x (fun b => levRep ((m • q) b)) - m * pairL (l := l) x (fun b => levRep (q b)) := by
   have hrep : ∀ q : LevQ Dw l, (Submodule.Quotient.mk (levRep q) : LevQ Dw l) = q := fun q =>
@@ -36,6 +43,13 @@ theorem pairL_levRep_zsmul {n : ℕ} (x : Fin n → Dw.La) (m : ℤ) (q : Fin n 
   refine Eq.trans ?_ (map_zsmul (Submodule.mkQ _) m (levRep (q b))).symm
   rw [Submodule.mkQ_apply, hrep, Pi.smul_apply]
 
+/- English proof (translation)
+Establish `hM : l.M ≠ 0` using `by have := l.three_le; omega`. Use `haveI : NeZero l.M := ⟨hM⟩`. Establish `h0` using `GlobalTheory.LevelPairing.zetaM_prim c`. Establish `h1 : IsPrimitiveRoot (c.F.val.toRingHom (zetaM c)) l.M` using `h0.map_of_injective c.F.val.toRingHom.injective`. Establish `h2 : IsPrimitiveRoot (τ (zetaM c)) l.M` using `h0.map_of_injective τ.injective`.
+
+Take `⟨m, -, hm⟩` from `h1.eq_pow_of_pow_eq_one h2.pow_eq_one`. Establish `hc : m.Coprime l.M` using `(h1.pow_iff_coprime (Nat.pos_of_ne_zero hM) m).1 (hm ▸ h2)`. Use `⟨m, Nat.isCoprime_iff_coprime.2 hc, fun n φ hφ q => ?_⟩` and prove the remaining obligations. Use `haveI := GlobalTheory.AdTh.PairModel.finite_levQc Dw l`. Use `haveI := Fintype.ofFinite (Fin n → LevQc Dw l)`.
+
+Rewrite using `[phiHat, phiHat, finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.LevelPairing.zpow_congr c (pairL_levRep_zsmul _ (m : ℤ) q), map_mul, map_mul, map_zpow₀, map_zpow₀, ← hm, _root_.zpow_mul, zpow_natCast]`. Use `congr 1`. Apply the tactic sequence `rcases hφ x with h | h <;> simp [h]`.
+-/
 theorem map_phiHat (c : Coeff l) (τ : c.F →+* ℂ) : ∃ m : ℤ, IsCoprime m (l.M : ℤ) ∧
     ∀ (n : ℕ) (φ : (Fin n → LevQc Dw l) → c.F), (∀ x, φ x = 0 ∨ φ x = 1) → ∀ q,
       τ (phiHat c φ q) = c.F.val.toRingHom (phiHat c φ (m • q)) := by

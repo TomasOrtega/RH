@@ -6,6 +6,17 @@ noncomputable def UpperTheory.Reformulated.B.SubgroupFixed.HasFixed :
     fun {Γ V : Type} [Group Γ] [AddCommGroup V] [_root_.Module ℂ V] (ρ : Representation ℂ Γ V) (U : Subgroup Γ) ↦
       ∃ (v : V), v ≠ (0 : V) ∧ ∀ u ∈ U, ((ρ : Γ → V →ₗ[ℂ] V) u : V → V) v = v
 
+/- English proof (translation)
+Establish `hss : IsSemisimpleModule R N`. Use `isSemisimpleModule_of_isSemisimpleModule_submodule' (p := fun f : M →ₗ[R] N => LinearMap.range f) (fun f => IsSemisimpleModule.range f) ?_` and prove the remaining obligations. Conclude with `hsup _ (fun f => le_iSup (fun f : M →ₗ[R] N => LinearMap.range f) f)`. Take `⟨C, hC⟩` from `exists_isCompl W`. Set `p : N →ₗ[R] W` to `W.linearProjOfIsCompl C hC`.
+
+Establish `hex : ∃ f : M →ₗ[R] N, p ∘ₗ f ≠ 0`. Assume the negation of the conclusion as `hno`. Use `push Not at hno`. Establish `htop : LinearMap.ker p = ⊤` using `hsup _ (fun f => by`. Introduce and unpack `_ ⟨x, rfl⟩`.
+
+Conclude with `LinearMap.congr_fun (hno f) x)`. Apply `hW` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce `w hw`. Establish `h1 : p w = 0`.
+
+Establish `: w ∈ LinearMap.ker p` using `htop ▸ Submodule.mem_top`. Conclude with `this`. Establish `h2 : p w = ⟨w, hw⟩` using `Submodule.linearProjOfIsCompl_apply_left hC ⟨w, hw⟩`. Establish `h3 : (⟨w, hw⟩ : W) = 0` using `h2.symm.trans h1`. Simplify using `using congrArg Subtype.val h3`.
+
+Take `⟨f, hf⟩` from `hex`. Establish `hinj` using `(LinearMap.injective_or_eq_zero (p ∘ₗ f)).resolve_right hf`. Use `⟨W.subtype ∘ₗ p ∘ₗ f, W.injective_subtype.comp hinj, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `(p (f x)).2`.
+-/
 private lemma UpperTheory.Reformulated.B.SubgroupFixed.core {R M N : Type*} [Ring R] [AddCommGroup M] [_root_.Module R M]
     [AddCommGroup N] [_root_.Module R N] [IsSimpleModule R M]
     (hsup : ∀ S : Submodule R N, (∀ f : M →ₗ[R] N, LinearMap.range f ≤ S) → S = ⊤)
@@ -38,6 +49,25 @@ private lemma UpperTheory.Reformulated.B.SubgroupFixed.core {R M N : Type*} [Rin
   rintro _ ⟨x, rfl⟩
   exact (p (f x)).2
 
+/- English proof (translation)
+Introduce `Γ X V _ _ _ _ _ σ hσ τ h W hWinv hW K hK`. Take `⟨x0, hx0, hfix⟩` from `hK`. Use `haveI : IsSimpleModule (MonoidAlgebra ℂ Γ) σ.asModule := (Representation.irreducible_iff_isSimpleModule_asModule σ).mp hσ`. Set `W' : Submodule (MonoidAlgebra ℂ Γ) τ.asModule` to `{ carrier := {x | τ.asModuleEquiv x ∈ W} add_mem' := fun {a b} ha hb => by show τ.asModuleEquiv (a + b) ∈ W`. Rewrite using `[map_add]`.
+
+Conclude with `W.add_mem ha hb`. Use the proof step `zero_mem' := by show τ.asModuleEquiv 0 ∈ W`. Rewrite using `[map_zero]`. Conclude with `W.zero_mem`. Use the proof step `smul_mem' := fun r x hx => by show τ.asModuleEquiv (r • x) ∈ W`.
+
+Rewrite using `[Representation.asModuleEquiv_map_smul]`. Conclude with `τ.asAlgebraHom_mem_of_forall_mem W hWinv _ hx r }`. Establish `hW' : W' ≠ ⊥`. Introduce `hbot`. Apply `hW` to reduce the goal to its premises.
+
+Rewrite using `[eq_bot_iff]`. Introduce `w hw`. Establish `hmem : τ.asModuleEquiv.symm w ∈ W'` using `by show τ.asModuleEquiv (τ.asModuleEquiv.symm w) ∈ W`. Simplify using `using hw`. Rewrite `hmem` using `[hbot, Submodule.mem_bot]`.
+
+Simplify using `using hmem`. Establish `hsup : ∀ S : Submodule (MonoidAlgebra ℂ Γ) τ.asModule, (∀ f : σ.asModule →ₗ[MonoidAlgebra ℂ Γ] τ.asModule, LinearMap.range f ≤ S) → S = ⊤`. Introduce `S hS`. Set `S0 : Submodule ℂ V` to `(S.restrictScalars ℂ).comap (τ.asModuleEquiv.symm : V →ₗ[ℂ] τ.asModule)`. Establish `hS0 : S0 = ⊤`.
+
+Rewrite using `[eq_top_iff, ← h]`. Use `iSup_le fun f => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Set `F : Representation.IntertwiningMap σ τ` to `f.1.intertwiningMap_of_isIntertwiningMap σ τ f.2`. Conclude with `hS (Representation.IntertwiningMap.equivLinearMapAsModule σ τ F) ⟨σ.asModuleEquiv.symm x, rfl⟩`.
+
+Rewrite using `[eq_top_iff]`. Introduce `y _`. Establish `hy : τ.asModuleEquiv y ∈ S0` using `hS0 ▸ Submodule.mem_top`. Simplify `hy` using `[S0]`. Take `⟨g, hg, hgW⟩` from `UpperTheory.Reformulated.B.SubgroupFixed.core hsup W' hW'`.
+
+Use `⟨τ.asModuleEquiv (g (σ.asModuleEquiv.symm x0)), hgW ⟨_, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Establish `h1 : g (σ.asModuleEquiv.symm x0) = 0` using `by simpa using h0`. Establish `h2 : σ.asModuleEquiv.symm x0 = 0` using `hg (h1.trans (map_zero g).symm)`. Conclude with `hx0 (by simpa using h2)`.
+
+Introduce `u hu`. Apply `τ.asModuleEquiv.symm.injective` to reduce the goal to its premises. Rewrite using `[Representation.asModuleEquiv_symm_map_rho, LinearEquiv.symm_apply_apply, ← map_smul, ← Representation.asModuleEquiv_symm_map_rho, hfix u hu]`.
+-/
 theorem UpperTheory.Reformulated.B.SubgroupFixed.sub_fixed :
     ∀ {Γ X V : Type} [inst : Group Γ] [inst_1 : AddCommGroup X] [inst_2 : _root_.Module ℂ X] [inst_3 : AddCommGroup V]
       [inst_4 : _root_.Module ℂ V] (σ : Representation ℂ Γ X),

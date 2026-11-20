@@ -9,6 +9,9 @@ open Formalism.IndefR.Tow.SobPf
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+The claim follows from `sobApprox_of haarExists_holds polyKernel_holds (avgSmooth_of sobChart_holds) avgKFin_holds (continuity_of_sobolev_chart sobChart_holds foldCont_holds) (foldBddK_of sobChart_holds)`.
+-/
 theorem sobApprox_holds : SobApprox :=
   sobApprox_of haarExists_holds polyKernel_holds (avgSmooth_of sobChart_holds) avgKFin_holds
     (continuity_of_sobolev_chart sobChart_holds foldCont_holds) (foldBddK_of sobChart_holds)

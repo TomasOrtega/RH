@@ -23,6 +23,9 @@ def jf : Gf q π₀ ⟶ Y₀ := pullback.fst _ _
 
 def sf : Gf q π₀ ⟶ Sp D.what₂.LL := pullback.snd _ _
 
+/- English proof (translation)
+The claim follows from `IsPullback.of_hasPullback _ _`.
+-/
 theorem isPullback_f :
     IsPullback (jf q π₀) (sf q π₀) (π₀ ≫ q) (spMap (algebraMap (𝓞 D.what₂.LL) D.what₂.LL)) :=
   IsPullback.of_hasPullback _ _
@@ -32,11 +35,17 @@ def jGf {Bg : Scheme.{0}} (jB : Bg ⟶ Bs) (p : Bg ⟶ Sp D.what₂.LL)
   hB.lift (jf q π₀ ≫ π₀) (sf q π₀) (by
     simpa [Category.assoc] using (isPullback_f q π₀).w)
 
+/- English proof (translation)
+The claim follows from `hB.lift_fst _ _ _`.
+-/
 theorem jGf_jB {Bg : Scheme.{0}} (jB : Bg ⟶ Bs) (p : Bg ⟶ Sp D.what₂.LL)
     (hB : IsPullback jB p q (spMap (algebraMap (𝓞 D.what₂.LL) D.what₂.LL))) :
     jGf q π₀ jB p hB ≫ jB = jf q π₀ ≫ π₀ :=
   hB.lift_fst _ _ _
 
+/- English proof (translation)
+Establish `h : f (genericPoint G) ⤳ genericPoint X` using `by rw [hf]`. Use `⟨(X.presheaf.stalkSpecializes h ≫ f.stalkMap (genericPoint G)).hom, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = Spec.map (CommRingCat.ofHom (X.presheaf.stalkSpecializes h ≫ f.stalkMap (genericPoint G)).hom) ≫ _`. Rewrite using `[CommRingCat.ofHom_hom, Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk, Scheme.SpecMap_stalkMap_fromSpecStalk]`.
+-/
 theorem exists_ringHom_of_generic {G X : Scheme.{0}} [IsIntegral G] [IsIntegral X] (f : G ⟶ X)
     (hf : f (genericPoint G) = genericPoint X) :
     ∃ φ : X.functionField →+* G.functionField,
@@ -47,6 +56,11 @@ theorem exists_ringHom_of_generic {G X : Scheme.{0}} [IsIntegral G] [IsIntegral 
   rw [CommRingCat.ofHom_hom, Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk,
     Scheme.SpecMap_stalkMap_fromSpecStalk]
 
+/- English proof (translation)
+Use `⟨fun x => ?_⟩` and prove the remaining obligations. Establish `hc : IsClosed (Set.range f.base)` using `f.isClosedMap.isClosed_range`. Establish `hx : x ∈ closure {genericPoint X}`. Use `genericPoint_spec X` as an intermediate fact. Rewrite using `[this.def]`.
+
+Discharge the goal by the elementary cases of `trivial`. Establish `hsub : closure {genericPoint X} ⊆ Set.range f.base` using `closure_minimal (by rintro _ rfl; exact ⟨_, hf⟩) hc`. Conclude with `hsub hx`.
+-/
 theorem surjective_of_generic {G X : Scheme.{0}} [IsIntegral G] [IsIntegral X] (f : G ⟶ X) [IsFinite f]
     (hf : f (genericPoint G) = genericPoint X) : Surjective f := by
   refine ⟨fun x => ?_⟩

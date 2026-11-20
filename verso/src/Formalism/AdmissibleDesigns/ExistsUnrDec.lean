@@ -15,6 +15,9 @@ section Gen
 
 variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Conclude with `hT2Core.out.unr A hp`.
+-/
 theorem exists_unr_dec (A : ValuationSubring Ω) (hp : A.valuation (p : Ω) < 1) :
     ∃ χ : ↥(A.decompositionSubgroup F) → ℤ_[p], Continuous χ ∧ (∀ g h, χ (g * h) = χ g + χ h) ∧
       (∀ g : ↥(A.decompositionSubgroup F), (g : Ω ≃ₐ[F] Ω) ∈ Ine (F := F) A → χ g = 0) ∧ ∃ g, χ g = 1 := by
@@ -26,6 +29,11 @@ section Rec
 
 variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D i)
 
+/- English proof (translation)
+Establish `hmem : l.1 ∈ K.plSet i dc`. Simplify using `only [K.plSet, Finset.mem_union]`. Conclude with `Or.inl (Or.inr l.2)`. Establish `hlt : ((K.plSet i dc).equivFin ⟨l.1, hmem⟩ : ℕ) < (K.plSet i dc).card` using `Fin.is_lt _`. Unfold `K.colIdx K.idx K.plOf`.
+
+Rewrite using `[dif_pos hmem, dif_pos hlt]`. Simplify using the standard rewrite rules.
+-/
 private lemma plOf_colIdx (l : K.Col i dc) : K.plOf i dc (K.colIdx i dc l) = l.1 := by
   have hmem : l.1 ∈ K.plSet i dc := by
     simp only [K.plSet, Finset.mem_union]
@@ -35,6 +43,9 @@ private lemma plOf_colIdx (l : K.Col i dc) : K.plOf i dc (K.colIdx i dc l) = l.1
   rw [dif_pos hmem, dif_pos hlt]
   simp
 
+/- English proof (translation)
+Rewrite using `[plOf_colIdx]`. Use `first`. Consider the case `exact (dc.cover l.1).mp (Or.inr l.2)`. Consider the case `exact ((dc.cover l.1).mp (Or.inr l.2)).1`. Consider the case `(have h := (dc.cover l.1).mp (Or.inr l.2); done)`.
+-/
 theorem col_over (l : K.Col i dc) : K.plOf i dc (K.colIdx i dc l) ∈ placesOver D.host.E (D.nd.l i) := by
   rw [plOf_colIdx]
   first
@@ -42,6 +53,11 @@ theorem col_over (l : K.Col i dc) : K.plOf i dc (K.colIdx i dc l) ∈ placesOver
   | exact ((dc.cover l.1).mp (Or.inr l.2)).1
   | (have h := (dc.cover l.1).mp (Or.inr l.2); done)
 
+/- English proof (translation)
+Establish `hov` using `col_over i dc l`. Rewrite `hov` using `[plOf_colIdx]`. Unfold `K.Aw`. Rewrite using `[plOf_colIdx]`. Establish `h2` using `(D.nd.plOm.2 l.1 ((D.nd.l i : ℕ) : 𝓞 D.host.E)).mpr hov`.
+
+Simplify using `using h2`.
+-/
 theorem col_hp (l : K.Col i dc) :
     (K.Aw i dc (K.colIdx i dc l)).valuation ((D.nd.l i : ℕ) : D.nd.Om) < 1 := by
   have hov := col_over i dc l
@@ -51,6 +67,13 @@ theorem col_hp (l : K.Col i dc) :
   have h2 := (D.nd.plOm.2 l.1 ((D.nd.l i : ℕ) : 𝓞 D.host.E)).mpr hov
   simpa using h2
 
+/- English proof (translation)
+Take `⟨χ, hc, hm, hI, g1, h1⟩` from `exists_unr_dec (F := D.host.E) (K.Aw i dc (K.colIdx i dc l)) (col_hp i dc l)`. Use `⟨fun g => algebraMap ℤ_[D.nd.l i] (D.nd.O i) (χ g), ⟨fun g h => ?_, fun g hg => ?_, fun hn => ?_⟩, g1, ?_⟩` and prove the remaining obligations. Use `show algebraMap ℤ_[D.nd.l i] (D.nd.O i) (χ (g * h)) = _ + _`. Rewrite using `[hm, map_add]`. Establish `hg' : ((g : D.nd.Om ≃ₐ[D.host.E] D.nd.Om)) ∈ Ine (F` using `D.host.E) (K.Aw i dc (K.colIdx i dc l)) := Subgroup.mem_subgroupOf.1 hg show algebraMap ℤ_[D.nd.l i] (D.nd.O i) (χ g) = 0`.
+
+Rewrite using `[hI g hg', map_zero]`. Establish `hf : Continuous fun g : ↥(KFin.Γc i dc l) => algebraMap ℤ_[D.nd.l i] (D.nd.O i) (χ g)` using `(K.Topo.continuous_alg i).comp hc`. Establish `e1 : ∀ c : D.nd.O i, KHf.eK (D.nbr i _ hn) (algebraMap (D.nd.O i) (FractionRing (D.nd.O i)) c) = ((D.nbr i _ hn).eO c : Br.LLw (D.nbr i _ hn))` using `fun c => by`. Rewrite using `[KHf.eK_apply, Br.toLLK_alg]`. Both sides reduce to the same expression.
+
+Simplify using `only [e1]`. Conclude with `continuous_subtype_val.comp ((D.nbr i _ hn).eO_cont.comp (hf.comp (Br.iota_cont D.nbr i _ hn)))`. Use `show algebraMap ℤ_[D.nd.l i] (D.nd.O i) (χ g1) = 1`. Rewrite using `[h1, map_one]`.
+-/
 theorem unrHom (l : K.Col i dc) : KFin.UnrHom i dc l := by
   obtain ⟨χ, hc, hm, hI, g1, h1⟩ :=
     exists_unr_dec (F := D.host.E) (K.Aw i dc (K.colIdx i dc l)) (col_hp i dc l)

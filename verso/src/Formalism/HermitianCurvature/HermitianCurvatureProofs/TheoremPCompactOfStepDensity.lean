@@ -15,11 +15,19 @@ def DerivCombInt (f : ℂ → ℂ) (I : ℂ) : Prop :=
     (∀ t, t ≠ 0 → f t = ∑ i, a i * iteratedFDeriv ℝ (j i) (Dd i) t (v i)) ∧
     ∑ i, a i * (if j i = 0 then ∫ t, Dd i t else 0) = I
 
+/- English proof (translation)
+Substitute `hm` using the available equality. Simplify using the standard rewrite rules.
+-/
 theorem iteratedFDeriv_apply_of_eq_zero (m : ℕ) (u : Fin m → ℂ) (G : ℂ → ℂ) (hm : m = 0) (t : ℂ) :
     iteratedFDeriv ℝ m G t u = G t := by
   subst hm
   simp
 
+/- English proof (translation)
+Rewrite using `[ae_iff]`. Establish `hset : {a : ℂ | ¬a ≠ 0} = {0}`. Use extensionality with `a`. Simplify using the standard rewrite rules. Rewrite using `[hset]`.
+
+Conclude with `measure_singleton 0`.
+-/
 theorem ae_ne_zero_C : ∀ᵐ t : ℂ, t ≠ 0 := by
   rw [ae_iff]
   have hset : {a : ℂ | ¬a ≠ 0} = {0} := by
@@ -28,6 +36,29 @@ theorem ae_ne_zero_C : ∀ᵐ t : ℂ, t ≠ 0 := by
   rw [hset]
   exact measure_singleton 0
 
+/- English proof (translation)
+Take `⟨n, K, C, Dd, j, v, a, hjn, hdat, hf, hI⟩` from `hf`. Establish `hc` using `fun i => Fou.smooth_extension_of_fourier_decay (Dd i) n C (hdat i).1 (hdat i).2.1 (hdat i).2.2.1 (hdat i).2.2.2.1 (hdat i).2.2.2.2`. Use `choose D' hD'c hD'e hD'i hdec hder using hc`. Use `choose Cd hCd using hdec`. Use `⟨fun t => ∑ i, a i * iteratedFDeriv ℝ (j i) (D' i) t (v i), ?_, fun t ht => ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `continuous_finsetSum _ fun i _ => continuous_const.mul ?_` and prove the remaining obligations. Conclude with `(continuous_eval_const (v i)).comp ((hD'c i).continuous_iteratedFDeriv (by exact_mod_cast hjn i))`. Rewrite using `[hf t ht]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 2`.
+
+Establish `hev : D' i =ᶠ[𝓝[Set.univ] t] Dd i`. Rewrite using `[nhdsWithin_univ]`. Use `filter_upwards [isOpen_compl_singleton.mem_nhds ht] with u hu`. Conclude with `hD'e i u hu`. Use `hev.iteratedFDerivWithin_eq (hD'e i t ht) (j i) (𝕜 := ℝ)` as an intermediate fact.
+
+Rewrite `this` using `[iteratedFDerivWithin_univ, iteratedFDerivWithin_univ]`. Then use the resulting hypothesis. Use `⟨∑ i, ‖a i‖ * (Cd i * ∏ k, ‖v i k‖), fun t => ?_⟩` and prove the remaining obligations. Establish `hpow : (1 + ‖t‖) ^ (-(4 : ℝ)) = (1 + ‖t‖) ^ (-4 : ℤ)`. Rewrite using `[← Real.rpow_intCast]`. Evaluate the numerical expressions.
+
+Establish `hp0 : 0 ≤ (1 + ‖t‖) ^ (-4 : ℤ)` using `by positivity`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+
+Establish `h1` using `(iteratedFDeriv ℝ (j i) (D' i) t).le_opNorm (v i)`. Establish `h2` using `hCd i (j i) (hjn i) t`. Rewrite `h2` using `[hpow]`. Establish `hv0 : 0 ≤ ∏ k, ‖v i k‖` using `Finset.prod_nonneg fun k _ => norm_nonneg _`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hterm : ∀ i, Integrable (fun t => a i * iteratedFDeriv ℝ (j i) (D' i) t (v i)) ∧ ∫ t, a i * iteratedFDeriv ℝ (j i) (D' i) t (v i) = a i * (if j i = 0 then ∫ t, Dd i t else 0)`. Introduce `i`. Distinguish the cases in `h0 : j i = 0`. Establish `e : (fun t => a i * iteratedFDeriv ℝ (j i) (D' i) t (v i)) = fun t => a i * D' i t`. Use function extensionality and compare the values at `t`.
+
+Rewrite using `[iteratedFDeriv_apply_of_eq_zero (j i) (v i) (D' i) h0 t]`. Establish `hInt : Integrable (D' i)` using `(hdat i).1.congr (ae_ne_zero_C.mono fun t ht => (hD'e i t ht).symm)`. Rewrite using `[e, if_pos h0]`. Conclude with `⟨hInt.const_mul _, by rw [integral_const_mul, hD'i i]⟩`. Establish `hj1 : 1 ≤ j i` using `Nat.one_le_iff_ne_zero.mpr h0`.
+
+Take `⟨hIi, hzero⟩` from `hder i (j i) hj1 (hjn i)`. Establish `hIv : Integrable (fun t => iteratedFDeriv ℝ (j i) (D' i) t (v i))` using `(ContinuousMultilinearMap.apply ℝ (fun _ : Fin (j i) => ℂ) ℂ (v i)).integrable_comp hIi`. Establish `hz : ∫ t, iteratedFDeriv ℝ (j i) (D' i) t (v i) = 0`. Use `(ContinuousMultilinearMap.apply ℝ (fun _ : Fin (j i) => ℂ) ℂ (v i)).integral_comp_comm hIi` as an intermediate fact. Simplify using `only [ContinuousMultilinearMap.apply_apply] at this`.
+
+Rewrite using `[this, hzero]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg h0]`. Conclude with `⟨hIv.const_mul _, by rw [integral_const_mul, hz, mul_zero]⟩`. Rewrite using `[integral_finsetSum _ fun i _ => (hterm i).1]`.
+
+Rewrite using `[← hI]`. Conclude with `Finset.sum_congr rfl fun i _ => (hterm i).2`.
+-/
 theorem ext_of_derivCombInt {f : ℂ → ℂ} {I : ℂ} (hf : DerivCombInt f I) :
     ∃ φ : ℂ → ℂ, Continuous φ ∧ (∀ t, t ≠ 0 → φ t = f t) ∧
       (∃ C' : ℝ, ∀ t, ‖φ t‖ ≤ C' * (1 + ‖t‖) ^ (-4 : ℤ)) ∧ ∫ t, φ t = I := by
@@ -88,6 +119,11 @@ theorem ext_of_derivCombInt {f : ℂ → ℂ} {I : ℂ} (hf : DerivCombInt f I) 
     rw [← hI]
     exact Finset.sum_congr rfl fun i _ => (hterm i).2
 
+/- English proof (translation)
+Take `⟨n, K, C, Dd, j, v, a, hj, hD, hfa, hI⟩` from `hf`. Use `⟨n, K, C, Dd, j, v, fun i => c * a i, hj, hD, ?_, ?_⟩` and prove the remaining obligations. Introduce `t ht`. Rewrite using `[h t ht, hfa t ht, Finset.mul_sum]`. Simplify using `only [mul_assoc]`.
+
+Rewrite using `[← hI, Finset.mul_sum]`. Simplify using `only [mul_assoc]`.
+-/
 theorem derivCombInt_congr {f g : ℂ → ℂ} {I : ℂ} (c : ℂ) (hf : DerivCombInt f I) (h : ∀ t, t ≠ 0 → g t = c * f t) :
     DerivCombInt g (c * I) := by
   obtain ⟨n, K, C, Dd, j, v, a, hj, hD, hfa, hI⟩ := hf
@@ -103,6 +139,9 @@ section Gen
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {S : Type} [Fintype S] [DecidableEq S]
 
+/- English proof (translation)
+Unfold `StepDens`. Introduce `w hw l x y hx hy c hc`. Conclude with `ext_of_derivCombInt (h w hw l x y hx hy c hc)`.
+-/
 theorem stepDens_of_exp (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π : Mx P.k P.r → (Wp →L[ℂ] Wp))
     (π' : Mx P.k P.r → (Wq →L[ℂ] Wq)) (μ : Measure (Mt P.k P.r))
     (L : R.LevelData (Pr (RadSp P.k P.r z z' π π')) P.r) (st : Fr.Start (Pr (RadSp P.k P.r z z' π π')))
@@ -130,6 +169,49 @@ def StepExp0 : Prop :=
       InK (herKc S P z z' π π' L st l0 D l.castSucc) x → InK (herKc S P z z' π π' L st l0 D l.castSucc) y →
       ∀ c ∈ OmX P.r, DerivCombInt (ph L st μ l w x y c) (RRform L st μ l.castSucc w x y c)
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ'`. Use `stepDens_of_exp P z z' π π' μ L st _ l0 fun w hw l x y hx hy c hc => ?_` and prove the remaining obligations. Take `⟨Di, Xi, μi, Li, sti, T, hDi, ⟨-, ⟨κ, hκ, hpair⟩, -, hwT⟩, hHer⟩` from `hT Wp Wq P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' l.castSucc c (fun p _ => hc p)`. Take `⟨hbT, hRR, hWO⟩` from `hwT S w`. Establish `hpos : 0 < P.r - (l.castSucc : Fin (P.r + 1)).val` using `by simp only [Fin.val_castSucc]; omega`.
+
+Use `set l' : Fin (P.r - (l.castSucc : Fin (P.r + 1)).val) := ⟨0, hpos⟩ with hl'`. Establish `hl'v : l'.val = 0` using `by rw [hl']`. Establish `e0 : ∀ h : l'.val + (l.castSucc : Fin (P.r + 1)).val < P.r, (⟨l'.val + (l.castSucc : Fin (P.r + 1)).val, h⟩ : Fin P.r) = l` using `fun h => by`. Apply `Fin.ext` to reduce the goal to its premises. Use `show l'.val + (l.castSucc : Fin (P.r + 1)).val = l.val`.
+
+Rewrite using `[hl'v, Fin.val_castSucc, zero_add]`. Establish `e1 : ∀ h : 1 + (l.castSucc : Fin (P.r + 1)).val < P.r + 1, (⟨1 + (l.castSucc : Fin (P.r + 1)).val, h⟩ : Fin (P.r + 1)) = l.succ` using `fun h => by`. Apply `Fin.ext` to reduce the goal to its premises. Use `show 1 + (l.castSucc : Fin (P.r + 1)).val = l.succ.val`. Rewrite using `[Fin.val_castSucc, Fin.val_succ, add_comm]`.
+
+Establish `e2 : ∀ h : 1 < P.r - (l.castSucc : Fin (P.r + 1)).val + 1, (⟨1, h⟩ : Fin (P.r - (l.castSucc : Fin (P.r + 1)).val + 1)) = l'.succ` using `fun h => by`. Apply `Fin.ext` to reduce the goal to its premises. Use `show 1 = l'.succ.val`. Rewrite using `[Fin.val_succ, hl'v]`. Establish `hb : Formalism.FourierDecayAlt.P.PBH.ARel T (bTl L l w) (bTl Li l' w)`.
+
+Use `hbT l'` as an intermediate fact. Simplify using `only [e0] at this`. Conclude with `this`. Establish `hR1 : Formalism.FourierDecayAlt.P.PBH.ARel T (RRi L st l.succ w) (RRi Li sti l'.succ w)`. Use `hRR 1 (by simp only [Fin.val_castSucc]; omega)` as an intermediate fact.
+
+Simplify using `only [e1, e2] at this`. Conclude with `this`. Establish `hM` using `Formalism.FourierDecayAlt.P.PBH.arel_mul hR1 hb`. Establish `hSM` using `Formalism.FourierDecayAlt.P.PBH.arel_mul (arel_star hb) hM`. Establish `hl0 : l'.castSucc = 0` using `Fin.ext rfl`.
+
+Establish `hx' : InK (herKc S (JC.parLev P (l.castSucc : Fin (P.r + 1))) Di.z Di.z' Di.π Di.π' Li sti l0 Di l'.castSucc) (fun a => T (x a))`. Rewrite using `[hl0]`. Conclude with `fun a => hHer S (x a) (hx a)`. Establish `hy' : InK (herKc S (JC.parLev P (l.castSucc : Fin (P.r + 1))) Di.z Di.z' Di.π Di.π' Li sti l0 Di l'.castSucc) (fun a => T (y a))`. Rewrite using `[hl0]`.
+
+Conclude with `fun a => hHer S (y a) (hy a)`. Establish `hc0 : shiftV l.castSucc c ∈ OmX (P.r - (l.castSucc : Fin (P.r + 1)).val)` using `fun m => hc _`. Establish `e3 : ∀ h : 0 + (l.castSucc : Fin (P.r + 1)).val < P.r + 1, (⟨0 + (l.castSucc : Fin (P.r + 1)).val, h⟩ : Fin (P.r + 1)) = l.castSucc` using `fun h => by`. Apply `Fin.ext` to reduce the goal to its premises. Use `show 0 + (l.castSucc : Fin (P.r + 1)).val = (l.castSucc : Fin (P.r + 1)).val`.
+
+Rewrite using `[zero_add]`. Establish `e4 : ∀ h : 0 < P.r - (l.castSucc : Fin (P.r + 1)).val + 1, (⟨0, h⟩ : Fin (P.r - (l.castSucc : Fin (P.r + 1)).val + 1)) = l'.castSucc` using `fun h => by`. Apply `Fin.ext` to reduce the goal to its premises. Use `show 0 = l'.castSucc.val`. Rewrite using `[Fin.val_castSucc, hl'v]`.
+
+Establish `hR0 : Formalism.FourierDecayAlt.P.PBH.ARel T (RRi L st l.castSucc w) (RRi Li sti l'.castSucc w)`. Use `hRR 0 (by simp only [Fin.val_castSucc]; omega)` as an intermediate fact. Simplify using `only [e3, e4] at this`. Conclude with `this`. Establish `hD0` using `h0 Wp Wq S (JC.parLev P (l.castSucc : Fin (P.r + 1))) Di.z Di.z' Di.π Di.π' Xi μi Li sti l0 Di hDi h1 h2 rfl rfl rfl rfl w (hWO hw) l' rfl _ _ hx' hy' _ hc0`.
+
+Establish `hjl0 : l'.castSucc.val + (l.castSucc : Fin (P.r + 1)).val = (l.castSucc : Fin (P.r + 1)).val`. Simplify using `only [Fin.val_castSucc, hl'v]`. Use linear arithmetic over natural numbers and integers. Establish `hRRf : RRform L st μ l.castSucc w x y c = (κ : ℂ)⁻¹ * RRform Li sti μi l'.castSucc w (fun a => T (x a)) (fun a => T (y a)) (shiftV l.castSucc c)`. Unfold `RRform`.
+
+Rewrite using `[form_tr μ l.castSucc l.castSucc l'.castSucc hjl0 c c (fun _ _ => rfl) μi T κ hκ hpair]`. Establish `eX0 : (fun a => T (act (RRi L st l.castSucc w) x a)) = act (RRi Li sti l'.castSucc w) (fun b => T (x b))`. Use function extensionality and compare the values at `a`. Conclude with `act_tr T hR0 x a`. Rewrite using `[eX0]`.
+
+Rewrite using `[hRRf]`. Use `derivCombInt_congr ((κ : ℂ)⁻¹) hD0 fun t _ => ?_` and prove the remaining obligations. Establish `hjl1 : l'.succ.val + (l.castSucc : Fin (P.r + 1)).val = l.succ.val`. Simplify using `only [Fin.val_succ, Fin.val_castSucc, hl'v]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hupd : ∀ p : Fin P.r, p.val < (l.castSucc : Fin (P.r + 1)).val → Function.update c l t p = c p`. Introduce `p hp`. Rewrite using `[Function.update_of_ne]`. Introduce `h`. Rewrite `hp` using `[h]`.
+
+Simplify using `at hp`. Establish `eX : (fun a => T (act (RRi L st l.succ w) (act (bTl L l w) x) a)) = act (RRi Li sti l'.succ w) (act (bTl Li l' w) (fun b => T (x b)))`. Use function extensionality and compare the values at `a`. Rewrite using `[act_tr T hR1 (act (bTl L l w) x) a]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `b`. Conclude with `act_tr T hb x b`. Establish `eY : (fun a => T (act (bTl L l w) y a)) = act (bTl Li l' w) (fun b => T (y b))`. Use function extensionality and compare the values at `a`. Conclude with `act_tr T hb y a`.
+
+Unfold `ph RRform`. Rewrite using `[form_tr μ l.castSucc l.succ l'.succ hjl1 c (Function.update c l t) hupd μi T κ hκ hpair, eX, eY, mul_left_comm]`. Use `congr 3`. Use function extensionality and compare the values at `m`. Simplify using `only [shiftV, Function.update]`.
+
+Use `split_ifs with hA hB hB`. Apply the tactic sequence `subst hB first | (simp only [eq_rec_constant]; done) | (simp only [eq_rec_constant]; rfl) | rfl | simp`. It suffices to derive a contradiction. Apply `hB` to reduce the goal to its premises. Apply `Fin.ext` to reduce the goal to its premises.
+
+Use `congrArg Fin.val hA` as an intermediate fact. Express the relevant statement in the definitionally equal form `m.val + (l.castSucc : Fin (P.r + 1)).val = l.val at this`. Establish `hcs` using `Fin.val_castSucc l`. Rewrite using `[hl'v]`. Use linear arithmetic over natural numbers and integers.
+
+It suffices to derive a contradiction. Apply `hA` to reduce the goal to its premises. Apply `Fin.ext` to reduce the goal to its premises. Use `congrArg Fin.val hB` as an intermediate fact. Rewrite `this` using `[hl'v]`.
+
+Express the relevant statement in the definitionally equal form `m.val + (l.castSucc : Fin (P.r + 1)).val = l.val`. Establish `hcs` using `Fin.val_castSucc l`. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
+-/
 theorem stepDensCptAll_of_levT (hT : Formalism.FourierDecayAlt.P.PTie.LevTransportHer) (h0 : StepExp0) : StepDensCptAll := by
   intro Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ'
   refine stepDens_of_exp P z z' π π' μ L st _ l0 fun w hw l x y hx hy c hc => ?_
@@ -242,6 +324,9 @@ theorem stepDensCptAll_of_levT (hT : Formalism.FourierDecayAlt.P.PTie.LevTranspo
     omega
   · rfl
 
+/- English proof (translation)
+The claim follows from `thmPActualCpt_of_outer (stepDensCptAll_of_levT hT h0) (formIntOuterCpt_of_levT hT)`.
+-/
 theorem theorem_P_compact_of_step_density (hT : Formalism.FourierDecayAlt.P.PTie.LevTransportHer) (h0 : StepExp0) : ThmPActualCpt :=
   thmPActualCpt_of_outer (stepDensCptAll_of_levT hT h0) (formIntOuterCpt_of_levT hT)
 

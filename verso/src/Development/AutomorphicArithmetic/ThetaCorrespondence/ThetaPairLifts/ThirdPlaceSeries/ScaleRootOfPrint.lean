@@ -19,6 +19,13 @@ set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 800000
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.BigOn.Exp
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.BigOn.Exp.ScaleRootAltBis _root_.GlobalTheory.BigOn.Exp.TwistConditions _root_.GlobalTheory.BigOn.AtPtsAlt`. Use `⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH _ _ => ?_⟩⟩` and prove the remaining obligations. Use `⟨0, fun x hx _ i p _ _ w _ j ρ ρ' hρ hρ' ν ν' _ _ hSB hN hN' _ _ s h P _ _ _ => ?_⟩` and prove the remaining obligations. Take `⟨-, c, hc, n, hn, hνn⟩` from `hN`. Take `⟨-, c', hc', m, hm, hν'm⟩` from `hN'`.
+
+Rewrite `hc'` using `[hSB.2.2.2.1]`. Take `⟨k, hk, hkk⟩` from `isScale_pow_eq p.R p.v₀ _ hc hc'`. Use `⟨n * m * k, Nat.mul_ne_zero (Nat.mul_ne_zero hn hm) hk, ?_⟩` and prove the remaining obligations. Establish `e1 : ν' ^ (n * m * k) = (ν' ^ m) ^ (n * k)` using `by rw [← pow_mul]; ring_nf`. Establish `e2 : ν ^ (n * m * k) = (ν ^ n) ^ (m * k)` using `by rw [← pow_mul]; ring_nf`.
+
+Establish `e3 : c' ^ (n * m * k) = c ^ (n * m * k)`. Rewrite using `[show n * m * k = k * (n * m) by ring, pow_mul c', pow_mul c, hkk]`. Rewrite using `[e1, e2, hν'm, hνn, ← pow_mul, ← pow_mul, mul_pow, mul_pow, show m * (n * k) = n * m * k by ring, show n * (m * k) = n * m * k by ring, e3]`.
+-/
 theorem scaleRoot_of_hypothesis_alt (_ : GlobalTheory.Published.CuspRapidDecay) (_ : GlobalTheory.Published.GlobalArtinReciprocity) (_ : GlobalTheory.Published.RayClassFieldSt)
     (_ : GlobalTheory.IndefiniteRowSideFullHecke.RationalRayLevels.SeriesRat) : _root_.GlobalTheory.BigOn.Exp.ScaleRootAltBis := by
   unfold _root_.GlobalTheory.BigOn.Exp.ScaleRootAltBis _root_.GlobalTheory.BigOn.Exp.TwistConditions _root_.GlobalTheory.BigOn.AtPtsAlt

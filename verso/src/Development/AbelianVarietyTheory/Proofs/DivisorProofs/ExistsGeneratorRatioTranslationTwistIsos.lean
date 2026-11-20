@@ -18,6 +18,21 @@ noncomputable section
 
 namespace GlobalTheory.MumCmp.TwRatio
 
+/- English proof (translation)
+Establish `pW` using `(isGen_iff W).1 hW`. Establish `l1 : ∀ (j : K ⊕ PUnit → M.ι) k, LB.wchart M (Sum.elim φ (fun _ : PUnit => F)) j ⊓ L₀.U k ≤ (LB.LinComb M φ ε).U (j ∘ Sum.inl) ⊓ L₀.U k` using `fun j k y hy => ⟨Set.mem_iInter.2 fun i => Set.mem_iInter.1 hy.1 (Sum.inl i), hy.2⟩`. Establish `l2 : ∀ (j : K ⊕ PUnit → M.ι) k, LB.wchart M (Sum.elim φ (fun _ : PUnit => F)) j ⊓ L₀.U k ≤ (M.pull F).U (fun _ => j (Sum.inr PUnit.unit)) ⊓ L₀.U k` using `fun j k y hy => ⟨Set.mem_iInter.2 fun _ => Set.mem_iInter.1 hy.1 (Sum.inr PUnit.unit), hy.2⟩`. Set `u : ∀ (j : K ⊕ PUnit → M.ι) k, Γ(A, LB.wchart M (Sum.elim φ (fun _ : PUnit => F)) j ⊓ L₀.U k)ˣ` to `fun j k => res (l1 j k) (w.s (j ∘ Sum.inl, k)) * (res (l2 j k) (W.s (fun _ => j (Sum.inr PUnit.unit), k)))⁻¹`. Establish `hu : ∀ (Z : Scheme.{0}) (r : Z ⟶ A) (z : Z) j k, r z ∈ LB.wchart M (Sum.elim φ (fun _ : PUnit => F)) j ⊓ L₀.U k → gm r z _ (u j k) = gv w r z (j ∘ Sum.inl) k * (gw W r z (j (Sum.inr PUnit.unit)) k)⁻¹` using `fun Z r z j k hz => (map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res r z _ hz _) ((map_inv _ _).trans (congrArg _ (gm_res r z _ hz _))))`.
+
+Establish `rel : ∀ (Z : Scheme.{0}) (r : Z ⟶ A) (z : Z) (j j' : K ⊕ PUnit → M.ι) (k k' : L₀.ι), r z ∈ LB.wchart M (Sum.elim φ (fun _ : PUnit => F)) j → r z ∈ LB.wchart M (Sum.elim φ (fun _ : PUnit => F)) j' → r z ∈ L₀.U k → r z ∈ L₀.U k' → gv w r z (j ∘ Sum.inl) k * (gw W r z (j (Sum.inr PU …`. Introduce `Z r z j j' k k' hj hj' hk hk'`. Establish `key : ∀ {G : Type} [CommGroup G] (a c d x y : G), a * c⁻¹ * x * (d * c⁻¹ * y)⁻¹ = a * d⁻¹ * (x * y⁻¹)` using `fun a c d x y => by`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`.
+
+Normalize the expressions using the abelian group laws. Establish `a₁ : r z ∈ (LB.LinComb M φ ε).U (j ∘ Sum.inl)` using `Set.mem_iInter.2 fun i => Set.mem_iInter.1 hj (Sum.inl i)`. Establish `a₂ : r z ∈ (LB.LinComb M φ ε).U (j' ∘ Sum.inl)` using `Set.mem_iInter.2 fun i => Set.mem_iInter.1 hj' (Sum.inl i)`. Establish `b₁ : F (r z) ∈ M.U (j (Sum.inr PUnit.unit))` using `Set.mem_iInter.1 hj (Sum.inr PUnit.unit)`. Establish `b₂ : F (r z) ∈ M.U (j' (Sum.inr PUnit.unit))` using `Set.mem_iInter.1 hj' (Sum.inr PUnit.unit)`.
+
+Establish `e` using `gm_linComb M φ ε r z _ _ a₁ a₂`. Rewrite using `[gm_isGen hw r z _ _ k k' a₁ a₂ hk hk', pW Z r z _ _ k k' b₁ b₂ hk hk']`. Use `erw [e]`. Rewrite using `[trF, Fintype.prod_sum_type]`. Simplify using `only [Fintype.prod_unique, Sum.elim_inl, Sum.elim_inr, Function.comp_apply, zpow_neg, zpow_one]`.
+
+Conclude with `key _ _ _ _ _`. Establish `glue : ∀ j : K ⊕ PUnit → M.ι, ∃ s : Γ(A, LB.wchart M (Sum.elim φ (fun _ : PUnit => F)) j)ˣ, ∀ k, res (inf_le_left : LB.wchart M (Sum.elim φ (fun _ : PUnit => F)) j ⊓ L₀.U k ≤ _) s = u j k` using `fun j => glue_unit _ (fun k => LB.wchart M (Sum.elim φ (fun _ : PUnit => F)) j ⊓ L₀.U k) (fun _ => inf_le_left) (fun y hy => by`. Take `⟨k, hk⟩` from `exists_chart hL₀ y`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨k, hy, hk⟩) (u j)`. Use the proof step `(fun k k' y hy => by`.
+
+Rewrite using `[hu _ _ y j k hy.1, hu _ _ y j k' hy.2, rel _ (𝟙 A) y j j k k' hy.1.1 hy.1.1 hy.1.2 hy.2.2, trF_self hM _ _ (𝟙 A) y hy.1.1, _root_.one_mul])`. Use `choose s hs using glue`. Establish `hv : ∀ (Z : Scheme.{0}) (r : Z ⟶ A) (z : Z) j k, r z ∈ LB.wchart M (Sum.elim φ (fun _ : PUnit => F)) j → r z ∈ L₀.U k → gm r z _ (s j) = gv w r z (j ∘ Sum.inl) k * (gw W r z (j (Sum.inr PUnit.unit)) k)⁻¹` using `fun Z r z j k hj hk => (gm_res r z _ (show r z ∈ _ ⊓ L₀.U k from ⟨hj, hk⟩) (s j)).symm.trans ((congrArg (gm r z _) (hs j k)).trans (hu Z r z j k ⟨hj, hk⟩))`. Use `⟨⟨s⟩, isGen_of_gm _ fun y j j' hj hj' => ?_, fun Z r z J j' hJ hj' => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `exists_chart hL₀ y`.
+
+Conclude with `(hv _ (𝟙 A) y j k hj hk).trans ((rel _ (𝟙 A) y j j' k k hj hj' hk hk).trans (congrArg _ (hv _ (𝟙 A) y j' k hj' hk).symm))`. Conclude with `hv Z r z _ j' (hJ.mem _ r) hj'`.
+-/
 theorem exists_ratio_gen {X A : Scheme.{0}} {M : LB X} {L₀ : LB A} (hM : M.IsLB) (hL₀ : L₀.IsLB)
     {K : Type} [Fintype K] (φ : K → (A ⟶ X)) (ε : K → ℤ) (F : A ⟶ X)
     (w : LB.Iso L₀ (LB.LinComb M φ ε)) (hw : w.IsGen) (W : LB.Iso L₀ (M.pull F)) (hW : W.IsGen) :
@@ -84,6 +99,21 @@ end GlobalTheory.MumCmp.TwRatio
 
 namespace GlobalTheory.MumCmp.TwRatio
 
+/- English proof (translation)
+Introduce `R _ _ _ D₀ D β b w hw W hW`. Take `⟨τ, hτ, vτ⟩` from `exists_ratio_gen D.P.isLB D₀.P.isLB (GlobalTheory.MumCmp.twφ D₀ D β b) GlobalTheory.MumCmp.twε (GlobalTheory.MumCmp.twφ D₀ D β b 0) w hw W hW`. Take `⟨t₀, ht₀⟩` from `DVR.exists_gen_of_local (V := R) D.P.L D.P.isLB (K := Fin 2) ![b.left, η[D.P.A].left] ![-1, 1]`. Establish `hF : FormEq (Sum.elim (GlobalTheory.MumCmp.twφ D₀ D β b) (fun _ : PUnit => GlobalTheory.MumCmp.twφ D₀ D β b 0)) (Sum.elim GlobalTheory.MumCmp.twε (fun _ => -1)) (fun k => D₀.P.A.hom ≫ (![b.left, η[D.P.A].left] : Fin 2 → ((𝟙_ (Over (Sp R))).left ⟶ D.P.A.left)) k) ![-1, 1]`. Introduce `U _ h`.
+
+Establish `e1 : GlobalTheory.MumCmp.twφ D₀ D β b 1 = D₀.P.A.hom ≫ b.left` using `rfl`. Establish `e2 : GlobalTheory.MumCmp.twφ D₀ D β b 2 = D₀.P.A.hom ≫ η[D.P.A].left` using `rfl`. Rewrite using `[Fintype.prod_sum_type, Fin.prod_univ_three, Fin.prod_univ_two]`. Simplify using `only [Fintype.prod_unique, Sum.elim_inl, Sum.elim_inr, e1, e2, GlobalTheory.MumCmp.twε, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, zpow_neg, zpow_one]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws. Take `⟨τ', hτ', vτ'⟩` from `ReciprocityTheory.ChartRestriction.G.Geo.Tor.exists_gen D.P.isLB hF τ hτ`. Take `⟨a, ha⟩` from `GlobalTheory.AbPackage.exists_unit_ratio D.P.isLB hτ' (DVR.pullGen_isGen _ _ _ t₀ ht₀ D₀.P.A.hom)`. Establish `hG` using `GlobalTheory.globalFns_holds _ D₀.P.A D₀.P.isAb`.
+
+Take `⟨c, hc⟩` from `hG.2 a.val`. Take `⟨c', hc'⟩` from `hG.2 (a⁻¹).val`. Establish `hcc : c * c' = 1` using `hG.1 (by rw [map_mul, hc, hc', Units.mul_inv, map_one])`. Set `cu : Γ(Sp R, ⊤)ˣ` to `⟨c, c', hcc, (mul_comm c' c).trans hcc⟩`. Establish `hcu : pullU D₀.P.A.hom ⊤ cu = a` using `Units.ext hc`.
+
+Take `⟨ν, hν, vν⟩` from `GlobalTheory.TorsionTranslate.exists_scale t₀ ht₀ cu`. Use `⟨ν, hν, fun Z r z J j' hJ hj' => ?_⟩` and prove the remaining obligations. Establish `e1` using `vτ Z r z J j' hJ hj'`. Establish `e2` using `vτ' Z r z J hJ`. Establish `e3` using `ha Z r z J hJ`.
+
+Establish `e4` using `val_pull hJ t₀ D₀.P.A.hom r`. Establish `e5` using `vν Z (r ≫ D₀.P.A.hom) z J hJ`. Establish `e6 : gm r z ⊤ a = gm (r ≫ D₀.P.A.hom) z ⊤ cu`. Rewrite using `[← hcu]`. Conclude with `gm_pull r D₀.P.A.hom z ⊤ trivial cu`.
+
+Rewrite using `[e5, ← e6, ← e4, ← e3, e2, e1, mul_left_comm, mul_inv_cancel, _root_.mul_one]`.
+-/
 theorem exists_twist_ratio : ∀ {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] (D₀ D : DegPre R) (β : D₀.P.A ⟶ D.P.A) (b : 𝟙_ (Over (Sp R)) ⟶ D.P.A)
     (w : LB.Iso D₀.P.L (LB.LinComb D.P.L (GlobalTheory.MumCmp.twφ D₀ D β b) GlobalTheory.MumCmp.twε)) (hw : w.IsGen)
     (W : LB.Iso D₀.P.L (D.P.L.pull (GlobalTheory.MumCmp.twφ D₀ D β b 0))) (hW : W.IsGen),

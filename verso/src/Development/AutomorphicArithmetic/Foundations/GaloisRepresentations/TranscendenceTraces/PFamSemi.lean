@@ -2,6 +2,15 @@ import Mathlib
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TranscendenceTraces.IsolateSpec
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
+/- English proof (translation)
+Introduce `Z S p R₁ R₂ R₃ _ _ _ I J K`. Use `⟨fun τ ρ => ?_, fun ρ τ => ?_⟩` and prove the remaining obligations. Use `⟨⟨fun s => ⟨fun A => (ρ.app A.U s).comp ((τ.deg s).app A), ?_⟩, ?_⟩, fun _ _ _ => rfl⟩` and prove the remaining obligations. Introduce `A B t a`. Express the relevant statement in the definitionally equal form `Sec.res t.g (ρ.app B.U s ((τ.deg s).app B a)) = ρ.app A.U s ((τ.deg s).app A (Sec.res t.k a))`.
+
+Rewrite using `[ρ.nat t.g s, (τ.deg s).nat t a]`. Introduce `A s t a`. Express the relevant statement in the definitionally equal form `Sec.map (K.d s t) (ρ.app A.U s ((τ.deg s).app A a)) = ρ.app A.U t ((τ.deg t).app A (Sec.map (I.d s t) a))`. Rewrite using `[ρ.comm A.U s t, τ.comm A s t a]`. Use `⟨⟨fun s => ⟨fun A => ((τ.deg s).app A).comp (ρ.app A.V s), ?_⟩, ?_⟩, fun _ _ _ => rfl⟩` and prove the remaining obligations.
+
+Introduce `A B t a`. Express the relevant statement in the definitionally equal form `Sec.res t.g ((τ.deg s).app B (ρ.app B.V s a)) = (τ.deg s).app A (ρ.app A.V s (Sec.res t.k a))`. Rewrite using `[(τ.deg s).nat t, ρ.nat t.k s]`. Introduce `A s t a`. Express the relevant statement in the definitionally equal form `Sec.map (K.d s t) ((τ.deg s).app A (ρ.app A.V s a)) = (τ.deg t).app A (ρ.app A.V t (Sec.map (I.d s t) a))`.
+
+Rewrite using `[τ.comm A s t, ρ.comm A.V s t]`.
+-/
 theorem UpperTheory.Gal.TranscendenceTraces.famSemi_of :
     FamSemi := by
   intro Z S p R₁ R₂ R₃ _ _ _ I J K

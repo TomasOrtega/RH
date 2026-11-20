@@ -13,6 +13,11 @@ variable {l : ℕ} [Fact l.Prime] {k : Type} [Field k] (F : Frame l k) (n : ℕ)
 def ordProd {H K : Type} [CommRing K] {n : ℕ} (r : H → Matrix (Fin n) (Fin n) K) (ψ : Fin n → H → K) (g : Fin n → H) :
     Matrix (Fin n) (Fin n) K := (List.ofFn fun i => r (g i) - ψ i (g i) • (1 : Matrix (Fin n) (Fin n) K)).prod
 
+/- English proof (translation)
+Simplify using `only [ordProd, map_list_prod, List.map_ofFn]`. Use `congr 1`. Use `congrArg List.ofFn (funext fun i => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, map_sub]`. Use `congr 1`.
+
+Use extensionality with `a b`. Apply the tactic sequence `by_cases h : a = b <;> simp [h, Matrix.one_apply]`.
+-/
 theorem ordProd_map {H K K' : Type} [CommRing K] [CommRing K'] {n : ℕ} (f : K →+* K')
     (r : H → Matrix (Fin n) (Fin n) K) (ψ : Fin n → H → K) (g : Fin n → H) :
     ordProd (fun s => f.mapMatrix (r s)) (fun i s => f (ψ i s)) g = f.mapMatrix (ordProd r ψ g) := by
@@ -48,12 +53,21 @@ def map (f : K →+* K') (ρ : NRep F n K) : NRep F n K' where
     exact (congrArg f (ρ.diag i j h)).trans (map_zero f)
   ord v g := (ordProd_map f _ _ g).trans (by rw [ρ.ord, map_zero])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem map_r (f : K →+* K') (ρ : NRep F n K) (g : F.G0) (i j : Fin n) :
     (ρ.map f).r g i j = f (ρ.r g i j) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem map_ψ (f : K →+* K') (ρ : NRep F n K) (v : F.V) (i : Fin n) (g : F.Gv v) :
     ((ρ.map f).ψ v i g : K') = f (ρ.ψ v i g) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem map_map {K'' : Type} [CommRing K''] (f : K →+* K') (f' : K' →+* K'') (ρ : NRep F n K) :
     (ρ.map f).map f' = ρ.map (f'.comp f) := rfl
 
@@ -134,6 +148,9 @@ def adicClosure {O R : Type} [CommRing O] [CommRing R] [IsLocalRing R] [Algebra 
     exact add_mem h1 h2
   algebraMap_mem' c N := ⟨_, S.algebraMap_mem c, by simp⟩
 
+/- English proof (translation)
+Introduce `x hx _` and use `⟨x, hx, by simp⟩`.
+-/
 theorem le_adicClosure {O R : Type} [CommRing O] [CommRing R] [IsLocalRing R] [Algebra O R] (S : Subalgebra O R) :
     S ≤ adicClosure S := fun x hx _ => ⟨x, hx, by simp⟩
 
@@ -175,13 +192,25 @@ def B : Subalgebra O S.R :=
 
 def A : Subalgebra O S.R := Algebra.adjoin O ((S.B : Set S.R) ∪ {x | ∃ g i j, x = S.ρ.r g i j})
 
+/- English proof (translation)
+Introduce `_ hx` and use `Algebra.subset_adjoin (Or.inl hx)`.
+-/
 theorem B_le_A : S.B ≤ S.A := fun _ hx => Algebra.subset_adjoin (Or.inl hx)
 
+/- English proof (translation)
+The claim follows from `le_adicClosure _ (Algebra.subset_adjoin (Or.inr ⟨v, i, g, rfl⟩))`.
+-/
 theorem ψ_mem (v : F.V) (i : Fin n) (g : F.Gv v) : (S.ρ.ψ v i g : S.R) ∈ S.B :=
   le_adicClosure _ (Algebra.subset_adjoin (Or.inr ⟨v, i, g, rfl⟩))
 
+/- English proof (translation)
+The claim follows from `le_adicClosure _ (Algebra.subset_adjoin (Or.inl hx))`.
+-/
 theorem mon_mem {x : S.R} (hx : x ∈ S.ρ.mon 0) : x ∈ S.B := le_adicClosure _ (Algebra.subset_adjoin (Or.inl hx))
 
+/- English proof (translation)
+The claim follows from `Algebra.subset_adjoin (Or.inr ⟨g, i, j, rfl⟩)`.
+-/
 theorem r_mem (g : F.G0) (i j : Fin n) : S.ρ.r g i j ∈ S.A := Algebra.subset_adjoin (Or.inr ⟨g, i, j, rfl⟩)
 
 def inc : S.B →ₐ[O] S.A := Subalgebra.inclusion S.B_le_A

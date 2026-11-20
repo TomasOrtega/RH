@@ -2,6 +2,11 @@ import Mathlib
 import Development.AutomorphicArithmetic.Foundations.Convolution.LocalGroupAnalysis.SplitEquiv
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.RestrictedProductMeasureSet
 
+/- English proof (translation)
+Introduce `H V G _ _ _ _ _ _ _ _ Gi _ _ _ _ _ _ _ _ Gv _ _ _ _ _ _ _ _ q p K hRP μ μi m hμ hμi hm`. Establish `hm1` using `fun v => (hm v).1`. Use `choose a ha0 ha using H V G Gi Gv q p K hRP μ μi m hμ hμi hm1`. Take `⟨hq, hp, hK, -⟩` from `hRP`. Take `⟨A⟩ : Nonempty (TopologicalSpace.PositiveCompacts Gi)` from `inferInstance`.
+
+Use `⟨a ∅, ha0 ∅, fun S => ?_⟩` and prove the remaining obligations. Establish `h : a ∅ = a S` using `UpperTheory.restricted_product_measure V G Gi Gv q (fun v => p v) (fun v => K v) μ μi m hq.measurable (fun v => (hp v).measurable) (fun v => (hK v).measurableSet) (fun v => (hm v).2) ⟨A, A.isCompact.measurableSet, (MeasureTheory.Measure.measure_pos_of_nonempty_interior μi A.inter …`. Conclude with `h ▸ ha S`.
+-/
 theorem UpperTheory.Reformulated.B.Gla1.haar_const_of_haar_exists :
     UpperTheory.ConvolutionTheory.T4.HaarEx → UpperTheory.ConvolutionTheory.T4.HaarConst := by
   intro H V G _ _ _ _ _ _ _ _ Gi _ _ _ _ _ _ _ _ Gv _ _ _ _ _ _ _ _ q p K hRP μ μi m hμ hμi hm

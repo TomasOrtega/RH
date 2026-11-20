@@ -22,30 +22,86 @@ section
 
 variable {E : Type} [Field E] [NumberField E] {dim : (E →+* ℂ) → ℕ}
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `only [I2.act, RingOfIntegers.coe_eq_algebraMap, map_mul]`. Conclude with `(mul_assoc _ _ _).symm`.
+-/
 theorem levReps_act_mul (a b : 𝓞 E) (v : I2.Vsp dim) : I2.act a (I2.act b v) = I2.act (a * b) v := by
   ext i
   simp only [I2.act, RingOfIntegers.coe_eq_algebraMap, map_mul]
   exact (mul_assoc _ _ _).symm
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[I2.act]`.
+-/
 theorem levReps_act_nat (m : ℕ) (v : I2.Vsp dim) : I2.act (m : 𝓞 E) v = (m : ℂ) • v := by
   ext i
   simp [I2.act]
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[I2.act]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem levReps_act_smul (a : 𝓞 E) (c : ℂ) (v : I2.Vsp dim) : I2.act a (c • v) = c • I2.act a v := by
   ext i
   simp [I2.act]
   ring
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[I2.act, mul_add]`.
+-/
 theorem levReps_act_add (a : 𝓞 E) (v w : I2.Vsp dim) : I2.act a (v + w) = I2.act a v + I2.act a w := by
   ext i
   simp [I2.act, mul_add]
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[I2.act]`.
+-/
 theorem levReps_act_neg (a : 𝓞 E) (v : I2.Vsp dim) : I2.act a (-v) = -I2.act a v := by
   ext i
   simp [I2.act]
 
 end
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l T mk α hα hMb hL hlin hinj hsurj x2 hx2 hrep n`. Use `haveI : Finite (LevQ Dw l) := (card_levQ E H Dw l).1`. Use `haveI : Fintype (LevQ Dw l) := Fintype.ofFinite _`. Establish `hM : (l.M : ℂ) ≠ 0`. Use `l.three_le` as an intermediate fact.
+
+Conclude with `Nat.cast_ne_zero.2 (by omega)`. Establish `hbb : H.bar (H.bar α) = α`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((H.bar (H.bar α) : 𝓞 E) : E) = (α : E)`. Rewrite using `[H.bar_eq, H.bar_eq, IsCMField.complexConj_apply_apply]`.
+
+Establish `hmap : l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) = Ideal.span {α}`. Rewrite using `[hMb, Ideal.map_span, Set.image_singleton]`. Conclude with `congrArg (fun z => Ideal.span {z}) hbb`. Establish `hsm : ∀ (c : 𝓞 E) (y : Dw.La), y ∈ Ideal.span {c} • (⊤ : Submodule (𝓞 E) Dw.La) ↔ ∃ z, y = c • z`. Introduce `c y`.
+
+Rewrite using `[Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Conclude with `⟨fun ⟨z, _, h⟩ => ⟨z, h.symm⟩, fun ⟨z, h⟩ => ⟨z, trivial, h.symm⟩⟩`. Establish `hu : ∀ q, ∃ u : Dw.La, x2 q = α • α • u`. Introduce `q`. Establish `h` using `hx2 q`.
+
+Rewrite `h` using `[hmap, Ideal.span_singleton_pow, Ideal.span_singleton_mul_span_singleton, hsm]`. Take `⟨z, hz⟩` from `h`. Use `⟨(2 : 𝓞 E) • z, ?_⟩` and prove the remaining obligations. Rewrite using `[hz, smul_smul, smul_smul]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hcls : ∀ q, (Submodule.Quotient.mk (x2 q) : LevQ Dw l) = q`. Introduce `q`. Rewrite using `[(Submodule.Quotient.eq _).2 (hrep q)]`. Conclude with `Classical.choose_spec (Submodule.Quotient.mk_surjective _ q)`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨r, s, hrs⟩ : ∃ r s : 𝓞 E, r * H.bar α + s * α = 1 := by`. Establish `h` using `l.coprime`. Rewrite `h` using `[hmap, hMb, Ideal.eq_top_iff_one, ← Ideal.span_insert, Ideal.mem_span_pair]`. Conclude with `h`. Use `set t : LevQ Dw l → I2.Vsp T.dim := fun q => I2.act (H.bar α) (-(((l.M : ℂ) ^ 2)⁻¹ • mk (x2 q))) with ht`.
+
+Establish `hαt : ∀ q, I2.act α (t q) = -((l.M : ℂ)⁻¹ • mk (x2 q))`. Introduce `q`. Simplify using `only [ht]`. Rewrite using `[levReps_act_mul, hα, levReps_act_nat, smul_neg, smul_smul]`. Use `congr 2`.
+
+Clear the denominators using the available nonvanishing facts. Establish `hMt : ∀ q, (l.M : ℂ) • t q ∈ T.L`. Introduce `q`. Take `⟨u, hq⟩` from `hu q`. Establish `: (l.M : ℂ) • t q = -mk (α • u)`.
+
+Simplify using `only [ht]`. Rewrite using `[hq, hlin α (α • u), levReps_act_neg, levReps_act_smul, levReps_act_mul, mul_comm (H.bar α), hα, levReps_act_nat, smul_neg, smul_smul, smul_smul]`. Establish `: (l.M : ℂ) * ((l.M : ℂ) ^ 2)⁻¹ * l.M = 1` using `by field_simp`. Rewrite using `[this, one_smul]`. Rewrite using `[this]`.
+
+Conclude with `T.L.neg_mem (hL _)`. Establish `hsub : ∀ (b : I2.Vsp T.dim) q, vspActL α (b - t q) = I2.act α b + (l.M : ℂ)⁻¹ • mk (x2 q)`. Introduce `b q`. Rewrite using `[map_sub]`. Express the relevant statement in the definitionally equal form `I2.act α b - I2.act α (t q) = _`.
+
+Rewrite using `[hαt, sub_neg_eq_add]`. Establish `hex : ∀ b : I2.Vsp T.dim, (l.M : ℂ) • b ∈ T.L → ∃ q, vspActL α (b - t q) ∈ T.L`. Introduce `b hb`. Take `⟨a, v', hv', hab⟩` from `hsurj _ hb`. Use `⟨Submodule.Quotient.mk (-(α • a)), ?_⟩` and prove the remaining obligations.
+
+Use `set q : LevQ Dw l := Submodule.Quotient.mk (-(α • a)) with hq`. Establish `h1 : x2 q - -(α • a) ∈ l.Mb • (⊤ : Submodule (𝓞 E) Dw.La)` using `(Submodule.Quotient.eq _).1 ((hcls q).trans hq)`. Rewrite `h1` using `[hMb, hsm]`. Take `⟨d, hd⟩` from `h1`. Take `⟨u, hqu⟩` from `hu q`.
+
+Establish `h2 : x2 q + α • a = (l.M : 𝓞 E) • (r • (α • u + a) + s • d)`. Establish `e1 : x2 q + α • a = α • (α • u + a)` using `by rw [hqu, smul_add]`. Establish `e2 : x2 q + α • a = H.bar α • d` using `by rw [← hd, sub_neg_eq_add]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hα, smul_add (α * H.bar α)]`.
+
+Simplify using `only [smul_smul (r * H.bar α), smul_smul (s * α), smul_smul (α * H.bar α)]`. Apply the tactic sequence `congr 2 <;> ring`. Establish `hb' : b = (l.M : ℂ)⁻¹ • mk a + v'`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : vspActL α (b - t q) = mk (r • (α • u + a) + s • d) + I2.act α v'`.
+
+Rewrite using `[hsub, hb', levReps_act_add, levReps_act_smul, ← hlin, add_right_comm, ← smul_add, ← map_add, add_comm (α • a), h2, hlin, levReps_act_nat, smul_smul, inv_mul_cancel₀ hM, one_smul]`. Rewrite using `[h3]`. Conclude with `T.L.add_mem (hL _) (T.stable _ _ hv')`. Establish `huniq : ∀ (b : I2.Vsp T.dim) q q', vspActL α (b - t q) ∈ T.L → vspActL α (b - t q') ∈ T.L → q = q'`. Introduce `b q q' h h'`.
+
+Establish `h1` using `T.L.sub_mem h h'`. Rewrite `h1` using `[hsub, hsub, add_sub_add_left_eq_sub, ← smul_sub, ← map_sub]`. Take `⟨z, hz⟩` from `hinj (x2 q - x2 q') ⟨_, h1, by rw [smul_smul, mul_inv_cancel₀ hM, one_smul]⟩`. Rewrite using `[← hcls q, ← hcls q']`. Use `(Submodule.Quotient.eq _).2 ?_` and prove the remaining obligations.
+
+Rewrite using `[hMb, hsm]`. Conclude with `⟨α • z, by rw [hz, smul_smul, mul_comm, hα, Nat.cast_smul_eq_nsmul]⟩`. Use `⟨Finset.univ.image (fun q : Fin n → LevQ Dw l => fun i => t (q i)), ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `b hb k`. Take `⟨q, -, rfl⟩` from `Finset.mem_image.1 hb`.
+
+Conclude with `hMt _`. Introduce `b hb choose q hq using fun k => hex (b k) (hb k)`. Use `⟨fun i => t (q i), ⟨Finset.mem_image.2 ⟨q, Finset.mem_univ _, rfl⟩, hq⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `b' ⟨hb', h'⟩`. Take `⟨q', -, rfl⟩` from `Finset.mem_image.1 hb'`.
+
+Use function extensionality and compare the values at `k`. Rewrite using `[huniq (b k) _ _ (h' k) (hq k)]`. Introduce `b hb`. Take `⟨q, -, rfl⟩` from `Finset.mem_image.1 hb`. Conclude with `⟨q, rfl⟩`.
+-/
 theorem isReps_level_translates : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (T : I2.PT E) (mk : Dw.La →+ I2.Vsp T.dim) (α : 𝓞 E), α * H.bar α = (l.M : 𝓞 E) → l.Mb = Ideal.span {H.bar α} → (∀ a, mk a ∈ T.L) → (∀ (β : 𝓞 E) a, mk (β • a) = I2.act β (mk a)) → (∀ a, (∃ v ∈ T.L, mk a = (l.M : ℂ) • v) → ∃ b, a = l.M • b) → (∀ v ∈ T.L, ∃ a, ∃ v' ∈ T.L, v = mk a + (l.M : ℂ) • v') → ∀ x2 : LevQ Dw l → Dw.La, (∀ q, x2 q ∈ (Ideal.span {(2 : 𝓞 E)} * (l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)) ^ 2) • (⊤ : Submodule (𝓞 E) Dw.La)) → (∀ q, x2 q - levRep q ∈ l.Mb • (⊤ : Submodule (𝓞 E) Dw.La)) → ∀ n : ℕ, ∃ K : Finset (Fin n → I2.Vsp T.dim), I2.IsReps T l.M n (vspActL α) K ∧ ∀ b ∈ K, ∃ q : Fin n → LevQ Dw l, b = fun i => I2.act (H.bar α) (-(((l.M : ℂ) ^ 2)⁻¹ • mk (x2 (q i)))) := by
   intro E _ _ _ H Dw l T mk α hα hMb hL hlin hinj hsurj x2 hx2 hrep n
   classical

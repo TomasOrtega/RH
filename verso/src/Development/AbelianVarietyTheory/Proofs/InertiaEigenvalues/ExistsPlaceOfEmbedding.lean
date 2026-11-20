@@ -4,6 +4,9 @@ namespace GlobalTheory.IntegralNormSmallIdeal
 
 open NumberField
 
+/- English proof (translation)
+Establish `hv` using `Valuation.integer.integers (Valued.v : Valuation (PadicAlgCl l) NNReal)`. Establish `h2 : IsIntegral (Valued.v : Valuation (PadicAlgCl l) NNReal).integer y` using `IsIntegral.tower_top hy`. Establish `h3` using `hv.isIntegral_iff_v_le_one.mp h2`. Rewrite `h3` using `[PadicAlgCl.valuation_def]`. Conclude with `h3` after adjusting the coercions.
+-/
 theorem norm_le_one_of_isIntegral {l : ℕ} [Fact (Nat.Prime l)] (y : PadicAlgCl l)
     (hy : IsIntegral ℤ y) : ‖y‖ ≤ 1 := by
   have hv := Valuation.integer.integers (Valued.v : Valuation (PadicAlgCl l) NNReal)
@@ -13,6 +16,9 @@ theorem norm_le_one_of_isIntegral {l : ℕ} [Fact (Nat.Prime l)] (y : PadicAlgCl
   rw [PadicAlgCl.valuation_def] at h3
   exact_mod_cast h3
 
+/- English proof (translation)
+Establish `h0` using `PadicAlgCl.norm_extends l (l : ℚ_[l])`. Rewrite `h0` using `[map_natCast]`. Rewrite using `[h0]`. Conclude with `Padic.norm_p_lt_one`.
+-/
 theorem norm_natCast_prime {l : ℕ} [Fact (Nat.Prime l)] :
     ‖((l : ℕ) : PadicAlgCl l)‖ < 1 := by
   have h0 := PadicAlgCl.norm_extends l (l : ℚ_[l])
@@ -20,6 +26,9 @@ theorem norm_natCast_prime {l : ℕ} [Fact (Nat.Prime l)] :
   rw [h0]
   exact Padic.norm_p_lt_one
 
+/- English proof (translation)
+Apply `norm_le_one_of_isIntegral` to reduce the goal to its premises. Establish `h0` using `(NumberField.RingOfIntegers.isIntegral_coe x).map c.toIntAlgHom`. Simplify using `using h0`.
+-/
 theorem norm_map_le_one {l : ℕ} [Fact (Nat.Prime l)] {E : Type} [Field E]
     (c : E →+* PadicAlgCl l) (x : 𝓞 E) : ‖c (x : E)‖ ≤ 1 := by
   apply norm_le_one_of_isIntegral
@@ -49,9 +58,19 @@ def smallIdeal {l : ℕ} [Fact (Nat.Prime l)] {E : Type} [Field E]
           mul_le_mul_of_nonneg_right (norm_map_le_one c r) (norm_nonneg _)
       _ < 1 := by rwa [one_mul]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_smallIdeal {l : ℕ} [Fact (Nat.Prime l)] {E : Type} [Field E]
     (c : E →+* PadicAlgCl l) (x : 𝓞 E) : x ∈ smallIdeal c ↔ ‖c (x : E)‖ < 1 := Iff.rfl
 
+/- English proof (translation)
+Use `Ideal.isPrime_iff.2 ⟨?_, fun {x y} hxy => ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.ne_top_iff_one, mem_smallIdeal]`. Simplify using the standard rewrite rules. Rewrite using `[mem_smallIdeal, mem_smallIdeal]`. Rewrite `hxy` using `[mem_smallIdeal]`.
+
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `h1` using `norm_map_le_one c x`. Establish `h2` using `norm_map_le_one c y`. Establish `e : ((x * y : 𝓞 E) : E) = (x : E) * (y : E)` using `map_mul (algebraMap (𝓞 E) E) x y`.
+
+Rewrite `hxy` using `[e, map_mul, norm_mul]`. Use polynomial arithmetic with `[hcon.1, hcon.2]`.
+-/
 theorem smallIdeal_isPrime {l : ℕ} [Fact (Nat.Prime l)] {E : Type} [Field E]
     (c : E →+* PadicAlgCl l) : (smallIdeal c).IsPrime := by
   refine Ideal.isPrime_iff.2 ⟨?_, fun {x y} hxy => ?_⟩
@@ -67,6 +86,9 @@ theorem smallIdeal_isPrime {l : ℕ} [Fact (Nat.Prime l)] {E : Type} [Field E]
     rw [e, map_mul, norm_mul] at hxy
     nlinarith [hcon.1, hcon.2]
 
+/- English proof (translation)
+Rewrite using `[mem_smallIdeal]`. Establish `e : (((l : ℕ) : 𝓞 E) : E) = ((l : ℕ) : E)` using `map_natCast (algebraMap (𝓞 E) E) l`. Rewrite using `[e, map_natCast]`. Conclude with `norm_natCast_prime`.
+-/
 theorem natCast_mem_smallIdeal {l : ℕ} [Fact (Nat.Prime l)] {E : Type} [Field E]
     (c : E →+* PadicAlgCl l) : ((l : ℕ) : 𝓞 E) ∈ smallIdeal c := by
   rw [mem_smallIdeal]
@@ -74,6 +96,9 @@ theorem natCast_mem_smallIdeal {l : ℕ} [Fact (Nat.Prime l)] {E : Type} [Field 
   rw [e, map_natCast]
   exact norm_natCast_prime
 
+/- English proof (translation)
+Establish `hl0 : ((l : ℕ) : NumberField.RingOfIntegers E) ≠ 0` using `by exact_mod_cast (Fact.out : l.Prime).ne_zero`. Use `⟨⟨smallIdeal c, smallIdeal_isPrime c, fun h => hl0 ?_⟩, natCast_mem_smallIdeal c, fun x => mem_smallIdeal c x⟩` and prove the remaining obligations. Establish `h0` using `natCast_mem_smallIdeal (E := E) c`. Rewrite `h0` using `[h]`. Conclude with `(Submodule.mem_bot _).1 h0`.
+-/
 theorem exists_place_of_embedding {l : ℕ} [inst : Fact (Nat.Prime l)] {E : Type} [inst_1 : Field E]
     [NumberField E] (c : E →+* PadicAlgCl l) :
     ∃ (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers E)),

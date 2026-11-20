@@ -18,6 +18,13 @@ open scoped Classical
 set_option autoImplicit false
 noncomputable section
 namespace GlobalTheory.LogPole
+/- English proof (translation)
+Introduce `PP E _ _ _ H Dw l Xo c TF`. Take `⟨s, hs0, hcore⟩` from `_root_.GlobalTheory.T.cech_kodaira_spencer_class_constant PP`. Use `⟨s, hs0, ?_⟩` and prove the remaining obligations. Introduce `U n e v hv D Θ hΘ K _ _ P hU hP y' hU' hy' hev`. Take `⟨A, _, A', _, π, π', i, h, ψ, ub, hb, g, hπ, hπ', hi, hpol, hu, hbl, hrow, hA, hgA, hA', hgA', hL⟩` from `_root_.GlobalTheory.T.kodaira_spencer_map_compatibilities PP E H Dw l Xo c TF U D.1 K P hU y' hU' hy' hev`.
+
+Establish `hC` using `GlobalTheory.T.cechDeformation_gluing_of_logKodairaSpencer E H Dw l Xo c TF U n e v hv D Θ hΘ K P hU hP y' hU' hy' hev A A' π π' i ub h hπ hπ' hi hu`. Establish `hbal` using `GlobalTheory.T.cechKodairaSpencerMatrix_eq_zero_off_conj_blocks E H Dw l Xo c TF U n e v hv D Θ hΘ`. Use `haveI : CharZero K := charZero_of_injective_algebraMap (algebraMap c.F K).injective`. Establish `hK` using `hcore K A A' i h g hA hgA hA' hgA' _ hL ψ hpol n (fun a => ub (e.symm a).1 (e.symm a).2) (Matrix.of fun a b => ev (frX P ≫ TF.Y.j) U.1 hU (Θ a b)) (fun a => (hbl _ _).1) hC (fun b => hb (e.symm b)) (fun b => hbl _ _)`. Use `⟨A, inferInstance, A', inferInstance, π, π', i, h, ψ, ub, hb, hπ, hπ', hi, hpol, hu, fun σ k => hbl σ k, fun τ a => ?_⟩` and prove the remaining obligations.
+
+Conclude with `GlobalTheory.T.kodairaSpencerRow_of_kodairaSpencerValue_hodgeFil E H Dw K A A' i h hA ψ ub hb n e _ (s : K) (fun σ k => (hbl σ k).1) (fun a b hab => by simp only [Matrix.of_apply, hbal a b hab, map_zero]) hK τ.1 a (hrow τ a)`.
+-/
 theorem exists_kodaira_spencer_comparison_log_pole : _root_.GlobalTheory.CovTop.Hypotheses'' → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c), ∃ s : ℚ, s ≠ 0 ∧ KSCompare TF s := by
   intro PP E _ _ _ H Dw l Xo c TF
   obtain ⟨s, hs0, hcore⟩ := _root_.GlobalTheory.T.cech_kodaira_spencer_class_constant PP
@@ -50,6 +57,9 @@ open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX)
 open GlobalTheory.LogPole
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.LogPole.exists_kodaira_spencer_comparison_log_pole | exact _root_.GlobalTheory.LogPole.exists_kodaira_spencer_comparison_log_pole | (intros; apply _root_.GlobalTheory.LogPole.exists_kodaira_spencer_comparison_log_pole <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.kodaira_spencer_comparison_along_boundary : _root_.GlobalTheory.CovTop.Hypotheses'' → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c), ∃ s : ℚ, s ≠ 0 ∧ KSCompare TF s := by
   first | exact @_root_.GlobalTheory.LogPole.exists_kodaira_spencer_comparison_log_pole | exact _root_.GlobalTheory.LogPole.exists_kodaira_spencer_comparison_log_pole | (intros; apply _root_.GlobalTheory.LogPole.exists_kodaira_spencer_comparison_log_pole <;> assumption)
 end

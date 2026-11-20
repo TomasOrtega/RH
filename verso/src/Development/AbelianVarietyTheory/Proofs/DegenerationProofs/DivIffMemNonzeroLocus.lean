@@ -12,6 +12,9 @@ open GlobalTheory.Points CrdCalc
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {N : RatModel o Ω} {X : Scheme.{0}} {a : N.Z ⟶ X}
   {H : LB X} {J : Type} {s : J → H.Sec} {t : J → Ω}
 
+/- English proof (translation)
+Establish `h : ⊤ ≤ (N.pt ≫ a) ⁻¹ᵁ nonzeroLocus (s k)` using `N.top_le_preimage_pt (U := a ⁻¹ᵁ nonzeroLocus (s k)) ⟨z, hz⟩`. Establish `hk : t k ≠ 0` using `((crd_isUnit_iff k ht).2 h).ne_zero`. Use `⟨hk, fun j r hr => ?_⟩` and prove the remaining obligations. Rewrite using `[eq_div_iff hk, crd_ratio ht hr h, valR_comp]`. Both sides reduce to the same expression.
+-/
 theorem ratio_eq (ht : Crd H s (N.pt ≫ a) t) {k : J} {z : N.Z} (hz : a z ∈ nonzeroLocus (s k)) :
     t k ≠ 0 ∧ ∀ (j : J) (r : Γ(X, nonzeroLocus (s k))), IsRatio (s j) (s k) _ r →
       valF N.pt (a ⁻¹ᵁ nonzeroLocus (s k)) (a.app _ r) = t j / t k := by
@@ -22,6 +25,9 @@ theorem ratio_eq (ht : Crd H s (N.pt ≫ a) t) {k : J} {z : N.Z} (hz : a z ∈ n
   rw [eq_div_iff hk, crd_ratio ht hr h, valR_comp]
   rfl
 
+/- English proof (translation)
+Take `⟨hk, h⟩` from `ratio_eq ht hz`. Use `⟨hk, fun j => ?_⟩` and prove the remaining obligations. Take `⟨r, hr, -⟩` from `GlobalTheory.SecRatio.existsUnique_isRatio hH (s j) (s k) _ le_rfl`. Conclude with `⟨a ⁻¹ᵁ nonzeroLocus (s k), a.app _ r, hz, h j r hr⟩`.
+-/
 theorem div_of_mem (hH : H.IsLB) (ht : Crd H s (N.pt ≫ a) t) {k : J} {z : N.Z}
     (hz : a z ∈ nonzeroLocus (s k)) : N.Div t k z := by
   obtain ⟨hk, h⟩ := ratio_eq ht hz
@@ -29,6 +35,11 @@ theorem div_of_mem (hH : H.IsLB) (ht : Crd H s (N.pt ≫ a) t) {k : J} {z : N.Z}
   obtain ⟨r, hr, -⟩ := GlobalTheory.SecRatio.existsUnique_isRatio hH (s j) (s k) _ le_rfl
   exact ⟨a ⁻¹ᵁ nonzeroLocus (s k), a.app _ r, hz, h j r hr⟩
 
+/- English proof (translation)
+Establish `hx : ⊤ ≤ x ⁻¹ᵁ (a ⁻¹ᵁ nonzeroLocus (s k))` using `(le_preimage_iff x _).2 hz`. Establish `h : ⊤ ≤ (x ≫ a) ⁻¹ᵁ nonzeroLocus (s k)` using `hx`. Use `⟨((crd_isUnit_iff k hv).2 h).ne_zero, fun j => ?_⟩` and prove the remaining obligations. Take `⟨r, hr, -⟩` from `GlobalTheory.SecRatio.existsUnique_isRatio hH (s j) (s k) _ le_rfl`. Rewrite using `[RatModel.val_eq ((top_le_preimage_iff _ _).1 hx) ((ratio_eq ht hz).2 j r hr), crd_ratio hv hr h, valR_comp]`.
+
+Both sides reduce to the same expression.
+-/
 theorem crd_eq_val_mul (hH : H.IsLB) (ht : Crd H s (N.pt ≫ a) t) {K : Type} [Field K] {x : Sp K ⟶ N.Z}
     {v : J → K} {k : J} (hv : Crd H s (x ≫ a) v)
     (hz : a (x (IsLocalRing.closedPoint K)) ∈ nonzeroLocus (s k)) :
@@ -41,6 +52,11 @@ theorem crd_eq_val_mul (hH : H.IsLB) (ht : Crd H s (N.pt ≫ a) t) {K : Type} [F
     valR_comp]
   rfl
 
+/- English proof (translation)
+Establish `hm : a (x (IsLocalRing.closedPoint K)) ∈ ⨆ j, nonzeroLocus (s j)` using `by rw [hs]; trivial`. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 hm`. Take `⟨v, hv⟩` from `crd_exists hH s (x ≫ a)`. Take `⟨h0, h1⟩` from `crd_eq_val_mul hH ht hv hk`. Establish `hd` using `div_of_mem hH ht hk`.
+
+Establish `hu` using `(RatModel.val_ne_zero_iff (RatModel.range_eq_singleton x _) _).2 ((hd.div_iff_isUnit i).1 hi)`. Establish `hvi : IsUnit (v i)` using `isUnit_iff_ne_zero.2 (by rw [h1 i]; exact mul_ne_zero hu h0)`. Conclude with `(le_preimage_iff (x ≫ a) _).1 ((crd_isUnit_iff i hv).1 hvi)`.
+-/
 theorem mem_of_div_pt (hH : H.IsLB) (hs : ⨆ j, nonzeroLocus (s j) = ⊤) (ht : Crd H s (N.pt ≫ a) t)
     {K : Type} [Field K] (x : Sp K ⟶ N.Z) {i : J} (hi : N.Div t i (x (IsLocalRing.closedPoint K))) :
     a (x (IsLocalRing.closedPoint K)) ∈ nonzeroLocus (s i) := by
@@ -53,6 +69,9 @@ theorem mem_of_div_pt (hH : H.IsLB) (hs : ⨆ j, nonzeroLocus (s j) = ⊤) (ht :
   have hvi : IsUnit (v i) := isUnit_iff_ne_zero.2 (by rw [h1 i]; exact mul_ne_zero hu h0)
   exact (le_preimage_iff (x ≫ a) _).1 ((crd_isUnit_iff i hv).1 hvi)
 
+/- English proof (translation)
+Set `x : Sp (N.Z.residueField z) ⟶ N.Z` to `N.Z.fromSpecResidueField z`. Establish `e : x (IsLocalRing.closedPoint (N.Z.residueField z)) = z` using `Scheme.fromSpecResidueField_apply _ _`. Establish `h` using `mem_of_div_pt hH hs ht x (i := i) (by rw [e]; exact hi)`. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem mem_of_div (hH : H.IsLB) (hs : ⨆ j, nonzeroLocus (s j) = ⊤) (ht : Crd H s (N.pt ≫ a) t)
     {i : J} {z : N.Z} (hi : N.Div t i z) : a z ∈ nonzeroLocus (s i) := by
   let x : Sp (N.Z.residueField z) ⟶ N.Z := N.Z.fromSpecResidueField z
@@ -60,6 +79,9 @@ theorem mem_of_div (hH : H.IsLB) (hs : ⨆ j, nonzeroLocus (s j) = ⊤) (ht : Cr
   have h := mem_of_div_pt hH hs ht x (i := i) (by rw [e]; exact hi)
   rwa [e] at h
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ _ _ _ hH hs ht` and use `⟨fun _ _ => ⟨mem_of_div hH hs ht, div_of_mem hH ht⟩, fun _ _ x _ _ hv hk => crd_eq_val_mul hH ht hv (mem_of_div_pt hH hs ht x hk)⟩`.
+-/
 theorem div_iff_mem_nonzeroLocus : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (N : RatModel o Ω) (X : Scheme.{0}) (a : N.Z ⟶ X) (H : LB X) (J : Type) (s : J → H.Sec) (t : J → Ω), H.IsLB → ⨆ j, nonzeroLocus (s j) = ⊤ → Crd H s (N.pt ≫ a) t → (∀ (i : J) (z : N.Z), N.Div t i z ↔ a z ∈ nonzeroLocus (s i)) ∧ ∀ (K : Type) [Field K] (x : Sp K ⟶ N.Z) (v : J → K) (k : J), Crd H s (x ≫ a) v → N.Div t k (x (IsLocalRing.closedPoint K)) → v k ≠ 0 ∧ ∀ j, v j = N.val x (t j / t k) * v k :=
   fun _ _ _ _ _ _ _ _ _ _ _ _ hH hs ht =>
     ⟨fun _ _ => ⟨mem_of_div hH hs ht, div_of_mem hH ht⟩,

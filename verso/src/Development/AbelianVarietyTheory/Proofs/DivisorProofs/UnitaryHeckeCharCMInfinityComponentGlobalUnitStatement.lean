@@ -5,5 +5,8 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.BCT.inf_mu_unit | exact GlobalTheory.BCT.inf_mu_unit | (intros; apply GlobalTheory.BCT.inf_mu_unit <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.unitaryHeckeCharCM_infinityComponent_globalUnit : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (μ : HChar E) (e : InfinitePlace E → ℤ), IsMu μ e → ∀ k : Eˣ, ((μ.inf k : ℂˣ) : ℂ) = ∏ v : InfinitePlace E, (v.embedding (k : E) / (‖v.embedding (k : E)‖ : ℂ)) ^ e v := by
   first | exact @GlobalTheory.BCT.inf_mu_unit | exact GlobalTheory.BCT.inf_mu_unit | (intros; apply GlobalTheory.BCT.inf_mu_unit <;> assumption)

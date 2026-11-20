@@ -12,6 +12,17 @@ open PositivityTheory.Rg.Rsw PositivityTheory.Rg.Rsw.L
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.CompanionTheory.Jp
 
+/- English proof (translation)
+Set `τ : E →ₐ[F] Fv F v` to `((AlgHom.fst (Fv F v) (Fv F v) (Fv F v)).restrictScalars F).comp (((π : Fv F v ⊗[F] E →ₐ[Fv F v] Fv F v × Fv F v).restrictScalars F).comp Algebra.TensorProduct.includeRight)`. Establish `hτ : ∀ x, τ x = (π ((1 : Fv F v) ⊗ₜ[F] x)).1` using `fun x => rfl`. Establish `hx : ∀ x, (π ((1 : Fv F v) ⊗ₜ[F] σ x)).1 = (π ((1 : Fv F v) ⊗ₜ[F] x)).2`. Introduce `x`. Establish `h0` using `congrArg Prod.fst (hs ((1 : Fv F v) ⊗ₜ[F] x))`.
+
+Simplify `h0` using `[sigR]`. Establish `e : ∀ (a : Fv F v) (x : E), (a ⊗ₜ[F] x : Fv F v ⊗[F] E) = a • ((1 : Fv F v) ⊗ₜ[F] x)`. Introduce `a x`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Use `⟨τ, fun y => ?_, fun y => ?_⟩` and prove the remaining obligations.
+
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x`. Simplify using `only [splitProj, Algebra.TensorProduct.lift_tmul, AlgHom.id_apply]`. Rewrite using `[e a x, map_smul, Prod.smul_fst, smul_eq_mul, hτ]`.
+
+Consider the case `add y z hy hz => simp only [map_add, Prod.fst_add, hy, hz]`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x`. Simplify using `only [splitProj, Algebra.TensorProduct.lift_tmul, AlgHom.id_apply, AlgHom.comp_apply]`.
+
+Rewrite using `[e a x, map_smul, Prod.smul_snd, smul_eq_mul, hτ, hx]`. Consider the case `add y z hy hz => simp only [map_add, Prod.snd_add, hy, hz]`.
+-/
 theorem PositivityTheory.Rg.Rsw.exists_tau {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (v : HeightOneSpectrum (𝓞 F))
     (σ : E →ₐ[F] E) (π : Fv F v ⊗[F] E ≃ₐ[Fv F v] Fv F v × Fv F v) (hs : ∀ y, π (sigR (Fv F v) σ y) = (π y).swap) :
     ∃ τ : E →ₐ[F] Fv F v, (∀ y, splitProj τ y = (π y).1) ∧ ∀ y, splitProj (τ.comp σ) y = (π y).2 := by
@@ -42,6 +53,29 @@ theorem PositivityTheory.Rg.Rsw.exists_tau {F E : Type} [Field F] [NumberField F
     | add y z hy hz => simp only [map_add, Prod.snd_add, hy, hz]
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `D r ψ hψ χ hχ hr S`. Take `⟨v, hvS, P, hP1, hP2, hP3⟩` from `PositivityTheory.Rg.Rsw.L.LJPos.placeEx D ψ hψ χ hχ r hr S`. Take `⟨τ, hτ1, hτ2⟩` from `PositivityTheory.Rg.Rsw.exists_tau v D.sp.cm.sig P.π P.swap`. Use `⟨v, hvS, ⟨fun a ha => ?_, fun ϖ hϖ => ?_⟩, τ, fun a hnorm => ?_⟩` and prove the remaining obligations. Establish `h` using `(hP1 a).2 ha 1 (one_mem _)`.
+
+Rewrite `h` using `[mul_one]`. Then use the resulting hypothesis. Establish `hne : (ϖ : Fv D.host.F v) ≠ 0`. Introduce `h0`. Apply `hϖ.ne_zero` to reduce the goal to its premises. Conclude with `Subtype.ext h0`.
+
+Establish `hnot : (ϖ : Fv D.host.F v)⁻¹ ∉ v.adicCompletionIntegers D.host.F`. Introduce `hin`. Apply `hϖ.not_isUnit` to reduce the goal to its premises. Use `isUnit_iff_exists_inv.2 ⟨⟨_, hin⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `[mul_inv_cancel₀ hne]`.
+
+Establish `h` using `(hP1 (ϖ : Fv D.host.F v)⁻¹).not.2 hnot`. Use `push Not at h`. Take `⟨b, hb, hb1⟩` from `h`. Use `⟨⟨b, hb⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[div_eq_inv_mul]` and apply the resulting hypothesis.
+
+Rewrite `hnorm` using `[hτ1, hτ2]`. Establish `hprod : P.π (a : Fv D.host.F v ⊗[D.host.F] D.host.E) * P.π ((a⁻¹ : (Fv D.host.F v ⊗[D.host.F] D.host.E)ˣ) : Fv D.host.F v ⊗[D.host.F] D.host.E) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Establish `h1 : (P.π a).1 * (P.π ((a⁻¹ : (Fv D.host.F v ⊗[D.host.F] D.host.E)ˣ) : _)).1 = 1`. Use `congrArg Prod.fst hprod` as an intermediate fact.
+
+Rewrite `this` using `[Prod.fst_mul, Prod.fst_one]`. Then use the resulting hypothesis. Establish `h2 : (P.π a).2 * (P.π ((a⁻¹ : (Fv D.host.F v ⊗[D.host.F] D.host.E)ˣ) : _)).2 = 1`. Use `congrArg Prod.snd hprod` as an intermediate fact. Rewrite `this` using `[Prod.snd_mul, Prod.snd_one]`. Then use the resulting hypothesis. Establish `hα : (P.π a).1 ≠ 0` using `left_ne_zero_of_mul_eq_one h1`.
+
+Establish `hβ : (P.π a).2 ≠ 0` using `left_ne_zero_of_mul_eq_one h2`. Establish `hn : ‖(P.π a).1‖₊ = ‖(P.π a).2‖₊`. Apply `NNReal.eq` to reduce the goal to its premises. Rewrite using `[coe_nnnorm, coe_nnnorm]`. Conclude with `hnorm`.
+
+Establish `hq1 : (P.π a).1 / (P.π a).2 ∈ v.adicCompletionIntegers D.host.F` using `nnnorm_le_one_iff_mem.1 (le_of_eq (by rw [nnnorm_div, hn, div_self (nnnorm_ne_zero_iff.2 hβ)]))`. Establish `hq2 : (P.π a).2 / (P.π a).1 ∈ v.adicCompletionIntegers D.host.F` using `nnnorm_le_one_iff_mem.1 (le_of_eq (by rw [nnnorm_div, hn, div_self (nnnorm_ne_zero_iff.2 hβ)]))`. Set `u : (Fv D.host.F v ⊗[D.host.F] D.host.E)ˣ` to `{ val := P.π.symm ((P.π a).1 / (P.π a).2, 1) inv := P.π.symm ((P.π a).2 / (P.π a).1, 1) val_inv := by`. Rewrite using `[← map_mul, Prod.mk_mul_mk, div_mul_div_comm, mul_comm ((P.π a).1), div_self (mul_ne_zero hβ hα), mul_one, Prod.mk_one_one, map_one]`. Use `inv_val := by`.
+
+Rewrite using `[← map_mul, Prod.mk_mul_mk, div_mul_div_comm, mul_comm ((P.π a).2), div_self (mul_ne_zero hα hβ), mul_one, Prod.mk_one_one, map_one] }`. Establish `hu : P.π (u : Fv D.host.F v ⊗[D.host.F] D.host.E) = ((P.π a).1 / (P.π a).2, 1)` using `P.π.apply_symm_apply _`. Establish `hu' : P.π ((u⁻¹ : (Fv D.host.F v ⊗[D.host.F] D.host.E)ˣ) : Fv D.host.F v ⊗[D.host.F] D.host.E) = ((P.π a).2 / (P.π a).1, 1)` using `P.π.apply_symm_apply _`. Establish `hχu : χ (ideleAt D.host.F D.host.E v u) = 1`. Use `hP2 u ?_ ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[hu]`. Conclude with `hq1`. Rewrite using `[hu']`. Conclude with `hq2`. Rewrite using `[hu]`.
+
+Establish `hχw : χ (ideleAt D.host.F D.host.E v (u⁻¹ * a)) = 1`. Use `hP3 _ ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, map_mul, hu', Prod.fst_mul, Prod.snd_mul, div_mul_cancel₀ _ hα, one_mul]`. Rewrite using `[← mul_inv_cancel_left u a, map_mul, map_mul, hχu, hχw, mul_one]`.
+-/
 theorem PositivityTheory.Rg.Rsw.jacquet_piatetski_first_bound : GoodPlacesOutsideFiniteSet := by
   intro D r ψ hψ χ hχ hr S
   obtain ⟨v, hvS, P, hP1, hP2, hP3⟩ := PositivityTheory.Rg.Rsw.L.LJPos.placeEx D ψ hψ χ hχ r hr S

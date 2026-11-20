@@ -8,6 +8,11 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE
 
 namespace GlobalTheory.CoreHt
 
+/- English proof (translation)
+Introduce `B X I h l Z L`. Establish `hX : B.fields.Ok` using `(GlobalTheory.Mem.FieldsLaws.fields_satisfy_definite_laws B).1.1`. Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, _⟩` from `host_fields_primes_ties I h hX l Z`. Use `⟨rfl, rfl, rfl, h1, h2, h3, h4, h5, h6, h7, h8, ?_, ?_, fun _ => rfl, HEq.rfl⟩` and prove the remaining obligations. Rewrite using `[h9]`.
+
+Both sides reduce to the same expression. Introduce `i`. Rewrite using `[h10]`. Both sides reduce to the same expression.
+-/
 theorem host_tie_trueCols : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B X) (h : I.Ok) (l : I.Laws) (Z : TC.Later B (I.cols l)) (L : SizeData₂ (I.rec7 l Z)), GlobalTheory.IndefiniteRowSideFullHecke.PlaceLogThetaBounds.HostTie (numDatumOfParameters (I.rec7 l Z) L) (seamOf B (I.cols l) Z.W Z.V Z.S Z.N Z.G) (B.primes X) := by
   intro B X I h l Z L
   have hX : B.fields.Ok := (GlobalTheory.Mem.FieldsLaws.fields_satisfy_definite_laws B).1.1

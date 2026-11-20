@@ -7,14 +7,35 @@ namespace GlobalTheory.PowerSumDiv
 
 variable {σ : Type} [Fintype σ]
 
+/- English proof (translation)
+Rewrite using `[← Finset.card_univ, esymm, Finset.powersetCard_self]`. Simplify using the standard rewrite rules.
+-/
 theorem eval_esymm_card (f : σ → ℂ) :
     MvPolynomial.eval f (esymm σ ℂ (Fintype.card σ)) = ∏ i, f i := by
   rw [← Finset.card_univ, esymm, Finset.powersetCard_self]
   simp
 
+/- English proof (translation)
+Simplify using `[psum]`.
+-/
 theorem eval_psum (f : σ → ℂ) (r : ℕ) : MvPolynomial.eval f (psum σ ℂ r) = ∑ i, f i ^ r := by
   simp [psum]
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k using Nat.strong_induction_on with`. Consider the case `_ k ih`. Introduce `hk1 hkn`. Establish `hN` using `congrArg (MvPolynomial.eval f) (MvPolynomial.mul_esymm_eq_sum σ ℂ k)`.
+
+Simplify using `only [map_mul, map_pow, map_neg, map_one, map_sum, map_natCast] at hN`. Establish `hsub : (antidiagonal k).filter (fun a => a.1 < k) ⊆ (range k).image (fun j => (j, k - j))`. Introduce `a ha`. Simplify using `only [mem_filter, Finset.HasAntidiagonal.mem_antidiagonal] at ha`. Simplify using `only [mem_image, mem_range]`.
+
+Apply the tactic sequence `exact ⟨a.1, ha.2, by ext <;> simp <;> omega⟩`. Establish `hcard : ((antidiagonal k).filter (fun a => a.1 < k)).card ≤ k` using `(card_le_card hsub).trans (card_image_le.trans (by simp))`. Establish `hterm : ∀ a ∈ (antidiagonal k).filter (fun a => a.1 < k), ‖(-1 : ℂ) ^ a.1 * MvPolynomial.eval f (esymm σ ℂ a.1) * MvPolynomial.eval f (psum σ ℂ a.2)‖ ≤ c`. Introduce `a ha`. Simplify using `only [mem_filter, Finset.HasAntidiagonal.mem_antidiagonal] at ha`.
+
+Establish `he : ‖MvPolynomial.eval f (esymm σ ℂ a.1)‖ ≤ 1`. Break down `Nat.eq_zero_or_pos a.1 with h0 | h0` into its components or cases. Rewrite using `[h0, esymm_zero]`. Simplify using the standard rewrite rules. Conclude with `(ih a.1 ha.2 h0 (by omega)).trans hc`.
+
+Establish `hq : ‖MvPolynomial.eval f (psum σ ℂ a.2)‖ ≤ c`. Rewrite using `[eval_psum]; exact hp _ (by omega) (by omega)`. Rewrite using `[norm_mul, norm_mul, norm_pow, norm_neg, norm_one, one_pow, one_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hk : (0 : ℝ) < k` using `by exact_mod_cast hk1`.
+
+Establish `h1 : (k : ℝ) * ‖MvPolynomial.eval f (esymm σ ℂ k)‖ ≤ k * c`. Use `congrArg norm hN` as an intermediate fact. Rewrite `this` using `[norm_mul, norm_mul, norm_pow, norm_neg, norm_one, one_pow, one_mul, Complex.norm_natCast]`. Rewrite using `[this]`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `le_of_mul_le_mul_left h1 hk`.
+-/
 theorem norm_eval_esymm_le (f : σ → ℂ) {c : ℝ} (hc0 : 0 ≤ c) (hc : c ≤ 1)
     (hp : ∀ r, 1 ≤ r → r ≤ Fintype.card σ → ‖∑ i, f i ^ r‖ ≤ c) :
     ∀ k, 1 ≤ k → k ≤ Fintype.card σ → ‖MvPolynomial.eval f (esymm σ ℂ k)‖ ≤ c := by
@@ -54,6 +75,13 @@ theorem norm_eval_esymm_le (f : σ → ℂ) {c : ℝ} (hc0 : 0 ≤ c) (hc : c �
         _ ≤ k * c := mul_le_mul_of_nonneg_right (by exact_mod_cast hcard) hc0
     exact le_of_mul_le_mul_left h1 hk
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `hne : (Icc 1 (Fintype.card σ)).Nonempty` using `⟨1, by simp [hn]⟩`. Use `set c := (Icc 1 (Fintype.card σ)).sup' hne (fun r => ‖∑ i, f i ^ r‖)`. Establish `hc1 : c < 1`.
+
+Rewrite using `[Finset.sup'_lt_iff]`. Introduce `r hr`. Rewrite `hr` using `[mem_Icc]`. Conclude with `h r hr.1 hr.2`. Establish `hle : ∀ r, 1 ≤ r → r ≤ Fintype.card σ → ‖∑ i, f i ^ r‖ ≤ c` using `fun r h1 h2 => Finset.le_sup' (fun r => ‖∑ i, f i ^ r‖) (by rw [mem_Icc]; exact ⟨h1, h2⟩)`.
+
+Establish `hc0 : 0 ≤ c` using `(norm_nonneg _).trans (hle 1 le_rfl hn)`. Use `norm_eval_esymm_le f hc0 hc1.le hle _ hn le_rfl` as an intermediate fact. Rewrite `this` using `[eval_esymm_card, hf]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_one_le_norm_psum (f : σ → ℂ) (hn : 1 ≤ Fintype.card σ) (hf : ‖∏ i, f i‖ = 1) :
     ∃ r, 1 ≤ r ∧ r ≤ Fintype.card σ ∧ 1 ≤ ‖∑ i, f i ^ r‖ := by
   by_contra h
@@ -76,6 +104,13 @@ end GlobalTheory.PowerSumDiv
 
 namespace GlobalTheory.PowerSumDiv
 
+/- English proof (translation)
+Use `set f : Fin A.toList.length → ℂ := A.toList.get`. Establish `hA' : A = Finset.univ.val.map f`. Rewrite using `[Fin.univ_val_map, List.ofFn_get, Multiset.coe_toList]`. Establish `hc : Fintype.card (Fin A.toList.length) = Multiset.card A` using `by simp`. Establish `hp : A.prod = ∏ i, f i` using `by rw [Finset.prod_eq_multiset_prod, ← hA']`.
+
+Establish `hs : ∀ r, (A.map (· ^ r)).sum = ∑ i, f i ^ r`. Introduce `r`. Establish `e` using `congrArg (fun B : Multiset ℂ => (B.map (· ^ r)).sum) hA'`. Rewrite using `[e, Finset.sum_eq_multiset_sum, Multiset.map_map]`. Both sides reduce to the same expression.
+
+Take `⟨r, h1, h2, h3⟩` from `exists_one_le_norm_psum f (by rw [hc]; exact hA) (by rw [← hp]; exact h)`. Conclude with `⟨r, h1, by rw [← hc]; exact h2, by rw [hs]; exact h3⟩`.
+-/
 theorem exists_one_le_norm_psum_multiset (A : Multiset ℂ) (hA : 1 ≤ Multiset.card A) (h : ‖A.prod‖ = 1) :
     ∃ r, 1 ≤ r ∧ r ≤ Multiset.card A ∧ 1 ≤ ‖(A.map (· ^ r)).sum‖ := by
   set f : Fin A.toList.length → ℂ := A.toList.get
@@ -96,11 +131,21 @@ open NumberField IsDedekindDomain Filter Topology
 
 namespace GlobalTheory.PowerSumDiv
 
+/- English proof (translation)
+Establish `: Ideal.absNorm w.asIdeal ≠ 0` using `fun h => w.ne_bot (Ideal.absNorm_eq_zero_iff.mp h)`. Conclude with `Nat.one_le_iff_ne_zero.mpr this` after adjusting the coercions.
+-/
 theorem one_le_absNorm {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) :
     (1 : ℝ) ≤ (Ideal.absNorm w.asIdeal : ℝ) := by
   have : Ideal.absNorm w.asIdeal ≠ 0 := fun h => w.ne_bot (Ideal.absNorm_eq_zero_iff.mp h)
   exact_mod_cast Nat.one_le_iff_ne_zero.mpr this
 
+/- English proof (translation)
+Introduce `hS`. Establish `hU : Summable (fun w : HeightOneSpectrum (𝓞 E) => (Ideal.absNorm w.asIdeal : ℝ)⁻¹)` using `(Finset.summable_compl_iff (f := fun w : HeightOneSpectrum (𝓞 E) => (Ideal.absNorm w.asIdeal : ℝ)⁻¹) S).mp hS`. Use `set M := ∑' w : HeightOneSpectrum (𝓞 E), (Ideal.absNorm w.asIdeal : ℝ)⁻¹`. Establish `hb : ∀ s : ℝ, 1 < s → NumberField.Set.primeIdealZetaSum (Set.univ : Set (HeightOneSpectrum (𝓞 E))) s ≤ M`. Introduce `s hs`.
+
+Establish `hle : ∀ w : HeightOneSpectrum (𝓞 E), (Ideal.absNorm w.asIdeal : ℝ) ^ (-s) ≤ (Ideal.absNorm w.asIdeal : ℝ)⁻¹`. Introduce `w`. Rewrite using `[← Real.rpow_neg_one]`. Conclude with `Real.rpow_le_rpow_of_exponent_le (one_le_absNorm w) (by linarith)`. Rewrite using `[NumberField.Set.primeIdealZetaSum_def, tsum_univ (fun w : HeightOneSpectrum (𝓞 E) => (Ideal.absNorm w.asIdeal : ℝ) ^ (-s))]`.
+
+Conclude with `Summable.tsum_le_tsum hle (hU.of_nonneg_of_le (fun _ => by positivity) hle) hU`. Take `⟨s, hsM, hs1⟩` from `(((ReciprocityTheory.Neutral.Bridge.tendsto_primeIdealZetaSum_univ E).eventually_gt_atTop M).and self_mem_nhdsWithin).exists`. Conclude with `absurd (hb s hs1) (not_le.mpr hsM)`.
+-/
 theorem not_summable_inv_absNorm {E : Type} [Field E] [NumberField E] (S : Finset (HeightOneSpectrum (𝓞 E))) :
     ¬ Summable (fun w : {w : HeightOneSpectrum (𝓞 E) // w ∉ S} => (Ideal.absNorm w.1.asIdeal : ℝ)⁻¹) := by
   intro hS
@@ -120,6 +165,21 @@ theorem not_summable_inv_absNorm {E : Type} [Field E] [NumberField E] (S : Finse
     self_mem_nhdsWithin).exists
   exact absurd (hb s hs1) (not_le.mpr hsM)
 
+/- English proof (translation)
+Introduce `hs`. Establish `hex : ∀ w : {w : HeightOneSpectrum (𝓞 E) // w ∉ S}, ∃ r, 1 ≤ r ∧ r ≤ N ∧ 1 ≤ ‖((A w.1).map (· ^ r)).sum‖`. Introduce `w`. Use `exists_one_le_norm_psum_multiset (A w.1) (by rw [hcard w.1 w.2]; exact hN) (hprod w.1 w.2)` as an intermediate fact. Rewrite `this` using `[hcard w.1 w.2]`. Then use the resulting hypothesis.
+
+Use `choose r hr1 hrN hr using hex`. Use `set F := fun p : {w : HeightOneSpectrum (𝓞 E) // w ∉ S} × ℕ => ‖((A p.1.1).map (· ^ (p.2 + 1))).sum‖ ^ 2 * (Ideal.absNorm p.1.1.asIdeal : ℝ) ^ (-(((p.2 : ℝ) + 1) * x)) / ((p.2 : ℝ) + 1) with hF`. Establish `hinj : Function.Injective (fun w : {w : HeightOneSpectrum (𝓞 E) // w ∉ S} => (w, r w - 1))` using `fun a b h => congrArg Prod.fst h`. Establish `h1` using `hs.comp_injective hinj`. Apply `not_summable_inv_absNorm S` to reduce the goal to its premises.
+
+Use `(h1.mul_left (N : ℝ)).of_nonneg_of_le (fun _ => by positivity) (fun w => ?_)` and prove the remaining obligations. Establish `hre : (((r w - 1 : ℕ) : ℝ) + 1) = (r w : ℝ)`. Rewrite using `[Nat.cast_sub (hr1 w)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hpow : r w - 1 + 1 = r w` using `Nat.sub_add_cancel (hr1 w)`. Simplify using `only [Function.comp_apply, hF, hre, hpow]`. Establish `hq` using `one_le_absNorm w.1`. Establish `hr0 : (0 : ℝ) < r w` using `by exact_mod_cast hr1 w`. Establish `hrN' : (r w : ℝ) ≤ N` using `by exact_mod_cast hrN w`.
+
+Establish `hN0 : (0 : ℝ) < N` using `by exact_mod_cast hN`. Establish `hrx : (r w : ℝ) * x ≤ 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hqq : (Ideal.absNorm w.1.asIdeal : ℝ)⁻¹ ≤ (Ideal.absNorm w.1.asIdeal : ℝ) ^ (-((r w : ℝ) * x))`. Rewrite using `[← Real.rpow_neg_one]`.
+
+Conclude with `Real.rpow_le_rpow_of_exponent_le hq (by linarith)`. Establish `hP : 1 ≤ ‖((A w.1).map (· ^ r w)).sum‖ ^ 2` using `one_le_pow₀ (hr w)`. Establish `hQ0 : 0 ≤ (Ideal.absNorm w.1.asIdeal : ℝ) ^ (-((r w : ℝ) * x))` using `by positivity`. Establish `hNr : 1 ≤ (N : ℝ) / r w` using `(one_le_div hr0).mpr hrN'`. Combine the equalities or inequalities in the displayed calculation.
+
+Use polynomial arithmetic with `[mul_le_mul hNr hP zero_le_one (by positivity : (0:ℝ) ≤ N / r w)]`. Use `_ = _ := by field_simp`.
+-/
 theorem not_summable_psum_sq {E : Type} [Field E] [NumberField E] (N : ℕ) (hN : 1 ≤ N)
     (S : Finset (HeightOneSpectrum (𝓞 E))) (A : HeightOneSpectrum (𝓞 E) → Multiset ℂ)
     (hcard : ∀ w ∉ S, Multiset.card (A w) = N) (hprod : ∀ w ∉ S, ‖(A w).prod‖ = 1) {x : ℝ} (hx : x ≤ 1 / N) :

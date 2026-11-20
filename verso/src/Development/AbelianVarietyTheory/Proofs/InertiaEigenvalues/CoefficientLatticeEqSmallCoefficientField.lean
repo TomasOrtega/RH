@@ -21,6 +21,23 @@ section BaseChange
 variable {E K₀ K ι : Type} [Field E] [NumberField E] [Field K₀] [NumberField K₀] [Field K] [NumberField K] [Fintype ι]
   {n : ℕ}
 
+/- English proof (translation)
+Unfold `nabAtr nabK at hx ⊢`. Rewrite `hx`, the goal using `[Submodule.mem_comap]`. Express the relevant statement in the definitionally equal form `MvPolynomial.map f x.1 ∈ nabP lam fun τ => dualFr (tauLat (fun τ => f.comp (emb τ)) τ M)`. Express the relevant statement in the definitionally equal form `x.1 ∈ nabP lam (fun τ => dualFr (tauLat emb τ M)) at hx`. Use `GlobalTheory.TransLattice.mem_of_forall_mem_locP _ fun w => ?_` and prove the remaining obligations.
+
+Choose the witnesses or unpack the hypotheses as in `⟨w₀, hw₀⟩ : ∃ Q : HeightOneSpectrum (𝓞 K₀), ∀ r : 𝓞 K₀, r ∈ Q.asIdeal ↔ RingOfIntegers.mapRingHom f r ∈ w.asIdeal := by`. Use `⟨⟨w.asIdeal.comap (RingOfIntegers.mapRingHom f), Ideal.comap_isPrime _ _, fun h => ?_⟩, fun _ => Iff.rfl⟩` and prove the remaining obligations. Establish `h1 : ((Ideal.absNorm w.asIdeal : ℕ) : 𝓞 K₀) ∈ w.asIdeal.comap (RingOfIntegers.mapRingHom f)`. Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `Ideal.absNorm_mem _`.
+
+Rewrite `h1` using `[h, Ideal.mem_bot]`. Conclude with `w.ne_bot (Ideal.absNorm_eq_zero_iff.1 (by exact_mod_cast h1))`. Establish `hw : ∀ t : 𝓞 K₀, t ∉ w₀.asIdeal → RingOfIntegers.mapRingHom f t ∉ w.asIdeal` using `fun t ht h => ht ((hw₀ t).2 h)`. Take `⟨hLoc, -, -⟩` from `GlobalTheory.TransLoc.nabDelLoc_free_leVV`. Establish `hT : ∀ τ, Submodule.IsLattice K₀ (tauLat emb τ M)` using `fun τ => tauLatLattice E K₀ ι n emb τ M hM`.
+
+Use `choose C hC using fun τ => basisAtEx K₀ n (tauLat emb τ M) (hT τ) w₀`. Set `B₀ : ι → GL (Fin n) K₀` to `fun τ => inside₂ K₀ n (C τ)`. Establish `hB₀ : ∀ τ, IsBasisAt w₀ (dualFr (tauLat emb τ M)) (B₀ τ)` using `fun τ => GlobalTheory.DualWeylDual.isBasisAt_dualFr w₀ (hT τ).fg (hC τ)`. Establish `hB : ∀ τ, IsBasisAt w (dualFr (tauLat (fun τ => f.comp (emb τ)) τ M)) (Formalism.UG.bc f (B₀ τ))` using `fun τ => GlobalTheory.NabBC.isBasisAt_dualFr_tauLat_comp f emb τ M hM w₀ w hw (C τ) (hC τ)`. Establish `L1` using `(hLoc K ι n lam _ (fun τ => dualFr_tauLat_isLattice (fun τ => f.comp (emb τ)) τ M hM) w _ hB).1`.
+
+Establish `L0` using `(hLoc K₀ ι n lam _ (fun τ => dualFr_tauLat_isLattice emb τ M hM) w₀ B₀ hB₀).1`. Establish `hx0 : x.1 ∈ Formalism.HermitianLatticesTheory.localization₂ w₀.asIdeal (nabP lam fun τ => dualFr (tauLat emb τ M))` using `GlobalTheory.NabBC.mem_localization_of_mem' _ hx`. Rewrite `hx0` using `[L0]`. Take `⟨g, ⟨s, hs, hsg⟩, hg⟩` from `hx0`. Rewrite using `[L1]`.
+
+Use `⟨MvPolynomial.map f g, ⟨RingOfIntegers.mapRingHom f s, hw s hs, ?_⟩, ?_⟩` and prove the remaining obligations. Use `(congrArg (· ∈ nabStd K lam) (GlobalTheory.NabBC.map_smul_int f s g)).mpr ?_` and prove the remaining obligations. Establish `h1` using `(GlobalTheory.StdBaseChange.std_baseChange (𝓞 K) K K₀ ι f (RingOfIntegers.mapRingHom f) (fun r => rfl) n lam).1`. Establish `h2` using `(GlobalTheory.StdBaseChange.std_baseChange (𝓞 K) K K ι (RingHom.id K) (RingHom.id _) (fun r => rfl) n lam).1`. Establish `h3 : MvPolynomial.map f (s • g) ∈ Submodule.span (𝓞 K) (MvPolynomial.map f '' (nabStd K₀ lam : Set (Pol K₀ ι n)))` using `Submodule.subset_span ⟨_, hsg, rfl⟩`.
+
+Rewrite `h3` using `[h1, ← h2]`. Establish `h4 : (MvPolynomial.map (RingHom.id K) '' (nabStd K lam : Set (Pol K ι n))) = (nabStd K lam : Set (Pol K ι n))`. Use extensionality with `y`. Simplify using `[MvPolynomial.map_id]`. Rewrite `h3` using `[h4, Submodule.span_eq]`.
+
+Conclude with `h3`. Express the relevant statement in the definitionally equal form `actP lam (fun τ => Formalism.UG.bc f (B₀ τ)) (MvPolynomial.map f g) = MvPolynomial.map f x.1`. Rewrite using `[← GlobalTheory.ValCmp.use₂]`. Conclude with `congrArg (MvPolynomial.map f) hg`.
+-/
 theorem map_mem_nabAtr (f : K₀ →+* K) (emb : ι → E →+* K₀) (lam : ι → DomWeight n) (M : Submodule (𝓞 E) (Fin n → E))
     (hM : Submodule.IsLattice E M) {x : VV K₀ lam} (hx : x ∈ nabAtr emb lam M) :
     (⟨MvPolynomial.map f x.1, GlobalTheory.Proof.TensorMapDescent.map_mem_VV f lam _ x.2⟩ : VV K lam) ∈
@@ -74,6 +91,9 @@ theorem map_mem_nabAtr (f : K₀ →+* K) (emb : ι → E →+* K₀) (lam : ι 
 
 end BaseChange
 
+/- English proof (translation)
+Use `inf_le_inf_left _ (Submodule.comap_mono (Submodule.span_mono ?_))` and prove the remaining obligations. Introduce and unpack `_ ⟨F, hF, rfl⟩`. Use `⟨_, map_mem_nabAtr f emb w.lam M hM hF, funext fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[coefFn, coefFn, MvPolynomial.eval₂Hom_map_hom]`.
+-/
 theorem harmLat_le {D : D7} {m n : ℕ} {K₀ K : Type} [Field K₀] [NumberField K₀] [Field K] [NumberField K] (f : K₀ →+* K)
     (σ : K →+* ℂ) (emb : D.what₂.Tau → (D.host.E →+* K₀)) (O : Subring ℂ) (w : GlobalTheory.ExportSeries.Weight D n) (B : GLR D n)
     {M : Submodule (𝓞 D.host.E) (Fin n → D.host.E)} (hM : Submodule.IsLattice D.host.E M) :
@@ -83,6 +103,13 @@ theorem harmLat_le {D : D7} {m n : ℕ} {K₀ K : Type} [Field K₀] [NumberFiel
   refine ⟨_, map_mem_nabAtr f emb w.lam M hM hF, funext fun y => ?_⟩
   rw [coefFn, coefFn, MvPolynomial.eval₂Hom_map_hom]
 
+/- English proof (translation)
+Introduce `D S T B hB O hO h`. Establish `hm : ∀ τ, B.w.p τ + B.w.q τ ≤ T.rank` using `fun τ => by`. Establish `h1` using `hB.sig τ`. Establish `h2` using `Formalism.BasicNotions.sig_sum _ hB.sigOK (Formalism.BasicNotions.TH.tauE D τ)`. Rewrite `h2` using `[← h1]`.
+
+Conclude with `h2.le`. Establish `hM` using `GlobalTheory.SmallSpan.isLattice_latAt hB.frame h`. Use `le_antisymm (fun P hP => ?_) (harmLat_le D.LL0.val.toRingHom D.what₂.embLL (labLL0 D) O B.w B.F.BS hM)` and prove the remaining obligations. Establish `h1` using `GlobalTheory.SmallSpan.harmLat_le_span D.LL0.val.toRingHom D.what₂.embLL (labLL0 D) O O (fun a => hO ⟨a, rfl⟩) B.w B.F.BS hB.wt hm hM hP`. Rewrite `h1` using `[Submodule.span_eq]`.
+
+Conclude with `h1`.
+-/
 theorem coefLat_eq_small : ∀ (D : D7) (S T : HSp D) (B : Base S T), B.Good → ∀ O : Subring ℂ, intLL D ≤ O → ∀ h, B.coefLat D.what₂.embLL (labLL D) O h = B.coefLat (embLL0 D) (labLL0 D) O h := by
   intro D S T B hB O hO h
   have hm : ∀ τ, B.w.p τ + B.w.q τ ≤ T.rank := fun τ => by

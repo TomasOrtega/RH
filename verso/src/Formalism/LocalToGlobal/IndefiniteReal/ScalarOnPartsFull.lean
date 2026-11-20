@@ -255,6 +255,9 @@ def Wpart (j : ℕ) (M : DSModel (D.sp.W j) (parW (D.sp.W j) (Formalism.L2.NThet
     (c : HeightOneSpectrum (𝓞 D.host.E) → List ℤ → ℂ) : Submodule ℂ (MMap M) :=
   partFull θ M J χ Sb c ⊓ WgoodRec θ j M J χ e
 
+/- English proof (translation)
+Establish `h1` using `(h v v).2`. Establish `h2` using `(h' v v).2`. Rewrite `h2` using `[h1]`. Conclude with `mul_right_cancel₀ hv h2`.
+-/
 theorem hasPeterssonInner_unique (M : DSModel V S) (μ : Measure (GA D V)) (𝓕 : Set (GA D V)) (T T' : MMap M) {c c' : ℂ}
     (v : M.Vec) (hv : ∏ τ, ⟪(v τ : M.H τ), (v τ : M.H τ)⟫_ℂ ≠ 0)
     (h : IsMultIP M μ 𝓕 T T' c) (h' : IsMultIP M μ 𝓕 T T' c') : c = c' := by
@@ -263,6 +266,9 @@ theorem hasPeterssonInner_unique (M : DSModel V S) (μ : Measure (GA D V)) (𝓕
   rw [h1] at h2
   exact mul_right_cancel₀ hv h2
 
+/- English proof (translation)
+Rewrite using `[ipM, dif_pos h]`. Conclude with `h.choose_spec`.
+-/
 theorem ipM_spec (M : DSModel V S) (μ : Measure (GA D V)) (𝓕 : Set (GA D V)) (T T' : MMap M)
     (h : ∃ c, IsMultIP M μ 𝓕 T T' c) : IsMultIP M μ 𝓕 T T' (ipM M μ 𝓕 T T') := by
   rw [ipM, dif_pos h]
@@ -312,21 +318,41 @@ def DualConj (M : DSModel V S) (J : Set (GA D V)) (χ : GA D V → ℂ) (Sb : Fi
   IsInfFam θ → SphOff J χ Sb →
     ∀ c ∈ IxFull θ M J χ Sb e, ∀ P d, (∃ R, Hecke₂ V J χ Sb P d R) → c P (dualLab d) = star (c P d)
 
+/- English proof (translation)
+Simplify using `[dualPar, Finset.image_image, Function.comp_def]`.
+-/
 theorem dualPar_dualPar (S : SPar) : dualPar (dualPar S) = S := by
   simp [dualPar, Finset.image_image, Function.comp_def]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem postOn_apply (M : DSModel V S) (L : (GA D V → ℂ) →ₗ[ℂ] (GA D V → ℂ)) (T : MMap M) (v : M.Vec) :
     postOn M L T v = L (T v) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem heckeLin_apply (R : Finset (GA D V)) (F : GA D V → ℂ) (g : GA D V) :
     heckeLin V R F g = ∑ γ ∈ R, F (g * γ) := rfl
 
+/- English proof (translation)
+The claim follows from `inf_le_left`.
+-/
 theorem goodPart_le (M : DSModel V S) (J : Set (GA D V)) (χ : GA D V → ℂ) (e : (GA D V → ℂ) →ₗ[ℂ] (GA D V → ℂ)) :
     goodPart θ M J χ e ≤ Mult θ M J χ := inf_le_left
 
+/- English proof (translation)
+The claim follows from `inf_le_left`.
+-/
 theorem part_le (M : DSModel V S) (J : Set (GA D V)) (χ : GA D V → ℂ) (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F)))
     (c : HeightOneSpectrum (𝓞 D.host.E) → ℕ → ℂ) : part θ M J χ Sb c ≤ Mult θ M J χ := inf_le_left
 
+/- English proof (translation)
+Rewrite using `[goodPart, Submodule.mem_inf, LinearMap.mem_ker]`. Use `and_congr Iff.rfl ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `h v`. Establish `h1` using `congrArg (fun S => S v) h`.
+
+Simplify `h1` using `[postOn_apply, sub_eq_zero]`. Introduce `h`. Use extensionality with `v`. Simplify using `[postOn_apply, h]`.
+-/
 theorem mem_goodPart (M : DSModel V S) (J : Set (GA D V)) (χ : GA D V → ℂ) (e : (GA D V → ℂ) →ₗ[ℂ] (GA D V → ℂ))
     (T : MMap M) : T ∈ goodPart θ M J χ e ↔ T ∈ Mult θ M J χ ∧ ∀ v, e (T v) = T v := by
   rw [goodPart, Submodule.mem_inf, LinearMap.mem_ker]
@@ -339,6 +365,11 @@ theorem mem_goodPart (M : DSModel V S) (J : Set (GA D V)) (χ : GA D V → ℂ) 
     ext v
     simp [postOn_apply, h]
 
+/- English proof (translation)
+Simplify using `only [part, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker]`. Use `and_congr Iff.rfl ?_` and prove the remaining obligations. Use `forall_congr' fun P => forall_congr' fun k => forall_congr' fun R => forall_congr' fun _ => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `h v`.
+
+Establish `h1` using `congrArg (fun S => S v) h`. Simplify `h1` using `[heckeOn, postOn_apply, sub_eq_zero]`. Introduce `h`. Use extensionality with `v`. Simplify using `[heckeOn, postOn_apply, h]`.
+-/
 theorem mem_part (M : DSModel V S) (J : Set (GA D V)) (χ : GA D V → ℂ) (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F)))
     (c : HeightOneSpectrum (𝓞 D.host.E) → ℕ → ℂ) (T : MMap M) :
     T ∈ part θ M J χ Sb c ↔ T ∈ Mult θ M J χ ∧
@@ -354,6 +385,11 @@ theorem mem_part (M : DSModel V S) (J : Set (GA D V)) (χ : GA D V → ℂ) (Sb 
     ext v
     simp [heckeOn, postOn_apply, h]
 
+/- English proof (translation)
+Simplify using `only [partFull, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker]`. Use `and_congr Iff.rfl ?_` and prove the remaining obligations. Use `forall_congr' fun P => forall_congr' fun d => forall_congr' fun R => forall_congr' fun _ => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `h v`.
+
+Establish `h1` using `congrArg (fun S => S v) h`. Simplify `h1` using `[heckeOn, postOn_apply, sub_eq_zero]`. Introduce `h`. Use extensionality with `v`. Simplify using `[heckeOn, postOn_apply, h]`.
+-/
 theorem mem_partFull (M : DSModel V S) (J : Set (GA D V)) (χ : GA D V → ℂ)
     (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))) (c : HeightOneSpectrum (𝓞 D.host.E) → List ℤ → ℂ) (T : MMap M) :
     T ∈ partFull θ M J χ Sb c ↔ T ∈ Mult θ M J χ ∧
@@ -377,6 +413,11 @@ def ipT (M : DSModel V S) (μ : Measure (GA D V)) (𝓕 : Set (GA D V))
     (x y : (⨂[ℂ] τ, M.sm τ) →ₗ[ℂ] (GA D V → ℂ)) : ℂ :=
   ipM M μ 𝓕 (PiTensorProduct.lift.symm y) (PiTensorProduct.lift.symm x)
 
+/- English proof (translation)
+Unfold `MultT`. Rewrite using `[Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify using `using hy`.
+
+Introduce `h`. Conclude with `⟨_, h, LinearEquiv.apply_symm_apply _ x⟩`.
+-/
 theorem mem_multT (M : DSModel V S) (J : Set (GA D V)) (χ : GA D V → ℂ)
     (x : (⨂[ℂ] τ, M.sm τ) →ₗ[ℂ] (GA D V → ℂ)) :
     x ∈ MultT θ M J χ ↔ PiTensorProduct.lift.symm x ∈ Mult θ M J χ := by

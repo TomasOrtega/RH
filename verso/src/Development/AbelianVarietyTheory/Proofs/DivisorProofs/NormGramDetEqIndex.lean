@@ -5,16 +5,43 @@ open NumberField
 
 namespace GlobalTheory.DualIndex
 
+/- English proof (translation)
+Rewrite using `[← AddSubgroup.relIndex_sup_left K H, ← AddSubgroup.relIndex_mul_relIndex H (H ⊔ K) K' le_sup_left (sup_le h1 h2)]`. Conclude with `dvd_mul_right _ _`.
+-/
 theorem relIndex_dvd_of_le_right {G : Type*} [AddCommGroup G] (H K K' : AddSubgroup G)
     (h1 : H ≤ K') (h2 : K ≤ K') : H.relIndex K ∣ H.relIndex K' := by
   rw [← AddSubgroup.relIndex_sup_left K H,
     ← AddSubgroup.relIndex_mul_relIndex H (H ⊔ K) K' le_sup_left (sup_le h1 h2)]
   exact dvd_mul_right _ _
 
+/- English proof (translation)
+Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Both sides reduce to the same expression.
+-/
 theorem absNorm_eq_index' {F : Type} [Field F] [NumberField F] (I : Ideal (𝓞 F)) :
     Ideal.absNorm I = I.toAddSubgroup.index := by
   rw [Ideal.absNorm_apply, Submodule.cardQuot_apply]; rfl
 
+/- English proof (translation)
+Distinguish the cases in `hI : I = ⊥`. Rewrite using `[← absNorm_eq_index', hI]`. Simplify using the standard rewrite rules. Take `⟨a, haI, ha⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hI`. Take `⟨J, hJ⟩ : I ∣ Ideal.span {a}` from `Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 haI)`.
+
+Establish `hinj : Function.Injective (algebraMap (𝓞 F) F)` using `FaithfulSMul.algebraMap_injective _ _`. Establish `haF : algebraMap (𝓞 F) F a ≠ 0` using `by simpa using ha`. Establish `hmul : Function.Injective (AddMonoidHom.mulLeft (algebraMap (𝓞 F) F a))` using `mul_right_injective₀ haF`. Establish `hJ0 : Ideal.absNorm J ≠ 0`. Introduce `h`.
+
+Rewrite `h` using `[Ideal.absNorm_eq_zero_iff]`. Rewrite `hJ` using `[h, Ideal.mul_bot, Ideal.span_singleton_eq_bot]`. Conclude with `ha hJ`. Establish `hle : (Ideal.span {a}).toAddSubgroup ≤ J.toAddSubgroup`. Establish `: Ideal.span {a} ≤ J` using `Ideal.dvd_iff_le.1 ⟨I, by rw [hJ, mul_comm]⟩`.
+
+Conclude with `this`. Establish `h1 : (Ideal.span {a}).toAddSubgroup.relIndex J.toAddSubgroup = I.toAddSubgroup.index`. Use `AddSubgroup.relIndex_mul_index hle` as an intermediate fact. Rewrite `this` using `[← absNorm_eq_index', ← absNorm_eq_index', hJ, map_mul]`. Rewrite using `[← absNorm_eq_index', hJ]`.
+
+Conclude with `mul_right_cancel₀ hJ0 this`. Rewrite using `[← h1, ← AddSubgroup.relIndex_map_map_of_injective _ _ hmul, ← AddSubgroup.relIndex_map_map_of_injective (f := (algebraMap (𝓞 F) F).toAddMonoidHom) (Ideal.span {a}).toAddSubgroup _ hinj]`. Establish `e : AddSubgroup.map (AddMonoidHom.mulLeft (algebraMap (𝓞 F) F a)) (1 : Submodule (𝓞 F) F).toAddSubgroup = AddSubgroup.map (algebraMap (𝓞 F) F).toAddMonoidHom (Ideal.span {a}).toAddSubgroup`. Use extensionality with `z`. Simplify using `only [AddSubgroup.mem_map, Submodule.mem_toAddSubgroup, Submodule.mem_one, Ideal.mem_span_singleton']`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨c, rfl⟩, rfl⟩`. Conclude with `⟨c * a, ⟨c, rfl⟩, by simp [mul_comm]⟩`. Introduce and unpack `⟨_, ⟨c, rfl⟩, rfl⟩`. Conclude with `⟨_, ⟨c, rfl⟩, by simp [mul_comm]⟩`.
+
+Rewrite using `[e]`. Use `relIndex_dvd_of_le_right _ _ _ (AddSubgroup.map_mono hle) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Take `⟨c, hc⟩` from `Submodule.mem_one.1 (hK f hf a haI)`. Use `⟨c, ?_, by simpa [Algebra.smul_def] using hc⟩` and prove the remaining obligations.
+
+Establish `: I * Ideal.span {c} ≤ I * J`. Rewrite using `[← hJ, Ideal.mul_le]`. Introduce `i hi s hs`. Take `⟨t, rfl⟩` from `Ideal.mem_span_singleton'.1 hs`. Take `⟨d, hd⟩` from `Submodule.mem_one.1 (hK f hf i hi)`.
+
+Use `Ideal.mem_span_singleton'.2 ⟨t * d, hinj ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, hc, hd, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : J ∣ Ideal.span {c}`. Rewrite `this` using `[← Ideal.dvd_iff_le]`.
+
+Conclude with `(mul_dvd_mul_iff_left hI).1 this`. Conclude with `(Ideal.span_singleton_le_iff_mem _).1 (Ideal.dvd_iff_le.1 h2)`.
+-/
 theorem inv_relIndex_dvd {F : Type} [Field F] [NumberField F] (I : Ideal (𝓞 F))
     (K : AddSubgroup F) (hK : ∀ f ∈ K, ∀ i ∈ I, i • f ∈ (1 : Submodule (𝓞 F) F)) :
     (1 : Submodule (𝓞 F) F).toAddSubgroup.relIndex K ∣ I.toAddSubgroup.index := by
@@ -74,9 +101,23 @@ theorem inv_relIndex_dvd {F : Type} [Field F] [NumberField F] (I : Ideal (𝓞 F
 variable {F : Type} [Field F] [NumberField F] {V : Type} [AddCommGroup V] [Module F V]
   [Module (𝓞 F) V] [IsScalarTower (𝓞 F) F V] (B : LinearMap.BilinForm F V)
 
+/- English proof (translation)
+Introduce `_ hy x hx` and use `hy x (h hx)`.
+-/
 theorem dual_anti {M L : Submodule (𝓞 F) V} (h : M ≤ L) :
     B.dualSubmodule L ≤ B.dualSubmodule M := fun _ hy x hx => hy x (h hx)
 
+/- English proof (translation)
+Establish `e1 : M.toAddSubgroup.relIndex (M ⊔ Submodule.span (𝓞 F) {x}).toAddSubgroup = (M.comap (LinearMap.toSpanSingleton (𝓞 F) V x)).toAddSubgroup.index`. Rewrite using `[Submodule.sup_toAddSubgroup, AddSubgroup.relIndex_sup_left]`. Use `AddSubgroup.index_comap M.toAddSubgroup (LinearMap.toSpanSingleton (𝓞 F) V x).toAddMonoidHom` as an intermediate fact. Rewrite using `[show (LinearMap.toSpanSingleton (𝓞 F) V x).toAddMonoidHom.range = (Submodule.span (𝓞 F) {x}).toAddSubgroup from by`. Use extensionality with `z`.
+
+Simplify using `[Submodule.mem_span_singleton]] at this`. Conclude with `this.symm`. Establish `e2 : (B.dualSubmodule (M ⊔ Submodule.span (𝓞 F) {x})).toAddSubgroup = ((1 : Submodule (𝓞 F) F).toAddSubgroup.comap (B.flip x).toAddMonoidHom) ⊓ (B.dualSubmodule M).toAddSubgroup`. Use extensionality with `y`. Simplify using `only [Submodule.mem_toAddSubgroup, LinearMap.BilinForm.mem_dualSubmodule, AddSubgroup.mem_inf, AddSubgroup.mem_comap]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨h x (Submodule.mem_sup_right (Submodule.mem_span_singleton_self x)), fun z hz => h z (Submodule.mem_sup_left hz)⟩`. Introduce and unpack `⟨h1, h2⟩ z hz`. Take `⟨m, hm, w, hw, rfl⟩` from `Submodule.mem_sup.1 hz`.
+
+Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hw`. Rewrite using `[map_add, LinearMap.map_smul_of_tower]`. Conclude with `add_mem (h2 m hm) (Submodule.smul_mem _ c h1)`. Rewrite using `[e1, e2, AddSubgroup.inf_relIndex_right, AddSubgroup.relIndex_comap]`. Use `inv_relIndex_dvd _ _ ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨y, hy, rfl⟩ i hi`. Use `hy (i • x) hi` as an intermediate fact. Rewrite `this` using `[LinearMap.map_smul_of_tower]`. Then use the resulting hypothesis.
+-/
 theorem dual_step (M : Submodule (𝓞 F) V) (x : V) :
     (B.dualSubmodule (M ⊔ Submodule.span (𝓞 F) {x})).toAddSubgroup.relIndex
       (B.dualSubmodule M).toAddSubgroup ∣
@@ -111,6 +152,11 @@ theorem dual_step (M : Submodule (𝓞 F) V) (x : V) :
   have := hy (i • x) hi
   rwa [LinearMap.map_smul_of_tower] at this
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert x s _ ih`. Establish `e : M ⊔ Submodule.span (𝓞 F) ((insert x s : Finset V) : Set V) = (M ⊔ Submodule.span (𝓞 F) (s : Set V)) ⊔ Submodule.span (𝓞 F) {x}`. Rewrite using `[Finset.coe_insert, Submodule.span_insert, sup_assoc, sup_comm (Submodule.span _ {x})]`.
+
+Rewrite using `[e]`. Use `set N := M ⊔ Submodule.span (𝓞 F) (s : Set V) with hN`. Establish `hMN : M ≤ N` using `le_sup_left`. Rewrite using `[← AddSubgroup.relIndex_mul_relIndex M.toAddSubgroup N.toAddSubgroup (N ⊔ Submodule.span (𝓞 F) {x}).toAddSubgroup hMN (le_sup_left (a := N)), ← AddSubgroup.relIndex_mul_relIndex _ (B.dualSubmodule N).toAddSubgroup (B.dualSubmodule M).toAddSubgroup (dual_anti B (le_sup_left (a := …`. Conclude with `mul_dvd_mul ih (dual_step B N x)`.
+-/
 theorem dual_relIndex_dvd (M : Submodule (𝓞 F) V) (s : Finset V) :
     (B.dualSubmodule (M ⊔ Submodule.span (𝓞 F) (s : Set V))).toAddSubgroup.relIndex
       (B.dualSubmodule M).toAddSubgroup ∣
@@ -132,6 +178,9 @@ theorem dual_relIndex_dvd (M : Submodule (𝓞 F) V) (s : Finset V) :
       mul_comm]
     exact mul_dvd_mul ih (dual_step B N x)
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `hL`. Use `dual_relIndex_dvd B M s` as an intermediate fact. Rewrite `this` using `[hs, sup_eq_right.2 h]`. Then use the resulting hypothesis.
+-/
 theorem dual_relIndex_dvd' {M L : Submodule (𝓞 F) V} (h : M ≤ L) (hL : L.FG) :
     (B.dualSubmodule L).toAddSubgroup.relIndex (B.dualSubmodule M).toAddSubgroup ∣
     M.toAddSubgroup.relIndex L.toAddSubgroup := by
@@ -139,6 +188,13 @@ theorem dual_relIndex_dvd' {M L : Submodule (𝓞 F) V} (h : M ≤ L) (hL : L.FG
   have := dual_relIndex_dvd B M s
   rwa [hs, sup_eq_right.2 h] at this
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Take `⟨f, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 hx`. Use `sum_mem fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← (RingOfIntegers.basis F).sum_repr (f j), Finset.sum_smul]`.
+
+Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_assoc]`. Use `AddSubgroup.zsmul_mem _ (AddSubgroup.subset_closure (Set.mem_range.2 ⟨(i, j), ?_⟩)) _` and prove the remaining obligations. Rewrite using `[Module.Basis.smulTower_apply, integralBasis_apply, algebraMap_smul]`. Rewrite using `[AddSubgroup.closure_le]`.
+
+Introduce and unpack `_ ⟨⟨i, j⟩, rfl⟩`. Rewrite using `[Module.Basis.smulTower_apply, integralBasis_apply, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+-/
 theorem span_eq_closure [Module ℚ V] [IsScalarTower ℚ F V] {n : ℕ} (b : Module.Basis (Fin n) F V) :
     (Submodule.span (𝓞 F) (Set.range b)).toAddSubgroup =
       AddSubgroup.closure (Set.range ((integralBasis F).smulTower b)) := by
@@ -157,6 +213,9 @@ theorem span_eq_closure [Module ℚ V] [IsScalarTower ℚ F V] {n : ℕ} (b : Mo
     rw [Module.Basis.smulTower_apply, integralBasis_apply, algebraMap_smul]
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)
 
+/- English proof (translation)
+The claim follows from `|Algebra.norm ℚ (c.det b)| := by classical letI : Module ℚ V := Module.compHom V (algebraMap ℚ F) haveI : IsScalarTower ℚ F V := IsScalarTower.of_algebraMap_smul fun _ _ => rfl haveI : Module.Free F V := Module.Free.of_basis b rw [AddSubgroup.relIndex_eq_abs_det _ _ h _ _ (span_e …`.
+-/
 theorem relIndex_span_eq_norm {n : ℕ} (b c : Module.Basis (Fin n) F V)
     (h : Submodule.span (𝓞 F) (Set.range b) ≤ Submodule.span (𝓞 F) (Set.range c)) :
     (((Submodule.span (𝓞 F) (Set.range b)).toAddSubgroup.relIndex
@@ -178,6 +237,11 @@ theorem relIndex_span_eq_norm {n : ℕ} (b c : Module.Basis (Fin n) F V)
   rw [h2, Module.Basis.det_comp, Module.Basis.det_self, mul_one, LinearMap.det_restrictScalars]
   conv_rhs => rw [h1, Module.Basis.det_comp, Module.Basis.det_self, mul_one]
 
+/- English proof (translation)
+Rewrite using `[Submodule.mem_one]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`. Conclude with `c.isIntegral_coe`. Introduce `h`.
+
+Conclude with `⟨⟨z, h⟩, rfl⟩`.
+-/
 theorem mem_one_iff (z : F) : z ∈ (1 : Submodule (𝓞 F) F) ↔ IsIntegral ℤ z := by
   rw [Submodule.mem_one]
   constructor
@@ -188,6 +252,25 @@ end GlobalTheory.DualIndex
 
 open GlobalTheory.DualIndex in
 
+/- English proof (translation)
+Introduce `F _ _ V _ _ _ _ n b B L hs hB hb hL hint`. Set `Λ : Submodule (𝓞 F) V` to `{ L.toAddSubmonoid with smul_mem' := fun a x hx => hL a x hx }`. Establish `hΛ : Λ.toAddSubgroup = L` using `rfl`. Use `set M := Submodule.span (𝓞 F) (Set.range b) with hM`. Establish `hcl : AddSubgroup.closure {y | ∀ x ∈ L, IsIntegral ℤ (B x y)} = (B.dualSubmodule Λ).toAddSubgroup`.
+
+Rewrite using `[← AddSubgroup.closure_eq (B.dualSubmodule Λ).toAddSubgroup]`. Use `congr 1`. Use extensionality with `y`. Express the relevant statement in the definitionally equal form `(∀ x ∈ L, IsIntegral ℤ (B x y)) ↔ ∀ x ∈ L, B y x ∈ (1 : Submodule (𝓞 F) F)`. Use `forall₂_congr fun x _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mem_one_iff, hs.eq x y]`. Establish `hML : M ≤ Λ` using `Submodule.span_le.2 (by rintro _ ⟨i, rfl⟩; exact hb i)`. Establish `hLL : Λ ≤ B.dualSubmodule Λ` using `fun x hx y hy => (mem_one_iff _).2 (hint x hx y hy)`. Establish `hLM : B.dualSubmodule Λ ≤ B.dualSubmodule M` using `dual_anti B hML`. Establish `hdual` using `B.dualSubmodule_span_of_basis (R := 𝓞 F) hB b`.
+
+Establish `hdd` using `B.dualSubmodule_dualSubmodule_of_basis (R := 𝓞 F) hB hs b`. Rewrite `hdual`, `hdd` using `[← hM]`. Establish `hfg : (B.dualSubmodule M).FG`. Rewrite using `[hdual]`. Conclude with `Submodule.fg_span (Set.finite_range _)`.
+
+Establish `hfgΛ : Λ.FG` using `Submodule.FG.of_le hfg (hLL.trans hLM)`. Establish `d1` using `dual_relIndex_dvd' B hML hfgΛ`. Establish `d2` using `dual_relIndex_dvd' B hLM hfg`. Rewrite `d2` using `[hdd]`. Establish `hΛdd : Λ ≤ B.dualSubmodule (B.dualSubmodule Λ)` using `fun x hx y hy => by`.
+
+Rewrite using `[hs.eq x y]`. Conclude with `hy x hx`. Establish `d3` using `relIndex_dvd_of_le_right M.toAddSubgroup Λ.toAddSubgroup (B.dualSubmodule (B.dualSubmodule Λ)).toAddSubgroup (hML.trans hΛdd) hΛdd`. Establish `hb'` using `Nat.dvd_antisymm d1 (d3.trans d2)`. Establish `hle : M ≤ Submodule.span (𝓞 F) (Set.range (B.dualBasis hB b))`.
+
+Rewrite using `[← hdual]`. Conclude with `hML.trans (hLL.trans hLM)`. Establish `ha` using `relIndex_span_eq_norm b (B.dualBasis hB b) hle`. Rewrite `ha` using `[← hM, ← hdual, ← AddSubgroup.relIndex_mul_relIndex M.toAddSubgroup Λ.toAddSubgroup (B.dualSubmodule M).toAddSubgroup hML (hLL.trans hLM), ← AddSubgroup.relIndex_mul_relIndex Λ.toAddSubgroup (B.dualSubmodule Λ).toAddSubgroup (B.dualSubmodule M).toAddSubgroup hLL hLM, hb']`. Establish `hdet : (B.dualBasis hB b).det b = (Matrix.of fun i j => B (b i) (b j)).det`.
+
+Rewrite using `[Module.Basis.det_apply, ← Matrix.det_transpose]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[Module.Basis.toMatrix_apply, LinearMap.BilinForm.dualBasis_repr_apply]`. Rewrite `ha` using `[hdet, hΛ]`.
+
+Rewrite using `[hcl, ← Rat.cast_abs, ← ha]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GlobalTheory.abs_norm_det_gram_eq_relIndex : ∀ (F : Type) [Field F] [NumberField F] (V : Type) [AddCommGroup V] [Module F V] [Module (𝓞 F) V] [IsScalarTower (𝓞 F) F V] (n : ℕ) (b : Module.Basis (Fin n) F V) (B : LinearMap.BilinForm F V) (L : AddSubgroup V), B.IsSymm → B.Nondegenerate → (∀ i, b i ∈ L) → (∀ (a : 𝓞 F) x, x ∈ L → a • x ∈ L) → (∀ x ∈ L, ∀ y ∈ L, IsIntegral ℤ (B x y)) → |((Algebra.norm ℚ (Matrix.of fun i j => B (b i) (b j)).det : ℚ) : ℝ)| = (L.relIndex (AddSubgroup.closure {y | ∀ x ∈ L, IsIntegral ℤ (B x y)}) : ℝ) * ((Submodule.span (𝓞 F) (Set.range b)).toAddSubgroup.relIndex L : ℝ) ^ 2 := by
   intro F _ _ V _ _ _ _ n b B L hs hB hb hL hint
   classical

@@ -11,6 +11,11 @@ namespace GlobalTheory.CompanionTheory.SiegelND.Integ.Arch.Vol
 
 def I0 : ℝ≥0∞ := ∫⁻ z : ℂ, ENNReal.ofReal (((1 + ‖z‖) ^ 3)⁻¹)
 
+/- English proof (translation)
+Establish `h` using `integrable_one_add_norm (E := ℂ) (μ := volume) (r := 3) (by rw [Complex.finrank_real_complex]; norm_num)`. Establish `h2` using `h.lintegral_lt_top`. Use `lt_of_le_of_lt (le_of_eq ?_) h2` and prove the remaining obligations. Use `lintegral_congr fun z => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Rewrite using `[Real.rpow_neg (by positivity), show (3:ℝ) = ((3:ℕ):ℝ) by norm_num, Real.rpow_natCast]`.
+-/
 theorem I0_lt_top : I0 < ⊤ := by
   have h := integrable_one_add_norm (E := ℂ) (μ := volume) (r := 3)
     (by rw [Complex.finrank_real_complex]; norm_num)
@@ -23,10 +28,20 @@ theorem I0_lt_top : I0 < ⊤ := by
 def wt (l : ℝ) (z : ℂ) : ℝ≥0∞ :=
   ENNReal.ofReal (((1 + ‖z‖) ^ 3)⁻¹ * ((1 + |l| * ‖z‖) ^ 3)⁻¹)
 
+/- English proof (translation)
+Unfold `wt`. Use `fun_prop`.
+-/
 theorem measurable_wt (l : ℝ) : Measurable (wt l) := by
   unfold wt
   fun_prop
 
+/- English proof (translation)
+Establish `hr : |l| ≠ 0` using `abs_ne_zero.mpr hl`. Establish `hm` using `Measure.map_addHaar_smul (volume : Measure ℂ) hr`. Establish `hF : Measurable fun w : ℂ => ENNReal.ofReal (((1 + ‖w‖) ^ 3)⁻¹)` using `by fun_prop`. Establish `h1 : ∫⁻ z : ℂ, ENNReal.ofReal (((1 + |l| * ‖z‖) ^ 3)⁻¹) = ∫⁻ w : ℂ, ENNReal.ofReal (((1 + ‖w‖) ^ 3)⁻¹) ∂(Measure.map (fun x : ℂ => |l| • x) volume)`. Rewrite using `[lintegral_map hF (measurable_const_smul _)]`.
+
+Use `lintegral_congr fun z => ?_` and prove the remaining obligations. Rewrite using `[norm_smul, Real.norm_eq_abs, abs_abs]`. Rewrite using `[h1, hm, lintegral_smul_measure, Complex.finrank_real_complex]`. Simplify using `only [smul_eq_mul, I0]`. Use `congr 2`.
+
+Rewrite using `[abs_of_nonneg (by positivity), sq_abs]`.
+-/
 theorem lint_scale {l : ℝ} (hl : l ≠ 0) :
     ∫⁻ z : ℂ, ENNReal.ofReal (((1 + |l| * ‖z‖) ^ 3)⁻¹) = ENNReal.ofReal ((l ^ 2)⁻¹) * I0 := by
   have hr : |l| ≠ 0 := abs_ne_zero.mpr hl
@@ -42,6 +57,23 @@ theorem lint_scale {l : ℝ} (hl : l ≠ 0) :
   congr 2
   rw [abs_of_nonneg (by positivity), sq_abs]
 
+/- English proof (translation)
+Establish `hI : ENNReal.ofReal I0.toReal = I0` using `ENNReal.ofReal_toReal I0_lt_top.ne`. Establish `hI0 : 0 ≤ I0.toReal` using `ENNReal.toReal_nonneg`. Break down `le_or_gt |l| 1 with h | h` into its components or cases. Establish `h1 : ∫⁻ z : ℂ, wt l z ≤ I0`. Use `lintegral_mono fun z => ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations.
+
+Establish `ha : (0:ℝ) ≤ ((1 + ‖z‖) ^ 3)⁻¹` using `by positivity`. Establish `hb : ((1 + |l| * ‖z‖) ^ 3)⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ (one_le_pow₀ (by nlinarith [norm_nonneg z, abs_nonneg l]))`. Use the polynomial consequences of the given equalities and inequalities. Use `h1.trans ?_` and prove the remaining obligations. Use `conv_lhs => rw [← hI]`.
+
+Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Establish `h2 : l ^ 2 ≤ 1`. Rewrite using `[← sq_abs]`. Use polynomial arithmetic with `[abs_nonneg l]`. Establish `h3 : (1 : ℝ) ≤ 2 * (1 + l ^ 2)⁻¹`.
+
+Rewrite using `[← div_eq_mul_inv, le_div_iff₀ (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities. Establish `hl : l ≠ 0`. Introduce and unpack `rfl`.
+
+Simplify using `at h`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : ∫⁻ z : ℂ, wt l z ≤ ∫⁻ z : ℂ, ENNReal.ofReal (((1 + |l| * ‖z‖) ^ 3)⁻¹)`. Use `lintegral_mono fun z => ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Establish `ha : (0:ℝ) ≤ ((1 + |l| * ‖z‖) ^ 3)⁻¹` using `by positivity`.
+
+Establish `hb : ((1 + ‖z‖) ^ 3)⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ (one_le_pow₀ (by linarith [norm_nonneg z]))`. Use the polynomial consequences of the given equalities and inequalities. Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[lint_scale hl]`. Use `conv_lhs => rw [← hI]`.
+
+Rewrite using `[← ENNReal.ofReal_mul (by positivity)]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Establish `h2 : 1 ≤ l ^ 2`. Rewrite using `[← sq_abs]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `h3 : (l ^ 2)⁻¹ ≤ 2 * (1 + l ^ 2)⁻¹`. Rewrite using `[← div_eq_mul_inv, inv_eq_one_div, div_le_div_iff₀ (by positivity) (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem one_var (l : ℝ) :
     ∫⁻ z : ℂ, wt l z ≤ ENNReal.ofReal (2 * I0.toReal * (1 + l ^ 2)⁻¹) := by
   have hI : ENNReal.ofReal I0.toReal = I0 := ENNReal.ofReal_toReal I0_lt_top.ne
@@ -86,6 +118,9 @@ theorem one_var (l : ℝ) :
       linarith
     nlinarith
 
+/- English proof (translation)
+Establish `hI0 : 0 ≤ I0.toReal` using `ENNReal.toReal_nonneg`. Rewrite using `[volume_pi, GlobalTheory.RestrMeas.lintegral_fintype_prod_eq_prod (f := fun i => wt (l i)) fun i => (measurable_wt (l i)).aemeasurable]`. Use `(Finset.prod_le_prod' fun i _ => one_var (l i)).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_prod_of_nonneg fun i _ => by positivity, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, Finset.prod_inv_distrib]`.
+-/
 theorem pi_bound {n : ℕ} (l : Fin n → ℝ) :
     ∫⁻ z : Fin n → ℂ, ∏ i, wt (l i) (z i) ≤
       ENNReal.ofReal ((2 * I0.toReal) ^ n * (∏ i, (1 + l i ^ 2))⁻¹) := by
@@ -96,6 +131,9 @@ theorem pi_bound {n : ℕ} (l : Fin n → ℝ) :
   rw [← ENNReal.ofReal_prod_of_nonneg fun i _ => by positivity, Finset.prod_mul_distrib,
     Finset.prod_const, Finset.card_univ, Fintype.card_fin, Finset.prod_inv_distrib]
 
+/- English proof (translation)
+Rewrite using `[Finset.prod_inv_distrib]`. Use `inv_anti₀ (Finset.prod_pos fun i _ => by have := h0 i; positivity) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← pow_mul]`. Use `_ ≤ (1 + a) ^ K := pow_le_pow_right₀ (by linarith) hK`.
+-/
 theorem prod_le_pow {n K : ℕ} (hK : 3 * n ≤ K) {x : Fin n → ℝ} {a : ℝ} (h0 : ∀ i, 0 ≤ x i)
     (hx : ∀ i, x i ≤ a) (ha : 0 ≤ a) :
     ((1 + a) ^ K)⁻¹ ≤ ∏ i, ((1 + x i) ^ 3)⁻¹ := by
@@ -108,6 +146,9 @@ theorem prod_le_pow {n K : ℕ} (hK : 3 * n ≤ K) {x : Fin n → ℝ} {a : ℝ}
         rw [Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← pow_mul]
     _ ≤ (1 + a) ^ K := pow_le_pow_right₀ (by linarith) hK
 
+/- English proof (translation)
+Unfold `wt`. Rewrite using `[← ENNReal.ofReal_prod_of_nonneg fun i _ => by positivity, Finset.prod_mul_distrib]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Conclude with `mul_le_mul (prod_le_pow hK (fun i => norm_nonneg _) h1 ha) (prod_le_pow hK (fun i => by positivity) h2 hd) (by positivity) (Finset.prod_nonneg fun i _ => by positivity)`.
+-/
 theorem weight_le {n K : ℕ} (hK : 3 * n ≤ K) (l : Fin n → ℝ) {a d : ℝ} (z : Fin n → ℂ)
     (ha : 0 ≤ a) (hd : 0 ≤ d) (h1 : ∀ i, ‖z i‖ ≤ a) (h2 : ∀ i, |l i| * ‖z i‖ ≤ d) :
     ENNReal.ofReal (((1 + a) ^ K)⁻¹ * ((1 + d) ^ K)⁻¹) ≤ ∏ i, wt (l i) (z i) := by
@@ -118,11 +159,19 @@ theorem weight_le {n K : ℕ} (hK : 3 * n ≤ K) (l : Fin n → ℝ) {a d : ℝ}
     (prod_le_pow hK (fun i => by positivity) h2 hd) (by positivity)
     (Finset.prod_nonneg fun i _ => by positivity)
 
+/- English proof (translation)
+Rewrite using `[det_mul, det_mul, mul_comm (det (U : Matrix (Fin n) (Fin n) ℂ)), mul_assoc, ← det_mul, mem_unitaryGroup_iff.mp U.2, det_one, mul_one]`.
+-/
 theorem det_conj_unitary {n : ℕ} (U : Matrix.unitaryGroup (Fin n) ℂ) (X : Matrix (Fin n) (Fin n) ℂ) :
     det ((U : Matrix (Fin n) (Fin n) ℂ) * X * star (U : Matrix (Fin n) (Fin n) ℂ)) = det X := by
   rw [det_mul, det_mul, mul_comm (det (U : Matrix (Fin n) (Fin n) ℂ)), mul_assoc, ← det_mul,
     mem_unitaryGroup_iff.mp U.2, det_one, mul_one]
 
+/- English proof (translation)
+Use `set D : Matrix (Fin n) (Fin n) ℂ := diagonal (RCLike.ofReal ∘ hb.eigenvalues) with hD`. Establish `hs` using `hb.spectral_theorem`. Establish `h1 : 1 + b * b = Unitary.conjStarAlgAut ℂ _ hb.eigenvectorUnitary (1 + D * D)`. Rewrite using `[map_add, map_one, map_mul, ← hs]`. Establish `h2 : 1 + D * D = diagonal fun i => (((1 + hb.eigenvalues i ^ 2 : ℝ)) : ℂ)`.
+
+Rewrite using `[hD, diagonal_mul_diagonal, ← diagonal_one, diagonal_add]`. Use `congr 1`. Use extensionality with `i`. Simplify using `[sq]`. Rewrite using `[detW, h1, Unitary.conjStarAlgAut_apply, det_conj_unitary, h2, det_diagonal, ← Complex.ofReal_prod, Complex.ofReal_re]`.
+-/
 theorem detW_eq {n : ℕ} {b : Matrix (Fin n) (Fin n) ℂ} (hb : b.IsHermitian) :
     detW b = ∏ i, (1 + hb.eigenvalues i ^ 2) := by
   set D : Matrix (Fin n) (Fin n) ℂ := diagonal (RCLike.ofReal ∘ hb.eigenvalues) with hD
@@ -137,6 +186,11 @@ theorem detW_eq {n : ℕ} {b : Matrix (Fin n) (Fin n) ℂ} (hb : b.IsHermitian) 
   rw [detW, h1, Unitary.conjStarAlgAut_apply, det_conj_unitary, h2, det_diagonal,
     ← Complex.ofReal_prod, Complex.ofReal_re]
 
+/- English proof (translation)
+Establish `hs : (Matrix.toEuclideanLin b).IsSymmetric` using `isSymmetric_toEuclideanLin_iff.mpr hb`. Establish `he : Matrix.toEuclideanLin b (hb.eigenvectorBasis i) = (hb.eigenvalues i : ℂ) • hb.eigenvectorBasis i`. Use `hb.mulVec_eigenvectorBasis i` as an intermediate fact. Apply `PiLp.ext` to reduce the goal to its premises. Introduce `j`.
+
+Establish `h2` using `congrFun this j`. Simplify `h2` using `[toLpLin_apply]`. Rewrite using `[OrthonormalBasis.repr_apply_apply, OrthonormalBasis.repr_apply_apply, ← hs, he, inner_smul_left]`. Simplify using the standard rewrite rules.
+-/
 theorem repr_apply_lin {n : ℕ} {b : Matrix (Fin n) (Fin n) ℂ} (hb : b.IsHermitian)
     (y : EuclideanSpace ℂ (Fin n)) (i : Fin n) :
     hb.eigenvectorBasis.repr (Matrix.toEuclideanLin b y) i =
@@ -152,6 +206,11 @@ theorem repr_apply_lin {n : ℕ} {b : Matrix (Fin n) (Fin n) ℂ} (hb : b.IsHerm
   rw [OrthonormalBasis.repr_apply_apply, OrthonormalBasis.repr_apply_apply, ← hs, he, inner_smul_left]
   simp
 
+/- English proof (translation)
+Establish `hp` using `LinearIsometryEquiv.measurePreserving (⟨R.toLinearEquiv.restrictScalars ℝ, R.norm_map⟩ : EuclideanSpace ℂ (Fin n) ≃ₗᵢ[ℝ] EuclideanSpace ℂ (Fin n))`. Establish `hc` using `Measure.isAddLeftInvariant_eq_smul m (volume : Measure (EuclideanSpace ℂ (Fin n)))`. Use `⟨R.continuous.measurable, ?_⟩` and prove the remaining obligations. Establish `hm : Measure.map R (volume : Measure (EuclideanSpace ℂ (Fin n))) = volume` using `hp.map_eq`. Use `conv_lhs => rw [hc]`.
+
+Rewrite using `[Measure.map_smul, hm, ← hc]`.
+-/
 theorem map_isometry {n : ℕ} (m : Measure (EuclideanSpace ℂ (Fin n))) [m.IsAddHaarMeasure]
     (R : EuclideanSpace ℂ (Fin n) ≃ₗᵢ[ℂ] EuclideanSpace ℂ (Fin n)) :
     MeasurePreserving R m m := by
@@ -164,6 +223,11 @@ theorem map_isometry {n : ℕ} (m : Measure (EuclideanSpace ℂ (Fin n))) [m.IsA
   conv_lhs => rw [hc]
   rw [Measure.map_smul, hm, ← hc]
 
+/- English proof (translation)
+Set `e` to `EuclideanSpace.equiv (Fin n) ℂ`. Use `haveI : (Measure.map e m).IsAddHaarMeasure := e.isAddHaarMeasure_map m`. Take `⟨c, hc⟩ : ∃ c : NNReal, Measure.map e m = c • (volume : Measure (Fin n → ℂ))` from `⟨_, Measure.isAddLeftInvariant_eq_smul _ _⟩`. Use `⟨c, fun P hP => ?_⟩` and prove the remaining obligations. Establish `h1 : ∫⁻ y, P (WithLp.ofLp y) ∂m = ∫⁻ x, P x ∂(Measure.map e m)`.
+
+Rewrite using `[lintegral_map hP e.continuous.measurable]`. Both sides reduce to the same expression. Rewrite using `[h1, hc, lintegral_smul_measure]`. Both sides reduce to the same expression.
+-/
 theorem exists_scale (n : ℕ) (m : Measure (EuclideanSpace ℂ (Fin n))) [m.IsAddHaarMeasure] :
     ∃ c : NNReal, ∀ P : (Fin n → ℂ) → ℝ≥0∞, Measurable P →
       ∫⁻ y, P (WithLp.ofLp y) ∂m = c * ∫⁻ x, P x := by
@@ -178,6 +242,17 @@ theorem exists_scale (n : ℕ) (m : Measure (EuclideanSpace ℂ (Fin n))) [m.IsA
   rw [h1, hc, lintegral_smul_measure]
   rfl
 
+/- English proof (translation)
+Introduce `n K hK m hm`. Take `⟨c, hc⟩` from `exists_scale n m`. Establish `hI0 : 0 ≤ I0.toReal` using `ENNReal.toReal_nonneg`. Use `⟨c * (2 * I0.toReal) ^ n, by positivity, fun b hb => ?_⟩` and prove the remaining obligations. Use `set l := hb.eigenvalues with hl`.
+
+Use `set R := hb.eigenvectorBasis.repr with hR`. Set `P : (Fin n → ℂ) → ℝ≥0∞` to `fun x => ∏ i, wt (l i) (x i)`. Establish `hP : Measurable P` using `Finset.measurable_prod _ fun i _ => (measurable_wt (l i)).comp (measurable_pi_apply i)`. Establish `hG : Measurable fun y : EuclideanSpace ℂ (Fin n) => P (WithLp.ofLp y)` using `hP.comp (EuclideanSpace.equiv (Fin n) ℂ).continuous.measurable`. Establish `h1 : ∀ y : EuclideanSpace ℂ (Fin n), ENNReal.ofReal (((1 + ‖y‖) ^ K)⁻¹ * ((1 + ‖Matrix.toEuclideanLin b y‖) ^ K)⁻¹) ≤ P (WithLp.ofLp (R y))`.
+
+Introduce `y`. Use `weight_le hK l _ (norm_nonneg _) (norm_nonneg _) (fun i => ?_) (fun i => ?_)` and prove the remaining obligations. Rewrite using `[← R.norm_map y]`. Conclude with `PiLp.norm_apply_le (R y) i`. Rewrite using `[← R.norm_map (Matrix.toEuclideanLin b y)]`.
+
+Use `le_trans (le_of_eq ?_) (PiLp.norm_apply_le (R (Matrix.toEuclideanLin b y)) i)` and prove the remaining obligations. Rewrite using `[hR, repr_apply_lin hb, norm_mul, Complex.norm_real, Real.norm_eq_abs]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `pi_bound l`. Use `_ = ENNReal.ofReal (c * (2 * I0.toReal) ^ n * (detW b)⁻¹) := by`.
+
+Rewrite using `[detW_eq hb, mul_assoc, ENNReal.ofReal_mul (p := (c : ℝ)) (by positivity), ENNReal.ofReal_coe_nnreal]`.
+-/
 theorem volume_bound : ∀ (n K : ℕ), 3 * n ≤ K → ∀ m : Measure (EuclideanSpace ℂ (Fin n)), m.IsAddHaarMeasure →
     ∃ C : ℝ, 0 ≤ C ∧ ∀ b : Matrix (Fin n) (Fin n) ℂ, b.IsHermitian →
     ∫⁻ y, ENNReal.ofReal (((1 + ‖y‖) ^ K)⁻¹ * ((1 + ‖Matrix.toEuclideanLin b y‖) ^ K)⁻¹) ∂m ≤

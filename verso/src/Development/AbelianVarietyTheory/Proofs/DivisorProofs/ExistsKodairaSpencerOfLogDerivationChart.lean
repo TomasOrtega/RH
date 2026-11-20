@@ -23,6 +23,9 @@ noncomputable section
 
 namespace GlobalTheory.LogKSChart
 
+/- English proof (translation)
+Take `rfl : inst = Ring.toIntAlgebra A` from `Subsingleton.elim _ _`. Conclude with `⟨D, rfl⟩`.
+-/
 theorem exists_derivation_intAlgebra {A : Type} [CommRing A] (inst : Algebra ℤ A) (D : @Derivation ℤ A A _ _ _ inst _ _) :
     ∃ D' : @Derivation ℤ A A _ _ _ (Ring.toIntAlgebra A) _ _, ⇑D' = ⇑D := by
   obtain rfl : inst = Ring.toIntAlgebra A := Subsingleton.elim _ _
@@ -30,6 +33,15 @@ theorem exists_derivation_intAlgebra {A : Type} [CommRing A] (inst : Algebra ℤ
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `E _ _ _ H k _ _ m d t P gam hmon hli hab n v hv hcomb D hD`. Use `letI := H.starRing`. Use `haveI : IsAdicComplete (maximalIdeal k) k := by rw [maximalIdeal_eq_bot]; infer_instance`. Use `haveI : IsAdicComplete (maximalIdeal (ChartRing k m d)) (ChartRing k m d) := GlobalTheory.PlaceInt.isAdicComplete_mvPowerSeries_finite (V := k) _`. Take `⟨Y⟩ : Nonempty (Ray P.oD)` from `inferInstance`.
+
+Take `⟨n', vY, dd, hdd⟩` from `GlobalTheory.T.exists_invariant_tangent_basis_raynaudExtension (ChartRing k m d) P.D.toPre (𝓞 E) P.oD Y`. Establish `hne : ∀ i, bdParam k m d i ≠ 0` using `fun i h => by`. Use `congrArg (MvPowerSeries.coeff (Finsupp.single (Sum.inl i) 1)) h` as an intermediate fact. Simplify using `[MvPowerSeries.coeff_X] at this`. Take `⟨D', hD'⟩` from `exists_derivation_intAlgebra _ D`.
+
+Take `⟨h, hb, hdef⟩` from `GlobalTheory.T.exists_torusInvariant_heatOperator_commuting_periods (ChartRing k m d) P.D (𝓞 E) P.oD Y n' vY dd hdd m (bdParam k m d) gam hmon hne D' (by rw [hD']; exact hD)`. Use `revert h`. Rewrite using `[hD']`. Introduce `h hb hdef`. Take `⟨v', hv', hks⟩` from `GlobalTheory.T.exists_kodairaSpencer_chart_of_heat_operators E H k m d t P gam hmon hli hab (𝓞 E) P.oD Y n' vY dd hdd D hD h hb hdef`.
+
+Use `choose B hB using fun a => (hcomb (v' a) (hv' a)).exists`. Conclude with `⟨_, GlobalTheory.KSFrameChange.isKS_frame_change E H (Sp (ChartRing k m d)) t ((Sp (ChartRing k m d)).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of (ChartRing k m d))).inv.hom (∏ i, bdParam k m d i))) (⟨⊤, isAffineOpen_top _⟩ : (Sp (ChartRing k m d)).affineOpens) n' n v' v (Matrix. …`.
+-/
 theorem exists_isKS_of_logDer : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (k : Type) [Field k] [CharZero k] (m d : ℕ) (t : SAB H (Sp (ChartRing k m d))) (P : PELUnif (maximalIdeal (ChartRing k m d)) t) (gam : Fin m → LinearMap.BilinForm ℤ P.D.toPre.X), IsMonomial P.D.toPre (bdParam k m d) gam → LinearIndependent ℤ gam → (∀ p : Sp (ChartRing k m d), p ∈ abLocus t.G ↔ ∏ i, bdParam k m d i ∉ p.asIdeal) → ∀ (n : ℕ) (v : Fin n → (Sp (DualNumber Γ(Sp (ChartRing k m d), ⊤)) ⟶ t.G.left)), (∀ i, IsTanAtG t (chart (⟨⊤, isAffineOpen_top _⟩ : (Sp (ChartRing k m d)).affineOpens)) (v i)) → (∀ w, IsTanAtG t (chart (⟨⊤, isAffineOpen_top _⟩ : (Sp (ChartRing k m d)).affineOpens)) w → ∃! cf : Fin n → Γ(Sp (ChartRing k m d), ⊤), IsCombAtG t (chart (⟨⊤, isAffineOpen_top _⟩ : (Sp (ChartRing k m d)).affineOpens)) v cf w) → ∀ D : Derivation ℤ (ChartRing k m d) (ChartRing k m d), (∀ i, D (bdParam k m d i) ∈ Ideal.span {bdParam k m d i}) → ∃ Θ, IsKS t ((Sp (ChartRing k m d)).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of (ChartRing k m d))).inv.hom (∏ i, bdParam k m d i))) (⟨⊤, isAffineOpen_top _⟩ : (Sp (ChartRing k m d)).affineOpens) v (fun r => (Scheme.ΓSpecIso (CommRingCat.of (ChartRing k m d))).inv.hom (D ((Scheme.ΓSpecIso (CommRingCat.of (ChartRing k m d))).hom.hom r))) Θ := by
   intro E _ _ _ H k _ _ m d t P gam hmon hli hab n v hv hcomb D hD
   letI := H.starRing

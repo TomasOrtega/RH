@@ -13,8 +13,14 @@ variable {d : ℕ} {K : Type} [Field K] [NumberField K] {b : K}
 noncomputable def om (hq : QuadData d K b) : 𝓞 K :=
   ⟨(1 + b) / 2, (imag_quadratic_integral_basis d K b hq).1⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem om_coe (hq : QuadData d K b) : ((om hq : 𝓞 K) : K) = (1 + b) / 2 := rfl
 
+/- English proof (translation)
+Take `⟨m, n, h⟩` from `(imag_quadratic_integral_basis d K b hq).2 x`. Use `⟨m, n, RingOfIntegers.ext ?_⟩` and prove the remaining obligations. Rewrite using `[h]`. Move the coercions through the operations in `[om_coe]`. Both sides reduce to the same expression.
+-/
 theorem basis (hq : QuadData d K b) (x : 𝓞 K) : ∃ m n : ℤ, x = m + n * om hq := by
   obtain ⟨m, n, h⟩ := (imag_quadratic_integral_basis d K b hq).2 x
   refine ⟨m, n, RingOfIntegers.ext ?_⟩
@@ -22,6 +28,13 @@ theorem basis (hq : QuadData d K b) (x : 𝓞 K) : ∃ m n : ℤ, x = m + n * om
   push_cast [om_coe]
   rfl
 
+/- English proof (translation)
+Establish `hK : (m : K) + n * ((1 + b) / 2) = m' + n' * ((1 + b) / 2)`. Establish `h'` using `congrArg (fun x : 𝓞 K => (x : K)) h`. Move the coercions through the operations in `[om_coe] at h'`. Conclude with `h'`. Distinguish the cases in `hn : n = n'`.
+
+Substitute `hn` using the available equality. Use `⟨?_, rfl⟩` and prove the remaining obligations. Conclude with `add_right_cancel hK` after adjusting the coercions. It suffices to derive a contradiction. Establish `hne : ((n : K) - n') ≠ 0` using `sub_ne_zero.mpr (by exact_mod_cast hn)`.
+
+Apply `PI.UnitaryGroupMassFormula.ClassNumImQInv.b_ne_rat hq ((2 * (m' - m) + n' - n) / (n - n'))` to reduce the goal to its premises. Use `push_cast`. Rewrite using `[div_eq_iff hne]`. Take the linear combination `(-2 : K) * hK`.
+-/
 theorem coeff_unique (hq : QuadData d K b) {m n m' n' : ℤ}
     (h : (m : 𝓞 K) + n * om hq = m' + n' * om hq) : m = m' ∧ n = n' := by
   have hK : (m : K) + n * ((1 + b) / 2) = m' + n' * ((1 + b) / 2) := by

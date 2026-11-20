@@ -6,6 +6,11 @@ namespace GroundTheory.Heights₂.Heights
 
 open Matrix
 
+/- English proof (translation)
+Introduce `j m Z hZ`. Use `set S : ℝ := ∑ I : {I : Finset (Fin (j + m)) // I.card = j}, ‖(colsOf (onePipe Z) I).det‖ ^ 2 with hS`. Establish `hS0 : 0 ≤ S` using `Finset.sum_nonneg fun I _ => by positivity`. Establish `hnorm : ‖((S : ℝ) : ℂ)‖ = S` using `Complex.norm_of_nonneg hS0`. Establish `heq : ((S : ℝ) : ℂ) = (1 + Z * Zᴴ).det` using `h₁ j m Z`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem PlueckerKernel.proof (h₁ : PlueckerNormSq.Statement) (h₂ : PlueckerUnitBound.Statement) :
     PlueckerKernel.Statement := by
   intro j m Z hZ

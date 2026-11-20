@@ -6,5 +6,8 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RingKrullDim
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | (exact @GlobalTheory.EtC.ClosedCover.closedCover) | (exact GlobalTheory.EtC.ClosedCover.closedCover) | (intros; apply GlobalTheory.EtC.ClosedCover.closedCover <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.etaleHomotopyInvariantTwists_of_closedCover : ∀ (q : ℕ) [NeZero q] (A : Type) [CommRing A] (I J : Ideal A), I ⊓ J ≤ nilradical A → IsUnit (q : A) → HInv q (A ⧸ I) → HInv q (A ⧸ J) → HInv q (A ⧸ (I ⊔ J)) → HInv q A := by
   first | (exact @GlobalTheory.EtC.ClosedCover.closedCover) | (exact GlobalTheory.EtC.ClosedCover.closedCover) | (intros; apply GlobalTheory.EtC.ClosedCover.closedCover  <;> assumption)

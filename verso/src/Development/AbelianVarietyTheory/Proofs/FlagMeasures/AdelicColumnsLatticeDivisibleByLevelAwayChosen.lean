@@ -12,6 +12,13 @@ namespace GlobalTheory.St.G.FrameFull
 
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `zero => exact ⟨0, I.Lf.zero_mem, (smul_zero _).symm⟩`. Consider the case `add x y _ _ hx hy`.
+
+Take `⟨a, ha, rfl⟩` from `hx`. Take `⟨b, hb, rfl⟩` from `hy`. Conclude with `⟨a + b, I.Lf.add_mem ha hb, (smul_add _ _ _).symm⟩`. Consider the case `smul c x _ hx`. Take `⟨a, ha, rfl⟩` from `hx`.
+
+Conclude with `⟨c • a, I.Lf.smul_mem c ha, smul_comm _ _ _⟩`.
+-/
 theorem mL_div (I : Formalism.MainNotions.S.AutInst) (m : ℕ) :
     ∀ v ∈ mL I m, ∃ z ∈ I.Lf, v = (m : I.E ⊗[I.F] Af I.F) • z := by
   intro v hv
@@ -26,17 +33,30 @@ theorem mL_div (I : Formalism.MainNotions.S.AutInst) (m : ℕ) :
     obtain ⟨a, ha, rfl⟩ := hx
     exact ⟨c • a, I.Lf.smul_mem c ha, smul_comm _ _ _⟩
 
+/- English proof (translation)
+Simplify using `only [embA, Pi.smul_apply, smul_eq_mul, map_mul, mul_smul, Finset.smul_sum]`.
+-/
 theorem embA_smul (X : HidaSetting D) (wt : (VS D).V ≃ₗ[D.host.E] (VS D).V)
     (ιA : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F ≃+* D.host.E ⊗[D.host.F] Ad D.host.F)
     (c : D.host.E ⊗[D.host.F] Ad D.host.F) (x : Fin (D.R.N 0) → D.host.E ⊗[D.host.F] Ad D.host.F) :
     embA X wt ιA (c • x) = ιA.symm c • embA X wt ιA x := by
   simp only [embA, Pi.smul_apply, smul_eq_mul, map_mul, mul_smul, Finset.smul_sum]
 
+/- English proof (translation)
+Simplify using `[embA]`.
+-/
 theorem embA_zero (X : HidaSetting D) (wt : (VS D).V ≃ₗ[D.host.E] (VS D).V)
     (ιA : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F ≃+* D.host.E ⊗[D.host.F] Ad D.host.F) :
     embA X wt ιA 0 = 0 := by
   simp [embA]
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos m with rfl | hm` into its components or cases. Use `⟨0, Submodule.zero_mem _, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_zero]`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hwe, embA_zero, Nat.cast_zero, zero_smul]`.
+
+Establish `hF : IsUnit ((m : D.host.F))` using `(Nat.cast_ne_zero.mpr hm.ne').isUnit`. Establish `hR : IsUnit ((m : D.host.E ⊗[D.host.F] Ad D.host.F))`. Simplify using `using hF.map (algebraMap D.host.F (D.host.E ⊗[D.host.F] Ad D.host.F))`. Take `⟨t, ht⟩` from `hR.exists_right_inv`. Use `⟨t • (c • y), ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hmem, embA_smul, hwe, smul_smul, ← map_natCast ιA.symm m, ← map_mul, mul_comm, ht, map_one, one_smul]`. Conclude with `hw`. Rewrite using `[smul_smul, ht, one_smul]`.
+-/
 theorem step (X : HidaSetting D) (wt : (VS D).V ≃ₗ[D.host.E] (VS D).V)
     (ιA : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F ≃+* D.host.E ⊗[D.host.F] Ad D.host.F)
     (hmem : ∀ x, x ∈ hat D.host.F (Mq wt) ↔ embA X wt ιA x ∈ X.B.I.Lf)
@@ -59,6 +79,9 @@ theorem step (X : HidaSetting D) (wt : (VS D).V ≃ₗ[D.host.E] (VS D).V)
       exact hw
     · rw [smul_smul, ht, one_smul]
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.St.G.IotaSigmaCompatibility.iotaA_sigA D X ιA hI X.ew`. Apply `ιA.injective` to reduce the goal to its premises. Rewrite using `[RingEquiv.apply_symm_apply, map_sub, map_sub, map_one]`. Conclude with `congrArg (fun t => 1 - ιA X.ew - t) h.symm`.
+-/
 theorem symm_unit (X : HidaSetting D)
     (ιA : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F ≃+* D.host.E ⊗[D.host.F] Ad D.host.F) (hI : IsAdeleIso X ιA) :
     ιA.symm (1 - ιA X.ew - Formalism.UG.sigR (Formalism.L2.Forms.sigD D) (Ad D.host.F) (ιA X.ew)) =
@@ -68,6 +91,9 @@ theorem symm_unit (X : HidaSetting D)
   rw [RingEquiv.apply_symm_apply, map_sub, map_sub, map_one]
   exact congrArg (fun t => 1 - ιA X.ew - t) h.symm
 
+/- English proof (translation)
+Rewrite using `[embA_smul, symm_unit X ιA hI]`. Take `⟨w, hw, hw'⟩` from `mL_div X.B.I X.B.g _ (X.ew_full _ hy)`. Conclude with `⟨w, hw, by rw [hw', X.g_eq]⟩`.
+-/
 theorem emb_mem (X : HidaSetting D) (wt : (VS D).V ≃ₗ[D.host.E] (VS D).V)
     (ιA : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F ≃+* D.host.E ⊗[D.host.F] Ad D.host.F) (hI : IsAdeleIso X ιA)
     (y : Fin (D.R.N 0) → D.host.E ⊗[D.host.F] Ad D.host.F) (hy : embA X wt ιA y ∈ X.B.I.Lf) :
@@ -78,6 +104,9 @@ theorem emb_mem (X : HidaSetting D) (wt : (VS D).V ≃ₗ[D.host.E] (VS D).V)
   obtain ⟨w, hw, hw'⟩ := mL_div X.B.I X.B.g _ (X.ew_full _ hy)
   exact ⟨w, hw, by rw [hw', X.g_eq]⟩
 
+/- English proof (translation)
+Introduce `D X u wt ιA hW hI y hy`. Take `⟨hmem, -, hinj, -⟩` from `GlobalTheory.T.adelicColumnLattice_eq_spanPart_transportedFrame D X u wt ιA hW hI`. Take `⟨w, hw, hwe⟩` from `emb_mem X wt ιA hI y ((hmem y).1 hy)`. Conclude with `step X wt ιA hmem hinj _ y _ w hw hwe`.
+-/
 theorem eps_full : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word) (wt : (VS D).V ≃ₗ[D.host.E] (VS D).V) (ιA : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F ≃+* D.host.E ⊗[D.host.F] Ad D.host.F), WittX X u wt → IsAdeleIso X ιA → ∀ y ∈ hat D.host.F (Mq wt), ∃ z ∈ hat D.host.F (Mq wt), (1 - ιA X.ew - Formalism.UG.sigR (Formalism.L2.Forms.sigD D) (Ad D.host.F) (ιA X.ew)) • y = ((D.host.g 0 * D.host.g 1 : ℕ) : D.host.E ⊗[D.host.F] Ad D.host.F) • z := by
   intro D X u wt ιA hW hI y hy
   obtain ⟨hmem, -, hinj, -⟩ := GlobalTheory.T.adelicColumnLattice_eq_spanPart_transportedFrame D X u wt ιA hW hI

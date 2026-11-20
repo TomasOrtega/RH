@@ -20,6 +20,11 @@ noncomputable section
 
 namespace GlobalTheory.RealPointMove
 
+/- English proof (translation)
+Introduce `D θ hθ V S M J χ T hT k hk v`. Use `⟨fun τ => ⟨M.rep τ (infMat D.sp.cm.sig V.gram (θ τ) k) (v τ), GlobalTheory.UnifEvery.rep_mem_sm M τ (GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ V k τ) (v τ).2⟩, fun τ => rfl, fun x => ?_⟩` and prove the remaining obligations. Establish `key` using `GlobalTheory.RealEquiv.mult_realElt D V S θ M J χ T (Submodule.subset_span hT) (fun τ => infMat D.sp.cm.sig V.gram (θ τ) k) (fun τ => GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ V k τ) v (fun τ => ⟨M.rep τ (infMat D.sp.cm.sig V.gram (θ τ) k) (v τ), GlobalTheory.UnifEvery …`. Rewrite `key` using `[← GlobalTheory.RealTransSm.eq_realElt hθ hk]`. Rewrite using `[key]`.
+
+Both sides reduce to the same expression.
+-/
 theorem translate_eq_move : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (J : Set (GA D V)) (χ : GA D V → ℂ) (T : MMap M), IsMultMap θ M J χ T → ∀ k ∈ GinfC V, ∀ v : M.Vec, ∃ v' : M.Vec, (∀ τ, (v' τ : M.H τ) = M.rep τ (infMat D.sp.cm.sig V.gram (θ τ) k) (v τ)) ∧ ∀ x, T v (x * k) = T v' x := by
   intro D θ hθ V S M J χ T hT k hk v
   refine ⟨fun τ => ⟨M.rep τ (infMat D.sp.cm.sig V.gram (θ τ) k) (v τ),

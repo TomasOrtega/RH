@@ -6,6 +6,17 @@ open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `S B φ h0 hadd hsmul hdet`. Set `W : Submodule ℂ (ℕ → ℂ)` to `{ carrier := S add_mem' := fun {a b} ha hb => (hadd a ha b hb).1 zero_mem' := h0 smul_mem' := fun c a ha => (hsmul c a ha).1 }`. Set `φW : W →ₗ[ℂ] ℂ` to `{ toFun := fun a => φ a map_add' := fun a b => (hadd a a.2 b b.2).2 map_smul' := fun c a => (hsmul c a a.2).2 }`. Set `r : W →ₗ[ℂ] (Fin B → ℂ)` to `{ toFun := fun a i => (a : ℕ → ℂ) i map_add' := fun a b => by ext i; rfl map_smul' := fun c a => by ext i; rfl }`. Establish `hr : LinearMap.ker r = ⊥`.
+
+Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `a ha`. Apply `Subtype.ext` to reduce the goal to its premises. Use `hdet a a.2 (fun n hn => ?_)` and prove the remaining obligations. Use `congrFun ha ⟨n, hn⟩` as an intermediate fact.
+
+Simplify `this` using `[r]`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective r hr`. Set `ψ : (Fin B → ℂ) →ₗ[ℂ] ℂ` to `φW.comp g`. Use `⟨fun n => if h : n < B then ψ (Pi.single ⟨n, h⟩ 1) else 0, fun a ha => ?_⟩` and prove the remaining obligations. Establish `h1 : φ a = ψ (r ⟨a, ha⟩)` using `by show φW ⟨a, ha⟩ = φW (g (r ⟨a, ha⟩))`.
+
+Rewrite using `[← LinearMap.comp_apply g r, hg, LinearMap.id_apply]`. Rewrite using `[h1, LinearMap.pi_apply_eq_sum_univ ψ (r ⟨a, ha⟩), EisM.lam, Finset.sum_range (fun n => (if h : n < B then ψ (Pi.single ⟨n, h⟩ 1) else 0) * a n)]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Simplify using `only [i.2, dif_pos, Fin.eta, r, LinearMap.coe_mk, AddHom.coe_mk, smul_eq_mul]`. Establish `hs : (fun j : Fin B => if i = j then (1 : ℂ) else 0) = Pi.single i 1`.
+
+Use function extensionality and compare the values at `j`. Simplify using `[Pi.single_apply, eq_comm]`. Rewrite using `[hs, mul_comm]`.
+-/
 theorem func_eq_lam : ∀ (S : Set (ℕ → ℂ)) (B : ℕ) (φ : (ℕ → ℂ) → ℂ), 0 ∈ S → (∀ a ∈ S, ∀ b ∈ S, a + b ∈ S ∧ φ (a + b) = φ a + φ b) → (∀ c : ℂ, ∀ a ∈ S, c • a ∈ S ∧ φ (c • a) = c * φ a) → (∀ a ∈ S, (∀ n < B, a n = 0) → a = 0) → ∃ c : ℕ → ℂ, ∀ a ∈ S, φ a = lam B c a := by
   intro S B φ h0 hadd hsmul hdet
   classical

@@ -7,6 +7,17 @@ open scoped LaurentPolynomial
 
 namespace GlobalTheory.CompanionTheory.PerfectRing
 
+/- English proof (translation)
+Set `L` to `Localization.Away g`. Set `u : L` to `IsLocalization.Away.invSelf g`. Establish `hu : algebraMap K L g * u = 1` using `IsLocalization.Away.mul_invSelf g`. Set `φ : Polynomial K →+* L` to `Polynomial.eval₂RingHom (algebraMap K L) (u * algebraMap K L f)`. Establish `h0 : φ (Polynomial.C f - Polynomial.X * Polynomial.C g) = 0`.
+
+Establish `e1 : φ (Polynomial.C f) = algebraMap K L f` using `by simp [φ]`. Establish `e2 : φ Polynomial.X = u * algebraMap K L f` using `by simp [φ]`. Establish `e3 : φ (Polynomial.C g) = algebraMap K L g` using `by simp [φ]`. Rewrite using `[map_sub, map_mul, e1, e2, e3]`. Take the linear combination `(-(algebraMap K L f)) * hu`.
+
+Establish `h1 : φ ((Polynomial.C a) ^ n) = 0`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 h`. Rewrite using `[← hc, map_mul, h0, mul_zero]`. Establish `h2 : algebraMap K L (a ^ n) = 0`. Establish `e : φ ((Polynomial.C a) ^ n) = algebraMap K L (a ^ n)` using `by simp [φ]`.
+
+Rewrite using `[← e, h1]`. Take `⟨⟨m, hm⟩, e⟩` from `(IsLocalization.map_eq_zero_iff (Submonoid.powers g) L _).1 h2`. Take `⟨M, rfl⟩` from `hm`. Establish `e' : g ^ M * a ^ n = 0` using `e`. Apply `hred _ (M + n)` to reduce the goal to its premises.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mul_eq_zero_of_C_pow_mem_span (K : Type) [CommRing K]
     (hred : ∀ (x : K) (n : ℕ), x ^ n = 0 → x = 0) (f g a : K) (n : ℕ)
     (h : (Polynomial.C a) ^ n ∈
@@ -34,6 +45,13 @@ theorem mul_eq_zero_of_C_pow_mem_span (K : Type) [CommRing K]
   calc (g * a) ^ (M + n) = g ^ n * a ^ M * (g ^ M * a ^ n) := by ring
     _ = 0 := by rw [e', mul_zero]
 
+/- English proof (translation)
+Introduce `p _ K _ K₁ _ K₂ _ f g i₁ i₂ r N hK hr hN h₁ h₂ a ha₁ ha₂`. Take `⟨-, hred, -, -, hroots⟩` from `pf_facts p K hK`. Take `⟨k₁, hk₁⟩` from `(h₁.ker _).1 ha₁`. Take `⟨k₂, hk₂⟩` from `(h₂.ker _).1 ha₂`. Establish `hg : g * a = 0` using `mul_eq_zero_of_C_pow_mem_span K hred f g a _ hk₁`.
+
+Establish `hf : f * a = 0` using `mul_eq_zero_of_C_pow_mem_span K hred g f a _ hk₂`. Take `⟨u, v, huv⟩` from `Ideal.mem_span_pair.1 hN`. Establish `h0 : r 0 ^ N * a = 0`. Rewrite using `[← huv]`. Take the linear combination `u * hf + v * hg`.
+
+Conclude with `(hroots r hr).2.2 N a h0`.
+-/
 theorem b_inj : ∀ (p : ℕ) [Fact p.Prime] (K : Type) [CommRing K] (K₁ : Type) [CommRing K₁]
     (K₂ : Type) [CommRing K₂] (f g : K) (i₁ : Polynomial K →+* K₁) (i₂ : Polynomial K →+* K₂)
     (r : ℕ → K) (N : ℕ), Pf p K → IsRt p r → r 0 ^ N ∈ Ideal.span {f, g} →

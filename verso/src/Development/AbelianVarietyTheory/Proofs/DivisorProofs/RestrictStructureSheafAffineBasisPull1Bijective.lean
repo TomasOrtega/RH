@@ -18,6 +18,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.Obs.BasisO
 
+/- English proof (translation)
+Introduce `R _ X s C' _ _ G h1 h2`. Establish `H` using `hasLoc_OAff s`. Establish `hcov` using `BasisExt.hcov_of_basis s G h1`. Establish `hdir` using `BasisExt.hdir_of_basis s G h2`. Establish `hs` using `_root_.GlobalTheory.sep_of_factoring_cover (OAff s) G H hcov`.
+
+Establish `hg` using `_root_.GlobalTheory.CatCoh.Desc.glue_comma_of_basis (OAff s) G H hcov hdir`. Establish `hv` using `_root_.GlobalTheory.CatCoh.Desc.Basis.oneCocycle_vanishing_comma_of_basis (OAff s) G H hcov hdir`. Conclude with `⟨_root_.GlobalTheory.CatCoh.CoefMap.restrict_pull1_injective_of_sep_glue _ _ hs hg, _root_.GlobalTheory.CatCoh.pull1_restrict_surjective_of_comma _ _ hs hg hv⟩`.
+-/
 theorem restrict_bijective_one : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (s : X ⟶ Sp R) (C' : Type)
     [Category.{0} C'] [Quiver.IsThin C'] (G : C' ⥤ AffOp X),
     (∀ (x : X) (U : X.Opens), x ∈ U → ∃ t : C', x ∈ (G.obj t).unop.1 ∧ (G.obj t).unop.1 ≤ U) →

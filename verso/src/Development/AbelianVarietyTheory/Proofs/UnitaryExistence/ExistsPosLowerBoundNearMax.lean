@@ -12,12 +12,28 @@ namespace HalfMax
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Establish `h : τ.1 X.ξ0 ≠ 0` using `(map_ne_zero τ.1).2 X.ξ0_ne`. Use `norm_pos_iff.2 h` as an intermediate fact. Simplify using `only [Data.c]`. Check the signs of the components of the expression.
+-/
 theorem c_pos' (X : Data E r) (τ : X.Ψ) : 0 < X.c τ := by
   have h : τ.1 X.ξ0 ≠ 0 := (map_ne_zero τ.1).2 X.ξ0_ne
   have := norm_pos_iff.2 h
   simp only [Data.c]
   positivity
 
+/- English proof (translation)
+Use `set S : ℝ := ∑ τ : X.Ψ, ‖τ.1 (X.den : E)‖ / X.c τ with hS`. Establish `hterm : ∀ τ : X.Ψ, 0 ≤ ‖τ.1 (X.den : E)‖ / X.c τ` using `fun τ => div_nonneg (norm_nonneg _) (c_pos' X τ).le`. Establish `hS0 : 0 ≤ S` using `Finset.sum_nonneg fun τ _ => hterm τ`. Use `⟨1 / (1 + S), by positivity, fun z hz v hv hsmall => ?_⟩` and prove the remaining obligations. Establish `hden : (X.den : E) ≠ 0` using `by exact_mod_cast X.den_ne`.
+
+Use `(mul_eq_zero.1 (UnipotentCoefficientShift.eq_zero_of_conj_lt_one (X.Λ_int v hv v hv) ?_)).resolve_left hden` and prove the remaining obligations. Introduce `σ`. Establish `key : ∀ τ : X.Ψ, ‖τ.1 ((X.den : E) * herm X.Gm v v)‖ < 1` using `fun τ => by`. Establish `hc` using `c_pos' X τ`. Establish `h1 : ‖τ.1 (herm X.Gm v v)‖ ≤ X.maj z τ (Data.emb τ.1 v)`.
+
+Rewrite using `[← EmbeddingHermitianPairs.hermC_emb]`. Conclude with `UnipotentCoefficientShift.norm_hermC_le_maj hz τ (Data.emb τ.1 v)`. Establish `h2 : ‖τ.1 (X.den : E)‖ / X.c τ ≤ S` using `Finset.single_le_sum (f := fun τ : X.Ψ => ‖τ.1 (X.den : E)‖ / X.c τ) (fun σ _ => hterm σ) (Finset.mem_univ τ)`. Establish `h3` using `hsmall τ`. Establish `h4 : X.c τ * ‖τ.1 (herm X.Gm v v)‖ ≤ 1 / (1 + S)` using `(mul_le_mul_of_nonneg_left h1 hc.le).trans h3.le`.
+
+Rewrite using `[map_mul, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_one_div, div_lt_one (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion. Distinguish the cases in `hσ : σ ∈ X.Ψ`.
+
+Conclude with `key ⟨σ, hσ⟩`. Establish `hc : NumberField.ComplexEmbedding.conjugate σ ∈ X.Ψ`. Rewrite using `[X.cmType, NumberField.ComplexEmbedding.involutive_conjugate E σ]`. Conclude with `hσ`. Use `key ⟨_, hc⟩` as an intermediate fact.
+
+Simplify `this` using `[NumberField.ComplexEmbedding.conjugate_coe_eq]`.
+-/
 theorem exists_herm_eq_zero (X : Data E r) :
     ∃ δ : ℝ, 0 < δ ∧ ∀ z ∈ X.dom, ∀ v ∈ X.Λ,
       (∀ τ : X.Ψ, X.c τ * X.maj z τ (Data.emb τ.1 v) < δ) → herm X.Gm v v = 0 := by
@@ -55,11 +71,37 @@ theorem exists_herm_eq_zero (X : Data E r) :
     have := key ⟨_, hc⟩
     simpa [NumberField.ComplexEmbedding.conjugate_coe_eq] using this
 
+/- English proof (translation)
+Establish `h` using `flowTermNormDecay.term_norm c ν ζ 1`. Simplify `h` using `only [Nat.cast_one, one_pow, div_one]`.
+-/
 theorem term_norm_one {ι : Type*} [Fintype ι] (c : ℂ) (ν : ι → ℝ) (ζ : ℂ) :
     ‖c * cexp (4 * π * I * ∑ τ, (ν τ : ℂ) * ζ)‖ = ‖c‖ * Real.exp (-(4 * π * (∑ τ, ν τ) * ζ.im)) := by
   have h := flowTermNormDecay.term_norm c ν ζ 1
   simpa only [Nat.cast_one, one_pow, div_one] using h
 
+/- English proof (translation)
+Use `set a : (X.Ψ → ℝ) → ℂ := fun ν => X.fj la v ν P z0 with ha`. Establish `hexp : ∀ ζ : ℂ, 0 ≤ ζ.im → HasSum (fun ν : X.Ψ → ℝ => a ν * cexp (4 * π * I * ∑ τ, (ν τ : ℂ) * ζ)) (P (X.flow v (fun _ => ζ) z0))` using `fun ζ hζ => m3bExp_holds r X la P hP.1.1 v hξ z0 hz0 (fun _ => ζ) (hdom ζ hζ)`. Take `⟨C, hC⟩` from `hP.1.2`. Establish `hpos` using `(moderateCoefficientPositivity_holds r X la P C 0 hP.1.1 (fun x hx => by simpa using hC x hx)).1`. Establish `ha0 : a 0 = 0` using `hP.2 v hξ z0 hz0`.
+
+Establish `hS : ∀ ν, a ν ≠ 0 → 0 < ∑ τ, ν τ`. Introduce `ν hν`. Establish `hnn : ∀ τ, 0 ≤ ν τ` using `hpos v hξ ν z0 hz0 hν`. Establish `hne : ν ≠ 0`. Introduce and unpack `rfl`.
+
+Conclude with `hν ha0`. Choose the witnesses or unpack the hypotheses as in `⟨τ, hτ⟩ : ∃ τ, ν τ ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hne (funext h)`.
+
+Conclude with `Finset.sum_pos' (fun τ _ => hnn τ) ⟨τ, Finset.mem_univ _, lt_of_le_of_ne (hnn τ) (Ne.symm hτ)⟩`. Establish `hsum : Summable fun ν => ‖a ν‖`. Establish `h0` using `(hexp 0 (le_refl _)).summable`. Simplify using `only [mul_zero, Finset.sum_const_zero, Complex.exp_zero, mul_one] at h0`. Conclude with `summable_norm_iff.2 h0`.
+
+Establish `hab : ∀ ν : X.Ψ → ℝ, Tendsto (fun ζ : ℂ => a ν * cexp (4 * π * I * ∑ τ, (ν τ : ℂ) * ζ)) (comap im atTop) (𝓝 0)`. Introduce `ν`. Distinguish the cases in `hν : a ν = 0`. Simplify using `only [hν, zero_mul]`. Conclude with `tendsto_const_nhds`.
+
+Rewrite using `[tendsto_zero_iff_norm_tendsto_zero]`. Simplify using `only [term_norm_one]`. Establish `hk : 0 < 4 * π * (∑ τ, ν τ)`. Use `hS ν hν` as an intermediate fact. Check the signs of the components of the expression.
+
+Establish `h1 : Tendsto (fun ζ : ℂ => ζ.im) (comap im atTop) atTop` using `tendsto_comap`. Establish `h2` using `Real.tendsto_exp_atBot.comp (tendsto_neg_atTop_atBot.comp (h1.const_mul_atTop hk))`. Establish `h3` using `h2.const_mul ‖a ν‖`. Simplify using `using h3`. Establish `hbound : ∀ᶠ ζ in comap im atTop, ∀ ν : X.Ψ → ℝ, ‖a ν * cexp (4 * π * I * ∑ τ, (ν τ : ℂ) * ζ)‖ ≤ ‖a ν‖`.
+
+Establish `hev : ∀ᶠ ζ in comap im atTop, (0 : ℝ) ≤ ζ.im` using `tendsto_comap.eventually (eventually_ge_atTop 0)`. Use `filter_upwards [hev] with ζ hζ ν`. Rewrite using `[term_norm_one]`. Distinguish the cases in `hν : a ν = 0`. Simplify using `[hν]`.
+
+Establish `hk : 0 ≤ 4 * π * (∑ τ, ν τ)`. Use `hS ν hν` as an intermediate fact. Check the signs of the components of the expression. Use `mul_le_of_le_one_right (norm_nonneg _) (Real.exp_le_one_iff.2 ?_)` and prove the remaining obligations. Use `mul_nonneg hk hζ` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hT` using `tendsto_tsum_of_dominated_convergence hsum hab hbound`. Simplify using `only [tsum_zero] at hT`. Use `hT.congr' ?_` and prove the remaining obligations. Establish `hev : ∀ᶠ ζ in comap im atTop, (0 : ℝ) < ζ.im` using `tendsto_comap.eventually (eventually_gt_atTop 0)`.
+
+Use `filter_upwards [hev] with ζ hζ`. Rewrite using `[hG ζ hζ]`. Conclude with `(hexp ζ hζ.le).tsum_eq`.
+-/
 theorem tendsto_zero (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (hP : P ∈ X.SS la)
     {z0 : Frame X.Ψ r} (hz0 : z0 ∈ X.dom) {v : Fin r → E} (hξ : X.IsIso v)
     (hdom : ∀ ζ : ℂ, 0 ≤ ζ.im → X.flow v (fun _ => ζ) z0 ∈ X.dom) (G : ℂ → ℂ)
@@ -127,6 +169,13 @@ theorem tendsto_zero (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) 
   rw [hG ζ hζ]
   exact (hexp ζ hζ.le).tsum_eq
 
+/- English proof (translation)
+Take `⟨n, hn, hχ⟩` from `X.χ_fin la`. Establish `h1` using `X.m_pos`. Use `⟨((X.m * n : ℕ) : ℝ), by positivity, fun v hv hvv => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, hγm⟩` from `X.transv v hv hvv 1 (map_one _) isIntegral_one`. Use `⟨γ ^ n, pow_mem hγ n, ?_, fun τ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[TransvectionPeriodicity.chi_pow X la hγ, hχ γ hγ]`. Rewrite using `[Units.val_pow_eq_pow_val, hγm, TransvectionPeriodicity.transvMat_pow X.Gm hvv]`. Use `TransvectionPeriodicity.transvMat_map X v τ _ _ ?_` and prove the remaining obligations. Simplify using `only [map_mul, map_one, map_natCast, TransvectionPeriodicity.emb_kappa]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_period (X : Data E r) (la : Wt X.Ψ r) :
     ∃ M : ℝ, 0 < M ∧ ∀ v ∈ X.Λ, herm X.Gm v v = 0 →
       ∃ γ ∈ X.Γ, X.χ la γ = 1 ∧
@@ -143,6 +192,61 @@ theorem exists_period (X : Data E r) (la : Wt X.Ψ r) :
     push_cast
     ring
 
+/- English proof (translation)
+Take `⟨M, hM, htrans⟩` from `exists_period X la`. Use `set w : ℝ := ∑ τ, X.spread la τ with hw`. Establish `hw0 : 0 ≤ w` using `Finset.sum_nonneg fun τ _ => flowTermNormDecay.spread_nonneg' X la τ`. Establish `hL : 0 < Real.log 2` using `Real.log_pos one_lt_two`. Establish `hpi` using `Real.pi_pos`.
+
+Use `set ε : ℝ := π / (M * (w + 2) * Real.log 2) with hε`. Establish `hε0 : 0 < ε` using `by positivity`. Use `⟨ε, hε0, fun P hP z0 hz0 hhalf hpos v hξ => ?_⟩` and prove the remaining obligations. Take `⟨hv, hvv, hv0⟩` from `id hξ`. Assume the negation of the conclusion as `hcon`.
+
+Use `push Not at hcon`. Use `set e : X.Ψ → Fin r → ℂ := fun τ => Data.emb τ.1 v with he`. Establish `he0 : ∀ τ : X.Ψ, e τ ≠ 0`. Introduce `τ h`. Apply `hv0` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `a`. Use `congr_fun h a` as an intermediate fact. Simplify `this` using `[e, Data.emb]`. Establish `heIso : X.IsIsoV e` using `fun τ => ⟨by show hermC τ.1 X.Gm (fun a => τ.1 (v a)) (fun a => τ.1 (v a)) = 0`. Rewrite using `[EmbeddingHermitianPairs.hermC_emb, hvv, map_zero], he0 τ⟩`.
+
+Establish `hmaj : ∀ τ, 0 < X.maj z0 τ (e τ)` using `fun τ => X.maj_pos hz0 τ (he0 τ)`. Use `set t : ℝ := 1 / (2 * ε) with ht`. Establish `ht0 : 0 < t` using `by positivity`. Establish `htt : ∀ τ, 2 * t < X.ttV e z0 τ`. Introduce `τ`.
+
+Simplify using `only [Data.ttV]`. Rewrite using `[show 2 * t = 1 / ε by rw [ht]; field_simp]`. Conclude with `one_div_lt_one_div_of_lt (mul_pos (c_pos' X τ) (hmaj τ)) (hcon τ)`. Establish `hfl : ∀ s, X.flowV e s z0 = X.flow v s z0` using `fun s => rfl`. Establish `hdom : ∀ ζ : ℂ, -(2 * t) < ζ.im → X.flow v (fun _ => ζ) z0 ∈ X.dom`.
+
+Introduce `ζ hζ`. Rewrite using `[← hfl]`. Use `((flowDomainCriterion_holds r X e heIso z0 hz0 (fun _ => ζ)).1).2 (fun τ => ?_)` and prove the remaining obligations. Use `show 0 < 1 + ζ.im / X.ttV e z0 τ`. Establish `h` using `htt τ`.
+
+Establish `hpos' : 0 < X.ttV e z0 τ` using `by linarith`. Establish `: -1 < ζ.im / X.ttV e z0 τ` using `by rw [lt_div_iff₀ hpos']; linarith`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set g : ℂ → ℂ := fun ζ => if -(2 * t) < ζ.im then P (X.flow v (fun _ => ζ) z0) else 0 with hg`. Take `⟨γ, hγ, hχ, hγm⟩` from `htrans v hv hvv`.
+
+Establish `hper : Function.Periodic g M`. Introduce `ζ`. Simplify using `only [hg, Complex.add_im, Complex.ofReal_im, add_zero]`. Use `split_ifs with h`. Establish `hy` using `hdom ζ h`.
+
+Establish `hlact : X.flow v (fun _ => ζ + (M : ℂ)) z0 = lact γ (X.flow v (fun _ => ζ) z0)`. Use function extensionality and compare the values at `τ`. Use `show X.flowMat v τ (ζ + M) * mat z0 τ = (γ : Matrix (Fin r) (Fin r) E).map τ.1 * mat (X.flow v (fun _ => ζ) z0) τ`. Rewrite using `[AdmissibleHermitianColumns.mat_flow, hγm τ, ← Matrix.mul_assoc, EmbeddingHermitianPairs.flowMat_mul X hvv, add_comm]`. Rewrite using `[hlact, hP.1.1.2.2 γ hγ _ hy, hχ, one_mul]`.
+
+Both sides reduce to the same expression. Establish `hopen` using `FourierCoefficientDomain.isOpen_dom X`. Establish `hdiff : ∀ ζ : ℂ, -(2 * t) < ζ.im → DifferentiableAt ℂ g ζ`. Introduce `ζ hζ`. Establish `hev : g =ᶠ[𝓝 ζ] fun ζ => P (X.flow v (fun _ => ζ) z0)`.
+
+Establish `: {ζ : ℂ | -(2 * t) < ζ.im} ∈ 𝓝 ζ` using `(isOpen_lt continuous_const Complex.continuous_im).mem_nhds hζ`. Use `filter_upwards [this] with ζ' h'`. Simplify using `only [hg, if_pos (show -(2 * t) < ζ'.im from h')]`. Use `DifferentiableAt.congr_of_eventuallyEq ?_ hev` and prove the remaining obligations. Establish `hF : DifferentiableAt ℂ (fun ζ : ℂ => X.flow v (fun _ => ζ) z0) ζ` using `((FlowMeanContinuity.flow_differentiable X v z0).comp (differentiable_pi.2 fun _ => differentiable_id)) ζ`.
+
+Conclude with `(hP.1.1.1.differentiableAt (hopen.mem_nhds (hdom ζ hζ))).comp ζ hF`. Establish `hzero : Tendsto g (comap im atTop) (𝓝 0)` using `tendsto_zero X la P hP hz0 hξ (fun ζ hζ => hdom ζ (by linarith)) g (fun ζ hζ => by simp only [hg, if_pos (show -(2 * t) < ζ.im by linarith)])`. Use `set B : ℝ := 2 * ‖P z0‖ * 2 ^ (w / 2) with hB`. Establish `hBd : ∀ ζ : ℂ, ζ.im = -t → ‖g ζ‖ ≤ B`. Introduce `ζ hζ`.
+
+Establish `hlt : -(2 * t) < ζ.im` using `by linarith`. Simplify using `only [hg, if_pos hlt]`. Use `set y := X.flow v (fun _ => ζ) z0 with hy`. Establish `hyd` using `hdom ζ hlt`. Establish `hnf : 0 < X.nfac la y` using `flowTermNormDecay.nfac_pos X la hyd`.
+
+Establish `hratio : X.nfac la z0 / X.nfac la y ≤ ∏ τ : X.Ψ, (max (1 + ζ.im / X.ttV e z0 τ) (1 + ζ.im / X.ttV e z0 τ)⁻¹) ^ (X.spread la τ / 2)` using `(m3bNorm_holds r X e heIso la z0 hz0 (fun _ => ζ) (by rw [hfl]; exact hyd)).2`. Establish `hprod : ∏ τ : X.Ψ, (max (1 + ζ.im / X.ttV e z0 τ) (1 + ζ.im / X.ttV e z0 τ)⁻¹) ^ (X.spread la τ / 2) ≤ (2 : ℝ) ^ (w / 2)`. Establish `hterm : ∀ τ : X.Ψ, (max (1 + ζ.im / X.ttV e z0 τ) (1 + ζ.im / X.ttV e z0 τ)⁻¹) ^ (X.spread la τ / 2) ≤ (2 : ℝ) ^ (X.spread la τ / 2)`. Introduce `τ`. Establish `h` using `htt τ`.
+
+Establish `hT : 0 < X.ttV e z0 τ` using `by linarith`. Establish `hq1 : 1 / 2 ≤ 1 + ζ.im / X.ttV e z0 τ`. Rewrite using `[hζ, neg_div]`. Establish `: t / X.ttV e z0 τ ≤ 1 / 2` using `by rw [div_le_iff₀ hT]; linarith`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hq2 : 1 + ζ.im / X.ttV e z0 τ ≤ 1`. Rewrite using `[hζ, neg_div]`. Establish `: 0 ≤ t / X.ttV e z0 τ` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hqpos : 0 < 1 + ζ.im / X.ttV e z0 τ` using `by linarith`.
+
+Establish `hinv : (1 + ζ.im / X.ttV e z0 τ)⁻¹ ≤ 2`. Rewrite using `[inv_le_comm₀ hqpos two_pos]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsp` using `flowTermNormDecay.spread_nonneg' X la τ`. Conclude with `Real.rpow_le_rpow (le_trans hqpos.le (le_max_left _ _)) (max_le (by linarith) hinv) (by linarith)`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h` using `htt τ`. Establish `hT : 0 < X.ttV e z0 τ` using `by linarith`. Establish `: t / X.ttV e z0 τ ≤ 1 / 2` using `by rw [div_le_iff₀ hT]; linarith`. Rewrite using `[hζ, neg_div]`.
+
+Use the proof step `linarith) (le_max_left _ _)) _) (fun τ _ => hterm τ)`. Use `_ = (2 : ℝ) ^ (∑ τ : X.Ψ, X.spread la τ / 2) := (Real.rpow_sum_of_pos two_pos _ _).symm`. Use `_ = (2 : ℝ) ^ (w / 2) := by rw [← Finset.sum_div]`. Establish `h1 : ‖P y‖ * X.nfac la y ≤ 2 * (‖P z0‖ * X.nfac la z0)` using `hhalf y hyd`. Establish `h2 : X.nfac la z0 ≤ 2 ^ (w / 2) * X.nfac la y`.
+
+Rewrite `hratio` using `[div_le_iff₀ hnf]`. Conclude with `hratio.trans (mul_le_mul_of_nonneg_right hprod hnf.le)`. Establish `h3 : ‖P y‖ * X.nfac la y ≤ B * X.nfac la y`. Combine the equalities or inequalities in the displayed calculation. Conclude with `le_of_mul_le_mul_right h3 hnf`.
+
+Establish `hsch` using `PeriodicSchwarzLemma.periodic_schwarz hM ht0 (show t < 2 * t by linarith) hper hdiff hzero hBd`. Establish `hg0 : g 0 = P z0`. Simplify using `only [hg, Complex.zero_im, if_pos (show -(2 * t) < (0 : ℝ) by linarith)]`. Use `congr 1`. Conclude with `EmbeddingHermitianPairs.flow_zero X v z0`.
+
+Rewrite `hsch` using `[hg0]`. Establish `hP0 : 0 < ‖P z0‖`. Establish `hpn : X.pnorm la P z0 = ‖P z0‖ * X.nfac la z0` using `rfl`. Break down `(norm_nonneg (P z0)).eq_or_lt with h | h` into its components or cases. Rewrite `hpos` using `[hpn, ← h, zero_mul]`.
+
+Conclude with `absurd hpos (lt_irrefl 0)`. Conclude with `h`. Establish `h1 : 1 ≤ Real.exp (-2 * π * t / M) * (2 * 2 ^ (w / 2))`. Establish `e1 : Real.exp (-2 * π * t / M) * B = ‖P z0‖ * (Real.exp (-2 * π * t / M) * (2 * 2 ^ (w / 2)))` using `by rw [hB]; ring`. Rewrite `hsch` using `[e1]`.
+
+Conclude with `le_of_mul_le_mul_left (by rw [mul_one]; exact hsch) hP0`. Establish `e3 : Real.exp ((1 + w / 2) * Real.log 2) = 2 * 2 ^ (w / 2)`. Rewrite using `[show (1 + w / 2) * Real.log 2 = Real.log 2 + Real.log 2 * (w / 2) by ring, Real.exp_add, Real.exp_log two_pos, ← Real.rpow_def_of_pos two_pos]`. Rewrite `h1` using `[← e3, ← Real.exp_add]`. Establish `h2` using `Real.one_le_exp_iff.1 h1`.
+
+Establish `h5 : -2 * π * t / M = -((w + 2) * Real.log 2)`. Rewrite using `[ht, hε]`. Clear the denominators using the available nonvanishing facts. Rewrite `h2` using `[h5]`. Establish `h6 : 0 < (w + 2) * Real.log 2` using `by positivity`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_le_maj_of_iso (X : Data E r) (la : Wt X.Ψ r) :
     ∃ ε : ℝ, 0 < ε ∧ ∀ P ∈ X.SS la, ∀ z0 ∈ X.dom,
       (∀ x ∈ X.dom, X.pnorm la P x ≤ 2 * X.pnorm la P z0) → 0 < X.pnorm la P z0 →
@@ -301,6 +405,19 @@ theorem exists_le_maj_of_iso (X : Data E r) (la : Wt X.Ψ r) :
 
 end HalfMax
 
+/- English proof (translation)
+Take `⟨δ, hδ, hiso⟩` from `HalfMax.exists_herm_eq_zero X`. Take `⟨ε, hε, hmax⟩` from `HalfMax.exists_le_maj_of_iso X la`. Establish `hm : 0 < min δ ε` using `lt_min hδ hε`. Use `⟨Real.sqrt (min δ ε), Real.sqrt_pos.2 hm, fun P hP z hz hhalf hpos => ?_⟩` and prove the remaining obligations. Use `Real.sqrt_le_sqrt (le_csInf ?_ ?_)` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hne`. Establish `hbot : ∀ v ∈ X.Λ, v = 0` using `fun v hv => by`. Assume the negation of the conclusion as `hv0`. Conclude with `hne ⟨_, v, hv, hv0, rfl⟩`. Establish `h1 : Submodule.span E (X.Λ : Set (Fin r → E)) = ⊥` using `Submodule.span_eq_bot.2 hbot`.
+
+Establish `h2 : (1 : Fin r → E) ∈ Submodule.span E (X.Λ : Set (Fin r → E))`. Rewrite using `[X.Λ_span]`. Conclude with `Submodule.mem_top`. Rewrite `h2` using `[h1, Submodule.mem_bot]`. Conclude with `one_ne_zero (congrFun h2 ⟨0, hr⟩)`.
+
+Introduce and unpack `_ ⟨v, hv, hv0, rfl⟩`. Establish `hp : ∀ τ : X.Ψ, 0 < X.maj z τ (Data.emb τ.1 v)` using `fun τ => by`. Use `X.maj_pos hz τ fun h => hv0 ?_` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Use `congr_fun h a` as an intermediate fact.
+
+Simplify `this` using `[Data.emb]`. Choose the witnesses or unpack the hypotheses as in `⟨τ, hτ⟩ : ∃ τ : X.Ψ, min δ ε ≤ X.c τ * X.maj z τ (Data.emb τ.1 v) := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `hvv` using `hiso z hz v hv fun τ => (hcon τ).trans_le (min_le_left _ _)`.
+
+Take `⟨τ, hτ⟩` from `hmax P hP z hz hhalf hpos v ⟨hv, hvv, hv0⟩`. Conclude with `absurd ((min_le_right δ ε).trans hτ) (not_le.2 (hcon τ))`. Conclude with `hτ.trans (Finset.single_le_sum (f := fun τ : X.Ψ => X.c τ * X.maj z τ (Data.emb τ.1 v)) (fun σ _ => (mul_pos (HalfMax.c_pos' X σ) (hp σ)).le) (Finset.mem_univ τ))`.
+-/
 theorem exists_lower_bound_half_max_norm (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ)
     (X : Data E r) (la : Wt X.Ψ r) (hr : 0 < r) :
     ∃ ε : ℝ, 0 < ε ∧ ∀ P ∈ X.SS la, ∀ z ∈ X.dom,

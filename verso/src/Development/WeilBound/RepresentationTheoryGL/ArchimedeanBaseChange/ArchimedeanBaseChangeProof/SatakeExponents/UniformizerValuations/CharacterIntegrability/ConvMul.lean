@@ -14,6 +14,11 @@ section Gen
 variable {K : Type*} [Group K] [TopologicalSpace K] [IsTopologicalGroup K] [MeasurableSpace K] [BorelSpace K]
   [SecondCountableTopology K] [T2Space K]
 
+/- English proof (translation)
+Establish `hc : Continuous (fun p : K × K => φ₁ p.1 * φ₂ (p.1⁻¹ * p.2) * g p.2)` using `((h₁.1.comp continuous_fst).mul (h₂.1.comp (continuous_fst.inv.mul continuous_snd))).mul (hg.comp continuous_snd)`. Use `hc.integrable_of_hasCompactSupport ?_` and prove the remaining obligations. Establish `hK : IsCompact ((fun q : K × K => (q.1, q.1 * q.2)) '' (tsupport φ₁ ×ˢ tsupport φ₂))` using `(h₁.2.isCompact.prod h₂.2.isCompact).image (continuous_fst.prodMk (continuous_fst.mul continuous_snd))`. Use `HasCompactSupport.intro' hK hK.isClosed fun p hp => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+
+Apply `hp` to reduce the goal to its premises. Use `⟨(p.1, p.1⁻¹ * p.2), ⟨?_, ?_⟩, by simp⟩` and prove the remaining obligations. Conclude with `subset_tsupport _ fun h => hne (by simp [h])`. Conclude with `subset_tsupport _ fun h => hne (by simp [h])`.
+-/
 theorem integrable_convolution_pairing (μ : Measure K) [IsFiniteMeasureOnCompacts μ] [SFinite μ]
     (φ₁ φ₂ g : K → ℂ) (h₁ : Continuous φ₁ ∧ HasCompactSupport φ₁) (h₂ : Continuous φ₂ ∧ HasCompactSupport φ₂)
     (hg : Continuous g) :
@@ -30,6 +35,11 @@ theorem integrable_convolution_pairing (μ : Measure K) [IsFiniteMeasureOnCompac
   · exact subset_tsupport _ fun h => hne (by simp [h])
   · exact subset_tsupport _ fun h => hne (by simp [h])
 
+/- English proof (translation)
+Establish `hI` using `integrable_convolution_pairing μ φ₁ φ₂ g h₁ h₂ hg`. Establish `e1 : ∀ y, (∫ z, φ₁ z * φ₂ (z⁻¹ * y) ∂μ) * g y = ∫ z, φ₁ z * φ₂ (z⁻¹ * y) * g y ∂μ` using `fun y => (integral_mul_const (g y) _).symm`. Repeatedly rewrite using `[e1]`. Rewrite using `[← integral_integral_swap (f := fun z y => φ₁ z * φ₂ (z⁻¹ * y) * g y) hI]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations.
+
+Simplify using `only`. Rewrite using `[← integral_mul_left_eq_self (μ := μ) (fun y => φ₁ z * φ₂ (z⁻¹ * y) * g y) z, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Simplify using `only [inv_mul_cancel_left]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem convolution_pairing_fubini (μ : Measure K) [IsFiniteMeasureOnCompacts μ] [SFinite μ] [μ.IsMulLeftInvariant]
     (φ₁ φ₂ g : K → ℂ) (h₁ : Continuous φ₁ ∧ HasCompactSupport φ₁) (h₂ : Continuous φ₂ ∧ HasCompactSupport φ₂)
     (hg : Continuous g) :
@@ -52,13 +62,32 @@ attribute [local instance] borelG borelF borelH lc_GLf sc_GLf t2_GL_finite_adele
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl⟩`.
+-/
 theorem borelSpaceHf : BorelSpace (Hf E a b) := ⟨rfl⟩
 
 attribute [local instance] borelSpaceHf
 
+/- English proof (translation)
+Simplify using `[finH, map_mul]`.
+-/
 theorem finH_mul (g h : Hf E a b) : finH (g * h) = finH g * finH h := by
   simp [finH, map_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i x`. Establish `hg : ∀ j, Continuous fun y => F (i.1, j) (x * finH y)` using `fun j => hF _ x`. Establish `hI : ∀ j k, Integrable (fun p : Hf E a b × Hf E a b => ψ i.2 k p.1 * ψ' k j (p.1⁻¹ * p.2) * F (i.1, j) (x * finH p.2)) (ν.prod ν)` using `fun j k => integrable_convolution_pairing ν _ _ _ (hψ i.2 k) (hψ' k j) (hg j)`. Establish `hL : ∀ j, ∫ y, (∑ k, ∫ z, ψ i.2 k z * ψ' k j (z⁻¹ * y) ∂ν) * F (i.1, j) (x * finH y) ∂ν = ∑ k, ∫ y, (∫ z, ψ i.2 k z * ψ' k j (z⁻¹ * y) ∂ν) * F (i.1, j) (x * finH y) ∂ν`. Introduce `j`.
+
+Repeatedly rewrite using `[Finset.sum_mul]`. Use `integral_finsetSum _ fun k _ => ?_` and prove the remaining obligations. Use `(hI j k).integral_prod_right` as an intermediate fact. Use `this.congr (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only`.
+
+Conclude with `integral_mul_const (F (i.1, j) (x * finH y)) _`. Establish `hR : ∀ k, ∫ z, ψ i.2 k z * (∑ j, ∫ w, ψ' k j w * F (i.1, j) (x * finH z * finH w) ∂ν) ∂ν = ∑ j, ∫ z, ψ i.2 k z * ∫ w, ψ' k j w * F (i.1, j) (x * finH z * finH w) ∂ν ∂ν`. Introduce `k`. Repeatedly rewrite using `[Finset.mul_sum]`. Use `integral_finsetSum _ fun j _ => ?_` and prove the remaining obligations.
+
+Use `(hI j k).integral_prod_left` as an intermediate fact. Use `this.congr (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← integral_mul_left_eq_self (μ := ν) (fun y => ψ i.2 k z * ψ' k j (z⁻¹ * y) * F (i.1, j) (x * finH y)) z, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations.
+
+Simplify using `only [inv_mul_cancel_left, finH_mul, mul_assoc]`. Use `show ∑ j, ∫ y, (∑ k, ∫ z, ψ i.2 k z * ψ' k j (z⁻¹ * y) ∂ν) * F (i.1, j) (x * finH y) ∂ν = ∑ k, ∫ z, ψ i.2 k z * (∑ j, ∫ w, ψ' k j w * F (i.1, j) (x * finH z * finH w) ∂ν) ∂ν`. Repeatedly rewrite using `[hL, hR]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Use `convolution_pairing_fubini ν (ψ i.2 k) (ψ' k j) (fun y => F (i.1, j) (x * finH y)) (hψ i.2 k) (hψ' k j) (hg j)` as an intermediate fact. Simplify `this` using `only [finH_mul, mul_assoc]`.
+-/
 theorem convF_mulF_eq_convF_convF {A κ : Type} [Fintype κ] (ν : Measure (Hf E a b)) [ν.IsHaarMeasure]
     (ψ ψ' : Matrix κ κ (Hf E a b → ℂ)) (hψ : IsFinM ψ) (hψ' : IsFinM ψ') (F : A × κ → H E a b → ℂ)
     (hF : ∀ i x, Continuous fun h => F i (x * finH h)) :

@@ -16,6 +16,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Unfold `hermForm`. Simplify using `only [dotProduct, Matrix.mulVec, Finset.mul_sum, star_sum, star_mul', Pi.star_apply, star_star]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h` using `congrFun (congrFun hH i) j`.
+
+Simplify using `only [Matrix.conjTranspose_apply] at h`. Rewrite using `[← h, star_star]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hermForm_swap_of_isHermitian {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (hH : Hm.IsHermitian)
     (z w : Fin g → ℂ) : hermForm Hm w z = star (hermForm Hm z w) := by
   unfold hermForm
@@ -27,6 +32,11 @@ theorem hermForm_swap_of_isHermitian {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ)
   rw [← h, star_star]
   ring
 
+/- English proof (translation)
+Introduce `g r Hm l M hH hM`. Use extensionality with `i j`. Establish `h1` using `hM j i`. Rewrite `h1` using `[hermForm_swap_of_isHermitian Hm hH]`. Establish `h2` using `hM i j`.
+
+Simplify using `only [Complex.star_def, Complex.conj_im] at h1`. Establish `: ((M j i : ℤ) : ℝ) = ((-M i j : ℤ) : ℝ)` using `by push_cast; linarith`. Simplify `Int.cast_injective this` using `[Matrix.transpose_apply]`.
+-/
 theorem hermForm_im_antisymm : ∀ (g r : ℕ) (Hm : Matrix (Fin g) (Fin g) ℂ) (l : Fin r → Fin g → ℂ)
     (M : Matrix (Fin r) (Fin r) ℤ), Hm.IsHermitian →
     (∀ i j, (hermForm Hm (l i) (l j)).im = M i j) → Mᵀ = -M := by
@@ -39,6 +49,9 @@ theorem hermForm_im_antisymm : ∀ (g r : ℕ) (Hm : Matrix (Fin g) (Fin g) ℂ)
   have : ((M j i : ℤ) : ℝ) = ((-M i j : ℤ) : ℝ) := by push_cast; linarith
   simpa [Matrix.transpose_apply] using Int.cast_injective this
 
+/- English proof (translation)
+The claim follows from `hermForm_im_antisymm`.
+-/
 example : ∀ (g r : ℕ) (Hm : Matrix (Fin g) (Fin g) ℂ) (l : Fin r → Fin g → ℂ) (M : Matrix (Fin r) (Fin r) ℤ), Hm.IsHermitian → (∀ i j, (hermForm Hm (l i) (l j)).im = M i j) → Mᵀ = -M := hermForm_im_antisymm
 
 end GlobalTheory

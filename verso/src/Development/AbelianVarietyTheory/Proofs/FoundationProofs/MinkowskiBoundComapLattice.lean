@@ -48,6 +48,11 @@ def blk {F I : Type} [Zero F] (e : Fin N ≃ C × I) (M : Matrix I I F) : Matrix
   Matrix.of fun a b => if (e a).1 = (e b).1 then M (e a).2 (e b).2 else 0
 
 omit [NumberField K] in
+/- English proof (translation)
+Rewrite using `[pairK_apply, pairP_eq_pairB, pairBK_apply, rhoK_coe]`. Use `congr 2`. Rewrite using `[bVV_coe]`. Take `⟨Q, hQ⟩` from `bVVfun_int K lam i`. Rewrite using `[hQ, MvPolynomial.map_map]`.
+
+Use `congr 2`. Conclude with `RingHom.ext_int _ _`.
+-/
 theorem pairK_basis [StarRing K] (lam : ι → DomWeight n) (g : ι → GL (Fin n) K) (i j : VVIdx lam) :
     pairK lam (fun τ => (g τ : Matrix (Fin n) (Fin n) K)) (bVV K lam i) (bVV K lam j) =
       pairBK lam (bVV K lam i) (rhoK lam g (bVV K lam j)) := by
@@ -63,11 +68,17 @@ def gramB (K : Type) [Field K] (lam : ι → DomWeight n) : Matrix (VVIdx lam) (
   Matrix.of fun i j => pairBK lam (bVV K lam i) (bVV K lam j)
 
 omit [NumberField K] in
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [gramB, Matrix.transpose_apply, Matrix.of_apply, pairBK_apply]`. Conclude with `pairingBSymm_holds K ι n lam _ _`.
+-/
 theorem gramB_transpose (lam : ι → DomWeight n) : (gramB K lam)ᵀ = gramB K lam := by
   ext i j
   simp only [gramB, Matrix.transpose_apply, Matrix.of_apply, pairBK_apply]
   exact pairingBSymm_holds K ι n lam _ _
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(∀ y ∈ M, y ⬝ᵥ (P *ᵥ x) ∈ (1 : Submodule (𝓞 K) K)) ↔ ∀ y ∈ M, (P *ᵥ x) ⬝ᵥ y ∈ (1 : Submodule (𝓞 K) K)`. Simplify using `only [dotProduct_comm]`.
+-/
 theorem hdualFr_triv {m : ℕ} (P : Matrix (Fin m) (Fin m) K) (M : Submodule (𝓞 K) (Fin m → K)) (x : Fin m → K) :
     x ∈ @hdualFr K _ m starRingOfComm P M ↔ P *ᵥ x ∈ dualFr M := by
   change (∀ y ∈ M, y ⬝ᵥ (P *ᵥ x) ∈ (1 : Submodule (𝓞 K) K)) ↔ ∀ y ∈ M, (P *ᵥ x) ⬝ᵥ y ∈ (1 : Submodule (𝓞 K) K)
@@ -113,6 +124,9 @@ def Under (P : ∀ (E K : Type) [Field E] [NumberField E] [Field K] [NumberField
   ∀ (N : ℕ) (e : Fin N ≃ C × VVIdx lam) (X : InfinitePlace K → Matrix (Fin N) (Fin N) ℂ),
     P E K cE ι emb n lam R J C L N e X
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem slopeE_eq : SlopeE = Under fun _ _ _ _ _ _ _ _ _ _ emb _ lam R J _ L _ e X =>
     WeylClause emb lam R J L e X ∧ NablaClause emb lam R J L e X ∧
       WeylClauseDual emb lam R J L e X ∧ NablaClauseDual emb lam R J L e X := rfl

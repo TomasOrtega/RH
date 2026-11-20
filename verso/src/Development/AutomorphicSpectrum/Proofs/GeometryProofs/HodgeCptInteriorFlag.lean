@@ -20,6 +20,15 @@ section Alg
 
 variable {Ω : Type} [Field Ω] {E : Type} [AddCommGroup E] [Module Ω E] {r : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨k, hk, rfl⟩` from `hx`. Use `⟨Pi.single k 1, fun l hl => ?_, ?_⟩` and prove the remaining obligations. Establish `hk' : (k : ℕ) < n` using `hk`.
+
+Establish `: l ≠ k`. Introduce and unpack `rfl`. Conclude with `absurd hk' (not_lt.2 hl)`. Simplify using `[this]`. Simplify using `[Pi.single_apply, ite_smul]`.
+
+Consider the case `zero => exact ⟨0, by simp, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨d, h1, rfl⟩` from `hx`. Take `⟨e, h2, rfl⟩` from `hy`. Conclude with `⟨d + e, fun l hl => by simp [h1 l hl, h2 l hl], by simp [add_smul, Finset.sum_add_distrib]⟩`.
+
+Consider the case `smul a x _ hx`. Take `⟨d, h1, rfl⟩` from `hx`. Conclude with `⟨a • d, fun l hl => by simp [h1 l hl], by simp [Finset.smul_sum, mul_smul]⟩`.
+-/
 theorem exists_coeff_of_mem_flagStep {b : Fin r → E} {n : ℕ} {x : E} (hx : x ∈ flagStep Ω b n) :
     ∃ d : Fin r → Ω, (∀ l : Fin r, n ≤ l → d l = 0) ∧ x = ∑ l, d l • b l := by
   induction hx using Submodule.span_induction with
@@ -41,6 +50,9 @@ theorem exists_coeff_of_mem_flagStep {b : Fin r → E} {n : ℕ} {x : E} (hx : x
     obtain ⟨d, h1, rfl⟩ := hx
     exact ⟨a • d, fun l hl => by simp [h1 l hl], by simp [Finset.smul_sum, mul_smul]⟩
 
+/- English proof (translation)
+Use `Fintype.linearIndependent_iff.1 hb (fun l => c l - d l) (by simp [sub_smul, Finset.sum_sub_distrib, h])` as an intermediate fact. Use function extensionality and compare the values at `l`. Conclude with `sub_eq_zero.1 (this l)`.
+-/
 theorem coeff_eq_of_li {b : Fin r → E} (hb : LinearIndependent Ω b) {c d : Fin r → Ω}
     (h : ∑ l, c l • b l = ∑ l, d l • b l) : c = d := by
   have := Fintype.linearIndependent_iff.1 hb (fun l => c l - d l)
@@ -48,6 +60,13 @@ theorem coeff_eq_of_li {b : Fin r → E} (hb : LinearIndependent Ω b) {c d : Fi
   funext l
   exact sub_eq_zero.1 (this l)
 
+/- English proof (translation)
+Establish `h1 : ∀ k, ∃ c : Fin r → A, ∑ l, c l • b l = b' k` using `fun k => (Submodule.mem_span_range_iff_exists_fun A).1 (hm k)`. Use `choose c hc using h1`. Establish `h2 : ∀ k l, (c k l : Ω) • b l = c k l • b l` using `fun _ _ => rfl`. Use `⟨fun l k => c k l, fun k => ?_, fun l k hkl => ?_⟩` and prove the remaining obligations. Rewrite using `[← hc k]`.
+
+Conclude with `Finset.sum_congr rfl fun l _ => rfl`. Take `⟨d, hd, hx⟩` from `exists_coeff_of_mem_flagStep (hf k)`. Establish `e : (fun l => (c k l : Ω)) = d` using `coeff_eq_of_li hb (by rw [← hx, ← hc k]; rfl)`. Establish `: (c k l : Ω) = 0`. Rewrite using `[congrFun e l]`.
+
+Conclude with `hd l hkl`. Conclude with `Subtype.ext this`.
+-/
 theorem exists_tri (A : Subring Ω) {b b' : Fin r → E} (hb : LinearIndependent Ω b)
     (hm : ∀ k, b' k ∈ Submodule.span A (Set.range b)) (hf : ∀ k : Fin r, b' k ∈ flagStep Ω b (k + 1)) :
     ∃ P : Fin r → Fin r → A, (∀ k, b' k = ∑ l, (P l k : Ω) • b l) ∧ ∀ l k, k < l → P l k = 0 := by
@@ -65,6 +84,17 @@ theorem exists_tri (A : Subring Ω) {b b' : Fin r → E} (hb : LinearIndependent
       exact hd l hkl
     exact Subtype.ext this
 
+/- English proof (translation)
+Establish `mem : ∀ (c : Fin r → E) (k : Fin r), c k ∈ flagStep Ω c (k + 1)` using `fun c k => Submodule.subset_span ⟨k, Nat.lt_succ_self _, rfl⟩`. Take `⟨P, hP, hP0⟩` from `exists_tri A hb (fun k => hs ▸ Submodule.subset_span ⟨k, rfl⟩) (fun k => (hf _).symm ▸ mem b' k)`. Take `⟨Q, hQ, hQ0⟩` from `exists_tri A hb' (fun k => hs ▸ Submodule.subset_span ⟨k, rfl⟩) (fun k => hf _ ▸ mem b k)`. Use `⟨P, hP, hP0, fun k => ?_⟩` and prove the remaining obligations. Establish `e : (fun m => ∑ l, (P m l : Ω) * (Q l k : Ω)) = fun m => if m = k then (1 : Ω) else 0`.
+
+Apply `coeff_eq_of_li hb` to reduce the goal to its premises. Establish `h1 : ∑ l, (if l = k then (1 : Ω) else 0) • b l = b k` using `by simp [ite_smul]`. Rewrite using `[h1]`. Use `conv_rhs => rw [hQ k]`. Simplify using `only [hP, Finset.smul_sum, Finset.sum_smul, mul_smul]`.
+
+Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun m _ => by rw [smul_comm]`. Establish `e'` using `congrFun e k`. Simplify using `only [if_true] at e'`. Rewrite `e'` using `[Finset.sum_eq_single k]`.
+
+Establish `: P k k * Q k k = 1` using `Subtype.ext e'`. Conclude with `IsUnit.of_mul_eq_one _ this`. Introduce `l _ hl`. Break down `lt_or_gt_of_ne hl with h | h` into its components or cases. Rewrite using `[hP0 k l h]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hQ0 l k h]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 theorem frame_change (A : Subring Ω) {b b' : Fin r → E} (hb : LinearIndependent Ω b)
     (hb' : LinearIndependent Ω b') (hs : Submodule.span A (Set.range b) = Submodule.span A (Set.range b'))
     (hf : ∀ s, flagStep Ω b s = flagStep Ω b' s) :
@@ -102,12 +132,26 @@ section Minor
 
 variable {r : ℕ}
 
+/- English proof (translation)
+Use `(Fintype.sum_of_injective (Fin.castLE hn) (Fin.castLE_injective hn) _ _ ?_ fun _ => rfl).symm` and prove the remaining obligations. Introduce `l hl`. Use `hf l (not_lt.1 fun h => hl ⟨⟨l, h⟩, rfl⟩)` and prove the remaining obligations.
+-/
 theorem sum_castLE {M : Type} [AddCommMonoid M] {n : ℕ} (hn : n ≤ r) (f : Fin r → M)
     (hf : ∀ l : Fin r, n ≤ l → f l = 0) : ∑ l, f l = ∑ a : Fin n, f (Fin.castLE hn a) := by
   refine (Fintype.sum_of_injective (Fin.castLE hn) (Fin.castLE_injective hn) _ _ ?_ fun _ => rfl).symm
   intro l hl
   refine hf l (not_lt.1 fun h => hl ⟨⟨l, h⟩, rfl⟩)
 
+/- English proof (translation)
+Unfold `leadMinor`. Rewrite using `[dif_pos hn, dif_pos hn]`. Use `set ic := Fin.castLE hn with hι2`. Establish `hz : ∀ (a : Fin n) (l : Fin r), n ≤ l → C l (ic a) = 0` using `fun a l hl => hC l (ic a) (Fin.lt_def.2 (lt_of_lt_of_le (show ((ic a : Fin r) : ℕ) < n by simp [hι2]) hl))`. Establish `hsub : (Cᴴ * Γ * C).submatrix ic ic = (C.submatrix ic ic)ᴴ * Γ.submatrix ic ic * C.submatrix ic ic`.
+
+Use extensionality with `a c`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply, Matrix.conjTranspose_apply]`. Rewrite using `[sum_castLE hn _ (fun l hl => by rw [hz c l hl, mul_zero])]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Rewrite using `[sum_castLE hn _ (fun l hl => by rw [hz a l hl]; simp)]`. Establish `hdet : (C.submatrix ic ic).det = ∏ a, C (ic a) (ic a)`. Use `Matrix.det_of_upperTriangular ?_` and prove the remaining obligations. Introduce `a c hac`. Conclude with `hC _ _ (show (c : ℕ) < a from hac)`.
+
+Rewrite using `[hsub, Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose, hdet, ← map_prod Complex.normSq]`. Use `set d := ∏ a, C (ic a) (ic a)`. Establish `: star d * (Γ.submatrix ic ic).det * d = ((Complex.normSq d : ℝ) : ℂ) * (Γ.submatrix ic ic).det`. Rewrite using `[Complex.normSq_eq_conj_mul_self]`. Simplify using `only [Complex.star_def]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Complex.re_ofReal_mul]`.
+-/
 theorem leadMinor_conj (Γ C : Matrix (Fin r) (Fin r) ℂ) (hC : ∀ l k, k < l → C l k = 0) {n : ℕ} (hn : n ≤ r) :
     leadMinor (Cᴴ * Γ * C) n =
       (∏ a : Fin n, Complex.normSq (C (Fin.castLE hn a) (Fin.castLE hn a))) * leadMinor Γ n := by
@@ -135,6 +179,13 @@ theorem leadMinor_conj (Γ C : Matrix (Fin r) (Fin r) ℂ) (hC : ∀ l k, k < l 
     ring
   rw [this, Complex.re_ofReal_mul]
 
+/- English proof (translation)
+Rewrite using `[leadMinor_conj Γ C hC (show (i : ℕ) + 1 ≤ r from i.2), leadMinor_conj Γ C hC i.2.le, Fin.prod_univ_castSucc]`. Establish `e1 : Fin.castLE (show (i : ℕ) + 1 ≤ r from i.2) (Fin.last i) = i` using `by ext; simp`. Establish `e2 : ∀ a : Fin i, Fin.castLE (show (i : ℕ) + 1 ≤ r from i.2) a.castSucc = Fin.castLE i.2.le a` using `fun a => by ext; simp`. Simplify using `only [e1, e2]`. Use `set N := ∏ a : Fin i, Complex.normSq (C (Fin.castLE i.2.le a) (Fin.castLE i.2.le a)) with hN`.
+
+Establish `hN0 : N ≠ 0` using `Finset.prod_ne_zero_iff.2 fun a _ => (map_ne_zero Complex.normSq).2 (hd _)`. Establish `: N * Complex.normSq (C i i) * leadMinor Γ (i + 1) / (N * leadMinor Γ i) = ‖C i i‖ ^ 2 * (leadMinor Γ (i + 1) / leadMinor Γ i)`. Rewrite using `[Complex.normSq_eq_norm_sq]`. Distinguish the cases in `h0 : leadMinor Γ i = 0`. Simplify using `[h0]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[this, Real.sqrt_mul (by positivity), Real.sqrt_sq (norm_nonneg _)]`.
+-/
 theorem sqrt_ratio_conj (Γ C : Matrix (Fin r) (Fin r) ℂ) (hC : ∀ l k, k < l → C l k = 0)
     (hd : ∀ k, C k k ≠ 0) (i : Fin r) :
     Real.sqrt (leadMinor (Cᴴ * Γ * C) (i + 1) / leadMinor (Cᴴ * Γ * C) i) =
@@ -155,6 +206,13 @@ theorem sqrt_ratio_conj (Γ C : Matrix (Fin r) (Fin r) ℂ) (hC : ∀ l k, k < l
     · field_simp
   rw [this, Real.sqrt_mul (by positivity), Real.sqrt_sq (norm_nonneg _)]
 
+/- English proof (translation)
+Use `Matrix.PosDef.of_dotProduct_mulVec_pos ?_ fun x hx => ?_` and prove the remaining obligations. Use extensionality with `p q`. Simplify using `[Matrix.conjTranspose_apply, hh (v p) (v q)]`. Establish `e : star x ⬝ᵥ ((Matrix.of fun p q => h (v p) (v q)) *ᵥ x) = h (∑ p, x p • v p) (∑ q, x q • v q)`. Simplify using `[dotProduct, Matrix.mulVec, map_sum, LinearMap.sum_apply, Finset.mul_sum, mul_comm, mul_left_comm]`.
+
+Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Rewrite using `[e]`. Use `set w := ∑ p, x p • v p with hw`. Establish `hw0 : w ≠ 0` using `fun h0 => hx (funext fun p => Fintype.linearIndependent_iff.1 hv x h0 p)`.
+
+Use `Complex.pos_iff.2 ⟨hp w hw0, ?_⟩` and prove the remaining obligations. Use `congrArg Complex.im (hh w w)` as an intermediate fact. Simplify using `only [Complex.conj_im] at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem gram_posDef {V : Type} [AddCommGroup V] [Module ℂ V] (h : V →ₗ⋆[ℂ] V →ₗ[ℂ] ℂ)
     (hh : ∀ v w, h w v = starRingEnd ℂ (h v w)) (hp : ∀ v, v ≠ 0 → 0 < (h v v).re) (v : Fin r → V)
     (hv : LinearIndependent ℂ v) : (Matrix.of fun p q => h (v p) (v q)).PosDef := by
@@ -180,6 +238,11 @@ section Core
 variable {Ω : Type} [Field Ω] {E : Type} [AddCommGroup E] [Module Ω E] {r : ℕ} {V : Type} [AddCommGroup V]
   [Module ℂ V]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, hk, rfl⟩`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, hk, rfl⟩)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨k, hk, rfl⟩`. Establish `e : b k = ((c k)⁻¹ : Rˣ).val • ((c k : R) • b k)` using `by rw [smul_smul]; simp`. Rewrite using `[SetLike.mem_coe, e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, hk, rfl⟩)`.
+-/
 theorem span_image_unit_smul {R : Type} [Ring R] [Module R E] (c : Fin r → Rˣ) (b : Fin r → E) (T : Set (Fin r)) :
     Submodule.span R ((fun k => (c k : R) • b k) '' T) = Submodule.span R (b '' T) := by
   apply le_antisymm
@@ -192,6 +255,9 @@ theorem span_image_unit_smul {R : Type} [Ring R] [Module R E] (c : Fin r → Rˣ
     rw [SetLike.mem_coe, e]
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, hk, rfl⟩)
 
+/- English proof (translation)
+Use `⟨?_, ?_, fun s => ?_⟩` and prove the remaining obligations. Conclude with `hb.units_smul fun k => Units.map A.subtype.toMonoidHom (c k)`. Use `span_image_unit_smul c b Set.univ` as an intermediate fact. Rewrite `this` using `[Set.image_univ, Set.image_univ]`. Then use the resulting hypothesis. Conclude with `span_image_unit_smul (fun k => Units.map A.subtype.toMonoidHom (c k)) b _`.
+-/
 theorem scale_frame (A : Subring Ω) {b : Fin r → E} (hb : LinearIndependent Ω b) (c : Fin r → Aˣ) :
     LinearIndependent Ω (fun k => ((c k : A) : Ω) • b k) ∧
       Submodule.span A (Set.range fun k => ((c k : A) : Ω) • b k) = Submodule.span A (Set.range b) ∧
@@ -207,6 +273,9 @@ def gramOf (h : V →ₗ⋆[ℂ] V →ₗ[ℂ] ℂ) (val : E → V) (b : Fin r �
 
 variable {A : Subring Ω} {φ : A →+* ℂ} {Lm : Submodule A E} {val : E → V}
 
+/- English proof (translation)
+Establish `hm : ∀ (l : Fin r), (a l : Ω) • b l ∈ Lm` using `fun l => Lm.smul_mem (a l) (hb l)`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using h0`. Consider the case `insert l s hl ih`. Rewrite using `[Finset.sum_insert hl, Finset.sum_insert hl, hadd _ (hm l) _ (Lm.sum_mem fun k _ => hm k), hsm _ _ (hb l), ih]`.
+-/
 theorem val_sum (h0 : val 0 = 0) (hadd : ∀ e ∈ Lm, ∀ e' ∈ Lm, val (e + e') = val e + val e')
     (hsm : ∀ a : A, ∀ e ∈ Lm, val ((a : Ω) • e) = φ a • val e) {b : Fin r → E} (hb : ∀ k, b k ∈ Lm)
     (a : Fin r → A) (s : Finset (Fin r)) :
@@ -218,6 +287,23 @@ theorem val_sum (h0 : val 0 = 0) (hadd : ∀ e ∈ Lm, ∀ e' ∈ Lm, val (e + e
   | insert l s hl ih =>
     rw [Finset.sum_insert hl, Finset.sum_insert hl, hadd _ (hm l) _ (Lm.sum_mem fun k _ => hm k), hsm _ _ (hb l), ih]
 
+/- English proof (translation)
+Take `⟨P, hP, hP0, hPu⟩` from `frame_change A hb hb' hs fun s => (hf s).trans (hf' s).symm`. Set `C : Matrix (Fin r) (Fin r) ℂ` to `Matrix.of fun l k => φ (P l k)`. Establish `hval : ∀ k, val (b' k) = ∑ l, C l k • val (b l)` using `fun k => by`. Rewrite using `[hP k]`. Conclude with `val_sum h0 hadd hsm hbL (fun l => P l k) Finset.univ`.
+
+Establish `hG : gramOf h val b' = Cᴴ * gramOf h val b * C`. Use extensionality with `p q`. Simplify using `only [gramOf, Matrix.of_apply, hval, Matrix.mul_apply, Matrix.conjTranspose_apply, map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, Finset.sum_mul, Complex.star_def, RingHom.id_apply, smul_eq_mul, map_smulₛₗ]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun _ _ => by ring`. Establish `hC : ∀ l k, k < l → C l k = 0` using `fun l k hkl => by simp [C, hP0 l k hkl]`. Establish `hd : ∀ k, C k k ≠ 0` using `fun k => ((hPu k).map φ).ne_zero`. Use `⟨P i i, hPu i, ?_, ?_⟩` and prove the remaining obligations. Establish `m1 : b' i - (P i i : Ω) • b i ∈ flagStep Ω b₀ i`.
+
+Establish `e : b' i - (P i i : Ω) • b i = ∑ l ∈ Finset.univ.erase i, (P l i : Ω) • b l`. Rewrite using `[hP i, ← Finset.add_sum_erase _ _ (Finset.mem_univ i)]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Use `Submodule.sum_mem _ fun l hl => ?_` and prove the remaining obligations.
+
+Break down `lt_or_gt_of_ne (Finset.ne_of_mem_erase hl) with hli | hli` into its components or cases. Conclude with `Submodule.smul_mem _ _ (hf i ▸ Submodule.subset_span ⟨l, hli, rfl⟩)`. Rewrite using `[hP0 l i hli]`. Simplify using the standard rewrite rules. Establish `m2 : (t' - (P i i : Ω) * t) • b₀ i ∈ flagStep Ω b₀ i`.
+
+Establish `e : (t' - (P i i : Ω) * t) • b₀ i = (b' i - (P i i : Ω) • b i) - (b' i - t' • b₀ i) + (P i i : Ω) • (b i - t • b₀ i)`. Simplify using `only [sub_smul, smul_sub, mul_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `add_mem (sub_mem m1 h2) (Submodule.smul_mem _ _ h1)`.
+
+Take `⟨d, hd0, hx⟩` from `exists_coeff_of_mem_flagStep m2`. Establish `e2 : (Pi.single i (t' - (P i i : Ω) * t) : Fin r → Ω) = d` using `coeff_eq_of_li hb₀ (by rw [← hx]; simp [Pi.single_apply, ite_smul])`. Establish `e3` using `congrFun e2 i`. Rewrite `e3` using `[Pi.single_eq_same, hd0 i le_rfl]`. Conclude with `(sub_eq_zero.1 e3).symm`.
+
+Rewrite using `[hG]`. Conclude with `sqrt_ratio_conj _ C hC hd i`.
+-/
 theorem compare (h0 : val 0 = 0) (hadd : ∀ e ∈ Lm, ∀ e' ∈ Lm, val (e + e') = val e + val e')
     (hsm : ∀ a : A, ∀ e ∈ Lm, val ((a : Ω) • e) = φ a • val e) (h : V →ₗ⋆[ℂ] V →ₗ[ℂ] ℂ)
     {b₀ b b' : Fin r → E} (hb₀ : LinearIndependent Ω b₀) (hb : LinearIndependent Ω b)
@@ -271,6 +357,17 @@ theorem compare (h0 : val 0 = 0) (hadd : ∀ e ∈ Lm, ∀ e' ∈ Lm, val (e + e
   · rw [hG]
     exact sqrt_ratio_conj _ C hC hd i
 
+/- English proof (translation)
+Establish `hbL : ∀ k, b k ∈ Lm` using `fun k => hVL (hV ▸ Submodule.subset_span ⟨k, rfl⟩)`. Establish `hΓ : (gramOf h val b).PosDef` using `gram_posDef h hh hp _ (hfr b hb hV)`. Use `⟨Real.sqrt (leadMinor (gramOf h val b) (i + 1) / leadMinor (gramOf h val b) i), Real.sqrt_pos.2 (div_pos (leadMinor_pos_of_posDef hΓ i.2) (leadMinor_pos_of_posDef hΓ i.2.le)), fun t' ν' => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨b', Γ, hf', hb', hV', h2, rfl, -, rfl⟩`. Take `⟨a, ha, e1, e2⟩` from `compare h0 hadd hsm h hb₀ hb hb' hbL (hV.symm.trans hV') hf hf' i h1 h2`.
+
+Conclude with `⟨φ a, (ha.map φ).ne_zero, ⟨a, eq_div_of_mul_eq ht e1, rfl⟩, e2⟩`. Introduce and unpack `⟨u, hu, ⟨a, e1, rfl⟩, rfl⟩`. Take `⟨w, rfl⟩` from `hloc a hu`. Take `⟨hb', hs', hf'⟩` from `scale_frame A hb (Function.update 1 i w)`. Use `set b' : Fin r → E := fun k => (((Function.update 1 i w : Fin r → Aˣ) k : A) : Ω) • b k with hb'def`.
+
+Establish `hbi : b' i = ((w : A) : Ω) • b i` using `by simp [hb'def]`. Establish `h2 : b' i - t' • b₀ i ∈ flagStep Ω b₀ i`. Establish `e : b' i - t' • b₀ i = ((w : A) : Ω) • (b i - t • b₀ i)`. Rewrite using `[hbi, smul_sub, smul_smul, e1, div_mul_cancel₀ _ ht]`. Rewrite using `[e]`.
+
+Conclude with `Submodule.smul_mem _ _ h1`. Establish `hf'' : ∀ s, flagStep Ω b' s = flagStep Ω b₀ s` using `fun s => (hf' s).trans (hf s)`. Establish `hV' : Vq = Submodule.span A (Set.range b')` using `hV.trans hs'.symm`. Take `⟨a', -, e3, e4⟩` from `compare h0 hadd hsm h hb₀ hb hb' hbL (hV.symm.trans hV') hf hf'' i h1 h2`. Establish `e5 : a' = w` using `Subtype.ext (by`.
+
+Rewrite using `[e1]`. Conclude with `eq_div_of_mul_eq ht e3)`. Substitute `e5` using the available equality. Conclude with `⟨b', _, hf'', hb', hV', h2, rfl, gram_posDef h hh hp _ (hfr b' hb' hV'), e4.symm⟩`.
+-/
 theorem core (h0 : val 0 = 0) (hadd : ∀ e ∈ Lm, ∀ e' ∈ Lm, val (e + e') = val e + val e')
     (hsm : ∀ a : A, ∀ e ∈ Lm, val ((a : Ω) • e) = φ a • val e) (hloc : ∀ a : A, φ a ≠ 0 → IsUnit a)
     (h : V →ₗ⋆[ℂ] V →ₗ[ℂ] ℂ) (hh : ∀ v w, h w v = starRingEnd ℂ (h v w)) (hp : ∀ v, v ≠ 0 → 0 < (h v v).re)
@@ -321,6 +418,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β} {S : Finset ℕ}
   {Ω : Type} [Field Ω] {K : Type} [Fintype K] {J : K → Type} {y : (Σ k, J k) → Ω}
 
+/- English proof (translation)
+Establish `hp0 : (p : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hp.ne_zero`. Establish `h1` using `RootHt.ArchB.val_nat (ξ := ξ) (z := z) hz p`. Establish `h2` using `RootHt.ArchB.val_inv₀ hp0 h1`. Introduce `h`. Use `h ⟨fun e => hp0 ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite `h1` using `[e]`. Conclude with `RootHt.ArchB.val_unique hξ h1 (RootHt.ArchB.val_zero hz)`. Take `⟨s, e, -⟩` from `h1.choose_spec`. Conclude with `⟨s, e⟩`. Take `⟨s, e, -⟩` from `h2.choose_spec`.
+
+Conclude with `⟨s, e⟩`.
+-/
 theorem not_inFibre {X : Scheme.{0}} {ξ : Spec (CommRingCat.of Ω) ⟶ X} (hξ : IsCptGen ξ)
     {z : Spec (CommRingCat.of ℂ) ⟶ X} (hz : genPt ξ ⤳ centre z) {p : ℕ} (hp : p.Prime) :
     ¬ InFibre ξ p ⟨centre z, hz⟩ := by
@@ -336,6 +440,23 @@ theorem not_inFibre {X : Scheme.{0}} {ξ : Spec (CommRingCat.of Ω) ⟶ X} (hξ 
   · obtain ⟨s, e, -⟩ := h2.choose_spec
     exact ⟨s, e⟩
 
+/- English proof (translation)
+Take `⟨W, hW, hc⟩` from `(hind s).symm.exists_isCompl`. Set `pr : 𝔐.Li →ₗ[Ω] 𝔐.Vgen s` to `Submodule.linearProjOfIsCompl _ _ hc.symm`. Establish `hker : LinearMap.ker (Fintype.linearCombination Ω b) = ⊥`. Use `LinearMap.ker_eq_bot'.2 fun m hm => funext fun k => ?_` and prove the remaining obligations. Conclude with `Fintype.linearIndependent_iff.1 hli m (by rwa [Fintype.linearCombination_apply] at hm) k`.
+
+Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective _ hker`. Establish `hgb : ∀ l, g (b l) = Pi.single l 1` using `fun l => by`. Use `LinearMap.congr_fun hg (Pi.single l 1)` as an intermediate fact. Simplify `this` using `[Fintype.linearCombination_apply_single]`. Establish `hbV : ∀ l, b l ∈ 𝔐.Vgen s` using `fun l => by`.
+
+Establish `: b l ∈ 𝔐.dR s q` using `hfr ▸ Submodule.subset_span ⟨l, rfl⟩`. Conclude with `this.2`. Establish `hpr : ∀ x (hx : x ∈ 𝔐.Vgen s), ((pr x : 𝔐.Vgen s) : 𝔐.Li) = x` using `fun x hx => by`. Use `Submodule.linearProjOfIsCompl_apply_left hc.symm ⟨x, hx⟩` as an intermediate fact. Conclude with `congrArg Subtype.val this`.
+
+Use `⟨fun j => (LinearMap.proj j).comp (g.comp ((𝔐.Vgen s).subtype.comp pr)), fun j k => ?_, fun j e he => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, hpr _ (hbV k), hgb, LinearMap.proj_apply]`. Simplify using `[Pi.single_apply]`. Rewrite `he` using `[hlat]`. Proceed by induction on `he using Submodule.iSup_induction' with`.
+
+Consider the case `mem s' x hx`. Distinguish the cases in `e : s' = s`. Substitute `e` using the available equality. Rewrite `hx` using `[hfr]`. Take `⟨c', rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 hx`.
+
+Establish `e1 : ∀ k, (c' k • b k) = ((c' k : regAt 𝔐.ξ q) : Ω) • b k` using `fun _ => rfl`. Simplify using `only [e1, map_sum, map_smul, LinearMap.comp_apply, Submodule.subtype_apply, hpr _ (hbV _), hgb, LinearMap.proj_apply]`. Use `sum_mem fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul]`. Use `mul_mem (c' k).2 ?_` and prove the remaining obligations.
+
+Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`. Establish `hxW : x ∈ W` using `hW (Submodule.mem_iSup_of_mem s' (Submodule.mem_iSup_of_mem e hx.2))`.
+
+Establish `: pr x = 0` using `Submodule.linearProjOfIsCompl_apply_right' hc.symm hxW`. Simplify using `[this]`. Consider the case `zero => simpa using zero_mem _`. Consider the case `add x y _ _ hx hy => simpa using add_mem hx hy`.
+-/
 theorem exists_dual (𝔐 : HodgeCpt Y S y) (hind : iSupIndep 𝔐.Vgen) (q : Cpt 𝔐.ξ)
     (hlat : 𝔐.M.lat q = ⨆ s, 𝔐.dR s q) (s : CMType H ⊕ CMType H) {r : ℕ} (b : Fin r → 𝔐.Li)
     (hli : LinearIndependent Ω b) (hfr : 𝔐.dR s q = Submodule.span (regAt 𝔐.ξ q) (Set.range b)) :
@@ -383,6 +504,15 @@ theorem exists_dual (𝔐 : HodgeCpt Y S y) (hind : iSupIndep 𝔐.Vgen) (q : Cp
     | zero => simpa using zero_mem _
     | add x y _ _ hx hy => simpa using add_mem hx hy
 
+/- English proof (translation)
+Use `(injective_iff_map_eq_zero g).2 fun o ho => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Establish `b0 : β o ≠ 0` using `fun h => h0 (hβ (h.trans (map_zero β).symm))`. Establish `halg : IsAlgebraic ℤ (β o)` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ F).2 (Algebra.IsAlgebraic.isAlgebraic _)`. Take `⟨p, hp, hp0⟩` from `halg`.
+
+Take `⟨q, hq, hq'⟩` from `Polynomial.exists_eq_pow_rootMultiplicity_mul_and_not_dvd p hp 0`. Simplify using `only [map_zero, sub_zero, Polynomial.X_dvd_iff] at hq hq'`. Establish `h1 : Polynomial.aeval (β o) q = 0`. Rewrite `hp0` using `[hq, map_mul, map_pow, Polynomial.aeval_X]`. Conclude with `(mul_eq_zero.1 hp0).resolve_left (pow_ne_zero _ b0)`.
+
+Establish `h2 : Polynomial.aeval o q = 0`. Apply `hβ` to reduce the goal to its premises. Rewrite using `[map_zero, ← h1]`. Conclude with `(Polynomial.aeval_algHom_apply β.toIntAlgHom o q).symm`. Establish `h3 : Polynomial.aeval (g o) q = 0`.
+
+Use `Polynomial.aeval_algHom_apply g.toIntAlgHom o q` as an intermediate fact. Rewrite `this` using `[h2, map_zero]`. Conclude with `this`. Rewrite `h3` using `[ho, Polynomial.aeval_def, Polynomial.eval₂_at_zero]`. Conclude with `hq' (by simpa using h3)`.
+-/
 theorem injective_of_algebraic {O : Type} [CommRing O] {F : Type} [Field F] [CharZero F] [Algebra.IsAlgebraic ℚ F]
     (β : O →+* F) (hβ : Function.Injective β) (g : O →+* ℂ) : Function.Injective g := by
   refine (injective_iff_map_eq_zero g).2 fun o ho => ?_
@@ -406,6 +536,9 @@ theorem injective_of_algebraic {O : Type} [CommRing O] {F : Type} [Field F] [Cha
   rw [ho, Polynomial.aeval_def, Polynomial.eval₂_at_zero] at h3
   exact hq' (by simpa using h3)
 
+/- English proof (translation)
+Establish `h0 : (p : PrimeSpectrum K).asIdeal = ⊥` using `@Ideal.eq_bot_of_prime K _ _ (PrimeSpectrum.isPrime (p : PrimeSpectrum K))`. Express the relevant statement in the definitionally equal form `Ideal.comap g (p : PrimeSpectrum K).asIdeal = ⊥`. Rewrite using `[h0]`. Conclude with `Ideal.comap_bot_of_injective g hg`.
+-/
 theorem spec_injective_point {O K : Type} [CommRing O] [Field K] (g : O →+* K) (hg : Function.Injective g)
     (p : Spec (CommRingCat.of K)) :
     ((Spec.map (CommRingCat.ofHom g)) p : PrimeSpectrum O).asIdeal = ⊥ := by
@@ -421,6 +554,21 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
 
 attribute [local instance] Over.cartesianMonoidalCategory in
 
+/- English proof (translation)
+Take `⟨PP', cub, sym, adj, prim, m₁, -⟩` from `sabPull Out.CubePf.cubePull z 𝔐.t`. Take `⟨n, -⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ 𝔐.m m₁`. Establish `hr : Set.range (z ≫ 𝔐.f) ⊆ Set.range (Y.jQ ≫ pullback.fst Y.s (spMap β))`. Introduce and unpack `_ ⟨p, rfl⟩`. Establish `hab : 𝔐.f (centre z) ∈ abLocus Y.t.G` using `(abLocus_pullback abLocusOne Y.t.semi 𝔐.m.cart.1 _).2 hz`.
+
+Establish `hp : p = IsLocalRing.closedPoint ℂ` using `Subsingleton.elim _ _`. Substitute `hp` using the available equality. Use `letI : Algebra.IsAlgebraic ℚ c.F := by`. Use `c.fin` as an intermediate fact. Use `infer_instance`.
+
+Set `g : O →+* ℂ` to `(Spec.preimage (z ≫ 𝔐.f ≫ Y.s)).hom`. Establish `hg : Function.Injective g` using `injective_of_algebraic β hβ g`. Establish `e : Spec.map (CommRingCat.ofHom g) = z ≫ 𝔐.f ≫ Y.s` using `Spec.map_preimage _`. Set `pt : Spec (CommRingCat.of c.F)` to `IsLocalRing.closedPoint c.F`. Establish `hs : Y.s (𝔐.f (centre z)) = spMap β pt`.
+
+Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Establish `e1 : Y.s (𝔐.f (centre z)) = Spec.map (CommRingCat.ofHom g) (IsLocalRing.closedPoint ℂ)`. Rewrite using `[e]`. Simplify using `only [Scheme.Hom.comp_apply]`. Both sides reduce to the same expression.
+
+Rewrite using `[e1]`. Conclude with `(spec_injective_point g hg _).trans (spec_injective_point β hβ pt).symm`. Take `⟨w, hw, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := Y.s) (g := spMap β) _ _ hs`. Establish `hw' : w ∈ pullback.fst Y.s (spMap β) ⁻¹' abLocus Y.t.G`. Rewrite using `[Set.mem_preimage, hw]`.
+
+Conclude with `hab`. Rewrite `hw'` using `[Y.ab_gen]`. Take `⟨v, rfl⟩` from `hw'`. Use `⟨v, ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.Hom.comp_apply]`.
+
+Conclude with `hw`. Use `GlobalTheory.GenericPol.proper_ample_kTriv Y.m Y.oF.proper Y.oF.ample Y.oF.ktriv n hr` as an intermediate fact. Conclude with `⟨_, m₁, this.1, this.2.1⟩`.
+-/
 theorem interior_pol (𝔐 : HodgeCpt Y S y) (hβ : Function.Injective β) (z : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X)
     (hz : 𝔐.Interior z) :
     ∃ (t' : SAB H (Sp ℂ)) (_ : SABMap t' 𝔐.t z), IsProper t'.G.hom ∧ Out.RelAmple t'.G t'.PP.L := by
@@ -456,6 +604,9 @@ theorem interior_pol (𝔐 : HodgeCpt Y S y) (hβ : Function.Injective β) (z : 
   have := GlobalTheory.GenericPol.proper_ample_kTriv Y.m Y.oF.proper Y.oF.ample Y.oF.ktriv n hr
   exact ⟨_, m₁, this.1, this.2.1⟩
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Use `CommRingCat.hom_ext (RingHom.ext fun a => ?_)` and prove the remaining obligations. Simplify using `[dualMap]`.
+-/
 theorem spec_dual_fst {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) :
     Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom B B B).toRingHom) ≫
         Spec.map (CommRingCat.ofHom (dualMap f)) =
@@ -465,6 +616,13 @@ theorem spec_dual_fst {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) :
   refine CommRingCat.hom_ext (RingHom.ext fun a => ?_)
   simp [dualMap]
 
+/- English proof (translation)
+Take `⟨hz, v, ⟨hv, -⟩, hw⟩` from `h`. Unfold `IsTanAt at hv ⊢`. Set `t : Over.mk z ⟶ Over.mk (X.fromSpecStalk (centre z))` to `Over.homMk (Spec.map (Scheme.stalkClosedPointTo z)) (Scheme.Spec_stalkClosedPointTo_fromSpecStalk z)`. Establish `h1 : t ≫ (1 : Over.mk (X.fromSpecStalk (centre z)) ⟶ G) = 1` using `MonObj.comp_one t`. Establish `h2` using `congrArg CommaMorphism.left h1`.
+
+Rewrite using `[hw]`. Use `Eq.trans ?_ h2` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = Spec.map (Scheme.stalkClosedPointTo z) ≫ (1 : Over.mk (X.fromSpecStalk (centre z)) ⟶ G).left`. Use `Eq.trans ?_ (congrArg (fun k => Spec.map (Scheme.stalkClosedPointTo z) ≫ k) hv)` and prove the remaining obligations. Establish `key` using `spec_dual_fst (Scheme.stalkClosedPointTo z).hom`.
+
+Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (fun k => k ≫ v.left) key).trans (Category.assoc _ _ _))`.
+-/
 theorem tan_of_valAt {X : Scheme.{0}} {Ω' : Type} [Field Ω'] {ξ : Sp Ω' ⟶ X} {G : Over X} [GrpObj G]
     {Li : Type} [AddCommGroup Li] [Module Ω' Li] {M : LieModel G ξ Li} {z : Sp ℂ ⟶ X} {e : Li}
     {w : epsAt z ⟶ G} (h : M.ValAt z e w) : IsTanAt G z w := by
@@ -481,6 +639,13 @@ theorem tan_of_valAt {X : Scheme.{0}} {Ω' : Type} [Field Ω'] {ξ : Sp Ω' ⟶ 
   have key := spec_dual_fst (Scheme.stalkClosedPointTo z).hom
   exact (Category.assoc _ _ _).symm.trans ((congrArg (fun k => k ≫ v.left) key).trans (Category.assoc _ _ _))
 
+/- English proof (translation)
+Take `⟨d, hd, rfl⟩` from `exists_coeff_of_mem_flagStep hx`. Use `⟨d i, ?_⟩` and prove the remaining obligations. Establish `e : ∑ l, d l • b l - d i • b i = ∑ l ∈ Finset.univ.erase i, d l • b l`. Rewrite using `[← Finset.add_sum_erase _ _ (Finset.mem_univ i)]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[e]`. Use `Submodule.sum_mem _ fun l hl => ?_` and prove the remaining obligations. Break down `lt_or_gt_of_ne (Finset.ne_of_mem_erase hl) with hli | hli` into its components or cases. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨l, hli, rfl⟩)`. Rewrite using `[hd l hli]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem exists_sub_mem_flagStep {Ω' : Type} [Field Ω'] {E' : Type} [AddCommGroup E'] [Module Ω' E'] {r : ℕ}
     {b : Fin r → E'} (i : Fin r) {x : E'} (hx : x ∈ flagStep Ω' b (i + 1)) :
     ∃ a : Ω', x - a • b i ∈ flagStep Ω' b i := by
@@ -499,6 +664,53 @@ theorem exists_sub_mem_flagStep {Ω' : Type} [Field Ω'] {E' : Type} [AddCommGro
 
 end Concrete
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O _ β Y S Ω _ K _ J _ y 𝔐 Fl hβ z hz s i t ht`. Establish `hgen : genPt 𝔐.ξ ⤳ centre z` using `𝔐.all _`. Establish `hξ : IsCptGen 𝔐.ξ` using `𝔐.tie.gen`. Use `set q : Cpt 𝔐.ξ := ⟨centre z, hgen⟩ with hq`. Take `⟨-, -, -, -, -, -, hind, -⟩` from `GlobalTheory.T.hodge_cpt_interior_generic E H D l Xo c O β Y S Ω K J y 𝔐 hβ`.
+
+Take `⟨hV, -, hlat⟩` from `GlobalTheory.T.hodge_cpt_away_from_primes E H D l Xo c O β Y S Ω K J y 𝔐 hβ q fun r hr => not_inFibre hξ hgen hr`. Establish `hsm : Smooth 𝔐.t.G.hom` using `𝔐.t.semi.smooth`. Take `⟨Vz, _, _, ⟨MR⟩⟩` from `lieModel_exists 𝔐.X 𝔐.t.G ℂ z`. Take `⟨ev, hev1, hev2, -⟩` from `GlobalTheory.T.lie_lattice_eval_at_local_ring 𝔐.X 𝔐.t.G Ω 𝔐.ξ 𝔐.Li 𝔐.M ℂ z hgen Vz MR hξ hsm`. Take `⟨h, hHI, hh, hp⟩` from `GlobalTheory.T.hodge_hermitian_form_exists E H 𝔐.X 𝔐.t z Vz MR (interior_pol 𝔐 hβ z hz)`.
+
+Set `eA : 𝔐.X.presheaf.stalk q.1 ≃+* regAt 𝔐.ξ q` to `RingEquiv.ofBijective (genMap 𝔐.ξ q).rangeRestrict ⟨fun a b e => hξ.inj q (congrArg Subtype.val e), (genMap 𝔐.ξ q).rangeRestrict_surjective⟩`. Set `φ : regAt 𝔐.ξ q →+* ℂ` to `(Scheme.stalkClosedPointTo z).hom.comp (eA.symm : regAt 𝔐.ξ q →+* 𝔐.X.presheaf.stalk q.1)`. Establish `hφ : ∀ a : regAt 𝔐.ξ q, ValAt 𝔐.ξ z (a : Ω) (φ a)` using `fun a => ⟨hgen, eA.symm a, congrArg Subtype.val (eA.apply_symm_apply a), rfl⟩`. Establish `hloc : ∀ a : regAt 𝔐.ξ q, φ a ≠ 0 → IsUnit a` using `fun a ha => by`. Use `CxVal.isUnit (z := z) (eA.symm a) ha` as an intermediate fact.
+
+Simplify using `using this.map eA`. Set `val : 𝔐.Li → Vz` to `fun e => if he : e ∈ 𝔐.M.lat q then ev ⟨e, he⟩ else 0`. Establish `hval : ∀ e (he : e ∈ 𝔐.M.lat q), val e = ev ⟨e, he⟩` using `fun e he => dif_pos he`. Establish `h0 : val 0 = 0`. Rewrite using `[hval 0 (zero_mem _)]`.
+
+Conclude with `map_zero ev`. Establish `hadd : ∀ e ∈ 𝔐.M.lat q, ∀ e' ∈ 𝔐.M.lat q, val (e + e') = val e + val e'` using `fun e he e' he' => by`. Rewrite using `[hval _ (add_mem he he'), hval e he, hval e' he']`. Conclude with `map_add ev ⟨e, he⟩ ⟨e', he'⟩`. Establish `hsmul : ∀ a : regAt 𝔐.ξ q, ∀ e ∈ 𝔐.M.lat q, val ((a : Ω) • e) = φ a • val e` using `fun a e he => by`.
+
+Establish `hm : (a : Ω) • e ∈ 𝔐.M.lat q` using `(𝔐.M.lat q).smul_mem a he`. Rewrite using `[hval _ hm, hval e he]`. Conclude with `hev2 a (φ a) ⟨e, he⟩ (hφ a)`. Establish `hvalAt : ∀ e (he : e ∈ 𝔐.M.lat q), 𝔐.M.ValAt z e (MR.pt (val e))` using `fun e he => (hev1 e _).2 ⟨he, (hval e he).symm⟩`. Establish `hVL : 𝔐.V s q ≤ 𝔐.M.lat q`.
+
+Rewrite using `[hV s, hlat]`. Conclude with `le_iSup (fun s' => 𝔐.dR s' q) s`. Establish `hfr : ∀ b : Fin (labelRk D s) → 𝔐.Li, LinearIndependent Ω b → 𝔐.V s q = Submodule.span (regAt 𝔐.ξ q) (Set.range b) → LinearIndependent ℂ fun k => val (b k)`. Introduce `b hb hVb`. Take `⟨π, hπ, hreg⟩` from `exists_dual 𝔐 hind q hlat s b hb ((hV s).symm.trans hVb)`.
+
+Establish `hbL : ∀ k, b k ∈ 𝔐.M.lat q` using `fun k => hVL (hVb ▸ Submodule.subset_span ⟨k, rfl⟩)`. Establish `hg : ∀ j, ∃ g : Vz →ₗ[ℂ] ℂ, ∀ k, g (val (b k)) = if j = k then 1 else 0` using `fun j => by`. Take `⟨g, hg⟩` from `GlobalTheory.T.lattice_regular_at_local_point 𝔐.X 𝔐.t.G Ω 𝔐.ξ 𝔐.Li 𝔐.M ℂ z hgen Vz MR (π j) hξ (hreg j)`. Use `⟨g, fun k => hg (b k) _ _ (hvalAt _ (hbL k)) ?_⟩` and prove the remaining obligations. Rewrite using `[hπ j k]`.
+
+Use `split_ifs`. Conclude with `RootHt.ArchB.val_one hgen`. Conclude with `RootHt.ArchB.val_zero hgen`. Use `choose g hg using hg`. Use `Fintype.linearIndependent_iff.2 fun w hw j => ?_` and prove the remaining obligations.
+
+Use `congrArg (g j) hw` as an intermediate fact. Simplify `this` using `[map_sum, hg, Finset.sum_ite_eq]`. Establish `hGram : ∀ (b : Fin (labelRk D s) → 𝔐.Li) (Γ : Matrix (Fin (labelRk D s)) (Fin (labelRk D s)) ℂ), (∀ k, b k ∈ 𝔐.M.lat q) → (𝔐.M.GramAt 𝔐.t.PP.L z b Γ ↔ Γ = gramOf h val b)`. Introduce `b Γ hb`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨v, hv, hI⟩`. Establish `e : ∀ k, v k = MR.pt (val (b k))` using `fun k => by`. Take `⟨x, hx⟩` from `MR.onto (v k) (tan_of_valAt (hv k))`. Establish `h1` using `hv k`. Rewrite `h1` using `[← hx]`.
+
+Take `⟨he, e2⟩` from `(hev1 _ _).1 h1`. Rewrite using `[hval _ he, e2, hx]`. Use extensionality with `p p'`. Use `hI p p'` as an intermediate fact. Rewrite `this` using `[e p, e p']`.
+
+Conclude with `(hHI _ _ _).1 this`. Introduce and unpack `rfl`. Conclude with `⟨fun k => MR.pt (val (b k)), fun k => hvalAt _ (hb k), fun p p' => (hHI _ _ _).2 rfl⟩`. Establish `hb₀ : LinearIndependent Ω (Fl.b s)`. Take `⟨c', u, -, -, -, hb, -⟩` from `Fl.generic`.
+
+Conclude with `hb s`. Take `⟨U, hU, b, hflag, hb⟩` from `Fl.sub s q trivial`. Take `⟨hbli, hbV⟩` from `hb q trivial hU`. Take `⟨a, ha⟩ : ∃ a : Ω, b i - a • Fl.b s i ∈ flagStep Ω (Fl.b s) i` from `exists_sub_mem_flagStep i (hflag _ ▸ Submodule.subset_span ⟨i, Nat.lt_succ_self _, rfl⟩)`. Establish `hgr` using `FlagGrGen.gr_isGenAt 𝔐.X Ω 𝔐.ξ 𝔐.Li (𝔐.V s) (labelRk D s) (Fl.b s) b q i a hb₀ hflag ⟨hbli, hbV⟩ ha`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨d, hd⟩ : ∃ d : regAt 𝔐.ξ q, d • a = t := by`. Establish `: t ∈ Submodule.span (regAt 𝔐.ξ q) {a}` using `hgr.2 ▸ ht.2 ▸ Submodule.mem_span_singleton_self t`. Conclude with `Submodule.mem_span_singleton.1 this`. Choose the witnesses or unpack the hypotheses as in `⟨d', hd'⟩ : ∃ d' : regAt 𝔐.ξ q, d' • t = a := by`. Establish `: a ∈ Submodule.span (regAt 𝔐.ξ q) {t}` using `ht.2 ▸ hgr.2 ▸ Submodule.mem_span_singleton_self a`.
+
+Conclude with `Submodule.mem_span_singleton.1 this`. Establish `hdu : IsUnit d`. Establish `e : (d : Ω) * d' = 1`. Establish `e1 : (d : Ω) * ((d' : Ω) * t) = t`. Establish `e2 : (d' : Ω) * t = a` using `hd'`.
+
+Rewrite using `[e2]`. Conclude with `hd`. Establish `: ((d : Ω) * d' - 1) * t = 0` using `by linear_combination e1`. Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 this).resolve_right ht.1)`. Conclude with `IsUnit.of_mul_eq_one _ (Subtype.ext e : d * d' = 1)`.
+
+Take `⟨w, rfl⟩` from `hdu`. Take `⟨hb', hs', hf'⟩` from `scale_frame (regAt 𝔐.ξ q) hbli (Function.update 1 i w)`. Use `set b' : Fin (labelRk D s) → 𝔐.Li := fun k => (((Function.update 1 i w : Fin (labelRk D s) → (regAt 𝔐.ξ q)ˣ) k : regAt 𝔐.ξ q) : Ω) • b k with hb'def`. Establish `hbi : b' i = ((w : regAt 𝔐.ξ q) : Ω) • b i` using `by simp [hb'def]`. Establish `h1 : b' i - t • Fl.b s i ∈ flagStep Ω (Fl.b s) i`.
+
+Establish `e : b' i - t • Fl.b s i = ((w : regAt 𝔐.ξ q) : Ω) • (b i - a • Fl.b s i)`. Establish `e2 : ((w : regAt 𝔐.ξ q) : Ω) * a = t` using `hd`. Rewrite using `[hbi, smul_sub, smul_smul, e2]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ ha`.
+
+Take `⟨ν, hν, hcore⟩` from `core (Lm := 𝔐.M.lat q) (φ := φ) (val := val) h0 hadd hsmul hloc h hh hp (𝔐.V s q) hVL hfr hb₀ hb' (hbV.trans hs'.symm) (fun s' => (hf' s').trans (hflag s')) i ht.1 h1`. Use `⟨ν, hν, fun t' ν' => ?_⟩` and prove the remaining obligations. Establish `e : 𝔐.M.IsGrNorm 𝔐.t.PP.L (𝔐.V s) (Fl.b s) i z t' ν' ↔ (∃ (b' : Fin (labelRk D s) → 𝔐.Li) (Γ : Matrix (Fin (labelRk D s)) (Fin (labelRk D s)) ℂ), (∀ s', flagStep Ω b' s' = flagStep Ω (Fl.b s) s') ∧ LinearIndependent Ω b' ∧ 𝔐.V s q = Submodule.span (regAt 𝔐.ξ q) (Set.range b') ∧ b …`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h', c', Γ, g1, ⟨g2, g3⟩, g4, g5, g6, g7⟩`.
+
+Establish `hc' : ∀ k, c' k ∈ 𝔐.M.lat q` using `fun k => hVL (g3 ▸ Submodule.subset_span ⟨k, rfl⟩)`. Conclude with `⟨c', Γ, g1, g2, g3, g4, (hGram c' Γ hc').1 g5, g6, g7⟩`. Introduce and unpack `⟨c', Γ, g1, g2, g3, g4, g5, g6, g7⟩`. Establish `hc' : ∀ k, c' k ∈ 𝔐.M.lat q` using `fun k => hVL (g3 ▸ Submodule.subset_span ⟨k, rfl⟩)`. Conclude with `⟨hgen, c', Γ, g1, ⟨g2, g3⟩, g4, (hGram c' Γ hc').2 g5, g6, g7⟩`.
+
+Rewrite using `[e, hcore]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, ⟨a', e1, rfl⟩, e2⟩`. Conclude with `⟨_, hu, e1 ▸ hφ a', e2⟩`. Introduce and unpack `⟨u, hu, hv, e2⟩`.
+
+Take `⟨h', r', e3, rfl⟩` from `hv`. Use `⟨_, hu, ⟨eA r', e3, ?_⟩, e2⟩` and prove the remaining obligations. Use `show (Scheme.stalkClosedPointTo z).hom (eA.symm (eA r')) = _`. Rewrite using `[eA.symm_apply_apply]`.
+-/
 theorem exists_norm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (Fl : 𝔐.Flag), Function.Injective β → ∀ (z : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X), 𝔐.Interior z → ∀ s (i : Fin (labelRk D s)) (t : Ω), ((𝔐.V s).gr (Fl.b s) i).IsGenAt ⟨centre z, 𝔐.all _⟩ t → ∃ ν : ℝ, 0 < ν ∧ ∀ (t' : Ω) (ν' : ℝ), 𝔐.M.IsGrNorm 𝔐.t.PP.L (𝔐.V s) (Fl.b s) i z t' ν' ↔ ∃ u : ℂ, u ≠ 0 ∧ ValAt 𝔐.ξ z (t' / t) u ∧ ν' = ‖u‖ * ν := by
   intro E _ _ _ H D l Xo c O _ β Y S Ω _ K _ J _ y 𝔐 Fl hβ z hz s i t ht
   classical

@@ -20,15 +20,26 @@ section Conj
 variable {K : Type} [Field K] {M M₂ : Type} [AddCommGroup M] [Module K M] [AddCommGroup M₂] [Module K M₂]
   (e : M ≃ₗ[K] M₂)
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[LinearEquiv.conj_apply]`.
+-/
 theorem conjE_one : e.conj (1 : Module.End K M) = 1 := by
   ext x
   simp [LinearEquiv.conj_apply]
 
+/- English proof (translation)
+Rewrite using `[commute_iff_eq]`. Use extensionality with `x`. Simplify `congrArg e (LinearMap.congr_fun hfg.eq (e.symm x))` using `[LinearEquiv.conj_apply]`.
+-/
 theorem conjE_commute {f g : Module.End K M} (hfg : Commute f g) : Commute (e.conj f) (e.conj g) := by
   rw [commute_iff_eq]
   ext x
   simpa [LinearEquiv.conj_apply] using congrArg e (LinearMap.congr_fun hfg.eq (e.symm x))
 
+/- English proof (translation)
+Establish `hsub : e.conj f - μ • (1 : Module.End K M₂) = e.conj (f - μ • (1 : Module.End K M))`. Use extensionality with `x`. Simplify using `[LinearEquiv.conj_apply]`. Rewrite using `[hsub]`. Proceed by induction on `k with`.
+
+Consider the case `zero => rw [pow_zero, pow_zero, conjE_one]`. Consider the case `succ k ih`. Rewrite using `[pow_succ, ih, pow_succ]`. Use extensionality with `x`. Simplify using `[LinearEquiv.conj_apply]`.
+-/
 theorem conjE_sub_pow (f : Module.End K M) (μ : K) (k : ℕ) :
     (e.conj f - μ • (1 : Module.End K M₂)) ^ k = e.conj ((f - μ • (1 : Module.End K M)) ^ k) := by
   have hsub : e.conj f - μ • (1 : Module.End K M₂) = e.conj (f - μ • (1 : Module.End K M)) := by
@@ -42,6 +53,11 @@ theorem conjE_sub_pow (f : Module.End K M) (μ : K) (k : ℕ) :
     ext x
     simp [LinearEquiv.conj_apply]
 
+/- English proof (translation)
+Use extensionality with `y`. Simplify using `only [Module.End.mem_maxGenEigenspace, Submodule.mem_map, conjE_sub_pow]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk⟩`. Use `⟨e.symm y, ⟨k, ?_⟩, by simp⟩` and prove the remaining obligations.
+
+Simplify `hk` using `[LinearEquiv.conj_apply]`. Introduce and unpack `⟨x, ⟨k, hk⟩, rfl⟩`. Conclude with `⟨k, by simp [LinearEquiv.conj_apply, hk]⟩`.
+-/
 theorem conjE_maxGen (f : Module.End K M) (μ : K) :
     (e.conj f).maxGenEigenspace μ = (f.maxGenEigenspace μ).map (e : M →ₗ[K] M₂) := by
   ext y
@@ -53,6 +69,9 @@ theorem conjE_maxGen (f : Module.End K M) (μ : K) :
   · rintro ⟨x, ⟨k, hk⟩, rfl⟩
     exact ⟨k, by simp [LinearEquiv.conj_apply, hk]⟩
 
+/- English proof (translation)
+Simplify using `only [conjE_maxGen]`. Rewrite using `[← Submodule.map_iSup, hf, Submodule.map_top]`. Conclude with `LinearEquiv.range e`.
+-/
 theorem conjE_iSup_maxGen (f : Module.End K M) (hf : ⨆ μ, f.maxGenEigenspace μ = ⊤) :
     ⨆ μ, (e.conj f).maxGenEigenspace μ = ⊤ := by
   simp only [conjE_maxGen]
@@ -68,6 +87,11 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {K : Type} [Field K] 
   (S : Col.GSD K) (h : S.Ok) (c : Col.DecoPts S E n ST SG') (SG : Finset (HeightOneSpectrum (𝓞 E)))
   (S0 : Set (HeightOneSpectrum (𝓞 E)))
 
+/- English proof (translation)
+Unfold `heckeCSD`. Simplify using `only`. Use `first`. Consider the case `(simp only [Col.heckeFam_zero]; ext x; simp [LinearEquiv.conj_apply])`. Consider the case `(erw [Col.heckeFam_zero]; ext x; simp [LinearEquiv.conj_apply])`.
+
+Consider the case `(ext x; simp [LinearEquiv.conj_apply, Col.heckeFam_zero])`.
+-/
 theorem heckeCSD_zero (P : offSub ST SG SG' S0) : heckeCSD S h c SG S0 (P, 0) = 1 := by
   unfold heckeCSD
   dsimp only
@@ -76,14 +100,27 @@ theorem heckeCSD_zero (P : offSub ST SG SG' S0) : heckeCSD S h c SG S0 (P, 0) = 
     | (erw [Col.heckeFam_zero]; ext x; simp [LinearEquiv.conj_apply])
     | (ext x; simp [LinearEquiv.conj_apply, Col.heckeFam_zero])
 
+/- English proof (translation)
+Introduce `x y`. Conclude with `conjE_commute _ (hc _ _)`.
+-/
 theorem heckeCSD_comm (hc : Col.HeckeComm c S0) : Col.PairComm (heckeCSD S h c SG S0) := by
   intro x y
   exact conjE_commute _ (hc _ _)
 
+/- English proof (translation)
+Introduce `x`. Conclude with `conjE_iSup_maxGen (S.res h) _ (hs _)`.
+-/
 theorem heckeCSD_split (hs : Col.HeckeFieldsIn c S0) : Col.SplitOver (heckeCSD S h c SG S0) := by
   intro x
   exact conjE_iSup_maxGen (S.res h) _ (hs _)
 
+/- English proof (translation)
+Establish `hR : (S.toCSD h).Rat` using `S.toCSDOf_rat h R S.outSec`. Establish `hb` using `Col.csd_hasRatBasis _ hR`. Rewrite using `[LinearMap.toMatrix_apply]`. Use `Col.CSDRat.repr_mem _ hR hb (S.det_H_ne_zero R h) _ ?_ a` and prove the remaining obligations. Introduce `cl i`.
+
+Establish `hf` using `(S.toCSD h).basis_rat hb b`. Use `show S.bV.repr ((((Col.heckeD c x.1.1.1.asIdeal x.2).op ((S.res h).symm ((S.toCSD h).basis b)) : S.EqFun) : S.D → S.V) (S.outSec.rep cl)) i ∈ cmMax K`. Rewrite using `[Col.heckeD_op_apply]`. Simplify using `only [map_sum, Finsupp.coe_finsetSum, Finset.sum_apply]`. Use `sum_mem fun e _ => ?_` and prove the remaining obligations.
+
+Use `show S.bV.repr (S.ρ (S.outSec.mv e) ((((S.toCSD h).basis b).1 : S.Cl → S.V) (S.cls e))) i ∈ cmMax K`. Conclude with `S.rho_mem R _ _ (hf _) i`.
+-/
 theorem heckeCSD_rat (R : S.Rat) (x : offSub ST SG SG' S0 × ℕ) (a b : Fin (S.toCSD h).dim) :
     LinearMap.toMatrix (S.toCSD h).basis (S.toCSD h).basis (heckeCSD S h c SG S0 x) a b ∈ cmMax K := by
   have hR : (S.toCSD h).Rat := S.toCSDOf_rat h R S.outSec
@@ -100,6 +137,11 @@ theorem heckeCSD_rat (R : S.Rat) (x : offSub ST SG SG' S0 × ℕ) (a b : Fin (S.
   show S.bV.repr (S.ρ (S.outSec.mv e) ((((S.toCSD h).basis b).1 : S.Cl → S.V) (S.cls e))) i ∈ cmMax K
   exact S.rho_mem R _ _ (hf _) i
 
+/- English proof (translation)
+Set `P' : Col.LevOff ST SG' S0` to `Col.conjugateSplitOff ⟨x.1.1.1, x.1.2⟩`. Set `Q : Col.LevOff ST SG S0` to `Col.conjugateSplitOff x.1.1`. Establish `hQ : Q ∈ offSub ST SG SG' S0` using `P'.2`. Use `⟨(⟨Q, hQ⟩, x.2), fun f g => ?_⟩` and prove the remaining obligations. Establish `e` using `Col.heckeOperator_adjoint_conj c h x.1.1.1 x.2 ((S.res h).symm f) ((S.res h).symm g)`.
+
+Use `conv_lhs => rw [← LinearEquiv.apply_symm_apply (S.res h) g]`. Use `conv_rhs => rw [← LinearEquiv.apply_symm_apply (S.res h) f]`. Conclude with `e`.
+-/
 theorem heckeCSD_adj (x : offSub ST SG SG' S0 × ℕ) :
     ∃ y, ∀ f g : (S.toCSD h).Forms,
       (S.toCSD h).csum (heckeCSD S h c SG S0 x f : (S.toCSD h).Cl → (S.toCSD h).V) (g : (S.toCSD h).Cl → (S.toCSD h).V) =
@@ -121,6 +163,9 @@ section Tr
 variable {X : Col.Fields} {n : ℕ} {ST SG : Finset (HeightOneSpectrum (𝓞 X.E))}
   (C : Col.CoefPk X n (Col.DecoSet X.E n ST SG)) (Λ : Col.LevFam X.E X.K n SG)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `d`. Simplify using `only [Col.heckeFam, Col.heckeD]`. Use `erw [Col.LocOp.ofNbr_op_apply]`. Simplify using `only [Col.DecoPts.nb, Finset.sum_map, LinearMap.id_apply]`. Both sides reduce to the same expression.
+-/
 theorem heckeFam_formPts_apply (S0 : Set (HeightOneSpectrum (𝓞 X.E))) (y : Col.LevOff ST SG S0 × ℕ)
     (φ : (Col.formGSD C Λ).EqFun) :
     ((Col.heckeFam (formPts C Λ) S0 y φ : (Col.formGSD C Λ).EqFun) : Col.DecoSet X.E n ST SG → C.V) =
@@ -131,6 +176,11 @@ theorem heckeFam_formPts_apply (S0 : Set (HeightOneSpectrum (𝓞 X.E))) (y : Co
   simp only [Col.DecoPts.nb, Finset.sum_map, LinearMap.id_apply]
   rfl
 
+/- English proof (translation)
+Rewrite using `[commute_iff_eq]`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `φ`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `key : ∀ ψ : (Col.formGSD C Λ).EqFun, ((Col.trRep C Λ ι hι a ψ : (Col.formGSD C Λ).EqFun) : Col.DecoSet X.E n ST SG → C.V) = Col.trF X n ST SG C.V (ι a) (ψ : Col.DecoSet X.E n ST SG → C.V)` using `fun ψ => rfl`.
+
+Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, key, heckeFam_formPts_apply, heckeFam_formPts_apply, key, Col.trF_nbFun]`.
+-/
 theorem heckeFam_comm_trRep {A : Type} [Group A] (ι : A →* Col.GLG X.E n SG) (hι : ∀ a w, (Λ w).NormBy (ι a w))
     (S0 : Set (HeightOneSpectrum (𝓞 X.E))) (y : Col.LevOff ST SG S0 × ℕ) (a : A) :
     Commute (Col.trRep C Λ ι hι a) (Col.heckeFam (formPts C Λ) S0 y) := by
@@ -144,6 +194,11 @@ theorem heckeFam_comm_trRep {A : Type} [Group A] (ι : A →* Col.GLG X.E n SG) 
   rw [Module.End.mul_apply, Module.End.mul_apply, key, heckeFam_formPts_apply, heckeFam_formPts_apply, key,
     Col.trF_nbFun]
 
+/- English proof (translation)
+Establish `hc` using `heckeFam_comm_trRep C Λ ι hι S0 (⟨x.1.1.1, x.1.2⟩, x.2) a`. Establish `hr : (Col.formGSD C Λ).repCSD h (Col.trRep C Λ ι hι) a = ((Col.formGSD C Λ).res h).conj (Col.trRep C Λ ι hι a)`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `f`. Simplify using `[Col.GSD.repCSD, LinearEquiv.conj_apply]`.
+
+Rewrite using `[hr]`. Conclude with `conjE_commute ((Col.formGSD C Λ).res h) hc.symm`.
+-/
 theorem heckeCSD_comm_trRep (h : (Col.formGSD C Λ).Ok) {A : Type} [Group A] (ι : A →* Col.GLG X.E n SG)
     (hι : ∀ a w, (Λ w).NormBy (ι a w)) (SG0 : Finset (HeightOneSpectrum (𝓞 X.E)))
     (S0 : Set (HeightOneSpectrum (𝓞 X.E))) (x : offSub ST SG0 SG S0 × ℕ) (a : A) :
@@ -186,6 +241,11 @@ structure ColHyp (v0 : InfinitePlace X.K) (TU : Finset (Tup X.F X.E X.K S))
 
   splitL : ∀ (j : Fin R.m) (τ : TupF TU), Col.HeckeFieldsIn (liftPts W Ch sel τ.1 (j.1 + 1)) S0
 
+/- English proof (translation)
+Take `⟨σ₀, h⟩` from `hX.conjK`. Use `⟨InfinitePlace.mk σ₀, ?_⟩` and prove the remaining obligations. Introduce `a`. Break down `InfinitePlace.embedding_mk_eq σ₀ with h1 | h1` into its components or cases. Rewrite using `[h1]`.
+
+Conclude with `h a`. Rewrite using `[h1, ComplexEmbedding.conjugate_coe_eq, ComplexEmbedding.conjugate_coe_eq, h a]`.
+-/
 theorem exists_isConjAt (hX : X.Ok) : ∃ v0 : InfinitePlace X.K, IsConjAt v0 := by
   obtain ⟨σ₀, h⟩ := hX.conjK
   refine ⟨InfinitePlace.mk σ₀, ?_⟩
@@ -199,6 +259,9 @@ variable (hX : X.Ok) (v0 : InfinitePlace X.K) (TU : Finset (Tup X.F X.E X.K S))
   (Xg : Finset (Col.G0 X.E Pr.vGs R.r → X.K)) (S0 : Set (HeightOneSpectrum (𝓞 X.E)))
   (xiVal : Tup X.F X.E X.K S → HeightOneSpectrum (𝓞 X.E) → X.Kˣ)
 
+/- English proof (translation)
+The claim follows from `Col.MtildeKCSD_good W Ch sel τ.1 hX _ hrat := Col.CSDRat.H_mem _ (Col.MtildeKCSD_rat W Ch sel τ.1 hX _) (Col.csd_hasRatBasis _ (Col.MtildeKCSD_rat W Ch sel τ.1 hX _)) hpos := fun v => (Col.mtildeK_rat W Ch sel τ.1 hX).posH _ v act := Col.unipotentActionForms_good W Ch sel τ.1 hX …`.
+-/
 theorem colFam_rows_ok (commR : ∀ τ : TupF TU, Col.HeckeComm (rowPts W Ch sel τ.1) S0)
     (splitR : ∀ τ : TupF TU, Col.HeckeFieldsIn (rowPts W Ch sel τ.1) S0) (τ : TupF TU) :
     ((colFam W Ch sel hX v0 TU Xg S0 xiVal).R τ).Ok 1 where
@@ -217,6 +280,9 @@ theorem colFam_rows_ok (commR : ∀ τ : TupF TU, Col.HeckeComm (rowPts W Ch sel
   q_pos := fun P => Nat.pos_of_ne_zero (Col.SplitOff.q_ne_zero P.1)
   pl_inj := Subtype.val_injective
 
+/- English proof (translation)
+The claim follows from `Col.MtKCSD_good W Ch sel τ.1 hX (j.1 + 1) _ hrat := Col.CSDRat.H_mem _ (Col.MtKCSD_rat W Ch sel τ.1 hX (j.1 + 1) _) (Col.csd_hasRatBasis _ (Col.MtKCSD_rat W Ch sel τ.1 hX (j.1 + 1) _)) hpos := fun v => (Col.mtK_rat W Ch sel τ.1 hX (j.1 + 1)).posH _ v act := Col.unipotentActionCla …`.
+-/
 theorem colFam_lifts_ok (commL : ∀ (j : Fin R.m) (τ : TupF TU), Col.HeckeComm (liftPts W Ch sel τ.1 (j.1 + 1)) S0)
     (splitL : ∀ (j : Fin R.m) (τ : TupF TU), Col.HeckeFieldsIn (liftPts W Ch sel τ.1 (j.1 + 1)) S0)
     (j : Fin R.m) (τ : TupF TU) :
@@ -236,6 +302,9 @@ theorem colFam_lifts_ok (commL : ∀ (j : Fin R.m) (τ : TupF TU), Col.HeckeComm
   q_pos := fun P => Nat.pos_of_ne_zero (Col.SplitOff.q_ne_zero P.1)
   pl_inj := Subtype.val_injective
 
+/- English proof (translation)
+The claim follows from `hH.conj tup_fin := tupF_finite TU irr := hH.irr what₂ := colFam_rows_ok W Ch sel hX v0 TU Xg S0 xiVal hH.commR hH.splitR lifts := colFam_lifts_ok W Ch sel hX v0 TU Xg S0 xiVal hH.commL hH.splitL`.
+-/
 theorem colFam_ok (hH : ColHyp W Ch sel v0 TU Xg S0) : (colFam W Ch sel hX v0 TU Xg S0 xiVal).Ok 1 where
   conj := hH.conj
   tup_fin := tupF_finite TU
@@ -243,20 +312,34 @@ theorem colFam_ok (hH : ColHyp W Ch sel v0 TU Xg S0) : (colFam W Ch sel hX v0 TU
   what₂ := colFam_rows_ok W Ch sel hX v0 TU Xg S0 xiVal hH.commR hH.splitR
   lifts := colFam_lifts_ok W Ch sel hX v0 TU Xg S0 xiVal hH.commL hH.splitL
 
+/- English proof (translation)
+Introduce `i a b` and use `heckeCSD_rat _ _ _ _ _ (Col.mtildeK_rat W Ch sel τ.1 hX) i a b adj := fun i => heckeCSD_adj _ _ _ _ _ i`.
+-/
 theorem colFam_okH_rows (τ : TupF TU) : ((colFam W Ch sel hX v0 TU Xg S0 xiVal).R τ).OkH where
   rat := fun i a b => heckeCSD_rat _ _ _ _ _ (Col.mtildeK_rat W Ch sel τ.1 hX) i a b
   adj := fun i => heckeCSD_adj _ _ _ _ _ i
 
+/- English proof (translation)
+Introduce `i a b` and use `heckeCSD_rat _ _ _ _ _ (Col.mtK_rat W Ch sel τ.1 hX (j.1 + 1)) i a b adj := fun i => heckeCSD_adj _ _ _ _ _ i`.
+-/
 theorem colFam_okH_lifts (j : Fin R.m) (τ : TupF TU) : ((colFam W Ch sel hX v0 TU Xg S0 xiVal).L j τ).OkH where
   rat := fun i a b => heckeCSD_rat _ _ _ _ _ (Col.mtK_rat W Ch sel τ.1 hX (j.1 + 1)) i a b
   adj := fun i => heckeCSD_adj _ _ _ _ _ i
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun τ => colFam_okH_rows W Ch sel hX v0 TU Xg S0 xiVal τ, fun j τ => colFam_okH_lifts W Ch sel hX v0 TU Xg S0 xiVal j τ⟩`.
+-/
 theorem colFam_okH :
     (∀ τ, ((colFam W Ch sel hX v0 TU Xg S0 xiVal).R τ).OkH) ∧
       ∀ j τ, ((colFam W Ch sel hX v0 TU Xg S0 xiVal).L j τ).OkH :=
   ⟨fun τ => colFam_okH_rows W Ch sel hX v0 TU Xg S0 xiVal τ,
     fun j τ => colFam_okH_lifts W Ch sel hX v0 TU Xg S0 xiVal j τ⟩
 
+/- English proof (translation)
+Unfold `colFam`. Use `FamIn.typesSep_of' (A := colIn W Ch sel hX v0 TU Xg S0 xiVal) (fun P => ?_) (fun P => ?_)` and prove the remaining obligations. Use `first`. Consider the case `exact Col.SplitOff.q_ne_zero _`. Consider the case `exact_mod_cast Col.SplitOff.q_ne_zero _`.
+
+Conclude with `heckeCSD_zero _ _ _ _ _ P`.
+-/
 theorem colFam_typesSep : (colFam W Ch sel hX v0 TU Xg S0 xiVal).TypesSep := by
   unfold colFam
   refine FamIn.typesSep_of' (A := colIn W Ch sel hX v0 TU Xg S0 xiVal) (fun P => ?_) (fun P => ?_)
@@ -282,11 +365,19 @@ open Classical in
 def unifVal (ξ : Chr F E L) (P : HeightOneSpectrum (𝓞 E)) : Lˣ :=
   if h : ∃ u, IsUnifIdele (F := F) P u then ξ h.choose else 1
 
+/- English proof (translation)
+Use `⟨?_, h.choose_spec⟩` and prove the remaining obligations. Rewrite using `[unifVal, dif_pos h]`.
+-/
 theorem unifVal_of (ξ : Chr F E L) (P : HeightOneSpectrum (𝓞 E)) (h : ∃ u, IsUnifIdele (F := F) P u) :
     unifVal ξ P = ξ h.choose ∧ IsUnifIdele P h.choose := by
   refine ⟨?_, h.choose_spec⟩
   rw [unifVal, dif_pos h]
 
+/- English proof (translation)
+Unfold `tilde`. Rewrite using `[dif_pos hξ]`. Use `first`. Consider the case `exact MonoidHom.liftOfRightInverse_comp_apply _ _ _ _ u`. Consider the case `exact MonoidHom.liftOfSurjective_comp_apply _ _ _ u`.
+
+Consider the case `simp`.
+-/
 theorem tilde_character_norm_quotient (σ : E →ₐ[F] E) (ξ : Chr F E L) (hξ : (h90 σ).ker ≤ ξ.ker) (u : (AfE F E)ˣ) :
     tilde σ ξ ((h90 σ).rangeRestrict u) = ξ u := by
   unfold tilde
@@ -296,6 +387,9 @@ theorem tilde_character_norm_quotient (σ : E →ₐ[F] E) (ξ : Chr F E L) (hξ
     | exact MonoidHom.liftOfSurjective_comp_apply _ _ _ u
     | simp
 
+/- English proof (translation)
+Establish `hmem : Matrix.GeneralLinearGroup.det g ∈ (h90 σ).range` using `⟨u, hg.symm⟩`. Unfold `detTw`. Rewrite using `[dif_pos hmem]`. Establish `hsub : (⟨_, hmem⟩ : (h90 σ).range) = (h90 σ).rangeRestrict u` using `Subtype.ext hg`. Rewrite using `[hsub, tilde_character_norm_quotient σ ξ hξ u]`.
+-/
 theorem det_twist_of_norm_quotient (σ : E →ₐ[F] E) (ξ : Chr F E L) (hξ : (h90 σ).ker ≤ ξ.ker) {n : ℕ}
     (g : GL (Fin n) (AfE F E)) (u : (AfE F E)ˣ) (hg : Matrix.GeneralLinearGroup.det g = h90 σ u) :
     detTw σ ξ g = ξ u := by
@@ -320,9 +414,15 @@ variable (hX : X.Ok) (v0 : InfinitePlace X.K) (TU : Finset (Tup X.F X.E X.K S))
 def colInX : FamIn X.K (Col.G0 X.E Pr.vGs R.r) (Col.LevOff ∅ Pr.vGs S0) (TupF TU) R.m :=
   colIn W Ch sel hX v0 TU Xg S0 xiVal
 
+/- English proof (translation)
+The claim follows from `colFam_ok W Ch sel hX v0 TU Xg S0 xiVal hH`.
+-/
 theorem colInX_ok (hH : ColHyp W Ch sel v0 TU Xg S0) : (colInX W Ch sel hX v0 TU Xg S0).fam.Ok 1 :=
   colFam_ok W Ch sel hX v0 TU Xg S0 xiVal hH
 
+/- English proof (translation)
+The claim follows from `colFam_typesSep W Ch sel hX v0 TU Xg S0 xiVal`.
+-/
 theorem colInX_typesSep : (colInX W Ch sel hX v0 TU Xg S0).fam.TypesSep :=
   colFam_typesSep W Ch sel hX v0 TU Xg S0 xiVal
 
@@ -336,6 +436,9 @@ variable {X : Col.Fields} {Pr : Col.Primes X} {R : Ranks} (W : Col.Wts X Pr.Word
 
 open Formalism.L2.Col in
 
+/- English proof (translation)
+Use `haveI := hX.cplxK`. Conclude with `division_height_bound (colInX W Ch sel hX v0 TU Xg S0) (colInX_ok W Ch sel hX v0 TU Xg S0 hH) (colInX_typesSep W Ch sel hX v0 TU Xg S0) P0 ψ0 P1 ψ1 hX Xg mu cst L hL hP Mem wd b hY Ak hF hE ev Sp Zsc C CH Pk Rn x Nu sg I hQ h0 hPL`.
+-/
 theorem division_height_bound_columns (hH : ColHyp W Ch sel v0 TU Xg S0)
     (P0 : Subgroup (Col.G0 X.E Pr.vGs R.r)) (ψ0 : P0 →* X.Kˣ) (P1 : Subgroup (Col.G0 X.E Pr.vGs R.r)) (ψ1 : P1 →* X.Kˣ)
     {P : LevFam X.E X.K R.r Pr.vGs} {m2 : ℕ} {Gc : ChGlob X R.m}

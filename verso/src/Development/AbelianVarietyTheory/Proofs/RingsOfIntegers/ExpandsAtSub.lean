@@ -10,12 +10,28 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Substitute `h` using the available equality. Unfold `gs`. Apply the tactic sequence `split_ifs <;> simp [map_sub]`.
+-/
 theorem gs_of_eq_sub {X Z : Scheme.{0}} (r : Z ⟶ X) (z : Z) (V : X.Opens) {a b c : Γ(X, V)} (h : a = b - c) :
     gs r z V a = gs r z V b - gs r z V c := by
   subst h
   unfold gs
   split_ifs <;> simp [map_sub]
 
+/- English proof (translation)
+Introduce `R _ _ I D A G _ _ U e k σ₁ σ₂ σ f₁ f₂ f hσ hf h₁ h₂`. Take `⟨S₁, H₁⟩` from `ReciprocityTheory.ChartRestriction.G.DVR.expandsAt_val U e k σ₁ f₁ h₁`. Take `⟨S₂, H₂⟩` from `ReciprocityTheory.ChartRestriction.G.DVR.expandsAt_val U e k σ₂ f₂ h₂`. Use `ReciprocityTheory.ChartRestriction.G.DVR.expandsAt_of_val U e k σ f (S₁ ∪ S₂) ?_` and prove the remaining obligations. Introduce `y J hJ`.
+
+Take `⟨z1, e1⟩` from `H₁ _ (𝟙 _) y J hJ`. Take `⟨z2, e2⟩` from `H₂ _ (𝟙 _) y J hJ`. Simplify using `only [Category.id_comp] at z1 z2 e1 e2`. Establish `hs : ∀ α, sval (f α) (ReciprocityTheory.ChartRestriction.G.DVR.pGl U e) y J = sval (f₁ α) (ReciprocityTheory.ChartRestriction.G.DVR.pGl U e) y J - sval (f₂ α) (ReciprocityTheory.ChartRestriction.G.DVR.pGl U e) y J`. Introduce `α`.
+
+Use `first`. Consider the case `exact gs_of_eq_sub _ _ _ (hf α _)`. Consider the case `(unfold sval; exact gs_of_eq_sub _ _ _ (hf α _))`. Consider the case `(simp only [sval]; exact gs_of_eq_sub _ _ _ (hf α _))`. Use `⟨fun α hα => ?_, fun jL hjL => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hs α, z1 α (fun h => hα (Finset.mem_union_left _ h)), z2 α (fun h => hα (Finset.mem_union_right _ h)), sub_zero]`. Establish `hsv : ReciprocityTheory.ChartRestriction.G.DVR.sv U k σ (ReciprocityTheory.ChartRestriction.G.DVR.fGl I G e) y jL = ReciprocityTheory.ChartRestriction.G.DVR.sv U k σ₁ (ReciprocityTheory.ChartRestriction.G.DVR.fGl I G e) y jL - ReciprocityTheory.ChartRestriction.G.DVR.sv U k σ₂ (R …`. Unfold `ReciprocityTheory.ChartRestriction.G.DVR.sv`. Conclude with `gs_of_eq_sub _ _ _ (hσ _)`. Establish `s1` using `Finset.sum_subset (Finset.subset_union_left (s₂ := S₂)) (fun α (_ : α ∈ S₁ ∪ S₂) (hα : α ∉ S₁) => show sval (f₁ α) (ReciprocityTheory.ChartRestriction.G.DVR.pGl U e) y J * (val (ReciprocityTheory.ChartRestriction.G.DVR.tG U e α) (𝟙 _) y J).val = 0 by`.
+
+Rewrite using `[z1 α hα, zero_mul])`. Establish `s2` using `Finset.sum_subset (Finset.subset_union_right (s₁ := S₁)) (fun α (_ : α ∈ S₁ ∪ S₂) (hα : α ∉ S₂) => show sval (f₂ α) (ReciprocityTheory.ChartRestriction.G.DVR.pGl U e) y J * (val (ReciprocityTheory.ChartRestriction.G.DVR.tG U e α) (𝟙 _) y J).val = 0 by`. Rewrite using `[z2 α hα, zero_mul])`. Rewrite using `[hsv, mul_sub, e1 jL hjL, e2 jL hjL, s1, s2, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl (fun α _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[hs α, sub_mul]`.
+-/
 theorem expandsAt_sub : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegData R I)
     (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G]
     [IsCommMonObj G] (U : UnifPre I D A G) (e k : ℕ) (σ₁ σ₂ σ : H0 U.LG.L k)

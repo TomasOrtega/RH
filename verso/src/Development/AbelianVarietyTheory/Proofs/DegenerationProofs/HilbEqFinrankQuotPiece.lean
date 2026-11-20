@@ -8,6 +8,13 @@ attribute [local instance] SplitExt.free SplitExt.finite MvPolynomial.gradedAlge
 
 namespace GlobalTheory.ZH
 
+/- English proof (translation)
+Rewrite using `[quotPiece_natCast]`. Set `ev : MvPolynomial J k →ₐ[k] (C → k)` to `AlgHom.pi fun v : C => MvPolynomial.aeval v.1`. Establish `hker : ∀ a ∈ MvPolynomial.vanishingIdeal k C, ev a = 0` using `fun a ha =>`. Use function extensionality and compare the values at `fun v => ha v.1 v.2`. Set `φ` to `Ideal.Quotient.liftₐ (MvPolynomial.vanishingIdeal k C) ev hker`.
+
+Establish `hφ : Function.Injective φ.toLinearMap`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 fun v hv => congrFun (show ev x = 0 from hx) ⟨v, hv⟩`.
+
+Rewrite using `[(Submodule.equivMapOfInjective _ hφ _).finrank_eq, ← Submodule.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem hilb_eq_finrank_quotPiece {k J : Type} [Field k] [Finite J] (C : Set (J → k)) (d : ℕ) :
     hilb C d = Module.finrank k (quotPiece (MvPolynomial.vanishingIdeal k C) (d : ℤ)) := by
   rw [quotPiece_natCast]
@@ -24,6 +31,19 @@ theorem hilb_eq_finrank_quotPiece {k J : Type} [Field k] [Finite J] (C : Set (J 
   rw [(Submodule.equivMapOfInjective _ hφ _).finrank_eq, ← Submodule.map_comp]
   rfl
 
+/- English proof (translation)
+Introduce `k _ _ J _ C g N hP hPh hne hdim hb v hv Pf hPf`. Assume the negation of the conclusion as `h0`. Take `⟨d, hd, f, hf, hfd, hfv⟩` from `exists_form_degree_le_hilbertDegree_eval_ne_zero hPh hne v ⟨Pf, hPf, h0⟩`. Use `hfv (hv d f (hd.trans ?_) hfd hf)` and prove the remaining obligations. Establish `hH` using `isHilbertPoly_idealHilbertPoly hPh`.
+
+Establish `hg : (idealHilbertPoly (MvPolynomial.vanishingIdeal k C)).natDegree = g`. Rewrite `hdim` using `[ProjCut.ringKrullDim_eq_natDegree_idealHilbertPoly hPh hne]`. Use `Nat.cast_injective hdim` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `h1 : 0 ≤ (Polynomial.C ((N : ℚ) ^ g) * Polynomial.X ^ g - idealHilbertPoly (MvPolynomial.vanishingIdeal k C)).coeff g`.
+
+Apply `coeff_nonneg_of_eventually_eval_nat` to reduce the goal to its premises. Use `(Polynomial.degree_sub_le _ _).trans (max_le (Polynomial.degree_C_mul_X_pow_le _ _) ?_)` and prove the remaining obligations. Conclude with `Polynomial.degree_le_of_natDegree_le hg.le`. Use `filter_upwards [tendsto_natCast_atTop_atTop.eventually hH.eventually_eq, Filter.eventually_ge_atTop 1] with n hn h1n`. Use `hb n h1n` as an intermediate fact.
+
+Rewrite `this` using `[hilb_eq_finrank_quotPiece, mul_pow]`. Rewrite `hn` using `[Int.cast_natCast]`. Rewrite using `[Polynomial.eval_sub, Polynomial.eval_C_mul, Polynomial.eval_pow, Polynomial.eval_X, ← hn, sub_nonneg]`. Conclude with `this` after adjusting the coercions. Rewrite `h1` using `[Polynomial.coeff_sub, Polynomial.coeff_C_mul, Polynomial.coeff_X_pow_self, _root_.mul_one, sub_nonneg]`.
+
+Establish `h2` using `cast_hilbertDegree hPh`. Rewrite `h2` using `[Polynomial.leadingCoeff, hg]`. Establish `h3 : (hilbertDegree (MvPolynomial.vanishingIdeal k C) : ℚ) ≤ (N : ℚ) ^ g * g.factorial`. Rewrite using `[h2, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_right h1 (Nat.cast_nonneg _)`.
+
+Conclude with `h3` after adjusting the coercions.
+-/
 theorem eval_eq_zero_of_hilb_le : (∀ (k : Type) [Field k] [IsAlgClosed k] (J : Type) [Fintype J] (C : Set (J → k)) (g N : ℕ), (MvPolynomial.vanishingIdeal k C).IsPrime → (MvPolynomial.vanishingIdeal k C).IsHomogeneous (MvPolynomial.homogeneousSubmodule J k) → (∃ i, MvPolynomial.X i ∉ MvPolynomial.vanishingIdeal k C) → ringKrullDim (MvPolynomial J k ⧸ MvPolynomial.vanishingIdeal k C) = (g + 1 : ℕ) → (∀ d, 1 ≤ d → hilb C d ≤ (N * d) ^ g) → ∀ v : J → k, (∀ (d : ℕ) (Pf : MvPolynomial J k), d ≤ N ^ g * g.factorial → Pf.IsHomogeneous d → Pf ∈ MvPolynomial.vanishingIdeal k C → MvPolynomial.eval v Pf = 0) → ∀ Pf ∈ MvPolynomial.vanishingIdeal k C, MvPolynomial.eval v Pf = 0) := by
   intro k _ _ J _ C g N hP hPh hne hdim hb v hv Pf hPf
   by_contra h0

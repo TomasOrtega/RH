@@ -18,6 +18,9 @@ open GlobalTheory.ChainParts
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+The claim follows from `isDiscreteValuationRing_V z.Z.i.c hp hW haveI := charP_residueField_of_mem_nonunits z.Z.i.c hp hW ∀ (c : (nmodel z.Z).Comp) (B : Vert.Model (z.Z.i.c.V W)) (f : Vert.Model.Hom B ((nmodel z.Z).comp c)) (n : ℕ) (b : Fin n → 𝓞 D.host.E) (ev : Emb D p → (𝓞 D.host.E →+* z.Z.i.c.V W)) ( …`.
+-/
 theorem _root_.GlobalTheory.T.vertical_model_embedding_decomp_unique : ∀ {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {p : ℕ} [Fact p.Prime] {hp : p.Prime} {W : ValuationSubring ℂ} {hW : (p : ℂ) ∈ W.nonunits} (z : AdmAt S κ hp hW) (jc : KW p →+* ℂ), haveI := isDiscreteValuationRing_V z.Z.i.c hp hW
     haveI := charP_residueField_of_mem_nonunits z.Z.i.c hp hW
     ∀ (c : (nmodel z.Z).Comp) (B : Vert.Model (z.Z.i.c.V W)) (f : Vert.Model.Hom B ((nmodel z.Z).comp c)) (n : ℕ)

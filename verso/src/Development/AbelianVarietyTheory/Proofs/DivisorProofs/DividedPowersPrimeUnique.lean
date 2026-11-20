@@ -7,12 +7,23 @@ noncomputable section
 
 namespace GlobalTheory.DivPowLPrime
 
+/- English proof (translation)
+Apply the tactic sequence `unfold lPrime lPrimeExp; split_ifs with h <;> simp [h]`.
+-/
 theorem lPrime_eq_pow (l : ℕ) : lPrime l = l ^ lPrimeExp l := by
   unfold lPrime lPrimeExp; split_ifs with h <;> simp [h]
 
+/- English proof (translation)
+Apply the tactic sequence `unfold lPrimeExp; split_ifs <;> norm_num`.
+-/
 theorem one_le_lPrimeExp (l : ℕ) : 1 ≤ lPrimeExp l := by
   unfold lPrimeExp; split_ifs <;> norm_num
 
+/- English proof (translation)
+Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.2 hc`. Assume the negation of the conclusion as `hu`. Establish `hm : (c : O) ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal _).2 hu`. Establish `h1 : (1 : O) ∈ IsLocalRing.maximalIdeal O`. Establish `h` using `congrArg (Int.cast : ℤ → O) hab`.
+
+Move the coercions through the operations in `at h`. Rewrite using `[← h]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ hl) (Ideal.mul_mem_left _ _ hm)`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal O).ne_top ((Ideal.eq_top_iff_one _).2 h1)`.
+-/
 theorem isUnit_natCast_of_coprime {O : Type} [CommRing O] [IsLocalRing O] {l c : ℕ}
     (hl : (l : O) ∈ IsLocalRing.maximalIdeal O) (hc : Nat.Coprime l c) : IsUnit (c : O) := by
   obtain ⟨a, b, hab⟩ := Nat.isCoprime_iff_coprime.2 hc
@@ -32,6 +43,9 @@ def qExp (l m : ℕ) : ℕ := lPrimeExp l * m - padicValNat l m.factorial
 def qCoef (O : Type) [CommRing O] (l m : ℕ) : O :=
   (l : O) ^ qExp l m * Ring.inverse (factPrimePart l m : O)
 
+/- English proof (translation)
+Rewrite using `[factPrimePart, ← Nat.factorization_def _ hl]`. Conclude with `(Nat.ordProj_mul_ordCompl_eq_self _ _).symm`.
+-/
 theorem factorial_eq {l : ℕ} (hl : l.Prime) (m : ℕ) :
     m.factorial = l ^ padicValNat l m.factorial * factPrimePart l m := by
   rw [factPrimePart, ← Nat.factorization_def _ hl]
@@ -41,10 +55,18 @@ section Lemmas
 
 variable {O : Type} [CommRing O] [IsLocalRing O] {l : ℕ}
 
+/- English proof (translation)
+The claim follows from `isUnit_natCast_of_coprime hlO (Nat.coprime_ordCompl hl (Nat.factorial_ne_zero m))`.
+-/
 theorem isUnit_factPrimePart (hl : l.Prime) (hlO : (l : O) ∈ IsLocalRing.maximalIdeal O) (m : ℕ) :
     IsUnit (factPrimePart l m : O) :=
   isUnit_natCast_of_coprime hlO (Nat.coprime_ordCompl hl (Nat.factorial_ne_zero m))
 
+/- English proof (translation)
+Establish `hu` using `isUnit_factPrimePart hl hlO m`. Establish `hf : (m.factorial : O) = (l : O) ^ padicValNat l m.factorial * (factPrimePart l m : O)`. Establish `h` using `congrArg (Nat.cast : ℕ → O) (factorial_eq hl m)`. Rewrite `h` using `[Nat.cast_mul, Nat.cast_pow]`. Then use the resulting hypothesis. Rewrite using `[hf, qCoef, qExp, lPrime_eq_pow, Nat.cast_pow, ← pow_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem factorial_mul_qCoef (hl : l.Prime) (hlO : (l : O) ∈ IsLocalRing.maximalIdeal O) (m : ℕ)
     (hv : padicValNat l m.factorial ≤ lPrimeExp l * m) :
     (m.factorial : O) * qCoef O l m = (lPrime l : O) ^ m := by
@@ -59,12 +81,40 @@ theorem factorial_mul_qCoef (hl : l.Prime) (hlO : (l : O) ∈ IsLocalRing.maxima
           ((factPrimePart l m : O) * Ring.inverse (factPrimePart l m : O)) := by rw [pow_add]; ring
     _ = _ := by rw [Ring.mul_inverse_cancel _ hu, Nat.add_sub_cancel' hv, mul_one]
 
+/- English proof (translation)
+Rewrite using `[qCoef, lPrime_eq_pow, Nat.cast_pow, ← mul_assoc, ← pow_add, Nat.add_sub_cancel' h]`.
+-/
 theorem qCoef_eq_mul {m : ℕ} (h : lPrimeExp l ≤ qExp l m) :
     qCoef O l m = (lPrime l : O) * ((l : O) ^ (qExp l m - lPrimeExp l) * Ring.inverse (factPrimePart l m : O)) := by
   rw [qCoef, lPrime_eq_pow, Nat.cast_pow, ← mul_assoc, ← pow_add, Nat.add_sub_cancel' h]
 
 end Lemmas
 
+/- English proof (translation)
+Introduce `l hl hnum O _ _ _ _ hlO R _ _ htf γ₀ hγ₀`. Establish `hv : ∀ m : ℕ, padicValNat l m.factorial ≤ lPrimeExp l * m` using `fun m => by`. Use `(hnum m).2` as an intermediate fact. Generalize the expression as in `lPrimeExp l * m = a at *`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hq : ∀ m : ℕ, (m.factorial : O) * qCoef O l m = (lPrime l : O) ^ m` using `fun m => factorial_mul_qCoef hl hlO m (hv m)`. Establish `hqe : ∀ m : ℕ, 1 ≤ m → lPrimeExp l ≤ qExp l m` using `fun m hm => by`. Use `(hnum m).1 hm` as an intermediate fact. Unfold `qExp`. Generalize the expression as in `lPrimeExp l * m = a at *`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hle : Ideal.span {(lPrime l : R)} ≤ Ideal.span {(l : R)}`. Use `Ideal.span_singleton_le_span_singleton.2 ⟨(l : R) ^ (lPrimeExp l - 1), ?_⟩` and prove the remaining obligations. Rewrite using `[lPrime_eq_pow, Nat.cast_pow, ← pow_succ', Nat.sub_add_cancel (one_le_lPrimeExp l)]`. Establish `hform0 : ∀ (m : ℕ) (x : R), γ₀.dpow m ((lPrime l : R) * x) = algebraMap O R (qCoef O l m) * x ^ m`.
+
+Introduce `m x`. Establish `hmem : (lPrime l : R) * x ∈ Ideal.span {(l : R)}` using `hle (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _))`. Apply `sub_eq_zero.1` to reduce the goal to its premises. Apply `htf m.factorial _ (Nat.factorial_ne_zero m)` to reduce the goal to its premises. Rewrite using `[mul_sub, hγ₀ m _ hmem, ← mul_assoc, ← map_natCast (algebraMap O R) m.factorial, ← map_mul, hq m, map_pow, map_natCast, mul_pow, sub_self]`.
+
+Establish `hsub : γ₀.IsSubDPIdeal (Ideal.span {(lPrime l : R)})` using `{ isSubideal := hle dpow_mem := fun n hn j hj => by`. Take `⟨y, rfl⟩` from `Ideal.mem_span_singleton'.1 hj`. Rewrite using `[mul_comm, hform0, qCoef_eq_mul (hqe n (by omega)), map_mul, map_natCast, mul_assoc]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _) }`. Set `γ` to `DividedPowers.IsSubDPIdeal.dividedPowers γ₀ hsub`.
+
+Establish `hγeq : ∀ (m : ℕ), ∀ y ∈ Ideal.span {(lPrime l : R)}, γ.dpow m y = γ₀.dpow m y` using `fun m y hy => DividedPowers.IsSubDPIdeal.dpow_eq_of_mem γ₀ hsub hy`. Establish `hform : ∀ (m : ℕ) (x : R), γ.dpow m ((lPrime l : R) * x) = algebraMap O R (qCoef O l m) * x ^ m`. Introduce `m x`. Rewrite using `[hγeq m _ (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)), hform0]`. Use `⟨γ, fun m => ⟨qCoef O l m, hq m, hform m⟩, hγeq, fun n hn => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+
+Conclude with `{ isSubideal := Ideal.span_singleton_le_span_singleton.2 (dvd_pow_self _ (by omega)) dpow_mem := fun m hm j hj => by`. Take `⟨y, rfl⟩` from `Ideal.mem_span_singleton'.1 hj`. Establish `hy : y * (lPrime l : R) ^ n = (lPrime l : R) * (y * (lPrime l : R) ^ (n - 1))`. Rewrite using `[mul_left_comm, ← pow_succ', Nat.sub_add_cancel hn]`. Rewrite using `[hy, hform, qCoef_eq_mul (hqe m (by omega)), map_mul, map_natCast, mul_pow]`.
+
+Apply `Ideal.mem_span_singleton.2` to reduce the goal to its premises. Establish `h1 : n - 1 ≤ (n - 1) * m` using `Nat.le_mul_of_pos_right _ (by omega)`. Establish `hd : (lPrime l : R) ^ n ∣ (lPrime l : R) * ((lPrime l : R) ^ (n - 1)) ^ m`. Rewrite using `[← pow_mul, ← pow_succ']`. Conclude with `pow_dvd_pow _ (by omega)`.
+
+Conclude with `hd.trans (Dvd.intro (algebraMap O R ((l : O) ^ (qExp l m - lPrimeExp l) * Ring.inverse (factPrimePart l m : O)) * y ^ m) (by ring)) }`. Introduce `r m x hx hsum choose y hy using fun i => Ideal.mem_span_singleton'.1 (hx i)`. Establish `hp : ∏ i, γ.dpow (m i) (x i) = algebraMap O R (∏ i, qCoef O l (m i)) * ∏ i, y i ^ m i`. Rewrite using `[map_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← hy i, mul_comm, hform]`. Establish `hprod : ∏ i, qCoef O l (m i) = (l : O) ^ (∑ i, qExp l (m i)) * ∏ i, Ring.inverse (factPrimePart l (m i) : O)`. Simplify using `only [qCoef, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]`. Establish `h2 : ∀ i, m i ≤ 2 * qExp l (m i)` using `fun i => by`. Use `(hnum (m i)).2` as an intermediate fact.
+
+Unfold `qExp`. Generalize the expression as in `lPrimeExp l * m i = a at *`. Use linear arithmetic over natural numbers and integers. Establish `h3 : ∑ i, m i ≤ 2 * ∑ i, qExp l (m i)`. Rewrite using `[Finset.mul_sum]`.
+
+Conclude with `Finset.sum_le_sum fun i _ => h2 i`. Establish `hN : lPrimeExp l * n ≤ ∑ i, qExp l (m i)` using `by nlinarith`. Rewrite using `[hp, Ideal.mem_span_singleton, hprod, map_mul, map_pow, map_natCast, lPrime_eq_pow, Nat.cast_pow, ← pow_mul]`. Conclude with `((pow_dvd_pow _ hN).mul_right _).mul_right _`.
+-/
 theorem dividedPowers_lPrime : ∀ (l : ℕ), l.Prime → (∀ m : ℕ, (1 ≤ m → lPrimeExp l + padicValNat l m.factorial ≤ lPrimeExp l * m) ∧ m + 2 * padicValNat l m.factorial ≤ 2 * (lPrimeExp l * m)) → ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O], (l : O) ∈ IsLocalRing.maximalIdeal O → ∀ (R : Type) [CommRing R] [Algebra O R], (∀ (k : ℕ) (x : R), k ≠ 0 → (k : R) * x = 0 → x = 0) → ∀ γ₀ : DividedPowers (Ideal.span {(l : R)}), (∀ (m : ℕ), ∀ y ∈ Ideal.span {(l : R)}, (m.factorial : R) * γ₀.dpow m y = y ^ m) → ∃ γ : DividedPowers (Ideal.span {(lPrime l : R)}), (∀ m : ℕ, ∃ q : O, (m.factorial : O) * q = (lPrime l : O) ^ m ∧ ∀ x : R, γ.dpow m ((lPrime l : R) * x) = algebraMap O R q * x ^ m) ∧ (∀ (m : ℕ), ∀ y ∈ Ideal.span {(lPrime l : R)}, γ.dpow m y = γ₀.dpow m y) ∧ ∀ n : ℕ, 1 ≤ n → γ.IsSubDPIdeal (Ideal.span {(lPrime l : R) ^ n}) ∧ ∀ (r : ℕ) (m : Fin r → ℕ) (x : Fin r → R), (∀ i, x i ∈ Ideal.span {(lPrime l : R)}) → 2 * n * lPrimeExp l ≤ ∑ i, m i → ∏ i, γ.dpow (m i) (x i) ∈ Ideal.span {(lPrime l : R) ^ n} := by
   intro l hl hnum O _ _ _ _ hlO R _ _ htf γ₀ hγ₀
   have hv : ∀ m : ℕ, padicValNat l m.factorial ≤ lPrimeExp l * m := fun m => by

@@ -24,12 +24,18 @@ section Basic
 
 variable {D M : Rep.{u} (ULift.{u} ℤ) G}
 
+/- English proof (translation)
+Set `f' : M →ₗ[ULift.{u} ℤ] D` to `f`. Express the relevant statement in the definitionally equal form `n • f' = 0`. Use `LinearMap.ext fun m => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, hD, LinearMap.zero_apply]`.
+-/
 theorem nsmul_dualRep_eq_zero (hD : ∀ d : D, n • d = 0) (f : dualRep D M) : n • f = 0 := by
   let f' : M →ₗ[ULift.{u} ℤ] D := f
   change n • f' = 0
   refine LinearMap.ext fun m => ?_
   rw [LinearMap.smul_apply, hD, LinearMap.zero_apply]
 
+/- English proof (translation)
+Take `⟨e⟩` from `hD`. Conclude with `Finite.of_equiv _ e.symm.toEquiv`.
+-/
 theorem finite_of_nonempty_addEquiv [NeZero n] (hD : Nonempty (D ≃+ ZMod n)) : Finite D := by
   obtain ⟨e⟩ := hD
   exact Finite.of_equiv _ e.symm.toEquiv
@@ -37,6 +43,9 @@ theorem finite_of_nonempty_addEquiv [NeZero n] (hD : Nonempty (D ≃+ ZMod n)) :
 instance finite_dualRep [Finite D] [Finite M] : Finite (dualRep D M) :=
   Finite.of_injective (fun f : M →ₗ[ULift.{u} ℤ] D => (f : M → D)) DFunLike.coe_injective
 
+/- English proof (translation)
+Take `⟨e⟩` from `hD`. Set `F : (M →ₗ[ULift.{u} ℤ] D) → (M →+ ZMod n)` to `fun f => e.toAddMonoidHom.comp f.toAddMonoidHom`. Establish `hF : Function.Injective F` using `fun f f' h => LinearMap.ext fun m => e.injective (DFunLike.congr_fun h m)`. Conclude with `(Nat.card_le_card_of_injective F hF).trans card_addMonoidHom_zmod_le`.
+-/
 theorem card_dualRep_le [NeZero n] (hD : Nonempty (D ≃+ ZMod n)) [Finite M] :
     Nat.card (dualRep D M) ≤ Nat.card M := by
   obtain ⟨e⟩ := hD
@@ -45,6 +54,9 @@ theorem card_dualRep_le [NeZero n] (hD : Nonempty (D ≃+ ZMod n)) [Finite M] :
     e.injective (DFunLike.congr_fun h m)
   exact (Nat.card_le_card_of_injective F hF).trans card_addMonoidHom_zmod_le
 
+/- English proof (translation)
+Take `⟨e⟩` from `hD`. Take `⟨χ, hχ⟩` from `zmod_exists_apply_ne_zero hM hm`. Use `⟨(uliftIntLinearEquivAddHom M D).symm (e.symm.toAddMonoidHom.comp χ), fun h => hχ ?_⟩` and prove the remaining obligations. Rewrite `h` using `[uliftIntLinearEquivAddHom_symm_apply, AddMonoidHom.comp_apply, AddEquiv.coe_toAddMonoidHom, AddEquiv.map_eq_zero_iff]`. Conclude with `h`.
+-/
 theorem exists_dualRep_apply_ne_zero [NeZero n] (hD : Nonempty (D ≃+ ZMod n))
     (hM : ∀ m : M, n • m = 0) {m : M} (hm : m ≠ 0) :
     ∃ f : M →ₗ[ULift.{u} ℤ] D, f m ≠ 0 := by
@@ -55,6 +67,11 @@ theorem exists_dualRep_apply_ne_zero [NeZero n] (hD : Nonempty (D ≃+ ZMod n))
     AddEquiv.coe_toAddMonoidHom, AddEquiv.map_eq_zero_iff] at h
   exact h
 
+/- English proof (translation)
+Establish `: Finite D` using `finite_of_nonempty_addEquiv hD`. Establish `: Finite (dualRep D M)` using `finite_dualRep`. Establish `: Finite (dualRep D (dualRep D M))` using `finite_dualRep`. Use `Function.Injective.bijective_of_nat_card_le ?_ ((card_dualRep_le hD).trans (card_dualRep_le hD))` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`.
+
+Introduce `m hm`. Assume the negation of the conclusion as `hne`. Take `⟨f, hf⟩` from `exists_dualRep_apply_ne_zero hD hM hne`. Conclude with `hf (DFunLike.congr_fun hm f)`.
+-/
 theorem bijective_toDualDual [NeZero n] (hD : Nonempty (D ≃+ ZMod n)) [Finite M]
     (hM : ∀ m : M, n • m = 0) : Function.Bijective (toDualDual D M).hom := by
   have : Finite D := finite_of_nonempty_addEquiv hD
@@ -74,6 +91,9 @@ section EvalAt
 
 variable {k : Type u} [CommRing k]
 
+/- English proof (translation)
+Use extensionality with `f a`. Express the relevant statement in the definitionally equal form `f ((0 : A ⟶ B).hom a) = 0`. Rewrite using `[Rep.zero_hom]`. Conclude with `map_zero f`.
+-/
 private theorem dualMap_zero (D : Rep.{u} k G) {A B : Rep.{u} k G} : dualMap D (0 : A ⟶ B) = 0 := by
   ext f a
   change f ((0 : A ⟶ B).hom a) = 0
@@ -87,6 +107,11 @@ def dualEvalAt (D X : Rep.{u} k G) (x : X) (hx : ∀ g : G, X.ρ g x = x) : dual
     change D.ρ σ ((ν : X →ₗ[k] D) (X.ρ σ⁻¹ x)) = D.ρ σ ((ν : X →ₗ[k] D) x)
     rw [hx]⟩
 
+/- English proof (translation)
+Use extensionality with `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul a ν`. Express the relevant statement in the definitionally equal form `μ.hom (a ⊗ₜ[k] (ν : X →ₗ[k] D) x : (X ⊗ D : Rep k G)) = (ν : X →ₗ[k] D) a`.
+
+Conclude with `h a ν`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`.
+-/
 theorem tensorHom_dualEvalAt (D X : Rep.{u} k G) (x : X) (hx : ∀ g : G, X.ρ g x = x)
     (μ : X ⊗ D ⟶ D) (h : ∀ (a : X) (ν : X →ₗ[k] D), μ.hom (a ⊗ₜ[k] ν x : (X ⊗ D : Rep k G)) = ν a) :
     (𝟙 X ⊗ₘ dualEvalAt D X x hx) ≫ μ = evalPairing D X := by
@@ -113,6 +138,9 @@ abbrev dualShortComplex (S : ShortComplex (Rep.{u} (ULift.{u} ℤ) G)) :
 
 variable {D}
 
+/- English proof (translation)
+Establish `hg : Function.Surjective S.g.hom` using `(Rep.epi_iff_surjective _).1 hS.epi_g`. Introduce `f₁ f₂ h`. Use `LinearMap.ext fun c => ?_` and prove the remaining obligations. Take `⟨b, rfl⟩` from `hg c`. Conclude with `LinearMap.congr_fun h b`.
+-/
 theorem dualShortComplex_injective_f {S : ShortComplex (Rep.{u} (ULift.{u} ℤ) G)}
     (hS : S.ShortExact) : Function.Injective (dualShortComplex D S).f.hom := by
   have hg : Function.Surjective S.g.hom := (Rep.epi_iff_surjective _).1 hS.epi_g
@@ -121,6 +149,15 @@ theorem dualShortComplex_injective_f {S : ShortComplex (Rep.{u} (ULift.{u} ℤ) 
   obtain ⟨b, rfl⟩ := hg c
   exact LinearMap.congr_fun h b
 
+/- English proof (translation)
+Establish `hg : Function.Surjective S.g.hom` using `(Rep.epi_iff_surjective _).1 hS.epi_g`. Establish `hex : ∀ b : S.X₂, S.g.hom b = 0 → ∃ a : S.X₁, S.f.hom a = b`. Use `(ShortComplex.exact_map_iff_of_faithful _ (forget₂ (Rep.{u} (ULift.{u} ℤ) G) (ModuleCat.{u} (ULift.{u} ℤ)))).2 hS.exact` as an intermediate fact. Conclude with `(ShortComplex.moduleCat_exact_iff _).1 this`. Rewrite using `[← ShortComplex.exact_map_iff_of_faithful _ (forget₂ (Rep.{u} (ULift.{u} ℤ) G) (ModuleCat.{u} (ULift.{u} ℤ))), ShortComplex.moduleCat_exact_iff]`.
+
+Introduce `φ₀ hφ₀`. Set `φ : S.X₂ →ₗ[ULift.{u} ℤ] D` to `φ₀`. Establish `hφ : ∀ a : S.X₁, φ (S.f.hom a) = 0` using `fun a => LinearMap.congr_fun hφ₀ a`. Set `g : S.X₂ →ₗ[ULift.{u} ℤ] S.X₃` to `S.g.hom.toLinearMap`. Establish `hker : LinearMap.ker g ≤ LinearMap.ker φ`.
+
+Introduce `b hb`. Take `⟨a, rfl⟩` from `hex b hb`. Conclude with `hφ a`. Set `ψ : S.X₃ →ₗ[ULift.{u} ℤ] D` to `((LinearMap.ker g).liftQ φ hker).comp (g.quotKerEquivOfSurjective hg).symm.toLinearMap`. Use `⟨ψ, LinearMap.ext fun b => ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `ψ (g b) = φ b`. Simplify using `only [ψ, LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply, LinearMap.quotKerEquivOfSurjective_symm_apply, Submodule.liftQ_apply]`.
+-/
 theorem dualShortComplex_exact {S : ShortComplex (Rep.{u} (ULift.{u} ℤ) G)}
     (hS : S.ShortExact) : (dualShortComplex D S).Exact := by
   have hg : Function.Surjective S.g.hom := (Rep.epi_iff_surjective _).1 hS.epi_g
@@ -146,6 +183,15 @@ theorem dualShortComplex_exact {S : ShortComplex (Rep.{u} (ULift.{u} ℤ) G)}
   simp only [ψ, LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply,
     LinearMap.quotKerEquivOfSurjective_symm_apply, Submodule.liftQ_apply]
 
+/- English proof (translation)
+Take `⟨e⟩` from `hD`. Establish `hf : Function.Injective S.f.hom` using `(Rep.mono_iff_injective _).1 hS.mono_f`. Introduce `ψ₀`. Set `ψ : S.X₁ →ₗ[ULift.{u} ℤ] D` to `ψ₀`. Set `h : S.X₁ →+ S.X₂` to `S.f.hom.toLinearMap.toAddMonoidHom`.
+
+Take `⟨Φ, hΦ⟩` from `zmod_exists_comp_eq_of_ker_le hn h (e.toAddMonoidHom.comp ψ.toAddMonoidHom) (fun a ha => by`. Rewrite `ha`, the goal using `[AddMonoidHom.mem_ker]`. Establish `: a = 0` using `hf (by rw [map_zero]; exact ha)`. Rewrite using `[this, map_zero])`. Use `⟨(uliftIntLinearEquivAddHom S.X₂ D).symm (e.symm.toAddMonoidHom.comp Φ), LinearMap.ext fun a => ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `e.symm (Φ (S.f.hom a)) = ψ a`. Use `DFunLike.congr_fun hΦ a` as an intermediate fact. Simplify using `only [AddMonoidHom.coe_comp, Function.comp_apply, AddEquiv.coe_toAddMonoidHom] at this`. Express the relevant statement in the definitionally equal form `e.symm (Φ (h a)) = ψ a`. Rewrite using `[this, AddEquiv.symm_apply_apply]`.
+
+Both sides reduce to the same expression.
+-/
 theorem dualShortComplex_surjective_g [NeZero n] (hD : Nonempty (D ≃+ ZMod n))
     {S : ShortComplex (Rep.{u} (ULift.{u} ℤ) G)} (hS : S.ShortExact)
     (hn : ∀ x : S.X₂, n • x = 0) : Function.Surjective (dualShortComplex D S).g.hom := by
@@ -168,6 +214,9 @@ theorem dualShortComplex_surjective_g [NeZero n] (hD : Nonempty (D ≃+ ZMod n))
   rw [this, AddEquiv.symm_apply_apply]
   rfl
 
+/- English proof (translation)
+The claim follows from `dualShortComplex_exact hS mono_f := (Rep.mono_iff_injective _).2 (dualShortComplex_injective_f hS) epi_g := (Rep.epi_iff_surjective _).2 (dualShortComplex_surjective_g hD hS hn)`.
+-/
 theorem dualShortComplex_shortExact [NeZero n] (hD : Nonempty (D ≃+ ZMod n))
     {S : ShortComplex (Rep.{u} (ULift.{u} ℤ) G)} (hS : S.ShortExact)
     (hn : ∀ x : S.X₂, n • x = 0) : (dualShortComplex D S).ShortExact where
@@ -184,16 +233,29 @@ variable (n) (D : Rep.{u} (ULift.{u} ℤ) G) (hD : ∀ d : D, n • d = 0)
 def zmodDualHom : dualRep D (zmodRep.{u} G n) ⟶ D :=
   dualEvalAt D (zmodRep.{u} G n) (ULift.up 1) fun _ => rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem zmodDualHom_hom_apply (ν : dualRep D (zmodRep.{u} G n)) :
     (zmodDualHom n D).hom ν = ν (ULift.up 1 : zmodRep.{u} G n) :=
   rfl
 
+/- English proof (translation)
+Use `conv_lhs => rw [← ZMod.intCast_zmod_cast a]`. Rewrite using `[zmodRep_eq_zsmul G n, map_zsmul]`.
+-/
 theorem dualRep_zmodRep_apply (ν : dualRep D (zmodRep.{u} G n)) (a : ZMod n) :
     ν (ULift.up a : zmodRep.{u} G n) = (ZMod.cast a : ℤ) • ν (ULift.up 1 : zmodRep.{u} G n) := by
   conv_lhs => rw [← ZMod.intCast_zmod_cast a]
   rw [zmodRep_eq_zsmul G n, map_zsmul]
 
 include hD in
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `ν hν`. Rewrite `hν` using `[zmodDualHom_hom_apply]`. Use `DFunLike.ext _ _ fun a => ?_` and prove the remaining obligations.
+
+Take `⟨a⟩` from `a`. Rewrite using `[dualRep_zmodRep_apply, hν, zsmul_zero]`. Both sides reduce to the same expression. Introduce `d`. Use `⟨(uliftIntLinearEquivAddHom (zmodRep.{u} G n) D).symm ((zmodMulAddHom n hD).flip d |>.comp ((AddEquiv.ulift : ULift.{u} (ZMod n) ≃+ ZMod n).toAddMonoidHom.comp (AddMonoidHom.id (zmodRep.{u} G n)))), ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(zmodMulAddHom n hD) 1 d = d`. Rewrite using `[zmodMulAddHom_apply]`. Rewrite using `[zsmul_eq_zsmul_of_intCast_eq hD (b := 1) (by simp) d, one_zsmul]`.
+-/
 theorem bijective_zmodDualHom : Function.Bijective (zmodDualHom n D).hom := by
   constructor
   · rw [injective_iff_map_eq_zero]
@@ -215,6 +277,9 @@ theorem bijective_zmodDualHom : Function.Bijective (zmodDualHom n D).hom := by
 def zmodDualIso : dualRep D (zmodRep.{u} G n) ≅ D :=
   Rep.isoOfBijective (zmodDualHom n D) (bijective_zmodDualHom n D hD)
 
+/- English proof (translation)
+The claim follows from `tensorHom_dualEvalAt D (zmodRep.{u} G n) (ULift.up 1) (fun _ => rfl) _ fun a ν => by obtain ⟨a⟩ := a change zmodMulAddHom n hD a (ν (ULift.up 1)) = ν (ULift.up a) rw [zmodMulAddHom_apply] exact (dualRep_zmodRep_apply n D ν a).symm`.
+-/
 theorem tensorHom_zmodDualIso_zmodMulPairing :
     (𝟙 (zmodRep.{u} G n) ⊗ₘ (zmodDualIso n D hD).hom) ≫ zmodMulPairing n D hD =
       evalPairing D (zmodRep.{u} G n) :=

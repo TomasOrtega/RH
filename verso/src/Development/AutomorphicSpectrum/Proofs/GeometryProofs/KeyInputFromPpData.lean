@@ -32,9 +32,17 @@ def epsIso (R : Type) [CommRing R] : epsR R ≅ epsAt (𝟙 (Sp R)) :=
 
 def tanVec (M : LieModel G (𝟙 (Sp R)) E) (x : E) : epsR R ⟶ G := (epsIso R).hom ≫ M.pt x
 
+/- English proof (translation)
+Simplify using `[tanVec, epsIso]`.
+-/
 theorem tanVec_left (M : LieModel G (𝟙 (Sp R)) E) (x : E) : (tanVec M x).left = (M.pt x).left := by
   simp [tanVec, epsIso]
 
+/- English proof (translation)
+Rewrite using `[Hom.one_def, Over.comp_left]`. Establish `h : (toUnit (Over.mk (𝟙 (Sp R)))).left = 𝟙 _`. Use `Over.w (toUnit (Over.mk (𝟙 (Sp R))))` as an intermediate fact. Simplify using `using this`. Rewrite using `[h]`.
+
+Conclude with `Category.id_comp _`.
+-/
 theorem one_left : (1 : Over.mk (𝟙 (Sp R)) ⟶ G).left = η[G].left := by
   rw [Hom.one_def, Over.comp_left]
   have h : (toUnit (Over.mk (𝟙 (Sp R)))).left = 𝟙 _ := by
@@ -43,12 +51,20 @@ theorem one_left : (1 : Over.mk (𝟙 (Sp R)) ⟶ G).left = η[G].left := by
   rw [h]
   exact Category.id_comp _
 
+/- English proof (translation)
+Establish `h` using `M.tan x`. Unfold `IsTangent`. Rewrite using `[tanVec_left]`. Conclude with `h.trans one_left`.
+-/
 theorem isTangent_tanVec (M : LieModel G (𝟙 (Sp R)) E) (x : E) : IsTangent (tanVec M x) := by
   have h := M.tan x
   unfold IsTangent
   rw [tanVec_left]
   exact h.trans one_left
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `M.onto ((epsIso R).inv ≫ w) (by`. Unfold `IsTanAt`. Establish `e : ((epsIso R).inv ≫ w).left = w.left` using `by simp [epsIso]`. Rewrite using `[e]`. Conclude with `Eq.trans hw one_left.symm)`.
+
+Conclude with `⟨x, by rw [tanVec, hx]; simp⟩`.
+-/
 theorem exists_tanVec (M : LieModel G (𝟙 (Sp R)) E) (w : epsR R ⟶ G) (hw : IsTangent w) : ∃ x, tanVec M x = w := by
   obtain ⟨x, hx⟩ := M.onto ((epsIso R).inv ≫ w) (by
     unfold IsTanAt
@@ -57,9 +73,15 @@ theorem exists_tanVec (M : LieModel G (𝟙 (Sp R)) E) (w : epsR R ⟶ G) (hw : 
     exact Eq.trans hw one_left.symm)
   exact ⟨x, by rw [tanVec, hx]; simp⟩
 
+/- English proof (translation)
+Introduce `a b h` and use `M.inj (Over.OverMorphism.ext (by rw [← tanVec_left, ← tanVec_left, h]))`.
+-/
 theorem tanVec_injective (M : LieModel G (𝟙 (Sp R)) E) : Function.Injective (tanVec M) := fun a b h =>
   M.inj (Over.OverMorphism.ext (by rw [← tanVec_left, ← tanVec_left, h]))
 
+/- English proof (translation)
+The claim follows from `| 0, f => by simp [tanVec, M.pt_zero] | n + 1, f => by rw [List.ofFn_succ, List.prod_cons, prod_ofFn_tanVec M, Fin.sum_univ_succ] simp only [tanVec, M.add, MonObj.comp_mul]`.
+-/
 theorem prod_ofFn_tanVec (M : LieModel G (𝟙 (Sp R)) E) :
     ∀ {n : ℕ} (f : Fin n → E), (List.ofFn fun j => tanVec M (f j)).prod = tanVec M (∑ j, f j)
   | 0, f => by simp [tanVec, M.pt_zero]
@@ -67,6 +89,11 @@ theorem prod_ofFn_tanVec (M : LieModel G (𝟙 (Sp R)) E) :
     rw [List.ofFn_succ, List.prod_cons, prod_ofFn_tanVec M, Fin.sum_univ_succ]
     simp only [tanVec, M.add, MonObj.comp_mul]
 
+/- English proof (translation)
+Establish `hs : ∀ i, (tanVec M (c i • b i)).left = spMap (epsScaleR (c i)) ≫ (tanVec M (b i)).left` using `fun i => by`. Rewrite using `[tanVec_left, tanVec_left, M.smul]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, hw⟩`.
+
+Establish `hu' : u = fun i => tanVec M (c i • b i)` using `funext fun i => Over.OverMorphism.ext ((hu i).trans (hs i).symm)`. Rewrite `hw` using `[hu', prod_ofFn_tanVec M]`. Conclude with `tanVec_injective M hw`. Introduce and unpack `rfl`. Conclude with `⟨fun i => tanVec M (c i • b i), hs, (prod_ofFn_tanVec M _).symm⟩`.
+-/
 theorem isLieComb_tanVec_iff (M : LieModel G (𝟙 (Sp R)) E) {n : ℕ} (b : Fin n → E) (c : Fin n → R) (x : E) :
     IsLieComb c (fun i => tanVec M (b i)) (tanVec M x) ↔ x = ∑ i, c i • b i := by
   have hs : ∀ i, (tanVec M (c i • b i)).left = spMap (epsScaleR (c i)) ≫ (tanVec M (b i)).left := fun i => by
@@ -81,6 +108,11 @@ theorem isLieComb_tanVec_iff (M : LieModel G (𝟙 (Sp R)) E) {n : ℕ} (b : Fin
   · rintro rfl
     exact ⟨fun i => tanVec M (c i • b i), hs, (prod_ofFn_tanVec M _).symm⟩
 
+/- English proof (translation)
+Use `⟨fun i => isTangent_tanVec M _, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `exists_tanVec M w hw`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun R).1 (hsp ▸ Submodule.mem_top : x ∈ Submodule.span R (Set.range b))`. Use `⟨c, (isLieComb_tanVec_iff M b c x).2 hc.symm, fun c' h => ?_⟩` and prove the remaining obligations. Establish `h'` using `(isLieComb_tanVec_iff M b c' x).1 h`.
+
+Establish `h0 : ∑ i, (c' i - c i) • b i = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib, ← h', hc, sub_self]`. Use function extensionality and compare the values at `i`. Conclude with `sub_eq_zero.1 (Fintype.linearIndependent_iff.1 hli _ h0 i)`.
+-/
 theorem isLieBasis_tanVec (M : LieModel G (𝟙 (Sp R)) E) {n : ℕ} (b : Fin n → E) (hli : LinearIndependent R b)
     (hsp : Submodule.span R (Set.range b) = ⊤) : IsLieBasis (fun i => tanVec M (b i)) := by
   refine ⟨fun i => isTangent_tanVec M _, fun w hw => ?_⟩
@@ -99,6 +131,9 @@ section Sec
 
 variable {X : Scheme.{0}}
 
+/- English proof (translation)
+Establish `e : X.basicOpen ((X.presheaf.map (homOfLE h).op).hom f) = V ⊓ X.basicOpen f` using `Scheme.basicOpen_res X f (homOfLE h).op`. Rewrite using `[e]`. Both sides reduce to the same expression.
+-/
 theorem mem_basicOpen_map {U V : X.Opens} (h : V ≤ U) (f : Γ(X, U)) (y : X) :
     y ∈ X.basicOpen ((X.presheaf.map (homOfLE h).op).hom f) ↔ y ∈ V ∧ y ∈ X.basicOpen f := by
   have e : X.basicOpen ((X.presheaf.map (homOfLE h).op).hom f) = V ⊓ X.basicOpen f :=
@@ -106,8 +141,14 @@ theorem mem_basicOpen_map {U V : X.Opens} (h : V ≤ U) (f : Γ(X, U)) (y : X) :
   rw [e]
   rfl
 
+/- English proof (translation)
+Introduce `_` and use `rfl`.
+-/
 theorem sameSec_ofPow {L : LB X} (s : Out.H0 L 1) : KeyDeg.SameSec s (GlobalTheory.GeneratorFrame.ofPow s) := fun _ => rfl
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 hy`. Take `⟨i, rfl⟩ : ∃ i, k = fun _ => i` from `⟨k 0, funext fun a => by rw [Subsingleton.elim a 0]⟩`. Establish `hU : y ∈ L.U i` using `GlobalTheory.GeneratorFrame.wchart_le' L (fun _ => i) (X.basicOpen_le _ hk)`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨i, (mem_basicOpen_map _ _ y).2 ⟨hU, hk⟩⟩`.
+-/
 theorem nonzeroLocus_ofPow {L : LB X} (s : Out.H0 L 1) {y : X} (hy : y ∈ Out.nonzeroLocus s) :
     y ∈ Out.nonzeroLocus (GlobalTheory.GeneratorFrame.ofPow s) := by
   obtain ⟨k, hk⟩ := TopologicalSpace.Opens.mem_iSup.1 hy
@@ -119,9 +160,15 @@ end Sec
 
 section Main
 
+/- English proof (translation)
+Apply the tactic sequence `ext a <;> simp [Chart.dualMapR, dualMap]`.
+-/
 theorem dualMapR_eq {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') : Chart.dualMapR f = dualMap f := by
   ext a <;> simp [Chart.dualMapR, dualMap]
 
+/- English proof (translation)
+Establish `e : (φ.appLE U V h).hom f = (Y.presheaf.map (homOfLE h).op).hom ((φ.app U).hom f)` using `rfl`. Rewrite using `[e]`. Use `(mem_basicOpen_map h _ z).2 ⟨hz, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.preimage_basicOpen]`. Conclude with `hy`.
+-/
 theorem mem_basicOpen_appLE {X Y : Scheme.{0}} (φ : Y ⟶ X) {U : X.Opens} {V : Y.Opens} (h : V ≤ φ ⁻¹ᵁ U) (f : Γ(X, U))
     {z : Y} (hz : z ∈ V) (hy : φ z ∈ X.basicOpen f) : z ∈ Y.basicOpen ((φ.appLE U V h).hom f) := by
   have e : (φ.appLE U V h).hom f = (Y.presheaf.map (homOfLE h).op).hom ((φ.app U).hom f) := rfl
@@ -130,6 +177,27 @@ theorem mem_basicOpen_appLE {X Y : Scheme.{0}} (φ : Y ⟶ X) {U : X.Opens} {V :
   rw [← Scheme.preimage_basicOpen]
   exact hy
 
+/- English proof (translation)
+Introduce `E _ _ _ H L _ _ D hg s e hs hli hsp`. Establish `sm` using `D.tK.semi.smooth`. Establish `gc` using `D.tK.semi.geomConnected`. Establish `: ConnectedSpace D.tK.G.left` using `GeometricallyConnected.geometrically_connectedSpace (f := D.tK.G.hom) (𝟙 _) (𝟙 _) D.tK.G.hom (IsPullback.of_horiz_isIso ⟨by simp⟩)`. Establish `hnv : KeyDeg.NonVan D.t.G.hom (GlobalTheory.GeneratorFrame.ofPow s)` using `fun b => by`.
+
+Take `⟨y, hy, hy'⟩` from `hs b`. Conclude with `⟨y, hy, nonzeroLocus_ofPow s hy'⟩`. Establish `hv` using `isLieBasis_tanVec D.MB e hli hsp`. Take `⟨v', hv', hφ⟩` from `GlobalTheory.exists_isLieBasis_baseChange (𝓞 L) L (algebraMap (𝓞 L) L) D.t.G D.tK.G D.m.φ D.m.cart D.t.semi.smooth D.g _ hv`. Take `⟨d, hd⟩` from `exists_dim_of_preconnected D.tK.G.hom (eSec D.tK.G (default : PrimeSpectrum L))`.
+
+Take `⟨u, hu⟩` from `GlobalTheory.CM.TenDim.exists_isLieBasis D.tK.G hd`. Establish `hdg : d = D.g` using `GlobalTheory.KeyFramePoint.card_eq_of_isLieBasis D.m.cart hu hv'`. Rewrite `hd` using `[hdg]`. Take `⟨hp, ha, hk⟩` from `D.princ`. Take `⟨w, hw, hr, -⟩` from `D.m.lin`.
+
+Establish `hw'` using `(isGen_iff w).1 hw`. Take `⟨xth, hx⟩` from `sec_pull_down hw' D.t.PP.isLB D.tK.PP.isLB (GlobalTheory.GeneratorFrame.ofPow s)`. Establish `hcompat : ∀ (j : (D.t.PP.L.pull D.m.φ).ι) (i : D.tK.PP.L.ι) (h : (D.t.PP.L.pull D.m.φ).U j ⊓ D.tK.PP.L.U i ≤ D.m.φ ⁻¹ᵁ D.t.PP.L.U (j PUnit.unit)), (D.m.φ.appLE _ _ h).hom ((GlobalTheory.GeneratorFrame.ofPow s).f (j PUnit.unit)) = (show Γ(D.tK.G.left, (D.t.PP.L.pull D.m.φ).U j ⊓ D …` using `fun j i h => fn_ext fun y hy => (gs_appLE D.m.φ _ _ h (𝟙 _) y hy _).trans ((hx _ (𝟙 _) y _ i (h hy) hy.2).trans (Eq.symm ((gs_mul (𝟙 _) y _ hy _ _).trans (congrArg₂ (· * ·) (gs_unit (𝟙 _) y _ hy _) (gs_res (𝟙 _) y _ hy _)))))`. Establish `hne : ∀ s₀ : Sp L, ∃ z : D.tK.G.left, D.tK.G.hom z = s₀ ∧ z ∈ Out.nonzeroLocus xth` using `fun s₀ => by`. Take `⟨y, hy, hyn⟩` from `hnv (spMap (algebraMap (𝓞 L) L) s₀)`.
+
+Take `⟨z, rfl, hz⟩` from `Scheme.exists_preimage_of_isPullback D.m.cart.1 y s₀ hy`. Take `⟨l, hl⟩` from `TopologicalSpace.Opens.mem_iSup.1 hyn`. Take `⟨i, hi⟩` from `exists_chart D.tK.PP.isLB z`. Establish `hU : D.m.φ z ∈ D.t.PP.L.U l` using `Scheme.basicOpen_le _ _ hl`. Set `j : PUnit → D.t.PP.L.ι` to `fun _ => l`.
+
+Establish `hV : z ∈ (D.t.PP.L.pull D.m.φ).U j ⊓ D.tK.PP.L.U i` using `⟨mem_pull.2 hU, hi⟩`. Establish `hle : (D.t.PP.L.pull D.m.φ).U j ⊓ D.tK.PP.L.U i ≤ D.m.φ ⁻¹ᵁ D.t.PP.L.U l` using `fun _ hy => mem_pull.1 hy.1`. Establish `h1` using `mem_basicOpen_appLE D.m.φ hle _ hV hl`. Establish `e` using `hcompat j i hle`. Use `⟨z, hz, TopologicalSpace.Opens.mem_iSup.2 ⟨i, ?_⟩⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `z ∈ D.tK.G.left.basicOpen ((D.m.φ.appLE _ _ hle).hom _) at h1`. Rewrite `h1` using `[e, Scheme.basicOpen_mul]`. Conclude with `((mem_basicOpen_map _ _ z).1 h1.2).2`. Take `⟨-, ws, gs', -⟩` from `D.tK.sym`. Use `⟨KeyBadModel.keyInOf D.tK xth D.g hg v' hv' ⟨inferInstance, sm, hp, gc⟩ hd (fun _ => ⟨⊤, trivial, gen_of_iso ((isGen_iff ws).1 gs') _⟩) ha hk hne, GlobalTheory.GeneratorFrame.ofPow s, rfl, fun i => tanVec D.MB (e i), sameSec_ofPow s, hnv, ?_, hv, fun i => tanVec_left _ _⟩` and prove the remaining obligations.
+
+Establish `he : eSec D.tK.G ≫ D.m.φ = spMap (algebraMap (𝓞 L) L) ≫ eSec D.t.G`. Use `D.m.cm.e_comm` as an intermediate fact. Rewrite `this` using `[D.m.base]`. Then use the resulting hypothesis. Establish `hrig : ∀ (e' : (𝟙_ (Over (Sp L))).left ⟶ (𝟙_ (Over (Sp (𝓞 L)))).left) (he' : eSec D.tK.G ≫ D.m.φ = e' ≫ eSec D.t.G), e' = D.m.cm.e → rigPullOf D.m.φ e' he' D.t.PP.L D.t.PP.rig = D.m.cm.rigPull D.t.PP.L D.t.PP.rig`. Introduce and unpack `_ _ rfl`.
+
+Both sides reduce to the same expression. Use `⟨D.m.φ, he, w, D.m.cart, hw, ?_, hcompat, fun i => ?_⟩` and prove the remaining obligations. Establish `h2 : LB.Gen.Maps (LB.linCombIso w (K` using `PUnit) (fun _ => eSec D.tK.G) (fun _ => 1)) D.tK.PP.rig (rigPullOf D.m.φ (spMap (algebraMap (𝓞 L) L)) he D.t.PP.L D.t.PP.rig) := by`. Rewrite using `[hrig _ he D.m.base.symm]`. Conclude with `hr`.
+
+Conclude with `h2`. Conclude with `(hφ i).trans (by rw [dualMapR_eq])`.
+-/
 theorem exists_keyIn : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (L : Type) [Field L] [NumberField L] (D : PPData H L), 1 ≤ D.g → ∀ (s : Out.H0 D.t.PP.L 1) (e : Fin D.g → D.B.carrier), KeyDeg.NonVan D.t.G.hom s → LinearIndependent (𝓞 L) e → Submodule.span (𝓞 L) (Set.range e) = ⊤ → ∃ (x : KeyIn L) (th : D.t.PP.L.Sec) (hg : x.P.g = D.g) (v : Fin x.P.g → (epsR (𝓞 L) ⟶ D.t.G)), KeyDeg.SameSec s th ∧ KeyDeg.NonVan D.t.G.hom th ∧ KeyOver (algebraMap (𝓞 L) L) D.t th x v ∧ IsLieBasis v ∧ ∀ i, (v i).left = (D.MB.pt (e (i.cast hg))).left := by
   intro E _ _ _ H L _ _ D hg s e hs hli hsp
   have sm := D.tK.semi.smooth

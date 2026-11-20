@@ -12,6 +12,9 @@ namespace GlobalTheory.TorusRM.KerTriv
 
 open GlobalTheory.TorusRM.TransFrame
 
+/- English proof (translation)
+Simplify using `only [dotProduct, Matrix.mulVec, star_sum, star_mul', Pi.star_apply, star_star, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← hH.apply i j, star_star]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dot_herm_swap {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHermitian) (a b : Fin g → ℂ) :
     a ⬝ᵥ Hm *ᵥ star b = star (b ⬝ᵥ Hm *ᵥ star a) := by
   simp only [dotProduct, Matrix.mulVec, star_sum, star_mul', Pi.star_apply, star_star, Finset.mul_sum]
@@ -20,6 +23,11 @@ theorem dot_herm_swap {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHer
   rw [← hH.apply i j, star_star]
   ring
 
+/- English proof (translation)
+Rewrite using `[dot_herm_swap hH l w]`. Use `set a := w ⬝ᵥ Hm *ᵥ star l`. Establish `e : (star a : ℂ) = a + (-n : ℤ) * (2 * Complex.I)`. Apply the tactic sequence `apply Complex.ext <;> simp [hn, Complex.conj_re, Complex.conj_im] <;> ring`. Rewrite using `[e, mul_add, Complex.exp_add]`.
+
+Establish `: (Real.pi : ℂ) * ((-n : ℤ) * (2 * Complex.I)) = ((-n : ℤ) : ℂ) * (2 * Real.pi * Complex.I)` using `by ring`. Rewrite using `[this, Complex.exp_int_mul_two_pi_mul_I, _root_.mul_one]`.
+-/
 theorem exp_swap {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHermitian) (w l : Fin g → ℂ) (n : ℤ)
     (hn : (w ⬝ᵥ Hm *ᵥ star l).im = n) :
     Complex.exp (Real.pi * (l ⬝ᵥ Hm *ᵥ star w)) = Complex.exp (Real.pi * (w ⬝ᵥ Hm *ᵥ star l)) := by
@@ -35,6 +43,17 @@ end GlobalTheory.TorusRM.KerTriv
 
 open GlobalTheory.TorusRM.TransFrame GlobalTheory.TorusRM.KerTriv in
 
+/- English proof (translation)
+Introduce `A _ _ g hA M u Hm χ hM hF w hw`. Establish `hp : IsProjOver A.hom` using `(GlobalTheory.ProjSpace.isProjBy_iff_isProjOver A.hom).1 (GlobalTheory.AbelianProjective.isProjBy_of_isAbelianScheme ℂ A hA)`. Establish `hL : (abelian₂ A M).IsLB` using `LB.isLB_linComb hM _ _`. Establish `hL' : ((abelian₂ A M).pull (pairRight (u.ex w)).left).IsLB` using `LB.isLB_linComb hL _ _`. Take `⟨t, ht⟩` from `GlobalTheory.HolUnifSec.hasGen_of_periodic A hA hp _ hL' g (transUnif u w) (fun z => Complex.exp (Real.pi * (z ⬝ᵥ Hm *ᵥ star w))) (by`.
+
+Establish `hd : Differentiable ℂ (fun z : Fin g → ℂ => z ⬝ᵥ Hm *ᵥ star w)`. Simplify using `only [dotProduct]`. Use `fun_prop`. Conclude with `((differentiable_const _).mul hd).cexp) (fun z => Complex.exp_ne_zero _) (by`. Introduce `l hl i z hz`.
+
+Take `⟨n, hn⟩` from `hw l hl`. Rewrite using `[transUnif_factor u hF w ⟨l, hl⟩ i z hz, add_dotProduct, mul_add, Complex.exp_add, exp_swap hF.1 w l n hn]`. Use the proof step `ring)`. Establish `hρ : fst A (𝟙_ (Over (Sp ℂ))) ≫ pairRight (u.ex w) = lift (fst A (𝟙_ (Over (Sp ℂ)))) (snd A (𝟙_ (Over (Sp ℂ))) ≫ u.ex w)`. Simplify using `only [pairRight, comp_lift, Category.comp_id]`.
+
+Rewrite using `[← Category.assoc, toUnit_unique (fst A (𝟙_ (Over (Sp ℂ))) ≫ toUnit A) (snd A (𝟙_ (Over (Sp ℂ))))]`. Establish `key : (fun _ : PUnit => (fst A (𝟙_ (Over (Sp ℂ)))).left ≫ (pairRight (u.ex w)).left) = (fun _ : PUnit => (lift (fst A (𝟙_ (Over (Sp ℂ)))) (snd A (𝟙_ (Over (Sp ℂ))) ≫ u.ex w)).left)`. Use function extensionality and compare the values at `_`. Rewrite using `[← Over.comp_left, hρ]`. Establish `H : ∃ t : (LB.LinComb (abelian₂ A M) (fun _ : PUnit => (fst A (𝟙_ (Over (Sp ℂ)))).left ≫ (pairRight (u.ex w)).left) (fun _ => 1)).Gen, t.IsGen` using `⟨_, ReciprocityTheory.ChartRestriction.G.DVR.pullGen_isGen (abelian₂ A M) _ _ t ht (fst A (𝟙_ (Over (Sp ℂ)))).left⟩`.
+
+Rewrite `H` using `[key]`. Conclude with `H`.
+-/
 theorem GlobalTheory.TorusRM.hasGen_lam_pull_of_im_int : ∀ (A : Over (Sp ℂ)) [GrpObj A] [IsCommMonObj A] (g : ℕ), IsAbelianScheme A → ∀ (M : LB A.left) (u : HolUnif A M g) (Hm : Matrix (Fin g) (Fin g) ℂ) (χ : u.Λ → ℂ), M.IsLB → GlobalTheory.TorusRM.IsFactorAH u Hm χ → ∀ w : Fin g → ℂ, (∀ l ∈ u.Λ, ∃ n : ℤ, (w ⬝ᵥ Hm.mulVec (star l)).im = n) → ∃ t : ((abelian₂ A M).pull (lift (fst A (𝟙_ (Over (Sp ℂ)))) (snd A (𝟙_ (Over (Sp ℂ))) ≫ u.ex w)).left).Gen, t.IsGen := by
   intro A _ _ g hA M u Hm χ hM hF w hw
   have hp : IsProjOver A.hom :=

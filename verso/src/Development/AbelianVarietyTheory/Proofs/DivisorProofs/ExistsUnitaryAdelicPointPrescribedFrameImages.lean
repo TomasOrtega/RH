@@ -16,20 +16,37 @@ section Ring
 
 variable {S : Type} [CommRing S] (s : S →+* S)
 
+/- English proof (translation)
+Use extensionality with `i k`. Simplify using `[cT]`.
+-/
 theorem cT_add' {a b : Type} (M N : Matrix a b S) : cT s (M + N) = cT s M + cT s N := by
   ext i k; simp [cT]
 
+/- English proof (translation)
+Use extensionality with `i k`. Simplify using `[cT]`.
+-/
 theorem cT_zero' {a b : Type} : cT s (0 : Matrix a b S) = 0 := by
   ext i k; simp [cT]
 
+/- English proof (translation)
+Use extensionality with `i k`. Simplify using `[cT, hs]`.
+-/
 theorem cT_cT' (hs : ∀ x, s (s x) = x) {a b : Type} (M : Matrix a b S) : cT s (cT s M) = M := by
   ext i k; simp [cT, hs]
 
+/- English proof (translation)
+Rewrite using `[cT_mul, cT_mul, cT_cT' s hs, hJ, Matrix.mul_assoc]`.
+-/
 theorem cT_gram {n a b : ℕ} (hs : ∀ x, s (s x) = x) (J : Matrix (Fin n) (Fin n) S) (hJ : cT s J = J)
     (M : Matrix (Fin n) (Fin a) S) (N : Matrix (Fin n) (Fin b) S) :
     cT s (cT s M * J * N) = cT s N * J * M := by
   rw [cT_mul, cT_mul, cT_cT' s hs, hJ, Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `h1 : cT s A * (J * (A * pX + Z * p0 + B * pY)) = pY`. Simplify using `only [Matrix.mul_add, ← Matrix.mul_assoc, aa, az, ab, Matrix.zero_mul, Matrix.one_mul, zero_add]`. Establish `h2 : cT s Z * (J * (A * pX + Z * p0 + B * pY)) = J0 * p0`. Simplify using `only [Matrix.mul_add, ← Matrix.mul_assoc, za, zz, zb, Matrix.zero_mul, zero_add, add_zero]`. Establish `h3 : cT s B * (J * (A * pX + Z * p0 + B * pY)) = pX`.
+
+Simplify using `only [Matrix.mul_add, ← Matrix.mul_assoc, ba, bz, bb, Matrix.zero_mul, Matrix.one_mul, zero_add, add_zero]`. Rewrite using `[cT_add', cT_add', cT_mul, cT_mul, cT_mul]`. Simplify using `only [Matrix.add_mul, Matrix.mul_assoc, h1, h2, h3]`.
+-/
 theorem gram_comb {n j m : ℕ} (J : Matrix (Fin n) (Fin n) S) (J0 : Matrix (Fin m) (Fin m) S)
     (A B : Matrix (Fin n) (Fin j) S) (Z : Matrix (Fin n) (Fin m) S)
     (pX pY : Matrix (Fin j) (Fin n) S) (p0 : Matrix (Fin m) (Fin n) S)
@@ -51,11 +68,17 @@ end Ring
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2, h.2.2.2, star_star]`.
+-/
 theorem sig_invol {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
   apply τ.injective
   rw [h.2.2.2, h.2.2.2, star_star]
 
+/- English proof (translation)
+Proceed by induction on `e using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Consider the case `tmul a x => simp [sigR, hσ]`.
+-/
 theorem sigR_invol (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) (e : AF F ⊗[F] E) :
     sigR (AF F) σ (sigR (AF F) σ e) = e := by
   induction e using TensorProduct.induction_on with
@@ -63,6 +86,9 @@ theorem sigR_invol (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) (e : AF F �
   | add x y hx hy => rw [map_add, map_add, hx, hy]
   | tmul a x => simp [sigR, hσ]
 
+/- English proof (translation)
+Use extensionality with `i k`. Simplify using `[cT, adMat, sigR, inclR]`.
+-/
 theorem cT_adMat (σ : E →ₐ[F] E) {a b : Type} (X : Matrix a b E) :
     cT (sigR (AF F) σ) (adMat F X) = adMat F (cT (σ : E →+* E) X) := by
   ext i k; simp [cT, adMat, sigR, inclR]
@@ -77,6 +103,19 @@ section Ring
 
 variable {S : Type} [CommRing S] (s : S →+* S)
 
+/- English proof (translation)
+Take `⟨pX, hpX⟩ : ∃ p, p = cT s d * Ja` from `⟨_, rfl⟩`. Take `⟨p0, hp0⟩ : ∃ p, p = k0 * (cT s z * Ja)` from `⟨_, rfl⟩`. Take `⟨pY, hpY⟩ : ∃ p, p = cT s c * Ja` from `⟨_, rfl⟩`. Rewrite `sum` using `[← hpX, ← hp0, ← hpY]`. Establish `Xc : pX * c = 1` using `by rw [hpX, dc]`.
+
+Establish `Xz : pX * z = 0` using `by rw [hpX, dz]`. Establish `Xd : pX * d = 0` using `by rw [hpX, dd]`. Establish `Yc : pY * c = 0` using `by rw [hpY, cc]`. Establish `Yz : pY * z = 0` using `by rw [hpY, cz]`. Establish `Yd : pY * d = 1` using `by rw [hpY, cd]`.
+
+Establish `Oc : p0 * c = 0` using `by rw [hp0, Matrix.mul_assoc, zc, Matrix.mul_zero]`. Establish `Oz : p0 * z = 1` using `by rw [hp0, Matrix.mul_assoc, zz, hk0]`. Establish `Od : p0 * d = 0` using `by rw [hp0, Matrix.mul_assoc, zd, Matrix.mul_zero]`. Take `⟨g, hg⟩ : ∃ g, g = C' * pX + Z' * p0 + D' * pY` from `⟨_, rfl⟩`. Establish `gram : cT s g * Ja * g = Ja`.
+
+Rewrite using `[hg, gram_comb s Ja j0 C' D' Z' pX pY p0 cc' dd' cd' dc' cz' dz' zc' zd' zz', ← gram_comb s Ja j0 c d z pX pY p0 cc dd cd dc cz dz zc zd zz, sum, cT_one, Matrix.one_mul, Matrix.mul_one]`. Establish `hl : (Jai * cT s g * Ja) * g = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (cT s g), gram, hJi]`. Establish `hr : g * (Jai * cT s g * Ja) = 1` using `mul_eq_one_comm.1 hl`. Use `⟨⟨g, Jai * cT s g * Ja, hr, hl⟩, gram, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `g * c = C'`. Simplify using `only [hg, Matrix.add_mul, Matrix.mul_assoc, Xc, Oc, Yc, Matrix.mul_zero, Matrix.mul_one, add_zero]`. Express the relevant statement in the definitionally equal form `g * z = Z'`. Simplify using `only [hg, Matrix.add_mul, Matrix.mul_assoc, Xz, Oz, Yz, Matrix.mul_zero, Matrix.mul_one, add_zero, zero_add]`. Express the relevant statement in the definitionally equal form `g * d = D'`.
+
+Simplify using `only [hg, Matrix.add_mul, Matrix.mul_assoc, Xd, Od, Yd, Matrix.mul_zero, Matrix.mul_one, add_zero, zero_add]`.
+-/
 theorem images_ring {n j m : ℕ} (Ja Jai : Matrix (Fin n) (Fin n) S) (j0 k0 : Matrix (Fin m) (Fin m) S)
     (hJi : Jai * Ja = 1) (hk0 : k0 * j0 = 1)
     (c d C' D' : Matrix (Fin n) (Fin j) S) (z Z' : Matrix (Fin n) (Fin m) S)
@@ -120,15 +159,27 @@ end Ring
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Rewrite using `[cT_adMat, adMat, adMat, adMat, adMat, ← Matrix.map_mul, ← Matrix.map_mul, h]`.
+-/
 theorem adMat_gram (σ : E →ₐ[F] E) {n a b : ℕ} (J : Matrix (Fin n) (Fin n) E) (X : Matrix (Fin n) (Fin a) E)
     (Y : Matrix (Fin n) (Fin b) E) (R : Matrix (Fin a) (Fin b) E) (h : cT (σ : E →+* E) X * J * Y = R) :
     cT (sigR (AF F) σ) (adMat F X) * adMat F J * adMat F Y = adMat F R := by
   rw [cT_adMat, adMat, adMat, adMat, adMat, ← Matrix.map_mul, ← Matrix.map_mul, h]
 
+/- English proof (translation)
+The claim follows from `Matrix.map_zero _ (map_zero _)`.
+-/
 theorem adMat_zero' {a b : Type} : adMat F (0 : Matrix a b E) = 0 := Matrix.map_zero _ (map_zero _)
 
+/- English proof (translation)
+The claim follows from `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem adMat_one' {a : Type} [DecidableEq a] : adMat F (1 : Matrix a a E) = 1 := Matrix.map_one _ (map_zero _) (map_one _)
 
+/- English proof (translation)
+The claim follows from `Matrix.map_mul`.
+-/
 theorem adMat_mul' {a b c : Type} [Fintype b] (X : Matrix a b E) (Y : Matrix b c E) :
     adMat F (X * Y) = adMat F X * adMat F Y := Matrix.map_mul
 
@@ -138,6 +189,19 @@ namespace GlobalTheory.SphEis.ColImg
 
 open Formalism.UG (cT_mul cT_one)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J j m C D Z J₀ fr C' D' Z' cc dd cd cz dz zz`. Establish `hσ : ∀ x, σ (σ x) = x` using `sig_invol fr.cm`. Establish `hs : ∀ x, sigR (AF F) σ (sigR (AF F) σ x) = x` using `sigR_invol σ hσ`. Establish `hJ : cT (sigR (AF F) σ) (adMat F J) = adMat F J` using `by rw [cT_adMat, cT_form fr.herm]`. Establish `dc : cT (sigR (AF F) σ) D' * adMat F J * C' = 1`.
+
+Rewrite using `[← cT_gram _ hs _ hJ, cd, cT_one]`. Establish `zc : cT (sigR (AF F) σ) Z' * adMat F J * C' = 0` using `by rw [← cT_gram _ hs _ hJ, cz, cT_zero']`. Establish `zd : cT (sigR (AF F) σ) Z' * adMat F J * D' = 0` using `by rw [← cT_gram _ hs _ hJ, dz, cT_zero']`. Establish `acc` using `adMat_gram (F := F) σ J C C 0 fr.cc`. Establish `add` using `adMat_gram (F := F) σ J D D 0 fr.dd`.
+
+Establish `acd` using `adMat_gram (F := F) σ J C D 1 fr.cd`. Establish `adc` using `adMat_gram (F := F) σ J D C 1 fr.dc`. Establish `acz` using `adMat_gram (F := F) σ J C Z 0 fr.cz`. Establish `adz` using `adMat_gram (F := F) σ J D Z 0 fr.dz`. Establish `azc` using `adMat_gram (F := F) σ J Z C 0 fr.zc`.
+
+Establish `azd` using `adMat_gram (F := F) σ J Z D 0 fr.zd`. Establish `azz` using `adMat_gram (F := F) σ J Z Z J₀ fr.zz`. Rewrite `acc`, `add`, `acz`, `adz`, `azc`, `azd` using `[adMat_zero']`. Rewrite `acd`, `adc` using `[adMat_one']`. Establish `hJ0 : adMat F J₀⁻¹ * adMat F J₀ = 1`.
+
+Rewrite using `[← adMat_mul', Matrix.nonsing_inv_mul _ (det_isUnit fr.herm₀), adMat_one']`. Establish `hJi : adMat F J⁻¹ * adMat F J = 1`. Rewrite using `[← adMat_mul', Matrix.nonsing_inv_mul _ (det_isUnit fr.herm), adMat_one']`. Establish `hsum : adMat F C * (cT (sigR (AF F) σ) (adMat F D) * adMat F J) + adMat F Z * (adMat F J₀⁻¹ * (cT (sigR (AF F) σ) (adMat F Z) * adMat F J)) + adMat F D * (cT (sigR (AF F) σ) (adMat F C) * adMat F J) = 1`. Use `congrArg (adMat F) fr.sum` as an intermediate fact.
+
+Rewrite `this` using `[adMat_one']`. Rewrite using `[← this, cT_adMat, cT_adMat, cT_adMat]`. Simplify using `only [adMat_mul', adMat, Matrix.map_add _ (map_add _)]`. Take `⟨u, hu, h1, h2, h3⟩` from `images_ring (sigR (AF F) σ) (adMat F J) (adMat F J⁻¹) (adMat F J₀) (adMat F J₀⁻¹) hJi hJ0 (adMat F C) (adMat F D) C' D' (adMat F Z) Z' acc add acd adc acz adz azc azd azz hsum cc dd cd dc cz dz zc zd zz`. Conclude with `⟨(show HA (AF F) σ J from (⟨u, hu⟩ : HR (AF F) σ J)), h1, h2, h3⟩`.
+-/
 theorem exists_point_images :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (j m : ℕ) (C D : Matrix (Fin n) (Fin j) E) (Z : Matrix (Fin n) (Fin m) E) (J₀ : Matrix (Fin m) (Fin m) E), Fr σ J C D Z J₀ → ∀ (C' D' : Matrix (Fin n) (Fin j) (AF F ⊗[F] E)) (Z' : Matrix (Fin n) (Fin m) (AF F ⊗[F] E)), cT (sigR (AF F) σ) C' * adMat F J * C' = 0 → cT (sigR (AF F) σ) D' * adMat F J * D' = 0 → cT (sigR (AF F) σ) C' * adMat F J * D' = 1 → cT (sigR (AF F) σ) C' * adMat F J * Z' = 0 → cT (sigR (AF F) σ) D' * adMat F J * Z' = 0 → cT (sigR (AF F) σ) Z' * adMat F J * Z' = adMat F J₀ → ∃ g : GAd σ J, (matHom _ σ J g).1 * adMat F C = C' ∧ (matHom _ σ J g).1 * adMat F Z = Z' ∧ (matHom _ σ J g).1 * adMat F D = D' := by
   intro F E _ _ _ _ _ σ n J j m C D Z J₀ fr C' D' Z' cc dd cd cz dz zz

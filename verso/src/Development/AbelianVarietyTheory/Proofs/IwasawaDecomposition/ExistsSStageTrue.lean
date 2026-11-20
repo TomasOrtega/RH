@@ -10,10 +10,16 @@ namespace GlobalTheory.Mem.SProv
 
 open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.EX GlobalTheory.Mem GlobalTheory.Mem.Top
 
+/- English proof (translation)
+Rewrite using `[B.conjF_eq, B.conjF_eq]`. Simplify `Examples₂.conjF_conjF B.host x` using `[Examples₂.conjF_apply]`.
+-/
 theorem conjF_invol (B : Pre) (x : B.host.E) : B.conjF (B.conjF x) = x := by
   rw [B.conjF_eq, B.conjF_eq]
   simpa [Examples₂.conjF_apply] using Examples₂.conjF_conjF B.host x
 
+/- English proof (translation)
+Introduce `K B C W cd h h2 h3`. Take `⟨S, a, b, c, d⟩` from `exists_sStage_loc K B C W cd h h2 h3 (fun p => Examples₂.locAtC B.toPre.conjF (conjF_invol B.toPre) (Examples₂.finrank_FE B.host) p)`. Conclude with `⟨S, a, b, c, fun V N G => Formalism.L2.S.loc_of_adj (assemble B C W V S N G) d⟩`.
+-/
 theorem exists_sStage_true : ∀ (K : Ctx) (B : Base) (C : Cols B) (W : RowsRest B C) (cd : CDHaar), K.Over B.toPre →
     SpectralModel.ColsPos C → W.Drows ≤ W.Dall → ∃ S : SStage B C W, S.s.Del = (Delv K.s K.cD : ℚ) ∧
       S.s.cdScale = Vol.trueScale cd ∧ (∀ τ, S.dsig τ = Vol.trueDsig B.R (B.hc τ)) ∧

@@ -15,6 +15,11 @@ variable {G : Type} [Group G] {LL : Type} [Field LL] {O : Type} [CommRing O] [Al
   {V : Type} [AddCommGroup V] [Module LL V] [Module O V] [IsScalarTower O LL V]
   {ρ : Representation LL G V}
 
+/- English proof (translation)
+Take `⟨y0, hy0, hs⟩ : ∃ y0 : ↥L.T, (y0 : V) = Formalism.MainNotions.LocalSituation.liftQ L (Ideal.span {a} • ⊤ : Submodule O ↥L.T) (Submodule.Quotient.mk y) ∧ (Submodule.Quotient.mk y0 : ↥L.T ⧸ (Ideal.span {a} • ⊤ : Submodule O ↥L.T)) = Submodule.Quotient.mk y` from `⟨_, rfl, (Submodule.Quotient.mk_surjective _ (Submodule.Quotient.mk y)).choose_spec⟩`. Rewrite using `[← hy0]`. Establish `hmem` using `(Submodule.Quotient.eq _).1 hs`. Rewrite `hmem` using `[Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Take `⟨t, -, ht⟩` from `hmem`.
+
+Establish `ht' : a • (t : V) = (y0 : V) - (y : V)` using `congrArg Subtype.val ht`. Rewrite using `[Submodule.Quotient.eq, ← smul_sub, ← ht', ← algebraMap_smul LL a, smul_smul, inv_mul_cancel₀ ha, one_smul]`. Conclude with `t.2`.
+-/
 theorem mk_inv_smul_liftQ (L : Lattice (O := O) ρ) (a : O) (ha : algebraMap O LL a ≠ 0)
     (y : ↥L.T) :
     (Submodule.Quotient.mk ((algebraMap O LL a)⁻¹ • Formalism.MainNotions.LocalSituation.liftQ L
@@ -34,6 +39,13 @@ theorem mk_inv_smul_liftQ (L : Lattice (O := O) ρ) (a : O) (ha : algebraMap O L
     inv_mul_cancel₀ ha, one_smul]
   exact t.2
 
+/- English proof (translation)
+Use `⟨hc.1.comp (fun x => (Submodule.Quotient.mk ((algebraMap O LL a)⁻¹ • Formalism.MainNotions.LocalSituation.liftQ L _ x) : V ⧸ L.T)), fun g h => ?_⟩` and prove the remaining obligations. Establish `hgh` using `hc.2 g h`. Take `⟨x, hx⟩` from `Submodule.Quotient.mk_surjective _ (c g)`. Take `⟨y, hy⟩` from `Submodule.Quotient.mk_surjective _ (c h)`. Establish `h1 : c (g * h) = Submodule.Quotient.mk (x + actT L g y)`.
+
+Rewrite using `[hgh, ← hx, ← hy]`. Both sides reduce to the same expression. Use `show Submodule.Quotient.mk _ = Submodule.Quotient.mk _ + actD L g (Submodule.Quotient.mk _)`. Rewrite using `[h1, ← hx, ← hy, mk_inv_smul_liftQ L a ha, mk_inv_smul_liftQ L a ha, mk_inv_smul_liftQ L a ha]`. Use `show _ = Submodule.Quotient.mk _ + Submodule.Quotient.mk (ρ g ((algebraMap O LL a)⁻¹ • (y : V)))`.
+
+Rewrite using `[← Submodule.Quotient.mk_add, map_smul, ← smul_add]`. Both sides reduce to the same expression.
+-/
 theorem inv_smul_liftQ_mem_Z1D [TopologicalSpace G] (L : Lattice (O := O) ρ) (a : O)
     (ha : algebraMap O LL a ≠ 0) (hI : StableSub L (Ideal.span {a} • ⊤ : Submodule O ↥L.T))
     (c : G → ↥L.T ⧸ (Ideal.span {a} • ⊤ : Submodule O ↥L.T)) (hc : c ∈ quotientCocycles L _ hI) :
@@ -55,6 +67,11 @@ theorem inv_smul_liftQ_mem_Z1D [TopologicalSpace G] (L : Lattice (O := O) ρ) (a
 
 end Gen
 
+/- English proof (translation)
+Introduce `l _ K LL _ _ _ O _ _ _ A' LA' r hI' c'`. Establish `he : algebraMap O LL (((l : ℕ) : O) ^ r) = ((l : ℕ) : LL) ^ r`. Rewrite using `[map_pow, map_natCast]`. Establish `hl : ((l : ℕ) : LL) ≠ 0`. Introduce `h`.
+
+Establish `h' : algebraMap ℚ_[l] LL (l : ℚ_[l]) = 0` using `by rw [map_natCast]; exact h`. Rewrite `h'` using `[map_eq_zero_iff _ (algebraMap ℚ_[l] LL).injective]`. Conclude with `(Fact.out : l.Prime).ne_zero (by exact_mod_cast h')`. Use `inv_smul_liftQ_mem_Z1D LA' (((l : ℕ) : O) ^ r) (by rw [he]; exact pow_ne_zero _ hl) hI' c'.1 c'.2` as an intermediate fact. Rewrite `this` using `[he]`. Then use the resulting hypothesis.
+-/
 theorem pow_inv_smul_liftQ_mem_Z1D : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ (A' : GRep ↥(GK K) ℚ_[l] LL O) (LA' : Lattice (O := O) A'.ρ) (r : ℕ) (hI' : StableSub LA' (Ideal.span {((l : ℕ) : O) ^ r} • ⊤ : Submodule O ↥LA'.T)) (c' : ↥(quotientCocycles LA' _ hI')), (fun g => (Submodule.Quotient.mk ((((l : ℕ) : LL) ^ r)⁻¹ • Formalism.MainNotions.LocalSituation.liftQ LA' _ ((c' : ↥(GK K) → ↥LA'.T ⧸ (Ideal.span {((l : ℕ) : O) ^ r} • ⊤ : Submodule O ↥LA'.T)) g)) : A'.V ⧸ LA'.T)) ∈ divisibleCocycles LA' := by
   intro l _ K LL _ _ _ O _ _ _ A' LA' r hI' c'
   have he : algebraMap O LL (((l : ℕ) : O) ^ r) = ((l : ℕ) : LL) ^ r := by

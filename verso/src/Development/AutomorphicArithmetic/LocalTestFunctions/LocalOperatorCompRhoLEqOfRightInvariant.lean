@@ -11,6 +11,15 @@ open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Au
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C
 open scoped TensorProduct InnerProductSpace ComplexConjugate Pointwise
 
+/- English proof (translation)
+Establish `hcont : Measurable (· * k : G → G)` using `(continuous_mul_right k).measurable`. Use `haveI : (Measure.map (· * k) m).IsHaarMeasure := Measure.isHaarMeasure_map_mul_right m k`. Establish `h` using `Measure.isMulLeftInvariant_eq_smul (Measure.map (· * k) m) m`. Establish `hmeas : MeasurableSet (J : Set G)` using `hJ.2.measurableSet`. Establish `hpre : (· * k : G → G) ⁻¹' (J : Set G) = J`.
+
+Use extensionality with `x`. Conclude with `Subgroup.mul_mem_cancel_right J hk`. Establish `h0 : m (J : Set G) ≠ 0` using `(hJ.2.measure_pos m ⟨1, J.one_mem⟩).ne'`. Establish `hT : m (J : Set G) ≠ ⊤` using `hJ.1.measure_lt_top.ne`. Establish `e` using `congrArg (fun ν : Measure G => ν (J : Set G)) h`.
+
+Simplify using `only [Measure.map_apply hcont hmeas, hpre, Measure.smul_apply] at e`. Establish `hc : Measure.haarScalarFactor (Measure.map (· * k) m) m = 1`. Establish `e' : m (J : Set G) = (Measure.haarScalarFactor (Measure.map (· * k) m) m : ENNReal) * m (J : Set G)`. Simplify `e` using `[ENNReal.smul_def]`. Establish `: ((Measure.haarScalarFactor (Measure.map (· * k) m) m : NNReal) : ENNReal) = 1` using `((ENNReal.mul_eq_right h0 hT).1 e'.symm)`.
+
+Conclude with `this` after adjusting the coercions. Rewrite using `[h, hc, one_smul]`.
+-/
 private theorem map_right_eq_of_CO {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [LocallyCompactSpace G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
     (m : Measure G) [m.IsHaarMeasure] {J : Subgroup G} (hJ : CO J) {k : G} (hk : k ∈ J) :
@@ -34,6 +43,11 @@ private theorem map_right_eq_of_CO {G : Type} [Group G] [TopologicalSpace G] [Is
     exact_mod_cast this
   rw [h, hc, one_smul]
 
+/- English proof (translation)
+Introduce `K _ _ n μ _ w _ _ mw _ J hJ φ hφ T hT k hk`. Establish `hmul : ∀ (g : Gw n w) (v : LL μ), rhoL μ w (g * k) v = rhoL μ w g (rhoL μ w k v)`. Introduce `g v`. Simplify using `only [rhoL, rhoF, map_mul]`. Conclude with `UnitaryRep.map_mul_apply _ _ _ v`.
+
+Establish `hmp : MeasurePreserving (· * k : Gw n w → Gw n w) mw mw` using `⟨(continuous_mul_right k).measurable, map_right_eq_of_CO mw hJ hk⟩`. Use `ContinuousLinearMap.ext fun v => ext_inner_left ℂ fun u => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.comp_apply, hT u, hT u v, ← hmp.integral_comp (Homeomorph.mulRight k).measurableEmbedding (fun g => φ g * ⟪u, rhoL μ w g v⟫_ℂ)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [hφ k hk, hmul]`.
+-/
 theorem UpperTheory.localOperator_comp_rhoL_eq_of_right_invariant :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (w : Pl K)
           [MeasurableSpace (Gw n w)] [BorelSpace (Gw n w)] (mw : Measure (Gw n w)) [mw.IsHaarMeasure] (J : Subgroup (Gw n w)), CO J →

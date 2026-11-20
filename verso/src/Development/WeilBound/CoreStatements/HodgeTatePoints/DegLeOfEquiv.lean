@@ -16,17 +16,26 @@ section SlopeTestRemainingChoices
 
 variable {K : Type} [Field K] {C : ACurve K} {V : Type} [AddCommGroup V] [Module K V]
 
+/- English proof (translation)
+Use `(h _).2 fun r => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases e : q = r <;> simp [e, Finsupp.single_apply]`.
+-/
 theorem basis_mem {i : C.I} {n : ℕ} {b : Module.Basis (Fin n) K V} {L : AddSubgroup V}
     (h : IsLatOf C i b L) (q : Fin n) : b q ∈ L := by
   refine (h _).2 fun r => ?_
   by_cases e : q = r <;> simp [e, Finsupp.single_apply]
 
+/- English proof (translation)
+Use `(h _).2 fun r => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul]`. Conclude with `mul_le_one' ha ((h _).1 hx r)`.
+-/
 theorem smul_mem_lat {i : C.I} {n : ℕ} {b : Module.Basis (Fin n) K V} {L : AddSubgroup V}
     (h : IsLatOf C i b L) {a : K} (ha : C.v i a ≤ 1) {x : V} (hx : x ∈ L) : a • x ∈ L := by
   refine (h _).2 fun r => ?_
   rw [map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul]
   exact mul_le_one' ha ((h _).1 hx r)
 
+/- English proof (translation)
+Rewrite using `[Module.Basis.det_apply, Matrix.det_apply']`. Use `(C.v i).map_sum_le fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_prod]`. Use `mul_le_one' ?_ (Finset.prod_le_one' fun q _ => (h' _).1 (hle (basis_mem h q)) _)` and prove the remaining obligations. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with e | e <;> simp [e]`.
+-/
 theorem v_det_le {i : C.I} {n : ℕ} {b b' : Module.Basis (Fin n) K V} {L L' : AddSubgroup V}
     (h : IsLatOf C i b L) (h' : IsLatOf C i b' L') (hle : L ≤ L') : C.v i (b'.det b) ≤ 1 := by
   rw [Module.Basis.det_apply, Matrix.det_apply']
@@ -35,6 +44,9 @@ theorem v_det_le {i : C.I} {n : ℕ} {b b' : Module.Basis (Fin n) K V} {L L' : A
   refine mul_le_one' ?_ (Finset.prod_le_one' fun q _ => (h' _).1 (hle (basis_mem h q)) _)
   rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with e | e <;> simp [e]
 
+/- English proof (translation)
+Establish `hb : IsBun C L` using `Inhab.isBun_of_basis C b L h`. Use `⟨hb, ?_⟩` and prove the remaining obligations. Rewrite using `[(GlobalTheory.T.bundle_degree_eq_sum_valuations K C V L n b (fun _ => b) hb h).2]`. Simplify using `[Module.Basis.det_self]`.
+-/
 theorem deg_triv [FiniteDimensional K V] {n : ℕ} (b : Module.Basis (Fin n) K V)
     {L : C.I → AddSubgroup V} (h : ∀ i, IsLatOf C i b (L i)) : IsBun C L ∧ deg C L = 0 := by
   have hb : IsBun C L := Inhab.isBun_of_basis C b L h
@@ -44,6 +56,13 @@ theorem deg_triv [FiniteDimensional K V] {n : ℕ} (b : Module.Basis (Fin n) K V
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `K _ C V _ _ _ L L' hL hL' hle`. Use `choose b hb using hL.1`. Use `choose b' hb' using hL'.1`. Take `⟨hf, e⟩` from `GlobalTheory.T.bundle_degree_eq_sum_valuations K C V L _ (Module.finBasis K V) b hL hb`. Take `⟨hf', e'⟩` from `GlobalTheory.T.bundle_degree_eq_sum_valuations K C V L' _ (Module.finBasis K V) b' hL' hb'`.
+
+Rewrite using `[e, e']`. Use `finsum_le_finsum' (hf.subset fun i hi h1 => hi (by simp [h1])) (hf'.subset fun i hi h1 => hi (by simp [h1])) fun i => ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left ?_ (Int.natCast_nonneg _)` and prove the remaining obligations. Establish `n1 : C.v i ((Module.finBasis K V).det (b i)) ≠ 0` using `(Valuation.ne_zero_iff _).2 ((Module.finBasis K V).isUnit_det (b i)).ne_zero`. Establish `n2 : C.v i ((Module.finBasis K V).det (b' i)) ≠ 0` using `(Valuation.ne_zero_iff _).2 ((Module.finBasis K V).isUnit_det (b' i)).ne_zero`.
+
+Rewrite using `[WithZero.log_le_log n1 n2, ← Module.Basis.det_mul_det _ (b' i) (b i), map_mul]`. Conclude with `mul_le_of_le_one_right' (v_det_le (hb i) (hb' i) (hle i))`.
+-/
 theorem deg_mono : ∀ (K : Type) [Field K] (C : ACurve K) (V : Type) [AddCommGroup V] [Module K V] [FiniteDimensional K V] (L L' : C.I → AddSubgroup V), IsBun C L → IsBun C L' → (∀ i, L i ≤ L' i) → deg C L ≤ deg C L' := by
   intro K _ C V _ _ _ L L' hL hL' hle
   choose b hb using hL.1
@@ -61,6 +80,9 @@ theorem deg_mono : ∀ (K : Type) [Field K] (C : ACurve K) (V : Type) [AddCommGr
   rw [WithZero.log_le_log n1 n2, ← Module.Basis.det_mul_det _ (b' i) (b i), map_mul]
   exact mul_le_of_le_one_right' (v_det_le (hb i) (hb' i) (hle i))
 
+/- English proof (translation)
+Take `⟨hM, hd⟩` from `GlobalTheory.T.degree_invariant_linear_equiv K C V V' L (fun i => (L i).comap e.symm.toLinearMap.toAddMonoidHom) e hL (fun i x => by simp)`. Rewrite using `[← hd]`. Use `deg_mono K C V' _ _ hM hL' fun i y hy => ?_` and prove the remaining obligations. Simplify using `using h i (e.symm y) hy`.
+-/
 theorem deg_le_of_equiv {K : Type} [Field K] {C : ACurve K} {V V' : Type} [AddCommGroup V]
     [Module K V] [FiniteDimensional K V] [AddCommGroup V'] [Module K V'] [FiniteDimensional K V']
     {L : C.I → AddSubgroup V} {L' : C.I → AddSubgroup V'} (e : V ≃ₗ[K] V') (hL : IsBun C L)
@@ -71,11 +93,23 @@ theorem deg_le_of_equiv {K : Type} [Field K] {C : ACurve K} {V V' : Type} [AddCo
   refine deg_mono K C V' _ _ hM hL' fun i y hy => ?_
   simpa using h i (e.symm y) hy
 
+/- English proof (translation)
+Introduce `K _ C V _ _ _ V' _ _ _ L L' f W hL hL' hf hh`. Conclude with `deg_le_of_equiv (Submodule.equivMapOfInjective f hf W) (GlobalTheory.T.sub_and_quotient_bundles K C V L W hL).1 (GlobalTheory.T.sub_and_quotient_bundles K C V' L' _ hL').1 fun i x hx => hh i x hx`.
+-/
 theorem deg_inj : ∀ (K : Type) [Field K] (C : ACurve K) (V : Type) [AddCommGroup V] [Module K V] [FiniteDimensional K V] (V' : Type) [AddCommGroup V'] [Module K V'] [FiniteDimensional K V'] (L : C.I → AddSubgroup V) (L' : C.I → AddSubgroup V') (f : V →ₗ[K] V') (W : Submodule K V), IsBun C L → IsBun C L' → Function.Injective f → IsHom C L L' f → subDeg C L W ≤ subDeg C L' (W.map f) := by
   intro K _ C V _ _ _ V' _ _ _ L L' f W hL hL' hf hh
   exact deg_le_of_equiv (Submodule.equivMapOfInjective f hf W) (GlobalTheory.T.sub_and_quotient_bundles K C V L W hL).1
     (GlobalTheory.T.sub_and_quotient_bundles K C V' L' _ hL').1 fun i x hx => hh i x hx
 
+/- English proof (translation)
+Introduce `K _ C V _ _ _ n b L W h`. Take `⟨hL, h0⟩` from `deg_triv b h`. Establish `hs` using `GlobalTheory.T.degree_additive_sub_quotient K C V L W hL`. Take `⟨κ, a, ha, hsp, hli⟩` from `exists_linearIndependent' K (fun q => W.mkQ (b q))`. Establish `: Finite κ` using `Finite.of_injective a ha`.
+
+Establish `: Fintype κ` using `Fintype.ofFinite κ`. Establish `htop : ⊤ ≤ Submodule.span K (Set.range ((fun q => W.mkQ (b q)) ∘ a))`. Rewrite using `[hsp, show (Set.range fun q => W.mkQ (b q)) = W.mkQ '' Set.range b from Set.range_comp _ _, Submodule.span_image, b.span_eq, Submodule.map_top, Submodule.range_mkQ]`. Set `c` to `(Module.Basis.mk hli htop).reindex (Fintype.equivFin κ)`. Establish `hc : ∀ q, c q = W.mkQ (b (a ((Fintype.equivFin κ).symm q)))` using `fun q => by simp [c]`.
+
+Take `⟨hM, hM0⟩` from `deg_triv (C := C) c (fun i => Inhab.isLatOf_latOf C i c)`. Use `deg_mono K C _ _ _ hM (GlobalTheory.T.sub_and_quotient_bundles K C V L W hL).2 fun i y hy => by` as an intermediate fact. Rewrite using `[← c.sum_repr y]`. Use `sum_mem fun q _ => ⟨c.repr y q • b (a ((Fintype.equivFin κ).symm q)), smul_mem_lat (h i) (hy q) (basis_mem (h i) _), ?_⟩` and prove the remaining obligations. Rewrite using `[hc]`.
+
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+-/
 theorem subdeg_trivial : ∀ (K : Type) [Field K] (C : ACurve K) (V : Type) [AddCommGroup V] [Module K V] [FiniteDimensional K V] (n : ℕ) (b : Module.Basis (Fin n) K V) (L : C.I → AddSubgroup V) (W : Submodule K V), (∀ i, IsLatOf C i b (L i)) → subDeg C L W ≤ 0 := by
   intro K _ C V _ _ _ n b L W h
   obtain ⟨hL, h0⟩ := deg_triv b h
@@ -96,6 +130,15 @@ theorem subdeg_trivial : ∀ (K : Type) [Field K] (C : ACurve K) (V : Type) [Add
     rw [hc]; simp
   omega
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, h5⟩` from `h`. Set `f' : A →ₗ[K] X` to `f.restrict fun x hx => (hA x).1 hx`. Set `g' : X →ₗ[K] B` to `g.restrict fun y hy => (hB _).2 ⟨y, hy, rfl⟩`. Establish `hse : ShortExact C (sub C L A) (sub C L' X) (fun i => (sub C L' X i).map g'.toAddMonoidHom) f' g'`. Use `⟨fun x y e => Subtype.ext (h1 (congrArg Subtype.val e)), fun y => ⟨fun hy => ?_, ?_⟩, fun z => ?_, fun i x => h4 i x, fun i z => Iff.rfl⟩` and prove the remaining obligations.
+
+Take `⟨x, hx⟩` from `(h2 y).1 (congrArg Subtype.val hy)`. Conclude with `⟨⟨x, (hA x).2 (hx ▸ y.2)⟩, Subtype.ext hx⟩`. Introduce and unpack `⟨x, rfl⟩`. Conclude with `Subtype.ext (h2.apply_apply_eq_zero x)`. Take `⟨y, hy, e⟩` from `(hB z).1 z.2`.
+
+Conclude with `⟨⟨y, hy⟩, Subtype.ext e⟩`. Take `⟨-, hI, hd⟩` from `GlobalTheory.T.short_exact_first_term_bundle K C _ _ _ _ _ _ f' g' (GlobalTheory.T.sub_and_quotient_bundles K C V' L' X hL').1 hse`. Use `⟨_, hI, hd, fun i z => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨y, hy, y.2, rfl⟩`.
+
+Introduce and unpack `⟨y, hy, hX, e⟩`. Conclude with `⟨⟨y, hX⟩, hy, Subtype.ext e⟩`.
+-/
 theorem ses_restrict {K : Type} [Field K] {C : ACurve K} {V V' V'' : Type} [AddCommGroup V]
     [Module K V] [FiniteDimensional K V] [AddCommGroup V'] [Module K V'] [FiniteDimensional K V']
     [AddCommGroup V''] [Module K V''] [FiniteDimensional K V'']
@@ -125,6 +168,11 @@ theorem ses_restrict {K : Type} [Field K] {C : ACurve K} {V V' V'' : Type} [AddC
   · rintro ⟨y, hy, hX, e⟩
     exact ⟨⟨y, hX⟩, hy, Subtype.ext e⟩
 
+/- English proof (translation)
+Introduce `K _ C V _ _ _ V' _ _ _ V'' _ _ _ L L' L'' f g X hL' h`. Take `⟨I, hI, hd, hm⟩` from `ses_restrict hL' h (X.comap f) X (X.map g) (fun _ => Iff.rfl) (fun _ => Iff.rfl)`. Establish `hL''` using `(GlobalTheory.T.short_exact_first_term_bundle K C _ _ _ _ _ _ f g hL' h).2.1`. Establish `: deg C I ≤ subDeg C L'' (X.map g)` using `deg_mono K C _ _ _ hI (GlobalTheory.T.sub_and_quotient_bundles K C V'' L'' _ hL'').1 fun i z hz => by`. Take `⟨y, hy, -, e⟩` from `(hm i z).1 hz`.
+
+Conclude with `(h.2.2.2.2 i z).2 ⟨y, hy, e⟩`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem subdeg_ses : ∀ (K : Type) [Field K] (C : ACurve K) (V : Type) [AddCommGroup V] [Module K V] [FiniteDimensional K V] (V' : Type) [AddCommGroup V'] [Module K V'] [FiniteDimensional K V'] (V'' : Type) [AddCommGroup V''] [Module K V''] [FiniteDimensional K V''] (L : C.I → AddSubgroup V) (L' : C.I → AddSubgroup V') (L'' : C.I → AddSubgroup V'') (f : V →ₗ[K] V') (g : V' →ₗ[K] V'') (X : Submodule K V'), IsBun C L' → ShortExact C L L' L'' f g → subDeg C L' X ≤ subDeg C L (X.comap f) + subDeg C L'' (X.map g) := by
   intro K _ C V _ _ _ V' _ _ _ V'' _ _ _ L L' L'' f g X hL' h
   obtain ⟨I, hI, hd, hm⟩ := ses_restrict hL' h (X.comap f) X (X.map g) (fun _ => Iff.rfl)
@@ -136,12 +184,34 @@ theorem subdeg_ses : ∀ (K : Type) [Field K] (C : ACurve K) (V : Type) [AddComm
       exact (h.2.2.2.2 i z).2 ⟨y, hy, e⟩
   omega
 
+/- English proof (translation)
+Use `⟨fun j => ψ (Pi.single j 1), fun x => ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [pi_eq_sum_univ' x, map_sum]`. Simplify using `[dotProduct, mul_comm]`.
+-/
 theorem exists_dot {K : Type} [Field K] {d : ℕ} (ψ : Module.Dual K (Fin d → K)) :
     ∃ u : Fin d → K, ∀ x, u ⬝ᵥ x = ψ x := by
   refine ⟨fun j => ψ (Pi.single j 1), fun x => ?_⟩
   conv_rhs => rw [pi_eq_sum_univ' x, map_sum]
   simp [dotProduct, mul_comm]
 
+/- English proof (translation)
+Introduce `K _ C d L W X hL hW`. Establish `hbij : Function.Bijective (dotProductBilin K K : (Fin d → K) →ₗ[K] (Fin d → K) →ₗ[K] K)`. Use `⟨(injective_iff_map_eq_zero _).2 fun u hu => funext fun j => ?_, fun ψ => ?_⟩` and prove the remaining obligations. Simplify using `using LinearMap.congr_fun hu (Pi.single j 1)`. Take `⟨u, hu⟩` from `exists_dot ψ`.
+
+Conclude with `⟨u, LinearMap.ext hu⟩`. Take `⟨hD, -, hbi⟩` from `GlobalTheory.T.dual_lattice_degree_neg K C _ _ L _ hL hbij`. Set `B₀ : (Fin d → K) →ₗ[K] W →ₗ[K] K` to `((dotProductBilin K K).comp W.subtype).flip`. Establish `hB₀ : ∀ φ (w : W), B₀ φ w = (w : Fin d → K) ⬝ᵥ φ` using `fun _ _ => rfl`. Set `B : ((Fin d → K) ⧸ X) →ₗ[K] W →ₗ[K] K` to `X.liftQ B₀ fun φ hφ => LinearMap.ext fun w => (hW w).1 w.2 φ hφ`.
+
+Establish `hB : ∀ φ (w : W), B (X.mkQ φ) w = (w : Fin d → K) ⬝ᵥ φ` using `fun _ _ => rfl`. Establish `hBb : Function.Bijective B`. Use `⟨(injective_iff_map_eq_zero _).2 fun y hy => ?_, fun ψ => ?_⟩` and prove the remaining obligations. Take `⟨φ, rfl⟩` from `X.mkQ_surjective y`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, ← Subspace.forall_mem_dualAnnihilator_apply_eq_zero_iff]`.
+
+Introduce `ψ hψ`. Take `⟨u, hu⟩` from `exists_dot ψ`. Establish `hu' : u ∈ W` using `(hW u).2 fun x hx => by`. Rewrite using `[hu]`. Conclude with `(Submodule.mem_dualAnnihilator ψ).1 hψ x hx`.
+
+Rewrite using `[← hu, ← hB φ ⟨u, hu'⟩, hy]`. Both sides reduce to the same expression. Take `⟨ψ', rfl⟩` from `LinearMap.dualMap_surjective_of_injective W.injective_subtype ψ`. Take `⟨u, hu⟩` from `exists_dot ψ'`. Use `⟨X.mkQ u, LinearMap.ext fun w => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hB, dotProduct_comm, hu]`. Both sides reduce to the same expression. Take `⟨-, hq, -⟩` from `GlobalTheory.T.dual_lattice_degree_neg K C _ _ _ B (GlobalTheory.T.sub_and_quotient_bundles K C _ _ X hD).2 hBb`. Establish `he : dualLat C (quot C (dualLat C L (dotProductBilin K K)) X) B = sub C L W`. Use function extensionality and compare the values at `i`.
+
+Use extensionality with `w`. Establish `: (w : Fin d → K) ∈ L i ↔ (w : Fin d → K) ∈ dualLat C (dualLat C L (dotProductBilin K K)) (dotProductBilin K K).flip i` using `by rw [hbi]`. Use `Iff.trans ?_ this.symm` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `H φ hφ`.
+
+Conclude with `H _ ⟨φ, hφ, rfl⟩`. Introduce and unpack `H _ ⟨φ, hφ, rfl⟩`. Conclude with `H φ hφ`. Establish `hs` using `GlobalTheory.T.degree_additive_sub_quotient K C _ _ X hD`. Rewrite `hq` using `[he]`.
+
+Unfold `dotDual`. Unfold `subDeg at hs ⊢`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem subdeg_orth : ∀ (K : Type) [Field K] (C : ACurve K) (d : ℕ) (L : C.I → AddSubgroup (Fin d → K)) (W X : Submodule K (Fin d → K)), IsBun C L → (∀ u, u ∈ W ↔ ∀ φ ∈ X, u ⬝ᵥ φ = 0) → subDeg C (dotDual C L) X = deg C (dotDual C L) + subDeg C L W := by
   intro K _ C d L W X hL hW
   have hbij : Function.Bijective (dotProductBilin K K : (Fin d → K) →ₗ[K] (Fin d → K) →ₗ[K] K) := by

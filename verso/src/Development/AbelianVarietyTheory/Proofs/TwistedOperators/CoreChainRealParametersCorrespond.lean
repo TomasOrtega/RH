@@ -28,6 +28,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CoreOntoPar
 open GlobalTheory.SignedHC GlobalTheory.PairLift Finset
 
+/- English proof (translation)
+Simplify using `only [dualPar, mem_image, Prod.exists]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, b, h, he⟩`. Rewrite using `[← he]`. Simplify using `using h`.
+
+Introduce `h; exact ⟨_, _, h, by simp⟩`.
+-/
 theorem mem_dualPar' {S : SPar} {x : ℚ × Bool} : x ∈ dualPar S ↔ (-x.1, x.2) ∈ S := by
   simp only [dualPar, mem_image, Prod.exists]
   constructor
@@ -35,6 +40,11 @@ theorem mem_dualPar' {S : SPar} {x : ℚ × Bool} : x ∈ dualPar S ↔ (-x.1, x
     rw [← he]; simpa using h
   · intro h; exact ⟨_, _, h, by simp⟩
 
+/- English proof (translation)
+Rewrite using `[mem_block, mem_block]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`. Use `⟨t - 1 - a, by omega, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_sub (by omega), Nat.cast_sub (by omega)]; push_cast; ring`.
+
+Introduce and unpack `⟨a, ha, h⟩`. Use `⟨t - 1 - a, by omega, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_sub (by omega), Nat.cast_sub (by omega)]; push_cast; linarith`.
+-/
 theorem mem_block_neg {c y : ℚ} {t : ℕ} : y ∈ TPar.block (-c) t ↔ -y ∈ TPar.block c t := by
   rw [mem_block, mem_block]
   constructor
@@ -45,6 +55,25 @@ theorem mem_block_neg {c y : ℚ} {t : ℕ} : y ∈ TPar.block (-c) t ↔ -y ∈
     refine ⟨t - 1 - a, by omega, ?_⟩
     rw [Nat.cast_sub (by omega), Nat.cast_sub (by omega)]; push_cast; linarith
 
+/- English proof (translation)
+Use extensionality with `⟨y, b⟩`. Rewrite using `[mem_dualPar', GlobalTheory.SignedHC.mem_flip]`. Simplify using `only [partner, mem_union, mem_image, Prod.exists, Prod.mk.injEq, mem_dualPar', sub_neg_eq_add, add_neg_cancel_right, sub_add_cancel]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(⟨a, b', h, rfl, h2⟩ | ⟨a, ha, rfl, rfl⟩)`.
+
+Use `left`. Use `⟨-a, b', h, rfl, ?_⟩` and prove the remaining obligations. Establish `hne : -a ≠ c` using `hc _ h`. Distinguish the cases in `h1 : a < -c`. Establish `h3 : ¬ (-a < c)` using `by linarith`.
+
+Rewrite `h2` using `[if_pos h1]`. Rewrite using `[if_neg h3]`. Substitute `h2` using the available equality. Simplify using the standard rewrite rules. Establish `h3 : -a < c` using `lt_of_le_of_ne (by linarith) hne`.
+
+Rewrite `h2` using `[if_neg h1]`. Rewrite using `[if_pos h3]`. Substitute `h2` using the available equality. Simplify using the standard rewrite rules. Use `right`.
+
+Conclude with `⟨-a, mem_block_neg.1 ha, rfl, rfl⟩`. Introduce and unpack `(⟨a, b', h, rfl, h2⟩ | ⟨a, ha, ha', hb⟩)`. Use `left`. Establish `hne : -y ≠ c` using `hc _ h`. Use `⟨y, b', h, rfl, ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `h1 : y < -c`. Establish `h3 : ¬ (-y < c)` using `by linarith`. Rewrite `h2` using `[if_neg h3]`. Rewrite using `[if_pos h1]`. Substitute `h2` using the available equality.
+
+Simplify using the standard rewrite rules. Establish `h3 : -y < c` using `lt_of_le_of_ne (by linarith) hne`. Rewrite `h2` using `[if_pos h3]`. Rewrite using `[if_neg h1]`. Conclude with `Bool.not_inj h2`.
+
+Use `right`. Substitute `ha'` using the available equality. Use `⟨y, mem_block_neg.2 ha, rfl, ?_⟩` and prove the remaining obligations. Consider the cases of `b`. Conclude with `absurd hb (by decide)`.
+
+Both sides reduce to the same expression.
+-/
 theorem dual_partner (t : ℕ) (c : ℚ) (P : SPar) (hc : ∀ x ∈ P, x.1 ≠ c) :
     partner t true (-c) (-c) (dualPar P) = dualPar (GlobalTheory.SignedHC.flip (partner t false c c P)) := by
   ext ⟨y, b⟩
@@ -78,6 +107,57 @@ theorem dual_partner (t : ℕ) (c : ℚ) (P : SPar) (hc : ∀ x ∈ P, x.1 ≠ c
       · exact absurd hb (by decide)
       · rfl
 
+/- English proof (translation)
+Introduce `D hS i hi τ`. Use `show GlobalTheory.EvenOnto.UpPair (GlobalTheory.ChiGrid.sLen D - 1) ((GlobalTheory.ChiGrid.num D 1 τ).parPi i) ((GlobalTheory.ChiGrid.num D 1 τ).parPi (i + 1)) _ _`. Use `set G := GlobalTheory.ChiGrid.num D 1 τ with hGdef`. Use `set c : ℚ := (GlobalTheory.ChiGrid.cen D 1 τ (D.R.m - i) : ℚ) with hc`. Establish `hN : G.NearMid` using `GlobalTheory.ChiGrid.num_nearMid D 1 τ`.
+
+Establish `hgp` using `(GlobalTheory.ChiGrid.isLeast_gap D 1).1`. Establish `hγ : 2 * GlobalTheory.ChiGrid.bigN D ^ 3 + 2 * GlobalTheory.ChiGrid.sLen D + 2 < GlobalTheory.ChiGrid.gap D 1` using `hgp.2.1`. Establish `hr` using `hS.1`. Establish `hsl : GlobalTheory.ChiGrid.sLen D = D.R.r + 6` using `rfl`. Establish `hrk : D.R.r = D.R.k + D.R.m - 1` using `rfl`.
+
+Take `⟨a, ha⟩` from `D.R.k_even`. Take `⟨b, hb⟩` from `D.R.m_even`. Establish `hkm` using `D.R.m_add_three_le_k`. Establish `hs1 : 1 ≤ G.s` using `show 1 ≤ GlobalTheory.ChiGrid.sLen D by omega`. Establish `hq : G.s = 2 * (a + b + 2) + 1` using `show GlobalTheory.ChiGrid.sLen D = _ by rw [hsl, hrk]; omega`.
+
+Establish `hmN : D.R.m ≤ D.R.m * (D.R.t + GlobalTheory.ChiGrid.sLen D + 1)` using `Nat.le_mul_of_pos_right _ (by omega)`. Establish `hN1 : 1800 < GlobalTheory.ChiGrid.bigN D` using `by unfold GlobalTheory.ChiGrid.bigN; omega`. Establish `hγq : (G.s : ℚ) + 4 ≤ G.ga` using `by show (GlobalTheory.ChiGrid.sLen D : ℚ) + 4 ≤ (GlobalTheory.ChiGrid.gap D 1 : ℚ)`. Conclude with `(by omega : GlobalTheory.ChiGrid.sLen D + 4 ≤ GlobalTheory.ChiGrid.gap D 1)` after adjusting the coercions. Establish `hγ2 : 2 * (GlobalTheory.ChiGrid.bigN D : ℚ) ^ 3 < G.ga` using `by show 2 * (GlobalTheory.ChiGrid.bigN D : ℚ) ^ 3 < (GlobalTheory.ChiGrid.gap D 1 : ℚ)`.
+
+Conclude with `(by omega : 2 * GlobalTheory.ChiGrid.bigN D ^ 3 < GlobalTheory.ChiGrid.gap D 1)` after adjusting the coercions. Establish `hs0 : (0 : ℚ) ≤ G.s` using `by positivity`. Establish `hsγ : (G.s : ℚ) ≤ G.ga` using `by linarith`. Establish `hsq : (G.s : ℚ) = (GlobalTheory.ChiGrid.sLen D : ℚ)` using `rfl`. Establish `hcastT : ((GlobalTheory.ChiGrid.sLen D - 1 : ℕ) : ℚ) = (GlobalTheory.ChiGrid.sLen D : ℚ) - 1`.
+
+Rewrite using `[Nat.cast_sub (show 1 ≤ GlobalTheory.ChiGrid.sLen D by omega)]; simp`. Establish `hfar : FarFrom c (((GlobalTheory.ChiGrid.sLen D : ℚ) + 2) / 2) (G.parPi i)` using `GlobalTheory.ParPairArrows.far_parPi G hN hs1 hγq hi`. Establish `hpart : partner (GlobalTheory.ChiGrid.sLen D - 1) false c c (G.parPi i) = GlobalTheory.SignedHC.flip (G.parPi (i + 1))` using `GlobalTheory.ParPairArrows.partner_parPi G hN hs1 hγq hi`. Establish `hcne : ∀ x ∈ G.parPi i, x.1 ≠ c` using `fun x hx e => by`. Use `hfar x.1 (fst_mem_entries hx)` as an intermediate fact.
+
+Rewrite `this` using `[e, sub_self, abs_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hflip : ∀ S : SPar, GlobalTheory.SignedHC.flip (GlobalTheory.SignedHC.flip S) = S` using `fun S => by`. Use extensionality with `⟨x, s⟩`. Simplify using `[mem_flip]`.
+
+Establish `hP1 : partner (GlobalTheory.ChiGrid.sLen D - 1) true (-c) (-c) (dualPar (G.parPi i)) = dualPar (G.parPi (i + 1))`. Rewrite using `[dual_partner _ _ _ hcne, hpart, hflip]`. Establish `hgapP : ∀ j, j ≤ D.R.m → GapOver (dualPar (G.parPi j)) (2 * (GlobalTheory.ChiGrid.bigN D : ℚ) ^ 3)`. Introduce `j hj x hx y hy hne`. Rewrite `hx`, `hy` using `[mem_dualPar']`.
+
+Use `GlobalTheory.ParPairArrows.gap_parPi G hN hs1 hsγ hj _ hx _ hy hne` as an intermediate fact. Establish `e : |(-x.1) - (-y.1)| = |x.1 - y.1|` using `by rw [show (-x.1) - (-y.1) = -(x.1 - y.1) by ring, abs_neg]`. Rewrite `this` using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hne : (dualPar (G.parPi i)).Nonempty`.
+
+Establish `h0 : (G.parPi i).Nonempty` using `⟨_, GridData.mem_parPi.2 (Or.inl ⟨0, Nat.zero_le _, rfl⟩)⟩`. Conclude with `h0.image _`. Establish `hreg : IsRegular (dualPar (G.parPi i))`. Introduce `x hx y hy e`. Assume the negation of the conclusion as `hne'`.
+
+Rewrite `hx`, `hy` using `[mem_dualPar']`. Use `GlobalTheory.ParPairArrows.gap_parPi G hN hs1 hsγ hi.le _ hx _ hy hne'` as an intermediate fact. Rewrite `this` using `[e, sub_self, abs_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hco : InCoset (-c + (((GlobalTheory.ChiGrid.sLen D - 1 : ℕ) : ℚ) + 1) / 2) (entries (dualPar (G.parPi i)))`.
+
+Introduce `x hx`. Take `⟨s', hs'⟩` from `mem_entries.1 hx`. Rewrite `hs'` using `[mem_dualPar']`. Simplify using `only at hs'`. Take `⟨z, hz⟩` from `GlobalTheory.ParPairArrows.inCoset_parPi G hq (GlobalTheory.ChiGrid.cen D 1 τ (D.R.m - i) - GlobalTheory.ChiGrid.sLen D) i (-x) (fst_mem_entries hs')`.
+
+Establish `hcastG : ((G.s - 1 : ℕ) : ℚ) = (GlobalTheory.ChiGrid.sLen D : ℚ) - 1` using `hcastT`. Rewrite `hz` using `[hcastG]`. Move the coercions through the operations in `at hz`. Use `⟨-z, ?_⟩` and prove the remaining obligations. Rewrite using `[hcastT]`.
+
+Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hfar' : FarFrom (-c) ((((GlobalTheory.ChiGrid.sLen D - 1 : ℕ) : ℚ) + 1) / 2) (dualPar (G.parPi i))`. Introduce `x hx`. Take `⟨s', hs'⟩` from `mem_entries.1 hx`.
+
+Rewrite `hs'` using `[mem_dualPar']`. Simplify using `only at hs'`. Use `hfar _ (fst_mem_entries hs')` as an intermediate fact. Simplify using `only at this`. Establish `e : |x - -c| = |-x - c|` using `by rw [show x - -c = -(-x - c) by ring, abs_neg]`.
+
+Rewrite using `[hcastT, e]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcard : (dualPar (G.parPi i)).card + (GlobalTheory.ChiGrid.sLen D - 1) ≤ GlobalTheory.ChiGrid.bigN D`. Establish `hc0 : (dualPar (G.parPi i)).card ≤ (G.parPi i).card` using `card_image_le`. Establish `hc` using `GlobalTheory.ParPairArrows.card_parPi G i`.
+
+Establish `h1 : (i + 1) * (GlobalTheory.ChiGrid.sLen D - 1) ≤ D.R.m * (GlobalTheory.ChiGrid.sLen D - 1)` using `Nat.mul_le_mul_right _ hi`. Establish `h2 : (i + 1) * (GlobalTheory.ChiGrid.sLen D - 1) = i * (GlobalTheory.ChiGrid.sLen D - 1) + (GlobalTheory.ChiGrid.sLen D - 1)` using `Nat.succ_mul _ _`. Establish `h3 : D.R.m * (GlobalTheory.ChiGrid.sLen D - 1) + D.R.m ≤ D.R.m * (D.R.t + GlobalTheory.ChiGrid.sLen D + 1)`. Rewrite using `[← Nat.mul_succ]; exact Nat.mul_le_mul_left _ (by omega)`. Express the relevant statement in the definitionally equal form `_ ≤ (D.R.m + 1) + (D.R.k - 1) + i * (GlobalTheory.ChiGrid.sLen D - 1) at hc`.
+
+Use `show _ ≤ D.R.k + D.R.m * (D.R.t + GlobalTheory.ChiGrid.sLen D + 1)`. Use linear arithmetic over natural numbers and integers. Establish `hth` using `GlobalTheory.PairLift.FromSigned.thetaPar_partner (GlobalTheory.ChiGrid.sLen D - 1) true (-c) (-c) (dualPar (G.parPi i)) (GlobalTheory.ChiGrid.bigN D) (by omega) hne hreg hco hfar' hcard hN1 (hgapP i hi.le) (by rw [hP1]; exact hgapP (i + 1) hi)`. Take `⟨al, be, ga, de, hPe, (⟨hD, hP'⟩ | ⟨_, hP'⟩)⟩` from `hth`. Use `⟨al, be, ga, de, hD, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `e he`. Establish `hmem : ∃ s, (e + -c, s) ∈ dualPar (G.parPi i)`. Rewrite using `[hPe]`. Simplify using `only [List.mem_append] at he`. Break down `he with ((h | h) | h) | h` into its components or cases.
+
+Conclude with `⟨true, GlobalTheory.Chain.ItPairCompare.mem_signed.2 (Or.inl ⟨rfl, by simp [h]⟩)⟩`. Conclude with `⟨true, GlobalTheory.Chain.ItPairCompare.mem_signed.2 (Or.inl ⟨rfl, by simp [h]⟩)⟩`. Conclude with `⟨false, GlobalTheory.Chain.ItPairCompare.mem_signed.2 (Or.inr ⟨rfl, by simp [h]⟩)⟩`. Conclude with `⟨false, GlobalTheory.Chain.ItPairCompare.mem_signed.2 (Or.inr ⟨rfl, by simp [h]⟩)⟩`. Take `⟨s, hs⟩` from `hmem`.
+
+Rewrite `hs` using `[mem_dualPar']`. Simplify using `only at hs`. Use `hfar _ (fst_mem_entries hs)` as an intermediate fact. Simplify using `only at this`. Establish `e1 : |-(e + -c) - c| = |e|` using `by rw [show -(e + -c) - c = -e by ring, abs_neg]`.
+
+Rewrite `this` using `[e1]`. Rewrite using `[hcastT]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[← hPe, dualPar_dualPar]`. Rewrite using `[← hP', hP1, dualPar_dualPar]`.
+
+It suffices to derive a contradiction. Establish `hg` using `hgapP (i + 1) hi`. Rewrite `hg` using `[← hP1, hP']`. Establish `e0m : (((GlobalTheory.ChiGrid.sLen D - 1 : ℕ) : ℚ) - 1) / 2 ∈ block (GlobalTheory.ChiGrid.sLen D - 1)` using `GlobalTheory.PairLift.FromSigned.mem_blockList.2 ⟨0, by omega, by simp⟩`. Establish `hf : ((((GlobalTheory.ChiGrid.sLen D - 1 : ℕ) : ℚ) - 1) / 2 + -c, false) ∈ GlobalTheory.Chain.signed (al ++ de) (ga ++ block (GlobalTheory.ChiGrid.sLen D - 1) ++ be) (-c)` using `GlobalTheory.Chain.ItPairCompare.mem_signed.2 (Or.inr ⟨rfl, by simp [e0m]⟩)`.
+
+Establish `ht : ((((GlobalTheory.ChiGrid.sLen D - 1 : ℕ) : ℚ) - 1) / 2 + -c, true) ∈ GlobalTheory.Chain.signed (al ++ de) (ga ++ block (GlobalTheory.ChiGrid.sLen D - 1) ++ be) (-c)`. Rewrite using `[← hP']`. Use `mem_union.2 (Or.inr (mem_image.2 ⟨_, mem_block.2 ⟨0, by omega, ?_⟩, rfl⟩))` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `hg _ ht _ hf (by simp)` as an intermediate fact. Simplify using `only [sub_self, abs_zero] at this`. Establish `: (0 : ℚ) ≤ 2 * (GlobalTheory.ChiGrid.bigN D : ℚ) ^ 3` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem parOK_core : ParOK := by
   intro D hS i hi τ
   show GlobalTheory.EvenOnto.UpPair (GlobalTheory.ChiGrid.sLen D - 1) ((GlobalTheory.ChiGrid.num D 1 τ).parPi i) ((GlobalTheory.ChiGrid.num D 1 τ).parPi (i + 1)) _ _

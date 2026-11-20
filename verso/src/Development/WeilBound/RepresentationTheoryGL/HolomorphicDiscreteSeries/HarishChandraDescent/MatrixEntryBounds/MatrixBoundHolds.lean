@@ -9,6 +9,13 @@ namespace PositivityTheory.RgHe3
 
 open ReciprocityTheory.ChartRestriction.DS
 
+/- English proof (translation)
+Introduce `n ε M _ _ E _ _ Λ A v hv hA hoff Y`. Establish `hsplit : actM E Y v - (∑ c : Fin n, Y c c * (Λ c : ℂ)) • v = ∑ a : Fin n, ∑ b : Fin n, Y a b • (E a b v - if a = b then (Λ a : ℂ) • v else 0)`. Simplify using `only [actM, LinearMap.sum_apply, LinearMap.smul_apply, smul_sub, Finset.sum_sub_distrib, smul_ite, smul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true, Finset.sum_smul, mul_smul]`. Rewrite using `[hsplit]`. Establish `hb : ∀ a b : Fin n, ‖Y a b • (E a b v - if a = b then (Λ a : ℂ) • v else 0)‖ ≤ ‖Y a b‖ * (A * ‖v‖)`.
+
+Introduce `a b`. Rewrite using `[norm_smul]`. Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+
+Simplify using `[hv a]`. Check the signs of the components of the expression. Simplify using `only [hab, if_false, sub_zero]`. Conclude with `hoff a b hab`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem matrix_bound_holds : MatBd := by
   intro n ε M _ _ E _ _ Λ A v hv hA hoff Y
   have hsplit : actM E Y v - (∑ c : Fin n, Y c c * (Λ c : ℂ)) • v

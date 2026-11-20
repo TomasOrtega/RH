@@ -14,6 +14,9 @@ namespace GlobalTheory.CompanionTheory.SobComplete
 
 variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
+/- English proof (translation)
+Establish `hxy : Sm ε σ (x - y)` using `sm_iff.2 (Submodule.sub_mem _ (sm_iff.1 hx) (sm_iff.1 hy))`. Establish `h` using `Dw_add hσ hl hxy hy`. Rewrite `h` using `[sub_add_cancel]`. Rewrite using `[h, add_sub_cancel_right]`.
+-/
 theorem Dw_sub_of_sm {σ : Mx n → (H →L[ℂ] H)} (hσ : IsURepOn (UJset ε) σ) {l : List (Mx n)}
     (hl : ∀ X ∈ l, X ∈ lieSet ε) {x y : H} (hx : Sm ε σ x) (hy : Sm ε σ y) :
     Dw σ l (x - y) = Dw σ l x - Dw σ l y := by
@@ -22,6 +25,11 @@ theorem Dw_sub_of_sm {σ : Mx n → (H →L[ℂ] H)} (hσ : IsURepOn (UJset ε) 
   rw [sub_add_cancel] at h
   rw [h, add_sub_cancel_right]
 
+/- English proof (translation)
+Proceed by induction on `S with`. Consider the case `nil => simpa [sobNorm] using tendsto_const_nhds`. Consider the case `cons l S ih`. Establish `h1` using `h l List.mem_cons_self`. Establish `h2` using `ih fun l' hl' => h l' (List.mem_cons_of_mem _ hl')`.
+
+Establish `h3` using `h1.add h2`. Rewrite `h3` using `[add_zero]`. Use `h3.congr fun k => ?_` and prove the remaining obligations. Simplify using `[sobNorm]`.
+-/
 theorem tendsto_sobNorm_zero {σ : Mx n → (H →L[ℂ] H)} {u : ℕ → H} (S : List (List (Mx n)))
     (h : ∀ l ∈ S, Tendsto (fun k => ‖l.foldr (dRep σ) (u k)‖) atTop (𝓝 0)) :
     Tendsto (fun k => sobNorm σ S (u k)) atTop (𝓝 0) := by
@@ -35,6 +43,19 @@ theorem tendsto_sobNorm_zero {σ : Mx n → (H →L[ℂ] H)} {u : ℕ → H} (S 
     refine h3.congr fun k => ?_
     simp [sobNorm]
 
+/- English proof (translation)
+Establish `hρ : ModRep ε σ` using `GlobalTheory.FamSmooth.modRep_of_isURepOn hσ`. Establish `hmem : ∀ l : List (lie (Jm ε)), ∀ X ∈ l.map Subtype.val, X ∈ lieSet ε` using `fun l X hX => by`. Take `⟨Y, -, rfl⟩` from `List.mem_map.1 hX`. Conclude with `Y.2`. Set `U : ℕ → List (lie (Jm ε)) → H` to `fun k l => Dw σ (l.map Subtype.val) (w k)`.
+
+Establish `hU : ∀ k, U k ∈ Fam ε σ` using `fun k => GlobalTheory.SobUnif.smooth_fam hσ (hw k)`. Establish `hcau : ∀ l, CauchySeq fun k => U k l` using `fun l => by`. Use `Metric.cauchySeq_iff.2 fun δ hδ => ?_` and prove the remaining obligations. Take `⟨K, hK⟩` from `hC [l.map Subtype.val] (by simpa using hmem l) δ hδ`. Use `⟨K, fun k hk m hm => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[dist_eq_norm]`. Use `show ‖Dw σ (l.map Subtype.val) (w k) - Dw σ (l.map Subtype.val) (w m)‖ < δ`. Rewrite using `[← Dw_sub_of_sm hσ (hmem l) (hw k) (hw m)]`. Conclude with `(norm_Dw_le_sobNorm σ List.mem_cons_self _).trans_lt (hK k hk m hm)`. Use `choose v hv using fun l => cauchySeq_tendsto_of_complete (hcau l)`.
+
+Establish `hvF : v ∈ Fam ε σ` using `(GlobalTheory.T.isClosed_derivativeFamilies_moderateGrowth n ε H σ hρ).mem_of_tendsto (tendsto_pi_nhds.2 hv) (Eventually.of_forall hU)`. Take `⟨hs, hd⟩` from `GlobalTheory.SobUnif.fam_smooth hσ hvF`. Use `⟨v [], hs, fun S hS => tendsto_sobNorm_zero S fun l hl => ?_⟩` and prove the remaining obligations. Take `⟨l', rfl⟩` from `GlobalTheory.SobUnif.exists_lift l (hS l hl)`. Establish `h1 : Tendsto (fun k => U k l' - v l') atTop (𝓝 0)`.
+
+Simplify using `using (hv l').sub_const (v l')`. Establish `h2` using `h1.norm`. Rewrite `h2` using `[norm_zero]`. Use `h2.congr fun k => ?_` and prove the remaining obligations. Use `show ‖Dw σ (l'.map Subtype.val) (w k) - v l'‖ = ‖Dw σ (l'.map Subtype.val) (w k - v [])‖`.
+
+Rewrite using `[Dw_sub_of_sm hσ (hmem l') (hw k) hs, hd l']`.
+-/
 theorem smoothVec_complete_of_unitary (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H))
     (hσ : IsURepOn (UJset ε) σ) (w : ℕ → H) (hw : ∀ k, SmoothVec (lieSet ε) σ (w k))
@@ -70,6 +91,9 @@ theorem smoothVec_complete_of_unitary (n : ℕ) (ε : Fin n → Bool) (H : Type)
   show ‖Dw σ (l'.map Subtype.val) (w k) - v l'‖ = ‖Dw σ (l'.map Subtype.val) (w k - v [])‖
   rw [Dw_sub_of_sm hσ (hmem l') (hw k) hs, hd l']
 
+/- English proof (translation)
+Introduce `n ε H _ _ _ σ hσ _ w hw hC` and use `smoothVec_complete_of_unitary n ε H σ hσ w hw hC`.
+-/
 theorem smoothVec_complete : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), IsURepOn (UJset ε) σ → IsIrredOn (UJset ε) σ → ∀ w : ℕ → H, (∀ k, SmoothVec (lieSet ε) σ (w k)) → (∀ S : List (List (Matrix (Fin n) (Fin n) ℂ)), (∀ l ∈ S, ∀ X ∈ l, X ∈ lieSet ε) → ∀ δ > 0, ∃ K, ∀ k ≥ K, ∀ m ≥ K, sobNorm σ S (w k - w m) < δ) → ∃ w₀, SmoothVec (lieSet ε) σ w₀ ∧ ∀ S : List (List (Matrix (Fin n) (Fin n) ℂ)), (∀ l ∈ S, ∀ X ∈ l, X ∈ lieSet ε) → Filter.Tendsto (fun k => sobNorm σ S (w k - w₀)) Filter.atTop (nhds 0) :=
   fun n ε H _ _ _ σ hσ _ w hw hC => smoothVec_complete_of_unitary n ε H σ hσ w hw hC
 

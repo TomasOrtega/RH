@@ -9,6 +9,11 @@ open AlgebraicGeometry CategoryTheory NumberField ReciprocityTheory.ChartRestric
 
 namespace GlobalTheory.FieldBC
 
+/- English proof (translation)
+Establish `h' : ∀ x : c.F, algebraMap c'.F S (incF c c' hle x) = algebraMap c.F S x` using `h`. Establish `hd : (MvPolynomial.map (incF c c' hle) P).totalDegree = P.totalDegree`. Simplify using `only [MvPolynomial.totalDegree, MvPolynomial.support_map_of_injective P (incF c c' hle).injective]`. Use `congr 1`. Rewrite using `[hd, ← h']`.
+
+Simplify using `only [map_mul, map_inv₀, map_pow, map_natCast]`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Rewrite using `[h']`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun i _ => (GlobalTheory.T.connectionPolynomialExpression_coeffFieldExtension E H Dw l Xo c c' hle nab n P S h y k (F q i)).2`.
+-/
 theorem shortExpr_bc {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} {c c' : Coeff l} (hle : c.F ≤ c'.F) (nab : NabV Xo c) {n : ℕ} (w : (Fin n → LevQ Dw l) → c.F)
     (β : c.F) (a b N : ℕ) (P : MvPolynomial (LtN Dw n) c.F) {S : Type} [CommRing S] [Algebra c.F S] [Algebra c'.F S]
@@ -35,6 +40,13 @@ theorem shortExpr_bc {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Hos
     congr 1
     exact Finset.sum_congr rfl fun i _ => (GlobalTheory.T.connectionPolynomialExpression_coeffFieldExtension E H Dw l Xo c c' hle nab n P S h y k (F q i)).2
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c c' hle nab n w Λ β N P S _ _ _ h y v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨S', i1, i2, φ, y', z, tp, F, hff, hfr, hz, hg, htp, hF, hv⟩`. Use `letI i3 : Algebra c.F S' := resAlg hle S'`. Establish `h' : AlgOver c c' hle S'` using `fun _ => rfl`.
+
+Set `φ₀ : S →ₐ[c.F] S'` to `{ φ.toRingHom with commutes' := fun x => (congrArg φ (h x).symm).trans (φ.commutes _) }`. Conclude with `⟨S', i1, i3, φ₀, y'.res hle h', z, tp, F, hff, hfr, hz, hg, htp, hF, hv.trans (shortExpr_bc hle nab w β _ _ N P h' y' _ F)⟩`. Introduce and unpack `⟨S', i1, i2, φ, y', z, tp, F, hff, hfr, hz, hg, htp, hF, hv⟩`. Use `letI i3 : Algebra c'.F S' := (φ.toRingHom.comp (algebraMap c'.F S)).toAlgebra`. Establish `h' : AlgOver c c' hle S'` using `fun x => (congrArg φ (h x)).trans (φ.commutes x)`.
+
+Set `φ₀ : S →ₐ[c'.F] S'` to `{ φ.toRingHom with commutes' := fun _ => rfl }`. Conclude with `⟨S', i1, i3, φ₀, y'.ext hle h', z, tp, F, hff, hfr, hz, hg, htp, hF, hv.trans (shortExpr_bc hle nab w β _ _ N P h' (y'.ext hle h') _ F).symm⟩`.
+-/
 theorem shortValAt_bc : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c c' : Coeff l) (hle : c.F ≤ c'.F) (nab : NabV Xo c) (n : ℕ) (w : (Fin n → LevQ Dw l) → c.F) (Λ : GenLat E n) (β : c.F) (N : ℕ) (P : MvPolynomial (LtN Dw n) c.F) (S : Type) [CommRing S] [Algebra c.F S] [Algebra c'.F S] (h : AlgOver c c' hle S) (y : FrPt Xo c' S) (v : S), ShortValAt Xo c' (nabBC hle nab) (fun q => incF c c' hle (w q)) Λ (incF c c' hle β) N (MvPolynomial.map (incF c c' hle) P) y v ↔ ShortValAt Xo c nab w Λ β N P (y.res hle h) v := by
   intro E _ _ _ H Dw l Xo c c' hle nab n w Λ β N P S _ _ _ h y v
   constructor

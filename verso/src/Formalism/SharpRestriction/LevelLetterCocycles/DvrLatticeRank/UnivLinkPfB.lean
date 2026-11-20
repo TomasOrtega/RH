@@ -17,10 +17,16 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
     (W : LocWach PD LL O v n)
 
+/- English proof (translation)
+The claim follows from `LinearMap.map_smul_of_tower ((W.map F).restrictScalars (LetA O n)) a x`.
+-/
 theorem univLinkPf_map_osmul {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) (a : O)
     (x : W.DD T₁) : W.map F (a • x) = a • W.map F x :=
   LinearMap.map_smul_of_tower ((W.map F).restrictScalars (LetA O n)) a x
 
+/- English proof (translation)
+Take `⟨hz, w₁, hw₁, hr⟩` from `h`. Use `⟨hz, ((PD.p : ℕ) : O) ^ t • w₁, Submodule.smul_mem _ _ hw₁, ?_⟩` and prove the remaining obligations. Establish `h2` using `Submodule.smul_mem (PiNS W T₂ π' 1) (((PD.p : ℕ) : O) ^ t) hr`. Rewrite `h2` using `[smul_sub, smul_smul, ← pow_add, add_comm t y, ← univLinkPf_map_osmul]`. Then use the resulting hypothesis.
+-/
 theorem univLinkPf_liftsBy_mono {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) {π' Eπ : LetA O n}
     {h' y : ℕ} {c : ZMod n} {z : W.DD T₂} (t : ℕ) (h : LiftsBy W F π' Eπ h' y c z) :
     LiftsBy W F π' Eπ h' (y + t) c z := by
@@ -29,6 +35,9 @@ theorem univLinkPf_liftsBy_mono {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.
   have h2 := Submodule.smul_mem (PiNS W T₂ π' 1) (((PD.p : ℕ) : O) ^ t) hr
   rwa [smul_sub, smul_smul, ← pow_add, add_comm t y, ← univLinkPf_map_osmul] at h2
 
+/- English proof (translation)
+Introduce `f hf x hx hFil h1 z hz hα` and use `univLinkPf_liftsBy_mono W F t (h f hf x hx hFil h1 z hz hα)`.
+-/
 theorem universal_lift_mono_exponent {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L)
     {Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop} {π' Eπ : LetA O n} {h' M S : ℕ}
     {up : (K →ₐ[Qp] LL) → Bool} {b : (K →ₐ[Qp] LL) → ℕ} {c : ZMod n} {y : ℕ}
@@ -36,6 +45,21 @@ theorem universal_lift_mono_exponent {T₁ T₂ : LocLat G Qp LL O} (F : LatHom 
     ThirdPropositionSlot W F Pt π' Eπ h' M S up b c (y + t) α :=
   fun f hf x hx hFil h1 z hz hα => univLinkPf_liftsBy_mono W F t (h f hf x hx hFil h1 z hz hα)
 
+/- English proof (translation)
+Take `⟨f, x, hx, xr, hcoord, hfl, hxr, hβ, hrel⟩` from `hU1w`. Establish `hαx` using `hβα _ _ x hx hβ`. Take `⟨o, ho⟩` from `hxb ⟨xr, hxr⟩`. Set `Xj : Fin k → ↥(LamLA W T₂ π' Eπ h' c ⊤)` to `fun j => ⟨f j ⊗ₜ mkL W T₂ π' c (ell j) (hell j), (Submodule.mem_inf.1 (hfl j)).1⟩`. Use `choose Yj hYj using fun j => Submodule.Quotient.mk_surjective _ (α T₂ (Xj j))`.
+
+Establish `hrel' : x - ∑ j, (Xj j : LA W T₂ π' c) - ∑ i, o i • ((⟨xb i, hxbL i⟩ : ↥(LamLA W T₂ π' Eπ h' c ⊤)) : LA W T₂ π' c) ∈ piNL W T₂ Pt π' Eπ h' c 1`. Establish `h` using `Submodule.add_mem _ hrel ho`. Rewrite `h` using `[sub_add_sub_cancel]`. Conclude with `h`. Establish `htr` using `univLinkPf_transport W T₂ hMF hM ⟨x, hx⟩ _ hαx Xj Yj (fun j => (hYj j).symm) (fun i => ⟨xb i, hxbL i⟩) Yb hYb o hrel'`.
+
+Establish `hL : ∀ j, LiftsBy W F π' Eπ h' y₁ c (Yj j : W.DD T₂)` using `fun j => hU3 (f j) (hcoord j) (ell j) (hell j) (hFil j) (Xj j).2 (Yj j) (Yj j).2 (hYj j).symm`. Use `choose w₁ hw₁ hw₁r using fun j => (hL j).2`. Use `⟨∑ j, u • w₁ j, Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ u (hw₁ j), fun i => ((PD.p : ℕ) : O) ^ y₁ * u * o i, ?_⟩` and prove the remaining obligations. Establish `htr'` using `(Submodule.Quotient.mk_eq_zero (PiNS W T₂ π' 1)).2 htr`. Rewrite `htr'` using `[← Submodule.mkQ_apply]`.
+
+Simplify using `only [map_sub, map_sum, map_smul] at htr'`. Rewrite `htr'` using `[sub_sub, sub_eq_zero]`. Establish `hq2 : ∀ j, (PiNS W T₂ π' 1).mkQ (W.map F (w₁ j)) = ((PD.p : ℕ) : O) ^ y₁ • (PiNS W T₂ π' 1).mkQ (Yj j : W.DD T₂)`. Introduce `j`. Establish `h` using `(Submodule.Quotient.mk_eq_zero (PiNS W T₂ π' 1)).2 (hw₁r j)`.
+
+Rewrite `h` using `[← Submodule.mkQ_apply, map_sub, map_smul, sub_eq_zero]`. Conclude with `h.symm`. Establish `hc : ((PD.p : ℕ) : O) ^ (2 * σ + κ + y₁) = (((PD.p : ℕ) : O) ^ y₁ * u) * (((PD.p : ℕ) : O) ^ (2 * σ) * piOm1 W c S h' up b)`. Rewrite using `[pow_add, pow_add, ← hu]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[← Submodule.Quotient.mk_eq_zero, ← Submodule.mkQ_apply]`. Simplify using `only [map_sub, map_sum, map_smul, univLinkPf_map_osmul, hq2]`. Rewrite using `[hc, mul_smul (((PD.p : ℕ) : O) ^ y₁ * u), mul_smul (((PD.p : ℕ) : O) ^ (2 * σ)) (piOm1 W c S h' up b), htr', smul_add, Finset.smul_sum, Finset.smul_sum]`. Simplify using `only [smul_smul]`. Rewrite using `[mul_comm u (((PD.p : ℕ) : O) ^ y₁)]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem univLinkPf_cong {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L)
     {Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop} {π' Eπ : LetA O n} {h' M σ κ y₁ S : ℕ} {c : ZMod n}
     {up : (K →ₐ[Qp] LL) → Bool} {b : (K →ₐ[Qp] LL) → ℕ}
@@ -108,6 +132,21 @@ theorem univLinkPf_cong {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L
   rw [mul_comm u (((PD.p : ℕ) : O) ^ y₁)]
   abel
 
+/- English proof (translation)
+Take `⟨wb, hwbM, hwbR⟩` from `hR₁.1 w₁ hw₁`. Take `⟨z₁, hz₁M, hz₁Z⟩` from `hC₁.1 wb hwbM`. Establish `hFZ` using `univLinkPf_map_Z1DΔ W F hz₁Z`. Establish `hnat : LatHom.H1map F (W.clK T₁ ⟨(wb, z₁), hz₁Z⟩) = W.clK T₂ ⟨(W.map F wb, W.map F z₁), hFZ⟩` using `hK F ⟨(wb, z₁), hz₁Z⟩ ⟨(W.map F wb, W.map F z₁), hFZ⟩ rfl`. Establish `hE : ((PD.p : ℕ) : O) ^ (σ + N) • (pr : W.DD T₂ × W.DD T₂).1 - (W.map F wb + ∑ i, o i • Ybb i) ∈ PiNS W T₂ π' M`.
+
+Apply `hR₂.2` to reduce the goal to its premises. Conclude with `Submodule.sub_mem _ (Submodule.smul_mem _ _ hpr1) (Submodule.add_mem _ (univLinkPf_map_InvS W F hc₁ hc₂ π' Eπ h' M c hwbM) (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hYbb i)))`. Establish `e1` using `(Submodule.Quotient.mk_eq_zero (PiNS W T₂ π' 1)).2 hrel`. Establish `e2` using `(Submodule.Quotient.mk_eq_zero (PiNS W T₂ π' 1)).2 (univLinkPf_map_PiNS W F hc₁ hc₂ π' 1 hwbR)`. Establish `e3 : ∀ i, (PiNS W T₂ π' 1).mkQ (Ybb i) = ((PD.p : ℕ) : O) ^ σ • (PiNS W T₂ π' 1).mkQ (Yb i)`.
+
+Introduce `i`. Establish `h` using `(Submodule.Quotient.mk_eq_zero (PiNS W T₂ π' 1)).2 (hYbbR i)`. Rewrite `h` using `[← Submodule.mkQ_apply, map_sub, map_smul, sub_eq_zero]`. Conclude with `h.symm`. Rewrite `e1`, `e2` using `[← Submodule.mkQ_apply]`.
+
+Simplify using `only [map_sub, map_sum, map_smul] at e1`. Rewrite `e1` using `[sub_sub, sub_eq_zero]`. Rewrite `e2` using `[map_sub, map_sub, univLinkPf_map_osmul, map_smul, sub_eq_zero]`. Rewrite using `[← Submodule.Quotient.mk_eq_zero, ← Submodule.mkQ_apply]`. Simplify using `only [map_sub, map_add, map_sum, map_smul, e3]`.
+
+Rewrite using `[pow_add, mul_smul, e1, ← e2, smul_add, Finset.smul_sum]`. Simplify using `only [smul_smul, mul_comm (((PD.p : ℕ) : O) ^ σ)]`. Normalize the expressions using the abelian group laws. Set `Pc : ↥(W.wachCocyclesDelta T₂)` to `⟨(W.map F wb, W.map F z₁), hFZ⟩ + ∑ i, o i • Pb i`. Establish `hPc1 : (Pc : W.DD T₂ × W.DD T₂).1 = W.map F wb + ∑ i, o i • Ybb i`.
+
+Simplify using `only [Pc, Submodule.coe_add, Submodule.coe_sum, Submodule.coe_smul, Prod.fst_add, Prod.fst_sum, Prod.smul_fst, hPb1]`. Establish `hPc2 : (Pc : W.DD T₂ × W.DD T₂).2 = W.map F z₁ + ∑ i, o i • (Pb i : W.DD T₂ × W.DD T₂).2`. Simplify using `only [Pc, Submodule.coe_add, Submodule.coe_sum, Submodule.coe_smul, Prod.snd_add, Prod.snd_sum, Prod.smul_snd]`. Establish `hcl` using `hC₂.2.1 (((PD.p : ℕ) : O) ^ (σ + N) • pr) Pc (by rw [Submodule.coe_smul, Prod.smul_fst]; exact Submodule.smul_mem _ _ hpr1) (by rw [Submodule.coe_smul, Prod.smul_snd]; exact Submodule.smul_mem _ _ hpr2) (by rw [hPc1]; exact Submodule.add_mem _ (univLinkPf_map_InvS W F hc₁ hc₂ π' …`. Use `⟨⟨(wb, z₁), hz₁Z⟩, hwbM, hz₁M, ?_⟩` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem univLinkPf_class {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L)
     (hc₁ : IsCrys PD T₁.ρ) (hc₂ : IsCrys PD T₂.ρ) (hK : W.ClKNat)
     {π' Eπ : LetA O n} {h' M σ N : ℕ} {c : ZMod n}
@@ -183,6 +222,29 @@ theorem univLinkPf_class {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.
         congrArg₂ (· + ·) hnat.symm ((map_sum (W.clK T₂) _ _).trans
           (Finset.sum_congr rfl fun i _ => map_smul (W.clK T₂) _ _))
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `hk`. Take `⟨Lr, k, ell, hell, hrk, hFil, -, hU1w⟩` from `hU1 hL`. Take `⟨hfin, hfree, hrk2⟩` from `hU2 Lr`. Use `hfin` as an intermediate fact. Use `hfree` as an intermediate fact.
+
+Take `⟨xb, hxb⟩` from `univLinkPf_basis W T₂ Pt π' Eπ h' c Lr`. Establish `hxbL : ∀ i, (xb i : LA W T₂ π' c) ∈ LamLA W T₂ π' Eπ h' c ⊤` using `fun i => univLinkPf_LamLA_le W T₂ π' Eπ h' c Lr (Submodule.mem_inf.1 (xb i).2).1`. Use `choose Yb hYb using fun i => Submodule.Quotient.mk_surjective _ (α T₂ ⟨xb i, hxbL i⟩)`. Establish `hYbI : ∀ i, (Yb i : W.DD T₂) ∈ InvS W T₂ π' Eπ h' 1 c` using `fun i => hMF.2.2.2.1 _ (hxbL i) _ (Yb i).2 (hYb i).symm (univLinkPf_InvL_le W T₂ Pt π' Eπ h' c Lr (xb i).2)`. Use `choose Ybb hYbb hYbbR using fun i => hR₂.1 _ (hYbI i)`.
+
+Use `choose zb hzb hzbZ using fun i => hC₂.1 _ (hYbb i)`. Set `Pb : Fin (finrank O (IIrest W T₂ Pt π' Eπ h' c Lr)) → ↥(W.wachCocyclesDelta T₂)` to `fun i => ⟨(Ybb i, zb i), hzbZ i⟩`. Use `choose κb hκbf hκbZ hκbcl using fun i => hC₂.2.2 (Pb i) (hYbb i) (hzb i)`. Use `⟨Finset.univ.image κb, ?_, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Introduce `κ' hκ'`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 (Finset.mem_coe.1 hκ')`. Conclude with `hκbf i`. Introduce `x hx`. Unfold `JZ at hx`.
+
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨hκ, w, hwM, z, hzM, hwz, hcl⟩` from `hy`. Establish `hw1` using `univLinkPf_InvS_anti W T₂ π' Eπ h' c hM hwM`. Take `⟨w₁, hw₁, o, hrel⟩` from `univLinkPf_cong W F hβα hMF hM u hu hU3 Lr ell hell hFil xb hxb hxbL Yb (fun i => (hYb i).symm) w hw1 (hU1w w hw1)`.
+
+Take `⟨pr₁, hp1, hp2, heq⟩` from `univLinkPf_class W F hc₁ hc₂ hK hR₁ hR₂ hC₁ hC₂ (fun i => (Yb i : W.DD T₂)) Ybb hYbb hYbbR Pb (fun i => rfl) hzb ⟨(w, z), hwz⟩ hwM hzM w₁ hw₁ o hrel`. Take `⟨κ₁, hκ₁f, hκ₁Z, hκ₁cl⟩` from `hC₁.2.2 pr₁ hp1 hp2`. Establish `hZ : ((PD.p : ℕ) : O) ^ (σ + (2 * σ + κ + y₁)) • (⟨y, hκ⟩ : ↥(latticeCocycles T₂.L)) - ⟨F.post κ₁, F.post_Z1T κ₁ hκ₁Z⟩ - ∑ i, o i • (⟨κb i, hκbZ i⟩ : ↥(latticeCocycles T₂.L)) ∈ (latticeCoboundaries T₂.L).comap (latticeCocycles T₂.L).subtype`. Establish `h1 : Submodule.mkQ ((latticeCoboundaries T₂.L).comap (latticeCocycles T₂.L).subtype) (⟨y, hκ⟩ : ↥(latticeCocycles T₂.L)) = W.clK T₂ ⟨(w, z), hwz⟩` using `hcl`. Establish `h2 : Submodule.mkQ ((latticeCoboundaries T₂.L).comap (latticeCocycles T₂.L).subtype) (⟨F.post κ₁, F.post_Z1T κ₁ hκ₁Z⟩ : ↥(latticeCocycles T₂.L)) = LatHom.H1map F (W.clK T₁ pr₁)`.
+
+Rewrite using `[← hκ₁cl]`. Both sides reduce to the same expression. Rewrite using `[← Submodule.Quotient.mk_eq_zero, ← Submodule.mkQ_apply]`. Simplify using `only [map_sub, map_sum, map_smul]`. Rewrite using `[h1, h2, sub_sub, sub_eq_zero]`.
+
+Conclude with `heq.trans (congrArg (LatHom.H1map F (W.clK T₁ pr₁) + ·) (Finset.sum_congr rfl fun i _ => congrArg (o i • ·) (hκbcl i).symm))`. Establish `hB` using `Submodule.mem_comap.1 hZ`. Simplify using `only [Submodule.subtype_apply, Submodule.coe_sub, Submodule.coe_smul, Submodule.coe_sum, Submodule.coe_mk] at hB`. Establish `hImF : F.post κ₁ ∈ F.ImF PD`. Unfold `LatHom.ImF`.
+
+Conclude with `Submodule.mem_sup_left (Submodule.mem_map_of_mem hκ₁f)`. Establish `hBI : ((PD.p : ℕ) : O) ^ (σ + (2 * σ + κ + y₁)) • y - F.post κ₁ - ∑ i, o i • κb i ∈ F.ImF PD`. Unfold `LatHom.ImF`. Conclude with `Submodule.mem_sup_right hB`. Establish `hsp : ∑ i, o i • κb i ∈ Submodule.span O (↑(Finset.univ.image κb) : Set (G → T₂.V))` using `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span (by simp))`.
+
+Establish `hall` using `Submodule.add_mem _ (Submodule.mem_sup_left (Submodule.add_mem _ hImF hBI) : _ ∈ F.ImF PD ⊔ Submodule.span O (↑(Finset.univ.image κb) : Set (G → T₂.V))) (Submodule.mem_sup_right hsp : _ ∈ F.ImF PD ⊔ Submodule.span O (↑(Finset.univ.image κb) : Set (G → T₂.V)))`. Use `hall using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Consider the case `zero => rw [smul_zero]`. Conclude with `Submodule.zero_mem _`.
+
+Consider the case `add y z _ _ hy hz => rw [smul_add]`. Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul a y _ hy => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ a hy`.
+-/
 theorem univLinkPf_local [StrongRankCondition O] {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L)
     (hc₁ : IsCrys PD T₁.ρ) (hc₂ : IsCrys PD T₂.ρ) (hK : W.ClKNat)
     {Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop} {π' Eπ : LetA O n} {h' M σ κ y₁ S η m : ℕ}

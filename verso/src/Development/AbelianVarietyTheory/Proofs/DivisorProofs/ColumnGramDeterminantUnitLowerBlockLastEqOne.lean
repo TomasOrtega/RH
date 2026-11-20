@@ -5,6 +5,13 @@ open scoped ENNReal Matrix
 
 namespace GlobalTheory.IntBall
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_of_lowerTriangular]`. Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `i _`. Simplify using `[blkW, lowMat]`. Introduce `i j hij`.
+
+Establish `hij' : (i : ℕ) < j` using `hij`. Simplify using `only [blkW, lowMat]`. Use `split_ifs with h1 h2 h3 h4 h5 h6`. Apply the tactic sequence `all_goals first`. Consider the case `rfl`.
+
+Consider the case `(exfalso; simp only [Fin.lt_def, Fin.ext_iff] at *; omega)`.
+-/
 theorem blkW_det_eq_one (r p0 : ℕ) (w : Low r → ℂ) : (blkW p0 w).det = 1 := by
   rw [Matrix.det_of_lowerTriangular]
   · apply Finset.prod_eq_one
@@ -18,6 +25,11 @@ theorem blkW_det_eq_one (r p0 : ℕ) (w : Low r → ℂ) : (blkW p0 w).det = 1 :
       | rfl
       | (exfalso; simp only [Fin.lt_def, Fin.ext_iff] at *; omega)
 
+/- English proof (translation)
+Unfold `colGram lminor`. Establish `: (Fin.castLE (Nat.le_of_lt_succ (Fin.last (r - 1)).isLt) : Fin (r - 1) → Fin (r - 1)) = id`. Use function extensionality and compare the values at `i`. Use `ext`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this, Matrix.submatrix_id_id, Matrix.det_mul, Matrix.det_conjTranspose, blkW_det_eq_one]`. Simplify using the standard rewrite rules.
+-/
 theorem colGram_blkW_last (r p0 : ℕ) (w : Low r → ℂ) :
     colGram (blkW p0 w) (Fin.last (r - 1)) = 1 := by
   unfold colGram lminor
@@ -26,6 +38,9 @@ theorem colGram_blkW_last (r p0 : ℕ) (w : Low r → ℂ) :
   rw [this, Matrix.submatrix_id_id, Matrix.det_mul, Matrix.det_conjTranspose, blkW_det_eq_one]
   simp
 
+/- English proof (translation)
+The claim follows from `colGram_blkW_last`.
+-/
 theorem colGramLast : ∀ (r p0 : ℕ) (w : Low r → ℂ), colGram (blkW p0 w) (Fin.last (r - 1)) = 1 :=
   colGram_blkW_last
 

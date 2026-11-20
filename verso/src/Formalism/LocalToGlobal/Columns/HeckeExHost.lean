@@ -17,6 +17,11 @@ section Gen
 
 variable {X : Fields}
 
+/- English proof (translation)
+Establish `hne : P.asIdeal.under (𝓞 X.F) ≠ ⊥` using `(P.under (𝓞 X.F)).ne_bot`. Use `P.isPrime` as an intermediate fact. Establish `: P.asIdeal.LiesOver (P.asIdeal.under (𝓞 X.F))` using `⟨rfl⟩`. Rewrite using `[← Ideal.ramificationIdx'_eq_ramificationIdx (P.asIdeal.under (𝓞 X.F)) P.asIdeal hne]`. Apply `Ideal.ramificationIdx'_spec` to reduce the goal to its premises.
+
+Rewrite using `[pow_one]`. Conclude with `Ideal.map_comap_le`. Conclude with `hX.unram P`.
+-/
 theorem unram_of (hX : X.AbelianUnramifiedExtensionConditions) (P : HeightOneSpectrum (𝓞 X.E)) : P.asIdeal.ramificationIdx (𝓞 X.F) = 1 := by
   have hne : P.asIdeal.under (𝓞 X.F) ≠ ⊥ := (P.under (𝓞 X.F)).ne_bot
   have := P.isPrime
@@ -27,6 +32,11 @@ theorem unram_of (hX : X.AbelianUnramifiedExtensionConditions) (P : HeightOneSpe
     exact Ideal.map_comap_le
   · exact hX.unram P
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `hX.star_F a`. Rewrite `h1` using `[h, hc]`. Apply `hne` to reduce the goal to its premises. Establish `h2 : s0 + s0 = 0` using `by nth_rewrite 1 [← h1]`.
+
+Conclude with `neg_add_cancel s0`. Conclude with `add_self_eq_zero.mp h2`.
+-/
 theorem algebraMap_ne_imaginary (hX : X.Ok) {s0 : X.E} (hne : s0 ≠ 0) (hc : star s0 = -s0) (a : X.F) : algebraMap X.F X.E a ≠ s0 := by
   intro h
   have h1 := hX.star_F a
@@ -37,6 +47,13 @@ theorem algebraMap_ne_imaginary (hX : X.Ok) {s0 : X.E} (hne : s0 ≠ 0) (hc : st
     exact neg_add_cancel s0
   exact add_self_eq_zero.mp h2
 
+/- English proof (translation)
+Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Establish `ht : t = 0`. Assume the negation of the conclusion as `ht`. Apply `algebraMap_ne_imaginary hX hne hc (-s / t)` to reduce the goal to its premises.
+
+Rewrite `hst` using `[Algebra.smul_def, Algebra.smul_def, mul_one]`. Establish `htE : algebraMap X.F X.E t ≠ 0` using `(map_ne_zero _).mpr ht`. Rewrite using `[map_div₀, map_neg, div_eq_iff htE]`. Take the linear combination `-hst`. Substitute `ht` using the available equality.
+
+Use `⟨?_, rfl⟩` and prove the remaining obligations. Rewrite `hst` using `[zero_smul, add_zero, Algebra.smul_def, mul_one]`. Conclude with `(map_eq_zero (algebraMap X.F X.E)).mp hst`.
+-/
 theorem li_pair (hX : X.Ok) {s0 : X.E} (hne : s0 ≠ 0) (hc : star s0 = -s0) : LinearIndependent X.F ![(1 : X.E), s0] := by
   rw [LinearIndependent.pair_iff]
   intro s t hst
@@ -52,6 +69,11 @@ theorem li_pair (hX : X.Ok) {s0 : X.E} (hne : s0 ≠ 0) (hc : star s0 = -s0) : L
   rw [zero_smul, add_zero, Algebra.smul_def, mul_one] at hst
   exact (map_eq_zero (algebraMap X.F X.E)).mp hst
 
+/- English proof (translation)
+Establish `hli` using `li_pair hX hne hc`. Establish `hcard : Fintype.card (Fin 2) = Module.finrank X.F X.E` using `by rw [hX.rankE]; rfl`. Use `set b := basisOfLinearIndependentOfCardEqFinrank hli hcard with hb`. Use `⟨b.repr x 0, b.repr x 1, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← b.sum_repr x]`.
+
+Simplify using `[hb, Fin.sum_univ_two, Algebra.smul_def]`.
+-/
 theorem exists_pair (hX : X.Ok) {s0 : X.E} (hne : s0 ≠ 0) (hc : star s0 = -s0) (x : X.E) :
     ∃ a b : X.F, x = algebraMap X.F X.E a + algebraMap X.F X.E b * s0 := by
   have hli := li_pair hX hne hc
@@ -61,6 +83,13 @@ theorem exists_pair (hX : X.Ok) {s0 : X.E} (hne : s0 ≠ 0) (hc : star s0 = -s0)
   conv_lhs => rw [← b.sum_repr x]
   simp [hb, Fin.sum_univ_two, Algebra.smul_def]
 
+/- English proof (translation)
+Take `⟨a, b, rfl⟩` from `exists_pair hX hne hc x`. Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `hb : algebraMap X.F X.E b * s0 = 0`. Rewrite `hx` using `[star_add, star_mul, hX.star_F, hX.star_F, hc]`. Establish `h2 : (2 : X.E) * (algebraMap X.F X.E b * s0) = 0` using `by linear_combination -hx`.
+
+Break down `mul_eq_zero.mp h2 with h | h` into its components or cases. Conclude with `absurd h two_ne_zero`. Conclude with `h`. Break down `mul_eq_zero.mp hb with h | h` into its components or cases. Rewrite using `[h, zero_mul, add_zero]`.
+
+Conclude with `absurd h hne`.
+-/
 theorem fixF_of (hX : X.Ok) {s0 : X.E} (hne : s0 ≠ 0) (hc : star s0 = -s0) (x : X.E) (hx : star x = x) :
     ∃ a : X.F, algebraMap X.F X.E a = x := by
   obtain ⟨a, b, rfl⟩ := exists_pair hX hne hc x
@@ -75,12 +104,50 @@ theorem fixF_of (hX : X.Ok) {s0 : X.E} (hne : s0 ≠ 0) (hc : star s0 = -s0) (x 
   · rw [h, zero_mul, add_zero]
   · exact absurd h hne
 
+/- English proof (translation)
+Rewrite using `[← hX.conjE, hX.star_F]`.
+-/
 theorem conj_alg (hX : X.Ok) (φ : X.E →+* ℂ) (a : X.F) :
     starRingEnd ℂ (φ (algebraMap X.F X.E a)) = φ (algebraMap X.F X.E a) := by
   rw [← hX.conjE, hX.star_F]
 
 open Classical in
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (X.embC σ₀)`. Introduce `τ τ' h`. Apply `hX.emb_inj` to reduce the goal to its premises. Use extensionality with `x`. Conclude with `σ₀.injective (RingHom.congr_fun h x)`.
+
+Set `Φ : X.Tau ⊕ X.Tau → (X.E →+* ℂ)` to `Sum.elim (X.embC σ₀) fun τ => (starRingEnd ℂ).comp (X.embC σ₀ τ)`. Establish `hΦ : Function.Injective Φ`. Establish `hcs : ∀ τ τ', X.embC σ₀ τ ≠ (starRingEnd ℂ).comp (X.embC σ₀ τ')`. Introduce `τ τ' h`. Take `⟨r, hr, h1⟩` from `hpos τ`.
+
+Take `⟨r', hr', h2⟩` from `hpos τ'`. Establish `h3` using `RingHom.congr_fun h s0`. Rewrite `h3` using `[RingHom.comp_apply, h1, h2, map_mul, Complex.conj_I, Complex.conj_ofReal]`. Establish `h4` using `congrArg Complex.im h3`. Simplify using `at h4`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Introduce and unpack `(τ | τ) (τ' | τ') h`. Conclude with `congrArg Sum.inl (hinj h)`. Conclude with `absurd h (hcs τ τ')`. Conclude with `absurd h.symm (hcs τ' τ)`.
+
+Use `congr 1`. Apply `hinj` to reduce the goal to its premises. Use extensionality with `x`. Use `RingHom.congr_fun h x` as an intermediate fact. Simplify using `only [Φ, Sum.elim_inr, RingHom.comp_apply] at this`.
+
+Conclude with `(starRingEnd ℂ).injective this`. Establish `hcardE : Fintype.card (X.E →+* ℂ) = 2 * Fintype.card X.Tau`. Rewrite using `[Embeddings.card, ← Module.finrank_mul_finrank ℚ X.F X.E, hX.rankE, hX.card_Tau, mul_comm]`. Establish `hsurj : Function.Surjective Φ`. Establish `hc2 : Fintype.card (X.Tau ⊕ X.Tau) = Fintype.card (X.E →+* ℂ)`.
+
+Rewrite using `[Fintype.card_sum, hcardE]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `((Fintype.bijective_iff_injective_and_card Φ).2 ⟨hΦ, hc2⟩).2`. Establish `hs2 : ∃ a : X.F, algebraMap X.F X.E a = s0 ^ 2` using `fixF_of hX hne hc _ (by rw [star_pow, hc]; ring)`. Establish `huniq : ∀ i τ, (InfinitePlace.mk (X.embC σ₀ i)).comap (algebraMap X.F X.E) = (InfinitePlace.mk (X.embC σ₀ τ)).comap (algebraMap X.F X.E) → i = τ`.
+
+Introduce `i τ h`. Establish `hagree : ∀ a : X.F, X.embC σ₀ i (algebraMap X.F X.E a) = X.embC σ₀ τ (algebraMap X.F X.E a)`. Rewrite `h` using `[InfinitePlace.comap_mk, InfinitePlace.comap_mk, InfinitePlace.mk_eq_iff]`. Introduce `a`. Break down `h with h | h` into its components or cases.
+
+Conclude with `RingHom.congr_fun h a`. Establish `h1` using `RingHom.congr_fun h a`. Rewrite `h1` using `[ComplexEmbedding.conjugate_coe_eq]`. Express the relevant statement in the definitionally equal form `starRingEnd ℂ (X.embC σ₀ i (algebraMap X.F X.E a)) = _ at h1`. Rewrite `h1` using `[conj_alg hX]`.
+
+Conclude with `h1`. Take `⟨r, hr, h1⟩` from `hpos i`. Take `⟨r', hr', h2⟩` from `hpos τ`. Take `⟨a2, ha2⟩` from `hs2`. Establish `hrr : r = r'`.
+
+Establish `h3` using `hagree a2`. Rewrite `h3` using `[ha2, map_pow, map_pow, h1, h2]`. Establish `h4 : ((r : ℂ) ^ 2) = (r' : ℂ) ^ 2`. Establish `: (Complex.I * r) ^ 2 = -(r : ℂ) ^ 2` using `by rw [mul_pow, Complex.I_sq]; ring`. Establish `h' : (Complex.I * r') ^ 2 = -(r' : ℂ) ^ 2` using `by rw [mul_pow, Complex.I_sq]; ring`.
+
+Rewrite `h3` using `[this, h']`. Take the linear combination `-h3`. Establish `h5 : r ^ 2 = r' ^ 2` using `by exact_mod_cast h4`. Use polynomial arithmetic with `[sq_nonneg (r - r'), sq_nonneg (r + r')]`. Apply `hinj` to reduce the goal to its premises.
+
+Use extensionality with `x`. Take `⟨a, b, rfl⟩` from `exists_pair hX hne hc x`. Rewrite using `[map_add, map_add, map_mul, map_mul, hagree a, hagree b, h1, h2, hrr]`. Establish `: Algebra.IsAlgebraic X.F X.E` using `inferInstance`. Take `⟨w', hw'⟩` from `InfinitePlace.comap_surjective (k := X.F) (K := X.E) w`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨τ, hτ⟩ : ∃ τ, InfinitePlace.mk (X.embC σ₀ τ) = w' := by`. Take `⟨t, ht⟩` from `hsurj w'.embedding`. Break down `t with τ | τ` into its components or cases. Conclude with `⟨τ, by rw [show X.embC σ₀ τ = w'.embedding from ht, InfinitePlace.mk_embedding]⟩`. Use `⟨τ, ?_⟩` and prove the remaining obligations.
+
+Establish `: (starRingEnd ℂ).comp (X.embC σ₀ τ) = w'.embedding` using `ht`. Establish `h2 : (starRingEnd ℂ).comp (X.embC σ₀ τ) = ComplexEmbedding.conjugate (X.embC σ₀ τ)` using `by ext x; rfl`. Rewrite using `[← InfinitePlace.mk_conjugate_eq, ← h2, this, InfinitePlace.mk_embedding]`. Rewrite using `[Finset.card_eq_one]`. Use `⟨τ, Finset.eq_singleton_iff_unique_mem.2 ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, aboveInf]`. Rewrite using `[hτ]`. Conclude with `hw'`. Introduce `i hi`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, aboveInf] at hi`.
+
+Conclude with `huniq i τ (by rw [hi, hτ]; exact hw'.symm)`.
+-/
 theorem onePsi_of (hX : X.Ok) (σ₀ : X.K →+* ℂ) {s0 : X.E} (hne : s0 ≠ 0) (hc : star s0 = -s0)
     (hpos : ∀ i, ∃ r : ℝ, 0 < r ∧ X.embC σ₀ i s0 = Complex.I * r) (w : InfinitePlace X.F) :
     (Finset.univ.filter (fun i => InfinitePlace.mk (X.embC σ₀ i) ∈ aboveInf (L := X.E) X.F w)).card = 1 := by
@@ -169,6 +236,9 @@ theorem onePsi_of (hX : X.Ok) (σ₀ : X.K →+* ℂ) {s0 : X.E} (hne : s0 ≠ 0
     simp only [Finset.mem_filter, Finset.mem_univ, true_and, aboveInf] at hi
     exact huniq i τ (by rw [hi, hτ]; exact hw'.symm)
 
+/- English proof (translation)
+Apply `RingOfIntegers.ext` to reduce the goal to its premises. Use `show starRingEnd X.E (starRingEnd X.E (x : X.E)) = (x : X.E)`. Simplify using the standard rewrite rules.
+-/
 theorem conjO_conjO' (x : 𝓞 X.E) : X.conjO (X.conjO x) = x := by
   apply RingOfIntegers.ext
   show starRingEnd X.E (starRingEnd X.E (x : X.E)) = (x : X.E)
@@ -190,6 +260,9 @@ def conjPrime₂ (P : HeightOneSpectrum (𝓞 X.E)) : HeightOneSpectrum (𝓞 X.
     have := congrArg X.conjO this
     rwa [conjO_conjO', map_zero] at this
 
+/- English proof (translation)
+Apply `RingOfIntegers.ext` to reduce the goal to its premises. Use `show starRingEnd X.E (algebraMap (𝓞 X.E) X.E (algebraMap (𝓞 X.F) (𝓞 X.E) a)) = algebraMap (𝓞 X.E) X.E (algebraMap (𝓞 X.F) (𝓞 X.E) a)`. Rewrite using `[starRingEnd_apply, ← IsScalarTower.algebraMap_apply (𝓞 X.F) (𝓞 X.E) X.E, IsScalarTower.algebraMap_apply (𝓞 X.F) X.F X.E]`. Conclude with `hX.star_F _`.
+-/
 theorem conjO_alg (hX : X.Ok) (a : 𝓞 X.F) : X.conjO (algebraMap (𝓞 X.F) (𝓞 X.E) a) = algebraMap (𝓞 X.F) (𝓞 X.E) a := by
   apply RingOfIntegers.ext
   show starRingEnd X.E (algebraMap (𝓞 X.E) X.E (algebraMap (𝓞 X.F) (𝓞 X.E) a)) =
@@ -198,6 +271,9 @@ theorem conjO_alg (hX : X.Ok) (a : 𝓞 X.F) : X.conjO (algebraMap (𝓞 X.F) (�
     IsScalarTower.algebraMap_apply (𝓞 X.F) X.F X.E]
   exact hX.star_F _
 
+/- English proof (translation)
+Establish `key : (P.asIdeal.comap X.conjO).comap (algebraMap (𝓞 X.F) (𝓞 X.E)) = P.asIdeal.comap (algebraMap (𝓞 X.F) (𝓞 X.E))`. Rewrite using `[Ideal.comap_comap, show X.conjO.comp (algebraMap (𝓞 X.F) (𝓞 X.E)) = algebraMap (𝓞 X.F) (𝓞 X.E) from RingHom.ext fun a => conjO_alg hX a]`. Use `ext1`. Conclude with `key`.
+-/
 theorem conjP_under (hX : X.Ok) (P : HeightOneSpectrum (𝓞 X.E)) : (conjPrime₂ P).under (𝓞 X.F) = P.under (𝓞 X.F) := by
   have key : (P.asIdeal.comap X.conjO).comap (algebraMap (𝓞 X.F) (𝓞 X.E)) =
       P.asIdeal.comap (algebraMap (𝓞 X.F) (𝓞 X.E)) := by
@@ -206,6 +282,11 @@ theorem conjP_under (hX : X.Ok) (P : HeightOneSpectrum (𝓞 X.E)) : (conjPrime�
   ext1
   exact key
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hny`. Apply `h` to reduce the goal to its premises. Establish `h1 : P.intValuation y = 1` using `le_antisymm (P.intValuation_le_one y) (not_lt.mp fun hlt => hny ((P.intValuation_lt_one_iff_mem y).mp hlt))`. Establish `h2 : P.valuation X.E (s : X.E) = 1`. Rewrite using `[← hy, show (y : X.E) = algebraMap (𝓞 X.E) X.E y from rfl, HeightOneSpectrum.valuation_of_algebraMap, h1]`.
+
+Unfold `Formalism.L2.Host.ordF`. Rewrite using `[h2]`. Simplify using the standard rewrite rules.
+-/
 theorem mem_of_ordF (P : HeightOneSpectrum (𝓞 X.E)) (s : X.Eˣ) (y : 𝓞 X.E) (hy : (y : X.E) = s) (h : ordF P s ≠ 0) :
     y ∈ P.asIdeal := by
   by_contra hny
@@ -220,6 +301,13 @@ theorem mem_of_ordF (P : HeightOneSpectrum (𝓞 X.E)) (s : X.Eˣ) (y : 𝓞 X.E
   rw [h2]
   simp
 
+/- English proof (translation)
+Introduce `s hs P hP hcard`. Establish `hy : y0 ∈ P.asIdeal` using `mem_of_ordF P s y0 (hy0.trans hs.symm) hP`. Establish `hne : conjPrime₂ P ≠ P` using `fun h => hmove P hy (congrArg HeightOneSpectrum.asIdeal h)`. Take `⟨Q, hQ⟩` from `Finset.card_eq_one.mp hcard`. Establish `h1 : P ∈ aboveF (L` using `X.E) X.F (P.under (𝓞 X.F)) := by`.
+
+Simplify using `[Formalism.L2.Host.aboveF]`. Establish `h2 : conjPrime₂ P ∈ aboveF (L` using `X.E) X.F (P.under (𝓞 X.F)) := by`. Rewrite using `[← conjP_under hX P]`. Simplify using `[Formalism.L2.Host.aboveF]`. Rewrite `h1`, `h2` using `[hQ, Finset.mem_singleton]`.
+
+Conclude with `hne (h2.trans h1.symm)`.
+-/
 theorem dsplit_of (hX : X.Ok) {s0 : X.E} (y0 : 𝓞 X.E) (hy0 : (y0 : X.E) = s0)
     (hmove : ∀ P : HeightOneSpectrum (𝓞 X.E), y0 ∈ P.asIdeal → P.asIdeal.comap X.conjO ≠ P.asIdeal) :
     ∀ s : X.Eˣ, (s : X.E) = s0 → ∀ P : HeightOneSpectrum (𝓞 X.E), ordF P s ≠ 0 →
@@ -255,6 +343,9 @@ def sqrtHO : 𝓞 (hostFields H.toHostRaw ι LL hE).E :=
   if ∃ τ, 0 < ((hostFields H.toHostRaw ι LL hE).embC (sig0 ι LL) τ (hwE H.toHostRaw ι LL hE)).im
   then hwO H.toHostRaw ι LL hE else -hwO H.toHostRaw ι LL hE
 
+/- English proof (translation)
+Unfold `sqrtHO sqrtH`. Use `split_ifs`. Both sides reduce to the same expression. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem sqrtHO_coe : ((sqrtHO H ι LL hE : 𝓞 (hostFields H.toHostRaw ι LL hE).E) : (hostFields H.toHostRaw ι LL hE).E) =
     sqrtH H ι LL hE := by
   unfold sqrtHO sqrtH
@@ -263,6 +354,9 @@ theorem sqrtHO_coe : ((sqrtHO H ι LL hE : 𝓞 (hostFields H.toHostRaw ι LL hE
   · push_cast
     rfl
 
+/- English proof (translation)
+Establish `hd : 0 < H.d` using `H.hyp.2.1.pos`. Unfold `sqrtH`. Use `split_ifs`. Conclude with `star_hwE H.toHostRaw ι LL hE hd`. Rewrite using `[star_neg, star_hwE H.toHostRaw ι LL hE hd, neg_neg]`.
+-/
 theorem sqrtH_star : star (sqrtH H ι LL hE) = -sqrtH H ι LL hE := by
   have hd : 0 < H.d := H.hyp.2.1.pos
   unfold sqrtH
@@ -270,6 +364,9 @@ theorem sqrtH_star : star (sqrtH H ι LL hE) = -sqrtH H ι LL hE := by
   · exact star_hwE H.toHostRaw ι LL hE hd
   · rw [star_neg, star_hwE H.toHostRaw ι LL hE hd, neg_neg]
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `hwE_sq H.toHostRaw ι LL hE`. Rewrite `h1` using `[h, zero_pow two_ne_zero, zero_eq_neg]`. Establish `hd : (H.d : (hostFields H.toHostRaw ι LL hE).E) ≠ 0` using `Nat.cast_ne_zero.2 H.hyp.2.1.ne_zero`. Conclude with `hd h1`.
+-/
 theorem hwE_ne : hwE H.toHostRaw ι LL hE ≠ 0 := by
   intro h
   have h1 := hwE_sq H.toHostRaw ι LL hE
@@ -277,12 +374,30 @@ theorem hwE_ne : hwE H.toHostRaw ι LL hE ≠ 0 := by
   have hd : (H.d : (hostFields H.toHostRaw ι LL hE).E) ≠ 0 := Nat.cast_ne_zero.2 H.hyp.2.1.ne_zero
   exact hd h1
 
+/- English proof (translation)
+Unfold `sqrtH`. Use `split_ifs`. Conclude with `hwE_ne H ι LL hE`. Conclude with `neg_ne_zero.mpr (hwE_ne H ι LL hE)`.
+-/
 theorem sqrtH_ne : sqrtH H ι LL hE ≠ 0 := by
   unfold sqrtH
   split_ifs
   · exact hwE_ne H ι LL hE
   · exact neg_ne_zero.mpr (hwE_ne H ι LL hE)
 
+/- English proof (translation)
+Set `v : (hostFields H.toHostRaw ι LL hE).Tau → ℂ` to `fun τ => (hostFields H.toHostRaw ι LL hE).embC (sig0 ι LL) τ (hwE H.toHostRaw ι LL hE)`. Establish `hd : (0 : ℝ) < Real.sqrt H.d` using `Real.sqrt_pos.2 (by exact_mod_cast H.hyp.2.1.pos)`. Establish `hsq : ∀ τ, v τ ^ 2 = (Complex.I * (Real.sqrt H.d : ℂ)) ^ 2`. Introduce `τ`. Establish `h1 : v τ ^ 2 = (hostFields H.toHostRaw ι LL hE).embC (sig0 ι LL) τ (hwE H.toHostRaw ι LL hE ^ 2)`.
+
+Rewrite using `[map_pow]`. Rewrite using `[h1, hwE_sq, map_neg, map_natCast, mul_pow, Complex.I_sq, ← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg _)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hK : ∀ τ τ', v τ = v τ'` using `fun τ τ' => congrArg (sig0 ι LL) (hwE_Kq H.toHostRaw ι LL hE τ τ')`.
+
+Establish `hpm : ∀ τ, v τ = Complex.I * (Real.sqrt H.d : ℂ) ∨ v τ = -(Complex.I * (Real.sqrt H.d : ℂ))` using `fun τ => sq_eq_sq_iff_eq_or_eq_neg.1 (hsq τ)`. Establish `hIm : (Complex.I * (Real.sqrt H.d : ℂ)).im = Real.sqrt H.d` using `by simp`. Use `⟨Real.sqrt H.d, hd, ?_⟩` and prove the remaining obligations. Unfold `sqrtH`. Use `split_ifs with h`.
+
+Take `⟨τ0, hτ0⟩` from `h`. Break down `hpm τ0 with h1 | h1` into its components or cases. Conclude with `(hK i τ0).trans h1`. It suffices to derive a contradiction. Establish `: (v τ0).im = -Real.sqrt H.d` using `by rw [h1, Complex.neg_im, hIm]`.
+
+Establish `h2 : 0 < (v τ0).im` using `hτ0`. Combine the linear equalities and inequalities to obtain the conclusion. Use `push Not at h`. Rewrite using `[map_neg]`. Break down `hpm i with h1 | h1` into its components or cases.
+
+It suffices to derive a contradiction. Establish `h2 : (v i).im ≤ 0` using `h i`. Rewrite `h2` using `[h1, hIm]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : -(v i) = Complex.I * (Real.sqrt H.d : ℂ)` using `by rw [h1, neg_neg]`.
+
+Conclude with `h3`.
+-/
 theorem sqrtH_pos (i : (hostFields H.toHostRaw ι LL hE).Tau) :
     ∃ r : ℝ, 0 < r ∧ (hostFields H.toHostRaw ι LL hE).embC (sig0 ι LL) i (sqrtH H ι LL hE) = Complex.I * r := by
   let v : (hostFields H.toHostRaw ι LL hE).Tau → ℂ := fun τ =>
@@ -322,6 +437,11 @@ theorem sqrtH_pos (i : (hostFields H.toHostRaw ι LL hE).Tau) :
 
 def toX (y : H.EQ) : (hostFields H.toHostRaw ι LL hE).E := y
 
+/- English proof (translation)
+Set `φ : (hostFields H.toHostRaw ι LL hE).E →+* ℂ` to `(T.ι.comp T.j.toRingHom).comp (T.iso.symm : H.EQ ≃ₐ[ℚ] H.E).toRingEquiv.toRingHom`. Establish `hφ : ∀ y : H.E, φ (toX H ι LL hE (T.iso y)) = T.ι (T.j y)`. Introduce `y`. Use `show T.ι (T.j (T.iso.symm (T.iso y))) = _`. Rewrite using `[AlgEquiv.symm_apply_apply]`.
+
+Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[(hostFields_ok H ι LL hE).conjE φ, hφ, hφ, T.conj]`.
+-/
 theorem frame_conj (T : Frame H) (x : H.E) :
     toX H ι LL hE (T.iso (H.conj x)) = star (toX H ι LL hE (T.iso x)) := by
   let φ : (hostFields H.toHostRaw ι LL hE).E →+* ℂ :=
@@ -333,6 +453,13 @@ theorem frame_conj (T : Frame H) (x : H.E) :
   apply φ.injective
   rw [(hostFields_ok H ι LL hE).conjE φ, hφ, hφ, T.conj]
 
+/- English proof (translation)
+Take `⟨T⟩` from `Frame.exists H`. Take `⟨n, hn, hzn⟩` from `hz`. Set `z' : H.EQ` to `z`. Establish `hz' : z' ^ n = 1` using `hzn`. Establish `h` using `hmu (T.iso.symm z') ⟨n, hn, by rw [← map_pow, hz', map_one]⟩`.
+
+Establish `h2 : z' = 1 ∨ z' = -1`. Break down `h with h | h` into its components or cases. Use `left`. Rewrite using `[← T.iso.apply_symm_apply z', h, map_one]`. Use `right`.
+
+Rewrite using `[← T.iso.apply_symm_apply z', h, map_neg, map_one]`. Conclude with `h2`.
+-/
 theorem roots_host (hmu : H.toHostRaw.MuPM) (z : (hostFields H.toHostRaw ι LL hE).E) (hz : ∃ n : ℕ, 0 < n ∧ z ^ n = 1) :
     z = 1 ∨ z = -1 := by
   obtain ⟨T⟩ := Frame.exists H
@@ -348,6 +475,21 @@ theorem roots_host (hmu : H.toHostRaw.MuPM) (z : (hostFields H.toHostRaw ι LL h
       rw [← T.iso.apply_symm_apply z', h, map_neg, map_one]
   exact h2
 
+/- English proof (translation)
+Introduce `hfix`. Take `⟨T⟩` from `Frame.exists H`. Establish `hw : hwO H.toHostRaw ι LL hE ∈ P.asIdeal`. Unfold `sqrtHO at hP`. Use `split_ifs at hP`.
+
+Conclude with `hP`. Conclude with `(P.asIdeal.neg_mem_iff).1 hP`. Establish `hdP : ((H.d : ℤ) : 𝓞 (hostFields H.toHostRaw ι LL hE).E) ∈ P.asIdeal`. Establish `h2 : hwO H.toHostRaw ι LL hE ^ 2 ∈ P.asIdeal` using `Ideal.pow_mem_of_mem _ hw 2 two_pos`. Rewrite `h2` using `[hwO_sq]`.
+
+Use `(P.asIdeal.neg_mem_iff).1 h2` as an intermediate fact. Simplify using `using this`. Set `eO : 𝓞 H.E ≃+* 𝓞 (hostFields H.toHostRaw ι LL hE).E` to `RingOfIntegers.mapRingEquiv (T.iso : H.E ≃ₐ[ℚ] H.EQ).toRingEquiv`. Establish `hdP' : ((H.d : ℤ) : 𝓞 H.E) ∈ P.asIdeal.comap (eO : 𝓞 H.E →+* 𝓞 (hostFields H.toHostRaw ι LL hE).E)`. Rewrite using `[Ideal.mem_comap, map_intCast]`.
+
+Conclude with `hdP`. Set `P' : HeightOneSpectrum (𝓞 H.E)` to `{ asIdeal := P.asIdeal.comap (eO : 𝓞 H.E →+* 𝓞 (hostFields H.toHostRaw ι LL hE).E) isPrime := Ideal.IsPrime.comap _ ne_bot := by`. Introduce `h`. Rewrite `hdP'` using `[h, Ideal.mem_bot]`. Establish `hd0 : ((H.d : ℤ) : 𝓞 H.E) ≠ 0` using `by exact_mod_cast H.hyp.2.1.ne_zero`.
+
+Conclude with `hd0 hdP' }`. Use `P'.isPrime` as an intermediate fact. Use `PI.UnitaryGroupMassFormula.HostPrimeFacts.liesOver_d H P' hdP'` as an intermediate fact. Apply `H.der.decompConj H.d H.hyp.2.1 (Dvd.intro_left _ rfl) P'.asIdeal` to reduce the goal to its premises. Rewrite using `[MulAction.mem_stabilizer_iff]`.
+
+Use extensionality with `z`. Rewrite using `[Ideal.mem_pointwise_smul_iff_inv_smul_mem]`. Establish `key : eO (H.conj⁻¹ • z) = (hostFields H.toHostRaw ι LL hE).conjO (eO z)`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Use `show toX H ι LL hE (T.iso (H.conj⁻¹ (z : H.E))) = star (toX H ι LL hE (T.iso (z : H.E)))`.
+
+Establish `h1` using `frame_conj H ι LL hE T (H.conj⁻¹ (z : H.E))`. Rewrite `h1` using `[show H.conj (H.conj⁻¹ (z : H.E)) = (z : H.E) from AlgEquiv.apply_symm_apply _ _]`. Rewrite using `[h1, star_star]`. Use `show eO (H.conj⁻¹ • z) ∈ P.asIdeal ↔ eO z ∈ P.asIdeal`. Rewrite using `[key, ← Ideal.mem_comap, hfix]`.
+-/
 theorem move_host (P : HeightOneSpectrum (𝓞 (hostFields H.toHostRaw ι LL hE).E)) (hP : sqrtHO H ι LL hE ∈ P.asIdeal) :
     P.asIdeal.comap (hostFields H.toHostRaw ι LL hE).conjO ≠ P.asIdeal := by
   intro hfix
@@ -390,6 +532,9 @@ theorem move_host (P : HeightOneSpectrum (𝓞 (hostFields H.toHostRaw ι LL hE)
   show eO (H.conj⁻¹ • z) ∈ P.asIdeal ↔ eO z ∈ P.asIdeal
   rw [key, ← Ideal.mem_comap, hfix]
 
+/- English proof (translation)
+The claim follows from `unram_of (base_fields_conditions H ι LL hE) P onePsi w := onePsi_of (hostFields_ok H ι LL hE) (sig0 ι LL) (sqrtH_ne H ι LL hE) (sqrtH_star H ι LL hE) (sqrtH_pos H ι LL hE) w fixF := fixF_of (hostFields_ok H ι LL hE) (sqrtH_ne H ι LL hE) (sqrtH_star H ι LL hE) roots := roots_host …`.
+-/
 theorem etaFactsC_host (hmu : H.toHostRaw.MuPM) :
     EtaFactsC (hostFields H.toHostRaw ι LL hE) (sig0 ι LL) (sqrtH H ι LL hE) where
   unram P _ := unram_of (base_fields_conditions H ι LL hE) P
@@ -403,6 +548,9 @@ theorem etaFactsC_host (hmu : H.toHostRaw.MuPM) :
   card4 := (base_fields_conditions H ι LL hE).four_dvd_f
   dsplit := dsplit_of (hostFields_ok H ι LL hE) (sqrtHO H ι LL hE) (sqrtHO_coe H ι LL hE) (move_host H ι LL hE)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, etaFactsC_host H ι LL hE hmu⟩`.
+-/
 theorem exists_etaFactsC_host (hmu : H.toHostRaw.MuPM) :
     ∃ s0, EtaFactsC (hostFields H.toHostRaw ι LL hE) (sig0 ι LL) s0 := ⟨_, etaFactsC_host H ι LL hE hmu⟩
 

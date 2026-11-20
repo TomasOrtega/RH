@@ -16,17 +16,32 @@ def DsPre (B : Pre) : ℝ :=
     (StandardLattice.idxRowLoc (B.host.g 0) B.R.k B.R.m ^ B.R.f * StandardLattice.idxRowLoc (B.host.g 1) B.R.k B.R.m ^ B.R.f) *
     ∏ τ : Tau B.R, Vol.trueDsig B.R (B.hc τ)
 
+/- English proof (translation)
+Take `⟨sp, hT, hY, hA, hV, hz, rfl, -⟩` from `h`. Conclude with `⟨fun u => K.du_eq u, K.Ds_eq⟩`.
+-/
 theorem Ctx.Over.sizes {K : Ctx} {B : Pre} (h : K.Over B) :
     (∀ u, (B.duStar u : ℝ) = duPre B u) ∧ B.Dstar = DsPre B := by
   obtain ⟨sp, hT, hY, hA, hV, hz, rfl, -⟩ := h
   exact ⟨fun u => K.du_eq u, K.Ds_eq⟩
 
+/- English proof (translation)
+Establish `h1` using `R.two_le_m`. Establish `h2` using `R.m_add_three_le_k`. Simplify using `only [sigYD, Ranks.rankY, Ranks.r]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem sigYD_zero (R : Ranks) : 2 ≤ (sigYD R 0).1 ∧ (sigYD R 0).1 + (sigYD R 0).2 = R.r := by
   have h1 := R.two_le_m
   have h2 := R.m_add_three_le_k
   simp only [sigYD, Ranks.rankY, Ranks.r]
   omega
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hO.sizes`. Use `⟨fun u => ?_, ?_⟩` and prove the remaining obligations. Establish `e : (X.toD7.mem u).A.duStar = X.B.duStar u` using `X.C.A_duStar u`. Rewrite using `[e]`. Use `(h1 u).trans ?_` and prove the remaining obligations.
+
+Unfold `duPre StandardLattice.duStarU StandardLattice.duStarP`. Use `congr 1`. Establish `e : X.toD7.what₂.Dstar = X.B.Dstar` using `(X.toD7.Dstar_eq X.toD7.u₀).symm.trans (X.C.A_Dstar _)`. Rewrite using `[e, h2]`. Establish `hvol : StandardLattice.volY0 X.toD7 = StandardLattice.massI X.toD7 X.B.R.r`.
+
+Use `letI := X.toD7.host.cmStar`. Use `hv.2 (X.toD7.sp.Y 0) (sigYD X.B.R 0).1 (sigYD X.B.R 0).2 (X.toD7.sp.Y_sig 0) (fun τ => X.toD7.Y_sigval 0 (Nat.zero_le _) τ) (sigYD_zero _).1` as an intermediate fact. Rewrite `this` using `[(sigYD_zero _).2]`. Conclude with `this`. Unfold `DsPre StandardLattice.DstarD StandardLattice.DstarP`.
+
+Rewrite using `[hvol]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun τ _ => (hd τ).symm`.
+-/
 theorem sizes_eq_count (K : Ctx) (X : Stages) (hO : K.Over X.B.toPre) (hv : StandardLattice.VolumeEqMass₂ X.toD7)
     (hd : ∀ τ, X.S.dsig τ = Vol.trueDsig X.B.R (X.B.hc τ)) :
     (∀ u, ((X.toD7.mem u).A.duStar : ℝ) = StandardLattice.duStarU X.toD7 u) ∧ X.toD7.what₂.Dstar = StandardLattice.DstarD X.toD7 := by

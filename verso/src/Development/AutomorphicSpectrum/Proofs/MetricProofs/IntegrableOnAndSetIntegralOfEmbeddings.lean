@@ -12,6 +12,17 @@ open GlobalTheory GlobalTheory.Points GlobalTheory.ArInt GlobalTheory.Cartier Gl
 
 namespace GlobalTheory.CompanionTheory.Metric
 
+/- English proof (translation)
+Use extensionality with `T hT`. Rewrite using `[Measure.finsetSum_apply]`. Establish `hcover : T = ⋃ a, T ∩ Set.range (s a)`. Use extensionality with `y`. Simplify using `only [Set.mem_iUnion, Set.mem_inter_iff]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hy`. Take `⟨a, ha, -⟩` from `hu y`. Conclude with `⟨a, hy, ha⟩`. Introduce and unpack `⟨a, hy, -⟩`.
+
+Conclude with `hy`. Establish `hdisj : Pairwise (Function.onFun Disjoint fun a => T ∩ Set.range (s a))`. Introduce `a b hab`. Rewrite using `[Function.onFun, Set.disjoint_left]`. Introduce and unpack `y ⟨-, hya⟩ ⟨-, hyb⟩`.
+
+Take `⟨a', -, ha'⟩` from `hu y`. Conclude with `hab ((ha' a hya).trans (ha' b hyb).symm)`. Establish `hmeas : ∀ a, MeasurableSet (T ∩ Set.range (s a))` using `fun a => hT.inter (hs a).measurableSet_range`. Rewrite using `[show ν T = ν (⋃ a, T ∩ Set.range (s a)) by rw [← hcover], measure_iUnion hdisj hmeas, tsum_fintype]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[(hs a).map_apply, ← hν a _ ((hs a).measurable hT), Set.image_preimage_eq_inter_range]`.
+-/
 theorem measure_eq_sum_map_of_embeddings {α : Type} [Fintype α] {Y : Type} [MeasurableSpace Y]
     {Z : α → Type} [∀ a, MeasurableSpace (Z a)] {s : ∀ a, Z a → Y}
     (hs : ∀ a, MeasurableEmbedding (s a)) (hu : ∀ y, ∃! a, y ∈ Set.range (s a))
@@ -42,6 +53,13 @@ theorem measure_eq_sum_map_of_embeddings {α : Type} [Fintype α] {Y : Type} [Me
   refine Finset.sum_congr rfl fun a _ => ?_
   rw [(hs a).map_apply, ← hν a _ ((hs a).measurable hT), Set.image_preimage_eq_inter_range]
 
+/- English proof (translation)
+Introduce `α _ Y _ Z _ s hs hu ν μ hν S hS f`. Use `haveI := Fintype.ofFinite α`. Establish `hνeq` using `measure_eq_sum_map_of_embeddings hs hu hν`. Establish `hres : ν.restrict S = ∑ a, (Measure.map (s a) (μ a)).restrict S`. Use extensionality with `T hT`.
+
+Rewrite using `[hνeq, Measure.restrict_apply hT, Measure.finsetSum_apply, Measure.finsetSum_apply]`. Simplify using `only [Measure.restrict_apply hT]`. Establish `hint : IntegrableOn f S ν ↔ ∀ a, IntegrableOn (fun z => f (s a z)) (s a ⁻¹' S) (μ a)`. Rewrite using `[IntegrableOn, hres, integrable_finsetSum_measure]`. Simplify using `only [Finset.mem_univ, forall_const]`.
+
+Conclude with `forall_congr' fun a => (hs a).integrableOn_map_iff`. Use `⟨hint, fun hf => ?_⟩` and prove the remaining obligations. Establish `hf' : ∀ a ∈ Finset.univ, Integrable f ((Measure.map (s a) (μ a)).restrict S)` using `fun a _ => (hs a).integrableOn_map_iff.mpr (hint.mp hf a)`. Rewrite using `[finsum_eq_sum_of_fintype, hres, integral_finsetSum_measure hf']`. Conclude with `Finset.sum_congr rfl fun a _ => (hs a).setIntegral_map _ _`.
+-/
 theorem integrableOn_and_setIntegral_of_embeddings :
     ∀ (α : Type) [Finite α] (Y : Type) [MeasurableSpace Y] (Z : α → Type)
       [∀ a, MeasurableSpace (Z a)] (s : ∀ a, Z a → Y), (∀ a, MeasurableEmbedding (s a)) →

@@ -11,6 +11,11 @@ open GlobalTheory.MulUnramified
 
 variable {C C₀ : Type} [CommRing C] [CommRing C₀] (π : C →+* C₀)
 
+/- English proof (translation)
+Introduce `(p : PrimeSpectrum C)`. Express the relevant statement in the definitionally equal form `p ∈ Set.range (PrimeSpectrum.comap π)`. Rewrite using `[range_comap_of_surjective _ _ hπ, PrimeSpectrum.mem_zeroLocus]`. Introduce `a ha`. Use `p.isPrime.mem_of_pow_mem 2 ?_` and prove the remaining obligations.
+
+Establish `: a ^ 2 ∈ RingHom.ker π ^ 2` using `Ideal.pow_mem_pow ha 2`. Rewrite `this` using `[hsq, Submodule.zero_eq_bot, Ideal.mem_bot]`. Rewrite using `[this]`. Conclude with `zero_mem _`.
+-/
 lemma spMap_surjective (hπ : Function.Surjective π) (hsq : RingHom.ker π ^ 2 = 0) :
     Function.Surjective (spMap π) := by
   intro (p : PrimeSpectrum C)
@@ -23,6 +28,9 @@ lemma spMap_surjective (hπ : Function.Surjective π) (hsq : RingHom.ker π ^ 2 
   rw [this]
   exact zero_mem _
 
+/- English proof (translation)
+Establish `hs : Surjective (spMap π)` using `⟨spMap_surjective π hπ hsq⟩`. Establish `hf : Surjective (pullback.fst X.hom (spMap π))` using `inferInstance`. Establish `e` using `congrArg (·.left) (h (Over.mk (pullback.snd X.hom (spMap π))) (Over.homMk (pullback.fst X.hom (spMap π)) pullback.condition))`. Simplify using `only [Over.comp_left, Over.homMk_left] at e`. Conclude with `preimage_eq _ hf.surj e V`.
+-/
 lemma preimage_eq_of_agree (hπ : Function.Surjective π) (hsq : RingHom.ker π ^ 2 = 0)
     {X Y : Over (Sp C)} {f f' : X ⟶ Y}
     (h : ∀ (T₀ : Over (Sp C₀)) (y : Over.mk (T₀.hom ≫ spMap π) ⟶ X), y ≫ f = y ≫ f')
@@ -37,6 +45,9 @@ lemma preimage_eq_of_agree (hπ : Function.Surjective π) (hsq : RingHom.ker π 
 noncomputable def alg (X : Over (Sp C)) (V : X.left.Opens) : C →+* Γ(X.left, V) :=
   ((Scheme.ΓSpecIso (CommRingCat.of C)).inv ≫ X.hom.appLE ⊤ V le_top).hom
 
+/- English proof (translation)
+Establish `h` using `IsAffineOpen.SpecMap_appLE_fromSpec X.hom (isAffineOpen_top (Spec (CommRingCat.of C))) hV (le_top : V ≤ X.hom ⁻¹ᵁ ⊤)`. Rewrite `h` using `[IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv]`. Rewrite using `[← h, alg, spMap, CommRingCat.ofHom_hom, Spec.map_comp]`.
+-/
 lemma fromSpec_over (X : Over (Sp C)) {V : X.left.Opens} (hV : IsAffineOpen V) :
     hV.fromSpec ≫ X.hom = spMap (alg X V) := by
   have h := IsAffineOpen.SpecMap_appLE_fromSpec X.hom (isAffineOpen_top (Spec (CommRingCat.of C))) hV
@@ -44,11 +55,21 @@ lemma fromSpec_over (X : Over (Sp C)) {V : X.left.Opens} (hV : IsAffineOpen V) :
   rw [IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv] at h
   rw [← h, alg, spMap, CommRingCat.ofHom_hom, Spec.map_comp]
 
+/- English proof (translation)
+Simplify using `only [alg, CommRingCat.hom_comp, RingHom.comp_apply]`. Conclude with `comp_appLE_apply f.left Y.hom (Over.w f) _ _ _ _ _ _ _`.
+-/
 lemma appLE_alg {X Y : Over (Sp C)} (f : X ⟶ Y) (V : Y.left.Opens) (V' : X.left.Opens)
     (hf : V' ≤ f.left ⁻¹ᵁ V) (c : C) : f.left.appLE V V' hf (alg Y V c) = alg X V' c := by
   simp only [alg, CommRingCat.hom_comp, RingHom.comp_apply]
   exact comp_appLE_apply f.left Y.hom (Over.w f) _ _ _ _ _ _ _
 
+/- English proof (translation)
+Use `set J := (RingHom.ker π).map (alg X V')`. Set `q : Γ(X.left, V') →+* Γ(X.left, V') ⧸ J` to `Ideal.Quotient.mk J`. Set `ψ : C₀ →+* Γ(X.left, V') ⧸ J` to `(Ideal.quotientMap J (alg X V') Ideal.le_comap_map).comp (RingHom.quotientKerEquivOfSurjective hπ).symm.toRingHom`. Establish `hψ : ψ.comp π = q.comp (alg X V')`. Use extensionality with `c`.
+
+Establish `e : (RingHom.quotientKerEquivOfSurjective hπ).symm (π c) = Ideal.Quotient.mk _ c` using `(RingEquiv.symm_apply_eq _).mpr rfl`. Simplify using `only [ψ, q, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, e, Ideal.quotientMap_mk]`. Set `y : Over.mk ((Over.mk (spMap ψ)).hom ≫ spMap π) ⟶ X` to `Over.homMk (spMap q ≫ hV'.fromSpec) (by`. Rewrite using `[Category.assoc, fromSpec_over]`. Simplify using `only [Over.mk_hom, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hψ])`.
+
+Establish `e` using `congrArg (·.left) (h (Over.mk (spMap ψ)) y)`. Simplify using `only [y, Over.comp_left, Over.homMk_left, Category.assoc] at e`. Rewrite `e` using `[← hV.SpecMap_appLE_fromSpec f.left hV' hf, ← hV.SpecMap_appLE_fromSpec f'.left hV' hf', ← Category.assoc, ← Category.assoc, cancel_mono, spMap, ← Spec.map_comp, ← Spec.map_comp, Spec.map_inj]`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, sub_eq_zero]`. Conclude with `congr($e s)`.
+-/
 lemma sub_mem (hπ : Function.Surjective π) {X Y : Over (Sp C)} {f f' : X ⟶ Y}
     (h : ∀ (T₀ : Over (Sp C₀)) (y : Over.mk (T₀.hom ≫ spMap π) ⟶ X), y ≫ f = y ≫ f')
     {V : Y.left.Opens} (hV : IsAffineOpen V) {V' : X.left.Opens} (hV' : IsAffineOpen V')
@@ -77,6 +98,15 @@ lemma sub_mem (hπ : Function.Surjective π) {X Y : Over (Sp C)} {f f' : X ⟶ Y
   rw [← Ideal.Quotient.eq_zero_iff_mem, map_sub, sub_eq_zero]
   exact congr($e s)
 
+/- English proof (translation)
+Establish `hJ : I.map φR * I.map φR = ⊥`. Rewrite using `[← Ideal.map_mul, ← pow_two, hI, Submodule.zero_eq_bot, Ideal.map_bot]`. It suffices to establish `β x = β' x ∧ β x ∈ I.map φR from this.1`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨c, hc, rfl⟩` from `hx`. Rewrite using `[← RingHom.comp_apply β, hβ, ← RingHom.comp_apply β', hβ']`. Conclude with `⟨rfl, Ideal.mem_map_of_mem _ hc⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => exact ⟨by rw [map_add, map_add, hx.1, hy.1], by rw [map_add]; exact add_mem hx.2 hy.2⟩`.
+
+Consider the case `smul a x _ hx`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_eq_mul, map_mul, map_mul, ← hx.1, ← sub_eq_zero, ← sub_mul, ← Ideal.mem_bot, ← hJ]`. Conclude with `Ideal.mul_mem_mul (hd a) hx.2`. Rewrite using `[smul_eq_mul, map_mul]`.
+
+Conclude with `Ideal.mul_mem_left _ _ hx.2`.
+-/
 lemma eq_on_map {B R : Type} [CommRing B] [CommRing R] (I : Ideal C) (hI : I ^ 2 = 0)
     (φB : C →+* B) (φR : C →+* R) (β β' : B →+* R) (hβ : β.comp φB = φR) (hβ' : β'.comp φB = φR)
     (hd : ∀ b, β b - β' b ∈ I.map φR) {x : B} (hx : x ∈ I.map φB) : β x = β' x := by
@@ -103,6 +133,17 @@ namespace GlobalTheory
 
 open MulUnramified SqZeroAgree in
 
+/- English proof (translation)
+Introduce `C C₀ _ _ π hπ hsq K G g g' hg T w w' hw h'`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [Over.comp_left]`. Use `Scheme.hom_ext_of_forall _ _ fun t ↦ ?_` and prove the remaining obligations. Take `⟨_, ⟨V, hV, rfl⟩, htV, -⟩` from `G.left.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (g.left (w.left t))) isOpen_univ`.
+
+Take `⟨_, ⟨V', hV', rfl⟩, htV', hV'V : V' ≤ g.left ⁻¹ᵁ V⟩` from `K.left.isBasis_affineOpens.exists_subset_of_mem_open (a := w.left t) (u := g.left ⁻¹ᵁ V) htV (TopologicalSpace.Opens.isOpen _)`. Take `⟨_, ⟨W, hW, rfl⟩, htW, hWV' : W ≤ w.left ⁻¹ᵁ V'⟩` from `T.left.isBasis_affineOpens.exists_subset_of_mem_open (a := t) (u := w.left ⁻¹ᵁ V') htV' (TopologicalSpace.Opens.isOpen _)`. Establish `hV'V₂ : V' ≤ g'.left ⁻¹ᵁ V` using `preimage_eq_of_agree π hπ hsq hg V ▸ hV'V`. Establish `hWV'₂ : W ≤ w'.left ⁻¹ᵁ V'` using `preimage_eq_of_agree π hπ hsq hw V' ▸ hWV'`. Use `⟨W, htW, ?_⟩` and prove the remaining obligations.
+
+Establish `key : ∀ s, w.left.appLE V' W hWV' (g.left.appLE V V' hV'V s) = w.left.appLE V' W hWV' (g'.left.appLE V V' hV'V₂ s)`. Introduce `s`. Establish `hx` using `sub_mem π hπ hg hV hV' hV'V hV'V₂ s`. Establish `e` using `eq_on_map (RingHom.ker π) hsq (alg K V') (alg T W) (w.left.appLE V' W hWV').hom (w'.left.appLE V' W hWV'₂).hom (RingHom.ext (appLE_alg w V' W hWV')) (RingHom.ext (appLE_alg w' V' W hWV'₂)) (sub_mem π hπ hw hV' hW hWV' hWV'₂) hx`. Establish `e' : w'.left.appLE V' W hWV'₂ (g.left.appLE V V' hV'V s) = w'.left.appLE V' W hWV'₂ (g'.left.appLE V V' hV'V₂ s)`.
+
+Rewrite using `[comp_appLE_apply _ _ rfl _ _ _ _ _ (le_preimage_of_comp _ _ hV'V hWV'₂), comp_appLE_apply _ _ rfl _ _ _ _ _ (le_preimage_of_comp _ _ hV'V₂ hWV'₂)]`. Establish `hh : w'.left ≫ g.left = w'.left ≫ g'.left` using `by rw [← Over.comp_left, h', Over.comp_left]`. Rewrite using `[appLE_congr hh V W _ (le_preimage_of_comp _ _ hV'V₂ hWV'₂)]`. Simplify using `only [map_sub] at e`. Rewrite using `[← sub_eq_zero, ← sub_eq_zero.mpr e, e', sub_self, sub_zero]`.
+
+Establish `fin : (w.left ≫ g.left).appLE V W (le_preimage_of_comp _ _ hV'V hWV') = (w.left ≫ g'.left).appLE V W (le_preimage_of_comp _ _ hV'V₂ hWV')`. Use extensionality with `s`. Rewrite using `[← comp_appLE_apply _ _ rfl _ _ _ hV'V hWV', ← comp_appLE_apply _ _ rfl _ _ _ hV'V₂ hWV']`. Conclude with `key s`. Rewrite using `[← hW.isoSpec_hom_fromSpec, Category.assoc, Category.assoc, ← hV.SpecMap_appLE_fromSpec _ hW (le_preimage_of_comp _ _ hV'V hWV'), fin, hV.SpecMap_appLE_fromSpec _ hW]`.
+-/
 theorem comp_eq_of_sqZero_agree : ∀ (C C₀ : Type) [CommRing C] [CommRing C₀] (π : C →+* C₀),
     Function.Surjective π → RingHom.ker π ^ 2 = 0 → ∀ (K G : Over (Sp C)) (g g' : K ⟶ G),
     (∀ (T₀ : Over (Sp C₀)) (y : Over.mk (T₀.hom ≫ spMap π) ⟶ K), y ≫ g = y ≫ g') →

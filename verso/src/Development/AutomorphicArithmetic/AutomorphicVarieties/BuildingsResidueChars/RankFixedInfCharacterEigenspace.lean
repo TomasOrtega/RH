@@ -2,6 +2,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 open ValuativeRel Matrix GlobalTheory.SmGL GlobalTheory.SplitWeil UpperTheory.V.Hi UpperTheory.V.Z.Desc.V0
 
+/- English proof (translation)
+Establish `gen : ∀ (J : Type) [Fintype J] (β : J → Type), Cardinal.mk (Σ j, β j) = ∑ j, Cardinal.mk (β j)`. Introduce `J _`. Use `Fintype.induction_empty_option (P := fun J _ => ∀ β : J → Type, Cardinal.mk (Σ j, β j) = ∑ j, Cardinal.mk (β j)) ?_ ?_ ?_ J` and prove the remaining obligations. Introduce `α γ _ e h β`. Rewrite using `[← Cardinal.mk_congr (Equiv.sigmaCongrLeft (β := β) e), h (fun a => β (e a))]`.
+
+Conclude with `@Equiv.sum_comp α γ Cardinal.{0} (Fintype.ofEquiv γ e.symm) _ _ e (fun b => Cardinal.mk (β b))`. Introduce `β`. Simplify using the standard rewrite rules. Introduce `α _ h β`. Set `e : (Σ j : Option α, β j) ≃ (β none ⊕ Σ a : α, β (some a))` to `{ toFun := fun p => match p with`.
+
+Consider the case `⟨none, b⟩ => Sum.inl b`. Consider the case `⟨some a, b⟩ => Sum.inr ⟨a, b⟩`. Use `invFun := fun q => match q with`. Consider the case `Sum.inl b => ⟨none, b⟩`. Consider the case `Sum.inr ⟨a, b⟩ => ⟨some a, b⟩`.
+
+Apply the tactic sequence `left_inv := by rintro ⟨_ | a, b⟩ <;> rfl`. Apply the tactic sequence `right_inv := by rintro (b | ⟨a, b⟩) <;> rfl }`. Rewrite using `[Cardinal.mk_congr e, Cardinal.mk_sum, Cardinal.lift_id, Cardinal.lift_id, h (fun a => β (some a)), Fintype.sum_option]`. Establish `hf : f = fun t => Cardinal.mk (Quotient.out (f t))`. Use function extensionality and compare the values at `t`.
+
+Conclude with `(Cardinal.mk_out (f t)).symm`. Rewrite using `[hf, ← Cardinal.mk_sigma]`. Conclude with `gen I _`.
+-/
 private theorem cardinal_sum_fintype {I : Type} [Fintype I] (f : I → Cardinal.{0}) :
     Cardinal.sum f = ∑ t, f t := by
   have gen : ∀ (J : Type) [Fintype J] (β : J → Type), Cardinal.mk (Σ j, β j) = ∑ j, Cardinal.mk (β j) := by
@@ -31,6 +42,15 @@ private theorem cardinal_sum_fintype {I : Type} [Fintype I] (f : I → Cardinal.
   rw [hf, ← Cardinal.mk_sigma]
   exact gen I _
 
+/- English proof (translation)
+Establish `hne : χ s ≠ χ t` using `fun h => hst (hχ h)`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y, χ s y ≠ χ t y := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hne (MonoidHom.ext h)`.
+
+Establish `hshift : ∑ x, (((χ s x)⁻¹ : ℂˣ) : ℂ) * ((χ t x : ℂˣ) : ℂ) = ((((χ s y)⁻¹ * χ t y : ℂˣ)) : ℂ) * ∑ x, (((χ s x)⁻¹ : ℂˣ) : ℂ) * ((χ t x : ℂˣ) : ℂ)`. Rewrite using `[Finset.mul_sum]`. Use `(Fintype.sum_equiv (Equiv.mulLeft y) (fun x => (((χ s (y * x))⁻¹ : ℂˣ) : ℂ) * ((χ t (y * x) : ℂˣ) : ℂ)) _ (fun x => rfl)).symm.trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Simplify using `only [map_mul, _root_.mul_inv_rev, Units.val_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hg : ((((χ s y)⁻¹ * χ t y : ℂˣ)) : ℂ) ≠ 1`. Rewrite using `[Ne, Units.val_eq_one, inv_mul_eq_one]`. Conclude with `hy`. Establish `h0 : (((((χ s y)⁻¹ * χ t y : ℂˣ)) : ℂ) - 1) * ∑ x, (((χ s x)⁻¹ : ℂˣ) : ℂ) * ((χ t x : ℂˣ) : ℂ) = 0`.
+
+Rewrite using `[sub_mul, ← hshift]`. Expand and normalize the polynomial expressions, which then agree. Break down `mul_eq_zero.1 h0 with h | h` into its components or cases. Conclude with `absurd (sub_eq_zero.1 h) hg`. Conclude with `h`.
+-/
 private theorem character_orthogonality_distinct {Q I : Type} [Group Q] [Fintype Q] (χ : I → Q →* ℂˣ)
     (hχ : Function.Injective χ) (s t : I) (hst : s ≠ t) :
     ∑ x, (((χ s x)⁻¹ : ℂˣ) : ℂ) * ((χ t x : ℂˣ) : ℂ) = 0 := by
@@ -58,6 +78,37 @@ private theorem character_orthogonality_distinct {Q I : Type} [Group Q] [Fintype
   · exact absurd (sub_eq_zero.1 h) hg
   · exact h
 
+/- English proof (translation)
+Establish `hn : (Fintype.card Q : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Take `⟨e, he_apply⟩ : ∃ e : I → Module.End ℂ W, ∀ t v, e t v = (Fintype.card Q : ℂ)⁻¹ • ∑ x, (((χ t x)⁻¹ : ℂˣ) : ℂ) • T x v` from `⟨fun t => (Fintype.card Q : ℂ)⁻¹ • ∑ x, (((χ t x)⁻¹ : ℂˣ) : ℂ) • T x, fun t v => by simp⟩`. Establish `heV : ∀ t, ∀ v ∈ V, e t v ∈ V ⊓ ⨅ x, Module.End.eigenspace (T x) ((χ t x : ℂˣ) : ℂ)`. Introduce `t v hv`. Use `Submodule.mem_inf.2 ⟨?_, (Submodule.mem_iInf _).2 fun y => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[he_apply]`. Conclude with `Submodule.smul_mem V _ (Submodule.sum_mem V fun x _ => Submodule.smul_mem V _ (hV x v hv))`. Rewrite using `[Module.End.mem_eigenspace_iff, he_apply, map_smul, map_sum]`. Establish `h1 : ∀ x, T y ((((χ t x)⁻¹ : ℂˣ) : ℂ) • T x v) = (((χ t x)⁻¹ : ℂˣ) : ℂ) • T (y * x) v`. Introduce `x`.
+
+Rewrite using `[map_smul, hmul y x v hv]`. Simplify using `only [h1]`. Rewrite using `[smul_comm ((χ t y : ℂˣ) : ℂ) ((Fintype.card Q : ℂ)⁻¹)]`. Use `congr 1`. Rewrite using `[Finset.smul_sum]`.
+
+Use `Fintype.sum_equiv (Equiv.mulLeft y) (fun x => (((χ t x)⁻¹ : ℂˣ) : ℂ) • T (y * x) v) (fun z => ((χ t y : ℂˣ) : ℂ) • ((((χ t z)⁻¹ : ℂˣ) : ℂ) • T z v)) ?_` and prove the remaining obligations. Introduce `x`. Simplify using `only [Equiv.coe_mulLeft]`. Rewrite using `[smul_smul]`. Use `congr 1`.
+
+Establish `h2` using `(χ t y).ne_zero`. Establish `h3` using `(χ t x).ne_zero`. Simplify using `only [map_mul, _root_.mul_inv_rev, Units.val_mul, Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts. Establish `hproj : ∀ s t, ∀ w ∈ V ⊓ ⨅ x, Module.End.eigenspace (T x) ((χ s x : ℂˣ) : ℂ), e t w = if s = t then w else 0`.
+
+Introduce `s t w hw`. Establish `hT : ∀ x, T x w = ((χ s x : ℂˣ) : ℂ) • w` using `fun x => Module.End.mem_eigenspace_iff.1 ((Submodule.mem_iInf _).1 (Submodule.mem_inf.1 hw).2 x)`. Rewrite using `[he_apply]`. Simplify using `only [hT, smul_smul]`. Rewrite using `[← Finset.sum_smul, smul_smul]`.
+
+Use `split_ifs with h`. Substitute `h` using the available equality. Establish `h1 : ∀ x, (((χ s x)⁻¹ : ℂˣ) : ℂ) * ((χ s x : ℂˣ) : ℂ) = 1` using `fun x => by`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Simplify using `only [h1, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one]`.
+
+Rewrite using `[inv_mul_cancel₀ hn, one_smul]`. Rewrite using `[character_orthogonality_distinct χ hχ t s (Ne.symm h), mul_zero, zero_smul]`. Establish `hP : ∀ v, (∑ x, c x • T x) v = (Fintype.card Q : ℂ) • ∑ t, e t v`. Introduce `v`. Establish `hR : (Fintype.card Q : ℂ) • ∑ t, e t v = ∑ t, ∑ x, (((χ t x)⁻¹ : ℂˣ) : ℂ) • T x v`.
+
+Simplify using `only [he_apply, ← Finset.smul_sum]`. Rewrite using `[smul_smul, mul_inv_cancel₀ hn, one_smul]`. Rewrite using `[hR, LinearMap.sum_apply]`. Simplify using `only [LinearMap.smul_apply]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[← Int.cast_smul_eq_zsmul ℂ (c x) (T x v), hc x, Finset.sum_smul]`. Establish `hker : ∀ v ∈ V, v ∈ LinearMap.ker ((∑ x, c x • T x) - ((Fintype.card Q : ℕ) : Module.End ℂ W)) ↔ ∑ t, e t v = v`. Introduce `v _`. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, Module.End.natCast_apply, sub_eq_zero, hP, ← Nat.cast_smul_eq_nsmul ℂ]`.
+
+Conclude with `(smul_right_injective W hn).eq_iff`. Establish `hsum : ∀ (w : ∀ t, ↥(V ⊓ ⨅ x, Module.End.eigenspace (T x) ((χ t x : ℂˣ) : ℂ))) t, e t (∑ s, (w s : W)) = w t`. Introduce `w t`. Rewrite using `[map_sum, Finset.sum_eq_single t]`. Rewrite using `[hproj t t _ (w t).2, if_pos rfl]`.
+
+Introduce `s _ hst`. Rewrite using `[hproj s t _ (w s).2, if_neg hst]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ t) h`. Establish `hsumV : ∀ (w : ∀ t, ↥(V ⊓ ⨅ x, Module.End.eigenspace (T x) ((χ t x : ℂˣ) : ℂ))), ∑ s, (w s : W) ∈ V` using `fun w => Submodule.sum_mem V fun s _ => (Submodule.mem_inf.1 (w s).2).1`.
+
+Set `L : ↥(V ⊓ LinearMap.ker ((∑ x, c x • T x) - ((Fintype.card Q : ℕ) : Module.End ℂ W))) ≃ₗ[ℂ] (∀ t, ↥(V ⊓ ⨅ x, Module.End.eigenspace (T x) ((χ t x : ℂˣ) : ℂ)))` to `{ toFun := fun v t => ⟨e t v, heV t v (Submodule.mem_inf.1 v.2).1⟩ map_add' := fun v w => by`. Use function extensionality and compare the values at `t`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[map_add]`. Use the proof step `map_smul' := fun a v => by`.
+
+Use function extensionality and compare the values at `t`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[map_smul]`. Use `invFun := fun w => ⟨∑ s, (w s : W), Submodule.mem_inf.2 ⟨hsumV w, (hker _ (hsumV w)).2 (Finset.sum_congr rfl fun t _ => hsum w t)⟩⟩`. Use `left_inv := fun v => Subtype.ext ((hker v (Submodule.mem_inf.1 v.2).1).1 (Submodule.mem_inf.1 v.2).2)`.
+
+Use `right_inv := fun w => by`. Use function extensionality and compare the values at `t`. Conclude with `Subtype.ext (hsum w t) }`. Rewrite using `[L.rank_eq, rank_pi, cardinal_sum_fintype]`.
+-/
 private theorem rank_isotypic_character_projection {Q I W : Type} [Group Q] [Fintype Q] [Fintype I] [AddCommGroup W]
     [Module ℂ W] (V : Submodule ℂ W) (T : Q → Module.End ℂ W)
     (hV : ∀ x, ∀ v ∈ V, T x v ∈ V) (hmul : ∀ x y, ∀ v ∈ V, T x (T y v) = T (x * y) v)
@@ -155,6 +206,23 @@ private theorem rank_isotypic_character_projection {Q I W : Type} [Group Q] [Fin
         exact Subtype.ext (hsum w t) }
   rw [L.rank_eq, rank_pi, cardinal_sum_fintype]
 
+/- English proof (translation)
+Introduce `G Q A I _ _ _ _ _ K ι π s hs hπ hK χ hχ c hc W _ _ τ`. Establish `hfix : ∀ a, π a = 1 → ∀ v ∈ fixd τ K, τ (ι a) v = v`. Introduce `a ha v hv`. Establish `hv' : ∀ u ∈ K, τ u v = v` using `hv`. Conclude with `hv' _ ((hπ a).1 ha)`.
+
+Establish `hV : ∀ x, ∀ v ∈ fixd τ K, τ (ι (s x)) v ∈ fixd τ K`. Introduce `x v hv`. Establish `hv' : ∀ u ∈ K, τ u v = v` using `hv`. Use `show ∀ u ∈ K, τ u (τ (ι (s x)) v) = τ (ι (s x)) v`. Introduce `u hu`.
+
+Establish `h1` using `hv' _ (hK (s x) u hu)`. Establish `e : ι (s x) * ((ι (s x))⁻¹ * u * ι (s x)) = u * ι (s x)` using `by group`. Combine the equalities or inequalities in the displayed calculation. Establish `hmul : ∀ x y, ∀ v ∈ fixd τ K, τ (ι (s x)) (τ (ι (s y)) v) = τ (ι (s (x * y))) v`. Introduce `x y v hv`.
+
+Take `⟨a, ha, he⟩ : ∃ a, π a = 1 ∧ s (x * y) = s x * s y * a` from `⟨(s x * s y)⁻¹ * s (x * y), by simp [hs], (mul_inv_cancel_left _ _).symm⟩`. Rewrite using `[he, map_mul ι (s x * s y) a, map_mul τ, Module.End.mul_apply, hfix a ha v hv, map_mul ι, map_mul τ, Module.End.mul_apply]`. Establish `hE : opE τ (∑ x, Finsupp.single (ι (s x)) (c x)) = ∑ x, c x • τ (ι (s x))`. Unfold `opE`. Rewrite using `[← Finsupp.sum_finset_sum_index (h := fun g (n : ℤ) => n • τ g) (fun _ => zero_smul _ _) (fun _ _ _ => add_smul _ _ _)]`.
+
+Simplify using `[Finsupp.sum_single_index]`. Establish `hR : ∀ t, fixd τ K ⊓ ⨅ y : A, Module.End.eigenspace (τ (ι y)) ((χ t (π y) : ℂˣ) : ℂ) = fixd τ K ⊓ ⨅ x, Module.End.eigenspace (τ (ι (s x))) ((χ t x : ℂˣ) : ℂ)`. Introduce `t`. Use extensionality with `v`. Simplify using `only [Submodule.mem_inf, Submodule.mem_iInf, Module.End.mem_eigenspace_iff]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hv, h⟩`. Conclude with `⟨hv, fun x => by simpa [hs] using h (s x)⟩`. Introduce and unpack `⟨hv, h⟩`. Use `⟨hv, fun y => ?_⟩` and prove the remaining obligations.
+
+Take `⟨a, ha, hy⟩ : ∃ a, π a = 1 ∧ y = s (π y) * a` from `⟨(s (π y))⁻¹ * y, by simp [hs], (mul_inv_cancel_left _ _).symm⟩`. Establish `h2 : τ (ι y) v = τ (ι (s (π y))) v` using `by conv_lhs => rw [hy]`. Rewrite using `[map_mul ι, map_mul τ, Module.End.mul_apply, hfix a ha v hv]`. Rewrite using `[h2]`. Conclude with `h (π y)`.
+
+Establish `key` using `rank_isotypic_character_projection (fixd τ K) (fun x => τ (ι (s x))) hV hmul χ hχ c hc`. Unfold `ePart`. Rewrite using `[hE]`. Use `key.trans (Finset.sum_congr rfl fun t _ => ?_)` and prove the remaining obligations. Rewrite using `[hR t]`.
+-/
 theorem UpperTheory.rank_fixed_inf_character_eigenspace :
     ∀ {G Q A I : Type} [Group G] [Group Q] [Fintype Q] [Group A] [Fintype I]
         (K : Subgroup G) (ι : A →* G) (π : A →* Q) (s : Q → A), (∀ x, π (s x) = x) →

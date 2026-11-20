@@ -21,6 +21,37 @@ open Matrix
 
 variable {D : D7} {n : ℕ}
 
+/- English proof (translation)
+Take `⟨hinf, hSv, hint⟩` from `KOff_props hk`. Take `⟨X, hXh, hXinf, hXS, hXint, hz, hu⟩` from `exists_X hS2 hk`. Take `⟨a, ha⟩ : ∃ a, a = bA (mat k)` from `⟨_, rfl⟩`. Take `⟨b, hb⟩ : ∃ b, b = bB (mat k)` from `⟨_, rfl⟩`. Take `⟨c, hc⟩ : ∃ c, c = bC (mat k)` from `⟨_, rfl⟩`.
+
+Take `⟨d, hd⟩ : ∃ d, d = bD (mat k)` from `⟨_, rfl⟩`. Establish `hMb : mat k = blk4 a b c d` using `by rw [ha, hb, hc, hd, block_matrix_of_blocks]`. Take `⟨ia, ib, ic, id⟩` from `blocks_at (infPart D) hinf`. Simplify using `only [← ha, ← hb, ← hc, ← hd] at ia ib ic id hz hu`. Take `⟨u, hudef⟩ : ∃ u, u = d + c * X` from `⟨_, rfl⟩`.
+
+Simplify using `only [← hudef] at hz hu`. Take `⟨ui, hui⟩ : ∃ ui, ui = u⁻¹` from `⟨_, rfl⟩`. Establish `hu1 : u * ui = 1` using `by rw [hui]; exact Matrix.mul_nonsing_inv _ hu`. Establish `hu2 : ui * u = 1` using `by rw [hui]; exact Matrix.nonsing_inv_mul _ hu`. Take `⟨β, hβ⟩ : ∃ β, β = a * X + b` from `⟨_, rfl⟩`.
+
+Establish `hh : mat (k * nOf X hXh) = blk4 a β c u` using `by rw [mat_mul, mat_nOf, hMb, block_matrix_mul_upper_unipotent, hβ, hudef]`. Establish `hunit` using `unit_fromBlocks (cA D) a β c u (by rw [← hh]; exact mat_unit _)`. Take `⟨-, R2, -⟩` from `unit_rel _ a β c u hunit`. Take `⟨-, -, C3⟩` from `unit_col _ a β c u hunit`. Take `⟨hXnh, hZnh, hid⟩` from `fact_alg (cA D) a β c u ui hu1 hu2 R2 C3`.
+
+Establish `hZn' : cj (cA D) (-(ui * c)) = -(ui * c)` using `by rw [cj_neg, hZnh]`. Establish `hXh' : cj (cA D) (-X) = -X` using `by rw [cj_neg, hXh]`. Establish `hIa : ∀ v ∉ S, IntM v a ∧ IntM v b ∧ IntM v c ∧ IntM v d` using `fun v hv => integral_block_matrix_iff.1 (by rw [← hMb]; exact hint v hv)`. Establish `hIX : ∀ v ∉ S, IntM v X` using `fun v hv => hXint v hv`. Establish `hIu : ∀ v ∉ S, IntM v ui`.
+
+Introduce `v hv`. Rewrite using `[hui]`. Use `IntM.inv ?_ hu (hz v)` and prove the remaining obligations. Rewrite using `[hudef]`. Conclude with `(hIa v hv).2.2.2.add ((hIa v hv).2.2.1.mul (hIX v hv))`.
+
+Establish `hIXn : ∀ v ∉ S, IntM v (β * ui)` using `fun v hv => by`. Rewrite using `[hβ]`. Conclude with `(((hIa v hv).1.mul (hIX v hv)).add (hIa v hv).2.1).mul (hIu v hv)`. Establish `hIZn : ∀ v ∉ S, IntM v (-(ui * c))` using `fun v hv => ((hIu v hv).mul (hIa v hv).2.2.1).neg`. Establish `hXn0 : ∀ (T : Type) [CommRing T] (f : AE D →+* T), a.map f = 1 → b.map f = 0 → X.map f = 0 → (β * ui).map f = 0`.
+
+Introduce `T _ f h1 h2 h3`. Rewrite using `[Matrix.map_mul, hβ, map_add', Matrix.map_mul, h2, h3]`. Simplify using the standard rewrite rules. Establish `hZn0 : ∀ (T : Type) [CommRing T] (f : AE D →+* T), c.map f = 0 → (-(ui * c)).map f = 0`. Introduce `T _ f h1`.
+
+Rewrite using `[map_neg', Matrix.map_mul, h1]`. Simplify using the standard rewrite rules. Establish `hS' : ∀ v ∈ S, a.map (cv D v) = 1 ∧ b.map (cv D v) = 0 ∧ c.map (cv D v) = 0 ∧ d.map (cv D v) = 1`. Introduce `v hv`. Use `blocks_at (cv D v) (hSv v hv)` as an intermediate fact.
+
+Simplify using `only [← ha, ← hb, ← hc, ← hd] at this`. Conclude with `this`. Establish `m4 : nOf (-X) hXh' ∈ KOff D n S` using `nOf_mem _ _ (by rw [map_neg', hXinf, neg_zero]) (fun v hv => by rw [map_neg', hXS v hv, neg_zero]) (fun v hv => (hIX v hv).neg)`. Establish `mX : nOf X hXh ∈ KOff D n S` using `nOf_mem _ _ hXinf hXS hIX`. Establish `m1 : nOf (β * ui) hXnh ∈ KOff D n S` using `nOf_mem _ _ (hXn0 _ _ ia ib hXinf) (fun v hv => hXn0 _ _ (hS' v hv).1 (hS' v hv).2.1 (hXS v hv)) hIXn`.
+
+Establish `mu3 : nOf (-(ui * c)) hZn' ∈ KOff D n S` using `nOf_mem _ _ (hZn0 _ _ ic) (fun v hv => hZn0 _ _ (hS' v hv).2.2.1) hIZn`. Establish `m3 : wE D n * nOf (-(ui * c)) hZn' * (wE D n)⁻¹ ∈ KOff D n S` using `conj_mem _ _ (hZn0 _ _ ic) (fun v hv => hZn0 _ _ (hS' v hv).2.2.1) hIZn`. Establish `hmg3 : mat (wE D n * nOf (-(ui * c)) hZn' * (wE D n)⁻¹) = blk4 1 0 (ui * c) 1`. Rewrite using `[mat_conj, neg_neg]`. Establish `hmg1i : mat (nOf (β * ui) hXnh)⁻¹ = blk4 1 (-(β * ui)) 0 1` using `mat_inv_eq (by rw [mat_nOf, upper_unipotent_block_inverse])`.
+
+Establish `hmg3i : mat (wE D n * nOf (-(ui * c)) hZn' * (wE D n)⁻¹)⁻¹ = blk4 1 0 (-(ui * c)) 1` using `mat_inv_eq (by rw [hmg3, lower_unipotent_block_inverse])`. Establish `hX4 : nOf X hXh * nOf (-X) hXh' = 1`. Apply `mat_inj` to reduce the goal to its premises. Rewrite using `[mat_mul, mat_nOf, mat_nOf, upper_unipotent_block_inverse, mat_one]`. Use `set g1 := nOf (β * ui) hXnh with hg1`.
+
+Use `set g3 := wE D n * nOf (-(ui * c)) hZn' * (wE D n)⁻¹ with hg3`. Establish `hmg2 : mat (g1⁻¹ * k * nOf X hXh * g3⁻¹) = blk4 (a - β * ui * c) 0 0 u`. Rewrite using `[mat_mul, mat_mul, mat_mul, hmg1i, hmg3i, Matrix.mul_assoc (blk4 1 (-(β * ui)) 0 1), ← mat_mul, hh, ← hid]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lower_unipotent_block_inverse, Matrix.mul_one]`.
+
+Use `upper_unipotent_block_inverse (-(β * ui))` as an intermediate fact. Rewrite `this` using `[neg_neg]`. Rewrite using `[this, Matrix.one_mul]`. Use `⟨g1, g1⁻¹ * k * nOf X hXh * g3⁻¹, g3, nOf (-X) hXh', ?_, m1, isN_nOf _ _, ?_, isM_of _ _ _ hmg2, m3, ⟨wE D n, _, isW_wE, isN_nOf _ _, mu3, rfl⟩, m4, isN_nOf _ _⟩` and prove the remaining obligations. Simplify using `only [mul_assoc, mul_inv_cancel_left, inv_mul_cancel_left, hX4, mul_one]`.
+
+Conclude with `mul_mem (mul_mem (mul_mem (inv_mem m1) hk) mX) (inv_mem m3)`.
+-/
 theorem factor {S : Finset (Pl D)} (hS2 : ∀ v ∉ S, (2 : 𝓞 D.host.F) ∉ v.asIdeal) {k : G D n} (hk : k ∈ KOff D n S) :
     ∃ g1 g2 g3 g4 : G D n, k = g1 * (g2 * (g3 * g4)) ∧ g1 ∈ KOff D n S ∧ IsN g1 ∧ g2 ∈ KOff D n S ∧ IsM g2 ∧
       g3 ∈ KOff D n S ∧ (∃ w u, IsW w ∧ IsN u ∧ u ∈ KOff D n S ∧ g3 = w * u * w⁻¹) ∧ g4 ∈ KOff D n S ∧ IsN g4 := by

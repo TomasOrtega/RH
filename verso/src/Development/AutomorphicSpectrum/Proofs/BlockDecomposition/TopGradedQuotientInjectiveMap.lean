@@ -11,10 +11,16 @@ open GlobalTheory.CatH (face toLast)
 noncomputable section
 namespace GlobalTheory.CompanionTheory.ConeLocal
 
+/- English proof (translation)
+Establish `hs : Function.Surjective I.1` using `Finite.injective_iff_surjective.1 I.2.injective`. Conclude with `(StrictMono.range_inj I.2 strictMono_id).1 (by rw [hs.range_eq, Set.range_id])`.
+-/
 theorem idx_self_eq {d : ℕ} (I : Idx d d) : I.1 = id := by
   have hs : Function.Surjective I.1 := Finite.injective_iff_surjective.1 I.2.injective
   exact (StrictMono.range_inj I.2 strictMono_id).1 (by rw [hs.range_eq, Set.range_id])
 
+/- English proof (translation)
+Use `letI : Unique (Idx d d) := { default := ⟨id, strictMono_id⟩, uniq := fun I => Subtype.ext (idx_self_eq I) }`. Conclude with `Fintype.sum_unique g`.
+-/
 theorem sum_idx_self {M : Type*} [AddCommMonoid M] {d : ℕ} [Fintype (Idx d d)] (g : Idx d d → M) :
     ∑ I, g I = g ⟨id, strictMono_id⟩ := by
   letI : Unique (Idx d d) :=
@@ -25,12 +31,21 @@ section Form
 variable {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {Φ : PDF R C} {d j : ℕ}
   (E : Frame Φ d) (σ : ∀ T : C, E.D ⟶ T) (I : Fin j → Fin d) (u : ComposableArrows C j)
 
+/- English proof (translation)
+Simplify using `only [Frame.form, map_add, mul_add]`.
+-/
 theorem form_add_fun (x x' : Φ.A.obj E.D) : E.form σ I (x + x') u = E.form σ I x u + E.form σ I x' u := by
   simp only [Frame.form, map_add, mul_add]
 
+/- English proof (translation)
+Simplify using `only [Frame.form, map_sub, mul_sub]`.
+-/
 theorem form_sub_fun (x x' : Φ.A.obj E.D) : E.form σ I (x - x') u = E.form σ I x u - E.form σ I x' u := by
   simp only [Frame.form, map_sub, mul_sub]
 
+/- English proof (translation)
+Simplify using `only [Frame.form, map_mul, AlgHom.commutes, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem form_alg_mul (a : R) (x : Φ.A.obj E.D) :
     E.form σ I (algebraMap R _ a * x) u = a • E.form σ I x u := by
   simp only [Frame.form, map_mul, AlgHom.commutes, Algebra.smul_def]
@@ -38,6 +53,25 @@ theorem form_alg_mul (a : R) (x : Φ.A.obj E.D) :
 
 end Form
 
+/- English proof (translation)
+Introduce `K _ _ X q W d t s E ε hL σ r hr hs`. Use `letI := (strV q W).toAlgebra`. Take `⟨hE, hU⟩` from `GlobalTheory.T.local_graded_class_representative q t s E ε hL σ d r hr hs`. Establish `ex : ∀ c : HQ (KS q s {W}) r (r + 1) d, ∃ y : Γ(X, W), CrystallineSemistableComparison.Pb.Rep (sFil (KS q s {W}) r) (sFil (KS q s {W}) (r + 1)) (E.form σ id (ε y)) c`. Introduce `c`.
+
+Take `⟨y, hy⟩` from `hE c`. Use `⟨y ⟨id, strictMono_id⟩, ?_⟩` and prove the remaining obligations. Establish `e : (fun u => ∑ I : Idx d d, E.form σ I.1 (ε (y I)) u) = E.form σ id (ε (y ⟨id, strictMono_id⟩))`. Use function extensionality and compare the values at `fun u => sum_idx_self (fun I : Idx d d => E.form σ I.1 (ε (y I)) u)`. Rewrite `hy` using `[e]`. Then use the resulting hypothesis.
+
+Establish `z0 : ∀ y : Γ(X, W), CrystallineSemistableComparison.Pb.Rep (sFil (KS q s {W}) r) (sFil (KS q s {W}) (r + 1)) (E.form σ id (ε y)) 0 → y = 0`. Introduce `y h`. Establish `e : (fun u => ∑ I : Idx d d, E.form σ I.1 (ε ((fun _ => y : Idx d d → Γ(X, W)) I)) u) = E.form σ id (ε y)`. Use function extensionality and compare the values at `fun u => sum_idx_self (fun I : Idx d d => E.form σ I.1 (ε y) u)`. Conclude with `congrFun (hU (fun _ => y) (by rwa [e])) ⟨id, strictMono_id⟩`.
+
+Establish `uniq : ∀ (y y' : Γ(X, W)) (c : HQ (KS q s {W}) r (r + 1) d), CrystallineSemistableComparison.Pb.Rep (sFil (KS q s {W}) r) (sFil (KS q s {W}) (r + 1)) (E.form σ id (ε y)) c → CrystallineSemistableComparison.Pb.Rep (sFil (KS q s {W}) r) (sFil (KS q s {W}) (r + 1)) (E.form σ id (ε y …`. Introduce `y y' c h h'`. Establish `h2` using `rep_add h (rep_smul (-1 : K) h')`. Establish `e : (fun u => E.form σ id (ε y) u + (-1 : K) • E.form σ id (ε y') u) = E.form σ id (ε (y - y'))`. Use function extensionality and compare the values at `u`.
+
+Rewrite using `[map_sub, form_sub_fun, neg_one_smul, sub_eq_add_neg]`. Rewrite `h2` using `[e, neg_one_smul, add_neg_cancel]`. Conclude with `sub_eq_zero.1 (z0 _ h2)`. Use `choose φ hφ using ex`. Use `⟨{ toFun := φ, map_add' := ?_, map_smul' := ?_ }, ?_, fun y c h => uniq _ _ c (hφ c) h⟩` and prove the remaining obligations.
+
+Introduce `c c'`. Use `uniq _ _ (c + c') (hφ _) ?_` and prove the remaining obligations. Establish `h2` using `rep_add (hφ c) (hφ c')`. Establish `e : (fun u => E.form σ id (ε (φ c)) u + E.form σ id (ε (φ c')) u) = E.form σ id (ε (φ c + φ c'))`. Use function extensionality and compare the values at `u`.
+
+Rewrite using `[map_add, form_add_fun]`. Rewrite `h2` using `[e]`. Then use the resulting hypothesis. Introduce `a c`. Use `uniq _ _ (a • c) (hφ _) ?_` and prove the remaining obligations. Establish `h2` using `rep_smul a (hφ c)`.
+
+Establish `e : (fun u => a • E.form σ id (ε (φ c)) u) = E.form σ id (ε (a • φ c))`. Use function extensionality and compare the values at `u`. Establish `e1 : a • φ c = strV q W a * φ c` using `Algebra.smul_def a (φ c)`. Rewrite using `[e1, map_mul, hL.2.2.1 a, form_alg_mul]`. Rewrite `h2` using `[e]`. Then use the resulting hypothesis.
+
+Introduce `c c' h`. Establish `h' : φ c = φ c'` using `h`. Establish `h2` using `hφ c'`. Rewrite `h2` using `[← h']`. Conclude with `rep_unique (hφ c) h2`.
+-/
 theorem coef_map : ∀ {K : Type} [Field K] [CharZero K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) {W : X.Opens} {d : ℕ} (t : Fin d → Γ(X, W)) (s : ℕ) (E : Frame (sP (KS q s {W})) d)
     (ε : Γ(X, W) ≃+* (sP (KS q s {W})).A.obj E.D), IsLoc q s t E ε → ∀ (σ : ∀ T, E.D ⟶ T) (r : ℤ), r = d → d + 1 ≤ s →
     letI := (strV q W).toAlgebra

@@ -5,6 +5,17 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 
 namespace GlobalTheory.LBDescent
 
+/- English proof (translation)
+Take `⟨R, M, ρ, ⟨T, hT⟩, hM, h1, h2, hI⟩` from `exists_fg_lb pB p φ hX L hL`. Set `F : IntermediateField K Ω` to `IntermediateField.adjoin K (T : Set Ω)`. Establish `hle : R ≤ F.toSubalgebra`. Rewrite using `[← hT]`. Conclude with `IntermediateField.algebra_adjoin_le_adjoin K _`.
+
+Use `⟨F, IntermediateField.finiteDimensional_adjoin (fun x _ => (Algebra.IsAlgebraic.isAlgebraic x).isIntegral), ?_⟩` and prove the remaining obligations. Introduce `X₁ p₁ φ₁ hX₁ j hj1 hj2`. Set `ι : R →+* F` to `(Subalgebra.inclusion hle).toRingHom`. Establish `e1 : spMap ι ≫ spMap (algebraMap K R) = spMap (algebraMap K F)`. Simplify using `only [spMap]`.
+
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Establish `e2 : spMap (algebraMap F Ω) ≫ spMap ι = spMap R.val.toRingHom`. Simplify using `only [spMap]`. Rewrite using `[← Spec.map_comp]`.
+
+Both sides reduce to the same expression. Set `q : X₁ ⟶ Limits.pullback pB (spMap (algebraMap K R))` to `Limits.pullback.lift φ₁ (p₁ ≫ spMap ι) (by rw [Category.assoc, e1, hX₁.w])`. Establish `hq : j ≫ q = ρ`. Apply `Limits.pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Limits.pullback.lift_fst, hj1, h1]`.
+
+Rewrite using `[Category.assoc, Limits.pullback.lift_snd, ← Category.assoc, hj2, Category.assoc, e2, h2]`. Use `⟨CechPic.pull q (CechPic.cls M hM), ?_⟩` and prove the remaining obligations. Rewrite using `[← CechPic.pull_comp, hq, ← CechPic.cls_pull hM ρ (pull_isLB hM ρ), eq_comm, CechPic.cls_eq_iff]`. Conclude with `hI`.
+-/
 theorem exists_finite_subextension_cls (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω]
     [Algebra.IsAlgebraic K Ω] (B X : Scheme.{0}) (pB : B ⟶ Sp K) [QuasiCompact pB]
     [QuasiSeparated pB] (p : X ⟶ Sp Ω) (φ : X ⟶ B)

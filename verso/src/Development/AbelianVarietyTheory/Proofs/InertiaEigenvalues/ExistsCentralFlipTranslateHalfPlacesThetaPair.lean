@@ -22,6 +22,21 @@ noncomputable section
 
 namespace GlobalTheory.LevelSeries
 
+/- English proof (translation)
+Introduce `D ψ θ V W χV χW om ΛV ΛW sW f₀ hV T m`. Distinguish the cases in `h : ∃ eT : AE D, IsIdemSum eT T ∧ m ≠ 0`. Take `⟨eT₀, h0, hm0⟩` from `h`. Take `⟨z, hzG, hzOne, hzmt⟩` from `GlobalTheory.T.exists_central_conjugateFlipScalar_finiteAdelic D V T m eT₀ h0 hm0`. Use `⟨z, hzG, hzOne, ?_⟩` and prove the remaining obligations.
+
+Introduce `eT heT hodd hcop hmT`. Establish `h1 : eT₀ * eT = eT` using `GlobalTheory.Tow.idemSum_mul_of_subset heT h0 subset_rfl`. Establish `h2 : eT * eT₀ = eT₀` using `GlobalTheory.Tow.idemSum_mul_of_subset h0 heT subset_rfl`. Establish `hEq : eT = eT₀` using `by rw [← h1, mul_comm, h2]`. Substitute `hEq` using the available equality.
+
+Establish `hidem : eT * eT = eT` using `GlobalTheory.Tow.idemSum_mul_of_subset heT heT subset_rfl`. Establish `hinv : incA D ((m : D.host.E)⁻¹) * (m : AE D) = 1`. Rewrite using `[← map_natCast (incA D) m, ← map_mul, inv_mul_cancel₀ (Nat.cast_ne_zero.2 hm0), map_one]`. Establish `hpq : incA D ((m : D.host.E)⁻¹) ^ V.rank * (m : AE D) ^ V.rank = 1`. Rewrite using `[← mul_pow, hinv, one_pow]`.
+
+Establish `hunit : (eT * incA D ((m : D.host.E)⁻¹) ^ V.rank + (1 - eT)) * (eT * (m : AE D) ^ V.rank + (1 - eT)) = 1`. Take the linear combination `(eT * eT) * hpq + (2 - incA D ((m : D.host.E)⁻¹) ^ V.rank - (m : AE D) ^ V.rank) * hidem`. Set `x : (AE D)ˣ` to `Units.mkOfMulEqOne _ _ hunit`. Establish `hx : IsFlipDet V eT m x` using `hunit`. Use `⟨x, hx, ?_⟩` and prove the remaining obligations.
+
+Take `⟨lam, Y, hY, hYd, hYc, hom⟩` from `GlobalTheory.T.centralFlip_vacuum_eq_multiple_of_translate_mean D ψ θ V W χV χW om ΛV ΛW sW f₀ hV T m eT z heT hodd hcop hmT hzG hzmt`. Establish `hlam` using `GlobalTheory.T.movedVacuum_translateSum_flipScalar D ψ θ V W χV χW om ΛV ΛW sW f₀ hV T m eT z x lam Y heT hodd hcop hmT hzG hzmt hx hY hYd hYc hom`. Substitute `hlam` using the available equality. Establish `hs : flipScal χW V W T m x ≠ 0`. Unfold `flipScal`.
+
+Use `mul_ne_zero (inv_ne_zero (Circle.coe_ne_zero _)) (inv_ne_zero ?_)` and prove the remaining obligations. Rewrite using `[Complex.ofReal_ne_zero, Real.sqrt_ne_zero']`. Conclude with `Nat.cast_pos.2 (Nat.pos_of_ne_zero (flipIdx_ne_zero V W T hm0))`. Introduce `M u e e' P O hM hu he hTP he' hz`. Conclude with `GlobalTheory.T.centralFlip_maps_halfTranslates_span D ψ θ V W χV χW om ΛV ΛW sW f₀ hV T m eT z _ Y heT hodd hcop hmT hzmt hs hY hom M u e e' P O hM hu he hTP (GlobalTheory.T.isIdemSum_conjugatePlaces_subset_eq_flip D e eT e' P T he heT hTP he') hz`.
+
+Use `⟨1, (GfC V).one_mem, fun l _ => oneAt_one V l, ?_⟩` and prove the remaining obligations. Introduce `eT heT hodd`. Conclude with `absurd ⟨eT, heT, (Nat.pos_of_ne_zero (by rintro rfl; exact (Nat.not_odd_zero hodd))).ne'⟩ h`.
+-/
 theorem exists_central_flip_step : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (V W : HSp D) (χV χW : (AE D)ˣ →* Circle) (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)) (ΛV : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (ΛW : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E)) (sW : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ) (f₀ : WO V W → ℂ), VacPair ψ θ V W χV χW om ΛV ΛW sW f₀ → ∀ (T : Finset (Formalism.L2.DIV.Pl D.host.E)) (m : ℕ), ∃ z : GA D V, z ∈ GfC V ∧ (∀ l : ℕ, (∀ PP ∈ T, ((l : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal) → OneAt V l z) ∧ ∀ eT : AE D, IsIdemSum eT T → Odd m → Nat.Coprime m (GlobalTheory.Tow.badN D) → (∀ PP ∈ T, ((m : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal) → ∃ x : (AE D)ˣ, IsFlipDet V eT m x ∧ ∀ (M u : ℕ) (e e' : AE D) (P : Finset (Formalism.L2.DIV.Pl D.host.E)) (O : Subring ℂ), M = m * u → (∀ PP ∈ T, ((u : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal) → IsIdemSum e P → T ⊆ P → IsIdemSum e' ((P \ T) ∪ T.image Formalism.L2.DIV.conjPl) → zeta M ∈ O → ∀ f ∈ trSp ψ V W ΛV ΛW f₀ e M O, ∃ F ∈ trSp ψ V W ΛV ΛW f₀ e' M O, om (z, 1) (flipScal χW V W T m x • F) = f := by
   intro D ψ θ V W χV χW om ΛV ΛW sW f₀ hV T m
   by_cases h : ∃ eT : AE D, IsIdemSum eT T ∧ m ≠ 0

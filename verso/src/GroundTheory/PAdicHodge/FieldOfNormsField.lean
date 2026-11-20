@@ -18,6 +18,27 @@ namespace NormTower
 
 variable (t : NormTower K Ω p)
 
+/- English proof (translation)
+Establish `hNint : ∀ n, ∀ y ∈ t.intSet (n + 1), t.N n y ∈ t.intSet n` using `fun n y hy ↦ ⟨t.N_mem n hy.1, t.nrm_N_le_one n hy.2⟩`. Establish `hNto : ∀ i j, ∀ y ∈ t.intSet (i + j) ∩ C (i + j), t.Nto i j y ∈ t.intSet i ∩ C i`. Introduce `i j`. Proceed by induction on `j with`. Consider the case `zero => exact fun y hy ↦ hy`.
+
+Consider the case `succ j ih`. Introduce `y hy`. Rewrite using `[Nto_succ]`. Conclude with `ih _ ⟨hNint _ _ hy.1, hN _ _ hy⟩`. Set `S : ℕ → Set (ℕ → Ω)` to `fun m ↦ {z | (∀ n < m, nrm K (t.N n (z (n + 1)) - z n) ≤ 0) ∧ ∀ n ≤ m, z n ∈ C n}`.
+
+Establish `hP : IsCompact {z : ℕ → Ω | ∀ n, z n ∈ t.intSet n}` using `isCompact_pi_infinite t.isCompact_intSet`. Establish `hcont : ∀ n, Continuous fun z : ℕ → Ω ↦ nrm K (t.N n (z (n + 1)) - z n)` using `fun n ↦ (continuous_nrm K Ω).comp (((t.continuous_N n).comp (continuous_apply _)).sub (continuous_apply _))`. Establish `hcl' : ∀ m, IsClosed (S m)`. Introduce `m`. Establish `e : S m = (⋂ n ∈ {n | n < m}, {z : ℕ → Ω | nrm K (t.N n (z (n + 1)) - z n) ≤ 0}) ∩ ⋂ n ∈ {n | n ≤ m}, (fun z : ℕ → Ω ↦ z n) ⁻¹' C n`.
+
+Use extensionality with `z`. Simplify using `[S]`. Rewrite using `[e]`. Conclude with `(isClosed_biInter fun n _ ↦ isClosed_le (hcont n) continuous_const).inter (isClosed_biInter fun n _ ↦ (hcl n).preimage (continuous_apply n))`. Establish `hanti : ∀ {m m'}, m ≤ m' → S m' ⊆ S m` using `fun hmm' z hz ↦ ⟨fun n hn ↦ hz.1 n (by omega), fun n hn ↦ hz.2 n (by omega)⟩`.
+
+Establish `hne' : ∀ m, ({z : ℕ → Ω | ∀ n, z n ∈ t.intSet n} ∩ S m).Nonempty`. Introduce `m`. Take `⟨y, hy⟩` from `hne m`. Use `⟨fun n ↦ if n ≤ m then t.Nto n (m - n) y else 0, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `n dsimp only split_ifs with h`.
+
+Establish `hy' : y ∈ t.intSet (n + (m - n)) ∩ C (n + (m - n))`. Rewrite using `[Nat.add_sub_cancel' h]`. Conclude with `hy`. Conclude with `(hNto n _ y hy').1`. Conclude with `⟨zero_mem _, by simp⟩`.
+
+Introduce `n hn`. Simplify using `only [if_pos hn.le, if_pos (show n + 1 ≤ m by omega)]`. Rewrite using `[← Nto_succ', show m - n = m - (n + 1) + 1 by omega]`. Simplify using the standard rewrite rules. Introduce `n hn`.
+
+Simplify using `only [if_pos hn]`. Establish `hy' : y ∈ t.intSet (n + (m - n)) ∩ C (n + (m - n))`. Rewrite using `[Nat.add_sub_cancel' hn]`. Conclude with `hy`. Conclude with `(hNto n _ y hy').2`.
+
+Take `⟨z, hzP, hz⟩` from `hP.inter_iInter_nonempty S hcl' fun u ↦ by`. Take `⟨z, hzP, hzS⟩` from `hne' (u.sup id)`. Use `⟨z, hzP, Set.mem_iInter₂.mpr fun m hm ↦ hanti (Finset.le_sup (f := id) hm) hzS⟩` and prove the remaining obligations. Rewrite `hz` using `[Set.mem_iInter]`. Use `⟨z, ⟨fun n ↦ ⟨(hzP n).1, ?_⟩, fun n ↦ (hzP n).2⟩, fun n ↦ (hz n).2 n le_rfl⟩` and prove the remaining obligations.
+
+Use `(hz (n + 1)).1 n (Nat.lt_succ_self n)` as an intermediate fact. Rewrite using `[← sub_eq_zero, ← nrm_eq_zero (K := K)]`. Conclude with `le_antisymm this (nrm_nonneg _)`.
+-/
 theorem exists_intFam_mem {C : ℕ → Set Ω} (hcl : ∀ n, IsClosed (C n))
     (hne : ∀ n, (t.intSet n ∩ C n).Nonempty)
     (hN : ∀ n, ∀ y ∈ t.intSet (n + 1) ∩ C (n + 1), t.N n y ∈ C n) :
@@ -83,20 +104,34 @@ namespace Plus
 
 variable {t}
 
+/- English proof (translation)
+Use `x.isFam.nrm_eq 0 n` as an intermediate fact. Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis.
+-/
 theorem nrm_val_zero (x : t.Plus) (n : ℕ) : nrm K (x.1 0) = nrm K (x.1 n) ^ t.D 0 n := by
   have := x.isFam.nrm_eq 0 n
   rwa [zero_add] at this
 
+/- English proof (translation)
+Rewrite using `[← nrm_eq_zero (K := K), ← nrm_eq_zero (K := K) (x := x.1 0), nrm_val_zero x n, pow_eq_zero_iff (t.D_pos 0 n).ne']`.
+-/
 theorem val_eq_zero_iff (x : t.Plus) (n : ℕ) : x.1 n = 0 ↔ x.1 0 = 0 := by
   rw [← nrm_eq_zero (K := K), ← nrm_eq_zero (K := K) (x := x.1 0), nrm_val_zero x n,
     pow_eq_zero_iff (t.D_pos 0 n).ne']
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Both sides reduce to the same expression. Introduce `h`. Conclude with `Subtype.ext (funext fun n ↦ (val_eq_zero_iff x n).mpr h)`.
+-/
 theorem eq_zero_iff (x : t.Plus) : x = 0 ↔ x.1 0 = 0 := by
   constructor
   · rintro rfl; rfl
   · intro h
     exact Subtype.ext (funext fun n ↦ (val_eq_zero_iff x n).mpr h)
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp [t.ρ_nonneg]`. Consider the case `succ m ih`. Establish `h` using `add_cong (m : t.Plus) 1 n`. Rewrite using `[Nat.cast_succ, Nat.cast_succ]`.
+
+Establish `e : ((m : t.Plus) + 1).1 n - ((m : Ω) + 1) = (((m : t.Plus) + 1).1 n - ((m : t.Plus).1 n + (1 : t.Plus).1 n)) + ((m : t.Plus).1 n - (m : Ω))` using `by simp; ring`. Rewrite using `[e]`. Conclude with `nrm_add_le_of_le h ih`.
+-/
 theorem natCast_cong (m n : ℕ) : nrm K (((m : ℕ) : t.Plus).1 n - (m : Ω)) ≤ t.ρ := by
   induction m with
   | zero => simp [t.ρ_nonneg]
@@ -112,6 +147,9 @@ theorem natCast_cong (m n : ℕ) : nrm K (((m : ℕ) : t.Plus).1 n - (m : Ω)) �
 instance instNontrivial : Nontrivial t.Plus :=
   ⟨⟨0, 1, fun h ↦ by simpa using congrArg (fun x : t.Plus ↦ x.1 0) h⟩⟩
 
+/- English proof (translation)
+The claim follows from `eq_of_cong fun n ↦ by have h := natCast_cong (t := t) p n simp only [zero_val, sub_zero] have : ((p : ℕ) : t.Plus).1 n = (((p : ℕ) : t.Plus).1 n - (p : Ω)) + (p : Ω) := by ring rw [this] exact nrm_add_le_of_le h t.nrm_p_le_ρ`.
+-/
 theorem natCast_p : ((p : ℕ) : t.Plus) = 0 :=
   eq_of_cong fun n ↦ by
     have h := natCast_cong (t := t) p n
@@ -131,11 +169,17 @@ instance instNoZeroDivisors : NoZeroDivisors t.Plus where
 instance instIsDomain : IsDomain t.Plus :=
   NoZeroDivisors.to_isDomain _
 
+/- English proof (translation)
+The claim follows from `(CharP.charP_iff_prime_eq_zero t.prime).mpr natCast_p`.
+-/
 theorem charP : CharP t.Plus p :=
   (CharP.charP_iff_prime_eq_zero t.prime).mpr natCast_p
 
 variable (t) in
 
+/- English proof (translation)
+Use `t.exists_intFam_mem (C := fun n ↦ {y | nrm K y = t.value n}) (fun n ↦ isClosed_eq (continuous_nrm K Ω) continuous_const) (fun n ↦ ?_) (fun n y hy ↦ ?_)` and prove the remaining obligations. Take `⟨π, hπ, hπv⟩` from `t.exists_value n`. Conclude with `⟨π, ⟨hπ, hπv ▸ (t.value_lt_one n).le⟩, hπv⟩`. Simplify using `only [Set.mem_ofPred_eq] at hy ⊢`. Rewrite using `[t.nrm_N, hy.2, t.value_succ]`.
+-/
 theorem exists_unif : ∃ z, t.IsIntFam z ∧ ∀ n, nrm K (z n) = t.value n := by
   refine t.exists_intFam_mem (C := fun n ↦ {y | nrm K y = t.value n})
     (fun n ↦ isClosed_eq (continuous_nrm K Ω) continuous_const) (fun n ↦ ?_) (fun n y hy ↦ ?_)
@@ -149,19 +193,34 @@ variable (t) in
 def unif : t.Plus :=
   ⟨(exists_unif t).choose, (exists_unif t).choose_spec.1⟩
 
+/- English proof (translation)
+The claim follows from `(exists_unif t).choose_spec.2 n`.
+-/
 theorem nrm_unif (n : ℕ) : nrm K ((unif t).1 n) = t.value n :=
   (exists_unif t).choose_spec.2 n
 
+/- English proof (translation)
+Rewrite using `[Ne, eq_zero_iff, ← nrm_eq_zero (K := K), nrm_unif]`. Conclude with `(t.value_pos 0).ne'`.
+-/
 theorem unif_ne_zero : unif t ≠ 0 := by
   rw [Ne, eq_zero_iff, ← nrm_eq_zero (K := K), nrm_unif]
   exact (t.value_pos 0).ne'
 
+/- English proof (translation)
+Rewrite using `[← nrm_pos (K := K), nrm_unif]`. Conclude with `t.value_pos n`.
+-/
 theorem unif_val_ne_zero (n : ℕ) : (unif t).1 n ≠ 0 := by
   rw [← nrm_pos (K := K), nrm_unif]; exact t.value_pos n
 
+/- English proof (translation)
+Rewrite using `[Ne, val_eq_zero_iff, ← eq_zero_iff]`. Conclude with `hx`.
+-/
 theorem val_ne_zero {x : t.Plus} (hx : x ≠ 0) (n : ℕ) : x.1 n ≠ 0 := by
   rw [Ne, val_eq_zero_iff, ← eq_zero_iff]; exact hx
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ, mul_val, ih, pow_succ]`.
+-/
 theorem pow_val (x : t.Plus) (k n : ℕ) : (x ^ k).1 n = x.1 n ^ k := by
   induction k with
   | zero => simp
@@ -180,8 +239,16 @@ variable {t}
 
 def toFam (x : t.Plus) : t.Fam := ⟨x.1, x.2.1⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem toFam_val (x : t.Plus) : x.toFam.1 = x.1 := rfl
 
+/- English proof (translation)
+Break down `max_choice (max a b) c with h | h` into its components or cases. Rewrite using `[h]`. Break down `max_choice a b with h' | h'` into its components or cases. Rewrite using `[h']`. Conclude with `le_max_of_le_left (le_max_left _ _)`.
+
+Rewrite using `[h']`. Conclude with `le_max_of_le_left (le_max_right _ _)`. Rewrite using `[h]`. Conclude with `le_max_right _ _`.
+-/
 theorem pow_max_max_le_max_pow {a b c : ℝ} (n : ℕ) :
     (max (max a b) c) ^ n ≤ max (max (a ^ n) (b ^ n)) (c ^ n) := by
   rcases max_choice (max a b) c with h | h
@@ -191,6 +258,21 @@ theorem pow_max_max_le_max_pow {a b c : ℝ} (n : ℕ) :
     · rw [h']; exact le_max_of_le_left (le_max_right _ _)
   · rw [h]; exact le_max_right _ _
 
+/- English proof (translation)
+Establish `hle : ∀ j, nrm K ((x + y).1 0) ≤ max (max (nrm K (x.1 0)) (nrm K (y.1 0))) (t.ρ ^ t.D 0 j)`. Introduce `j`. Rewrite using `[nrm_val_zero (x + y) j, nrm_val_zero x j, nrm_val_zero y j]`. Establish `h1 : nrm K ((x + y).1 j) ≤ max (max (nrm K (x.1 j)) (nrm K (y.1 j))) t.ρ`. Establish `: (x + y).1 j = ((x + y).1 j - (x.1 j + y.1 j)) + (x.1 j + y.1 j)` using `by ring`.
+
+Rewrite using `[this]`. Use `(nrm_add_le_max _ _).trans (max_le (le_max_of_le_right (add_cong x y j)) ?_)` and prove the remaining obligations. Conclude with `le_max_of_le_left (nrm_add_le_max _ _)`. Establish `hD` using `t.D_pos 0 j`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hDj : ∀ M : ℕ, ∃ j, M ≤ t.D 0 j`. Introduce `M`. Take `⟨j, hj⟩` from `t.exists_le_cnt 0 M`. Use `⟨j, hj.trans ?_⟩` and prove the remaining obligations. Use `clear hj`.
+
+Proceed by induction on `j with`. Consider the case `zero => simp [cnt, D]`. Consider the case `succ j ih`. Rewrite using `[cnt_succ, D_succ]`. Use `split_ifs with hk`.
+
+Establish `h2 : 2 ≤ p ^ t.k (0 + j)` using `(t.prime.two_le).trans (Nat.le_self_pow hk _)`. Use `t.D_pos 0 j` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use `Nat.one_le_pow (t.k (0 + j)) p t.prime.pos` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+
+Use `le_of_forall_pos_lt_add fun ε hε ↦ ?_` and prove the remaining obligations. Take `⟨M, hM⟩` from `exists_pow_lt_of_lt_one hε t.ρ_lt_one`. Take `⟨j, hj⟩` from `hDj M`. Establish `h` using `hle j`. Establish `hρj : t.ρ ^ t.D 0 j ≤ t.ρ ^ M` using `pow_le_pow_of_le_one t.ρ_nonneg t.ρ_lt_one.le hj`.
+
+Break down `le_total (max (nrm K (x.1 0)) (nrm K (y.1 0))) (t.ρ ^ t.D 0 j) with h' | h'` into its components or cases. Rewrite `h` using `[max_eq_right h']`. Combine the linear relations using `[le_max_left (nrm K (x.1 0)) (nrm K (y.1 0)), nrm_nonneg (K := K) (x.1 0)]`. Rewrite `h` using `[max_eq_left h']`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem nrm_add_val_zero_le (x y : t.Plus) :
     nrm K ((x + y).1 0) ≤ max (nrm K (x.1 0)) (nrm K (y.1 0)) := by
   have hle : ∀ j, nrm K ((x + y).1 0) ≤ max (max (nrm K (x.1 0)) (nrm K (y.1 0))) (t.ρ ^ t.D 0 j) := by
@@ -241,18 +323,33 @@ namespace Fam
 
 variable {t}
 
+/- English proof (translation)
+The claim follows from `(x.2 n).1`.
+-/
 theorem mem (x : t.Fam) (n : ℕ) : x.1 n ∈ t.E n := (x.2 n).1
 
+/- English proof (translation)
+The claim follows from `(x.2 n).2`.
+-/
 theorem N_eq (x : t.Fam) (n : ℕ) : t.N n (x.1 (n + 1)) = x.1 n := (x.2 n).2
 
+/- English proof (translation)
+Use `x.2.nrm_eq 0 n` as an intermediate fact. Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis.
+-/
 theorem nrm_val_zero (x : t.Fam) (n : ℕ) : nrm K (x.1 0) = nrm K (x.1 n) ^ t.D 0 n := by
   have := x.2.nrm_eq 0 n
   rwa [zero_add] at this
 
+/- English proof (translation)
+Rewrite using `[← nrm_eq_zero (K := K), ← nrm_eq_zero (K := K) (x := x.1 0), nrm_val_zero x n, pow_eq_zero_iff (t.D_pos 0 n).ne']`.
+-/
 theorem val_eq_zero_iff (x : t.Fam) (n : ℕ) : x.1 n = 0 ↔ x.1 0 = 0 := by
   rw [← nrm_eq_zero (K := K), ← nrm_eq_zero (K := K) (x := x.1 0), nrm_val_zero x n,
     pow_eq_zero_iff (t.D_pos 0 n).ne']
 
+/- English proof (translation)
+Use `⟨x.2, fun n ↦ ?_⟩` and prove the remaining obligations. Rewrite `h` using `[nrm_val_zero x n]`. Conclude with `(pow_le_one_iff_of_nonneg (nrm_nonneg _) (t.D_pos 0 n).ne').mp h`.
+-/
 theorem isIntFam_of_nrm_le {x : t.Fam} (h : nrm K (x.1 0) ≤ 1) : t.IsIntFam x.1 := by
   refine ⟨x.2, fun n ↦ ?_⟩
   rw [nrm_val_zero x n] at h
@@ -262,11 +359,19 @@ def scale (x : t.Fam) (m : ℕ) : t.Fam :=
   ⟨fun n ↦ (Plus.unif t).1 n ^ m * x.1 n, fun n ↦ ⟨mul_mem (pow_mem ((Plus.unif t).mem n) m) (x.mem n),
     by rw [t.N_mul, t.N_pow, (Plus.unif t).N_eq, x.N_eq]⟩⟩
 
+/- English proof (translation)
+Use `show nrm K ((Plus.unif t).1 0 ^ m * x.1 0) = _`. Rewrite using `[nrm_mul, nrm_pow, Plus.nrm_unif]`.
+-/
 theorem nrm_scale_val_zero (x : t.Fam) (m : ℕ) :
     nrm K ((x.scale m).1 0) = t.value 0 ^ m * nrm K (x.1 0) := by
   show nrm K ((Plus.unif t).1 0 ^ m * x.1 0) = _
   rw [nrm_mul, nrm_pow, Plus.nrm_unif]
 
+/- English proof (translation)
+Break down `eq_or_lt_of_le (nrm_nonneg (K := K) (x.1 0)) with h | h` into its components or cases. Conclude with `⟨0, by rw [← h]; simp⟩`. Take `⟨m, hm⟩` from `exists_pow_lt_of_lt_one (inv_pos.mpr h) (t.value_lt_one 0)`. Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite using `[← le_div_iff₀ h, one_div]`.
+
+Conclude with `hm.le`.
+-/
 theorem exists_scale (x : t.Fam) : ∃ m, t.value 0 ^ m * nrm K (x.1 0) ≤ 1 := by
   rcases eq_or_lt_of_le (nrm_nonneg (K := K) (x.1 0)) with h | h
   · exact ⟨0, by rw [← h]; simp⟩
@@ -278,6 +383,9 @@ theorem exists_scale (x : t.Fam) : ∃ m, t.value 0 ^ m * nrm K (x.1 0) ≤ 1 :=
 def scalePlus (x : t.Fam) (m : ℕ) (h : t.value 0 ^ m * nrm K (x.1 0) ≤ 1) : t.Plus :=
   ⟨(x.scale m).1, isIntFam_of_nrm_le (by rwa [nrm_scale_val_zero])⟩
 
+/- English proof (translation)
+The claim follows from `pow_mem (mem_nonZeroDivisors_of_ne_zero Plus.unif_ne_zero) m`.
+-/
 theorem unif_pow_mem (m : ℕ) : Plus.unif t ^ m ∈ nonZeroDivisors t.Plus :=
   pow_mem (mem_nonZeroDivisors_of_ne_zero Plus.unif_ne_zero) m
 
@@ -285,10 +393,18 @@ def toFrac (x : t.Fam) : FractionRing t.Plus :=
   IsLocalization.mk' _ (scalePlus x (Nat.find (exists_scale x)) (Nat.find_spec (exists_scale x)))
     ⟨Plus.unif t ^ Nat.find (exists_scale x), unif_pow_mem _⟩
 
+/- English proof (translation)
+The claim follows from `IsFractionRing.injective t.Plus (FractionRing t.Plus)`.
+-/
 theorem injective_algebraMap :
     Function.Injective (algebraMap t.Plus (FractionRing t.Plus)) :=
   IsFractionRing.injective t.Plus (FractionRing t.Plus)
 
+/- English proof (translation)
+Rewrite using `[toFrac, IsLocalization.mk'_eq_iff_eq]`. Use `congr 1`. Use `Subtype.ext (funext fun n ↦ ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Plus.unif t ^ m).1 n * ((Plus.unif t).1 n ^ _ * x.1 n) = (Plus.unif t ^ _).1 n * ((Plus.unif t).1 n ^ m * x.1 n)`. Rewrite using `[Plus.pow_val, Plus.pow_val]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem toFrac_eq (x : t.Fam) (m : ℕ) (h : t.value 0 ^ m * nrm K (x.1 0) ≤ 1) :
     toFrac x = IsLocalization.mk' _ (scalePlus x m h) ⟨Plus.unif t ^ m, unif_pow_mem _⟩ := by
   rw [toFrac, IsLocalization.mk'_eq_iff_eq]
@@ -304,12 +420,23 @@ def ofDiv (a : t.Plus) (b : nonZeroDivisors t.Plus) : t.Fam :=
     show t.N n (a.1 (n + 1) / b.1.1 (n + 1)) = a.1 n / b.1.1 n
     rw [div_eq_mul_inv, t.N_mul, t.N_inv, a.N_eq, b.1.N_eq, div_eq_mul_inv]⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofDiv_val (a : t.Plus) (b : nonZeroDivisors t.Plus) (n : ℕ) :
     (ofDiv a b).1 n = a.1 n / b.1.1 n := rfl
 
+/- English proof (translation)
+The claim follows from `Plus.val_ne_zero (nonZeroDivisors.ne_zero hb) n`.
+-/
 theorem val_ne_zero_of_mem {b : t.Plus} (hb : b ∈ nonZeroDivisors t.Plus) (n : ℕ) : b.1 n ≠ 0 :=
   Plus.val_ne_zero (nonZeroDivisors.ne_zero hb) n
 
+/- English proof (translation)
+Rewrite `h` using `[IsLocalization.mk'_eq_iff_eq]`. Establish `h'` using `congrArg (fun z : t.Plus ↦ z.1) (injective_algebraMap h)`. Use `Subtype.ext (funext fun n ↦ ?_)` and prove the remaining obligations. Establish `hn` using `congrFun h' n`. Simplify using `only [Plus.mul_val] at hn`.
+
+Simplify using `only [ofDiv_val]`. Rewrite using `[div_eq_div_iff (val_ne_zero_of_mem b.2 n) (val_ne_zero_of_mem b'.2 n)]`. Take the linear combination `hn`.
+-/
 theorem ofDiv_eq_ofDiv {a a' : t.Plus} {b b' : nonZeroDivisors t.Plus}
     (h : IsLocalization.mk' (FractionRing t.Plus) a b = IsLocalization.mk' _ a' b') :
     ofDiv a b = ofDiv a' b' := by
@@ -326,6 +453,9 @@ def ofFrac (q : FractionRing t.Plus) : t.Fam :=
   ofDiv (IsLocalization.mk'_surjective (nonZeroDivisors t.Plus) q).choose.1
     (IsLocalization.mk'_surjective (nonZeroDivisors t.Plus) q).choose.2
 
+/- English proof (translation)
+The claim follows from `ofDiv_eq_ofDiv (IsLocalization.mk'_surjective (nonZeroDivisors t.Plus) (IsLocalization.mk' (FractionRing t.Plus) a b)).choose_spec`.
+-/
 theorem ofFrac_mk' (a : t.Plus) (b : nonZeroDivisors t.Plus) :
     ofFrac (IsLocalization.mk' (FractionRing t.Plus) a b) = ofDiv a b :=
   ofDiv_eq_ofDiv (IsLocalization.mk'_surjective (nonZeroDivisors t.Plus)
@@ -358,18 +488,35 @@ def equivFrac : t.Fam ≃ FractionRing t.Plus where
 instance instField : Field t.Fam :=
   (equivFrac t).field
 
+/- English proof (translation)
+The claim follows from `(equivFrac t).apply_symm_apply _`.
+-/
 theorem equivFrac_mul (x y : t.Fam) : equivFrac t (x * y) = equivFrac t x * equivFrac t y :=
   (equivFrac t).apply_symm_apply _
 
+/- English proof (translation)
+The claim follows from `(equivFrac t).apply_symm_apply _`.
+-/
 theorem equivFrac_add (x y : t.Fam) : equivFrac t (x + y) = equivFrac t x + equivFrac t y :=
   (equivFrac t).apply_symm_apply _
 
+/- English proof (translation)
+The claim follows from `(equivFrac t).apply_symm_apply _`.
+-/
 theorem equivFrac_zero : equivFrac t (0 : t.Fam) = 0 :=
   (equivFrac t).apply_symm_apply _
 
+/- English proof (translation)
+The claim follows from `(equivFrac t).apply_symm_apply _`.
+-/
 theorem equivFrac_one : equivFrac t (1 : t.Fam) = 1 :=
   (equivFrac t).apply_symm_apply _
 
+/- English proof (translation)
+Use `show toFrac a.toFam = _`. Rewrite using `[toFrac_eq a.toFam 0 (by simpa using a.nrm_le 0), ← IsLocalization.mk'_one (M := nonZeroDivisors t.Plus)]`. Use `congr 1`. Use `Subtype.ext (funext fun n ↦ ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Plus.unif t).1 n ^ 0 * a.1 n = a.1 n`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem equivFrac_toFam (a : t.Plus) :
     equivFrac t a.toFam = algebraMap t.Plus (FractionRing t.Plus) a := by
   show toFrac a.toFam = _
@@ -379,6 +526,15 @@ theorem equivFrac_toFam (a : t.Plus) :
   change (Plus.unif t).1 n ^ 0 * a.1 n = a.1 n
   simp
 
+/- English proof (translation)
+Set `xy : t.Fam` to `⟨fun n ↦ x.1 n * y.1 n, fun n ↦ ⟨mul_mem (x.mem n) (y.mem n), by rw [t.N_mul, x.N_eq, y.N_eq]⟩⟩`. It suffices to establish `h : x * y = xy by rw [h]`. Apply `(equivFrac t).injective` to reduce the goal to its premises. Rewrite using `[equivFrac_mul]`. Take `⟨mx, hmx⟩` from `exists_scale x`.
+
+Take `⟨my, hmy⟩` from `exists_scale y`. Establish `hxy : t.value 0 ^ (mx + my) * nrm K (xy.1 0) ≤ 1` using `by show t.value 0 ^ (mx + my) * nrm K (x.1 0 * y.1 0) ≤ 1`. Rewrite using `[nrm_mul, pow_add]`. Combine the equalities or inequalities in the displayed calculation. Use `show toFrac x * toFrac y = toFrac xy`.
+
+Rewrite using `[toFrac_eq x mx hmx, toFrac_eq y my hmy, toFrac_eq xy (mx + my) hxy, ← IsLocalization.mk'_mul]`. Use `congr 1`. Use `Subtype.ext (funext fun n ↦ ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Plus.unif t).1 n ^ mx * x.1 n * ((Plus.unif t).1 n ^ my * y.1 n) = (Plus.unif t).1 n ^ (mx + my) * (x.1 n * y.1 n)`. Expand and normalize the polynomial expressions, which then agree.
+
+Conclude with `Subtype.ext (pow_add _ _ _).symm`. Use the proof step `@[simp]`.
+-/
 theorem mul_val (x y : t.Fam) (n : ℕ) : (x * y).1 n = x.1 n * y.1 n := by
   let xy : t.Fam := ⟨fun n ↦ x.1 n * y.1 n, fun n ↦ ⟨mul_mem (x.mem n) (y.mem n),
     by rw [t.N_mul, x.N_eq, y.N_eq]⟩⟩
@@ -406,6 +562,11 @@ theorem mul_val (x y : t.Fam) (n : ℕ) : (x * y).1 n = x.1 n * y.1 n := by
   · exact Subtype.ext (pow_add _ _ _).symm
 
 @[simp]
+/- English proof (translation)
+Establish `: (0 : t.Fam) = (0 : t.Plus).toFam`. Apply `(equivFrac t).injective` to reduce the goal to its premises. Rewrite using `[equivFrac_zero, equivFrac_toFam, map_zero]`. Rewrite using `[this]`. Both sides reduce to the same expression.
+
+Use the proof step `@[simp]`.
+-/
 theorem zero_val (n : ℕ) : (0 : t.Fam).1 n = 0 := by
   have : (0 : t.Fam) = (0 : t.Plus).toFam := by
     apply (equivFrac t).injective
@@ -413,25 +574,44 @@ theorem zero_val (n : ℕ) : (0 : t.Fam).1 n = 0 := by
   rw [this]; rfl
 
 @[simp]
+/- English proof (translation)
+Establish `: (1 : t.Fam) = (1 : t.Plus).toFam`. Apply `(equivFrac t).injective` to reduce the goal to its premises. Rewrite using `[equivFrac_one, equivFrac_toFam, map_one]`. Rewrite using `[this]`. Both sides reduce to the same expression.
+-/
 theorem one_val (n : ℕ) : (1 : t.Fam).1 n = 1 := by
   have : (1 : t.Fam) = (1 : t.Plus).toFam := by
     apply (equivFrac t).injective
     rw [equivFrac_one, equivFrac_toFam, map_one]
   rw [this]; rfl
 
+/- English proof (translation)
+Apply `(equivFrac t).injective` to reduce the goal to its premises. Rewrite using `[equivFrac_add, equivFrac_toFam, equivFrac_toFam, equivFrac_toFam, map_add]`.
+-/
 theorem toFam_add (a b : t.Plus) : (a + b).toFam = a.toFam + b.toFam := by
   apply (equivFrac t).injective
   rw [equivFrac_add, equivFrac_toFam, equivFrac_toFam, equivFrac_toFam, map_add]
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (funext fun n ↦ by rw [mul_val]; rfl)`.
+-/
 theorem toFam_mul (a b : t.Plus) : (a * b).toFam = a.toFam * b.toFam :=
   Subtype.ext (funext fun n ↦ by rw [mul_val]; rfl)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `zero_val 0`. Introduce `h`. Conclude with `Subtype.ext (funext fun n ↦ by rw [zero_val]; exact (val_eq_zero_iff x n).mpr h)`.
+-/
 theorem eq_zero_iff (x : t.Fam) : x = 0 ↔ x.1 0 = 0 := by
   constructor
   · rintro rfl; exact zero_val 0
   · intro h
     exact Subtype.ext (funext fun n ↦ by rw [zero_val]; exact (val_eq_zero_iff x n).mpr h)
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Simplify using the standard rewrite rules. Establish `hxn : ∀ n, x.1 n ≠ 0` using `fun n ↦ by`. Rewrite using `[Ne, val_eq_zero_iff, ← eq_zero_iff]`.
+
+Conclude with `hx`. Set `y : t.Fam` to `⟨fun n ↦ (x.1 n)⁻¹, fun n ↦ ⟨inv_mem (x.mem n), by rw [t.N_inv, x.N_eq]⟩⟩`. Establish `hxy : x * y = 1` using `Subtype.ext (funext fun n ↦ by`. Rewrite using `[mul_val, one_val]`. Conclude with `mul_inv_cancel₀ (hxn n))`.
+
+Rewrite using `[inv_eq_of_mul_eq_one_right hxy]`.
+-/
 theorem inv_val (x : t.Fam) (n : ℕ) : x⁻¹.1 n = (x.1 n)⁻¹ := by
   by_cases hx : x = 0
   · subst hx; simp

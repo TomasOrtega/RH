@@ -17,12 +17,20 @@ namespace GlobalTheory.ProperFinite
 
 variable {X X' : Scheme.{0}}
 
+/- English proof (translation)
+Introduce `h` and use `by have h' := (mem_support_iff_primeIdealOf (F := F) hV ⟨x, hx⟩).1 h rw [Module.support_eq_empty] at h' exact h'`.
+-/
 theorem notMem_support_of_subsingleton (F : X.Modules) [F.IsQuasicoherent] {V : X.Opens} (hV : IsAffineOpen V)
     [Subsingleton Γ(F, V)] {x : X} (hx : x ∈ V) : x ∉ support F := fun h => by
   have h' := (mem_support_iff_primeIdealOf (F := F) hV ⟨x, hx⟩).1 h
   rw [Module.support_eq_empty] at h'
   exact h'
 
+/- English proof (translation)
+Establish `hc' : π ⁻¹ᵁ ⊤ ≤ ⨆ i, π ⁻¹ᵁ U i` using `by rw [← Scheme.Hom.preimage_iSup, hc]`. Establish `ha : CechAcyclicMod (π ⁻¹ᵁ ⊤) (fun i => π ⁻¹ᵁ U i) E` using `(cechAcyclicMod_iff_of_le fun _ => le_top).2 fun s hs q hq => by`. Use `hE s hs q hq` as an intermediate fact. Establish `e : π ⁻¹ᵁ (⊤ ⊓ ⨅ i ∈ s, U i) = ⊤ ⊓ ⨅ i ∈ s, π ⁻¹ᵁ U i` using `preimage_cechOpen π ⊤ U s`. Rewrite `this` using `[← top_inf_eq (⨅ i ∈ s, U i), e, top_inf_eq]`. Then use the resulting hypothesis.
+
+Conclude with `⟨(cechHEquivCoh R hc hU _ p).symm ≪≫ₗ ((HomologicalComplex.homologyFunctor _ _ p).mapIso (cechPushforwardIso ⊤ U E hπ)).toLinearEquiv ≪≫ₗ cechHEquivCohOn R hc' ha p⟩`.
+-/
 theorem nonempty_coh_pushforward_equiv (R : Type) [CommRing R] [Algebra R Γ(X, ⊤)] [Algebra R Γ(X', ⊤)]
     (π : X' ⟶ X) (hπ : ∀ r, π.appTop (algebraMap R Γ(X, ⊤) r) = algebraMap R Γ(X', ⊤) r)
     (E : X'.Modules) [((Scheme.Modules.pushforward π).obj E).IsQuasicoherent] {m : ℕ} {U : Fin m → X.Opens}
@@ -39,6 +47,13 @@ theorem nonempty_coh_pushforward_equiv (R : Type) [CommRing R] [Algebra R Γ(X, 
     ((HomologicalComplex.homologyFunctor _ _ p).mapIso (cechPushforwardIso ⊤ U E hπ)).toLinearEquiv ≪≫ₗ
     cechHEquivCohOn R hc' ha p⟩
 
+/- English proof (translation)
+Establish `: IsNoetherianRing Γ(X, V)` using `IsLocallyNoetherian.component_noetherian ⟨V, hV⟩`. Establish `: IsLocallyNoetherian X'` using `LocallyOfFiniteType.isLocallyNoetherian π`. Use `hL.noetherianSpace` as an intermediate fact. Set `j` to `(π ⁻¹ᵁ V).ι`. Set `g : (π ⁻¹ᵁ V).toScheme ⟶ Sp Γ(X, V)` to `π ∣_ V ≫ hV.isoSpec.hom`.
+
+Establish `: IsProper g` using `inferInstanceAs (IsProper (π ∣_ V ≫ hV.isoSpec.hom))`. Use `letI := algebraΓOfHom g`. Establish `hj : IsAmpleLB (L.pull j)` using `hL.pull_of_isImmersion j`. Use `(hj.eventually_subsingleton_coh_twist (f := g) (fun _ => rfl) (E.restrict j)).mono fun n hn q hq => ?_` and prove the remaining obligations. Use `hn q hq` as an intermediate fact.
+
+Take `⟨e⟩` from `nonempty_iso_of_lbIso (F := E.restrict j) (LB.isLB_pull (isLB_lbPow hL.isLB n) j) (isLB_lbPow hj.isLB n) (lbIso_lbPow_pull hL.isLB j n).symm`. Set `e' : (twist E (lbPow L n)).restrict j ≅ twist (E.restrict j) (lbPow (L.pull j) n)` to `(Scheme.Modules.restrictFunctorIsoPullback j).app _ ≪≫ Twist.pullbackIso E j (isLB_lbPow hL.isLB n) ≪≫ (twistFunctor _).mapIso ((Scheme.Modules.restrictFunctorIsoPullback j).app _).symm ≪≫ e`. Conclude with `((cohOn.restrictEquiv ℤ (g := j) (fun r => by simp) _ (π ⁻¹ᵁ V).ι_image_top q).trans (cohOn.mapIso ℤ ⊤ q e')).injective.subsingleton`.
+-/
 theorem eventually_subsingleton_cohOn [IsLocallyNoetherian X] (π : X' ⟶ X) [IsProper π] {L : LB X'}
     (hL : IsAmpleLB L) (E : X'.Modules) [IsFiniteQC E] {V : X.Opens} (hV : IsAffineOpen V) :
     ∀ᶠ n : ℕ in atTop, ∀ q, 0 < q → Subsingleton (cohOn (twist E (lbPow L n)) (π ⁻¹ᵁ V) q) := by
@@ -60,11 +75,25 @@ theorem eventually_subsingleton_cohOn [IsLocallyNoetherian X] (π : X' ⟶ X) [I
   exact ((cohOn.restrictEquiv ℤ (g := j) (fun r => by simp) _ (π ⁻¹ᵁ V).ι_image_top q).trans
     (cohOn.mapIso ℤ ⊤ q e')).injective.subsingleton
 
+/- English proof (translation)
+Rewrite using `[morphismRestrict_appTop, Scheme.Opens.topIso_inv, Scheme.Hom.app_eq_appLE]`. Conclude with `(congrArg (_ ≫ ·) (π.appLE_map _ _)).trans (π.map_appLE _ _)`.
+-/
 theorem topIso_inv_appTop (π : X' ⟶ X) (V : X.Opens) :
     V.topIso.inv ≫ (π ∣_ V).appTop = π.appLE V ((π ⁻¹ᵁ V).ι ''ᵁ ⊤) (π ⁻¹ᵁ V).ι_image_top.le := by
   rw [morphismRestrict_appTop, Scheme.Opens.topIso_inv, Scheme.Hom.app_eq_appLE]
   exact (congrArg (_ ≫ ·) (π.appLE_map _ _)).trans (π.map_appLE _ _)
 
+/- English proof (translation)
+Use `⟨inferInstance, fun V hV => ?_⟩` and prove the remaining obligations. Establish `: IsNoetherianRing Γ(X, V)` using `IsLocallyNoetherian.component_noetherian ⟨V, hV⟩`. Establish `: IsLocallyNoetherian X'` using `LocallyOfFiniteType.isLocallyNoetherian π`. Use `hL.noetherianSpace` as an intermediate fact. Set `j` to `(π ⁻¹ᵁ V).ι`.
+
+Set `g : (π ⁻¹ᵁ V).toScheme ⟶ Sp Γ(X, V)` to `π ∣_ V ≫ hV.isoSpec.hom`. Establish `: IsProper g` using `inferInstanceAs (IsProper (π ∣_ V ≫ hV.isoSpec.hom))`. Use `letI := algebraΓOfHom g`. Establish `hj : IsAmpleLB (L.pull j)` using `hL.pull_of_isImmersion j`. Establish `hfin` using `hj.finite_coh (f := g) (fun _ => rfl) (E.restrict j) 0`.
+
+Establish `hfin'` using `Module.Finite.equiv (cohOn.zeroEquiv Γ(X, V) (E.restrict j) ⊤)`. Establish `hle : j ''ᵁ ⊤ ≤ π ⁻¹ᵁ V` using `(π ⁻¹ᵁ V).ι_image_top.le`. Establish `ha : ∀ r, algebraMap Γ(X, V) Γ((π ⁻¹ᵁ V).toScheme, ⊤) r = π.appLE V (j ''ᵁ ⊤) hle r` using `fun r => by`. Express the relevant statement in the definitionally equal form `(π ∣_ V ≫ hV.isoSpec.hom).appTop ((Scheme.ΓSpecIso Γ(X, V)).inv r) = _`. Rewrite using `[Scheme.Hom.comp_appTop, IsAffineOpen.isoSpec_hom_appTop, ← CommRingCat.comp_apply, Category.assoc, Iso.inv_hom_id_assoc, topIso_inv_appTop]`.
+
+Both sides reduce to the same expression. Set `ρ : Γ((Scheme.Modules.pushforward π).obj E, V) →ₗ[Γ(X, V)] sectionsOn (E.restrict j) ⊤` to `{ toFun := fun s => (sectionsOn.toΓ (E.restrict j) ⊤).symm (E.presheaf.map (homOfLE hle).op s) map_add' := fun s t => (congrArg _ (map_add (E.presheaf.map (homOfLE hle).op).hom s t)).trans (map_add _ _ _) map_smul' := fun r s => (sectionsOn.toΓ (E.restrict j) ⊤).injective (by`. Rewrite using `[sectionsOn.toΓ_smul, RingHom.id_apply, ha]`. Express the relevant statement in the definitionally equal form `E.presheaf.map (homOfLE hle).op (π.app V r • (show Γ(E, π ⁻¹ᵁ V) from s)) = (j.appIso ⊤).inv (restrictGlobal _ ⊤ (π.appLE V (j ''ᵁ ⊤) hle r)) • E.presheaf.map (homOfLE hle).op s`. Rewrite using `[Scheme.Modules.map_smul, Scheme.Opens.ι_appIso]`.
+
+Conclude with `congrArg (· • _) (res_self_ring (X := (π ⁻¹ᵁ V).toScheme) le_top _).symm) }`. Establish `hρ : Function.Bijective ρ` using `(sectionsOn.toΓ (E.restrict j) ⊤).symm.bijective.comp (res_bijective_of_eq E hle (π ⁻¹ᵁ V).ι_image_top)`. Conclude with `Module.Finite.equiv (LinearEquiv.ofBijective ρ hρ).symm`.
+-/
 theorem isFiniteQC_pushforward [IsLocallyNoetherian X] (π : X' ⟶ X) [IsProper π] {L : LB X'}
     (hL : IsAmpleLB L) (E : X'.Modules) [IsFiniteQC E] : IsFiniteQC ((Scheme.Modules.pushforward π).obj E) := by
   refine ⟨inferInstance, fun V hV => ?_⟩
@@ -97,6 +126,17 @@ theorem isFiniteQC_pushforward [IsLocallyNoetherian X] (π : X' ⟶ X) [IsProper
     (sectionsOn.toΓ (E.restrict j) ⊤).symm.bijective.comp (res_bijective_of_eq E hle (π ⁻¹ᵁ V).ι_image_top)
   exact Module.Finite.equiv (LinearEquiv.ofBijective ρ hρ).symm
 
+/- English proof (translation)
+Establish `hi : IsIso (π ∣_ V)`. Establish `h₁ : IsIso (π ∣_ U ∣_ (U.ι ⁻¹ᵁ V))` using `inferInstance`. Establish `h₂` using `((MorphismProperty.isomorphisms Scheme).arrow_mk_iso_iff (morphismRestrictRestrict π U (U.ι ⁻¹ᵁ V))).1 h₁`. Rewrite `h₂` using `[Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι, inf_eq_right.2 h]`. Then use the resulting hypothesis. Establish `hV' : IsAffineOpen (π ⁻¹ᵁ V)`.
+
+Establish `: IsAffine V` using `hV`. Conclude with `IsAffine.of_isIso (π ∣_ V)`. Establish `hb : Function.Bijective (π.appLE V (π ⁻¹ᵁ V) le_rfl)`. Establish `h₀ : IsIso (π ∣_ V).appTop` using `inferInstanceAs (IsIso ((π ∣_ V).app ⊤))`. Establish `h₁ : IsIso (V.topIso.inv ≫ (π ∣_ V).appTop)` using `inferInstance`.
+
+Rewrite `h₁` using `[topIso_inv_appTop, ← π.appLE_map le_rfl (eqToHom (π ⁻¹ᵁ V).ι_image_top).op]`. Use `@IsIso.of_isIso_comp_right _ _ _ _ _ (π.appLE V (π ⁻¹ᵁ V) le_rfl) (X'.presheaf.map (eqToHom (π ⁻¹ᵁ V).ι_image_top).op) inferInstance h₁` as an intermediate fact. Conclude with `ConcreteCategory.bijective_of_isIso _`. Use `letI := appLEAlgebra π (le_refl (π ⁻¹ᵁ V))`. Use `letI := appLEModule π ((Scheme.Modules.pullback π).obj G) (le_refl (π ⁻¹ᵁ V))`.
+
+Use `haveI := appLE_isScalarTower π ((Scheme.Modules.pullback π).obj G) (le_refl (π ⁻¹ᵁ V))`. Establish `hB` using `isBaseChange_pullbackSections π G hV' hV le_rfl`. Establish `h₁ : Function.Bijective (pullbackSections π G (le_refl (π ⁻¹ᵁ V)))`. Set `e` to `(TensorProduct.lid Γ(X, V) Γ(G, V)).symm ≪≫ₗ (LinearEquiv.ofBijective (Algebra.linearMap Γ(X, V) Γ(X', π ⁻¹ᵁ V)) hb).rTensor Γ(G, V)`. Establish `he : ⇑(pullbackSections π G (le_refl (π ⁻¹ᵁ V))) = hB.equiv ∘ e` using `funext fun m => by`.
+
+Express the relevant statement in the definitionally equal form `_ = hB.equiv (algebraMap Γ(X, V) Γ(X', π ⁻¹ᵁ V) 1 ⊗ₜ m)`. Rewrite using `[map_one, hB.equiv_tmul, one_smul]`. Rewrite using `[he]`. Conclude with `hB.equiv.bijective.comp e.bijective`. Conclude with `(Function.Bijective.of_comp_iff' (res_bijective_of_eq ((Scheme.Modules.pullback π).obj G) (le_refl (π ⁻¹ᵁ V)) rfl) _).1 h₁`.
+-/
 theorem bijective_unit_app (π : X' ⟶ X) {U V : X.Opens} [IsIso (π ∣_ U)] (h : V ≤ U) (hV : IsAffineOpen V)
     (G : X.Modules) [G.IsQuasicoherent] :
     Function.Bijective (((Scheme.Modules.pullbackPushforwardAdjunction π).unit.app G).app V) := by
@@ -133,6 +173,15 @@ theorem bijective_unit_app (π : X' ⟶ X) {U V : X.Opens} [IsIso (π ∣_ U)] (
 def VanishesSomewhere (E : X.Modules) : Prop :=
   ∃ W : X.Opens, (W : Set X).Nonempty ∧ ∀ V ≤ W, IsAffineOpen V → Subsingleton Γ(E, V)
 
+/- English proof (translation)
+Set `ψ : F ⟶ kernel (cokernel.π φ)` to `Abelian.factorThruImage φ`. Establish `hψ : ψ ≫ kernel.ι _ = φ` using `Abelian.image.fac φ`. Establish `: Epi ψ` using `inferInstanceAs (Epi (Abelian.factorThruImage φ))`. Establish `h₂ : (ShortComplex.mk (kernel.ι (cokernel.π φ)) (cokernel.π φ) (kernel.condition _)).ShortExact` using `{ exact := ShortComplex.exact_kernel _ }`. Establish `h₁ : (ShortComplex.mk (kernel.ι ψ) ψ (kernel.condition _)).ShortExact` using `{ exact := ShortComplex.exact_kernel _ }`.
+
+Establish `hC` using `ih (cokernel φ) inferInstance ⟨W, hW, fun V hV ha => by`. Use `subsingleton_of_forall_eq 0 fun c => ?_` and prove the remaining obligations. Take `⟨g, rfl⟩` from `app_surjective_of_epi_of_isAffineOpen (cokernel.π φ) ha c`. Take `⟨f, rfl⟩` from `(hφ V hV ha).2 g`. Express the relevant statement in the definitionally equal form `(φ ≫ cokernel.π φ).app V f = 0`.
+
+Rewrite using `[cokernel.condition]`. Use the proof step `rfl⟩`. Establish `hK` using `ih (kernel ψ) inferInstance ⟨W, hW, fun V hV ha => by`. Use `subsingleton_of_forall_eq 0 fun c => injective_kernel_ι_app ψ V ((hφ V hV ha).1 ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(kernel.ι ψ ≫ φ).app V c = (kernel.ι ψ ≫ φ).app V 0`.
+
+Rewrite using `[show kernel.ι ψ ≫ φ = 0 from (congrArg (_ ≫ ·) hψ.symm).trans (by rw [kernel.condition_assoc, zero_comp])]`. Use the proof step `rfl⟩`. Conclude with `cohOn.forall_finite₂ R h₁ ⊤ hK (cohOn.forall_finite₁ R h₂ ⊤ hG hC)`.
+-/
 theorem finite_coh_of_bijective [IsLocallyNoetherian X] (R : Type) [CommRing R] [IsNoetherianRing R]
     [Algebra R Γ(X, ⊤)]
     (ih : ∀ E : X.Modules, IsFiniteQC E → VanishesSomewhere E → ∀ p, Module.Finite R (coh E p))
@@ -160,6 +209,21 @@ theorem finite_coh_of_bijective [IsLocallyNoetherian X] (R : Type) [CommRing R] 
     rfl⟩
   exact cohOn.forall_finite₂ R h₁ ⊤ hK (cohOn.forall_finite₁ R h₂ ⊤ hG hC)
 
+/- English proof (translation)
+Use `letI := algebraΓOfHom f`. Use `letI := algebraΓOfHom (π ≫ f)`. Take `⟨_, L, hL⟩` from `isProper_and_exists_isAmpleLB_of_isProjOver hP`. Establish `: IsProper π` using `.of_comp π f`. Establish `: IsLocallyNoetherian X` using `LocallyOfFiniteType.isLocallyNoetherian f`.
+
+Establish `: IsLocallyNoetherian X'` using `LocallyOfFiniteType.isLocallyNoetherian π`. Establish `: CompactSpace X` using `QuasiCompact.compactSpace_of_compactSpace f`. Use `isAffineHom_diagonal_of_isSeparated f` as an intermediate fact. Take `⟨m, D, hD, hc⟩` from `exists_fin_affine_cover (X := X) (V := ⊤) isCompact_univ`. Establish `hD'` using `isAffineOpen_finset_biInf hD`.
+
+Set `E` to `(Scheme.Modules.pullback π).obj G`. Take `⟨u, hu⟩` from `hU`. Set `σ : U.toScheme ⟶ X'` to `inv (π ∣_ U) ≫ (π ⁻¹ᵁ U).ι`. Take `⟨d, hd, s, hs, -⟩` from `hL.exists_affine (σ ⟨u, hu⟩)`. Establish `H : ∀ᶠ n : ℕ in atTop, ∀ I : Finset (Fin m), I.Nonempty → ∀ q, 0 < q → Subsingleton (cohOn (twist E (lbPow L n)) (π ⁻¹ᵁ (⨅ i ∈ I, D i)) q)` using `eventually_all.2 fun I => eventually_all.2 fun hI => eventually_subsingleton_cohOn π hL E (hD' I hI)`.
+
+Take `⟨n, hn⟩` from `eventually_atTop.1 H`. Establish `hN` using `isLB_lbPow hL.isLB (d * (n + 1))`. Set `t : (lbPow L (d * (n + 1))).Sec` to `secPow s (n + 1)`. Establish `ht : Out.nonzeroLocus t = Out.nonzeroLocus s` using `nonzeroLocus_secPow s n.succ_pos`. Use `isFiniteQC_twist (F := E) hN` as an intermediate fact.
+
+Use `isFiniteQC_pushforward π hL (twist E (lbPow L (d * (n + 1))))` as an intermediate fact. Use `finite_coh_of_bijective R ih ((Scheme.Modules.pullbackPushforwardAdjunction π).unit.app G ≫ (Scheme.Modules.pushforward π).map (secHom E t)) (W := U.ι ''ᵁ (σ ⁻¹ᵁ Out.nonzeroLocus s)) ⟨u, ⟨u, hu⟩, hs, rfl⟩ (fun V hV ha => ?_) fun p => ?_` and prove the remaining obligations. Establish `h₁ : V ≤ U` using `hV.trans (U.ι_image_le _)`. Establish `h₂ : π ⁻¹ᵁ V ≤ Out.nonzeroLocus t` using `fun x hx => by`. Take `⟨y, hy, e⟩` from `hV hx`.
+
+Establish `e₁ : (π ∣_ U) ⟨x, h₁ hx⟩ = y` using `Subtype.ext ((morphismRestrict_base_coe π U _).trans e.symm)`. Establish `e₂ : σ y = x`. Rewrite using `[← e₁]`. Conclude with `congrArg (fun q => q (⟨x, h₁ hx⟩ : (π ⁻¹ᵁ U).toScheme)) (IsIso.hom_inv_id_assoc (π ∣_ U) (π ⁻¹ᵁ U).ι)`. Rewrite using `[ht, ← e₂]`.
+
+Conclude with `hy`. Conclude with `(bijective_secHom_app hN t h₂).comp (bijective_unit_app π h₁ ha G)`. Take `⟨e⟩` from `nonempty_coh_pushforward_equiv R π (fun _ => rfl) (twist E (lbPow L (d * (n + 1)))) hc hD' (hn _ (le_trans n.le_succ (Nat.le_mul_of_pos_left _ hd))) p`. Use `hL.finite_coh (f := π ≫ f) (fun _ => rfl) (twist E (lbPow L (d * (n + 1)))) p` as an intermediate fact. Conclude with `Module.Finite.equiv e.symm`.
+-/
 theorem finite_coh_of_modification {R : Type} [CommRing R] [IsNoetherianRing R] (f : X ⟶ Sp R) [IsProper f]
     (π : X' ⟶ X) (hP : IsProjOver (π ≫ f)) {U : X.Opens} (hU : (U : Set X).Nonempty) [IsIso (π ∣_ U)]
     (ih : letI := algebraΓOfHom f
@@ -206,6 +270,13 @@ theorem finite_coh_of_modification {R : Type} [CommRing R] [IsNoetherianRing R] 
     have := hL.finite_coh (f := π ≫ f) (fun _ => rfl) (twist E (lbPow L (d * (n + 1)))) p
     exact Module.Finite.equiv e.symm
 
+/- English proof (translation)
+Take `⟨W, ⟨z, hz⟩, hW⟩` from `h`. Use `⟨fun x hx => by_contra fun hx' => ?_, fun hle => ?_⟩` and prove the remaining obligations. Take `⟨V, hV, hxV, hle⟩` from `exists_affine_mem_le (U := ⟨(Set.range ι)ᶜ, ι.isClosedEmbedding.isClosed_range.isOpen_compl⟩) x hx'`. Establish `e : ι ⁻¹ᵁ V = ⊥` using `le_bot_iff.1 fun y hy => (hle hy ⟨y, rfl⟩).elim`. Establish `: Subsingleton Γ((Scheme.Modules.pushforward ι).obj E, V)`.
+
+Express the relevant statement in the definitionally equal form `Subsingleton Γ(E, ι ⁻¹ᵁ V)`. Conclude with `hW _ (e ▸ bot_le) (hV.preimage ι)`. Conclude with `notMem_support_of_subsingleton _ hV hxV hx`. Take `⟨O, hO, e⟩` from `ι.isClosedEmbedding.isInducing.isOpen_iff.1 W.isOpen`. Take `⟨V, hV, hxV, hle'⟩` from `exists_affine_mem_le (U := ⟨O, hO⟩) (ι z) (e.ge hz)`.
+
+Establish `: Subsingleton Γ((Scheme.Modules.pushforward ι).obj E, V)`. Express the relevant statement in the definitionally equal form `Subsingleton Γ(E, ι ⁻¹ᵁ V)`. Conclude with `hW _ (fun y hy => e.le (hle' hy)) (hV.preimage ι)`. Conclude with `notMem_support_of_subsingleton _ hV hxV (hle ⟨z, rfl⟩)`.
+-/
 theorem support_pushforward_ssubset (ι : X' ⟶ X) [IsClosedImmersion ι] (E : X'.Modules) [E.IsQuasicoherent]
     (h : VanishesSomewhere E) : support ((Scheme.Modules.pushforward ι).obj E) ⊂ Set.range ι := by
   obtain ⟨W, ⟨z, hz⟩, hW⟩ := h
@@ -224,6 +295,13 @@ theorem support_pushforward_ssubset (ι : X' ⟶ X) [IsClosedImmersion ι] (E : 
       exact hW _ (fun y hy => e.le (hle' hy)) (hV.preimage ι)
     exact notMem_support_of_subsingleton _ hV hxV (hle ⟨z, rfl⟩)
 
+/- English proof (translation)
+Use `letI := algebraΓOfHom f`. Establish `: IsLocallyNoetherian X` using `LocallyOfFiniteType.isLocallyNoetherian f`. Establish `: CompactSpace X` using `QuasiCompact.compactSpace_of_compactSpace f`. Establish `: AlgebraicGeometry.IsNoetherian X` using `{}`. Use `devissage X (fun F => ∀ p, Module.Finite R (coh F p)) (fun F hF p => ?_) (fun S hS _ _ h₁ h₃ => cohOn.forall_finite₂ R hS ⊤ h₁ h₃) (fun Z hZ ih G hG p => ?_) F inferInstance` and prove the remaining obligations.
+
+Use `cohOn.subsingleton_of_isZero hF ⊤ p infer_instance` as an intermediate fact. Use `isIntegral_red hZ` as an intermediate fact. Use `letI := algebraΓOfHom (redι Z ≫ f)`. Take `⟨Z', π, U, hP, hU, _⟩` from `h _ (redι Z)`. Use `finite_coh_of_modification (redι Z ≫ f) π hP hU (fun E hE hv q => by` as an intermediate fact.
+
+Use `ih ((Scheme.Modules.pushforward (redι Z)).obj E) ⟨inferInstance, fun V hV => finite_sections_pushforward _ _ hV (hF := finite_sections E (hV.preimage _))⟩ (range_redι Z ▸ support_pushforward_ssubset (redι Z) E hv) q` as an intermediate fact. Conclude with `Module.Finite.equiv (coh.pushforwardEquiv R (g := redι Z) (fun _ => rfl) E q)) G p`. Conclude with `Module.Finite.equiv (coh.pushforwardEquiv R (g := redι Z) (fun _ => rfl) G p).symm`.
+-/
 theorem finite_coh_of_forall_modification {R : Type} [CommRing R] [IsNoetherianRing R] (f : X ⟶ Sp R) [IsProper f]
     (h : ∀ (Z : Scheme.{0}) [IsIntegral Z] (ι : Z ⟶ X) [IsClosedImmersion ι], ∃ (Z' : Scheme.{0}) (π : Z' ⟶ Z)
       (U : Z.Opens), IsProjOver (π ≫ ι ≫ f) ∧ (U : Set Z).Nonempty ∧ IsIso (π ∣_ U))

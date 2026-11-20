@@ -9,6 +9,13 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 
 namespace GlobalTheory.PolFan.CoverSuper
 
+/- English proof (translation)
+Establish `hB' : ∀ a b, B (e a) (e b) = ∑ i, c i * (γ i a b : ℝ)` using `fun a b => by`. Simplify `LinearMap.congr_fun₂ hB a b` using `[LinearMap.sum_apply]`. Establish `hev : evalR φ B = ∑ i, c i * φ.evalZ (γ i)` using `hγ.linear.eval_eq_sum (r := e.toLinearMap) e.surjective hc hB'`. Use `⟨?_, LinearMap.ext₂ fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[hev, Finset.mul_sum]`.
+
+Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Establish `h1` using `hℓ _ (pull_mem (f.trans e.symm).toLinearMap (hγ.mem i)) (fun y => hγ.nonneg i _)`. Rewrite `h1` using `[evalZ_pull φ (f.trans e.symm).surjective]`. Combine the equalities or inequalities in the displayed calculation. Use `hB' (e.symm (f a)) (e.symm (f b))` as an intermediate fact.
+
+Simplify using `only [LinearEquiv.apply_symm_apply] at this`. Simplify using `[LinearMap.sum_apply, this]`.
+-/
 theorem mul_evalR_le {O : Type} [CommRing O] {bar : O → O} {φ : InvFun O} {X : Type} [AddCommGroup X] [Module O X]
     [Module.Finite O X] {B : X →ₗ[ℤ] X →ₗ[ℤ] ℝ} {e : X ≃ₗ[O] X} {m : ℕ} {γ : Fin m → LinearMap.BilinForm ℤ X}
     {c : Fin m → ℝ} (hγ : IsCell bar φ γ) (hc : ∀ i, 0 ≤ c i)
@@ -32,6 +39,9 @@ theorem mul_evalR_le {O : Type} [CommRing O] {bar : O → O} {φ : InvFun O} {X 
     simp only [LinearEquiv.apply_symm_apply] at this
     simp [LinearMap.sum_apply, this]
 
+/- English proof (translation)
+Take `⟨m₁, γ₁, c₁, h1, h2, h3, rfl⟩` from `ConeSpan.exists_nonneg_comb_of_mem_psdCone O bar X B hB`. Take `⟨m₂, γ₂, c₂, k1, k2, k3, rfl⟩` from `ConeSpan.exists_nonneg_comb_of_mem_psdCone O bar X B' hB'`. Use `ConeSub.sum_smul_toReal_mem_psdCone O bar X (m₁ + m₂) (Fin.append γ₁ γ₂) (Fin.append c₁ c₂) (fun i => Fin.addCases (fun j => by simpa using h1 j) (fun j => by simpa using k1 j) i) (fun i => Fin.addCases (fun j => by simpa using h2 j) (fun j => by simpa using k2 j) i) (fun i => Fi …` as an intermediate fact. Simplify `this` using `[Fin.sum_univ_add]`.
+-/
 theorem add_mem_psdCone (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O)
     (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] {B B' : X →ₗ[ℤ] X →ₗ[ℤ] ℝ}
     (hB : B ∈ psdCone bar X) (hB' : B' ∈ psdCone bar X) : B + B' ∈ psdCone bar X := by
@@ -43,6 +53,17 @@ theorem add_mem_psdCone (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O
     (fun i => Fin.addCases (fun j => by simpa using h3 j) (fun j => by simpa using k3 j) i)
   simpa [Fin.sum_univ_add] using this
 
+/- English proof (translation)
+Introduce `O _ _ _ _ bar φ X _ _ _ hcov B hB B' hB'`. Establish `hBB` using `add_mem_psdCone O bar X hB hB'`. Take `⟨e₁, m₁, γ₁, c₁, hγ₁, hc₁, h₁⟩` from `hcov B hB`. Take `⟨e₂, m₂, γ₂, c₂, hγ₂, hc₂, h₂⟩` from `hcov B' hB'`. Take `⟨e₃, m₃, γ₃, c₃, hγ₃, hc₃, h₃⟩` from `hcov (B + B') hBB`.
+
+Take `⟨N, ℓ, hN, hℓ1, hℓ2, -⟩` from `hγ₃.strict`. Take `⟨i1, j1⟩` from `mul_evalR_le hγ₁ hc₁ h₁ e₃ hℓ2`. Take `⟨i2, j2⟩` from `mul_evalR_le hγ₂ hc₂ h₂ e₃ hℓ2`. Establish `hev3 : evalR φ (B + B') = ∑ i, c₃ i * φ.evalZ (γ₃ i)` using `hγ₃.linear.eval_eq_sum (r := e₃.toLinearMap) e₃.surjective hc₃ fun a b => by`. Simplify `LinearMap.congr_fun₂ h₃ a b` using `[LinearMap.sum_apply]`.
+
+Establish `hN3 : (N : ℝ) * evalR φ (B + B') = ∑ i, c₃ i * (ℓ (γ₃ i) : ℝ)`. Rewrite using `[hev3, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hℓ1 i]; ring`. Establish `hpull : pullR e₃.toLinearMap (B + B') = pullR e₃.toLinearMap B + pullR e₃.toLinearMap B'` using `LinearMap.ext₂ fun a b => by simp`. Establish `rel` using `sum_mul_eq_zero_of_sum_toReal (X := X) (j := LinearMap.id) (fun _ _ h => h) ℓ (β := Sum.elim (Sum.elim (fun i => pull (e₃.trans e₁.symm).toLinearMap (γ₁ i)) (fun i => pull (e₃.trans e₂.symm).toLinearMap (γ₂ i))) γ₃) (c := Sum.elim (Sum.elim c₁ c₂) (-c₃)) (by`.
+
+Simplify using `only [Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, LinearMap.id_apply, Pi.neg_apply, neg_smul, Finset.sum_neg_distrib]`. Rewrite using `[← j1, ← j2, ← h₃, hpull]`. Use the proof step `abel)`. Simplify using `only [Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, Pi.neg_apply, neg_mul, Finset.sum_neg_distrib] at rel`. Establish `hNpos : (0 : ℝ) < N` using `by exact_mod_cast hN`.
+
+Establish `key : (N : ℝ) * (evalR φ B + evalR φ B') ≤ N * evalR φ (B + B')`. Rewrite using `[mul_add, hN3]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `le_of_mul_le_mul_left key hNpos`.
+-/
 theorem superadd_of_cover : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O)
     (φ : InvFun O) (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X],
     (∀ B ∈ psdCone bar X, ∃ (e : X ≃ₗ[O] X) (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X) (c : Fin m → ℝ),

@@ -14,6 +14,31 @@ namespace PositivityTheory.Rg.Sw.Glob
 
 open NbarH GaussH
 
+/- English proof (translation)
+Introduce `D n V ψ χ θ μ ω H l s ν τ ε fr ι hC L hL y c hc hyc f hf`. Establish `htc : |tLoc l τ| = cLoc l τ` using `abs_tLoc l τ`. Establish `hc0 : 0 < cLoc l τ`. Unfold `cLoc`. Conclude with `mul_pos (mul_pos two_pos Real.pi_pos) (abs_pos.2 (hLNe D ψ θ l hC.hψ hC.hθ hC.hl τ))`.
+
+Establish `hsq : (tLoc l τ) ^ 2 = (cLoc l τ) ^ 2` using `by rw [← htc, sq_abs]`. Establish `hsq' : (-tLoc l τ) ^ 2 = (cLoc l τ) ^ 2` using `by rw [neg_sq, hsq]`. Take `⟨w, hw⟩` from `hW D n`. Establish `hc' : (-c)ᴴ = -c` using `by rw [Matrix.conjTranspose_neg, hc]`. Take `⟨yn, hyn⟩` from `OG.exists_nU n (-c) hc'`.
+
+Establish `hιy : ι y = w * ι yn * w⁻¹` using `by rw [OG.iota_conj hC.hθ hC.hι w hw y yn c hyc hyn]; group`. Take `⟨κ, A, A', hκ, hFT⟩` from `hF D n V ψ χ θ μ ω H l s ν τ ε fr ι hC w hw`. Establish `hvS : IsSch (vac (n` using `n) ε (tLoc l τ) (cLoc l τ)) := gZSch V.rank n ε _ _ hc0 htc _ isSiegel_I`. Use `set K : ℂ := ((Real.pi : ℂ) / (cLoc l τ)) ^ (V.rank * n) with hK`. Establish `hK0 : K ≠ 0` using `pow_ne_zero _ (div_ne_zero (by exact_mod_cast Real.pi_pos.ne') (by exact_mod_cast hc0.ne'))`.
+
+Use `hTI D n V ψ χ θ μ ω H l s ν τ ε fr ι hC _ _ fun Ψ hΨ => ?_` and prove the remaining obligations. Take `⟨hAΨ, hA'Ψ, hFΨ⟩` from `hFT Ψ hΨ`. Establish `kA` using `hFT (A' Ψ) hA'Ψ`. Establish `hid : ∀ g (hg : IsSch g), tens θ τ fr g Ψ = tens θ τ fr (fun u => κ * ftLoc ε (tLoc l τ) (fun v => κ⁻¹ * ftLoc ε (-tLoc l τ) g v) u) (A (A' Ψ))`. Introduce `g hg`.
+
+Establish `h1 : ω w⁻¹ ⟨tens θ τ fr g Ψ, hΨ.2 g hg⟩ = ⟨tens θ τ fr (fun u => κ⁻¹ * ftLoc ε (-tLoc l τ) g u) (A' Ψ), hA'Ψ.2 _ ((hFΨ g hg).2.1)⟩` using `Subtype.ext (hFΨ g hg).2.2.2`. Establish `h2` using `(kA.2.2 _ ((hFΨ g hg).2.1)).2.2.1`. Establish `h3 : ω w (ω w⁻¹ ⟨tens θ τ fr g Ψ, hΨ.2 g hg⟩) = ⟨tens θ τ fr g Ψ, hΨ.2 g hg⟩`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Rewrite `h3` using `[h1]`.
+
+Rewrite using `[← h2, h3]`. Establish `hAA : ∀ x, A (A' Ψ) x = (K * K)⁻¹ * Ψ x`. Introduce `x`. Establish `h` using `congrFun (hid _ hvS) x`. Simplify using `only [tens, ftLoc_vac ε _ _ _ hc0 hsq', ftLoc_const_mul', ftLoc_vac ε _ _ _ hc0 hsq] at h`.
+
+Establish `hv0 : vac (n` using `n) ε (tLoc l τ) (cLoc l τ) (fr⁻¹ * compAt θ τ x) ≠ 0 := Complex.exp_ne_zero _`. Establish `hκ' : κ * κ⁻¹ = 1` using `mul_inv_cancel₀ hκ`. Clear denominators, using `at h` for the nonvanishing conditions. Rewrite using `[h, hK]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[← hL.2 y Ψ hΨ f hf]`. Establish `hE : IsSch (fun u => chN ε (tLoc l τ) (-c) u * (κ⁻¹ * ftLoc ε (-tLoc l τ) f u))` using `OpGenAH.isSch_phase ε (tLoc l τ) (-c) hc' (hFΨ f hf).2.1`. Establish `s1 : ω w⁻¹ ⟨tens θ τ fr f Ψ, hΨ.2 f hf⟩ = ⟨tens θ τ fr (fun u => κ⁻¹ * ftLoc ε (-tLoc l τ) f u) (A' Ψ), hA'Ψ.2 _ ((hFΨ f hf).2.1)⟩` using `Subtype.ext (hFΨ f hf).2.2.2`. Establish `s2 : ω (ι yn) ⟨tens θ τ fr (fun u => κ⁻¹ * ftLoc ε (-tLoc l τ) f u) (A' Ψ), hA'Ψ.2 _ ((hFΨ f hf).2.1)⟩ = ⟨tens θ τ fr (fun u => chN ε (tLoc l τ) (-c) u * (κ⁻¹ * ftLoc ε (-tLoc l τ) f u)) (A' Ψ), hA'Ψ.2 _ hE⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `x`. Rewrite using `[hU D n V ψ χ θ μ ω H l s ν τ ε fr ι hC yn (-c) hc' hyn]`. Simplify using `only [tens, chN, mul_assoc]`. Establish `s3` using `(kA.2.2 _ hE).2.2.1`. Rewrite using `[hιy, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, s1, s2, s3]`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [tens]`. Rewrite using `[hAA x]`. Establish `hKK : ((|tLoc l τ| / Real.pi : ℝ) : ℂ) ^ (2 * V.rank * n) = (K * K)⁻¹`. Rewrite using `[hK, htc, ← pow_two, ← pow_mul, ← inv_pow, inv_div]`.
+
+Use `push_cast`. Put the polynomial expressions in normal form. Rewrite using `[hKK]`. Establish `hκ' : κ * κ⁻¹ = 1` using `mul_inv_cancel₀ hκ`. Establish `e : (fun v => chN ε (tLoc l τ) (-c) v * (κ⁻¹ * ftLoc ε (-tLoc l τ) f v)) = fun v => κ⁻¹ * (chN ε (tLoc l τ) (-c) v * ftLoc ε (-tLoc l τ) f v)` using `by funext v; ring`.
+
+Rewrite using `[e, ftLoc_const_mul']`. Take the linear combination `(ftLoc ε (tLoc l τ) (fun v => chN ε (tLoc l τ) (-c) v * ftLoc ε (-tLoc l τ) f v) (fr⁻¹ * compAt θ τ x)) * (K * K)⁻¹ * Ψ x * hκ'`.
+-/
 theorem lawNbar_of (hU : UnipTau) (hW : WEx) (hF : FTfact) (hTI : TensInj) (hLNe : LNe) : LawNbar := by
   intro D n V ψ χ θ μ ω H l s ν τ ε fr ι hC L hL y c hc hyc f hf
   have htc : |tLoc l τ| = cLoc l τ := abs_tLoc l τ

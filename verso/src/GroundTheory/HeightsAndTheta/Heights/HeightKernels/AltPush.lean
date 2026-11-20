@@ -16,9 +16,15 @@ def permTerm (e : ι → ℕ) (π : Equiv.Perm ι) : MvPolynomial ι ℚ := ∏ 
 
 def sgnP (π : Equiv.Perm ι) : MvPolynomial ι ℚ := ((Equiv.Perm.sign π : ℤ) : MvPolynomial ι ℚ)
 
+/- English proof (translation)
+Simplify using `[alternant, Matrix.det_apply', permTerm, sgnP]`.
+-/
 theorem alternant_eq_sum (e : ι → ℕ) : alternant e = ∑ π, sgnP π * permTerm e π := by
   simp [alternant, Matrix.det_apply', permTerm, sgnP]
 
+/- English proof (translation)
+Unfold `antisym`. Use `sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_intCast]`. Both sides reduce to the same expression.
+-/
 theorem antisym_eq_sum (H : MvPolynomial ι ℚ) : antisym H = ∑ w, sgnP w * rename w H := by
   unfold antisym
   refine sum_congr rfl fun w _ => ?_
@@ -26,21 +32,38 @@ theorem antisym_eq_sum (H : MvPolynomial ι ℚ) : antisym H = ∑ w, sgnP w * r
   rfl
 
 omit [DecidableEq ι] in
+/- English proof (translation)
+Simplify using `[permTerm, map_prod, rename_X, Equiv.Perm.mul_apply]`.
+-/
 theorem rename_permTerm (e : ι → ℕ) (w π : Equiv.Perm ι) :
     rename w (permTerm e π) = permTerm e (w * π) := by
   simp [permTerm, map_prod, rename_X, Equiv.Perm.mul_apply]
 
+/- English proof (translation)
+Simplify using `[sgnP, Equiv.Perm.sign_mul]`.
+-/
 theorem permSign_mul₂ (a b : Equiv.Perm ι) : sgnP (a * b) = sgnP a * sgnP b := by
   simp [sgnP, Equiv.Perm.sign_mul]
 
+/- English proof (translation)
+Simplify using `[sgnP, Equiv.Perm.sign_inv]`.
+-/
 theorem permSign_inv₂ (a : Equiv.Perm ι) : sgnP a⁻¹ = sgnP a := by
   simp [sgnP, Equiv.Perm.sign_inv]
 
+/- English proof (translation)
+Unfold `sgnP`. Rewrite using `[← Int.cast_mul, ← Units.val_mul, Int.units_mul_self]`. Simplify using the standard rewrite rules.
+-/
 theorem permSign_mul_self₂ (a : Equiv.Perm ι) : sgnP a * sgnP a = 1 := by
   unfold sgnP
   rw [← Int.cast_mul, ← Units.val_mul, Int.units_mul_self]
   simp
 
+/- English proof (translation)
+Rewrite using `[antisym_eq_sum, alternant_eq_sum, mul_sum]`. Repeatedly rewrite using `[rename_permTerm]`. Use `(Equiv.sum_comp (Equiv.mulRight π⁻¹) _).symm.trans ?_` and prove the remaining obligations. Use `sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulRight, inv_mul_cancel_right, permSign_mul₂, permSign_inv₂]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem antisym_permTerm (e : ι → ℕ) (π : Equiv.Perm ι) :
     antisym (permTerm e π) = sgnP π * alternant e := by
   rw [antisym_eq_sum, alternant_eq_sum, mul_sum]
@@ -50,11 +73,17 @@ theorem antisym_permTerm (e : ι → ℕ) (π : Equiv.Perm ι) :
   simp only [Equiv.coe_mulRight, inv_mul_cancel_right, permSign_mul₂, permSign_inv₂]
   ring
 
+/- English proof (translation)
+Simplify using `only [antisym, map_sum, smul_sum]`. Rewrite using `[sum_comm]`.
+-/
 theorem antisym_sum {κ : Type*} (s : Finset κ) (f : κ → MvPolynomial ι ℚ) :
     antisym (∑ x ∈ s, f x) = ∑ x ∈ s, antisym (f x) := by
   simp only [antisym, map_sum, smul_sum]
   rw [sum_comm]
 
+/- English proof (translation)
+Simplify using `only [antisym_eq_sum, map_mul, sgnP, map_intCast, mul_sum]`. Use `sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem antisym_sign_mul (a : Equiv.Perm ι) (p : MvPolynomial ι ℚ) :
     antisym (sgnP a * p) = sgnP a * antisym p := by
   simp only [antisym_eq_sum, map_mul, sgnP, map_intCast, mul_sum]
@@ -63,6 +92,9 @@ theorem antisym_sign_mul (a : Equiv.Perm ι) (p : MvPolynomial ι ℚ) :
 
 variable {r s : ℕ}
 
+/- English proof (translation)
+Rewrite using `[alternant_eq_sum, alternant_eq_sum, map_sum, map_sum, sum_mul_sum]`. Use `sum_congr rfl fun σ _ => sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [sgnP, permTerm, map_mul, map_intCast, map_prod, map_pow, rename_X, Equiv.Perm.sign_sumCongr, Units.val_mul, Int.cast_mul, Fintype.prod_sum_type, Equiv.Perm.sumCongr_apply, Sum.map_inl, Sum.map_inr, Sum.elim_inl, Sum.elim_inr]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rename_mul_rename (α : Fin r → ℕ) (β : Fin s → ℕ) :
     rename (Sum.inl : Fin r → Fin r ⊕ Fin s) (alternant α) *
         rename (Sum.inr : Fin s → Fin r ⊕ Fin s) (alternant β) =
@@ -75,6 +107,9 @@ theorem rename_mul_rename (α : Fin r → ℕ) (β : Fin s → ℕ) :
     Equiv.Perm.sumCongr_apply, Sum.map_inl, Sum.map_inr, Sum.elim_inl, Sum.elim_inr]
   ring
 
+/- English proof (translation)
+Rewrite using `[rename_mul_rename, antisym_sum]`. Repeatedly rewrite using `[antisym_sum, antisym_sign_mul, antisym_permTerm, ← mul_assoc, permSign_mul_self₂, one_mul]`. Simplify using `only [sum_const, card_univ, Fintype.card_perm, Fintype.card_fin]`. Rewrite using `[mul_smul, Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]`.
+-/
 theorem antisym_rename_mul_rename (α : Fin r → ℕ) (β : Fin s → ℕ) :
     antisym (rename (Sum.inl : Fin r → Fin r ⊕ Fin s) (alternant α) *
         rename (Sum.inr : Fin s → Fin r ⊕ Fin s) (alternant β)) =
@@ -86,6 +121,17 @@ theorem antisym_rename_mul_rename (α : Fin r → ℕ) (β : Fin s → ℕ) :
 
 end KAlt
 
+/- English proof (translation)
+Introduce `r s`. Use `⟨1, Or.inl rfl, fun la hla => ?_⟩` and prove the remaining obligations. Rewrite using `[KAlt.antisym_rename_mul_rename]`. Use `split_ifs with h`. Rewrite using `[one_mul]`.
+
+Simplify using `only [not_forall, not_le] at h`. Take `⟨a, ha⟩` from `h`. Establish `hr : 0 < r` using `Fin.pos a`. Use `set a0 : Fin r := ⟨r - 1, by omega⟩ with ha0`. Establish `hle : la a0 ≤ la a` using `hla (show a ≤ a0 from by`.
+
+Rewrite using `[Fin.le_def]`. Simplify using `only [ha0]`. Use `a.isLt` as an intermediate fact. Use the proof step `omega)`. Establish `hlt : la a0 < s` using `lt_of_le_of_lt hle ha`.
+
+Use `set b0 : Fin s := ⟨s - 1 - la a0, by omega⟩ with hb0`. Establish `hdet : alternant (Sum.elim (fun a : Fin r => la a + (r - 1 - (a : ℕ))) fun b : Fin s => s - 1 - (b : ℕ)) = 0`. Unfold `alternant`. Use `Matrix.det_zero_of_column_eq (i := Sum.inl a0) (j := Sum.inr b0) Sum.inl_ne_inr ?_` and prove the remaining obligations. Introduce `k`.
+
+Simplify using `only [Matrix.of_apply, Sum.elim_inl, Sum.elim_inr]`. Use `congr 1`. Use `show la a0 + (r - 1 - (r - 1)) = s - 1 - (s - 1 - la a0)`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hdet, smul_zero]`.
+-/
 theorem AlternantPush.intersectionNumber_baseChange : AlternantPush.Statement := by
   intro r s
   refine ⟨1, Or.inl rfl, fun la hla => ?_⟩

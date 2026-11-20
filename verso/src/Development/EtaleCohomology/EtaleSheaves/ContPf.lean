@@ -23,6 +23,11 @@ def ContInd : Prop := ∀ (P : Scheme.{0} → Prop), (∀ (X : Scheme.{0}) [IsAf
     P U.toScheme → P V.toScheme → P (U ⊓ V).toScheme → P X) →
   ∀ (X : Scheme.{0}) [CompactSpace X] [QuasiSeparatedSpace X], P X
 
+/- English proof (translation)
+Introduce `h q J _ _ D c hc ha hcs hqs hu n i`. Take `⟨j0⟩` from `IsCofiltered.nonempty (C := J)`. Use `hcs j0` as an intermediate fact. Use `hqs j0` as an intermediate fact. Establish `key : PC (D.obj j0)` using `hI PC (fun X _ => hA h X) (fun X U V hU hV hUV pU pV pW => hS h hMV X U V hU hV hUV pU pV pW) (D.obj j0)`.
+
+Conclude with `key q D c hc ha hcs hqs hu j0 ⟨Iso.refl _⟩ n i`.
+-/
 theorem Cont_of (hMV : MV) (hA : ContAff) (hS : ContStep) (hI : ContInd) : Cont := by
   intro h q J _ _ D c hc ha hcs hqs hu n i
   obtain ⟨j0⟩ := IsCofiltered.nonempty (C := J)

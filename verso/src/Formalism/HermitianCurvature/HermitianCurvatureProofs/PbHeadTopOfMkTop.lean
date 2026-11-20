@@ -17,12 +17,18 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.PbHeadTopOf
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+The claim follows from `CutEX.exhPic_of_leaves CutEX.exceptional_assumption_holds unipotent_weight_top slice_top_exhaustion pullback_smooth pullback_right_action pullback_support pullback_equivalence hMk compact_truncation_construction top_point_existence determinant_exceptional_holds head_family_exhaus …`.
+-/
 theorem pb_exhPic_of_mkTop (hMk : CutEX.MkTop) : PBI.ExhPic :=
   CutEX.exhPic_of_leaves CutEX.exceptional_assumption_holds unipotent_weight_top slice_top_exhaustion pullback_smooth
     pullback_right_action pullback_support pullback_equivalence hMk compact_truncation_construction top_point_existence
     determinant_exceptional_holds head_family_exhaustion radial_slice_top radial_of_function_exceptional radial_extension_exceptional
     residue_top_exceptional_level frame_parameter_regularity (pb_radWordSliceOfHeadPic head_picture) level_zero_picture_of_slice
 
+/- English proof (translation)
+The claim follows from `pb_headTop_of top_unipotent_integral (pb_exhPic_of_mkTop hMk)`.
+-/
 theorem pb_headTop_of_mkTop (hMk : CutEX.MkTop) : KB.HeadTop :=
   pb_headTop_of top_unipotent_integral (pb_exhPic_of_mkTop hMk)
 

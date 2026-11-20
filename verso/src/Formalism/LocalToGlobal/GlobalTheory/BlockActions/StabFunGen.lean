@@ -10,6 +10,15 @@ open scoped TensorProduct
 
 section GenE
 
+/- English proof (translation)
+Establish `hGx : G *ᵥ x - x = I *ᵥ (k *ᵥ (P *ᵥ x)) - I *ᵥ (P *ᵥ x)`. Simplify using `only [hG, Matrix.add_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec, ← Matrix.mulVec_mulVec]`. Normalize the expressions using the abelian group laws. Establish `hPIv : ∀ y, P *ᵥ (I *ᵥ y) = y` using `fun y => by rw [Matrix.mulVec_mulVec, hPI, Matrix.one_mulVec]`. Establish `e : G *ᵥ x = x + (I *ᵥ (k *ᵥ (P *ᵥ x)) - I *ᵥ (P *ᵥ x))` using `by rw [← hGx]; abel`.
+
+Establish `hPG : P *ᵥ (G *ᵥ x) = k *ᵥ (P *ᵥ x)`. Rewrite using `[e, Matrix.mulVec_add, Matrix.mulVec_sub, hPIv, hPIv]`. Normalize the expressions using the abelian group laws. Establish `hdiff : P *ᵥ x ∈ Λp → G *ᵥ x - x ∈ Λm` using `fun h => by`. Rewrite using `[hGx]`.
+
+Conclude with `sub_mem (hI _ ((hk _).1 h)) (hI _ h)`. Use `⟨⟨fun hx => ?_, fun hx => ?_⟩, fun hx => hdiff (hO x hx)⟩` and prove the remaining obligations. Establish `e2 : G *ᵥ x = x + (G *ᵥ x - x)` using `by abel`. Rewrite using `[e2]`. Conclude with `add_mem hx (hmd (hdiff (hO x hx)))`.
+
+Establish `h1 : P *ᵥ x ∈ Λp` using `(hk _).2 (by rw [← hPG]; exact hO _ hx)`. Establish `e2 : x = G *ᵥ x - (G *ᵥ x - x)` using `by abel`. Rewrite using `[e2]`. Conclude with `sub_mem hx (hmd (hdiff h1))`.
+-/
 theorem ext_mem_gen {A S : Type} [CommRing A] [Ring S] {n N : ℕ} [Module S (Fin N → A)] [Module S (Fin n → A)]
     (Λm Λd : Submodule S (Fin N → A)) (Λp : Submodule S (Fin n → A)) (hmd : Λm ≤ Λd)
     (I : Matrix (Fin N) (Fin n) A) (P : Matrix (Fin n) (Fin N) A) (k : Matrix (Fin n) (Fin n) A)
@@ -32,6 +41,9 @@ theorem ext_mem_gen {A S : Type} [CommRing A] [Ring S] {n N : ℕ} [Module S (Fi
     have e2 : x = G *ᵥ x - (G *ᵥ x - x) := by abel
     rw [e2]; exact sub_mem hx (hmd (hdiff h1))
 
+/- English proof (translation)
+Use `⟨hst, fun x => ?_⟩` and prove the remaining obligations. Establish `e : (⟨(g : Matrix (Fin N) (Fin N) A) *ᵥ (x : Fin N → A), (hst x).1 x.2⟩ : Λ) = x + ⟨_, hm (hd x.1 x.2)⟩` using `Subtype.ext (by simp)`. Rewrite using `[e, map_add, hf ⟨_, hm (hd x.1 x.2)⟩ (hd x.1 x.2), add_zero]`.
+-/
 theorem stabFun_gen {A R M : Type} [CommRing A] [CommRing R] [Algebra R A] [AddCommGroup M] [Module R M] {N : ℕ}
     (Λ Λm : Submodule R (Fin N → A)) (f : Λ →ₗ[R] M) (g : GL (Fin N) A)
     (hst : ∀ x, x ∈ Λ ↔ (g : Matrix (Fin N) (Fin N) A) *ᵥ x ∈ Λ)
@@ -46,6 +58,21 @@ end GenE
 
 variable {D : D7} {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : ∀ i, (D.mem u).C.cls i → Ch i}
 
+/- English proof (translation)
+Establish `hiX : ∀ x, iXm D *ᵥ x = iXc D x` using `fun x => by simp only [iXm, LinearMap.toMatrix'_mulVec]`. Take `⟨a0, ha0⟩` from `Tf.til.lastCoordinateUniformizerVector_spans_orthogonal_line`. Establish `ha : a0 ≠ 0`. Introduce and unpack `rfl`. Establish `hT : ((D.mem u).A.T : D.host.E) ≠ 0` using `Nat.cast_ne_zero.mpr (D.mem u).A.T_prime.ne_zero`.
+
+Establish `h` using `Tf.til.hermitianForm_lastCoordinateUniformizerVector_self`. Rewrite `h` using `[ha0, zero_smul]`. Simplify using `[Formalism.UG.hform] at h`. Conclude with `hT h.symm`. Establish `hPzc : P *ᵥ zc D = 0`.
+
+Rewrite `hPz` using `[ha0, Matrix.mulVec_smul]`. Conclude with `(smul_eq_zero.mp hPz).resolve_left ha`. Establish `hin` using `(lat_in_out Tf P hP1 hPz).1`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`.
+
+Consider the case `mem y hy`. Take `⟨x, s, rfl⟩` from `span_iXc_zc D y`. Establish `e : P *ᵥ (iXc D x + s • zc D) = x`. Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_smul, hPzc, smul_zero, add_zero, ← hiX, Matrix.mulVec_mulVec, hP1, Matrix.one_mulVec]`. Rewrite using `[e]`.
+
+Establish `hd : x ∈ dualSet (sigD D : D.host.E →+* D.host.E) (gramP D) Tf.clsP.lev.Lb`. Introduce `x' hx'`. Establish `h` using `hy (iXc D x') (by rw [← hiX]; exact hin x' hx')`. Rewrite `h` using `[hform_add_right, hform_smul_rightB, hform_iXc, hform_iXc_zc, mul_zero, add_zero]`. Then use the resulting hypothesis. Use `Tf.clsP.lev.Lb_dual x hd` as an intermediate fact.
+
+Simplify using `using this`. Consider the case `zero => rw [Matrix.mulVec_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [Matrix.mulVec_add]`. Conclude with `add_mem hx hy`.
+
+Consider the case `smul a x _ hx`. Rewrite using `[← algebraMap_smul D.host.E a x, Matrix.mulVec_smul, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ a hx`.
+-/
 theorem proj_dual (Tf : FormsTiedSym D u Ch chOf) (P : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m)) D.host.E)
     (hP1 : P * iXm D = 1) (hPz : P *ᵥ Tf.til.z0 = 0) :
     ∀ y ∈ Submodule.span (𝓞 D.host.E) (dualSet (sigD D : D.host.E →+* D.host.E) (gramN D D.R.m le_rfl)
@@ -86,6 +113,11 @@ theorem proj_dual (Tf : FormsTiedSym D u Ch chOf) (P : Matrix (Fin (D.R.N D.R.m 
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Establish `hκv : bc (prV (E` using `D.host.E) v) κ.1 ∈ Tf.clsP.lev.Uloc v := ((Tf.clsP.lev.U_eq κ.1).1 κ.2).2 v`. Establish `hκst` using `(Subgroup.mem_inf.mp (Tf.clsP.lev.Uloc_lev v hκv)).2`. Establish `hin` using `(lat_in_out Tf P hP1 hPz).1`. Establish `hI` using `latS_mulVec (F := D.host.F) (v.adicCompletion D.host.F) (intV D.host.E v) (iXm D) _ _ hin`. Establish `hform` using `ext_form Tf (inclE (F := D.host.F) (v.adicCompletion D.host.F)) P hP1 hPz _ _ (isExt_prV v hE)`.
+
+Rewrite `hform` using `[Matrix.map_mul]`. Establish `hPI : (P.map (inclE (F` using `D.host.F) (v.adicCompletion D.host.F))) * ((iXm D).map (inclE (F := D.host.F) (v.adicCompletion D.host.F))) = 1 := by`. Rewrite using `[← Matrix.map_mul, hP1, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `ext_mem_gen _ Λd _ hmd _ _ (κ.1.1.map (prV (E := D.host.E) v)) _ hPI hform (fun y => hκst y) hI hO x`.
+-/
 theorem extV_lat (Tf : FormsTiedSym D u Ch chOf) (κ : Tf.clsP.lev.U)
     (G : GL (Fin (D.R.N D.R.m)) (D.host.E ⊗[D.host.F] (FiniteAdeleRing (𝓞 D.host.F) D.host.F)))
     (hE : IsExt D Tf.til.z0 (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) κ.1.1 G.1)
@@ -113,6 +145,9 @@ theorem extV_lat (Tf : FormsTiedSym D u Ch chOf) (κ : Tf.clsP.lev.U)
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Establish `hκv : bc (prV (E` using `D.host.E) v) κ.1 ∈ Tf.clsP.lev.Uloc v := ((Tf.clsP.lev.U_eq κ.1).1 κ.2).2 v`. Establish `hκU0` using `Tf.clsP.lev.Uloc_le v hκv`. Establish `hκU : cT (sigR (sigD D) (v.adicCompletion D.host.F)) (κ.1.1.map (prV (E` using `D.host.E) v)) * (gramP D).map (inclE (F := D.host.F) (v.adicCompletion D.host.F)) * κ.1.1.map (prV (E := D.host.E) v) = (gramP D).map (inclE (F := D.host.F) (v.adicCompletion D.host.F)) := hκU0`. Use `show cT (sigR (sigD D) (v.adicCompletion D.host.F)) (G.1.map (prV (E := D.host.E) v)) * (gramN D D.R.m le_rfl).map (inclE (F := D.host.F) (v.adicCompletion D.host.F)) * G.1.map (prV (E := D.host.E) v) = (gramN D D.R.m le_rfl).map (inclE (F := D.host.F) (v.adicCompletion D.host.F) …`. Conclude with `extUR Tf _ hκU _ (isExt_prV v hE)`.
+-/
 theorem extV_unit (Tf : FormsTiedSym D u Ch chOf) (κ : Tf.clsP.lev.U)
     (G : GL (Fin (D.R.N D.R.m)) (D.host.E ⊗[D.host.F] (FiniteAdeleRing (𝓞 D.host.F) D.host.F)))
     (hE : IsExt D Tf.til.z0 (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) κ.1.1 G.1)
@@ -132,6 +167,9 @@ theorem extV_unit (Tf : FormsTiedSym D u Ch chOf) (κ : Tf.clsP.lev.U)
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Take `⟨P, hP1, hPz⟩` from `exists_projP Tf`. Establish `hout` using `(lat_in_out Tf P hP1 hPz).2`. Establish `hO` using `latS_mulVec (F := D.host.F) (v.adicCompletion D.host.F) (intV D.host.E v) P _ _ hout`. Introduce `x`. Conclude with `(extV_lat Tf κ G hE v P hP1 hPz _ le_rfl hO x).1`.
+-/
 theorem extV_stabL (Tf : FormsTiedSym D u Ch chOf) (κ : Tf.clsP.lev.U)
     (G : GL (Fin (D.R.N D.R.m)) (D.host.E ⊗[D.host.F] (FiniteAdeleRing (𝓞 D.host.F) D.host.F)))
     (hE : IsExt D Tf.til.z0 (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) κ.1.1 G.1)
@@ -147,6 +185,9 @@ theorem extV_stabL (Tf : FormsTiedSym D u Ch chOf) (κ : Tf.clsP.lev.U)
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+The claim follows from `Subgroup.mem_inf.mpr ⟨extV_unit Tf κ G hE v, extV_stabL Tf κ G hE v⟩`.
+-/
 theorem extV_level (Tf : FormsTiedSym D u Ch chOf) (κ : Tf.clsP.lev.U)
     (G : GL (Fin (D.R.N D.R.m)) (D.host.E ⊗[D.host.F] (FiniteAdeleRing (𝓞 D.host.F) D.host.F)))
     (hE : IsExt D Tf.til.z0 (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) κ.1.1 G.1)
@@ -157,6 +198,9 @@ theorem extV_level (Tf : FormsTiedSym D u Ch chOf) (κ : Tf.clsP.lev.U)
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Take `⟨P, hP1, hPz⟩` from `exists_projP Tf`. Establish `hOd` using `latS_mulVec (F := D.host.F) (v.adicCompletion D.host.F) (intV D.host.E v) P _ _ (proj_dual Tf P hP1 hPz)`. Establish `hmd : latS (F` using `D.host.F) (v.adicCompletion D.host.F) (intV D.host.E v) (Tf.cls D.R.m le_rfl (Or.inr rfl)).lev.Lb ≤ latS (F := D.host.F) (v.adicCompletion D.host.F) (intV D.host.E v) (Submodule.span (𝓞 D.host.E) (dualSet (sigD D : D.host.E →+* D.host.E) (gramN D D.R.m le_rfl) (Tf.cls D.R.m le_rf …`. Conclude with `stabFun_gen _ _ _ (bc (prV (E := D.host.E) v) G) (fun x => (extV_lat Tf κ G hE v P hP1 hPz _ hmd hOd x).1) (fun x hx => (extV_lat Tf κ G hE v P hP1 hPz _ hmd hOd x).2 hx) hmd (fun y hy => (Tf.cls D.R.m le_rfl (Or.inr rfl)).lev.fT_L v hT y hy)`.
+-/
 theorem extV_fT (Tf : FormsTiedSym D u Ch chOf) (κ : Tf.clsP.lev.U)
     (G : GL (Fin (D.R.N D.R.m)) (D.host.E ⊗[D.host.F] (FiniteAdeleRing (𝓞 D.host.F) D.host.F)))
     (hE : IsExt D Tf.til.z0 (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) κ.1.1 G.1)

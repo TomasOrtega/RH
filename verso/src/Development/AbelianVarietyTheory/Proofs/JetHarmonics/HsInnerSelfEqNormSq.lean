@@ -14,15 +14,30 @@ variable {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
 
 omit [FiniteDimensional ℂ Wp] in
 
+/- English proof (translation)
+Unfold `B.hsInner`. Rewrite using `[inner_self_eq_norm_sq_to_K]`. Simplify using the standard rewrite rules.
+-/
 theorem hsInner_self_eq_normSq (A : Wq →L[ℂ] Wp) : B.hsInner A A = ((‖B.hsVec A‖ ^ 2 : ℝ) : ℂ) := by
   unfold B.hsInner
   rw [inner_self_eq_norm_sq_to_K]
   simp
 
 omit [FiniteDimensional ℂ Wp] in
+/- English proof (translation)
+Simplify using `[P.Topx1.hsInner_eq]`.
+-/
 theorem hsInner_zero_zero : B.hsInner (0 : Wq →L[ℂ] Wp) 0 = 0 := by
   simp [P.Topx1.hsInner_eq]
 
+/- English proof (translation)
+Distinguish the cases in `hg : D.IsLocPt a (P.r + 1) ∧ 0 < D.ptG (Tz P.k P.r p.T.base.z * Tz P.k P.r p.T.base.z') P.r a`. Unfold `KB.Pl.RR D.RRplace`. Rewrite using `[dif_pos ⟨hg.1, hg.1⟩, dif_neg (by omega), if_pos rfl]`. Use `split_ifs with hw`. Substitute `hw` using the available equality.
+
+Conclude with `(Formalism.FourierDecayAlt.P.top_of_empty Formalism.FourierDecayAlt.P.vector_valued_types Wp Wq P p.l0 p.T p.ν' p.m₀ p.Θ p.TP H a a p.hP p.hF hg.1 hg.1 hg.2 hg.2).symm`. Both sides reduce to the same expression. Establish `hV : ∀ F, D.vecV p.T.base p.ν' p.m₀ F a = 0` using `fun F => by`. Unfold `D.vecV`. Rewrite using `[dif_neg hg]`.
+
+Establish `ht : Top.topOf P p.l0 p.T p.ν' p.m₀ p.Θ p.TP H w a a = 0`. Simplify using `only [Top.topOf, hV, ContinuousLinearMap.comp_zero, hsInner_zero_zero, mul_zero, Finset.sum_const_zero]`. Rewrite using `[ht]`. Unfold `KB.Pl.RR D.RRplace`. Use `split_ifs with h1 h2 h3 h4`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[hV, hsInner_zero_zero]`. Conclude with `ht`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+-/
 theorem levelForm_top_diag (p : KB.Pl P Wp Wq) (H : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (w : List C.Letter)
     (a : C.LPt) :
     p.RR H (P.r + 1) w a a = Top.topOf P p.l0 p.T p.ν' p.m₀ p.Θ p.TP H w a a := by
@@ -51,6 +66,11 @@ theorem levelForm_top_diag (p : KB.Pl P Wp Wq) (H : B.Mat P.k P.r → (Wq →L[�
 
 end
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P p H w c`. Establish `h1 : TBB.normC (fun _ => 1) w = 1` using `by simp [TBB.normC]`. Unfold `TBB.Ew TBB.NP`. Rewrite using `[levelForm_top_diag, h1, div_one, PiLp.norm_sq_eq_of_L2, Fintype.sum_prod_type]`. Unfold `Top.topOf`.
+
+Simplify using `only [hsInner_self_eq_normSq, ← Complex.ofReal_mul, ← Complex.ofReal_sum, Complex.ofReal_re, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun e _ => Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Simplify using `only [tv, norm_smul, Complex.norm_real, Real.norm_eq_abs, mul_pow, sq_abs, TBB.TTp, KB.Pl.V]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Ew_eq_norm_tv_sq : ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par) (p : KB.Pl P Wp Wq) (H : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (w : List C.Letter) (c : Fin (P.r + 1) → ℂ), TBB.Ew p (fun _ => 1) H (P.r + 1) w (TBB.bigPt P.r c) = ‖tv p H w c‖ ^ 2 := by
   intro Wp Wq _ _ _ _ _ _ P p H w c
   have h1 : TBB.normC (fun _ => 1) w = 1 := by simp [TBB.normC]

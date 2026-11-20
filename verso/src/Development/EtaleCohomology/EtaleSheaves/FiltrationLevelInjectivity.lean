@@ -23,11 +23,19 @@ def iN {Y X : Scheme.{0}} (f : Y ⟶ X) : sch.obj Y ⟶ cech f where
     · erw [Category.assoc, WidePullback.lift_base, Category.assoc, WidePullback.lift_base, WidePullback.lift_base]
       exact Category.id_comp _
 
+/- English proof (translation)
+Use `NatTrans.ext (funext fun x => ?_)` and prove the remaining obligations. Use `erw [NatTrans.comp_app, WidePullback.lift_base]`. Both sides reduce to the same expression.
+-/
 theorem iN_aug {Y X : Scheme.{0}} (f : Y ⟶ X) : iN f ≫ cechAug f = sch.map f := by
   refine NatTrans.ext (funext fun x => ?_)
   erw [NatTrans.comp_app, WidePullback.lift_base]
   rfl
 
+/- English proof (translation)
+Use `⟨⟨WidePullback.π (fun _ : Fin 1 => yoneda.map f) 0, ?_, ?_⟩⟩` and prove the remaining obligations. Use `erw [WidePullback.lift_π]`. Apply `WidePullback.hom_ext` to reduce the goal to its premises. Introduce `j`. Establish `hj : j = 0` using `Fin.fin_one_eq_zero j`.
+
+Substitute `hj` using the available equality. Use `erw [Category.assoc, WidePullback.lift_π, Category.id_comp]`. Conclude with `Category.comp_id _`. Use `erw [Category.assoc, WidePullback.lift_base, Category.id_comp]`. Conclude with `WidePullback.π_arrow _ _`.
+-/
 theorem iN_app_zero_iso {Y X : Scheme.{0}} (f : Y ⟶ X) : IsIso ((iN f).app (op ⦋0⦌)) := by
   refine ⟨⟨WidePullback.π (fun _ : Fin 1 => yoneda.map f) 0, ?_, ?_⟩⟩
   · erw [WidePullback.lift_π]
@@ -40,6 +48,9 @@ theorem iN_app_zero_iso {Y X : Scheme.{0}} (f : Y ⟶ X) : IsIso ((iN f).app (op
     · erw [Category.assoc, WidePullback.lift_base, Category.id_comp]
       exact WidePullback.π_arrow _ _
 
+/- English proof (translation)
+Use `NatTrans.ext (funext fun x => ?_)` and prove the remaining obligations. Use `erw [NatTrans.comp_app, WidePullback.lift_base]`. Both sides reduce to the same expression.
+-/
 theorem gN_aug {D Y' E Y'' : CommRingCat.{0}} (φ' : D ⟶ Y') (e : D ⟶ E) (u : Y' ⟶ Y'') (φ'' : E ⟶ Y'')
     (h : φ' ≫ u = e ≫ φ'') :
     gN φ' e u φ'' h ≫ cechAug (Spec.map e) = cechAug (Spec.map u) ≫ sch.map (Spec.map φ') := by
@@ -47,6 +58,11 @@ theorem gN_aug {D Y' E Y'' : CommRingCat.{0}} (φ' : D ⟶ Y') (e : D ⟶ E) (u 
   erw [NatTrans.comp_app, WidePullback.lift_base]
   rfl
 
+/- English proof (translation)
+Establish `hw : yoneda.map (Spec.map φ'') ≫ yoneda.map (Spec.map e) = yoneda.map (Spec.map u) ≫ yoneda.map (Spec.map φ')`. Rewrite using `[← Functor.map_comp, ← Functor.map_comp, ← Spec.map_comp, ← Spec.map_comp, h]`. Use `NatTrans.ext (funext fun x => ?_)` and prove the remaining obligations. Apply `WidePullback.hom_ext` to reduce the goal to its premises. Introduce `j erw [Category.assoc, WidePullback.lift_π, Category.assoc, WidePullback.lift_π, ← Category.assoc, WidePullback.lift_π, Category.id_comp]`.
+
+Conclude with `Category.comp_id _`. Use `erw [Category.assoc, WidePullback.lift_base, Category.assoc, WidePullback.lift_base, ← Category.assoc, WidePullback.lift_base]`. Conclude with `hw`.
+-/
 theorem gN_iN {D Y' E Y'' : CommRingCat.{0}} (φ' : D ⟶ Y') (e : D ⟶ E) (u : Y' ⟶ Y'') (φ'' : E ⟶ Y'')
     (h : φ' ≫ u = e ≫ φ'') :
     sch.map (Spec.map φ'') ≫ iN (Spec.map e) = iN (Spec.map u) ≫ gN φ' e u φ'' h := by
@@ -80,6 +96,9 @@ def LvlRel : Prop := Hyp → ∀ (q : ℕ) [NeZero q] (i n : ℤ) {A Y : CommRin
     Function.Injective (pull (ZMod q) (disc.map ((gN φ' e u φ'' hpo.w).app (op ⦋p⦌))) (tw q i) m) ∧
     Function.Surjective (pull (ZMod q) (disc.map ((gN φ' e u φ'' hpo.w).app (op ⦋p⦌))) (tw q i) (m - 1))
 
+/- English proof (translation)
+Introduce `hH q _ i n A Y φ hq P hP hE hB D d hD Y' w φ' hpo E e Y'' u φ'' he hs hPE hpo'`. Use `⟨gN φ' e u φ'' hpo'.w, gN_aug _ _ _ _ _, iN (Spec.map e), iN (Spec.map u), gN_iN _ _ _ _ _, iN_aug _, iN_aug _, ?_⟩` and prove the remaining obligations. Conclude with `hF hH (ZMod q) (tw q i) n (gN φ' e u φ'' hpo'.w) (yoneda.map (Spec.map φ'')) (iN (Spec.map e)) (iN (Spec.map u)) (gN_iN _ _ _ _ _) (iN_app_zero_iso _) (iN_app_zero_iso _) (hL hH q i n φ hq P hP hE hB D d hD Y' w φ' hpo E e Y'' u φ'' he hs hPE hpo')`.
+-/
 theorem LevelInj_of (hF : Filt) (hL : LvlRel) : LateralTheory.E.RelDescPf.LevelInj := by
   intro hH q _ i n A Y φ hq P hP hE hB D d hD Y' w φ' hpo E e Y'' u φ'' he hs hPE hpo'
   refine ⟨gN φ' e u φ'' hpo'.w, gN_aug _ _ _ _ _, iN (Spec.map e), iN (Spec.map u), gN_iN _ _ _ _ _,

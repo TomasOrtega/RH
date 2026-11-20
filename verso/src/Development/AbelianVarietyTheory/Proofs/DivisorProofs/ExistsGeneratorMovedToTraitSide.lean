@@ -11,6 +11,15 @@ open GlobalTheory.Mum GlobalTheory.ThetaMove
 
 namespace GlobalTheory.ThetaMove
 
+/- English proof (translation)
+Establish `hm : f ≫ mA ≫ α = mT ≫ c ≫ β`. Rewrite using `[← h₂, Category.assoc, ← h₁, ← Category.assoc f mA, ← h₃]`. Simplify using `only [Category.assoc]`. Take `⟨t₁, ht₁, v₁⟩` from `exists_up ((isGen_iff wA).1 hwA) hP hA (φ' := ![sA, mA]) (ε := ![k, -k]) u hu`. Take `⟨t₂, ht₂, v₂⟩` from `GlobalTheory.ArcPull.exists_down_om hℓ hP hG (φ' := ![sT ≫ c, mT ≫ c]) f (fun i => by fin_cases i`.
+
+Simplify using `using h₁.symm`. Simplify using `using hm.symm) t₁ ht₁`. Apply the tactic sequence `obtain ⟨u', hu', v₃⟩ := GlobalTheory.ArcPull.exists_down_om hw hG hT (φ' := ![sT, mT]) (φ := ![sT ≫ c, mT ≫ c]) (𝟙 Y') (fun i => by fin_cases i <;> simp) t₂ ht₂`. Use `⟨u', hu', fun Z q z JP JA JG Jt hP' hA' hG' hT' => ?_⟩` and prove the remaining obligations. Establish `e₁ : val t₁ (q ≫ f) z JP = pw wA ![sA, mA] ![k, -k] (q ≫ f) z (fun i => JP ((q ≫ f) ≫ ![sA, mA] i ≫ α)) (fun i => JA ((q ≫ f) ≫ ![sA, mA] i)) * val u (q ≫ f) z JA` using `v₁ Z (q ≫ f) z _ _ (hP'.mem _ _) (hA'.mem _ _)`.
+
+Establish `e₂` using `v₂ Z q z JP JG hP' hG'`. Establish `e₃` using `v₃ Z q z JG Jt hG' hT'`. Rewrite `e₃` using `[Category.comp_id]`. Rewrite `e₁` using `[e₂, e₃]`. Simplify using `only [pw, GlobalTheory.ArcPull.om, tf, Fin.prod_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Category.assoc] at e₁ ⊢`.
+
+Simplify using `only [reassoc_of% h₁, reassoc_of% hm, reassoc_of% h₂, reassoc_of% h₃, h₁, hm, h₂, h₃] at e₁ ⊢`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `e'` using `congrArg Additive.ofMul e₁`. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow] at e' ⊢`. Take the linear combination `(norm := module) -e'`.
+-/
 theorem exists_down_three {XA XP XG XT Y Y' : Scheme.{0}} {LA : LB XA} {LP : LB XP} {LG : LB XG} {LT : LB XT}
     (hA : LA.IsLB) (hP : LP.IsLB) (hG : LG.IsLB) (hT : LT.IsLB) {α : XA ⟶ XP} {β : XG ⟶ XP} {c : XT ⟶ XG}
     (wA : LB.Iso LA (LP.pull α)) (hwA : wA.IsGen) (ℓ : LB.Iso LG (LP.pull β)) (hℓ : ℓ.IsGen)

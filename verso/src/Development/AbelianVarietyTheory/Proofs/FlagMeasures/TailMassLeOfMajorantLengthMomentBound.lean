@@ -9,10 +9,18 @@ open scoped InnerProductSpace ENNReal
 
 namespace GlobalTheory.Amp.Cheb
 
+/- English proof (translation)
+Unfold `GG UH`. Conclude with `isClosed_eq (by fun_prop) continuous_const`.
+-/
 theorem isClosed_GG (k r : ℕ) : IsClosed (GG k r) := by
   unfold GG UH
   exact isClosed_eq (by fun_prop) continuous_const
 
+/- English proof (translation)
+Take `⟨u, hu, h⟩` from `continuousOn_iff'.1 ((LenCont.lA_Sg_continuousOn k r z).1 a) (Set.Ioi T) isOpen_Ioi`. Establish `h1 : MeasurableSet (α` using `Mt k r) u := IsOpen.measurableSet (α := Mt k r) hu`. Establish `h2 : MeasurableSet (α` using `Mt k r) (GG k r) := IsClosed.measurableSet (α := Mt k r) (isClosed_GG k r)`. Establish `h3 : {x : Mt k r | Matrix.of x ∈ GG k r ∧ T < lA k r z (Matrix.of x) a} = u ∩ GG k r`. Rewrite using `[← h]`.
+
+Use extensionality with `x`. Conclude with `⟨fun hx => ⟨hx.2, hx.1⟩, fun hx => ⟨hx.2, hx.1⟩⟩`. Rewrite using `[h3]`. Conclude with `h1.inter h2`.
+-/
 theorem measurableSet_len_gt (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (a : Fin (r + 1)) (T : ℝ) :
     MeasurableSet {x : Mt k r | Matrix.of x ∈ GG k r ∧ T < lA k r z (Matrix.of x) a} := by
   obtain ⟨u, hu, h⟩ := continuousOn_iff'.1 ((LenCont.lA_Sg_continuousOn k r z).1 a) (Set.Ioi T) isOpen_Ioi
@@ -25,6 +33,11 @@ theorem measurableSet_len_gt (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (a : 
   rw [h3]
   exact h1.inter h2
 
+/- English proof (translation)
+Rewrite using `[← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `le_trans (setLIntegral_mono' hE fun x hx => ?_) (setLIntegral_le_lintegral E _)` and prove the remaining obligations. Establish `hTn : 0 < T ^ n` using `pow_pos hT n`. Rewrite using `[← mul_assoc, ← ENNReal.ofReal_mul (inv_nonneg.2 hTn.le)]`. Use `le_mul_of_one_le_left' ?_` and prove the remaining obligations.
+
+Rewrite using `[ENNReal.one_le_ofReal, inv_mul_eq_div, one_le_div hTn]`. Conclude with `pow_le_pow_left₀ hT.le (hl x hx).le n`.
+-/
 theorem cheb_one {X : Type*} [MeasurableSpace X] (ν : Measure X) (l : X → ℝ) (f : X → ℝ≥0∞) (E : Set X)
     (hE : MeasurableSet E) (T : ℝ) (hT : 0 < T) (hl : ∀ x ∈ E, T < l x) (n : ℕ) :
     ∫⁻ x in E, f x ∂ν ≤ ENNReal.ofReal ((T ^ n)⁻¹) * ∫⁻ x, ENNReal.ofReal (l x ^ n) * f x ∂ν := by
@@ -36,6 +49,23 @@ theorem cheb_one {X : Type*} [MeasurableSpace X] (ν : Measure X) (l : X → ℝ
   rw [ENNReal.one_le_ofReal, inv_mul_eq_div, one_le_div hTn]
   exact pow_le_pow_left₀ hT.le (hl x hx).le n
 
+/- English proof (translation)
+Introduce `k r Wp _ _ _ z νS Φ q H₁ hH _ _ hM i`. Break down `i with _ | j` into its components or cases. Use `(setLIntegral_le_lintegral _ _).trans ?_` and prove the remaining obligations. Use `le_mul_of_one_le_left' ?_` and prove the remaining obligations. Rewrite using `[ENNReal.one_le_ofReal]`.
+
+Establish `h1 : (1 : ℝ) ≤ 4 ^ q` using `one_le_pow₀ (by norm_num)`. Establish `h2 : (0 : ℝ) ≤ r` using `Nat.cast_nonneg r`. Simplify using `only [pow_zero, one_pow, inv_one, mul_one]`. Use the polynomial consequences of the given equalities and inequalities. Use `set T : ℝ := 2 ^ (j + 1) * H₁ / 2 with hTdef`.
+
+Establish `hT' : T = 2 ^ j * H₁` using `by rw [hTdef]; ring`. Establish `h2j : (1 : ℝ) ≤ 2 ^ j` using `one_le_pow₀ (by norm_num)`. Establish `hT1 : 1 ≤ T` using `by rw [hT']; nlinarith`. Establish `hsub : {x : Mt k r | Matrix.of x ∈ GG k r ∧ (j + 1 = 0 ∨ T < Sg k r z (Matrix.of x))} ⊆ ⋃ a : Fin (r + 1), {x : Mt k r | Matrix.of x ∈ GG k r ∧ T < lA k r z (Matrix.of x) a}`. Introduce and unpack `x ⟨hx, h | h⟩`.
+
+Use linear arithmetic over natural numbers and integers. Unfold `Sg at h`. Rewrite `h` using `[Finset.lt_fold_max]`. Break down `h with h | ⟨a, -, h⟩` into its components or cases. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Conclude with `Set.mem_iUnion.2 ⟨a, hx, h⟩`. Use `(lintegral_mono_set hsub).trans ((lintegral_iUnion_le _ _).trans ?_)` and prove the remaining obligations. Rewrite using `[tsum_fintype]`. Establish `hone : ∀ a : Fin (r + 1), ∫⁻ x in {x : Mt k r | Matrix.of x ∈ GG k r ∧ T < lA k r z (Matrix.of x) a}, (‖Φ (Matrix.of x)‖₊ : ℝ≥0∞) ^ 2 ∂νS ≤ ENNReal.ofReal (4 ^ q * ((2 ^ (j + 1) : ℝ) ^ (2 * q))⁻¹) * l2SG νS Φ`. Introduce `a`.
+
+Use `(cheb_one νS (fun x => lA k r z (Matrix.of x) a) _ _ (measurableSet_len_gt k r z a T) T (by linarith) (fun x hx => hx.2) (2 * q)).trans ?_` and prove the remaining obligations. Use `(mul_le_mul_right (hM a) _).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← ENNReal.ofReal_mul (by positivity)]`. Use `congr 2`. Establish `hH0 : H₁ ≠ 0` using `by linarith`.
+
+Establish `h4 : (4 : ℝ) ^ q = 2 ^ (2 * q)` using `by rw [pow_mul]; norm_num`. Rewrite using `[hT', h4, pow_succ, mul_pow, mul_pow]`. Clear the denominators using the available nonvanishing facts. Use `(Finset.sum_le_sum fun a _ => hone a).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, ← mul_assoc, mul_assoc ((r : ℝ) + 1), ENNReal.ofReal_mul (p := (r : ℝ) + 1) (by positivity)]`.
+
+Use `congr 2`. Rewrite using `[← ENNReal.ofReal_natCast]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem tail_mass_le : ∀ (k r : ℕ) {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp] (z : (Fin (2 * r + k + 1) → ℂ)) (νS : Measure (Mt k r)) (Φ : Mat k r → Wp) (q : ℕ) (H₁ : ℝ), 1 ≤ H₁ → νS {x | Matrix.of x ∉ GG k r} = 0 → ContinuousOn Φ (GG k r) → MomBd z νS Φ q H₁ → ∀ i : ℕ, ∫⁻ x in {x : Mt k r | Matrix.of x ∈ GG k r ∧ (i = 0 ∨ 2 ^ i * H₁ / 2 < Sg k r z (Matrix.of x))}, (‖Φ (Matrix.of x)‖₊ : ℝ≥0∞) ^ 2 ∂νS ≤ ENNReal.ofReal ((r + 1) * 4 ^ q * ((2 ^ i : ℝ) ^ (2 * q))⁻¹) * l2SG νS Φ := by
   intro k r Wp _ _ _ z νS Φ q H₁ hH _ _ hM i
   rcases i with _ | j

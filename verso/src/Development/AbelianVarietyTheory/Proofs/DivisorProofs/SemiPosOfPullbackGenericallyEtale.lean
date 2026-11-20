@@ -18,6 +18,11 @@ namespace GlobalTheory.SemiPosEtale
 variable {k : Type} [CommRing k] {X Z : Scheme.{0}} {p : X ⟶ Sp k} {q : Z ⟶ Sp k} {σ : k →+* ℂ}
   {D : ℕ}
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `hy`. Take `⟨w, -, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := j) (g := y.1) v _ hv`. Establish `: JacobsonSpace ↥(pullback j y.1)` using `LocallyOfFiniteType.jacobsonSpace (pullback.snd j y.1)`. Take `⟨c, -, hc⟩` from `nonempty_inter_closedPoints (Z := (Set.univ : Set ↥(pullback j y.1))) ⟨w, trivial⟩ isOpen_univ.isLocallyClosed`. Use `replace hc : IsClosed {c} := hc`.
+
+Use `⟨⟨pointOfClosedPoint (pullback.snd j y.1) c hc ≫ pullback.fst j y.1, ?_⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[← hj, Category.assoc, pullback.condition_assoc, pointOfClosedPoint_comp_assoc]`. Conclude with `y.2`. Express the relevant statement in the definitionally equal form `(pointOfClosedPoint (pullback.snd j y.1) c hc ≫ pullback.fst j y.1) ≫ j = y.1`. Rewrite using `[Category.assoc, pullback.condition, pointOfClosedPoint_comp_assoc]`.
+-/
 theorem exists_map_eq_of_etale (j : Z ⟶ X) [Etale j] (hj : j ≫ p = q) {y : CxPts p σ}
     (hy : y.1 (IsLocalRing.closedPoint ℂ) ∈ Set.range j) :
     ∃ z : CxPts q σ, PtsOver.map j hj _ z = y := by
@@ -35,6 +40,9 @@ theorem exists_map_eq_of_etale (j : Z ⟶ X) [Etale j] (hj : j ≫ p = q) {y : C
 
 def img (j : Z ⟶ X) [Etale j] : X.Opens := ⟨Set.range j, j.isOpenMap.isOpen_range⟩
 
+/- English proof (translation)
+Introduce `c y hy ξ` and use `by obtain ⟨z, rfl⟩ := exists_map_eq_of_etale j hj (mem_ptsIn.1 hy.2.2) obtain ⟨W, hW, hzW, e⟩ := exists_isAffineOpen_le z.1 (V := j ⁻¹ᵁ c.U) (c.source_subset hy.1) have h₂ : (MvPolynomial.eval₂Hom (algX q W) fun a => (j.appLE _ W e).hom (c.x a)).Etale := by rw [← appLE_comp_eval …`.
+-/
 theorem PosOn.of_etale (j : Z ⟶ X) [Etale j] (hj : j ≫ p = q) {f : CxPts p σ → ℝ}
     {S : Set (CxPts p σ)}
     (h : PosOn D (fun w => f (PtsOver.map j hj _ w)) (PtsOver.map j hj (spMap σ) ⁻¹' S)) :
@@ -53,6 +61,19 @@ end GlobalTheory.SemiPosEtale
 
 namespace GlobalTheory.SemiPosEtale
 
+/- English proof (translation)
+Introduce `k _ X Y _ _ p q D hp _ π hπ V hV hE L hL σ i`. Use `hp.isDomain` as an intermediate fact. Use `hp.finite` as an intermediate fact. Establish `hσ : Function.Injective σ`. Rewrite using `[RingHom.injective_iff_ker_eq_bot]`.
+
+Use `Ideal.eq_bot_of_comap_eq_bot (R := ℤ) ?_` and prove the remaining obligations. Rewrite using `[RingHom.comap_ker, ← RingHom.injective_iff_ker_eq_bot]`. Conclude with `RingHom.injective_int _`. Establish `: Etale (V.ι ≫ π)` using `hE`. Establish `hj : (V.ι ≫ π) ≫ p = V.ι ≫ q` using `by rw [Category.assoc, hπ]`.
+
+Establish `hU : ((img (V.ι ≫ π) : X.Opens) : Set X).Nonempty`. Take `⟨v, hv⟩` from `hV`. Conclude with `⟨_, ⟨v, hv⟩, rfl⟩`. Express the relevant statement in the definitionally equal form `PosOn D ((L.φ σ).φ i) (ptsIn p σ (L.B.U i))`. Use `PosOn.of_inter hσ (isOpen_ptsIn _) (L.cInf σ i) hU (PosOn.of_etale (V.ι ≫ π) hj ?_)` and prove the remaining obligations.
+
+Set `J : (L.B.pull π).ι` to `fun _ => i`. Establish `h₀ : PosOn D (((L.φ σ).pull π hπ).φ J) (ptsIn q σ ((L.B.pull π).U J))` using `hL σ J`. Establish `e₁ : ptsIn q σ ((L.B.pull π).U J) = PtsOver.map π hπ (spMap σ) ⁻¹' ptsIn p σ (L.B.U i)` using `Set.ext fun z => by`. Rewrite using `[Set.mem_preimage, mem_ptsIn, mem_ptsIn]`. Conclude with `⟨fun h => Set.mem_iInter.1 h PUnit.unit, fun h => Set.mem_iInter.2 fun _ => h⟩`.
+
+Establish `e₂ : ((L.φ σ).pull π hπ).φ J = fun w => (L.φ σ).φ i (PtsOver.map π hπ _ w)`. Use function extensionality and compare the values at `((L.φ σ).pull_φ π hπ J)`. Rewrite `h₀` using `[e₁, e₂]`. Establish `h₁` using `h₀.pull V.ι (q := V.ι ≫ q) rfl`. Establish `e₃ (w : CxPts (V.ι ≫ q) σ) : PtsOver.map π hπ _ (PtsOver.map V.ι rfl _ w) = PtsOver.map (V.ι ≫ π) hj _ w` using `Subtype.ext (Category.assoc _ _ _)`.
+
+Simplify using `only [e₃] at h₁`. Conclude with `h₁`.
+-/
 theorem semiPos_of_pull_etale : ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y] (p : X ⟶ Sp k) (q : Y ⟶ Sp k) (D : ℕ), IsArithVar p D → IsArithVar q D → ∀ (π : Y ⟶ X) (hπ : π ≫ p = q) (V : Y.Opens), (V : Set Y).Nonempty → Etale (V.ι ≫ π) → ∀ L : HermLB p, (L.pull π hπ).SemiPos D → L.SemiPos D := by
   intro k _ X Y _ _ p q D hp _ π hπ V hV hE L hL σ i
   have := hp.isDomain

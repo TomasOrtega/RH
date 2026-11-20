@@ -23,10 +23,16 @@ def gsInfFamily (v : InfinitePlace K.1) :
     Gal(AlgebraicClosure v.Completion / v.Completion) →ₜ* galUnramifiedOutside K.1 ℚ̄ S :=
   ⟨decompHomS v.Completion S (ι v), continuous_decompHomS (Kv := v.Completion) S (ι v)⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gsInfFamily_real (v : {v : InfinitePlace K.1 // v.IsReal}) :
     gsInfFamily S ι v.1 = gsRealFamily S (fun w => ι w.1) v :=
   rfl
 
+/- English proof (translation)
+Establish `: IsAlgClosed v.Completion` using `IsAlgClosed.of_ringEquiv ℂ _ (InfinitePlace.Completion.ringEquivComplexOfIsComplex hv).symm`. Use extensionality with `x`. Take `⟨c, rfl⟩` from `(IsAlgClosed.algebraMap_bijective_of_isIntegral (k := v.Completion) (K := AlgebraicClosure v.Completion)).2 x`. Simplify using the standard rewrite rules.
+-/
 theorem eq_one_of_isComplex {v : InfinitePlace K.1} (hv : v.IsComplex)
     (σ : Gal(AlgebraicClosure v.Completion / v.Completion)) : σ = 1 := by
   have : IsAlgClosed v.Completion :=

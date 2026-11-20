@@ -15,12 +15,20 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.FieldPerf
 
+/- English proof (translation)
+Establish `e` using `h ⟨⊥, Ideal.isPrime_bot⟩`. Rewrite `e` using `[Module.rankAtStalk_eq_finrank_of_free]`. Then use the resulting hypothesis.
+-/
 theorem finrank_of_rankAtStalk {k : Type} [Field k] {M : Type*} [AddCommGroup M] [Module k M]
     [Module.Finite k M] {n : ℕ} (h : ∀ p : PrimeSpectrum k, Module.rankAtStalk M p = n) :
     Module.finrank k M = n := by
   have e := h ⟨⊥, Ideal.isPrime_bot⟩
   rwa [Module.rankAtStalk_eq_finrank_of_free] at e
 
+/- English proof (translation)
+Introduce `H k _ A B _ _ g hA hB gA gB P hP φ hφ`. Take `⟨HF, HH, -⟩` from `GlobalTheory.T.abelianSchemeDeRham_free_hodgeSequence_baseChange H`. Take `⟨fA, -, rA⟩` from `GlobalTheory.Published.AbelianDeRham.Free.prim HF hA gA`. Take `⟨fB, -, rB⟩` from `GlobalTheory.Published.AbelianDeRham.Free.prim HF hB gB`. Take `⟨-, -, fFA, -, rFA⟩` from `HH k A g hA gA`.
+
+Take `⟨-, -, fFB, -, rFB⟩` from `HH k B g hB gB`. Conclude with `GlobalTheory.T.isPerfPair_dual_of_half_dim_kernel_conditions k (primDR A) (primDR B) (PrimitiveSubmodule A) (PrimitiveSubmodule B) g (finrank_of_rankAtStalk rA) (finrank_of_rankAtStalk rB) (finrank_of_rankAtStalk rFA) (finrank_of_rankAtStalk rFB) φ (GlobalTheory.T.hodge_filtratio …`.
+-/
 theorem isPerfPair : GlobalTheory.Published.AbelianHodgeDeRham → ∀ (k : Type) [Field k] (A B : Over (Sp k)) [GrpObj A] [GrpObj B] (g : ℕ), IsAbelianScheme A → IsAbelianScheme B → SmoothOfRelativeDimension g A.hom → SmoothOfRelativeDimension g B.hom → ∀ P : LB (A ⊗ B).left, AbDual.IsPerfect A B P → ∀ φ : HdR A →ₗ[k] HdR B →ₗ[k] k, AbDual.IsCorrForm (dp0 k) (𝟙 _) A B P φ → φ.IsPerfPair := by
   intro H k _ A B _ _ g hA hB gA gB P hP φ hφ
   obtain ⟨HF, HH, -⟩ := GlobalTheory.T.abelianSchemeDeRham_free_hodgeSequence_baseChange H

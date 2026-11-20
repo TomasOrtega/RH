@@ -19,9 +19,15 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def tst (σ : E →ₐ[F] E) (ε : ℤˣ) (γ : Matrix (Fin n) (Fin n) E) : Matrix (Fin n) (Fin n) E :=
   γ - (ε : ℤ) • (γ.map σ)ᵀ
 
+/- English proof (translation)
+Rewrite using `[smul_smul, ← Units.val_mul, Int.units_mul_self, Units.val_one, one_smul]`.
+-/
 theorem zsmul_zsmul_self (ε : ℤˣ) {M : Type} [AddCommGroup M] (x : M) : (ε : ℤ) • (ε : ℤ) • x = x := by
   rw [smul_smul, ← Units.val_mul, Int.units_mul_self, Units.val_one, one_smul]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [tst, Matrix.transpose_apply, Matrix.sub_apply, Matrix.smul_apply, Matrix.map_apply, Matrix.neg_apply, map_sub, map_zsmul, GlobalTheory.LeviLine.sigma_invol hcm]`. Rewrite using `[smul_sub, zsmul_zsmul_self]`. Normalize the expressions using the abelian group laws.
+-/
 theorem tst_mem (hcm : IsCMExt F E σ) (ε : ℤˣ) (γ : Matrix (Fin n) (Fin n) E) :
     (tst σ ε γ)ᵀ = -((ε : ℤ) • (tst σ ε γ).map σ) := by
   ext i j
@@ -30,13 +36,24 @@ theorem tst_mem (hcm : IsCMExt F E σ) (ε : ℤˣ) (γ : Matrix (Fin n) (Fin n)
   rw [smul_sub, zsmul_zsmul_self]
   abel
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[incM, Matrix.map_apply, GlobalTheory.LeviLine.cA_inclR]`.
+-/
 theorem incM_map_cA (γ : Matrix (Fin n) (Fin n) E) : (incM F (γ.map σ)) = (incM F γ).map (cA σ) := by
   ext i j
   simp [incM, Matrix.map_apply, GlobalTheory.LeviLine.cA_inclR]
 
+/- English proof (translation)
+Simplify using `[Matrix.trace, map_sum]`.
+-/
 theorem trace_map_cA (M : Matrix (Fin n) (Fin n) (AE F E)) : (M.map (cA σ)).trace = cA σ M.trace := by
   simp [Matrix.trace, map_sum]
 
+/- English proof (translation)
+Establish `h1 : incM F (tst σ ε γ) = incM F γ - (ε : ℤ) • ((incM F γ).map (cA σ))ᵀ`. Use extensionality with `i j`. Simplify using `only [tst, incM, Matrix.map_apply, Matrix.sub_apply, Matrix.smul_apply, Matrix.transpose_apply, map_sub, map_zsmul, GlobalTheory.LeviLine.cA_inclR]`. Establish `h2 : Matrix.trace (((incM F γ).map (cA σ))ᵀ * β) = -((ε : ℤ) • cA σ (Matrix.trace (incM F γ * β)))`. Rewrite using `[← Matrix.trace_transpose, Matrix.transpose_mul, Matrix.transpose_transpose, hβ, Matrix.neg_mul, Matrix.trace_neg, Matrix.smul_mul, Matrix.trace_smul, ← Matrix.map_mul, trace_map_cA, Matrix.trace_mul_comm]`.
+
+Rewrite using `[h1, Matrix.sub_mul, Matrix.trace_sub, Matrix.smul_mul, Matrix.trace_smul, h2, smul_neg, zsmul_zsmul_self, sub_neg_eq_add]`.
+-/
 theorem trace_tst (ε : ℤˣ) (γ : Matrix (Fin n) (Fin n) E) (β : Matrix (Fin n) (Fin n) (AE F E))
     (hβ : βᵀ = -((ε : ℤ) • β.map (cA σ))) :
     Matrix.trace (incM F (tst σ ε γ) * β) = Matrix.trace (incM F γ * β) + cA σ (Matrix.trace (incM F γ * β)) := by
@@ -50,6 +67,9 @@ theorem trace_tst (ε : ℤˣ) (γ : Matrix (Fin n) (Fin n) E) (β : Matrix (Fin
   rw [h1, Matrix.sub_mul, Matrix.trace_sub, Matrix.smul_mul, Matrix.trace_smul, h2, smul_neg, zsmul_zsmul_self,
     sub_neg_eq_add]
 
+/- English proof (translation)
+Establish `: incM F (Matrix.single j i c) = Matrix.single j i (inclR (F` using `F) (AF F) c) := by`. Use extensionality with `a b`. Simplify using `only [incM, Matrix.map_apply, Matrix.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[this, Matrix.trace_single_mul, smul_eq_mul]`.
+-/
 theorem trace_incM_single (β : Matrix (Fin n) (Fin n) (AE F E)) (i j : Fin n) (c : E) :
     Matrix.trace (incM F (Matrix.single j i c) * β) = inclR (F := F) (AF F) c * β i j := by
   have : incM F (Matrix.single j i c) = Matrix.single j i (inclR (F := F) (AF F) c) := by
@@ -58,11 +78,25 @@ theorem trace_incM_single (β : Matrix (Fin n) (Fin n) (AE F E)) (i j : Fin n) (
     split_ifs <;> simp
   rw [this, Matrix.trace_single_mul, smul_eq_mul]
 
+/- English proof (translation)
+The claim follows from `Algebra.trace_eq_of_algEquiv (AlgEquiv.ofAlgHom (cA σ) (cA σ) (AlgHom.ext (GlobalTheory.LeviLine.cA_invol hcm)) (AlgHom.ext (GlobalTheory.LeviLine.cA_invol hcm))) z`.
+-/
 theorem trace_cA (hcm : IsCMExt F E σ) (z : AE F E) :
     Algebra.trace (AF F) (AE F E) (cA σ z) = Algebra.trace (AF F) (AE F E) z :=
   Algebra.trace_eq_of_algEquiv
     (AlgEquiv.ofAlgHom (cA σ) (cA σ) (AlgHom.ext (GlobalTheory.LeviLine.cA_invol hcm)) (AlgHom.ext (GlobalTheory.LeviLine.cA_invol hcm))) z
 
+/- English proof (translation)
+Establish `: IsTotallyReal F` using `hcm.1`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hcm.2.2.1]; norm_num)`. Establish `hc` using `GlobalTheory.StdCharFromIsStd.isCharAF hψ`. Establish `key : ∀ i j (e : E), ψ (Algebra.trace (AF F) (AE F E) ((1 : AF F) ⊗ₜ[F] e * β i j)) = 1`. Introduce `i j e`.
+
+Establish `h1` using `h _ (tst_mem hcm ε (Matrix.single j i (-(e / 2))))`. Rewrite `h1` using `[trace_tst ε _ β hβ, trace_incM_single, map_add, trace_cA hcm]`. Establish `hI : ∀ c : E, inclR (F` using `F) (AF F) c = (1 : AF F) ⊗ₜ[F] c := fun c => rfl`. Establish `hadd : ∀ a c : E, Algebra.trace (AF F) (AE F E) ((1 : AF F) ⊗ₜ[F] (a + c) * β i j) = Algebra.trace (AF F) (AE F E) ((1 : AF F) ⊗ₜ[F] a * β i j) + Algebra.trace (AF F) (AE F E) ((1 : AF F) ⊗ₜ[F] c * β i j)` using `fun a c => by`. Rewrite using `[TensorProduct.tmul_add, add_mul, map_add]`.
+
+Establish `hneg : ∀ a : E, Algebra.trace (AF F) (AE F E) ((1 : AF F) ⊗ₜ[F] (-a) * β i j) = -Algebra.trace (AF F) (AE F E) ((1 : AF F) ⊗ₜ[F] a * β i j)` using `fun a => by`. Rewrite using `[TensorProduct.tmul_neg, neg_mul, map_neg]`. Establish `h2 : -(Algebra.trace (AF F) (AE F E) (inclR (F` using `F) (AF F) (-(e / 2)) * β i j) + Algebra.trace (AF F) (AE F E) (inclR (F := F) (AF F) (-(e / 2)) * β i j)) = Algebra.trace (AF F) (AE F E) ((1 : AF F) ⊗ₜ[F] e * β i j) := by`. Rewrite using `[hI, ← hadd, ← hneg]`. Use `congr 3`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[h2]`. Conclude with `h1`. Establish `hent : ∀ i j, ∃ e : E, β i j = (1 : AF F) ⊗ₜ[F] e` using `fun i j => GlobalTheory.RatAnnih.tensor_rat (β i j) fun e => (GlobalTheory.SWQ.Annihilator.self_annihilator F inferInstance ψ hc).2 _ fun c => (congrArg ψ (GlobalTheory.RatAnnih.trace_mul_algebraMap (β i j) e c)).trans (key i j (c • e))`. Use `choose M hM using hent`.
+
+Conclude with `⟨Matrix.of M, Matrix.ext fun i j => (hM i j).trans rfl⟩`.
+-/
 theorem rat_of_ker (hcm : IsCMExt F E σ) {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (ε : ℤˣ)
     (β : Matrix (Fin n) (Fin n) (AE F E)) (hβ : βᵀ = -((ε : ℤ) • β.map (cA σ)))
     (h : ∀ T : Matrix (Fin n) (Fin n) E, Tᵀ = -((ε : ℤ) • T.map σ) →
@@ -103,15 +137,34 @@ variable {Y : Spc F E n}
 def chr (ψ : AddChar (AF F) ℂ) (b : GL (Fin n ⊕ Fin n) E) (T : nF σ Y b) (β : nA σ Y b) : ℂ :=
   ψ (-(Algebra.trace (AF F) (AE F E) (Matrix.trace (T.1.1 * β.1))))
 
+/- English proof (translation)
+Simplify using `[incM, Matrix.map_mul]`.
+-/
 theorem incM_mul (A C : Matrix (Fin n) (Fin n) E) : incM F (A * C) = incM F A * incM F C := by
   simp [incM, Matrix.map_mul]
 
+/- English proof (translation)
+Establish `: Matrix.trace (incM F A) = (1 : AF F) ⊗ₜ[F] Matrix.trace A`. Simplify using `[incM, Matrix.trace, inclR, TensorProduct.tmul_sum]`. Rewrite using `[this, GlobalTheory.LatVac.trace_tmul, one_mul]`.
+-/
 theorem trace_incM_rat [FiniteDimensional F E] (A : Matrix (Fin n) (Fin n) E) :
     Algebra.trace (AF F) (AE F E) (Matrix.trace (incM F A)) = algebraMap F (AF F) (Algebra.trace F E (Matrix.trace A)) := by
   have : Matrix.trace (incM F A) = (1 : AF F) ⊗ₜ[F] Matrix.trace A := by
     simp [incM, Matrix.trace, inclR, TensorProduct.tmul_sum]
   rw [this, GlobalTheory.LatVac.trace_tmul, one_mul]
 
+/- English proof (translation)
+Establish `hσ : ∀ a, σ (σ a) = a` using `GlobalTheory.LeviLine.sigma_invol hB.cm`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hB.cm.2.2.1]; norm_num)`. Take `⟨ε, hε⟩` from `hb.1`. Establish `hβ : β.1 ∈ PositivityTheory.SiegelWeilFormula.kfour.nCond σ n ε` using `(PositivityTheory.SiegelWeilFormula.kfour.mem_nA_iff hσ hε β.1).1 β.2`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Use `(PositivityTheory.SiegelWeilFormula.kfour.mem_nF_iff β).2 (rat_of_ker hB.cm hB.std ε β.1 ?_ fun T hT => ?_)` and prove the remaining obligations. Establish `e` using `hβ`. Simplify using `only [PositivityTheory.SiegelWeilFormula.kfour.nCond, AddSubgroup.mem_mk, ] at e`. Rewrite using `[e, Int.cast_smul_eq_zsmul]`.
+
+Establish `hm : incM F T ∈ nA σ Y b`. Use `(PositivityTheory.SiegelWeilFormula.kfour.mem_nA_iff hσ hε _).2 ?_` and prove the remaining obligations. Use `show (incM F T)ᵀ = -((((ε : ℤ) : AE F E)) • (incM F T).map (cA σ))`. Rewrite using `[Int.cast_smul_eq_zsmul, ← incM_map_cA]`. Use extensionality with `i j`.
+
+Use `congrFun (congrFun hT i) j` as an intermediate fact. Simplify using `only [Matrix.transpose_apply, Matrix.neg_apply, Matrix.smul_apply, Matrix.map_apply] at this ⊢`. Simplify using `only [incM, Matrix.map_apply, this, map_neg, map_zsmul]`. Establish `hT' : (⟨incM F T, hm⟩ : nA σ Y b) ∈ nF σ Y b` using `(PositivityTheory.SiegelWeilFormula.kfour.mem_nF_iff _).2 ⟨T, rfl⟩`. Conclude with `h ⟨⟨incM F T, hm⟩, hT'⟩`.
+
+Introduce `hβF T`. Take `⟨T₀, hT₀⟩` from `(PositivityTheory.SiegelWeilFormula.kfour.mem_nF_iff β).1 hβF`. Take `⟨T₁, hT₁⟩` from `(PositivityTheory.SiegelWeilFormula.kfour.mem_nF_iff T.1).1 T.2`. Unfold `chr`. Rewrite using `[hT₀, hT₁, ← incM_mul, trace_incM_rat, ← map_neg]`.
+
+Conclude with `hB.std.2.1 _`.
+-/
 theorem chr_ker {B : Base F E} (hB : B.IsGood σ) {b : GL (Fin n ⊕ Fin n) E} (hb : IsFrame2 σ Y b)
     (β : nA σ Y b) : (∀ T : nF σ Y b, chr B.ψ b T β = 1) ↔ β ∈ nF σ Y b := by
   have hσ : ∀ a, σ (σ a) = a := GlobalTheory.LeviLine.sigma_invol hB.cm
@@ -141,6 +194,17 @@ theorem chr_ker {B : Base F E} (hB : B.IsGood σ) {b : GL (Fin n ⊕ Fin n) E} (
     rw [hT₀, hT₁, ← incM_mul, trace_incM_rat, ← map_neg]
     exact hB.std.2.1 _
 
+/- English proof (translation)
+Take `⟨hnb, hlam, hFD, -⟩` from `hc`. Establish `hσ : ∀ a, σ (σ a) = a` using `GlobalTheory.LeviLine.sigma_invol hB.cm`. Take `⟨i1, i2, i3, i4⟩` from `PositivityTheory.SiegelWeilFormula.kfour.nA_top hσ hb`. Take `⟨K, hK, hcov⟩` from `PositivityTheory.SiegelWeilFormula.kfour.nF_cocompact hσ hb`. Establish `hψ` using `GlobalTheory.StdCharFromIsStd.isCharAF hB.std`.
+
+Establish `htr : Continuous (Algebra.trace (AF F) (AE F E))` using `IsModuleTopology.continuous_of_linearMap _`. Establish `key` using `GlobalTheory.SeparatingCharacters.eq_zero_of_coefficients_eq_zero (nA σ Y b) (nF σ Y b) K hK hcov (nF σ Y b) (chr B.ψ b) (fun T => hψ.1.comp (htr.comp ((continuous_const.matrix_mul continuous_subtype_val).matrix_trace)).neg) (fun T β β' => by`. Unfold `chr`. Rewrite using `[AddSubgroup.coe_add, Matrix.mul_add, Matrix.trace_add, map_add, neg_add, AddChar.map_add_eq_mul])`. Use the proof step `(fun T T' β => by`.
+
+Unfold `chr`. Rewrite using `[AddSubgroup.coe_add, AddSubgroup.coe_add, Matrix.add_mul, Matrix.trace_add, map_add, neg_add, AddChar.map_add_eq_mul])`. Use the proof step `(fun β => by`. Unfold `chr`. Rewrite using `[ZeroMemClass.coe_zero, ZeroMemClass.coe_zero, Matrix.zero_mul, Matrix.trace_zero, map_zero, neg_zero, AddChar.map_zero_eq_one])`.
+
+Use the proof step `(fun T β => hψ.2.1 _)`. Use the proof step `(chr_ker hB hb)`. Use `lam 𝓖 hlam hFD (fun β => f (nb β * x))`. Use the proof step `(hf.comp ((PositivityTheory.SiegelWeilFormula.kfour.nb_continuous hσ hb hnb).mul continuous_const))`. Use the proof step `(fun γ hγ β => by show f (nb (γ + β) * x) = f (nb β * x)`.
+
+Rewrite using `[PositivityTheory.SiegelWeilFormula.kfour.nb_add hnb, mul_assoc]`. Conclude with `hper γ hγ _)`. Use the proof step `(fun T => (integral_congr_ae (.of_forall fun β => mul_comm _ _)).trans (hx T))`. Establish `h0` using `congrFun key 0`. Simplify `h0` using `[PositivityTheory.SiegelWeilFormula.kfour.nb_zero hnb]`.
+-/
 theorem fc_inj_pt_per {B : Base F E} (hB : B.IsGood σ) (b : GL (Fin n ⊕ Fin n) E) (nb : nA σ Y b → G2 σ Y)
     (lam : Measure (nA σ Y b)) (𝓖 : Set (nA σ Y b)) (hb : IsFrame2 σ Y b) (hc : CoefData (σ := σ) (Y := Y) b nb lam 𝓖)
     (f : G2 σ Y → ℂ) (hf : Continuous f) (hper : ∀ β ∈ nF σ Y b, ∀ g, f (nb β * g) = f g) (x : G2 σ Y)
@@ -177,6 +241,9 @@ theorem fc_inj_pt_per {B : Base F E} (hB : B.IsGood σ) (b : GL (Fin n ⊕ Fin n
   have h0 := congrFun key 0
   simpa [PositivityTheory.SiegelWeilFormula.kfour.nb_zero hnb] using h0
 
+/- English proof (translation)
+The claim follows from `fc_inj_pt_per hB b nb lam 𝓖 hb hc f hf (fun β hβ g => hinv _ (PositivityTheory.SiegelWeilFormula.kfour.nb_rat hc.1 β hβ) g) x hx`.
+-/
 theorem fc_inj_pt_core {B : Base F E} (hB : B.IsGood σ) (b : GL (Fin n ⊕ Fin n) E) (nb : nA σ Y b → G2 σ Y)
     (lam : Measure (nA σ Y b)) (𝓖 : Set (nA σ Y b)) (hb : IsFrame2 σ Y b) (hc : CoefData (σ := σ) (Y := Y) b nb lam 𝓖)
     (f : G2 σ Y → ℂ) (hf : Continuous f) (hinv : ∀ γ ∈ rat2 σ Y, ∀ y, f (γ * y) = f y) (x : G2 σ Y)

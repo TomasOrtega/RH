@@ -12,10 +12,16 @@ noncomputable section
 namespace GlobalTheory.TopZeroFirst
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
 
+/- English proof (translation)
+Establish `h2` using `D.R.two_le_m`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem zero_lt_m (D : D7) : 0 < D.R.m := by
   have h2 := D.R.two_le_m
   omega
 
+/- English proof (translation)
+Rewrite using `[← map_inv, ← map_mul, ← map_mul]`. Both sides reduce to the same expression.
+-/
 private theorem inBasis_val_eq_submatrix_conj {n n' : ℕ} (h : n' = n) (β x : GL (Fin n) (Lev.EAf D)) (w : Pl D.host.E) :
     (inBasis h β w x).val = ((loc w β)⁻¹ * loc w x * loc w β).val.submatrix (Fin.cast h) (Fin.cast h) := by
   rw [← map_inv, ← map_mul, ← map_mul]
@@ -36,6 +42,17 @@ def datFn {t : T} (d : PureDat G t) : ∀ l : Arr D, WO (G.pS (arrP t l)) (G.pT 
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j < D.R.m`. Distinguish the cases in `h0 : j = 0`. Substitute `h0` using the available equality. Establish `hu` using `loc_finE_u_colCoord S ht (X := .top 0) (Nat.zero_le _) hw`.
+
+Rewrite using `[Function.update_self, colAt_eq S t w _ hj, colAt_eq S t w _ hj]`. Unfold `firstPt`. Rewrite using `[Function.update_self, frAt_actO_colCoord]`. Simplify using `only [inv_one, map_one, mul_one, inv_mul_cancel, Units.val_one, Matrix.one_mul, Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_inv, hu, _root_.inv_inv, _root_.mul_inv_rev, one_mul]`. Unfold `kapTop0`.
+
+Rewrite using `[inBasis_val_eq_submatrix_conj, submatrix_cast_mul_colCoord]`. Simplify using `only [_root_.mul_assoc]`. Both sides reduce to the same expression. Rewrite using `[Function.update_of_ne h0, colAt_eq S t w _ hj, colAt_eq S t w _ hj]`. Unfold `firstPt`.
+
+Rewrite using `[Function.update_of_ne (fun h => h0 (congrArg Fin.val h))]`. Establish `h0 : j ≠ 0`. Use `zero_lt_m D` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[Function.update_of_ne h0]`.
+
+Simplify using `only [GridChoice.colAt, dif_neg hj]`.
+-/
 theorem colAt_firstPt (S : GridChoice W U) {t : T} (ht : t ∈ U) (k : FinPt G (.top 0)) {w : Pl D.host.E}
     (hw : w ∈ locPl G t) (x : ∀ j : Fin D.R.m, WO (G.pS (.top t j : Pair T)) (G.pT (.top t j : Pair T))) :
     S.colAt t w (firstPt t ((S.N.u (.top 0))⁻¹ * k * S.N.u (.top 0)) x) =

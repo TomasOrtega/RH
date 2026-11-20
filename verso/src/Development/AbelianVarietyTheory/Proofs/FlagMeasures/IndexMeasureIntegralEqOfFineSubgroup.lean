@@ -9,6 +9,9 @@ namespace GlobalTheory.IdxInt
 
 open scoped Pointwise Classical in
 open Function in
+/- English proof (translation)
+Use `conv_lhs => rw [← QuotientAddGroup.out_eq' c]`. Both sides reduce to the same expression.
+-/
 private lemma quotientEquivProdOfLE_apply_fst {W : Type} [AddCommGroup W] {C B : AddSubgroup W} (h : C ≤ B)
     (c : W ⧸ C) : ((AddSubgroup.quotientEquivProdOfLE h) c).1 = ((Quotient.out c : W) : W ⧸ B) := by
   conv_lhs => rw [← QuotientAddGroup.out_eq' c]
@@ -16,6 +19,11 @@ private lemma quotientEquivProdOfLE_apply_fst {W : Type} [AddCommGroup W] {C B :
 
 open scoped Pointwise Classical in
 open Function in
+/- English proof (translation)
+Use `Fintype.ofFinite Y` as an intermediate fact. Rewrite using `[finsum_eq_sum_of_support_subset (s := hg.toFinset ×ˢ Finset.univ), finsum_eq_sum_of_support_subset (s := hg.toFinset), Finset.sum_product, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_ show ∑ _y : Y, g x = _` and prove the remaining obligations. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul, Nat.card_eq_fintype_card]`. Introduce `x hx`.
+
+Simplify using `using hx`. Introduce `p hp`. Simplify using `using hp`.
+-/
 private lemma finsum_prod_fst_eq_card_mul {X Y : Type} [Finite Y] (g : X → ℂ) (hg : (support g).Finite) :
     ∑ᶠ p : X × Y, g p.1 = (Nat.card Y : ℂ) * ∑ᶠ x, g x := by
   have := Fintype.ofFinite Y
@@ -31,6 +39,9 @@ private lemma finsum_prod_fst_eq_card_mul {X Y : Type} [Finite Y] (g : X → ℂ
 
 open scoped Pointwise Classical in
 open Function in
+/- English proof (translation)
+Use `hφ.subset fun c hc => ⟨Quotient.out c, hc, QuotientAddGroup.out_eq' c⟩` and prove the remaining obligations.
+-/
 private lemma support_quotient_out_finite_of_image_finite {W : Type} [AddCommGroup W] {B : AddSubgroup W} (φ : W → ℂ)
     (hφ : ((fun w : W => (w : W ⧸ B)) '' support φ).Finite) :
     (support fun c : W ⧸ B => φ (Quotient.out c)).Finite := by
@@ -38,6 +49,11 @@ private lemma support_quotient_out_finite_of_image_finite {W : Type} [AddCommGro
 
 open scoped Pointwise Classical in
 open Function in
+/- English proof (translation)
+Establish `hfin : Finite (B ⧸ C.addSubgroupOf B)` using `Nat.finite_of_card_ne_zero hidx`. Establish `hcls : ∀ c : W ⧸ C, φ (Quotient.out c) = φ (Quotient.out ((AddSubgroup.quotientEquivProdOfLE hCB) c).1)`. Introduce `c`. Rewrite using `[quotientEquivProdOfLE_apply_fst]`. Choose the witnesses or unpack the hypotheses as in `⟨b, hb⟩ : ∃ b ∈ B, Quotient.out ((Quotient.out c : W) : W ⧸ B) = Quotient.out c + b := by`.
+
+Use `⟨-(Quotient.out c) + Quotient.out ((Quotient.out c : W) : W ⧸ B), ?_, by abel⟩` and prove the remaining obligations. Conclude with `QuotientAddGroup.leftRel_apply.mp (Quotient.exact' (QuotientAddGroup.out_eq' _).symm)`. Rewrite using `[hb.2, hinv _ _ hb.1]`. Rewrite using `[finsum_congr hcls, finsum_comp_equiv (AddSubgroup.quotientEquivProdOfLE hCB) (f := fun p => φ (Quotient.out p.1)), finsum_prod_fst_eq_card_mul _ (support_quotient_out_finite_of_image_finite φ hφ)]`. Both sides reduce to the same expression.
+-/
 private lemma finsum_quotient_out_eq_relIndex_mul_of_le {W : Type} [AddCommGroup W] {C B : AddSubgroup W} (hCB : C ≤ B)
     (hidx : C.relIndex B ≠ 0) (φ : W → ℂ) (hinv : ∀ w b : W, b ∈ B → φ (w + b) = φ w)
     (hφ : ((fun w : W => (w : W ⧸ B)) '' support φ).Finite) :
@@ -57,6 +73,9 @@ private lemma finsum_quotient_out_eq_relIndex_mul_of_le {W : Type} [AddCommGroup
 
 open scoped Pointwise Classical in
 open Function in
+/- English proof (translation)
+Take `⟨hBA, -, hinv, hsupp⟩` from `hB`. Establish `hidx : C.relIndex B ≠ 0`. Rewrite `hC` using `[← AddSubgroup.relIndex_mul_relIndex C B A hCB hBA]`. Conclude with `left_ne_zero_of_mul hC`. Rewrite using `[finsum_quotient_out_eq_relIndex_mul_of_le hCB hidx φ hinv hsupp, ← AddSubgroup.relIndex_mul_relIndex C B A hCB hBA, Nat.cast_mul, mul_div_mul_left _ _ (Nat.cast_ne_zero.mpr hidx)]`.
+-/
 private lemma finsum_out_div_relIndex_eq_of_le {W : Type} [AddCommGroup W] {A B C : AddSubgroup W}
     {φ : W → ℂ} (hB : _root_.GlobalTheory.IdxInt.Fine A φ B) (hCB : C ≤ B) (hC : C.relIndex A ≠ 0) :
     (∑ᶠ c : W ⧸ C, φ (Quotient.out c)) / (C.relIndex A : ℂ) =
@@ -71,6 +90,11 @@ private lemma finsum_out_div_relIndex_eq_of_le {W : Type} [AddCommGroup W] {A B 
 open scoped Pointwise Classical in
 open Function in
 
+/- English proof (translation)
+Introduce `W _ A B φ hB`. Establish `h : _root_.GlobalTheory.IdxInt.Nice A φ` using `⟨B, hB⟩`. Unfold `_root_.GlobalTheory.IdxInt.cint`. Rewrite using `[dif_pos h]`. Establish `hB0` using `h.choose_spec`.
+
+Establish `hidx : (B ⊓ h.choose).relIndex A ≠ 0` using `AddSubgroup.relIndex_inf_ne_zero hB.2.1 hB0.2.1`. Rewrite using `[← finsum_out_div_relIndex_eq_of_le hB0 inf_le_right hidx, finsum_out_div_relIndex_eq_of_le hB inf_le_left hidx]`.
+-/
 theorem _root_.GlobalTheory.IdxInt.cint_eq_of_fine : ∀ {W : Type} [AddCommGroup W] (A B : AddSubgroup W) (φ : W → ℂ),
     _root_.GlobalTheory.IdxInt.Fine A φ B → _root_.GlobalTheory.IdxInt.cint A φ = (∑ᶠ c : W ⧸ B, φ c.out) / (B.relIndex A : ℂ) := by
   intro W _ A B φ hB

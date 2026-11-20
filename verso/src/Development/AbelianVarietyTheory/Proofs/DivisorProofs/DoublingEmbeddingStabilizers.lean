@@ -26,6 +26,29 @@ open scoped ENNReal
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Substitute `hQ` using the available equality. Take `⟨c, hc⟩` from `GlobalTheory.T.bounded_count_lattice_stabilizers F E σ n J L`. Use `choose! T hT hTx using hc`. Use `⟨max ((c : ℝ) + 1) n, fun μ hμ t ht => ?_⟩` and prove the remaining obligations. Establish `ht1 : (c : ℝ) + 1 < t` using `(le_max_left _ _).trans_lt ht`.
+
+Establish `ht2 : (n : ℝ) < t` using `(le_max_right _ _).trans_lt ht`. Establish `ht0 : 0 ≤ t` using `(Nat.cast_nonneg n).trans ht2.le`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI := t2Space_adeleRing' (F := F)`. Use `set Q := dblGram finSumFinEquiv J with hQ`.
+
+Set `fa : ∀ w, GArch σ J w → ℝ` to `fun w y => (hgtArch σ Q w (Formalism.UG.bc (compInf F E w) a) (ioH w.Completion σ rfl (y, 1)) : ℝ) ^ t`. Establish `hfa : ∀ w (m : Measure (GArch σ J w)), m.IsHaarMeasure → Integrable (fa w) m` using `fun w m hm => by`. Use `GlobalTheory.RealHeight.heightConv_real F E σ hcm n J hJ w _ (ha w) m hm (t - n / 2) (by linarith)` as an intermediate fact. Simplify `this` using `only [GlobalTheory.IndefiniteRowSideFullHecke.LocalMajorantConvergence.HeightConv, sub_add_cancel]`. Establish `hfc : ∀ w, Continuous (fa w)` using `fun w => (NNReal.continuous_coe.comp (((hI.arch w).continuous_hgtH (continuous_absEw w) (isCompact_KArch hcm w _)).comp ((continuous_ioH _).comp (continuous_id.prodMk continuous_const)))).rpow_const fun _ => Or.inr ht0`.
+
+Establish `hfa0 : ∀ w y, 0 ≤ fa w y` using `fun w y => Real.rpow_nonneg (NNReal.coe_nonneg _) _`. Set `U : Set (GAd σ J)` to `{g | ∀ v ∉ (∅ : Finset (HeightOneSpectrum (𝓞 F))), proj σ J v g ∈ stabLoc σ J L v}`. Use `haveI := GlobalTheory.AdelicUnitaryTop.countable_heightOneSpectrum F`. Establish `hU : MeasurableSet U`. Establish `: U = ⋂ v, proj σ J v ⁻¹' (stabLoc σ J L v)` using `by ext g; simp [U]`.
+
+Rewrite using `[this]`. Conclude with `MeasurableSet.iInter fun v => (continuous_proj σ J v).measurable (isOpen_stabLoc σ J L v).measurableSet`. Set `ψ : GAd σ J → ℝ≥0∞` to `fun g => ∏ w, ENNReal.ofReal (fa w (projArch σ J w g))`. Establish `hψ : Measurable ψ` using `Finset.measurable_prod _ fun w _ => ((hfc w).comp (continuous_projArch σ J w)).measurable.ennreal_ofReal`. Establish `hφ : ∫⁻ g, U.indicator ψ g ∂μ ≠ ⊤`.
+
+Take `⟨μa, hμa⟩` from `exists_isRestrictedProd_of_haar σ J L μ`. Use `((hμa.euler_product ∅ (fun v _ => haarLoc_stabLoc σ J L v)).2 (fun w y => ENNReal.ofReal (fa w y)) (fun _ _ => 1) (fun w => (hfc w).measurable.ennreal_ofReal.aemeasurable)).1 (fun _ _ _ _ => rfl) ∅ le_rfl (by simp)` as an intermediate fact. Rewrite using `[lintegral_indicator hU]`. Simplify using `only [finprod_one, mul_one, Finset.prod_empty] at this`. Rewrite using `[this]`.
+
+Conclude with `ENNReal.prod_ne_top fun w _ => (hfa w _ (hμa.haar_arch w)).lintegral_lt_top.ne`. Set `T' : ℕ → Finset (GAd σ J)` to `fun m => (T m).image fun x => ofFin σ J (projFin σ J x)`. Establish `hcont : Continuous fun g : GAd σ J => (hgtAd σ Q L a (ioH (AF F) σ rfl (g, 1)) : ℝ) ^ t` using `(NNReal.continuous_coe.comp ((hI.continuous_hgtH continuous_absE (isCompact_KAd hcm)).comp ((continuous_ioH _).comp (continuous_id.prodMk continuous_const)))).rpow_const fun _ => Or.inr ht0`. Use `⟨hcont.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_ofReal (Eventually.of_forall fun g => Real.rpow_nonneg (NNReal.coe_nonneg _) _)]`.
+
+Use `lt_top_iff_ne_top.2 (GlobalTheory.T.lattice_count_integrable_bound (GAd σ J) μ (U.indicator ψ) _ (hψ.indicator hU) hφ T' c t (fun m hm => Finset.card_image_le.trans (hT m hm)) ht1 fun g => ?_)` and prove the remaining obligations. Use `choose d hd0 hd1 hd2 hd3 using fun v => GlobalTheory.T.iwasawa_decomposition_local F E σ hcm n J hJ.2 Q rfl L v (hI.fin v) (proj σ J v g)`. Establish `hp : ∀ v, proj σ Q v (ioH (AF F) σ rfl (g, 1)) = ioH _ σ rfl (proj σ J v g, 1)` using `fun v => by`. Rewrite using `[proj_ioH, map_one]`. Establish `hpa : ∀ w, projArch σ Q w (ioH (AF F) σ rfl (g, 1)) = ioH _ σ rfl (projArch σ J w g, 1)` using `fun v => by`.
+
+Rewrite using `[projArch_ioH, map_one]`. Establish `hfin` using `finite_mulSupport_hgtFin (L := L) (ioH (AF F) σ (rfl : Q = _) (g, 1))`. Simplify using `only [hp, hd2] at hfin`. Take `⟨m, hm, hm1, hm2⟩` from `GlobalTheory.T.finite_adele_norm_product_integer F d hd0 hd1 hfin`. Take `⟨x, hx, hxg⟩` from `hTx m hm g fun v => hd3 v m (hm2 v)`.
+
+Use `⟨m, hm, ofFin σ J (projFin σ J x), Finset.mem_image_of_mem _ hx, ?_⟩` and prove the remaining obligations. Establish `hmem : (ofFin σ J (projFin σ J x))⁻¹ * g ∈ U` using `fun v _ => by`. Simplify `hxg v` using `only [map_mul, map_inv, proj_ofFin, projFinLoc_projFin]`. Rewrite using `[Set.indicator_of_mem hmem, hI.hgtAd_eq hcm]`. Simplify using `only [hp, hpa, hd2, hm1, ψ, map_mul, map_inv, projArch_ofFin, inv_one, one_mul]`.
+
+Rewrite using `[← ENNReal.ofReal_prod_of_nonneg fun w _ => hfa0 w _, NNReal.coe_mul, Real.mul_rpow (NNReal.coe_nonneg _) (NNReal.coe_nonneg _), NNReal.coe_prod, ← Real.finset_prod_rpow _ _ (fun _ _ => NNReal.coe_nonneg _), mul_comm, ENNReal.ofReal_mul (Real.rpow_nonneg (NNReal.coe_nonneg _) _)]`. Use `le_of_eq ?_` and prove the remaining obligations. Use `congr 1`. Establish `hm' : (0 : ℝ) < m` using `by exact_mod_cast hm`. Rewrite using `[NNReal.coe_inv, NNReal.coe_natCast, Real.inv_rpow hm'.le, ← Real.rpow_neg hm'.le, ← ENNReal.ofReal_rpow_of_pos hm', ENNReal.ofReal_natCast]`.
+-/
 theorem integrable_left (hcm : IsCMExt F E σ) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hJ : IsHermND σ J)
     {Q : Matrix (Fin (n + n)) (Fin (n + n)) E} (hQ : Q = dblGram finSumFinEquiv J)
     (L : Submodule (𝓞 E) (Fin n → E)) [Submodule.IsLattice E L] {a : GL (Fin n) (AF F ⊗[F] E)}
@@ -102,6 +125,13 @@ theorem integrable_left (hcm : IsCMExt F E σ) {n : ℕ} {J : Matrix (Fin n) (Fi
   rw [NNReal.coe_inv, NNReal.coe_natCast, Real.inv_rpow hm'.le, ← Real.rpow_neg hm'.le,
     ← ENNReal.ofReal_rpow_of_pos hm', ENNReal.ofReal_natCast]
 
+/- English proof (translation)
+Take `⟨R, hR⟩` from `integrable_left hcm hJ hQ L ha hI`. Take `⟨δ, hδ, hσδ⟩` from `GlobalTheory.HermUnimod.exists_anti hcm`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI := t2Space_adeleRing' (F := F)`. Use `haveI := GlobalTheory.AdelicPointsUnimod.isMulRightInvariant_adelic σ (GlobalTheory.SiegelSet.sigma_sigma hcm) hδ hσδ hJ μ`.
+
+Establish `hH : μ.inv.IsHaarMeasure` using `{}`. Use `⟨R, fun t ht => ?_⟩` and prove the remaining obligations. Use `(integrable_map_equiv (μ := μ) (MeasurableEquiv.inv (GAd σ J)) _).1 (hR μ.inv hH t ht)` as an intermediate fact. Use `this.congr (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Establish `e : ioH (AF F) σ hQ (1, g) = (ioDiag hQ g : GAd σ Q) * ioH (AF F) σ hQ (g⁻¹, 1)`.
+
+Rewrite using `[coe_ioDiag, ← map_mul, Prod.mk_mul_mk, mul_inv_cancel, mul_one]`. Establish `e2` using `hI.hgtH_left continuous_absE (isCompact_KAd hcm) (ioDiag hQ g) (ioH (AF F) σ hQ (g⁻¹, 1))`. Rewrite `e2` using `[aH_ioDiag, abs_detH (absE_conjUnit σ) hJ.2, one_mul, ← e]`. Conclude with `congrArg (fun x : ℝ≥0 => (x : ℝ) ^ t) e2.symm`.
+-/
 theorem integrable_right (hcm : IsCMExt F E σ) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hJ : IsHermND σ J)
     {Q : Matrix (Fin (n + n)) (Fin (n + n)) E} (hQ : Q = dblGram finSumFinEquiv J)
     (L : Submodule (𝓞 E) (Fin n → E)) [Submodule.IsLattice E L] {a : GL (Fin n) (AF F ⊗[F] E)}
@@ -129,6 +159,9 @@ def Conv {A : Type} [CommRing A] [TopologicalSpace A] {n : ℕ} (H : Subgroup (G
     ∀ μ : @Measure H (borel H), @Measure.IsHaarMeasure H _ _ (borel H) μ → ∃ R : ℝ, ∀ t : ℝ, R < t →
       @Integrable _ _ _ _ (borel H) (fun g => ((hgtOf finSumFinEquiv G.subtype ν K (i (1, g)) : ℝ≥0) : ℝ) ^ t) μ
 
+/- English proof (translation)
+Introduce `i hi K hK hI μ hμ`. Take `rfl : K = KAd σ Q L a` from `Subgroup.ext fun g => (hK g).trans (Subgroup.mem_map_iff_mem (matHom_injective (AF F) σ Q))`. Take `rfl : i = ioH (AF F) σ hQ` from `MonoidHom.ext fun x => Subtype.ext (Units.ext (hi x.1 x.2))`. Conclude with `integrable_right hcm hJ hQ L ha hI.1 μ hμ`.
+-/
 theorem conv_adelic (hcm : IsCMExt F E σ) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hJ : IsHermND σ J)
     {Q : Matrix (Fin (n + n)) (Fin (n + n)) E} (hQ : Q = dblGram finSumFinEquiv J)
     (L : Submodule (𝓞 E) (Fin n → E)) [Submodule.IsLattice E L] {a : GL (Fin n) (AF F ⊗[F] E)}
@@ -142,6 +175,9 @@ theorem conv_adelic (hcm : IsCMExt F E σ) {n : ℕ} {J : Matrix (Fin n) (Fin n)
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Establish `e : incM F (ξ • J) = inclR (F` using `F) (AF F) ξ • incM F J := by ext i j; simp [incM]`. Establish `hu : IsUnit (inclR (F` using `F) (AF F) ξ) := (IsUnit.mk0 _ hξ).map _`. Use extensionality with `g`. Express the relevant statement in the definitionally equal form `_ * incM F (ξ • J) * _ = incM F (ξ • J) ↔ _ * incM F J * _ = incM F J`. Rewrite using `[e, Matrix.mul_smul, Matrix.smul_mul, hu.smul_left_cancel]`.
+-/
 theorem UG_smul {n : ℕ} {ξ : E} (hξ : ξ ≠ 0) (J : Matrix (Fin n) (Fin n) E) :
     UG (cA σ) (incM F (ξ • J)) = UG (cA σ) (incM F J) := by
   have e : incM F (ξ • J) = inclR (F := F) (AF F) ξ • incM F J := by ext i j; simp [incM]
@@ -151,6 +187,9 @@ theorem UG_smul {n : ℕ} {ξ : E} (hξ : ξ ≠ 0) (J : Matrix (Fin n) (Fin n) 
   rw [e, Matrix.mul_smul, Matrix.smul_mul, hu.smul_left_cancel]
 
 omit [NumberField E] in
+/- English proof (translation)
+Establish `e1 : mat (⟨g, hg⟩ : UA σ X.J) = g.1` using `rfl`. Establish `e2 : mat (⟨g, hg⟩⁻¹ : UA σ X.J) = (g⁻¹).1` using `congrArg Units.val (Subgroup.coe_inv _ _)`. Rewrite using `[hK, e1, e2, forall₂_and]`.
+-/
 theorem isStab_iff {n : ℕ} {B : Base F E} {X : Spc F E n} {K : Subgroup (UA σ X.J)} (hK : IsStab B K)
     (g : GL (Fin n) (AE F E)) (hg : g ∈ UG (cA σ) (incM F X.J)) : (⟨g, hg⟩ : UA σ X.J) ∈ K ↔
       (∀ w, Commute (g.1.map (piInf (B.emb w))) (X.θ w)) ∧
@@ -159,6 +198,13 @@ theorem isStab_iff {n : ℕ} {B : Base F E} {X : Spc F E n} {K : Subgroup (UA σ
   have e2 : mat (⟨g, hg⟩⁻¹ : UA σ X.J) = (g⁻¹).1 := congrArg Units.val (Subgroup.coe_inv _ _)
   rw [hK, e1, e2, forall₂_and]
 
+/- English proof (translation)
+Establish `h1' : (ε : ℂ) * ε = 1` using `by exact_mod_cast h1`. Establish `hm : ((ε : ℂ) • θ).map star = (ε : ℂ) • θ.map star` using `by ext i j; simp`. Use `⟨by rw [Matrix.smul_mul, Matrix.mul_smul, h.1, smul_smul, h1', one_smul], ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[hm]`. Simplify using `only [Matrix.transpose_smul, Matrix.smul_mul, Matrix.mul_smul, smul_smul, h.2.1]`.
+
+Use `congr 1`. Take the linear combination `(c : ℂ) * h1'`. Use `h.2.2 x hx` as an intermediate fact. Simplify using `only [Matrix.smul_mulVec, smul_dotProduct, dotProduct_smul, smul_smul, smul_eq_mul]`. Rewrite using `[← mul_assoc, ← Complex.ofReal_mul, Complex.re_ofReal_mul]`.
+
+Conclude with `mul_pos (by linarith [mul_comm c ε]) this`.
+-/
 theorem isCartan_smul {n : ℕ} {M θ : Matrix (Fin n) (Fin n) ℂ} (h : IsCartan M θ) {c ε : ℝ} (h1 : ε * ε = 1)
     (h2 : 0 < ε * c) : IsCartan ((c : ℂ) • M) ((ε : ℂ) • θ) := by
   have h1' : (ε : ℂ) * ε = 1 := by exact_mod_cast h1
@@ -171,6 +217,9 @@ theorem isCartan_smul {n : ℕ} {M θ : Matrix (Fin n) (Fin n) ℂ} (h : IsCarta
     rw [← mul_assoc, ← Complex.ofReal_mul, Complex.re_ofReal_mul]
     exact mul_pos (by linarith [mul_comm c ε]) this
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `obtain ⟨i | i, rfl⟩ := finSumFinEquiv.surjective i <;> obtain ⟨j | j, rfl⟩ := finSumFinEquiv.surjective j <;>`. Simplify using `only [blkMat, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.smul_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, Matrix.neg_apply, smul_zero, smul_neg]`.
+-/
 theorem blkMat_smul {A : Type} [CommRing A] {n : ℕ} (t : A) (x : Matrix (Fin n) (Fin n) A) :
     blkMat finSumFinEquiv (t • x) (-(t • x)) = t • blkMat finSumFinEquiv x (-x) := by
   ext i j
@@ -179,6 +228,31 @@ theorem blkMat_smul {A : Type} [CommRing A] {n : ℕ} (t : A) (x : Matrix (Fin n
       Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂,
       Matrix.zero_apply, Matrix.neg_apply, smul_zero, smul_neg]
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B hB n r s W hW W₂ hJ₂ hL₂ hθ₂ i hi K hK`. Establish `hcm` using `hB.cm`. Take `⟨δ, hδ, hσδ⟩` from `GlobalTheory.HermUnimod.exists_anti hcm`. Establish `hc : ∀ w : InfinitePlace F, ∃ c ε : ℝ, (B.emb w).1 δ = c * Complex.I ∧ ε * ε = 1 ∧ 0 < ε * c` using `fun w => by`. Establish `h1` using `congrArg Complex.re (hcm.2.2.2 (B.emb w).1 δ)`.
+
+Rewrite `h1` using `[hσδ, map_neg, Complex.neg_re, Complex.star_def, Complex.conj_re]`. Establish `h2 : ((B.emb w).1 δ).re = 0` using `by linarith`. Establish `h3 : ((B.emb w).1 δ).im ≠ 0` using `fun e => hδ ((map_eq_zero _).1 (Complex.ext h2 e))`. Establish `h4 : (B.emb w).1 δ = (((B.emb w).1 δ).im : ℝ) * Complex.I`. Apply the tactic sequence `apply Complex.ext <;> simp [h2]`.
+
+Break down `h3.lt_or_gt with e | e` into its components or cases. Conclude with `⟨_, -1, h4, by simp, by linarith⟩`. Conclude with `⟨_, 1, h4, by simp, by linarith⟩`. Use `choose c ε hc h1 h2 using hc`. Use `haveI : Submodule.IsLattice E W.L := hW.lat`.
+
+Establish `hherm : ∀ i j, σ ((δ • W.J) j i) = (δ • W.J) i j` using `fun i j => by`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, map_mul, hσδ, hW.skew, neg_mul_neg]`. Establish `hJt : IsHermND σ (δ • W.J)ᵀ` using `⟨fun i j => hherm j i, by`. Rewrite using `[Matrix.det_transpose, Matrix.det_smul]`. Conclude with `mul_ne_zero (pow_ne_zero _ hδ) (GlobalTheory.SkewUnimod.det_ne_zero_of_isSkew hW)⟩`.
+
+Establish `hθ : ∀ w, IsCartan ((δ • W.J).map (B.emb w).1) ((ε w : ℂ) • W.θ w)` using `fun w => by`. Establish `: (δ • W.J).map (B.emb w).1 = (c w : ℂ) • (Complex.I • W.J.map (B.emb w).1)`. Use extensionality with `i j`. Simplify using `[hc w, mul_assoc]`. Rewrite using `[this]`.
+
+Conclude with `isCartan_smul (hW.cartan w) (h1 w) (h2 w)`. Set `X₂ : Spc F E (n + n)` to `{ W₂ with J := δ • W₂.J }`. Establish `hQ : X₂.Jᵀ = dblGram finSumFinEquiv (δ • W.J)ᵀ`. Rewrite using `[← GlobalTheory.DblIwasawa.transpose_dblGram, dblGram, blkMat_smul, ← dblGram, ← hJ₂]`. Take `⟨a, hmaj, harch⟩` from `GlobalTheory.DblIwasawa.arch hcm B (δ • W.J) (fun w => (ε w : ℂ) • W.θ w) hherm hθ hQ`.
+
+Establish `hε : ∀ w, (ε w : ℂ) ≠ 0` using `fun w => by exact_mod_cast left_ne_zero_of_mul_eq_one (h1 w)`. Establish `harch' : ∀ (w : InfinitePlace F) (k : GArch σ X₂.Jᵀ w), k ∈ KArch σ X₂.Jᵀ w (Formalism.UG.bc (compInf F E w) a) ↔ Commute ((matHom w.Completion σ X₂.Jᵀ k).1.map (infEmb (B.emb w))) (X₂.θ w)` using `fun w k => by`. Rewrite using `[harch, blkMat_smul, Commute.smul_right_iff₀ (hε w), ← hθ₂]`. Establish `hL₂' : X₂.L.IsLattice E` using `by change W₂.L.IsLattice E; rw [hL₂]; infer_instance`. Establish `hL₃ : X₂.L = sumLat finSumFinEquiv W.L W.L` using `hL₂`.
+
+Establish `key : ∀ g : GAd σ X₂.Jᵀ, GlobalTheory.IwLine.ofGAd σ X₂.J g ∈ GlobalTheory.StabHaar.stabK (σ` using `σ) B X₂ ↔ g ∈ KAd σ X₂.Jᵀ W.L a := by`. Introduce `g`. Rewrite using `[mem_KAd]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Take `⟨h1, h2⟩` from `GlobalTheory.T.stabilizer_commutes_majorant F E σ B (n + n) X₂ hL₂' g h`. Use `⟨fun v => ?_, fun w => (harch' w _).2 (h1 w)⟩` and prove the remaining obligations. Use `h2 v` as an intermediate fact. Rewrite `this` using `[hL₃]`. Then use the resulting hypothesis. Introduce and unpack `⟨h2, h1⟩`.
+
+Use `GlobalTheory.KBridge.ofGAd_mem_stabK F E σ B (n + n) X₂ hL₂' g (fun w => (harch' w _).1 (h1 w)) (fun v => ?_)` and prove the remaining obligations. Rewrite using `[hL₃]`. Conclude with `h2 v`. Establish `hH : HR (AF F) σ (δ • W.J)ᵀ = UG (cA σ) (incM F W.J)` using `(GlobalTheory.IwLine.UG_eq_HR σ _).symm.trans (UG_smul hδ _)`. Establish `hG : HR (AF F) σ X₂.Jᵀ = UG (cA σ) (incM F W₂.J)` using `(GlobalTheory.IwLine.UG_eq_HR σ _).symm.trans (UG_smul hδ _)`.
+
+Establish `hC` using `conv_adelic hcm hJt hQ W.L hmaj`. Generalize the expression as in `hS : SetLike.coe ((KAd σ X₂.Jᵀ W.L a).map (matHom (AF F) σ X₂.Jᵀ)) = S at hC`. Rewrite `hC` using `[hH, hG]`. Use `hC i hi K fun g => ?_` and prove the remaining obligations. Establish `hg : g.1 ∈ HR (AF F) σ X₂.Jᵀ` using `hG.ge g.2`.
+
+Establish `hg' : g.1 ∈ UG (cA σ) (incM F X₂.J)` using `(GlobalTheory.IwLine.UG_eq_HR σ X₂.J).ge hg`. Rewrite using `[← hS]`. Use `((isStab_iff hK g.1 g.2).trans (isStab_iff (GlobalTheory.StabHaar.isStab_stabK (σ := σ) B X₂) g.1 hg').symm).trans ?_` and prove the remaining obligations. Conclude with `(key ⟨g.1, hg⟩).trans (Subgroup.mem_map_iff_mem (matHom_injective (AF F) σ X₂.Jᵀ)).symm`.
+-/
 theorem integrable_hgt_rpow : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (n r s : ℕ) (W : Spc F E n), W.IsSkew σ B r s →
     ∀ W₂ : Spc F E (n + n), W₂.J = dblGram finSumFinEquiv W.J → W₂.L = sumLat finSumFinEquiv W.L W.L →

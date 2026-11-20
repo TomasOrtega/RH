@@ -17,6 +17,19 @@ namespace GlobalTheory.HTSkew
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `p _ D R _ b N k _ t o₀ φ hφ o' m' x _ y _ x₁ y₁ hx hy`. Establish `HR : GlobalTheory.Published.AbelianDeRham` using `GlobalTheory.abelianDeRham`. Establish `HD : GlobalTheory.Published.AbelianDualCrystal` using `GlobalTheory.abelianDualCrystal`. Take `⟨g', hg'⟩` from `GlobalTheory.KSGraph.exists_dim o'.A o'.ab`. Take `⟨l₁, l₂⟩` from `m'.sq`.
+
+Establish `C : GlobalTheory.AbDual.CupSquare (epsDP k) (GlobalTheory.DeRham.epsRed k) (o₀.A ⊗ o₀.A)` using `GlobalTheory.Published.AbelianDualCrystal.cupSquare_crys_prod HR.1 HD.2 (isDPNilpotent_squareZero (SqExt.dual k).sq) GlobalTheory.KSBijection.fst_surj rfl o'.ab hg' o'.ab hg' m'.cart m'.cart`. Establish `iso : LBIso (o₀.P.pull (Over.Hom.left (𝟙 (o₀.A ⊗ o₀.A)))) o₀.P` using `(GlobalTheory.CechPic.cls_eq_iff (pull_isLB o₀.isLB _) o₀.isLB).1 (by rw [GlobalTheory.CechPic.cls_pull o₀.isLB, Over.id_left, GlobalTheory.CechPic.pull_id])`. Take `⟨φ', hφ', e'⟩` from `hφ.pull o₀.isLB (constMor o₀.A) (constMor o₀.A) (h := Over.Hom.left (𝟙 (o₀.A ⊗ o₀.A))) (by simp) (by simp) o₀.isLB iso`. Establish `van` using `GlobalTheory.BirigidLift.vanish_of_lift HR o'.ab hg' o'.ab hg' m'.cart m'.cart l₁ l₂ C o'.isLB o'.rig₁ o'.rig₂ o₀.isLB (LBIso.symm m'.pol) hφ'`. Establish `hm` using `GlobalTheory.HTRealise.isBC_constMor o₀.ab`.
+
+Take `⟨xc, hxc⟩` from `hm.exists x`. Take `⟨yc, hyc⟩` from `hm.exists y`. Take `⟨x₁c, hx₁c⟩` from `hm.exists x₁`. Take `⟨y₁c, hy₁c⟩` from `hm.exists y₁`. Take `⟨d, hd, ed⟩` from `hx`.
+
+Take `⟨d', hd', ed'⟩` from `hy`. Establish `dx : d = xc + (DualNumber.eps : DualNumber k) • x₁c` using `GlobalTheory.HTRealise.crys_ext o₀.ab fun c ↦ by`. Rewrite using `[ed c, LinearMap.add_apply, LinearMap.smul_apply, hxc c, hx₁c c]`. Apply the tactic sequence `ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]`. Establish `dy : d' = yc + (DualNumber.eps : DualNumber k) • y₁c` using `GlobalTheory.HTRealise.crys_ext o₀.ab fun c ↦ by`.
+
+Rewrite using `[ed' c, LinearMap.add_apply, LinearMap.smul_apply, hyc c, hy₁c c]`. Apply the tactic sequence `ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]`. Establish `z : φ' d d' = 0` using `van d hd d' hd'`. Rewrite `z` using `[dx, dy]`. Simplify using `only [map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul, e' _ _ _ _ hxc hyc, e' _ _ _ _ hx₁c hyc, e' _ _ _ _ hxc hy₁c, e' _ _ _ _ hx₁c hy₁c] at z`.
+
+Establish `z2` using `congrArg TrivSqZeroExt.snd z`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl] at z2`. Take the linear combination `z2`.
+-/
 theorem skew_of_isFilLift : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : GlobalTheory.UPel.HT.Base D R) (N : ℕ) (k : Type) [Field k] (t : Sp k ⟶ Sp R) (o₀ : GlobalTheory.UPel.HT.Obj b N t) (φ : LinearMap.BilinForm k (HdR o₀.A)), GlobalTheory.AbDual.IsCorrForm (dp0 k) (𝟙 _) o₀.A o₀.A o₀.P φ → ∀ (o' : GlobalTheory.UPel.HT.Obj b N (spMap (algebraMap k (DualNumber k)) ≫ t)) (m' : GlobalTheory.UPel.HT.ObjMap o₀ o' (spMap (TrivSqZeroExt.fstHom k k k).toRingHom)), ∀ x ∈ Fil o₀.A, ∀ y ∈ Fil o₀.A, ∀ x' y' : HdR o₀.A, IsFilLift m'.cart x x' → IsFilLift m'.cart y y' → φ x' y + φ x y' = 0 := by
   intro p _ D R _ b N k _ t o₀ φ hφ o' m' x _ y _ x₁ y₁ hx hy
   have HR : GlobalTheory.Published.AbelianDeRham := GlobalTheory.abelianDeRham

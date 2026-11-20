@@ -15,6 +15,13 @@ namespace ObjectsChow
 open MvPolynomial
 open ReciprocityTheory.ChartRestriction.G.Geo (MRing PBlk IsArithVar)
 
+/- English proof (translation)
+Introduce and unpack `x ⟨h, rfl⟩`. Establish `hxh : x * x * h ∣ x * h`. Use `(hf.2 (x * h)).1 fun u hu => ?_` and prove the remaining obligations. Establish `h0` using `(hf.2 (x * x * h)).2 dvd_rfl u hu`. Simplify using `only [map_mul] at h0 ⊢`.
+
+Establish `h2 : aeval u x * aeval u h * (aeval u x * aeval u h) = 0`. Combine the equalities or inequalities in the displayed calculation. Conclude with `mul_self_eq_zero.mp h2`. Establish `hne : x * h ≠ 0` using `fun h0 => hf.1 (by rw [mul_assoc, h0, mul_zero])`. Establish `h1 : x * (x * h) ∣ 1 * (x * h)` using `by rwa [one_mul, ← mul_assoc]`.
+
+Conclude with `isUnit_of_dvd_one ((mul_dvd_mul_iff_right hne).mp h1)`.
+-/
 theorem squarefree_of_isChowForm {F : Type*} [Field F] {n k : ℕ} {I : Ideal (MvPolynomial (Fin n) F)}
     {f : MvPolynomial (Fin k × Fin n) F} (hf : IsChowForm I k f) : Squarefree f := by
   rintro x ⟨h, rfl⟩
@@ -30,6 +37,9 @@ theorem squarefree_of_isChowForm {F : Type*} [Field F] {n k : ℕ} {I : Ideal (M
   have h1 : x * (x * h) ∣ 1 * (x * h) := by rwa [one_mul, ← mul_assoc]
   exact isUnit_of_dvd_one ((mul_dvd_mul_iff_right hne).mp h1)
 
+/- English proof (translation)
+Introduce `m hm`. Rewrite using `[← hs m (mem_support_iff.mpr hm) ()]`. Simplify using `[Finsupp.weight_apply, Finsupp.sum_fintype, Fintype.sum_sigma]`.
+-/
 theorem isHomogeneous_of_isMultiHomog {n : ℕ} {s : MRing (PBlk n)} {a : Unit → ℕ}
     (hs : ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomog s a) : s.IsHomogeneous (a ()) := by
   intro m hm
@@ -40,6 +50,13 @@ section Homog
 
 attribute [local instance] MvPolynomial.gradedAlgebra
 
+/- English proof (translation)
+Take `⟨S, hS, rfl⟩` from `hP.2.1.2.1`. Set `E : MRing (PBlk n) ≃+* MvPolynomial (Fin n) ℤ` to `(renameEquiv ℤ (Equiv.uniqueSigma (PBlk n))).toRingEquiv`. Establish `hfin : IndefiniteRowSideFullHecke.ArithBezout.finIdeal (Ideal.span S) = (Ideal.span S).map E`. Rewrite using `[← Ideal.comap_symm]`. Both sides reduce to the same expression.
+
+Establish `hhom : IsHomogIdeal (IndefiniteRowSideFullHecke.ArithBezout.finIdeal (Ideal.span S))`. Rewrite using `[isHomogIdeal_iff, hfin, Ideal.map_span]`. Use `Ideal.homogeneous_span _ _ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨s, hs, rfl⟩`. Take `⟨a, ha⟩` from `hS s hs`.
+
+Conclude with `⟨a (), (mem_homogeneousSubmodule _ _).mpr ((isHomogeneous_of_isMultiHomog ha).rename_isHomogeneous)⟩`. Conclude with `isHomogIdeal_map (Int.castRingHom ℚ) hhom`.
+-/
 theorem isHomogIdeal_genericIdeal {n d : ℕ} {P : Ideal (MRing (PBlk n))} (hP : IsArithVar P d) :
     IsHomogIdeal (genericIdeal P) := by
   obtain ⟨S, hS, rfl⟩ := hP.2.1.2.1
@@ -59,6 +76,17 @@ theorem isHomogIdeal_genericIdeal {n d : ℕ} {P : Ideal (MRing (PBlk n))} (hP :
 
 end Homog
 
+/- English proof (translation)
+Introduce `n e δ P f hP hf hδ`. Establish `hcast : Rat.castHom ℂ = algebraMap ℚ ℂ` using `RingHom.ext_rat _ _`. Establish `hC` using `ChowFormExtend.isChowForm_map (L := ℂ) RadicalBaseChange.proof (genericIdeal P) f hf`. Rewrite `hC` using `[← hcast]`. Use `⟨(isMultihomog_map_iff (Rat.castHom ℂ).injective f).mpr ((isMultiHomog_iff f).mp hδ), squarefree_of_isChowForm hC, fun u => ⟨fun hu => ?_, fun ⟨z, hz, hzu⟩ => ?_⟩⟩` and prove the remaining obligations.
+
+Establish `hv : ∀ g ∈ incIdeal (genericIdeal P) (e + 1), aeval (fun p => u p.1 p.2) g = 0`. Introduce `g hg`. Simplify using `only [incIdeal, Ideal.mem_iInf, RingHom.mem_ker] at hg`. Take `⟨h, rfl⟩` from `(hf.2 g).1 fun w hw => hg w hw`. Rewrite using `[map_mul, aeval_def, ← hcast, ← eval_map, hu, zero_mul]`.
+
+Take `⟨y, hy0, hyQ, hyu⟩` from `hZ ℚ n (e + 1) (genericIdeal P) (isHomogIdeal_genericIdeal hP) ℂ (fun p => u p.1 p.2) hv`. Use `⟨y, ⟨hy0, fun q hq => ?_⟩, fun j => hyu j⟩` and prove the remaining obligations. Rewrite using `[eval_map, RingHom.ext_int (Int.castRingHom ℂ) ((algebraMap ℚ ℂ).comp (Int.castRingHom ℚ)), ← eval₂_map, ← aeval_def]`. Conclude with `hyQ _ (Ideal.mem_map_of_mem _ hq)`. Use `set ι := algebraMap ℂ (AlgebraicClosure ℂ)`.
+
+Establish `hle : (genericIdeal P).map (map (Rat.castHom ℂ)) ≤ RingHom.ker (aeval (ι ∘ z) : MvPolynomial (Fin n) ℂ →ₐ[ℂ] AlgebraicClosure ℂ)`. Rewrite using `[genericIdeal, Ideal.map_map, Ideal.map_le_iff_le_comap]`. Introduce `q hq`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, RingHom.comp_apply, map_map, RingHom.ext_int ((Rat.castHom ℂ).comp (Int.castRingHom ℚ)) (Int.castRingHom ℂ), aeval_algebraMap_apply]`. Conclude with `(congrArg ι (hz.2 q hq)).trans (map_zero ι)`.
+
+Establish `h1` using `(hC.2 (map (Rat.castHom ℂ) f)).2 dvd_rfl (ι ∘ fun p => u p.1 p.2) ⟨ι ∘ z, fun h0 => hz.1 (funext fun i => ι.injective (by simpa using congrFun h0 i)), fun g hg => hle hg, fun j => by simpa [map_sum, map_mul] using congrArg ι (hzu j)⟩`. Rewrite `h1` using `[aeval_algebraMap_apply]`. Conclude with `ι.injective (h1.trans (map_zero ι).symm)`.
+-/
 theorem ChowFormToComplexChowForm.proof (hZ : IncidenceZeroLocus.Statement) : ChowFormToComplexChowForm.Statement := by
   intro n e δ P f hP hf hδ
   have hcast : Rat.castHom ℂ = algebraMap ℚ ℂ := RingHom.ext_rat _ _

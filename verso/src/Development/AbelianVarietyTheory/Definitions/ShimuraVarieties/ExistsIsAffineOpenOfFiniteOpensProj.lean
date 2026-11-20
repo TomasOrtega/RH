@@ -7,6 +7,25 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry TopologicalSpace Opp
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hι : Function.Injective (algebraMap B' A')` using `FaithfulSMul.algebraMap_injective B' A'`. Establish `hBA : Function.Injective (algebraMap B A)` using `FaithfulSMul.algebraMap_injective B A`. Establish `hinvA : ∀ (g : G) (b : B), g • algebraMap B A b = algebraMap B A b` using `fun g b ↦ by`. Rewrite using `[Algebra.algebraMap_eq_smul_one, smul_comm, smul_one]`. Establish `hinvA' : ∀ (g : G) (b : B'), g • algebraMap B' A' b = algebraMap B' A' b` using `fun g b ↦ by`.
+
+Rewrite using `[Algebra.algebraMap_eq_smul_one, smul_comm, smul_one]`. Establish `: Fintype G` using `Fintype.ofFinite G`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨_, n, rfl⟩`. Rewrite using `[map_pow]`.
+
+Apply `IsUnit.pow` to reduce the goal to its premises. Take `⟨u, hu⟩` from `IsLocalization.Away.algebraMap_isUnit (S := A') (algebraMap B A r)`. Establish `hinv : ∀ g : G, g • (↑u⁻¹ : A') = ↑u⁻¹` using `fun g ↦ by`. Establish `h2 : g • (↑u : A') = ↑u` using `by rw [hu, ← he, hinvA]`. Establish `h3 : g • (↑u⁻¹ : A') * ↑u = 1`.
+
+Rewrite using `[← h2, ← smul_mul', Units.inv_mul, smul_one]`. Conclude with `Units.eq_inv_of_mul_eq_one_left (by rw [mul_comm]; exact h3)`. Take `⟨b, hb⟩` from `Algebra.IsInvariant.isInvariant (A := B') (G := G) (↑u⁻¹ : A') hinv`. Establish `hb1 : algebraMap B B' r * b = 1` using `hι (by rw [map_mul, hb, hc, ← hu, Units.mul_inv, map_one])`. Conclude with `⟨⟨algebraMap B B' r, b, hb1, by rw [mul_comm]; exact hb1⟩, rfl⟩`.
+
+Introduce `z`. Take `⟨⟨a0, ⟨_, n, rfl⟩⟩, hz⟩` from `IsLocalization.surj (Submonoid.powers (algebraMap B A r)) (algebraMap B' A' z)`. Simplify using `only at hz`. Establish `hg : ∀ g : G, algebraMap A A' (g • a0) = algebraMap A A' a0` using `fun g ↦ by`. Rewrite using `[he, ← hz, smul_mul', hinvA', ← map_pow, ← he, hinvA]`.
+
+Use `choose k hk using fun g : G ↦ IsLocalization.exists_of_eq (M := Submonoid.powers (algebraMap B A r)) (hg g)`. Establish `hcg : ∀ g : G, (∏ h, (k h : A)) * (g • a0) = (∏ h, (k h : A)) * a0` using `fun g ↦ by`. Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ g), mul_assoc, mul_assoc, hk g]`. Take `⟨K, hK⟩ : (∏ h, (k h : A)) ∈ Submonoid.powers (algebraMap B A r)` from `Submonoid.prod_mem _ fun h _ ↦ (k h).2`. Simplify using `only at hK`.
+
+Establish `hinv0 : ∀ g : G, g • ((∏ h, (k h : A)) * a0) = (∏ h, (k h : A)) * a0` using `fun g ↦ by`. Rewrite using `[smul_mul', ← hK, smul_pow', hinvA, hK, hcg]`. Take `⟨b, hb⟩` from `Algebra.IsInvariant.isInvariant (A := B) (G := G) _ hinv0`. Use `⟨⟨b, ⟨r ^ (n + K), n + K, rfl⟩⟩, hι ?_⟩` and prove the remaining obligations. Use `show algebraMap B' A' (z * algebraMap B B' (r ^ (n + K))) = algebraMap B' A' (algebraMap B B' b)`.
+
+Rewrite using `[map_mul, hc, hc, hb, map_pow, pow_add, map_mul (algebraMap A A') (algebraMap B A r ^ n), ← mul_assoc, hz, hK, ← map_mul, mul_comm a0]`. Introduce `x y hxy`. Establish `h1 : algebraMap A A' (algebraMap B A x) = algebraMap A A' (algebraMap B A y)`. Rewrite using `[← hc, ← hc, hxy]`. Take `⟨⟨_, n, rfl⟩, hn⟩` from `IsLocalization.exists_of_eq (M := Submonoid.powers (algebraMap B A r)) h1`.
+
+Use `⟨⟨r ^ n, n, rfl⟩, hBA ?_⟩` and prove the remaining obligations. Simplify `hn` using `only [map_mul, map_pow]`.
+-/
 theorem isLocalization_away_of_isInvariant (G : Type*) [Group G] [Finite G] {B B' : Type*}
     (A A' : Type*) [CommRing B] [CommRing B'] [CommRing A] [CommRing A'] [Algebra B A]
     [Algebra B' A'] [Algebra B B'] [Algebra A A'] [MulSemiringAction G A] [MulSemiringAction G A']
@@ -67,6 +86,29 @@ theorem isLocalization_away_of_isInvariant (G : Type*) [Group G] [Finite G] {B B
 
 variable {G : Type v} [Group G] {X Y Z : Scheme.{u}}
 
+/- English proof (translation)
+Use `IsAffineQuotient.of_cover hπ fun y ↦ ?_` and prove the remaining obligations. Take `⟨X', Y', ρ', π', p, j, _, _, ⟨y', rfl⟩, hcomm, hpre, hequiv, h'⟩` from `h y`. Use `h'.isAffineHom` as an intermediate fact. Take `⟨W', hW', hyW', -⟩` from `exists_isAffineOpen_mem_and_subset (U := (⊤ : Y'.Opens)) (x := y') trivial`. Establish `hWj : j ''ᵁ W' ≤ j.opensRange` using `j.image_le_opensRange W'`.
+
+Establish `hjW : j ⁻¹ᵁ j ''ᵁ W' = W'` using `j.preimage_image_eq W'`. Establish `hpreW : π ⁻¹ᵁ j ''ᵁ W' ≤ p.opensRange` using `(π.preimage_mono hWj).trans hpre.le`. Establish `hV : p ⁻¹ᵁ π ⁻¹ᵁ j ''ᵁ W' = π' ⁻¹ᵁ j ⁻¹ᵁ j ''ᵁ W'`. Express the relevant statement in the definitionally equal form `(p ≫ π) ⁻¹ᵁ j ''ᵁ W' = (π' ≫ j) ⁻¹ᵁ j ''ᵁ W'`. Rewrite using `[hcomm]`.
+
+Establish `hπW : π ⁻¹ᵁ j ''ᵁ W' = p ''ᵁ (π' ⁻¹ᵁ W')`. Rewrite using `[show π' ⁻¹ᵁ W' = p ⁻¹ᵁ π ⁻¹ᵁ j ''ᵁ W' by rw [hV, hjW], p.image_preimage_eq_opensRange_inf, inf_eq_right.mpr hpreW]`. Establish `hres : ∀ {Z : Scheme.{u}} {A B : Z.Opens} (hAB : A ≤ B) (_ : B ≤ A), Function.Bijective (Z.presheaf.map (homOfLE hAB).op)`. Introduce `Z A B hAB hBA`. Take `rfl : A = B` from `le_antisymm hAB hBA`.
+
+Rewrite using `[Subsingleton.elim (homOfLE hAB) (𝟙 A), op_id, Z.presheaf.map_id]`. Conclude with `ConcreteCategory.bijective_of_isIso (𝟙 _)`. Establish `hle : π' ⁻¹ᵁ j ⁻¹ᵁ j ''ᵁ W' ≤ p ⁻¹ᵁ π ⁻¹ᵁ j ''ᵁ W'` using `hV.ge`. Establish `hge : p ⁻¹ᵁ π ⁻¹ᵁ j ''ᵁ W' ≤ π' ⁻¹ᵁ j ⁻¹ᵁ j ''ᵁ W'` using `hV.le`. Establish `key : π.app (j ''ᵁ W') ≫ p.appLE (π ⁻¹ᵁ j ''ᵁ W') _ hle = j.app (j ''ᵁ W') ≫ π'.app (j ⁻¹ᵁ j ''ᵁ W')`.
+
+Rewrite using `[Scheme.Hom.app_eq_appLE π, Scheme.Hom.appLE_comp_appLE, Scheme.Hom.app_eq_appLE j, Scheme.Hom.app_eq_appLE π', Scheme.Hom.appLE_comp_appLE]`. Use `congr 1`. Use `j.isIso_app (j ''ᵁ W') hWj` as an intermediate fact. Use `p.isIso_app (π ⁻¹ᵁ j ''ᵁ W') hpreW` as an intermediate fact. Use `⟨j ''ᵁ W', hW'.image_of_isOpenImmersion j, ⟨y', hyW', rfl⟩, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hπW]`. Conclude with `(IsAffineHom.isAffine_preimage W' hW').image_of_isOpenImmersion p`. Introduce `a b hab`. Apply `(ConcreteCategory.bijective_of_isIso (j.app (j ''ᵁ W'))).1` to reduce the goal to its premises. Apply `h'.app_injective (j ⁻¹ᵁ j ''ᵁ W')` to reduce the goal to its premises.
+
+Establish `e1` using `congr($key a)`. Establish `e2` using `congr($key b)`. Rewrite `e1`, `e2` using `[CommRingCat.comp_apply, CommRingCat.comp_apply]`. Rewrite using `[← e1, ← e2, hab]`. Introduce `s hs`.
+
+Establish `hΦinv : IsInvariantSection ρ' (π' ⁻¹ᵁ j ⁻¹ᵁ j ''ᵁ W') (p.appLE (π ⁻¹ᵁ j ''ᵁ W') _ hle s)`. Introduce `g`. Take `⟨e, he⟩` from `hs g`. Use `⟨h'.preimage_le (j ⁻¹ᵁ j ''ᵁ W') g, ?_⟩` and prove the remaining obligations. Establish `k2 : p.appLE (π ⁻¹ᵁ j ''ᵁ W') _ hle ≫ (ρ' g).hom.appLE _ _ (h'.preimage_le (j ⁻¹ᵁ j ''ᵁ W') g) = (ρ g).hom.appLE _ _ e ≫ p.appLE (π ⁻¹ᵁ j ''ᵁ W') _ hle`.
+
+Rewrite using `[Scheme.Hom.appLE_comp_appLE, Scheme.Hom.appLE_comp_appLE]`. Use `congr 1`. Conclude with `hequiv g`. Use `congr($k2 s)` as an intermediate fact. Rewrite `this` using `[CommRingCat.comp_apply, CommRingCat.comp_apply, he]`.
+
+Conclude with `this`. Take `⟨u, hu⟩` from `h'.mem_range_app (j ⁻¹ᵁ j ''ᵁ W') _ hΦinv`. Take `⟨v, rfl⟩` from `(ConcreteCategory.bijective_of_isIso (j.app (j ''ᵁ W'))).2 u`. Use `⟨v, ?_⟩` and prove the remaining obligations. Apply `(ConcreteCategory.bijective_of_isIso (p.app (π ⁻¹ᵁ j ''ᵁ W'))).1` to reduce the goal to its premises.
+
+Apply `(hres hle hge).1` to reduce the goal to its premises. Establish `e1` using `congr($key v)`. Rewrite `e1` using `[CommRingCat.comp_apply, CommRingCat.comp_apply]`. Conclude with `e1.trans hu`.
+-/
 theorem IsAffineQuotient.of_forall_exists_isOpenImmersion [Finite G] {ρ : G →* Aut X} {π : X ⟶ Y}
     (hπ : ∀ g, (ρ g).hom ≫ π = π)
     (h : ∀ y : Y, ∃ (X' Y' : Scheme.{u}) (ρ' : G →* Aut X') (π' : X' ⟶ Y') (p : X' ⟶ X)
@@ -148,6 +190,11 @@ noncomputable def invariantSections (U : X.Opens) (hU : ∀ g, U ≤ (ρ g).hom 
 
 variable {ρ} in
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h g`. Establish `h' : (ρ g⁻¹⁻¹).hom.appLE U U (hU _) s = s` using `h g⁻¹`. Simplify using `only [inv_inv] at h'`. Conclude with `⟨hU g, h'⟩`.
+
+Introduce `h g`. Take `⟨_, hg⟩` from `h g⁻¹`. Conclude with `hg`.
+-/
 theorem mem_invariantSections {U : X.Opens} {hU : ∀ g, U ≤ (ρ g).hom ⁻¹ᵁ U} {s : Γ(X, U)} :
     s ∈ invariantSections ρ U hU ↔ IsInvariantSection ρ U s := by
   constructor
@@ -166,10 +213,16 @@ noncomputable def invariantSectionsRes {U V : X.Opens} (hU : ∀ g, U ≤ (ρ g)
     mem_invariantSections.mpr ((mem_invariantSections.mp hs).res hU e)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_invariantSectionsRes {U V : X.Opens} (hU : ∀ g, U ≤ (ρ g).hom ⁻¹ᵁ U)
     (hV : ∀ g, V ≤ (ρ g).hom ⁻¹ᵁ V) (e : U ≤ V) (s : invariantSections ρ V hV) :
     (invariantSectionsRes ρ hU hV e s : Γ(X, U)) = X.presheaf.map (homOfLE e).op s := rfl
 
+/- English proof (translation)
+Use `letI := sectionsAction ρ U hU`. Use `⟨⟨fun g s b ↦ ?_⟩, ⟨fun {b₁ b₂} h ↦ Subtype.ext (by simpa [Subring.smul_def] using h 1)⟩, ⟨fun b hb ↦ ⟨⟨b, hb⟩, rfl⟩⟩⟩` and prove the remaining obligations. Use `show g • ((s : Γ(X, U)) * b) = (s : Γ(X, U)) * (g • b)`. Rewrite using `[smul_mul', s.2 g]`.
+-/
 private theorem invariantSections_of_stable_open (U : X.Opens) (hU : ∀ g, U ≤ (ρ g).hom ⁻¹ᵁ U) :
     letI := sectionsAction ρ U hU
     SMulCommClass G (invariantSections ρ U hU) Γ(X, U) ∧
@@ -181,6 +234,13 @@ private theorem invariantSections_of_stable_open (U : X.Opens) (hU : ∀ g, U �
   show g • ((s : Γ(X, U)) * b) = (s : Γ(X, U)) * (g • b)
   rw [smul_mul', s.2 g]
 
+/- English proof (translation)
+Use `letI := (invariantSectionsRes ρ hU hV e).toAlgebra`. Set `_` to `sectionsAction ρ V hV`. Set `_` to `sectionsAction ρ U hU`. Set `_ : Algebra Γ(X, V) Γ(X, U)` to `(X.presheaf.map (homOfLE e).op).hom.toAlgebra`. Take `⟨_, _, _⟩` from `invariantSections_of_stable_open ρ V hV`.
+
+Take `⟨_, _, _⟩` from `invariantSections_of_stable_open ρ U hU`. Establish `hloc : IsLocalization.Away (r : Γ(X, V)) Γ(X, U)`. Substitute `hr` using the available equality. Conclude with `hV'.isLocalization_basicOpen (r : Γ(X, V))`. Establish `he : ∀ (g : G) (a : Γ(X, V)), algebraMap Γ(X, V) Γ(X, U) (g • a) = g • algebraMap Γ(X, V) Γ(X, U) a`.
+
+Introduce `g a`. Express the relevant statement in the definitionally equal form `(X.presheaf.map (homOfLE e).op) ((ρ g⁻¹).hom.appLE V V (hV g⁻¹) a) = (ρ g⁻¹).hom.appLE U U (hU g⁻¹) ((X.presheaf.map (homOfLE e).op) a)`. Rewrite using `[← CommRingCat.comp_apply, ← CommRingCat.comp_apply, Scheme.Hom.appLE_map, Scheme.Hom.map_appLE]`. Establish `: IsLocalization.Away (algebraMap (invariantSections ρ V hV) Γ(X, V) r) Γ(X, U)` using `hloc`. Conclude with `isLocalization_away_of_isInvariant (B := invariantSections ρ V hV) (B' := invariantSections ρ U hU) G Γ(X, V) Γ(X, U) (fun b ↦ by exact coe_invariantSectionsRes ρ hU hV e b) he r`.
+-/
 theorem isLocalization_invariantSections [Finite G] {U V : X.Opens}
     (hU : ∀ g, U ≤ (ρ g).hom ⁻¹ᵁ U) (hV : ∀ g, V ≤ (ρ g).hom ⁻¹ᵁ V) (e : U ≤ V)
     (hV' : IsAffineOpen V) (r : invariantSections ρ V hV) (hr : X.basicOpen (r : Γ(X, V)) = U) :
@@ -226,6 +286,9 @@ instance StableAffineOpens.preorder : Preorder (StableAffineOpens ρ) where
 
 variable {ρ} in
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `f.le`. Rewrite using `[← hs]`. Conclude with `X.basicOpen_le s`.
+-/
 theorem StableAffineOpens.toOpens_le {U V : StableAffineOpens ρ} (f : U ⟶ V) :
     U.toOpens ≤ V.toOpens := by
   obtain ⟨s, hs⟩ := f.le
@@ -247,6 +310,9 @@ noncomputable def quotientDiagram : StableAffineOpens ρ ⥤ Scheme.{u} where
     ext s
     exact (presheaf_map_map_apply _ _ _).symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem quotientDiagram_obj (U : StableAffineOpens ρ) :
     (quotientDiagram ρ).obj U = Spec (.of (invariantSections ρ U.toOpens U.stable)) := rfl
 
@@ -268,6 +334,9 @@ noncomputable def toChart (U : StableAffineOpens ρ) :
   Spec.map (CommRingCat.ofHom (algebraMap (invariantSections ρ U.toOpens U.stable) Γ(X, U.toOpens)))
 
 @[reassoc]
+/- English proof (translation)
+Simplify using `only [toChart, quotientDiagram]`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`.
+-/
 theorem toChart_map {U V : StableAffineOpens ρ} (f : U ⟶ V) :
     U.toChart ≫ (quotientDiagram ρ).map f =
       Spec.map (X.presheaf.map (homOfLE (StableAffineOpens.toOpens_le f)).op) ≫
@@ -278,6 +347,11 @@ theorem toChart_map {U V : StableAffineOpens ρ} (f : U ⟶ V) :
 
 variable [Finite G]
 
+/- English proof (translation)
+Use `letI := sectionsAction ρ U.toOpens U.stable`. Establish `: SMulCommClass G (invariantSections ρ U.toOpens U.stable) Γ(X, U.toOpens)` using `⟨fun g s b ↦ by show g • ((s : Γ(X, U.toOpens)) * b) = (s : Γ(X, U.toOpens)) * (g • b)`. Rewrite using `[smul_mul', s.2 g]⟩`. Establish `: FaithfulSMul (invariantSections ρ U.toOpens U.stable) Γ(X, U.toOpens)` using `⟨fun {b₁ b₂} h ↦ Subtype.ext (by simpa [Subring.smul_def] using h 1)⟩`. Establish `: Algebra.IsInvariant (invariantSections ρ U.toOpens U.stable) Γ(X, U.toOpens) G` using `⟨fun b hb ↦ ⟨⟨b, hb⟩, rfl⟩⟩`.
+
+Conclude with `isAffineQuotient_spec _ _`.
+-/
 theorem isAffineQuotient_toChart (U : StableAffineOpens ρ) :
     letI := sectionsAction ρ U.toOpens U.stable
     IsAffineQuotient (specAction G Γ(X, U.toOpens)) U.toChart := by
@@ -292,6 +366,9 @@ theorem isAffineQuotient_toChart (U : StableAffineOpens ρ) :
     ⟨fun b hb ↦ ⟨⟨b, hb⟩, rfl⟩⟩
   exact isAffineQuotient_spec _ _
 
+/- English proof (translation)
+Take `⟨f, hf⟩` from `h`. Take `⟨t, ht, hte⟩` from `exists_isInvariantSection_basicOpen_eq V.stable f (by rw [hf]; exact U.stable)`. Conclude with `⟨⟨t, mem_invariantSections.mpr ht⟩, hte.trans hf⟩`.
+-/
 theorem exists_basicOpen_eq {U V : StableAffineOpens ρ} (h : U ≤ V) :
     ∃ r : invariantSections ρ V.toOpens V.stable, X.basicOpen (r : Γ(X, V.toOpens)) = U.toOpens := by
   obtain ⟨f, hf⟩ := h
@@ -307,6 +384,9 @@ instance isOpenImmersion_map {U V : StableAffineOpens ρ} (f : U ⟶ V) :
   have := isLocalization_invariantSections ρ U.stable V.stable e V.isAffineOpen r hr
   exact IsOpenImmersion.of_isLocalization r
 
+/- English proof (translation)
+Use `letI := (invariantSectionsRes ρ U.stable V.stable (toOpens_le f)).toAlgebra`. Use `isLocalization_invariantSections ρ U.stable V.stable (toOpens_le f) V.isAffineOpen r hr` as an intermediate fact. Conclude with `PrimeSpectrum.localization_away_comap_range (invariantSections ρ U.toOpens U.stable) r`.
+-/
 theorem range_map {U V : StableAffineOpens ρ} (f : U ⟶ V) (r : invariantSections ρ V.toOpens V.stable)
     (hr : X.basicOpen (r : Γ(X, V.toOpens)) = U.toOpens) :
     Set.range ((quotientDiagram ρ).map f) =
@@ -339,6 +419,11 @@ instance isLocallyDirected : (quotientDiagram ρ ⋙ Scheme.forget).IsLocallyDir
     · exact congr($((quotientDiagram ρ).map_comp (homOfLE hU) fU) x).symm.trans hx
     · exact congr($((quotientDiagram ρ).map_comp (homOfLE hV) fV) x).symm.trans (hx.trans e)
 
+/- English proof (translation)
+Take `⟨t, ht, hxt, htO⟩` from `exists_isInvariantSection_basicOpen_le U.isAffineOpen U.stable hU (U.toOpens ⊓ V.toOpens) (fun g ↦ ⟨U.stable g hU, V.stable g hV⟩)`. Set `U' : StableAffineOpens ρ` to `⟨X.basicOpen t, U.isAffineOpen.basicOpen t, ht.basicOpen_le⟩`. Take `⟨t', ht', hxt', ht'O⟩` from `exists_isInvariantSection_basicOpen_le V.isAffineOpen V.stable hV U'.toOpens (fun g ↦ ht.basicOpen_le g hxt)`. Establish `hU'V : U'.toOpens ≤ V.toOpens` using `htO.trans inf_le_right`. Use `⟨⟨X.basicOpen t', V.isAffineOpen.basicOpen t', ht'.basicOpen_le⟩, le_trans (b := U') ⟨X.presheaf.map (homOfLE hU'V).op t', ?_⟩ ⟨t, rfl⟩, ⟨t', rfl⟩, hxt'⟩` and prove the remaining obligations.
+
+Rewrite using `[Scheme.basicOpen_res]`. Conclude with `inf_eq_right.mpr ht'O`.
+-/
 theorem exists_le_le (U V : StableAffineOpens ρ) {x : X} (hU : x ∈ U.toOpens) (hV : x ∈ V.toOpens) :
     ∃ W : StableAffineOpens ρ, W ≤ U ∧ W ≤ V ∧ x ∈ W.toOpens := by
   obtain ⟨t, ht, hxt, htO⟩ := exists_isInvariantSection_basicOpen_le U.isAffineOpen U.stable hU
@@ -352,6 +437,11 @@ theorem exists_le_le (U V : StableAffineOpens ρ) {x : X} (hU : x ∈ U.toOpens)
   rw [Scheme.basicOpen_res]
   exact inf_eq_right.mpr ht'O
 
+/- English proof (translation)
+Establish `hU : U.isAffineOpen.fromSpec (pullback.fst U.isAffineOpen.fromSpec V.isAffineOpen.fromSpec x) ∈ U.toOpens` using `U.isAffineOpen.range_fromSpec.le ⟨_, rfl⟩`. Establish `hV : U.isAffineOpen.fromSpec (pullback.fst U.isAffineOpen.fromSpec V.isAffineOpen.fromSpec x) ∈ V.toOpens`. Rewrite using `[← Scheme.Hom.comp_apply, pullback.condition, Scheme.Hom.comp_apply]`. Conclude with `V.isAffineOpen.range_fromSpec.le ⟨_, rfl⟩`. Take `⟨W, hWU, hWV, hxW⟩` from `U.exists_le_le V hU hV`.
+
+Take `⟨y, hy⟩` from `W.isAffineOpen.range_fromSpec.ge hxW`. Use `⟨W, hWU, hWV, y, U.isAffineOpen.fromSpec.isOpenEmbedding.injective ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, IsAffineOpen.map_fromSpec U.isAffineOpen W.isAffineOpen, hy]`.
+-/
 theorem exists_le_le_pullback (U V : StableAffineOpens ρ)
     (x : ↑(pullback U.isAffineOpen.fromSpec V.isAffineOpen.fromSpec)) :
     ∃ (W : StableAffineOpens ρ) (hU : W ≤ U) (_ : W ≤ V) (y : Spec Γ(X, W.toOpens)),
@@ -418,14 +508,23 @@ noncomputable def chart (U : StableAffineOpens ρ) :
 instance isOpenImmersion_chart (U : StableAffineOpens ρ) : IsOpenImmersion (chart ρ U) :=
   inferInstanceAs (IsOpenImmersion (colimit.ι (quotientDiagram ρ) U))
 
+/- English proof (translation)
+Take `⟨U, x, hx⟩` from `Scheme.IsLocallyDirected.ι_jointly_surjective (quotientDiagram ρ) y`. Conclude with `⟨U, x, hx⟩`. Use the proof step `@[reassoc]`.
+-/
 theorem exists_mem_opensRange_chart (y : finiteQuotient ρ) : ∃ U, y ∈ (chart ρ U).opensRange := by
   obtain ⟨U, x, hx⟩ := Scheme.IsLocallyDirected.ι_jointly_surjective (quotientDiagram ρ) y
   exact ⟨U, x, hx⟩
 
 @[reassoc]
+/- English proof (translation)
+Conclude with `colimit.w (quotientDiagram ρ) f`.
+-/
 theorem map_chart {U V : StableAffineOpens ρ} (f : U ⟶ V) :
     (quotientDiagram ρ).map f ≫ chart ρ V = chart ρ U := by exact colimit.w (quotientDiagram ρ) f
 
+/- English proof (translation)
+Rewrite using `[← map_chart ρ f, StableAffineOpens.toChart_map_assoc]`. Both sides reduce to the same expression.
+-/
 theorem trans_toChart_chart {U V : StableAffineOpens ρ} (f : U ⟶ V) :
     (stableAffineCover ρ).trans f ≫ V.toChart ≫ chart ρ V = U.toChart ≫ chart ρ U := by
   rw [← map_chart ρ f, StableAffineOpens.toChart_map_assoc]
@@ -436,8 +535,24 @@ noncomputable def π : X ⟶ finiteQuotient ρ :=
     (trans_toChart_chart ρ)
 
 @[reassoc]
+/- English proof (translation)
+Conclude with `Scheme.OpenCover.map_glueMorphismsOfLocallyDirected (stableAffineCover ρ) _ _ U`.
+-/
 theorem fromSpec_π (U : StableAffineOpens ρ) : U.isAffineOpen.fromSpec ≫ π ρ = U.toChart ≫ chart ρ U := by exact Scheme.OpenCover.map_glueMorphismsOfLocallyDirected (stableAffineCover ρ) _ _ U
 
+/- English proof (translation)
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨y, hy⟩` from `hx`. Take `⟨V, hV, hst, hxV⟩` from `exists_stable_isAffineOpen ρ x`.
+
+Set `V' : StableAffineOpens ρ` to `⟨V, hV, hst⟩`. Take `⟨x', hx'⟩` from `hV.range_fromSpec.ge hxV`. Establish `e : π ρ x = chart ρ V' (V'.toChart x')`. Rewrite using `[← hx', ← Scheme.Hom.comp_apply, fromSpec_π ρ V', Scheme.Hom.comp_apply]`. Rewrite `hy` using `[e]`.
+
+Take `⟨W, fU, fV, w, hwU, hwV⟩` from `(Scheme.IsLocallyDirected.ι_eq_ι_iff (quotientDiagram ρ)).mp hy`. Take `⟨r, hr⟩` from `StableAffineOpens.exists_basicOpen_eq fV.le`. Establish `h1 : V'.toChart x' ∈ (PrimeSpectrum.basicOpen r : Set (PrimeSpectrum (invariantSections ρ V'.toOpens V'.stable)))`. Rewrite using `[← hwV]`. Conclude with `(StableAffineOpens.range_map fV r hr).le ⟨w, rfl⟩`.
+
+Establish `h2 : x' ∈ PrimeSpectrum.basicOpen (r : Γ(X, V))` using `h1`. Establish `h3 : x ∈ X.basicOpen (r : Γ(X, V))`. Rewrite using `[← hx', ← Scheme.Hom.mem_preimage, hV.fromSpec_preimage_basicOpen]`. Conclude with `h2`. Rewrite `h3` using `[hr]`.
+
+Conclude with `StableAffineOpens.toOpens_le fU h3`. Introduce `hx`. Take `⟨x', rfl⟩` from `U.isAffineOpen.range_fromSpec.ge hx`. Use `⟨U.toChart x', ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, fromSpec_π]`.
+
+Use the proof step `@[reassoc (attr := simp)]`.
+-/
 theorem π_preimage_opensRange_chart (U : StableAffineOpens ρ) :
     π ρ ⁻¹ᵁ (chart ρ U).opensRange = U.toOpens := by
   ext x
@@ -469,6 +584,9 @@ theorem π_preimage_opensRange_chart (U : StableAffineOpens ρ) :
     rw [← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, fromSpec_π]
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+Use `(stableAffineCover ρ).hom_ext _ _ fun U ↦ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `U.isAffineOpen.fromSpec ≫ (ρ g).hom ≫ π ρ = U.isAffineOpen.fromSpec ≫ π ρ`. Use `letI := sectionsAction ρ U.toOpens U.stable`. Rewrite using `[← Category.assoc, ← specAction_fromSpec ρ U.isAffineOpen U.stable g, Category.assoc, fromSpec_π, ← Category.assoc, (U.isAffineQuotient_toChart).comp_eq g]`.
+-/
 theorem comp_π (g : G) : (ρ g).hom ≫ π ρ = π ρ := by
   refine (stableAffineCover ρ).hom_ext _ _ fun U ↦ ?_
   change U.isAffineOpen.fromSpec ≫ (ρ g).hom ≫ π ρ = U.isAffineOpen.fromSpec ≫ π ρ
@@ -476,6 +594,9 @@ theorem comp_π (g : G) : (ρ g).hom ≫ π ρ = π ρ := by
   rw [← Category.assoc, ← specAction_fromSpec ρ U.isAffineOpen U.stable g, Category.assoc,
     fromSpec_π, ← Category.assoc, (U.isAffineQuotient_toChart).comp_eq g]
 
+/- English proof (translation)
+Use `IsAffineQuotient.of_forall_exists_isOpenImmersion (comp_π ρ) fun y ↦ ?_` and prove the remaining obligations. Take `⟨U, hy⟩` from `exists_mem_opensRange_chart ρ y`. Use `letI := sectionsAction ρ U.toOpens U.stable`. Use `⟨Spec Γ(X, U.toOpens), (quotientDiagram ρ).obj U, specAction G Γ(X, U.toOpens), U.toChart, U.isAffineOpen.fromSpec, chart ρ U, inferInstance, inferInstance, hy, fromSpec_π ρ U, ?_, specAction_fromSpec ρ U.isAffineOpen U.stable, U.isAffineQuotient_toChart⟩` and prove the remaining obligations. Rewrite using `[π_preimage_opensRange_chart, U.isAffineOpen.opensRange_fromSpec]`.
+-/
 theorem isAffineQuotient : IsAffineQuotient ρ (π ρ) := by
   refine IsAffineQuotient.of_forall_exists_isOpenImmersion (comp_π ρ) fun y ↦ ?_
   obtain ⟨U, hy⟩ := exists_mem_opensRange_chart ρ y
@@ -494,10 +615,19 @@ instance epi_π : Epi (π ρ) := (isAffineQuotient ρ).epi
 instance isSchemeTheoreticallyDominant_π : IsSchemeTheoreticallyDominant (π ρ) :=
   (isAffineQuotient ρ).isSchemeTheoreticallyDominant
 
+/- English proof (translation)
+Conclude with `(isAffineQuotient ρ).apply_eq_iff x y`.
+-/
 theorem π_apply_eq_iff (x y : X) : π ρ x = π ρ y ↔ ∃ g, (ρ g).hom x = y := by exact (isAffineQuotient ρ).apply_eq_iff x y
 
+/- English proof (translation)
+Conclude with `⟨(π ρ).surjective, (π ρ).continuous, (isAffineQuotient ρ).isOpenMap⟩`.
+-/
 theorem isOpenQuotientMap_π : IsOpenQuotientMap (π ρ) := by exact ⟨(π ρ).surjective, (π ρ).continuous, (isAffineQuotient ρ).isOpenMap⟩
 
+/- English proof (translation)
+Conclude with `⟨(isAffineQuotient ρ).app_injective W, (isAffineQuotient ρ).range_app W⟩`.
+-/
 theorem app_injective_and_range (W : (finiteQuotient ρ).Opens) :
     Function.Injective ((π ρ).app W) ∧
       Set.range ((π ρ).app W) = {s | IsInvariantSection ρ (π ρ ⁻¹ᵁ W) s} := by exact ⟨(isAffineQuotient ρ).app_injective W, (isAffineQuotient ρ).range_app W⟩
@@ -506,11 +636,20 @@ noncomputable def desc (f : X ⟶ Z) (hf : ∀ g, (ρ g).hom ≫ f = f) : finite
   (isAffineQuotient ρ).desc f hf
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+Conclude with `(isAffineQuotient ρ).comp_desc f hf`. Use the proof step `@[ext]`.
+-/
 theorem π_desc (f : X ⟶ Z) (hf : ∀ g, (ρ g).hom ≫ f = f) : π ρ ≫ desc ρ f hf = f := by exact (isAffineQuotient ρ).comp_desc f hf
 
 @[ext]
+/- English proof (translation)
+Conclude with `(isAffineQuotient ρ).hom_ext e`.
+-/
 theorem hom_ext {a b : finiteQuotient ρ ⟶ Z} (e : π ρ ≫ a = π ρ ≫ b) : a = b := by exact (isAffineQuotient ρ).hom_ext e
 
+/- English proof (translation)
+Conclude with `(isAffineQuotient ρ).existsUnique_comp_eq f hf`.
+-/
 theorem existsUnique_π_comp_eq (f : X ⟶ Z) (hf : ∀ g, (ρ g).hom ≫ f = f) :
     ∃! f' : finiteQuotient ρ ⟶ Z, π ρ ≫ f' = f := by exact (isAffineQuotient ρ).existsUnique_comp_eq f hf
 
@@ -522,9 +661,15 @@ instance isIntegral [IsIntegral X] : IsIntegral (finiteQuotient ρ) :=
 instance isNormalScheme [IsNormalScheme X] : IsNormalScheme (finiteQuotient ρ) :=
   (isAffineQuotient ρ).isNormalScheme
 
+/- English proof (translation)
+Conclude with `(isAffineQuotient ρ).comp_eq_comp_iff x y`.
+-/
 theorem comp_π_eq_iff {k : Type u} [Field k] (x y : Spec (.of k) ⟶ X) :
     x ≫ π ρ = y ≫ π ρ ↔ ∃ g, x ≫ (ρ g).hom = y := by exact (isAffineQuotient ρ).comp_eq_comp_iff x y
 
+/- English proof (translation)
+Conclude with `(isAffineQuotient ρ).exists_comp_eq_of_isAlgClosed y`.
+-/
 theorem exists_comp_π_eq {k : Type u} [Field k] [IsAlgClosed k]
     (y : Spec (.of k) ⟶ finiteQuotient ρ) : ∃ x : Spec (.of k) ⟶ X, x ≫ π ρ = y := by exact (isAffineQuotient ρ).exists_comp_eq_of_isAlgClosed y
 
@@ -532,10 +677,19 @@ section Free
 
 variable {ρ}
 
+/- English proof (translation)
+Conclude with `(isAffineQuotient ρ).isFinite_of_isFreeAction hρ`.
+-/
 theorem isFinite_π_of_isFreeAction (hρ : IsFreeAction ρ) : IsFinite (π ρ) := by exact (isAffineQuotient ρ).isFinite_of_isFreeAction hρ
 
+/- English proof (translation)
+Conclude with `(isAffineQuotient ρ).etale_of_isFreeAction hρ`.
+-/
 theorem etale_π (hρ : IsFreeAction ρ) : Etale (π ρ) := by exact (isAffineQuotient ρ).etale_of_isFreeAction hρ
 
+/- English proof (translation)
+Conclude with `(isAffineQuotient ρ).finrank_of_isFreeAction hρ y`.
+-/
 theorem finrank_π (hρ : IsFreeAction ρ) (y : finiteQuotient ρ) : (π ρ).finrank y = Nat.card G := by exact (isAffineQuotient ρ).finrank_of_isFreeAction hρ y
 
 end Free
@@ -546,6 +700,9 @@ variable {S S' : Scheme.{u}} (f : X ⟶ S) (hf : ∀ g, (ρ g).hom ≫ f = f)
 
 include hf in
 
+/- English proof (translation)
+Establish `: LocallyOfFiniteType (π ρ ≫ desc ρ f hf)` using `by rwa [π_desc]`. Conclude with `(isAffineQuotient ρ).isFinite (desc ρ f hf)`.
+-/
 theorem isFinite_π [LocallyOfFiniteType f] : IsFinite (π ρ) := by
   have : LocallyOfFiniteType (π ρ ≫ desc ρ f hf) := by rwa [π_desc]
   exact (isAffineQuotient ρ).isFinite (desc ρ f hf)
@@ -584,6 +741,9 @@ noncomputable def pullbackIso [Flat t] :
   (isAffineQuotient _).uniqueIso ((isAffineQuotient ρ).pullbackMap hf t _ (π_desc ρ f hf))
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+Unfold `pullbackIso`. Conclude with `IsAffineQuotient.comp_uniqueIso_hom _ _`.
+-/
 theorem π_pullbackIso_hom [Flat t] :
     π (pullbackAction ρ f hf t) ≫ (pullbackIso ρ f hf t).hom = pullbackπ ρ f hf t := by
   unfold pullbackIso
@@ -595,6 +755,9 @@ noncomputable def pullbackIsoOfIsFreeAction (hρ : IsFreeAction ρ) :
     ((isAffineQuotient ρ).pullbackMap_of_isFreeAction hf t _ (π_desc ρ f hf) hρ)
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+Unfold `pullbackIsoOfIsFreeAction`. Conclude with `IsAffineQuotient.comp_uniqueIso_hom _ _`.
+-/
 theorem π_pullbackIsoOfIsFreeAction_hom (hρ : IsFreeAction ρ) :
     π (pullbackAction ρ f hf t) ≫ (pullbackIsoOfIsFreeAction ρ f hf t hρ).hom =
       pullbackπ ρ f hf t := by
@@ -614,17 +777,26 @@ noncomputable def map (p : X ⟶ Y) (hp : ∀ g, ∃ k, (ρ g).hom ≫ p = p ≫
     rw [reassoc_of% hk, comp_π]
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+Unfold `map`. Conclude with `π_desc ρ _ _`. Use the proof step `@[simp]`.
+-/
 theorem π_map (p : X ⟶ Y) (hp : ∀ g, ∃ k, (ρ g).hom ≫ p = p ≫ (τ k).hom) :
     π ρ ≫ map ρ τ p hp = p ≫ π τ := by
   unfold map
   exact π_desc ρ _ _
 
 @[simp]
+/- English proof (translation)
+Apply `hom_ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Use the proof step `@[reassoc]`.
+-/
 theorem map_id (hp) : map ρ ρ (𝟙 X) hp = 𝟙 _ := by
   apply hom_ext
   simp
 
 @[reassoc]
+/- English proof (translation)
+Apply `hom_ext` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+-/
 theorem map_comp {K : Type*} [Group K] [Finite K] (σ : K →* Aut Z) [OrbitsInAffineOpens σ]
     (p : X ⟶ Y) (q : Y ⟶ Z) (hp hq hpq) :
     map ρ σ (p ≫ q) hpq = map ρ τ p hp ≫ map τ σ q hq := by
@@ -639,6 +811,9 @@ noncomputable def specIso (B A : Type u) [CommRing B] [CommRing A]
   (isAffineQuotient _).uniqueIso (isAffineQuotient_spec B A)
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+Unfold `specIso`. Conclude with `IsAffineQuotient.comp_uniqueIso_hom _ _`.
+-/
 theorem π_specIso_hom (B A : Type u) [CommRing B] [CommRing A]
     [MulSemiringAction G A] [Algebra B A] [SMulCommClass G B A] [FaithfulSMul B A]
     [Algebra.IsInvariant B A G] : π (specAction G A) ≫ (specIso B A).hom =
@@ -648,6 +823,9 @@ theorem π_specIso_hom (B A : Type u) [CommRing B] [CommRing A]
 
 end finiteQuotient
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Y, π, h⟩`. Conclude with `h.orbitsInAffineOpens`. Introduce `_`. Conclude with `⟨_, _, finiteQuotient.isAffineQuotient ρ⟩`.
+-/
 theorem exists_isAffineQuotient_iff [Finite G] (ρ : G →* Aut X) :
     (∃ (Y : Scheme.{u}) (π : X ⟶ Y), IsAffineQuotient ρ π) ↔ OrbitsInAffineOpens ρ := by
   constructor
@@ -656,6 +834,21 @@ theorem exists_isAffineQuotient_iff [Finite G] (ρ : G →* Aut X) :
   · intro _
     exact ⟨_, _, finiteQuotient.isAffineQuotient ρ⟩
 
+/- English proof (translation)
+Set `_` to `sectionsAction ρ (π ⁻¹ᵁ W) (h.preimage_le W)`. Set `_ : Algebra Γ(Y, W) Γ(X, π ⁻¹ᵁ W)` to `(π.app W).hom.toAlgebra`. Take `⟨_, _, _⟩` from `h.isInvariant W`. Establish `: Algebra.IsIntegral Γ(Y, W) Γ(X, π ⁻¹ᵁ W)` using `Algebra.IsInvariant.isIntegral (A := Γ(Y, W)) (B := Γ(X, π ⁻¹ᵁ W)) (G := G)`. Use `h.surjective` as an intermediate fact.
+
+Apply `isAffineOpen_of_isAffineOpen_basicOpen W {b : Γ(Y, W) | IsAffineOpen (Y.basicOpen b)} ?_ fun b hb ↦ hb` to reduce the goal to its premises. Assume the negation of the conclusion as `hne`. Take `⟨P, hPmax, hsP⟩` from `Ideal.exists_le_maximal _ hne`. Use `hPmax.isPrime` as an intermediate fact. Take `⟨Q, -, hQ, hQP⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral P ⊥ (Ideal.comap_bot_le_of_injective _ (by exact h.app_injective W))`.
+
+Establish `hxW : hW.fromSpec ⟨Q, hQ⟩ ∈ π ⁻¹ᵁ W` using `hW.range_fromSpec.le ⟨_, rfl⟩`. Take `⟨W0, hW0, hyW0, hW0W⟩` from `exists_isAffineOpen_mem_and_subset (x := π (hW.fromSpec ⟨Q, hQ⟩)) (U := W) hxW`. Establish `hO : ∀ g, (ρ g).hom (hW.fromSpec ⟨Q, hQ⟩) ∈ π ⁻¹ᵁ W0` using `fun g ↦ by show π ((ρ g).hom (hW.fromSpec ⟨Q, hQ⟩)) ∈ W0`. Rewrite using `[← Scheme.Hom.comp_apply, h.comp_eq g]`. Conclude with `hyW0`.
+
+Take `⟨t, ht, hxt, htO⟩` from `exists_isInvariantSection_basicOpen_le hW (h.preimage_le W) hxW (π ⁻¹ᵁ W0) hO`. Take `⟨b, rfl⟩` from `h.mem_range_app W t ht`. Establish `hDb : π ⁻¹ᵁ Y.basicOpen b = X.basicOpen (π.app W b)` using `Scheme.preimage_basicOpen π b`. Establish `hbW0 : Y.basicOpen b ≤ W0`. Introduce `z hz`.
+
+Take `⟨x', rfl⟩` from `π.surjective z`. Establish `hx' : x' ∈ π ⁻¹ᵁ Y.basicOpen b` using `hz`. Rewrite `hx'` using `[hDb]`. Conclude with `htO hx'`. Establish `hbs : IsAffineOpen (Y.basicOpen b)`.
+
+Use `hW0.basicOpen (Y.presheaf.map (homOfLE (show W0 ≤ W from hW0W)).op b)` as an intermediate fact. Rewrite `this` using `[Scheme.basicOpen_res, inf_eq_right.mpr hbW0]`. Then use the resulting hypothesis. Establish `hbP : b ∈ P` using `hsP (Ideal.subset_span hbs)`. Establish `hbQ : algebraMap Γ(Y, W) Γ(X, π ⁻¹ᵁ W) b ∈ Q`. Rewrite using `[← Ideal.mem_comap, hQP]`.
+
+Conclude with `hbP`. Establish `hx2 : hW.fromSpec ⟨Q, hQ⟩ ∈ X.basicOpen (π.app W b)` using `hxt`. Establish `hx3 : (⟨Q, hQ⟩ : PrimeSpectrum Γ(X, π ⁻¹ᵁ W)) ∈ hW.fromSpec ⁻¹ᵁ X.basicOpen (π.app W b)` using `hx2`. Rewrite `hx3` using `[hW.fromSpec_preimage_basicOpen]`. Conclude with `hx3 hbQ`.
+-/
 theorem IsAffineQuotient.isAffineOpen_of_preimage [Finite G] {ρ : G →* Aut X} {π : X ⟶ Y}
     (h : IsAffineQuotient ρ π) {W : Y.Opens} (hW : IsAffineOpen (π ⁻¹ᵁ W)) : IsAffineOpen W := by
   classical
@@ -702,6 +895,9 @@ theorem IsAffineQuotient.isAffineOpen_of_preimage [Finite G] {ρ : G →* Aut X}
   rw [hW.fromSpec_preimage_basicOpen] at hx3
   exact hx3 hbQ
 
+/- English proof (translation)
+Conclude with `FiniteSubsetsInAffineOpens.exists_isAffineOpen s hs`.
+-/
 theorem exists_isAffineOpen_of_finite_opens_proj {σ : Type*} {A : Type u} [CommRing A]
     [SetLike σ A] [AddSubgroupClass σ A] (𝒜 : ℕ → σ) [GradedRing 𝒜] (O : (Proj 𝒜).Opens)
     (s : Set O.toScheme) (hs : s.Finite) :
@@ -711,6 +907,11 @@ section Stages
 
 variable {H : Type w} [Group H] {ρ : G →* Aut X} {φ : H →* G} {π : X ⟶ Y}
 
+/- English proof (translation)
+Take `⟨k', hk'⟩ : g * φ k * g⁻¹ ∈ φ.range` from `hφ.conj_mem _ ⟨k, rfl⟩ g`. Establish `e : g * φ k = φ k' * g` using `by rw [hk']; group`. Establish `h1 : (ρ (φ k)).hom ≫ (ρ g).hom = (ρ g).hom ≫ (ρ (φ k')).hom`. Use `congrArg (fun a ↦ (ρ a).hom) e` as an intermediate fact. Simplify using `only [map_mul, Aut.Aut_mul_def] at this`.
+
+Conclude with `this`. Use `show (ρ (φ k)).hom ≫ (ρ g).hom ≫ π = (ρ g).hom ≫ π`. Rewrite using `[reassoc_of% h1]`. Conclude with `congrArg ((ρ g).hom ≫ ·) (hπ k')`.
+-/
 theorem comp_hom_comp_eq_of_normal [hφ : φ.range.Normal] (hπ : ∀ k, (ρ.comp φ k).hom ≫ π = π)
     (g : G) (k : H) : (ρ.comp φ k).hom ≫ (ρ g).hom ≫ π = (ρ g).hom ≫ π := by
   obtain ⟨k', hk'⟩ : g * φ k * g⁻¹ ∈ φ.range := hφ.conj_mem _ ⟨k, rfl⟩ g
@@ -741,10 +942,26 @@ noncomputable def IsAffineQuotient.residualAction [Finite H] [φ.range.Normal]
     Iso.ext (mul g g')
 
 @[reassoc]
+/- English proof (translation)
+Conclude with `h.comp_desc _ (comp_hom_comp_eq_of_normal h.comp_eq g)`.
+-/
 theorem IsAffineQuotient.comp_residualAction [Finite H] [φ.range.Normal]
     (h : IsAffineQuotient (ρ.comp φ) π) (g : G) :
     π ≫ (h.residualAction g).hom = (ρ g).hom ≫ π := by exact h.comp_desc _ (comp_hom_comp_eq_of_normal h.comp_eq g)
 
+/- English proof (translation)
+Rewrite using `[← Category.assoc, ← hτ g, Category.assoc, h'.comp_eq g]`. Use `isAffineHom := by`. Use `h.isAffineHom` as an intermediate fact. Use `h'.isAffineHom` as an intermediate fact. Use `infer_instance`.
+
+Use `app_injective W := by`. Introduce `a b e`. Apply `h'.app_injective W` to reduce the goal to its premises. Apply `h.app_injective (π' ⁻¹ᵁ W)` to reduce the goal to its premises. Conclude with `e`.
+
+Use `mem_range_app W s hs := by`. Take `⟨s₁, rfl⟩` from `h.mem_range_app (π' ⁻¹ᵁ W) s fun k ↦ hs (φ k)`. Establish `hs₁ : IsInvariantSection τ (π' ⁻¹ᵁ W) s₁`. Introduce `g`. Use `⟨h'.preimage_le W g, ?_⟩` and prove the remaining obligations.
+
+Apply `h.app_injective (π' ⁻¹ᵁ W)` to reduce the goal to its premises. Take `⟨e, he⟩` from `hs g`. Establish `e' : π ⁻¹ᵁ π' ⁻¹ᵁ W ≤ (ρ g).hom ⁻¹ᵁ π ⁻¹ᵁ π' ⁻¹ᵁ W` using `e`. Establish `key : (τ g).hom.appLE (π' ⁻¹ᵁ W) (π' ⁻¹ᵁ W) (h'.preimage_le W g) ≫ π.app (π' ⁻¹ᵁ W) = π.app (π' ⁻¹ᵁ W) ≫ (ρ g).hom.appLE (π ⁻¹ᵁ π' ⁻¹ᵁ W) (π ⁻¹ᵁ π' ⁻¹ᵁ W) e'`. Rewrite using `[Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_comp_appLE, Scheme.Hom.appLE_comp_appLE]`.
+
+Use `congr 1`. Conclude with `hτ g`. Use `congr($key s₁)` as an intermediate fact. Rewrite `this` using `[CommRingCat.comp_apply, CommRingCat.comp_apply]`. Conclude with `this.trans he`.
+
+Take `⟨s₂, rfl⟩` from `h'.mem_range_app W s₁ hs₁`. Conclude with `⟨s₂, rfl⟩`.
+-/
 theorem IsAffineQuotient.comp (h : IsAffineQuotient (ρ.comp φ) π) {τ : G →* Aut Y}
     (hτ : ∀ g, π ≫ (τ g).hom = (ρ g).hom ≫ π) {π' : Y ⟶ Z} (h' : IsAffineQuotient τ π') :
     IsAffineQuotient ρ (π ≫ π') where
@@ -810,8 +1027,14 @@ def overAction (ρ : G →* Aut X) : G →* Aut X.left :=
   ((Over.forget S).mapAut X).comp ρ
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem overAction_hom (ρ : G →* Aut X) (g : G) : (overAction ρ g).hom = (ρ g).hom.left := rfl
 
+/- English proof (translation)
+Rewrite using `[overAction_hom]`. Conclude with `Over.w (ρ g).hom`.
+-/
 theorem overAction_comp (ρ : G →* Aut X) (g : G) : (overAction ρ g).hom ≫ X.hom = X.hom := by
   rw [overAction_hom]
   exact Over.w (ρ g).hom
@@ -825,21 +1048,37 @@ noncomputable def finiteQuotientOver.π : X ⟶ finiteQuotientOver ρ :=
   Over.homMk (finiteQuotient.π (overAction ρ)) (finiteQuotient.π_desc _ _ (overAction_comp ρ))
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem finiteQuotientOver.π_left :
     (finiteQuotientOver.π ρ).left = finiteQuotient.π (overAction ρ) := rfl
 
+/- English proof (translation)
+Rewrite using `[finiteQuotientOver.π_left]`. Conclude with `finiteQuotient.isAffineQuotient _`. Use the proof step `@[reassoc (attr := simp)]`.
+-/
 theorem finiteQuotientOver.isAffineQuotient :
     IsAffineQuotient (overAction ρ) (finiteQuotientOver.π ρ).left := by
   rw [finiteQuotientOver.π_left]
   exact finiteQuotient.isAffineQuotient _
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, finiteQuotientOver.π_left, ← overAction_hom]`. Conclude with `finiteQuotient.comp_π _ g`.
+-/
 theorem finiteQuotientOver.comp_π (g : G) :
     (ρ g).hom ≫ finiteQuotientOver.π ρ = finiteQuotientOver.π ρ := by
   apply Over.OverMorphism.ext
   rw [Over.comp_left, finiteQuotientOver.π_left, ← overAction_hom]
   exact finiteQuotient.comp_π _ g
 
+/- English proof (translation)
+Establish `hf' : ∀ g, (overAction ρ g).hom ≫ f.left = f.left` using `fun g ↦ by`. Rewrite using `[overAction_hom, ← Over.comp_left, hf]`. Use `⟨Over.homMk (finiteQuotient.desc _ f.left hf') (finiteQuotient.hom_ext _ ?_), ?_, ?_⟩` and prove the remaining obligations. Simplify using `[finiteQuotientOver]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Conclude with `finiteQuotient.π_desc _ _ hf'`. Introduce `y hy`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `finiteQuotient.hom_ext` to reduce the goal to its premises. Use `congrArg (fun m ↦ m.left) hy` as an intermediate fact.
+
+Conclude with `this.trans (finiteQuotient.π_desc _ _ hf').symm`.
+-/
 theorem finiteQuotientOver.existsUnique_π_comp_eq {T : Over S} (f : X ⟶ T)
     (hf : ∀ g, (ρ g).hom ≫ f = f) :
     ∃! f' : finiteQuotientOver ρ ⟶ T, finiteQuotientOver.π ρ ≫ f' = f := by
@@ -857,6 +1096,9 @@ theorem finiteQuotientOver.existsUnique_π_comp_eq {T : Over S} (f : X ⟶ T)
 
 end Over
 
+/- English proof (translation)
+Establish `h : IsAffineQuotient (1 : G →* Aut X) (𝟙 X)` using `⟨fun _ ↦ Category.id_comp _, inferInstance, fun _ ↦ Function.injective_id, fun _ s _ ↦ ⟨s, rfl⟩⟩`. Use `h.orbitsInAffineOpens` as an intermediate fact. Use `⟨this, ?_⟩` and prove the remaining obligations. Rewrite using `[← h.comp_uniqueIso_hom (finiteQuotient.isAffineQuotient _)]`. Use `infer_instance`.
+-/
 example [Finite G] : ∃ _ : OrbitsInAffineOpens (1 : G →* Aut X),
     IsIso (finiteQuotient.π (1 : G →* Aut X)) := by
   have h : IsAffineQuotient (1 : G →* Aut X) (𝟙 X) :=
@@ -867,6 +1109,9 @@ example [Finite G] : ∃ _ : OrbitsInAffineOpens (1 : G →* Aut X),
   rw [← h.comp_uniqueIso_hom (finiteQuotient.isAffineQuotient _)]
   infer_instance
 
+/- English proof (translation)
+The claim follows from `have h := (isFreeAction_specAction_iff L).mpr (FreeQuotient.isFreeRingAction_of_field Gal(L/K) L) ⟨⟨finiteQuotient.specIso K L⟩, finiteQuotient.etale_π h, fun y ↦ (finiteQuotient.finrank_π h y).trans (IsGalois.card_aut_eq_finrank K L)⟩`.
+-/
 example (K L : Type u) [Field K] [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L] :
     Nonempty (finiteQuotient (specAction Gal(L/K) L) ≅ Spec (.of K)) ∧
       Etale (finiteQuotient.π (specAction Gal(L/K) L)) ∧
@@ -875,11 +1120,17 @@ example (K L : Type u) [Field K] [Field L] [Algebra K L] [FiniteDimensional K L]
   ⟨⟨finiteQuotient.specIso K L⟩, finiteQuotient.etale_π h,
     fun y ↦ (finiteQuotient.finrank_π h y).trans (IsGalois.card_aut_eq_finrank K L)⟩
 
+/- English proof (translation)
+The claim follows from `fun h ↦ absurd (h.eq_one (𝟙 _) (g := -1) (Category.id_comp _)) (by decide)`.
+-/
 example : ¬ IsFreeAction (1 : ℤˣ →* Aut (Spec (.of ℤ))) := fun h ↦
   absurd (h.eq_one (𝟙 _) (g := -1) (Category.id_comp _)) (by decide)
 
 open NumberField in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨finiteQuotient.specIso _ _⟩`.
+-/
 example (K L : Type u) [Field K] [Field L] [NumberField K] [NumberField L] [Algebra K L]
     [IsGalois K L] :
     Nonempty (finiteQuotient (specAction Gal(L/K) (𝓞 L)) ≅ Spec (.of (𝓞 K))) :=
@@ -888,6 +1139,9 @@ example (K L : Type u) [Field K] [Field L] [NumberField K] [NumberField L] [Alge
 attribute [local instance] MvPolynomial.gradedAlgebra in
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor in
 
+/- English proof (translation)
+The claim follows from `have : IsSeparated (finiteQuotient.π ρ ≫ terminal.from (finiteQuotient ρ)) := by rw [terminal.comp_from] exact (Proj.instIsSeparated _).isSeparated_terminal_from (finiteQuotient.isAffineQuotient ρ).isSeparated _`.
+-/
 example (N : ℕ) [Finite G] (ρ : G →* Aut (PSpace ℤ N)) :
     IsSeparated (terminal.from (finiteQuotient ρ)) :=
   have : IsSeparated (finiteQuotient.π ρ ≫ terminal.from (finiteQuotient ρ)) := by

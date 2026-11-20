@@ -9,15 +9,26 @@ namespace GlobalTheory.BSP.DiscBasic
 
 variable (l : ℕ) [hl : Fact l.Prime] {A : Type} [CommRing A] (u : A) (ρ : ℝ≥0)
 
+/- English proof (translation)
+Use `(denseRange_ofPre l u ρ).induction_on₂ (p := fun x y => ‖x + y‖ ≤ max ‖x‖ ‖y‖) (isClosed_le (by fun_prop) (by fun_prop)) (fun a b => ?_) x y` and prove the remaining obligations. Rewrite using `[← map_add, norm_ofPre, norm_ofPre, norm_ofPre]`. Conclude with `gauge_add_le_max l u ρ a b`.
+-/
 theorem norm_add_le_max_disc (x y : Disc l u ρ) : ‖x + y‖ ≤ max ‖x‖ ‖y‖ := by
   refine (denseRange_ofPre l u ρ).induction_on₂ (p := fun x y => ‖x + y‖ ≤ max ‖x‖ ‖y‖)
     (isClosed_le (by fun_prop) (by fun_prop)) (fun a b => ?_) x y
   rw [← map_add, norm_ofPre, norm_ofPre, norm_ofPre]
   exact gauge_add_le_max l u ρ a b
 
+/- English proof (translation)
+The claim follows from `IsUltrametricDist.isUltrametricDist_of_forall_norm_add_le_max_norm (norm_add_le_max_disc l u ρ)`.
+-/
 theorem isUltrametricDist_disc : IsUltrametricDist (Disc l u ρ) :=
   IsUltrametricDist.isUltrametricDist_of_forall_norm_add_le_max_norm (norm_add_le_max_disc l u ρ)
 
+/- English proof (translation)
+Establish `hl0 : (0 : ℝ) < l` using `Nat.cast_pos.2 hl.out.pos`. Rewrite using `[← map_natCast (ofPre l u ρ), norm_ofPre]`. Use `gauge_le l u ρ (by positivity) (Submodule.subset_span ⟨1, 0, 0, ?_, ?_⟩)` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
+
+Simplify using the standard rewrite rules.
+-/
 theorem norm_l_disc_le : ‖((l : ℕ) : Disc l u ρ)‖ ≤ 1 / l := by
   have hl0 : (0 : ℝ) < l := Nat.cast_pos.2 hl.out.pos
   rw [← map_natCast (ofPre l u ρ), norm_ofPre]
@@ -25,6 +36,9 @@ theorem norm_l_disc_le : ‖((l : ℕ) : Disc l u ρ)‖ ≤ 1 / l := by
   · field_simp; simp
   · simp
 
+/- English proof (translation)
+Establish `hl0 : (0 : ℝ) < l` using `Nat.cast_pos.2 hl.out.pos`. Rewrite using `[norm_ofPre]`. Use `gauge_le l u ρ hl0 (Submodule.subset_span ⟨0, 0, 1, ?_, ?_⟩)` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 theorem norm_inv_disc_le : ‖ofPre l u ρ (IsLocalization.Away.invSelf (l : A))‖ ≤ l := by
   have hl0 : (0 : ℝ) < l := Nat.cast_pos.2 hl.out.pos
   rw [norm_ofPre]
@@ -32,12 +46,20 @@ theorem norm_inv_disc_le : ‖ofPre l u ρ (IsLocalization.Away.invSelf (l : A))
   · simp
   · simp
 
+/- English proof (translation)
+Rewrite using `[← map_natCast (ofPre l u ρ), ← map_mul, ← map_one (ofPre l u ρ)]`. Use `congr 1`. Rewrite using `[mul_comm, ← map_natCast (algebraMap A (PreDisc l u ρ))]`. Conclude with `IsLocalization.Away.mul_invSelf _`.
+-/
 theorem inv_mul_l_disc : ofPre l u ρ (IsLocalization.Away.invSelf (l : A)) * ((l : ℕ) : Disc l u ρ) = 1 := by
   rw [← map_natCast (ofPre l u ρ), ← map_mul, ← map_one (ofPre l u ρ)]
   congr 1
   rw [mul_comm, ← map_natCast (algebraMap A (PreDisc l u ρ))]
   exact IsLocalization.Away.mul_invSelf _
 
+/- English proof (translation)
+Establish `hl0 : (0 : ℝ) < l` using `Nat.cast_pos.2 hl.out.pos`. Apply `le_antisymm` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_le_iff₀ hl0]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← mul_assoc, inv_mul_l_disc, one_mul]`. Use `_ ≤ ‖ofPre l u ρ (IsLocalization.Away.invSelf (l : A))‖ * ‖((l : ℕ) : Disc l u ρ) * y‖ := norm_mul_le _ _`. Use `_ ≤ l * ‖((l : ℕ) : Disc l u ρ) * y‖ := mul_le_mul_of_nonneg_right (norm_inv_disc_le l u ρ) (norm_nonneg _)`. Use `_ = _ := by ring`.
+-/
 theorem norm_l_mul (y : Disc l u ρ) : ‖((l : ℕ) : Disc l u ρ) * y‖ = ‖y‖ / l := by
   have hl0 : (0 : ℝ) < l := Nat.cast_pos.2 hl.out.pos
   apply le_antisymm
@@ -52,6 +74,13 @@ theorem norm_l_mul (y : Disc l u ρ) : ‖((l : ℕ) : Disc l u ρ) * y‖ = ‖
           mul_le_mul_of_nonneg_right (norm_inv_disc_le l u ρ) (norm_nonneg _)
       _ = _ := by ring
 
+/- English proof (translation)
+Establish `hN' : ∀ n : ℕ, ∀ z : N, (l ^ n) • z = 0 → z = 0`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro z hz`. Simplify using `using hz`.
+
+Consider the case `succ n ih => intro z hz; exact ih z (hN _ (by rw [← mul_smul, ← pow_succ']; exact hz))`. Establish `hpre : ∀ y : PreDisc l u ρ, F (ofPre l u ρ y) = G (ofPre l u ρ y)`. Introduce `y`. Take `⟨n, a, hy⟩` from `IsLocalization.Away.surj (l : A) y`. Establish `e : ((l ^ n : ℕ) : Disc l u ρ) * ofPre l u ρ y = toDisc l u ρ a`.
+
+Rewrite using `[toDisc, RingHom.comp_apply, ← hy, map_mul, mul_comm (ofPre l u ρ y), ← map_natCast (ofPre l u ρ), ← map_natCast (algebraMap A (PreDisc l u ρ)), Nat.cast_pow, map_pow, map_pow]`. Use `sub_eq_zero.1 (hN' n _ ?_)` and prove the remaining obligations. Rewrite using `[smul_sub, ← map_nsmul F, ← map_nsmul G, nsmul_eq_mul, e, h, sub_self]`. Use extensionality with `x`. Conclude with `(denseRange_ofPre l u ρ).induction_on x (isClosed_eq hF hG) hpre`.
+-/
 theorem addHom_ext (N : Type) [NormedAddCommGroup N] (hN : ∀ z : N, l • z = 0 → z = 0)
     (F G : Disc l u ρ →+ N) (hF : Continuous F) (hG : Continuous G)
     (h : ∀ a, F (toDisc l u ρ a) = G (toDisc l u ρ a)) : F = G := by
@@ -71,12 +100,18 @@ theorem addHom_ext (N : Type) [NormedAddCommGroup N] (hN : ∀ z : N, l • z = 
   ext x
   exact (denseRange_ofPre l u ρ).induction_on x (isClosed_eq hF hG) hpre
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a => by rw [RingHom.comp_apply, hF.ext, hF'.ext, RingHom.comp_apply], fun x => (hF'.norm_le _).trans (hF.norm_le x)⟩`.
+-/
 theorem isDiscMap_comp {A' A'' : Type} [CommRing A'] [CommRing A''] {u' : A'} {u'' : A''} {ρ' ρ'' : ℝ≥0}
     {f : A →+* A'} {f' : A' →+* A''} {F : Disc l u ρ →+* Disc l u' ρ'} {F' : Disc l u' ρ' →+* Disc l u'' ρ''}
     (hF : IsDiscMap f F) (hF' : IsDiscMap f' F') : IsDiscMap (f'.comp f) (F'.comp F) :=
   ⟨fun a => by rw [RingHom.comp_apply, hF.ext, hF'.ext, RingHom.comp_apply],
     fun x => (hF'.norm_le _).trans (hF.norm_le x)⟩
 
+/- English proof (translation)
+Introduce `l _ A _ u ρ` and use `⟨isUltrametricDist_disc l u ρ, norm_l_mul l u ρ, fun N _ hN F G hF hG h => addHom_ext l u ρ N hN F G hF hG h, fun _ _ _ _ _ _ _ _ _ _ _ _ hF hF' => isDiscMap_comp l u ρ hF hF'⟩`.
+-/
 theorem disc_basic : ∀ (l : ℕ) [Fact l.Prime] (A : Type) [CommRing A] (u : A) (ρ : ℝ≥0), IsUltrametricDist (Disc l u ρ) ∧ (∀ y : Disc l u ρ, ‖((l : ℕ) : Disc l u ρ) * y‖ = ‖y‖ / l) ∧ (∀ (N : Type) [NormedAddCommGroup N], (∀ z : N, l • z = 0 → z = 0) → ∀ F G : Disc l u ρ →+ N, Continuous F → Continuous G → (∀ a, F (toDisc l u ρ a) = G (toDisc l u ρ a)) → F = G) ∧ ∀ (A' A'' : Type) [CommRing A'] [CommRing A''] (u' : A') (u'' : A'') (ρ' ρ'' : ℝ≥0) (f : A →+* A') (f' : A' →+* A'') (F : Disc l u ρ →+* Disc l u' ρ') (F' : Disc l u' ρ' →+* Disc l u'' ρ''), IsDiscMap f F → IsDiscMap f' F' → IsDiscMap (f'.comp f) (F'.comp F) :=
   fun l _ A _ u ρ => ⟨isUltrametricDist_disc l u ρ, norm_l_mul l u ρ,
     fun N _ hN F G hF hG h => addHom_ext l u ρ N hN F G hF hG h,

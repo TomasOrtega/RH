@@ -11,6 +11,11 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 def pC (P : Ideal (MRing ι)) : Ideal (MRingOver ℂ ι) :=
   Ideal.span (map (Int.castRingHom ℂ) '' (P : Set (MRing ι)))
 
+/- English proof (translation)
+Use extensionality with `z`. Simplify using `only [mcPts, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨h1, fun f hf => ?_⟩` and prove the remaining obligations.
+
+Establish `hle : pC P ≤ RingHom.ker (MvPolynomial.eval z)` using `Ideal.span_le.2 (by rintro _ ⟨g, hg, rfl⟩; exact h2 g hg)`. Conclude with `RingHom.mem_ker.1 (hle hf)`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1, fun f hf => h2 _ (Ideal.subset_span ⟨f, hf, rfl⟩)⟩`.
+-/
 theorem mcPts_eq_pC (P : Ideal (MRing ι)) :
     mcPts P = {z | (∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) ∧ ∀ f ∈ pC P, eval z f = 0} := by
   ext z

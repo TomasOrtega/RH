@@ -9,6 +9,13 @@ open scoped TensorProduct
 
 namespace GlobalTheory.CompanionTheory.KFin.LeviOne
 
+/- English proof (translation)
+Establish `hd : ∀ m : Matrix (Fin r) (Fin r) S, m = 1 → Matrix.diagonal (fun i => m i i) = 1`. Introduce `m hm`. Substitute `hm` using the available equality. Simplify using the standard rewrite rules. Establish `hPa : (1 - a * d - b * c) * a = 0`.
+
+Rewrite using `[Matrix.sub_mul, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc, da, Matrix.mul_assoc, ca, Matrix.mul_one, Matrix.mul_zero]`. Simplify using the standard rewrite rules. Establish `hPb : (1 - a * d - b * c) * b = 0`. Rewrite using `[Matrix.sub_mul, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc, db, Matrix.mul_assoc, cb, Matrix.mul_one, Matrix.mul_zero]`. Simplify using the standard rewrite rules.
+
+Establish `hPP : (1 - a * d - b * c) * (1 - a * d - b * c) = 1 - a * d - b * c` using `by conv_lhs => rw [Matrix.mul_sub (1 - a * d - b * c) (1 - a * d) (b * c), Matrix.mul_sub (1 - a * d - b * c) 1 (a * d)]`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hPa, hPb, Matrix.zero_mul, Matrix.zero_mul, Matrix.mul_one]`. Simplify using the standard rewrite rules. Rewrite using `[Matrix.mul_one, Matrix.mul_one, Matrix.mul_one, hPP, hd _ da, hd _ cb, Matrix.mul_one, Matrix.mul_one]`. Normalize the expressions using the abelian group laws.
+-/
 theorem sum_parts {S : Type} [Ring S] {n r : ℕ} {a b : Matrix (Fin n) (Fin r) S} {c d : Matrix (Fin r) (Fin n) S}
     (ca : c * a = 0) (db : d * b = 0) (cb : c * b = 1) (da : d * a = 1) :
     a * Matrix.diagonal (fun i => (d * (1 : Matrix (Fin n) (Fin n) S) * a) i i) * d +
@@ -33,6 +40,15 @@ theorem sum_parts {S : Type} [Ring S] {n r : ℕ} {a b : Matrix (Fin n) (Fin r) 
   rw [Matrix.mul_one, Matrix.mul_one, Matrix.mul_one, hPP, hd _ da, hd _ cb, Matrix.mul_one, Matrix.mul_one]
   abel
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J r X Y h hJ hW A _ _`. Establish `hX : cT (σ : E →+* E) (cT (σ : E →+* E) X) = X`. Use extensionality with `i j`. Simplify using `[cT, cm_conj_conj h]`. Establish `hJJ : cT (σ : E →+* E) J = J`.
+
+Use extensionality with `i j`. Simplify `hJ.1 i j` using `[cT]`. Establish `yx : cT (σ : E →+* E) Y * J * X = 1`. Establish `e` using `congrArg (cT (σ : E →+* E)) hW.xy`. Rewrite `e` using `[Formalism.UG.cT_mul, Formalism.UG.cT_mul, hX, hJJ, Formalism.UG.cT_one, ← Matrix.mul_assoc]`.
+
+Conclude with `e`. Establish `m0 : ∀ {M : Matrix (Fin r) (Fin n) E} {N : Matrix (Fin n) (Fin r) E}, M * N = 0 → M.map (inclR (F` using `F) A) * N.map (inclR (F := F) A) = 0 := by`. Introduce `M N e`. Rewrite using `[← Matrix.map_mul, e, Matrix.map_zero _ (map_zero _)]`. Establish `m1 : ∀ {M : Matrix (Fin r) (Fin n) E} {N : Matrix (Fin n) (Fin r) E}, M * N = 1 → M.map (inclR (F` using `F) A) * N.map (inclR (F := F) A) = 1 := by`.
+
+Introduce `M N e`. Rewrite using `[← Matrix.map_mul, e, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `sum_parts (m0 hW.xx) (m0 hW.yy) (m1 hW.xy) (m1 yx)`.
+-/
 theorem leviMat_one : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {r : ℕ} {X Y : Matrix (Fin n) (Fin r) E}, IsCMExt F E σ → IsHermND σ J → IsWittFrame σ J X Y → ∀ (A : Type) [CommRing A] [Algebra F A], leviMat σ J A X Y (1 : Matrix (Fin n) (Fin n) (A ⊗[F] E)) = 1 := by
   intro F E _ _ _ _ _ σ n J r X Y h hJ hW A _ _
   have hX : cT (σ : E →+* E) (cT (σ : E →+* E) X) = X := by

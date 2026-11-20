@@ -16,6 +16,13 @@ section Bridge
 variable {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω] {Gw : Subgroup (Ω ≃ₐ[E] Ω)}
   {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l E Ω Gw O)
 
+/- English proof (translation)
+Establish `hc : Continuous fun g : ↥(GK Bw.Kw) => ((Bw.e.symm g : Gw) : Ω ≃ₐ[E] Ω)` using `continuous_subtype_val.comp Bw.e_symm_cont`. Take `⟨t, ht, hts⟩` from `isOpen_induced_iff.1 (hU.preimage hc)`. Establish `h1 : (1 : GQ l) ∈ t`. Establish `: (1 : ↥(GK Bw.Kw)) ∈ Subtype.val ⁻¹' t`. Rewrite using `[hts]`.
+
+Simplify using `[U.one_mem]`. Conclude with `this`. Take `⟨L, hL, hLt⟩` from `(krullTopology_mem_nhds_one_iff ℚ_[l] (Om l) t).1 (ht.mem_nhds h1)`. Use `⟨⟨L, hL⟩, fun g hg => ?_⟩` and prove the remaining obligations. Establish `: g ∈ Subtype.val ⁻¹' t` using `hLt hg`.
+
+Rewrite `this` using `[hts]`. Conclude with `this`.
+-/
 theorem exists_finExt_of_open (U : Subgroup (Ω ≃ₐ[E] Ω)) (hU : IsOpen (U : Set (Ω ≃ₐ[E] Ω))) :
     ∃ L : FinExt l, ∀ g : ↥(GK Bw.Kw), (g : GQ l) ∈ GK L → ((Bw.e.symm g : Gw) : Ω ≃ₐ[E] Ω) ∈ U := by
   have hc : Continuous fun g : ↥(GK Bw.Kw) => ((Bw.e.symm g : Gw) : Ω ≃ₐ[E] Ω) :=
@@ -32,6 +39,9 @@ theorem exists_finExt_of_open (U : Subgroup (Ω ≃ₐ[E] Ω)) (hU : IsOpen (U :
   rw [hts] at this
   exact this
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rep_apply {m : ℕ} (r : ↥Gw →* Matrix.GeneralLinearGroup (Fin m) O) (g : ↥(GK Bw.Kw))
     (x : Fin m → ↥Bw.LL.1) :
     Bw.rep r g x = (((r (Bw.e.symm g) : Matrix.GeneralLinearGroup (Fin m) O) : Matrix (Fin m) (Fin m) O).map Bw.toLL).mulVec x := rfl
@@ -49,8 +59,14 @@ section Lat
 variable {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω] {Gw : Subgroup (Ω ≃ₐ[E] Ω)}
   {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l E Ω Gw O)
 
+/- English proof (translation)
+The claim follows from `(Bw.eO a).2`.
+-/
 theorem toLL_mem (a : O) : Bw.toLL a ∈ OL Bw.LL := (Bw.eO a).2
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩ j`. Conclude with `(u j).2`. Introduce `h`. Conclude with `⟨fun j => ⟨x j, h j⟩, rfl⟩`.
+-/
 theorem mem_stdG_OL {LL : FinExt l} {k : ℕ} (x : Fin k → ↥LL.1) :
     x ∈ stdG ↥(OL LL) ↥LL.1 k ↔ ∀ j, x j ∈ OL LL := by
   constructor
@@ -92,6 +108,9 @@ def bridgeLat {m : ℕ} (r : ↥Gw →* Matrix.GeneralLinearGroup (Fin m) O)
         funext j'
         simp [Pi.single_apply] }
 
+/- English proof (translation)
+The claim follows from `(hres l K₂ K₁ h₁₂ (GK_le h₁₂) Bw.LL (bridgeLat Bw r hr h₁) hc).1`.
+-/
 theorem isCrys_up (LT : LocTheory) (hres : ElementDenominator.CrystallineRestrictionToExtension LT) {m : ℕ}
     (r : ↥Gw →* Matrix.GeneralLinearGroup (Fin m) O)
     (hr : Continuous fun g => ((r g : Matrix.GeneralLinearGroup (Fin m) O) : Matrix (Fin m) (Fin m) O))
@@ -108,6 +127,11 @@ namespace GlobalTheory.PotExt
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Establish `h : (MaximalUnramifiedExtension l).map (σ : Om l →ₐ[ℚ_[l]] Om l) ≤ MaximalUnramifiedExtension l`. Unfold `MaximalUnramifiedExtension`. Rewrite using `[IntermediateField.adjoin_map]`. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨y, ⟨m, hm, hlm, hy⟩, rfl⟩`.
+
+Conclude with `IntermediateField.subset_adjoin _ _ ⟨m, hm, hlm, by rw [← map_pow, hy, map_one]⟩`. Conclude with `h ((IntermediateField.mem_map _).2 ⟨x, hx, rfl⟩)`.
+-/
 theorem Kur_stable (σ : GQ l) {x : Om l} (hx : x ∈ MaximalUnramifiedExtension l) : σ x ∈ MaximalUnramifiedExtension l := by
   have h : (MaximalUnramifiedExtension l).map (σ : Om l →ₐ[ℚ_[l]] Om l) ≤ MaximalUnramifiedExtension l := by
     unfold MaximalUnramifiedExtension
@@ -117,22 +141,34 @@ theorem Kur_stable (σ : GQ l) {x : Om l} (hx : x ∈ MaximalUnramifiedExtension
     exact IntermediateField.subset_adjoin _ _ ⟨m, hm, hlm, by rw [← map_pow, hy, map_one]⟩
   exact h ((IntermediateField.mem_map _).2 ⟨x, hx, rfl⟩)
 
+/- English proof (translation)
+The claim follows from `IntermediateField.normal_iff_forall_map_le'.1 hn σ ((IntermediateField.mem_map _).2 ⟨x, hx, rfl⟩)`.
+-/
 theorem mem_of_normal {K' : FinExt l} (hn : Normal ℚ_[l] K'.1) (σ : GQ l) {x : Om l} (hx : x ∈ K'.1) :
     σ x ∈ K'.1 :=
   IntermediateField.normal_iff_forall_map_le'.1 hn σ ((IntermediateField.mem_map _).2 ⟨x, hx, rfl⟩)
 
+/- English proof (translation)
+Use `haveI : IsGalois ℚ_[l] K'.1 := IsGalois.mk`. Use `haveI : (GK K').Normal := (InfiniteGalois.normal_iff_isGalois K'.1).2 inferInstance`. Unfold `GKin`. Use `infer_instance`.
+-/
 theorem GKin_normal {K K' : FinExt l} (h : K.1 ≤ K'.1) (hn : Normal ℚ_[l] K'.1) : (GKin h).Normal := by
   haveI : IsGalois ℚ_[l] K'.1 := IsGalois.mk
   haveI : (GK K').Normal := (InfiniteGalois.normal_iff_isGalois K'.1).2 inferInstance
   unfold GKin
   infer_instance
 
+/- English proof (translation)
+Use `haveI : Finite (GQ l ⧸ GK K') := Subgroup.quotient_finite_of_isOpen _ (@IntermediateField.fixingSubgroup_isOpen _ _ _ _ _ K'.1 K'.2)`. Use `haveI : (GK K').FiniteIndex := Subgroup.finiteIndex_of_finite_quotient`. Unfold `GKin`. Use `infer_instance`.
+-/
 theorem GKin_finiteIndex {K K' : FinExt l} (h : K.1 ≤ K'.1) : (GKin h).FiniteIndex := by
   haveI : Finite (GQ l ⧸ GK K') := Subgroup.quotient_finite_of_isOpen _ (@IntermediateField.fixingSubgroup_isOpen _ _ _ _ _ K'.1 K'.2)
   haveI : (GK K').FiniteIndex := Subgroup.finiteIndex_of_finite_quotient
   unfold GKin
   infer_instance
 
+/- English proof (translation)
+Establish `hc1 : ((c : Om l)) ∈ K'.1` using `c.2.1`. Establish `hc2 : ((c : Om l)) ∈ MaximalUnramifiedExtension l` using `c.2.2`. Use `⟨⟨(g : GQ l) c, mem_of_normal hn _ hc1, Kur_stable _ hc2⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[P.PD_actB]`. Conclude with `P.actQ_Kur (g : GQ l) ⟨c, hc2⟩ ⟨(g : GQ l) c, Kur_stable _ hc2⟩ rfl`.
+-/
 theorem maxUnramifiedSubfield_stable_of_normal (P : LocPrime l) {K K' : FinExt l} (hn : Normal ℚ_[l] K'.1) (g : ↥(GK K)) (c : ↥(K0 K')) :
     ∃ c' : ↥(K0 K'), (P.PD K).actB g (algebraMap ↥(K0 K') P.R.B c) = algebraMap ↥(K0 K') P.R.B c' := by
   have hc1 : ((c : Om l)) ∈ K'.1 := c.2.1
@@ -145,6 +181,19 @@ end GlobalTheory.PotExt
 
 namespace GlobalTheory.PotExt
 
+/- English proof (translation)
+Introduce `D P hadm i k w hw Y hY ι _ n R n₀ R₀ hRc hR₀c hRp hR₀p`. Unfold `Br.IsPotCrysW LocBridge.IsPotCrysW at hRp hR₀p`. Use `choose Kj hj hcj using hRp`. Take `⟨K₀', h₀, hc₀⟩` from `hR₀p`. Establish `hLy : ∀ y : ↥Y, ∃ L : FinExt (D.nd.l i), ∀ g : ↥(GK (D.nbr i w hw).Kw), (g : GQ (D.nd.l i)) ∈ GK L → (((D.nbr i w hw).e.symm g : Gw D.nd w) : GE D.nd) ∈ Ine (F` using `D.host.E) (D.nd.plOm.1 w) → P.om k w y (((D.nbr i w hw).e.symm g : Gw D.nd w) : GE D.nd) = 1 := by`.
+
+Introduce `y`. Take `⟨U, hU, hUo⟩` from `P.om_open k w y (hY y y.2)`. Take `⟨L, hL⟩` from `exists_finExt_of_open (D.nbr i w hw) U hU`. Conclude with `⟨L, fun g hg hI => hUo _ (hL g hg) hI⟩`. Use `choose Ly hLy using hLy`.
+
+Use `haveI : ∀ j, FiniteDimensional ℚ_[D.nd.l i] (Kj j).1 := fun j => (Kj j).2`. Use `haveI : ∀ y, FiniteDimensional ℚ_[D.nd.l i] (Ly y).1 := fun y => (Ly y).2`. Use `haveI := (D.nbr i w hw).Kw.2`. Use `haveI := K₀'.2`. Set `M : IntermediateField ℚ_[D.nd.l i] (Om (D.nd.l i))` to `(D.nbr i w hw).Kw.1 ⊔ K₀'.1 ⊔ (⨆ j, (Kj j).1) ⊔ (⨆ y, (Ly y).1)`.
+
+Use `haveI : FiniteDimensional ℚ_[D.nd.l i] M := by infer_instance`. Set `K' : FinExt (D.nd.l i)` to `⟨IntermediateField.normalClosure ℚ_[D.nd.l i] M (Om (D.nd.l i)), inferInstance⟩`. Establish `hMK : M ≤ K'.1` using `IntermediateField.le_normalClosure M`. Establish `hn : Normal ℚ_[D.nd.l i] K'.1` using `normalClosure.normal _ _ _`. Establish `h : (D.nbr i w hw).Kw.1 ≤ K'.1` using `le_trans (le_sup_left.trans (le_sup_left.trans le_sup_left)) hMK`.
+
+Establish `h0K : K₀'.1 ≤ K'.1` using `le_trans (le_sup_right.trans (le_sup_left.trans le_sup_left)) hMK`. Use `⟨K', h, GKin_normal h hn, GKin_finiteIndex h, maxUnramifiedSubfield_stable_of_normal _ hn, fun j => ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hjK : (Kj j).1 ≤ K'.1` using `le_trans ((le_iSup (fun j => (Kj j).1) j).trans (le_sup_right.trans le_sup_left)) hMK`. Use `(GlobalTheory.PcRes.main _ _ _ _ _ h _ _ _ _ _).2.2 ?_` and prove the remaining obligations. Conclude with `isCrys_up (D.nbr i w hw) D.loc hadm _ ((hRc j).comp continuous_subtype_val) (hj j) hjK (hcj j)`.
+
+Use `(GlobalTheory.PcRes.main _ _ _ _ _ h _ _ _ _ _).2.2 ?_` and prove the remaining obligations. Conclude with `isCrys_up (D.nbr i w hw) D.loc hadm _ (hR₀c.comp continuous_subtype_val) h₀ h0K hc₀`. Introduce `y hy g hg hI`. Establish `hyK : (Ly ⟨y, hy⟩).1 ≤ K'.1` using `le_trans ((le_iSup (fun y => (Ly y).1) ⟨y, hy⟩).trans le_sup_right) hMK`. Conclude with `hLy ⟨y, hy⟩ g (GK_le hyK (Subgroup.mem_subgroupOf.1 hg)) hI`.
+-/
 theorem main : ∀ (D : D7) (P : Pend D), ElementDenominator.adm12 D → ∀ (i : D.nd.Loc) (k : Fin 2)
   (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i))
   (Y : Finset (Fb (D.host.g k) (D.host.g_prime k))), (∀ y ∈ Y, y ≠ 0) →

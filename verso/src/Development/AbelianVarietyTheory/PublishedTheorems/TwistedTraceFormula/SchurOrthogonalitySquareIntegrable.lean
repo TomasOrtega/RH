@@ -30,6 +30,13 @@ end Published
 
 namespace SqIntRep
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Set `c : ENNReal` to `Measure.haarScalarFactor μ.inv μ`. Establish `hc : μ.inv = c • μ` using `Measure.isMulLeftInvariant_eq_smul_of_regular μ.inv μ`. Establish `h1 : Measure.map Inv.inv (Measure.map Inv.inv μ) = c ^ 2 • μ`. Rewrite using `[← Measure.inv_def μ, hc, Measure.map_smul, ← Measure.inv_def μ, hc, smul_smul, pow_two]`.
+
+Establish `μeq : μ = c ^ 2 • μ`. Rewrite `h1` using `[Measure.map_map continuous_inv.measurable continuous_inv.measurable]`. Simplify `h1` using `only [inv_involutive, Function.Involutive.comp_self, Measure.map_id]`. Establish `K : TopologicalSpace.PositiveCompacts G` using `Classical.arbitrary _`. Establish `h2 : c ^ 2 * μ K = 1 ^ 2 * μ K` using `by conv_rhs => rw [μeq]`.
+
+Simplify using the standard rewrite rules. Establish `h3 : c ^ 2 = 1 ^ 2` using `(ENNReal.mul_left_inj (Measure.measure_pos_of_nonempty_interior _ K.interior_nonempty).ne' K.isCompact.measure_lt_top.ne).1 h2`. Establish `h4 : c = 1` using `(ENNReal.pow_right_strictMono two_ne_zero).injective h3`. Rewrite using `[hc, h4, one_smul]`.
+-/
 theorem isInvInvariant_of_unimodular {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [LocallyCompactSpace G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsHaarMeasure]
     [μ.Regular] [μ.IsMulRightInvariant] : μ.IsInvInvariant := by
@@ -73,10 +80,18 @@ def coefGraph (μ : Measure G) (π : G → (H →L[ℂ] H)) (w : H) :
     rw [h1, Pi.smul_apply, h2, map_smul, inner_smul_right, smul_eq_mul]
 
 omit [Group G] in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_coefGraph {π : G → (H →L[ℂ] H)} {w : H} {p : WithLp 2 (H × Lp ℂ 2 μ)} :
     p ∈ coefGraph μ π w ↔ (p.snd : G → ℂ) =ᵐ[μ] fun g => ⟪w, π g p.fst⟫_ℂ := Iff.rfl
 
 omit [Group G] in
+/- English proof (translation)
+Use `isSeqClosed_iff_isClosed.1 fun u p hu hp => ?_` and prove the remaining obligations. Establish `h1 : Filter.Tendsto (fun i => (u i).fst) Filter.atTop (nhds p.fst)` using `((WithLp.continuous_fst 2 H (Lp ℂ 2 μ)).tendsto p).comp hp`. Establish `h2 : Filter.Tendsto (fun i => (u i).snd) Filter.atTop (nhds p.snd)` using `((WithLp.continuous_snd 2 H (Lp ℂ 2 μ)).tendsto p).comp hp`. Take `⟨ns, hns, hae⟩` from `(tendstoInMeasure_of_tendsto_Lp h2).exists_seq_tendsto_ae`. Establish `hall : ∀ᵐ g ∂μ, ∀ i, ((u i).snd : G → ℂ) g = ⟪w, π g (u i).fst⟫_ℂ` using `ae_all_iff.2 fun i => hu i`.
+
+Use `mem_coefGraph.2 ?_` and prove the remaining obligations. Use `filter_upwards [hae, hall] with g h3 h4`. Establish `h5 : Filter.Tendsto (fun i => ⟪w, π g (u (ns i)).fst⟫_ℂ) Filter.atTop (nhds ⟪w, π g p.fst⟫_ℂ)` using `Filter.Tendsto.inner tendsto_const_nhds (((π g).continuous.tendsto _).comp (h1.comp hns.tendsto_atTop))`. Use `tendsto_nhds_unique h3 ?_` and prove the remaining obligations. Simplify `h5` using `only [h4]`.
+-/
 theorem isClosed_coefGraph (π : G → (H →L[ℂ] H)) (w : H) :
     IsClosed (coefGraph μ π w : Set (WithLp 2 (H × Lp ℂ 2 μ))) := by
   refine isSeqClosed_iff_isClosed.1 fun u p hu hp => ?_
@@ -96,6 +111,35 @@ theorem isClosed_coefGraph (π : G → (H →L[ℂ] H)) (w : H) :
   refine tendsto_nhds_unique h3 ?_
   simpa only [h4] using h5
 
+/- English proof (translation)
+Use `set Γ := coefGraph μ π w with hΓ`. Use `haveI : CompleteSpace Γ := (isClosed_coefGraph (μ := μ) π w).completeSpace_coe`. Set `ρ : G → (Lp ℂ 2 μ →ₗᵢ[ℂ] Lp ℂ 2 μ)` to `fun g => Lp.compMeasurePreservingₗᵢ ℂ (fun x => x * g) (measurePreserving_mul_right μ g)`. Establish `hρ : ∀ g (a : H) (f : Lp ℂ 2 μ), WithLp.toLp 2 (a, f) ∈ Γ → WithLp.toLp 2 (π g a, ρ g f) ∈ Γ`. Introduce `g a f hf`.
+
+Establish `h1 : (f : G → ℂ) =ᵐ[μ] fun x => ⟪w, π x a⟫_ℂ` using `hf`. Establish `h2` using `(measurePreserving_mul_right μ g).quasiMeasurePreserving.ae_eq_comp h1`. Establish `h3` using `Lp.coeFn_compMeasurePreserving f (measurePreserving_mul_right μ g)`. Express the relevant statement in the definitionally equal form `((ρ g f : Lp ℂ 2 μ) : G → ℂ) =ᵐ[μ] fun x => ⟪w, π x (π g a)⟫_ℂ`. Use `(h3.trans h2).trans (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
+
+Simplify using `[map_mul]`. Establish `huniq : ∀ (a : H) (f f' : Lp ℂ 2 μ), WithLp.toLp 2 (a, f) ∈ Γ → WithLp.toLp 2 (a, f') ∈ Γ → f = f'`. Introduce `a f f' hf hf'`. Establish `h1 : (f : G → ℂ) =ᵐ[μ] fun x => ⟪w, π x a⟫_ℂ` using `hf`. Establish `h2 : (f' : G → ℂ) =ᵐ[μ] fun x => ⟪w, π x a⟫_ℂ` using `hf'`.
+
+Conclude with `Lp.ext (h1.trans h2.symm)`. Establish `hinv : ∀ g (a : H), π g (π g⁻¹ a) = a` using `fun g a => by`. Rewrite using `[← ContinuousLinearMap.mul_apply, ← map_mul, mul_inv_cancel, map_one]`. Both sides reduce to the same expression. Set `ι : H →L[ℂ] WithLp 2 (H × Lp ℂ 2 μ)` to `(WithLp.prodContinuousLinearEquiv 2 ℂ H (Lp ℂ 2 μ)).symm.toContinuousLinearMap.comp (ContinuousLinearMap.inl ℂ H (Lp ℂ 2 μ))`.
+
+Establish `hι : ∀ a, ι a = WithLp.toLp 2 (a, 0)` using `fun a => rfl`. Set `A : H →L[ℂ] H` to `(WithLp.fstL 2 ℂ H (Lp ℂ 2 μ)).comp (Γ.starProjection.comp ι)`. Establish `hA : ∀ a, A a = (Γ.starProjection (ι a)).fst` using `fun a => rfl`. Establish `hcomm : ∀ g, π g * A = A * π g`. Introduce `g`.
+
+Use extensionality with `a`. Rewrite using `[ContinuousLinearMap.mul_apply, ContinuousLinearMap.mul_apply, hA, hA]`. Use `set p := Γ.starProjection (ι a) with hp`. Establish `hpm : WithLp.toLp 2 (p.fst, p.snd) ∈ Γ` using `Γ.starProjection_apply_mem _`. Establish `key : Γ.starProjection (ι (π g a)) = WithLp.toLp 2 (π g p.fst, ρ g p.snd)`.
+
+Use `Submodule.eq_starProjection_of_mem_of_inner_eq_zero (hρ g _ _ hpm) fun q hq => ?_` and prove the remaining obligations. Establish `hq' : WithLp.toLp 2 (q.fst, q.snd) ∈ Γ` using `hq`. Establish `h1` using `hρ g⁻¹ _ _ hq'`. Establish `h2` using `hρ g _ _ h1`. Rewrite `h2` using `[hinv]`.
+
+Establish `h3 : ρ g (ρ g⁻¹ q.snd) = q.snd` using `huniq _ _ _ h2 hq'`. Establish `h4` using `Submodule.starProjection_inner_eq_zero (K := Γ) (ι a) _ h1`. Rewrite `h4` using `[← hp, WithLp.prod_inner_apply]`. Rewrite using `[WithLp.prod_inner_apply]`. Express the relevant statement in the definitionally equal form `⟪a - p.fst, π g⁻¹ q.fst⟫_ℂ + ⟪0 - p.snd, ρ g⁻¹ q.snd⟫_ℂ = 0 at h4`.
+
+Express the relevant statement in the definitionally equal form `⟪π g a - π g p.fst, q.fst⟫_ℂ + ⟪0 - ρ g p.snd, q.snd⟫_ℂ = 0`. Rewrite `h4` using `[SchurOrth.inner_rep π hπ, inv_inv, map_sub, ← (ρ g).inner_map_map, h3, map_sub, map_zero]`. Conclude with `h4`. Rewrite using `[key]`. Both sides reduce to the same expression.
+
+Take `⟨c, hc⟩` from `hilbert_schur H G π hπ hirr A hcomm`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Use `set p := Γ.starProjection (ι v₀) with hp`. Establish `hp1 : p.fst = 0` using `by rw [← hA, hc]; simp`.
+
+Establish `hm : WithLp.toLp 2 (v₀, h.toLp _) ∈ Γ` using `h.coeFn_toLp`. Establish `hpm : WithLp.toLp 2 (p.fst, p.snd) ∈ Γ` using `Γ.starProjection_apply_mem _`. Rewrite `hpm` using `[hp1]`. Establish `hp2 : p.snd = 0` using `huniq 0 _ _ hpm Γ.zero_mem`. Establish `h4` using `Submodule.starProjection_inner_eq_zero (K := Γ) (ι v₀) _ hm`.
+
+Rewrite `h4` using `[← hp, WithLp.prod_inner_apply]`. Express the relevant statement in the definitionally equal form `⟪v₀ - p.fst, v₀⟫_ℂ + ⟪0 - p.snd, h.toLp _⟫_ℂ = 0 at h4`. Rewrite `h4` using `[hp1, hp2]`. Simplify using `at h4`. Conclude with `hv₀ h4`.
+
+Establish `hv : (Γ.starProjection (ι (c⁻¹ • v))).fst = v`. Rewrite using `[← hA, hc]`. Simplify using `[smul_smul, hc0]`. Establish `hm` using `mem_coefGraph.1 (Γ.starProjection_apply_mem (ι (c⁻¹ • v)))`. Rewrite `hm` using `[hv]`.
+
+Conclude with `(Lp.memLp _).ae_eq hm`.
+-/
 theorem memLp_coef_right [CompleteSpace H] [MeasurableMul G] [μ.IsMulRightInvariant]
     (π : G →* (H →L[ℂ] H)) (hπ : ∀ g v, ‖π g v‖ = ‖v‖)
     (hirr : ∀ S : Submodule ℂ H, IsClosed (S : Set H) → (∀ g, ∀ v ∈ S, π g v ∈ S) → S = ⊥ ∨ S = ⊤)
@@ -172,6 +216,11 @@ theorem memLp_coef_right [CompleteSpace H] [MeasurableMul G] [μ.IsMulRightInvar
   rw [hv] at hm
   exact (Lp.memLp _).ae_eq hm
 
+/- English proof (translation)
+Establish `h1` using `memLp_coef_right π hπ hirr hv₀ h w`. Establish `h2 : MemLp (fun g => ⟪w, π g w₀⟫_ℂ) 2 μ`. Establish `h3` using `(h1.comp_measurePreserving (Measure.measurePreserving_inv μ)).star`. Use `h3.ae_eq (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [Pi.star_apply, Function.comp_apply]`.
+
+Rewrite using `[SchurOrth.inner_rep π hπ, inv_inv]`. Conclude with `inner_conj_symm _ _`. Conclude with `memLp_coef_right π hπ hirr hw₀ h2 v`.
+-/
 theorem memLp_coef [CompleteSpace H] [MeasurableMul G] [MeasurableInv G] [μ.IsMulRightInvariant]
     [μ.IsInvInvariant] (π : G →* (H →L[ℂ] H)) (hπ : ∀ g v, ‖π g v‖ = ‖v‖)
     (hirr : ∀ S : Submodule ℂ H, IsClosed (S : Set H) → (∀ g, ∀ v ∈ S, π g v ∈ S) → S = ⊥ ∨ S = ⊤)
@@ -186,6 +235,11 @@ theorem memLp_coef [CompleteSpace H] [MeasurableMul G] [MeasurableInv G] [μ.IsM
     exact inner_conj_symm _ _
   exact memLp_coef_right π hπ hirr hw₀ h2 v
 
+/- English proof (translation)
+Set `π : Circle →* (ℂ →L[ℂ] ℂ)` to `{ toFun := fun g => (g : ℂ) • (1 : ℂ →L[ℂ] ℂ) map_one' := by simp map_mul' := fun a b => by simp [smul_smul, mul_comm] }`. Establish `hπ : ∀ g v, π g v = (g : ℂ) * v` using `fun g v => rfl`. Establish `hc : ∀ v, Continuous fun g => π g v` using `fun v => by`. Simplify using `only [hπ]`. Conclude with `continuous_subtype_val.mul continuous_const`.
+
+Use `⟨π, fun g => by simp [hπ], fun g v => by rw [hπ, norm_mul, Circle.norm_coe, one_mul], hc, fun S _ _ => Ideal.eq_bot_or_top S, 1, 1, one_ne_zero, one_ne_zero, ?_⟩` and prove the remaining obligations. Use `MemLp.of_bound (continuous_const.inner (hc 1)).aestronglyMeasurable 1 (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Rewrite using `[hπ, mul_one, RCLike.inner_apply, map_one, mul_one, Circle.norm_coe]`.
+-/
 example [MeasurableSpace Circle] [BorelSpace Circle] : ∃ π : Circle →* (ℂ →L[ℂ] ℂ),
     (∀ g, π g 1 = g) ∧ (∀ g v, ‖π g v‖ = ‖v‖) ∧ (∀ v, Continuous fun g => π g v) ∧
     (∀ S : Submodule ℂ ℂ, IsClosed (S : Set ℂ) → (∀ g, ∀ v ∈ S, π g v ∈ S) → S = ⊥ ∨ S = ⊤) ∧
@@ -207,6 +261,9 @@ example [MeasurableSpace Circle] [BorelSpace Circle] : ∃ π : Circle →* (ℂ
 
 end SqIntRep
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ _ μ _ _ _ H _ _ _ π hπ hc hirr ⟨v₀, w₀, hv₀, hw₀, h⟩`. Use `haveI := SqIntRep.isInvInvariant_of_unimodular μ`. Use `haveI : Nontrivial H := nontrivial_of_ne v₀ 0 hv₀`. Establish `hall` using `SqIntRep.memLp_coef π hπ hirr hv₀ hw₀ h`. Conclude with `⟨hall, SchurOrth.schur_orthogonality π hπ hc hirr hall⟩`.
+-/
 theorem Published.schurOrthogonalitySquareIntegrable' : Published.SchurOrthogonalitySquareIntegrable := by
   intro G _ _ _ _ _ _ _ μ _ _ _ H _ _ _ π hπ hc hirr ⟨v₀, w₀, hv₀, hw₀, h⟩
   haveI := SqIntRep.isInvInvariant_of_unimodular μ

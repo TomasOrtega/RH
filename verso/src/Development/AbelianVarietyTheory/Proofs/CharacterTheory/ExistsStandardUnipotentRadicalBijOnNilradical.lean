@@ -45,6 +45,11 @@ def unip {d : ℕ} (A : Submodule F (Fin d → F)) : Subgroup (GL (Fin d) F) whe
 
 open Polynomial in
 variable {F : Type} [Field F] in
+/- English proof (translation)
+Rewrite using `[Fintype.card_subtype, ← Finset.card_map Fin.valEmbedding, ← Nat.card_Ico a d]`. Use `congr 1`. Use extensionality with `n`. Simplify using `only [Finset.mem_map, Finset.mem_filter, Finset.mem_univ, true_and, Fin.valEmbedding_apply, Finset.mem_Ico]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨i, hi, rfl⟩`. Conclude with `⟨hi, i.isLt⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨⟨n, h2⟩, h1, rfl⟩`.
+-/
 private lemma card_fin_le_val_eq_sub (d a : ℕ) : Fintype.card {i : Fin d // a ≤ i.val} = d - a := by
   rw [Fintype.card_subtype, ← Finset.card_map Fin.valEmbedding, ← Nat.card_Ico a d]
   congr 1
@@ -59,6 +64,9 @@ private lemma card_fin_le_val_eq_sub (d a : ℕ) : Fintype.card {i : Fin d // a 
 
 open Polynomial in
 variable {F : Type} [Field F] in
+/- English proof (translation)
+Establish `hs` using `LinearMap.finrank_range_add_finrank_ker (LinearMap.funLeft F F (Subtype.val : {i : Fin d // a ≤ i.val} → Fin d))`. Rewrite `hs` using `[LinearMap.range_eq_top.mpr (LinearMap.funLeft_surjective_of_injective _ _ _ Subtype.val_injective), finrank_top, Module.finrank_fintype_fun_eq_card, Module.finrank_fintype_fun_eq_card, card_fin_le_val_eq_sub, Fintype.card_fin]`. Rewrite using `[_root_.GlobalTheory.CuspGL.UnipNilRad.lowSub]`. Use linear arithmetic over natural numbers and integers.
+-/
 private lemma finrank_lowSub_of_le {d a : ℕ} (had : a ≤ d) :
     Module.finrank F (_root_.GlobalTheory.CuspGL.UnipNilRad.lowSub F d a) = a := by
   have hs := LinearMap.finrank_range_add_finrank_ker
@@ -72,6 +80,11 @@ private lemma finrank_lowSub_of_le {d a : ℕ} (had : a ≤ d) :
 
 open Polynomial in
 variable {F : Type} [Field F] in
+/- English proof (translation)
+Rewrite using `[_root_.GlobalTheory.CuspGL.UnipNilRad.lowSub, LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h i hi`. Conclude with `congrFun h ⟨i, hi⟩`. Introduce `h`.
+
+Use function extensionality and compare the values at `i`. Conclude with `h i.1 i.2`.
+-/
 private lemma mem_lowSub_iff_apply_eq_zero {d a : ℕ} (v : Fin d → F) :
     v ∈ _root_.GlobalTheory.CuspGL.UnipNilRad.lowSub F d a ↔ ∀ i : Fin d, a ≤ i.val → v i = 0 := by
   rw [_root_.GlobalTheory.CuspGL.UnipNilRad.lowSub, LinearMap.mem_ker]
@@ -84,6 +97,19 @@ private lemma mem_lowSub_iff_apply_eq_zero {d a : ℕ} (v : Fin d → F) :
 
 open Polynomial in
 variable {F : Type} [Field F] in
+/- English proof (translation)
+Use `show ((∀ x, Matrix.toLin' N x ∈ _) ∧ ∀ x ∈ _, Matrix.toLin' N x = 0) ↔ _`. Simplify using `only [Matrix.toLin'_apply, mem_lowSub_iff_apply_eq_zero]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ i j`. Distinguish the cases in `hi : a ≤ i.val`.
+
+Use `left`. Use `h1 (Pi.single j 1) i hi` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_single_one]`. Distinguish the cases in `hj : a ≤ j.val`. Conclude with `Or.inr ⟨by omega, hj⟩`.
+
+Use `left`. Establish `hx : ∀ k : Fin d, a ≤ k.val → (Pi.single j (1 : F) : Fin d → F) k = 0`. Introduce `k hk`. Establish `: k ≠ j` using `fun h => hj (h ▸ hk)`. Simplify using `[Pi.single_apply, this]`.
+
+Use `congrFun (h2 _ hx) i` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_single_one]`. Introduce `h`. Use `⟨fun x i hi => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec, dotProduct]`.
+
+Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Break down `h i j with h0 | ⟨hlt, _⟩` into its components or cases. Simplify using `[h0]`. Use linear arithmetic over natural numbers and integers. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[Matrix.mulVec, dotProduct, Pi.zero_apply]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Break down `h i j with h0 | ⟨_, hj⟩` into its components or cases. Simplify using `[h0]`. Simplify using `[hx j hj]`.
+-/
 private lemma toLin'_mem_nilRad_lowSub_iff {d a : ℕ} (N : Matrix (Fin d) (Fin d) F) :
     Matrix.toLin' N ∈ _root_.GlobalTheory.CuspGL.nilRad (_root_.GlobalTheory.CuspGL.UnipNilRad.lowSub F d a) ↔
       ∀ i j : Fin d, N i j = 0 ∨ (i.val < a ∧ a ≤ j.val) := by
@@ -121,6 +147,17 @@ private lemma toLin'_mem_nilRad_lowSub_iff {d a : ℕ} (N : Matrix (Fin d) (Fin 
 open Polynomial in
 variable {F : Type} [Field F] in
 
+/- English proof (translation)
+Introduce `F _ _ d a had`. Use `⟨_root_.GlobalTheory.CuspGL.UnipNilRad.lowSub F d a, _root_.GlobalTheory.CuspGL.UnipNilRad.unip (_root_.GlobalTheory.CuspGL.UnipNilRad.lowSub F d a), finrank_lowSub_of_le had, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `u show Matrix.toLin' (u : Matrix (Fin d) (Fin d) F) - 1 ∈ _root_.GlobalTheory.CuspGL.nilRad (_root_.GlobalTheory.CuspGL.UnipNilRad.lowSub F d a) ↔ _`. Establish `hsub : Matrix.toLin' (u : Matrix (Fin d) (Fin d) F) - 1 = Matrix.toLin' ((u : Matrix (Fin d) (Fin d) F) - 1)`. Rewrite using `[map_sub, Matrix.toLin'_one]`.
+
+Both sides reduce to the same expression. Rewrite using `[hsub, toLin'_mem_nilRad_lowSub_iff, Set.mem_setOf_eq]`. Simplify using `only [Matrix.sub_apply, Matrix.one_apply, sub_eq_zero]`. Use `⟨fun u hu => hu, fun u _ v _ h => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Conclude with `Units.ext (Matrix.toLin'.injective (sub_left_injective h))`.
+
+Use `set N := LinearMap.toMatrix' f with hNdef`. Establish `hNf : Matrix.toLin' N = f` using `Matrix.toLin'_toMatrix' f`. Establish `hN : N * N = 0`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.toLin'_mul, LinearMap.comp_apply, hNf, map_zero, LinearMap.zero_apply]`. Conclude with `hf.2 _ (hf.1 x)`. Set `u : GL (Fin d) F` to `⟨1 + N, 1 - N, by noncomm_ring; rw [hN]; simp, by noncomm_ring; rw [hN]; simp⟩`. Establish `hu : Matrix.toLin' (u : Matrix (Fin d) (Fin d) F) - 1 = f` using `by show Matrix.toLin' (1 + N) - 1 = f`. Rewrite using `[map_add, Matrix.toLin'_one, hNf]`.
+
+Conclude with `add_sub_cancel_left (1 : Module.End F (Fin d → F)) f`. Use `⟨u, ?_, hu⟩` and prove the remaining obligations. Use `show Matrix.toLin' (u : Matrix (Fin d) (Fin d) F) - 1 ∈ _root_.GlobalTheory.CuspGL.nilRad (_root_.GlobalTheory.CuspGL.UnipNilRad.lowSub F d a)`. Rewrite using `[hu]`. Conclude with `hf`.
+-/
 theorem _root_.GlobalTheory.CuspGL.UnipNilRad.exists_unip_bijOn_nilRad :
     ∀ (F : Type) [Field F] [Finite F] (d a : ℕ), a ≤ d → ∃ (A : Submodule F (Fin d → F)) (H : Subgroup (GL (Fin d) F)), Module.finrank F A = a ∧ (H : Set (GL (Fin d) F)) = {u : GL (Fin d) F | ∀ i j : Fin d, (u : Matrix (Fin d) (Fin d) F) i j = (if i = j then 1 else 0) ∨ (i.val < a ∧ a ≤ j.val)} ∧ Set.BijOn (fun u : GL (Fin d) F => Matrix.toLin' (u : Matrix (Fin d) (Fin d) F) - 1) (H : Set (GL (Fin d) F)) (_root_.GlobalTheory.CuspGL.nilRad A) := by
   intro F _ _ d a had

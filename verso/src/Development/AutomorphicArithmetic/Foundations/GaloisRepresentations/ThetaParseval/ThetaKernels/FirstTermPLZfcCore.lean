@@ -12,6 +12,19 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace PositivityTheory.FTA.ZFC
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ}
 variable {Y : Spc F E n}
+/- English proof (translation)
+Establish `hσ : ∀ a, σ (σ a) = a` using `GlobalTheory.LeviLine.sigma_invol hB.cm`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hB.cm.2.2.1]; norm_num)`. Take `⟨ε, hε⟩` from `hb.1`. Establish `hβ : β.1 ∈ PositivityTheory.SiegelWeilFormula.kfour.nCond σ n ε` using `(PositivityTheory.SiegelWeilFormula.kfour.mem_nA_iff hσ hε β.1).1 β.2`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Use `(PositivityTheory.SiegelWeilFormula.kfour.mem_nF_iff β).2 (rat_of_ker hB.cm hB.std ε β.1 ?_ fun T hT => ?_)` and prove the remaining obligations. Establish `e` using `hβ`. Simplify using `only [PositivityTheory.SiegelWeilFormula.kfour.nCond, AddSubgroup.mem_mk, ] at e`. Rewrite using `[e, Int.cast_smul_eq_zsmul]`.
+
+Establish `hm : incM F T ∈ nA σ Y b`. Use `(PositivityTheory.SiegelWeilFormula.kfour.mem_nA_iff hσ hε _).2 ?_` and prove the remaining obligations. Use `show (incM F T)ᵀ = -((((ε : ℤ) : AE F E)) • (incM F T).map (cA σ))`. Rewrite using `[Int.cast_smul_eq_zsmul, ← incM_map_cA]`. Use extensionality with `i j`.
+
+Use `congrFun (congrFun hT i) j` as an intermediate fact. Simplify using `only [Matrix.transpose_apply, Matrix.neg_apply, Matrix.smul_apply, Matrix.map_apply] at this ⊢`. Simplify using `only [incM, Matrix.map_apply, this, map_neg, map_zsmul]`. Establish `hT' : (⟨incM F T, hm⟩ : nA σ Y b) ∈ nF σ Y b` using `(PositivityTheory.SiegelWeilFormula.kfour.mem_nF_iff _).2 ⟨T, rfl⟩`. Conclude with `h ⟨⟨incM F T, hm⟩, hT'⟩`.
+
+Introduce `hβF T`. Take `⟨T₀, hT₀⟩` from `(PositivityTheory.SiegelWeilFormula.kfour.mem_nF_iff β).1 hβF`. Take `⟨T₁, hT₁⟩` from `(PositivityTheory.SiegelWeilFormula.kfour.mem_nF_iff T.1).1 T.2`. Unfold `chr`. Rewrite using `[hT₀, hT₁, ← incM_mul, trace_incM_rat, ← map_neg]`.
+
+Conclude with `hB.std.2.1 _`.
+-/
 theorem chr_ker_k {B : Base F E} (hB : _root_.UpperTheory.TP.W.GoodK σ B) {b : GL (Fin n ⊕ Fin n) E} (hb : IsFrame2 σ Y b)
     (β : nA σ Y b) : (∀ T : nF σ Y b, chr B.ψ b T β = 1) ↔ β ∈ nF σ Y b := by
   have hσ : ∀ a, σ (σ a) = a := GlobalTheory.LeviLine.sigma_invol hB.cm
@@ -40,6 +53,17 @@ theorem chr_ker_k {B : Base F E} (hB : _root_.UpperTheory.TP.W.GoodK σ B) {b : 
     unfold chr
     rw [hT₀, hT₁, ← incM_mul, trace_incM_rat, ← map_neg]
     exact hB.std.2.1 _
+/- English proof (translation)
+Take `⟨hnb, hlam, hFD, -⟩` from `hc`. Establish `hσ : ∀ a, σ (σ a) = a` using `GlobalTheory.LeviLine.sigma_invol hB.cm`. Take `⟨i1, i2, i3, i4⟩` from `PositivityTheory.SiegelWeilFormula.kfour.nA_top hσ hb`. Take `⟨K, hK, hcov⟩` from `PositivityTheory.SiegelWeilFormula.kfour.nF_cocompact hσ hb`. Establish `hψ` using `GlobalTheory.StdCharFromIsStd.isCharAF hB.std`.
+
+Establish `htr : Continuous (Algebra.trace (AF F) (AE F E))` using `IsModuleTopology.continuous_of_linearMap _`. Establish `key` using `GlobalTheory.SeparatingCharacters.eq_zero_of_coefficients_eq_zero (nA σ Y b) (nF σ Y b) K hK hcov (nF σ Y b) (chr B.ψ b) (fun T => hψ.1.comp (htr.comp ((continuous_const.matrix_mul continuous_subtype_val).matrix_trace)).neg) (fun T β β' => by`. Unfold `chr`. Rewrite using `[AddSubgroup.coe_add, Matrix.mul_add, Matrix.trace_add, map_add, neg_add, AddChar.map_add_eq_mul])`. Use the proof step `(fun T T' β => by`.
+
+Unfold `chr`. Rewrite using `[AddSubgroup.coe_add, AddSubgroup.coe_add, Matrix.add_mul, Matrix.trace_add, map_add, neg_add, AddChar.map_add_eq_mul])`. Use the proof step `(fun β => by`. Unfold `chr`. Rewrite using `[ZeroMemClass.coe_zero, ZeroMemClass.coe_zero, Matrix.zero_mul, Matrix.trace_zero, map_zero, neg_zero, AddChar.map_zero_eq_one])`.
+
+Use the proof step `(fun T β => hψ.2.1 _)`. Use the proof step `(_root_.PositivityTheory.FTA.ZFC.chr_ker_k hB hb)`. Use `lam 𝓖 hlam hFD (fun β => f (nb β * x))`. Use the proof step `(hf.comp ((PositivityTheory.SiegelWeilFormula.kfour.nb_continuous hσ hb hnb).mul continuous_const))`. Use the proof step `(fun γ hγ β => by show f (nb (γ + β) * x) = f (nb β * x)`.
+
+Rewrite using `[PositivityTheory.SiegelWeilFormula.kfour.nb_add hnb, mul_assoc]`. Conclude with `hper γ hγ _)`. Use the proof step `(fun T => (integral_congr_ae (.of_forall fun β => mul_comm _ _)).trans (hx T))`. Establish `h0` using `congrFun key 0`. Simplify `h0` using `[PositivityTheory.SiegelWeilFormula.kfour.nb_zero hnb]`.
+-/
 theorem fc_inj_pt_per_k {B : Base F E} (hB : _root_.UpperTheory.TP.W.GoodK σ B) (b : GL (Fin n ⊕ Fin n) E) (nb : nA σ Y b → G2 σ Y)
     (lam : Measure (nA σ Y b)) (𝓖 : Set (nA σ Y b)) (hb : IsFrame2 σ Y b) (hc : CoefData (σ := σ) (Y := Y) b nb lam 𝓖)
     (f : G2 σ Y → ℂ) (hf : Continuous f) (hper : ∀ β ∈ nF σ Y b, ∀ g, f (nb β * g) = f g) (x : G2 σ Y)

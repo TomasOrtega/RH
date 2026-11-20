@@ -9,6 +9,9 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Loc
 
 namespace GlobalTheory.CompanionTheory.LUniq
 
+/- English proof (translation)
+Introduce `k _ _ _ _ hLO 𝔭 N V W _ _ _ _ π σ hπ hσ`. Take `⟨h, x, hd, hx, hπc⟩` from `hπ`. Establish `hσc : IsCosocle σ (prodIrr x hd)` using `hLO 𝔭 h N x hd hx σ hσ`. Conclude with `hσc.unique hπc`.
+-/
 theorem isL_unique : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
     LOrderFree k → ∀ (𝔭 : Multiset (Segment k)) {N : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W]
     [Module ℂ W] (π : Representation ℂ (GL (Fin N) k) V) (σ : Representation ℂ (GL (Fin N) k) W),

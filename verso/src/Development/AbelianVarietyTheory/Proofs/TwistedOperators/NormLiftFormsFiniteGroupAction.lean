@@ -7,6 +7,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R hH hg hν i σ g x`. Unfold `RealDat.models_HW at hH`. Unfold `RealDat.models_gW at hg`. Unfold `RealDat.models_νW at hν`. Take `⟨hinj, hrange, hip⟩` from `hH i σ`.
+
+Unfold `ipAt at hip`. Establish `hfd` using `hν i`. Unfold `IsMeasFD at hfd`. Establish `hHaar : (R.νW i).IsHaarMeasure`. Establish `h` using `hfd.1`.
+
+Unfold `IsMeasLev IsMeasLevW at h`. Conclude with `h.1`. Set `u : (R.HW i σ).H ≃ₗ[ℂ] (R.HW i σ).H` to `LinearEquiv.ofLinear (R.gW i σ g) (R.gW i σ g⁻¹) (by ext y; simp) (by ext y; simp)`. Establish `hmem : ∀ y, (R.HW i σ).e y ∈ R.Wall i σ` using `fun y => by`. Rewrite using `[← hrange]`.
+
+Conclude with `LinearMap.mem_range_self _ y`. Conclude with `_root_.GlobalTheory.T.norm_eq_of_actG0_intertwining_isometric_embedding R.θ (R.MW i σ) (R.βW i) (R.datWp i R.triv) _ _ (R.HW i σ).H (R.HW i σ).e _ (R.νW i) (R.fdW i) hip hinj hmem hHaar hfd.2 (R.eG g) u (fun y v => congrArg (fun T => T v) (hg i σ g y)) x`.
+-/
 theorem gW_norm_eq : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), R.models_HW → R.models_gW → R.models_νW → ∀ i σ g x, ‖R.gW i σ g x‖ = ‖x‖ := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R hH hg hν i σ g x
   unfold RealDat.models_HW at hH

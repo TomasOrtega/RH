@@ -23,9 +23,27 @@ noncomputable section
 
 namespace GlobalTheory.LowestVector
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma lowK_eq {n : ℕ} (ε : Fin n → Bool) (mu : Fin n → ℝ) :
     PI.UpqRep.lowK ε mu = Formalism.QuantumDeterminants.lowK ε mu := rfl
 
+/- English proof (translation)
+Introduce `hK k r ε mu R hR Q E hQ hE`. Establish `hD` using `(GlobalTheory.CayleyChoice.cayley_exists_and_any k r).2 ε mu R hR Q hQ`. Take `⟨-, -, -, -, -, ⟨S, hfin, hst, -, ⟨v, hvS, hv0, hvw⟩, hmax⟩, -⟩` from `hD`. Rewrite `hvw`, `hmax` using `[lowK_eq]`. Take `⟨hS1, hS2⟩` from `GlobalTheory.T.KStable_finiteDim_smooth_compactRoot_stable hK k r ε mu R hR Q hQ S hfin hst`.
+
+Establish `hn : ‖v‖ ≠ 0` using `norm_ne_zero_iff.2 hv0`. Use `set u : R.H := ((‖v‖⁻¹ : ℝ) : ℂ) • v with hu`. Establish `huS : u ∈ S` using `S.smul_mem _ hvS`. Establish `huw : PI.UpqRep.IsWtOn (PI.UpqRep.Kset ε) (fun g => R.σ (Q⁻¹ * g * Q)) (Formalism.QuantumDeterminants.lowK ε mu) u`. Introduce `θ hθ`.
+
+Use `hvw θ hθ` as an intermediate fact. Simplify using `only at this ⊢`. Rewrite using `[hu, map_smul, this, smul_comm]`. Set `w : R.smSub` to `⟨u, (hS1 u huS).2⟩`. Take `⟨hw1, hw2⟩` from `GlobalTheory.T.torusWeight_eigen_and_rootShift hK k r ε mu R hR Q E hQ hE (Formalism.QuantumDeterminants.lowK ε mu) w huw`.
+
+Use `⟨w, ?_, (hS1 u huS).1, ⟨hw1, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show ‖u‖ = 1`. Rewrite using `[hu, norm_smul, Complex.norm_real, norm_inv, norm_norm, inv_mul_cancel₀ hn]`. Introduce `a b hab he`. Assume the negation of the conclusion as `h0`.
+
+Establish `hmem : ((E a b w : R.smSub) : R.H) ∈ S`. Rewrite using `[hE a b w]`. Conclude with `hS2 a b he u huS`. Establish `h0' : ((E a b w : R.smSub) : R.H) ≠ 0` using `fun h => h0 (Subtype.ext h)`. Conclude with `GlobalTheory.DominantRootSums.not_cDom_add_root _ ε _ a b hab (hmax _ _ hmem h0' (hw2 a b))`.
+
+Establish `hle : Formalism.REAL.kSpan ε E w ≤ S.comap R.smSub.subtype`. Use `sInf_le ⟨huS, ?_⟩` and prove the remaining obligations. Introduce `a b he x hx`. Use `show ((E a b x : R.smSub) : R.H) ∈ S`. Rewrite using `[hE a b x]`.
+
+Conclude with `hS2 a b he _ hx`. Establish `: FiniteDimensional ℂ (S.comap R.smSub.subtype)` using `FiniteDimensional.of_injective ((R.smSub.subtype.comp (S.comap R.smSub.subtype).subtype).codRestrict S (fun x => x.2)) (fun x y h => by`. Establish `h'` using `congrArg Subtype.val h`. Conclude with `Subtype.ext (Subtype.ext h'))`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+-/
 theorem exists_lowest_vector : PI.KFinSmooth → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (R : Rep k r), R.IsDG ε mu → ∀ (Q : Mx k r) (E : (Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Module.End ℂ R.smSub)), PI.UpqRep.IsCayleyU k r ε Q → R.IsE Q E → ∃ w : R.smSub, ‖w‖ = 1 ∧ R.KFin (w : R.H) ∧ Formalism.REAL.KHighest ε E (Formalism.QuantumDeterminants.lowK ε mu) w ∧ FiniteDimensional ℂ (Formalism.REAL.kSpan ε E w) := by
   intro hK k r ε mu R hR Q E hQ hE
   have hD := (GlobalTheory.CayleyChoice.cayley_exists_and_any k r).2 ε mu R hR Q hQ

@@ -9,17 +9,26 @@ variable {F : Type} [Field F]
 def Lvl {n : ℕ} (O : Subring F) (c : F) (X : Matrix (Fin n) (Fin n) F) : Prop :=
   ∀ a b, ∃ o ∈ O, X a b = c * o
 
+/- English proof (translation)
+Introduce `a b` and use `by obtain ⟨o, ho, h⟩ := hX a b obtain ⟨o', ho', h'⟩ := hY a b exact ⟨o + o', O.add_mem ho ho', by simp [h, h', mul_add]⟩`.
+-/
 theorem Lvl.add {n : ℕ} {O : Subring F} {c : F} {X Y : Matrix (Fin n) (Fin n) F} (hX : Lvl O c X)
     (hY : Lvl O c Y) : Lvl O c (X + Y) := fun a b => by
   obtain ⟨o, ho, h⟩ := hX a b
   obtain ⟨o', ho', h'⟩ := hY a b
   exact ⟨o + o', O.add_mem ho ho', by simp [h, h', mul_add]⟩
 
+/- English proof (translation)
+Introduce `a b` and use `by obtain ⟨o, ho, h⟩ := hX a b exact ⟨-o, O.neg_mem ho, by simp [h]⟩`.
+-/
 theorem Lvl.neg {n : ℕ} {O : Subring F} {c : F} {X : Matrix (Fin n) (Fin n) F} (hX : Lvl O c X) :
     Lvl O c (-X) := fun a b => by
   obtain ⟨o, ho, h⟩ := hX a b
   exact ⟨-o, O.neg_mem ho, by simp [h]⟩
 
+/- English proof (translation)
+Introduce `a b` and use `by choose f hf hf' using hX refine ⟨∑ k, Y a k * f k b, O.sum_mem fun k _ => O.mul_mem (hY a k) (hf k b), ?_⟩ rw [Matrix.mul_apply, Finset.mul_sum] exact Finset.sum_congr rfl fun k _ => by rw [hf' k b]; ring`.
+-/
 theorem Lvl.int_mul {n : ℕ} {O : Subring F} {c : F} {X Y : Matrix (Fin n) (Fin n) F}
     (hY : IsInt O Y) (hX : Lvl O c X) : Lvl O c (Y * X) := fun a b => by
   choose f hf hf' using hX
@@ -69,6 +78,11 @@ def boxAdd (O : Subring F) {n : ℕ} (β : Fin n → ℕ) (c : Fin n → Fin n �
 def conjSub {G : Type} [Group G] (H : Subgroup G) (d : G) : Subgroup G :=
   H.map (MulAut.conj d⁻¹).toMonoidHom
 
+/- English proof (translation)
+Simplify using `only [conjSub, Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hh, rfl⟩`. Simplify `hh` using `[mul_assoc]`. Introduce `h`.
+
+Conclude with `⟨_, h, by simp [mul_assoc]⟩`.
+-/
 theorem mem_conjSub {G : Type} [Group G] (H : Subgroup G) (d p : G) :
     p ∈ conjSub H d ↔ d * p * d⁻¹ ∈ H := by
   simp only [conjSub, Subgroup.mem_map]

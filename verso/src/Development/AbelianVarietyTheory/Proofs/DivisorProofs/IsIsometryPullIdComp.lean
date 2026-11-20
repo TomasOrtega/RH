@@ -19,6 +19,9 @@ section Sections
 
 variable {X Y Z : Scheme.{0}}
 
+/- English proof (translation)
+Establish `e` using `unit_conjugateEquiv Adjunction.id (Scheme.Modules.pullbackPushforwardAdjunction (𝟙 X)) (Scheme.Modules.pullbackId X).hom E`. Rewrite `e` using `[Scheme.Modules.conjugateEquiv_pullbackId_hom]`. Use `(app_resM _ h _).trans ?_` and prove the remaining obligations. Conclude with `congrArg (resM _ h') congr(($e).app V s).symm`.
+-/
 theorem pullbackId_hom_app (E : X.Modules) {U V : X.Opens} (h : U ≤ (𝟙 X) ⁻¹ᵁ V) (h' : U ≤ V)
     (s : Γ(E, V)) :
     ((Scheme.Modules.pullbackId X).hom.app E).app U (pullbackSections (𝟙 X) E h s) =
@@ -29,6 +32,9 @@ theorem pullbackId_hom_app (E : X.Modules) {U V : X.Opens} (h : U ≤ (𝟙 X) �
   refine (app_resM _ h _).trans ?_
   exact congrArg (resM _ h') congr(($e).app V s).symm
 
+/- English proof (translation)
+Rewrite using `[← Vert.DivPull.pullbackComp_inv_app b a E h₁ h₂ h s]`. Establish `e : (Scheme.Modules.pullbackComp b a).inv.app E ≫ (Scheme.Modules.pullbackComp b a).hom.app E = 𝟙 _` using `by simp`. Conclude with `congr(($e).app T (pullbackSections (b ≫ a) E h s))`.
+-/
 theorem pullbackComp_hom_app (b : Z ⟶ Y) (a : Y ⟶ X) (E : X.Modules) {U : X.Opens} {V : Y.Opens}
     {T : Z.Opens} (h₁ : V ≤ a ⁻¹ᵁ U) (h₂ : T ≤ b ⁻¹ᵁ V) (h : T ≤ (b ≫ a) ⁻¹ᵁ U) (s : Γ(E, U)) :
     ((Scheme.Modules.pullbackComp b a).hom.app E).app T
@@ -46,12 +52,20 @@ section Met
 variable {k : Type} [CommRing k] {X Y Z : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ}
   {E E' : X.Modules} {r : ℕ}
 
+/- English proof (translation)
+The claim follows from `Met.ext_of_exists fun y => by obtain ⟨c, hc, e⟩ := H y exact ⟨c.map φ, hc, by rw [e, h.map_G φ c hc]⟩`.
+-/
 theorem eq_map_of_frames {h : Met p σ E r} {h' : Met p σ E' r} (φ : E ≅ E')
     (H : ∀ y, ∃ c : Chart E r, y ∈ ptsIn p σ c.U ∧ h'.G (c.map φ) y = h.G c y) : h' = h.map φ :=
   Met.ext_of_exists fun y => by
     obtain ⟨c, hc, e⟩ := H y
     exact ⟨c.map φ, hc, by rw [e, h.map_G φ c hc]⟩
 
+/- English proof (translation)
+Use `eq_map_of_frames _ fun y => ?_` and prove the remaining obligations. Take `⟨c, hc⟩ : ∃ c : Chart E r, PtsOver.map (𝟙 X) (Category.id_comp p) _ y ∈ ptsIn p σ c.U` from `⟨_, h.isVB.mem_pick _⟩`. Use `⟨Chart.pull c h.isVB (𝟙 X), hc, ?_⟩` and prove the remaining obligations. Rewrite using `[h.pull_G _ _ _ hc, PtsOver.map_id]`. Rewrite `hc` using `[PtsOver.map_id]`.
+
+Establish `hl : (𝟙 X) ⁻¹ᵁ c.U ≤ c.U` using `fun _ h => h`. Establish `e (a : Fin r) : (Chart.map (Chart.pull c h.isVB (𝟙 X)) ((Scheme.Modules.pullbackId X).app E)).e a = resM E hl (c.e a)` using `pullbackId_hom_app E _ hl _`. Use extensionality with `a b`. Rewrite using `[← h.form_frame (Chart.map (Chart.pull c h.isVB (𝟙 X)) ((Scheme.Modules.pullbackId X).app E)) hc a b, ← h.form_frame c hc a b, e, e]`. Conclude with `h.form_resM _ _ hl hc`.
+-/
 theorem eq_map_pull_id (h : Met p σ E r) :
     h = (h.pull (𝟙 X) (Category.id_comp p)).map ((Scheme.Modules.pullbackId X).app E) := by
   refine eq_map_of_frames _ fun y => ?_
@@ -69,6 +83,15 @@ theorem eq_map_pull_id (h : Met p σ E r) :
     ((Scheme.Modules.pullbackId X).app E)) hc a b, ← h.form_frame c hc a b, e, e]
   exact h.form_resM _ _ hl hc
 
+/- English proof (translation)
+Use `eq_map_of_frames _ fun z => ?_` and prove the remaining obligations. Take `⟨c, hc⟩ : ∃ c : Chart E r, PtsOver.map (τ ≫ π) e _ z ∈ ptsIn p σ c.U` from `⟨_, h.isVB.mem_pick _⟩`. Establish `hc' : PtsOver.map π hπ _ (PtsOver.map τ hτ _ z) ∈ ptsIn p σ c.U`. Rewrite using `[PtsOver.map_map]`. Conclude with `hc`.
+
+Use `⟨Chart.pull (Chart.pull c h.isVB π) (h.pull π hπ).isVB τ, hc', ?_⟩` and prove the remaining obligations. Establish `g₁` using `(h.pull π hπ).pull_G τ hτ (Chart.pull c h.isVB π) hc'`. Establish `g₂` using `h.pull_G π hπ c hc'`. Establish `g₃ : h.G c (PtsOver.map π hπ _ (PtsOver.map τ hτ _ z)) = h.G c (PtsOver.map (τ ≫ π) e _ z)` using `congrArg _ (PtsOver.map_map _ _ _ _ _ _)`. Use `Eq.trans ?_ (g₁.trans (g₂.trans g₃)).symm` and prove the remaining obligations.
+
+Establish `hT : τ ⁻¹ᵁ π ⁻¹ᵁ c.U ≤ (τ ≫ π) ⁻¹ᵁ c.U` using `fun _ h => h`. Establish `f (a : Fin r) : (Chart.map (Chart.pull (Chart.pull c h.isVB π) (h.pull π hπ).isVB τ) ((Scheme.Modules.pullbackComp τ π).app E)).e a = pullbackSections (τ ≫ π) E hT (c.e a)` using `pullbackComp_hom_app τ π E le_rfl le_rfl hT _`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Use `((h.pull (τ ≫ π) e).form_frame (Chart.map (Chart.pull (Chart.pull c h.isVB π) (h.pull π hπ).isVB τ) ((Scheme.Modules.pullbackComp τ π).app E)) hc a b).symm.trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (h.form_frame c hc a b)` and prove the remaining obligations.
+
+Use `Eq.trans (congrArg₂ (fun s t => (h.pull (τ ≫ π) e).form s t z) (f a) (f b)) ?_` and prove the remaining obligations. Conclude with `h.form_pull (τ ≫ π) e _ _ hT hc`.
+-/
 theorem pull_comp_eq_map (h : Met p σ E r) {q : Y ⟶ Sp k} {t : Z ⟶ Sp k} (π : Y ⟶ X) (τ : Z ⟶ Y)
     (hπ : π ≫ p = q) (hτ : τ ≫ q = t) (e : (τ ≫ π) ≫ p = t) :
     h.pull (τ ≫ π) e =
@@ -102,6 +125,9 @@ end GlobalTheory.PullPull
 
 namespace GlobalTheory.VMetric
 
+/- English proof (translation)
+Introduce `k _ X p E r h`. Use `⟨isIsometry_iff _ |>.2 (VMetric.ext (funext fun σ => PullPull.eq_map_pull_id (h.met σ))), ?_⟩` and prove the remaining obligations. Introduce `Y Z q t π τ hπ hτ e`. Conclude with `isIsometry_iff _ |>.2 (VMetric.ext (funext fun σ => PullPull.pull_comp_eq_map (h.met σ) π τ hπ hτ e))`.
+-/
 theorem isIsometry_pull_id_comp : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (E : X.Modules) (r : ℕ) (h : VMetric p E r), (h.pull (𝟙 X) (Category.id_comp p)).IsIsometry h ((Scheme.Modules.pullbackId X).app E) ∧ ∀ (Y Z : Scheme.{0}) (q : Y ⟶ Sp k) (t : Z ⟶ Sp k) (π : Y ⟶ X) (τ : Z ⟶ Y) (hπ : π ≫ p = q) (hτ : τ ≫ q = t) (e : (τ ≫ π) ≫ p = t), ((h.pull π hπ).pull τ hτ).IsIsometry (h.pull (τ ≫ π) e) ((Scheme.Modules.pullbackComp τ π).app E) := by
   intro k _ X p E r h
   refine ⟨isIsometry_iff _ |>.2 (VMetric.ext (funext fun σ => PullPull.eq_map_pull_id (h.met σ))), ?_⟩

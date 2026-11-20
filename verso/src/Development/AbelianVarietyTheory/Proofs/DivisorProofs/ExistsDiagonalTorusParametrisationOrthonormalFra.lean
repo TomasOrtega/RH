@@ -16,6 +16,9 @@ noncomputable section
 
 namespace GlobalTheory.TorusFrame
 
+/- English proof (translation)
+Establish `hc (a : Fin r) : ReciprocityTheory.ChartRestriction.G.FD.col (M * x) a = M *ᵥ ReciprocityTheory.ChartRestriction.G.FD.col x a`. Use extensionality with `k`. Simplify using `[ReciprocityTheory.ChartRestriction.G.FD.col, mul_apply, mulVec, dotProduct]`. Use extensionality with `a b`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.gram, of_apply, hc, hM]`.
+-/
 theorem gram_mul_of_preserves {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (τ : E →+* ℂ)
     (G : Matrix (Fin r) (Fin r) E) (M x : Matrix (Fin r) (Fin r) ℂ)
     (hM : ∀ u w, hermC τ G (M *ᵥ u) (M *ᵥ w) = hermC τ G u w) :
@@ -25,6 +28,27 @@ theorem gram_mul_of_preserves {E : Type} [Field E] [NumberField E] [IsCMField E]
   ext a b
   simp only [ReciprocityTheory.ChartRestriction.G.FD.gram, of_apply, hc, hM]
 
+/- English proof (translation)
+Introduce `E _ _ _ r X x hx`. Use `⟨fun θ => ⟨torusGL hx θ, GlobalTheory.T.torusElementConjugatedByFrame_mem_specialUnitary E r X x hx θ⟩, torusDer x, ?_, ?_, ?_, ?_, fun θ => GlobalTheory.T.torusTangent_mem_specialUnitaryLie_diagonal E r X x hx θ, ?_⟩` and prove the remaining obligations. Introduce `θ`. Use function extensionality and compare the values at `τ show ((mat x τ * diagonal (fun a => Complex.exp (Complex.I * (angles (θ τ) a : ℂ))) * (mat x τ)⁻¹ * mat x τ : Matrix (Fin r) (Fin r) ℂ) : Fin r → Fin r → ℂ) = (mat x τ * mat (phaseFrame θ) τ : Matrix (Fin r) (Fin r) ℂ)`. Rewrite using `[Matrix.mul_assoc, nonsing_inv_mul _ (isUnit_det_of_isOrth hx τ), Matrix.mul_one]`.
+
+Both sides reduce to the same expression. Introduce `θ θ'`. Use `Subtype.ext (funext fun τ => ?_)` and prove the remaining obligations. Establish `hp : phaseU ((θ + θ') τ) = phaseU (θ τ) * phaseU (θ' τ)`. Use `Units.ext ?_` and prove the remaining obligations.
+
+Simplify using `only [phaseU, Units.val_mul, diagonal_mul_diagonal, Pi.add_apply, angles_add, Complex.ofReal_add, mul_add, Complex.exp_add]`. Simplify using `only [Subgroup.coe_mul, Pi.mul_apply, torusGL, hp]`. Use `group`. Use `Continuous.subtype_mk (continuous_pi fun τ => ?_) _` and prove the remaining obligations. Establish `hph : Continuous fun φ : Fin (r - 1) → ℝ => phaseU φ`.
+
+Use `Units.continuous_iff.2 ⟨Continuous.matrix_diagonal (continuous_pi fun a => ?_), Continuous.matrix_diagonal (continuous_pi fun a => ?_)⟩` and prove the remaining obligations. Conclude with `Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp (continuous_angles a)))`. Conclude with `Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp (continuous_angles a))).neg`. Conclude with `(continuous_const.mul (hph.comp (continuous_apply τ))).mul continuous_const`. Conclude with `GlobalTheory.T.hasStrictFDerivAt_diagonalTorus_zero E r X.Ψ x`.
+
+Introduce and unpack `g ⟨b, hb, hgb⟩`. Establish `hgx (τ : X.Ψ) : ((g : X.Ψ → GL (Fin r) ℂ) τ : Matrix (Fin r) (Fin r) ℂ) * mat x τ = mat x τ * mat b τ` using `congrFun hgb τ`. Apply the tactic sequence `have hdiag (τ : X.Ψ) := GlobalTheory.T.upperTriangular_signForm_diagonal_unimodular r (mat b τ) (fun a => sgn X.p0 a) (fun a => by unfold sgn; split_ifs <;> simp) (isUnit_iff_ne_zero.2 (hb τ).1) (fun a c h => (hb τ).2 a c h) (by`. Establish `h1` using `gram_mul_of_preserves τ.1 X.Gm _ (mat x τ) ((g.2 τ).2)`. Establish `hJ` using `hx τ`.
+
+Rewrite `hJ` using `[gram_eq]`. Rewrite `h1` using `[hgx τ, gram_eq, gram_eq, transpose_mul, Matrix.map_mul]`. Rewrite using `[← hJ]`. Use `Eq.trans ?_ h1` and prove the remaining obligations. Simplify using `only [Matrix.mul_assoc])`.
+
+Establish `hbd (τ : X.Ψ) : mat b τ = diagonal fun a => mat b τ a a`. Use extensionality with `a c`. Distinguish the cases in `h : a = c`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[diagonal_apply_ne _ h, (hdiag τ).1 a c h]`. Establish `hdet (τ : X.Ψ) : ∏ a, mat b τ a a = 1`. Establish `h` using `congrArg Matrix.det (hgx τ)`. Rewrite `h` using `[det_mul, det_mul, (g.2 τ).1, one_mul, hbd τ, det_diagonal]`. Conclude with `(mul_left_cancel₀ (isUnit_det_of_isOrth hx τ).ne_zero (h.symm.trans (mul_one _).symm))`.
+
+Use `choose φ hφ using fun τ : X.Ψ => GlobalTheory.T.exists_torusAngles_of_unimodular_prod_one r (fun a => mat b τ a a) (hdiag τ).2 (hdet τ)`. Use `⟨φ, Subtype.ext (funext fun τ => Units.ext ?_)⟩` and prove the remaining obligations. Use `show ((g : X.Ψ → GL (Fin r) ℂ) τ : Matrix (Fin r) (Fin r) ℂ) = mat x τ * diagonal (fun a => Complex.exp (Complex.I * (angles (φ τ) a : ℂ))) * (mat x τ)⁻¹`. Establish `hD : (diagonal fun a => Complex.exp (Complex.I * (angles (φ τ) a : ℂ))) = mat b τ`. Rewrite using `[hbd τ]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `a`. Conclude with `hφ τ a`. Rewrite using `[hD, ← hgx τ, Matrix.mul_assoc, mul_nonsing_inv _ (isUnit_det_of_isOrth hx τ), Matrix.mul_one]`.
+-/
 theorem torus_param : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (x : Frame X.Ψ r), IsOrth X x → ∃ (t : (X.Ψ → Fin (r - 1) → ℝ) → realSU X.Ψ X.Gm) (Dt : (X.Ψ → Fin (r - 1) → ℝ) →L[ℝ] (X.Ψ → Fin r → Fin r → ℂ)), (∀ θ, X.lmulC (fun τ => ((((t θ : realSU X.Ψ X.Gm) : X.Ψ → GL (Fin r) ℂ) τ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ)) x = rmul x (phaseFrame θ)) ∧ (∀ θ θ', t (θ + θ') = t θ * t θ') ∧ Continuous t ∧ HasStrictFDerivAt (fun θ => (fun τ a b => ((((t θ : realSU X.Ψ X.Gm) : X.Ψ → GL (Fin r) ℂ) τ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) a b)) Dt 0 ∧ (∀ θ, Dt θ ∈ realLie X.Ψ X.Gm ∧ ∀ τ a b, inFrame x (Dt θ) τ a b = if a = b then Complex.I * (angles (θ τ) a : ℂ) else 0) ∧ (∀ g : realSU X.Ψ X.Gm, (∃ b ∈ Bor X.Ψ r, X.lmulC (fun τ => ((((g : realSU X.Ψ X.Gm) : X.Ψ → GL (Fin r) ℂ) τ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ)) x = rmul x b) → ∃ θ, g = t θ) := by
   intro E _ _ _ r X x hx
   refine ⟨fun θ => ⟨torusGL hx θ, GlobalTheory.T.torusElementConjugatedByFrame_mem_specialUnitary E r X x hx θ⟩, torusDer x, ?_, ?_, ?_, ?_, fun θ => GlobalTheory.T.torusTangent_mem_specialUnitaryLie_diagonal E r X x hx θ, ?_⟩

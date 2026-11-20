@@ -21,6 +21,19 @@ namespace GlobalTheory.WeilSuperpos
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `haveI : BorelSpace (WO S T) := ⟨rfl⟩`. Use `haveI : BorelSpace (WO A T) := ⟨rfl⟩`. Use `haveI : BorelSpace (WO B T) := ⟨rfl⟩`. Use `haveI : SFinite ν := @instSFiniteOfSigmaFinite _ _ ν (@IsFiniteMeasure.toSigmaFinite _ _ ν _)`. Take `⟨-, -, hA2, -⟩` from `lattice_Mx D T.rank A.rank`.
+
+Take `⟨-, -, hB2, -⟩` from `lattice_Mx D T.rank B.rank`. Establish `hσ : Measurable fun q : WO A T × Ω => Φ ((o.resS T).symm (q.1, k q.2))` using `hΦc.measurable.comp ((o.continuous_resS_symm T).measurable.comp (measurable_fst.prodMk (hk.comp measurable_snd)))`. Establish `hgm : Measurable fun q : WO A T × Ω => star (g q.1)` using `(continuous_star.comp hgc).measurable.comp measurable_fst`. Establish `h1 : Integrable (fun q : WO A T × Ω => a q.2) (ν.prod μ)` using `ha.comp_snd ν`. Establish `hint : Integrable (Function.uncurry fun u w => a w * Φ ((o.resS T).symm (u, k w)) * star (g u)) (ν.prod μ)`.
+
+Use `(h1.norm.mul_const (CΦ * Cg)).mono' ?_ (Filter.Eventually.of_forall fun q => ?_)` and prove the remaining obligations. Conclude with `(h1.aestronglyMeasurable.mul hσ.aestronglyMeasurable).mul hgm.aestronglyMeasurable`. Break down `q with ⟨u, w⟩` into its components or cases. Simplify using `only [Function.uncurry_apply_pair, norm_mul, norm_star]`. Establish `hC : 0 ≤ CΦ` using `(norm_nonneg _).trans (hΦ 0)`.
+
+Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (mul_le_mul (hΦ _) (hg _) (norm_nonneg _) hC) (norm_nonneg _)`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `u`.
+
+Rewrite using `[integral_mul_const]`. Use `_ = ∫ w, ∫ u, a w * Φ ((o.resS T).symm (u, k w)) * star (g u) ∂ν ∂μ := integral_integral_swap hint`. Use `_ = ∫ w, a w * ∫ u, Φ ((o.resS T).symm (u, k w)) * star (g u) ∂ν ∂μ := by`. Use `congr 1`. Use function extensionality and compare the values at `w`.
+
+Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `u`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pair_swap {S A B T : HSp D} (o : OrthDec S A B) {Ω : Type} [MeasurableSpace Ω] (μ : Measure Ω) [SFinite μ]
     (k : Ω → WO B T) (a : Ω → ℂ) (hk : Measurable k) (ha : Integrable a μ)
     (ν : Measure (WO A T)) [IsFiniteMeasure ν]
@@ -56,6 +69,11 @@ theorem pair_swap {S A B T : HSp D} (o : OrthDec S A B) {Ω : Type} [MeasurableS
     _ = ∫ w, a w * ∫ u, Φ ((o.resS T).symm (u, k w)) * star (g u) ∂ν ∂μ := by
         congr 1; funext w; rw [← integral_const_mul]; congr 1; funext u; ring
 
+/- English proof (translation)
+Establish `hf` using `ha.aefinStronglyMeasurable`. Use `⟨hf.sigmaFiniteSet, hf.sigmaFinite_restrict, fun X => ?_⟩` and prove the remaining obligations. Establish `hs : MeasurableSet hf.sigmaFiniteSet` using `hf.measurableSet`. Establish `h0 : ∀ᵐ w ∂μ, w ∉ hf.sigmaFiniteSet → a w = 0`. Use `hf.ae_eq_zero_compl` as an intermediate fact.
+
+Rewrite `this` using `[Filter.EventuallyEq, ae_restrict_iff' hs.compl]`. Conclude with `this.mono fun w hw hws => hw hws`. Conclude with `(setIntegral_eq_integral_of_ae_compl_eq_zero (h0.mono fun w hw hws => by rw [hw hws, zero_mul])).symm`.
+-/
 theorem exists_sfinite {Ω : Type} [MeasurableSpace Ω] (μ : Measure Ω) (a : Ω → ℂ) (ha : Integrable a μ) :
     ∃ s : Set Ω, SigmaFinite (μ.restrict s) ∧ ∀ X : Ω → ℂ, ∫ w, a w * X w ∂μ = ∫ w, a w * X w ∂(μ.restrict s) := by
   have hf := ha.aefinStronglyMeasurable
@@ -69,6 +87,41 @@ theorem exists_sfinite {Ω : Type} [MeasurableSpace Ω] (μ : Measure Ω) (a : �
 
 variable {ψ : AddChar (AF D.host.F) ℂ}
 
+/- English proof (translation)
+Establish `hψ` using `hW.std`. Use `set H : WO S T → ℂ := fun x => om p (fun u => F ((o.resS T).symm (u, (o.resS T x).2))) (o.resS T x).1 with hH`. Establish `hHt : IsThetaFunO ψ S T H` using `(GlobalTheory.T.weilOperator_oneVariable_keeps_thetaFunctions D ψ S A B T o F hF).1 χ χ' om hW p`. Establish `hHs : ∀ u b, H ((o.resS T).symm (u, b)) = om p (fun u' => F ((o.resS T).symm (u', b))) u`. Introduce `u b`.
+
+Simplify using `only [hH, AddEquiv.apply_symm_apply]`. Establish `hsl : ∀ b, IsThetaFunO ψ A T (fun u => F ((o.resS T).symm (u, b)))`. Introduce `b`. Use `GlobalTheory.T.isThetaFunction_superposition_orthogonalSlices D ψ hψ S A B T o F hF Unit (Measure.dirac ()) (fun _ => b) (fun _ => 1) measurable_const (integrable_const _)` as an intermediate fact. Simplify using `using this`.
+
+Use `set G : WO A T → ℂ := fun u => ∫ w, a w * F ((o.resS T).symm (u, k w)) ∂μ with hGdef`. Use `set R : WO A T → ℂ := fun u => ∫ w, a w * om p (fun u' => F ((o.resS T).symm (u', k w))) u ∂μ with hRdef`. Establish `hG : IsThetaFunO ψ A T G` using `GlobalTheory.T.isThetaFunction_superposition_orthogonalSlices D ψ hψ S A B T o F hF Ω μ k a hk ha`. Establish `hR' : R = fun u => ∫ w, a w * H ((o.resS T).symm (u, k w)) ∂μ`. Use function extensionality and compare the values at `u`.
+
+Simplify using `only [hRdef, hHs]`. Establish `hR : IsThetaFunO ψ A T R`. Rewrite using `[hR']`. Conclude with `GlobalTheory.T.isThetaFunction_superposition_orthogonalSlices D ψ hψ S A B T o H hHt Ω μ k a hk ha`. Establish `hL : IsThetaFunO ψ A T (om p G)` using `hW.om_pres p G hG`.
+
+Take `⟨v⟩` from `GlobalTheory.Unf.Inhab.nonempty_volM D T.rank A.rank`. Take `⟨hhaar, hfd, hvol⟩` from `v.covol`. Use `haveI := hhaar`. Use `haveI : IsFiniteMeasure (v.μ.restrict v.𝓕) := ⟨by rw [Measure.restrict_apply_univ, hvol]; exact ENNReal.one_lt_top⟩`. Establish `key : ∀ g, IsThetaFunO ψ A T g → thPair v.μ v.𝓕 (om p G) g = thPair v.μ v.𝓕 R g`.
+
+Introduce `g hg`. Establish `hg' : IsThetaFunO ψ A T (om p⁻¹ g)` using `hW.om_pres _ _ hg`. Establish `hinv : om p (om p⁻¹ g) = g`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Take `⟨Cg, hCg⟩` from `GlobalTheory.IsoMean.isThetaFunO_bounded A T ψ hψ _ hg`.
+
+Take `⟨Cg', hCg'⟩` from `GlobalTheory.IsoMean.isThetaFunO_bounded A T ψ hψ _ hg'`. Take `⟨CF, hCF⟩` from `GlobalTheory.IsoMean.isThetaFunO_bounded S T ψ hψ _ hF`. Take `⟨CH, hCH⟩` from `GlobalTheory.IsoMean.isThetaFunO_bounded S T ψ hψ _ hHt`. Combine the equalities or inequalities in the displayed calculation. Unfold `thPair`.
+
+Conclude with `pair_swap o μ k a hk ha _ F hF.cont CF hCF _ hg'.cont Cg' hCg'`. Use `_ = ∫ w, a w * thPair v.μ v.𝓕 (om p (fun u => F ((o.resS T).symm (u, k w)))) g ∂μ := by`. Use `congr 1`. Use function extensionality and compare the values at `w`. Use `congr 1`.
+
+Rewrite using `[← GlobalTheory.T.weilDatum_preserves_thetaFundamentalDomainPairing D ψ A T χ χ' om hW v p _ _ (hsl _) hg', hinv]`. Use `_ = ∫ w, a w * thPair v.μ v.𝓕 (fun u => H ((o.resS T).symm (u, k w))) g ∂μ := by`. Simplify using `only [hHs]`. Use `_ = thPair v.μ v.𝓕 R g := by`. Rewrite using `[hR']`.
+
+Unfold `thPair`. Conclude with `(pair_swap o μ k a hk ha _ H hHt.cont CH hCH g hg.cont Cg hCg).symm`. Establish `hd : IsThetaFunO ψ A T (om p G - R)` using `GlobalTheory.WeilVacMove.isTheta_sub hL hR`. Establish `hkd` using `key _ hd`. Take `⟨CL, hCL⟩` from `GlobalTheory.IsoMean.isThetaFunO_bounded A T ψ hψ _ hL`.
+
+Take `⟨CR, hCR⟩` from `GlobalTheory.IsoMean.isThetaFunO_bounded A T ψ hψ _ hR`. Take `⟨Cd, hCd⟩` from `GlobalTheory.IsoMean.isThetaFunO_bounded A T ψ hψ _ hd`. Use `haveI : BorelSpace (WO A T) := ⟨rfl⟩`. Establish `bint : ∀ f : WO A T → ℂ, Continuous f → ∀ C : ℝ, (∀ x, ‖f x‖ ≤ C) → Integrable (fun x => f x * star ((om p G - R) x)) (v.μ.restrict v.𝓕)`. Introduce `f hf C hC`.
+
+Use `(integrable_const (C * Cd)).mono' ?_ (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Conclude with `(hf.mul (continuous_star.comp hd.cont)).aestronglyMeasurable`. Rewrite using `[norm_mul, norm_star]`. Conclude with `mul_le_mul (hC x) (hCd x) (norm_nonneg _) ((norm_nonneg _).trans (hC x))`. Establish `h0 : ∫ x in v.𝓕, ((Complex.normSq ((om p G - R) x) : ℝ) : ℂ) ∂v.μ = 0`.
+
+Establish `e : ∀ x, ((Complex.normSq ((om p G - R) x) : ℝ) : ℂ) = om p G x * star ((om p G - R) x) - R x * star ((om p G - R) x)`. Introduce `x`. Rewrite using `[← sub_mul, ← Pi.sub_apply, Complex.star_def, Complex.mul_conj]`. Simplify using `only [e]`. Rewrite using `[integral_sub (bint _ hL.cont CL hCL) (bint _ hR.cont CR hCR)]`.
+
+Unfold `thPair at hkd`. Rewrite using `[hkd, sub_self]`. Rewrite `h0` using `[integral_complex_ofReal]`. Establish `h1 : ∫ x in v.𝓕, Complex.normSq ((om p G - R) x) ∂v.μ = 0` using `by exact_mod_cast h0`. Establish `hnn : 0 ≤ᵐ[v.μ.restrict v.𝓕] fun x => Complex.normSq ((om p G - R) x)` using `Filter.Eventually.of_forall fun x => Complex.normSq_nonneg _`.
+
+Establish `hi : Integrable (fun x => Complex.normSq ((om p G - R) x)) (v.μ.restrict v.𝓕)`. Use `(integrable_const (Cd * Cd)).mono' ?_ (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Conclude with `(Complex.continuous_normSq.comp hd.cont).aestronglyMeasurable`. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (Complex.normSq_nonneg _), Complex.normSq_eq_norm_sq, sq]`. Conclude with `mul_le_mul (hCd x) (hCd x) (norm_nonneg _) ((norm_nonneg _).trans (hCd x))`.
+
+Establish `hae` using `(integral_eq_zero_iff_of_nonneg_ae hnn hi).1 h1`. Establish `hae' : ∀ᵐ x ∂v.μ.restrict v.𝓕, (om p G - R) x = 0` using `hae.mono fun x hx => Complex.normSq_eq_zero.1 hx`. Take `⟨i1, -, i3, -, i5, -⟩` from `lattice_Mx D T.rank A.rank`. Use `haveI := i1`. Use `haveI := i3`.
+
+Use `haveI := i5`. Establish `hz` using `GlobalTheory.WeilVacMove.eq_zero_of_ae_fundamentalDomain (ratMx D T.rank A.rank) v.μ v.𝓕 hfd (om p G - R) hd.cont (GlobalTheory.WeilVacMove.norm_periodic hψ hd) hae'`. Use `congrFun hz u₀` as an intermediate fact. Rewrite `this` using `[Pi.sub_apply, Pi.zero_apply, sub_eq_zero]`. Conclude with `this`.
+-/
 theorem comm_sfinite {S A B T : HSp D} (o : OrthDec S A B) {χ χ' : (AE D)ˣ →* Circle} {om : Om A T}
     (hW : IsWeilDatumO ψ A T χ χ' om) {F : WO S T → ℂ} (hF : IsThetaFunO ψ S T F)
     {Ω : Type} [MeasurableSpace Ω] (μ : Measure Ω) [SFinite μ] (k : Ω → WO B T) (a : Ω → ℂ)
@@ -162,6 +215,11 @@ theorem comm_sfinite {S A B T : HSp D} (o : OrthDec S A B) {χ χ' : (AE D)ˣ �
   rw [Pi.sub_apply, Pi.zero_apply, sub_eq_zero] at this
   exact this
 
+/- English proof (translation)
+Introduce `D ψ S A B T o χ χ' om hW F hF Ω _ μ k a hk ha p`. Use `⟨(GlobalTheory.T.weilOperator_oneVariable_keeps_thetaFunctions D ψ S A B T o F hF).1 χ χ' om hW p, fun u₀ => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, hr⟩` from `exists_sfinite μ a ha`. Establish `e1 : (fun u => ∫ w, a w * F ((o.resS T).symm (u, k w)) ∂μ) = fun u => ∫ w, a w * F ((o.resS T).symm (u, k w)) ∂(μ.restrict s)` using `funext fun u => hr _`. Rewrite using `[e1, hr]`.
+
+Conclude with `comm_sfinite o hW hF (μ.restrict s) k a hk ha.restrict p u₀`.
+-/
 theorem weil_comm_superpos : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S A B T : HSp D) (o : OrthDec S A B) (χ χ' : ((AE D)ˣ →* Circle)) (om : Om A T), IsWeilDatumO ψ A T χ χ' om → ∀ (F : WO S T → ℂ), IsThetaFunO ψ S T F → ∀ (Ω : Type) [MeasurableSpace Ω] (μ : Measure Ω) (k : Ω → WO B T) (a : Ω → ℂ), Measurable k → Integrable a μ → ∀ p, IsThetaFunO ψ S T (fun x => om p (fun u => F ((o.resS T).symm (u, (o.resS T x).2))) (o.resS T x).1) ∧ ∀ u₀, om p (fun u => ∫ w, a w * F ((o.resS T).symm (u, k w)) ∂μ) u₀ = ∫ w, a w * om p (fun u => F ((o.resS T).symm (u, k w))) u₀ ∂μ := by
   intro D ψ S A B T o χ χ' om hW F hF Ω _ μ k a hk ha p
   refine ⟨(GlobalTheory.T.weilOperator_oneVariable_keeps_thetaFunctions D ψ S A B T o F hF).1 χ χ' om hW p, fun u₀ => ?_⟩

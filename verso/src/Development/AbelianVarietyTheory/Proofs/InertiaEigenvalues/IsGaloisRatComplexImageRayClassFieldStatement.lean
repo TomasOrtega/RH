@@ -4,5 +4,8 @@ import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.SmulCommClass
 import Development.AbelianVarietyTheory.Definitions.HeightFunctions.FiniteDimensionalOfSz
 open NumberField IsDedekindDomain
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RayNatGalois.isGalois_fieldRange | exact GlobalTheory.RayNatGalois.isGalois_fieldRange | (intros; apply GlobalTheory.RayNatGalois.isGalois_fieldRange <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isGalois_rat_complexImage_rayClassField : ∀ {K H : Type} [Field K] [NumberField K] [IsGalois ℚ K] [Field H] [NumberField H] [Algebra K H] [IsAbelianGalois K H] {n : ℕ}, n ≠ 0 → GlobalTheory.FieldSize.IsRay H (Ideal.span {(n : 𝓞 K)}) → ∀ j : H →+* ℂ, IsGalois ℚ j.toRatAlgHom.fieldRange := by
   first | exact @GlobalTheory.RayNatGalois.isGalois_fieldRange | exact GlobalTheory.RayNatGalois.isGalois_fieldRange | (intros; apply GlobalTheory.RayNatGalois.isGalois_fieldRange <;> assumption)

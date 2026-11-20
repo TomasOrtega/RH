@@ -18,6 +18,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Finit
 namespace UpperTheory.Gal.Int.Geo.CovMain
 
 open UpperTheory.Gal.FiniteEtaleModels in
+/- English proof (translation)
+The claim follows from `@GlobalTheory.T.harrisTaylorIntegralModel_nonempty proj := @GlobalTheory.UPel.HT.Model.isProjOver_of_compactB cmp := @GlobalTheory.T.exists_open_closed_immersion_genModel_to_fibre finModel := finModel_holds (finCover_holds (repAll_holds idealInd_holds (repMul_holds crtMul_holds c …`.
+-/
 theorem mIn : MIn where
   ex := @GlobalTheory.T.harrisTaylorIntegralModel_nonempty
   proj := @GlobalTheory.UPel.HT.Model.isProjOver_of_compactB
@@ -28,8 +31,17 @@ theorem mIn : MIn where
   cong := crystallineComparison.Mod.congKS_link
   corr := crystallineComparison.Mod.corrBC_holds crystallineComparison.Mod.quotObj_link
 
+/- English proof (translation)
+The claim follows from `kSCong_of mIn`.
+-/
 theorem ksCong_holds : KSCong := kSCong_of mIn
+/- English proof (translation)
+The claim follows from `stdEx_of mIn`.
+-/
 theorem stdEx_holds : StdEx := stdEx_of mIn
+/- English proof (translation)
+The claim follows from `kSCover_of mIn`.
+-/
 theorem ksCover_holds : KSCover := kSCover_of mIn
 
 end UpperTheory.Gal.Int.Geo.CovMain

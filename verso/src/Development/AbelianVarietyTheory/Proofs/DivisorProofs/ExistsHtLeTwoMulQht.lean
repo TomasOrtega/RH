@@ -17,6 +17,19 @@ namespace GlobalTheory.CuspDbl
 
 open Metric
 
+/- English proof (translation)
+Establish `hr2 : 0 < r / 2` using `half_pos hr`. Establish `hG : ∀ s ∈ ball s₀ r, s ≠ s₀ → ∀ y, G s y = H s y / (s - s₀) ^ k` using `fun s hs hne y => by`. Rewrite using `[hGH s hs hne y, mul_div_cancel_left₀ _ (pow_ne_zero _ (sub_ne_zero.2 hne))]`. Establish `hGd : ∀ y, DifferentiableOn ℂ (fun s => G s y) (ball s₀ r)` using `fun y => by`. Use `(Complex.differentiableOn_compl_singleton_and_continuousAt_iff (ball_mem_nhds s₀ hr)).1 ⟨?_, h₀ y⟩` and prove the remaining obligations.
+
+Use `DifferentiableOn.congr (f := fun s => H s y / (s - s₀) ^ k) ?_ fun s hs => hG s hs.1 hs.2 y` and prove the remaining obligations. Conclude with `((hd y).mono Set.diff_subset).div (by fun_prop) fun s hs => pow_ne_zero _ (sub_ne_zero.2 hs.2)`. Establish `hsub : closedBall s₀ (r / 2) ⊆ ball s₀ r` using `closedBall_subset_ball (half_lt_self hr)`. Establish `hsph : ∀ s ∈ sphere s₀ (r / 2), s ∈ ball s₀ r ∧ s ≠ s₀ ∧ ‖s - s₀‖ = r / 2` using `fun s hs => ⟨hsub (sphere_subset_closedBall hs), ne_of_mem_sphere hs hr2.ne', mem_sphere_iff_norm.1 hs⟩`. Establish `hmax : ∀ {u : ℂ → ℂ} {c : ℝ}, DifferentiableOn ℂ u (ball s₀ r) → (∀ s ∈ sphere s₀ (r / 2), ‖u s‖ ≤ c) → ∀ s ∈ ball s₀ (r / 2), ‖u s‖ ≤ c` using `fun {u c} hu hb s hs => by`.
+
+Use `Complex.norm_le_of_forall_mem_frontier_norm_le isBounded_ball (DifferentiableOn.diffContOnCl_ball hu hsub) (fun z hz => hb z ?_) (subset_closure hs)` and prove the remaining obligations. Rewrite `hz` using `[frontier_ball s₀ hr2.ne']`. Then use the resulting hypothesis. Use `⟨hGd, fun s hs => continuous_iff_continuousAt.2 fun y₀ => ?_, fun s hs y => hmax (hGd y) (fun z hz => ?_) s hs⟩` and prove the remaining obligations. Use `Metric.tendsto_nhds.2 fun ε hε => ?_` and prove the remaining obligations. Establish `h1 : ∀ᶠ y in 𝓝 y₀, ∀ z ∈ sphere s₀ (r / 2), ‖H z y - H z y₀‖ < ε / 2 * (r / 2) ^ k`.
+
+Use `(isCompact_sphere s₀ (r / 2)).eventually_forall_of_forall_eventually fun z hz => ?_` and prove the remaining obligations. Establish `h2 : ContinuousAt (fun x : ℂ × Y => H x.1 x.2) (z, y₀)` using `hc.continuousAt ((isOpen_ball.prod isOpen_univ).mem_nhds ⟨(hsph z hz).1, trivial⟩)`. Establish `h3 : ContinuousAt (fun x : Y × ℂ => ‖H x.2 x.1 - H x.2 y₀‖) (y₀, z)` using `((h2.comp_of_eq (f := fun x : Y × ℂ => (x.2, x.1)) (by fun_prop) rfl).sub (h2.comp_of_eq (f := fun x : Y × ℂ => (x.2, y₀)) (by fun_prop) rfl)).norm`. Conclude with `h3.eventually_lt continuousAt_const (by simp only [sub_self, norm_zero]; positivity)`. Use `filter_upwards [h1] with y hy`.
+
+Rewrite using `[dist_eq_norm]`. Use `(hmax (c := ε / 2) ((hGd y).sub (hGd y₀)) (fun z hz => ?_) s hs).trans_lt (half_lt_self hε)` and prove the remaining obligations. Take `⟨a, b, c⟩` from `hsph z hz`. Simplify using `only [Pi.sub_apply]`. Rewrite using `[hG z a b, hG z a b, ← sub_div, norm_div, norm_pow, c, div_le_iff₀ (by positivity)]`.
+
+Conclude with `(hy z hz).le`. Take `⟨a, b, c⟩` from `hsph z hz`. Rewrite using `[hG z a b, norm_div, norm_pow, c]`. Conclude with `div_le_div_of_nonneg_right (hB z a y) (by positivity)`.
+-/
 theorem removable_param {Y : Type} [TopologicalSpace Y] {G H : ℂ → Y → ℂ} {s₀ : ℂ} {r : ℝ} {k : ℕ} {B : Y → ℝ} (hr : 0 < r)
     (hGH : ∀ s ∈ ball s₀ r, s ≠ s₀ → ∀ y, H s y = (s - s₀) ^ k * G s y)
     (hd : ∀ y, DifferentiableOn ℂ (fun s => H s y) (ball s₀ r))
@@ -60,6 +73,23 @@ theorem removable_param {Y : Type} [TopologicalSpace Y] {G H : ℂ → Y → ℂ
     rw [hG z a b, norm_div, norm_pow, c]
     exact div_le_div_of_nonneg_right (hB z a y) (by positivity)
 
+/- English proof (translation)
+Establish `hm : ∀ y, GlobalTheory.Cont.IsMerExt (fun s => e s y) Set.univ fun s => Ei s y` using `fun y => by`. Use `GlobalTheory.Cont.isMerExt_univ.2 ⟨fun x => ?_, σ₀, fun s hs => hE s hs y⟩` and prove the remaining obligations. Take `⟨k, r, H, hr, h1, h2, -⟩` from `hloc x`. Establish `h3 : MeromorphicAt (fun s => H s y / (s - x) ^ k) x` using `((h2 y).analyticAt (ball_mem_nhds x hr)).meromorphicAt.fun_div (by fun_prop)`. Use `h3.congr ?_` and prove the remaining obligations.
+
+Use `filter_upwards [mem_nhdsWithin_of_mem_nhds (ball_mem_nhds x hr), self_mem_nhdsWithin] with s hs hne`. Rewrite using `[h1 s hs hne y, mul_div_cancel_left₀ _ (pow_ne_zero _ (sub_ne_zero.2 hne))]`. It suffices to establish `h : ∃ (k : ℕ) (r C : ℝ) (N : ℕ) (H : ℂ → Y → ℂ), 0 < r ∧ 0 ≤ C ∧ (s₁ = s₀ → k = 0) ∧ (∀ s ∈ ball s₁ r, (s ≠ s₁ ∨ k = 0) → ∀ y, H s y = (s - s₁) ^ k * (if s = s₀ then Ψ y else Ei s y)) ∧ (∀ y, DifferentiableOn ℂ (fun s => H s y) (ball s₁ r)) ∧ (∀ s ∈ ball s₁ r, Continuous (H s)) ∧ …`. Take `⟨k, r, C, N, H, hr, hC, hk, h1, h2, h3, h4⟩` from `h`. Use `⟨k, r, C, N, H, hr, hC, hk, h1, h2, h3, h4, fun y y' hy => ?_⟩` and prove the remaining obligations.
+
+Establish `h5 : (fun s => Ei s y) =ᶠ[𝓝[≠] s₁] fun s => Ei s y'` using `(((hm y).isExtAt trivial).congr ⟨σ₀, fun s hs => hy s hs⟩).eventuallyEq ((hm y').isExtAt trivial)`. Establish `h6 : Ψ y = Ψ y'` using `((hΨ y).congr ⟨σ₀, fun s hs => hy s hs⟩).unique (hΨ y')`. Use `((h2 y).analyticOnNhd isOpen_ball).eqOn_of_preconnected_of_frequently_eq ((h2 y').analyticOnNhd isOpen_ball) (convex_ball s₁ r).isPreconnected (mem_ball_self hr) (Eventually.frequently ?_)` and prove the remaining obligations. Use `filter_upwards [h5, mem_nhdsWithin_of_mem_nhds (ball_mem_nhds s₁ hr), self_mem_nhdsWithin] with s a b c`. Rewrite using `[h1 s b (.inl c), h1 s b (.inl c), a, h6]`.
+
+Take `⟨k, r, H, hr, h1, h2, h3, C, N, h4⟩` from `hloc s₁`. Establish `h4' : ∀ s ∈ ball s₁ r, ∀ y, ‖H s y‖ ≤ |C| * ht y ^ N` using `fun s hs y => (h4 s hs y).trans (mul_le_mul_of_nonneg_right (le_abs_self C) (pow_nonneg (hht y) N))`. Distinguish the cases in `h0 : s₁ = s₀`. Substitute `h0` using the available equality. Take `⟨a, b, c⟩` from `removable_param (G := fun s y => if s = s₁ then Ψ y else Ei s y) hr (fun s hs hne y => by simp only [if_neg hne]; exact h1 s hs hne y) h2 h3 h4' fun y => by`.
+
+Rewrite using `[← continuousWithinAt_compl_self, ContinuousWithinAt]`. Simplify using `only [if_true]`. Use `(((hm y).isExtAt trivial).holValueAt_iff.1 (hΨ y)).congr' ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with s hs`. Rewrite using `[if_neg (show s ≠ s₁ from hs)]`.
+
+Use `⟨0, r / 2, |C| / (r / 2) ^ k, N, fun s y => if s = s₁ then Ψ y else Ei s y, half_pos hr, by positivity, fun _ => rfl, fun s _ _ y => by simp, fun y => (a y).mono (ball_subset_ball (half_le_self hr.le)), b, fun s hs y => (c s hs y).trans_eq (by ring)⟩` and prove the remaining obligations. Establish `hρ : 0 < min r (dist s₀ s₁)` using `lt_min hr (dist_pos.2 (Ne.symm h0))`. Establish `hsub : ball s₁ (min r (dist s₀ s₁)) ⊆ ball s₁ r` using `ball_subset_ball (min_le_left _ _)`. Use `⟨k + 1, min r (dist s₀ s₁), r * |C|, N, fun s y => (s - s₁) * H s y, hρ, by positivity, fun h => absurd h h0, fun s hs hne y => ?_, fun y => DifferentiableOn.fun_mul (by fun_prop) ((h2 y).mono hsub), fun s hs => ?_, fun s hs y => ?_⟩` and prove the remaining obligations. Establish `hne' : s ≠ s₁` using `hne.resolve_right (Nat.succ_ne_zero k)`.
+
+Establish `hs0 : s ≠ s₀`. Introduce and unpack `rfl`. Conclude with `absurd (mem_ball.1 hs) (not_lt.2 (min_le_right _ _))`. Simplify using `only [if_neg hs0, h1 s (hsub hs) hne' y]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `continuous_const.mul ?_` and prove the remaining obligations. Conclude with `h3.comp_continuous (f := fun y => (s, y)) (by fun_prop) fun y => ⟨hsub hs, trivial⟩`. Rewrite using `[norm_mul, mul_assoc]`. Conclude with `mul_le_mul (mem_ball_iff_norm.1 (hsub hs)).le (h4' s (hsub hs) y) (norm_nonneg _) hr.le`.
+-/
 theorem local_form {Y : Type} [TopologicalSpace Y] {ht : Y → ℝ} (hht : ∀ y, 0 ≤ ht y) {Ei e : ℂ → Y → ℂ} {σ₀ : ℝ}
     (hE : ∀ s : ℂ, σ₀ < s.re → ∀ y, Ei s y = e s y)
     (hloc : ∀ s₁ : ℂ, ∃ (k : ℕ) (r : ℝ) (H : ℂ → Y → ℂ), 0 < r ∧
@@ -125,6 +155,9 @@ theorem local_form {Y : Type} [TopologicalSpace Y] {ht : Y → ℝ} (hht : ∀ y
     · rw [norm_mul, mul_assoc]
       exact mul_le_mul (mem_ball_iff_norm.1 (hsub hs)).le (h4' s (hsub hs) y) (norm_nonneg _) hr.le
 
+/- English proof (translation)
+Establish `h1 : 1 ≤ qht h` using `le_ciInf fun γ => one_le_heightGL F _`. Establish `h2 : qht h < 2 * qht h` using `lt_two_mul_self (one_pos.trans_le h1)`. Take `⟨γ, hγ⟩` from `exists_lt_of_ciInf_lt h2`. Conclude with `⟨γ.1, γ.2, hγ.le⟩`.
+-/
 theorem exists_ht_le_two_mul_qht {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (h : UA σ J) :
     ∃ γ ∈ ratU σ J, ht (γ * h) ≤ 2 * qht h := by
@@ -133,6 +166,19 @@ theorem exists_ht_le_two_mul_qht {F E : Type} [Field F] [NumberField F] [Field E
   obtain ⟨γ, hγ⟩ := exists_lt_of_ciInf_lt h2
   exact ⟨γ.1, γ.2, hγ.le⟩
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n W W₂ _ i hi f hf Ei hEi hloc s₀ Ψ hΨ w hwc hw1 _ s₁`. Establish `hi' : ∀ h h', (i (h, h')).1 = blkGL finSumFinEquiv (h.1, h'.1)` using `fun h h' => Units.ext (hi h h')`. Establish `hic : Continuous i` using `continuous_induced_rng.2 (((continuous_blkGL finSumFinEquiv).comp ((continuous_subtype_val.comp continuous_fst).prodMk (continuous_subtype_val.comp continuous_snd))).congr fun x => (hi' x.1 x.2).symm)`. Establish `hrat : ∀ γ ∈ ratU σ W.J, ∀ γ' ∈ ratU σ W.J, i (γ, γ') ∈ ratU σ W₂.J` using `fun γ hγ γ' hγ' => by`. Rewrite `hγ`, `hγ'`, the goal using `[ratU, Subgroup.mem_subgroupOf]`.
+
+Take `⟨A, hA⟩` from `hγ`. Take `⟨A', hA'⟩` from `hγ'`. Use `⟨blkGL finSumFinEquiv (A, A'), Units.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(blkMat finSumFinEquiv A.1 A'.1).map _ = mat (i (γ, γ'))`. Rewrite using `[hi, blkMat_map _ _ (map_zero _)]`.
+
+Establish `h1 : (A.1).map (inclR (F` using `F) (E := E) (AF F)) = mat γ := congrArg Units.val hA`. Establish `h2 : (A'.1).map (inclR (F` using `F) (E := E) (AF F)) = mat γ' := congrArg Units.val hA'`. Rewrite using `[h1, h2]`. Establish `hht : ∀ h h', ht (i (h, h')) ≤ ht h * ht h'` using `fun h h' => by`. Unfold `ht`.
+
+Rewrite using `[hi']`. Conclude with `GlobalTheory.BlockHeight.heightGL_blk_le F finSumFinEquiv _ _ _ rfl rfl`. Take `⟨k, r, C, N, H, hr, hC, hk, h1, h2, h3, h4, h5⟩` from `local_form (ht := fun g : UA σ W₂.J => (ht g : ℝ)) (fun g => (ht g).2) hEi hloc hΨ s₁`. Use `⟨k, r, C * 4 ^ N, N, fun s h h' => H s (i (h, h')) * w h', hr, hk, fun s hs hne h h' => ?_, fun h h' => (h2 _).mul_const _, fun s hs => ((h3 s hs).comp hic).mul (hwc.comp continuous_snd), fun s hs h h' => ?_⟩` and prove the remaining obligations. Simplify using `only [h1 s hs hne, mul_assoc]`.
+
+Take `⟨γ, hγ, a⟩` from `exists_ht_le_two_mul_qht h`. Take `⟨γ', hγ', a'⟩` from `exists_ht_le_two_mul_qht h'`. Establish `e : H s (i (γ * h, γ' * h')) = H s (i (h, h'))`. Use `h5 _ _ (fun t ht => ?_) s hs` and prove the remaining obligations. Rewrite using `[← Prod.mk_mul_mk, map_mul]`.
+
+Conclude with `GlobalTheory.Eis.leftInv_cosetSum (hf t ht).1 _ (hrat γ hγ γ' hγ') _`. Establish `b : ht (i (γ * h, γ' * h')) ≤ 4 * (qht h * qht h')` using `(hht _ _).trans ((mul_le_mul' a a').trans_eq (by ring))`. Establish `b' : (ht (i (γ * h, γ' * h')) : ℝ) ≤ 4 * ((qht h : ℝ) * (qht h' : ℝ))` using `by exact_mod_cast b`. Rewrite using `[norm_mul, hw1, mul_one, ← e, mul_assoc, ← mul_pow]`. Conclude with `(h4 s hs _).trans (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (ht _).2 b' N) hC)`.
+-/
 theorem isRegFam_doubled : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (W : Spc F E n)
     (W₂ : Spc F E (n + n)), W₂.J = dblGram finSumFinEquiv W.J →
     ∀ i : UA σ W.J × UA σ W.J →* UA σ W₂.J, (∀ h h', mat (i (h, h')) = blkMat finSumFinEquiv (mat h) (mat h')) →

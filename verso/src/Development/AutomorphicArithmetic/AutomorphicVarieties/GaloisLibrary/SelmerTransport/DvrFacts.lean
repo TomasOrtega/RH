@@ -8,6 +8,11 @@ section Alg
 variable {l : ℕ} [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
   [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O]
 
+/- English proof (translation)
+Rewrite using `[RingHom.injective_iff_ker_eq_bot]`. Assume the negation of the conclusion as `hne`. Establish `hp : (RingHom.ker (algebraMap ℤ_[l] O)).IsPrime` using `RingHom.ker_isPrime _`. Establish `hmax : (RingHom.ker (algebraMap ℤ_[l] O)).IsMaximal` using `hp.isMaximal hne`. Establish `hbot : (⊥ : Ideal O).IsMaximal`.
+
+Apply `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap (R := ℤ_[l])` to reduce the goal to its premises. Rewrite using `[← RingHom.ker_eq_comap_bot]`. Conclude with `hmax`. Conclude with `IsDiscreteValuationRing.not_a_field O (IsLocalRing.eq_maximalIdeal hbot).symm`.
+-/
 private theorem algebraMap_inj : Function.Injective (algebraMap ℤ_[l] O) := by
   rw [RingHom.injective_iff_ker_eq_bot]
   by_contra hne
@@ -19,6 +24,11 @@ private theorem algebraMap_inj : Function.Injective (algebraMap ℤ_[l] O) := by
     exact hmax
   exact IsDiscreteValuationRing.not_a_field O (IsLocalRing.eq_maximalIdeal hbot).symm
 
+/- English proof (translation)
+Establish `hspan : Ideal.span {(l : O)} = (IsLocalRing.maximalIdeal ℤ_[l]).map (algebraMap ℤ_[l] O)`. Rewrite using `[PadicInt.maximalIdeal_eq_span_p, Ideal.map_span, Set.image_singleton, map_natCast]`. Rewrite using `[hspan, ← IsLocalRing.finrank_quotient_map (R := ℤ_[l]) (S := O)]`. Use `letI : Field (ℤ_[l] ⧸ IsLocalRing.maximalIdeal ℤ_[l]) := Ideal.Quotient.field _`. Use `haveI : Module.Finite (ℤ_[l] ⧸ IsLocalRing.maximalIdeal ℤ_[l]) (O ⧸ (IsLocalRing.maximalIdeal ℤ_[l]).map (algebraMap ℤ_[l] O)) := Module.Finite.of_restrictScalars_finite ℤ_[l] _ _`.
+
+Rewrite using `[← Module.length_eq_finrank]`. Conclude with `Module.length_eq_of_surjective Ideal.Quotient.mk_surjective`.
+-/
 private theorem length_quot [Module.Free ℤ_[l] O] : Module.length ℤ_[l] (O ⧸ Ideal.span {(l : O)}) = Module.finrank ℤ_[l] O := by
   have hspan : Ideal.span {(l : O)} = (IsLocalRing.maximalIdeal ℤ_[l]).map (algebraMap ℤ_[l] O) := by
     rw [PadicInt.maximalIdeal_eq_span_p, Ideal.map_span, Set.image_singleton, map_natCast]
@@ -32,6 +42,25 @@ private theorem length_quot [Module.Free ℤ_[l] O] : Module.length ℤ_[l] (O �
 
 end Alg
 
+/- English proof (translation)
+Introduce `l _ O _ _ _ _ _`. Establish `hinj : Function.Injective (algebraMap ℤ_[l] O)` using `algebraMap_inj O`. Use `haveI : CharZero O := charZero_of_injective_algebraMap hinj`. Take `⟨hcomp, -, hlm, -, hfree, hloc⟩` from `UpperTheory.V.abelian₂.dvr_finite l O`. Use `haveI := hfree`.
+
+Use `haveI := hloc`. Establish `hspan : Ideal.span {(l : O)} = (IsLocalRing.maximalIdeal ℤ_[l]).map (algebraMap ℤ_[l] O)`. Rewrite using `[PadicInt.maximalIdeal_eq_span_p, Ideal.map_span, Set.image_singleton, map_natCast]`. Establish `hl0 : (l : O) ≠ 0`. Introduce `h`.
+
+Establish `h' : algebraMap ℤ_[l] O (l : ℤ_[l]) = algebraMap ℤ_[l] O 0`. Rewrite using `[map_natCast, h, map_zero]`. Establish `h'' : ((l : ℕ) : ℤ_[l]) = 0` using `hinj h'`. Conclude with `(Fact.out : l.Prime).ne_zero (by exact_mod_cast h'')`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`.
+
+Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hl0 hϖ`. Establish `hval : IsDiscreteValuationRing.addVal O (l : O) = n` using `IsDiscreteValuationRing.addVal_def _ u hϖ n hu`. Establish `he : eO l O = n` using `by show Module.length O (O ⧸ Ideal.span {(l : O)}) = n`. Rewrite using `[hu, Ideal.span_singleton_mul_left_unit u.isUnit, ← Ideal.span_singleton_pow, ← hϖ.maximalIdeal_eq]`. Conclude with `IsDiscreteValuationRing.length_quotient_pow_maximalIdeal (R := O) n`.
+
+Establish `hn0 : n ≠ 0`. Introduce and unpack `rfl`. Rewrite `hu` using `[pow_zero, mul_one]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 hlm (hu ▸ u.isUnit)`. Use `⟨hinj, hfree, hloc, hcomp, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `show Module.length O (O ⧸ Ideal.span {(l : O)}) = _`. Rewrite using `[hspan]`. Rewrite using `[he]`. Conclude with `hn0` after adjusting the coercions. Rewrite using `[← length_quot (l := l) O] show Module.length O (O ⧸ Ideal.span {(l : O)}) ≤ _`.
+
+Rewrite using `[IsLocalRing.length_restrictScalars ℤ_[l] O (O ⧸ Ideal.span {(l : O)})]`. Conclude with `le_mul_of_one_le_right' (Order.one_le_iff_pos.2 Module.length_pos)`. Rewrite using `[he, hval]`. Introduce `m hm`. Establish `hcop : IsCoprime (l : ℤ) (m : ℤ)` using `Nat.isCoprime_iff_coprime.2 ((Nat.Prime.coprime_iff_not_dvd Fact.out).2 hm)`.
+
+Take `⟨a, b, hab⟩` from `hcop`. Assume the negation of the conclusion as `hmu`. Establish `hmm : (m : O) ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal _).2 hmu`. Establish `h1 : (1 : O) ∈ IsLocalRing.maximalIdeal O`. Establish `hab' : (a : O) * (l : O) + (b : O) * (m : O) = 1`.
+
+Conclude with `congrArg (Int.cast : ℤ → O) hab` after adjusting the coercions. Rewrite using `[← hab']`. Conclude with `add_mem (Ideal.mul_mem_left _ _ hlm) (Ideal.mul_mem_left _ _ hmm)`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal O).ne_top ((Ideal.eq_top_iff_one _).2 h1)`.
+-/
 theorem UpperTheory.V.Base.dvrFacts :
     ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O],
       Function.Injective (algebraMap ℤ_[l] O) ∧ Module.Free ℤ_[l] O ∧ IsLocalHom (algebraMap ℤ_[l] O) ∧

@@ -3,6 +3,13 @@ open FourierTransform MeasureTheory Filter Topology
 
 namespace GlobalTheory.GaussTransport
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => funext y`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Rewrite using `[iteratedDeriv_succ, ih]`.
+
+Use function extensionality and compare the values at `y`. Establish `h1 : HasDerivAt (fun y : ℝ => (y : ℂ)) 1 y`. Simplify using `using (hasDerivAt_id y).ofReal_comp`. Establish `h : HasDerivAt (fun y : ℝ => a ^ n * Complex.exp (a * y)) (a ^ n * (Complex.exp (a * y) * (a * 1))) y` using `((h1.const_mul a).cexp).const_mul (a ^ n)`. Rewrite using `[h.deriv]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem iteratedDeriv_cexp_mul (a : ℂ) (n : ℕ) :
     iteratedDeriv n (fun y : ℝ => Complex.exp (a * y)) = fun y : ℝ => a ^ n * Complex.exp (a * y) := by
   induction n with
@@ -16,6 +23,11 @@ theorem iteratedDeriv_cexp_mul (a : ℂ) (n : ℕ) :
       ((h1.const_mul a).cexp).const_mul (a ^ n)
     rw [h.deriv]; ring
 
+/- English proof (translation)
+Establish `hc : ContDiff ℝ (⊤ : ℕ∞) (fun y : ℝ => Complex.exp (Complex.I * y))` using `(contDiff_const.mul Complex.ofRealCLM.contDiff).cexp`. Use `⟨hc, fun n => ⟨0, ‖Complex.I‖ ^ n, fun x => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[norm_iteratedFDeriv_eq_norm_iteratedDeriv, iteratedDeriv_cexp_mul, pow_zero, mul_one, norm_mul, norm_pow]`. Establish `h1 : ‖Complex.exp (Complex.I * x)‖ = 1`. Rewrite using `[mul_comm, Complex.norm_exp_ofReal_mul_I]`.
+
+Rewrite using `[h1, mul_one]`.
+-/
 theorem hasTemperateGrowth_expI : Function.HasTemperateGrowth (fun t : ℝ => Complex.exp (Complex.I * t)) := by
   have hc : ContDiff ℝ (⊤ : ℕ∞) (fun y : ℝ => Complex.exp (Complex.I * y)) :=
     (contDiff_const.mul Complex.ofRealCLM.contDiff).cexp
@@ -25,6 +37,9 @@ theorem hasTemperateGrowth_expI : Function.HasTemperateGrowth (fun t : ℝ => Co
     rw [mul_comm, Complex.norm_exp_ofReal_mul_I]
   rw [h1, mul_one]
 
+/- English proof (translation)
+Establish `h1 : Function.HasTemperateGrowth (fun x : V => Q x x)` using `Q.bilinear_hasTemperateGrowth Function.HasTemperateGrowth.id' Function.HasTemperateGrowth.id'`. Establish `h2 : Function.HasTemperateGrowth (fun x : V => s * (Q x x).im)`. Use `((s • Complex.imCLM : ℂ →L[ℝ] ℝ)).hasTemperateGrowth.comp h1` as an intermediate fact. Simplify `this` using `[Function.comp_def]`. Conclude with `hasTemperateGrowth_expI.comp h2`.
+-/
 theorem hasTemperateGrowth_chirp {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     (Q : V →L[ℝ] V →L[ℝ] ℂ) (s : ℝ) :
     Function.HasTemperateGrowth (fun x : V => Complex.exp (Complex.I * ((s * (Q x x).im : ℝ) : ℂ))) := by
@@ -41,6 +56,39 @@ namespace GlobalTheory.GaussTransport
 
 open LineDeriv in
 
+/- English proof (translation)
+Introduce `V _ _ _ E _ _ _ A Q N hQ hD hL`. Use `set χ : V → ℂ := fun x => Complex.exp (Complex.I * ((-1 * (Q x x).im : ℝ) : ℂ)) with hχdef`. Use `set χi : V → ℂ := fun x => Complex.exp (Complex.I * ((1 * (Q x x).im : ℝ) : ℂ)) with hχidef`. Establish `hχ : χ.HasTemperateGrowth` using `hasTemperateGrowth_chirp Q (-1)`. Establish `hχi : χi.HasTemperateGrowth` using `hasTemperateGrowth_chirp Q 1`.
+
+Establish `hχχi : ∀ x, χ x * χi x = 1`. Introduce `x`. Simplify using `only [hχdef, hχidef, ← Complex.exp_add]`. Rewrite using `[← Complex.exp_zero]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Set `Ψ : SchwartzMap E ℂ →L[ℂ] SchwartzMap V ℂ` to `(SchwartzMap.smulLeftCLM ℂ χ).comp (SchwartzMap.compCLMOfContinuousLinearEquiv ℂ A)`. Establish `hΨ : ∀ f x, Ψ f x = χ x * f (A x)`. Introduce `f x`.
+
+Simplify using `[Ψ, SchwartzMap.smulLeftCLM_apply_apply hχ]`. Use `⟨N.comap (Ψ : SchwartzMap E ℂ →ₗ[ℂ] SchwartzMap V ℂ), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `w f f₁ hf hf₁`. Rewrite `hf`, the goal using `[Submodule.mem_comap]`. Simplify using `only [ContinuousLinearMap.coe_coe] at hf ⊢`.
+
+Use `set v : V := A.symm w with hv`. Set `lam : V →L[ℝ] ℝ` to `Complex.imCLM.comp (Q.flip v + Q v)`. Establish `hlam : ∀ x, lam x = (Q x v).im + (Q v x).im` using `by intro x; simp [lam]`. Establish `hlamT : (fun x : V => ((lam x : ℝ) : ℂ)).HasTemperateGrowth` using `(Complex.ofRealCLM.comp lam).hasTemperateGrowth`. Establish `h1N : ∂_{v} (Ψ f) ∈ N` using `hD v (Ψ f) _ hf (fun x => SchwartzMap.lineDerivOp_apply_eq_fderiv v (Ψ f) x)`.
+
+Establish `h2N : SchwartzMap.smulLeftCLM ℂ (fun x : V => ((lam x : ℝ) : ℂ)) (Ψ f) ∈ N` using `hL lam (Ψ f) _ hf (fun x => by rw [SchwartzMap.smulLeftCLM_apply_apply hlamT, smul_eq_mul])`. Establish `hder : ∀ x, fderiv ℝ (⇑(Ψ f)) x v = χ x * fderiv ℝ (⇑f) (A x) w - Complex.I * ((lam x : ℂ) * (χ x * f (A x)))`. Introduce `x`. Establish `hfun : (⇑(Ψ f)) = χ * (fun y => f (A y))` using `funext (hΨ f)`. Set `L : ℂ →L[ℝ] ℂ` to `Complex.ofRealCLM.comp ((-1 : ℝ) • Complex.imCLM)`.
+
+Establish `hq` using `Q.hasFDerivAt_of_bilinear (hasFDerivAt_id x) (hasFDerivAt_id x)`. Establish `hu` using `((L.hasFDerivAt).comp x hq).const_mul Complex.I`. Establish `hχd : HasFDerivAt χ (Complex.exp (Complex.I * L (Q x x)) • (Complex.I • (L.comp (((ContinuousLinearMap.precompR V Q) (id x)) (ContinuousLinearMap.id ℝ V) + ((ContinuousLinearMap.precompL V Q) (ContinuousLinearMap.id ℝ V)) (id x))))) x`. Use `hu.cexp.congr_of_eventuallyEq (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `[χ, L]`.
+
+Establish `hfA : HasFDerivAt (fun y => f (A y)) ((fderiv ℝ (⇑f) (A x)).comp (A : V →L[ℝ] E)) x` using `(f.differentiableAt.hasFDerivAt).comp x A.hasFDerivAt`. Rewrite using `[hfun, (hχd.mul hfA).fderiv]`. Establish `hχx : χ x = Complex.exp (-(Complex.I * ((Q x x).im : ℂ)))` using `by simp [χ]`. Simplify using `[L, v, hlam]`. Rewrite using `[hχx]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hsum : Ψ f₁ = ∂_{v} (Ψ f) + Complex.I • SchwartzMap.smulLeftCLM ℂ (fun x : V => ((lam x : ℝ) : ℂ)) (Ψ f)`. Use extensionality with `x`. Rewrite using `[SchwartzMap.add_apply, SchwartzMap.smul_apply, SchwartzMap.smulLeftCLM_apply_apply hlamT, SchwartzMap.lineDerivOp_apply_eq_fderiv, hder, hΨ, hΨ, hf₁, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hsum]`. Conclude with `N.add_mem h1N (N.smul_mem _ h2N)`. Introduce `ℓ f f₁ hf hf₁`. Rewrite `hf`, the goal using `[Submodule.mem_comap]`. Simplify using `only [ContinuousLinearMap.coe_coe] at hf ⊢`.
+
+Use `hL (ℓ.comp (A : V →L[ℝ] E)) (Ψ f) (Ψ f₁) hf (fun x => ?_)` and prove the remaining obligations. Rewrite using `[hΨ, hΨ, hf₁]`. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearEquiv.coe_coe]`. Expand and normalize the polynomial expressions, which then agree. Introduce `g G hg hgN hG`.
+
+Rewrite using `[Submodule.mem_comap]`. Simplify using `only [ContinuousLinearMap.coe_coe]`. Establish `hΨG : Ψ G = g`. Use extensionality with `x`. Rewrite using `[hΨ, hG, hg, hχdef]`.
+
+Simplify using `only`. Rewrite using `[← Complex.exp_add]`. Use `congr 1`. Use `conv_rhs => rw [← Complex.re_add_im (Q x x)]`. Rewrite using `[← hQ x]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hΨG]`. Conclude with `hgN`. Introduce `hd`.
+
+Establish `hsurj : Function.Surjective Ψ`. Introduce `k`. Use `⟨SchwartzMap.compCLMOfContinuousLinearEquiv ℂ A.symm (SchwartzMap.smulLeftCLM ℂ χi k), ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Rewrite using `[hΨ]`.
+
+Simplify using `only [SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, ContinuousLinearEquiv.symm_apply_apply, SchwartzMap.smulLeftCLM_apply_apply hχi, smul_eq_mul]`. Rewrite using `[← mul_assoc, hχχi, one_mul]`. Use `(hsurj.denseRange.dense_image Ψ.continuous hd).mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `hf`.
+-/
 theorem transport : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (E : Type) [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     (A : V ≃L[ℝ] E) (Q : V →L[ℝ] V →L[ℝ] ℂ) (N : Submodule ℂ (SchwartzMap V ℂ)),

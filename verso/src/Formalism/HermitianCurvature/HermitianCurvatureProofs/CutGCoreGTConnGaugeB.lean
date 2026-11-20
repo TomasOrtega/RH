@@ -12,8 +12,14 @@ section gaugeCalc
 
 variable (P : M.Par)
 
+/- English proof (translation)
+The claim follows from `isOpen_lt continuous_const Complex.continuous_normSq`.
+-/
 theorem ann_open : IsOpen (Ann P) := isOpen_lt continuous_const Complex.continuous_normSq
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `hf`. Rewrite using `[Ring.inverse_unit]`. Establish `h` using `congrArg (fun g : SmQ P.r P.TT => (g : Qp P.r P.TT → ℂ) q) u.mul_inv`. Simplify using `only [Subalgebra.coe_mul, Pi.mul_apply, OneMemClass.coe_one, Pi.one_apply] at h`. Conclude with `eq_inv_of_mul_eq_one_right h`.
+-/
 theorem ev_inv' (f : SmQ P.r P.TT) (hf : IsUnit f) (q : Qp P.r P.TT) :
     ((Ring.inverse f : SmQ P.r P.TT) : Qp P.r P.TT → ℂ) q = ((f : Qp P.r P.TT → ℂ) q)⁻¹ := by
   obtain ⟨u, rfl⟩ := hf
@@ -22,6 +28,9 @@ theorem ev_inv' (f : SmQ P.r P.TT) (hf : IsUnit f) (q : Qp P.r P.TT) :
   simp only [Subalgebra.coe_mul, Pi.mul_apply, OneMemClass.coe_one, Pi.one_apply] at h
   exact eq_inv_of_mul_eq_one_right h
 
+/- English proof (translation)
+Use `show ContDiffOn ℝ MA.sm (MA.ext (fun q : MA.Qp P.r P.TT => v q.1.2)) (MA.Qset P.r P.TT)`. Establish `h1 : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun x : MA.E P.r => v x.2) (MA.Qset P.r P.TT)` using `hv.comp contDiff_snd.contDiffOn (fun x hx => show P.TT < Complex.normSq x.2 from hx.2)`. Conclude with `h1.congr (fun x hx => by simp [MA.ext, hx])`.
+-/
 theorem smZ {v : ℂ → ℂ} (hv : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) v (Ann P)) :
     (fun q : Qp P.r P.TT => v q.1.2) ∈ smSub P.r P.TT := by
   show ContDiffOn ℝ MA.sm (MA.ext (fun q : MA.Qp P.r P.TT => v q.1.2)) (MA.Qset P.r P.TT)
@@ -29,11 +38,25 @@ theorem smZ {v : ℂ → ℂ} (hv : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ
     hv.comp contDiff_snd.contDiffOn (fun x hx => show P.TT < Complex.normSq x.2 from hx.2)
   exact h1.congr (fun x hx => by simp [MA.ext, hx])
 
+/- English proof (translation)
+Establish `h` using `smZ P hv`. Simplify using `[fnZ, MA.toSm, h]`.
+-/
 theorem fnZ_val {v : ℂ → ℂ} (hv : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) v (Ann P)) (q : Qp P.r P.TT) :
     ((fnZ P v : SmQ P.r P.TT) : Qp P.r P.TT → ℂ) q = v q.1.2 := by
   have h := smZ P hv
   simp [fnZ, MA.toSm, h]
 
+/- English proof (translation)
+Establish `hne : ∀ x ∈ MA.Qset P.r P.TT, MA.coordE v x ≠ 0`. Introduce `x hx`. Establish `hz : MA.zE v x ≠ 0`. Unfold `MA.zE`. Use `split_ifs with h`.
+
+Conclude with `hx.1 _`. Introduce `h0`. Establish `h1 : P.TT < Complex.normSq x.2` using `hx.2`. Rewrite `h1` using `[h0, Complex.normSq_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Unfold `MA.coordE`. Use `split_ifs`. Conclude with `hz`. Conclude with `(map_ne_zero _).mpr hz`. Establish `hmem : (fun q : MA.Qp P.r P.TT => (MA.coordE v q.1)⁻¹) ∈ MA.smSub P.r P.TT` using `by show ContDiffOn ℝ MA.sm (MA.ext (fun q : MA.Qp P.r P.TT => (MA.coordE v q.1)⁻¹)) (MA.Qset P.r P.TT)`.
+
+Establish `h1 : ContDiffOn ℝ MA.sm (fun x => (MA.coordE v x)⁻¹) (MA.Qset P.r P.TT)` using `(MA.coordE_smooth v).contDiffOn.inv hne`. Conclude with `h1.congr (fun x hx => by simp [MA.ext, hx])`. Use `isUnit_iff_exists_inv.mpr ⟨⟨_, hmem⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `q`.
+
+Use `show MA.coordE v q.1 * (MA.coordE v q.1)⁻¹ = 1`. Conclude with `mul_inv_cancel₀ (hne q.1 q.2)`.
+-/
 theorem coordQ_unit (hTT : 0 ≤ P.TT) (v : M.Var P.r) : IsUnit (coordQ v : SmQ P.r P.TT) := by
   have hne : ∀ x ∈ MA.Qset P.r P.TT, MA.coordE v x ≠ 0 := by
     intro x hx
@@ -60,6 +83,13 @@ theorem coordQ_unit (hTT : 0 ≤ P.TT) (v : M.Var P.r) : IsUnit (coordQ v : SmQ 
   show MA.coordE v q.1 * (MA.coordE v q.1)⁻¹ = 1
   exact mul_inv_cancel₀ (hne q.1 q.2)
 
+/- English proof (translation)
+Use `show ((Ring.inverse (coordQ M.vz : SmQ P.r P.TT) : SmQ P.r P.TT) : Qp P.r P.TT → ℂ) q * (MA.coordE M.vz q.1 * wirt M.vz (MA.ext (f : Qp P.r P.TT → ℂ)) q.1) = _`. Rewrite using `[ev_inv' P _ (coordQ_unit P hTT M.vz) q]`. Establish `hz : q.1.2 ≠ 0`. Introduce `h0`. Establish `h2` using `q.2.2`.
+
+Rewrite `h2` using `[h0, Complex.normSq_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hne : MA.coordE M.vz q.1 ≠ 0`. Establish `h1 : MA.coordE M.vz q.1 = q.1.2`. Simplify using `[MA.coordE, MA.zE, M.vz]`.
+
+Rewrite using `[h1]`. Conclude with `hz`. Rewrite using `[show ((coordQ M.vz : SmQ P.r P.TT) : Qp P.r P.TT → ℂ) q = MA.coordE M.vz q.1 from rfl, ← mul_assoc, inv_mul_cancel₀ hne, one_mul]`.
+-/
 theorem dzQ_apply (hTT : 0 ≤ P.TT) (f : SmQ P.r P.TT) (q : Qp P.r P.TT) :
     ((dzQ P f : SmQ P.r P.TT) : Qp P.r P.TT → ℂ) q = wirt M.vz (MA.ext (f : Qp P.r P.TT → ℂ)) q.1 := by
   show ((Ring.inverse (coordQ M.vz : SmQ P.r P.TT) : SmQ P.r P.TT) : Qp P.r P.TT → ℂ) q *
@@ -78,6 +108,13 @@ theorem dzQ_apply (hTT : 0 ≤ P.TT) (f : SmQ P.r P.TT) (q : Qp P.r P.TT) :
   rw [show ((coordQ M.vz : SmQ P.r P.TT) : Qp P.r P.TT → ℂ) q = MA.coordE M.vz q.1 from rfl,
     ← mul_assoc, inv_mul_cancel₀ hne, one_mul]
 
+/- English proof (translation)
+Use `show ((Ring.inverse (coordQ M.vzb : SmQ P.r P.TT) : SmQ P.r P.TT) : Qp P.r P.TT → ℂ) q * (MA.coordE M.vzb q.1 * wirt M.vzb (MA.ext (f : Qp P.r P.TT → ℂ)) q.1) = _`. Rewrite using `[ev_inv' P _ (coordQ_unit P hTT M.vzb) q]`. Establish `hz : q.1.2 ≠ 0`. Introduce `h0`. Establish `h2` using `q.2.2`.
+
+Rewrite `h2` using `[h0, Complex.normSq_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hne : MA.coordE M.vzb q.1 ≠ 0`. Establish `h1 : MA.coordE M.vzb q.1 = (starRingEnd ℂ) q.1.2`. Simplify using `[MA.coordE, MA.zE, M.vzb]`.
+
+Rewrite using `[h1]`. Conclude with `(map_ne_zero _).mpr hz`. Rewrite using `[show ((coordQ M.vzb : SmQ P.r P.TT) : Qp P.r P.TT → ℂ) q = MA.coordE M.vzb q.1 from rfl, ← mul_assoc, inv_mul_cancel₀ hne, one_mul]`.
+-/
 theorem dzbQ_apply (hTT : 0 ≤ P.TT) (f : SmQ P.r P.TT) (q : Qp P.r P.TT) :
     ((dzbQ P f : SmQ P.r P.TT) : Qp P.r P.TT → ℂ) q = wirt M.vzb (MA.ext (f : Qp P.r P.TT → ℂ)) q.1 := by
   show ((Ring.inverse (coordQ M.vzb : SmQ P.r P.TT) : SmQ P.r P.TT) : Qp P.r P.TT → ℂ) q *
@@ -96,6 +133,13 @@ theorem dzbQ_apply (hTT : 0 ≤ P.TT) (f : SmQ P.r P.TT) (q : Qp P.r P.TT) :
   rw [show ((coordQ M.vzb : SmQ P.r P.TT) : Qp P.r P.TT → ℂ) q = MA.coordE M.vzb q.1 from rfl,
     ← mul_assoc, inv_mul_cancel₀ hne, one_mul]
 
+/- English proof (translation)
+Establish `h1o : IsOpen {x : MA.E P.r | ∀ l, x.1 l ≠ 0}`. Simplify using `only [Set.setOf_forall]`. Conclude with `isOpen_iInter_of_finite (fun l => isOpen_ne_fun ((continuous_apply l).comp continuous_fst) continuous_const)`. Establish `hopen : IsOpen (MA.Qset P.r P.TT)` using `h1o.inter (isOpen_lt continuous_const (Complex.continuous_normSq.comp continuous_snd))`. Establish `heq : MA.ext ((f * g : SmQ P.r P.TT) : Qp P.r P.TT → ℂ) =ᶠ[nhds q.1] (fun x => MA.ext (f : Qp P.r P.TT → ℂ) x * MA.ext (g : Qp P.r P.TT → ℂ) x)` using `by filter_upwards [hopen.mem_nhds q.2] with x hx`.
+
+Simplify using `[MA.ext, hx]`. Establish `hf` using `MA.ext_smooth_diff f.2 q.1 q.2`. Establish `hg` using `MA.ext_smooth_diff g.2 q.1 q.2`. Establish `hD : fderiv ℝ (MA.ext ((f * g : SmQ P.r P.TT) : Qp P.r P.TT → ℂ)) q.1 = MA.ext (f : Qp P.r P.TT → ℂ) q.1 • fderiv ℝ (MA.ext (g : Qp P.r P.TT → ℂ)) q.1 + MA.ext (g : Qp P.r P.TT → ℂ) q.1 • fderiv ℝ (MA.ext (f : Qp P.r P.TT → ℂ)) q.1` using `heq.fderiv_eq.trans (fderiv_mul hf hg)`. Establish `hfq : MA.ext (f : Qp P.r P.TT → ℂ) q.1 = (f : Qp P.r P.TT → ℂ) q` using `by simp [MA.ext, q.2]`.
+
+Establish `hgq : MA.ext (g : Qp P.r P.TT → ℂ) q.1 = (g : Qp P.r P.TT → ℂ) q` using `by simp [MA.ext, q.2]`. Unfold `MA.wirt`. Rewrite using `[hD]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, hfq, hgq]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem wirtQ_mul (v : M.Var P.r) (f g : SmQ P.r P.TT) (q : Qp P.r P.TT) :
     wirt v (MA.ext ((f * g : SmQ P.r P.TT) : Qp P.r P.TT → ℂ)) q.1 =
       wirt v (MA.ext (f : Qp P.r P.TT → ℂ)) q.1 * (g : Qp P.r P.TT → ℂ) q +
@@ -123,6 +167,11 @@ theorem wirtQ_mul (v : M.Var P.r) (f g : SmQ P.r P.TT) (q : Qp P.r P.TT) :
   simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, hfq, hgq]
   ring
 
+/- English proof (translation)
+Establish `h1 : IsOpen {x : MA.E P.r | ∀ l, x.1 l ≠ 0}`. Simplify using `only [Set.setOf_forall]`. Conclude with `isOpen_iInter_of_finite (fun l => isOpen_ne_fun ((continuous_apply l).comp continuous_fst) continuous_const)`. Establish `hopen : IsOpen (MA.Qset P.r P.TT)` using `h1.inter (isOpen_lt continuous_const (Complex.continuous_normSq.comp continuous_snd))`. Use `filter_upwards [hopen.mem_nhds q.2] with x hx`.
+
+Simplify using `only [MA.ext, dif_pos hx]`. Conclude with `fnZ_val P hv ⟨x, hx⟩`.
+-/
 theorem fnZ_ev_eq {v : ℂ → ℂ} (hv : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) v (Ann P)) (q : Qp P.r P.TT) :
     MA.ext ((fnZ P v : SmQ P.r P.TT) : Qp P.r P.TT → ℂ) =ᶠ[nhds q.1] (fun x : E P.r => v x.2) := by
   have h1 : IsOpen {x : MA.E P.r | ∀ l, x.1 l ≠ 0} := by
@@ -135,6 +184,9 @@ theorem fnZ_ev_eq {v : ℂ → ℂ} (hv : ContDiffOn ℝ ((⊤ : ℕ∞) : WithT
   simp only [MA.ext, dif_pos hx]
   exact fnZ_val P hv ⟨x, hx⟩
 
+/- English proof (translation)
+Establish `hq : q.1.2 ∈ Ann P` using `q.2.2`. Apply the tactic sequence `have hd : DifferentiableAt ℝ v q.1.2 := (hv.differentiableOn (by first | simp | exact_mod_cast le_top)).differentiableAt ((ann_open P).mem_nhds hq)`. Rewrite using `[show (fun x : E P.r => v x.2) = v ∘ Prod.snd from rfl, fderiv_comp q.1 hd differentiableAt_snd, fderiv_snd]`.
+-/
 theorem fderiv_snd_comp {v : ℂ → ℂ} (hv : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) v (Ann P)) (q : Qp P.r P.TT) :
     fderiv ℝ (fun x : E P.r => v x.2) q.1 = (fderiv ℝ v q.1.2).comp (ContinuousLinearMap.snd ℝ _ _) := by
   have hq : q.1.2 ∈ Ann P := q.2.2
@@ -144,6 +196,9 @@ theorem fderiv_snd_comp {v : ℂ → ℂ} (hv : ContDiffOn ℝ ((⊤ : ℕ∞) :
   rw [show (fun x : E P.r => v x.2) = v ∘ Prod.snd from rfl, fderiv_comp q.1 hd differentiableAt_snd,
     fderiv_snd]
 
+/- English proof (translation)
+Establish `h1 : fderiv ℝ (MA.ext ((fnZ P v : SmQ P.r P.TT) : Qp P.r P.TT → ℂ)) q.1 = (fderiv ℝ v q.1.2).comp (ContinuousLinearMap.snd ℝ _ _)` using `(fnZ_ev_eq P hv q).fderiv_eq.trans (fderiv_snd_comp P hv q)`. Unfold `MA.wirt`. Rewrite using `[h1]`. Apply the tactic sequence `simp [MA.dirE, M.vz, NF.dZ] <;> ring`.
+-/
 theorem wirtinger_derivative_fibre_function {v : ℂ → ℂ} (hv : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) v (Ann P)) (q : Qp P.r P.TT) :
     wirt M.vz (MA.ext ((fnZ P v : SmQ P.r P.TT) : Qp P.r P.TT → ℂ)) q.1 = NF.dZ v q.1.2 := by
   have h1 : fderiv ℝ (MA.ext ((fnZ P v : SmQ P.r P.TT) : Qp P.r P.TT → ℂ)) q.1 =
@@ -153,6 +208,9 @@ theorem wirtinger_derivative_fibre_function {v : ℂ → ℂ} (hv : ContDiffOn �
   rw [h1]
   simp [MA.dirE, M.vz, NF.dZ] <;> ring
 
+/- English proof (translation)
+Establish `h1 : fderiv ℝ (MA.ext ((fnZ P v : SmQ P.r P.TT) : Qp P.r P.TT → ℂ)) q.1 = (fderiv ℝ v q.1.2).comp (ContinuousLinearMap.snd ℝ _ _)` using `(fnZ_ev_eq P hv q).fderiv_eq.trans (fderiv_snd_comp P hv q)`. Unfold `MA.wirt`. Rewrite using `[h1]`. Apply the tactic sequence `simp [MA.dirE, M.vzb, NF.dZb] <;> ring`.
+-/
 theorem wirt_fnZ_zb {v : ℂ → ℂ} (hv : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) v (Ann P)) (q : Qp P.r P.TT) :
     wirt M.vzb (MA.ext ((fnZ P v : SmQ P.r P.TT) : Qp P.r P.TT → ℂ)) q.1 = NF.dZb v q.1.2 := by
   have h1 : fderiv ℝ (MA.ext ((fnZ P v : SmQ P.r P.TT) : Qp P.r P.TT → ℂ)) q.1 =
@@ -162,11 +220,27 @@ theorem wirt_fnZ_zb {v : ℂ → ℂ} (hv : ContDiffOn ℝ ((⊤ : ℕ∞) : Wit
   rw [h1]
   simp [MA.dirE, M.vzb, NF.dZb] <;> ring
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem star_mul_self_eq_one_of_norm_eq_one {z : ℂ} (h : ‖z‖ = 1) : star z * z = 1 := by
   calc star z * z = (starRingEnd ℂ) z * z := rfl
     _ = ((‖z‖ : ℝ) : ℂ) ^ 2 := Complex.conj_mul' _
     _ = 1 := by rw [h]; norm_num
 
+/- English proof (translation)
+Apply the tactic sequence `have hd : DifferentiableAt ℝ u ζ := (hu.differentiableOn (by first | simp | exact_mod_cast le_top)).differentiableAt ((ann_open P).mem_nhds hζ)`. Establish `hstar : ∀ h : ℂ, fderiv ℝ (fun w => star (u w)) ζ h = star (fderiv ℝ u ζ h)`. Introduce `h`. Use `first`. Consider the case `(rw [fderiv_star]; rfl)`.
+
+Consider the case `(rw [(hd.hasFDerivAt.star).fderiv]; rfl)`. Establish `hconst : (fun w => u w * star (u w)) =ᶠ[nhds ζ] fun _ => (1 : ℂ)` using `by filter_upwards [(ann_open P).mem_nhds hζ] with w hw`. Rewrite using `[mul_comm]`. Conclude with `star_mul_self_eq_one_of_norm_eq_one (h1 w hw)`. Establish `hD : ∀ h : ℂ, u ζ * star (fderiv ℝ u ζ h) + star (u ζ) * fderiv ℝ u ζ h = 0`.
+
+Introduce `h`. Establish `h2` using `congrArg (fun L : ℂ →L[ℝ] ℂ => L h) ((fderiv_mul hd hd.star).symm.trans (hconst.fderiv_eq.trans (fderiv_const_apply _)))`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, ContinuousLinearMap.zero_apply] at h2`. Rewrite `h2` using `[hstar]`. Conclude with `h2`.
+
+Establish `hN : star (u ζ) * u ζ = 1` using `star_mul_self_eq_one_of_norm_eq_one (h1 ζ hζ)`. Establish `hc : ∀ h : ℂ, star (fderiv ℝ u ζ h) = -(star (u ζ)) ^ 2 * fderiv ℝ u ζ h`. Introduce `h`. Take the linear combination `(star (u ζ)) * hD h - star (fderiv ℝ u ζ h) * hN`. Prove the components needed by the constructor for the conclusion.
+
+Simplify using `only [NF.dZ]`. Rewrite using `[hstar, hstar, hc, hc]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [NF.dZb]`. Rewrite using `[hstar, hstar, hc, hc]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dZ_conj_unit {u : ℂ → ℂ} (hu : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) u (Ann P))
     (h1 : ∀ ζ ∈ Ann P, ‖u ζ‖ = 1) {ζ : ℂ} (hζ : ζ ∈ Ann P) :
     NF.dZ (fun w => star (u w)) ζ = -(star (u ζ)) ^ 2 * NF.dZ u ζ ∧
@@ -203,6 +277,9 @@ theorem dZ_conj_unit {u : ℂ → ℂ} (hu : ContDiffOn ℝ ((⊤ : ℕ∞) : Wi
     rw [hstar, hstar, hc, hc]
     ring
 
+/- English proof (translation)
+Use `show MA.coordE M.vzb q.1 * (f : Qp P.r P.TT → ℂ) q = star q.1.2 * (f : Qp P.r P.TT → ℂ) q`. Use `congr 1`. Use `first`. Consider the case `(simp [MA.coordE, MA.zE, M.vzb]; done)`. Consider the case `(simp [MA.coordE, MA.zE, M.vzb]; rfl)`.
+-/
 theorem mul_conjCoordinate_apply (f : SmQ P.r P.TT) (q : Qp P.r P.TT) :
     ((show SmQ P.r P.TT from ((MA.DQ P).zbP).1 f) : Qp P.r P.TT → ℂ) q = star q.1.2 * (f : Qp P.r P.TT → ℂ) q := by
   show MA.coordE M.vzb q.1 * (f : Qp P.r P.TT → ℂ) q = star q.1.2 * (f : Qp P.r P.TT → ℂ) q
@@ -211,12 +288,30 @@ theorem mul_conjCoordinate_apply (f : SmQ P.r P.TT) (q : Qp P.r P.TT) :
   | (simp [MA.coordE, MA.zE, M.vzb]; done)
   | (simp [MA.coordE, MA.zE, M.vzb]; rfl)
 
+/- English proof (translation)
+Use `show MA.coordE M.vz q.1 * (f : Qp P.r P.TT → ℂ) q = q.1.2 * (f : Qp P.r P.TT → ℂ) q`. Use `congr 1`. Simplify using `[MA.coordE, MA.zE, M.vz]`.
+-/
 theorem algebraMap_comp_ofPadicInt_apply (f : SmQ P.r P.TT) (q : Qp P.r P.TT) :
     ((show SmQ P.r P.TT from ((MA.DQ P).zP).1 f) : Qp P.r P.TT → ℂ) q = q.1.2 * (f : Qp P.r P.TT → ℂ) q := by
   show MA.coordE M.vz q.1 * (f : Qp P.r P.TT → ℂ) q = q.1.2 * (f : Qp P.r P.TT → ℂ) q
   congr 1
   simp [MA.coordE, MA.zE, M.vz]
 
+/- English proof (translation)
+Establish `hsq : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun ζ : ℂ => ((Complex.normSq ζ : ℂ) - (P.TT : ℂ))⁻¹) (Ann P)`. Establish `hs : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun ζ : ℂ => star ζ)` using `by first`. Consider the case `exact contDiff_id.star`. Consider the case `exact Complex.conjCLE.contDiff`. Consider the case `simpa using (Complex.conjCLE.contDiff (n := ((⊤ : ℕ∞) : WithTop ℕ∞)))`.
+
+Establish `h : (fun ζ : ℂ => ((Complex.normSq ζ : ℂ) - (P.TT : ℂ))⁻¹) = fun ζ : ℂ => (ζ * star ζ - (P.TT : ℂ))⁻¹`. Use function extensionality and compare the values at `ζ`. Rewrite using `[← Complex.mul_conj]`. Both sides reduce to the same expression. Rewrite using `[h]`.
+
+Apply `ContDiffOn.inv` to reduce the goal to its premises. Conclude with `((contDiff_id.mul hs).sub contDiff_const).contDiffOn`. Introduce `ζ hζ`. Rewrite using `[show ζ * star ζ = ((Complex.normSq ζ : ℝ) : ℂ) from Complex.mul_conj ζ, ← Complex.ofReal_sub]`. Conclude with `Complex.ofReal_ne_zero.mpr (sub_pos.mpr hζ).ne'`.
+
+Establish `hval : ∀ q' : Qp P.r P.TT, ((show SmQ P.r P.TT from (MA.DQ P).gg P.TT) : Qp P.r P.TT → ℂ) q' = (Complex.normSq q'.1.2 : ℂ) - (P.TT : ℂ)`. Introduce `q'`. Establish `e1 : MA.coordE M.vz q'.1 = q'.1.2` using `by simp [MA.coordE, MA.zE, M.vz]`. Establish `e2 : MA.coordE M.vzb q'.1 = (starRingEnd ℂ) q'.1.2` using `by simp [MA.coordE, MA.zE, M.vzb]`. Use `show MA.coordE M.vz q'.1 * MA.coordE M.vzb q'.1 - (P.TT : ℂ) = _`.
+
+Rewrite using `[e1, e2, Complex.mul_conj]`. Establish `hne : ∀ q' : Qp P.r P.TT, (Complex.normSq q'.1.2 : ℂ) - (P.TT : ℂ) ≠ 0`. Introduce `q'`. Rewrite using `[← Complex.ofReal_sub]`. Conclude with `Complex.ofReal_ne_zero.mpr (sub_pos.mpr q'.2.2).ne'`.
+
+Establish `hu : IsUnit (show SmQ P.r P.TT from (MA.DQ P).gg P.TT)`. Use `isUnit_iff_exists_inv.mpr ⟨⟨_, smZ P hsq⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `q'`. Use `show ((show SmQ P.r P.TT from (MA.DQ P).gg P.TT) : Qp P.r P.TT → ℂ) q' * ((Complex.normSq q'.1.2 : ℂ) - (P.TT : ℂ))⁻¹ = 1`.
+
+Rewrite using `[hval q']`. Conclude with `mul_inv_cancel₀ (hne q')`. Use `show ((Ring.inverse (show SmQ P.r P.TT from (MA.DQ P).gg P.TT) : SmQ P.r P.TT) : Qp P.r P.TT → ℂ) q * (f : Qp P.r P.TT → ℂ) q = _`. Rewrite using `[ev_inv' P _ hu q, hval q]`.
+-/
 theorem ggiP_apply (f : SmQ P.r P.TT) (q : Qp P.r P.TT) :
     ((show SmQ P.r P.TT from ((MA.DQ P).ggiP P.TT).1 f) : Qp P.r P.TT → ℂ) q =
       ((Complex.normSq q.1.2 : ℂ) - (P.TT : ℂ))⁻¹ * (f : Qp P.r P.TT → ℂ) q := by

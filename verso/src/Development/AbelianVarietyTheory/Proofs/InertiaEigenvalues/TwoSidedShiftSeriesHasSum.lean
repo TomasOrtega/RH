@@ -3,10 +3,58 @@ open Polynomial
 
 namespace GlobalTheory.TwoSidedShift
 
+/- English proof (translation)
+Simplify using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+-/
 theorem mem_pow_span_iff (l : ℕ) (A : Type) [CommRing A] (n : ℕ) (x : A) :
     x ∈ ((Ideal.span {(l : A)}) ^ n • ⊤ : Submodule A A) ↔ (l : A) ^ n ∣ x := by
   simp [Ideal.span_singleton_pow, Ideal.mem_span_singleton]
 
+/- English proof (translation)
+Introduce `l _ A _ _ φ h c hc hsh`. Use `set ψ : A →+* A := φ ^ h with hψdef`. Establish `hψ : ∀ x, φ^[h] x = ψ x` using `fun x => by rw [hψdef, RingHom.coe_pow]`. Establish `hsh' : ∀ n : ℤ, ψ (c n) = (l : A) * c (n + 1)` using `fun n => by rw [← hψ]; exact hsh n`. Use `set T : ℕ → A := fun N => ∑ n ∈ Finset.Icc (-(N : ℤ)) N, c n with hT`.
+
+Establish `hIcc : ∀ N : ℕ, Finset.Icc (-((N + 1 : ℕ) : ℤ)) ((N + 1 : ℕ) : ℤ) = insert (-((N + 1 : ℕ) : ℤ)) (insert ((N + 1 : ℕ) : ℤ) (Finset.Icc (-(N : ℤ)) N))`. Introduce `N`. Use extensionality with `x`. Simplify using `only [Finset.mem_Icc, Finset.mem_insert]`. Use `push_cast`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hstep : ∀ N : ℕ, T (N + 1) = T N + c ((N + 1 : ℕ) : ℤ) + c (-((N + 1 : ℕ) : ℤ))`. Introduce `N`. Simplify using `only [hT]`. Rewrite using `[hIcc N, Finset.sum_insert, Finset.sum_insert]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Finset.mem_Icc]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers. Simplify using `only [Finset.mem_insert, Finset.mem_Icc]`.
+
+Use `push_cast`. Use linear arithmetic over natural numbers and integers. Establish `hdstep : ∀ N : ℕ, (l : A) ^ (N + 1) ∣ T (N + 1) - T N`. Introduce `N`. Rewrite using `[hstep N, show T N + c ((N + 1 : ℕ) : ℤ) + c (-((N + 1 : ℕ) : ℤ)) - T N = c ((N + 1 : ℕ) : ℤ) + c (-((N + 1 : ℕ) : ℤ)) by ring]`.
+
+Use `dvd_add ?_ ?_` and prove the remaining obligations. Use `hc ((N + 1 : ℕ) : ℤ)` as an intermediate fact. Rewrite `this` using `[show (((N + 1 : ℕ) : ℤ)).natAbs = N + 1 by omega]`. Then use the resulting hypothesis. Use `hc (-((N + 1 : ℕ) : ℤ))` as an intermediate fact. Rewrite `this` using `[show (-((N + 1 : ℕ) : ℤ)).natAbs = N + 1 by omega]`. Then use the resulting hypothesis.
+
+Establish `hcauchy : ∀ m n : ℕ, m ≤ n → (l : A) ^ m ∣ T n - T m`. Introduce `m n hmn`. Proceed by induction on `n, hmn using Nat.le_induction with`. Consider the case `base => simp`. Consider the case `succ n hmn ih`.
+
+Rewrite using `[show T (n + 1) - T m = (T (n + 1) - T n) + (T n - T m) by ring]`. Conclude with `dvd_add ((pow_dvd_pow _ (by omega)).trans (hdstep n)) ih`. Take `⟨w, hw⟩` from `IsPrecomplete.prec (I := Ideal.span {(l : A)}) inferInstance (f := T) (fun {m n} hmn => by`. Rewrite using `[SModEq.sub_mem, mem_pow_span_iff]`. Rewrite using `[← dvd_neg, neg_sub]`.
+
+Conclude with `hcauchy m n hmn)`. Establish `hwT : ∀ N : ℕ, (l : A) ^ N ∣ w - T N`. Introduce `N`. Use `hw N` as an intermediate fact. Rewrite `this` using `[SModEq.sub_mem, mem_pow_span_iff]`.
+
+Rewrite using `[← dvd_neg, neg_sub]`. Conclude with `this`. Establish `hE : ∀ N : ℕ, ψ (T N) - (l : A) * T N = (l : A) * (c ((N : ℤ) + 1) - c (-(N : ℤ)))`. Introduce `N`. Proceed by induction on `N with`.
+
+Consider the case `zero => simp [hT, hsh']`. Expand and normalize the polynomial expressions, which then agree. Consider the case `succ N ih`. Rewrite using `[hstep N, map_add, map_add, hsh', hsh']`. Establish `e1 : (-((N + 1 : ℕ) : ℤ) + 1) = -(N : ℤ)` using `by push_cast; ring`.
+
+Establish `e2 : (((N + 1 : ℕ) : ℤ) + 1) = ((N + 1 : ℕ) : ℤ) + 1` using `rfl`. Rewrite using `[e1]`. Move the coercions through the operations in `at ih ⊢`. Take the linear combination `ih`. Establish `hEd : ∀ N : ℕ, (l : A) ^ N ∣ ψ (T N) - (l : A) * T N`.
+
+Introduce `N`. Rewrite using `[hE N]`. Establish `h1 : (l : A) ^ (N + 1) ∣ c ((N : ℤ) + 1)`. Use `hc ((N : ℤ) + 1)` as an intermediate fact. Rewrite `this` using `[show ((N : ℤ) + 1).natAbs = N + 1 by omega]`. Then use the resulting hypothesis.
+
+Establish `h2 : (l : A) ^ N ∣ c (-(N : ℤ))` using `by simpa using hc (-(N : ℤ))`. Conclude with `dvd_mul_of_dvd_right (dvd_sub ((pow_dvd_pow _ (by omega)).trans h1) h2) _`. Use `⟨w, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hψ, ← sub_eq_zero]`. Use `IsHausdorff.haus (I := Ideal.span {(l : A)}) inferInstance _ (fun N => ?_)` and prove the remaining obligations.
+
+Rewrite using `[SModEq.sub_mem, sub_zero, mem_pow_span_iff]`. Rewrite using `[show ψ w - (l : A) * w = ψ (w - T N) + (ψ (T N) - (l : A) * T N) - (l : A) * (w - T N) by`. Rewrite using `[map_sub]`. Use the proof step `ring]`. Use `dvd_sub (dvd_add ?_ (hEd N)) (dvd_mul_of_dvd_right (hwT N) _)` and prove the remaining obligations.
+
+Use `map_dvd ψ (hwT N)` as an intermediate fact. Simplify `this` using `[map_pow, map_natCast]`. Introduce `Θ hΘ set r : ℝ := ‖(l : ℂ_[l])‖ with hr`. Establish `hr1 : r < 1`. Establish `h` using `PadicComplex.norm_extends' l (l : ℚ_[l])`.
+
+Establish `h2 : ‖(l : ℚ_[l])‖ < 1` using `Padic.norm_p_lt_one`. Rewrite `h2` using `[← h]`. Simplify using `using h2`. Establish `hr0 : 0 ≤ r` using `norm_nonneg _`. Establish `hbound : ∀ (n : ℕ) (a : A), (l : A) ^ n ∣ a → ‖Θ a‖ ≤ r ^ n`.
+
+Introduce `n a ⟨b, hb⟩`. Rewrite using `[hb, map_mul, map_pow, map_natCast, norm_mul, norm_pow]`. Conclude with `mul_le_of_le_one_right (pow_nonneg hr0 _) (hΘ b)`. Express the relevant statement in the definitionally equal form `Filter.Tendsto (fun s : Finset ℤ => ∑ b ∈ s, Θ (c b)) Filter.atTop (nhds (Θ w))`. Rewrite using `[Metric.tendsto_atTop]`.
+
+Introduce `ε hε`. Take `⟨N, hN⟩` from `exists_pow_lt_of_lt_one hε hr1`. Use `⟨Finset.Icc (-(N : ℤ)) N, fun s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[dist_eq_norm, ← Finset.sum_sdiff hs]`. Establish `hrest : ‖∑ n ∈ s \ Finset.Icc (-(N : ℤ)) N, Θ (c n)‖ ≤ r ^ N`.
+
+Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (pow_nonneg hr0 _) fun n hn => ?_` and prove the remaining obligations. Establish `hn' : n ∉ Finset.Icc (-(N : ℤ)) N` using `(Finset.mem_sdiff.1 hn).2`. Rewrite `hn'` using `[Finset.mem_Icc]`. Use `(hbound _ _ (hc n)).trans (pow_le_pow_of_le_one hr0 hr1.le (by omega))` and prove the remaining obligations. Establish `hhead : ‖∑ n ∈ Finset.Icc (-(N : ℤ)) N, Θ (c n) - Θ w‖ ≤ r ^ N`.
+
+Rewrite using `[← map_sum, ← map_sub]`. Use `hbound N _ ?_` and prove the remaining obligations. Rewrite using `[← dvd_neg, neg_sub]`. Conclude with `hwT N`. Rewrite using `[add_sub_assoc]`.
+
+Conclude with `lt_of_le_of_lt ((IsUltrametricDist.norm_add_le_max _ _).trans (max_le hrest hhead)) hN`.
+-/
 theorem exists_sum_shift : ∀ (l : ℕ) [Fact l.Prime] (A : Type) [CommRing A]
     [IsAdicComplete (Ideal.span {(l : A)}) A] (φ : A →+* A) (h : ℕ) (c : ℤ → A),
     (∀ n : ℤ, (l : A) ^ n.natAbs ∣ c n) → (∀ n : ℤ, φ^[h] (c n) = (l : A) * c (n + 1)) →
@@ -113,5 +161,8 @@ theorem exists_sum_shift : ∀ (l : ℕ) [Fact l.Prime] (A : Type) [CommRing A]
 
 end GlobalTheory.TwoSidedShift
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.TwoSidedShift.exists_sum_shift`.
+-/
 theorem GlobalTheory.twoSided_shift_series : ∀ (l : ℕ) [Fact l.Prime] (A : Type) [CommRing A] [IsAdicComplete (Ideal.span {(l : A)}) A] (φ : A →+* A) (h : ℕ) (c : ℤ → A), (∀ n : ℤ, (l : A) ^ n.natAbs ∣ c n) → (∀ n : ℤ, φ^[h] (c n) = (l : A) * c (n + 1)) → ∃ w : A, φ^[h] w = (l : A) * w ∧ ∀ Θ : A →+* ℂ_[l], (∀ a, ‖Θ a‖ ≤ 1) → HasSum (fun n : ℤ => Θ (c n)) (Θ w) :=
   GlobalTheory.TwoSidedShift.exists_sum_shift

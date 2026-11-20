@@ -12,12 +12,28 @@ open scoped Pointwise ENNReal Classical nonZeroDivisors
 
 namespace GlobalTheory.DegCnt
 
+/- English proof (translation)
+Unfold `ipow`. Rewrite using `[zpow_one]`. Conclude with `FractionalIdeal.mem_coeIdeal _`.
+-/
 theorem mem_ipow_one_iff_exists {K : Type} [Field K] [NumberField K] (𝔞 : Ideal (𝓞 K)) (t : K) :
     t ∈ ipow 𝔞 1 ↔ ∃ a ∈ 𝔞, algebraMap (𝓞 K) K a = t := by
   unfold ipow
   rw [zpow_one]
   exact FractionalIdeal.mem_coeIdeal _
 
+/- English proof (translation)
+Set `f : 𝓞 K →ₗ[𝓞 K] V` to `LinearMap.toSpanSingleton (𝓞 K) V z`. Establish `hf : ∀ a : 𝓞 K, f a = (algebraMap (𝓞 K) K a) • z` using `fun a => by`. Simplify using `only [f, LinearMap.toSpanSingleton_apply, algebraMap_smul]`. Set `𝔞 : Ideal (𝓞 K)` to `M.comap f`. Establish `hr : f.toAddMonoidHom.range ≤ L.toAddSubgroup`.
+
+Introduce and unpack `_ ⟨a, rfl⟩`. Use `show f a ∈ L`. Rewrite using `[hf, hz]`. Conclude with `Submodule.mem_one.2 ⟨a, rfl⟩`. Establish `hN : Ideal.absNorm 𝔞 = M.toAddSubgroup.relIndex f.toAddMonoidHom.range`.
+
+Rewrite using `[← AddSubgroup.index_comap, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Both sides reduce to the same expression. Establish `hle : Ideal.absNorm 𝔞 ≤ idx L M`. Rewrite using `[hN]`. Conclude with `AddSubgroup.relIndex_le_of_le_right hr hidx`.
+
+Establish `hne : Ideal.absNorm 𝔞 ≠ 0`. Rewrite using `[hN]`. Conclude with `fun h => hidx (AddSubgroup.relIndex_eq_zero_of_le_right hr h)`. Use `⟨𝔞, fun h => hne (by rw [h, Ideal.absNorm_bot]), hle, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_ipow_one_iff_exists]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`. Rewrite using `[← hf]`. Conclude with `ha`. Introduce `ht`.
+
+Take `⟨a, rfl⟩` from `Submodule.mem_one.1 ((hz t).1 (hML ht))`. Use `⟨a, ?_, rfl⟩` and prove the remaining obligations. Use `show f a ∈ M`. Rewrite using `[hf]`. Conclude with `ht`.
+-/
 theorem exists_ideal_coeff {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V]
     [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (L M : Submodule (𝓞 K) V) (z : V) (hML : M ≤ L)
     (hidx : idx L M ≠ 0) (hz : ∀ t : K, t • z ∈ L ↔ t ∈ (1 : Submodule (𝓞 K) K)) :
@@ -50,6 +66,19 @@ theorem exists_ideal_coeff {K V : Type} [Field K] [NumberField K] [AddCommGroup 
     show f a ∈ M
     rw [hf]; exact ht
 
+/- English proof (translation)
+Introduce `K V _ _ _ _ _ _ _ _ H hK r N g Λ hg hΛ`. Take `⟨-, -, hz, hz', -⟩` from `GlobalTheory.T.hermFramePair_innerLattices_unimodular_primitive K V H hK r N g Λ hg hΛ`. Take `⟨hb, -, hD, h1⟩` from `GlobalTheory.T.normal_form_terminal_determinant K V H hK r N g Λ hg hΛ`. Take `⟨hi, hi', hle, -⟩` from `GlobalTheory.T.flagPairInnerLattice_indices_and_generators K V H hK r N g Λ hg hΛ`. Use `set i := idx (latL N.F N.F' Λ) (lamOne N.F N.F' Λ) with hidef`.
+
+Establish `hi0 : i ≠ 0`. Introduce `h`. Rewrite `hi` using `[h]`. Simplify using `at hi`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hB : cardB N.F N.F' Λ ≠ 0`. Introduce `h`. Rewrite `hi` using `[h]`. Simplify using `at hi`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hiD : (i : ℝ) ≤ N.Del`. Establish `hB1 : (1 : ℝ) ≤ cardB N.F N.F' Λ` using `by exact_mod_cast Nat.one_le_iff_ne_zero.2 hB`. Establish `hb1 : (1 : ℝ) ≤ N.bI Λ` using `by exact_mod_cast Nat.one_le_iff_ne_zero.2 hb`. Establish `hb2 : (1 : ℝ) ≤ (N.bI Λ : ℝ) ^ 2` using `one_le_pow₀ hb1`. Establish `hi1 : (0 : ℝ) ≤ i` using `Nat.cast_nonneg _`.
+
+Combine the equalities or inequalities in the displayed calculation. Take `⟨𝔞, h0, hn, hm⟩` from `exists_ideal_coeff _ _ N.F.z (hle.trans inf_le_left) hi0 hz`. Take `⟨𝔞', h0', hn', hm'⟩` from `exists_ideal_coeff _ _ N.F'.z (hle.trans inf_le_right) (hi' ▸ hi0) hz'`. Use `⟨𝔞, 𝔞', h0, h0', le_trans (by exact_mod_cast hn) hiD, le_trans (by exact_mod_cast hi' ▸ hn') hiD, fun t => ?_⟩` and prove the remaining obligations. Establish `hzz : N.F'.z = N.c • N.F.z` using `N.same (Fin.last r) (by simpa using N.j_le)`.
+
+Rewrite using `[hm, hm', hzz, mul_smul]`.
+-/
 theorem c_eq_quot_ideals : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (H : HermSpace K V), Formalism.HermitianLatticesTheory.IsCMUnram K → ∀ (r : ℕ) (N : NF H r), ∀ (g : ℕ) (Λ : Submodule (𝓞 K) V), 1 ≤ g → N.IsTerm g Λ → ∃ 𝔞 𝔞' : Ideal (𝓞 K), 𝔞 ≠ ⊥ ∧ 𝔞' ≠ ⊥ ∧ (Ideal.absNorm 𝔞 : ℝ) ≤ N.Del ∧ (Ideal.absNorm 𝔞' : ℝ) ≤ N.Del ∧ ∀ t : K, t * N.c ∈ ipow 𝔞 1 ↔ t ∈ ipow 𝔞' 1 := by
   intro K V _ _ _ _ _ _ _ _ H hK r N g Λ hg hΛ
   obtain ⟨-, -, hz, hz', -⟩ := GlobalTheory.T.hermFramePair_innerLattices_unimodular_primitive K V H hK r N g Λ hg hΛ

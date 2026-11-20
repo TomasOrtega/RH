@@ -16,6 +16,13 @@ def eSum {K : Type} (r : ℕ) : ℕ → List (ℕ × K) → ℕ
   | _, [] => 0
   | b, (s, _) :: rest => s * (2 * (r + 1 - (b + s - 1)) + s - 1) + eSum r (b + s) rest
 
+/- English proof (translation)
+Take `⟨k, rfl⟩ : ∃ k, s = k + 1` from `⟨s - 1, by omega⟩`. Take `⟨m, rfl⟩ : ∃ m, n = k + 1 + m` from `⟨n - (k + 1), by omega⟩`. Establish `e0 : k + 1 + m - (k + 1) = m` using `by omega`. Establish `e1 : 2 * m + (k + 1) - 1 = 2 * m + k` using `by omega`. Establish `e2 : k + 1 + m - 1 = k + m` using `by omega`.
+
+Rewrite using `[e0, e1, e2]`. Break down `m with _ | m` into its components or cases. Simplify using `only [Nat.zero_sub, mul_zero, zero_mul, add_zero]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[show m + 1 - 1 = m by omega]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eSum_arith (s n : ℕ) (h1 : 1 ≤ s) (h2 : s ≤ n) :
     s * (2 * (n - s) + s - 1) + (n - s) * (n - s - 1) = n * (n - 1) := by
   obtain ⟨k, rfl⟩ : ∃ k, s = k + 1 := ⟨s - 1, by omega⟩
@@ -30,6 +37,9 @@ theorem eSum_arith (s n : ℕ) (h1 : 1 ≤ s) (h2 : s ≤ n) :
   · rw [show m + 1 - 1 = m by omega]
     ring
 
+/- English proof (translation)
+The claim follows from `| b, [], hb, _, hs => by simp only [List.map_nil, List.sum_nil, Nat.add_zero] at hs subst hs simp [eSum] | b, (s, t) :: rest, hb, hP, hs => by have h1 : 1 ≤ s := hP (s, t) (by simp) have hP' : ∀ c ∈ rest, 1 ≤ c.1 := fun c hc => hP c (by simp [hc]) simp only [List.map_cons, List.s …`.
+-/
 theorem eSum_eq {K : Type} (r : ℕ) : ∀ (b : ℕ) (P : List (ℕ × K)), 1 ≤ b → (∀ c ∈ P, 1 ≤ c.1) →
     b + (P.map Prod.fst).sum = r + 2 → eSum r b P = (r + 2 - b) * (r + 1 - b)
   | b, [], hb, _, hs => by
@@ -55,11 +65,17 @@ theorem eSum_eq {K : Type} (r : ℕ) : ∀ (b : ℕ) (P : List (ℕ × K)), 1 �
 
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
 
+/- English proof (translation)
+Rewrite using `[X.φ_eq, RingEquiv.apply_symm_apply, map_mul, map_pow, map_neg, map_one, norm_mul, norm_pow, norm_neg, norm_one, one_pow, one_mul]`.
+-/
 theorem norm_phi_sign (v : InfinitePlace X.B.I.F) (k : ℕ) (t : D.host.E) :
     ‖X.B.I.φ v (X.ιE.symm ((-1) ^ k * t))‖ = ‖Formalism.MainNotions.S.embS D (X.pl v) t‖ := by
   rw [X.φ_eq, RingEquiv.apply_symm_apply, map_mul, map_pow, map_neg, map_one, norm_mul, norm_pow, norm_neg,
     norm_one, one_pow, one_mul]
 
+/- English proof (translation)
+Rewrite using `[← prod_normSq_embS D t]`. Conclude with `Fintype.prod_equiv X.pl _ _ (fun v => rfl)`.
+-/
 theorem prod_norm_pl_sq (t : D.host.E) :
     ∏ v : InfinitePlace X.B.I.F, ‖Formalism.MainNotions.S.embS D (X.pl v) t‖ ^ 2 = ((|Algebra.norm ℚ t| : ℚ) : ℝ) := by
   rw [← prod_normSq_embS D t]
@@ -71,11 +87,25 @@ section Block
 
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
 
+/- English proof (translation)
+Unfold `Formalism.L2.SG.DataInst.gNorm`. Establish `hg : (0 : ℝ) < ((Formalism.MainNotions.S.Lat.gS D : ℕ) : ℝ)` using `by exact_mod_cast Formalism.MainNotions.LocalModelPeriodLattices.gS_pos D`. Conclude with `inv_pos.2 (pow_pos hg _)`.
+-/
 theorem gNorm_pos : 0 < Formalism.L2.SG.DataInst.gNorm D := by
   unfold Formalism.L2.SG.DataInst.gNorm
   have hg : (0 : ℝ) < ((Formalism.MainNotions.S.Lat.gS D : ℕ) : ℝ) := by exact_mod_cast Formalism.MainNotions.LocalModelPeriodLattices.gS_pos D
   exact inv_pos.2 (pow_pos hg _)
 
+/- English proof (translation)
+Use `set X0 := D.R.rS + 1 - (b + s - 1) with hX0`. Use `set ν := 2 * (D.R.rS + 1) - b - (b + s - 1) with hν`. Use `set e := s * (2 * X0 + s - 1) with he`. Establish `hnu : nu D.R.rS b (b + s - 1) = ν` using `rfl`. Establish `hexp1 : 2 * s * (2 * X0 + s - 1) = 2 * e` using `by rw [he]; ring`.
+
+Establish `hev : 2 * (s * (s - 1) / 2) = s * (s - 1)` using `Nat.two_mul_div_two_of_even (Nat.even_mul_pred_self s)`. Establish `hexp2 : (s * X0 + s * (s - 1) / 2) * 2 = e`. Establish `h3 : 2 * X0 + s - 1 = 2 * X0 + (s - 1)` using `by omega`. Rewrite using `[he, h3]`. Establish `: (s * X0 + s * (s - 1) / 2) * 2 = 2 * (s * X0) + 2 * (s * (s - 1) / 2)` using `by ring`.
+
+Rewrite using `[this, hev]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hnu, hexp1, ← pow_mul, hexp2]`. Establish `hn : ∀ v : InfinitePlace X.B.I.F, ((D.host.rdE ^ ν)⁻¹ * ‖X.B.I.φ v (X.ιE.symm ((-1) ^ k * t))‖) ^ (2 * e) = ((D.host.rdE ^ ν)⁻¹ ^ 2) ^ e * (‖Formalism.MainNotions.S.embS D (X.pl v) t‖ ^ 2) ^ e`. Introduce `v`.
+
+Rewrite using `[norm_phi_sign]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.prod_congr rfl fun v _ => hn v, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, card_places X, Finset.prod_pow, prod_norm_pl_sq X t]`. Unfold `Formalism.L2.SG.DataInst.nrm`. Establish `hg` using `(gNorm_pos (D := D)).ne'`.
+
+Rewrite using `[mul_pow, mul_pow, ← mul_assoc, ← mul_assoc, ← mul_pow, inv_mul_cancel₀ hg, one_pow, one_mul]`. Use `congr 1`. Simplify using `only [inv_pow, ← pow_mul]`. Put the polynomial expressions in normal form.
+-/
 theorem block_prod (b s : ℕ) (hs : 1 ≤ s) (k : ℕ) (t : D.host.E) :
     ∏ v : InfinitePlace X.B.I.F, ((D.host.rdE ^ (2 * (D.R.rS + 1) - b - (b + s - 1)))⁻¹ *
         ‖X.B.I.φ v (X.ιE.symm ((-1) ^ k * t))‖) ^ (2 * s * (2 * (D.R.rS + 1 - (b + s - 1)) + s - 1)) =
@@ -115,6 +145,9 @@ section Weight
 
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
 
+/- English proof (translation)
+The claim follows from `| b, [], _ => by simp [nHead, Formalism.L2.SG.DataInst.signAux, eSum, Formalism.L2.SG.DataInst.blockWeightPhi] | b, (s, t) :: rest, hP => by have hs : 1 ≤ s := hP (s, t) (by simp) have ih := nHead_prod (b + s) rest (fun c hc => hP c (by simp [hc])) simp only [Formalism.L2.SG.Data …`.
+-/
 theorem nHead_prod : ∀ (b : ℕ) (P : List (ℕ × D.host.E)), (∀ c ∈ P, 1 ≤ c.1) →
     ∏ v : InfinitePlace X.B.I.F, nHead X v b ((Formalism.L2.SG.DataInst.signAux D.R.rS b P).map Prod.swap) =
       (Formalism.L2.SG.DataInst.gNorm D)⁻¹ ^ eSum D.R.rS b P *
@@ -129,6 +162,25 @@ theorem nHead_prod : ∀ (b : ℕ) (P : List (ℕ × D.host.E)), (∀ c ∈ P, 1
     rw [Finset.prod_mul_distrib, ih, block_prod X b s hs]
     ring
 
+/- English proof (translation)
+Unfold `Formalism.L2.SG.DataInst.ptOfList at hp`. Use `split_ifs at hp with hL`. Take `rfl` from `Option.some_injective _ hp`. Establish `hw : ((Formalism.L2.S.ptEquiv D.host.E (D.R.rS + 1)).symm ⟨Formalism.L2.SG.DataInst.signPt D.R.rS p, hL⟩).1 = (Formalism.L2.SG.DataInst.signAux D.R.rS 1 p).map Prod.swap` using `rfl`. Establish `hP : ∀ c ∈ p, 1 ≤ c.1 ∧ c.2 ≠ 0` using `(Formalism.L2.SG.DataInst.sign_list_mem_nonzero D.R.rS 1 p).1 hL.2`.
+
+Establish `hsum : (p.map Prod.fst).sum = D.R.rS + 1`. Use `hL.1` as an intermediate fact. Unfold `Formalism.L2.SG.DataInst.signPt at this`. Rewrite `this` using `[Formalism.L2.SG.DataInst.sign_list_fst]`. Then use the resulting hypothesis. Use `set w := (Formalism.L2.S.ptEquiv D.host.E (D.R.rS + 1)).symm ⟨Formalism.L2.SG.DataInst.signPt D.R.rS p, hL⟩ with hwdef`.
+
+Establish `hnW : nW X u u' w = (∏ v, GX X u u' D.host.rdE (gamW X u u' w) v) ^ (D.R.k - 1) * ∏ v : InfinitePlace X.B.I.F, nHead X v 1 w.1`. Unfold `nW`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_pow]`. Rewrite using `[hnW, prod_GX_gamW X u u' w hγ hT, hw, nHead_prod X 1 p (fun c hc => (hP c hc).1), eSum_eq D.R.rS 1 p le_rfl (fun c hc => (hP c hc).1) (by rw [hsum]; ring)]`. Unfold `n0 Formalism.L2.SG.MassDataConc.ngFac Formalism.L2.SG.MassDataConc.kapN Formalism.L2.SG.DataInst.gNorm Formalism.L2.SG.DataInst.phi`.
+
+Establish `hgpos : 0 < Formalism.MainNotions.S.Lat.gS D` using `Formalism.MainNotions.LocalModelPeriodLattices.gS_pos D`. Establish `hg : (0 : ℝ) < ((Formalism.MainNotions.S.Lat.gS D : ℕ) : ℝ)` using `by exact_mod_cast hgpos`. Establish `hrd` using `Formalism.MainNotions.LocalModelPeriodLattices.rdE_pos D`. Use `set gE : D.host.E := (Nat.cast (Formalism.MainNotions.S.Lat.gS D) : D.host.E) ^ D.R.m with hgEdef`. Establish `hgE : gE ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 hgpos.ne')`.
+
+Establish `hNgE : Algebra.norm ℚ gE ≠ 0` using `(Algebra.norm_ne_zero_iff).2 hgE`. Use `set G := Gpt (D.mem u).A.T (D.mem u').A.T w with hGdef`. Establish `hnd : Algebra.norm ℚ (G / gE) = Algebra.norm ℚ G / Algebra.norm ℚ gE`. Rewrite using `[eq_div_iff hNgE, ← map_mul, div_mul_cancel₀ _ hgE]`. Establish `hB : (0 : ℝ) < |((Algebra.norm ℚ gE : ℚ) : ℝ)|` using `abs_pos.2 (by exact_mod_cast hNgE)`.
+
+Establish `hsq : Real.sqrt |((Algebra.norm ℚ (G / gE) : ℚ) : ℝ)| = Real.sqrt |((Algebra.norm ℚ G : ℚ) : ℝ)| / Real.sqrt |((Algebra.norm ℚ gE : ℚ) : ℝ)|`. Rewrite using `[hnd, Rat.cast_div, abs_div, Real.sqrt_div' _ hB.le]`. Establish `hcast : ((|Algebra.norm ℚ G| : ℚ) : ℝ) = |((Algebra.norm ℚ G : ℚ) : ℝ)|` using `Rat.cast_abs _`. Rewrite using `[hsq, hcast, inv_inv]`. Establish `e1 : (D.R.rS + 2 - 1) * (D.R.rS + 1 - 1) = (D.R.rS + 1) * D.R.rS`.
+
+Rewrite using `[show D.R.rS + 2 - 1 = D.R.rS + 1 by omega, show D.R.rS + 1 - 1 = D.R.rS by omega]`. Rewrite using `[e1]`. Establish `hSB : 0 < Real.sqrt |((Algebra.norm ℚ gE : ℚ) : ℝ)|` using `Real.sqrt_pos.2 hB`. Establish `h1 : Real.sqrt |((Algebra.norm ℚ gE : ℚ) : ℝ)| ^ (D.R.k - 1) ≠ 0` using `pow_ne_zero _ hSB.ne'`. Establish `h2 : D.host.rdE ^ (2 * D.R.rS * (D.R.rS + 1) * (D.R.k - 1) * D.R.f) ≠ 0` using `pow_ne_zero _ hrd.ne'`.
+
+Establish `h3 : ((Formalism.MainNotions.S.Lat.gS D : ℕ) : ℝ) ^ (2 * D.R.f * D.R.rS * (D.R.rS + 1)) ≠ 0` using `pow_ne_zero _ hg.ne'`. Establish `h4 : D.host.rdE ^ (2 * D.R.rS * (D.R.rS + 1)) ≠ 0` using `pow_ne_zero _ hrd.ne'`. Rewrite using `[div_pow, mul_pow]`. Simplify using `only [inv_pow]`. Establish `h5 : ((D.host.rdE ^ (2 * D.R.rS * (D.R.rS + 1))) ^ D.R.f) ^ (D.R.k - 1) ≠ 0` using `pow_ne_zero _ (pow_ne_zero _ h4)`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem nW_eq (u u' : D.what₂.Word) (p : Formalism.FourierDecayAlt.TB.Pt D.host.E) (w : Point D.host.E (D.R.rS + 1))
     (hp : Formalism.L2.SG.DataInst.ptOfList (D := D) (D.R.rS + 1) p = some w) (hγ : ∃ γ, IsPtRep X u u' w γ)
     (hT : TotPos (Gpt (D.mem u).A.T (D.mem u').A.T w)) {c : ℝ} (hc : 0 < c) :
@@ -194,6 +246,9 @@ def EligTotPos : Prop :=
   ∀ (t : Formalism.L2.SG.TermDef.Term D u u' (X.Fu u) (Y.what₂ u)) (w : Point D.host.E (D.R.rS + 1)),
     Formalism.L2.SG.DataInst.Elig t → t.atPt w → TotPos (Gpt (D.mem u).A.T (D.mem u').A.T w)
 
+/- English proof (translation)
+Unfold `Formalism.L2.SG.DataInst.ptOfList at hp`. Use `split at hp`. Use `next h => exact (Formalism.L2.SG.DataInst.isPtL_signPt _ _ _).mp h`. Conclude with `absurd hp (by simp)`.
+-/
 theorem isPtL_of_ptOfList {p : Formalism.FourierDecayAlt.TB.Pt D.host.E} {w : Point D.host.E (D.R.rS + 1)}
     (hp : Formalism.L2.SG.DataInst.ptOfList (D := D) (D.R.rS + 1) p = some w) : Formalism.L2.S.IsPtL p (D.R.rS + 1) := by
   unfold Formalism.L2.SG.DataInst.ptOfList at hp
@@ -201,6 +256,11 @@ theorem isPtL_of_ptOfList {p : Formalism.FourierDecayAlt.TB.Pt D.host.E} {w : Po
   · next h => exact (Formalism.L2.SG.DataInst.isPtL_signPt _ _ _).mp h
   · exact absurd hp (by simp)
 
+/- English proof (translation)
+Introduce `hx`. Establish `hne : Nonempty D.what₂.Tau`. Rewrite using `[← Fintype.card_pos_iff, D.what₂.card_Tau]`. Conclude with `Formalism.MainNotions.InterlacingSignCuts.f_pos D`. Take `⟨τ⟩` from `hne`.
+
+Establish `h1` using `h τ`. Rewrite `h1` using `[hx, map_zero]`. Simplify using `at h1`.
+-/
 theorem ne_zero_of_totPos {x : D.host.E} (h : TotPos x) : x ≠ 0 := by
   intro hx
   have hne : Nonempty D.what₂.Tau := by
@@ -211,6 +271,11 @@ theorem ne_zero_of_totPos {x : D.host.E} (h : TotPos x) : x ≠ 0 := by
   rw [hx, map_zero] at h1
   simp at h1
 
+/- English proof (translation)
+Introduce `hc p w hp ht`. Take `⟨t, hEl, hat⟩` from `ht`. Establish `hT` using `hE t w hEl hat`. Establish `hγ : ∃ γ, IsPtRep X u u' w γ`. Take `⟨γ, h1, -⟩` from `hPR w (fun v => by rw [Gv_zhatO, Gv_ptC]; exact hT (X.pl v))`.
+
+Conclude with `⟨γ, h1⟩`. Conclude with `⟨Formalism.L2.SG.DataInst.phi_pos (isPtL_of_ptOfList hp), Formalism.L2.SG.Pf.n0_pos hc (ne_zero_of_totPos hT), nW_eq X u u' p w hp hγ hT hc⟩`.
+-/
 theorem weightConstC_of {sc : ℝ} {i0 i0' : ∀ _ : InfinitePlace X.B.I.F, Fin D.R.k} (c : ℝ)
     (hPR : PtRepExists X u u' sc i0 i0') (hE : EligTotPos X Y u u') :
     Formalism.L2.SG.Pf.RowForm.WeightConstC X Y u u' c := by

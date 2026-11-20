@@ -11,6 +11,11 @@ noncomputable section
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `k generalizing f with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[iteratedLineDerivOp_succ_left, fourier_lineDerivOp_eq]`. Establish `hg : (fun x : EuclideanSpace ℝ (Fin n) ↦ inner ℝ x (w 0)).HasTemperateGrowth` using `((innerSL ℝ).flip (w 0)).hasTemperateGrowth`.
+
+Rewrite using `[smul_apply, smulLeftCLM_apply_apply hg, ih, Fin.prod_univ_succ]`. Simplify using `only [Fin.tail]`. Rewrite using `[Complex.real_smul]`. Simplify using `only [smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fourier_iteratedLineDerivOp_apply (f : 𝓢(EuclideanSpace ℝ (Fin n), ℂ)) {k : ℕ}
     (w : Fin k → EuclideanSpace ℝ (Fin n)) (ξ : EuclideanSpace ℝ (Fin n)) :
     𝓕 (∂^{w} f) ξ = (∏ l, (2 * π * Complex.I) * (inner ℝ ξ (w l) : ℂ)) * 𝓕 f ξ := by
@@ -30,20 +35,34 @@ section Plancherel
 
 variable {v : EuclideanSpace ℝ (Fin n) → ℂ}
 
+/- English proof (translation)
+Simplify using `[ev, EuclideanSpace.inner_single_right]`.
+-/
 private theorem inner_ev (ξ : EuclideanSpace ℝ (Fin n)) (i : Fin n) : inner ℝ ξ (ev i) = ξ i := by
   simp [ev, EuclideanSpace.inner_single_right]
 
+/- English proof (translation)
+Rewrite using `[iteratedLineDerivOp_eq_iteratedFDeriv]`. Both sides reduce to the same expression.
+-/
 theorem pdT_eq_iteratedLineDerivOp (hv : ContDiff ℝ ∞ v) (hvc : HasCompactSupport v) {k : ℕ}
     (J : Fin k → Fin n) (x : EuclideanSpace ℝ (Fin n)) :
     pdT J v x = (∂^{fun l ↦ ev (J l)} (hvc.toSchwartzMap hv)) x := by
   rw [iteratedLineDerivOp_eq_iteratedFDeriv]
   rfl
 
+/- English proof (translation)
+Establish `h` using `(g.memLp 2).integrable_norm_pow (p := 2) two_ne_zero`. Simplify using `using h`.
+-/
 theorem integrable_norm_sq_schwartz (g : 𝓢(EuclideanSpace ℝ (Fin n), ℂ)) :
     Integrable (fun x ↦ ‖g x‖ ^ 2) := by
   have h := (g.memLp 2).integrable_norm_pow (p := 2) two_ne_zero
   simpa using h
 
+/- English proof (translation)
+Rewrite using `[fourier_iteratedLineDerivOp_apply, norm_mul, norm_prod, mul_pow, ← Finset.prod_pow]`. Use `congr 1`. Use `Finset.prod_congr rfl fun l _ ↦ ?_` and prove the remaining obligations. Rewrite using `[inner_ev, norm_mul, mul_pow]`. Establish `h1 : ‖(2 * π * Complex.I : ℂ)‖ = 2 * π`.
+
+Rewrite using `[norm_mul, Complex.norm_I, mul_one, Complex.norm_mul, Complex.norm_ofNat, Complex.norm_real, Real.norm_eq_abs, abs_of_pos Real.pi_pos]`. Rewrite using `[h1, Complex.norm_real, Real.norm_eq_abs, sq_abs]`.
+-/
 theorem norm_sq_fourier_pdT (φ : 𝓢(EuclideanSpace ℝ (Fin n), ℂ)) {k : ℕ} (J : Fin k → Fin n)
     (ξ : EuclideanSpace ℝ (Fin n)) :
     ‖𝓕 (∂^{fun l ↦ ev (J l)} φ) ξ‖ ^ 2 =
@@ -57,6 +76,9 @@ theorem norm_sq_fourier_pdT (φ : 𝓢(EuclideanSpace ℝ (Fin n), ℂ)) {k : �
       Complex.norm_real, Real.norm_eq_abs, abs_of_pos Real.pi_pos]
   rw [h1, Complex.norm_real, Real.norm_eq_abs, sq_abs]
 
+/- English proof (translation)
+Establish `h` using `Finset.prod_univ_sum (fun _ : Fin k ↦ (Finset.univ : Finset (Fin n))) (fun _ i ↦ c i)`. Rewrite `h` using `[Fintype.piFinset_univ]`. Rewrite using `[← h, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
+-/
 private theorem sum_prod_eq_pow {k : ℕ} (c : Fin n → ℝ) :
     ∑ J : Fin k → Fin n, ∏ l, c (J l) = (∑ i, c i) ^ k := by
   have h := Finset.prod_univ_sum (fun _ : Fin k ↦ (Finset.univ : Finset (Fin n)))
@@ -64,10 +86,22 @@ private theorem sum_prod_eq_pow {k : ℕ} (c : Fin n → ℝ) :
   rw [Fintype.piFinset_univ] at h
   rw [← h, Finset.prod_const, Finset.card_univ, Fintype.card_fin]
 
+/- English proof (translation)
+Rewrite using `[EuclideanSpace.norm_eq, Real.sq_sqrt (Finset.sum_nonneg fun _ _ ↦ sq_nonneg _)]`. Simplify using the standard rewrite rules.
+-/
 private theorem sum_sq_eq_norm_sq (ξ : EuclideanSpace ℝ (Fin n)) : ∑ i, ξ i ^ 2 = ‖ξ‖ ^ 2 := by
   rw [EuclideanSpace.norm_eq, Real.sq_sqrt (Finset.sum_nonneg fun _ _ ↦ sq_nonneg _)]
   simp
 
+/- English proof (translation)
+Use `set φ := hvc.toSchwartzMap hv`. Establish `hφ : ∀ ξ, (𝓕 φ : 𝓢(EuclideanSpace ℝ (Fin n), ℂ)) ξ = 𝓕 v ξ` using `fun ξ ↦ congrFun (fourier_coe φ) ξ`. Repeatedly rewrite using `[hsD_sq]`. Rewrite using `[integral_finsetSum _ fun J _ ↦ ?_]`. Use `swap`.
+
+Repeatedly rewrite using `[pdT_eq_iteratedLineDerivOp hv hvc]`. Conclude with `integrable_norm_sq_schwartz _`. Establish `h1 : ∀ J : Fin q → Fin n, ∫ x, ‖pdT J v x‖ ^ 2 = ∫ ξ, (∏ l, (2 * π) ^ 2 * ξ (J l) ^ 2) * ‖𝓕 φ ξ‖ ^ 2` using `fun J ↦ by`. Establish `e : (fun x ↦ ‖pdT J v x‖ ^ 2) = fun x ↦ ‖(∂^{fun l ↦ ev (J l)} φ) x‖ ^ 2`. Use function extensionality and compare the values at `fun x ↦ by rw [pdT_eq_iteratedLineDerivOp hv hvc]`.
+
+Rewrite using `[e, ← integral_norm_sq_fourier]`. Repeatedly rewrite using `[norm_sq_fourier_pdT]`. Repeatedly rewrite using `[h1]`. Rewrite using `[← integral_finsetSum _ fun J _ ↦ ?_]`. Use `swap`.
+
+Use `integrable_norm_sq_schwartz (𝓕 (∂^{fun l ↦ ev (J l)} φ))` as an intermediate fact. Simplify `this` using `only [norm_sq_fourier_pdT]`. Use `integral_congr_ae (ae_of_all _ fun ξ ↦ ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← Finset.sum_mul, sum_prod_eq_pow (fun i ↦ (2 * π) ^ 2 * ξ i ^ 2), ← Finset.mul_sum, sum_sq_eq_norm_sq, hφ]`.
+-/
 theorem integral_hsD_sq (hv : ContDiff ℝ ∞ v) (hvc : HasCompactSupport v) (q : ℕ) :
     ∫ x, hsD q v x ^ 2 = ∫ ξ, ((2 * π) ^ 2 * ‖ξ‖ ^ 2) ^ q * ‖𝓕 v ξ‖ ^ 2 := by
   set φ := hvc.toSchwartzMap hv
@@ -105,6 +139,9 @@ def frozenOp (A : Finset (Fin n → ℕ)) (a : (Fin n → ℕ) → EuclideanSpac
     (x : EuclideanSpace ℝ (Fin n)) : ℂ :=
   ∑ α ∈ A with mabs α = m, a α x₀ * pderiv α v x
 
+/- English proof (translation)
+Rewrite using `[fourier_iteratedLineDerivOp_apply, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← prod_inner_mdir α ξ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fourier_mdir_apply (φ : 𝓢(EuclideanSpace ℝ (Fin n), ℂ)) (α : Fin n → ℕ)
     (ξ : EuclideanSpace ℝ (Fin n)) :
     𝓕 (∂^{mdir α} φ) ξ = (2 * π * Complex.I) ^ mabs α * (mpow α ξ : ℂ) * 𝓕 φ ξ := by
@@ -113,6 +150,11 @@ theorem fourier_mdir_apply (φ : 𝓢(EuclideanSpace ℝ (Fin n), ℂ)) (α : Fi
   push_cast
   ring
 
+/- English proof (translation)
+Rewrite using `[prinSymbol, prinSymbol, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun α hα ↦ ?_` and prove the remaining obligations. Rewrite `hα` using `[Finset.mem_filter]`. Establish `h : mpow α (t • ξ) = t ^ m * mpow α ξ`. Simplify using `only [mpow, PiLp.smul_apply, smul_eq_mul, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]`.
+
+Rewrite using `[← hα.2]`. Both sides reduce to the same expression. Rewrite using `[h]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem prinSymbol_smul (x₀ ξ : EuclideanSpace ℝ (Fin n)) (t : ℝ) :
     prinSymbol A a m x₀ (t • ξ) = (t : ℂ) ^ m * prinSymbol A a m x₀ ξ := by
   rw [prinSymbol, prinSymbol, Finset.mul_sum]
@@ -127,11 +169,27 @@ theorem prinSymbol_smul (x₀ ξ : EuclideanSpace ℝ (Fin n)) (t : ℝ) :
   push_cast
   ring
 
+/- English proof (translation)
+Unfold `prinSymbol mpow`. Use `fun_prop`.
+-/
 theorem continuous_prinSymbol (x₀ : EuclideanSpace ℝ (Fin n)) :
     Continuous (prinSymbol A a m x₀) := by
   unfold prinSymbol mpow
   fun_prop
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Substitute `hn` using the available equality. Establish `hm : 1 ≤ m` using `hnm.resolve_left (lt_irrefl 0)`. Use `⟨1, one_pos, fun ξ ↦ ?_⟩` and prove the remaining obligations. Establish `: ξ = 0` using `Subsingleton.elim _ _`.
+
+Rewrite using `[this, norm_zero, zero_pow (by omega), mul_zero]`. Conclude with `norm_nonneg _`. Use `set S := Metric.sphere (0 : EuclideanSpace ℝ (Fin n)) 1`. Establish `hS : IsCompact S` using `isCompact_sphere 0 1`. Establish `hu : ‖ev (⟨0, hn⟩ : Fin n)‖ = 1` using `norm_ev _`.
+
+Establish `hSne : S.Nonempty` using `⟨ev ⟨0, hn⟩, by simp [S, hu]⟩`. Take `⟨u₀, hu₀S, hmin⟩` from `hS.exists_isMinOn hSne ((continuous_prinSymbol (A := A) (a := a) (m := m) x₀).norm.continuousOn)`. Establish `hu₀ : u₀ ≠ 0`. Introduce `h`. Rewrite `hu₀S` using `[h]`.
+
+Simplify using `[S] at hu₀S`. Use `⟨‖prinSymbol A a m x₀ u₀‖, norm_pos_iff.2 (hell u₀ hu₀), fun ξ ↦ ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨u, huS, hξu⟩ : ∃ u ∈ S, ξ = ‖ξ‖ • u := by`. Distinguish the cases in `hξ : ξ = 0`. Conclude with `⟨ev ⟨0, hn⟩, by simp [S, hu], by simp [hξ]⟩`.
+
+Use `⟨‖ξ‖⁻¹ • ξ, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[S, norm_smul, inv_mul_cancel₀ (norm_ne_zero_iff.2 hξ)]`. Rewrite using `[smul_smul, mul_inv_cancel₀ (norm_ne_zero_iff.2 hξ), one_smul]`. Establish `h1 : ‖prinSymbol A a m x₀ ξ‖ = ‖ξ‖ ^ m * ‖prinSymbol A a m x₀ u‖` using `by conv_lhs => rw [hξu]`. Rewrite using `[prinSymbol_smul, norm_mul, norm_pow, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (norm_nonneg ξ)]`.
+
+Rewrite using `[h1, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_left (hmin huS) (by positivity)`.
+-/
 theorem exists_prinSymbol_lower_bound (hnm : 0 < n ∨ 1 ≤ m) {x₀ : EuclideanSpace ℝ (Fin n)}
     (hell : ∀ ξ : EuclideanSpace ℝ (Fin n), ξ ≠ 0 → prinSymbol A a m x₀ ξ ≠ 0) :
     ∃ c > 0, ∀ ξ : EuclideanSpace ℝ (Fin n), c * ‖ξ‖ ^ m ≤ ‖prinSymbol A a m x₀ ξ‖ := by
@@ -166,6 +224,13 @@ theorem exists_prinSymbol_lower_bound (hnm : 0 < n ∨ 1 ≤ m) {x₀ : Euclidea
   rw [h1, mul_comm]
   exact mul_le_mul_of_nonneg_left (hmin huS) (by positivity)
 
+/- English proof (translation)
+Use `set φ := hvc.toSchwartzMap hv`. Use `⟨∑ α ∈ A with mabs α = m, a α x₀ • ∂^{mdir α} φ, fun x ↦ ?_, fun ξ ↦ ?_⟩` and prove the remaining obligations. Simplify using `only [frozenOp, sum_apply, smul_apply, smul_eq_mul, iteratedLineDerivOp_eq_iteratedFDeriv]`. Both sides reduce to the same expression. Establish `hFψ : (𝓕 (∑ α ∈ A with mabs α = m, a α x₀ • ∂^{mdir α} φ) : 𝓢(EuclideanSpace ℝ (Fin n), ℂ)) ξ = (2 * π * Complex.I) ^ m * prinSymbol A a m x₀ ξ * 𝓕 v ξ`.
+
+Simplify using `only [FourierTransform.fourier_sum, FourierTransform.fourier_smul, sum_apply, smul_apply, smul_eq_mul, fourier_mdir_apply, prinSymbol, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun α hα ↦ ?_` and prove the remaining obligations. Rewrite `hα` using `[Finset.mem_filter]`. Rewrite using `[hα.2, show (𝓕 φ : 𝓢(EuclideanSpace ℝ (Fin n), ℂ)) ξ = 𝓕 v ξ from congrFun (fourier_coe φ) ξ]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hFψ, norm_mul, norm_mul, norm_pow]`. Establish `h1 : ‖(2 * π * Complex.I : ℂ)‖ = 2 * π`. Rewrite using `[norm_mul, Complex.norm_I, mul_one, Complex.norm_mul, Complex.norm_ofNat, Complex.norm_real, Real.norm_eq_abs, abs_of_pos Real.pi_pos]`. Rewrite using `[h1]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_schwartz_frozenOp {v : EuclideanSpace ℝ (Fin n) → ℂ} (hv : ContDiff ℝ ∞ v)
     (hvc : HasCompactSupport v) (x₀ : EuclideanSpace ℝ (Fin n)) :
     ∃ ψ : 𝓢(EuclideanSpace ℝ (Fin n), ℂ), (∀ x, ψ x = frozenOp A a m x₀ v x) ∧
@@ -192,6 +257,9 @@ theorem exists_schwartz_frozenOp {v : EuclideanSpace ℝ (Fin n) → ℂ} (hv : 
     rw [h1]
     ring
 
+/- English proof (translation)
+Take `⟨ψ, hψ, hFψ⟩` from `exists_schwartz_frozenOp (A := A) (a := a) (m := m) hv hvc x₀`. Establish `e : (fun x ↦ ‖frozenOp A a m x₀ v x‖ ^ 2) = fun x ↦ ‖ψ x‖ ^ 2` using `funext fun x ↦ by rw [hψ]`. Rewrite using `[e, ← integral_norm_sq_fourier]`. Conclude with `integral_congr_ae (ae_of_all _ fun ξ ↦ hFψ ξ)`.
+-/
 theorem integral_norm_sq_frozenOp {v : EuclideanSpace ℝ (Fin n) → ℂ} (hv : ContDiff ℝ ∞ v)
     (hvc : HasCompactSupport v) (x₀ : EuclideanSpace ℝ (Fin n)) :
     ∫ x, ‖frozenOp A a m x₀ v x‖ ^ 2 =
@@ -201,6 +269,9 @@ theorem integral_norm_sq_frozenOp {v : EuclideanSpace ℝ (Fin n) → ℂ} (hv :
   rw [e, ← integral_norm_sq_fourier]
   exact integral_congr_ae (ae_of_all _ fun ξ ↦ hFψ ξ)
 
+/- English proof (translation)
+Take `⟨ψ, -, hFψ⟩` from `exists_schwartz_frozenOp (A := A) (a := a) (m := m) hv hvc x₀`. Use `(integrable_norm_sq_schwartz (𝓕 ψ)).congr (ae_of_all _ fun ξ ↦ ?_)` and prove the remaining obligations. Conclude with `hFψ ξ`.
+-/
 theorem integrable_frozen_fourier {v : EuclideanSpace ℝ (Fin n) → ℂ} (hv : ContDiff ℝ ∞ v)
     (hvc : HasCompactSupport v) (x₀ : EuclideanSpace ℝ (Fin n)) :
     Integrable (fun ξ ↦ (2 * π) ^ (2 * m) * ‖prinSymbol A a m x₀ ξ‖ ^ 2 * ‖𝓕 v ξ‖ ^ 2) := by
@@ -214,29 +285,49 @@ section Helpers
 
 variable {v : EuclideanSpace ℝ (Fin n) → ℂ}
 
+/- English proof (translation)
+The claim follows from `(continuous_eval_const _).comp (hv.continuous_iteratedFDeriv (by exact_mod_cast le_top))`.
+-/
 private theorem continuous_pdT' (hv : ContDiff ℝ ∞ v) {k : ℕ} (J : Fin k → Fin n) :
     Continuous (pdT J v) :=
   (continuous_eval_const _).comp (hv.continuous_iteratedFDeriv (by exact_mod_cast le_top))
 
+/- English proof (translation)
+Establish `: iteratedFDeriv ℝ k v x = 0` using `image_eq_zero_of_notMem_tsupport fun h ↦ hx (tsupport_iteratedFDeriv_subset k h)`. Rewrite using `[pdT_apply, this, zero_apply]`.
+-/
 private theorem pdT_eq_zero' {k : ℕ} (J : Fin k → Fin n) {x : EuclideanSpace ℝ (Fin n)}
     (hx : x ∉ tsupport v) : pdT J v x = 0 := by
   have : iteratedFDeriv ℝ k v x = 0 :=
     image_eq_zero_of_notMem_tsupport fun h ↦ hx (tsupport_iteratedFDeriv_subset k h)
   rw [pdT_apply, this, zero_apply]
 
+/- English proof (translation)
+The claim follows from `Real.continuous_sqrt.comp (continuous_finsetSum _ fun J _ ↦ (continuous_pdT' hv J).norm.pow 2)`.
+-/
 private theorem continuous_hsD' (hv : ContDiff ℝ ∞ v) (k : ℕ) : Continuous (hsD k v) :=
   Real.continuous_sqrt.comp (continuous_finsetSum _ fun J _ ↦ (continuous_pdT' hv J).norm.pow 2)
 
+/- English proof (translation)
+Simplify using `[hsD, pdT_eq_zero' _ hx]`.
+-/
 private theorem hsD_eq_zero' (k : ℕ) {x : EuclideanSpace ℝ (Fin n)} (hx : x ∉ tsupport v) :
     hsD k v x = 0 := by
   simp [hsD, pdT_eq_zero' _ hx]
 
+/- English proof (translation)
+The claim follows from `memLp_two_of_continuous_hasCompactSupport (continuous_hsD' hv k) (hvc.mono' fun x hx ↦ by by_contra h exact hx (hsD_eq_zero' k h))`.
+-/
 private theorem memLp_hsD' (hv : ContDiff ℝ ∞ v) (hvc : HasCompactSupport v) (k : ℕ) :
     MemLp (hsD k v) 2 volume :=
   memLp_two_of_continuous_hasCompactSupport (continuous_hsD' hv k) (hvc.mono' fun x hx ↦ by
     by_contra h
     exact hx (hsD_eq_zero' k h))
 
+/- English proof (translation)
+Establish `h : ∀ l, ∃ i, mdir α l = ev i` using `fun l ↦ by`. Establish `hmem : mdir α l ∈ mdirList α` using `List.get_mem _ _`. Simplify using `only [mdirList, List.mem_flatMap, List.mem_replicate] at hmem`. Take `⟨i, -, -, hi⟩` from `hmem`. Conclude with `⟨i, hi⟩`.
+
+Use `choose J hJ using h`. Conclude with `⟨J, hJ⟩`.
+-/
 theorem exists_mdir_eq_ev (α : Fin n → ℕ) :
     ∃ J : Fin (mabs α) → Fin n, ∀ l, mdir α l = ev (J l) := by
   have h : ∀ l, ∃ i, mdir α l = ev i := fun l ↦ by
@@ -247,6 +338,9 @@ theorem exists_mdir_eq_ev (α : Fin n → ℕ) :
   choose J hJ using h
   exact ⟨J, hJ⟩
 
+/- English proof (translation)
+Rewrite using `[hsD]`. Use `Real.le_sqrt_of_sq_le ?_` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun J ↦ ‖pdT J v x‖ ^ 2) (fun _ _ ↦ sq_nonneg _) (Finset.mem_univ J)`.
+-/
 theorem norm_pdT_le_hsD {k : ℕ} (J : Fin k → Fin n) (x : EuclideanSpace ℝ (Fin n)) :
     ‖pdT J v x‖ ≤ hsD k v x := by
   rw [hsD]
@@ -254,6 +348,11 @@ theorem norm_pdT_le_hsD {k : ℕ} (J : Fin k → Fin n) (x : EuclideanSpace ℝ 
   exact Finset.single_le_sum (f := fun J ↦ ‖pdT J v x‖ ^ 2) (fun _ _ ↦ sq_nonneg _)
     (Finset.mem_univ J)
 
+/- English proof (translation)
+Take `⟨J, hJ⟩` from `exists_mdir_eq_ev α`. Establish `: pderiv α v x = pdT J v x`. Rewrite using `[pderiv_eq_dT, pdT, dT_apply, dT_apply]`. Use `congr 1`. Conclude with `funext hJ`.
+
+Rewrite using `[this]`. Conclude with `norm_pdT_le_hsD J x`.
+-/
 theorem norm_pderiv_le_hsD (α : Fin n → ℕ) (x : EuclideanSpace ℝ (Fin n)) :
     ‖pderiv α v x‖ ≤ hsD (mabs α) v x := by
   obtain ⟨J, hJ⟩ := exists_mdir_eq_ev α
@@ -264,12 +363,18 @@ theorem norm_pderiv_le_hsD (α : Fin n → ℕ) (x : EuclideanSpace ℝ (Fin n))
   rw [this]
   exact norm_pdT_le_hsD J x
 
+/- English proof (translation)
+Establish `h` using `norm_pderiv_le_hsD (v := v) α x`. Rewrite `h` using `[hsD_eq_zero' _ hx]`. Conclude with `norm_le_zero_iff.1 h`.
+-/
 private theorem pderiv_eq_zero' (α : Fin n → ℕ) {x : EuclideanSpace ℝ (Fin n)}
     (hx : x ∉ tsupport v) : pderiv α v x = 0 := by
   have h := norm_pderiv_le_hsD (v := v) α x
   rw [hsD_eq_zero' _ hx] at h
   exact norm_le_zero_iff.1 h
 
+/- English proof (translation)
+The claim follows from `(continuous_eval_const _).comp (hv.continuous_iteratedFDeriv (by exact_mod_cast le_top))`.
+-/
 private theorem continuous_pderiv' (hv : ContDiff ℝ ∞ v) (α : Fin n → ℕ) :
     Continuous (pderiv α v) :=
   (continuous_eval_const _).comp (hv.continuous_iteratedFDeriv (by exact_mod_cast le_top))
@@ -280,6 +385,15 @@ section Estimate
 
 variable {m : ℕ} {A : Finset (Fin n → ℕ)} {a : (Fin n → ℕ) → EuclideanSpace ℝ (Fin n) → ℂ}
 
+/- English proof (translation)
+Establish `hP : MemLp (fun x ↦ ‖frozenOp A a m x₀ v x‖) 2 volume`. Use `memLp_two_of_continuous_hasCompactSupport ?_ (hvc.mono' fun x hx ↦ ?_)` and prove the remaining obligations. Conclude with `(continuous_finsetSum _ fun α _ ↦ continuous_const.mul (continuous_pderiv' hv α)).norm`. Assume the negation of the conclusion as `h`. Apply `hx` to reduce the goal to its premises.
+
+Simplify using `[frozenOp, pderiv_eq_zero' _ h]`. Rewrite using `[l2Norm_eq_sqrt_integral_sq (memLp_hsD' hv hvc m), l2Norm_eq_sqrt_integral_sq hP, integral_hsD_sq hv hvc, integral_norm_sq_frozenOp hv hvc x₀]`. Establish `hci : c⁻¹ = Real.sqrt ((c⁻¹) ^ 2)` using `(Real.sqrt_sq (inv_nonneg.2 hc.le)).symm`. Rewrite using `[hci, ← Real.sqrt_mul (sq_nonneg _), ← integral_const_mul]`. Use `Real.sqrt_le_sqrt (integral_mono_of_nonneg (ae_of_all _ fun ξ ↦ by positivity) ((integrable_frozen_fourier hv hvc x₀).const_mul _) (ae_of_all _ fun ξ ↦ ?_))` and prove the remaining obligations.
+
+Establish `h2 : ‖ξ‖ ^ m ≤ c⁻¹ * ‖prinSymbol A a m x₀ ξ‖`. Rewrite using `[le_inv_mul_iff₀ hc]`. Conclude with `hσ ξ`. Establish `h3 : (‖ξ‖ ^ m) ^ 2 ≤ (c⁻¹ * ‖prinSymbol A a m x₀ ξ‖) ^ 2` using `pow_le_pow_left₀ (by positivity) h2 2`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[mul_pow, ← pow_mul, ← pow_mul, ← pow_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (2 * π) ^ (2 * m) * (c⁻¹ * ‖prinSymbol A a m x₀ ξ‖) ^ 2 * ‖𝓕 v ξ‖ ^ 2 := by gcongr`. Use `_ = (c⁻¹) ^ 2 * ((2 * π) ^ (2 * m) * ‖prinSymbol A a m x₀ ξ‖ ^ 2 * ‖𝓕 v ξ‖ ^ 2) := by ring`.
+-/
 theorem l2Norm_derivative_le_frozen_operator {c : ℝ} (hc : 0 < c) {x₀ : EuclideanSpace ℝ (Fin n)}
     (hσ : ∀ ξ : EuclideanSpace ℝ (Fin n), c * ‖ξ‖ ^ m ≤ ‖prinSymbol A a m x₀ ξ‖)
     {v : EuclideanSpace ℝ (Fin n) → ℂ} (hv : ContDiff ℝ ∞ v) (hvc : HasCompactSupport v) :
@@ -308,6 +422,57 @@ theorem l2Norm_derivative_le_frozen_operator {c : ℝ} (hc : 0 < c) {x₀ : Eucl
     _ ≤ (2 * π) ^ (2 * m) * (c⁻¹ * ‖prinSymbol A a m x₀ ξ‖) ^ 2 * ‖𝓕 v ξ‖ ^ 2 := by gcongr
     _ = (c⁻¹) ^ 2 * ((2 * π) ^ (2 * m) * ‖prinSymbol A a m x₀ ξ‖ ^ 2 * ‖𝓕 v ξ‖ ^ 2) := by ring
 
+/- English proof (translation)
+Take `⟨c, hc, hσ⟩` from `exists_prinSymbol_lower_bound hnm hell`. Use `set N : ℝ := (A.card : ℝ)`. Establish `hN : 0 ≤ N` using `Nat.cast_nonneg _`. Choose the witnesses or unpack the hypotheses as in `⟨M, hM⟩ : ∃ M : ℝ, ∀ x ∈ Metric.closedBall x₀ 1, ∀ α ∈ A, ‖a α x‖ ≤ M := by`. Take `⟨M, hM⟩` from `(isCompact_closedBall x₀ 1).exists_bound_of_continuousOn (f := fun x ↦ ∑ α ∈ A, ‖a α x‖) (continuous_finsetSum _ fun α hα ↦ (ha α hα).norm).continuousOn`.
+
+Use `⟨M, fun x hx α hα ↦ ?_⟩` and prove the remaining obligations. Establish `h` using `hM x hx`. Rewrite `h` using `[Real.norm_of_nonneg (Finset.sum_nonneg fun _ _ ↦ norm_nonneg _)]`. Conclude with `(Finset.single_le_sum (f := fun β ↦ ‖a β x‖) (fun β _ ↦ norm_nonneg (a β x)) hα).trans h`. Use `set M' := max M 0`.
+
+Establish `hM' : 0 ≤ M'` using `le_max_right _ _`. Use `set ε := c / (2 * (N + 1))`. Establish `hε : 0 < ε` using `by positivity`. Establish `hev : ∀ᶠ x in nhds x₀, ∀ α ∈ A, ‖a α x - a α x₀‖ < ε`. Rewrite using `[Filter.eventually_all_finset]`.
+
+Introduce `α hα`. Use `filter_upwards [Metric.tendsto_nhds.1 ((ha α hα).tendsto x₀) ε hε] with x hx`. Rewrite `hx` using `[dist_eq_norm]`. Then use the resulting hypothesis. Take `⟨δ, hδ, hδε⟩` from `Metric.eventually_nhds_iff.1 hev`. Use `⟨min δ 1, lt_min hδ one_pos, 2 * c⁻¹ * max 1 (M' * N), by positivity, fun v hv hvc hsupp ↦ ?_⟩` and prove the remaining obligations.
+
+Use `set X := l2n (hsD m v)`. Use `set Y := ∑ j ∈ Finset.range m, l2n (hsD j v)`. Use `set Z := l2n (fun x ↦ ‖diffOp A a v x‖)`. Establish `hX0 : 0 ≤ X` using `l2Norm_nonneg_alt _`. Establish `hY0 : 0 ≤ Y` using `Finset.sum_nonneg fun _ _ ↦ l2Norm_nonneg_alt _`.
+
+Establish `hZ0 : 0 ≤ Z` using `l2Norm_nonneg_alt _`. Establish `hpt : ∀ x, ‖frozenOp A a m x₀ v x‖ ≤ ‖diffOp A a v x‖ + (ε * N) * hsD m v x + (M' * N) * ∑ j ∈ Finset.range m, hsD j v x`. Introduce `x`. Establish `hsplit : diffOp A a v x = (∑ α ∈ A with mabs α = m, a α x * pderiv α v x) + ∑ α ∈ A with ¬ mabs α = m, a α x * pderiv α v x` using `(Finset.sum_filter_add_sum_filter_not A _ _).symm`. Establish `hfz : frozenOp A a m x₀ v x = diffOp A a v x - (∑ α ∈ A with mabs α = m, (a α x - a α x₀) * pderiv α v x) - ∑ α ∈ A with ¬ mabs α = m, a α x * pderiv α v x`.
+
+Rewrite using `[hsplit, frozenOp]`. Simplify using `only [sub_mul, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : ∀ α ∈ A, ‖(a α x - a α x₀) * pderiv α v x‖ ≤ ε * hsD (mabs α) v x`. Introduce `α hα`.
+
+Distinguish the cases in `hx : x ∈ tsupport v`. Establish `hxb` using `hsupp hx`. Rewrite `hxb` using `[Metric.mem_ball]`. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hδε (lt_of_lt_of_le hxb (min_le_left _ _)) α hα).le (norm_pderiv_le_hsD α x) (norm_nonneg _) hε.le`.
+
+Rewrite using `[pderiv_eq_zero' α hx, mul_zero, norm_zero]`. Conclude with `mul_nonneg hε.le (hsD_nonneg _ _ _)`. Establish `h2 : ∀ α ∈ A, ‖a α x * pderiv α v x‖ ≤ M' * hsD (mabs α) v x`. Introduce `α hα`. Distinguish the cases in `hx : x ∈ tsupport v`.
+
+Establish `hxb` using `hsupp hx`. Rewrite `hxb` using `[Metric.mem_ball]`. Establish `hxc : x ∈ Metric.closedBall x₀ 1` using `Metric.mem_closedBall.2 (lt_of_lt_of_le hxb (min_le_right _ _)).le`. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul ((hM x hxc α hα).trans (le_max_left _ _)) (norm_pderiv_le_hsD α x) (norm_nonneg _) hM'`.
+
+Rewrite using `[pderiv_eq_zero' α hx, mul_zero, norm_zero]`. Conclude with `mul_nonneg hM' (hsD_nonneg _ _ _)`. Establish `h3 : ‖∑ α ∈ A with mabs α = m, (a α x - a α x₀) * pderiv α v x‖ ≤ (ε * N) * hsD m v x`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Use `Finset.sum_le_sum fun α hα ↦ ?_` and prove the remaining obligations. Rewrite `hα` using `[Finset.mem_filter]`. Use `h1 α hα.1` as an intermediate fact. Rewrite `this` using `[hα.2]`. Then use the resulting hypothesis. Use `_ ≤ ∑ α ∈ A, ε * hsD m v x := Finset.sum_le_sum_of_subset_of_nonneg (Finset.filter_subset _ _) fun _ _ _ ↦ mul_nonneg hε.le (hsD_nonneg _ _ _)`.
+
+Use `_ = (ε * N) * hsD m v x := by rw [Finset.sum_const, nsmul_eq_mul]; ring`. Establish `h4 : ‖∑ α ∈ A with ¬ mabs α = m, a α x * pderiv α v x‖ ≤ (M' * N) * ∑ j ∈ Finset.range m, hsD j v x`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Establish `hS : 0 ≤ ∑ j ∈ Finset.range m, hsD j v x` using `Finset.sum_nonneg fun _ _ ↦ hsD_nonneg _ _ _`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `Finset.sum_le_sum fun α hα ↦ ?_` and prove the remaining obligations. Rewrite `hα` using `[Finset.mem_filter]`. Use `(h2 α hα.1).trans (mul_le_mul_of_nonneg_left ?_ hM')` and prove the remaining obligations. Establish `hlt : mabs α < m` using `lt_of_le_of_ne (hA α hα.1) hα.2`. Conclude with `Finset.single_le_sum (f := fun j ↦ hsD j v x) (fun _ _ ↦ hsD_nonneg _ _ _) (Finset.mem_range.2 hlt)`.
+
+Use `_ ≤ ∑ α ∈ A, M' * ∑ j ∈ Finset.range m, hsD j v x := Finset.sum_le_sum_of_subset_of_nonneg (Finset.filter_subset _ _) fun _ _ _ ↦ mul_nonneg hM' hS`. Use `_ = (M' * N) * ∑ j ∈ Finset.range m, hsD j v x := by`. Rewrite using `[Finset.sum_const, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfz]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations. Use `gcongr`. Conclude with `norm_sub_le _ _`. Use `_ ≤ _ := by gcongr`.
+
+Establish `hDv : MemLp (fun x ↦ ‖diffOp A a v x‖) 2 volume`. Use `memLp_two_of_continuous_hasCompactSupport ?_ (hvc.mono' fun x hx ↦ ?_)` and prove the remaining obligations. Conclude with `(continuous_finsetSum _ fun α hα ↦ (ha α hα).mul (continuous_pderiv' hv α)).norm`. Assume the negation of the conclusion as `h`. Apply `hx` to reduce the goal to its premises.
+
+Simplify using `[diffOp, pderiv_eq_zero' _ h]`. Establish `hHm` using `memLp_hsD' hv hvc m`. Establish `hHs : MemLp (fun x ↦ ∑ j ∈ Finset.range m, hsD j v x) 2 volume`. Conclude with `memLp_finsetSum (Finset.range m) fun j _ ↦ memLp_hsD' hv hvc j`. Establish `hR1 : MemLp (fun x ↦ (ε * N) * hsD m v x) 2 volume` using `hHm.const_mul _`.
+
+Establish `hR2 : MemLp (fun x ↦ (M' * N) * ∑ j ∈ Finset.range m, hsD j v x) 2 volume` using `hHs.const_mul _`. Establish `hfrozen : l2n (fun x ↦ ‖frozenOp A a m x₀ v x‖) ≤ Z + (ε * N) * X + (M' * N) * Y`. Establish `hR : MemLp (fun x ↦ ‖diffOp A a v x‖ + (ε * N) * hsD m v x + (M' * N) * ∑ j ∈ Finset.range m, hsD j v x) 2 volume` using `(hDv.add hR1).add hR2`. Establish `hFc : Continuous (fun x ↦ ‖frozenOp A a m x₀ v x‖)` using `(continuous_finsetSum _ fun α _ ↦ continuous_const.mul (continuous_pderiv' hv α)).norm`. Use `(l2Norm_le_of_abs_le hR hFc.aestronglyMeasurable fun x ↦ ?_).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[abs_of_nonneg (norm_nonneg _)]`. Conclude with `hpt x`. Use `(l2Norm_add_le_alt (hDv.add hR1) hR2).trans ?_` and prove the remaining obligations. Use `(add_le_add (l2Norm_add_le_alt hDv hR1) le_rfl).trans ?_` and prove the remaining obligations. Rewrite using `[l2Norm_const_mul, l2Norm_const_mul, abs_of_nonneg (by positivity), abs_of_nonneg (by positivity)]`.
+
+Establish `hY : l2n (fun x ↦ ∑ j ∈ Finset.range m, hsD j v x) ≤ Y` using `l2Norm_finset_sum_le _ _ fun j _ ↦ memLp_hsD' hv hvc j`. Use `gcongr`. Establish `hmain : X ≤ c⁻¹ * (Z + ε * N * X + M' * N * Y)` using `(l2Norm_derivative_le_frozen_operator hc hσ hv hvc).trans (mul_le_mul_of_nonneg_left hfrozen (inv_nonneg.2 hc.le))`. Establish `hεN : c⁻¹ * (ε * N) ≤ 1 / 2`. Establish `: c⁻¹ * (ε * N) = N / (2 * (N + 1))`.
+
+Simplify using `only [ε]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this, div_le_div_iff₀ (by positivity) two_pos]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e1 : c⁻¹ * (Z + ε * N * X + M' * N * Y) = c⁻¹ * Z + (c⁻¹ * (ε * N)) * X + c⁻¹ * (M' * N * Y)` using `by ring`.
+
+Establish `e2 : (c⁻¹ * (ε * N)) * X ≤ (1 / 2) * X` using `mul_le_mul_of_nonneg_right hεN hX0`. Establish `hX : X ≤ 2 * c⁻¹ * (Z + (M' * N) * Y)`. Establish `h6 : X ≤ c⁻¹ * Z + (1 / 2) * X + c⁻¹ * (M' * N * Y)`. Rewrite `hmain` using `[e1]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `e3 : 2 * c⁻¹ * (Z + M' * N * Y) = 2 * (c⁻¹ * Z) + 2 * (c⁻¹ * (M' * N * Y))` using `by ring`. Rewrite using `[e3]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_left (add_le_add ?_ ?_) (by positivity)` and prove the remaining obligations.
+
+Conclude with `le_mul_of_one_le_left hZ0 (le_max_left _ _)`. Conclude with `mul_le_mul_of_nonneg_right (le_max_right _ _) hY0`. Use `_ = 2 * c⁻¹ * max 1 (M' * N) * (Z + Y) := by ring`.
+-/
 theorem elliptic_estimate (hnm : 0 < n ∨ 1 ≤ m) (hA : ∀ α ∈ A, mabs α ≤ m)
     (ha : ∀ α ∈ A, Continuous (a α)) {x₀ : EuclideanSpace ℝ (Fin n)}
     (hell : ∀ ξ : EuclideanSpace ℝ (Fin n), ξ ≠ 0 → prinSymbol A a m x₀ ξ ≠ 0) :
@@ -477,6 +642,9 @@ section Pointwise
 
 variable {v : EuclideanSpace ℝ (Fin n) → ℂ}
 
+/- English proof (translation)
+Use `set φ := hvc.toSchwartzMap hv`. Establish `hint : Integrable (fun ξ ↦ ∑ J : Fin q → Fin n, ‖(𝓕 (∂^{fun l ↦ ev (J l)} φ) : 𝓢(EuclideanSpace ℝ (Fin n), ℂ)) ξ‖ ^ 2)` using `integrable_finsetSum _ fun J _ ↦ integrable_norm_sq_schwartz _`. Use `hint.congr (ae_of_all _ fun ξ ↦ ?_)` and prove the remaining obligations. Simplify using `only [norm_sq_fourier_pdT]`. Rewrite using `[← Finset.sum_mul, sum_prod_eq_pow (fun i ↦ (2 * π) ^ 2 * ξ i ^ 2), ← Finset.mul_sum, sum_sq_eq_norm_sq, show (𝓕 φ : 𝓢(EuclideanSpace ℝ (Fin n), ℂ)) ξ = 𝓕 v ξ from congrFun (fourier_coe φ) ξ]`.
+-/
 theorem integrable_fourier_weight (hv : ContDiff ℝ ∞ v) (hvc : HasCompactSupport v) (q : ℕ) :
     Integrable (fun ξ ↦ ((2 * π) ^ 2 * ‖ξ‖ ^ 2) ^ q * ‖𝓕 v ξ‖ ^ 2) := by
   set φ := hvc.toSchwartzMap hv
@@ -489,6 +657,9 @@ theorem integrable_fourier_weight (hv : ContDiff ℝ ∞ v) (hvc : HasCompactSup
     sum_sq_eq_norm_sq, show (𝓕 φ : 𝓢(EuclideanSpace ℝ (Fin n), ℂ)) ξ = 𝓕 v ξ from
       congrFun (fourier_coe φ) ξ]
 
+/- English proof (translation)
+Break down `le_total s 1 with h | h` into its components or cases. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem one_add_pow_le (s : ℝ) (hs : 0 ≤ s) (k : ℕ) :
     (1 + s) ^ k ≤ 2 ^ k * (1 + s ^ k) := by
   rcases le_total s 1 with h | h
@@ -499,6 +670,13 @@ private theorem one_add_pow_le (s : ℝ) (hs : 0 ≤ s) (k : ℕ) :
       _ = 2 ^ k * s ^ k := mul_pow _ _ _
       _ ≤ 2 ^ k * (1 + s ^ k) := by gcongr; linarith
 
+/- English proof (translation)
+Establish `hr : ((Module.finrank ℝ (EuclideanSpace ℝ (Fin n)) : ℕ) : ℝ) < ((2 * σ : ℕ) : ℝ)`. Rewrite using `[finrank_euclideanSpace_fin]`. Conclude with `hσ` after adjusting the coercions. Use `((integrable_one_add_norm hr).const_mul ((2 : ℝ) ^ (2 * σ))).mono' ?_ (ae_of_all _ fun ξ ↦ ?_)` and prove the remaining obligations. Conclude with `(Continuous.inv₀ (by fun_prop : Continuous fun ξ : EuclideanSpace ℝ (Fin n) ↦ 1 + ((2 * π) ^ 2 * ‖ξ‖ ^ 2) ^ σ) fun ξ ↦ by positivity).aestronglyMeasurable`.
+
+Establish `h2π : 1 ≤ (2 * π) ^ 2` using `by nlinarith [Real.pi_gt_three]`. Establish `hW : ‖ξ‖ ^ (2 * σ) ≤ ((2 * π) ^ 2 * ‖ξ‖ ^ 2) ^ σ`. Rewrite using `[pow_mul, mul_pow]`. Conclude with `le_mul_of_one_le_left (by positivity) (one_le_pow₀ h2π)`. Rewrite using `[Real.norm_of_nonneg (by positivity), Real.rpow_neg (by positivity), Real.rpow_natCast]`.
+
+Establish `hpos : 0 < (1 + ‖ξ‖) ^ (2 * σ)` using `by positivity`. Rewrite using `[← div_eq_mul_inv, le_div_iff₀ hpos, inv_mul_le_iff₀ (by positivity)]`. Establish `key : (1 + ‖ξ‖) ^ (2 * σ) ≤ 2 ^ (2 * σ) * (1 + ((2 * π) ^ 2 * ‖ξ‖ ^ 2) ^ σ)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `key.trans_eq (mul_comm _ _)`.
+-/
 theorem integrable_inv_one_add_weight {σ : ℕ} (hσ : n < 2 * σ) :
     Integrable (fun ξ : EuclideanSpace ℝ (Fin n) ↦ (1 + ((2 * π) ^ 2 * ‖ξ‖ ^ 2) ^ σ)⁻¹) := by
   have hr : ((Module.finrank ℝ (EuclideanSpace ℝ (Fin n)) : ℕ) : ℝ) < ((2 * σ : ℕ) : ℝ) := by
@@ -521,6 +699,23 @@ theorem integrable_inv_one_add_weight {σ : ℕ} (hσ : n < 2 * σ) :
         _ ≤ 2 ^ (2 * σ) * (1 + ((2 * π) ^ 2 * ‖ξ‖ ^ 2) ^ σ) := by gcongr
     exact key.trans_eq (mul_comm _ _)
 
+/- English proof (translation)
+Break down `ha.eq_or_lt with ha0 | hapos` into its components or cases. Substitute `ha0` using the available equality. Rewrite using `[zero_mul, Real.sqrt_zero]`. Assume the negation of the conclusion as `hX`. Use `push Not at hX`.
+
+Establish `ht : 0 < b / X + 1` using `by positivity`. Establish `h1` using `h (b / X + 1) ht`. Rewrite `h1` using `[mul_zero, zero_add]`. Establish `h2 : (b / X + 1)⁻¹ * b < X`. Rewrite using `[inv_mul_lt_iff₀ ht, add_mul, div_mul_cancel₀ _ hX.ne', one_mul]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : 0 ≤ (b / X + 1)⁻¹ * b` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Break down `hb.eq_or_lt with hb0 | hbpos` into its components or cases. Substitute `hb0` using the available equality.
+
+Rewrite using `[mul_zero, Real.sqrt_zero]`. Assume the negation of the conclusion as `hX`. Use `push Not at hX`. Use `h (X / a) (div_pos hX hapos)` as an intermediate fact. Rewrite `this` using `[mul_zero, add_zero, div_mul_cancel₀ _ hapos.ne']`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `set t := Real.sqrt (b / a)`. Establish `ht : 0 < t` using `Real.sqrt_pos.2 (div_pos hbpos hapos)`. Establish `h1` using `h t ht`. Establish `e1 : t * a = Real.sqrt (a * b)`.
+
+Rewrite using `[show t * a = Real.sqrt (b / a) * Real.sqrt (a ^ 2) by`. Rewrite using `[Real.sqrt_sq hapos.le], ← Real.sqrt_mul (div_nonneg hbpos.le hapos.le)]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Establish `ht2 : t ^ 2 = b / a` using `Real.sq_sqrt (div_nonneg hbpos.le hapos.le)`.
+
+Establish `e2 : t⁻¹ * b = Real.sqrt (a * b)`. Rewrite using `[← e1]`. Establish `hb' : b = t ^ 2 * a` using `by rw [ht2]; field_simp`. Rewrite using `[hb']`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite `h1` using `[e1, e2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem le_sqrt_of_forall_le {X a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b)
     (h : ∀ t > 0, X ≤ (t * a + t⁻¹ * b) / 2) : X ≤ Real.sqrt (a * b) := by
   rcases ha.eq_or_lt with ha0 | hapos
@@ -561,6 +756,27 @@ private theorem le_sqrt_of_forall_le {X a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b)
     rw [e1, e2] at h1
     linarith
 
+/- English proof (translation)
+Use `set σ := n / 2 + 1`. Establish `hσ : n < 2 * σ` using `by omega`. Use `set W : EuclideanSpace ℝ (Fin n) → ℝ := fun ξ ↦ 1 + ((2 * π) ^ 2 * ‖ξ‖ ^ 2) ^ σ`. Establish `hWpos : ∀ ξ, 0 < W ξ` using `fun ξ ↦ by positivity`. Use `set I₁ := ∫ ξ, (W ξ)⁻¹`.
+
+Establish `hI₁int : Integrable (fun ξ ↦ (W ξ)⁻¹)` using `integrable_inv_one_add_weight hσ`. Establish `hI₁ : 0 ≤ I₁` using `integral_nonneg fun ξ ↦ (inv_pos.2 (hWpos ξ)).le`. Use `⟨σ, Real.sqrt I₁, Real.sqrt_nonneg _, fun w hw hwc x ↦ ?_⟩` and prove the remaining obligations. Use `set φ := hwc.toSchwartzMap hw`. Establish `hFw : ∀ ξ, (𝓕 φ : 𝓢(EuclideanSpace ℝ (Fin n), ℂ)) ξ = 𝓕 w ξ` using `fun ξ ↦ congrFun (fourier_coe φ) ξ`.
+
+Establish `hFint : Integrable (𝓕 w)` using `(𝓕 φ).integrable.congr (ae_of_all _ hFw)`. Establish `hinv : w x = 𝓕⁻ (𝓕 w) x`. Rewrite using `[hw.continuous.fourierInv_fourier_eq (φ.integrable) hFint]`. Establish `hx1 : ‖w x‖ ≤ ∫ ξ, ‖𝓕 w ξ‖`. Rewrite using `[hinv, Real.fourierInv_eq]`.
+
+Use `(norm_integral_le_integral_norm _).trans (le_of_eq ?_)` and prove the remaining obligations. Use `integral_congr_ae (ae_of_all _ fun ξ ↦ ?_)` and prove the remaining obligations. Simplify using `only [Circle.norm_smul]`. Use `set I₂ := ∫ ξ, W ξ * ‖𝓕 w ξ‖ ^ 2`. Establish `hsq0` using `integrable_fourier_weight hw hwc 0`.
+
+Establish `hsqσ` using `integrable_fourier_weight hw hwc σ`. Establish `hWint : Integrable (fun ξ ↦ W ξ * ‖𝓕 w ξ‖ ^ 2)`. Use `(hsq0.add hsqσ).congr (ae_of_all _ fun ξ ↦ ?_)` and prove the remaining obligations. Simplify using `only [W, Pi.add_apply, pow_zero, one_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hI₂0 : 0 ≤ I₂` using `integral_nonneg fun ξ ↦ mul_nonneg (hWpos ξ).le (sq_nonneg _)`. Establish `hI₂ : I₂ = l2n (hsD 0 w) ^ 2 + l2n (hsD σ w) ^ 2`. Rewrite using `[l2Norm_eq_sqrt_integral_sq (memLp_hsD' hw hwc 0), l2Norm_eq_sqrt_integral_sq (memLp_hsD' hw hwc σ), Real.sq_sqrt (integral_nonneg fun _ ↦ sq_nonneg _), Real.sq_sqrt (integral_nonneg fun _ ↦ sq_nonneg _), integral_hsD_sq hw hwc, integral_hsD_sq hw hwc, ← integral_add hsq0 hsqσ]`. Use `integral_congr_ae (ae_of_all _ fun ξ ↦ ?_)` and prove the remaining obligations. Simplify using `only [W, pow_zero, one_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hamgm : ∫ ξ, ‖𝓕 w ξ‖ ≤ Real.sqrt (I₁ * I₂)`. Use `le_sqrt_of_forall_le hI₁ hI₂0 fun t ht ↦ ?_` and prove the remaining obligations. Establish `hR : Integrable (fun ξ ↦ (t * (W ξ)⁻¹ + t⁻¹ * (W ξ * ‖𝓕 w ξ‖ ^ 2)) / 2)` using `((hI₁int.const_mul t).add (hWint.const_mul t⁻¹)).div_const 2`. Establish `hpt : ∀ ξ, ‖𝓕 w ξ‖ ≤ (t * (W ξ)⁻¹ + t⁻¹ * (W ξ * ‖𝓕 w ξ‖ ^ 2)) / 2` using `fun ξ ↦ by`.
+
+Establish `hW` using `hWpos ξ`. Establish `key : (t * (W ξ)⁻¹ + t⁻¹ * (W ξ * ‖𝓕 w ξ‖ ^ 2)) / 2 - ‖𝓕 w ξ‖ = (t - W ξ * ‖𝓕 w ξ‖) ^ 2 / (2 * t * W ξ)`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `: 0 ≤ (t - W ξ * ‖𝓕 w ξ‖) ^ 2 / (2 * t * W ξ)` using `by positivity`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_div, integral_add (hI₁int.const_mul t) (hWint.const_mul t⁻¹), integral_const_mul, integral_const_mul]`. Establish `hs : Real.sqrt I₂ ≤ l2n (hsD 0 w) + l2n (hsD σ w)`. Rewrite using `[hI₂, Real.sqrt_le_left (add_nonneg (l2Norm_nonneg_alt _) (l2Norm_nonneg_alt _))]`.
+
+Establish `h0` using `l2Norm_nonneg_alt (hsD 0 w)`. Establish `hσ'` using `l2Norm_nonneg_alt (hsD σ w)`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sobolev_pointwise : ∃ σ : ℕ, ∃ C : ℝ, 0 ≤ C ∧ ∀ w : EuclideanSpace ℝ (Fin n) → ℂ,
     ContDiff ℝ ∞ w → HasCompactSupport w → ∀ x,
       ‖w x‖ ≤ C * (l2n (hsD 0 w) + l2n (hsD σ w)) := by

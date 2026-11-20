@@ -10,6 +10,15 @@ namespace GlobalTheory
 open NumberField IsDedekindDomain NumberField.mixedEmbedding Complex Classical in
 open scoped TensorProduct ContDiff nonZeroDivisors in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ Φ hΦ hint hplace P e f hprime`. Unfold `_root_.HeckeCharacterZeroLocus.ThmBIn.IsPrimeIdem at hprime`. Break down `hprime with ⟨hat, -⟩ | ⟨-, ⟨v, ε, hε, rfl⟩, hcrit⟩` into its components or cases. Unfold `_root_.HeckeCharacterZeroLocus.ThmBIn.IsIdemAt _root_.HeckeCharacterZeroLocus.ThmBIn.IsSplitIdem at hat`. Take `⟨⟨he, hce, v, ε, hε, hsum⟩, hcrit⟩` from `hat`.
+
+Establish `heε : e * algebraMap (_root_.HeckeCharacterZeroLocus.ThmBIn.AF F) (_root_.HeckeCharacterZeroLocus.ThmBIn.AE F E) ε = e`. Rewrite using `[← hsum, mul_add, he, hce, add_zero]`. Conclude with `(_root_.GlobalTheory.adele_idem_prime_criterion F E Φ hΦ hint hplace e P v ε hε he heε).mp hcrit`. Take `⟨h0, hind⟩` from `hplace v ε hε`. Establish `he : algebraMap (_root_.HeckeCharacterZeroLocus.ThmBIn.AF F) (_root_.HeckeCharacterZeroLocus.ThmBIn.AE F E) ε * algebraMap (_root_.HeckeCharacterZeroLocus.ThmBIn.AF F) (_root_.HeckeCharacterZeroLocus.ThmBIn.AE F E) ε = algebraMap (_root_.HeckeCharacterZeroLocus.ThmBIn.AF F) (_roo …`.
+
+Apply `Φ.injective` to reduce the goal to its premises. Rewrite using `[map_mul]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Prod.fst_mul, h0, mul_zero]`. Use extensionality with `Q : 1`.
+
+Express the relevant statement in the definitionally equal form `(Φ _).2 Q * (Φ _).2 Q = (Φ _).2 Q`. Rewrite using `[hind Q]`. Apply the tactic sequence `split_ifs <;> simp`. Conclude with `(_root_.GlobalTheory.adele_idem_prime_criterion F E Φ hΦ hint hplace _ P v ε hε he he).mp hcrit`.
+-/
 theorem _root_.GlobalTheory.isPrimeIdem_eq_indicator :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), ∀ Φ : _root_.HeckeCharacterZeroLocus.ThmBIn.AE F E ≃+* (mixedSpace E × FiniteAdeleRing (𝓞 E) E), (∀ x : E, Φ (_root_.HeckeCharacterZeroLocus.ThmBIn.incA F E x) = (mixedEmbedding E x, algebraMap E _ x)) → (∀ y, _root_.HeckeCharacterZeroLocus.ThmBIn.finPart F E y ∈ _root_.HeckeCharacterZeroLocus.ThmBIn.intAE F E ↔ ∀ P, Valued.v ((Φ y).2 P) ≤ 1) → (∀ v ε, _root_.HeckeCharacterZeroLocus.ThmBIn.IsPlaceIdem F v ε → (Φ (algebraMap (_root_.HeckeCharacterZeroLocus.ThmBIn.AF F) (_root_.HeckeCharacterZeroLocus.ThmBIn.AE F E) ε)).1 = 0 ∧ ∀ P : HeightOneSpectrum (𝓞 E), (Φ (algebraMap (_root_.HeckeCharacterZeroLocus.ThmBIn.AF F) (_root_.HeckeCharacterZeroLocus.ThmBIn.AE F E) ε)).2 P = if P.under (𝓞 F) = v then 1 else 0) → ∀ P e f, _root_.HeckeCharacterZeroLocus.ThmBIn.IsPrimeIdem σ P e f → ((Φ e).1 = 0 ∧ (Φ e).2 P = 1 ∧ ∀ Q, Q ≠ P → (Φ e).2 Q = 0) := by
   intro F E _ _ _ _ _ σ Φ hΦ hint hplace P e f hprime

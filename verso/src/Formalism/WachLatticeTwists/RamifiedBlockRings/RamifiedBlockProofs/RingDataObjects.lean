@@ -15,14 +15,25 @@ variable {O K : Type} [CommRing O] [CommRing K] [Algebra O K] {X : Type} (T : Su
 
 def term (c : X → O) (g : G) : X → Matrix d d K := fun x => algebraMap O K (c x) • r g x
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[term, add_smul]`.
+-/
 theorem term_add (c c' : X → O) (g : G) : term r (c + c') g = term r c g + term r c' g := by
   funext x
   simp [term, add_smul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[term]`.
+-/
 theorem term_zero (g : G) : term r (0 : X → O) g = 0 := by
   funext x
   simp [term]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [term, Pi.mul_apply, map_mul]`. Use `first`. Consider the case `exact smul_mul_smul_comm _ _ _ _`. Consider the case `exact smul_mul_smul _ _ _ _`.
+
+Consider the case `simp [Matrix.smul_mul, Matrix.mul_smul, smul_smul, mul_comm]`.
+-/
 theorem term_mul (c c' : X → O) (g g' : G) : term r c g * term r c' g' = term r (c * c') (g * g') := by
   funext x
   simp only [term, Pi.mul_apply, map_mul]
@@ -31,13 +42,29 @@ theorem term_mul (c c' : X → O) (g g' : G) : term r c g * term r c' g' = term 
   | exact smul_mul_smul _ _ _ _
   | simp [Matrix.smul_mul, Matrix.mul_smul, smul_smul, mul_comm]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_tSpan_iff (F : X → Matrix d d K) :
     F ∈ tSpan T r ↔ ∃ (s : Finset G) (c : G → X → O), (∀ g, c g ∈ T) ∧ F = ∑ g ∈ s, term r (c g) g := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `(mem_tSpan_iff T r _).2 ⟨{g}, fun _ => c, fun _ => hc, by simp⟩`.
+-/
 theorem term_mem {c : X → O} (hc : c ∈ T) (g : G) : term r c g ∈ tSpan T r := (mem_tSpan_iff T r _).2 ⟨{g}, fun _ => c, fun _ => hc, by simp⟩
 
+/- English proof (translation)
+The claim follows from `(mem_tSpan_iff T r 0).2 ⟨∅, fun _ => 0, fun _ => T.zero_mem, by simp⟩`.
+-/
 theorem zero_mem_tSpan : (0 : X → Matrix d d K) ∈ tSpan T r := (mem_tSpan_iff T r 0).2 ⟨∅, fun _ => 0, fun _ => T.zero_mem, by simp⟩
 
+/- English proof (translation)
+Take `⟨s, c, hc, rfl⟩` from `(mem_tSpan_iff T r _).1 h`. Take `⟨s', c', hc', rfl⟩` from `(mem_tSpan_iff T r _).1 h'`. Use `(mem_tSpan_iff T r _).2 ⟨s ∪ s', fun g => (if g ∈ s then c g else 0) + (if g ∈ s' then c' g else 0), fun g => T.add_mem (by split_ifs; exacts [hc g, T.zero_mem]) (by split_ifs; exacts [hc' g, T.zero_mem]), ?_⟩` and prove the remaining obligations. Simplify using `only [term_add, Finset.sum_add_distrib]`. Use `congr 1`.
+
+Use `(Finset.sum_congr rfl fun g hg => ?_).trans (Finset.sum_subset Finset.subset_union_left fun g _ hg => ?_)` and prove the remaining obligations. Rewrite using `[if_pos hg]`. Rewrite using `[if_neg hg, term_zero]`. Use `(Finset.sum_congr rfl fun g hg => ?_).trans (Finset.sum_subset Finset.subset_union_right fun g _ hg => ?_)` and prove the remaining obligations. Rewrite using `[if_pos hg]`.
+
+Rewrite using `[if_neg hg, term_zero]`.
+-/
 theorem add_mem_tSpan {F F' : X → Matrix d d K} (h : F ∈ tSpan T r) (h' : F' ∈ tSpan T r) :
     F + F' ∈ tSpan T r := by
   classical
@@ -54,10 +81,18 @@ theorem add_mem_tSpan {F F' : X → Matrix d d K} (h : F ∈ tSpan T r) (h' : F'
     · rw [if_pos hg]
     · rw [if_neg hg, term_zero]
 
+/- English proof (translation)
+The claim follows from `Finset.sum_induction _ (· ∈ tSpan T r) (fun _ _ ha hb => add_mem_tSpan T r ha hb) (zero_mem_tSpan T r) h`.
+-/
 theorem sum_mem_tSpan {ι : Type*} (s : Finset ι) (F : ι → X → Matrix d d K)
     (h : ∀ i ∈ s, F i ∈ tSpan T r) : ∑ i ∈ s, F i ∈ tSpan T r := Finset.sum_induction _ (· ∈ tSpan T r) (fun _ _ ha hb => add_mem_tSpan T r ha hb)
   (zero_mem_tSpan T r) h
 
+/- English proof (translation)
+Take `⟨s, c, hc, rfl⟩` from `(mem_tSpan_iff T r _).1 h`. Take `⟨s', c', hc', rfl⟩` from `(mem_tSpan_iff T r _).1 h'`. Simplify using `only [Finset.sum_mul, Finset.mul_sum]`. Conclude with `sum_mem_tSpan T r _ _ fun g _ => sum_mem_tSpan T r _ _ fun g' _ => by`. Rewrite using `[term_mul]`.
+
+Conclude with `term_mem T r (T.mul_mem (hc _) (hc' _)) _`.
+-/
 theorem mul_mem_tSpan {F F' : X → Matrix d d K} (h : F ∈ tSpan T r) (h' : F' ∈ tSpan T r) :
     F * F' ∈ tSpan T r := by
   obtain ⟨s, c, hc, rfl⟩ := (mem_tSpan_iff T r _).1 h
@@ -67,6 +102,11 @@ theorem mul_mem_tSpan {F F' : X → Matrix d d K} (h : F ∈ tSpan T r) (h' : F'
     rw [term_mul]
     exact term_mem T r (T.mul_mem (hc _) (hc' _)) _
 
+/- English proof (translation)
+Take `⟨s, c, hc, rfl⟩` from `(mem_tSpan_iff T r _).1 h`. Use `(mem_tSpan_iff T r _).2 ⟨s, fun g => f * c g, fun g => T.mul_mem hf (hc g), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Simplify using `[term, Finset.sum_apply, Finset.smul_sum, smul_smul, map_mul]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← map_mul, algebraMap_smul]`.
+-/
 theorem smul_mem_tSpan {f : X → O} (hf : f ∈ T) {F : X → Matrix d d K} (h : F ∈ tSpan T r) :
     (fun x => algebraMap O K (f x) • F x) ∈ tSpan T r := by
   obtain ⟨s, c, hc, rfl⟩ := (mem_tSpan_iff T r _).1 h

@@ -7,6 +7,11 @@ open GroundTheory.Global GroundTheory.Global.SemiLocal UpperTheory.V.Published U
 open scoped Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Establish `hx : IsIntegral k x` using `Algebra.IsIntegral.isIntegral x`. Use `haveI : FiniteDimensional k (IntermediateField.adjoin k {x}) := IntermediateField.adjoin.finiteDimensional hx`. Use `haveI : Finite (IntermediateField.adjoin k {x}) := Module.finite_of_finite k`. Use `haveI : Fintype (IntermediateField.adjoin k {x}) := Fintype.ofFinite _`. Use `⟨Fintype.card (IntermediateField.adjoin k {x}), Fintype.one_lt_card, ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `FiniteField.pow_card (⟨x, IntermediateField.mem_adjoin_simple_self k x⟩ : IntermediateField.adjoin k {x})`. Conclude with `congrArg Subtype.val h`.
+-/
 private theorem pow_self_of_alg (k : Type) [Field k] [Finite k] (x : AlgebraicClosure k) :
     ∃ c : ℕ, 2 ≤ c ∧ x ^ c = x := by
   have hx : IsIntegral k x := Algebra.IsIntegral.isIntegral x
@@ -17,6 +22,13 @@ private theorem pow_self_of_alg (k : Type) [Field k] [Finite k] (x : AlgebraicCl
   have h := FiniteField.pow_card (⟨x, IntermediateField.mem_adjoin_simple_self k x⟩ : IntermediateField.adjoin k {x})
   exact congrArg Subtype.val h
 
+/- English proof (translation)
+Take `⟨c, hc, hx⟩` from `h x`. Establish `hmon : (X ^ c - X : Polynomial F').Monic`. Apply `monic_X_pow_sub` to reduce the goal to its premises. Rewrite using `[degree_X]`. Conclude with `(by omega : 1 < c)` after adjusting the coercions.
+
+Establish `hroots` using `hmon.roots_map_of_card_eq_natDegree e' IsAlgClosed.card_roots_eq_natDegree`. Establish `hmem : e x ∈ ((X ^ c - X : Polynomial F').map e').roots`. Rewrite using `[mem_roots (map_monic_ne_zero hmon)]`. Simplify using `only [IsRoot, Polynomial.map_sub, Polynomial.map_pow, Polynomial.map_X, eval_sub, eval_pow, eval_X]`. Rewrite using `[← map_pow, hx, sub_self]`.
+
+Rewrite `hmem` using `[← hroots, Multiset.mem_map]`. Take `⟨y, -, hy⟩` from `hmem`. Conclude with `⟨y, hy⟩`.
+-/
 private theorem exists_preimage {F F' R : Type} [Field F] [Field F'] [IsAlgClosed F'] [Field R]
     (e : F →+* R) (e' : F' →+* R) (h : ∀ x : F, ∃ c : ℕ, 2 ≤ c ∧ x ^ c = x) (x : F) :
     ∃ y, e' y = e x := by
@@ -34,6 +46,15 @@ private theorem exists_preimage {F F' R : Type} [Field F] [Field F'] [IsAlgClose
   obtain ⟨y, -, hy⟩ := hmem
   exact ⟨y, hy⟩
 
+/- English proof (translation)
+Establish `h1 : ∀ x, ∃ y, e' y = e x` using `fun x => exists_preimage e e' (pow_self_of_alg k) x`. Establish `h2 : ∀ x, ∃ y, e y = e' x` using `fun x => exists_preimage e' e (pow_self_of_alg k') x`. Establish `hr : e.range = e'.range`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨x, rfl⟩`. Take `⟨y, hy⟩` from `h1 x`. Conclude with `⟨y, hy⟩`. Introduce and unpack `⟨x, rfl⟩`. Take `⟨y, hy⟩` from `h2 x`.
+
+Conclude with `⟨y, hy⟩`. Set `φ` to `RingEquiv.ofBijective e.rangeRestrict ⟨fun a b hab => e.injective (congrArg Subtype.val hab), e.rangeRestrict_surjective⟩`. Set `ψ` to `RingEquiv.ofBijective e'.rangeRestrict ⟨fun a b hab => e'.injective (congrArg Subtype.val hab), e'.rangeRestrict_surjective⟩`. Use `⟨φ.trans ((RingEquiv.subringCongr hr).trans ψ.symm), fun x => ?_⟩` and prove the remaining obligations. Establish `hq` using `ψ.apply_symm_apply ((RingEquiv.subringCongr hr) (φ x))`.
+
+Conclude with `congrArg Subtype.val hq`.
+-/
 private theorem exists_equiv_of_fin {k k' R : Type} [Field k] [Field k'] [Finite k] [Finite k'] [Field R]
     (e : AlgebraicClosure k →+* R) (e' : AlgebraicClosure k' →+* R) :
     ∃ j : AlgebraicClosure k ≃+* AlgebraicClosure k', ∀ x, e' (j x) = e x := by
@@ -56,13 +77,38 @@ private theorem exists_equiv_of_fin {k k' R : Type} [Field k] [Field k'] [Finite
   have hq := ψ.apply_symm_apply ((RingEquiv.subringCongr hr) (φ x))
   exact congrArg Subtype.val hq
 
+/- English proof (translation)
+The claim follows from `hu.le_one_iff_le_one`.
+-/
 private theorem val_le_one_iff {k : Type} [Field k] [ValuativeRel k] {Γ : Type} [LinearOrderedCommGroupWithZero Γ]
     (u : Valuation k Γ) (hu : (valuation k).IsEquiv u) (x : k) : x ∈ 𝒪[k] ↔ u x ≤ 1 := hu.le_one_iff_le_one
 
+/- English proof (translation)
+Conclude with `(Valuation.integer.integers (valuation k)).isUnit_iff_valuation_eq_one.trans hu.eq_one_iff_eq_one`.
+-/
 private theorem isUnit_iff_val {k : Type} [Field k] [ValuativeRel k] {Γ : Type} [LinearOrderedCommGroupWithZero Γ]
     (u : Valuation k Γ) (hu : (valuation k).IsEquiv u) (x : 𝒪[k]) : IsUnit x ↔ u (x : k) = 1 := by
   exact (Valuation.integer.integers (valuation k)).isUnit_iff_valuation_eq_one.trans hu.eq_one_iff_eq_one
 
+/- English proof (translation)
+Introduce `K M Ω _ _ _ _ _ _ _ _ _ A v w e e' he he'`. Take `⟨j, hj⟩` from `exists_equiv_of_fin e e'`. Establish `eqv : (valuation (v.adicCompletion K)).IsEquiv Valued.v` using `ValuativeRel.isEquiv _ _`. Establish `eqw : (valuation (w.1.adicCompletion M)).IsEquiv Valued.v` using `ValuativeRel.isEquiv _ _`. Establish `he0 : w.1.asIdeal.ramificationIdx (𝓞 K) ≠ 0` using `(Ideal.ramificationIdx_pos w.1.asIdeal (𝓞 K)).ne'`.
+
+Set `f : 𝒪[v.adicCompletion K] →+* 𝒪[w.1.adicCompletion M]` to `(completionMap v w.1).comp (algebraMap 𝒪[v.adicCompletion K] (v.adicCompletion K)) |>.codRestrict (𝒪[w.1.adicCompletion M]) (fun x => by`. Use `(val_le_one_iff _ eqw _).2 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Valued.v (completionMap v w.1 x) ≤ 1`. Rewrite using `[valued_completionMap]`. Conclude with `pow_le_one' ((val_le_one_iff _ eqv _).1 x.2) _)`.
+
+Establish `hf : ∀ x, ((f x : 𝒪[w.1.adicCompletion M]) : w.1.adicCompletion M) = completionMap v w.1 x` using `fun _ => rfl`. Use `haveI : IsLocalHom f := ⟨fun a ha => by`. Rewrite `ha` using `[isUnit_iff_val _ eqw, hf, valued_completionMap]`. Rewrite using `[isUnit_iff_val _ eqv]`. Conclude with `(pow_eq_one_iff.1 ha).resolve_right he0⟩`.
+
+Use `⟨IsLocalRing.ResidueField.map f, j, fun x y hy => ?_, fun x => ?_, hj⟩` and prove the remaining obligations. Rewrite using `[IsLocalRing.ResidueField.map_residue]`. Use `congr 1`. Conclude with `Subtype.ext hy`. Take `⟨y, rfl⟩` from `IsLocalRing.residue_surjective x`.
+
+Establish `hy1 : Valued.v (y : v.adicCompletion K) ≤ 1` using `(val_le_one_iff _ eqv _).1 y.2`. Take `⟨a, ha⟩` from `DiscreteGroups.sglob.DzType.exists_int_approx_compl v (y : v.adicCompletion K) hy1`. Establish `hb1 : Valued.v (algebraMap K (v.adicCompletion K) (a : K)) ≤ 1`. Establish `e2 : algebraMap K (v.adicCompletion K) (a : K) = (y : v.adicCompletion K) - ((y : v.adicCompletion K) - algebraMap K (v.adicCompletion K) (a : K))` using `by ring`. Rewrite using `[e2]`.
+
+Conclude with `(Valuation.map_sub _ _ _).trans (max_le hy1 ha.le)`. Set `b : 𝒪[v.adicCompletion K]` to `⟨algebraMap K _ (a : K), (val_le_one_iff _ eqv _).2 hb1⟩`. Establish `hyb : IsLocalRing.residue _ y = IsLocalRing.residue _ b`. Rewrite using `[← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, isUnit_iff_val _ eqv]`. Conclude with `ha.ne`.
+
+Set `a' : 𝓞 M` to `algebraMap (𝓞 K) (𝓞 M) a`. Establish `ha' : (a' : M) = algebraMap K M (a : K)` using `rfl`. Set `z : A` to `⟨algebraMap K Ω (a : K), mem_of_isIntegral_int A ((RingOfIntegers.isIntegral_coe a).map (IsScalarTower.toAlgHom ℤ K Ω))⟩`. Establish `h1` using `he a b z rfl rfl`. Establish `h2` using `he' a' (f b) z (by`.
+
+Rewrite using `[hf, ha']`. Express the relevant statement in the definitionally equal form `completionMap v w.1 (algebraMap K _ (a : K)) = _`. Rewrite using `[completionMap_algebraMap]`. Conclude with `IsScalarTower.algebraMap_apply K M (w.1.adicCompletion M) _) (by`. Rewrite using `[ha', ← IsScalarTower.algebraMap_apply])`.
+
+Apply `e'.injective` to reduce the goal to its premises. Rewrite using `[hj, hyb, h1, IsLocalRing.ResidueField.map_residue, h2]`.
+-/
 theorem UpperTheory.Gal.InertialTypesAlt.resEmbCompat :
     ResEmbCompat := by
   intro K M Ω _ _ _ _ _ _ _ _ _ A v w e e' he he'

@@ -22,6 +22,9 @@ namespace ReciprocityTheory.ChartRestriction.DS.Lap.NVHTop
 
 open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.B2
 
+/- English proof (translation)
+The claim follows from `S0.IntS.intS_of_sIntFin (Mult1.S0.sIntFin Mult1.multiplicity_one_hypotheses_hold)`.
+-/
 theorem intS : S0.IntSStatement :=
   S0.IntS.intS_of_sIntFin (Mult1.S0.sIntFin Mult1.multiplicity_one_hypotheses_hold)
 

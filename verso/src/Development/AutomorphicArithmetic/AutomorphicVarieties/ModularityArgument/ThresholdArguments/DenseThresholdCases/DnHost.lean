@@ -14,6 +14,25 @@ section
 open private val_of_even from Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecialization.LkHost
 open NumberField IsLocalRing Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.GalOfCusp UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Aut UpperTheory.V.Pr UpperTheory.V UpperTheory.V.Z.Win
 open Formalism.GaloisCohomology UpperTheory.V.Base in
+/- English proof (translation)
+Introduce `hF hL hD K _ _ _ hK Ω _ _ _ l hl ι c N _ e ψ o₁ hd σ hσ B hB`. Use `haveI : IsLocalHom (algebraMap ℤ_[l] c.O) := (dvrFacts l c.O).2.2.1`. Use `haveI : CharP (ResidueField c.O) l := by`. Rewrite using `[CharP.charP_iff_prime_eq_zero hl.out, ← map_natCast (residue c.O), residue_eq_zero_iff, mem_maximalIdeal, mem_nonunits_iff, ← map_natCast (algebraMap ℤ_[l] c.O)]`. Introduce `hu`.
+
+Conclude with `PadicInt.prime_p.not_unit (isUnit_of_map_unit _ _ hu)`. Take `⟨L, _, _, _, _, g₁, Φ, C₀, ⟨k⟩, ok, big, sc⟩` from `hF Ω l c N e ψ o₁ hd σ hσ B hB`. Establish `hσ' : IsConjOm σ.toRingEquiv` using `hσ`. Establish `hsq : σ * σ = 1`. Take `⟨j, hj⟩` from `hσ'`.
+
+Conclude with `AlgEquiv.ext fun x => j.injective (by`. Establish `h1 : j (σ (σ x)) = starRingEnd ℂ (j (σ x))` using `hj (σ x)`. Establish `h2 : j (σ x) = starRingEnd ℂ (j x)` using `hj x`. Rewrite using `[AlgEquiv.mul_apply, h1, h2, Complex.conj_conj, AlgEquiv.one_apply])`. Establish `hΨ : Chr.Psi l e (Chr.dirG ℚ Ω ψ) σ = 1`.
+
+Establish `h1 : cycZ ℚ Ω l σ = -1` using `hσ'.cyc (E := ℚ)`. Establish `h2 : chiO ℚ Ω l c.O σ = -1` using `by show Units.map (algebraMap ℤ_[l] c.O).toMonoidHom (cycZ ℚ Ω l σ) = -1`. Rewrite using `[h1]`. Apply `Units.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+
+Establish `h3 : (Chr.dirG ℚ Ω ψ σ : c.O) = (-1) ^ e`. Rewrite using `[Chr.dirG, MonoidHom.comp_apply, (Chr.clsFacts ℚ Ω N).2.2.2.1 σ hσ', MulChar.coe_toUnitHom]`. Conclude with `hd.par`. Apply `Units.ext` to reduce the goal to its premises. Use `show ((chiO ℚ Ω l c.O σ ^ (e : ℤ) * Chr.dirG ℚ Ω ψ σ : c.Oˣ) : c.O) = 1`.
+
+Rewrite using `[h2, zpow_natCast, Units.val_mul, h3, Units.val_pow_eq_pow_val, Units.val_neg, Units.val_one, ← mul_pow]`. Simplify using the standard rewrite rules. Establish `hram : ∀ B' : ValuationSubring Ω, ¬ Ine (F` using `ℚ) B' ≤ (UnitaryThreeInertia.eta4 Ω).ker → B'.valuation ((l * N : ℕ) : Ω) < 1 := by`. Introduce `B' h`. Use `val_of_even B' (hd.N_even.mul_left l) ?_` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `h4`. Use `h fun s hs => ?_` and prove the remaining obligations. Establish `h5 : Chr.cls ℚ Ω 4 s = 1` using `(Chr.clsFacts ℚ Ω 4).2.2.2.2 B' h4 hs`. Rewrite using `[MonoidHom.mem_ker, UnitaryThreeInertia.eta4, Chr.dirG, MonoidHom.comp_apply, h5, map_one]`. Take `⟨hfin, haut, -⟩` from `hL Ω l ι c N e ψ hd.e_pos hd.N_even (UnitaryThreeInertia.eta4 Ω) σ g₁ B (l * N) dvd_rfl hram L Φ C₀ k hB ok big sc`.
+
+Use `haveI : IsAlgClosure L Ω := Th.Db.algClo L Ω`. Establish `hLk : LinkHyp c N e (UnitaryThreeInertia.eta4 Ω) σ B (l * N)` using `⟨hd.e_pos, dvd_rfl, mul_ne_zero hl.out.ne_zero (NeZero.ne N), hram, hB, hσ⟩`. Establish `hker : ∀ [Algebra K Ω], Base.galOf ℚ K Ω = (UnitaryThreeInertia.eta4 Ω).ker`. Introduce `_`. Rewrite using `[← Base.range_galEmb]`.
+
+Conclude with `(UnitaryThreeInertia.gaussian_field_range_eq_ker_quartic_char.2 Ω K hK).1`. Conclude with `⟨g₁, marks_of_link k ok (dvd_mul_right l N) hsq hΨ, finEnd_of_finPt k ok (dvd_mul_right l N) hsq hfin, _root_.UpperTheory.V.Z.Win.Dn.autEnd3_alt hD k ok (dvd_mul_right l N) hσ ι K hker (fun A _ _ r hr hi _ _ _ ρ hρ => by haveI : IsAlgClosure K Ω := Th.Db.algClo K Ω`. Establish `t` using `h3 Ω l c N e ψ _ _ g₁ B _ hLk L Φ C₀ k ok A r hr K hker.symm ρ hρ`. Conclude with `⟨t.1, t.2, hK3 Ω l c N e ψ hd.N_even _ _ g₁ B _ hLk L Φ C₀ k ok big sc A r hr hi K hker.symm ρ hρ⟩) haut⟩`.
+-/
 theorem UpperTheory.V.Z.Win.Dn.hostEnd_of_loc3_frame_linkedEnd_downCsdK (h3 : Dn.Loc3) (hK3 : Dn.LocalConditionRankThreeEvenLevel) :
     HostFrameEx → _root_.UpperTheory.V.Z.Sym.Pl.LinkedEndEAlt → _root_.UpperTheory.V.Z.Win.Dn.DownCsdKAlt → _root_.UpperTheory.V.Pr.HostEndAlt := by
   intro hF hL hD K _ _ _ hK Ω _ _ _ l hl ι c N _ e ψ o₁ hd σ hσ B hB

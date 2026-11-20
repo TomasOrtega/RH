@@ -52,22 +52,61 @@ def Ext.ev (z : Φ.Ext) : B := Prod.fst z
 
 def Ext.od (z : Φ.Ext) : N := Prod.snd z
 
+/- English proof (translation)
+The claim follows from `Prod.ext h h'`.
+-/
 @[ext] theorem Ext.ext {z w : Φ.Ext} (h : z.ev = w.ev) (h' : z.od = w.od) : z = w := Prod.ext h h'
 
 instance : One Φ.Ext := ⟨Φ.el 1 0⟩
 instance : Mul Φ.Ext := ⟨fun z w => Φ.el (z.ev * w.ev + Φ.be z.od w.od) (z.ev • w.od + w.ev • z.od)⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem ev_el (a : B) (b : N) : (Φ.el a b).ev = a := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem od_el (a : B) (b : N) : (Φ.el a b).od = b := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem ev_add (z w : Φ.Ext) : (z + w).ev = z.ev + w.ev := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem od_add (z w : Φ.Ext) : (z + w).od = z.od + w.od := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem ev_zero : (0 : Φ.Ext).ev = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem od_zero : (0 : Φ.Ext).od = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem ev_one : (1 : Φ.Ext).ev = 1 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem od_one : (1 : Φ.Ext).od = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem ev_smul (c : B) (z : Φ.Ext) : (c • z).ev = c * z.ev := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem od_smul (c : B) (z : Φ.Ext) : (c • z).od = c • z.od := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem ev_mul (z w : Φ.Ext) : (z * w).ev = z.ev * w.ev + Φ.be z.od w.od := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem od_mul (z w : Φ.Ext) : (z * w).od = z.ev • w.od + w.ev • z.od := rfl
 
 instance : CommRing Φ.Ext :=
@@ -158,6 +197,9 @@ namespace TrInv.Units
 
 variable {T : TrInv B E} {ι : Type*} [Fintype ι] {o : ι → ι} (U : T.Units ι o)
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `U.rank_one i y`. Rewrite using `[hb, map_smul, U.tr_ep, smul_eq_mul, mul_one]`.
+-/
 theorem corner_eq (i : ι) (y : E) : U.ep i * y * U.ep i = T.tr (U.ep i * y * U.ep i) • U.ep i := by
   obtain ⟨b, hb⟩ := U.rank_one i y
   rw [hb, map_smul, U.tr_ep, smul_eq_mul, mul_one]

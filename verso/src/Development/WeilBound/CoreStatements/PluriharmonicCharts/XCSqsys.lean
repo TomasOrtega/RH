@@ -26,12 +26,18 @@ variable {K' : Type} [Fintype K'] {ι' : K' → Type} [∀ k, Fintype (ι' k)] {
 variable {M : FlagModel y Ψ N j} {M' : FlagModel y' Ψ N j} {n d : ℕ} {BM : BaseMetric M n} {FA : FlagAn BM d}
   {Cv : FlagCover M' M}
 
+/- English proof (translation)
+The claim follows from `FA.Re.R.inj x x' (fun h => by have := h.2 1 (by rw [FA.J_top]; trivial) simp at this) h`.
+-/
 theorem lift_inj (FA : FlagAn BM d) {x x' : FA.Re.R.X} (h : SameOrbit (FA.Re.R.lift x x) (FA.Re.R.lift x' x')) :
     x = x' :=
   FA.Re.R.inj x x' (fun h => by
     have := h.2 1 (by rw [FA.J_top]; trivial)
     simp at this) h
 
+/- English proof (translation)
+Take `⟨x₁, hx₁⟩` from `(GlobalTheory.T.flag_analytic_projection_bijective K ι Φ y Ψ N j M n d BM FA).2 (CR.ϖ z)`. Establish `h1 : IsImg Cv z (FA.Re.R.lift x₁ x₁)` using `fun z₁ o F' F hF' hF hg' hg h hfl => CR.flags z₁ (mem_mcPts_of_sameOrbit hy'.2.1.2.1 o hz) F' F hF' hF hg' hg h hfl x₁ (hx₁.trans (CR.ϖ_torus z z₁ hz o).symm)`. Rewrite using `[← hx₁, lift_inj FA (GlobalTheory.T.flag_cover_arithmetic_second K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv d hy hy' z hz _ _ h1 hi)]`.
+-/
 theorem varpi_eq (CR : CovReal FA Cv) (hy : IsArithVar (mCoordIdeal y) (d + 2))
     (hy' : IsArithVar (mCoordIdeal y') (d + 2)) {z : (Σ k, ι' k) → ℂ} (hz : z ∈ mcPts (mCoordIdeal y'))
     {x₀ : FA.Re.R.X} (hi : IsImg Cv z (FA.Re.R.lift x₀ x₀)) : CR.ϖ z = FA.Re.π x₀ := by
@@ -41,6 +47,13 @@ theorem varpi_eq (CR : CovReal FA Cv) (hy : IsArithVar (mCoordIdeal y) (d + 2))
       (hx₁.trans (CR.ϖ_torus z z₁ hz o).symm)
   rw [← hx₁, lift_inj FA (GlobalTheory.T.flag_cover_arithmetic_second K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv d hy hy' z hz _ _ h1 hi)]
 
+/- English proof (translation)
+Establish `hg₀ : HoloMap R.A FA.Re.R.A g₀`. Use `GlobalTheory.T.log_resolution_map_locally_analytic _ _ _ _ _ _ _ _ _ _ FA.Re.R R g₀ FA.J_top fun x => ?_` and prove the remaining obligations. Take `⟨V, f, hV, hzV, hf, hff⟩` from `GlobalTheory.T.flag_cover_arithmetic_first K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv d hy hy' _ (hP _ (R.mem x x (R.mem_U x)))`. Use `⟨(fun z => z ∘ v) ⁻¹' V, fun z => f (z ∘ v), hV.preimage (continuous_comp_idx v), hzV, fun z hz => (hf _ hz).comp (f := fun z => z ∘ v) (analytic_comp_idx v z), fun z' hz' x' hx' => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.flag_cover_arithmetic_second K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv d hy hy' _ (hP _ hz'.2) _ _ (hff _ ⟨hz'.1, hP _ hz'.2⟩).2 ((hi x').orbit (FibreCount.comp_orbit hv hx') (Cj.sameOrbit_refl _))`.
+
+Establish `hW : IsOpen (R.U x ∩ g₀ ⁻¹' FA.Re.R.U (g₀ x))` using `(R.isOpen_U x).inter ((FA.Re.R.isOpen_U _).preimage hg₀.1)`. Establish `L1` using `pot_loc CR hy hy' (A := R.A) hW ⟨R.mem_U x, FA.Re.R.mem_U _⟩ (Z := fun u => R.lift x u ∘ v) (fun q => holo_mono (R.holo x (v q)) Set.inter_subset_left) (fun u hu => hP _ (R.mem x u hu.1)) (Y := fun u => FA.Re.R.lift (g₀ x) (g₀ u)) (fun q => holo_mono (GlobalTheory.CompanionTheory …`. Establish `L2 : LocRe FA.Re.R.A (g₀ x) fun u => Real.log ((fsHerm ι (M.dy p)).h (FA.Re.R.lift (g₀ x) u)) - (FA.S.th (some p)).φ (FA.Re.π (g₀ x)) (FA.Re.π u)`. Use `FA.Re.ref_pot (some p) (g₀ x) trivial` as an intermediate fact. Rewrite `this` using `[FA.ref_some]`.
+
+Conclude with `this`. Conclude with `(L1.add (L2.comp hg₀)).congr isOpen_univ trivial fun u _ => by ring`.
+-/
 theorem pot_pull (CR : CovReal FA Cv) (hy : IsArithVar (mCoordIdeal y) (d + 2))
     (hy' : IsArithVar (mCoordIdeal y') (d + 2)) {K₂ : Type} [Fintype K₂] {ι₂ : K₂ → Type} [∀ k, Fintype (ι₂ k)]
     {P J : Ideal (MRing ι₂)} {e : ℕ} (R : AnLogRes P J e) {κ : K' → K₂} {v : (Σ k, ι' k) → Σ k, ι₂ k}
@@ -71,6 +84,9 @@ theorem pot_pull (CR : CovReal FA Cv) (hy : IsArithVar (mCoordIdeal y) (d + 2))
     exact this
   exact (L1.add (L2.comp hg₀)).congr isOpen_univ trivial fun u _ => by ring
 
+/- English proof (translation)
+Rewrite using `[combLine_h, Real.log_prod fun p _ => zpow_ne_zero _ ((A p).pos z hz).ne']`. Simplify using `only [Real.log_zpow]`.
+-/
 theorem log_comb {σ : Type} [Fintype σ] (A : σ → HermLine ι) (ε : σ → ℤ) {z : (Σ k, ι k) → ℂ}
     (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) : Real.log ((combLine A ε).h z) = ∑ p, (ε p : ℝ) * Real.log ((A p).h z) := by
   rw [combLine_h, Real.log_prod fun p _ => zpow_ne_zero _ ((A p).pos z hz).ne']
@@ -79,6 +95,49 @@ theorem log_comb {σ : Type} [Fintype σ] (A : σ → HermLine ι) (ε : σ → 
 end PositivityTheory.Xgp.c_sqsys
 
 open GlobalTheory.CompanionTheory.Ar.PB.WSq GlobalTheory.CompanionTheory.Ar.PB.CovMap PositivityTheory.Xgp.c_algsq PositivityTheory.Xgp.c_sqsys GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter in
+/- English proof (translation)
+Introduce `hI K _ ι _ Φ _ y Ψ _ _ N j M n d BM FA K' _ ι' _ Φ' _ y' M' Cv CR hy τ a b hb hab`. Establish `hy' : IsArithVar (mCoordIdeal y') (d + 2)` using `CR.Re.arith`. Take `⟨k₀, ca, cb, hk, hca, hcb, -, -, -⟩` from `PositivityTheory.Xgp.t_c_swap K ι Φ y Ψ N j M τ a b hb hab`. Take `⟨k₀', ca', cb', hk', hca', hcb', -, hxi', hdy'⟩` from `PositivityTheory.Xgp.t_c_swap K' ι' Φ' y' Ψ N j M' τ a b hb hab`. Take `rfl : ca = ca'` from `Fin.ext (hca.trans hca'.symm)`.
+
+Take `rfl : cb = cb'` from `Fin.ext (hcb.trans hcb'.symm)`. Establish `S : Sw M τ a b k₀ ca cb` using `⟨hb, hab, hk, hca, hcb, PositivityTheory.Xgp.t_c_w_arith⟩`. Establish `S' : Sw M' τ a b k₀' ca cb` using `⟨hb, hab, hk', hca, hcb, PositivityTheory.Xgp.t_c_w_arith⟩`. Take `⟨Q, RW, e, he, hde, hq0, hq1, -, hnorm⟩` from `GlobalTheory.T.flag_adjacent_swap_square_system hI K ι Φ y Ψ N j M n d BM FA τ a b k₀ ca cb hb hab hk hca hcb hy`. Take `⟨g, h, dg, dh, hg, hh, hgn, hhn, hdeg, hq, hdiv⟩` from `PositivityTheory.Xgp.t_c_w_sec K' ι' Φ' y' Ψ N j M' d τ a b k₀' ca cb hb hab hk' hca hcb hy'`.
+
+Establish `LC` using `PositivityTheory.Xgp.c_algsq.lc K' ι' Φ' y' Ψ N j M' d τ a b k₀' ca cb hb hab hk' hca hcb hy' g h dg dh hg hh hdeg hq`. Apply the tactic sequence `obtain ⟨J, R', γ, br, hγ, hdegW, hrel⟩ := mapsTo_twoFlagFramesOrthogonal_of_isometry hI.2.1.1 Cv S S' hy hy' Q.SW.A RW e he hde`. Establish `hxi : ∑ p, xiCoef τ a p * (CR.Re.ref p).a k₀' = -2` using `by simpa only [CR.ref_deg] using hxi'`. Establish `hdeg₁ : ∀ o : Option K', (dg o : ℤ) - dh o = o.elim 1 fun k => -(combLine CR.Re.ref (xiCoef τ a)).a k - (if M'.blk (τ, a) = some k then 1 else 0)` using `by simpa only [combLine_a, CR.ref_deg] using hdeg`. Establish `hdeg₂ : ∀ o : Option K', (dg o : ℤ) - dh o = o.elim 1 fun k => -(∑ p, xiCoef τ a p * (CR.Re.ref p).a k) - if k₀' = k then 1 else 0`.
+
+Simplify `hdeg₁` using `only [combLine_a, hk', Option.some.injEq]`. Establish `hv₀` using `Pts.isBlockMap_v₀ (ι := ι') k₀'`. Establish `hv₁` using `isBlockMap_v₁ (ι := ι') k₀'`. Establish `hsurj` using `(GlobalTheory.T.flag_analytic_projection_bijective K ι Φ y Ψ N j M n d BM FA).2`. Establish `o₀ : ∀ x x₀, FA.Re.π x₀ = Q.q 0 (e x) → SameOrbit (FA.Re.R.lift x₀ x₀) (fstPt k₀ (RW.lift x x))` using `hq0`.
+
+Establish `o₁ : ∀ x x₀, FA.Re.π x₀ = Q.q 1 (e x) → SameOrbit (FA.Re.R.lift x₀ x₀) (sndPt k₀ (RW.lift x x))`. Introduce `x x₀ hx`. Take `⟨z₁, h1, h2, h3⟩` from `hq1 x x₀ hx`. Establish `: z₁ = sndPt k₀ (RW.lift x x)`. Use function extensionality and compare the values at `⟨k, m⟩`.
+
+Distinguish the cases in `ek : k = k₀`. Substitute `ek` using the available equality. Rewrite using `[h3, Pts.snd_self]`. Rewrite using `[h2 ⟨k, m⟩ ek, Pts.snd_fst_ne ek]`. Both sides reduce to the same expression.
+
+Conclude with `this ▸ h1`. Use `choose g₀ hg₀ using fun x => hsurj (Q.q 0 (e (γ x)))`. Use `choose g₁ hg₁ using fun x => hsurj (Q.q 1 (e (γ x)))`. Establish `i₀ : ∀ x, IsImg Cv (fstPt k₀' (R'.lift x x)) (FA.Re.R.lift (g₀ x) (g₀ x))` using `fun x => (hrel x).1.orbit (Cj.sameOrbit_refl _) (o₀ _ _ (hg₀ x))`. Establish `i₁ : ∀ x, IsImg Cv (sndPt k₀' (R'.lift x x)) (FA.Re.R.lift (g₁ x) (g₁ x))` using `fun x => (hrel x).2.orbit (Cj.sameOrbit_refl _) (o₁ _ _ (hg₁ x))`.
+
+Establish `mem : ∀ x, R'.lift x x ∈ mcPts _` using `fun x => R'.mem x x (R'.mem_U x)`. Establish `m₀` using `fun x => fst_mem (mem x)`. Establish `m₁` using `fun x => S'.snd_mem hy' (mem x)`. Establish `w₀ : ∀ x, CR.ϖ (fstPt k₀' (R'.lift x x)) = Q.q 0 (e (γ x))` using `fun x => (varpi_eq CR hy hy' (m₀ x) (i₀ x)).trans (hg₀ x)`. Establish `w₁ : ∀ x, CR.ϖ (sndPt k₀' (R'.lift x x)) = Q.q 1 (e (γ x))` using `fun x => (varpi_eq CR hy hy' (m₁ x) (i₁ x)).trans (hg₁ x)`.
+
+Establish `hπ : HoloMap R'.A Q.SW.A (e ∘ γ)` using `holoMap_comp hγ he`. Set `ReW : Realis Q.SW (mCoordIdeal (M'.wCo (τ, a) k₀' ca cb RatFunc.X))` to `{ arith := S'.arith hy' J := J R := R' π := e ∘ γ holo := hπ deg := CR.Re.deg deg_pos := CR.Re.deg_pos br := br degree := by rw [CR.deg_eq]; exact hdegW ref := fun o => o.elim (pullHerm hv₁ (CR.Re.ref (τ, a))) fun p => pullHerm hv₀ (CR.Re.ref p) ref_smooth := fun o => by`. Consider the cases of `o with`. Consider the case `none`. Conclude with `SqFirst.isSmoothHerm_of_pull hv₁ (CR.Re.ref_smooth _) (isPullHerm_pullHerm hv₁ _)`.
+
+Consider the case `some p`. Conclude with `SqFirst.isSmoothHerm_of_pull hv₀ (CR.Re.ref_smooth _) (isPullHerm_pullHerm hv₀ _)`. Use `ref_pot := fun o x _ => by`. Consider the cases of `o with`. Consider the case `none`.
+
+Establish `L1` using `pot_pull CR hy hy' R' hv₁ (fun z hz => S'.snd_mem hy' hz) g₁ i₁ (τ, a) x`. Establish `L2` using `LocRe.comp hπ (show LocRe Q.SW.A ((e ∘ γ) x) _ from Q.th1 _ trivial)`. Simplify using `only [hg₁] at L1`. Conclude with `(L1.sub L2).congr isOpen_univ trivial fun u _ => by show _ - _ = _ - _ - (_ - _)`. Conclude with `(sub_sub_sub_cancel_right _ _ _).symm`.
+
+Consider the case `some p`. Establish `L1` using `pot_pull CR hy hy' R' hv₀ (fun z hz => fst_mem hz) g₀ i₀ p x`. Establish `L2` using `LocRe.comp hπ (show LocRe Q.SW.A ((e ∘ γ) x) _ from Q.th0 p _ trivial)`. Simplify using `only [hg₀] at L1`. Conclude with `(L1.sub L2).congr isOpen_univ trivial fun u _ => by show _ - _ = _ - _ - (_ - _)`.
+
+Conclude with `(sub_sub_sub_cancel_right _ _ _).symm`. Use `line := fun o t => o.elim (pullHerm hv₁ (CR.Re.line (τ, a) t)) fun p => pullHerm hv₀ (CR.Re.line p t)`. Use `line_deg := fun o t => by`. Consider the cases of `o with`. Consider the case `none => exact congrArg (pullDeg _) (CR.Re.line_deg _ t)`.
+
+Consider the case `some p => exact congrArg (pullDeg _) (CR.Re.line_deg _ t)`. Use `line_smooth := fun o t h0 h1 => by`. Consider the cases of `o with`. Consider the case `none`. Conclude with `SqFirst.isSmoothHerm_of_pull hv₁ (CR.Re.line_smooth _ t h0 (h1.trans Q.t₀_le)) (isPullHerm_pullHerm hv₁ _)`.
+
+Consider the case `some p`. Conclude with `SqFirst.isSmoothHerm_of_pull hv₀ (CR.Re.line_smooth _ t h0 (h1.trans Q.t₀_le)) (isPullHerm_pullHerm hv₀ _)`. Use `line_eq := fun o t h0 h1 x => by`. Consider the cases of `o with`. Consider the case `none`.
+
+Use `CR.line_pt (τ, a) t h0 (h1.trans Q.t₀_le) _ (m₁ x)` as an intermediate fact. Rewrite `this` using `[w₁]`. Rewrite using `[Q.phase_none_eq_comp_second_projection]`. Conclude with `this`. Consider the case `some p`.
+
+Use `CR.line_pt p t h0 (h1.trans Q.t₀_le) _ (m₀ x)` as an intermediate fact. Rewrite `this` using `[w₀]`. Rewrite using `[Q.phase_some_eq_comp_first_projection]`. Conclude with `this }`. Use `⟨⟨k₀', Q, mkAlg M' hb hab hk' hca hcb hy' _ hxi g h dg dh hg hh hgn hhn hdeg₁ hdiv, ReW, rfl, ?_, fun p t => isPullHerm_pullHerm hv₀ _, fun t => isPullHerm_pullHerm hv₁ _, {x | eval (R'.lift x x) (map (Int.castRingHom ℂ) (g * h)) = 0}, ?_, ?_⟩⟩` and prove the remaining obligations.
+
+Introduce `p hp t`. Use `⟨by rw [CR.Re.line_deg, CR.ref_deg]; exact hdy' p hp, fun z z' hzz => CR.step p t z z' ?_ ?_⟩` and prove the remaining obligations. Conclude with `funext fun q => hzz _ fun e => q.1.2 (τ, a) (hk'.trans (congrArg some e.symm))`. Conclude with `fun k hk m => hzz _ fun e => hp (M'.blk_inj _ _ k hk (hk'.trans (congrArg some e.symm)))`. Conclude with `HilbertSamuel.AnResNullForm.proof HilbertSamuel.NonvanishingDense.full _ _ _ _ _ R'.toAnRes (g * h) _ (S'.arith hy') (CovMap.isMultiHomog_mul hg hh) fun hm => ((S'.arith hy').2.1.1.mem_or_mem hm).elim hgn hhn`.
+
+Introduce `t h0 h1 x hx`. Establish `hx' : eval (R'.lift x x) (map (Int.castRingHom ℂ) g) * eval (R'.lift x x) (map (Int.castRingHom ℂ) h) ≠ 0`. Rewrite using `[← map_mul, ← map_mul]`. Conclude with `hx`. Establish `g0` using `left_ne_zero_of_mul hx'`.
+
+Establish `h0'` using `right_ne_zero_of_mul hx'`. Take `⟨z₀, z₁, F, hm, s, hF, hG, oz₀, oz₁, hmb, hmd, hs, ex₀, ex₁, heq⟩` from `norm_pt CR S' hy' hg hh hxi hdeg₂ LC (mem x) g0 h0' (fst_mem (RW.mem _ _ (RW.mem_U (γ x)))) (S.snd_mem hy (RW.mem _ _ (RW.mem_U (γ x)))) (hrel x).1 (hrel x).2`. Establish `hn : _ = normRhs M τ a F z₀ z₁ hm s` using `hnorm (γ x) z₀ z₁ F hm s hF hG (fun x₀ h => orbit_trans (o₀ _ _ h) (orbit_symm oz₀)) (fun x₀ h => orbit_trans (o₁ _ _ h) (orbit_symm oz₁)) hmb hmd hs ex₀ ex₁`. Use `show Real.log (‖eval (R'.lift x x) (map (Int.castRingHom ℂ) g)‖ / ‖eval (R'.lift x x) (map (Int.castRingHom ℂ) h)‖) + (Real.log ((combLine (fun p => CR.Re.line p t) (xiCoef τ a)).h (fstPt k₀' (R'.lift x x))) + Real.log ((combLine (fun p => CR.Re.line p t) (xiCoef τ a)).h (sndPt k …`. Rewrite using `[hn, ← heq, lognorm, Real.log_div (norm_ne_zero_iff.2 g0) (norm_ne_zero_iff.2 h0'), log_comb _ _ (m₀ x).1, log_comb _ _ (m₁ x).1]`.
+
+Simplify using `only [fun p => CR.line_pt p t h0 (h1.trans Q.t₀_le) _ (m₀ x), fun p => CR.line_pt p t h0 (h1.trans Q.t₀_le) _ (m₁ x), w₀, w₁, mul_add, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem PositivityTheory.Xgp.t_c_sqsys : Inputs → ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n d : ℕ) (BM : BaseMetric M n) (FA : FlagAn BM d) (K' : Type) [Fintype K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (Φ' : Type) [Field Φ'] (y' : (Σ k, ι' k) → Φ') (M' : FlagModel y' Ψ N j) (Cv : FlagCover M' M) (CR : CovReal FA Cv), IsArithVar (mCoordIdeal y) (d + 2) → ∀ (τ : Ψ) (a b : Fin N), (b : ℕ) = a + 1 → ((b : ℕ) < j ∨ j ≤ (a : ℕ)) → Nonempty (SqSys CR.Re (τ, a) (xiCoef τ a)) := by
   intro hI K _ ι _ Φ _ y Ψ _ _ N j M n d BM FA K' _ ι' _ Φ' _ y' M' Cv CR hy τ a b hb hab
   have hy' : IsArithVar (mCoordIdeal y') (d + 2) := CR.Re.arith

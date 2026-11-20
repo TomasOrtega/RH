@@ -12,6 +12,15 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 
 namespace UpperTheory.V.Odd
 
+/- English proof (translation)
+Take `⟨C, hC, hK⟩` from `hK`. Use `⟨8 * C, by positivity, fun E Ω _ _ _ _ _ _ N hN hE l _ D hP e he => ?_⟩` and prove the remaining obligations. Take `⟨r, hr, hk⟩` from `hK E Ω N hN hE l D hP e he`. Take `⟨g, hg, hg'⟩` from `hG E Ω N hN hE l D e`. Establish `h1 : minusLen D e ≤ ((r * g : ℕ) : ℕ∞)`.
+
+Use `push_cast`. Conclude with `(hL _ _ (ShaMinus D e) _ r hk).trans (by gcongr)`. Establish `h2 : minusLen D e ≠ ⊤` using `ne_top_of_le_ne_top (ENat.coe_ne_top _) h1`. Use `⟨h2, ?_⟩` and prove the remaining obligations. Establish `h3 : ((minusLen D e).toNat : ℝ) ≤ r * g` using `by exact_mod_cast ENat.toNat_le_of_le_coe h1`.
+
+Establish `hl : (1 : ℝ) ≤ l` using `by exact_mod_cast (Fact.out : l.Prime).one_le`. Establish `hN' : (1 : ℝ) ≤ N` using `by exact_mod_cast hN`. Establish `he' : (1 : ℝ) ≤ e` using `by exact_mod_cast he`. Establish `hlN : (1 : ℝ) ≤ l * N` using `one_le_mul_of_one_le_of_one_le hl hN'`. Establish `h4 : Real.log ((l : ℝ) * N) ≤ Real.log ((e : ℝ) * l * N)` using `Real.log_le_log (by positivity) (by rw [mul_assoc]; exact le_mul_of_one_le_left (by positivity) he')`.
+
+Establish `h5 : 0 ≤ Real.log ((e : ℝ) * l * N)` using `(Real.log_nonneg hlN).trans h4`. Establish `h6 : 0 ≤ Real.log l` using `Real.log_nonneg hl`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul hr (hg'.trans (by gcongr)) (by positivity) (by positivity)` and prove the remaining obligations. Use `_ = _ := by ring`.
+-/
 private theorem stick_of (hK : ∃ C : ℝ, 0 ≤ C ∧ ∀ (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (N : ℕ), 0 < N → Nonempty (E →ₐ[ℚ] CyclotomicField N ℚ) → ∀ (l : ℕ) [Fact l.Prime] (D : LData E Ω l), Procyc E Ω l → ∀ e : ℕ, 1 ≤ e → ∃ r : ℕ, (r : ℝ) * Real.log l ≤ C * Module.finrank ℚ E * (e + 1) * Real.log ((e : ℝ) * l * N) ∧ ∀ x ∈ ShaMinus D e, (l : ℤ_[l]) ^ r • x = 0) (hL : ∀ (R X : Type) [CommRing R] [AddCommGroup X] [Module R X] (P : Submodule R X) (a : R) (r : ℕ), (∀ x ∈ P, a ^ r • x = 0) → Module.length R P ≤ r * Module.length R (Submodule.torsionBy R X a)) (hG : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (N : ℕ), 0 < N → Nonempty (E →ₐ[ℚ] CyclotomicField N ℚ) → ∀ (l : ℕ) [Fact l.Prime] (D : LData E Ω l) (e : ℤ), ∃ g : ℕ, Module.length ℤ_[l] (Submodule.torsionBy ℤ_[l] (H1 (qzTw D e)) (l : ℤ_[l])) ≤ g ∧ (g : ℝ) ≤ 8 * l * Module.finrank ℚ E * Real.log ((l : ℝ) * N)) : ∃ C : ℝ, 0 ≤ C ∧ StickBound C := by
   obtain ⟨C, hC, hK⟩ := hK
   refine ⟨8 * C, by positivity, fun E Ω _ _ _ _ _ _ N hN hE l _ D hP e he => ?_⟩
@@ -38,6 +47,15 @@ private theorem stick_of (hK : ∃ C : ℝ, 0 ≤ C ∧ ∀ (E Ω : Type) [Field
       refine mul_le_mul hr (hg'.trans (by gcongr)) (by positivity) (by positivity)
     _ = _ := by ring
 
+/- English proof (translation)
+Establish `hS : ∀ χ ∈ charSet ℂ (parE ρ k), ρ.ker ≤ (MulChar.toUnitHom χ).ker`. Introduce `χ hχ`. Simplify using `only [charSet, Set.mem_setOf_eq, parE] at hχ`. Conclude with `hχ.1`. Set `f : charSet ℂ (parE ρ k) → ((ZMod N)ˣ ⧸ ρ.ker →* ℂˣ)` to `fun χ => QuotientGroup.lift ρ.ker (MulChar.toUnitHom χ.1) (hS χ.1 χ.2)`.
+
+Establish `hf : Function.Injective f`. Introduce `a b hab`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `MulChar.ext` to reduce the goal to its premises. Introduce `u`.
+
+Use `congrArg (fun g => ((g (QuotientGroup.mk u) : ℂˣ) : ℂ)) hab` as an intermediate fact. Simplify `this` using `[f]`. Establish `hQ : Nat.card ((ZMod N)ˣ ⧸ ρ.ker →* ℂˣ) = ρ.ker.index`. Rewrite using `[CommGroup.card_monoidHom_of_hasEnoughRootsOfUnity]`. Both sides reduce to the same expression.
+
+Establish `hfin : Finite ((ZMod N)ˣ ⧸ ρ.ker →* ℂˣ)` using `Nat.finite_of_card_ne_zero (by rw [hQ]; exact Subgroup.index_ne_zero_of_finite)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem ncard_charSet_le_ker_index {E : Type} [Field E] [NumberField E] {N : ℕ} [NeZero N]
     (ρ : (ZMod N)ˣ →* Gal(E/ℚ)) (k : ℕ) : (charSet ℂ (parE ρ k)).ncard ≤ ρ.ker.index := by
   classical
@@ -64,6 +82,19 @@ private theorem ncard_charSet_le_ker_index {E : Type} [Field E] [NumberField E] 
     _ ≤ Nat.card ((ZMod N)ˣ ⧸ ρ.ker →* ℂˣ) := Nat.card_le_card_of_injective f hf
     _ = _ := hQ
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ _ N hN hemb ld e he`. Use `haveI : NeZero N := ⟨hN.ne'⟩`. Take `⟨ρ, hρ⟩` from `hA E Ω N hemb`. Take `⟨-, -, -, hidx, -⟩` from `hF E Ω N ρ hρ`. Establish `key : ∀ (p : ℕ) [Fact p.Prime], p ≠ 2 → ¬ p ∣ Module.finrank ℚ E → minusLen (ld p) e ≠ ⊤ ∧ ∃ T : Finset (DirichletCharacter (PadicAlgCl p) N), (T : Set _) ⊆ charSet (PadicAlgCl p) (parE ρ (e + 1)) ∧ ((minusLen (ld p) e).toNat : ℝ) * Real.log p ≤ ∑ χ ∈ T, -Real.log ‖alN (e + 1) χ‖` using `fun p _ hp2 hpd => hP h E Ω N ρ hρ p (ld p) hp2 hpd e he`.
+
+Use `⟨fun p _ hp2 hpd => (key p hp2 hpd).1, ?_⟩` and prove the remaining obligations. Introduce `S hS`. Take `⟨w, hw1, hw2⟩` from `hV N (e + 1) (parE ρ (e + 1)) (by omega) (fun H hH => hH.2)`. Establish `hterm : ∀ l ∈ S, Real.log ((l : ℕ) : ℝ) * ((minusLen (ld (l : ℕ)) e).toNat : ℝ) ≤ (w l : ℝ) * Real.log ((l : ℕ) : ℝ)`. Introduce `l hl`.
+
+Use `haveI : Fact (l : ℕ).Prime := ⟨l.2⟩`. Take `⟨-, T, hT, hle⟩` from `key l (hS l hl).1 (hS l hl).2`. Establish `h2` using `hw2 l T hT`. Use the polynomial consequences of the given equalities and inequalities. Establish `hN1 : (1 : ℝ) ≤ N` using `by exact_mod_cast hN`.
+
+Establish `hlogb : 0 ≤ Real.log (bnd N (e + 1))`. Apply `Real.log_nonneg` to reduce the goal to its premises. Unfold `bnd`. Establish `h1 : (1 : ℝ) ≤ (N : ℝ) ^ (e + 1 + 1)` using `one_le_pow₀ hN1`. Establish `h2 : (1 : ℝ) ≤ ((e + 1).factorial : ℝ)`.
+
+Conclude with `Nat.one_le_iff_ne_zero.mpr (Nat.factorial_ne_zero _)` after adjusting the coercions. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Apply `hw1` to reduce the goal to its premises. Introduce `m hm`.
+
+Take `⟨p, -, rfl⟩` from `Finset.mem_image.mp hm`. Conclude with `p.2`. Use `_ ≤ (Module.finrank ℚ E : ℝ) * Real.log (bnd N (e + 1)) := by`. Apply `mul_le_mul_of_nonneg_right _ hlogb` to reduce the goal to its premises. Conclude with `(ncard_charSet_le_ker_index ρ (e + 1)).trans hidx.le` after adjusting the coercions.
+-/
 private theorem prime_of (hA : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (N : ℕ) [NeZero N], Nonempty (E →ₐ[ℚ] CyclotomicField N ℚ) → ∃ ρ : (ZMod N)ˣ →* (E ≃ₐ[ℚ] E), IsCycAct Ω N ρ) (hF : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (N : ℕ) [NeZero N] (ρ : (ZMod N)ˣ →* (E ≃ₐ[ℚ] E)), IsCycAct Ω N ρ → Function.Surjective ρ ∧ IsAbelianGalois ℚ E ∧ Nat.card (Gq ρ) = Module.finrank ℚ E ∧ ρ.ker.index = Module.finrank ℚ E ∧ ∀ (M : ℕ) [NeZero M] (h : N ∣ M), IsCycAct Ω M (ρ.comp (ZMod.unitsMap h))) (hV : ∀ (N : ℕ) [NeZero N] (k : ℕ) (P : Set (Subgroup (ZMod N)ˣ)), 1 ≤ k → P ⊆ parKer N k → ∃ w : ℕ → ℕ, (∀ T : Finset ℕ, (∀ l ∈ T, l.Prime) → ∑ l ∈ T, (w l : ℝ) * Real.log l ≤ (charSet ℂ P).ncard * Real.log (bnd N k)) ∧ ∀ (l : ℕ) [Fact l.Prime] (T : Finset (DirichletCharacter (PadicAlgCl l) N)), (T : Set _) ⊆ charSet (PadicAlgCl l) P → ∑ χ ∈ T, -Real.log ‖alN k χ‖ ≤ (w l : ℝ) * Real.log l) (hP : PsiBound → ∀ (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (N : ℕ) [NeZero N] (ρ : (ZMod N)ˣ →* (E ≃ₐ[ℚ] E)), IsCycAct Ω N ρ → ∀ (l : ℕ) [Fact l.Prime] (D : LData E Ω l), l ≠ 2 → ¬ l ∣ Module.finrank ℚ E → ∀ e : ℕ, 1 ≤ e → minusLen D e ≠ ⊤ ∧ ∃ T : Finset (DirichletCharacter (PadicAlgCl l) N), (T : Set _) ⊆ charSet (PadicAlgCl l) (parE ρ (e + 1)) ∧ ((minusLen D e).toNat : ℝ) * Real.log l ≤ ∑ χ ∈ T, -Real.log ‖alN (e + 1) χ‖)
     (h : PsiBound) : PrimeBound := by
   intro E Ω _ _ _ _ _ _ N hN hemb ld e he
@@ -107,6 +138,17 @@ private theorem prime_of (hA : ∀ (E Ω : Type) [Field E] [NumberField E] [Fiel
         apply mul_le_mul_of_nonneg_right _ hlogb
         exact_mod_cast (ncard_charSet_le_ker_index ρ (e + 1)).trans hidx.le
 
+/- English proof (translation)
+Establish `htF : 2 ≤ t * F` using `le_trans ht (Nat.le_mul_of_pos_right t hF)`. Establish `h1 : 16 ≤ (t * F) ^ 4`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : F ^ (e + 1 + 1) ≤ (t * F) ^ (t + 1)`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h3 : (e + 1).factorial ≤ (t * F) ^ t`. Combine the equalities or inequalities in the displayed calculation. Establish `hnat : 16 * F ^ (e + 1 + 1) * (e + 1).factorial ≤ (t * F) ^ (2 * t + 5)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← pow_add, ← pow_add]`.
+
+Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `hF' : (0 : ℝ) < F` using `by exact_mod_cast hF`. Establish `hreal : bnd F (e + 1) ≤ ((t : ℝ) * F) ^ (2 * t + 5)`. Unfold `bnd`.
+
+Conclude with `hnat` after adjusting the coercions. Establish `hpos : 0 < bnd F (e + 1)`. Unfold `bnd`. Check the signs of the components of the expression. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem log_bnd_le_mul_log (F t e : ℕ) (hF : 0 < F) (ht : 2 ≤ t) (he : e + 1 ≤ t) :
     Real.log (bnd F (e + 1)) ≤ (2 * t + 5) * Real.log (t * F) := by
   have htF : 2 ≤ t * F := le_trans ht (Nat.le_mul_of_pos_right t hF)
@@ -144,6 +186,49 @@ private theorem log_bnd_le_mul_log (F t e : ℕ) (hF : 0 < F) (ht : 2 ≤ t) (he
         push_cast
         ring
 
+/- English proof (translation)
+Take `⟨C, hC0, hSt⟩` from `hS`. Use `⟨C, ?_⟩` and prove the remaining obligations. Introduce `M e t q d he ht hpp E _ _ _ hcomp`. Establish `hmem : condF E ∈ {N : ℕ | 0 < N ∧ Nonempty (E →ₐ[ℚ] CyclotomicField N ℚ)}`. Unfold `condF`.
+
+Apply `Nat.sInf_mem` to reduce the goal to its premises. Unfold `IsCompField at hcomp`. Take `⟨N, hN0, j, -⟩` from `hcomp`. Conclude with `⟨N, Nat.pos_of_ne_zero hN0.out, ⟨j⟩⟩`. Take `⟨hFpos, hemb⟩` from `hmem`.
+
+Establish `hdvd : ∀ l : ℕ, l.Prime → l ≠ 2 → l ∣ Module.finrank ℚ E → l ∣ M.deg` using `hD M e q d hpp E hcomp`. Use `haveI : NeZero M.m := NeZero.of_pos M.pos`. Establish `hdeg : M.deg ≠ 0`. Unfold `AbF.deg`. Conclude with `Subgroup.index_ne_zero_of_finite`.
+
+Unfold `VVminusLe minusBound`. Introduce `Ω _ _ _ ld`. Use `set F := condF E with hFdef`. Use `set dE := Module.finrank ℚ E with hdE`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `p _ e' hp2 he' _`. Distinguish the cases in `hpd : p ∣ dE`. Establish `hpc : Procyc E Ω p`. Unfold `Procyc`. Conclude with `Or.inl hp2`.
+
+Conclude with `(hSt E Ω F hFpos hemb p (ld p) hpc e' he').1`. Conclude with `(hP E Ω F hFpos hemb ld e' he').1 p hp2 hpd`. Introduce `S hS2`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not S (fun l : Nat.Primes => ¬ (l : ℕ) ∣ dE)]`. Establish `hF1 : (1 : ℝ) ≤ F` using `by exact_mod_cast hFpos`.
+
+Establish `ht1 : (2 : ℝ) ≤ t` using `by exact_mod_cast ht`. Establish `hlogtF : 0 ≤ Real.log ((t : ℝ) * F)` using `Real.log_nonneg (by nlinarith)`. Establish `hd0 : (0 : ℝ) ≤ dE` using `Nat.cast_nonneg _`. Establish `hA : ∑ l ∈ S.filter (fun l : Nat.Primes => ¬ (l : ℕ) ∣ dE), Real.log ((l : ℕ) : ℝ) * ∑ e' ∈ Finset.Ico 1 t, ((minusLen (ld (l : ℕ)) e').toNat : ℝ) ≤ 3 * dE * t ^ 2 * Real.log (t * F)`. Repeatedly rewrite using `[Finset.mul_sum]`.
+
+Rewrite using `[Finset.sum_comm]`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `e' he'`. Rewrite `he'` using `[Finset.mem_Ico]`.
+
+Establish `hb` using `(hP E Ω F hFpos hemb ld e' he'.1).2 (S.filter (fun l : Nat.Primes => ¬ (l : ℕ) ∣ dE)) (by`. Introduce `l hl`. Rewrite `hl` using `[Finset.mem_filter]`. Conclude with `⟨hS2 l hl.1, hl.2⟩)`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `_ = ((t - 1 : ℕ) : ℝ) * ((dE : ℝ) * ((2 * t + 5) * Real.log (t * F))) := by`. Rewrite using `[Finset.sum_const, Nat.card_Ico, nsmul_eq_mul]`. Use `_ ≤ 3 * dE * t ^ 2 * Real.log (t * F) := by`. Rewrite using `[Nat.cast_sub (by omega : 1 ≤ t)]`. Use `push_cast`.
+
+Establish `key : ((t : ℝ) - 1) * (2 * t + 5) ≤ 3 * t ^ 2` using `by nlinarith`. Use `mul_le_mul_of_nonneg_right key (mul_nonneg hd0 hlogtF)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hB : ∑ l ∈ S.filter (fun l : Nat.Primes => ¬ ¬ (l : ℕ) ∣ dE), Real.log ((l : ℕ) : ℝ) * ∑ e' ∈ Finset.Ico 1 t, ((minusLen (ld (l : ℕ)) e').toNat : ℝ) ≤ C * ∑ l ∈ M.deg.primeFactors.erase 2, (l : ℝ) * (dE : ℝ) ^ 2 * (t : ℝ) ^ 2 * Real.log (t * l * F) ^ 2`. Establish `hterm : ∀ l ∈ S.filter (fun l : Nat.Primes => ¬ ¬ (l : ℕ) ∣ dE), Real.log ((l : ℕ) : ℝ) * ∑ e' ∈ Finset.Ico 1 t, ((minusLen (ld (l : ℕ)) e').toNat : ℝ) ≤ C * (((l : ℕ) : ℝ) * (dE : ℝ) ^ 2 * (t : ℝ) ^ 2 * Real.log (t * ((l : ℕ) : ℝ) * F) ^ 2)`.
+
+Introduce `l hl`. Rewrite `hl` using `[Finset.mem_filter, not_not]`. Use `haveI : Fact (l : ℕ).Prime := ⟨l.2⟩`. Establish `hp2` using `hS2 l hl.1`. Establish `hpc : Procyc E Ω (l : ℕ)`.
+
+Unfold `Procyc`. Conclude with `Or.inl hp2`. Establish `hl1 : (1 : ℝ) ≤ ((l : ℕ) : ℝ)` using `by exact_mod_cast l.2.one_le`. Establish `hK : 0 ≤ C * ((l : ℕ) : ℝ) * (dE : ℝ) ^ 2` using `by positivity`. Rewrite using `[Finset.mul_sum]`.
+
+Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `e' he'`. Rewrite `he'` using `[Finset.mem_Ico]`. Establish `h1` using `(hSt E Ω F hFpos hemb (l : ℕ) (ld (l : ℕ)) hpc e' he'.1).2`.
+
+Establish `he1 : (1 : ℝ) ≤ e'` using `by exact_mod_cast he'.1`. Establish `het : (e' : ℝ) + 1 ≤ t` using `by exact_mod_cast he'.2`. Establish `hge1 : (1 : ℝ) ≤ e' * ((l : ℕ) : ℝ) * F` using `one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le he1 hl1) hF1`. Establish `hlogle : Real.log (e' * ((l : ℕ) : ℝ) * F) ≤ Real.log (t * ((l : ℕ) : ℝ) * F)`. Apply `Real.log_le_log (by linarith)` to reduce the goal to its premises.
+
+Establish `: (e' : ℝ) ≤ t` using `by linarith`. Use `gcongr`. Establish `hlog0' : 0 ≤ Real.log (e' * ((l : ℕ) : ℝ) * F)` using `Real.log_nonneg hge1`. Establish `hsq : Real.log (e' * ((l : ℕ) : ℝ) * F) ^ 2 ≤ Real.log (t * ((l : ℕ) : ℝ) * F) ^ 2` using `pow_le_pow_left₀ hlog0' hlogle 2`. Establish `hm` using `mul_le_mul het hsq (sq_nonneg _) (by linarith)`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `_ = ((t - 1 : ℕ) : ℝ) * (C * ((l : ℕ) : ℝ) * (dE : ℝ) ^ 2 * (t : ℝ) * Real.log (t * ((l : ℕ) : ℝ) * F) ^ 2) := by`. Rewrite using `[Finset.sum_const, Nat.card_Ico, nsmul_eq_mul]`. Use `_ ≤ ∑ e' ∈ Finset.Ico 1 t, 0 + C * (((l : ℕ) : ℝ) * (dE : ℝ) ^ 2 * (t : ℝ) ^ 2 * Real.log (t * ((l : ℕ) : ℝ) * F) ^ 2) := by`. Rewrite using `[Finset.sum_const_zero, zero_add, Nat.cast_sub (by omega : 1 ≤ t)]`.
+
+Use `push_cast`. Establish `hK2 : 0 ≤ C * ((l : ℕ) : ℝ) * (dE : ℝ) ^ 2 * (t : ℝ) * Real.log (t * ((l : ℕ) : ℝ) * F) ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Use `_ = _ := by rw [Finset.sum_const_zero, zero_add]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← Finset.mul_sum]`. Use `congr 1`. Conclude with `(Finset.sum_image (f := fun m : ℕ => (m : ℝ) * (dE : ℝ) ^ 2 * (t : ℝ) ^ 2 * Real.log (t * (m : ℝ) * F) ^ 2) (s := S.filter (fun l : Nat.Primes => ¬ ¬ (l : ℕ) ∣ dE)) (g := fun p : Nat.Primes => (p : ℕ)) (fun a _ b _ h => Nat.Primes.coe_nat_injective h)).symm`. Use `_ ≤ _ := by`. Apply `mul_le_mul_of_nonneg_left _ hC0` to reduce the goal to its premises.
+
+Apply `Finset.sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises. Introduce `m hm`. Take `⟨p, hp, rfl⟩` from `Finset.mem_image.mp hm`. Rewrite `hp` using `[Finset.mem_filter, not_not]`. Rewrite using `[Finset.mem_erase, Nat.mem_primeFactors]`.
+
+Conclude with `⟨hS2 p hp.1, p.2, hdvd p p.2 (hS2 p hp.1) hp.2, hdeg⟩`. Introduce `m _ _`. Check the signs of the components of the expression. Conclude with `add_le_add hA hB`.
+-/
 private theorem thmBc_of (hD : ∀ (M : AbF) (e q d : ℕ), PrimePair M.m q d → ∀ (E : Type) [Field E] [NumberField E], IsCompField M e q d E → ∀ l : ℕ, l.Prime → l ≠ 2 → l ∣ Module.finrank ℚ E → l ∣ M.deg) (hS : ∃ C : ℝ, 0 ≤ C ∧ StickBound C) (hP : PrimeBound) : ThmBcFree := by
   obtain ⟨C, hC0, hSt⟩ := hS
   refine ⟨C, ?_⟩
@@ -288,10 +373,19 @@ private theorem thmBc_of (hD : ∀ (M : AbF) (e q d : ℕ), PrimePair M.m q d �
               positivity
     exact add_le_add hA hB
 
+/- English proof (translation)
+The claim follows from `stick_of killPow lenPow gen`.
+-/
 theorem stickBound : ∃ C : ℝ, 0 ≤ C ∧ StickBound C := stick_of killPow lenPow gen
 
+/- English proof (translation)
+The claim follows from `prime_of actEx actFacts prodVal atPrime h`.
+-/
 theorem primeBound_of (h : PsiBound) : PrimeBound := prime_of actEx actFacts prodVal atPrime h
 
+/- English proof (translation)
+The claim follows from `thmBc_of deg stickBound (primeBound_of h)`.
+-/
 theorem thmBcFree_of (h : PsiBound) : ThmBcFree := thmBc_of deg stickBound (primeBound_of h)
 
 end UpperTheory.V.Odd

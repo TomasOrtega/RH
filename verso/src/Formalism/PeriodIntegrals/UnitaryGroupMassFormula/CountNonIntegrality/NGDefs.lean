@@ -33,11 +33,19 @@ def CongG : Prop :=
               (((D.mem u).A.T : ℕ) : (D.s.atP p).Fp) + (((D.mem u').A.T : ℕ) : (D.s.atP p).Fp) else 0) =
               (g.q : (D.s.atP p).Fp) ^ 2 * s)
 
+/- English proof (translation)
+Unfold `frFac`. Simplify using `only [Fin.val_last, Nat.sub_self, pow_zero, Ring.inverse_one]`.
+-/
 theorem frFac_last (D : Formalism.BasicNotions.D7) (δ : ∀ p : PlF D, (D.s.atP p).Fp) (p : PlF D) :
     frFac δ p (Fin.last D.R.rS) = 1 := by
   unfold frFac
   simp only [Fin.val_last, Nat.sub_self, pow_zero, Ring.inverse_one]
 
+/- English proof (translation)
+Establish `hc : (M p).L.cj (frFac δ p a) = frFac δ p a`. Rewrite using `[(hA p).2.2.1, cj_frFac]`. Establish `h` using `g.e_cj (frFac δ p a)`. Rewrite `h` using `[hc]`. Establish `h2` using `congrArg Prod.snd h`.
+
+Rewrite `h2` using `[Prod.snd_swap]`. Conclude with `h2`.
+-/
 theorem frFac_coord (D : Formalism.BasicNotions.D7) (δ : ∀ p : PlF D, (D.s.atP p).Fp)
     (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (hA : ∀ p, Agree δ M p) (p : PlF D)
     (g : Loc.SplitG (M p).L) (a : Fin (D.R.rS + 1)) :
@@ -50,6 +58,9 @@ theorem frFac_coord (D : Formalism.BasicNotions.D7) (δ : ∀ p : PlF D, (D.s.at
   rw [Prod.snd_swap] at h2
   exact h2
 
+/- English proof (translation)
+Establish `h : (M p).L.cj = (D.s.atP p).cj` using `(hA p).2.2.1`. Simplify using `only [ZhatLoc, Matrix.of_apply]`. Rewrite using `[h, cj_frFac]`.
+-/
 theorem zhatLoc_eq (D : Formalism.BasicNotions.D7) (δ : ∀ p : PlF D, (D.s.atP p).Fp)
     (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (hA : ∀ p, Agree δ M p) (p : PlF D) (Z : MatZ D)
     (a b : Fin (D.R.rS + 1)) :
@@ -58,6 +69,17 @@ theorem zhatLoc_eq (D : Formalism.BasicNotions.D7) (δ : ∀ p : PlF D, (D.s.atP
   simp only [ZhatLoc, Matrix.of_apply]
   rw [h, cj_frFac]
 
+/- English proof (translation)
+Introduce `D δ M hA u u' hu F0 what₂ hrows Λ hΛ Z F' hF' p g hg a b`. Take `⟨c1, c2, c3⟩` from `h2 D δ M hA u u' hu F0 what₂ hrows Λ hΛ Z F' hF' p g hg a b`. Establish `hfa` using `h1 D δ M hA p g hg a`. Establish `hfb` using `h1 D δ M hA p g hg b`. Establish `ea` using `frFac_coord D δ M hA p g a`.
+
+Establish `eb` using `frFac_coord D δ M hA p g b`. Unfold `NormAt`. Rewrite using `[zhatLoc_eq D δ M hA p Z a b, zhatLoc_eq D δ M hA p Z b a]`. Distinguish the cases in `hab : a = Fin.last D.R.rS ∧ b = Fin.last D.R.rS`. Take `⟨rfl, rfl⟩` from `hab`.
+
+Simplify using `only [frFac_last, one_mul] at c1 c2 c3 ⊢`. Conclude with `⟨c1, c2, c3⟩`. Simplify using `only [map_mul, Prod.fst_mul, Prod.snd_mul, ea, eb]`. Simplify using `only [if_neg hab, add_zero] at c1 c2 c3 ⊢`. Take `⟨s1, hs1⟩` from `c1`.
+
+Take `⟨s2, hs2⟩` from `c2`. Take `⟨s3, hs3⟩` from `c3`. Use `⟨⟨⟨_, mul_mem (mul_mem hfb hfa) s1.2⟩, ?_⟩, ⟨⟨_, mul_mem (mul_mem hfb hfa) s2.2⟩, ?_⟩, ⟨⟨_, mul_mem (mul_mem hfb hfa) s3.2⟩, ?_⟩⟩` and prove the remaining obligations. Use `show _ = (g.q : (D.s.atP p).Fp) * ((g.e (frFac δ p b)).1 * (g.e (frFac δ p a)).1 * (s1 : (D.s.atP p).Fp))`. Take the linear combination `((g.e (frFac δ p b)).1 * (g.e (frFac δ p a)).1) * hs1`.
+
+Use `show _ = (g.q : (D.s.atP p).Fp) * ((g.e (frFac δ p b)).1 * (g.e (frFac δ p a)).1 * (s2 : (D.s.atP p).Fp))`. Take the linear combination `((g.e (frFac δ p b)).1 * (g.e (frFac δ p a)).1) * hs2`. Use `show _ = (g.q : (D.s.atP p).Fp) ^ 2 * ((g.e (frFac δ p b)).1 * (g.e (frFac δ p a)).1 * (s3 : (D.s.atP p).Fp))`. Take the linear combination `((g.e (frFac δ p b)).1 * (g.e (frFac δ p a)).1) * hs3`.
+-/
 theorem normG_of (h1 : FrIntG) (h2 : CongG) : NormG := by
   intro D δ M hA u u' hu F0 what₂ hrows Λ hΛ Z F' hF' p g hg a b
   obtain ⟨c1, c2, c3⟩ := h2 D δ M hA u u' hu F0 what₂ hrows Λ hΛ Z F' hF' p g hg a b

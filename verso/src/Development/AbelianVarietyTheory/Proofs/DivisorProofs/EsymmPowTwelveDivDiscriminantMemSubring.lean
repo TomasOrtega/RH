@@ -14,6 +14,15 @@ open ModularForm (E₄ E₆)
 
 namespace GlobalTheory.QFam
 
+/- English proof (translation)
+Introduce `ι _ act w N f R τ₀ hN hact hf hq hj k`. Establish `hF : IsFam act ((12 : ℕ) * (w : ℤ)) fun i τ => f i τ ^ 12` using `(GlobalTheory.T.isSLTwoPermutedModularFamily_algebra_closure ι act).2.2.2.2.1 w f 12 hf`. Take `⟨-, -, -, -, hpow, hsp⟩` from `GlobalTheory.T.qExpansionCoeffsInSubring_ring_closed R N hN`. Establish `hqS : QAll (· ∈ R) N fun τ => ∑ t ∈ Finset.powersetCard k Finset.univ, ∏ i ∈ t, f i τ ^ 12` using `(hsp (Finset ι) (Finset.powersetCard k Finset.univ) (fun t τ => ∏ i ∈ t, f i τ ^ 12) fun t _ => (hsp ι t (fun i τ => f i τ ^ 12) fun i _ => hpow (f i) 12 (hq i)).2).1`. Establish `hw : ((k : ℤ) * (((12 : ℕ) : ℤ) * (w : ℤ))) = 12 * ((k * w : ℕ) : ℤ)` using `by push_cast; ring`.
+
+Take `⟨P, hP, hPe⟩` from `GlobalTheory.T.exists_eq_discriminant_pow_mul_eval_jInvariant R N (k * w) _ hN (fun γ => by`. Establish `h` using `(GlobalTheory.T.permutedModularFamily_sum_esymm_slash_invariant ι act _ _ hact hF γ).2 k`. Rewrite `h` using `[hw]`. Conclude with `h) hqS`. Establish `hD : DD τ₀ ^ (k * w) ≠ 0` using `pow_ne_zero _ (ReciprocityTheory.ChartRestriction.L1.DD_ne_zero τ₀)`.
+
+Establish `hsum : (∑ t ∈ Finset.powersetCard k Finset.univ, ∏ i ∈ t, f i τ₀ ^ 12 / DD τ₀ ^ w) = (∑ t ∈ Finset.powersetCard k Finset.univ, ∏ i ∈ t, f i τ₀ ^ 12) / DD τ₀ ^ (k * w)`. Rewrite using `[Finset.sum_div]`. Use `Finset.sum_congr rfl fun t ht => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_div_distrib, Finset.prod_const, (Finset.mem_powersetCard.mp ht).2, ← pow_mul, mul_comm w k]`. Establish `h0` using `hPe τ₀`.
+
+Rewrite using `[hsum, h0, mul_div_cancel_left₀ _ hD, Polynomial.eval_eq_sum_range]`. Conclude with `R.sum_mem fun i _ => R.mul_mem (hP i) (R.pow_mem hj i)`.
+-/
 theorem esymm_pow_twelve_div_mem : ∀ (ι : Type) [Fintype ι] (act : ι → SL(2, ℤ) → ι) (w N : ℕ)
     (f : ι → ℍ → ℂ) (R : Subring ℂ) (τ₀ : ℍ), 0 < N → ActBij act → IsFam act w f →
     (∀ i, QAll (· ∈ R) N (f i)) → jT τ₀ ∈ R → ∀ k : ℕ,

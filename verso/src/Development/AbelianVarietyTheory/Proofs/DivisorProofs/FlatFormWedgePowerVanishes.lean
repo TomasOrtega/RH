@@ -9,6 +9,11 @@ namespace GlobalTheory.FlatTopPower
 
 variable {T : Type*} [NormedAddCommGroup T] [NormedSpace ℝ T]
 
+/- English proof (translation)
+Use extensionality with `i c`. Distinguish the cases in `hi : i = a`. Substitute `hi` using the available equality. Distinguish the cases in `hc : c = b`. Substitute `hc` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Function.update_apply, hc]`. Simplify using `[Function.update_apply, hi]`.
+-/
 theorem block_update {k : ℕ} (v : Fin k × Fin 2 → T) (a : Fin k) (b : Fin 2) (z : T) :
     (fun i c => Function.update v (a, b) z (i, c)) =
       Function.update (fun i c => v (i, c)) a (Function.update (fun c => v (a, c)) b z) := by
@@ -20,6 +25,11 @@ theorem block_update {k : ℕ} (v : Fin k × Fin 2 → T) (a : Fin k) (b : Fin 2
     · simp [Function.update_apply, hc]
   · simp [Function.update_apply, hi]
 
+/- English proof (translation)
+Rewrite using `[← Finset.prod_update_of_mem (Finset.mem_univ a) (fun i => α (fun c => v (i, c)))]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congrFun (block_update v a b z) i` as an intermediate fact. Distinguish the cases in `hi : i = a`. Substitute `hi` using the available equality.
+
+Simplify using `only [Function.update_self] at this ⊢`. Conclude with `congrArg α this`. Simplify using `only [Function.update_of_ne hi] at this ⊢`. Conclude with `congrArg α this`.
+-/
 theorem pairProd_key {k : ℕ} (α : T [⋀^Fin 2]→L[ℝ] ℝ) (v : Fin k × Fin 2 → T) (a : Fin k)
     (b : Fin 2) (z : T) :
     ∏ i, α (fun c => Function.update v (a, b) z (i, c)) =
@@ -49,12 +59,18 @@ def pairProd (α : T [⋀^Fin 2]→L[ℝ] ℝ) (k : ℕ) :
     obtain ⟨a, b⟩ := j
     rw [pairProd_key, pairProd_key, α.map_update_smul, smul_eq_mul, smul_eq_mul, mul_assoc]
 
+/- English proof (translation)
+Use `show ∏ i, α (fun c => v (i, c)) = _`. Use `Finset.prod_congr rfl fun i _ => congrArg α ?_` and prove the remaining obligations. Apply the tactic sequence `ext c; fin_cases c <;> rfl`.
+-/
 theorem pairProd_apply (α : T [⋀^Fin 2]→L[ℝ] ℝ) (k : ℕ) (v : Fin k × Fin 2 → T) :
     pairProd α k v = ∏ i, α ![v (i, 0), v (i, 1)] := by
   show ∏ i, α (fun c => v (i, c)) = _
   refine Finset.prod_congr rfl fun i _ => congrArg α ?_
   ext c; fin_cases c <;> rfl
 
+/- English proof (translation)
+Rewrite using `[wedgePow, MultilinearMap.alternatization_apply]`. Use `congr 1`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[MultilinearMap.domDomCongr_apply, pairProd_apply, Units.smul_def, zsmul_eq_mul]`.
+-/
 theorem wedgePow_eq (α : T [⋀^Fin 2]→L[ℝ] ℝ) (k : ℕ) (v : Fin k × Fin 2 → T) :
     wedgePow α k v = (1 / 2 ^ k) * MultilinearMap.alternatization (pairProd α k) v := by
   rw [wedgePow, MultilinearMap.alternatization_apply]
@@ -63,10 +79,18 @@ theorem wedgePow_eq (α : T [⋀^Fin 2]→L[ℝ] ℝ) (k : ℕ) (v : Fin k × Fi
   rw [MultilinearMap.domDomCongr_apply, pairProd_apply,
     Units.smul_def, zsmul_eq_mul]
 
+/- English proof (translation)
+Rewrite using `[wedgePow_eq, AlternatingMap.map_linearDependent _ v hv, mul_zero]`.
+-/
 theorem wedgePow_eq_zero_of_not_linearIndependent (α : T [⋀^Fin 2]→L[ℝ] ℝ) (k : ℕ)
     (v : Fin k × Fin 2 → T) (hv : ¬ LinearIndependent ℝ v) : wedgePow α k v = 0 := by
   rw [wedgePow_eq, AlternatingMap.map_linearDependent _ v hv, mul_zero]
 
+/- English proof (translation)
+Unfold `wedgePow`. Use `congr 1`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[ContinuousAlternatingMap.compContinuousLinearMap_apply]`. Use `congr 1`. Apply the tactic sequence `ext c; fin_cases c <;> rfl`.
+-/
 theorem wedgePow_comp {T' : Type*} [NormedAddCommGroup T'] [NormedSpace ℝ T']
     (α : T' [⋀^Fin 2]→L[ℝ] ℝ) (L : T →L[ℝ] T') (k : ℕ) (v : Fin k × Fin 2 → T) :
     wedgePow (α.compContinuousLinearMap L) k v = wedgePow α k (L ∘ v) := by
@@ -79,6 +103,9 @@ theorem wedgePow_comp {T' : Type*} [NormedAddCommGroup T'] [NormedSpace ℝ T']
   congr 1
   ext c; fin_cases c <;> rfl
 
+/- English proof (translation)
+Use `wedgePow_eq_zero_of_not_linearIndependent α _ v fun hv => ?_` and prove the remaining obligations. Establish `h` using `hv.fintype_card_le_finrank`. Simplify using `[Module.finrank_fintype_fun_eq_card] at h`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem wedgePow_succ_eq_zero {g : ℕ} (α : Fl g [⋀^Fin 2]→L[ℝ] ℝ)
     (v : Fin (g + 1) × Fin 2 → Fl g) : wedgePow α (g + 1) v = 0 := by
   refine wedgePow_eq_zero_of_not_linearIndependent α _ v fun hv => ?_
@@ -86,6 +113,9 @@ theorem wedgePow_succ_eq_zero {g : ℕ} (α : Fl g [⋀^Fin 2]→L[ℝ] ℝ)
   simp [Module.finrank_fintype_fun_eq_card] at h
   omega
 
+/- English proof (translation)
+Introduce `g E _ _ _ B τ _ P _ v`. Rewrite using `[om0, wedgePow_comp]`. Conclude with `wedgePow_succ_eq_zero _ _`.
+-/
 theorem flatForm_wedgePow_succ_eq_zero :
     ∀ {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E]
       {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ},

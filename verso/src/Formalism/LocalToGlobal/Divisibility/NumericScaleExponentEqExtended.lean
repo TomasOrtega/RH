@@ -31,6 +31,9 @@ def ZscOfNum3 (A3 : FamIn3 K G Pl0 I0 Ty T m) (P0 : Subgroup G) (ψ0 : P0 →* K
 variable (A3 : FamIn3 K G Pl0 I0 Ty T m) (P0 : Subgroup G) (ψ0 : P0 →* Kˣ) (Nd : NumDatum)
   (eJ : A3.fam3.base3.J ≃ Fin Nd.R.m) (Nc : ℝ)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩`.
+-/
 theorem ZscOfNum3_units (Zs : DefSub A3.fam3.amb3) :
     (ZscOfNum3 A3 P0 ψ0 Nd eJ Nc Zs).E1u = Nd.unitE Nc ∧
       (ZscOfNum3 A3 P0 ψ0 Nd eJ Nc Zs).l3u = Nd.B0 * Real.log (Real.log Nd.sc.x) ∧

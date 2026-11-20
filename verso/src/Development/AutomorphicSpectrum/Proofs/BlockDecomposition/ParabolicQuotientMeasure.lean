@@ -5,6 +5,25 @@ open scoped ENNReal NNReal Matrix Pointwise
 
 namespace GlobalTheory.CompanionTheory.SplitExtLat
 
+/- English proof (translation)
+Introduce `P G₁ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ι π hι hπ hπι ν _ μ₁ _ hconj`. Establish `hclosed : IsClosed (π.ker : Set P)`. Establish `hk : (π.ker : Set P) = π ⁻¹' {1}`. Use extensionality with `p`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hk]`. Conclude with `isClosed_singleton.preimage hπ`. Establish `: LocallyCompactSpace π.ker` using `hclosed.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Establish `: SecondCountableTopology π.ker` using `TopologicalSpace.Subtype.secondCountableTopology (π.ker : Set P)`. Establish `: SigmaCompactSpace π.ker` using `inferInstance`.
+
+Establish `: SigmaFinite ν` using `inferInstance`. Use `set Φ := splitHomeo ι π hι hπ hπι with hΦdef`. Establish `hΦm : Measurable Φ` using `Φ.continuous.measurable`. Establish `hinv : (Measure.map Φ (ν.prod μ₁)).IsMulLeftInvariant`. Use `⟨fun g => ?_⟩` and prove the remaining obligations.
+
+Use `set k₀ := kerPart ι π hπι g`. Establish `hcm : Measurable (fun m : π.ker => MulAut.conjNormal (ι (π g)) m)` using `((continuous_conj ι π hι).comp (Continuous.prodMk_right (π g))).measurable`. Establish `hfm : Measurable (fun m : π.ker => k₀ * MulAut.conjNormal (ι (π g)) m)` using `(measurable_const_mul k₀).comp hcm`. Establish `hhm : Measurable (fun u : G₁ => π g * u)` using `measurable_const_mul _`. Establish `e1 : Measure.map (fun m : π.ker => k₀ * MulAut.conjNormal (ι (π g)) m) ν = ν`.
+
+Establish `hsplit : (fun m : π.ker => k₀ * MulAut.conjNormal (ι (π g)) m) = (fun x => k₀ * x) ∘ (fun m : π.ker => MulAut.conjNormal (ι (π g)) m)` using `rfl`. Rewrite using `[hsplit, ← Measure.map_map (measurable_const_mul k₀) hcm, hconj, map_mul_left_eq_self]`. Establish `e2 : Measure.map (fun u : G₁ => π g * u) μ₁ = μ₁` using `map_mul_left_eq_self μ₁ _`. Establish `hcomp : (fun x => g * x) ∘ Φ = Φ ∘ Prod.map (fun m : π.ker => k₀ * MulAut.conjNormal (ι (π g)) m) (fun u : G₁ => π g * u)`. Use function extensionality and compare the values at `z`.
+
+Simplify using `only [Function.comp_apply, Prod.map_fst, Prod.map_snd, hΦdef, splitHomeo_apply]`. Conclude with `mul_split ι π hπι g z.1 z.2`. Rewrite using `[Measure.map_map (measurable_const_mul g) hΦm, hcomp, ← Measure.map_map hΦm (hfm.prodMap hhm), ← Measure.map_prod_map ν μ₁ hfm hhm, e1, e2]`. Take `⟨K, hK, hK1⟩` from `exists_compact_mem_nhds (1 : P)`. Establish `hKm : MeasurableSet K` using `hK.measurableSet`.
+
+Use `Measure.isHaarMeasure_of_isCompact_nonempty_interior _ K hK ⟨1, mem_interior_iff_mem_nhds.mpr hK1⟩ ?_ ?_` and prove the remaining obligations. Rewrite using `[Measure.map_apply hΦm hKm]`. Establish `hopen : IsOpen (Φ ⁻¹' interior K)` using `isOpen_interior.preimage Φ.continuous`. Establish `hne : (Φ ⁻¹' interior K).Nonempty`. Take `⟨z, hz⟩` from `Φ.surjective 1`.
+
+Use `⟨z, ?_⟩` and prove the remaining obligations. Use `show Φ z ∈ interior K`. Rewrite using `[hz]`. Conclude with `mem_interior_iff_mem_nhds.mpr hK1`. Conclude with `((hopen.measure_pos _ hne).trans_le (measure_mono (Set.preimage_mono interior_subset))).ne'`.
+
+Rewrite using `[Measure.map_apply hΦm hKm]`. Conclude with `(Φ.isCompact_preimage.mpr hK).measure_lt_top.ne`.
+-/
 theorem isHaarMeasure_map_splitHomeo :
     ∀ (P G₁ : Type) [Group P] [TopologicalSpace P] [IsTopologicalGroup P] [LocallyCompactSpace P] [SecondCountableTopology P] [T2Space P] [MeasurableSpace P] [BorelSpace P] [Group G₁] [TopologicalSpace G₁] [IsTopologicalGroup G₁] [LocallyCompactSpace G₁] [SecondCountableTopology G₁] [T2Space G₁] [MeasurableSpace G₁] [BorelSpace G₁] (ι : G₁ →* P) (π : P →* G₁) (hι : Continuous ι) (hπ : Continuous π) (hπι : ∀ u, π (ι u) = u) (ν : Measure π.ker) [ν.IsHaarMeasure] (μ₁ : Measure G₁) [μ₁.IsHaarMeasure], (∀ u, Measure.map (fun m : π.ker => MulAut.conjNormal (ι u) m) ν = ν) → (Measure.map (GlobalTheory.CompanionTheory.SplitExtLat.splitHomeo ι π hι hπ hπι) (ν.prod μ₁)).IsHaarMeasure := by
   intro P G₁ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ι π hι hπ hπι ν _ μ₁ _ hconj

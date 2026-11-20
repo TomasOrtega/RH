@@ -15,6 +15,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ZH
 open GlobalTheory.Points
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ _ S ρ M U₀ Q hO N N' σ σ' c hσ hσ' j O h h'`. Take `⟨K, _, β, g, r, jP, h1, h2, h3, h4⟩` from `Q.exists_generic hO.ne`. Take `⟨jL, rfl⟩ : ∃ jL, j = fun _ => jL` from `⟨j 0, funext fun i => by rw [Subsingleton.elim i 0]⟩`. Use `eq_of_valF_generic (g ≫ Q.φ) h4 fun hm => ?_` and prove the remaining obligations. Establish `hm'` using `(top_le_preimage_iff _ _).1 hm`.
+
+Establish `hV : Set.range (g ≫ Q.φ) ⊆ (Q.G.hom ⁻¹ᵁ N : Q.G.left.Opens)` using `fun y hy => (h (hm' hy)).1`. Establish `hV' : Set.range (g ≫ Q.φ) ⊆ (Q.G.hom ⁻¹ᵁ N' : Q.G.left.Opens)` using `fun y hy => (h' (hm' hy)).1`. Establish `hL : Set.range (g ≫ Q.φ) ⊆ Q.L.L.U jL` using `fun y hy => Set.mem_iInter.1 (h (hm' hy)).2 0`. Establish `e` using `(hσ K β g r jP jL h1 h2 h3 hL hV).symm.trans (hσ' K β g r jP jL h1 h2 h3 hL hV')`. Use `(valR_res _ h hm _).trans (Eq.trans ?_ (valR_res _ h' hm _).symm)` and prove the remaining obligations.
+
+Use `mul_left_cancel₀ (zpow_ne_zero _ ?_) e` and prove the remaining obligations. Use `IsUnit.ne_zero ?_` and prove the remaining obligations. Establish `hw : ⊤ ≤ g ⁻¹ᵁ (LB.div (ρ.P.L.pull (pullback.fst ρ.P.A.hom Q.u₀)) (Q.L.L.pull Q.φ)).U (fun _ => jP, fun _ => jL)` using `fun w _ => ⟨Set.mem_iInter.2 fun _ => h3 ⟨w, Scheme.Hom.comp_apply _ _ _⟩, Set.mem_iInter.2 fun _ => hL ⟨w, Scheme.Hom.comp_apply _ _ _⟩⟩`. Rewrite using `[valF_eq_valR, valR_eq g _ hw]`. Conclude with `(Units.isUnit _).map _`.
+-/
 theorem ZHPre.resG_eq_of_thMul : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (M : RatModel o Ω) (U₀ : M.Z.Opens) (Q : ZHPre ρ M U₀), S.Over₀ M U₀ → ∀ (N N' : M.Z.Opens) (σ : Q.SecFam N) (σ' : Q.SecFam N') (c : Ω), Q.ThMul c N σ → Q.ThMul c N' σ' → ∀ (j : Q.LOne.ι) (O : Q.G.left.Opens) (h : O ≤ Q.G.hom ⁻¹ᵁ N ⊓ Q.LOne.U j) (h' : O ≤ Q.G.hom ⁻¹ᵁ N' ⊓ Q.LOne.U j), resG _ h (σ j) = resG _ h' (σ' j) := by
   intro o Ω _ _ _ _ S ρ M U₀ Q hO N N' σ σ' c hσ hσ' j O h h'
   obtain ⟨K, _, β, g, r, jP, h1, h2, h3, h4⟩ := Q.exists_generic hO.ne

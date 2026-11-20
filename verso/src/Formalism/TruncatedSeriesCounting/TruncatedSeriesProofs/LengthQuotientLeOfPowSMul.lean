@@ -5,6 +5,25 @@ noncomputable section
 
 namespace Formalism.TruncatedSeriesCounting.R9
 
+/- English proof (translation)
+Introduce `O _ _ _ M _ _ _ _ ℓ e e' FFs J h1 h2`. Use `set A := FFs ⊔ Ideal.span {ℓ ^ e'} • (⊤ : Submodule O M) with hA`. Establish `hx : ∀ x ∈ A, ℓ ^ e • x ∈ J`. Introduce `x hxA`. Take `⟨f, hf, m, hm, rfl⟩` from `Submodule.mem_sup.1 hxA`.
+
+Rewrite using `[smul_add]`. Conclude with `J.add_mem (h1 (Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) hf)) (J.smul_mem _ (h2 hm))`. Establish `hS` using `Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.submodule_generator_count O M ℓ e A J hx`. Set `f : (A ⧸ J.comap A.subtype) →ₗ[O] M ⧸ J` to `(J.comap A.subtype).mapQ J A.subtype le_rfl`. Set `g : (M ⧸ J) →ₗ[O] M ⧸ (A ⊔ J)` to `J.mapQ (A ⊔ J) LinearMap.id (fun x hx => Submodule.mem_sup_right hx)`.
+
+Establish `hf : Function.Injective f`. Introduce `x y hxy`. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨b, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Simplify using `only [f, Submodule.mapQ_apply, Submodule.Quotient.eq] at hxy ⊢`.
+
+Simplify using `using hxy`. Establish `hg : Function.Surjective g`. Introduce `z`. Take `⟨m, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Conclude with `⟨Submodule.Quotient.mk m, rfl⟩`.
+
+Establish `hex : Function.Exact f g`. Introduce `y`. Take `⟨m, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Simplify using `only [g, Submodule.mapQ_apply, LinearMap.id_apply, Submodule.Quotient.mk_eq_zero]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hm`. Take `⟨a, ha, j, hj, rfl⟩` from `Submodule.mem_sup.1 hm`. Use `⟨Submodule.Quotient.mk ⟨a, ha⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [f, Submodule.mapQ_apply, Submodule.coe_subtype]`. Rewrite using `[Submodule.Quotient.eq]`.
+
+Simplify using `using J.neg_mem hj`. Introduce and unpack `⟨x, hx⟩`. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Simplify using `only [f, Submodule.mapQ_apply, Submodule.coe_subtype, Submodule.Quotient.eq] at hx`. Establish `e1 : m = (a : M) - ((a : M) - m)` using `by abel`.
+
+Rewrite using `[e1]`. Conclude with `Submodule.sub_mem _ (Submodule.mem_sup_left a.2) (Submodule.mem_sup_right hx)`. Establish `hlen` using `Module.length_eq_add_of_exact f g hf hg hex`. Establish `hq : Module.length O (M ⧸ (A ⊔ J)) ≤ Module.length O (M ⧸ A)`. Use `Module.length_le_of_surjective (A.mapQ (A ⊔ J) LinearMap.id (fun x hx => Submodule.mem_sup_left hx)) ?_` and prove the remaining obligations.
+
+Introduce `z`. Take `⟨m, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Conclude with `⟨Submodule.Quotient.mk m, rfl⟩`. Rewrite using `[hlen, add_comm]`. Conclude with `add_le_add hq hS`.
+-/
 theorem length_quotient_le_of_pow_smul : LengthQuotientLeOfPowSMul := by
   intro O _ _ _ M _ _ _ _ ℓ e e' FFs J h1 h2
   set A := FFs ⊔ Ideal.span {ℓ ^ e'} • (⊤ : Submodule O M) with hA

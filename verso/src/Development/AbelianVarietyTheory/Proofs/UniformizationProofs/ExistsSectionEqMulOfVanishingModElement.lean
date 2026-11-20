@@ -14,6 +14,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.SectionKernel
 
+/- English proof (translation)
+Use `letI := c.toAlgebra`. Use `haveI : Module.Flat R B := hf`. Take `⟨l, d, y, hy, hc⟩` from `Module.Flat.isTrivialRelation_of_sum_smul_eq_zero (R := R) (M := B) (f := fun _ : Unit => ε) (x := fun _ => b) (by rw [Fintype.sum_unique, Algebra.smul_def]; exact hb)`. Establish `: b = ∑ j, d () j • y j` using `hy ()`. Rewrite using `[this]`.
+
+Use `Ideal.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Use `Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem c (h _ ?_))` and prove the remaining obligations. Establish `h` using `hc j`. Rewrite `h` using `[Fintype.sum_unique]`. Then use the resulting hypothesis.
+-/
 theorem mem_map_of_flat {R B : Type} [CommRing R] [CommRing B] (c : R →+* B) (hf : c.Flat)
     {I : Ideal R} {ε : R} (h : ∀ x, ε * x = 0 → x ∈ I) (b : B) (hb : c ε * b = 0) :
     b ∈ I.map c := by
@@ -32,17 +37,29 @@ theorem mem_map_of_flat {R B : Type} [CommRing R] [CommRing B] (c : R →+* B) (
 
 variable {X Y : Scheme.{0}}
 
+/- English proof (translation)
+Use `congr(($(i.naturality (homOfLE h).op)).hom a)` as an intermediate fact. Conclude with `this`.
+-/
 theorem app_rs (i : Y ⟶ X) {U V : X.Opens} (h : V ≤ U) (a : Γ(X, U)) :
     (i.app V).hom (rs X h a) = rs Y (i.preimage_mono h) ((i.app U).hom a) := by
   have := congr(($(i.naturality (homOfLE h).op)).hom a)
   exact this
 
+/- English proof (translation)
+Simplify using `only [gs_eq r z U h, map_sub]`.
+-/
 theorem gs_sub (r : Y ⟶ X) (z : Y) (U : X.Opens) (h : r z ∈ U) (a b : Γ(X, U)) :
     gs r z U (a - b) = gs r z U a - gs r z U b := by simp only [gs_eq r z U h, map_sub]
 
+/- English proof (translation)
+Rewrite using `[gs_eq r z U h, ha, map_zero]`.
+-/
 theorem gs_of_app_eq_zero (r : Y ⟶ X) (z : Y) (U : X.Opens) (h : r z ∈ U) (a : Γ(X, U))
     (ha : (r.app U).hom a = 0) : gs r z U a = 0 := by rw [gs_eq r z U h, ha, map_zero]
 
+/- English proof (translation)
+Take `⟨V, hxV, i, i', e⟩` from `X.presheaf.germ_eq x hx hx a 0 (h.trans (map_zero _).symm)`. Conclude with `⟨V, i.le, hxV, e.trans (map_zero _)⟩`.
+-/
 theorem exists_rs_eq_zero {U : X.Opens} {x : X} (hx : x ∈ U) (a : Γ(X, U))
     (h : (X.presheaf.germ U x hx).hom a = 0) :
     ∃ (V : X.Opens) (hV : V ≤ U), x ∈ V ∧ rs X hV a = 0 := by
@@ -52,9 +69,17 @@ theorem exists_rs_eq_zero {U : X.Opens} {x : X} (hx : x ∈ U) (a : Γ(X, U))
 variable {A A₀ : Type} [CommRing A] [CommRing A₀] {g₀ : A →+* A₀} {a : A}
   {f : X ⟶ Spec (CommRingCat.of A)} {f₀ : Y ⟶ Spec (CommRingCat.of A₀)} {j : Y ⟶ X}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cst_eq (f : X ⟶ Spec (CommRingCat.of A)) (W : X.Opens) :
     SmallExtLift.cst f W = cst f W := rfl
 
+/- English proof (translation)
+Rewrite using `[← cst_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h` using `mem_map_of_flat _ (SmallExtLift.cst_flat f hV) (fun x hx => (ha x).1 hx) u h`. Use `(show _ ≤ RingHom.ker (j.app V).hom from Ideal.map_le_iff_le_comap.2 fun r hr => ?_) h` and prove the remaining obligations.
+
+Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, SmallExtLift.app_cst P.w, RingHom.mem_ker.1 hr, map_zero]`. Introduce `h`. Conclude with `SmallExtLift.mul_eq_zero_of_mem _ (fun x hx => (mul_comm _ _).trans ((ha x).2 hx)) (SmallExtLift.mem_of_app_eq_zero hg P hV u h)`.
+-/
 theorem mul_eq_zero_iff_app (hg : Function.Surjective g₀)
     (ha : ∀ x, a * x = 0 ↔ x ∈ RingHom.ker g₀) [Flat f]
     (P : IsPullback j f₀ f (Spec.map (CommRingCat.ofHom g₀))) {V : X.Opens} (hV : IsAffineOpen V)
@@ -69,6 +94,19 @@ theorem mul_eq_zero_iff_app (hg : Function.Surjective g₀)
     exact SmallExtLift.mul_eq_zero_of_mem _ (fun x hx => (mul_comm _ _).trans ((ha x).2 hx))
       (SmallExtLift.mem_of_app_eq_zero hg P hV u h)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite `h` using `[gs_eq (𝟙 X) (j z) W hz]`. Take `⟨V, hV, hx, e⟩` from `exists_rs_eq_zero hz (cst f W a * u) h`. Take `⟨V', hA, hx', hle⟩` from `Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens hx`.
+
+Establish `e'` using `congrArg (rs X hle) e`. Rewrite `e'` using `[rs_rs, map_mul, rs_cst, map_zero]`. Rewrite using `[← gs_res j z (hle.trans hV) hx']`. Conclude with `gs_of_app_eq_zero j z V' hx' _ ((mul_eq_zero_iff_app hg ha P hA _).1 e')`. Introduce `h`.
+
+Establish `: IsClosedImmersion (Spec.map (CommRingCat.ofHom g₀))` using `IsClosedImmersion.spec_of_surjective _ hg`. Establish `: IsClosedImmersion j` using `MorphismProperty.of_isPullback P.flip this`. Rewrite `h` using `[gs_eq _ _ W hz]`. Take `⟨O, hO, hx, e⟩` from `exists_rs_eq_zero (U := j ⁻¹ᵁ W) hz _ h`. Take `⟨D, hD, hD'⟩` from `j.isClosedEmbedding.isInducing.isOpen_iff.mp O.isOpen`.
+
+Establish `hx₁ : j z ∈ W ⊓ ⟨D, hD⟩` using `⟨hz, show z ∈ j ⁻¹' D from hD' ▸ hx⟩`. Take `⟨V', hA, hx', hle⟩` from `Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens hx₁`. Establish `l : j ⁻¹ᵁ V' ≤ O` using `fun y hy => by`. Establish `: y ∈ j ⁻¹' D` using `(hle hy).2`. Rewrite `this` using `[hD']`. Then use the resulting hypothesis.
+
+Establish `e'` using `congrArg (rs Y l) e`. Rewrite `e'` using `[rs_rs, map_zero]`. Establish `h₂` using `(mul_eq_zero_iff_app hg ha P hA (rs X (hle.trans inf_le_left) u)).2 ((app_rs j _ u).trans e')`. Rewrite using `[← gs_res (𝟙 X) (j z) (hle.trans inf_le_left) hx']`. Use `gs_of_app_eq_zero (𝟙 X) (j z) V' hx' _ ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `rs X _ _ = 0`. Rewrite using `[map_mul, rs_cst, h₂]`.
+-/
 theorem gs_mul_eq_zero_iff (hg : Function.Surjective g₀)
     (ha : ∀ x, a * x = 0 ↔ x ∈ RingHom.ker g₀) [Flat f]
     (P : IsPullback j f₀ f (Spec.map (CommRingCat.ofHom g₀))) {W : X.Opens} (z : Y) (hz : j z ∈ W)
@@ -103,6 +141,13 @@ theorem gs_mul_eq_zero_iff (hg : Function.Surjective g₀)
     change rs X _ _ = 0
     rw [map_mul, rs_cst, h₂]
 
+/- English proof (translation)
+Establish `h2 : Surjective (Spec.map (CommRingCat.ofHom g₀))` using `⟨fun x => by`. Take `⟨n, hn⟩` from `hn`. Establish `hx : x ∈ PrimeSpectrum.zeroLocus (RingHom.ker g₀ : Set A)` using `fun a ha => x.isPrime.mem_of_pow_mem n (by`. Use `Ideal.pow_mem_pow ha n` as an intermediate fact. Rewrite `this` using `[hn, Ideal.zero_eq_bot, Ideal.mem_bot]`.
+
+Rewrite using `[this]`. Conclude with `zero_mem _)`. Rewrite `hx` using `[← range_comap_of_surjective _ g₀ hg]`. Conclude with `hx⟩`. Establish `: Surjective j` using `MorphismProperty.of_isPullback P.flip h2`.
+
+Conclude with `j.surjective`.
+-/
 theorem surjective_of_isNilpotent (hg : Function.Surjective g₀)
     (hn : IsNilpotent (RingHom.ker g₀))
     (P : IsPullback j f₀ f (Spec.map (CommRingCat.ofHom g₀))) : Function.Surjective j := by
@@ -119,6 +164,21 @@ theorem surjective_of_isNilpotent (hg : Function.Surjective g₀)
   have : Surjective j := MorphismProperty.of_isPullback P.flip h2
   exact j.surjective
 
+/- English proof (translation)
+Establish `tr : ∀ q q' k' l' z, j z ∈ V q → j z ∈ V q' → z ∈ N₀.U k' → z ∈ N₀.U l' → (gw w (𝟙 _) z (c q) k')⁻¹.val * gs j z _ (u q) = (gm (𝟙 _) z _ (N₀.g k' l')).val * ((gw w (𝟙 _) z (c q') l')⁻¹.val * gs j z _ (u q'))`. Introduce `q q' k' l' z h h' hk hl`. Establish `e` using `(isGen_iff w).1 hw _ (𝟙 Y) z (c q) (c q') k' l' (hc q h) (hc q' h') hk hl`. Rewrite `e` using `[Category.id_comp]`. Rewrite using `[hu q q' z h h', e, ← _root_.mul_assoc, ← _root_.mul_assoc, ← Units.val_mul, ← Units.val_mul]`.
+
+Use `congr 2`. Generalize the expression as in `gm j z _ (N.g (c q) (c q')) = B`. Generalize the expression as in `gm (𝟙 Y) z _ (N₀.g k' l') = C`. Generalize the expression as in `gw w (𝟙 Y) z (c q') l' = D`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws. Establish `glue : ∀ k' : N₀.ι, ∃ s : Γ(Y, N₀.U k'), ∀ q z, j z ∈ V q → z ∈ N₀.U k' → gs (𝟙 _) z _ s = (gw w (𝟙 _) z (c q) k')⁻¹.val * gs j z _ (u q)`. Introduce `k'`. Set `O : I → Y.Opens` to `fun q => j ⁻¹ᵁ V q ⊓ N₀.U k'`.
+
+Establish `l₁ : ∀ q, O q ≤ (N.pull j).U (fun _ => c q) ⊓ N₀.U k'` using `fun q x hx => ⟨mem_pull.2 (hc q hx.1), hx.2⟩`. Take `⟨b, hb⟩ : ∃ b : ∀ q, Γ(Y, O q), ∀ q z, z ∈ O q → gs (𝟙 _) z (O q) (b q) = (gw w (𝟙 _) z (c q) k')⁻¹.val * gs j z _ (u q)` from `⟨fun q => rs Y (l₁ q) (w.s (fun _ => c q, k'))⁻¹.val * rs Y (inf_le_left : O q ≤ j ⁻¹ᵁ V q) ((j.app (V q)).hom (u q)), fun q z hz => (gs_mul (𝟙 Y) z _ hz _ _).trans (congrArg₂ (· * ·) ((gs_res (𝟙 Y) z _ hz _).trans ((gs_unit (𝟙 Y) z _ (l₁ q hz) _).trans (congrArg Units.val (map_i …`. Take `⟨s, hs, -⟩` from `Y.sheaf.existsUnique_gluing' O (N₀.U k') (fun q => homOfLE inf_le_right) (fun z hz => by`. Take `⟨q, hq⟩` from `cov z`. Conclude with `Opens.mem_iSup.2 ⟨q, hq, hz⟩) b`.
+
+Use the proof step `(fun q q' => fn_ext (V := O q ⊓ O q') fun z hz => by`. Use `(gs_res (𝟙 Y) z inf_le_left hz _).trans (Eq.trans ?_ (gs_res (𝟙 Y) z inf_le_right hz _).symm)` and prove the remaining obligations. Rewrite using `[hb q z hz.1, hb q' z hz.2, tr q q' k' k' z hz.1.1 hz.2.1 hz.1.2 hz.1.2, gm_self hN₀ (𝟙 Y) z hz.1.2, Units.val_one, _root_.one_mul])`. Use `⟨s, fun q z h₁ h₂ => ?_⟩` and prove the remaining obligations. Establish `hz : z ∈ O q` using `⟨h₁, h₂⟩`.
+
+Conclude with `(gs_res (𝟙 Y) z inf_le_right hz s).symm.trans ((congrArg (gs (𝟙 Y) z (O q)) (hs q)).trans (hb q z hz))`. Use `choose s hs using glue`. Use `⟨⟨s, fun k' l' => fn_ext fun z hz => ?_⟩, fun q k' z h₁ h₂ => ?_⟩` and prove the remaining obligations. Take `⟨q, hq⟩` from `cov z`. Use `(gs_res (𝟙 Y) z _ hz _).trans (Eq.trans ?_ ((gs_mul (𝟙 Y) z _ hz _ _).trans (congrArg₂ (· * ·) (gs_unit (𝟙 Y) z _ hz _) (gs_res (𝟙 Y) z _ hz _))).symm)` and prove the remaining obligations.
+
+Rewrite using `[hs k' q z hq hz.1, hs l' q z hq hz.2]`. Conclude with `tr q q k' l' z hq hq hz.1 hz.2`. Express the relevant statement in the definitionally equal form `_ * gs (𝟙 Y) z _ (s k') = _`. Rewrite using `[hs k' q z h₁ h₂, Units.mul_inv_cancel_left]`.
+-/
 theorem exists_sec_of_local {N : LB X} {N₀ : LB Y} (w : LB.Iso N₀ (N.pull j)) (hN₀ : N₀.IsLB)
     (hw : w.IsGen) {I : Type} (V : I → X.Opens) (c : I → N.ι) (hc : ∀ q, V q ≤ N.U (c q))
     (cov : ∀ z : Y, ∃ q, j z ∈ V q) (u : ∀ q, Γ(X, V q))
@@ -178,6 +238,23 @@ theorem exists_sec_of_local {N : LB X} {N₀ : LB Y} (w : LB.Iso N₀ (N.pull j)
   · change _ * gs (𝟙 Y) z _ (s k') = _
     rw [hs k' q z h₁ h₂, Units.mul_inv_cancel_left]
 
+/- English proof (translation)
+Introduce `A A₀ A' _ _ _ g₀ g' a hg hg' hn hk _ ha X Y X' f f₀ f' j β _ P P' N N₀ w hN hN₀ hw σ hσ`. Set `I` to `{q : Σ (_ : N.ι) (W : X.Opens), Γ(X, W) // ∃ h : q.2.1 ≤ N.U q.1, rs X h (σ.f q.1) = cst f q.2.1 a * q.2.2}`. Set `V : I → X.Opens` to `fun q => q.1.2.1`. Set `c : I → N.ι` to `fun q => q.1.1`. Set `u : ∀ q, Γ(X, V q)` to `fun q => q.1.2.2`.
+
+Establish `hc : ∀ q, V q ≤ N.U (c q)` using `fun q => q.2.1`. Establish `hu : ∀ q, rs X (hc q) (σ.f (c q)) = cst f (V q) a * u q` using `fun q => q.2.2`. Establish `loc : ∀ k x, x ∈ N.U k → ∃ q, c q = k ∧ x ∈ V q`. Introduce `k x hx`. Take `⟨W, hW, hxW, hle⟩` from `Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens hx`.
+
+Establish `h` using `SmallExtLift.mem_of_app_eq_zero hg' P' hW (rs X hle (σ.f k)) (by rw [app_rs, hσ, map_zero])`. Rewrite `h` using `[hk, Ideal.map_span, Set.image_singleton, Ideal.mem_span_singleton]`. Take `⟨b, hb⟩` from `h`. Conclude with `⟨⟨⟨k, W, b⟩, hle, hb⟩, rfl, hxW⟩`. Take `⟨τ₀, hτ₀⟩` from `exists_sec_of_local w hN₀ hw V c hc (fun z => by`.
+
+Take `⟨k, hk⟩` from `exists_chart hN (j z)`. Take `⟨q, -, hq⟩` from `loc k _ hk`. Conclude with `⟨q, hq⟩) u (fun q q' z h h' => by`. Establish `hm : j z ∈ V q ⊓ V q'` using `⟨h, h'⟩`. Establish `e` using `(gs_mul_eq_zero_iff hg ha P z hm (rs X inf_le_left (u q) - rs X (inf_le_inf (hc q) (hc q')) (N.g (c q) (c q')).val * rs X inf_le_right (u q'))).1 (by`.
+
+Use `gs_of_app_eq_zero (𝟙 X) (j z) _ hm _ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(_ : Γ(X, V q ⊓ V q')) = 0`. Establish `e₁` using `congrArg (rs X (inf_le_left : V q ⊓ V q' ≤ _)) (hu q)`. Establish `e₂` using `congrArg (rs X (inf_le_right : V q ⊓ V q' ≤ _)) (hu q')`. Establish `e₃` using `congrArg (rs X (inf_le_inf (hc q) (hc q'))) (σ.compat (c q) (c q'))`.
+
+Simplify using `only [map_mul, rs_rs, rs_cst] at e₁ e₂ e₃`. Express the relevant statement in the definitionally equal form `cst f (V q ⊓ V q') a * (_ - _ * _) = 0`. Take the linear combination `e₃ - e₁ + rs X (inf_le_inf (hc q) (hc q')) (N.g (c q) (c q')).val * e₂)`. Rewrite `e` using `[gs_sub _ _ _ hm, gs_mul _ _ _ hm, gs_res _ _ _ hm, gs_res _ _ _ hm, gs_res _ _ _ hm, gs_unit j z (N.U (c q) ⊓ N.U (c q')) ⟨hc q h, hc q' h'⟩, sub_eq_zero]`. Conclude with `e)`.
+
+Use `⟨τ₀, fun τ hτ k => fn_ext fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `surjective_of_isNilpotent hg hn P x`. Take `⟨q, rfl, hq⟩` from `loc k _ hx`. Take `⟨k', hk'⟩` from `exists_chart hN₀ z`. Establish `e` using `(gs_mul_eq_zero_iff hg ha P z hq (u q - rs X (hc q) (τ.f (c q)))).2 (by`.
+
+Rewrite using `[gs_sub _ _ _ hq, gs_res _ _ _ hq, hτ z (c q) k' hx hk', hτ₀ q k' z hq hk', sub_self])`. Rewrite `e` using `[mul_sub, ← hu, ← rs_cst f (hc q), ← map_mul, gs_sub (𝟙 X) (j z) _ hq, gs_res (𝟙 X) (j z) _ hq, gs_res (𝟙 X) (j z) _ hq, sub_eq_zero]`. Conclude with `e`.
+-/
 theorem exists_sec_of_vanishing : ∀ (A A₀ A' : Type) [CommRing A] [CommRing A₀] [CommRing A'] (g₀ : A →+* A₀) (g' : A →+* A') (a : A), Function.Surjective g₀ → Function.Surjective g' → IsNilpotent (RingHom.ker g₀) → RingHom.ker g' = Ideal.span {a} → a ∈ RingHom.ker g₀ → (∀ x, a * x = 0 ↔ x ∈ RingHom.ker g₀) → ∀ (X X₀ X' : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of A)) (f₀ : X₀ ⟶ Spec (CommRingCat.of A₀)) (f' : X' ⟶ Spec (CommRingCat.of A')) (j₀ : X₀ ⟶ X) (β : X' ⟶ X), Flat f → IsPullback j₀ f₀ f (Spec.map (CommRingCat.ofHom g₀)) → IsPullback β f' f (Spec.map (CommRingCat.ofHom g')) → ∀ (N : LB X) (N₀ : LB X₀) (w₀ : LB.Iso N₀ (N.pull j₀)), N.IsLB → N₀.IsLB → w₀.IsGen → ∀ σ : LB.Sec N, (∀ k, (β.app (N.U k)).hom (σ.f k) = 0) → ∃ τ₀ : LB.Sec N₀, ∀ τ : LB.Sec N, (∀ z (k : (N).ι) (k' : (N₀).ι), (j₀) z ∈ (N).U k → z ∈ (N₀).U k' → gs (j₀) z _ ((τ).f k) = (Geo.Tor.gw (w₀) (𝟙 _) z k k').val * gs (𝟙 _) z _ ((τ₀).f k')) → ∀ k, σ.f k = cst f (N.U k) a * τ.f k := by
   intro A A₀ A' _ _ _ g₀ g' a hg hg' hn hk _ ha X Y X' f f₀ f' j β _ P P' N N₀ w hN hN₀ hw σ hσ
   let I := {q : Σ (_ : N.ι) (W : X.Opens), Γ(X, W) //

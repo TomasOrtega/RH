@@ -26,11 +26,17 @@ section Orbit
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `h`. Conclude with `⟨fun k => c k.1, fun k => hc k.1, rfl⟩`.
+-/
 theorem base_orbit {σ : Type} {blk : σ → Option K} {z₁ z : (Σ k, ι k) → ℂ} (h : SameOrbit z₁ z) :
     SameOrbit (basePart blk z₁) (basePart blk z) := by
   obtain ⟨c, hc, rfl⟩ := h
   exact ⟨fun k => c k.1, fun k => hc k.1, rfl⟩
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `h`. Use `⟨fun k => c (κ k), fun k => hc _, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `q`. Simplify using `only [Function.comp]`. Rewrite using `[hv.2.2.1 q]`.
+-/
 theorem comp_orbit {K' : Type} [Fintype K'] {ι' : K' → Type} [∀ k, Fintype (ι' k)] {κ : K → K'}
     {v : (Σ k, ι k) → (Σ k, ι' k)} (hv : IsBlockMap κ v) {b₁ b : (Σ k, ι' k) → ℂ} (h : SameOrbit b₁ b) :
     SameOrbit (b₁ ∘ v) (b ∘ v) := by
@@ -40,10 +46,16 @@ theorem comp_orbit {K' : Type} [Fintype K'] {ι' : K' → Type} [∀ k, Fintype 
   simp only [Function.comp]
   rw [hv.2.2.1 q]
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `h`. Conclude with `StepW.TorusAct.mCoordIdeal_torus c hc b`.
+-/
 theorem ideal_orbit {b₁ b : (Σ k, ι k) → ℂ} (h : SameOrbit b₁ b) : mCoordIdeal b₁ = mCoordIdeal b := by
   obtain ⟨c, hc, rfl⟩ := h
   exact StepW.TorusAct.mCoordIdeal_torus c hc b
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `h`. Conclude with `((StepW.TorusAct.main K ι Ω x b c hc).2 hb).2 s`.
+-/
 theorem valAt_orbit {x : (Σ k, ι k) → Ω} {b₁ b : (Σ k, ι k) → ℂ} (h : SameOrbit b₁ b)
     (hb : b ∈ mcPts (mCoordIdeal x)) (s : Ω) : valAt x s b₁ = valAt x s b := by
   obtain ⟨c, hc, rfl⟩ := h
@@ -51,6 +63,25 @@ theorem valAt_orbit {x : (Σ k, ι k) → Ω} {b₁ b : (Σ k, ι k) → ℂ} (h
 
 end Orbit
 
+/- English proof (translation)
+Establish `hb : basePart M'.blk z ∈ mcPts (mCoordIdeal M'.x)` using `(GlobalTheory.T.flag_model_base_projection_points K' ι' Φ' y' Ψ N j M').1 z hz`. Establish `hbv` using `(GlobalTheory.T.flag_cover_base_point_in_points K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv _ hb).1`. Take `⟨h₀, hh₀, hz₀⟩` from `GlobalTheory.T.exists_block_diag_frame_change K' ι' Φ' y' Ψ N j M' F₀' z hz hF' hg'`. Establish `hT₀` using `GlobalTheory.T.flag_cover_frame_compatibility K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv _ F₀' F₀ hb hF' hF hg' hg`. Establish `hH₀ : ∀ τ, IsBlockDiag j (Cv.trans F₀' F₀ (basePart M'.blk z) τ * h₀ τ) ∧ (Cv.trans F₀' F₀ (basePart M'.blk z) τ * h₀ τ).det ≠ 0` using `fun τ => ⟨(hT₀ τ).1.mul (hh₀ τ).1, by rw [det_mul]; exact mul_ne_zero (hT₀ τ).2 (hh₀ τ).2⟩`.
+
+Establish `hform` using `GlobalTheory.T.flag_cover_frames_value_at_point K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv z F₀' F₀ h₀ hb hF' hF hg' hg (fun τ => (hh₀ τ).1) hz₀`. Establish `hwb : basePart M.blk (img Cv F₀' F₀ z) = basePart M'.blk z ∘ Cv.v` using `img_base Cv F₀' F₀ z`. Establish `hw : img Cv F₀' F₀ z ∈ mcPts (mCoordIdeal y)` using `(GlobalTheory.T.block_diag_frame_at_good_point K ι Φ y Ψ N j M F₀ (img Cv F₀' F₀ z) _ hF (by rw [hwb]; exact hbv) (by rw [hwb]; exact hg) hH₀ (by rw [hwb]; exact hform)).1`. Use `⟨hw, ?_⟩` and prove the remaining obligations. Introduce `z₁ h1 F' F hF1' hF1 hg1' hg1 h hfl`.
+
+Establish `hbo : SameOrbit (basePart M'.blk z₁) (basePart M'.blk z)` using `base_orbit h1`. Establish `hbov` using `comp_orbit Cv.block hbo`. Rewrite `hg1'` using `[ideal_orbit hbo]`. Rewrite `hg1` using `[ideal_orbit hbov]`. Establish `htrans : ∀ τ, Cv.trans F' F (basePart M'.blk z₁) τ = Cv.trans F' F (basePart M'.blk z) τ` using `fun τ => by`.
+
+Use extensionality with `a c`. Conclude with `valAt_orbit hbo hb _`. Take `⟨-, hhinv, hflag⟩` from `hfl`. Establish `hpl : ∀ (p : Ψ × Fin N) (k' : K'), M'.blk p = some k' → ∃ a : ℂ, a ≠ 0 ∧ ∀ m' : ι' k', plk M' F' (basePart M'.blk z) p.2 ⟨k', m'⟩ (h p.1) = a * plk M' F₀' (basePart M'.blk z) p.2 ⟨k', m'⟩ (h₀ p.1)` using `fun p k' hp => by`. Take `⟨a, ha, e⟩` from `hflag p k' hp`.
+
+Take `⟨a₀, ha₀, e₀⟩` from `hz₀ p k' hp`. Take `⟨c, hc, rfl⟩` from `h1`. Use `⟨a⁻¹ * c k' * a₀, mul_ne_zero (mul_ne_zero (inv_ne_zero ha) (hc k')) ha₀, fun m' => ?_⟩` and prove the remaining obligations. Establish `e1` using `e m'`. Establish `e2` using `e₀ m'`.
+
+Establish `e3 : ∑ I, valAt M'.x (F'.u ⟨k', m'⟩ I) (basePart M'.blk fun p => c p.1 * z p) * minorIJ (h p.1) I (stepCols N j p.2) = plk M' F' (basePart M'.blk z) p.2 ⟨k', m'⟩ (h p.1)` using `Finset.sum_congr rfl fun I _ => by rw [valAt_orbit hbo hb]`. Rewrite `e1` using `[e3]`. Simplify using `only at e1`. Rewrite `e1` using `[e2]`. Clear the denominators using the available nonvanishing facts.
+
+Take the linear combination `-e1`. Establish `hind` using `GlobalTheory.T.flag_cover_two_frames_comparison K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv _ F' F₀' F F₀ h h₀ hb hF1' hF' hF1 hF hg1' hg' hg1 hg (fun τ => (hhinv τ).1) (fun τ => (hh₀ τ).1) hpl`. Establish `hT` using `GlobalTheory.T.flag_cover_frame_compatibility K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv _ F' F hb hF1' hF1 hg1' hg1`. Take `⟨-, z₀, o1, o2, fl⟩` from `GlobalTheory.T.block_diag_frame_at_good_point K ι Φ y Ψ N j M F (img Cv F₀' F₀ z) (fun τ => Cv.trans F' F (basePart M'.blk z) τ * h τ) hF1 (by rw [hwb]; exact hbv) (by rw [hwb]; exact hg1) (fun τ => ⟨(hT τ).1.mul (hhinv τ).1, by rw [det_mul]; exact mul_ne_zero (hT τ).2 (hhinv τ). …`. Take `⟨a₁, ha₁, e₁⟩` from `hform p k hp`.
+
+Take `⟨a₂, ha₂, e₂⟩` from `hind p k hp`. Use `⟨a₁ * a₂⁻¹, mul_ne_zero ha₁ (inv_ne_zero ha₂), fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[e₁ m, hwb, e₂ m]`. Use the proof step `field_simp)`. Use `⟨z₀, o1, Cj.sameOrbit_trans (hwb ▸ o2) (Cj.sameOrbit_symm hbov), ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [htrans]`. Conclude with `fl`.
+-/
 theorem img_spec (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ)
     (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (K' : Type) [Fintype K']
     (ι' : K' → Type) [∀ k, Fintype (ι' k)] (Φ' : Type) [Field Φ'] (y' : (Σ k, ι' k) → Φ') (M' : FlagModel y' Ψ N j)
@@ -115,6 +146,11 @@ theorem img_spec (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)
   simp only [htrans]
   exact fl
 
+/- English proof (translation)
+Introduce `K _ ι _ Φ _ y Ψ _ _ N j M K' _ ι' _ Φ' _ y' M' Cv d _ _ z hz`. Establish `hb : basePart M'.blk z ∈ mcPts (mCoordIdeal M'.x)` using `(GlobalTheory.T.flag_model_base_projection_points K' ι' Φ' y' Ψ N j M').1 z hz`. Establish `hbv` using `(GlobalTheory.T.flag_cover_base_point_in_points K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv _ hb).1`. Take `⟨F', hF', hg'⟩` from `(GlobalTheory.T.flag_model_base_projection_points K' ι' Φ' y' Ψ N j M').2.1 _ hb`. Take `⟨F, hF, hg⟩` from `(GlobalTheory.T.flag_model_base_projection_points K ι Φ y Ψ N j M).2.1 _ hbv`.
+
+Take `⟨V, f, hV, hzV, hf, hs⟩` from `GlobalTheory.T.flag_cover_frames_at_point K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv z F' F hz hF' hF hg' hg`. Use `⟨V, f, hV, hzV, hf, fun z' hz' => ?_⟩` and prove the remaining obligations. Take `⟨g1, g2, e⟩` from `hs z' hz'`. Rewrite using `[e]`. Conclude with `img_spec K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv z' F' F hz'.2 hF' hF g1 g2`.
+-/
 theorem local_img : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (K' : Type) [Fintype K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (Φ' : Type) [Field Φ'] (y' : (Σ k, ι' k) → Φ') (M' : FlagModel y' Ψ N j) (Cv : FlagCover M' M) (d : ℕ), IsArithVar (mCoordIdeal y) (d + 2) → IsArithVar (mCoordIdeal y') (d + 2) → ∀ z ∈ mcPts (mCoordIdeal y'), ∃ (V : Set ((Σ k, ι' k) → ℂ)) (f : ((Σ k, ι' k) → ℂ) → (Σ k, ι k) → ℂ), IsOpen V ∧ z ∈ V ∧ AnalyticOnNhd ℂ f V ∧ ∀ z' ∈ V ∩ mcPts (mCoordIdeal y'), f z' ∈ mcPts (mCoordIdeal y) ∧ CovMap.IsImg Cv z' (f z') := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M K' _ ι' _ Φ' _ y' M' Cv d _ _ z hz
   have hb : basePart M'.blk z ∈ mcPts (mCoordIdeal M'.x) := (GlobalTheory.T.flag_model_base_projection_points K' ι' Φ' y' Ψ N j M').1 z hz

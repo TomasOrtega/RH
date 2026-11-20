@@ -6,5 +6,8 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory GlobalTheory.Cart
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LatChain.ProjDom.exists_cover_dominating_proj | exact GlobalTheory.LatChain.ProjDom.exists_cover_dominating_proj | (intros; apply GlobalTheory.LatChain.ProjDom.exists_cover_dominating_proj <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_cover_factoring_projective : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Cover Y) (Z : Scheme.{0}) (s : Z ⟶ Sp (𝓞 F)) (h : V.G ⟶ Z), IsProjOver s → h ≫ s = V.j ≫ V.p → ∃ (V' : Cover Y) (ν : V'.X ⟶ Z) (g : V'.G ⟶ V.G), ν ≫ s = V'.p ∧ V'.j ≫ ν = g ≫ h ∧ g ≫ V.π = V'.π := by
   first | exact @GlobalTheory.LatChain.ProjDom.exists_cover_dominating_proj | exact GlobalTheory.LatChain.ProjDom.exists_cover_dominating_proj | (intros; apply GlobalTheory.LatChain.ProjDom.exists_cover_dominating_proj <;> assumption)

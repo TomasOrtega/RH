@@ -23,13 +23,22 @@ def compHomeoL (e : X ≃ₜ X) :
   map_smul' _ _ := rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_compHomeoL (e : X ≃ₜ X) (f : locallyConstantCompactSupport X ℂ ℂ) :
     ((compHomeoL e f : locallyConstantCompactSupport X ℂ ℂ) : X → ℂ) = (f : X → ℂ) ∘ e := rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (funext fun x => by simp)`.
+-/
 theorem compHomeoL_symm_apply (e : X ≃ₜ X) (f : locallyConstantCompactSupport X ℂ ℂ) :
     compHomeoL e (compHomeoL e.symm f) = f :=
   Subtype.ext (funext fun x => by simp)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (funext fun x => by simp)`.
+-/
 theorem compHomeoL_apply_symm (e : X ≃ₜ X) (f : locallyConstantCompactSupport X ℂ ℂ) :
     compHomeoL e.symm (compHomeoL e f) = f :=
   Subtype.ext (funext fun x => by simp)
@@ -41,6 +50,9 @@ def biTranslL (a b : G) :
   compHomeoL ((Homeomorph.mulLeft a⁻¹).trans (Homeomorph.mulRight b))
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_biTranslL (a b : G) (f : locallyConstantCompactSupport G ℂ ℂ) :
     ((biTranslL a b f : locallyConstantCompactSupport G ℂ ℂ) : G → ℂ) =
       fun x => (f : G → ℂ) (a⁻¹ * x * b) := rfl
@@ -50,6 +62,9 @@ def rtransL (g : G) :
   compHomeoL (Homeomorph.mulRight g)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_rtransL (g : G) (f : locallyConstantCompactSupport G ℂ ℂ) :
     ((rtransL g f : locallyConstantCompactSupport G ℂ ℂ) : G → ℂ) = fun x => (f : G → ℂ) (x * g) :=
   rfl
@@ -59,10 +74,16 @@ def ltransL (a : G) :
   compHomeoL (Homeomorph.mulLeft a⁻¹)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_ltransL (a : G) (f : locallyConstantCompactSupport G ℂ ℂ) :
     ((ltransL a f : locallyConstantCompactSupport G ℂ ℂ) : G → ℂ) = fun x => (f : G → ℂ) (a⁻¹ * x) :=
   rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (funext fun x => by simp [mul_assoc])`.
+-/
 theorem biTranslL_eq (a b : G) (f : locallyConstantCompactSupport G ℂ ℂ) :
     biTranslL a b f = ltransL a (rtransL b f) :=
   Subtype.ext (funext fun x => by simp [mul_assoc])
@@ -81,6 +102,9 @@ def BiEquivariantSigmaInvariant (H : Subgroup G) (χ : H → ℂ) (σ : G ≃ₜ
 
 omit [IsTopologicalGroup G] in
 
+/- English proof (translation)
+Establish `h1 : σ 1 = 1`. Use `hσ 1 1` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `(mul_eq_left.1 this.symm)`. Rewrite using `[eq_inv_iff_mul_eq_one, ← hσ, mul_inv_cancel, h1]`.
+-/
 theorem map_inv_of_antiHom (σ : G ≃ₜ G) (hσ : ∀ x y, σ (x * y) = σ y * σ x) (x : G) :
     σ x⁻¹ = (σ x)⁻¹ := by
   have h1 : σ 1 = 1 := by
@@ -89,6 +113,15 @@ theorem map_inv_of_antiHom (σ : G ≃ₜ G) (hσ : ∀ x y, σ (x * y) = σ y *
     exact (mul_eq_left.1 this.symm)
   rw [eq_inv_iff_mul_eq_one, ← hσ, mul_inv_cancel, h1]
 
+/- English proof (translation)
+Introduce `D hD f`. Use `set ι : G ≃ₜ G := Homeomorph.inv G`. Use `set D' : Module.Dual ℂ (locallyConstantCompactSupport G ℂ ℂ) := D ∘ₗ compHomeoL ι`. Establish `hD' : ∀ (f : locallyConstantCompactSupport G ℂ ℂ) (h₁ h₂ : H), D' (biTranslL (h₁ : G) (h₂ : G) f) = χ h₁ * (χ h₂)⁻¹ * D' f`. Introduce `f h₁ h₂`.
+
+Establish `e : compHomeoL ι (biTranslL (h₁ : G) (h₂ : G) f) = biTranslL (h₂ : G) (h₁ : G) (compHomeoL ι f)` using `Subtype.ext (funext fun x => by simp [ι, mul_assoc])`. Simplify using `only [D', LinearMap.comp_apply, e, hD]`. Rewrite using `[inv_inv]`. Expand and normalize the polynomial expressions, which then agree. Establish `key` using `h D' hD'`.
+
+Establish `e : compHomeoL ι (compHomeoL σ f) = compHomeoL σ (compHomeoL ι f)` using `Subtype.ext (funext fun x => by simp [ι, map_inv_of_antiHom σ hσ])`. Establish `hιι : ∀ g : locallyConstantCompactSupport G ℂ ℂ, compHomeoL ι (compHomeoL ι g) = g` using `fun g => Subtype.ext (funext fun x => by simp [ι])`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [D', LinearMap.comp_apply, hιι]`. Use `_ = D' (compHomeoL σ (compHomeoL ι f)) := by rw [e]`.
+
+Use `_ = D' (compHomeoL ι f) := key _`. Use `_ = D f := by simp only [D', LinearMap.comp_apply, hιι]`.
+-/
 theorem BiEquivariantSigmaInvariant.inv {H : Subgroup G} {χ : H → ℂ} {σ : G ≃ₜ G}
     (hσ : ∀ x y, σ (x * y) = σ y * σ x) (h : BiEquivariantSigmaInvariant H χ σ) :
     BiEquivariantSigmaInvariant H (fun g => (χ g)⁻¹) σ := by
@@ -126,6 +159,9 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Loca
 
 omit [LocallyCompactSpace G] [T2Space G] [TotallyDisconnectedSpace G] in
 
+/- English proof (translation)
+Establish `hf' : (fun x => f (x * g⁻¹)) ∈ locallyConstantCompactSupport G ℂ ℂ` using `(rtransL g⁻¹ ⟨f, hf⟩).2`. Use `eq_of_forall_dual fun φ => ?_` and prove the remaining obligations. Rewrite using `[dual_heckeAct μ hf (smooth_apply_mem ρ hv g), dual_heckeAct μ hf' hv, ← integral_mul_right_eq_self (fun x => f (x * g⁻¹) * φ (ρ x v)) g]`. Simplify using `only [mul_inv_cancel_right, map_mul, Module.End.mul_apply]`.
+-/
 theorem heckeAct_apply_act [μ.IsMulRightInvariant] {f : G → ℂ} (hf : f ∈ locallyConstantCompactSupport G ℂ ℂ) {v : V}
     (hv : v ∈ smoothVectors ρ) (g : G) :
     heckeAct μ ρ f (ρ g v) = heckeAct μ ρ (fun x => f (x * g⁻¹)) v := by
@@ -140,12 +176,22 @@ def normInd (K : Subgroup G) : G → ℂ :=
   (K : Set G).indicator fun _ => ((μ.real (K : Set G))⁻¹ : ℂ)
 
 omit [IsTopologicalGroup G] [LocallyCompactSpace G] [TotallyDisconnectedSpace G] [BorelSpace G] [μ.IsHaarMeasure] in
+/- English proof (translation)
+The claim follows from `indicator_mem_locallyConstantCompactSupport hKc hKo _`.
+-/
 theorem normInd_mem {K : Subgroup G} (hKc : IsCompact (K : Set G)) (hKo : IsOpen (K : Set G)) :
     normInd μ K ∈ locallyConstantCompactSupport G ℂ ℂ :=
   indicator_mem_locallyConstantCompactSupport hKc hKo _
 
 omit [LocallyCompactSpace G] [TotallyDisconnectedSpace G] in
 
+/- English proof (translation)
+Establish `hvs : v ∈ smoothVectors ρ` using `mem_smoothVectors_of_mem_fixedVectors hKo hv`. Establish `hK0 : μ.real (K : Set G) ≠ 0`. Rewrite using `[measureReal_ne_zero_iff hKc.measure_lt_top.ne]`. Conclude with `(hKo.measure_pos μ ⟨1, K.one_mem⟩).ne'`. Use `eq_of_forall_dual fun φ => ?_` and prove the remaining obligations.
+
+Rewrite using `[dual_heckeAct μ (normInd_mem μ hKc hKo) hvs]`. Establish `hpt : ∀ g, normInd μ K g * φ (ρ g v) = (K : Set G).indicator (fun _ => ((μ.real (K : Set G))⁻¹ : ℂ) * φ v) g`. Introduce `g`. Distinguish the cases in `hg : g ∈ (K : Set G)`. Rewrite using `[normInd, Set.indicator_of_mem hg, Set.indicator_of_mem hg, mem_fixedVectors.1 hv g hg]`.
+
+Rewrite using `[normInd, Set.indicator_of_notMem hg, Set.indicator_of_notMem hg, zero_mul]`. Rewrite using `[integral_congr_ae (Eventually.of_forall hpt), integral_indicator_const _ hKo.measurableSet, Complex.real_smul, ← mul_assoc, ← Complex.ofReal_inv, ← Complex.ofReal_mul, mul_inv_cancel₀ hK0, Complex.ofReal_one, one_mul]`.
+-/
 theorem heckeAct_normInd {K : Subgroup G} (hKc : IsCompact (K : Set G)) (hKo : IsOpen (K : Set G))
     {v : V} (hv : v ∈ fixedVectors ρ K) : heckeAct μ ρ (normInd μ K) v = v := by
   have hvs : v ∈ smoothVectors ρ := mem_smoothVectors_of_mem_fixedVectors hKo hv
@@ -174,9 +220,17 @@ def heckeLin (f : locallyConstantCompactSupport G ℂ ℂ) : V →ₗ[ℂ] V whe
 
 omit [LocallyCompactSpace G] [T2Space G] [TotallyDisconnectedSpace G] in
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem heckeLin_apply (f : locallyConstantCompactSupport G ℂ ℂ) (v : V) :
     heckeLin μ hρ f v = heckeAct μ ρ f v := rfl
 
+/- English proof (translation)
+Take `⟨K, -, hK⟩` from `exists_forall_mul_right f.2`. Use `mem_smoothVectors_of_mem_fixedVectors (H := (K : Subgroup G)) K.isOpen (mem_fixedVectors_dual.2 fun k hk v => ?_)` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, heckeLin_apply]`. Rewrite using `[heckeAct_apply_act μ f.2 (hρ v) k]`. Use `congr 2`.
+
+Use function extensionality and compare the values at `x`. Conclude with `hK x k⁻¹ (inv_mem hk)`.
+-/
 theorem comp_heckeLin_mem [μ.IsMulRightInvariant] (ℓ : Module.Dual ℂ V) (f : locallyConstantCompactSupport G ℂ ℂ) :
     ℓ ∘ₗ heckeLin μ hρ f ∈ smoothVectors (Representation.dual ρ) := by
   obtain ⟨K, -, hK⟩ := exists_forall_mul_right f.2
@@ -199,10 +253,16 @@ def coeffL [μ.IsMulRightInvariant] (ℓ : Module.Dual ℂ V) :
       RingHom.id_apply]
     rw [heckeAct_smul_left c f.2 (hρ v), map_smul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coeffL_apply [μ.IsMulRightInvariant] (ℓ : Module.Dual ℂ V) (f : locallyConstantCompactSupport G ℂ ℂ) (v : V) :
     ((coeffL μ hρ ℓ f : smoothVectors (Representation.dual ρ)) : Module.Dual ℂ V) v =
       ℓ (heckeAct μ ρ f v) := rfl
 
+/- English proof (translation)
+Use `Subtype.ext (LinearMap.ext fun v => ?_)` and prove the remaining obligations. Rewrite using `[coeffL_apply, contragredient_apply_apply, coeffL_apply, heckeAct_apply_act μ f.2 (hρ v) g⁻¹]`. Use `congr 2`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+-/
 theorem coeffL_rtransL [μ.IsMulRightInvariant] (ℓ : Module.Dual ℂ V) (g : G) (f : locallyConstantCompactSupport G ℂ ℂ) :
     coeffL μ hρ ℓ (rtransL g f) = contragredient ρ g (coeffL μ hρ ℓ f) := by
   refine Subtype.ext (LinearMap.ext fun v => ?_)
@@ -212,6 +272,9 @@ theorem coeffL_rtransL [μ.IsMulRightInvariant] (ℓ : Module.Dual ℂ V) (g : G
   funext x
   simp
 
+/- English proof (translation)
+Use `Subtype.ext (LinearMap.ext fun v => ?_)` and prove the remaining obligations. Rewrite using `[coeffL_apply, coeffL_apply, LinearMap.comp_apply, heckeAct_ltrans a f.2 (hρ v)]`. Both sides reduce to the same expression.
+-/
 theorem coeffL_ltransL [μ.IsMulRightInvariant] (ℓ : Module.Dual ℂ V) (a : G) (f : locallyConstantCompactSupport G ℂ ℂ) :
     coeffL μ hρ ℓ (ltransL a f) = coeffL μ hρ (ℓ ∘ₗ ρ a) f := by
   refine Subtype.ext (LinearMap.ext fun v => ?_)
@@ -221,6 +284,9 @@ theorem coeffL_ltransL [μ.IsMulRightInvariant] (ℓ : Module.Dual ℂ V) (a : G
 def convS (f₁ f₂ : locallyConstantCompactSupport G ℂ ℂ) : locallyConstantCompactSupport G ℂ ℂ :=
   ⟨groupConv μ f₁ f₂, groupConv_mem μ f₁.2 f₂.2⟩
 
+/- English proof (translation)
+Use `Subtype.ext (LinearMap.ext fun v => ?_)` and prove the remaining obligations. Rewrite using `[coeffL_apply, coeffL_apply, coeffL_apply, convS, heckeAct_groupConv f₁.2 f₂.2 (hρ v)]`.
+-/
 theorem coeffL_convS [μ.IsMulRightInvariant] (ℓ : Module.Dual ℂ V) (f₁ f₂ : locallyConstantCompactSupport G ℂ ℂ) :
     coeffL μ hρ ℓ (convS μ f₁ f₂) =
       coeffL μ hρ ((coeffL μ hρ ℓ f₁ : smoothVectors (Representation.dual ρ)) :
@@ -228,6 +294,9 @@ theorem coeffL_convS [μ.IsMulRightInvariant] (ℓ : Module.Dual ℂ V) (f₁ f�
   refine Subtype.ext (LinearMap.ext fun v => ?_)
   rw [coeffL_apply, coeffL_apply, coeffL_apply, convS, heckeAct_groupConv f₁.2 f₂.2 (hρ v)]
 
+/- English proof (translation)
+Rewrite using `[coeffL_apply]`. Conclude with `congrArg ℓ (heckeAct_normInd μ hKc hKo hv)`.
+-/
 theorem coeffL_normInd_apply [μ.IsMulRightInvariant] (ℓ : Module.Dual ℂ V) {K : Subgroup G} (hKc : IsCompact (K : Set G))
     (hKo : IsOpen (K : Set G)) {v : V} (hv : v ∈ fixedVectors ρ K) :
     ((coeffL μ hρ ℓ ⟨normInd μ K, normInd_mem μ hKc hKo⟩ : smoothVectors (Representation.dual ρ)) :
@@ -253,6 +322,9 @@ def equivariantFunctionals (ρ : Representation ℂ G V) {H : Subgroup G} (χ : 
     rw [hℓ h v]
     ring
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_equivariantFunctionals {ρ : Representation ℂ G V} {H : Subgroup G} {χ : H → ℂ}
     {ℓ : Module.Dual ℂ V} :
     ℓ ∈ equivariantFunctionals ρ χ ↔ ∀ h : H, ∀ v, ℓ (ρ h v) = χ h * ℓ v :=
@@ -268,6 +340,15 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Loca
 
 omit [LocallyCompactSpace G] [T2Space G] [TotallyDisconnectedSpace G] [μ.IsHaarMeasure] in
 
+/- English proof (translation)
+Use `Subtype.ext (funext fun x => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `groupConv μ f₁ f₂ (σ x) = groupConv μ ((f₂ : G → ℂ) ∘ σ) ((f₁ : G → ℂ) ∘ σ) x`. Simplify using `only [groupConv, Function.comp_apply]`. Establish `eR : ∫ y, (f₂ : G → ℂ) (σ y) * (f₁ : G → ℂ) (σ (y⁻¹ * x)) ∂μ = ∫ z, (f₂ : G → ℂ) z * (f₁ : G → ℂ) (σ x * z⁻¹) ∂μ`. Establish `h` using `integral_map_equiv (μ := μ) σ.toMeasurableEquiv (fun z => (f₂ : G → ℂ) z * (f₁ : G → ℂ) (σ x * z⁻¹))`.
+
+Simplify using `only [Homeomorph.toMeasurableEquiv_coe, hσμ] at h`. Rewrite using `[h]`. Use `integral_congr_ae (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [hσ, map_inv_of_antiHom σ hσ]`. Establish `eL : ∫ y, (f₁ : G → ℂ) y * (f₂ : G → ℂ) (y⁻¹ * σ x) ∂μ = ∫ z, (f₂ : G → ℂ) z * (f₁ : G → ℂ) (σ x * z⁻¹) ∂μ`.
+
+Rewrite using `[← integral_inv_eq_self (fun z => (f₂ : G → ℂ) z * (f₁ : G → ℂ) (σ x * z⁻¹)) μ, ← integral_mul_left_eq_self (fun y => (f₁ : G → ℂ) y * (f₂ : G → ℂ) (y⁻¹ * σ x)) (σ x)]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Simplify using `only [inv_inv, mul_inv_rev, mul_assoc, inv_mul_cancel, mul_one]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[eL, eR]`.
+-/
 theorem compHomeoL_convS [LocallyCompactSpace G] [T2Space G] [TotallyDisconnectedSpace G]
     [μ.IsMulLeftInvariant] [μ.IsInvInvariant] (σ : G ≃ₜ G)
     (hσ : ∀ x y, σ (x * y) = σ y * σ x) (hσμ : μ.map σ = μ)
@@ -303,15 +384,24 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Loca
   (μ : Measure G) [μ.IsHaarMeasure] [μ.IsMulRightInvariant]
   {V : Type*} [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ G V} (hρ : IsSmooth ρ)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (LinearMap.ext fun v => by simp only [coeffL_apply, SetLike.val_smul, LinearMap.smul_apply])`.
+-/
 theorem coeffL_smul_left (c : ℂ) (ℓ : Module.Dual ℂ V) (f : locallyConstantCompactSupport G ℂ ℂ) :
     coeffL μ hρ (c • ℓ) f = c • coeffL μ hρ ℓ f :=
   Subtype.ext (LinearMap.ext fun v => by
     simp only [coeffL_apply, SetLike.val_smul, LinearMap.smul_apply])
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (LinearMap.ext fun v => by simp [coeffL_apply])`.
+-/
 theorem coeffL_zero_left (f : locallyConstantCompactSupport G ℂ ℂ) :
     coeffL μ hρ (0 : Module.Dual ℂ V) f = 0 :=
   Subtype.ext (LinearMap.ext fun v => by simp [coeffL_apply])
 
+/- English proof (translation)
+Establish `e : ℓ ∘ₗ ρ h₁ = χ h₁ • ℓ` using `LinearMap.ext fun v => by`. Rewrite using `[LinearMap.comp_apply, LinearMap.smul_apply, smul_eq_mul]`. Conclude with `hℓ h₁ v`. Rewrite using `[biTranslL_eq, coeffL_ltransL, e, coeffL_smul_left, coeffL_rtransL]`.
+-/
 theorem coeffL_biTranslL {H : Subgroup G} {χ : H → ℂ} {ℓ : Module.Dual ℂ V}
     (hℓ : ℓ ∈ equivariantFunctionals ρ χ) (h₁ h₂ : H) (f : locallyConstantCompactSupport G ℂ ℂ) :
     coeffL μ hρ ℓ (biTranslL (h₁ : G) (h₂ : G) f) =
@@ -325,6 +415,9 @@ def coeffDist (ℓ : Module.Dual ℂ V) (ℓt : Module.Dual ℂ (smoothVectors (
     Module.Dual ℂ (locallyConstantCompactSupport G ℂ ℂ) :=
   ℓt ∘ₗ coeffL μ hρ ℓ
 
+/- English proof (translation)
+Simplify using `only [coeffDist, LinearMap.comp_apply]`. Rewrite using `[coeffL_biTranslL μ hρ hℓ, map_smul, hℓt h₂, smul_eq_mul, mul_assoc]`.
+-/
 theorem coeffDist_biTranslL {H : Subgroup G} {χ : H → ℂ} {ℓ : Module.Dual ℂ V}
     (hℓ : ℓ ∈ equivariantFunctionals ρ χ)
     {ℓt : Module.Dual ℂ (smoothVectors (Representation.dual ρ))}
@@ -366,10 +459,18 @@ def annihilatorSubrep (W : Subrepresentation (contragredient ρ)) : Subrepresent
     rwa [contragredient_apply_apply, inv_inv] at this
 
 omit [LocallyCompactSpace G] [T2Space G] [TotallyDisconnectedSpace G] in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_annihilatorSubrep {W : Subrepresentation (contragredient ρ)} {v : V} :
     v ∈ annihilatorSubrep W ↔ ∀ ξ ∈ W, (ξ : Module.Dual ℂ V) v = 0 :=
   Iff.rfl
 
+/- English proof (translation)
+Take `⟨K, hKc, hKo, hvK⟩` from `(isSmooth_iff_forall_exists ρ).1 h.1 v`. Establish `hv' : (⟨v, hvK⟩ : fixedVectors ρ K) ≠ 0` using `fun e => hv (congrArg Subtype.val e)`. Take `⟨φ, hφ⟩` from `not_forall.1 (mt (Module.forall_dual_apply_eq_zero_iff ℂ (⟨v, hvK⟩ : fixedVectors ρ K)).1 hv')`. Take `⟨ξ, hξ⟩` from `(restrictFixed_bijective h.1 hKc hKo).2 φ`. Use `⟨(ξ : smoothVectors (Representation.dual ρ)), fun e => hφ ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hξ, restrictFixed_apply]`. Conclude with `e`.
+-/
 theorem exists_ne_zero_contragredient (h : IsAdmissible ρ) {v : V} (hv : v ≠ 0) :
     ∃ ξ : smoothVectors (Representation.dual ρ), (ξ : Module.Dual ℂ V) v ≠ 0 := by
   obtain ⟨K, hKc, hKo, hvK⟩ := (isSmooth_iff_forall_exists ρ).1 h.1 v
@@ -383,6 +484,9 @@ theorem exists_ne_zero_contragredient (h : IsAdmissible ρ) {v : V} (hv : v ≠ 
 
 omit [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G] [TotallyDisconnectedSpace G] in
 
+/- English proof (translation)
+Introduce `w` and use `by have : (stabilizerOf (V := W.toSubmodule) W.toRepresentation w : Set G) = stabilizerOf ρ (w : V) := by ext g simp only [SetLike.mem_coe, mem_stabilizerOf, Subtype.ext_iff] rfl rw [this] exact hρ _`.
+-/
 theorem isSmooth_subrep (hρ : IsSmooth ρ) (W : Subrepresentation ρ) :
     IsSmooth (V := W.toSubmodule) W.toRepresentation := fun w => by
   have : (stabilizerOf (V := W.toSubmodule) W.toRepresentation w : Set G) =
@@ -393,6 +497,9 @@ theorem isSmooth_subrep (hρ : IsSmooth ρ) (W : Subrepresentation ρ) :
   rw [this]
   exact hρ _
 
+/- English proof (translation)
+Set `ι : Representation.IntertwiningMap (V` to `W.toSubmodule) W.toRepresentation ρ := ⟨W.toSubmodule.subtype, fun g => LinearMap.ext fun _ => rfl⟩`. Establish `key` using `fixedProj_map hKc hKo (isSmooth_subrep hρ W) hρ ι ⟨x, hx⟩`. Establish `e : ((fixedProj ρ hρ hKc hKo x : fixedVectors ρ K) : V) = (((fixedProj (V` using `W.toSubmodule) W.toRepresentation (isSmooth_subrep hρ W) hKc hKo ⟨x, hx⟩ : fixedVectors _ K) : W.toSubmodule) : V) := congrArg Subtype.val key`. Rewrite using `[e]`. Conclude with `Subtype.property _`.
+-/
 theorem fixedProj_mem_subrep (hρ : IsSmooth ρ) (W : Subrepresentation ρ) {K : Subgroup G}
     (hKc : IsCompact (K : Set G)) (hKo : IsOpen (K : Set G)) {x : V} (hx : x ∈ W) :
     ((fixedProj ρ hρ hKc hKo x : fixedVectors ρ K) : V) ∈ W := by
@@ -406,6 +513,13 @@ theorem fixedProj_mem_subrep (hρ : IsSmooth ρ) (W : Subrepresentation ρ) {K :
   rw [e]
   exact Subtype.property _
 
+/- English proof (translation)
+Introduce `ζ hζ`. Establish `hsm` using `isSmooth_contragredient ρ`. Set `E : smoothVectors (Representation.dual ρ) →ₗ[ℂ] ℂ` to `LinearMap.applyₗ (R := ℂ) u ∘ₗ (smoothVectors (Representation.dual ρ)).subtype`. Establish `hE : ∀ k ∈ K, ∀ η, E (contragredient ρ k η) = E η` using `fun k hk η => by`. Express the relevant statement in the definitionally equal form `((contragredient ρ k η : smoothVectors (Representation.dual ρ)) : Module.Dual ℂ V) u = (η : Module.Dual ℂ V) u`.
+
+Rewrite using `[contragredient_apply_apply, mem_fixedVectors.1 hu k⁻¹ (inv_mem hk)]`. Establish `e1 : (ζ : Module.Dual ℂ V) u = (((fixedProj (contragredient ρ) hsm hKc hKo ζ : fixedVectors _ K) : smoothVectors (Representation.dual ρ)) : Module.Dual ℂ V) u`. Use `coinvariantsKer_le_ker_of_invariant hE (sub_fixedProj_mem hsm hKc hKo ζ)` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, map_sub, sub_eq_zero]`. Conclude with `this`.
+
+Rewrite using `[e1]`. Conclude with `hW _ (fixedProj_mem_subrep hsm W hKc hKo hζ) (fixedProj (contragredient ρ) hsm hKc hKo ζ).2`.
+-/
 theorem forall_mem_apply_eq_zero {W : Subrepresentation (contragredient ρ)} {K : Subgroup G}
     (hKc : IsCompact (K : Set G)) (hKo : IsOpen (K : Set G)) {u : V} (hu : u ∈ fixedVectors ρ K)
     (hW : ∀ η ∈ W, η ∈ fixedVectors (contragredient ρ) K → (η : Module.Dual ℂ V) u = 0) :
@@ -427,6 +541,19 @@ theorem forall_mem_apply_eq_zero {W : Subrepresentation (contragredient ρ)} {K 
   rw [e1]
   exact hW _ (fixedProj_mem_subrep hsm W hKc hKo hζ) (fixedProj (contragredient ρ) hsm hKc hKo ζ).2
 
+/- English proof (translation)
+Establish `hsm` using `isSmooth_contragredient ρ`. Use `Subrepresentation.ext (eq_top_iff.2 fun ξ _ => ?_)` and prove the remaining obligations. Take `⟨K, hKc, hKo, hξK⟩` from `(isSmooth_iff_forall_exists _).1 hsm ξ`. Establish `hfin : FiniteDimensional ℂ (fixedVectors ρ K)` using `h.2 K hKc hKo`. Establish `hfinD : FiniteDimensional ℂ (Module.Dual ℂ (fixedVectors ρ K))` using `(Module.finite_dual_iff ℂ).2 hfin`.
+
+Set `S : Submodule ℂ (Module.Dual ℂ (fixedVectors ρ K))` to `(W.toSubmodule.comap (fixedVectors (contragredient ρ) K).subtype).map (restrictFixed ρ K)`. Establish `hSfin : FiniteDimensional ℂ S` using `FiniteDimensional.finiteDimensional_submodule S`. Establish `hS : S = ⊤`. Assume the negation of the conclusion as `hS`. Establish `hco : S.dualCoannihilator ≠ ⊥`.
+
+Introduce `e`. Apply `hS` to reduce the goal to its premises. Rewrite using `[← Subspace.dualCoannihilator_dualAnnihilator_eq (W := S), e, Submodule.dualAnnihilator_bot]`. Take `⟨u, hu, hu0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hco`. Establish `hann : (u : V) ∈ annihilatorSubrep W`.
+
+Use `forall_mem_apply_eq_zero hKc hKo u.2 fun η hη hηK => ?_` and prove the remaining obligations. Establish `hmem : restrictFixed ρ K ⟨η, hηK⟩ ∈ S` using `Submodule.mem_map_of_mem hη`. Conclude with `(Submodule.mem_dualCoannihilator _).1 hu _ hmem`. Rewrite `hann` using `[hA]`. Conclude with `hu0 (Subtype.ext ((Submodule.mem_bot ℂ).1 hann))`.
+
+Establish `hmem : restrictFixed ρ K ⟨ξ, hξK⟩ ∈ S`. Rewrite using `[hS]`. Conclude with `Submodule.mem_top`. Take `⟨η, hη, hηξ⟩` from `Submodule.mem_map.1 hmem`. Establish `e` using `(restrictFixed_bijective h.1 hKc hKo).1 hηξ`.
+
+Establish `: (η : smoothVectors (Representation.dual ρ)) = ξ` using `congrArg Subtype.val e`. Rewrite using `[← this]`. Conclude with `hη`.
+-/
 theorem eq_top_of_annihilator_eq_bot (h : IsAdmissible ρ) {W : Subrepresentation (contragredient ρ)}
     (hA : annihilatorSubrep W = ⊥) : W = ⊤ := by
   have hsm := isSmooth_contragredient ρ
@@ -461,6 +588,17 @@ theorem eq_top_of_annihilator_eq_bot (h : IsAdmissible ρ) {W : Subrepresentatio
   rw [← this]
   exact hη
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨ξ₀, hξ₀⟩ : ∃ ξ : smoothVectors (Representation.dual ρ), ξ ≠ 0 := by`. Take `⟨v, hv⟩` from `exists_ne_zero_of_isIrreducible (ρ := ρ)`. Take `⟨ξ, hξ⟩` from `exists_ne_zero_contragredient h hv`. Conclude with `⟨ξ, fun e => hξ (by rw [e]; rfl)⟩`. Use `{ toNontrivial := ⟨⟨⊥, ⊤, fun e => hξ₀ ?_⟩⟩, eq_bot_or_eq_top := fun W => ?_ }` and prove the remaining obligations.
+
+Establish `: ξ₀ ∈ (⊤ : Subrepresentation (contragredient ρ))` using `Submodule.mem_top`. Rewrite `this` using `[← e]`. Conclude with `(Submodule.mem_bot ℂ).1 this`. Distinguish the cases in `hW : W = ⊥`. Conclude with `Or.inl hW`.
+
+Use `right`. Break down `eq_bot_or_eq_top (annihilatorSubrep W) with hA | hA` into its components or cases. Conclude with `eq_top_of_annihilator_eq_bot h hA`. It suffices to derive a contradiction. Apply `hW` to reduce the goal to its premises.
+
+Use `Subrepresentation.ext (eq_bot_iff.2 fun ξ hξ => ?_)` and prove the remaining obligations. Rewrite using `[Submodule.mem_bot]`. Use `Subtype.ext (LinearMap.ext fun v => ?_)` and prove the remaining obligations. Establish `hv : v ∈ annihilatorSubrep W`. Rewrite using `[hA]`.
+
+Conclude with `Submodule.mem_top`. Conclude with `hv ξ hξ`.
+-/
 theorem isIrreducible_contragredient (h : IsAdmissible ρ) [ρ.IsIrreducible] :
     (contragredient ρ).IsIrreducible := by
   obtain ⟨ξ₀, hξ₀⟩ : ∃ ξ : smoothVectors (Representation.dual ρ), ξ ≠ 0 := by
@@ -495,6 +633,15 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Loca
   (μ : Measure G) [μ.IsHaarMeasure] [μ.IsMulRightInvariant]
   {V : Type*} [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ G V}
 
+/- English proof (translation)
+Use `isIrreducible_contragredient h` as an intermediate fact. Set `R : Subrepresentation (contragredient ρ)` to `⟨LinearMap.range (coeffL μ h.1 ℓ), fun g ξ hξ => by`. Take `⟨f, rfl⟩` from `LinearMap.mem_range.1 hξ`. Rewrite using `[← coeffL_rtransL]`. Conclude with `LinearMap.mem_range_self _ _⟩`.
+
+Break down `eq_bot_or_eq_top R with hR | hR` into its components or cases. It suffices to derive a contradiction. Take `⟨v, hv⟩ : ∃ v, ℓ v ≠ 0` from `not_forall.1 fun e => hℓ (LinearMap.ext e)`. Take `⟨K, hKc, hKo, hvK⟩` from `(isSmooth_iff_forall_exists ρ).1 h.1 v`. Establish `hmem : coeffL μ h.1 ℓ ⟨normInd μ K, normInd_mem μ hKc hKo⟩ ∈ R` using `LinearMap.mem_range_self _ _`.
+
+Rewrite `hmem` using `[hR]`. Establish `h0` using `(Submodule.mem_bot ℂ).1 hmem`. Apply `hv` to reduce the goal to its premises. Rewrite using `[← coeffL_normInd_apply μ h.1 ℓ hKc hKo hvK, h0]`. Both sides reduce to the same expression.
+
+Introduce `ξ`. Establish `: ξ ∈ R`. Rewrite using `[hR]`. Conclude with `Submodule.mem_top`. Conclude with `LinearMap.mem_range.1 this`.
+-/
 theorem coeffL_surjective (h : IsAdmissible ρ) [ρ.IsIrreducible] {ℓ : Module.Dual ℂ V}
     (hℓ : ℓ ≠ 0) : Function.Surjective (coeffL μ h.1 ℓ) := by
   have := isIrreducible_contragredient h
@@ -531,6 +678,11 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Loca
 
 omit [LocallyCompactSpace G] [TotallyDisconnectedSpace G] [μ.IsMulRightInvariant] in
 
+/- English proof (translation)
+Establish `hK0 : μ.real (K : Set G) ≠ 0`. Rewrite using `[measureReal_ne_zero_iff hKc.measure_lt_top.ne]`. Conclude with `(hKo.measure_pos μ ⟨1, K.one_mem⟩).ne'`. Rewrite using `[dual_heckeAct μ (normInd_mem μ hKc hKo) (hρ v)]`. Establish `hpt : ∀ g, normInd μ K g * (ξ : Module.Dual ℂ V) (ρ g v) = (K : Set G).indicator (fun _ => ((μ.real (K : Set G))⁻¹ : ℂ) * (ξ : Module.Dual ℂ V) v) g`.
+
+Introduce `g`. Distinguish the cases in `hg : g ∈ (K : Set G)`. Rewrite using `[normInd, Set.indicator_of_mem hg, Set.indicator_of_mem hg, mem_fixedVectors_contragredient.1 hξ g hg v]`. Rewrite using `[normInd, Set.indicator_of_notMem hg, Set.indicator_of_notMem hg, zero_mul]`. Rewrite using `[integral_congr_ae (Eventually.of_forall hpt), integral_indicator_const _ hKo.measurableSet, Complex.real_smul, ← mul_assoc, ← Complex.ofReal_inv, ← Complex.ofReal_mul, mul_inv_cancel₀ hK0, Complex.ofReal_one, one_mul]`.
+-/
 theorem apply_heckeAct_normInd (hρ : IsSmooth ρ) {K : Subgroup G} (hKc : IsCompact (K : Set G))
     (hKo : IsOpen (K : Set G)) {ξ : smoothVectors (Representation.dual ρ)}
     (hξ : ξ ∈ fixedVectors (contragredient ρ) K) (v : V) :
@@ -561,12 +713,18 @@ def coeffKer (hρ : IsSmooth ρ) (ℓt : Module.Dual ℂ (smoothVectors (Represe
   smul_mem' c k hk ξ := by
     rw [map_smul, map_smul, hk ξ, smul_zero]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_coeffKer (hρ : IsSmooth ρ) {ℓt : Module.Dual ℂ (smoothVectors (Representation.dual ρ))}
     {k : locallyConstantCompactSupport G ℂ ℂ} :
     k ∈ coeffKer μ hρ ℓt ↔ ∀ ξ : smoothVectors (Representation.dual ρ),
       ℓt (coeffL μ hρ (ξ : Module.Dual ℂ V) k) = 0 :=
   Iff.rfl
 
+/- English proof (translation)
+Introduce `ξ`. Rewrite using `[coeffL_ltransL]`. Establish `e : (ξ : Module.Dual ℂ V) ∘ₗ ρ a = ((contragredient ρ a⁻¹ ξ : smoothVectors (Representation.dual ρ)) : Module.Dual ℂ V)` using `LinearMap.ext fun v => by rw [contragredient_apply_apply, inv_inv]; rfl`. Rewrite using `[e]`. Conclude with `hk _`.
+-/
 theorem ltransL_mem_coeffKer (hρ : IsSmooth ρ)
     {ℓt : Module.Dual ℂ (smoothVectors (Representation.dual ρ))} (a : G)
     {k : locallyConstantCompactSupport G ℂ ℂ} (hk : k ∈ coeffKer μ hρ ℓt) :
@@ -579,11 +737,25 @@ theorem ltransL_mem_coeffKer (hρ : IsSmooth ρ)
   rw [e]
   exact hk _
 
+/- English proof (translation)
+The claim follows from `LinearMap.mem_ker`.
+-/
 theorem mem_ker_coeffL (hρ : IsSmooth ρ) {ℓ : Module.Dual ℂ V}
     {f : locallyConstantCompactSupport G ℂ ℂ} :
     f ∈ LinearMap.ker (coeffL μ hρ ℓ) ↔ coeffL μ hρ ℓ f = 0 :=
   LinearMap.mem_ker
 
+/- English proof (translation)
+Use `isIrreducible_contragredient h` as an intermediate fact. Set `M : Subrepresentation (contragredient ρ)` to `⟨L.map (coeffL μ h.1 ℓ), fun g ξ hξ => by`. Take `⟨f, hf, rfl⟩` from `Submodule.mem_map.1 hξ`. Rewrite using `[← coeffL_rtransL]`. Conclude with `Submodule.mem_map_of_mem (hL g f hf)⟩`.
+
+Use `le_antisymm hker ?_` and prove the remaining obligations. Break down `eq_bot_or_eq_top M with hM | hM` into its components or cases. Introduce `f hf`. Establish `: coeffL μ h.1 ℓ f ∈ M` using `Submodule.mem_map_of_mem hf`. Rewrite `this` using `[hM]`.
+
+Conclude with `LinearMap.mem_ker.2 ((Submodule.mem_bot ℂ).1 this)`. It suffices to derive a contradiction. Apply `hLtop` to reduce the goal to its premises. Use `eq_top_iff.2 fun f _ => ?_` and prove the remaining obligations. Establish `: coeffL μ h.1 ℓ f ∈ M`.
+
+Rewrite using `[hM]`. Conclude with `Submodule.mem_top`. Take `⟨f', hf', e⟩` from `Submodule.mem_map.1 this`. Establish `hd : f - f' ∈ L` using `hker (LinearMap.mem_ker.2 (by rw [map_sub, e, sub_self]))`. Use `L.add_mem hd hf'` as an intermediate fact.
+
+Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 theorem ker_coeffL_eq (h : IsAdmissible ρ) [ρ.IsIrreducible] {ℓ : Module.Dual ℂ V}
     {L : Submodule ℂ (locallyConstantCompactSupport G ℂ ℂ)}
     (hker : LinearMap.ker (coeffL μ h.1 ℓ) ≤ L) (hL : ∀ g, ∀ f ∈ L, rtransL g f ∈ L)
@@ -613,6 +785,21 @@ theorem ker_coeffL_eq (h : IsAdmissible ρ) [ρ.IsIrreducible] {ℓ : Module.Dua
 
 variable [μ.IsInvInvariant] {σ : G ≃ₜ G} {H : Subgroup G} {χ : H → ℂ}
 
+/- English proof (translation)
+Establish `hB` using `hGK (coeffDist μ h.1 ℓ ℓt) (coeffDist_biTranslL μ h.1 hℓ hℓt)`. Use `ker_coeffL_eq μ h ?_ ?_ ?_` and prove the remaining obligations. Introduce `f₁ hf₁`. Rewrite `hf₁` using `[LinearMap.mem_ker]`. Use `show compHomeoL σ f₁ ∈ coeffKer μ h.1 ℓt`.
+
+Introduce `ξ`. Take `⟨k, rfl⟩` from `coeffL_surjective μ h hℓ0 ξ`. Use `set f₂ := compHomeoL σ.symm k`. Establish `hk : k = compHomeoL σ f₂` using `(compHomeoL_symm_apply σ k).symm`. Rewrite using `[← coeffL_convS, hk, ← compHomeoL_convS μ σ hσ hσμ]`.
+
+Use `hB (convS μ f₁ f₂)` as an intermediate fact. Simplify using `only [coeffDist, LinearMap.comp_apply] at this`. Rewrite using `[this, coeffL_convS, hf₁]`. Simplify using `[coeffL_zero_left]`. Introduce `g f hf`.
+
+Use `show compHomeoL σ (rtransL g f) ∈ coeffKer μ h.1 ℓt`. Establish `e : compHomeoL σ (rtransL g f) = ltransL (σ.symm g)⁻¹ (compHomeoL σ f)` using `Subtype.ext (funext fun x => by`. Simplify using `only [coe_compHomeoL, coe_rtransL, coe_ltransL, Function.comp_apply, inv_inv, hσ, Homeomorph.apply_symm_apply])`. Rewrite using `[e]`. Conclude with `ltransL_mem_coeffKer μ h.1 _ hf`.
+
+Introduce `htop`. Take `⟨ξ₀, hξ₀⟩ : ∃ ξ, ℓt ξ ≠ 0` from `not_forall.1 fun e => hℓt0 (LinearMap.ext e)`. Take `⟨K, hKc, hKo, hξK⟩` from `(isSmooth_iff_forall_exists _).1 (isSmooth_contragredient ρ) ξ₀`. Set `k₀ : locallyConstantCompactSupport G ℂ ℂ` to `⟨normInd μ K, normInd_mem μ hKc hKo⟩`. Establish `hmem : compHomeoL σ.symm k₀ ∈ (coeffKer μ h.1 ℓt).comap (compHomeoL σ)`.
+
+Rewrite using `[htop]`. Conclude with `Submodule.mem_top`. Establish `h0` using `(Submodule.mem_comap.1 hmem) ξ₀`. Rewrite `h0` using `[compHomeoL_symm_apply]`. Establish `e : coeffL μ h.1 (ξ₀ : Module.Dual ℂ V) k₀ = ξ₀` using `Subtype.ext (LinearMap.ext fun v => apply_heckeAct_normInd μ h.1 hKc hKo hξK v)`.
+
+Rewrite `h0` using `[e]`. Conclude with `hξ₀ h0`.
+-/
 theorem ker_coeffL_eq_comap (hσ : ∀ x y, σ (x * y) = σ y * σ x) (hσμ : μ.map σ = μ)
     (hGK : BiEquivariantSigmaInvariant H χ σ) (h : IsAdmissible ρ) [ρ.IsIrreducible]
     {ℓ : Module.Dual ℂ V} (hℓ : ℓ ∈ equivariantFunctionals ρ χ) (hℓ0 : ℓ ≠ 0)
@@ -658,6 +845,19 @@ theorem ker_coeffL_eq_comap (hσ : ∀ x y, σ (x * y) = σ y * σ x) (hσμ : �
     rw [e] at h0
     exact hξ₀ h0
 
+/- English proof (translation)
+Distinguish the cases in `h₂0 : ℓ₂ = 0`. Conclude with `⟨0, by rw [h₂0, zero_smul]⟩`. Use `isIrreducible_contragredient h` as an intermediate fact. Use `set A₁ := coeffL μ h.1 ℓ₁`. Use `set A₂ := coeffL μ h.1 ℓ₂`.
+
+Establish `hs₁ : Function.Surjective A₁` using `coeffL_surjective μ h h₁0`. Establish `hker : LinearMap.ker A₁ ≤ LinearMap.ker A₂`. Rewrite using `[ker_coeffL_eq_comap μ hσ hσμ hGK h h₁ h₁0 hℓt hℓt0, ker_coeffL_eq_comap μ hσ hσμ hGK h h₂ h₂0 hℓt hℓt0]`. Set `e` to `A₁.quotKerEquivOfSurjective hs₁`. Set `T : smoothVectors (Representation.dual ρ) →ₗ[ℂ] smoothVectors (Representation.dual ρ)` to `(LinearMap.ker A₁).liftQ A₂ hker ∘ₗ e.symm.toLinearMap`.
+
+Establish `hT : ∀ f, T (A₁ f) = A₂ f` using `fun f => by`. Establish `: e.symm (A₁ f) = Submodule.Quotient.mk f`. Rewrite using `[LinearEquiv.symm_apply_eq, LinearMap.quotKerEquivOfSurjective_apply_mk]`. Simplify using `only [T, LinearMap.comp_apply, LinearEquiv.coe_coe, this, Submodule.liftQ_apply]`. Establish `hTi : ∀ (g : G) (ξ : smoothVectors (Representation.dual ρ)), T (contragredient ρ g ξ) = contragredient ρ g (T ξ)` using `fun g ξ => by`.
+
+Take `⟨f, rfl⟩` from `hs₁ ξ`. Rewrite using `[← coeffL_rtransL, hT, hT, coeffL_rtransL]`. Take `⟨c, hc⟩` from `(algebraMap_intertwiningMap_bijective_of_isSmooth (isSmooth_contragredient ρ)).2 (LinearMap.intertwiningMap_of_isIntertwiningMap _ _ T hTi)`. Establish `hTc : ∀ ξ, T ξ = c • ξ` using `fun ξ => (congrArg (fun F : Representation.IntertwiningMap (contragredient ρ) (contragredient ρ) => F ξ) hc).symm`. Use `⟨c, LinearMap.ext fun v => ?_⟩` and prove the remaining obligations.
+
+Take `⟨K, hKc, hKo, hvK⟩` from `(isSmooth_iff_forall_exists ρ).1 h.1 v`. Set `k : locallyConstantCompactSupport G ℂ ℂ` to `⟨normInd μ K, normInd_mem μ hKc hKo⟩`. Establish `e₂` using `coeffL_normInd_apply μ h.1 ℓ₂ hKc hKo hvK`. Establish `e₁` using `coeffL_normInd_apply μ h.1 ℓ₁ hKc hKo hvK`. Rewrite using `[LinearMap.smul_apply, ← e₁, ← e₂]`.
+
+Express the relevant statement in the definitionally equal form `((A₂ k : smoothVectors (Representation.dual ρ)) : Module.Dual ℂ V) v = c • ((A₁ k : smoothVectors (Representation.dual ρ)) : Module.Dual ℂ V) v`. Rewrite using `[← hT, hTc]`. Both sides reduce to the same expression.
+-/
 theorem exists_smul_eq (hσ : ∀ x y, σ (x * y) = σ y * σ x) (hσμ : μ.map σ = μ)
     (hGK : BiEquivariantSigmaInvariant H χ σ) [TopologicalSpace.SeparableSpace G]
     (h : IsAdmissible ρ) [ρ.IsIrreducible]
@@ -701,6 +901,13 @@ theorem exists_smul_eq (hσ : ∀ x y, σ (x * y) = σ y * σ x) (hσμ : μ.map
   rw [← hT, hTc]
   rfl
 
+/- English proof (translation)
+Take `⟨ℓt, hℓt, hℓt0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Rewrite using `[rank_le_one_iff]`. Distinguish the cases in `hz : ∀ ℓ ∈ equivariantFunctionals ρ χ, ℓ = 0`. Use `⟨0, fun ℓ => ⟨0, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[zero_smul]`.
+
+Conclude with `Subtype.ext (hz ℓ ℓ.2).symm`. Use `push Not at hz`. Take `⟨ℓ₁, h₁, h₁0⟩` from `hz`. Use `⟨⟨ℓ₁, h₁⟩, fun ℓ => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `exists_smul_eq μ hσ hσμ hGK h hℓt hℓt0 h₁ h₁0 ℓ.2`.
+
+Conclude with `⟨c, Subtype.ext hc.symm⟩`.
+-/
 theorem rank_equivariantFunctionals_le_one (hσ : ∀ x y, σ (x * y) = σ y * σ x)
     (hσμ : μ.map σ = μ) (hGK : BiEquivariantSigmaInvariant H χ σ)
     [TopologicalSpace.SeparableSpace G] (h : IsAdmissible ρ) [ρ.IsIrreducible]
@@ -724,6 +931,9 @@ section Unimodular
 
 variable {G : Type*} [Group G] [MeasurableSpace G] [MeasurableMul G] [MeasurableInv G]
 
+/- English proof (translation)
+Establish `: μ.inv.IsMulRightInvariant` using `inferInstance`. Rewrite `this` using `[Measure.inv_eq_self]`. Then use the resulting hypothesis.
+-/
 theorem isMulRightInvariant_of_isInvInvariant (μ : Measure G) [μ.IsMulLeftInvariant]
     [μ.IsInvInvariant] : μ.IsMulRightInvariant :=
   by
@@ -744,6 +954,17 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Loca
 omit [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G] [TotallyDisconnectedSpace G]
   [TopologicalSpace.SeparableSpace G] [MeasurableSpace G] [BorelSpace G] in
 
+/- English proof (translation)
+Take `⟨ℓ, hℓ, hℓ0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Set `Φ` to `LinearEquiv.ofBijective (toDoubleContragredient h.1).toLinearMap (toDoubleContragredient_bijective h)`. Establish `hΦ : ∀ x, Φ x = toDoubleContragredient h.1 x` using `fun _ => rfl`. Set `ℓ' : Module.Dual ℂ (smoothVectors (Representation.dual (contragredient ρ)))` to `ℓ ∘ₗ Φ.symm.toLinearMap`. Establish `hℓ'Φ : ∀ x, ℓ' (Φ x) = ℓ x` using `fun x => by`.
+
+Simplify using `only [ℓ', LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]`. Introduce `hbot`. Establish `hmem : ℓ' ∈ equivariantFunctionals (contragredient (contragredient ρ)) (fun g => ((χ g)⁻¹)⁻¹)`. Introduce `g y`. Take `⟨x, rfl⟩` from `Φ.surjective y`.
+
+Use `show ℓ' (contragredient (contragredient ρ) g (Φ x)) = ((χ g)⁻¹)⁻¹ * ℓ' (Φ x)`. Establish `e1 : contragredient (contragredient ρ) g (Φ x) = Φ (ρ g x)`. Rewrite using `[hΦ, hΦ, (toDoubleContragredient h.1).isIntertwining]`. Rewrite using `[inv_inv, e1, hℓ'Φ, hℓ'Φ]`. Conclude with `hℓ g x`.
+
+Rewrite `hmem` using `[hbot]`. Establish `h0 : ℓ' = 0` using `(Submodule.mem_bot ℂ).1 hmem`. Apply `hℓ0` to reduce the goal to its premises. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[← hℓ'Φ, h0]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_ne_zero_doubleContragredient [IsTopologicalGroup G] [LocallyCompactSpace G]
     [T2Space G] [TotallyDisconnectedSpace G] (h : IsAdmissible ρ)
     (hne : equivariantFunctionals ρ χ ≠ ⊥) :
@@ -773,6 +994,13 @@ theorem exists_ne_zero_doubleContragredient [IsTopologicalGroup G] [LocallyCompa
   rw [← hℓ'Φ, h0]
   rfl
 
+/- English proof (translation)
+Use `isMulRightInvariant_of_isInvInvariant μ` as an intermediate fact. Distinguish the cases in `h₂ : equivariantFunctionals (contragredient ρ) (fun g => (χ g)⁻¹) = ⊥`. Rewrite using `[h₂, rank_bot, mul_zero]`. Conclude with `zero_le_one`. Distinguish the cases in `h₁ : equivariantFunctionals ρ χ = ⊥`.
+
+Rewrite using `[h₁, rank_bot, zero_mul]`. Conclude with `zero_le_one`. Use `isIrreducible_contragredient h` as an intermediate fact. Establish `r₁` using `rank_equivariantFunctionals_le_one μ hσ hσμ hGK h h₂`. Establish `r₂` using `rank_equivariantFunctionals_le_one μ hσ hσμ (hGK.inv hσ) (isAdmissible_contragredient h) (exists_ne_zero_doubleContragredient h h₁)`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem rank_mul_rank_le_one (hσ : ∀ x y, σ (x * y) = σ y * σ x) (hσμ : μ.map σ = μ)
     (hGK : BiEquivariantSigmaInvariant H χ σ) (h : IsAdmissible ρ) [ρ.IsIrreducible] :
     Module.rank ℂ (equivariantFunctionals ρ χ) *
@@ -793,6 +1021,9 @@ theorem rank_mul_rank_le_one (hσ : ∀ x y, σ (x * y) = σ y * σ x) (hσμ : 
       ≤ 1 * 1 := mul_le_mul' r₁ r₂
     _ = 1 := one_mul 1
 
+/- English proof (translation)
+Use `isMulRightInvariant_of_isInvInvariant μ` as an intermediate fact. Conclude with `rank_equivariantFunctionals_le_one μ hσ hσμ hGK h hne`.
+-/
 theorem rank_le_one_of_ne_bot (hσ : ∀ x y, σ (x * y) = σ y * σ x) (hσμ : μ.map σ = μ)
     (hGK : BiEquivariantSigmaInvariant H χ σ) (h : IsAdmissible ρ) [ρ.IsIrreducible]
     (hne : equivariantFunctionals (contragredient ρ) (fun g => (χ g)⁻¹) ≠ ⊥) :

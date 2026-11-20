@@ -11,6 +11,9 @@ open scoped ENNReal Classical
 open Limits
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.NefDeRhamCover.exists_cover_degree_eq | exact GlobalTheory.NefDeRhamCover.exists_cover_degree_eq | (intros; apply GlobalTheory.NefDeRhamCover.exists_cover_degree_eq <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.dominant_induced_model_reduction : Hypotheses2 → HypothesesH → ∀ (D : D7) (O : Setup D), O.Core → ∀ (A : SlopeTestRemainingChoices O.Y) (T : Real0 O.Y) (H : Ht O.Y) (h : O.Reads A T H),
   ∀ (B : ℝ), 2 ≤ B → ∀ (u : Wt O.Y) (s : ℚ), IsRat O.Y u → 0 < s → WeightThresholdDefs.Dominant O.Y (A.sh u s) →
   ∀ (c : O.s.Comp) (M : TrueGeo.Model (O.var c)) (L : HermLB M.p) (k : ℕ+) (cf : HeightOneSpectrum (𝓞 D.what₂.LL) → ℝ),

@@ -22,28 +22,48 @@ open Formalism.L2.Host (unif atFin unif_spec)
 namespace GlobalTheory.CompanionTheory.HeckeFE
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.hecke_character_conductor_exponent E χ hu v m h`.
+-/
 theorem L_cond (χ : HChar E) (hu : IsUnitary χ) (v : HeightOneSpectrum (𝓞 E)) (m : ℕ) (h : ExpAt χ v m) :
     multiplicity v.asIdeal (toHecke χ hu).conductor = m := GlobalTheory.T.hecke_character_conductor_exponent E χ hu v m h
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.cm_hecke_character_infinity_type E I φ hφ χ hu n hi i`.
+-/
 theorem L_inf {I : Type} [Fintype I] (φ : I → E →+* ℂ) (hφ : IsCMType φ) [IsTotallyComplex E] (χ : HChar E) (hu : IsUnitary χ)
     (n : I → ℤ) (hi : Formalism.L2.Host.HChar.HasInf χ φ n) (i : I) :
     (toHecke χ hu).infiniteTau (InfinitePlace.mk (φ i)) = 0 ∧
       ((toHecke χ hu).infiniteWeight (InfinitePlace.mk (φ i))).natAbs = (n i).natAbs :=
   GlobalTheory.T.cm_hecke_character_infinity_type E I φ hφ χ hu n hi i
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.cm_hecke_character_not_norm_power E I φ hφ χ hu n hi hn`.
+-/
 theorem L_notPow {I : Type} [Fintype I] (φ : I → E →+* ℂ) (hφ : IsCMType φ) [IsTotallyComplex E] (χ : HChar E) (hu : IsUnitary χ)
     (n : I → ℤ) (hi : Formalism.L2.Host.HChar.HasInf χ φ n) (hn : ∃ i, n i ≠ 0) :
     ¬ ∃ τ : ℝ, ∀ x : IdeleGroup E,
       ((toHecke χ hu).toIdele x : ℂ) = ((ideleModule E x : ℝ) : ℂ) ^ ((τ : ℂ) * Complex.I) :=
   GlobalTheory.T.cm_hecke_character_not_norm_power E I φ hφ χ hu n hi hn
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.hecke_L_function_euler_product E χ hu s hs`.
+-/
 theorem L_euler (χ : HChar E) (hu : IsUnitary χ) {s : ℂ} (hs : 1 < s.re) :
     HasProd (eulerFactor χ s) ((toHecke χ hu).LFunction s) := GlobalTheory.T.hecke_L_function_euler_product E χ hu s hs
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.finite_epsilon_factor_dependence_on_s E χ a s`.
+-/
 theorem L_shift (χ : HChar E) (a : HeightOneSpectrum (𝓞 E) →₀ ℕ) (s : ℂ) :
     finEps χ a s = finEps χ a (1 / 2) *
       (((discr E).natAbs * a.prod fun v k => Ideal.absNorm v.asIdeal ^ k : ℕ) : ℂ) ^ (1 / 2 - s) := GlobalTheory.T.finite_epsilon_factor_dependence_on_s E χ a s
 
+/- English proof (translation)
+Establish `h` using `valued_eq_exp_neg_ord (v := v) (Units.ne_zero (atFin v (unif v ^ k)))`. Establish `h2 : Valued.v ((atFin v (unif v ^ k) : (v.adicCompletion E)ˣ) : v.adicCompletion E) = WithZero.exp (-(k : ℤ))`. Establish `h3 : Valued.v ((atFin v (unif v) : (v.adicCompletion E)ˣ) : v.adicCompletion E) = WithZero.exp (-1 : ℤ)` using `unif_spec v`. Rewrite using `[map_pow, Units.val_pow_eq_pow_val, map_pow, h3, ← WithZero.exp_nsmul]`. Simplify using the standard rewrite rules.
+
+Rewrite `h` using `[h2, WithZero.exp_inj]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem ord_unif (v : HeightOneSpectrum (𝓞 E)) (k : ℕ) :
     ord ((atFin v (unif v ^ k) : (v.adicCompletion E)ˣ) : v.adicCompletion E) = k := by
   have h := valued_eq_exp_neg_ord (v := v) (Units.ne_zero (atFin v (unif v ^ k)))
@@ -54,9 +74,21 @@ theorem ord_unif (v : HeightOneSpectrum (𝓞 E)) (k : ℕ) :
   rw [h2, WithZero.exp_inj] at h
   omega
 
+/- English proof (translation)
+The claim follows from `count_coeIdeal_eq_multiplicity v _root_.differentIdeal_ne_bot`.
+-/
 theorem differentExp_eq (v : HeightOneSpectrum (𝓞 E)) : differentExp v = (diffExp v : ℤ) :=
   count_coeIdeal_eq_multiplicity v _root_.differentIdeal_ne_bot
 
+/- English proof (translation)
+Establish `hc : multiplicity v.asIdeal (toHecke χ hu).conductor = m` using `L_cond χ hu v m h`. Establish `hG` using `GlobalTheory.T.hecke_gauss_sum_local_term E χ hu v m hm h`. Simplify using `only [GlobalTheory.T.local_additive_character_eq_adelic] at hG`. Rewrite using `[GlobalTheory.T.haar_integral_integers_finite_sum E v m _ (fun y hy => by rw [(toHecke χ hu).finiteTest_eq_zero hy, zero_mul]) (fun y k hk => ?_), hG]`. Use `set c : v.adicCompletion E := ((atFin v (unif v ^ (m + diffExp v)) : (v.adicCompletion E)ˣ) : v.adicCompletion E) with hcdef`.
+
+Establish `hcv : Valued.v c = WithZero.exp (-((m + diffExp v : ℕ) : ℤ))`. Establish `h3 : Valued.v ((atFin v (unif v) : (v.adicCompletion E)ˣ) : v.adicCompletion E) = WithZero.exp (-1 : ℤ)` using `unif_spec v`. Rewrite using `[hcdef, map_pow, Units.val_pow_eq_pow_val, map_pow, h3, ← WithZero.exp_nsmul]`. Simplify using the standard rewrite rules. Establish `hψ : localAdelicChar E v (c⁻¹ * k) = 1`.
+
+Use `localAdelicChar_eq_one_of_mem ((mem_localInvDifferent_iff_valued v _).2 ?_)` and prove the remaining obligations. Use `show _ ≤ WithZero.exp (differentExp v)`. Rewrite using `[map_mul, map_inv₀, hcv, ← WithZero.exp_neg, differentExp_eq]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← WithZero.exp_add]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[(toHecke χ hu).finiteTest_add y (by rw [hc]; exact hk), mul_add, AddChar.map_add_eq_mul, hψ, mul_one]`.
+-/
 theorem L_ramInt (χ : HChar E) (hu : IsUnitary χ) (v : HeightOneSpectrum (𝓞 E)) {m : ℕ} (hm : m ≠ 0) (h : ExpAt χ v m) :
     ∫ y, (toHecke χ hu).finiteTest v y *
         (localAdelicChar E v (((atFin v (unif v ^ (m + diffExp v)) : (v.adicCompletion E)ˣ) : v.adicCompletion E)⁻¹ * y) : ℂ)
@@ -83,6 +115,11 @@ theorem L_ramInt (χ : HChar E) (hu : IsUnitary χ) (v : HeightOneSpectrum (𝓞
         ring
   rw [(toHecke χ hu).finiteTest_add y (by rw [hc]; exact hk), mul_add, AddChar.map_add_eq_mul, hψ, mul_one]
 
+/- English proof (translation)
+Establish `hv : ¬ v.asIdeal ∣ (toHecke χ hu).conductor` using `fun hd => (multiplicity_pos_of_dvd hd).ne' (L_cond χ hu v 0 h)`. Establish `hN : ((Ideal.absNorm v.asIdeal : ℕ) : ℂ) ≠ 0`. Rewrite using `[Nat.cast_ne_zero, Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `v.ne_bot`. Rewrite using `[(toHecke χ hu).localEpsilon_half_of_not_dvd v hv (atFin v (unif v ^ (0 + diffExp v))) (by rw [ord_unif, differentExp_eq, zero_add]), coe_localComponent, locEps, if_pos rfl, mul_one, mul_assoc, ← Complex.cpow_add _ _ hN]`.
+
+Establish `: -(1 / 2 : ℂ) * ((0 + diffExp v : ℕ) : ℂ) + (diffExp v : ℂ) / 2 = 0`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Complex.cpow_zero, mul_one]`. Both sides reduce to the same expression.
+-/
 theorem L_locUnr (χ : HChar E) (hu : IsUnitary χ) (v : HeightOneSpectrum (𝓞 E)) (h : ExpAt χ v 0) :
     localEpsilon (localChar (toHecke χ hu) v) (localAdelicChar E v) (1 / 2) = locEps χ v 0 (1 / 2) := by
   have hv : ¬ v.asIdeal ∣ (toHecke χ hu).conductor := fun hd =>
@@ -99,6 +136,21 @@ theorem L_locUnr (χ : HChar E) (hu : IsUnitary χ) (v : HeightOneSpectrum (𝓞
   rw [this, Complex.cpow_zero, mul_one]
   rfl
 
+/- English proof (translation)
+Establish `hc` using `L_cond χ hu v m h`. Establish `hv : v.asIdeal ∣ (toHecke χ hu).conductor`. Assume the negation of the conclusion as `hd`. Conclude with `hm (hc ▸ multiplicity_eq_zero.2 hd)`. Establish `hN : ((Ideal.absNorm v.asIdeal : ℕ) : ℂ) ≠ 0`.
+
+Rewrite using `[Nat.cast_ne_zero, Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `v.ne_bot`. Rewrite using `[(toHecke χ hu).localEpsilon_half_of_dvd v hv (atFin v (unif v ^ (m + diffExp v))) (by rw [ord_unif, differentExp_eq, HeckeCharacter.condExp_eq, hc]; push_cast; rfl), L_ramInt χ hu v hm h, coe_localComponent, locEps, if_neg hm, hc]`. Use `set c : ℂ := ((Ideal.absNorm v.asIdeal : ℕ) : ℂ) ^ ((m : ℂ) / 2) with hcdef`. Establish `hc0 : c ≠ 0`.
+
+Rewrite using `[hcdef, Ne, Complex.cpow_eq_zero_iff]`. The claim follows by propositional logic. Establish `h1 : (Real.sqrt ((Ideal.absNorm v.asIdeal ^ m : ℕ) : ℝ) : ℂ) = c`. Rewrite using `[Real.sqrt_eq_rpow, Complex.ofReal_cpow (Nat.cast_nonneg _), hcdef]`. Use `push_cast`.
+
+Rewrite using `[← Complex.natCast_cpow_natCast_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : (((Ideal.absNorm v.asIdeal ^ m : ℕ) : ℂ)) = c * c`. Rewrite using `[hcdef, ← Complex.cpow_add _ _ hN]`.
+
+Use `push_cast`. Rewrite using `[add_halves, Complex.cpow_natCast]`. Establish `h3 : ((Ideal.absNorm v.asIdeal : ℕ) : ℂ) ^ (-(1 / 2 : ℂ) * ((m + diffExp v : ℕ) : ℂ)) * ((Ideal.absNorm v.asIdeal : ℕ) : ℂ) ^ ((diffExp v : ℂ) / 2) = c⁻¹`. Rewrite using `[← Complex.cpow_add _ _ hN, hcdef, ← Complex.cpow_neg]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, h2]`. Establish `h4 : ((χ.locK v (unif v ^ (m + diffExp v)) : ℂˣ) : ℂ) = ((χ.loc v (atFin v (unif v ^ (m + diffExp v))) : ℂˣ) : ℂ)` using `rfl`. Rewrite using `[h4]`.
+
+Establish `h5 : c * (c * c)⁻¹ = c⁻¹`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(((χ.loc v (atFin v (unif v ^ (m + diffExp v))) : ℂˣ) : ℂ) * gaussSumAt χ v m (unif v ^ (m + diffExp v))) * (h5 - h3)`.
+-/
 theorem L_locRam (χ : HChar E) (hu : IsUnitary χ) (v : HeightOneSpectrum (𝓞 E)) {m : ℕ} (hm : m ≠ 0) (h : ExpAt χ v m) :
     localEpsilon (localChar (toHecke χ hu) v) (localAdelicChar E v) (1 / 2) = locEps χ v m (1 / 2) := by
   have hc := L_cond χ hu v m h
@@ -138,6 +190,15 @@ theorem L_locRam (χ : HChar E) (hu : IsUnitary χ) (v : HeightOneSpectrum (𝓞
     field_simp
   linear_combination (((χ.loc v (atFin v (unif v ^ (m + diffExp v))) : ℂˣ) : ℂ) * gaussSumAt χ v m (unif v ^ (m + diffExp v))) * (h5 - h3)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `i j h`. Establish `h' : InfinitePlace.mk (φ i) = InfinitePlace.mk (φ j)` using `h`. Take `⟨k, -, hk⟩` from `hφ (φ i)`. Establish `h1` using `hk i (Or.inl rfl)`.
+
+Break down `InfinitePlace.mk_eq_iff.1 h' with e | e` into its components or cases. Conclude with `h1.trans (hk j (Or.inl e)).symm`. Conclude with `h1.trans (hk j (Or.inr (by rw [← e]; ext x; simp))).symm`. Introduce `w`. Take `⟨i, hi, -⟩` from `hφ w.embedding`.
+
+Use `⟨i, ?_⟩` and prove the remaining obligations. Break down `hi with e | e` into its components or cases. Use `show InfinitePlace.mk (φ i) = w`. Rewrite using `[← e, InfinitePlace.mk_embedding]`. Use `show InfinitePlace.mk (φ i) = w`.
+
+Rewrite using `[← InfinitePlace.mk_conjugate_eq, ← e, InfinitePlace.mk_embedding]`.
+-/
 theorem bijective_mk {I : Type} {φ : I → E →+* ℂ} (hφ : IsCMType φ) :
     Function.Bijective fun i => InfinitePlace.mk (φ i) := by
   constructor
@@ -160,6 +221,11 @@ theorem bijective_mk {I : Type} {φ : I → E →+* ℂ} (hφ : IsCMType φ) :
 section
 variable {I : Type} [Fintype I] {φ : I → E →+* ℂ} [IsTotallyComplex E] {χ : HChar E} {n : I → ℤ}
 
+/- English proof (translation)
+Rewrite using `[HeckeCharacter.gammaFactor, archFactor, ← (Equiv.ofBijective _ (bijective_mk hφ)).prod_comp]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Take `⟨h1, h2⟩` from `L_inf φ hφ χ hu n hi i`. Establish `hc : ¬ (InfinitePlace.mk (φ i)).IsReal` using `InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex _)`. Establish `e : (((n i).natAbs : ℕ) : ℂ) = ((|n i| : ℤ) : ℂ)`.
+
+Rewrite using `[← Int.cast_natCast, Int.natCast_natAbs]`. Use `show (toHecke χ hu).infiniteGamma (InfinitePlace.mk (φ i)) s = _`. Rewrite using `[HeckeCharacter.infiniteGamma, if_neg hc, h1, h2, e, Complex.Gammaℂ_def]`. Simplify using the standard rewrite rules.
+-/
 theorem gammaFactor_toHecke (hφ : IsCMType φ) (hu : IsUnitary χ) (hi : Formalism.L2.Host.HChar.HasInf χ φ n) (s : ℂ) :
     (toHecke χ hu).gammaFactor s = archFactor n s := by
   rw [HeckeCharacter.gammaFactor, archFactor, ← (Equiv.ofBijective _ (bijective_mk hφ)).prod_comp]
@@ -172,6 +238,9 @@ theorem gammaFactor_toHecke (hφ : IsCMType φ) (hu : IsUnitary χ) (hi : Formal
   rw [HeckeCharacter.infiniteGamma, if_neg hc, h1, h2, e, Complex.Gammaℂ_def]
   simp
 
+/- English proof (translation)
+Rewrite using `[archEps, ← Finset.prod_pow_eq_pow_sum, ← (Equiv.ofBijective _ (bijective_mk hφ)).prod_comp]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `show (-Complex.I) ^ ((toHecke χ hu).infiniteWeight (InfinitePlace.mk (φ i))).natAbs = _`. Rewrite using `[(L_inf φ hφ χ hu n hi i).2]`.
+-/
 theorem prod_weight_toHecke (hφ : IsCMType φ) (hu : IsUnitary χ) (hi : Formalism.L2.Host.HChar.HasInf χ φ n) :
     (∏ w, (-Complex.I) ^ ((toHecke χ hu).infiniteWeight w).natAbs) = archEps n := by
   rw [archEps, ← Finset.prod_pow_eq_pow_sum, ← (Equiv.ofBijective _ (bijective_mk hφ)).prod_comp]
@@ -179,6 +248,13 @@ theorem prod_weight_toHecke (hφ : IsCMType φ) (hu : IsUnitary χ) (hi : Formal
   show (-Complex.I) ^ ((toHecke χ hu).infiniteWeight (InfinitePlace.mk (φ i))).natAbs = _
   rw [(L_inf φ hφ χ hu n hi i).2]
 
+/- English proof (translation)
+Establish `h1` using `(toHecke χ hu).finiteFourier_mul_eq_finprod_localEpsilon (toHecke χ hu).toFractionalIdeal_conductorDifferentIdele`. Establish `h2 : (∏ᶠ v, localEpsilon (localChar (toHecke χ hu) v) (localAdelicChar E v) (1 / 2)) = finEps χ a (1 / 2)`. Use `finprod_congr fun v => ?_` and prove the remaining obligations. Distinguish the cases in `hv : a v = 0`. Use `ha v` as an intermediate fact.
+
+Rewrite `this`, the goal using `[hv]`. Conclude with `L_locUnr χ hu v this`. Conclude with `L_locRam χ hu v hv (ha v)`. Rewrite `h1` using `[h2]`. Rewrite using `[HeckeCharacter.rootNumber, HeckeCharacter.fourierConst, prod_weight_toHecke hφ hu hi, ← h1]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rootNumber_toHecke (hφ : IsCMType φ) (hu : IsUnitary χ) (hi : Formalism.L2.Host.HChar.HasInf χ φ n)
     {a : HeightOneSpectrum (𝓞 E) →₀ ℕ} (ha : ∀ w, ExpAt χ w (a w)) :
     (toHecke χ hu).rootNumber = archEps n * finEps χ a (1 / 2) := by
@@ -198,6 +274,9 @@ theorem rootNumber_toHecke (hφ : IsCMType φ) (hu : IsUnitary χ) (hi : Formali
 def conductorNormalizedCompletedLFunction (χ : HChar E) (hu : IsUnitary χ) (s : ℂ) : ℂ :=
   ((toHecke χ hu).discrNormConductor : ℂ) ^ (-(s / 2)) * (toHecke χ hu).completedLFunction s
 
+/- English proof (translation)
+Establish `hA : ((toHecke χ hu).discrNormConductor : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (toHecke χ hu).discrNormConductor_pos.ne'`. Use `⟨?_, fun s hs => ⟨_, L_euler χ hu hs, ?_⟩⟩` and prove the remaining obligations. Use `Differentiable.mul (fun s => ?_) ((toHecke χ hu).differentiable_completedLFunction (L_notPow φ hφ χ hu n hi hn))` and prove the remaining obligations. Conclude with `((differentiableAt_id.div_const 2).neg).const_cpow (Or.inl hA)`. Rewrite using `[conductorNormalizedCompletedLFunction, (toHecke χ hu).completedLFunction_eq hs, gammaFactor_toHecke hφ hu hi, ← mul_assoc, ← mul_assoc, ← Complex.cpow_add _ _ hA, neg_add_cancel, Complex.cpow_zero, one_mul]`.
+-/
 theorem isCompletedL_completed (hφ : IsCMType φ) (hu : IsUnitary χ) (hi : Formalism.L2.Host.HChar.HasInf χ φ n)
     (hn : ∃ i, n i ≠ 0) : IsCompletedL χ n (conductorNormalizedCompletedLFunction χ hu) := by
   have hA : ((toHecke χ hu).discrNormConductor : ℂ) ≠ 0 :=
@@ -209,6 +288,13 @@ theorem isCompletedL_completed (hφ : IsCMType φ) (hu : IsUnitary χ) (hi : For
   · rw [conductorNormalizedCompletedLFunction, (toHecke χ hu).completedLFunction_eq hs, gammaFactor_toHecke hφ hu hi, ← mul_assoc, ← mul_assoc,
       ← Complex.cpow_add _ _ hA, neg_add_cancel, Complex.cpow_zero, one_mul]
 
+/- English proof (translation)
+Establish `hm` using `fun v => L_cond χ hu v (a v) (ha v)`. Establish `h : (toHecke χ hu).conductorPrimes = a.support`. Use extensionality with `v`. Rewrite using `[HeckeCharacter.mem_conductorPrimes, Finsupp.mem_support_iff, ← hm v]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Conclude with `(multiplicity_pos_of_dvd h).ne'`. Introduce `h`. Assume the negation of the conclusion as `h'`. Conclude with `h (multiplicity_eq_zero.2 h')`.
+
+Rewrite using `[HeckeCharacter.absNorm_conductor, Finsupp.prod, h]`. Conclude with `Finset.prod_congr rfl fun v _ => by rw [hm v]`.
+-/
 theorem absNorm_conductor_toHecke (hu : IsUnitary χ) {a : HeightOneSpectrum (𝓞 E) →₀ ℕ} (ha : ∀ w, ExpAt χ w (a w)) :
     Ideal.absNorm (toHecke χ hu).conductor = a.prod fun v k => Ideal.absNorm v.asIdeal ^ k := by
   have hm := fun v => L_cond χ hu v (a v) (ha v)
@@ -224,12 +310,20 @@ theorem absNorm_conductor_toHecke (hu : IsUnitary χ) {a : HeightOneSpectrum (�
   rw [HeckeCharacter.absNorm_conductor, Finsupp.prod, h]
   exact Finset.prod_congr rfl fun v _ => by rw [hm v]
 
+/- English proof (translation)
+Rewrite using `[HeckeCharacter.discrNormConductor, absNorm_conductor_toHecke hu ha, ← Complex.ofReal_natCast, Nat.cast_mul, Nat.cast_natAbs, Int.cast_abs]`.
+-/
 theorem discrNormConductor_toHecke (hu : IsUnitary χ) {a : HeightOneSpectrum (𝓞 E) →₀ ℕ} (ha : ∀ w, ExpAt χ w (a w)) :
     ((toHecke χ hu).discrNormConductor : ℂ) =
       (((discr E).natAbs * a.prod fun v k => Ideal.absNorm v.asIdeal ^ k : ℕ) : ℂ) := by
   rw [HeckeCharacter.discrNormConductor, absNorm_conductor_toHecke hu ha, ← Complex.ofReal_natCast, Nat.cast_mul,
     Nat.cast_natAbs, Int.cast_abs]
 
+/- English proof (translation)
+Establish `hA : ((toHecke χ hu).discrNormConductor : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (toHecke χ hu).discrNormConductor_pos.ne'`. Rewrite using `[conductorNormalizedCompletedLFunction, conductorNormalizedCompletedLFunction, toHecke_inv χ hu hu', HeckeCharacter.discrNormConductor_inv, (toHecke χ hu).completedLFunction_eq_rootNumber_mul_of_not (L_notPow φ hφ χ hu n hi hn) s]`. Establish `e : ((toHecke χ hu).discrNormConductor : ℂ) ^ (-(s / 2)) = ((toHecke χ hu).discrNormConductor : ℂ) ^ (1 / 2 - s) * ((toHecke χ hu).discrNormConductor : ℂ) ^ (-((1 - s) / 2))`. Rewrite using `[← Complex.cpow_add _ _ hA]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem completed_eq (hφ : IsCMType φ) (hu : IsUnitary χ) (hi : Formalism.L2.Host.HChar.HasInf χ φ n) (hn : ∃ i, n i ≠ 0)
     (hu' : IsUnitary χ⁻¹) (s : ℂ) :
     conductorNormalizedCompletedLFunction χ hu s = (toHecke χ hu).rootNumber * ((toHecke χ hu).discrNormConductor : ℂ) ^ (1 / 2 - s) *
@@ -251,6 +345,11 @@ end
 
 end GlobalTheory.CompanionTheory.HeckeFE
 
+/- English proof (translation)
+Introduce `E _ _ _ I _ φ hφ χ n a hu hi hn ha`. Establish `hu'` using `GlobalTheory.Published.HeckeFEModel.isUnitary_inv hu`. Establish `hi'` using `GlobalTheory.Published.HeckeFEModel.hasInf_inv hi`. Establish `hn' : ∃ i, -n i ≠ 0` using `hn.imp fun i h => neg_ne_zero.2 h`. Use `⟨conductorNormalizedCompletedLFunction χ hu, conductorNormalizedCompletedLFunction χ⁻¹ hu', isCompletedL_completed hφ hu hi hn, isCompletedL_completed hφ hu' hi' hn', fun s => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[L_shift χ a s, ← discrNormConductor_toHecke hu ha, completed_eq hφ hu hi hn hu' s, rootNumber_toHecke hφ hu hi ha]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GlobalTheory.CompanionTheory.HeckeFE.heckeTateFunctionalEquation : GlobalTheory.Published.HeckeTateFunctionalEquation := by
   intro E _ _ _ I _ φ hφ χ n a hu hi hn ha
   have hu' := GlobalTheory.Published.HeckeFEModel.isUnitary_inv hu

@@ -12,6 +12,23 @@ open IsLocalRing UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools
 
 namespace UpperTheory.V.Pa
 
+/- English proof (translation)
+Introduce `l _ L G G0 h n x O _ _ _ _ _ _ r B _ _ _ u P Bh _ _ _ rF hl hc hr hk`. Use `letI : Algebra Bh (FractionRing x.A) := rF.toAlgebra`. Establish `hk' : RingHom.ker (algebraMap Bh (FractionRing x.A)) = maximalIdeal Bh` using `hk`. Take `⟨H⟩` from `hat_ex P (Bh := Bh) hr`. Establish `hs` using `rF_surj P (Bh := Bh) hr hk'`.
+
+Use `haveI := hc.noeth`. Use `haveI := hc.complete`. Use `haveI := H.fin`. Establish `h2 : IsUnit (2 : Bh)`. Assume the negation of the conclusion as `hn`.
+
+Establish `h3 : (2 : Bh) ∈ RingHom.ker (algebraMap Bh (FractionRing x.A))` using `by rw [hk']; exact hn`. Rewrite `h3` using `[RingHom.mem_ker, map_ofNat]`. Establish `h4 : (2 : x.K) = 0`. Establish `h5 : (algebraMap x.A (FractionRing x.A)).comp (PowerSeries.C (R` using `x.K)) 2 = 0 := by rw [map_ofNat]; exact h3`. Conclude with `(map_eq_zero _).1 h5`.
+
+Establish `h6 : IsUnit (2 : ℤ_[l])`. Rewrite using `[PadicInt.isUnit_iff]`. Use `le_antisymm (PadicInt.norm_le_one _) (not_lt.1 fun hlt => hl ?_)` and prove the remaining obligations. Establish `h7 : ‖((2 : ℤ) : ℤ_[l])‖ < 1` using `by simpa using hlt`. Rewrite `h7` using `[PadicInt.norm_int_lt_one_iff_dvd]`.
+
+Conclude with `(Nat.prime_dvd_prime_iff_eq Fact.out Nat.prime_two).1 (by exact_mod_cast h7)`. Establish `h8` using `h6.map (algebraMap ℤ_[l] x.K)`. Rewrite `h8` using `[map_ofNat, h4]`. Conclude with `not_isUnit_zero h8`. Establish `hst` using `hat_st P hr H`.
+
+Establish `hrg` using `hat_range P hs H`. Take `⟨U, hx, hrk⟩` from `idem x.a H.DE H.T H.r x.a_pos x.a_le h2 H.ch H.tr hk' (hat_chi P hr H) hst fun Z hZ => (hrg Z).1 hZ`. Establish `hg : Nonempty (GrAlg H.T n x.a H.r U.ep)`. Break down `x.a_le.lt_or_eq with ha | ha` into its components or cases. Conclude with `gr_E x.a H.T H.r U x.a_pos ha hk' hst hx fun y => (hrg _).2 ⟨y, rfl⟩`.
+
+Establish `hn : 1 ≤ n` using `ha ▸ x.a_pos revert U`. Rewrite using `[ha]`. Introduce `U hx _`. Conclude with `gr_I H.T H.r U hn hst hx`. Take `⟨g⟩` from `hg`.
+
+Conclude with `urep_of H g U.coi hrk`.
+-/
 theorem s6 : S6 := by
   intro l _ L G G0 h n x O _ _ _ _ _ _ r B _ _ _ u P Bh _ _ _ rF hl hc hr hk
   letI : Algebra Bh (FractionRing x.A) := rF.toAlgebra

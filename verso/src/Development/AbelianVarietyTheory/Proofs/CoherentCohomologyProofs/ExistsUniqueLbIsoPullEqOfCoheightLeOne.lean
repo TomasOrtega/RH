@@ -15,36 +15,63 @@ section Functions
 
 variable {X Y : Scheme.{u}}
 
+/- English proof (translation)
+Rewrite using `[ringKrullDim_stalk_eq_coheight]`. Conclude with `Iff.rfl` after adjusting the coercions.
+-/
 theorem ringKrullDim_stalk_le_one_iff (x : X) :
     ringKrullDim (X.presheaf.stalk x) ≤ 1 ↔ Order.coheight x ≤ 1 := by
   rw [ringKrullDim_stalk_eq_coheight]
   exact_mod_cast Iff.rfl
 
+/- English proof (translation)
+Use `ringKrullDim_eq_of_ringEquiv (asIso (f.stalkMap y)).commRingCatIsoToRingEquiv` as an intermediate fact. Rewrite `this` using `[ringKrullDim_stalk_eq_coheight, ringKrullDim_stalk_eq_coheight]`. Conclude with `this` after adjusting the coercions.
+-/
 theorem coheight_apply_of_isOpenImmersion (f : Y ⟶ X) [IsOpenImmersion f] (y : Y) :
     Order.coheight (f y) = Order.coheight y := by
   have := ringKrullDim_eq_of_ringEquiv (asIso (f.stalkMap y)).commRingCatIsoToRingEquiv
   rw [ringKrullDim_stalk_eq_coheight, ringKrullDim_stalk_eq_coheight] at this
   exact_mod_cast this
 
+/- English proof (translation)
+The claim follows from `((genericPoint_spec X).mem_open_set_iff W.isOpen).mpr (by simpa using h)`.
+-/
 theorem genericPoint_mem_opens [IsIntegral X] (W : X.Opens) [h : Nonempty W] :
     genericPoint X ∈ W :=
   ((genericPoint_spec X).mem_open_set_iff W.isOpen).mpr (by simpa using h)
 
+/- English proof (translation)
+Use `ringKrullDim_eq_zero_of_isField (Field.toIsField X.functionField)` as an intermediate fact. Rewrite `this` using `[Scheme.functionField, ringKrullDim_stalk_eq_coheight]`. Conclude with `this` after adjusting the coercions.
+-/
 theorem coheight_genericPoint [IsIntegral X] : Order.coheight (genericPoint X) = 0 := by
   have := ringKrullDim_eq_zero_of_isField (Field.toIsField X.functionField)
   rw [Scheme.functionField, ringKrullDim_stalk_eq_coheight] at this
   exact_mod_cast this
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨X.presheaf.germ V x hx s, X.presheaf.germ_stalkSpecializes_apply hx _ s⟩`.
+-/
 theorem germToFunctionField_mem_range_stalk [IsIntegral X] (V : X.Opens) [Nonempty V]
     (s : Γ(X, V)) {x : X} (hx : x ∈ V) :
     X.germToFunctionField V s ∈ (algebraMap (X.presheaf.stalk x) X.functionField).range :=
   ⟨X.presheaf.germ V x hx s, X.presheaf.germ_stalkSpecializes_apply hx _ s⟩
 
+/- English proof (translation)
+The claim follows from `X.presheaf.germ_res_apply (homOfLE h) _ _ s`.
+-/
 theorem germToFunctionField_res [IsIntegral X] {V W : X.Opens} [Nonempty V] [Nonempty W]
     (h : W ≤ V) (s : Γ(X, V)) :
     X.germToFunctionField W (X.presheaf.map (homOfLE h).op s) = X.germToFunctionField V s :=
   X.presheaf.germ_res_apply (homOfLE h) _ _ s
 
+/- English proof (translation)
+Use `IsNormalScheme.exists_germToFunctionField_eq_of_locally V t fun x hx ↦ ?_` and prove the remaining obligations. Take `⟨_, ⟨(W : X.Opens), hW, rfl⟩, hxW, hWV⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open hx V.isOpen`. Establish `: Nonempty W` using `⟨⟨x, hxW⟩⟩`. Use `functionField_isFractionRing_of_isAffineOpen X W hW` as an intermediate fact. Use `IsNormalScheme.isIntegrallyClosed_of_isAffineOpen hW` as an intermediate fact.
+
+Establish `: IsNoetherianRing Γ(X, W)` using `IsLocallyNoetherian.component_noetherian ⟨W, hW⟩`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : t ∈ (algebraMap Γ(X, W) X.functionField).range := by`. Use `(mem_range_algebraMap_iff_forall_height_eq_one t).mpr fun p hp h1 ↦ ?_` and prove the remaining obligations. Establish `hy : hW.fromSpec ⟨p, hp⟩ ∈ W`. Rewrite using `[← SetLike.mem_coe, ← hW.range_fromSpec]`.
+
+Conclude with `⟨_, rfl⟩`. Set `y : W` to `⟨_, hy⟩`. Set `: Algebra Γ(X, W) (X.presheaf.stalk y.1)` to `X.presheaf.algebra_section_stalk y`. Establish `: IsLocalization.AtPrime (X.presheaf.stalk y.1) p` using `hW.isLocalization_stalk' ⟨p, hp⟩ hy`. Use `functionField_isScalarTower X W y` as an intermediate fact.
+
+Use `(mem_range_algebraMap_iff_mem_primeLocalSubalgebra p (X.presheaf.stalk y.1) t).mp (h _ (hWV hy) ?_)` and prove the remaining obligations. Establish `e` using `IsLocalization.AtPrime.ringKrullDim_eq_height p (X.presheaf.stalk y.1)`. Rewrite `e` using `[ringKrullDim_stalk_eq_coheight, h1]`. Conclude with `e` after adjusting the coercions. Conclude with `⟨W, inferInstance, s, hxW, hWV, hs⟩`.
+-/
 theorem exists_germToFunctionField_eq_of_coheight_eq_one [IsIntegral X] [IsLocallyNoetherian X]
     [IsNormalScheme X] (V : X.Opens) [Nonempty V] (t : X.functionField)
     (h : ∀ x ∈ V, Order.coheight x = 1 →
@@ -73,6 +100,9 @@ theorem exists_germToFunctionField_eq_of_coheight_eq_one [IsIntegral X] [IsLocal
     exact_mod_cast e
   exact ⟨W, inferInstance, s, hxW, hWV, hs⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨s, hs⟩ _ hx _ ↦ hs ▸ germToFunctionField_mem_range_stalk V s hx, exists_germToFunctionField_eq_of_coheight_eq_one V t⟩`.
+-/
 theorem exists_germToFunctionField_eq_iff_coheight_eq_one [IsIntegral X] [IsLocallyNoetherian X]
     [IsNormalScheme X] (V : X.Opens) [Nonempty V] (t : X.functionField) :
     (∃ s : Γ(X, V), X.germToFunctionField V s = t) ↔ ∀ x ∈ V, Order.coheight x = 1 →
@@ -80,12 +110,18 @@ theorem exists_germToFunctionField_eq_iff_coheight_eq_one [IsIntegral X] [IsLoca
   ⟨fun ⟨s, hs⟩ _ hx _ ↦ hs ▸ germToFunctionField_mem_range_stalk V s hx,
     exists_germToFunctionField_eq_of_coheight_eq_one V t⟩
 
+/- English proof (translation)
+Take `rfl : W = V` from `le_antisymm h (hV ▸ bot_le)`. Rewrite using `[show (homOfLE h).op = 𝟙 _ from rfl, X.presheaf.map_id]`. Conclude with `Function.bijective_id`.
+-/
 theorem bijective_res_of_eq_bot {V W : X.Opens} (h : W ≤ V) (hV : V = ⊥) :
     Function.Bijective (X.presheaf.map (homOfLE h).op).hom := by
   obtain rfl : W = V := le_antisymm h (hV ▸ bot_le)
   rw [show (homOfLE h).op = 𝟙 _ from rfl, X.presheaf.map_id]
   exact Function.bijective_id
 
+/- English proof (translation)
+Establish `: Nonempty V` using `⟨⟨_, h (genericPoint_mem_opens W)⟩⟩`. Use `⟨map_injective_of_isIntegral X (homOfLE h), fun s ↦ ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `exists_germToFunctionField_eq_of_coheight_eq_one V (X.germToFunctionField W s) fun x hx h1 ↦ germToFunctionField_mem_range_stalk W s (hW x hx h1)`. Conclude with `⟨t, X.germToFunctionField_injective W ((germToFunctionField_res h t).trans ht)⟩`.
+-/
 theorem bijective_res_of_coheight_eq_one [IsIntegral X] [IsLocallyNoetherian X]
     [IsNormalScheme X] {V W : X.Opens} (h : W ≤ V) [Nonempty W]
     (hW : ∀ x ∈ V, Order.coheight x = 1 → x ∈ W) :
@@ -96,6 +132,11 @@ theorem bijective_res_of_coheight_eq_one [IsIntegral X] [IsLocallyNoetherian X]
     (X.germToFunctionField W s) fun x hx h1 ↦ germToFunctionField_mem_range_stalk W s (hW x hx h1)
   exact ⟨t, X.germToFunctionField_injective W ((germToFunctionField_res h t).trans ht)⟩
 
+/- English proof (translation)
+Use `f.isIso_app (V ⊓ f.opensRange) inf_le_right` as an intermediate fact. Establish `hb : Function.Bijective (f.app (V ⊓ f.opensRange)).hom` using `ConcreteCategory.bijective_of_isIso _`. Establish `he : f ⁻¹ᵁ (V ⊓ f.opensRange) = f ⁻¹ᵁ V` using `le_antisymm (fun _ h ↦ h.1) fun y h ↦ ⟨h, y, rfl⟩`. Establish `hb' : Function.Bijective (Y.presheaf.map (eqToHom he).op).hom` using `ConcreteCategory.bijective_of_isIso _`. Rewrite using `[← hb.of_comp_iff', ← hb'.of_comp_iff', ← RingHom.coe_comp, ← RingHom.coe_comp, ← CommRingCat.hom_comp, ← CommRingCat.hom_comp, f.naturality]`.
+
+Both sides reduce to the same expression.
+-/
 theorem bijective_app_iff_of_isOpenImmersion (f : Y ⟶ X) [IsOpenImmersion f] (V : X.Opens) :
     Function.Bijective (f.app V).hom ↔
       Function.Bijective (X.presheaf.map
@@ -111,6 +152,11 @@ theorem bijective_app_iff_of_isOpenImmersion (f : Y ⟶ X) [IsOpenImmersion f] (
     ← CommRingCat.hom_comp, ← CommRingCat.hom_comp, f.naturality]
   rfl
 
+/- English proof (translation)
+Rewrite using `[bijective_app_iff_of_isOpenImmersion]`. Distinguish the cases in `hV : V = ⊥`. Conclude with `bijective_res_of_eq_bot _ hV`. Establish `: Nonempty V` using `((Opens.ne_bot_iff_nonempty _).mp hV).to_subtype`. Establish `: Nonempty f.opensRange` using `⟨⟨f (Nonempty.some inferInstance), _, rfl⟩⟩`.
+
+Establish `: Nonempty (V ⊓ f.opensRange : X.Opens)` using `⟨⟨_, genericPoint_mem_opens V, genericPoint_mem_opens f.opensRange⟩⟩`. Conclude with `bijective_res_of_coheight_eq_one _ fun x hx h1 ↦ ⟨hx, hf x h1⟩`.
+-/
 theorem bijective_app_of_coheight_eq_one [IsIntegral X] [IsLocallyNoetherian X] [IsNormalScheme X]
     (f : Y ⟶ X) [IsOpenImmersion f] [Nonempty Y]
     (hf : ∀ x : X, Order.coheight x = 1 → x ∈ Set.range f) (V : X.Opens) :
@@ -124,6 +170,17 @@ theorem bijective_app_of_coheight_eq_one [IsIntegral X] [IsLocallyNoetherian X] 
     ⟨⟨_, genericPoint_mem_opens V, genericPoint_mem_opens f.opensRange⟩⟩
   exact bijective_res_of_coheight_eq_one _ fun x hx h1 ↦ ⟨hx, hf x h1⟩
 
+/- English proof (translation)
+Set `B : (Σ Z : irreducibleComponents X, (IsNormalScheme.component Z).toScheme.Opens) → X.Opens` to `fun p ↦ (IsNormalScheme.component p.1).ι ''ᵁ p.2`. Establish `hB : Opens.IsBasis (Set.range B)`. Rewrite using `[Opens.isBasis_iff_nbhd]`. Introduce `O x hx`. Set `Z : irreducibleComponents X` to `⟨_, irreducibleComponent_mem_irreducibleComponents x⟩`.
+
+Use `⟨_, ⟨⟨Z, (IsNormalScheme.component Z).ι ⁻¹ᵁ O⟩, rfl⟩, ⟨⟨x, mem_irreducibleComponent⟩, hx, rfl⟩, Scheme.Hom.image_preimage_le _ _⟩` and prove the remaining obligations. Set `φ : X.sheaf ⟶ (TopCat.Sheaf.pushforward CommRingCat f.base).obj Y.sheaf` to `⟨f.c⟩`. Establish `hφ : IsIso φ`. Use `TopCat.Sheaf.isIso_iff_isIso_basis hB fun ⟨Z, O⟩ ↦ ?_` and prove the remaining obligations. Establish `hf' : ∀ x : (IsNormalScheme.component Z).toScheme, Order.coheight x ≤ 1 → x ∈ Set.range (f ∣_ IsNormalScheme.component Z)` using `fun x hx ↦ by`.
+
+Take `⟨y, hy⟩` from `hf ((IsNormalScheme.component Z).ι x) (by rwa [coheight_apply_of_isOpenImmersion])`. Use `⟨⟨y, ?_⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f y ∈ IsNormalScheme.component Z`. Rewrite using `[hy]`. Conclude with `x.2`.
+
+Conclude with `(morphismRestrict_base_coe f _ _).trans hy`. Establish `: Nonempty (f ⁻¹ᵁ IsNormalScheme.component Z).toScheme`. Take `⟨y, -⟩` from `hf' (genericPoint _) (by simp [coheight_genericPoint])`. Conclude with `⟨y⟩`. Establish `hb` using `bijective_app_of_coheight_eq_one (f ∣_ IsNormalScheme.component Z) (fun x hx ↦ hf' x hx.le) O`.
+
+Establish `: IsIso ((f ∣_ IsNormalScheme.component Z).app O)` using `(ConcreteCategory.isIso_iff_bijective _).mpr hb`. Rewrite `this` using `[morphismRestrict_app]`. Conclude with `(@isIso_comp_right_iff _ _ _ _ _ (f.app _) _ (Functor.map_isIso Y.presheaf _)).mp this`. Establish `: IsIso f.c` using `@Functor.map_isIso _ _ _ _ _ _ (sheafToPresheaf _ _) φ hφ`. Conclude with `ConcreteCategory.bijective_of_isIso (f.c.app (op V))`.
+-/
 theorem bijective_app_of_coheight_le_one [IsLocallyNoetherian X] [IsNormalScheme X]
     (f : Y ⟶ X) [IsOpenImmersion f]
     (hf : ∀ x : X, Order.coheight x ≤ 1 → x ∈ Set.range f) (V : X.Opens) :
@@ -160,6 +217,9 @@ theorem bijective_app_of_coheight_le_one [IsLocallyNoetherian X] [IsNormalScheme
   have : IsIso f.c := @Functor.map_isIso _ _ _ _ _ _ (sheafToPresheaf _ _) φ hφ
   exact ConcreteCategory.bijective_of_isIso (f.c.app (op V))
 
+/- English proof (translation)
+Use `(bijective_app_iff_of_isOpenImmersion U.ι V).mp (bijective_app_of_coheight_le_one U.ι (fun x hx ↦ by simpa using hU x hx) V)` as an intermediate fact. Establish `key : ∀ U' : X.Opens, U' = U → Function.Bijective (X.presheaf.map (homOfLE (inf_le_left : V ⊓ U' ≤ V)).op).hom → Function.Bijective (X.presheaf.map (homOfLE (inf_le_left : V ⊓ U ≤ V)).op).hom`. Introduce and unpack `_ rfl h`. Conclude with `h`. Conclude with `key _ U.opensRange_ι this`.
+-/
 theorem bijective_res_inf_of_coheight_le_one [IsLocallyNoetherian X] [IsNormalScheme X]
     {U : X.Opens} (hU : ∀ x : X, Order.coheight x ≤ 1 → x ∈ U) (V : X.Opens) :
     Function.Bijective (X.presheaf.map (homOfLE (inf_le_left : V ⊓ U ≤ V)).op).hom := by
@@ -180,28 +240,49 @@ open ReciprocityTheory.ChartRestriction.G.Semi
 
 variable {X Y : Scheme.{u}}
 
+/- English proof (translation)
+Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.appLE_map]`.
+-/
 theorem res_appLE_apply (f : Y ⟶ X) {V : X.Opens} {W W' : Y.Opens} (e : W ≤ f ⁻¹ᵁ V) (h : W' ≤ W)
     (s : Γ(X, V)) :
     (Y.presheaf.map (homOfLE h).op).hom ((f.appLE V W e).hom s) =
       (f.appLE V W' (h.trans e)).hom s := by
   rw [← CommRingCat.comp_apply, Scheme.Hom.appLE_map]
 
+/- English proof (translation)
+Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.map_appLE]`.
+-/
 theorem appLE_res_apply (f : Y ⟶ X) {V V' : X.Opens} {W : Y.Opens} (h : V' ≤ V)
     (e : W ≤ f ⁻¹ᵁ V') (s : Γ(X, V)) :
     (f.appLE V' W e).hom ((X.presheaf.map (homOfLE h).op).hom s) =
       (f.appLE V W (e.trans (f.preimage_mono h))).hom s := by
   rw [← CommRingCat.comp_apply, Scheme.Hom.map_appLE]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[← Scheme.Hom.app_eq_appLE]` and apply the resulting hypothesis.
+-/
 theorem bijective_appLE_of_eq (f : Y ⟶ X) {V : X.Opens} {W : Y.Opens} (h : W = f ⁻¹ᵁ V)
     (hf : Function.Bijective (f.app V).hom) : Function.Bijective (f.appLE V W h.le).hom := by
   subst h
   rwa [← Scheme.Hom.app_eq_appLE]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[← Scheme.Hom.app_eq_appLE]` and apply the resulting hypothesis.
+-/
 theorem injective_appLE_of_eq (f : Y ⟶ X) {V : X.Opens} {W : Y.Opens} (h : W = f ⁻¹ᵁ V)
     (hf : Function.Injective (f.app V).hom) : Function.Injective (f.appLE V W h.le).hom := by
   subst h
   rwa [← Scheme.Hom.app_eq_appLE]
 
+/- English proof (translation)
+Establish `hb (j)` using `bijective_appLE_of_eq f (hU j) (hf _)`. Use `choose a ha using fun j ↦ (hb j).2 (s.f j)`. Set `t : ∀ i, Γ(X, L.U i)` to `e.piCongrLeft (fun i ↦ Γ(X, L.U i)) a`. Establish `ht (j) : t (e j) = a j` using `e.piCongrLeft_apply_apply (fun i ↦ Γ(X, L.U i)) a j`. Use `⟨⟨t, fun i j ↦ ?_⟩, fun j ↦ by rw [← ha, ← ht], fun t' ht' ↦ ?_⟩` and prove the remaining obligations.
+
+Take `⟨i, rfl⟩` from `e.surjective i`. Take `⟨j, rfl⟩` from `e.surjective j`. Apply `(bijective_appLE_of_eq f (V := L.U (e i) ⊓ L.U (e j)) (W := L'.U i ⊓ L'.U j) (by rw [hU, hU]; rfl) (hf _)).1` to reduce the goal to its premises. Use `s.compat i j` as an intermediate fact. Rewrite `this` using `[← ha, ← ha, res_appLE_apply, res_appLE_apply, hg]`.
+
+Rewrite using `[map_mul, appLE_res_apply, appLE_res_apply, ht, ht]`. Conclude with `this`. Consider the cases of `t' with | mk t' _ => ?_`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Take `⟨i, rfl⟩` from `e.surjective i`. Conclude with `(hb i).1 ((ht' i).trans (by rw [ht, ha]))`.
+-/
 theorem existsUnique_sec_of_charts (f : Y ⟶ X) (hf : ∀ V, Function.Bijective (f.app V).hom)
     {L : LB X} {L' : LB Y} (e : L'.ι ≃ L.ι) (hU : ∀ j, L'.U j = f ⁻¹ᵁ L.U (e j))
     (hg : ∀ i j, (L'.g i j).val = (f.appLE (L.U (e i) ⊓ L.U (e j)) (L'.U i ⊓ L'.U j)
@@ -226,6 +307,13 @@ theorem existsUnique_sec_of_charts (f : Y ⟶ X) (hf : ∀ V, Function.Bijective
     obtain ⟨i, rfl⟩ := e.surjective i
     exact (hb i).1 ((ht' i).trans (by rw [ht, ha]))
 
+/- English proof (translation)
+Take `⟨t, ht, hu⟩` from `existsUnique_sec_of_charts f hf e hU hg ⟨fun j ↦ (s.s j).val, fun i j ↦ congrArg Units.val (hs i j)⟩`. Establish `hunit (i) : IsUnit (t.f i)`. Take `⟨i, rfl⟩` from `e.surjective i`. Establish `hb` using `bijective_appLE_of_eq f (hU i) (hf _)`. Use `(MulEquiv.isUnit_map (RingEquiv.ofBijective _ hb)).mp ?_` and prove the remaining obligations.
+
+Rewrite using `[RingEquiv.ofBijective_apply, ht]`. Conclude with `(s.s i).isUnit`. Use `⟨⟨fun i ↦ (hunit i).unit⟩, ⟨fun i j ↦ Units.ext (t.compat i j), ht⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨t'⟩ ⟨h1, h2⟩`. Use `hu ⟨fun j ↦ (t' j).val, fun i j ↦ congrArg Units.val (h1 i j)⟩ h2` as an intermediate fact.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `Units.ext (congrArg (fun z : L.Sec ↦ z.f i) this)`.
+-/
 theorem existsUnique_gen_of_charts (f : Y ⟶ X) (hf : ∀ V, Function.Bijective (f.app V).hom)
     {L : LB X} {L' : LB Y} (e : L'.ι ≃ L.ι) (hU : ∀ j, L'.U j = f ⁻¹ᵁ L.U (e j))
     (hg : ∀ i j, (L'.g i j).val = (f.appLE (L.U (e i) ⊓ L.U (e j)) (L'.U i ⊓ L'.U j)
@@ -247,11 +335,17 @@ theorem existsUnique_gen_of_charts (f : Y ⟶ X) (hf : ∀ V, Function.Bijective
   funext i
   exact Units.ext (congrArg (fun z : L.Sec ↦ z.f i) this)
 
+/- English proof (translation)
+The claim follows from `le_antisymm (LB.wchart_le L (K := PUnit) (fun _ ↦ f) j PUnit.unit) fun _ hy ↦ Set.mem_iInter.mpr fun _ ↦ hy`.
+-/
 theorem lb_pull_U (L : LB X) (f : Y ⟶ X) (j : PUnit.{u + 1} → L.ι) :
     (L.pull f).U j = f ⁻¹ᵁ L.U (j PUnit.unit) :=
   le_antisymm (LB.wchart_le L (K := PUnit) (fun _ ↦ f) j PUnit.unit)
     fun _ hy ↦ Set.mem_iInter.mpr fun _ ↦ hy
 
+/- English proof (translation)
+The claim follows from `congrArg Units.val (LB.lcg_pull L f i j)`.
+-/
 theorem lb_pull_g (L : LB X) (f : Y ⟶ X) (i j : PUnit.{u + 1} → L.ι) :
     ((L.pull f).g i j).val =
       (f.appLE (L.U (i PUnit.unit) ⊓ L.U (j PUnit.unit)) ((L.pull f).U i ⊓ (L.pull f).U j)
@@ -272,28 +366,43 @@ noncomputable def lbSecPull (L : LB X) (s : L.Sec) (f : Y ⟶ X) : (L.pull f).Se
     exact (appLE_res_apply f _ _ _).symm.trans
       (this.trans (congrArg (_ * ·) (appLE_res_apply f _ _ _)))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lbSecPull_f (L : LB X) (s : L.Sec) (f : Y ⟶ X) (j : PUnit.{u + 1} → L.ι) :
     (lbSecPull L s f).f j =
       (f.appLE (L.U (j PUnit.unit)) ((L.pull f).U j) (lb_pull_U L f j).le).hom
         (s.f (j PUnit.unit)) := rfl
 
+/- English proof (translation)
+Consider the cases of `s`. Consider the cases of `t`. Use `congr 1`. Conclude with `funext h`.
+-/
 theorem lbSec_ext {L : LB X} {s t : L.Sec} (h : ∀ i, s.f i = t.f i) : s = t := by
   cases s
   cases t
   congr 1
   exact funext h
 
+/- English proof (translation)
+Consider the cases of `s`. Consider the cases of `t`. Use `congr 1`. Conclude with `funext fun i ↦ Units.ext (h i)`.
+-/
 theorem lbGen_ext {L : LB X} {s t : L.Gen} (h : ∀ i, (s.s i).val = (t.s i).val) : s = t := by
   cases s
   cases t
   congr 1
   exact funext fun i ↦ Units.ext (h i)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem genPull_s_val (L : LB X) (c : L.Gen) (f : Y ⟶ X) (j : PUnit.{u + 1} → L.ι) :
     ((L.genPull c f).s j).val =
       (f.appLE (L.U (j PUnit.unit)) ((L.pull f).U j) (lb_pull_U L f j).le).hom
         (c.s (j PUnit.unit)).val := rfl
 
+/- English proof (translation)
+Use `(Function.bijective_iff_existsUnique _).mpr fun s ↦ ?_` and prove the remaining obligations. Use `(existsUnique_congr fun t ↦ ?_).mp (existsUnique_sec_of_charts f hf (L := L) (L' := L.pull f) (Equiv.funUnique PUnit L.ι) (lb_pull_U L f) (lb_pull_g L f) s)` and prove the remaining obligations. Conclude with `⟨fun h ↦ lbSec_ext h, fun h j ↦ congrArg (fun z : (L.pull f).Sec ↦ z.f j) h⟩`.
+-/
 theorem bijective_lbSecPull (f : Y ⟶ X) (hf : ∀ V, Function.Bijective (f.app V).hom) (L : LB X) :
     Function.Bijective fun s : L.Sec ↦ lbSecPull L s f := by
   refine (Function.bijective_iff_existsUnique _).mpr fun s ↦ ?_
@@ -301,6 +410,9 @@ theorem bijective_lbSecPull (f : Y ⟶ X) (hf : ∀ V, Function.Bijective (f.app
     (L' := L.pull f) (Equiv.funUnique PUnit L.ι) (lb_pull_U L f) (lb_pull_g L f) s)
   exact ⟨fun h ↦ lbSec_ext h, fun h j ↦ congrArg (fun z : (L.pull f).Sec ↦ z.f j) h⟩
 
+/- English proof (translation)
+Use `(existsUnique_congr fun t ↦ and_congr_right fun _ ↦ ?_).mp (existsUnique_gen_of_charts f hf (L := L) (L' := L.pull f) (Equiv.funUnique PUnit L.ι) (lb_pull_U L f) (lb_pull_g L f) r hr)` and prove the remaining obligations. Conclude with `⟨fun h ↦ lbGen_ext h, fun h j ↦ congrArg (fun z : (L.pull f).Gen ↦ (z.s j).val) h⟩`.
+-/
 theorem existsUnique_genPull_eq (f : Y ⟶ X) (hf : ∀ V, Function.Bijective (f.app V).hom)
     (L : LB X) (r : (L.pull f).Gen) (hr : r.IsGen) :
     ∃! t : L.Gen, t.IsGen ∧ L.genPull t f = r := by
@@ -313,11 +425,17 @@ noncomputable abbrev lbIsoPull {L M : LB X} (w : LB.Iso L M) (f : Y ⟶ X) :
     LB.Iso (L.pull f) (M.pull f) :=
   LB.linCombIso w (K := PUnit) (fun _ ↦ f) (fun _ ↦ 1)
 
+/- English proof (translation)
+The claim follows from `congrArg₂ (· ⊓ ·) (lb_pull_U M f p.1) (lb_pull_U L f p.2)`.
+-/
 theorem lb_div_pull_U (L M : LB X) (f : Y ⟶ X)
     (p : (PUnit.{u + 1} → M.ι) × (PUnit.{u + 1} → L.ι)) :
     ((M.pull f).div (L.pull f)).U p = f ⁻¹ᵁ (M.div L).U (p.1 PUnit.unit, p.2 PUnit.unit) :=
   congrArg₂ (· ⊓ ·) (lb_pull_U M f p.1) (lb_pull_U L f p.2)
 
+/- English proof (translation)
+Establish `key : ∀ {a b a' b' : X.Opens} {c d c' d' : Y.Opens} (h₁ : c ⊓ c' ≤ f ⁻¹ᵁ (a ⊓ a')) (h₂ : d ⊓ d' ≤ f ⁻¹ᵁ (b ⊓ b')) (h₃ : c ⊓ d ⊓ (c' ⊓ d') ≤ f ⁻¹ᵁ (a ⊓ b ⊓ (a' ⊓ b'))) (x : Γ(X, a ⊓ a')ˣ) (y : Γ(X, b ⊓ b')ˣ) (x' : Γ(Y, c ⊓ c')ˣ) (y' : Γ(Y, d ⊓ d')ˣ), x' = res h₁ (pullU f _ x) → y' …`. Introduce and unpack `a b a' b' c d c' d' h₁ h₂ h₃ x y _ _ rfl rfl`. Simplify using `only [map_mul, map_inv, LB.pullU_res, LB.res_res]`. Conclude with `key _ _ _ _ _ _ _ (LB.lcg_pull M f p.1 q.1) (LB.lcg_pull L f p.2 q.2)`.
+-/
 theorem lb_div_pull_g (L M : LB X) (f : Y ⟶ X)
     (p q : (PUnit.{u + 1} → M.ι) × (PUnit.{u + 1} → L.ι)) :
     ((M.pull f).div (L.pull f)).g p q =
@@ -344,6 +462,9 @@ theorem lb_div_pull_g (L M : LB X) (f : Y ⟶ X)
     simp only [map_mul, map_inv, LB.pullU_res, LB.res_res]
   exact key _ _ _ _ _ _ _ (LB.lcg_pull M f p.1 q.1) (LB.lcg_pull L f p.2 q.2)
 
+/- English proof (translation)
+Simplify using `only [lbIsoPull, LB.linCombIso, zpow_one]`. Conclude with `congrArg Units.val (Fintype.prod_unique _)`.
+-/
 theorem lbIsoPull_s_val {L M : LB X} (w : LB.Iso L M) (f : Y ⟶ X)
     (p : (PUnit.{u + 1} → M.ι) × (PUnit.{u + 1} → L.ι)) :
     ((lbIsoPull w f).s p).val =
@@ -352,6 +473,9 @@ theorem lbIsoPull_s_val {L M : LB X} (w : LB.Iso L M) (f : Y ⟶ X)
   simp only [lbIsoPull, LB.linCombIso, zpow_one]
   exact congrArg Units.val (Fintype.prod_unique _)
 
+/- English proof (translation)
+Use `(existsUnique_congr fun t ↦ and_congr_right fun _ ↦ ?_).mp (existsUnique_gen_of_charts f hf (L := M.div L) (L' := (M.pull f).div (L.pull f)) ((Equiv.funUnique PUnit M.ι).prodCongr (Equiv.funUnique PUnit L.ι)) (lb_div_pull_U L M f) (fun p q ↦ congrArg Units.val (lb_div_pull_g L M …` and prove the remaining obligations. Conclude with `⟨fun h ↦ lbGen_ext fun p ↦ (lbIsoPull_s_val t f p).trans (h p), fun h p ↦ (lbIsoPull_s_val t f p).symm.trans (congrArg (fun z : LB.Iso (L.pull f) (M.pull f) ↦ (z.s p).val) h)⟩`.
+-/
 theorem existsUnique_lbIsoPull_eq (f : Y ⟶ X) (hf : ∀ V, Function.Bijective (f.app V).hom)
     (L M : LB X) (w : LB.Iso (L.pull f) (M.pull f)) (hw : w.IsGen) :
     ∃! v : LB.Iso L M, v.IsGen ∧ lbIsoPull v f = w := by
@@ -371,15 +495,24 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 
 variable {X Y : Scheme.{0}}
 
+/- English proof (translation)
+Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem resG_resG {U V W : X.Opens} (h₁ : V ≤ U) (h₂ : W ≤ V) (s : Γ(X, U)) :
     resG X h₂ (resG X h₁ s) = resG X (h₂.trans h₁) s := by
   rw [← CommRingCat.comp_apply, ← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Rewrite using `[resG, show (homOfLE (le_refl U)).op = 𝟙 _ from rfl, X.presheaf.map_id]`. Both sides reduce to the same expression.
+-/
 theorem resG_refl {U : X.Opens} (s : Γ(X, U)) : resG X le_rfl s = s := by
   rw [resG, show (homOfLE (le_refl U)).op = 𝟙 _ from rfl, X.presheaf.map_id]
   rfl
 
+/- English proof (translation)
+Apply `hi` to reduce the goal to its premises. Simplify `h` using `only [map_mul, resG_resG]`.
+-/
 theorem resG_eq_mul_of_injective {A B G T A' B' T' : X.Opens} (hA : T ≤ A) (hB : T ≤ B)
     (hG : T ≤ G) (hA' : A' ≤ A) (hB' : B' ≤ B) (hT : T' ≤ T) (kA : T' ≤ A') (kB : T' ≤ B')
     (hi : Function.Injective (resG X hT)) {a : Γ(X, A)} {b : Γ(X, B)} {g : Γ(X, G)}
@@ -388,6 +521,9 @@ theorem resG_eq_mul_of_injective {A B G T A' B' T' : X.Opens} (hA : T ≤ A) (hB
   apply hi
   simpa only [map_mul, resG_resG] using h
 
+/- English proof (translation)
+Introduce `i j`. Use `congrArg (resG X (inf_le_inf_right _ (inf_le_inf_right _ h) : W ⊓ L.U i ⊓ L.U j ≤ V ⊓ L.U i ⊓ L.U j)) (hs i j)` as an intermediate fact. Simplify `this` using `only [map_mul, resG_resG]`.
+-/
 theorem res_mem_secOn {L : LB X} {V W : X.Opens} (h : W ≤ V) {s : ∀ i, Γ(X, V ⊓ L.U i)}
     (hs : s ∈ secOn L V) : (fun i ↦ resG X (inf_le_inf_right _ h) (s i)) ∈ secOn L W := by
   intro i j
@@ -395,6 +531,9 @@ theorem res_mem_secOn {L : LB X} {V W : X.Opens} (h : W ≤ V) {s : ∀ i, Γ(X,
     W ⊓ L.U i ⊓ L.U j ≤ V ⊓ L.U i ⊓ L.U j)) (hs i j)
   simpa only [map_mul, resG_resG] using this
 
+/- English proof (translation)
+Introduce `i j`. Use `congrArg (resG X (le_inf (inf_le_left.trans inf_le_right) inf_le_right : W ⊓ L.U i ⊓ L.U j ≤ L.U i ⊓ L.U j)) (s.compat i j)` as an intermediate fact. Simplify `this` using `only [map_mul, resG_resG]`.
+-/
 theorem res_sec_mem_secOn {L : LB X} (W : X.Opens) (s : L.Sec) :
     (fun i ↦ resG X inf_le_right (s.f i)) ∈ secOn L W := by
   intro i j
@@ -402,6 +541,13 @@ theorem res_sec_mem_secOn {L : LB X} (W : X.Opens) (s : L.Sec) :
     W ⊓ L.U i ⊓ L.U j ≤ L.U i ⊓ L.U j)) (s.compat i j)
   simpa only [map_mul, resG_resG] using this
 
+/- English proof (translation)
+Establish `hb` using `bijective_res_inf_of_coheight_le_one (X := V) (U := V.ι ⁻¹ᵁ W) (fun x hx ↦ hW _ x.2 (by rwa [← coheight_apply_of_isOpenImmersion V.ι] at hx)) (V.ι ⁻¹ᵁ V)`. Establish `h1 : Function.Bijective (V.ι.app V).hom`. Use `V.ι.isIso_app V (by simp)` as an intermediate fact. Use the proof step `ConcreteCategory.bijective_of_isIso _`. Establish `h2 : Function.Bijective (V.ι.appLE W (V.ι ⁻¹ᵁ V ⊓ V.ι ⁻¹ᵁ W) inf_le_right).hom`.
+
+Use `V.ι.isIso_app W (by simpa)` as an intermediate fact. Use `bijective_appLE_of_eq V.ι (inf_eq_right.mpr (V.ι.preimage_mono h)) (ConcreteCategory.bijective_of_isIso _)`. Rewrite using `[← h2.of_comp_iff']`. Use `hb.comp h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `s`.
+
+Conclude with `appLE_res_apply V.ι h _ s`.
+-/
 theorem bijective_resG_of_coheight_le_one [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X]
     {V W : X.Opens} (h : W ≤ V) (hW : ∀ x ∈ V, Order.coheight x ≤ 1 → x ∈ W) :
     Function.Bijective (resG X h) := by
@@ -419,6 +565,11 @@ theorem bijective_resG_of_coheight_le_one [IsLocallyNoetherian X] [GlobalTheory.
   funext s
   exact appLE_res_apply V.ι h _ s
 
+/- English proof (translation)
+Establish `hb (i) : Function.Bijective (resG X (inf_le_inf_right (L.U i) h))` using `bijective_resG_of_coheight_le_one _ fun x hx h1 ↦ ⟨hW x hx.1 h1, hx.2⟩`. Use `choose t ht using fun i ↦ (hb i).2 (s i)`. Use `⟨t, ⟨fun i j ↦ ?_, ht⟩, fun t' ht' ↦ funext fun i ↦ (hb i).1 ((ht'.2 i).trans (ht i).symm)⟩` and prove the remaining obligations. Use `resG_eq_mul_of_injective _ _ _ (inf_le_inf_right _ h) (inf_le_inf_right _ h) (inf_le_inf_right _ (inf_le_inf_right _ h) : W ⊓ L.U i ⊓ L.U j ≤ _) inf_le_left (le_inf (inf_le_left.trans inf_le_left) inf_le_right) (bijective_resG_of_coheight_le_one _ fun x hx h1 ↦ ?_).1 ?_` and prove the remaining obligations. Conclude with `⟨⟨hW x hx.1.1 h1, hx.1.2⟩, hx.2⟩`.
+
+Rewrite using `[ht, ht]`. Conclude with `hs i j`.
+-/
 theorem existsUnique_secOn_of_coheight_le_one [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X]
     (L : LB X) {V W : X.Opens} (h : W ≤ V) (hW : ∀ x ∈ V, Order.coheight x ≤ 1 → x ∈ W)
     {s : ∀ i, Γ(X, W ⊓ L.U i)} (hs : s ∈ secOn L W) :
@@ -436,6 +587,11 @@ theorem existsUnique_secOn_of_coheight_le_one [IsLocallyNoetherian X] [GlobalThe
   · rw [ht, ht]
     exact hs i j
 
+/- English proof (translation)
+Establish `hb (i) : Function.Bijective (resG X (inf_le_right : U ⊓ L.U i ≤ L.U i))` using `bijective_resG_of_coheight_le_one _ fun x hx h1 ↦ ⟨hU x h1, hx⟩`. Use `choose t ht using fun i ↦ (hb i).2 (s i)`. Use `⟨⟨t, fun i j ↦ ?_⟩, ht, fun t' ht' ↦ lbSec_ext fun i ↦ (hb i).1 ((ht' i).trans (ht i).symm)⟩` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (· * _) (resG_refl _))` and prove the remaining obligations. Use `resG_eq_mul_of_injective _ _ _ inf_le_right inf_le_right (le_inf (inf_le_left.trans inf_le_right) inf_le_right : U ⊓ L.U i ⊓ L.U j ≤ _) inf_le_left (le_inf (inf_le_left.trans inf_le_left) inf_le_right) (bijective_resG_of_coheight_le_one _ fun x hx h1 ↦ ?_).1 ?_` and prove the remaining obligations.
+
+Conclude with `⟨⟨hU x h1, hx.1⟩, hx.2⟩`. Rewrite using `[ht, ht]`. Conclude with `hs i j`.
+-/
 theorem existsUnique_sec_res_eq_of_coheight_le_one [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X]
     (L : LB X) {U : X.Opens} (hU : ∀ x : X, Order.coheight x ≤ 1 → x ∈ U)
     {s : ∀ i, Γ(X, U ⊓ L.U i)} (hs : s ∈ secOn L U) :
@@ -458,10 +614,16 @@ section Integral
 
 variable [IsIntegral X]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨_, genericPoint_mem_opens V, genericPoint_mem_opens W⟩⟩`.
+-/
 theorem nonempty_inf_of_isIntegral (V W : X.Opens) [Nonempty V] [Nonempty W] :
     Nonempty (V ⊓ W : X.Opens) :=
   ⟨⟨_, genericPoint_mem_opens V, genericPoint_mem_opens W⟩⟩
 
+/- English proof (translation)
+Distinguish the cases in `hT : T = ⊥`. Conclude with `(bijective_res_of_eq_bot h hT).1`. Establish `: Nonempty T` using `((Opens.ne_bot_iff_nonempty _).mp hT).to_subtype`. Establish `: Nonempty T'` using `⟨⟨_, hW ⟨genericPoint_mem_opens W, genericPoint_mem_opens T⟩⟩⟩`. Conclude with `map_injective_of_isIntegral X (homOfLE h)`.
+-/
 theorem injective_resG_of_inf_le (W : X.Opens) [Nonempty W] {T T' : X.Opens} (h : T' ≤ T)
     (hW : W ⊓ T ≤ T') : Function.Injective (resG X h) := by
   by_cases hT : T = ⊥
@@ -470,6 +632,11 @@ theorem injective_resG_of_inf_le (W : X.Opens) [Nonempty W] {T T' : X.Opens} (h 
   have : Nonempty T' := ⟨⟨_, hW ⟨genericPoint_mem_opens W, genericPoint_mem_opens T⟩⟩⟩
   exact map_injective_of_isIntegral X (homOfLE h)
 
+/- English proof (translation)
+Establish `: Nonempty (L.U j)` using `⟨⟨x, hj⟩⟩`. Establish `: Nonempty (L.U i ⊓ L.U j : X.Opens)` using `⟨⟨x, hi, hj⟩⟩`. Use `nonempty_inf_of_isIntegral (W ⊓ L.U i) (L.U j)` as an intermediate fact. Establish `e` using `congrArg (X.germToFunctionField (W ⊓ L.U i ⊓ L.U j)) (hs i j)`. Rewrite `e` using `[map_mul]`.
+
+Use `erw [germToFunctionField_res, germToFunctionField_res, germToFunctionField_res] at e`. Rewrite using `[e]`. Conclude with `mul_mem (germToFunctionField_mem_range_stalk _ _ ⟨hi, hj⟩) h`.
+-/
 theorem germToFunctionField_mem_range_stalk_of_secOn {L : LB X} {W : X.Opens}
     {s : ∀ i, Γ(X, W ⊓ L.U i)} (hs : s ∈ secOn L W) {x : X} {i j : L.ι} (hi : x ∈ L.U i)
     (hj : x ∈ L.U j) [Nonempty (W ⊓ L.U i : X.Opens)] [Nonempty (W ⊓ L.U j : X.Opens)]
@@ -487,6 +654,11 @@ theorem germToFunctionField_mem_range_stalk_of_secOn {L : LB X} {W : X.Opens}
 
 variable [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X]
 
+/- English proof (translation)
+Distinguish the cases in `hT : O = ⊥`. Conclude with `(bijective_res_of_eq_bot h hT).2 _`. Establish `: Nonempty O` using `((Opens.ne_bot_iff_nonempty _).mp hT).to_subtype`. Establish `: Nonempty (W ⊓ L.U i : X.Opens)` using `⟨⟨_, genericPoint_mem_opens W, hO (genericPoint_mem_opens O)⟩⟩`. Take `⟨t, ht⟩` from `exists_germToFunctionField_eq_of_coheight_eq_one O (X.germToFunctionField _ (s i)) fun x hx h1 ↦ by`.
+
+Distinguish the cases in `hxW : x ∈ W`. Conclude with `germToFunctionField_mem_range_stalk _ _ ⟨hxW, hO hx⟩`. Take `⟨j, _, hj, h⟩` from `H x hx h1 hxW`. Conclude with `germToFunctionField_mem_range_stalk_of_secOn hs (hO hx) hj h`. Conclude with `⟨t, X.germToFunctionField_injective _ ((germToFunctionField_res h t).trans ht)⟩`.
+-/
 theorem exists_resG_eq_of_secOn {L : LB X} {W : X.Opens} [Nonempty W]
     {s : ∀ i, Γ(X, W ⊓ L.U i)} (hs : s ∈ secOn L W) (i : L.ι) {O : X.Opens} (h : W ⊓ L.U i ≤ O)
     (hO : O ≤ L.U i)
@@ -507,6 +679,13 @@ theorem exists_resG_eq_of_secOn {L : LB X} {W : X.Opens} [Nonempty W]
         exact germToFunctionField_mem_range_stalk_of_secOn hs (hO hx) hj h
   exact ⟨t, X.germToFunctionField_injective _ ((germToFunctionField_res h t).trans ht)⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, -, ht⟩ x hx - -`. Take `⟨i, hi⟩` from `LB.mem_of_cover hL x`. Establish `: Nonempty (L.U i)` using `⟨⟨x, hi⟩⟩`. Establish `: Nonempty (V ⊓ L.U i : X.Opens)` using `⟨⟨x, hx, hi⟩⟩`.
+
+Use `nonempty_inf_of_isIntegral W (L.U i)` as an intermediate fact. Use `⟨i, this, hi, ?_⟩` and prove the remaining obligations. Rewrite using `[← ht]`. Use `erw [germToFunctionField_res]`. Conclude with `germToFunctionField_mem_range_stalk _ _ ⟨hx, hi⟩`.
+
+Introduce `H choose t ht using fun i ↦ exists_resG_eq_of_secOn hs i (inf_le_inf_right _ h) inf_le_right fun x hx ↦ H x hx.1`. Use `⟨t, fun i j ↦ ?_, ht⟩` and prove the remaining obligations. Use `resG_eq_mul_of_injective _ _ _ (inf_le_inf_right _ h) (inf_le_inf_right _ h) (inf_le_inf_right _ (inf_le_inf_right _ h) : W ⊓ L.U i ⊓ L.U j ≤ _) inf_le_left (le_inf (inf_le_left.trans inf_le_left) inf_le_right) (injective_resG_of_inf_le W _ fun x hx ↦ ⟨⟨hx.1, hx.2.1.2⟩, hx.2.2⟩) …` and prove the remaining obligations. Rewrite using `[ht, ht]`. Conclude with `hs i j`.
+-/
 theorem exists_secOn_res_eq_iff {L : LB X} (hL : L.IsLB) {V W : X.Opens} (h : W ≤ V) [Nonempty W]
     {s : ∀ i, Γ(X, W ⊓ L.U i)} (hs : s ∈ secOn L W) :
     (∃ t ∈ secOn L V, ∀ i, resG X (inf_le_inf_right _ h) (t i) = s i) ↔
@@ -535,6 +714,11 @@ theorem exists_secOn_res_eq_iff {L : LB X} (hL : L.IsLB) {V W : X.Opens} (h : W 
     rw [ht, ht]
     exact hs i j
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht⟩`. Conclude with `fun x ↦ (exists_secOn_res_eq_iff hL le_top hs).mp ⟨_, res_sec_mem_secOn ⊤ t, fun i ↦ (resG_resG _ _ _).trans (ht i)⟩ x trivial`. Introduce `H choose t ht using fun i ↦ exists_resG_eq_of_secOn hs i inf_le_right le_rfl fun x _ ↦ H x`. Use `⟨⟨t, fun i j ↦ ?_⟩, ht⟩` and prove the remaining obligations.
+
+Use `Eq.trans ?_ (congrArg (· * _) (resG_refl _))` and prove the remaining obligations. Use `resG_eq_mul_of_injective _ _ _ inf_le_right inf_le_right (le_inf (inf_le_left.trans inf_le_right) inf_le_right : W ⊓ L.U i ⊓ L.U j ≤ _) inf_le_left (le_inf (inf_le_left.trans inf_le_left) inf_le_right) (injective_resG_of_inf_le W _ fun x hx ↦ ⟨⟨hx.1, hx.2.1⟩, hx.2.2⟩) ?_` and prove the remaining obligations. Rewrite using `[ht, ht]`. Conclude with `hs i j`.
+-/
 theorem exists_sec_res_eq_iff {L : LB X} (hL : L.IsLB) {W : X.Opens} [Nonempty W]
     {s : ∀ i, Γ(X, W ⊓ L.U i)} (hs : s ∈ secOn L W) :
     (∃ t : L.Sec, ∀ i, resG X inf_le_right (t.f i) = s i) ↔
@@ -559,6 +743,9 @@ theorem exists_sec_res_eq_iff {L : LB X} (hL : L.IsLB) {W : X.Opens} [Nonempty W
 
 omit [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X] in
 
+/- English proof (translation)
+The claim follows from `lbSec_ext fun i ↦ injective_resG_of_inf_le W _ le_rfl (h i)`.
+-/
 theorem lbSec_eq_of_res_eq {L : LB X} (W : X.Opens) [Nonempty W] {t t' : L.Sec}
     (h : ∀ i, resG X (inf_le_right : W ⊓ L.U i ≤ L.U i) (t.f i) = resG X inf_le_right (t'.f i)) :
     t = t' :=
@@ -566,15 +753,26 @@ theorem lbSec_eq_of_res_eq {L : LB X} (W : X.Opens) [Nonempty W] {t t' : L.Sec}
 
 end Integral
 
+/- English proof (translation)
+The claim follows from `(lb_pull_U L W.ι j).trans (le_antisymm (fun y hy ↦ ⟨y.2, hy⟩) fun _ hy ↦ hy.2)`.
+-/
 theorem lb_pull_ι_U (L : LB X) (W : X.Opens) (j : PUnit.{1} → L.ι) :
     (L.pull W.ι).U j = W.ι ⁻¹ᵁ (W ⊓ L.U (j PUnit.unit)) :=
   (lb_pull_U L W.ι j).trans (le_antisymm (fun y hy ↦ ⟨y.2, hy⟩) fun _ hy ↦ hy.2)
 
+/- English proof (translation)
+The claim follows from `have := W.ι.isIso_app V (by simpa) bijective_appLE_of_eq W.ι h (ConcreteCategory.bijective_of_isIso _)`.
+-/
 theorem bijective_ι_appLE (W : X.Opens) {V : X.Opens} (hV : V ≤ W) {T : W.toScheme.Opens}
     (h : T = W.ι ⁻¹ᵁ V) : Function.Bijective (W.ι.appLE V T h.le).hom :=
   have := W.ι.isIso_app V (by simpa)
   bijective_appLE_of_eq W.ι h (ConcreteCategory.bijective_of_isIso _)
 
+/- English proof (translation)
+Establish `hb (j : PUnit.{1} → L.ι)` using `bijective_ι_appLE W inf_le_left (lb_pull_ι_U L W j)`. Use `choose s hs using fun i : L.ι ↦ (hb fun _ ↦ i).2 (r.f fun _ ↦ i)`. Use `⟨s, ⟨fun i j ↦ ?_, fun j ↦ hs (j PUnit.unit)⟩, fun t ht ↦ funext fun i ↦ (hb fun _ ↦ i).1 ((ht.2 fun _ ↦ i).trans (hs i).symm)⟩` and prove the remaining obligations. Apply `(bijective_ι_appLE W (V := W ⊓ L.U i ⊓ L.U j) (inf_le_left.trans inf_le_left) (T := (L.pull W.ι).U (fun _ ↦ i) ⊓ (L.pull W.ι).U (fun _ ↦ j)) (congrArg₂ (· ⊓ ·) (lb_pull_ι_U L W fun _ ↦ i) (lb_pull_U L W.ι fun _ ↦ j))).1` to reduce the goal to its premises. Use `r.compat (fun _ ↦ i) (fun _ ↦ j)` as an intermediate fact.
+
+Rewrite `this` using `[← hs, ← hs, lb_pull_g L W.ι (fun _ ↦ i) (fun _ ↦ j)]`. Use `erw [res_appLE_apply, res_appLE_apply] at this`. Rewrite using `[map_mul]`. Use `erw [appLE_res_apply, appLE_res_apply, appLE_res_apply]`. Conclude with `this`.
+-/
 theorem existsUnique_secOn_of_pull (L : LB X) (W : X.Opens) (r : (L.pull W.ι).Sec) :
     ∃! s : ∀ i, Γ(X, W ⊓ L.U i), s ∈ secOn L W ∧ ∀ j : PUnit.{1} → L.ι,
       (W.ι.appLE (W ⊓ L.U (j PUnit.unit)) _ (lb_pull_ι_U L W j).le).hom (s (j PUnit.unit)) =
@@ -593,6 +791,13 @@ theorem existsUnique_secOn_of_pull (L : LB X) (W : X.Opens) (r : (L.pull W.ι).S
   erw [appLE_res_apply, appLE_res_apply, appLE_res_apply]
   exact this
 
+/- English proof (translation)
+Establish `hb (j : PUnit.{1} → L.ι)` using `bijective_ι_appLE W inf_le_left (lb_pull_ι_U L W j)`. Take `⟨s, ⟨hs, hr⟩, -⟩` from `existsUnique_secOn_of_pull L W r`. Establish `h1 : (∃ t : L.Sec, lbSecPull L t W.ι = r) ↔ ∃ t : L.Sec, ∀ i, resG X inf_le_right (t.f i) = s i`. Use `exists_congr fun t ↦ ⟨fun h i ↦ (hb fun _ ↦ i).1 ?_, fun h ↦ lbSec_ext fun j ↦ ?_⟩` and prove the remaining obligations. Use `(appLE_res_apply W.ι _ _ _).trans (Eq.trans ?_ (hr fun _ ↦ i).symm)` and prove the remaining obligations.
+
+Rewrite using `[← h]`. Both sides reduce to the same expression. Use `Eq.trans ?_ (hr j)` and prove the remaining obligations. Rewrite using `[← h]`. Conclude with `(appLE_res_apply W.ι _ _ _).symm`.
+
+Rewrite using `[h1, exists_sec_res_eq_iff hL hs]`. Use `forall₃_congr fun x _ _ ↦ exists₂_congr fun i _ ↦ ⟨fun h ↦ ⟨s i, h.1, hr fun _ ↦ i, h.2⟩, fun ⟨a, h1, h2, h3⟩ ↦ ⟨h1, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← (hb fun _ ↦ i).1 (h2.trans (hr fun _ ↦ i).symm)]` and apply the resulting hypothesis.
+-/
 theorem exists_lbSecPull_eq_iff [IsIntegral X] [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X]
     {L : LB X} (hL : L.IsLB) {W : X.Opens} [Nonempty W] (r : (L.pull W.ι).Sec) :
     (∃ t : L.Sec, lbSecPull L t W.ι = r) ↔
@@ -623,18 +828,27 @@ section Main
 
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
+/- English proof (translation)
+The claim follows from `bijective_lbSecPull f (bijective_app_of_coheight_le_one f hf) L`.
+-/
 theorem bijective_lbSecPull_of_coheight_le_one {X Y : Scheme.{u}} [IsLocallyNoetherian X]
     [GlobalTheory.IsNormalScheme X] (f : Y ⟶ X) [IsOpenImmersion f]
     (hf : ∀ x : X, Order.coheight x ≤ 1 → x ∈ Set.range f) (L : LB X) :
     Function.Bijective fun s : L.Sec ↦ lbSecPull L s f :=
   bijective_lbSecPull f (bijective_app_of_coheight_le_one f hf) L
 
+/- English proof (translation)
+The claim follows from `existsUnique_genPull_eq f (bijective_app_of_coheight_le_one f hf) L r hr`.
+-/
 theorem existsUnique_genPull_eq_of_coheight_le_one {X Y : Scheme.{u}} [IsLocallyNoetherian X]
     [GlobalTheory.IsNormalScheme X] (f : Y ⟶ X) [IsOpenImmersion f]
     (hf : ∀ x : X, Order.coheight x ≤ 1 → x ∈ Set.range f) (L : LB X) (r : (L.pull f).Gen)
     (hr : r.IsGen) : ∃! t : L.Gen, t.IsGen ∧ L.genPull t f = r :=
   existsUnique_genPull_eq f (bijective_app_of_coheight_le_one f hf) L r hr
 
+/- English proof (translation)
+The claim follows from `existsUnique_lbIsoPull_eq f (bijective_app_of_coheight_le_one f hf) L M w hw`.
+-/
 theorem existsUnique_lbIsoPull_eq_of_coheight_le_one {X Y : Scheme.{u}} [IsLocallyNoetherian X]
     [GlobalTheory.IsNormalScheme X] (f : Y ⟶ X) [IsOpenImmersion f]
     (hf : ∀ x : X, Order.coheight x ≤ 1 → x ∈ Set.range f) (L M : LB X)
@@ -642,11 +856,19 @@ theorem existsUnique_lbIsoPull_eq_of_coheight_le_one {X Y : Scheme.{u}} [IsLocal
     ∃! v : LB.Iso L M, v.IsGen ∧ lbIsoPull v f = w :=
   existsUnique_lbIsoPull_eq f (bijective_app_of_coheight_le_one f hf) L M w hw
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨w, hw⟩ ↦ let ⟨v, hv, _⟩ := existsUnique_lbIsoPull_eq f hf L M w hw; ⟨v, hv.1⟩, fun ⟨v, hv⟩ ↦ ⟨lbIsoPull v f, DVR.linCombIso_isGen v hv _ _⟩⟩`.
+-/
 theorem lbIso_pull_iff {X Y : Scheme.{0}} (f : Y ⟶ X) (hf : ∀ V, Function.Bijective (f.app V).hom)
     (L M : LB X) : LBIso (L.pull f) (M.pull f) ↔ LBIso L M :=
   ⟨fun ⟨w, hw⟩ ↦ let ⟨v, hv, _⟩ := existsUnique_lbIsoPull_eq f hf L M w hw; ⟨v, hv.1⟩,
     fun ⟨v, hv⟩ ↦ ⟨lbIsoPull v f, DVR.linCombIso_isGen v hv _ _⟩⟩
 
+/- English proof (translation)
+Use `GlobalTheory.IsNormalScheme.of_pred hX` as an intermediate fact. Use `⟨fun U hU ↦ ?_, fun x hx ↦ ⟨inferInstance, GlobalTheory.IsNormalScheme.isDiscreteValuationRing_stalk hx⟩, fun L hL W _ ↦ ⟨fun s hs ↦ ?_, exists_lbSecPull_eq_iff hL⟩⟩` and prove the remaining obligations. Establish `hU' : ∀ x : X, Order.coheight x ≤ 1 → x ∈ U` using `fun x hx ↦ hU x ((ringKrullDim_stalk_le_one_iff x).mpr hx)`. Establish `hf` using `bijective_app_of_coheight_le_one U.ι fun x hx ↦ by simpa using hU' x hx`. Conclude with `⟨bijective_res_inf_of_coheight_le_one hU', fun L ↦ (Function.bijective_iff_existsUnique _).mp (bijective_lbSecPull U.ι hf L), fun L V s hs ↦ existsUnique_secOn_of_coheight_le_one L inf_le_left (fun x hx h1 ↦ ⟨hx, hU' x h1⟩) hs, existsUnique_genPull_eq U.ι hf, existsUnique_lbIsoPu …`.
+
+Rewrite using `[← exists_sec_res_eq_iff hL hs]`. Conclude with `⟨ExistsUnique.exists, fun ⟨t, ht⟩ ↦ ⟨t, ht, fun t' ht' ↦ lbSec_eq_of_res_eq W fun i ↦ (ht' i).trans (ht i).symm⟩⟩`.
+-/
 theorem extension_over_codim_two (X : Scheme.{0}) [IsLocallyNoetherian X]
     (hX : Geo.Tor.IsNormalScheme X) :
     (∀ U : X.Opens, (∀ x : X, ringKrullDim (X.presheaf.stalk x) ≤ 1 → x ∈ U) →
@@ -690,6 +912,13 @@ theorem extension_over_codim_two (X : Scheme.{0}) [IsLocallyNoetherian X]
     exact ⟨ExistsUnique.exists, fun ⟨t, ht⟩ ↦ ⟨t, ht, fun t' ht' ↦
       lbSec_eq_of_res_eq W fun i ↦ (ht' i).trans (ht i).symm⟩⟩
 
+/- English proof (translation)
+Take `⟨m, hm, h1⟩ : ∃ m : Ideal (Polynomial ℤ), m.IsMaximal ∧ ¬ m.height ≤ 1` from `by by_contra! H`. Establish `h` using `(ringKrullDim_le_iff_isMaximal_height_le (R := Polynomial ℤ) 1).mpr fun m hm ↦ by exact_mod_cast H m hm`. Rewrite `h` using `[Polynomial.ringKrullDim_of_isNoetherianRing, IsPrincipalIdealRing.ringKrullDim_eq_one ℤ Int.not_isField]`. Conclude with `absurd h (by decide)`. Set `x : Spec (.of (Polynomial ℤ))` to `⟨m, hm.isPrime⟩`.
+
+Establish `hc : IsClosed {x}` using `(PrimeSpectrum.isClosed_singleton_iff_isMaximal x).mpr hm`. Use `⟨Spec (.of (Polynomial ℤ)), inferInstance, inferInstance, GlobalTheory.IsNormalScheme.pred _, ⟨{x}ᶜ, hc.isOpen_compl⟩, fun h ↦ ?_, fun y hy hyx ↦ h1 ?_⟩` and prove the remaining obligations. Establish `: x ∈ (⟨{x}ᶜ, hc.isOpen_compl⟩ : (Spec (.of (Polynomial ℤ))).Opens)` using `h ▸ trivial`. Conclude with `this rfl`. Rewrite `hy` using `[show y = x from hyx, ringKrullDim_stalk_le_one_iff, ← idealHeight_eq_coheight]`.
+
+Conclude with `hy`.
+-/
 example : ∃ (X : Scheme.{0}) (_ : IsIntegral X) (_ : IsLocallyNoetherian X)
     (_ : Geo.Tor.IsNormalScheme X) (U : X.Opens), U ≠ ⊤ ∧
       ∀ x : X, ringKrullDim (X.presheaf.stalk x) ≤ 1 → x ∈ U := by

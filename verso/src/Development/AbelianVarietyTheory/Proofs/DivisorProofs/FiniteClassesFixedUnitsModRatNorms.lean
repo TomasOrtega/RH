@@ -6,6 +6,9 @@ open scoped TensorProduct Classical
 
 namespace GlobalTheory.EtaleCls
 
+/- English proof (translation)
+Introduce `E _ _ _ _ τ hτ _j _ _ S`. Take `⟨A, hA⟩` from `GlobalTheory.T.normClassFinite_of_reduced_rat_algebra GlobalTheory.T.exists_finite_classes_modulo_involutionNorms E τ hτ S`. Conclude with `⟨A, GlobalTheory.T.involution_norm_class_remove_rational_factor E τ S A hA⟩`.
+-/
 theorem classes_mod_rat_norms : ∀ (E : Type) [CommRing E] [Algebra ℚ E] [FiniteDimensional ℚ E] [IsReduced E] (τ : E ≃ₐ[ℚ] E),
     (∀ x, τ (τ x) = x) → ∀ j : E, IsUnit j → τ j = -j → ∀ S : Finset ℕ, ∃ A : Finset E, ∀ a : E, IsUnit a → τ a = a →
     (∀ ℓ : ℕ, ℓ.Prime → ℓ ∉ S → ∃ (c : ℚ) (b x y : E), c ≠ 0 ∧ IsUnit b ∧ a = x * (algebraMap ℚ E c * (b * τ b)) ∧

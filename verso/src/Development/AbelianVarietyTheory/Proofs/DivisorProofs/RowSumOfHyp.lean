@@ -17,6 +17,11 @@ namespace GlobalTheory.RowClaim
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `_`. Use `⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F hS ch _ _ t a => ?_⟩⟩` and prove the remaining obligations. Establish `hL : R.toLevCh.Is A.μ0` using `hS.core.lev`. Establish `hde` using `GlobalTheory.RowClaim.Test.pde_ne_q hS`. Establish `hc : ∀ P ∈ R.toLevCh.Q t, ((Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal` using `GlobalTheory.RowClaim.Test.guard hS t`.
+
+Take `⟨h1, h2, h3, h4, h5⟩` from `GridChoice.sumOK_classes ch.W ch.S.toGridChoice t (ch.Phi a) hL`. Take `⟨f1, f2, -⟩` from `GridChoice.sumOK_flat_fin_ex hL ch.S.toGridChoice t (ch.Phi a) hde hc`. Take `⟨v1, v2⟩` from `GlobalTheory.T.gridKernelPairing_independent_of_expansion D T R.toLevCh ch.sc ch.G ch.W Set.univ ch.S.toGridChoice A.μ0 hL t trivial (ch.Phi a)`. Conclude with `{ flat := f1 flatA := fun w _ => flatIntegrable_aaVac_of_conductor ch.W w (hasConductor_psiAt_AA ch.W w) fin := f2 ex := GridChoice.sumOK_ex hL ch.S.toGridChoice t (ch.Phi a) hde hc vec := v1 indep := v2 cls := h1 gam := h2 wts := h3 br := h4 read := h5 }`.
+-/
 theorem rowSum_of_hypotheses : GlobalTheory.FunPr.Hypotheses₂ → SumOKK := by
   intro _
   refine ⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F hS ch _ _ t a => ?_⟩⟩

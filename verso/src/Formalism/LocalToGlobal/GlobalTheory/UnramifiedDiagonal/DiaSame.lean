@@ -11,6 +11,9 @@ open scoped TensorProduct
 
 variable {D : D7} {u : D.what₂.Word}
 
+/- English proof (translation)
+Introduce `v' hv'`. Establish `e : (δ⁻¹ * η * δ).1 = δ.1⁻¹ * η.1 * δ.1` using `rfl`. Rewrite using `[e, map_mul, map_mul, map_inv, hη v' hv', hδ v' hv']`. Simplify using the standard rewrite rules.
+-/
 theorem conj_off (v : HeightOneSpectrum (𝓞 D.host.F))
     (η δ : UPts (sigD D) (gramN D 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F))
     (hη : ∀ v', v' ≠ v → bc (prV (E := D.host.E) v') η.1 = 1)
@@ -59,6 +62,29 @@ def DnDiaSame0F (T : Forms0 D u) : Prop :=
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `⟨g, hg, hgφ⟩` from `S0.forms_from_adelic_function T 0 (Nat.zero_le _) rfl φ hφ`. Establish `hgA` using `(Submodule.mem_inf.1 hg).1`. Take `⟨G, hG, hGφ⟩` from `S0.forms_from_adelic_function T 0 (Nat.zero_le _) rfl (Uop D u 0 v φ) (U_op_preserves_forms_zero T v φ hφ)`. Establish `hGA` using `(Submodule.mem_inf.1 hG).1`. Take `⟨k, hk, δ, hδ⟩` from `diamond_elements_exist_all T 0 (Nat.zero_le _) rfl v a`.
+
+Establish `hgδ` using `S0.adelic_function_right_translate_diamond T.cls0.lev (embT D) _ _ (S0.level_places_not_bad T.atT v) hδ hgA`. Establish `hdφ : ∀ c1, dia D u 0 v a φ c1 = fun s => g (T.cls0.y c1 * δ) (T.val0.eY s)`. Introduce `c1`. Use `show (D.fm u).dilT 0 v a c1 (φ ((D.fm u).dil 0 v a c1)) = _`. Rewrite using `[hgφ]`.
+
+Conclude with `T.val0.dilT v a k hk c1 δ hδ g hgA`. Use function extensionality and compare the values at `c`. Establish `hcl` using `T.val0.dil v a k hk c δ hδ`. Take `⟨hh, hhH, κ0, hκK, e⟩` from `(DoubleCoset.eq _ _ _ _).1 hcl`. Establish `hκ : κ0.1 ∈ T.cls0.lev.U` using `hκK`.
+
+Take `⟨γd, hγd, hge⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 hhH)`. Establish `hx : (T.cls0.y c * δ).1 = bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γd * (T.cls0.y ((D.fm u).dil 0 v a c)).1 * κ0.1 := by`. Rewrite using `[e]`. Simplify using `only [Subgroup.coe_mul]`. Rewrite using `[← hge]`.
+
+Take `⟨σ, Mv, Mv2, hMv, hMv2, hm⟩` from `hM v a k hk δ hδ c γd hγd ⟨κ0.1, hκ⟩ hx`. Establish `hL : dia D u 0 v a (Uop D u 0 v φ) c = fun s => G (T.cls0.y c * δ) (T.val0.eY s)` using `by show (D.fm u).dilT 0 v a c (Uop D u 0 v φ ((D.fm u).dil 0 v a c)) = _`. Rewrite using `[hGφ]`. Conclude with `T.val0.dilT v a k hk c δ hδ G hGA`. Rewrite using `[hL, U_op_eq_move_sum T v (dia D u 0 v a φ) hgδ hdφ c Mv hMv]`.
+
+Use function extensionality and compare the values at `s`. Rewrite using `[S0.adelic_value_translate T.cls0.lev (embT D) (fun τ x => S0.embedding_conj_compat D τ x) hGA γd hγd _ _ ⟨κ0.1, hκ⟩ hx]`. Establish `hG2 : ∀ y', G (T.cls0.y ((D.fm u).dil 0 v a c)) y' = ∑ x, g (T.cls0.y ((D.fm u).dil 0 v a c) * Mv2 x) y'`. Introduce `y'`. Establish `h1` using `congrFun (hGφ ((D.fm u).dil 0 v a c)) (T.val0.eY.symm y')`.
+
+Rewrite `h1` using `[U_op_eq_move_sum T v φ hgA hgφ _ Mv2 hMv2]`. Express the relevant statement in the definitionally equal form `_ = G (T.cls0.y ((D.fm u).dil 0 v a c)) (T.val0.eY (T.val0.eY.symm y')) at h1`. Simplify using `only [Equiv.apply_symm_apply] at h1`. Conclude with `h1.symm`. Rewrite using `[hG2, Finset.mul_sum, ← Equiv.sum_comp σ]`.
+
+Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Set `m : T.cls0.lev.U` to `⟨(Mv2 (σ x)).1⁻¹ * κ0.1 * (δ.1⁻¹ * (Mv x).1 * δ.1), hm x⟩`. Take `⟨-, -, hs1, -, -⟩` from `hMv x`. Take `⟨-, -, hs2, -, -⟩` from `hMv2 (σ x)`. Establish `hx2 : (T.cls0.y c * Mv x * δ).1 = bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γd * (T.cls0.y ((D.fm u).dil 0 v a c) * Mv2 (σ x)).1 * m.1 := by`.
+
+Establish `e2 : (T.cls0.y c * Mv x * δ).1 = (T.cls0.y c * δ).1 * (δ.1⁻¹ * (Mv x).1 * δ.1)`. Simplify using `only [Subgroup.coe_mul]`. Use `group`. Rewrite using `[e2, hx]`. Simplify using `only [Subgroup.coe_mul, m]`.
+
+Use `group`. Establish `hs2i : ∀ v'', v'' ≠ (T.atT.eV v).1 → bc (prV (E` using `D.host.E) v'') ((Mv2 (σ x))⁻¹).1 = 1 := by`. Introduce `v'' hv''`. Rewrite using `[InvMemClass.coe_inv, map_inv, hs2 v'' hv'', inv_one]`. Establish `hχ : T.cls0.lev.chi m = T.cls0.lev.chi ⟨κ0.1, hκ⟩`.
+
+Use `rnd_chi T.cls0.lev (T.atT.eV v).1 (S0.level_places_not_bad T.atT v) ((Mv2 (σ x))⁻¹) (δ⁻¹ * Mv x * δ) hs2i (conj_off _ _ _ hs1 hδ.1) ⟨κ0.1, hκ⟩ 1 m (by simp only [m, Subgroup.coe_mul, InvMemClass.coe_inv, OneMemClass.coe_one, mul_one])` as an intermediate fact. Rewrite using `[this, map_one, mul_one]`. Rewrite using `[S0.adelic_value_translate T.cls0.lev (embT D) (fun τ x => S0.embedding_conj_compat D τ x) hgA γd hγd _ _ m hx2, hχ]`.
+-/
 theorem diaU_same (T : Forms0 D u) (hM : UpDiaSame0F T) (v : (D.mem u).A.vT)
     (a : ((D.mem u).A.Fv v)ˣ) (φ : Fn D u 0) (hφ : φ ∈ (D.fm u).Fi 0) :
     dia D u 0 v a (Uop D u 0 v φ) = Uop D u 0 v (dia D u 0 v a φ) := by
@@ -130,6 +156,29 @@ theorem diaU_same (T : Forms0 D u) (hM : UpDiaSame0F T) (v : (D.mem u).A.vT)
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `⟨g, hg, hgφ⟩` from `S0.forms_from_adelic_function T 0 (Nat.zero_le _) rfl φ hφ`. Establish `hgA` using `(Submodule.mem_inf.1 hg).1`. Take `⟨G, hG, hGφ⟩` from `S0.forms_from_adelic_function T 0 (Nat.zero_le _) rfl (Dop D u 0 v φ) (D_op_preserves_forms_zero T v φ hφ)`. Establish `hGA` using `(Submodule.mem_inf.1 hG).1`. Take `⟨k, hk, δ, hδ⟩` from `diamond_elements_exist_all T 0 (Nat.zero_le _) rfl v a`.
+
+Establish `hgδ` using `S0.adelic_function_right_translate_diamond T.cls0.lev (embT D) _ _ (S0.level_places_not_bad T.atT v) hδ hgA`. Establish `hdφ : ∀ c1, dia D u 0 v a φ c1 = fun s => g (T.cls0.y c1 * δ) (T.val0.eY s)`. Introduce `c1`. Use `show (D.fm u).dilT 0 v a c1 (φ ((D.fm u).dil 0 v a c1)) = _`. Rewrite using `[hgφ]`.
+
+Conclude with `T.val0.dilT v a k hk c1 δ hδ g hgA`. Use function extensionality and compare the values at `c`. Establish `hcl` using `T.val0.dil v a k hk c δ hδ`. Take `⟨hh, hhH, κ0, hκK, e⟩` from `(DoubleCoset.eq _ _ _ _).1 hcl`. Establish `hκ : κ0.1 ∈ T.cls0.lev.U` using `hκK`.
+
+Take `⟨γd, hγd, hge⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 hhH)`. Establish `hx : (T.cls0.y c * δ).1 = bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γd * (T.cls0.y ((D.fm u).dil 0 v a c)).1 * κ0.1 := by`. Rewrite using `[e]`. Simplify using `only [Subgroup.coe_mul]`. Rewrite using `[← hge]`.
+
+Take `⟨σ, Mv, Mv2, hMv, hMv2, hm⟩` from `hM v a k hk δ hδ c γd hγd ⟨κ0.1, hκ⟩ hx`. Establish `hL : dia D u 0 v a (Dop D u 0 v φ) c = fun s => G (T.cls0.y c * δ) (T.val0.eY s)` using `by show (D.fm u).dilT 0 v a c (Dop D u 0 v φ ((D.fm u).dil 0 v a c)) = _`. Rewrite using `[hGφ]`. Conclude with `T.val0.dilT v a k hk c δ hδ G hGA`. Rewrite using `[hL, D_op_eq_move_sum T v (dia D u 0 v a φ) hgδ hdφ c Mv hMv]`.
+
+Use function extensionality and compare the values at `s`. Rewrite using `[S0.adelic_value_translate T.cls0.lev (embT D) (fun τ x => S0.embedding_conj_compat D τ x) hGA γd hγd _ _ ⟨κ0.1, hκ⟩ hx]`. Establish `hG2 : ∀ y', G (T.cls0.y ((D.fm u).dil 0 v a c)) y' = ∑ x, g (T.cls0.y ((D.fm u).dil 0 v a c) * Mv2 x) y'`. Introduce `y'`. Establish `h1` using `congrFun (hGφ ((D.fm u).dil 0 v a c)) (T.val0.eY.symm y')`.
+
+Rewrite `h1` using `[D_op_eq_move_sum T v φ hgA hgφ _ Mv2 hMv2]`. Express the relevant statement in the definitionally equal form `_ = G (T.cls0.y ((D.fm u).dil 0 v a c)) (T.val0.eY (T.val0.eY.symm y')) at h1`. Simplify using `only [Equiv.apply_symm_apply] at h1`. Conclude with `h1.symm`. Rewrite using `[hG2, Finset.mul_sum, ← Equiv.sum_comp σ]`.
+
+Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Set `m : T.cls0.lev.U` to `⟨(Mv2 (σ x)).1⁻¹ * κ0.1 * (δ.1⁻¹ * (Mv x).1 * δ.1), hm x⟩`. Take `⟨-, -, hs1, -, -⟩` from `hMv x`. Take `⟨-, -, hs2, -, -⟩` from `hMv2 (σ x)`. Establish `hx2 : (T.cls0.y c * Mv x * δ).1 = bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γd * (T.cls0.y ((D.fm u).dil 0 v a c) * Mv2 (σ x)).1 * m.1 := by`.
+
+Establish `e2 : (T.cls0.y c * Mv x * δ).1 = (T.cls0.y c * δ).1 * (δ.1⁻¹ * (Mv x).1 * δ.1)`. Simplify using `only [Subgroup.coe_mul]`. Use `group`. Rewrite using `[e2, hx]`. Simplify using `only [Subgroup.coe_mul, m]`.
+
+Use `group`. Establish `hs2i : ∀ v'', v'' ≠ (T.atT.eV v).1 → bc (prV (E` using `D.host.E) v'') ((Mv2 (σ x))⁻¹).1 = 1 := by`. Introduce `v'' hv''`. Rewrite using `[InvMemClass.coe_inv, map_inv, hs2 v'' hv'', inv_one]`. Establish `hχ : T.cls0.lev.chi m = T.cls0.lev.chi ⟨κ0.1, hκ⟩`.
+
+Use `rnd_chi T.cls0.lev (T.atT.eV v).1 (S0.level_places_not_bad T.atT v) ((Mv2 (σ x))⁻¹) (δ⁻¹ * Mv x * δ) hs2i (conj_off _ _ _ hs1 hδ.1) ⟨κ0.1, hκ⟩ 1 m (by simp only [m, Subgroup.coe_mul, InvMemClass.coe_inv, OneMemClass.coe_one, mul_one])` as an intermediate fact. Rewrite using `[this, map_one, mul_one]`. Rewrite using `[S0.adelic_value_translate T.cls0.lev (embT D) (fun τ x => S0.embedding_conj_compat D τ x) hgA γd hγd _ _ m hx2, hχ]`.
+-/
 theorem diaD_same (T : Forms0 D u) (hM : DnDiaSame0F T) (v : (D.mem u).A.vT)
     (a : ((D.mem u).A.Fv v)ˣ) (φ : Fn D u 0) (hφ : φ ∈ (D.fm u).Fi 0) :
     dia D u 0 v a (Dop D u 0 v φ) = Dop D u 0 v (dia D u 0 v a φ) := by
@@ -199,6 +248,9 @@ theorem diaD_same (T : Forms0 D u) (hM : DnDiaSame0F T) (v : (D.mem u).A.vT)
   rw [S0.adelic_value_translate T.cls0.lev (embT D) (fun τ x => S0.embedding_conj_compat D τ x) hgA γd hγd _ _
     m hx2, hχ]
 
+/- English proof (translation)
+Introduce `v a φ hφ` and use `⟨diaU_same T hU v a φ hφ, diaD_same T hD v a φ hφ⟩`.
+-/
 theorem diamond_same_place_of_matchings (T : Forms0 D u) (hU : UpDiaSame0F T) (hD : DnDiaSame0F T) : DiamondOperatorCommutationAtPlace D u :=
   fun v a φ hφ => ⟨diaU_same T hU v a φ hφ, diaD_same T hD v a φ hφ⟩
 

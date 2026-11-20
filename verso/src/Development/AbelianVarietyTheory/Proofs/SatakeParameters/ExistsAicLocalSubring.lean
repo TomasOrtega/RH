@@ -10,6 +10,9 @@ namespace GlobalTheory.GenusTwoPureComparison.Cmp
 
 open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC
 
+/- English proof (translation)
+Take `⟨D, m₀, hD, hm₀, hres, hint⟩` from `GlobalTheory.T.exists_polynomialSubring_maximal_integral k K φ`. Take `⟨R, 𝔪, hR, h𝔪, hres', hfr, hic⟩` from `GlobalTheory.T.integralClosure_maximal_residue_of_algClosed k K φ D m₀ hD hm₀ hres hint`. Conclude with `GlobalTheory.T.exists_local_subring_monic_roots_residue k K φ R 𝔪 hR h𝔪 hres' hfr hic`.
+-/
 theorem exists_aic_local_subring (k K : Type) [Field k] [IsAlgClosed k] [Field K] [IsAlgClosed K] (φ : k →+* K) :
     ∃ T : Subring K, φ.range ≤ T ∧ (∃ _ : IsLocalRing T, AIC T ∧
       ∀ t : T, ∃ c : k, ∃ h : φ c ∈ T, t - ⟨φ c, h⟩ ∈ IsLocalRing.maximalIdeal T) ∧ IsFractionRing T K := by
@@ -20,18 +23,27 @@ theorem exists_aic_local_subring (k K : Type) [Field k] [IsAlgClosed k] [Field K
 section Eqv
 variable {R : Type} [CommRing R] (F : Shv R)
 
+/- English proof (translation)
+Introduce `n`. Use `Function.bijective_iff_has_inverse.mpr ⟨pull R (inv f) F n, fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← pull_comp, IsIso.inv_hom_id, pull_id]`. Rewrite using `[← pull_comp, IsIso.hom_inv_id, pull_id]`.
+-/
 theorem eqv_iso {E E' : Spc} (f : E ⟶ E') [IsIso f] : Eqv R f F := by
   intro n
   refine Function.bijective_iff_has_inverse.mpr ⟨pull R (inv f) F n, fun x => ?_, fun x => ?_⟩
   · rw [← pull_comp, IsIso.inv_hom_id, pull_id]
   · rw [← pull_comp, IsIso.hom_inv_id, pull_id]
 
+/- English proof (translation)
+Introduce `n`. Establish `: (pull R (f ≫ g) F n : _ → _) = pull R f F n ∘ pull R g F n` using `funext fun x => pull_comp R f g F n x`. Rewrite using `[this]`. Conclude with `(hf n).comp (hg n)`.
+-/
 theorem eqv_trans {E E' E'' : Spc} {f : E ⟶ E'} {g : E' ⟶ E''} (hf : Eqv R f F) (hg : Eqv R g F) : Eqv R (f ≫ g) F := by
   intro n
   have : (pull R (f ≫ g) F n : _ → _) = pull R f F n ∘ pull R g F n := funext fun x => pull_comp R f g F n x
   rw [this]
   exact (hf n).comp (hg n)
 
+/- English proof (translation)
+Introduce `n`. Establish `h : ∀ x, pull R (f ≫ g) F n x = pull R f F n (pull R g F n x)` using `pull_comp R f g F n`. Use `⟨fun x y hxy => (hfg n).1 (by rw [h, h, hxy]), fun y => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `(hfg n).2 (pull R f F n y)`. Conclude with `⟨x, (hf n).1 (by rw [← h, hx])⟩`.
+-/
 theorem eqv_of_eqv_comp {E E' E'' : Spc} {f : E ⟶ E'} {g : E' ⟶ E''} (hf : Eqv R f F) (hfg : Eqv R (f ≫ g) F) :
     Eqv R g F := by
   intro n
@@ -42,15 +54,24 @@ theorem eqv_of_eqv_comp {E E' E'' : Spc} {f : E ⟶ E'} {g : E' ⟶ E''} (hf : E
 
 variable {X Y W S : Scheme.{0}} (p : X ⟶ S) (d : Y ⟶ S) (g : W ⟶ Y)
 
+/- English proof (translation)
+Rewrite using `[Iso.eq_inv_comp, pullbackLeftPullbackSndIso_hom_fst]`.
+-/
 theorem fst_comp_eq : pullback.fst p (g ≫ d) =
     (pullbackLeftPullbackSndIso p d g).inv ≫ pullback.fst (pullback.snd p d) g ≫ pullback.fst p d := by
   rw [Iso.eq_inv_comp, pullbackLeftPullbackSndIso_hom_fst]
 
+/- English proof (translation)
+Rewrite using `[fst_comp_eq, Functor.map_comp, Functor.map_comp]`. Conclude with `eqv_trans F (eqv_iso F _) (eqv_trans F h1 h2)`.
+-/
 theorem eqv_fst_comp (h1 : Eqv R (sch.map (pullback.fst (pullback.snd p d) g)) F)
     (h2 : Eqv R (sch.map (pullback.fst p d)) F) : Eqv R (sch.map (pullback.fst p (g ≫ d))) F := by
   rw [fst_comp_eq, Functor.map_comp, Functor.map_comp]
   exact eqv_trans F (eqv_iso F _) (eqv_trans F h1 h2)
 
+/- English proof (translation)
+Use `eqv_of_eqv_comp F h1 ?_` and prove the remaining obligations. Establish `: pullback.fst (pullback.snd p d) g ≫ pullback.fst p d = (pullbackLeftPullbackSndIso p d g).hom ≫ pullback.fst p (g ≫ d)`. Rewrite using `[pullbackLeftPullbackSndIso_hom_fst]`. Rewrite using `[← Functor.map_comp, this, Functor.map_comp]`. Conclude with `eqv_trans F (eqv_iso F _) h2`.
+-/
 theorem eqv_fst_of_comp (h1 : Eqv R (sch.map (pullback.fst (pullback.snd p d) g)) F)
     (h2 : Eqv R (sch.map (pullback.fst p (g ≫ d))) F) : Eqv R (sch.map (pullback.fst p d)) F := by
   refine eqv_of_eqv_comp F h1 ?_
@@ -62,6 +83,9 @@ theorem eqv_fst_of_comp (h1 : Eqv R (sch.map (pullback.fst (pullback.snd p d) g)
 
 end Eqv
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spec_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     Spec.map (CommRingCat.ofHom (g.comp f)) = Spec.map (CommRingCat.ofHom g) ≫ Spec.map (CommRingCat.ofHom f) := by
   rw [← Spec.map_comp]; rfl
@@ -72,6 +96,21 @@ namespace GlobalTheory.GenusTwoPureComparison.Cmp
 
 open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC
 
+/- English proof (translation)
+Take `⟨T, hφT, ⟨hloc, hT, hres⟩, hfr⟩` from `exists_aic_local_subring k K φ`. Set `α : k →+* T` to `φ.codRestrict T (fun c => hφT ⟨c, rfl⟩)`. Establish `hqT : IsUnit (q : T)` using `by simpa using hq.map α`. Set `a` to `Spec.map (CommRingCat.ofHom α)`. Establish `hb : Function.Bijective ((IsLocalRing.residue T).comp α)`.
+
+Use `⟨(IsLocalRing.residue T).comp α |>.injective, fun y => ?_⟩` and prove the remaining obligations. Take `⟨t, rfl⟩` from `IsLocalRing.residue_surjective y`. Take `⟨c, h, hc⟩` from `hres t`. Use `⟨c, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsLocalRing.residue T (α c) = IsLocalRing.residue T t`.
+
+Rewrite using `[← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff]`. Establish `e : α c - t = -(t - ⟨φ c, h⟩)` using `by rw [neg_sub]; rfl`. Rewrite using `[e]`. Conclude with `(IsLocalRing.maximalIdeal T).neg_mem hc`. Use `haveI : IsIso (CommRingCat.ofHom ((IsLocalRing.residue T).comp α)) := (RingEquiv.ofBijective _ hb).toCommRingCatIso.isIso_hom`.
+
+Set `r` to `Spec.map (CommRingCat.ofHom (IsLocalRing.residue T))`. Establish `hra : r ≫ a = Spec.map (CommRingCat.ofHom ((IsLocalRing.residue T).comp α))` using `(spec_comp _ _).symm`. Establish `hsp : Eqv (ZMod q) (sch.map (pullback.fst (pullback.snd p a) r)) (tw q i)` using `eqv_spInc hE2 hT q hqT (pullback.snd p a) i`. Establish `hXT : Eqv (ZMod q) (sch.map (pullback.fst p a)) (tw q i)`. Use `eqv_fst_of_comp _ p a r hsp ?_` and prove the remaining obligations.
+
+Rewrite using `[hra]`. Conclude with `eqv_iso _ _`. Set `e` to `IsLocalization.algEquiv (nonZeroDivisors T) (FractionRing T) K`. Establish `hφ : φ = (e.toRingEquiv.toRingHom).comp ((algebraMap T (FractionRing T)).comp α)`. Use extensionality with `c`.
+
+Simplify using `only [RingHom.comp_apply]`. Rewrite using `[show e.toRingEquiv.toRingHom (algebraMap T (FractionRing T) (α c)) = e (algebraMap T (FractionRing T) (α c)) from rfl, AlgEquiv.commutes]`. Both sides reduce to the same expression. Use `haveI : IsIso (CommRingCat.ofHom (e.toRingEquiv.toRingHom)) := e.toRingEquiv.toCommRingCatIso.isIso_hom`. Establish `hgen : Eqv (ZMod q) (sch.map (pullback.fst (pullback.snd p a) (Spec.map (CommRingCat.ofHom (algebraMap T (FractionRing T)))))) (tw q i)` using `eqv_genInc hE3 hT q hqT (pullback.snd p a) i`.
+
+Rewrite using `[hφ, spec_comp, spec_comp]`. Use `eqv_fst_comp _ p _ _ (eqv_iso _ _) (eqv_fst_comp _ p a _ hgen hXT)` and prove the remaining obligations.
+-/
 theorem eqv_fieldChange (hE2 : E2) (hE3 : E3) (q : ℕ) [NeZero q] (k K : Type) [Field k] [IsAlgClosed k] [Field K]
     [IsAlgClosed K] (φ : k →+* K) (hq : IsUnit (q : k)) {X : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of k)) [IsProper p]
     [Smooth p] (i : ℤ) : Eqv (ZMod q) (sch.map (pullback.fst p (Spec.map (CommRingCat.ofHom φ)))) (tw q i) := by

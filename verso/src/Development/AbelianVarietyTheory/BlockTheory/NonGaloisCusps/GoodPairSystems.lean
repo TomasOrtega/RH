@@ -94,23 +94,35 @@ def ExistsChoiceClosed (𝒞 : FamClass) : Prop := Closed 𝒞 fun Fm _ => FamEx
 
 def Statement (𝒞 : FamClass) : Prop := ExistsChoiceClosed 𝒞 ∧ TwGoodClosed 𝒞
 
+/- English proof (translation)
+The claim follows from `Or.inr fun _ => Iff.rfl`.
+-/
 theorem samePair_conj (w : D.what₂.places.Pl) : SamePair D w (D.what₂.places.conj w) :=
   Or.inr fun _ => Iff.rfl
 
 open NumberField IsDedekindDomain in
 variable (D : _root_.Formalism.BasicNotions.D7) in
 variable {D} in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.GoodPairSystems.Twisted`. Rewrite using `[_root_.Formalism.BasicNotions.Rows.Data.muAt_conj]`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.GoodPairSystems.twisted_conj (w : D.what₂.places.Pl) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.GoodPairSystems.Twisted D (D.what₂.places.conj w) ↔ _root_.GlobalTheory.IndefiniteRowSideFullHecke.GoodPairSystems.Twisted D w := by
   unfold _root_.GlobalTheory.IndefiniteRowSideFullHecke.GoodPairSystems.Twisted
   rw [_root_.Formalism.BasicNotions.Rows.Data.muAt_conj]
 
+/- English proof (translation)
+Break down `(h.1 w hw).2 with h1 | h1` into its components or cases. Conclude with `⟨w, hw, h1⟩`. Conclude with `⟨_, (twisted_conj w).2 hw, h1⟩`.
+-/
 theorem TwistedPlaceSettings.inW1 {twI : D.what₂.places.Pl → D.ntw.Tw} (h : TwistedPlaceSettings D twI) {w : D.what₂.places.Pl}
     (hw : Twisted D w) : D.ntw.NonzeroIndexPlace (twI w) := by
   rcases (h.1 w hw).2 with h1 | h1
   · exact ⟨w, hw, h1⟩
   · exact ⟨_, (twisted_conj w).2 hw, h1⟩
 
+/- English proof (translation)
+Take `⟨-, -, -, -, S, -, hS⟩` from `h.1.2.1 w hw`. Use `hS 1 isCoprime_one_left` as an intermediate fact. Rewrite `this` using `[zpow_one]`. Conclude with `⟨S, this⟩`.
+-/
 theorem TwGoodAt.goodTw {c : NChoice D} {xd : ThData D} {N0 : D.ntw.Tw → ℕ} (h : TwGoodAt c xd N0)
     {w : D.what₂.places.Pl} (hw : Twisted D w) :
     ∃ S, IntegralHeckeForms.GoodTw D.nexp (BlochKatoReduction.bk0 D) (expDat xd) N0 (c.twI w) (((D.ntw.l (c.twI w) : ℝ) ^ 2)⁻¹) S ∅

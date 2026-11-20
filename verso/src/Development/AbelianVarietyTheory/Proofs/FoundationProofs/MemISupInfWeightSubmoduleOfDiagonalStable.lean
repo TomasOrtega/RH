@@ -11,6 +11,11 @@ open scoped TensorProduct
 
 namespace GlobalTheory.WeightDecomp
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.WeightSubspaceComponent.weight_component_mem`. Consider the case `exact _root_.GlobalTheory.WeightSubspaceComponent.weight_component_mem`. Consider the case `(apply _root_.GlobalTheory.WeightSubspaceComponent.weight_component_mem <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.WeightSubspaceComponent.weight_component_mem <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.WeightSubspaceComponent.weight_component_mem <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.WeightSubspaceComponent.weight_component_mem ..)`.
+-/
 lemma comp_mem {p q : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (act : Mat p q →ₗ[ℂ] Module.End ℂ V) (N : Submodule ℂ V)
     (hN : ∀ a, ∀ x ∈ N, act (Eab a a) x ∈ N) (S : Finset (Ix p q → ℚ)) :
@@ -23,6 +28,9 @@ lemma comp_mem {p q : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
   | (intros; apply @_root_.GlobalTheory.WeightSubspaceComponent.weight_component_mem <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.WeightSubspaceComponent.weight_component_mem ..)
 
+/- English proof (translation)
+Introduce `p q V _ _ act N hN x hx hx'`. Take `⟨f, hf, rfl⟩` from `(Submodule.mem_iSup_iff_exists_finsupp _ _).1 hx'`. Establish `h` using `comp_mem act N hN f.support f hf hx`. Use `Submodule.sum_mem _ fun ν hν => ?_` and prove the remaining obligations. Conclude with `Submodule.mem_iSup_of_mem ν ⟨h ν hν, hf ν⟩`.
+-/
 theorem mem_iSup_inf_wtSub : ∀ (p q : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V]
     (act : Mat p q →ₗ[ℂ] Module.End ℂ V) (N : Submodule ℂ V),
     (∀ a, ∀ x ∈ N, act (Eab a a) x ∈ N) → ∀ x ∈ N, x ∈ (⨆ μ : Ix p q → ℚ, wtSub act μ) →

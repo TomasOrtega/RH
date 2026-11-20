@@ -17,11 +17,17 @@ namespace GlobalTheory.CompanionTheory.OmGlobSite
 
 variable {K : Type} [Field K]
 
+/- English proof (translation)
+Take `⟨-, V, ⟨α, rfl⟩, h⟩` from `T.property`. Conclude with `⟨α, h⟩`.
+-/
 theorem vk_cover {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) (U : Cov q) (a : ℕ) (T : (KC q U a).FullSubcategory) :
     ∃ α, Vk q U a α T := by
   obtain ⟨-, V, ⟨α, rfl⟩, h⟩ := T.property
   exact ⟨α, h⟩
 
+/- English proof (translation)
+Rewrite using `[sSup_range]`. Conclude with `U.cover`.
+-/
 theorem cov_sSup {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) (U : Cov q) : sSup (Set.range U.U) = ⊤ := by
   rw [sSup_range]
   exact U.cover
@@ -31,6 +37,9 @@ def rho {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) (U : Cov q) (a n : 
   LinearEquiv.ofBijective ((CH.Mor.restrict (HT.grT (smFun X q) a) (KC q U a).ι).pull n)
     (GlobalTheory.CompanionTheory.OmLoc.grT_restrict_bijective q _ (cov_sSup q U) a (a + 1) (Nat.lt_succ_self a) n)
 
+/- English proof (translation)
+Establish `h1` using `(CrystallineSemistableComparison.P.pull_comp (σ'' := RingHom.id K) (pullM u hu a) (CH.Mor.restrict (HT.grT (smFun X q) a) (KC q U a).ι) n x).1`. Establish `h2` using `(CrystallineSemistableComparison.P.pull_comp (σ'' := RingHom.id K) (CH.Mor.restrict (HT.grT (smFun Y p) a) (KC p W a).ι) (morU (pullM u hu a) (U := KC p W a) (U' := KC q U a) hG) n x).1`. Express the relevant statement in the definitionally equal form `(CH.Mor.restrict (HT.grT (smFun X q) a) (KC q U a).ι).pull n ((pullM u hu a).pull n x) = (morU (pullM u hu a) (U := KC p W a) (U' := KC q U a) hG).pull n ((CH.Mor.restrict (HT.grT (smFun Y p) a) (KC p W a).ι).pull n x)`. Rewrite using `[← h1, ← h2]`. Both sides reduce to the same expression.
+-/
 theorem rho_pull {X Y : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) (p : Y ⟶ Spec (CommRingCat.of K))
     (u : X ⟶ Y) (hu : u ≫ p = q) (U : Cov q) (W : Cov p) (a n : ℕ)
     (hG : ∀ T, KC q U a T → KC p W a ((pullM u hu a).G.obj T)) (x : HT.Hdg p a n) :
@@ -47,6 +56,11 @@ theorem rho_pull {X Y : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) (p : Y �
   rw [← h1, ← h2]
   rfl
 
+/- English proof (translation)
+Introduce `K _ _`. Take `⟨E, hE⟩` from `GlobalTheory.T.cech_hodge_to_cohomology_iso K`. Use `⟨fun q _ U a j => (rho q U a (a + j)).trans (E (Fk q U a) (Vk q U a) (GlobalTheory.T.cover_star_isCosieve q U a) (vk_cover q U a) a (fun n i r hr => GlobalTheory.T.cover_intersection_graded_vanish q U a n i r hr) j), ?_⟩` and prove the remaining obligations. Introduce `X Y q p _ _ u hu U W τ a hG hτ j c h0 h1`. Simplify using `only`.
+
+Rewrite using `[LinearEquiv.symm_trans_apply, LinearEquiv.symm_trans_apply]`. Apply `(rho q U a (a + j)).injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply, rho_pull q p u hu U W a (a + j) hG, LinearEquiv.apply_symm_apply]`. Conclude with `hE _ _ _ _ (GlobalTheory.T.cover_star_isCosieve p W a) (vk_cover p W a) (GlobalTheory.T.cover_star_isCosieve q U a) (vk_cover q U a) a (fun n i r hr => GlobalTheory.T.cover_intersection_graded_vanish p W a n i r hr) (fun n i r hr => GlobalTheory.T.cover_intersection_graded_vanish …`.
+-/
 theorem glob_site : ∀ (K : Type) [Field K] [CharZero K],
     ∃ e : ∀ {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) [Smooth q] (U : Cov q) (a j : ℕ),
       HT.Hdg q a (a + j) ≃ₗ[K] (CrystallineSemistableComparison.Pb.cechH (Fk q U a) (Vk q U a) a).cx.H j,

@@ -7,6 +7,21 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R Glo
 
 open TensorProduct in
 
+/- English proof (translation)
+Introduce `k A _ _ φ I h1 h2`. Use `letI := φ.toAlgebra`. Use `haveI hA : Algebra.Smooth k A := h1`. Establish `halg : (Ideal.Quotient.algebra k : Algebra k (A ⧸ I)) = ((Ideal.Quotient.mk I).comp φ).toAlgebra` using `Algebra.algebra_ext _ _ fun _ => rfl`. Establish `hQ : Algebra.FormallySmooth k (A ⧸ I)`.
+
+Establish `hs : @Algebra.Smooth k _ (A ⧸ I) _ ((Ideal.Quotient.mk I).comp φ).toAlgebra` using `h2`. Rewrite `hs` using `[← halg]`. Conclude with `hs.formallySmooth`. Use `haveI : Algebra.FormallySmooth k A := hA.formallySmooth`. Use `haveI : Module.Projective A (KaehlerDifferential k A) := Algebra.FormallySmooth.projective_kaehlerDifferential`.
+
+Use `haveI : Algebra.FinitePresentation k A := hA.finitePresentation`. Use `haveI : Algebra.FiniteType k A := Algebra.FiniteType.of_finitePresentation`. Use `haveI : Algebra.EssFiniteType k A := Algebra.EssFiniteType.of_finiteType k A`. Use `haveI : Module.Finite A (KaehlerDifferential k A) := KaehlerDifferential.finite k A`. Use `haveI : Module.Finite (A ⧸ I) ((A ⧸ I) ⊗[A] KaehlerDifferential k A) := Module.Finite.base_change A (A ⧸ I) _`.
+
+Use `haveI : IsScalarTower A (A ⧸ I) I.Cotangent := by first`. Consider the case `infer_instance`. Consider the case `exact IsScalarTower.of_algebraMap_smul fun _ _ => rfl`. Take `⟨l, hl⟩` from `(Algebra.FormallySmooth.iff_split_injection (R := k) (P := A) (A := A ⧸ I) Ideal.Quotient.mk_surjective).mp hQ`. Establish `hsurj : Function.Surjective (algebraMap A (A ⧸ I))` using `Ideal.Quotient.mk_surjective`.
+
+Set `e` to `Ideal.Cotangent.equivOfEq _ _ (Ideal.mk_ker (I := I))`. Set `i : I.Cotangent →ₗ[A ⧸ I] (A ⧸ I) ⊗[A] KaehlerDifferential k A` to `LinearMap.extendScalarsOfSurjective hsurj (KaehlerDifferential.kerCotangentToTensor k A (A ⧸ I) ∘ₗ e.symm.toLinearMap)`. Set `s : (A ⧸ I) ⊗[A] KaehlerDifferential k A →ₗ[A ⧸ I] I.Cotangent` to `LinearMap.extendScalarsOfSurjective hsurj (e.toLinearMap ∘ₗ l)`. Establish `hsi : s ∘ₗ i = LinearMap.id`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations.
+
+Establish `h` using `LinearMap.congr_fun hl (e.symm x)`. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at h`. Use `first`. Consider the case `(simp only [s, i, LinearMap.comp_apply, LinearMap.extendScalarsOfSurjective_apply, LinearEquiv.coe_coe, LinearMap.id_apply, h, LinearEquiv.apply_symm_apply]; done)`. Consider the case `(show e (l (KaehlerDifferential.kerCotangentToTensor k A (A ⧸ I) (e.symm x))) = x`.
+
+Rewrite using `[h, LinearEquiv.apply_symm_apply])`. Use `⟨Module.Finite.of_surjective s fun x => ⟨i x, ?_⟩, Module.Projective.of_split i s hsi⟩` and prove the remaining obligations. Simplify `LinearMap.congr_fun hsi x` using `only [LinearMap.comp_apply, LinearMap.id_apply]`.
+-/
 theorem GlobalTheory.CompanionTheory.Hypotheses₂.Conormal.finite_projective_cotangent :
     ∀ {k A : Type} [Field k] [CommRing A] (φ : k →+* A) (I : Ideal A), φ.Smooth →
       ((Ideal.Quotient.mk I).comp φ).Smooth →

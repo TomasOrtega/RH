@@ -13,11 +13,17 @@ variable {n : ℕ}
 
 def gK (v : E n) : ℝ := ∏ a, ∏ b, (Real.sqrt Real.pi)⁻¹ * Real.exp (-(v a b) ^ 2)
 
+/- English proof (translation)
+Unfold `gK`. Conclude with `Finset.prod_nonneg fun a _ => Finset.prod_nonneg fun b _ => mul_nonneg (inv_nonneg.mpr (Real.sqrt_nonneg _)) (Real.exp_pos _).le`.
+-/
 theorem gK_nonneg (v : E n) : 0 ≤ gK v := by
   unfold gK
   exact Finset.prod_nonneg fun a _ => Finset.prod_nonneg fun b _ =>
     mul_nonneg (inv_nonneg.mpr (Real.sqrt_nonneg _)) (Real.exp_pos _).le
 
+/- English proof (translation)
+Establish `h1 : Integrable (fun s : ℝ => (Real.sqrt Real.pi)⁻¹ * Real.exp (-s ^ 2))`. Use `(integrable_exp_neg_mul_sq (b := 1) one_pos).const_mul (Real.sqrt Real.pi)⁻¹` as an intermediate fact. Simplify using `using this`. Establish `h2 : Integrable (fun w : Fin n → ℝ => ∏ b, (Real.sqrt Real.pi)⁻¹ * Real.exp (-(w b) ^ 2))` using `Integrable.fintype_prod (f := fun _ (s : ℝ) => (Real.sqrt Real.pi)⁻¹ * Real.exp (-s ^ 2)) (fun _ => h1)`. Conclude with `Integrable.fintype_prod (f := fun _ (w : Fin n → ℝ) => ∏ b, (Real.sqrt Real.pi)⁻¹ * Real.exp (-(w b) ^ 2)) (fun _ => h2)`.
+-/
 theorem integrable_gK : Integrable (gK (n := n)) := by
   have h1 : Integrable (fun s : ℝ => (Real.sqrt Real.pi)⁻¹ * Real.exp (-s ^ 2)) := by
     have := (integrable_exp_neg_mul_sq (b := 1) one_pos).const_mul (Real.sqrt Real.pi)⁻¹
@@ -27,6 +33,11 @@ theorem integrable_gK : Integrable (gK (n := n)) := by
   exact Integrable.fintype_prod (f := fun _ (w : Fin n → ℝ) => ∏ b, (Real.sqrt Real.pi)⁻¹ * Real.exp (-(w b) ^ 2))
     (fun _ => h2)
 
+/- English proof (translation)
+Establish `h1 : ∫ s : ℝ, (Real.sqrt Real.pi)⁻¹ * Real.exp (-s ^ 2) = 1`. Rewrite using `[integral_const_mul]`. Use `integral_gaussian 1` as an intermediate fact. Simplify using `only [neg_mul, one_mul, div_one] at this`. Rewrite using `[this]`.
+
+Conclude with `inv_mul_cancel₀ (Real.sqrt_ne_zero'.mpr Real.pi_pos)`. Unfold `gK`. Rewrite using `[integral_fintype_prod_volume_eq_prod (f := fun _ (w : Fin n → ℝ) => ∏ b, (Real.sqrt Real.pi)⁻¹ * Real.exp (-(w b) ^ 2))]`. Repeatedly rewrite using `[integral_fintype_prod_volume_eq_prod (f := fun _ (s : ℝ) => (Real.sqrt Real.pi)⁻¹ * Real.exp (-s ^ 2)), h1, Finset.prod_const_one]`.
+-/
 theorem integral_gK : ∫ v, gK (n := n) v = 1 := by
   have h1 : ∫ s : ℝ, (Real.sqrt Real.pi)⁻¹ * Real.exp (-s ^ 2) = 1 := by
     rw [integral_const_mul]
@@ -40,6 +51,11 @@ theorem integral_gK : ∫ v, gK (n := n) v = 1 := by
   simp_rw [integral_fintype_prod_volume_eq_prod (f := fun _ (s : ℝ) => (Real.sqrt Real.pi)⁻¹ * Real.exp (-s ^ 2)), h1,
     Finset.prod_const_one]
 
+/- English proof (translation)
+Repeatedly rewrite using `[← Complex.exp_sum]`. Use `congr 1`. Unfold `ip`. Use `push_cast`. Rewrite using `[Finset.mul_sum, ← Finset.sum_neg_distrib]`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gauss_prod (ε : ℝ) (y : E n) :
     Complex.exp (-((ε * ip y y : ℝ) : ℂ)) = ∏ a, ∏ b, Complex.exp (-(ε : ℂ) * ((y a b : ℝ) : ℂ) ^ 2) := by
   simp_rw [← Complex.exp_sum]
@@ -52,6 +68,9 @@ theorem gauss_prod (ε : ℝ) (y : E n) :
   refine Finset.sum_congr rfl fun b _ => ?_
   ring
 
+/- English proof (translation)
+Repeatedly rewrite using `[gauss_prod]`. Establish `h1 : Integrable (fun s : ℝ => Complex.exp (-(ε : ℂ) * (s : ℂ) ^ 2))` using `integrable_cexp_neg_mul_sq (by simpa using hε)`. Establish `h2 : Integrable (fun w : Fin n → ℝ => ∏ b, Complex.exp (-(ε : ℂ) * ((w b : ℝ) : ℂ) ^ 2))` using `Integrable.fintype_prod (f := fun _ (s : ℝ) => Complex.exp (-(ε : ℂ) * (s : ℂ) ^ 2)) (fun _ => h1)`. Conclude with `Integrable.fintype_prod (f := fun _ (w : Fin n → ℝ) => ∏ b, Complex.exp (-(ε : ℂ) * ((w b : ℝ) : ℂ) ^ 2)) (fun _ => h2)`.
+-/
 theorem integrable_gauss (ε : ℝ) (hε : 0 < ε) :
     Integrable (fun y : E n => Complex.exp (-((ε * ip y y : ℝ) : ℂ))) := by
   simp_rw [gauss_prod]
@@ -62,6 +81,11 @@ theorem integrable_gauss (ε : ℝ) (hε : 0 < ε) :
   exact Integrable.fintype_prod (f := fun _ (w : Fin n → ℝ) => ∏ b, Complex.exp (-(ε : ℂ) * ((w b : ℝ) : ℂ) ^ 2))
     (fun _ => h2)
 
+/- English proof (translation)
+Rewrite using `[Complex.norm_exp]`. Establish `h : 0 ≤ ip y y`. Unfold `ip`. Conclude with `Finset.sum_nonneg fun a _ => Finset.sum_nonneg fun b _ => mul_self_nonneg _`. Establish `: (-((ε * ip y y : ℝ) : ℂ)).re = -(ε * ip y y)` using `by simp`.
+
+Rewrite using `[this, Real.exp_le_one_iff]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem norm_gauss_le (ε : ℝ) (hε : 0 < ε) (y : E n) : ‖Complex.exp (-((ε * ip y y : ℝ) : ℂ))‖ ≤ 1 := by
   rw [Complex.norm_exp]
   have h : 0 ≤ ip y y := by
@@ -71,6 +95,35 @@ theorem norm_gauss_le (ε : ℝ) (hε : 0 < ε) (y : E n) : ‖Complex.exp (-((�
   rw [this, Real.exp_le_one_iff]
   nlinarith
 
+/- English proof (translation)
+Use `set lam : ℝ := |t| / (2 * Real.sqrt ε) with hlam`. Establish `hε' : 0 < (ε : ℂ).re` using `by simpa using hε`. Establish `hprod : ∀ y : E n, Complex.exp (-((ε * ip y y : ℝ) : ℂ)) * Complex.exp (Complex.I * t * ip y u) = ∏ a, ∏ b, (Complex.exp (Complex.I * ((t * u a b : ℝ) : ℂ) * ((y a b : ℝ) : ℂ)) * Complex.exp (-(ε : ℂ) * ((y a b : ℝ) : ℂ) ^ 2))`. Introduce `y`. Repeatedly rewrite using `[Finset.prod_mul_distrib, ← gauss_prod, ← Complex.exp_sum]`.
+
+Rewrite using `[mul_comm]`. Use `congr 2`. Unfold `ip`. Use `push_cast`. Rewrite using `[Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hint : ∫ y : E n, Complex.exp (-((ε * ip y y : ℝ) : ℂ)) * Complex.exp (Complex.I * t * ip y u) = ∏ a, ∏ b, ((Real.pi : ℂ) / ε) ^ (1 / 2 : ℂ) * Complex.exp (-((t * u a b : ℝ) : ℂ) ^ 2 / (4 * ε))`.
+
+Repeatedly rewrite using `[hprod]`. Rewrite using `[integral_fintype_prod_volume_eq_prod (f := fun a (w : Fin n → ℝ) => ∏ b, (Complex.exp (Complex.I * ((t * u a b : ℝ) : ℂ) * ((w b : ℝ) : ℂ)) * Complex.exp (-(ε : ℂ) * ((w b : ℝ) : ℂ) ^ 2)))]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[integral_fintype_prod_volume_eq_prod (f := fun b (s : ℝ) => Complex.exp (Complex.I * ((t * u a b : ℝ) : ℂ) * (s : ℂ)) * Complex.exp (-(ε : ℂ) * (s : ℂ) ^ 2))]`. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Conclude with `fourierIntegral_gaussian hε' _`. Establish `hsq : ((Real.pi : ℂ) / ε) ^ (1 / 2 : ℂ) = ((Real.sqrt Real.pi / Real.sqrt ε : ℝ) : ℂ)`. Rewrite using `[← Real.sqrt_div' _ hε.le, Real.sqrt_eq_rpow, Complex.ofReal_cpow (div_nonneg Real.pi_pos.le hε.le)]`. Use `push_cast`. Put the polynomial expressions in normal form.
+
+Establish `hcoord : ∀ s : ℝ, (((|t| / (2 * Real.pi)) : ℝ) : ℂ) * (((Real.pi : ℂ) / ε) ^ (1 / 2 : ℂ) * Complex.exp (-((t * s : ℝ) : ℂ) ^ 2 / (4 * ε))) = ((lam * ((Real.sqrt Real.pi)⁻¹ * Real.exp (-(lam * s) ^ 2)) : ℝ) : ℂ)`. Introduce `s`. Establish `hpi : 0 < Real.sqrt Real.pi` using `Real.sqrt_pos.mpr Real.pi_pos`. Establish `hse : 0 < Real.sqrt ε` using `Real.sqrt_pos.mpr hε`. Establish `hee : Real.sqrt ε ^ 2 = ε` using `Real.sq_sqrt hε.le`.
+
+Establish `hpp : Real.sqrt Real.pi ^ 2 = Real.pi` using `Real.sq_sqrt Real.pi_pos.le`. Rewrite using `[hsq]`. Establish `hexp : (-((t * s : ℝ) : ℂ) ^ 2 / (4 * ε)) = ((-(lam * s) ^ 2 : ℝ) : ℂ)`. Rewrite using `[hlam]`. Use `push_cast`.
+
+Establish `: ((|t| : ℝ) : ℂ) ^ 2 = (t : ℂ) ^ 2`. Rewrite using `[← Complex.ofReal_pow, sq_abs, Complex.ofReal_pow]`. Establish `hε0 : (ε : ℂ) ≠ 0` using `by exact_mod_cast hε.ne'`. Establish `hs0 : ((Real.sqrt ε : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hse.ne'`. Establish `hee' : ((Real.sqrt ε : ℝ) : ℂ) ^ 2 = (ε : ℂ)` using `by exact_mod_cast hee`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[this, hee']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hexp, ← Complex.ofReal_exp]`. Use `push_cast`.
+
+Rewrite using `[hlam]`. Establish `hpi0 : ((Real.sqrt Real.pi : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hpi.ne'`. Establish `hs0 : ((Real.sqrt ε : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hse.ne'`. Establish `hpp' : ((Real.sqrt Real.pi : ℝ) : ℂ) ^ 2 = (Real.pi : ℂ)` using `by exact_mod_cast hpp`. Establish `hpi1 : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_pos.ne'`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[← hpp']`. Rewrite using `[hint]`. Establish `hC : (((|t| / (2 * Real.pi)) ^ (n ^ 2) : ℝ) : ℂ) = ∏ _a : Fin n, ∏ _b : Fin n, (((|t| / (2 * Real.pi)) : ℝ) : ℂ)`.
+
+Simplify using `only [Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Use `push_cast`. Rewrite using `[← pow_mul, sq]`. Rewrite using `[hC, ← Finset.prod_mul_distrib]`. Repeatedly rewrite using `[← Finset.prod_mul_distrib, hcoord]`.
+
+Use `push_cast`. Unfold `gK`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Use `push_cast`. Rewrite using `[show ((lam : ℂ)) ^ (n ^ 2) = ∏ _a : Fin n, ∏ _b : Fin n, (lam : ℂ) by`.
+
+Simplify using `only [Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[← pow_mul, sq]]`. Rewrite using `[← Finset.prod_mul_distrib]`. Repeatedly rewrite using `[← Finset.prod_mul_distrib]`.
+-/
 theorem kraw_eq (ε : ℝ) (hε : 0 < ε) (t : ℝ) (ht : t ≠ 0) (u : E n) :
     (((|t| / (2 * Real.pi)) ^ (n ^ 2) : ℝ) : ℂ) *
         ∫ y : E n, Complex.exp (-((ε * ip y y : ℝ) : ℂ)) * Complex.exp (Complex.I * t * ip y u) =

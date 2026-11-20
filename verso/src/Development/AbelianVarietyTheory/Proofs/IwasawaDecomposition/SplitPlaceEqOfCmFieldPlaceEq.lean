@@ -13,6 +13,17 @@ open GlobalTheory.TwistChoice (Reading ReadsAt)
 
 namespace GlobalTheory.SplitByCompl
 
+/- English proof (translation)
+Introduce `L _ _ _ s s' h`. Establish `hv : s.v = s'.v` using `HeightOneSpectrum.ext (by rw [← s'.w_under, ← s.w_under, h])`. Take `⟨v, si⟩` from `s`. Take `⟨v', si'⟩` from `s'`. Simplify using `only at hv`.
+
+Substitute `hv` using the available equality. Take `⟨i, hi, -, hix⟩` from `GlobalTheory.SplitCompl.exists_ringEquiv L ⟨v, si⟩`. Take `⟨i', hi', -, hix'⟩` from `GlobalTheory.SplitCompl.exists_ringEquiv L ⟨v, si'⟩`. Simplify using `only at hix hix'`. Generalize the expression as in `hw : SplitPlace.w ⟨v, si⟩ = w at i hix hi`.
+
+Generalize the expression as in `hw' : SplitPlace.w ⟨v, si'⟩ = w' at i' hix' hi'`. Establish `hww : w = w'` using `hw.symm.trans (h.trans hw')`. Substitute `hww` using the available equality. Establish `e : (i' : v.adicCompletion (maximalRealSubfield L) →+* w.adicCompletion L) = i` using `DFunLike.coe_injective ((HeightOneSpectrum.denseRange_algebraMap (maximalRealSubfield L) v).equalizer hi' hi (funext fun y => by`. Establish `h1` using `hix (algebraMap _ L y)`.
+
+Establish `h2` using `hix' (algebraMap _ L y)`. Rewrite `h1`, `h2` using `[AlgHom.commutes]`. Conclude with `h2.trans h1.symm))`. Establish `e' : ∀ x, i' x = i x` using `fun x => congrArg (fun f : v.adicCompletion (maximalRealSubfield L) →+* w.adicCompletion L => f x) e`. Establish `hs : si = si'` using `AlgHom.ext fun x => i.injective (by rw [hix, ← e', hix'])`.
+
+Rewrite using `[hs]`.
+-/
 theorem eq_of_w_eq : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (s s' : SplitPlace L),
     s.w = s'.w → s = s' := by
   intro L _ _ _ s s' h

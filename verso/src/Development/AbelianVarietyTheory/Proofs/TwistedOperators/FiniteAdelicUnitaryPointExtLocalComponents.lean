@@ -23,6 +23,9 @@ open scoped TensorProduct
 
 namespace GlobalTheory.TrFinExt
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero]`. Use `Formalism.UG.P.afsplit_inj _ fun w => ?_` and prove the remaining obligations. Establish `hw` using `congrFun (congrFun (h w) i) j`. Rewrite `hw` using `[Matrix.map_apply, Matrix.map_apply]`. Rewrite using `[map_sub, hw, sub_self]`.
+-/
 private theorem eq_of_finE_map_prV_eq_forall_place {D : D7} (V : HSp D) (a b : GA D V)
     (h : ∀ u : HeightOneSpectrum (𝓞 D.host.F), (Formalism.IndefR.Lev.finE V a).val.map (Formalism.UG.prV (E := D.host.E) u) = (Formalism.IndefR.Lev.finE V b).val.map (Formalism.UG.prV (E := D.host.E) u))
     (i j : Fin V.rank) :
@@ -34,6 +37,13 @@ private theorem eq_of_finE_map_prV_eq_forall_place {D : D7} (V : HSp D) (a b : G
   rw [Matrix.map_apply, Matrix.map_apply] at hw
   rw [map_sub, hw, sub_self]
 
+/- English proof (translation)
+Introduce `D V x y h`. Establish `hx : infHom V (x : GA D V) = 1` using `x.2`. Establish `hy : infHom V (y : GA D V) = 1` using `y.2`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply `GlobalTheory.FinIsoGrp.proj_inj D` to reduce the goal to its premises. Establish `ex` using `congrArg (fun g : GL (Fin V.rank) (Ainf D.host.F ⊗[D.host.F] D.host.E) => g.val i j) hx`. Establish `ey` using `congrArg (fun g : GL (Fin V.rank) (Ainf D.host.F ⊗[D.host.F] D.host.E) => g.val i j) hy`.
+
+Conclude with `ex.trans ey.symm`. Establish `e` using `eq_of_finE_map_prV_eq_forall_place V (x : GA D V) (y : GA D V) h i j`. Rewrite `e` using `[GlobalTheory.FinIsoGrp.finE_val, GlobalTheory.FinIsoGrp.finE_val]`. Conclude with `e`.
+-/
 theorem gfc_ext : ∀ {D : D7} (V : HSp D) (x y : GfC V), (∀ u : HeightOneSpectrum (𝓞 D.host.F), (Formalism.IndefR.Lev.finE V (x : GA D V)).val.map (Formalism.UG.prV (E := D.host.E) u) = (Formalism.IndefR.Lev.finE V (y : GA D V)).val.map (Formalism.UG.prV (E := D.host.E) u)) → x = y := by
   intro D V x y h
 

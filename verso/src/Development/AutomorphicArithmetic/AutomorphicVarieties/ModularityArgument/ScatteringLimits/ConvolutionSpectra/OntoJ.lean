@@ -12,6 +12,53 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open MeasureTheory GroundTheory.Automorphic PositivityTheory.Rg.Tf.IntegralApplyAeEq Set Filter Topology UpperTheory.V.Z.IntegralApplyAeEq
 open scoped InnerProductSpace FourierTransform ComplexConjugate
 
+/- English proof (translation)
+Introduce `H _ _ _ V _ _ _ _ W _ _ _ _ D`. Use `set J := D.J.toContinuousLinearMap with hJ`. Use `set J' := D.J'.toContinuousLinearMap with hJ'`. Use `set A := ContinuousLinearMap.adjoint J with hA`. Use `set A' := ContinuousLinearMap.adjoint J' with hA'`.
+
+Establish `aJ : ∀ u, A (D.J u) = u` using `fun u => ext_inner_left ℂ fun y => by`. Rewrite using `[hA, ContinuousLinearMap.adjoint_inner_right]`. Conclude with `D.J.inner_map_map _ _`. Establish `aJ' : ∀ u, A' (D.J' u) = u` using `fun u => ext_inner_left ℂ fun y => by`. Rewrite using `[hA', ContinuousLinearMap.adjoint_inner_right]`.
+
+Conclude with `D.J'.inner_map_map _ _`. Establish `iA : ∀ u h, ⟪D.J u, h⟫_ℂ = ⟪u, A h⟫_ℂ` using `fun u h => (ContinuousLinearMap.adjoint_inner_right J u h).symm`. Establish `iA' : ∀ u h, ⟪D.J' u, h⟫_ℂ = ⟪u, A' h⟫_ℂ` using `fun u h => (ContinuousLinearMap.adjoint_inner_right J' u h).symm`. Establish `shf : ∀ t u v, ⟪D.J (sh V t u), D.J' v⟫_ℂ = ⟪D.J u, D.J' (sh W t v)⟫_ℂ` using `fun t u v => D.shift t u _ v _ (sh_ae V _ u) (sh_ae W _ v)`. Establish `adV : ∀ t (x y : L V), ⟪sh V t x, y⟫_ℂ = ⟪x, sh V (-t) y⟫_ℂ` using `fun t x y => by`.
+
+Use `(avSpec (shF V)).1 t` as an intermediate fact. Rewrite using `[← ContinuousLinearMap.adjoint_inner_right]`. Conclude with `congrArg (fun Z : L V →L[ℂ] L V => ⟪x, Z y⟫_ℂ) this`. Establish `adW : ∀ t (x y : L W), ⟪sh W t x, y⟫_ℂ = ⟪x, sh W (-t) y⟫_ℂ` using `fun t x y => by`. Use `(avSpec (shF W)).1 t` as an intermediate fact.
+
+Rewrite using `[← ContinuousLinearMap.adjoint_inner_right]`. Conclude with `congrArg (fun Z : L W →L[ℂ] L W => ⟪x, Z y⟫_ℂ) this`. Establish `S1 : ∀ t v, A (D.J' (sh W t v)) = sh V (-t) (A (D.J' v))` using `fun t v => ext_inner_left ℂ fun y => by`. Rewrite using `[← iA, ← shf, iA, adV]`. Establish `S2 : ∀ t u, A' (D.J (sh V (-t) u)) = sh W t (A' (D.J u))` using `fun t u => ext_inner_left ℂ fun y => by`.
+
+Rewrite using `[← iA', ← inner_conj_symm, shf, inner_conj_symm, iA', adW, neg_neg]`. Set `Q : H →L[ℂ] H` to `1 - J ∘L A`. Establish `Qa : ∀ h, Q h = h - D.J (A h)` using `fun _ => rfl`. Establish `AQ : ∀ h, A (Q h) = 0` using `fun h => by rw [Qa, map_sub, aJ, sub_self]`. Establish `nQ : ∀ h, ‖Q h‖ ^ 2 = ‖h‖ ^ 2 - ‖A h‖ ^ 2` using `fun h => by`.
+
+Establish `h1 : ⟪D.J (A h), Q h⟫_ℂ = 0` using `by rw [iA, AQ, inner_zero_right]`. Establish `h2` using `norm_add_sq_eq_norm_sq_add_norm_sq_of_inner_eq_zero _ _ h1`. Rewrite `h2` using `[Qa h, add_sub_cancel, D.J.norm_map, ← Qa]`. Use the polynomial consequences of the given equalities and inequalities. Set `x : L W → ℝ → H` to `fun v t => Q (D.J' (sh W t v))`.
+
+Establish `Ax : ∀ v t, A (x v t) = 0` using `fun v t => AQ _`. Establish `nx : ∀ v t, ‖x v t‖ = ‖Q (D.J' v)‖` using `fun v t => by`. Use `(pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).1 ?_` and prove the remaining obligations. Rewrite using `[nQ, nQ, S1, D.J'.norm_map, D.J'.norm_map]`. Conclude with `congrArg₂ (fun a b : ℝ => a ^ 2 - b ^ 2) ((shF W).norm t v) ((shF V).norm _ _)`.
+
+Establish `A'x : ∀ v t, A' (x v t) = sh W t (v - A' (D.J (A (D.J' v))))` using `fun v t => by show A' (Q _) = _`. Rewrite using `[Qa, map_sub, aJ', S1, S2, map_sub]`. Establish `dense : ∀ (y : H) (ε : ℝ), 0 < ε → ∃ u v, ‖y - (D.J u + D.J' v)‖ < ε`. Introduce `y ε hε`. Establish `: (LinearMap.range D.J.toLinearMap ⊔ LinearMap.range D.J'.toLinearMap).topologicalClosure = ⊤`.
+
+Rewrite using `[Submodule.topologicalClosure_eq_top_iff, Submodule.eq_bot_iff]`. Conclude with `fun h hh => D.span h (fun u => hh _ (Submodule.mem_sup_left ⟨u, rfl⟩)) fun v => hh _ (Submodule.mem_sup_right ⟨v, rfl⟩)`. Establish `hy : y ∈ closure ((LinearMap.range D.J.toLinearMap ⊔ LinearMap.range D.J'.toLinearMap : Submodule ℂ H) : Set H)`. Rewrite using `[← Submodule.topologicalClosure_coe, this]`. Discharge the goal by the elementary cases of `trivial`.
+
+Take `⟨z, hz, hd⟩` from `Metric.mem_closure_iff.1 hy ε hε`. Take `⟨_, ⟨u, rfl⟩, _, ⟨v, rfl⟩, rfl⟩` from `Submodule.mem_sup.1 hz`. Conclude with `⟨u, v, by rwa [dist_eq_norm] at hd⟩`. Establish `weak : ∀ v y, Tendsto (fun t => ⟪y, x v t⟫_ℂ) atTop (𝓝 0)`. Introduce `v y`.
+
+Rewrite using `[Metric.tendsto_nhds]`. Introduce `ε hε`. Use `set c := ‖Q (D.J' v)‖ + 1 with hc`. Establish `c0 : 0 < c` using `by positivity`. Take `⟨u, w, hd⟩` from `dense y (ε / 2 / c) (by positivity)`.
+
+Establish `h1` using `Metric.tendsto_nhds.1 (shNull (V := W) (v - A' (D.J (A (D.J' v)))) w).1 (ε / 2) (by positivity)`. Use `filter_upwards [h1] with t ht`. Rewrite `ht`, the goal using `[dist_zero_right]`. Establish `e : ⟪y, x v t⟫_ℂ = ⟪y - (D.J u + D.J' w), x v t⟫_ℂ + ⟪w, (shF W).U t (v - A' (D.J (A (D.J' v))))⟫_ℂ`. Rewrite using `[inner_sub_left, inner_add_left, iA, iA', A'x, Ax, inner_zero_right, zero_add]`.
+
+Conclude with `(sub_add_cancel _ _).symm`. Rewrite using `[e]`. Establish `h2 : ‖⟪y - (D.J u + D.J' w), x v t⟫_ℂ‖ ≤ ε / 2 / c * c`. Use `(norm_inner_le_norm _ _).trans ?_` and prove the remaining obligations. Rewrite using `[nx]`.
+
+Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `h2` using `[div_mul_cancel₀ _ c0.ne']`. Combine the linear relations using `[norm_add_le ⟪y - (D.J u + D.J' w), x v t⟫_ℂ ⟪w, (shF W).U t (v - A' (D.J (A (D.J' v))))⟫_ℂ]`. Establish `sup : ∀ {X : Type} [NormedAddCommGroup X] [InnerProductSpace ℂ X] [FiniteDimensional ℂ X] [CompleteSpace X] (s : ℝ) (u : L X), ∀ᵐ x : ℝ, x ≤ s → cut X (Ioi s) u x = 0` using `fun s u => (((cutLaws (Ioi s) (Ioi s) measurableSet_Ioi measurableSet_Ioi).2.2.2.2.2.2.2.1 _).1 (by simpa using DFunLike.congr_fun (cutLaws (Ioi s) (Ioi s) measurableSet_Ioi measurableSet_Ioi).1 u)).mono fun x h hx => h (by simpa using hx)`.
+
+Use `set Λ : H →L[ℂ] H := 1 - J ∘L cut V (Ioi D.T₀) ∘L A - J' ∘L cut W (Ioi D.T₀) ∘L A' with hΛ`. Establish `tr : IsTrunc D.J D.J' D.T₀ Λ` using `(truncEq D.J D.J' D.T₀ Λ fun u v => D.causal D.T₀ _ _ (sup _ u) ((sup _ v).mono fun x h hx => h (by linarith))).2 rfl`. Establish `Λx : ∀ v, Tendsto (fun t => x v t - Λ (x v t)) atTop (𝓝 0)` using `fun v => by`. Use `(D.J'.continuous.tendsto 0).comp ((cutLim (v - A' (D.J (A (D.J' v))))).1 D.T₀)` as an intermediate fact. Rewrite `this` using `[map_zero]`.
+
+Use `this.congr fun t => ?_` and prove the remaining obligations. Use `show _ = x v t - (x v t - D.J (cut V _ (A (x v t))) - D.J' (cut W _ (A' (x v t))))`. Rewrite using `[A'x, Ax]`. Simplify using the standard rewrite rules. Establish `BJ : ∀ u, D.B (D.J u) = D.J (conv D.β u)` using `fun u => D.B_J u _ (convSpec _ D.β_ker u).1`.
+
+Establish `BJ' : ∀ u, D.B (D.J' u) = D.J' (conv D.β' u)` using `fun u => D.B_J' u _ (convSpec _ D.β'_ker u).1`. Establish `BQ : ∀ h, D.B (Q h) = Q (D.B h)` using `fun h => by`. Establish `h1 : A (D.B (Q h)) = 0` using `ext_inner_left ℂ fun y => by`. Rewrite using `[← iA, ← D.B_sa.isSymmetric.apply_clm, BJ, iA, AQ, inner_zero_right, inner_zero_right]`. Establish `h2 : D.B h = D.B (Q h) + D.J (conv D.β (A h))` using `by rw [← BJ, ← map_add, Qa, sub_add_cancel]`.
+
+Rewrite using `[Qa (D.B h)]`. Use `conv_rhs => rw [h2, map_add, h1, aJ, zero_add, add_sub_cancel_right]`. Establish `Bx : ∀ v t, D.B (x v t) = x (conv D.β' v) t` using `fun v t => by show D.B (Q _) = Q _`. Rewrite using `[BQ, BJ']`. Conclude with `congrArg (fun z => Q (D.J' z)) (DFunLike.congr_fun ((convLaws _ D.β'_ker).1 t) v)`.
+
+Establish `zero : ∀ v, Q (D.J' (conv D.β' v)) = 0` using `fun v => by`. Establish `t1` using `cptNull atTop _ (x v) _ (D.compact _ Λ le_rfl tr) (fun t => (nx v t).le) (weak v)`. Establish `t2` using `((Λ ∘L D.B).continuous.tendsto 0).comp (Λx v)`. Establish `t3` using `(t1.add t2).add (Λx (conv D.β' v))`. Simplify using `only [map_zero, add_zero] at t3`.
+
+Establish `t4 : Tendsto (fun t => x (conv D.β' v) t) atTop (𝓝 0)` using `t3.congr fun t => by`. Simplify using `only [Function.comp_apply, ContinuousLinearMap.comp_apply, map_sub, Bx]`. Normalize the expressions using the abelian group laws. Establish `t5` using `tendsto_zero_iff_norm_tendsto_zero.1 t4`. Simplify using `only [nx] at t5`.
+
+Conclude with `norm_eq_zero.1 (tendsto_nhds_unique tendsto_const_nhds t5)`. Establish `QJ' : ∀ v, Q (D.J' v) = 0` using `fun v => (convDense _ D.β'_ker D.β'_unit).induction_on v (isClosed_eq (Q.continuous.comp D.J'.continuous) continuous_const) zero`. Introduce `h`. Use `⟨A h, (sub_eq_zero.1 (D.span (Q h) (fun u => by rw [iA, AQ, inner_zero_right]) fun v => ?_)).symm⟩` and prove the remaining obligations. Establish `e : D.J' v = D.J (A (D.J' v))` using `sub_eq_zero.1 (QJ' v)`.
+
+Rewrite using `[e, iA, AQ, inner_zero_right]`.
+-/
 theorem UpperTheory.V.Z.IntegralApplyAeEq.ontoJ :
     ∀ {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] [CompleteSpace V] {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W] [CompleteSpace W] (D : Datum H V W), Function.Surjective D.J := by
   intro H _ _ _ V _ _ _ _ W _ _ _ _ D

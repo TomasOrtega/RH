@@ -23,6 +23,9 @@ noncomputable section
 
 namespace GlobalTheory.CongLevelStd
 
+/- English proof (translation)
+Establish `hι : ∀ (x : E) (a : IsDedekindDomain.FiniteAdeleRing (𝓞 F) F), ((GlobalTheory.LFun.finAdEquiv F E).toRingHom.comp (Algebra.TensorProduct.comm F E (IsDedekindDomain.FiniteAdeleRing (𝓞 F) F)).toRingHom) (x ⊗ₜ[F] a) = algebraMap E _ x * GlobalTheory.AdeleBaseChange.adMap F E a`. Introduce `x a`. Use `show GlobalTheory.LFun.toFinAd F E (a ⊗ₜ[F] x) = _`. Rewrite using `[GlobalTheory.LFun.toFinAd_tmul, mul_comm]`. Conclude with `⟨GlobalTheory.AdeleBaseChange.map_mem_int hι, GlobalTheory.AdeleBaseChange.mem_int_of_map hι⟩`.
+-/
 theorem mem_RInt_iff (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (y : Formalism.L2.DIV.AfE F E) :
     y ∈ Formalism.L2.DIV.RInt F E ↔
@@ -39,6 +42,11 @@ theorem mem_RInt_iff (F E : Type) [Field F] [NumberField F] [Field E] [NumberFie
 
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite using `[show Formalism.L2.Herm.intAf D.host.F D.host.E = Formalism.L2.DIV.RInt D.host.F D.host.E from rfl, mem_RInt_iff, show Formalism.MainNotions.StandardLatticesGL3.OhE D = Formalism.L2.DIV.RInt ℚ D.host.E from rfl, mem_RInt_iff]`. Establish `e1 : ∀ e' : TensorProduct D.host.F (Af D.host.F) D.host.E, Algebra.TensorProduct.comm D.host.F D.host.E (IsDedekindDomain.FiniteAdeleRing (𝓞 D.host.F) D.host.F) (Lev.swapAE D e') = e'`. Introduce `e'`. Proceed by induction on `e' using TensorProduct.induction_on with`. Consider the case `zero => rfl`.
+
+Consider the case `tmul a x => rfl`. Consider the case `add a b ha hb => rw [RingHom.map_add, map_add (Algebra.TensorProduct.comm D.host.F D.host.E (IsDedekindDomain.FiniteAdeleRing (𝓞 D.host.F) D.host.F)), ha, hb]`. Rewrite using `[e1, h]`. Both sides reduce to the same expression.
+-/
 theorem swap_mem_iff (e : TensorProduct D.host.F (Af D.host.F) D.host.E) (c : Formalism.MainNotions.StandardLatticesGL3.AE D)
     (h : GlobalTheory.LFun.finAdEquiv D.host.F D.host.E e = GlobalTheory.BotFormula.toFinE D c) :
     Lev.swapAE D e ∈ Formalism.L2.Herm.intAf D.host.F D.host.E ↔ c ∈ Formalism.MainNotions.StandardLatticesGL3.OhE D := by
@@ -55,6 +63,13 @@ theorem swap_mem_iff (e : TensorProduct D.host.F (Af D.host.F) D.host.E) (c : Fo
   rw [e1, h]
   rfl
 
+/- English proof (translation)
+Use `set w := (Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).symm z with hw_def`. Establish `hw : Lev.swapAE D w = z` using `by show (Algebra.TensorProduct.comm _ _ _) ((Algebra.TensorProduct.comm _ _ _).symm z) = z`. Conclude with `AlgEquiv.apply_symm_apply _ _`. Use `set s := (GlobalTheory.BotFormula.toFinE D).symm (GlobalTheory.LFun.finAdEquiv D.host.F D.host.E w) with hs_def`. Establish `hs : s ∈ Formalism.MainNotions.StandardLatticesGL3.OhE D` using `(swap_mem_iff w s (by rw [hs_def, RingEquiv.apply_symm_apply])).1 (hw ▸ hz)`.
+
+Use `⟨s, hs, (GlobalTheory.BotFormula.toFinE D).injective ?_⟩` and prove the remaining obligations. Establish `hinj : Function.Injective (Lev.swapAE D)` using `(Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).injective`. Establish `e2 : e - (b : TensorProduct D.host.F (Af D.host.F) D.host.E) = (N : TensorProduct D.host.F (Af D.host.F) D.host.E) * w`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[RingHom.map_sub, map_natCast (Lev.swapAE D) b, hc, RingHom.map_mul, map_natCast (Lev.swapAE D) N, hw, nsmul_eq_mul]`.
+
+Rewrite using `[RingEquiv.map_sub, map_natCast (GlobalTheory.BotFormula.toFinE D) b, RingEquiv.map_mul, map_natCast (GlobalTheory.BotFormula.toFinE D) N, hs_def, RingEquiv.apply_symm_apply, ← h, ← map_natCast (GlobalTheory.LFun.finAdEquiv D.host.F D.host.E) b, ← RingEquiv.map_sub, e2, RingEquiv …`.
+-/
 theorem cong_transfer (e : TensorProduct D.host.F (Af D.host.F) D.host.E) (c : Formalism.MainNotions.StandardLatticesGL3.AE D)
     (h : GlobalTheory.LFun.finAdEquiv D.host.F D.host.E e = GlobalTheory.BotFormula.toFinE D c) (b N : ℕ) (z : Lev.EAf D)
     (hz : z ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) (hc : Lev.swapAE D e - (b : Lev.EAf D) = N • z) :
@@ -78,6 +93,11 @@ theorem cong_transfer (e : TensorProduct D.host.F (Af D.host.F) D.host.E) (c : F
     ← map_natCast (GlobalTheory.LFun.finAdEquiv D.host.F D.host.E) b, ← RingEquiv.map_sub, e2, RingEquiv.map_mul,
     map_natCast (GlobalTheory.LFun.finAdEquiv D.host.F D.host.E) N]
 
+/- English proof (translation)
+Use `show finHom V k = 1`. Establish `hinj : Function.Injective (Lev.swapAE D)` using `(Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).injective`. Establish `h1 : Formalism.UG.bc (Lev.swapAE D) (finHom V k) = 1` using `hk`. Apply `Units.ext` to reduce the goal to its premises. Establish `h2` using `congrArg Units.val h1`.
+
+Express the relevant statement in the definitionally equal form `Matrix.map (finHom V k).val (Lev.swapAE D) = 1 at h2`. Use `Matrix.map_injective hinj ?_` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[h2, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem ker_finE (V : HSp D) {k : GA D V} (hk : Lev.finE V k = 1) : k ∈ GinfC V := by
   show finHom V k = 1
   have hinj : Function.Injective (Lev.swapAE D) :=
@@ -90,6 +110,11 @@ theorem ker_finE (V : HSp D) {k : GA D V} (hk : Lev.finE V k = 1) : k ∈ GinfC 
   beta_reduce
   rw [h2, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]
 
+/- English proof (translation)
+Establish `key : ∀ A : Matrix (Fin r) (Fin r) R, (∀ i j, A i j ∈ S) → ∀ w : Fin r → R, (∀ i, w i ∈ S) → ∀ i, Matrix.mulVec A w i ∈ S`. Introduce `A hA w hw i`. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Subring.sum_mem _ fun j _ => Subring.mul_mem _ (hA i j) (hw j)`. Use `⟨key _ h1 v, fun hv => ?_⟩` and prove the remaining obligations.
+
+Establish `e : v = Matrix.mulVec ((M⁻¹ : GL (Fin r) R) : Matrix (Fin r) (Fin r) R) (Matrix.mulVec (M : Matrix (Fin r) (Fin r) R) v)`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Rewrite using `[e]`. Conclude with `key _ h2 _ hv`.
+-/
 theorem mulVec_mem_iff {R : Type} [CommRing R] {S : Subring R} {r : ℕ} (M : GL (Fin r) R)
     (h1 : ∀ i j, (M : Matrix (Fin r) (Fin r) R) i j ∈ S)
     (h2 : ∀ i j, ((M⁻¹ : GL (Fin r) R) : Matrix (Fin r) (Fin r) R) i j ∈ S) (v : Fin r → R) :
@@ -105,6 +130,11 @@ theorem mulVec_mem_iff {R : Type} [CommRing R] {S : Subring R} {r : ℕ} (M : GL
   rw [e]
   exact key _ h2 _ hv
 
+/- English proof (translation)
+Establish `e3 : g.val i j - (1 : Matrix (Fin r) (Fin r) (Lev.EAf D)) i j = m • w i j`. Use `congrFun (congrFun e i) j` as an intermediate fact. Simplify `this` using `only [Matrix.sub_apply, Matrix.smul_apply]`. Rewrite using `[eq_add_of_sub_eq e3]`. Use `add_mem (nsmul_mem (hw i j) m) ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+-/
 theorem entry_mem {D : D7} {r : ℕ} (g : GL (Fin r) (Lev.EAf D)) (w : Matrix (Fin r) (Fin r) (Lev.EAf D)) (m : ℕ)
     (hw : ∀ i j, w i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) (e : g.val - 1 = m • w) (i j : Fin r) :
     g.val i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E := by
@@ -118,6 +148,9 @@ theorem entry_mem {D : D7} {r : ℕ} (g : GL (Fin r) (Lev.EAf D)) (w : Matrix (F
   · exact one_mem _
   · exact zero_mem _
 
+/- English proof (translation)
+Use `congrFun (congrFun e i) j` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, Matrix.smul_apply, Matrix.one_apply]`. Rewrite using `[← this]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem entry_cong {D : D7} {r : ℕ} (g : GL (Fin r) (Lev.EAf D)) (w : Matrix (Fin r) (Fin r) (Lev.EAf D)) (m : ℕ)
     (e : g.val - 1 = m • w) (i j : Fin r) :
     g.val i j - (((if i = j then 1 else 0 : ℕ)) : Lev.EAf D) = m • w i j := by
@@ -128,6 +161,47 @@ theorem entry_cong {D : D7} {r : ℕ} (g : GL (Fin r) (Lev.EAf D)) (w : Matrix (
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `D V n ι J _hg hfin hinj hrange hJ hcongJ`. Take `⟨m, hm, hcong⟩` from `hcongJ`. Take `⟨-, e0, -⟩` from `hfin 1`. Substitute `e0` using the available equality. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram` as an intermediate fact.
+
+Establish `hent : ∀ (x : Formalism.MainNotions.StandardLatticesGL3.GA D V.rank) (i j : Fin V.rank), GlobalTheory.LFun.finAdEquiv D.host.F D.host.E ((finHom V (ι x)).1 i j) = GlobalTheory.BotFormula.toFinE D (((x : GL (Fin V.rank) (Formalism.MainNotions.StandardLatticesGL3.AE D)) : Matrix (F …`. Introduce `x i j`. Take `⟨-, e, h⟩` from `hfin x`. Simplify using `using h i j`. Establish `hint : ∀ (x : Formalism.MainNotions.StandardLatticesGL3.GA D V.rank) (i j : Fin V.rank), (Lev.finE V (ι x)).val i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E ↔ ((x : GL (Fin V.rank) (Formalism.MainNotions.StandardLatticesGL3.AE D)) : Matrix (Fin V.rank) (Fin V.rank) (Formalism. …` using `fun x i j => swap_mem_iff _ _ (hent x i j)`.
+
+Establish `hGf : ∀ x, ι x ∈ GfC V` using `fun x => hrange ▸ ⟨x, rfl⟩`. Establish `hfinj : ∀ x y, Lev.finE V (ι x) = Lev.finE V (ι y) → x = y`. Introduce `x y h`. Establish `h1 : Lev.finE V ((ι y)⁻¹ * ι x) = 1` using `by rw [map_mul, map_inv, h, inv_mul_cancel]`. Establish `h2` using `(GlobalTheory.UnitarySplit.real_finite_split D V).2.2.1 _ (ker_finE V h1) (mul_mem (inv_mem (hGf y)) (hGf x))`.
+
+Conclude with `hinj (inv_mul_eq_one.1 h2).symm`. Take `⟨hK₀o, hK₀c⟩` from `GlobalTheory.FunObj.congLev_open_compact V (Λ := Formalism.L2.Col.stdLat D.host.E V.rank) Formalism.L2.Col.stdLat_lattice (𝔪 := ⊤) top_ne_bot`. Take `⟨K₀, hK₀⟩ : ∃ K₀, K₀ = GlobalTheory.ChiGrid.congLev D.sp.cm V.gram (Formalism.L2.Col.stdLat D.host.E V.rank) ⊤` from `⟨_, rfl⟩`. Rewrite `hK₀o`, `hK₀c` using `[← hK₀]`. Take `⟨f, hf⟩ : ∃ f : Formalism.MainNotions.StandardLatticesGL3.GA D V.rank →* GL (Fin V.rank) (Lev.EAf D), f = (Lev.finE V).comp ι` from `⟨_, rfl⟩`.
+
+Establish `hfx : ∀ x, f x = Lev.finE V (ι x)` using `fun x => by rw [hf]; rfl`. Establish `hmax : ∀ x ∈ intG D V.rank, f x ∈ K₀`. Introduce `x hx`. Establish `hle : intG D V.rank ≤ K₀.comap f`. Rewrite using `[GlobalTheory.NormSum.intG, Subgroup.closure_le]`.
+
+Introduce `k hk`. Establish `h1 : ∀ i j, (f k).val i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `fun i j => by rw [hfx]; exact (hint k i j).2 (hk i j).1`. Establish `h2 : ∀ i j, ((f k)⁻¹).val i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`. Introduce `i j`. Rewrite using `[← map_inv, hfx]`.
+
+Conclude with `(hint k⁻¹ i j).2 (by simpa using (hk i j).2)`. Use `show f k ∈ K₀`. Rewrite using `[hK₀, GlobalTheory.ChiGrid.congLev_top, Subgroup.mem_inf]`. Use `⟨hfx k ▸ GlobalTheory.LevSplit.finE_mem_UA V (ι k), fun v => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `v ∈ Formalism.UG.latS (Formalism.L2.Herm.Af D.host.F) (Formalism.L2.Herm.intAf D.host.F D.host.E) (Formalism.L2.Col.stdLat D.host.E V.rank) ↔ Matrix.mulVec (f k).val v ∈ Formalism.UG.latS (Formalism.L2.Herm.Af D.host.F) (Formalism.L2.Herm.intAf D.host.F D.host.E) (Formalism.L2.Co …`.
+
+Rewrite using `[Formalism.L2.Col.mem_latS_std, Formalism.L2.Col.mem_latS_std]`. Conclude with `mulVec_mem_iff (f k) h1 h2 v`. Conclude with `hle hx`. Establish `hopen : IsOpen (((K₀ ⊓ J.map f).comap (Lev.finE V) : Subgroup (GA D V)) : Set (GA D V))`. Rewrite using `[Subgroup.comap_inf, Subgroup.coe_inf]`.
+
+Use `hK₀o.inter (Subgroup.isOpen_of_mem_nhds _ (g := 1) ?_)` and prove the remaining obligations. Take `⟨π, hπ, -⟩` from `GlobalTheory.Mass.existsUnique_isFinProj D.sp.cm.sig V.gram`. Establish `hc : Continuous (finHom V)` using `(continuous_subtype_val.comp hπ.continuous).congr fun κ => hπ κ`. Establish `hmN : m ≠ 0` using `hm.ne'`. Establish `hev1 : ∀ᶠ κ in nhds (1 : GA D V), ∃ z : Matrix (Fin V.rank) (Fin V.rank) (Lev.EAf D), (∀ i j, z i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) ∧ (Lev.finE V κ).val - 1 = m • z`.
+
+Establish `h` using `GlobalTheory.FunObj.eventually_cong_mat (F := D.host.F) (E := D.host.E) (n := V.rank) (X := GA D V) (x₀ := 1) (1 : GL (Fin V.rank) (Lev.EAf D)) hmN hc (finHom V).map_one`. Use `h.mono fun κ hκ => ?_` and prove the remaining obligations. Take `⟨z, hz, hz'⟩` from `hκ`. Use `⟨z, hz, ?_⟩` and prove the remaining obligations. Rewrite `hz'` using `[inv_one, one_mul, mul_one]`.
+
+Conclude with `hz'`. Establish `hev2 : ∀ᶠ κ in nhds (1 : GA D V), ∃ z : Matrix (Fin V.rank) (Fin V.rank) (Lev.EAf D), (∀ i j, z i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) ∧ (Lev.finE V κ⁻¹).val - 1 = m • z`. Establish `hc2 : Continuous fun κ : GA D V => finHom V κ⁻¹` using `hc.comp continuous_inv`. Establish `h` using `GlobalTheory.FunObj.eventually_cong_mat (F := D.host.F) (E := D.host.E) (n := V.rank) (X := GA D V) (x₀ := 1) (1 : GL (Fin V.rank) (Lev.EAf D)) hmN hc2 (by rw [inv_one]; exact (finHom V).map_one)`. Use `h.mono fun κ hκ => ?_` and prove the remaining obligations.
+
+Take `⟨z, hz, hz'⟩` from `hκ`. Use `⟨z, hz, ?_⟩` and prove the remaining obligations. Rewrite `hz'` using `[inv_one, one_mul, mul_one]`. Conclude with `hz'`. Use `filter_upwards [hev1, hev2] with κ ⟨z, hz, hz'⟩ ⟨z2, hz2, hz2'⟩`.
+
+Take `⟨a, ha, k, hk, hκ⟩` from `(GlobalTheory.UnitarySplit.real_finite_split D V).1 κ`. Take `⟨x, hx⟩ : k ∈ ι.range` from `hrange ▸ hk`. Establish `hfa : Lev.finE V a = 1` using `by show Formalism.UG.bc (Lev.swapAE D) (finHom V a) = 1`. Rewrite using `[show finHom V a = 1 from ha, map_one]`. Establish `e1 : Lev.finE V κ = Lev.finE V (ι x)` using `by rw [hκ, map_mul, hfa, one_mul, hx]`.
+
+Establish `e2 : Lev.finE V κ⁻¹ = Lev.finE V (ι x⁻¹)` using `(map_inv (Lev.finE V) κ).trans ((congrArg (·⁻¹) e1).trans ((map_inv (Lev.finE V) (ι x)).symm.trans (congrArg (Lev.finE V) (map_inv ι x).symm)))`. Establish `hI : ∀ (y : Formalism.MainNotions.StandardLatticesGL3.GA D V.rank) (g : GL (Fin V.rank) (Lev.EAf D)) (w : Matrix (Fin V.rank) (Fin V.rank) (Lev.EAf D)), g = Lev.finE V (ι y) → (∀ i j, w i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) → g.val - 1 = m • w → ∀ i j, (y : GL (Fin V.r …`. Introduce `y g w hg hw e i j`. Substitute `hg` using the available equality. Conclude with `(hint y i j).1 (entry_mem _ w m hw e i j)`.
+
+Establish `hxJ : x ∈ J`. Use `hcong x (Subgroup.subset_closure (fun i j => ⟨hI x _ z e1 hz hz' i j, ?_⟩)) fun i j => ?_` and prove the remaining obligations. Simplify using `using hI x⁻¹ _ z2 e2 hz2 hz2' i j`. Establish `hC : ∀ (g : GL (Fin V.rank) (Lev.EAf D)), g = Lev.finE V (ι x) → g.val - 1 = m • z → Lev.swapAE D ((finHom V (ι x)).val i j) - (((if i = j then 1 else 0 : ℕ)) : Lev.EAf D) = m • z i j`. Introduce `g hg e`.
+
+Substitute `hg` using the available equality. Conclude with `entry_cong _ z m e i j`. Take `⟨s, hs, es⟩` from `cong_transfer ((finHom V (ι x)).val i j) _ (hent x i j) (if i = j then 1 else 0) m (z i j) (hz i j) (hC _ e1 hz')`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.sub_apply, Matrix.one_apply, ← es]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Establish `h3 : f x ∈ J.map f` using `Subgroup.mem_map_of_mem f hxJ`. Establish `h4 : Lev.finE V κ = f x` using `e1.trans (hfx x).symm`. Conclude with `Subgroup.mem_comap.2 (Eq.subst (motive := fun g => g ∈ J.map f) h4.symm h3)`. Use `⟨K₀ ⊓ J.map f, ⟨hopen, ?_⟩, fun x => ⟨fun h => ?_, fun h => ?_⟩⟩` and prove the remaining obligations.
+
+Establish `hcl : IsClosed ((Lev.levA V (K₀ ⊓ J.map f) : Subgroup (GA D V)) : Set (GA D V))`. Establish `e : ((Lev.levA V (K₀ ⊓ J.map f) : Subgroup (GA D V)) : Set (GA D V)) = (GfC V : Set (GA D V)) ∩ (((K₀ ⊓ J.map f).comap (Lev.finE V) : Subgroup (GA D V)) : Set (GA D V))` using `rfl`. Rewrite using `[e]`. Conclude with `(GlobalTheory.Ker.CongTop.isClosed_GfC V).inter (Subgroup.isClosed_of_isOpen _ hopen)`. Use `hK₀c.of_isClosed_subset hcl fun k hk => ?_` and prove the remaining obligations.
+
+Take `⟨h1, h2⟩` from `Lev.mem_levA.1 hk`. Conclude with `Lev.mem_levA.2 ⟨h1, h2.1⟩`. Take `⟨y, hy, hyx⟩` from `Subgroup.mem_map.1 (Subgroup.mem_inf.1 h).2`. Rewrite `hyx` using `[hfx]`. Rewrite using `[← hfinj y x hyx]` and apply the resulting hypothesis.
+
+Rewrite using `[← hfx]`. Conclude with `⟨hmax x (hJ h), Subgroup.mem_map_of_mem f h⟩`.
+-/
 theorem exists_level : ∀ {D : D7} (V : HSp D) (n : ℕ) (ι : Formalism.MainNotions.StandardLatticesGL3.GA D n →* GA D V) (J : Subgroup (Formalism.MainNotions.StandardLatticesGL3.GA D n)), V.gram = 1 →
   (∀ x, IsFinPt V (ι x) x) → Function.Injective ι → ι.range = GfC V → J ≤ intG D n → IsCongLevel J →
   ∃ K : Subgroup (GL (Fin V.rank) (Lev.EAf D)), IsOpenCompactLevel V K ∧ ∀ x, Lev.finE V (ι x) ∈ K ↔ x ∈ J := by

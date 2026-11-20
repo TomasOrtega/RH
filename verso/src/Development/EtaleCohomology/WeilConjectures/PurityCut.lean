@@ -25,6 +25,19 @@ def Compare : Prop := Base → ∀ (l : ℕ) [Fact l.Prime] (r : ℕ),
     ∀ (P : SPair l r) (c : ℕ) (i a b : ℤ) h x,
       θ P c i a b h (redZ (l ^ (c + 1)) (l ^ c) i (initial.to P.Z) a x) = redZ _ _ _ P.j _ (θ P (c + 1) i a b h x)
 
+/- English proof (translation)
+Introduce `hB l _ r`. Take `⟨o, bd, hex, hnat, hred⟩` from `hS`. Take `⟨θ, hθn, hθr⟩` from `hC hB l r`. Establish `bij : ∀ (q : ℕ) (i : ℤ) (Z : Scheme.{0}) (n : ℤ), Function.Bijective (o q i (initial.to Z) n)`. Introduce `q i Z n`.
+
+Use `⟨(injective_iff_map_eq_zero _).2 fun x hx => ?_, fun y => ?_⟩` and prove the remaining obligations. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by ring⟩`. Take `⟨z, rfl⟩` from `((hex q i (initial.to Z) m).2.2 x).1 hx`. Use `hE q m i` as an intermediate fact. Rewrite using `[Subsingleton.elim z 0, map_zero]`.
+
+Use `haveI := hE q n i`. Conclude with `((hex q i (initial.to Z) n).1 y).1 (Subsingleton.elim _ _)`. Set `e : ∀ (q : ℕ) (i : ℤ) (Z : Scheme.{0}) (n : ℤ), HZ q i (initial.to Z) n ≃+ Ht q (sch.obj Z) n i` to `fun q i Z n => AddEquiv.ofBijective (o q i (initial.to Z) n) (bij q i Z n)`. Establish `he : ∀ q i Z n x, e q i Z n x = o q i (initial.to Z) n x` using `fun _ _ _ _ _ => rfl`. Use `⟨fun P c i a b h => (e (l ^ c) i P.Z a).symm.trans (θ P c i a b h), ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `P' P f c i a b h x`. Simplify using `only [AddEquiv.trans_apply]`. Rewrite using `[← hθn]`. Use `congr 1`. Apply `(e (l ^ c) i P'.Z a).injective` to reduce the goal to its premises.
+
+Rewrite using `[AddEquiv.apply_symm_apply, he, (hnat (l ^ c) i (initial.to P.Z) (initial.to P'.Z) f.fZ (𝟙 _) (initial.hom_ext _ _) a).1, ← he, AddEquiv.apply_symm_apply]`. Introduce `P c i a b h x`. Simplify using `only [AddEquiv.trans_apply]`. Rewrite using `[← hθr]`. Use `congr 1`.
+
+Apply `(e (l ^ c) i P.Z a).injective` to reduce the goal to its premises. Rewrite using `[AddEquiv.apply_symm_apply, he, (hred (l ^ (c + 1)) (l ^ c) i (initial.to P.Z) a).1, ← he, AddEquiv.apply_symm_apply]`.
+-/
 theorem goal_of (hS : SuppSeq) (hE : EmptyVan) (hC : Compare) : Purity := by
   intro hB l _ r
   obtain ⟨o, bd, hex, hnat, hred⟩ := hS

@@ -14,6 +14,9 @@ noncomputable section
 
 namespace GlobalTheory.FlagCls.BaseChange
 
+/- English proof (translation)
+Consider the cases of `dual`. Conclude with `h`. Establish `e : (lieMat true d).det = _` using `Matrix.det_permute Fin.revPerm (Matrix.transpose d⁻¹)`. Rewrite `h` using `[e, Matrix.det_transpose]`. Conclude with `Matrix.isUnit_nonsing_inv_det_iff.1 (isUnit_of_mul_isUnit_right h)`.
+-/
 theorem isUnit_det_of_lieMat {dual : Bool} {r : ℕ} {K : Type} [CommRing K] {d : Matrix (Fin r) (Fin r) K}
     (h : IsUnit (lieMat dual d).det) : IsUnit d.det := by
   cases dual
@@ -22,6 +25,13 @@ theorem isUnit_det_of_lieMat {dual : Bool} {r : ℕ} {K : Type} [CommRing K] {d 
     rw [e, Matrix.det_transpose] at h
     exact Matrix.isUnit_nonsing_inv_det_iff.1 (isUnit_of_mul_isUnit_right h)
 
+/- English proof (translation)
+Consider the cases of `dual`. Conclude with `⟨C, hC, hC', rfl⟩`. Use `C.invertibleOfIsUnitDet hC` as an intermediate fact. Establish `hb : C.BlockTriangular OrderDual.toDual` using `fun a b hab => hC' a b hab`. Establish `hi` using `Matrix.blockTriangular_inv_of_blockTriangular hb`.
+
+Establish `hm : (d.map ψ)⁻¹ = d⁻¹.map ψ` using `Matrix.inv_eq_right_inv (by`. Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv _ hd, Matrix.map_one _ (map_zero ψ) (map_one ψ)])`. Use `⟨(Matrix.transpose C⁻¹).submatrix Fin.revPerm Fin.revPerm, ?_, fun i j hij => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_submatrix_equiv_self, Matrix.det_transpose]`. Conclude with `Matrix.isUnit_nonsing_inv_det C hC`.
+
+Conclude with `hi (show OrderDual.toDual (Fin.rev i) < OrderDual.toDual (Fin.rev j) from Fin.rev_lt_rev.2 hij)`. Use `show (Matrix.transpose (C * d.map ψ)⁻¹).submatrix Fin.rev id = _`. Rewrite using `[Matrix.mul_inv_rev, Matrix.transpose_mul, hm]`. Conclude with `Matrix.submatrix_mul _ _ _ Fin.rev _ Fin.revPerm.bijective`.
+-/
 theorem lieMat_tri (dual : Bool) {r : ℕ} {K K' : Type} [CommRing K] [CommRing K'] (ψ : K →+* K')
     {d : Matrix (Fin r) (Fin r) K} (hd : IsUnit d.det) {C : Matrix (Fin r) (Fin r) K'} (hC : IsUnit C.det)
     (hC' : ∀ i j, i < j → C i j = 0) :
@@ -42,6 +52,9 @@ theorem lieMat_tri (dual : Bool) {r : ℕ} {K K' : Type} [CommRing K] [CommRing 
       rw [Matrix.mul_inv_rev, Matrix.transpose_mul, hm]
       exact Matrix.submatrix_mul _ _ _ Fin.rev _ Fin.revPerm.bijective
 
+/- English proof (translation)
+Simplify using `only [h2, h1, Finset.smul_sum, smul_smul, Finset.sum_smul]`. Conclude with `Finset.sum_comm`.
+-/
 theorem sum_chain {K N : Type} [CommRing K] [AddCommMonoid N] [Module K N] {r : ℕ} {u v : Fin r → N} {w : N}
     (A : Matrix (Fin r) (Fin r) K) (b : Fin r → K) (h1 : ∀ i, v i = ∑ a, A i a • u a) (h2 : w = ∑ i, b i • v i) :
     w = ∑ a, (∑ i, b i * A i a) • u a := by
@@ -51,6 +64,9 @@ theorem sum_chain {K N : Type} [CommRing K] [AddCommMonoid N] [Module K N] {r : 
 attribute [local instance] Over.cartesianMonoidalCategory in
 open MonoidalCategory CartesianMonoidalCategory MonObj in
 
+/- English proof (translation)
+Establish `h1` using `fun i => (LieMet.isComb_iff (fun a => LieMet.tanOf (hu a)) _ (LieMet.tanOf (hv i))).1 (hA i)`. Establish `h2` using `(LieMet.isComb_iff (fun a => LieMet.tanOf (hv a)) _ (LieMet.tanOf hw)).1 hb`. Use `(LieMet.isComb_iff (fun a => LieMet.tanOf (hu a)) _ (LieMet.tanOf hw)).2 ?_` and prove the remaining obligations. Conclude with `sum_chain (N := ReciprocityTheory.ChartRestriction.G.PullbackSections.TanM x t.G) (u := fun a => LieMet.tanOf (hu a)) (v := fun a => LieMet.tanOf (hv a)) A b h1 h2`.
+-/
 theorem comb_chain {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {T : Scheme.{0}} (t : SAB H T) {K : Type} [CommRing K] (x : Sp K ⟶ T) {r : ℕ}
     {u v : Fin r → (Sp (DualNumber K) ⟶ t.G.left)} {w : Sp (DualNumber K) ⟶ t.G.left}
@@ -63,6 +79,25 @@ theorem comb_chain {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Recip
   exact sum_chain (N := ReciprocityTheory.ChartRestriction.G.PullbackSections.TanM x t.G) (u := fun a => LieMet.tanOf (hu a))
     (v := fun a => LieMet.tanOf (hv a)) A b h1 h2
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Take `⟨V, f, hV, hf⟩` from `hM ((xb ≫ jB) (IsLocalRing.closedPoint K))`. Establish `hx : ⊤ ≤ (xb ≫ jB) ⁻¹ᵁ V` using `fun w _ => (IsLocalRing.specializes_closedPoint (R := K) w).mem_open ((xb ≫ jB) ⁻¹ᵁ V).isOpen hV`. Establish `hx' : ⊤ ≤ ((spMap ψ ≫ xb) ≫ jB) ⁻¹ᵁ V` using `fun w _ => by`. Rewrite using `[Category.assoc]`.
+
+Conclude with `hx (Set.mem_univ (spMap ψ w))`. Establish `h3' : (spMap ψ ≫ xb) ≫ πB ≫ genStr Z = spMap (ψ.comp χ)`. Rewrite using `[Category.assoc, h3, ← Spec.map_comp]`. Both sides reduce to the same expression. Establish `key : ∀ {L : Type} [CommRing L] (z : Sp L ⟶ Bg) (ρ : c.F →+* L) (hz : ⊤ ≤ (z ≫ jB) ⁻¹ᵁ V), z ≫ πB ≫ genStr Z = spMap ρ → IsEigBasis Z ρ (z ≫ πB ≫ genι Z) τ (u V f hf L z hz)`.
+
+Introduce `L _ z ρ hz hρ`. Establish `hb` using `hu.1 V f hf L z hz (ρ.comp e.toRingHom) (by`. Rewrite using `[reassoc_of% hρ, ← Spec.map_comp]`. Use the proof step `rfl)`. Establish `e1 : (ρ.comp e.toRingHom).comp e.symm.toRingHom = ρ` using `RingHom.ext fun a => by simp`.
+
+Rewrite `hb` using `[e1]`. Then use the resulting hypothesis. Establish `hb` using `key xb χ hx h3`. Establish `hb'` using `key (spMap ψ ≫ xb) (ψ.comp χ) hx' h3'`. Use `choose d hd using fun i => (hb.2 (g.v τ i) ⟨g.tan τ i, g.eig τ i⟩).exists`. Establish `hA : FlagMat hM π fl hf y (lieMat dual (Matrix.of d))` using `h V f hf hx (Matrix.of d) hd`.
+
+Establish `hdu` using `isUnit_det_of_lieMat hA.1`. Establish `hA'` using `(GlobalTheory.T.flag_matrix_unique_up_to_triangular Bs Y M _ hM π fl V f hf K y (by rw [h1]; exact hx)).2.2 K' ψ _ hA`. Use `choose C hC1 hC2 hC3 using ht.2.2 τ`. Establish `hCu : IsUnit (Matrix.of C).det`. Rewrite using `[Matrix.det_of_lowerTriangular (Matrix.of C) (fun a b hab => hC2 a b hab)]`.
+
+Conclude with `IsUnit.prod_univ_iff.2 fun i => by rw [Matrix.of_apply, hC1]; exact Units.isUnit _`. Take `⟨T, hT, hT', eT⟩` from `lieMat_tri dual ψ hdu hCu hC2`. Take `⟨g₀, hg₀⟩` from `g.exists_isMap ψ (φ' := ψ.comp χ) (x' := spMap ψ ≫ xb ≫ πB ≫ genι Z) rfl rfl`. Establish `ex : (spMap ψ ≫ xb) ≫ πB ≫ genι Z = spMap ψ ≫ xb ≫ πB ≫ genι Z` using `Category.assoc _ _ _`. Use `GlobalTheory.T.toroidal_flag_bundle_rank_dual E H Dw l Xo c Oz β Z F e _ τ dual Bs Bg Y M hM jB πB u π fl hu K' (spMap ψ ≫ y) (spMap ψ ≫ xb) (ψ.comp χ) (by rw [Category.assoc, h1, Category.assoc]) h3' (g'.v τ) V f hf hx' (Matrix.of C * (Matrix.of d).map ψ) (by` as an intermediate fact.
+
+Rewrite using `[Matrix.det_mul]`. Conclude with `hCu.mul (by rw [← RingHom.mapMatrix_apply, ← RingHom.map_det]; exact hdu.map ψ))`. Use the proof step `(fun i => by`. Rewrite `hb'`, the goal using `[ex]`. Use `comb_chain Z.t _ (v := g₀.v τ) (fun a => (hb'.1 a).1) (g₀.tan τ) (g'.tan τ i) ((Matrix.of d).map ψ) (C i) (fun k => ?_) ?_` and prove the remaining obligations.
+
+Rewrite using `[funext (hu.2.2 V f hf K K' ψ xb hx hx'), hg₀ τ k]`. Conclude with `GlobalTheory.GradedPieces.comb_map ψ rfl (hd k)`. Rewrite using `[funext (hg₀ τ)]`. Conclude with `hC3 i)`. Use the proof step `(by rw [eT]; exact hA'.mul hT hT')`.
+
+Rewrite `this` using `[ex]`. Conclude with `this`.
+-/
 theorem agreeAt_tri {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}
     {Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l} {c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l} {Oz : Type} [CommRing Oz]
@@ -121,6 +156,11 @@ theorem agreeAt_tri {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Reci
   rw [ex] at this
   exact this
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Oz _ β Z F _ e ι rk emb dual hr Bs Bg Y M hM jB πB u π fl hu K _ _ y xb χ x g K' _ ψ χ' x' g' t hB ht`. Take `⟨h1, rfl, h3, h4⟩` from `hB`. Take `rfl` from `ht.1`. Take `rfl` from `ht.2.1`. Use `⟨by rw [Category.assoc, h1, Category.assoc], (Category.assoc _ _ _).symm, ?_, fun a => agreeAt_tri Z e (dual a) (hr a) (hM a) jB πB (u a) π (fl a) (hu a) g g' h1 h3 (h4 a) ht⟩` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, h3, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem bears_tri : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l) (c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l) (Oz : Type) [CommRing Oz] (β : Oz →+* c.F) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) (F : Type) [Field F] (e : F ≃+* c.F) (ι : Type) (rk : ι → ℕ) (emb : ι → (E →+* ℂ)) (dual : ι → Bool) (hr : ∀ a, rk a = Dw.mult (emb a)) (Bs Bg Y : Scheme.{0}) (M : ι → Bs.Modules) (hM : ∀ a, IsVB (M a) (rk a)) (jB : Bg ⟶ Bs) (πB : Bg ⟶ gen Z) (u : ∀ a, FrAssign Z (M a) (rk a) jB) (π : Y ⟶ Bs) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (M a)) (rk a)), (∀ a, IsLieFrames Z e jB πB (M a) (rk a) (emb a) (dual a) (u a)) → ∀ (K : Type) [CommRing K] [IsLocalRing K] (y : Sp K ⟶ Y) (xb : Sp K ⟶ Bg) (χ : c.F →+* K) (x : Sp K ⟶ Z.X) (g : EigFrame Z χ x) (K' : Type) [CommRing K'] (ψ : K →+* K') (χ' : c.F →+* K') (x' : Sp K' ⟶ Z.X) (g' : EigFrame Z χ' x') (t : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → K'ˣ), Bears Z emb dual hr hM jB πB u π fl y xb g → g.Tri ψ g' t → Bears Z emb dual hr hM jB πB u π fl (spMap ψ ≫ y) (spMap ψ ≫ xb) g' := by
   intro E _ _ _ H Dw l Xo c Oz _ β Z F _ e ι rk emb dual hr Bs Bg Y M hM jB πB u π fl hu K _ _ y xb χ x g K' _ ψ χ' x'
     g' t hB ht

@@ -8,6 +8,9 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjVar GlobalTheory.TwoLat GlobalTheory.FlagCov
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FlagExtend.main | exact GlobalTheory.FlagExtend.main | (intros; apply GlobalTheory.FlagExtend.main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.flag_pullback_generic_fibre : ∀ (F : Type) [Field F] [NumberField F] (Y : Scheme.{0}) [IsIntegral Y] (p : Y ⟶ Sp (𝓞 F)) (d : ℕ), IsArithVar p d →
     ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Y → ∀ (ι : Type) [Fintype ι] (N N' : ι → Y.Modules) (n : ι → ℕ),
     (∀ a, IsVB (N' a) (n a)) → ∀ (u : ∀ a, N a ⟶ N' a) (fl : ∀ a, Vert.Flag (N a) (n a))

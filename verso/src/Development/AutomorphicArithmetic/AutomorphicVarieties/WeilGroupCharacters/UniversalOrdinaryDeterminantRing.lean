@@ -182,6 +182,9 @@ variable {r} in
 def LamObj.toPair (Λ : LamObj r) {R : Type} [CommRing R] [Algebra O R] [IsCO O R] (p : Pair r R) : Λ.Λ →ₐ[O] R :=
   (Λ.univ R (fun v i => (p.ψ v i).comp (F.Iv v).subtype) fun v i => ⟨_, p.psi v i, rfl⟩).choose
 
+/- English proof (translation)
+The claim follows from `(Λ.univ R (fun v i => (p.ψ v i).comp (F.Iv v).subtype) fun v i => ⟨_, p.psi v i, rfl⟩).choose_spec.1 v i`.
+-/
 theorem LamObj.toPair_spec (Λ : LamObj r) {R : Type} [CommRing R] [Algebra O R] [IsCO O R] (p : Pair r R) (v : F.Vl)
     (i : Fin n) : pushCh (Λ.toPair p : Λ.Λ →+* R) (Λ.κ v i) = (p.ψ v i).comp (F.Iv v).subtype :=
   (Λ.univ R (fun v i => (p.ψ v i).comp (F.Iv v).subtype) fun v i => ⟨_, p.psi v i, rfl⟩).choose_spec.1 v i
@@ -297,6 +300,9 @@ def P3core : Prop :=
     (∃ q₁ : PrimeSpectrum B.B, B.IsStable q₁ ∧ J ≤ q₁.asIdeal ∧ q₁.asIdeal ≤ RingHom.ker (f 0)) →
     ∀ q : PrimeSpectrum B.B, q.asIdeal ≤ RingHom.ker (f (Fin.last h)) → B.IsStable q ∨ B.IsThick q → J ≤ q.asIdeal
 
+/- English proof (translation)
+Introduce `x f hx hf h₁ q hq hs` and use `H 0 (fun _ => x) (fun _ => f) Fin.elim0 (fun _ => hx) (fun _ => hf) (fun i => i.elim0) h₁ q hq hs`.
+-/
 theorem P3core.p2 {B : UniversalOrdinaryDeterminantRing r} {J : Ideal B.B} (H : B.P3core J) : B.P2core J := fun x f hx hf h₁ q hq hs =>
   H 0 (fun _ => x) (fun _ => f) Fin.elim0 (fun _ => hx) (fun _ => hf) (fun i => i.elim0) h₁ q hq hs
 

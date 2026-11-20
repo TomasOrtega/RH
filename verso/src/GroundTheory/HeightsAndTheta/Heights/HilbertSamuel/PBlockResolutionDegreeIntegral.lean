@@ -17,11 +17,17 @@ set_option linter.unusedSectionVars false
 
 namespace BlockResolutionDegreeIntegral
 
+/- English proof (translation)
+Unfold `ReciprocityTheory.AnForm.hessC`. Rewrite using `[(h.fderiv (𝕜 := ℝ)).fderiv_eq]`.
+-/
 theorem hessC_congr {n : ℕ} {φ ψ : (Fin n → ℂ) → ℝ} {z : Fin n → ℂ} (h : φ =ᶠ[𝓝 z] ψ) :
     ReciprocityTheory.AnForm.hessC φ z = ReciprocityTheory.AnForm.hessC ψ z := by
   unfold ReciprocityTheory.AnForm.hessC
   rw [(h.fderiv (𝕜 := ℝ)).fderiv_eq]
 
+/- English proof (translation)
+Establish `hH : (fun k => ReciprocityTheory.AnForm.hessC (φ k) z) = fun k => ReciprocityTheory.AnForm.hessC (ψ k) z`. Use function extensionality and compare the values at `fun k => hessC_congr (h k)`. Unfold `ReciprocityTheory.AnForm.maDens`. Rewrite using `[hH]`.
+-/
 theorem maDens_congr {n : ℕ} {φ ψ : Fin n → (Fin n → ℂ) → ℝ} {z : Fin n → ℂ} (h : ∀ i, φ i =ᶠ[𝓝 z] ψ i) :
     ReciprocityTheory.AnForm.maDens φ z = ReciprocityTheory.AnForm.maDens ψ z := by
   have hH : (fun k => ReciprocityTheory.AnForm.hessC (φ k) z) = fun k => ReciprocityTheory.AnForm.hessC (ψ k) z :=
@@ -29,6 +35,11 @@ theorem maDens_congr {n : ℕ} {φ ψ : Fin n → (Fin n → ℂ) → ℝ} {z : 
   unfold ReciprocityTheory.AnForm.maDens
   rw [hH]
 
+/- English proof (translation)
+Unfold `mInt`. Use `split_ifs with hP`. Unfold `integralWith`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `MeasureTheory.setIntegral_congr_fun (A.chart j).open_target.measurableSet fun y hy => ?_` and prove the remaining obligations.
+
+Simplify using `only [h j y hy]`. Both sides reduce to the same expression.
+-/
 theorem mInt_congr_of_locDens {e : ℕ} {X : Type*} [TopologicalSpace X] (A : FinHolAtlas e X)
     {Φ Ψ : Fin e → LocPot X} (h : ∀ j, ∀ y ∈ (A.chart j).target, locDens A Φ j y = locDens A Ψ j y)
     (g : X → ℝ) : mInt A Φ g = mInt A Ψ g := by
@@ -43,6 +54,9 @@ theorem mInt_congr_of_locDens {e : ℕ} {X : Type*} [TopologicalSpace X] (A : Fi
 variable {D : ℕ} {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
   {Ω : Type} [Field Ω] [CharZero Ω]
 
+/- English proof (translation)
+Establish `hp : (∏ k, ‖c k‖ ^ A₀.a k) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ (norm_ne_zero_iff.mpr (hc k))`. Rewrite using `[A₁.smul c z hc, A₀.smul c z hc, hdeg, mul_div_mul_left _ _ hp]`.
+-/
 theorem ratio_smul {A₀ A₁ : HermLine ι} (hdeg : A₁.a = A₀.a) (c : K → ℂ) (hc : ∀ k, c k ≠ 0)
     (z : (Σ k, ι k) → ℂ) :
     A₁.h (fun p => c p.1 * z p) / A₀.h (fun p => c p.1 * z p) = A₁.h z / A₀.h z := by
@@ -50,6 +64,9 @@ theorem ratio_smul {A₀ A₁ : HermLine ι} (hdeg : A₁.a = A₀.a) (c : K →
     Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ (norm_ne_zero_iff.mpr (hc k))
   rw [A₁.smul c z hc, A₀.smul c z hc, hdeg, mul_div_mul_left _ _ hp]
 
+/- English proof (translation)
+Introduce `j` and use `by refine contDiffOn_of_locally_contDiffOn fun y hy => ?_ refine ⟨(d.R.A.chart j).target ∩ (d.R.A.chart j).symm ⁻¹' d.R.U ((d.R.A.chart j).symm y), (d.R.A.chart j).isOpen_inter_preimage_symm (d.R.isOpen_U _), ⟨hy.1, d.R.mem_U _⟩, ?_⟩ have hsm := (contDiffOn_const (c := t)).mul (( …`.
+-/
 theorem smooth_logRatio (d : HSMBlockDatum D K ι Ω) {A₀ A₁ : HermLine ι} (hdeg : A₁.a = A₀.a)
     (h₀ : IsSmoothHerm A₀) (h₁ : IsSmoothHerm A₁) (t : ℝ) :
     d.R.A.Smooth (fun x => t * Real.log (A₁.h (blockPt d x) / A₀.h (blockPt d x))) := fun j => by
@@ -69,6 +86,13 @@ theorem smooth_logRatio (d : HSMBlockDatum D K ι Ω) {A₀ A₁ : HermLine ι} 
       Real.log (A₀.h (d.R.lift ((d.R.A.chart j).symm y) ((d.R.A.chart j).symm y'))))
   rw [hcy, ratio_smul hdeg c hc, Real.log_div (A₁.pos _ hz).ne' (A₀.pos _ hz).ne']
 
+/- English proof (translation)
+Use `mInt_congr_of_locDens _ (fun j y hy => ?_) g` and prove the remaining obligations. Unfold `locDens`. Use `maDens_congr fun _ => ?_` and prove the remaining obligations. Establish `hmem : (d.R.A.chart j).target ∩ (d.R.A.chart j).symm ⁻¹' d.R.U ((d.R.A.chart j).symm y) ∈ 𝓝 y` using `((d.R.A.chart j).isOpen_inter_preimage_symm (d.R.isOpen_U _)).mem_nhds ⟨hy, d.R.mem_U _⟩`. Use `filter_upwards [hmem] with y' hy'`.
+
+Take `⟨c, hc, hcy⟩` from `d.R.compat ((d.R.A.chart j).symm y') ((d.R.A.chart j).symm y) ((d.R.A.chart j).symm y') ⟨d.R.mem_U _, hy'.2⟩`. Establish `hz` using `(d.R.mem ((d.R.A.chart j).symm y) _ hy'.2).1`. Establish `h₀` using `A₀.pos _ hz`. Establish `h₁` using `A₁.pos _ hz`. Express the relevant statement in the definitionally equal form `(1 - t) * Real.log (A₀.h (d.R.lift ((d.R.A.chart j).symm y) ((d.R.A.chart j).symm y'))) + t * Real.log (A₁.h (d.R.lift ((d.R.A.chart j).symm y) ((d.R.A.chart j).symm y'))) = Real.log (A₀.h (d.R.lift ((d.R.A.chart j).symm y) ((d.R.A.chart j).symm y'))) + t * Real.log (A₁.h (d.R.li …`.
+
+Rewrite using `[hcy, ratio_smul hdeg c hc, Real.log_div h₁.ne' h₀.ne']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mInt_blockInterpPot_eq (d : HSMBlockDatum D K ι Ω) {A₀ A₁ : HermLine ι} (hdeg : A₁.a = A₀.a)
     (t : ℝ) (g : d.R.X → ℝ) :
     mInt d.R.A (fun _ => blockInterpPot d A₀ A₁ t) g =
@@ -93,6 +117,9 @@ theorem mInt_blockInterpPot_eq (d : HSMBlockDatum D K ι Ω) {A₀ A₁ : HermLi
   rw [hcy, ratio_smul hdeg c hc, Real.log_div h₁.ne' h₀.ne']
   ring
 
+/- English proof (translation)
+Rewrite using `[mInt_blockInterpPot_eq d hdeg t]`. Conclude with `massIndep d.R.A (fun _ => AnResBridge.potOf d.R A₀) (fun _ x => t * Real.log (A₁.h (blockPt d x) / A₀.h (blockPt d x))) (fun _ => AnResBridge.isPotential_potOf d.R h₀) (fun _ => smooth_logRatio d hdeg h₀ h₁ t)`.
+-/
 theorem mass_eq (d : HSMBlockDatum D K ι Ω) {A₀ A₁ : HermLine ι} (hdeg : A₁.a = A₀.a)
     (h₀ : IsSmoothHerm A₀) (h₁ : IsSmoothHerm A₁) (t : ℝ) :
     mInt d.R.A (fun _ => blockInterpPot d A₀ A₁ t) (fun _ => 1) =
@@ -102,6 +129,15 @@ theorem mass_eq (d : HSMBlockDatum D K ι Ω) {A₀ A₁ : HermLine ι} (hdeg : 
     (fun _ x => t * Real.log (A₁.h (blockPt d x) / A₀.h (blockPt d x)))
     (fun _ => AnResBridge.isPotential_potOf d.R h₀) (fun _ => smooth_logRatio d hdeg h₀ h₁ t)
 
+/- English proof (translation)
+Establish `hex : ∃ Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (D + 1) → ℂ), IsGoodProj (mCoordIdeal d.y) Ψ` using `goodProjExists K ι (mCoordIdeal d.y) D d.arith`. Set `B : HermLine ι` to `HermLine.ofWeight (fun _ => (-1 : ℝ)) (fun _ _ _ => rfl)`. Establish `hB : IsSmoothHerm B` using `contDiffOn_const`. Establish `hlog : logNorm B.inv 1 = fun _ => (1 : ℝ)`. Use function extensionality and compare the values at `z`.
+
+Rewrite using `[logNorm_inv_one]`. Simplify using `[B, HermLine.ofWeight]`. Establish `hsec : IsSectionOn (mCoordIdeal d.y) B.inv 1` using `isSectionOn_inv_one d.arith.2.1.1 rfl`. Establish `key` using `AnResBridge.bridge d.R hex.choose (fun _ => A₀) B.inv 1 d.arith hex.choose_spec (fun _ => h₀) (isSmoothHerm_inv hB) hsec`. Simplify using `only [hlog] at key`.
+
+Establish `hg` using `hGG K ι Ω d.y D A₀ d.arith h₀`. Rewrite `hg` using `[hdeg]`. Rewrite using `[← hg]`. Unfold `geomDeg ptsIntegral`. Rewrite using `[dif_pos hex]`.
+
+Conclude with `key.symm`.
+-/
 theorem mass_potOf (hGG : GenDegGeomDeg.Statement) (d : HSMBlockDatum D K ι Ω) {A₀ : HermLine ι}
     (hdeg : A₀.a = unitDeg d.k₀) (h₀ : IsSmoothHerm A₀) :
     mInt d.R.A (fun _ => AnResBridge.potOf d.R A₀) (fun _ => 1) =
@@ -127,6 +163,9 @@ theorem mass_potOf (hGG : GenDegGeomDeg.Statement) (d : HSMBlockDatum D K ι Ω)
 
 end BlockResolutionDegreeIntegral
 
+/- English proof (translation)
+Introduce `D K _ _ ι _ Ω _ _ d A₀ A₁ h0 h1 hs0 hs1 t _`. Rewrite using `[BlockResolutionDegreeIntegral.mass_eq d (h1.trans h0.symm) hs0 hs1 t]`. Conclude with `BlockResolutionDegreeIntegral.mass_potOf hGG d h0 hs0`.
+-/
 theorem BlockResolutionDegreeIntegral.proof (hGG : GenDegGeomDeg.Statement) :
     BlockResolutionDegreeIntegral.Statement := by
   intro D K _ _ ι _ Ω _ _ d A₀ A₁ h0 h1 hs0 hs1 t _

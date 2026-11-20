@@ -18,12 +18,22 @@ section Rev
 
 variable {K : Type*} [Field K] {s : ℕ}
 
+/- English proof (translation)
+Rewrite using `[mul_apply, Finset.sum_eq_single (Fin.rev i)]`. Simplify using `[revJ]`. Introduce `k _ hk`. Simplify using `[revJ, hk]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem revJ_mul_apply (M : Matrix (Fin s) (Fin s) K) (i j : Fin s) : (revJ K s * M) i j = M (Fin.rev i) j := by
   rw [mul_apply, Finset.sum_eq_single (Fin.rev i)]
   · simp [revJ]
   · intro k _ hk; simp [revJ, hk]
   · intro h; exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Rewrite using `[mul_apply, Finset.sum_eq_single (Fin.rev j)]`. Simplify using `[revJ]`. Introduce `k _ hk`. Establish `: j ≠ Fin.rev k`. Introduce `h`.
+
+Apply `hk` to reduce the goal to its premises. Rewrite using `[h, Fin.rev_rev]`. Simplify using `[revJ, this]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem mul_revJ_apply (M : Matrix (Fin s) (Fin s) K) (i j : Fin s) : (M * revJ K s) i j = M i (Fin.rev j) := by
   rw [mul_apply, Finset.sum_eq_single (Fin.rev j)]
   · simp [revJ]
@@ -33,6 +43,11 @@ theorem mul_revJ_apply (M : Matrix (Fin s) (Fin s) K) (i j : Fin s) : (M * revJ 
     simp [revJ, this]
   · intro h; exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[revJ_mul_apply]`. Simplify using `only [revJ, Fin.rev_rev, one_apply]`. Distinguish the cases in `h : i = j`. Simplify using `[h]`.
+
+Simplify using `[h, Ne.symm h]`.
+-/
 theorem revJ_revJ : revJ K s * revJ K s = 1 := by
   ext i j
   rw [revJ_mul_apply]
@@ -41,6 +56,9 @@ theorem revJ_revJ : revJ K s * revJ K s = 1 := by
   · simp [h]
   · simp [h, Ne.symm h]
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[mul_revJ_apply, revJ_mul_apply]`. Use `⟨fun h => (hL _ _).1 (Fin.rev_lt_rev.mpr h), fun h => (hL _ _).2 (by rw [h])⟩` and prove the remaining obligations.
+-/
 theorem revJ_conj_up {L : Matrix (Fin s) (Fin s) K} (hL : IsLoUni L) : IsUpUni (revJ K s * L * revJ K s) := by
   intro i j
   rw [mul_revJ_apply, revJ_mul_apply]
@@ -48,6 +66,9 @@ theorem revJ_conj_up {L : Matrix (Fin s) (Fin s) K} (hL : IsLoUni L) : IsUpUni (
 
 end Rev
 
+/- English proof (translation)
+Use `⟨o • revJ (𝓞 E) s, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : j = Fin.rev i <;> simp [revJ, hij, h]`.
+-/
 theorem intg_revJ (x : E) (m o : 𝓞 E) (h : algebraMap (𝓞 E) E o = algebraMap (𝓞 E) E m * x) (s : ℕ) :
     Intg m (x • revJ E s) := by
   refine ⟨o • revJ (𝓞 E) s, ?_⟩
@@ -58,6 +79,9 @@ section Blocks
 
 variable {K : Type*} {s n : ℕ}
 
+/- English proof (translation)
+Apply the tactic sequence `ext (i | i) (j | j) <;> simp`.
+-/
 theorem blocks_eq (M : Matrix (Fin (s + n)) (Fin (s + n)) K) :
     M.submatrix finSumFinEquiv finSumFinEquiv =
       fromBlocks (M.submatrix (Fin.castAdd n) (Fin.castAdd n)) (M.submatrix (Fin.castAdd n) (Fin.natAdd s))
@@ -66,55 +90,98 @@ theorem blocks_eq (M : Matrix (Fin (s + n)) (Fin (s + n)) K) :
 
 variable [CommRing K]
 
+/- English proof (translation)
+Introduce `i j`. Use `⟨fun hij => (h _ _).1 ?_, fun hij => (h _ _).2 (by rw [hij])⟩` and prove the remaining obligations. Rewrite `hij`, the goal using `[Fin.lt_def]`. Simplify using `only [Fin.val_castAdd]`. Conclude with `hij`.
+-/
 theorem lo_11 {L : Matrix (Fin (s + n)) (Fin (s + n)) K} (h : IsLoUni L) :
     IsLoUni (L.submatrix (Fin.castAdd n) (Fin.castAdd n)) := by
   intro i j
   refine ⟨fun hij => (h _ _).1 ?_, fun hij => (h _ _).2 (by rw [hij])⟩
   rw [Fin.lt_def] at hij ⊢; simp only [Fin.val_castAdd]; exact hij
 
+/- English proof (translation)
+Introduce `i j`. Use `⟨fun hij => (h _ _).1 ?_, fun hij => (h _ _).2 (by rw [hij])⟩` and prove the remaining obligations. Rewrite `hij`, the goal using `[Fin.lt_def]`. Simplify using `only [Fin.val_natAdd]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem lo_22 {L : Matrix (Fin (s + n)) (Fin (s + n)) K} (h : IsLoUni L) :
     IsLoUni (L.submatrix (Fin.natAdd s) (Fin.natAdd s)) := by
   intro i j
   refine ⟨fun hij => (h _ _).1 ?_, fun hij => (h _ _).2 (by rw [hij])⟩
   rw [Fin.lt_def] at hij ⊢; simp only [Fin.val_natAdd]; omega
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `(h _ _).1 ?_` and prove the remaining obligations. Rewrite using `[Fin.lt_def]`. Simplify using `only [Fin.val_castAdd, Fin.val_natAdd]`. Use `i.isLt` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem lo_12 {L : Matrix (Fin (s + n)) (Fin (s + n)) K} (h : IsLoUni L) :
     L.submatrix (Fin.castAdd n) (Fin.natAdd s) = 0 := by
   ext i j
   refine (h _ _).1 ?_
   rw [Fin.lt_def]; simp only [Fin.val_castAdd, Fin.val_natAdd]; have := i.isLt; omega
 
+/- English proof (translation)
+Introduce `i j`. Use `⟨fun hij => (h _ _).1 ?_, fun hij => (h _ _).2 (by rw [hij])⟩` and prove the remaining obligations. Rewrite `hij`, the goal using `[Fin.lt_def]`. Simplify using `only [Fin.val_castAdd]`. Conclude with `hij`.
+-/
 theorem up_11 {U : Matrix (Fin (s + n)) (Fin (s + n)) K} (h : IsUpUni U) :
     IsUpUni (U.submatrix (Fin.castAdd n) (Fin.castAdd n)) := by
   intro i j
   refine ⟨fun hij => (h _ _).1 ?_, fun hij => (h _ _).2 (by rw [hij])⟩
   rw [Fin.lt_def] at hij ⊢; simp only [Fin.val_castAdd]; exact hij
 
+/- English proof (translation)
+Introduce `i j`. Use `⟨fun hij => (h _ _).1 ?_, fun hij => (h _ _).2 (by rw [hij])⟩` and prove the remaining obligations. Rewrite `hij`, the goal using `[Fin.lt_def]`. Simplify using `only [Fin.val_natAdd]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem up_22 {U : Matrix (Fin (s + n)) (Fin (s + n)) K} (h : IsUpUni U) :
     IsUpUni (U.submatrix (Fin.natAdd s) (Fin.natAdd s)) := by
   intro i j
   refine ⟨fun hij => (h _ _).1 ?_, fun hij => (h _ _).2 (by rw [hij])⟩
   rw [Fin.lt_def] at hij ⊢; simp only [Fin.val_natAdd]; omega
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `(h _ _).1 ?_` and prove the remaining obligations. Rewrite using `[Fin.lt_def]`. Simplify using `only [Fin.val_castAdd, Fin.val_natAdd]`. Use `j.isLt` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem up_21 {U : Matrix (Fin (s + n)) (Fin (s + n)) K} (h : IsUpUni U) :
     U.submatrix (Fin.natAdd s) (Fin.castAdd n) = 0 := by
   ext i j
   refine (h _ _).1 ?_
   rw [Fin.lt_def]; simp only [Fin.val_castAdd, Fin.val_natAdd]; have := j.isLt; omega
 
+/- English proof (translation)
+Rewrite using `[Fin.lt_def, Fin.lt_def]`. Simplify using `only [Fin.val_castAdd]`.
+-/
 theorem cast_lt_cast {i j : Fin s} : Fin.castAdd n i < Fin.castAdd n j ↔ i < j := by
   rw [Fin.lt_def, Fin.lt_def]; simp only [Fin.val_castAdd]
 
+/- English proof (translation)
+Rewrite using `[Fin.lt_def, Fin.lt_def]`. Simplify using `only [Fin.val_natAdd]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem nat_lt_nat {i j : Fin n} : Fin.natAdd s i < Fin.natAdd s j ↔ i < j := by
   rw [Fin.lt_def, Fin.lt_def]; simp only [Fin.val_natAdd]; omega
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `congrArg Fin.val h`. Simplify using `only [Fin.val_castAdd, Fin.val_natAdd] at h1`. Use `i.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem cast_ne_nat (i : Fin s) (j : Fin n) : Fin.castAdd n i ≠ Fin.natAdd s j := by
   intro h; have h1 := congrArg Fin.val h; simp only [Fin.val_castAdd, Fin.val_natAdd] at h1
   have := i.isLt; omega
 
+/- English proof (translation)
+Rewrite using `[Fin.lt_def]`. Simplify using `only [Fin.val_castAdd, Fin.val_natAdd]`. Use `j.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem not_nat_lt_cast (i : Fin n) (j : Fin s) : ¬ Fin.natAdd s i < Fin.castAdd n j := by
   rw [Fin.lt_def]; simp only [Fin.val_castAdd, Fin.val_natAdd]; have := j.isLt; omega
 
+/- English proof (translation)
+Introduce `i j`. Proceed by induction on `i using Fin.addCases with`. Consider the case `left i`. Proceed by induction on `j using Fin.addCases with`. Consider the case `left j`.
+
+Simplify using `only [submatrix_apply, finSumFinEquiv_symm_apply_castAdd, fromBlocks_apply₁₁, cast_lt_cast, Fin.castAdd_inj]`. Conclude with `hA i j`. Consider the case `right j`. Simplify using `only [submatrix_apply, finSumFinEquiv_symm_apply_castAdd, finSumFinEquiv_symm_apply_natAdd, fromBlocks_apply₁₂, Matrix.zero_apply]`. Conclude with `⟨by simp, fun h => absurd h (cast_ne_nat i j)⟩`.
+
+Consider the case `right i`. Proceed by induction on `j using Fin.addCases with`. Consider the case `left j`. Simplify using `only [submatrix_apply, finSumFinEquiv_symm_apply_castAdd, finSumFinEquiv_symm_apply_natAdd, fromBlocks_apply₂₁]`. Conclude with `⟨fun h => absurd h (not_nat_lt_cast i j), fun h => absurd h.symm (cast_ne_nat j i)⟩`.
+
+Consider the case `right j`. Simplify using `only [submatrix_apply, finSumFinEquiv_symm_apply_natAdd, fromBlocks_apply₂₂, nat_lt_nat, Fin.natAdd_inj]`. Conclude with `hD i j`.
+-/
 theorem lo_of_blocks {A : Matrix (Fin s) (Fin s) K} {C : Matrix (Fin n) (Fin s) K}
     {D : Matrix (Fin n) (Fin n) K} (hA : IsLoUni A) (hD : IsLoUni D) :
     IsLoUni ((fromBlocks A 0 C D).submatrix finSumFinEquiv.symm finSumFinEquiv.symm) := by
@@ -141,6 +208,15 @@ theorem lo_of_blocks {A : Matrix (Fin s) (Fin s) K} {C : Matrix (Fin n) (Fin s) 
         Fin.natAdd_inj]
       exact hD i j
 
+/- English proof (translation)
+Introduce `i j`. Proceed by induction on `i using Fin.addCases with`. Consider the case `left i`. Proceed by induction on `j using Fin.addCases with`. Consider the case `left j`.
+
+Simplify using `only [submatrix_apply, finSumFinEquiv_symm_apply_castAdd, fromBlocks_apply₁₁, cast_lt_cast, Fin.castAdd_inj]`. Conclude with `hA i j`. Consider the case `right j`. Simplify using `only [submatrix_apply, finSumFinEquiv_symm_apply_castAdd, finSumFinEquiv_symm_apply_natAdd, fromBlocks_apply₁₂]`. Conclude with `⟨fun h => absurd h (not_nat_lt_cast j i), fun h => absurd h (cast_ne_nat i j)⟩`.
+
+Consider the case `right i`. Proceed by induction on `j using Fin.addCases with`. Consider the case `left j`. Simplify using `only [submatrix_apply, finSumFinEquiv_symm_apply_castAdd, finSumFinEquiv_symm_apply_natAdd, fromBlocks_apply₂₁, Matrix.zero_apply]`. Conclude with `⟨by simp, fun h => absurd h.symm (cast_ne_nat j i)⟩`.
+
+Consider the case `right j`. Simplify using `only [submatrix_apply, finSumFinEquiv_symm_apply_natAdd, fromBlocks_apply₂₂, nat_lt_nat, Fin.natAdd_inj]`. Conclude with `hD i j`.
+-/
 theorem up_of_blocks {A : Matrix (Fin s) (Fin s) K} {B : Matrix (Fin s) (Fin n) K}
     {D : Matrix (Fin n) (Fin n) K} (hA : IsUpUni A) (hD : IsUpUni D) :
     IsUpUni ((fromBlocks A B 0 D).submatrix finSumFinEquiv.symm finSumFinEquiv.symm) := by
@@ -169,6 +245,9 @@ theorem up_of_blocks {A : Matrix (Fin s) (Fin s) K} {B : Matrix (Fin s) (Fin n) 
 
 end Blocks
 
+/- English proof (translation)
+Introduce `i j`. Conclude with `⟨fun h => one_apply_ne (ne_of_lt h), fun h => by rw [h, one_apply_eq]⟩`.
+-/
 theorem lo_one {K : Type*} [Field K] {k : ℕ} : IsLoUni (1 : Matrix (Fin k) (Fin k) K) := by
   intro i j
   exact ⟨fun h => one_apply_ne (ne_of_lt h), fun h => by rw [h, one_apply_eq]⟩
@@ -178,11 +257,51 @@ def BDm {N : ℕ} (W : Matrix (Fin N) (Fin N) E) : Prop :=
     (∃ L0 U0, IsLoUni L0 ∧ IsUpUni U0 ∧ Z = L0 * W * U0) →
     ∃ L1 U1, IsLoUni L1 ∧ IsUpUni U1 ∧ Z = L1 * W * U1 ∧ Intg D L1 ∧ Intg D U1
 
+/- English proof (translation)
+Rewrite using `[submatrix_mul_equiv, submatrix_mul_equiv]`.
+-/
 theorem submatrix_equiv_prod {K : Type*} [CommRing K] {m n : Type*} [Fintype m] [Fintype n]
     (e : m ≃ n) (A B C : Matrix n n K) :
     (A * B * C).submatrix e e = A.submatrix e e * B.submatrix e e * C.submatrix e e := by
   rw [submatrix_mul_equiv, submatrix_mul_equiv]
 
+/- English proof (translation)
+Introduce `d hd`. Take `⟨mt, hmt, ot, hot⟩` from `exists_den t⁻¹`. Establish `hD1 : mt * d ≠ 0` using `mul_ne_zero hmt hd`. Establish `hδ : (mt * d) ^ (s - 1) * mt ≠ 0` using `mul_ne_zero (pow_ne_zero _ hD1) hmt`. Establish `hd' : d * ((mt * d) ^ (s - 1) * mt) * d ≠ 0` using `mul_ne_zero (mul_ne_zero hd hδ) hd`.
+
+Take `⟨D', hD', hih⟩` from `ih _ hd'`. Use `⟨d * ((mt * d) ^ (s - 1) * mt) * (mt * d) * D', mul_ne_zero (mul_ne_zero (mul_ne_zero hd hδ) hD1) hD', ?_⟩` and prove the remaining obligations. Introduce and unpack `Z hZ ⟨L0, U0, hL0, hU0, hZe⟩`. Use `set P := Z.submatrix (Fin.castAdd n) (Fin.castAdd n) with hPdef`. Use `set Q := Z.submatrix (Fin.castAdd n) (Fin.natAdd s) with hQdef`.
+
+Use `set R := Z.submatrix (Fin.natAdd s) (Fin.castAdd n) with hRdef`. Use `set S := Z.submatrix (Fin.natAdd s) (Fin.natAdd s) with hSdef`. Use `set liftZP_unit := L0.submatrix (Fin.castAdd n) (Fin.castAdd n)`. Use `set lintegral_supP_lt_top₂ := L0.submatrix (Fin.natAdd s) (Fin.castAdd n)`. Use `set lix_inf_of_locP_le := L0.submatrix (Fin.natAdd s) (Fin.natAdd s)`.
+
+Use `set U11 := U0.submatrix (Fin.castAdd n) (Fin.castAdd n)`. Use `set U12 := U0.submatrix (Fin.castAdd n) (Fin.natAdd s)`. Use `set U22 := U0.submatrix (Fin.natAdd s) (Fin.natAdd s)`. Use `set W1 := t • revJ E s with hW1`. Use `set W1i := t⁻¹ • revJ E s with hW1i`.
+
+Establish `hW1W1i : W1 * W1i = 1`. Rewrite using `[hW1, hW1i, smul_mul_smul_comm, mul_inv_cancel₀ ht, one_smul, revJ_revJ]`. Establish `hW1iW1 : W1i * W1 = 1`. Rewrite using `[hW1, hW1i, smul_mul_smul_comm, inv_mul_cancel₀ ht, one_smul, revJ_revJ]`. Establish `key : Z.submatrix finSumFinEquiv finSumFinEquiv = fromBlocks (liftZP_unit * W1 * U11) (liftZP_unit * W1 * U12) (lintegral_supP_lt_top₂ * W1 * U11) (lintegral_supP_lt_top₂ * W1 * U12 + lix_inf_of_locP_le * W' * U22)`.
+
+Rewrite using `[hZe, submatrix_equiv_prod, hW, blocks_eq L0, blocks_eq U0, lo_12 hL0, up_21 hU0, fromBlocks_multiply, fromBlocks_multiply]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_assoc]`. Both sides reduce to the same expression. Rewrite `key` using `[blocks_eq Z, fromBlocks_inj]`. Take `⟨hP0, hQ0, hR0, hS0⟩` from `key`.
+
+Establish `hP : P = liftZP_unit * W1 * U11` using `hP0`. Establish `hQ : Q = liftZP_unit * W1 * U12` using `hQ0`. Establish `hR : R = lintegral_supP_lt_top₂ * W1 * U11` using `hR0`. Establish `hS : S = lintegral_supP_lt_top₂ * W1 * U12 + lix_inf_of_locP_le * W' * U22` using `hS0`. Use `set U1 := W1i * P with hU1def`.
+
+Establish `hU1 : IsUpUni U1`. Establish `: U1 = (revJ E s * liftZP_unit * revJ E s) * U11`. Rewrite using `[hU1def, hP, hW1i, hW1]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, smul_smul, inv_mul_cancel₀ ht, mul_inv_cancel₀ ht, one_smul, Matrix.mul_assoc]`. Rewrite using `[this]`.
+
+Conclude with `up_mul (revJ_conj_up (lo_11 hL0)) (up_11 hU0)`. Establish `hWU1 : W1 * U1 = P` using `by rw [hU1def, ← Matrix.mul_assoc, hW1W1i, Matrix.one_mul]`. Use `set Pinv := U1.adjugate * W1i with hPinvdef`. Establish `hPinvP : Pinv * P = 1`. Rewrite using `[hPinvdef, ← hWU1, Matrix.mul_assoc, ← Matrix.mul_assoc W1i, hW1iW1, Matrix.one_mul, up_adj_mul hU1]`.
+
+Establish `hPPinv : P * Pinv = 1` using `mul_eq_one_comm.mp hPinvP`. Establish `hX : (W1 * U11 * Pinv) * liftZP_unit = 1`. Apply `mul_eq_one_comm.mp` to reduce the goal to its premises. Rewrite using `[show liftZP_unit * (W1 * U11 * Pinv) = P * Pinv by rw [hP]; simp only [Matrix.mul_assoc], hPPinv]`. Establish `hRPQ : R * Pinv * Q = lintegral_supP_lt_top₂ * W1 * U12`.
+
+Rewrite using `[hR, hQ]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = lintegral_supP_lt_top₂ * W1 * U12 := by rw [hX, Matrix.mul_one]`. Establish `hS' : S - R * Pinv * Q = lix_inf_of_locP_le * W' * U22` using `by rw [hRPQ, hS]; abel`.
+
+Establish `hPi : Intg d P` using `intg_submatrix hZ _ _`. Establish `hQi : Intg d Q` using `intg_submatrix hZ _ _`. Establish `hRi : Intg d R` using `intg_submatrix hZ _ _`. Establish `hSi : Intg d S` using `intg_submatrix hZ _ _`. Establish `hW1ii : Intg mt W1i` using `intg_revJ _ _ _ hot s`.
+
+Establish `hU1i : Intg (mt * d) U1` using `intg_mul hW1ii hPi`. Establish `hPinvi : Intg ((mt * d) ^ (s - 1) * mt) Pinv`. Conclude with `intg_mul (intg_adj hU1i) hW1ii`. Establish `hRPi : Intg (d * ((mt * d) ^ (s - 1) * mt)) (R * Pinv)` using `intg_mul hRi hPinvi`. Establish `hS'i : Intg (d * ((mt * d) ^ (s - 1) * mt) * d) (S - R * Pinv * Q)` using `intg_sub (intg_dvd hSi ⟨(mt * d) ^ (s - 1) * mt * d, by ring⟩) (intg_mul hRPi hQi)`.
+
+Take `⟨L2, U2, hL2, hU2, hS2, hL2i, hU2i⟩` from `hih _ hS'i ⟨lix_inf_of_locP_le, U22, lo_22 hL0, up_22 hU0, hS'⟩`. Use `⟨(fromBlocks 1 0 (R * Pinv) L2).submatrix finSumFinEquiv.symm finSumFinEquiv.symm, (fromBlocks U1 (W1i * Q) 0 U2).submatrix finSumFinEquiv.symm finSumFinEquiv.symm, lo_of_blocks (lo_one (K := E)) hL2, up_of_blocks hU1 hU2, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hZZ : Z = (Z.submatrix finSumFinEquiv finSumFinEquiv).submatrix finSumFinEquiv.symm finSumFinEquiv.symm`. Simplify using the standard rewrite rules. Establish `hWW : W = (W.submatrix finSumFinEquiv finSumFinEquiv).submatrix finSumFinEquiv.symm finSumFinEquiv.symm`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hWW, ← submatrix_equiv_prod, hW, fromBlocks_multiply, fromBlocks_multiply, hZZ, blocks_eq Z]`. Use `congr 1`. Establish `hc : ∀ {m : ℕ} (X : Matrix (Fin s) (Fin m) E), W1 * (W1i * X) = X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, hW1W1i, Matrix.one_mul]`.
+
+Establish `h22` using `sub_eq_iff_eq_add'.mp hS2`. Simplify using `only [Matrix.one_mul, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add, Matrix.mul_assoc, hU1def, hc] at h22 ⊢`. Rewrite using `[fromBlocks_inj]`. Use `⟨rfl, rfl, ?_, h22⟩` and prove the remaining obligations. Rewrite using `[hPinvP, Matrix.mul_one]`.
+
+Use `intg_submatrix (intg_fromBlocks (intg_one _) (intg_zero _) (intg_dvd hRPi ?_) (intg_dvd hL2i ?_)) _ _` and prove the remaining obligations. Conclude with `⟨(mt * d) * D', by ring⟩`. Conclude with `⟨d * ((mt * d) ^ (s - 1) * mt) * (mt * d), by ring⟩`. Use `intg_submatrix (intg_fromBlocks (intg_dvd hU1i ?_) (intg_dvd (intg_mul hW1ii hQi) ?_) (intg_zero _) (intg_dvd hU2i ?_)) _ _` and prove the remaining obligations. Conclude with `⟨d * ((mt * d) ^ (s - 1) * mt) * D', by ring⟩`.
+
+Conclude with `⟨d * ((mt * d) ^ (s - 1) * mt) * D', by ring⟩`. Conclude with `⟨d * ((mt * d) ^ (s - 1) * mt) * (mt * d), by ring⟩`.
+-/
 theorem bd_step {s n : ℕ} (t : E) (ht : t ≠ 0) (W' : Matrix (Fin n) (Fin n) E)
     (W : Matrix (Fin (s + n)) (Fin (s + n)) E)
     (hW : W.submatrix finSumFinEquiv finSumFinEquiv = fromBlocks (t • revJ E s) 0 0 W')

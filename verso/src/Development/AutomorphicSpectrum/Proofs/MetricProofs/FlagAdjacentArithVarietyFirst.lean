@@ -15,6 +15,13 @@ section Mat
 
 variable {N j : ℕ}
 
+/- English proof (translation)
+Establish `same : ((ca : ℕ) < N - j ↔ (cb : ℕ) < N - j)`. Use `a.2` as an intermediate fact. Use `b.2` as an intermediate fact. Use `cb.2` as an intermediate fact. Unfold `lastCol at hca`.
+
+Apply the tactic sequence `split_ifs at hca <;> omega`. Introduce `r s hrs`. Establish `e1 : r ≠ s` using `fun e => hrs (by rw [e])`. Rewrite using `[Matrix.add_apply, Matrix.one_apply_ne e1, zero_add, Matrix.single_apply, if_neg]`. Introduce and unpack `⟨rfl, rfl⟩`.
+
+Conclude with `hrs same.symm`.
+-/
 theorem transv_isBlockDiag {a b ca cb : Fin N} (hb : (b : ℕ) = a + 1) (hab : (b : ℕ) < j ∨ j ≤ (a : ℕ))
     (hca : (ca : ℕ) = lastCol N j a) (hcb : (cb : ℕ) = ca + 1) (t : ℂ) :
     IsBlockDiag j (1 + Matrix.single cb ca t : Matrix (Fin N) (Fin N) ℂ) := by
@@ -30,6 +37,13 @@ theorem transv_isBlockDiag {a b ca cb : Fin N} (hb : (b : ℕ) = a + 1) (hab : (
   rintro ⟨rfl, rfl⟩
   exact hrs same.symm
 
+/- English proof (translation)
+Establish `hne : ca ≠ cb` using `fun e => by rw [e] at hc; omega`. Establish `hlt : ca < cb` using `by rw [Fin.lt_def]; omega`. Rewrite using `[Matrix.det_of_lowerTriangular _ fun r c h => ?_]`. Use `Finset.prod_eq_one fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.add_apply, Matrix.one_apply_eq, Matrix.single_apply_of_ne, add_zero]`.
+
+Introduce and unpack `⟨rfl, e⟩`. Conclude with `hne e`. Establish `h' : r < c` using `h`. Rewrite using `[Matrix.add_apply, Matrix.one_apply_ne h'.ne, Matrix.single_apply_of_ne, add_zero]`. Introduce and unpack `⟨rfl, rfl⟩`.
+
+Conclude with `lt_asymm h' hlt`.
+-/
 theorem transv_det_one {ca cb : Fin N} (hc : (cb : ℕ) = ca + 1) (t : ℂ) :
     (1 + Matrix.single cb ca t : Matrix (Fin N) (Fin N) ℂ).det = 1 := by
   have hne : ca ≠ cb := fun e => by rw [e] at hc; omega
@@ -49,12 +63,24 @@ end Mat
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : Type} [Field Φ] {y : (Σ k, ι k) → Φ}
   {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N j : ℕ}
 
+/- English proof (translation)
+Use `⟨fun k => by rw [basePart_flagPt]; exact hb k, hh, fun p k hp => ⟨1, one_ne_zero, fun m => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[basePart_flagPt, flagPt_step M F b h hp m, one_mul]`.
+-/
 theorem isFlagOf_flagPt (M : FlagModel y Ψ N j) (F : FrameData ι Ψ N M.Ω M.blk) {b : (Σ k, baseIdx ι M.blk k) → ℂ}
     (hb : ∀ k, b ⟨k, F.c k⟩ = 1) {h : Ψ → Matrix (Fin N) (Fin N) ℂ}
     (hh : ∀ τ, IsBlockDiag j (h τ) ∧ (h τ).det ≠ 0) : M.IsFlagOf F (flagPt M F b h) h := by
   refine ⟨fun k => by rw [basePart_flagPt]; exact hb k, hh, fun p k hp => ⟨1, one_ne_zero, fun m => ?_⟩⟩
   rw [basePart_flagPt, flagPt_step M F b h hp m, one_mul]
 
+/- English proof (translation)
+Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n BM d τ a b k₀ ca cb hb hab hk hca hcb hvar l b' hb' h t hh`. Take `⟨h1, h2⟩` from `GlobalTheory.T.flag_adjacent_plucker_orbit K ι Φ y Ψ N j M τ a b k₀ ca cb hb hab hk hca hcb (BM.F l) (bvec BM l b') h t`. Take `⟨g1, g2, g3, -⟩` from `GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.bvec_good K ι Φ y Ψ N j M n BM l b' hb'`. Establish `hh' : ∀ τ', IsBlockDiag j (Function.update h τ (h τ * (1 + Matrix.single cb ca t)) τ') ∧ (Function.update h τ (h τ * (1 + Matrix.single cb ca t)) τ').det ≠ 0`. Introduce `τ'`.
+
+Distinguish the cases in `e : τ' = τ`. Substitute `e` using the available equality. Rewrite using `[Function.update_self]`. Use `⟨(hh τ').1.mul (transv_isBlockDiag hb hab hca hcb t), ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_mul, transv_det_one hcb, mul_one]`.
+
+Conclude with `(hh τ').2`. Rewrite using `[Function.update_of_ne e]`. Conclude with `hh τ'`. Establish `hbase : basePart M.blk (fstPt k₀ (wVec M (BM.F l) (bvec BM l b') h τ a k₀ ca cb t)) = bvec BM l b'`. Rewrite using `[h1, basePart_flagPt]`.
+
+Use `(GlobalTheory.T.log_period_statement K ι Φ y Ψ N j M d τ a b k₀ ca cb hb hab hk hca hcb hvar (BM.F l) _ (BM.isFrame l) (by rw [hbase]; exact g1) (by rw [hbase]; exact g2) (by rw [hbase]; exact g3)).2 ⟨h, t, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h1]`. Conclude with `isFlagOf_flagPt M (BM.F l) g3 hh`. Rewrite using `[h2]`. Conclude with `isFlagOf_flagPt M (BM.F l) g3 hh'`.
+-/
 theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n : ℕ) (BM : BaseMetric M n) (d : ℕ) (τ : Ψ) (a b : Fin N) (k₀ : K) (ca cb : Fin N), (b : ℕ) = a + 1 → ((b : ℕ) < j ∨ j ≤ (a : ℕ)) → M.blk (τ, a) = some k₀ → (ca : ℕ) = lastCol N j a → (cb : ℕ) = ca + 1 → IsArithVar (mCoordIdeal y) (d + 2) → ∀ (l : Fin BM.q), ∀ b' ∈ BM.O l, ∀ (h : Ψ → Matrix (Fin N) (Fin N) ℂ) (t : ℂ), (∀ τ', IsBlockDiag j (h τ') ∧ (h τ').det ≠ 0) → FC.wVec M (BM.F l) (FC.bvec BM l b') h τ a k₀ ca cb t ∈ mcPts (mCoordIdeal (M.wCo (τ, a) k₀ ca cb RatFunc.X)) := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n BM d τ a b k₀ ca cb hb hab hk hca hcb hvar l b' hb' h t hh
   obtain ⟨h1, h2⟩ := GlobalTheory.T.flag_adjacent_plucker_orbit K ι Φ y Ψ N j M τ a b k₀ ca cb hb hab hk hca hcb (BM.F l) (bvec BM l b') h t

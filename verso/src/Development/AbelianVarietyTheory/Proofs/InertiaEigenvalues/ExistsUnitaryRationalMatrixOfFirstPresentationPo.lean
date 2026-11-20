@@ -13,6 +13,13 @@ open Matrix
 
 namespace GlobalTheory.RatPtsBridge
 
+/- English proof (translation)
+Introduce `L _ _ _ n γQ`. Take `⟨γ₀, hγ₀, he⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 γQ.2)`. Establish `h0 : (γ₀ : Matrix (Fin n) (Fin n) L) * conjT (IsCMField.complexConj L : L →+* L) γ₀ = 1` using `hγ₀`. Establish `h1 : conjT (IsCMField.complexConj L : L →+* L) (γ₀ : Matrix (Fin n) (Fin n) L) * (γ₀ : Matrix (Fin n) (Fin n) L) = 1` using `mul_eq_one_comm.1 h0`. Establish `hmem : ratGL L n γ₀ ∈ UA L n` using `by show Formalism.UG.cT (conjAd L) ((ratGL L n γ₀ : GL (Fin n) (Ad L)) : Matrix (Fin n) (Fin n) (Ad L)) * 1 * ((ratGL L n γ₀ : GL (Fin n) (Ad L)) : Matrix (Fin n) (Fin n) (Ad L)) = 1`.
+
+Establish `e : Formalism.UG.cT (conjAd L) ((γ₀ : Matrix (Fin n) (Fin n) L).map (algebraMap L (Ad L))) = (conjT (IsCMField.complexConj L : L →+* L) (γ₀ : Matrix (Fin n) (Fin n) L)).map (algebraMap L (Ad L))`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, conjT, conjAd_algebraMap]`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT (conjAd L) ((γ₀ : Matrix (Fin n) (Fin n) L).map (algebraMap L (Ad L))) * 1 * (γ₀ : Matrix (Fin n) (Fin n) L).map (algebraMap L (Ad L)) = 1`. Rewrite using `[mul_one, e, ← Matrix.map_mul, h1, Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Use `⟨⟨ratGL L n γ₀, hmem⟩, γ₀, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[← he]`. Both sides reduce to the same expression.
+-/
 theorem exists_ratGL : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (γQ : GQ L n), ∃ (γ : UA L n) (γ₀ : GL (Fin n) L), γ.1 = ratGL L n γ₀ ∧ (((γQ : GAf L n) : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) = (γ₀ : Matrix (Fin n) (Fin n) L).map Algebra.TensorProduct.includeLeftRingHom := by
   intro L _ _ _ n γQ
   obtain ⟨γ₀, hγ₀, he⟩ := Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 γQ.2)

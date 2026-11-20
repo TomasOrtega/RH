@@ -33,6 +33,11 @@ def sheetEquiv {k : Type} [CommRing k] {X : Scheme.{0}} (p : X ⟶ Sp k) (t : X 
     exact key _ (emb_sheet t τ y) _ rfl
   right_inv y := sheet_unsheet p y
 
+/- English proof (translation)
+Establish `: Finite (X.residueField (genericPoint X) →+* ℂ)`. Distinguish the cases in `h : Nonempty (X.residueField (genericPoint X) →+* ℂ)`. Take `⟨f⟩` from `h`. Use `SmallSecHeight.numberField hX f.charZero` as an intermediate fact. Use `infer_instance`.
+
+Use `not_nonempty_iff.1 h infer_instance` as an intermediate fact. Conclude with `.of_equiv _ (SmallSecHeight.ptsEquiv hX).symm`.
+-/
 theorem finite_sigma_cxPts {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k}
     (hX : IsArithVar p 0) : Finite (Σ σ : k →+* ℂ, CxPts p σ) := by
   have : Finite (X.residueField (genericPoint X) →+* ℂ) := by
@@ -44,6 +49,13 @@ theorem finite_sigma_cxPts {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral 
       infer_instance
   exact .of_equiv _ (SmallSecHeight.ptsEquiv hX).symm
 
+/- English proof (translation)
+Introduce `k _ X _ p t τ hX M ν hν r hr`. Establish `hfin` using `finite_sigma_cxPts hX`. Establish `(σ : k →+* ℂ) : Finite (CxPts p σ)` using `.of_injective _ (sigma_mk_injective (i := σ))`. Use `hX.finite_emb` as an intermediate fact. Use `Fintype.ofFinite (k →+* ℂ)` as an intermediate fact.
+
+Establish `(σ : k →+* ℂ)` using `Fintype.ofFinite (CxPts p σ)`. Establish `h₁ (σ : k →+* ℂ) (y : CxPts p σ) : logNorm ν r (sheet t τ y) = logNorm (M.φ σ) r y` using `GlobalTheory.T.logNorm_sheet_eq k X p t τ M.B M.φ ν hν r hr σ y (mem_offSupp.2 (by`. Rewrite using `[hX.under_eq_genericPoint]`. Conclude with `CartierDiv.genericPoint_notMem_supp _))`. Rewrite using `[← finsum_comp_equiv (sheetEquiv p t τ)]`.
+
+Simplify using `only [finsum_eq_sum_of_fintype]`. Rewrite using `[Fintype.sum_sigma]`. Conclude with `Finset.sum_congr rfl fun σ _ => Finset.sum_congr rfl fun y _ => h₁ σ y`.
+-/
 theorem sum_logNorm_curve : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (t : X ⟶ Sp ℤ) (τ : ℤ →+* ℂ), IsArithVar p 0 → ∀ (M : HermLB p) (ν : Weight t τ M.B), WOver M.φ ν → ∀ (r : M.B.ι → X.functionFieldˣ), IsRatSec M.B r → ∑ᶠ y : CxPts t τ, logNorm ν r y = ∑ᶠ σ : k →+* ℂ, ∑ᶠ y : CxPts p σ, logNorm (M.φ σ) r y := by
   intro k _ X _ p t τ hX M ν hν r hr
   have hfin := finite_sigma_cxPts hX

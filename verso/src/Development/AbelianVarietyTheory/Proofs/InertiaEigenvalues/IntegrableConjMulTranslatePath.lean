@@ -5,6 +5,13 @@ open MeasureTheory GlobalTheory.AutomorphicL2Unitary
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `haveI : IsFiniteMeasure (volume.restrict (Set.uIoc (0 : ℝ) t)) := ⟨by rw [Measure.restrict_apply_univ, Set.uIoc]; exact measure_Ioc_lt_top⟩`. Establish `hm : Measurable (Function.uncurry fun (s : ℝ) (q : GlobalTheory.AutomorphicL2Unitary.Quot Γ) => rmul Γ (c s) q)` using `measurable_rmul_uncurry.comp (measurable_snd.prodMk (hc.measurable.comp measurable_fst))`. Establish `hp` using `(MeasurePreserving.id (volume.restrict (Set.uIoc (0 : ℝ) t))).skew_product (μc := quotMeasure Γ μ) (μd := quotMeasure Γ μ) hm (Filter.Eventually.of_forall fun s => (measurePreserving_rmul (c s)).map_eq)`. Establish `h1` using `((Lp.memLp H).star).comp_snd (volume.restrict (Set.uIoc (0 : ℝ) t))`. Establish `h2` using `(hf'.2.comp_snd (volume.restrict (Set.uIoc (0 : ℝ) t))).comp_measurePreserving hp`.
+
+Use `(h1.integrable_mul h2).congr (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Establish `e : descend Γ f' (rmul Γ (c p.1) p.2) = f' (sec Γ p.2 * c p.1)`. Rewrite using `[← hf'.1.descend_mk, ← rmul_mk, mk_sec]`. Express the relevant statement in the definitionally equal form `star (H p.2) * descend Γ f' (rmul Γ (c p.1) p.2) = _`. Rewrite using `[e]`.
+
+Both sides reduce to the same expression.
+-/
 theorem integrable_conj_mul_translate_path {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] [LocallyCompactSpace G] (Γ : Subgroup G)
     [DiscreteTopology Γ] (μ : Measure G) [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant]

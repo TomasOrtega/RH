@@ -28,10 +28,16 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Chart
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Yhd5.main u h`.
+-/
 theorem differentiableOn_prod' {n : ℕ} {U : Set (Fin n → ℂ)} {ι : Type} (u : Finset ι) {f : ι → (Fin n → ℂ) → ℂ}
     (h : ∀ i ∈ u, DifferentiableOn ℂ (f i) U) : DifferentiableOn ℂ (fun t => ∏ i ∈ u, f i t) U :=
   _root_.UpperTheory.Reformulated.B.Yhd5.main u h
 
+/- English proof (translation)
+Simplify using `only [Matrix.det_apply]`. Use `DifferentiableOn.fun_sum fun σ _ => ?_` and prove the remaining obligations. Use `DifferentiableOn.const_smul ?_ _` and prove the remaining obligations. Conclude with `differentiableOn_prod' _ fun i _ => h _ _`.
+-/
 theorem differentiableOn_det' {n m : ℕ} {U : Set (Fin n → ℂ)} {M : (Fin n → ℂ) → Matrix (Fin m) (Fin m) ℂ}
     (h : ∀ a b, DifferentiableOn ℂ (fun t => M t a b) U) : DifferentiableOn ℂ (fun t => (M t).det) U := by
   simp only [Matrix.det_apply]
@@ -39,6 +45,43 @@ theorem differentiableOn_det' {n m : ℕ} {U : Set (Fin n → ℂ)} {M : (Fin n 
   refine DifferentiableOn.const_smul ?_ _
   exact differentiableOn_prod' _ fun i _ => h _ _
 
+/- English proof (translation)
+Introduce `E _ _ _ Ψ _ j j' n g Λ _ _ F C A₀ h₀`. Take `⟨hUo, hUc, hU0⟩` from `GlobalTheory.T.ball_domain_open_convex_zero Ψ j j' n F.q`. Establish `hunit : ∀ τ, (A₀ τ)ᴴ * C.sgr τ * A₀ τ = sgI j j'` using `h₀.unit`. Establish `hex : ∀ t, ∃ A, t ∈ ballDom F.q → C.IsAdapted (F.R t) A` using `fun t => by`. Distinguish the cases in `ht : t ∈ ballDom F.q`.
+
+Take `⟨A, hA⟩` from `GlobalTheory.T.exists_adapted_frame_bis E Ψ j j' n g Λ F C (F.R t) (F.form_eq t) (F.sig t ht)`. Conclude with `⟨A, fun _ => hA⟩`. Conclude with `⟨A₀, fun h => absurd h ht⟩`. Use `choose Ad hAd using hex`. Set `dV : Ψ → Fin j' → (Fin n → ℂ) → Fin g → ℂ` to `fun τ b t => C.pPart (F.R t) τ (A₀ τ *ᵥ Sum.elim 0 (Pi.single b 1))`.
+
+Set `aV : Ψ → Fin j → (Fin n → ℂ) → Fin g → ℂ` to `fun τ i t => C.pPart (F.R t) τ (A₀ τ *ᵥ Sum.elim (Pi.single i 1) 0)`. Set `Wm : (Fin n → ℂ) → Ψ → Matrix (Fin j') (Fin j) ℂ` to `fun t τ => moebW (C.cinv (A₀ τ) τ * Ad t τ) 0`. Establish `hgA` using `fun t (A : Ψ → Matrix (Fin (j + j')) (Sg j j') ℂ) (hA : C.IsAdapted (F.R t) A) => GlobalTheory.T.adapted_frame_hermitian_product E Ψ j j' n g Λ F C (F.R t) A (GlobalTheory.T.period_extension_imaginary_form E Ψ j j' n g Λ F C (F.R t) (F.form_eq t)) hA`. Establish `hpt` using `fun t (ht : t ∈ ballDom F.q) τ => GlobalTheory.T.adapted_frame_ball_coordinate E Ψ j j' n g Λ F C (F.R t) (Ad t) A₀ τ (Wm t τ) (GlobalTheory.T.signature_unitary_blocks_invertible j j') (hgA t (Ad t) (hAd t ht) τ) (hAd t ht) (hunit τ) rfl`. Establish `hgram : ∀ t ∈ ballDom F.q, ∀ τ, IsUnit (F.R t |>.gram fun b => dV τ b t).det`.
+
+Introduce `t ht τ`. Establish `h` using `(hpt t ht τ).2.1`. Establish `hc : ((2 * C.c : ℝ) : ℂ) ≠ 0`. Conclude with `(mul_pos two_pos C.c_pos).ne'` after adjusting the coercions. Establish `h2` using `congrArg Matrix.det h`.
+
+Rewrite `h2` using `[Matrix.det_mul, Matrix.det_smul, Matrix.det_one, mul_one]`. Conclude with `isUnit_iff_ne_zero.2 (left_ne_zero_of_mul (h2 ▸ pow_ne_zero _ hc))`. Establish `hind : ∀ t ∈ ballDom F.q, ∀ τ, LinearIndependent ℂ (fun b => dV τ b t)` using `fun t ht τ => GlobalTheory.T.linearIndependent_of_gram_det_unit E g Λ (F.R t) j' _ (hgram t ht τ)`. Establish `hrel : ∀ t, ∀ τ (W : Matrix (Fin j') (Fin j) ℂ), (∀ v : Fin j → ℂ, C.pPart (F.R t) τ (A₀ τ *ᵥ Sum.elim v (W *ᵥ v)) = 0) → ∀ i, -aV τ i t = ∑ b, W b i • dV τ b t`. Introduce `t τ W hW i`.
+
+Establish `h` using `hW (Pi.single i 1)`. Rewrite `h` using `[pPart_elim]`. Establish `hWv : ∀ b, (W *ᵥ Pi.single i 1) b = W b i`. Introduce `b`. Simplify using the standard rewrite rules.
+
+Simplify using `only [hWv, Pi.single_apply, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h`. Conclude with `(eq_neg_of_add_eq_zero_right h).symm ▸ by simp [aV, dV]`. Establish `huniq : ∀ t ∈ ballDom F.q, ∀ τ (W W' : Matrix (Fin j') (Fin j) ℂ), (∀ v : Fin j → ℂ, C.pPart (F.R t) τ (A₀ τ *ᵥ Sum.elim v (W *ᵥ v)) = 0) → (∀ v : Fin j → ℂ, C.pPart (F.R t) τ (A₀ τ *ᵥ Sum.elim v (W' *ᵥ v)) = 0) → W = W'`. Introduce `t ht τ W W' hW hW'`. Use extensionality with `b i`.
+
+Establish `h1` using `hrel t τ W hW i`. Establish `h2` using `hrel t τ W' hW' i`. Establish `h3 : ∑ b, (W b i - W' b i) • dV τ b t = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib, ← h1, ← h2, sub_self]`. Use `Fintype.linearIndependent_iff.1 (hind t ht τ) _ h3 b` as an intermediate fact.
+
+Conclude with `sub_eq_zero.1 this`. Establish `hdV : ∀ τ b, DifferentiableOn ℂ (dV τ b) (ballDom F.q)` using `fun τ b => GlobalTheory.T.holomorphic_eigen_projection_on_ball E Ψ j j' n g Λ F C τ _`. Establish `haV : ∀ τ i, DifferentiableOn ℂ (aV τ i) (ballDom F.q)` using `fun τ i => GlobalTheory.T.holomorphic_eigen_projection_on_ball E Ψ j j' n g Λ F C τ _`. Establish `hWd : ∀ τ i, DifferentiableOn ℂ (fun t b => Wm t τ b i) (ballDom F.q)` using `fun τ i => GlobalTheory.T.holomorphic_coefficients_in_frame n j' g _ (fun b => dV τ b) (fun t => -aV τ i t) (fun t b => Wm t τ b i) hUo (hdV τ) (haV τ i).neg (fun t ht => hind t ht τ) (fun t ht => hrel t τ _ (hpt t ht τ).1 i)`. Establish `hY : ∀ t τ b, ∃ c : Fin j' → ℂ, t ∈ ballDom F.q → dV τ b t = ∑ i, c i • F.b τ i t`.
+
+Introduce `t τ b`. Distinguish the cases in `ht : t ∈ ballDom F.q`. Establish `hm : dV τ b t ∈ Submodule.span ℂ (Set.range fun i => F.b τ i t)`. Rewrite using `[((F.frames.2 t ht τ).2)]`. Conclude with `GlobalTheory.T.eigen_projection_in_eigenspace E Ψ j j' n g Λ F C (F.R t) τ _`.
+
+Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).1 hm`. Conclude with `⟨c, fun _ => hc.symm⟩`. Conclude with `⟨0, fun h => absurd h ht⟩`. Use `choose Yc hYc using hY`. Set `Ym : (Fin n → ℂ) → Ψ → Matrix (Fin j') (Fin j') ℂ` to `fun t τ => Matrix.of fun c b => Yc t τ b c`.
+
+Establish `hYd : ∀ τ b, DifferentiableOn ℂ (fun t => Yc t τ b) (ballDom F.q)` using `fun τ b => GlobalTheory.T.holomorphic_coefficients_in_frame n j' g _ (F.b τ) (dV τ b) (fun t => Yc t τ b) hUo (F.frames.1 τ) (hdV τ b) (fun t ht => (F.frames.2 t ht τ).1) (fun t ht => hYc t τ b ht)`. Establish `hloc` using `fun t (ht : t ∈ ballDom F.q) τ => GlobalTheory.T.gram_det_change_of_basis_alt E g Λ (F.R t) j' (fun i => F.b τ i t) (fun b => dV τ b t) (Ym t τ) (1 - Wm t τ * (Wm t τ)ᴴ) (2 * C.c) (mul_pos two_pos C.c_pos) (fun b => hYc t τ b ht) (hpt t ht τ).2.1 (hpt t ht τ).2.2`. Set `Pf : (Fin n → ℂ) → ℂ` to `fun t => ∏ τ, (Ym t τ).det`. Establish `hPd : DifferentiableOn ℂ Pf (ballDom F.q)`. Use `differentiableOn_prod' _ fun τ _ => differentiableOn_det' fun a b => ?_` and prove the remaining obligations.
+
+Conclude with `(differentiableOn_pi.1 (hYd τ b)) a`. Establish `hP0 : ∀ t ∈ ballDom F.q, Pf t ≠ 0` using `fun t ht => Finset.prod_ne_zero_iff.2 fun τ _ => (hloc t ht τ).1`. Take `⟨G₀, hG₀a, hG₀⟩` from `GroundTheory.Heights₂.Heights.Regular.exists_analytic_log hUo hUc ⟨0, hU0⟩ (ReciprocityTheory.AnForm.Osgood.osgood n _ Pf hUo hPd) hP0`. Establish `hG₀d : DifferentiableOn ℂ G₀ (ballDom F.q)` using `hG₀a.differentiableOn`. Use `⟨fun t => ballPt F.q (Wm t), fun t => 2 * G₀ t - ((Fintype.card Ψ * j' * Real.log (2 * C.c) : ℝ) : ℂ), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `differentiableOn_pi.2 fun k => ?_` and prove the remaining obligations. Conclude with `(differentiableOn_pi.1 (hWd _ _)) _`. Conclude with `(hG₀d.const_mul 2).sub_const _`. Introduce `t ht A hA`. Establish `hb0 : ∀ τ, ballMat F.q 0 τ = 0` using `fun τ => by ext a b; simp [ballMat]`.
+
+Establish `: (fun τ => Wm t τ) = fun τ => moebW (C.cinv (A₀ τ) τ * A τ) ((ballMat F.q 0 τ)ᵀ)`. Use function extensionality and compare the values at `τ`. Rewrite using `[hb0, Matrix.transpose_zero]`. Conclude with `huniq t ht τ _ _ (hpt t ht τ).1 (GlobalTheory.T.adapted_frame_ball_coordinate E Ψ j j' n g Λ F C (F.R t) A A₀ τ _ (GlobalTheory.T.signature_unitary_blocks_invertible j j') (hgA t A hA τ) hA (hunit τ) rfl).1`. Simplify using `only [moebBall]`.
+
+Conclude with `congrArg (ballPt F.q) this`. Introduce `t ht`. Establish `hre : (G₀ t).re = ∑ τ, Real.log ‖(Ym t τ).det‖`. Establish `h1 : ‖Pf t‖ = Real.exp (G₀ t).re` using `by rw [← hG₀ t ht, Complex.norm_exp]`. Establish `h2 : Real.log ‖Pf t‖ = (G₀ t).re` using `by rw [h1, Real.log_exp]`.
+
+Rewrite using `[← h2, norm_prod, Real.log_prod]`. Introduce `τ _`. Conclude with `norm_ne_zero_iff.2 (hloc t ht τ).1`. Rewrite using `[GlobalTheory.T.ball_potential_formula, ← F.logDet_eq t ht]`. Simplify using `only [RiemLat.logDet, ← Finset.sum_neg_distrib]`.
+
+Simplify using `only [Complex.sub_re, Complex.mul_re, Complex.re_ofNat, Complex.im_ofNat, Complex.ofReal_re, zero_mul, sub_zero, hre]`. Rewrite using `[Finset.sum_congr rfl fun τ _ => (hloc t ht τ).2]`. Simplify using `only [Finset.sum_sub_distrib, Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem chart_exists : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Type) [Fintype Ψ] (j j' n g : ℕ) (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (F : UnivFam E Ψ j j' n g Λ) (C : LatEmb F) (A₀ : Ψ → Matrix (Fin (j + j')) (Sg j j') ℂ), C.IsAdapted (F.R 0) A₀ → ∃ (Z : (Fin n → ℂ) → Fin n → ℂ) (G : (Fin n → ℂ) → ℂ), DifferentiableOn ℂ Z (ballDom F.q) ∧ DifferentiableOn ℂ G (ballDom F.q) ∧ (∀ t ∈ ballDom F.q, ∀ A, C.IsAdapted (F.R t) A → Z t = moebBall F.q (fun τ => C.cinv (A₀ τ) τ * A τ) 0) ∧ ∀ t ∈ ballDom F.q, ballPot F.q (Z t) = ballPot F.q t + (G t).re := by
   intro E _ _ _ Ψ _ j j' n g Λ _ _ F C A₀ h₀
   obtain ⟨hUo, hUc, hU0⟩ := GlobalTheory.T.ball_domain_open_convex_zero Ψ j j' n F.q

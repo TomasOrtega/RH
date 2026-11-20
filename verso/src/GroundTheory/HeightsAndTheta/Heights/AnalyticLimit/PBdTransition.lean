@@ -7,6 +7,15 @@ namespace GroundTheory.Heights₂.Heights.AnalyticLimit
 open ReciprocityTheory.AnForm.M (FinHolAtlas)
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Regular (RegChartData)
 
+/- English proof (translation)
+Introduce `X _ D A R j k`. Take `⟨u, hu, huc, hue⟩` from `hDiv D A R k j`. Take `⟨v, -, hvc, hve⟩` from `hDiv D A R j k`. Establish `hO : bdDom R k ∩ bdDom R j = bdDom R j ∩ bdDom R k` using `Set.inter_comm _ _`. Rewrite `hu`, `huc`, `hue` using `[hO]`.
+
+Use `set O := bdDom R j ∩ bdDom R k with hOdef`. Establish `hOopen : IsOpen O` using `(isOpen_bdDom R j).inter (isOpen_bdDom R k)`. Establish `hYo : Set.EqOn (fun y => u y * v y) (fun _ => (1 : ℂ)) (O ∩ R.Yo)`. Introduce `y ⟨hyO, hyY⟩`. Establish `hne : bdEq R j y ≠ 0` using `fun h0 => ((hEq D A R j).2 y hyO.1).1 h0 hyY`.
+
+Establish `h1 : bdEq R j y = (u y * v y) * bdEq R j y`. Rewrite using `[mul_assoc, ← hve y hyO, ← hue y hyO]`. Establish `h2 : (u y * v y) * bdEq R j y = 1 * bdEq R j y` using `by rw [← h1, one_mul]`. Conclude with `mul_right_cancel₀ hne h2`. Establish `hall : Set.EqOn (fun y => u y * v y) (fun _ => (1 : ℂ)) O` using `hYo.of_subset_closure (huc.mul hvc) continuousOn_const Set.inter_subset_left ((hDense D A R).open_subset_closure_inter hOopen)`.
+
+Use `⟨u, hu, fun y hy => ⟨fun h0 => ?_, hue y hy⟩⟩` and prove the remaining obligations. Use `hall hy` as an intermediate fact. Simplify using `only [h0, zero_mul] at this`. Conclude with `zero_ne_one this`.
+-/
 theorem BdTransition.proof (hDense : RegYoDense.Statement) (hEq : BdEqHolo.Statement)
     (hDiv : BdDivides.Statement) : BdTransition.Statement := by
   intro X _ D A R j k

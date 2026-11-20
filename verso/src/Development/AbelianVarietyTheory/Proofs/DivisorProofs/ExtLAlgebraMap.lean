@@ -15,6 +15,9 @@ def logSub {k A : Type} [CommRing k] [CommRing A] (φ : k →+* A) (J : Ideal A)
   smul_mem' := fun r D h =>
     ⟨fun a => by simp [h.1 a], fun g hg => Ideal.mul_mem_left _ r (h.2 g hg)⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_logSub {k A : Type} [CommRing k] [CommRing A] (φ : k →+* A) (J : Ideal A) (D : Derivation ℤ A A) :
     D ∈ logSub φ J ↔ (∀ a, D (φ a) = 0) ∧ ∀ g ∈ J, D g ∈ J := Iff.rfl
 
@@ -24,10 +27,18 @@ include f
 def ext (D : Derivation ℤ R R) : Derivation ℤ S S :=
   Classical.choose (GlobalTheory.LogDerLoc.exists_extension (B := S) f D)
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec (GlobalTheory.LogDerLoc.exists_extension (B := S) f D) r`.
+-/
 theorem ext_algebraMap (D : Derivation ℤ R R) (r : R) :
     ext (S := S) f D (algebraMap R S r) = algebraMap R S (D r) :=
   Classical.choose_spec (GlobalTheory.LogDerLoc.exists_extension (B := S) f D) r
 
+/- English proof (translation)
+Use extensionality with `y`. Take `⟨⟨r, t⟩, e⟩` from `IsLocalization.surj (Submonoid.powers f) y`. Establish `hu : IsUnit (algebraMap R S t)` using `IsLocalization.map_units S t`. Establish `e' : y * algebraMap R S t = algebraMap R S r` using `e`. Establish `h1` using `congrArg D₁ e'`.
+
+Establish `h2` using `congrArg D₂ e'`. Rewrite `h1`, `h2` using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul]`. Rewrite `h1` using `[h r, h t]`. Establish `: algebraMap R S t * D₁ y = algebraMap R S t * D₂ y` using `by linear_combination h1 - h2`. Conclude with `hu.mul_left_cancel this`.
+-/
 theorem der_ext (D₁ D₂ : Derivation ℤ S S) (h : ∀ r, D₁ (algebraMap R S r) = D₂ (algebraMap R S r)) :
     D₁ = D₂ := by
   ext y
@@ -49,6 +60,9 @@ def extL : Derivation ℤ R R →ₗ[R] Derivation ℤ S S where
     rw [ext_algebraMap, RingHom.id_apply, Derivation.smul_apply, Derivation.smul_apply, ext_algebraMap,
       smul_eq_mul, map_mul, Algebra.smul_def]
 
+/- English proof (translation)
+The claim follows from `ext_algebraMap f D r`.
+-/
 theorem extL_algebraMap (D : Derivation ℤ R R) (r : R) :
     extL (S := S) f D (algebraMap R S r) = algebraMap R S (D r) :=
   ext_algebraMap f D r
@@ -63,6 +77,9 @@ def res (φ : k →+* R) (J : Ideal R) :
   map_add' D D' := Subtype.ext (map_add (extL (S := S) f) D.1 D'.1)
   map_smul' c D := Subtype.ext (map_smul (extL (S := S) f) c D.1)
 
+/- English proof (translation)
+The claim follows from `ext_algebraMap f D.1 r`.
+-/
 theorem res_apply (φ : k →+* R) (J : Ideal R) (D : logSub φ J) (r : R) :
     (res (S := S) f φ J D).1 (algebraMap R S r) = algebraMap R S (D.1 r) :=
   ext_algebraMap f D.1 r

@@ -12,6 +12,17 @@ open scoped InnerProductSpace ComplexOrder ContDiff
 
 namespace GlobalTheory.Dec.TorusModulus
 
+/- English proof (translation)
+Establish `hup : ∀ s, L s ≤ K * |s|`. Introduce `s`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `hpos : 0 < L s - K * |s|` using `by linarith`.
+
+Take `⟨m, hm⟩` from `exists_nat_gt (A / (L s - K * |s|))`. Establish `hA : A < (m : ℝ) * (L s - K * |s|)` using `by rwa [div_lt_iff₀ hpos] at hm`. Establish `hm1` using `h ((m : ℝ) * s)`. Establish `hlin : L ((m : ℝ) * s) = (m : ℝ) * L s`. Use `map_nsmul L m s` as an intermediate fact.
+
+Rewrite `this` using `[nsmul_eq_mul, nsmul_eq_mul]`. Then use the resulting hypothesis. Rewrite `hm1` using `[hlin, abs_mul, Nat.abs_cast]`. Use the polynomial consequences of the given equalities and inequalities. Establish `habs : ∀ s, |L s| ≤ K * |s|`. Introduce `s`.
+
+Use `abs_le.2 ⟨?_, hup s⟩` and prove the remaining obligations. Use `hup (-s)` as an intermediate fact. Rewrite `this` using `[map_neg, abs_neg]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcont : Continuous L` using `AddMonoidHomClass.continuous_of_bound L K (fun s => by simpa only [Real.norm_eq_abs] using habs s)`.
+
+Use `⟨L 1, by simpa using habs 1, fun s => ?_⟩` and prove the remaining obligations. Establish `hs` using `map_real_smul L hcont s 1`. Rewrite `hs` using `[smul_eq_mul, mul_one, smul_eq_mul]`. Rewrite using `[hs, mul_comm]`.
+-/
 theorem linear_of_le (L : ℝ →+ ℝ) (A K : ℝ) (h : ∀ s, L s ≤ A + K * |s|) :
     ∃ κ : ℝ, |κ| ≤ K ∧ ∀ s, L s = κ * s := by
 
@@ -46,6 +57,17 @@ section General
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G]
   [LocallyCompactSpace G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
 
+/- English proof (translation)
+Take `⟨hne, hfin, hnull, hinv⟩` from `h`. Establish `hemb : MeasurableEmbedding (Subtype.val : N → G)` using `MeasurableEmbedding.subtype_coe hN.measurableSet`. Use `haveI : LocallyCompactSpace N := hN.locallyCompactSpace`. Use `haveI : SecondCountableTopology N := TopologicalSpace.Subtype.secondCountableTopology (N : Set G)`. Use `haveI : BorelSpace N := Subtype.borelSpace (N : Set G)`.
+
+Use `set ν₀ : Measure N := ν.comap Subtype.val with hν₀`. Establish `hback : ν₀.map Subtype.val = ν`. Rewrite using `[hν₀, hemb.map_comap]`. Use `Measure.restrict_eq_self_of_ae_mem (ae_iff.2 (measure_mono_null (fun x hx => ?_) hnull))` and prove the remaining obligations. Introduce `hxN`.
+
+Conclude with `hx ⟨⟨x, hxN⟩, rfl⟩`. Establish `hcomap : ∀ ρ : Measure N, (ρ.map Subtype.val).comap Subtype.val = ρ` using `fun ρ => hemb.comap_map ρ`. Use `haveI : Measure.IsMulLeftInvariant ν₀ := ⟨fun g => by`. Rewrite using `[← hcomap (ν₀.map (g * ·)), Measure.map_map hemb.measurable (measurable_const_mul g)]`. Establish `hfun : (Subtype.val ∘ fun x : N => g * x) = (fun y : G => (g : G) * y) ∘ Subtype.val` using `rfl`.
+
+Rewrite using `[hfun, ← Measure.map_map (measurable_const_mul (g : G)) hemb.measurable, hback, hinv g g.2, ← hback, hcomap]⟩`. Use `haveI : IsFiniteMeasureOnCompacts ν₀ := ⟨fun K hK => by`. Rewrite using `[hν₀, hemb.comap_apply]`. Use `haveI := hfin`. Conclude with `(hK.image continuous_subtype_val).measure_lt_top⟩`.
+
+Use `⟨Measure.haarScalarFactor ν₀ μ, ?_⟩` and prove the remaining obligations. Establish `hsm` using `Measure.isMulLeftInvariant_eq_smul ν₀ μ`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem eq_smul_map (N : Subgroup G) (hN : IsClosed (N : Set G)) {ν : Measure G}
     (h : IsHaarSub (N : Set G) ν) (μ : Measure N) [μ.IsHaarMeasure] :
     ∃ c : NNReal, ν = c • μ.map Subtype.val := by
@@ -77,6 +99,13 @@ theorem eq_smul_map (N : Subgroup G) (hN : IsClosed (N : Set G)) {ν : Measure G
     _ = (Measure.haarScalarFactor ν₀ μ • μ).map Subtype.val := congrArg (Measure.map Subtype.val) hsm
     _ = Measure.haarScalarFactor ν₀ μ • μ.map Subtype.val := Measure.map_smul _ _ _
 
+/- English proof (translation)
+Use `haveI : LocallyCompactSpace N := hN.locallyCompactSpace`. Take `⟨c, hc⟩` from `eq_smul_map N hN h (Measure.haar)`. Take `⟨c', hc'⟩` from `eq_smul_map N hN h' (Measure.haar)`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`.
+
+Conclude with `h.1 (by rw [hc, zero_smul])`. Establish `hc0' : c' ≠ 0`. Introduce and unpack `rfl`. Conclude with `h'.1 (by rw [hc', zero_smul])`. Establish `hpos : 0 < (c' : ℝ) / c` using `div_pos (NNReal.coe_pos.2 (pos_iff_ne_zero.2 hc0')) (NNReal.coe_pos.2 (pos_iff_ne_zero.2 hc0))`.
+
+Use `⟨Real.log ((c' : ℝ) / c), ?_⟩` and prove the remaining obligations. Rewrite using `[Real.exp_log hpos, ← NNReal.coe_div, ENNReal.ofReal_coe_nnreal, hc, hc']`. Use extensionality with `s _`. Simplify using `only [ENNReal.smul_def, Measure.smul_apply, smul_eq_mul]`. Rewrite using `[← mul_assoc, ← ENNReal.coe_mul, div_mul_cancel₀ _ hc0]`.
+-/
 theorem exists_exp_smul (N : Subgroup G) (hN : IsClosed (N : Set G)) {ν ν' : Measure G}
     (h : IsHaarSub (N : Set G) ν) (h' : IsHaarSub (N : Set G) ν') :
     ∃ t : ℝ, ν' = ENNReal.ofReal (Real.exp t) • ν := by
@@ -99,6 +128,17 @@ theorem exists_exp_smul (N : Subgroup G) (hN : IsClosed (N : Set G)) {ν ν' : M
 
 omit [LocallyCompactSpace G] [SecondCountableTopology G] in
 
+/- English proof (translation)
+Take `⟨hne, hfin, hnull, hinv⟩` from `hν`. Set `e : G ≃ᵐ G` to `(MeasurableEquiv.mulLeft g).trans (MeasurableEquiv.mulRight g⁻¹)`. Establish `he : (fun m => g * m * g⁻¹) = (e : G → G)` using `rfl`. Rewrite using `[he]`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `h0`. Conclude with `hne ((Measure.map_eq_zero_iff e.measurable.aemeasurable).1 h0)`. Use `⟨fun K hK => ?_⟩ haveI := hfin` and prove the remaining obligations. Rewrite using `[e.map_apply]`. Establish `hc : IsCompact ((fun x => g⁻¹ * x * g) '' K)` using `hK.image (by fun_prop)`.
+
+Use `lt_of_le_of_lt (measure_mono fun x hx => ?_) hc.measure_lt_top` and prove the remaining obligations. Use `⟨g * x * g⁻¹, hx, ?_⟩` and prove the remaining obligations. Use `show g⁻¹ * (g * x * g⁻¹) * g = x`. Use `group`. Rewrite using `[e.map_apply]`.
+
+Use `measure_mono_null (fun x hx => ?_) hnull` and prove the remaining obligations. Introduce `hxN`. Conclude with `hx (h1 x hxN)`. Introduce `m hm`. Rewrite using `[Measure.map_map (measurable_const_mul m) e.measurable]`.
+
+Establish `hcomp : (fun x => m * x) ∘ e = e ∘ (fun x => (g⁻¹ * m * g) * x)`. Use function extensionality and compare the values at `x`. Use `show m * (g * x * g⁻¹) = g * ((g⁻¹ * m * g) * x) * g⁻¹`. Use `group`. Rewrite using `[hcomp, ← Measure.map_map e.measurable (measurable_const_mul _), hinv _ (h2 m hm)]`.
+-/
 theorem isHaarSub_conj {N : Set G} {ν : Measure G} (hν : IsHaarSub N ν) (g : G)
     (h1 : ∀ m ∈ N, g * m * g⁻¹ ∈ N) (h2 : ∀ m ∈ N, g⁻¹ * m * g ∈ N) :
     IsHaarSub N (ν.map fun m => g * m * g⁻¹) := by
@@ -129,6 +169,9 @@ theorem isHaarSub_conj {N : Set G} {ν : Measure G} (hν : IsHaarSub N ν) (g : 
       group
     rw [hcomp, ← Measure.map_map e.measurable (measurable_const_mul _), hinv _ (h2 m hm)]
 
+/- English proof (translation)
+Establish `h1` using `congrArg (fun ρ : Measure X => (ρ S).toReal) h`. Simplify using `only [Measure.smul_apply, smul_eq_mul, ENNReal.toReal_mul, ENNReal.toReal_ofReal (Real.exp_pos _).le] at h1`. Conclude with `Real.exp_injective (mul_right_cancel₀ (ENNReal.toReal_pos h0 htop).ne' h1)`.
+-/
 private theorem eq_of_exp_smul_measure_eq {X : Type} [MeasurableSpace X] {ν : Measure X} {S : Set X} (h0 : ν S ≠ 0)
     (htop : ν S ≠ ⊤) {t t' : ℝ} (h : ENNReal.ofReal (Real.exp t) • ν = ENNReal.ofReal (Real.exp t') • ν) :
     t = t' := by
@@ -137,6 +180,41 @@ private theorem eq_of_exp_smul_measure_eq {X : Type} [MeasurableSpace X] {ν : M
     ENNReal.toReal_ofReal (Real.exp_pos _).le] at h1
   exact Real.exp_injective (mul_right_cancel₀ (ENNReal.toReal_pos h0 htop).ne' h1)
 
+/- English proof (translation)
+Establish `a0 : a 0 = 1`. Establish `h` using `ha 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_left_cancel (h.symm.trans (mul_one (a 0)).symm)`. Establish `aneg : ∀ s, a (-s) = (a s)⁻¹`.
+
+Introduce `s`. Establish `h` using `ha s (-s)`. Rewrite `h` using `[add_neg_cancel, a0]`. Conclude with `eq_inv_of_mul_eq_one_right h.symm`. Set `e : ℝ → G ≃ᵐ G` to `fun s => (MeasurableEquiv.mulLeft (a s)).trans (MeasurableEquiv.mulRight (a s)⁻¹)`.
+
+Establish `he : ∀ s, (e s : G → G) = fun m => a s * m * (a s)⁻¹` using `fun s => rfl`. Establish `hconj : ∀ s, IsHaarSub (N : Set G) (ν.map (e s))`. Introduce `s`. Rewrite using `[he s]`. Use `isHaarSub_conj hν (a s) (hn s) (fun m hm => ?_)` and prove the remaining obligations.
+
+Use `hn (-s) m hm` as an intermediate fact. Rewrite `this` using `[aneg, inv_inv]`. Then use the resulting hypothesis. Use `choose T hT using fun s => exists_exp_smul N hN hν (hconj s)`. Choose the witnesses or unpack the hypotheses as in `⟨r0, hr0⟩ : ∃ k : ℕ, ν {m | d m ≤ (k : ℝ)} ≠ 0 := by`. Assume the negation of the conclusion as `hcon`.
+
+Use `push_neg at hcon`. Apply `hν.1` to reduce the goal to its premises. Rewrite using `[← Measure.measure_univ_eq_zero]`. Establish `hU : (Set.univ : Set G) = ⋃ k : ℕ, {m | d m ≤ (k : ℝ)}`. Use extensionality with `x`.
+
+Simplify using `only [Set.mem_univ, Set.mem_iUnion, Set.mem_setOf_eq, true_iff]`. Conclude with `exists_nat_ge (d x)`. Rewrite using `[hU]`. Conclude with `measure_iUnion_null hcon`. Use `set S := {m | d m ≤ (r0 : ℝ)} with hS`.
+
+Establish `hStop : ν S ≠ ⊤` using `ne_top_of_le_ne_top ENNReal.ofReal_ne_top (hv r0 (Nat.cast_nonneg r0))`. Establish `hcomp : ∀ s t, (e (s + t) : G → G) = (e s) ∘ (e t)`. Introduce `s t`. Use function extensionality and compare the values at `m`. Use `show a (s + t) * m * (a (s + t))⁻¹ = a s * (a t * m * (a t)⁻¹) * (a s)⁻¹`.
+
+Rewrite using `[ha]`. Use `group`. Establish `hadd : ∀ s t, T (s + t) = T s + T t`. Introduce `s t`. Apply `eq_of_exp_smul_measure_eq hr0 hStop` to reduce the goal to its premises.
+
+Rewrite using `[← hT (s + t), hcomp, ← Measure.map_map (e s).measurable (e t).measurable, hT t, Measure.map_smul, hT s, smul_smul, ← ENNReal.ofReal_mul (Real.exp_pos _).le, ← Real.exp_add, add_comm (T t) (T s)]`. Establish `hm0 : 0 < (ν S).toReal` using `ENNReal.toReal_pos hr0 hStop`. Establish `hbound : ∀ s, T s ≤ (Real.log C + c * r0 - Real.log (ν S).toReal) + 2 * c * |s|`. Introduce `s`. Establish `hsub : (e s) ⁻¹' S ⊆ {m | d m ≤ (r0 : ℝ) + 2 * |s|}`.
+
+Introduce `x hx`. Establish `hx' : d (a s * x * (a s)⁻¹) ≤ (r0 : ℝ)` using `hx`. Establish `hrep : a (-s) * (a s * x * (a s)⁻¹) * a s = x`. Rewrite using `[aneg]`. Use `group`.
+
+Establish `h1` using `hmul (a (-s) * (a s * x * (a s)⁻¹)) (a s)`. Establish `h2` using `hmul (a (-s)) (a s * x * (a s)⁻¹)`. Establish `h3` using `hd (-s)`. Establish `h4` using `hd s`. Rewrite `h3` using `[abs_neg]`.
+
+Rewrite `h1` using `[hrep]`. Use `show d x ≤ (r0 : ℝ) + 2 * |s|`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hle : ν.map (e s) S ≤ ENNReal.ofReal (C * Real.exp (c * ((r0 : ℝ) + 2 * |s|)))`. Rewrite using `[(e s).map_apply]`.
+
+Conclude with `(measure_mono hsub).trans (hv _ (by positivity))`. Rewrite `hle` using `[hT s, Measure.smul_apply, smul_eq_mul, ← ENNReal.ofReal_toReal hStop, ← ENNReal.ofReal_mul (Real.exp_pos _).le]`. Establish `hpos : 0 < Real.exp (T s) * (ν S).toReal` using `mul_pos (Real.exp_pos _) hm0`. Establish `hle' : Real.exp (T s) * (ν S).toReal ≤ C * Real.exp (c * ((r0 : ℝ) + 2 * |s|))`. Break down `(ENNReal.ofReal_le_ofReal_iff').1 hle with h | h` into its components or cases.
+
+Conclude with `h`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hC : 0 < C`. Assume the negation of the conclusion as `hC`. Use `push_neg at hC`.
+
+Use polynomial arithmetic with `[Real.exp_pos (c * ((r0 : ℝ) + 2 * |s|))]`. Establish `hlog` using `Real.log_le_log hpos hle'`. Rewrite `hlog` using `[Real.log_mul (Real.exp_pos _).ne' hm0.ne', Real.log_mul hC.ne' (Real.exp_pos _).ne', Real.log_exp, Real.log_exp]`. Establish `hexp : c * ((r0 : ℝ) + 2 * |s|) = c * r0 + 2 * c * |s|` using `by ring`. Rewrite `hlog` using `[hexp]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Set `L : ℝ →+ ℝ` to `AddMonoidHom.mk' T hadd`. Take `⟨κ, hκ, hL⟩` from `linear_of_le L _ (2 * c) (fun s => hbound s)`. Use `⟨κ, hκ, fun s => ?_⟩` and prove the remaining obligations. Establish `h1` using `hT s`.
+
+Rewrite `h1` using `[he s]`. Establish `hTs : T s = κ * s` using `hL s`. Rewrite using `[h1, hTs]`.
+-/
 theorem modulus (N : Subgroup G) (hN : IsClosed (N : Set G)) {ν : Measure G} (hν : IsHaarSub (N : Set G) ν)
     (a : ℝ → G) (ha : ∀ s t, a (s + t) = a s * a t) (hn : ∀ s, ∀ m ∈ (N : Set G), a s * m * (a s)⁻¹ ∈ (N : Set G))
     (d : G → ℝ) (hmul : ∀ x y, d (x * y) ≤ d x + d y) (hd : ∀ s, d (a s) ≤ |s|)
@@ -236,6 +314,21 @@ theorem modulus (N : Subgroup G) (hN : IsClosed (N : Set G)) {ν : Measure G} (h
 
 end General
 
+/- English proof (translation)
+Introduce `n ε W ν hW hν a Hm hP ha hd hn`. Establish `hN : IsClosed ((nwSub ε W : Subgroup (UJ ε)) : Set (UJ ε))`. Rewrite using `[coe_nwSub]`. Conclude with `isClosed_NW ε W`. Establish `hν' : IsHaarSub ((nwSub ε W : Subgroup (UJ ε)) : Set (UJ ε)) ν`.
+
+Rewrite using `[coe_nwSub]`. Conclude with `hν`. Establish `hn' : ∀ s, ∀ m ∈ ((nwSub ε W : Subgroup (UJ ε)) : Set (UJ ε)), a s * m * (a s)⁻¹ ∈ ((nwSub ε W : Subgroup (UJ ε)) : Set (UJ ε))`. Rewrite using `[coe_nwSub]`. Conclude with `hn`.
+
+Establish `hadd : ∀ s t, a (s + t) = a s * a t`. Introduce `s t`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use `show umat (a (s + t)) = umat (a s) * umat (a t)`.
+
+Rewrite using `[ha, ha, ha, Complex.ofReal_add, add_smul]`. Conclude with `Matrix.exp_add_of_commute _ _ (((Commute.refl Hm).smul_left (s : ℂ)).smul_right (t : ℂ))`. Establish `hmul : ∀ x y : UJ ε, dOp (umat (x * y)) ≤ dOp (umat x) + dOp (umat y)`. Introduce `x y`. Break down `Nat.eq_zero_or_pos n with h0 | hpos` into its components or cases.
+
+Substitute `h0` using the available equality. Establish `hz : ∀ g : Matrix (Fin 0) (Fin 0) ℂ, dOp g = 0`. Introduce `g`. Rewrite using `[Subsingleton.elim g 0]`. Simplify using `[dOp]`.
+
+Rewrite using `[hz, hz, hz]`. Evaluate the numerical expressions. Establish `e : umat (x * y) = umat x * umat y` using `rfl`. Rewrite using `[e]`. Conclude with `GlobalTheory.Count.Cartan.dOp_mul_le hpos (Units.isUnit _) (Units.isUnit _)`.
+
+Take `⟨⟨C, hC⟩, -⟩` from `GlobalTheory.RadVol.radical_volume_growth n ε W ν hW hν`. Take `⟨κ, hκ, hmod⟩` from `modulus (nwSub ε W) hN hν' a hadd hn' (fun g => dOp (umat g)) hmul hd C (4 * n * rkR ε) hC`. Use `⟨κ, ?_, hmod⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem torus_modulus : ∀ (n : ℕ) (ε : Fin n → Bool) (W : Submodule ℂ (Fin n → ℂ)) (ν : Measure (UJ ε)), IsIsoC ε W → IsHaarSub (NW ε W) ν → ∀ (a : ℝ → UJ ε) (Hm : Matrix (Fin n) (Fin n) ℂ), inP ε Hm → (∀ s : ℝ, umat (a s) = NormedSpace.exp ((s : ℂ) • Hm)) → (∀ s, dOp (umat (a s)) ≤ |s|) → (∀ s, ∀ m ∈ NW ε W, a s * m * (a s)⁻¹ ∈ NW ε W) → ∃ κ : ℝ, |κ| ≤ 8 * n * rkR ε ∧ ∀ s, ν.map (fun m => a s * m * (a s)⁻¹) = ENNReal.ofReal (Real.exp (κ * s)) • ν := by
   intro n ε W ν hW hν a Hm hP ha hd hn
   have hN : IsClosed ((nwSub ε W : Subgroup (UJ ε)) : Set (UJ ε)) := by

@@ -7,6 +7,17 @@ open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalS
 open GlobalTheory.CuspRep (CuspSub GA Af Ad finGL locGL)
 open UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.Dp UpperTheory.V
 
+/- English proof (translation)
+Introduce `E _ _ _ n π`. Prove the components needed by the constructor for the conclusion. Introduce `h ψ hψ`. Use `mem_centralCuspForms.2 fun s x => ?_` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases.
+
+Conclude with `congrArg ψ.1 (Subsingleton.elim _ _)`. Establish `hc : ((n : ℝ) * Module.finrank ℚ E) ≠ 0` using `mul_ne_zero (Nat.cast_ne_zero.2 hn.ne') (Nat.cast_ne_zero.2 Module.finrank_pos.ne')`. Establish `hs : (⟨Real.exp (n * Module.finrank ℚ E * (Real.log s.1 / (n * Module.finrank ℚ E))), Real.exp_pos _⟩ : {r : ℝ // 0 < r}) = s` using `Subtype.ext (by`. Express the relevant statement in the definitionally equal form `Real.exp _ = s.1`. Rewrite using `[mul_div_cancel₀ _ hc, Real.exp_log s.2])`.
+
+Establish `e` using `UpperTheory.V.KernelIndexFullLattice.splitEq_holds E n (Real.log s.1 / (n * Module.finrank ℚ E))`. Rewrite `e` using `[hs]`. Establish `key` using `h (Cm.ofCusp E n ψ) hψ (Real.log s.1 / (n * Module.finrank ℚ E)) x`. Rewrite `key` using `[e]`. Conclude with `key`.
+
+Introduce `h φ hφ t g`. Establish `hφ' : φ ∈ (Cm.carrier π).map (Cm.ofCusp E n)`. Rewrite using `[Cm.map_carrier]`. Conclude with `hφ`. Take `⟨ψ, hψ, rfl⟩` from `hφ'`.
+
+Rewrite using `[UpperTheory.V.KernelIndexFullLattice.splitEq_holds E n t]`. Conclude with `h hψ _ g`.
+-/
 theorem UpperTheory.ConvolutionTheory.Dp.normIff :
     UpperTheory.ConvolutionTheory.Dp.NormIff := by
   intro E _ _ _ n π

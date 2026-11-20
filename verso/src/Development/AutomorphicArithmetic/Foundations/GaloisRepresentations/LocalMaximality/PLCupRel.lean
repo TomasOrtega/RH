@@ -8,48 +8,84 @@ open scoped TensorProduct
 section
 variable {β κ : Type} [LinearOrder β] [LinearOrder κ]
 
+/- English proof (translation)
+Take `⟨x, rfl⟩ : ∃ x : β ⊕ κ, toLex x = t` from `⟨ofLex t, rfl⟩`. Break down `x with i | l` into its components or cases. Conclude with `Or.inl ⟨i, rfl⟩`. Conclude with `Or.inr ⟨l, rfl⟩`.
+-/
 private theorem lex_cases (t : β ⊕ₗ κ) : (∃ i, t = inlE i) ∨ ∃ l, t = inrE l := by
   obtain ⟨x, rfl⟩ : ∃ x : β ⊕ κ, toLex x = t := ⟨ofLex t, rfl⟩
   rcases x with i | l
   · exact Or.inl ⟨i, rfl⟩
   · exact Or.inr ⟨l, rfl⟩
 
+/- English proof (translation)
+Simplify using `[uni, inlE]`.
+-/
 private theorem mem_uni_l (b : Finset β) (L : Finset κ) (i : β) :
     (inlE i : β ⊕ₗ κ) ∈ uni b L ↔ i ∈ b := by
   simp [uni, inlE]
 
+/- English proof (translation)
+Simplify using `[uni, inrE]`.
+-/
 private theorem mem_uni_r (b : Finset β) (L : Finset κ) (l : κ) :
     (inrE l : β ⊕ₗ κ) ∈ uni b L ↔ l ∈ L := by
   simp [uni, inrE]
 
+/- English proof (translation)
+Simplify using `[lft, inlE]`.
+-/
 private theorem mem_lft (s : Finset (β ⊕ₗ κ)) (i : β) : i ∈ lft s ↔ (inlE i : β ⊕ₗ κ) ∈ s := by
   simp [lft, inlE]
 
+/- English proof (translation)
+Simplify using `[rgt, inrE]`.
+-/
 private theorem mem_rgt (s : Finset (β ⊕ₗ κ)) (l : κ) : l ∈ rgt s ↔ (inrE l : β ⊕ₗ κ) ∈ s := by
   simp [rgt, inrE]
 
+/- English proof (translation)
+Use extensionality with `i`. Rewrite using `[mem_lft, mem_uni_l]`.
+-/
 private theorem lft_uni (b : Finset β) (L : Finset κ) : lft (uni b L) = b := by
   ext i; rw [mem_lft, mem_uni_l]
 
+/- English proof (translation)
+Use extensionality with `l`. Rewrite using `[mem_rgt, mem_uni_r]`.
+-/
 private theorem rgt_uni (b : Finset β) (L : Finset κ) : rgt (uni b L) = L := by
   ext l; rw [mem_rgt, mem_uni_r]
 
+/- English proof (translation)
+Use extensionality with `t`. Break down `lex_cases t with ⟨i, rfl⟩ | ⟨l, rfl⟩` into its components or cases. Rewrite using `[mem_uni_l, mem_lft]`. Rewrite using `[mem_uni_r, mem_rgt]`.
+-/
 private theorem uni_lft_rgt (s : Finset (β ⊕ₗ κ)) : uni (lft s) (rgt s) = s := by
   ext t
   rcases lex_cases t with ⟨i, rfl⟩ | ⟨l, rfl⟩
   · rw [mem_uni_l, mem_lft]
   · rw [mem_uni_r, mem_rgt]
 
+/- English proof (translation)
+The claim follows from `Sum.Lex.inl_lt_inr i l`.
+-/
 private theorem l_lt_r (i : β) (l : κ) : (inlE i : β ⊕ₗ κ) < inrE l := Sum.Lex.inl_lt_inr i l
 
+/- English proof (translation)
+Simplify using `[uni]`.
+-/
 private theorem card_uni (b : Finset β) (L : Finset κ) : (uni b L).card = b.card + L.card := by
   simp [uni]
 
+/- English proof (translation)
+Simplify using `only [uni, Finset.sum_map, Finset.sum_disjSum]`. Both sides reduce to the same expression.
+-/
 private theorem sum_uni {M : Type} [AddCommMonoid M] (b : Finset β) (L : Finset κ) (f : β ⊕ₗ κ → M) :
     ∑ t ∈ uni b L, f t = ∑ i ∈ b, f (inlE i) + ∑ l ∈ L, f (inrE l) := by
   simp only [uni, Finset.sum_map, Finset.sum_disjSum]
   rfl
 
+/- English proof (translation)
+Use extensionality with `t`. Break down `lex_cases t with ⟨j, rfl⟩ | ⟨l, rfl⟩` into its components or cases. Simplify using `[mem_uni_l]`. Simplify using `[mem_uni_r, not_le.2 (l_lt_r i l)]`.
+-/
 private theorem filter_le_l (I : Finset β) (J : Finset κ) (i : β) :
     (uni I J).filter (· ≤ (inlE i : β ⊕ₗ κ)) = uni (I.filter (· ≤ i)) (∅ : Finset κ) := by
   ext t
@@ -57,6 +93,9 @@ private theorem filter_le_l (I : Finset β) (J : Finset κ) (i : β) :
   · simp [mem_uni_l]
   · simp [mem_uni_r, not_le.2 (l_lt_r i l)]
 
+/- English proof (translation)
+Use extensionality with `t`. Break down `lex_cases t with ⟨j, rfl⟩ | ⟨l, rfl⟩` into its components or cases. Simplify using `[mem_uni_l]`. Simplify using `[mem_uni_r, (l_lt_r i l).le]`.
+-/
 private theorem filter_ge_l (I : Finset β) (J : Finset κ) (i : β) :
     (uni I J).filter ((inlE i : β ⊕ₗ κ) ≤ ·) = uni (I.filter (i ≤ ·)) J := by
   ext t
@@ -64,6 +103,9 @@ private theorem filter_ge_l (I : Finset β) (J : Finset κ) (i : β) :
   · simp [mem_uni_l]
   · simp [mem_uni_r, (l_lt_r i l).le]
 
+/- English proof (translation)
+Use extensionality with `t`. Break down `lex_cases t with ⟨j, rfl⟩ | ⟨m, rfl⟩` into its components or cases. Simplify using `[mem_uni_l, (l_lt_r j l).le]`. Simplify using `[mem_uni_r]`.
+-/
 private theorem filter_le_r (I : Finset β) (J : Finset κ) (l : κ) :
     (uni I J).filter (· ≤ (inrE l : β ⊕ₗ κ)) = uni I (J.filter (· ≤ l)) := by
   ext t
@@ -71,6 +113,9 @@ private theorem filter_le_r (I : Finset β) (J : Finset κ) (l : κ) :
   · simp [mem_uni_l, (l_lt_r j l).le]
   · simp [mem_uni_r]
 
+/- English proof (translation)
+Use extensionality with `t`. Break down `lex_cases t with ⟨j, rfl⟩ | ⟨m, rfl⟩` into its components or cases. Simplify using `[mem_uni_l, not_le.2 (l_lt_r j l)]`. Simplify using `[mem_uni_r]`.
+-/
 private theorem filter_ge_r (I : Finset β) (J : Finset κ) (l : κ) :
     (uni I J).filter ((inrE l : β ⊕ₗ κ) ≤ ·) = uni (∅ : Finset β) (J.filter (l ≤ ·)) := by
   ext t
@@ -78,6 +123,9 @@ private theorem filter_ge_r (I : Finset β) (J : Finset κ) (l : κ) :
   · simp [mem_uni_l, not_le.2 (l_lt_r j l)]
   · simp [mem_uni_r]
 
+/- English proof (translation)
+Use extensionality with `t`. Apply the tactic sequence `rcases lex_cases t with ⟨i, rfl⟩ | ⟨l, rfl⟩ <;> simp [mem_uni_l, mem_uni_r]`.
+-/
 private theorem uni_empty : uni (∅ : Finset β) (∅ : Finset κ) = ∅ := by
   ext t
   rcases lex_cases t with ⟨i, rfl⟩ | ⟨l, rfl⟩ <;> simp [mem_uni_l, mem_uni_r]
@@ -87,6 +135,15 @@ private def ext0 {X : Type} [Zero X] (x : Finset β → X) : Finset (β ⊕ₗ �
 
 end
 
+/- English proof (translation)
+Establish `h1 : I.filter (· ≤ i) ∪ I.filter (i ≤ ·) = I`. Use extensionality with `x`. Simplify using `only [Finset.mem_union, Finset.mem_filter]`. Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `rintro (⟨h, _⟩ | ⟨h, _⟩) <;> exact h`.
+
+Introduce `h`. Break down `le_total x i with h' | h'` into its components or cases. Conclude with `Or.inl ⟨h, h'⟩`. Conclude with `Or.inr ⟨h, h'⟩`. Establish `h2 : I.filter (· ≤ i) ∩ I.filter (i ≤ ·) = {i}`.
+
+Use extensionality with `x`. Simplify using `only [Finset.mem_inter, Finset.mem_filter, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨_, h1⟩, _, h2⟩`. Conclude with `le_antisymm h1 h2`.
+
+Introduce and unpack `rfl`. Conclude with `⟨⟨hi, le_rfl⟩, hi, le_rfl⟩`. Rewrite using `[← Finset.card_union_add_card_inter, h1, h2, Finset.card_singleton]`.
+-/
 private theorem card_split {β : Type} [LinearOrder β] (I : Finset β) {i : β} (hi : i ∈ I) :
     (I.filter (· ≤ i)).card + (I.filter (i ≤ ·)).card = I.card + 1 := by
   have h1 : I.filter (· ≤ i) ∪ I.filter (i ≤ ·) = I := by
@@ -108,10 +165,18 @@ private theorem card_split {β : Type} [LinearOrder β] (I : Finset β) {i : β}
       exact ⟨⟨hi, le_rfl⟩, hi, le_rfl⟩
   rw [← Finset.card_union_add_card_inter, h1, h2, Finset.card_singleton]
 
+/- English proof (translation)
+Simplify using `[wd, GlobalTheory.DI.delta, LinearMap.pi_apply, LinearMap.sum_apply, LinearMap.smul_apply]`.
+-/
 private theorem wd_one {σ X : Type} [LinearOrder σ] [AddCommGroup X] [Module ℂ X] (c : Finset σ → X) (t : Finset σ) :
     wd (fun _ : σ => (1 : Module.End ℂ X)) c t = GlobalTheory.DI.delta c t := by
   simp [wd, GlobalTheory.DI.delta, LinearMap.pi_apply, LinearMap.sum_apply, LinearMap.smul_apply]
 
+/- English proof (translation)
+Establish `h1` using `(Submodule.mem_pi.1 (Submodule.mem_inf.1 h).1) s (Set.mem_univ _)`. Use `split_ifs at h1 with hc`. Use `right`. Conclude with `⟨hc.1, by have := hc.2; omega, h1⟩`. Use `left`.
+
+Conclude with `(Submodule.mem_bot _).1 h1`.
+-/
 private theorem cech_val {σ X : Type} [LinearOrder σ] [AddCommGroup X] [Module ℂ X] (F : Finset σ → Submodule ℂ X)
     (n : ℕ) {a : Finset σ → X} (h : a ∈ (cech F).Z n) (s : Finset σ) :
     a s = 0 ∨ (s.Nonempty ∧ s.card = n + 1 ∧ a s ∈ F s) := by
@@ -122,10 +187,32 @@ private theorem cech_val {σ X : Type} [LinearOrder σ] [AddCommGroup X] [Module
   · left
     exact (Submodule.mem_bot _).1 h1
 
+/- English proof (translation)
+The claim follows from `LinearMap.mem_ker.1 (Submodule.mem_inf.1 h).2`.
+-/
 private theorem cech_delta {σ X : Type} [LinearOrder σ] [AddCommGroup X] [Module ℂ X] (F : Finset σ → Submodule ℂ X)
     (n : ℕ) {a : Finset σ → X} (h : a ∈ (cech F).Z n) : GlobalTheory.DI.delta a = 0 :=
   LinearMap.mem_ker.1 (Submodule.mem_inf.1 h).2
 
+/- English proof (translation)
+Set `Φ : E × E'' →+ (Finset σ → E × E'')` to `{ toFun := fun x t => ((0 : E), μ x.1 (b t)) map_zero' := by`. Use function extensionality and compare the values at `t`. Simplify using the standard rewrite rules. Use the proof step `map_add' := by`. Introduce `x y`.
+
+Use function extensionality and compare the values at `t`. Apply the tactic sequence `refine Prod.ext ?_ ?_ <;> simp }`. Set `c : Finset σ → E × E''` to `fun t => (a t, 0)`. Establish `key` using `GlobalTheory.DI.delta_cup_eq Φ c (fun x => by show ((0 : E), μ x.1 (b ∅)) = 0`. Simplify using `[hb])`.
+
+Use the proof step `(by show (a ∅, (0 : E'')) = 0`. Simplify using `[ha]) u`. Establish `hsnd : ∀ (f : Finset σ → E × E'') (t : Finset σ), (GlobalTheory.DI.delta f t).2 = GlobalTheory.DI.delta (fun s => (f s).2) t`. Introduce `f t`. Simplify using `[GlobalTheory.DI.delta, Prod.snd_sum]`.
+
+Establish `hfst : ∀ (f : Finset σ → E × E'') (t : Finset σ), (GlobalTheory.DI.delta f t).1 = GlobalTheory.DI.delta (fun s => (f s).1) t`. Introduce `f t`. Simplify using `[GlobalTheory.DI.delta, Prod.fst_sum]`. Establish `h1 : (fun t => (GlobalTheory.DI.cup Φ c t).2) = cupE μ a b`. Use function extensionality and compare the values at `t`.
+
+Simplify using `only [GlobalTheory.DI.cup, cupE, Prod.snd_sum]`. Both sides reduce to the same expression. Establish `h3 : (GlobalTheory.DI.cup Φ (GlobalTheory.DI.delta c) u).2 = cupE μ (GlobalTheory.DI.delta a) b u`. Simplify using `only [GlobalTheory.DI.cup, cupE, Prod.snd_sum]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations.
+
+Use `show μ (GlobalTheory.DI.delta c _).1 _ = _`. Rewrite using `[hfst]`. Establish `h5 : ∀ (x : E × E'') (t : Finset σ), GlobalTheory.DI.delta (fun s => (Φ x s).2) t = 0`. Introduce `x t`. Use `show GlobalTheory.DI.delta (fun s => μ x.1 (b s)) t = 0`.
+
+Establish `: GlobalTheory.DI.delta (fun s => μ x.1 (b s)) t = μ x.1 (GlobalTheory.DI.delta b t)`. Simplify using `[GlobalTheory.DI.delta, map_sum, map_zsmul]`. Rewrite using `[this, hd]`. Simplify using the standard rewrite rules. Establish `h4 : ∀ j ∈ u, ((-1 : ℤ) ^ (u.filter (· < j)).card • GlobalTheory.DI.delta (Φ (c (u.filter (· ≤ j)))) (u.filter (j ≤ ·))).2 = 0`.
+
+Introduce `j _`. Rewrite using `[Prod.smul_snd, hsnd, h5, smul_zero]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hsnd, h1]`. Use `_ = _ := by`.
+
+Rewrite using `[key, Prod.snd_add, h3, Prod.snd_sum, Finset.sum_eq_zero h4, add_zero]`.
+-/
 private theorem delta_cupE {σ E E' E'' : Type} [LinearOrder σ] [AddCommGroup E] [Module ℂ E] [AddCommGroup E'] [Module ℂ E']
     [AddCommGroup E''] [Module ℂ E''] (μ : E →ₗ[ℂ] E' →ₗ[ℂ] E'') (a : Finset σ → E) (b : Finset σ → E')
     (ha : a ∅ = 0) (hb : b ∅ = 0) (hd : GlobalTheory.DI.delta b = 0) (u : Finset σ) :
@@ -183,6 +270,21 @@ private theorem delta_cupE {σ E E' E'' : Type} [LinearOrder σ] [AddCommGroup E
 section
 variable {β κ : Type} [LinearOrder β] [LinearOrder κ]
 
+/- English proof (translation)
+Establish `hs : ∀ (y : X) (L : Finset κ), GlobalTheory.DI.delta (fun L' : Finset κ => if L' = ∅ then y else 0) L = if L.card = 1 then y else 0`. Introduce `y L`. Distinguish the cases in `h : L.card = 1`. Take `⟨l, rfl⟩` from `Finset.card_eq_one.1 h`. Simplify using `[GlobalTheory.DI.delta, GlobalTheory.cubeSign_singleton]`.
+
+Rewrite using `[if_neg h]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `l hl`. Establish `hne : L.erase l ≠ ∅`. Introduce `he`.
+
+Break down `(Finset.erase_eq_empty_iff L l).1 he with h0 | h0` into its components or cases. Rewrite `hl` using `[h0]`. Simplify using `at hl`. Conclude with `h (by rw [h0, Finset.card_singleton])`. Use `show GlobalTheory.cubeSign L l • (if L.erase l = ∅ then y else 0) = 0`.
+
+Rewrite using `[if_neg hne, smul_zero]`. Establish `key` using `(hU β κ X (fun _ => 1) (ext0 x) I J).1`. Simplify using `only [wd_one] at key`. Rewrite using `[key]`. Establish `e1 : (fun b' => ext0 (κ` using `κ) x (uni b' J)) = fun b' => if J = ∅ then x b' else 0 := by`.
+
+Use function extensionality and compare the values at `b'`. Simplify using `[ext0, lft_uni, rgt_uni]`. Establish `e2 : (fun L' => ext0 (κ` using `κ) x (uni I L')) = fun L' => if L' = ∅ then x I else 0 := by`. Use function extensionality and compare the values at `L'`. Simplify using `[ext0, lft_uni, rgt_uni]`.
+
+Rewrite using `[e1, e2, hs]`. Establish `e3 : GlobalTheory.DI.delta (fun b' => if J = ∅ then x b' else 0) I = 0`. Distinguish the cases in `hJ : J = ∅`. Simplify using `only [if_pos hJ]`. Conclude with `congrFun hx I`.
+
+Simplify using `[hJ, GlobalTheory.DI.delta]`. Rewrite using `[e3, zero_add]`. Simplify using `[edge1, lft_uni, rgt_uni]`.
+-/
 private theorem delta_ext (hU : WdUni) {X : Type} [AddCommGroup X] [Module ℂ X] (x : Finset β → X)
     (hx : GlobalTheory.DI.delta x = 0) (I : Finset β) (J : Finset κ) :
     GlobalTheory.DI.delta (ext0 (κ := κ) x) (uni I J) = ((-1 : ℤ) ^ I.card) • edge1 (κ := κ) x (uni I J) := by
@@ -224,6 +326,13 @@ private theorem delta_ext (hU : WdUni) {X : Type} [AddCommGroup X] [Module ℂ X
 variable {E E' E'' : Type} [AddCommGroup E] [Module ℂ E] [AddCommGroup E'] [Module ℂ E']
   [AddCommGroup E''] [Module ℂ E''] (μ : E →ₗ[ℂ] E' →ₗ[ℂ] E'')
 
+/- English proof (translation)
+Simplify using `only [cupE]`. Rewrite using `[sum_uni]`. Use `beta_reduce`. Rewrite using `[Finset.sum_eq_zero (s := J) (fun l hl => ?_), add_zero]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations.
+
+Simplify using `[filter_le_l, filter_ge_l, ext0, lft_uni, rgt_uni]`. Establish `hne : J.filter (· ≤ l) ≠ ∅`. Introduce `he`. Establish `hm : l ∈ J.filter (· ≤ l)` using `Finset.mem_filter.2 ⟨hl, le_rfl⟩`. Rewrite `hm` using `[he]`.
+
+Simplify using `at hm`. Simplify using `only [filter_le_r, ext0, rgt_uni, if_neg hne, map_zero, LinearMap.zero_apply]`.
+-/
 private theorem cup_ext_uni (a : Finset β → E) (c : Finset (β ⊕ₗ κ) → E') (I : Finset β) (J : Finset κ) :
     cupE μ (ext0 a) c (uni I J) =
       ∑ i ∈ I, μ (a (I.filter (· ≤ i))) (c (uni (I.filter (i ≤ ·)) J)) := by
@@ -240,6 +349,19 @@ private theorem cup_ext_uni (a : Finset β → E) (c : Finset (β ⊕ₗ κ) →
       simp at hm
     simp only [filter_le_r, ext0, rgt_uni, if_neg hne, map_zero, LinearMap.zero_apply]
 
+/- English proof (translation)
+Simplify using `only [cupE]`. Rewrite using `[sum_uni]`. Use `beta_reduce`. Rewrite using `[Finset.sum_eq_zero (s := I) (fun i _ => ?_), zero_add]`. Simplify using `only [join, lft_uni, rgt_uni]`.
+
+Break down `J.eq_empty_or_nonempty with hJ | hJ` into its components or cases. Substitute `hJ` using the available equality. Simplify using `[uni_empty, hc]`. Rewrite using `[Finset.sum_eq_single_of_mem (J.min' hJ) (J.min'_mem hJ) (fun l hl hne => ?_)]`. Establish `e1 : J.filter (· ≤ J.min' hJ) = {J.min' hJ}`.
+
+Use extensionality with `x`. Simplify using `only [Finset.mem_filter, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, h⟩`. Conclude with `le_antisymm h (J.min'_le x hx)`.
+
+Introduce and unpack `rfl`. Conclude with `⟨J.min'_mem hJ, le_rfl⟩`. Establish `e2 : J.filter (J.min' hJ ≤ ·) = J` using `Finset.filter_true_of_mem (fun x hx => J.min'_le x hx)`. Simplify using `only [filter_le_r, filter_ge_r, e1, e2, edge1, lft_uni, rgt_uni, Finset.card_singleton, if_pos rfl, map_zsmul, LinearMap.smul_apply, if_true]`. Distinguish the cases in `hI : I.card = q + 1`.
+
+Rewrite using `[hI]`. Rewrite using `[ha I hI]`. Simplify using the standard rewrite rules. Establish `h2 : 1 < (J.filter (· ≤ l)).card` using `Finset.one_lt_card.2 ⟨J.min' hJ, Finset.mem_filter.2 ⟨J.min'_mem hJ, J.min'_le l hl⟩, l, Finset.mem_filter.2 ⟨hl, le_rfl⟩, Ne.symm hne⟩`. Simplify using `only [filter_le_r, edge1, lft_uni, rgt_uni, if_neg h2.ne', smul_zero, map_zero, LinearMap.zero_apply]`.
+
+Simplify using `[filter_le_l, edge1, rgt_uni]`.
+-/
 private theorem cup_edge (q : ℕ) (a : Finset β → E) (ha : ∀ I : Finset β, I.card ≠ q + 1 → a I = 0)
     (c : Finset (β ⊕ₗ κ) → E') (hc : c ∅ = 0) (I : Finset β) (J : Finset κ) :
     cupE μ (fun v => ((-1 : ℤ) ^ (lft v).card) • edge1 (κ := κ) a v) c (uni I J) =
@@ -278,6 +400,53 @@ private theorem cup_edge (q : ℕ) (a : Finset β → E) (ha : ∀ I : Finset β
 
 end
 
+/- English proof (translation)
+Introduce `hU ι _ _ E E' E'' _ _ _ _ _ _ μ A G H q p hH a ha γ hγ`. Establish `ha0 : a ∅ = 0`. Break down `cech_val A q ha ∅ with h | ⟨h, _⟩` into its components or cases. Conclude with `h`. Conclude with `absurd h (by simp)`.
+
+Establish `hγ0 : γ ∅ = 0`. Break down `cech_val G p hγ ∅ with h | ⟨h, _⟩` into its components or cases. Conclude with `h`. Conclude with `absurd h (by simp)`. Establish `hda : GlobalTheory.DI.delta a = 0` using `cech_delta A q ha`.
+
+Establish `hdγ : GlobalTheory.DI.delta γ = 0` using `cech_delta G p hγ`. Establish `haq : ∀ I : Finset ι, I.card ≠ q + 1 → a I = 0`. Introduce `I hI`. Break down `cech_val A q ha I with h | ⟨_, h, _⟩` into its components or cases. Conclude with `h`.
+
+Conclude with `absurd h hI`. Establish `hempty : ∀ f : Finset ι → E', GlobalTheory.DI.delta f ∅ = 0` using `fun f => by simp [GlobalTheory.DI.delta]`. Use `set wL : Finset ι → E' := fun I => γ (uni I ∅) with hwL`. Use `set w : Finset ι → E'' := cupE μ a wL with hw`. Establish `hdwL : GlobalTheory.DI.delta wL = 0`.
+
+Use function extensionality and compare the values at `I`. Establish `key` using `(hU ι ι E' (fun _ => 1) γ I ∅).1`. Simplify using `only [wd_one] at key`. Rewrite `key` using `[hdγ, hempty, smul_zero, add_zero, Pi.zero_apply]`. Conclude with `key.symm`.
+
+Establish `hdw : GlobalTheory.DI.delta w = 0`. Use function extensionality and compare the values at `u`. Establish `hwL0 : wL ∅ = 0` using `by show γ (uni ∅ ∅) = 0`. Rewrite using `[uni_empty, hγ0]`. Rewrite using `[hw, delta_cupE μ a wL ha0 hwL0 hdwL u, hda]`.
+
+Simplify using `[cupE]`. Establish `hcard : ∀ (I J : Finset ι) (i : ι), i ∈ I → I.card + J.card ≠ q + p + 1 → μ (a (I.filter (· ≤ i))) (γ (uni (I.filter (i ≤ ·)) J)) = 0`. Introduce `I J i hi hne`. Break down `cech_val A q ha (I.filter (· ≤ i)) with h0 | ⟨_, h1, _⟩` into its components or cases. Rewrite using `[h0]`.
+
+Simplify using the standard rewrite rules. Break down `cech_val G p hγ (uni (I.filter (i ≤ ·)) J) with h0 | ⟨_, h2, _⟩` into its components or cases. Rewrite using `[h0]`. Simplify using the standard rewrite rules. It suffices to derive a contradiction.
+
+Apply `hne` to reduce the goal to its premises. Rewrite `h2` using `[card_uni]`. Use `card_split I hi` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hwcard : ∀ I : Finset ι, I.card ≠ q + p + 1 → w I = 0`.
+
+Introduce `I hI`. Rewrite using `[hw]`. Simplify using `only [cupE]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `i hi`.
+
+Conclude with `hcard I ∅ i hi (by simpa using hI)`. Establish `hext_a : ext0 (κ` using `ι) a ∅ = 0 := by`. Rewrite using `[← uni_empty (β := ι) (κ := ι)]`. Use `show (if rgt (uni (∅ : Finset ι) (∅ : Finset ι)) = ∅ then a (lft (uni ∅ ∅)) else 0) = 0`. Rewrite using `[rgt_uni, lft_uni, if_pos rfl, ha0]`.
+
+Establish `hdext_a : GlobalTheory.DI.delta (ext0 (κ` using `ι) a) = fun v => ((-1 : ℤ) ^ (lft v).card) • edge1 (κ := ι) a v := by`. Use function extensionality and compare the values at `v`. Rewrite using `[← uni_lft_rgt v, delta_ext hU a hda, lft_uni]`. Establish `hsub : ∀ (f g : Finset (ι ⊕ₗ ι) → E'') t, GlobalTheory.DI.delta (f - g) t = GlobalTheory.DI.delta f t - GlobalTheory.DI.delta g t`. Introduce `f g t`.
+
+Simplify using `[GlobalTheory.DI.delta, Finset.sum_sub_distrib, smul_sub]`. Establish `hdY : ∀ v, GlobalTheory.DI.delta (cupE μ (ext0 (κ` using `ι) a) γ - ext0 (κ := ι) w) v = (-1 : ℤ) ^ (q + 1) • ((join μ a fun J => γ (uni ∅ J)) - (-1 : ℤ) ^ p • edge1 (κ := ι) w) v := by`. Introduce `v`. Take `⟨I, J, rfl⟩ : ∃ I J, v = uni I J` from `⟨lft v, rgt v, (uni_lft_rgt v).symm⟩`. Rewrite using `[hsub, delta_cupE μ _ γ hext_a hγ0 hdγ, hdext_a, cup_edge μ q a haq γ hγ0 I J, delta_ext hU w hdw I J, Pi.sub_apply, Pi.smul_apply, smul_sub, smul_smul]`.
+
+Use `congr 1`. Distinguish the cases in `hI : I.card = q + p + 1`. Rewrite using `[hI, ← pow_add, show q + 1 + p = q + p + 1 by omega]`. Simplify using `[edge1, lft_uni, rgt_uni, hwcard I hI]`. Establish `hsubuni : ∀ (I J : Finset ι) (i : ι), uni (I.filter (i ≤ ·)) J ⊆ uni I J`.
+
+Introduce `I J i t ht`. Break down `lex_cases t with ⟨j, rfl⟩ | ⟨l, rfl⟩` into its components or cases. Rewrite `ht`, the goal using `[mem_uni_l]`. Conclude with `(Finset.mem_filter.1 ht).1`. Rewrite `ht`, the goal using `[mem_uni_r]`.
+
+Conclude with `ht`. Establish `hYmem : ∀ s : Finset (ι ⊕ₗ ι), (cupE μ (ext0 (κ` using `ι) a) γ - ext0 (κ := ι) w) s ∈ (if (s.card : ℤ) = (q : ℤ) + p + 2 - 1 then mixF H s else ⊥) := by`. Introduce `s`. Take `⟨I, J, rfl⟩ : ∃ I J, s = uni I J` from `⟨lft s, rgt s, (uni_lft_rgt s).symm⟩`. Rewrite using `[Pi.sub_apply, cup_ext_uni]`.
+
+Break down `J.eq_empty_or_nonempty with hJ | hJ` into its components or cases. Substitute `hJ` using the available equality. Establish `e : ext0 (κ` using `ι) w (uni I ∅) = ∑ i ∈ I, μ (a (I.filter (· ≤ i))) (γ (uni (I.filter (i ≤ ·)) ∅)) := by show (if rgt (uni I (∅ : Finset ι)) = ∅ then w (lft (uni I ∅)) else 0) = _`. Rewrite using `[rgt_uni, lft_uni, if_pos rfl, hw]`. Both sides reduce to the same expression.
+
+Rewrite using `[e, sub_self]`. Conclude with `Submodule.zero_mem _`. Establish `h0 : ext0 (κ` using `ι) w (uni I J) = 0 := by show (if rgt (uni I J) = ∅ then w (lft (uni I J)) else 0) = 0`. Rewrite using `[rgt_uni, if_neg hJ.ne_empty]`. Rewrite using `[h0, sub_zero]`.
+
+Use `split_ifs with hc`. Break down `I.eq_empty_or_nonempty with hI | hI` into its components or cases. Substitute `hI` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[show mixF H (uni I J) = H I J by simp [mixF, lft_uni, rgt_uni, hI, hJ]]`.
+
+Apply `Submodule.sum_mem` to reduce the goal to its premises. Introduce `i _`. Break down `cech_val A q ha (I.filter (· ≤ i)) with h0 | ⟨hne, _, hmem⟩` into its components or cases. Rewrite using `[h0, map_zero, LinearMap.zero_apply]`. Conclude with `Submodule.zero_mem _`.
+
+Break down `cech_val G p hγ (uni (I.filter (i ≤ ·)) J) with h0 | ⟨hne', _, hmem'⟩` into its components or cases. Rewrite using `[h0, map_zero]`. Conclude with `Submodule.zero_mem _`. Conclude with `hH I J _ _ hJ hne hne' (Finset.filter_subset _ _) (hsubuni I J i) _ hmem _ hmem'`. Rewrite using `[Finset.sum_eq_zero (fun i hi => hcard I J i hi (fun h => hc (by`.
+
+Rewrite using `[card_uni]`. Use `push_cast`. Use the proof step `omega)))]`. Conclude with `Submodule.zero_mem _`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Use `Submodule.mem_map.2 ⟨(-1 : ℤ) ^ (q + 1) • (cupE μ (ext0 (κ := ι) a) γ - ext0 (κ := ι) w), zsmul_mem (Submodule.mem_pi.2 (fun s _ => hYmem s)) _, ?_⟩ show wd (fun _ => (1 : Module.End ℂ E'')) ((-1 : ℤ) ^ (q + 1) • (cupE μ (ext0 (κ := ι) a) γ - ext0 (κ := ι) w)) = _` and prove the remaining obligations. Rewrite using `[map_zsmul]`. Use function extensionality and compare the values at `v`. Rewrite using `[Pi.smul_apply, wd_one, hdY v, smul_smul, ← mul_pow, neg_one_mul, neg_neg, one_pow, one_smul]`. Conclude with `hdw`.
+-/
 theorem UpperTheory.Gal.productCup_of_system.lCupRel_of :
     WdUni → LCupRel := by
   intro hU ι _ _ E E' E'' _ _ _ _ _ _ μ A G H q p hH a ha γ hγ

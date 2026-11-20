@@ -20,10 +20,18 @@ noncomputable section
 
 namespace GlobalTheory.Mum.PowData
 
+/- English proof (translation)
+The claim follows from `cls_cube_two hL (fst H H) (snd H H) h`.
+-/
 theorem cls_lam_proj {S : Scheme.{0}} {H : Over S} [GrpObj H] {L : LB H.left} (hL : L.IsLB) (h : (abelian₂ H L).IsLB) :
     cls (abelian₂ H L) h = lam (cls L hL) (fst H H) (snd H H) :=
   cls_cube_two hL (fst H H) (snd H H) h
 
+/- English proof (translation)
+Establish `hA : (abelian₂ H₁ L₁).IsLB` using `LB.isLB_linComb h₁ _ _`. Establish `hB : (abelian₂ H₂ L₂).IsLB` using `LB.isLB_linComb h₂ _ _`. Rewrite using `[← cls_eq_iff hA (pull_isLB hB _), cls_pull hB, cls_lam_proj h₁, cls_lam_proj h₂, pull_lam, lift_fst, lift_snd]`. Prove the components needed by the constructor for the conclusion. Introduce `h T x z`.
+
+Establish `e` using `congrArg (pull (lift x z).left) h`. Simplify `e` using `only [pull_lam, lift_fst_assoc, lift_snd_assoc, lift_fst, lift_snd]`. Introduce `h`. Conclude with `h _ _ _`.
+-/
 theorem lbIso_iff_lam {S : Scheme.{0}} {H₁ H₂ : Over S} [GrpObj H₁] [GrpObj H₂] {L₁ : LB H₁.left} {L₂ : LB H₂.left}
     (h₁ : L₁.IsLB) (h₂ : L₂.IsLB) (f g : H₁ ⟶ H₂) :
     LBIso (abelian₂ H₁ L₁) ((abelian₂ H₂ L₂).pull (lift (fst H₁ H₁ ≫ f) (snd H₁ H₁ ≫ g) : G2 H₁ ⟶ G2 H₂).left) ↔
@@ -38,6 +46,9 @@ theorem lbIso_iff_lam {S : Scheme.{0}} {H₁ H₂ : Over S} [GrpObj H₁] [GrpOb
   · intro h
     exact h _ _ _
 
+/- English proof (translation)
+Unfold `lam`. Rewrite using `[GlobalTheory.EndRosati.cls_of_rosati hM u hu x y]`.
+-/
 theorem lam_of_rosatiGen {S : Scheme.{0}} {B : Over S} [GrpObj B] [IsCommMonObj B] {M : LB B.left} (hM : M.IsLB)
     {a b : B ⟶ B} (u : LB.Gen (LB.LinComb M (rosatiφ B a b) rosatiε)) (hu : u.IsGen) {T : Over S} (x y : T ⟶ B) :
     lam (cls M hM) (x ≫ a) y = lam (cls M hM) x (y ≫ b) := by
@@ -50,6 +61,21 @@ namespace GlobalTheory.Mum.PowData
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `R _ _ _ hR D D₀ A A₀ G G₀ _ _ _ _ hG hG₀ U U₀ q r inc j hq hr hinc hj hiq hjr hqj hri qB jB hqB hjB hOq hOj`. Take `⟨hAdm, hCZ⟩` from `hR`. Take `⟨incB, hincB, hOinc⟩` from `exists_abelian_hom R _ hAdm D₀ D A₀ A G₀ G U₀.toUnifPre U.toUnifPre inc hinc`. Take `⟨rB, hrB, hOr⟩` from `exists_abelian_hom R _ hAdm D D₀ A A₀ G G₀ U.toUnifPre U₀.toUnifPre r hr`. Establish `hjrB : jB ≫ rB = 𝟙 _` using `(over₀_onTorus_unique R _ hAdm D₀ D₀ A₀ A₀ G₀ G₀ U₀.toUnifPre U₀.toUnifPre (j ≫ r)).1 _ _ (FactorPol.over_comp hOj hOr) (by rw [hjr]; exact FactorPol.over_id)`.
+
+Establish `h1 : ∀ (T : Over (Sp R)) (x z : T ⟶ G₀), lam (cls U₀.LG.L U₀.LG.isLB) x z = lam (cls U.LG.L U.LG.isLB) (x ≫ inc) (z ≫ j)`. Introduce `T x z`. Rewrite using `[hqj T (x ≫ inc) z, Category.assoc, hiq, Category.comp_id]`. Establish `hI` using `GlobalTheory.T.mumfordBundle_iso_along_homs_descends_abelianPart R hAdm D₀ D A₀ A G₀ G hG₀ hG U₀ U inc j incB jB hinc hj hincB hjB hOinc hOj ((lbIso_iff_lam U₀.LG.isLB U.LG.isLB inc j).2 h1)`. Establish `h1B` using `(lbIso_iff_lam D₀.toPre.P.isLB D.toPre.P.isLB incB jB).1 hI`.
+
+Establish `hadj : ∀ (T : Over (Sp R)) (x z : T ⟶ G), lam (cls U.LG.L U.LG.isLB) (x ≫ q ≫ inc) z = lam (cls U.LG.L U.LG.isLB) x (z ≫ r ≫ j)`. Introduce `T x z`. Rewrite using `[lam_comm, ← Category.assoc x, hri T z (x ≫ q), lam_comm, ← hqj T x (z ≫ r), Category.assoc]`. Establish `hiso : LBIso (cubeLB G ![fst G G ≫ (q ≫ inc), snd G G] U.LG.L) (cubeLB G ![fst G G, snd G G ≫ (r ≫ j)] U.LG.L)`. Establish `ha : (cubeLB G ![fst G G ≫ (q ≫ inc), snd G G] U.LG.L).IsLB` using `LB.isLB_linComb U.LG.isLB _ _`.
+
+Establish `hb : (cubeLB G ![fst G G, snd G G ≫ (r ≫ j)] U.LG.L).IsLB` using `LB.isLB_linComb U.LG.isLB _ _`. Use `(cls_eq_iff ha hb).1 ?_` and prove the remaining obligations. Rewrite using `[cls_cube_two U.LG.isLB _ _ ha, cls_cube_two U.LG.isLB _ _ hb]`. Conclude with `hadj _ _ _`. Use `haveI : IsMonHom U.gen.hom := U.gen_hom`.
+
+Establish `hext : ∀ a : G ⟶ G, (Over.pullback (jK R)).map a ≫ U.gen.hom = U.gen.hom ≫ (U.gen.inv ≫ (Over.pullback (jK R)).map a ≫ U.gen.hom)` using `fun a => by simp`. Take `⟨E, hE, -⟩` from `exists_degenerationEndomorphism_of_admissibleBase R _ hAdm D A G hG U (q ≫ inc) _ inferInstance inferInstance (hext _)`. Take `⟨E', hE', -⟩` from `exists_degenerationEndomorphism_of_admissibleBase R _ hAdm D A G hG U (r ≫ j) _ inferInstance inferInstance (hext _)`. Establish `hros` using `(rosatiAdjoint_and_linear_of_admissibleBase R _ hAdm D A G hG U E E' (by rw [hE, hE']; exact hiso)).2.1`. Establish `hEB : E.aB = qB ≫ incB` using `(over₀_onTorus_unique R _ hAdm D D A A G G U.toUnifPre U.toUnifPre E.aG).1 _ _ (lin_of_endU E).1.2.2.1 (by rw [hE]; exact FactorPol.over_comp hOq hOinc)`.
+
+Establish `hE'B : E'.aB = rB ≫ jB` using `(over₀_onTorus_unique R _ hAdm D D A A G G U.toUnifPre U.toUnifPre E'.aG).1 _ _ (lin_of_endU E').1.2.2.1 (by rw [hE']; exact FactorPol.over_comp hOr hOj)`. Use `haveI := E.homB`. Use `haveI := E'.homB`. Take `⟨u, hu, -⟩` from `exists_ros GlobalTheory.firstFiveLaws.1.globalFns D.toPre.P.isAb D.toPre.P.isLB E.aB E'.aB hros`. Introduce `T x z`.
+
+Rewrite using `[h1B T (x ≫ qB) z, Category.assoc, ← hEB, lam_of_rosatiGen D.toPre.P.isLB u hu, hE'B, Category.assoc, reassoc_of% hjrB]`.
+-/
 theorem adjCls_abelianPart : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D D₀ : DegData R (maximalIdeal R)) (A A₀ : PolAV (Sp (FractionRing R))) (G G₀ : Over (Sp R)) [GrpObj G] [IsCommMonObj G] [GrpObj G₀] [IsCommMonObj G₀], IsSemiAbelian G → IsSemiAbelian G₀ → ∀ (U : Unif (maximalIdeal R) D A G) (U₀ : Unif (maximalIdeal R) D₀ A₀ G₀), ∀ (q r : G ⟶ G₀) (inc j : G₀ ⟶ G), IsMonHom q → IsMonHom r → IsMonHom inc → IsMonHom j → inc ≫ q = 𝟙 G₀ → j ≫ r = 𝟙 G₀ → AdjCls (cls U.LG.L U.LG.isLB) (cls U₀.LG.L U₀.LG.isLB) q j → AdjCls (cls U.LG.L U.LG.isLB) (cls U₀.LG.L U₀.LG.isLB) r inc → ∀ (qB : D.toPre.P.A ⟶ D₀.toPre.P.A) (jB : D₀.toPre.P.A ⟶ D.toPre.P.A), IsMonHom qB → IsMonHom jB → Over₀ U.toUnifPre U₀.toUnifPre q qB → Over₀ U₀.toUnifPre U.toUnifPre j jB → AdjCls (cls D.toPre.P.L D.toPre.P.isLB) (cls D₀.toPre.P.L D₀.toPre.P.isLB) qB jB := by
   intro R _ _ _ hR D D₀ A A₀ G G₀ _ _ _ _ hG hG₀ U U₀ q r inc j hq hr hinc hj hiq hjr hqj hri qB jB hqB hjB hOq hOj
   obtain ⟨hAdm, hCZ⟩ := hR

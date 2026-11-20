@@ -7,6 +7,9 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Fo
 open scoped Classical
 
+/- English proof (translation)
+Use `fin_cases i`. Conclude with `⟨_, _, rfl⟩`. Conclude with `⟨_, _, rfl⟩`. Conclude with `⟨_, _, rfl⟩`. Conclude with `⟨_, _, rfl⟩`.
+-/
 private lemma p_form {F : Type} [Field F] [NumberField F] [IsTotallyReal F] (O : Ops F) (δ : F)
     (w : InfinitePlace F) (i : Fin 4) : ∃ (c : ℂ) (k : Fin 4), O.p δ w i = c • O.x w k := by
   fin_cases i
@@ -15,6 +18,9 @@ private lemma p_form {F : Type} [Field F] [NumberField F] [IsTotallyReal F] (O :
   · exact ⟨_, _, rfl⟩
   · exact ⟨_, _, rfl⟩
 
+/- English proof (translation)
+Take `⟨c, k, h⟩` from `p_form O δ w i`. Take `⟨c', k', h'⟩` from `p_form O δ w' j`. Rewrite using `[h, h', smul_mul_smul_comm, smul_mul_smul_comm, (weyl F O w w' k k').1, mul_comm c c']`.
+-/
 private lemma p_comm {F : Type} [Field F] [NumberField F] [IsTotallyReal F] (O : Ops F) (δ : F)
     (w w' : InfinitePlace F) (i j : Fin 4) :
     O.p δ w i * O.p δ w' j = O.p δ w' j * O.p δ w i := by
@@ -22,6 +28,11 @@ private lemma p_comm {F : Type} [Field F] [NumberField F] [IsTotallyReal F] (O :
   obtain ⟨c', k', h'⟩ := p_form O δ w' j
   rw [h, h', smul_mul_smul_comm, smul_mul_smul_comm, (weyl F O w w' k k').1, mul_comm c c']
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W O w w' i j`. Establish `hinv : W.Om (wW F) * W.Om (wW F)⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel, map_one]`. Establish `key : O.d w i * O.d w' j * W.Om (wW F) = O.d w' j * O.d w i * W.Om (wW F)`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.Fo.dComm :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (O : Ops F) w w' i j, O.d w i * O.d w' j = O.d w' j * O.d w i := by
   intro F E _ _ _ _ _ _ _ D W O w w' i j

@@ -11,6 +11,17 @@ open scoped LaurentSeries
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `hK E _ _ _ H Dw l Xo c K₁ _ _ d a' n`. Establish `hP : ∀ F ∈ sec Xo c a' n, ∃ P : MvPolynomial (ArcLt Dw) (LaurentSeries K₁), algebraMap _ (ArcS Dw K₁) P = evR Xo c F d.yF ∧ P.IsHomogeneous (absA Dw a')` using `fun F hF => GlobalTheory.ArcQ.evR_arc_isHomogeneous hK.laws hK.laws2 E H Dw l Xo c (hK.ev E H Dw l Xo c) K₁ d a' n F hF`. Establish `hcomp : ∀ a : c.F, algebraMap c.F (ArcS Dw K₁) a = algebraMap (MvPolynomial (ArcLt Dw) (LaurentSeries K₁)) (ArcS Dw K₁) (algebraMap c.F (MvPolynomial (ArcLt Dw) (LaurentSeries K₁)) a)` using `fun _ => rfl`. Establish `hnum : ∀ F : sec Xo c a' n, algebraMap _ (ArcS Dw K₁) (arcNum (evR Xo c F.1 d.yF)) = evR Xo c F.1 d.yF` using `fun F => (hP F.1 F.2).elim fun P hP' => by`. Rewrite using `[← hP'.1, LinOfPoly.arcNum_map]`.
+
+Establish `hadd : ∀ F G : sec Xo c a' n, arcNum (evR Xo c (F + G).1 d.yF) = arcNum (evR Xo c F.1 d.yF) + arcNum (evR Xo c G.1 d.yF)` using `fun F G => LinOfPoly.inj _ K₁ (by`. Rewrite using `[map_add, hnum, hnum, hnum, Submodule.coe_add, LinOfPoly.evR_add])`. Establish `hsmul : ∀ (a : c.F) (F : sec Xo c a' n), arcNum (evR Xo c (a • F).1 d.yF) = algebraMap c.F (MvPolynomial (ArcLt Dw) (LaurentSeries K₁)) a * arcNum (evR Xo c F.1 d.yF)` using `fun a F => LinOfPoly.inj _ K₁ (by`. Rewrite using `[hnum, Submodule.coe_smul, LinOfPoly.evR_smul, map_mul, hnum F, hcomp])`. Use `⟨⟨{ toFun := fun F => cfOf d.yF d.μ d.jj F.1, map_add' := ?_, map_smul' := ?_ }, fun F => rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce `F G`. Simplify using `only [cfOf]`. Rewrite using `[hadd, MvPolynomial.coeff_add, HahnSeries.coeff_add]`. Introduce `a F`. Simplify using `only [cfOf]`.
+
+Rewrite using `[hsmul, MvPolynomial.algebraMap_apply, MvPolynomial.coeff_C_mul, LinOfPoly.laur_alg, HahnSeries.C_mul_eq_smul, HahnSeries.coeff_smul, RingHom.id_apply]`. Simplify using `[Algebra.smul_def]`. Introduce `F hF hne`. Take `⟨P, hP1, hP2⟩` from `hP F hF`. Rewrite using `[← Finsupp.degree_eq_sum]`.
+
+Assume the negation of the conclusion as `hd`. Apply `hne` to reduce the goal to its premises. Simplify using `only [cfOf]`. Rewrite using `[← hP1, LinOfPoly.arcNum_map, hP2.coeff_eq_zero hd]`. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.ArcCM.cfOf_linear_and_degree : Known → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (K₁ : Type) [Field K₁] [Algebra c.F K₁] (d : ArcDatum Xo c K₁) (a' : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), (∃ φ : sec Xo c a' n →ₗ[c.F] K₁, ∀ F, φ F = cfOf d.yF d.μ d.jj F.1) ∧ ∀ F ∈ sec Xo c a' n, cfOf d.yF d.μ d.jj F ≠ 0 → ∑ v, d.μ v = absA Dw a' := by
   intro hK E _ _ _ H Dw l Xo c K₁ _ _ d a' n
   have hP : ∀ F ∈ sec Xo c a' n, ∃ P : MvPolynomial (ArcLt Dw) (LaurentSeries K₁),

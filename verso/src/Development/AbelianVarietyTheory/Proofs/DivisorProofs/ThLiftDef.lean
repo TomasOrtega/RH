@@ -16,6 +16,9 @@ def thLift {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (om : Rep σ X W) (Φ : (
     (μ : Measure (UA σ W.J)) (𝓕 : Set (UA σ W.J)) (f : UA σ W.J → ℂ) (g : UA σ X.J) : ℂ :=
   ∫ h in 𝓕, f h * (starRingEnd ℂ) (theta om Φ g h) ∂μ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem thLift_def {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (om : Rep σ X W) (Φ : (Fin n × Fin d → AF F) → ℂ)
     (μ : Measure (UA σ W.J)) (𝓕 : Set (UA σ W.J)) (f : UA σ W.J → ℂ) (g : UA σ X.J) :
     thLift om Φ μ 𝓕 f g = ∫ h in 𝓕, f h * (starRingEnd ℂ) (theta om Φ g h) ∂μ := rfl

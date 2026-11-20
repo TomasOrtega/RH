@@ -26,17 +26,30 @@ def liftSub {X : Scheme.{0}} {P : X.Modules} {S : ℕ → Subobject P} (hS : ∀
     exact ⟨c • x, Scheme.Modules.Hom.app_smul _ _ _,
       by rw [Scheme.Modules.Hom.app_smul]; exact W.smul_mem c hx⟩
 
+/- English proof (translation)
+Rewrite using `[← ConcreteCategory.comp_apply, ← Scheme.Modules.Hom.comp_app, incl_arrow]`.
+-/
 lemma incl_arrow_app {X : Scheme.{0}} {P : X.Modules} {S : ℕ → Subobject P}
     (hS : ∀ e, S (e + 1) ≤ S e) (e : ℕ) (V : X.Opens) (y : Γ((lvl S (e + 1) : X.Modules), V)) :
     (lvl S e).arrow.app V ((incl hS e).app V y) = (lvl S (e + 1)).arrow.app V y := by
   rw [← ConcreteCategory.comp_apply, ← Scheme.Modules.Hom.comp_app, incl_arrow]
 
+/- English proof (translation)
+Rewrite using `[← ConcreteCategory.comp_apply, ← Scheme.Modules.Hom.comp_app, incl_grπ]`. Both sides reduce to the same expression.
+-/
 lemma incl_grπ_app {X : Scheme.{0}} {P : X.Modules} {S : ℕ → Subobject P}
     (hS : ∀ e, S (e + 1) ≤ S e) (e : ℕ) (V : X.Opens) (y : Γ((lvl S (e + 1) : X.Modules), V)) :
     (grπ hS e).app V ((incl hS e).app V y) = 0 := by
   rw [← ConcreteCategory.comp_apply, ← Scheme.Modules.Hom.comp_app, incl_grπ]
   rfl
 
+/- English proof (translation)
+Consider the cases of `e with`. Consider the case `zero`. Establish `: IsIso (lvl S 0).arrow`. Express the relevant statement in the definitionally equal form `IsIso (⊤ : Subobject P).arrow`. Use `infer_instance`.
+
+Use `⟨(inv (lvl S 0).arrow).app (U : X.Opens) n, ?_⟩` and prove the remaining obligations. Rewrite using `[← ConcreteCategory.comp_apply, ← Scheme.Modules.Hom.comp_app, IsIso.inv_hom_id]`. Simplify using the standard rewrite rules. Consider the case `succ e`. Establish `h1 : n ∈ secs (powSub I P (e + 1)) (U : X.Opens)`.
+
+Rewrite using `[GlobalTheory.T.ideal_power_subobject_sections I P hP (e + 1) U U.2]`. Conclude with `hn`. Conclude with `(GlobalTheory.T.subobject_le_iff_affine_sections _ _).1 (hS.pow_le e) U h1`.
+-/
 lemma pow_smul_le_secs_lvl {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ideal A) {X : Scheme.{0}}
     [X.Over (Spec (.of A))] {P : X.Modules} (hP : P.IsQuasicoherent) {S : ℕ → Subobject P}
     (hS : ClosedSys I P S) (e : ℕ) (U : X.affineOpens) {n : Γ(P, U)}
@@ -56,6 +69,27 @@ lemma pow_smul_le_secs_lvl {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ide
       exact hn
     exact (GlobalTheory.T.subobject_le_iff_affine_sections _ _).1 (hS.pow_le e) U h1
 
+/- English proof (translation)
+Use `set W := Submodule.span Γ(X, U) (⋃ i, Set.range ((grT (anti hS) (hr i) e).app U)) with hW`. Establish `hgen : ∀ i, ∀ n ∈ (Ideal.map (toFunctions (A` using `A) (U : X.Opens)) (I ^ e) • ⊤ : Submodule Γ(X, U) Γ(P, U)), toFunctions (A := A) (U : X.Opens) (g i) • n ∈ liftSub (anti hS) (e + 1) (U : X.Opens) W := by`. Introduce `i n hn`. Take `⟨v, rfl⟩` from `pow_smul_le_secs_lvl I hP hS e U hn`. Use `⟨(mulLvl (hr i) e).app (U : X.Opens) v, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← ConcreteCategory.comp_apply, ← Scheme.Modules.Hom.comp_app, mulLvl_arrow, Scheme.Modules.Hom.comp_app, ConcreteCategory.comp_apply, GroundTheory.Arith.SchemeCoh.smulHom_app_apply]`. Use `congr 1`. Conclude with `restrictTop_restrict (homOfLE le_top) _`. Use `Submodule.subset_span (Set.mem_iUnion.2 ⟨i, (grπ (anti hS) e).app (U : X.Opens) v, ?_⟩)` and prove the remaining obligations. Rewrite using `[← ConcreteCategory.comp_apply, ← Scheme.Modules.Hom.comp_app, grπ_grT, Scheme.Modules.Hom.comp_app, ConcreteCategory.comp_apply]`.
+
+Establish `hle : (Ideal.map (toFunctions (A` using `A) (U : X.Opens)) (I ^ (e + 1)) • ⊤ : Submodule Γ(X, U) Γ(P, U)) ≤ liftSub (anti hS) (e + 1) (U : X.Opens) W := by`. Rewrite using `[pow_succ', Ideal.map_mul, Submodule.mul_smul, Submodule.smul_le]`. Introduce `r hr' n hn`. Rewrite `hr'` using `[← hg, Ideal.map_span]`. Proceed by induction on `hr' using Submodule.span_induction with`.
+
+Consider the case `mem x h`. Take `⟨_, ⟨i, rfl⟩, rfl⟩` from `h`. Conclude with `hgen i n hn`. Consider the case `zero => rw [zero_smul]`. Conclude with `Submodule.zero_mem _`.
+
+Consider the case `add a b _ _ ha hb => rw [add_smul]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul a b _ hb => rw [smul_eq_mul, mul_smul]`. Conclude with `Submodule.smul_mem _ a hb`. Use `haveI : ((lvl S (e + 1 + 1) : Subobject P) : X.Modules).IsQuasicoherent := hS.qcoh (e + 1)`.
+
+Use `haveI : ((lvl S (e + 1) : Subobject P) : X.Modules).IsQuasicoherent := hS.qcoh e`. Establish `hsur : Function.Surjective ((grπ (anti hS) (e + 1)).app (U : X.Opens))` using `surjective_cokernel_π_app (incl (anti hS) (e + 1)) U.2`. Rewrite using `[eq_top_iff]`. Introduce `s _`. Take `⟨x, rfl⟩` from `hsur s`.
+
+Establish `hq : ((powSub I P (e + 1) : Subobject P) : X.Modules).IsQuasicoherent` using `haveI := hP (closedSys_pow I P).qcoh e`. Establish `hx : (lvl S (e + 1)).arrow.app (U : X.Opens) x ∈ secs (S (e + 1) ⊔ powSub I P (e + 1)) (U : X.Opens)`. Rewrite using `[← hS.succ e]`. Conclude with `⟨x, rfl⟩`. Rewrite `hx` using `[(GlobalTheory.T.quasicoherent_sup_sections hP _ _ (hS.qcoh (e + 1)) hq).2 U U.2]`.
+
+Take `⟨_, ⟨y, rfl⟩, t, ht, hxy⟩` from `hx`. Rewrite `ht` using `[GlobalTheory.T.ideal_power_subobject_sections I P hP (e + 1) U U.2]`. Take `⟨x', hx't, hx'W⟩` from `hle ht`. Establish `hdec : x = (incl (anti hS) (e + 1)).app (U : X.Opens) y + x'`. Apply `injective_app_of_mono (lvl S (e + 1)).arrow (U : X.Opens)` to reduce the goal to its premises.
+
+Rewrite using `[map_add, hx't, hxy]`. Conclude with `congrArg (· + t) (incl_arrow_app (anti hS) (e + 1) (U : X.Opens) y).symm`. Establish `hz : ∀ z : Γ((lvl S (e + 1 + 1) : X.Modules), (U : X.Opens)), (grπ (anti hS) (e + 1)).app (U : X.Opens) ((incl (anti hS) (e + 1)).app (U : X.Opens) z + x') = (grπ (anti hS) (e + 1)).app (U : X.Opens) x'` using `fun z => by`. Rewrite using `[map_add, incl_grπ_app, zero_add]`. Rewrite using `[hdec]`.
+
+Conclude with `Eq.mpr (congrArg (· ∈ W) (hz y)) hx'W`.
+-/
 theorem span_grT_eq_top {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ideal A) {X : Scheme.{0}}
     [X.Over (Spec (.of A))] {P : X.Modules} (hP : P.IsQuasicoherent) (S : ℕ → Subobject P)
     (hS : ClosedSys I P S) {k : ℕ} (g : Fin k → A) (hg : Ideal.span (Set.range g) = I)

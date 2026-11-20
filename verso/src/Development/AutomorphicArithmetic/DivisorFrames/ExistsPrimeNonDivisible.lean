@@ -2,6 +2,13 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemRadicalOfHolomorphicRatioTendsto
 import Formalism.LocalToGlobal.ProjectiveLattices.ReadAlg
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨i₀, by simp⟩`. Consider the case `insert a s _ ih`. Take `⟨i, hi⟩` from `ih`. Break down `htot i a with h | h` into its components or cases.
+
+Use `⟨i, fun j hj => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hj with rfl | hj` into its components or cases. Conclude with `h`. Conclude with `hi j hj`. Use `⟨a, fun j hj => ?_⟩` and prove the remaining obligations.
+
+Break down `Finset.mem_insert.1 hj with rfl | hj` into its components or cases. Conclude with `(htot j j).elim id id`. Conclude with `htr _ _ _ h (hi j hj)`.
+-/
 private theorem exists_least_of_total {ι : Type} (r : ι → ι → Prop) (htot : ∀ i j, r i j ∨ r j i)
     (htr : ∀ i j k, r i j → r j k → r i k) (i₀ : ι) (s : Finset ι) : ∃ i, ∀ j ∈ s, r i j := by
   classical
@@ -19,6 +26,23 @@ private theorem exists_least_of_total {ι : Type} (r : ι → ι → Prop) (htot
       · exact (htot j j).elim id id
       · exact htr _ _ _ h (hi j hj)
 
+/- English proof (translation)
+Introduce `A _ _ _ _ m b d hd ⟨j₁, hj₁⟩`. Choose the witnesses or unpack the hypotheses as in `⟨P, hP, h1, hdP, hno⟩ : ∃ P : Ideal A, P.IsPrime ∧ P.height = 1 ∧ d ∈ P ∧ ¬ ∃ s, s ∉ P ∧ d ∣ s * b j₁ := by`. Assume the negation of the conclusion as `hcon`. Use `hj₁ (GlobalTheory.dvd_of_forall_height_eq_one hd fun P hP h1 hdP => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `hn`.
+
+Conclude with `hcon ⟨P, hP, h1, hdP, hn⟩`. Establish `hmul : ∀ {x y : A}, x ∉ P → y ∉ P → x * y ∉ P` using `fun hx hy h => (hP.mem_or_mem h).elim hx hy`. Take `⟨j₀, hj₀⟩` from `exists_least_of_total (fun i j => ∃ s, s ∉ P ∧ b i ∣ s * b j) (fun i j => GlobalTheory.ShFam.BdArc.dvd_or_dvd_of_height_eq_one P h1 (b i) (b j)) (by`. Introduce and unpack `i j k ⟨s, hs, u, hu⟩ ⟨s', hs', u', hu'⟩`. Use `⟨s * s', hmul hs hs', u * u', ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mul_assoc, hu', ← mul_assoc, hu, mul_assoc]) j₁ Finset.univ`. Use `choose s hs hsd using fun j => hj₀ j (Finset.mem_univ j)`. Establish `hS : (∏ j, s j) ∉ P`. Introduce `h`. Take `⟨j, -, hj⟩` from `(Ideal.IsPrime.prod_mem_iff (hp := hP)).1 h`.
+
+Conclude with `hs j hj`. Establish `hdiv : ∀ j, b j₀ ∣ (∏ j, s j) * b j` using `fun j => (hsd j).trans (mul_dvd_mul_right (Finset.dvd_prod_of_mem s (Finset.mem_univ j)) _)`. Generalize the expression as in `(∏ j, s j) = S at hS hdiv`. Use `choose c hc using hdiv`. Establish `hno' : ∀ x, x ∉ P → ¬ d ∣ x * b j₀`.
+
+Introduce `x hx h`. Use `hno ⟨x * S, hmul hx hS, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, hc j₁, ← mul_assoc]`. Conclude with `h.mul_right _`. Establish `hb0 : b j₀ ≠ 0` using `fun h => hno' S hS (by rw [h, mul_zero]; exact dvd_zero d)`.
+
+Establish `hcS : c j₀ = S` using `mul_left_cancel₀ hb0 (by rw [← hc j₀, mul_comm])`. Take `⟨s', hs', t', ht'⟩` from `(GlobalTheory.ShFam.BdArc.dvd_or_dvd_of_height_eq_one P h1 d (b j₀)).resolve_left (fun ⟨x, hx, h⟩ => hno' x hx h)`. Establish `ht'P : t' ∈ P`. Assume the negation of the conclusion as `hn`. Conclude with `hno' t' hn ⟨s', by rw [mul_comm t', ← ht', mul_comm]⟩`.
+
+Use `⟨P, S * t', fun j => s' * c j, j₀, hP, hdP, P.mul_mem_left _ ht'P, ?_, fun j => ?_⟩` and prove the remaining obligations. Simplify using `only [hcS]`. Conclude with `hmul hs' hS`. Use `hc j` as an intermediate fact. Simplify using `only`.
+
+Take the linear combination `t' * this - c j * ht'`.
+-/
 theorem UpperTheory.exists_prime_non_divisible :
     ∀ (A : Type) [CommRing A] [IsDomain A] [IsNoetherianRing A] [IsIntegrallyClosed A] (m : ℕ) (b : Fin m → A) (d : A), d ≠ 0 → (∃ j, ¬ d ∣ b j) → ∃ (P : Ideal A) (t : A) (c : Fin m → A) (j₀ : Fin m), P.IsPrime ∧ d ∈ P ∧ t ∈ P ∧ c j₀ ∉ P ∧ ∀ j, b j * t = d * c j := by
   intro A _ _ _ _ m b d hd ⟨j₁, hj₁⟩

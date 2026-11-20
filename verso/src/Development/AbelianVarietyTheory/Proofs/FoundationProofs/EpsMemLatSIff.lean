@@ -11,6 +11,13 @@ namespace GlobalTheory.GenusCong
 
 open GlobalTheory.NormSum.RepAt
 
+/- English proof (translation)
+Establish `haX : (a : R) • X ∈ matIn O n` using `fun i j => mul_mem a.2 (hX i j)`. Prove the components needed by the constructor for the conclusion. Introduce `hw`. Rewrite using `[Matrix.add_mulVec, Matrix.one_mulVec, smul_comm, Matrix.smul_mulVec]`. Conclude with `add_mem hw (hm _ haX _ hw)`.
+
+Introduce `hz`. Take `⟨W, hW, e⟩` from `mat_inv O a ha (m • X) (fun i j => mul_mem hmO (hX i j))`. Establish `e'` using `mul_eq_one_comm.1 e`. Establish `eW : W = 1 - m • ((a : R) • X * W)`. Rewrite using `[← e, add_mul, one_mul, smul_comm, Matrix.smul_mul, add_sub_cancel_right]`.
+
+Establish `h1 : w = W *ᵥ ((1 + (a : R) • m • X) *ᵥ w)`. Rewrite using `[Matrix.mulVec_mulVec, e', Matrix.one_mulVec]`. Generalize the expression as in `(1 + (a : R) • m • X) *ᵥ w = z at hz h1`. Rewrite using `[h1, eW, Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.smul_mulVec]`. Conclude with `sub_mem hz (hm _ (mul_mem haX hW) _ hz)`.
+-/
 theorem mem_iff_one_add {R : Type} [CommRing R] (O : Subring R) {n : ℕ} (L : Submodule O (Fin n → R))
     (m : R) (hmO : m ∈ O)
     (hm : ∀ Y ∈ matIn O n, ∀ u ∈ L, m • (Y *ᵥ u) ∈ L)
@@ -33,6 +40,9 @@ theorem mem_iff_one_add {R : Type} [CommRing R] (O : Subring R) {n : ℕ} (L : S
     rw [h1, eW, Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.smul_mulVec]
     exact sub_mem hz (hm _ (mul_mem haX hW) _ hz)
 
+/- English proof (translation)
+Establish `h1 : e • k = e • (1 + (e * p) • m • X)`. Rewrite using `[smul_add, smul_smul, smul_smul, ← mul_assoc, he, mul_assoc, mul_smul, ← h, smul_smul, he, smul_sub, add_sub_cancel]`. Rewrite using `[← Matrix.smul_mulVec, h1, Matrix.smul_mulVec, Matrix.mulVec_smul]`.
+-/
 theorem eps_mulVec {R : Type} [CommRing R] {n : ℕ} (e p m : R) (he : e * e = e)
     (k X : Matrix (Fin n) (Fin n) R) (h : e • (k - 1) = (p * m) • X) (u : Fin n → R) :
     e • (k *ᵥ u) = (1 + (e * p) • m • X) *ᵥ (e • u) := by
@@ -49,6 +59,13 @@ local notation "𝔸" => FiniteAdeleRing (𝓞 F) F
 local notation "𝒜" => E ⊗[F] FiniteAdeleRing (𝓞 F) F
 local notation "𝒮" => tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)
 
+/- English proof (translation)
+Take `⟨c₁, hc₁, h₁⟩` from `adelstabL_lower (F := F) Λ hspan`. Take `⟨c₂, hc₂, h₂⟩` from `adelstabL_upper (F := F) Λ hfin`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {c₁ * c₂}))`. Use `⟨Ideal.absNorm (Ideal.span {c₁ * c₂}), Nat.pos_of_ne_zero ?_, fun Y hY u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`.
+
+Conclude with `mul_ne_zero hc₁ hc₂`. Rewrite using `[← levelafC_nat, ← hc, levelafC_mul, levelafC_mul]`. Establish `e : (levelafC E c * (levelafC E c₁ * levelafC E c₂)) • (Y *ᵥ u) = fun i => levelafC E c₁ * ∑ j, levelafC E c * Y i j * (levelafC E c₂ * u j)`. Use extensionality with `i`. Rewrite using `[Pi.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct, Finset.mul_sum, Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Rewrite using `[e]`. Conclude with `h₁ _ fun i => sum_mem fun j _ => mul_mem (mul_mem (levelafC_mem c) (hY i j)) (h₂ u hu j)`.
+-/
 theorem exists_mult {n : ℕ} (Λ : Submodule (𝓞 E) (Fin n → E)) (hfin : Module.Finite (𝓞 E) Λ)
     (hspan : Submodule.span E (Λ : Set (Fin n → E)) = ⊤) :
     ∃ m : ℕ, 0 < m ∧ ∀ Y ∈ matIn 𝒮 n, ∀ u ∈ latS (F := F) 𝔸 𝒮 Λ,
@@ -69,6 +86,11 @@ theorem exists_mult {n : ℕ} (Λ : Submodule (𝓞 E) (Fin n → E)) (hfin : Mo
 
 end Ad
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ n Λ hfin hspan v`. Take `⟨m, hm0, hm⟩` from `exists_mult (F := F) Λ hfin hspan`. Establish `hpv` using `Ideal.absNorm_mem v.asIdeal`. Establish `hp : 0 < Ideal.absNorm v.asIdeal` using `Nat.pos_of_ne_zero (by rw [Ne, Ideal.absNorm_eq_zero_iff]; exact v.ne_bot)`. Generalize the expression as in `Ideal.absNorm v.asIdeal = p at hpv hp`.
+
+Use `⟨p * m, Nat.mul_pos hp hm0, fun k X hX h u => ?_⟩` and prove the remaining obligations. Rewrite `h` using `[← Nat.cast_smul_eq_nsmul (E ⊗[F] FiniteAdeleRing (𝓞 F) F), Nat.cast_mul]`. Rewrite using `[eps_mulVec _ _ _ (afsplit_eps_idem v) k X h u, eps_mul_nat]`. Set `a : intAd F` to `⟨afsplitI v p, afsplitI_mem_intAd v _ (natCast_mem _ _)⟩`. Conclude with `mem_iff_one_add _ _ _ (natCast_mem _ _) hm (incInt a) (unit_of_integral _ incInt_integral a (unit_intAd v p hpv a rfl)) X hX _`.
+-/
 theorem eps_mem_latS_iff : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ) (Λ : Submodule (𝓞 E) (Fin n → E)), Module.Finite (𝓞 E) Λ → Submodule.span E (Λ : Set (Fin n → E)) = ⊤ → ∀ (v : HeightOneSpectrum (𝓞 F)), ∃ D : ℕ, 0 < D ∧ ∀ (k X : Matrix (Fin n) (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)), (∀ i j, X i j ∈ tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)) → afsplitEps E v • (k - 1) = D • X → ∀ u : Fin n → E ⊗[F] FiniteAdeleRing (𝓞 F) F, afsplitEps E v • u ∈ latS (F := F) (FiniteAdeleRing (𝓞 F) F) (tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)) Λ ↔ afsplitEps E v • (k *ᵥ u) ∈ latS (F := F) (FiniteAdeleRing (𝓞 F) F) (tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)) Λ := by
   intro F E _ _ _ _ _ n Λ hfin hspan v
   obtain ⟨m, hm0, hm⟩ := exists_mult (F := F) Λ hfin hspan

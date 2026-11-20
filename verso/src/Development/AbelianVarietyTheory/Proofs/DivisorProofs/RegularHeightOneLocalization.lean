@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualHopfOrderGaussS
 import Mathlib
 open IsLocalRing Polynomial
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | (exact @GlobalTheory.EtaleSpreadReg.isRegularLocalRing_atPrime) | (exact GlobalTheory.EtaleSpreadReg.isRegularLocalRing_atPrime) | (intros; apply GlobalTheory.EtaleSpreadReg.isRegularLocalRing_atPrime <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.regular_height_one_localization : ∀ (A : Type) [CommRing A] [IsDomain A] [IsNoetherianRing A] [IsIntegrallyClosed A]
     (EA : Type) [CommRing EA] [Algebra (Polynomial A) EA] [Algebra A EA]
     [IsScalarTower A (Polynomial A) EA] [Algebra.Etale (Polynomial A) EA]

@@ -4,6 +4,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.T
 open NumberField UpperTheory.V UpperTheory.V.TR
 open private main sc_comm fin_sc from Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.ShortLatticeUnitarize.CompactBoxLattices.CentChar
 
+/- English proof (translation)
+Introduce `F _ _ _ π`. Take `⟨ω, hω⟩` from `main UpperTheory.V.Af.admissibleReal π`. Use `⟨ω, fun z φ hφ g => ?_, fun z x => Subtype.ext ?_⟩` and prove the remaining obligations. Conclude with `(congrArg φ.1 (sc_comm z g)).symm.trans (congrArg (fun ψ : Sm F 2 => ψ.1 g) (hω z φ hφ))`. Use `hω (GlobalTheory.CuspRep.finId F z) x.1 x.2` as an intermediate fact.
+
+Rewrite `this` using `[← fin_sc]`. Conclude with `this`.
+-/
 theorem UpperTheory.V.Af.Rn.centChar : UpperTheory.V.Sd.Wc.CentChar := by
   intro F _ _ _ π
   obtain ⟨ω, hω⟩ := main UpperTheory.V.Af.admissibleReal π

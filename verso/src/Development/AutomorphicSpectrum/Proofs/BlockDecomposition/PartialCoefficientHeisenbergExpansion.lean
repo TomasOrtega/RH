@@ -19,6 +19,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CompanionTheory.FJE.PcShear
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Establish `h : adj (0 : Mx D ρ p) = 0`. Use extensionality with `i j`. Simplify using `[adj]`. Use `show (HMul.hMul y (adj (0 : Mx D ρ p)) : Mx D ρ ρ) + (HMul.hMul (0 : Mx D ρ p) (adj y) : Mx D ρ ρ) = _`.
+
+Rewrite using `[h]`. Simplify using the standard rewrite rules.
+-/
 theorem jc_zero {D : D7} {ρ p : ℕ} (y : Mx D ρ p) : GlobalTheory.CompanionTheory.FJE.jc y 0 = 0 := by
   apply Subtype.ext
   have h : adj (0 : Mx D ρ p) = 0 := by
@@ -28,6 +33,15 @@ theorem jc_zero {D : D7} {ρ p : ℕ} (y : Mx D ρ p) : GlobalTheory.CompanionTh
   rw [h]
   simp
 
+/- English proof (translation)
+Take `⟨hadd, hnorm, -, -⟩` from `GlobalTheory.T.centre_character_properties ψ hψ b₀`. Establish `h0 : chz ψ b₀ (0 : hermA D ρ) = 1`. Establish `h` using `hadd 0 0`. Rewrite `h` using `[add_zero]`. Establish `hne : chz ψ b₀ (0 : hermA D ρ) ≠ 0`.
+
+Introduce `h'`. Use `hnorm 0` as an intermediate fact. Rewrite `this` using `[h']`. Simplify using `at this`. Conclude with `(mul_eq_left₀ hne).1 h.symm`.
+
+Establish `h1 : chz ψ b₀ z * chz ψ b₀ (-z) = 1`. Rewrite using `[← hadd, add_neg_cancel, h0]`. Establish `h2 : chz ψ b₀ z * conj (chz ψ b₀ z) = 1`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, hnorm]`. Simplify using the standard rewrite rules.
+
+Establish `hne : chz ψ b₀ z ≠ 0` using `left_ne_zero_of_mul_eq_one h1`. Conclude with `mul_left_cancel₀ hne (h1.trans h2.symm)`.
+-/
 theorem chz_neg {D : D7} {ρ : ℕ} (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsCharAF D.host.F ψ) (b₀ : HermE D ρ)
     (z : hermA D ρ) : chz ψ b₀ (-z) = conj (chz ψ b₀ z) := by
   obtain ⟨hadd, hnorm, -, -⟩ := GlobalTheory.T.centre_character_properties ψ hψ b₀
@@ -48,6 +62,11 @@ theorem chz_neg {D : D7} {ρ : ℕ} (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsCh
   have hne : chz ψ b₀ z ≠ 0 := left_ne_zero_of_mul_eq_one h1
   exact mul_left_cancel₀ hne (h1.trans h2.symm)
 
+/- English proof (translation)
+Unfold `zc`. Use `congr 1`. Use function extensionality and compare the values at `z`. Establish `hc : M.sh (GlobalTheory.CompanionTheory.FJE.rt ξ) * M.nzx z 0 = M.nzx z 0 * M.sh (GlobalTheory.CompanionTheory.FJE.rt ξ)`. Use `GlobalTheory.T.shift_conj_heisenberg M (GlobalTheory.CompanionTheory.FJE.rt ξ) z 0` as an intermediate fact.
+
+Rewrite `this` using `[jc_zero, add_zero]`. Then use the resulting hypothesis. Establish `hr : M.sh (GlobalTheory.CompanionTheory.FJE.rt ξ) ∈ GF D n` using `(GlobalTheory.T.rational_points_heisenberg_group M).1 ξ`. Rewrite using `[← mul_assoc, ← hc, mul_assoc, hF _ hr]`.
+-/
 theorem zc_sh {D : D7} {n ρ p : ℕ} {hn : ρ + p = n} (M : Maps D hn) (m : Meas D ρ p)
     (ψ : AddChar (AF D.host.F) ℂ) (b₀ : HermE D ρ) (F : G D n → ℂ) (hF : LeftInv (GF D n) F)
     (ξ : Matrix (Fin ρ) (Fin p) D.host.E) (k : G D n) :
@@ -61,6 +80,11 @@ theorem zc_sh {D : D7} {n ρ p : ℕ} {hn : ρ + p = n} (M : Maps D hn) (m : Mea
   have hr : M.sh (GlobalTheory.CompanionTheory.FJE.rt ξ) ∈ GF D n := (GlobalTheory.T.rational_points_heisenberg_group M).1 ξ
   rw [← mul_assoc, ← hc, mul_assoc, hF _ hr]
 
+/- English proof (translation)
+Use `set c : hermA D ρ := -GlobalTheory.CompanionTheory.FJE.jc (GlobalTheory.CompanionTheory.FJE.rt ξ) x with hc`. Establish `h1 : M.sh (GlobalTheory.CompanionTheory.FJE.rt ξ) * M.nzx c x = M.nzx 0 x * M.sh (GlobalTheory.CompanionTheory.FJE.rt ξ)`. Use `GlobalTheory.T.shift_conj_heisenberg M (GlobalTheory.CompanionTheory.FJE.rt ξ) c x` as an intermediate fact. Rewrite `this` using `[hc, neg_add_cancel]`. Then use the resulting hypothesis. Establish `h2 : M.nzx c x = M.nzx c 0 * M.nzx 0 x`.
+
+Rewrite using `[GlobalTheory.CompanionTheory.NzxAdd.nzx_add, add_zero, zero_add]`. Establish `h3 : M.nzx 0 x * (M.sh (GlobalTheory.CompanionTheory.FJE.rt ξ) * h) = M.sh (GlobalTheory.CompanionTheory.FJE.rt ξ) * (M.nzx c 0 * (M.nzx 0 x * h))`. Rewrite using `[← mul_assoc, ← h1, h2]`. Simplify using `only [mul_assoc]`. Rewrite using `[h3, zc_sh M m ψ b₀ F hF, GlobalTheory.T.centre_coefficient_equivariance M m ψ hψ b₀ F hF, hc, chz_neg ψ hψ, GlobalTheory.T.centre_character_commutator]`.
+-/
 theorem zc_at {D : D7} {n ρ p : ℕ} {hn : ρ + p = n} (M : Maps D hn) (m : Meas D ρ p)
     (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsCharAF D.host.F ψ) (b₀ : HermE D ρ) (F : G D n → ℂ)
     (hF : LeftInv (GF D n) F) (ξ : Matrix (Fin ρ) (Fin p) D.host.E) (h : G D n) (x : Mx D ρ p) :
@@ -78,6 +102,9 @@ theorem zc_at {D : D7} {n ρ p : ℕ} {hn : ρ + p = n} (M : Maps D hn) (m : Mea
     simp only [mul_assoc]
   rw [h3, zc_sh M m ψ b₀ F hF, GlobalTheory.T.centre_coefficient_equivariance M m ψ hψ b₀ F hF, hc, chz_neg ψ hψ, GlobalTheory.T.centre_character_commutator]
 
+/- English proof (translation)
+Introduce `D n ρ p hn M m ψ hψ b₀ F hF ξ h`. Unfold `PositivityTheory.Rg.Rsw.pc`. Use `congr 1`. Use function extensionality and compare the values at `x`. Conclude with `zc_at M m ψ hψ b₀ F hF ξ h x`.
+-/
 theorem pc_sh : ∀ {D : D7} {n ρ p : ℕ} {hn : ρ + p = n} (M : Maps D hn) (m : Meas D ρ p) (ψ : AddChar (AF D.host.F) ℂ), IsCharAF D.host.F ψ → ∀ (b₀ : HermE D ρ) (F : G D n → ℂ), LeftInv (GF D n) F → ∀ (ξ : Matrix (Fin ρ) (Fin p) D.host.E) (h : G D n), pc M m ψ b₀ F (M.sh (GlobalTheory.CompanionTheory.FJE.rt ξ) * h) = ∫ x in m.𝓕, conj (GlobalTheory.CompanionTheory.FJE.chv ψ b₀ x (GlobalTheory.CompanionTheory.FJE.rt ξ)) * zc M m ψ b₀ F (M.nzx 0 x * h) ∂m.μ := by
   intro D n ρ p hn M m ψ hψ b₀ F hF ξ h
   unfold PositivityTheory.Rg.Rsw.pc

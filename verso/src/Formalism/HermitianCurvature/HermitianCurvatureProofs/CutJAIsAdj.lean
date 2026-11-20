@@ -22,17 +22,29 @@ def adjSub : Subalgebra ℂ (DQ P).Pr where
     rw [Algebra.algebraMap_eq_smul_one]
     exact h
 
+/- English proof (translation)
+The claim follows from `(Formalism.FourierDecayAlt.P.adjoint_closed P.r P.TT).2.2.2 a ha`.
+-/
 theorem adjSub_star {a : (DQ P).Pr} (ha : a ∈ adjSub P) : star a ∈ adjSub P :=
   (Formalism.FourierDecayAlt.P.adjoint_closed P.r P.TT).2.2.2 a ha
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.adjoint_generators P.r P.TT hτ w hw`.
+-/
 theorem gen_adj (hτ : 0 ≤ P.TT) {w : (DQ P).Pr} (hw : w ∈ (DQ P).gens P.TT) : w ∈ adjSub P :=
   Formalism.FourierDecayAlt.P.adjoint_generators P.r P.TT hτ w hw
 
 abbrev MSa : Subalgebra ℂ (A P (DQ P)) := Formalism.FourierDecayAlt.P.MAx2.Jet.matSub (adjSub P) (M.Ty P)
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.MAx2.Jet.scalar_mem _ _ (gen_adj P hτ hw)`.
+-/
 theorem sc_memMS (hτ : 0 ≤ P.TT) {w : (DQ P).Pr} (hw : w ∈ (DQ P).gens P.TT) : sc P (DQ P) w ∈ MSa P :=
   Formalism.FourierDecayAlt.P.MAx2.Jet.scalar_mem _ _ (gen_adj P hτ hw)
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.star_apply]; exact adjSub_star P (ha j i)`.
+-/
 theorem star_memMS {a : A P (DQ P)} (ha : a ∈ MSa P) : star a ∈ MSa P := fun i j => by
   rw [Matrix.star_apply]; exact adjSub_star P (ha j i)
 
@@ -43,56 +55,115 @@ section Lv
 variable (hτ : 0 ≤ P.TT) {L : LevelData (A P (DQ P)) P.r} (hL : IsModelLevel P (DQ P) L)
 include hτ hL
 
+/- English proof (translation)
+Rewrite using `[hL.1]; exact sc_memMS P hτ (by simp [DAlg.gens])`.
+-/
 theorem lv_p (l : Fin P.r) : L.p l ∈ MSa P := by
   rw [hL.1]; exact sc_memMS P hτ (by simp [DAlg.gens])
+/- English proof (translation)
+Rewrite using `[hL.2.1]; exact sc_memMS P hτ (by simp [DAlg.gens])`.
+-/
 theorem lv_pb (l : Fin P.r) : L.pb l ∈ MSa P := by
   rw [hL.2.1]; exact sc_memMS P hτ (by simp [DAlg.gens])
+/- English proof (translation)
+Rewrite using `[hL.2.2.1]; exact sc_memMS P hτ (by simp [DAlg.gens])`.
+-/
 theorem lv_c (l : Fin P.r) : L.c l ∈ MSa P := by
   rw [hL.2.2.1]; exact sc_memMS P hτ (by simp [DAlg.gens])
+/- English proof (translation)
+Rewrite using `[hL.2.2.2.1]; exact sc_memMS P hτ (by simp [DAlg.gens])`.
+-/
 theorem lv_ci (l : Fin P.r) : L.ci l ∈ MSa P := by
   rw [hL.2.2.2.1]; exact sc_memMS P hτ (by simp [DAlg.gens])
+/- English proof (translation)
+Rewrite using `[hL.2.2.2.2.1]; exact sc_memMS P hτ (by simp [DAlg.gens])`.
+-/
 theorem lv_cb (l : Fin P.r) : L.cb l ∈ MSa P := by
   rw [hL.2.2.2.2.1]; exact sc_memMS P hτ (by simp [DAlg.gens])
+/- English proof (translation)
+Rewrite using `[hL.2.2.2.2.2.1]; exact sc_memMS P hτ (by simp [DAlg.gens])`.
+-/
 theorem lv_cbi (l : Fin P.r) : L.cbi l ∈ MSa P := by
   rw [hL.2.2.2.2.2.1]; exact sc_memMS P hτ (by simp [DAlg.gens])
+/- English proof (translation)
+Rewrite using `[hL.2.2.2.2.2.2.1]; exact sc_memMS P hτ (by simp [DAlg.gens])`.
+-/
 theorem zeta_mem_self_adjoint : L.ζ ∈ MSa P := by
   rw [hL.2.2.2.2.2.2.1]; exact sc_memMS P hτ (by simp [DAlg.gens])
+/- English proof (translation)
+Rewrite using `[hL.2.2.2.2.2.2.2.1]; exact sc_memMS P hτ (by simp [DAlg.gens])`.
+-/
 theorem lv_zi : L.ζi ∈ MSa P := by
   rw [hL.2.2.2.2.2.2.2.1]; exact sc_memMS P hτ (by simp [DAlg.gens])
+/- English proof (translation)
+Rewrite using `[hL.2.2.2.2.2.2.2.2.1]; exact sc_memMS P hτ (by simp [DAlg.gens])`.
+-/
 theorem lv_zb : L.ζb ∈ MSa P := by
   rw [hL.2.2.2.2.2.2.2.2.1]; exact sc_memMS P hτ (by simp [DAlg.gens])
+/- English proof (translation)
+Rewrite using `[hL.2.2.2.2.2.2.2.2.2.1]; exact sc_memMS P hτ (by simp [DAlg.gens])`.
+-/
 theorem lv_zbi : L.ζbi ∈ MSa P := by
   rw [hL.2.2.2.2.2.2.2.2.2.1]; exact sc_memMS P hτ (by simp [DAlg.gens])
+/- English proof (translation)
+Rewrite using `[hL.2.2.2.2.2.2.2.2.2.2.1]; exact sc_memMS P hτ (by simp [DAlg.gens])`.
+-/
 theorem lv_gg : L.GG ∈ MSa P := by
   rw [hL.2.2.2.2.2.2.2.2.2.2.1]; exact sc_memMS P hτ (by simp [DAlg.gens])
+/- English proof (translation)
+Rewrite using `[hL.2.2.2.2.2.2.2.2.2.2.2.1]; exact sc_memMS P hτ (by simp [DAlg.gens])`.
+-/
 theorem lv_ggi : L.GGi ∈ MSa P := by
   rw [hL.2.2.2.2.2.2.2.2.2.2.2.1]; exact sc_memMS P hτ (by simp [DAlg.gens])
+/- English proof (translation)
+Rewrite using `[hL.2.2.2.2.2.2.2.2.2.2.2.2.1]`. Use `Formalism.FourierDecayAlt.P.MAx2.Jet.diag_mem _ _ fun π => add_mem (gen_adj P hτ (by simp [DAlg.gens])) (Subalgebra.smul_mem _ (mul_mem (gen_adj P hτ (by simp [DAlg.gens])) (gen_adj P hτ (by simp [DAlg.gens]))) _)` and prove the remaining obligations.
+-/
 theorem lv_nab : L.nab ∈ MSa P := by
   rw [hL.2.2.2.2.2.2.2.2.2.2.2.2.1]
   refine Formalism.FourierDecayAlt.P.MAx2.Jet.diag_mem _ _ fun π => add_mem (gen_adj P hτ (by simp [DAlg.gens]))
     (Subalgebra.smul_mem _ (mul_mem (gen_adj P hτ (by simp [DAlg.gens])) (gen_adj P hτ (by simp [DAlg.gens]))) _)
+/- English proof (translation)
+Rewrite using `[hL.2.2.2.2.2.2.2.2.2.2.2.2.2.1]`. Use `Formalism.FourierDecayAlt.P.MAx2.Jet.diag_mem _ _ fun π => add_mem (neg_mem (gen_adj P hτ (by simp [DAlg.gens]))) (Subalgebra.smul_mem _ (mul_mem (gen_adj P hτ (by simp [DAlg.gens])) (gen_adj P hτ (by simp [DAlg.gens]))) _)` and prove the remaining obligations.
+-/
 theorem lv_nabs : L.nabs ∈ MSa P := by
   rw [hL.2.2.2.2.2.2.2.2.2.2.2.2.2.1]
   refine Formalism.FourierDecayAlt.P.MAx2.Jet.diag_mem _ _ fun π => add_mem (neg_mem (gen_adj P hτ (by simp [DAlg.gens])))
     (Subalgebra.smul_mem _ (mul_mem (gen_adj P hτ (by simp [DAlg.gens])) (gen_adj P hτ (by simp [DAlg.gens]))) _)
 
+/- English proof (translation)
+Unfold `LevelData.Dr`. Use `Subalgebra.list_prod_mem _ fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[List.mem_ofFn]`. Take `⟨l, rfl⟩` from `hx`. Conclude with `lv_c hτ hL l`.
+-/
 theorem lv_Dr : L.Dr ∈ MSa P := by
   unfold LevelData.Dr
   refine Subalgebra.list_prod_mem _ fun x hx => ?_
   rw [List.mem_ofFn] at hx; obtain ⟨l, rfl⟩ := hx; exact lv_c hτ hL l
+/- English proof (translation)
+Unfold `LevelData.Drb`. Use `Subalgebra.list_prod_mem _ fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[List.mem_ofFn]`. Take `⟨l, rfl⟩` from `hx`. Conclude with `lv_cb hτ hL l`.
+-/
 theorem lv_Drb : L.Drb ∈ MSa P := by
   unfold LevelData.Drb
   refine Subalgebra.list_prod_mem _ fun x hx => ?_
   rw [List.mem_ofFn] at hx; obtain ⟨l, rfl⟩ := hx; exact lv_cb hτ hL l
+/- English proof (translation)
+Unfold `LevelData.Dri`. Use `Subalgebra.list_prod_mem _ fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[List.mem_ofFn]`. Take `⟨l, rfl⟩` from `hx`. Conclude with `lv_ci hτ hL l`.
+-/
 theorem lv_Dri : L.Dri ∈ MSa P := by
   unfold LevelData.Dri
   refine Subalgebra.list_prod_mem _ fun x hx => ?_
   rw [List.mem_ofFn] at hx; obtain ⟨l, rfl⟩ := hx; exact lv_ci hτ hL l
+/- English proof (translation)
+Unfold `LevelData.Drbi`. Use `Subalgebra.list_prod_mem _ fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[List.mem_ofFn]`. Take `⟨l, rfl⟩` from `hx`. Conclude with `lv_cbi hτ hL l`.
+-/
 theorem lv_Drbi : L.Drbi ∈ MSa P := by
   unfold LevelData.Drbi
   refine Subalgebra.list_prod_mem _ fun x hx => ?_
   rw [List.mem_ofFn] at hx; obtain ⟨l, rfl⟩ := hx; exact lv_cbi hτ hL l
 
+/- English proof (translation)
+Unfold `LevelData.Tprod`. Use `Subalgebra.list_prod_mem _ fun M hM => ?_` and prove the remaining obligations. Rewrite `hM` using `[List.mem_reverse, List.mem_ofFn]`. Take `⟨l, rfl⟩` from `hM`. Introduce `i j`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp only [LevelData.Tl, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_fin_const]`. Conclude with `add_mem (Subalgebra.algebraMap_mem _ _) (lv_p hτ hL l)`. Conclude with `neg_mem (lv_c hτ hL l)`. Conclude with `lv_ci hτ hL l`. Conclude with `zero_mem _`.
+-/
 theorem lv_Tprod (Y : ℂ) : L.Tprod Y ∈ Formalism.FourierDecayAlt.P.MAx2.Jet.matSub (MSa P) (Fin 2) := by
   unfold LevelData.Tprod
   refine Subalgebra.list_prod_mem _ fun M hM => ?_
@@ -106,6 +177,11 @@ theorem lv_Tprod (Y : ℂ) : L.Tprod Y ∈ Formalism.FourierDecayAlt.P.MAx2.Jet.
   · exact lv_ci hτ hL l
   · exact zero_mem _
 
+/- English proof (translation)
+Unfold `LevelData.Tvprod`. Use `Subalgebra.list_prod_mem _ fun M hM => ?_` and prove the remaining obligations. Rewrite `hM` using `[List.mem_reverse, List.mem_ofFn]`. Take `⟨l, rfl⟩` from `hM`. Introduce `i j`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp only [LevelData.Tvl, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_fin_const]`. Conclude with `sub_mem (Subalgebra.algebraMap_mem _ _) (lv_pb hτ hL l)`. Conclude with `neg_mem (lv_cb hτ hL l)`. Conclude with `lv_cbi hτ hL l`. Conclude with `zero_mem _`.
+-/
 theorem lv_Tvprod (Y : ℂ) : L.Tvprod Y ∈ Formalism.FourierDecayAlt.P.MAx2.Jet.matSub (MSa P) (Fin 2) := by
   unfold LevelData.Tvprod
   refine Subalgebra.list_prod_mem _ fun M hM => ?_
@@ -119,6 +195,13 @@ theorem lv_Tvprod (Y : ℂ) : L.Tvprod Y ∈ Formalism.FourierDecayAlt.P.MAx2.Je
   · exact lv_cbi hτ hL l
   · exact zero_mem _
 
+/- English proof (translation)
+Establish `hl0 : ∀ Y, L.l0 Y ∈ MSa P` using `fun Y => by`. Unfold `LevelData.l0`. Conclude with `sub_mem (neg_mem (lv_nab hτ hL)) (mul_mem (Subalgebra.algebraMap_mem _ _) (mul_mem (lv_zb hτ hL) (lv_ggi hτ hL)))`. Establish `hm0 : ∀ Y, L.m0 Y ∈ MSa P` using `fun Y => by`. Unfold `LevelData.m0`.
+
+Conclude with `sub_mem (neg_mem (lv_nabs hτ hL)) (mul_mem (Subalgebra.algebraMap_mem _ _) (mul_mem (zeta_mem_self_adjoint hτ hL) (lv_ggi hτ hL)))`. Break down `hX with ((⟨Y, rfl⟩ | ⟨Y, rfl⟩) | ⟨Y, rfl⟩) | ⟨Y, rfl⟩` into its components or cases. Conclude with `mul_mem (lv_Dr hτ hL) (lv_Tprod hτ hL Y 0 0)`. Conclude with `mul_mem (mul_mem (lv_Drb hτ hL) (lv_gg hτ hL)) (add_mem (mul_mem (hl0 Y) (lv_Tprod hτ hL Y 0 0)) (lv_Tprod hτ hL Y 1 0))`. Conclude with `mul_mem (lv_Drb hτ hL) (lv_Tvprod hτ hL Y 0 0)`.
+
+Conclude with `mul_mem (mul_mem (lv_Dr hτ hL) (lv_gg hτ hL)) (add_mem (mul_mem (hm0 Y) (lv_Tvprod hτ hL Y 0 0)) (lv_Tvprod hτ hL Y 1 0))`.
+-/
 theorem lv_hat {X : A P (DQ P)} (hX : X ∈ hatSet P L) : X ∈ MSa P := by
   have hl0 : ∀ Y, L.l0 Y ∈ MSa P := fun Y => by
     unfold LevelData.l0
@@ -134,17 +217,30 @@ theorem lv_hat {X : A P (DQ P)} (hX : X ∈ hatSet P L) : X ∈ MSa P := by
   · exact mul_mem (mul_mem (lv_Dr hτ hL) (lv_gg hτ hL))
       (add_mem (mul_mem (hm0 Y) (lv_Tvprod hτ hL Y 0 0)) (lv_Tvprod hτ hL Y 1 0))
 
+/- English proof (translation)
+Introduce `a b` and use `by simp only [SS, Matrix.of_apply] split_ifs · exact Subalgebra.algebraMap_mem _ _ · exact zero_mem _`.
+-/
 theorem lv_SS (i : ℕ) : SS P (DQ P) i ∈ MSa P := fun a b => by
   simp only [SS, Matrix.of_apply]
   split_ifs
   · exact Subalgebra.algebraMap_mem _ _
   · exact zero_mem _
 
+/- English proof (translation)
+Establish `: kap P (DQ P) g = Matrix.diagonal fun π => algebraMap ℂ (DQ P).Pr (g π)` using `rfl`. Rewrite using `[this]`. Conclude with `Formalism.FourierDecayAlt.P.MAx2.Jet.diag_mem _ _ fun π => Subalgebra.algebraMap_mem _ _`.
+-/
 theorem lv_kap (g : M.Ty P → ℂ) : kap P (DQ P) g ∈ MSa P := by
   have : kap P (DQ P) g = Matrix.diagonal fun π => algebraMap ℂ (DQ P).Pr (g π) := rfl
   rw [this]
   exact Formalism.FourierDecayAlt.P.MAx2.Jet.diag_mem _ _ fun π => Subalgebra.algebraMap_mem _ _
 
+/- English proof (translation)
+Establish `hD : L.D ∈ MSa P` using `mul_mem (lv_Dr hτ hL) (zeta_mem_self_adjoint hτ hL)`. Establish `hDi : L.Di ∈ MSa P` using `mul_mem (lv_zi hτ hL) (lv_Dri hτ hL)`. Establish `hDb : L.Db ∈ MSa P` using `mul_mem (lv_Drb hτ hL) (lv_zb hτ hL)`. Establish `hDbi : L.Dbi ∈ MSa P` using `mul_mem (lv_zbi hτ hL) (lv_Drbi hτ hL)`. Establish `hS : ∀ i, L.Drb * L.Dri * SS P (DQ P) i ∈ MSa P` using `fun i => mul_mem (mul_mem (lv_Drb hτ hL) (lv_Dri hτ hL)) (lv_SS hτ hL i)`.
+
+Break down `hb with ((h4 | ⟨g, rfl⟩) | ⟨i, -, rfl⟩) | ⟨i, -, rfl⟩` into its components or cases. Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff] at h4`. Break down `h4 with rfl | rfl | rfl | rfl` into its components or cases. Conclude with `lv_zi hτ hL`. Conclude with `lv_zbi hτ hL`.
+
+Conclude with `mul_mem hD hDbi`. Conclude with `mul_mem hDb hDi`. Conclude with `lv_kap hτ hL g`. Conclude with `hS i`. Conclude with `star_memMS P (hS i)`.
+-/
 theorem lv_bdd {b : A P (DQ P)} (hb : b ∈ bddSet P L) : b ∈ MSa P := by
   have hD : L.D ∈ MSa P := mul_mem (lv_Dr hτ hL) (zeta_mem_self_adjoint hτ hL)
   have hDi : L.Di ∈ MSa P := mul_mem (lv_zi hτ hL) (lv_Dri hτ hL)
@@ -165,6 +261,11 @@ theorem lv_bdd {b : A P (DQ P)} (hb : b ∈ bddSet P L) : b ∈ MSa P := by
 
 end Lv
 
+/- English proof (translation)
+Introduce `P L hτ hL a ha`. Establish `hsub : Submonoid.closure (hatSet P L ∪ bddSet P L) ≤ (MSa P).toSubmonoid` using `Submonoid.closure_le.2 fun x hx => by`. Break down `hx with hx | hx` into its components or cases. Conclude with `lv_hat (le_of_lt hτ) hL hx`. Conclude with `lv_bdd (le_of_lt hτ) hL hx`.
+
+Introduce `π π'`. Conclude with `hsub ha π π'`.
+-/
 theorem transfer_is_adjoint_holds : JAIsAdj := by
   intro P L hτ hL a ha
   have hsub : Submonoid.closure (hatSet P L ∪ bddSet P L) ≤ (MSa P).toSubmonoid :=

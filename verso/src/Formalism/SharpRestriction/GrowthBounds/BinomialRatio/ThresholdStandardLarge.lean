@@ -10,6 +10,11 @@ def pairSet {s : ℕ} (r A : ℕ) (Ai Ci : Fin s → ℕ) :
     Set ((Fin (2 * s + 1 + 1) → Fin (r + 1) → ℤ) × (Fin r → ℤ)) :=
   {x | IsPair A Ai Ci x.1 x.2}
 
+/- English proof (translation)
+Establish `hc` using `chains_finite (r := r) hCD (kLetters A Ai Ci)`. Establish `hl : (⋃ mu ∈ {mu : Fin (2 * s + 1 + 1) → Fin (r + 1) → ℤ | IsChain (kLetters A Ai Ci) mu}, Set.Icc (fun i : Fin r => mu (Fin.last _) i.succ) (fun i : Fin r => mu (Fin.last _) i.castSucc)).Finite` using `hc.biUnion fun mu _ => Set.finite_Icc _ _`. Use `(hc.prod hl).subset ?_` and prove the remaining obligations. Introduce `t ht`. Use `⟨ht.1, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Set.mem_iUnion]`. Conclude with `⟨t.1, ht.1, fun i => (ht.2 i).1, fun i => (ht.2 i).2⟩`.
+-/
 theorem pairSet_finite (hCD : ChainDimAt) {s : ℕ} (r A : ℕ) (Ai Ci : Fin s → ℕ) : (pairSet r A Ai Ci).Finite := by
   classical
   have hc := chains_finite (r := r) hCD (kLetters A Ai Ci)
@@ -22,6 +27,9 @@ theorem pairSet_finite (hCD : ChainDimAt) {s : ℕ} (r A : ℕ) (Ai Ci : Fin s �
   simp only [Set.mem_iUnion]
   exact ⟨t.1, ht.1, fun i => (ht.2 i).1, fun i => (ht.2 i).2⟩
 
+/- English proof (translation)
+Unfold `symDim sd`. Rewrite using `[if_neg (by omega)]`. Simplify using the standard rewrite rules.
+-/
 theorem tl_symDim_nat (m g : ℕ) : symDim (m + 1) (g : ℤ) = sd m g := by
   unfold symDim sd
   rw [if_neg (by omega)]
@@ -29,6 +37,23 @@ theorem tl_symDim_nat (m g : ℕ) : symDim (m + 1) (g : ℤ) = sd m g := by
 
 open Classical in
 
+/- English proof (translation)
+Establish `e0 : ∑ x ∈ (pairSet_finite hCD r A Ai Ci).toFinset, wdim x.2 = ∑ᶠ x : (Fin (2 * s + 1 + 1) → Fin (r + 1) → ℤ) × (Fin r → ℤ), if IsPair A Ai Ci x.1 x.2 then wdim x.2 else 0`. Rewrite using `[finsum_eq_sum_of_support_subset (s := (pairSet_finite hCD r A Ai Ci).toFinset)]`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Establish `: IsPair A Ai Ci x.1 x.2` using `by simpa [pairSet] using hx`. Rewrite using `[if_pos this]`.
+
+Introduce `x hx`. Assume the negation of the conclusion as `hn`. Apply `hx` to reduce the goal to its premises. Establish `: ¬ IsPair A Ai Ci x.1 x.2` using `by simpa [pairSet] using hn`. Use `show (if IsPair A Ai Ci x.1 x.2 then wdim x.2 else 0) = 0`.
+
+Rewrite using `[if_neg this]`. Establish `hfin : (support fun x : (Fin (2 * s + 1 + 1) → Fin (r + 1) → ℤ) × (Fin r → ℤ) => if IsPair A Ai Ci x.1 x.2 then wdim x.2 else 0).Finite`. Use `(pairSet_finite hCD r A Ai Ci).subset fun x hx => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Apply `hx` to reduce the goal to its premises.
+
+Establish `: ¬ IsPair A Ai Ci x.1 x.2` using `hn`. Use `show (if IsPair A Ai Ci x.1 x.2 then wdim x.2 else 0) = 0`. Rewrite using `[if_neg this]`. Rewrite using `[e0, finsum_curry _ hfin]`. Establish `e1 : (dimMM (r + 1) (A : ℤ) Ai Ci : ℚ) = ∏ a, (sdXi (r + 1) ((kLetters A Ai Ci).deg a) : ℚ)`.
+
+Rewrite using `[prod_kLetters]`. Unfold `dimMM`. Simplify using `only [tl_symDim_nat]`. Use `push_cast`. Both sides reduce to the same expression.
+
+Rewrite using `[e1, ← hCD (2 * s + 1) (r + 1) (kLetters A Ai Ci)]`. Unfold `chainSum`. Use `finsum_congr fun mu => ?_` and prove the remaining obligations. Distinguish the cases in `hmu : IsChain (kLetters A Ai Ci) mu`. Rewrite using `[if_pos ⟨hmu, fun k => k.elim0⟩, hNB r _ (IsChain.anti_last hmu)]`.
+
+Use `finsum_congr fun lam => ?_` and prove the remaining obligations. Distinguish the cases in `hl : Inter (mu (Fin.last _)) lam`. Establish `hl' : ∀ i : Fin r, mu (Fin.last _) i.succ ≤ lam i ∧ lam i ≤ mu (Fin.last _) i.castSucc` using `hl`. Rewrite using `[if_pos hl', if_pos (show IsPair A Ai Ci mu lam from ⟨hmu, hl⟩)]`. Establish `hl' : ¬ ∀ i : Fin r, mu (Fin.last _) i.succ ≤ lam i ∧ lam i ≤ mu (Fin.last _) i.castSucc` using `hl`.
+
+Rewrite using `[if_neg hl', if_neg (show ¬ IsPair A Ai Ci mu lam from fun h => hl h.2)]`. Rewrite using `[if_neg (fun h => hmu h.1)]`. Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises. Introduce `lam`. Rewrite using `[if_neg (show ¬ IsPair A Ai Ci mu lam from fun h => hmu h.1)]`.
+-/
 theorem pair_sum (hCD : ChainDimAt) (hNB : NumBranchAt) {s : ℕ} (r A : ℕ) (Ai Ci : Fin s → ℕ) :
     ∑ x ∈ (pairSet_finite hCD r A Ai Ci).toFinset, wdim x.2 = (dimMM (r + 1) (A : ℤ) Ai Ci : ℚ) := by
   have e0 : ∑ x ∈ (pairSet_finite hCD r A Ai Ci).toFinset, wdim x.2 =
@@ -75,6 +100,13 @@ theorem pair_sum (hCD : ChainDimAt) (hNB : NumBranchAt) {s : ℕ} (r A : ℕ) (A
     rw [if_neg (show ¬ IsPair A Ai Ci mu lam from fun h => hmu h.1)]
 
 open Classical in
+/- English proof (translation)
+Unfold `keptPairSum`. Rewrite using `[finsum_eq_sum_of_support_subset (s := (pairSet_finite hCD r A Ai Ci).toFinset)]`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Establish `: IsPair A Ai Ci x.1 x.2` using `by simpa [pairSet] using hx`. Distinguish the cases in `hk : KeptPair p La Ai Ci x.1 x.2`.
+
+Rewrite using `[if_pos ⟨this, hk⟩, if_pos hk]`. Rewrite using `[if_neg (fun h => hk h.2), if_neg hk]`. Introduce `x hx`. Assume the negation of the conclusion as `hn`. Apply `hx` to reduce the goal to its premises.
+
+Establish `: ¬ IsPair A Ai Ci x.1 x.2` using `by simpa [pairSet] using hn`. Use `show (if IsPair A Ai Ci x.1 x.2 ∧ KeptPair p La Ai Ci x.1 x.2 then wdim x.2 else 0) = 0`. Rewrite using `[if_neg (fun h => this h.1)]`.
+-/
 theorem kept_sum (hCD : ChainDimAt) (p : ℕ) (La : ℝ) {s : ℕ} (r : ℕ) [NeZero r] (A : ℕ) (Ai Ci : Fin s → ℕ) :
     keptPairSum p La (r := r) A Ai Ci =
       ∑ x ∈ (pairSet_finite hCD r A Ai Ci).toFinset, if KeptPair p La Ai Ci x.1 x.2 then wdim x.2 else 0 := by
@@ -94,6 +126,19 @@ theorem kept_sum (hCD : ChainDimAt) (p : ℕ) (La : ℝ) {s : ℕ} (r : ℕ) [Ne
 
 open Classical in
 
+/- English proof (translation)
+Use `set F := (pairSet_finite hCD r A Ai Ci).toFinset with hF`. Use `set M : ℝ := (dimMM (r + 1) (A : ℤ) Ai Ci : ℝ) with hM`. Establish `hM0 : 0 ≤ M` using `Nat.cast_nonneg _`. Establish `h1 : (∑ x ∈ F, ((wdim x.2 : ℚ) : ℝ)) = M`. Use `pair_sum hCD hNB r A Ai Ci` as an intermediate fact.
+
+Establish `h2 : ((∑ x ∈ F, wdim x.2 : ℚ) : ℝ) = ((dimMM (r + 1) (A : ℤ) Ai Ci : ℚ) : ℝ)` using `by rw [hF, this]`. Move the coercions through the operations in `at h2`. Conclude with `h2`. Establish `h2 : ((keptPairSum p La (r` using `r) A Ai Ci : ℚ) : ℝ) = ∑ x ∈ F, if KeptPair p La Ai Ci x.1 x.2 then ((wdim x.2 : ℚ) : ℝ) else 0 := by`. Rewrite using `[kept_sum hCD]`.
+
+Use `push_cast`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Establish `h3 : ∀ x ∈ F, ((wdim x.2 : ℚ) : ℝ) - W * M ≤ if KeptPair p La Ai Ci x.1 x.2 then ((wdim x.2 : ℚ) : ℝ) else 0`. Introduce `x hx`.
+
+Establish `hp : IsPair A Ai Ci x.1 x.2` using `by simpa [hF, pairSet] using hx`. Establish `hWM : 0 ≤ W * M` using `mul_nonneg hW hM0`. Use `split_ifs with hk`. Combine the linear equalities and inequalities to obtain the conclusion. Use `hwt x.1 x.2 hp hk` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4` using `Finset.sum_le_sum h3`. Rewrite `h4` using `[Finset.sum_sub_distrib, h1, Finset.sum_const, nsmul_eq_mul, ← h2]`. Establish `h5 : (F.card : ℝ) ≤ Np`. Rewrite using `[hF, ← Set.ncard_eq_toFinset_card _ (pairSet_finite hCD r A Ai Ci)]`.
+
+Conclude with `hN`. Establish `h6 : (F.card : ℝ) * (W * M) ≤ e * M`. Establish `: (F.card : ℝ) * W ≤ e` using `le_trans (mul_le_mul_of_nonneg_right h5 hW) he`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem tail_core (hCD : ChainDimAt) (hNB : NumBranchAt) (p : ℕ) (La : ℝ) {s : ℕ} (r : ℕ) [NeZero r] (A : ℕ)
     (Ai Ci : Fin s → ℕ) (Np W e : ℝ) (hW : 0 ≤ W)
     (hN : ((pairSet r A Ai Ci).ncard : ℝ) ≤ Np)
@@ -135,6 +180,19 @@ theorem tail_core (hCD : ChainDimAt) (hNB : NumBranchAt) (p : ℕ) (La : ℝ) {s
       _ ≤ e * M := mul_le_mul_of_nonneg_right this hM0
   linarith
 
+/- English proof (translation)
+Use `set L := Real.log a with hLdef`. Establish `ha0 : 0 < a` using `by linarith`. Establish `hE : Real.exp (2 * L) = a ^ 2`. Rewrite using `[two_mul, Real.exp_add, hLdef, Real.exp_log ha0]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hE1 : 1 ≤ Real.exp (2 * L)` using `Real.one_le_exp (by linarith)`. Establish `hb1 : 8 * a ≤ Real.exp (2 * L)` using `by rw [hE]; nlinarith`. Establish `hb2 : 8 * a + k ≤ Real.exp (2 * L)` using `by rw [hE]; nlinarith`. Establish `hn1 : 4 * (N1 + 1) ^ 2 ≤ 16 * N1 ^ 2` using `by nlinarith`. Establish `hn2 : (2 * N1 + 2) ^ 2 ≤ 16 * N1 ^ 2` using `by nlinarith`.
+
+Establish `p1 : (8 * a) ^ (4 * (N1 + 1) ^ 2) ≤ Real.exp (((16 * N1 ^ 2 : ℕ) : ℝ) * (2 * L))`. Rewrite using `[Real.exp_nat_mul]`. Conclude with `le_trans (pow_le_pow_left₀ (by linarith) hb1 _) (pow_le_pow_right₀ hE1 hn1)`. Establish `p2 : (8 * a + k) ^ ((2 * N1 + 2) ^ 2) ≤ Real.exp (((16 * N1 ^ 2 : ℕ) : ℝ) * (2 * L))`. Rewrite using `[Real.exp_nat_mul]`.
+
+Conclude with `le_trans (pow_le_pow_left₀ (by linarith) hb2 _) (pow_le_pow_right₀ hE1 hn2)`. Establish `hN1 : (1 : ℝ) ≤ (N1 : ℝ)` using `by exact_mod_cast hN`. Establish `hNL : 1 ≤ (N1 : ℝ) ^ 2 * L` using `by nlinarith [mul_self_nonneg ((N1 : ℝ) - 1)]`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul p1 _ (by positivity) (Real.exp_pos _).le` to reduce the goal to its premises.
+
+Conclude with `mul_le_mul_of_nonneg_left p2 (Real.exp_pos _).le`. Use `_ = Real.exp (((16 * N1 ^ 2 : ℕ) : ℝ) * (2 * L) + (2 - C0 * (N1 : ℝ) ^ 2 * L / 5 + ((16 * N1 ^ 2 : ℕ) : ℝ) * (2 * L))) := by rw [Real.exp_add, Real.exp_add]`. Use `_ ≤ Real.exp (-(C0 * (N1 : ℝ) ^ 2 * L) / 8) := by`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Use `push_cast`.
+
+Establish `: 880 * ((N1 : ℝ) ^ 2 * L) ≤ C0 * ((N1 : ℝ) ^ 2 * L)` using `mul_le_mul_of_nonneg_right hC (by linarith)`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem tail_num (a k C0 : ℝ) (N1 : ℕ) (ha : 9 ≤ a) (hk0 : 0 ≤ k) (hk : k ≤ a) (hN : 1 ≤ N1) (hC : 880 ≤ C0)
     (hL : 1 ≤ Real.log a) :
     (8 * a) ^ (4 * (N1 + 1) ^ 2) *
@@ -195,12 +253,22 @@ def NotKeptWtAt (C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ) : Prop :=
 def RestPairCount : Prop := TransportedAlt fun C0 CYb Cde Ck CD Cb CE1 CE2 _ Cc => PairCountAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc
 def RestNotKeptWt : Prop := TransportedAlt fun C0 CYb Cde Ck CD Cb CE1 CE2 _ Cc => NotKeptWtAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc
 
+/- English proof (translation)
+The claim follows from `TransportedAlt.of_explicit (fun _ => 880) (fun _ _ => 1) (fun Cc _ CE1 CE2 _ => T2 CE1 CE2 Cc 1) fun _ _ _ _ _ _ _ _ _ _ hCc hC0 h880 h1 h2 _ _ _ _ _ _ _ _ _ t1 t2 t3 t4 t5 => ⟨h880, fun _ hD hI hc => std_of hCc hC0 h1 h2 le_rfl t1 t2 t3 t4 t5 hD hI hc⟩`.
+-/
 theorem threshold_standard_large : TransportedAlt fun C0 CYb Cde Ck CD Cb CE1 CE2 _ Cc => 880 ≤ C0 ∧
     ∀ X : Loc, D1num X → HIext C0 CYb Cde Ck CD Cb X → CBound Cc X → Std C0 Cde CE1 CE2 1 X :=
   TransportedAlt.of_explicit (fun _ => 880) (fun _ _ => 1) (fun Cc _ CE1 CE2 _ => T2 CE1 CE2 Cc 1)
     fun _ _ _ _ _ _ _ _ _ _ hCc hC0 h880 h1 h2 _ _ _ _ _ _ _ _ _ t1 t2 t3 t4 t5 =>
       ⟨h880, fun _ hD hI hc => std_of hCc hC0 h1 h2 le_rfl t1 t2 t3 t4 t5 hD hI hc⟩
 
+/- English proof (translation)
+Introduce `X _ hD hI hc j rz ry hd A hA1 hA2`. Establish `S` using `hstd X hD hI hc`. Establish `hk5` using `S.k5`. Establish `hkQ` using `S.kQ le_rfl`. Establish `hQ1` using `S.Q1`.
+
+Establish `hkb` using `S.kb`. Establish `hb1 : 1 ≤ X.b'` using `by nlinarith [pow_pos (show (0 : ℝ) < X.k by linarith) 3, pow_le_pow_left₀ (by norm_num : (0 : ℝ) ≤ 5) hk5 3]`. Establish `hka : X.k ≤ X.a` using `le_trans (le_mul_of_one_le_right (by linarith) hb1) hkb`. Establish `hb9 : 9 ≤ X.b'` using `by nlinarith [pow_le_pow_left₀ (by norm_num : (0 : ℝ) ≤ 5) hk5 3]`. Establish `ha9 : (9 : ℝ) ≤ X.a` using `le_trans hb9 S.ba`.
+
+Establish `hnum` using `tail_num X.a X.k C0 X.N1 ha9 (by linarith) hka S.N1pos h880 S.loga`. Establish `hLa : X.La C0 = C0 * (X.N1 : ℝ) ^ 2 * Real.log X.a` using `rfl`. Use `tail_core hCD hNB X.p (X.La C0) X.m A _ _ ((8 * (X.a : ℝ)) ^ (4 * (X.N1 + 1) ^ 2)) (Real.exp (2 - X.La C0 / 5) * (8 * (X.a : ℝ) + X.k) ^ ((2 * X.N1 + 2) ^ 2)) _ (by positivity) (hP X hD hI hc j rz ry hd A hA1 hA2) (hW X hD hI hc j rz ry hd A hA1 hA2) ?_` and prove the remaining obligations. Rewrite using `[hLa]`. Conclude with `hnum`.
+-/
 theorem tail_of {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ} (hCD : ChainDimAt) (hNB : NumBranchAt) (h880 : 880 ≤ C0)
     (hstd : ∀ X : Loc, D1num X → HIext C0 CYb Cde Ck CD Cb X → CBound Cc X → Std C0 Cde CE1 CE2 1 X)
     (hP : PairCountAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc) (hW : NotKeptWtAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc) :
@@ -223,6 +291,9 @@ theorem tail_of {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ} (hCD : ChainDimAt) (hNB :
   rw [hLa]
   exact hnum
 
+/- English proof (translation)
+Use `TransportedAlt.mono ?_ ((threshold_standard_large.and hP).and hW)` and prove the remaining obligations. Introduce and unpack `C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc ⟨⟨⟨h880, hstd⟩, hp⟩, hw⟩`. Conclude with `tail_of hCD hNB h880 hstd hp hw`.
+-/
 theorem restTail_of (hCD : ChainDimAt) (hNB : NumBranchAt) (hP : RestPairCount) (hW : RestNotKeptWt) : RestTail := by
   refine TransportedAlt.mono ?_ ((threshold_standard_large.and hP).and hW)
   rintro C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc ⟨⟨⟨h880, hstd⟩, hp⟩, hw⟩

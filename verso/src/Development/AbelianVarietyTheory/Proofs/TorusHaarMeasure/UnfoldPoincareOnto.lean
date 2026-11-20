@@ -30,6 +30,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 namespace GlobalTheory.PoincareClosed
 
+/- English proof (translation)
+Take `⟨-, hMeas, -, hExt⟩` from `GlobalTheory.FrameMeasureClosed.measure_statements (E := E)`. Establish `hUnf` using `GlobalTheory.Unfold.lintegral_unfold (E := E) hMeas`. Establish `hκ` using `GlobalTheory.kaFrame (E := E) GlobalTheory.FramePotential.frame_potential_basic GlobalTheory.MinorRatioNear.minorRatio_near (GlobalTheory.FrameSumBound.frame_sum_bound GlobalTheory.grpSep)`. Establish `hKa : KaUnfoldStatement (E` using `E) := GlobalTheory.kaUnfold_of_unfold_of_kappa hUnf hκ`. Establish `hPair : PairUnfoldStatement (E` using `E) := GlobalTheory.PairUnfold.pairUnfold_of_unfold (GlobalTheory.UnfoldComplex.unfold_integral hUnf) hKa`.
+
+Establish `hN` using `GlobalTheory.NormFactor.nfac_transform (E := E)`. Establish `hPoin : PoinStatement (E` using `E) := GlobalTheory.PoincareAssembly.poinStatement_of hκ (GlobalTheory.PointSup.pointSup hMeas GlobalTheory.OrthNear.orthNear hN) (GlobalTheory.norm_le_sqrt_weight_near_orthonormal hMeas GlobalTheory.OrthNear.orthNear hN) (GlobalTheory.PoinHol.poin_summable_isBddSec GlobalTheory.d …`. Conclude with `⟨hUnf, hKa, hPair, hPoin, onto_of hPoin hExt RhGradFStatement_holds exhaustG_holds hKa hPair bigCellStatement_holds OmFConnStatement_holds⟩`.
+-/
 theorem unfold_poincare_onto :
     (∀ (r : ℕ) (X : Data E r) (x0 : Frame X.Ψ r), IsOrth X x0 → ∀ FF, IsFundSet X x0 FF → ∀ ψ : Frame X.Ψ r → ℝ≥0∞, Measurable ψ → (∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, ψ (rmul x b) = ψ x) → ∫⁻ z, ψ (cpt X x0 z) ∂muF X x0 = ∫⁻ z in FF, ∑' γ : X.Γ, ψ (lact γ.1 (cpt X x0 z)) ∂muF X x0) ∧ (KaUnfoldStatement (E := E)) ∧ (PairUnfoldStatement (E := E)) ∧ (PoinStatement (E := E)) ∧ (OntoStatement (E := E)) := by
   obtain ⟨-, hMeas, -, hExt⟩ := GlobalTheory.FrameMeasureClosed.measure_statements (E := E)

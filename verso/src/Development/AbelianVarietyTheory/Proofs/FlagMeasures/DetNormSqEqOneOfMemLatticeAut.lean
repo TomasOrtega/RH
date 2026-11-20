@@ -10,6 +10,13 @@ namespace GlobalTheory.OrbitTerm
 open MeasureTheory NumberField Matrix Finset in
 open MeasureTheory NumberField Matrix Finset in
 
+/- English proof (translation)
+Introduce `E _ _ hE j Λ hΛ γ hγ`. Take `⟨κ, hκ, hcov⟩` from `(_root_.GlobalTheory.LatFacts.lattice_facts E hE j).1 Λ hΛ`. Establish `hpos` using `_root_.GlobalTheory.OrbitTerm.detNorm_pos_of_mem_autGL hγ`. Establish `h1` using `(hcov γ hpos).2.1`. Establish `h2` using `(hcov (_root_.GlobalTheory.OrbitTerm.oneInf E j) (by`.
+
+Rewrite using `[_root_.GlobalTheory.OrbitTerm.detNorm_oneInf]`. Conclude with `one_pos)).2.1`. Rewrite `h2` using `[_root_.GlobalTheory.OrbitTerm.detNorm_oneInf, div_one]`. Establish `hmul` using `_root_.GlobalTheory.FlagBase.Test.latAt_aut_mul E j Λ hγ (_root_.GlobalTheory.OrbitTerm.oneInf E j)`. Rewrite `hmul` using `[_root_.GlobalTheory.OrbitTerm.mul_oneInf]`.
+
+Rewrite `h1` using `[hmul, h2]`. Clear denominators, using `at h1` for the nonvanishing conditions. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem _root_.GlobalTheory.OrbitTerm.detNorm_eq_one_of_mem_autGL : ∀ (E : Type) [Field E] [NumberField E],
     IsTotallyComplex E → ∀ (j : ℕ) (Λ : Submodule (𝓞 E) (Fin j → E)), Submodule.IsLattice E Λ →
       ∀ γ ∈ _root_.GlobalTheory.FlagMeas.autGL E j Λ, _root_.GlobalTheory.FlagMeas.detNorm E j γ = 1 := by

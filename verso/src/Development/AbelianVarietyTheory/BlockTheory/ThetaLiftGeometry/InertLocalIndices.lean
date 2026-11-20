@@ -21,6 +21,9 @@ def LocAt (V : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) (x : Bridge.Gf V) 
     (Units.val (x : GL (Fin V.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E))).map
       (Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV D.host.F v') (AlgHom.id D.host.F D.host.E)) = 1
 
+/- English proof (translation)
+Introduce `v' _`. Simplify using `only [OneMemClass.coe_one, Units.val_one]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem locAt_one (V : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) : LocAt V v 1 := by
   intro v' _
   simp only [OneMemClass.coe_one, Units.val_one]
@@ -33,6 +36,9 @@ def HasResC (A : FamIn D.what₂.LL G Pl0 T D.R.m) (p : Pl0 → D.what₂.LL[X])
   ∀ P : A.ok A.μ0, Col.heckePoly (A.fam.R A.μ0).n (A.fam.R A.μ0).q x P =
     (p P.1 * (A.fam.R A.μ0).blockProd P).map D.what₂.embLL
 
+/- English proof (translation)
+Use `forall_congr' fun P => ?_` and prove the remaining obligations. Establish `h : Col.heckePoly (A.fam.R A.μ0).n (A.fam.R A.μ0).q (fun i => D.what₂.embLL (x i)) P = (Col.heckePoly (A.fam.R A.μ0).n (A.fam.R A.μ0).q x P).map D.what₂.embLL`. Unfold `Col.heckePoly`. Rewrite using `[Col.map_heckePolyOf]`. Conclude with `(Eq.congr h rfl).trans (Polynomial.map_injective _ D.what₂.embLL.injective).eq_iff`.
+-/
 theorem hasResC_map (p : Pl0 → D.what₂.LL[X]) (x : A.ok A.μ0 × ℕ → D.what₂.LL) :
     HasResC A p (fun i => D.what₂.embLL (x i)) ↔ (A.fam.R A.μ0).HasRes p x := by
   refine forall_congr' fun P => ?_

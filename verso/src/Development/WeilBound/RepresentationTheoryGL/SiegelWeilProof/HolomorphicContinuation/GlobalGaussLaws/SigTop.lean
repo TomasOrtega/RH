@@ -4,6 +4,9 @@ import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicC
 
 namespace PositivityTheory.Rg.Sw.Glob
 
+/- English proof (translation)
+The claim follows from `sigOK_of wittLBlt wittLBeq`.
+-/
 theorem sigOK : SigOK := sigOK_of wittLBlt wittLBeq
 
 end PositivityTheory.Rg.Sw.Glob

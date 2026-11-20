@@ -6,6 +6,9 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `E _ _ _ n L hL`. Conclude with `GlobalTheory.BCT.ClassFinLev.finite_doubleCoset_of_isOpen L hL`.
+-/
 theorem GlobalTheory.BCT.finite_doubleCoset_ratFinU_isOpen : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (L : Subgroup (finU E n)), IsOpen (L : Set (finU E n)) → Finite (DoubleCoset.Quotient (ratFinU E n : Set (finU E n)) (L : Set (finU E n))) := by
   intro E _ _ _ n L hL
   exact GlobalTheory.BCT.ClassFinLev.finite_doubleCoset_of_isOpen L hL

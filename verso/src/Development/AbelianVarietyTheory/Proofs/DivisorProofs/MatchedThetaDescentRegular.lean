@@ -14,6 +14,23 @@ namespace GlobalTheory.ThKTypes
 
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM μ 𝓕 hμ h𝓕 Φ`. Establish `hstab` using `(GlobalTheory.T.matched_pair_theta_exists_data hKP F E σ B a a' G X om om' R Rf hM).2`. Take `⟨h1, hmul, hcomm⟩` from `GlobalTheory.T.archimedean_level_subgroup_closed_mul F E σ (a + a') G.W B.emb`. Establish `hinv : ∀ k ∈ KInf σ G.W B.emb, k⁻¹ ∈ KInf σ G.W B.emb` using `fun k hk => GlobalTheory.ThetaFacCompl.inv_mem_KInf B.emb hk`. Set `ρ : UA σ G.W.J →* Module.End ℂ (Fn F a' (a + a'))` to `om'.comp (MonoidHom.inr _ _)`.
+
+Take `⟨m, τ, hτ, P, hPΦ, hPP, hjoint, htypes⟩` from `GlobalTheory.T.K_finite_vectors_finite_matrix_coeff (UA σ G.W.J) (KInf σ G.W B.emb) (Fn F a' (a + a')) ρ (PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁) h1 hmul hinv hstab (GlobalTheory.T.matched_triple_local_invariance hKP F E σ B a a' G X om om' R Rf hM) Φ`. Use `⟨m, τ, hτ, P, hPΦ, hPP, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `Ψ Ψ'`. Take `⟨n, c, k, hk, hx, -, hy⟩` from `hjoint Ψ Ψ'`. Rewrite using `[hx, hy]`.
+
+Conclude with `GlobalTheory.T.matched_triple_local_equivariance hKP F E σ B a a' G X om om' R Rf hM μ 𝓕 hμ h𝓕 _ Ψ.2 _ Ψ'.2 n c k hk`. Introduce `N hN _ Ψ hΨ`. Take `⟨n, c, k, hk, hx, -, -⟩` from `hjoint Ψ Ψ`. Rewrite using `[hx]`. Conclude with `Submodule.sum_mem _ fun i _ => N.smul_mem _ (hN.cpt _ (hk i) _ hΨ)`.
+
+Introduce `Ψ`. Take `⟨T, hT, hr⟩` from `htypes Ψ`. Conclude with `⟨T, hT, hr⟩`. Introduce `l hl Ψ hfix`. Take `⟨n, c, k, hk, hx, -, -⟩` from `hjoint Ψ Ψ`.
+
+Rewrite using `[hx, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Use `congr 1`. Use `show om' (1, l) (om' (1, k i) (Ψ : Fn F a' (a + a'))) = om' (1, k i) (Ψ : Fn F a' (a + a'))`.
+
+Establish `e : om' (1, l) (om' (1, k i) (Ψ : Fn F a' (a + a'))) = om' (1, k i) (om' (1, l) (Ψ : Fn F a' (a + a')))`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, Prod.mk_mul_mk, hcomm l hl (k i) (hk i)]`. Rewrite using `[e, hfix]`. Introduce `T hT Ψ`. Take `⟨n, c, k, hk, hx, hy, -⟩` from `hjoint Ψ (T Ψ)`.
+
+Establish `hPΨ : P Ψ = ∑ i, c i • (⟨om' (1, k i) (Ψ : Fn F a' (a + a')), hstab _ (hk i) _ Ψ.2⟩ : ↥(PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁))`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hx, Submodule.coe_sum]`. Both sides reduce to the same expression. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[hy, hPΨ, map_sum, Submodule.coe_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Submodule.coe_smul]`. Use `congr 1`. Conclude with `(hT (k i) (hk i) Ψ _ rfl).symm`.
+-/
 theorem exists_typeProj : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field
     E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B
     : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G

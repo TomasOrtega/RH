@@ -18,6 +18,9 @@ namespace Formalism.L2.SG.Pf.SzHypOf
 
 variable (D : D7) (e : InfinitePlace D.host.E ≃ D.what₂.Tau)
 
+/- English proof (translation)
+Unfold `Sz.Glob.place Formalism.L2.SG.SpectralTiesReal.gOf Formalism.MainNotions.BridgeLemma.cfgOf`. Use `congr 1`. Conclude with `(Formalism.MainNotions.BridgeLemma.m_eq D).symm`.
+-/
 theorem gOf_place (w : InfinitePlace D.host.E) :
     (Formalism.L2.SG.SpectralTiesReal.gOf D e).place w = Formalism.MainNotions.BridgeLemma.cfgOf D (e w) := by
   unfold Sz.Glob.place Formalism.L2.SG.SpectralTiesReal.gOf Formalism.MainNotions.BridgeLemma.cfgOf
@@ -26,11 +29,26 @@ theorem gOf_place (w : InfinitePlace D.host.E) :
 
 include e in
 
+/- English proof (translation)
+Rewrite using `[Fintype.card_congr e]`. Conclude with `Formalism.MainNotions.BridgeLemma.szf_card_Tau D`.
+-/
 theorem card_places : Fintype.card (InfinitePlace D.host.E) = D.R.f := by
   rw [Fintype.card_congr e]; exact Formalism.MainNotions.BridgeLemma.szf_card_Tau D
 
+/- English proof (translation)
+The claim follows from `card_places D e`.
+-/
 theorem gOf_f : (Formalism.L2.SG.SpectralTiesReal.gOf D e).f = D.R.f := card_places D e
 
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Establish `hk` using `Formalism.MainNotions.BridgeLemma.five_le_k D`. Unfold `Formalism.L2.SG.SpectralTiesReal.deOf`. Distinguish the cases in `hl : 1 ≤ l ∧ l + 2 ≤ D.R.k`. Rewrite using `[if_pos hl]`.
+
+Establish `hu` using `Formalism.MainNotions.BridgeLemma.cfg_u D u τ (h5 u τ) (l + 1) (by omega) (by omega)`. Establish `hv` using `Formalism.MainNotions.BridgeLemma.cfg_v D τ l hl.1 (by omega)`. Establish `hne1 : l + 1 ≠ 1` using `by omega`. Establish `hnek : l + 1 ≠ (Formalism.MainNotions.BridgeLemma.cfgOf D τ).k` using `by show l + 1 ≠ D.R.k; omega`. Unfold `Sz.Cfg.u at hu`.
+
+Rewrite `hu` using `[if_neg hne1, if_neg hnek, Nat.add_sub_cancel, hv]`. Establish `hD : (Formalism.MainNotions.BridgeLemma.cfgOf D τ).Del = (D.s.Del : ℝ)` using `rfl`. Rewrite `hu` using `[hD]`. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite using `[if_neg hl]`. Unfold `Formalism.MainNotions.BridgeLemma.deOf`. Rewrite using `[dif_neg (by omega)]`.
+-/
 theorem deOf_eq (h5 : ∀ (u : D.what₂.Word) τ, ¬ IsTop D τ → uOne D u τ D.R.k = vOne D τ (D.R.k - 1) - 1 / 2)
     (hDel : (D.s.Del : ℝ) ≠ 0) (τ : D.what₂.Tau) (u : D.what₂.Word) :
     Formalism.L2.SG.SpectralTiesReal.deOf D τ u = Formalism.MainNotions.BridgeLemma.deOf D u := by
@@ -55,6 +73,21 @@ theorem deOf_eq (h5 : ∀ (u : D.what₂.Word) τ, ¬ IsTop D τ → uOne D u τ
 
 variable {D e}
 
+/- English proof (translation)
+Establish `hHc` using `hH`. Take `⟨-, -, a3, a4, -, -, -, -, -, -, -, a12, -, a14, -, a16, -, -, a19, a20, -, -, -, -, -⟩` from `hHc`. Establish `hk5` using `Formalism.MainNotions.BridgeLemma.five_le_k D`. Establish `hk1 : (1 : ℝ) ≤ D.R.k` using `by exact_mod_cast (show 1 ≤ D.R.k by omega)`. Establish `hf1` using `Formalism.MainNotions.BridgeLemma.one_le_f D`.
+
+Establish `hL1` using `Formalism.MainNotions.BridgeLemma.one_le_L large₂`. Establish `hm` using `Formalism.MainNotions.BridgeLemma.m_eq D`. Use `⟨fun w => ?_, fun w => ?_, Formalism.MainNotions.BridgeLemma.one_lt_b large₂, ?_, ?_, a19, ?_, a12, a14, ?_, ?_, Formalism.MainNotions.BridgeLemma.szaMass_pos D _⟩` and prove the remaining obligations. Rewrite using `[gOf_place]`. Conclude with `Formalism.MainNotions.BridgeLemma.cfg_ok hD hH (e w)`.
+
+Rewrite using `[gOf_place]`. Conclude with `Formalism.MainNotions.BridgeLemma.cfg_small hH h40 (e w)`. Use `show 2 * D.R.rS + 2 ≤ Fintype.card _`. Rewrite using `[card_places D e, ← hm]`. Establish `h2` using `D.R.two_le_m`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `show Fintype.card _ ≤ D.R.k`. Rewrite using `[card_places D e]`. Conclude with `a4`. Use `show (2 * D.host.v) ^ D.R.f = (2 * D.host.v) ^ Fintype.card _`.
+
+Rewrite using `[card_places D e]`. Introduce `w j hj1 hjm`. Establish `hjm' : j ≤ D.R.m` using `by rw [hm]; exact hjm`. Establish `h` using `(a16 (e w) j hj1 hjm').1`. Use `show (D.R.k : ℝ) ^ (3 : ℝ) ≤ bOne D (e w) j`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `show ((D.R.k : ℝ) * (Fintype.card (InfinitePlace D.host.E) : ℝ) * Real.log large₂.sc.b) ^ (5 : ℝ) ≤ D.s.Del`. Rewrite using `[card_places D e, Formalism.MainNotions.BridgeLemma.log_b]`. Establish `hx : (1 : ℝ) ≤ (D.R.k : ℝ) * D.R.f * large₂.sc.L`. Use `mul_le_mul hk1 hf1 zero_le_one (by linarith)` as an intermediate fact.
+
+Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem gOf_hyp {large₂ : SizeData₂ D} {C0 C' Cl Cg cb Cu cT CT : ℝ} (hD : StandingNumericalData D C0)
     (hH : StandingHypotheses D large₂ C' Cl Cg cb Cu cT CT) (h40 : 40 ≤ Cl) : (Formalism.L2.SG.SpectralTiesReal.gOf D e).Hyp large₂.sc.b 5 3 := by
   have hHc := hH
@@ -92,6 +125,11 @@ theorem gOf_hyp {large₂ : SizeData₂ D} {C0 C' Cl Cg cb Cu cT CT : ℝ} (hD :
           Real.rpow_le_rpow_of_exponent_le hx (by linarith)
       _ ≤ _ := a20
 
+/- English proof (translation)
+Establish `hf1 : ((Formalism.L2.SG.SpectralTiesReal.gOf D e).size de T du).f = D.R.f` using `card_places D e`. Establish `hf2 : (Formalism.MainNotions.BridgeLemma.szaData D u).f = D.R.f` using `Formalism.MainNotions.BridgeLemma.szaData_f D u`. Unfold `Sz.SizeData.MassRatios at h ⊢`. Rewrite using `[hf1]`. Rewrite `h` using `[hf2]`.
+
+Conclude with `h`.
+-/
 theorem massRatios_of (de : ℕ → ℝ) (T : ℕ) (du : ℝ) (u : D.what₂.Word)
     (h : (Formalism.MainNotions.BridgeLemma.szaData D u).MassRatios) : ((Formalism.L2.SG.SpectralTiesReal.gOf D e).size de T du).MassRatios := by
   have hf1 : ((Formalism.L2.SG.SpectralTiesReal.gOf D e).size de T du).f = D.R.f := card_places D e
@@ -101,6 +139,11 @@ theorem massRatios_of (de : ℕ → ℝ) (T : ℕ) (du : ℝ) (u : D.what₂.Wor
   rw [hf2] at h
   exact h
 
+/- English proof (translation)
+Establish `h` using `Formalism.MainNotions.BridgeLemma.szaData_LBound D u`. Establish `hf1 : ((Formalism.L2.SG.SpectralTiesReal.gOf D e).size de T du).f = D.R.f` using `card_places D e`. Establish `hf2 : (Formalism.MainNotions.BridgeLemma.szaData D u).f = D.R.f` using `Formalism.MainNotions.BridgeLemma.szaData_f D u`. Unfold `Sz.SizeData.LBound at h ⊢`. Rewrite using `[hf1]`.
+
+Rewrite `h` using `[hf2]`. Conclude with `h`.
+-/
 theorem lBound_of (de : ℕ → ℝ) (T : ℕ) (du : ℝ) (u : D.what₂.Word) :
     ((Formalism.L2.SG.SpectralTiesReal.gOf D e).size de T du).LBound := by
   have h := Formalism.MainNotions.BridgeLemma.szaData_LBound D u
@@ -111,6 +154,11 @@ theorem lBound_of (de : ℕ → ℝ) (T : ℕ) (du : ℝ) (u : D.what₂.Word) :
   rw [hf2] at h
   exact h
 
+/- English proof (translation)
+Rewrite using `[← Equiv.prod_comp e]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Unfold `Sz.SizeData.dimPi`. Use `congr 1`. Use `show Sz.Vand D.R.k (((Formalism.L2.SG.SpectralTiesReal.gOf D e).place w).u (Formalism.L2.SG.SpectralTiesReal.deOf D τ0 u)) = vand (uS D u (e w))`.
+
+Rewrite using `[deOf_eq D h5 hDel τ0 u, gOf_place, Formalism.MainNotions.BridgeLemma.Vand_u D u (e w) (h5 u (e w))]`.
+-/
 theorem prod_dimPi (h5 : ∀ (u : D.what₂.Word) τ, ¬ IsTop D τ → uOne D u τ D.R.k = vOne D τ (D.R.k - 1) - 1 / 2)
     (hDel : (D.s.Del : ℝ) ≠ 0) (τ0 : D.what₂.Tau) (u : D.what₂.Word) (T : ℕ) (du : ℝ) :
     ∏ w, ((Formalism.L2.SG.SpectralTiesReal.gOf D e).size (Formalism.L2.SG.SpectralTiesReal.deOf D τ0 u) T du).dimPi w =
@@ -122,6 +170,11 @@ theorem prod_dimPi (h5 : ∀ (u : D.what₂.Word) τ, ¬ IsTop D τ → uOne D u
   show Sz.Vand D.R.k (((Formalism.L2.SG.SpectralTiesReal.gOf D e).place w).u (Formalism.L2.SG.SpectralTiesReal.deOf D τ0 u)) = vand (uS D u (e w))
   rw [deOf_eq D h5 hDel τ0 u, gOf_place, Formalism.MainNotions.BridgeLemma.Vand_u D u (e w) (h5 u (e w))]
 
+/- English proof (translation)
+Establish `hf1 : ((Formalism.L2.SG.SpectralTiesReal.gOf D e).size (Formalism.L2.SG.SpectralTiesReal.deOf D τ0 u) (D.mem u).A.T (D.duS u)).f = D.R.f` using `card_places D e`. Establish `hf2 : (Formalism.MainNotions.BridgeLemma.szaData D u).f = D.R.f` using `Formalism.MainNotions.BridgeLemma.szaData_f D u`. Establish `hp` using `prod_dimPi (e := e) h5 hDel τ0 u (D.mem u).A.T (D.duS u)`. Unfold `Sz.SizeData.ColumnCount Sz.SizeData.idxCol at h ⊢`. Rewrite using `[hp, hf1]`.
+
+Rewrite `h` using `[hf2]`. Conclude with `h`.
+-/
 theorem columnCount_of (h5 : ∀ (u : D.what₂.Word) τ, ¬ IsTop D τ → uOne D u τ D.R.k = vOne D τ (D.R.k - 1) - 1 / 2)
     (hDel : (D.s.Del : ℝ) ≠ 0) (τ0 : D.what₂.Tau) (u : D.what₂.Word)
     (h : (Formalism.MainNotions.BridgeLemma.szaData D u).ColumnCount) :
@@ -135,6 +188,11 @@ theorem columnCount_of (h5 : ∀ (u : D.what₂.Word) τ, ¬ IsTop D τ → uOne
   rw [hf2] at h
   exact h
 
+/- English proof (translation)
+Establish `hf1 : ((Formalism.L2.SG.SpectralTiesReal.gOf D e).size de T du).f = D.R.f` using `card_places D e`. Establish `hf2 : (Formalism.MainNotions.BridgeLemma.szaData D u).f = D.R.f` using `Formalism.MainNotions.BridgeLemma.szaData_f D u`. Establish `hd : ∏ w, ((Formalism.L2.SG.SpectralTiesReal.gOf D e).size de T du).dsig w = ∏ τ, (Formalism.MainNotions.BridgeLemma.szaData D u).dsig τ`. Rewrite using `[← Equiv.prod_comp e]`. Both sides reduce to the same expression.
+
+Unfold `Sz.SizeData.Dstar Sz.SizeData.idxRow`. Rewrite using `[hd, hf1, hf2]`. Both sides reduce to the same expression.
+-/
 theorem dstar_eq (de : ℕ → ℝ) (T : ℕ) (du : ℝ) (u : D.what₂.Word) :
     ((Formalism.L2.SG.SpectralTiesReal.gOf D e).size de T du).Dstar = (Formalism.MainNotions.BridgeLemma.szaData D u).Dstar := by
   have hf1 : ((Formalism.L2.SG.SpectralTiesReal.gOf D e).size de T du).f = D.R.f := card_places D e
@@ -145,6 +203,13 @@ theorem dstar_eq (de : ℕ → ℝ) (T : ℕ) (du : ℝ) (u : D.what₂.Word) :
   rw [hd, hf1, hf2]
   rfl
 
+/- English proof (translation)
+Establish `hk` using `Formalism.MainNotions.BridgeLemma.five_le_k D`. Take `⟨a, ha⟩` from `Function.ne_iff.1 (hne u u' huu τ)`. Establish `ha' : uOne D u τ (a.1 + 1) ≠ uOne D u' τ (a.1 + 1)`. Rewrite using `[Formalism.MainNotions.BridgeLemma.uOne_succ D u τ a.1 a.2, Formalism.MainNotions.BridgeLemma.uOne_succ D u' τ a.1 a.2]`. Conclude with `ha`.
+
+Establish `h0 : a.1 ≠ 0`. Introduce `h`. Apply `ha'` to reduce the goal to its premises. Rewrite using `[h, Formalism.MainNotions.BridgeLemma.uOne_one D u τ, Formalism.MainNotions.BridgeLemma.uOne_one D u' τ]`. Establish `hl : a.1 + 1 ≠ D.R.k`.
+
+Introduce `h`. Apply `ha'` to reduce the goal to its premises. Rewrite using `[h, Formalism.MainNotions.BridgeLemma.uOne_last D u τ, Formalism.MainNotions.BridgeLemma.uOne_last D u' τ]`. Establish `hak` using `a.2`. Conclude with `⟨a.1, by omega, by omega, Formalism.MainNotions.BridgeLemma.deOf_ne D u u' τ (fun w => h5 w τ) a.1 (by omega) (by omega) ha'⟩`.
+-/
 theorem exists_continuousLinearMap_tens_update (h5 : ∀ (u : D.what₂.Word) τ, ¬ IsTop D τ → uOne D u τ D.R.k = vOne D τ (D.R.k - 1) - 1 / 2)
     (hne : ∀ u u' : D.what₂.Word, u ≠ u' → ∀ τ, uS D u τ ≠ uS D u' τ) {u u' : D.what₂.Word} (huu : u ≠ u')
     (τ : D.what₂.Tau) : ∃ l, 1 ≤ l ∧ l + 2 ≤ D.R.k ∧ Formalism.MainNotions.BridgeLemma.deOf D u l ≠ Formalism.MainNotions.BridgeLemma.deOf D u' l := by
@@ -175,6 +240,47 @@ def ThresholdAtPlaces (CA : ℝ) (D : D7) (u u' : D.what₂.Word) : Prop :=
     (Formalism.L2.SG.SpectralTiesReal.lOf D (Formalism.MainNotions.BridgeLemma.deOf D u) (Formalism.MainNotions.BridgeLemma.deOf D u')))
     ((Th ^ (Formalism.L2.SG.SpectralTiesReal.gOf D (Formalism.L2.Geo.Rec.StarEmbeddingNorm.ePl D).symm).f)⁻¹)
 
+/- English proof (translation)
+Establish `hk5` using `Formalism.MainNotions.BridgeLemma.five_le_k D`. Establish `hDc` using `hD`. Take `⟨-, -, -, -, d5, -, -, d8, d9, d10, -⟩` from `hDc`. Establish `hHc` using `hH`. Take `⟨a1, a2, a3, -, -, a6, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, a23, -, -⟩` from `hHc`.
+
+Establish `hL1` using `Formalism.MainNotions.BridgeLemma.one_le_L large₂`. Establish `hm` using `Formalism.MainNotions.BridgeLemma.m_eq D`. Establish `hfpos : 0 < D.R.f`. Establish `h2` using `D.R.two_le_m`. Establish `: 1 ≤ D.R.m ^ 4` using `Nat.one_le_pow _ _ (by omega)`.
+
+Use linear arithmetic over natural numbers and integers. Use `haveI : Nonempty D.what₂.Tau := Fintype.card_pos_iff.1 (by rw [Formalism.MainNotions.BridgeLemma.szf_card_Tau]; exact hfpos)`. Take `⟨τ0⟩` from `(inferInstance : Nonempty D.what₂.Tau)`. Establish `hDel : (D.s.Del : ℝ) ≠ 0`. Use `(Formalism.MainNotions.BridgeLemma.cfg_ok hD hH τ0).hDel` as an intermediate fact.
+
+Conclude with `ne_of_gt (lt_of_lt_of_le one_pos this)`. Use `set e := (Formalism.L2.Geo.Rec.StarEmbeddingNorm.ePl D).symm with he`. Establish `hdu` using `deOf_eq D d5 hDel τ0 u`. Establish `hdu'` using `deOf_eq D d5 hDel τ0 u'`. Establish `hfR : ((Formalism.L2.SG.SpectralTiesReal.gOf D e).f : ℝ) = (D.R.f : ℝ)` using `by exact_mod_cast card_places D e`.
+
+Establish `hmR : ((Formalism.L2.SG.SpectralTiesReal.gOf D e).m : ℝ) = (D.R.m : ℝ)` using `by show ((2 * D.R.rS + 2 : ℕ) : ℝ) = _`. Rewrite using `[hm]`. Establish `hlogb` using `Formalism.MainNotions.BridgeLemma.log_b large₂`. Establish `cc` using `columnCount_of (e := e) d5 hDel τ0 u (Formalism.MainNotions.BridgeLemma.szaData_ColumnCount D u hR.2.1 hR.2.2.1)`. Establish `cc'` using `columnCount_of (e := e) d5 hDel τ0 u' (Formalism.MainNotions.BridgeLemma.szaData_ColumnCount D u' hR.2.1 hR.2.2.1)`.
+
+Rewrite `cc` using `[hdu]`. Rewrite `cc'` using `[hdu']`. Establish `hDs : ∀ (w : D.what₂.Word) (de : ℕ → ℝ) (Tw : ℕ) (dw : ℝ), ((Formalism.L2.SG.SpectralTiesReal.gOf D e).size de Tw dw).Dstar = D.what₂.Dstar` using `fun w de Tw dw => (dstar_eq de Tw dw w).trans (Formalism.MainNotions.BridgeLemma.szaData_Dstar D w hR.2.1 hR.2.2.1)`. Establish `hΓ : ∀ w : D.what₂.Word, Real.exp (large₂.CGam * ((Formalism.L2.SG.SpectralTiesReal.gOf D e).m : ℝ) ^ 5 * ((Formalism.L2.SG.SpectralTiesReal.gOf D e).f : ℝ) * Real.log large₂.sc.b) = (D.mem w).A.GamP`. Introduce `w`.
+
+Rewrite using `[hmR, hfR, hlogb, ← Formalism.MainNotions.S.gamOf_eq large₂ w]`. Both sides reduce to the same expression. Establish `hcho : ∀ (w : D.what₂.Word) (de : ℕ → ℝ), ((Formalism.L2.SG.SpectralTiesReal.gOf D e).size de (D.mem w).A.T (D.duS w)).ChoiceOfT C0 (Real.exp (large₂.CGam * ((Formalism.L2.SG.SpectralTiesReal.gOf D e).m : ℝ) ^ 5 * ((Formalism.L2.SG.SpectralTiesReal.gOf D e).f : ℝ) * Real.log larg …`. Introduce `w de`. Unfold `Sz.SizeData.ChoiceOfT`.
+
+Rewrite using `[hΓ w, hDs w de]`. Take `⟨l1, l2⟩` from `d10 w`. Rewrite `l1` using `[zpow_neg, zpow_ofNat, div_eq_mul_inv]`. Rewrite `l2` using `[zpow_neg, zpow_ofNat]`. Conclude with `⟨l1, l2⟩`.
+
+Establish `hfdl : ∀ (w : InfinitePlace D.host.E) (de : ℕ → ℝ) (Tw : ℕ) (dw : ℝ), Sz.FormalDegreeLower ((Formalism.L2.SG.SpectralTiesReal.gOf D e).place w) (1 / 2) (((Formalism.L2.SG.SpectralTiesReal.gOf D e).size de Tw dw).VV w)`. Introduce `w de Tw dw`. Rewrite using `[gOf_place]`. Establish `hn : D.R.k + (2 * D.R.rS + 2) - 1 = D.R.r` using `by rw [Formalism.MainNotions.BridgeLemma.sza_r_eq]; omega`. Establish `h` using `hR.2.2.2 (e w)`.
+
+Unfold `VV at h`. Unfold `Sz.SizeData.VV Sz.SizeData.n Sz.SizeData.m`. Use `show _ ≤ D.dsig (e w) * ((Sz.sfac (D.R.k + (2 * D.R.rS + 2) - 1) : ℕ) : ℝ)`. Rewrite using `[hn, Sz.sfac, Nat.cast_prod]`. Conclude with `h`.
+
+Establish `hex` using `exists_continuousLinearMap_tens_update d5 d8 huu τ0`. Establish `hlOf : Formalism.L2.SG.SpectralTiesReal.lOf D (Formalism.MainNotions.BridgeLemma.deOf D u) (Formalism.MainNotions.BridgeLemma.deOf D u') = Nat.find hex`. Unfold `Formalism.L2.SG.SpectralTiesReal.lOf`. Conclude with `dif_pos hex`. Establish `hsl` using `Nat.find_spec hex`.
+
+Take `⟨Th, hTh, hG⟩` from `hThr`. Use `⟨e, τ0, C', Th, 256, fun x => Formalism.L2.SG.Pf.CarrierTop.placeTie_ePl T.X x, hk0, ?_, ?_, ?_, ?_, ?_, hDs u _ _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[hdu, hdu']`. Use `⟨gOf_hyp hD hH (by linarith), Formalism.MainNotions.BridgeLemma.isWord_deOf D u, Formalism.MainNotions.BridgeLemma.isWord_deOf D u', ?_, ?_, ?_, ?_, ?_, a1, ?_, massRatios_of _ _ _ u (Formalism.MainNotions.BridgeLemma.szaData_MassRatios D u hR.1), lBound_of _ _ _ u, cc, cc', hcho …` and prove the remaining obligations. Rewrite using `[hlOf]`.
+
+Conclude with `hsl.1`. Rewrite using `[hlOf]`. Conclude with `hsl.2.1`. Rewrite using `[hlOf]`. Conclude with `hsl.2.2`.
+
+Rewrite using `[hmR]`. Conclude with `(a23 u).1`. Rewrite using `[hmR]`. Conclude with `(a23 u').1`. Rewrite using `[hmR, hfR, hlogb]`.
+
+Conclude with `a2`. Unfold `Sz.cExp`. Evaluate the numerical expressions. Use `show (256 : ℝ) * Real.log large₂.sc.b ≤ ((Formalism.L2.SG.SpectralTiesReal.gOf D e).f : ℝ) * Real.log (D.R.k : ℝ)`. Rewrite using `[hfR, hlogb]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hkR : C' * (D.R.m : ℝ) ^ 5 * D.R.f * large₂.sc.L ≤ D.R.k` using `a2`. Establish `hm2 : (2 : ℝ) ≤ D.R.m` using `by exact_mod_cast D.R.two_le_m`. Establish `hmf : (D.R.m : ℝ) ≤ D.R.f`. Establish `h` using `D.R.two_le_m`.
+
+Establish `: D.R.m ≤ D.R.f` using `le_trans (Nat.le_self_pow (by norm_num) _) a3`. Conclude with `this` after adjusting the coercions. Establish `hf1` using `Formalism.MainNotions.BridgeLemma.one_le_f D`. Establish `hm5 : (32 : ℝ) ≤ (D.R.m : ℝ) ^ 5`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h1 : (7 : ℝ) * D.R.f ≤ D.R.k`. Establish `: (70 * 32 : ℝ) * D.R.f * 1 ≤ C' * (D.R.m : ℝ) ^ 5 * D.R.f * large₂.sc.L` using `by gcongr`. Use the polynomial consequences of the given equalities and inequalities. Establish `h2 : ((2 * D.R.rS + 2 + D.R.f + 5 : ℕ) : ℝ) ≤ D.R.k`. Use `push_cast`.
+
+Establish `: (2 * (D.R.rS : ℝ) + 2) = D.R.m` using `by exact_mod_cast hm.symm`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `h2` after adjusting the coercions. Establish `hSN` using `Formalism.L2.SG.ThmSOwn.size_numbers_of_hypotheses hH (by linarith) h70 hCn show Formalism.FourierDecayAlt.PB.SizeNumbers D.R.k D.R.rS (Fintype.card _) large₂.sc.b (D.host.g 0) (D.host.g 1) (1 / 3) Cn`. Rewrite using `[card_places D e]`.
+
+Conclude with `hSN`. Establish `e1 : (D.mem u).A.T ≡ (D.mem u').A.T [MOD (D.host.g 0 * D.host.g 1) ^ 2]` using `((d9 u).2 : _ ≡ 1 [MOD _]).trans ((d9 u').2 : _ ≡ 1 [MOD _]).symm`. Conclude with `e1`.
+-/
 theorem sizesAt_of {large₂ : SizeData₂ D} {C0 C' Cl Cg cb Cu CT CA Cn : ℝ} {k0 : ℕ} (hD : StandingNumericalData D C0)
     (hH : StandingHypotheses D large₂ C' Cl Cg cb Cu (1 / 2) CT) (h256 : 256 ≤ Cl) (h70 : 70 ≤ C') (hCn : 8 * Cn ≤ C')
     (hk0 : k0 ≤ D.R.k) (hR : SzRowsAt D) (T : Formalism.L2.SG.SpectralTiesReal.STies D) {u u' : D.what₂.Word} (huu : u ≠ u')
@@ -285,6 +391,9 @@ theorem sizesAt_of {large₂ : SizeData₂ D} {C0 C' Cl Cg cb Cu CT CA Cn : ℝ}
       ((d9 u).2 : _ ≡ 1 [MOD _]).trans ((d9 u').2 : _ ≡ 1 [MOD _]).symm
     exact e1
 
+/- English proof (translation)
+Unfold `Sz.FormalDegreeLower`. Rewrite using `[Formalism.MainNotions.BridgeLemma.Vand_lam D τ]`. Establish `h` using `(hg τ).1`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem fdl_of_cTvG {large₂ : SizeData₂ D} {CV : ℝ} (hg : Formalism.MainNotions.S.UnitaryVolumeMass.cTvG D large₂ (1 / 2) CV) (τ : D.what₂.Tau) :
     Sz.FormalDegreeLower (Formalism.MainNotions.BridgeLemma.cfgOf D τ) (1 / 2) (VV D τ) := by
   unfold Sz.FormalDegreeLower
@@ -294,6 +403,9 @@ theorem fdl_of_cTvG {large₂ : SizeData₂ D} {CV : ℝ} (hg : Formalism.MainNo
 
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Formalism.MainNotions.BridgeLemma.mass_ratio_of_siegel_cm_unramified Formalism.HermitianLattices.Ext.L3.siegelMassRatio D, hR, Formalism.MainNotions.BridgeLemma.sza_spl_of_data hD, hFD⟩`.
+-/
 theorem szRowsAt_of {C0 : ℝ} (hD : StandingNumericalData D C0) (hR : LocalBesselAndTopKernel.FamilyMidVolume D)
     (hFD : ∀ τ, Sz.FormalDegreeLower (Formalism.MainNotions.BridgeLemma.cfgOf D τ) (1 / 2) (VV D τ)) : SzRowsAt D :=
   ⟨Formalism.MainNotions.BridgeLemma.mass_ratio_of_siegel_cm_unramified Formalism.HermitianLattices.Ext.L3.siegelMassRatio D, hR, Formalism.MainNotions.BridgeLemma.sza_spl_of_data hD, hFD⟩
@@ -304,6 +416,15 @@ open Formalism.L2.SG.ThmSOwn
 
 variable (C0 : ℝ)
 
+/- English proof (translation)
+Introduce `CA hCA k0 cn`. Use `closed_with (hRw.and (hThr CA hCA)) (fun _ => 0) (fun l => max 256 (8 * cn l)) fun Fm CH _ hQ _ h1 h2 hc => ?_` and prove the remaining obligations. Take `⟨⟨xa, Ha⟩, ⟨xb, Hb⟩⟩` from `hQ`. Take `⟨xk, -, Hk⟩` from `Formalism.MainNotions.BridgeLemma.ev_k Fm (k0 (Fm.cOut ++ Fm.cMid CH) : ℝ)`. Use `⟨max (max xa xb) xk, fun x hx i hH hx1 h0 u u' huu => ?_⟩` and prove the remaining obligations.
+
+Establish `hxa : xa ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hx`. Establish `hxb : xb ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hx`. Establish `hxk : xk ≤ x` using `le_trans (le_max_right _ _) hx`. Establish `h1' : max 256 (8 * cn (Fm.cOut ++ Fm.cMid CH)) ≤ sC' Fm` using `h1`. Establish `h2' : max 256 (8 * cn (Fm.cOut ++ Fm.cMid CH)) ≤ sCl Fm` using `h2`.
+
+Establish `h256 : 256 ≤ sCl Fm` using `le_trans (le_max_left _ _) h2'`. Establish `h70 : 70 ≤ sC' Fm` using `le_trans (by norm_num) (le_trans (le_max_left _ _) h1')`. Establish `hCn : 8 * cn (Fm.cOut ++ Fm.cMid CH) ≤ sC' Fm` using `le_trans (le_max_right _ _) h1'`. Establish `hk0 : k0 (Fm.cOut ++ Fm.cMid CH) ≤ (Fm.D x i).R.k` using `by exact_mod_cast Hk x hxk i`. Establish `h` using `sizesAt_of hH.1 hH.2.1 h256 h70 hCn hk0 (Ha x hxa i hH) ((sel Fm hc).2 x hx1 h0 i) huu (Hb x hxb i hH u u' huu)`.
+
+Rewrite `h` using `[Fm.CGam_eq x i]`. Then use the resulting hypothesis.
+-/
 theorem sizesRowS_of {𝒞 : FamClass} (sel : SSel 𝒞)
     (hRw : Closed 𝒞 fun Fm _ => OwnEv Fm fun C' Cl x i =>
       AdmissibleBoundsFromSource.hyp (Fm.D x i) (Fm.L x i) C0 C' Cl (Fm.CYL + 1) (1 / 4) 3 (1 / 2) Fm.CTu → SzRowsAt (Fm.D x i))

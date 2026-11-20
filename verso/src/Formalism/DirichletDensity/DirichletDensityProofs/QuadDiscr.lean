@@ -7,6 +7,9 @@ noncomputable section
 
 namespace Formalism.HF.P
 
+/- English proof (translation)
+Introduce `b hb`. Establish `hsq : IsSquare (a : ℚ)` using `⟨b, by rw [← hb]; ring⟩`. Take `⟨n, hn⟩` from `Rat.isSquare_intCast_iff.1 hsq`. Establish `hu : IsUnit n` using `ha n ⟨1, by rw [hn, mul_one]⟩`. Apply the tactic sequence `rcases Int.isUnit_iff.1 hu with h | h <;> (subst h; simp at hn; exact h1 hn)`.
+-/
 lemma quad_not_sq_rat (a : ℤ) (ha : Squarefree a) (h1 : a ≠ 1) : ∀ b : ℚ, b ^ 2 ≠ (a : ℚ) := by
   intro b hb
   have hsq : IsSquare (a : ℚ) := ⟨b, by rw [← hb]; ring⟩
@@ -14,6 +17,39 @@ lemma quad_not_sq_rat (a : ℤ) (ha : Squarefree a) (h1 : a ≠ 1) : ∀ b : ℚ
   have hu : IsUnit n := ha n ⟨1, by rw [hn, mul_one]⟩
   rcases Int.isUnit_iff.1 hu with h | h <;> (subst h; simp at hn; exact h1 hn)
 
+/- English proof (translation)
+Establish `hirr : Irreducible (X ^ 2 - C (a : ℚ))` using `X_pow_sub_C_irreducible_of_prime Nat.prime_two (quad_not_sq_rat a hsf h1)`. Establish `hmon : (X ^ 2 - C (a : ℚ)).Monic` using `monic_X_pow_sub_C _ two_ne_zero`. Establish `hev : aeval x (X ^ 2 - C (a : ℚ)) = 0` using `by simp [hx]`. Establish `hmin : minpoly ℚ x = X ^ 2 - C (a : ℚ)` using `(minpoly.eq_of_irreducible_of_monic hirr hev hmon).symm`. Establish `hint : IsIntegral ℚ x` using `.of_finite ℚ x`.
+
+Establish `hrank : Module.finrank ℚ K = 2`. Use `IntermediateField.adjoin.finrank hint` as an intermediate fact. Rewrite `this` using `[hmin, natDegree_X_pow_sub_C, hadj, IntermediateField.finrank_top']`. Conclude with `this`. Establish `htrq : ∀ q : ℚ, Algebra.trace ℚ K (algebraMap ℚ K q) = 2 * q`.
+
+Introduce `q`. Rewrite using `[Algebra.trace_algebraMap, hrank]`. Simplify using the standard rewrite rules. Establish `htrlin : ∀ (q : ℚ) (z : K), Algebra.trace ℚ K (algebraMap ℚ K q * z) = q * Algebra.trace ℚ K z`. Introduce `q z`.
+
+Rewrite using `[← Algebra.smul_def, map_smul, smul_eq_mul]`. Establish `htrx : Algebra.trace ℚ K x = 0`. Establish `hnc : (X ^ 2 - C (a : ℚ)).nextCoeff = 0`. Rewrite using `[nextCoeff, natDegree_X_pow_sub_C, coeff_sub, coeff_X_pow, coeff_C]`. Evaluate the numerical expressions.
+
+Rewrite using `[trace_eq_finrank_mul_minpoly_nextCoeff, hmin, hnc]`. Simplify using the standard rewrite rules. Use `set ω : K := (1 + x) / 2 with hω`. Establish `hω1 : ω = algebraMap ℚ K (1 / 2) + algebraMap ℚ K (1 / 2) * x`. Rewrite using `[hω]`.
+
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish `hω2 : ω * ω = algebraMap ℚ K ((1 + a) / 4) + algebraMap ℚ K (1 / 2) * x`. Rewrite using `[hω]`. Simplify using the standard rewrite rules.
+
+Take the linear combination `(1 / 4 : K) * hx`. Establish `htr1 : Algebra.trace ℚ K 1 = 2`. Rewrite using `[show (1 : K) = algebraMap ℚ K 1 by simp, htrq]; norm_num`. Establish `htrω : Algebra.trace ℚ K ω = 1`. Rewrite using `[hω1, map_add, htrq, htrlin, htrx]`.
+
+Evaluate the numerical expressions. Establish `htrωω : Algebra.trace ℚ K (ω * ω) = (1 + a) / 2`. Rewrite using `[hω2, map_add, htrq, htrlin, htrx]`. Expand and normalize the polynomial expressions, which then agree. Establish `hdisc : Algebra.discr ℚ ![(1 : K), ω] = a`.
+
+Rewrite using `[Algebra.discr_def, Matrix.det_fin_two]`. Simplify using `only [Algebra.traceMatrix_apply, Algebra.traceForm_apply, Matrix.cons_val_zero, Matrix.cons_val_one, one_mul, mul_one]`. Rewrite using `[htr1, htrω, htrωω]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨c, hc⟩ : ∃ c : ℤ, a = 4 * c + 1` from `⟨a / 4, by omega⟩`.
+
+Establish `hcK : (a : K) = 4 * c + 1` using `by rw [hc]; push_cast; ring`. Establish `hωint : IsIntegral ℤ ω`. Use `⟨X ^ 2 - X - C c, ?_, ?_⟩` and prove the remaining obligations. Use `monicity!`. Rewrite using `[eval₂_sub, eval₂_sub, eval₂_X_pow, eval₂_X, eval₂_C, algebraMap_int_eq, eq_intCast, hω]`.
+
+Take the linear combination `(1 / 4 : K) * hx + (1 / 4 : K) * hcK`. Set `B` to `RingOfIntegers.basis K`. Establish `hcard : Fintype.card (Module.Free.ChooseBasisIndex ℤ (𝓞 K)) = 2`. Rewrite using `[← hrank, Module.finrank_eq_card_basis (integralBasis K)]`. Set `e` to `Fintype.equivFinOfCardEq hcard`.
+
+Set `B' : Module.Basis (Fin 2) ℤ (𝓞 K)` to `B.reindex e`. Set `Cb : Module.Basis (Fin 2) ℚ K` to `(integralBasis K).reindex e`. Establish `hC : ∀ i, Cb i = ((B' i : 𝓞 K) : K)`. Introduce `i`. Simplify using `[Cb, B', B, integralBasis_apply]`.
+
+Set `ω' : 𝓞 K` to `⟨ω, hωint⟩`. Set `v : Fin 2 → 𝓞 K` to `![1, ω']`. Set `P : Matrix (Fin 2) (Fin 2) ℤ` to `B'.toMatrix v`. Establish `hv : ![(1 : K), ω] = Cb ᵥ* (P.map (Int.cast : ℤ → ℚ)).map (algebraMap ℚ K)`. Establish `h0` using `B'.toMatrix_map_vecMul v`.
+
+Use function extensionality and compare the values at `j`. Establish `hj` using `congrArg (fun w : Fin 2 → 𝓞 K => ((w j : 𝓞 K) : K)) h0`. Apply the tactic sequence `have hvj : ((v j : 𝓞 K) : K) = ![(1 : K), ω] j := by fin_cases j <;> rfl`. Rewrite using `[← hvj, ← hj]`. Simplify using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two, hC, P]`.
+
+Establish `key : (a : ℚ) = ((P.det : ℤ) : ℚ) ^ 2 * (discr K : ℚ)`. Rewrite using `[← hdisc, hv, Algebra.discr_of_matrix_vecMul, coe_discr, Module.Basis.coe_reindex, Algebra.discr_reindex]`. Use `congr 2`. Conclude with `(RingHom.map_det (Int.castRingHom ℚ) P).symm`. Establish `key' : a = P.det ^ 2 * discr K` using `by exact_mod_cast key`.
+
+Establish `hu : IsUnit P.det` using `hsf P.det ⟨discr K, by rw [key']; ring⟩`. Apply the tactic sequence `rcases Int.isUnit_iff.1 hu with h | h <;> (rw [key', h]; ring)`.
+-/
 theorem quadDiscr_ne_one (K : Type) [Field K] [NumberField K] (a : ℤ) (x : K)
     (hx : x ^ 2 = (a : K)) (hadj : IntermediateField.adjoin ℚ {x} = ⊤) (hsf : Squarefree a)
     (h4 : a % 4 = 1) (h1 : a ≠ 1) : discr K = a := by
@@ -92,6 +128,15 @@ theorem quadDiscr_ne_one (K : Type) [Field K] [NumberField K] (a : ℤ) (x : K)
 
 end Formalism.HF.P
 
+/- English proof (translation)
+Introduce `K _ _ a x hx hadj hsf h4`. Distinguish the cases in `h1 : a = 1`. Substitute `h1` using the available equality. Establish `hx1 : x * x = 1` using `by rw [← sq, hx]; simp`. Establish `hbot : x ∈ (⊥ : IntermediateField ℚ K)`.
+
+Break down `mul_self_eq_one_iff.1 hx1 with h | h` into its components or cases. Rewrite using `[h]`. Conclude with `IntermediateField.one_mem _`. Rewrite using `[h]`. Conclude with `IntermediateField.neg_mem _ (IntermediateField.one_mem _)`.
+
+Establish `htop : (⊥ : IntermediateField ℚ K) = ⊤`. Rewrite using `[← hadj, eq_comm]`. Conclude with `IntermediateField.adjoin_simple_eq_bot_iff.2 hbot`. Set `e : ℚ ≃ₐ[ℚ] K` to `(IntermediateField.botEquiv ℚ K).symm.trans ((IntermediateField.equivOfEq htop).trans IntermediateField.topEquiv)`. Rewrite using `[← NumberField.discr_eq_discr_of_algEquiv ℚ e, NumberField.discr_rat]`.
+
+Conclude with `Formalism.HF.P.quadDiscr_ne_one K a x hx hadj hsf h4 h1`.
+-/
 theorem Formalism.HF.quadDiscr : Formalism.HF.QuadDiscr := by
   intro K _ _ a x hx hadj hsf h4
   by_cases h1 : a = 1

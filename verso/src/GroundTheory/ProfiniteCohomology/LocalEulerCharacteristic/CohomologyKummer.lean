@@ -16,6 +16,9 @@ variable {K Ksep : Type} [Field K] [Field Ksep] [Algebra K Ksep]
 
 include h hN in
 
+/- English proof (translation)
+Use `hN.conj_mem ⟨v, h hv⟩ (Subgroup.mem_subgroupOf.2 hv) g⁻¹` as an intermediate fact. Rewrite `this` using `[Subgroup.mem_subgroupOf]`. Simplify using `using this`.
+-/
 theorem inv_mul_mul_mem_of_subgroupOf_normal (g : (U : Subgroup Gal(Ksep/K))) {v : Gal(Ksep/K)}
     (hv : v ∈ (V : Subgroup Gal(Ksep/K))) :
     (g : Gal(Ksep/K))⁻¹ * v * g ∈ (V : Subgroup Gal(Ksep/K)) := by
@@ -25,6 +28,9 @@ theorem inv_mul_mul_mem_of_subgroupOf_normal (g : (U : Subgroup Gal(Ksep/K))) {v
 
 include h hN in
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[mem_fixedField_iff]`. Introduce `v hv`. Establish `e` using `hx _ (inv_mul_mul_mem_of_subgroupOf_normal h g hv)`. Rewrite `e` using `[AlgEquiv.mul_apply, AlgEquiv.mul_apply, AlgEquiv.aut_inv]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem apply_mem_fixedField (g : (U : Subgroup Gal(Ksep/K))) {x : Ksep}
     (hx : x ∈ fixedField (V : Subgroup Gal(Ksep/K))) :
     (g : Gal(Ksep/K)) x ∈ fixedField (V : Subgroup Gal(Ksep/K)) := by
@@ -51,6 +57,9 @@ def fixedFieldConj (g : (U : Subgroup Gal(Ksep/K))) :
   commutes' c := Subtype.ext ((g : Gal(Ksep/K)).commutes c)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_fixedFieldConj_apply (g : (U : Subgroup Gal(Ksep/K))) (x : fixedField (V : Subgroup Gal(Ksep/K))) :
     ((fixedFieldConj h g x : fixedField (V : Subgroup Gal(Ksep/K))) : Ksep) = (g : Gal(Ksep/K)) (x : Ksep) :=
   rfl
@@ -62,6 +71,9 @@ def fixedFieldConjHom :
   map_mul' _ _ := AlgEquiv.ext fun _ => Subtype.ext rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fixedFieldConjHom_apply (g : (U : Subgroup Gal(Ksep/K))) :
     fixedFieldConjHom h g = fixedFieldConj h g :=
   rfl
@@ -78,6 +90,9 @@ def unitOfMemFixedField (a : Ksepˣ) (ha : (a : Ksep) ∈ fixedField (V : Subgro
   Units.mk0 ⟨a, ha⟩ fun h0 => a.ne_zero (congrArg Subtype.val h0)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_unitOfMemFixedField (a : Ksepˣ) (ha : (a : Ksep) ∈ fixedField (V : Subgroup Gal(Ksep/K))) :
     (((unitOfMemFixedField a ha : (fixedField (V : Subgroup Gal(Ksep/K)))ˣ) :
       fixedField (V : Subgroup Gal(Ksep/K))) : Ksep) = a :=
@@ -85,12 +100,18 @@ theorem coe_unitOfMemFixedField (a : Ksepˣ) (ha : (a : Ksep) ∈ fixedField (V 
 
 include h in
 
+/- English proof (translation)
+The claim follows from `(mem_fixedField_iff _ _).2 fun v hv => hx ⟨⟨v, h hv⟩, Subgroup.mem_subgroupOf.2 hv⟩`.
+-/
 theorem mem_fixedField_of_forall_subgroupOf {x : Ksep}
     (hx : ∀ n : ((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))),
       ((n : (U : Subgroup Gal(Ksep/K))) : Gal(Ksep/K)) x = x) :
     x ∈ fixedField (V : Subgroup Gal(Ksep/K)) :=
   (mem_fixedField_iff _ _).2 fun v hv => hx ⟨⟨v, h hv⟩, Subgroup.mem_subgroupOf.2 hv⟩
 
+/- English proof (translation)
+The claim follows from `(mem_fixedField_iff _ _).1 hx _ (Subgroup.mem_subgroupOf.1 n.2)`.
+-/
 theorem subgroupOf_apply_of_mem_fixedField {x : Ksep} (hx : x ∈ fixedField (V : Subgroup Gal(Ksep/K)))
     (n : ((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K)))) :
     ((n : (U : Subgroup Gal(Ksep/K))) : Gal(Ksep/K)) x = x :=
@@ -111,6 +132,9 @@ noncomputable def unitsInvariantsOpenEquiv :
   map_add' _ _ := Subtype.ext (Additive.toMul.injective (Units.ext rfl))
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_unitsInvariantsOpenEquiv_apply (u : Additive (fixedField (V : Subgroup Gal(Ksep/K)))ˣ) :
     (((Additive.toMul ((unitsInvariantsOpenEquiv h u : _) : Additive Ksepˣ)) : Ksepˣ) : Ksep) =
       ((u.toMul : (fixedField (V : Subgroup Gal(Ksep/K)))ˣ) : Ksep) :=
@@ -146,6 +170,9 @@ noncomputable def rootsInvariantsOpenEquiv (l : ℕ) :
   map_add' a b := Subtype.ext (Additive.toMul.injective (Units.ext (Subtype.ext rfl)))
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_rootsInvariantsOpenEquiv_apply (l : ℕ)
     (ζ : (Rep.res ((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))).subtype
         (Rep.res (U : Subgroup Gal(Ksep/K)).subtype (galRootsOfUnity.{0} K Ksep l))).ρ.invariants) :
@@ -171,6 +198,9 @@ variable [((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))).Nor
 
 omit [IsSepClosure K Ksep] in
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (Additive.toMul.injective (Units.ext rfl))`.
+-/
 theorem unitsInvariantsOpenEquiv_smul (g : (U : Subgroup Gal(Ksep/K)))
     (u : Additive (fixedField (V : Subgroup Gal(Ksep/K)))ˣ) :
     unitsInvariantsOpenEquiv h (fixedFieldConjHom h g • u) =
@@ -180,6 +210,9 @@ theorem unitsInvariantsOpenEquiv_smul (g : (U : Subgroup Gal(Ksep/K)))
 
 omit [IsSepClosure K Ksep] in
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (Additive.toMul.injective (Units.ext (Subtype.ext rfl)))`.
+-/
 theorem rootsInvariantsOpenEquiv_invariantsConj (l : ℕ) (g : (U : Subgroup Gal(Ksep/K)))
     (ζ : (Rep.res ((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))).subtype
         (Rep.res (U : Subgroup Gal(Ksep/K)).subtype (galRootsOfUnity.{0} K Ksep l))).ρ.invariants) :
@@ -190,6 +223,9 @@ theorem rootsInvariantsOpenEquiv_invariantsConj (l : ℕ) (g : (U : Subgroup Gal
         (rootsInvariantsOpenEquiv h l ζ) :=
   Subtype.ext (Additive.toMul.injective (Units.ext (Subtype.ext rfl)))
 
+/- English proof (translation)
+Conclude with `(congrArg (rootsInvariantsOpenEquiv h l) (H0Iso_hom_cohomologyConj _ _ g x)).trans (rootsInvariantsOpenEquiv_invariantsConj h l g _)`.
+-/
 theorem cohomologyZeroRootsEquiv_cohomologyConj (l : ℕ) (g : (U : Subgroup Gal(Ksep/K)))
     (x : cohomology (Rep.res ((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))).subtype
         (Rep.res (U : Subgroup Gal(Ksep/K)).subtype (galRootsOfUnity.{0} K Ksep l))) 0) :
@@ -218,6 +254,9 @@ noncomputable def kummerOpenHom :
       (Rep.res (U : Subgroup Gal(Ksep/K)).subtype (galUnits.{0} K Ksep)))).inv.hom.toAddMonoidHom).comp
     (unitsInvariantsOpenEquiv h).toAddMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem kummerOpenHom_apply (u : Additive (fixedField (V : Subgroup Gal(Ksep/K)))ˣ) :
     kummerOpenHom h hl u = (δ (kummerSequenceResRes_shortExact hl (U : Subgroup Gal(Ksep/K))
       ((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K)))) 0 1 rfl).hom
@@ -228,6 +267,9 @@ theorem kummerOpenHom_apply (u : Additive (fixedField (V : Subgroup Gal(Ksep/K))
 
 include hl in
 
+/- English proof (translation)
+Introduce `x`. Take `⟨v, hv⟩` from `exists_δ_H0Iso_inv_eq (kummerSequenceResRes_shortExact hl (U : Subgroup Gal(Ksep/K)) ((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K)))) (subsingleton_cohomology_one_galUnits_subgroupOf h) x`. Take `⟨u, rfl⟩` from `(unitsInvariantsOpenEquiv h).surjective v`. Conclude with `⟨u, hv⟩`.
+-/
 theorem kummerOpenHom_surjective : Function.Surjective (kummerOpenHom (l := l) h hl) := by
   intro x
   obtain ⟨v, hv⟩ := exists_δ_H0Iso_inv_eq (kummerSequenceResRes_shortExact hl (U : Subgroup Gal(Ksep/K))
@@ -238,6 +280,13 @@ theorem kummerOpenHom_surjective : Function.Surjective (kummerOpenHom (l := l) h
 
 include hl in
 
+/- English proof (translation)
+Rewrite using `[kummerOpenHom_apply]`. Use `(δ_H0Iso_inv_eq_zero_iff (kummerSequenceResRes_shortExact hl (U : Subgroup Gal(Ksep/K)) ((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K)))) _).trans ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨w, hw⟩`. Take `⟨w, rfl⟩` from `(unitsInvariantsOpenEquiv h).surjective w`. Use `⟨w, (unitsInvariantsOpenEquiv h).injective ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hw, map_nsmul]`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `(nsmul_id_hom_apply (galUnits.{0} K Ksep) l _).symm`. Introduce and unpack `⟨w, rfl⟩`. Use `⟨unitsInvariantsOpenEquiv h w, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_nsmul]`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `nsmul_id_hom_apply (galUnits.{0} K Ksep) l _`.
+-/
 theorem kummerOpenHom_eq_zero_iff (u : Additive (fixedField (V : Subgroup Gal(Ksep/K)))ˣ) :
     kummerOpenHom h hl u = 0 ↔ ∃ w, l • w = u := by
   rw [kummerOpenHom_apply]
@@ -256,6 +305,9 @@ theorem kummerOpenHom_eq_zero_iff (u : Additive (fixedField (V : Subgroup Gal(Ks
     exact nsmul_id_hom_apply (galUnits.{0} K Ksep) l _
 
 include hl in
+/- English proof (translation)
+Use extensionality with `u`. Rewrite using `[LinearMap.mem_range, LinearMap.mem_ker, AddMonoidHom.coe_toIntLinearMap, kummerOpenHom_eq_zero_iff]`. Simplify using `only [LinearMap.lsmul_apply, natCast_zsmul]`.
+-/
 theorem range_lsmul_eq_ker_kummerOpenHom :
     LinearMap.range (LinearMap.lsmul ℤ (Additive (fixedField (V : Subgroup Gal(Ksep/K)))ˣ) (l : ℤ)) =
       LinearMap.ker (kummerOpenHom (l := l) h hl).toIntLinearMap := by
@@ -272,6 +324,11 @@ noncomputable def kummerOpenModNHom :
     (kummerOpenHom h hl).toIntLinearMap (range_lsmul_eq_ker_kummerOpenHom h hl).le
 
 include hl in
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[← LinearMap.ker_eq_bot, kummerOpenModNHom, Submodule.ker_liftQ_eq_bot']`. Conclude with `range_lsmul_eq_ker_kummerOpenHom h hl`. Introduce `x`. Take `⟨u, rfl⟩` from `kummerOpenHom_surjective h hl x`.
+
+Conclude with `⟨Submodule.Quotient.mk u, rfl⟩`.
+-/
 theorem kummerOpenModNHom_bijective : Function.Bijective (kummerOpenModNHom (l := l) h hl) := by
   constructor
   · rw [← LinearMap.ker_eq_bot, kummerOpenModNHom, Submodule.ker_liftQ_eq_bot']
@@ -286,16 +343,25 @@ noncomputable def cohomologyOneRootsEquiv :
       ModN (Additive (fixedField (V : Subgroup Gal(Ksep/K)))ˣ) l :=
   (AddEquiv.ofBijective (kummerOpenModNHom h hl).toAddMonoidHom (kummerOpenModNHom_bijective h hl)).symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cohomologyOneRootsEquiv_symm_mk (u : Additive (fixedField (V : Subgroup Gal(Ksep/K)))ˣ) :
     (cohomologyOneRootsEquiv h hl).symm (Submodule.Quotient.mk u) = kummerOpenHom h hl u :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[← cohomologyOneRootsEquiv_symm_mk, AddEquiv.apply_symm_apply]`.
+-/
 theorem cohomologyOneRootsEquiv_kummerOpenHom (u : Additive (fixedField (V : Subgroup Gal(Ksep/K)))ˣ) :
     cohomologyOneRootsEquiv h hl (kummerOpenHom h hl u) = Submodule.Quotient.mk u := by
   rw [← cohomologyOneRootsEquiv_symm_mk, AddEquiv.apply_symm_apply]
 
 variable [((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))).Normal]
 
+/- English proof (translation)
+Rewrite using `[kummerOpenHom_apply, kummerOpenHom_apply, unitsInvariantsOpenEquiv_smul]`. Conclude with `δ_H0Iso_inv_invariantsConj _ (shortExact_map_res (U : Subgroup Gal(Ksep/K)) (kummerSequence_shortExact l hl)) g _`.
+-/
 theorem kummerOpenHom_smul (g : (U : Subgroup Gal(Ksep/K)))
     (u : Additive (fixedField (V : Subgroup Gal(Ksep/K)))ˣ) :
     kummerOpenHom h hl (fixedFieldConjHom h g • u) =
@@ -305,6 +371,9 @@ theorem kummerOpenHom_smul (g : (U : Subgroup Gal(Ksep/K)))
   exact δ_H0Iso_inv_invariantsConj _ (shortExact_map_res (U : Subgroup Gal(Ksep/K))
     (kummerSequence_shortExact l hl)) g _
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `kummerOpenHom_surjective h hl x`. Rewrite using `[← kummerOpenHom_smul, cohomologyOneRootsEquiv_kummerOpenHom, cohomologyOneRootsEquiv_kummerOpenHom, modNRep_mk]`.
+-/
 theorem cohomologyOneRootsEquiv_cohomologyConj (g : (U : Subgroup Gal(Ksep/K)))
     (x : cohomology (Rep.res ((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))).subtype
         (Rep.res (U : Subgroup Gal(Ksep/K)).subtype (galRootsOfUnity.{0} K Ksep l))) 1) :

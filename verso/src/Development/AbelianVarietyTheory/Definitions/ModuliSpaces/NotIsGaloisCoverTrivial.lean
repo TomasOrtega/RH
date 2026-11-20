@@ -6,21 +6,33 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 noncomputable section
 namespace GlobalTheory.ZM.DwModel
 
+/- English proof (translation)
+Use `show Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 private lemma spMap_comp_moduli_spaces {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   show Spec.map _ = Spec.map _ ≫ Spec.map _
   rw [← Spec.map_comp]
   rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(Spec.preimage y).hom, by simp [spMap]⟩`.
+-/
 private lemma spMap_surjective' {A B : Type} [CommRing A] [CommRing B] (y : Sp B ⟶ Sp A) :
     ∃ f : A →+* B, spMap f = y :=
   ⟨(Spec.preimage y).hom, by simp [spMap]⟩
 
+/- English proof (translation)
+Establish `h'` using `Spec.map_injective h`. Conclude with `congrArg CommRingCat.Hom.hom h'`.
+-/
 private lemma spMap_inj_lemma_3 {A B : Type} [CommRing A] [CommRing B] {f g : A →+* B} (h : spMap f = spMap g) :
     f = g := by
   have h' := Spec.map_injective h
   exact congrArg CommRingCat.Hom.hom h'
 
+/- English proof (translation)
+The claim follows from `inferInstance one := by show Spec.map _ = _ convert Spec.map_id (CommRingCat.of L) rfl mul a c := by show spMap (((a * c : L ≃ₐ[K] L) : L →+* L)) = _ rw [← spMap_comp_moduli_spaces] rfl inv a := by rw [← spMap_comp_moduli_spaces] congr 1 ext r exact a.commutes r fin := by show Is …`.
+-/
 theorem isGaloisCover_field (K L : Type) [Field K] [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L] :
     IsGaloisCover (L ≃ₐ[K] L) (fun σ => spMap (σ : L →+* L)) (spMap (algebraMap K L)) where
   finite := inferInstance
@@ -79,12 +91,18 @@ theorem isGaloisCover_field (K L : Type) [Field K] [Field L] [Algebra K L] [Fini
       ext x
       exact (RingHom.congr_fun hb' x).trans (AlgHom.congr_fun ha x).symm
 
+/- English proof (translation)
+Establish `: IsAlgClosure ℝ ℂ` using `⟨Complex.isAlgClosed, inferInstance⟩`. Establish `: IsGalois ℝ ℂ` using `⟨⟩`. Conclude with `⟨isGaloisCover_field ℝ ℂ, by rw [IsGalois.card_aut_eq_finrank, Complex.finrank_real_complex]⟩`.
+-/
 theorem isGaloisCover_complex :
     IsGaloisCover (ℂ ≃ₐ[ℝ] ℂ) (fun σ => spMap (σ : ℂ →+* ℂ)) (spMap (algebraMap ℝ ℂ)) ∧ Nat.card (ℂ ≃ₐ[ℝ] ℂ) = 2 := by
   have : IsAlgClosure ℝ ℂ := ⟨Complex.isAlgClosed, inferInstance⟩
   have : IsGalois ℝ ℂ := ⟨⟩
   exact ⟨isGaloisCover_field ℝ ℂ, by rw [IsGalois.card_aut_eq_finrank, Complex.finrank_real_complex]⟩
 
+/- English proof (translation)
+Introduce `h`. Take `⟨a, -, ha⟩` from `h.fibre ℂ (𝟙 _) (𝟙 _) rfl`. Establish `h1 : (1 : ℤˣ) = a` using `ha 1 (by simp)`. Establish `h2 : (-1 : ℤˣ) = a` using `ha (-1) (by simp)`. Conclude with `absurd (h1.trans h2.symm) (by decide)`.
+-/
 theorem not_isGaloisCover_trivial :
     ¬ IsGaloisCover ℤˣ (fun _ => 𝟙 (Sp ℂ)) (𝟙 (Sp ℂ)) := by
   intro h
@@ -93,10 +111,18 @@ theorem not_isGaloisCover_trivial :
   have h2 : (-1 : ℤˣ) = a := ha (-1) (by simp)
   exact absurd (h1.trans h2.symm) (by decide)
 
+/- English proof (translation)
+Apply the tactic sequence `constructor <;> simp [dirMap]`.
+-/
 theorem dirMap_fst {K : Type} [Field K] {n : ℕ} (lam : (Fin n → K) →ₗ[K] K) (x : TrivSqZeroExt K (Fin n → K)) :
     (dirMap lam x).fst = x.fst ∧ (dirMap lam x).snd = lam x.snd := by
   constructor <;> simp [dirMap]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun x hx => h x fun p _ hp => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `hx`. Conclude with `hp.mem_of_pow_mem k (hk ▸ p.zero_mem)`.
+
+Introduce `hR f hf`. Establish `hnil : f ∈ nilradical R`. Rewrite using `[nilradical_eq_sInf, Ideal.mem_sInf]`. Conclude with `fun p hp => hf p (Set.mem_univ p) hp`. Conclude with `(mem_nilradical.mp hnil).eq_zero`.
+-/
 theorem densePrimes_univ_iff (R : Type) [CommRing R] : DenseP (Set.univ : Set (Ideal R)) ↔ _root_.IsReduced R := by
   constructor
   · intro h
@@ -109,6 +135,9 @@ theorem densePrimes_univ_iff (R : Type) [CommRing R] : DenseP (Set.univ : Set (I
       exact fun p hp => hf p (Set.mem_univ p) hp
     exact (mem_nilradical.mp hnil).eq_zero
 
+/- English proof (translation)
+Introduce `h`. Establish `h2 : (2 : ℤ) = 0` using `h 2 fun p hp _ => by`. Rewrite using `[Set.mem_singleton_iff.mp hp]`. Conclude with `Ideal.mem_span_singleton_self 2`. Evaluate the numerical expressions using `at h2`.
+-/
 theorem not_denseP_two : ¬ DenseP ({Ideal.span {2}} : Set (Ideal ℤ)) := by
   intro h
   have h2 : (2 : ℤ) = 0 := h 2 fun p hp _ => by
@@ -116,6 +145,11 @@ theorem not_denseP_two : ¬ DenseP ({Ideal.span {2}} : Set (Ideal ℤ)) := by
     exact Ideal.mem_span_singleton_self 2
   norm_num at h2
 
+/- English proof (translation)
+Take `⟨x, ⟨-, hx⟩, -⟩` from `W.Y.pts PUnit (algebraMap o PUnit) (fun _ => 0) (by`. Unfold `InMM`. Conclude with `⟨fun _ _ => Subsingleton.elim _ _, fun q hq => absurd (Subsingleton.elim q ⊤) hq.ne_top⟩)`. Set `x' : Sp PUnit ⟶ W.U.toScheme` to `specPUnitIsInitial.to _`. Establish `hx' : x' ≫ W.U.ι = x` using `specPUnitIsInitial.hom_ext _ _`.
+
+Establish `h` using `(W.th PUnit x' (fun _ => 0)).2 (hx' ▸ hx)`. Unfold `TObj.HasTh Out.IsThetaPt at h`. Conclude with `h.1`.
+-/
 theorem odd_of_wfam {o : Type} [CommRing o] {g : ℕ} {J : Type} {n N' : ℕ} {b : TBase o (N' ^ 2)} {em : o →+* ℂ}
     {C : TObj g (N' ^ 2) J b (spMap em) → Prop} {Mat : J → Matrix (Fin (2 * g)) (Fin (2 * g)) ℤ} {κ : ℕ}
     (W : WFam n em C Mat κ) : Odd N' := by

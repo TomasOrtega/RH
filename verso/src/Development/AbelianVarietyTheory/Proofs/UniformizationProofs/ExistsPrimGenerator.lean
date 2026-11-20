@@ -28,6 +28,11 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
   {G : Over (Spec (CommRingCat.of V))} [GrpObj G] [IsCommMonObj G]
   {F : Type} [Field F] [Algebra (FractionRing V) F]
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `(Set.finite_range fun i => (v (c i)).untopD 0).bddBelow`. Use `⟨m, fun i => ?_⟩` and prove the remaining obligations. Establish `h` using `hm ⟨i, rfl⟩`. Consider the cases of `e : v (c i) with`. Consider the case `top => exact le_top`.
+
+Consider the case `coe y`. Simplify using `only [e, WithTop.untopD_coe] at h`. Conclude with `WithTop.coe_le_coe.2 h`.
+-/
 theorem exists_lower (v : AddValuation F (WithTop ℚ)) {n : ℕ} (c : Fin n → F) :
     ∃ r : ℚ, ∀ i, (r : WithTop ℚ) ≤ v (c i) := by
   obtain ⟨m, hm⟩ := (Set.finite_range fun i => (v (c i)).untopD 0).bddBelow
@@ -39,6 +44,9 @@ theorem exists_lower (v : AddValuation F (WithTop ℚ)) {n : ℕ} (c : Fin n →
     simp only [e, WithTop.untopD_coe] at h
     exact WithTop.coe_le_coe.2 h
 
+/- English proof (translation)
+Take `⟨n, c, x, -, -, hs⟩` from `(expandsG_iff U F k σ s).1 h`. Take `⟨r, hr⟩` from `exists_lower v c`. Use `⟨r, n, c, fun i => (x i).2 α, fun i => termPull D.toPre (FractionRing V) F k α (genericTerm D k α ((x i).2 α)), fun i => ?_, hr, fun j => ?_⟩` and prove the remaining obligations. Conclude with `SectionScalarValuation.secScal_of_sval D.toPre.P.isLB fun y J hJ => ((sval_pullOver _ _ _ _ hJ).trans ((sval_pullOver _ _ _ _ hJ).trans (congrArg (fun q => sval ((x i).2 α) q y J) ((Category.assoc _ _ _).trans (congrArg (𝟙 _ ≫ ·) (congrArg (fun q => q.left) (famMap_snd D.toPre (F …`. Conclude with `(congrArg (chartLin (famBase D.toPre F) _ j) (hs α)).trans (map_sum (chartLin (famBase D.toPre F) _ j) _ _)`.
+-/
 theorem exists_vge (U : UnifPre (maximalIdeal V) D A G) (v : AddValuation F (WithTop ℚ)) {k : ℕ}
     {σ : U.SecGF F k} {s : Fam D.toPre F k} (h : U.ExpandsG F k σ s) (α : D.toPre.X) :
     ∃ r : ℚ, VGe D F v k α (s.s α) r := by
@@ -52,6 +60,21 @@ theorem exists_vge (U : UnifPre (maximalIdeal V) D A G) (v : AddValuation F (Wit
           (congrArg (fun q => q.left) (famMap_snd D.toPre (FractionRing V) F))))))).symm
   · exact (congrArg (chartLin (famBase D.toPre F) _ j) (hs α)).trans (map_sum (chartLin (famBase D.toPre F) _ j) _ _)
 
+/- English proof (translation)
+Take `⟨b, hli, hb, hsp⟩` from `hU V ϖ hϖ D Q hQ F v hv (Or.inl inferInstance) 1 le_rfl`. Establish `: Subsingleton (Fin (1 ^ (D.toPre.rank + D.toPre.P.g)))` using `by rw [one_pow]; infer_instance`. Set `i₀ : Fin (1 ^ (D.toPre.rank + D.toPre.P.g))` to `⟨0, by rw [one_pow]; exact one_pos⟩`. Establish `hsp' : ∀ s, NuGe D Q F v 1 s 0 → ∃ c : F, (0 : WithTop ℚ) ≤ v c ∧ s = c • b i₀` using `fun s hs => by`. Take `⟨c, hc, e⟩` from `(hsp s).1 hs`.
+
+Conclude with `⟨c i₀, hc i₀, e.trans (Fintype.sum_subsingleton _ i₀)⟩`. Use `⟨b i₀, ⟨hb i₀, fun r hr h => ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨ζ, s', hζ, hs', e⟩` from `(n1c V ϖ hϖ D Q hQ F v hv 1 le_rfl (b i₀) (hb i₀)).1 ⟨r, hr, h⟩`. Take `⟨c, hc, rfl⟩` from `hsp' s' hs'`. Rewrite `e` using `[isSmul_iff, smul_smul]`.
+
+Establish `e1 : ζ * c = 1` using `smul_left_injective F (hli.ne_zero i₀) (e.symm.trans (one_smul F _).symm)`. Establish `h0 : (0 : WithTop ℚ) < v (ζ * c)`. Rewrite using `[AddValuation.map_mul]`. Conclude with `lt_add_of_lt_of_nonneg hζ hc`. Rewrite `h0` using `[e1, AddValuation.map_one]`.
+
+Conclude with `lt_irrefl _ h0`. Introduce and unpack `s ⟨r, hr⟩`. Establish `h1 : NuGe D Q F v 1 s (-(|r| + 1))`. Rewrite using `[n1a V ϖ hϖ D Q hQ F v hv 1 le_rfl {0} (fun χ => ⟨0, Finset.mem_singleton_self _, χ, by simp⟩) s]`. Introduce `α hα`.
+
+Take `rfl` from `Finset.mem_singleton.1 hα`. Use `hr.mono ?_` and prove the remaining obligations. Rewrite using `[QForm.Q_zero hϖ D hQ]`. Use `neg_abs_le r` as an intermediate fact. Simplify using `only [Int.cast_zero, zero_div, add_zero]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨ζ, hζ0, hζ⟩` from `exists_val_eq hv (r := |r| + 1) (by positivity)`. Establish `h2` using `NuGe.smul Q hζ.ge ((isSmul_iff ζ s _).2 rfl) h1`. Rewrite `h2` using `[neg_add_cancel]`. Take `⟨c, -, e⟩` from `hsp' _ h2`.
+
+Conclude with `⟨ζ⁻¹ * c, by rw [mul_smul, ← e, inv_smul_smul₀ hζ0]⟩`.
+-/
 theorem exists_prim_span (hU : UUStatement) {ϖ : V} (hϖ : Irreducible ϖ) {Q : D.toPre.X → ℤ}
     (hQ : QForm.IsQ D.toPre ϖ Q) [IsAlgClosed F] {v : AddValuation F (WithTop ℚ)} (hv : ValOver ϖ F v) :
     ∃ ϑ : Fam D.toPre F 1, Prim D Q v ϑ ∧
@@ -95,6 +118,11 @@ namespace GlobalTheory.UT
 
 open GlobalTheory.FieldBaseChange
 
+/- English proof (translation)
+Introduce `hL _ _ _ hU V _ _ _ _ _ ϖ hϖ D Q hQ F _ _ _ v hv A G _ _ _ U w₀ hw`. Take `⟨ϑ, hp, hsp⟩` from `PrimGen.exists_prim_span hU hϖ hQ hv`. Take `⟨e, he⟩` from `GlobalTheory.exists_linearEquiv_expandsF hL.1.globalFns U F (k := 1) le_rfl w₀ hw`. Use `⟨e.symm ϑ, ϑ, (he _ _).2 (e.apply_symm_apply ϑ), hp, fun t => ?_⟩` and prove the remaining obligations. Take `⟨σ, -, hσ⟩` from `(he t _).2 rfl`.
+
+Take `⟨c, hc⟩` from `hsp _ (PrimGen.exists_vge U.toUnifPre v hσ 0)`. Establish `ht : t = (c • e.symm ϑ : SecOver (abelianBase A F) _)` using `e.injective (hc.trans (by rw [map_smul, e.apply_symm_apply]))`. Use `⟨(Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom c, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[ht]`. Both sides reduce to the same expression.
+-/
 theorem exists_prim_generator : LL → TwistBCSpanStatement → TWM.VRatioGtStatement → TWStatement → UUStatement → AllUV fun {V} _ _ _ {ϖ} hϖ {D} Q {F} _ _ {v} hv {A} {G} _ _ U => ∀ w₀ : W0 U.toUnifPre, w₀.IsGen → ∃ (th : SecA A F 1) (ϑ : Fam D.toPre F 1), U.ExpandsF F 1 w₀ th ϑ ∧ Prim D Q v ϑ ∧ IsGenSec A.A A.L 1 th := by
   intro hL _ _ _ hU V _ _ _ _ _ ϖ hϖ D Q hQ F _ _ _ v hv A G _ _ _ U w₀ hw
   obtain ⟨ϑ, hp, hsp⟩ := PrimGen.exists_prim_span hU hϖ hQ hv

@@ -21,6 +21,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.Exist
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.cubical_extends_and_extendGen GlobalTheory.forall_geometricallyIntegral_of_smooth_of_geometricallyConnected GlobalTheory.GenExtend.existsUnique_gen_extend).2`.
+-/
 theorem extendGen : extendGenSt.{0} :=
   (GlobalTheory.cubical_extends_and_extendGen GlobalTheory.forall_geometricallyIntegral_of_smooth_of_geometricallyConnected
     GlobalTheory.GenExtend.existsUnique_gen_extend).2

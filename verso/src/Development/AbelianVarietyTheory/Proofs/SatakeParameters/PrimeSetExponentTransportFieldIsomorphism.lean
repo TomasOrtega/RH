@@ -4,12 +4,20 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.TwU.SeamExp
 
+/- English proof (translation)
+Apply `D.host.φ₀.injective` to reduce the goal to its premises. Use `letI := D.host.isCMField_hostE`. Use `show D.host.φ₀ (IsCMField.complexConj D.host.E x) = _`. Rewrite using `[NumberField.IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply]`.
+-/
 theorem star_eq_conj (D : D7) (x : D.host.E) : star x = D.host.conj x := by
   apply D.host.φ₀.injective
   letI := D.host.isCMField_hostE
   show D.host.φ₀ (IsCMField.complexConj D.host.E x) = _
   rw [NumberField.IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply]
 
+/- English proof (translation)
+Use extensionality with `y`. Take `⟨x, rfl⟩` from `(RingOfIntegers.mapRingEquiv s.iE).surjective y`. Rewrite using `[mem_conjP, mem_seamP, mem_conjP]`. Establish `h : cO D.host.E (RingOfIntegers.mapRingEquiv s.iE x) = RingOfIntegers.mapRingEquiv s.iE (cO X.E x)`. Apply `RingOfIntegers.ext` to reduce the goal to its premises.
+
+Use `show star (s.iE (x : X.E)) = s.iE (star (x : X.E))`. Rewrite using `[hs.2, star_eq_conj]`. Rewrite using `[h, mem_seamP]`.
+-/
 theorem conjP_seamP {D : D7} {X : Fields} (s : Seam D X) (hs : s.Ok) (P : HeightOneSpectrum (𝓞 X.E)) :
     conjPrime₂ (seamP s P) = seamP s (conjPrime₂ P) := by
   ext y
@@ -21,6 +29,13 @@ theorem conjP_seamP {D : D7} {X : Fields} (s : Seam D X) (hs : s.Ok) (P : Height
     rw [hs.2, star_eq_conj]
   rw [h, mem_seamP]
 
+/- English proof (translation)
+Introduce `D X s hs SS P`. Establish `hm : ∀ Q, seamP s Q ∈ SS.map (HeightOneSpectrum.equivOfRingEquiv (RingOfIntegers.mapRingEquiv s.iE)).toEmbedding ↔ Q ∈ SS` using `fun Q => Finset.mem_map' _`. Establish `h1` using `hm P`. Establish `h2` using `hm (conjPrime₂ P)`. Rewrite `h2` using `[← conjP_seamP s hs]`.
+
+Unfold `expS`. Distinguish the cases in `hP : P ∈ SS`. Rewrite using `[if_pos (h1.2 hP), if_pos hP]`. Rewrite using `[if_neg (fun h => hP (h1.1 h)), if_neg hP]`. Distinguish the cases in `hQ : conjPrime₂ P ∈ SS`.
+
+Rewrite using `[if_pos (h2.2 hQ), if_pos hQ]`. Rewrite using `[if_neg (fun h => hQ (h2.1 h)), if_neg hQ]`.
+-/
 theorem expS_seam : ∀ {D : D7} {X : Fields} (s : Seam D X), s.Ok → ∀ (SS : Finset (HeightOneSpectrum (𝓞 X.E))) (P : HeightOneSpectrum (𝓞 X.E)), expS (SS.map (HeightOneSpectrum.equivOfRingEquiv (RingOfIntegers.mapRingEquiv s.iE)).toEmbedding) (seamP s P) = expS SS P := by
   intro D X s hs SS P
   have hm : ∀ Q, seamP s Q ∈ SS.map (HeightOneSpectrum.equivOfRingEquiv (RingOfIntegers.mapRingEquiv s.iE)).toEmbedding ↔ Q ∈ SS :=

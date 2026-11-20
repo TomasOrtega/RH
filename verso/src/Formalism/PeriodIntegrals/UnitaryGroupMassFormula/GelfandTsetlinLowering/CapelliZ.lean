@@ -22,10 +22,18 @@ def capZ {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (sg : DomWeight n) :
   ((List.finRange n).map fun i =>
     ((((Rset h lam sg i).erase (sg.w i)).toList.map fun v => capF h lam i v).prod)).prod
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact Bl.general_b_fact_right.goal1 .. | (apply Bl.general_b_fact_right.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_right.goal1 <;> assumption) | (apply @Bl.general_b_fact_right.goal1 <;> assumption) | (intros; apply @Bl.general_b_fact_right.goal1 <;> assumpt …`.
+-/
 theorem list_scalar {V ι : Type*} [AddCommGroup V] [Module ℂ V] (L : List ι) (F : ι → Module.End ℂ V)
     (c : ι → ℂ) (x : V) (hL : ∀ j ∈ L, F j x = c j • x) : (L.map F).prod x = (L.map c).prod • x := by
   first | exact Bl.general_b_fact_right.goal1 .. | (apply Bl.general_b_fact_right.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_right.goal1 <;> assumption) | (apply @Bl.general_b_fact_right.goal1 <;> assumption) | (intros; apply @Bl.general_b_fact_right.goal1 <;> assumption) | (apply @Bl.general_b_fact_right.goal1 <;> first | assumption | infer_instance)
 
+/- English proof (translation)
+Rewrite using `[capF, LinearMap.smul_apply, hC h lam mu φ hφ s hs, smul_smul]`. Use `congr 1`. Establish `: ((-1 : ℂ) ^ n) = ∏ _j : Fin n, (-1 : ℂ)` using `by simp`. Rewrite using `[this, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem capF_scalar (hC : CapScalar) {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (mu : DomWeight n)
     (φ : MvPolynomial (Fin n × Fin n) ℂ →ₗ[ℂ] MvPolynomial (Fin N × Fin N) ℂ) (hφ : IsEqv h mu lam φ)
     (s : MvPolynomial (Fin n × Fin n) ℂ) (hs : s ∈ nablaSq ℂ n mu) (i : Fin n) (v : ℤ) :
@@ -37,6 +45,11 @@ theorem capF_scalar (hC : CapScalar) {n N : ℕ} (h : n + 1 = N) (lam : DomWeigh
   refine Finset.prod_congr rfl fun j _ => ?_
   push_cast; ring
 
+/- English proof (translation)
+Unfold `capZ`. Rewrite using `[list_scalar (List.finRange n) _ (fun i => ∏ v ∈ (Rset h lam sg i).erase (sg.w i), ∏ j : Fin n, ((((v - (i.1 : ℤ)) - mu.w j + (j.1 : ℤ) : ℤ)) : ℂ)) (φ s)]`. Rewrite using `[← Fin.prod_univ_def]`. Unfold `zScalar`. Use `push_cast`.
+
+Both sides reduce to the same expression. Introduce `i _`. Rewrite using `[list_scalar _ _ (fun v => ∏ j : Fin n, ((((v - (i.1 : ℤ)) - mu.w j + (j.1 : ℤ) : ℤ)) : ℂ)) (φ s), Finset.prod_map_toList]`. Introduce `v _`. Conclude with `capF_scalar hC h lam mu φ hφ s hs i v`.
+-/
 theorem capZ_scalar (hC : CapScalar) {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (sg mu : DomWeight n)
     (φ : MvPolynomial (Fin n × Fin n) ℂ →ₗ[ℂ] MvPolynomial (Fin N × Fin N) ℂ) (hφ : IsEqv h mu lam φ)
     (s : MvPolynomial (Fin n × Fin n) ℂ) (hs : s ∈ nablaSq ℂ n mu) :
@@ -75,15 +88,24 @@ def presRing {N : ℕ} (lam : DomWeight N) : Subring (Module.End ℂ (MvPolynomi
     obtain ⟨f1, hf1, e1⟩ := h1 f hf
     exact ⟨-f1, neg_mem hf1, by rw [LinearMap.neg_apply, e1, map_neg]⟩
 
+/- English proof (translation)
+Rewrite using `[map_intCast]`. Conclude with `intCast_mem _ w`.
+-/
 theorem algebraMap_int_mem {N : ℕ} (lam : DomWeight N) (w : ℤ) :
     algebraMap ℂ (Module.End ℂ (MvPolynomial (Fin N × Fin N) ℂ)) (w : ℂ) ∈ presRing lam := by
   rw [map_intCast]; exact intCast_mem _ w
 
+/- English proof (translation)
+Introduce `f hf`. Conclude with `⟨pol ℤ a b f, pol_mem_dualWeyl ℤ lam.natW a b f hf, pol_map _ a b f⟩`.
+-/
 theorem pol_mem_presRing {N : ℕ} (lam : DomWeight N) (a b : Fin N) :
     (pol ℂ (m := N) a b : Module.End ℂ (MvPolynomial (Fin N × Fin N) ℂ)) ∈ presRing lam := by
   intro f hf
   exact ⟨pol ℤ a b f, pol_mem_dualWeyl ℤ lam.natW a b f hf, pol_map _ a b f⟩
 
+/- English proof (translation)
+Unfold `capE`. Use `add_mem (pol_mem_presRing lam _ _) ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `algebraMap_int_mem lam _`. Conclude with `zero_mem _`.
+-/
 theorem capE_mem {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (a b : Fin n) : capE h lam a b ∈ presRing lam := by
   unfold capE
   refine add_mem (pol_mem_presRing lam _ _) ?_
@@ -91,6 +113,11 @@ theorem capE_mem {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (a b : Fin n) :
   · exact algebraMap_int_mem lam _
   · exact zero_mem _
 
+/- English proof (translation)
+Unfold `Formalism.REAL.qdet Formalism.REAL.qminor`. Use `Subring.sum_mem _ fun σ _ => mul_mem (intCast_mem _ _) (Subring.list_prod_mem _ fun x hx => ?_)` and prove the remaining obligations. Take `⟨k, rfl⟩` from `List.mem_ofFn.mp hx`. Unfold `Formalism.REAL.Tm`. Use `add_mem ?_ (capE_mem h lam _ _)` and prove the remaining obligations.
+
+Use `split_ifs`. Establish `: (w : ℂ) - (k : ℂ) = ((w - (k.1 : ℤ) : ℤ) : ℂ)` using `by push_cast; rfl`. Rewrite using `[this]`. Conclude with `algebraMap_int_mem lam _`. Conclude with `zero_mem _`.
+-/
 theorem qdet_mem {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (w : ℤ) :
     Formalism.REAL.qdet (capE h lam) (w : ℂ) ∈ presRing lam := by
   unfold Formalism.REAL.qdet Formalism.REAL.qminor
@@ -103,6 +130,9 @@ theorem qdet_mem {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (w : ℤ) :
     rw [this]; exact algebraMap_int_mem lam _
   · exact zero_mem _
 
+/- English proof (translation)
+Unfold `capF`. Establish `h1 : (-((v : ℂ) - ((i.1 : ℤ) : ℂ))) = ((-(v - (i.1 : ℤ)) : ℤ) : ℂ)` using `by push_cast; ring`. Establish `h2 : ((-1 : ℂ) ^ n) = (((-1 : ℤ) ^ n : ℤ) : ℂ)` using `by push_cast; ring`. Rewrite using `[h1, h2, Algebra.smul_def]`. Conclude with `mul_mem (algebraMap_int_mem lam _) (qdet_mem h lam _)`.
+-/
 theorem capF_mem {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (i : Fin n) (v : ℤ) :
     capF h lam i v ∈ presRing lam := by
   unfold capF
@@ -111,6 +141,11 @@ theorem capF_mem {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (i : Fin n) (v 
   rw [h1, h2, Algebra.smul_def]
   exact mul_mem (algebraMap_int_mem lam _) (qdet_mem h lam _)
 
+/- English proof (translation)
+Unfold `capZ`. Use `Subring.list_prod_mem _ fun x hx => ?_` and prove the remaining obligations. Take `⟨i, _, rfl⟩` from `List.mem_map.mp hx`. Use `Subring.list_prod_mem _ fun y hy => ?_` and prove the remaining obligations. Take `⟨v, _, rfl⟩` from `List.mem_map.mp hy`.
+
+Conclude with `capF_mem h lam i v`.
+-/
 theorem capZ_mem {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (sg : DomWeight n) :
     capZ h lam sg ∈ presRing lam := by
   unfold capZ
@@ -120,6 +155,9 @@ theorem capZ_mem {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (sg : DomWeight
   obtain ⟨v, _, rfl⟩ := List.mem_map.mp hy
   exact capF_mem h lam i v
 
+/- English proof (translation)
+Introduce `n N h lam sg _`. Use `⟨capZ h lam sg, fun f hf => capZ_mem h lam sg f hf, ?_⟩` and prove the remaining obligations. Introduce `mu _ φ hφ s hs`. Conclude with `capZ_scalar hC h lam sg mu φ hφ s hs`.
+-/
 theorem capelliZ_of (hC : CapScalar) : CapelliZ := by
   intro n N h lam sg _
   refine ⟨capZ h lam sg, fun f hf => capZ_mem h lam sg f hf, ?_⟩

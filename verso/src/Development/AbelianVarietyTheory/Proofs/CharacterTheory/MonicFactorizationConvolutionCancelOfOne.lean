@@ -5,6 +5,11 @@ open Polynomial GlobalTheory.CuspGL
 
 namespace GlobalTheory.CuspGL.ConvCancel
 
+/- English proof (translation)
+Establish `hfin : {g : F[X] | g.Monic ∧ g ∣ P}.Finite`. Establish `h` using `Polynomial.fintypeSubtypeMonicDvd P hP`. Conclude with `@Finite.of_fintype _ h`. Use `(hfin.prod hfin).subset ?_` and prove the remaining obligations. Introduce and unpack `⟨D, E⟩ ⟨hD, hE, h⟩`.
+
+Conclude with `⟨⟨hD, Dvd.intro _ h⟩, ⟨hE, Dvd.intro_left _ h⟩⟩`.
+-/
 theorem finite_pairs {F : Type} [Field F] (P : F[X]) (hP : P ≠ 0) :
     {x : F[X] × F[X] | x.1.Monic ∧ x.2.Monic ∧ x.1 * x.2 = P}.Finite := by
   classical
@@ -15,6 +20,19 @@ theorem finite_pairs {F : Type} [Field F] (P : F[X]) (hP : P ≠ 0) :
   rintro ⟨D, E⟩ ⟨hD, hE, h⟩
   exact ⟨⟨hD, Dvd.intro _ h⟩, ⟨hE, Dvd.intro_left _ h⟩⟩
 
+/- English proof (translation)
+Introduce `F _ a b m hm h P`. Proceed by induction on `hn : P.natDegree using Nat.strong_induction_on generalizing P with`. Consider the case `_ n ih`. Introduce `hP`. Establish `hfin` using `finite_pairs P hP.ne_zero`.
+
+Establish `h1` using `h P hP`. Unfold `conv at h1`. Rewrite `h1` using `[finsum_mem_eq_finite_toFinset_sum _ hfin, finsum_mem_eq_finite_toFinset_sum _ hfin]`. Establish `hmem : ((P, 1) : F[X] × F[X]) ∈ hfin.toFinset`. Simplify using `[hP]`.
+
+Rewrite `h1` using `[← Finset.add_sum_erase _ _ hmem, ← Finset.add_sum_erase _ _ hmem]`. Establish `h2 : ∑ x ∈ hfin.toFinset.erase (P, 1), a x.1 * m x.2 = ∑ x ∈ hfin.toFinset.erase (P, 1), b x.1 * m x.2`. Use `Finset.sum_congr rfl ?_` and prove the remaining obligations. Introduce and unpack `⟨D, E⟩ hx`. Rewrite `hx` using `[Finset.mem_erase, Set.Finite.mem_toFinset]`.
+
+Take `⟨hne, hD, hE, hDE⟩` from `hx`. Simplify using `only at hD hE hDE ⊢`. Establish `hE1 : E ≠ 1`. Introduce and unpack `rfl`. Apply `hne` to reduce the goal to its premises.
+
+Rewrite using `[← hDE, mul_one]`. Establish `hdeg : D.natDegree < n`. Rewrite using `[← hn, ← hDE, hD.natDegree_mul hE]`. Establish `: E.natDegree ≠ 0` using `fun h0 => hE1 (hE.natDegree_eq_zero.mp h0)`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[ih _ hdeg D rfl hD]`. Rewrite `h1` using `[h2]`. Simplify `h1` using `[hm]`.
+-/
 theorem conv_cancel : ∀ (F : Type) [Field F] (a b m : F[X] → ℂ), m 1 = 1 →
     (∀ P : F[X], P.Monic → conv a m P = conv b m P) → ∀ P : F[X], P.Monic → a P = b P := by
   intro F _ a b m hm h P

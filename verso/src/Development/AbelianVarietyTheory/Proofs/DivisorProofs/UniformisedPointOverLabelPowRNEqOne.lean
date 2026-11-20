@@ -11,6 +11,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.LabelTorsion
 
+/- English proof (translation)
+Establish `h0 : ρ.pt 0 = 1`. Establish `h` using `ρ.pt_add 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `left_eq_mul.mp h`. Proceed by induction on `n with`.
+
+Consider the case `zero => rw [zero_smul, pow_zero, h0]`. Consider the case `succ n ih => rw [succ_nsmul, ρ.pt_add, ih, pow_succ]`.
+-/
 theorem pt_nsmul {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω} (ρ : S.Real) (b : S.Gam)
     (n : ℕ) : ρ.pt (n • b) = ρ.pt b ^ n := by
   have h0 : ρ.pt 0 = 1 := by
@@ -21,6 +26,9 @@ theorem pt_nsmul {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : Theta
   | zero => rw [zero_smul, pow_zero, h0]
   | succ n ih => rw [succ_nsmul, ρ.pt_add, ih, pow_succ]
 
+/- English proof (translation)
+Establish `h : (S.r * S.N) • b = 0 • b`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, Pi.smul_apply, zero_smul, nsmul_eq_mul, ZMod.natCast_self, zero_mul]`. Rewrite using `[← pt_nsmul, h, pt_nsmul, pow_zero]`.
+-/
 theorem pt_pow_eq_one {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω} (ρ : S.Real) (b : S.Gam) :
     ρ.pt b ^ (S.r * S.N) = 1 := by
   have h : (S.r * S.N) • b = 0 • b := by
@@ -28,6 +36,9 @@ theorem pt_pow_eq_one {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : 
     rw [Pi.smul_apply, Pi.smul_apply, zero_smul, nsmul_eq_mul, ZMod.natCast_self, zero_mul]
   rw [← pt_nsmul, h, pt_nsmul, pow_zero]
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ S ρ p _ y₀ u b x hx`. Conclude with `GlobalTheory.FrameMove.pow_eq_one_of (T := baseOver (Sp S.R)) (x := ρ.pt b) u.cart hx (pt_pow_eq_one ρ b)`.
+-/
 theorem pow_eq_one_of_over_label : ∀ {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (b : S.Gam) (x : TFK (R := u.V) (PadicAlgCl p) ⟶ u.A.A), x.left ≫ u.φ = spMap y₀ ≫ (ρ.pt b).left → x ^ (S.r * S.N) = 1 := by
   intro o Ω _ _ _ S ρ p _ y₀ u b x hx
   exact GlobalTheory.FrameMove.pow_eq_one_of (T := baseOver (Sp S.R)) (x := ρ.pt b) u.cart hx (pt_pow_eq_one ρ b)

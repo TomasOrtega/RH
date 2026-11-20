@@ -18,6 +18,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `A _ hA M f N hM hN hf T x hx hgen`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `AlgebraicGeometry.Scheme.hom_ext_of_forall` to reduce the goal to its premises. Introduce `t`. Take `⟨U, y, htU, hU⟩` from `GlobalTheory.T.torsionPoint_locally_constant_complexAbelian A hA N hN T x hx t`.
+
+Establish `hy : y ≫ f = 1` using `hf y (GlobalTheory.T.hasGenerator_lambdaPullback_complexPoint_of_eqOnOpen A hA M hM T x U y t htU hU hgen)`. Use `⟨U, htU, ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : T ⟶ A) = toUnit T ≫ (1 : 𝟙_ (Over (Sp ℂ)) ⟶ A)` using `(comp_one _).symm`. Establish `h2 : (toUnit T).left = T.hom`. Simplify using `using Over.w (toUnit T)`.
+
+Rewrite using `[h1, ← hy]`. Simplify using `only [Over.comp_left, h2]`. Rewrite using `[← Category.assoc, hU, Category.assoc, Category.assoc]`.
+-/
 theorem torsion_point_comp_eq_one : ∀ (A : Over (Sp ℂ)) [GrpObj A], IsAbelianScheme A → ∀ (M : LB A.left) (f : A ⟶ A) (N : ℕ), M.IsLB → 1 ≤ N →
     (∀ y : 𝟙_ (Over (Sp ℂ)) ⟶ A, HasGen ((abelian₂ A M).pull (lift (fst A (𝟙_ (Over (Sp ℂ)))) (snd A (𝟙_ (Over (Sp ℂ))) ≫ y)).left) → y ≫ f = 1) →
     ∀ (T : Over (Sp ℂ)) (x : T ⟶ A), x ^ N = 1 → HasGen ((abelian₂ A M).pull (lift (fst A T) (snd A T ≫ x)).left) → x ≫ f = 1 := by

@@ -13,6 +13,9 @@ section Gen
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ}
 
+/- English proof (translation)
+Rewrite using `[psiF_apply]`. Simplify using `only [hff, hef, zero_smul, Finset.sum_const_zero, add_zero, ite_smul, one_smul, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Normalize the expressions using the abelian group laws.
+-/
 theorem psiF_f (e f : Fin r → S.V) (U U' : Matrix (Fin r) (Fin r) E) (hff : ∀ a b, S.hT (f a) (f b) = 0)
     (hef : ∀ a b, S.hT (e a) (f b) = if a = b then 1 else 0) (j : Fin r) :
     psiF e f U U' (f j) = ∑ c, U' c j • f c := by
@@ -21,6 +24,27 @@ theorem psiF_f (e f : Fin r → S.V) (U U' : Matrix (Fin r) (Fin r) E) (hff : �
     Finset.sum_ite_eq', Finset.mem_univ, if_true]
   abel
 
+/- English proof (translation)
+Establish `hA : ∀ y ∈ latSpan aa e, psiF e f U U' y ∈ latSpan aa e`. Introduce `y hy`. Unfold `latSpan at hy ⊢`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `zero => simp`.
+
+Consider the case `add y y' _ _ h h' => rw [map_add]`. Conclude with `Submodule.add_mem _ h h'`. Consider the case `smul o y _ h => rw [LinearMap.map_smul_of_tower]`. Conclude with `Submodule.smul_mem _ o h`. Consider the case `mem y hy`.
+
+Take `⟨a, x, hx, rfl⟩` from `hy`. Rewrite using `[map_smul, psiF_e e f hef U U' hee, Finset.smul_sum]`. Use `Submodule.sum_mem _ fun c _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`. Break down `lt_or_ge a c with h | h` into its components or cases.
+
+Rewrite using `[(hU c a).1 h, mul_zero, zero_smul]`. Conclude with `Submodule.zero_mem _`. Take `⟨o, ho⟩` from `(hU c a).2`. Use `Submodule.subset_span ⟨c, x * U c a, haa a c h ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[← ho, mul_comm, ← Algebra.smul_def]`.
+
+Conclude with `Submodule.smul_mem _ o hx`. Establish `hC : ∀ y ∈ latSpan (fun a => (aa a)⁻¹) f, psiF e f U U' y ∈ latSpan (fun a => (aa a)⁻¹) f`. Introduce `y hy`. Unfold `latSpan at hy ⊢`. Proceed by induction on `hy using Submodule.span_induction with`.
+
+Consider the case `zero => simp`. Consider the case `add y y' _ _ h h' => rw [map_add]`. Conclude with `Submodule.add_mem _ h h'`. Consider the case `smul o y _ h => rw [LinearMap.map_smul_of_tower]`. Conclude with `Submodule.smul_mem _ o h`.
+
+Consider the case `mem y hy`. Take `⟨a, x, hx, rfl⟩` from `hy`. Rewrite using `[map_smul, psiF_f e f U U' hff hef, Finset.smul_sum]`. Use `Submodule.sum_mem _ fun c _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`.
+
+Break down `lt_or_ge c a with h | h` into its components or cases. Rewrite using `[(hU' c a).1 h, mul_zero, zero_smul]`. Conclude with `Submodule.zero_mem _`. Take `⟨o, ho⟩` from `(hU' c a).2`. Use `Submodule.subset_span ⟨c, x * U' c a, ?_, rfl⟩` and prove the remaining obligations.
+
+Establish `hle : (aa a)⁻¹ ≤ (aa c)⁻¹` using `FractionalIdeal.inv_anti_mono (haa0 c) (haa0 a) (haa c a h)`. Use `hle ?_` and prove the remaining obligations. Rewrite using `[← ho, mul_comm, ← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ o hx`. Rewrite `hv`, the goal using `[hΛ]`.
+
+Take `⟨v12, hv12, v3, hv3, rfl⟩` from `Submodule.mem_sup.mp hv`. Take `⟨v1, hv1, v2, hv2, rfl⟩` from `Submodule.mem_sup.mp hv12`. Rewrite using `[map_add, map_add, psiF_fix e f U U' v2 (fun a => (hL v2 hv2 a).2) (fun a => (hL v2 hv2 a).1)]`. Conclude with `Submodule.add_mem _ (Submodule.add_mem _ (Submodule.mem_sup_left (Submodule.mem_sup_left (hA _ hv1))) (Submodule.mem_sup_left (Submodule.mem_sup_right hv2))) (Submodule.mem_sup_right (hC _ hv3))`.
+-/
 theorem levi_mem (Λ : Submodule (𝓞 E) S.V) (aa : Fin r → FractionalIdeal (nonZeroDivisors (𝓞 E)) E)
     (e f : Fin r → S.V) (L : Submodule (𝓞 E) S.V)
     (hΛ : Λ = latSpan aa e ⊔ L ⊔ latSpan (fun a => (aa a)⁻¹) f)
@@ -85,11 +109,21 @@ section D7
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Unfold `ddS`. Rewrite using `[← FractionalIdeal.coeIdeal_pow]`. Conclude with `FractionalIdeal.coeIdeal_le_one`.
+-/
 theorem ddS_pow_le_one (D : D7) (n : ℕ) : ddS D ^ n ≤ 1 := by
   unfold ddS
   rw [← FractionalIdeal.coeIdeal_pow]
   exact FractionalIdeal.coeIdeal_le_one
 
+/- English proof (translation)
+Rewrite using `[PI.TermsAtPtFiniteW.FrameW.aaS_eq, PI.TermsAtPtFiniteW.FrameW.aaS_eq]`. Use `FractionalIdeal.inv_anti_mono (pow_ne_zero _ (PI.SRW.ddS_ne D)) (pow_ne_zero _ (PI.SRW.ddS_ne D)) ?_` and prove the remaining obligations. Establish `e : ddS D ^ (D.R.rS - c.1) = ddS D ^ (D.R.rS - a.1) * ddS D ^ (a.1 - c.1)`. Rewrite using `[← pow_add]`. Use `congr 1`.
+
+Use `a.2` as an intermediate fact. Establish `: c.1 ≤ a.1` using `h`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e, FractionalIdeal.mul_le]`. Introduce `i hi j hj`.
+
+Establish `hj1` using `ddS_pow_le_one D (a.1 - c.1) hj`. Take `⟨o, ho⟩` from `(FractionalIdeal.mem_one_iff _).mp hj1`. Rewrite using `[← ho, mul_comm, ← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ o hi`.
+-/
 theorem aaS_mono (D : D7) (a c : Fin D.R.rS) (h : c ≤ a) : aaS D a ≤ aaS D c := by
   rw [PI.TermsAtPtFiniteW.FrameW.aaS_eq, PI.TermsAtPtFiniteW.FrameW.aaS_eq]
   refine FractionalIdeal.inv_anti_mono (pow_ne_zero _ (PI.SRW.ddS_ne D)) (pow_ne_zero _ (PI.SRW.ddS_ne D)) ?_
@@ -106,6 +140,9 @@ theorem aaS_mono (D : D7) (a c : Fin D.R.rS) (h : c ≤ a) : aaS D a ≤ aaS D c
   rw [← ho, mul_comm, ← Algebra.smul_def]
   exact Submodule.smul_mem _ o hi
 
+/- English proof (translation)
+Rewrite using `[PI.TermsAtPtFiniteW.FrameW.aaS_eq]`. Conclude with `inv_ne_zero (pow_ne_zero _ (PI.SRW.ddS_ne D))`.
+-/
 theorem aaS_ne (D : D7) (a : Fin D.R.rS) : aaS D a ≠ 0 := by
   rw [PI.TermsAtPtFiniteW.FrameW.aaS_eq]
   exact inv_ne_zero (pow_ne_zero _ (PI.SRW.ddS_ne D))

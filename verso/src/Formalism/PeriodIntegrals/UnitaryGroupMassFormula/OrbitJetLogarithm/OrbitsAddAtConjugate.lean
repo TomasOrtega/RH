@@ -11,6 +11,11 @@ open MvPowerSeries Formalism.BasicNotions Formalism.MainNotions.G PI.OrbJet.OJ
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Establish `hadm` using `admissible_jet_term E h5 u i z c hc (ep z) (sg z) (hep z) (hsg z) (be z) (hbe z) (kz D z k)`. Establish `hK` using `hβ z _ hadm`. Establish `hP : MvPolynomial.rename (xzMap (N0` using `D.R.N i) (N1 := D.R.N (i + 1)) (ptE D z)) (Gxz (D.R.N i) (D.R.N (i + 1)) (fun _ : ZMod 1 => E.nu u i z) (fun _ c' => I z c')) = ∏ c' : Fin ((E.nu u i z).rowLen 0), minorXZ (D.R.N i) (D.R.N (i + 1)) z ((E.nu u i z).colLen c') (I z c') := by`. Simplify using `only [Gxz, map_prod, rename_minorXZ, ptE_apply, Finset.prod_const, Finset.card_univ, ZMod.card, pow_one]`. Rewrite using `[← hP, applyAt0_rename]`.
+
+Conclude with `norm_coeff_rename_le _ _ (Real.rpow_nonneg (Nat.cast_nonneg _) _) (fun m => hK _ m) m'`.
+-/
 theorem bound_place {D : D7} (E : Ent D) (h5 : 5 ≤ p) (u : D.what₂.Word) (i : ℕ) (β : Pl D → ℝ)
     (hβ : ∀ z, OneGe E p h5 u i z (β z)) (c : ℂ_[p]) (hc : ‖c‖ = 1) (ep sg : Pl D → ℂ_[p])
     (hep : ∀ z, ‖ep z‖ = 1) (hsg : ∀ z, sg z = 1 ∨ sg z = -1) (be : Pl D → MvPowerSeries (ZMod 2) ℂ_[p])
@@ -33,6 +38,11 @@ theorem bound_place {D : D7} (E : Ent D) (h5 : 5 ≤ p) (u : D.what₂.Word) (i 
   rw [← hP, applyAt0_rename]
   exact norm_coeff_rename_le _ _ (Real.rpow_nonneg (Nat.cast_nonneg _) _) (fun m => hK _ m) m'
 
+/- English proof (translation)
+Establish `hs` using `hs_psiA (p := p) c (τ := τ)`. Establish `h1 : (1 : ℕ∞) ≤ ⨅ v : τ, (psiA p c v).order`. Use `le_iInf fun v => ?_` and prove the remaining obligations. Use `MvPowerSeries.le_order fun d hd => ?_` and prove the remaining obligations. Establish `hd1 : Finsupp.degree d < 1` using `by exact_mod_cast hd`.
+
+Establish `hd0 : d = 0` using `(Finsupp.degree_eq_zero_iff d).mp (Nat.lt_one_iff.mp hd1)`. Rewrite using `[hd0, MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Conclude with `cc_psubst (p := p) _ (by simp) _ (Ep_const (p := p))`. Establish `h2 : V.order ≤ (V * X).order` using `le_trans le_self_add MvPowerSeries.le_order_mul`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem order_psi_gt (c : ℂ_[p]) {τ : Type*} [Finite τ] (n : ℕ) (V X : MvPowerSeries τ ℂ_[p])
     (hV : (n : ℕ∞) < V.order) : (n : ℕ∞) < (subst (psiA p c) (V * X)).order := by
   have hs := hs_psiA (p := p) c (τ := τ)
@@ -52,6 +62,33 @@ theorem order_psi_gt (c : ℂ_[p]) {τ : Type*} [Finite τ] (n : ℕ) (V X : MvP
       mul_le_mul_of_nonneg_right h1 (by simp)
     _ ≤ (subst (psiA p c) (V * X)).order := MvPowerSeries.le_order_subst hs _
 
+/- English proof (translation)
+Introduce `p _ h5 hn u i _ β hβ Th hB I m`. Take `⟨ep0, hep0, be, hbe, ep, hep, sg, hsg, U, hU, hEq⟩` from `hB`. Establish `hep0' : ep0 ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hep0`.
+
+Establish `hcc : ∀ z, constantCoeff (be z) = 0` using `fun z => constantCoeff_zero_of_bound_two (be z) (hbe z).2.2.1`. Establish `hphi : (fun v : Pl D × Fin (D.R.N i) × Fin (D.R.N (i + 1)) => MvPowerSeries.C ep0 * logPl D p v) = phiA p ep0`. Use function extensionality and compare the values at `v`. Rewrite using `[logPl_one (p := p) D hn v]`. Both sides reduce to the same expression.
+
+Establish `hEq' : subst (phiA p ep0) Th = U * subst (logPl D p (β` using `Fin (D.R.N i) × Fin (D.R.N (i + 1)))) (OJ.expS ℂ_[p] (fAll D (D.R.N i) (D.R.N (i + 1)) ep sg be)) := by`. Rewrite using `[← hphi]`. Conclude with `hEq`. Establish `hTh : Th = subst (psiA p ep0) (U * subst (logPl D p (β` using `Fin (D.R.N i) × Fin (D.R.N (i + 1)))) (OJ.expS ℂ_[p] (fAll D (D.R.N i) (D.R.N (i + 1)) ep sg be))) := by`. Rewrite using `[← hEq', psi_phi (p := p) ep0 hep0' Th]`.
+
+Establish `hdisj : ((Finset.univ : Finset (Pl D)) : Set (Pl D)).PairwiseDisjoint (fun z : Pl D => ({z} : Set (Pl D)))`. Introduce `x _ y _ hxy`. Conclude with `Set.disjoint_singleton.mpr hxy`. Establish `hprod : ∀ (k : Pl D × Fin (D.R.N i) × Fin (D.R.N (i + 1)) →₀ ℕ) (m' : Pl D × ℕ × Fin (D.R.N i) →₀ ℕ), ‖MvPolynomial.coeff m' (applyAt0 (D.R.N i) (D.R.N (i + 1)) p (∏ z, rename (pEmb (ptE D z) (Fin (D.R.N i) × Fin (D.R.N (i + 1)))) (T1 (D.R.N i) (D.R.N (i + 1)) ep0 (ep z) (sg z) ( …`. Introduce `k m'`.
+
+Establish `hT : ∀ z ∈ (Finset.univ : Finset (Pl D)), SerIn {v : Pl D × Fin (D.R.N i) × Fin (D.R.N (i + 1)) | v.1 ∈ ({z} : Set (Pl D))} (rename (pEmb (ptE D z) (Fin (D.R.N i) × Fin (D.R.N (i + 1)))) (T1 (D.R.N i) (D.R.N (i + 1)) ep0 (ep z) (sg z) (be z) (kz D z k)))`. Introduce `z _`. Use `SerIn.mono ?_ (serIn_rename (ptE D z) _)` and prove the remaining obligations. Introduce and unpack `v ⟨s, hs⟩`. Rewrite `hs` using `[ptE_apply]`.
+
+Conclude with `hs.symm`. Establish `hP : ∀ z ∈ (Finset.univ : Finset (Pl D)), (∏ c' : Fin ((E.nu u i z).rowLen 0), minorXZ (D.R.N i) (D.R.N (i + 1)) z ((E.nu u i z).colLen c') (I z c')) ∈ MvPolynomial.supported ℤ (xzLetter ⁻¹' ({z} : Set (Pl D)))`. Introduce `z _`. Conclude with `Subalgebra.prod_mem _ fun c' _ => minorXZ_supported _ _ _`. Establish `hG : Gxz (D.R.N i) (D.R.N (i + 1)) (E.nu u i) I = ∏ z ∈ (Finset.univ : Finset (Pl D)), ∏ c' : Fin ((E.nu u i z).rowLen 0), minorXZ (D.R.N i) (D.R.N (i + 1)) z ((E.nu u i z).colLen c') (I z c')` using `rfl`.
+
+Establish `happ : applyAt0 (D.R.N i) (D.R.N (i + 1)) p (∏ z, rename (pEmb (ptE D z) (Fin (D.R.N i) × Fin (D.R.N (i + 1)))) (T1 (D.R.N i) (D.R.N (i + 1)) ep0 (ep z) (sg z) (be z) (kz D z k))) (∏ z ∈ (Finset.univ : Finset (Pl D)), ∏ c' : Fin ((E.nu u i z).rowLen 0), minorXZ (D.R.N i) (D.R.N ( …` using `applyAt0_prod (l := p) _ _ hdisj _ _ hT hP`. Rewrite using `[hG, happ, ← Finset.sum_neg_distrib, Real.rpow_sum_of_pos (by exact_mod_cast (Fact.out : p.Prime).pos)]`. Use `norm_coeff_prod_le _ ?_ ?_ m'` and prove the remaining obligations. Introduce `z _`. Conclude with `Real.rpow_nonneg (Nat.cast_nonneg _) _`.
+
+Introduce `z _ m''`. Conclude with `bound_place E h5 u i β hβ ep0 hep0 ep sg hep hsg be hbe I k z m''`. Establish `hfac` using `factor D hn (D.R.N i) (D.R.N (i + 1)) ep0 hep0' ep sg be hcc`. Generalize the expression as in `subst (logPl D p (β := Fin (D.R.N i) × Fin (D.R.N (i + 1)))) (OJ.expS ℂ_[p] (fAll D (D.R.N i) (D.R.N (i + 1)) ep sg be)) = L at hTh hfac`. Take `⟨Sk, V, hUV, hV⟩` from `trunc_split (Gxz (D.R.N i) (D.R.N (i + 1)) (E.nu u i) I).totalDegree U`.
+
+Establish `hs` using `hs_psiA (p := p) ep0 (τ := Pl D × Fin (D.R.N i) × Fin (D.R.N (i + 1)))`. Establish `hmon : ∀ k, MvPowerSeries.monomial k (MvPowerSeries.coeff k U) * L = MvPowerSeries.coeff k U • (MvPowerSeries.monomial k (1 : ℂ_[p]) * L)`. Introduce `k`. Rewrite using `[← smul_mul_assoc]`. Use `congr 1`.
+
+Establish `h` using `map_smul (MvPowerSeries.monomial k : ℂ_[p] →ₗ[ℂ_[p]] MvPowerSeries (Pl D × Fin (D.R.N i) × Fin (D.R.N (i + 1))) ℂ_[p]) (MvPowerSeries.coeff k U) (1 : ℂ_[p])`. Rewrite `h` using `[smul_eq_mul, mul_one]`. Conclude with `h`. Establish `hsplit : subst (psiA p ep0) (U * L) = ∑ k ∈ Sk, MvPowerSeries.coeff k U •`. Substitute `(psiA p ep0) (MvPowerSeries.monomial k (1 : ℂ_[p]) * L)` using the available equality.
+
+Use the proof step `+ subst (psiA p ep0) (V * L) := by`. Use `conv_lhs => rw [hUV]`. Rewrite using `[add_mul, Finset.sum_mul, ← MvPowerSeries.coe_substAlgHom (R := ℂ_[p]) hs, map_add, map_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hmon k, map_smul]`. Establish `hord` using `order_psi_gt ep0 _ V L hV`. Rewrite using `[hTh, hsplit, applyAt0_addT, applyAt0_sumT, applyAt0_eq_zero_of_order (h := hord), add_zero]`. Simplify using `only [applyAt0_smulT, hfac]`. Rewrite using `[MvPolynomial.coeff_sum]`.
+
+Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (Real.rpow_nonneg (Nat.cast_nonneg _) _) fun k _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul, norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem orbitsAddAtConjugate (D : D7) (E : Ent D) : OrbitsAddAtConjugate E := by
   intro p _ h5 hn u i _ β hβ Th hB I m
   obtain ⟨ep0, hep0, be, hbe, ep, hep, sg, hsg, U, hU, hEq⟩ := hB

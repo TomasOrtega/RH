@@ -11,12 +11,22 @@ namespace GlobalTheory
 
 namespace PlaceExt
 
+/- English proof (translation)
+Establish `h'` using `h ((a.untopD 0).natAbs + (p.untopD 0).natAbs + 1)`. Apply the tactic sequence `induction a using WithTop.recTopCoe <;> induction p using WithTop.recTopCoe <;>`. Apply the tactic sequence `simp only [WithTop.untopD_top, WithTop.untopD_coe, le_top, min_eq_right, ← WithTop.coe_min, WithTop.coe_inj] at h' ⊢ <;> omega`.
+-/
 theorem wt_eq_of_min {a p : WithTop ℤ} (h : ∀ m : ℕ, min a (m : ℤ) = min p (m : ℤ)) : a = p := by
   have h' := h ((a.untopD 0).natAbs + (p.untopD 0).natAbs + 1)
   induction a using WithTop.recTopCoe <;> induction p using WithTop.recTopCoe <;>
     simp only [WithTop.untopD_top, WithTop.untopD_coe, le_top, min_eq_right, ← WithTop.coe_min,
       WithTop.coe_inj] at h' ⊢ <;> omega
 
+/- English proof (translation)
+Take `⟨p, q, r, h1, h2, h3, h4⟩` from `h ((c.untopD 0).natAbs + 1)`. Proceed by induction on `c using WithTop.recTopCoe with`. Consider the case `top => exact le_top`. Consider the case `coe c`. Establish `hc : (c : WithTop ℤ) < ((((c.natAbs + 1 : ℕ) : ℤ)) : WithTop ℤ)`.
+
+Rewrite using `[WithTop.coe_lt_coe]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [WithTop.untopD_coe] at h1 h2 h3`. Generalize the expression as in `((((c.natAbs + 1 : ℕ) : ℤ)) : WithTop ℤ) = M at *`. Generalize the expression as in `(c : WithTop ℤ) = c' at *`.
+
+Use `grind`.
+-/
 theorem wt_add_of_min {a b c : WithTop ℤ} (h : ∀ m : ℕ, ∃ p q r : WithTop ℤ,
     min a (m : ℤ) = min p (m : ℤ) ∧ min b (m : ℤ) = min q (m : ℤ) ∧
       min c (m : ℤ) = min r (m : ℤ) ∧ min p q ≤ r) : min a b ≤ c := by
@@ -31,6 +41,9 @@ theorem wt_add_of_min {a b c : WithTop ℤ} (h : ∀ m : ℕ, ∃ p q r : WithTo
     generalize (c : WithTop ℤ) = c' at *
     grind
 
+/- English proof (translation)
+Take `⟨p, q, h1, h2, h3⟩` from `h ((a.untopD 0).natAbs + (b.untopD 0).natAbs + (c.untopD 0).natAbs + 1)`. Apply the tactic sequence `induction a using WithTop.recTopCoe <;> induction b using WithTop.recTopCoe <;>`. Apply the tactic sequence `induction c using WithTop.recTopCoe <;> induction p using WithTop.recTopCoe <;>`. Apply the tactic sequence `induction q using WithTop.recTopCoe <;>`. Apply the tactic sequence `simp only [WithTop.untopD_top, WithTop.untopD_coe, le_top, min_eq_right, ← WithTop.coe_min, WithTop.coe_inj, top_add, add_top, ← WithTop.coe_add, WithTop.top_ne_coe, WithTop.coe_ne_top] at h1 h2 h3 ⊢ <;> omega`.
+-/
 theorem wt_mul_of_min {a b c : WithTop ℤ} (n : ℕ) (h : ∀ m : ℕ, ∃ p q : WithTop ℤ,
     min a ((m + n : ℕ) : ℤ) = min p ((m + n : ℕ) : ℤ) ∧
       min b ((m + n : ℕ) : ℤ) = min q ((m + n : ℕ) : ℤ) ∧
@@ -48,6 +61,9 @@ section Abstract
 
 variable {L A : Type*} [Field L] [CommRing A]
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simpa using hb`. Consider the case `succ m ih`. Rewrite using `[pow_succ', mul_assoc, AddValuation.map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem le_val_pow_mul (u : AddValuation A (WithTop ℤ)) {t b : A} (ht : 1 ≤ u t) (hb : 0 ≤ u b)
     (m : ℕ) : ((m : ℤ) : WithTop ℤ) ≤ u (t ^ m * b) := by
   induction m with
@@ -58,6 +74,11 @@ theorem le_val_pow_mul (u : AddValuation A (WithTop ℤ)) {t b : A} (ht : 1 ≤ 
           push_cast; exact add_comm _ _
       _ ≤ _ := add_le_add ht ih
 
+/- English proof (translation)
+Establish `h1 : min (u (x - y)) (u y) ≤ u x` using `by simpa using u.map_add (x - y) y`. Establish `h2 : min (u (x - y)) (u x) ≤ u y`. Use `u.map_add (y - x) x` as an intermediate fact. Rewrite `this` using `[u.map_sub_swap y x]`. Simplify using `using this`.
+
+Use `grind`.
+-/
 theorem min_eq_of_le_sub (u : AddValuation A (WithTop ℤ)) {x y : A} {M : WithTop ℤ}
     (h : M ≤ u (x - y)) : min (u x) M = min (u y) M := by
   have h1 : min (u (x - y)) (u y) ≤ u x := by simpa using u.map_add (x - y) y
@@ -69,6 +90,11 @@ theorem min_eq_of_le_sub (u : AddValuation A (WithTop ℤ)) {x y : A} {M : WithT
 
 variable (ι : L →+* A) (S : Subring A) (π : L) (w : AddValuation L (WithTop ℤ))
 
+/- English proof (translation)
+Apply `AddValuation.ext` to reduce the goal to its premises. Introduce `x`. Apply `wt_eq_of_min` to reduce the goal to its premises. Introduce `m`. Take `⟨l, b, hb, hx⟩` from `happ x m`.
+
+Rewrite using `[min_eq_of_le_sub u (y := ι l), min_eq_of_le_sub u' (y := ι l), hu, hu']`. Rewrite using `[hx]; exact le_val_pow_mul u' (by rwa [hu']) (h0' b hb) m`. Rewrite using `[hx]; exact le_val_pow_mul u (by rwa [hu]) (h0 b hb) m`.
+-/
 theorem ext_unique (hw : 1 ≤ w π)
     (happ : ∀ (x : A) (m : ℕ), ∃ l, ∃ b ∈ S, x - ι l = ι π ^ m * b)
     (u u' : AddValuation A (WithTop ℤ)) (hu : ∀ l, u (ι l) = w l) (hu' : ∀ l, u' (ι l) = w l)
@@ -82,6 +108,35 @@ theorem ext_unique (hw : 1 ≤ w π)
   · rw [hx]; exact le_val_pow_mul u' (by rwa [hu']) (h0' b hb) m
   · rw [hx]; exact le_val_pow_mul u (by rwa [hu]) (h0 b hb) m
 
+/- English proof (translation)
+Set `C : A → ℕ → L → Prop` to `fun x m l => ∃ b ∈ S, x - ι l = ι π ^ m * b`. Establish `hmono : ∀ x m m' l, m ≤ m' → C x m' l → C x m l`. Introduce and unpack `x m m' l hm ⟨b, hb, h⟩`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hm`. Conclude with `⟨ι π ^ k * b, S.mul_mem (S.pow_mem hπS k) hb, by rw [h]; ring⟩`.
+
+Establish `hcl : ∀ x m l l', C x m l → C x m l' → min (w l) (m : ℤ) = min (w l') (m : ℤ)`. Introduce and unpack `x m l l' ⟨b, hb, h⟩ ⟨b', hb', h'⟩`. Apply `min_eq_of_le_sub` to reduce the goal to its premises. Establish `hp : π ^ m ≠ 0` using `pow_ne_zero _ hπ0`. Establish `e1 : l - l' = π ^ m * ((π ^ m)⁻¹ * (l - l'))` using `by field_simp`.
+
+Rewrite using `[e1]`. Apply `le_val_pow_mul w hw` to reduce the goal to its premises. Apply `hS` to reduce the goal to its premises. Establish `e2 : ι ((π ^ m)⁻¹ * (l - l')) = b' - b`. Establish `: ι (l - l') = ι (π ^ m) * (b' - b)`.
+
+Rewrite using `[map_sub, map_pow]`. Take the linear combination `h' - h`. Rewrite using `[map_mul, this, ← mul_assoc, ← map_mul, inv_mul_cancel₀ hp, map_one, one_mul]`. Rewrite using `[e2]`. Conclude with `S.sub_mem hb' hb`.
+
+Set `f : A → WithTop ℤ` to `fun x => if h : ∃ ml : ℕ × L, C x ml.1 ml.2 ∧ w ml.2 < (ml.1 : ℤ) then w h.choose.2 else ⊤`. Establish `hf : ∀ x m l, C x m l → min (f x) (m : ℤ) = min (w l) (m : ℤ)`. Introduce `x m l hC`. Distinguish the cases in `h : ∃ ml : ℕ × L, C x ml.1 ml.2 ∧ w ml.2 < (ml.1 : ℤ)`. Establish `e : f x = w h.choose.2` using `dif_pos h`.
+
+Take `⟨h1, h2⟩` from `h.choose_spec`. Rewrite using `[e]`. Generalize the expression as in `h.choose = ml at h1 h2`. Take `⟨m', l'⟩` from `ml`. Break down `le_total m m' with hm | hm` into its components or cases.
+
+Conclude with `hcl x m _ _ (hmono x m m' l' hm h1) hC`. Establish `h3` using `hcl x m' _ _ h1 (hmono x m' m l hm hC) dsimp only at h2 ⊢`. Establish `: w l' = w l` using `by grind`. Rewrite using `[this]`. Establish `e : f x = ⊤` using `dif_neg h`.
+
+Establish `: ¬ w l < (m : ℤ)` using `fun h' => h ⟨(m, l), hC, h'⟩`. Rewrite using `[e, min_eq_right le_top, min_eq_right (not_lt.1 this)]`. Establish `hι : ∀ l, f (ι l) = w l` using `fun l => wt_eq_of_min fun m => hf _ m l ⟨0, S.zero_mem, by simp⟩`. Use `⟨AddValuation.of f ?_ ?_ ?_ ?_, hι, ?_⟩` and prove the remaining obligations. Simplify using `using hι 0`.
+
+Simplify using `using hι 1`. Introduce `x y`. Apply `wt_add_of_min` to reduce the goal to its premises. Introduce `m`. Take `⟨l, b, hb, h⟩` from `happ x m`.
+
+Take `⟨l', b', hb', h'⟩` from `happ y m`. Use `⟨w l, w l', w (l + l'), hf x m l ⟨b, hb, h⟩, hf y m l' ⟨b', hb', h'⟩, hf _ m _ ⟨b + b', S.add_mem hb hb', ?_⟩, w.map_add _ _⟩` and prove the remaining obligations. Rewrite using `[map_add]`. Take the linear combination `h + h'`. Introduce `x y`.
+
+Take `⟨n1, hx⟩` from `hden x`. Take `⟨n2, hy⟩` from `hden y`. Apply `wt_mul_of_min (n1 + n2)` to reduce the goal to its premises. Introduce `m`. Take `⟨l, b, hb, h⟩` from `happ x (m + (n1 + n2))`.
+
+Take `⟨l', b', hb', h'⟩` from `happ y (m + (n1 + n2))`. Use `⟨w l, w l', hf x _ l ⟨b, hb, h⟩, hf y _ l' ⟨b', hb', h'⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← w.map_mul]`. Use `hf _ m _ ⟨ι π ^ n1 * b * (ι π ^ n2 * y) + ι π ^ n2 * b' * (ι π ^ n1 * x) - ι π ^ (m + 2 * (n1 + n2)) * b * b', ?_, ?_⟩` and prove the remaining obligations. Conclude with `S.sub_mem (S.add_mem (S.mul_mem (S.mul_mem (S.pow_mem hπS _) hb) hy) (S.mul_mem (S.mul_mem (S.pow_mem hπS _) hb') hx)) (S.mul_mem (S.mul_mem (S.pow_mem hπS _) hb) hb')`.
+
+Establish `e1 : ι l = x - ι π ^ (m + (n1 + n2)) * b` using `by linear_combination -h`. Establish `e2 : ι l' = y - ι π ^ (m + (n1 + n2)) * b'` using `by linear_combination -h'`. Rewrite using `[map_mul, e1, e2]`. Expand and normalize the polynomial expressions, which then agree. Introduce `b hb`.
+
+Use `hf b 0 0 ⟨b, hb, by simp⟩` as an intermediate fact. Simplify using `only [AddValuation.map_zero, le_top, min_eq_right, min_eq_right_iff] at this`. Simplify using `using this`.
+-/
 theorem exists_ext (hπ0 : π ≠ 0) (hπS : ι π ∈ S) (hw : 1 ≤ w π)
     (hS : ∀ l, ι l ∈ S → 0 ≤ w l)
     (happ : ∀ (x : A) (m : ℕ), ∃ l, ∃ b ∈ S, x - ι l = ι π ^ m * b)
@@ -169,6 +224,9 @@ variable {R R' : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [Co
   [IsDomain R'] [IsDiscreteValuationRing R'] [Algebra R R'] [IsLocalHom (algebraMap R R')]
 
 omit [IsLocalHom (algebraMap R R')] in
+/- English proof (translation)
+Rewrite using `[← hmax, (IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ, Ideal.map_span, Set.image_singleton]`.
+-/
 theorem maximalIdeal_eq_span
     (hmax : Ideal.map (algebraMap R R') (IsLocalRing.maximalIdeal R) = IsLocalRing.maximalIdeal R')
     {ϖ : R} (hϖ : Irreducible ϖ) :
@@ -176,6 +234,13 @@ theorem maximalIdeal_eq_span
   rw [← hmax, (IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ, Ideal.map_span,
     Set.image_singleton]
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => exact ⟨0, r, by simp⟩`. Consider the case `succ m ih`. Take `⟨r₀, r₁, h⟩` from `ih`. Take `⟨s, hs⟩` from `hres (IsLocalRing.residue R' r₁)`.
+
+Take `⟨s, rfl⟩` from `IsLocalRing.residue_surjective s`. Rewrite `hs` using `[IsLocalRing.ResidueField.map_residue]`. Establish `hm : r₁ - algebraMap R R' s ∈ IsLocalRing.maximalIdeal R'`. Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_sub, hs, sub_self]`. Rewrite `hm` using `[maximalIdeal_eq_span hmax hϖ, Ideal.mem_span_singleton']`.
+
+Take `⟨c, hc⟩` from `hm`. Use `⟨r₀ + ϖ ^ m * s, c, ?_⟩` and prove the remaining obligations. Rewrite using `[h, map_add, map_mul, map_pow]`. Take the linear combination `(-(algebraMap R R' ϖ) ^ m) * hc`.
+-/
 theorem exists_approx_base
     (hmax : Ideal.map (algebraMap R R') (IsLocalRing.maximalIdeal R) = IsLocalRing.maximalIdeal R')
     (hres : Function.Surjective (IsLocalRing.ResidueField.map (algebraMap R R')))
@@ -200,6 +265,13 @@ variable {F F' : Type} [Field F] [Algebra R F] [IsFractionRing R F] [Field F'] [
   [IsFractionRing R' F'] [Algebra F F'] [Algebra R F'] [IsScalarTower R F F']
   [IsScalarTower R R' F']
 
+/- English proof (translation)
+Break down `ValuationRing.isInteger_or_isInteger R f with hf | ⟨r, hr⟩` into its components or cases. Conclude with `hf`. Distinguish the cases in `hf0 : f = 0`. Conclude with `⟨0, by simp [hf0]⟩`. Establish `h1 : algebraMap R R' r * r' = 1`.
+
+Apply `IsFractionRing.injective R' F'` to reduce the goal to its premises. Rewrite using `[map_mul, ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply R F F', hr, h, ← map_mul, inv_mul_cancel₀ hf0, map_one, map_one]`. Establish `hu : IsUnit r` using `isUnit_of_map_unit (algebraMap R R') r (IsUnit.of_mul_eq_one _ h1)`. Take `⟨v, hv⟩` from `hu.exists_right_inv`. Use `⟨v, ?_⟩` and prove the remaining obligations.
+
+Establish `h2` using `congrArg (algebraMap R F) hv`. Rewrite `h2` using `[map_mul, hr, map_one]`. Clear denominators, using `at h2` for the nonvanishing conditions. Conclude with `h2`.
+-/
 theorem isInteger_of_map {f : F} (r' : R') (h : algebraMap R' F' r' = algebraMap F F' f) :
     ∃ r : R, algebraMap R F r = f := by
   rcases ValuationRing.isInteger_or_isInteger R f with hf | ⟨r, hr⟩
@@ -221,6 +293,23 @@ theorem isInteger_of_map {f : F} (r' : R') (h : algebraMap R' F' r' = algebraMap
 variable {L : Type} [Field L] [Algebra F L] [FiniteDimensional F L] [Algebra.IsSeparable F L]
   [Algebra R L] [IsScalarTower R F L]
 
+/- English proof (translation)
+Use `haveI := integralClosure.isDedekindDomain R F L`. Use `haveI := integralClosure.isFractionRing_of_finite_extension (A := R) F L`. Use `haveI : FaithfulSMul R L := (faithfulSMul_iff_algebraMap_injective R L).2 (ValPl.algebraMap_OL_injective (F := F))`. Use `haveI := IsIntegralClosure.module_free R F L (integralClosure R L)`. Use `haveI := IsIntegralClosure.isLocalization R F L (integralClosure R L)`.
+
+Set `b` to `Module.Free.chooseBasis R (integralClosure R L)`. Set `bL` to `b.localizationLocalization F (nonZeroDivisors R) L`. Set `bA` to `Algebra.TensorProduct.basis F' bL`. Establish `key : ∀ x ∈ Submodule.span R' ((fun b : L => (1 : F') ⊗ₜ[F] b) '' (integralClosure R L : Set L)), ∀ i, ∃ r' : R', algebraMap R' F' r' = bA.repr x i`. Introduce `x hx i`.
+
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨y, hy, rfl⟩` from `hx`. Use `⟨algebraMap R R' (b.repr ⟨y, hy⟩ i), ?_⟩` and prove the remaining obligations. Use `b.localizationLocalization_repr_algebraMap F (nonZeroDivisors R) L ⟨y, hy⟩ i` as an intermediate fact.
+
+Simplify using `only [bA, Algebra.TensorProduct.basis_repr_tmul, one_smul, Finsupp.mapRange_apply]`. Rewrite using `[← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply R F F', ← this]`. Both sides reduce to the same expression. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+
+Take `⟨r, hr⟩` from `hx`. Take `⟨s, hs⟩` from `hy`. Conclude with `⟨r + s, by simp [hr, hs]⟩`. Consider the case `smul a x _ hx`. Take `⟨r, hr⟩` from `hx`.
+
+Use `⟨a * r, ?_⟩` and prove the remaining obligations. Rewrite using `[← IsScalarTower.algebraMap_smul F' a x, map_smul, Finsupp.smul_apply, map_mul, hr, smul_eq_mul]`. Establish `hc : ∀ i, ∃ r : R, algebraMap R F r = bL.repr l i`. Introduce `i`. Take `⟨r', hr'⟩` from `key _ hl i`.
+
+Apply `isInteger_of_map (F' := F') r'` to reduce the goal to its premises. Simplify `hr'` using `only [bA, Algebra.TensorProduct.basis_repr_tmul, one_smul, Finsupp.mapRange_apply]`. Rewrite using `[← bL.linearCombination_repr l, Finsupp.linearCombination_apply, Finsupp.sum]`. Use `Subalgebra.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Take `⟨r, hr⟩` from `hc i`.
+
+Rewrite using `[← hr, IsScalarTower.algebraMap_smul]`. Use `Subalgebra.smul_mem _ ?_ _` and prove the remaining obligations. Simplify using `only [bL, Module.Basis.localizationLocalization_apply]`. Conclude with `(b i).2`.
+-/
 theorem mem_integralClosure_of_mem_span (l : L)
     (hl : (1 : F') ⊗ₜ[F] l ∈ Submodule.span R'
       ((fun b : L => (1 : F') ⊗ₜ[F] b) '' (integralClosure R L : Set L))) :
@@ -274,6 +363,9 @@ theorem mem_integralClosure_of_mem_span (l : L)
 omit [IsDomain R] [IsDiscreteValuationRing R] [IsDomain R'] [IsDiscreteValuationRing R']
   [IsLocalHom (algebraMap R R')] [IsFractionRing R F] [IsFractionRing R' F']
   [FiniteDimensional F L] [Algebra.IsSeparable F L] in
+/- English proof (translation)
+Rewrite using `[Algebra.TensorProduct.algebraMap_apply, ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply R F F', IsScalarTower.algebraMap_apply R F L, Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one (A := L), TensorProduct.smul_tmul]`.
+-/
 theorem algebraMap_eq_one_tmul (r : R) :
     algebraMap R' (F' ⊗[F] L) (algebraMap R R' r) = (1 : F') ⊗ₜ[F] algebraMap R L r := by
   rw [Algebra.TensorProduct.algebraMap_apply, ← IsScalarTower.algebraMap_apply,
@@ -287,6 +379,47 @@ end PlaceExt
 
 open PlaceExt in
 
+/- English proof (translation)
+Introduce `R R' F F' _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hmax hres L _ _ _ _ _ _ hB`. Use `haveI := integralClosure.isDedekindDomain R F L`. Use `haveI := integralClosure.isFractionRing_of_finite_extension (A := R) F L`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible R`. Establish `hϖ' : Irreducible (algebraMap R R' ϖ)` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer _).2 (maximalIdeal_eq_span hmax hϖ)`.
+
+Set `ι : L →+* F' ⊗[F] L` to `(Algebra.TensorProduct.includeRight : L →ₐ[F] F' ⊗[F] L).toRingHom`. Establish `hι : ∀ l, ι l = (1 : F') ⊗ₜ[F] l` using `fun _ => rfl`. Set `S : Subring (F' ⊗[F] L)` to `(integralClosure R' (F' ⊗[F] L)).toSubring`. Set `π : L` to `algebraMap R L ϖ`. Establish `halg : ∀ r : R, algebraMap R' (F' ⊗[F] L) (algebraMap R R' r) = ι (algebraMap R L r)` using `fun r => algebraMap_eq_one_tmul r`.
+
+Establish `hR'S : ∀ r : R', algebraMap R' (F' ⊗[F] L) r ∈ S` using `fun r => isIntegral_algebraMap`. Establish `hπ0 : π ≠ 0` using `fun h => hϖ.ne_zero (ValPl.algebraMap_OL_injective (F := F) (L := L) (by rw [map_zero]; exact h))`. Establish `hπS : ι π ∈ S` using `halg ϖ ▸ hR'S _`. Establish `hw1 : ∀ w : ValPl.PlacesOver R L, 1 ≤ w.1 π`. Introduce `w`.
+
+Establish `h : 0 < w.1 π` using `((w.2.2 ϖ).2).2 hϖ.not_isUnit`. Generalize the expression as in `w.1 π = a at h`. Proceed by induction on `a using WithTop.recTopCoe with`. Consider the case `top => exact le_top`. Consider the case `coe a`.
+
+Establish `: 0 < a` using `by exact_mod_cast h`. Conclude with `(show (1 : ℤ) ≤ a by omega)` after adjusting the coercions. Establish `hS : ∀ (w : ValPl.PlacesOver R L) l, ι l ∈ S → 0 ≤ w.1 l` using `fun w l hl => (HDiscVal.mem_integralClosure_iff R F l).1 (mem_integralClosure_of_mem_span (R' := R') (F' := F') l ((hB _).1 hl)) w.1 w.2`. Establish `hden : ∀ x, ∃ n : ℕ, ι π ^ n * x ∈ S`. Introduce `x`.
+
+Take `⟨⟨d, hd⟩, hx⟩` from `IsIntegral.exists_multiple_integral_of_isLocalization (nonZeroDivisors R') (Rₘ := F') x (Algebra.IsIntegral.isIntegral x)`. Take `⟨n, v, hv⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible (nonZeroDivisors.ne_zero hd) hϖ'`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `hx' : algebraMap R' _ d * x ∈ S`. Rewrite using `[← Algebra.smul_def]`.
+
+Conclude with `hx`. Use `S.mul_mem (hR'S (v⁻¹ : R'ˣ)) hx'` as an intermediate fact. Rewrite `this` using `[← mul_assoc, ← map_mul, hv, Units.inv_mul_cancel_left, map_pow, halg]`. Then use the resulting hypothesis. Establish `happS : ∀ (m : ℕ), ∀ x ∈ S, ∃ l, ∃ b ∈ S, x - ι l = ι π ^ m * b`. Introduce `m x hx`.
+
+Establish `hx'` using `(hB x).1 hx`. Use `clear hx`. Proceed by induction on `hx' using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨y, -, rfl⟩` from `hx`.
+
+Conclude with `⟨y, 0, S.zero_mem, by simp [hι]⟩`. Consider the case `zero => exact ⟨0, 0, S.zero_mem, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨l, b, hb, h⟩` from `hx`. Take `⟨l', b', hb', h'⟩` from `hy`.
+
+Use `⟨l + l', b + b', S.add_mem hb hb', ?_⟩` and prove the remaining obligations. Rewrite using `[map_add]`. Take the linear combination `h + h'`. Consider the case `smul a x hxs hx`. Take `⟨l, b, hb, h⟩` from `hx`.
+
+Take `⟨r₀, r₁, hr⟩` from `exists_approx_base hmax hres hϖ m a`. Use `⟨algebraMap R L r₀ * l, ι (algebraMap R L r₀) * b + algebraMap R' _ r₁ * x, S.add_mem (S.mul_mem (halg r₀ ▸ hR'S _) hb) (S.mul_mem (hR'S _) ((hB x).2 hxs)), ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, hr, map_add, map_mul, map_pow, halg, halg, map_mul]`. Take the linear combination `ι (algebraMap R L r₀) * h`. Establish `happ : ∀ x (m : ℕ), ∃ l, ∃ b ∈ S, x - ι l = ι π ^ m * b`.
+
+Introduce `x m`. Take `⟨n, hn⟩` from `hden x`. Take `⟨l, b, hb, h⟩` from `happS (n + m) _ hn`. Use `⟨(π ^ n)⁻¹ * l, b, hb, ?_⟩` and prove the remaining obligations. Establish `h1 : ι ((π ^ n)⁻¹) * ι π ^ n = 1`.
+
+Rewrite using `[← map_pow ι, ← map_mul, inv_mul_cancel₀ (pow_ne_zero _ hπ0), map_one]`. Rewrite using `[map_mul]`. Take the linear combination `ι ((π ^ n)⁻¹) * h + (ι π ^ m * b - x) * h1`. Use `choose w' hw' hw0 using fun w : ValPl.PlacesOver R L => exists_ext ι S π w.1 hπ0 hπS (hw1 w) (hS w) happ hden`. Establish `hnear : ∀ w x l (m : ℕ) b, b ∈ S → x - ι l = ι π ^ m * b → 0 ≤ w' w x → 0 ≤ w.1 l`.
+
+Introduce `w x l m b hb h hx`. Establish `h1 : 0 ≤ w' w (x - ι l)` using `h ▸ hw0 w _ (S.mul_mem (S.pow_mem hπS m) hb)`. Establish `h2` using `min_eq_of_le_sub (w' w) h1`. Rewrite `h2` using `[min_eq_right hx, hw', eq_comm, min_eq_right_iff]`. Conclude with `h2`.
+
+Use `⟨w', hw', fun x => ⟨fun hx w => hw0 w x hx, fun hx => ?_⟩, fun w x hx => ?_, fun w u hu hu0 => ?_⟩` and prove the remaining obligations. Take `⟨l, b, hb, h⟩` from `happ x 0`. Establish `hl : l ∈ integralClosure R L` using `(HDiscVal.mem_integralClosure_iff R F l).2 fun w hw => hnear ⟨w, hw⟩ x l 0 b hb h (hx _)`. Establish `hlS : ι l ∈ S` using `(hB _).2 (Submodule.subset_span ⟨l, hl, rfl⟩)`. Establish `: x = ι l + b` using `by linear_combination h`.
+
+Rewrite using `[this]`. Conclude with `S.add_mem hlS hb`. Take `⟨l, b, hb, h⟩` from `happ x 1`. Use `⟨l, hnear w x l 1 b hb h hx, ?_⟩` and prove the remaining obligations. Use `le_val_pow_mul (w' w) (t := ι π) (by rw [hw']; exact hw1 w) (hw0 w b hb) 1` as an intermediate fact.
+
+Rewrite `this` using `[← h]`. Conclude with `lt_of_lt_of_le (by norm_num) this`. Use `ext_unique ι S π w.1 (hw1 w) happ u (w' w) hu (hw' w) ?_ (hw0 w)` and prove the remaining obligations. Introduce `x hx`. Establish `hx'` using `(hB x).1 hx`.
+
+Use `clear hx`. Proceed by induction on `hx' using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨y, hy, rfl⟩` from `hx`. Rewrite using `[hu]`.
+
+Conclude with `(HDiscVal.mem_integralClosure_iff R F y).1 hy w.1 w.2`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => exact le_trans (le_min hx hy) (u.map_add x y)`. Consider the case `smul a x _ hx`. Rewrite using `[Algebra.smul_def, u.map_mul]`.
+
+Conclude with `add_nonneg (hu0 a) hx`.
+-/
 theorem exists_unique_place_baseChange : ∀ (R R' F F' : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [CommRing R'] [IsDomain R'] [IsDiscreteValuationRing R'] [Algebra R R'] [Module.Flat R R'] [IsLocalHom (algebraMap R R')] [Field F] [Algebra R F] [IsFractionRing R F] [Field F'] [Algebra R' F'] [IsFractionRing R' F'] [Algebra F F'] [Algebra R F'] [IsScalarTower R F F'] [IsScalarTower R R' F'], Ideal.map (algebraMap R R') (IsLocalRing.maximalIdeal R) = IsLocalRing.maximalIdeal R' → Function.Surjective (IsLocalRing.ResidueField.map (algebraMap R R')) → ∀ (L : Type) [Field L] [Algebra F L] [FiniteDimensional F L] [Algebra.IsSeparable F L] [Algebra R L] [IsScalarTower R F L], (∀ x : F' ⊗[F] L, IsIntegral R' x ↔ x ∈ Submodule.span R' ((fun b : L => (1 : F') ⊗ₜ[F] b) '' (integralClosure R L : Set L))) → ∃ w' : ValPl.PlacesOver R L → AddValuation (F' ⊗[F] L) (WithTop ℤ), (∀ w (g : L), w' w ((1 : F') ⊗ₜ[F] g) = w.1 g) ∧ (∀ x : F' ⊗[F] L, IsIntegral R' x ↔ ∀ w, 0 ≤ w' w x) ∧ (∀ w (x : F' ⊗[F] L), 0 ≤ w' w x → ∃ g : L, 0 ≤ w.1 g ∧ 0 < w' w (x - (1 : F') ⊗ₜ[F] g)) ∧ ∀ (w : ValPl.PlacesOver R L) (u : AddValuation (F' ⊗[F] L) (WithTop ℤ)), (∀ g : L, u ((1 : F') ⊗ₜ[F] g) = w.1 g) → (∀ r : R', 0 ≤ u (algebraMap R' F' r ⊗ₜ[F] (1 : L))) → u = w' w := by
   intro R R' F F' _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hmax hres L _ _ _ _ _ _ hB
   haveI := integralClosure.isDedekindDomain R F L

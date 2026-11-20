@@ -17,6 +17,11 @@ variable {n : ℕ}
 
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+Establish `h1` using `ccb_rdv ε hV hF hW hWV hf (ccb_inG_cpart1 ε (Matrix.single a b 1)) hg hgu`. Establish `h2` using `ccb_rdv ε hV hF hW hWV hf (ccb_inG_cpart2 ε (Matrix.single a b 1)) hg hgu`. Simplify using `only [EabV, EcV, RdV, Lhol]`. Rewrite using `[h1.deriv, h2.deriv]`. Use `conv_rhs => rw [← ccb_cpart_sum ε (Matrix.single a b 1)]`.
+
+Rewrite using `[add_mul, smul_mul_assoc, map_add, map_smul, smul_neg, neg_add]`.
+-/
 theorem eabV_of_local (ε : Fin n → Bool) {F : Matrix (Fin n) (Fin n) ℂ → E} {V W : Set (Matrix (Fin n) (Fin n) ℂ)} {m : Matrix (Fin n) (Fin n) ℂ}
     (hV : IsOpen V) (hF : DifferentiableOn ℂ F V) (hW : IsOpen W)
     (hWV : ∀ g ∈ W, IsUnit g ∧ g⁻¹ * m ∈ V) {f : Matrix (Fin n) (Fin n) ℂ → E}
@@ -30,6 +35,19 @@ theorem eabV_of_local (ε : Fin n → Bool) {F : Matrix (Fin n) (Fin n) ℂ → 
   conv_rhs => rw [← ccb_cpart_sum ε (Matrix.single a b 1)]
   rw [add_mul, smul_mul_assoc, map_add, map_smul, smul_neg, neg_add]
 
+/- English proof (translation)
+Establish `hent : ∀ i j : Fin n, ContDiff ℂ ∞ (fun A : Matrix (Fin n) (Fin n) ℂ => A i j)`. Introduce `i j`. Use `fun_prop`. Establish `hdet : ∀ {G : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ}, (∀ i j, ContDiff ℂ ∞ (fun A => G A i j)) → ContDiff ℂ ∞ (fun A => (G A).det)`. Introduce `G hG`.
+
+Simplify using `only [Matrix.det_apply']`. Use `ContDiff.sum fun σ _ => contDiff_const.mul ?_` and prove the remaining obligations. Conclude with `contDiff_prod fun i _ => hG _ _`. Establish `hadj : ∀ i j : Fin n, ContDiff ℂ ∞ (fun A : Matrix (Fin n) (Fin n) ℂ => A.adjugate i j)`. Introduce `i j`.
+
+Simplify using `only [Matrix.adjugate_apply]`. Use `hdet fun k l => ?_` and prove the remaining obligations. Simplify using `only [Matrix.updateRow_apply]`. Use `split_ifs`. Conclude with `contDiff_const`.
+
+Conclude with `hent k l`. Establish `hinv : ContDiffOn ℂ ∞ (fun g : Matrix (Fin n) (Fin n) ℂ => g⁻¹ * m) W`. Introduce `g hg`. Establish `hdg : g.det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det g).mp (hWV g hg).1).ne_zero`. Establish `hid : ContDiffAt ℂ ∞ (fun A : Matrix (Fin n) (Fin n) ℂ => (A.det)⁻¹) g` using `((hdet fun i j => hent i j).contDiffAt).inv hdg`.
+
+Use `ContDiffAt.contDiffWithinAt ?_` and prove the remaining obligations. Use `contDiffAt_pi.mpr fun i => contDiffAt_pi.mpr fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, Matrix.inv_def, Matrix.smul_apply, smul_eq_mul, Ring.inverse_eq_inv']`. Conclude with `ContDiffAt.sum fun k _ => (hid.mul (hadj i k).contDiffAt).mul contDiffAt_const`. Establish `hFc : ContDiffOn ℂ ∞ F V` using `cca_contDiffOn hV hF`.
+
+Establish `hc : ContDiffOn ℂ ∞ (F ∘ fun g : Matrix (Fin n) (Fin n) ℂ => g⁻¹ * m) W` using `hFc.comp hinv fun g hg => (hWV g hg).2`. Conclude with `hc.restrict_scalars ℝ`.
+-/
 theorem contDiffOn_of_local [CompleteSpace E] {F : Matrix (Fin n) (Fin n) ℂ → E} {V W : Set (Matrix (Fin n) (Fin n) ℂ)} {m : Matrix (Fin n) (Fin n) ℂ}
     (hV : IsOpen V) (hF : DifferentiableOn ℂ F V) (hW : IsOpen W)
     (hWV : ∀ g ∈ W, IsUnit g ∧ g⁻¹ * m ∈ V) : ContDiffOn ℝ ∞ (fun g => F (g⁻¹ * m)) W := by

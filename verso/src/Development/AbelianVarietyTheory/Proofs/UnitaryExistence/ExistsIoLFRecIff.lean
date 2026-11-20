@@ -16,6 +16,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GlobalTheory.IndefiniteRowSideFullHecke.CoefficientSpaceWeights
 open scoped Matrix
 
+/- English proof (translation)
+Set `f : G → Module.End K V` to `fun g => (LinearEquiv.ofInjective io hio).symm.toLinearMap ∘ₗ LinearMap.codRestrict (LinearMap.range io) (R g ∘ₗ io) (hst g)`. Establish `hf : ∀ g v, io (f g v) = R g (io v)` using `fun g v => LinearEquiv.ofInjective_symm_apply (h := hio) io _`. Use `⟨⟨⟨f, ?_⟩, fun g h => ?_⟩, hf⟩` and prove the remaining obligations. Use extensionality with `v`. Conclude with `hio (by rw [hf, map_one]; rfl)`.
+
+Use extensionality with `v`. Conclude with `hio (by rw [hf, map_mul, Module.End.mul_apply, Module.End.mul_apply, hf, hf])`.
+-/
 theorem exists_rep {G K V W : Type} [Monoid G] [Field K] [AddCommGroup V] [Module K V] [AddCommGroup W] [Module K W]
     (io : V →ₗ[K] W) (hio : Function.Injective io) (R : G →* Module.End K W)
     (hst : ∀ g v, R g (io v) ∈ LinearMap.range io) :
@@ -33,6 +38,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 def uGL (γ : Matrix (Fin n) (Fin n) E) (h : γᴴ * γ = 1) : GL (Fin n) E := ⟨γ, γᴴ, mul_eq_one_comm.1 h, h⟩
 
+/- English proof (translation)
+Rewrite using `[Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `ht i`.
+-/
 theorem diag_unitary {t : Fin n → E} (ht : ∀ i, star (t i) * t i = 1) :
     (Matrix.diagonal t)ᴴ * Matrix.diagonal t = 1 := by
   rw [Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
@@ -40,9 +48,17 @@ theorem diag_unitary {t : Fin n → E} (ht : ∀ i, star (t i) * t i = 1) :
   funext i
   exact ht i
 
+/- English proof (translation)
+Rewrite using `[← Matrix.det_conjTranspose, ← Matrix.det_mul, h, Matrix.det_one]`.
+-/
 theorem det_norm_one {γ : Matrix (Fin n) (Fin n) E} (h : γᴴ * γ = 1) : star γ.det * γ.det = 1 := by
   rw [← Matrix.det_conjTranspose, ← Matrix.det_mul, h, Matrix.det_one]
 
+/- English proof (translation)
+Consider the cases of `n with`. Consider the case `zero => exact ⟨fun _ => 1, fun i => i.elim0, by simp⟩`. Consider the case `succ m`. Use `⟨Fin.cons γ.det fun _ => 1, fun i => ?_, by simp [Fin.prod_univ_succ]⟩` and prove the remaining obligations. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations.
+
+Simplify using `using det_norm_one h`. Simplify using the standard rewrite rules.
+-/
 theorem exists_diag_det {γ : Matrix (Fin n) (Fin n) E} (h : γᴴ * γ = 1) :
     ∃ t : Fin n → E, (∀ i, star (t i) * t i = 1) ∧ (Matrix.diagonal t).det = γ.det := by
   cases n with
@@ -57,6 +73,11 @@ section Rho
 
 variable {K ι : Type} [Field K] [NumberField K] [Fintype ι] (emb : ι → E →+* K) (lam : ι → DomWeight n)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `detTwK lam (invTrK (embGL emb (uGL γ h))) • trAct (invTrK (embGL emb (uGL γ h))) (v : Pol K ι n) = _`. Use `congr 1`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[detPow, Units.val_zpow_eq_zpow_val, zpow_neg, ← inv_zpow]`. Use `congr 1`.
+
+Express the relevant statement in the definitionally equal form `(γᴴ.map (emb τ))ᵀ.det = _`. Rewrite using `[Matrix.det_transpose, ← RingHom.mapMatrix_apply, ← RingHom.map_det, Matrix.det_conjTranspose, ← map_inv₀, eq_inv_of_mul_eq_one_left (det_norm_one h)]`.
+-/
 theorem rhoVr_unitary (γ : Matrix (Fin n) (Fin n) E) (h : γᴴ * γ = 1) (v : VV K lam) :
     ((rhoVr emb lam (uGL γ h) v : VV K lam) : Pol K ι n) =
       (∏ τ, emb τ γ.det ^ (-(lam τ).detShift)) • Formalism.GradedWeylDivisibility.blockAct K (fun τ => γᴴ.map (emb τ)) (v : Pol K ι n) := by
@@ -69,12 +90,24 @@ theorem rhoVr_unitary (γ : Matrix (Fin n) (Fin n) E) (h : γᴴ * γ = 1) (v : 
   rw [Matrix.det_transpose, ← RingHom.mapMatrix_apply, ← RingHom.map_det, Matrix.det_conjTranspose, ← map_inv₀,
     eq_inv_of_mul_eq_one_left (det_norm_one h)]
 
+/- English proof (translation)
+Establish `: μ.detShift ≤ μ.w i`. Rewrite using `[DomWeight.detShift, dif_pos i.pos]`. Conclude with `μ.anti (by rw [Fin.le_def]; have := i.isLt; simp only; omega)`. Rewrite using `[DomWeight.natW, Int.toNat_of_nonneg (by omega)]`.
+-/
 theorem natW_cast (μ : DomWeight n) (i : Fin n) : (μ.natW i : ℤ) = μ.w i - μ.detShift := by
   have : μ.detShift ≤ μ.w i := by
     rw [DomWeight.detShift, dif_pos i.pos]
     exact μ.anti (by rw [Fin.le_def]; have := i.isLt; simp only; omega)
   rw [DomWeight.natW, Int.toNat_of_nonneg (by omega)]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[rhoVr_unitary, Submodule.coe_smul, hv, ten, map_prod]`. Establish `e : ∀ τ, Formalism.GradedWeylDivisibility.blockAct K (fun τ => (Matrix.diagonal t)ᴴ.map (emb τ)) (Formalism.GradedWeylDivisibility.blockEmb K τ (extremal K n (lam τ))) = (∏ i, (emb τ (t i))⁻¹ ^ (lam τ).natW i) • Formalism.GradedWeylDivisibility.blockEmb K τ (extremal K n (lam τ))` using `fun τ => by`. Rewrite using `[(Formalism.GradedWeylDivisibility.blockActTensor K K ι n n _).1, Matrix.diagonal_conjTranspose, Matrix.diagonal_map (map_zero _), extremal, Formalism.GradedWeylDivisibility.rowActDiagWeight K n n _ _ _ (Formalism.GradedWeylDivisibility.hwRowWeight K n n le_rfl _ (natW_anti (lam …`. Use `congr 1`.
+
+Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.star_apply, eq_inv_of_mul_eq_one_left (ht i), map_inv₀]`. Simplify using `[Formalism.GradedWeylDivisibility.rowNu]`. Simplify using `only [e]`. Rewrite using `[Finset.prod_smul, smul_smul, ← Finset.prod_mul_distrib]`.
+
+Use `congr 1`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.det_diagonal, map_prod, ← Finset.prod_zpow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h0 : emb τ (t i) ≠ 0` using `(_root_.map_ne_zero _).2 (right_ne_zero_of_mul_eq_one (ht i))`.
+
+Rewrite using `[← zpow_natCast, natW_cast, inv_zpow', ← zpow_add₀ h0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rhoVr_diag {t : Fin n → E} (ht : ∀ i, star (t i) * t i = 1) (v : VV K lam)
     (hv : (v : Pol K ι n) = ten fun τ => extremal K n (lam τ)) :
     rhoVr emb lam (uGL _ (diag_unitary ht)) v = (∏ τ, ∏ i, emb τ (t i) ^ (-(lam τ).w i)) • v := by
@@ -101,6 +134,13 @@ theorem rhoVr_diag {t : Fin n → E} (ht : ∀ i, star (t i) * t i = 1) (v : VV 
   congr 1
   ring
 
+/- English proof (translation)
+Take `⟨ℓ', hℓ⟩` from `LinearMap.exists_extend ℓ`. Establish `hd : ∀ (τ : ι) (e : ℤ), (fun s => emb τ (Γ s).det ^ e) ∈ ratFn K` using `fun τ e => by`. Use `zpow_mem (f := fun s => emb τ (Γ s).det) ?_ (fun s => (_root_.map_ne_zero _).2 (right_ne_zero_of_mul_eq_one (det_norm_one (hΓ s)))) e` and prove the remaining obligations. Simplify using `only [RingHom.map_det]`. Conclude with `det_mem fun i j => hr _ i j`.
+
+Establish `h1` using `aeval_mem (σ := ι × Fin n × Fin n) (fun s x b => ((Γ s)ᴴ.map (emb x.1)) x.2.1 b) (fun x b => (x.1, b, x.2.2)) (fun x b => hr ((emb x.1).comp (starRingEnd E)) b x.2.1) (v : Pol K ι n) ℓ'`. Use `mul_mem (Subalgebra.prod_mem (ratFn K) (t := Finset.univ) fun τ _ => hd τ (-(lam τ).detShift)) h1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `s`. Rewrite using `[← hℓ, LinearMap.comp_apply, Submodule.subtype_apply, rhoVr_unitary, map_smul, Pi.mul_apply, Finset.prod_apply]`.
+
+Both sides reduce to the same expression.
+-/
 theorem rhoVr_mem (Γ : ℚ → Matrix (Fin n) (Fin n) E) (hΓ : ∀ s, (Γ s)ᴴ * Γ s = 1)
     (hr : ∀ (σ : E →+* K) i j, (fun s => σ (Γ s i j)) ∈ ratFn K) (v : VV K lam) (ℓ : VV K lam →ₗ[K] K) :
     (fun s => ℓ (rhoVr emb lam (uGL _ (hΓ s)) v)) ∈ ratFn K := by
@@ -124,6 +164,9 @@ section Letters
 
 variable {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {l : Level H} (Dw : Datum H) (c : Coeff l)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (IsCMField.complexEmbedding_complexConj E τ x).symm`.
+-/
 theorem embF_conjugate (τ : E →+* ℂ) (x : E) : embF c (ComplexEmbedding.conjugate τ) x = embF c τ (star x) :=
   Subtype.ext (IsCMField.complexEmbedding_complexConj E τ x).symm
 
@@ -133,11 +176,21 @@ def letRep : GL (Fin n) E →* Module.End c.F (MvPolynomial (LtN Dw n) c.F) :=
   ((renameEquiv c.F (Harm.thetaLetterEquiv Dw n)).toLinearEquiv.symm.conjRingEquiv : _ →* _).comp
     ((Harm.colRep c.F (Psi H) Dw.p Dw.q (Fin n)).comp (embGL (embPsi c)))
 
+/- English proof (translation)
+The claim follows from `(renameEquiv c.F (Harm.thetaLetterEquiv Dw n)).apply_symm_apply _`.
+-/
 theorem rename_letRep (g : GL (Fin n) E) (P : MvPolynomial (LtN Dw n) c.F) :
     rename (Harm.thetaLetterEquiv Dw n) (letRep n Dw c g P) =
       Harm.colAct c.F (Psi H) Dw.p Dw.q (Fin n) (embGL (embPsi c) g) (rename (Harm.thetaLetterEquiv Dw n) P) :=
   (renameEquiv c.F (Harm.thetaLetterEquiv Dw n)).apply_symm_apply _
 
+/- English proof (translation)
+Apply `rename_injective _ (Harm.thetaLetterEquiv Dw n).injective` to reduce the goal to its premises. Rewrite using `[rename_letRep, Harm.colAct_apply]`. Rewrite using `[← AlgHom.comp_apply, ← AlgHom.comp_apply]`. Use `DFunLike.congr_fun ?_ P` and prove the remaining obligations. Use `MvPolynomial.algHom_ext fun ⟨τ, i, b⟩ => ?_` and prove the remaining obligations.
+
+Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, rename_X, Formalism.L2.Pj.gaStar, aeval_X]`. Break down `Harm.half_cases (Ψ := InPsi H) (ComplexEmbedding.involutive_conjugate E) (Harm.not_mem_hostType_iff H) τ with hτ | ⟨τ, hτ, rfl⟩` into its components or cases. Rewrite using `[Harm.thetaLetterEquiv_of_mem Dw hτ, Harm.colSubst_X_xVar, Harm.rename_letB_of_mem Dw c hτ]`. Both sides reduce to the same expression. Rewrite using `[Harm.thetaLetterEquiv_conjugate Dw hτ, Harm.colSubst_X_yVar, Harm.rename_letB_conjugate Dw c hτ]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `k`. Conclude with `congrArg (embF c τ) (star_star (γ k b)).symm`.
+-/
 theorem letRep_unitary (γ : Matrix (Fin n) (Fin n) E) (h : γᴴ * γ = 1) (P : MvPolynomial (LtN Dw n) c.F) :
     letRep n Dw c (uGL γ h) P = gaStar c (γ.map (IsCMField.complexConj E)) P := by
   apply rename_injective _ (Harm.thetaLetterEquiv Dw n).injective
@@ -155,6 +208,11 @@ theorem letRep_unitary (γ : Matrix (Fin n) (Fin n) E) (h : γᴴ * γ = 1) (P :
     funext k
     exact congrArg (embF c τ) (star_star (γ k b)).symm
 
+/- English proof (translation)
+Rewrite using `[← Submodule.mem_comap]`. Use `Submodule.span_le.2 (fun Q hQ => ?_) hP` and prove the remaining obligations. Break down `Harm.HHa_eq_zero_or_rowHighest (n := n) (K := c.F) (Ψ := InPsi H) (ComplexEmbedding.involutive_conjugate E) (Harm.not_mem_hostType_iff H) (fun _ => Harm.mult_of_mem Dw) (fun _ => Harm.mult_conjEmb_of_mem Dw) (fun τ i => a (τ, i)) with h0 | ⟨k, k', -, hk⟩` into its components or cases. Rewrite using `[h0 Q hQ]`. Conclude with `zero_mem _`.
+
+Use `Submodule.subset_span ((hk _).2 ?_)` and prove the remaining obligations. Conclude with `(rename_letRep Dw c g Q).symm ▸ Harm.colAct_mem_rowHighest _ ((hk Q).1 hQ)`.
+-/
 theorem letRep_mem (a : (E →+* ℂ) × ℕ → ℕ) (g : GL (Fin n) E) {P : MvPolynomial (LtN Dw n) c.F}
     (hP : P ∈ Submodule.span c.F (HHa Dw.mult n c.F ComplexEmbedding.conjugate (InPsi H) (fun τ i => a (τ, i)))) :
     letRep n Dw c g P ∈
@@ -169,6 +227,9 @@ theorem letRep_mem (a : (E →+* ℂ) × ℕ → ℕ) (g : GL (Fin n) E) {P : Mv
   · refine Submodule.subset_span ((hk _).2 ?_)
     exact (rename_letRep Dw c g Q).symm ▸ Harm.colAct_mem_rowHighest _ ((hk Q).1 hQ)
 
+/- English proof (translation)
+Use `aeval_mem (σ := LtN Dw n) (σ' := LtN Dw n) (fun s x j => embF c x.1 (IsCMField.complexConj E (Γ s j x.2.2))) (fun x j => ⟨x.1, x.2.1, j⟩) (fun x j => hr ((embF c x.1).comp (starRingEnd E)) j x.2.2) P ℓ` as an intermediate fact. Simplify `this` using `only [Formalism.L2.Pj.gaStar, letB, Matrix.map_apply]`.
+-/
 theorem gaStar_mem (Γ : ℚ → Matrix (Fin n) (Fin n) E)
     (hr : ∀ (σ : E →+* c.F) i j, (fun s => σ (Γ s i j)) ∈ ratFn c.F) (P : MvPolynomial (LtN Dw n) c.F)
     (ℓ : MvPolynomial (LtN Dw n) c.F →ₗ[c.F] c.F) :
@@ -178,6 +239,9 @@ theorem gaStar_mem (Γ : ℚ → Matrix (Fin n) (Fin n) E)
     (fun x j => hr ((embF c x.1).comp (starRingEnd E)) j x.2.2) P ℓ
   simpa only [Formalism.L2.Pj.gaStar, letB, Matrix.map_apply] using this
 
+/- English proof (translation)
+Rewrite using `[minorPolynomial, AlgHom.map_det, smul_eq_C_mul, map_prod, ← Matrix.det_mul_row]`. Use `congr 1`. Use extensionality with `s b : 2`. Simplify using `only [AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, Formalism.L2.Pj.gaStar, aeval_X, letB]`. Rewrite using `[Finset.sum_eq_single (col b) (fun j _ hj => by rw [Matrix.diagonal_apply_ne _ hj, map_zero, map_zero, zero_mul]) (by simp), Matrix.diagonal_apply_eq]`.
+-/
 theorem gaStar_minorP (u : Fin n → E) (σ : E →+* ℂ) (i : ℕ) (hi : i < Dw.mult σ) (col : Fin (i + 1) → Fin n) :
     gaStar c (Matrix.diagonal u) (minorPolynomial c σ i hi col) = (∏ b, embF c σ (u (col b))) • minorPolynomial c σ i hi col := by
   rw [minorPolynomial, AlgHom.map_det, smul_eq_C_mul, map_prod, ← Matrix.det_mul_row]
@@ -187,12 +251,30 @@ theorem gaStar_minorP (u : Fin n → E) (σ : E →+* ℂ) (i : ℕ) (hi : i < D
   rw [Finset.sum_eq_single (col b) (fun j _ hj => by rw [Matrix.diagonal_apply_ne _ hj, map_zero, map_zero, zero_mul])
     (by simp), Matrix.diagonal_apply_eq]
 
+/- English proof (translation)
+Unfold `Datum.mult`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem mult_le (σ : E →+* ℂ) : Dw.mult σ ≤ Dw.p + Dw.q := by
   unfold Datum.mult
   split_ifs <;> omega
 
 open Classical in
 
+/- English proof (translation)
+Rewrite using `[pG, map_prod, ← Finset.prod_smul]`. Use `Finset.prod_congr rfl fun σ _ => ?_` and prove the remaining obligations. Establish `hm : Dw.mult σ ≤ n` using `(mult_le Dw σ).trans hn`. Set `x : ℕ → c.F` to `fun b => if h : b < n then embF c σ (u (if InPsi H σ then ⟨b, h⟩ else Fin.rev ⟨b, h⟩)) else 1`. Establish `e : ∏ b : Fin n, embF c σ (u (if InPsi H σ then b else b.rev)) ^ part Dw a σ b = ∏ i : Fin (Dw.mult σ), (∏ b ∈ Finset.range (i + 1), x b) ^ aStep Dw a σ i`.
+
+Establish `t` using `tele x (part Dw a σ) (part_anti ha σ) (Dw.mult σ)`. Rewrite using `[show part Dw a σ (Dw.mult σ) = 0 from if_neg (lt_irrefl _), pow_zero, mul_one, Finset.prod_subset (Finset.range_mono hm) (f := fun b => x b ^ part Dw a σ b) (fun b _ hb => by`. Rewrite using `[show part Dw a σ b = 0 from if_neg (by simpa using hb), pow_zero]),`. Use the proof step `Finset.prod_range, Finset.prod_range] at t`. Use `Eq.trans ?_ (t.symm.trans ?_)` and prove the remaining obligations.
+
+Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [x, dif_pos b.isLt]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[aStep, part, part, if_pos i.isLt]`. Rewrite using `[e, map_prod, ← Finset.prod_smul]`.
+
+Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hi : i.val + 1 ≤ n` using `lt_of_lt_of_le i.isLt hm`. Rewrite using `[dif_pos hi, map_pow, ← smul_pow]`. Use `congr 1`. Distinguish the cases in `hσ : InPsi H σ`.
+
+Rewrite using `[if_pos hσ, gaStar_minorP, Finset.prod_range]`. Use `congr 1`. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [x, dif_pos (lt_of_lt_of_le b.isLt hi), if_pos hσ]`. Both sides reduce to the same expression.
+
+Rewrite using `[if_neg hσ, gaStar_minorP, Finset.prod_range, ← Equiv.prod_comp Fin.revPerm]`. Use `congr 1`. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [x, dif_pos (lt_of_lt_of_le b.isLt hi), if_neg hσ]`. Use `congr 2`.
+
+Apply `Fin.ext` to reduce the goal to its premises. Use `b.isLt` as an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+-/
 theorem gaStar_pG {a : (E →+* ℂ) × ℕ → ℕ} (ha : IsPartFam Dw a) (hn : Dw.p + Dw.q ≤ n) (u : Fin n → E) :
     gaStar c (Matrix.diagonal u) (pG (Dw := Dw) c a n) =
       (∏ σ : E →+* ℂ, ∏ b : Fin n, embF c σ (u (if InPsi H σ then b else b.rev)) ^ part Dw a σ b) •
@@ -234,6 +316,11 @@ theorem gaStar_pG {a : (E →+* ℂ) × ℕ → ℕ} (ha : IsPartFam Dw a) (hn :
     simp
     omega
 
+/- English proof (translation)
+Rewrite using `[← Fintype.prod_subtype_mul_prod_subtype (InPsi H), Finset.prod_mul_distrib]`. Use `congr 1`. Use `rfl` and compare the differences between its conclusion and the goal. Use `(Fintype.prod_equiv (Equiv.subtypeEquiv (ComplexEmbedding.involutive_conjugate E).toPerm fun τ => ?_) _ _ fun τ => rfl).symm` and prove the remaining obligations. Use `Harm.not_mem_hostType_iff H (ComplexEmbedding.conjugate τ)` as an intermediate fact.
+
+Rewrite `this` using `[show conjEmb (ComplexEmbedding.conjugate τ) = τ from ComplexEmbedding.involutive_conjugate E τ]`. Conclude with `this.symm`.
+-/
 theorem prod_emb {M : Type} [CommMonoid M] (F : (E →+* ℂ) → M) :
     ∏ σ, F σ = ∏ τ : Psi H, F τ.1 * F (ComplexEmbedding.conjugate τ.1) := by
   classical
@@ -246,6 +333,15 @@ theorem prod_emb {M : Type} [CommMonoid M] (F : (E →+* ℂ) → M) :
     rw [show conjEmb (ComplexEmbedding.conjugate τ) = τ from ComplexEmbedding.involutive_conjugate E τ] at this
     exact this.symm
 
+/- English proof (translation)
+Rewrite using `[Matrix.diagonal_map (map_zero _), gaStar_pG Dw c ha hn, smul_smul, prod_emb (H := H), vacChar, ← Finset.prod_mul_distrib]`. Use `congr 1`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `h1 : ¬ InPsi H (ComplexEmbedding.conjugate τ.1)`. Use `Harm.not_mem_hostType_iff H τ.1` as an intermediate fact.
+
+Conclude with `fun h => this.2 h τ.2`. Simplify using `only [if_pos τ.2, if_neg h1]`. Rewrite using `[Matrix.det_diagonal, map_prod, ← Finset.prod_zpow, ← Equiv.prod_comp Fin.revPerm (fun b => embF c (ComplexEmbedding.conjugate τ.1) (IsCMField.complexConj E (t b.rev)) ^ part Dw a (ComplexEmbedding.conjugate τ.1) b), ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h0 : embF c τ.1 (t i) ≠ 0` using `(_root_.map_ne_zero _).2 (right_ne_zero_of_mul_eq_one (ht i))`.
+
+Establish `e1 : embF c τ.1 (IsCMField.complexConj E (t i)) = (embF c τ.1 (t i))⁻¹`. Rewrite using `[← map_inv₀, ← eq_inv_of_mul_eq_one_left (ht i)]`. Both sides reduce to the same expression. Establish `e2 : embF c (ComplexEmbedding.conjugate τ.1) (IsCMField.complexConj E (t i)) = embF c τ.1 (t i)`. Rewrite using `[embF_conjugate]`.
+
+Conclude with `congrArg _ (star_star _)`. Simplify using `only [Fin.revPerm_apply, Fin.rev_rev, e1, e2, embPsi, lamP]`. Rewrite using `[← zpow_natCast, ← zpow_natCast, inv_zpow', ← zpow_add₀ h0, ← zpow_add₀ h0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gaStar_pG_vac {a : (E →+* ℂ) × ℕ → ℕ} (ha : IsPartFam Dw a) (hn : Dw.p + Dw.q ≤ n) (d : Psi H → ℤ)
     {t : Fin n → E} (ht : ∀ i, star (t i) * t i = 1) :
     vacChar c n d (Matrix.diagonal t) • gaStar c ((Matrix.diagonal t).map (IsCMField.complexConj E))
@@ -275,6 +371,9 @@ theorem gaStar_pG_vac {a : (E →+* ℂ) × ℕ → ℕ} (ha : IsPartFam Dw a) (
 
 end Letters
 
+/- English proof (translation)
+Establish `e1 : LinearMap.det (ρ g) = 1` using `congrArg Units.val (char_eq_one (LinearMap.det.comp ρ).toHomUnits g hg)`. Establish `e2 : LinearMap.det (φ g) = 1` using `congrArg Units.val (char_eq_one (LinearMap.det.comp φ).toHomUnits g hg)`. Rewrite `e1` using `[show ρ g = s • φ g from LinearMap.ext h, LinearMap.det_smul, e2, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem pow_eq_one_of_det {K V : Type} [Field K] [AddCommGroup V] [Module K V] [Module.Finite K V]
     (ρ φ : GL (Fin n) E →* Module.End K V) (g : GL (Fin n) E) (hg : (g : Matrix (Fin n) (Fin n) E).det = 1) (s : K)
     (h : ∀ v, ρ g v = s • φ g v) : s ^ Module.finrank K V = 1 := by
@@ -282,6 +381,23 @@ theorem pow_eq_one_of_det {K V : Type} [Field K] [AddCommGroup V] [Module K V] [
   have e2 : LinearMap.det (φ g) = 1 := congrArg Units.val (char_eq_one (LinearMap.det.comp φ).toHomUnits g hg)
   rwa [show ρ g = s • φ g from LinearMap.ext h, LinearMap.det_smul, e2, mul_one] at e1
 
+/- English proof (translation)
+Establish `hφ0 : ∀ g, φ g w ≠ 0` using `fun g h0 => hw0 (by`. Rewrite using `[← Module.End.one_apply (R := K) w, ← map_one φ, ← inv_mul_cancel g, map_mul, Module.End.mul_apply, h0, map_zero])`. Establish `hsm : ∀ γ (h : γᴴ * γ = 1), ρ (uGL γ h) = cga γ • φ (uGL γ h)` using `fun γ h => LinearMap.ext (hsm' γ h)`. Establish `hun : ∀ {γ δ : Matrix (Fin n) (Fin n) E}, γᴴ * γ = 1 → δᴴ * δ = 1 → (γ * δ)ᴴ * (γ * δ) = 1` using `fun {γ δ} h h' => by`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.mul_assoc, ← Matrix.mul_assoc γᴴ, h, Matrix.one_mul, h']`.
+
+Establish `hmul : ∀ γ δ (h : γᴴ * γ = 1) (h' : δᴴ * δ = 1), cga (γ * δ) = cga γ * cga δ` using `fun γ δ h h' => by`. Establish `e : uGL _ (hun h h') = uGL γ h * uGL δ h'` using `Units.ext rfl`. Establish `e1` using `hsm _ (hun h h')`. Rewrite `e1` using `[e, map_mul ρ, hsm, hsm, smul_mul_smul_comm, ← map_mul]`. Conclude with `(smul_left_injective K (hφ0 _) (LinearMap.congr_fun e1 w)).symm`.
+
+Use `haveI : Nontrivial V := nontrivial_of_ne _ _ hw0`. Establish `hN : Module.finrank K V ≠ 0` using `Module.finrank_pos.ne'`. Establish `hpow : ∀ γ (h : γᴴ * γ = 1), cga γ ^ Module.finrank K V = vac γ ^ Module.finrank K V` using `fun γ h => by`. Take `⟨t, ht, hd⟩` from `exists_diag_det h`. Establish `hD` using `diag_unitary ht`.
+
+Establish `hD' : (Matrix.diagonal t)ᴴᴴ * (Matrix.diagonal t)ᴴ = 1`. Rewrite using `[Matrix.conjTranspose_conjTranspose, mul_eq_one_comm.1 hD]`. Establish `hd1 : (γ * (Matrix.diagonal t)ᴴ).det = 1`. Rewrite using `[Matrix.det_mul, Matrix.det_conjTranspose, hd, mul_comm, det_norm_one h]`. Establish `e1` using `pow_eq_one_of_det ρ φ (uGL _ (hun h hD')) hd1 _ (hsm' _ (hun h hD'))`.
+
+Establish `e3 : γ = γ * (Matrix.diagonal t)ᴴ * Matrix.diagonal t` using `by rw [Matrix.mul_assoc, hD, Matrix.mul_one]`. Rewrite using `[← hdet _ _ hd, ← hdiag t ht, congrArg cga e3, hmul _ _ (hun h hD') hD, mul_pow, e1, one_mul]`. Establish `hone : cga 1 = vac 1` using `by simpa using hdiag 1 (by simp)`. Establish `hcay : ∀ γ, γᴴ * γ = 1 → IsUnit (1 + γ) → cga γ = vac γ` using `fun γ h h1 => by`. Take `⟨Γ, hΓ, hΓ0, rfl, hr⟩` from `exists_curve K γ h h1`.
+
+Take `⟨ℓ₀, h₀⟩` from `not_forall.1 (mt (Module.forall_dual_apply_eq_zero_iff K _).1 (hφ0 (uGL _ (hΓ 0))))`. Take `⟨ℓ₁, h₁⟩` from `not_forall.1 (mt (Module.forall_dual_apply_eq_zero_iff K _).1 (hφ0 (uGL _ (hΓ 1))))`. Take `⟨hv, hℓ⟩` from `hrat Γ hΓ hr`. Establish `he : ∀ (ℓ : V →ₗ[K] K) (s : ℚ), ℓ (ρ (uGL _ (hΓ s)) w) = cga (Γ s) * ℓ (φ (uGL _ (hΓ s)) w)` using `fun ℓ s => by rw [hsm', map_smul, smul_eq_mul]`. Conclude with `scalar_eq (c := fun s => cga (Γ s)) hN hv (hℓ ℓ₀).1 (hℓ ℓ₀).2 (hℓ ℓ₁).1 (hℓ ℓ₁).2 (he ℓ₀) (he ℓ₁) (fun s => hpow _ (hΓ s)) (by rw [hΓ0, hone]) (by rwa [hΓ0]) h₀ h₁`.
+
+Take `⟨z, hz, hz1⟩` from `exists_scalar γ`. Establish `hz' : ∀ _ : Fin n, star (star z) * star z = 1` using `fun _ => by rw [star_star, mul_comm, hz]`. Establish `hzγ : (z • γ)ᴴ * (z • γ) = 1`. Rewrite using `[Matrix.conjTranspose_smul, smul_mul_smul_comm, hz, hγ, one_smul]`. Establish `e : γ = Matrix.diagonal (fun _ => star z) * (z • γ)`.
+
+Rewrite using `[← Matrix.smul_eq_diagonal_mul, smul_smul, hz, one_smul]`. Rewrite using `[e, hmul _ _ (diag_unitary hz') hzγ, hvm, hdiag _ hz', hcay _ hzγ hz1]`.
+-/
 theorem scalar_eq_of_diag {K V : Type} [Field K] [CharZero K] [AddCommGroup V] [Module K V] [Module.Finite K V]
     (ρ φ : GL (Fin n) E →* Module.End K V) (w : V) (hw0 : w ≠ 0) (cga vac : Matrix (Fin n) (Fin n) E → K)
     (hsm' : ∀ γ (h : γᴴ * γ = 1) v, ρ (uGL γ h) v = cga γ • φ (uGL γ h) v)
@@ -333,6 +449,29 @@ theorem scalar_eq_of_diag {K V : Type} [Field K] [CharZero K] [AddCommGroup V] [
     rw [← Matrix.smul_eq_diagonal_mul, smul_smul, hz, one_smul]
   rw [e, hmul _ _ (diag_unitary hz') hzγ, hvm, hdiag _ hz', hcay _ hzγ hz1]
 
+/- English proof (translation)
+Establish `key : ∀ θ : E, star θ = -θ → ∑ τ : Psi H, (m τ : ℂ) * τ.1 θ = 0` using `fun θ hθ => by`. Establish `hd : ∀ τ : Psi H, HasDerivAt (fun s : ℂ => ((1 + s * τ.1 θ) / (1 - s * τ.1 θ)) ^ m τ) ((m τ : ℂ) * (2 * τ.1 θ)) 0` using `fun τ => by`. Establish `h1 : HasDerivAt (fun s : ℂ => (1 + s * τ.1 θ) / (1 - s * τ.1 θ)) (2 * τ.1 θ) 0`. Use `HasDerivAt.congr_deriv ((((hasDerivAt_id (0 : ℂ)).mul_const (τ.1 θ)).const_add 1).fun_div (((hasDerivAt_id (0 : ℂ)).mul_const (τ.1 θ)).const_sub 1) (by simp)) ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `(hasDerivAt_zpow (m τ) (1 : ℂ) (Or.inl one_ne_zero)).comp_of_eq 0 h1 (by simp)`. Simplify `h2` using `[Function.comp_def]`. Establish `hp` using `HasDerivAt.fun_finsetProd (u := Finset.univ) fun τ _ => hd τ`. Simplify using `only [zero_mul, add_zero, sub_zero, div_one, one_zpow, Finset.prod_const_one, one_smul] at hp`.
+
+Establish `hq : ∀ s : ℚ, ∏ τ : Psi H, ((1 + (s : ℂ) * τ.1 θ) / (1 - (s : ℂ) * τ.1 θ)) ^ m τ = 1` using `fun s => by`. Establish `hc : ∀ s : ℚ, star (1 + (s : E) * θ) = 1 - s * θ` using `fun s => by`. Rewrite using `[star_add, star_one, star_mul', star_ratCast, hθ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hne : 1 + (s : E) * θ ≠ 0` using `fun hk => by`.
+
+Use `hc s` as an intermediate fact. Rewrite `this` using `[hk, star_zero]`. Conclude with `two_ne_zero (α := E) (by linear_combination hk - this)`. Establish `hne' : 1 - (s : E) * θ ≠ 0` using `by rw [← hc]; exact star_ne_zero.2 hne`. Establish `h'` using `hc (-s)`.
+
+Simplify using `only [Rat.cast_neg, neg_mul, ← sub_eq_add_neg, sub_neg_eq_add] at h'`. Use `h ((1 + s * θ) / (1 - s * θ)) (by` as an intermediate fact. Rewrite using `[star_div₀, hc, h', div_mul_div_comm, mul_comm, div_self (mul_ne_zero hne hne')])`. Simplify using `using this`. Establish `hs : Filter.Tendsto (fun k : ℕ => (1 / ((k : ℂ) + 1))) Filter.atTop (nhdsWithin 0 {0}ᶜ)` using `tendsto_nhdsWithin_iff.2 ⟨tendsto_one_div_add_atTop_nhds_zero_nat, Filter.Eventually.of_forall fun k => one_div_ne_zero (Nat.cast_add_one_ne_zero k)⟩`.
+
+Establish `ht` using `(hasDerivAt_iff_tendsto_slope_zero.1 hp).comp hs`. Establish `h0 : ∑ τ : Psi H, (m τ : ℂ) * (2 * τ.1 θ) = 0`. Use `tendsto_nhds_unique ht (tendsto_const_nhds.congr fun k => ?_)` and prove the remaining obligations. Use `hq (1 / (k + 1))` as an intermediate fact. Move the coercions through the operations in `at this`.
+
+Simplify using `only [Function.comp_apply, zero_add, this]`. Simplify using the standard rewrite rules. Establish `: 2 * ∑ τ : Psi H, (m τ : ℂ) * τ.1 θ = 0`. Rewrite using `[← h0, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`.
+
+Simplify using `using this`. Establish `hli : LinearIndependent ℂ (fun σ : E →+* ℂ => (σ : E → ℂ))` using `(linearIndependent_monoidHom E ℂ).comp (fun σ : E →+* ℂ => (σ : E →* ℂ)) RingHom.coe_monoidHom_injective`. Set `μ : (E →+* ℂ) → ℂ` to `fun σ => if h : InPsi H σ then (m ⟨σ, h⟩ : ℂ) else -(m ⟨ComplexEmbedding.conjugate σ, (Harm.not_mem_hostType_iff H σ).1 h⟩ : ℂ)`. Establish `hμ` using `Fintype.linearIndependent_iff.1 hli μ (by`. Use function extensionality and compare the values at `z`.
+
+Use `prod_emb (H := H) (M := Multiplicative ℂ) fun σ => Multiplicative.ofAdd (μ σ * σ z)` as an intermediate fact. Use `replace this : ∑ σ, μ σ * σ z = ∑ τ : Psi H, (μ τ.1 * τ.1 z + μ (ComplexEmbedding.conjugate τ.1) * ComplexEmbedding.conjugate τ.1 z) := this`. Rewrite using `[Finset.sum_apply, Pi.zero_apply, ← key (z - star z) (by simp)]`. Use `this.trans (Finset.sum_congr rfl fun τ _ => ?_)` and prove the remaining obligations. Establish `h1 : ¬ InPsi H (ComplexEmbedding.conjugate τ.1)` using `fun h => (Harm.not_mem_hostType_iff H τ.1).2 h τ.2`.
+
+Establish `h2 : τ.1 (star z) = ComplexEmbedding.conjugate τ.1 z` using `IsCMField.complexEmbedding_complexConj E τ.1 z`. Simplify using `only [μ, dif_pos τ.2, dif_neg h1, ComplexEmbedding.involutive_conjugate E τ.1, map_sub, h2]`. Use the proof step `ring)`. Use function extensionality and compare the values at `τ`. Use `hμ τ.1` as an intermediate fact.
+
+Simplify using `only [μ, dif_pos τ.2] at this`. Conclude with `this` after adjusting the coercions.
+-/
 theorem exponents_eq_zero {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (m : Psi H → ℤ)
     (h : ∀ ζ : E, star ζ * ζ = 1 → ∏ τ : Psi H, τ.1 ζ ^ m τ = 1) : m = 0 := by
   classical
@@ -398,13 +537,24 @@ section Scalar
 
 variable {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {l : Level H} (c : Coeff l) (d : Psi H → ℤ)
 
+/- English proof (translation)
+Rewrite using `[vacChar, vacChar, h]`.
+-/
 theorem vacChar_congr {γ δ : Matrix (Fin n) (Fin n) E} (h : γ.det = δ.det) : vacChar c n d γ = vacChar c n d δ := by
   rw [vacChar, vacChar, h]
 
+/- English proof (translation)
+Simplify using `only [vacChar, Matrix.det_mul, map_mul, mul_zpow, Finset.prod_mul_distrib]`.
+-/
 theorem vacChar_mul (γ δ : Matrix (Fin n) (Fin n) E) :
     vacChar c n d (γ * δ) = vacChar c n d γ * vacChar c n d δ := by
   simp only [vacChar, Matrix.det_mul, map_mul, mul_zpow, Finset.prod_mul_distrib]
 
+/- English proof (translation)
+Use `Subalgebra.prod_mem (ratFn c.F) (t := Finset.univ) fun (τ : Psi H) _ => zpow_mem (f := fun s => embPsi c τ (Γ s).det) (by` as an intermediate fact. Simplify using `only [RingHom.map_det]`. Conclude with `det_mem fun i j => hr (embPsi c τ) i j)`. Use the proof step `(fun s => (_root_.map_ne_zero _).2 (right_ne_zero_of_mul_eq_one (det_norm_one (hΓ s)))) (-(d τ))`. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `s`. Rewrite using `[Finset.prod_apply, vacChar]`.
+-/
 theorem vacChar_mem (Γ : ℚ → Matrix (Fin n) (Fin n) E) (hΓ : ∀ s, (Γ s)ᴴ * Γ s = 1)
     (hr : ∀ (σ : E →+* c.F) i j, (fun s => σ (Γ s i j)) ∈ ratFn c.F) :
     (fun s => vacChar c n d (Γ s)) ∈ ratFn c.F := by
@@ -424,11 +574,17 @@ section Comparison₂
 variable {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {l : Level H} {Dw : Datum H} {c : Coeff l}
   {a : (E →+* ℂ) × ℕ → ℕ} {Ix : Type} [Fintype Ix]
 
+/- English proof (translation)
+Rewrite using `[rhoM, dif_pos ((Matrix.isUnit_iff_isUnit_det _).1 g.isUnit)]`. Conclude with `congrArg _ (Units.ext rfl)`.
+-/
 theorem rhoM_coe (emb : Ix → E →+* c.F) (lam : Ix → DomWeight n) (g : GL (Fin n) E) :
     rhoM c emb lam (g : Matrix (Fin n) (Fin n) E) = rhoVr emb lam g := by
   rw [rhoM, dif_pos ((Matrix.isUnit_iff_isUnit_det _).1 g.isUnit)]
   exact congrArg _ (Units.ext rfl)
 
+/- English proof (translation)
+Introduce `h0` and use `by have : ten (fun τ => extremal c.F n (lam τ)) = 0 := h.symm.trans (congrArg Subtype.val h0) obtain ⟨τ, -, hτ⟩ := Finset.prod_eq_zero_iff.1 this exact Formalism.GradedWeylDivisibility.hwNe c.F n n le_rfl _ (rename_injective _ (Prod.mk_right_injective τ) (hτ.trans (map_zero _).sy …`.
+-/
 theorem ne_zero_of_hwOK {lam : Ix → DomWeight n} {hw : VVc c lam} (h : hwOK c lam hw) : hw ≠ 0 := fun h0 => by
   have : ten (fun τ => extremal c.F n (lam τ)) = 0 := h.symm.trans (congrArg Subtype.val h0)
   obtain ⟨τ, -, hτ⟩ := Finset.prod_eq_zero_iff.1 this
@@ -438,6 +594,15 @@ theorem ne_zero_of_hwOK {lam : Ix → DomWeight n} {hw : VVc c lam} (h : hwOK c 
 variable {lam : Ix → DomWeight n} {io : VVc c lam →ₗ[c.F] MvPolynomial (LtN Dw n) c.F} {hw : VVc c lam}
   {cga : Matrix (Fin n) (Fin n) E → c.F} {nab0 : Submodule (𝓞 c.F) (VVc c lam)}
 
+/- English proof (translation)
+Take `⟨-, hinj, hrange, -⟩` from `h`. Choose the witnesses or unpack the hypotheses as in `⟨Q, hQ, hQ0⟩ : ∃ Q ∈ HHa Dw.mult n c.F ComplexEmbedding.conjugate (InPsi H) (fun τ i => a (τ, i)), Q ≠ 0 := by`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Use `LinearMap.mem_range_self io hw` as an intermediate fact.
+
+Rewrite `this` using `[hrange, Submodule.span_eq_bot.2 hne, Submodule.mem_bot]`. Conclude with `ne_zero_of_hwOK hok (hinj (this.trans (map_zero io).symm))`. Take `⟨-, h₂, h₃⟩` from `(Harm.mem_HHa_iff_rename (Ψ := InPsi H) (ComplexEmbedding.involutive_conjugate E) (Harm.not_mem_hostType_iff H) (fun _ => Harm.mult_of_mem Dw) (fun _ => Harm.mult_conjEmb_of_mem Dw) _ Q).1 hQ`. Establish `key (t : Psi H) (r r' : Fin Dw.p ⊕ Fin Dw.q) (hr : Harm.RowLT r r')` using `Harm.rowDegree_le_of_rowAdd_eq hr.ne (fun e => hQ0 (rename_injective _ (Equiv.injective _) (e.trans (map_zero _).symm))) (h₂ t r) (h₂ t r') (h₃ t r r' hr)`. Introduce `σ i j hij hj`.
+
+Break down `hij.eq_or_lt with rfl | hlt` into its components or cases. Conclude with `le_rfl`. Break down `Harm.half_cases (Ψ := InPsi H) (ComplexEmbedding.involutive_conjugate E) (Harm.not_mem_hostType_iff H) σ with hσ | ⟨τ, hτ, rfl⟩` into its components or cases. Rewrite `hj` using `[Harm.mult_of_mem Dw hσ]`. Conclude with `key ⟨σ, hσ⟩ (Sum.inl ⟨i, hlt.trans hj⟩) (Sum.inl ⟨j, hj⟩) hlt`.
+
+Use `replace hj : j < Dw.q := Harm.mult_conjEmb_of_mem Dw hτ ▸ hj`. Conclude with `key ⟨τ, hτ⟩ (Sum.inr ⟨i, hlt.trans hj⟩) (Sum.inr ⟨j, hj⟩) hlt`.
+-/
 theorem isPartFam_of_tie {emb : Ix → E →+* c.F} (hok : hwOK c lam hw)
     (h : IoLF (Dw := Dw) c a io (rhoM c emb lam) cga nab0 hw (pG (Dw := Dw) c a n)) : IsPartFam Dw a := by
   obtain ⟨-, hinj, hrange, -⟩ := h
@@ -463,6 +628,11 @@ theorem isPartFam_of_tie {emb : Ix → E →+* c.F} (hok : hwOK c lam hw)
   · replace hj : j < Dw.q := Harm.mult_conjEmb_of_mem Dw hτ ▸ hj
     exact key ⟨τ, hτ⟩ (Sum.inr ⟨i, hlt.trans hj⟩) (Sum.inr ⟨j, hj⟩) hlt
 
+/- English proof (translation)
+Take `⟨-, hinj, hrange, heq, -⟩` from `h`. Take `⟨φ, hφ⟩` from `exists_rep io hinj (letRep n Dw c) fun g v => by`. Rewrite using `[hrange]`. Conclude with `letRep_mem Dw c a g (hrange ▸ LinearMap.mem_range_self io v)`. Use `⟨φ, hφ, fun γ hγ v => hinj ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_smul io, hφ, letRep_unitary, ← heq γ hγ v]`. Conclude with `congrArg (fun f => io (f v)) (rhoM_coe emb lam (uGL γ hγ)).symm`.
+-/
 theorem exists_lift {emb : Ix → E →+* c.F}
     (h : IoLF (Dw := Dw) c a io (rhoM c emb lam) cga nab0 hw (pG (Dw := Dw) c a n)) :
     ∃ φ : GL (Fin n) E →* Module.End c.F (VVc c lam), (∀ g v, io (φ g v) = letRep n Dw c g (io v)) ∧
@@ -475,6 +645,15 @@ theorem exists_lift {emb : Ix → E →+* c.F}
   rw [map_smul io, hφ, letRep_unitary, ← heq γ hγ v]
   exact congrArg (fun f => io (f v)) (rhoM_coe emb lam (uGL γ hγ)).symm
 
+/- English proof (translation)
+Take `⟨hn, hinj, -, heq, -, -, hhw, -⟩` from `h`. Establish `hD` using `diag_unitary ht`. Establish `e1` using `heq _ hD hw`. Rewrite `e1` using `[show rhoM c _ lam (Matrix.diagonal t) = _ from rhoM_coe _ lam (uGL _ hD), rhoVr_diag _ _ ht hw hok, map_smul io, hhw]`. Establish `e2` using `gaStar_pG_vac Dw c ha hn d ht`.
+
+Establish `e3` using `congrArg (vacChar c n d (Matrix.diagonal t) • ·) e1`. Rewrite `e3` using `[smul_comm _ (cga _), e2, smul_smul, smul_smul]`. Establish `hp : pG (Dw` using `Dw) c a n ≠ 0 := fun h0 => ne_zero_of_hwOK hok (hinj (hhw.trans (h0.trans (map_zero io).symm)))`. Establish `e4` using `smul_left_injective c.F hp e3`. Establish `h0 : ∀ (σ : E →+* c.F) i, σ (t i) ≠ 0` using `fun σ i => (_root_.map_ne_zero _).2 (right_ne_zero_of_mul_eq_one (ht i))`.
+
+Rewrite `e4` using `[← e.prod_comp]`. Use `mul_right_cancel₀ (Finset.prod_ne_zero_iff.2 fun x _ => Finset.prod_ne_zero_iff.2 fun i _ => zpow_ne_zero _ (h0 _ i)) (e4.symm.trans ?_)` and prove the remaining obligations. Rewrite using `[mul_assoc, ← Finset.prod_mul_distrib]`. Use `congr 1`. Use `Finset.prod_congr rfl fun x _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[embPsi, ← zpow_add₀ (h0 _ i)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem scalar_diag (e : Ix ≃ Psi H) (ha : IsPartFam Dw a) (d : Psi H → ℤ) (hok : hwOK c lam hw)
     (h : IoLF (Dw := Dw) c a io (rhoM c (fun x => embF c (e x).1) lam) cga nab0 hw (pG (Dw := Dw) c a n))
     {t : Fin n → E} (ht : ∀ i, star (t i) * t i = 1) :
@@ -505,6 +684,25 @@ theorem scalar_diag (e : Ix ≃ Psi H) (ha : IsPartFam Dw a) (d : Psi H → ℤ)
   congr 1
   ring
 
+/- English proof (translation)
+Take `⟨φ, -, hφ⟩` from `exists_lift h`. Use `haveI : Module.Finite c.F (VVc c lam) := Module.Finite.of_basis (bVV c.F lam)`. Use `haveI : Nontrivial (VVc c lam) := nontrivial_of_ne _ _ (ne_zero_of_hwOK hok)`. Establish `hN : Module.finrank c.F (VVc c lam) ≠ 0` using `Module.finrank_pos.ne'`. Generalize the expression as in `hNN : Module.finrank c.F (VVc c lam) = N at hN`.
+
+Set `κ : Ix → Fin n → ℤ` to `fun x i => (lamP Dw n ha 0 (e x)).w i - (lam x).w i`. Establish `hκ : ∀ x i j, κ x i = κ x j` using `fun x i j => by`. Use `exponents_eq_zero (fun τ => (κ (e.symm τ) i - κ (e.symm τ) j) * N) fun ζ hζ => by` as an intermediate fact. Establish `hζ0 : ζ ≠ 0` using `right_ne_zero_of_mul_eq_one hζ`. Set `t : Fin n → E` to `Pi.mulSingle i ζ * Pi.mulSingle j ζ⁻¹`.
+
+Establish `ht : ∀ k, star (t k) * t k = 1` using `fun k => by`. Establish `h1 : star ζ⁻¹ * ζ⁻¹ = 1` using `by rw [star_inv₀, ← mul_inv, hζ, inv_one]`. Simplify using `only [t, Pi.mul_apply, Pi.mulSingle_apply, star_mul']`. Apply the tactic sequence `split_ifs <;> simp_all`. Establish `hd : (Matrix.diagonal t).det = 1`.
+
+Simplify using `[t, Finset.prod_mul_distrib, hζ0]`. Establish `e1` using `pow_eq_one_of_det _ φ (uGL _ (diag_unitary ht)) hd _ (hφ _ _)`. Rewrite `e1` using `[hNN, scalar_diag e ha 0 hok h ht, vacChar, ← e.symm.prod_comp]`. Simplify using `only [Pi.zero_apply, neg_zero, zpow_zero, Finset.prod_const_one, one_mul, Equiv.apply_symm_apply, ← Finset.prod_pow] at e1`. Establish `e2 : ∏ τ : Psi H, embF c τ.1 ζ ^ ((κ (e.symm τ) i - κ (e.symm τ) j) * N) = 1`.
+
+Rewrite using `[← e1]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `h0 : embF c τ.1 ζ ≠ 0` using `(_root_.map_ne_zero _).2 hζ0`. Rewrite using `[Finset.prod_pow, zpow_mul, zpow_natCast]`. Use `congr 1`.
+
+Simplify using `only [t, Pi.mul_apply, map_mul, mul_zpow, Finset.prod_mul_distrib]`. Rewrite using `[Finset.prod_eq_single i (fun k _ hk => by simp [hk]) (by simp), Finset.prod_eq_single j (fun k _ hk => by simp [hk]) (by simp), zpow_sub₀ h0]`. Simplify using `only [κ, div_eq_mul_inv, Pi.mulSingle_eq_same, map_inv₀, inv_zpow, Equiv.apply_symm_apply]`. Establish `e3` using `congrArg c.F.subtype e2`. Rewrite `e3` using `[map_prod, map_one]`.
+
+Conclude with `(Finset.prod_congr rfl fun τ _ => (map_zpow₀ (c.F.subtype : c.F →+* ℂ) (embF c τ.1 ζ) _).symm).trans e3`. Establish `h1` using `congrFun this (e x)`. Simplify using `only [Equiv.symm_apply_apply, Pi.zero_apply, mul_eq_zero, Nat.cast_eq_zero, hN, or_false] at h1`. Conclude with `sub_eq_zero.1 h1`. Use `⟨fun τ => if hn : 0 < n then -κ (e.symm τ) ⟨0, hn⟩ else 0, funext fun x => ?_⟩` and prove the remaining obligations.
+
+Establish `: (lam x).w = (lamP Dw n ha (fun τ => if hn : 0 < n then -κ (e.symm τ) ⟨0, hn⟩ else 0) (e x)).w`. Use function extensionality and compare the values at `i`. Use `hκ x ⟨0, i.pos⟩ i` as an intermediate fact. Simplify using `only [lamP, dif_pos i.pos, Equiv.symm_apply_apply, this]`. Simplify using `[κ, lamP]`.
+
+Generalize the expression as in `lam x = μ, lamP Dw n ha _ (e x) = ν at this`. Consider the cases of `μ`. Consider the cases of `ν`. Simplify using `using this`.
+-/
 theorem weight_eq_of_tie (e : Ix ≃ Psi H) (ha : IsPartFam Dw a) (hok : hwOK c lam hw)
     (h : IoLF (Dw := Dw) c a io (rhoM c (fun x => embF c (e x).1) lam) cga nab0 hw (pG (Dw := Dw) c a n)) :
     ∃ d : Psi H → ℤ, lam = fun x => lamP Dw n ha d (e x) := by
@@ -555,6 +753,11 @@ theorem weight_eq_of_tie (e : Ix ≃ Psi H) (ha : IsPartFam Dw a) (hok : hwOK c 
   cases ν
   simpa using this
 
+/- English proof (translation)
+Take `⟨φ, hφ, hsm⟩` from `exists_lift h`. Use `haveI : Module.Finite c.F (VVc c lam) := Module.Finite.of_basis (bVV c.F lam)`. Use `scalar_eq_of_diag (rhoVr (fun x => embF c (e x).1) lam) φ _ (ne_zero_of_hwOK hok) cga _ hsm (fun t ht => ?_) (fun _ _ => vacChar_congr c d) (vacChar_mul c d) (by simp [vacChar]) (fun Γ hΓ hr => ⟨vacChar_mem c d Γ hΓ hr, fun ℓ => ⟨rhoVr_mem _ _ Γ hΓ hr _ ℓ, ?_⟩⟩) γ hγ` and prove the remaining obligations. Rewrite using `[scalar_diag e ha d hok h ht, hl]`. Simplify using the standard rewrite rules.
+
+Take `⟨r, hr'⟩` from `io.exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 h.2.1)`. Use `gaStar_mem Dw c Γ hr (io hw) (ℓ ∘ₗ r) using 2 with s` and compare the differences between its conclusion and the goal. Rewrite using `[← letRep_unitary Dw c _ (hΓ s), ← hφ, LinearMap.comp_apply, ← LinearMap.comp_apply r, hr', LinearMap.id_apply]`.
+-/
 theorem scalar_eq_vacChar (e : Ix ≃ Psi H) (ha : IsPartFam Dw a) (d : Psi H → ℤ)
     (hl : lam = fun x => lamP Dw n ha d (e x)) (hok : hwOK c lam hw)
     (h : IoLF (Dw := Dw) c a io (rhoM c (fun x => embF c (e x).1) lam) cga nab0 hw (pG (Dw := Dw) c a n))
@@ -577,8 +780,14 @@ section Compare
 variable {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {l : Level H} (Dw : Datum H) (c : Coeff l) (n : ℕ)
   {a : (E →+* ℂ) × ℕ → ℕ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem space_eq (ha : IsPartFam Dw a) (d : Psi H → ℤ) : VVc c (lamP Dw n ha d) = CoefSp Dw c n ha d := rfl
 
+/- English proof (translation)
+Establish `ha` using `isPartFam_of_tie hok h`. Take `⟨d, hd⟩` from `weight_eq_of_tie e ha hok h`. Conclude with `⟨ha, d, hd, scalar_eq_vacChar e ha d hd hok h⟩`.
+-/
 theorem pins_of_ioLF {Ix : Type} [Fintype Ix] (e : Ix ≃ Psi H) (a : (E →+* ℂ) × ℕ → ℕ) (lam : Ix → DomWeight n)
     (io : VVc c lam →ₗ[c.F] MvPolynomial (LtN Dw n) c.F) (hw : VVc c lam) (cga : Matrix (Fin n) (Fin n) E → c.F)
     (hok : hwOK c lam hw) (h : IoLF (Dw := Dw) c a io (rhoM c (fun x => embF c (e x).1) lam) cga

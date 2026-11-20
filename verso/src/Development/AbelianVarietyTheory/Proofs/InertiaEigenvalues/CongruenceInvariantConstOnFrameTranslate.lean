@@ -4,6 +4,19 @@ open scoped InnerProductSpace BigOperators
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `O K _ _ _ _ _ _ _ r t ϖ hϖ Φ hΦ x g z hx`. Use `set z₁ : Matrix (Fin r) (Fin r) O := Matrix.toRows₁ z`. Use `set z₂ : Matrix (Fin t) (Fin r) O := Matrix.toRows₂ z`. Use `set M : Matrix (Fin r ⊕ Fin t) (Fin r ⊕ Fin t) O := Matrix.fromBlocks (1 + ϖ • z₁) 0 (ϖ • z₂) 1 with hMdef`. Establish `hmem : ϖ ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal _).2 hϖ.not_isUnit`.
+
+Establish `hres : IsLocalRing.residue O ϖ = 0` using `(IsLocalRing.residue_eq_zero_iff ϖ).2 hmem`. Establish `hdet : IsUnit M.det`. Rewrite using `[hMdef, Matrix.det_fromBlocks_zero₁₂, Matrix.det_one, mul_one, ← IsLocalRing.notMem_maximalIdeal, ← IsLocalRing.residue_eq_zero_iff, RingHom.map_det]`. Establish `h1 : (IsLocalRing.residue O).mapMatrix (1 + ϖ • z₁) = 1`. Use extensionality with `i j`.
+
+Simplify using `[Matrix.one_apply, hres]`. Rewrite using `[h1, Matrix.det_one]`. Conclude with `one_ne_zero`. Set `h : GL (Fin r ⊕ Fin t) O` to `M.nonsingInvUnit hdet`. Establish `hh : (h : Matrix (Fin r ⊕ Fin t) (Fin r ⊕ Fin t) O) = M` using `rfl`.
+
+Use `set e : Matrix (Fin r ⊕ Fin t) (Fin r) O := Matrix.fromRows (1 : Matrix (Fin r) (Fin r) O) (0 : Matrix (Fin t) (Fin r) O) with hedef`. Establish `key : M * e = e + ϖ • z`. Apply the tactic sequence `ext (a | a) b <;>`. Simplify using `[hMdef, hedef, z₁, z₂, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.fromBlocks, Matrix.fromRows_apply_inl, Matrix.fromRows_apply_inr, Matrix.toRows₁, Matrix.toRows₂, Matrix.one_apply, add_mul, Sum.elim_inl, Sum.elim_inr, mul_ite, ite_mul, Finset.sum_add_distrib, Finset.sum_ite_ …`. Establish `h1 : ∀ a b, (h : Matrix (Fin r ⊕ Fin t) (Fin r ⊕ Fin t) O) (Sum.inl a) (Sum.inl b) - (1 : Matrix (Fin r) (Fin r) O) a b ∈ Ideal.span {ϖ}`.
+
+Introduce `a b`. Rewrite using `[hh, hMdef, Matrix.fromBlocks_apply₁₁, Matrix.add_apply, add_sub_cancel_left, Matrix.smul_apply, smul_eq_mul]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self ϖ)`. Establish `h2 : ∀ a b, (h : Matrix (Fin r ⊕ Fin t) (Fin r ⊕ Fin t) O) (Sum.inr a) (Sum.inl b) ∈ Ideal.span {ϖ}`. Introduce `a b`.
+
+Rewrite using `[hh, hMdef, Matrix.fromBlocks_apply₂₁, Matrix.smul_apply, smul_eq_mul]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self ϖ)`. Establish `hinv` using `hΦ h h1 h2 (e.map (algebraMap O K) * ((g⁻¹ : GL (Fin r) K) : Matrix (Fin r) (Fin r) K))`. Rewrite using `[← hinv, hh, ← Matrix.mul_assoc, ← Matrix.map_mul, key, ← hx, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`.
+-/
 theorem invariant_const_on_translate : ∀ (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Finite (IsLocalRing.ResidueField O)] [Field K] [Algebra O K] [IsFractionRing O K] (r t : ℕ) (ϖ : O), Irreducible ϖ → ∀ (Φ : Matrix (Fin r ⊕ Fin t) (Fin r) K → ℂ), (∀ h : GL (Fin r ⊕ Fin t) O, (∀ a b, (h : Matrix (Fin r ⊕ Fin t) (Fin r ⊕ Fin t) O) (Sum.inl a) (Sum.inl b) - (1 : Matrix (Fin r) (Fin r) O) a b ∈ Ideal.span {ϖ}) → (∀ a b, (h : Matrix (Fin r ⊕ Fin t) (Fin r ⊕ Fin t) O) (Sum.inr a) (Sum.inl b) ∈ Ideal.span {ϖ}) → ∀ x : Matrix (Fin r ⊕ Fin t) (Fin r) K, Φ ((h : Matrix (Fin r ⊕ Fin t) (Fin r ⊕ Fin t) O).map (algebraMap O K) * x) = Φ x) → ∀ (x : Matrix (Fin r ⊕ Fin t) (Fin r) K) (g : GL (Fin r) K) (z : Matrix (Fin r ⊕ Fin t) (Fin r) O), x * (g : Matrix (Fin r) (Fin r) K) = ((Matrix.fromRows (1 : Matrix (Fin r) (Fin r) O) (0 : Matrix (Fin t) (Fin r) O)) + ϖ • z).map (algebraMap O K) → Φ x = Φ ((Matrix.fromRows (1 : Matrix (Fin r) (Fin r) O) (0 : Matrix (Fin t) (Fin r) O)).map (algebraMap O K) * ((g⁻¹ : GL (Fin r) K) : Matrix (Fin r) (Fin r) K)) := by
   intro O K _ _ _ _ _ _ _ r t ϖ hϖ Φ hΦ x g z hx
   classical

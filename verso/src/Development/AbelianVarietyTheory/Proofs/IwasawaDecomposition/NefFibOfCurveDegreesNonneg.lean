@@ -5,6 +5,13 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace ReciprocityTheory.ChartRe
 
 namespace GlobalTheory.ArInt
 
+/- English proof (translation)
+Introduce `k _ X p L h Z i _ _ κ _ _ _ hdim`. Use `haveI : Fintype κ := Fintype.ofFinite κ`. Use `haveI hq : Fact (ringChar κ).Prime := ⟨CharP.char_is_prime κ (ringChar κ)⟩`. Use `letI : Algebra (ZMod (ringChar κ)) κ := ZMod.algebra κ (ringChar κ)`. Use `letI : Algebra (ZMod (ringChar κ)) Γ(Z, ⊤) := ((algebraMap κ Γ(Z, ⊤)).comp (algebraMap (ZMod (ringChar κ)) κ)).toAlgebra`.
+
+Use `haveI : IsScalarTower (ZMod (ringChar κ)) κ Γ(Z, ⊤) := IsScalarTower.of_algebraMap_eq' rfl`. Establish `h1` using `h Z i (ringChar κ) hdim`. Establish `e` using `GlobalTheory.T.lineBundleIntersectionNumber_groundFieldChange (ZMod (ringChar κ)) κ Z (structureModule Z) (fun _ : Fin 1 => L.B.pull i)`. Rewrite `h1`, the goal using `[topSelf_def]`. Rewrite `h1` using `[e]`.
+
+Use `haveI : Module.Finite (ZMod (ringChar κ)) κ := Module.Finite.of_finite`. Establish `hpos : (0 : ℤ) < (Module.finrank (ZMod (ringChar κ)) κ : ℤ)`. Conclude with `Module.finrank_pos` after adjusting the coercions. Conclude with `(mul_nonneg_iff_of_pos_left hpos).mp h1`.
+-/
 theorem nefFib_of_primeField : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (L : HermLB p),
     (∀ (Z : Scheme.{0}) (i : Z ⟶ X) [IsClosedImmersion i] [IsIntegral Z] (q : ℕ) [Fact q.Prime]
       [Algebra (ZMod q) Γ(Z, ⊤)], topologicalKrullDim Z = 1 → 0 ≤ topSelfIntersection (ZMod q) (L.B.pull i) 1) →

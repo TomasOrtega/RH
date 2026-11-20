@@ -16,6 +16,25 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points Gl
 
 namespace GlobalTheory.MixDrop
 
+/- English proof (translation)
+Introduce `F _ X Y _ _ p q σ D D' hD hp hX hq π hπ hgen L ε`. Establish `hLN : IsLocallyNoetherian X`. Take `⟨N, ι, _, h⟩` from `hp`. Establish `: LocallyOfFiniteType p` using `h ▸ inferInstance`. Conclude with `LocallyOfFiniteType.isLocallyNoetherian p`.
+
+Take `⟨U, hU, hch⟩` from `GlobalTheory.GenericCharts.exists_generic_charts F X p σ D' hp hX`. Establish `hgU : genericPoint Y ∈ π ⁻¹ᵁ U` using `by show π (genericPoint Y) ∈ U`. Rewrite using `[hgen]`. Conclude with `hU`. Establish `hnull` using `GlobalTheory.MixNull.part_compl_null F Y q σ σ.injective hq D (fun i => (L i).pull π hπ) ε (π ⁻¹ᵁ U) hgU`.
+
+Establish `hz : ∀ (c : AlgChart q σ D) (w : CxPts q σ), w ∈ c.e.source → w ∈ ptsIn q σ (π ⁻¹ᵁ U) → dens (fun i => (L i).pull π hπ) c w = 0`. Introduce `c w hw hwU`. Establish `hm : ptMap π hπ σ w ∈ ptsIn p σ U`. Rewrite `hwU`, the goal using `[mem_ptsIn]`. Conclude with `hwU`.
+
+Take `⟨c0, hc0⟩` from `hch _ hm`. Take `⟨ξ, hξ, hker⟩` from `GlobalTheory.T.exists_common_kernel_hessians_pullback_smaller_chart F X Y p q σ D D' hD π hπ c0 c w hw hc0`. Establish `hdet : ∀ τ : Equiv.Perm (Fin D), (Matrix.of fun j l => c.hess ((L (τ l)).pull π hπ).φ (pick ((L (τ l)).pull π hπ).φ.isLB w) w j l).det = 0`. Introduce `τ`. Use `(Matrix.exists_vecMul_eq_zero_iff).1 ⟨ξ, hξ, funext fun l => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `congrFun (hker (L (τ l)) (pick ((L (τ l)).pull π hπ).φ.isLB w) (mem_pick _ w)) l`. Simplify `h1` using `[Matrix.vecMul, dotProduct]`. Unfold `dens`. Simplify using `only [hdet, Finset.sum_const_zero, Complex.zero_re, mul_zero]`. Establish `hc : ∀ c : AlgChart q σ D, chartMeas c.e (fun y => ENNReal.ofReal ((ε : ℤ) * dens (fun i => (L i).pull π hπ) c y)) = 0`.
+
+Introduce `c`. Use `set S := ptsIn q σ (π ⁻¹ᵁ U) with hSdef`. Establish `hS : MeasurableSet S` using `(isOpen_ptsIn _).measurableSet`. Establish `h1 : chartMeas c.e (fun y => ENNReal.ofReal ((ε : ℤ) * dens (fun i => (L i).pull π hπ) c y)) S = 0`. Rewrite using `[chartMeas_apply c.e _ hS]`.
+
+Use `(setLIntegral_congr_fun (measurableSet_image _ (c.e.open_source.measurableSet.inter hS) inter_subset_left) ?_).trans lintegral_zero` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Use `show ENNReal.ofReal ((ε : ℤ) * dens (fun i => (L i).pull π hπ) c (c.e.symm (c.e y))) = 0`. Rewrite using `[c.e.left_inv hy.1, hz c y hy.1 hy.2, mul_zero, ENNReal.ofReal_zero]`. Establish `hle : chartMeas c.e (fun y => ENNReal.ofReal ((ε : ℤ) * dens (fun i => (L i).pull π hπ) c y)) ≤ part (fun i => (L i).pull π hπ) ε` using `le_iSup (fun c : AlgChart q σ D => chartMeas c.e (fun y => ENNReal.ofReal ((ε : ℤ) * dens (fun i => (L i).pull π hπ) c y))) c`.
+
+Establish `h2` using `(Measure.le_iff'.1 hle Sᶜ).trans_eq hnull`. Use `Measure.measure_univ_eq_zero.1 (le_antisymm ?_ bot_le)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `show glueMeas _ _ = 0`. Unfold `glueMeas`.
+
+Simplify using `only [hc]`. Conclude with `le_antisymm (iSup_le fun _ => le_rfl) (Measure.zero_le _)`.
+-/
 theorem part_pull_eq_zero : ∀ (F : Type) [Field F] (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y] (p : X ⟶ Sp F) (q : Y ⟶ Sp F) (σ : F →+* ℂ) (D D' : ℕ), D' < D → IsProjOver p → topologicalKrullDim X = (D' : ℕ) → IsProjOver q → ∀ (π : Y ⟶ X) (hπ : π ≫ p = q), π (genericPoint Y) = genericPoint X → ∀ (L : Fin D → MLine p σ) (ε : ℤˣ), part (fun i => (L i).pull π hπ) ε = 0 := by
   intro F _ X Y _ _ p q σ D D' hD hp hX hq π hπ hgen L ε
   have hLN : IsLocallyNoetherian X := by

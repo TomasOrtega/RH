@@ -6,6 +6,15 @@ open Complex
 
 namespace PositivityTheory.Rg.Sw.Glob.VacE
 
+/- English proof (translation)
+Establish `hcC : (c : ℂ) ≠ 0` using `by exact_mod_cast hc.ne'`. Establish `hco' : (co : ℂ) ≠ 0` using `by exact_mod_cast hco.ne'`. Establish `htC : (t : ℂ) ^ 2 = (c : ℂ) ^ 2` using `by exact_mod_cast ht`. Establish `hσC : (σ : ℂ) ^ 2 = 1` using `by exact_mod_cast hσ`. Establish `hs2 : (si : ℂ) ^ 2 + (co : ℂ) ^ 2 = 1` using `by exact_mod_cast hs`.
+
+Establish `hden : (c : ℂ) * co - I * t * σ * si ≠ 0`. Introduce `h0`. Use `congrArg Complex.re h0` as an intermediate fact. Simplify using `at this`. Break down `this with h | h` into its components or cases.
+
+Conclude with `hc.ne' h`. Conclude with `hco.ne' h`. Simplify using `only [Complex.ofReal_inv, Complex.ofReal_mul, Complex.ofReal_neg, Complex.ofReal_div]`. Rewrite using `[neg_sq, htC, hσC]`. Establish `e1 : (c : ℂ) ^ 2 * 1 / ((c : ℂ) * ((co : ℂ))⁻¹ ^ 2) - I * t * σ * (si * co) = co * ((c : ℂ) * co - I * t * σ * si)`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[e1]`. Clear the denominators using the available nonvanishing facts. Establish `htσ : (t : ℂ) ^ 2 * (σ : ℂ) ^ 2 = (c : ℂ) ^ 2` using `by rw [htC, hσC, mul_one]`. Take the linear combination `(-(c : ℂ) ^ 2) * hs2 + (si : ℂ) ^ 2 * I ^ 2 * htσ + (si : ℂ) ^ 2 * (c : ℂ) ^ 2 * Complex.I_sq`.
+-/
 theorem coord_gamma (c t σ co si : ℝ) (hc : 0 < c) (ht : t ^ 2 = c ^ 2) (hσ : σ ^ 2 = 1) (hco : 0 < co)
     (hs : si ^ 2 + co ^ 2 = 1) :
     (t : ℂ) ^ 2 * (σ : ℂ) ^ 2 /
@@ -32,6 +41,19 @@ theorem coord_gamma (c t σ co si : ℝ) (hc : 0 < c) (ht : t ^ 2 = c ^ 2) (hσ 
   have htσ : (t : ℂ) ^ 2 * (σ : ℂ) ^ 2 = (c : ℂ) ^ 2 := by rw [htC, hσC, mul_one]
   linear_combination (-(c : ℂ) ^ 2) * hs2 + (si : ℂ) ^ 2 * I ^ 2 * htσ + (si : ℂ) ^ 2 * (c : ℂ) ^ 2 * Complex.I_sq
 
+/- English proof (translation)
+Establish `hcC : (c : ℂ) ≠ 0` using `by exact_mod_cast hc.ne'`. Establish `hco' : (co : ℂ) ≠ 0` using `by exact_mod_cast hco.ne'`. Establish `hpi : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Establish `htC : (t : ℂ) ^ 2 = (c : ℂ) ^ 2` using `by exact_mod_cast ht`. Establish `hσC : (σ : ℂ) ^ 2 = 1` using `by exact_mod_cast hσ`.
+
+Establish `hs2 : (si : ℂ) ^ 2 + (co : ℂ) ^ 2 = 1` using `by exact_mod_cast hs`. Establish `habs : ((|t| : ℝ) : ℂ) ^ 2 = (c : ℂ) ^ 2`. Rewrite using `[← Complex.ofReal_pow, sq_abs]`. Conclude with `ht` after adjusting the coercions. Establish `hden : (c : ℂ) * co - I * t * σ * si ≠ 0`.
+
+Introduce `h0`. Use `congrArg Complex.re h0` as an intermediate fact. Simplify using `at this`. Break down `this with h | h` into its components or cases. Conclude with `hc.ne' h`.
+
+Conclude with `hco.ne' h`. Simplify using `only [Complex.ofReal_inv, Complex.ofReal_mul, Complex.ofReal_neg, Complex.ofReal_div]`. Rewrite using `[neg_sq, htC, hσC, div_pow, habs]`. Establish `e1 : (c : ℂ) ^ 2 * 1 / ((c : ℂ) * ((co : ℂ))⁻¹ ^ 2) - I * t * σ * (si * co) = co * ((c : ℂ) * co - I * t * σ * si)`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[e1]`. Establish `key : (co : ℂ)⁻¹ * ((Real.pi : ℂ) / ((c : ℂ) * (co : ℂ)⁻¹ ^ 2)) * ((Real.pi : ℂ) / (co * ((c : ℂ) * co - I * t * σ * si))) * ((c : ℂ) ^ 2 / (Real.pi : ℂ) ^ 2) = (c : ℂ) / ((c : ℂ) * co - I * t * σ * si)`. Clear the denominators using the available nonvanishing facts. Rewrite using `[key, div_eq_iff hden]`. Establish `htσ : (t : ℂ) ^ 2 * (σ : ℂ) ^ 2 = (c : ℂ) ^ 2` using `by rw [htC, hσC, mul_one]`.
+
+Clear the denominators using the available nonvanishing facts. Take the linear combination `(-(c : ℂ) ^ 2) * hs2 + (si : ℂ) ^ 2 * I ^ 2 * htσ + (si : ℂ) ^ 2 * (c : ℂ) ^ 2 * Complex.I_sq`.
+-/
 theorem coord_const (c t σ co si : ℝ) (hc : 0 < c) (ht : t ^ 2 = c ^ 2) (hσ : σ ^ 2 = 1) (hco : 0 < co)
     (hs : si ^ 2 + co ^ 2 = 1) :
     ((co⁻¹ : ℝ) : ℂ) * ((Real.pi : ℂ) / ((c : ℂ) * ((co⁻¹ : ℝ) : ℂ) ^ 2)) *

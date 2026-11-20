@@ -6,6 +6,25 @@ namespace ReciprocityTheory.MultiplicativeHeights
 
 open Module
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Establish `hj` using `j.isLt`. Distinguish the cases in `hmid : m ≤ (j : ℕ) ∧ (j : ℕ) + m < r`. Establish `h` using `hv j`. Rewrite `h` using `[Finset.sum_eq_single j]`.
+
+Simplify using `only [wittMat, Matrix.of_apply] at h`. Rewrite `h` using `[if_neg (by omega), if_pos ⟨trivial, hmid.1, hmid.2⟩]`. Conclude with `(mul_eq_zero.1 h).resolve_right (hg j hmid.1 hmid.2)`. Introduce `i _ hij`. Establish `hi` using `i.isLt`.
+
+Simplify using `only [wittMat, Matrix.of_apply]`. Rewrite using `[if_neg, if_neg, mul_zero]`. Introduce and unpack `⟨h1, -⟩`. Conclude with `hij h1.symm`. Introduce and unpack `⟨h1, h2⟩`.
+
+Apply the tactic sequence `rcases h2 with h2 | h2 <;> omega`. Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`. Use `set p : Fin r := ⟨r - 1 - j, by omega⟩ with hp`. Establish `hpv : (p : ℕ) = r - 1 - j` using `rfl`.
+
+Establish `h` using `hv p`. Rewrite `h` using `[Finset.sum_eq_single j]`. Simplify using `only [wittMat, Matrix.of_apply] at h`. Establish `hc : (p : ℕ) + j + 1 = r ∧ ((p : ℕ) < m ∨ (j : ℕ) < m)`. Rewrite using `[hpv]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite `h` using `[if_pos hc, mul_one]`. Conclude with `h`. Introduce `i _ hij`. Establish `hi` using `i.isLt`.
+
+Simplify using `only [wittMat, Matrix.of_apply]`. Rewrite using `[if_neg, if_neg, mul_zero]`. Introduce and unpack `⟨-, h2, h3⟩`. Rewrite `h2`, `h3` using `[hpv]`. Use linear arithmetic over natural numbers and integers.
+
+Introduce and unpack `⟨h1, -⟩`. Apply `hij` to reduce the goal to its premises. Use `ext`. Rewrite `h1` using `[hpv]`. Use linear arithmetic over natural numbers and integers.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`.
+-/
 theorem wa_witt_ker {K : Type} [Field K] (r m : ℕ) (g : Fin r → K)
     (hg : ∀ k : Fin r, m ≤ (k : ℕ) → (k : ℕ) + m < r → g k ≠ 0) (v : Fin r → K)
     (hv : ∀ p : Fin r, ∑ i, v i * wittMat r m g p i = 0) : v = 0 := by
@@ -52,6 +71,27 @@ theorem wa_witt_ker {K : Type} [Field K] (r m : ℕ) (g : Fin r → K)
     · intro h
       exact absurd (Finset.mem_univ j) h
 
+/- English proof (translation)
+Introduce `K _ _ r S hdet`. Establish `hnd : ∀ x ∈ (⊤ : Submodule K (Fin r → K)), (∀ y ∈ (⊤ : Submodule K (Fin r → K)), S.h x y = 0) → x = 0`. Introduce `x _ hx`. Establish `hrow : Matrix.vecMul (fun a => S.c (x a)) S.G = 0`. Use function extensionality and compare the values at `b'`.
+
+Establish `h1` using `hx (Pi.single b' 1) Submodule.mem_top`. Simplify `h1` using `[HermForm.h, Pi.single_apply, Matrix.vecMul, dotProduct]`. Establish `h2 : (fun a => S.c (x a)) = 0` using `Matrix.eq_zero_of_vecMul_eq_zero hdet hrow`. Use function extensionality and compare the values at `a`. Establish `h3` using `congrFun h2 a`.
+
+Simplify using `only [Pi.zero_apply, map_eq_zero] at h3`. Conclude with `h3`. Take `⟨m, bb, g, -, hm, hW, hg⟩` from `wa_main S r ⊤ (by rw [finrank_top, Module.finrank_fin_fun]) hnd`. Establish `hgmid : ∀ k : Fin r, m ≤ (k : ℕ) → (k : ℕ) + m < r → g k ≠ 0`. Introduce `k hk1 hk2 hgk`.
+
+Establish `ht` using `hg (Pi.single k 1) (fun i hi => by`. Rewrite using `[Pi.single_apply, if_neg]`. Introduce and unpack `rfl`. Use the proof step `omega) (by`. Rewrite using `[Finset.sum_eq_single k]`.
+
+Simplify using `[hgk]`. Introduce `i _ hik`. Simplify using `[Pi.single_eq_of_ne hik]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ k) h)`.
+
+Use `congrFun ht k` as an intermediate fact. Simplify using `at this`. Establish `hlin : ∀ (x v : Fin r → K), S.h x (fun a => ∑ i, bb i a * v i) = ∑ i, v i * S.h x (bb i)`. Introduce `x v`. Simplify using `only [HermForm.h, Finset.mul_sum]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `⟨Matrix.of fun a i => bb i a, m, g, ?_, hm, ?_, hg⟩` and prove the remaining obligations. Introduce `hd`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 hd`. Apply `hv0` to reduce the goal to its premises.
+
+Establish `hPv : Matrix.mulVec (Matrix.of fun a i => bb i a) v = fun a => ∑ i, bb i a * v i`. Use function extensionality and compare the values at `a`. Simplify using `[Matrix.mulVec, dotProduct]`. Use `wa_witt_ker r m g hgmid v fun p => ?_` and prove the remaining obligations. Establish `h1 : S.h (bb p) (fun a => ∑ i, bb i a * v i) = 0`.
+
+Rewrite using `[← hPv, hv]`. Simplify using `[HermForm.h]`. Rewrite `h1` using `[hlin]`. Rewrite using `[← h1]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hW p i]`.
+
+Use extensionality with `i j`. Rewrite using `[← hW i j]`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Matrix.of_apply, HermForm.h, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+-/
 theorem wittBasis_holds : WittBasisStatement := by
   intro K _ _ r S hdet
   have hnd : ∀ x ∈ (⊤ : Submodule K (Fin r → K)),

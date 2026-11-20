@@ -7,6 +7,11 @@ open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.RootE
 
 namespace GlobalTheory.RootEx
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Establish `hC : (Matrix.of fun (l : Fin c) (s : n) => if l.val + 1 = p then (0 : n → k) s else 0) = 0`. Use extensionality with `l s`. Simplify using the standard rewrite rules. Use `show Matrix.fromBlocks 1 0 (Matrix.of fun (l : Fin c) (s : n) => if l.val + 1 = p then (0 : n → k) s else 0) 1 = 1`.
+
+Rewrite using `[hC, Matrix.fromBlocks_one]`.
+-/
 theorem rowE_zero_eq_one {k : Type*} [Field k] {n : Type*} [Fintype n] [DecidableEq n] (c p : ℕ) :
     rowE c p (0 : n → k) = 1 := by
   apply Units.ext
@@ -17,6 +22,11 @@ theorem rowE_zero_eq_one {k : Type*} [Field k] {n : Type*} [Fintype n] [Decidabl
       (Matrix.of fun (l : Fin c) (s : n) => if l.val + 1 = p then (0 : n → k) s else 0) 1 = 1
   rw [hC, Matrix.fromBlocks_one]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Establish `hB : (Matrix.of fun (r : n) (i : Fin c) => if i.val + 1 = p then (0 : n → k) r else 0) = 0`. Use extensionality with `r i`. Simplify using the standard rewrite rules. Use `show Matrix.fromBlocks 1 (Matrix.of fun (r : n) (i : Fin c) => if i.val + 1 = p then (0 : n → k) r else 0) 0 1 = 1`.
+
+Rewrite using `[hB, Matrix.fromBlocks_one]`.
+-/
 theorem colE_zero_eq_one {k : Type*} [Field k] {n : Type*} [Fintype n] [DecidableEq n] (c p : ℕ) :
     colE c p (0 : n → k) = 1 := by
   apply Units.ext
@@ -27,6 +37,11 @@ theorem colE_zero_eq_one {k : Type*} [Field k] {n : Type*} [Fintype n] [Decidabl
       (Matrix.of fun (r : n) (i : Fin c) => if i.val + 1 = p then (0 : n → k) r else 0) 0 1 = 1
   rw [hB, Matrix.fromBlocks_one]
 
+/- English proof (translation)
+Take `⟨γ, hγ0, hγ1⟩` from `ValuativeRel.IsNontrivial.exists_lt_one (R := k)`. Establish `hδ : (1 : ValueGroupWithZero k) < γ⁻¹` using `one_lt_inv_iff₀.mpr ⟨hγ0, hγ1⟩`. Use `⟨⟨fun m : ℕ => {x : k | valuation k x ≤ γ⁻¹ ^ m}, fun m => IsNonarchimedeanLocalField.isCompact_closedBall k _, ?_⟩⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using `only [Set.mem_iUnion, Set.mem_ofPred_eq, Set.mem_univ, iff_true]`.
+
+Conclude with `MulArchimedean.arch (valuation k x) hδ`.
+-/
 private theorem sigmaCompactSpace_nonarchimedeanLocalField (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] : SigmaCompactSpace k := by
   obtain ⟨γ, hγ0, hγ1⟩ := ValuativeRel.IsNontrivial.exists_lt_one (R := k)
@@ -37,6 +52,13 @@ private theorem sigmaCompactSpace_nonarchimedeanLocalField (k : Type) [Field k] 
   simp only [Set.mem_iUnion, Set.mem_ofPred_eq, Set.mem_univ, iff_true]
   exact MulArchimedean.arch (valuation k x) hδ
 
+/- English proof (translation)
+Establish `hτ : (fun x : n → k => f (x - z)) ∈ SB (n → k)` using `⟨hf.1.comp_continuous (continuous_sub_right z), hf.2.comp_homeomorph (Homeomorph.subRight z)⟩`. Establish `key : ∀ y : n → k, (∫ x : n → k, f x * (ψ (x ⬝ᵥ y) : ℂ) ∂(Measure.pi fun _ => ν)) * (ψ (y ⬝ᵥ z) : ℂ) = ∫ x : n → k, f (x - z) * (ψ (x ⬝ᵥ y) : ℂ) ∂(Measure.pi fun _ => ν)`. Introduce `y`. Rewrite using `[← integral_mul_const, ← integral_add_right_eq_self (fun x : n → k => f (x - z) * (ψ (x ⬝ᵥ y) : ℂ)) z]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [add_sub_cancel_right, add_dotProduct, AddChar.map_add_eq_mul, Circle.coe_mul, dotProduct_comm z y]`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`.
+
+Use function extensionality and compare the values at `y`. Conclude with `key y`. Use `_ = f (0 - z) := hF _ hτ`. Use `_ = f (-z) := by rw [zero_sub]`.
+-/
 private theorem fourier_fourier_eq_neg {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] {n : Type} [Fintype n]
     [DecidableEq n] (ψ : AddChar k Circle) (ν : Measure k) [SigmaFinite ν] [ν.IsAddHaarMeasure]
@@ -65,6 +87,23 @@ private theorem fourier_fourier_eq_neg {k : Type} [Field k] [ValuativeRel k] [To
     _ = f (0 - z) := hF _ hτ
     _ = f (-z) := by rw [zero_sub]
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ n _ _ c p hp hpc ψ hψc hψ1 ν hsd A _ _ σ hσ l v`. Establish `: ν.IsAddHaarMeasure` using `hsd.1`. Establish `hT` using `GlobalTheory.T.rootExchange_support_and_fourier_relation k n c p hp hpc ψ hψc hψ1 ν A σ hσ l v`. Establish `hF` using `GlobalTheory.T.fourier_transform_inversion_localFieldPi k n ψ hψc hψ1 ν hsd`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hN`. Take `⟨hSB, -, hint⟩` from `hT.1 hN`. Establish `h1 : exDown ν p σ (exUp ν p σ l) v = ∫ β : n → k, ∫ u : n → k, (fun u : n → k => l (σ (rowE c p u) v)) u * (ψ (u ⬝ᵥ β) : ℂ) ∂(Measure.pi fun _ => ν) ∂(Measure.pi fun _ => ν)`. Unfold `exDown`. Use `congr 1`.
+
+Use function extensionality and compare the values at `β`. Rewrite using `[hint β]`. Use `congr 1`. Use function extensionality and compare the values at `u`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[h1, (hF _ hSB).2]`. Simplify using `[rowE_zero_eq_one]`. Introduce `hN`. Take `⟨hSB, hcomm⟩` from `hT.2 hN`. Establish `: SigmaCompactSpace k` using `sigmaCompactSpace_nonarchimedeanLocalField k`.
+
+Establish `: SigmaFinite ν` using `inferInstance`. Establish `hF2` using `fun f hf => (hF f hf).2`. Establish `hG` using `(hF _ hSB).1`. Establish `hGG` using `(hF _ hG).1`. Establish `h1 : exUp ν p σ (exDown ν p σ l) v = ∫ u : n → k, ∫ y : n → k, (∫ x : n → k, (∫ β : n → k, l (σ (colE c (p + 1) β) v) * (ψ (β ⬝ᵥ x) : ℂ) ∂(Measure.pi fun _ => ν)) * (ψ (x ⬝ᵥ y) : ℂ) ∂(Measure.pi fun _ => ν)) * (ψ (y ⬝ᵥ u) : ℂ) ∂(Measure.pi fun _ => ν) ∂(Measure.pi fun _ => ν)`.
+
+Unfold `exUp exDown`. Use `congr 1`. Use function extensionality and compare the values at `u`. Rewrite using `[fourier_fourier_eq_neg ψ ν hF2 _ hG u]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `β`. Rewrite using `[hcomm u β, dotProduct_neg, dotProduct_comm]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, hF2 _ hGG]`. Simplify using `only [dotProduct_zero, AddChar.map_zero_eq_one, Circle.coe_one, mul_one]`.
+
+Rewrite using `[hF2 _ hSB]`. Use `show l (σ (colE c (p + 1) 0) v) = l v`. Rewrite using `[colE_zero_eq_one, map_one]`. Both sides reduce to the same expression.
+-/
 theorem exDown_exUp_and_exUp_exDown : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (n : Type) [Fintype n] [DecidableEq n] (c p : ℕ) (_ : 1 ≤ p) (_ : p < c) (ψ : AddChar k Circle) (_ : Continuous ψ) (_ : ψ ≠ 1) (ν : Measure k) (_ : IsSelfDual ψ ν) (A : Type) [AddCommGroup A] [Module ℂ A] (σ : Representation ℂ (GL (n ⊕ Fin c) k) A) (_ : IsSmoothRep σ) (l : A →ₗ[ℂ] ℂ) (v : A), (IsNEquiv ψ p σ l → exDown ν p σ (exUp ν p σ l) v = l v) ∧ (IsNEquiv ψ (p + 1) σ l → exUp ν p σ (exDown ν p σ l) v = l v) := by
   intro k _ _ _ _ _ _ n _ _ c p hp hpc ψ hψc hψ1 ν hsd A _ _ σ hσ l v
   have : ν.IsAddHaarMeasure := hsd.1

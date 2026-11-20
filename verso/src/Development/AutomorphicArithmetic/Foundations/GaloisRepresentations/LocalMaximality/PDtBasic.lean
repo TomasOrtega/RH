@@ -7,6 +7,9 @@ section
 variable {F K : Type} [Field F] [Field K] [Algebra ℂ F] [Algebra ℂ K] [Algebra F K] [IsScalarTower ℂ F K] {d : ℕ}
   (x : Fin (d + 1) → Fˣ)
 
+/- English proof (translation)
+Rewrite using `[ExteriorAlgebra.basis_apply_ofCard b (rfl : S.card = S.card)]`. Simplify using `only [dtS, ExteriorAlgebra.ιMulti_family]`. Use `congr 1`. Use extensionality with `a`. Simplify using `[hb, Set.powersetCard.ofFinEmbEquiv_symm_apply]`.
+-/
 private theorem dt_eq (b : Module.Basis (Fin d) K Ω[K⁄ℂ]) (hb : ∀ j, b j = D ℂ K (tt K x j)) (S : Finset (Fin d)) :
     dtS K x S = b.ExteriorAlgebra S := by
   rw [ExteriorAlgebra.basis_apply_ofCard b (rfl : S.card = S.card)]
@@ -15,6 +18,13 @@ private theorem dt_eq (b : Module.Basis (Fin d) K Ω[K⁄ℂ]) (hb : ∀ j, b j 
   ext a
   simp [hb, Set.powersetCard.ofFinEmbEquiv_symm_apply]
 
+/- English proof (translation)
+Establish `h : (Finset.univ : Finset (Fin d)).card = d` using `by simp`. Establish `key : ∀ (n : ℕ) (hn : (Finset.univ : Finset (Fin d)).card = n) , n = d → (ExteriorAlgebra.ιMulti K n fun a => D ℂ K (tt K x ((Finset.univ : Finset (Fin d)).orderEmbOfFin hn a))) = ExteriorAlgebra.ιMulti K d fun j => D ℂ K (tt K x j)`. Introduce `n hn e`. Substitute `e` using the available equality. Use `congr 1`.
+
+Use extensionality with `a`. Establish `: (Finset.univ : Finset (Fin n)).orderEmbOfFin hn a = a`. Use `Finset.orderEmbOfFin_unique' (s := (Finset.univ : Finset (Fin n))) hn (f := (OrderIso.refl (Fin n)).toOrderEmbedding) (by simp)` as an intermediate fact. Rewrite using `[← this]`. Both sides reduce to the same expression.
+
+Rewrite using `[this]`. Conclude with `key _ rfl h`.
+-/
 private theorem dt_univ : dtS K x Finset.univ = ExteriorAlgebra.ιMulti K d fun j => D ℂ K (tt K x j) := by
   have h : (Finset.univ : Finset (Fin d)).card = d := by simp
   have key : ∀ (n : ℕ) (hn : (Finset.univ : Finset (Fin d)).card = n) , n = d →
@@ -32,6 +42,25 @@ private theorem dt_univ : dtS K x Finset.univ = ExteriorAlgebra.ιMulti K d fun 
 
 end
 
+/- English proof (translation)
+Introduce `F K _ _ _ _ _ _ d x hc τ hτ`. Take `⟨b0, hb0⟩` from `hc.exists_basis`. Establish `hb : ∀ j, b0 j = D ℂ K (tt K x j)` using `hb0`. Establish `hfun : dtS K x = b0.ExteriorAlgebra` using `funext (dt_eq x b0 hb)`. Establish `hprod : algebraMap F K (omG x 0) = ∏ l, tt K x l`.
+
+Unfold `omG`. Rewrite using `[Fin.prod_univ_succ, div_self (x 0).ne_zero, one_mul, map_prod]`. Both sides reduce to the same expression. Use `⟨?_, ?_, ?_, hprod, ?_⟩` and prove the remaining obligations. Rewrite using `[hfun]`.
+
+Conclude with `b0.ExteriorAlgebra.linearIndependent`. Introduce `S`. Use `Submodule.subset_span ⟨1, one_mem _, fun a => tt K x (S.orderEmbOfFin rfl a), fun j => tco_mem ℂ K (xv x) _, ?_⟩` and prove the remaining obligations. Rewrite using `[one_smul]`. Both sides reduce to the same expression.
+
+Establish `hne : ∀ j, tt K x j ≠ 0` using `fun j => (map_ne_zero _).2 (div_ne_zero (x j.succ).ne_zero (x 0).ne_zero)`. Establish `hv : vol0 ℂ K (xv x) = (∏ j, (tt K x j)⁻¹) • ExteriorAlgebra.ιMulti K d fun j => D ℂ K (tt K x j)`. Rewrite using `[← AlternatingMap.map_smul_univ]`. Both sides reduce to the same expression. Rewrite using `[dt_univ, hprod, hv, smul_smul, ← Finset.prod_mul_distrib, Finset.prod_congr rfl fun j _ => mul_inv_cancel₀ (hne j), Finset.prod_const_one, one_smul]`.
+
+Establish `hd : ∀ S : Finset (Fin d), Disjoint (Sᶜ) S` using `fun S => disjoint_compl_left`. Use `⟨fun S => (Set.powersetCard.permOfDisjoint (s := (⟨Sᶜ, rfl⟩ : Set.powersetCard (Fin d) Sᶜ.card)) (t := (⟨S, rfl⟩ : Set.powersetCard (Fin d) S.card)) (hd S)).sign, fun U S hUS => ?_⟩` and prove the remaining obligations. Rewrite using `[hfun]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+
+Establish `e` using `ExteriorAlgebra.basis_mul_of_disjoint b0 (⟨Sᶜ, rfl⟩ : Set.powersetCard (Fin d) Sᶜ.card) (⟨S, rfl⟩ : Set.powersetCard (Fin d) S.card) (hd S)`. Establish `hu : ((Set.powersetCard.disjUnion (s` using `(⟨Sᶜ, rfl⟩ : Set.powersetCard (Fin d) Sᶜ.card)) (t := (⟨S, rfl⟩ : Set.powersetCard (Fin d) S.card)) (hd S) : Set.powersetCard (Fin d) (Sᶜ.card + S.card)) : Finset (Fin d)) = Finset.univ := by`. Use extensionality with `i`. Simplify using `[Set.powersetCard.disjUnion]`. The claim follows by propositional logic.
+
+Rewrite `e` using `[hu]`. Conclude with `e`. Establish `hnd : ¬ Disjoint U S`. Introduce `hUd`. Apply `h` to reduce the goal to its premises.
+
+Establish `hc2 : (U ∪ S).card = Fintype.card (Fin d)`. Rewrite using `[Finset.card_union_of_disjoint hUd, hUS, Fintype.card_fin]`. Establish `huniv : U ∪ S = Finset.univ` using `(Finset.card_eq_iff_eq_univ _).1 hc2`. Use extensionality with `i`. Use `Finset.ext_iff.1 huniv i` as an intermediate fact.
+
+Establish `h2 : i ∈ U → i ∉ S` using `fun a => Finset.disjoint_left.1 hUd a`. Simplify using `at this ⊢`. The claim follows by propositional logic. Conclude with `ExteriorAlgebra.basis_mul_of_not_disjoint b0 (⟨U, rfl⟩ : Set.powersetCard (Fin d) U.card) (⟨S, rfl⟩ : Set.powersetCard (Fin d) S.card) hnd`.
+-/
 theorem UpperTheory.Gal.productCup_of_system.dtBasic_of :
     DtBasic := by
   intro F K _ _ _ _ _ _ d x hc τ hτ

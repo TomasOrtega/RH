@@ -13,6 +13,11 @@ open HeightOneSpectrum
 def IsIntAd {E : Type} [Field E] [NumberField E] (z : FiniteAdeleRing (𝓞 E) E) : Prop :=
   ∀ Q : HeightOneSpectrum (𝓞 E), Valued.v (z Q) ≤ 1
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hx`. Establish `e` using `WithZero.exp_log hx`. Use `set n : ℕ := (-WithZero.log x + 1).toNat`. Establish `h1` using `h n`. Rewrite `h1` using `[← e, WithZero.exp_le_exp]`.
+
+Establish `h2` using `Int.self_le_toNat (-WithZero.log x + 1)`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem eq_zero_of_le_exp {x : WithZero (Multiplicative ℤ)} (h : ∀ n : ℕ, x ≤ WithZero.exp (-(n : ℤ))) : x = 0 := by
   by_contra hx
   have e := WithZero.exp_log hx
@@ -22,6 +27,11 @@ theorem eq_zero_of_le_exp {x : WithZero (Multiplicative ℤ)} (h : ∀ n : ℕ, 
   have h2 := Int.self_le_toNat (-WithZero.log x + 1)
   omega
 
+/- English proof (translation)
+Establish `hP : P.asIdeal ∈ nonZeroDivisors (Ideal (𝓞 E))` using `mem_nonZeroDivisors_of_ne_zero P.ne_bot`. Use `set h := Fintype.card (ClassGroup (𝓞 E))`. Establish `hPh : P.asIdeal ^ h ∈ nonZeroDivisors (Ideal (𝓞 E))` using `pow_mem hP h`. Establish `h1 : ClassGroup.mk0 ⟨P.asIdeal ^ h, hPh⟩ = 1`. Establish `e : (⟨P.asIdeal ^ h, hPh⟩ : nonZeroDivisors (Ideal (𝓞 E))) = ⟨P.asIdeal, hP⟩ ^ h` using `Subtype.ext (by simp)`.
+
+Rewrite using `[e, map_pow, pow_card_eq_one]`. Use `haveI := (ClassGroup.mk0_eq_one_iff hPh).1 h1`. Conclude with `⟨h, Fintype.card_pos, _, Ideal.span_singleton_generator _⟩`.
+-/
 theorem exists_gen {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) :
     ∃ h : ℕ, 0 < h ∧ ∃ α : 𝓞 E, Ideal.span {α} = P.asIdeal ^ h := by
   have hP : P.asIdeal ∈ nonZeroDivisors (Ideal (𝓞 E)) := mem_nonZeroDivisors_of_ne_zero P.ne_bot
@@ -33,6 +43,21 @@ theorem exists_gen {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (
   haveI := (ClassGroup.mk0_eq_one_iff hPh).1 h1
   exact ⟨h, Fintype.card_pos, _, Ideal.span_singleton_generator _⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h0 n`. Take `⟨h, hh, α, hα⟩` from `exists_gen P`. Establish `hα0 : α ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `hα` using `[Ideal.span_singleton_eq_bot.2 rfl]`. Conclude with `pow_ne_zero _ P.ne_bot hα.symm`. Establish `hαP : α ∈ P.asIdeal` using `Ideal.pow_le_self hh.ne' (hα ▸ Ideal.mem_span_singleton_self α)`. Use `⟨α ^ n, pow_ne_zero _ hα0, Ideal.pow_mem_pow hαP n, fun Q => ?_⟩` and prove the remaining obligations. Use `show Valued.v (((algebraMap (𝓞 E) E (α ^ n))⁻¹ : E) * z Q) ≤ 1`.
+
+Distinguish the cases in `hQ : Q = P`. Substitute `hQ` using the available equality. Rewrite using `[h0, mul_zero, map_zero]`. Conclude with `zero_le'`. Establish `hαQ : α ∉ Q.asIdeal`.
+
+Introduce `hm`. Establish `h2 : P.asIdeal ^ h ≤ Q.asIdeal` using `by rw [← hα, Ideal.span_singleton_le_iff_mem]; exact hm`. Conclude with `hQ (HeightOneSpectrum.ext (P.isMaximal.eq_of_le Q.isPrime.ne_top (Q.isPrime.le_of_pow_le h2)).symm)`. Establish `hv : Q.valuation E (algebraMap (𝓞 E) E (α ^ n)) = 1` using `(HeightOneSpectrum.valuation_eq_one_iff_notMem (K := E) Q).2 fun hm => hαQ (Q.isPrime.mem_of_pow_mem n hm)`. Rewrite using `[map_mul, valuedAdicCompletion_eq_valuation', map_inv₀, hv, inv_one, one_mul]`.
+
+Conclude with `hz Q`. Introduce `h`. Use `(Valued.v.zero_iff).1 (eq_zero_of_le_exp fun n => ?_)` and prove the remaining obligations. Take `⟨π, hπ0, hπn, hint⟩` from `h n`. Establish `h1 : Valued.v (((algebraMap (𝓞 E) E π)⁻¹ : E) * z P) ≤ 1` using `hint P`.
+
+Rewrite `h1` using `[map_mul, valuedAdicCompletion_eq_valuation', map_inv₀, valuation_of_algebraMap]`. Establish `hv0 : P.intValuation π ≠ 0` using `P.intValuation_ne_zero π hπ0`. Establish `h2 : Valued.v (z P) ≤ P.intValuation π`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, mul_inv_cancel₀ hv0, one_mul]`.
+
+Use `_ ≤ P.intValuation π * 1 := by gcongr`. Use `_ = P.intValuation π := mul_one _`. Conclude with `h2.trans ((P.intValuation_le_pow_iff_mem π n).2 hπn)`.
+-/
 theorem comp_eq_zero_iff {E : Type} [Field E] [NumberField E] (z : FiniteAdeleRing (𝓞 E) E) (hz : IsIntAd z)
     (P : HeightOneSpectrum (𝓞 E)) :
     z P = 0 ↔ ∀ n : ℕ, ∃ π : 𝓞 E, π ≠ 0 ∧ π ∈ P.asIdeal ^ n ∧
@@ -78,6 +103,13 @@ namespace GlobalTheory.AfeLocTr
 
 open HeightOneSpectrum
 
+/- English proof (translation)
+Rewrite `h0` using `[comp_eq_zero_iff z hz]`. Rewrite using `[comp_eq_zero_iff (Φ z) ((hI z).2 hz)]`. Introduce `n`. Take `⟨π, hπ0, hπn, hint⟩` from `h0 n`. Use `set f := RingOfIntegers.mapRingEquiv s`.
+
+Use `⟨f π, (map_ne_zero_iff _ f.injective).2 hπ0, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : Ideal.map f P.asIdeal ≤ Q.asIdeal` using `Ideal.map_le_iff_le_comap.2 hPQ`. Establish `h2 : f π ∈ Ideal.map f (P.asIdeal ^ n)` using `Ideal.mem_map_of_mem _ hπn`. Rewrite `h2` using `[Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono h1 n h2`.
+
+Establish `e : algebraMap (𝓞 E') E' (f π) = s (algebraMap (𝓞 E) E π)` using `RingOfIntegers.mapRingEquiv_apply s π`. Establish `e2 : algebraMap E' (FiniteAdeleRing (𝓞 E') E') (algebraMap (𝓞 E') E' (f π))⁻¹ * Φ z = Φ (algebraMap E (FiniteAdeleRing (𝓞 E) E) (algebraMap (𝓞 E) E π)⁻¹ * z)`. Rewrite using `[map_mul, hΦ, map_inv₀ s, e]`. Rewrite using `[e2]`. Conclude with `(hI _).2 hint`.
+-/
 theorem transport_zero {E E' : Type} [Field E] [NumberField E] [Field E'] [NumberField E'] (s : E ≃+* E')
     (Φ : FiniteAdeleRing (𝓞 E) E ≃+* FiniteAdeleRing (𝓞 E') E')
     (hΦ : ∀ x : E, Φ (algebraMap E _ x) = algebraMap E' _ (s x)) (hI : ∀ z, IsIntAd (Φ z) ↔ IsIntAd z)
@@ -101,6 +133,21 @@ theorem transport_zero {E E' : Type} [Field E] [NumberField E] [Field E'] [Numbe
     rw [e2]
     exact (hI _).2 hint
 
+/- English proof (translation)
+Introduce `F E F' E' _ _ _ _ _ _ _ _ _ _ s φ hφ hR y hy P`. Use `set ι := GlobalTheory.Mem.Col2.afIso F E`. Use `set ι' := GlobalTheory.Mem.Col2.afIso F' E'`. Use `set Φ : FiniteAdeleRing (𝓞 E) E ≃+* FiniteAdeleRing (𝓞 E') E' := ι.symm.trans (φ.trans ι')`. Establish `hΦa : ∀ w, Φ w = ι' (φ (ι.symm w))` using `fun _ => rfl`.
+
+Establish `hΦ : ∀ x : E, Φ (algebraMap E _ x) = algebraMap E' _ (s x)` using `fun x => by`. Rewrite using `[hΦa, ← GlobalTheory.Mem.Col2.afIso_tmul_one F E x, RingEquiv.symm_apply_apply, hφ, GlobalTheory.Mem.Col2.afIso_tmul_one]`. Establish `hI : ∀ w, IsIntAd (Φ w) ↔ IsIntAd w` using `fun w => by`. Unfold `IsIntAd`. Rewrite using `[hΦa, ← GlobalTheory.Mem.Col2.mem_rInt_iff, hR, GlobalTheory.Mem.Col2.mem_rInt_iff, RingEquiv.apply_symm_apply]`.
+
+Establish `hΦy : Φ (ι y) = ι' (φ y)` using `by rw [hΦa, RingEquiv.symm_apply_apply]`. Establish `hz : IsIntAd (ι y)` using `(GlobalTheory.Mem.Col2.mem_rInt_iff F E y).1 hy`. Use `set Q := HeightOneSpectrum.equivOfRingEquiv (RingOfIntegers.mapRingEquiv s) P`. Establish `hQ : ∀ b : 𝓞 E', b ∈ Q.asIdeal ↔ (RingOfIntegers.mapRingEquiv s).symm b ∈ P.asIdeal` using `fun b => Iff.rfl`. Rewrite using `[← hΦy]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h0`. Establish `hΦ' : ∀ x : E', Φ.symm (algebraMap E' _ x) = algebraMap E _ (s.symm x)` using `fun x => by`. Rewrite using `[RingEquiv.symm_apply_eq, hΦ, RingEquiv.apply_symm_apply]`. Establish `hI' : ∀ w, IsIntAd (Φ.symm w) ↔ IsIntAd w` using `fun w => by`.
+
+Rewrite using `[← hI, RingEquiv.apply_symm_apply]`. Establish `hQP : ∀ a ∈ Q.asIdeal, RingOfIntegers.mapRingEquiv s.symm a ∈ P.asIdeal` using `fun a ha => by`. Establish `e : RingOfIntegers.mapRingEquiv s.symm a = (RingOfIntegers.mapRingEquiv s).symm a` using `rfl`. Rewrite using `[e]`. Conclude with `(hQ a).1 ha`.
+
+Use `transport_zero s.symm Φ.symm hΦ' hI' Q P hQP (Φ (ι y)) ((hI _).2 hz) h0` as an intermediate fact. Rewrite `this` using `[RingEquiv.symm_apply_apply]`. Then use the resulting hypothesis. Introduce `h0`. Use `transport_zero s Φ hΦ hI P Q (fun a ha => ?_) (ι y) hz h0` and prove the remaining obligations. Rewrite using `[hQ, RingEquiv.symm_apply_apply]`.
+
+Conclude with `ha`.
+-/
 theorem afIso_eq_zero_iff : ∀ (F E F' E' : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [Field F'] [NumberField F'] [Field E'] [NumberField E'] [Algebra F' E'] (s : E ≃+* E') (φ : AfE F E ≃+* AfE F' E'), (∀ x : E, φ (x ⊗ₜ[F] 1) = s x ⊗ₜ[F'] 1) → (∀ y, φ y ∈ RInt F' E' ↔ y ∈ RInt F E) → ∀ y ∈ RInt F E, ∀ P : HeightOneSpectrum (𝓞 E), (GlobalTheory.Mem.Col2.afIso F' E' (φ y) (HeightOneSpectrum.equivOfRingEquiv (RingOfIntegers.mapRingEquiv s) P) = 0 ↔ GlobalTheory.Mem.Col2.afIso F E y P = 0) := by
   intro F E F' E' _ _ _ _ _ _ _ _ _ _ s φ hφ hR y hy P
   set ι := GlobalTheory.Mem.Col2.afIso F E

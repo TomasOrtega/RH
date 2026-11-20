@@ -6,6 +6,21 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.KaehlerFinrankFract
 
 namespace GlobalTheory.CompanionTheory.Ar.LocalStep
 
+/- English proof (translation)
+Use `haveI : Algebra.IsSmoothAt S P := inferInstance`. Take `⟨g, hg, hstd⟩` from `Algebra.IsSmoothAt.exists_notMem_isStandardSmooth S P`. Use `⟨g, hg, ?_⟩` and prove the remaining obligations. Introduce `T' _ _ _ _ _ _ _`. Use `letI : Algebra S T' := ((algebraMap T T').comp (algebraMap S T)).toAlgebra`.
+
+Use `haveI : IsScalarTower S T T' := .of_algebraMap_eq' rfl`. Use `haveI : IsScalarTower ℚ S T' := .of_algebraMap_eq fun x => DFunLike.congr_fun (Subsingleton.elim (algebraMap ℚ T') ((algebraMap S T').comp (algebraMap ℚ S))) x`. Use `haveI : IsScalarTower S T' L := .of_algebraMap_eq fun x => by`. Rewrite using `[IsScalarTower.algebraMap_apply S T L, IsScalarTower.algebraMap_apply S T T', ← IsScalarTower.algebraMap_apply T T' L]`. Set `f : Localization.Away g ≃ₐ[T] T'` to `IsLocalization.algEquiv (Submonoid.powers g) _ _`.
+
+Use `haveI : Algebra.IsStandardSmooth S T' := Algebra.IsStandardSmooth.of_algEquiv (f.restrictScalars S)`. Use `haveI : Algebra.Smooth S T' := inferInstance`. Establish `hsm : Algebra.Smooth ℚ T'` using `Algebra.Smooth.comp ℚ S T'`. Use `⟨hsm, ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨m, w, hli', hsp'⟩ : ∃ (m : ℕ) (w : Fin m → T'), LinearIndependent T' (fun i => KaehlerDifferential.D S T' (w i)) ∧ Submodule.span T' (Set.range fun i => KaehlerDifferential.D S T' (w i)) = ⊤ := by`.
+
+Take `⟨-, I, b, hb⟩` from `(Algebra.IsStandardSmooth.iff_exists_basis_kaehlerDifferential (R := S) (S := T')).1 inferInstance`. Use `haveI : Finite I := Module.Finite.finite_basis b`. Consider the cases of `nonempty_fintype I`. Set `b'` to `b.reindex (Fintype.equivFin I)`. Establish `hb' : ∀ i, ∃ x, KaehlerDifferential.D S T' x = b' i` using `fun i => by`.
+
+Take `⟨x, hx⟩` from `hb ⟨(Fintype.equivFin I).symm i, rfl⟩`. Conclude with `⟨x, by simpa [b'] using hx⟩`. Use `choose w hw using hb'`. Use `⟨_, w, ?_, ?_⟩` and prove the remaining obligations. Simplify `b'.linearIndependent` using `only [hw]`.
+
+Simplify `b'.span_eq` using `only [hw]`. Use `haveI : IsDomain T := (IsFractionRing.injective T L).isDomain (algebraMap T L)`. Use `haveI : IsFractionRing T' L := IsFractionRing.isFractionRing_of_isDomain_of_isLocalization (Submonoid.powers g) T' L`. Establish `hm : Module.finrank L (KaehlerDifferential K L) = m` using `GlobalTheory.T.kaehler_finrank_fraction_field S T' K L m w hli' hsp'`. Take `rfl : r = m` from `hr.symm.trans hm`.
+
+Take `⟨h1, h2⟩` from `GlobalTheory.T.kaehler_basis_tower_alt ℚ S T' e r z w hli hsp hli' hsp'`. Conclude with `⟨_, fun i => by rw [Fin.append_left]; rfl, h1, h2⟩`.
+-/
 theorem exists_away_basis (S T K L : Type) [CommRing S] [CommRing T] [Field K] [Field L] [Algebra S T] [Algebra S K]
     [Algebra S L] [Algebra T L] [Algebra K L] [IsScalarTower S T L] [IsScalarTower S K L]
     [IsFractionRing S K] [IsFractionRing T L] [Algebra ℚ S] [Algebra.Smooth S T] [Algebra.Smooth ℚ S]
@@ -58,6 +73,45 @@ theorem exists_away_basis (S T K L : Type) [CommRing S] [CommRing T] [Field K] [
   obtain ⟨h1, h2⟩ := GlobalTheory.T.kaehler_basis_tower_alt ℚ S T' e r z w hli hsp hli' hsp'
   exact ⟨_, fun i => by rw [Fin.append_left]; rfl, h1, h2⟩
 
+/- English proof (translation)
+Introduce `Ω₀ Ω _ _ _ _ _ σ σ' _ r₀ r₁ v hv e r bd hr h hh S T hS hT ψ hψ hsm hfS hfT hsS z n hn hli hsp hq P hP h₁ hh₁ hh₁P`. Use `letI : Algebra S T := ψ.toAlgebra`. Use `haveI : Algebra.Smooth S T := hsm`. Use `haveI : IsScalarTower S T Ω := .of_algebraMap_eq fun s => (hψ s).symm`. Use `haveI : IsScalarTower S Ω₀ Ω := .of_algebraMap_eq fun s => rfl`.
+
+Establish `hr₁T : ∀ p, r₁ p ∈ T` using `fun p => by`. Rewrite using `[hT]`. Conclude with `Algebra.subset_adjoin (Set.mem_insert_of_mem _ ⟨p, rfl⟩)`. Establish `hle₁ : Algebra.adjoin ℚ (Set.range r₁) ≤ T` using `Algebra.adjoin_le (by rintro _ ⟨p, rfl⟩; exact hr₁T p)`. Use `letI : Algebra (Algebra.adjoin ℚ (Set.range r₁)) T := (Subalgebra.inclusion hle₁).toRingHom.toAlgebra`.
+
+Establish `hne₁ : h₁ ≠ 0` using `fun h0 => hh₁P (h0 ▸ P.zero_mem)`. Use `haveI : IsLocalization.Away h₁ T := GlobalTheory.T.adjoin_inverse_is_localization_away Ω _ T (Set.range r₁) rfl h₁ hne₁ (by rw [hT, hh₁]) hle₁`. Establish `hdisj : Disjoint ((Submonoid.powers h₁ : Submonoid (Algebra.adjoin ℚ (Set.range r₁))) : Set (Algebra.adjoin ℚ (Set.range r₁))) (↑P : Set (Algebra.adjoin ℚ (Set.range r₁)))`. Rewrite using `[Ideal.disjoint_powers_iff_notMem_of_isPrime]` and apply the resulting hypothesis. Use `haveI hPT : (P.map (algebraMap _ T)).IsPrime := IsLocalization.isPrime_of_isPrime_disjoint (.powers h₁) T P hP hdisj`.
+
+Establish `hcomap : (P.map (algebraMap _ T)).comap (algebraMap _ T) = P` using `IsLocalization.comap_map_of_isPrime_disjoint (.powers h₁) T hP hdisj`. Take `⟨g, hgP, Hg⟩` from `exists_away_basis S T Ω₀ Ω e r hr z hli hsp (P.map (algebraMap _ T))`. Take `⟨k, g₀, hk⟩` from `IsLocalization.Away.surj h₁ g`. Establish `hg₀ : g₀ ∉ P`. Introduce `hmem`.
+
+Establish `h1` using `Ideal.mem_map_of_mem (algebraMap _ T) hmem`. Rewrite `h1` using `[← hk]`. Break down `hPT.mem_or_mem h1 with h2 | h2` into its components or cases. Conclude with `hgP h2`. Establish `h3` using `hPT.mem_of_pow_mem _ h2`.
+
+Establish `h4 : h₁ ∈ (P.map (algebraMap _ T)).comap (algebraMap _ T)` using `h3`. Rewrite `h4` using `[hcomap]`. Conclude with `hh₁P h4`. Use `⟨g₀ * h₁, hP.mul_notMem hg₀ hh₁P, ?_⟩` and prove the remaining obligations. Introduce `S' hS'`.
+
+Establish `hk' : (g : Ω) * (h₁ : Ω) ^ k = (g₀ : Ω)` using `congrArg T.val hk`. Establish `hg0 : g ≠ 0` using `fun h0 => hgP (h0 ▸ Ideal.zero_mem _)`. Establish `hgΩ : (g : Ω) ≠ 0` using `fun h0 => hg0 (Subtype.ext h0)`. Establish `hHΩ : (h₁ : Ω) ≠ 0` using `fun h0 => hne₁ (Subtype.ext h0)`. Establish `hg₀Ω : (g₀ : Ω) ≠ 0` using `by rw [← hk']; exact mul_ne_zero hgΩ (pow_ne_zero _ hHΩ)`.
+
+Establish `ht : (((g₀ * h₁ : Algebra.adjoin ℚ (Set.range r₁)) : _) : Ω) = (g₀ : Ω) * h₁` using `rfl`. Establish `hr₁S' : ∀ p, r₁ p ∈ S'` using `fun p => by`. Rewrite using `[hS']`. Conclude with `Algebra.subset_adjoin (Set.mem_insert_of_mem _ ⟨p, rfl⟩)`. Establish `hle' : Algebra.adjoin ℚ (Set.range r₁) ≤ S'` using `Algebra.adjoin_le (by rintro _ ⟨p, rfl⟩; exact hr₁S' p)`.
+
+Establish `htS' : ((g₀ : Ω) * h₁)⁻¹ ∈ S'`. Rewrite using `[hS', ht]`. Conclude with `Algebra.subset_adjoin (Set.mem_insert _ _)`. Establish `hTS' : T ≤ S'`. Rewrite using `[hT]`.
+
+Use `Algebra.adjoin_le (Set.insert_subset ?_ (by rintro _ ⟨p, rfl⟩; exact hr₁S' p))` and prove the remaining obligations. Establish `: (algebraMap Ω₀ Ω h)⁻¹ = ((g₀ : Ω) * h₁)⁻¹ * (g₀ : Ω)`. Rewrite using `[← hh₁]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[SetLike.mem_coe, this]`.
+
+Conclude with `S'.mul_mem htS' (hle' g₀.2)`. Establish `hEq : S' = Algebra.adjoin ℚ (insert (g : Ω)⁻¹ (T : Set Ω))`. Use `le_antisymm ?_ (Algebra.adjoin_le (Set.insert_subset ?_ hTS'))` and prove the remaining obligations. Rewrite using `[hS']`. Use `Algebra.adjoin_le (Set.insert_subset ?_ ?_)` and prove the remaining obligations.
+
+Establish `hinv : (h₁ : Ω)⁻¹ ∈ T`. Rewrite using `[hT, hh₁]`. Conclude with `Algebra.subset_adjoin (Set.mem_insert _ _)`. Establish `: (((g₀ * h₁ : Algebra.adjoin ℚ (Set.range r₁)) : _) : Ω)⁻¹ = (g : Ω)⁻¹ * ((h₁ : Ω)⁻¹) ^ (k + 1)`. Rewrite using `[ht, ← hk', inv_pow, ← mul_inv, mul_assoc, ← pow_succ]`.
+
+Rewrite using `[SetLike.mem_coe, this]`. Conclude with `Subalgebra.mul_mem _ (Algebra.subset_adjoin (Set.mem_insert _ _)) (Subalgebra.pow_mem _ (Algebra.subset_adjoin (Set.mem_insert_of_mem _ hinv)) _)`. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `Algebra.subset_adjoin (Set.mem_insert_of_mem _ (hr₁T p))`. Establish `: (g : Ω)⁻¹ = ((g₀ : Ω) * h₁)⁻¹ * (h₁ : Ω) ^ (k + 1)`.
+
+Rewrite using `[← hk', mul_assoc, ← pow_succ, mul_inv, mul_assoc, inv_mul_cancel₀ (pow_ne_zero _ hHΩ), mul_one]`. Rewrite using `[SetLike.mem_coe, this]`. Conclude with `S'.mul_mem htS' (S'.pow_mem (hle' h₁.2) _)`. Use `letI : Algebra T S' := (Subalgebra.inclusion hTS').toRingHom.toAlgebra`. Use `haveI : IsLocalization.Away g S' := GlobalTheory.T.adjoin_inverse_is_localization_away Ω T S' (T : Set Ω) (Algebra.adjoin_eq T).symm g hg0 hEq hTS'`.
+
+Use `haveI : IsScalarTower T S' Ω := .of_algebraMap_eq fun _ => rfl`. Take `⟨hsm', z', hz', hli', hsp'⟩` from `Hg S'`. Use `⟨hsm', z', n, by omega, hli', hsp', ?_⟩` and prove the remaining obligations. Introduce `q hq'`. Set `θ : S →+* S'` to `(algebraMap T S').comp ψ`.
+
+Establish `hθ : ∀ s, ((θ s : S') : Ω) = algebraMap Ω₀ Ω s` using `fun s => hψ s`. Establish `hr₀S : ∀ p, r₀ p ∈ S` using `fun p => by`. Rewrite using `[hS]`. Conclude with `Algebra.subset_adjoin (Set.mem_insert_of_mem _ ⟨p, rfl⟩)`. Rewrite using `[GlobalTheory.T.localization_kaehler_prime_ideal Ω₀ Ω σ σ' r₀ r₁ v hv bd S S' θ hθ hr₀S hr₁S' q, hq (q.comap θ) (hq'.comap θ)]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, hi, hmem⟩`. Use `⟨Fin.castAdd r i, by simpa using hi, ?_⟩` and prove the remaining obligations. Rewrite using `[hz']`. Conclude with `hmem`.
+
+Introduce and unpack `⟨j, hj, hmem⟩`. Establish `hje : (j : ℕ) < e` using `by omega`. Use `⟨⟨j, hje⟩, hj, ?_⟩` and prove the remaining obligations. Establish `: j = Fin.castAdd r ⟨j, hje⟩` using `Fin.ext rfl`. Rewrite `hmem` using `[this, hz']`.
+
+Conclude with `hmem`.
+-/
 theorem local_step : ∀ (Ω₀ Ω : Type) [Field Ω₀] [Field Ω] [CharZero Ω₀] [CharZero Ω] [Algebra Ω₀ Ω] (σ σ' : Type) [Finite σ']
     (r₀ : σ → Ω₀) (r₁ : σ' → Ω) (v : σ → σ'), (∀ p, algebraMap Ω₀ Ω (r₀ p) = r₁ (v p)) →
     ∀ (e r : ℕ) (bd : Ideal (MvPolynomial σ ℤ)), Module.finrank Ω (KaehlerDifferential Ω₀ Ω) = r →

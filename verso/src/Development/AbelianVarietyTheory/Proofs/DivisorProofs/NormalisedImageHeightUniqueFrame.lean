@@ -18,6 +18,9 @@ open Formalism.L2.Pj Formalism.NormVectorIdentities.Items
 
 namespace GlobalTheory.ImageHeightFrame
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hh hh'` and use `ImageHeightUnique.isImageHeight_unique hh hh'`.
+-/
 theorem isImageHeight_unique : Quoted → ∀ (F : Type) [Field F] [NumberField F] (V Ω : Type) [AddCommGroup V] [Module F V] [Module (𝓞 F) V] [IsScalarTower (𝓞 F) F V] [Field Ω] [Algebra F Ω] (Nm : (F →+* ℂ) → V → ℝ) (W : Submodule (𝓞 F) V) (ev : V →ₗ[F] Ω) (D : ℕ) (h h' : ℝ), IsTotallyComplex F → CompHt.IsImageHeight Nm W ev D h → CompHt.IsImageHeight Nm W ev D h' → h = h' :=
   fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hh hh' => ImageHeightUnique.isImageHeight_unique hh hh'
 

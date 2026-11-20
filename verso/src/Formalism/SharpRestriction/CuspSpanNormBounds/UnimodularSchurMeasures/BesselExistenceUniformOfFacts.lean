@@ -13,6 +13,11 @@ section Grp
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Establish `ha' : aᴴ * Formalism.QuantumDeterminants.Hpk k r * a = Formalism.QuantumDeterminants.Hpk k r` using `ha`. Establish `hb' : bᴴ * Formalism.QuantumDeterminants.Hpk k r * b = Formalism.QuantumDeterminants.Hpk k r` using `hb`. Use `show (a * b)ᴴ * Formalism.QuantumDeterminants.Hpk k r * (a * b) = Formalism.QuantumDeterminants.Hpk k r`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`.
+
+Use `_ = Formalism.QuantumDeterminants.Hpk k r := by rw [ha', hb']`.
+-/
 theorem unitary_group_mul_mem {a b : Mat k r} (ha : a ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r))
     (hb : b ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) : a * b ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r) := by
   have ha' : aᴴ * Formalism.QuantumDeterminants.Hpk k r * a = Formalism.QuantumDeterminants.Hpk k r := ha
@@ -22,6 +27,13 @@ theorem unitary_group_mul_mem {a b : Mat k r} (ha : a ∈ Formalism.QuantumDeter
         simp only [conjTranspose_mul, Matrix.mul_assoc]
     _ = Formalism.QuantumDeterminants.Hpk k r := by rw [ha', hb']
 
+/- English proof (translation)
+Establish `hu : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det _).1 hP.1.1`. Establish `h1 : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul _ hu`. Establish `h2 : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hu`. Establish `hH : Pᴴ * Formalism.REAL.Jm ε * P = Formalism.QuantumDeterminants.Hpk k r` using `hP.1.2`. Establish `ha' : aᴴ * Formalism.QuantumDeterminants.Hpk k r * a = Formalism.QuantumDeterminants.Hpk k r` using `ha`.
+
+Prove the components needed by the constructor for the conclusion. Use `show (P * a * P⁻¹)ᴴ * Formalism.REAL.Jm ε * (P * a * P⁻¹) = Formalism.REAL.Jm ε`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (P⁻¹)ᴴ * (Pᴴ * Formalism.REAL.Jm ε * P) * P⁻¹ := by rw [hH, ha']`.
+
+Use `_ = (P * P⁻¹)ᴴ * Formalism.REAL.Jm ε * (P * P⁻¹) := by`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm ε := by rw [h2]; simp`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem cayley_conj_mem_diagonal_model {ε : Fin (2 * r + k + 1) → Bool} {P a : Mat k r} (hP : IsCayleyU k r ε P)
     (ha : a ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) :
     P * a * P⁻¹ ∈ UJset ε ∧ P⁻¹ * (P * a * P⁻¹) * P = a := by
@@ -42,6 +54,11 @@ theorem cayley_conj_mem_diagonal_model {ε : Fin (2 * r + k + 1) → Bool} {P a 
   · calc P⁻¹ * (P * a * P⁻¹) * P = (P⁻¹ * P) * a * (P⁻¹ * P) := by simp only [Matrix.mul_assoc]
       _ = a := by rw [h1]; simp
 
+/- English proof (translation)
+Take `⟨P, hP, hDS⟩` from `hσ`. Establish `hrep` using `hDS.2.2.1.1.2 _ (cayley_conj_mem_diagonal_model hP ha).1 _ (cayley_conj_mem_diagonal_model hP hb).1`. Establish `hu : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det _).1 hP.1.1`. Establish `h1 : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul _ hu`. Establish `e1 : P⁻¹ * (P * a * P⁻¹ * (P * b * P⁻¹)) * P = a * b`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = a * b := by rw [h1]; simp`. Simplify using `only [e1, (cayley_conj_mem_diagonal_model hP ha).2, (cayley_conj_mem_diagonal_model hP hb).2] at hrep`. Conclude with `hrep`.
+-/
 theorem discrete_series_map_mul {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {ε : Fin (2 * r + k + 1) → Bool}
     {lam : Fin (2 * r + k + 1) → ℝ} {σ : Mat k r → (H →L[ℂ] H)} (hσ : IsDSHpk k r ε lam σ) {a b : Mat k r}
     (ha : a ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) (hb : b ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) :
@@ -59,6 +76,15 @@ theorem discrete_series_map_mul {H : Type} [NormedAddCommGroup H] [InnerProductS
 
 end Grp
 
+/- English proof (translation)
+Take `⟨t, -, ht, -, hgap⟩` from `hG`. Use `set n : ℕ := rk48 k r with hn`. Establish `hn2 : 2 ≤ n` using `by simp only [hn, rk48]; omega`. Establish `hq : ((r : ℝ) + 1) ≤ (n : ℝ) / 2`. Establish `: 2 * (r + 1) ≤ n` using `by simp only [hn, rk48]; omega`.
+
+Establish `h' : ((2 * (r + 1) : ℕ) : ℝ) ≤ (n : ℝ)` using `by exact_mod_cast this`. Move the coercions through the operations in `at h'`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨e1, e2, e3⟩` from `Formalism.HermitianLatticeCounting.Final.S8.explicitC n ((r : ℝ) + 1) (2 * ((n + (2 * r + 2) * t : ℕ) : ℝ) ^ 3 + (t : ℝ) + 3) hn2 (by positivity) hq`. Establish `hM : 3 * (n : ℝ) ≤ ((n + (2 * r + 2) * t : ℕ) : ℝ)`.
+
+Establish `: 3 * n ≤ n + (2 * r + 2) * t` using `by nlinarith`. Conclude with `this` after adjusting the coercions. Establish `hM3 : (3 * (n : ℝ)) ^ 3 ≤ ((n + (2 * r + 2) * t : ℕ) : ℝ) ^ 3` using `pow_le_pow_left₀ (by positivity) hM 3`. Establish `hbig : 43 * ((n : ℝ) ^ 2 * Real.sqrt n) ≤ 2 * ((n + (2 * r + 2) * t : ℕ) : ℝ) ^ 3 + (t : ℝ) + 3`. Establish `h0 : (0 : ℝ) ≤ (n : ℝ) ^ 3` using `by positivity`.
+
+Establish `ht0 : (0 : ℝ) ≤ (t : ℝ)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨f1, f2, f3⟩` from `e3 hbig`. Use `⟨2 * ((n + (2 * r + 2) * t : ℕ) : ℝ) ^ 3 + (t : ℝ) + 3, fun j hj => (hgap j hj).le, f1, ?_, f3⟩` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem rank_height_ranges (k r : ℕ) (b : Fin (2 * r + 2) → ℝ) (hk : 1 ≤ k) (hG : GapBig k r b) :
     ∃ h : ℝ, LowGapGe h r b ∧
       120 * (rk48 k r : ℝ) * (((r : ℝ) + 1) * Real.sqrt ((r : ℝ) + 1)) ≤ h ∧
@@ -171,6 +197,9 @@ def Pairing (B : X.H → X.Vp) : Prop :=
 
 variable {X}
 
+/- English proof (translation)
+Introduce `h hh m hm g hg`. Establish `hhm : h * m ∈ X.G` using `unitary_group_mul_mem hh.1 hm.1`. Unfold `W'`. Rewrite using `[discrete_series_map_mul hX.2.1 hhm hg]`. Conclude with `hB.1.2.2.1 h hh m hm _ (hs g hg)`.
+-/
 theorem W'_equiv (hX : X.Hyp) {B : X.H → X.Vp} (hB : X.IsFun B) (hs : X.OrbitSmooth) :
     IsSPsiEquiv X.z X.ψ X.π (X.W' B) := by
   intro h hh m hm g hg
@@ -179,12 +208,20 @@ theorem W'_equiv (hX : X.Hyp) {B : X.H → X.Vp} (hB : X.IsFun B) (hs : X.OrbitS
   rw [discrete_series_map_mul hX.2.1 hhm hg]
   exact hB.1.2.2.1 h hh m hm _ (hs g hg)
 
+/- English proof (translation)
+Introduce `h hh m hm g hg`. Unfold `Φ`. Rewrite using `[hχ.2.1 (h * m) ⟨h, hh, m, hm, rfl⟩ g hg, W'_equiv hX hB hs h hh m hm g hg, map_smul, smul_comm]`.
+-/
 theorem Φ_equiv (hX : X.Hyp) {B : X.H → X.Vp} (hB : X.IsFun B) (hs : X.OrbitSmooth) {χ : Mat X.k X.r → ℝ}
     (hχ : X.IsCut B χ) : IsSPsiEquiv X.z X.ψ X.π (X.Φ B χ) := by
   intro h hh m hm g hg
   unfold Φ
   rw [hχ.2.1 (h * m) ⟨h, hh, m, hm, rfl⟩ g hg, W'_equiv hX hB hs h hh m hm g hg, map_smul, smul_comm]
 
+/- English proof (translation)
+Use `⟨?_, hX.2.2.2.2.1.2.2.2 g hg⟩` and prove the remaining obligations. Unfold `Formalism.QuantumDeterminants.lmulM`. Use `measurable_pi_iff.2 fun i => measurable_pi_iff.2 fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Use `Finset.measurable_sum _ fun l _ => ?_` and prove the remaining obligations.
+
+Establish `h0 : Measurable fun x : Formalism.QuantumDeterminants.Mt X.k X.r => x l j` using `by fun_prop`. Conclude with `h0.const_mul _`.
+-/
 theorem mp_left (hX : X.Hyp) {g : Mat X.k X.r} (hg : g ∈ X.G) :
     MeasurePreserving (Formalism.QuantumDeterminants.lmulM g) X.μG X.μG := by
   refine ⟨?_, hX.2.2.2.2.1.2.2.2 g hg⟩
@@ -195,11 +232,17 @@ theorem mp_left (hX : X.Hyp) {g : Mat X.k X.r} (hg : g ∈ X.G) :
   have h0 : Measurable fun x : Formalism.QuantumDeterminants.Mt X.k X.r => x l j := by fun_prop
   exact h0.const_mul _
 
+/- English proof (translation)
+Use `hX.2.2.2.2.1.2.2.1` as an intermediate fact. Rewrite using `[ae_iff]`. Conclude with `this`.
+-/
 theorem ae_mem (hX : X.Hyp) : ∀ᵐ y ∂X.μG, Matrix.of y ∈ X.G := by
   have := hX.2.2.2.2.1.2.2.1
   rw [ae_iff]
   exact this
 
+/- English proof (translation)
+Take `⟨M, hM⟩` from `hχ.2.2.2.1`. Establish `hm : AEStronglyMeasurable (fun y => X.Φ B χ (g * Matrix.of y)) X.μG` using `hχ.2.2.1.comp_measurePreserving (mp_left hX hg)`. Use `he.smul_bdd M hm ?_` and prove the remaining obligations. Use `filter_upwards [ae_mem hX] with y hy`. Conclude with `hM _ (unitary_group_mul_mem hg hy)`.
+-/
 theorem integrable_conv (hX : X.Hyp) {B : X.H → X.Vp} {χ : Mat X.k X.r → ℝ} (hχ : X.IsCut B χ) (he : X.ConvolutionKernelIntegrable)
     {g : Mat X.k X.r} (hg : g ∈ X.G) :
     Integrable (fun y => X.e (Matrix.of y) • X.Φ B χ (g * Matrix.of y)) X.μG := by
@@ -210,6 +253,9 @@ theorem integrable_conv (hX : X.Hyp) {B : X.H → X.Vp} {χ : Mat X.k X.r → �
   filter_upwards [ae_mem hX] with y hy
   exact hM _ (unitary_group_mul_mem hg hy)
 
+/- English proof (translation)
+Introduce `h hh m hm g hg`. Unfold `Wf rconv`. Establish `h1 : ∀ᵐ y ∂X.μG, X.e (Matrix.of y) • X.Φ B χ (h * m * g * Matrix.of y) = X.ψ m • X.π h (X.e (Matrix.of y) • X.Φ B χ (g * Matrix.of y))` using `by filter_upwards [ae_mem hX] with y hy`. Rewrite using `[Matrix.mul_assoc (h * m) g, Φ_equiv hX hB hs hχ h hh m hm _ (unitary_group_mul_mem hg hy), map_smul, smul_comm]`. Rewrite using `[integral_congr_ae h1, integral_smul, ContinuousLinearMap.integral_comp_comm _ (integrable_conv hX hχ he hg)]`.
+-/
 theorem Wf_equiv (hX : X.Hyp) {B : X.H → X.Vp} (hB : X.IsFun B) (hs : X.OrbitSmooth) {χ : Mat X.k X.r → ℝ}
     (hχ : X.IsCut B χ) (he : X.ConvolutionKernelIntegrable) : IsSPsiEquiv X.z X.ψ X.π (X.Wf B χ) := by
   intro h hh m hm g hg
@@ -220,6 +266,11 @@ theorem Wf_equiv (hX : X.Hyp) {B : X.H → X.Vp} (hB : X.IsFun B) (hs : X.OrbitS
     rw [Matrix.mul_assoc (h * m) g, Φ_equiv hX hB hs hχ h hh m hm _ (unitary_group_mul_mem hg hy), map_smul, smul_comm]
   rw [integral_congr_ae h1, integral_smul, ContinuousLinearMap.integral_comp_comm _ (integrable_conv hX hχ he hg)]
 
+/- English proof (translation)
+Establish `key` using `Formalism.HermitianLatticeCounting.Final.S8.assemblyB (Formalism.QuantumDeterminants.Mt X.k X.r) X.ν X.Vp (fun _ x => X.Wf B χ (Matrix.of x)) (fun x => χ (Matrix.of x)) (fun x => X.W' B (Matrix.of x)) (hp χ hχ) hχ.2.2.2.2.2`. Introduce `h0`. Apply `key` to reduce the goal to its premises. Unfold `l2SG at h0`. Establish `hme : AEMeasurable (fun x => (‖X.Wf B χ (Matrix.of x)‖₊ : ℝ≥0∞) ^ 2) X.ν` using `(hm.enorm).pow_const 2`.
+
+Use `(lintegral_eq_zero_iff' hme).1 h0` as an intermediate fact. Use `filter_upwards [this] with x hx`. Simplify using `using hx`.
+-/
 theorem Wf_ne_zero {B : X.H → X.Vp} {χ : Mat X.k X.r → ℝ} (hχ : X.IsCut B χ)
     (hm : AEStronglyMeasurable (fun x => X.Wf B χ (Matrix.of x)) X.ν) (hp : X.Pairing B) : l2SG X.ν (X.Wf B χ) ≠ 0 := by
   have key := Formalism.HermitianLatticeCounting.Final.S8.assemblyB (Formalism.QuantumDeterminants.Mt X.k X.r) X.ν X.Vp (fun _ x => X.Wf B χ (Matrix.of x))
@@ -232,6 +283,9 @@ theorem Wf_ne_zero {B : X.H → X.Vp} {χ : Mat X.k X.r → ℝ} (hχ : X.IsCut 
   filter_upwards [this] with x hx
   simpa using hx
 
+/- English proof (translation)
+Take `⟨χ, hχ⟩` from `s3 s2`. Take `⟨m1, m2, hfin⟩` from `s6 χ hχ`. Conclude with `⟨X.Wf B χ, m1, m2, Wf_equiv hX hB s1 hχ s4, hfin, Wf_ne_zero hχ m2 s7, s5 χ hχ⟩`.
+-/
 theorem exists_sol' (hX : X.Hyp) {B : X.H → X.Vp} (hB : X.IsFun B) (s1 : X.OrbitSmooth) (s2 : X.OrbitNZ B)
     (s3 : X.CutStep B) (s4 : X.ConvolutionKernelIntegrable) (s5 : X.IdemStep B) (s6 : X.ProjectionSquareIntegrable B) (s7 : X.Pairing B) : ∃ W, X.IsSol W := by
   obtain ⟨χ, hχ⟩ := s3 s2
@@ -240,6 +294,9 @@ theorem exists_sol' (hX : X.Hyp) {B : X.H → X.Vp} (hB : X.IsFun B) (s1 : X.Orb
 
 end BData
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h X hX hC`. Conclude with `h X.k X.r X.z X.c X.u X.v X.b hX.1 hC X.H X.σ hX.2.1 X.Vp X.π hX.2.2.1 X.w hX.2.2.2.1 X.μG X.μS X.ν hX.2.2.2.2.1 hX.2.2.2.2.2.1 hX.2.2.2.2.2.2`. Introduce `h k r z c u v b hS hC H _ _ _ σ hσ Vp _ _ _ π hπ w hw μG μS ν hG hS' hQ`. Conclude with `h { k := k, r := r, z := z, c := c, u := u, v := v, b := b, H := H, σ := σ, Vp := Vp, π := π, w := w, μG := μG, μS := μS, ν := ν } ⟨hS, hσ, hπ, hw, hG, hS', hQ⟩ hC`.
+-/
 theorem bessel_existence_iff_solutions (D : Formalism.BasicNotions.D7) (C : ℝ) :
     Conclusion2 D C ↔ ∀ X : BData, X.Hyp → GapC C X.k X.r X.b → ∃ W, X.IsSol W := by
   constructor
@@ -254,6 +311,9 @@ def BesselExistenceFacts : Prop :=
   ∀ X : BData, X.Hyp → ∀ B : X.H → X.Vp, X.IsFun B →
     X.OrbitSmooth ∧ X.OrbitNZ B ∧ X.CutStep B ∧ X.ConvolutionKernelIntegrable ∧ X.IdemStep B ∧ X.ProjectionSquareIntegrable B ∧ X.Pairing B
 
+/- English proof (translation)
+Rewrite using `[bessel_existence_iff_solutions]`. Introduce `X hX hC`. Take `⟨B, b1, b2, b3⟩` from `ha X.k X.r X.z X.c X.u X.v X.b hX.1 hC X.H X.σ hX.2.1 X.Vp X.π hX.2.2.1`. Take `⟨s1, s2, s3, s4, s5, s6, s7⟩` from `hS X hX B ⟨b1, b2, b3⟩`. Conclude with `BData.exists_sol' hX ⟨b1, b2, b3⟩ s1 s2 s3 s4 s5 s6 s7`.
+-/
 theorem bessel_existence_of_ordered (D : Formalism.BasicNotions.D7) (C : ℝ) (ha : FunctionalContinuityOrder D C) (hS : BesselExistenceFacts) : Conclusion2 D C := by
   rw [bessel_existence_iff_solutions]
   intro X hX hC
@@ -261,12 +321,21 @@ theorem bessel_existence_of_ordered (D : Formalism.BasicNotions.D7) (C : ℝ) (h
   obtain ⟨s1, s2, s3, s4, s5, s6, s7⟩ := hS X hX B ⟨b1, b2, b3⟩
   exact BData.exists_sol' hX ⟨b1, b2, b3⟩ s1 s2 s3 s4 s5 s6 s7
 
+/- English proof (translation)
+Introduce `ha h2 h6` and use `bessel_existence_of_ordered D C ha (hS ha h2 h6)`.
+-/
 theorem bessel_existence_of_facts (D : Formalism.BasicNotions.D7) (C : ℝ) (hS : FunctionalContinuityOrder D C → adm2 D → adm6 D → BesselExistenceFacts) : HodgeTateFromSandwich D C :=
   fun ha h2 h6 => bessel_existence_of_ordered D C ha (hS ha h2 h6)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, fun C _ D => bessel_existence_of_facts D C (hS D C)⟩`.
+-/
 theorem bessel_existence_uniform_of_facts (hS : ∀ (D : Formalism.BasicNotions.D7) (C : ℝ), FunctionalContinuityOrder D C → adm2 D → adm6 D → BesselExistenceFacts) : ClosedFormProjectorBound :=
   ⟨0, fun C _ D => bessel_existence_of_facts D C (hS D C)⟩
 
+/- English proof (translation)
+Introduce `ha h2 h6 x i` and use `h (Fm.D x i) (ha x i) (h2 x i) (h6 x i)`.
+-/
 theorem family_bessel_existence {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (C : ℝ) (h : ∀ D : Formalism.BasicNotions.D7, HodgeTateFromSandwich D C) : DeterminantValueFamily Fm C :=
   fun ha h2 h6 x i => h (Fm.D x i) (ha x i) (h2 x i) (h6 x i)
 

@@ -151,6 +151,9 @@ def TwistFactorNormAt : Prop :=
         ∃ ζ : D.what₂.LL, (∃ m : ℕ, 0 < m ∧ ζ ^ m = 1) ∧
           ∀ h, ct h = D.what₂.embLL ζ * c0 h * cXi (dδ t) (U₂ t) (dict₂ t) h
 
+/- English proof (translation)
+Introduce `hTi h1 c0 hc0 t ct hct` and use `hT hTi c0 c0 hc0 (fun h => by rw [h1 h, mul_one]) t ct hct`.
+-/
 theorem TwistFactorAt.norm (hT : TwistFactorAt R i U dict ι e F ik φ th x₀ dδ U₂ dict₂ xi) :
     TwistFactorNormAt R i U dict ι e F ik φ th x₀ dδ U₂ dict₂ xi :=
   fun hTi h1 c0 hc0 t ct hct => hT hTi c0 c0 hc0 (fun h => by rw [h1 h, mul_one]) t ct hct

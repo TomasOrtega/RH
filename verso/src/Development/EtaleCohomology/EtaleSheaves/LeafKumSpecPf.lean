@@ -21,6 +21,9 @@ def L_ev_basic : Prop := ∀ (R : Type) [CommRing R] {E : Spc} {I : Cx R} {n : �
 section Basic
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+The claim follows from `(ConcreteCategory.congr_hom (φ.hom.naturality g.op) x).symm`.
+-/
 theorem sec_res_map {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sec F U) :
     Sec.res g (Sec.map φ x) = Sec.map φ (Sec.res g x) :=
   (ConcreteCategory.congr_hom (φ.hom.naturality g.op) x).symm

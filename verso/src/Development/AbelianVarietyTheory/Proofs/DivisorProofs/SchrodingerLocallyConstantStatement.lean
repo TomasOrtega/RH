@@ -7,6 +7,9 @@ open scoped TensorProduct GlobalTheory.VacAny
 open Matrix
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SchrSmall.schr_eventually_eq | exact GlobalTheory.SchrSmall.schr_eventually_eq | (intros; apply GlobalTheory.SchrSmall.schr_eventually_eq <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.schrodinger_locally_constant : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (v : Pl F) (ψ : AddChar (Fv F v) ℂ), Continuous ψ →
     ∀ φ ∈ SB (κ → Fv F v), ∀ᶠ w in nhds (0 : (κ → Fv F v) × (κ → Fv F v)), schr ψ w φ = φ := by
   first | exact @GlobalTheory.SchrSmall.schr_eventually_eq | exact GlobalTheory.SchrSmall.schr_eventually_eq | (intros; apply GlobalTheory.SchrSmall.schr_eventually_eq <;> assumption)

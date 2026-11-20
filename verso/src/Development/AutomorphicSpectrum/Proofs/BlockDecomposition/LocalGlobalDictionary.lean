@@ -18,8 +18,18 @@ variable (F E) in
 def sec : (Af F ⊗[F] E) →+ AE F E :=
   (TensorProduct.map (LinearMap.inr F (Ainf F) (Af F)) (LinearMap.id : E →ₗ[F] E)).toAddMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sec_tmul (a : Af F) (x : E) : sec F E (a ⊗ₜ[F] x) = ((0, a) : AF F) ⊗ₜ[F] x := rfl
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, smul_add]`. Consider the case `tmul a x`. Express the relevant statement in the definitionally equal form `sec F E (HeckeCharacterZeroLocus.ThmBIn.sndA F a ⊗ₜ[F] x) = _`.
+
+Rewrite using `[sec_tmul, TensorProduct.smul_tmul']`. Use `congr 1`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(0 : Ainf F) = 0 * a.1`. Simplify using the standard rewrite rules.
+
+Express the relevant statement in the definitionally equal form `a.2 = 1 * a.2`. Simplify using the standard rewrite rules.
+-/
 theorem sec_finPart (z : AE F E) : sec F E (HeckeCharacterZeroLocus.ThmBIn.finPart F E z) = finOne F • z := by
   induction z using TensorProduct.induction_on with
   | zero => simp
@@ -34,6 +44,11 @@ theorem sec_finPart (z : AE F E) : sec F E (HeckeCharacterZeroLocus.ThmBIn.finPa
     · change a.2 = 1 * a.2
       simp
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [smul_add, map_add, map_add, hx, hy]`. Consider the case `tmul a x`. Rewrite using `[TensorProduct.smul_tmul']`.
+
+Express the relevant statement in the definitionally equal form `HeckeCharacterZeroLocus.ThmBIn.sndA F (finOne F • a) ⊗ₜ[F] x = HeckeCharacterZeroLocus.ThmBIn.sndA F a ⊗ₜ[F] x`. Use `congr 1`. Express the relevant statement in the definitionally equal form `1 * a.2 = a.2`. Simplify using the standard rewrite rules.
+-/
 theorem finPart_finOne_smul (z : AE F E) :
     HeckeCharacterZeroLocus.ThmBIn.finPart F E (finOne F • z) = HeckeCharacterZeroLocus.ThmBIn.finPart F E z := by
   induction z using TensorProduct.induction_on with
@@ -46,6 +61,13 @@ theorem finPart_finOne_smul (z : AE F E) :
     change 1 * a.2 = a.2
     simp
 
+/- English proof (translation)
+Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y h`. Take `⟨a, ha, x, rfl⟩` from `h`. Use `AddSubgroup.subset_closure ⟨(0, a), ?_, fun v => ha v, x, ?_⟩` and prove the remaining obligations. Conclude with `map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F)`.
+
+Rewrite using `[sec_tmul]`. Express the relevant statement in the definitionally equal form `_ = pairA F 0 a • ((1 : AF F) ⊗ₜ[F] (x : E))`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Both sides reduce to the same expression. Consider the case `zero => simpa using (intHat F E).zero_mem`.
+
+Consider the case `add x y _ _ hx hy => simpa using (intHat F E).add_mem hx hy`. Consider the case `neg x _ hx => simpa using (intHat F E).neg_mem hx`.
+-/
 theorem sec_mem {y : Af F ⊗[F] E} (hy : y ∈ HeckeCharacterZeroLocus.ThmBIn.intAE F E) : sec F E y ∈ intHat F E := by
   induction hy using AddSubgroup.closure_induction with
   | mem y h =>
@@ -60,6 +82,11 @@ theorem sec_mem {y : Af F ⊗[F] E} (hy : y ∈ HeckeCharacterZeroLocus.ThmBIn.i
   | add x y _ _ hx hy => simpa using (intHat F E).add_mem hx hy
   | neg x _ hx => simpa using (intHat F E).neg_mem hx
 
+/- English proof (translation)
+Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z h`. Take `⟨a, -, ha, o, rfl⟩` from `h`. Use `AddSubgroup.subset_closure ⟨HeckeCharacterZeroLocus.ThmBIn.sndA F a, fun v => ha v, o, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `HeckeCharacterZeroLocus.ThmBIn.finPart F E (a • ((1 : AF F) ⊗ₜ[F] (o : E))) = _`.
+
+Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Both sides reduce to the same expression. Consider the case `zero => simpa using (HeckeCharacterZeroLocus.ThmBIn.intAE F E).zero_mem`. Consider the case `add x y _ _ hx hy => simpa using (HeckeCharacterZeroLocus.ThmBIn.intAE F E).add_mem hx hy`. Consider the case `neg x _ hx => simpa using (HeckeCharacterZeroLocus.ThmBIn.intAE F E).neg_mem hx`.
+-/
 theorem finPart_mem {z : AE F E} (hz : z ∈ intHat F E) : HeckeCharacterZeroLocus.ThmBIn.finPart F E z ∈ HeckeCharacterZeroLocus.ThmBIn.intAE F E := by
   induction hz using AddSubgroup.closure_induction with
   | mem z h =>
@@ -72,6 +99,9 @@ theorem finPart_mem {z : AE F E} (hz : z ∈ intHat F E) : HeckeCharacterZeroLoc
   | add x y _ _ hx hy => simpa using (HeckeCharacterZeroLocus.ThmBIn.intAE F E).add_mem hx hy
   | neg x _ hx => simpa using (HeckeCharacterZeroLocus.ThmBIn.intAE F E).neg_mem hx
 
+/- English proof (translation)
+Rewrite using `[GroundTheory.BlockD.ThmBHecke.mem_intAE_iff, ← GroundTheory.BlockD.ThmBHecke.adeleEquiv_snd, GroundTheory.Global.mem_integralFiniteAdeles]`. Simplify using `only [intAd, Subring.mem_iInf, Subring.mem_comap]`. Both sides reduce to the same expression.
+-/
 theorem mem_intAd_iff (z : AE F E) :
     eqv F E z ∈ intAd E ↔ HeckeCharacterZeroLocus.ThmBIn.finPart F E z ∈ HeckeCharacterZeroLocus.ThmBIn.intAE F E := by
   rw [GroundTheory.BlockD.ThmBHecke.mem_intAE_iff, ← GroundTheory.BlockD.ThmBHecke.adeleEquiv_snd,
@@ -79,6 +109,11 @@ theorem mem_intAd_iff (z : AE F E) :
   simp only [intAd, Subring.mem_iInf, Subring.mem_comap]
   rfl
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _`. Use `⟨GroundTheory.BlockD.ThmBHecke.continuous_adeleEquiv, GroundTheory.BlockD.ThmBHecke.continuous_adeleEquiv_symm, GroundTheory.BlockD.ThmBHecke.adeleEquiv_incA, fun z => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_intAd_iff]`. Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[← sec_finPart]`.
+
+Conclude with `sec_mem h`. Rewrite using `[← finPart_finOne_smul]`. Conclude with `finPart_mem h`. Conclude with `(PositivityTheory.ThKCT.Tate.absE_eq x).symm`.
+-/
 theorem dict : Dict := by
   intro F E _ _ _ _ _
   refine ⟨GroundTheory.BlockD.ThmBHecke.continuous_adeleEquiv, GroundTheory.BlockD.ThmBHecke.continuous_adeleEquiv_symm,

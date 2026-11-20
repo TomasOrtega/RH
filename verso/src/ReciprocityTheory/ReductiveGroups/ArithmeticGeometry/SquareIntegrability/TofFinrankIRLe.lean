@@ -8,6 +8,25 @@ noncomputable section
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Establish `hpi` using `Real.pi_gt_three`. Establish `hd' : (2 : ℝ) ≤ d` using `by exact_mod_cast hd`. Establish `hE : Real.exp (-1) * Real.exp (1 - Real.pi / 2) ^ k = Real.exp (-1 + k * (1 - Real.pi / 2))`. Rewrite using `[← Real.exp_nat_mul, ← Real.exp_add]`. Rewrite using `[hE]`.
+
+Establish `key : (3 * ((k : ℝ) + 1)) ^ d ≤ (3 * (d : ℝ)) ^ d * Real.exp (Real.pi / 2 * (k : ℝ) ^ 2 + (-1 + k * (1 - Real.pi / 2)))`. Break down `Nat.eq_zero_or_pos k with hk0 | hk` into its components or cases. Substitute `hk0` using the available equality. Establish `he : Real.exp 1 < 3` using `lt_trans Real.exp_one_lt_d9 (by norm_num)`. Establish `hdd : (4 : ℝ) ≤ (d : ℝ) ^ d`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hQ : Real.pi / 2 * ((0 : ℕ) : ℝ) ^ 2 + (-1 + ((0 : ℕ) : ℝ) * (1 - Real.pi / 2)) = -1`. Simplify using the standard rewrite rules. Rewrite using `[hQ, Real.exp_neg]`. Establish `h1 : (1 : ℝ) ≤ (d : ℝ) ^ d * (Real.exp 1)⁻¹`.
+
+Rewrite using `[le_mul_inv_iff₀ (Real.exp_pos 1)]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Establish `hk1 : (1 : ℝ) ≤ k` using `by exact_mod_cast hk`. Distinguish the cases in `hkd : k + 1 ≤ d`.
+
+Establish `hkd' : (k : ℝ) + 1 ≤ d` using `by exact_mod_cast hkd`. Establish `h1 : (3 * ((k : ℝ) + 1)) ^ d ≤ (3 * (d : ℝ)) ^ d` using `pow_le_pow_left₀ (by positivity) (by linarith) d`. Establish `h2 : 0 ≤ Real.pi / 2 * (k : ℝ) ^ 2 + (-1 + k * (1 - Real.pi / 2))`. Use polynomial arithmetic with `[mul_nonneg (mul_nonneg (by linarith : (0 : ℝ) ≤ Real.pi / 2) (by linarith : (0 : ℝ) ≤ k)) (by linarith : (0 : ℝ) ≤ k - 1)]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hdk : (d : ℝ) ≤ k` using `by exact_mod_cast (by omega : d ≤ k)`. Establish `hk2 : (2 : ℝ) ≤ k` using `le_trans hd' hdk`. Establish `h1 : ((k : ℝ) + 1) ^ d ≤ Real.exp ((k : ℝ) * k)`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : (k : ℝ) * k ≤ Real.pi / 2 * (k : ℝ) ^ 2 + (-1 + k * (1 - Real.pi / 2))`.
+
+Establish `hkk : 2 ≤ (k : ℝ) * ((k : ℝ) - 1)` using `by nlinarith`. Establish `hpp : (1 : ℝ) / 2 ≤ Real.pi / 2 - 1` using `by linarith`. Use polynomial arithmetic with `[mul_le_mul hpp hkk (by norm_num) (by linarith)]`. Establish `h3 : (1 : ℝ) ≤ (d : ℝ) ^ d` using `one_le_pow₀ (by linarith)`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `h1.trans (Real.exp_le_exp.mpr h2)`. Use `_ ≤ 3 ^ d * ((d : ℝ) ^ d * Real.exp (Real.pi / 2 * (k : ℝ) ^ 2 + (-1 + k * (1 - Real.pi / 2)))) := by gcongr`. Conclude with `le_mul_of_one_le_left (Real.exp_pos _).le h3`. Use `_ = _ := by rw [mul_pow]; ring`. Establish `hexp : Real.exp (Real.pi / 2 * (k : ℝ) ^ 2 + (-1 + k * (1 - Real.pi / 2))) * Real.exp (-(Real.pi / 2) * (k : ℝ) ^ 2) = Real.exp (-1 + k * (1 - Real.pi / 2))`.
+
+Rewrite using `[← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem tof_shell_term (d k : ℕ) (hd : 2 ≤ d) :
     (3 * ((k : ℝ) + 1)) ^ d * Real.exp (-(Real.pi / 2) * (k : ℝ) ^ 2) ≤
       (3 * (d : ℝ)) ^ d * (Real.exp (-1) * Real.exp (1 - Real.pi / 2) ^ k) := by
@@ -76,6 +95,19 @@ theorem tof_shell_term (d k : ℕ) (hd : 2 ≤ d) :
         mul_le_mul_of_nonneg_right key (Real.exp_pos _).le
     _ = _ := by rw [mul_assoc, hexp]
 
+/- English proof (translation)
+Use `set r := Real.exp (1 - Real.pi / 2) with hr`. Establish `hpi` using `Real.pi_gt_three`. Establish `hr0 : 0 < r` using `Real.exp_pos _`. Establish `hr1 : r ≤ 2 / 3`. Establish `h` using `Real.add_one_le_exp (Real.pi / 2 - 1)`.
+
+Establish `hrr : r * Real.exp (Real.pi / 2 - 1) = 1`. Rewrite using `[hr, ← Real.exp_add]`. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. Establish `he1 : Real.exp (-1) ≤ 1 / 2`.
+
+Establish `h` using `Real.add_one_le_exp (1 : ℝ)`. Establish `hrr : Real.exp (-1) * Real.exp 1 = 1`. Rewrite using `[← Real.exp_add]`. Simplify using the standard rewrite rules. Use `Real.exp_pos (-1)` as an intermediate fact.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hsum0 : 0 ≤ ∑ k ∈ Finset.range K, r ^ k` using `Finset.sum_nonneg (fun k _ => pow_nonneg hr0.le k)`. Establish `hS : ∑ k ∈ Finset.range K, r ^ k ≤ 3`. Establish `h` using `geom_sum_mul r K`. Establish `: 0 ≤ r ^ K` using `by positivity`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hd0 : (0 : ℝ) ≤ (3 * (d : ℝ)) ^ d` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (3 * (d : ℝ)) ^ d * (1 / 2) * 3 := by gcongr`. Use `_ ≤ 2 * (3 * (d : ℝ)) ^ d := by nlinarith`.
+-/
 theorem tof_shell_sum (d K : ℕ) (hd : 2 ≤ d) :
     ∑ k ∈ Finset.range K, (3 * ((k : ℝ) + 1)) ^ d * Real.exp (-(Real.pi / 2) * (k : ℝ) ^ 2) ≤
       2 * (3 * (d : ℝ)) ^ d := by
@@ -111,6 +143,13 @@ theorem tof_shell_sum (d K : ℕ) (hd : 2 ≤ d) :
     _ ≤ (3 * (d : ℝ)) ^ d * (1 / 2) * 3 := by gcongr
     _ ≤ 2 * (3 * (d : ℝ)) ^ d := by nlinarith
 
+/- English proof (translation)
+Establish `hsub : uMap I x - uMap I x' = uMap I (x - x')` using `(map_sub (uMap I) x x').symm`. Establish `hne' : uMap I (x - x') ≠ 0`. Rewrite using `[← hsub]`. Conclude with `sub_ne_zero.mpr hne`. Establish `hb` using `hI.sep (x - x') (X.L.sub_mem hx hx') (uMap I (x - x')) (isU_uMap I (x - x')) hne'`.
+
+Establish `h1 : (1 : ℝ) ≤ ‖uMap I (x - x')‖ ^ 2` using `le_trans P.C2 hb`. Rewrite using `[hsub]`. Assume the negation of the conclusion as `hlt`. Establish `hlt' : ‖uMap I (x - x')‖ < 1` using `lt_of_not_ge hlt`. Establish `h0` using `norm_nonneg (uMap I (x - x'))`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem tof_uMap_sep [IsCMField E] {X : PT E} {DF : ℕ} (P : Par X DF) {I : Submodule ℤ (Vsp X.dim)}
     (hI : IsSplit P I) {x x' : Vsp X.dim} (hx : x ∈ X.L) (hx' : x' ∈ X.L)
     (hne : uMap I x ≠ uMap I x') : 1 ≤ ‖uMap I x - uMap I x'‖ := by
@@ -126,6 +165,9 @@ theorem tof_uMap_sep [IsCMField E] {X : PT E} {DF : ℕ} (P : Par X DF) {I : Sub
   have h0 := norm_nonneg (uMap I (x - x'))
   nlinarith
 
+/- English proof (translation)
+Take `⟨ρ, hρ, h⟩` from `hI.rank`. Rewrite using `[h]`. Unfold `dstar`. Conclude with `Nat.mul_le_mul_left _ hρ`.
+-/
 theorem tof_finrank_IR_le [IsCMField E] {X : PT E} {DF : ℕ} (P : Par X DF) {I : Submodule ℤ (Vsp X.dim)}
     (hI : IsSplit P I) : Module.finrank ℝ (IR I) ≤ dstar (E := E) P.m := by
   obtain ⟨ρ, hρ, h⟩ := hI.rank
@@ -133,6 +175,9 @@ theorem tof_finrank_IR_le [IsCMField E] {X : PT E} {DF : ℕ} (P : Par X DF) {I 
   unfold dstar
   exact Nat.mul_le_mul_left _ hρ
 
+/- English proof (translation)
+Establish `h1 : 1 ≤ PT.f E` using `le_trans (Nat.one_le_pow _ _ P.hm1) P.hmf`. Establish `h2` using `P.hm1`. Unfold `dstar`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem tof_two_le_dstar {X : PT E} {DF : ℕ} (P : Par X DF) : 2 ≤ dstar (E := E) P.m := by
   have h1 : 1 ≤ PT.f E := le_trans (Nat.one_le_pow _ _ P.hm1) P.hmf
   have h2 := P.hm1
@@ -140,6 +185,37 @@ theorem tof_two_le_dstar {X : PT E} {DF : ℕ} (P : Par X DF) : 2 ≤ dstar (E :
   calc 2 = 2 * 1 * 1 := by norm_num
     _ ≤ 2 * PT.f E * P.m := by gcongr
 
+/- English proof (translation)
+Use `set d := dstar (E := E) P.m with hd`. Establish `hd2 : 2 ≤ d` using `tof_two_le_dstar P`. Establish `hDd : Module.finrank ℝ (IR I) ≤ d` using `tof_finrank_IR_le P hI`. Establish `hyR : ∀ y ∈ F, y ∈ IR I`. Introduce `y hy`.
+
+Take `⟨x, hx, rfl⟩` from `hF y hy`. Conclude with `(IR I).starProjection_apply_mem _`. Set `e` to `(stdOrthonormalBasis ℝ (IR I)).repr`. Set `g : Vsp X.dim → EuclideanSpace ℝ (Fin (Module.finrank ℝ (IR I)))` to `fun y => e ⟨(IR I).starProjection (y - u), (IR I).starProjection_apply_mem _⟩`. Establish `hproj : ∀ y ∈ F, (IR I).starProjection (y - u) = y - u` using `fun y hy => (Submodule.starProjection_eq_self_iff).mpr ((IR I).sub_mem (hyR y hy) hu)`.
+
+Establish `hgn : ∀ y ∈ F, ‖g y‖ = ‖u - y‖`. Introduce `y hy`. Simplify using `only [g, LinearIsometryEquiv.norm_map, Submodule.coe_norm, hproj y hy]`. Rewrite using `[norm_sub_rev]`. Establish `hgd : ∀ y ∈ F, ∀ y' ∈ F, dist (g y) (g y') = ‖y - y'‖`.
+
+Introduce `y hy y' hy'`. Rewrite using `[dist_eq_norm]`. Simplify using `only [g, ← map_sub, LinearIsometryEquiv.norm_map]`. Simplify using `only [Submodule.coe_norm, Submodule.coe_sub, hproj y hy, hproj y' hy']`. Use `congr 1`.
+
+Normalize the expressions using the abelian group laws. Establish `hsep : ∀ y ∈ F, ∀ y' ∈ F, y ≠ y' → 1 ≤ ‖y - y'‖`. Introduce `y hy y' hy' hne`. Take `⟨x, hx, rfl⟩` from `hF y hy`. Take `⟨x', hx', rfl⟩` from `hF y' hy'`.
+
+Conclude with `tof_uMap_sep P hI hx hx' hne`. Use `set K := (F.sup fun y => ⌊‖u - y‖⌋₊) + 1 with hK`. Establish `hmaps : ∀ y ∈ F, ⌊‖u - y‖⌋₊ ∈ Finset.range K`. Introduce `y hy`. Rewrite using `[Finset.mem_range, hK]`.
+
+Conclude with `Nat.lt_succ_of_le (Finset.le_sup (f := fun y => ⌊‖u - y‖⌋₊) hy)`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to hmaps]`. Use `le_trans (Finset.sum_le_sum (fun k _ => ?_)) (tof_shell_sum d K hd2)` and prove the remaining obligations. Use `set Fk := F.filter (fun y => ⌊‖u - y‖⌋₊ = k) with hFk`. Establish `hFkF : ∀ y ∈ Fk, y ∈ F` using `fun y hy => (Finset.mem_filter.mp hy).1`.
+
+Establish `hterm : ∀ y ∈ Fk, Real.exp (-(Real.pi / 2) * ‖u - y‖ ^ 2) ≤ Real.exp (-(Real.pi / 2) * (k : ℝ) ^ 2)`. Introduce `y hy`. Establish `hk : ⌊‖u - y‖⌋₊ = k` using `(Finset.mem_filter.mp hy).2`. Establish `hle : (k : ℝ) ≤ ‖u - y‖`. Rewrite using `[← hk]`.
+
+Conclude with `Nat.floor_le (norm_nonneg _)`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `: (k : ℝ) ^ 2 ≤ ‖u - y‖ ^ 2` using `pow_le_pow_left₀ (Nat.cast_nonneg k) hle 2`. Use polynomial arithmetic with `[Real.pi_pos]`. Establish `hinj : Set.InjOn g Fk`.
+
+Introduce `y hy y' hy' hgg`. Assume the negation of the conclusion as `hne`. Establish `h1` using `hsep y (hFkF y hy) y' (hFkF y' hy') hne`. Establish `h2` using `hgd y (hFkF y hy) y' (hFkF y' hy')`. Rewrite `h2` using `[hgg, dist_self]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcard : (Fk.card : ℝ) ≤ (3 * ((k : ℝ) + 1)) ^ Module.finrank ℝ (IR I)`. Rewrite using `[← Finset.card_image_of_injOn hinj]`. Establish `hpk` using `hP (Module.finrank ℝ (IR I)) (Fk.image g) 1 ((k : ℝ) + 1) one_pos (by linarith [(Nat.cast_nonneg k : (0 : ℝ) ≤ k)]) (by`. Introduce `p hp`.
+
+Take `⟨y, hy, rfl⟩` from `Finset.mem_image.mp hp`. Rewrite using `[hgn y (hFkF y hy)]`. Establish `hk : ⌊‖u - y‖⌋₊ = k` using `(Finset.mem_filter.mp hy).2`. Rewrite using `[← hk]`. Conclude with `(Nat.lt_floor_add_one _).le)`.
+
+Use the proof step `(by`. Introduce `p hp p' hp' hne`. Take `⟨y, hy, rfl⟩` from `Finset.mem_image.mp hp`. Take `⟨y', hy', rfl⟩` from `Finset.mem_image.mp hp'`. Rewrite using `[hgd y (hFkF y hy) y' (hFkF y' hy')]`.
+
+Conclude with `hsep y (hFkF y hy) y' (hFkF y' hy') (fun h => hne (by rw [h])))`. Simplify using `using hpk`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, nsmul_eq_mul]`. Use `_ ≤ (3 * ((k : ℝ) + 1)) ^ Module.finrank ℝ (IR I) * Real.exp (-(Real.pi / 2) * (k : ℝ) ^ 2) := by gcongr`.
+
+Use `_ ≤ (3 * ((k : ℝ) + 1)) ^ d * Real.exp (-(Real.pi / 2) * (k : ℝ) ^ 2) := by gcongr`. Establish `: (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem tof_sep_sum [IsCMField E] {X : PT E} {DF : ℕ} (P : Par X DF) {I : Submodule ℤ (Vsp X.dim)}
     (hI : IsSplit P I) (hP : Ext.PackingCount) (u : Vsp X.dim) (hu : u ∈ IR I)
     (F : Finset (Vsp X.dim)) (hF : ∀ y ∈ F, ∃ x ∈ X.L, y = uMap I x) :

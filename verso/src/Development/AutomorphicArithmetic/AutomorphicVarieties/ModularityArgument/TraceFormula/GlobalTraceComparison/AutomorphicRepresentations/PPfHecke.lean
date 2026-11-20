@@ -18,6 +18,9 @@ private def boxes (j : ∀ i, A i →* G) (C : ∀ i, Set (A i)) : List ι → S
 private def pr (j : ∀ i, A i →* G) (q : ∀ i, G →* A i) (x : G) (l : List ι) : G :=
   (l.map fun i => j i (q i x)).prod
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact isCompact_singleton`. Consider the case `cons i l ih`. Conclude with `((h i (by simp)).image (hj i)).mul (ih fun k hk => h k (by simp [hk]))`.
+-/
 private theorem boxes_compact [TopologicalSpace G] [ContinuousMul G] [∀ i, TopologicalSpace (A i)]
     (j : ∀ i, A i →* G) (C : ∀ i, Set (A i)) (hj : ∀ i, Continuous (j i)) (l : List ι)
     (h : ∀ i ∈ l, IsCompact (C i)) : IsCompact (boxes j C l) := by
@@ -26,6 +29,11 @@ private theorem boxes_compact [TopologicalSpace G] [ContinuousMul G] [∀ i, Top
   | cons i l ih =>
     exact ((h i (by simp)).image (hj i)).mul (ih fun k hk => h k (by simp [hk]))
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp [pr, boxes]`. Consider the case `cons i l ih`. Establish `h1 : j i (q i x) ∈ j i '' C i` using `⟨_, h i (by simp), rfl⟩`. Establish `h2` using `ih fun k hk => h k (by simp [hk])`.
+
+Simplify `Set.mul_mem_mul h1 h2` using `[pr, boxes]`.
+-/
 private theorem pr_mem (j : ∀ i, A i →* G) (q : ∀ i, G →* A i) (C : ∀ i, Set (A i)) (x : G) (l : List ι)
     (h : ∀ i ∈ l, q i x ∈ C i) : pr j q x l ∈ boxes j C l := by
   induction l with
@@ -35,6 +43,11 @@ private theorem pr_mem (j : ∀ i, A i →* G) (q : ∀ i, G →* A i) (C : ∀ 
     have h2 := ih fun k hk => h k (by simp [hk])
     simpa [pr, boxes] using Set.mul_mem_mul h1 h2
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp [pr]`. Consider the case `cons i l ih`. Establish `hne : i ≠ k` using `fun e => hkl (by simp [e])`. Establish `h2 : q k (pr j q x l) = 1` using `ih (fun m hm => hl m (by simp [hm])) (fun hm => hkl (by simp [hm]))`.
+
+Establish `h3 : pr j q x (i :: l) = j i (q i x) * pr j q x l` using `by simp [pr]`. Rewrite using `[h3, map_mul, h2, hind i k (hl i (by simp)) hk hne, one_mul]`.
+-/
 private theorem q_pr_out (j : ∀ i, A i →* G) (q : ∀ i, G →* A i) (P : ι → Prop)
     (hind : ∀ i k, P i → P k → i ≠ k → ∀ a, q k (j i a) = 1) (x : G) (k : ι) (hk : P k) (l : List ι)
     (hl : ∀ i ∈ l, P i) (hkl : k ∉ l) : q k (pr j q x l) = 1 := by
@@ -47,6 +60,13 @@ private theorem q_pr_out (j : ∀ i, A i →* G) (q : ∀ i, G →* A i) (P : ι
     have h3 : pr j q x (i :: l) = j i (q i x) * pr j q x l := by simp [pr]
     rw [h3, map_mul, h2, hind i k (hl i (by simp)) hk hne, one_mul]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp at hkl`. Consider the case `cons i l ih`. Establish `h3 : pr j q x (i :: l) = j i (q i x) * pr j q x l` using `by simp [pr]`. Establish `hl' : ∀ m ∈ l, P m` using `fun m hm => hl m (by simp [hm])`.
+
+Take `⟨hi, hnd'⟩` from `List.nodup_cons.1 hnd`. Distinguish the cases in `e : k = i`. Substitute `e` using the available equality. Rewrite using `[h3, map_mul, hjq, q_pr_out j q P hind x k (hl k (by simp)) l hl' hi, mul_one]`. Establish `hk' : k ∈ l` using `by simpa [e] using hkl`.
+
+Rewrite using `[h3, map_mul, ih hl' hnd' hk', hind i k (hl i (by simp)) (hl k (by simp [hk'])) (Ne.symm e), one_mul]`.
+-/
 private theorem q_pr_in (j : ∀ i, A i →* G) (q : ∀ i, G →* A i) (P : ι → Prop)
     (hjq : ∀ i a, q i (j i a) = a)
     (hind : ∀ i k, P i → P k → i ≠ k → ∀ a, q k (j i a) = 1) (x : G) (k : ι) (l : List ι)
@@ -63,6 +83,19 @@ private theorem q_pr_in (j : ∀ i, A i →* G) (q : ∀ i, G →* A i) (P : ι 
     · have hk' : k ∈ l := by simpa [e] using hkl
       rw [h3, map_mul, ih hl' hnd' hk', hind i k (hl i (by simp)) (hl k (by simp [hk'])) (Ne.symm e), one_mul]
 
+/- English proof (translation)
+Establish `hcl : IsClosed (Function.support f)`. Rewrite using `[← isOpen_compl_iff, isOpen_iff_mem_nhds]`. Introduce `x hx`. Establish `hx0 : f x = 0` using `by simpa using hx`. Establish `hop : IsOpen ((fun y => x⁻¹ * y) ⁻¹' (L : Set G))` using `hLo.preimage (continuous_const.mul continuous_id)`.
+
+Establish `hmem : x ∈ (fun y => x⁻¹ * y) ⁻¹' (L : Set G)` using `by simp [L.one_mem]`. Use `Filter.mem_of_superset (hop.mem_nhds hmem) ?_` and prove the remaining obligations. Introduce `y hy`. Establish `: f (x * (x⁻¹ * y)) = f x` using `hinv _ hy x`. Simplify `this` using `[hx0]`.
+
+Establish `hl : ∀ i ∈ I.toList, P i` using `fun i hi => hI i (by simpa using hi)`. Establish `hK : IsCompact (boxes j C I.toList * (L : Set G))` using `(boxes_compact j C hj _ fun i hi => hC i (by simpa using hi)).mul hLc`. Establish `hsub : Function.support f ⊆ boxes j C I.toList * (L : Set G)`. Introduce `x hx`. Take `⟨h1, h2⟩` from `hs x hx`.
+
+Establish `hb` using `pr_mem j q C x I.toList fun i hi => h1 i (by simpa using hi)`. Establish `hy : (pr j q x I.toList)⁻¹ * x ∈ L`. Use `(hL _).2 fun k hk => ?_` and prove the remaining obligations. Distinguish the cases in `hkI : k ∈ I`. Rewrite using `[map_mul, map_inv, q_pr_in j q P hjq hind x k _ hl I.nodup_toList (by simpa using hkI)]`.
+
+Simplify using `[(N k).one_mem]`. Rewrite using `[map_mul, map_inv, q_pr_out j q P hind x k hk _ hl (by simpa using hkI)]`. Simplify using `using h2 k hk hkI`. Use `Set.mul_mem_mul hb hy` as an intermediate fact. Simplify using `using this`.
+
+Use `show IsCompact (closure (Function.support f))`. Rewrite using `[hcl.closure_eq]`. Conclude with `hK.of_isClosed_subset hcl hsub`.
+-/
 private theorem abs_support [TopologicalSpace G] [IsTopologicalGroup G] [∀ i, TopologicalSpace (A i)]
     (j : ∀ i, A i →* G) (q : ∀ i, G →* A i) (hj : ∀ i, Continuous (j i)) (P : ι → Prop)
     (N : ∀ i, Subgroup (A i)) (L : Subgroup G) (hL : ∀ x, x ∈ L ↔ ∀ i, P i → q i x ∈ N i)
@@ -111,6 +144,49 @@ end UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi.PfH
 open GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions GlobalTheory.UnitaryBC Formalism.L2.Host GlobalTheory.BCT GlobalTheory.LFun in
 open UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi.PfH in
 open scoped Classical in
+/- English proof (translation)
+Introduce `hSF hLT E _ _ _ n S Z N hS hZ hN I F hF`. Take `⟨-, -, hloc, hind, hfinK, -, -⟩` from `hSF E n S hS`. Take `⟨hLo, hLc, -, -⟩` from `hLT E n S Z N hS hZ hN`. Establish `hLev : ∀ x, x ∈ Lev S N ↔ ∀ i : Pl E × Bool, Sl S i → qw n i.1 i.2 x ∈ N i.1`. Introduce `x`.
+
+Simplify using `only [Lev, Subgroup.mem_iInf, Subgroup.mem_comap, Subtype.forall]`. Establish `hposition : ∀ i : Pl E × Bool, Sl S i → ∀ a ∈ N i.1, ∀ x, F i.1 i.2 (a * x) = F i.1 i.2 x ∧ F i.1 i.2 (x * a) = F i.1 i.2 x`. Introduce `i hi a ha x`. Distinguish the cases in `hiI : i ∈ I`. Conclude with `(hF.1 i hiI).2.2 a ha x`.
+
+Rewrite using `[hF.2 i hi hiI]`. Prove the components needed by the constructor for the conclusion. Distinguish the cases in `hx : x ∈ N i.1`. Rewrite using `[Set.indicator_of_mem (show a * x ∈ (N i.1 : Set _) from (N i.1).mul_mem ha hx), Set.indicator_of_mem (show x ∈ (N i.1 : Set _) from hx)]`. Both sides reduce to the same expression.
+
+Rewrite using `[Set.indicator_of_notMem (show a * x ∉ (N i.1 : Set _) from fun h => hx ((Subgroup.mul_mem_cancel_left _ ha).1 h)), Set.indicator_of_notMem (show x ∉ (N i.1 : Set _) from hx)]`. Distinguish the cases in `hx : x ∈ N i.1`. Rewrite using `[Set.indicator_of_mem (show x * a ∈ (N i.1 : Set _) from (N i.1).mul_mem hx ha), Set.indicator_of_mem (show x ∈ (N i.1 : Set _) from hx)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem (show x * a ∉ (N i.1 : Set _) from fun h => hx ((Subgroup.mul_mem_cancel_right _ ha).1 h)), Set.indicator_of_notMem (show x ∉ (N i.1 : Set _) from hx)]`.
+
+Establish `hfalse : ∀ w, w ∈ S → Sl S (w, false)` using `fun w hw => ⟨hw, by simp⟩`. Establish `htrue : ∀ w, w ∈ S → IsSplitAt w → Sl S (w, true)` using `fun w hw hs => ⟨hw, fun _ => hs⟩`. Establish `hinvL : ∀ k ∈ Lev S N, ∀ x, pf S F (k * x) = pf S F x`. Introduce `k hk x`. Use `finprod_congr fun w => finprod_congr fun hw => ?_` and prove the remaining obligations.
+
+Establish `hk'` using `(hLev k).1 hk`. Establish `h1` using `(hposition (w, false) (hfalse w hw) _ (hk' _ (hfalse w hw)) (qw n w false x)).1`. Simplify using `only [map_mul] at h1 ⊢`. Rewrite using `[h1]`. Distinguish the cases in `hs : IsSplitAt w`.
+
+Establish `h2` using `(hposition (w, true) (htrue w hw hs) _ (hk' _ (htrue w hw hs)) (qw n w true x)).1`. Simplify using `only [if_pos hs]`. Rewrite using `[h2]`. Simplify using `only [if_neg hs]`. Establish `hinvR : ∀ k ∈ Lev S N, ∀ x, pf S F (x * k) = pf S F x`.
+
+Introduce `k hk x`. Use `finprod_congr fun w => finprod_congr fun hw => ?_` and prove the remaining obligations. Establish `hk'` using `(hLev k).1 hk`. Establish `h1` using `(hposition (w, false) (hfalse w hw) _ (hk' _ (hfalse w hw)) (qw n w false x)).2`. Simplify using `only [map_mul] at h1 ⊢`.
+
+Rewrite using `[h1]`. Distinguish the cases in `hs : IsSplitAt w`. Establish `h2` using `(hposition (w, true) (htrue w hw hs) _ (hk' _ (htrue w hw hs)) (qw n w true x)).2`. Simplify using `only [if_pos hs]`. Rewrite using `[h2]`.
+
+Simplify using `only [if_neg hs]`. Establish `hfac : ∀ x : GF E n, pf S F x ≠ 0 → ∀ w ∈ S, (F w false (qw n w false x) * if IsSplitAt w then F w true (qw n w true x) else 1) ≠ 0`. Introduce `x hx w hw h0`. Apply `hx` to reduce the goal to its premises. Use `set fac : Pl E → ℂ := fun w => F w false (qw n w false x) * if IsSplitAt w then F w true (qw n w true x) else 1 with hfacdef`.
+
+Establish `hbad` using `hfinK x`. Establish `hfin : (S ∩ Function.mulSupport fac).Finite`. Use `((Z.finite_toSet.union (I.image Prod.fst).finite_toSet).union (hbad.image Prod.fst)).subset ?_` and prove the remaining obligations. Introduce and unpack `u ⟨hu, hne⟩`. Assume the negation of the conclusion as `hout`.
+
+Simplify using `only [Set.mem_union, Finset.mem_coe, Finset.mem_image, Set.mem_image, Set.mem_setOf_eq, not_or, not_exists, not_and] at hout`. Take `⟨⟨huZ, huI⟩, hub⟩` from `hout`. Establish `hNu : N u = KGL u n` using `(hN u).2.2.2 huZ`. Establish `hone : ∀ b, Sl S (u, b) → F u b (qw n u b x) = 1`. Introduce `b hb`.
+
+Establish `hnotI : (u, b) ∉ I` using `fun h => huI (u, b) h rfl`. Establish `hq : qw n u b x ∈ KGL u n`. Assume the negation of the conclusion as `hq`. Conclude with `hub (u, b) hq rfl`. Rewrite using `[hF.2 (u, b) hb hnotI]`.
+
+Simplify using `only`. Rewrite using `[hNu, Set.indicator_of_mem (show qw n u b x ∈ (KGL u n : Set _) from hq)]`. Both sides reduce to the same expression. Apply `hne` to reduce the goal to its premises. Simplify using `only [hfacdef]`.
+
+Rewrite using `[hone false (hfalse u hu)]`. Distinguish the cases in `hs : IsSplitAt u`. Simplify using `only [if_pos hs]`. Rewrite using `[hone true (htrue u hu hs), one_mul]`. Simplify using `only [if_neg hs, one_mul]`.
+
+Establish `hwm : w ∈ hfin.toFinset`. Rewrite using `[Set.Finite.mem_toFinset]`. Use `⟨hw, ?_⟩` and prove the remaining obligations. Use `show fac w ≠ 1`. Rewrite using `[show fac w = 0 from h0]`.
+
+Conclude with `zero_ne_one`. Use `show (∏ᶠ w ∈ S, fac w) = 0`. Rewrite using `[finprod_mem_eq_prod fac hfin]`. Conclude with `Finset.prod_eq_zero hwm h0`. Establish `hval : ∀ x : GF E n, pf S F x ≠ 0 → ∀ i : Pl E × Bool, Sl S i → F i.1 i.2 (qw n i.1 i.2 x) ≠ 0`.
+
+Introduce and unpack `x hx ⟨w, b⟩ ⟨hw, hb⟩`. Establish `h` using `hfac x hx w hw`. Consider the cases of `b with`. Consider the case `false => exact left_ne_zero_of_mul h`. Consider the case `true`.
+
+Establish `hs` using `hb rfl`. Establish `h2` using `right_ne_zero_of_mul h`. Rewrite `h2` using `[if_pos hs]`. Then use the resulting hypothesis. Use `⟨?_, fun k hk x => ⟨hinvL k hk x, hinvR k hk x⟩⟩` and prove the remaining obligations. Use `abs_support (ι := Pl E × Bool) (A := fun i => GLw n i.1) (fun i => jw n i.1 i.2) (fun i => qw n i.1 i.2) (fun i => (hloc i.1 i.2).1) (Sl S) (fun i => N i.1) (Lev S N) hLev hLo hLc (fun i a => (hloc i.1 i.2).2.2.1 a) (fun i k hi hk hne a => hind i k hi hk hne a) I (fun i hi => (hF …` and prove the remaining obligations.
+
+Introduce `x hx`. Use `⟨fun i hi => subset_tsupport _ (hval x hx i (hF.1 i hi).1), fun i hi hiI => ?_⟩` and prove the remaining obligations. Establish `h` using `hval x hx i hi`. Rewrite `h` using `[hF.2 i hi hiI]`. Assume the negation of the conclusion as `hq`.
+
+Conclude with `h (Set.indicator_of_notMem hq _)`.
+-/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi.pfHecke_pf :
     SlotBasic → LevTop → PfHecke := by
   intro hSF hLT E _ _ _ n S Z N hS hZ hN I F hF

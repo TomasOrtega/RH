@@ -7,6 +7,9 @@ import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicC
 
 namespace PositivityTheory.Rg.Sw.SP
 
+/- English proof (translation)
+The claim follows from `sPrime_of' PositivityTheory.Rg.Sw.WR.B.clsBound PositivityTheory.Rg.Sw.WR.K.GB.clsGainB PositivityTheory.Rg.Sw.WR.ibp PositivityTheory.Rg.Sw.WR.I.integr PositivityTheory.Rg.Sw.WR.Z.chain PositivityTheory.Rg.Sw.WR.Z.ext`.
+-/
 theorem sPrime_of : SPrimeOf :=
   sPrime_of' PositivityTheory.Rg.Sw.WR.B.clsBound PositivityTheory.Rg.Sw.WR.K.GB.clsGainB PositivityTheory.Rg.Sw.WR.ibp PositivityTheory.Rg.Sw.WR.I.integr
     PositivityTheory.Rg.Sw.WR.Z.chain PositivityTheory.Rg.Sw.WR.Z.ext

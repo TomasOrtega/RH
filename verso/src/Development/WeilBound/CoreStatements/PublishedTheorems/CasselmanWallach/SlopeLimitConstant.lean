@@ -6,6 +6,15 @@ namespace PositivityTheory.CW
 
 namespace ExistsNormingFunctional
 
+/- English proof (translation)
+Establish `H : ∀ c : ℂ, c • x₀ = 0 → (RingHom.id ℂ) c • ((q x₀ : ℝ) : ℂ) = 0`. Introduce `c hc`. Establish `h0 : ‖c‖ * q x₀ = 0` using `by rw [← map_smul_eq_mul q, hc, map_zero]`. Break down `mul_eq_zero.1 h0 with h | h` into its components or cases. Simplify using `[norm_eq_zero.1 h]`.
+
+Simplify using `[h]`. Set `f : Module.Dual ℂ (Submodule.span ℂ {x₀})` to `(LinearPMap.mkSpanSingleton' x₀ ((q x₀ : ℝ) : ℂ) H).toFun`. Establish `hf : ∀ (c : ℂ) (h : c • x₀ ∈ Submodule.span ℂ {x₀}), f ⟨c • x₀, h⟩ = c * (q x₀ : ℂ)`. Introduce `c h`. Conclude with `(LinearPMap.mkSpanSingleton'_apply x₀ ((q x₀ : ℝ) : ℂ) H c h).trans (by simp)`.
+
+Establish `h1 : f ⟨x₀, Submodule.mem_span_singleton_self x₀⟩ = (q x₀ : ℂ)` using `LinearPMap.mkSpanSingleton'_apply_self x₀ ((q x₀ : ℝ) : ℂ) H _`. Take `⟨g, hg, hgq⟩` from `Module.Dual.exists_extension_of_le_seminorm (Submodule.span ℂ {x₀}) f (p := q) (by`. Introduce and unpack `⟨z, hz⟩`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hz`. Rewrite using `[hf, norm_mul, Complex.norm_real, Real.norm_of_nonneg (apply_nonneg q x₀)]`.
+
+Conclude with `le_of_eq (map_smul_eq_mul q c x₀).symm)`. Use `⟨g, ?_, hgq⟩` and prove the remaining obligations. Establish `h2` using `hg ⟨x₀, Submodule.mem_span_singleton_self x₀⟩`. Rewrite `h2` using `[h1]`. Rewrite using `[show g x₀ = (q x₀ : ℂ) from h2, Complex.norm_real, Real.norm_of_nonneg (apply_nonneg q x₀)]`.
+-/
 theorem exists_norming {E : Type} [AddCommGroup E] [Module ℂ E] (q : Seminorm ℂ E) (x₀ : E) :
     ∃ φ : Module.Dual ℂ E, ‖φ x₀‖ = q x₀ ∧ ∀ x, ‖φ x‖ ≤ q x := by
   have H : ∀ c : ℂ, c • x₀ = 0 → (RingHom.id ℂ) c • ((q x₀ : ℝ) : ℂ) = 0 := by
@@ -34,6 +43,17 @@ theorem exists_norming {E : Type} [AddCommGroup E] [Module ℂ E] (q : Seminorm 
 
 end ExistsNormingFunctional
 
+/- English proof (translation)
+Use `set J := ReciprocityTheory.ChartRestriction.DS.Jm ε with hJdef`. Establish `hJJ : J * J = 1`. Rewrite using `[hJdef, ReciprocityTheory.ChartRestriction.DS.Jm, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+
+Apply the tactic sequence `split_ifs <;> norm_num`. Set `u : (Matrix (Fin n) (Fin n) ℂ)ˣ` to `⟨J, J, hJJ, hJJ⟩`. Establish `hX' : Xᴴ * J + J * X = 0` using `hX`. Use `set Y : Matrix (Fin n) (Fin n) ℂ := t • X with hYdef`. Establish `hYJ : Yᴴ * J = -(J * Y)`.
+
+Rewrite using `[hYdef, Matrix.conjTranspose_smul, star_trivial, smul_mul_assoc, Matrix.mul_smul, eq_neg_of_add_eq_zero_left hX', smul_neg]`. Establish `hY : Yᴴ = J * (-Y) * J`. Combine the equalities or inequalities in the displayed calculation. Establish `hexp : NormedSpace.exp Yᴴ = J * NormedSpace.exp (-Y) * J`. Establish `h` using `Matrix.exp_units_conj u (-Y)`.
+
+Rewrite using `[hY]`. Conclude with `h`. Establish `hdet : IsUnit (NormedSpace.exp Y).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (Matrix.isUnit_exp _)`. Use `show (NormedSpace.exp Y)ᴴ * J * NormedSpace.exp Y = J`. Rewrite using `[← Matrix.exp_conjTranspose, hexp, Matrix.exp_neg]`.
+
+Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc J J, hJJ, one_mul, Matrix.nonsing_inv_mul _ hdet, mul_one]`.
+-/
 private theorem exp_smul_mem_UJset_of_mem_lieSet {n : ℕ} (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) ℂ)
     (hX : X ∈ lieSet ε) (t : ℝ) : NormedSpace.exp (t • X) ∈ UJset ε := by
   set J := ReciprocityTheory.ChartRestriction.DS.Jm ε with hJdef
@@ -62,6 +82,25 @@ private theorem exp_smul_mem_UJset_of_mem_lieSet {n : ℕ} (ε : Fin n → Bool)
   simp only [mul_assoc]
   rw [← mul_assoc J J, hJJ, one_mul, Matrix.nonsing_inv_mul _ hdet, mul_one]
 
+/- English proof (translation)
+Introduce `n ε H _ _ _ σ hU hI E _ _ _ _ _ _ p π dπ hπ hCore T₀ hT i`. Take `⟨q, N, hq, hgrow⟩` from `hπ.growth i`. Take `⟨S, C, I₀, hS, hC, hI₀, hmain⟩` from `hCore N`. Use `⟨S, C * ∑ e ∈ I₀, q (T₀ e), hS, ?_⟩` and prove the remaining obligations. Introduce `w hw`.
+
+Take `⟨φ, hφ1, hφ2⟩` from `ExistsNormingFunctional.exists_norming (p i) (T₀ w)`. Establish `hφc : Continuous φ` using `hπ.withSeminorms.continuous_normedSpace_rng ℂ φ ⟨{i}, 1, by`. Introduce `x`. Simplify using `using hφ2 x⟩`. Set `F : H →ₗ[ℂ] Mx n → ℂ` to `LinearMap.pi (fun g => φ ∘ₗ (π g).toLinearMap ∘ₗ T₀)`.
+
+Establish `hF : ∀ v g, F v g = φ (π g (T₀ v))` using `fun _ _ => rfl`. Establish `hpos : ∀ g : Mx n, 0 ≤ (1 + hs g) ^ N`. Introduce `g`. Apply `pow_nonneg` to reduce the goal to its premises. Establish `: 0 ≤ hs g`.
+
+Unfold `hs`. Conclude with `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hB : 0 ≤ ∑ e ∈ I₀, q (T₀ e)` using `Finset.sum_nonneg fun _ _ => apply_nonneg _ _`. Establish `key` using `hmain F (fun v _ => by show ContinuousOn (fun g => φ (π g (T₀ v))) (UJset ε)`.
+
+Conclude with `hφc.comp_continuousOn (hπ.continuousOn (T₀ v)))`. Use the proof step `(fun X hX v hv g hg => by`. Rewrite using `[hF, hT.2 X hX v hv, hasDerivAt_iff_tendsto_slope]`. Establish `hΛ : Continuous fun z : E => φ (π g z)` using `hφc.comp (π g).continuous`. Establish `heq : slope (fun t : ℝ => F v (g * NormedSpace.exp (t • X))) 0 = fun t : ℝ => φ (π g (((t : ℂ))⁻¹ • ((π (NormedSpace.exp (t • X))) (T₀ v) - T₀ v)))`.
+
+Use function extensionality and compare the values at `t`. Rewrite using `[slope_def_module]`. Simplify using `only [hF, sub_zero, zero_smul, NormedSpace.exp_zero, mul_one, hπ.map_mul g hg _ (exp_smul_mem_UJset_of_mem_lieSet ε X hX t), ContinuousLinearMap.comp_apply, map_smul, map_sub, smul_eq_mul, Complex.real_smul, Complex.ofReal_inv]`. Rewrite using `[heq]`. Conclude with `(hΛ.tendsto _).comp (hπ.hasDRep X hX (T₀ v)))`.
+
+Use the proof step `(fun v _ => ⟨q (T₀ v), fun g hg => by`. Rewrite using `[hF]`. Combine the equalities or inequalities in the displayed calculation. Use the proof step `(∑ e ∈ I₀, q (T₀ e)) hB`. Use the proof step `(fun e he g hg => by`.
+
+Rewrite using `[hF]`. Combine the equalities or inequalities in the displayed calculation. Use `w hw`. Rewrite `key` using `[hF, hπ.map_one, ContinuousLinearMap.one_apply]`. Rewrite using `[← hφ1]`.
+
+Conclude with `key`.
+-/
 theorem d1b : D1 := by
   intro n ε H _ _ _ σ hU hI E _ _ _ _ _ _ p π dπ hπ hCore T₀ hT i
   obtain ⟨q, N, hq, hgrow⟩ := hπ.growth i

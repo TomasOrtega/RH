@@ -15,6 +15,9 @@ open GlobalTheory.Mum
 noncomputable section
 namespace GlobalTheory.Mum.RedVal
 
+/- English proof (translation)
+Rewrite using `[zpow_sub_one]`. Simplify using `only [zpow_neg, zpow_one, zpow_natCast]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_pow]`. Normalize the expressions using the abelian group laws.
+-/
 theorem commGroup_fourFactor_exponents_cancel_pow {M : Type} [CommGroup M] (a b c d : M) (k : ℕ) :
     a ^ ((k:ℤ)-1) * b ^ (1:ℤ) * c ^ (-1:ℤ) * d ^ (1:ℤ) * (b ^ (-1:ℤ) * c ^ (1:ℤ) * a ^ (1:ℤ) * d ^ (-1:ℤ)) = a ^ k := by
   rw [zpow_sub_one]; simp only [zpow_neg, zpow_one, zpow_natCast]
@@ -22,17 +25,31 @@ theorem commGroup_fourFactor_exponents_cancel_pow {M : Type} [CommGroup M] (a b 
   simp only [ofMul_mul, ofMul_inv, ofMul_pow]
   abel
 
+/- English proof (translation)
+Apply the tactic sequence `unfold gs; split_ifs <;> simp`.
+-/
 theorem gs_zero' {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (U : X.Opens) : gs f y U 0 = 0 := by
   unfold gs; split_ifs <;> simp
 
+/- English proof (translation)
+Simplify using `only [gs_eq f y U h, map_pow]`.
+-/
 theorem gs_pow' {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (U : X.Opens) (h : f y ∈ U) (a : Γ(X, U)) (n : ℕ) :
     gs f y U (a ^ n) = gs f y U a ^ n := by
   simp only [gs_eq f y U h, map_pow]
 
+/- English proof (translation)
+Simplify using `only [gs_eq f y U h, map_sum]`.
+-/
 theorem gs_sum' {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (U : X.Opens) (h : f y ∈ U) {Ix : Type} (s : Finset Ix)
     (a : Ix → Γ(X, U)) : gs f y U (∑ i ∈ s, a i) = ∑ i ∈ s, gs f y U (a i) := by
   simp only [gs_eq f y U h, map_sum]
 
+/- English proof (translation)
+Take `⟨J', hJ'⟩` from `GlobalTheory.TorusCoord.exists_good' D.P.isLB z`. Establish `E` using `hb Z r z (fun κ => J' ((r ≫ D'.famφB a κ) ≫ hD.e.hom.left ≫ pullback.fst D.P.A.hom (specOf φ))) (fun κ => J₁ (r ≫ D'.famφB a κ)) (fun κ => hJ' _) (fun κ => hJ₁ _)`. Establish `h0 : gs (r ≫ hD.e.hom.left ≫ pullback.fst D.P.A.hom (specOf φ)) z (LB.wchart D.P.L (D.famφB (hD.xe a)) (fun κ => J' ((r ≫ D'.famφB a κ) ≫ hD.e.hom.left ≫ pullback.fst D.P.A.hom (specOf φ)))) (b.f (fun κ => J' ((r ≫ D'.famφB a κ) ≫ hD.e.hom.left ≫ pullback.fst D.P.A.hom (specOf φ) …`. Rewrite using `[← hh]`. Distinguish the cases in `hm : (h' ≫ pullback.fst D.P.A.hom (thick R I e)) z ∈ LB.wchart D.P.L (D.famφB (hD.xe a)) (fun κ => J' ((r ≫ D'.famφB a κ) ≫ hD.e.hom.left ≫ pullback.fst D.P.A.hom (specOf φ)))`.
+
+Conclude with `(gs_pull h' _ z _ hm _).symm.trans ((congrArg (gs h' z _) (hv _)).trans (gs_zero' _ _ _))`. Unfold `gs`. Conclude with `dif_neg hm`. Rewrite `E` using `[h0]`. Conclude with `(Units.mul_right_eq_zero _).1 E.symm`.
+-/
 theorem sval_zero_of_van {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] {φ : R →+* R'}
     {D : DegPre R} {D' : DegPre R'} (hD : IsPullDeg φ D D') {k : ℕ} (a : D'.X) (b : D.SecB k (hD.xe a))
     (b' : D'.SecB k a) (hb : PullB hD a b b') (I : Ideal R) (e : ℕ) (hv : VanMod I b e) {Z : Scheme.{0}}
@@ -55,6 +72,21 @@ theorem sval_zero_of_van {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [
   rw [h0] at E
   exact (Units.mul_right_eq_zero _).1 E.symm
 
+/- English proof (translation)
+Take `⟨S, hS0, hS⟩` from `hX`. Set `p : (PUnit.{1} → D.toPre.P.L.ι) × (PUnit.{1} → U.LG.L.ι)` to `(fun _ => J₁ (g ≫ (U.gt 0).pG.left), fun _ => J₂ ((g ≫ (fstG I 0 G).left) ≫ 𝟙 G.left))`. Set `j₁ : Fin 1 → U.LG.L.ι` to `fun _ => J₂ ((g ≫ (fstG I 0 G).left) ≫ 𝟙 G.left)`. Set `jf : D.toPre.X → Fin 4 → D.toPre.P.L.ι` to `fun a κ => J₁ ((g ≫ (U.gt 0).pG.left) ≫ D.toPre.famφB a κ)`. Set `jt : D.toPre.X → Fin 4 → D.toPre.P.L.ι` to `fun a κ => J₁ (g ≫ D.toPre.Oφ (U.gt 0).pG a κ)`.
+
+Establish `hcoh : CohAll D.toPre.P.L (Sum.elim (fun _ : PUnit.{1} => (U.gt 0).pG.left) (Sum.elim (fun a : S × Fin 4 => (U.gt 0).pG.left ≫ D.toPre.famφB a.1.1 a.2) (fun a : S × Fin 4 => D.toPre.Oφ (U.gt 0).pG a.1.1 a.2))) (Sum.elim (fun _ => p.1 PUnit.unit) (Sum.elim (fun a : S × Fin 4 => jf …`. Establish `key : ∀ i, (Sum.elim (fun _ => p.1 PUnit.unit) (Sum.elim (fun a : S × Fin 4 => jf a.1.1 a.2) (fun a : S × Fin 4 => jt a.1.1 a.2))) i = J₁ (g ≫ (Sum.elim (fun _ : PUnit.{1} => (U.gt 0).pG.left) (Sum.elim (fun a : S × Fin 4 => (U.gt 0).pG.left ≫ D.toPre.famφB a.1.1 a.2) (fun a : S …`. Introduce and unpack `(_ | (_ | _))`. Both sides reduce to the same expression. Simplify using `only [Sum.elim_inl, Sum.elim_inr, jf, Category.assoc]`.
+
+Both sides reduce to the same expression. Introduce `a b e`. Rewrite using `[key a, key b, e]`. Establish `E` using `hS p j₁ jf jt rfl hcoh`. Establish `hA : g z ∈ (LB.div (D.toPre.P.L.pull (U.gt 0).pG.left) (U.LG.L.pull (fstG I 0 G).left)).U p` using `⟨mem_pull.2 (hJ₁ (g ≫ (U.gt 0).pG.left)), mem_pull.2 (hJ₂ ((g ≫ (fstG I 0 G).left) ≫ 𝟙 G.left))⟩`.
+
+Establish `hB : g z ∈ (fstG I 0 G).left ⁻¹ᵁ LB.wchart U.LG.L (fun _ : Fin 1 => 𝟙 G.left) j₁` using `hJ₂.mem (fun _ : Fin 1 => 𝟙 G.left) (g ≫ (fstG I 0 G).left)`. Establish `hC : ∀ a, g z ∈ (U.gt 0).pG.left ⁻¹ᵁ LB.wchart D.toPre.P.L (D.toPre.famφB a) (jf a)` using `fun a => hJ₁.mem (D.toPre.famφB a) (g ≫ (U.gt 0).pG.left)`. Establish `hD' : ∀ a, g z ∈ LB.wchart D.toPre.P.L (D.toPre.Oφ (U.gt 0).pG a) (jt a)` using `fun a => hJ₁.mem (D.toPre.Oφ (U.gt 0).pG a) g`. Establish `hm : g z ∈ U.expW 0 p j₁ S jf jt`. Use `⟨⟨hA, hB⟩, ?_⟩` and prove the remaining obligations.
+
+Conclude with `Finset.inf_induction (p := fun V : (thickObj W I 0 G).left.Opens => g z ∈ V) trivial (fun _ h₁ _ h₂ => ⟨h₁, h₂⟩) (fun a _ => ⟨hC a, hD' a⟩)`. Establish `E'` using `congrArg (gs g z (U.expW 0 p j₁ S jf jt)) E`. Rewrite `E'` using `[gs_mul g z _ hm, gs_pow' g z _ hm, gs_unit g z _ hm, gm_res g z _ hm, gs_res g z _ hm, gs_sum' g z _ hm]`. Use `erw [gs_pull g (fstG I 0 G).left z _ hB] at E'`. Use `E'.trans ?_` and prove the remaining obligations.
+
+Establish `hterm : ∀ a : S, gs g z (U.expW 0 p j₁ S jf jt) (((thickObj W I 0 G).left.presheaf.map (homOfLE (U.expW_le_f 0 p j₁ jf jt a.2)).op).hom (((U.gt 0).pG.left.app _).hom ((f a.1).f (jf a.1))) * (res (U.expWeight_le_chart_weight 0 p j₁ jf jt a.2) (((U.gt 0).t a.1).s (jt a.1))).val) = …` using `fun a => by`. Rewrite using `[gs_mul g z _ hm, gs_res g z _ hm, gs_unit g z _ hm]`. Use `erw [gm_res g z (U.expWeight_le_chart_weight 0 p j₁ jf jt a.2) hm, gs_pull g (U.gt 0).pG.left z _ (hC a.1)]`. Both sides reduce to the same expression. Rewrite using `[Finset.sum_congr rfl (fun a _ => hterm a)]`.
+
+Rewrite using `[Finset.sum_attach S (fun a => sval (f a) (g ≫ (U.gt 0).pG.left) z J₁ * (val ((U.gt 0).t a) g z J₁).val)]`. Use `Finset.sum_eq_single x (fun b _ hb => by rw [hv b hb, zero_mul]) (fun hx => ?_)` and prove the remaining obligations. Establish `h0 : sval (f x) (g ≫ (U.gt 0).pG.left) z J₁ = 0` using `(gs_pull g (U.gt 0).pG.left z _ (hC x) _).symm.trans ((congrArg (gs g z _) (hS0 x hx _)).trans (gs_zero' _ _ _))`. Rewrite using `[h0, zero_mul]`.
+-/
 theorem expand_eval {W : Type} [CommRing W] [IsDomain W] {I : Ideal W} {D : DegData W I}
     {A : PolAV (Spec (CommRingCat.of (FractionRing W)))} {G : Over (Spec (CommRingCat.of W))} [GrpObj G]
     [IsCommMonObj G] (U : UnifPre I D A G) {k : ℕ} (σ : H0 U.LG.L k) (f : ∀ α : D.toPre.X, D.toPre.SecB k α)
@@ -121,6 +153,39 @@ theorem expand_eval {W : Type} [CommRing W] [IsDomain W] {I : Ideal W} {D : DegD
     (gs_pull g (U.gt 0).pG.left z _ (hC x) _).symm.trans ((congrArg (gs g z _) (hS0 x hx _)).trans (gs_zero' _ _ _))
   rw [h0, zero_mul]
 
+/- English proof (translation)
+Introduce `R _ _ _ _ D C Y W _ _ _ T Z p' y g ξ' hg hpt hpull k u z J J' hJ hJ'`. Substitute `hg` using the available equality. Take `⟨J₁, hJ₁⟩` from `GlobalTheory.TorusCoord.exists_good' T.D'.toPre.P.isLB z`. Take `⟨J₂, hJ₂⟩` from `GlobalTheory.TorusCoord.exists_good' T.U.LG.isLB z`. Use `set Fm := T.hD.e.hom.left ≫ pullback.fst D.toPre.P.A.hom (specOf T.φ) with hFm`.
+
+Use `set r := g ≫ (T.U.gt 0).pG.left with hr`. Use `set p' := g ≫ (fstG (maximalIdeal W) 0 T.G).left with hp'`. Set `Gw : (Z ⟶ T.D'.toPre.P.A.left) → (Z.presheaf.stalk z)ˣ` to `fun f => gw T.hD.w f z (J' (f ≫ Fm)) (J₁ f)`. Set `W0` to `gm g z _ ((T.U.w 0).s (fun _ => J₁ (g ≫ (T.U.gt 0).pG.left), fun _ => J₂ (p' ≫ 𝟙 T.G.left)))`. Set `uG : Γ(T.G.left, ⊤)ˣ` to `Units.map (T.G.hom.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of W)).inv.hom).toMonoidHom u`.
+
+Use `⟨gm p' z ⊤ uG * gw T.ℓ p' z (J (p' ≫ T.β)) (J₂ p') ^ k * (W0 ^ k)⁻¹ * (Gw r ^ k)⁻¹, ?_⟩` and prove the remaining obligations. Introduce `α b τ F σ hτ hL hE`. Take `⟨x, rfl⟩` from `T.hD.xe.surjective α`. Take `⟨σ', f', hC, hP, hX⟩` from `hE`. Establish `hb' : ξ'.b.left = r` using `hpt.1`.
+
+Establish `hq : (Y.Φ (Over.mk (y ≫ Y.H.hom)) (Over.homMk y rfl)).b.left = y ≫ Y.q.left`. Establish `h` using `(Y.rep.1 (Over.mk (y ≫ Y.H.hom)) Y.H (Over.homMk y rfl) (𝟙 _)).1`. Rewrite `h` using `[Category.comp_id]`. Conclude with `h`. Establish `hrF : r ≫ Fm = y ≫ Y.q.left`.
+
+Establish `h` using `hpull.1`. Rewrite `h` using `[hb']`. Conclude with `h.trans ((Category.id_comp _).trans hq)`. Use `haveI := T.loc`. Establish `hmm : maximalIdeal R ^ (0 + 1) ≤ (maximalIdeal W ^ (0 + 1)).comap T.φ`.
+
+Simplify using `only [zero_add, pow_one]`. Introduce `a ha`. Conclude with `(mem_maximalIdeal _).2 fun hu => (mem_maximalIdeal _).1 ha (isUnit_of_map_unit T.φ a hu)`. Set `qm : R ⧸ maximalIdeal R ^ (0 + 1) →+* W ⧸ maximalIdeal W ^ (0 + 1)` to `Ideal.quotientMap _ T.φ hmm`. Establish `hsq : thick W (maximalIdeal W) 0 ≫ specOf T.φ = Spec.map (CommRingCat.ofHom qm) ≫ thick R (maximalIdeal R) 0`.
+
+Simplify using `only [thick, specOf, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Establish `hcond : (r ≫ Fm) ≫ D.toPre.P.A.hom = (g ≫ (thickObj W (maximalIdeal W) 0 T.G).hom ≫ Spec.map (CommRingCat.ofHom qm)) ≫ thick R (maximalIdeal R) 0`. Establish `e1 : Fm ≫ D.toPre.P.A.hom = T.D'.toPre.P.A.hom ≫ specOf T.φ`. Rewrite using `[hFm, Category.assoc, pullback.condition, ← Category.assoc]`.
+
+Use `congr 1`. Conclude with `Over.w T.hD.e.hom`. Establish `e2 : r ≫ T.D'.toPre.P.A.hom = g ≫ (thickObj W (maximalIdeal W) 0 T.G).hom ≫ thick W (maximalIdeal W) 0`. Rewrite using `[hr, Category.assoc, Over.w (T.U.gt 0).pG]`. Both sides reduce to the same expression.
+
+Rewrite using `[Category.assoc, e1, ← Category.assoc, e2, Category.assoc, Category.assoc, hsq, Category.assoc, Category.assoc]`. Set `h'` to `pullback.lift (r ≫ Fm) _ hcond`. Establish `hh : h' ≫ pullback.fst D.toPre.P.A.hom (thick R (maximalIdeal R) 0) = r ≫ T.hD.e.hom.left ≫ pullback.fst D.toPre.P.A.hom (specOf T.φ)` using `pullback.lift_fst _ _ _`. Establish `hvan : ∀ a, a ≠ x → sval (f' a) r z J₁ = 0` using `fun a ha => sval_zero_of_van T.hD a (F.f (T.hD.xe a)) (f' a) (hP a) (maximalIdeal R) 0 (hL.2 _ (fun e => ha (T.hD.xe.injective e))) r h' hh z hJ₁`. Establish `E1` using `expand_eval T.U.toUnifPre σ' f' (hX 0) g z hJ₁ hJ₂ x hvan`.
+
+Establish `E2` using `hC Z p' z J J₂ hJ hJ₂`. Establish `E3` using `hτ (Over.mk (y ≫ Y.H.hom)) (Over.homMk y rfl) z J' hJ'`. Establish `E4` using `hP x Z r z (fun κ => J' ((r ≫ T.D'.toPre.famφB x κ) ≫ Fm)) (fun κ => J₁ (r ≫ T.D'.toPre.famφB x κ)) (fun κ => hJ' _) (fun κ => hJ₁ _)`. Rewrite `E4` using `[hL.1]`. Establish `E4' : sval b (y ≫ Y.q.left) z J' = (∏ κ, Gw (r ≫ T.D'.toPre.famφB x κ) ^ DegPre.famε k κ).val * sval (f' x) r z J₁`.
+
+Establish `hfam : ∀ κ, (r ≫ Fm) ≫ D.toPre.famφB (T.hD.xe x) κ = (r ≫ T.D'.toPre.famφB x κ) ≫ Fm` using `fun κ => by`. Establish `e` using `GlobalTheory.ExpGTrans.famφB_pull T.hD x κ`. Rewrite `e` using `[← hFm]`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (r ≫ ·) e.symm).trans (Category.assoc _ _ _).symm)`. Rewrite using `[sval_of b (y ≫ Y.q.left) z J' (fun κ => J' ((r ≫ T.D'.toPre.famφB x κ) ≫ Fm)) (fun κ => by`.
+
+Rewrite using `[← hrF, hfam])]`. Rewrite using `[← hrF]`. Conclude with `E4`. Establish `E5 : val ((T.U.gt 0).t x) g z J₁ = val (ξ'.s x) (𝟙 Z) z J₁`. Rewrite using `[val_corr hJ₁ (hpt.2 x) (𝟙 Z), val_pull hJ₁, Category.id_comp]`.
+
+Take `⟨hψ, hM⟩` from `hpull.2 x`. Establish `E6` using `ReciprocityTheory.ChartRestriction.G.Out.OLinPf.ILin.val_maps _ T.hD.w _ DegPre.gtε _ (𝟙 Z) hψ _ _ hM (𝟙 Z) z J₁ J' hJ₁ hJ'`. Establish `hO` using `(GlobalTheory.TorusCoord.comp_eq_of_left ξ'.b (𝟙 T.D'.toPre.P.A) (𝟙 Z) r (by rw [hb']; simp)).1 x`. Establish `Gprod : (∏ κ, Gw (r ≫ T.D'.toPre.famφB x κ) ^ DegPre.famε k κ) * (∏ κ, Gw (𝟙 Z ≫ DegPre.gtφT _ _ ξ'.b x κ) ^ DegPre.gtε κ) = Gw r ^ k`. Simplify using `only [hO, Fin.prod_univ_four]`.
+
+Simplify using `only [DegPre.famφB, DegPre.Oφ, DegPre.famε, DegPre.gtε, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three, Matrix.head_cons, Over.id_left, Category.comp_id]`. Conclude with `commGroup_fourFactor_exponents_cancel_pow _ _ _ _ k`. Establish `E3' : sval τ y z J' = sval b (y ≫ Y.q.left) z J' * (val ((Y.Φ (Over.mk (y ≫ Y.H.hom)) (Over.homMk y rfl)).s (T.hD.xe x)) (𝟙 Z) z J').val` using `E3`. Establish `E6' : val ((Y.Φ (Over.mk (y ≫ Y.H.hom)) (Over.homMk y rfl)).s (T.hD.xe x)) (𝟙 Z) z J' = (∏ κ, Gw (𝟙 Z ≫ DegPre.gtφT _ _ ξ'.b x κ) ^ DegPre.gtε κ) * val ((T.U.gt 0).t x) g z J₁`. Rewrite using `[E5]`.
+
+Conclude with `(congrArg (fun q => val ((Y.Φ (Over.mk (y ≫ Y.H.hom)) (Over.homMk y rfl)).s (T.hD.xe x)) q z J') (Category.comp_id (𝟙 Z)).symm).trans E6`. Establish `hu : gs p' z ⊤ (scal T.G.hom u.val) = (gm p' z ⊤ uG).val` using `gs_unit p' z ⊤ trivial uG`. Establish `hW : ((W0 ^ k)⁻¹ : (Z.presheaf.stalk z)ˣ).val * W0.val ^ k = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, Units.inv_mul]`. Establish `hG : ((Gw r ^ k)⁻¹ : (Z.presheaf.stalk z)ˣ).val * ((∏ κ, Gw (r ≫ T.D'.toPre.famφB x κ) ^ DegPre.famε k κ).val * (∏ κ, Gw (𝟙 Z ≫ DegPre.gtφT _ _ ξ'.b x κ) ^ DegPre.gtε κ).val) = 1`.
+
+Rewrite using `[← Units.val_mul, Gprod, Units.inv_mul]`. Rewrite using `[E2, hu, E3', E4', E6']`. Simplify using `only [Units.val_mul]`. Take the linear combination `(-((gm p' z ⊤ uG).val * (gw T.ℓ p' z (J (p' ≫ T.β)) (J₂ p') ^ k).val * ((W0 ^ k)⁻¹ : (Z.presheaf.stalk z)ˣ).val * sval (f' x) r z J₁ * (val ((T.U.gt 0).t x) g z J₁).val)) * hG - ((gm p' z ⊤ uG).val * (gw T.ℓ p' z (J (p' ≫ T.β)) (J₂ p') ^ k).val * sval σ' p' z J₂) * hW + ((gm p' z …`.
+-/
 theorem closedFibre_val : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (C : LabCover D) (Y : Ext D.toPre) (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] (T : Trait C W) (Z : Scheme.{0}) (p' : Z ⟶ T.G.left) (y : Z ⟶ Y.H.left) (g : Z ⟶ (thickObj W (maximalIdeal W) 0 T.G).left) (ξ' : GtPt T.D'.toPre (Over.mk (g ≫ (thickObj W (maximalIdeal W) 0 T.G).hom ≫ thick W (maximalIdeal W) 0))), g ≫ (fstG (maximalIdeal W) 0 T.G).left = p' → GlobalTheory.TorusCoord.IsPointOf (T.U.gt 0) g ξ' → IsPullPt T.hD (𝟙 Z) (Y.Φ (Over.mk (y ≫ Y.H.hom)) (Over.homMk y rfl)) ξ' → ∀ (k : ℕ) (u : Wˣ) (z : Z) J J', Good C.P.L.L z J → Good D.toPre.P.L z J' → ∃ c : (Z.presheaf.stalk z)ˣ, ∀ (α : D.toPre.X) (b : D.toPre.SecB k α) (τ : SecK D.toPre.P.L Y.q.left k) (F : IntFam (maximalIdeal R) D.toPre k) (σ : SecK C.P.L.L T.β k), IsTermOf Y b τ → F.Lead α b → T.ExpBy u σ F → sval σ p' z J = c.val * sval τ y z J' := by
   intro R _ _ _ _ D C Y W _ _ _ T Z p' y g ξ' hg hpt hpull k u z J J' hJ hJ'
   subst hg

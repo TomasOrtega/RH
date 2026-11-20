@@ -14,6 +14,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [Fintype α] [LinearOrder α]
   [∀ a, Fintype (m a)] [Fintype n] in
 
+/- English proof (translation)
+Simplify using `[Matrix.one_apply]`.
+-/
 theorem one_same (e : (Σ a, m a) ≃ n) (a : α) (i j : m a) :
     (1 : Matrix n n k) (e ⟨a, i⟩) (e ⟨a, j⟩) = (1 : Matrix (m a) (m a) k) i j := by
   simp [Matrix.one_apply]
@@ -21,10 +24,24 @@ theorem one_same (e : (Σ a, m a) ≃ n) (a : α) (i j : m a) :
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [Fintype α] [LinearOrder α]
   [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] [Fintype n] in
 
+/- English proof (translation)
+The claim follows from `Matrix.one_apply_ne fun e' => h (congrArg Sigma.fst (e.injective e'))`.
+-/
 theorem one_ne (e : (Σ a, m a) ≃ n) {a b : α} (h : a ≠ b) (i : m a) (j : m b) :
     (1 : Matrix n n k) (e ⟨a, i⟩) (e ⟨b, j⟩) = 0 :=
   Matrix.one_apply_ne fun e' => h (congrArg Sigma.fst (e.injective e'))
 
+/- English proof (translation)
+Take `⟨h1, h3⟩` from `mem_proRad.1 hg`. Take `⟨h1, h2⟩` from `mem_parahoric.1 h1`. Set `U : Matrix n n k` to `Matrix.of fun i j => if blk e i < blk e j then g.val i j else (1 : Matrix n n k) i j`. Establish `hU : StepData.MaxM (U - g.val)`. Introduce `i j`.
+
+Take `⟨⟨a, i⟩, rfl⟩` from `e.surjective i`. Take `⟨⟨b, j⟩, rfl⟩` from `e.surjective j`. Simplify using `only [U, Matrix.sub_apply, Matrix.of_apply, blk_apply]`. Break down `lt_trichotomy a b with h | rfl | h` into its components or cases. Simplify using `[h]`.
+
+Rewrite using `[if_neg (lt_irrefl a), one_same, Valuation.map_sub_swap]`. Conclude with `h3 a i j`. Rewrite using `[if_neg h.not_gt, one_ne e h.ne', zero_sub, Valuation.map_neg]`. Conclude with `h2 a b i j h`. Take `⟨x, hx, hgx⟩` from `StepData.exists_mul_KOne h1 hU`.
+
+Use `⟨g * x, ⟨mem_unipRad.2 ⟨mem_parab_iff.2 fun a b i j h => ?_, fun a i j => ?_⟩, mul_mem h1 (StepData.KOne_le_KO hx)⟩, x⁻¹, inv_mem hx, by simp⟩` and prove the remaining obligations. Rewrite using `[hgx]`. Simplify using `only [U, Matrix.of_apply, blk_apply]`. Rewrite using `[if_neg h.not_gt, one_ne e h.ne']`. Rewrite using `[hgx]`.
+
+Simplify using `only [U, Matrix.of_apply, blk_apply]`. Rewrite using `[if_neg (lt_irrefl a), one_same]`.
+-/
 theorem exists_jPlus_mul_KOne (e : (Σ a, m a) ≃ n) {g : GL n k} (hg : g ∈ proRad k e) :
     ∃ u ∈ jPlus k e, ∃ x ∈ KOne k n, g = u * x := by
   obtain ⟨h1, h3⟩ := mem_proRad.1 hg
@@ -51,16 +68,33 @@ theorem exists_jPlus_mul_KOne (e : (Σ a, m a) ≃ n) {g : GL n k} (hg : g ∈ p
     simp only [U, Matrix.of_apply, blk_apply]
     rw [if_neg (lt_irrefl a), one_same]
 
+/- English proof (translation)
+Take `⟨u, hu, x, hx, rfl⟩` from `exists_jPlus_mul_KOne e hg`. Conclude with `⟨u * x * u⁻¹, (Subgroup.mem_normalizer_iff.1 (KO_le_normalizer hu.2) x).1 hx, u, hu, by simp⟩`.
+-/
 theorem exists_KOne_mul_jPlus (e : (Σ a, m a) ≃ n) {g : GL n k} (hg : g ∈ proRad k e) :
     ∃ x ∈ KOne k n, ∃ u ∈ jPlus k e, g = x * u := by
   obtain ⟨u, hu, x, hx, rfl⟩ := exists_jPlus_mul_KOne e hg
   exact ⟨u * x * u⁻¹, (Subgroup.mem_normalizer_iff.1 (KO_le_normalizer hu.2) x).1 hx, u, hu, by simp⟩
 
+/- English proof (translation)
+Use `le_antisymm (fun g hg => ?_) (sup_le (KOne_le_proRad e) (jPlus_le_proRad e))` and prove the remaining obligations. Take `⟨x, hx, u, hu, rfl⟩` from `exists_KOne_mul_jPlus e hg`. Conclude with `Subgroup.mul_mem_sup hx hu`.
+-/
 theorem proRad_eq_sup (e : (Σ a, m a) ≃ n) : proRad k e = KOne k n ⊔ jPlus k e := by
   refine le_antisymm (fun g hg => ?_) (sup_le (KOne_le_proRad e) (jPlus_le_proRad e))
   obtain ⟨x, hx, u, hu, rfl⟩ := exists_KOne_mul_jPlus e hg
   exact Subgroup.mul_mem_sup hx hu
 
+/- English proof (translation)
+Establish `hx'` using `StepData.mem_KOne.1 hx`. Establish `hA : ∀ a : α, ∃ y ∈ KOne k n, y.val = Matrix.of fun i l => if a < blk e i then x.val i l else (1 : Matrix n n k) i l` using `fun a => StepData.exists_mem_KOne fun i l => by`. Simplify using `only [Matrix.sub_apply, Matrix.of_apply]`. Use `split_ifs`. Conclude with `hx' i l`.
+
+Simplify using the standard rewrite rules. Use `choose y hy hyv using hA`. Take `⟨c, hc, hcv⟩` from `StepData.exists_mem_KOne (M := Matrix.of fun i j => (y (blk e j))⁻¹.val i j) fun i j => StepData.mem_KOne.1 (inv_mem (hy (blk e j))) i j`. Establish `key : ∀ i j, ∑ l, (if blk e j < blk e i then x.val i l else (1 : Matrix n n k) i l) * c.val l j = (1 : Matrix n n k) i j` using `fun i j => by`. Use `congrFun (congrFun (y (blk e j)).mul_inv i) j` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.mul_apply, hyv]`. Rewrite using `[hcv]`. Conclude with `this`. Establish `h1 : ∀ i j, blk e i ≤ blk e j → c.val i j = (1 : Matrix n n k) i j` using `fun i j h => by`. Use `key i j` as an intermediate fact.
+
+Simplify using `only [if_neg h.not_gt] at this`. Rewrite `this` using `[← Matrix.mul_apply, Matrix.one_mul]`. Then use the resulting hypothesis. Use `⟨c, ⟨(mem_unipRadLower k).2 ⟨(mem_parabLower_iff k).2 fun a b i j h => ?_, fun a i j => ?_⟩, hc⟩, mem_parab_iff.2 fun a b i j h => ?_⟩` and prove the remaining obligations. Rewrite using `[h1 _ _ (by simpa using h.le), one_ne e h.ne]`. Rewrite using `[h1 _ _ (by simp), one_same]`.
+
+Use `key (e ⟨a, i⟩) (e ⟨b, j⟩)` as an intermediate fact. Simplify using `only [blk_apply, if_pos h] at this`. Rewrite using `[Units.val_mul, Matrix.mul_apply, this, one_ne e h.ne']`.
+-/
 theorem exists_mul_mem_parab (e : (Σ a, m a) ≃ n) {x : GL n k} (hx : x ∈ KOne k n) :
     ∃ c ∈ jMinus k e, x * c ∈ parab k e := by
   have hx' := StepData.mem_KOne.1 hx
@@ -92,6 +126,11 @@ theorem exists_mul_mem_parab (e : (Σ a, m a) ≃ n) {x : GL n k} (hx : x ∈ KO
     simp only [blk_apply, if_pos h] at this
     rw [Units.val_mul, Matrix.mul_apply, this, one_ne e h.ne']
 
+/- English proof (translation)
+Take `⟨u, hu, hpu⟩` from `exists_levi_mul_unip k e ⟨p, hp⟩`. Establish `hd : leviEmb k e (leviProj k e ⟨p, hp⟩) ∈ jLevi k e` using `⟨_, fun a _ => StepData.mem_KOne.2 fun i j => by`. Use `StepData.mem_KOne.1 h (e ⟨a, i⟩) (e ⟨a, j⟩)` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, one_same]`. Conclude with `this, rfl⟩`.
+
+Use `⟨_, hd, u, ⟨hu, ?_⟩, hpu⟩` and prove the remaining obligations. Rewrite using `[(inv_mul_eq_iff_eq_mul.2 hpu).symm]`. Conclude with `StepData.KOne_le_KO (mul_mem (inv_mem (jLevi_le_KOne e hd)) h)`.
+-/
 theorem exists_jLevi_mul_jPlus (e : (Σ a, m a) ≃ n) {p : GL n k} (hp : p ∈ parab k e) (h : p ∈ KOne k n) :
     ∃ d ∈ jLevi k e, ∃ u ∈ jPlus k e, p = d * u := by
   obtain ⟨u, hu, hpu⟩ := exists_levi_mul_unip k e ⟨p, hp⟩
@@ -104,6 +143,9 @@ theorem exists_jLevi_mul_jPlus (e : (Σ a, m a) ≃ n) {p : GL n k} (hp : p ∈ 
   rw [(inv_mul_eq_iff_eq_mul.2 hpu).symm]
   exact StepData.KOne_le_KO (mul_mem (inv_mem (jLevi_le_KOne e hd)) h)
 
+/- English proof (translation)
+Establish `h` using `StepData.KOne_le_KO (jLevi_le_KOne e hd)`. Take `⟨g, -, rfl⟩` from `hd`. Conclude with `⟨(Subgroup.mem_normalizer_iff.1 (leviEmb_mem_normalizer k e g) u).1 hu.1, (KO k n).mul_mem ((KO k n).mul_mem h hu.2) ((KO k n).inv_mem h)⟩`.
+-/
 theorem conj_mem_jPlus (e : (Σ a, m a) ≃ n) {d u : GL n k} (hd : d ∈ jLevi k e) (hu : u ∈ jPlus k e) :
     d * u * d⁻¹ ∈ jPlus k e := by
   have h := StepData.KOne_le_KO (jLevi_le_KOne e hd)
@@ -111,6 +153,9 @@ theorem conj_mem_jPlus (e : (Σ a, m a) ≃ n) {d u : GL n k} (hd : d ∈ jLevi 
   exact ⟨(Subgroup.mem_normalizer_iff.1 (leviEmb_mem_normalizer k e g) u).1 hu.1,
     (KO k n).mul_mem ((KO k n).mul_mem h hu.2) ((KO k n).inv_mem h)⟩
 
+/- English proof (translation)
+Establish `h` using `jLevi_le_KOne e hd`. Take `⟨g, -, rfl⟩` from `hd`. Conclude with `⟨(Subgroup.mem_normalizer_iff.1 (leviEmb_mem_normalizer_lower k e g) c).1 hc.1, (KOne k n).mul_mem ((KOne k n).mul_mem h hc.2) ((KOne k n).inv_mem h)⟩`.
+-/
 theorem conj_mem_jMinus (e : (Σ a, m a) ≃ n) {d c : GL n k} (hd : d ∈ jLevi k e) (hc : c ∈ jMinus k e) :
     d * c * d⁻¹ ∈ jMinus k e := by
   have h := jLevi_le_KOne e hd
@@ -118,6 +163,11 @@ theorem conj_mem_jMinus (e : (Σ a, m a) ≃ n) {d c : GL n k} (hd : d ∈ jLevi
   exact ⟨(Subgroup.mem_normalizer_iff.1 (leviEmb_mem_normalizer_lower k e g) c).1 hc.1,
     (KOne k n).mul_mem ((KOne k n).mul_mem h hc.2) ((KOne k n).inv_mem h)⟩
 
+/- English proof (translation)
+Take `⟨u, hu, x, hx, rfl⟩` from `exists_jPlus_mul_KOne e hg`. Take `⟨c, hc, hp⟩` from `exists_mul_mem_parab e hx`. Take `⟨d, hd, v, hv, h⟩` from `exists_jLevi_mul_jPlus e hp (mul_mem hx hc.2)`. Use `⟨_, mul_mem hu (conj_mem_jPlus e hd hv), d, hd, c⁻¹, inv_mem hc, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_mul_inv_of_mul_eq h]`.
+
+Use `group`.
+-/
 theorem plus_levi_minus (e : (Σ a, m a) ≃ n) {g : GL n k} (hg : g ∈ proRad k e) :
     ∃ u ∈ jPlus k e, ∃ d ∈ jLevi k e, ∃ c ∈ jMinus k e, g = u * d * c := by
   obtain ⟨u, hu, x, hx, rfl⟩ := exists_jPlus_mul_KOne e hg
@@ -127,31 +177,49 @@ theorem plus_levi_minus (e : (Σ a, m a) ≃ n) {g : GL n k} (hg : g ∈ proRad 
   rw [eq_mul_inv_of_mul_eq h]
   group
 
+/- English proof (translation)
+Take `⟨u, hu, d, hd, c, hc, rfl⟩` from `plus_levi_minus e hg`. Conclude with `⟨d, hd, _, conj_mem_jPlus e (inv_mem hd) hu, c, hc, by group⟩`.
+-/
 theorem levi_plus_minus (e : (Σ a, m a) ≃ n) {g : GL n k} (hg : g ∈ proRad k e) :
     ∃ d ∈ jLevi k e, ∃ u ∈ jPlus k e, ∃ c ∈ jMinus k e, g = d * u * c := by
   obtain ⟨u, hu, d, hd, c, hc, rfl⟩ := plus_levi_minus e hg
   exact ⟨d, hd, _, conj_mem_jPlus e (inv_mem hd) hu, c, hc, by group⟩
 
+/- English proof (translation)
+Take `⟨u, hu, d, hd, c, hc, rfl⟩` from `plus_levi_minus e hg`. Conclude with `⟨u, hu, _, conj_mem_jMinus e hd hc, d, hd, by group⟩`.
+-/
 theorem plus_minus_levi (e : (Σ a, m a) ≃ n) {g : GL n k} (hg : g ∈ proRad k e) :
     ∃ u ∈ jPlus k e, ∃ c ∈ jMinus k e, ∃ d ∈ jLevi k e, g = u * c * d := by
   obtain ⟨u, hu, d, hd, c, hc, rfl⟩ := plus_levi_minus e hg
   exact ⟨u, hu, _, conj_mem_jMinus e hd hc, d, hd, by group⟩
 
+/- English proof (translation)
+Take `⟨u, hu, d, hd, c, hc, h⟩` from `plus_levi_minus e (inv_mem hg)`. Conclude with `⟨_, inv_mem hc, _, inv_mem hd, _, inv_mem hu, by rw [← inv_inv g, h]; group⟩`.
+-/
 theorem minus_levi_plus (e : (Σ a, m a) ≃ n) {g : GL n k} (hg : g ∈ proRad k e) :
     ∃ c ∈ jMinus k e, ∃ d ∈ jLevi k e, ∃ u ∈ jPlus k e, g = c * d * u := by
   obtain ⟨u, hu, d, hd, c, hc, h⟩ := plus_levi_minus e (inv_mem hg)
   exact ⟨_, inv_mem hc, _, inv_mem hd, _, inv_mem hu, by rw [← inv_inv g, h]; group⟩
 
+/- English proof (translation)
+Take `⟨c, hc, d, hd, u, hu, rfl⟩` from `minus_levi_plus e hg`. Conclude with `⟨d, hd, _, conj_mem_jMinus e (inv_mem hd) hc, u, hu, by group⟩`.
+-/
 theorem levi_minus_plus (e : (Σ a, m a) ≃ n) {g : GL n k} (hg : g ∈ proRad k e) :
     ∃ d ∈ jLevi k e, ∃ c ∈ jMinus k e, ∃ u ∈ jPlus k e, g = d * c * u := by
   obtain ⟨c, hc, d, hd, u, hu, rfl⟩ := minus_levi_plus e hg
   exact ⟨d, hd, _, conj_mem_jMinus e (inv_mem hd) hc, u, hu, by group⟩
 
+/- English proof (translation)
+Take `⟨c, hc, d, hd, u, hu, rfl⟩` from `minus_levi_plus e hg`. Conclude with `⟨c, hc, _, conj_mem_jPlus e hd hu, d, hd, by group⟩`.
+-/
 theorem minus_plus_levi (e : (Σ a, m a) ≃ n) {g : GL n k} (hg : g ∈ proRad k e) :
     ∃ c ∈ jMinus k e, ∃ u ∈ jPlus k e, ∃ d ∈ jLevi k e, g = c * u * d := by
   obtain ⟨c, hc, d, hd, u, hu, rfl⟩ := minus_levi_plus e hg
   exact ⟨c, hc, _, conj_mem_jPlus e hd hu, d, hd, by group⟩
 
+/- English proof (translation)
+Use `⟨proRad_eq_sup e, le_antisymm (sup_le (sup_le (jMinus_le_proRad e) (jLevi_le_proRad e)) (jPlus_le_proRad e)) fun g hg => ?_, fun g hg => ⟨⟨exists_KOne_mul_jPlus e hg, exists_jPlus_mul_KOne e hg⟩, minus_levi_plus e hg, minus_plus_levi e hg, levi_minus_plus e hg, levi_plus_minus e …` and prove the remaining obligations. Take `⟨c, hc, d, hd, u, hu, rfl⟩` from `minus_levi_plus e hg`. Conclude with `Subgroup.mul_mem_sup (Subgroup.mul_mem_sup hc hd) hu`.
+-/
 theorem proRad_factorisation (e : (Σ a, m a) ≃ n) :
     proRad k e = KOne k n ⊔ jPlus k e ∧ jMinus k e ⊔ jLevi k e ⊔ jPlus k e = proRad k e ∧
     ∀ g ∈ proRad k e,

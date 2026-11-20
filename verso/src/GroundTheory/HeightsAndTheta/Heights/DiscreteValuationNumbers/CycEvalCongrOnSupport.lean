@@ -12,6 +12,11 @@ section Helpers
 
 variable {K : Type*} [Fintype K] [DecidableEq K] {ι : K → Type} {R : Type*} [CommRing R]
 
+/- English proof (translation)
+Establish `h` using `IsWeightedHomogeneous.prod (R := R) Finset.univ (fun k => (X ⟨k, i k⟩ : MRing ι R) ^ e k) (fun k => e k • blockWeight ι ⟨k, i k⟩) (fun k _ => (isWeightedHomogeneous_X R _ _).pow (e k))`. Establish `key : (∑ k, e k • blockWeight ι ⟨k, i k⟩) = e`. Use function extensionality and compare the values at `k'`. Simplify using `[blockWeight, Finset.sum_apply, Pi.single_apply]`. Rewrite `h` using `[key]`.
+
+Conclude with `h`.
+-/
 theorem powMonomial_isMultiHomog (e : K → ℕ) (i : ∀ k, ι k) :
     IsMultiHomog (powMonomial (R := R) e i) e := by
   have h := IsWeightedHomogeneous.prod (R := R) Finset.univ (fun k => (X ⟨k, i k⟩ : MRing ι R) ^ e k)
@@ -24,11 +29,17 @@ theorem powMonomial_isMultiHomog (e : K → ℕ) (i : ∀ k, ι k) :
 
 omit [Fintype K] [DecidableEq K] in
 
+/- English proof (translation)
+Simplify using `[liftForm]`.
+-/
 theorem liftForm_C_eq {J : Type} (a : R) : liftForm (ι := ι) (J := J) (C a : MRing ι R) = C a := by
   simp [liftForm]
 
 omit [Fintype K] [DecidableEq K] in
 
+/- English proof (translation)
+Unfold `cycEval`. Use `finsum_congr fun W => ?_` and prove the remaining obligations. Distinguish the cases in `hW : Z W = 0`. Rewrite using `[hW, zero_mul, zero_mul]`. Rewrite using `[h W hW]`.
+-/
 theorem cycEval_congr_on_support {n n' : Ideal (MRing ι R) → ℤ} (Z : Ideal (MRing ι R) → ℤ)
     (h : ∀ W, Z W ≠ 0 → n W = n' W) : cycEval n Z = cycEval n' Z := by
   unfold cycEval
@@ -40,6 +51,9 @@ theorem cycEval_congr_on_support {n n' : Ideal (MRing ι R) → ℤ} (Z : Ideal 
 omit [Fintype K] [DecidableEq K] in
 open Classical in
 
+/- English proof (translation)
+Unfold `cycEval`. Rewrite using `[← finsum_add_distrib (hZ.subset (Function.support_mul_subset_left _ _)) (hZ.subset (Function.support_mul_subset_left _ _))]`. Use `finsum_congr fun W => ?_` and prove the remaining obligations. Simplify using `only`. Apply the tactic sequence `split_ifs <;> ring`.
+-/
 theorem cycEval_ite (p : Ideal (MRing ι R) → Prop) (A B : Ideal (MRing ι R) → ℤ)
     (Z : Ideal (MRing ι R) → ℤ) (hZ : (Function.support Z).Finite) :
     cycEval (fun W => if p W then A W else B W) Z =
@@ -53,6 +67,9 @@ theorem cycEval_ite (p : Ideal (MRing ι R) → Prop) (A B : Ideal (MRing ι R) 
 
 omit [Fintype K] [DecidableEq K] in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i o`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) i <;> cases o <;> simp [liftDegs, liftDeg, liftMDeg]`.
+-/
 theorem vecCons_liftMDeg {d : ℕ} (c : K → ℕ) (L : Fin d → K → ℤ) :
     Matrix.vecCons (fun k => ((liftMDeg c k : ℕ) : ℤ)) (liftDegs L) =
       liftDegs (Matrix.vecCons (fun k => (c k : ℤ)) L) := by
@@ -61,6 +78,31 @@ theorem vecCons_liftMDeg {d : ℕ} (c : K → ℕ) (L : Fin d → K → ℤ) :
 
 end Helpers
 
+/- English proof (translation)
+Introduce `O _ _ _ ϖ hϖ K _ _ ι _ P d hP b f g hD c s hs hsP hsH e hce m hm hmP hmH L`. Take `⟨bf, bg, hf, hg, hb⟩` from `hD.1.degrees`. Establish `hPp` using `hP.multiProj.isPrime`. Establish `hdeg : bf + e = c + bg`. Use function extensionality and compare the values at `k`.
+
+Establish `h1` using `hce k`. Establish `h2` using `congrFun hb k`. Simplify using `only [Pi.add_apply] at h1 h2 ⊢`. Use linear arithmetic over natural numbers and integers. Establish `hN : ∀ j, IsMultiHomog (blowUpGens s g f m e j) (c + bg)`.
+
+Introduce and unpack `(_ | _ | i)`. Conclude with `hs.mul hg`. Conclude with `hdeg ▸ hf.mul hm`. Conclude with `hdeg ▸ hf.mul (powMonomial_isMultiHomog e i)`. Establish `hfm : f * m ∉ P` using `fun h => (hPp.mem_or_mem h).elim hD.1.num_not_mem hmP`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `cutIdentityLeftSide`. Rewrite using `[vecCons_liftMDeg]`. Conclude with `hdiv O ϖ hϖ K ι _ P (d + 1) hP b f g hD.1 _ _ hN ⟨some none, hfm⟩ _`. Establish `hinv : ∀ W : Ideal (MRing ι O), W.IsPrime → P ≤ W → IsRelevant W → (C ϖ : MRing ι O) ∉ W → ∃ j, ∀ j', ∃ v w : MRing ι O, v ∉ W ∧ v * blowUpGens s g f m e j' - w * blowUpGens s g f m e j ∈ P`.
+
+Introduce `W hW hPW hrel hϖW`. Use `choose i hi using hrel`. Establish `hμ : powMonomial e i ∉ W`. Rewrite using `[powMonomial, hW.prod_mem_iff]`. Introduce and unpack `⟨k, -, hk⟩`.
+
+Conclude with `hi k (hW.mem_of_pow_mem _ hk)`. Take `⟨u', v', hu', hv', h⟩` from `hD.1.unit_off_special W hW hPW (fun k => ⟨i k, hi k⟩) hϖW`. Use `⟨some (some i), ?_⟩` and prove the remaining obligations. Introduce and unpack `(_ | _ | i')`. Use `⟨v' * powMonomial e i, s * u', fun h' => (hW.mem_or_mem h').elim hv' hμ, ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : v' * powMonomial e i * (s * g) - s * u' * (f * powMonomial e i) = -(s * powMonomial e i) * (u' * f - v' * g)` using `by ring`. Simplify `P.mul_mem_left _ h` using `only [blowUpGens, e1]`. Conclude with `⟨powMonomial e i, m, hμ, by simp only [blowUpGens]; rw [show powMonomial e i * (f * m) - m * (f * powMonomial e i) = 0 by ring]; exact P.zero_mem⟩`. Conclude with `⟨powMonomial e i, powMonomial e i', hμ, by simp only [blowUpGens]; rw [show powMonomial e i * (f * powMonomial e i') - powMonomial e i' * (f * powMonomial e i) = 0 by ring]; exact P.zero_mem⟩`. Take `⟨htrans, hpt⟩` from `hhor O ϖ hϖ K ι _ P (d + 1) hP _ _ hN ⟨some none, hfm⟩ hinv c s hs hsP`.
+
+Unfold `cutIdentityRightSide`. Rewrite using `[cycEval_ite _ _ _ _ (hfin O (Option K) (extIdx ι (BlowUpIdx ι)) (blowUpOf P (blowUpGens s g f m e)) (liftForm s)), cycEval_ite _ _ _ _ (hfin O K ι P s)]`. Use `congr 1`. Establish `hv` using `hvert O ϖ hϖ K ι _ P (d + 1) hP _ _ hN ⟨some none, hfm⟩ c s hs hsP (Matrix.vecCons b L)`. Use `hv using 4` and compare the differences between its conclusion and the goal.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `Fin.cases rfl (fun i => rfl) i`. Rewrite using `[← htrans (fun W => cycEval (fun G => vNum G L) (ratDiv W f g))]`. Use `cycEval_congr_on_support _ fun W hW => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hϖ' : (C ϖ : MRing (extIdx ι (BlowUpIdx ι)) O) ∈ W`. Simplify using `only [if_pos hϖ']`. Rewrite using `[if_neg hϖ', if_neg hϖ']`. Take `⟨hWs, hWeq⟩` from `hpt W hW hϖ'`. Establish `hϖW : (C ϖ : MRing ι O) ∉ W.comap (liftForm (ι` using `ι) (J := BlowUpIdx ι) (R := O)) := by`.
+
+Rewrite using `[Ideal.mem_comap, liftForm_C_eq]` and apply the resulting hypothesis. Generalize the expression as in `W.comap (liftForm (ι := ι) (J := BlowUpIdx ι) (R := O)) = V at hWs hWeq hϖW ⊢`. Establish `hWm` using `hcomp O ϖ hϖ K ι P d hP c s hs hsP _ hWs hϖW`. Establish `hWv` using `hsH _ hWs hϖW`. Establish `hfmW : blowUpGens s g f m e (some none) ∉ V` using `fun h => (hWm.multiProj.isPrime.mem_or_mem h).elim hWv.num_not_mem (hmH _ hWs hϖW)`.
+
+Rewrite using `[hWeq ⟨_, hfmW⟩]`. Conclude with `hdiv O ϖ hϖ K ι _ _ d hWm b f g hWv _ _ hN ⟨_, hfmW⟩ L`.
+-/
 theorem BlowUpInvariance.proof (hvert : BlowUpVerticalPush.Statement.{u})
     (hdiv : BlowUpDivisorPush.Statement.{u}) (hhor : BlowUpHorizontalCorresp.Statement.{u})
     (hcomp : HorizontalComponentModel.Statement.{u}) (hfin : DivCycleFiniteSupport.Statement.{u}) :

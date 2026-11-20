@@ -16,6 +16,11 @@ namespace GlobalTheory.AdForm.PlacesDistinct
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨α, rfl, h1, h2⟩` from `h`. Take `⟨α', rfl, h1', h2'⟩` from `h'`. Use `congr 1`. Use `RestrictedProduct.ext _ _ fun u => ?_` and prove the remaining obligations. Distinguish the cases in `hu : u = v`.
+
+Substitute `hu` using the available equality. Conclude with `h1.trans h1'.symm`. Conclude with `(h2 u hu).trans (h2' u hu).symm`.
+-/
 theorem placeIdem_unique {v : HeightOneSpectrum (𝓞 D.host.F)} {ε ε' : AF D.host.F}
     (h : IsPlaceIdem D v ε) (h' : IsPlaceIdem D v ε') : ε = ε' := by
   obtain ⟨α, rfl, h1, h2⟩ := h
@@ -27,6 +32,9 @@ theorem placeIdem_unique {v : HeightOneSpectrum (𝓞 D.host.F)} {ε ε' : AF D.
     exact h1.trans h1'.symm
   · exact (h2 u hu).trans (h2' u hu).symm
 
+/- English proof (translation)
+Establish `h1` using `(h.2 1 one_ne_zero).not`. Establish `hw : (1 : 𝓞 D.host.E) ∉ w.asIdeal` using `fun h => w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h)`. Use `not_not.1 (h1.1 hw)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem finPart_idem_int {e : AE D} {w : HeightOneSpectrum (𝓞 D.host.E)} (h : Formalism.L2.NTheta.IsIdemAt e w) :
     finPart D e ∈ intAE D := by
   have h1 := (h.2 1 one_ne_zero).not
@@ -34,6 +42,19 @@ theorem finPart_idem_int {e : AE D} {w : HeightOneSpectrum (𝓞 D.host.E)} (h :
   have := not_not.1 (h1.1 hw)
   simpa using this
 
+/- English proof (translation)
+Establish `hx'0 : x' ≠ 0`. Introduce `h0`. Apply `hx0` to reduce the goal to its premises. Establish `: star (x : D.host.E) = 0` using `by rw [← hx', h0]; rfl`. Conclude with `RingOfIntegers.coe_eq_zero_iff.mp (star_eq_zero.mp this)`.
+
+Establish `hN : finPart D (e * incA D ((x : D.host.E)⁻¹)) ∉ intAE D` using `(h.2 x hx0).1 hxw`. Establish `hI' : finPart D (e' * incA D ((x : D.host.E)⁻¹)) ∈ intAE D` using `not_not.1 (mt (h'.2 x hx0).2 hxw')`. Establish `he` using `finPart_idem_int h`. Establish `hee : e = e * e' + e * cA D e'`. Rewrite using `[← mul_add, ← hsum, mul_add, h.1.1, h.1.2.1, add_zero]`.
+
+Establish `hsplit : e * incA D ((x : D.host.E)⁻¹) = e * (e' * incA D ((x : D.host.E)⁻¹)) + e * (cA D e' * incA D ((x : D.host.E)⁻¹))` using `by conv_lhs => rw [hee]`. Expand and normalize the polynomial expressions, which then agree. Establish `hA : finPart D (e * (e' * incA D ((x : D.host.E)⁻¹))) ∈ intAE D`. Rewrite using `[map_mul]`. Conclude with `GlobalTheory.FinPl.FrameLat.mul_mem_intAE he hI'`.
+
+Establish `hB : finPart D (cA D e' * incA D ((x : D.host.E)⁻¹)) ∉ intAE D`. Introduce `hB`. Apply `hN` to reduce the goal to its premises. Rewrite using `[hsplit, map_add]`. Use `add_mem hA ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul]`. Conclude with `GlobalTheory.FinPl.FrameLat.mul_mem_intAE he hB`. Establish `hC : cA D e' * incA D ((x : D.host.E)⁻¹) = cA D (e' * incA D ((x' : D.host.E)⁻¹))`. Rewrite using `[map_mul, GlobalTheory.FinPl.FrameLat.cA_incA, hx', star_inv₀, star_star]`. Rewrite `hB` using `[hC, GlobalTheory.FinPl.FrameLat.cA_int_iff]`.
+
+Conclude with `(h'.2 x' hx'0).2 hB`.
+-/
 theorem conj_mem_of {e e' : AE D} {w w' : HeightOneSpectrum (𝓞 D.host.E)} (h : Formalism.L2.NTheta.IsIdemAt e w)
     (h' : Formalism.L2.NTheta.IsIdemAt e' w') (hsum : e + cA D e = e' + cA D e') {x x' : 𝓞 D.host.E} (hx' : (x' : D.host.E) = star (x : D.host.E))
     (hx0 : x ≠ 0) (hxw : x ∈ w.asIdeal) (hxw' : x ∉ w'.asIdeal) : x' ∈ w'.asIdeal := by
@@ -64,6 +85,13 @@ theorem conj_mem_of {e e' : AE D} {w w' : HeightOneSpectrum (𝓞 D.host.E)} (h 
   rw [hC, GlobalTheory.FinPl.FrameLat.cA_int_iff] at hB
   exact (h'.2 x' hx'0).2 hB
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `hnle : ¬ w.asIdeal ≤ w'.asIdeal`. Introduce `hle`. Apply `hne` to reduce the goal to its premises. Conclude with `HeightOneSpectrum.ext (w.isMaximal.eq_of_le w'.isPrime.ne_top hle)`.
+
+Take `⟨x₀, hx₀w, hx₀w'⟩` from `Set.not_subset.1 hnle`. Establish `hx₀0 : x₀ ≠ 0` using `fun h0 => hx₀w' (h0 ▸ w'.asIdeal.zero_mem)`. Establish `hy : π + x₀ ∉ w'.asIdeal` using `fun hm => hx₀w' (by simpa using w'.asIdeal.sub_mem hm hw')`. Establish `hy0 : π + x₀ ≠ 0` using `fun h0 => hy (h0 ▸ w'.asIdeal.zero_mem)`. Take `⟨c₀, hc₀⟩ : ∃ c : 𝓞 D.host.E, (c : D.host.E) = star (x₀ : D.host.E)` from `⟨⟨star (x₀ : D.host.E), (x₀.2).map (starRingEnd D.host.E).toIntAlgHom⟩, rfl⟩`.
+
+Establish `h1 : c₀ ∈ w'.asIdeal` using `conj_mem_of h h' hsum hc₀ hx₀0 hx₀w hx₀w'`. Establish `h2 : π' + c₀ ∈ w'.asIdeal` using `conj_mem_of h h' hsum (x := π + x₀) (by push_cast; rw [star_add]; exact congrArg₂ (· + ·) hπ' hc₀) hy0 (w.asIdeal.add_mem hw hx₀w) hy`. Conclude with `hc (by simpa using w'.asIdeal.sub_mem h2 h1)`.
+-/
 theorem prime_eq {e e' : AE D} {w w' : HeightOneSpectrum (𝓞 D.host.E)} (h : Formalism.L2.NTheta.IsIdemAt e w)
     (h' : Formalism.L2.NTheta.IsIdemAt e' w') (hsum : e + cA D e = e' + cA D e') {π π' : 𝓞 D.host.E}
     (hπ' : (π' : D.host.E) = star (π : D.host.E)) (hw : π ∈ w.asIdeal) (hw' : π ∈ w'.asIdeal)
@@ -88,6 +116,17 @@ end GlobalTheory.AdForm.PlacesDistinct
 
 open GlobalTheory.AdForm.PlacesDistinct in
 
+/- English proof (translation)
+Introduce `B X I _ _ l Z u k _ _ _ _ ι p β Q L hS`. Take `⟨⟨e, he⟩, -⟩` from `hS`. Take `⟨-, hPr, -⟩` from `GlobalTheory.Mem.Col2.base_fields_primes_ok B X`. Establish `hcop : IsCoprime (X.piT u) (B.fields.conjO (X.piT u))` using `hPr.piT_cop u`. Establish `hne : X.piT u ≠ 0`.
+
+Introduce `h0`. Rewrite `hcop` using `[h0, map_zero, isCoprime_zero_left]`. Conclude with `not_isUnit_zero hcop`. Introduce `i i' hv`. Establish `hv : (p i).v = (p i').v` using `hv`.
+
+Apply `e.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hmem : ∀ j, X.piT u ∈ (e j).1.asIdeal` using `fun j => (Formalism.L2.Col.mem_divs hne _).1 (e j).2`. Take `⟨ε, hε, hε'⟩` from `(p i).above`. Take `⟨ε', hε2, hε2'⟩` from `(p i').above`.
+
+Rewrite `hε` using `[hv]`. Establish `hsum : (p i).e + cA (I.rec7 l Z) (p i).e = (p i').e + cA (I.rec7 l Z) (p i').e`. Rewrite using `[hε', hε2', placeIdem_unique hε hε2]`. Use `prime_eq (he i) (he i') hsum (π := X.piT u) (π' := B.fields.conjO (X.piT u)) rfl (hmem i) (hmem i') ?_` and prove the remaining obligations. Introduce `hc`.
+
+Take `⟨a, b, hab⟩` from `hcop`. Conclude with `(e i').1.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hab ▸ (e i').1.asIdeal.add_mem (Ideal.mul_mem_left _ a (hmem i')) (Ideal.mul_mem_left _ b hc)))`.
+-/
 theorem GlobalTheory.AdForm.StdT.places_injective : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word)
     {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {ι : Type}
     (p : ι → SplitPt (I.rec7 l Z) k) (β : ∀ j i, Frame (p i) ((I.rec7 l Z).sp.X j) (Fin ((I.rec7 l Z).sp.X j).rank))

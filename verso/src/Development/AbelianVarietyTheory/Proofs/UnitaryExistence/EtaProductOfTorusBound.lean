@@ -28,6 +28,9 @@ def FixBound (X : PT E) (s : (Fin 1 → Vsp X.dim) → ℂ) (r1 Nc nt i : ℕ) (
 
 variable {X : PT E} {s : (Fin 1 → Vsp X.dim) → ℂ} {r1 i : ℕ} {y : ℝ}
 
+/- English proof (translation)
+Take `⟨c, a, hc, ha, hy⟩` from `h`. Conclude with `⟨fun _ => nt, c, a, fun _ => hn, fun g t => le_trans (by exact_mod_cast hc g t) hN, ha, hy⟩`.
+-/
 theorem FixBound.prodBound {Nc nt : ℕ} {N : ℝ} (hN : (Nc : ℝ) ≤ N) (hn : nt ≤ r1 ^ (2 * PT.f E * X.r ^ 2))
     (h : FixBound X s r1 Nc nt i y) : ProdBound X s r1 N i y := by
   obtain ⟨c, a, hc, ha, hy⟩ := h
@@ -37,6 +40,9 @@ variable {Y : PT E} {ψ : Vsp X.dim ≃ₗ[ℝ] Vsp Y.dim}
 
 variable [IsCMField E] {r : ℕ} {Z : FD.Data E r} {x : FD.Frame Z.Ψ r}
 
+/- English proof (translation)
+The claim follows from `TorusAtDataPf.torusAtIs_holds E r Z x A`.
+-/
 theorem isTorusAt (A : TorusAt Z x) : IsTorusAt Z x A.T := TorusAtDataPf.torusAtIs_holds E r Z x A
 
 end Torus
@@ -54,6 +60,9 @@ def EtProdEps (N : ℝ) : Prop :=
     ∃ X : PT D.host.E, IsTorusAt ((T.U j σ).X k) x X ∧ (∃ w, EpsBy X w) ∧ ∃ s ∈ X.Sec 1 1, s ≠ 0 ∧
       ProdBound X s 5 N i (normAt T j σ (wEt D j i) η.1 k x)
 
+/- English proof (translation)
+Introduce `σ hσ k x hx` and use `by obtain ⟨A, hA⟩ := H σ hσ k x hx exact ⟨A.T, isTorusAt A, A.s, A.s_mem, A.s_ne, FixBound.prodBound hN (by rw [torusAt_r A]; exact hn) hA⟩`.
+-/
 theorem eta_product_of_torus_bound {Nc nt : ℕ} {N : ℝ} (hN : (Nc : ℝ) ≤ N) (hn : nt ≤ nTerms D)
     (H : Formalism.L2.Pj.EtProd h 5 Nc nt j i η) : EtaleProductPrimes.EtProd h N j i η := fun σ hσ k x hx => by
   obtain ⟨A, hA⟩ := H σ hσ k x hx

@@ -11,6 +11,11 @@ noncomputable section
 
 namespace GlobalTheory.FlagPush
 
+/- English proof (translation)
+Introduce `F _ X Y f hs K _ V v₁ q₂ hq`. Use `haveI : IsProper (f ≫ X.str) := hs ▸ inferInstance`. Use `haveI : UniversallyClosed f := UniversallyClosed.of_comp_of_isSeparated f X.str`. Establish `hE : ValuativeCriterion.Existence f` using `(UniversallyClosed.eq_valuativeCriterion ▸ (inferInstance : UniversallyClosed f) : (ValuativeCriterion.Existence ⊓ @QuasiCompact) f).1`. Take `⟨⟨l⟩⟩` from `hE { R := V, K := K, i₁ := q₂, i₂ := v₁ ≫ f, commSq := ⟨hq⟩ }`.
+
+Conclude with `⟨l.l, l.fac_left, l.fac_right⟩`.
+-/
 theorem exists_lift_of_var : ∀ (F : Type) [Field F] (X Y : Var F) (f : Y.X ⟶ X.X), f ≫ X.str = Y.str → ∀ (K : Type) [Field K] (V : ValuationSubring K) (v₁ : Sp V ⟶ Y.X) (q₂ : Sp K ⟶ Y.X), q₂ ≫ f = spMap (algebraMap V K) ≫ v₁ ≫ f → ∃ v₂ : Sp V ⟶ Y.X, spMap (algebraMap V K) ≫ v₂ = q₂ ∧ v₂ ≫ f = v₁ ≫ f := by
   intro F _ X Y f hs K _ V v₁ q₂ hq
   haveI : IsProper (f ≫ X.str) := hs ▸ inferInstance

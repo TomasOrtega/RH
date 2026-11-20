@@ -13,6 +13,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.SmGL.CuspRow
 
+/- English proof (translation)
+Introduce `k _ _ _ _ d V _ _ σ s' b f X _ _ ρ hσ hX hsub j j' hj hj'`. Assume the negation of the conclusion as `hne`. Establish `hU : GlobalTheory.SmGL.unipRad k f ≠ ⊥`. Use `GlobalTheory.SmGL.CuspMax.unipRad_ne_bot_iff.2 ?_` and prove the remaining obligations. Break down `lt_or_gt_of_ne hne with h | h` into its components or cases.
+
+Conclude with `⟨f ⟨j, ⟨0, hj⟩⟩, f ⟨j', ⟨0, hj'⟩⟩, by rwa [GlobalTheory.SmGL.blk_apply, GlobalTheory.SmGL.blk_apply]⟩`. Conclude with `⟨f ⟨j', ⟨0, hj'⟩⟩, f ⟨j, ⟨0, hj⟩⟩, by rwa [GlobalTheory.SmGL.blk_apply, GlobalTheory.SmGL.blk_apply]⟩`. Establish `hs` using `hσ.2 s' b f hU`. Establish `hn` using `GlobalTheory.ProdSupport.nontrivial_piTensor X hX`. Take `⟨S, g, hg⟩` from `hsub`.
+
+Establish `hS : Subsingleton S.toSubmodule` using `inferInstance`. Conclude with `not_subsingleton _ (Function.Surjective.subsingleton hg)`.
+-/
 theorem block_unique_of_isCuspidal : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (d : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (σ : Representation ℂ (GL (Fin d) k) V) (s' : ℕ) (b : Fin s' → ℕ) (f : (Σ j, Fin (b j)) ≃ Fin d) (X : Fin s' → Type) [∀ j, AddCommGroup (X j)] [∀ j, Module ℂ (X j)] (ρ : ∀ j, Representation ℂ (GL (Fin (b j)) k) (X j)), GlobalTheory.SmGL.IsCuspidal σ → (∀ j, Nontrivial (X j)) → GlobalTheory.SmGL.IsSubquotient (GlobalTheory.SmGL.piTensor ρ) (GlobalTheory.SmGL.jac f σ) → ∀ j j', 0 < b j → 0 < b j' → j = j' := by
   intro k _ _ _ _ d V _ _ σ s' b f X _ _ ρ hσ hX hsub j j' hj hj'
   by_contra hne

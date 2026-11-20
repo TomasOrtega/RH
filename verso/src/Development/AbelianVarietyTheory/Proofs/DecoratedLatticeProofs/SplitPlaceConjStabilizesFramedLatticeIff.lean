@@ -26,9 +26,19 @@ open GlobalTheory.StepData GlobalTheory.SplitWeil ValuativeRel
 
 namespace GlobalTheory.SplitStabConj
 
+/- English proof (translation)
+Take the linear combination `-h`.
+-/
 theorem eq_idempotent_mul_add_of_mul_sub_eq {R : Type*} [CommRing R] (ε m o : R) (h : ε * (m - o) = m - o) : m = ε * m + (1 - ε) * o := by
   linear_combination -h
 
+/- English proof (translation)
+Establish `hmul : ∀ x y : GA D V, Formalism.L2.Theta.mt V (x * y) = Formalism.L2.Theta.mt V x * Formalism.L2.Theta.mt V y` using `fun x y => by`. Simplify using `[Formalism.L2.Theta.mt, map_mul]`. Establish `hAB : Formalism.L2.Theta.mt V b⁻¹ * Formalism.L2.Theta.mt V b = 1`. Rewrite using `[← hmul, inv_mul_cancel]`. Simplify using `[Formalism.L2.Theta.mt]`.
+
+Establish `hm : Formalism.L2.Theta.mt V (b⁻¹ * g * b) - 1 = Formalism.L2.Theta.mt V b⁻¹ * (Formalism.L2.Theta.mt V g - 1) * Formalism.L2.Theta.mt V b`. Rewrite using `[hmul, hmul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hAB]`. Establish `hg : Formalism.L2.Theta.mt V g - 1 = (e + cA D e) • (Formalism.L2.Theta.mt V g - 1)`. Use extensionality with `i j`. Conclude with `(h i j).symm`.
+
+Introduce `i j`. Rewrite using `[hm]`. Use `conv_rhs => rw [hg, Matrix.mul_smul, Matrix.smul_mul]`. Both sides reduce to the same expression.
+-/
 theorem suppAt_conj {D : D7} {e : AE D} {V : HSp D} {g : GA D V} (h : Formalism.L2.Theta.SuppAt e V g) (b : GA D V) :
     Formalism.L2.Theta.SuppAt e V (b⁻¹ * g * b) := by
   have hmul : ∀ x y : GA D V, Formalism.L2.Theta.mt V (x * y) = Formalism.L2.Theta.mt V x * Formalism.L2.Theta.mt V y := fun x y => by
@@ -50,6 +60,25 @@ end GlobalTheory.SplitStabConj
 set_option maxHeartbeats 1000000 in
 open GlobalTheory.SplitStabConj in
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ q PP he V β Λ N hSD Y _ _ F σ b hM g gk hL`. Establish `hsd` using `GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D V β Λ N hSD`. Take `⟨c, hfr, -⟩` from `hSD`. Establish `hsg : Formalism.L2.Theta.SuppAt q.e V g` using `hL.1`. Establish `hsκ : Formalism.L2.Theta.SuppAt q.e V (b⁻¹ * g * b)` using `suppAt_conj hsg b`.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hg` using `GlobalTheory.SplitHecke.Stab.mem_GfC q.split hsg`. Rewrite `hg`, the goal using `[GfC, MonoidHom.mem_ker]`. Rewrite using `[map_mul, map_mul, hg, mul_one, ← map_mul, inv_mul_cancel, map_one]`. Take `⟨hX, hXi⟩` from `GlobalTheory.T.splitPlace_conj_frameMatrix_reindex q he V β F σ b hM g gk hL`.
+
+Take `⟨hint, -⟩` from `GlobalTheory.IdemRes.resS_idem_eq_one D q.e PP he`. Rewrite using `[GlobalTheory.LocGl.mem_KO_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Establish `hyX : Formalism.L2.DIV.intGL D.host.F D.host.E _ y = β⁻¹ * Lev.finE V (b⁻¹ * g * b) * β`.
+
+Rewrite using `[← hy]`. Simplify using `[Formalism.L2.DIV.frGL, MulAut.conj_apply, mul_assoc]`. Use `⟨fun a a' => ?_, fun a a' => ?_⟩` and prove the remaining obligations. Take `⟨i, rfl⟩` from `σ.surjective a`. Take `⟨j, rfl⟩` from `σ.surjective a'`.
+
+Rewrite using `[← hX i j, q.prF_mem_iff he, ← hyX]`. Conclude with `mul_mem hint (y.val i j).2`. Take `⟨i, rfl⟩` from `σ.surjective a`. Take `⟨j, rfl⟩` from `σ.surjective a'`. Rewrite using `[← hXi i j, q.prF_mem_iff he, ← hyX, ← map_inv]`.
+
+Conclude with `mul_mem hint ((y⁻¹).val i j).2`. Introduce and unpack `⟨h1, h2⟩`. Establish `hA : IsIntM (toEAf D q.e • (β⁻¹ * Lev.finE V (b⁻¹ * g * b) * β : GL (Fin V.rank) (Lev.EAf D)).1)` using `fun i j => by`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, ← q.prF_mem_iff he, hX]`. Conclude with `h1 _ _`.
+
+Establish `hB : IsIntM (toEAf D q.e • ((β⁻¹ * Lev.finE V (b⁻¹ * g * b) * β : GL (Fin V.rank) (Lev.EAf D))⁻¹ : GL (Fin V.rank) (Lev.EAf D)).1)` using `fun i j => by`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, ← q.prF_mem_iff he, hXi]`. Conclude with `h2 _ _`. Take `⟨hC, hD⟩` from `GlobalTheory.T.selfDualFrame_conj_integral_smul_of_integral V Λ β hsd hfr _ (GlobalTheory.LevSplit.finE_mem_UA V (b⁻¹ * g * b)) _ rfl q.e hA hB`. Establish `hsum : IsIdemSum q.e {PP}` using `⟨⟨fun _ => q.e, by simpa using he, by simp⟩, q.split.2.1⟩`.
+
+Establish `hmt : Formalism.L2.Theta.mt V (b⁻¹ * g * b) = (q.e + cA D q.e) • Formalism.L2.Theta.mt V (b⁻¹ * g * b) + (1 - (q.e + cA D q.e)) • (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D))`. Use extensionality with `i j`. Use `hsκ i j` as an intermediate fact. Simplify using `only [Matrix.sub_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul] at this ⊢`. Conclude with `eq_idempotent_mul_add_of_mul_sub_eq _ _ _ this`.
+
+Establish `hy` using `GlobalTheory.T.finiteEmbedding_idempotent_patch_in_frame V β (b⁻¹ * g * b) (b⁻¹ * g * b) (q.e + cA D q.e) hmt`. Conclude with `(GlobalTheory.T.frameIdempotentCutMatrix_mem_stabiliser_reduction V.rank β _ _ {PP} q.e hsum hA hB hC hD hy).1`. Introduce `PP' hne hS`. Conclude with `GlobalTheory.T.reduction_eq_one_off_splitPlace q he V β _ hsκ hS PP' hne`.
+-/
 theorem GlobalTheory.splitStab_conj_iff : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : GlobalTheory.FinPl.SplitPt D k) (PP : Formalism.L2.DIV.Pl D.host.E), Formalism.L2.NTheta.IsIdemAt q.e PP → ∀ (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (N : ℕ), IsSDFrame V β Λ N → ∀ (Y : Type) [Fintype Y] [DecidableEq Y] (F : GlobalTheory.LocMod.Frame k V.rank Y) (σ : Fin V.rank ≃ Y) (b : GA D V), MovedTo (ofSplit q) V b β (F.β.submatrix id σ) → ∀ (g : GA D V) (gk : GL Y k), (ofSplit q).IsLoc F g gk → b⁻¹ * g * b ∈ GfC V ∧ (Lev.finE V (b⁻¹ * g * b) ∈ Formalism.L2.DIV.St β ↔ gk ∈ KO k Y) ∧ ∀ PP' : Formalism.L2.DIV.Pl D.host.E, PP'.under (𝓞 D.host.F) ≠ PP.under (𝓞 D.host.F) → Lev.finE V (b⁻¹ * g * b) ∈ Formalism.L2.DIV.St β → Formalism.L2.DIV.redFn β PP' (Lev.finE V (b⁻¹ * g * b)) = 1 := by
   intro D k _ _ _ _ q PP he V β Λ N hSD Y _ _ F σ b hM g gk hL
   have hsd := GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D V β Λ N hSD

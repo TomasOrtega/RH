@@ -29,6 +29,11 @@ def LeafWData : Prop := ∀ (d : ℕ) (R : Type) [CommRing R],
         (MvPolynomial (Fin d) R)))).obj U), (∀ i, (yoneda.map (fW d R)).app U (y i) = z) →
       ∃ x, ∀ i, g.app U (((W d R).map (vtx n i).op).app U x) = y i)
 
+/- English proof (translation)
+Introduce `d R _`. Take `⟨r, g, hr, hg, hi, hs⟩` from `hD d R`. Take `⟨ψ, hψ, he⟩` from `hC (W d R) _ _ (yoneda.map (fW d R)) r g hg hi hs`. Use `⟨ψ, hψ, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `wa d R ≫ ψ ≫ (Arrow.mk (yoneda.map (fW d R))).augmentedCechNerve.hom = 𝟙 _`.
+
+Substitute `he` using the available equality. Conclude with `hr`.
+-/
 theorem LeafWCech_of (hC : LeafCechRec) (hD : LeafWData) : LeafWCech := by
   intro d R _
   obtain ⟨r, g, hr, hg, hi, hs⟩ := hD d R

@@ -36,9 +36,17 @@ end Parts
 
 variable {D : D7} {u : D.what₂.Word}
 
+/- English proof (translation)
+Introduce `w hw hs v hb` and use `⟨(weight_lattice_inclusions D u Tt w hw hs v).2 hb, hL w hw hs v hb⟩`.
+-/
 theorem second_branch_incl_length_of_second (Tt : Formalism.L2.Forms.FormsTied D u) (hL : SeenPlaceLatticeLengthFormula D u) : SecondBranchInclusionLength D u :=
   fun w hw hs v hb => ⟨(weight_lattice_inclusions D u Tt w hw hs v).2 hb, hL w hw hs v hb⟩
 
+/- English proof (translation)
+Introduce `w hw hs v`. Establish `hR : Rat0 D u` using `rational_level_zero_of_integral w hw hs h4`. Take `⟨hUB, hDS⟩` from `h4 w hw hs v`. Establish `ram` using `h9 v`. Take `⟨hI1, hI2⟩` from `weight_lattice_inclusions D u Tt w hw hs v`.
+
+Take `⟨hL1, hL2⟩` from `hL w hw hs v`. Conclude with `⟨fun hd => ⟨hI1 hd, hL1 hd, LemmaC_one hR w hw v (hI1 hd) hUB hDS ram⟩, fun hb => ⟨hI2 hb, hL2 hb, LemmaC_two hR w hw v _ hb (hI2 hb) hUB hDS ram⟩⟩`.
+-/
 theorem lattice_length_of_formulas (Tt : Formalism.L2.Forms.FormsTied D u) (h4 : HeckeIntegralLevelZero D u) (h9 : HeckeRamifiedLevelZero D u) (hL : BranchLatticeLengths D u) :
     LatticeInclusionLength D u := by
   intro w hw hs v
@@ -50,8 +58,14 @@ theorem lattice_length_of_formulas (Tt : Formalism.L2.Forms.FormsTied D u) (h4 :
   exact ⟨fun hd => ⟨hI1 hd, hL1 hd, LemmaC_one hR w hw v (hI1 hd) hUB hDS ram⟩,
     fun hb => ⟨hI2 hb, hL2 hb, LemmaC_two hR w hw v _ hb (hI2 hb) hUB hDS ram⟩⟩
 
+/- English proof (translation)
+The claim follows from `second_branch_incl_length_of_second Tt fun w hw hs v hb => (hL w hw hs v).2 hb`.
+-/
 theorem second_branch_incl_length_of_lengths (Tt : Formalism.L2.Forms.FormsTied D u) (hL : BranchLatticeLengths D u) : SecondBranchInclusionLength D u := second_branch_incl_length_of_second Tt fun w hw hs v hb => (hL w hw hs v).2 hb
 
+/- English proof (translation)
+The claim follows from `ramified_lattice_of_length fun D u hF hS hA => by obtain ⟨h4, h9, hL⟩ := h D u hF hS hA obtain ⟨Tf, -⟩ := hF exact lattice_length_of_formulas Tf h4 h9 hL`.
+-/
 theorem ramified_lattice_family_of_clauses
     (h : ∀ (D : D7) (u : D.what₂.Word), FormsCompatible D u → HidaSetting D u → admS D u →
       HeckeIntegralLevelZero D u ∧ HeckeRamifiedLevelZero D u ∧ BranchLatticeLengths D u) : RamifiedLatticeFamily :=
@@ -60,6 +74,9 @@ theorem ramified_lattice_family_of_clauses
     obtain ⟨Tf, -⟩ := hF
     exact lattice_length_of_formulas Tf h4 h9 hL
 
+/- English proof (translation)
+Use `congruence_no_kernel_family_minimal fun D u hF hS hA => ?_` and prove the remaining obligations. Take `⟨h4, h9, hL⟩` from `h D u hF hS hA`. Take `⟨T, _⟩` from `hF`. Conclude with `⟨h4, h9, second_branch_incl_length_of_lengths T hL⟩`.
+-/
 theorem congruence_no_kernel_of_lengths
     (h : ∀ (D : D7) (u : D.what₂.Word), FormsCompatible D u → HidaSetting D u → admS D u →
       HeckeIntegralLevelZero D u ∧ HeckeRamifiedLevelZero D u ∧ BranchLatticeLengths D u) : CongruenceLatticeLengthBoundFamily := by

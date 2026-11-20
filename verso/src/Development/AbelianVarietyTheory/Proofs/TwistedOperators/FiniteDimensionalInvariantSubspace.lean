@@ -23,6 +23,39 @@ def restr (ε : Fin n → Bool) (ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ
     (S : Submodule ℂ H) (hle : S ≤ kFinVec ε ρ) : S →ₗ[ℂ] H :=
   (kFinVec ε ρ).subtype ∘ₗ T ∘ₗ Submodule.inclusion hle
 
+/- English proof (translation)
+Take `⟨hfd, hK, hirr, ⟨v0, hv0S, hv0, hv0w⟩, hdom⟩` from `hS`. Use `set φ := restr ε ρ T S hle with hφ`. Establish `hcomm : ∀ g (hg : g ∈ Kset ε) (x : S), φ ⟨ρ g x, hK g hg x x.2⟩ = ρ g (φ x)`. Introduce `g hg x`. Conclude with `hT g hg ⟨x, hle x.2⟩ ⟨ρ g x, hle (hK g hg x x.2)⟩ rfl`.
+
+Use `set Kr : Submodule ℂ H := (LinearMap.ker φ).map S.subtype with hKr`. Establish `hKrS : Kr ≤ S` using `Submodule.map_subtype_le _ _`. Establish `hKrK : IsKStableOn ε ρ Kr`. Introduce `g hg x hx`. Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.1 hx`.
+
+Use `Submodule.mem_map.2 ⟨⟨ρ g y, hK g hg y y.2⟩, ?_, rfl⟩` and prove the remaining obligations. Rewrite `hy`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[hcomm g hg y, hy, map_zero]`. Break down `hirr Kr hKrS hKrK with h0 | h1` into its components or cases. Use `right`.
+
+Establish `hinj : Function.Injective φ`. Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`. Introduce `y hy`. Establish `: (y : H) ∈ Kr` using `Submodule.mem_map.2 ⟨y, hy, rfl⟩`. Rewrite `this` using `[h0, Submodule.mem_bot]`.
+
+Conclude with `(Submodule.mem_bot ℂ).2 (Subtype.ext this)`. Use `⟨LinearMap.finiteDimensional_range φ, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `g hg _ ⟨x, rfl⟩`. Conclude with `⟨⟨ρ g x, hK g hg x x.2⟩, hcomm g hg x⟩`. Introduce `S'' hS''le hS''K set P : Submodule ℂ H := (S''.comap φ).map S.subtype with hP`.
+
+Establish `hPS : P ≤ S` using `Submodule.map_subtype_le _ _`. Establish `hPK : IsKStableOn ε ρ P`. Introduce `g hg x hx`. Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.1 hx`. Use `Submodule.mem_map.2 ⟨⟨ρ g y, hK g hg y y.2⟩, ?_, rfl⟩` and prove the remaining obligations.
+
+Rewrite `hy`, the goal using `[Submodule.mem_comap]`. Rewrite using `[hcomm g hg y]`. Conclude with `hS''K g hg _ hy`. Break down `hirr P hPS hPK with hP0 | hP1` into its components or cases. Use `left`.
+
+Rewrite using `[eq_bot_iff]`. Introduce `y hy`. Take `⟨z, rfl⟩` from `hS''le hy`. Establish `: (z : H) ∈ P` using `Submodule.mem_map.2 ⟨z, hy, rfl⟩`. Rewrite `this` using `[hP0, Submodule.mem_bot]`.
+
+Establish `hz : z = 0` using `Subtype.ext this`. Rewrite using `[hz, map_zero]`. Conclude with `Submodule.zero_mem _`. Use `right`. Use `le_antisymm hS''le ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨z, rfl⟩`. Establish `: (z : H) ∈ P` using `by rw [hP1]; exact z.2`. Take `⟨z', hz', hzz⟩` from `Submodule.mem_map.1 this`. Establish `: z' = z` using `Subtype.ext hzz`. Rewrite using `[← this]`.
+
+Conclude with `hz'`. Use `⟨φ ⟨v0, hv0S⟩, ⟨_, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Use `hinj (h.trans (map_zero φ).symm)` as an intermediate fact. Conclude with `hv0 (congrArg Subtype.val this)`.
+
+Introduce `θ hθ`. Rewrite using `[← hcomm _ hθ, ← map_smul]`. Use `congr 1`. Conclude with `Subtype.ext (hv0w θ hθ)`. Introduce and unpack `μ _ ⟨x, rfl⟩ hy hw`.
+
+Establish `hx : (x : H) ≠ 0`. Introduce `h`. Apply `hy` to reduce the goal to its premises. Rewrite using `[show x = 0 from Subtype.ext h, map_zero]`. Use `hdom μ x x.2 hx ?_` and prove the remaining obligations.
+
+Introduce `θ hθ`. Use `hw θ hθ` as an intermediate fact. Rewrite `this` using `[← hcomm _ hθ, ← map_smul]`. Conclude with `congrArg Subtype.val (hinj this)`. Use `left`.
+
+Rewrite using `[LinearMap.range_eq_bot]`. Use extensionality with `y`. Establish `: (y : H) ∈ Kr` using `by rw [h1]; exact y.2`. Take `⟨z, hz, hzy⟩` from `Submodule.mem_map.1 this`. Establish `: z = y` using `Subtype.ext hzy`.
+
+Rewrite using `[← this]`. Simplify using `using hz`.
+-/
 theorem range_restr (ε : Fin n → Bool) (ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H))
     (T : Module.End ℂ (kFinVec ε ρ))
     (hT : ∀ κ ∈ Kset ε, ∀ (v w : kFinVec ε ρ), (w : H) = ρ κ v → ((T w : kFinVec ε ρ) : H) = ρ κ (T v : H))
@@ -132,9 +165,15 @@ def kSub (ε : Fin n → Bool) : Subgroup (Matrix.unitaryGroup (Fin n) ℂ) wher
     simp only [star_mul, Matrix.star_eq_conjTranspose, Jm_conjTranspose] at h
     simpa [Matrix.star_eq_conjTranspose] using h.symm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(g : Matrix.unitaryGroup (Fin n) ℂ).2, g.2⟩`.
+-/
 theorem mem_Kset (ε : Fin n → Bool) (g : kSub ε) : ((g : Matrix.unitaryGroup (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) ∈ Kset ε :=
   ⟨(g : Matrix.unitaryGroup (Fin n) ℂ).2, g.2⟩
 
+/- English proof (translation)
+Use `show inUJ ε _`. Establish `hu : star ((g : Matrix.unitaryGroup (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) * ((g : Matrix.unitaryGroup (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) = 1` using `Unitary.star_mul_self_of_mem (g : Matrix.unitaryGroup (Fin n) ℂ).2`. Unfold `inUJ`. Rewrite using `[Matrix.mul_assoc, ← g.2, ← Matrix.mul_assoc, ← Matrix.star_eq_conjTranspose, hu, Matrix.one_mul]`.
+-/
 theorem mem_UJset (ε : Fin n → Bool) (g : kSub ε) :
     ((g : Matrix.unitaryGroup (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) ∈ UJset ε := by
   show inUJ ε _
@@ -187,6 +226,27 @@ def kRep {n : ℕ} (ε : Fin n → Bool) {H : Type} [NormedAddCommGroup H] [Inne
   map_one' := h.1
   map_mul' a b := h.2 _ (mem_UJset ε a) _ (mem_UJset ε b)
 
+/- English proof (translation)
+Introduce `n ε H _ _ _ _ ρ hA T hT`. Take `⟨hrep, hcont, hnorm, hadm⟩` from `hA`. Take `⟨S₀, hS₀, hS₀fd, hS₀K⟩` from `GlobalTheory.T.compact_unitary_finite_invariant_subspace (kSub ε) H (kRep ε ρ hrep) (fun k x => hnorm _ (mem_Kset ε k) x) (fun x => (hcont x).comp_continuous (continuous_subtype_val.comp continuous_subtype_val) (fun k => mem_UJset ε k))`. Establish `hS₀K' : IsKStableOn ε ρ S₀` using `fun g hg v hv => hS₀K ⟨⟨g, hg.1⟩, hg.2⟩ v hv`. Establish `hex : ∃ d, ∃ S : Submodule ℂ H, S ≠ ⊥ ∧ FiniteDimensional ℂ S ∧ IsKStableOn ε ρ S ∧ Module.finrank ℂ S = d` using `⟨_, S₀, hS₀, hS₀fd, hS₀K', rfl⟩`.
+
+Take `⟨S₁, hS₁, hS₁fd, hS₁K, hS₁d⟩` from `Nat.find_spec hex`. Establish `hirr : ∀ S' : Submodule ℂ H, S' ≤ S₁ → IsKStableOn ε ρ S' → S' = ⊥ ∨ S' = S₁`. Introduce `S' hle hK'`. Distinguish the cases in `h0 : S' = ⊥`. Conclude with `Or.inl h0`.
+
+Use `right`. Assume the negation of the conclusion as `hne`. Establish `hlt : S' < S₁` using `lt_of_le_of_ne hle hne`. Use `haveI := Submodule.finiteDimensional_of_le hle`. Use `Submodule.finrank_lt_finrank_of_lt hlt` as an intermediate fact.
+
+Conclude with `Nat.find_min hex (hS₁d ▸ this) ⟨S', h0, inferInstance, hK', rfl⟩`. Take `⟨Λ, hΛ⟩` from `(GlobalTheory.T.maxCompact_irreducible_has_highest_weight_and_iso n ε H ρ hrep hcont hnorm).1 S₁ hS₁fd hS₁ hS₁K hirr`. Use `set Sg : Submodule ℂ H := sSup {S' | S' ≤ ⊤ ∧ IsKTypeOf ε ρ Λ S'} with hSg`. Use `haveI hSgfd : FiniteDimensional ℂ Sg := hadm Λ`. Establish `hkt_le : ∀ S', IsKTypeOf ε ρ Λ S' → S' ≤ kFinVec ε ρ` using `fun S' h v hv => ⟨S', h.1, hv, h.2.1⟩`.
+
+Establish `hSgle : Sg ≤ kFinVec ε ρ` using `sSup_le fun S' h => hkt_le S' h.2`. Establish `hle_Sg : ∀ S', IsKTypeOf ε ρ Λ S' → S' ≤ Sg` using `fun S' h => le_sSup ⟨le_top, h⟩`. Use `⟨Sg.comap (kFinVec ε ρ).subtype, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `LinearEquiv.finiteDimensional (Submodule.comapSubtypeEquivOfLe hSgle).symm`. Take `⟨v0, hv0, hv0ne, -⟩` from `hΛ.2.2.2.1`.
+
+Introduce `hbot`. Establish `hmem : (⟨v0, hkt_le S₁ hΛ hv0⟩ : kFinVec ε ρ) ∈ Sg.comap (kFinVec ε ρ).subtype` using `hle_Sg S₁ hΛ hv0`. Rewrite `hmem` using `[hbot, Submodule.mem_bot]`. Conclude with `hv0ne (congrArg Subtype.val hmem)`. Introduce `k set N : Submodule ℂ H := (Sg.comap ((kFinVec ε ρ).subtype ∘ₗ T k)).map (kFinVec ε ρ).subtype with hN`.
+
+Establish `hSgN : Sg ≤ N`. Use `sSup_le fun S' hS' => ?_` and prove the remaining obligations. Introduce `x hx`. Establish `hxk` using `hkt_le S' hS'.2 hx`. Use `Submodule.mem_map.2 ⟨⟨x, hxk⟩, ?_, rfl⟩` and prove the remaining obligations.
+
+Rewrite using `[Submodule.mem_comap]`. Establish `hr : restr ε ρ (T k) S' (hkt_le S' hS'.2) ⟨x, hx⟩ ∈ Sg`. Break down `range_restr ε ρ (T k) (fun κ hκ v w h => hT κ hκ k v w h) Λ S' hS'.2 (hkt_le S' hS'.2) with h0 | h1` into its components or cases. Establish `: restr ε ρ (T k) S' (hkt_le S' hS'.2) ⟨x, hx⟩ ∈ LinearMap.range (restr ε ρ (T k) S' (hkt_le S' hS'.2))` using `⟨_, rfl⟩`. Rewrite `this` using `[h0, Submodule.mem_bot]`.
+
+Rewrite using `[this]`. Conclude with `Sg.zero_mem`. Conclude with `hle_Sg _ h1 ⟨_, rfl⟩`. Conclude with `hr`. Introduce `w hw`.
+
+Rewrite `hw`, the goal using `[Submodule.mem_comap]`. Take `⟨y, hy, hyw⟩` from `Submodule.mem_map.1 (hSgN hw)`. Establish `: y = w` using `Subtype.ext hyw`. Rewrite using `[← this]`. Conclude with `hy`.
+-/
 theorem exists_finDim_stable : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] [Nontrivial H] (ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), IsAdmRep ε ρ → ∀ T : ℕ → Module.End ℂ (kFinVec ε ρ), (∀ κ ∈ Kset ε, ∀ (k : ℕ) (v w : kFinVec ε ρ), (w : H) = ρ κ v → ((T k w : kFinVec ε ρ) : H) = ρ κ (T k v : H)) → ∃ S : Submodule ℂ (kFinVec ε ρ), FiniteDimensional ℂ S ∧ S ≠ ⊥ ∧ ∀ k, ∀ w ∈ S, T k w ∈ S := by
   intro n ε H _ _ _ _ ρ hA T hT
   obtain ⟨hrep, hcont, hnorm, hadm⟩ := hA

@@ -21,6 +21,15 @@ def LeafRootHens : Prop := ∀ (A B : Type) [CommRing A] [CommRing B] (I : Ideal
   ∃ c : B, (f.map ψ).IsRoot c ∧ c - ψ a ∈ J ∧ IsUnit ((f.derivative.map ψ).eval c) ∧
     IsUnit (((f /ₘ (X - C a)).map ψ).eval c) ∧ ∀ c' : B, (f.map ψ).IsRoot c' → c' - ψ a ∈ J → c' = c
 
+/- English proof (translation)
+Introduce `A _ I f a hf hfa hu`. Take `⟨S, _, φ, b, he, hr, hs, hb, hba, hext, hlift⟩` from `h1 A I f a hf hfa hu`. Use `⟨S, inferInstance, φ, b, ⟨he, hr, hs, ?_⟩, hb, hba⟩` and prove the remaining obligations. Introduce `B _ J hJ ψ hIJ`. Take `⟨c, hc, _, hc1, hc2, huniq⟩` from `h2 A B I J hJ ψ hIJ f a hf hfa hu`.
+
+Take `⟨χ, hχ, hχb⟩` from `hlift B ψ c hc hc1 hc2`. Use `⟨χ, hχ, fun χ' hχ' => hext B χ' χ (hχ'.trans hχ.symm) ?_⟩` and prove the remaining obligations. Rewrite using `[hχb]`. Establish `hpa : χ' (φ a) = ψ a` using `by rw [← hχ']; rfl`. Apply `huniq` to reduce the goal to its premises.
+
+Establish `h4 : (f.map φ).map χ' = f.map ψ` using `by rw [Polynomial.map_map, hχ']`. Rewrite using `[← h4]`. Conclude with `Polynomial.IsRoot.map hb`. Establish `h3 : (I.map φ).map χ' ≤ J`. Rewrite using `[Ideal.map_map, hχ', Ideal.map_le_iff_le_comap]`.
+
+Conclude with `hIJ`. Establish `h5` using `h3 (Ideal.mem_map_of_mem χ' hba)`. Rewrite `h5` using `[map_sub, hpa]`. Then use the resulting hypothesis.
+-/
 theorem LeafRoot_of (h1 : LeafRootStd) (h2 : LeafRootHens) : LeafRoot := by
   intro A _ I f a hf hfa hu
   obtain ⟨S, _, φ, b, he, hr, hs, hb, hba, hext, hlift⟩ := h1 A I f a hf hfa hu

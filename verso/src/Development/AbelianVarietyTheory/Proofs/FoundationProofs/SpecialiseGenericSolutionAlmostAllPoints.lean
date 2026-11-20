@@ -8,6 +8,9 @@ open Polynomial
 namespace GlobalTheory
 namespace GenericSpecial
 
+/- English proof (translation)
+Introduce `h`. Establish `e` using `hmul x hx _ hi`. Rewrite `e` using `[Ring.mul_inverse_cancel x hu, hone, h, zero_mul]`. Conclude with `one_ne_zero e`.
+-/
 theorem ext_unit_ne {k R : Type} [Field k] [CommRing R] [IsDomain R] [Algebra k R]
     (S : Subalgebra k R) (L : R →ₗ[k] k) (hone : L 1 = 1)
     (hmul : ∀ x ∈ S, ∀ z ∈ S, L (x * z) = L x * L z) (x : R) (hx : x ∈ S) (hu : IsUnit x)
@@ -17,6 +20,9 @@ theorem ext_unit_ne {k R : Type} [Field k] [CommRing R] [IsDomain R] [Algebra k 
   rw [Ring.mul_inverse_cancel x hu, hone, h, zero_mul] at e
   exact one_ne_zero e
 
+/- English proof (translation)
+Establish `h1 : g (u - g u • 1) = 0` using `by simp [hg]`. Establish `h2` using `(hk _).1 h1`. Rewrite `h2` using `[map_sub, map_smul, hh, smul_eq_mul, mul_one, sub_eq_zero]`. Conclude with `h2.symm`.
+-/
 theorem lin_eq_of_zero_iff {k A : Type} [Field k] [CommRing A] [Algebra k A]
     (g h : A →ₗ[k] k) (hg : g 1 = 1) (hh : h 1 = 1) (hk : ∀ u, g u = 0 ↔ h u = 0) (u : A) :
     g u = h u := by
@@ -27,6 +33,45 @@ theorem lin_eq_of_zero_iff {k A : Type} [Field k] [CommRing A] [Algebra k A]
 
 end GenericSpecial
 
+/- English proof (translation)
+Introduce `k A _ _ _ _ _ _ _ R _ _ _ N I _ V D hN hex`. Take `⟨ξ, Δ, m, v, y, hinj, h01, hleib, hπ, hvV, hli, ⟨j0, hj0⟩, heq0, heqΔ, hsep, hsepξ, hD, hDξ⟩` from `hex`. Establish `hsep' : ∀ p : I × I, ∃ u : A, p.1 ≠ p.2 → IsUnit (Δ p.1 0 u - Δ p.2 0 u)`. Introduce `p`. Distinguish the cases in `hp : p.1 = p.2`.
+
+Conclude with `⟨0, fun h => absurd hp h⟩`. Take `⟨u, hu⟩` from `hsep p.1 p.2 hp`. Conclude with `⟨u, fun _ => hu⟩`. Use `choose us hus using hsep'`. Use `choose uξ huξ using hsepξ`.
+
+Use `choose uD huDmem huD using hD`. Take `⟨u0, hu0D, hu0⟩` from `hDξ`. Use `choose TJ hTJ using fun i => GlobalTheory.T.jets_mem_subalgebra_of_finiteType_algebra k A R N (Δ i) (h01 i) (hleib i)`. Set `T : Finset R` to `Finset.univ.biUnion TJ ∪ Finset.univ.image y ∪ Finset.univ.image (fun p : I × I => Ring.inverse (Δ p.1 0 (us p) - Δ p.2 0 (us p))) ∪ Finset.univ.image (fun i => Ring.inverse (Δ i 0 (uξ i) - ξ (uξ i))) ∪ Finset.univ.image (fun i => Ring.inverse (Δ i 0 (uD i))) ∪ {Ring.inverse (ξ u …`. Take `⟨a, S, hξS, ha0, hTS, hspec⟩` from `GlobalTheory.T.exists_ne_zero_point_extends_to_subalgebra k A R ξ hinj T`.
+
+Use `⟨a, ha0, ?_⟩` and prove the remaining obligations. Introduce `P hPmax haP`. Take `⟨-, φ, hφ⟩` from `(GlobalTheory.T.dedekind_finiteType_ideal_codimension k A).2.1 P hPmax`. Take `⟨ψ, hψ⟩` from `hspec φ (fun h => haP ((hφ a).2 h))`. Take `⟨L, hL⟩` from `LinearMap.exists_extend (ψ.toLinearMap.comp (LinearEquiv.refl k (Subalgebra.toSubmodule S)).toLinearMap)`.
+
+Establish `hLS : ∀ x (hx : x ∈ S), L x = ψ ⟨x, hx⟩`. Introduce `x hx`. Conclude with `LinearMap.congr_fun hL ⟨x, hx⟩`. Establish `hone : L 1 = 1` using `by rw [hLS 1 S.one_mem]; exact map_one ψ`. Establish `hmul : ∀ x ∈ S, ∀ z ∈ S, L (x * z) = L x * L z`.
+
+Introduce `x hx z hz`. Rewrite using `[hLS _ (S.mul_mem hx hz), hLS x hx, hLS z hz, ← map_mul]`. Both sides reduce to the same expression. Establish `hLξ : ∀ u, L (ξ u) = φ u` using `fun u => by rw [hLS _ (hξS u), hψ]`. Establish `hSΔ : ∀ i l, l < N → ∀ u, Δ i l u ∈ S` using `fun i => hTJ i S (fun t ht => hTS t (by simp only [T, Finset.mem_union, Finset.mem_biUnion]; exact Or.inl (Or.inl (Or.inl (Or.inl (Or.inl ⟨i, Finset.mem_univ _, ht⟩))))))`.
+
+Establish `hy : ∀ j, y j ∈ S` using `fun j => hTS _ (by simp [T])`. Establish `hN0 : 0 < N` using `by omega`. Establish `hN1 : 1 < N` using `by omega`. Set `Δ' : I → ℕ → A →ₗ[k] k` to `fun i l => if l < N then L ∘ₗ Δ i l else 0`. Establish `hΔ' : ∀ i l, l < N → ∀ u, Δ' i l u = L (Δ i l u)`.
+
+Introduce `i l h u`. Simplify using `[Δ', h]`. Establish `hjet : ∀ i, ∃ Q : Ideal A, Q.IsMaximal ∧ (∀ u, u ∈ Q ↔ Δ' i 0 u = 0) ∧ ∀ f : A, (∀ l < N, Δ' i l f = 0) → f ∈ Q ^ N`. Introduce `i`. Apply `GlobalTheory.T.mem_maximal_pow_of_jets_vanish k A N (Δ' i) hN` to reduce the goal to its premises.
+
+Rewrite using `[hΔ' i 0 hN0, h01 i, hone]`. Introduce `l hl u w`. Rewrite using `[hΔ' i l hl, hleib i l u w, map_sum]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Establish `hp' : p < l + 1` using `Finset.mem_range.1 hp`.
+
+Rewrite using `[map_nsmul, hmul _ (hSΔ i p (by omega) u) _ (hSΔ i (l - p) (by omega) w), hΔ' i p (by omega), hΔ' i (l - p) (by omega)]`. Take `⟨π, hπ'⟩` from `hπ i`. Conclude with `⟨π, by rw [hΔ' i 1 hN1, hπ', hone]⟩`. Use `choose Q' hQmax hQmem hQpow using hjet`. Establish `hunit : ∀ x ∈ S, IsUnit x → Ring.inverse x ∈ S → L x ≠ 0` using `fun x hx hu hi => GenericSpecial.ext_unit_ne S L hone hmul x hx hu hi`.
+
+Set `f : A` to `∑ j, L (y j) • v j`. Use `⟨Q', f, hQmax, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i i' hii'`. Assume the negation of the conclusion as `hne`. Establish `hu` using `hus (i, i') hne`.
+
+Use `set u := us (i, i')`. Establish `heqv` using `GenericSpecial.lin_eq_of_zero_iff (Δ' i 0) (Δ' i' 0) (by rw [hΔ' i 0 hN0, h01 i, hone]) (by rw [hΔ' i' 0 hN0, h01 i', hone]) (fun w => by rw [← hQmem, ← hQmem, hii']) u`. Rewrite `heqv` using `[hΔ' i 0 hN0, hΔ' i' 0 hN0]`. Use `hunit _ (S.sub_mem (hSΔ i 0 hN0 u) (hSΔ i' 0 hN0 u)) hu (hTS _ (by simp only [T, Finset.mem_union, Finset.mem_image]; exact Or.inl (Or.inl (Or.inl (Or.inr ⟨(i, i'), Finset.mem_univ _, rfl⟩))))) ?_` and prove the remaining obligations. Rewrite using `[map_sub, heqv, sub_self]`.
+
+Introduce `i hiP`. Establish `hu` using `huξ i`. Establish `heqv` using `GenericSpecial.lin_eq_of_zero_iff (Δ' i 0) φ.toLinearMap (by rw [hΔ' i 0 hN0, h01 i, hone]) (map_one φ) (fun w => by rw [← hQmem, hiP, hφ]; rfl) (uξ i)`. Rewrite `heqv` using `[hΔ' i 0 hN0, AlgHom.toLinearMap_apply, ← hLξ]`. Use `hunit _ (S.sub_mem (hSΔ i 0 hN0 _) (hξS _)) hu (hTS _ (by simp only [T, Finset.mem_union, Finset.mem_image]; exact Or.inl (Or.inl (Or.inr ⟨i, Finset.mem_univ _, rfl⟩)))) ?_` and prove the remaining obligations.
+
+Rewrite using `[map_sub, heqv, sub_self]`. Introduce `i hDQ`. Establish `h0 : Δ' i 0 (uD i) = 0` using `(hQmem i _).1 (hDQ (huDmem i))`. Rewrite `h0` using `[hΔ' i 0 hN0]`. Conclude with `hunit _ (hSΔ i 0 hN0 _) (huD i) (hTS _ (by simp only [T, Finset.mem_union, Finset.mem_image]; exact Or.inl (Or.inr ⟨i, Finset.mem_univ _, rfl⟩))) h0`.
+
+Introduce `hDP`. Establish `h0 : φ u0 = 0` using `(hφ u0).1 (hDP hu0D)`. Rewrite `h0` using `[← hLξ]`. Conclude with `hunit _ (hξS _) hu0 (hTS _ (by simp [T])) h0`. Conclude with `Submodule.sum_mem _ fun j _ => V.smul_mem _ (hvV j)`.
+
+Introduce `hf`. Use `(Fintype.linearIndependent_iff.1 hli) (fun j => L (y j)) hf j0` as an intermediate fact. Conclude with `hunit _ (hy j0) hj0 (hTS _ (by simp [T])) this`. Apply `(hφ f).2` to reduce the goal to its premises. Establish `: φ f = L (∑ j, y j * ξ (v j))`.
+
+Simplify using `only [f, map_sum, map_smul, smul_eq_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hmul _ (hy j) _ (hξS _), hLξ]`. Rewrite using `[this, heq0, map_zero]`. Introduce `i`.
+
+Apply `hQpow i` to reduce the goal to its premises. Introduce `l hl`. Establish `: Δ' i l f = L (∑ j, y j * Δ i l (v j))`. Simplify using `only [f, map_sum, map_smul, smul_eq_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hmul _ (hy j) _ (hSΔ i l hl _), hΔ' i l hl]`. Rewrite using `[this, heqΔ i l hl, map_zero]`.
+-/
 theorem specialise_generic_solution : ∀ (k A : Type) [Field k] [IsAlgClosed k] [CharZero k] [CommRing A] [IsDedekindDomain A] [Algebra k A] [Algebra.FiniteType k A] (R : Type) [CommRing R] [IsDomain R] [Algebra k R] (N : ℕ) (I : Type) [Fintype I] (V : Submodule k A) (D : Ideal A), 2 ≤ N → (∃ (ξ : A →ₐ[k] R) (Δ : I → ℕ → A →ₗ[k] R) (m : ℕ) (v : Fin m → A) (y : Fin m → R),
   Function.Injective ξ ∧ (∀ i, Δ i 0 1 = 1) ∧ (∀ i, (∀ l, ∀ u w : A, Δ i l (u * w) = ∑ p ∈ Finset.range (l + 1), l.choose p • (Δ i p u * Δ i (l - p) w))) ∧ (∀ i, ∃ π : A, Δ i 1 π = 1) ∧
   (∀ j, v j ∈ V) ∧ LinearIndependent k v ∧ (∃ j, IsUnit (y j)) ∧ ∑ j, y j * ξ (v j) = 0 ∧ (∀ i, ∀ l < N, ∑ j, y j * Δ i l (v j) = 0) ∧

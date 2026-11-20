@@ -12,6 +12,37 @@ open scoped InnerProductSpace
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `n ε V _ _ E hR hU N hfd hS hN`. Use `haveI : FiniteDimensional ℂ N := hfd`. Use `haveI : Nontrivial N := Submodule.nontrivial_iff_ne_bot.2 hN`. Establish `hcomm : ∀ k i j, ε i = ε j → E k k * E i j - E i j * E k k = ((if k = i then (1 : ℂ) else 0) - (if j = k then 1 else 0)) • E i j`. Introduce `k i j h`.
+
+Rewrite using `[hR k k i j rfl h]`. Apply the tactic sequence `by_cases h1 : k = i <;> by_cases h2 : j = k`. Substitute `h1` using the available equality. Substitute `h2` using the available equality. Simplify using the standard rewrite rules.
+
+Substitute `h1` using the available equality. Simplify using `[h2]`. Substitute `h2` using the available equality. Simplify using `[h1]`. Simplify using `[h1, h2]`.
+
+Set `H : Module.End ℂ V` to `∑ k : Fin n, ((k : ℕ) : ℂ) • E k k`. Establish `hH : ∀ i j, ε i = ε j → H * E i j = E i j * H + (((i : ℕ) : ℂ) - (j : ℕ)) • E i j`. Introduce `i j hij`. Rewrite using `[← sub_eq_iff_eq_add', Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Simplify using `only [smul_mul_assoc, mul_smul_comm, ← smul_sub, hcomm _ _ _ hij, smul_smul, ← Finset.sum_smul]`.
+
+Simplify using `[mul_sub]`. Establish `hHN : ∀ v ∈ N, H v ∈ N`. Introduce `v hv`. Simplify using `only [H, LinearMap.sum_apply, LinearMap.smul_apply]`. Conclude with `N.sum_mem fun k _ => N.smul_mem _ (hS k k rfl v hv)`.
+
+Set `HN : Module.End ℂ N` to `H.restrict hHN`. Set `D : Fin n → Module.End ℂ N` to `fun k => (E k k).restrict (fun v hv => hS k k rfl v hv)`. Take `⟨l, hl, hmin⟩` from `Set.exists_min_image {c | HN.HasEigenvalue c} Complex.re (Module.End.finite_hasEigenvalue HN) (Module.End.exists_eigenvalue HN)`. Establish `hDc : ∀ i j, D i * D j = D j * D i`. Introduce `i j`.
+
+Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h` using `LinearMap.congr_fun (hcomm i j j rfl) (x : V)`. Establish `h' : ((if i = j then (1 : ℂ) else 0) - (if j = i then 1 else 0)) = 0`.
+
+Distinguish the cases in `h1 : i = j`. Substitute `h1` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h1, Ne.symm h1]`. Rewrite `h` using `[h', zero_smul, LinearMap.zero_apply, LinearMap.sub_apply, sub_eq_zero]`.
+
+Simplify `h` using `[D, LinearMap.restrict_apply]`. Take `⟨v, hv, hv0, ν, hν⟩` from `GlobalTheory.AlgInfChar.exists_joint_eigenvector D hDc (HN.eigenspace l) hl (fun k u hu => by`. Rewrite `hu`, the goal using `[Module.End.mem_eigenspace_iff]`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h1` using `LinearMap.congr_fun (hH k k rfl) (u : V)`.
+
+Establish `h2 : H (u : V) = l • (u : V)` using `congrArg Subtype.val hu`. Simplify using `only [sub_self, zero_smul, add_zero, Module.End.mul_apply] at h1`. Simplify using `only [HN, D, LinearMap.restrict_apply, SetLike.val_smul]`. Rewrite using `[h1, h2, map_smul])`. Rewrite `hv` using `[Module.End.mem_eigenspace_iff]`.
+
+Establish `hHv : H (v : V) = l • (v : V)` using `congrArg Subtype.val hv`. Establish `hEv : ∀ a, E a a (v : V) = ν a • (v : V)` using `fun a => congrArg Subtype.val (hν a)`. Establish `hv0' : (v : V) ≠ 0` using `fun h => hv0 (Subtype.ext h)`. Establish `hreal : ∀ a, (((ν a).re : ℝ) : ℂ) = ν a`. Introduce `a`.
+
+Establish `h` using `hU a a rfl (v : V) (v : V)`. Rewrite `h` using `[hEv, inner_smul_left, inner_smul_right]`. Establish `hne : ⟪(v : V), (v : V)⟫_ℂ ≠ 0` using `inner_self_ne_zero.2 hv0'`. Conclude with `Complex.conj_eq_iff_re.1 (mul_right_cancel₀ hne h)`. Use `⟨fun a => (ν a).re, v, v.2, hv0', fun a => by rw [hEv, hreal], fun a b hab he => ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `h0`. Set `u : N` to `⟨E a b v, hS a b he v v.2⟩`. Establish `hu0 : u ≠ 0` using `fun h => h0 (congrArg Subtype.val h)`. Establish `hHu : HN u = (l + (((a : ℕ) : ℂ) - (b : ℕ))) • u`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Establish `h1` using `LinearMap.congr_fun (hH a b he) (v : V)`. Simplify using `only [Module.End.mul_apply, LinearMap.add_apply, LinearMap.smul_apply] at h1`. Simplify using `only [HN, u, LinearMap.restrict_apply, SetLike.val_smul]`. Rewrite using `[h1, hHv, map_smul, add_smul]`. Establish `h2` using `hmin _ (Module.End.hasEigenvalue_of_hasEigenvector ⟨Module.End.mem_eigenspace_iff.2 hHu, hu0⟩)`.
+
+Establish `hab' : (a : ℕ) < b` using `hab`. Simplify using `at h2`. Conclude with `absurd hab' (not_lt.2 (by exact_mod_cast h2))`.
+-/
 theorem exists_kHighest_real_of_finiteDimensional : ∀ (n : ℕ) (ε : Fin n → Bool) (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] (E : Fin n → Fin n → Module.End ℂ V), KRel ε E → KUnit ε E → ∀ N : Submodule ℂ V, FiniteDimensional ℂ N → KStab ε E N → N ≠ ⊥ → ∃ (μ : Fin n → ℝ) (w : V), w ∈ N ∧ w ≠ 0 ∧ KHighest ε E μ w := by
   intro n ε V _ _ E hR hU N hfd hS hN
   classical

@@ -12,6 +12,9 @@ namespace Formalism.FourierDecayAlt.P.CutMP.Gauge.GC.KLAM
 
 section LinAlg
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons τ l ih`. Rewrite using `[List.map_cons, List.prod_cons, Module.End.mul_apply, ih, map_smul, hw τ, smul_smul, List.map_cons, List.prod_cons, mul_comm]`.
+-/
 theorem prod_act {W ι : Type*} [AddCommGroup W] [Module ℂ W] (F : ι → W →ₗ[ℂ] W) (c : ι → ℂ) {w : W}
     (hw : ∀ τ, F τ w = c τ • w) (l : List ι) : (l.map F).prod w = (l.map c).prod • w := by
   induction l with
@@ -24,6 +27,9 @@ def projL {W ι : Type*} [AddCommGroup W] [Module ℂ W] (C : ℂ → W →ₗ[�
     (l : List ι) : W →ₗ[ℂ] W :=
   (l.map fun τ => C (Y τ) - x τ (Y τ) • (1 : W →ₗ[ℂ] W)).prod
 
+/- English proof (translation)
+Unfold `projL`. Use `prod_act _ _ (fun τ => ?_) l` and prove the remaining obligations. Rewrite using `[LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, hw, sub_smul]`.
+-/
 theorem projL_eig {W ι : Type*} [AddCommGroup W] [Module ℂ W] (C : ℂ → W →ₗ[ℂ] W) (x : ι → ℂ → ℂ) (Y : ι → ℂ)
     (l : List ι) (μ : ℂ → ℂ) {w : W} (hw : ∀ Y', C Y' w = μ Y' • w) :
     projL C x Y l w = (l.map fun τ => μ (Y τ) - x τ (Y τ)).prod • w := by
@@ -31,6 +37,17 @@ theorem projL_eig {W ι : Type*} [AddCommGroup W] [Module ℂ W] (C : ℂ → W 
   refine prod_act _ _ (fun τ => ?_) l
   rw [LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, hw, sub_smul]
 
+/- English proof (translation)
+Use `choose Y hY using hsep`. Use `set l := (Finset.univ : Finset ι).toList with hl`. Establish `hzero : ∀ w, projL C x Y l w = 0`. Introduce `w`. Establish `hw : w ∈ ⨆ τ, S τ` using `by rw [hS]; trivial`.
+
+Proceed by induction on `hw using Submodule.iSup_induction' with`. Consider the case `mem τ' w hw`. Rewrite using `[projL_eig C x Y l (x τ') (fun Y' => hC τ' Y' w hw)]`. Establish `: (l.map fun τ => x τ' (Y τ) - x τ (Y τ)).prod = 0`. Apply `List.prod_eq_zero` to reduce the goal to its premises.
+
+Rewrite using `[List.mem_map]`. Conclude with `⟨τ', by simp [hl], by simp⟩`. Rewrite using `[this, zero_smul]`. Consider the case `zero => exact map_zero _`. Consider the case `add a b _ _ ha hb => rw [map_add, ha, hb, add_zero]`.
+
+Establish `h1` using `projL_eig C x Y l μ hu`. Rewrite `h1` using `[hzero]`. Establish `hp : (l.map fun τ => μ (Y τ) - x τ (Y τ)).prod ≠ 0`. Apply `List.prod_ne_zero` to reduce the goal to its premises. Rewrite using `[List.mem_map]`.
+
+Introduce and unpack `⟨τ, -, h0⟩`. Conclude with `hY τ (sub_eq_zero.1 h0).symm`. Conclude with `(smul_eq_zero.1 h1.symm).resolve_left hp`.
+-/
 theorem eig_zero {W ι : Type*} [AddCommGroup W] [Module ℂ W] [Fintype ι] (S : ι → Submodule ℂ W)
     (hS : ⨆ τ, S τ = ⊤) (C : ℂ → W →ₗ[ℂ] W) (x : ι → ℂ → ℂ) (hC : ∀ τ Y, ∀ w ∈ S τ, C Y w = x τ Y • w)
     (μ : ℂ → ℂ) (hsep : ∀ τ, ∃ Y, x τ Y ≠ μ Y) {u : W} (hu : ∀ Y, C Y u = μ Y • u) : u = 0 := by
@@ -59,6 +76,23 @@ theorem eig_zero {W ι : Type*} [AddCommGroup W] [Module ℂ W] [Fintype ι] (S 
     exact hY τ (sub_eq_zero.1 h0).symm
   exact (smul_eq_zero.1 h1.symm).resolve_left hp
 
+/- English proof (translation)
+Establish `hsep' : ∀ τ : {τ // τ ≠ σ}, ∃ Y, x τ.1 Y ≠ x σ Y` using `fun τ => hsep τ.1 τ.2`. Use `choose Y hY using hsep'`. Set `Yf : ι → ℂ` to `fun τ => if h : τ = σ then 0 else Y ⟨τ, h⟩`. Use `set l := ((Finset.univ : Finset ι).erase σ).toList with hl`. Establish `hmem : ∀ w, projL C x Yf l w ∈ S σ`.
+
+Introduce `w`. Establish `hw : w ∈ ⨆ τ, S τ` using `by rw [hS]; trivial`. Proceed by induction on `hw using Submodule.iSup_induction' with`. Consider the case `mem τ' w hw`. Rewrite using `[projL_eig C x Yf l (x τ') (fun Y' => hC τ' Y' w hw)]`.
+
+Distinguish the cases in `hτ : τ' = σ`. Substitute `hτ` using the available equality. Conclude with `Submodule.smul_mem _ _ hw`. Establish `: (l.map fun τ => x τ' (Yf τ) - x τ (Yf τ)).prod = 0`. Apply `List.prod_eq_zero` to reduce the goal to its premises.
+
+Rewrite using `[List.mem_map]`. Conclude with `⟨τ', by simp [hl, hτ], by simp⟩`. Rewrite using `[this, zero_smul]`. Conclude with `Submodule.zero_mem _`. Consider the case `zero => rw [map_zero]`.
+
+Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `Submodule.add_mem _ ha hb`. Establish `h1` using `projL_eig C x Yf l (x σ) hu`. Establish `hp : (l.map fun τ => x σ (Yf τ) - x τ (Yf τ)).prod ≠ 0`.
+
+Apply `List.prod_ne_zero` to reduce the goal to its premises. Rewrite using `[List.mem_map]`. Introduce and unpack `⟨τ, hτl, h0⟩`. Establish `hτ : τ ≠ σ`. Use `(Finset.mem_toList.1 hτl)` as an intermediate fact.
+
+Conclude with `(Finset.mem_erase.1 this).1`. Establish `hYf : Yf τ = Y ⟨τ, hτ⟩` using `by simp [Yf, hτ]`. Rewrite `h0` using `[hYf]`. Conclude with `hY ⟨τ, hτ⟩ (sub_eq_zero.1 h0).symm`. Establish `h2 : u = ((l.map fun τ => x σ (Yf τ) - x τ (Yf τ)).prod)⁻¹ • projL C x Yf l u`.
+
+Rewrite using `[h1, smul_smul, inv_mul_cancel₀ hp, one_smul]`. Rewrite using `[h2]`. Conclude with `Submodule.smul_mem _ _ (hmem u)`.
+-/
 theorem eig_mem {W ι : Type*} [AddCommGroup W] [Module ℂ W] [Fintype ι] [DecidableEq ι] (S : ι → Submodule ℂ W)
     (hS : ⨆ τ, S τ = ⊤) (C : ℂ → W →ₗ[ℂ] W) (x : ι → ℂ → ℂ) (hC : ∀ τ Y, ∀ w ∈ S τ, C Y w = x τ Y • w)
     (σ : ι) (hsep : ∀ τ, τ ≠ σ → ∃ Y, x τ Y ≠ x σ Y) {u : W} (hu : ∀ Y, C Y u = x σ Y • u) : u ∈ S σ := by
@@ -99,6 +133,9 @@ theorem eig_mem {W ι : Type*} [AddCommGroup W] [Module ℂ W] [Fintype ι] [Dec
   rw [h2]
   exact Submodule.smul_mem _ _ (hmem u)
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact Bl.general_b_fact_second_alt_form.goal1 .. | (apply Bl.general_b_fact_second_alt_form.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_second_alt_form.goal1 <;> assumption)`.
+-/
 theorem schur_core {Wq Wp : Type*} [AddCommGroup Wq] [Module ℂ Wq] [FiniteDimensional ℂ Wq]
     [AddCommGroup Wp] [Module ℂ Wp] [FiniteDimensional ℂ Wp]
     (S' : Submodule ℂ Wq) (S : Submodule ℂ Wp) (Gq : Set (Module.End ℂ Wq)) (Gp : Set (Module.End ℂ Wp))
@@ -120,12 +157,41 @@ open Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.P.Qx8
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+The claim follows from `Matrix.nonsing_inv_mul _ (WeylGroupFacts.isUnit_of_uh hg)`.
+-/
 theorem inv_mul_uh {g : Q.Mx k r} (hg : g ∈ UH (Hpk k r)) : g⁻¹ * g = 1 :=
   Matrix.nonsing_inv_mul _ (WeylGroupFacts.isUnit_of_uh hg)
 
+/- English proof (translation)
+The claim follows from `Matrix.mul_nonsing_inv _ (WeylGroupFacts.isUnit_of_uh hg)`.
+-/
 theorem mul_inv_uh {g : Q.Mx k r} (hg : g ∈ UH (Hpk k r)) : g * g⁻¹ = 1 :=
   Matrix.mul_nonsing_inv _ (WeylGroupFacts.isUnit_of_uh hg)
 
+/- English proof (translation)
+Establish `hpos` using `GGl_pos hz hz' hT hT' hg hne`. Use `set y := g⁻¹ *ᵥ z with hy`. Establish `hgy : g *ᵥ y = z` using `inv_mulVec_uh hg.1 z`. Establish `hginv : g⁻¹ ∈ Q.Glev k r (Fin.last r)`. Use `⟨WeylGroupFacts.uh_inv hg.1, fun a ha => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+
+Use `conv_lhs => rw [← (hg.2 a ha).1]`. Rewrite using `[Matrix.mulVec_mulVec, inv_mul_uh hg.1, Matrix.one_mulVec]`. Use `conv_lhs => rw [← (hg.2 a ha).2]`. Rewrite using `[Matrix.mulVec_mulVec, inv_mul_uh hg.1, Matrix.one_mulVec]`. Establish `hyW : inWb k r y` using `inWb_mulVec hginv hz`.
+
+Establish `hyy : herm (Hpk k r) y y = -((Tz k r z : ℝ) : ℂ)`. Rewrite using `[← herm_self', ← hgy, herm_UH hg.1]`. Establish `hζ : herm (Hpk k r) z' y = Q.zetaL k r z z' (Fin.last r) g`. Unfold `Q.zetaL`. Rewrite using `[fvec_last, fvec_last, ← hgy, herm_UH hg.1]`.
+
+Establish `hG1 : 0 < Complex.normSq (herm (Hpk k r) z' y) - Tz k r z' * Tz k r z`. Rewrite using `[hζ, mul_comm]`. Conclude with `hpos`. Establish `hG2 : 0 < Complex.normSq (herm (Hpk k r) y z') - Tz k r z * Tz k r z'`. Rewrite using `[← herm_conj, hζ]`.
+
+Establish `: Complex.normSq (star (Q.zetaL k r z z' (Fin.last r) g)) = Complex.normSq (Q.zetaL k r z z' (Fin.last r) g)` using `Complex.normSq_conj _`. Rewrite using `[this]`. Conclude with `hpos`. Take `⟨e', s, c, hs, he', he'W, he'z, he'e⟩` from `orth_unit hyW hz' hT' hyy (herm_self' z') hG2`. Take `⟨f, s₂, c₂, hs₂, hf, hfW, hfy, hff⟩` from `orth_unit hz' hyW hT (herm_self' z') hyy hG1`.
+
+Establish `hBz : ∀ a, herm (Hpk k r) (Fr a) z' = 0` using `fun a => hFr.2.2 a z' (by simp)`. Establish `hBy : ∀ a, herm (Hpk k r) (Fr a) y = 0` using `fun a => hFr.2.2 a y (by simp)`. Establish `hBe : ∀ a, herm (Hpk k r) (Fr a) e' = 0`. Introduce `a`. Rewrite using `[he', herm_smul_right', herm_add_right', herm_smul_right', hBz, hBy]`.
+
+Simplify using the standard rewrite rules. Establish `hBf : ∀ a, herm (Hpk k r) (Fr a) f = 0`. Introduce `a`. Rewrite using `[hf, herm_smul_right', herm_add_right', herm_smul_right', hBz, hBy]`. Simplify using the standard rewrite rules.
+
+Use `⟨e', f, s, c, s₂, c₂, hs, hs₂, he', hf, ⟨he'W, he'z, he'e⟩, ⟨inWb_mulVec hg hfW, ?_, ?_⟩, ⟨hFr.1, hFr.2.1, ?_⟩, ⟨fun a => inWb_mulVec hg (hFr.1 a), ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← hgy, herm_UH hg.1, hfy]`. Rewrite using `[herm_UH hg.1, hff]`. Introduce `a v hv`. Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hv`.
+
+Break down `hv with rfl | rfl` into its components or cases. Conclude with `hBz a`. Conclude with `hBe a`. Introduce `a b`. Rewrite using `[herm_UH hg.1]`.
+
+Conclude with `hFr.2.1 a b`. Introduce `a v hv`. Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hv`. Break down `hv with rfl | rfl` into its components or cases. Use `conv_lhs => rw [← hgy]`.
+
+Rewrite using `[herm_UH hg.1]`. Conclude with `hBy a`. Rewrite using `[herm_UH hg.1]`. Conclude with `hBf a`.
+-/
 theorem geom_fr {z z' : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hz' : inWb k r z')
     (hT : 0 < Tz k r z) (hT' : 0 < Tz k r z') {g : Q.Mx k r} (hg : g ∈ Q.Glev k r (Fin.last r))
     (hne : Q.GGl k r z z' g ≠ 0) {m : ℕ} {Fr : Fin m → Fin (2 * r + k + 1) → ℂ}
@@ -185,6 +251,13 @@ theorem geom_fr {z z' : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hz' : in
       rw [herm_UH hg.1]; exact hBy a
     · rw [herm_UH hg.1]; exact hBf a
 
+/- English proof (translation)
+Establish `hginv : g⁻¹ * g = 1` using `inv_mul_uh hg.1`. Establish `hgi : g⁻¹ ∈ UH (Hpk k r)` using `WeylGroupFacts.uh_inv hg.1`. Use `⟨WeylGroupFacts.uh_mul (WeylGroupFacts.uh_mul hg.1 hh'.1) hgi, fun c => ?_, ?_⟩` and prove the remaining obligations. Establish `hc` using `hg.2 c (by simp)`. Establish `i1 : g⁻¹ *ᵥ bvec (eI k r c) = bvec (eI k r c)` using `by conv_lhs => rw [← hc.1]`.
+
+Rewrite using `[Matrix.mulVec_mulVec, hginv, Matrix.one_mulVec]`. Establish `i2 : g⁻¹ *ᵥ bvec (esI k r c) = bvec (esI k r c)` using `by conv_lhs => rw [← hc.2]`. Rewrite using `[Matrix.mulVec_mulVec, hginv, Matrix.one_mulVec]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← Matrix.mulVec_mulVec, i1, ← Matrix.mulVec_mulVec, (hh'.2.1 c).1, hc.1]`.
+
+Rewrite using `[← Matrix.mulVec_mulVec, i2, ← Matrix.mulVec_mulVec, (hh'.2.1 c).2, hc.2]`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hy, inv_mulVec_uh hg.1]`.
+-/
 theorem conj_uw {z z' : Fin (2 * r + k + 1) → ℂ} {g : Q.Mx k r} (hg : g ∈ Q.Glev k r (Fin.last r))
     {h' : Q.Mx k r} (hh' : h' ∈ UWset k r z') (hy : h' *ᵥ (g⁻¹ *ᵥ z) = g⁻¹ *ᵥ z) :
     g * h' * g⁻¹ ∈ UWset k r z := by
@@ -211,6 +284,13 @@ open Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.P.Qx8
 
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp] [NormedAddCommGroup Wq] [NormedSpace ℂ Wq]
 
+/- English proof (translation)
+Establish `hh'i : h'⁻¹ ∈ UWset k r z'` using `LieBracketMultiplication.uw_inv hh'`. Establish `hyi : h'⁻¹ *ᵥ (g⁻¹ *ᵥ z) = g⁻¹ *ᵥ z` using `by conv_lhs => rw [← hy]`. Rewrite using `[Matrix.mulVec_mulVec, inv_mul_uh hh'.1, Matrix.one_mulVec]`. Establish `hh : g * h'⁻¹ * g⁻¹ ∈ UWset k r z` using `conj_uw hg hh'i hyi`. Establish `hc : g * h' * g⁻¹ ∈ UWset k r z` using `conj_uw hg hh' hy`.
+
+Establish `hgg : g * h'⁻¹ * g⁻¹ * g * h' = g`. Rewrite using `[Matrix.mul_assoc (g * h'⁻¹) g⁻¹ g, inv_mul_uh hg.1, Matrix.mul_one, Matrix.mul_assoc, inv_mul_uh hh'.1, Matrix.mul_one]`. Establish `hfib` using `hX _ hh h' hh' hgg`. Establish `hone : g * h' * g⁻¹ * (g * h'⁻¹ * g⁻¹) = 1`. Rewrite using `[show g * h' * g⁻¹ * (g * h'⁻¹ * g⁻¹) = g * h' * (g⁻¹ * g) * h'⁻¹ * g⁻¹ by`.
+
+Simplify using `only [Matrix.mul_assoc], inv_mul_uh hg.1, Matrix.mul_one, Matrix.mul_assoc g h' h'⁻¹, mul_inv_uh hh'.1,`. Use the proof step `Matrix.mul_one, mul_inv_uh hg.1]`. Establish `hπ1 : (π (g * h' * g⁻¹)).comp (π (g * h'⁻¹ * g⁻¹)) = 1`. Rewrite using `[← hrep.2 _ hc _ hh, hone, hrep.1]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem fib_intertwine {z z' : Fin (2 * r + k + 1) → ℂ} {π : Q.Mx k r → (Wp →L[ℂ] Wp)}
     {π' : Q.Mx k r → (Wq →L[ℂ] Wq)} (hrep : IsCRepOn (UWset k r z) π) {g : Q.Mx k r}
     (hg : g ∈ Q.Glev k r (Fin.last r)) {X : Wq →L[ℂ] Wp} (hX : X ∈ FibAt k r z z' π π' g)
@@ -244,6 +324,71 @@ namespace Formalism.FourierDecayAlt.P.CutMP.Gauge.GC
 
 open Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.P Formalism.FourierDecayAlt.P.Qx8
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P z z' π π' hPl hk g hg hGG Fr hFr ρ E Z hEf hZf hEe hZe hEn`. Take `⟨hOK, hz, hz', hTz, hTz', hπ, hπ'⟩` from `id hPl`. Take `⟨-, hrep, hcont, -, -, -⟩` from `id hπ`. Take `⟨-, hrep', hcont', -, -, -⟩` from `id hπ'`. Establish `hT : 0 < Tz P.k P.r z` using `by rw [hTz]; exact hOK.T_pos`.
+
+Establish `hT' : 0 < Tz P.k P.r z'` using `by rw [hTz']; exact hOK.T'_pos`. Take `⟨e', f, s, c, s₂, c₂, hs, hs₂, he', hf, ⟨he1, he2, he3⟩, ⟨hf1, hf2, hf3⟩, hFe, hFf⟩` from `KLAM.geom_fr hz hz' hT hT' hg hGG hFr`. Establish `hBr : Q.Branching` using `qr_branching_of branching_compact`. Take `⟨S', hInt', hirr', hcap'⟩` from `hBr Wq (P1 P) (first_projection_preserves_ok hOK) rfl z' e' π' hz' hT' hπ' he1 he2 he3`. Take `⟨S, hInt, hirr, hcap⟩` from `hBr Wp (P2 P) (second_projection_preserves_ok hOK) rfl z (g *ᵥ f) π hz hT hπ hf1 hf2 hf3`.
+
+Establish `hgl'` using `(frame_general_linear Wq P.k P.r (P.k - 1) z' π' Fr ⟨hrep', hcont'⟩ (frame_sub hFr (by simp))).2`. Establish `hgl` using `(frame_general_linear Wp P.k P.r (P.k - 1) z π (fun a => g *ᵥ Fr a) ⟨hrep, hcont⟩ (frame_sub hFf (by simp))).2`. Establish `hC' : ∀ (σ : M.Ty (P1 P)) (Y : ℂ), ∀ v ∈ S' σ, qdet (Qr.EB π' Fr) (Y + ((P.k : ℂ) - 2) / 2) v = M.xC (P1 P) σ Y • v`. Introduce `σ Y v hv`. Rewrite using `[← hgl']`.
+
+Use `hcap' Fr hFe σ (Y + ((P.k : ℂ) - 2) / 2) v hv` as an intermediate fact. Rewrite `this` using `[show Y + ((P.k : ℂ) - 2) / 2 - (((P1 P).k : ℂ) - 2) / 2 = Y from add_sub_cancel_right _ _]`. Conclude with `this`. Establish `hC : ∀ (τ : M.Ty (P2 P)) (Y : ℂ), ∀ w ∈ S τ, qdet (Qr.EB π (fun a => g *ᵥ Fr a)) (Y + ((P.k : ℂ) - 2) / 2) w = M.xC (P2 P) τ Y • w`. Introduce `τ Y w hw`.
+
+Rewrite using `[← hgl]`. Use `hcap (fun a => g *ᵥ Fr a) hFf τ (Y + ((P.k : ℂ) - 2) / 2) w hw` as an intermediate fact. Rewrite `this` using `[show Y + ((P.k : ℂ) - 2) / 2 - (((P2 P).k : ℂ) - 2) / 2 = Y from add_sub_cancel_right _ _]`. Conclude with `this`. Establish `hCX : ∀ X ∈ FibAt P.k P.r z z' π π' g, ∀ (Y : ℂ) (v : Wq), X (qdet (Qr.EB π' Fr) (Y + ((P.k : ℂ) - 2) / 2) v) = qdet (Qr.EB π (fun a => g *ᵥ Fr a)) (Y + ((P.k : ℂ) - 2) / 2) (X v)`.
+
+Introduce `X hX Y v`. Rewrite using `[← hgl', ← hgl]`. Conclude with `capRep_intertwine hFr hrep' hcont' hg.1 X (fun h' hh' hy v => KLAM.fib_intertwine hrep hg hX hh' hy v) _ v`. Take `⟨Y1, hY1⟩` from `Formalism.FourierDecayAlt.P5.Kfp.sep_real (first_projection_preserves_ok hOK)`. Take `⟨Y2, hY2⟩` from `Formalism.FourierDecayAlt.P5.Kfp.sep_real (second_projection_preserves_ok hOK)`.
+
+Establish `sep1 : ∀ σ σ' : M.Ty (P1 P), σ ≠ σ' → ∃ Y, M.xC (P1 P) σ Y ≠ M.xC (P1 P) σ' Y` using `fun σ σ' h => ⟨(Y1 : ℂ), fun h0 => h (hY1 h0)⟩`. Establish `sep2 : ∀ τ τ' : M.Ty (P2 P), τ ≠ τ' → ∃ Y, M.xC (P2 P) τ Y ≠ M.xC (P2 P) τ' Y` using `fun τ τ' h => ⟨(Y2 : ℂ), fun h0 => h (hY2 h0)⟩`. Establish `hkill : ∀ X : Wq →L[ℂ] Wp, CapEig P π' Fr ρ X → ∀ σ : M.Ty (P1 P), (∃ Y, M.xC (P1 P) σ Y ≠ M.xC P ρ Y) → ∀ v ∈ S' σ, X v = 0`. Introduce `X hX σ ⟨Y, hY⟩ v hv`. Establish `h1` using `hX Y v`.
+
+Rewrite `h1` using `[hC' σ Y v hv, map_smul]`. Establish `h2 : (M.xC (P1 P) σ Y - M.xC P ρ Y) • X v = 0` using `by rw [sub_smul, h1, sub_self]`. Conclude with `(smul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 hY)`. Establish `htop' : ⨆ σ, S' σ = ⊤` using `hInt'.submodule_iSup_eq_top`. Establish `htop : ⨆ τ, S τ = ⊤` using `hInt.submodule_iSup_eq_top`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨σ0, v0, hv0, hEv0⟩ : ∃ σ0, ∃ v ∈ S' σ0, E v ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Apply `hEn` to reduce the goal to its premises. Use extensionality with `v`.
+
+Establish `hv : v ∈ ⨆ σ, S' σ` using `by rw [htop']; trivial`. Proceed by induction on `hv using Submodule.iSup_induction' with`. Consider the case `mem σ w hw => simpa using hcon σ w hw`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => simp only [map_add, ContinuousLinearMap.zero_apply] at ha hb ⊢`.
+
+Rewrite using `[ha, hb, add_zero]`. Establish `hx0 : ∀ Y, M.xC (P1 P) σ0 Y = M.xC P ρ Y`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hEv0 (hkill E hEe σ0 h v0 hv0)`.
+
+Establish `hstab : ∀ σ : M.Ty (P1 P), ∀ h0 ∈ UWset P.k P.r z', h0 *ᵥ e' = e' → ∀ v ∈ S' σ, π' h0 v ∈ S' σ`. Introduce `σ h0 hh0 he0 v hv`. Establish `hFe2 : Q.IsFrameOf P.k P.r [e', z'] Fr` using `frame_sub hFe (by simp)`. Establish `hF0 : Q.IsFrameOf P.k P.r [z', e'] (fun a => h0 *ᵥ Fr a)`. Use `⟨fun a => inWb_mulVec (uw_glev (Fin.last P.r) hh0) (hFe.1 a), fun a b => ?_, fun a w hw => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[herm_UH hh0.1]`. Conclude with `hFe.2.1 a b`. Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hw`. Break down `hw with rfl | rfl` into its components or cases. Rewrite using `[← hh0.2.2, herm_UH hh0.1]; exact hFe.2.2 a _ (by simp)`.
+
+Rewrite using `[← he0, herm_UH hh0.1]; exact hFe.2.2 a _ (by simp)`. Establish `hgl0` using `(frame_general_linear Wq P.k P.r (P.k - 1) z' π' (fun a => h0 *ᵥ Fr a) ⟨hrep', hcont'⟩ (frame_sub hF0 (by simp))).2`. Establish `hmov : ∀ (w : ℂ) (x : Wq), π' h0 (capRep P.k P.r π' Fr w x) = capRep P.k P.r π' (fun a => h0 *ᵥ Fr a) w (π' h0 x)`. Introduce `w x`. Use `capRep_intertwine hFe2 hrep' hcont' hh0.1 (π' h0) (fun h' hh' _ u => ?_) w x` and prove the remaining obligations.
+
+Establish `hc : h0 * h' * h0⁻¹ ∈ UWset P.k P.r z'` using `LieBracketMultiplication.uw_mul (LieBracketMultiplication.uw_mul hh0 hh') (LieBracketMultiplication.uw_inv hh0)`. Establish `e1 : h0 * h' * h0⁻¹ * h0 = h0 * h'`. Rewrite using `[Matrix.mul_assoc, KLAM.inv_mul_uh hh0.1, Matrix.mul_one]`. Use `hrep'.2 _ hc _ hh0` as an intermediate fact. Rewrite `this` using `[e1, hrep'.2 _ hh0 _ hh']`.
+
+Establish `e2` using `congrArg (fun L : Wq →L[ℂ] Wq => L u) this`. Simplify using `only [ContinuousLinearMap.coe_comp', Function.comp_apply] at e2`. Conclude with `e2`. Use `KLAM.eig_mem S' htop' (fun Y => qdet (Qr.EB π' (fun a => h0 *ᵥ Fr a)) (Y + ((P.k : ℂ) - 2) / 2)) (fun τ => M.xC (P1 P) τ) (fun τ Y w hw => ?_) σ (fun τ h => sep1 τ σ h) (fun Y => ?_)` and prove the remaining obligations. Rewrite using `[← hgl0]`.
+
+Use `hcap' (fun a => h0 *ᵥ Fr a) hF0 τ (Y + ((P.k : ℂ) - 2) / 2) w hw` as an intermediate fact. Rewrite `this` using `[show Y + ((P.k : ℂ) - 2) / 2 - (((P1 P).k : ℂ) - 2) / 2 = Y from add_sub_cancel_right _ _]`. Conclude with `this`. Use `show qdet (Qr.EB π' (fun a => h0 *ᵥ Fr a)) (Y + ((P.k : ℂ) - 2) / 2) (π' h0 v) = _`. Rewrite using `[← hgl0, ← hmov, hgl', hC' σ Y v hv, map_smul]`.
+
+Establish `heigE : ∀ X ∈ FibAt P.k P.r z z' π π' g, ∀ v ∈ S' σ0, ∀ Y, qdet (Qr.EB π (fun a => g *ᵥ Fr a)) (Y + ((P.k : ℂ) - 2) / 2) (X v) = M.xC (P1 P) σ0 Y • X v`. Introduce `X hX v hv Y`. Rewrite using `[← hCX X hX, hC' σ0 Y v hv, map_smul]`. Choose the witnesses or unpack the hypotheses as in `⟨τ0, hτ0⟩ : ∃ τ0 : M.Ty (P2 P), ∀ Y, M.xC (P2 P) τ0 Y = M.xC (P1 P) σ0 Y := by`. Assume the negation of the conclusion as `h`.
+
+Use `push Not at h`. Conclude with `hEv0 (KLAM.eig_zero S htop (fun Y => qdet (Qr.EB π (fun a => g *ᵥ Fr a)) (Y + ((P.k : ℂ) - 2) / 2)) (fun τ => M.xC (P2 P) τ) (fun τ Y w hw => hC τ Y w hw) (M.xC (P1 P) σ0) h (heigE E hEf v0 hv0))`. Establish `hmemS : ∀ X ∈ FibAt P.k P.r z z' π π' g, ∀ v ∈ S' σ0, X v ∈ S τ0`. Introduce `X hX v hv`. Use `KLAM.eig_mem S htop (fun Y => qdet (Qr.EB π (fun a => g *ᵥ Fr a)) (Y + ((P.k : ℂ) - 2) / 2)) (fun τ => M.xC (P2 P) τ) (fun τ Y w hw => hC τ Y w hw) τ0 (fun τ h => sep2 τ τ0 h) (fun Y => ?_)` and prove the remaining obligations.
+
+Use `show _ = M.xC (P2 P) τ0 Y • X v`. Rewrite using `[hτ0 Y]`. Conclude with `heigE X hX v hv Y`. Establish `hfix_y : ∀ h' : Q.Mx P.k P.r, h' *ᵥ z' = z' → h' *ᵥ e' = e' → h' *ᵥ (g⁻¹ *ᵥ z) = g⁻¹ *ᵥ z`. Introduce `h' hz'h he'h`.
+
+Establish `h1 : h' *ᵥ e' = s • (h' *ᵥ (g⁻¹ *ᵥ z) + c • z')`. Rewrite using `[he', Matrix.mulVec_smul, Matrix.mulVec_add, Matrix.mulVec_smul, hz'h]`. Rewrite `h1` using `[he'h, he']`. Establish `h2` using `smul_right_injective _ hs h1`. Conclude with `(add_right_cancel h2).symm`.
+
+Take `⟨c0, hc0⟩` from `KLAM.schur_core (S' σ0) (S τ0) ((fun h => (π' h : Wq →ₗ[ℂ] Wq)) '' {h | h ∈ UWset P.k P.r z' ∧ h *ᵥ e' = e'}) ((fun h => (π h : Wp →ₗ[ℂ] Wp)) '' {h | h ∈ UWset P.k P.r z ∧ h *ᵥ (g *ᵥ f) = g *ᵥ f}) (fun K hK hst => (hirr' σ0).2 K hK (fun h hh he v hv => hst _ ⟨h, ⟨hh, he⟩, rfl⟩ v …`. Take `⟨h, ⟨hh, he⟩, rfl⟩` from `hA`. Conclude with `hstab σ0 h hh he v hv)`. Use the proof step `(E : Wq →ₗ[ℂ] Wp) (Z : Wq →ₗ[ℂ] Wp) (fun v hv => hmemS E hEf v hv) (fun v hv => hmemS Z hZf v hv)`. Use the proof step `(fun A hA => by`.
+
+Take `⟨h, ⟨hh, he⟩, rfl⟩` from `hA`. Establish `hy` using `hfix_y h hh.2.2 he`. Use `⟨(π (g * h * g⁻¹) : Wp →ₗ[ℂ] Wp), ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `v`. Conclude with `KLAM.fib_intertwine hrep hg hEf hh hy v`.
+
+Use extensionality with `v`. Conclude with `KLAM.fib_intertwine hrep hg hZf hh hy v)`. Use the proof step `(fun B hB => by`. Take `⟨h, ⟨hh, he⟩, rfl⟩` from `hB`. Use `set h' := g⁻¹ * h * g with hh'def`.
+
+Establish `hgi : g⁻¹ ∈ UH (Hpk P.k P.r)` using `WeylGroupFacts.uh_inv hg.1`. Establish `hyy : h' *ᵥ (g⁻¹ *ᵥ z) = g⁻¹ *ᵥ z`. Rewrite using `[hh'def, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, inv_mulVec_uh hg.1, hh.2.2]`. Establish `hff : h' *ᵥ f = f`. Rewrite using `[hh'def, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, he, Matrix.mulVec_mulVec, KLAM.inv_mul_uh hg.1, Matrix.one_mulVec]`.
+
+Establish `hz'f : z' = s₂⁻¹ • f - c₂ • (g⁻¹ *ᵥ z)`. Rewrite using `[hf, smul_smul, inv_mul_cancel₀ hs₂, one_smul, add_sub_cancel_right]`. Establish `hzz : h' *ᵥ z' = z'` using `by conv_lhs => rw [hz'f]`. Rewrite using `[Matrix.mulVec_sub, Matrix.mulVec_smul, Matrix.mulVec_smul, hff, hyy, ← hz'f]`. Establish `hee : h' *ᵥ e' = e'`.
+
+Rewrite using `[he', Matrix.mulVec_smul, Matrix.mulVec_add, Matrix.mulVec_smul, hyy, hzz]`. Establish `hgl' : g⁻¹ ∈ Q.Glev P.k P.r (Fin.last P.r)` using `⟨hgi, fun a ha => ⟨by conv_lhs => rw [← (hg.2 a ha).1]`. Rewrite using `[Matrix.mulVec_mulVec, KLAM.inv_mul_uh hg.1, Matrix.one_mulVec], by`. Use `conv_lhs => rw [← (hg.2 a ha).2]`. Rewrite using `[Matrix.mulVec_mulVec, KLAM.inv_mul_uh hg.1, Matrix.one_mulVec]⟩⟩`.
+
+Establish `hlev` using `glev_mul (glev_mul hgl' (uw_glev (Fin.last P.r) hh)) hg`. Establish `hmem : h' ∈ UWset P.k P.r z'` using `⟨hlev.1, fun a => hlev.2 a (by simp), hzz⟩`. Use `⟨(π' h' : Wq →ₗ[ℂ] Wq), ⟨h', ⟨hmem, hee⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hconj : g * h' * g⁻¹ = h`. Rewrite using `[hh'def, show g * (g⁻¹ * h * g) * g⁻¹ = (g * g⁻¹) * h * (g * g⁻¹) by simp only [Matrix.mul_assoc], KLAM.mul_inv_uh hg.1, Matrix.one_mul, Matrix.mul_one]`.
+
+Use extensionality with `v`. Use `KLAM.fib_intertwine hrep hg hEf hmem hyy v` as an intermediate fact. Rewrite `this` using `[hconj]`. Conclude with `this)`. Use the proof step `⟨v0, hv0, hEv0⟩`.
+
+Use `⟨c0, ?_⟩` and prove the remaining obligations. Use extensionality with `v`. Establish `hv : v ∈ ⨆ σ, S' σ` using `by rw [htop']; trivial`. Proceed by induction on `hv using Submodule.iSup_induction' with`. Consider the case `mem σ w hw`.
+
+Distinguish the cases in `hσ : σ = σ0`. Substitute `hσ` using the available equality. Conclude with `hc0 w hw`. Establish `hd : ∃ Y, M.xC (P1 P) σ Y ≠ M.xC P ρ Y`. Take `⟨Y, hY⟩` from `sep1 σ σ0 hσ`.
+
+Conclude with `⟨Y, by rw [← hx0 Y]; exact hY⟩`. Rewrite using `[ContinuousLinearMap.smul_apply, hkill Z hZe σ hd w hw, hkill E hEe σ hd w hw, smul_zero]`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [map_add, map_add, ha, hb]`.
+-/
 theorem lie_weight_at_most_holds : KLAtMost := by
   classical
   intro Wp Wq _ _ _ _ _ _ P z z' π π' hPl hk g hg hGG Fr hFr ρ E Z hEf hZf hEe hZe hEn

@@ -12,28 +12,43 @@ def uOf (k r : ℕ) (g : B.Mat k r) : B.Mat k r :=
     if (r ≤ i.val ∧ i.val ≤ r + k) ∧ (r ≤ j.val ∧ j.val ≤ r + k) then g i j
     else if i = j then 1 else 0
 
+/- English proof (translation)
+Simplify using `only [uOf, of_apply]`. Rewrite using `[if_neg (by omega)]`.
+-/
 lemma uOf_out_col {k r : ℕ} (g : B.Mat k r) (i j : Fin (2 * r + k + 1))
     (hj : j.val < r ∨ r + k < j.val) : uOf k r g i j = if i = j then 1 else 0 := by
   simp only [uOf, of_apply]
   rw [if_neg (by omega)]
 
+/- English proof (translation)
+Simplify using `only [uOf, of_apply]`. Rewrite using `[if_neg (by omega)]`.
+-/
 lemma uOf_out_row {k r : ℕ} (g : B.Mat k r) (i j : Fin (2 * r + k + 1))
     (hi : i.val < r ∨ r + k < i.val) : uOf k r g i j = if i = j then 1 else 0 := by
   simp only [uOf, of_apply]
   rw [if_neg (by omega)]
 
+/- English proof (translation)
+Simplify using `only [uOf, of_apply]`. Rewrite using `[if_pos ⟨⟨hi1, hi2⟩, hj1, hj2⟩]`.
+-/
 lemma uOf_in {k r : ℕ} (g : B.Mat k r) (i j : Fin (2 * r + k + 1))
     (hi1 : r ≤ i.val) (hi2 : i.val ≤ r + k) (hj1 : r ≤ j.val) (hj2 : j.val ≤ r + k) :
     uOf k r g i j = g i j := by
   simp only [uOf, of_apply]
   rw [if_pos ⟨⟨hi1, hi2⟩, hj1, hj2⟩]
 
+/- English proof (translation)
+Rewrite using `[uOf_out_col g i j hj, if_neg]`. Introduce `h`. Substitute `h` using the available equality. Use linear arithmetic over natural numbers and integers.
+-/
 lemma uOf_W_out {k r : ℕ} (g : B.Mat k r) (i j : Fin (2 * r + k + 1))
     (hi1 : r ≤ i.val) (hi2 : i.val ≤ r + k) (hj : j.val < r ∨ r + k < j.val) :
     uOf k r g i j = 0 := by
   rw [uOf_out_col g i j hj, if_neg]
   intro h; subst h; omega
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Repeatedly rewrite using `[Matrix.mul_apply, conjTranspose_apply, Hpk_eq, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun p _ => ?_)` and prove the remaining obligations. Simplify using `[mul_ite, ite_mul, Finset.sum_ite_eq']`.
+-/
 lemma herm_entry {k r : ℕ} (A C : B.Mat k r) (i j : Fin (2 * r + k + 1)) :
     (Aᴴ * Hpk k r * C) i j = ∑ p, star (A p i) * sgn k r p * C (sig k r p) j := by
   rw [Matrix.mul_apply]
@@ -42,10 +57,16 @@ lemma herm_entry {k r : ℕ} (A C : B.Mat k r) (i j : Fin (2 * r + k + 1)) :
   refine Finset.sum_congr rfl (fun p _ => ?_)
   simp [mul_ite, ite_mul, Finset.sum_ite_eq']
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[bvec, mulVec, dotProduct, Pi.single_apply]`.
+-/
 lemma mulVec_bvec {m : ℕ} (A : Matrix (Fin m) (Fin m) ℂ) (j : Fin m) :
     A *ᵥ bvec j = fun i => A i j := by
   ext i; simp [bvec, mulVec, dotProduct, Pi.single_apply]
 
+/- English proof (translation)
+Establish `h` using `congrFun (hg.2 ⟨j.val, by omega⟩) i`. Establish `e : eI k r ⟨j.val, hj⟩ = j` using `Fin.ext rfl`. Simplify using `only [fvec, dif_pos hj, e, mulVec_bvec] at h`. Rewrite using `[h]`. Simplify using `[bvec, Pi.single_apply]`.
+-/
 lemma fix_col {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} {g : B.Mat k r} (hg : g ∈ FixSet k r z)
     (j : Fin (2 * r + k + 1)) (hj : j.val < r) (i : Fin (2 * r + k + 1)) :
     g i j = if i = j then 1 else 0 := by
@@ -54,11 +75,25 @@ lemma fix_col {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} {g : B.Mat k r} (hg 
   simp only [fvec, dif_pos hj, e, mulVec_bvec] at h
   rw [h]; simp [bvec, Pi.single_apply]
 
+/- English proof (translation)
+Establish `h` using `hg.2 (Fin.last r)`. Simplify `h` using `[fvec]`.
+-/
 lemma isometry_fix_flagAnisotropicVector_of_fix_frame {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} {g : B.Mat k r} (hg : g ∈ FixSet k r z) :
     g *ᵥ z = z := by
   have h := hg.2 (Fin.last r)
   simpa [fvec] using h
 
+/- English proof (translation)
+Establish `hU : gᴴ * Hpk k r * g = Hpk k r` using `hg.1`. Use `set a := sig k r i with ha`. Establish `har : a.val < r` using `by rw [ha, sig_hi k r i hi]; have := i.isLt; omega`. Establish `e` using `congrFun (congrFun hU a) j`. Rewrite `e` using `[herm_entry, Finset.sum_eq_single a]`.
+
+Rewrite `e` using `[fix_col hg a har a, if_pos rfl, ha, sig_sig]`. Establish `hs : sgn k r (sig k r i) = 1`. Unfold `sgn`. Rewrite using `[if_neg]`. Rewrite using `[sig_hi k r i hi]`.
+
+Use `i.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite `e` using `[hs, star_one, one_mul, one_mul, Hpk_eq, if_neg]`. Conclude with `e`. Rewrite using `[← ha, sig_sig]`.
+
+Introduce `h`. Substitute `h` using the available equality. Use linear arithmetic over natural numbers and integers. Introduce `p _ hp`. Rewrite using `[fix_col hg a har p, if_neg hp, star_zero, zero_mul, zero_mul]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 lemma fix_zero {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} {g : B.Mat k r} (hg : g ∈ FixSet k r z)
     (i j : Fin (2 * r + k + 1)) (hi : r + k < i.val) (hj2 : j.val ≤ r + k) : g i j = 0 := by
   have hU : gᴴ * Hpk k r * g = Hpk k r := hg.1
@@ -76,6 +111,23 @@ lemma fix_zero {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} {g : B.Mat k r} (hg
     rw [fix_col hg a har p, if_neg hp, star_zero, zero_mul, zero_mul]
   · intro h; exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Establish `hU : gᴴ * Hpk k r * g = Hpk k r` using `hg.1`. Use `show (uOf k r g)ᴴ * Hpk k r * uOf k r g = Hpk k r`. Use extensionality with `i j`. Rewrite using `[herm_entry]`. Distinguish the cases in `hi : r ≤ i.val ∧ i.val ≤ r + k`.
+
+Distinguish the cases in `hj : r ≤ j.val ∧ j.val ≤ r + k`. Rewrite using `[← congrFun (congrFun hU i) j, herm_entry]`. Use `Finset.sum_congr rfl (fun p _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hp : r ≤ p.val ∧ p.val ≤ r + k`. Rewrite using `[sig_mid k r p hp.1 hp.2, uOf_in g p i hp.1 hp.2 hi.1 hi.2, uOf_in g p j hp.1 hp.2 hj.1 hj.2]`.
+
+Rewrite using `[uOf_out_row g p i (by omega), if_neg (by intro h; subst h; omega), star_zero, zero_mul, zero_mul]`. Break down `(show p.val < r ∨ r + k < p.val by omega) with hp' | hp'` into its components or cases. Rewrite using `[fix_zero hg (sig k r p) j (by rw [sig_lo k r p hp']; omega) hj.2, mul_zero]`. Rewrite using `[fix_zero hg p i hp' hi.2, star_zero, zero_mul, zero_mul]`. Rewrite using `[Finset.sum_eq_single (sig k r j)]`.
+
+Rewrite using `[sig_sig, uOf_out_col g j j (by omega), if_pos rfl, mul_one]`. Establish `hsj : (sig k r j).val < r ∨ r + k < (sig k r j).val`. Apply the tactic sequence `have := j.isLt; rw [sig_val]; split_ifs <;> omega`. Rewrite using `[uOf_out_row g (sig k r j) i hsj, if_neg (by intro h; rw [← h] at hi; omega), star_zero, zero_mul, Hpk_eq, if_neg]`. Rewrite using `[sig_mid k r i hi.1 hi.2]`.
+
+Introduce `h`. Substitute `h` using the available equality. Use linear arithmetic over natural numbers and integers. Introduce `p _ hp`. Rewrite using `[uOf_out_col g _ j (by omega), if_neg (by intro h; apply hp; rw [← h, sig_sig]), mul_zero]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[uOf_out_col g i i (by omega), if_pos rfl, star_one, one_mul]`. Establish `hsi : (sig k r i).val < r ∨ r + k < (sig k r i).val`.
+
+Apply the tactic sequence `have := i.isLt; rw [sig_val]; split_ifs <;> omega`. Rewrite using `[uOf_out_row g (sig k r i) j hsi, Hpk_eq]`. Distinguish the cases in `h : sig k r i = j`. Rewrite using `[if_pos h, if_pos h.symm, mul_one]`. Rewrite using `[if_neg h, if_neg (Ne.symm h), mul_zero]`.
+
+Introduce `p _ hp`. Rewrite using `[uOf_out_col g p i (by omega), if_neg hp, star_zero, zero_mul, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 lemma uOf_mem {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} {g : B.Mat k r} (hg : g ∈ FixSet k r z) :
     uOf k r g ∈ UH (Hpk k r) := by
   have hU : gᴴ * Hpk k r * g = Hpk k r := hg.1
@@ -115,11 +167,23 @@ lemma uOf_mem {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} {g : B.Mat k r} (hg 
       rw [uOf_out_col g p i (by omega), if_neg hp, star_zero, zero_mul, zero_mul]
     · intro h; exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Rewrite using `[mulVec_bvec]`. Use extensionality with `i`. Rewrite using `[uOf_out_col g i c hc]`. Simplify using `[bvec, Pi.single_apply]`.
+-/
 lemma uOf_fix_out {k r : ℕ} (g : B.Mat k r) (c : Fin (2 * r + k + 1))
     (hc : c.val < r ∨ r + k < c.val) : uOf k r g *ᵥ bvec c = bvec c := by
   rw [mulVec_bvec]; ext i
   rw [uOf_out_col g i c hc]; simp [bvec, Pi.single_apply]
 
+/- English proof (translation)
+Use extensionality with `i`. Establish `hgz` using `congrFun (isometry_fix_flagAnisotropicVector_of_fix_frame hg) i`. Distinguish the cases in `hi : r ≤ i.val ∧ i.val ≤ r + k`. Rewrite using `[← hgz]`. Simplify using `only [mulVec, dotProduct]`.
+
+Use `Finset.sum_congr rfl (fun l _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hl : r ≤ l.val ∧ l.val ≤ r + k`. Rewrite using `[uOf_in g i l hi.1 hi.2 hl.1 hl.2]`. Rewrite using `[hz l (by omega), mul_zero, mul_zero]`. Simplify using `only [mulVec, dotProduct]`.
+
+Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[uOf_out_row g i i (by omega), if_pos rfl, one_mul]`. Introduce `l _ hl`. Rewrite using `[uOf_out_row g i l (by omega), if_neg (Ne.symm hl), zero_mul]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 lemma unipotent_part_fixes_vector {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {g : B.Mat k r}
     (hg : g ∈ FixSet k r z) : uOf k r g *ᵥ z = z := by
   ext i
@@ -138,6 +202,9 @@ lemma unipotent_part_fixes_vector {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} 
       rw [uOf_out_row g i l (by omega), if_neg (Ne.symm hl), zero_mul]
     · intro h; exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Use `⟨uOf_mem hg, fun a => ⟨?_, ?_⟩, unipotent_part_fixes_vector hz hg⟩` and prove the remaining obligations. Conclude with `uOf_fix_out g _ (Or.inl (by simp [eI]))`. Conclude with `uOf_fix_out g _ (Or.inr (by simp [esI]; omega))`.
+-/
 lemma uOf_UW {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {g : B.Mat k r}
     (hg : g ∈ FixSet k r z) : uOf k r g ∈ UWset k r z := by
   refine ⟨uOf_mem hg, fun a => ⟨?_, ?_⟩, unipotent_part_fixes_vector hz hg⟩
@@ -147,6 +214,21 @@ lemma uOf_UW {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {g 
 def yv (k r : ℕ) (g : B.Mat k r) (j : Fin (2 * r + k + 1)) : Fin (2 * r + k + 1) → ℂ :=
   fun i => if i.val < r then g i j else if i = j then 1 else 0
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `only [mulVec, dotProduct]`. Distinguish the cases in `hi : r ≤ i.val ∧ i.val ≤ r + k`. Establish `key : ∀ l, uOf k r g i l * yv k r g j l = if l = j then (if r ≤ j.val then g i j else 0) else 0`. Introduce `l`.
+
+Distinguish the cases in `hl : r ≤ l.val ∧ l.val ≤ r + k`. Rewrite using `[uOf_in g i l hi.1 hi.2 hl.1 hl.2]`. Simplify using `only [yv, if_neg (show ¬ l.val < r by omega)]`. Distinguish the cases in `hlj : l = j`. Substitute `hlj` using the available equality.
+
+Rewrite using `[if_pos rfl, if_pos rfl, if_pos hl.1, mul_one]`. Rewrite using `[if_neg hlj, if_neg hlj, mul_zero]`. Rewrite using `[uOf_W_out g i l hi.1 hi.2 (by omega), zero_mul]`. Distinguish the cases in `hlj : l = j`. Substitute `hlj; rw [if_pos rfl, if_neg (by omega)]` using the available equality.
+
+Rewrite using `[if_neg hlj]`. Rewrite using `[Finset.sum_congr rfl (fun l _ => key l), Finset.sum_ite_eq' Finset.univ j, if_pos (Finset.mem_univ _)]`. Distinguish the cases in `hjr : r ≤ j.val`. Rewrite using `[if_pos hjr]`. Rewrite using `[if_neg hjr, fix_col hg j (by omega) i, if_neg]; intro h; subst h; omega`.
+
+Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[uOf_out_row g i i (by omega), if_pos rfl, one_mul]`. Simplify using `only [yv]`. Distinguish the cases in `hir : i.val < r`. Rewrite using `[if_pos hir]`.
+
+Rewrite using `[if_neg hir, if_neg (by intro h; subst h; omega)]`. Distinguish the cases in `hjr : j.val < r`. Rewrite using `[fix_col hg j hjr i, if_neg (by intro h; subst h; omega)]`. Rewrite using `[fix_zero hg i j (by omega) hj]`. Introduce `l _ hl`.
+
+Rewrite using `[uOf_out_row g i l (by omega), if_neg (Ne.symm hl), zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 lemma uOf_yv {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} {g : B.Mat k r} (hg : g ∈ FixSet k r z)
     (j : Fin (2 * r + k + 1)) (hj : j.val ≤ r + k) : uOf k r g *ᵥ yv k r g j = fun i => g i j := by
   ext i
@@ -182,6 +264,19 @@ lemma uOf_yv {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} {g : B.Mat k r} (hg :
       rw [uOf_out_row g i l (by omega), if_neg (Ne.symm hl), zero_mul]
     · intro h; exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Introduce `k r z hz g hg`. Establish `hu` using `uOf_UW hz hg`. Establish `hH : (Hpk k r).det ≠ 0`. Establish `h2` using `congrArg Matrix.det (Hpk_sq k r)`. Rewrite `h2` using `[det_mul, det_one]`.
+
+Conclude with `left_ne_zero_of_mul_eq_one h2`. Establish `hdet : IsUnit (uOf k r g).det`. Establish `h` using `congrArg Matrix.det hu.1`. Rewrite `h` using `[det_mul, det_mul, det_conjTranspose]`. Use `isUnit_iff_ne_zero.mpr (fun h0 => hH ?_)` and prove the remaining obligations.
+
+Rewrite using `[← h, h0, mul_zero]`. Use `⟨uOf k r g, hu, (uOf k r g)⁻¹ * g, ?_, ?_⟩` and prove the remaining obligations. Establish `hm : (uOf k r g)⁻¹ * g ∈ UH (Hpk k r)`. Establish `hinv` using `(uHGroup (2 * r + k + 1) (Hpk k r) (isUnit_iff_ne_zero.mpr hH)).2`. Conclude with `hinv.1 _ (hinv.2 _ hu.1).2 _ hg.1`.
+
+Use `⟨hm, fun a i hi => ?_, fun i j h1 h2 h3 => ?_⟩` and prove the remaining obligations. Establish `e : (eI k r a).val < r` using `by simp [eI]`. Establish `hy` using `congrFun (uOf_yv hg (eI k r a) (by omega)) i`. Establish `hc : ((uOf k r g)⁻¹ * g) i (eI k r a) = yv k r g (eI k r a) i`. Rewrite using `[← congrFun (mulVec_bvec ((uOf k r g)⁻¹ * g) (eI k r a)) i, ← mulVec_mulVec, mulVec_bvec g, ← uOf_yv hg (eI k r a) (by omega), mulVec_mulVec, nonsing_inv_mul _ hdet, one_mulVec]`.
+
+Rewrite using `[hc]`. Simplify using `only [yv]`. Distinguish the cases in `hir : i.val < r`. Rewrite using `[if_pos hir, fix_col hg _ e i]`. Rewrite using `[if_neg hir]`.
+
+Establish `hc : ((uOf k r g)⁻¹ * g) i j = yv k r g j i`. Rewrite using `[← congrFun (mulVec_bvec ((uOf k r g)⁻¹ * g) j) i, ← mulVec_mulVec, mulVec_bvec g, ← uOf_yv hg j h2, mulVec_mulVec, nonsing_inv_mul _ hdet, one_mulVec]`. Rewrite using `[hc]; simp only [yv, if_neg (show ¬ i.val < r by omega)]`. Rewrite using `[← Matrix.mul_assoc, mul_nonsing_inv _ hdet, Matrix.one_mul]`.
+-/
 theorem fixed_point_subgroup : FixSub := by
   intro k r z hz g hg
   have hu := uOf_UW hz hg
@@ -219,6 +314,9 @@ end PI.StabSplit.FixW
 
 namespace PI.StabSplit
 
+/- English proof (translation)
+The claim follows from `FixW.fixed_point_subgroup`.
+-/
 theorem fixed_point_subgroup : FixSub := FixW.fixed_point_subgroup
 
 end PI.StabSplit

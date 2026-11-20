@@ -7,6 +7,13 @@ open MeasureTheory Matrix Set GlobalTheory.CompanionTheory.MajC Ad3.K.LC Ad3.K.L
 
 namespace GlobalTheory.CompanionTheory.MajC.KernInt
 
+/- English proof (translation)
+Establish `hint : IntervalIntegrable (fun r : ℝ => r ^ (s - 1)) volume 0 T` using `intervalIntegral.intervalIntegrable_rpow' (by linarith)`. Establish `hI : IntegrableOn (fun r : ℝ => r ^ (s - 1) * T ^ (-s)) (Ioc 0 T)` using `((intervalIntegrable_iff_integrableOn_Ioc_of_le hT.le).1 hint).mul_const _`. Rewrite using `[← ofReal_integral_eq_lintegral_ofReal hI ?_]`. Use `congr 1`. Rewrite using `[integral_mul_const, ← intervalIntegral.integral_of_le hT.le, integral_rpow (Or.inl (by linarith))]`.
+
+Establish `h1 : s - 1 + 1 = s` using `by ring`. Establish `hp : T ^ s ≠ 0` using `(Real.rpow_pos_of_pos hT s).ne'`. Rewrite using `[h1, Real.zero_rpow hs.ne', sub_zero, Real.rpow_neg hT.le]`. Clear the denominators using the available nonvanishing facts. Use `filter_upwards [ae_restrict_mem measurableSet_Ioc] with r hr`.
+
+Conclude with `mul_nonneg (Real.rpow_nonneg hr.1.le _) (Real.rpow_nonneg hT.le _)`.
+-/
 lemma lintegral_lo {s T : ℝ} (hs : 0 < s) (hT : 0 < T) :
     ∫⁻ r in Ioc (0 : ℝ) T, ENNReal.ofReal (r ^ (s - 1) * T ^ (-s)) = ENNReal.ofReal (1 / s) := by
   have hint : IntervalIntegrable (fun r : ℝ => r ^ (s - 1)) volume 0 T :=
@@ -24,6 +31,13 @@ lemma lintegral_lo {s T : ℝ} (hs : 0 < s) (hT : 0 < T) :
   · filter_upwards [ae_restrict_mem measurableSet_Ioc] with r hr
     exact mul_nonneg (Real.rpow_nonneg hr.1.le _) (Real.rpow_nonneg hT.le _)
 
+/- English proof (translation)
+Establish `ha : -s - 1 < -1` using `by linarith`. Establish `hI : IntegrableOn (fun r : ℝ => r ^ (-s - 1) * T ^ s) (Ioi T)` using `(integrableOn_Ioi_rpow_of_lt ha hT).mul_const _`. Rewrite using `[← ofReal_integral_eq_lintegral_ofReal hI ?_]`. Use `congr 1`. Rewrite using `[integral_mul_const, integral_Ioi_rpow_of_lt ha hT]`.
+
+Establish `h1 : -s - 1 + 1 = -s` using `by ring`. Establish `hp : T ^ s ≠ 0` using `(Real.rpow_pos_of_pos hT s).ne'`. Rewrite using `[h1, Real.rpow_neg hT.le]`. Clear the denominators using the available nonvanishing facts. Use `filter_upwards [ae_restrict_mem measurableSet_Ioi] with r hr`.
+
+Establish `: 0 < r` using `hT.trans hr`. Conclude with `mul_nonneg (Real.rpow_nonneg this.le _) (Real.rpow_nonneg hT.le _)`.
+-/
 lemma lintegral_hi {s T : ℝ} (hs : 0 < s) (hT : 0 < T) :
     ∫⁻ r in Ioi T, ENNReal.ofReal (r ^ (-s - 1) * T ^ s) = ENNReal.ofReal (1 / s) := by
   have ha : -s - 1 < -1 := by linarith
@@ -42,10 +56,18 @@ lemma lintegral_hi {s T : ℝ} (hs : 0 < s) (hT : 0 < T) :
 
 def prof (s T r : ℝ) : ℝ := r * ((r ^ 2)⁻¹ * min ((r / T) ^ s) ((T / r) ^ s))
 
+/- English proof (translation)
+Unfold `prof`. Use `fun_prop`.
+-/
 lemma measurable_prof (s T : ℝ) : Measurable (prof s T) := by
   unfold prof
   fun_prop
 
+/- English proof (translation)
+Unfold `prof`. Establish `h1 : r * (r ^ 2)⁻¹ = r⁻¹` using `by field_simp`. Establish `h2 : r ^ (s - 1) * T ^ (-s) = r⁻¹ * (r / T) ^ s`. Rewrite using `[Real.rpow_sub_one hr.ne', Real.div_rpow hr.le hT.le, Real.rpow_neg hT.le]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[← mul_assoc, h1, h2]`. Conclude with `mul_le_mul_of_nonneg_left (min_le_left _ _) (inv_nonneg.2 hr.le)`.
+-/
 lemma prof_le_lo {s T r : ℝ} (hT : 0 < T) (hr : 0 < r) :
     prof s T r ≤ r ^ (s - 1) * T ^ (-s) := by
   unfold prof
@@ -56,6 +78,11 @@ lemma prof_le_lo {s T r : ℝ} (hT : 0 < T) (hr : 0 < r) :
   rw [← mul_assoc, h1, h2]
   exact mul_le_mul_of_nonneg_left (min_le_left _ _) (inv_nonneg.2 hr.le)
 
+/- English proof (translation)
+Unfold `prof`. Establish `h1 : r * (r ^ 2)⁻¹ = r⁻¹` using `by field_simp`. Establish `h2 : r ^ (-s - 1) * T ^ s = r⁻¹ * (T / r) ^ s`. Rewrite using `[Real.rpow_sub_one hr.ne', Real.div_rpow hT.le hr.le, Real.rpow_neg hr.le]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[← mul_assoc, h1, h2]`. Conclude with `mul_le_mul_of_nonneg_left (min_le_right _ _) (inv_nonneg.2 hr.le)`.
+-/
 lemma prof_le_hi {s T r : ℝ} (hT : 0 < T) (hr : 0 < r) :
     prof s T r ≤ r ^ (-s - 1) * T ^ s := by
   unfold prof
@@ -66,6 +93,13 @@ lemma prof_le_hi {s T r : ℝ} (hT : 0 < T) (hr : 0 < r) :
   rw [← mul_assoc, h1, h2]
   exact mul_le_mul_of_nonneg_left (min_le_right _ _) (inv_nonneg.2 hr.le)
 
+/- English proof (translation)
+Rewrite using `[← Ioc_union_Ioi_eq_Ioi hT.le, lintegral_union measurableSet_Ioi Ioc_disjoint_Ioi_same]`. Establish `hlo : ∫⁻ r in Ioc (0 : ℝ) T, ENNReal.ofReal (prof s T r) ≤ ENNReal.ofReal (1 / s)`. Rewrite using `[← lintegral_lo hs hT]`. Conclude with `setLIntegral_mono' measurableSet_Ioc fun r hr => ENNReal.ofReal_le_ofReal (prof_le_lo hT hr.1)`. Establish `hhi : ∫⁻ r in Ioi T, ENNReal.ofReal (prof s T r) ≤ ENNReal.ofReal (1 / s)`.
+
+Rewrite using `[← lintegral_hi hs hT]`. Conclude with `setLIntegral_mono' measurableSet_Ioi fun r hr => ENNReal.ofReal_le_ofReal (prof_le_hi hT (hT.trans hr))`. Establish `h2 : ENNReal.ofReal (2 / s) = ENNReal.ofReal (1 / s) + ENNReal.ofReal (1 / s)`. Rewrite using `[← ENNReal.ofReal_add (by positivity) (by positivity)]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2]`. Conclude with `add_le_add hlo hhi`.
+-/
 lemma lintegral_prof_le {s T : ℝ} (hs : 0 < s) (hT : 0 < T) :
     ∫⁻ r in Ioi (0 : ℝ), ENNReal.ofReal (prof s T r) ≤ ENNReal.ofReal (2 / s) := by
   rw [← Ioc_union_Ioi_eq_Ioi hT.le, lintegral_union measurableSet_Ioi Ioc_disjoint_Ioi_same]
@@ -84,6 +118,15 @@ lemma lintegral_prof_le {s T : ℝ} (hs : 0 < s) (hT : 0 < T) :
   rw [h2]
   exact add_le_add hlo hhi
 
+/- English proof (translation)
+Introduce `s hs`. Use `⟨2 / s * (2 * Real.pi), by positivity, fun T hT => ?_⟩` and prove the remaining obligations. Rewrite using `[← Complex.lintegral_comp_polarCoord_symm]`. Establish `hcongr : ∫⁻ p in polarCoord.target, ENNReal.ofReal p.1 • ENNReal.ofReal (kern s T (Complex.polarCoord.symm p)) = ∫⁻ p in polarCoord.target, ENNReal.ofReal (prof s T p.1)`. Use `setLIntegral_congr_fun (measurableSet_Ioi.prod measurableSet_Ioo |> fun h => by` and prove the remaining obligations.
+
+Rewrite using `[polarCoord_target]`. Conclude with `h) fun p hp => ?_`. Rewrite `hp` using `[polarCoord_target]`. Establish `hp1 : 0 < p.1` using `hp.1`. Establish `hn : ‖Complex.polarCoord.symm p‖ = p.1`.
+
+Rewrite using `[Complex.norm_polarCoord_symm, abs_of_pos hp1]`. Simplify using `only [smul_eq_mul, kern, hn, prof]`. Rewrite using `[ENNReal.ofReal_mul hp1.le]`. Rewrite using `[hcongr, polarCoord_target, Measure.volume_eq_prod, ← Measure.prod_restrict]`. Establish `hprod` using `lintegral_prod_mul (μ := volume.restrict (Ioi (0 : ℝ))) (ν := volume.restrict (Ioo (-Real.pi) Real.pi)) (f := fun r => ENNReal.ofReal (prof s T r)) (g := fun _ => (1 : ENNReal)) (measurable_prof s T).ennreal_ofReal.aemeasurable aemeasurable_const`.
+
+Simplify using `only [mul_one] at hprod`. Rewrite using `[hprod, lintegral_one, Measure.restrict_apply_univ, Real.volume_Ioo, ENNReal.ofReal_mul (by positivity)]`. Establish `h2 : Real.pi - -Real.pi = 2 * Real.pi` using `by ring`. Rewrite using `[h2]`. Conclude with `mul_le_mul_left (lintegral_prof_le hs hT) _`.
+-/
 theorem lintegral_kern_le : ∀ s : ℝ, 0 < s → ∃ K : ℝ, 0 ≤ K ∧ ∀ T₀ : ℝ, 0 < T₀ →
     ∫⁻ z : ℂ, ENNReal.ofReal (kern s T₀ z) ≤ ENNReal.ofReal K := by
   intro s hs

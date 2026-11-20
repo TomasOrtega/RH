@@ -19,12 +19,20 @@ open GlobalTheory.Asc
 
 namespace GlobalTheory.AscRungB
 
+/- English proof (translation)
+Use `first`. Consider the case `exact h.conj`. Consider the case `exact RapidDec.of_le h (fun γ hγ g => by simp only [Pi.star_apply]; rw [h.left hγ g]) h.continuous.star (fun g => by simp only [Pi.star_apply, norm_star, le_refl])`.
+-/
 theorem rapidDec_star {D : D7} {V : HSp D} {f : GA D V → ℂ} (h : RapidDec V f) : RapidDec V (star f) := by
   first
   | exact h.conj
   | exact RapidDec.of_le h (fun γ hγ g => by simp only [Pi.star_apply]; rw [h.left hγ g])
       h.continuous.star (fun g => by simp only [Pi.star_apply, norm_star, le_refl])
 
+/- English proof (translation)
+Establish `hDesc` using `GlobalTheory.Unf.descent_of_weilDatumExists D (GlobalTheory.WeilDatumExistence.weilDatumExists D)`. Take `⟨om₁, h₁⟩` from `(hDesc ψ V W χV χW om h).1 V₀ ρ dV`. Take `⟨om₀, h₀⟩` from `(hDesc ψ V₀ W χV χW om₁ h₁).2 W₀ σ dW`. Take `⟨vS⟩` from `GlobalTheory.Unf.VolExist.nonempty_volM D W.rank ρ`. Take `⟨vT⟩` from `GlobalTheory.Unf.VolExist.nonempty_volM D σ V₀.rank`.
+
+Take `⟨vU⟩` from `GlobalTheory.Unf.VolExist.nonempty_volU D ρ`. Conclude with `⟨⟨χV, χW, om, om₀, h, h₀, vW, vS, vT, vU⟩, rfl, rfl, rfl, rfl⟩`.
+-/
 theorem exists_step {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {V V₀ W W₀ : HSp D} {ρ σ : ℕ} (dV : HypDec V V₀ ρ) (dW : HypDec W W₀ σ)
     {χV χW : (AE D)ˣ →* Circle} {om : Om V W} (h : IsWeilDatumO ψ V W χV χW om) (vW : GlobalTheory.Unf.Vol W) :
     ∃ s : Step ψ V V₀ W W₀ ρ σ, s.χV = χV ∧ s.χW = χW ∧ s.om = om ∧ s.vW = vW := by
@@ -36,6 +44,31 @@ theorem exists_step {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {V V₀ W W₀ : H
   obtain ⟨vU⟩ := GlobalTheory.Unf.VolExist.nonempty_volU D ρ
   exact ⟨⟨χV, χW, om, om₀, h, h₀, vW, vS, vT, vU⟩, rfl, rfl, rfl, rfl⟩
 
+/- English proof (translation)
+Introduce `hF hP`. Unfold `RungB OnTower`. Introduce `D hD T L μ0 hL sc G W M hM v F ΓL _hEnds hGood Ψ hΨ u hu k h hJ`. Establish `hi : 2 * k + 1 < D.R.m` using `by omega`. Take `⟨hw1, hw2, hodd, -, hdepiff, hdn, hpart, hpartEq, hhaar, hfund⟩` from `GlobalTheory.T.gridConjugation_weilData_inverseCharacter D hD T L μ0 hL sc G W M hM (2 * k + 1) hi`.
+
+Take `⟨hχS, hχT⟩` from `hodd (odd_two_mul_add_one k)`. Take `⟨hrap, hchain⟩` from `hΨ`. Take `⟨f, hdep, hΨeq⟩` from `hchain (2 * k + 1) hi`. Take `⟨χ', omz, hwz, ρ, Φ, Φ₀, hΦ₀, hne⟩` from `hJ`. Set `vW : GlobalTheory.Unf.Vol (G.V (.grid (2 * k + 1) 0))` to `⟨M.ν _, M.fd _, hhaar, hfund⟩`.
+
+Take `⟨s, hsV, hsW, hsom, hsvW⟩` from `exists_step (F.dB k h) (F.dJ k h) hw1 vW`. Take `⟨𝒮, Γ₀, hLoc, hvacS, hbox⟩` from `hGood.bf k h s hsom`. Use `set φ : GA D (G.V (.core (2 * k + 2))) → ℂ := star (Ψ (2 * k + 2))`. Use `set G' : GA D (G.V (.grid (2 * k + 1) 0)) → ℂ := star (part W M ρ Φ u (2 * k + 1) (by omega))`. Establish `hφ : RapidDec _ φ` using `rapidDec_star (hrap (2 * k + 2) h)`.
+
+Establish `hG' : RapidDec _ G'` using `rapidDec_star (hu ρ Φ (2 * k + 1) (by omega))`. Establish `hfix : ∀ k' ∈ lev G (.grid (2 * k + 1) 0), ∀ g, G' (g * k') = G' g` using `fun k' hk' g => congrArg star (hP D hD T L μ0 hL sc G W M hM ρ Φ u (2 * k) (by omega) k' hk' g)`. Establish `hvac1 : VacG W.ψ _ _ (latCore G (2 * k + 1)) (star f)` using `(hdepiff f).1 hdep`. Take `⟨-, hlink⟩` from `GlobalTheory.T.linkedLineVectors_invertible_on_theta_functions D W.ψ W.ψ_std (negSp F.Lz) (negSp F.Lz) (G.V (.core (2 * k + 1))) (F.ζ (k + 1)) (F.ζ k) (F.line (k + 1)) (F.line k) (F.lnk k)`. Take `⟨Ξ₂, hΞ₂, hΦ₀eq⟩` from `hlink Φ₀ hΦ₀.1`.
+
+Establish `hbox'` using `hbox (star f) Ξ₂ hvac1 hΞ₂ (by rw [← hΦ₀eq]; exact hΦ₀)`. Establish `hlift : liftT (omCore W (2 * k + 1)) (v (2 * k + 2)).μ (v (2 * k + 2)).𝓕 φ (star f) = star (Ψ (2 * k + 1))`. Rewrite using `[hΨeq]`. Conclude with `(hdn v f (Ψ (2 * k + 2))).symm`. Establish `hJper : (F.jac v k h).per W.ψ (F.ζ k) omz (liftT (omCore W (2 * k + 1)) (v (2 * k + 2)).μ (v (2 * k + 2)).𝓕 φ (star f)) G' (fun w => star (Ξ₂ ((F.lnk k).κ _ w))) ≠ 0`.
+
+Rewrite using `[hlift, ← hΦ₀eq]`. Conclude with `hne`. Establish `hsχ : s.χV = (G.ch.chi (D.R.m - (2 * k + 1)))⁻¹ * L.eta` using `by rw [hsV, hχS]`. Establish `hWA : IsWeilDatumO W.ψ _ _ (G.ch.chi (D.R.m - (2 * k + 1)))⁻¹ s.χW (omCore W (2 * k + 1))`. Rewrite using `[hsW, hχT]`.
+
+Conclude with `hw2`. Take `⟨Φ₁, hΦ₁S, hper₁⟩` from `GlobalTheory.T.fourierJacobi_period_gives_bessel_period_of_lift D W.ψ k (F.bes v k h) (F.jac v k h) s 𝒮 Γ₀ _ hLoc (negSp F.Lz) (F.ζ k) (F.line k) (F.lnk k) _ _ χ' (omCore W (2 * k + 1)) omz hsχ hWA hwz φ G' hφ hG' hfix (star f) Ξ₂ hvac1.1 hΞ₂ hbox' hJper`. Use `set ℓ : (WO (G.V (.grid (2 * k + 2) 0)) (G.V (.grid (2 * k + 1) 0)) → ℂ) → ℂ := fun Φ' => (F.bes v k h).per W.ψ φ (liftS (omRow W (2 * k + 1)) vW.μ vW.𝓕 G' Φ')`. Establish `htame : Tame W.ψ _ _ ℓ` using `(GlobalTheory.T.thetaLift_periods_isTameThetaFunctional D W.ψ _ vW G' hG').1 k (F.bes v k h) _ _ (omRow W (2 * k + 1)) hw1 φ hφ`. Establish `hℓ₁ : ℓ Φ₁ ≠ 0`.
+
+Establish `e : s.lift G' Φ₁ = liftS (omRow W (2 * k + 1)) vW.μ vW.𝓕 G' Φ₁`. Unfold `GlobalTheory.Unf.Step.lift`. Rewrite using `[hsom, hsvW]`. Rewrite `hper₁` using `[e]`. Conclude with `hper₁`.
+
+Assume the negation of the conclusion as `hall`. Apply `hℓ₁` to reduce the goal to its premises. Use `hF D hD T L μ0 hL sc G W M hM ⟨2 * k + 1, hi⟩ ℓ htame ?_ Φ₁ (hvacS Φ₁ hΦ₁S)` and prove the remaining obligations. Introduce `κ P`. Set `ρ' : G.RealVec` to `Function.update ρ ⟨2 * k + 1, hi⟩ P`.
+
+Set `Φ' : G.Datum` to `Function.update Φ ⟨2 * k + 1, hi⟩ κ`. Establish `hagree : ∀ j : Fin D.R.m, j.1 < 2 * k + 1 → ρ' j = ρ j ∧ Φ' j = Φ j`. Introduce `j hj`. Establish `hne' : j ≠ ⟨2 * k + 1, hi⟩` using `fun e => by rw [e] at hj; exact lt_irrefl _ hj`. Conclude with `⟨Function.update_of_ne hne' _ _, Function.update_of_ne hne' _ _⟩`.
+
+Establish `hdat : W.datum ρ' Φ' ⟨2 * k + 1, hi⟩ = W.fock (.chi (2 * k + 1) 0) (W.cosVec (2 * k + 1) κ) P`. Simplify using `only [GlobalTheory.ChiGrid.GridData.Weil.datum, ρ', Φ', Function.update_self]`. Establish `htop` using `hpart ρ' Φ' u`. Rewrite `htop` using `[hpartEq ρ' Φ' ρ Φ u hagree, hdat]`. Establish `h0 : (F.bes v k h).per W.ψ φ (star (part W M ρ' Φ' u (2 * k + 1 + 1) hi)) = 0`.
+
+Assume the negation of the conclusion as `hne0`. Conclude with `hall ⟨ρ', Φ', hne0⟩`. Rewrite `h0` using `[htop]`. Conclude with `h0`.
+-/
 theorem rungB : FockTot → PartFixed → RungB := by
   intro hF hP
   unfold RungB OnTower

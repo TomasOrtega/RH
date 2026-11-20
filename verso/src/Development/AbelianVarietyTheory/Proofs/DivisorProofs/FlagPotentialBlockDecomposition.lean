@@ -15,12 +15,22 @@ noncomputable section
 
 namespace GlobalTheory.UPel.HT.ES.PIsogExt
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, pow_zero, Hom.one_def, Hom.one_def, ← Category.assoc, toUnit_unique (f ≫ toUnit T) (toUnit T')]`. Consider the case `succ n ih => rw [pow_succ, pow_succ, MonObj.comp_mul, ih]`.
+-/
 theorem comp_pow_pt {S : Scheme.{0}} {T T' A : Over S} [GrpObj A] (f : T' ⟶ T) (g : T ⟶ A) (n : ℕ) :
     f ≫ g ^ n = (f ≫ g) ^ n := by
   induction n with
   | zero => rw [pow_zero, pow_zero, Hom.one_def, Hom.one_def, ← Category.assoc, toUnit_unique (f ≫ toUnit T) (toUnit T')]
   | succ n ih => rw [pow_succ, pow_succ, MonObj.comp_mul, ih]
 
+/- English proof (translation)
+Set `φ₀ : Over.mk (A₀.hom ≫ i) ⟶ A` to `Over.homMk φ h.1.w`. Establish `key : ∀ n : ℕ, (φ₀ ^ (n + 1)).left = (𝟙 A₀ ^ (n + 1)).left ≫ φ`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => rw [zero_add, pow_one, pow_one]`.
+
+Both sides reduce to the same expression. Consider the case `succ n ih`. Rewrite using `[pow_succ φ₀, pow_succ (𝟙 A₀)]`. Conclude with `h.2 A₀ _ _ _ _ ih rfl`. Take `⟨n, rfl⟩` from `Nat.exists_eq_add_of_lt hk`.
+
+Rewrite using `[zero_add, ← key n]`. Establish `: φ₀ ^ (n + 1) = φ₀ ≫ 𝟙 A ^ (n + 1)` using `by rw [comp_pow_pt, Category.comp_id]`. Rewrite using `[this]`. Both sides reduce to the same expression.
+-/
 theorem pow_comp_of_isGrpPullback {Y₀ Y : Scheme.{0}} {i : Y₀ ⟶ Y} {A₀ : Over Y₀} {A : Over Y}
     [GrpObj A₀] [GrpObj A] {φ : A₀.left ⟶ A.left} (h : IsGrpPullback A₀ A i φ) (k : ℕ) (hk : 0 < k) :
     (𝟙 A₀ ^ k).left ≫ φ = φ ≫ (𝟙 A ^ k).left := by
@@ -37,6 +47,13 @@ theorem pow_comp_of_isGrpPullback {Y₀ Y : Scheme.{0}} {i : Y₀ ⟶ Y} {A₀ :
   have : φ₀ ^ (n + 1) = φ₀ ≫ 𝟙 A ^ (n + 1) := by rw [comp_pow_pt, Category.comp_id]
   rw [this]; rfl
 
+/- English proof (translation)
+Establish `f1 : ∀ {B B' : Over Y} [GrpObj B] [IsCommMonObj B] [GrpObj B'] [IsCommMonObj B'] (χ : B ⟶ B'), sq2 χ ≫ (fst B' B').left = (fst B B).left ≫ χ.left` using `fun χ => by`. Rewrite using `[sq2, ← Over.comp_left, lift_fst, Over.comp_left]`. Establish `f2 : ∀ {B B' : Over Y} [GrpObj B] [IsCommMonObj B] [GrpObj B'] [IsCommMonObj B'] (χ : B ⟶ B'), sq2 χ ≫ (snd B' B').left = (snd B B).left ≫ χ.left` using `fun χ => by`. Rewrite using `[sq2, ← Over.comp_left, lift_snd, Over.comp_left]`. Establish `g1 : sq2 ψ₀ ≫ (fst A₀' A₀').left = (fst A₀ A₀).left ≫ ψ₀.left`.
+
+Rewrite using `[sq2, ← Over.comp_left, lift_fst, Over.comp_left]`. Establish `g2 : sq2 ψ₀ ≫ (snd A₀' A₀').left = (snd A₀ A₀).left ≫ ψ₀.left`. Rewrite using `[sq2, ← Over.comp_left, lift_snd, Over.comp_left]`. Apply `pullback.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `_ ≫ (fst A' A').left = _ ≫ (fst A' A').left`.
+
+Rewrite using `[Category.assoc, Category.assoc, f1, h'.1, ← Category.assoc, h.1, Category.assoc, e, reassoc_of% g1]`. Express the relevant statement in the definitionally equal form `_ ≫ (snd A' A').left = _ ≫ (snd A' A').left`. Rewrite using `[Category.assoc, Category.assoc, f2, h'.2, ← Category.assoc, h.2, Category.assoc, e, reassoc_of% g2]`.
+-/
 theorem isSquare_square_compatible_homs {Y₀ Y : Scheme.{0}} {A₀ A₀' : Over Y₀} {A A' : Over Y}
     [GrpObj A₀] [IsCommMonObj A₀] [GrpObj A₀'] [IsCommMonObj A₀'] [GrpObj A] [IsCommMonObj A]
     [GrpObj A'] [IsCommMonObj A'] {φ : A₀.left ⟶ A.left} {φ' : A₀'.left ⟶ A'.left}
@@ -61,6 +78,19 @@ theorem isSquare_square_compatible_homs {Y₀ Y : Scheme.{0}} {A₀ A₀' : Over
 
 open GlobalTheory.CechPic in
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.IsNormalScheme.of_pred hY`. Use `haveI := o.ab.smooth`. Use `haveI := o.ab.geomConnected`. Use `haveI := GlobalTheory.smooth_tensorObj_hom o.A o.A`. Use `haveI := GlobalTheory.geometricallyConnected_tensorObj_hom o.A o.A`.
+
+Establish `hpb : IsPullback m.φ₂ (G2 o₀.A).hom (G2 o.A).hom i` using `GlobalTheory.SiegDesc.isPullback_of_isSquare m.cart.1 m.sq`. Establish `hL : (Hecke.lbPow o.P c).IsLB` using `LB.isLB_linComb o.isLB _ _`. Establish `hM : (o'.P.pull (sq2 ψ)).IsLB` using `pull_isLB o'.isLB _`. Establish `hcL : ∀ {X : Scheme.{0}} (L : LB X) (hL : L.IsLB) (h : (Hecke.lbPow L c).IsLB), cls _ h = c • cls L hL` using `fun {X} L hL h => (cls_linComb (L := L) hL (fun _ => 𝟙 X) (fun _ => 1) h).trans (by simp [pull_id])`. Set `s : Y ⟶ (G2 o.A).left` to `(η[o.A] ≫ lift (1 : o.A ⟶ o.A) (𝟙 o.A)).left`.
+
+Establish `hs : s ≫ (G2 o.A).hom = 𝟙 Y` using `Over.w _`. Establish `hss : s ≫ sq2 ψ = (η[o'.A] ≫ lift (1 : o'.A ⟶ o'.A) (𝟙 o'.A)).left`. Rewrite using `[sq2, ← Over.comp_left]`. Use `congr 1`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [Hom.one_def, IsMonHom.one_hom]`.
+
+Establish `r0 : ∀ (A : Over Y) [GrpObj A] [IsCommMonObj A] (P : LB (G2 A).left) (hP : P.IsLB), (∃ t : (P.pull (lift (1 : A ⟶ A) (𝟙 A)).left).Gen, t.IsGen) → pull (η[A] ≫ lift (1 : A ⟶ A) (𝟙 A)).left (cls P hP) = 0`. Introduce `A _ _ P hP ht`. Rewrite using `[Over.comp_left, pull_comp, ← cls_pull hP _ (pull_isLB hP _), (cls_eq_zero_iff _).2 ht, map_zero]`. Establish `key` using `eq_zero_of_pull_densePart_of_pull_section (G2 o.A).hom i m.φ₂ (G2 o₀.A).hom i.denseRange hpb s hs (cls _ hM - cls _ hL) ?_ ?_`. Conclude with `(cls_eq_iff hL hM).1 (sub_eq_zero.1 key).symm`.
+
+Establish `hsq` using `PIsogExt.isSquare_square_compatible_homs m.sq m'.sq e`. Establish `e1` using `(cls_eq_iff o₀'.isLB (pull_isLB o'.isLB _)).2 m'.pol`. Establish `e2` using `(cls_eq_iff o₀.isLB (pull_isLB o.isLB _)).2 m.pol`. Establish `e3 : cls (Hecke.lbPow o₀.P c) (LB.isLB_linComb o₀.isLB _ _) = cls _ (pull_isLB o₀'.isLB (sq2 ψ₀))` using `(cls_eq_iff _ _).2 h₀`. Rewrite using `[map_sub, sub_eq_zero, hcL (X := (G2 o.A).left) o.P o.isLB, map_nsmul, cls_pull o'.isLB, ← pull_comp, hsq, pull_comp, ← cls_pull o'.isLB _ (pull_isLB o'.isLB _), ← e1, ← cls_pull o₀'.isLB _ (pull_isLB o₀'.isLB _), ← e3]`.
+
+Use `(hcL (X := (G2 o₀.A).left) o₀.P o₀.isLB _).trans ?_` and prove the remaining obligations. Rewrite using `[e2, cls_pull o.isLB]`. Rewrite using `[map_sub, hcL (X := (G2 o.A).left) o.P o.isLB, map_nsmul, cls_pull o'.isLB, ← pull_comp, hss, r0 _ _ _ o'.rig₁, r0 _ _ _ o.rig₁, smul_zero, sub_zero]`.
+-/
 theorem lbIso_extend {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ}
     {Y₀ Y : Scheme.{0}} [IsLocallyNoetherian Y] (hY : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Y) (i : Y₀ ⟶ Y) [IsOpenImmersion i]
     [IsDominant i] {σ₀ : Y₀ ⟶ Sp R} {σ : Y ⟶ Sp R} (o o' : Obj b N σ) (o₀ o₀' : Obj b N σ₀)
@@ -103,6 +133,21 @@ theorem lbIso_extend {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing
   · rw [map_sub, hcL (X := (G2 o.A).left) o.P o.isLB, map_nsmul, cls_pull o'.isLB, ← pull_comp, hss, r0 _ _ _ o'.rig₁, r0 _ _ _ o.rig₁,
       smul_zero, sub_zero]
 
+/- English proof (translation)
+Introduce `p _ D R _ b N _ _ j c _ Y₀ Y i σ₀ σ _ _ _ hic hdom o o' o₀ o₀' m m' ψ₀ hψ₀`. Establish `hY : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Y` using `fun y => ⟨hdom y, hic y⟩`. Use `haveI := GlobalTheory.IsNormalScheme.of_pred hY`. Use `haveI : IsReduced Y := by haveI := hdom`. Conclude with `isReduced_of_isReduced_stalk Y`.
+
+Establish `hcpos : 0 < c` using `hψ₀.pos`. Take `⟨hk, hmon₀, hlin₀, heta₀, ⟨hP₀⟩, ψ₀', hmon₀', h₁, h₂⟩` from `hψ₀`. Use `haveI := hmon₀`. Use `haveI := hmon₀'`. Establish `hA` using `GlobalTheory.isSemiAbelian_of_isAbelianScheme o.A o.ab`.
+
+Establish `hA'` using `GlobalTheory.isSemiAbelian_of_isAbelianScheme o'.A o'.ab`. Take `⟨_, _⟩` from `GlobalTheory.ExtUnique.dense_openImmersion i`. Take `⟨_, _⟩` from `GlobalTheory.ExtUnique.flat_and_isSeparated_of_isSemiAbelian o.A hA`. Take `⟨_, _⟩` from `GlobalTheory.ExtUnique.flat_and_isSeparated_of_isSemiAbelian o'.A hA'`. Take `⟨ψ, hψ⟩` from `GlobalTheory.SemiAbDenseExt.exists_extension i i.denseRange o.A o'.A hA hA' o₀.A o₀'.A m.φ m'.φ m.cart m'.cart ψ₀ hmon₀`.
+
+Take `⟨ψ', hψ'⟩` from `GlobalTheory.SemiAbDenseExt.exists_extension i i.denseRange o'.A o.A hA' hA o₀'.A o₀.A m'.φ m.φ m'.cart m.cart ψ₀' hmon₀'`. Use `haveI hψm : IsMonHom ψ := GlobalTheory.ExtUnique.isMonHom_of_isGrpPullback m.cart m'.cart ψ₀ ψ hψ`. Use `haveI hψm' : IsMonHom ψ' := GlobalTheory.ExtUnique.isMonHom_of_isGrpPullback m'.cart m.cart ψ₀' ψ' hψ'`. Establish `e : m.φ ≫ ψ.left = ψ₀.left ≫ m'.φ` using `hψ.symm`. Establish `e' : m'.φ ≫ ψ'.left = ψ₀'.left ≫ m.φ` using `hψ'.symm`.
+
+Use `⟨ψ, ⟨hk, hψm, fun c' => ?_, fun x => ?_, ⟨lbIso_extend hY i o o' o₀ o₀' m m' ψ₀ ψ e c hP₀⟩, ψ', hψm', ?_, ?_⟩, e⟩` and prove the remaining obligations. Use `GlobalTheory.ExtUnique.over_hom_ext_of_isPullback m.cart.1 ?_` and prove the remaining obligations. Rewrite using `[Over.comp_left, Over.comp_left, ← Category.assoc, ← m.act c', Category.assoc, e, ← Category.assoc, ← Over.comp_left, hlin₀ c', Over.comp_left, Category.assoc, m'.act c', ← Category.assoc, ← e, Category.assoc]`. Use `Over.OverMorphism.ext (GlobalTheory.ExtUnique.hom_ext_of_dominant o'.A.hom (by rw [Over.w, Over.w]) i ?_)` and prove the remaining obligations. Establish `h1` using `m'.eta x`.
+
+Establish `h2` using `m.eta x`. Rewrite `h1` using `[heta₀ x, Over.comp_left, Category.assoc]`. Rewrite using `[← h1, ← e, Over.comp_left, ← Category.assoc, h2, Category.assoc]`. Use `GlobalTheory.ExtUnique.over_hom_ext_of_isPullback m.cart.1 ?_` and prove the remaining obligations. Rewrite using `[Over.comp_left, ← Category.assoc, e, Category.assoc, e', ← Category.assoc, ← Over.comp_left, h₁, PIsogExt.pow_comp_of_isGrpPullback m.cart c hcpos]`.
+
+Use `GlobalTheory.ExtUnique.over_hom_ext_of_isPullback m'.cart.1 ?_` and prove the remaining obligations. Rewrite using `[Over.comp_left, ← Category.assoc, e', Category.assoc, e, ← Category.assoc, ← Over.comp_left, h₂, PIsogExt.pow_comp_of_isGrpPullback m'.cart c hcpos]`.
+-/
 theorem exists_isPIsog_extend : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ),
     3 ≤ N → N.Coprime p → ∀ (j c : ℕ), (∃ e : ℕ, c = p ^ e ∧ (0 < j → 0 < e)) →
     ∀ (Y₀ Y : Scheme.{0}) (i : Y₀ ⟶ Y) (σ₀ : Y₀ ⟶ Sp R) (σ : Y ⟶ Sp R), IsOpenImmersion i → IsDominant i →

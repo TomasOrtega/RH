@@ -14,6 +14,9 @@ set_option synthInstance.maxHeartbeats 200000
 
 section
 open UpperTheory.V UpperTheory.V.Th UpperTheory.V.Hi UpperTheory.V.Hi.CaseU
+/- English proof (translation)
+Introduce `P l _ L Ω _ _ _ _ _ _ s V hS c n hn r B Λ ι`. Take `⟨R⟩` from `_root_.UpperTheory.V.Hi.nonempty_unitaryHeckeData P l L Ω s n hn V (QData.empty V hS) c r ι Λ`. Set `K : (hset (QData.empty V hS) R.τ₀).Lev` to `⟨fun q => Empty.elim q, fun q => Empty.elim q⟩`. Take `⟨J, hJ⟩` from `_root_.UpperTheory.V.Hi.exists_hecke_ideal P l L Ω s n hn V _ c r ι B Λ R K`. Conclude with `⟨J, _root_.UpperTheory.V.Hi.hecke_ideal_point_properties P l L Ω s n hn V _ c r ι B Λ R K hS J hJ, _root_.UpperTheory.V.Th.AnnihilatorQuotientFinite.levelX_of_isJ_unitaryHeckeData P l L Ω s n hn V _ c r ι B Λ R K hS J hJ⟩`.
+-/
 theorem UpperTheory.V.Th.hida_x_of_printed_hida :
     _root_.UpperTheory.V.Af.HypothesesH' → _root_.UpperTheory.V.Th.HidaFamilyCondition := by
   intro P l _ L Ω _ _ _ _ _ _ s V hS c n hn r B Λ ι

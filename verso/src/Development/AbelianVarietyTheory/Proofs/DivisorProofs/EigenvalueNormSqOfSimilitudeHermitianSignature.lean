@@ -7,10 +7,20 @@ open scoped TensorProduct Classical
 
 namespace GlobalTheory.EigenvalueNormSignature
 
+/- English proof (translation)
+Rewrite using `[star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, Matrix.mul_assoc]`.
+-/
 theorem form_mulVec {n : ℕ} (M A : Matrix (Fin n) (Fin n) ℂ) (x y : Fin n → ℂ) :
     star (M *ᵥ x) ⬝ᵥ A *ᵥ (M *ᵥ y) = star x ⬝ᵥ (Mᴴ * A * M) *ᵥ y := by
   rw [star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, Matrix.mul_assoc]
 
+/- English proof (translation)
+Introduce `hd`. Rewrite `hd` using `[hh.det_eq_prod_eigenvalues]`. Take `⟨i, -, hi⟩` from `Finset.prod_eq_zero_iff.mp hd`. Establish `hi0 : hh.eigenvalues i = 0` using `by simpa using hi`. Unfold `sigPosH sigNegH at hs`.
+
+Establish `hdis : Disjoint (fun j : Fin n => 0 < hh.eigenvalues j) (fun j => hh.eigenvalues j < 0)`. Rewrite using `[Pi.disjoint_iff]`. Introduce `j`. Simplify using `only [Prop.disjoint_iff]`. Introduce and unpack `⟨h1, h2⟩`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hs` using `[← Fintype.card_subtype_or_disjoint _ _ hdis]`. Establish `hlt : Fintype.card {j : Fin n // 0 < hh.eigenvalues j ∨ hh.eigenvalues j < 0} < Fintype.card (Fin n)` using `Fintype.card_subtype_lt (p := fun j => 0 < hh.eigenvalues j ∨ hh.eigenvalues j < 0) (x := i) (by rw [hi0]; simp)`. Rewrite `hlt` using `[Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem det_ne_zero_of_sig {n : ℕ} {h : Matrix (Fin n) (Fin n) ℂ} (hh : h.IsHermitian)
     (hs : sigPosH hh + sigNegH hh = n) : h.det ≠ 0 := by
   intro hd
@@ -35,6 +45,27 @@ namespace GlobalTheory
 
 open GlobalTheory.EigenvalueNormSignature in
 
+/- English proof (translation)
+Introduce `n h Q Γ hh Z c hle hs hQ hc hΓ hcase w x hx hw`. Establish `hdet` using `det_ne_zero_of_sig hh hs`. Use `set Zm : Matrix (Fin n) (Fin n) ℂ := (Z : Matrix (Fin n) (Fin n) ℂ) with hZm`. Establish `hZinj : ∀ v : Fin n → ℂ, v ≠ 0 → Zm *ᵥ v ≠ 0`. Introduce `v hv h0`.
+
+Apply `hv` to reduce the goal to its premises. Establish `: ((Z⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) *ᵥ (Zm *ᵥ v) = v`. Rewrite using `[mulVec_mulVec, hZm, ← Matrix.GeneralLinearGroup.coe_mul, inv_mul_cancel, Matrix.GeneralLinearGroup.coe_one, one_mulVec]`. Rewrite using `[← this, h0, mulVec_zero]`. Establish `hB : ∀ u v : Fin n → ℂ, star u ⬝ᵥ Q *ᵥ v = star (Zm *ᵥ u) ⬝ᵥ h *ᵥ (Zm *ᵥ v)`.
+
+Introduce `u v`. Rewrite using `[form_mulVec, hQ]`. Establish `hsim : ∀ (a b : ℂ) (u v : Fin n → ℂ), Γ *ᵥ u = a • u → Γ *ᵥ v = b • v → (star a * b - c) * (star u ⬝ᵥ Q *ᵥ v) = 0`. Introduce `a b u v hu hv`. Establish `e` using `form_mulVec Γ Q u v`.
+
+Rewrite `e` using `[hΓ, hu, hv]`. Simplify using `only [star_smul, mulVec_smul, smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_mulVec] at e`. Rewrite `e`, the goal using `[RCLike.star_def]`. Take the linear combination `e`. Establish `hnorm : ∀ a : ℂ, star a * a = (c : ℂ) → ‖a‖ ^ 2 = c`.
+
+Introduce `a ha`. Establish `: ((‖a‖ ^ 2 : ℝ) : ℂ) = c`. Rewrite using `[← ha, RCLike.star_def, mul_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Conclude with `this` after adjusting the coercions. Distinguish the cases in `hq : star x ⬝ᵥ Q *ᵥ x = 0`.
+
+Break down `hcase with h0 | ⟨μ, x₀, hμ, hpos⟩` into its components or cases. Use `herm_negDef_of_sigPosH_eq_zero h hh hdet h0 (Zm *ᵥ x) (hZinj x hx)` as an intermediate fact. Rewrite `this` using `[← hB, hq]`. Simplify using `at this`. Establish `h1 : sigPosH hh = 1`.
+
+Break down `Nat.le_one_iff_eq_zero_or_eq_one.mp hle with h0 | h1` into its components or cases. Establish `hx₀ : x₀ ≠ 0` using `by rintro rfl; simp at hpos`. Use `herm_negDef_of_sigPosH_eq_zero h hh hdet h0 (Zm *ᵥ x₀) (hZinj x₀ hx₀)` as an intermediate fact. Rewrite `this` using `[← hB]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Conclude with `h1`. Establish `hμμ` using `hsim μ μ x₀ x₀ hμ hμ`. Establish `hq0 : star x₀ ⬝ᵥ Q *ᵥ x₀ ≠ 0` using `fun e => by rw [e] at hpos; simp at hpos`. Establish `hμc : star μ * μ = (c : ℂ)` using `sub_eq_zero.mp ((mul_eq_zero.mp hμμ).resolve_right hq0)`. Distinguish the cases in `hb : star x₀ ⬝ᵥ Q *ᵥ x = 0`.
+
+Use `re_form_neg_of_orth_of_sigPosH_eq_one h hh hdet h1 (Zm *ᵥ x₀) (Zm *ᵥ x) (by rw [← hB]; exact hpos) (by rw [← hB]; exact hb) (hZinj x hx)` as an intermediate fact. Rewrite `this` using `[← hB, hq]`. Simplify using `at this`. Establish `hμw` using `sub_eq_zero.mp ((mul_eq_zero.mp (hsim μ w x₀ x hμ hw)).resolve_right hb)`. Establish `hμ0 : star μ ≠ 0`.
+
+Introduce `e; rw [e, zero_mul] at hμc; exact hc (by exact_mod_cast hμc.symm)`. Establish `hwμ : w = μ` using `mul_left_cancel₀ hμ0 (hμw.trans hμc.symm)`. Rewrite using `[hwμ]`. Conclude with `hnorm μ hμc`. Conclude with `hnorm w (sub_eq_zero.mp ((mul_eq_zero.mp (hsim w w x x hw hw)).resolve_right hq))`.
+-/
 theorem eig_norm_sq_of_similitude : ∀ (n : ℕ) (h Q Γ : Matrix (Fin n) (Fin n) ℂ) (hh : h.IsHermitian) (Z : GL (Fin n) ℂ) (c : ℝ),
     sigPosH hh ≤ 1 → sigPosH hh + sigNegH hh = n → Q = (Z : Matrix (Fin n) (Fin n) ℂ)ᴴ * h * Z → c ≠ 0 →
     Γᴴ * Q * Γ = (c : ℂ) • Q →

@@ -23,12 +23,21 @@ def rt (g : GL n k) : SB (Matrix m n k) →ₗ[ℂ] SB (Matrix m n k) where
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem rt_apply (g : GL n k) (Ψ : SB (Matrix m n k)) (x : Matrix m n k) :
     (rt g Ψ).1 x = Ψ.1 (x * g.val) := rfl
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+-/
 theorem rt_one (Ψ : SB (Matrix m n k)) : rt (1 : GL n k) Ψ = Ψ := by
   apply Subtype.ext; funext x; simp
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Simplify using `[Matrix.mul_assoc]`.
+-/
 theorem rt_rt (a b : GL n k) (Ψ : SB (Matrix m n k)) : rt a (rt b Ψ) = rt (a * b) Ψ := by
   apply Subtype.ext; funext x; simp [Matrix.mul_assoc]
 
@@ -45,6 +54,9 @@ def Mid (l'' : kˣ →* ℂˣ) (π : Representation ℂ (GL m' k) V) : Submodule
     simp only [LinearMap.smul_apply, map_smul]
     rw [smul_comm, ha h Ψ Ψ' e]
 
+/- English proof (translation)
+Introduce `h Ψ Ψ' e`. Simplify using `only [LinearMap.comp_apply]`. Conclude with `hf h _ _ (fun x => by simp [e, Matrix.mul_assoc])`.
+-/
 theorem rt_mem_Mid (l'' : kˣ →* ℂˣ) (π : Representation ℂ (GL m' k) V) (g : GL n k)
     (f : SB (Matrix m' n k) →ₗ[ℂ] V) (hf : f ∈ Mid l'' π) : f ∘ₗ rt g ∈ Mid l'' π := by
   intro h Ψ Ψ' e
@@ -63,6 +75,9 @@ def piM (l'' : kˣ →* ℂˣ) (π : Representation ℂ (GL m' k) V) : Represent
     ext f Ψ
     simp [rt_rt]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem piM_apply (l'' : kˣ →* ℂˣ) (π : Representation ℂ (GL m' k) V) (g : GL n k)
     (f : Mid (n := n) l'' π) (Ψ : SB (Matrix m' n k)) : (piM l'' π g f).1 Ψ = f.1 (rt g⁻¹ Ψ) := rfl
 
@@ -77,6 +92,9 @@ def th1 {V' A B V : Type} [AddCommGroup V'] [Module ℂ V'] [AddCommGroup A] [Mo
   LinearMap.mk₂ ℂ (fun v a => ⟨θ v a, hmem v a⟩) (fun _ _ _ => by ext; simp) (fun _ _ _ => by ext; simp)
     (fun _ _ _ => by ext; simp) (fun _ _ _ => by ext; simp)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem kernel_trilinear_apply {V' A B V : Type} [AddCommGroup V'] [Module ℂ V'] [AddCommGroup A] [Module ℂ A]
     [AddCommGroup B] [Module ℂ B] [AddCommGroup V] [Module ℂ V] (θ : V' →ₗ[ℂ] A →ₗ[ℂ] B →ₗ[ℂ] V)
     (p : Submodule ℂ (B →ₗ[ℂ] V)) (hmem : ∀ v a, θ v a ∈ p) (v : V') (a : A) :

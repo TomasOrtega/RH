@@ -18,6 +18,33 @@ namespace GlobalTheory.ThKSmoothDerSmall
 open Formalism.BasicNotions.TH GlobalTheory.WeilM GlobalTheory.RealLift GlobalTheory.RealLift.Main GlobalTheory.ThKFockDer
 open scoped Classical
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ B a a' G X om om' hKP hT c hc _ w τ`. Take `⟨hb, hg, hch, -, hw⟩` from `hT`. Use `choose A hA hAθ using fun w => frameEx_holds _ _ _ _ _ (hg.hV'.sig w) (hg.hV'.cartan w)`. Use `choose C hC hCθ using fun w => frameEx_holds _ _ _ _ _ (hg.hW.sig w) (hg.hW.cartan w)`. Establish `hA1 : ∀ w, IsFrame ((1 : ℂ) • (incM F G.V'.J).map (piInf (B.emb w))) (A w)` using `fun w => by`.
+
+Rewrite using `[incM_map_piInf, one_smul]`. Conclude with `hA w`. Establish `hC1 : ∀ w, IsFrame (Complex.I • (incM F G.W.J).map (piInf (B.emb w))) (C w)` using `fun w => by`. Rewrite using `[incM_map_piInf]`. Conclude with `hC w`.
+
+Establish `fr : Framed B.emb (incM F G.V'.J) (incM F G.W.J) 1 Complex.I A C` using `⟨one_mul _, hA1, hC1⟩`. Establish `hvl` using `i_vacline i_derex`. Establish `hfe` using `i_fockex i_derex`. Establish `hsec` using `i_liesecond hKP.base i_derex hfe hvl (i_liescalar hKP.base i_derex hvl)`. Take `⟨Φ, hΦ⟩` from `hfe F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ G.M'.co 1 Complex.I A C hb.cm hb.std fr`.
+
+Establish `hr` using `i_polrange actsLaws i_derex hvl F E σ _ _ _ _ _ _ G.V' G.W G.M' B.ψ B.emb A C Φ hb.cm hb.std fr hAθ hCθ hΦ`. Establish `hwp : IsUWeilPair (cA σ) (adeleClass F) B.ψ (-1) (incM F G.V'.J) (incM F G.W.J) G.M'.co X.α (X.α / X.β) om'` using `hw`. Establish `hW2` using `hsec F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ G.M'.co 1 Complex.I A C Φ _ X.α B.mα hb.cm hb.std fr hΦ hwp.1 hch.expα`. Take `⟨Ψ, hΨ⟩` from `LinearMap.exists_leftInverse_of_injective Φ (LinearMap.ker_eq_bot.2 hΦ.1)`. Take `⟨C', hCC', hC'C⟩` from `frame_inv (hC w)`.
+
+Take `⟨κ, hκ⟩` from `exists_transfer hb.cm (c • G.W.J.map σ) τ (B.emb w)`. Set `D : Mat _ _ →ₗ[ℂ] Module.End ℂ (SInf F (Fin a' × Fin (a + a')))` to `{ toFun := fun Y => Φ ∘ₗ atPl w (fockAct2 _ _ _ _ Y + ((B.mα w : ℂ) / 2 * Y.trace) • 1) ∘ₗ Ψ map_add' := fun Y Y' => by`. Rewrite using `[← LinearMap.comp_add, ← LinearMap.add_comp, ← atPl_add, map_add, Matrix.trace_add, mul_add, add_smul]`. Use `congr 3`. Normalize the expressions using the abelian group laws.
+
+Use the proof step `map_smul' := fun r Y => by`. Rewrite using `[RingHom.id_apply, ← LinearMap.comp_smul, ← LinearMap.smul_comp, ← atPl_smul, map_smul, Matrix.trace_smul, smul_add, smul_smul, smul_eq_mul, mul_left_comm] }`. Set `L : Matrix (Fin (a + a')) (Fin (a + a')) ℂ →ₗ[ℝ] Mat _ _` to `{ toFun := fun Z => C' * Z * C w map_add' := fun X Y => by rw [Matrix.mul_add, Matrix.add_mul] map_smul' := fun r X => by rw [Matrix.mul_smul, Matrix.smul_mul, RingHom.id_apply] }`. Use `⟨D.restrictScalars ℝ ∘ₗ L ∘ₗ κ, fun Z f _ => ?_, fun Z γ h1 h2 f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[← hr]`.
+
+Conclude with `LinearMap.mem_range_self Φ _`. Establish `hRL : IsRealLine σ (c • G.W.J.map σ) γ` using `⟨w, τ, Z, GlobalTheory.T.one_parameter_skew_hermitian F E σ hb.cm _ _ w τ Z (fun t => projArch σ (c • G.W.J.map σ) w (γ t)) h2, fun t => ⟨projArch σ (c • G.W.J.map σ) w (γ t), (h1 t).symm, h2 t⟩⟩`. Take `⟨γL, hγL, eγ⟩` from `GlobalTheory.T.real_line_corresponds_to_line F E σ hσ hb.cm G.W c hc γ hRL`. Set `Yg : InfinitePlace F → Mat _ _` to `Function.update (fun _ => 0) w (L (κ Z))`. Establish `hgen : IsGen B.emb C γL Yg`.
+
+Introduce `t u`. Establish `e0 : ((γL (Multiplicative.ofAdd t)).1 : Matrix _ _ (AE F E)).map (piInf (B.emb u)) = GlobalTheory.Orb.archMat σ (c • G.W.J.map σ) (B.emb u) (projArch σ (c • G.W.J.map σ) u (γ t))`. Rewrite using `[← eγ]`. Both sides reduce to the same expression. Rewrite using `[e0]`.
+
+Distinguish the cases in `hu : u = w`. Substitute `hu` using the available equality. Rewrite using `[hκ _ _ (h2 t), exp_mul_frame _ _ hCC' hC'C, map_smul]`. Simplify using `only [Yg, Function.update_self]`. Rewrite using `[← L.map_smul]`.
+
+Both sides reduce to the same expression. Rewrite using `[← h1 t, projArch_embArch_ne _ _ hu, map_one]`. Simplify using `[Yg, Function.update_of_ne hu]`. Take `⟨T, rfl⟩` from `pol_eq B G.M' Φ hr hf`. Establish `hsd` using `hW2 γL hγL Yg hgen T`.
+
+Establish `hact` using `(actsLaws F _ (Φ T) _ (Φ T)).1 _ (fun t => map_zero _) hsd`. Establish `hsum : sumPl (fun w' => fockAct2 _ _ _ _ (Yg w') + ((B.mα w' : ℂ) / 2 * (Yg w').trace) • 1) = atPl (V` using `fun _ : InfinitePlace F => Formalism.BasicNotions.TH.Pol G.q (a' - G.q) _ _) w (fockAct2 _ _ _ _ (L (κ Z)) + ((B.mα w : ℂ) / 2 * (L (κ Z)).trace) • 1) := by`. Unfold `sumPl`. Rewrite using `[Finset.sum_eq_single w]`. Simplify using `only [Yg, Function.update_self]`.
+
+Introduce `w' _ h`. Simplify using `[Yg, Function.update_of_ne h, atPl_zero]`. Simplify using the standard rewrite rules. Rewrite `hact` using `[hsum]`. Simplify using `only [eγ]`.
+
+Establish `hΨT : Ψ (Φ T) = T` using `LinearMap.congr_fun hΨ T`. Express the relevant statement in the definitionally equal form `ActsD _ _ _ (Φ (atPl w _ (Ψ (Φ T))))`. Rewrite using `[hΨT]`. Conclude with `hact`.
+-/
 theorem exists_fockDer_small : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), GlobalTheory.ThK.KP → IsTriple B G X om om' →
@@ -101,6 +128,67 @@ theorem exists_fockDer_small : ∀ (F E : Type) [Field F] [NumberField F] [Field
   rw [hΨT]
   exact hact
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ B a a' G X om om' hKP hT c hc hcσ w τ`. Take `⟨Δ, hΔpol, hΔ⟩` from `exists_fockDer_small F E σ hσ B a a' G X om om' hKP hT c hc hcσ w τ`. Establish `hM` using `hT.geo.hM'`. Set `Good : Matrix (Fin (a + a')) (Fin (a + a')) ℂ → (ℝ → GAd σ (c • G.W.J.map σ)) → Prop` to `fun Z γ => (∀ t, embArch σ (c • G.W.J.map σ) w (projArch σ (c • G.W.J.map σ) w (γ t)) = γ t) ∧ (∀ t, GlobalTheory.Orb.archMat σ (c • G.W.J.map σ) τ (projArch σ (c • G.W.J.map σ) w (γ t)) = NormedSpace.exp (t • Z))`. Establish `hRLof : ∀ Z γ, Good Z γ → IsRealLine σ (c • G.W.J.map σ) γ` using `fun Z γ h => ⟨w, τ, Z, GlobalTheory.T.one_parameter_skew_hermitian F E σ hT.base.cm _ _ w τ Z (fun t => projArch σ (c • G.W.J.map σ) w (γ t)) h.2, fun t => ⟨projArch σ (c • G.W.J.map σ) w (γ t), (h.1 t).symm, h.2 t⟩⟩`.
+
+Set `S : Set (Matrix (Fin (a + a')) (Fin (a + a')) ℂ)` to `{Z | ∃ γ, Good Z γ}`. Take `⟨b, hbS, hbspan, hbli⟩` from `exists_linearIndependent ℝ S`. Set `U` to `Submodule.span ℝ (Set.range ((↑) : b → Matrix (Fin (a + a')) (Fin (a + a')) ℂ))`. Establish `hSU : ∀ Z ∈ S, Z ∈ U`. Introduce `Z hZ`.
+
+Use `show Z ∈ Submodule.span ℝ (Set.range ((↑) : b → Matrix (Fin (a + a')) (Fin (a + a')) ℂ))`. Rewrite using `[Subtype.range_coe, hbspan]`. Conclude with `Submodule.subset_span hZ`. Set `bb : Module.Basis b ℝ U` to `Module.Basis.span hbli`. Take `⟨q, hq⟩` from `Submodule.exists_isCompl U`.
+
+Set `π` to `Submodule.linearProjOfIsCompl U q hq`. Take `⟨qP, hqP⟩` from `Submodule.exists_isCompl (GlobalTheory.ThK.PolData B G.M')`. Set `P` to `Submodule.linearProjOfIsCompl (GlobalTheory.ThK.PolData B G.M') qP hqP`. Use `choose γb hγb using fun i : b => hbS i.2`. Set `T : b → ℝ → Module.End ℂ ((Fin a' × Fin (a + a') → AF F) → ℂ)` to `fun i t => om' (1, (toGAd hσ G.W.J hc).symm (γb i t))`.
+
+Establish `hvacI : ∀ φ : ∀ v : Pl F, (Fin a' × Fin (a + a') → Fv F v) → ℂ, (∀ᶠ v in Filter.cofinite, φ v = G.M'.vac v) → ∀ᶠ v : Pl F in Filter.cofinite, φ v = {x | ∀ (i : Fin a' × Fin (a + a')), x i ∈ IsDedekindDomain.HeightOneSpectrum.adicCompletionIntegers F v}.indicator 1` using `fun φ hvac => (hvac.and hM.std).mono fun v hv => hv.1.trans hv.2`. Establish `hder : ∀ i : b, ∀ Ψ ∈ GlobalTheory.ThK.PolData B G.M', ∃ Ψ₁ ∈ GlobalTheory.ThK.PolData B G.M', ∀ y, HasDerivAt (fun t => T i t Ψ y) (Ψ₁ y) 0`. Introduce `i Ψ hΨ`. Proceed by induction on `hΨ using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨f, hf, φ, hSB, hvac, rfl⟩` from `hx`. Conclude with `⟨GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (Δ i f) φ, Submodule.subset_span ⟨Δ i f, hΔpol _ f hf, φ, hSB, hvac, rfl⟩, GlobalTheory.ThKSmoothDer.hasDerivAt_pure (T i) (hΔ i (γb i) (hγb i).1 (hγb i).2 f hf) φ hSB (hvacI φ hvac)⟩`. Consider the case `zero => exact ⟨0, zero_mem _, fun y => by simpa using hasDerivAt_const (0 : ℝ) (0 : ℂ)⟩`. Consider the case `add x y hx hy ihx ihy`. Take `⟨x₁, hx₁, ex⟩` from `ihx`.
+
+Take `⟨y₁, hy₁, ey⟩` from `ihy`. Use `⟨x₁ + y₁, add_mem hx₁ hy₁, fun z => ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, Pi.add_apply]`. Conclude with `(ex z).add (ey z)`. Consider the case `smul r x hx ihx`.
+
+Take `⟨x₁, hx₁, ex⟩` from `ihx`. Use `⟨r • x₁, Submodule.smul_mem _ r hx₁, fun z => ?_⟩` and prove the remaining obligations. Simplify using `only [map_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `(ex z).const_mul r`. Establish `hderv : ∀ i : b, ∀ Ψ ∈ GlobalTheory.ThK.PolData B G.M', ∀ y, HasDerivAt (fun t => T i t Ψ y) (deriv (fun t => T i t Ψ y) 0) 0` using `fun i Ψ hΨ y => by`.
+
+Take `⟨Ψ₁, -, h⟩` from `hder i Ψ hΨ`. Conclude with `(h y).differentiableAt.hasDerivAt`. Set `dL : b → (GlobalTheory.ThK.PolData B G.M' →ₗ[ℂ] ((Fin a' × Fin (a + a') → AF F) → ℂ))` to `fun i => { toFun := fun Ψ y => deriv (fun t => T i t Ψ y) 0 map_add' := fun Ψ₁ Ψ₂ => by`. Use function extensionality and compare the values at `y`. Establish `e` using `((hderv i _ Ψ₁.2 y).add (hderv i _ Ψ₂.2 y)).deriv`.
+
+Simplify using `only [Submodule.coe_add, map_add, Pi.add_apply]`. Conclude with `e`. Use the proof step `map_smul' := fun r Ψ => by`. Use function extensionality and compare the values at `y`. Simplify using `only [Submodule.coe_smul, map_smul, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]`.
+
+Conclude with `deriv_const_mul _ (hderv i _ Ψ.2 y).differentiableAt }`. Establish `hdL_mem : ∀ i Ψ, dL i Ψ ∈ GlobalTheory.ThK.PolData B G.M'` using `fun i Ψ => by`. Take `⟨Ψ₁, h1, h⟩` from `hder i Ψ Ψ.2`. Establish `e : dL i Ψ = Ψ₁` using `funext fun y => (h y).deriv`. Rewrite using `[e]`.
+
+Conclude with `h1`. Establish `hmemP : ∀ f ∈ G.M'.Pol B.ψ B.emb, ∀ φ : ∀ v : Pl F, (Fin a' × Fin (a + a') → Fv F v) → ℂ, (∀ v, φ v ∈ GlobalTheory.WeilM.SB _) → (∀ᶠ v in Filter.cofinite, φ v = G.M'.vac v) → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ ∈ GlobalTheory.ThK.PolData B G.M'` using `fun f hf φ hSB hvac => Submodule.subset_span ⟨f, hf, φ, hSB, hvac, rfl⟩`. Set `Ei : b → Module.End ℂ ((Fin a' × Fin (a + a') → AF F) → ℂ)` to `fun i => dL i ∘ₗ P`. Establish `hEi_mem : ∀ i Ψ, Ei i Ψ ∈ GlobalTheory.ThK.PolData B G.M'` using `fun i Ψ => hdL_mem i _`. Establish `hEi_pure : ∀ (i : b), ∀ f ∈ G.M'.Pol B.ψ B.emb, ∀ φ : ∀ v : Pl F, (Fin a' × Fin (a + a') → Fv F v) → ℂ, (∀ v, φ v ∈ GlobalTheory.WeilM.SB _) → (∀ᶠ v in Filter.cofinite, φ v = G.M'.vac v) → Ei i (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) = GlobalTheory.Ind …`.
+
+Introduce `i f hf φ hSB hvac`. Establish `hP : P (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) = ⟨_, hmemP f hf φ hSB hvac⟩` using `Submodule.linearProjOfIsCompl_apply_left hqP ⟨_, hmemP f hf φ hSB hvac⟩`. Use `show dL i (P _) = _`. Rewrite using `[hP]`. Use function extensionality and compare the values at `y`.
+
+Conclude with `(GlobalTheory.ThKSmoothDer.hasDerivAt_pure (T i) (hΔ i (γb i) (hγb i).1 (hγb i).2 f hf) φ hSB (hvacI φ hvac) y).deriv`. Establish `hEi_so : ∀ i : b, ∀ Ψ ∈ (GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁), Ei i Ψ ∈ G.M'.So B.ψ B.τ₁`. Introduce `i Ψ hΨ`. Take `⟨hP, hS⟩` from `Submodule.mem_inf.1 hΨ`. Take `⟨γL, hγL, eγ⟩` from `GlobalTheory.ThKDerSmall.lineA F E σ hσ hT.base.cm G.W c hc (γb i) (hRLof _ _ (hγb i))`.
+
+Take `⟨Ψ₁, h1, d⟩` from `GlobalTheory.ThKDerSmall.exists_der_so hKP hT hγL Ψ hS`. Establish `hPΨ : P Ψ = ⟨Ψ, hP⟩` using `Submodule.linearProjOfIsCompl_apply_left hqP ⟨Ψ, hP⟩`. Establish `e : Ei i Ψ = Ψ₁` using `by show dL i (P Ψ) = Ψ₁`. Rewrite using `[hPΨ]`. Use function extensionality and compare the values at `y`.
+
+Use `show deriv (fun t => T i t Ψ y) 0 = Ψ₁ y`. Establish `e2 : (fun t => T i t Ψ y) = fun t => om' (1, γL (Multiplicative.ofAdd t)) Ψ y`. Use function extensionality and compare the values at `fun t => by simp only [T, eγ]`. Rewrite using `[e2]`. Conclude with `(d y).deriv`.
+
+Rewrite using `[e]`. Conclude with `h1`. Set `D₀ : U →ₗ[ℝ] Module.End ℂ ((Fin a' × Fin (a + a') → AF F) → ℂ)` to `bb.constr ℝ Ei`. Establish `hD₀_Q : ∀ u, ∀ Ψ ∈ (GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁), D₀ u Ψ ∈ (GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁)` using `fun u Ψ hΨ => by`. Rewrite using `[Module.Basis.constr_apply, Finsupp.sum, LinearMap.sum_apply]`.
+
+Conclude with `Submodule.sum_mem _ fun i _ => by`. Rewrite using `[LinearMap.smul_apply]`. Conclude with `Submodule.smul_of_tower_mem _ _ (Submodule.mem_inf.2 ⟨hEi_mem i _, hEi_so i Ψ hΨ⟩)`. Establish `hD₀_pure : ∀ (x) (hx : x ∈ U), ∀ f ∈ G.M'.Pol B.ψ B.emb, ∀ φ : ∀ v : Pl F, (Fin a' × Fin (a + a') → Fv F v) → ℂ, (∀ v, φ v ∈ GlobalTheory.WeilM.SB _) → (∀ᶠ v in Filter.cofinite, φ v = G.M'.vac v) → D₀ ⟨x, hx⟩ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) = G …`. Introduce `x hx`.
+
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Introduce `f hf φ hSB hvac`. Establish `e : (⟨(i : Matrix (Fin (a + a')) (Fin (a + a')) ℂ), Submodule.subset_span ⟨i, rfl⟩⟩ : U) = bb i` using `(Module.Basis.span_apply hbli i).symm`.
+
+Rewrite using `[e, Module.Basis.constr_basis]`. Conclude with `hEi_pure i f hf φ hSB hvac`. Consider the case `zero`. Introduce `f hf φ hSB hvac`. Establish `e : (⟨0, zero_mem _⟩ : U) = 0` using `rfl`.
+
+Rewrite using `[e, map_zero, map_zero, LinearMap.zero_apply, LinearMap.zero_apply, GlobalTheory.ThKSmoothDer.pure_zero]`. Consider the case `add x y hx hy ihx ihy`. Introduce `f hf φ hSB hvac`. Establish `e : (⟨x + y, add_mem hx hy⟩ : U) = ⟨x, hx⟩ + ⟨y, hy⟩` using `rfl`. Rewrite using `[e, map_add, LinearMap.add_apply, ihx f hf φ hSB hvac, ihy f hf φ hSB hvac, map_add, LinearMap.add_apply, GlobalTheory.ThKSmoothDer.pure_add]`.
+
+Consider the case `smul r x hx ihx`. Introduce `f hf φ hSB hvac`. Establish `e : (⟨r • x, Submodule.smul_mem _ r hx⟩ : U) = r • ⟨x, hx⟩` using `rfl`. Rewrite using `[e, map_smul, LinearMap.smul_apply, ihx f hf φ hSB hvac, map_smul, LinearMap.smul_apply, GlobalTheory.ThKSmoothDer.pure_rsmul]`. Use `⟨D₀ ∘ₗ π, fun Z Φ hΦ => hD₀_Q _ _ hΦ, ?_⟩` and prove the remaining obligations.
+
+Introduce `Z γ h1 h2 Φ hΦ x`. Establish `hZS : Z ∈ S` using `⟨γ, h1, h2⟩`. Establish `hπ : π Z = ⟨Z, hSU Z hZS⟩` using `Submodule.linearProjOfIsCompl_apply_left hq ⟨Z, hSU Z hZS⟩`. Use `set DZ := D₀ ⟨Z, hSU Z hZS⟩ with hDZdef`. Establish `hDZ : (D₀ ∘ₗ π) Z = DZ` using `by rw [LinearMap.comp_apply, hπ]`.
+
+Take `⟨γL, hγL, eγ⟩` from `GlobalTheory.ThKDerSmall.lineA F E σ hσ hT.base.cm G.W c hc γ (hRLof Z γ ⟨h1, h2⟩)`. Establish `hpt : ∀ Ψ ∈ GlobalTheory.ThK.PolData B G.M', ∀ y, HasDerivAt (fun t : ℝ => om' (1, γL (Multiplicative.ofAdd t)) Ψ y) (DZ Ψ y) 0`. Introduce `Ψ hΨ`. Proceed by induction on `hΨ using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨f, hf, φ, hSB, hvac, rfl⟩` from `hx`. Introduce `y`. Establish `hact` using `hΔ Z γ h1 h2 f hf`. Simplify using `only [eγ] at hact`. Rewrite using `[hDZdef, hD₀_pure Z _ f hf φ hSB hvac]`.
+
+Conclude with `GlobalTheory.ThKSmoothDer.hasDerivAt_pure (fun t => om' (1, γL (Multiplicative.ofAdd t))) hact φ hSB (hvacI φ hvac) y`. Consider the case `zero`. Introduce `y`. Simplify using `using hasDerivAt_const (0 : ℝ) (0 : ℂ)`. Consider the case `add x y hx hy ihx ihy`.
+
+Introduce `z`. Simplify using `only [map_add, Pi.add_apply]`. Conclude with `(ihx z).add (ihy z)`. Consider the case `smul r x hx ihx`. Introduce `z`.
+
+Simplify using `only [map_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `(ihx z).const_mul r`. Establish `hDQ : ∀ Ψ ∈ (GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁), DZ Ψ ∈ (GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁)` using `fun Ψ hΨ => hD₀_Q _ _ hΨ`. Establish `hk : ∀ Ψ ∈ (GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁), ∀ g h, HasDerivAt (fun s : ℝ => theta om' Ψ g (h * γL (Multiplicative.ofAdd s))) (theta om' (DZ Ψ) g h) 0`. Introduce `Ψ hΨ`.
+
+Take `⟨Ψ₁, -, p1, d1⟩` from `GlobalTheory.ThKDerSmall.exists_der_pol hKP hT hγL Ψ (Submodule.mem_inf.1 hΨ).1`. Establish `e : Ψ₁ = DZ Ψ` using `funext fun y => (p1 y).unique (hpt Ψ (Submodule.mem_inf.1 hΨ).1 y)`. Rewrite using `[← e]`. Conclude with `d1`. Establish `key` using `GlobalTheory.ThKDerSmall.hasDerivAt_I hKP hT hγL (Submodule.mem_inf.1 hΦ).2 (Submodule.mem_inf.1 (hDQ Φ hΦ)).2 (Submodule.mem_inf.1 (hDQ _ (hDQ Φ hΦ))).2 (hk Φ hΦ) (hk _ (hDQ Φ hΦ)) ((toGAd hσ G.W.J hc).symm x)`.
+
+Rewrite using `[hDZ]`. Use `key.congr_of_eventuallyEq (Filter.Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Use `show G.M'.I om' Φ ((toGAd hσ G.W.J hc).symm (x * γ s)) = _`. Rewrite using `[map_mul, eγ]`.
+-/
 theorem hasDerivAt_thetaIntegral_small : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), GlobalTheory.ThK.KP → IsTriple B G X om om' →

@@ -6,6 +6,11 @@ open Polynomial
 
 namespace GlobalTheory.K4
 
+/- English proof (translation)
+Use `letI : Algebra Ω L := i.toAlgebra`. Take `⟨p, hp, h0⟩ : IsIntegral ℚ c` from `(Algebra.IsAlgebraic.isAlgebraic c).isIntegral`. Establish `e : (σ.comp i).comp (algebraMap ℚ Ω) = i.comp (algebraMap ℚ Ω)` using `RingHom.ext_rat _ _`. Establish `hint : IsIntegral Ω (σ (i c))`. Use `⟨p.map (algebraMap ℚ Ω), hp.map _, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Polynomial.eval₂_map]`. Use `show p.eval₂ (i.comp (algebraMap ℚ Ω)) ((σ.comp i) c) = 0`. Rewrite using `[← e, ← Polynomial.hom_eval₂, h0, map_zero]`. Take `⟨c', hc'⟩` from `minpoly.mem_range_of_degree_eq_one Ω (σ (i c)) (IsAlgClosed.degree_eq_one_of_irreducible Ω (minpoly.irreducible hint))`. Conclude with `⟨c', hc'.symm⟩`.
+-/
 theorem exists_map_const_eq_of_isAlgClosed {Ω L : Type} [Field Ω] [IsAlgClosed Ω] [Algebra ℚ Ω]
     [Algebra.IsAlgebraic ℚ Ω] [Field L] (i : Ω →+* L) (σ : L →+* L) (c : Ω) : ∃ c' : Ω, σ (i c) = i c' := by
   letI : Algebra Ω L := i.toAlgebra
@@ -20,6 +25,11 @@ theorem exists_map_const_eq_of_isAlgClosed {Ω L : Type} [Field Ω] [IsAlgClosed
     (IsAlgClosed.degree_eq_one_of_irreducible Ω (minpoly.irreducible hint))
   exact ⟨c', hc'.symm⟩
 
+/- English proof (translation)
+Take `⟨p, hp, h0⟩` from `hx`. Establish `hl : p.map (σ.comp (algebraMap R L)) ∈ Polynomial.lifts (algebraMap R L)`. Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`. Introduce `n`. Take `⟨r', hr'⟩` from `h (p.coeff n)`.
+
+Conclude with `⟨r', by rw [Polynomial.coeff_map, RingHom.comp_apply, hr']⟩`. Take `⟨q, hq, -, hqm⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic hl (hp.map _)`. Use `⟨q, hqm, ?_⟩` and prove the remaining obligations. Rewrite using `[← Polynomial.eval_map, hq, Polynomial.eval_map, ← Polynomial.hom_eval₂, h0, map_zero]`.
+-/
 theorem isIntegral_map_of_map_range {R L : Type} [CommRing R] [Field L] [Algebra R L] (σ : L →+* L)
     (h : ∀ r : R, ∃ r' : R, σ (algebraMap R L r) = algebraMap R L r') {x : L} (hx : IsIntegral R x) :
     IsIntegral R (σ x) := by
@@ -33,6 +43,15 @@ theorem isIntegral_map_of_map_range {R L : Type} [CommRing R] [Field L] [Algebra
   refine ⟨q, hqm, ?_⟩
   rw [← Polynomial.eval_map, hq, Polynomial.eval_map, ← Polynomial.hom_eval₂, h0, map_zero]
 
+/- English proof (translation)
+Introduce `Ω _ _ _ _ ε X Γ' S`. Use `letI := GlobalTheory.K4.algPoly X Γ'`. Use `letI := GlobalTheory.K4.algMdl X Γ' S`. Introduce `σ x hx`. Establish `hj : σ ⟨X.jK, jK_mem_lev X Γ'⟩ = ⟨X.jK, jK_mem_lev X Γ'⟩` using `σ.commutes (⟨X.jK, jK_mem_mdl X Γ' S⟩ : mdl X Γ' S)`.
+
+Establish `key : ∀ P : Polynomial Ω, ∃ Q : Polynomial Ω, σ (jPoly X Γ' P) = jPoly X Γ' Q`. Introduce `P`. Proceed by induction on `P using Polynomial.induction_on' with`. Consider the case `add P P' hP hP'`. Take `⟨Q, hQ⟩` from `hP`.
+
+Take `⟨Q', hQ'⟩` from `hP'`. Conclude with `⟨Q + Q', by rw [map_add, map_add, hQ, hQ', map_add]⟩`. Consider the case `monomial n c`. Take `⟨c', hc'⟩` from `exists_map_const_eq_of_isAlgClosed (levConst X Γ') (σ : lev X Γ' →+* lev X Γ') c`. Use `⟨Polynomial.monomial n c', ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [jPoly, Polynomial.coe_eval₂RingHom, Polynomial.eval₂_monomial, map_mul, map_pow]`. Rewrite using `[hj, ← hc']`. Both sides reduce to the same expression. Conclude with `isIntegral_map_of_map_range (R := Polynomial Ω) (σ : lev X Γ' →+* lev X Γ') key hx`.
+-/
 theorem map_mem_ringOfIntegers_of_fix_mdl :
     ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] [Algebra ℚ Ω] [Algebra.IsAlgebraic ℚ Ω] (ε : Ω →+* ℂ)
       (X : GlobalTheory.KZ.Tower Ω ε) (Γ' : Subgroup SL(2, ℤ)) (S : Subgroup (Ω ≃ₐ[ℚ] Ω)),

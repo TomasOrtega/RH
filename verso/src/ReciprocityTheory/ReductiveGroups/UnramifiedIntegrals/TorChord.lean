@@ -13,9 +13,27 @@ open Formalism.L2.Th1.A (shortW)
 
 variable {C : Type} [NormedField C] [IsUltrametricDist C]
 
+/- English proof (translation)
+Rewrite using `[IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm h.ne', max_eq_left h.le]`.
+-/
 theorem chord_norm_add {a b : C} (h : ‖b‖ < ‖a‖) : ‖a + b‖ = ‖a‖ := by
   rw [IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm h.ne', max_eq_left h.le]
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, h6⟩` from `hW`. Rewrite `h` using `[Affine.equation_iff]`. Establish `hx0 : 0 < ‖x‖` using `lt_trans one_pos hx`. Establish `e2 : ‖W.a₂ * x ^ 2‖ < ‖x ^ 3‖`. Rewrite using `[norm_mul, norm_pow, norm_pow]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `e4 : ‖W.a₄ * x‖ < ‖x ^ 3‖`. Rewrite using `[norm_mul, norm_pow]`. Combine the equalities or inequalities in the displayed calculation. Establish `e6 : ‖W.a₆‖ < ‖x ^ 3‖`.
+
+Rewrite using `[norm_pow]`. Combine the equalities or inequalities in the displayed calculation. Establish `hR : ‖x ^ 3 + W.a₂ * x ^ 2 + W.a₄ * x + W.a₆‖ = ‖x‖ ^ 3`. Establish `s1` using `chord_norm_add e2`. Establish `s2 : ‖x ^ 3 + W.a₂ * x ^ 2 + W.a₄ * x‖ = ‖x ^ 3‖`.
+
+Rewrite using `[chord_norm_add (by rw [s1]; exact e4), s1]`. Rewrite using `[chord_norm_add (by rw [s2]; exact e6), s2, norm_pow]`. Establish `hL : y ^ 2 + W.a₁ * x * y + W.a₃ * y = y * (y + (W.a₁ * x + W.a₃))` using `by ring`. Rewrite `hR` using `[← h, hL, norm_mul]`. Establish `hc : ‖W.a₁ * x + W.a₃‖ ≤ ‖x‖`.
+
+Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ (h3.trans hx.le))` and prove the remaining obligations. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hyx : ‖x‖ < ‖y‖`. Assume the negation of the conclusion as `hcon`.
+
+Rewrite `hcon` using `[not_lt]`. Establish `hs : ‖y + (W.a₁ * x + W.a₃)‖ ≤ ‖x‖` using `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hcon hc)`. Establish `: ‖y‖ * ‖y + (W.a₁ * x + W.a₃)‖ ≤ ‖x‖ * ‖x‖` using `mul_le_mul hcon hs (norm_nonneg _) hx0.le`. Use polynomial arithmetic with `[mul_pos hx0 hx0]`. Rewrite `hR` using `[chord_norm_add (lt_of_le_of_lt hc hyx)]`.
+
+Rewrite using `[← hR]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem chord_norm_y_sq (W : WeierstrassCurve C) (hW : IntegralModel W) {x y : C}
     (h : W.toAffine.Equation x y) (hx : 1 < ‖x‖) : ‖y‖ ^ 2 = ‖x‖ ^ 3 := by
   obtain ⟨h1, h2, h3, h4, h6⟩ := hW
@@ -56,6 +74,9 @@ theorem chord_norm_y_sq (W : WeierstrassCurve C) (hW : IntegralModel W) {x y : C
   rw [chord_norm_add (lt_of_le_of_lt hc hyx)] at hR
   rw [← hR]; ring
 
+/- English proof (translation)
+Establish `hy` using `chord_norm_y_sq W hW h hx`. Establish `hx0 : 0 < ‖x‖` using `by linarith`. Establish `hx0'` using `hx0.ne'`. Rewrite using `[norm_div, norm_neg, div_pow, hy]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem chord_norm_u_sq (W : WeierstrassCurve C) (hW : IntegralModel W) {x y : C}
     (h : W.toAffine.Equation x y) (hx : 1 < ‖x‖) : ‖-x / y‖ ^ 2 * ‖x‖ = 1 := by
   have hy := chord_norm_y_sq W hW h hx
@@ -64,6 +85,11 @@ theorem chord_norm_u_sq (W : WeierstrassCurve C) (hW : IntegralModel W) {x y : C
   rw [norm_div, norm_neg, div_pow, hy]
   field_simp
 
+/- English proof (translation)
+Break down `P with _ | @⟨x, y, h⟩` into its components or cases. Simplify using `[uOf]`. Establish `hx : 1 < ‖x‖` using `hP`. Establish `hu` using `chord_norm_u_sq W hW h.1 hx`. Use `show ‖-x / y‖ < 1`.
+
+Assume the negation of the conclusion as `hcon`. Rewrite `hcon` using `[not_lt]`. Establish `: 1 ≤ ‖-x / y‖ ^ 2` using `one_le_pow₀ hcon`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem formalGroup_param_norm_lt_one (W : WeierstrassCurve C) (hW : IntegralModel W) (P : W.toAffine.Point) (hP : InFormalGroupPoints P) :
     ‖uOf P‖ < 1 := by
   rcases P with _ | @⟨x, y, h⟩
@@ -76,12 +102,22 @@ theorem formalGroup_param_norm_lt_one (W : WeierstrassCurve C) (hW : IntegralMod
     have : 1 ≤ ‖-x / y‖ ^ 2 := one_le_pow₀ hcon
     nlinarith
 
+/- English proof (translation)
+Break down `P with _ | @⟨x, y, h⟩` into its components or cases. Conclude with `absurd rfl h0`. Conclude with `chord_norm_u_sq W hW h.1 hP`.
+-/
 theorem formalGroup_param_sq_norm (W : WeierstrassCurve C) (hW : IntegralModel W) (P : W.toAffine.Point) (hP : InFormalGroupPoints P)
     (h0 : P ≠ 0) : ‖uOf P‖ ^ 2 * ‖px W P‖ = 1 := by
   rcases P with _ | @⟨x, y, h⟩
   · exact absurd rfl h0
   · exact chord_norm_u_sq W hW h.1 hP
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, h6⟩` from `hW`. Proceed by induction on `hc using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff] at hx`. Apply the tactic sequence `rcases hx with rfl | rfl | rfl | rfl | rfl <;> assumption`.
+
+Consider the case `algebraMap n`. Rewrite using `[eq_intCast]`. Conclude with `IsUltrametricDist.norm_intCast_le_one C n`. Consider the case `add x y _ _ hx hy`. Conclude with `(IsUltrametricDist.norm_add_le_max x y).trans (max_le hx hy)`.
+
+Consider the case `mul x y _ _ hx hy`. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ hx (norm_nonneg _) hy`.
+-/
 theorem chord_adjoin_le (W : WeierstrassCurve C) (hW : IntegralModel W) {c : C}
     (hc : c ∈ Algebra.adjoin ℤ ({W.a₁, W.a₂, W.a₃, W.a₄, W.a₆} : Set C)) : ‖c‖ ≤ 1 := by
   obtain ⟨h1, h2, h3, h4, h6⟩ := hW
@@ -98,6 +134,21 @@ theorem chord_adjoin_le (W : WeierstrassCurve C) (hW : IntegralModel W) {c : C}
     rw [norm_mul]
     exact mul_le_one₀ hx (norm_nonneg _) hy
 
+/- English proof (translation)
+Use `set r := max ‖a‖ ‖b‖ with hr`. Establish `hr0 : 0 ≤ r` using `le_trans (norm_nonneg a) (le_max_left _ _)`. Establish `hr1 : r < 1` using `max_lt ha hb`. Use `set G : MvPowerSeries (Fin 2) C := F - MvPowerSeries.X 0 - MvPowerSeries.X 1 with hG`. Establish `hI1 : Formalism.G.IntegralMv (F - MvPowerSeries.X 0)` using `(FormalGroupPointsHom.IL C).sub_mem hF (FormalGroupPointsHom.integral_X 0)`.
+
+Establish `hIG : Formalism.G.IntegralMv G` using `(FormalGroupPointsHom.IL C).sub_mem hI1 (FormalGroupPointsHom.integral_X 1)`. Establish `hev : evalMv2 G a b = evalMv2 F a b - a - b`. Rewrite using `[hG, FormalGroupPointsHom.evalMv2_sub hI1 (FormalGroupPointsHom.integral_X 1) ha hb, FormalGroupPointsHom.evalMv2_sub hF (FormalGroupPointsHom.integral_X 0) ha hb, FormalGroupPointsHom.evalMv2_X0, FormalGroupPointsHom.evalMv2_X1]`. Rewrite using `[← hev, FormalGroupPointsHom.evalMv2_eq]`. Apply `IsUltrametricDist.norm_tsum_le_of_forall_le_of_nonneg (pow_nonneg hr0 2)` to reduce the goal to its premises.
+
+Introduce `d`. Distinguish the cases in `hd : 2 ≤ d.degree`. Conclude with `(FormalGroupPointsHom.norm_term_le hIG (le_max_left _ _) (le_max_right _ _) d).trans (pow_le_pow_of_le_one hr0 hr1.le hd)`. Establish `hz : MvPowerSeries.coeff d G = 0`. Rewrite `hd` using `[FormalGroupPointsHom.degree_fin_two_eq_add_of_ne]`.
+
+Establish `hcases : d = 0 ∨ d = Finsupp.single 0 1 ∨ d = Finsupp.single 1 1`. Establish `h3 : (d 0 = 0 ∧ d 1 = 0) ∨ (d 0 = 1 ∧ d 1 = 0) ∨ (d 0 = 0 ∧ d 1 = 1)` using `by omega`. Break down `h3 with ⟨u, v⟩ | ⟨u, v⟩ | ⟨u, v⟩` into its components or cases. Apply the tactic sequence `left; ext i; fin_cases i <;> simp [u, v]`. Apply the tactic sequence `right; left; ext i; fin_cases i <;> simp [u, v]`.
+
+Apply the tactic sequence `right; right; ext i; fin_cases i <;> simp [u, v]`. Establish `hne : (Finsupp.single (0 : Fin 2) 1 : Fin 2 →₀ ℕ) ≠ Finsupp.single 1 1`. Introduce `he`. Use `DFunLike.congr_fun he 0` as an intermediate fact. Simplify using `at this`.
+
+Break down `hcases with rfl | rfl | rfl` into its components or cases. Rewrite using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hG]`. Simplify using `[h00]`. Rewrite using `[hG, map_sub, map_sub, h10, MvPowerSeries.coeff_X, MvPowerSeries.coeff_X, if_pos rfl, if_neg hne]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hG, map_sub, map_sub, h01, MvPowerSeries.coeff_X, MvPowerSeries.coeff_X, if_pos rfl, if_neg hne.symm]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[FormalGroupPointsHom.term, hz, zero_mul, norm_zero]`. Conclude with `pow_nonneg hr0 2`.
+-/
 theorem chord_eval_est [CompleteSpace C] {F : MvPowerSeries (Fin 2) C} (hF : Formalism.G.IntegralMv F)
     (h00 : MvPowerSeries.constantCoeff F = 0)
     (h10 : MvPowerSeries.coeff (Finsupp.single 0 1) F = 1)
@@ -144,6 +195,9 @@ theorem chord_eval_est [CompleteSpace C] {F : MvPowerSeries (Fin 2) C} (hF : For
     rw [FormalGroupPointsHom.term, hz, zero_mul, norm_zero]
     exact pow_nonneg hr0 2
 
+/- English proof (translation)
+Take `⟨w, hw, -⟩` from `wSeriesUnique.{0} C W`. Take `⟨F, hFc, h00, h10, h01, hch⟩` from `wChordSeries.{0} C W w hw`. Establish `hF : Formalism.G.IntegralMv F` using `fun d => chord_adjoin_le W hW (hFc d)`. Rewrite using `[formal_group_points_hom.{0} C W w F hW hw hF h00 hch P Q hP hQ]`. Conclude with `chord_eval_est hF h00 h10 h01 (formalGroup_param_norm_lt_one W hW P hP) (formalGroup_param_norm_lt_one W hW Q hQ)`.
+-/
 theorem formalGroup_add_estimate [CompleteSpace C] (W : WeierstrassCurve C) (hW : IntegralModel W)
     (P Q : W.toAffine.Point) (hP : InFormalGroupPoints P) (hQ : InFormalGroupPoints Q) :
     ‖uOf (P + Q) - uOf P - uOf Q‖ ≤ (max ‖uOf P‖ ‖uOf Q‖) ^ 2 := by

@@ -14,6 +14,13 @@ section Base
 
 variable (X : PJ D B P j) (la : HeightOneSpectrum (𝓞 B.KO)) (N : ℕ) (ka : WeightFamilies.Wt D j)
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨F, ⟨F', _, rfl⟩, rfl⟩` from `hx`. Conclude with `emb_mem_Vw X la N ka F'`. Consider the case `zero => rw [map_zero]`.
+
+Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx`. Rewrite using `[map_smul, ← algebraMap_smul (Kp X la N) a]`.
+
+Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem bcV_mem_Vw {x : X.Vl la} (hx : x ∈ T0.WL X ka la) : bcV X la N x ∈ Vw X la N ka := by
   induction hx using Submodule.span_induction with
   | mem x hx =>
@@ -29,6 +36,9 @@ def jW : ↥(T0.WL X ka la) →ₗ[X.Kl la] ↥(Vw X la N ka) :=
   ((bcV X la N).toLinearMap.domRestrict (T0.WL X ka la)).codRestrict ((Vw X la N ka).restrictScalars (X.Kl la))
     fun x => bcV_mem_Vw X la N ka x.2
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_jW (x : ↥(T0.WL X ka la)) : (jW X la N ka x : Rp X la N) = bcV X la N (x : X.Vl la) := rfl
 
 def M1 : Submodule (Op X la N) ↥(Vw X la N ka) :=
@@ -83,6 +93,9 @@ def rhoO : ↥(Vw X la G.N (addL wF wL T)) →ₗ[Op X la G.N] WK X la G.w wF (a
 def rhoN (e : ℕ) : ↥(Np G la e) →ₗ[Op X la G.N] WK X la G.w wF (a0 D j T) :=
   rhoO G la ∘ₗ (Np G la e).subtype
 
+/- English proof (translation)
+Unfold `firstLength_le_prime_bound N1`. Rewrite using `[Submodule.map_span]`. Both sides reduce to the same expression.
+-/
 theorem reducedGenerators_eq_map : firstLength_le_prime_bound G la T = (N1 G la).map (rhoO G la) := by
   unfold firstLength_le_prime_bound N1
   rw [Submodule.map_span]

@@ -18,11 +18,21 @@ open scoped TensorProduct
 
 namespace GlobalTheory.RealUnifSplit
 
+/- English proof (translation)
+Rewrite using `[← WithZero.lt_mul_exp_iff_le WithZero.exp_ne_zero, ← WithZero.exp_add, neg_add_cancel, WithZero.exp_zero]`. Conclude with `h`.
+-/
 theorem le_exp_neg_one_of_lt {x : WithZero (Multiplicative ℤ)} (h : x < 1) : x ≤ WithZero.exp (-1) := by
   rw [← WithZero.lt_mul_exp_iff_le WithZero.exp_ne_zero, ← WithZero.exp_add, neg_add_cancel,
     WithZero.exp_zero]
   exact h
 
+/- English proof (translation)
+Rewrite `hz` using `[pow_two]`. Use `Submodule.mul_induction_on hz ?_ ?_` and prove the remaining obligations. Introduce `a ha b hb`. Establish `ha' : Valued.v (s.i (a : L)) < 1` using `(s.split_mem_ideal a).1 ha`. Establish `hb' : Valued.v (s.i (b : L)) < 1` using `(s.split_mem_ideal b).1 hb`.
+
+Use `show Valued.v (s.i ((a : L) * (b : L))) ≤ _`. Rewrite using `[map_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Introduce `a b ha hb show Valued.v (s.i ((a : L) + (b : L))) ≤ _`. Rewrite using `[map_add]`.
+
+Conclude with `le_trans (Valuation.map_add _ _ _) (max_le ha hb)`.
+-/
 theorem val_sq_le {L : Type} [Field L] [NumberField L] [IsCMField L] (s : SplitPlace L)
     (z : 𝓞 L) (hz : z ∈ s.w.asIdeal ^ 2) :
     Valued.v (s.i (z : L)) ≤ WithZero.exp (-2) := by
@@ -44,6 +54,13 @@ theorem val_sq_le {L : Type} [Field L] [NumberField L] [IsCMField L] (s : SplitP
 
 end GlobalTheory.RealUnifSplit
 
+/- English proof (translation)
+Take `⟨π, hπ⟩` from `s.v.intValuation_exists_uniformizer`. Establish `hv : Valued.v (s.i ((algebraMap (𝓞 (maximalRealSubfield L)) (𝓞 L) π : 𝓞 L) : L)) = WithZero.exp (-1)`. Rewrite using `[s.split_val_alg, HeightOneSpectrum.valuation_of_algebraMap, hπ]`. Use `⟨algebraMap _ (𝓞 L) π, ?_, ?_, hv⟩` and prove the remaining obligations. Use `(s.split_mem_ideal _).2 ?_` and prove the remaining obligations.
+
+Rewrite using `[hv]`. Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions. Introduce `h`. Establish `h2` using `GlobalTheory.RealUnifSplit.val_sq_le s _ h`.
+
+Rewrite `h2` using `[hv]`. Use `WithZero.exp_le_exp.1 h2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem GlobalTheory.realUnif_split {L : Type} [Field L] [NumberField L] [IsCMField L] (s : SplitPlace L) :
     ∃ y : 𝓞 L, y ∈ s.w.asIdeal ∧ y ∉ s.w.asIdeal ^ 2 ∧ Formalism.AUTREP.IsUnif L s.v (s.i (y : L)) := by
   obtain ⟨π, hπ⟩ := s.v.intValuation_exists_uniformizer

@@ -10,6 +10,15 @@ set_option synthInstance.maxHeartbeats 200000
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `E _ _ _ n w σ K' hlev g hg y hy m`. Establish `key : ∀ k : ℕ, IsHecke K' (U.lpow K' g k) ∧ locOp σ K' (U.lpow K' g k) y = y`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`.
+
+Take `⟨-, -, -, -, -, -, h1, h2⟩` from `GlobalTheory.CompanionTheory.LocHecke.locAlg E n w σ K' hlev g g hg hg`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Use `show locOp σ K' ((K' : Set (UL n w)).indicator fun _ => ((K'.relIndex (KL n w) : ℕ) : ℂ)) y = y`. Rewrite using `[h2]`. Both sides reduce to the same expression.
+
+Consider the case `succ k ih`. Take `⟨-, -, h3, -, h5, -⟩` from `GlobalTheory.CompanionTheory.LocHecke.locAlg E n w σ K' hlev g _ hg ih.1`. Use `⟨h3, ?_⟩` and prove the remaining obligations. Use `show locOp σ K' (lconv g (U.lpow K' g k)) y = y`. Rewrite using `[h5, Module.End.mul_apply, ih.2, hy]`.
+
+Conclude with `(key m).2`.
+-/
 theorem UpperTheory.HeckeLevelFrameExistence.powEig :
     UpperTheory.HeckeLevelFrameExistence.PowEig := by
   intro E _ _ _ n w σ K' hlev g hg y hy m

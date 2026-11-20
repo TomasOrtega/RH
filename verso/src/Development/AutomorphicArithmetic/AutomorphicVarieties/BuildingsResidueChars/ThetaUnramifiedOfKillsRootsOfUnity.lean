@@ -3,11 +3,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.Ad
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement
 open GlobalTheory.CuspRep GlobalTheory.GalOfCusp UpperTheory.V.Af UpperTheory.V.Ws UpperTheory.V.Sd UpperTheory.V.Sd.S3
 
+/- English proof (translation)
+Establish `h1 : A.valuation ζ ^ m = 1` using `by rw [← map_pow, h, map_one]`. Conclude with `(pow_eq_one_iff_left hm).1 h1`.
+-/
 private theorem aux_one {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {m : ℕ} (hm : m ≠ 0) {ζ : Ω}
     (h : ζ ^ m = 1) : A.valuation ζ = 1 := by
   have h1 : A.valuation ζ ^ m = 1 := by rw [← map_pow, h, map_one]
   exact (pow_eq_one_iff_left hm).1 h1
 
+/- English proof (translation)
+Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih`. Establish `e : 1 - η ^ (i + 1) = η * (1 - η ^ i) - (η - 1)` using `by ring`. Rewrite using `[e]`.
+
+Use `A.valuation.map_sub_lt ?_ h` and prove the remaining obligations. Rewrite using `[map_mul, h1, one_mul]`. Conclude with `ih`.
+-/
 private theorem power_bounds_of_between {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {η : Ω} (h1 : A.valuation η = 1)
     (h : A.valuation (η - 1) < 1) (i : ℕ) : A.valuation (1 - η ^ i) < 1 := by
   induction i with
@@ -18,6 +26,13 @@ private theorem power_bounds_of_between {Ω : Type} [Field Ω] (A : ValuationSub
     refine A.valuation.map_sub_lt ?_ h
     rw [map_mul, h1, one_mul]; exact ih
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Apply `hv` to reduce the goal to its premises. Establish `hs : ∑ i ∈ Finset.range m, η ^ i = 0`. Use `mul_geom_sum η m` as an intermediate fact. Rewrite `this` using `[hη, sub_self]`.
+
+Conclude with `(mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hne)`. Establish `e : (m : Ω) = ∑ i ∈ Finset.range m, (1 - η ^ i)`. Rewrite using `[Finset.sum_sub_distrib, hs]`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
+
+Conclude with `A.valuation.map_sum_lt one_ne_zero fun i _ => power_bounds_of_between A (aux_one A hm hη) h i`.
+-/
 private theorem root_of_unity_eq_one_of_close_residue {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {m : ℕ} (hm : m ≠ 0)
     (hv : ¬ A.valuation (m : Ω) < 1) {η : Ω} (hη : η ^ m = 1) (h : A.valuation (η - 1) < 1) : η = 1 := by
   by_contra hne
@@ -31,6 +46,11 @@ private theorem root_of_unity_eq_one_of_close_residue {Ω : Type} [Field Ω] (A 
   rw [e]
   exact A.valuation.map_sum_lt one_ne_zero fun i _ => power_bounds_of_between A (aux_one A hm hη) h i
 
+/- English proof (translation)
+Establish `hv` using `aux_one A hm hζ`. Establish `h0 : ζ ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hv`. Establish `e : g ζ / ζ - 1 = (g ζ - ζ) / ζ` using `by field_simp`.
+
+Establish `: g ζ / ζ = 1`. Use `root_of_unity_eq_one_of_close_residue A hm hA (by rw [div_pow, ← map_pow, hζ, map_one, div_one]) ?_` and prove the remaining obligations. Rewrite using `[e, map_div₀, hv, div_one]`. Conclude with `hg.2 ζ hv.le`. Conclude with `(div_eq_one_iff_eq h0).1 this`.
+-/
 private theorem inertia_fixes_prime_to_roots {Ω : Type} [Field Ω] [CharZero Ω] (A : ValuationSubring Ω) {m : ℕ} (hm : m ≠ 0)
     (hA : ¬ A.valuation (m : Ω) < 1) {g : G ℚ Ω} (hg : g ∈ Ine (F := ℚ) A) {ζ : Ω} (hζ : ζ ^ m = 1) : g ζ = ζ := by
   have hv := aux_one A hm hζ
@@ -43,6 +63,11 @@ private theorem inertia_fixes_prime_to_roots {Ω : Type} [Field Ω] [CharZero Ω
     rw [e, map_div₀, hv, div_one]; exact hg.2 ζ hv.le
   exact (div_eq_one_iff_eq h0).1 this
 
+/- English proof (translation)
+Establish `hfin : {ζ : Ω | ζ ^ w = 1}.Finite`. Use `(nthRoots w (1 : Ω)).finite_toSet.subset fun ζ hζ => ?_` and prove the remaining obligations. Conclude with `(mem_nthRoots (Nat.pos_of_ne_zero hw)).2 hζ`. Use `haveI : Finite {ζ : Ω | ζ ^ w = 1} := hfin`. Use `haveI : Algebra.IsAlgebraic ℚ Ω := IsAlgClosure.isAlgebraic`.
+
+Use `haveI : FiniteDimensional ℚ (IntermediateField.adjoin ℚ {ζ : Ω | ζ ^ w = 1}) := IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x`. Use `Subgroup.isOpen_mono (H₁ := (IntermediateField.adjoin ℚ {ζ : Ω | ζ ^ w = 1}).fixingSubgroup) (fun g hg => ?_) (IntermediateField.fixingSubgroup_isOpen _)` and prove the remaining obligations. Use `hk g fun ζ hζ => ?_` and prove the remaining obligations. Conclude with `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hg ζ (IntermediateField.subset_adjoin _ _ hζ)`.
+-/
 private theorem open_kernel_killing_roots_of_unity {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {w : ℕ} (hw : w ≠ 0) {C : Type} [Group C]
     (θ : G ℚ Ω →* C) (hk : KillsMu w θ) : IsOpen (θ.ker : Set (G ℚ Ω)) := by
   have hfin : {ζ : Ω | ζ ^ w = 1}.Finite := by
@@ -57,6 +82,15 @@ private theorem open_kernel_killing_roots_of_unity {Ω : Type} [Field Ω] [CharZ
   refine hk g fun ζ hζ => ?_
   exact (IntermediateField.mem_fixingSubgroup_iff _ _).1 hg ζ (IntermediateField.subset_adjoin _ _ hζ)
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l hl w hw θ hθ hk`. Establish `h1 : ∀ A, Raw.Away {w} A → Ine (F` using `ℚ) A ≤ θ.ker := fun A hA g hg => hk g fun ζ hζ => inertia_fixes_prime_to_roots A hw.ne_zero (hA w (Finset.mem_singleton_self w)) hg hζ`. Use `⟨h1, fun F hF => ?_⟩` and prove the remaining obligations. Use `haveI : NeZero l := ⟨hl.out.ne_zero⟩`. Use `haveI : NeZero (l : Qbar l) := ⟨Nat.cast_ne_zero.2 hl.out.ne_zero⟩`.
+
+Establish `hc : Nat.card (rootsOfUnity l (Qbar l)) = Nat.card (Multiplicative (ZMod l))`. Rewrite using `[HasEnoughRootsOfUnity.natCard_rootsOfUnity]`. Simplify using the standard rewrite rules. Set `e` to `mulEquivOfCyclicCardEq hc`. Establish `hm : ∀ g, θ g ∈ rootsOfUnity l (Qbar l)` using `fun g => by`.
+
+Rewrite using `[mem_rootsOfUnity]`. Conclude with `DFunLike.congr_fun hθ g`. Establish `hker : (e.toMonoidHom.comp (θ.codRestrict _ hm)).ker = θ.ker`. Use extensionality with `g`. Simplify using `[MonoidHom.mem_ker, Subtype.ext_iff]`.
+
+Use `hF (e.toMonoidHom.comp (θ.codRestrict _ hm))` as an intermediate fact. Rewrite `this` using `[hker]`. Conclude with `this (open_kernel_killing_roots_of_unity hw.ne_zero θ hk) h1`.
+-/
 theorem UpperTheory.theta_unramified_of_kills_roots_of_unity :
     UpperTheory.V.Sd.S3.ThetaUnr := by
   intro Ω _ _ _ l hl w hw θ hθ hk

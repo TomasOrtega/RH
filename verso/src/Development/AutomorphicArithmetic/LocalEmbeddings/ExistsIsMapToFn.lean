@@ -96,15 +96,24 @@ def ValAt {K : Type} [Field K] (x : Sp K ⟶ Y.X) (P : Matrix (Fin (Dw.mult τ))
 variable {g₀ τ}
 
 omit [NumberField F] in
+/- English proof (translation)
+The claim follows from `Scheme.SpecMap_stalkSpecializes_fromSpecStalk (genericPoint_specializes y)`.
+-/
 theorem spMap_toFn (y : Y.X) : spMap (toFn y) ≫ stalkPt Y y = genericPt Y :=
   Scheme.SpecMap_stalkSpecializes_fromSpecStalk (genericPoint_specializes y)
 
 omit [NumberField F] in
+/- English proof (translation)
+The claim follows from `IsFractionRing.injective (Y.X.presheaf.stalk y) Y.X.functionField`.
+-/
 theorem toFn_injective (y : Y.X) : Function.Injective (toFn y) :=
   IsFractionRing.injective (Y.X.presheaf.stalk y) Y.X.functionField
 
 omit [NumberField F] in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => EigFrame.co_eq fun i => by rw [hf τ i]; exact h.2 i, fun h => ⟨hφ, fun i => by rw [← hf τ i, ← h]; exact g₀.co_spec f' τ i⟩⟩`.
+-/
 theorem fits_iff {y : Y.X} {φ : c.F →+* Y.X.presheaf.stalk y} {f : StalkFrame ρ y φ} {f' : GenFrame e ρ}
     (hφ : constF e Y = (toFn y).comp φ) (hf : f.IsMap (toFn y) f')
     {P : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) Y.Fn} : Fits g₀ τ y φ f P ↔ g₀.co f' τ = P :=
@@ -112,11 +121,17 @@ theorem fits_iff {y : Y.X} {φ : c.F →+* Y.X.presheaf.stalk y} {f : StalkFrame
     rw [← hf τ i, ← h]; exact g₀.co_spec f' τ i⟩⟩
 
 omit [NumberField F] in
+/- English proof (translation)
+The claim follows from `f.exists_isMap _ hφ (by rw [← spMap_toFn y, Category.assoc])`.
+-/
 theorem exists_isMap_toFn {y : Y.X} {φ : c.F →+* Y.X.presheaf.stalk y} (f : StalkFrame ρ y φ)
     (hφ : constF e Y = (toFn y).comp φ) : ∃ f' : GenFrame e ρ, f.IsMap (toFn y) f' :=
   f.exists_isMap _ hφ (by rw [← spMap_toFn y, Category.assoc])
 
 omit [NumberField F] in
+/- English proof (translation)
+Take `⟨f', hf⟩` from `exists_isMap_toFn (e := e) f h.1`. Rewrite using `[← (fits_iff h.1 hf).1 h]`. Conclude with `g₀.isUnit_det_co f' τ`.
+-/
 theorem Fits.isUnit_det {y : Y.X} {φ : c.F →+* Y.X.presheaf.stalk y} {f : StalkFrame ρ y φ}
     {P : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) Y.Fn} (h : Fits g₀ τ y φ f P) : IsUnit P.det := by
   obtain ⟨f', hf⟩ := exists_isMap_toFn (e := e) f h.1
@@ -124,6 +139,9 @@ theorem Fits.isUnit_det {y : Y.X} {φ : c.F →+* Y.X.presheaf.stalk y} {f : Sta
   exact g₀.isUnit_det_co f' τ
 
 omit [NumberField F] in
+/- English proof (translation)
+The claim follows from `RingHom.ext fun a => toFn_injective y ((RingHom.congr_fun h.1 a).symm.trans (RingHom.congr_fun h'.1 a))`.
+-/
 theorem Fits.φ_eq {y : Y.X} {φ φ' : c.F →+* Y.X.presheaf.stalk y} {f : StalkFrame ρ y φ} {f' : StalkFrame ρ y φ'}
     {τ' : E →+* ℂ} {P : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) Y.Fn}
     {P' : Matrix (Fin (Dw.mult τ')) (Fin (Dw.mult τ')) Y.Fn} (h : Fits g₀ τ y φ f P) (h' : Fits g₀ τ' y φ' f' P') :
@@ -132,6 +150,9 @@ theorem Fits.φ_eq {y : Y.X} {φ φ' : c.F →+* Y.X.presheaf.stalk y} {f : Stal
 
 omit [NumberField F] in
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `exists_isMap_toFn (e := e) f h.1`. Take `⟨k', hk'⟩` from `exists_isMap_toFn (e := e) f' h.1`. Rewrite using `[← (fits_iff h.1 hk).1 h, ← (fits_iff h.1 hk').1 h', ← hk.co τ hk' (by rw [← spMap_toFn y, Category.assoc]), EigFrame.co_mul]`.
+-/
 theorem Fits.eq_mul {y : Y.X} {φ : c.F →+* Y.X.presheaf.stalk y} {f f' : StalkFrame ρ y φ}
     {P P' : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) Y.Fn} (h : Fits g₀ τ y φ f P) (h' : Fits g₀ τ y φ f' P') :
     P' = P * (f.co f' τ).map (toFn y) := by
@@ -142,6 +163,9 @@ theorem Fits.eq_mul {y : Y.X} {φ : c.F →+* Y.X.presheaf.stalk y} {f f' : Stal
 
 omit [NumberField F] in
 
+/- English proof (translation)
+Use `h.eq_mul h'` as an intermediate fact. Rewrite `this` using `[((isUnit_iff_isUnit_det _).2 h.isUnit_det).mul_right_inj]`. Conclude with `(Matrix.map_injective (toFn_injective y) this).symm`.
+-/
 theorem Fits.co_eq {y : Y.X} {φ : c.F →+* Y.X.presheaf.stalk y} {f f' : StalkFrame ρ y φ}
     {P : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) Y.Fn} {T : Matrix _ _ (Y.X.presheaf.stalk y)}
     (h : Fits g₀ τ y φ f P) (h' : Fits g₀ τ y φ f' (P * T.map (toFn y))) : f.co f' τ = T := by
@@ -152,6 +176,13 @@ theorem Fits.co_eq {y : Y.X} {φ : c.F →+* Y.X.presheaf.stalk y} {f f' : Stalk
 attribute [local instance] Over.cartesianMonoidalCategory in
 open MonoidalCategory CartesianMonoidalCategory MonObj ReciprocityTheory.ChartRestriction.G.PullbackSections GlobalTheory.LieMet in
 
+/- English proof (translation)
+Establish `key (τ) (a : Fin (Dw.mult τ) → R) : ∑ i, a i • ∑ k, T τ k i • (f τ).vec τ k = ∑ k, (T τ *ᵥ a) k • (f τ).vec τ k`. Simplify using `only [Finset.smul_sum, smul_smul, mulVec, dotProduct, Finset.sum_smul, mul_comm]`. Conclude with `Finset.sum_comm`. Use `⟨EigFrame.ofVec (fun τ i => ∑ k, T τ k i • (f τ).vec τ k) (fun τ i a => ?_) fun τ w hw => ?_, fun τ => EigFrame.co_eq fun i => (GlobalTheory.LieMet.isComb_iff ((f τ).vec τ) _ _).2 rfl⟩` and prove the remaining obligations. Simplify using `only [map_sum, map_smul, EigFrame.act_vec, Finset.smul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun k _ => smul_comm _ _ _`. Take `⟨b, hb, hu⟩` from `(f τ).existsUnique_sum τ w hw`. Use `⟨(T τ)⁻¹ *ᵥ b, by beta_reduce` and prove the remaining obligations. Rewrite using `[key, mulVec_mulVec, mul_nonsing_inv _ (hT τ), one_mulVec]`. Conclude with `hb, fun a ha => ?_⟩`.
+
+Rewrite using `[← hu _ (ha.trans (key τ a)), mulVec_mulVec, nonsing_inv_mul _ (hT τ), one_mulVec]`.
+-/
 theorem exists_co_eq {R : Type} [CommRing R] {φ : c.F →+* R} {x : Sp R ⟶ Z.X} (f : (E →+* ℂ) → EigFrame Z φ x)
     (T : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) R) (hT : ∀ τ, IsUnit (T τ).det) :
     ∃ g : EigFrame Z φ x, ∀ τ, (f τ).co g τ = T τ := by
@@ -171,6 +202,13 @@ theorem exists_co_eq {R : Type} [CommRing R] {φ : c.F →+* R} {x : Sp R ⟶ Z.
 
 omit [NumberField F] in
 
+/- English proof (translation)
+Take `⟨f', hf'⟩` from `exists_co_eq (fun _ => f) (Function.update (fun _ => 1) τ T) fun τ' => by`. Distinguish the cases in `h : τ' = τ`. Substitute `h` using the available equality. Rewrite using `[Function.update_self]` and apply the resulting hypothesis. Rewrite using `[Function.update_of_ne h, det_one]`.
+
+Conclude with `isUnit_one`. Establish `e₁ : f.co f' τ = T` using `by rw [hf', Function.update_self]`. Take `⟨k', hk'⟩` from `exists_isMap_toFn (e := e) f' h.1`. Establish `h'` using `(fits_iff (g₀ := g₀) (τ := τ) h.1 hk').2 rfl`. Use `⟨f', e₁, ?_⟩` and prove the remaining obligations.
+
+Rewrite `h'` using `[h.eq_mul h', e₁]`. Then use the resulting hypothesis.
+-/
 theorem Fits.exists_mul {y : Y.X} {φ : c.F →+* Y.X.presheaf.stalk y} {f : StalkFrame ρ y φ}
     {P : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) Y.Fn} (h : Fits g₀ τ y φ f P)
     {T : Matrix _ _ (Y.X.presheaf.stalk y)} (hT : IsUnit T.det) :
@@ -188,6 +226,13 @@ theorem Fits.exists_mul {y : Y.X} {φ : c.F →+* Y.X.presheaf.stalk y} {f : Sta
 
 omit [NumberField F] in
 
+/- English proof (translation)
+Set `φ : c.F →+* Y.X.presheaf.stalk y` to `(Spec.preimage ((stalkPt Y y ≫ ρ) ≫ genStr Z)).hom`. Establish `hφ : (stalkPt Y y ≫ ρ) ≫ genStr Z = spMap φ` using `(Spec.map_preimage _).symm`. Take `⟨f₁⟩` from `EigLoc.exists_eigFrame E H Dw l Xo c O β Z _ φ _ hφ`. Establish `f : EigFrame Z φ (stalkPt Y y ≫ ρ ≫ genι Z)` using `by rw [← Category.assoc]; exact f₁`. Establish `h : constF e Y = (toFn y).comp φ` using `EigLoc.spMap_inj (by`.
+
+Establish `h1 : genericPt Y ≫ Y.str = spMap (algebraMap F Y.Fn)` using `(GlobalTheory.FlagBundle.ratOf Y).pt_s`. Establish `h2 : spMap e.toRingHom ≫ spMap e.symm.toRingHom = 𝟙 _`. Use `(Spec.map_comp _ _).symm.trans ((congrArg Spec.map ?_).trans (Spec.map_id _))` and prove the remaining obligations. Conclude with `CommRingCat.hom_ext (RingHom.ext fun a => e.apply_symm_apply a)`. Establish `h3 : spMap ((toFn y).comp φ) = spMap (toFn y) ≫ spMap φ` using `by rw [← Spec.map_comp]; rfl`.
+
+Establish `h4 : spMap (constF e Y) = spMap (algebraMap F Y.Fn) ≫ spMap e.symm.toRingHom` using `by rw [← Spec.map_comp]; rfl`. Rewrite using `[h3, h4, ← hφ, ← h1, ← hρ, ← spMap_toFn y]`. Simplify using `only [Category.assoc, h2, Category.comp_id])`. Take `⟨f', hf'⟩` from `exists_isMap_toFn (e := e) f h`. Conclude with `⟨φ, f, _, (fits_iff h hf').2 rfl⟩`.
+-/
 theorem exists_fits (hρ : ρ ≫ genStr Z ≫ spMap e.toRingHom = Y.str) (g₀ : GenFrame e ρ) (τ : E →+* ℂ) (y : Y.X) :
     ∃ φ f P, Fits g₀ τ y φ f P := by
   let φ : c.F →+* Y.X.presheaf.stalk y := (Spec.preimage ((stalkPt Y y ≫ ρ) ≫ genStr Z)).hom
@@ -207,17 +252,26 @@ theorem exists_fits (hρ : ρ ≫ genStr Z ≫ spMap e.toRingHom = Y.str) (g₀ 
   exact ⟨φ, f, _, (fits_iff h hf').2 rfl⟩
 
 omit [NumberField F] in
+/- English proof (translation)
+Introduce `p _` and use `by have h₁ : stalkPt Y y p ∈ Set.range (Y.X.fromSpecStalk y) := ⟨p, rfl⟩ rw [Scheme.range_fromSpecStalk] at h₁ exact (Specializes.map h₁ j.continuous).mem_open U.isOpen h`.
+-/
 theorem stalk_le {y : Y.X} {U : X.Opens} (h : j y ∈ U) : ⊤ ≤ (stalkPt Y y ≫ j) ⁻¹ᵁ U := fun p _ => by
   have h₁ : stalkPt Y y p ∈ Set.range (Y.X.fromSpecStalk y) := ⟨p, rfl⟩
   rw [Scheme.range_fromSpecStalk] at h₁
   exact (Specializes.map h₁ j.continuous).mem_open U.isOpen h
 
 omit [NumberField F] in
+/- English proof (translation)
+Rewrite using `[← spMap_toFn y, Category.assoc]`. Conclude with `fun p _ => stalk_le j h (x := spMap (toFn y) p) trivial`.
+-/
 theorem gen_le {y : Y.X} {U : X.Opens} (h : j y ∈ U) : ⊤ ≤ (genericPt Y ≫ j) ⁻¹ᵁ U := by
   rw [← spMap_toFn y, Category.assoc]
   exact fun p _ => stalk_le j h (x := spMap (toFn y) p) trivial
 
 omit [NumberField F] in
+/- English proof (translation)
+Rewrite using `[← trAt_spMap _ ch ch' (stalk_le j h) (stalk_le j h'), ← Category.assoc, spMap_toFn]`.
+-/
 theorem trAt_gen {r : ℕ} {y : Y.X} (ch ch' : Chart M r) (h : j y ∈ ch.U) (h' : j y ∈ ch'.U) :
     trAt (genericPt Y ≫ j) ch ch' = (trAt (stalkPt Y y ≫ j) ch ch').map (toFn y) := by
   rw [← trAt_spMap _ ch ch' (stalk_le j h) (stalk_le j h'), ← Category.assoc, spMap_toFn]
@@ -226,6 +280,9 @@ variable {j dual A}
 
 omit [NumberField F] in
 
+/- English proof (translation)
+Establish `hu` using `isUnit_det_trAt ch ch' (stalk_le j h) (stalk_le j h')`. Rewrite using `[hA.2 ch ch' (gen_le j h) (gen_le j h'), lieMat_mul, trAt_gen j ch ch' h h', lieMat_map _ _ hu]`. Conclude with `hf.exists_mul (isUnit_det_lieMat dual hu)`.
+-/
 theorem Fits.change (hA : IsCo (genericPt Y ≫ j) A) {y : Y.X} {ch ch' : Chart M (Dw.mult τ)} (h : j y ∈ ch.U)
     (h' : j y ∈ ch'.U) {φ : c.F →+* Y.X.presheaf.stalk y} {f : StalkFrame ρ y φ}
     (hf : Fits g₀ τ y φ f (lieMat dual (A ch))) : ∃ f' : StalkFrame ρ y φ,
@@ -236,6 +293,9 @@ theorem Fits.change (hA : IsCo (genericPt Y ≫ j) A) {y : Y.X} {ch ch' : Chart 
 
 omit [NumberField F] in
 
+/- English proof (translation)
+Use `⟨hA, fun ch y hy => ?_⟩` and prove the remaining obligations. Take `⟨ch₀, h₀, φ, f, hf⟩` from `h y`. Take `⟨f', -, hf'⟩` from `hf.change hA h₀ hy`. Conclude with `⟨φ, f', hf'⟩`.
+-/
 theorem isLie_of_exists (hA : IsCo (genericPt Y ≫ j) A)
     (h : ∀ y : Y.X, ∃ ch : Chart M (Dw.mult τ), j y ∈ ch.U ∧ ∃ φ f, Fits g₀ τ y φ f (lieMat dual (A ch))) :
     IsLie g₀ τ j dual A := by
@@ -254,10 +314,16 @@ section Pull
 variable {B : Var F} {ρB : B.X ⟶ gen Z} {f : Y.X ⟶ B.X} {φ : B.Fn →+* Y.Fn}
 
 omit [NumberField F] in
+/- English proof (translation)
+The claim follows from `Scheme.SpecMap_stalkMap_fromSpecStalk f`.
+-/
 theorem spMap_stalkMap (f : Y.X ⟶ B.X) (y : Y.X) :
     spMap (f.stalkMap y).hom ≫ stalkPt B (f y) = stalkPt Y y ≫ f := Scheme.SpecMap_stalkMap_fromSpecStalk f
 
 omit [NumberField F] in
+/- English proof (translation)
+The claim follows from `EigLoc.spMap_inj ((cancel_mono (B.X.fromSpecStalk (f y))).1 (by have h₁ : spMap ((toFn y).comp (f.stalkMap y).hom) = spMap (toFn y) ≫ spMap (f.stalkMap y).hom := by rw [← Spec.map_comp]; rfl have h₂ : spMap (φ.comp (toFn (f y))) = spMap φ ≫ spMap (toFn (f y)) := by rw [← Spec.map …`.
+-/
 theorem IsOver.toFn_comp (h : IsOver e ρB ρ f φ) (y : Y.X) :
     (toFn y).comp (f.stalkMap y).hom = φ.comp (toFn (f y)) :=
   EigLoc.spMap_inj ((cancel_mono (B.X.fromSpecStalk (f y))).1 (by
@@ -268,11 +334,19 @@ theorem IsOver.toFn_comp (h : IsOver e ρB ρ f φ) (y : Y.X) :
     rw [h₁, h₂, Category.assoc, Category.assoc, spMap_stalkMap, spMap_toFn, ← Category.assoc, spMap_toFn, h.2.2.1]))
 
 omit [NumberField F] in
+/- English proof (translation)
+The claim follows from `g.exists_isMap φ h.2.2.2 (by rw [← h.1, Category.assoc, ← Category.assoc, h.2.2.1, Category.assoc])`.
+-/
 theorem IsOver.exists_isMap (h : IsOver e ρB ρ f φ) (g : GenFrame e ρB) : ∃ g' : GenFrame e ρ, g.IsMap φ g' :=
   g.exists_isMap φ h.2.2.2 (by rw [← h.1, Category.assoc, ← Category.assoc, h.2.2.1, Category.assoc])
 
 omit [NumberField F] in
 
+/- English proof (translation)
+Take `⟨k₁, hk₁⟩` from `k.exists_isMap (f.stalkMap y).hom (x' := stalkPt Y y ≫ ρ ≫ genι Z) rfl (by rw [← Category.assoc (spMap _), spMap_stalkMap, ← h.1]; simp only [Category.assoc])`. Establish `hφ : constF e Y = (toFn y).comp ((f.stalkMap y).hom.comp φ₀)`. Rewrite using `[← RingHom.comp_assoc, h.toFn_comp, RingHom.comp_assoc, ← hk.1, h.2.2.2]`. Take `⟨k', hk'⟩` from `exists_isMap_toFn (e := e) k hk.1`. Take `⟨k₁', hk₁'⟩` from `exists_isMap_toFn (e := e) k₁ hφ`.
+
+Establish `hm : k'.IsMap φ k₁'` using `fun τ i => by`. Rewrite using `[hk₁', hk₁, hk', GlobalTheory.GradedPieces.dual_comp, GlobalTheory.GradedPieces.dual_comp, h.toFn_comp]`. Use `⟨k₁, hk₁, (fits_iff hφ hk₁').2 ?_⟩` and prove the remaining obligations. Rewrite using `[← g₁.co_mul g', hg.co τ hm (by rw [← h.1, Category.assoc, ← Category.assoc, h.2.2.1, Category.assoc]), (fits_iff hk.1 hk').1 hk]`.
+-/
 theorem Fits.pull (h : IsOver e ρB ρ f φ) {g : GenFrame e ρB} {g' : GenFrame e ρ} (hg : g.IsMap φ g') (g₁ : GenFrame e ρ)
     {y : Y.X} {φ₀ : c.F →+* B.X.presheaf.stalk (f y)} {k : StalkFrame ρB (f y) φ₀}
     {P : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) B.Fn} (hk : Fits g τ (f y) φ₀ k P) :
@@ -299,6 +373,11 @@ def IsPullCo {XB : Scheme.{0}} (jB : B.X ⟶ XB) (π : X ⟶ XB) {N : XB.Modules
 
 omit [NumberField F] in
 
+/- English proof (translation)
+Take `⟨A', h₁, h₂⟩` from `hA.1.exists_pull hN π (genericPt Y ≫ j) φ (by rw [Category.assoc, hj, ← Category.assoc, h.2.2.1, Category.assoc]) _ (isUnit_det_lieMat dual (g₁.isUnit_det_co g' τ))`. Use `⟨A', isLie_of_exists h₁ fun y => ?_, h₂⟩` and prove the remaining obligations. Take `⟨U, s, hU, hs⟩` from `hN (jB (f y))`. Set `ch : Chart N (Dw.mult τ)` to `⟨U, s, hs⟩`. Take `⟨φ₀, k, hk⟩` from `hA.2 ch (f y) hU`.
+
+Take `⟨k₁, -, hk₁⟩` from `hk.pull h hg g₁`. Use `⟨ch.pull hN π, ?_, _, k₁, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `π (j y) ∈ U`. Rewrite using `[← Scheme.Hom.comp_apply, hj, Scheme.Hom.comp_apply]` and apply the resulting hypothesis. Rewrite using `[h₂ ch (gen_le jB hU), lieMat_mul, lieMat_lieMat _ (g₁.isUnit_det_co g' τ), lieMat_map _ _ (hA.1.1 ch (gen_le jB hU))]` and apply the resulting hypothesis.
+-/
 theorem IsLie.exists_pull (h : IsOver e ρB ρ f φ) {g : GenFrame e ρB} {g' : GenFrame e ρ} (hg : g.IsMap φ g')
     (g₁ : GenFrame e ρ) {XB : Scheme.{0}} {jB : B.X ⟶ XB} (π : X ⟶ XB) (j : Y.X ⟶ X) (hj : j ≫ π = f ≫ jB) {N : XB.Modules}
     (hN : IsVB N (Dw.mult τ)) {A : Chart N (Dw.mult τ) → Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) B.Fn}

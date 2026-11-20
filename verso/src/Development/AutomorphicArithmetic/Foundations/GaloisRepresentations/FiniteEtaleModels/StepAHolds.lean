@@ -17,6 +17,9 @@ open UpperTheory.Gal.Int.Geo
 
 namespace UpperTheory.Gal.FiniteEtaleModels
 
+/- English proof (translation)
+The claim follows from `stepA_of (dictP_holds h₁) sysExt_holds trEtaK_holds trKer_holds galOfKer_holds betaH_holds (betaLat_holds h₂) numSplit_holds (coreA_of trPull trSame_holds levTr_holds levRe_holds h₃) h₄ h₅ h₆`.
+-/
 theorem stepA_holds (h₁ : MultUnit) (h₂ : LatGen) (h₃ : ClsEx) (h₄ : TrEta) (h₅ : TrBack) (h₆ : QComp) : StepA :=
   stepA_of (dictP_holds h₁) sysExt_holds trEtaK_holds trKer_holds galOfKer_holds betaH_holds (betaLat_holds h₂) numSplit_holds
     (coreA_of trPull trSame_holds levTr_holds levRe_holds h₃) h₄ h₅ h₆

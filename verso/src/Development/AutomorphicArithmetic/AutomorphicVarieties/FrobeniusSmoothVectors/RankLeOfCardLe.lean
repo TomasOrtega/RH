@@ -12,6 +12,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Kumm
 
 open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Base UpperTheory.V.Pr UpperTheory.V.Fr UpperTheory.V
 
+/- English proof (translation)
+Take `⟨hfin, hcard⟩` from `h`. Use `haveI := hfin`. Use `haveI : Module.Finite (ZMod l) P := Module.Finite.of_finite`. Rewrite using `[← Module.finrank_eq_rank]`. Establish `hc : Nat.card P = l ^ Module.finrank (ZMod l) P` using `by haveI := Fintype.ofFinite P`.
+
+Rewrite using `[Nat.card_eq_fintype_card, Module.card_eq_pow_finrank (K := ZMod l), ZMod.card]`. Rewrite `hcard` using `[hc]`. Establish `hle` using `(Nat.pow_le_pow_iff_right hl.out.one_lt).mp hcard`. Conclude with `hle` after adjusting the coercions.
+-/
 private theorem rank_le_of_cardLe (l : ℕ) [hl : Fact l.Prime] (P : Type) [AddCommGroup P] [Module (ZMod l) P] (r : ℕ)
     (h : Two.CardLe P (l ^ r)) : Module.rank (ZMod l) P ≤ r := by
   obtain ⟨hfin, hcard⟩ := h
@@ -25,6 +30,37 @@ private theorem rank_le_of_cardLe (l : ℕ) [hl : Fact l.Prime] (P : Type) [AddC
   have hle := (Nat.pow_le_pow_iff_right hl.out.one_lt).mp hcard
   exact_mod_cast hle
 
+/- English proof (translation)
+Use `haveI : IsGalois ℚ Ω := IsAlgClosure.isGalois ℚ Ω`. Set `H : ClosedSubgroup (G ℚ Ω)` to `⟨V, Subgroup.isClosed_of_isOpen V ho⟩`. Set `E` to `IntermediateField.fixedField V`. Establish `hEV : E.fixingSubgroup = V` using `InfiniteGalois.fixingSubgroup_fixedField H`. Establish `hnorm : V.Normal`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `v hv g`. Establish `hc : g * v * g⁻¹ * v⁻¹ ∈ V` using `hab (Subgroup.commutator_mem_commutator (Subgroup.mem_top g) (Subgroup.mem_top v))`. Use `V.mul_mem hc hv` as an intermediate fact. Simplify using `using this`.
+
+Use `haveI hfd : FiniteDimensional ℚ E := by`. Rewrite using `[← InfiniteGalois.isOpen_iff_finite, hEV]`. Conclude with `ho`. Establish `hG` using `(InfiniteGalois.normal_iff_isGalois E).mp (hEV ▸ hnorm)`. Establish `hquot : ∀ a b : G ℚ Ω ⧸ V, a * b = b * a`.
+
+Introduce `a b`. Proceed by induction on `a using QuotientGroup.induction_on with`. Consider the case `H x`. Proceed by induction on `b using QuotientGroup.induction_on with`. Consider the case `H y`.
+
+Rewrite using `[← QuotientGroup.mk_mul, ← QuotientGroup.mk_mul, QuotientGroup.eq]`. Establish `hc : y⁻¹ * x⁻¹ * y⁻¹⁻¹ * x⁻¹⁻¹ ∈ V` using `hab (Subgroup.commutator_mem_commutator (Subgroup.mem_top _) (Subgroup.mem_top _))`. Simplify `hc` using `[mul_assoc]`. Use `haveI : H.Normal := hnorm`. Establish `hc2 : ∀ x y : @AlgEquiv ℚ E E _ _ _ (IntermediateField.algebra' E) (IntermediateField.algebra' E), x * y = y * x` using `fun x y => (InfiniteGalois.normalAutEquivQuotient H).symm.injective (by rw [map_mul, map_mul, hquot])`.
+
+Establish `hA : (IntermediateField.algebra' E : Algebra ℚ E) = DivisionRing.toRatAlgebra` using `Subsingleton.elim _ _`. Rewrite `hc2`, `hG` using `[hA]`. Use `haveI hAb : IsAbelianGalois ℚ E := @IsAbelianGalois.mk _ _ _ _ _ hG ⟨⟨hc2⟩⟩`. Use `haveI : NumberField E := NumberField.mk`. Establish `hgal : galOf ℚ E Ω = V`.
+
+Rewrite using `[← hEV]`. Use extensionality with `σ`. Both sides reduce to the same expression. Establish `hker : ∀ n, (cycMod ℚ Ω l n).ker = (Two.galChar Ω (l ^ n)).ker`. Introduce `n`.
+
+Use `haveI : NeZero (l ^ n) := ⟨pow_ne_zero _ hl.out.ne_zero⟩`. Establish `h` using `(Two.levChar Ω l n ⊤).1`. Rewrite `h` using `[levU, KStar.TotallyRealRoots.princ, MonoidHom.comap_ker, top_inf_eq, top_inf_eq]`. Conclude with `h`. Use `haveI : NeZero l := ⟨hl.out.ne_zero⟩`.
+
+Establish `hζ : ∃ ζ : E, IsPrimitiveRoot ζ l` using `by haveI : NeZero (l ^ 1) := ⟨pow_ne_zero _ hl.out.ne_zero⟩`. Establish `h1 : ∃ ζ : E, IsPrimitiveRoot ζ (l ^ 1)`. Rewrite using `[Two.muIff Ω E (l ^ 1), hgal, ← hker 1]`. Conclude with `hμ`. Simplify using `using h1`.
+
+Use `haveI : Algebra.IsAlgebraic ℚ Ω := IsAlgClosure.isAlgebraic`. Use `haveI : Module.IsTorsionFree E Ω := DivisionSemiring.to_moduleIsTorsionFree`. Use `haveI : IsAlgClosure E Ω := ⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) E⟩`. Take `⟨r, hr⟩` from `FW.main l E (by rw [if_neg h2]; exact hζ)`. Use `⟨r, fun n => ?_⟩` and prove the remaining obligations.
+
+Set `K'` to `Kum.Fn E Ω l n`. Take `⟨hcyc, -, -⟩` from `Kum.fnCyc E Ω l n`. Use `haveI := hcyc`. Use `haveI : NumberField K' := IsCyclotomicExtension.numberField {l ^ n} E K'`. Establish `hgal' : galOf ℚ K' Ω = V ⊓ (cycMod ℚ Ω l n).ker`.
+
+Rewrite using `[Kum.galOfCyc ℚ Ω l n E K', hgal, levU, KStar.TotallyRealRoots.princ, MonoidHom.comap_ker]`. Both sides reduce to the same expression. Use `haveI : Module.IsTorsionFree K' Ω := DivisionSemiring.to_moduleIsTorsionFree`. Use `haveI : IsAlgClosure K' Ω := ⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) K'⟩`. Establish `h2z : ∀ m : ZMod l, 2 • m = 0 → m = 0`.
+
+Introduce `m hm`. Establish `h2u : (2 : ZMod l) ≠ 0`. Introduce `h`. Establish `h' : ((2 : ℕ) : ZMod l) = 0` using `by exact_mod_cast h`. Rewrite `h'` using `[ZMod.natCast_eq_zero_iff]`.
+
+Conclude with `h2 ((Nat.prime_dvd_prime_iff_eq hl.out Nat.prime_two).mp h')`. Rewrite `hm` using `[nsmul_eq_mul, Nat.cast_ofNat]`. Conclude with `(mul_eq_zero.mp hm).resolve_left h2u`. Establish `hmap` using `Kum.pullOnto ℚ Ω K' (V ⊓ (cycMod ℚ Ω l n).ker) (le_of_eq hgal'.symm) 1 (ZMod l) (ZMod l) one_ne_zero (le_of_eq hgal') (Or.inr h2z)`. Use `show Module.rank (ZMod l) (Kum.XDual 1 (V ⊓ (cycMod ℚ Ω l n).ker) (ZMod l) (ZMod l)) ≤ r`.
+
+Rewrite using `[← hmap]`. Establish `hc` using `Two.cardClDual K' l 1`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem lev_rk {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [hl : Fact l.Prime] (h2 : l ≠ 2)
     (V : Subgroup (G ℚ Ω)) (ho : IsOpen (V : Set (G ℚ Ω))) (hab : commutator (G ℚ Ω) ≤ V) (hμ : V ≤ (cycMod ℚ Ω l 1).ker) :
     ∃ r : ℕ, ∀ n, GC.clRk l (V ⊓ (cycMod ℚ Ω l n).ker) ≤ r := by
@@ -108,6 +144,17 @@ private theorem lev_rk {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω
   calc _ ≤ _ := rank_map_le _ _
     _ ≤ r := rank_le_of_cardLe l _ r ⟨hc.1, hc.2.trans (hr n K')⟩
 
+/- English proof (translation)
+Set `S : Finset Ω` to `(Polynomial.nthRoots N (1 : Ω)).toFinset`. Establish `hS : ∀ ζ : Ω, ζ ^ N = 1 → ζ ∈ (S : Set Ω)`. Introduce `ζ hζ`. Simplify using `only [S, Finset.mem_coe, Multiset.mem_toFinset]`. Conclude with `(Polynomial.mem_nthRoots (Nat.pos_of_ne_zero hN)).mpr hζ`.
+
+Establish `hint : ∀ x ∈ (S : Set Ω), IsIntegral ℚ x`. Introduce `x hx`. Simplify using `only [S, Finset.mem_coe, Multiset.mem_toFinset] at hx`. Establish `hx'` using `(Polynomial.mem_nthRoots (Nat.pos_of_ne_zero hN)).mp hx`. Apply `IsIntegral.of_pow (Nat.pos_of_ne_zero hN)` to reduce the goal to its premises.
+
+Rewrite using `[hx']`. Conclude with `isIntegral_one`. Set `E` to `IntermediateField.adjoin ℚ (S : Set Ω)`. Use `haveI : FiniteDimensional ℚ E := IntermediateField.finiteDimensional_adjoin hint`. Establish `hle : E.fixingSubgroup ≤ χ.ker`.
+
+Introduce `s hs`. Rewrite using `[MonoidHom.mem_ker]`. Apply `h` to reduce the goal to its premises. Introduce `ζ hζ`. Establish `hm : ζ ∈ E` using `IntermediateField.subset_adjoin ℚ _ (hS ζ hζ)`.
+
+Conclude with `(IntermediateField.mem_fixingSubgroup_iff E s).mp hs ζ hm`. Conclude with `Subgroup.isOpen_mono hle (IntermediateField.fixingSubgroup_isOpen E)`.
+-/
 private theorem kills_open {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {C : Type} [Group C] (N : ℕ) (hN : N ≠ 0)
     (χ : G ℚ Ω →* C) (h : Af.KillsMu N χ) : IsOpen (χ.ker : Set (G ℚ Ω)) := by
   classical
@@ -134,6 +181,25 @@ private theorem kills_open {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure �
     exact (IntermediateField.mem_fixingSubgroup_iff E s).mp hs ζ hm
   exact Subgroup.isOpen_mono hle (IntermediateField.fixingSubgroup_isOpen E)
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ O _ _ _ η Ψ σ B M Hb hG H₀ w h0 hW`. Take `⟨a, hηk, hΨk⟩` from `hG.cyc`. Establish `hMa : M ^ a ≠ 0` using `pow_ne_zero _ hG.M_ne`. Establish `hth'` using `hth Ω l w hW.prime hW.one`. Establish `hk1 : Af.KillsMu l (cycMod ℚ Ω l 1)` using `by haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`.
+
+Introduce `s hs`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_one]`. Use `show PadicInt.toZModPow 1 (cyclotomicCharacter Ω l (MulSemiringAction.toRingAut (G ℚ Ω) Ω s) : ℤ_[l]) = 1`. Rewrite using `[cyclotomicCharacter.toZModPow]`.
+
+Use `symm`. Apply `modularCyclotomicCharacter.unique` to reduce the goal to its premises. Introduce `t ht`. Establish `htn : (t : Ω) ^ (l ^ 1) = 1`. Rewrite `ht` using `[mem_rootsOfUnity]`.
+
+Rewrite using `[← Units.val_pow_eq_pow_val, ht, Units.val_one]`. Express the relevant statement in the definitionally equal form `s (t : Ω) = (t : Ω) ^ (1 : ZMod (l ^ 1)).val`. Establish `h1 : l ^ 1 ≠ 1`. Rewrite using `[pow_one]`. Conclude with `(Fact.out : l.Prime).one_lt.ne'`.
+
+Rewrite using `[ZMod.val_one'' h1, pow_one]`. Conclude with `hs t (by simpa using htn)`. Establish `hηo` using `kills_open (M ^ a) hMa η hηk`. Establish `hΨo` using `kills_open (M ^ a) hMa (barChar O Ψ) hΨk`. Establish `h1o` using `kills_open l (Fact.out : l.Prime).ne_zero _ hk1`.
+
+Establish `hc0 : commutator (G ℚ Ω) ≤ H₀`. Rewrite using `[commutator_def, Subgroup.commutator_le]`. Introduce `x _ y _`. Rewrite using `[commutatorElement_def]`. Simplify using `only [Subgroup.mul_mem_iff_of_index_two h0.idx, inv_mem_iff]`.
+
+The claim follows by propositional logic. Use `set V := H₀ ⊓ Hth Ω l w ⊓ Hb ⊓ η.ker ⊓ (barChar O Ψ).ker ⊓ (cycMod ℚ Ω l 1).ker with hV`. Establish `hVo : IsOpen (V : Set (G ℚ Ω))`. Simplify using `only [hV, Subgroup.coe_inf]`. Conclude with `((((h0.isOpen.inter hth'.1).inter hG.Hb_open).inter hηo).inter hΨo).inter h1o`.
+
+Establish `hVc : commutator (G ℚ Ω) ≤ V` using `le_inf (le_inf (le_inf (le_inf (le_inf hc0 hth'.2.1) hG.Hb_ab) (Abelianization.commutator_subset_ker _)) (Abelianization.commutator_subset_ker _)) (Abelianization.commutator_subset_ker _)`. Take `⟨r, hr⟩` from `lev_rk l hG.odd V hVo hVc inf_le_right`. Use `⟨r, fun m => ?_⟩` and prove the remaining obligations. Establish `heq : Upl l Hb H₀ w m ⊓ η.ker ⊓ (barChar O Ψ).ker ⊓ (cycMod ℚ Ω l 1).ker = V ⊓ (cycMod ℚ Ω l (m + 1)).ker`. Rewrite using `[← (hlay Ω l m hG.odd).2.2.2.1]`.
+
+Use extensionality with `s`. Simplify using `only [hV, Upl, Subgroup.mem_inf]`. The claim follows by propositional logic. Rewrite using `[heq]`. Conclude with `hr (m + 1)`.
+-/
 theorem UpperTheory.V.Fr.b0 :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] [CharP (ResidueField O) l] (η : G ℚ Ω →* ℤˣ) (Ψ : G ℚ Ω →* Oˣ) (σ : G ℚ Ω) (B : ValuationSubring Ω) (M : ℕ) (Hb : Subgroup (G ℚ Ω)), Gen l η Ψ σ B M Hb → ∀ (H₀ : Subgroup (G ℚ Ω)) (w : ℕ), FrobeniusSplitPrimeDatum η M H₀ → FrobeniusWitnessPrime l η Ψ M w → ∃ C₀ : ℕ, ∀ m, GC.clRk l (Upl l Hb H₀ w m ⊓ η.ker ⊓ (barChar O Ψ).ker ⊓ (cycMod ℚ Ω l 1).ker) ≤ C₀ := by
   intro Ω _ _ _ l _ O _ _ _ η Ψ σ B M Hb hG H₀ w h0 hW

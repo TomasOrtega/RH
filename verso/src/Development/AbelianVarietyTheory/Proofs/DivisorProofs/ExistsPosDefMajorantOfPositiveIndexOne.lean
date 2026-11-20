@@ -5,6 +5,9 @@ open Matrix GlobalTheory.LKTrip
 
 namespace GlobalTheory.HermitianMajorantIdentities
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [mul_apply, vecMulVec_apply, mulVec, vecMul, dotProduct, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mul_vecMulVec_mul' {n : ℕ} (A B : Matrix (Fin n) (Fin n) ℂ) (u v : Fin n → ℂ) :
     A * vecMulVec u v * B = vecMulVec (A *ᵥ u) (v ᵥ* B) := by
   ext i j
@@ -12,10 +15,16 @@ theorem mul_vecMulVec_mul' {n : ℕ} (A B : Matrix (Fin n) (Fin n) ℂ) (u v : F
   refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_
   ring
 
+/- English proof (translation)
+Rewrite using `[vecMulVec_mulVec, dotProduct_smul, op_smul_eq_mul]`.
+-/
 theorem form_vecMulVec {n : ℕ} (u x : Fin n → ℂ) :
     star x ⬝ᵥ vecMulVec u (star u) *ᵥ x = (star x ⬝ᵥ u) * (star u ⬝ᵥ x) := by
   rw [vecMulVec_mulVec, dotProduct_smul, op_smul_eq_mul]
 
+/- English proof (translation)
+Rewrite using `[star_dotProduct, star_mulVec, hH.eq, ← dotProduct_mulVec]`.
+-/
 theorem herm_swap {n : ℕ} {H : Matrix (Fin n) (Fin n) ℂ} (hH : H.IsHermitian) (x y : Fin n → ℂ) :
     star y ⬝ᵥ H *ᵥ x = star (star x ⬝ᵥ H *ᵥ y) := by
   rw [star_dotProduct, star_mulVec, hH.eq, ← dotProduct_mulVec]
@@ -26,6 +35,45 @@ namespace GlobalTheory
 
 open GlobalTheory.HermitianMajorantIdentities in
 
+/- English proof (translation)
+Introduce `n H hH hdet hsig z hz`. Use `set a : ℝ := (star z ⬝ᵥ H *ᵥ z).re with ha`. Establish `hzz : star z ⬝ᵥ H *ᵥ z = (a : ℂ)`. Establish `h` using `herm_swap hH z z`. Conclude with `(Complex.conj_eq_iff_re.mp h.symm).symm`.
+
+Use `set u : Fin n → ℂ := H *ᵥ z with hu`. Establish `hux : ∀ x, star u ⬝ᵥ x = star z ⬝ᵥ H *ᵥ x`. Introduce `x`. Rewrite using `[hu, star_mulVec, hH.eq, ← dotProduct_mulVec]`. Use `⟨((2 / a : ℝ) : ℂ) • vecMulVec u (star u) - H, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Unfold `IsHermitian`. Rewrite using `[conjTranspose_sub, conjTranspose_smul, hH.eq, conjTranspose_vecMulVec, star_star]`. Simplify using `[Complex.star_def]`. Introduce `x hx set q := star z ⬝ᵥ H *ᵥ x with hq set t : ℂ := q / (a : ℂ) with ht set x' := x - t • z with hx'`. Establish `ha0 : (a : ℂ) ≠ 0` using `by exact_mod_cast hz.ne'`.
+
+Establish `hzx' : star z ⬝ᵥ H *ᵥ x' = 0`. Rewrite using `[hx', mulVec_sub, mulVec_smul, dotProduct_sub, dotProduct_smul, hzz, ← hq, ht, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hx'z : star x' ⬝ᵥ H *ᵥ z = 0`.
+
+Rewrite using `[herm_swap hH z x', hzx', star_zero]`. Establish `hzz' : star z ⬝ᵥ H *ᵥ z = (a : ℂ)` using `hzz`. Establish `hxe : x = t • z + x'` using `by rw [hx']; abel`. Establish `hxx : star x ⬝ᵥ H *ᵥ x = star t * t * (a : ℂ) + star x' ⬝ᵥ H *ᵥ x'` using `by conv_lhs => rw [hxe]`. Simplify using `only [star_add, star_smul, mulVec_add, mulVec_smul, add_dotProduct, dotProduct_add, smul_dotProduct, dotProduct_smul, smul_eq_mul, hzx', hx'z, hzz']`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hxz : star x ⬝ᵥ H *ᵥ z = star q` using `herm_swap hH z x`. Establish `hP : star x ⬝ᵥ (((2 / a : ℝ) : ℂ) • vecMulVec u (star u) - H) *ᵥ x = ((2 / a : ℝ) : ℂ) * (star q * q) - (star t * t * (a : ℂ) + star x' ⬝ᵥ H *ᵥ x')`. Rewrite using `[sub_mulVec, smul_mulVec, dotProduct_sub, dotProduct_smul, form_vecMulVec, hux, hxx, smul_eq_mul]`. Rewrite using `[show star x ⬝ᵥ u = star q from hxz]`.
+
+Establish `hqt : q = t * (a : ℂ)` using `by rw [ht]; field_simp`. Establish `hnt : star t * t = ((Complex.normSq t : ℝ) : ℂ)`. Rewrite using `[Complex.normSq_eq_conj_mul_self]`. Both sides reduce to the same expression. Rewrite using `[hP, hqt, star_mul', Complex.star_def, Complex.conj_ofReal]`.
+
+Establish `e1 : ((starRingEnd ℂ) t * (a : ℂ) * (t * (a : ℂ))) = ((Complex.normSq t * a * a : ℝ) : ℂ)`. Rewrite using `[← Complex.star_def, show star t * (a:ℂ) * (t * (a:ℂ)) = (star t * t) * ((a * a : ℝ) : ℂ) by push_cast; ring, hnt]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, ← Complex.star_def, hnt]`.
+
+Simplify using `only [Complex.sub_re, Complex.add_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, mul_zero, sub_zero, zero_mul]`. Establish `hapos : 0 < a` using `hz`. Distinguish the cases in `h0 : x' = 0`. Establish `htne : t ≠ 0`. Introduce `ht0`.
+
+Apply `hx` to reduce the goal to its premises. Rewrite using `[hxe, h0, ht0, zero_smul, add_zero]`. Establish `hnpos : 0 < Complex.normSq t` using `Complex.normSq_pos.mpr htne`. Rewrite using `[h0]`. Simplify using `only [star_zero, zero_dotProduct, Complex.zero_re, add_zero]`.
+
+Clear the denominators using the available nonvanishing facts. Use polynomial arithmetic with `[mul_pos hnpos hapos]`. Establish `hneg` using `re_form_neg_of_orth_of_sigPosH_eq_one H hH hdet hsig z x' hz hzx' h0`. Establish `hn0 : 0 ≤ Complex.normSq t` using `Complex.normSq_nonneg t`. Establish `: 2 / a * (Complex.normSq t * a * a) - Complex.normSq t * a = Complex.normSq t * a` using `by field_simp; ring`.
+
+Use polynomial arithmetic with `[mul_nonneg hn0 hapos.le]`. Introduce `Y s c hs hY hYz`. Establish `hzz' : star z ⬝ᵥ H *ᵥ z = (a : ℂ)` using `hzz`. Establish `ha0 : (a : ℂ) ≠ 0` using `by exact_mod_cast hz.ne'`. Establish `hA : ∀ x, star (Y *ᵥ z) ⬝ᵥ H *ᵥ (Y *ᵥ x) = (s : ℂ) * (star z ⬝ᵥ H *ᵥ x)`.
+
+Introduce `x`. Rewrite using `[star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, hY, smul_mulVec, dotProduct_smul, smul_eq_mul]`. Establish `hB : ∀ x, star (Y *ᵥ z) ⬝ᵥ H *ᵥ (Y *ᵥ x) = star c * (star z ⬝ᵥ H *ᵥ (Y *ᵥ x))`. Introduce `x`. Rewrite using `[hYz, star_smul, smul_dotProduct, smul_eq_mul]`.
+
+Establish `hsc : (s : ℂ) = star c * c`. Establish `h1` using `(hA z).symm.trans (hB z)`. Rewrite `h1` using `[hYz, mulVec_smul, dotProduct_smul, smul_eq_mul, hzz']`. Establish `h2 : ((s : ℂ) - star c * c) * (a : ℂ) = 0` using `by rw [sub_mul, h1]; ring`. Conclude with `sub_eq_zero.mp ((mul_eq_zero.mp h2).resolve_right ha0)`.
+
+Establish `hc0 : star c ≠ 0`. Introduce `h0`. Establish `: (s : ℂ) = 0` using `by rw [hsc, h0, zero_mul]`. Conclude with `hs.ne' (by exact_mod_cast this)`. Establish `hrow : ∀ x, star z ⬝ᵥ H *ᵥ (Y *ᵥ x) = c * (star z ⬝ᵥ H *ᵥ x)`.
+
+Introduce `x`. Establish `h1` using `(hA x).symm.trans (hB x)`. Rewrite `h1` using `[hsc, mul_assoc]`. Conclude with `(mul_left_cancel₀ hc0 h1).symm`. Establish `hrowv : star u ᵥ* Y = c • star u`.
+
+Use function extensionality and compare the values at `j`. Establish `h1 : (star u ᵥ* Y) ⬝ᵥ Pi.single j 1 = (c • star u) ⬝ᵥ Pi.single j 1`. Rewrite using `[← dotProduct_mulVec, hux, hrow, smul_dotProduct, hux, smul_eq_mul]`. Simplify `h1` using `[dotProduct_single]`. Establish `hcolv : Yᴴ *ᵥ u = star c • u`.
+
+Establish `h1` using `congrArg star hrowv`. Rewrite `h1` using `[star_vecMul, star_star, star_smul, star_star]`. Conclude with `h1`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_smul, Matrix.smul_mul, mul_vecMulVec_mul', hcolv, hrowv, hY]`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.sub_apply, Matrix.smul_apply, vecMulVec_apply, Pi.smul_apply, smul_eq_mul, hsc]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_posDef_majorant_of_sigPosH_eq_one : ∀ {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (hH : H.IsHermitian), H.det ≠ 0 → sigPosH hH = 1 → ∀ z : Fin n → ℂ, 0 < (star z ⬝ᵥ H *ᵥ z).re → ∃ P : Matrix (Fin n) (Fin n) ℂ, P.IsHermitian ∧ (∀ x : Fin n → ℂ, x ≠ 0 → 0 < (star x ⬝ᵥ P *ᵥ x).re) ∧ ∀ (Y : Matrix (Fin n) (Fin n) ℂ) (s : ℝ) (c : ℂ), 0 < s → Yᴴ * H * Y = (s : ℂ) • H → Y *ᵥ z = c • z → Yᴴ * P * Y = (s : ℂ) • P := by
   intro n H hH hdet hsig z hz
   set a : ℝ := (star z ⬝ᵥ H *ᵥ z).re with ha

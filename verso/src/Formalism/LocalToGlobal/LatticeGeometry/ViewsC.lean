@@ -53,6 +53,9 @@ end PJ
 
 def MjSat (F : ShimFam D G Lev) (j : ℕ) (volRec : ℝ) : Prop := F.forms.MjSat j volRec
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem MjSat.forms {F : ShimFam D G Lev} {j : ℕ} {volRec : ℝ} (h : MjSat F j volRec) :
     F.forms.MjSat j volRec := h
 

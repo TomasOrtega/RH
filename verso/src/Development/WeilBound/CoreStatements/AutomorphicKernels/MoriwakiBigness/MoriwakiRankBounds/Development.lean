@@ -33,6 +33,11 @@ def ShiftSectionsRankB.Statement : Prop :=
             ((n : ℝ) ^ D / (D.factorial : ℝ))) atTop
         (𝓝 (genDeg (mCoordIdeal y) D (HermLine.zcomb A (fsH ι) (q : ℤ) 1).a : ℝ))
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ y D A P0 hV hB hP0 hs q hq ε hε`. Establish `hr` using `h K ι Ω y D A P0 hV hB hP0 hs q hq`. Use `filter_upwards [hr.eventually (gt_mem_nhds (lt_add_of_pos_right _ hε)), eventually_ge_atTop 1] with n hn hn1`. Establish `hx : 0 < (n : ℝ) ^ D / (D.factorial : ℝ)`. Establish `: (1 : ℝ) ≤ n` using `by exact_mod_cast hn1`.
+
+Check the signs of the components of the expression. Conclude with `((div_lt_iff₀ hx).1 hn).le`.
+-/
 theorem ShiftSectionsRankUpper.of_B (h : ShiftSectionsRankB.Statement) : ShiftSectionsRankUpper.Statement := by
   intro K _ ι _ Ω _ y D A P0 hV hB hP0 hs q hq ε hε
   have hr := h K ι Ω y D A P0 hV hB hP0 hs q hq

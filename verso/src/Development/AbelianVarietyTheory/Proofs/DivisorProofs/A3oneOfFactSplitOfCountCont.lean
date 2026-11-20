@@ -16,6 +16,9 @@ namespace GlobalTheory.CuspDim.IsoPow
 
 variable {Z : Scheme.{0}} {B : LB Z}
 
+/- English proof (translation)
+Use `ext`. Express the relevant statement in the definitionally equal form `(Z.presheaf.map (homOfLE h).op ≫ Z.presheaf.map (homOfLE h').op).hom u.val = _`. Rewrite using `[← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem res_res {U V W : Z.Opens} (h : V ≤ U) (h' : W ≤ V) (u : Γ(Z, U)ˣ) :
     res h' (res h u) = res (h'.trans h) u := by
   ext
@@ -23,9 +26,15 @@ theorem res_res {U V W : Z.Opens} (h : V ≤ U) (h' : W ≤ V) (u : Γ(Z, U)ˣ) 
   rw [← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+The claim follows from `LB.wchart_le B (fun _ => 𝟙 Z) j PUnit.unit`.
+-/
 theorem pow_le (n : ℕ) (j : PUnit → B.ι) : (lbPow B n).U j ≤ B.U (j PUnit.unit) :=
   LB.wchart_le B (fun _ => 𝟙 Z) j PUnit.unit
 
+/- English proof (translation)
+Establish `e : (lbPow B n).g j j' = res (inf_le_inf (pow_le n j) (pow_le n j')) (B.g (j PUnit.unit) (j' PUnit.unit)) ^ (n : ℤ)` using `Fintype.prod_unique fun a : PUnit.{1} => res (le_inf (inf_le_left.trans (LB.wchart_le B (fun _ => 𝟙 Z) j a)) (inf_le_right.trans (LB.wchart_le B (fun _ => 𝟙 Z) j' a))) (pullU (𝟙 Z) _ (B.g (j a) (j' a))) ^ (n : ℤ)`. Rewrite using `[e, zpow_natCast, map_pow, res_res]`.
+-/
 theorem res_pow_g (n : ℕ) (j j' : PUnit → B.ι) {W : Z.Opens} (h : W ≤ (lbPow B n).U j ⊓ (lbPow B n).U j') :
     res h ((lbPow B n).g j j') =
       res (h.trans (inf_le_inf (pow_le n j) (pow_le n j'))) (B.g (j PUnit.unit) (j' PUnit.unit)) ^ n := by
@@ -47,6 +56,9 @@ def isoSucc (n : ℕ) : LB.Iso (tens (lbPow B n) B) (lbPow B (n + 1)) :=
       (B.g (p.1 PUnit.unit) (p.2.1 PUnit.unit)) ^ n *
     res (inf_le_inf (pow_le (n + 1) p.1) inf_le_right) (B.g (p.1 PUnit.unit) p.2.2)⟩
 
+/- English proof (translation)
+Rewrite using `[zpow_natCast, ← ev_res h hy, ev_eq hy, ev_eq hy, Units.val_pow_eq_pow_val, map_pow]`. Both sides reduce to the same expression.
+-/
 theorem ev_res_pow {k : Type} [CommRing k] {q : Z ⟶ Sp k} {σ : k →+* ℂ} {U W : Z.Opens} {y : CxPts q σ} (h : W ≤ U)
     (hy : y ∈ ptsIn q σ W) (u : Γ(Z, U)ˣ) (n : ℕ) :
     ev q σ W (res h u ^ n).val y = ev q σ U u.val y ^ (n : ℤ) := by

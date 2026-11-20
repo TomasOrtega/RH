@@ -7,6 +7,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => obtain ⟨i, rfl⟩ := hy`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [map_add]`.
+
+Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul c y _ hy`. Rewrite using `[Algebra.smul_def, map_mul, ← hg, ← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ _ hy`.
+-/
 theorem algebraMap_mem_span_of_mem_span {K L A M : Type} [Field K] [Field L] [Algebra K L]
     [Field A] [CommRing M] [Algebra L M] [Algebra A M] (g : K →+* A)
     (hg : ∀ c : K, algebraMap A M (g c) = algebraMap L M (algebraMap K L c))
@@ -20,6 +25,19 @@ theorem algebraMap_mem_span_of_mem_span {K L A M : Type} [Field K] [Field L] [Al
     rw [Algebra.smul_def, map_mul, ← hg, ← Algebra.smul_def]
     exact Submodule.smul_mem _ _ hy
 
+/- English proof (translation)
+Introduce `K L _ _ _ _ _ v v' f hf hirr`. Use `letI := f.toAlgebra`. Introduce `n b`. Take `⟨α, hα⟩` from `Field.exists_primitive_element K L`. Establish `hint : IsIntegral K α` using `Algebra.IsIntegral.isIntegral α`.
+
+Establish `hcomp : f.comp (algebraMap K (v.adicCompletion K)) = (algebraMap L (v'.adicCompletion L)).comp (algebraMap K L)` using `RingHom.ext hf`. Establish `hroot : Polynomial.aeval (algebraMap L (v'.adicCompletion L) α) ((minpoly K α).map (algebraMap K (v.adicCompletion K))) = 0`. Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_map]`. Express the relevant statement in the definitionally equal form `Polynomial.eval₂ (f.comp (algebraMap K (v.adicCompletion K))) _ _ = 0`. Rewrite using `[hcomp, ← Polynomial.hom_eval₂, ← Polynomial.aeval_def, minpoly.aeval, map_zero]`.
+
+Establish `hmin : (minpoly K α).map (algebraMap K (v.adicCompletion K)) = minpoly (v.adicCompletion K) (algebraMap L (v'.adicCompletion L) α)` using `minpoly.eq_of_irreducible_of_monic (hirr α) hroot ((minpoly.monic hint).map _)`. Establish `hdeg : (minpoly (v.adicCompletion K) (algebraMap L (v'.adicCompletion L) α)).natDegree = n`. Rewrite using `[← hmin, (minpoly.monic hint).natDegree_map, ← IntermediateField.adjoin.finrank hint, hα, IntermediateField.finrank_top', Module.finrank_eq_card_basis b, Fintype.card_fin]`. Establish `hpow` using `linearIndependent_pow (K := v.adicCompletion K) (algebraMap L (v'.adicCompletion L) α)`. Establish `hle : Submodule.span (v.adicCompletion K) (Set.range fun i : Fin (minpoly (v.adicCompletion K) (algebraMap L (v'.adicCompletion L) α)).natDegree => (algebraMap L (v'.adicCompletion L) α) ^ (i : ℕ)) ≤ Submodule.span (v.adicCompletion K) (Set.range fun i => algebraMap L (v'.adicCom …`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Use `algebraMap_mem_span_of_mem_span (M := v'.adicCompletion L) (algebraMap K (v.adicCompletion K)) hf b (α ^ (i : ℕ)) (by rw [b.span_eq]; trivial)` as an intermediate fact. Simplify using `using this`. Establish `h1` using `finrank_span_eq_card hpow`.
+
+Establish `h2` using `finrank_range_le_card (R := v.adicCompletion K) (fun i => algebraMap L (v'.adicCompletion L) (b i))`. Use `haveI : Module.Finite (v.adicCompletion K) (Submodule.span (v.adicCompletion K) (Set.range fun i => algebraMap L (v'.adicCompletion L) (b i))) := FiniteDimensional.span_of_finite _ (Set.finite_range _)`. Establish `h3` using `Submodule.finrank_mono hle`. Rewrite using `[linearIndependent_iff_card_eq_finrank_span]`. Simplify using `only [Fintype.card_fin] at h1 h2 ⊢`.
+
+Rewrite `h2`, the goal using `[Set.finrank]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem linearIndependent_completion_of_irreducible_minpoly :
     ∀ (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L] (v : HeightOneSpectrum (𝓞 K)) (v' : HeightOneSpectrum (𝓞 L)) (f : v.adicCompletion K →+* v'.adicCompletion L), (∀ x : K, f (algebraMap K _ x) = algebraMap L _ (algebraMap K L x)) → (∀ α : L, Irreducible ((minpoly K α).map (algebraMap K (v.adicCompletion K)))) → letI := f.toAlgebra; ∀ (n : ℕ) (b : Module.Basis (Fin n) K L), LinearIndependent (v.adicCompletion K) fun i => algebraMap L (v'.adicCompletion L) (b i) := by
   intro K L _ _ _ _ _ v v' f hf hirr

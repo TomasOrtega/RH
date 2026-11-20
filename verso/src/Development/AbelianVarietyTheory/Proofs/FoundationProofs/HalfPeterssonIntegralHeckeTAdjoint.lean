@@ -16,12 +16,23 @@ open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 
 namespace GlobalTheory.EisM
 
+/- English proof (translation)
+Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.adjugate_fin_two]`.
+-/
 lemma adjT_adj_adj (M : M2) : M.adjugate.adjugate = M := by
   ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.adjugate_fin_two]
 
+/- English proof (translation)
+Simplify using `[Matrix.adjugate_fin_two]`.
+-/
 lemma intMatrixTwo_adjugate_zero_zero (M : M2) : M.adjugate 0 0 = M 1 1 := by
   simp [Matrix.adjugate_fin_two]
 
+/- English proof (translation)
+Unfold `pet`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Simplify using `only [map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma pet_const_mul_left (k : ℕ) (ρ : ℍ → ℝ) (c : ℂ) (F G : ℍ → ℂ) :
     pet k ρ (fun τ => c * F τ) G = conj c * pet k ρ F G := by
   unfold pet
@@ -31,6 +42,27 @@ lemma pet_const_mul_left (k : ℕ) (ρ : ℍ → ℝ) (c : ℂ) (F G : ℍ → �
 
 end GlobalTheory.EisM
 
+/- English proof (translation)
+Introduce `k L N q ε ρ h a hk hL hNL hq hqL hρ hh ha`. Establish `hN : 0 < N` using `Nat.pos_of_dvd_of_pos hNL hL`. Establish `hqN : ¬ q ∣ N` using `fun h' => hqL (h'.trans hNL)`. Establish `hcop : q.Coprime N` using `(Nat.Prime.coprime_iff_not_dvd hq).2 hqN`. Establish `hq0 : 0 < q` using `hq.pos`.
+
+Establish `hε1 : ch ε 1 = 1` using `by simp [ch]`. Take `⟨-, hTaeq⟩` from `GlobalTheory.T.coeffHeckeTOperator_qExpansion_slashSum k q (ch ε) a hk hq0 hε1 ha.1`. Take `⟨-, hTheq⟩` from `GlobalTheory.T.coeffHeckeTOperator_qExpansion_slashSum k q (ch ε) h hk hq0 hε1 hh.1.1`. Establish `hcont_h` using `(GlobalTheory.T.qExpansion_polyGrowth_summable_continuous h hh.1.1).2`. Establish `hcont_a` using `(GlobalTheory.T.qExpansion_polyGrowth_summable_continuous a ha.1).2`.
+
+Establish `hslz` using `GlobalTheory.T.slashIntMatrixPosDet_properties k (qs a) hk`. Establish `hdetpos : ∀ i, 0 < (repT q i).det`. Apply the tactic sequence `intro i; cases i <;> simp [repT, repU, Matrix.det_fin_two_of, hq0]`. Establish `hlow : ∀ i, (repT q i) 1 0 = 0`. Apply the tactic sequence `intro i; cases i <;> simp [repT, repU]`.
+
+Establish `hint : ∀ i, Integrable (fun τ : ℍ => (ρ τ : ℂ) * (conj (qs h τ) * slz k (repT q i) (qs a) τ * (τ.im : ℂ) ^ k))` using `fun i => GlobalTheory.T.integrable_petersson_integrand_moderateGrowth k L L N ε h ρ (slz k (repT q i) (qs a)) hk hL hNL hρ hh ((hslz.2.2.2.1 _ (hdetpos i) hcont_a).aestronglyMeasurable) (GlobalTheory.T.hasModerateGrowth_algebra_slash_stable.2.2 _ k _ (hdetpos i) (hlow i) (GlobalT …`. Establish `hadj` using `GlobalTheory.T.petersson_doubleCoset_adjoint k L N q ε ρ (DT L q) (Option (Fin q)) (Option (Fin q)) (repT q) (fun i => (repT q i).adjugate) (qs h) (qs a) hk hN hNL hq0 hcop hρ (fun δ hδ => ⟨hδ.1, (Int.natCast_dvd_natCast.2 hNL).trans hδ.2⟩) (GlobalTheory.T.isLeftGamma0CosetDecomp …`. Rewrite `hadj` using `[← hTaeq]`. Rewrite using `[hadj]`. Establish `hu : ((q : ℤ) : ZMod N) = ((ZMod.unitOfCoprime q hcop : (ZMod N)ˣ) : ZMod N)`.
+
+Simplify using `[ZMod.coe_unitOfCoprime]`. Establish `hnorm : ‖ch ε q‖ = 1`. Simplify using `only [ch]`. Rewrite using `[hu]`. Conclude with `DirichletCharacter.unit_norm_eq_one ε _`.
+
+Establish `hne : ch ε q ≠ 0`. Introduce `h0`. Rewrite `hnorm` using `[h0, norm_zero]`. Conclude with `zero_ne_one hnorm`. Establish `hinvq : ch ε⁻¹ q = (ch ε q)⁻¹`.
+
+Simplify using `only [ch]`. Rewrite using `[MulChar.inv_apply_eq_inv']`. Establish `hinv1 : ch ε⁻¹ 1 = 1` using `by simp [ch]`. Establish `hsumeq : (fun τ => ∑ j, ch ε⁻¹ ((repT q j).adjugate 0 0) * slz k (repT q j).adjugate.adjugate (qs h) τ) = fun τ => (ch ε q)⁻¹ * qs (To k (ch ε q) q h) τ`. Use function extensionality and compare the values at `τ`.
+
+Rewrite using `[hTheq]`. Simplify using `only [hsum, Fintype.sum_option, adjT_adj_adj, intMatrixTwo_adjugate_zero_zero, Finset.mul_sum, mul_add]`. Simplify using `[repT, repU, hinvq, hinv1, hε1, hne]`. Rewrite using `[hsumeq, pet_const_mul_left]`. Establish `hc : conj ((ch ε q)⁻¹) = ch ε q`.
+
+Rewrite using `[map_inv₀]`. Establish `: conj (ch ε q) * ch ε q = 1`. Rewrite using `[← Complex.normSq_eq_conj_mul_self, Complex.normSq_eq_norm_sq, hnorm]`. Simplify using the standard rewrite rules. Conclude with `inv_eq_of_mul_eq_one_right this`.
+
+Rewrite using `[hc]`.
+-/
 theorem GlobalTheory.EisM.pet_To_adjoint : ∀ (k L N q : ℕ) (ε : DirichletCharacter ℂ N) (ρ : ℍ → ℝ) (h a : ℕ → ℂ), 1 ≤ k → 0 < L → N ∣ L → q.Prime → ¬ q ∣ L → Wt L ρ → CF k L (ch ε) h → MF k L (ch ε) a → pet k ρ (qs h) (qs (To k (ch ε q) q a)) = ch ε q * pet k ρ (qs (To k (ch ε q) q h)) (qs a) := by
   intro k L N q ε ρ h a hk hL hNL hq hqL hρ hh ha
   have hN : 0 < N := Nat.pos_of_dvd_of_pos hNL hL

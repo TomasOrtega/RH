@@ -19,6 +19,31 @@ open scoped TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R k _ _ _ φ X X' f f' π d _ _ hR hφ hpb s L σ h K M A hM hA r b hAmp hr hb hrel q hq`. Use `haveI : IsDomain R := Function.Injective.isDomain φ hφ`. Use `haveI : CharZero R := (RingHom.charZero_iff hφ).mpr inferInstance`. Use `haveI := hR`. Use `haveI : IsNoetherianRing R := Algebra.FiniteType.isNoetherianRing ℤ R`.
+
+Use `haveI hstab := smoothOfRelativeDimension_isStableUnderBaseChange (n := d)`. Use `haveI : Smooth f := SmoothOfRelativeDimension.smooth d f`. Use `haveI : Flat f := inferInstance`. Set `KR` to `FractionRing R`. Set `ι : KR →+* k` to `IsFractionRing.lift hφ`.
+
+Establish `hφι : φ = ι.comp (algebraMap R KR)`. Use extensionality with `x`. Simplify using `[ι, IsFractionRing.lift_algebraMap]`. Establish `hsp : spMap φ = spMap ι ≫ spMap (algebraMap R KR)`. Rewrite using `[hφι]`.
+
+Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`. Use `haveI : IsProper f' := MorphismProperty.of_isPullback (P := @IsProper) hpb ‹IsProper f›`. Establish `hAπ : (A.pull π).IsLB` using `LB.isLB_pull hA π`. Establish `hrelK' : Out.RelAmple (Over.mk f') (A.pull π)` using `haveI : IsProper (Over.mk f').hom := (inferInstance : IsProper f') (relAmple_iff_isAmpleLB_of_isAffine (Over.mk f') hAπ).mpr hAmp`. Establish `hgenPb` using `IsPullback.of_hasPullback f (spMap (algebraMap R KR))`.
+
+Establish `hA1 : (A.pull (pullback.fst f (spMap (algebraMap R KR)))).IsLB` using `LB.isLB_pull hA _`. Establish `hgen : Out.RelAmple (Over.mk (pullback.snd f (spMap (algebraMap R KR)))) (A.pull (pullback.fst f (spMap (algebraMap R KR))))` using `FibreAmple.relAmple_of_fieldExtension hA ι hgenPb (hsp ▸ hpb) hA1 ((cls_eq_iff hA1 hA1).mp rfl) hrelK'`. Take `⟨a, ha, hspread⟩` from `AmpleSpread.relAmple_spread R KR (Over.mk f) A ‹IsProper f› hA hgen`. Take `⟨p, hp, hdp, χ, hχ⟩` from `exists_ringHom_zmod_prime_sq_isUnit_of_finiteType R hR a ha d`. Use `haveI : Fact (Nat.Prime p) := ⟨hp⟩`.
+
+Set `c : ZMod (p ^ 2) →+* ZMod p` to `ZMod.castHom (dvd_pow_self p two_ne_zero) (ZMod p)`. Establish `hY` using `IsPullback.of_hasPullback f (spMap χ)`. Use `haveI : SmoothOfRelativeDimension d (pullback.snd f (spMap χ)) := MorphismProperty.of_isPullback (P := @SmoothOfRelativeDimension d) hY inferInstance`. Establish `h1` using `IsPullback.of_hasPullback (pullback.snd f (spMap χ)) (spMap c)`. Use `haveI : SmoothOfRelativeDimension d (pullback.snd (pullback.snd f (spMap χ)) (spMap c)) := MorphismProperty.of_isPullback (P := @SmoothOfRelativeDimension d) h1 inferInstance`.
+
+Use `haveI : IsProper (pullback.snd (pullback.snd f (spMap χ)) (spMap c)) := inferInstance`. Establish `hsp2 : spMap c ≫ spMap χ = spMap (c.comp χ)`. Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`. Establish `hρ : IsPullback (pullback.fst (pullback.snd f (spMap χ)) (spMap c) ≫ pullback.fst f (spMap χ)) (pullback.snd (pullback.snd f (spMap χ)) (spMap c)) f (spMap (c.comp χ))` using `hsp2 ▸ h1.paste_horiz hY`. Use `set ρ := pullback.fst (pullback.snd f (spMap χ)) (spMap c) ≫ pullback.fst f (spMap χ) with hρdef`.
+
+Use `set f₁ := pullback.snd (pullback.snd f (spMap χ)) (spMap c) with hf₁`. Establish `hspec` using `hspread (ZMod p) (c.comp χ) (hχ.map c)`. Establish `hid : spMap (RingHom.id (ZMod p)) ≫ spMap (c.comp χ) = spMap (c.comp χ)`. Simplify using `[spMap]`. Establish `hAρ : (A.pull ρ).IsLB` using `LB.isLB_pull hA ρ`.
+
+Establish `hamp1 : Out.RelAmple (Over.mk f₁) (A.pull ρ)` using `FibreAmple.relAmple_of_fieldExtension hA (RingHom.id (ZMod p)) hρ (hid.symm ▸ IsPullback.of_hasPullback f (spMap (c.comp χ))) hAρ ((cls_eq_iff hAρ hAρ).mp rfl) hspec`. Use `haveI : IsProper (Over.mk f₁).hom := (inferInstance : IsProper f₁)`. Establish `hampX : IsAmpleLB (A.pull ρ)` using `(relAmple_iff_isAmpleLB_of_isAffine (Over.mk f₁) hAρ).mp hamp1`. Establish `hproj : IsProjOver f₁` using `(isProjOver_iff_isProper_and_exists_isAmpleLB f₁).mpr ⟨inferInstance, _, hampX⟩`. Establish `hL` using `LogPair.relSnc_baseChange R (ZMod (p ^ 2)) χ X _ f _ _ d s L σ hY h`.
+
+Set `K₁ : CanonLB f₁ d` to `CanonLB.baseChange hρ K`. Establish `hMρ : (M.pull ρ).IsLB` using `LB.isLB_pull hM ρ`. Establish `hrel1 : r • cls (M.pull ρ) hMρ = r • cls K₁.bundle K₁.isLB + ∑ i, b i • pull (pullback.fst (pullback.snd f (spMap χ)) (spMap c)) (cls ((L i).pull (pullback.fst f (spMap χ))) (LB.isLB_pull (h.isLB i) _)) + cls (A.pull ρ) hAρ`. Establish `e` using `congrArg (pull ρ) hrel`. Simplify using `only [map_add, map_nsmul, map_sum] at e`.
+
+Establish `eK : cls K₁.bundle K₁.isLB = pull ρ (cls K.bundle K.isLB)` using `cls_pull K.isLB ρ K₁.isLB`. Rewrite using `[cls_pull hM ρ, eK, cls_pull hA ρ]`. Use `e using 4` and compare the differences between its conclusion and the goal. Rewrite using `[cls_pull (h.isLB _) _, ← pull_comp]`. Establish `hvan` using `charp_vanishing_liftable p _ _ (pullback.snd f (spMap χ)) f₁ (pullback.fst (pullback.snd f (spMap χ)) (spMap c)) d h1 hproj hdp s (fun i => (L i).pull (pullback.fst f (spMap χ))) (fun i => Cartier.secPull (σ i) _) hL K₁ (M.pull ρ) (A.pull ρ) hMρ hampX r b hr hb hrel1 q hq`.
+
+Establish `hker : RingHom.ker φ ≤ RingHom.ker (c.comp χ)`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot φ).mp hφ]`. Conclude with `bot_le`. Conclude with `SemicontLB.subsingleton_coh_pull_of_ker_le R X f M hM (ZMod p) k (c.comp χ) φ _ X' f₁ f' ρ π hρ hpb hker q hvan`.
+-/
 theorem vanishing_charZero_fibre_of_finiteType : ∀ (R k : Type) [CommRing R] [Field k] [CharZero k] (φ : R →+* k) (X X' : Scheme.{0}) (f : X ⟶ Sp R) (f' : X' ⟶ Sp k) (π : X' ⟶ X) (d : ℕ) [SmoothOfRelativeDimension d f] [IsProper f], Algebra.FiniteType ℤ R → Function.Injective φ → IsPullback π f' f (spMap φ) → ∀ (s : ℕ) (L : Fin s → LB X) (σ : ∀ i, (L i).Sec) (h : RelSnc f d L σ) (K : CanonLB f d) (M A : LB X) (hM : M.IsLB) (hA : A.IsLB) (r : ℕ) (b : Fin s → ℕ), IsAmpleLB (A.pull π) → 0 < r → (∀ i, b i < r) → r • cls M hM = r • cls K.bundle K.isLB + ∑ i, b i • cls (L i) (h.isLB i) + cls A hA → ∀ q : ℕ, 0 < q → Subsingleton (coh (LB.toMod (M.pull π)) q) := by
   intro R k _ _ _ φ X X' f f' π d _ _ hR hφ hpb s L σ h K M A hM hA r b hAmp hr hb hrel q hq
   haveI : IsDomain R := Function.Injective.isDomain φ hφ

@@ -24,6 +24,19 @@ namespace GlobalTheory.EighthPowerLocal
 
 open GlobalTheory.SS GlobalTheory.CechPic GlobalTheory.MatrixBundle
 
+/- English proof (translation)
+Establish `hlam : (abelian₂ B M).IsLB` using `LB.isLB_linComb hM _ _`. Set `q` to `Out.powIsPowGrp B 2`. Establish `hG : IsAbelianScheme (Out.powObj B 2)` using `(PowGrp.powers _ _ B 2 q).2.2.2.1 hB`. Set `ψ : B ⟶ Out.powObj B 2` to `(Out.powIsLimit B 2).lift (Fan.mk B ![𝟙 B, (𝟙 B)⁻¹])`. Establish `hψ : ∀ u, ψ ≫ q.pr u = ![𝟙 B, (𝟙 B)⁻¹] u` using `fun u => (Out.powIsLimit B 2).fac _ ⟨u⟩`.
+
+Establish `hbox : (Out.boxLB M q.pr).IsLB` using `LB.isLB_linComb hM _ _`. Establish `hfin : IsFinite ψ.left`. Use `hB.proper` as an intermediate fact. Use `hG.proper` as an intermediate fact. Establish `: IsSeparated ((q.pr 0).left ≫ B.hom)` using `by rw [Over.w]; infer_instance`.
+
+Establish `: IsSeparated (q.pr 0).left` using `IsSeparated.of_comp _ B.hom`. Establish `: IsFinite (ψ.left ≫ (q.pr 0).left)`. Rewrite using `[← Over.comp_left, hψ]`. Conclude with `inferInstanceAs (IsFinite (𝟙 B.left))`. Conclude with `IsFinite.of_comp _ (q.pr 0).left`.
+
+Establish `hid : IsFinite (𝟙 B : B ⟶ B).left` using `inferInstanceAs (IsFinite (𝟙 B.left))`. Establish `a₁` using `(relAmple_finite_pow_iso _ B _ ψ _ 1 one_pos hB hG hbox hfin).1 (relAmple_boxLB _ _ B 2 q M hM ha)`. Use `(relAmple_finite_pow_iso _ B B (𝟙 B) _ 1 one_pos hB hB (pull_isLB hbox _) hid).2.2.2 _ (pull_isLB hlam _) ((cls_eq_iff (pull_isLB hbox _) (pull_isLB hlam _)).1 ?_) a₁` and prove the remaining obligations. Establish `h₀ : pull (1 : B ⟶ B).left (cls M hM) = 0`. Rewrite using `[Hom.one_def, Over.comp_left, pull_comp]`.
+
+Take `⟨N, hN, e⟩` from `cls_surj (pull (η[B]).left (cls M hM))`. Establish `z : cls N hN = 0` using `(cls_eq_zero_iff hN).2 (DVR.exists_gen_of_isLB_local (V := R) N hN)`. Rewrite using `[← e, z, map_zero]`. Establish `h₁ : cls _ hlam = lam (cls M hM) (fst B B) (snd B B)` using `cls_cube_two hM _ _ hlam`. Establish `h₂` using `lam_mul_left hM hΘ (𝟙 B) (𝟙 B)⁻¹ (𝟙 B)`.
+
+Rewrite `h₂` using `[mul_inv_cancel, lam_one_left, lam.eq_1 _ (𝟙 B)⁻¹, inv_mul_cancel, h₀]`. Rewrite using `[cls_pull hbox, cls_pull hlam, h₁, pull_lam, lift_fst, lift_snd, cls_linComb hM, map_sum, Fin.sum_univ_two, one_smul, one_smul, ← pull_comp, ← pull_comp, ← Over.comp_left, ← Over.comp_left, hψ, hψ]`. Use `Eq.trans ?_ (eq_neg_of_add_eq_zero_left h₂.symm).symm` and prove the remaining obligations. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one]`. Normalize the expressions using the abelian group laws.
+-/
 theorem relAmple_diag_lam {R : Type} [CommRing R] [IsLocalRing R] [IsNoetherianRing R] {B : Over (Sp R)} [GrpObj B]
     [IsCommMonObj B] (hB : IsAbelianScheme B) {M : LB B.left} (hM : M.IsLB) (hΘ : ∃ t : LB.Gen (Theta B M), t.IsGen)
     (ha : Out.RelAmple B M) : Out.RelAmple B ((abelian₂ B M).pull (lift (𝟙 B) (𝟙 B)).left) := by

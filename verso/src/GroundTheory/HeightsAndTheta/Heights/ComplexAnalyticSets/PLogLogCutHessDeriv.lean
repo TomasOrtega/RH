@@ -9,6 +9,11 @@ open scoped ContDiff
 
 noncomputable section
 
+/- English proof (translation)
+Rewrite `hx` using `[Set.mem_Icc, not_and_or, not_le, not_le]`. Break down `hx with h | h` into its components or cases. Use `⟨0, ?_⟩ filter_upwards [Iio_mem_nhds h] with y hy` and prove the remaining obligations. Conclude with `Real.smoothTransition.zero_of_nonpos (le_of_lt hy)`. Use `⟨1, ?_⟩ filter_upwards [Ioi_mem_nhds h] with y hy` and prove the remaining obligations.
+
+Conclude with `Real.smoothTransition.one_of_one_le (le_of_lt hy)`.
+-/
 theorem smoothTransition_eventually_const {x : ℝ} (hx : x ∉ Set.Icc (0 : ℝ) 1) :
     ∃ c : ℝ, Real.smoothTransition =ᶠ[𝓝 x] fun _ => c := by
   rw [Set.mem_Icc, not_and_or, not_le, not_le] at hx
@@ -20,6 +25,9 @@ theorem smoothTransition_eventually_const {x : ℝ} (hx : x ∉ Set.Icc (0 : ℝ
     filter_upwards [Ioi_mem_nhds h] with y hy
     exact Real.smoothTransition.one_of_one_le (le_of_lt hy)
 
+/- English proof (translation)
+The claim follows from `|deriv (deriv Real.smoothTransition) x| ≤ C := by have hsm : ContDiff ℝ ∞ Real.smoothTransition := Real.smoothTransition.contDiff obtain ⟨-, h1⟩ := contDiff_infty_iff_deriv.1 hsm obtain ⟨-, h2⟩ := contDiff_infty_iff_deriv.1 h1 obtain ⟨C1, hC1⟩ := isCompact_Icc.exists_bound_of_con …`.
+-/
 theorem smoothTransition_deriv_bound :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ x, |deriv Real.smoothTransition x| ≤ C ∧
       |deriv (deriv Real.smoothTransition) x| ≤ C := by
@@ -42,6 +50,9 @@ theorem smoothTransition_deriv_bound :
     rw [e1, e2, abs_zero]
     exact ⟨le_max_right _ _, le_max_right _ _⟩
 
+/- English proof (translation)
+The claim follows from `|q * v * v + p * w| ≤ (6 * C + 4 * C ^ 2) / (c * t ^ 2) ∧ |p * v * (p * v) + f * (q * v * v + p * w)| ≤ (6 * C + 4 * C ^ 2) / (c * t ^ 2) := by have hc0 : 0 < c := by linarith have hD : 0 < c * t ^ 2 := by positivity have hvv : v * v ≤ 4 / (c * t ^ 2) := by have e : v * v = 4 / ( …`.
+-/
 theorem logLogStep_arith {C c t p q f v w : ℝ} (hC0 : 0 ≤ C) (hc : 1 ≤ c) (ht : t ≠ 0) (hp : |p| ≤ C)
     (hq : |q| ≤ C) (hf : |f| ≤ 1) (hv : v = -(2 * (t⁻¹ / c))) (hw : w = -(2 * (-(t ^ 2)⁻¹ / c))) :
     |q * v * v + p * w| ≤ (6 * C + 4 * C ^ 2) / (c * t ^ 2) ∧
@@ -73,6 +84,9 @@ theorem logLogStep_arith {C c t p q f v w : ℝ} (hC0 : 0 ≤ C) (hc : 1 ≤ c) 
       rw [abs_of_nonneg (mul_self_nonneg (p * v)), abs_mul]; gcongr
     _ = (6 * C + 4 * C ^ 2) / (c * t ^ 2) := by ring
 
+/- English proof (translation)
+The claim follows from `|deriv (deriv fun x => cutStep (Real.log (-x) / c)) t| ≤ K / (c * t ^ 2) ∧ |deriv (deriv fun x => cutStep (Real.log (-x) / c) ^ 2 / 2) t| ≤ K / (c * t ^ 2) := by obtain ⟨C, hC0, hC⟩ := smoothTransition_deriv_bound refine ⟨6 * C + 4 * C ^ 2, by positivity, fun c hc t ht => ?_⟩ hav …`.
+-/
 theorem logLogStep_deriv2_bound :
     ∃ K : ℝ, 0 ≤ K ∧ ∀ c : ℝ, 1 ≤ c → ∀ t : ℝ, t < 0 →
       ContDiffAt ℝ 2 (fun x => cutStep (Real.log (-x) / c)) t ∧

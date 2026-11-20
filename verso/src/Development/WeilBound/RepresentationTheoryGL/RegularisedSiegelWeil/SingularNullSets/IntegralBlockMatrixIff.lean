@@ -24,25 +24,51 @@ namespace IntM
 
 variable {v : Pl D} {m p q : ℕ}
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.add_apply, map_add]; exact add_mem (hM i j) (hN i j)`.
+-/
 theorem add {M N : Mx D m p} (hM : IntM v M) (hN : IntM v N) : IntM v (M + N) := fun i j => by
   rw [Matrix.add_apply, map_add]; exact add_mem (hM i j) (hN i j)
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.neg_apply, map_neg]; exact neg_mem (hM i j)`.
+-/
 theorem neg {M : Mx D m p} (hM : IntM v M) : IntM v (-M) := fun i j => by
   rw [Matrix.neg_apply, map_neg]; exact neg_mem (hM i j)
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.zero_apply, map_zero]; exact zero_mem _`.
+-/
 theorem zero : IntM v (0 : Mx D m p) := fun i j => by
   rw [Matrix.zero_apply, map_zero]; exact zero_mem _
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.one_apply] split_ifs · rw [map_one]; exact one_mem _ · rw [map_zero]; exact zero_mem _`.
+-/
 theorem one : IntM v (1 : Mx D m m) := fun i j => by
   rw [Matrix.one_apply]
   split_ifs
   · rw [map_one]; exact one_mem _
   · rw [map_zero]; exact zero_mem _
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.mul_apply, map_sum] exact sum_mem fun k _ => by rw [map_mul]; exact mul_mem (hM i k) (hN k j)`.
+-/
 theorem mul {M : Mx D m p} {N : Mx D p q} (hM : IntM v M) (hN : IntM v N) : IntM v (M * N) := fun i j => by
   rw [Matrix.mul_apply, map_sum]
   exact sum_mem fun k _ => by rw [map_mul]; exact mul_mem (hM i k) (hN k j)
 
+/- English proof (translation)
+Take `⟨z, hz, hdz⟩` from `hdet`. Take `⟨u, hu'⟩` from `hu`. Establish `hinv : cv D v (Ring.inverse M.det) = z`. Rewrite using `[← hu', Ring.inverse_unit]`. Establish `h1 : cv D v ((u⁻¹ : (AE D)ˣ) : AE D) * cv D v (u : AE D) = 1`.
+
+Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Rewrite `h1` using `[hu']`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hdz, mul_one]`. Use `_ = z := by rw [← mul_assoc, h1, one_mul]`.
+
+Set `N : Matrix (Fin m) (Fin m) (intLoc D.host.F D.host.E v)` to `fun i j => ⟨cv D v (M i j), hM i j⟩`. Establish `hN : N.map (intLoc D.host.F D.host.E v).subtype = M.map (cv D v)` using `rfl`. Establish `hadj : ∀ i j, cv D v (M.adjugate i j) ∈ intLoc D.host.F D.host.E v`. Introduce `i j`. Establish `e1 : cv D v (M.adjugate i j) = (M.map (cv D v)).adjugate i j` using `congrFun (congrFun (RingHom.map_adjugate (cv D v) M) i) j`.
+
+Establish `e2 : (intLoc D.host.F D.host.E v).subtype (N.adjugate i j) = (N.map (intLoc D.host.F D.host.E v).subtype).adjugate i j` using `congrFun (congrFun (RingHom.map_adjugate (intLoc D.host.F D.host.E v).subtype N) i) j`. Rewrite using `[e1, ← hN, ← e2]`. Conclude with `(N.adjugate i j).2`. Introduce `i j`. Rewrite using `[Matrix.inv_def, Matrix.smul_apply, smul_eq_mul, map_mul, hinv]`.
+
+Conclude with `mul_mem hz (hadj i j)`.
+-/
 theorem inv {M : Mx D m m} (hM : IntM v M) (hu : IsUnit M.det)
     (hdet : ∃ z ∈ intLoc D.host.F D.host.E v, cv D v M.det * z = 1) : IntM v M⁻¹ := by
   obtain ⟨z, hz, hdz⟩ := hdet
@@ -73,6 +99,19 @@ theorem inv {M : Mx D m m} (hM : IntM v M) (hu : IsUnit M.det)
 
 end IntM
 
+/- English proof (translation)
+Establish `key : ∀ x y, blk4 a b c d (finSumFinEquiv x) (finSumFinEquiv y) = Matrix.fromBlocks a b c d x y`. Introduce `x y`. Simplify using `only [blk4, Matrix.submatrix_apply, Equiv.symm_apply_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Use `⟨fun i j => ?_, fun i j => ?_, fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Use `h (finSumFinEquiv (Sum.inl i)) (finSumFinEquiv (Sum.inl j))` as an intermediate fact. Rewrite `this` using `[key, Matrix.fromBlocks_apply₁₁]`. Then use the resulting hypothesis. Use `h (finSumFinEquiv (Sum.inl i)) (finSumFinEquiv (Sum.inr j))` as an intermediate fact. Rewrite `this` using `[key, Matrix.fromBlocks_apply₁₂]`. Then use the resulting hypothesis.
+
+Use `h (finSumFinEquiv (Sum.inr i)) (finSumFinEquiv (Sum.inl j))` as an intermediate fact. Rewrite `this` using `[key, Matrix.fromBlocks_apply₂₁]`. Then use the resulting hypothesis. Use `h (finSumFinEquiv (Sum.inr i)) (finSumFinEquiv (Sum.inr j))` as an intermediate fact. Rewrite `this` using `[key, Matrix.fromBlocks_apply₂₂]`. Then use the resulting hypothesis. Introduce and unpack `⟨ha, hb, hc, hd⟩ i j`.
+
+Take `⟨i', rfl⟩` from `finSumFinEquiv.surjective i`. Take `⟨j', rfl⟩` from `finSumFinEquiv.surjective j`. Use `show cv D v (blk4 a b c d _ _) ∈ _`. Rewrite using `[key]`. Apply the tactic sequence `rcases i' with i' | i' <;> rcases j' with j' | j'`.
+
+Rewrite using `[Matrix.fromBlocks_apply₁₁]`. Conclude with `ha i' j'`. Rewrite using `[Matrix.fromBlocks_apply₁₂]`. Conclude with `hb i' j'`. Rewrite using `[Matrix.fromBlocks_apply₂₁]`.
+
+Conclude with `hc i' j'`. Rewrite using `[Matrix.fromBlocks_apply₂₂]`. Conclude with `hd i' j'`.
+-/
 theorem integral_block_matrix_iff {v : Pl D} {n : ℕ} {a b c d : Mx D n n} :
     IntM v (blk4 a b c d) ↔ IntM v a ∧ IntM v b ∧ IntM v c ∧ IntM v d := by
   have key : ∀ x y, blk4 a b c d (finSumFinEquiv x) (finSumFinEquiv y) = Matrix.fromBlocks a b c d x y := by

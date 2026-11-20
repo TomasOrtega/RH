@@ -8,6 +8,9 @@ namespace Formalism.L2.SG.LocalCountModules.LocCnt0LAlg
 
 variable {E : Type} [CommRing E] (O : Subring E) (cj : E →+* E) {r : ℕ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => simp`. Consider the case `cast a => simp [h a, Pi.single_eq_of_ne (Fin.castSucc_lt_last a).ne]`.
+-/
 theorem supp_inl (Y : Ix r → O) (h : ∀ a : Fin r, Y (Sum.inl a.castSucc) = 0) :
     (fun j => Y (Sum.inl j)) = Y (Sum.inl (Fin.last r)) • Pi.single (Fin.last r) 1 := by
   funext j
@@ -15,6 +18,9 @@ theorem supp_inl (Y : Ix r → O) (h : ∀ a : Fin r, Y (Sum.inl a.castSucc) = 0
   | last => simp
   | cast a => simp [h a, Pi.single_eq_of_ne (Fin.castSucc_lt_last a).ne]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => simp`. Consider the case `cast a => simp [h a, Pi.single_eq_of_ne (Fin.castSucc_lt_last a).ne]`.
+-/
 theorem supp_inr (Y : Ix r → O) (h : ∀ a : Fin r, Y (Sum.inr a.castSucc) = 0) :
     (fun j => Y (Sum.inr j)) = Y (Sum.inr (Fin.last r)) • Pi.single (Fin.last r) 1 := by
   funext j
@@ -22,16 +28,25 @@ theorem supp_inr (Y : Ix r → O) (h : ∀ a : Fin r, Y (Sum.inr a.castSucc) = 0
   | last => simp
   | cast a => simp [h a, Pi.single_eq_of_ne (Fin.castSucc_lt_last a).ne]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Apply the tactic sequence `cases i <;> rfl`.
+-/
 theorem elim_eta (Y : Ix r → O) : Y = Sum.elim (fun j => Y (Sum.inl j)) (fun j => Y (Sum.inr j)) := by
   funext i
   cases i <;> rfl
 
+/- English proof (translation)
+Rewrite using `[← Submodule.Quotient.eq, liftOf_spec, Submodule.Quotient.mk_smul, Submodule.Quotient.mk_smul, map_smul]`. Conclude with `congrArg (s • ·) he`.
+-/
 theorem lift_e_mem {Z Z' : Matrix (Fin (r + 1)) (Fin (r + 1)) O} (f : MbMod Z →ₗ[O] MbMod Z')
     (he : f (eCl Z) = eCl Z') (s : O) :
     liftOf O f (s • Pi.single (Fin.last r) 1) - s • Pi.single (Fin.last r) 1 ∈ headCols Z' := by
   rw [← Submodule.Quotient.eq, liftOf_spec, Submodule.Quotient.mk_smul, Submodule.Quotient.mk_smul, map_smul]
   exact congrArg (s • ·) he
 
+/- English proof (translation)
+Rewrite using `[← Submodule.Quotient.eq, liftOf_spec, hy, LinearEquiv.coe_toLinearMap, LinearEquiv.apply_symm_apply]`.
+-/
 theorem lift_rep_mem {Z Z' : Matrix (Fin (r + 1)) (Fin (r + 1)) O} (f : MbMod Z ≃ₗ[O] MbMod Z')
     (y : Fin (r + 1) → O) (y₂ : Fin (r + 1) → O)
     (hy : (Submodule.Quotient.mk y : MbMod Z) = f.symm (Submodule.Quotient.mk y₂)) :

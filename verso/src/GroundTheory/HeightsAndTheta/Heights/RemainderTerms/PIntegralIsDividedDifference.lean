@@ -7,6 +7,9 @@ namespace GroundTheory.Heights₂.Heights
 
 namespace RestTerms
 
+/- English proof (translation)
+Introduce `f N`. Use `⟨flagIntegral f N (blockVandermonde f N) / (N.factorial : ℚ) ^ f, ?_, ?_⟩` and prove the remaining obligations. Conclude with `div_ne_zero (h2 f N).ne' (pow_ne_zero _ (Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero N)))`. Introduce `H hH`. Conclude with `h1 f N H hH`.
+-/
 theorem IntegralIsDividedDifference.proof (h1 : FlagIntegralTopDegree.Statement)
     (h2 : FlagIntegralVandermondePos.Statement) : IntegralIsDividedDifference.Statement := by
   intro f N

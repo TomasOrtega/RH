@@ -3,6 +3,29 @@ open NumberField IsDedekindDomain
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hb : ∀ (_la : S) (y : L) (la' : HeightOneSpectrum (𝓞 L)), ∃ n : ℕ, WithZero.exp (-(n : ℤ)) * la'.valuation L y ≤ 1`. Introduce `_ y la'`. Distinguish the cases in `hy : la'.valuation L y = 0`. Conclude with `⟨0, by simp [hy]⟩`. Take `⟨m, hm⟩ : ∃ m : ℤ, WithZero.exp m = la'.valuation L y` from `⟨_, WithZero.exp_log hy⟩`.
+
+Use `⟨m.toNat, ?_⟩` and prove the remaining obligations. Rewrite using `[← hm, ← WithZero.exp_add, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Use `choose n hn using hb`. Set `N : ℕ` to `∑ la : S, ∑ y ∈ Y la, ∑ la' ∈ S, n la y la'`.
+
+Establish `hN : ∀ la, ∀ y ∈ Y la, ∀ la' ∈ S, n la y la' ≤ N`. Introduce `la y hy la' hla'`. Combine the equalities or inequalities in the displayed calculation. Set `J : S → Ideal (𝓞 L)` to `fun la => ∏ la' ∈ S.erase la.1, la'.asIdeal ^ N`. Establish `htop : ⨆ la ∈ (Finset.univ : Finset S), J la = ⊤`.
+
+Assume the negation of the conclusion as `h`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ h`. Establish `hJM : ∀ la : S, J la ≤ M` using `fun la => le_trans (le_iSup₂_of_le (f := fun la (_ : la ∈ (Finset.univ : Finset S)) => J la) la (Finset.mem_univ _) le_rfl) hle`. Take `⟨la0, hla0⟩` from `hS`. Take `⟨la1, hla1, h1⟩` from `(Ideal.IsPrime.prod_le hM.isPrime).1 (hJM ⟨la0, hla0⟩)`.
+
+Establish `hle1 : la1.asIdeal ≤ M` using `hM.isPrime.le_of_pow_le h1`. Establish `heq : la1.asIdeal = M` using `la1.isMaximal.eq_of_le hM.ne_top hle1`. Establish `hla1S : la1 ∈ S` using `Finset.mem_of_mem_erase hla1`. Take `⟨la2, hla2, h2⟩` from `(Ideal.IsPrime.prod_le hM.isPrime).1 (hJM ⟨la1, hla1S⟩)`. Establish `hle2 : la2.asIdeal ≤ la1.asIdeal` using `heq ▸ hM.isPrime.le_of_pow_le h2`.
+
+Establish `h22 : la2.asIdeal = la1.asIdeal` using `la2.isMaximal.eq_of_le la1.isPrime.ne_top hle2`. Conclude with `(Finset.ne_of_mem_erase hla2) (HeightOneSpectrum.ext h22)`. Establish `h1 : (1 : 𝓞 L) ∈ ⨆ la ∈ (Finset.univ : Finset S), J la` using `htop ▸ Submodule.mem_top`. Take `⟨μ, hμ⟩` from `(Submodule.mem_iSup_finset_iff_exists_sum _ _).1 h1`. Use `⟨fun la => ((μ la : 𝓞 L) : L), ?_, ?_⟩` and prove the remaining obligations.
+
+Use `congrArg (fun x : 𝓞 L => (x : L)) hμ` as an intermediate fact. Simplify using `using this`. Introduce `la y hy la' hla'`. Rewrite using `[map_mul]`. Distinguish the cases in `h : la' = la.1`.
+
+Substitute `h` using the available equality. Combine the equalities or inequalities in the displayed calculation. Establish `hmem : (μ la : 𝓞 L) ∈ la'.asIdeal ^ N`. Establish `hm : (μ la : 𝓞 L) ∈ J la` using `(μ la).2`. Establish `hs : la' ∈ S.erase la.1` using `Finset.mem_erase.2 ⟨h, hla'⟩`.
+
+Establish `: J la ≤ la'.asIdeal ^ N` using `by show ∏ la'' ∈ S.erase la.1, la''.asIdeal ^ N ≤ _`. Rewrite using `[← Finset.mul_prod_erase _ _ hs]`. Conclude with `le_trans Ideal.mul_le_inf inf_le_left`. Conclude with `this hm`. Establish `hv : la'.valuation L ((μ la : 𝓞 L) : L) ≤ WithZero.exp (-(N : ℤ))`.
+
+Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_le_pow_iff_dvd, Ideal.dvd_span_singleton]`. Conclude with `hmem`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul' ?_ le_rfl` and prove the remaining obligations. Rewrite using `[WithZero.exp_le_exp]`.
+
+Use `hN la y hy la' hla'` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `_ ≤ 1 := hn la y la'`.
+-/
 theorem exists_partition_one_integral_at_places (L : Type) [Field L] [NumberField L]
     (S : Finset (HeightOneSpectrum (𝓞 L))) (hS : S.Nonempty) (Y : S → Finset L)
     (hY : ∀ la, ∀ y ∈ Y la, la.1.valuation L y ≤ 1) :

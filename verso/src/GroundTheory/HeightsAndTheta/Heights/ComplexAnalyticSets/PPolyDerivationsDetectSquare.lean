@@ -10,6 +10,17 @@ noncomputable section
 
 open IsLocalRing KaehlerDifferential TensorProduct
 
+/- English proof (translation)
+Establish `: Algebra.FormallySmooth F k` using `h₁ F k`. Establish `: Algebra.FormallySmooth F p.ResidueField` using `h₁ F p.ResidueField`. Establish `: Algebra.FormallySmooth F (MvPolynomial (Fin n) k)` using `Algebra.FormallySmooth.comp F k (MvPolynomial (Fin n) k)`. Establish `hsurj : Function.Surjective (algebraMap (Localization.AtPrime p) p.ResidueField)` using `IsLocalRing.residue_surjective`. Take `⟨ret, hret⟩` from `(Algebra.FormallySmooth.iff_split_injection (R := F) (P := Localization.AtPrime p) hsurj).mp inferInstance`.
+
+Establish `hinj : Function.Injective (kerCotangentToTensor F (Localization.AtPrime p) p.ResidueField)` using `Function.LeftInverse.injective (g := ret) fun x => LinearMap.congr_fun hret x`. Establish `hgI : algebraMap (MvPolynomial (Fin n) k) (Localization.AtPrime p) g ∈ RingHom.ker (algebraMap (Localization.AtPrime p) p.ResidueField)`. Rewrite using `[RingHom.mem_ker, ← IsScalarTower.algebraMap_apply]`. Conclude with `Ideal.algebraMap_residueField_eq_zero.mpr hg`. Establish `: Module.Free (MvPolynomial (Fin n) k) Ω[MvPolynomial (Fin n) k⁄F]` using `h₂ F k n`.
+
+Set `b` to `Module.Free.chooseBasis (MvPolynomial (Fin n) k) Ω[MvPolynomial (Fin n) k⁄F]`. Establish `hc : ∀ α, b.repr (D F (MvPolynomial (Fin n) k) g) α ∈ p` using `fun α => hD (((b.coord α).compDer (D F (MvPolynomial (Fin n) k))).restrictScalars ℤ)`. Establish `hzero : kerCotangentToTensor F (Localization.AtPrime p) p.ResidueField (Ideal.toCotangent _ ⟨_, hgI⟩) = 0`. Express the relevant statement in the definitionally equal form `(1 : p.ResidueField) ⊗ₜ[Localization.AtPrime p] D F (Localization.AtPrime p) (algebraMap (MvPolynomial (Fin n) k) (Localization.AtPrime p) g) = 0`. Rewrite using `[← map_D F F (MvPolynomial (Fin n) k) (Localization.AtPrime p), ← b.linearCombination_repr (D F (MvPolynomial (Fin n) k) g), Finsupp.linearCombination_apply, map_finsuppSum, Finsupp.sum, tmul_sum]`.
+
+Use `Finset.sum_eq_zero fun α _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smul, ← algebraMap_smul (Localization.AtPrime p), tmul_smul, ← algebraMap_smul p.ResidueField, ← IsScalarTower.algebraMap_apply, Ideal.algebraMap_residueField_eq_zero.mpr (hc α), zero_smul]`. Establish `h0` using `hinj (hzero.trans (map_zero _).symm)`. Establish `hker : RingHom.ker (algebraMap (Localization.AtPrime p) p.ResidueField) = maximalIdeal (Localization.AtPrime p)` using `IsLocalRing.ker_residue`. Rewrite `h0` using `[Ideal.toCotangent_eq_zero]`.
+
+Rewrite using `[← hker]`. Conclude with `h0`.
+-/
 theorem PolyDerivationsDetectSquare.of_perfectField
     (h₁ : PerfectFieldExtensionFormallySmooth.Statement) (h₂ : PolyKaehlerFree.Statement)
     (F k : Type) [Field F] [Field k] [Algebra F k] [PerfectField F] (n : ℕ)
@@ -57,6 +68,11 @@ theorem PolyDerivationsDetectSquare.of_perfectField
   rw [← hker]
   exact h0
 
+/- English proof (translation)
+Introduce `k _ n p _ g hg hD`. Take `⟨q, hq⟩` from `CharP.exists k`. Break down `CharP.char_is_prime_or_zero k q with hqp | rfl` into its components or cases. Establish `: Fact q.Prime` using `⟨hqp⟩`. Set `_ : Algebra (ZMod q) k` to `ZMod.algebra k q`.
+
+Conclude with `PolyDerivationsDetectSquare.of_perfectField h₁ h₂ (ZMod q) k n p g hg hD`. Establish `: CharZero k` using `CharP.charP_to_charZero k`. Conclude with `PolyDerivationsDetectSquare.of_perfectField h₁ h₂ ℚ k n p g hg hD`.
+-/
 theorem PolyDerivationsDetectSquare.proof (h₁ : PerfectFieldExtensionFormallySmooth.Statement)
     (h₂ : PolyKaehlerFree.Statement) : PolyDerivationsDetectSquare.Statement := by
   intro k _ n p _ g hg hD

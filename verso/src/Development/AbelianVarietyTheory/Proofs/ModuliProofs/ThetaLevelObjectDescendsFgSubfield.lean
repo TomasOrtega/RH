@@ -22,17 +22,29 @@ namespace GlobalTheory.ThetaDescent
 def gen {o K : Type} [CommRing o] [Field K] (β : o →+* K) (s : Finset K) : Subfield K :=
   Subfield.closure (Set.range β ∪ s)
 
+/- English proof (translation)
+The claim follows from `Subfield.closure_mono (Set.union_subset_union_right _ (Finset.coe_subset.2 h))`.
+-/
 theorem gen_mono {o K : Type} [CommRing o] [Field K] (β : o →+* K) {s s' : Finset K} (h : s ⊆ s') :
     gen β s ≤ gen β s' :=
   Subfield.closure_mono (Set.union_subset_union_right _ (Finset.coe_subset.2 h))
 
+/- English proof (translation)
+Introduce `_ hx` and use `Subfield.subset_closure (Or.inr (h hx))`.
+-/
 theorem subset_gen {o K : Type} [CommRing o] [Field K] (β : o →+* K) {s s' : Finset K} (h : s ⊆ s') :
     (s : Set K) ⊆ gen β s' :=
   fun _ hx => Subfield.subset_closure (Or.inr (h hx))
 
+/- English proof (translation)
+The claim follows from `Subfield.subset_closure (Or.inl ⟨a, rfl⟩)`.
+-/
 theorem mem_gen {o K : Type} [CommRing o] [Field K] (β : o →+* K) (s : Finset K) (a : o) : β a ∈ gen β s :=
   Subfield.subset_closure (Or.inl ⟨a, rfl⟩)
 
+/- English proof (translation)
+Establish `hc : (Set.range β ∪ (s : Set K)).Countable` using `(Set.countable_range β).union s.countable_toSet`. Rewrite using `[← Cardinal.mk_le_aleph0_iff]`. Use `(Subfield.cardinalMk_closure_le_max _).trans ?_` and prove the remaining obligations. Conclude with `max_le (Cardinal.mk_le_aleph0_iff.2 hc.to_subtype) le_rfl`.
+-/
 theorem countable_gen {o K : Type} [CommRing o] [Field K] (β : o →+* K) (s : Finset K) [Countable o] :
     Countable (gen β s) := by
   have hc : (Set.range β ∪ (s : Set K)).Countable := (Set.countable_range β).union s.countable_toSet
@@ -40,16 +52,43 @@ theorem countable_gen {o K : Type} [CommRing o] [Field K] (β : o →+* K) (s : 
   refine (Subfield.cardinalMk_closure_le_max _).trans ?_
   exact max_le (Cardinal.mk_le_aleph0_iff.2 hc.to_subtype) le_rfl
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_subtype {K : Type} [Field K] {K₀ K₁ : Subfield K} (h : K₀ ≤ K₁) :
     spMap K₁.subtype ≫ spMap (Subfield.inclusion h) = spMap K₀.subtype := by
   rw [← Spec.map_comp]; rfl
 
+/- English proof (translation)
+Take `⟨N, i, hi, rfl⟩` from `h`. Use `isProper_str R N` as an intermediate fact. Use `infer_instance`.
+-/
 theorem isProper_of_isProjOver {R : Type} [CommRing R] {X : Scheme.{0}} {f : X ⟶ Sp R} (h : IsProjOver f) :
     IsProper f := by
   obtain ⟨N, i, hi, rfl⟩ := h
   have := isProper_str R N
   infer_instance
 
+/- English proof (translation)
+Introduce `o _ g k J b _ K _ β t`. Take `⟨s₀, H₀⟩` from `hproj K (gen β ∅) t.A.left t.A.hom (GlobalTheory.ProjSpace.isProjOver_of_relAmple t.ample)`. Take `⟨X₀, p₀, φ, hp₀, sq⟩` from `H₀ (gen β s₀) (gen_mono β (Finset.empty_subset _)) (subset_gen β le_rfl)`. Establish `: IsProper p₀` using `isProper_of_isProjOver hp₀`. Establish `: LocallyOfFinitePresentation p₀` using `inferInstance`.
+
+Establish `: QuasiCompact (Over.mk p₀).hom` using `inferInstanceAs (QuasiCompact p₀)`. Establish `: QuasiSeparated (Over.mk p₀).hom` using `inferInstanceAs (QuasiSeparated p₀)`. Establish `: LocallyOfFinitePresentation (Over.mk p₀).hom` using `inferInstanceAs (LocallyOfFinitePresentation p₀)`. Take `⟨s₁, H₁⟩` from `hgrp K (gen β s₀) (Over.mk p₀) t.A φ sq`. Take `⟨s₂, H₂⟩` from `hlb K (gen β s₀) X₀ t.A.left p₀ t.A.hom φ t.L t.isLB sq`.
+
+Take `⟨s₃, H₃⟩` from `hmor K (gen β s₀) X₀ t.A.left p₀ t.A.hom φ X₀ p₀ J (fun j => (t.act j).left ≫ φ) sq (fun j => by rw [Category.assoc, sq.w, ← Category.assoc, Over.w])`. Take `⟨s₄, H₄⟩` from `hmor K (gen β s₀) (Sp (gen β s₀)) (Sp K) (𝟙 _) (𝟙 _) (spMap (gen β s₀).subtype) X₀ p₀ (Fin (2 * g)) (fun a => (t.pt a).left ≫ φ) (IsPullback.of_vert_isIso ⟨by simp⟩) (fun a => by`. Establish `e : (t.pt a).left ≫ t.A.hom = 𝟙 _` using `Over.w (t.pt a)`. Rewrite using `[Category.assoc, sq.w, ← Category.assoc, e]`. Use the proof step `simp)`.
+
+Set `s : Finset K` to `s₀ ∪ s₁ ∪ s₂ ∪ s₃ ∪ s₄`. Establish `h : gen β s₀ ≤ gen β s` using `gen_mono β (fun x hx => by simp [s, hx])`. Set `inc` to `spMap (Subfield.inclusion h)`. Set `A₁ : Over (Sp (gen β s))` to `Over.mk (pullback.snd p₀ inc)`. Set `φ₁ : A₁.left ⟶ X₀` to `pullback.fst p₀ inc`.
+
+Establish `sq₁ : IsPullback φ₁ A₁.hom p₀ inc` using `IsPullback.of_hasPullback p₀ inc`. Set `ψ : t.A.left ⟶ A₁.left` to `sq₁.lift φ (t.A.hom ≫ spMap (gen β s).subtype) (by rw [Category.assoc, spMap_subtype h, sq.w])`. Establish `hψ₁ : ψ ≫ φ₁ = φ` using `sq₁.lift_fst _ _ _`. Establish `hψ₂ : ψ ≫ A₁.hom = t.A.hom ≫ spMap (gen β s).subtype` using `sq₁.lift_snd _ _ _`. Take `⟨gr₁, hG⟩` from `H₁ (gen β s) h (subset_gen β (fun x hx => by simp [s, hx])) A₁ φ₁ ψ sq₁ hψ₁ hψ₂`.
+
+Take `⟨L₁, hL₁, hL⟩` from `H₂ (gen β s) h (subset_gen β (fun x hx => by simp [s, hx])) A₁.left A₁.hom φ₁ ψ sq₁ hψ₁ hψ₂`. Take `⟨f₁, hf₁⟩` from `H₃ (gen β s) h (subset_gen β (fun x hx => by simp [s, hx])) A₁.left A₁.hom φ₁ ψ sq₁ hψ₁ hψ₂`. Take `⟨x₁, hx₁⟩` from `H₄ (gen β s) h (subset_gen β (fun x hx => by simp [s, hx])) (Sp (gen β s)) (𝟙 _) inc (spMap (gen β s).subtype) (IsPullback.of_vert_isIso ⟨by simp [inc]⟩) (spMap_subtype h) (by simp)`. Set `act₁ : J → (A₁ ⟶ A₁)` to `fun j => Over.homMk (sq₁.lift (f₁ j) A₁.hom (by rw [(hf₁ j).2, sq₁.w])) (sq₁.lift_snd _ _ _)`. Set `pt₁ : Fin (2 * g) → (Out.baseOver (Sp (gen β s)) ⟶ A₁)` to `fun a => Over.homMk (sq₁.lift (x₁ a) (𝟙 _) (by rw [(hx₁ a).2]; simp)) (sq₁.lift_snd _ _ _)`.
+
+Set `β₁ : o →+* gen β s` to `β.codRestrict _ (mem_gen β s)`. Establish `hβ : (gen β s).subtype.comp β₁ = β` using `rfl`. Take `⟨t₀, ht₀⟩` from `hobj o g k J b (gen β s) K (gen β s).subtype β₁ β t A₁ ψ L₁ pt₁ act₁ hβ hG hL₁ hL (fun a => by`. Establish `e : (t.pt a).left ≫ t.A.hom = 𝟙 _` using `Over.w (t.pt a)`. Establish `e₁ : (pt₁ a).left ≫ φ₁ = x₁ a` using `sq₁.lift_fst _ _ _`.
+
+Establish `e₂ : (pt₁ a).left ≫ A₁.hom = 𝟙 _` using `sq₁.lift_snd _ _ _`. Apply `sq₁.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hψ₁]`. Conclude with `((hx₁ a).1.symm.trans (congrArg _ e₁.symm)).trans (Category.assoc _ _ _).symm`. Rewrite using `[Category.assoc, hψ₂, ← Category.assoc, e]`.
+
+Use `(Category.id_comp _).trans (Eq.trans ?_ (Category.assoc _ _ _).symm)` and prove the remaining obligations. Conclude with `((congrArg _ e₂).trans (Category.comp_id _)).symm)`. Use the proof step `(fun j => by`. Establish `e₁ : (act₁ j).left ≫ φ₁ = f₁ j` using `sq₁.lift_fst _ _ _`. Apply `sq₁.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, hψ₁, Category.assoc, e₁, (hf₁ j).1]`. Rewrite using `[Category.assoc, hψ₂, ← Category.assoc, Over.w, Category.assoc, Over.w, hψ₂])`. Conclude with `⟨gen β s, β₁, t₀, hβ, fun _ => countable_gen β s, ⟨s, rfl⟩, ht₀⟩`.
+-/
 theorem descends_of
     (hproj : ∀ (K : Type) [Field K] (K₀ : Subfield K) (X : Scheme.{0}) (p : X ⟶ Sp K), IsProjOver p → ∃ s : Finset K, ∀ K₁ : Subfield K, K₀ ≤ K₁ → (s : Set K) ⊆ K₁ → ∃ (X₁ : Scheme.{0}) (p₁ : X₁ ⟶ Sp K₁) (φ : X ⟶ X₁), IsProjOver p₁ ∧ IsPullback φ p p₁ (spMap K₁.subtype))
     (hmor : ∀ (K : Type) [Field K] (K₀ : Subfield K) (X₀ X : Scheme.{0}) (p₀ : X₀ ⟶ Sp K₀) (p : X ⟶ Sp K) (φ : X ⟶ X₀) (Z : Scheme.{0}) (q : Z ⟶ Sp K₀) [QuasiCompact p₀] [QuasiSeparated p₀] [LocallyOfFinitePresentation q] (I : Type) [Finite I] (f : I → (X ⟶ Z)), IsPullback φ p p₀ (spMap K₀.subtype) → (∀ j, f j ≫ q = φ ≫ p₀) → ∃ s : Finset K, ∀ (K₁ : Subfield K) (h : K₀ ≤ K₁), (s : Set K) ⊆ K₁ → ∀ (X₁ : Scheme.{0}) (p₁ : X₁ ⟶ Sp K₁) (φ₁ : X₁ ⟶ X₀) (ψ : X ⟶ X₁), IsPullback φ₁ p₁ p₀ (spMap (Subfield.inclusion h)) → ψ ≫ φ₁ = φ → ψ ≫ p₁ = p ≫ spMap K₁.subtype → ∃ f₁ : I → (X₁ ⟶ Z), ∀ j, ψ ≫ f₁ j = f j ∧ f₁ j ≫ q = φ₁ ≫ p₀)
@@ -116,6 +155,9 @@ theorem descends_of
       · rw [Category.assoc, hψ₂, ← Category.assoc, Over.w, Category.assoc, Over.w, hψ₂])
   exact ⟨gen β s, β₁, t₀, hβ, fun _ => countable_gen β s, ⟨s, rfl⟩, ht₀⟩
 
+/- English proof (translation)
+The claim follows from `descends_of (@GlobalTheory.T.exists_finset_isProjOver_descends_to_subfield) (@GlobalTheory.T.exists_descent_of_morphisms_to_subfield) (@GlobalTheory.grpObj_descends_to_large_subfield) (@GlobalTheory.T.exists_lineBundle_descent_to_subfield) (@GlobalTheory.exists_thetaObj_of_descen …`.
+-/
 theorem descends_to_fg_subfield :
     ∀ (o : Type) [CommRing o] (g k : ℕ) (J : Type) (b : TBase o k) [Finite J] (K : Type) [Field K] (β : o →+* K) (t : TObj g k J b (spMap β)), ∃ (K₀ : Subfield K) (β₀ : o →+* K₀) (t₀ : TObj g k J b (spMap β₀)), K₀.subtype.comp β₀ = β ∧ (Countable o → Countable K₀) ∧ (∃ s : Finset K, K₀ = Subfield.closure (Set.range β ∪ s)) ∧ TMap t t₀ (spMap K₀.subtype) :=
   descends_of (@GlobalTheory.T.exists_finset_isProjOver_descends_to_subfield) (@GlobalTheory.T.exists_descent_of_morphisms_to_subfield) (@GlobalTheory.grpObj_descends_to_large_subfield) (@GlobalTheory.T.exists_lineBundle_descent_to_subfield) (@GlobalTheory.exists_thetaObj_of_descended_data)

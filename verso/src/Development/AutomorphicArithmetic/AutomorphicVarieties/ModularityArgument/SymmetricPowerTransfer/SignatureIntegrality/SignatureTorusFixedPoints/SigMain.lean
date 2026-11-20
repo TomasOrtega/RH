@@ -6,6 +6,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SymmetricPowerTransfer.SignatureIntegrality.SignatureTorusFixedPoints.OkDOrb
 
 open UpperTheory.V.Z.Sym.Sig in
+/- English proof (translation)
+Introduce `k _ _ _ _ O _ _ hO h2 Δ s hs hs0 V Ry hR χ hχ`. Take `⟨hJ, hJf, hJ2, hJ2f, hcG, hcS, hreg⟩` from `okLev k O hO h2 Δ s hs hs0 V Ry hR χ hχ`. Conclude with `⟨hcG, hcS, hcS, hJ, hJf, hJ2, hJ2f, hreg, fun t ht => (okG k O hO h2 Δ s hs hs0 V Ry hR χ hχ t ht).1, fun t ht => (okG k O hO h2 Δ s hs hs0 V Ry hR χ hχ t ht).2.1, fun t ht => (okG k O hO h2 Δ s hs hs0 V Ry hR χ hχ t ht).2.2, fun t ht => okGOrb k O hO h2 Δ s hs hs0 V Ry hR χ hχ t …`.
+-/
 theorem UpperTheory.V.Z.Sym.Sig.sigMain : UpperTheory.V.Z.Sym.Sig.SigMain := by
   intro k _ _ _ _ O _ _ hO h2 Δ s hs hs0 V Ry hR χ hχ
   obtain ⟨hJ, hJf, hJ2, hJ2f, hcG, hcS, hreg⟩ := okLev k O hO h2 Δ s hs hs0 V Ry hR χ hχ

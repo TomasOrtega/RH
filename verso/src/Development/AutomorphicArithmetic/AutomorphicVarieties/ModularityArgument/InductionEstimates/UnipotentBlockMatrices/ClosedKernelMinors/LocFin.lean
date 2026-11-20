@@ -14,6 +14,11 @@ open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Adel PositivityTheory.Rg
 open scoped ENNReal NumberField.AdeleRing InnerProductSpace ComplexConjugate
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial
 
+/- English proof (translation)
+Establish `h1` using `GroundTheory.Global.discreteTopology_principalSubgroup K`. Establish `h2` using `GroundTheory.Global.isClosed_principalSubgroup K`. Establish `h3 : IsCompact ((Subtype.val : NumberField.AdeleRing.principalSubgroup (𝓞 K) K → 𝔸[K]) ⁻¹' S)` using `h2.isClosedEmbedding_subtypeVal.isCompact_preimage hS`. Establish `h4` using `h3.finite_of_discrete`. Use `Set.Finite.of_finite_image (f := algebraMap K 𝔸[K]) ((h4.image Subtype.val).subset ?_) (NumberField.AdeleRing.algebraMap_injective (𝓞 K) K).injOn` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨k, hk, rfl⟩`. Conclude with `⟨⟨_, k, rfl⟩, hk, rfl⟩`.
+-/
 private theorem lf_fin {K : Type} [Field K] [NumberField K] {S : Set 𝔸[K]} (hS : IsCompact S) :
     {k : K | algebraMap K 𝔸[K] k ∈ S}.Finite := by
   have h1 := GroundTheory.Global.discreteTopology_principalSubgroup K
@@ -26,6 +31,13 @@ private theorem lf_fin {K : Type} [Field K] [NumberField K] {S : Set 𝔸[K]} (h
   rintro _ ⟨k, hk, rfl⟩
   exact ⟨⟨_, k, rfl⟩, hk, rfl⟩
 
+/- English proof (translation)
+Use `set e : ℝ := (((2 : ℕ) : ℝ) * Module.finrank ℚ K)⁻¹ with he`. Establish `he0 : 0 ≤ e` using `by positivity`. Set `B : Set (InfiniteAdeleRing K)` to `Set.univ.pi fun w : InfinitePlace K => Metric.closedBall (0 : w.Completion) (Real.exp (-T) ^ e)`. Establish `hB : IsCompact B` using `isCompact_univ_pi fun w => isCompact_closedBall _ _`. Set `Z0 : Set 𝔸[K]` to `B ×ˢ ({1} : Set (IsDedekindDomain.FiniteAdeleRing (𝓞 K) K))`.
+
+Establish `hZ0 : IsCompact Z0` using `hB.prod isCompact_singleton`. Use `⟨(fun x => x * x) '' Z0, hZ0.image (continuous_id.mul continuous_id), fun t ht => ?_⟩` and prove the remaining obligations. Establish `hp : 0 < Real.exp (-t) ^ e` using `Real.rpow_pos_of_pos (Real.exp_pos _) e`. Use `⟨(posIdele (K := K) _ hp : GroundTheory.Global.IdeleGroup K), ⟨fun w _ => ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_closedBall_zero_iff, norm_posIdele_infinite]`.
+
+Conclude with `Real.rpow_le_rpow (Real.exp_pos _).le (Real.exp_le_exp.2 (by linarith)) he0`. Conclude with `DFunLike.ext _ _ fun v => posIdele_finite _ hp v`. Rewrite using `[← AdelicGLn.coe_det]`. Establish `: zt K (-t) = diagUnits 2 fun _ => posIdele (K` using `K) _ hp := rfl`. Rewrite using `[this, det_diagUnits, Fin.prod_univ_two, Units.val_mul]`.
+-/
 private theorem lf_ray (K : Type) [Field K] [NumberField K] (T : ℝ) :
     ∃ Z : Set 𝔸[K], IsCompact Z ∧ ∀ t, T ≤ t →
       ((zt K (-t) : AdelicGLn.AdelicGL K 2) : Matrix (Fin 2) (Fin 2) 𝔸[K]).det ∈ Z := by
@@ -46,6 +58,13 @@ private theorem lf_ray (K : Type) [Field K] [NumberField K] (T : ℝ) :
     have : zt K (-t) = diagUnits 2 fun _ => posIdele (K := K) _ hp := rfl
     rw [this, det_diagUnits, Fin.prod_univ_two, Units.val_mul]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.det_mul]`. Use `congr 1`. Use extensionality with `i j`. Establish `h1 : ∀ (M : Matrix (Fin (2 + 2)) (Fin (2 + 2)) R) (k : Fin (2 + 2)), (unipMatrix X * M) (Fin.natAdd 2 i) k = M (Fin.natAdd 2 i) k`. Introduce `M k`.
+
+Rewrite using `[unipMatrix, add_mul, one_mul, Matrix.add_apply, Matrix.mul_apply, Finset.sum_eq_zero, add_zero]`. Introduce `l _`. Rewrite using `[blockEntry_apply, dif_neg, zero_mul]`. Simplify using the standard rewrite rules. Rewrite using `[Matrix.submatrix_apply, mul_assoc, h1, Matrix.mul_apply, Matrix.mul_apply, Fin.sum_univ_add]`.
+
+Simplify using `only [blk, Matrix.reindex_apply, Matrix.submatrix_apply, finSumFinEquiv_symm_apply_natAdd, finSumFinEquiv_symm_apply_castAdd, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, zero_mul, Finset.sum_const_zero, zero_add]`.
+-/
 private theorem lf_minor {R : Type} [CommRing R] (X : UPos (2 + 2) 2 → R) (a b : GL (Fin 2) R)
     (h : Matrix (Fin (2 + 2)) (Fin (2 + 2)) R) (c : Fin 2 → Fin (2 + 2)) :
     ((unipMatrix X * (blk a b).val * h).submatrix (Fin.natAdd 2) c).det =
@@ -65,6 +84,27 @@ private theorem lf_minor {R : Type} [CommRing R] (X : UPos (2 + 2) 2 → R) (a b
     finSumFinEquiv_symm_apply_castAdd, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, zero_mul,
     Finset.sum_const_zero, zero_add]
 
+/- English proof (translation)
+Introduce `K _ _ C T hC`. Take `⟨D, hD, -, hxD⟩` from `GroundTheory.Global.IdeleGroup.exists_isCompact_normOneSubgroup K`. Take `⟨Z, hZ, hzZ⟩` from `lf_ray K T`. Establish `hK : IsCompact (KG K (2 + 2) : Set (G1 K (2 + 2)))` using `((blkLaws (K := K)).2.2.2.2.2.2.2.2.2.2.2 _).1`. Set `mn : (Fin 2 → Fin (2 + 2)) → G1 K (2 + 2) → 𝔸[K]` to `fun c g => (((g : AdelicGLn.AdelicGL K (2 + 2)) : Matrix (Fin (2 + 2)) (Fin (2 + 2)) 𝔸[K]).submatrix (Fin.natAdd 2) c).det`.
+
+Establish `hmn : ∀ c, Continuous (mn c)` using `fun c => ((Units.continuous_val.comp continuous_subtype_val).matrix_submatrix _ _).matrix_det`. Set `Φ : (Fin 2 → Fin (2 + 2)) → GroundTheory.Global.IdeleGroup K × 𝔸[K] × G1 K (2 + 2) × G1 K (2 + 2) → 𝔸[K]` to `fun c p => (p.1 : 𝔸[K]) * p.2.1 * mn c (p.2.2.1 * p.2.2.2⁻¹)`. Establish `hΦ : ∀ c, Continuous (Φ c)` using `fun c => ((Units.continuous_val.comp continuous_fst).mul continuous_snd.fst).mul ((hmn c).comp (continuous_snd.snd.fst.mul continuous_snd.snd.snd.inv))`. Establish `hfin : ∀ c, {k : K | algebraMap K 𝔸[K] k ∈ Φ c '' (D ×ˢ Z ×ˢ (KG K (2 + 2) : Set (G1 K (2 + 2))) ×ˢ C)}.Finite` using `fun c => lf_fin ((hD.prod (hZ.prod (hK.prod hC))).image (hΦ c))`. Establish `hrat : ∀ q : Cos K, ∃ γ : GL (Fin (2 + 2)) K, AdelicGLn.diagonal K (2 + 2) γ = ((q.out : G1 K (2 + 2)) : AdelicGLn.AdelicGL K (2 + 2))` using `fun q => q.out.2`.
+
+Use `choose γ hγ using hrat`. Establish `hm : ∀ q c, mn c (q.out : G1 K (2 + 2)) = algebraMap K 𝔸[K] ((γ q : Matrix (Fin (2 + 2)) (Fin (2 + 2)) K).submatrix (Fin.natAdd 2) c).det`. Introduce `q c`. Simplify using `only [mn]`. Rewrite using `[← hγ, RingHom.map_det]`.
+
+Both sides reduce to the same expression. Establish `key : ∀ q : Cos K, (∃ g ∈ C, T ≤ HH ((q.out : G1 K (2 + 2)) * g)) → ∃ a : Kˣ, ∀ c, algebraMap K 𝔸[K] (a * ((γ q : Matrix (Fin (2 + 2)) (Fin (2 + 2)) K).submatrix (Fin.natAdd 2) c).det) ∈ Φ c '' (D ×ˢ Z ×ˢ (KG K (2 + 2) : Set (G1 K (2 + 2))) ×ˢ C)`. Introduce and unpack `q ⟨g, hg, hT⟩`. Take `⟨X, m₁, m₂, t, k, hk, hq⟩` from `iwa ((q.out : G1 K (2 + 2)) * g)`. Rewrite `hT` using `[hq, (hpSpec (K := K)).1, ((hpSpec (K := K)).2.1 k hk).1, add_zero]`.
+
+Establish `hm2 : AdelicGLn.det K 2 (m₂ : AdelicGLn.AdelicGL K 2) ∈ GroundTheory.Global.IdeleGroup.normOneSubgroup K` using `mem_normOneGL_iff_detModule.1 m₂.2`. Take `⟨a, ha⟩` from `hxD _ hm2`. Use `⟨a, fun c => ⟨⟨_, ((zt K (-t) : AdelicGLn.AdelicGL K 2) : Matrix (Fin 2) (Fin 2) 𝔸[K]).det, k, g⟩, ⟨ha, hzZ t hT, hk, hg⟩, ?_⟩⟩` and prove the remaining obligations. Establish `hq' : (q.out : G1 K (2 + 2)) = nn X * lv m₁ m₂ t * (k * g⁻¹)`. Rewrite using `[← mul_assoc, ← hq, mul_inv_cancel_right]`.
+
+Rewrite using `[map_mul, ← hm, hq']`. Simplify using `only [Φ, mn]`. Rewrite using `[Subgroup.coe_mul _ (nn X * _), Subgroup.coe_mul _ (nn X), (blkLaws (K := K)).1, Units.val_mul (_ * blk _ _), Units.val_mul _ (blk _ _), coe_unipOne, coe_unipGL, lf_minor, Units.val_mul, Units.val_mul (m₂ : AdelicGLn.AdelicGL K 2), Matrix.det_mul, GroundTheory.Global.IdeleGroup.c …`. Expand and normalize the polynomial expressions, which then agree. Use `choose! a ha using key`.
+
+Use `Set.Finite.of_finite_image (f := fun q c => (a q : K) * ((γ q : Matrix (Fin (2 + 2)) (Fin (2 + 2)) K).submatrix (Fin.natAdd 2) c).det) ((Set.Finite.pi' hfin).subset ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨q, hq, rfl⟩ c`. Conclude with `ha q hq c`. Introduce `q _ q' _ h`. Establish `h1` using `(pluck (γ q') (γ q)).2 (((a q')⁻¹ * a q : Kˣ) : K) fun c => by`.
+
+Use `congrFun h c` as an intermediate fact. Simplify using `only at this`. Rewrite using `[Units.val_mul, mul_assoc, this, ← mul_assoc, Units.inv_mul, one_mul]`. Rewrite using `[← q.out_eq, ← q'.out_eq]`. Use `Quotient.sound (QuotientGroup.rightRel_apply.2 ?_)` and prove the remaining obligations.
+
+Rewrite using `[(pkLaws (K := K)).1]`. Introduce `i j hi hj`. Establish `h2 : (((q'.out * q.out⁻¹ : Gam K (2 + 2)) : G1 K (2 + 2)) : AdelicGLn.AdelicGL K (2 + 2)) = AdelicGLn.diagonal K (2 + 2) (γ q' * (γ q)⁻¹)`. Rewrite using `[map_mul, map_inv, hγ, hγ]`. Both sides reduce to the same expression.
+
+Rewrite using `[h2]`. Establish `h3` using `AdelicGLn.diagonal_apply K (2 + 2) (γ q' * (γ q)⁻¹) i j`. Rewrite `h3` using `[h1 i j hi hj, map_zero]`. Conclude with `h3`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.locFin :
     ∀ {K : Type} [Field K] [NumberField K] (C : Set (G1 K (2 + 2))) (T : ℝ), IsCompact C → {q : Cos K | ∃ g ∈ C, T ≤ HH ((q.out : G1 K (2 + 2)) * g)}.Finite := by
   intro K _ _ C T hC

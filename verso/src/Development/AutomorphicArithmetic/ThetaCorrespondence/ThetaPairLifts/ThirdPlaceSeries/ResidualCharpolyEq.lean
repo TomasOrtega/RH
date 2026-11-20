@@ -37,6 +37,15 @@ section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 NumberField IsDedekindDomain Polynomial GlobalTheory.EtaJoin GlobalTheory.CoefDuty
 open GlobalTheory.IndefiniteRowSideFullHecke.CongruenceModuleMatrices
 namespace GlobalTheory.AbsoluteIrreducibilityOfTraceSpan
+/- English proof (translation)
+Establish `hG3` using `(_root_.UpperTheory.GalS.g3' ((h32 i).2.2 rep hr).2.2.1).2 x π g`. Take `⟨ex, hex⟩` from `hx`. Take `⟨e0, he0⟩` from `h0`. Establish `dx` using `charpoly_of_decomp D i rep (fun _ => ρx) x ⟨ex, hex⟩ g`. Establish `d0` using `charpoly_of_decomp D i (fun _ => r0) (fun _ => ρ0) π ⟨e0, he0⟩ g`.
+
+Establish `hc` using `charpoly_eq_of_isHeckeGalois hC D i rep hr π r0 hr0 g`. Use `set res := IsLocalRing.residue (D.nd.O i)`. Use `set P : (D.nd.O i)[X] := ∏ c ∈ Finset.Icc 1 D.R.t, (X - C ((chiU D.nd i c g : (D.nd.O i)ˣ) : D.nd.O i))`. Establish `hP : (P.map res) ≠ 0`. Apply `Polynomial.Monic.ne_zero` to reduce the goal to its premises.
+
+Apply `Polynomial.Monic.map` to reduce the goal to its premises. Conclude with `Polynomial.monic_prod_of_monic _ _ fun c _ => Polynomial.monic_X_sub_C _`. Establish `e1 : ((mat ρx g).map res).charpoly * P.map res = ((mat ρ0 g).map res).charpoly * P.map res`. Rewrite using `[Matrix.charpoly_map, Matrix.charpoly_map, ← Polynomial.map_mul, ← Polynomial.map_mul]`. Establish `ex' : (rO D.nd i rep x g).charpoly = (mat ρx g).charpoly * P` using `dx`.
+
+Establish `e0' : (mat r0 g).charpoly = (mat ρ0 g).charpoly * P` using `d0`. Rewrite using `[← ex', ← e0', ← hc, ← Matrix.charpoly_map, ← Matrix.charpoly_map]`. Conclude with `hG3`. Conclude with `mul_right_cancel₀ hP e1`.
+-/
 theorem residual_charpoly_eq_alt_alt (hC : GlobalTheory.TwSys.Cheb) (D : D7) (h32 : _root_.Formalism.MainNotions.SumRepresentations.provisionFortyOne D) (i : D.nd.Loc)
     (rep : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (hr : GoodR D.nd i rep)
     (x π : D.nd.X i) (ρx ρ0 : GE D.nd →* GL (Fin D.R.r) (D.nd.O i))

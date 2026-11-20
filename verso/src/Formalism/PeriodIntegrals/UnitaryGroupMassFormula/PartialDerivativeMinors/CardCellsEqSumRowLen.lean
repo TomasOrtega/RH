@@ -10,6 +10,13 @@ namespace PI.EntAtD.W
 
 open PI.EntAtD Formalism.BasicNotions Formalism.MainNotions.G
 
+/- English proof (translation)
+Rewrite using `[Finset.card_eq_sum_card_fiberwise (f := Prod.fst) (t := Finset.range n)]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[YoungDiagram.rowLen_eq_card]`. Use `first`. Consider the case `rfl`.
+
+Consider the case `(simp only [YoungDiagram.row]; congr 1)`. Introduce `x hx`. Simplify using `only [Finset.mem_coe, Finset.mem_range] at hx ⊢`. Assume the negation of the conclusion as `hc`. Establish `h0` using `h x.1 (not_lt.mp hc)`.
+
+Establish `hx' : (x.1, x.2) ∈ α` using `hx`. Rewrite `hx'` using `[YoungDiagram.mem_iff_lt_rowLen]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem card_cells_eq_sum_rowLen (α : YoungDiagram) (n : ℕ) (h : ∀ r, n ≤ r → α.rowLen r = 0) :
     α.cells.card = ∑ r ∈ Finset.range n, α.rowLen r := by
   rw [Finset.card_eq_sum_card_fiberwise (f := Prod.fst) (t := Finset.range n)]
@@ -26,6 +33,19 @@ theorem card_cells_eq_sum_rowLen (α : YoungDiagram) (n : ℕ) (h : ∀ r, n ≤
     rw [YoungDiagram.mem_iff_lt_rowLen] at hx'
     omega
 
+/- English proof (translation)
+Establish `hN0 : 0 < D.R.N i` using `by omega`. Establish `hN1 : 1 < D.R.N i` using `by omega`. Establish `hr : ∀ z r, r < D.R.N i → DV.nuRow D u (i + 1) (tauPl D z) r = ((nu z).rowLen r : ℝ)`. Introduce `z r hr'`. Rewrite using `[hrow z r, if_pos hr']`.
+
+Establish `hz : ∀ z r, D.R.N i ≤ r → (nu z).rowLen r = 0`. Introduce `z r hr'`. Establish `hz0` using `hrow z r`. Rewrite `hz0` using `[if_neg (by omega)]`. Conclude with `hz0` after adjusting the coercions.
+
+Establish `hsum` using `card_cells_eq_sum_rowLen (nu (false, t)) (D.R.N i) (hz _)`. Establish `habs : nuAbs D u (i + 1) (tauPl D (false, t)) = ((nu (false, t)).cells.card : ℝ)`. Rewrite using `[hsum]`. Unfold `nuAbs`. Rewrite using `[Nat.add_sub_cancel]`.
+
+Use `push_cast`. Use `Finset.sum_congr rfl fun r hr' => ?_` and prove the remaining obligations. Conclude with `hr _ r (Finset.mem_range.mp hr')`. Establish `h0le : (nu (false, t)).rowLen 0 ≤ (nu (false, t)).cells.card`. Rewrite using `[hsum]`.
+
+Conclude with `Finset.single_le_sum (f := fun r => (nu (false, t)).rowLen r) (fun _ _ => Nat.zero_le _) (Finset.mem_range.mpr hN0)`. Unfold `cPr ctD`. Rewrite using `[habs, hr (false, t) 0 hN0, hr (false, t) 1 hN1, hr (true, t) 0 hN0]`. Move the coercions through the operations in `[Nat.cast_sub h0le]`. Establish `hm1` using `min_le_left ((nu (false, t)).rowLen 0 : ℝ) ((nu (true, t)).rowLen 0 : ℝ)`.
+
+Establish `hm2` using `min_le_right ((nu (false, t)).rowLen 0 : ℝ) ((nu (true, t)).rowLen 0 : ℝ)`. Establish `ha1 : (0 : ℝ) ≤ ((nu (false, t)).rowLen 1 : ℝ)` using `Nat.cast_nonneg _`. Apply the tactic sequence `split_ifs <;> linarith`.
+-/
 theorem cPr_le_ctD (D : D7) (u : D.what₂.Word) (i : ℕ) (nu : Pl D → YoungDiagram)
     (hrow : ∀ z r, (((nu z).rowLen r : ℕ) : ℝ) =
       if r < D.R.N i then DV.nuRow D u (i + 1) (tauPl D z) r else 0)
@@ -62,6 +82,15 @@ theorem cPr_le_ctD (D : D7) (u : D.what₂.Word) (i : ℕ) (nu : Pl D → YoungD
   have ha1 : (0 : ℝ) ≤ ((nu (false, t)).rowLen 1 : ℝ) := Nat.cast_nonneg _
   split_ifs <;> linarith
 
+/- English proof (translation)
+Unfold `PI.EntAtD.EntAtD`. Introduce `D Dx nu hrow hcol Th hTh u μ w hLF hram i hi L L'`. Establish `hS` using `hTh u μ w hLF hram i hi L L'`. Establish `hc` using `h (HH D) (D.R.N i) (D.R.N (i + 1)) (D.what₂.places.resChar w) (nu u i) (Th u μ w i L L') hS`. Establish `hN : 2 ≤ D.R.N i` using `by show 2 ≤ D.R.k + i * (D.R.t + 1)`.
+
+Establish `h2` using `D.R.two_le_m`. Establish `h3` using `D.R.m_add_three_le_k`. Conclude with `le_trans (by omega : 2 ≤ D.R.k) (Nat.le_add_right _ _)`. Establish `hle : ∑ t : HH D, (cPr (nu u i (false, t)) (nu u i (true, t)) : ℝ) ≤ ∑ t : HH D, ctD D u (i + 1) t` using `Finset.sum_le_sum fun t _ => cPr_le_ctD D u i (nu u i) (hrow u i hi) hN t`. Establish `hp : (1 : ℝ) ≤ (D.what₂.places.resChar w : ℝ)`.
+
+Establish `hpr : (D.what₂.places.resChar w).Prime` using `Fact.out`. Conclude with `hpr.one_lt.le` after adjusting the coercions. Unfold `KvalGe at hc ⊢`. Introduce `I m`. Use `(hc I m).trans ?_` and prove the remaining obligations.
+
+Apply `Real.rpow_le_rpow_of_exponent_le hp` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem entAtD_of_core (h : CoreBound) : PI.EntAtD.EntAtD := by
   unfold PI.EntAtD.EntAtD
   intro D Dx nu hrow hcol Th hTh u μ w hLF hram i hi L L'

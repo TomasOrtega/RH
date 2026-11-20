@@ -24,6 +24,11 @@ def genSums (F : Type) {E : Type} [Field F] [Field E] [Algebra F E] {k m : ℕ}
     funext i
     simp [TensorProduct.tmul_neg, Finset.sum_neg_distrib]
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).1 hx`. Use `⟨fun j => c j • s, fun j => zsmul_mem hs _, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, TensorProduct.sum_tmul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[TensorProduct.smul_tmul]`.
+-/
 theorem tmul_mem_genSums {F E : Type} [Field F] [Field E] [Algebra F E] {k m : ℕ}
     (l : Fin m → Fin k → E) (R : Type) [CommRing R] [Algebra F R] (S₂ : Subring R)
     {x : Fin k → E} (hx : x ∈ Submodule.span ℤ (Set.range l)) {s : R} (hs : s ∈ S₂) :
@@ -35,6 +40,11 @@ theorem tmul_mem_genSums {F E : Type} [Field F] [Field E] [Algebra F E] {k m : �
   refine Finset.sum_congr rfl fun j _ => ?_
   rw [TensorProduct.smul_tmul]
 
+/- English proof (translation)
+Establish `: Module.Finite ℤ Λ` using `Module.Finite.trans (𝓞 E) Λ`. Take `⟨m, s, hs⟩` from `Module.Finite.exists_fin (R := ℤ) (M := Λ)`. Use `⟨m, fun j => (s j : Fin k → E), fun j => (s j).2, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h : (⟨x, hx⟩ : Λ) ∈ Submodule.span ℤ (Set.range s)` using `hs ▸ Submodule.mem_top`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).1 h`.
+
+Use `(Submodule.mem_span_range_iff_exists_fun ℤ).2 ⟨c, ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val hc` as an intermediate fact. Simplify using `using this`.
+-/
 theorem exists_int_generators {E : Type} [Field E] [NumberField E] {k : ℕ}
     (Λ : Submodule (𝓞 E) (Fin k → E)) [Module.Finite (𝓞 E) Λ] :
     ∃ (m : ℕ) (l : Fin m → Fin k → E), (∀ j, l j ∈ Λ) ∧
@@ -48,6 +58,25 @@ theorem exists_int_generators {E : Type} [Field E] [NumberField E] {k : ℕ}
   have := congrArg Subtype.val hc
   simpa using this
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ k Λ hΛ`. Take `⟨m, l, hl, hgen⟩` from `exists_int_generators Λ`. Use `⟨m, l, hl, fun R _ _ S₂ u => ⟨fun hu => ?_, ?_⟩⟩` and prove the remaining obligations. Use `show u ∈ genSums F l R S₂`. Establish `hst : ∀ s ∈ tensInt (F` using `F) R (intOE E) S₂, ∀ v ∈ genSums F l R S₂, s • v ∈ genSums F l R S₂ := by`.
+
+Introduce `s hs`. Proceed by induction on `hs using Subring.closure_induction with`. Consider the case `mem x hx`. Introduce and unpack `_ ⟨t, ht, rfl⟩`. Break down `hx with ⟨⟨_, a, rfl⟩, rfl⟩ | ⟨y, rfl⟩` into its components or cases.
+
+Establish `e : ((algebraMap (𝓞 E) E a) ⊗ₜ[F] (1 : R)) • (fun i => ∑ j, l j i ⊗ₜ[F] t j) = ∑ j, fun i => (a • l j) i ⊗ₜ[F] t j`. Use function extensionality and compare the values at `i`. Simplify using `[Finset.mul_sum, Algebra.smul_def]`. Rewrite using `[show ((algebraMap (𝓞 E) E a) ⊗ₜ[F] (1 : R)) • (fun i => ∑ j, l j i ⊗ₜ[F] t j) = ∑ j, fun i => (a • l j) i ⊗ₜ[F] t j from e]`. Conclude with `sum_mem fun j _ => tmul_mem_genSums l R S₂ (hgen _ (Λ.smul_mem a (hl j))) (ht j)`.
+
+Use `⟨fun j => (y : R) * t j, fun j => mul_mem y.2 (ht j), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[Finset.mul_sum]`. Consider the case `zero => intro v _`. Rewrite using `[zero_smul]`.
+
+Conclude with `zero_mem _`. Consider the case `one => intro v hv`. Rewrite using `[one_smul]` and apply the resulting hypothesis. Consider the case `add x y _ _ hx hy => intro v hv`. Rewrite using `[add_smul]`.
+
+Conclude with `add_mem (hx v hv) (hy v hv)`. Consider the case `neg x _ hx => intro v hv`. Rewrite using `[neg_smul]`. Conclude with `neg_mem (hx v hv)`. Consider the case `mul x y _ _ hx hy => intro v hv`.
+
+Rewrite using `[mul_smul]`. Conclude with `hx _ (hy v hv)`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨y, hy, rfl⟩` from `hx`.
+
+Conclude with `tmul_mem_genSums l R S₂ (hgen y hy) (one_mem _)`. Consider the case `zero => exact zero_mem _`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `smul a x _ hx => exact hst a a.2 x hx`. Introduce and unpack `⟨t, ht, rfl⟩`.
+
+Establish `e : (fun i => ∑ j, l j i ⊗ₜ[F] t j) = ∑ j, (⟨(1 : E) ⊗ₜ[F] t j, Subring.subset_closure (Or.inr ⟨⟨t j, ht j⟩, rfl⟩)⟩ : tensInt (F` using `F) R (intOE E) S₂) • (fun i => inclE (F := F) R (l j i)) := by`. Use function extensionality and compare the values at `i`. Simplify using `[inclE, Subring.smul_def]`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨l j, hl j, rfl⟩)`.
+-/
 theorem exists_generators_mem_latS_iff :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (k : ℕ) (Λ : Submodule (𝓞 E) (Fin k → E)), Module.Finite (𝓞 E) Λ → ∃ (m : ℕ) (l : Fin m → Fin k → E), (∀ j, l j ∈ Λ) ∧ ∀ (R : Type) [CommRing R] [Algebra F R] (S₂ : Subring R) (u : Fin k → E ⊗[F] R), u ∈ latS (F := F) R (tensInt (F := F) R (intOE E) S₂) Λ ↔ ∃ t : Fin m → R, (∀ j, t j ∈ S₂) ∧ u = fun i => ∑ j, l j i ⊗ₜ[F] t j := by
   intro F E _ _ _ _ _ k Λ hΛ

@@ -22,10 +22,16 @@ def ResolutionSupBound.Statement : Prop :=
       ∀ z ∈ pts (coordIdeal ℤ d.x),
         ptNorm d.m (RingHom.id ℂ) n f z ≤ C * (n : ℝ) ^ ((D : ℝ) / 2) * resolutionVolumeL2Complex d n f
 
+/- English proof (translation)
+Simplify using `[ptNorm, MvPolynomial.map_id]`.
+-/
 theorem ptNorm_map_intCast (m : ConeMetric ℂ (Ix κ)) (n : ℕ) (f : MvPolynomial (Ix κ) ℤ) (z : Ix κ → ℂ) :
     ptNorm m (RingHom.id ℂ) n (map (Int.castRingHom ℂ) f) z = ptNorm m (Int.castRingHom ℂ) n f z := by
   simp [ptNorm, MvPolynomial.map_id]
 
+/- English proof (translation)
+Introduce `D Ω _ _ κ _ d`. Take `⟨C, hC⟩` from `h D Ω κ d`. Use `⟨C, fun n hn f hf z hz => ?_⟩` and prove the remaining obligations. Use `hC n hn (map (Int.castRingHom ℂ) f) (hf.map _) z hz` as an intermediate fact. Simplify `this` using `only [resolutionVolumeL2Complex, resolutionVolumeL2, ptNorm_map_intCast]`.
+-/
 theorem ResolutionSupBound.toInt (h : ResolutionSupBound.Statement) :
     ∀ (D : ℕ) (Ω : Type) [Field Ω] [CharZero Ω] (κ : Type) [Fintype κ] (d : HSMDatum D Ω κ),
       ∃ C : ℝ, ∀ n : ℕ, 1 ≤ n → ∀ f : MvPolynomial (Ix κ) ℤ, f.IsHomogeneous n →

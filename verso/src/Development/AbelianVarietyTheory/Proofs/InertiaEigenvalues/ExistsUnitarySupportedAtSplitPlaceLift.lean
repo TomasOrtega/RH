@@ -14,12 +14,20 @@ namespace GlobalTheory.DownLift.SplitCoef
 
 open GlobalTheory.ParahoricLift GlobalTheory.LevSplit Formalism.L2.NTheta
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `congrArg φ (congrFun (congrFun h i) j)` as an intermediate fact. Simplify `this` using `only [Matrix.smul_apply, smul_eq_mul, map_mul, hp, one_mul, Matrix.map_apply]`.
+-/
 theorem lift_map_eq_of_smul {A B : Type} [CommRing A] [CommRing B] {m n : ℕ} (φ : A →+* B) (p : A) (hp : φ p = 1)
     (M M' : Matrix (Fin m) (Fin n) A) (h : p • M = p • M') : M.map φ = M'.map φ := by
   ext i j
   have := congrArg φ (congrFun (congrFun h i) j)
   simpa only [Matrix.smul_apply, smul_eq_mul, map_mul, hp, one_mul, Matrix.map_apply] using this
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `h2` using `congrFun (congrFun h i) j`. Simplify using `only [Matrix.map_apply] at h2`. Establish `h3 : φ (M i j - M' i j) = 0` using `by rw [map_sub, h2, sub_self]`. Rewrite `h3` using `[hker, mul_sub, sub_eq_zero]`.
+
+Simplify `h3` using `only [Matrix.smul_apply, smul_eq_mul]`.
+-/
 theorem lift_smul_eq_of_map {A B : Type} [CommRing A] [CommRing B] {m n : ℕ} (φ : A →+* B) (p : A)
     (hker : ∀ z, φ z = 0 ↔ p * z = 0) (M M' : Matrix (Fin m) (Fin n) A) (h : M.map φ = M'.map φ) : p • M = p • M' := by
   ext i j
@@ -29,14 +37,23 @@ theorem lift_smul_eq_of_map {A B : Type} [CommRing A] [CommRing B] {m n : ℕ} (
   rw [hker, mul_sub, sub_eq_zero] at h3
   simpa only [Matrix.smul_apply, smul_eq_mul] using h3
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem lift_smul_conj {A : Type} [CommRing A] {n : ℕ} (β : GL (Fin n) A) (p : A) (M : Matrix (Fin n) (Fin n) A) :
     p • (β.1 * M * (β⁻¹).1) = β.1 * (p • M) * (β⁻¹).1 := by
   rw [Matrix.mul_smul, Matrix.smul_mul]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem lift_smul_conj_inv {A : Type} [CommRing A] {n : ℕ} (β : GL (Fin n) A) (p : A) (M : Matrix (Fin n) (Fin n) A) :
     p • ((β⁻¹).1 * M * β.1) = (β⁻¹).1 * (p • M) * β.1 := by
   rw [Matrix.mul_smul, Matrix.smul_mul]
 
+/- English proof (translation)
+Establish `e3 : (β.1 * M * (β⁻¹).1) * (β.1 * M' * (β⁻¹).1) = β.1 * (M * M') * (β⁻¹).1`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (β⁻¹).1 β.1, Units.inv_mul, Matrix.one_mul]`. Rewrite using `[e3, lift_smul_conj, h, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Units.mul_inv]`.
+-/
 theorem lift_conj_mul_smul {A : Type} [CommRing A] {n : ℕ} (β : GL (Fin n) A) (p : A) (M M' : Matrix (Fin n) (Fin n) A)
     (h : p • (M * M') = p • (1 : Matrix (Fin n) (Fin n) A)) :
     p • ((β.1 * M * (β⁻¹).1) * (β.1 * M' * (β⁻¹).1)) = p • (1 : Matrix (Fin n) (Fin n) A) := by
@@ -45,12 +62,18 @@ theorem lift_conj_mul_smul {A : Type} [CommRing A] {n : ℕ} (β : GL (Fin n) A)
     rw [← Matrix.mul_assoc (β⁻¹).1 β.1, Units.inv_mul, Matrix.one_mul]
   rw [e3, lift_smul_conj, h, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Units.mul_inv]
 
+/- English proof (translation)
+Rewrite using `[lift_smul_conj_inv, h, lift_smul_conj]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Units.inv_mul, Matrix.mul_one, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`.
+-/
 theorem lift_conj_part {A : Type} [CommRing A] {n : ℕ} (β : GL (Fin n) A) (p : A) (g M : Matrix (Fin n) (Fin n) A)
     (h : p • g = p • (β.1 * M * (β⁻¹).1)) : p • ((β⁻¹).1 * g * β.1) = p • M := by
   rw [lift_smul_conj_inv, h, lift_smul_conj]
   simp only [Matrix.mul_assoc]
   rw [Units.inv_mul, Matrix.mul_one, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `h0 : φ (1 - toEAf D e) = 0`. Rewrite using `[hker, mul_sub, mul_one, he, sub_self]`. Rewrite `h0` using `[map_sub, map_one, sub_eq_zero]`. Conclude with `h0.symm`.
+-/
 theorem lift_chart_idem {D : D7} {e : AE D} {v : HeightOneSpectrum (𝓞 D.host.F)} {φ : Formalism.IndefR.Lev.EAf D →+* Fv D.host.F v}
     (hker : ∀ z, φ z = 0 ↔ toEAf D e * z = 0) (he : toEAf D e * toEAf D e = toEAf D e) : φ (toEAf D e) = 1 := by
   have h0 : φ (1 - toEAf D e) = 0 := by
@@ -58,6 +81,9 @@ theorem lift_chart_idem {D : D7} {e : AE D} {v : HeightOneSpectrum (𝓞 D.host.
   rw [map_sub, map_one, sub_eq_zero] at h0
   exact h0.symm
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `hsurj (o : Fv D.host.F v)`. Use `⟨⟨toEAf D e * z, (hint z).2 (hz ▸ o.2)⟩, ?_⟩` and prove the remaining obligations. Use `show φ (toEAf D e * z) = _`. Rewrite using `[map_mul, h1, one_mul, hz]`.
+-/
 theorem lift_chart_int {D : D7} {e : AE D} {v : HeightOneSpectrum (𝓞 D.host.F)} {φ : Formalism.IndefR.Lev.EAf D →+* Fv D.host.F v}
     (hsurj : Function.Surjective φ) (h1 : φ (toEAf D e) = 1)
     (hint : ∀ z, toEAf D e * z ∈ Formalism.L2.Herm.intAf D.host.F D.host.E ↔ φ z ∈ v.adicCompletionIntegers D.host.F)
@@ -67,6 +93,9 @@ theorem lift_chart_int {D : D7} {e : AE D} {v : HeightOneSpectrum (𝓞 D.host.F
   show φ (toEAf D e * z) = _
   rw [map_mul, h1, one_mul, hz]
 
+/- English proof (translation)
+Unfold `Formalism.IndefR.Fin.LevelGroupLemmas.Lat.frG`. Rewrite using `[map_one, mul_one, inv_mul_cancel]`.
+-/
 theorem lift_frG_one {D : D7} (T : HSp D) (βT : GL (Fin T.rank) (Formalism.IndefR.Lev.EAf D)) :
     Formalism.IndefR.Fin.LevelGroupLemmas.Lat.frG T βT 1 = 1 := by
   unfold Formalism.IndefR.Fin.LevelGroupLemmas.Lat.frG
@@ -76,6 +105,9 @@ section Gen
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
+/- English proof (translation)
+Substitute `hf` using the available equality. Conclude with `(mem_St_iff β Λ hβ g).2 (stab_of_part _ _ _ hΛ p.2 hq g hg hs _ _ (frame_mulVec β Λ hβ Y) (frame_mulVec β Λ hβ Y') hmm hY)`.
+-/
 theorem mem_St_of_part_inv (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E) (Λ : Submodule (𝓞 E) (Fin n → E))
     (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (hβ : IsFrame β Λ) (hΛ : HatSelfDual σ J Λ)
     (p : Formalism.L2.Herm.intAf F E) (hq : Formalism.UG.sigR σ (Formalism.L2.Herm.Af F) p ∈ Formalism.L2.Herm.intAf F E)
@@ -94,6 +126,27 @@ end Gen
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D S T βS βT e PP v φ ι he hL Λ N hB h`. Take `⟨hsurj, hker, hint, hres⟩` from `hL`. Use `PP.isPrime` as an intermediate fact. Take `⟨p, hp, hpp, hres1⟩` from `exists_idem_int he`. Establish `hpe : toEAf D e = (p : Formalism.IndefR.Lev.EAf D)` using `hp.symm`.
+
+Establish `hpp' : toEAf D e * toEAf D e = toEAf D e` using `by rw [hpe]; exact congrArg Subtype.val hpp`. Establish `hp1 : φ (p : Formalism.IndefR.Lev.EAf D) = 1` using `hpe ▸ lift_chart_idem hker hpp'`. Establish `hker' : ∀ z, φ z = 0 ↔ (p : Formalism.IndefR.Lev.EAf D) * z = 0` using `fun z => hpe ▸ hker z`. Use `choose lf hlf using lift_chart_int hsurj (hpe ▸ hp1) hint`. Use `set Y : Matrix (Fin S.rank) (Fin S.rank) (Formalism.L2.Herm.intAf D.host.F D.host.E) := h.val.map lf with hYdef`.
+
+Use `set Y' : Matrix (Fin S.rank) (Fin S.rank) (Formalism.L2.Herm.intAf D.host.F D.host.E) := (h⁻¹).val.map lf with hY'def`. Establish `hY : (Y.map (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype).map φ = h.val.map (algebraMap (GlobalTheory.SplitHecke.Ov D v) (Fv D.host.F v))` using `Matrix.ext fun i j => hlf _`. Establish `hY' : (Y'.map (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype).map φ = (h⁻¹).val.map (algebraMap (GlobalTheory.SplitHecke.Ov D v) (Fv D.host.F v))` using `Matrix.ext fun i j => hlf _`. Establish `hYY : (p : Formalism.IndefR.Lev.EAf D) • (Y.map (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype * Y'.map (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype) = (p : Formalism.IndefR.Lev.EAf D) • 1`. Use `lift_smul_eq_of_map φ _ hker' _ _ ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.map_mul, hY, hY', ← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hmm` using `lift_conj_mul_smul βS _ _ _ hYY`. Establish `hmm'` using `hmm`. Rewrite `hmm'` using `[hp]`. Take `⟨κ, hs, hκ⟩` from `split_lift_fin S he.1 _ _ hmm'`.
+
+Establish `hP : IsPrimeIdem PP e (e + cA D e)` using `Or.inl ⟨he, rfl⟩`. Take `⟨-, -, T3, -⟩` from `GlobalTheory.IdemSupport.supported_group_and_prime_idempotents S`. Establish `hsf` using `supp_fin S (f := e + cA D e) hs`. Establish `hκ' : (p : Formalism.IndefR.Lev.EAf D) • (finE S κ).1 = (p : Formalism.IndefR.Lev.EAf D) • (βS.1 * Y.map (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype * (βS⁻¹).1)`. Rewrite using `[hp]`.
+
+Conclude with `hκ`. Establish `hf : finSw D (e + cA D e) = p + Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F) p`. Rewrite using `[RingHom.map_add, finSw_cA, hp]`. Establish `hSt : finE S κ ∈ St βS` using `mem_St_of_part_inv D.sp.cm.sig S.gram Λ βS hB.1 (hatL_selfDual hB) p (sigR_int p.2) Y Y' hmm (finE S κ) (finE_mem_UA S κ) _ hf hsf hκ'`. Use `⟨κ, hs, (T3 PP e _ hP).2.2.1 κ hs, hSt, ?_, fun P' h1 h2 => ?_, fun x => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[redFn_of_smul_eq βS PP _ hSt p hres1 Y hκ']`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply]`. Conclude with `hres (lf (h.val i j)) (h.val i j) (hlf _).symm`. Take `⟨y, y', hy, hyy, a1, a2⟩` from `exists_sep h1 fun h => h2 (isConjPl_symm h)`.
+
+Take `⟨w, hw⟩` from `idem_div_int hP y y' hyy a1 a2`. Use `redFn_eq_one βS P' _ hSt (w * oToS D.host.F D.host.E y) ?_ ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_mul, resS_oToS, Ideal.Quotient.eq_zero_iff_mem.2 hy, mul_zero]`. Establish `e1 : ((w * oToS D.host.F D.host.E y : Formalism.L2.Herm.intAf D.host.F D.host.E) : Formalism.IndefR.Lev.EAf D) = finSw D (e + cA D e)` using `hw`. Rewrite using `[e1]`.
+
+Conclude with `hsf`. Establish `hG : (Formalism.IndefR.Fin.LevelGroupLemmas.Lat.frG S βS κ).val.map φ = h.val.map (algebraMap (GlobalTheory.SplitHecke.Ov D v) (Fv D.host.F v))`. Rewrite using `[← hY]`. Use `lift_map_eq_of_smul φ _ hp1 _ _ ?_` and prove the remaining obligations. Unfold `Formalism.IndefR.Fin.LevelGroupLemmas.Lat.frG`.
+
+Rewrite using `[Units.val_mul, Units.val_mul]`. Conclude with `lift_conj_part βS _ _ _ hκ'`. Unfold `rdAdj`. Rewrite using `[Formalism.IndefR.Fin.LevelGroupLemmas.Lat.frMapAdj_actO, lift_frG_one, inv_one, Units.val_one, Matrix.mul_one, Matrix.map_mul, hG]`.
+-/
 theorem exists_supp_lift_adj : ∀ (D : D7) (S T : HSp D) (βS : GL (Fin S.rank) (Formalism.IndefR.Lev.EAf D)) (βT : GL (Fin T.rank) (Formalism.IndefR.Lev.EAf D)) (e : AE D) (PP : Pl D.host.E) (v : HeightOneSpectrum (𝓞 D.host.F)) (φ : Formalism.IndefR.Lev.EAf D →+* Fv D.host.F v) (ι : kP PP ≃+* IsLocalRing.ResidueField (GlobalTheory.SplitHecke.Ov D v)), Formalism.L2.NTheta.IsIdemAt e PP → LevChart e PP v φ ι → ∀ (Λ : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (N : ℕ), IsBaseFrame S βS Λ N → ∀ h : GL (Fin S.rank) (GlobalTheory.SplitHecke.Ov D v), ∃ κ : GA D S, SuppAt e S κ ∧ κ ∈ GfC S ∧ finE S κ ∈ St βS ∧ (redFn βS PP (finE S κ)).val.map ι = h.val.map (IsLocalRing.residue (GlobalTheory.SplitHecke.Ov D v)) ∧ (∀ PP', PP' ≠ PP → ¬ Formalism.IndefR.Lev.IsConjPl PP PP' → redFn βS PP' (finE S κ) = 1) ∧ ∀ x : WO S T, rdAdj S T βS βT φ (actO S T κ 1 x) = h.val.map (algebraMap (GlobalTheory.SplitHecke.Ov D v) (Fv D.host.F v)) * rdAdj S T βS βT φ x := by
   intro D S T βS βT e PP v φ ι he hL Λ N hB h
   obtain ⟨hsurj, hker, hint, hres⟩ := hL

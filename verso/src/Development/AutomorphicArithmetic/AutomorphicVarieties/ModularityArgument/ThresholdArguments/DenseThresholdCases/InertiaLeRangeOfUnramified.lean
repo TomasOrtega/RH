@@ -11,6 +11,17 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 namespace GlobalTheory.QuadraticCharacterUnramified
 end GlobalTheory.QuadraticCharacterUnramified
+/- English proof (translation)
+Introduce `N F Ω _ _ _ _ _ K _ _ _ _ _ _ h2 η hq u A hA hu`. Establish `: Fact (Nat.Prime 2)` using `⟨Nat.prime_two⟩`. Take `⟨ι⟩ : Nonempty (Qbar 2 ≃+* ℂ)` from `GlobalTheory.nonempty_padicAlgCl_ringEquiv_complex 2`. Take `⟨art, ha⟩` from `N.aut.art F Ω`. Take `⟨δ, hδc, hL⟩` from `ha.exists_isLAdicOf ι (isAlgPos_zero_of_orderDvd two_pos (GlobalTheory.QuadraticCharacterUnramified.orderDvd_two hq))`.
+
+Take `⟨ε, hεc, -, hε, hεu⟩` from `UpperTheory.exists_quadratic_sign_character F K Ω 2 h2`. Establish `hE : ∀ v, η.UnrAt v → CharEig ι δ v (η.val v : ℂˣ)` using `fun v hv B hB => ⟨(hL.unr_iff ha (Or.inr rfl) hB).2 hv, fun σ hσ => by`. Rewrite using `[map_inv, Units.val_inv_eq_inv_val, hL.frob_unr ha (Or.inr rfl) hv hB hσ, inv_inv, RingEquiv.apply_symm_apply]⟩`. Establish `hS` using `Filter.eventually_cofinite.1 ((GlobalTheory.QuadraticCharacterUnramified.good (K := K) hq).and hεu)`. Establish `key` using `GlobalTheory.Published.ChebotarevDegreeOne.eq_of_frob (F := F) (Ω := Ω) GlobalTheory.Published.chebotarevDegreeOne' hS (f := fun s => δ s) (f' := fun s => ε s) hδc hεc fun v hv _ B hB σ hσ => by`.
+
+Take `⟨⟨w, hwv, hu', hval⟩, hεv⟩` from `not_not.1 hv`. Substitute `hwv` using the available equality. Establish `h1` using `(hE _ hu' B hB).2 σ hσ`. Establish `h3` using `(UpperTheory.frobenius_sign_compatibility F K Ω 2 ι ε hε w hεv B hB).2 σ hσ`. Establish `e : δ σ⁻¹ = ε σ⁻¹` using `Units.ext (ι.injective (by rw [h1, h3, hval]))`.
+
+Rewrite `e` using `[map_inv, map_inv, inv_inj]`. Then use the resulting hypothesis. Introduce `s hs`. Establish `h1 : δ s = 1` using `(hL.unr_iff ha (Or.inr rfl) hA).2 hu s hs`. Establish `h3 : ε s = 1`. Establish `e : δ s = ε s` using `congrFun key s`.
+
+Rewrite using `[← e, h1]`. Conclude with `(hε.1 s).1 h3`.
+-/
 theorem _root_.GlobalTheory.T.inertia_le_range_of_unramified_alt : _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis → ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (K : Type) [Field K] [NumberField K] [Algebra F K] [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure K Ω], Module.finrank F K = 2 → ∀ η : HChar F, IsQuadCharOf K η → ∀ (u : HeightOneSpectrum (𝓞 F)) (A : ValuationSubring Ω), IsPlaceOver A u → η.UnrAt u → Ine (F := F) A ≤ (res F Ω K).range := by
   intro N F Ω _ _ _ _ _ K _ _ _ _ _ _ h2 η hq u A hA hu
   have : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩

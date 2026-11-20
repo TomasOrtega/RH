@@ -21,6 +21,9 @@ def NoSplit (L : Type) [Field L] [NumberField L] [IsCMField L] (v : HeightOneSpe
 def SphAtG (π : NG.AutRep L n) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) : Prop :=
   π.SphAt v ∧ (NoSplit L v → GoodAU π)
 
+/- English proof (translation)
+Introduce `s σ' hσ'` and use `by obtain ⟨x, σ₀, σ, e, hσ, hx⟩ := GlobalTheory.AutQuot.locAt_of_split π s have h1 : x = GlobalTheory.LocLanglands.cls σ' := GlobalTheory.AutQuot.locAt_unique h ⟨σ₀, σ, e, hσ, hx⟩ ⟨s, σ', rfl, hσ', HEq.rfl⟩ have key : ∀ (w : HeightOneSpectrum (𝓞 L)) (e : σ₀.w = w) (y : GlobalTheo …`.
+-/
 theorem goodAU_iso {π π' : NG.AutRep L n} (h : π.Iso π') (hg : GoodAU π) : GoodAU π' := fun s σ' hσ' => by
   obtain ⟨x, σ₀, σ, e, hσ, hx⟩ := GlobalTheory.AutQuot.locAt_of_split π s
   have h1 : x = GlobalTheory.LocLanglands.cls σ' := GlobalTheory.AutQuot.locAt_unique h ⟨σ₀, σ, e, hσ, hx⟩ ⟨s, σ', rfl, hσ', HEq.rfl⟩
@@ -34,8 +37,14 @@ namespace Old
 
 def Sph0 (π : NG.AutRep L n) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) : Prop := π.SphAt v
 
+/- English proof (translation)
+The claim follows from `s.elim`.
+-/
 theorem sphGood (s : Sw) {π : NG.AutRep L n} {v} (_h : π.SphAt v) : NoSplit L v → GoodAU π := s.elim
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem sphMk {π : NG.AutRep L n} {v} (h : Sph0 π v) (_hg : NoSplit L v → GoodAU π) : π.SphAt v := h
 
 end Old
@@ -44,10 +53,19 @@ namespace New
 
 def Sph0 (π : NG.AutRep L n) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) : Prop := π.SphAt v
 
+/- English proof (translation)
+The claim follows from `h.2`.
+-/
 theorem sphGood (_ : TrivialCondition) {π : NG.AutRep L n} {v} (h : SphAtG π v) : NoSplit L v → GoodAU π := h.2
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h, hg⟩`.
+-/
 theorem sphMk {π : NG.AutRep L n} {v} (h : Sph0 π v) (hg : NoSplit L v → GoodAU π) : SphAtG π v := ⟨h, hg⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨GlobalTheory.AutQuot.sphAt_iso h hs.1, fun hv => goodAU_iso h (hs.2 hv)⟩`.
+-/
 theorem sphAt_iso {π π' : NG.AutRep L n} (h : π.Iso π') {v} (hs : SphAtG π v) : SphAtG π' v :=
   ⟨GlobalTheory.AutQuot.sphAt_iso h hs.1, fun hv => goodAU_iso h (hs.2 hv)⟩
 

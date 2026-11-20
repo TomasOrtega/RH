@@ -14,6 +14,11 @@ namespace FiniteSubfield
 
 variable {F E : FiniteSubfield} [Fact (F ≤ E)]
 
+/- English proof (translation)
+Set `g' : ℚ̄ ≃ₐ[F.1] ℚ̄` to `IntermediateField.fixingSubgroupEquiv F.1 ⟨g, hg⟩`. Establish `: IsScalarTower F.1 E.1 ℚ̄` using `IsScalarTower.of_algebraMap_eq fun _ ↦ rfl`. Establish `h` using `AlgEquiv.restrictNormal_commutes g' E.1 ⟨x, hx⟩`. Establish `e : g' x = g x` using `rfl`. Rewrite using `[← e, ← show algebraMap E.1 ℚ̄ ⟨x, hx⟩ = x from rfl, ← h]`.
+
+Conclude with `(g'.restrictNormal E.1 ⟨x, hx⟩).2`.
+-/
 theorem apply_mem_of_normal_field [Normal F.1 E.1] {g : ℚ̄ ≃ₐ[ℚ] ℚ̄} (hg : g ∈ F.1.fixingSubgroup)
     {x : ℚ̄} (hx : x ∈ E.1) : g x ∈ E.1 := by
   let g' : ℚ̄ ≃ₐ[F.1] ℚ̄ := IntermediateField.fixingSubgroupEquiv F.1 ⟨g, hg⟩
@@ -23,6 +28,11 @@ theorem apply_mem_of_normal_field [Normal F.1 E.1] {g : ℚ̄ ≃ₐ[ℚ] ℚ̄}
   rw [← e, ← show algebraMap E.1 ℚ̄ ⟨x, hx⟩ = x from rfl, ← h]
   exact (g'.restrictNormal E.1 ⟨x, hx⟩).2
 
+/- English proof (translation)
+Use `⟨fun l hl g ↦ ?_⟩` and prove the remaining obligations. Rewrite `hl`, the goal using `[Subgroup.mem_subgroupOf, IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`. Establish `hy : ((g⁻¹ : F.1.fixingSubgroup) : ℚ̄ ≃ₐ[ℚ] ℚ̄) x ∈ E.1` using `apply_mem_of_normal_field (g⁻¹ : F.1.fixingSubgroup).2 hx`. Express the relevant statement in the definitionally equal form `(g : ℚ̄ ≃ₐ[ℚ] ℚ̄) ((l : ℚ̄ ≃ₐ[ℚ] ℚ̄) (((g⁻¹ : F.1.fixingSubgroup) : ℚ̄ ≃ₐ[ℚ] ℚ̄) x)) = x`.
+
+Rewrite using `[hl _ hy, ← AlgEquiv.mul_apply, ← Subgroup.coe_mul, mul_inv_cancel]`. Both sides reduce to the same expression.
+-/
 theorem normal_subgroupOf_of_isGalois [IsGalois F.1 E.1] :
     (E.1.fixingSubgroup.subgroupOf F.1.fixingSubgroup).Normal := by
   refine ⟨fun l hl g ↦ ?_⟩
@@ -44,6 +54,9 @@ variable {K K' L L' : Type*} [Field K] [NumberField K] [Field K'] [NumberField K
 
 omit [NumberField K] [NumberField K'] in
 
+/- English proof (translation)
+The claim follows from `(AlgEquiv.ofBijective (Algebra.ofId K K') hK).toLinearEquiv.finrank_eq.symm.trans (Module.finrank_self K)`.
+-/
 theorem finrank_eq_one_of_bijective (hK : Function.Bijective (algebraMap K K')) :
     Module.finrank K K' = 1 :=
   (AlgEquiv.ofBijective (Algebra.ofId K K') hK).toLinearEquiv.finrank_eq.symm.trans
@@ -52,6 +65,9 @@ theorem finrank_eq_one_of_bijective (hK : Function.Bijective (algebraMap K K')) 
 omit [Algebra K L] [Algebra K L'] [Algebra K' L'] [Algebra L L'] [IsScalarTower K K' L']
   [IsScalarTower K L L'] in
 
+/- English proof (translation)
+Rewrite using `[ideleNorm_ideleEmbedding, finrank_eq_one_of_bijective hK, pow_one]`.
+-/
 theorem ideleNorm_ideleEmbedding_of_bijective (hK : Function.Bijective (algebraMap K K'))
     (x : IdeleGroup K) : ideleNorm K K' (ideleEmbedding K K' x) = x := by
   rw [ideleNorm_ideleEmbedding, finrank_eq_one_of_bijective hK, pow_one]
@@ -60,6 +76,9 @@ variable [IsGalois K L]
 
 omit [NumberField K] [NumberField K'] [NumberField L] [NumberField L'] in
 
+/- English proof (translation)
+Use `AlgEquiv.ext fun y ↦ ?_` and prove the remaining obligations. Take `⟨l, rfl⟩` from `hL.2 y`. Establish `e` using `AlgEquiv.restrictNormal_commutes (σ.restrictScalars K) L l`. Rewrite `e` using `[h, AlgEquiv.one_apply]`. Conclude with `e.symm`.
+-/
 theorem restrictNormal_restrictScalars_eq_one (hL : Function.Bijective (algebraMap L L'))
     {σ : L' ≃ₐ[K'] L'} (h : (σ.restrictScalars K).restrictNormal L = 1) : σ = 1 := by
   refine AlgEquiv.ext fun y ↦ ?_
@@ -70,6 +89,9 @@ theorem restrictNormal_restrictScalars_eq_one (hL : Function.Bijective (algebraM
 
 variable [IsMulCommutative (L ≃ₐ[K] L)] [IsGalois K' L'] [IsMulCommutative (L' ≃ₐ[K'] L')]
 
+/- English proof (translation)
+Rewrite using `[← ideleNorm_ideleEmbedding_of_bijective hK (diagonal K a), ← restrictNormal_restrictScalars_ideleSymbol (L := L) (L' := L'), ideleEmbedding_diagonal, hA]`. Conclude with `map_one ((AlgEquiv.restrictNormalHom (F := K) (K₁ := L') L).comp (restrictScalarsHom K))`.
+-/
 theorem ideleSymbol_diagonal_of_bijective (hK : Function.Bijective (algebraMap K K'))
     (hA : ∀ a : K'ˣ, ideleSymbol K' L' (diagonal K' a) = 1) (a : Kˣ) :
     ideleSymbol K L (diagonal K a) = 1 := by
@@ -77,6 +99,13 @@ theorem ideleSymbol_diagonal_of_bijective (hK : Function.Bijective (algebraMap K
     ← restrictNormal_restrictScalars_ideleSymbol (L := L) (L' := L'), ideleEmbedding_diagonal, hA]
   exact map_one ((AlgEquiv.restrictNormalHom (F := K) (K₁ := L') L).comp (restrictScalarsHom K))
 
+/- English proof (translation)
+Introduce `x hx`. Establish `h1 : ideleSymbol K' L' (ideleEmbedding K K' x) = 1`. Use `restrictNormal_restrictScalars_eq_one (K := K) hL ?_` and prove the remaining obligations. Rewrite using `[restrictNormal_restrictScalars_ideleSymbol, ideleNorm_ideleEmbedding_of_bijective hK]`. Conclude with `hx`.
+
+Establish `hmap : ((diagonal K').range ⊔ (ideleNorm K' L').range).map (ideleNorm K K') ≤ (diagonal K).range ⊔ (ideleNorm K L).range`. Rewrite using `[Subgroup.map_sup]`. Use `sup_le_sup ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨b, rfl⟩, rfl⟩`. Conclude with `⟨_, (ideleNorm_diagonal b).symm⟩`.
+
+Introduce and unpack `_ ⟨_, ⟨y, rfl⟩, rfl⟩`. Conclude with `⟨ideleNorm L L' y, by rw [ideleNorm_ideleNorm, ideleNorm_ideleNorm]⟩`. Rewrite using `[← ideleNorm_ideleEmbedding_of_bijective hK x]`. Conclude with `hmap ⟨_, hker h1, rfl⟩`.
+-/
 theorem ker_ideleSymbol_le_of_bijective (hK : Function.Bijective (algebraMap K K'))
     (hL : Function.Bijective (algebraMap L L'))
     (hker : (ideleSymbol K' L').ker ≤ (diagonal K').range ⊔ (ideleNorm K' L').range) :
@@ -108,10 +137,16 @@ def rangeMap {A : Type*} [Field A] [Algebra ℚ A] (f : A →ₐ[ℚ] ℚ̄) : A
   map_zero' := Subtype.ext (map_zero f)
   map_add' a b := Subtype.ext (map_add f a b)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(rangeMap f).injective, by rintro ⟨_, a, rfl⟩; exact ⟨a, rfl⟩⟩`.
+-/
 theorem rangeMap_bijective {A : Type*} [Field A] [Algebra ℚ A] (f : A →ₐ[ℚ] ℚ̄) :
     Function.Bijective (rangeMap f) :=
   ⟨(rangeMap f).injective, by rintro ⟨_, a, rfl⟩; exact ⟨a, rfl⟩⟩
 
+/- English proof (translation)
+The claim follows from `Module.Finite.of_surjective ({ toFun := rangeMap f, map_add' := map_add _, map_smul' := fun c a ↦ Subtype.ext (f.toLinearMap.map_smul c a) } : A →ₗ[ℚ] f.fieldRange) (rangeMap_bijective f).2`.
+-/
 theorem finiteDimensional_fieldRange {A : Type*} [Field A] [NumberField A] (f : A →ₐ[ℚ] ℚ̄) :
     FiniteDimensional ℚ f.fieldRange :=
   Module.Finite.of_surjective
@@ -135,6 +170,15 @@ instance fact_baseField_le : Fact (baseField K L ≤ topField L) :=
 
 variable {K L} [IsGalois K L] [IsMulCommutative (L ≃ₐ[K] L)]
 
+/- English proof (translation)
+Set `K'` to `baseField K L`. Set `L'` to `topField L`. Set `_ : Algebra K K'.1` to `(rangeMap (baseEmbedding K L)).toAlgebra`. Set `_ : Algebra L L'.1` to `(rangeMap (embedding L)).toAlgebra`. Set `_ : Algebra K L'.1` to `((rangeMap (embedding L)).comp (algebraMap K L)).toAlgebra`.
+
+Establish `: IsScalarTower K K'.1 L'.1` using `IsScalarTower.of_algebraMap_eq fun _ ↦ rfl`. Establish `: IsScalarTower K L L'.1` using `IsScalarTower.of_algebraMap_eq fun _ ↦ rfl`. Establish `hK : Function.Bijective (algebraMap K K'.1)` using `rangeMap_bijective _`. Establish `hL : Function.Bijective (algebraMap L L'.1)` using `rangeMap_bijective _`. Establish `: IsGalois K L'.1` using `IsGalois.of_algEquiv (AlgEquiv.ofBijective (IsScalarTower.toAlgHom K L L'.1) hL)`.
+
+Establish `: IsGalois K'.1 L'.1` using `IsGalois.tower_top_of_isGalois K K'.1 L'.1`. Establish `: IsMulCommutative (L'.1 ≃ₐ[K'.1] L'.1)`. Use `⟨⟨fun σ τ ↦ ?_⟩⟩` and prove the remaining obligations. Set `f` to `(AlgEquiv.restrictNormalHom (F := K) (K₁ := L'.1) L).comp (restrictScalarsHom (K' := K'.1) (L' := L'.1) K)`. Establish `h` using `restrictNormal_restrictScalars_eq_one (K := K) (K' := K'.1) (L := L) (L' := L'.1) hL (σ := σ * τ * (τ * σ)⁻¹) (by`.
+
+Express the relevant statement in the definitionally equal form `f (σ * τ * (τ * σ)⁻¹) = 1`. Rewrite using `[map_mul, map_inv, map_mul, map_mul, mul_comm' (f σ) (f τ), mul_inv_cancel])`. Rewrite `h` using `[mul_inv_eq_one]`. Then use the resulting hypothesis. Use `FiniteSubfield.normal_subgroupOf_of_isGalois (F := K') (E := L')` as an intermediate fact. Conclude with `⟨ideleSymbol_diagonal_of_bijective hK (IdeleClassLimit.ideleSymbol_diagonal K' L'), ker_ideleSymbol_le_of_bijective hK hL (IdeleClassLimit.ker_ideleSymbol K' L').le⟩`.
+-/
 theorem ideleSymbol_diagonal_and_ker_le :
     (∀ a : Kˣ, ideleSymbol K L (diagonal K a) = 1) ∧
       (ideleSymbol K L).ker ≤ (diagonal K).range ⊔ (ideleNorm K L).range := by
@@ -169,13 +213,22 @@ section Reciprocity
 variable {K L : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
   [IsGalois K L] [IsMulCommutative (L ≃ₐ[K] L)]
 
+/- English proof (translation)
+The claim follows from `ideleSymbol_diagonal_and_ker_le.1 a`.
+-/
 theorem ideleSymbol_diagonal (a : Kˣ) : ideleSymbol K L (diagonal K a) = 1 :=
   ideleSymbol_diagonal_and_ker_le.1 a
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `ideleSymbol_diagonal a`.
+-/
 theorem diagonal_range_le_ker_ideleSymbol : (diagonal K).range ≤ (ideleSymbol K L).ker := by
   rintro _ ⟨a, rfl⟩
   exact ideleSymbol_diagonal a
 
+/- English proof (translation)
+The claim follows from `le_antisymm ideleSymbol_diagonal_and_ker_le.2 (sup_le diagonal_range_le_ker_ideleSymbol (range_ideleNorm_le_ker_ideleSymbol L))`.
+-/
 theorem ker_ideleSymbol : (ideleSymbol K L).ker = (diagonal K).range ⊔ (ideleNorm K L).range :=
   le_antisymm ideleSymbol_diagonal_and_ker_le.2
     (sup_le diagonal_range_le_ker_ideleSymbol (range_ideleNorm_le_ker_ideleSymbol L))
@@ -191,13 +244,28 @@ def reciprocityMap : IdeleClassGroup K →* (L ≃ₐ[K] L) :=
   QuotientGroup.lift _ (ideleSymbol K L) diagonal_range_le_ker_ideleSymbol
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem reciprocityMap_mk (x : IdeleGroup K) :
     reciprocityMap K L (IdeleClassGroup.mk K x) = ideleSymbol K L x :=
   rfl
 
+/- English proof (translation)
+The claim follows from `(QuotientGroup.isQuotientMap_mk _).continuous_iff.2 (continuous_ideleSymbol L)`.
+-/
 theorem continuous_reciprocityMap : Continuous (reciprocityMap K L) :=
   (QuotientGroup.isQuotientMap_mk _).continuous_iff.2 (continuous_ideleSymbol L)
 
+/- English proof (translation)
+Use extensionality with `c`. Take `⟨x, rfl⟩` from `IdeleClassGroup.mk_surjective K c`. Rewrite using `[MonoidHom.mem_ker, reciprocityMap_mk, ← MonoidHom.mem_ker, ker_ideleSymbol]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Take `⟨d, hd, n, hn, rfl⟩` from `Subgroup.mem_sup.1 hx`. Take `⟨y, rfl⟩` from `hn`. Take `⟨a, rfl⟩` from `hd`. Use `⟨IdeleClassGroup.mk L y, ?_⟩` and prove the remaining obligations. Rewrite using `[ideleClassNorm_mk, map_mul, IdeleClassGroup.mk_diagonal]`.
+
+Conclude with `(one_mul (IdeleClassGroup.mk K (ideleNorm K L y))).symm`. Introduce and unpack `⟨c', hc'⟩`. Take `⟨y, rfl⟩` from `IdeleClassGroup.mk_surjective L c'`. Rewrite `hc'` using `[ideleClassNorm_mk]`. Establish `hd : (ideleNorm K L y)⁻¹ * x ∈ (diagonal K).range`.
+
+Rewrite using `[← IdeleClassGroup.ker_mk, MonoidHom.mem_ker, map_mul, map_inv, hc', inv_mul_cancel]`. Rewrite using `[← mul_inv_cancel_left (ideleNorm K L y) x]`. Conclude with `Subgroup.mul_mem _ (Subgroup.mem_sup_right ⟨y, rfl⟩) (Subgroup.mem_sup_left hd)`.
+-/
 theorem ker_reciprocityMap : (reciprocityMap K L).ker = (ideleClassNorm K L).range := by
   ext c
   obtain ⟨x, rfl⟩ := IdeleClassGroup.mk_surjective K c
@@ -227,6 +295,9 @@ section Isomorphism
 variable {K L : Type u} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
   [IsGalois K L] [IsMulCommutative (L ≃ₐ[K] L)]
 
+/- English proof (translation)
+The claim follows from `fun σ ↦ let ⟨x, hx⟩ := ideleSymbol_surjective (K := K) (L := L) σ ⟨IdeleClassGroup.mk K x, hx⟩`.
+-/
 theorem reciprocityMap_surjective : Function.Surjective (reciprocityMap K L) := fun σ ↦
   let ⟨x, hx⟩ := ideleSymbol_surjective (K := K) (L := L) σ
   ⟨IdeleClassGroup.mk K x, hx⟩
@@ -238,10 +309,16 @@ def reciprocityMapEquiv : IdeleClassGroup K ⧸ (ideleClassNorm K L).range ≃* 
     (QuotientGroup.quotientKerEquivOfSurjective _ reciprocityMap_surjective)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem reciprocityMapEquiv_mk (x : IdeleGroup K) :
     reciprocityMapEquiv K L (QuotientGroup.mk (IdeleClassGroup.mk K x)) = ideleSymbol K L x :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[Subgroup.index, Nat.card_congr (reciprocityMapEquiv K L).toEquiv, IsGalois.card_aut_eq_finrank]`.
+-/
 theorem index_range_ideleClassNorm_eq_finrank_of_isMulCommutative : (ideleClassNorm K L).range.index = Module.finrank K L := by
   rw [Subgroup.index, Nat.card_congr (reciprocityMapEquiv K L).toEquiv, IsGalois.card_aut_eq_finrank]
 

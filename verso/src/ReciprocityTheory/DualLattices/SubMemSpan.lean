@@ -15,11 +15,19 @@ namespace OAdj
 
 variable {B : BX R₀} {O : LAlg R₀} (A : OAdj B O) {R : LAlg R₀} (s : LHom O R)
 
+/- English proof (translation)
+Substitute `hx hz` using the available equality. Consider the cases of `eq_of_heq hu`. Both sides reduce to the same expression.
+-/
 lemma e_hcongr {x₁ x₂ z₁ z₂ : B.G R} (hx : x₁ = x₂) (hz : z₁ = z₂)
     {u₁ : B.P R (A.a.f s x₁) z₁} {u₂ : B.P R (A.a.f s x₂) z₂} (hu : HEq u₁ u₂) :
     HEq (A.e s x₁ z₁ u₁) (A.e s x₂ z₂ u₂) := by
   subst hx hz; cases eq_of_heq hu; rfl
 
+/- English proof (translation)
+Use `set w0 := B.tr1 (map_zero (A.a.f s)).symm (B.zero1 z) with hw0`. Establish `hw : HEq w0 (B.zero1 z)` using `B.castFst_heq _ _`. Establish `h1` using `A.equiv_addFst s 0 0 z w0 w0`. Establish `h2 : HEq (A.e s (0 + 0) z (B.tr1 (map_add (A.a.f s) 0 0).symm (B.add1 w0 w0))) (A.e s 0 z w0)`. Use `A.e_hcongr s (add_zero 0) rfl ?_` and prove the remaining obligations.
+
+Use `(B.castFst_heq _ _).trans ?_` and prove the remaining obligations. Use `(B.addFst_hcongr (map_zero _) (map_zero _) rfl hw hw).trans ?_` and prove the remaining obligations. Conclude with `(B.zeroFst_add (B.zero1 z)).trans hw.symm`. Establish `hid : B.S1mk (A.e s 0 z w0) + B.S1mk (A.e s 0 z w0) = B.S1mk (A.e s 0 z w0)` using `Sigma.ext (add_zero (0 : B.G R)) ((heq_of_eq h1.symm).trans h2)`. Conclude with `(Sigma.ext_iff.1 (B.fibreFst_idem _ hid)).2`.
+-/
 lemma e_zero1 (z : B.G R) :
     HEq (A.e s 0 z (B.tr1 (map_zero (A.a.f s)).symm (B.zero1 z))) (B.zero1 (A.ab.f s z)) := by
   set w0 := B.tr1 (map_zero (A.a.f s)).symm (B.zero1 z) with hw0
@@ -35,6 +43,11 @@ lemma e_zero1 (z : B.G R) :
     Sigma.ext (add_zero (0 : B.G R)) ((heq_of_eq h1.symm).trans h2)
   exact (Sigma.ext_iff.1 (B.fibreFst_idem _ hid)).2
 
+/- English proof (translation)
+Use `set w0 := B.zero2 (A.a.f s x) with hw0`. Establish `h1` using `A.equiv_addSnd s x 0 0 w0 w0`. Establish `h2 : HEq (A.e s x (0 + 0) (B.add2 w0 w0)) (A.e s x 0 w0)` using `A.e_hcongr s rfl (add_zero 0) (B.zeroSnd_add w0)`. Establish `hz : A.ab.f s 0 + A.ab.f s 0 = A.ab.f s 0` using `by rw [map_zero, add_zero]`. Establish `hid : B.S2mk (A.e s x 0 w0) + B.S2mk (A.e s x 0 w0) = B.S2mk (A.e s x 0 w0)` using `Sigma.ext hz ((B.castSnd_heq _ _).symm.trans ((heq_of_eq h1).symm.trans h2))`.
+
+Conclude with `(Sigma.ext_iff.1 (B.fibreSnd_idem _ hid)).2`.
+-/
 lemma e_zero2 (x : B.G R) : HEq (A.e s x 0 (B.zero2 (A.a.f s x))) (B.zero2 x) := by
   set w0 := B.zero2 (A.a.f s x) with hw0
   have h1 := A.equiv_addSnd s x 0 0 w0 w0
@@ -45,6 +58,13 @@ lemma e_zero2 (x : B.G R) : HEq (A.e s x 0 (B.zero2 (A.a.f s x))) (B.zero2 x) :=
     Sigma.ext hz ((B.castSnd_heq _ _).symm.trans ((heq_of_eq h1).symm.trans h2))
   exact (Sigma.ext_iff.1 (B.fibreSnd_idem _ hid)).2
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Use `(A.e_hcongr s (zero_nsmul x) rfl (u₂ := B.tr1 (map_zero (A.a.f s)).symm (B.zero1 z)) ?_).trans ?_` and prove the remaining obligations. Conclude with `hw.trans ((B.castFst_heq _ _).trans (B.castFst_heq _ _).symm)`. Conclude with `(A.e_zero1 s z).trans (B.castFst_heq _ _).symm`.
+
+Consider the case `succ n ih`. Establish `hn : A.a.f s (n • x) = n • A.a.f s x` using `map_nsmul _ n x`. Establish `h1` using `ih (B.tr1 hn.symm (B.nsmul1 u n)) (B.castFst_heq _ _)`. Use `(A.e_hcongr s (succ_nsmul x n) rfl (u₂ := B.tr1 (map_add (A.a.f s) (n • x) x).symm (B.add1 (B.tr1 hn.symm (B.nsmul1 u n)) u)) ?_).trans ?_` and prove the remaining obligations. Use `hw.trans ((B.castFst_heq _ _).trans ?_)` and prove the remaining obligations.
+
+Conclude with `(B.addFst_hcongr hn.symm rfl rfl (B.castFst_heq _ _).symm HEq.rfl).trans (B.castFst_heq _ _).symm`. Rewrite using `[A.equiv_addFst]`. Conclude with `(B.addFst_hcongr rfl rfl rfl h1 HEq.rfl).trans (B.castFst_heq _ _).symm`.
+-/
 lemma e_nsmul1 (x z : B.G R) (u : B.P R (A.a.f s x) z) (n : ℕ)
     (w : B.P R (A.a.f s (n • x)) z) (hw : HEq w (B.nsmul1 u n)) :
     HEq (A.e s (n • x) z w) (B.nsmul1 (A.e s x z u) n) := by
@@ -65,6 +85,11 @@ lemma e_nsmul1 (x z : B.G R) (u : B.P R (A.a.f s x) z) (n : ℕ)
     · rw [A.equiv_addFst]
       exact (B.addFst_hcongr rfl rfl rfl h1 HEq.rfl).trans (B.castFst_heq _ _).symm
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Conclude with `(A.e_hcongr s rfl (zero_nsmul z) (B.castSnd_heq _ _)).trans ((A.e_zero2 s x).trans (B.castSnd_heq _ _).symm)`. Consider the case `succ n ih`. Use `(A.e_hcongr s rfl (succ_nsmul z n) (B.castSnd_heq _ _)).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[A.equiv_addSnd]`. Use `(B.castSnd_heq _ _).trans ?_` and prove the remaining obligations. Conclude with `(B.addSnd_hcongr rfl (map_nsmul _ n z) rfl ih HEq.rfl).trans (B.castSnd_heq _ _).symm`.
+-/
 lemma e_nsmul2 (x z : B.G R) (u : B.P R (A.a.f s x) z) (n : ℕ) :
     HEq (A.e s x (n • z) (B.nsmul2 u n)) (B.nsmul2 (A.e s x z u) n) := by
   induction n with
@@ -77,6 +102,15 @@ lemma e_nsmul2 (x z : B.G R) (u : B.P R (A.a.f s x) z) (n : ℕ) :
     refine (B.castSnd_heq _ _).trans ?_
     exact (B.addSnd_hcongr rfl (map_nsmul _ n z) rfl ih HEq.rfl).trans (B.castSnd_heq _ _).symm
 
+/- English proof (translation)
+Take `⟨hax, hz, u, l₁, l₂, h1, h2, rfl⟩` from `h`. Establish `hbz : N • A.ab.f s z = 0` using `by rw [← map_nsmul, hz, map_zero]`. Use `⟨hx, hbz, A.e s x z u, l₁, l₂, ?_, ?_, rfl⟩` and prove the remaining obligations. Establish `hn : A.a.f s (N • x) = N • A.a.f s x` using `map_nsmul _ N x`. Establish `k1` using `A.e_nsmul1 s x z u N (B.tr1 hn.symm (B.nsmul1 u N)) (B.castFst_heq _ _)`.
+
+Establish `k2 : HEq (A.e s (N • x) z (B.tr1 hn.symm (B.nsmul1 u N))) (A.e s 0 z (B.tr1 (map_zero (A.a.f s)).symm (B.smul l₁ (B.zero1 z))))`. Use `A.e_hcongr s hx rfl ?_` and prove the remaining obligations. Use `(B.castFst_heq _ _).trans ?_` and prove the remaining obligations. Conclude with `((B.castFst_heq hax _).symm.trans (heq_of_eq h1)).trans (B.castFst_heq _ _).symm`. Rewrite `k2` using `[B.castFst_smul, A.e_smul]`.
+
+Apply `eq_of_heq` to reduce the goal to its premises. Use `(B.castFst_heq _ _).trans (k1.symm.trans (k2.trans ?_))` and prove the remaining obligations. Conclude with `B.smul_hcongr rfl rfl l₁ (A.e_zero1 s z)`. Establish `k1` using `A.e_nsmul2 s x z u N`. Establish `k2 : HEq (A.e s x (N • z) (B.nsmul2 u N)) (A.e s x 0 (B.smul l₂ (B.zero2 (A.a.f s x))))` using `A.e_hcongr s rfl hz ((B.castSnd_heq hz _).symm.trans (heq_of_eq h2))`.
+
+Rewrite `k2` using `[A.e_smul]`. Apply `eq_of_heq` to reduce the goal to its premises. Use `(B.castSnd_heq _ _).trans (k1.symm.trans (k2.trans ?_))` and prove the remaining obligations. Conclude with `B.smul_hcongr rfl (map_zero _) l₂ (A.e_zero2 s x)`.
+-/
 theorem pairing_of (N : ℕ) (x z : B.G R) (w : (R : Type u)ˣ) (hx : N • x = 0)
     (h : B.IsPairing N (A.a.f s x) z w) : B.IsPairing N x (A.ab.f s z) w := by
   obtain ⟨hax, hz, u, l₁, l₂, h1, h2, rfl⟩ := h
@@ -102,6 +136,9 @@ theorem pairing_of (N : ℕ) (x z : B.G R) (w : (R : Type u)ˣ) (hx : N • x = 
     refine (B.castSnd_heq _ _).trans (k1.symm.trans (k2.trans ?_))
     exact B.smul_hcongr rfl (map_zero _) l₂ (A.e_zero2 s x)
 
+/- English proof (translation)
+Use `⟨A.pairing_of s N x z w hx, fun h => ?_⟩` and prove the remaining obligations. Establish `hax : N • A.a.f s x = 0` using `by rw [← map_nsmul, hx, map_zero]`. Take `⟨w', hw'⟩` from `B.pairing_exists N _ z hax hz`. Rewrite `hw'` using `[B.pairing_unique N x _ _ _ (A.pairing_of s N x z w' hx hw') h]`. Then use the resulting hypothesis.
+-/
 theorem pairing_iff (N : ℕ) (x z : B.G R) (w : (R : Type u)ˣ) (hx : N • x = 0) (hz : N • z = 0) :
     B.IsPairing N (A.a.f s x) z w ↔ B.IsPairing N x (A.ab.f s z) w := by
   refine ⟨A.pairing_of s N x z w hx, fun h => ?_⟩
@@ -115,13 +152,22 @@ namespace DualPair
 
 variable {R : LAlg R₀} (Dp : DualPair R)
 
+/- English proof (translation)
+Establish `h` using `Dp.η_mem`. Rewrite `h` using `[Submodule.restrictScalars_mem, RingHom.mem_ker]`. Then use the resulting hypothesis.
+-/
 lemma π_η : Dp.π.1 Dp.η = 0 := by
   have h := Dp.η_mem
   rwa [Submodule.restrictScalars_mem, RingHom.mem_ker] at h
 
+/- English proof (translation)
+Rewrite using `[← Dp.ker_eq, RingHom.mem_ker, map_sub, Dp.sect, sub_self]`.
+-/
 lemma sub_mem_span (d : (Dp.D : Type u)) : d - Dp.σ.1 (Dp.π.1 d) ∈ Ideal.span {Dp.η} := by
   rw [← Dp.ker_eq, RingHom.mem_ker, map_sub, Dp.sect, sub_self]
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 ha`. Take `⟨d, rfl⟩` from `Ideal.mem_span_singleton'.1 hb`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma mul_span (a b : (Dp.D : Type u)) (ha : a ∈ Ideal.span {Dp.η}) (hb : b ∈ Ideal.span {Dp.η}) :
     a * b = 0 := by
   obtain ⟨c, rfl⟩ := Ideal.mem_span_singleton'.1 ha
@@ -147,21 +193,36 @@ def mr (r : (R : Type u)) : LHom Dp.D Dp.D :=
      convert h1 using 1
      exact e.symm⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma mr_apply (r : (R : Type u)) (d : (Dp.D : Type u)) :
     (Dp.mr r).1 d = Dp.σ.1 (Dp.π.1 d) + Dp.σ.1 r * (d - Dp.σ.1 (Dp.π.1 d)) := rfl
 
+/- English proof (translation)
+Simplify using `[mr_apply, Dp.sect]`.
+-/
 lemma mr_π (r : (R : Type u)) (d : (Dp.D : Type u)) : Dp.π.1 ((Dp.mr r).1 d) = Dp.π.1 d := by
   simp [mr_apply, Dp.sect]
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (AlgHom.ext fun t => by show (Dp.mr r).1 (Dp.σ.1 t) = Dp.σ.1 t simp [mr_apply, Dp.sect])`.
+-/
 lemma mr_comp_σ (r : (R : Type u)) : (Dp.mr r).comp Dp.σ = Dp.σ :=
   Subtype.ext (AlgHom.ext fun t => by
     show (Dp.mr r).1 (Dp.σ.1 t) = Dp.σ.1 t
     simp [mr_apply, Dp.sect])
 
+/- English proof (translation)
+Simplify using `[mr_apply, Dp.π_η]`.
+-/
 lemma mr_ση (r t : (R : Type u)) :
     (Dp.mr r).1 (Dp.σ.1 t * Dp.η) = Dp.σ.1 r * (Dp.σ.1 t * Dp.η) := by
   simp [mr_apply, Dp.π_η]
 
+/- English proof (translation)
+Introduce `a ha`. Rewrite `ha`, the goal using `[Submodule.restrictScalars_mem, RingHom.mem_ker]`. Rewrite using `[AlgHom.toLinearMap_apply, Dp.mr_π, ha]`.
+-/
 lemma mr_ker (r : (R : Type u)) :
     ∀ a ∈ Dp.π.ker, (Dp.mr r).1.toLinearMap a ∈ Dp.π.ker := by
   intro a ha
@@ -170,10 +231,28 @@ lemma mr_ker (r : (R : Type u)) :
 
 end DualPair
 
+/- English proof (translation)
+Simplify using `[hext]`.
+-/
 lemma hext_tmul (B : BX R₀) {R : LAlg R₀} (h : B.gg →ₗ[R₀] (R : Type u)) (w : B.gg) (r : (R : Type u)) :
     hext B h (w ⊗ₜ r) = h w * r := by
   simp [hext]
 
+/- English proof (translation)
+Proceed by induction on `V using TensorProduct.induction_on with`. Consider the case `zero`. Establish `hY : N • B.map Dp.σ y = 0` using `by rw [← map_nsmul, hy, map_zero]`. Take `⟨z, hz⟩` from `B.pairing_exists N (0 : B.G Dp.D) _ (smul_zero N) hY`. Establish `h2` using `B.isPairingValue_add_left N 0 0 _ z z hz hz`.
+
+Rewrite `h2` using `[add_zero]`. Establish `hzz : z * z = z * 1` using `by rw [mul_one]; exact (B.pairing_unique N _ _ _ _ hz h2).symm`. Establish `h1 : z = 1` using `mul_left_cancel hzz`. Substitute `h1` using the available equality. Use `⟨1, by simpa using hz, by simp⟩` and prove the remaining obligations.
+
+Consider the case `tmul w r`. Take `⟨z, hz, ez⟩` from `hH w`. Establish `k` using `B.pairing_map (Dp.mr r) N _ _ z hz`. Establish `e1 : B.map (Dp.mr r) (B.tg Dp.π Dp.sqZero (w ⊗ₜ Dp.ηk)) = B.tg Dp.π Dp.sqZero (LinearMap.lTensor B.gg Dp.ηmap (w ⊗ₜ r))`. Rewrite using `[← B.tg_nat Dp.π Dp.π Dp.sqZero Dp.sqZero (Dp.mr r) (Dp.mr_ker r), LinearMap.lTensor_tmul, LinearMap.lTensor_tmul]`.
+
+Use `congr 2`. Conclude with `Subtype.ext (by simp [DualPair.ηk, DualPair.ηmap, DualPair.mr_apply, Dp.π_η, LinearMap.restrict_apply])`. Establish `e2 : B.map (Dp.mr r) (B.map Dp.σ y) = B.map Dp.σ y`. Rewrite using `[← B.map_comp, Dp.mr_comp_σ]`. Rewrite `k` using `[e1, e2]`.
+
+Use `⟨_, k, ?_⟩` and prove the remaining obligations. Simplify using `only [Units.coe_map, MonoidHom.coe_coe]`. Rewrite using `[ez, map_add, map_one, Dp.mr_ση, hext_tmul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add V V' ihV ihV'`.
+
+Take `⟨z, hz, ez⟩` from `ihV`. Take `⟨z', hz', ez'⟩` from `ihV'`. Use `⟨z * z', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_add]`. Conclude with `B.isPairingValue_add_left N _ _ _ z z' hz hz'`.
+
+Rewrite using `[Units.val_mul, ez, ez', map_add, map_add]`. Take the linear combination `(Dp.σ.1 (hext B h V) * Dp.σ.1 (hext B h V')) * Dp.η_sq`.
+-/
 theorem ht_ext (B : BX R₀) {R : LAlg R₀} (Dp : DualPair R) (N : ℕ) (y : B.G R)
     (h : B.gg →ₗ[R₀] (R : Type u)) (hy : N • y = 0) (hH : B.IsHeight Dp N y h)
     (V : B.gg ⊗[R₀] (R : Type u)) :
@@ -219,6 +298,11 @@ namespace OAdj
 
 variable {B : BX R₀} {O : LAlg R₀} (A : OAdj B O) {R : LAlg R₀} (s : LHom O R)
 
+/- English proof (translation)
+Introduce `v`. Take `⟨z, hz, ez⟩` from `ht_ext B Dp N y h hy hH (δ v)`. Rewrite `hz` using `[← hδ v]`. Take `⟨z0, hz0, -⟩` from `hH v`. Take `⟨hX, hY, -⟩` from `hz0`.
+
+Establish `k1` using `B.pairing_sw N _ _ z hz`. Establish `k2` using `(A.pairing_iff (Dp.σ.comp s) N _ _ z⁻¹ hY hX).2 k1`. Establish `k3` using `B.pairing_sw N _ _ _ k2`. Rewrite `k3` using `[inv_inv, A.a.nat]`. Conclude with `⟨z, k3, by rw [ez]; rfl⟩`.
+-/
 theorem ht_a (Dp : DualPair R) (N : ℕ) (y : B.G R) (h : B.gg →ₗ[R₀] (R : Type u))
     (δ : B.gg →ₗ[R₀] B.gg ⊗[R₀] (R : Type u)) (hy : N • y = 0) (hH : B.IsHeight Dp N y h)
     (hδ : ∀ v, A.ab.f (Dp.σ.comp s) (B.tg Dp.π Dp.sqZero (v ⊗ₜ Dp.ηk)) =
@@ -237,6 +321,9 @@ theorem ht_a (Dp : DualPair R) (N : ℕ) (y : B.G R) (h : B.gg →ₗ[R₀] (R :
 
 end OAdj
 
+/- English proof (translation)
+Introduce `A _ s Dp N y h δ hy hH hδ` and use `A.ht_a s Dp N y h δ hy hH hδ`.
+-/
 theorem linHt (B : BX R₀) (O : LAlg R₀) : LinHtStatement B O :=
   fun A _ s Dp N y h δ hy hH hδ => A.ht_a s Dp N y h δ hy hH hδ
 

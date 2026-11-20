@@ -31,6 +31,13 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
     {PD : PeriodData G Qp K₀ K B BdR}
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨⟨cc, hcc⟩, hyf, rfl⟩` from `Submodule.mem_map.mp hx`. Establish `hccf : cc ∈ latticeFiniteCocycles PD T₂.L` using `hyf`. Take `⟨Y, ι, π, hYc, hE⟩` from `hext T₂ hcr cc hccf`. Take `⟨-, hkill⟩` from `hY Y ι π cc hcc hYc hE`.
+
+Take `⟨w, xx, hw, hsum⟩` from `hsplit hcase hl A hA T₂ Y ι π hW₂ hYc cc hcc hE rr hkill`. Establish `hmem : ∀ c ∈ A.cuts, (((PD.p : ℕ) : O) ^ E) • xx c ∈ (latticeFiniteCohomology PD T₁.L).map F.H1map ⊔ Submodule.span O ((A.cuts.biUnion Zc : Finset _) : Set (LatticeCohomology T₂.L))` using `fun c hc => hcut c hc (w c) (xx c) (hw c hc).1 (hw c hc).2.1 (hw c hc).2.2.2 (hw c hc).2.2.1`. Rewrite using `[Submodule.mkQ_apply, show rr + 2 * A.σ PD.p + E = E + (rr + 2 * A.σ PD.p) by ring, pow_add, mul_smul]`. Break down `hsum with h | h` into its components or cases. Rewrite using `[h, Finset.smul_sum]`.
+
+Conclude with `Submodule.sum_mem _ hmem`. Rewrite using `[h, smul_neg, Finset.smul_sum]`. Conclude with `Submodule.neg_mem _ (Submodule.sum_mem _ hmem)`.
+-/
 theorem split_sum [Fintype (K →ₐ[Qp] LL)] (W : LocWach PD LL O v n) (hcase : Formalism.MainNotions.LiftingTheory.CaseA W)
     (hl : 5 ≤ PD.p) (hsplit : SplitCore W) (hext : ExtYCore PD W)
     (A : ArcP n) (hA : A.OK) {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L)
@@ -65,6 +72,11 @@ theorem split_sum [Fintype (K →ₐ[Qp] LL)] (W : LocWach PD LL O v n) (hcase :
   · rw [h, smul_neg, Finset.smul_sum]
     exact Submodule.neg_mem _ (Submodule.sum_mem _ hmem)
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos (Formalism.MainNotions.TruncatedSeriesCountingBounds.hB b w S η size) with h | h` into its components or cases. Simplify using `[h]`. Apply `Real.logb_nonneg` to reduce the goal to its premises. Conclude with `(by omega : 1 < l)` after adjusting the coercions. Establish `: (1 : ℝ) ≤ (Formalism.MainNotions.TruncatedSeriesCountingBounds.hB b w S η size : ℝ)` using `by exact_mod_cast h`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private lemma logb_two_mul_hB_nonneg {n : ℕ} (l b w S η : ℕ) (size : ZMod n → ℕ) (hl : 2 ≤ l) :
     0 ≤ Real.logb l (2 * (Formalism.MainNotions.TruncatedSeriesCountingBounds.hB b w S η size : ℝ)) := by
   rcases Nat.eq_zero_or_pos (Formalism.MainNotions.TruncatedSeriesCountingBounds.hB b w S η size) with h | h
@@ -74,6 +86,9 @@ private lemma logb_two_mul_hB_nonneg {n : ℕ} (l b w S η : ℕ) (size : ZMod n
     · have : (1 : ℝ) ≤ (Formalism.MainNotions.TruncatedSeriesCountingBounds.hB b w S η size : ℝ) := by exact_mod_cast h
       linarith
 
+/- English proof (translation)
+Establish `h1` using `logb_two_mul_hB_nonneg l b w S η size hl`. Unfold `Sg`. Establish `a : (0 : ℝ) ≤ (Formalism.MainNotions.TruncatedSeriesCountingBounds.hB b w S η size : ℝ) / (l : ℝ) ^ 2` using `by positivity`. Establish `c : (0 : ℝ) ≤ ((w : ℝ) + S + η) / l` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem one_le_Sg {n : ℕ} (l b w S η : ℕ) (size : ZMod n → ℕ) (hl : 2 ≤ l) : 1 ≤ Sg l b w S η size := by
   have h1 := logb_two_mul_hB_nonneg l b w S η size hl
   unfold Sg
@@ -81,10 +96,16 @@ theorem one_le_Sg {n : ℕ} (l b w S η : ℕ) (size : ZMod n → ℕ) (hl : 2 �
   have c : (0 : ℝ) ≤ ((w : ℝ) + S + η) / l := by positivity
   linarith
 
+/- English proof (translation)
+Conclude with `logb_two_mul_hB_nonneg l b w S η size hl`.
+-/
 theorem logb_hB_nonneg {n : ℕ} (l b w S η : ℕ) (size : ZMod n → ℕ) (hl : 2 ≤ l) :
     0 ≤ Real.logb l (2 * (Formalism.MainNotions.TruncatedSeriesCountingBounds.hB b w S η size : ℝ)) := by
   exact logb_two_mul_hB_nonneg l b w S η size hl
 
+/- English proof (translation)
+Unfold `Sg`. Establish `a : (0 : ℝ) ≤ (Formalism.MainNotions.TruncatedSeriesCountingBounds.hB b w S η size : ℝ) / (l : ℝ) ^ 2` using `by positivity`. Establish `c : (0 : ℝ) ≤ ((w : ℝ) + S + η) / l` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem logb_le_Sg {n : ℕ} (l b w S η : ℕ) (size : ZMod n → ℕ) :
     3 * Real.logb l (2 * (Formalism.MainNotions.TruncatedSeriesCountingBounds.hB b w S η size : ℝ)) + 3 ≤ 3 * Sg l b w S η size := by
   unfold Sg
@@ -92,11 +113,45 @@ theorem logb_le_Sg {n : ℕ} (l b w S η : ℕ) (size : ZMod n → ℕ) :
   have c : (0 : ℝ) ≤ ((w : ℝ) + S + η) / l := by positivity
   linarith
 
+/- English proof (translation)
+Unfold `bandI`. Apply the tactic sequence `split_ifs <;> norm_num`.
+-/
 theorem bandI_nonneg {n : ℕ} (l b w S η : ℕ) (size : ZMod n → ℕ) (Cb : ℝ) :
     0 ≤ bandI l b w S η size Cb := by
   unfold bandI
   split_ifs <;> norm_num
 
+/- English proof (translation)
+Establish `hl : 11 ≤ PD.p` using `hB.1`. Establish `hS` using `hB.2.1`. Establish `hcase` using `hS.1`. Take `⟨hOK, hW₁, hW₂, hsumlen, hlen3, -, hσ, rr, hrr, hkF, hY⟩` from `Formalism.MainNotions.N.FrobeniusPowerSeries.arc_setup_theorem W hcase f hB CR co.wr co.dc (co.jq T₁ T₂ f hS.2.1) co.cj`. Establish `hsg1` using `one_le_Sg PD.p b w S η size (by omega)`.
+
+Establish `hbd0` using `bandI_nonneg PD.p b w S η size Cb`. Take `⟨E₁, hE₁def⟩ : ∃ E₁ : ℕ, E₁ = ⌊40 * Sg PD.p b w S η size + η * bandI PD.p b w S η size Cb⌋₊` from `⟨_, rfl⟩`. Establish `hη0 : (0 : ℝ) ≤ η * bandI PD.p b w S η size Cb` using `mul_nonneg (Nat.cast_nonneg η) hbd0`. Establish `hE₁le : (E₁ : ℝ) ≤ 40 * Sg PD.p b w S η size + η * bandI PD.p b w S η size Cb`. Rewrite using `[hE₁def]; exact Nat.floor_le (by linarith)`.
+
+Establish `hσE : (arcOf b w S η up size).σ PD.p ≤ E₁`. Rewrite using `[hE₁def]`. Apply `Nat.le_floor` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hscope : ∀ c ∈ (arcOf b w S η up size).cuts, (arcOf b w S η up size).len c ≤ 2 ∨ 40 * Sg PD.p b w S η size ≤ (b : ℝ) / 4`.
+
+Introduce `c _`. Break down `hsm with h | h` into its components or cases. Use the proof step `left; exact (arc_len_le_one_of_no_thick b w S η up size h c).trans (by norm_num)`. Use `right`. Conclude with `h`.
+
+Establish `hARC : ∀ c ∈ (arcOf b w S η up size).cuts, ∀ (d : ℕ) (bb : Fin d → W.DD T₂) (sol : Fin d → ℕ → Fin d → LL), IsHor W T₂ (c - (((arcOf b w S η up size).len c : ℕ) : ZMod n)) bb sol → ∀ k₀, InLpp W (arcOf b w S η up size) T₂ c bb k₀ → ∀ f', InFF W (arcOf b w S η up size) c f' → Lift …`. Introduce `c hc d bb sol hbb k₀ hk₀ f' hf'`. Take `⟨e₁, he₁, hL⟩` from `Formalism.MainNotions.N.FrobeniusPowerSeries.arc_proposition_alternative W hcase f hB CR co.wr hW₁ hW₂ co.H co.Tr co.relay co.arc co.arcL co.nn co.sat co.satP co.kLev co.r2 co.hO co.hOv co.inj co.P2 co.P9 co.pi0 co.sec co.gl co.hf co.fl rr hrr hkF c hc bb sol hbb k₀ hk₀ f' hf' Pt …`. Conclude with `Formalism.MainNotions.N.FrobeniusPowerSeries.LiftsAt.liftsAt_mono _ _ _ _ _ _ _ (hE₁def ▸ Nat.le_floor he₁) hL`. Establish `hm : ∀ i, ((arcOf b w S η up size).ty i).thick → Formalism.MainNotions.TruncatedSeriesCountingBounds.lowCount W T₂ i (arcOf b w S η up size).η ≤ m` using `fun i _ => hS.2.2.2.2.1 i`.
+
+Establish `hcut` using `fun c (hc : c ∈ (arcOf b w S η up size).cuts) => arc_length_bound_theorem W hcase co.l5 co.hO co.hOv co.inj co.relay co.arc co.nn co.univ co.kLev co.kMod co.P2 co.P9 co.pi0 (arcOf b w S η up size) hOK f hS.2.1 hW₁ hW₂ m hm c hc E₁ hσE (hARC c hc)`. Use `choose! Zc hZcard hZH1 hZmain using hcut`. Take `⟨κ, hκdef⟩ : ∃ κ : ℕ, κ = (arcOf b w S η up size).cuts.sup (kapC PD.p (arcOf b w S η up size))` from `⟨_, rfl⟩`. Take `⟨E, hEdef⟩ : ∃ E : ℕ, E = (arcOf b w S η up size).σ PD.p + κ + E₁` from `⟨_, rfl⟩`. Establish `hcutE : ∀ c ∈ (arcOf b w S η up size).cuts, ∀ (w' : W.DD T₂) (x : LatticeCohomology T₂.L), InI W T₂ c w' → InFP W T₂ (c - (((arcOf b w S η up size).len c : ℕ) : ZMod n)) ((arcOf b w S η up size).len c) 1 (abelian₂ W (arcOf b w S η up size) c ((arcOf b w S η up size).len c) • w') …`.
+
+Introduce `c hc w' x h1 h2 h3 h4`. Establish `h` using `hZmain c hc w' x h1 h2 h3 h4`. Establish `hk : kapC PD.p (arcOf b w S η up size) c ≤ κ` using `hκdef ▸ Finset.le_sup (f := kapC PD.p (arcOf b w S η up size)) hc`. Establish `hE : E = ((arcOf b w S η up size).σ PD.p + kapC PD.p (arcOf b w S η up size) c + E₁) + (κ - kapC PD.p (arcOf b w S η up size) c)` using `by rw [hEdef]; omega`. Establish `hsub : ((Zc c : Finset _) : Set (LatticeCohomology T₂.L)) ⊆ (((arcOf b w S η up size).cuts.biUnion Zc : Finset _) : Set (LatticeCohomology T₂.L))` using `fun z hz => Finset.mem_coe.2 (Finset.mem_biUnion.2 ⟨c, hc, Finset.mem_coe.1 hz⟩)`.
+
+Rewrite using `[hE, pow_add, mul_comm, mul_smul]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Conclude with `SetLike.le_def.1 (sup_le_sup_left (Submodule.span_mono hsub) ((latticeFiniteCohomology PD T₁.L).map f.H1map)) h`. Establish `hsp` using `split_sum W hcase co.l5 co.split co.ext (arcOf b w S η up size) hOK f hS.2.1.2.1 hW₂ rr hY E Zc hcutE`. Establish `hZH1' : ∀ z ∈ (arcOf b w S η up size).cuts.biUnion Zc, z ∈ latticeFiniteCohomology PD T₂.L`.
+
+Introduce `z hz`. Take `⟨c, hc, hz'⟩` from `Finset.mem_biUnion.1 hz`. Conclude with `hZH1 c hc z hz'`. Take `⟨Z, hZc, hZf, hZe⟩` from `cocycle_classes_exponent f (rr + 2 * (arcOf b w S η up size).σ PD.p + E) _ hZH1' hsp`. Use `⟨rr + 2 * (arcOf b w S η up size).σ PD.p + E, Z, ?_, ?_, hZf, hZe⟩` and prove the remaining obligations.
+
+Establish `hlg` using `logb_le_Sg PD.p b w S η size`. Establish `hlg0` using `logb_hB_nonneg PD.p b w S η size (by omega)`. Establish `hκ : (κ : ℝ) ≤ 13 * S + 3 * Real.logb PD.p (2 * (Formalism.MainNotions.TruncatedSeriesCountingBounds.hB b w S η size : ℝ)) + 3`. Establish `h0 : 0 ≤ 13 * (S : ℝ) + 3 * Real.logb PD.p (2 * (Formalism.MainNotions.TruncatedSeriesCountingBounds.hB b w S η size : ℝ)) + 3`. Use `Nat.cast_nonneg (α := ℝ) S` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `: κ ≤ ⌊13 * (S : ℝ) + 3 * Real.logb PD.p (2 * (Formalism.MainNotions.TruncatedSeriesCountingBounds.hB b w S η size : ℝ)) + 3⌋₊`. Rewrite using `[hκdef]`. Apply `Finset.sup_le` to reduce the goal to its premises. Introduce `c hc`.
+
+Apply `Nat.le_floor` to reduce the goal to its premises. Conclude with `kappa_le_of_alternating PD.p hl b w S η up size hB.2.2.2.2.1 hB.2.2.1 hS.2.2.2.2.2.1 hAlt hS.2.2.1 c hc (hlen3 hAlt c hc)`. Conclude with `(Nat.cast_le.2 this).trans (Nat.floor_le h0)`. Rewrite using `[hEdef]`. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `hZc.trans ((Finset.card_biUnion_le).trans ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `c hc`.
+
+Use `(hZcard c hc).trans ?_` and prove the remaining obligations. Establish `h1` using `ro_le_arc_len (arcOf b w S η up size) c`. Establish `h2` using `hlen3 hAlt c hc`. Establish `: Formalism.MainNotions.LocalTheoryWindows.ro (arcOf b w S η up size).ty (arcOf b w S η up size).len c * ((arcOf b w S η up size).len c + 1) ≤ 4 * (arcOf b w S η up size).len c` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `_ = 4 * m * ∑ c ∈ (arcOf b w S η up size).cuts, (arcOf b w S η up size).len c := by`. Rewrite using `[Finset.mul_sum]`. Use `_ = 4 * n * m := by rw [hsumlen]; ring`.
+-/
 theorem sumAltW [Fintype (K →ₐ[Qp] LL)] [NeZero n] [FiniteDimensional Qp LL] [IsDomain O]
     [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O] (W : LocWach PD LL O v n) {CR : ℝ}
     {Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop} (co : CoresW W CR Pt)
@@ -213,6 +268,35 @@ theorem sumAltW [Fintype (K →ₐ[Qp] LL)] [NeZero n] [FiniteDimensional Qp LL]
           rw [Finset.mul_sum]
       _ = 4 * n * m := by rw [hsumlen]; ring
 
+/- English proof (translation)
+Establish `hl : 11 ≤ PD.p` using `hB.1`. Establish `hS` using `hB.2.1`. Establish `hcase` using `hS.1`. Take `⟨hOK, hW₁, hW₂, hsumlen, -, hlenR, hσ, rr, hrr, hkF, hY⟩` from `Formalism.MainNotions.N.FrobeniusPowerSeries.arc_setup_theorem W hcase f hB CR co.wr co.dc (co.jq T₁ T₂ f hS.2.1) co.cj`. Establish `hsg1` using `one_le_Sg PD.p b w S η size (by omega)`.
+
+Take `⟨E₁, hE₁def⟩ : ∃ E₁ : ℕ, E₁ = ⌊6 * Sg PD.p b w S η size + 1⌋₊` from `⟨_, rfl⟩`. Establish `hE₁le : (E₁ : ℝ) ≤ 6 * Sg PD.p b w S η size + 1`. Rewrite using `[hE₁def]; exact Nat.floor_le (by linarith)`. Establish `hσE : (arcOf b w S η up size).σ PD.p ≤ E₁`. Rewrite using `[hE₁def]`.
+
+Apply `Nat.le_floor` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hARC : ∀ c ∈ (arcOf b w S η up size).cuts, ∀ (d : ℕ) (bb : Fin d → W.DD T₂) (sol : Fin d → ℕ → Fin d → LL), IsHor W T₂ (c - (((arcOf b w S η up size).len c : ℕ) : ZMod n)) bb sol → ∀ k₀, InLpp W (arcOf b w S η up size) T₂ c bb k₀ → ∀ f', InFF W (arcOf b w S η up size) c f' → Lift …`. Introduce `c hc d bb sol hbb k₀ hk₀ f' hf'`. Take `⟨e₁, he₁, hL⟩` from `Formalism.MainNotions.N.FrobeniusPowerSeries.arc_single_type_bound W hcase f hB CR co.wr hW₁ hW₂ co.H co.Tr co.relay co.arc co.arcL co.nn co.sat co.satP co.kLev co.r2 co.hO co.hOv co.inj co.P2 co.P9 co.pi0 co.sec co.gl co.hf co.fl rr hrr hkF c hc bb sol hbb k₀ hk₀ f' hf' (fun s _ …`.
+
+Conclude with `Formalism.MainNotions.N.FrobeniusPowerSeries.LiftsAt.liftsAt_mono _ _ _ _ _ _ _ (hE₁def ▸ Nat.le_floor he₁) hL`. Establish `hm : ∀ i, ((arcOf b w S η up size).ty i).thick → Formalism.MainNotions.TruncatedSeriesCountingBounds.lowCount W T₂ i (arcOf b w S η up size).η ≤ m` using `fun i _ => hS.2.2.2.2.1 i`. Establish `hcut` using `fun c (hc : c ∈ (arcOf b w S η up size).cuts) => arc_length_bound_theorem W hcase co.l5 co.hO co.hOv co.inj co.relay co.arc co.nn co.univ co.kLev co.kMod co.P2 co.P9 co.pi0 (arcOf b w S η up size) hOK f hS.2.1 hW₁ hW₂ m hm c hc E₁ hσE (hARC c hc)`. Use `choose! Zc hZcard hZH1 hZmain using hcut`. Take `⟨κ, hκdef⟩ : ∃ κ : ℕ, κ = (arcOf b w S η up size).cuts.sup (kapC PD.p (arcOf b w S η up size))` from `⟨_, rfl⟩`.
+
+Take `⟨E, hEdef⟩ : ∃ E : ℕ, E = (arcOf b w S η up size).σ PD.p + κ + E₁` from `⟨_, rfl⟩`. Establish `hcutE : ∀ c ∈ (arcOf b w S η up size).cuts, ∀ (w' : W.DD T₂) (x : LatticeCohomology T₂.L), InI W T₂ c w' → InFP W T₂ (c - (((arcOf b w S η up size).len c : ℕ) : ZMod n)) ((arcOf b w S η up size).len c) 1 (abelian₂ W (arcOf b w S η up size) c ((arcOf b w S η up size).len c) • w') …`. Introduce `c hc w' x h1 h2 h3 h4`. Establish `h` using `hZmain c hc w' x h1 h2 h3 h4`. Establish `hk : kapC PD.p (arcOf b w S η up size) c ≤ κ` using `hκdef ▸ Finset.le_sup (f := kapC PD.p (arcOf b w S η up size)) hc`.
+
+Establish `hE : E = ((arcOf b w S η up size).σ PD.p + kapC PD.p (arcOf b w S η up size) c + E₁) + (κ - kapC PD.p (arcOf b w S η up size) c)` using `by rw [hEdef]; omega`. Establish `hsub : ((Zc c : Finset _) : Set (LatticeCohomology T₂.L)) ⊆ (((arcOf b w S η up size).cuts.biUnion Zc : Finset _) : Set (LatticeCohomology T₂.L))` using `fun z hz => Finset.mem_coe.2 (Finset.mem_biUnion.2 ⟨c, hc, Finset.mem_coe.1 hz⟩)`. Rewrite using `[hE, pow_add, mul_comm, mul_smul]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Conclude with `SetLike.le_def.1 (sup_le_sup_left (Submodule.span_mono hsub) ((latticeFiniteCohomology PD T₁.L).map f.H1map)) h`.
+
+Establish `hsp` using `split_sum W hcase co.l5 co.split co.ext (arcOf b w S η up size) hOK f hS.2.1.2.1 hW₂ rr hY E Zc hcutE`. Establish `hZH1' : ∀ z ∈ (arcOf b w S η up size).cuts.biUnion Zc, z ∈ latticeFiniteCohomology PD T₂.L`. Introduce `z hz`. Take `⟨c, hc, hz'⟩` from `Finset.mem_biUnion.1 hz`. Conclude with `hZH1 c hc z hz'`.
+
+Take `⟨Z, hZc, hZf, hZe⟩` from `cocycle_classes_exponent f (rr + 2 * (arcOf b w S η up size).σ PD.p + E) _ hZH1' hsp`. Use `⟨rr + 2 * (arcOf b w S η up size).σ PD.p + E, Z, ?_, ?_, hZf, hZe⟩` and prove the remaining obligations. Establish `hlg0` using `logb_hB_nonneg PD.p b w S η size (by omega)`. Establish `hR1 : (1 : ℝ) ≤ R` using `by exact_mod_cast hR`. Establish `hκ : (κ : ℝ) ≤ 3 * (R : ℝ) ^ 2 * ((S : ℝ) + 1 + Real.logb PD.p (2 * (Formalism.MainNotions.TruncatedSeriesCountingBounds.hB b w S η size : ℝ)))`.
+
+Establish `h0 : 0 ≤ 3 * (R : ℝ) ^ 2 * ((S : ℝ) + 1 + Real.logb PD.p (2 * (Formalism.MainNotions.TruncatedSeriesCountingBounds.hB b w S η size : ℝ)))`. Use `Nat.cast_nonneg (α := ℝ) S` as an intermediate fact. Check the signs of the components of the expression. Establish `: κ ≤ ⌊3 * (R : ℝ) ^ 2 * ((S : ℝ) + 1 + Real.logb PD.p (2 * (Formalism.MainNotions.TruncatedSeriesCountingBounds.hB b w S η size : ℝ)))⌋₊`. Rewrite using `[hκdef]`.
+
+Apply `Finset.sup_le` to reduce the goal to its premises. Introduce `c hc`. Apply `Nat.le_floor` to reduce the goal to its premises. Conclude with `kappa_le_of_single_thick PD.p hl b w S η up size hB.2.2.2.2.1 hB.2.2.1 hS.2.2.2.2.2.1 R hR hOne hS.2.2.1 c hc (hlenR R hR hOne c hc)`. Conclude with `(Nat.cast_le.2 this).trans (Nat.floor_le h0)`.
+
+Rewrite using `[hEdef]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Use `hZc.trans ((Finset.card_biUnion_le).trans ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `c hc`. Use `(hZcard c hc).trans ?_` and prove the remaining obligations. Establish `h1` using `ro_le_arc_len (arcOf b w S η up size) c`. Establish `h2` using `hlenR R hR hOne c hc`.
+
+Establish `: Formalism.MainNotions.LocalTheoryWindows.ro (arcOf b w S η up size).ty (arcOf b w S η up size).len c * ((arcOf b w S η up size).len c + 1) ≤ (R + 1) * (arcOf b w S η up size).len c`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Use `_ = (R + 1) * m * ∑ c ∈ (arcOf b w S η up size).cuts, (arcOf b w S η up size).len c := by`. Rewrite using `[Finset.mul_sum]`.
+
+Use `_ = (R + 1) * n * m := by rw [hsumlen]; ring`.
+-/
 theorem sumOneW [Fintype (K →ₐ[Qp] LL)] [NeZero n] [FiniteDimensional Qp LL] [IsDomain O]
     [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O] (W : LocWach PD LL O v n) {CR : ℝ}
     {Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop} (co : CoresW W CR Pt)
@@ -331,6 +415,13 @@ section Record
 
 variable (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
 
+/- English proof (translation)
+Establish `h5 : 5 ≤ l` using `by omega`. Establish `hpl : ((D.loc l).PD K).p = l` using `(D.loc l).PD_p K`. Establish `hFD : FiniteDimensional ℚ_[l] ↥LL.1` using `LL.2`. Establish `h9 : Formalism.MainNotions.DeltaInvariantLattices.P9 D HW F` using `hU.p9`. Use `{ l5 := by rw [hpl]; exact h5 hO := fun x => ((D.loc l).v_O LL (x : ↥LL.1)).2 x.2 hOv := fun x hx => ⟨⟨x, ((D.loc l).v_O LL x).1 hx⟩, rfl⟩ inj := Subtype.val_injective wr := hU.a2.2.2.2.2.1 l K 1 LL hG H := hU.a2.2.2.2.2.2.1 l K 1 LL hG Tr := hU.a2.2.2.2.2.2.2.1 l K 1 LL hG dc := …` and prove the remaining obligations.
+
+Use extensionality with `:= fun T hT cc hcc => Formalism.MainNotions.LiftingTheory.lext_HExt_D D HW F l K 1 LL hG (Formalism.MainNotions.LiftingTheory.gen_one_crys _) T cc hT hcc`. Use `cj := hJ.a23 l K LL`. Use `c4 := hJ.c4 l K 1 LL hG`. Use `sec := (arc_structures_hold_at D HW F Cm hU hJ l K LL hG hK).1`. Use `gl := (arc_structures_hold_at D HW F Cm hU hJ l K LL hG hK).2.1`.
+
+Use `hf := (arc_structures_hold_at D HW F Cm hU hJ l K LL hG hK).2.2.1`. Use `fl := (arc_structures_hold_at D HW F Cm hU hJ l K LL hG hK).2.2.2`. Use `jq := (jumps_of_surjective_lattice_map D HW F hJ l K LL hG).1`. Use `jy := (jumps_of_surjective_lattice_map D HW F hJ l K LL hG).2 }`.
+-/
 theorem coresAt {CR CA CB CK : ℝ} (hU : AdmBoundsB D HW F Cm CR CA CB CK) (hJ : UsedJ D HW F)
     (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (hG : Good K 1 LL) (hK : CaseA K LL) (hl : 11 ≤ l)
     [NeZero (Module.finrank ℚ_[l] ↥(K0 K))] [Fintype (↥K.1 →ₐ[ℚ_[l]] ↥LL.1)] :
@@ -383,6 +474,11 @@ section Record2
 
 variable (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
 
+/- English proof (translation)
+Establish `hp : ((D.loc l).PD K).p = l` using `(D.loc l).PD_p K`. Establish `hl : 11 ≤ l`. Establish `h11` using `hB.1`. Rewrite `h11` using `[hp]`. Then use the resulting hypothesis. Use `haveI : IsAdicComplete (IsLocalRing.maximalIdeal ↥(OL LL)) ↥(OL LL) := isAdicComplete_integers_local l LL`.
+
+Establish `h` using `sumAltW ((HW l).W K 1 LL hG) (coresAt D HW F Cm hU hJ l K LL hG hK hl) f hB hAlt Cb hCb (by rw [hp]; exact hsm)`. Rewrite `h` using `[hp]`. Conclude with `h`.
+-/
 theorem sum_alt {CR CA CB CK : ℝ} (hU : AdmBoundsB D HW F Cm CR CA CB CK) (hJ : UsedJ D HW F)
     (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (hG : Good K 1 LL) (hK : CaseA K LL)
     [NeZero (Module.finrank ℚ_[l] ↥(K0 K))] [Fintype (↥K.1 →ₐ[ℚ_[l]] ↥LL.1)]
@@ -405,6 +501,11 @@ theorem sum_alt {CR CA CB CK : ℝ} (hU : AdmBoundsB D HW F Cm CR CA CB CK) (hJ 
   rw [hp] at h
   exact h
 
+/- English proof (translation)
+Establish `hp : ((D.loc l).PD K).p = l` using `(D.loc l).PD_p K`. Establish `hl : 11 ≤ l`. Establish `h11` using `hB.1`. Rewrite `h11` using `[hp]`. Then use the resulting hypothesis. Use `haveI : IsAdicComplete (IsLocalRing.maximalIdeal ↥(OL LL)) ↥(OL LL) := isAdicComplete_integers_local l LL`.
+
+Establish `h` using `sumOneW ((HW l).W K 1 LL hG) (coresAt D HW F Cm hU hJ l K LL hG hK hl) f hB R hR hOne`. Rewrite `h` using `[hp]`. Conclude with `h`.
+-/
 theorem sum_one {CR CA CB CK : ℝ} (hU : AdmBoundsB D HW F Cm CR CA CB CK) (hJ : UsedJ D HW F)
     (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (hG : Good K 1 LL) (hK : CaseA K LL)
     [NeZero (Module.finrank ℚ_[l] ↥(K0 K))] [Fintype (↥K.1 →ₐ[ℚ_[l]] ↥LL.1)]

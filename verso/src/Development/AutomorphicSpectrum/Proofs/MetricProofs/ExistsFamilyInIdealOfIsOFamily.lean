@@ -11,6 +11,29 @@ open GlobalTheory.CompanionTheory.Ar.RiemannLimit GlobalTheory.CompanionTheory.A
 
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.BoundaryLimit
 
+/- English proof (translation)
+Introduce `E _ _ g Λ _ _ W I per ρ r v hIW hinj hact hO`. Use `set J : Submodule (𝓞 E) W := I.comap W.subtype with hJ`. Establish `hS : AddSubgroup.closure {p | ∃ x : W, (x : Λ) ∈ I ∧ p = per x} = J.toAddSubgroup.map per`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[AddSubgroup.closure_le]`.
+
+Introduce and unpack `p ⟨x, hx, rfl⟩`. Conclude with `⟨x, hx, rfl⟩`. Introduce and unpack `p ⟨x, hx, rfl⟩`. Conclude with `AddSubgroup.subset_closure ⟨x, hx, rfl⟩`. Rewrite `hO`, the goal using `[hS]`.
+
+Take `⟨hmem, hind, hfin⟩` from `hO`. Use `choose y hyJ hyv using fun a => (hmem a)`. Establish `hyI : ∀ a, ((y a : W) : Λ) ∈ I` using `fun a => hyJ a`. Establish `hsum : ∀ c : Fin r → 𝓞 E, per (∑ i, c i • y i) = ∑ i, ρ (c i) (v i)`. Introduce `c`.
+
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hact, hyv]`. Use `⟨y, hyI, hyv, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.linearIndependent_iff]`.
+
+Introduce `c hc i`. Establish `h0 : ∑ i, c i • y i = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using hc`. Use `hind c (by rw [← hsum, h0, map_zero])` as an intermediate fact.
+
+Conclude with `congrFun this i`. Use `set P : Submodule (𝓞 E) W := Submodule.span (𝓞 E) (Set.range y) with hP`. Establish `hspan : oSpan ρ v = P.toAddSubgroup.map per`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[oSpan, AddSubgroup.closure_le]`.
+
+Introduce and unpack `p ⟨a, i, rfl⟩`. Use `⟨a • y i, ?_, ?_⟩` and prove the remaining obligations. Conclude with `P.smul_mem a (Submodule.subset_span ⟨i, rfl⟩)`. Simplify using `only [hact, hyv]`. Introduce and unpack `p ⟨x, hx, rfl⟩`.
+
+Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 E)).1 hx`. Use `show per _ ∈ _`. Rewrite using `[hsum]`. Conclude with `sum_mem fun i _ => AddSubgroup.subset_closure ⟨c i, i, rfl⟩`. Establish `hPΛ : (Submodule.span (𝓞 E) (Set.range fun a => (y a : Λ))).toAddSubgroup = P.toAddSubgroup.map W.subtype.toAddMonoidHom`.
+
+Establish `: Submodule.span (𝓞 E) (Set.range fun a => (y a : Λ)) = P.map W.subtype`. Rewrite using `[hP, Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[this]`. Use extensionality with `x`.
+
+Simplify using the standard rewrite rules. Establish `hIΛ : I.toAddSubgroup = J.toAddSubgroup.map W.subtype.toAddMonoidHom`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Conclude with `⟨⟨x, hIW hx⟩, hx, rfl⟩`. Introduce and unpack `⟨z, hz, rfl⟩`. Conclude with `hz`. Rewrite using `[hspan, hPΛ, hIΛ, AddSubgroup.relIndex_map_map_of_injective _ _ hinj, AddSubgroup.relIndex_map_map_of_injective _ _ W.injective_subtype]`.
+-/
 theorem oFamily_of_image : ∀ (E : Type) [Field E] [NumberField E] (g : ℕ) (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (W I : Submodule (𝓞 E) Λ) (per : W →+ (Fin g → ℂ)) (ρ : 𝓞 E →+* Module.End ℂ (Fin g → ℂ)) (r : ℕ) (v : Fin r → Fin g → ℂ), I ≤ W → Function.Injective per → (∀ (c : 𝓞 E) (x : W), per (c • x) = ρ c (per x)) → IsOFamily ρ (AddSubgroup.closure {p | ∃ x : W, (x : Λ) ∈ I ∧ p = per x}) v → ∃ y : Fin r → W, (∀ a, (y a : Λ) ∈ I) ∧ (∀ a, per (y a) = v a) ∧ LinearIndependent (𝓞 E) (fun a => (y a : Λ)) ∧ (oSpan ρ v).relIndex (AddSubgroup.closure {p | ∃ x : W, (x : Λ) ∈ I ∧ p = per x}) = (Submodule.span (𝓞 E) (Set.range fun a => (y a : Λ))).toAddSubgroup.relIndex I.toAddSubgroup := by
   intro E _ _ g Λ _ _ W I per ρ r v hIW hinj hact hO
   classical

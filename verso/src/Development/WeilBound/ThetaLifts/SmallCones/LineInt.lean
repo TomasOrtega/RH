@@ -22,6 +22,11 @@ def soSub (B : Base F E) (M : Model σ X W) : Submodule ℂ ((Fin n × Fin d →
   smul_mem' c a ha := ⟨Submodule.smul_mem _ _ ha.1, fun f => by
     rw [GlobalTheory.ThK.Dbl.Dense.pureA_smul]; exact Submodule.smul_mem _ _ (ha.2 f)⟩
 
+/- English proof (translation)
+Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem _ h`. Take `⟨f, φ, h1, h2, h3, rfl⟩` from `h`. Establish `: GlobalTheory.ThK.Dbl.Dense.pf φ ∈ soSub B M` using `⟨GlobalTheory.ThK.Dbl.Dense.pf_mem ⟨h1, by filter_upwards [h2, hM.std] with v a b using a.trans b⟩, fun f' => Submodule.subset_span ⟨f', φ, h1, h2, h3, rfl⟩⟩`. Use `Submodule.smul_mem _ (f x) this using 1` and compare the differences between its conclusion and the goal.
+
+Conclude with `funext fun y => pureA_pt f (GlobalTheory.ThK.Dbl.Dense.pf φ) x y`. Consider the case `zero => exact zero_mem _`. Consider the case `add a b _ _ ha hb => exact add_mem ha hb`. Consider the case `smul c a _ ha => exact Submodule.smul_mem _ c ha`.
+-/
 theorem contract {B : Base F E} {M : Model σ X W} (hM : M.IsGood B.ψ) {Φ : Fn F n d} (hΦ : Φ ∈ M.So B.ψ B.τ₁)
     (x : Fin n × Fin d → mixedSpace F) : (fun y : Fin n × Fin d → Af F => Φ fun i => pt (x i) (y i)) ∈ soSub B M := by
   induction hΦ using Submodule.span_induction with
@@ -35,6 +40,13 @@ theorem contract {B : Base F E} {M : Model σ X W} (hM : M.IsGood B.ψ) {Φ : Fn
   | add a b _ _ ha hb => exact add_mem ha hb
   | smul c a _ ha => exact Submodule.smul_mem _ c ha
 
+/- English proof (translation)
+Take `⟨q, hq⟩` from `(soSub B M).subtype.exists_leftInverse_of_injective (Submodule.ker_subtype _)`. Use `⟨fun i => q (φ i), fun i => (q (φ i)).2, fun g hg => funext fun w => ?_⟩` and prove the remaining obligations. Set `x : Fin n × Fin d → mixedSpace F` to `fun i => evI F (w i)`. Establish `h1 : ∑ i, g i x • φ i ∈ soSub B M`. Use `contract hM hg x using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `y`. Simplify using `only [Finset.sum_apply, pureA_pt, Pi.smul_apply, smul_eq_mul]`. Establish `h2` using `congrArg Subtype.val (LinearMap.congr_fun hq ⟨_, h1⟩)`. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, map_sum, map_smul, LinearMap.id_apply, Submodule.coe_sum, Submodule.coe_smul] at h2`. Establish `h3` using `congrFun h2 fun i => (w i).2`.
+
+Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at h3 ⊢`. Conclude with `h3.symm`.
+-/
 theorem exists_so {B : Base F E} {M : Model σ X W} (hM : M.IsGood B.ψ) {ι : Type} [Fintype ι]
     (φ : ι → (Fin n × Fin d → Af F) → ℂ) : ∃ φ' : ι → (Fin n × Fin d → Af F) → ℂ, (∀ i, φ' i ∈ soFin B M) ∧
       ∀ g : ι → SInf F (Fin n × Fin d), ∑ i, pureA F (g i) (φ i) ∈ M.So B.ψ B.τ₁ →
@@ -53,6 +65,15 @@ theorem exists_so {B : Base F E} {M : Model σ X W} (hM : M.IsGood B.ψ) {ι : T
   simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at h3 ⊢
   exact h3.symm
 
+/- English proof (translation)
+Use `choose p k G hp hG hG' hb using fun i => hD _ (h2 i)`. Take `⟨l₀, -, hl₀⟩` from `exists_adm_eq_thetaSum_of_locallyCompact F (Fin n × Fin d)`. Use `lt_of_le_of_lt (lintegral_mono (g := fun l => ∑ i, ENNReal.ofReal (p i (g i l) * t l) * (ENNReal.ofReal ((ht h : ℝ) ^ k i) * ∫⁻ x in M.dom, G i x ∂M.μ)) fun l => ?_) ?_` and prove the remaining obligations. Use `(mul_le_mul_left (lintegral_mono (g := fun x => ∑ i, ENNReal.ofReal (p i (g i l) * (ht h : ℝ) ^ k i) * G i x) fun x => ?_) _).trans (le_of_eq ?_)` and prove the remaining obligations. Use `le_trans (le_of_eq ?_) ((enorm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => hb i (g i l) x h))` and prove the remaining obligations.
+
+Rewrite using `[theta, ← hl₀ _ (hom _ _ (Submodule.sum_mem _ fun i _ => pureA_mem _ (h1 i))), map_sum, map_sum]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun i _ => hl₀ _ (hom _ _ (pureA_mem _ (h1 i)))`. Rewrite using `[lintegral_finsetSum _ fun i _ => (hG i).const_mul _, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[lintegral_const_mul _ (hG i), ENNReal.ofReal_mul (apply_nonneg _ _), ENNReal.ofReal_mul (apply_nonneg _ _)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[lintegral_finsetSum' _ fun i _ => (hg _ (hp i) i).aemeasurable.ennreal_ofReal.mul_const _]`. Use `ENNReal.sum_lt_top.2 fun i _ => ?_` and prove the remaining obligations. Establish `hc` using `ENNReal.mul_lt_top (ENNReal.ofReal_lt_top (r := (ht h : ℝ) ^ k i)) (hG' i)`.
+
+Rewrite using `[lintegral_mul_const' _ _ hc.ne]`. Conclude with `ENNReal.mul_lt_top (hg _ (hp i) i).lintegral_lt_top hc`.
+-/
 theorem dom_int {M : Model σ X W} {om : Rep σ X W} (hom : ∀ x, ∀ Φ ∈ schA F (Fin n × Fin d), om x Φ ∈ schA F _)
     {𝓕 : Set ((Fin n × Fin d → Af F) → ℂ)} (hD : Dom M om 𝓕) {ι : Type} [Fintype ι] {φ : ι → (Fin n × Fin d → Af F) → ℂ}
     (h1 : ∀ i, φ i ∈ SB _) (h2 : ∀ i, φ i ∈ 𝓕) {α : Type} [MeasurableSpace α] (μ : Measure α) (g : ι → α → SInf F (Fin n × Fin d))
@@ -83,6 +104,19 @@ end Line
 
 open Line
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d n₁ d₁ X W X₁ W₁ M M₁ hB hM hM₁ ι ι' I e he v₀ z₀ hz₀ hu τ hτ μ hμ z ν hz hν Ψ hΨ`. Take `⟨κ, _, φ, g, h1, h2, h3, h4⟩` from `nice hS hT hB hM hM₁ he hz₀ hu τ (by rcases hτ with rfl | rfl; exacts [fun _ => rfl, cA_cA hB.cm]) μ hμ hz hΨ`. Use `beta_reduce at h3`. Use `⟨fun om₁ hom hD h₁ => ?_, ?_⟩` and prove the remaining obligations. Break down `hD with hD | ⟨hD, hso⟩` into its components or cases.
+
+Simplify using `only [h3]`. Conclude with `dom_int hom hD h1 h1 μ (fun i l => g i l) _ (fun l => by positivity) h4 h₁`. Take `⟨φ', hφ', h5⟩` from `exists_so hM₁ φ`. Establish `h6 : ∀ a, e (M.co.rho B.ψ (τ a • incM F v₀) Ψ) = ∑ i, pureA F (g i a) (φ' i)` using `fun a => by`. Rewrite using `[h3, h5 _ (h3 a ▸ hso _)]`.
+
+Simplify using `only [h6]`. Conclude with `dom_int hom hD (fun i => (hφ' i).1) hφ' μ (fun i l => g i l) _ (fun l => by positivity) h4 h₁`. Take `⟨-, -, _, -, -, _, -⟩` from `ideleTop F E`. Set `c : (AE F E)ˣ → ℂ` to `fun l => (ν l : ℂ) * ((absE F E l : ℝ) : ℂ) ^ z`. Establish `hc : Continuous c` using `(continuous_subtype_val.comp hν).mul ((Complex.continuous_ofReal.comp (NNReal.continuous_coe.comp GlobalTheory.Doubling.continuous_absE)).pow z)`.
+
+Use `choose f hf using fun i => hI _ _ μ (fun l : (AE F E)ˣ => c l • g i l) (hc.smul ((h2 i).comp Units.continuous_val)) fun k j => (h4 _ ((schwartz_withSeminorms ℂ _ ℂ).continuous_seminorm (k, j)) i).congr (.of_forall fun l => by`. Simplify using `only [map_smul_eq_mul, c, norm_mul, Circle.norm_coe, one_mul, norm_pow, Complex.norm_real, NNReal.norm_eq]`. Conclude with `mul_comm _ _)`. Use `⟨∑ i, pureA F (f i) (φ i), Submodule.sum_mem _ fun i _ => pureA_mem _ (h1 i), fun l₁ hl₁ => ?_⟩` and prove the remaining obligations. Use `choose T hT using fun i => hl₁ _ (h1 i)`.
+
+Establish `e1 : (fun l : (AE F E)ˣ => l₁ (e (M.co.rho B.ψ (τ l.1 • incM F v₀) Ψ)) * (ν l : ℂ) * ((absE F E l : ℝ) : ℂ) ^ z) = fun l => ∑ i, T i (c l • g i l)` using `funext fun l => by`. Rewrite using `[h3, map_sum, mul_assoc, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hT, map_smul, smul_eq_mul, mul_comm]`. Rewrite using `[e1]`. Use `⟨integrable_finsetSum _ fun i _ => (hf i (T i)).1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[integral_finsetSum _ fun i _ => (hf i (T i)).1, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hT, (hf i (T i)).2]`.
+-/
 theorem lineInt_of (hS : Slice) (hI : SchInt) (hT : TateAbs) : LineInt := by
   intro F E _ _ _ _ _ σ B n d n₁ d₁ X W X₁ W₁ M M₁ hB hM hM₁ ι ι' I e he v₀ z₀ hz₀ hu τ hτ μ hμ z ν hz hν Ψ hΨ
   obtain ⟨κ, _, φ, g, h1, h2, h3, h4⟩ := nice hS hT hB hM hM₁ he hz₀ hu τ

@@ -26,6 +26,29 @@ variable {O : Type} [CommRing O] {J : Type} [Fintype J] (b : Basis J ℤ O)
 
 abbrev eigSpan : Submodule K V := ⨆ a : O, LinearMap.range (ρ a - χ a • LinearMap.id)
 
+/- English proof (translation)
+Take `⟨B, hB⟩ : ∃ B : Basis (Fin r × J) K V, ∀ q, B q = ρ (b q.2) (x q.1)` from `⟨Basis.mk hli hsp.ge, fun q => by simp⟩`. Take `⟨φ, hφB⟩ : ∃ φ : V →ₗ[K] (Fin r → K), ∀ q, φ (B q) = χ (b q.2) • Pi.single q.1 (1 : K)` from `⟨B.constr K fun q => χ (b q.2) • Pi.single q.1 (1 : K), fun q => B.constr_basis K _ q⟩`. Take `⟨ψ, hψ⟩ : ∃ ψ : (Fin r → K) →ₗ[K] V ⧸ eigSpan ρ χ, ∀ j, ψ (Pi.single j 1) = (eigSpan ρ χ).mkQ (x j)` from `⟨(Pi.basisFun K (Fin r)).constr K fun j => (eigSpan ρ χ).mkQ (x j), fun j => by`. Simplify using `using (Pi.basisFun K (Fin r)).constr_basis K (fun j => (eigSpan ρ χ).mkQ (x j)) j⟩`. Establish `hχ : ∀ a : O, χ a = ∑ k, ((b.repr a k : ℤ) : K) * χ (b k)`.
+
+Introduce `a`. Use `conv_lhs => rw [← b.sum_repr a]`. Simplify using `[map_sum, zsmul_eq_mul]`. Establish `hρ : ∀ (a : O) (v : V), ρ a v = ∑ k, (b.repr a k : ℤ) • ρ (b k) v`. Introduce `a v`.
+
+Use `conv_lhs => rw [← b.sum_repr a]`. Simplify using `[map_sum, LinearMap.sum_apply]`. Establish `hφx : ∀ (a : O) (j : Fin r), φ (ρ a (x j)) = χ a • Pi.single j (1 : K)`. Introduce `a j`. Rewrite using `[hρ, map_sum, hχ a, Finset.sum_smul]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `h` using `hφB (j, k)`. Rewrite `h` using `[hB]`. Rewrite using `[map_zsmul, h, mul_smul, Int.cast_smul_eq_zsmul]`. Establish `hx : ∀ j, φ (x j) = Pi.single j (1 : K)`.
+
+Introduce `j`. Simplify using `using hφx 1 j`. Establish `hφρ : ∀ (a : O) (v : V), φ (ρ a v) = χ a • φ v`. Introduce `a v`. Establish `h : φ ∘ₗ ρ a = χ a • φ`.
+
+Use `B.ext fun q => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, LinearMap.smul_apply, hφB, hB, ← Module.End.mul_apply, ← map_mul, hφx, map_mul, mul_smul]`. Conclude with `LinearMap.congr_fun h v`. Establish `hWk : eigSpan ρ χ ≤ LinearMap.ker φ`. Use `iSup_le fun a => ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨v, rfl⟩`. Simplify using `[hφρ]`. Establish `hmk : ∀ v, (eigSpan ρ χ).mkQ v = ψ (φ v)`. Establish `h : (eigSpan ρ χ).mkQ = ψ ∘ₗ φ`. Use `B.ext fun q => ?_` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.comp_apply, hφB, map_smul, hψ, hB, ← map_smul, Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Conclude with `Submodule.mem_iSup_of_mem (b q.2) (LinearMap.mem_range.2 ⟨x q.1, rfl⟩)`. Conclude with `fun v => LinearMap.congr_fun h v`. Set `e : (V ⧸ eigSpan ρ χ) ≃ₗ[K] (Fin r → K)` to `LinearEquiv.ofLinear ((eigSpan ρ χ).liftQ φ hWk) ψ ((Pi.basisFun K (Fin r)).ext fun j => by simp [hψ, hx]) (Submodule.linearMap_qext _ (LinearMap.ext fun v => by`. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply, Submodule.mkQ_apply, Submodule.liftQ_apply]`.
+
+Conclude with `(hmk v).symm))`. Establish `he : ∀ v, e ((eigSpan ρ χ).mkQ v) = φ v` using `fun v => by simp [e]`. Use `⟨(Pi.basisFun K (Fin r)).map e.symm, fun j => ?_, fun c j => ?_⟩` and prove the remaining obligations. Simplify using `[e, hψ]`. Rewrite using `[Basis.map_repr, LinearEquiv.trans_apply, LinearEquiv.symm_symm, he, Pi.basisFun_repr]`.
+
+Repeatedly rewrite using `[← hB]`. Rewrite using `[map_sum, Finset.sum_apply, Fintype.sum_prod_type, Finset.sum_eq_single j]`. Simplify using `[hφB]`. Introduce `j' _ hj'`. Simplify using `[hφB, Pi.single_apply, Ne.symm hj']`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem exists_quot_basis {r : ℕ} (x : Fin r → V)
     (hli : LinearIndependent K fun q : Fin r × J => ρ (b q.2) (x q.1))
     (hsp : Submodule.span K (Set.range fun q : Fin r × J => ρ (b q.2) (x q.1)) = ⊤) :
@@ -95,6 +118,19 @@ theorem exists_quot_basis {r : ℕ} (x : Fin r → V)
       simp [hφB, Pi.single_apply, Ne.symm hj']
     · simp
 
+/- English proof (translation)
+Use `delta GlobalTheory.CompanionTheory.Ar.Crv.IsLatOf`. Introduce `w`. Rewrite using `[AddSubgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`.
+
+Take `⟨c, hc, rfl⟩` from `(hL y).1 hy`. Introduce `j`. Use `show C.v i (bq.repr ((eigSpan ρ χ).mkQ (∑ q, c q • ρ (b q.2) (x q.1))) j) ≤ 1`. Rewrite using `[hbq c j]`. Use `Valuation.map_sum_le _ fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul]`. Conclude with `mul_le_one' (hc (j, k)) (hχ (b k))`. Introduce `hw`. Establish `h1 : χ 1 = ∑ k, ((b.repr 1 k : ℤ) : K) * χ (b k)` using `by conv_lhs => rw [← b.sum_repr 1]`. Simplify using `[map_sum, zsmul_eq_mul]`.
+
+Use `⟨∑ q : Fin r × J, (((b.repr 1 q.2 : ℤ) : K) * bq.repr w q.1) • ρ (b q.2) (x q.1), (hL _).2 ⟨fun q : Fin r × J => ((b.repr 1 q.2 : ℤ) : K) * bq.repr w q.1, fun q => ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show C.v i (((b.repr 1 q.2 : ℤ) : K) * bq.repr w q.1) ≤ 1`. Rewrite using `[map_mul]`. Use `mul_le_one' ?_ (hw q.1)` and prove the remaining obligations. Establish `h` using `hχ ((b.repr 1 q.2 : ℤ) : O)`.
+
+Rewrite `h` using `[map_intCast]`. Then use the resulting hypothesis. Use `show (eigSpan ρ χ).mkQ _ = w`. Use `bq.repr.injective (Finsupp.ext fun j => ?_)` and prove the remaining obligations. Rewrite using `[hbq (fun q : Fin r × J => ((b.repr 1 q.2 : ℤ) : K) * bq.repr w q.1) j]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Use `_ = bq.repr w j := by rw [← h1, map_one, _root_.mul_one]`.
+-/
 theorem isLatOf_quot {C : ACurve K} (i : C.I) {r : ℕ} {x : Fin r → V}
     (bq : Basis (Fin r) K (V ⧸ eigSpan ρ χ)) (L : AddSubgroup V) (hχ : ∀ a, C.v i (χ a) ≤ 1)
     (hbq : ∀ (c : Fin r × J → K) (j : Fin r),
@@ -141,6 +177,15 @@ section Place
 variable {E : Type} [Field E] [NumberField E] [StarRing (𝓞 E)] {K : Type} [Field K] {C : ACurve K}
   {p d r : ℕ} (F : Family C p d (𝓞 E)) (i : C.I)
 
+/- English proof (translation)
+Establish `hrho : ∀ a : O, rho B₂ a = (rho B a).map f`. Introduce `a`. Use extensionality with `k l`. Use `delta GlobalTheory.CompanionTheory.Ar.Conj.rho GlobalTheory.CompanionTheory.Ar.Conj.lin`. Simplify using `only [h.act, MvPowerSeries.coeff_map]`.
+
+Both sides reduce to the same expression. Establish `hbil : bil (B₂.ad a) 1 1 = (bil (B.ad a) 1 1).map f`. Use extensionality with `k l`. Use `delta GlobalTheory.CompanionTheory.Ar.Conj.bil`. Simplify using `only [h.ad, MvPowerSeries.coeff_map]`.
+
+Both sides reduce to the same expression. Use `Prod.ext (funext fun k => ?_) (funext fun k => ?_)` and prove the remaining obligations. Use `delta GlobalTheory.CompanionTheory.Ar.Conj.rhoH GlobalTheory.CompanionTheory.Ar.Flat.DegZ.vmap`. Simplify using `[hrho, RingHom.map_mulVec, Matrix.toLin'_apply, Function.comp_def]`. Use `delta GlobalTheory.CompanionTheory.Ar.Conj.rhoH GlobalTheory.CompanionTheory.Ar.Flat.DegZ.vmap`.
+
+Simplify using `[hrho, hbil, RingHom.map_mulVec, Matrix.toLin'_apply, Matrix.transpose_map, Function.comp_def]`.
+-/
 private theorem rhoH_vmap_of_isMapOf {R R₂ : Type} [CommRing R] [CommRing R₂] {n : ℕ} {O : Type} [CommRing O]
     [StarRing O] (f : R →+* R₂) {B : Germ.FB R n O} {B₂ : Germ.FB R₂ n O} (h : IsMapOf f B B₂) (a : O)
     (u : (Fin n → R) × (Fin n → R)) : rhoH B₂ a (vmap f u) = vmap f (rhoH B a u) := by
@@ -162,6 +207,9 @@ private theorem rhoH_vmap_of_isMapOf {R R₂ : Type} [CommRing R] [CommRing R₂
     simp [hrho, hbil, RingHom.map_mulVec, Matrix.toLin'_apply, Matrix.transpose_map,
       Function.comp_def]
 
+/- English proof (translation)
+Establish `h` using `(GlobalTheory.T.formal_isomorphism_transport _ _ _ _ _ _ _ _ (F.iso i)).2.2.2.2.1 a`. Rewrite using `[← LinearMap.comp_apply, h, LinearMap.comp_apply, rhoH_vmap_of_isMapOf _ (F.mapK i)]`.
+-/
 theorem rhoH_trans (a : 𝓞 E)
     (u : (Fin d → (C.v i).valuationSubring) × (Fin d → (C.v i).valuationSubring)) :
     rhoH F.B a (transH (F.φ i) (F.ψ i) (F.lam i) (vmap (C.v i).valuationSubring.subtype u)) =
@@ -169,6 +217,13 @@ theorem rhoH_trans (a : 𝓞 E)
   have h := (GlobalTheory.T.formal_isomorphism_transport _ _ _ _ _ _ _ _ (F.iso i)).2.2.2.2.1 a
   rw [← LinearMap.comp_apply, h, LinearMap.comp_apply, rhoH_vmap_of_isMapOf _ (F.mapK i)]
 
+/- English proof (translation)
+Use `⟨⟨⟨vmap A.subtype, ?_⟩, ?_⟩, ?_, fun u => rfl⟩` and prove the remaining obligations. Introduce `u u'`. Conclude with `Prod.ext (funext fun k => by delta GlobalTheory.CompanionTheory.Ar.Flat.DegZ.vmap; simp) (funext fun k => by delta GlobalTheory.CompanionTheory.Ar.Flat.DegZ.vmap; simp)`. Introduce `s u`. Conclude with `Prod.ext (funext fun k => by delta GlobalTheory.CompanionTheory.Ar.Flat.DegZ.vmap; simp [Algebra.smul_def]) (funext fun k => by delta GlobalTheory.CompanionTheory.Ar.Flat.DegZ.vmap; simp [Algebra.smul_def])`.
+
+Introduce `u u' h`. Establish `h1` using `congrArg Prod.fst h`. Establish `h2` using `congrArg Prod.snd h`. Use `Prod.ext (funext fun k => ?_) (funext fun k => ?_)` and prove the remaining obligations. Conclude with `Subtype.ext (congrFun h1 k)`.
+
+Conclude with `Subtype.ext (congrFun h2 k)`.
+-/
 private theorem exists_injective_linearMap_eq_vmap {Ω : Type} [Field Ω] (A : ValuationSubring Ω) (n : ℕ) :
     ∃ L : ((Fin n → A) × (Fin n → A)) →ₗ[A] ((Fin n → Ω) × (Fin n → Ω)),
       Function.Injective L ∧ ∀ u, L u = vmap A.subtype u := by
@@ -186,6 +241,11 @@ private theorem exists_injective_linearMap_eq_vmap {Ω : Type} [Field Ω] (A : V
   · exact Subtype.ext (congrFun h1 k)
   · exact Subtype.ext (congrFun h2 k)
 
+/- English proof (translation)
+Take `⟨L, hLi, hL⟩` from `exists_injective_linearMap_eq_vmap A n`. Establish `hA : LinearIndependent A (L ∘ v)` using `hli.map' L (LinearMap.ker_eq_bot.2 hLi)`. Establish `hK : LinearIndependent Ω (fun q => vmap A.subtype (v q))`. Use `(LinearIndependent.iff_fractionRing A Ω).1 hA` as an intermediate fact. Simplify `this` using `[Function.comp_def, hL]`.
+
+Use `⟨hK, Submodule.eq_top_of_finrank_eq ?_⟩` and prove the remaining obligations. Rewrite using `[finrank_span_eq_card hK, ← Module.finrank_eq_card_basis (Basis.mk hli hsp.ge)]`. Simplify using `[Module.finrank_prod, Module.finrank_fin_fun]`.
+-/
 private theorem vmap_basis_linearIndependent_and_span {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {n : ℕ} {Ix : Type}
     [Fintype Ix] {v : Ix → (Fin n → A) × (Fin n → A)} (hli : LinearIndependent A v)
     (hsp : Submodule.span A (Set.range v) = ⊤) :
@@ -201,6 +261,11 @@ private theorem vmap_basis_linearIndependent_and_span {Ω : Type} [Field Ω] (A 
   rw [finrank_span_eq_card hK, ← Module.finrank_eq_card_basis (Basis.mk hli hsp.ge)]
   simp [Module.finrank_prod, Module.finrank_fin_fun]
 
+/- English proof (translation)
+Take `⟨-, -, hbij, -⟩` from `GlobalTheory.T.formal_isomorphism_transport _ _ _ _ _ _ _ _ (F.iso i)`. Use `delta GlobalTheory.CompanionTheory.Ar.Flat.DegZ.IsHBasis at hx ⊢`. Take `⟨hli, hsp⟩` from `vmap_basis_linearIndependent_and_span (C.v i).valuationSubring hx.1 hx.2`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify `hli.map' (transH (F.φ i) (F.ψ i) (F.lam i)) (LinearMap.ker_eq_bot.2 hbij.1)` using `only [Function.comp_def, ← rhoH_trans F i]`.
+
+Establish `key : Submodule.span K (Set.range (transH (F.φ i) (F.ψ i) (F.lam i) ∘ fun q : Fin r × Module.Free.ChooseBasisIndex ℤ (𝓞 E) => vmap (C.v i).valuationSubring.subtype (rhoH (F.Bi i) (RingOfIntegers.basis E q.2) (x q.1)))) = ⊤`. Rewrite using `[Set.range_comp, Submodule.span_image, hsp, Submodule.map_top, LinearMap.range_eq_top.2 hbij.2]`. Simplify `key` using `only [Function.comp_def, ← rhoH_trans F i]`.
+-/
 theorem isHBasis_trans
     {x : Fin r → (Fin d → (C.v i).valuationSubring) × (Fin d → (C.v i).valuationSubring)}
     (hx : IsHBasis (F.Bi i) x) :
@@ -219,6 +284,23 @@ theorem isHBasis_trans
         LinearMap.range_eq_top.2 hbij.2]
     simpa only [Function.comp_def, ← rhoH_trans F i] using key
 
+/- English proof (translation)
+Use `delta GlobalTheory.CompanionTheory.Ar.Flat.DegZ.IsHBasis at hx`. Take `⟨L, -, hL⟩` from `exists_injective_linearMap_eq_vmap (C.v i).valuationSubring d`. Use `set T := transH (F.φ i) (F.ψ i) (F.lam i) with hT`. Use `set bA := Basis.mk hx.1 hx.2.ge with hbA`. Establish `hw : ∀ q : Fin r × Module.Free.ChooseBasisIndex ℤ (𝓞 E), rhoH F.B (RingOfIntegers.basis E q.2) (T (vmap (C.v i).valuationSubring.subtype (x q.1))) = T (L (bA q))`.
+
+Introduce `q`. Rewrite using `[hT, rhoH_trans F i, hL, hbA, Basis.mk_apply]`. Repeatedly rewrite using `[hw]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+
+Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨y₀, hy₀, rfl⟩` from `hz`. Set `u : (Fin d → (C.v i).valuationSubring) × (Fin d → (C.v i).valuationSubring)` to `(fun k => ⟨y₀.1 k, (hy₀ k).1⟩, fun k => ⟨y₀.2 k, (hy₀ k).2⟩)`. Establish `hu : L u = y₀`.
+
+Rewrite using `[hL]`. Both sides reduce to the same expression. Use `⟨fun q => (bA.repr u q : K), fun q => (Valuation.mem_valuationSubring_iff _ _).1 (bA.repr u q).2, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← hu, ← bA.sum_repr u, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul, LinearMap.map_smul_of_tower, ← algebraMap_smul K]`. Both sides reduce to the same expression. Consider the case `zero => exact ⟨0, fun q => by simp, by simp⟩`. Consider the case `add z z' _ _ hz hz'`. Take `⟨c, hc, rfl⟩` from `hz`.
+
+Take `⟨c', hc', rfl⟩` from `hz'`. Use `⟨c + c', fun q => Valuation.map_add_le _ (hc q) (hc' q), ?_⟩` and prove the remaining obligations. Simplify using `[add_smul, Finset.sum_add_distrib]`. Consider the case `smul s z _ hz`. Take `⟨c, hc, rfl⟩` from `hz`.
+
+Use `⟨fun q => (s : K) * c q, fun q => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_le_one' ((Valuation.mem_valuationSubring_iff _ _).1 s.2) (hc q)`. Rewrite using `[Subring.smul_def, Finset.smul_sum]`. Simplify using `[smul_smul]`.
+
+Introduce and unpack `⟨c, hc, rfl⟩`. Use `Submodule.sum_mem _ fun q _ => ?_` and prove the remaining obligations. Establish `hmem : T (L (bA q)) ∈ stdLat (C.v i).valuationSubring.toSubring T` using `Submodule.subset_span ⟨L (bA q), fun k => ⟨by rw [hL]; exact (bA q).1 k |>.2, by rw [hL]; exact (bA q).2 k |>.2⟩, rfl⟩`. Use `Submodule.smul_mem _ (⟨c q, (Valuation.mem_valuationSubring_iff _ _).2 (hc q)⟩ : (C.v i).valuationSubring.toSubring) hmem` as an intermediate fact. Simplify `this` using `[Subring.smul_def]`.
+-/
 theorem mem_stdLat_iff
     {x : Fin r → (Fin d → (C.v i).valuationSubring) × (Fin d → (C.v i).valuationSubring)}
     (hx : IsHBasis (F.Bi i) x) (y : (Fin d → K) × (Fin d → K)) :
@@ -276,6 +358,17 @@ theorem mem_stdLat_iff
 
 end Place
 
+/- English proof (translation)
+Take `⟨b₀, hb₀, -⟩` from `exists_quot_basis b ρ χ x₀ h₀li h₀sp`. Use `choose bq hbq1 hbq2 using fun i => exists_quot_basis b ρ χ (y i) (hyli i) (hysp i)`. Establish `hLat : ∀ i, GlobalTheory.CompanionTheory.Ar.Crv.IsLatOf C i (bq i) (GlobalTheory.CompanionTheory.Ar.Crv.quot C H (eigSpan ρ χ) i)` using `fun i => isLatOf_quot b ρ χ i (bq i) (H i) (hχ i) (hbq2 i) (hL i)`. Establish `hBun` using `(GlobalTheory.T.sub_and_quotient_bundles K C V H (eigSpan ρ χ) hH).2`. Take `⟨hfin, hdeg⟩` from `GlobalTheory.T.bundle_degree_eq_sum_valuations K C _ (GlobalTheory.CompanionTheory.Ar.Crv.quot C H (eigSpan ρ χ)) r b₀ bq hBun hLat`.
+
+Establish `hdet : ∀ i, b₀.det (bq i) = (N i).det`. Introduce `i`. Establish `hbqN : ∀ j, bq i j = ∑ l, N i j l • b₀ l`. Introduce `j`. Rewrite using `[hbq1 i j]`.
+
+Repeatedly rewrite using `[hb₀]`. Rewrite using `[show (∑ l, N i j l • (eigSpan ρ χ).mkQ (x₀ l)) = (eigSpan ρ χ).mkQ (∑ l, N i j l • x₀ l) by rw [map_sum]; simp only [map_smul]]`. Rewrite using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Conclude with `hN i j`. Establish `hM : b₀.toMatrix (bq i) = (N i).transpose`.
+
+Use extensionality with `a j`. Rewrite using `[Basis.toMatrix_apply, hbqN, Matrix.transpose_apply, ← Basis.equivFun_symm_apply, ← Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`. Rewrite using `[Basis.det_apply, hM, Matrix.det_transpose]`. Use `⟨fun i => ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hdet i]`.
+
+Conclude with `(b₀.isUnit_det (bq i)).ne_zero`. Simplify `hfin` using `only [hdet]`. Rewrite `h0` using `[hdeg]`. Simplify `h0` using `only [hdet]`.
+-/
 private theorem quot_deg_lemma_4 {K : Type} [Field K] (C : ACurve K) {V : Type} [AddCommGroup V]
     [Module K V] [FiniteDimensional K V] {O : Type} [CommRing O] {J : Type} [Fintype J]
     (b : Basis J ℤ O) (ρ : O →+* Module.End K V) (χ : O →+* K) (H : C.I → AddSubgroup V)
@@ -323,6 +416,17 @@ private theorem quot_deg_lemma_4 {K : Type} [Field K] (C : ACurve K) {V : Type} 
   · rw [hdeg] at h0
     simpa only [hdet] using h0
 
+/- English proof (translation)
+Introduce `E _ _ _ K _ C p _ _ d r F χ hspl hχ x₀ x N hx₀ hx hN`. Break down `isEmpty_or_nonempty C.I with hI | hI` into its components or cases. Use `⟨fun i => (IsEmpty.false i).elim, Set.finite_empty.subset fun i _ => (IsEmpty.false i).elim, ?_⟩` and prove the remaining obligations. Rewrite using `[finsum_of_isEmpty]`. Take `⟨D, hDρ, hDH⟩` from `GlobalTheory.T.family_hodge_lattice_data K C p d (𝓞 E) F hI`.
+
+Establish `hW : eigW F.B χ = eigSpan D.ρH χ` using `by delta GlobalTheory.CompanionTheory.Ar.Flat.DegZ.eigW`. Simplify using `only [eigSpan, hDρ]`. Take `⟨h₀li, h₀sp⟩` from `hx₀`. Establish `hHB` using `fun i => isHBasis_trans F i (hx i)`. Establish `hL : ∀ i y, y ∈ D.H i ↔ ∃ c : Fin r × Module.Free.ChooseBasisIndex ℤ (𝓞 E) → K, (∀ q, C.v i (c q) ≤ 1) ∧ y = ∑ q, c q • D.ρH (RingOfIntegers.basis E q.2) (transH (F.φ i) (F.ψ i) (F.lam i) (vmap (C.v i).valuationSubring.subtype (x i q.1)))`.
+
+Introduce `i y`. Rewrite using `[hDH i y, mem_stdLat_iff F i (hx i) y]`. Simplify using `only [hDρ]`. Establish `hyli : ∀ i, LinearIndependent K fun q : Fin r × Module.Free.ChooseBasisIndex ℤ (𝓞 E) => D.ρH (RingOfIntegers.basis E q.2) (transH (F.φ i) (F.ψ i) (F.lam i) (vmap (C.v i).valuationSubring.subtype (x i q.1)))`. Introduce `i`.
+
+Take `⟨h1, -⟩` from `hHB i`. Simplify `h1` using `only [hDρ]`. Establish `hysp : ∀ i, Submodule.span K (Set.range fun q : Fin r × Module.Free.ChooseBasisIndex ℤ (𝓞 E) => D.ρH (RingOfIntegers.basis E q.2) (transH (F.φ i) (F.ψ i) (F.lam i) (vmap (C.v i).valuationSubring.subtype (x i q.1)))) = ⊤`. Introduce `i`. Take `⟨-, h2⟩` from `hHB i`.
+
+Simplify `h2` using `only [hDρ]`. Establish `h0` using `GlobalTheory.T.split_hermitian_generators_exist E K C p d r D χ hspl fun i => ⟨fun j => transH (F.φ i) (F.ψ i) (F.lam i) (vmap (C.v i).valuationSubring.subtype (x i j)), hyli i, hL i⟩`. Conclude with `quot_deg_lemma_4 C (RingOfIntegers.basis E) D.ρH χ D.H D.H_bun hχ x₀ (by simpa only [hDρ] using h₀li) (by simpa only [hDρ] using h₀sp) (fun i j => transH (F.φ i) (F.ψ i) (F.lam i) (vmap (C.v i).valuationSubring.subtype (x i j))) hyli hysp hL N (fun i j => by rw [← hW]; exact hN i …`.
+-/
 theorem curve_deg : ∀ (E : Type) [Field E] [NumberField E] [StarRing (𝓞 E)] (K : Type) [Field K] (C : ACurve K) (p : ℕ) [Fact p.Prime] [CharP K p] (d r : ℕ) (F : Family C p d (𝓞 E)) (χ : 𝓞 E →+* K), (∀ a : 𝓞 E, ((Algebra.lmul ℤ (𝓞 E) a : Module.End ℤ (𝓞 E)).charpoly.map (Int.castRingHom K)).Splits) → (∀ (i : C.I) (a : 𝓞 E), C.v i (χ a) ≤ 1) → ∀ (x₀ : Fin r → (Fin d → K) × (Fin d → K)) (x : ∀ i : C.I, Fin r → (Fin d → (C.v i).valuationSubring) × (Fin d → (C.v i).valuationSubring)) (N : C.I → Matrix (Fin r) (Fin r) K), IsHBasis F.B x₀ → (∀ i, IsHBasis (F.Bi i) (x i)) → (∀ i j, transH (F.φ i) (F.ψ i) (F.lam i) (vmap (C.v i).valuationSubring.subtype (x i j)) - ∑ l, N i j l • x₀ l ∈ eigW F.B χ) → (∀ i, (N i).det ≠ 0) ∧ {i | C.v i (N i).det ≠ 1}.Finite ∧ ∑ᶠ i, (C.w i : ℤ) * WithZero.log (C.v i (N i).det) = 0 := by
   intro E _ _ _ K _ C p _ _ d r F χ hspl hχ x₀ x N hx₀ hx hN
   classical

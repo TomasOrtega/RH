@@ -13,6 +13,13 @@ section Cosets
 
 variable {α : Type*} [Group α] {W : Type*} [AddCommGroup W]
 
+/- English proof (translation)
+Use `set e := Subgroup.quotientEquivProdOfLE h`. Establish `key : ∀ a : α ⧸ s, φ (Quotient.out a) = φ (Quotient.out (e a).1)`. Introduce `a`. Establish `h1 : (e a).1 = (QuotientGroup.mk (Quotient.out a) : α ⧸ t)` using `by conv_lhs => rw [← Quotient.out_eq' a]`. Both sides reduce to the same expression.
+
+Rewrite using `[h1]`. Take `⟨b, hb⟩` from `QuotientGroup.mk_out_eq_mul t (Quotient.out a)`. Rewrite using `[hb, hφ _ _ b.2]`. Rewrite using `[Fintype.sum_congr _ _ key, e.sum_comp (fun p => φ (Quotient.out p.1)), Fintype.sum_prod_type]`. Simplify using `only [Finset.sum_const, Finset.card_univ]`.
+
+Rewrite using `[Finset.smul_sum, Subgroup.relIndex, Subgroup.index, Nat.card_eq_fintype_card]`.
+-/
 theorem sum_quotient_out_of_le {s t : Subgroup α} (h : s ≤ t) [Fintype (α ⧸ s)] [Fintype (α ⧸ t)]
     [Fintype (t ⧸ s.subgroupOf t)] (φ : α → W) (hφ : ∀ a, ∀ b ∈ t, φ (a * b) = φ a) :
     ∑ q : α ⧸ s, φ (Quotient.out q) = (s.relIndex t) • ∑ q : α ⧸ t, φ (Quotient.out q) := by
@@ -51,6 +58,9 @@ def rightStab (f : G → W) : Subgroup G where
     exact this.symm
 
 omit [AddCommGroup W] [Module ℂ W] in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_rightStab {f : G → W} {g : G} : g ∈ rightStab f ↔ ∀ x, f (x * g) = f x :=
   Iff.rfl
 
@@ -60,12 +70,26 @@ def avgSub (K : Subgroup G) (S : Subgroup K) (f : G → W) (x : G) : W :=
 def avgOver (K : Subgroup G) (f : G → W) (x : G) : W :=
   avgSub K ((rightStab f).subgroupOf K) f x
 
+/- English proof (translation)
+Rewrite using `[avgSub, finsum_eq_sum_of_fintype]`.
+-/
 theorem avgSub_eq_sum (K : Subgroup G) (S : Subgroup K) [Fintype (K ⧸ S)] (f : G → W) (x : G) :
     avgSub K S f x = ((S.index : ℂ)⁻¹) • ∑ q : K ⧸ S, f (x * ((Quotient.out q : K) : G)) := by
   rw [avgSub, finsum_eq_sum_of_fintype]
 
 variable {K : Subgroup G} {f : G → W}
 
+/- English proof (translation)
+Use `set t := (rightStab f).subgroupOf K`. Establish `: S.FiniteIndex` using `⟨hSi⟩`. Establish `hti : t.index ≠ 0` using `fun h0 => hSi (Nat.eq_zero_of_zero_dvd (h0 ▸ Subgroup.index_dvd_of_le hS))`. Establish `: t.FiniteIndex` using `⟨hti⟩`. Establish `hrel : S.relIndex t ≠ 0`.
+
+Introduce `h0`. Apply `hSi` to reduce the goal to its premises. Rewrite using `[← Subgroup.relIndex_mul_index hS, h0, zero_mul]`. Establish `: (S.subgroupOf t).FiniteIndex` using `⟨hrel⟩`. Set `_` to `Fintype.ofFinite (K ⧸ S)`.
+
+Set `_` to `Fintype.ofFinite (K ⧸ t)`. Set `_` to `Fintype.ofFinite (t ⧸ S.subgroupOf t)`. Rewrite using `[avgOver, avgSub_eq_sum, avgSub_eq_sum, sum_quotient_out_of_le hS (fun k : K => f (x * (k : G))) (fun a b hb => by show f (x * ((a : G) * (b : G))) = f (x * a)`. Rewrite using `[← mul_assoc]`. Conclude with `hb _),`.
+
+Use the proof step `← Subgroup.relIndex_mul_index hS, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, Nat.cast_mul]`. Use `congr 1`. Establish `: (S.relIndex t : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hrel`. Establish `h2 : (t.index : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hti`. Clear the denominators using the available nonvanishing facts.
+
+Conclude with `div_self h2`.
+-/
 theorem avgOver_eq_avgSub {S : Subgroup K} (hS : S ≤ (rightStab f).subgroupOf K) (hSi : S.index ≠ 0)
     (x : G) : avgOver K f x = avgSub K S f x := by
   classical
@@ -95,12 +119,24 @@ theorem avgOver_eq_avgSub {S : Subgroup K} (hS : S ≤ (rightStab f).subgroupOf 
 
 abbrev AvgFinite (K : Subgroup G) (f : G → W) : Prop := (rightStab f).relIndex K ≠ 0
 
+/- English proof (translation)
+Rewrite using `[avgOver, avgSub_eq_sum]`. Both sides reduce to the same expression.
+-/
 theorem avgOver_eq_sum [Fintype (K ⧸ (rightStab f).subgroupOf K)] (x : G) :
     avgOver K f x = (((rightStab f).relIndex K : ℂ)⁻¹) •
       ∑ q : K ⧸ (rightStab f).subgroupOf K, f (x * ((Quotient.out q : K) : G)) := by
   rw [avgOver, avgSub_eq_sum]
   rfl
 
+/- English proof (translation)
+Use `set S := (rightStab f).subgroupOf K`. Establish `: S.FiniteIndex` using `⟨hf⟩`. Set `_` to `Fintype.ofFinite (K ⧸ S)`. Simplify using `only [avgOver]`. Rewrite using `[avgSub_eq_sum, avgSub_eq_sum]`.
+
+Use `congr 1`. Set `k' : K` to `⟨k, hk⟩`. Use `Fintype.sum_equiv (MulAction.toPerm k') _ _ fun q => ?_` and prove the remaining obligations. Use `show f (x * k * (Quotient.out q : K)) = f (x * (Quotient.out (k' • q) : K))`. Establish `h1 : k' • q = (QuotientGroup.mk (k' * Quotient.out q) : K ⧸ S)` using `by conv_lhs => rw [← QuotientGroup.out_eq' q]`.
+
+Both sides reduce to the same expression. Rewrite using `[h1]`. Take `⟨b, hb⟩` from `QuotientGroup.mk_out_eq_mul S (k' * Quotient.out q)`. Rewrite using `[hb]`. Establish `hb' : ((b : K) : G) ∈ rightStab f` using `b.2`.
+
+Simplify using `only [Subgroup.coe_mul]`. Rewrite using `[← mul_assoc, ← mul_assoc, hb' _, mul_assoc]`.
+-/
 theorem avgOver_mul_right (hf : AvgFinite K f) {k : G} (hk : k ∈ K) (x : G) :
     avgOver K f (x * k) = avgOver K f x := by
   classical
@@ -123,9 +159,15 @@ theorem avgOver_mul_right (hf : AvgFinite K f) {k : G} (hk : k ∈ K) (x : G) :
   simp only [Subgroup.coe_mul]
   rw [← mul_assoc, ← mul_assoc, hb' _, mul_assoc]
 
+/- English proof (translation)
+Introduce `_ hk x` and use `avgOver_mul_right hf hk x`.
+-/
 theorem le_rightStab_avgOver (hf : AvgFinite K f) : K ≤ rightStab (avgOver K f) :=
   fun _ hk x => avgOver_mul_right hf hk x
 
+/- English proof (translation)
+Establish `hle : (rightStab f).subgroupOf K ≤ (rightStab fun y => T (f y)).subgroupOf K` using `fun k hk y => by show T (f (y * (k : G))) = T (f y)`. Conclude with `congrArg T (hk y)`. Establish `: ((rightStab f).subgroupOf K).FiniteIndex` using `⟨hf⟩`. Set `_` to `Fintype.ofFinite (K ⧸ (rightStab f).subgroupOf K)`. Rewrite using `[avgOver_eq_avgSub hle hf, avgOver, avgSub_eq_sum, avgSub_eq_sum, map_smul, map_sum]`.
+-/
 theorem avgOver_comp_linearMap (hf : AvgFinite K f) {W' : Type*} [AddCommGroup W'] [Module ℂ W']
     (T : W →ₗ[ℂ] W') (x : G) :
     avgOver K (fun y => T (f y)) x = T (avgOver K f x) := by
@@ -138,6 +180,13 @@ theorem avgOver_comp_linearMap (hf : AvgFinite K f) {W' : Type*} [AddCommGroup W
   let _ := Fintype.ofFinite (K ⧸ (rightStab f).subgroupOf K)
   rw [avgOver_eq_avgSub hle hf, avgOver, avgSub_eq_sum, avgSub_eq_sum, map_smul, map_sum]
 
+/- English proof (translation)
+Establish `hst : rightStab (fun y => f (h * y)) = rightStab f`. Use extensionality with `g`. Simplify using `only [mem_rightStab]`. Prove the components needed by the constructor for the conclusion. Introduce `H y`.
+
+Use `H (h⁻¹ * y)` as an intermediate fact. Simplify using `only [← mul_assoc, mul_inv_cancel, one_mul] at this`. Conclude with `this`. Introduce `H y`. Rewrite using `[← mul_assoc, H]`.
+
+Rewrite using `[avgOver, avgOver, avgSub, avgSub, hst]`. Simplify using `only [mul_assoc]`.
+-/
 theorem avgOver_comp_mul_left (h x : G) :
     avgOver K (fun y => f (h * y)) x = avgOver K f (h * x) := by
   have hst : rightStab (fun y => f (h * y)) = rightStab f := by
@@ -160,6 +209,13 @@ section Average2
 variable {G : Type*} [Group G] {W : Type*} [AddCommGroup W] [Module ℂ W]
   {K : Subgroup G} {f : G → W}
 
+/- English proof (translation)
+Establish `: S.FiniteIndex` using `⟨hSi⟩`. Set `_` to `Fintype.ofFinite (K ⧸ S)`. Rewrite using `[avgSub_eq_sum, avgSub_eq_sum]`. Use `congr 1`. Set `k' : K` to `⟨k, hk⟩`.
+
+Use `Fintype.sum_equiv (Equiv.mulRight (QuotientGroup.mk k' : K ⧸ S)) _ _ fun q => ?_` and prove the remaining obligations. Use `show f (x * ((Quotient.out q : K) : G) * k) = f (x * ((Quotient.out (q * (QuotientGroup.mk k' : K ⧸ S)) : K) : G))`. Establish `h1 : q * (QuotientGroup.mk k' : K ⧸ S) = QuotientGroup.mk (Quotient.out q * k')`. Rewrite using `[QuotientGroup.mk_mul, QuotientGroup.out_eq']`. Rewrite using `[h1]`.
+
+Take `⟨b, hb⟩` from `QuotientGroup.mk_out_eq_mul S (Quotient.out q * k')`. Rewrite using `[hb]`. Establish `hb' : ((b : K) : G) ∈ rightStab f` using `hS b.2`. Simplify using `only [Subgroup.coe_mul]`. Rewrite using `[← mul_assoc, ← mul_assoc, hb' _, mul_assoc]`.
+-/
 theorem avgSub_comp_mul_right_of_normal {S : Subgroup K} [S.Normal] (hSi : S.index ≠ 0)
     (hS : S ≤ (rightStab f).subgroupOf K) {k : G} (hk : k ∈ K) (x : G) :
     avgSub K S (fun y => f (y * k)) x = avgSub K S f x := by
@@ -181,6 +237,17 @@ theorem avgSub_comp_mul_right_of_normal {S : Subgroup K} [S.Normal] (hSi : S.ind
   simp only [Subgroup.coe_mul]
   rw [← mul_assoc, ← mul_assoc, hb' _, mul_assoc]
 
+/- English proof (translation)
+Use `set S := (rightStab f).subgroupOf K`. Establish `: S.FiniteIndex` using `⟨hf⟩`. Use `set N := S.normalCore`. Establish `hNi : N.index ≠ 0` using `Subgroup.FiniteIndex.index_ne_zero`. Establish `hN1 : N ≤ S` using `Subgroup.normalCore_le S`.
+
+Establish `hN2 : N ≤ (rightStab fun y => f (y * k)).subgroupOf K`. Introduce `n hn y`. Use `show f (y * (n : G) * k) = f (y * k)`. Set `k' : K` to `⟨k, hk⟩`. Establish `hc : k'⁻¹ * n * k' ∈ N`.
+
+Use `(Subgroup.normalCore_normal S).conj_mem n hn k'⁻¹` as an intermediate fact. Simplify using `using this`. Establish `hc' : ((k'⁻¹ * n * k' : K) : G) ∈ rightStab f` using `hN1 hc`. Use `hc' (y * k)` as an intermediate fact. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv] at this`.
+
+Rewrite using `[← this]`. Use `congr 1`. Simplify using `only [k']`. Use `group`. Use function extensionality and compare the values at `x`.
+
+Rewrite using `[avgOver_eq_avgSub hN2 hNi, avgOver_eq_avgSub hN1 hNi]`. Conclude with `avgSub_comp_mul_right_of_normal hNi hN1 hk x`.
+-/
 theorem avgOver_comp_mul_right (hf : AvgFinite K f) {k : G} (hk : k ∈ K) :
     avgOver K (fun y => f (y * k)) = avgOver K f := by
   set S := (rightStab f).subgroupOf K
@@ -206,6 +273,11 @@ theorem avgOver_comp_mul_right (hf : AvgFinite K f) {k : G} (hk : k ∈ K) :
   rw [avgOver_eq_avgSub hN2 hNi, avgOver_eq_avgSub hN1 hNi]
   exact avgSub_comp_mul_right_of_normal hNi hN1 hk x
 
+/- English proof (translation)
+Establish `hle : (⊤ : Subgroup K) ≤ (rightStab f).subgroupOf K` using `fun k _ => h k k.2`. Establish `hi : (⊤ : Subgroup K).index ≠ 0` using `by rw [Subgroup.index_top]; exact one_ne_zero`. Establish `: (⊤ : Subgroup K).FiniteIndex` using `⟨hi⟩`. Set `_` to `Fintype.ofFinite (K ⧸ (⊤ : Subgroup K))`. Use function extensionality and compare the values at `x`.
+
+Rewrite using `[avgOver_eq_avgSub hle hi, avgSub_eq_sum]`. Establish `hterm : ∀ q : K ⧸ (⊤ : Subgroup K), f (x * ((Quotient.out q : K) : G)) = f x` using `fun q => h _ (Quotient.out q).2 x`. Rewrite using `[Fintype.sum_congr _ _ hterm, Finset.sum_const, Finset.card_univ, ← Nat.card_eq_fintype_card, ← Subgroup.index, Subgroup.index_top, one_smul, Nat.cast_one, inv_one, one_smul]`.
+-/
 theorem avgOver_of_forall (h : ∀ k ∈ K, ∀ y, f (y * k) = f y) : avgOver K f = f := by
   classical
   have hle : (⊤ : Subgroup K) ≤ (rightStab f).subgroupOf K := fun k _ => h k k.2
@@ -220,6 +292,13 @@ theorem avgOver_of_forall (h : ∀ k ∈ K, ∀ y, f (y * k) = f y) : avgOver K 
     ← Nat.card_eq_fintype_card, ← Subgroup.index, Subgroup.index_top, one_smul, Nat.cast_one,
     inv_one, one_smul]
 
+/- English proof (translation)
+Use `set S := (rightStab f ⊓ rightStab g).subgroupOf K`. Establish `hSi : S.index ≠ 0` using `Subgroup.relIndex_inf_ne_zero hf hg`. Establish `h1 : S ≤ (rightStab f).subgroupOf K` using `fun k hk => (Subgroup.mem_inf.1 hk).1`. Establish `h2 : S ≤ (rightStab g).subgroupOf K` using `fun k hk => (Subgroup.mem_inf.1 hk).2`. Establish `h3 : S ≤ (rightStab (f + g)).subgroupOf K` using `fun k hk y => by show f (y * (k : G)) + g (y * (k : G)) = f y + g y`.
+
+Conclude with `congrArg₂ (· + ·) ((Subgroup.mem_inf.1 hk).1 y) ((Subgroup.mem_inf.1 hk).2 y)`. Establish `: S.FiniteIndex` using `⟨hSi⟩`. Set `_` to `Fintype.ofFinite (K ⧸ S)`. Use function extensionality and compare the values at `x`. Rewrite using `[Pi.add_apply, avgOver_eq_avgSub h3 hSi, avgOver_eq_avgSub h1 hSi, avgOver_eq_avgSub h2 hSi, avgSub_eq_sum, avgSub_eq_sum, avgSub_eq_sum, ← smul_add, ← Finset.sum_add_distrib]`.
+
+Both sides reduce to the same expression.
+-/
 theorem avgOver_add {g : G → W} (hf : AvgFinite K f) (hg : AvgFinite K g) :
     avgOver K (f + g) = avgOver K f + avgOver K g := by
   classical
@@ -237,12 +316,18 @@ theorem avgOver_add {g : G → W} (hf : AvgFinite K f) (hg : AvgFinite K g) :
     avgSub_eq_sum, avgSub_eq_sum, avgSub_eq_sum, ← smul_add, ← Finset.sum_add_distrib]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Use `avgOver_comp_linearMap hf (c • LinearMap.id) x` as an intermediate fact. Use `show avgOver K (fun y => c • f y) x = c • avgOver K f x`. Simplify using `using this`.
+-/
 theorem avgOver_smul (c : ℂ) (hf : AvgFinite K f) : avgOver K (c • f) = c • avgOver K f := by
   funext x
   have := avgOver_comp_linearMap hf (c • LinearMap.id) x
   show avgOver K (fun y => c • f y) x = c • avgOver K f x
   simpa using this
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Rewrite using `[avgOver_eq_sum, Pi.smul_apply, Finset.sum_apply]`.
+-/
 theorem avgOver_eq_sum_translates
     [Fintype (K ⧸ (rightStab f).subgroupOf K)] :
     avgOver K f = (((rightStab f).relIndex K : ℂ)⁻¹) •
@@ -250,6 +335,9 @@ theorem avgOver_eq_sum_translates
   funext x
   rw [avgOver_eq_sum, Pi.smul_apply, Finset.sum_apply]
 
+/- English proof (translation)
+Establish `: ((rightStab f).subgroupOf K).FiniteIndex` using `⟨hf⟩`. Set `_` to `Fintype.ofFinite (K ⧸ (rightStab f).subgroupOf K)`. Rewrite using `[avgOver_eq_sum_translates]`. Conclude with `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun q _ => hV _ (Quotient.out q).2)`.
+-/
 theorem avgOver_mem (hf : AvgFinite K f) {V : Submodule ℂ (G → W)}
     (hV : ∀ k ∈ K, (fun y => f (y * k)) ∈ V) : avgOver K f ∈ V := by
   classical
@@ -258,6 +346,11 @@ theorem avgOver_mem (hf : AvgFinite K f) {V : Submodule ℂ (G → W)}
   rw [avgOver_eq_sum_translates]
   exact Submodule.smul_mem _ _ (Submodule.sum_mem _ fun q _ => hV _ (Quotient.out q).2)
 
+/- English proof (translation)
+Establish `: ((rightStab f).subgroupOf K).FiniteIndex` using `⟨hf⟩`. Set `_` to `Fintype.ofFinite (K ⧸ (rightStab f).subgroupOf K)`. Establish `hI : (((rightStab f).relIndex K : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hf`. Establish `hcard : Fintype.card (K ⧸ (rightStab f).subgroupOf K) = (rightStab f).relIndex K`. Rewrite using `[Subgroup.relIndex, Subgroup.index, Nat.card_eq_fintype_card]`.
+
+Establish `key : f - avgOver K f = -((((rightStab f).relIndex K : ℂ)⁻¹) • ∑ q : K ⧸ (rightStab f).subgroupOf K, ((fun y => f (y * ((Quotient.out q : K) : G))) - f))`. Rewrite using `[avgOver_eq_sum_translates, Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, hcard, ← Nat.cast_smul_eq_nsmul ℂ, smul_sub, smul_smul, inv_mul_cancel₀ hI, one_smul, neg_sub]`. Rewrite using `[key]`. Use `Submodule.neg_mem _ (Submodule.smul_mem _ _ (Submodule.sum_mem _ fun q _ => ?_))` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨_, (Quotient.out q).2, rfl⟩`.
+-/
 theorem sub_avgOver_mem_span (hf : AvgFinite K f) :
     f - avgOver K f ∈ Submodule.span ℂ {g | ∃ k ∈ K, g = (fun y => f (y * k)) - f} := by
   classical
@@ -276,6 +369,9 @@ theorem sub_avgOver_mem_span (hf : AvgFinite K f) :
   refine Submodule.neg_mem _ (Submodule.smul_mem _ _ (Submodule.sum_mem _ fun q _ => ?_))
   exact Submodule.subset_span ⟨_, (Quotient.out q).2, rfl⟩
 
+/- English proof (translation)
+Establish `: (H.subgroupOf K').FiniteIndex` using `⟨h⟩`. Establish `: Finite (K ⧸ H.subgroupOf K)` using `Finite.of_injective _ (Subgroup.quotientSubgroupOfEmbeddingOfLE H hKK').injective`. Conclude with `Subgroup.index_ne_zero_of_finite`.
+-/
 theorem relIndex_ne_zero_of_le_right {H K K' : Subgroup G} (hKK' : K ≤ K')
     (h : H.relIndex K' ≠ 0) : H.relIndex K ≠ 0 := by
   have : (H.subgroupOf K').FiniteIndex := ⟨h⟩
@@ -283,6 +379,25 @@ theorem relIndex_ne_zero_of_le_right {H K K' : Subgroup G} (hKK' : K ≤ K')
     Finite.of_injective _ (Subgroup.quotientSubgroupOfEmbeddingOfLE H hKK').injective
   exact Subgroup.index_ne_zero_of_finite
 
+/- English proof (translation)
+Establish `hf : AvgFinite K f` using `relIndex_ne_zero_of_le_right hKK' hf'`. Use `set S' := (rightStab f).subgroupOf K'`. Establish `: S'.FiniteIndex` using `⟨hf'⟩`. Use `set N := S'.normalCore`. Establish `hNi : N.index ≠ 0` using `Subgroup.FiniteIndex.index_ne_zero`.
+
+Establish `hN1 : N ≤ S'` using `Subgroup.normalCore_le S'`. Establish `: ((rightStab f).subgroupOf K).FiniteIndex` using `⟨hf⟩`. Set `_` to `Fintype.ofFinite (K ⧸ (rightStab f).subgroupOf K)`. Establish `: N.FiniteIndex` using `⟨hNi⟩`. Set `_` to `Fintype.ofFinite (K' ⧸ N)`.
+
+Establish `hN2 : N ≤ (rightStab (avgOver K f)).subgroupOf K'`. Introduce `n hn y`. Use `show avgOver K f (y * (n : G)) = avgOver K f y`. Rewrite using `[avgOver_eq_sum, avgOver_eq_sum]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Use `set k : K := Quotient.out q`. Set `k' : K'` to `⟨k, hKK' k.2⟩`. Establish `hc : k'⁻¹ * n * k' ∈ N`. Use `(Subgroup.normalCore_normal S').conj_mem n hn k'⁻¹` as an intermediate fact.
+
+Simplify using `using this`. Establish `hc' : ((k'⁻¹ * n * k' : K') : G) ∈ rightStab f` using `hN1 hc`. Use `hc' (y * (k : G))` as an intermediate fact. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, k'] at this`. Rewrite using `[← this]`.
+
+Use `congr 1`. Use `group`. Use function extensionality and compare the values at `x`. Rewrite using `[avgOver_eq_avgSub hN2 hNi, avgOver_eq_avgSub hN1 hNi, avgSub_eq_sum, avgSub_eq_sum]`. Simplify using `only [avgOver_eq_sum, Finset.smul_sum]`.
+
+Rewrite using `[Finset.sum_comm]`. Establish `hterm : ∀ q : K ⧸ (rightStab f).subgroupOf K, ∑ q' : K' ⧸ N, ((N.index : ℂ)⁻¹) • ((((rightStab f).relIndex K : ℂ)⁻¹) • f (x * ((Quotient.out q' : K') : G) * ((Quotient.out q : K) : G))) = (((rightStab f).relIndex K : ℂ)⁻¹) • avgSub K' N f x`. Introduce `q`. Use `avgSub_comp_mul_right_of_normal hNi hN1 (hKK' (Quotient.out q).2) x` as an intermediate fact. Rewrite `this` using `[avgSub_eq_sum, avgSub_eq_sum]`.
+
+Rewrite using `[avgSub_eq_sum, ← this, Finset.smul_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun q' _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, smul_smul, mul_comm]`. Rewrite using `[Finset.sum_congr rfl fun q _ => hterm q, Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, avgSub_eq_sum]`. Establish `hcard : (Fintype.card (K ⧸ (rightStab f).subgroupOf K) : ℂ) = (rightStab f).relIndex K`.
+
+Rewrite using `[Subgroup.relIndex, Subgroup.index, Nat.card_eq_fintype_card]`. Rewrite using `[hcard, mul_inv_cancel₀ (Nat.cast_ne_zero.2 hf), one_smul, Finset.smul_sum]`.
+-/
 theorem avgOver_avgOver {K' : Subgroup G} (hKK' : K ≤ K') (hf' : AvgFinite K' f) :
     avgOver K' (avgOver K f) = avgOver K' f := by
   classical
@@ -341,6 +456,9 @@ section Topological
 variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   {W : Type*} [AddCommGroup W] [Module ℂ W]
 
+/- English proof (translation)
+Establish `: CompactSpace K` using `isCompact_iff_compactSpace.1 hK`. Establish `hopen : IsOpen ((L.subgroupOf K : Subgroup K) : Set K)` using `hL.preimage continuous_subtype_val`. Use `Subgroup.quotient_finite_of_isOpen (L.subgroupOf K) hopen` as an intermediate fact. Conclude with `Subgroup.index_ne_zero_of_finite`.
+-/
 theorem relIndex_ne_zero_of_isCompact_of_isOpen {K L : Subgroup G} (hK : IsCompact (K : Set G))
     (hL : IsOpen (L : Set G)) : L.relIndex K ≠ 0 := by
   have : CompactSpace K := isCompact_iff_compactSpace.1 hK
@@ -350,6 +468,9 @@ theorem relIndex_ne_zero_of_isCompact_of_isOpen {K L : Subgroup G} (hK : IsCompa
 
 omit [AddCommGroup W] [Module ℂ W] in
 
+/- English proof (translation)
+The claim follows from `relIndex_ne_zero_of_isCompact_of_isOpen hK (Subgroup.isOpen_mono hUf hU)`.
+-/
 theorem avgFinite_of_isOpen {K U : Subgroup G} {f : G → W} (hK : IsCompact (K : Set G))
     (hU : IsOpen (U : Set G)) (hUf : U ≤ rightStab f) : AvgFinite K f :=
   relIndex_ne_zero_of_isCompact_of_isOpen hK (Subgroup.isOpen_mono hUf hU)
@@ -362,13 +483,30 @@ variable {G : Type*} [Group G]
 
 def relVol (K₀ K : Subgroup G) : ℝ := (K₀.relIndex K : ℝ) / (K.relIndex K₀)
 
+/- English proof (translation)
+Simplify using `[relVol, Subgroup.relIndex_self]`.
+-/
 theorem relVol_self (K₀ : Subgroup G) : relVol K₀ K₀ = 1 := by
   simp [relVol, Subgroup.relIndex_self]
 
+/- English proof (translation)
+The claim follows from `div_pos (Nat.cast_pos.2 (Nat.pos_of_ne_zero h₁)) (Nat.cast_pos.2 (Nat.pos_of_ne_zero h₂))`.
+-/
 theorem relVol_pos {K₀ K : Subgroup G} (h₁ : K₀.relIndex K ≠ 0) (h₂ : K.relIndex K₀ ≠ 0) :
     0 < relVol K₀ K :=
   div_pos (Nat.cast_pos.2 (Nat.pos_of_ne_zero h₁)) (Nat.cast_pos.2 (Nat.pos_of_ne_zero h₂))
 
+/- English proof (translation)
+Establish `E1 : K₀.relIndex L * L.relIndex K = (L ⊓ K₀).relIndex (K ⊓ K₀) * K₀.relIndex K`. Establish `a` using `Subgroup.relIndex_mul_relIndex _ _ _ (inf_le_left : L ⊓ K₀ ≤ L) hLK`. Establish `b` using `Subgroup.relIndex_mul_relIndex _ _ _ (inf_le_inf_right K₀ hLK) (inf_le_left : K ⊓ K₀ ≤ K)`. Rewrite `a` using `[Subgroup.inf_relIndex_left]`. Rewrite `b` using `[Subgroup.inf_relIndex_left]`.
+
+Rewrite using `[a, ← b]`. Establish `E2 : (L ⊓ K₀).relIndex (K ⊓ K₀) * K.relIndex K₀ = L.relIndex K₀`. Establish `b` using `Subgroup.relIndex_mul_relIndex _ _ _ (inf_le_inf_right K₀ hLK) (inf_le_right : K ⊓ K₀ ≤ K₀)`. Rewrite `b` using `[Subgroup.inf_relIndex_right, Subgroup.inf_relIndex_right]`. Conclude with `b`.
+
+Establish `hc : (L ⊓ K₀).relIndex (K ⊓ K₀) ≠ 0` using `fun h => hL (by rw [← E2, h, zero_mul])`. Establish `hK : K.relIndex K₀ ≠ 0` using `fun h => hL (by rw [← E2, h, mul_zero])`. Unfold `relVol`. Establish `hc' : ((L ⊓ K₀).relIndex (K ⊓ K₀) : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 hc`. Establish `hK' : (K.relIndex K₀ : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 hK`.
+
+Establish `hL' : (L.relIndex K₀ : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 hL`. Establish `E1' : (K₀.relIndex L : ℝ) * L.relIndex K = (L ⊓ K₀).relIndex (K ⊓ K₀) * K₀.relIndex K`. Conclude with `E1` after adjusting the coercions. Establish `E2' : ((L ⊓ K₀).relIndex (K ⊓ K₀) : ℝ) * K.relIndex K₀ = L.relIndex K₀`. Conclude with `E2` after adjusting the coercions.
+
+Establish `key : (L.relIndex K : ℝ) * ((K₀.relIndex L : ℝ) / (L.relIndex K₀)) = (K₀.relIndex K : ℝ) / (K.relIndex K₀)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_div_mul_left _ _ hc']`. Conclude with `key.symm`.
+-/
 theorem relVol_eq_relIndex_mul {K₀ K L : Subgroup G} (hLK : L ≤ K) (hL : L.relIndex K₀ ≠ 0) :
     relVol K₀ K = L.relIndex K * relVol K₀ L := by
   have E1 : K₀.relIndex L * L.relIndex K = (L ⊓ K₀).relIndex (K ⊓ K₀) * K₀.relIndex K := by
@@ -403,6 +541,9 @@ theorem relVol_eq_relIndex_mul {K₀ K L : Subgroup G} (hLK : L ≤ K) (hL : L.r
             rw [mul_div_mul_left _ _ hc']
   exact key.symm
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (MulAut.conj g).toMonoidHom` using `(MulAut.conj g).injective`. Unfold `relVol`. Rewrite using `[Subgroup.relIndex_map_map_of_injective _ _ hinj, Subgroup.relIndex_map_map_of_injective _ _ hinj]`.
+-/
 theorem relVol_map_conj (g : G) (K₀ K : Subgroup G) :
     relVol (K₀.map (MulAut.conj g).toMonoidHom) (K.map (MulAut.conj g).toMonoidHom) =
       relVol K₀ K := by

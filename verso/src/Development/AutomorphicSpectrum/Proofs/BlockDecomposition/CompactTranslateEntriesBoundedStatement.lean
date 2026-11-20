@@ -16,5 +16,8 @@ open GlobalTheory.CompanionTheory.WcB
 open scoped Topology
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.KHBound.entries_det_bound | exact GlobalTheory.CompanionTheory.KHBound.entries_det_bound | (intros; apply GlobalTheory.CompanionTheory.KHBound.entries_det_bound <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.compact_translate_entries_bounded : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (h₀ : GL (Fin 2) F), ∃ M : ℝ, 0 < M ∧ ∀ k ∈ GLnLocal.integralGL F 2, (∀ i j, (modulus ((k * h₀).val i j) : ℝ) ≤ M) ∧ modulus ((k * h₀).val).det = modulus (h₀.val).det := by
   first | exact @GlobalTheory.CompanionTheory.KHBound.entries_det_bound | exact GlobalTheory.CompanionTheory.KHBound.entries_det_bound | (intros; apply GlobalTheory.CompanionTheory.KHBound.entries_det_bound <;> assumption)

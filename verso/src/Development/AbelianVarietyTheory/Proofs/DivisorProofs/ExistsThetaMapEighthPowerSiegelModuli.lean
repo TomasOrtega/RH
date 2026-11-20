@@ -21,6 +21,21 @@ noncomputable section
 
 namespace GlobalTheory.SiegTh
 
+/- English proof (translation)
+Introduce `S G _ _ L ρ hL hρ g m n o _ X s q hmo hm3 hmu hn hred hP hA`. Establish `hloc : ∀ x : X, ∃ (W : X.Opens) (h : W.toScheme ⟶ PSpace o n), x ∈ W ∧ h ≫ PSpace.str o n = W.ι ≫ s ∧ ThMap G L ρ m (W.ι ≫ q) h`. Introduce `x`. Take `⟨U, hxU, h1, h2, h3, h4⟩` from `hA x`. Conclude with `GlobalTheory.T.exists_nhd_thetaMap_on_normal_charZero_affine S G L ρ hL hρ g m n o X s q hmo hm3 hmu hn hP U h1 h2 h3 h4 x hxU`.
+
+Use `choose W h hxW hs hT using hloc`. Establish `hag : ∀ i j (K : Type) [Field K] [IsAlgClosed K] (y : Sp K ⟶ (W i).toScheme) (y' : Sp K ⟶ (W j).toScheme), y ≫ (W i).ι = y' ≫ (W j).ι → y ≫ h i = y' ≫ h j`. Introduce `i j K _ _ y y' e`. Establish `hPK` using `hP K (y ≫ (W i).ι)`. Take `⟨⟨θ, hθ⟩, -⟩` from `gen_of_polFib S G L hL g K _ hPK`.
+
+Establish `hmK : (m : K) ≠ 0`. Use `hmu.map (Spec.preimage (y ≫ (W i).ι ≫ s)).hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Conclude with `this.ne_zero`. Take `⟨pt, c, hc⟩` from `GlobalTheory.T.exists_thetaConstantList_algClosed S G L ρ hL hρ g m (n + 1) K _ θ hmo hmK hn hPK`.
+
+Establish `hH : HasTh G L ρ m ((y ≫ (W i).ι) ≫ q) c` using `⟨θ, pt, hθ, hc⟩`. Establish `h1` using `hT i K y c (by rw [Category.assoc] at hH; exact hH)`. Establish `h2` using `hT j K y' c (by rw [e, Category.assoc] at hH; exact hH)`. Use `CrdUniq.eq_of_pCrd ?_ h1 h2` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, hs, hs, ← Category.assoc, e, Category.assoc]`.
+
+Establish `hcov : (⨆ x, W x) = ⊤` using `eq_top_iff.2 fun x _ => TopologicalSpace.Opens.mem_iSup.2 ⟨x, hxW x⟩`. Take `⟨f, hf, hfi⟩` from `GlobalTheory.ThetaGlue.glue_geom o n X s X W h hcov hs hag`. Use `⟨f, hf, fun K _ x c hH => ?_⟩` and prove the remaining obligations. Set `z : X` to `x.base (IsLocalRing.closedPoint K)`. Establish `hr : Set.range x.base ⊆ Set.range (W z).ι.base`.
+
+Introduce and unpack `_ ⟨p, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι, Subsingleton.elim p (IsLocalRing.closedPoint K)]`. Conclude with `hxW z`. Set `x' : Sp K ⟶ (W z).toScheme` to `IsOpenImmersion.lift (W z).ι x hr`. Establish `hx : x' ≫ (W z).ι = x` using `IsOpenImmersion.lift_fac _ _ _`.
+
+Establish `h1` using `hT z K x' c (by rw [← Category.assoc, hx]; exact hH)`. Rewrite using `[← hx, Category.assoc, hfi]`. Conclude with `h1`.
+-/
 theorem exists_thMap_of_affine_cover : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (L : LB G.left) (ρ : LB.Gen (L.pull (eSec G))), L.IsLB → ρ.IsGen →
     ∀ (g m n : ℕ) (o : Type) [CommRing o] (X : Scheme.{0}) (s : X ⟶ Sp o) (q : X ⟶ S), Odd m → 3 ≤ m → IsUnit (m : o) → n + 1 = m ^ (4 * g) →
     IsReduced X → (∀ (R : Type) [CommRing R] (x : Sp R ⟶ X), PolFib G L g (x ≫ q)) →
@@ -63,6 +78,13 @@ theorem exists_thMap_of_affine_cover : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj
   rw [← hx, Category.assoc, hfi]
   exact h1
 
+/- English proof (translation)
+Introduce `g n hg hn hno F W hW P rig m hPg hSh hrig hmo hm3 hmu`. Take `⟨hI, hN, hLN⟩` from `GlobalTheory.T.siegelModuli_integral_normal_locallyNoetherian g n hg hn hno F`. Use `letI := P.isAb.comm`. Establish `hpos : 0 < m ^ (4 * (8 * g))` using `pow_pos (by omega) _`. Establish `hA : ∀ x : F.X, ∃ U : F.X.affineOpens, x ∈ (U : F.X.Opens) ∧ IsDomain Γ(F.X, U) ∧ IsNoetherianRing Γ(F.X, U) ∧ IsIntegrallyClosed Γ(F.X, U) ∧ CharZero Γ(F.X, U)` using `fun x => by`.
+
+Take `⟨U, hU, hxU, -⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.mp F.X.isBasis_affineOpens) (show x ∈ (⊤ : F.X.Opens) from trivial)`. Establish `hne : (U : F.X.Opens) ≠ ⊥` using `fun h => by simp [h] at hxU`. Take `⟨h1, h2, h3⟩` from `GlobalTheory.affineOpen_ring_isDomain_noetherian_integrallyClosed F.X hI hN hLN ⟨U, hU⟩ hne`. Conclude with `⟨⟨U, hU⟩, hxU, h1, h2, h3, GlobalTheory.SiegelTor.sFam_charZero_affineOpen g n F ⟨U, hU⟩ inferInstance⟩`. Take `⟨f, hf, hT⟩` from `exists_thMap_of_affine_cover F.X P.A P.L rig P.isLB hrig P.g m (m ^ (4 * (8 * g)) - 1) (cycAway n) F.X F.s (𝟙 F.X) hmo hm3 hmu (by rw [hPg]; omega) inferInstance (fun R _ x => by simpa using GlobalTheory.UMin.FibExist.polFib_of_point F.X P R x) hA`.
+
+Conclude with `⟨_, f, hPg, hSh, hrig, hmo, hm3, hmu, by omega, hf, hT, hW⟩`.
+-/
 theorem exists_thAt : ∀ (g n : ℕ), 1 ≤ g → 3 ≤ n → Odd n → ∀ (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ), IsE8 W → ∀ (P : PolAV F.X) (rig : LB.Gen (P.L.pull (eSec P.A))) (m : ℕ), P.g = 8 * g → GlobalTheory.Poinc.SharpOver F W P (𝟙 F.X) → rig.IsGen → Odd m → 3 ≤ m → IsUnit (m : cycAway n) → ∃ (N : ℕ) (f : F.X ⟶ PSpace (cycAway n) N), ThAt F W P rig m f := by
   intro g n hg hn hno F W hW P rig m hPg hSh hrig hmo hm3 hmu
   obtain ⟨hI, hN, hLN⟩ := GlobalTheory.T.siegelModuli_integral_normal_locallyNoetherian g n hg hn hno F

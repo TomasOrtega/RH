@@ -14,6 +14,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hL E _ _ _ H Dw l Xo c S _ _ y n x`. Establish `hM : 0 < l.M` using `lt_of_lt_of_le (by norm_num) l.three_le`. Establish `hpow : ∀ {R : Type} [CommRing R] (x0 : Sp R ⟶ Xo.X) (a : Dw.La), levPt Xo x0 a ^ l.M = 1`. Introduce `R _ x0 a`. Rewrite using `[levPt, ← MonObj.comp_pow, (moduli_univ_eta_killed hL E H Dw l Xo a).2.2, MonObj.comp_one]`.
+
+Establish `hkill : ∀ {R : Type} [CommRing R] (x0 : Sp R ⟶ Xo.X) (a : Dw.La), KilledBy Xo l.Mb (levPt Xo x0 a)`. Introduce `R _ x0 a b hb`. Rewrite using `[levPt, Category.assoc, (moduli_univ_eta_killed hL E H Dw l Xo a).1 b hb, MonObj.comp_one]`. Take `⟨B, _, φ, w, hφ, hw⟩` from `GlobalTheory.T.exists_faithfullyFlat_nthRoots_of_torsion hL E H Dw l Xo S y.x l.M l.M hM hM (Fin n) (fun b => levPt Xo y.x (x b)) (fun b => hpow _ _)`. Use `letI : Algebra c.F B := (φ.comp (algebraMap c.F S)).toAlgebra`.
+
+Set `ψ : S →ₐ[c.F] B` to `{ φ with commutes' := fun _ => rfl }`. Take `⟨y', hy'⟩` from `GlobalTheory.T.exists_framedPoint_baseChange_algHom hL E H Dw l Xo c S B ψ y`. Establish `hx : spMap φ ≫ y.x = y'.x` using `hy'.1.symm`. Establish `hroot : ∀ (x0 : Sp B ⟶ Xo.X), spMap φ ≫ y.x = x0 → ∀ b, ∃ v : ptO Xo x0 ⟶ Xo.univ.t.G, v ^ l.M = levPt Xo x0 (x b)`. Introduce and unpack `_ rfl b`.
+
+Use `⟨w b, ?_⟩` and prove the remaining obligations. Set `g : ptO Xo (spMap φ ≫ y.x) ⟶ ptO Xo y.x` to `Over.homMk (spMap φ) rfl`. Establish `hg : levPt Xo (spMap φ ≫ y.x) (x b) = g ≫ levPt Xo y.x (x b)`. Rewrite using `[levPt, levPt, ← Category.assoc, comp_toUnit]`. Rewrite using `[hg]`.
+
+Conclude with `Over.OverMorphism.ext (hw b)`. Establish `hF : ∀ b, ∃ F, IsVtOver Xo.univ.t.G Xo.univ.t.PP l.M (KilledBy Xo (l.Mb ^ 2)) y'.s (levPt Xo y'.x (x b)) F`. Introduce `b`. Take `⟨v, hv⟩` from `hroot _ hx b`. Take `⟨t', ht', hk⟩` from `(exists_root_killedBy_pow E H Dw l Xo _ _ v l.M hM (hkill _ _) hv).2 rfl`.
+
+Use `(GlobalTheory.T.exists_translation_sections_universal_object hL E H Dw l Xo l.M l.odd (ptO Xo y'.x) y'.s).1 _ _ t' ht' ?_ hk` and prove the remaining obligations. Rewrite using `[pow_two, pow_mul, ht', hpow]`. Use `choose F hF using hF`. Conclude with `⟨B, inferInstance, inferInstance, ψ, y', F, hφ, hy', hF⟩`.
+-/
 theorem exists_faithfullyFlat_isVtOver :
     Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (S : Type) [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) (n : ℕ) (x : Fin n → Dw.La), ∃ (S' : Type) (_ : CommRing S') (_ : Algebra c.F S') (φ : S →ₐ[c.F] S') (y' : FrPt Xo c S') (F : Fin n → LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L ((l.M : ℤ) ^ 2) (ptO Xo y'.x))), φ.toRingHom.FaithfullyFlat ∧ FrMap φ y y' ∧ ∀ b, IsVtOver Xo.univ.t.G Xo.univ.t.PP l.M (KilledBy Xo (l.Mb ^ 2)) y'.s (levPt Xo y'.x (x b)) (F b) := by
   intro hL E _ _ _ H Dw l Xo c S _ _ y n x

@@ -6,6 +6,13 @@ namespace GroundTheory.Heights₂.Heights
 
 open MvPolynomial
 
+/- English proof (translation)
+Introduce `F _ n W hW`. Use `hW.isPrime` as an intermediate fact. Take `⟨j, hj⟩` from `hW.isRelevant`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+
+Apply `hj` to reduce the goal to its premises. Establish `hmem : (X j : MvPolynomial (Fin n) F) ∈ vanishingIdeal F (zeroLocus (AlgebraicClosure F) W)`. Introduce `x hx`. Distinguish the cases in `hx0 : x = 0`. Substitute `hx0` using the available equality.
+
+Simplify using the standard rewrite rules. Take `⟨q, hq, hne⟩` from `hcon x hx0`. Conclude with `absurd (hx q hq) hne`. Rewrite `hmem` using `[IsPrime.vanishingIdeal_zeroLocus]`. Then use the resulting hypothesis.
+-/
 theorem ProjPrimeHasPoint.proof : ProjPrimeHasPoint.Statement := by
   intro F _ n W hW
   have := hW.isPrime

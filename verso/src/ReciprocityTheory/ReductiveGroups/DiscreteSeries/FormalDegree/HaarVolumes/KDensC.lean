@@ -15,6 +15,13 @@ variable {E X : Type*} [TopologicalSpace E] [PolishSpace E] [MeasurableSpace E] 
 def kdNu (m : Measure X) (f : E → X) (U : Set E) : Measure E :=
   Measure.map (Subtype.val : U → E) (Measure.comap (fun x : U => f x) m)
 
+/- English proof (translation)
+Establish `hI : Function.Injective (fun x : U => f x)` using `fun a b h => Subtype.ext (hinj a.2 b.2 h)`. Establish `hM : ∀ s : Set U, MeasurableSet s → MeasurableSet ((fun x : U => f x) '' s)`. Introduce `s hs`. Establish `e : (fun x : U => f x) '' s = f '' (Subtype.val '' s)` using `by rw [image_image]`. Rewrite using `[e]`.
+
+Establish `hsub : Subtype.val '' s ⊆ U` using `by rintro _ ⟨x, _, rfl⟩; exact x.2`. Conclude with `(hU.subtype_image hs).image_of_continuousOn_injOn (hf.mono hsub) (hinj.mono hsub)`. Rewrite using `[kdNu, Measure.map_apply measurable_subtype_coe hA, Measure.comap_apply _ hI hM _ (measurable_subtype_coe hA)]`. Use `congr 1`. Use extensionality with `y`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨x, hx⟩, hxA, rfl⟩`. Conclude with `⟨x, ⟨hxA, hx⟩, rfl⟩`. Introduce and unpack `⟨x, ⟨hxA, hx⟩, rfl⟩`. Conclude with `⟨⟨x, hx⟩, hxA, rfl⟩`.
+-/
 lemma kdNu_apply {m : Measure X} {f : E → X} {U : Set E} (hU : MeasurableSet U) (hf : ContinuousOn f U)
     (hinj : InjOn f U) {A : Set E} (hA : MeasurableSet A) : kdNu m f U A = m (f '' (A ∩ U)) := by
   have hI : Function.Injective (fun x : U => f x) := fun a b h => Subtype.ext (hinj a.2 b.2 h)
@@ -32,10 +39,16 @@ lemma kdNu_apply {m : Measure X} {f : E → X} {U : Set E} (hU : MeasurableSet U
   · rintro ⟨⟨x, hx⟩, hxA, rfl⟩; exact ⟨x, ⟨hxA, hx⟩, rfl⟩
   · rintro ⟨x, ⟨hxA, hx⟩, rfl⟩; exact ⟨⟨x, hx⟩, hxA, rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by rw [kdNu_apply hU hf hinj MeasurableSet.univ]; exact measure_lt_top _ _⟩`.
+-/
 lemma kdNu_finite {m : Measure X} [IsFiniteMeasure m] {f : E → X} {U : Set E} (hU : MeasurableSet U)
     (hf : ContinuousOn f U) (hinj : InjOn f U) : IsFiniteMeasure (kdNu m f U) :=
   ⟨by rw [kdNu_apply hU hf hinj MeasurableSet.univ]; exact measure_lt_top _ _⟩
 
+/- English proof (translation)
+Use `Measure.le_iff.2 fun A hA => ?_` and prove the remaining obligations. Rewrite using `[kdNu_apply hU hf hinj hA, Measure.smul_apply, Measure.restrict_apply hA, smul_eq_mul]`. Conclude with `h _ inter_subset_right (hA.inter hU)`.
+-/
 lemma kdNu_le {m : Measure X} {f : E → X} {U : Set E} (hU : MeasurableSet U) (hf : ContinuousOn f U)
     (hinj : InjOn f U) (lam : Measure E) (c : ℝ≥0∞)
     (h : ∀ A ⊆ U, MeasurableSet A → m (f '' A) ≤ c * lam A) : kdNu m f U ≤ c • lam.restrict U := by
@@ -43,6 +56,9 @@ lemma kdNu_le {m : Measure X} {f : E → X} {U : Set E} (hU : MeasurableSet U) (
   rw [kdNu_apply hU hf hinj hA, Measure.smul_apply, Measure.restrict_apply hA, smul_eq_mul]
   exact h _ inter_subset_right (hA.inter hU)
 
+/- English proof (translation)
+Use `Measure.le_iff.2 fun A hA => ?_` and prove the remaining obligations. Rewrite using `[kdNu_apply hU hf hinj hA, Measure.smul_apply, Measure.restrict_apply hA, smul_eq_mul]`. Conclude with `h _ inter_subset_right (hA.inter hU)`.
+-/
 lemma kdNu_ge {m : Measure X} {f : E → X} {U : Set E} (hU : MeasurableSet U) (hf : ContinuousOn f U)
     (hinj : InjOn f U) (lam : Measure E) (d : ℝ≥0∞)
     (h : ∀ A ⊆ U, MeasurableSet A → d * lam A ≤ m (f '' A)) : d • lam.restrict U ≤ kdNu m f U := by
@@ -59,6 +75,9 @@ variable {E₁ E₂ X₁ X₂ : Type*} [TopologicalSpace E₁] [PolishSpace E₁
   [TopologicalSpace X₁] [T2Space X₁] [MeasurableSpace X₁] [BorelSpace X₁] [SecondCountableTopology X₁]
   [TopologicalSpace X₂] [T2Space X₂] [MeasurableSpace X₂] [BorelSpace X₂] [SecondCountableTopology X₂]
 
+/- English proof (translation)
+Use `kdNu_finite (m := m₁) hU₁ hf₁ hi₁` as an intermediate fact. Use `kdNu_finite (m := m₂) hU₂ hf₂ hi₂` as an intermediate fact. Use `Measure.prod_eq fun s t hs ht => ?_` and prove the remaining obligations. Rewrite using `[kdNu_apply (hU₁.prod hU₂) (hf₁.prodMap hf₂) (hi₁.prodMap hi₂) (hs.prod ht), kdNu_apply hU₁ hf₁ hi₁ hs, kdNu_apply hU₂ hf₂ hi₂ ht, prod_inter_prod, prodMap_image_prod, Measure.prod_prod]`.
+-/
 lemma kdNu_prod {m₁ : Measure X₁} {m₂ : Measure X₂} [IsFiniteMeasure m₁] [IsFiniteMeasure m₂]
     {f₁ : E₁ → X₁} {f₂ : E₂ → X₂} {U₁ : Set E₁} {U₂ : Set E₂} (hU₁ : MeasurableSet U₁)
     (hU₂ : MeasurableSet U₂) (hf₁ : ContinuousOn f₁ U₁) (hf₂ : ContinuousOn f₂ U₂) (hi₁ : InjOn f₁ U₁)
@@ -71,6 +90,13 @@ lemma kdNu_prod {m₁ : Measure X₁} {m₂ : Measure X₂} [IsFiniteMeasure m�
     kdNu_apply hU₁ hf₁ hi₁ hs, kdNu_apply hU₂ hf₂ hi₂ ht, prod_inter_prod, prodMap_image_prod,
     Measure.prod_prod]
 
+/- English proof (translation)
+Use `kdNu_finite (m := m₁) hU₁ hf₁ hi₁` as an intermediate fact. Use `kdNu_finite (m := m₂) hU₂ hf₂ hi₂` as an intermediate fact. Establish `e : (m₁.prod m₂) (Prod.map f₁ f₂ '' B) = ((kdNu m₁ f₁ U₁).prod (kdNu m₂ f₂ U₂)) B`. Rewrite using `[kdNu_prod hU₁ hU₂ hf₁ hf₂ hi₁ hi₂, kdNu_apply (hU₁.prod hU₂) (hf₁.prodMap hf₂) (hi₁.prodMap hi₂) hB, inter_eq_left.2 hBU]`. Establish `hs : ∀ a b : ℝ≥0∞, ((a • lam₁.restrict U₁).prod (b • lam₂.restrict U₂)) B = a * b * (lam₁.prod lam₂) B`.
+
+Introduce `a b`. Rewrite using `[Measure.prod_smul_left, Measure.prod_smul_right, Measure.prod_restrict, smul_smul, Measure.smul_apply, Measure.restrict_apply hB, inter_eq_left.2 hBU, smul_eq_mul]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e, ← hs c₁ c₂]`. Conclude with `Measure.le_iff'.1 (Measure.prod_mono (kdNu_le hU₁ hf₁ hi₁ lam₁ c₁ fun A hA hm => (h₁ A hA hm).1) (kdNu_le hU₂ hf₂ hi₂ lam₂ c₂ fun A hA hm => (h₂ A hA hm).1)) B`.
+
+Rewrite using `[e, ← hs d₁ d₂]`. Conclude with `Measure.le_iff'.1 (Measure.prod_mono (kdNu_ge hU₁ hf₁ hi₁ lam₁ d₁ fun A hA hm => (h₁ A hA hm).2) (kdNu_ge hU₂ hf₂ hi₂ lam₂ d₂ fun A hA hm => (h₂ A hA hm).2)) B`.
+-/
 theorem kd_prod_bounds {m₁ : Measure X₁} {m₂ : Measure X₂} [IsFiniteMeasure m₁] [IsFiniteMeasure m₂]
     (lam₁ : Measure E₁) (lam₂ : Measure E₂) [SigmaFinite lam₁] [SigmaFinite lam₂]
     {f₁ : E₁ → X₁} {f₂ : E₂ → X₂} {U₁ : Set E₁} {U₂ : Set E₂} (hU₁ : MeasurableSet U₁)

@@ -17,6 +17,11 @@ namespace GlobalTheory.TwistField.Read
 
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
 
+/- English proof (translation)
+Introduce `γ hγ g`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx => exact (hx.aut v).left γ hγ g`. Consider the case `zero => rfl`. Consider the case `add x y _ _ hx hy => simp only [_root_.add_apply, Pi.add_apply, hx, hy]`.
+
+Consider the case `smul a x _ hx => simp only [_root_.smul_apply, Pi.smul_apply, hx]`.
+-/
 theorem mult_inv {V : HSp D} {S : D.what₂.Tau → _} (θ) (M : DSModel V S) (J : Set (GA D V)) (χ : GA D V → ℂ) {Φ : MMap M}
     (hΦ : Φ ∈ Mult θ M J χ) (v : M.Vec) : ∀ γ ∈ GQ V, ∀ g, Φ v (γ * g) = Φ v g := by
   intro γ hγ g
@@ -26,6 +31,11 @@ theorem mult_inv {V : HSp D} {S : D.what₂.Tau → _} (θ) (M : DSModel V S) (J
   | add x y _ _ hx hy => simp only [_root_.add_apply, Pi.add_apply, hx, hy]
   | smul a x _ hx => simp only [_root_.smul_apply, Pi.smul_apply, hx]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Set `q : AutQ W` to `Quotient.mk _ g`. Establish `hr : g * q.out⁻¹ ∈ GQ W` using `QuotientGroup.rightRel_apply.1 (Quotient.exact (Quotient.out_eq q))`. Establish `h1` using `hΦ _ hr q.out`. Establish `h2` using `hΨ _ hr q.out`.
+
+Rewrite `h1`, `h2` using `[inv_mul_cancel_right]`. Rewrite using `[h1, h2, h q]`.
+-/
 theorem eq_of_out {W : HSp D} {Φ Ψ : GA D W → ℂ} (hΦ : ∀ γ ∈ GQ W, ∀ g, Φ (γ * g) = Φ g)
     (hΨ : ∀ γ ∈ GQ W, ∀ g, Ψ (γ * g) = Ψ g) (h : ∀ q : AutQ W, Φ q.out = Ψ q.out) : Φ = Ψ := by
   funext g
@@ -36,6 +46,9 @@ theorem eq_of_out {W : HSp D} {Φ Ψ : GA D W → ℂ} (hΦ : ∀ γ ∈ GQ W, �
   rw [inv_mul_cancel_right] at h1 h2
   rw [h1, h2, h q]
 
+/- English proof (translation)
+Rewrite using `[map_sum, map_sum, _root_.sum_apply, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ, map_smul]`. Both sides reduce to the same expression.
+-/
 theorem ev_sum {L H Y : Type} [Field L] [AddCommGroup H] [Module ℂ H] [AddCommGroup Y] [Module L Y] {σ : L →+* ℂ}
     (j : Y →ₛₗ[σ] H) {V : HSp D} {S : D.what₂.Tau → _} {M : DSModel V S} (e : H →ₗ[ℂ] MMap M) (v : M.Vec) (g : GA D V) {m : ℕ}
     (a : Fin m → L) (y : Fin m → Y) : e (j (∑ l, a l • y l)) v g = ∑ l, σ (a l) * e (j (y l)) v g := by
@@ -47,6 +60,11 @@ theorem ev_sum {L H Y : Type} [Field L] [AddCommGroup H] [Module ℂ H] [AddComm
 variable {T : CoreJ D} [Algebra T.Q.c.F D.what₂.LL] {R : RealDat D A T.Q.c.F}
   {κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)} {v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec}
 
+/- English proof (translation)
+Establish `e : res T (sg0 D A) = O.s0` using `((congrArg (res T) (show sg0 D A = D.what₂.embLL from sgAt_mk _ R.hv0)).trans (res_embLL T fw.alg_eq fw.laws.pins.2.2.1)).trans (sOv_eq T.toCore O.c' O.hle).symm`. Establish `hV : T.V ((i : ℕ) + 1) (res T (sg0 D A)) = Wc D i` using `(congrArg (T.V ((i : ℕ) + 1)) e).trans O.hV`. Establish `h1` using `hev i (sg0 D A) (base_embedding_good T R fw.alg_eq fw.laws.pins.2.2.1) hV f`. Establish `key : ∀ (σ σ' : T.Q.c.F →+* ℂ) (_ : σ' = σ) (W : HSp D) (hV : T.V ((i : ℕ) + 1) σ = W) (hV' : T.V ((i : ℕ) + 1) σ' = W) (g : GA D W), phiC T hV' (wtA (κ i)) (f : T.R ((i : ℕ) + 1)) g = (lieFac (T.Q.Dw ((i : ℕ) + 1)) (xiR D) (wtA (κ i)) : ℂ) * adel W (castDict hV (T.dict ((i : ℕ) …`. Introduce `σ σ' e W hV hV' g`.
+
+Substitute `e` using the available equality. Substitute `hV` using the available equality. Both sides reduce to the same expression. Conclude with `(congrFun h1 h).trans (key _ _ e _ O.hV hV h)`.
+-/
 theorem ev_base (fw : FWTie T R κ v₀) (hev : fw.Evaluates) {i : Fin D.R.m} {Tp : Type} {tup : Tp → T0}
     (O : OMDat T.toCore R i Tp tup) (f : Cu T κ i) (h : GA D (Wc D i)) :
     (R.HW i (sg0 D A)).e (fw.jK i (sg0 D A) f) (v₀ i (sg0 D A)) h =
@@ -70,6 +88,19 @@ theorem ev_base (fw : FWTie T R κ v₀) (hev : fw.Evaluates) {i : Fin D.R.m} {T
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨hE, ⟨-, hC, hA, -, -, z, -, h1⟩, -⟩` from `hrow`. Establish `aux1` using `h1 t`. Take `⟨ze, a1, -, h1⟩` from `aux1`. Establish `aux2` using `(hP.tuple t).reps`. Take `⟨h, J', -, p2, p3, p4⟩` from `aux2`.
+
+Establish `aux3` using `p2 y`. Take `⟨x, hx⟩` from `aux3`. Establish `e` using `p3 _ x hx`. Establish `aux4` using `h1 x ((p4 x).2 ⟨y, hx⟩)`. Take `⟨⟨f, hf, hf'⟩, h2⟩` from `aux4`.
+
+Establish `hs` using `((mem_cusp _ _ _ _ _ _).1 hf).1`. Establish `h4` using `h2 f hs hf'`. Rewrite `hf` using `[← hn]`. Establish `aux5` using `hC _ _ f hf`. Take `⟨m, as, fs, hfs, hBC⟩` from `aux5`.
+
+Establish `aux6` using `hP.lift.lev z`. Take `⟨k, hk, -⟩` from `aux6`. Establish `h5` using `rdU_unfBC O.hle (T.U ((i : ℕ) + 1)) (inC O.c') (hA _ _ z m as fs f ((mem_cusp _ _ _ _ _ _).1 hf).1 (fun l => ((mem_cusp _ _ _ _ _ _).1 (hfs l)).1) hBC)`. Use `⟨ze, a1, m, as, fun l => ⟨_, (hE z k hk (fs l) (hfs l)).1⟩, fun q => ?_⟩` and prove the remaining obligations. Establish `h6 : ph * R.thF i t (R.jV i t y) v q.out = ze * T.cE ((i : ℕ) + 1) O.s0 (O.dict q.out).1 * (lieFac (T.Q.Dw ((i : ℕ) + 1)) (xiR D) (wtA κ) : ℂ) * (O.mu q.out * rdU (unfBC O.hle (T.U ((i : ℕ) + 1)) (inC O.c')) (actLev O.c' O.lev2 z f) (O.dict q.out).1 (O.dict q.out).2)` using `(congrArg (ph * ·) (congrFun e q)).symm.trans (h4 q)`.
+
+Rewrite using `[h6, h5]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `show _ = ze * (as l : ℂ) * (_ * (T.cE ((i : ℕ) + 1) O.s0 (O.dict q.out).1 * O.mu q.out * rdU (T.U ((i : ℕ) + 1) O.s0) (actLev T.Q.c O.lev2 z (fs l)) (O.dict q.out).1 (O.dict q.out).2))`. Use `show _ * (_ * ((as l : ℂ) * _)) = _`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_comb {i : Fin D.R.m} {κ : WeightFamilies.Wt D ((i : ℕ) + 1)} {v : (R.MW i (sg0 D A)).Vec} {ι x₀} {ph : ℂ}
     (hn : κ.n = (Vc D i).rank) (O : OMDat T.toCore R i T0 id) (hP : O.Pins κ v ι x₀)
     (hrow : O.OneMapOf κ v (T.cE ((i : ℕ) + 1) O.s0) ph) (t : T0) (y : A.fam.amb.FL i t) :
@@ -111,6 +142,17 @@ theorem exists_comb {i : Fin D.R.m} {κ : WeightFamilies.Wt D ((i : ℕ) + 1)} {
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `x₀`. Take `⟨O, hF, hpin, hrow⟩` from `h`. Establish `hn : (κ i).n = (Vc D i).rank` using `(fw.kap i (D.eTau.symm 1)).2.2.trans (D.sp.V_rank ((i : ℕ) + 1) (Nat.le_add_left _ _) i.2).symm`. Establish `aux7` using `exists_comb hn O hpin hrow t x₀`. Take `⟨ze, hze, m, as, fs, hq⟩` from `aux7`.
+
+Establish `hs : sg0 D A = D.what₂.embLL` using `sgAt_mk _ R.hv0`. Establish `ha : ∀ l, ∃ a : D.what₂.LL, sg0 D A a = ze * (as l : ℂ)` using `fun l => by`. Establish `aux8` using `AlgHom.mem_fieldRange.1 (mul_mem hze (hF.le (as l).2))`. Take `⟨a, ha⟩` from `aux8`. Conclude with `⟨a, (RingHom.congr_fun hs a).trans ha⟩`.
+
+Use `choose a ha using ha`. Establish `hmem` using `(hW i (sg0 D A)).2.1.ge (hP.thF_mem i t (R.jV i t x₀))`. Take `⟨w, hw⟩` from `hmem`. Establish `hinv : ∀ u : (R.HW i (sg0 D A)).H, ∀ γ ∈ GQ (Wc D i), ∀ g, evAt R i _ (v₀ i _) u (γ * g) = evAt R i _ (v₀ i _) u g` using `fun u => mult_inv R.θ _ _ _ ((hW i _).2.1.le (LinearMap.mem_range_self _ u)) _`. Establish `e0 : (R.HW i (sg0 D A)).e (ph • w) = ph • R.thF i t (R.jV i t x₀)` using `(map_smul (R.HW i (sg0 D A)).e ph w).trans (congrArg (ph • ·) hw)`.
+
+Establish `key : (R.FW i).j (sg0 D A) (∑ l, a l • ((fw.e i (fs l) : (R.FW i).WK) : Fin (R.nW i) → D.what₂.LL)) = ph • w`. Use `hinj i _ (base_embedding_good T R fw.alg_eq fw.laws.pins.2.2.1) (eq_of_out (hinv _) (hinv _) fun q => ?_)` and prove the remaining obligations. Establish `e1 : evAt R i _ (v₀ i _) (ph • w) q.out = ph * R.thF i t (R.jV i t x₀) (v₀ i _) q.out` using `congrArg (fun Φ : MMap (R.MW i (sg0 D A)) => Φ (v₀ i _) q.out) e0`. Use `(ev_sum _ _ _ _ _ _).trans (Eq.trans ?_ ((hq q).symm.trans e1.symm))` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun l _ => congrArg₂ (· * ·) (ha l) (ev_base fw hev O (fs l) q.out)`.
+
+Establish `h1` using `(congrArg (R.HW i (sg0 D A)).e key).trans e0`. Conclude with `⟨_, h1, GlobalTheory.IndefiniteRowSideFullHecke.RayFieldTheta.proj_clause R i ph t hP.thG (hW i _).1 (hU i _).2.2 _ _ h1⟩`.
+-/
 theorem ratAt_of_oneMap (fw : FWTie T R κ v₀) {ph : ℂ} {i : Fin D.R.m} (hW : R.models_HW) (hP : R.IsThP) (hU : R.LUnif)
     (hev : fw.Evaluates) (hinj : EvInj T R v₀) (h : OneMapOverL T R κ v₀ ph i) (t : T0) : GlobalTheory.IndefiniteRowSideFullHecke.RayFieldTheta.RatAt R i ph t := by
   intro x₀
@@ -141,6 +183,9 @@ theorem ratAt_of_oneMap (fw : FWTie T R κ v₀) {ph : ℂ} {i : Fin D.R.m} (hW 
   have h1 := (congrArg (R.HW i (sg0 D A)).e key).trans e0
   exact ⟨_, h1, GlobalTheory.IndefiniteRowSideFullHecke.RayFieldTheta.proj_clause R i ph t hP.thG (hW i _).1 (hU i _).2.2 _ _ h1⟩
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ _ _ _ _ fw _ _ _ _ hM hP hU hev hinj h t` and use `ratAt_of_oneMap fw hM.HW hP hU hev hinj h t`.
+-/
 theorem rat_of_oneMapOverL : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec) (fw : FWTie T R κ v₀) (ph : ℂ) (i : Fin D.R.m), R.toLevCh.Is A.μ0 → R.IsGrp F → R.IsModels → R.IsThP → R.LUnif → fw.Evaluates → EvInj T R v₀ → GlobalTheory.TwistField.OneMapOverL T R κ v₀ ph i → ∀ t : T0, GlobalTheory.IndefiniteRowSideFullHecke.RayFieldTheta.RatAt R i ph t :=
   fun _ _ _ _ _ _ _ _ _ _ _ _ _ fw _ _ _ _ hM hP hU hev hinj h t => ratAt_of_oneMap fw hM.HW hP hU hev hinj h t
 

@@ -13,6 +13,21 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.PtExt
 
+/- English proof (translation)
+Establish `e : spMap ρ ≫ z = z' ≫ φ`. Set `u : T₀.B₀ →+* E.C` to `τ.φ₀`. Set `u' : T₀'.B₀ →+* E'.C` to `τ'.φ₀`. Set `a₀ : T₀.B₀ →+* T₀'.B₀` to `a.φ₀`. Establish `h1 : spMap u ≫ T₀.x = z` using `τ.pt`.
+
+Establish `h2 : spMap u' ≫ T₀'.x = z'` using `τ'.pt`. Establish `h3 : spMap a₀ ≫ T₀.x = T₀'.x ≫ φ` using `a.pt`. Rewrite using `[← h1, ← h2, Category.assoc, ← h3, ← Category.assoc, ← Category.assoc, ← Cris.spMap_comp, ← Cris.spMap_comp]`. Use `congr 2`. Use `RingHom.ext fun c ↦ ?_` and prove the remaining obligations.
+
+Take `⟨c, rfl⟩` from `T₀.surj c`. Conclude with `(congrArg ρ (τ.comm c)).trans ((h c).trans ((τ'.comm (a.φ c)).symm.trans (congrArg τ'.φ₀ (a.comm c).symm)))`. Establish `e₀ : spMap ρ₀ ≫ spMap (E.π : E.C →+* E.B) ≫ z = (spMap (E'.π : E'.C →+* E'.B) ≫ z') ≫ φ`. Rewrite using `[Category.assoc, ← e, ← Category.assoc, ← Category.assoc, ← Cris.spMap_comp, ← Cris.spMap_comp]`. Use `congr 2`.
+
+Conclude with `RingHom.ext hπ`. Set `Φ : E.thick _ (E.red_w hz) ⟶ m.obj (E'.thick _ (E'.red_w hz'))` to `{ φ := { ρ with commutes' := hρ } φ₀ := ρ₀ comm := hπ dp := isDPMorphism_sqDP E.sq E'.sq _ fun c hc ↦ by`. Establish `hc' : E.π c = 0` using `hc`. Express the relevant statement in the definitionally equal form `E'.π (ρ c) = 0`. Rewrite using `[← hπ, hc', map_zero]`.
+
+Use `pt := e₀ }`. Set `b : Thick.triv E.B _ (E.red_w hz) ⟶ m.obj (Thick.triv E'.B _ (E'.red_w hz'))` to `Thick.trivHom { ρ₀ with commutes' := hρ₀ } e₀`. Establish `k1` using `ev_sq f b (m.functor.map (E'.secHom (E'.red_w hz') E'.i E'.π_i)) (E.secHom (E.red_w hz) E.i E.π_i) Φ fun c ↦ (hi c).symm`. Establish `k2` using `ev_sq f a (m.functor.map (τ' ≫ E'.idHom hz')) (τ ≫ E.idHom hz) Φ fun c ↦ (h c).symm`. Establish `k3` using `ev_comp f τ (E.idHom hz)`.
+
+Establish `k4` using `ev_comp (m.coef.pullbackOneCocycle f) τ' (E'.idHom hz')`. Establish `key : ∀ (A B C : E.C) (x y u v w k l : E'.C) (N : E.C), x + y = ρ A + w → l + k = ρ N + w → N = C + B → k = v + u → y - u - v = ρ (A - B - C) + l - x` using `fun A B C x y u v w k l N h1 h2 h3 h4 ↦ by`. Substitute `h3 h4` using the available equality. Rewrite `h2` using `[map_add]`. Rewrite using `[map_sub, map_sub]`.
+
+Take the linear combination `h1 - h2`. Conclude with `⟨ev f b, key _ _ _ _ _ _ _ _ _ _ _ k1 k2 k3 k4⟩`.
+-/
 theorem val_sub_pull {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'} {Y Y' : Scheme.{0}}
     {t : Y ⟶ Sp R} {t' : Y' ⟶ Sp R'} {φ : Y' ⟶ Y} (m : IsMor (dp0 R) t (dp0 R') t' σ φ)
     (E : SqExt R) (E' : SqExt R') (ρ : E.C →+* E'.C) (ρ₀ : E.B →+* E'.B)
@@ -78,6 +93,15 @@ def cotRingHom {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'} {D D' 
   map_add' a b := by ext <;> simp
   map_mul' a b := by ext <;> simp [map_smulₛₗ]
 
+/- English proof (translation)
+Introduce `R R' _ _ σ X X' φ m D D' _ _ _ _ s y y' a f ha`. Establish `hf : ∀ c, (cotRingHom s c).fst = σ c.fst` using `fun c ↦ add_zero _`. Establish `hs : ∀ c, (cotRingHom s c).snd = s.cot c.snd` using `fun c ↦ zero_add _`. Establish `pf : ∀ c : D, TrivSqZeroExt.fst (cotPt R D c) = Coalgebra.counit c` using `fun c ↦ add_zero _`. Establish `ps : ∀ c : D, TrivSqZeroExt.snd (cotPt R D c) = dUnit R c` using `fun c ↦ zero_add _`.
+
+Establish `pf' : ∀ c : D', TrivSqZeroExt.fst (cotPt R' D' c) = Coalgebra.counit c` using `fun c ↦ add_zero _`. Establish `ps' : ∀ c : D', TrivSqZeroExt.snd (cotPt R' D' c) = dUnit R' c` using `fun c ↦ zero_add _`. Take `⟨b, hb⟩` from `val_sub_pull m (cotExt R D) (cotExt R' D') (cotRingHom s) σ (fun r ↦ TrivSqZeroExt.ext (hf _) ((hs _).trans (map_zero _))) (fun _ ↦ rfl) (fun c ↦ (hf c).symm) (fun r ↦ TrivSqZeroExt.ext (hf _) ((hs _).trans (map_zero _))) a (spOver (cotPt R D) ≫ y).left (Pt.w _) (spOver (cotPt R' …`. Express the relevant statement in the definitionally equal form `cotRingHom s (cotPt R D c) = cotPt R' D' (a.φ c)`. Rewrite using `[ha]`.
+
+Use `ext`. Rewrite using `[hf, pf, pf', s.counit_map]`. Rewrite using `[hs, ps, ps', s.cot_d]) f`. Use `(congrArg (cotSnd R' D') hb).trans ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_add]`.
+
+Use `(sub_zero _).trans ?_` and prove the remaining obligations. Conclude with `congrArg₂ (· + ·) (hs _) (ps' _)`.
+-/
 theorem cotVal_pull : ∀ (R R' : Type) [CommRing R] [CommRing R'] (σ : R →+* R') (X : Over (Sp R)) (X' : Over (Sp R')) (φ : X'.left ⟶ X.left) (m : IsMor (dp0 R) (X.hom ≫ 𝟙 _) (dp0 R') (X'.hom ≫ 𝟙 _) σ φ) (D D' : Type) [CommRing D] [Bialgebra R D] [CommRing D'] [Bialgebra R' D'] (s : SemiBialgHom σ D D') (y : Pt X D) (y' : Pt X' D') (a : trivAt y ⟶ m.obj (trivAt y')) (f : Z1 (O (dp0 R) (X.hom ≫ 𝟙 _))), (∀ r, a.φ r = s r) → cotVal (m.coef.pullbackOneCocycle f) y' = s.cot (cotVal f y) + dUnit R' (show D' from ev f a) := by
   intro R R' _ _ σ X X' φ m D D' _ _ _ _ s y y' a f ha
   have hf : ∀ c, (cotRingHom s c).fst = σ c.fst := fun c ↦ add_zero _

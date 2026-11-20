@@ -16,6 +16,11 @@ variable {n n₁ d d₁ : ℕ}
 def uAt (H : Plane E n n₁) (H' : Plane E d d₁) (v : Pl F) (t : Fv F v ⊗[F] E) : Matrix (Fin n) (Fin d) (AE F E) :=
   Matrix.vecMulVec (incV F H.x) (liftT v t • incV F H'.y)
 
+/- English proof (translation)
+Introduce `u hu`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, smul_zero]`. Consider the case `tmul a e`. Rewrite using `[liftT, LinearMap.rTensor_tmul, TensorProduct.smul_tmul', GlobalTheory.LatVac.at_liftV v a u hu, TensorProduct.zero_tmul]`.
+
+Consider the case `add x y hx hy => rw [map_add, smul_add, hx, hy, add_zero]`.
+-/
 theorem at_liftT (v : Pl F) (t : Fv F v ⊗[F] E) : At (evFin F v) (liftT v t) := by
   intro u hu
   induction t using TensorProduct.induction_on with
@@ -24,6 +29,9 @@ theorem at_liftT (v : Pl F) (t : Fv F v ⊗[F] E) : At (evFin F v) (liftT v t) :
     rw [liftT, LinearMap.rTensor_tmul, TensorProduct.smul_tmul', GlobalTheory.LatVac.at_liftV v a u hu, TensorProduct.zero_tmul]
   | add x y hx hy => rw [map_add, smul_add, hx, hy, add_zero]
 
+/- English proof (translation)
+Introduce `u hu`. Use extensionality with `i j`. Establish `h` using `at_liftT v t u hu`. Simplify using `only [uAt, Matrix.smul_apply, Matrix.vecMulVec_apply, Pi.smul_apply, smul_eq_mul, Matrix.zero_apply]`. Rewrite using `[← mul_smul_comm, ← smul_mul_assoc, h, zero_mul, mul_zero]`.
+-/
 theorem at_uAt (H : Plane E n n₁) (H' : Plane E d d₁) (v : Pl F) (t : Fv F v ⊗[F] E) : At (evFin F v) (uAt H H' v t) := by
   intro u hu
   ext i j
@@ -31,9 +39,19 @@ theorem at_uAt (H : Plane E n n₁) (H' : Plane E d d₁) (v : Pl F) (t : Fv F v
   simp only [uAt, Matrix.smul_apply, Matrix.vecMulVec_apply, Pi.smul_apply, smul_eq_mul, Matrix.zero_apply]
   rw [← mul_smul_comm, ← smul_mul_assoc, h, zero_mul, mul_zero]
 
+/- English proof (translation)
+The claim follows from `Or.inl ⟨_, rfl⟩`.
+-/
 theorem uAt_mem_isoB (H : Plane E n n₁) (H' : Plane E d d₁) (v : Pl F) (t : Fv F v ⊗[F] E) :
     uAt H H' v t ∈ isoB H H' := Or.inl ⟨_, rfl⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [schr, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[add_assoc x w.1 w'.1, add_assoc x w'.1 w.1, add_comm w.1 w'.1]`. Establish `e : (x + w.1) ⬝ᵥ w'.2 = x ⬝ᵥ w'.2 + w.1 ⬝ᵥ w'.2` using `add_dotProduct _ _ _`. Establish `e' : (x + w'.1) ⬝ᵥ w.2 = x ⬝ᵥ w.2 + w'.1 ⬝ᵥ w.2` using `add_dotProduct _ _ _`.
+
+Rewrite using `[e, e']`. Establish `h : ψ (x ⬝ᵥ w.2 + ⅟(2 : R) * (w.1 ⬝ᵥ w.2)) * ψ (x ⬝ᵥ w'.2 + w.1 ⬝ᵥ w'.2 + ⅟(2 : R) * (w'.1 ⬝ᵥ w'.2)) = ψ (w.1 ⬝ᵥ w'.2 - w'.1 ⬝ᵥ w.2) * (ψ (x ⬝ᵥ w'.2 + ⅟(2 : R) * (w'.1 ⬝ᵥ w'.2)) * ψ (x ⬝ᵥ w.2 + w'.1 ⬝ᵥ w.2 + ⅟(2 : R) * (w.1 ⬝ᵥ w.2)))`. Simplify using `only [← AddChar.map_add_eq_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Take the linear combination `(φ (x + (w'.1 + w.1))) * h`.
+-/
 theorem schr_comm {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) {κ : Type} [Fintype κ]
     (w w' : (κ → R) × (κ → R)) (φ : (κ → R) → ℂ) :
     schr ψ w (schr ψ w' φ) = ψ (w.1 ⬝ᵥ w'.2 - w'.1 ⬝ᵥ w.2) • schr ψ w' (schr ψ w φ) := by

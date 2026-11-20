@@ -22,6 +22,25 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 
 namespace GlobalTheory.FlatModel
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l' Xo' c' W Y p _ n _ hstar hA yb yy P π ψ hP β σ J _ N a T S hL`. Take `⟨ev, ζ, hζp, hζpow, hadd, hlin, honto, htow, hweil, hlev⟩` from `GlobalTheory.T.p_adic_point_level_power E H Dw l' Xo' c' W Y p n hA yb yy P π ψ hP`. Establish `hp : 0 < p` using `(Fact.out : p.Prime).pos`. Establish `hev1 : ∀ b, ev 1 b = 1` using `fun b => by`. Use `(honto 1 one_pos (ev 1 b)).2 ⟨b, rfl⟩` as an intermediate fact.
+
+Simplify using `using this`. Take `⟨f, hflev, hflin⟩` from `GlobalTheory.T.exists_tate_module_of_evaluations E H Dw p P ev hadd hlin htow hev1`. Establish `hspan` using `GlobalTheory.T.tate_lattice_spans E H Dw p P f (fun x hx => by`. Take `⟨b, hb⟩` from `(honto p hp x).1 hx`. Conclude with `⟨b, by rw [hflev, pow_one, hb]⟩)`.
+
+Take `⟨u, hu, hpair⟩` from `GlobalTheory.T.weil_pairing_unit_scalar E H Dw p P f ζ hζp hζpow (fun k b b' => by`. Rewrite using `[hflev, hflev]`. Conclude with `hweil _ (pow_pos hp k) b b')`. Establish `hmem : ∀ (c : 𝓞_ℂ_[p]) (t : P.T), ((c : ℂ_[p]) ⊗ₜ[ℤ_[p]] t : P.V) ∈ P.latT` using `fun c t => ⟨c ⊗ₜ t, by rw [Point.inclT_tmul]; rfl⟩`. Establish `hsum : ∀ (X : Fin N → 𝓞_ℂ_[p]), (∑ m, ((X m : ℂ_[p]) ⊗ₜ[ℤ_[p]] f (a m)) : P.V) ∈ P.latT` using `fun X => Submodule.sum_mem _ fun m _ => hmem _ _`.
+
+Set `Φ : (c'.V W) ⊗[ℤ] Dw.La →ₗ[ℤ] P.V` to `TensorProduct.lift (LinearMap.mk₂ ℤ (fun (v : c'.V W) (b : Dw.La) => ((β v : ℂ_[p]) ⊗ₜ[ℤ_[p]] f b : P.V)) (fun v v' b => by simp [TensorProduct.add_tmul]) (fun z v b => by simp [TensorProduct.smul_tmul']) (fun v b b' => by simp [TensorProduct.tmul_add]) (fun z v b => by simp [Ten …`. Establish `hΦ : ∀ v b, Φ (v ⊗ₜ b) = (β v : ℂ_[p]) ⊗ₜ[ℤ_[p]] f b` using `fun v b => rfl`. Use `⟨fun m => f (a m), algebraMap ℤ_[p] ℂ_[p] u, fun m => by rw [hflev]; exact hlev _, ?_⟩` and prove the remaining obligations. Use `⟨fun i => ⟨hsum _, ?_⟩, fun i => hsum _, ?_, fun i j => ?_, ?_⟩` and prove the remaining obligations. Use `EigenSplit.mem_eigenSub.2 fun o => ?_` and prove the remaining obligations.
+
+Establish `e1` using `congrArg Φ (hL.1 i o)`. Simplify using `only [map_sum, hΦ] at e1`. Establish `e2 : ∀ (c : ℂ_[p]) (t : P.T), P.actV o (c ⊗ₜ[ℤ_[p]] t) = c ⊗ₜ[ℤ_[p]] P.actT o t` using `fun c t => rfl`. Simplify using `only [map_sum, e2, ← hflin]`. Rewrite using `[e1, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[TensorProduct.smul_tmul', map_mul]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `‖algebraMap ℚ_[p] ℂ_[p] (u : ℚ_[p])‖ = 1`. Rewrite using `[norm_algebraMap']`.
+
+Conclude with `PadicInt.isUnit_iff.1 hu`. Establish `hc : ∀ x : 𝓞_ℂ_[p], algebraMap 𝓞_ℂ_[p] ℂ_[p] x = (x : ℂ_[p])` using `fun x => rfl`. Establish `e` using `congrArg (fun x : c'.V W => algebraMap 𝓞_ℂ_[p] ℂ_[p] (β x)) (hL.2.1 i j)`. Simplify using `only [map_sum, map_mul, map_intCast] at e`. Simplify using `only [hc] at e`.
+
+Simplify using `only [map_sum, LinearMap.sum_apply, Point.pairV_tmul, hpair]`. Simplify using `only [Algebra.smul_def, map_mul, map_intCast]`. Establish `e4 : ∀ m m', algebraMap ℤ_[p] ℂ_[p] u * ((Dw.EF (a m) (a m') : ℤ) : ℂ_[p]) * (((β (S i m) : 𝓞_ℂ_[p]) : ℂ_[p]) * ((β (T j m') : 𝓞_ℂ_[p]) : ℂ_[p])) = algebraMap ℤ_[p] ℂ_[p] u * (((β (S i m) : 𝓞_ℂ_[p]) : ℂ_[p]) * ((β (T j m') : 𝓞_ℂ_[p]) : ℂ_[p]) * ((Dw.EF (a m) (a m') : ℤ) : ℂ_[p]))` using `fun m m' => by ring`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [e4, ← Finset.mul_sum, e]`.
+
+Apply the tactic sequence `by_cases h : i = j <;> simp [h]`. Conclude with `GlobalTheory.T.lattice_data_tate_span E H Dw p P (c'.V W) β (embV c' W σ) J N a T S f hL hflin hspan`.
+-/
 theorem tateSt : TateSt := by
   intro E _ _ _ H Dw l' Xo' c' W Y p _ n _ hstar hA yb yy P π ψ hP β σ J _ N a T S hL
   obtain ⟨ev, ζ, hζp, hζpow, hadd, hlin, honto, htow, hweil, hlev⟩ :=

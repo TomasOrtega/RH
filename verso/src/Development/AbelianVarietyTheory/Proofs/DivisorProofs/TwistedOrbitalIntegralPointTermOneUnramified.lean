@@ -8,6 +8,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 noncomputable section
 namespace GlobalTheory.EulerAbs
 
+/- English proof (translation)
+Establish `hs : rStab (fun _ : H => (1 : ℂ)) = ⊤`. Use extensionality with `k`. Simplify using `[rStab]`. Unfold `avg`. Rewrite using `[hs, Subgroup.index_top]`.
+
+Use `haveI : Subsingleton (H ⧸ (⊤ : Subgroup H)) := QuotientGroup.subsingleton_quotient_top`. Use `haveI : Unique (H ⧸ (⊤ : Subgroup H)) := uniqueOfSubsingleton (QuotientGroup.mk 1)`. Rewrite using `[finsum_unique]`. Simplify using the standard rewrite rules.
+-/
 theorem avg_const_one {H : Type} [Group H] : avg (fun _ : H => (1 : ℂ)) = 1 := by
   have hs : rStab (fun _ : H => (1 : ℂ)) = ⊤ := by
     ext k; simp [rStab]
@@ -18,6 +23,15 @@ theorem avg_const_one {H : Type} [Group H] : avg (fun _ : H => (1 : ℂ)) = 1 :=
   rw [finsum_unique]
   simp
 
+/- English proof (translation)
+Establish `hT : cptPart (twCent θ δ) ≤ twCent θ δ`. Unfold `cptPart`. Rewrite using `[Subgroup.closure_le]`. Introduce `t ht`. Conclude with `ht.1`.
+
+Establish `hmap : K.map (MulAut.conj (1 : G)).toMonoidHom = K`. Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `hidx : ((twCent θ δ ⊓ K.map (MulAut.conj (1 : G)).toMonoidHom).relIndex (cptPart (twCent θ δ))) = 1`. Rewrite using `[hmap, Subgroup.relIndex_eq_one]`.
+
+Conclude with `le_inf hT hc`. Establish `hf : (fun k : K => (K : Set G).indicator (1 : G → ℂ) ((1 * (k : G))⁻¹ * δ * θ (1 * k))) = fun _ => 1`. Use function extensionality and compare the values at `k`. Rewrite using `[Set.indicator_of_mem]`. Both sides reduce to the same expression.
+
+Simplify using `only [one_mul, SetLike.mem_coe]`. Conclude with `K.mul_mem (K.mul_mem (K.inv_mem k.2) hδ) (hθ _ k.2)`. Unfold `twTerm`. Rewrite using `[hidx, hf, avg_const_one]`. Simplify using the standard rewrite rules.
+-/
 theorem twTerm_one_eq_one {G : Type} [Group G] [TopologicalSpace G] (θ : G →* G) (K : Subgroup G) (δ : G)
     (hθ : ∀ k ∈ K, θ k ∈ K) (hδ : δ ∈ K) (hc : cptPart (twCent θ δ) ≤ K) :
     twTerm θ K δ ((K : Set G).indicator 1) 1 = 1 := by

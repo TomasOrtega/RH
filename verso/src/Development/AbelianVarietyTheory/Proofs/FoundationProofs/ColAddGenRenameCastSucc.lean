@@ -8,6 +8,11 @@ open scoped DirectSum
 
 namespace GlobalTheory.Branching.AddColumn
 
+/- English proof (translation)
+Proceed by induction on `u using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb`. Use `⟨fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finsupp.mapDomain_add, map_add, map_add, Pi.add_apply, Pi.add_apply, ha.1, hb.1]`.
+
+Rewrite using `[Finsupp.mapDomain_add, map_add, Pi.add_apply, ha.2, hb.2]`. Consider the case `single v k`. Use `⟨fun i => ?_, ?_⟩` and prove the remaining obligations. Simplify using `[Finsupp.mapDomain_single, Finsupp.weight_single, colW, Pi.single_apply]`. Simplify using `[Finsupp.mapDomain_single, Finsupp.weight_single, colW, Pi.single_apply, (Fin.castSucc_lt_last v.2).ne']`.
+-/
 theorem weight_mapDomain (r n : ℕ) (u : Fin r × Fin n →₀ ℕ) :
     (∀ i : Fin n, Finsupp.weight (colW r (n + 1))
         (Finsupp.mapDomain (Prod.map id Fin.castSucc) u) i.castSucc = Finsupp.weight (colW r n) u i) ∧
@@ -24,6 +29,11 @@ theorem weight_mapDomain (r n : ℕ) (u : Fin r × Fin n →₀ ℕ) :
     · simp [Finsupp.mapDomain_single, Finsupp.weight_single, colW, Pi.single_apply,
         (Fin.castSucc_lt_last v.2).ne']
 
+/- English proof (translation)
+Establish `e : (colAddGen R (r` using `r) l.castSucc j.castSucc).comp (rename (Prod.map id Fin.castSucc : Fin r × Fin n → Fin r × Fin (n + 1))) = (rename (Option.map (Prod.map id Fin.castSucc))).comp (colAddGen R (r := r) l j) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨a, s⟩`. Distinguish the cases in `hv : s = j`. Simplify using `[colAddGen, hv]`.
+
+Simplify using `[colAddGen, hv]`. Conclude with `DFunLike.congr_fun e f`.
+-/
 theorem colAddGen_rename_castSucc (R : Type*) [CommRing R] {r n : ℕ} (l j : Fin n)
     (f : MvPolynomial (Fin r × Fin n) R) :
     colAddGen R l.castSucc j.castSucc
@@ -39,6 +49,9 @@ theorem colAddGen_rename_castSucc (R : Type*) [CommRing R] {r n : ℕ} (l j : Fi
     · simp [colAddGen, hv]
   exact DFunLike.congr_fun e f
 
+/- English proof (translation)
+Establish `e : (colAddGen R (r` using `r) l (Fin.last n)).comp (rename (Prod.map id Fin.castSucc : Fin r × Fin n → Fin r × Fin (n + 1))) = (rename some).comp (rename (Prod.map id Fin.castSucc : Fin r × Fin n → Fin r × Fin (n + 1))) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨a, s⟩`. Simplify using `[colAddGen, (Fin.castSucc_lt_last s).ne]`. Conclude with `DFunLike.congr_fun e f`.
+-/
 theorem colAddGen_rename_last (R : Type*) [CommRing R] {r n : ℕ} (l : Fin (n + 1))
     (f : MvPolynomial (Fin r × Fin n) R) :
     colAddGen R l (Fin.last n)
@@ -52,6 +65,17 @@ theorem colAddGen_rename_last (R : Type*) [CommRing R] {r n : ℕ} (l : Fin (n +
     simp [colAddGen, (Fin.castSucc_lt_last s).ne]
   exact DFunLike.congr_fun e f
 
+/- English proof (translation)
+Introduce `r n ν hν`. Use `⟨fun f hf => ?_, fun g f => ?_⟩` and prove the remaining obligations. Simplify using `only [dualWeyl, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, AlgHom.toLinearMap_apply, sub_eq_zero, mem_weightedHomogeneousSubmodule] at hf ⊢`. Use `⟨fun d hd => ?_, fun l j hlj => ?_⟩` and prove the remaining obligations. Take `⟨u, rfl, hu⟩` from `coeff_rename_ne_zero _ _ _ hd`.
+
+Establish `h` using `hf.1 hu`. Use function extensionality and compare the values at `i`. Use `Fin.lastCases ?_ (fun i => ?_) i` and prove the remaining obligations. Rewrite using `[(weight_mapDomain r n u).2, hν]`. Rewrite using `[(weight_mapDomain r n u).1, h]`.
+
+Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => exact colAddGen_rename_last ℂ l f`. Consider the case `cast j`. Proceed by induction on `l using Fin.lastCases with`. Consider the case `last => exact absurd hlj (not_lt.2 (Fin.le_last _))`.
+
+Consider the case `cast l`. Rewrite using `[colAddGen_rename_castSucc, hf.2 l j (Fin.castSucc_lt_castSucc_iff.1 hlj), rename_rename, rename_rename]`. Both sides reduce to the same expression. Establish `e : (rowAct ℂ g).comp (rename (Prod.map id Fin.castSucc : Fin r × Fin n → Fin r × Fin (n + 1))) = (rename (Prod.map id Fin.castSucc)).comp (rowAct ℂ g)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises.
+
+Introduce and unpack `⟨a, s⟩`. Simplify using `[rowAct]`. Conclude with `DFunLike.congr_fun e f`.
+-/
 theorem add_column : ∀ (r n : ℕ) (ν : Fin (n + 1) → ℕ), ν (Fin.last n) = 0 → (∀ f ∈ dualWeyl ℂ r n (fun i => ν i.castSucc), rename (Prod.map id Fin.castSucc) f ∈ dualWeyl ℂ r (n + 1) ν) ∧ ∀ (g : Matrix (Fin r) (Fin r) ℂ) (f : MvPolynomial (Fin r × Fin n) ℂ), rowAct ℂ g (rename (Prod.map id Fin.castSucc : Fin r × Fin n → Fin r × Fin (n + 1)) f) = rename (Prod.map id Fin.castSucc) (rowAct ℂ g f) := by
   intro r n ν hν
   refine ⟨fun f hf => ?_, fun g f => ?_⟩

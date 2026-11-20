@@ -14,10 +14,16 @@ noncomputable def coordEquiv {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) :
     EuclideanSpace ℝ (Fin d) ≃L[ℝ] 𝔤 :=
   (EuclideanSpace.equiv (Fin d) ℝ).trans b.equivFun.symm.toContinuousLinearEquiv
 
+/- English proof (translation)
+Simplify using `[coordEquiv, Module.Basis.equivFun_symm_apply]`.
+-/
 theorem coordEquiv_apply {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) (x : EuclideanSpace ℝ (Fin d)) :
     coordEquiv b x = ∑ j, x j • b j := by
   simp [coordEquiv, Module.Basis.equivFun_symm_apply]
 
+/- English proof (translation)
+The claim follows from `map_zero _`.
+-/
 theorem coordEquiv_zero {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) : coordEquiv b 0 = 0 :=
   map_zero _
 
@@ -25,6 +31,9 @@ namespace IsExpLieAlgebra
 
 variable (h : IsExpLieAlgebra G 𝔤)
 
+/- English proof (translation)
+The claim follows from `((h.isSmoothFun_iff).1 hf g).comp (coordEquiv b).contDiff`.
+-/
 theorem contDiff_comp_coordEquiv {F : Type*} [NormedAddCommGroup F] [NormedSpace ℂ F]
     {f : G → F} (hf : h.IsSmoothFun f) (g : G) {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) :
     ContDiff ℝ ∞ (fun x : EuclideanSpace ℝ (Fin d) => f (g * h.expG (coordEquiv b x))) :=

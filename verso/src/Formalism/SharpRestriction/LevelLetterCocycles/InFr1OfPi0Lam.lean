@@ -25,16 +25,25 @@ section Mod
 variable (T : LocLat G Qp LL O) (A : ArcP n) (c : ZMod n) (e : ℕ) {d : ℕ} (b : Fin d → W.DD T)
   (Rst : Finset (Fin d))
 
+/- English proof (translation)
+The claim follows from `(Formalism.MainNotions.UnusedSlot80.UnivC.inFr_lam_iff W A c e _).2 (inId_add W ((Formalism.MainNotions.UnusedSlot80.UnivC.inFr_lam_iff W A c e _).1 hf) ((Formalism.MainNotions.UnusedSlot80.UnivC.inFr_lam_iff W A c e _).1 hg))`.
+-/
 theorem inFr1_add {f g : W.EE} (hf : InFr W c 1 (abelian₂ W A c e) f) (hg : InFr W c 1 (abelian₂ W A c e) g) :
     InFr W c 1 (abelian₂ W A c e) (f + g) :=
   (Formalism.MainNotions.UnusedSlot80.UnivC.inFr_lam_iff W A c e _).2 (inId_add W
     ((Formalism.MainNotions.UnusedSlot80.UnivC.inFr_lam_iff W A c e _).1 hf) ((Formalism.MainNotions.UnusedSlot80.UnivC.inFr_lam_iff W A c e _).1 hg))
 
+/- English proof (translation)
+The claim follows from `(Formalism.MainNotions.UnusedSlot80.UnivC.inFr_lam_iff W A c e _).2 (inId_smul W ((Formalism.MainNotions.UnusedSlot80.UnivC.inFr_lam_iff W A c e _).1 hf) o)`.
+-/
 theorem inFr1_smul (o : O) {f : W.EE} (hf : InFr W c 1 (abelian₂ W A c e) f) :
     InFr W c 1 (abelian₂ W A c e) (o • f) :=
   (Formalism.MainNotions.UnusedSlot80.UnivC.inFr_lam_iff W A c e _).2 (inId_smul W
     ((Formalism.MainNotions.UnusedSlot80.UnivC.inFr_lam_iff W A c e _).1 hf) o)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, W.AΔ.zero_mem, by simp⟩`.
+-/
 theorem inFr1_zero : InFr W c 1 (abelian₂ W A c e) 0 := ⟨0, W.AΔ.zero_mem, by simp⟩
 
 def Msub : Submodule O (Fin d → W.EE) where
@@ -76,6 +85,11 @@ def Isub : Submodule O (Fin d → W.EE) where
     simp only [Pi.smul_apply, map_smul]
     rw [← smul_sub, hfg k, mul_smul_comm]
 
+/- English proof (translation)
+Take `⟨w, hw, hfw⟩` from `hf`. Establish `hΛm : abelian₂ W A c e ∈ W.AΔ` using `W.AΔ.prod_mem fun t _ => W.AΔ.pow_mem (Formalism.MainNotions.UnusedSlot80.KL.ps_mem W (Formalism.MainNotions.UnusedSlot80.UnivC.uniformizer_mem_delta_invariants W) t) _`. Use `⟨abelian₂ W A c e * (W.π₀ * abelian₂ W A c e) * w, W.AΔ.mul_mem (W.AΔ.mul_mem hΛm (W.AΔ.mul_mem (Formalism.MainNotions.UnusedSlot80.UnivC.uniformizer_mem_delta_invariants W) hΛm)) hw, ?_⟩` and prove the remaining obligations. Rewrite `hfw` using `[map_one, one_mul]`. Rewrite using `[hfw, ← map_mul]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem inFr1_of_pi0Lam {f : W.EE} (hf : InFr W c (W.π₀ * abelian₂ W A c e) 1 f) :
     InFr W c 1 (abelian₂ W A c e) f := by
   obtain ⟨w, hw, hfw⟩ := hf
@@ -86,6 +100,9 @@ theorem inFr1_of_pi0Lam {f : W.EE} (hf : InFr W c (W.π₀ * abelian₂ W A c e)
   rw [map_one, one_mul] at hfw
   rw [hfw, ← map_mul]; congr 1; ring
 
+/- English proof (translation)
+Take `⟨g, hg, hfg⟩` from `nl_of_pi0Lam W hR hbij A hA c hc T hT b hb f hf`. Conclude with `⟨⟨fun k => inFr1_of_pi0Lam W A c _ (hf k), hs⟩, g, hg, hfg⟩`.
+-/
 theorem psub_of_pi0Lam [IsDomain O] (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W)
     (hbij : Function.Bijective (algebraMap K₀ K)) (hA : A.OK) (hc : c ∈ A.cuts) (hT : Win W A T)
     (hb : Formalism.MainNotions.LiftingTheory.IsFrameΔ W T (c - ((A.len c : ℕ) : ZMod n)) b) (f : Fin d → W.EE)

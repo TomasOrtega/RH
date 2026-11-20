@@ -8,6 +8,23 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open MeasureTheory GroundTheory.Automorphic PositivityTheory.Rg.Tf.IntegralApplyAeEq Set Filter Topology UpperTheory.V.Z.IntegralApplyAeEq
 open scoped InnerProductSpace FourierTransform ComplexConjugate
 
+/- English proof (translation)
+Introduce `V _ _ _ _ W _ _ _ _ κ hk u`. Establish `ki : Integrable κ` using `hk.1.integrable_of_hasCompactSupport hk.2`. Set `σ : ℝ → V →L[ℂ] W` to `fun ξ => symb κ (2 * Real.pi * Complex.I * ξ)`. Establish `hσ : ∀ ξ, σ ξ = 𝓕 (fun t => κ (-t)) ξ` using `fun ξ => by`. Rewrite using `[Real.fourier_real_eq_integral_exp_smul, ← integral_neg_eq_self]`.
+
+Use `integral_congr_ae (Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `only [neg_neg]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `σc : Continuous σ`. Rewrite using `[show σ = _ from funext hσ]`. Conclude with `VectorFourier.fourierIntegral_continuous Real.continuous_fourierChar (innerSL ℝ).continuous₂ ki.comp_neg`. Establish `σb : ∀ ξ, ‖σ ξ‖ ≤ ∫ t, ‖κ (-t)‖` using `fun ξ => by`. Rewrite using `[hσ]`.
+
+Conclude with `VectorFourier.norm_fourierIntegral_le_integral_norm _ _ _ _ _`. Use `set C := ∫ t, ‖κ (-t)‖`. Establish `hm : ∀ v : L V, MemLp (fun ξ => σ ξ (v ξ)) 2 volume` using `fun v => (Lp.memLp v).of_le_mul (c := C) ((ContinuousLinearMap.id ℂ (V →L[ℂ] W)).aestronglyMeasurable_comp₂ σc.aestronglyMeasurable (Lp.aestronglyMeasurable v)) (Eventually.of_forall fun ξ => (σ ξ).le_of_opNorm_le (σb ξ) _)`. Set `T : L V → L W` to `fun v => (hm v).toLp _`. Establish `Tc : Continuous T`.
+
+Use `(LipschitzWith.of_dist_le' (K := C) fun v v' => ?_).continuous` and prove the remaining obligations. Rewrite using `[dist_eq_norm, dist_eq_norm]`. Use `Lp.norm_le_mul_norm_of_ae_le_mul ?_` and prove the remaining obligations. Use `filter_upwards [Lp.coeFn_sub (T v) (T v'), Lp.coeFn_sub v v', (hm v).coeFn_toLp, (hm v').coeFn_toLp] with x h1 h2 h3 h4`. Rewrite using `[h1, h2, Pi.sub_apply, Pi.sub_apply, h3, h4, ← map_sub]`.
+
+Conclude with `(σ x).le_of_opNorm_le (σb x) _`. Establish `key : Lp.fourierTransformₗᵢ ℝ W (conv κ u) = T (Lp.fourierTransformₗᵢ ℝ V u)`. Use `DenseRange.induction_on (p := fun u : L V => Lp.fourierTransformₗᵢ ℝ W (conv κ u) = T (Lp.fourierTransformₗᵢ ℝ V u)) (SchwartzMap.denseRange_toLpCLM (E := ℝ) (F := V) (p := 2) (μ := volume) ENNReal.ofNat_ne_top) u (isClosed_eq ((Lp.fourierTransformₗᵢ ℝ W).continuous.comp (conv κ) …` and prove the remaining obligations. Use `set w : L V := SchwartzMap.toLpCLM ℝ V 2 volume f`. Establish `wi : Integrable (w : ℝ → V)` using `f.integrable.congr (f.coeFn_toLp 2 volume).symm`.
+
+Establish `e : (conv κ w : ℝ → W) =ᵐ[volume] convolution (fun t => κ (-t)) w (ContinuousLinearMap.id ℂ (V →L[ℂ] W)) volume` using `by filter_upwards [(convSpec κ hk w).1] with x hx`. Rewrite using `[hx, convolution_def, ← integral_neg_eq_self]`. Simplify using `[sub_eq_add_neg]`. Establish `ci : Integrable (conv κ w : ℝ → W)` using `(ki.comp_neg.integrable_convolution _ wi).congr e.symm`. Use `Lp.ext ?_` and prove the remaining obligations.
+
+Use `filter_upwards [fourAe _ ci, fourAe _ wi, (hm (Lp.fourierTransformₗᵢ ℝ V w)).coeFn_toLp] with ξ h1 h2 h3`. Rewrite using `[h1, h3, h2, Real.fourier_congr_ae e, Real.fourier_bilin_convolution_eq _ ki.comp_neg wi, hσ]`. Both sides reduce to the same expression. Rewrite using `[key]`. Conclude with `(hm _).coeFn_toLp`.
+-/
 theorem UpperTheory.V.Z.IntegralApplyAeEq.fourConv :
     ∀ {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] [CompleteSpace V] {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W] [CompleteSpace W] (κ : ℝ → V →L[ℂ] W), Ker κ → ∀ u : L V, ∀ᵐ ξ : ℝ,
       Lp.fourierTransformₗᵢ ℝ W (conv κ u) ξ = symb κ (2 * Real.pi * Complex.I * ξ) (Lp.fourierTransformₗᵢ ℝ V u ξ) := by

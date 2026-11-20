@@ -11,6 +11,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CocompactIntegrable
 
+/- English proof (translation)
+Establish `hle : μ 𝓕 ≤ μ C`. Rewrite using `[h𝓕.measure_eq_tsum C]`. Use `le_trans (measure_mono ?_) (measure_iUnion_le _)` and prove the remaining obligations. Introduce `h hh`. Take `⟨γ, hγ, c, hc, rfl⟩` from `hcov h`.
+
+Conclude with `Set.mem_iUnion.2 ⟨⟨γ, hγ⟩, ⟨c, hc, rfl⟩, hh⟩`. Establish `hfin : μ 𝓕 ≠ ⊤` using `(hle.trans_lt hC.measure_lt_top).ne`. Take `⟨M, hM⟩` from `hC.exists_bound_of_continuousOn hF.continuousOn`. Use `Measure.integrableOn_of_bounded (M := M) hfin hF.aestronglyMeasurable (Filter.Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Take `⟨γ, hγ, c, hc, rfl⟩` from `hcov h`.
+
+Rewrite using `[hinv γ hγ]`. Conclude with `hM c hc`.
+-/
 theorem integrableOn_of_cocompact {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [MeasurableSpace G] [BorelSpace G] (Γ : Subgroup G) [Countable Γ] (μ : Measure G)
     [μ.IsMulLeftInvariant] [IsFiniteMeasureOnCompacts μ] (𝓕 C : Set G)
@@ -31,6 +38,9 @@ theorem integrableOn_of_cocompact {G : Type*} [Group G] [TopologicalSpace G] [Is
   rw [hinv γ hγ]
   exact hM c hc
 
+/- English proof (translation)
+Introduce `D V μ 𝓕 C hμ h𝓕 hC hcov F hF hinv`. Take `⟨-, -, -, _, _, -, _⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Conclude with `integrableOn_of_cocompact (GQ V) μ 𝓕 C h𝓕 hC hcov F hF hinv`.
+-/
 theorem integrableOn_fundamentalDomain : ∀ {D : D7} (V : HSp D) (μ : Measure (GA D V)) (𝓕 C : Set (GA D V)), μ.IsHaarMeasure → IsFundamentalDomain (GQ V) 𝓕 μ → IsCompact C → (∀ h : GA D V, ∃ γ ∈ GQ V, ∃ c ∈ C, h = γ * c) → ∀ F : GA D V → ℂ, Continuous F → (∀ γ ∈ GQ V, ∀ h, F (γ * h) = F h) → IntegrableOn F 𝓕 μ := by
   intro D V μ 𝓕 C hμ h𝓕 hC hcov F hF hinv
   obtain ⟨-, -, -, _, _, -, _⟩ := GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V

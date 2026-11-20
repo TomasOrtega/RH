@@ -15,12 +15,18 @@ namespace GlobalTheory.CoboundaryRoots
 
 variable {X : Type} [AddCommGroup X] {A : Type} [CommGroup A]
 
+/- English proof (translation)
+Establish `h` using `hc 0 0 c`. Simplify using `only [add_zero, zero_add] at h`. Conclude with `(mul_left_cancel h).symm`.
+-/
 theorem coc_zero_left (f : X → X → A)
     (hc : ∀ a b c, f (a + b) c * f a b = f a (b + c) * f b c) (c : X) : f 0 c = f 0 0 := by
   have h := hc 0 0 c
   simp only [add_zero, zero_add] at h
   exact (mul_left_cancel h).symm
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mul_mul_mul_inv_inv' (x y z : A) : x * y * z * x⁻¹ * y⁻¹ = z := by
   calc x * y * z * x⁻¹ * y⁻¹ = z * (x * x⁻¹) * (y * y⁻¹) := by ac_rfl
     _ = z := by simp
@@ -61,6 +67,13 @@ end GlobalTheory.CoboundaryRoots
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `X _ _ A _ f hs hc`. Use `letI : AddCommGroup (GlobalTheory.CoboundaryRoots.CocExt X A) := GlobalTheory.CoboundaryRoots.extGroup f hs hc`. Set `bs` to `Module.Free.chooseBasis ℤ X`. Set `s : X →ₗ[ℤ] GlobalTheory.CoboundaryRoots.CocExt X A` to `bs.constr ℤ (fun i => ⟨bs i, 1⟩)`. Set `π : GlobalTheory.CoboundaryRoots.CocExt X A →+ X` to `{ toFun := GlobalTheory.CoboundaryRoots.CocExt.fst, map_zero' := rfl, map_add' := fun _ _ => rfl }`.
+
+Establish `hcomp : π.toIntLinearMap.comp s = LinearMap.id` using `bs.ext (fun i => by show π (s (bs i)) = bs i`. Rewrite using `[show s (bs i) = ⟨bs i, 1⟩ from bs.constr_basis ℤ _ i]`. Use the proof step `rfl)`. Establish `hπ : ∀ x, (s x).fst = x` using `fun x => LinearMap.congr_fun hcomp x`. Use `⟨fun x => (s x).snd, fun a b => ?_⟩` and prove the remaining obligations.
+
+Establish `h : (s (a + b)).snd = (s a).snd * (s b).snd * f (s a).fst (s b).fst` using `congrArg GlobalTheory.CoboundaryRoots.CocExt.snd (s.map_add a b)`. Rewrite `h` using `[hπ, hπ]`. Use `show f a b = (s (a + b)).snd * ((s a).snd)⁻¹ * ((s b).snd)⁻¹`. Rewrite using `[h, GlobalTheory.CoboundaryRoots.mul_mul_mul_inv_inv']`.
+-/
 theorem symm_cocycle_isCoboundary : ∀ (X : Type) [AddCommGroup X] [Module.Free ℤ X] (A : Type) [CommGroup A] (f : X → X → A), (∀ a b, f a b = f b a) → (∀ a b c, f (a + b) c * f a b = f a (b + c) * f b c) → ∃ g : X → A, ∀ a b, f a b = g (a + b) * (g a)⁻¹ * (g b)⁻¹ := by
   intro X _ _ A _ f hs hc
   letI : AddCommGroup (GlobalTheory.CoboundaryRoots.CocExt X A) := GlobalTheory.CoboundaryRoots.extGroup f hs hc

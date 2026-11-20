@@ -10,6 +10,9 @@ import Mathlib.RingTheory.ZMod.UnitsCyclic
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.V.Odd UpperTheory.V.ML UpperTheory.V.X
 
+/- English proof (translation)
+Establish `key : ∀ x : Ω, x ^ N = 1 → x ^ ((1 : (ZMod N)ˣ) : ZMod N).val = x` using `fun x hx => by`. Rewrite using `[Units.val_one, ZMod.val_one_eq_one_mod, ← pow_eq_pow_mod 1 hx, pow_one]`. Use `⟨fun h => (Chr.clsFacts ℚ Ω N).2.2.1 g 1 fun x hx => (h x hx).trans (key x hx).symm, fun h x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[Chr.cls_spec N g x hx, h, key x hx]`.
+-/
 private theorem kwl_fix {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (N : ℕ) [NeZero N] (g : G ℚ Ω) :
     g ∈ fixMu ℚ Ω N ↔ Chr.cls ℚ Ω N g = 1 := by
   have key : ∀ x : Ω, x ^ N = 1 → x ^ ((1 : (ZMod N)ˣ) : ZMod N).val = x := fun x hx => by
@@ -17,12 +20,32 @@ private theorem kwl_fix {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure �
   refine ⟨fun h => (Chr.clsFacts ℚ Ω N).2.2.1 g 1 fun x hx => (h x hx).trans (key x hx).symm, fun h x hx => ?_⟩
   rw [Chr.cls_spec N g x hx, h, key x hx]
 
+/- English proof (translation)
+Establish `hch : CharZero Ω` using `charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Take `rfl : inst = DivisionRing.toRatAlgebra` from `Subsingleton.elim _ _`. Conclude with `(Chr.clsOnto Ω N).1`.
+-/
 private theorem kwl_onto {Ω : Type} [Field Ω] [inst : Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (N : ℕ) [NeZero N] :
     Function.Surjective (Chr.cls ℚ Ω N) := by
   have hch : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective
   obtain rfl : inst = DivisionRing.toRatAlgebra := Subsingleton.elim _ _
   exact (Chr.clsOnto Ω N).1
 
+/- English proof (translation)
+Use `haveI : NeZero (l ^ (n + 2)) := ⟨pow_ne_zero _ hl.ne_zero⟩`. Use `haveI : NeZero (l ^ 2) := ⟨pow_ne_zero _ hl.ne_zero⟩`. Use `haveI := ZMod.isCyclic_units_of_prime_pow l hl h2 (n + 2)`. Establish `hl0 : 0 < l - 1` using `Nat.sub_pos_of_lt hl.one_lt`. Establish `hcard : ∀ e : ℕ, 0 < e → Nat.card (ZMod (l ^ e))ˣ = l ^ (e - 1) * (l - 1)`.
+
+Introduce `e he`. Use `haveI : NeZero (l ^ e) := ⟨pow_ne_zero _ hl.ne_zero⟩`. Rewrite using `[Nat.card_eq_fintype_card, ZMod.card_units_eq_totient, Nat.totient_prime_pow hl he]`. Establish `hG` using `hcard (n + 2) (by omega)`. Establish `hH` using `hcard 2 (by omega)`.
+
+Establish `e1 : n + 2 - 1 = n + 1` using `by omega`. Rewrite `hG` using `[e1]`. Simplify using `only [show (2 - 1 : ℕ) = 1 from rfl, pow_one] at hH`. Establish `hrange : (ZMod.unitsMap hd).range = ⊤` using `MonoidHom.range_eq_top.2 (ZMod.unitsMap_surjective hd)`. Establish `hker : Nat.card (ZMod.unitsMap hd).ker = l ^ n`.
+
+Establish `h1` using `Subgroup.card_mul_index (ZMod.unitsMap hd).ker`. Rewrite `h1` using `[Subgroup.index_ker, hrange, Subgroup.card_top, hH, hG]`. Establish `hpos : 0 < l * (l - 1)` using `Nat.mul_pos hl.pos hl0`. Apply `Nat.eq_of_mul_eq_mul_right hpos` to reduce the goal to its premises. Rewrite using `[h1]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hu1 : u ^ (l ^ n) = 1`. Use `pow_card_eq_one' (G := (ZMod.unitsMap hd).ker) (x := ⟨u, hu⟩)` as an intermediate fact. Rewrite `this` using `[hker]`. Conclude with `congrArg Subtype.val this`.
+
+Take `⟨γ, hγ⟩` from `IsCyclic.exists_generator (α := (ZMod (l ^ (n + 2)))ˣ)`. Take `⟨k, rfl⟩` from `Subgroup.mem_zpowers_iff.1 (hγ u)`. Establish `hord : orderOf γ = l ^ (n + 1) * (l - 1)`. Rewrite using `[orderOf_eq_card_of_forall_mem_zpowers hγ, hG]`. Rewrite `hu1` using `[← zpow_natCast, ← zpow_mul, ← orderOf_dvd_iff_zpow_eq_one, hord]`.
+
+Establish `hlk : (l : ℤ) ∣ k`. Establish `h3 : ((l ^ (n + 1) : ℕ) : ℤ) ∣ k * ((l ^ n : ℕ) : ℤ)` using `(Int.natCast_dvd_natCast.2 (Dvd.intro _ rfl)).trans hu1`. Move the coercions through the operations in `at h3`. Rewrite `h3` using `[pow_succ, mul_comm ((l : ℤ) ^ n)]`. Conclude with `(mul_dvd_mul_iff_right (pow_ne_zero _ (by exact_mod_cast hl.ne_zero))).1 h3`.
+
+Take `⟨j, rfl⟩` from `hlk`. Use `⟨γ ^ j, ?_⟩` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← zpow_mul, mul_comm]`.
+-/
 private theorem kwl_pow (l : ℕ) (hl : l.Prime) (h2 : l ≠ 2) (n : ℕ) (hd : l ^ 2 ∣ l ^ (n + 2)) (u : (ZMod (l ^ (n + 2)))ˣ)
     (hu : ZMod.unitsMap hd u = 1) : ∃ v, v ^ l = u := by
   haveI : NeZero (l ^ (n + 2)) := ⟨pow_ne_zero _ hl.ne_zero⟩
@@ -66,6 +89,25 @@ private theorem kwl_pow (l : ℕ) (hl : l.Prime) (h2 : l ≠ 2) (n : ℕ) (hd : 
   refine ⟨γ ^ j, ?_⟩
   rw [← zpow_natCast, ← zpow_mul, mul_comm]
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l hlf h2 φ hφ g hg`. Establish `hl : l.Prime` using `hlf.out`. Take `⟨hlc, hadd, hunr⟩` from `hφ`. Set `ψ : G ℚ Ω →* Multiplicative (ZMod l)` to `MonoidHom.mk' (fun x => Multiplicative.ofAdd (φ x)) (fun a b => by`. Simplify using `only [hadd, ofAdd_add])`.
+
+Establish `hψ : ∀ x, ψ x = Multiplicative.ofAdd (φ x)` using `fun x => rfl`. Establish `hkerset : ((ψ.ker : Subgroup (G ℚ Ω)) : Set (G ℚ Ω)) = {x | φ x = 0}`. Use extensionality with `x`. Simplify using `[MonoidHom.mem_ker, hψ]`. Establish `hVo : IsOpen ((ψ.ker : Subgroup (G ℚ Ω)) : Set (G ℚ Ω))`.
+
+Rewrite using `[hkerset]`. Conclude with `hlc.isOpen_fiber 0`. Establish `hVc : commutator (G ℚ Ω) ≤ ψ.ker` using `Abelianization.commutator_subset_ker ψ`. Establish `hI : ∀ A : ValuationSubring Ω, ¬ A.valuation (l : Ω) < 1 → Ine (F` using `ℚ) A ≤ ψ.ker := by`. Introduce `A hA x hx`.
+
+Rewrite using `[MonoidHom.mem_ker, hψ, hunr A hA x hx]`. Both sides reduce to the same expression. Take `⟨n, hn⟩` from `UpperTheory.V.CF.kwAbsRam Ω ψ.ker hVo hVc l hl.pos hI`. Use `haveI : NeZero (l ^ (n + 2)) := ⟨pow_ne_zero _ hl.ne_zero⟩`. Use `haveI : NeZero (l ^ 2) := ⟨pow_ne_zero _ hl.ne_zero⟩`.
+
+Establish `hfix : fixMu ℚ Ω (l ^ (n + 2)) ≤ ψ.ker`. Introduce `x hx`. Apply `hn x` to reduce the goal to its premises. Conclude with `fixMu_le ℚ Ω (pow_dvd_pow l (by omega)) hx`. Establish `hd : l ^ 2 ∣ l ^ (n + 2)` using `pow_dvd_pow l (by omega)`.
+
+Establish `hc2 : ZMod.unitsMap hd (Chr.cls ℚ Ω (l ^ (n + 2)) g) = 1`. Use `DFunLike.congr_fun ((Chr.clsFacts ℚ Ω (l ^ (n + 2))).2.1 (l ^ 2) hd) g` as an intermediate fact. Rewrite `this` using `[MonoidHom.comp_apply]`. Rewrite using `[this]`. Conclude with `(kwl_fix (l ^ 2) g).1 hg`.
+
+Take `⟨v, hv⟩` from `kwl_pow l hl h2 n hd _ hc2`. Take `⟨h, rfl⟩` from `kwl_onto (Ω := Ω) (l ^ (n + 2)) v`. Establish `hk : g * (h ^ l)⁻¹ ∈ fixMu ℚ Ω (l ^ (n + 2))`. Rewrite using `[kwl_fix, map_mul, map_inv, map_pow, hv, mul_inv_cancel]`. Establish `h0` using `hfix hk`.
+
+Rewrite `h0` using `[MonoidHom.mem_ker]`. Establish `hg' : g = g * (h ^ l)⁻¹ * h ^ l` using `by group`. Establish `: ψ g = 1`. Rewrite using `[hg', map_mul, h0, one_mul, map_pow, hψ, ← ofAdd_nsmul, nsmul_eq_mul, ZMod.natCast_self, zero_mul]`. Both sides reduce to the same expression.
+
+Rewrite `this` using `[hψ]`. Conclude with `this`.
+-/
 theorem UpperTheory.V.X.kwl :
     ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime], l ≠ 2 → ∀ φ ∈ UnrHom ℚ Ω l, ∀ g ∈ fixMu ℚ Ω (l ^ 2), φ g = 0 := by
   intro Ω _ _ _ l hlf h2 φ hφ g hg

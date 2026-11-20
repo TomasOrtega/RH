@@ -16,6 +16,15 @@ section Continuity
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [TopologicalSpace O]
   [IsTopologicalRing O] {X : Type} [TopologicalSpace X]
 
+/- English proof (translation)
+Take `⟨p, hp⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨k, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hd hp`. Establish `hm : ∀ (n : ℕ) (y : O), y ∈ (IsLocalRing.maximalIdeal O) ^ n ↔ p ^ n ∣ y`. Introduce `n y`. Rewrite using `[hp.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+
+Rewrite using `[continuous_iff_continuousAt]`. Introduce `x₀`. Establish `h0 : Filter.Tendsto (fun x => (u : O) * p ^ k * (f x - f x₀)) (nhds x₀) (nhds 0)`. Use `(h.sub (continuous_const (y := (u : O) * p ^ k * f x₀))).tendsto x₀` as an intermediate fact. Simplify `this` using `[mul_sub, Pi.sub_def]`.
+
+Establish `h1 : Filter.Tendsto (fun x => f x - f x₀) (nhds x₀) (nhds 0)`. Rewrite `h0`, the goal using `[had.hasBasis_nhds_zero.tendsto_right_iff]`. Introduce `n _`. Use `filter_upwards [h0 (k + n) trivial] with x hx`. Establish `hx'` using `(hm _ _).1 hx`.
+
+Use `(hm _ _).2 ?_` and prove the remaining obligations. Rewrite `hx'` using `[pow_add, mul_assoc, Units.dvd_mul_left]`. Conclude with `(mul_dvd_mul_iff_left (pow_ne_zero k hp.ne_zero)).1 hx'`. Simplify `h1.add_const (f x₀)` using `[ContinuousAt]`.
+-/
 theorem continuous_of_mul (had : IsAdic (IsLocalRing.maximalIdeal O)) {d : O} (hd : d ≠ 0) {f : X → O}
     (h : Continuous fun x => d * f x) : Continuous f := by
   obtain ⟨p, hp⟩ := IsDiscreteValuationRing.exists_irreducible O
@@ -38,6 +47,11 @@ theorem continuous_of_mul (had : IsAdic (IsLocalRing.maximalIdeal O)) {d : O} (h
     exact (mul_dvd_mul_iff_left (pow_ne_zero k hp.ne_zero)).1 hx'
   simpa [ContinuousAt] using h1.add_const (f x₀)
 
+/- English proof (translation)
+Take `⟨d, hd⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors O) c`. Use `choose a ha using hd`. Use `continuous_of_mul had (nonZeroDivisors.ne_zero d.2) ?_` and prove the remaining obligations. Establish `: (fun x => (d : O) * f x) = fun x => ∑ j, a j * h j x`. Use function extensionality and compare the values at `x`.
+
+Apply `IsFractionRing.injective O (FractionRing O)` to reduce the goal to its premises. Simplify using `only [map_mul, map_sum, hf, ha, Finset.mul_sum, Algebra.smul_def, mul_assoc]`. Rewrite using `[this]`. Conclude with `continuous_finset_sum _ fun j _ => continuous_const.mul (hh j)`.
+-/
 theorem continuous_of_comb (had : IsAdic (IsLocalRing.maximalIdeal O)) {ι : Type} [Fintype ι]
     (c : ι → FractionRing O) {h : ι → X → O} (hh : ∀ j, Continuous (h j)) {f : X → O}
     (hf : ∀ x, algebraMap O (FractionRing O) (f x) =
@@ -52,6 +66,15 @@ theorem continuous_of_comb (had : IsAdic (IsLocalRing.maximalIdeal O)) {ι : Typ
   rw [this]
   exact continuous_finset_sum _ fun j _ => continuous_const.mul (hh j)
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `hs`. Use `continuous_matrix fun a b => ?_` and prove the remaining obligations. Use `set u : Fin n → FractionRing O := e.symm (Pi.single b 1, 0) with hu`. Use `continuous_of_comb had (fun jk : Fin n × Fin n => (e (Pi.single jk.1 1)).1 a * u jk.2) (h := fun jk g => M g jk.1 jk.2) (fun jk => hM.matrix_elem jk.1 jk.2) fun g => ?_` and prove the remaining obligations. Establish `h1` using `congrFun (congrArg Prod.fst (he g u)) a`.
+
+Establish `h2 : ∀ v : Fin n → FractionRing O, (e v).1 a = ∑ j, (e (Pi.single j 1)).1 a * v j`. Introduce `v`. Use `conv_lhs => rw [pi_eq_sum_univ' v]`. Simplify using `[map_sum, Prod.fst_sum, Finset.sum_apply, mul_comm]`. Rewrite `h1` using `[h2]`.
+
+Simplify using `only [hu, LinearEquiv.apply_symm_apply, Matrix.mulVec_single_one] at h1`. Rewrite `h1` using `[← hu]`. Rewrite using `[Fintype.sum_prod_type]`. Use `Eq.trans ?_ (h1.symm.trans ?_)` and prove the remaining obligations. Both sides reduce to the same expression.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec, dotProduct, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ * (algebraMap O (FractionRing O) (M g j k) * u k) = _`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem continuous_of_splitsAs (had : IsAdic (IsLocalRing.maximalIdeal O)) {Γ : Type} [Group Γ]
     [TopologicalSpace Γ] {n r t : ℕ} {M : Γ →* Matrix (Fin n) (Fin n) O}
     {P : Γ →* Matrix (Fin r) (Fin r) O} {χ : Fin t → Γ → FractionRing O}
@@ -88,9 +111,15 @@ section Glob
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (i : N.Loc)
   (r : N.X i → (GE N →* GL (Fin R.nV) (N.O i))) (ρ : N.X i → (GE N →* GL (Fin R.r) (N.O i)))
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem blockSum_iff (π : N.X i) :
     GlobalTheory.IndefiniteRowSideFullHecke.BlockJumpCount.IsBlockSum N i r ρ π ↔ GlobalTheory.IndefiniteRowSideFullHecke.BlockHodgeTateJumps.BlockSplit N i r ρ π := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `continuous_of_splitsAs (M := rO N i r π) (P := rhoO N i ρ π) (N.O_adic i) ((blockSum_iff N i r ρ π).1 hs) hr.1`.
+-/
 theorem continuous_rho (π : N.X i) (hr : IsHeckeGalois N i π (r π))
     (hs : GlobalTheory.IndefiniteRowSideFullHecke.BlockJumpCount.IsBlockSum N i r ρ π) :
     Continuous (fun g => ((ρ π g : GL (Fin R.r) (N.O i)) : Matrix (Fin R.r) (Fin R.r) (N.O i))) :=

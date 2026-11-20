@@ -6,6 +6,15 @@ noncomputable section
 
 namespace Deduction
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `hP.growth`. Use `⟨∫ u in Ioi (0 : ℝ), C * Real.exp (-(σ - 2) * u), fun s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[hP.laplace s (lt_of_lt_of_le hσ hs)]`. Use `norm_integral_le_of_norm_le ((exp_neg_integrableOn_Ioi 0 (sub_pos.mpr hσ)).const_mul C) ?_` and prove the remaining obligations. Use `filter_upwards [ae_restrict_mem measurableSet_Ioi] with u hu`.
+
+Establish `hu0 : 0 ≤ u` using `le_of_lt hu`. Establish `h1` using `hC u hu0`. Establish `hre : (-s * (u : ℂ)).re = -s.re * u` using `by simp`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, Complex.norm_exp, hre]`. Establish `h2 : Real.exp (-s.re * u) ≤ Real.exp (-σ * u)`.
+
+Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, ← Real.exp_add]`. Use `congr 2`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem landau_pole_re_le_bound {g : ℝ → ℝ} {Φ : ℂ → ℂ} {Z : Set ℂ} (hP : PoleData g Φ Z) {σ : ℝ}
     (hσ : 2 < σ) : ∃ M : ℝ, ∀ s : ℂ, σ ≤ s.re → ‖Φ s‖ ≤ M := by
   obtain ⟨C, hC⟩ := hP.growth
@@ -26,6 +35,17 @@ theorem landau_pole_re_le_bound {g : ℝ → ℝ} {Φ : ℂ → ℂ} {Z : Set �
     _ = C * Real.exp (-(σ - 2) * u) := by
         rw [mul_assoc, ← Real.exp_add]; congr 2; ring
 
+/- English proof (translation)
+Introduce `ρ hρ`. Assume the negation of the conclusion as `hlt`. Establish `hlt : 2 < ρ.re` using `not_le.mp hlt`. Take `⟨M, hM⟩` from `landau_pole_re_le_bound hP (σ := (2 + ρ.re) / 2) (by linarith)`. Take `⟨c, hc, -, h, hh, hev⟩` from `hP.pole ρ hρ`.
+
+Establish `h0 : Tendsto (fun s : ℂ => s - ρ) (𝓝[≠] ρ) (𝓝 0)`. Establish `: Tendsto (fun s : ℂ => s - ρ) (𝓝 ρ) (𝓝 (ρ - ρ))` using `tendsto_id.sub_const ρ`. Rewrite `this` using `[sub_self]`. Conclude with `this.mono_left nhdsWithin_le_nhds`. Establish `hb : ∀ᶠ s in 𝓝[≠] ρ, ‖Φ s‖ ≤ M`.
+
+Establish `: ∀ᶠ s in 𝓝 ρ, (2 + ρ.re) / 2 < s.re` using `Complex.continuous_re.continuousAt.eventually (lt_mem_nhds (by linarith))`. Use `filter_upwards [this.filter_mono nhdsWithin_le_nhds] with s hs using hM s hs.le`. Establish `h1 : Tendsto (fun s : ℂ => (s - ρ) * Φ s) (𝓝[≠] ρ) (𝓝 0)` using `NormedField.tendsto_zero_smul_of_tendsto_zero_of_bounded h0 ⟨M, eventually_map.mpr hb⟩`. Establish `h2 : Tendsto (fun s : ℂ => c + (s - ρ) * h s) (𝓝[≠] ρ) (𝓝 (c + 0 * h ρ))` using `(h0.mul (hh.continuousAt.tendsto.mono_left nhdsWithin_le_nhds)).const_add c`. Establish `h3 : (fun s : ℂ => (s - ρ) * Φ s) =ᶠ[𝓝[≠] ρ] fun s : ℂ => c + (s - ρ) * h s` using `by filter_upwards [hev, self_mem_nhdsWithin] with s hs hne`.
+
+Establish `: s - ρ ≠ 0` using `sub_ne_zero.mpr hne`. Rewrite using `[hs]`. Clear the denominators using the available nonvanishing facts. Use `tendsto_nhds_unique (h1.congr' h3) h2` as an intermediate fact. Apply `hc` to reduce the goal to its premises.
+
+Simplify using `using this.symm`.
+-/
 theorem landau_pole_re_le {g : ℝ → ℝ} {Φ : ℂ → ℂ} {Z : Set ℂ} (hP : PoleData g Φ Z) : ∀ ρ ∈ Z, ρ.re ≤ 2 := by
   intro ρ hρ
   by_contra hlt

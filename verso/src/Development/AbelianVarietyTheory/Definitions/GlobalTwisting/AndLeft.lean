@@ -23,9 +23,15 @@ def HasCols : V4.Slot := positionOf fun _ _ _ _ w Z c => ColView w Z c.O.tw c.O.
 
 def OverCols (Q : V4.Slot) : Prop := ∀ K X f T c, Q K X f T c → HasCols K X f T c
 
+/- English proof (translation)
+Introduce `K X f T c t` and use `h K X f T c t.1`.
+-/
 theorem OverCols.and_left {Q R : V4.Slot} (h : OverCols Q) : OverCols fun K X f T c => Q K X f T c ∧ R K X f T c :=
   fun K X f T c t => h K X f T c t.1
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ t` and use `t`.
+-/
 example : OverCols HasCols := fun _ _ _ _ _ t => t
 
 end GlobalTheory.Fc.Cv

@@ -16,6 +16,9 @@ section Group
 
 variable {G : Type} [Group G] [Finite G]
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.T.star_virtualCharacter_eq_apply_inv G χ (AddSubgroup.subset_closure hχ)`. Establish `hG : (Nat.card G : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Unfold `pair`. Rewrite using `[← mul_assoc, mul_inv_cancel₀ hG, one_mul]`. Conclude with `finsum_congr fun g => by rw [h, mul_comm]`.
+-/
 private theorem sum_eq_pair {χ : G → ℂ} (ψ : G → ℂ) (hχ : IsChar ℂ ℂ χ) :
     (∑ᶠ g, star (χ g) * ψ g) = (Nat.card G : ℂ) * pair ψ χ := by
   have h := GlobalTheory.T.star_virtualCharacter_eq_apply_inv G χ (AddSubgroup.subset_closure hχ)
@@ -24,12 +27,22 @@ private theorem sum_eq_pair {χ : G → ℂ} (ψ : G → ℂ) (hχ : IsChar ℂ 
   rw [← mul_assoc, mul_inv_cancel₀ hG, one_mul]
   exact finsum_congr fun g => by rw [h, mul_comm]
 
+/- English proof (translation)
+Establish `hc : (Nat.card G : ℂ) ≠ 0` using `by exact_mod_cast Nat.card_pos.ne'`. Unfold `Pairs`. Rewrite using `[sum_eq_pair ψ hχ, mul_ne_zero_iff]`. The claim follows by propositional logic.
+-/
 private theorem pairs_iff {χ : G → ℂ} (ψ : G → ℂ) (hχ : IsChar ℂ ℂ χ) : Pairs χ ψ ↔ pair ψ χ ≠ 0 := by
   have hc : (Nat.card G : ℂ) ≠ 0 := by exact_mod_cast Nat.card_pos.ne'
   unfold Pairs
   rw [sum_eq_pair ψ hχ, mul_ne_zero_iff]
   tauto
 
+/- English proof (translation)
+Take `⟨hadd, hnat, -, hsymm⟩` from `GlobalTheory.T.finiteGroupFunctionPairing_add_nat_pos_symm ℂ ℂ G`. Take `⟨n1, h1⟩` from `hnat b a hb ha`. Take `⟨n2, h2⟩` from `hnat v a hv ha`. Take `⟨n3, h3⟩` from `hnat b u hb hu`. Take `⟨n4, h4⟩` from `hnat v u hv hu`.
+
+Establish `e : pair (a + u) (b + v) = pair b a + pair v a + (pair b u + pair v u)`. Rewrite using `[hadd, hsymm a (b + v), hsymm u (b + v), hadd b v a, hadd b v u]`. Establish `hn1 : n1 ≠ 0`. Introduce and unpack `rfl`. Conclude with `h (by rw [hsymm, h1]; simp)`.
+
+Rewrite using `[e, h1, h2, h3, h4]`. Conclude with `(by omega : n1 + n2 + (n3 + n4) ≠ 0)` after adjusting the coercions.
+-/
 private theorem pair_add_ne {a u b v : G → ℂ} (ha : IsChar ℂ ℂ a) (hu : IsChar ℂ ℂ u) (hb : IsChar ℂ ℂ b)
     (hv : IsChar ℂ ℂ v) (h : pair a b ≠ 0) : pair (a + u) (b + v) ≠ 0 := by
   obtain ⟨hadd, hnat, -, hsymm⟩ := GlobalTheory.T.finiteGroupFunctionPairing_add_nat_pos_symm ℂ ℂ G
@@ -45,10 +58,24 @@ private theorem pair_add_ne {a u b v : G → ℂ} (ha : IsChar ℂ ℂ a) (hu : 
   rw [e, h1, h2, h3, h4]
   exact_mod_cast (by omega : n1 + n2 + (n3 + n4) ≠ 0)
 
+/- English proof (translation)
+Take `⟨n, ρ, -, e⟩` from `h`. Conclude with `⟨n, ρ, e⟩`.
+-/
 private theorem isChar_of_irr {φ : G → ℂ} (h : IsIrrChar ℂ ℂ φ) : IsChar ℂ ℂ φ := by
   obtain ⟨n, ρ, -, e⟩ := h
   exact ⟨n, ρ, e⟩
 
+/- English proof (translation)
+Take `⟨hadd, -, -, hsymm⟩` from `GlobalTheory.T.finiteGroupFunctionPairing_add_nat_pos_symm ℂ ℂ G`. Take `⟨-, hcadd⟩` from `GlobalTheory.T.isCharacterOverSubfield_zero_and_add ℂ ℂ G`. Establish `hzero : ∀ c : G → ℂ, pair 0 c = 0`. Introduce `c`. Use `hadd 0 0 c` as an intermediate fact.
+
+Rewrite `this` using `[add_zero]`. Take the linear combination `-this`. Use `revert h`. Use `GlobalTheory.T.isCharacterOverSubfield_induction_irreducible ℂ ℂ G (fun α => pair A α ≠ 0 → ∃ φ R R' : G → ℂ, IsIrrChar ℂ ℂ φ ∧ IsChar ℂ ℂ R ∧ IsChar ℂ ℂ R' ∧ A = φ + R ∧ α = φ + R') ?_ ?_ α hα` and prove the remaining obligations. Introduce `h0`.
+
+Conclude with `absurd (by rw [hsymm, hzero] : pair A 0 = 0) h0`. Introduce `φ c hφ hc ih hne`. Establish `hsplit : pair A (φ + c) = pair A φ + pair A c`. Rewrite using `[hsymm A (φ + c), hadd, hsymm φ A, hsymm c A]`. Distinguish the cases in `h1 : pair A φ = 0`.
+
+Rewrite `hne` using `[hsplit, h1, zero_add]`. Take `⟨ψ, R, R', hψ, hR, hR', hA', hc'⟩` from `ih hne`. Use `⟨ψ, R, φ + R', hψ, hR, hcadd _ _ (isChar_of_irr hφ) hR', hA', ?_⟩` and prove the remaining obligations. Rewrite using `[hc']`. Normalize the expressions using the abelian group laws.
+
+Take `⟨R, hR, hAR⟩` from `GlobalTheory.T.exists_isChar_eq_add_of_pair_ne_zero' ℂ ℂ G φ A hφ hA h1`. Conclude with `⟨φ, R, c, hφ, hR, hc, hAR, rfl⟩`.
+-/
 private theorem common {A : G → ℂ} (hA : IsChar ℂ ℂ A) {α : G → ℂ} (hα : IsChar ℂ ℂ α) (h : pair A α ≠ 0) :
     ∃ φ R R' : G → ℂ, IsIrrChar ℂ ℂ φ ∧ IsChar ℂ ℂ R ∧ IsChar ℂ ℂ R' ∧ A = φ + R ∧ α = φ + R' := by
   obtain ⟨hadd, -, -, hsymm⟩ := GlobalTheory.T.finiteGroupFunctionPairing_add_nat_pos_symm ℂ ℂ G
@@ -75,6 +102,11 @@ private theorem common {A : G → ℂ} (hA : IsChar ℂ ℂ A) {α : G → ℂ} 
     · obtain ⟨R, hR, hAR⟩ := GlobalTheory.T.exists_isChar_eq_add_of_pair_ne_zero' ℂ ℂ G φ A hφ hA h1
       exact ⟨φ, R, c, hφ, hR, hc, hAR, rfl⟩
 
+/- English proof (translation)
+Take `⟨n, ρ, hirr, hφ⟩` from `h`. Rewrite using `[hφ, Representation.char_one]`. Simplify using `only [Module.finrank_fin_fun, Algebra.algebraMap_self, RingHom.id_apply, ne_eq, Nat.cast_eq_zero]`. Introduce and unpack `rfl`. Apply `hirr.bot_ne_top` to reduce the goal to its premises.
+
+Use extensionality with `v`. Rewrite using `[Subsingleton.elim v 0]`. Conclude with `⟨fun _ => Submodule.zero_mem _, fun _ => Submodule.zero_mem _⟩`.
+-/
 private theorem irr_one_ne {φ : G → ℂ} (h : IsIrrChar ℂ ℂ φ) : φ 1 ≠ 0 := by
   obtain ⟨n, ρ, hirr, hφ⟩ := h
   rw [hφ, Representation.char_one]
@@ -85,6 +117,11 @@ private theorem irr_one_ne {φ : G → ℂ} (h : IsIrrChar ℂ ℂ φ) : φ 1 �
   rw [Subsingleton.elim v 0]
   exact ⟨fun _ => Submodule.zero_mem _, fun _ => Submodule.zero_mem _⟩
 
+/- English proof (translation)
+Take `⟨-, -, hirr, -⟩` from `GlobalTheory.T.finiteGroupFunctionPairing_add_nat_pos_symm ℂ ℂ G`. Establish `hx0 : x ≠ 0` using `fun e => h (by simp [e])`. Take `⟨φ, c, hφ, hc, rfl⟩` from `GlobalTheory.T.exists_isIrrChar_add_isChar_of_ne_zero ℂ ℂ G x hx hx0`. Take `⟨n, hn, hpn⟩` from `hirr φ hφ`. Use `pair_add_ne (isChar_of_irr hφ) hc (isChar_of_irr hφ) hc ?_` and prove the remaining obligations.
+
+Rewrite using `[hpn]`. Conclude with `hn.ne'` after adjusting the coercions.
+-/
 private theorem pair_self_ne {x : G → ℂ} (hx : IsChar ℂ ℂ x) (h : x 1 ≠ 0) : pair x x ≠ 0 := by
   obtain ⟨-, -, hirr, -⟩ := GlobalTheory.T.finiteGroupFunctionPairing_add_nat_pos_symm ℂ ℂ G
   have hx0 : x ≠ 0 := fun e => h (by simp [e])
@@ -100,6 +137,11 @@ section Hc
 
 variable {F : Type} [Field F] [Finite F]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [hc, hcTw, Pi.add_apply]`. Rewrite using `[← mul_add, ← finsum_add_distrib (Set.toFinite _) (Set.toFinite _)]`. Use `congr 1`. Use `finsum_congr fun y => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `split_ifs <;> simp [add_mul]`.
+-/
 private theorem hc_add_left (a b n : ℕ) (α α' : GL (Fin a) F → ℂ) (β : GL (Fin b) F → ℂ) :
     hc a b (α + α') β n = hc a b α β n + hc a b α' β n := by
   funext x
@@ -109,6 +151,11 @@ private theorem hc_add_left (a b n : ℕ) (α α' : GL (Fin a) F → ℂ) (β : 
   refine finsum_congr fun y => ?_
   split_ifs <;> simp [add_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [hc, hcTw, Pi.add_apply]`. Rewrite using `[← mul_add, ← finsum_add_distrib (Set.toFinite _) (Set.toFinite _)]`. Use `congr 1`. Use `finsum_congr fun y => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `split_ifs <;> simp [mul_add]`.
+-/
 private theorem hc_add_right (a b n : ℕ) (α : GL (Fin a) F → ℂ) (β β' : GL (Fin b) F → ℂ) :
     hc a b α (β + β') n = hc a b α β n + hc a b α β' n := by
   funext x
@@ -120,6 +167,15 @@ private theorem hc_add_right (a b n : ℕ) (α : GL (Fin a) F → ℂ) (β β' :
 
 end Hc
 
+/- English proof (translation)
+Introduce `hC hO F _ _ a b n hn α A β B hα hA hβ hB hAα hBβ`. Establish `hcC : ∀ (x : GL (Fin a) F → ℂ) (y : GL (Fin b) F → ℂ), IsChar ℂ ℂ x → IsChar ℂ ℂ y → IsChar ℂ ℂ (hc a b x y n)` using `fun x y hx hy => hC F a b n hn x y hx hy`. Take `⟨-, hcadd⟩` from `GlobalTheory.T.isCharacterOverSubfield_zero_and_add ℂ ℂ (GL (Fin n) F)`. Rewrite using `[pairs_iff _ (hcC A B hA hB)]`. Rewrite `hAα` using `[pairs_iff _ hA]`.
+
+Rewrite `hBβ` using `[pairs_iff _ hB]`. Take `⟨φ, R, R', hφ, hR, hR', rfl, rfl⟩` from `common hα hA hAα`. Take `⟨ψ, S, S', hψ, hS, hS', rfl, rfl⟩` from `common hβ hB hBβ`. Establish `hφ'` using `isChar_of_irr hφ`. Establish `hψ'` using `isChar_of_irr hψ`.
+
+Establish `e1 : hc a b (φ + R) (ψ + S) n = hc a b φ ψ n + (hc a b φ S n + (hc a b R ψ n + hc a b R S n))`. Rewrite using `[hc_add_left, hc_add_right, hc_add_right]`. Normalize the expressions using the abelian group laws. Establish `e2 : hc a b (φ + R') (ψ + S') n = hc a b φ ψ n + (hc a b φ S' n + (hc a b R' ψ n + hc a b R' S' n))`. Rewrite using `[hc_add_left, hc_add_right, hc_add_right]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[e1, e2]`. Use `pair_add_ne (hcC _ _ hφ' hψ') (hcadd _ _ (hcC _ _ hφ' hS) (hcadd _ _ (hcC _ _ hR hψ') (hcC _ _ hR hS))) (hcC _ _ hφ' hψ') (hcadd _ _ (hcC _ _ hφ' hS') (hcadd _ _ (hcC _ _ hR' hψ') (hcC _ _ hR' hS'))) ?_` and prove the remaining obligations. Conclude with `pair_self_ne (hcC _ _ hφ' hψ') (hO F a b n hn φ ψ (irr_one_ne hφ) (irr_one_ne hψ))`.
+-/
 theorem hcPair : HcChar → HcOne → HcPair := by
   intro hC hO F _ _ a b n hn α A β B hα hA hβ hB hAα hBβ
   have hcC : ∀ (x : GL (Fin a) F → ℂ) (y : GL (Fin b) F → ℂ), IsChar ℂ ℂ x → IsChar ℂ ℂ y →

@@ -37,6 +37,37 @@ namespace GlobalTheory.EvenOntoRealZeta
 
 open GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction in
 
+/- English proof (translation)
+Introduce `hDS hHC D c hc k hk s s' hs hs' p hp m X hmX`. Establish `hvac` using `hp.pre.vac`. Establish `hW` using `hp.pre.weil`. Establish `hArch` using `fun τ => (GlobalTheory.T.realThetaCorrespondence_upwardPair_both_directions hDS hHC D c.t (s.par τ) (s'.par τ) (c.a k τ) (c.a k τ) (hp.pre.par τ)).1 τ s.V s'.V`. Establish `hfock : ∀ τ, IsFockAt c.ψ c.θ s.V s'.V τ (cart s.M τ) (cart s'.M τ) (onb s.M τ) (onb s'.M τ) p.f` using `fun τ => ⟨hc.inf, isAdapted_model s.M τ, isAdapted_model s'.M τ, hvac.theta, hvac.ne, hvac.vac τ⟩`.
+
+Establish `hLL` using `fun τ => (hArch τ).1 c.ψ c.θ (c.χ k) (c.χ k) p.ω hW (hc.exp k hk τ) (hc.exp k hk τ) s.par s'.par s.M s'.M rfl rfl _ _ p.f (hfock τ)`. Establish `hZL` using `fun τ => (hArch τ).2 c.ψ c.θ (c.χ k) (c.χ k) p.ω hW (hc.exp k hk τ) (hc.exp k hk τ) s.par s'.par s.M s'.M rfl rfl _ _ p.f (hfock τ) m X hmX.1 hmX.2.1`. Use `choose Φ hΦ using fun τ => (hLL τ).joint_ex`. Use `choose w hwsm hwk hwhi using fun τ => GlobalTheory.T.exists_smooth_kFinite_unit_highestWeight_vector hHC D s.V s.par s.M τ`. Use `⟨glue Φ, fun τ => ⟨w τ, hwsm τ⟩, fun τ => hwk τ, ?_⟩` and prove the remaining obligations.
+
+Introduce `mR hmR z`. Establish `hfac` using `GlobalTheory.T.thetaInner_fockProduct_eq_prod_realPlaces D s.V s'.V s.par s'.par s.M s'.M c.θ c.ψ (c.χ k) (c.χ k) p.ω hc.inf hW m X hmX p.f hvac`. Take `⟨cst, hcst, hhaar⟩` from `GlobalTheory.T.integral_realUnitary_haar_eq_prod_Upq_haar D s.V s.par s.M c.θ hc.inf mR (fun τ => Formalism.REAL.muG (s.M.ε τ)) hmR (fun τ => inferInstance)`. Establish `hZ` using `fun τ => hZL τ (Φ τ) (hΦ τ) ⟨w τ, hwk τ⟩ (hwhi τ) (Formalism.REAL.muG (s.M.ε τ)) inferInstance`. Use `set i0 := ipTh m X p.f p.f with hi0`.
+
+Use `set F : D.what₂.Tau → Matrix (Fin s.V.rank) (Fin s.V.rank) ℂ → ℂ := fun τ h => ipTh m X (p.ω (atTau c.θ s.V τ h, 1) (ptAt c.ψ c.θ s.V s'.V τ (cart s.M τ) (cart s'.M τ) (onb s.M τ) (onb s'.M τ) p.f (Φ τ))) (ptAt c.ψ c.θ s.V s'.V τ (cart s.M τ) (cart s'.M τ) (onb s.M τ) (onb s'.M τ …`. Establish `hrep : ∀ τ (Y : Matrix (Fin s.V.rank) (Fin s.V.rank) ℂ), s.M.rep τ (ofFr s.M τ Y) = s.M.σ τ Y`. Introduce `τ Y`. Establish `h1 : s.M.fr τ * (s.M.fr τ)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 (s.M.fr_unit τ))`. Establish `: s.M.fr τ * ((s.M.fr τ)⁻¹ * Y * s.M.fr τ) * (s.M.fr τ)⁻¹ = Y`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [DSModel.rep, ofFr, this]`. Establish `hFu : ∀ τ (u : Formalism.REAL.UJ (s.M.ε τ)), F τ (ofFr s.M τ (umat u)) = ipTh m X (actSrc c.θ p.ω τ (ofFr s.M τ (umat u)) (ptAt c.ψ c.θ s.V s'.V τ (cart s.M τ) (cart s'.M τ) (onb s.M τ) (onb s'.M τ) p.f (Φ τ))) (ptAt c.ψ c.θ s.V s'.V τ (cart s.M τ) (cart s'.M τ) (onb s.M τ) (onb …`. Introduce `τ u`. Simplify using `only [hF, hrep, actSrc, coefOn, starRingEnd_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hFint : ∀ τ, Integrable (fun u : Formalism.REAL.UJ (s.M.ε τ) => F τ (ofFr s.M τ (umat u))) (Formalism.REAL.muG (s.M.ε τ))`. Introduce `τ`. Repeatedly rewrite using `[hFu]`. Conclude with `(hZ τ).2.1.div_const _`.
+
+Establish `hFval : ∀ τ, ∃ r : ℝ, 0 < r ∧ ∫ u, F τ (ofFr s.M τ (umat u)) ∂(Formalism.REAL.muG (s.M.ε τ)) = (r : ℂ) / i0`. Introduce `τ`. Take `⟨r, hr, hrI⟩` from `(hZ τ).2.2.1`. Use `⟨r, hr, ?_⟩` and prove the remaining obligations. Repeatedly rewrite using `[hFu]`.
+
+Rewrite using `[integral_div, hrI]`. Use `choose r hr hrI using hFval`. Establish `hi0 : i0 ≠ 0` using `hfac.1`. Establish `hz : ∀ g : GinfC s.V, z g = i0 * ∏ τ, F τ (infMat D.sp.cm.sig s.V.gram (c.θ τ) (g : GA D s.V))`. Introduce `g`.
+
+Establish `h` using `hfac.2 Φ g g.2`. Express the relevant statement in the definitionally equal form `ipTh m X (p.ω ((g : GA D s.V), 1) (ptOf c.ψ c.θ s.M s'.M p.f (glue Φ))) (ptOf c.ψ c.θ s.M s'.M p.f (glue Φ)) * conj (∏ τ, ⟪(w τ : s.M.H τ), s.M.rep τ (infMat D.sp.cm.sig s.V.gram (c.θ τ) (g : GA D s.V)) (w τ)⟫_ℂ) = _`. Rewrite using `[h, map_prod, mul_assoc, ← Finset.prod_mul_distrib]`. Take `⟨hIint, hIval⟩` from `hhaar F hFint`. Establish `hintz : ∫ g, z g ∂mR = i0 * ((cst : ℂ) * ∏ τ, ((r τ : ℂ) / i0))`.
+
+Repeatedly rewrite using `[hz]`. Rewrite using `[integral_const_mul, hIval]`. Repeatedly rewrite using `[hrI]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hintz]`.
+
+Conclude with `mul_ne_zero hi0 (mul_ne_zero (by exact_mod_cast hcst.ne') (Finset.prod_ne_zero_iff.2 fun τ _ => div_ne_zero (by exact_mod_cast (hr τ).ne') hi0))`. Introduce `a ha hfr`. Establish `htpos : 0 < c.t` using `by have := hc.step; omega`. Use `⟨0, div_pos (by exact_mod_cast htpos) two_pos, ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `GlobalTheory.T.realMatrixCoeff_fockVectors_le_doublingHeight_pow D s.V s'.V s.par s'.par s.M s'.M c.θ c.ψ (c.χ k) (c.χ k) p.ω hc.inf hW m X hmX p.f hvac a ha hfr (glue Φ) (glue Φ)`.
+
+Use `set mf : GinfC s.V → ℂ := fun g => conj (∏ τ, ⟪(w τ : s.M.H τ), s.M.rep τ (infMat D.sp.cm.sig s.V.gram (c.θ τ) (g : GA D s.V)) (w τ)⟫_ℂ) with hmf`. Establish `hmint : Integrable mf mR`. Take `⟨hI2, -⟩` from `hhaar (fun τ h => conj ⟪(w τ : s.M.H τ), s.M.rep τ h (w τ)⟫_ℂ) (fun τ => by`. Simplify using `only [hrep]`. Conclude with `(hZ τ).1.norm.mono' (hZ τ).1.1.star (Filter.Eventually.of_forall fun x => (RCLike.norm_conj _).le))`.
+
+Simplify `hI2` using `[hmf, map_prod]`. Use `set Hf : GinfC s.V → ℝ := fun g => ∏ w, GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.hgtW s.V a w (GlobalTheory.AdelicU.projArch D.sp.cm.sig s.V.gram w (g : GA D s.V)) with hHf`. Establish `hHc : Continuous Hf` using `continuous_finsetProd _ fun w _ => (GlobalTheory.T.doublingHeightAtRealPlace_continuous_pos_le_one D s.V a ha w).1.comp ((GlobalTheory.AdelicU.continuous_projArch _ _ w).comp continuous_subtype_val)`. Establish `hHpos : ∀ g, 0 < Hf g ∧ Hf g ≤ 1` using `fun g => ⟨Finset.prod_pos fun w _ => ((GlobalTheory.T.doublingHeightAtRealPlace_continuous_pos_le_one D s.V a ha w).2 _).1, Finset.prod_le_one (fun w _ => ((GlobalTheory.T.doublingHeightAtRealPlace_continuous_pos_le_one D s.V a ha w).2 _).1.le) fun w _ => ((GlobalTheory.T.doublin …`. Establish `hzint : Integrable z mR` using `(hIint.const_mul i0).congr (Filter.Eventually.of_forall fun g => (hz g).symm)`.
+
+Establish `htb : c.t ≤ s'.V.rank`. Rewrite using `[hs'.rank]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hbd : ∀ g, ‖z g‖ ≤ C * Hf g ^ ((s'.V.rank : ℝ) / 2) * ‖mf g‖`. Introduce `g`.
+
+Express the relevant statement in the definitionally equal form `‖ipTh m X (p.ω ((g : GA D s.V), 1) (ptOf c.ψ c.θ s.M s'.M p.f (glue Φ))) (ptOf c.ψ c.θ s.M s'.M p.f (glue Φ)) * mf g‖ ≤ _`. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right (hC g g.2) (norm_nonneg _)`. Conclude with `GlobalTheory.T.integrable_mul_heightPow_of_bounded_factor mR z mf Hf C s'.V.rank c.t hzint hmint hHc hHpos htb hbd`.
+-/
 theorem realZeta : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → ∀ D : D7, RealZeta D := by
   intro hDS hHC D c hc k hk s s' hs hs' p hp m X hmX
   have hvac := hp.pre.vac

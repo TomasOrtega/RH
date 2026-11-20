@@ -14,6 +14,9 @@ open GlobalTheory.AscFin
 
 namespace GlobalTheory.FinPl.CoreProj
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `only [Matrix.mulVec, dotProduct, rat, Matrix.map_apply, one_mul, TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((1 : AF D.host.F) ⊗ₜ[D.host.F] M k l) * (t ⊗ₜ[D.host.F] x l) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
+-/
 theorem rat_mulVec_gen' {D : D7} {m n : ℕ} (M : Matrix (Fin m) (Fin n) D.host.E) (t : AF D.host.F) (x : Fin n → D.host.E) :
     rat M *ᵥ (fun l => t ⊗ₜ[D.host.F] (1 * x l)) = fun k => t ⊗ₜ[D.host.F] (1 * (M *ᵥ x) k) := by
   funext k
@@ -22,6 +25,11 @@ theorem rat_mulVec_gen' {D : D7} {m n : ℕ} (M : Matrix (Fin m) (Fin n) D.host.
   change ((1 : AF D.host.F) ⊗ₜ[D.host.F] M k l) * (t ⊗ₜ[D.host.F] x l) = _
   rw [Algebra.TensorProduct.tmul_mul_tmul, one_mul]
 
+/- English proof (translation)
+Introduce `D S S₀ ρ d L L₀ hlg hmono t ht`. Use `hlg _ fun v => ?_` and prove the remaining obligations. Establish `hY : (fun i => pairA D.host.F 0 (GlobalTheory.FinPl.LatMem.indP D.host.F (· = v)) ⊗ₜ[D.host.F] (1 * t i)) ∈ latV S L (· = v)` using `AddSubgroup.subset_closure ⟨_, GlobalTheory.FinPl.LatMem.indicatorAdele_mem_integralAdeles' _ _, GlobalTheory.FinPl.LatMem.indicatorAdele_supported _ _, 1, rfl, t, ht, rfl⟩`. Establish `h` using `((hmono v _).1 hY).2.2`. Rewrite `h` using `[HypDec.p0, rat_mulVec_gen']`.
+
+Simplify `h` using `only [one_mul]`.
+-/
 theorem wittCoreProjection_mem_lattice_of_splits : ∀ {D : D7} {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) {L : Lat S} {L₀ : Lat S₀}, (∀ z : Fin S₀.rank → D.host.E, (∀ v : GlobalTheory.FinPl.Pl D, (fun i => pairA D.host.F 0 (GlobalTheory.FinPl.LatMem.indP D.host.F (· = v)) ⊗ₜ[D.host.F] z i) ∈ latV S₀ L₀ (· = v)) → z ∈ L₀) → (∀ v, MonoAt d L L₀ v) → ∀ t ∈ L, d.q0 *ᵥ t ∈ L₀ := by
   intro D S S₀ ρ d L L₀ hlg hmono t ht
   refine hlg _ fun v => ?_

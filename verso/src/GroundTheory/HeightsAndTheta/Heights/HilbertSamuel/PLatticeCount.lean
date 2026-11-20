@@ -14,6 +14,13 @@ section
 variable {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDimensional ℝ V]
   (La : Submodule ℤ V) {c : ℝ}
 
+/- English proof (translation)
+Set `e` to `basisOfLinearIndependentOfCardEqFinrank' B.vec B.linearIndependent (Fintype.card_fin _)`. Establish `he : ∀ i, e i = B.vec i` using `fun i ↦ by simp [e]`. Use `⟨-((floor e x : Submodule.span ℤ (Set.range e)) : V), ?_, ?_⟩` and prove the remaining obligations. Use `La.neg_mem ?_` and prove the remaining obligations. Establish `hle : Submodule.span ℤ (Set.range e) ≤ La`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[he]`. Conclude with `B.mem i`. Conclude with `hle (floor e x).2`.
+
+Rewrite using `[← sub_eq_add_neg, ← fract_apply]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem LatticeCount.exists_near (B : ShortLatticeBasis La c) (x : V) :
     ∃ μ ∈ La, ‖x + μ‖ ≤ finrank ℝ V * c := by
   let e := basisOfLinearIndependentOfCardEqFinrank' B.vec B.linearIndependent (Fintype.card_fin _)
@@ -32,6 +39,11 @@ theorem LatticeCount.exists_near (B : ShortLatticeBasis La c) (x : V) :
           Finset.sum_le_sum fun i _ ↦ by rw [he]; exact B.norm_le i
       _ = _ := by simp
 
+/- English proof (translation)
+Take `⟨μ, hμ, hxμ⟩` from `LatticeCount.exists_near La B x`. Use `Set.encard_le_encard_of_injOn (f := fun y : V ↦ if h : y ∈ La then (⟨y + μ, La.add_mem h hμ⟩ : La) else 0) ?_ ?_` and prove the remaining obligations. Introduce and unpack `y ⟨hy, hyb⟩`. Simplify using `only [Set.mem_ofPred_eq, hy, dif_pos, mem_closedBall, dist_zero_right, Submodule.vadd_def, vadd_eq_add]`. Combine the equalities or inequalities in the displayed calculation.
+
+Introduce and unpack `y ⟨hy, -⟩ y' ⟨hy', -⟩ h`. Simplify using `only [hy, hy', dif_pos, Subtype.mk.injEq, add_left_inj] at h`. Conclude with `h`.
+-/
 theorem LatticeCount.encard_le (B : ShortLatticeBasis La c) (b : ℝ) (x : V) :
     {y : V | y ∈ La ∧ ‖y‖ ≤ b}.encard ≤
       {g : La | g +ᵥ x ∈ closedBall (0 : V) (b + finrank ℝ V * c)}.encard := by
@@ -51,6 +63,27 @@ theorem LatticeCount.encard_le (B : ShortLatticeBasis La c) (b : ℝ) (x : V) :
 
 end
 
+/- English proof (translation)
+Introduce `V _ _ _ _ _ La _ _ c b B hb`. Use `set R := finrank ℝ V with hRdef`. Use `set S := {x : V | x ∈ La ∧ ‖x‖ ≤ b}`. Establish `hfin : S.Finite` using `finite_lattice_closedBall La b`. Use `⟨hfin, ?_⟩` and prove the remaining obligations.
+
+Establish `hRc : 0 ≤ (R : ℝ) * c`. Break down `Nat.eq_zero_or_pos R with h | h` into its components or cases. Simplify using `[h]`. Conclude with `mul_nonneg (Nat.cast_nonneg _) ((norm_nonneg _).trans (B.norm_le ⟨0, h⟩))`. Use `set r := b + R * c with hrdef`.
+
+Establish `hr : 0 ≤ r` using `add_nonneg hb hRc`. Establish `: MeasurableVAdd La V` using `(inferInstance : MeasurableVAdd La.toAddSubgroup V)`. Establish `: VAddInvariantMeasure La V volume` using `(inferInstance : VAddInvariantMeasure La.toAddSubgroup V volume)`. Use `set bz := Free.chooseBasis ℤ La`. Establish `hF` using `ZLattice.isAddFundamentalDomain bz volume`.
+
+Use `set F := fundamentalDomain (bz.ofZLatticeBasis ℝ La)`. Use `set A := closedBall (0 : V) r`. Establish `hA : MeasurableSet A` using `measurableSet_closedBall`. Establish `hmeas : ∀ g : La, Measurable fun x : V ↦ A.indicator (1 : V → ENNReal) (g +ᵥ x)` using `fun g ↦ (measurable_one.indicator hA).comp (measurable_const_vadd g)`. Establish `key : ∀ x : V, (S.encard : ENNReal) ≤ ∑' g : La, A.indicator (1 : V → ENNReal) (g +ᵥ x)`.
+
+Introduce `x`. Establish `hind : (fun g : La ↦ A.indicator (1 : V → ENNReal) (g +ᵥ x)) = {g : La | g +ᵥ x ∈ A}.indicator 1`. Use function extensionality and compare the values at `g`. Apply the tactic sequence `by_cases hg : g +ᵥ x ∈ A <;> simp [hg]`. Rewrite using `[hind, ← tsum_subtype]`.
+
+Simplify using `only [Pi.one_apply]`. Rewrite using `[ENNReal.tsum_set_one]`. Conclude with `LatticeCount.encard_le La B b x` after adjusting the coercions. Establish `hFfin : volume F ≠ ⊤` using `(fundamentalDomain_isBounded _).measure_lt_top.ne`. Establish `hvol : (S.encard : ENNReal) * ENNReal.ofReal (ZLattice.covolume La) ≤ volume A`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ZLattice.covolume_eq_measure_fundamentalDomain La volume hF, ofReal_measureReal hFfin]`. Use `_ = ∫⁻ _ in F, (S.encard : ENNReal) := (setLIntegral_const F _).symm`. Use `_ ≤ ∫⁻ x in F, ∑' g : La, A.indicator 1 (g +ᵥ x) := lintegral_mono key`. Use `_ = ∑' g : La, ∫⁻ x in F, A.indicator 1 (g +ᵥ x) := lintegral_tsum fun g ↦ (hmeas g).aemeasurable`.
+
+Use `_ = ∫⁻ x, A.indicator 1 x := (hF.lintegral_eq_tsum'' _).symm`. Use `_ = volume A := lintegral_indicator_one hA`. Establish `hunit : volume (ball (0 : V) 1) = volume (ball (0 : EuclideanSpace ℝ (Fin R)) 1)`. Set `f` to `(stdOrthonormalBasis ℝ V).repr`. Rewrite using `[← f.measurePreserving.measure_preimage measurableSet_ball.nullMeasurableSet, f.preimage_ball, map_zero]`.
+
+Establish `hunitfin : volume (ball (0 : EuclideanSpace ℝ (Fin R)) 1) ≠ ⊤` using `isBounded_ball.measure_lt_top.ne`. Establish `hball : volume A = ENNReal.ofReal (unitBallVolume R * r ^ R)`. Rewrite using `[Measure.addHaar_closedBall volume 0 hr, hunit, unitBallVolume, ENNReal.ofReal_mul ENNReal.toReal_nonneg, ENNReal.ofReal_toReal hunitfin, mul_comm]`. Establish `hS : (S.encard : ENNReal) * ENNReal.ofReal (ZLattice.covolume La) = ENNReal.ofReal (S.ncard * ZLattice.covolume La)`. Rewrite using `[← hfin.cast_ncard_eq, ENat.toENNReal_coe, ← ENNReal.ofReal_natCast, ← ENNReal.ofReal_mul (Nat.cast_nonneg _)]`.
+
+Establish `hpos : 0 ≤ unitBallVolume R * r ^ R` using `mul_nonneg ENNReal.toReal_nonneg (pow_nonneg hr _)`. Use `(hS ▸ hvol).trans_eq hball` as an intermediate fact. Conclude with `(ENNReal.ofReal_le_ofReal_iff hpos).1 this`.
+-/
 theorem LatticeCount.proof : LatticeCount.Statement := by
   intro V _ _ _ _ _ La _ _ c b B hb
   set R := finrank ℝ V with hRdef

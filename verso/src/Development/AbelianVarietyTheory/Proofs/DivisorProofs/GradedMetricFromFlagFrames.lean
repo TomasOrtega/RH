@@ -16,14 +16,23 @@ open GlobalTheory.FlagBundle GlobalTheory.ProjVar GlobalTheory.FlagZ GlobalTheor
 
 section General
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => LB.wchart_le B (fun _ : PUnit => f) c PUnit.unit h, fun h => Set.mem_iInter.2 fun _ => h⟩`.
+-/
 private theorem mem_pull_U {X Z : Scheme.{0}} (B : LB X) (f : Z ⟶ X) (c : (B.pull f).ι) (z : Z) :
     z ∈ (B.pull f).U c ↔ f z ∈ B.U (c PUnit.unit) :=
   ⟨fun h => LB.wchart_le B (fun _ : PUnit => f) c PUnit.unit h, fun h => Set.mem_iInter.2 fun _ => h⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h _ hz => (mem_pull_U B f c _).1 (h hz), fun h _ hz => (mem_pull_U B f c _).2 (h hz)⟩`.
+-/
 private theorem le_pull_iff {X Z W : Scheme.{0}} (B : LB X) (f : Z ⟶ X) (η : W ⟶ Z) (c : (B.pull f).ι) :
     ⊤ ≤ η ⁻¹ᵁ (B.pull f).U c ↔ ⊤ ≤ (η ≫ f) ⁻¹ᵁ B.U (c PUnit.unit) :=
   ⟨fun h _ hz => (mem_pull_U B f c _).1 (h hz), fun h _ hz => (mem_pull_U B f c _).2 (h hz)⟩
 
+/- English proof (translation)
+Use `(le_pull_iff (GlobalTheory.ProjSpace.O1 ℤ r) π η a).trans ?_` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `GlobalTheory.Points.le_pt_preimage_chart_iff _ _ _ _`.
+-/
 private theorem le_O1_iff {X : Scheme.{0}} {C : Type} [CommRing C] {r : ℕ} {η : Sp C ⟶ X} {π : X ⟶ PSpace ℤ r}
     {v : Fin (r + 1) → C} {hv : Ideal.span (Set.range v) = ⊤}
     (e : η ≫ π = GlobalTheory.ProjSpace.pt (Int.castRingHom C) v hv) (a : PUnit → Fin (r + 1)) :
@@ -32,6 +41,11 @@ private theorem le_O1_iff {X : Scheme.{0}} {C : Type} [CommRing C] {r : ℕ} {η
   rw [e]
   exact GlobalTheory.Points.le_pt_preimage_chart_iff _ _ _ _
 
+/- English proof (translation)
+Establish `ha` using `(le_O1_iff e a).1 (GlobalTheory.Points.le_preimage_mono _ inf_le_left h)`. Establish `hb` using `(le_O1_iff e b).1 (GlobalTheory.Points.le_preimage_mono _ inf_le_right h)`. Use `(GlobalTheory.TuplePoint.valR_linComb_g η (GlobalTheory.ProjSpace.O1 ℤ r) π 1 a b h).trans ((zpow_one _).trans ?_)` and prove the remaining obligations. Rewrite using `[e]`. Establish `h1 : ⊤ ≤ GlobalTheory.ProjSpace.pt (Int.castRingHom L) v hv ⁻¹ᵁ (GlobalTheory.ProjSpace.chart ℤ r (a PUnit.unit) ⊓ GlobalTheory.ProjSpace.chart ℤ r (b PUnit.unit))` using `le_inf ((GlobalTheory.Points.le_pt_preimage_chart_iff _ _ _ _).2 ha) ((GlobalTheory.Points.le_pt_preimage_chart_iff _ _ _ _).2 hb)`.
+
+Use `(GlobalTheory.Points.valR_res _ inf_le_left h1 (GlobalTheory.ProjSpace.ratio ℤ r (a PUnit.unit) (b PUnit.unit))).trans ?_` and prove the remaining obligations. Use `(GlobalTheory.Points.valR_pt_ratio _ _ _ ha _).trans ?_` and prove the remaining obligations. Rewrite using `[Ring.inverse_eq_inv, div_eq_mul_inv]`.
+-/
 private theorem valR_O1_g {X : Scheme.{0}} {L : Type} [Field L] {r : ℕ} {η : Sp L ⟶ X} {π : X ⟶ PSpace ℤ r}
     {v : Fin (r + 1) → L} {hv : Ideal.span (Set.range v) = ⊤}
     (e : η ≫ π = GlobalTheory.ProjSpace.pt (Int.castRingHom L) v hv) (a b : PUnit → Fin (r + 1))
@@ -49,6 +63,11 @@ private theorem valR_O1_g {X : Scheme.{0}} {L : Type} [Field L] {r : ℕ} {η : 
   refine (GlobalTheory.Points.valR_pt_ratio _ _ _ ha _).trans ?_
   rw [Ring.inverse_eq_inv, div_eq_mul_inv]
 
+/- English proof (translation)
+Establish `l₁ : (A.U a.1 ⊓ B.U a.2) ⊓ (A.U b.1 ⊓ B.U b.2) ≤ A.U a.1 ⊓ A.U b.1` using `fun y h => ⟨h.1.1, h.2.1⟩`. Establish `l₂ : (A.U a.1 ⊓ B.U a.2) ⊓ (A.U b.1 ⊓ B.U b.2) ≤ B.U a.2 ⊓ B.U b.2` using `fun y h => ⟨h.1.2, h.2.2⟩`. Establish `h₂` using `GlobalTheory.Points.le_preimage_mono _ l₂ h`. Use `(GlobalTheory.TuplePoint.valR_mul_unit _ h (res l₁ (A.g a.1 b.1)) (res l₂ (B.g a.2 b.2)⁻¹)).trans (congrArg₂ (· * ·) ?_ ?_)` and prove the remaining obligations. Conclude with `GlobalTheory.TuplePoint.valR_res_unit _ l₁ h _`.
+
+Conclude with `(GlobalTheory.TuplePoint.valR_res_unit _ l₂ h _).trans (GlobalTheory.TuplePoint.valR_inv_unit _ h₂ _)`.
+-/
 private theorem valR_tens_dual {X : Scheme.{0}} {L : Type} [Field L] (η : Sp L ⟶ X) (A B : LB X)
     (a b : A.ι × B.ι) (h : ⊤ ≤ η ⁻¹ᵁ ((A.U a.1 ⊓ B.U a.2) ⊓ (A.U b.1 ⊓ B.U b.2))) :
     valR η ((CechPic.tens A (CechPic.dual B)).U a ⊓ (CechPic.tens A (CechPic.dual B)).U b)
@@ -62,6 +81,11 @@ private theorem valR_tens_dual {X : Scheme.{0}} {L : Type} [Field L] (η : Sp L 
   · exact GlobalTheory.TuplePoint.valR_res_unit _ l₁ h _
   · exact (GlobalTheory.TuplePoint.valR_res_unit _ l₂ h _).trans (GlobalTheory.TuplePoint.valR_inv_unit _ h₂ _)
 
+/- English proof (translation)
+Introduce `c c' h`. Establish `h' : ⊤ ≤ Z.fromSpecStalk (genericPoint Z) ⁻¹ᵁ ((B.pull f).U c ⊓ (B.pull f).U c')` using `fun w _ => by`. Establish `: Z.fromSpecStalk (genericPoint Z) w ∈ Set.range (Z.fromSpecStalk (genericPoint Z))` using `⟨w, rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Conclude with `Specializes.mem_open (x := Z.fromSpecStalk (genericPoint Z) w) this (TopologicalSpace.Opens.isOpen _) h`.
+
+Establish `e` using `GlobalTheory.TuplePoint.valR_linComb_g (L := Z.functionField) (Z.fromSpecStalk (genericPoint Z)) B f 1 c c' h'`. Rewrite `e` using `[zpow_one]`. Use `(hs _ _ (le_inf ((le_pull_iff B f _ c).1 (GlobalTheory.Points.le_preimage_mono _ inf_le_left h')) ((le_pull_iff B f _ c').1 (GlobalTheory.Points.le_preimage_mono _ inf_le_right h')))).trans ?_` and prove the remaining obligations. Conclude with `congrArg (· * _) (e.symm.trans (valF_fromSpecStalk h _))`.
+-/
 private theorem isRatSec_of_val {X Z : Scheme.{0}} [IsIntegral Z] (B : LB X) (f : Z ⟶ X)
     (s : B.ι → Z.functionFieldˣ)
     (hs : ∀ a b, ⊤ ≤ (Z.fromSpecStalk (genericPoint Z) ≫ f) ⁻¹ᵁ (B.U a ⊓ B.U b) →
@@ -79,6 +103,15 @@ private theorem isRatSec_of_val {X Z : Scheme.{0}} [IsIntegral Z] (B : LB X) (f 
     ((le_pull_iff B f _ c').1 (GlobalTheory.Points.le_preimage_mono _ inf_le_right h')))).trans ?_
   exact congrArg (· * _) (e.symm.trans (valF_fromSpecStalk h _))
 
+/- English proof (translation)
+Use `set b := (H⁻¹ * G).1 with hbdef`. Establish `hG : G.1 = H.1 * b` using `by rw [hbdef, ← Units.val_mul, mul_inv_cancel_left]`. Establish `ht : b.BlockTriangular id` using `fun a c h => hb a c h`. Establish `hdet : ∏ k, b k k ≠ 0`. Rewrite using `[← Matrix.det_of_upperTriangular ht]`.
+
+Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 (H⁻¹ * G).isUnit).ne_zero`. Establish `hd (k : Fin N) : b k k ≠ 0` using `Finset.prod_ne_zero_iff.1 hdet k (Finset.mem_univ _)`. Establish `hm (l : Fin (N + 1)) (K : Rows N l) : minor G.1 l K = minor H.1 l K * ∏ k : Fin l, b (Fin.castLE l.is_le k) (Fin.castLE l.is_le k)`. Rewrite using `[hG, minor_mul _ _ l (fun a c h₁ h₂ => hb a c (h₁.trans_le h₂)), Matrix.det_of_upperTriangular (M := b.submatrix (Fin.castLE l.is_le) (Fin.castLE l.is_le)) (fun a c h => hb _ _ h)]`. Both sides reduce to the same expression.
+
+Establish `hp (l : Fin (N + 1)) : ∏ k : Fin l, b (Fin.castLE l.is_le k) (Fin.castLE l.is_le k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => hd _`. Establish `hs : ∏ k : Fin i.succ, b (Fin.castLE i.succ.is_le k) (Fin.castLE i.succ.is_le k) = (∏ k : Fin i.castSucc, b (Fin.castLE i.castSucc.is_le k) (Fin.castLE i.castSucc.is_le k)) * b i i` using `Fin.prod_univ_castSucc (n := i) _`. Establish `he : G.1.transpose * (H.1.transpose)⁻¹ = b.transpose`. Rewrite using `[hG, Matrix.transpose_mul, Matrix.mul_nonsing_inv_cancel_right]`. Rewrite using `[Matrix.det_transpose]`.
+
+Conclude with `(Matrix.isUnit_iff_isUnit_det _).1 H.isUnit`. Use `⟨by rw [hm]; exact mul_ne_zero hI (hp _), by rw [hm]; exact mul_ne_zero hJ (hp _), ?_⟩` and prove the remaining obligations. Use `hp i.castSucc` as an intermediate fact. Rewrite using `[he, hm _ I, hm _ J, hs, Matrix.transpose_apply]`. Clear the denominators using the available nonvanishing facts.
+-/
 private theorem diag_minor {K : Type} [Field K] {N : ℕ} (G H : GL (Fin N) K)
     (hb : ∀ a b : Fin N, b < a → (H⁻¹ * G).1 a b = 0) (i : Fin N) (I : Rows N i.castSucc) (J : Rows N i.succ)
     (hI : minor H.1 _ I ≠ 0) (hJ : minor H.1 _ J ≠ 0) :
@@ -117,17 +150,26 @@ section Charts
 
 variable {ι : Type} [Fintype ι] {N : ℕ}
 
+/- English proof (translation)
+The claim follows from `(flagPt_plEmb_assoc (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd g (Pi.π _ (τ, l))).trans (plPt_π _ _ g (τ, l))`.
+-/
 private theorem flagPt_π {C : Type} [CommRing C] (g : ι → GL (Fin N) C) (τ : ι) (l : Fin (N + 1)) :
     flagPt (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd g ≫ plEmb Prod.fst Prod.snd ≫ Pi.π _ (τ, l) =
       GlobalTheory.ProjSpace.pt (Int.castRingHom C) (plVec (g τ).1 l) (span_plVec _ _) :=
   (flagPt_plEmb_assoc (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd g (Pi.π _ (τ, l))).trans (plPt_π _ _ g (τ, l))
 
+/- English proof (translation)
+The claim follows from `Iff.trans ⟨fun h => ⟨fun _ hz => (h hz).1, fun _ hz => (h hz).2⟩, fun h _ hz => ⟨h.1 hz, h.2 hz⟩⟩ (and_congr (le_O1_iff (flagPt_π g x.1 x.2.castSucc) a.1) (le_O1_iff (flagPt_π g x.1 x.2.succ) a.2))`.
+-/
 private theorem le_gr_iff {C : Type} [CommRing C] (g : ι → GL (Fin N) C) (x : ι × Fin N) (a : (grLine x).B.ι) :
     ⊤ ≤ flagPt Prod.fst Prod.snd g ⁻¹ᵁ (grLine x).B.U a ↔
       IsUnit (plVec (g x.1).1 x.2.castSucc (a.1 PUnit.unit)) ∧ IsUnit (plVec (g x.1).1 x.2.succ (a.2 PUnit.unit)) :=
   Iff.trans ⟨fun h => ⟨fun _ hz => (h hz).1, fun _ hz => (h hz).2⟩, fun h _ hz => ⟨h.1 hz, h.2 hz⟩⟩
     (and_congr (le_O1_iff (flagPt_π g x.1 x.2.castSucc) a.1) (le_O1_iff (flagPt_π g x.1 x.2.succ) a.2))
 
+/- English proof (translation)
+The claim follows from `(valR_tens_dual _ (flDet x.1 x.2.castSucc).B (flDet x.1 x.2.succ).B a b h).trans (congrArg₂ (fun s t => s * t⁻¹) (valR_O1_g (flagPt_π g x.1 x.2.castSucc) a.1 b.1 fun _ hz => ⟨(h hz).1.1, (h hz).2.1⟩) (valR_O1_g (flagPt_π g x.1 x.2.succ) a.2 b.2 fun _ hz => ⟨(h hz).1.2, (h hz).2.2 …`.
+-/
 private theorem valR_gr_g {L : Type} [Field L] (g : ι → GL (Fin N) L) (x : ι × Fin N) (a b : (grLine x).B.ι)
     (h : ⊤ ≤ flagPt Prod.fst Prod.snd g ⁻¹ᵁ ((grLine x).B.U a ⊓ (grLine x).B.U b)) :
     valR (flagPt Prod.fst Prod.snd g) ((grLine x).B.U a ⊓ (grLine x).B.U b) ((grLine x).B.g a b).val =
@@ -142,12 +184,20 @@ private def colRat {L : Type} [Field L] (g : ι → GL (Fin N) L) (x : ι × Fin
   if h : plVec (g x.1).1 x.2.castSucc (a.1 PUnit.unit) ≠ 0 ∧ plVec (g x.1).1 x.2.succ (a.2 PUnit.unit) ≠ 0 then
     Units.mk0 _ (div_ne_zero h.2 h.1) else 1
 
+/- English proof (translation)
+Rewrite using `[colRat, dif_pos ⟨h₁, h₂⟩, Units.val_mk0]`.
+-/
 private theorem val_colRat {L : Type} [Field L] (g : ι → GL (Fin N) L) (x : ι × Fin N) (a : (grLine x).B.ι)
     (h₁ : plVec (g x.1).1 x.2.castSucc (a.1 PUnit.unit) ≠ 0) (h₂ : plVec (g x.1).1 x.2.succ (a.2 PUnit.unit) ≠ 0) :
     (colRat g x a : L) =
       plVec (g x.1).1 x.2.succ (a.2 PUnit.unit) / plVec (g x.1).1 x.2.castSucc (a.1 PUnit.unit) := by
   rw [colRat, dif_pos ⟨h₁, h₂⟩, Units.val_mk0]
 
+/- English proof (translation)
+Take `⟨a₁, a₂⟩` from `(le_gr_iff g x a).1 (GlobalTheory.Points.le_preimage_mono _ inf_le_left h)`. Take `⟨b₁, b₂⟩` from `(le_gr_iff g x b).1 (GlobalTheory.Points.le_preimage_mono _ inf_le_right h)`. Establish `a₁` using `a₁.ne_zero`. Establish `a₂` using `a₂.ne_zero`. Establish `b₁` using `b₁.ne_zero`.
+
+Establish `b₂` using `b₂.ne_zero`. Rewrite using `[valR_gr_g g x a b h, val_colRat g x a a₁ a₂, val_colRat g x b b₁ b₂]`. Clear the denominators using the available nonvanishing facts.
+-/
 private theorem colRat_trans {L : Type} [Field L] (g : ι → GL (Fin N) L) (x : ι × Fin N) (a b : (grLine x).B.ι)
     (h : ⊤ ≤ flagPt Prod.fst Prod.snd g ⁻¹ᵁ ((grLine x).B.U a ⊓ (grLine x).B.U b)) :
     (colRat g x a : L) =
@@ -164,6 +214,9 @@ private theorem colRat_trans {L : Type} [Field L] (g : ι → GL (Fin N) L) (x :
 
 variable {Y : Var ℚ}
 
+/- English proof (translation)
+Use `isRatSec_of_val (grLine x).B j (colRat (genMat j) x) ?_` and prove the remaining obligations. Establish `e : Y.X.fromSpecStalk (genericPoint Y.X) ≫ j = flagPt Prod.fst Prod.snd (genMat j)` using `flagPt_genMat j`. Establish `h` using `colRat_trans (genMat j) x`. Rewrite `h` using `[← e]`. Conclude with `h`.
+-/
 private theorem isRatSec_colRat (j : Y.X ⟶ Fl ι N) (x : ι × Fin N) :
     IsRatSec ((grLine x).B.pull j) fun c => colRat (genMat j) x (c PUnit.unit) := by
   refine isRatSec_of_val (grLine x).B j (colRat (genMat j) x) ?_
@@ -172,6 +225,9 @@ private theorem isRatSec_colRat (j : Y.X ⟶ Fl ι N) (x : ι × Fin N) :
   rw [← e] at h
   exact h
 
+/- English proof (translation)
+Rewrite using `[← flagPt_genMat, ← spMap_flagPt, ← hg, ← Category.assoc]`. Conclude with `congrArg (· ≫ j) (Scheme.SpecMap_stalkSpecializes_fromSpecStalk (genericPoint_specializes y))`.
+-/
 private theorem flagPt_genMat_eq (j : Y.X ⟶ Fl ι N) (y : Y.X) (g : ι → GL (Fin N) (Y.X.presheaf.stalk y))
     (hg : Y.X.fromSpecStalk y ≫ j = flagPt Prod.fst Prod.snd g) :
     flagPt (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd
@@ -180,6 +236,15 @@ private theorem flagPt_genMat_eq (j : Y.X ⟶ Fl ι N) (y : Y.X) (g : ι → GL 
   rw [← flagPt_genMat, ← spMap_flagPt, ← hg, ← Category.assoc]
   exact congrArg (· ≫ j) (Scheme.SpecMap_stalkSpecializes_fromSpecStalk (genericPoint_specializes y))
 
+/- English proof (translation)
+Establish `hb` using `(flagPt_eq_iff_below ι _ N Prod.fst Prod.snd Y.Fn _ _).1 (flagPt_genMat_eq j y g hg).symm`. Use `set φ : Y.X.presheaf.stalk y →+* Y.Fn := algebraMap _ _ with hφ`. Use `⟨fun τ => ?_, fun τ => ?_⟩` and prove the remaining obligations. Establish `hu` using `(Matrix.isUnit_iff_isUnit_det _).1 (g τ).isUnit`. Establish `hd : (Matrix.GeneralLinearGroup.map φ (g τ)).1.transpose.det = φ (g τ).1.det`.
+
+Rewrite using `[Matrix.det_transpose]`. Conclude with `(φ.map_det _).symm`. Use `⟨fun a b => mem_O_ratOf.2 ⟨(g τ).1 b a, rfl⟩, ?_, ?_, fun a b ha _ => absurd ha (Nat.not_lt_zero _)⟩` and prove the remaining obligations. Conclude with `fun h => (hu.map φ).ne_zero (hd.symm.trans h)`. Use `mem_O_ratOf.2 ⟨(hu.unit⁻¹ : (Y.X.presheaf.stalk y)ˣ), ?_⟩` and prove the remaining obligations.
+
+Use `Eq.trans ?_ (congrArg (·⁻¹) hd).symm` and prove the remaining obligations. Conclude with `map_units_inv φ hu.unit`. Establish `he : (Matrix.GeneralLinearGroup.map φ (g τ)).1.transpose * ((genMat j τ).1.transpose)⁻¹ = ((genMat j τ)⁻¹ * Matrix.GeneralLinearGroup.map φ (g τ)).1.transpose`. Rewrite using `[Units.val_mul, Matrix.transpose_mul, Matrix.coe_units_inv, Matrix.transpose_nonsing_inv]`. Use `⟨fun _ _ => trivial, ?_, trivial, fun a b _ hab => ?_⟩` and prove the remaining obligations.
+
+Use `fun h => ((Matrix.isUnit_iff_isUnit_det _).1 ((genMat j τ)⁻¹ * Matrix.GeneralLinearGroup.map φ (g τ)).isUnit).ne_zero ?_` and prove the remaining obligations. Rewrite using `[← Matrix.det_transpose, ← he]`. Conclude with `h`. Conclude with `(congrFun (congrFun he a) b).trans (hb τ b a ⟨(τ, ⟨b, Nat.lt_succ_of_lt b.isLt⟩), rfl, hab, le_refl _⟩)`.
+-/
 private theorem isFrame_local (j : Y.X ⟶ Fl ι N) (y : Y.X) (g : ι → GL (Fin N) (Y.X.presheaf.stalk y))
     (hg : Y.X.fromSpecStalk y ≫ j = flagPt Prod.fst Prod.snd g) :
     IsFrame j y fun τ =>
@@ -211,6 +276,27 @@ end Charts
 end GlobalTheory.FlagQ
 
 open GlobalTheory.FlagQ GlobalTheory.FlagBundle GlobalTheory.ProjVar GlobalTheory.FlagZ GlobalTheory.Cartier in
+/- English proof (translation)
+Introduce `ι _ N Y j _ E' hE`. Establish `hL (x : ι × Fin N) : ((grLine x).B.pull j).IsLB` using `LB.isLB_pull (grLine x).isLB j`. Establish `hr (x : ι × Fin N)` using `isRatSec_colRat j x`. Establish `hdet (τ : ι) : (genFrame j τ).det ≠ 0` using `by show ((genMat j τ).1.transpose).det ≠ 0`. Rewrite using `[Matrix.det_transpose]`.
+
+Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 (genMat j τ).isUnit).ne_zero`. Use `⟨fun x => divOfRatSec (hL x) (hr x), fun x => ⟨_, presents_divOfRatSec (hL x) (hr x)⟩, genFrame j, ?_, ?_⟩` and prove the remaining obligations. Use `(hE _ _).2 ⟨fun τ => ⟨fun a b => mem_O_ratOf.2 (regAt_genericPoint _), hdet τ, mem_O_ratOf.2 (regAt_genericPoint _), fun a b ha _ => absurd ha (Nat.not_lt_zero _)⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Mat.mul_inv hdet]`. Conclude with `Par.one`.
+
+Introduce `y x`. Establish `hloc : IsLocalRing (Y.X.presheaf.stalk y)` using `Y.X.toLocallyRingedSpace.isLocalRing y`. Take `⟨g, hg⟩` from `@exists_eq_flagPt_of_isLocalRing ι (ι × Fin (N + 1)) _ _ N Prod.fst Prod.snd (Y.X.presheaf.stalk y) _ hloc (Y.X.fromSpecStalk y ≫ j)`. Establish `hb` using `(flagPt_eq_iff_below ι _ N Prod.fst Prod.snd Y.Fn _ _).1 (flagPt_genMat_eq j y g hg)`. Establish `hF` using `isFrame_local j y g hg`.
+
+Use `set φ : Y.X.presheaf.stalk y →+* Y.Fn := algebraMap _ _ with hφ`. Use `set g' : ι → GL (Fin N) Y.Fn := fun τ => Matrix.GeneralLinearGroup.map φ (g τ) with hg'`. Establish `hex (l : Fin (N + 1)) : ∃ c, IsUnit (plVec (g x.1).1 l c)`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+
+Establish `hle : Ideal.span (Set.range (plVec (g x.1).1 l)) ≤ IsLocalRing.maximalIdeal _` using `Ideal.span_le.2 (Set.range_subset_iff.2 fun a => (IsLocalRing.mem_maximalIdeal _).2 (h _))`. Rewrite `hle` using `[span_plVec]`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal _).ne_top (top_le_iff.1 hle)`. Take `⟨I, hI⟩` from `hex (Fin.castSucc x.2)`. Take `⟨J, hJ⟩` from `hex (Fin.succ x.2)`.
+
+Establish `hmap (l : Fin (N + 1)) (c) : plVec (g' x.1).1 l c = φ (plVec (g x.1).1 l c)` using `minor_map φ _ _ _`. Establish `hI' : plVec (g' x.1).1 _ I ≠ 0` using `by rw [hmap]; exact (hI.map φ).ne_zero`. Establish `hJ' : plVec (g' x.1).1 _ J ≠ 0` using `by rw [hmap]; exact (hJ.map φ).ne_zero`. Take `⟨hGI, hGJ, hdiag⟩` from `diag_minor (genMat j x.1) (g' x.1) (fun a b hba => hb x.1 a b ⟨(x.1, ⟨a, Nat.lt_succ_of_lt a.isLt⟩), rfl, hba, le_refl _⟩) x.2 _ _ hI' hJ'`. Establish `hu : UnitAt y (plVec (g' x.1).1 _ I / plVec (g' x.1).1 _ J)`.
+
+Use `⟨((hI.unit * hJ.unit⁻¹ : (Y.X.presheaf.stalk y)ˣ) : Y.X.presheaf.stalk y), Units.isUnit _, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, map_mul, map_units_inv, IsUnit.unit_spec, IsUnit.unit_spec, hmap, hmap, div_eq_mul_inv]`. Set `a : (grLine ((x.1, x.2) : ι × Fin N)).B.ι` to `(fun _ => I, fun _ => J)`. Establish `hc : y ∈ ((grLine ((x.1, x.2) : ι × Fin N)).B.pull j).U (fun _ => a)`. Establish `h₁` using `(le_gr_iff g (x.1, x.2) a).2 ⟨hI, hJ⟩`.
+
+Rewrite `h₁` using `[← hg]`. Establish `h₂` using `(le_pull_iff _ j (Y.X.fromSpecStalk y) (fun _ => a)).2 h₁ (x := IsLocalRing.closedPoint (Y.X.presheaf.stalk y)) trivial`. Establish `h₃ : Y.X.fromSpecStalk y (IsLocalRing.closedPoint (Y.X.presheaf.stalk y)) ∈ ((grLine ((x.1, x.2) : ι × Fin N)).B.pull j).U (fun _ => a)` using `h₂`. Rewrite `h₃` using `[Scheme.fromSpecStalk_closedPoint]`. Then use the resulting hypothesis. Establish `he` using `(presents_divOfRatSec (hL (x.1, x.2)) (hr (x.1, x.2))).isEqn _ y hc`.
+
+Use `⟨fun τ => (g' τ).1.transpose, (hE y _).2 hF, colRat (genMat j) (x.1, x.2) a * Units.mk0 _ (div_ne_zero hI' hJ'), ?_, ?_⟩` and prove the remaining obligations. Use `hdiag.trans ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, val_colRat (genMat j) (x.1, x.2) a hGI hGJ, Units.val_mk0]`. Both sides reduce to the same expression. Use `he.iff_unitAt.2 ?_` and prove the remaining obligations.
+
+Rewrite using `[Units.val_mul, mul_div_cancel_left₀ _ (Units.ne_zero _), Units.val_mk0]`. Conclude with `hu`.
+-/
 theorem _root_.GlobalTheory.T.graded_metric_from_flag_frames : ∀ (ι : Type) [Fintype ι] (N : ℕ) (Y : GlobalTheory.ProjVar.Var ℚ) (j : Y.X ⟶ GlobalTheory.FlagZ.Fl ι N), IsPullback j Y.str (GlobalTheory.FlagZ.flStr ι N) (spMap (algebraMap ℤ ℚ)) → ∀ (E' : GlobalTheory.FlagBundle.Fr (GlobalTheory.FlagBundle.ratOf Y) (fun _ : ι => N) (fun _ => N)), (∀ y A', A' ∈ E'.S y ↔ GlobalTheory.FlagQ.IsFrame j y A') → ∃ gr : ι × Fin N → Y.Dv, (∀ x, ∃ r, GlobalTheory.Cartier.Presents (gr x) ((GlobalTheory.FlagZ.grLine x).B.pull j) r) ∧ GlobalTheory.GoodMetric.IsGraded E' (fun x => gr (x.1, x.2)) := by
   intro ι _ N Y j _ E' hE
   have hL (x : ι × Fin N) : ((grLine x).B.pull j).IsLB := LB.isLB_pull (grLine x).isLB j

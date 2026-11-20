@@ -21,17 +21,29 @@ def fT (φ : GA E (m + 1) → ℂ) (Φ : (Fin (m + 1) → Cinf E) → ℂ) (g : 
 
 def wt (N : ℕ) (x : ℝ) (g : GA E (m + 1)) : ℝ≥0 := Real.toNNReal ((indN N (yFin g)).re * detPow E (m + 1) x g)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `congrArg (fun r => pInf E (r i)) h`.
+-/
 theorem yInf_of_lastRow {g g' : GA E (m + 1)} (h : GlobalTheory.ZEul.lastRow g' = GlobalTheory.ZEul.lastRow g) : yInf g' = yInf g := by
   funext i; exact congrArg (fun r => pInf E (r i)) h
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `congrArg (fun r => GlobalTheory.RSJ.pFin E (r i)) h`.
+-/
 theorem yFin_of_lastRow {g g' : GA E (m + 1)} (h : GlobalTheory.ZEul.lastRow g' = GlobalTheory.ZEul.lastRow g) : yFin g' = yFin g := by
   funext i; exact congrArg (fun r => GlobalTheory.RSJ.pFin E (r i)) h
 
+/- English proof (translation)
+Rewrite using `[fT, yInf_of_lastRow h]`.
+-/
 theorem fT_of_lastRow {φ : GA E (m + 1) → ℂ} {Φ : (Fin (m + 1) → Cinf E) → ℂ} {g g' : GA E (m + 1)}
     (h : GlobalTheory.ZEul.lastRow g' = GlobalTheory.ZEul.lastRow g) :
     fT φ Φ g' = φ (g' * infGL E (m + 1) (secInv (yInf g))) * sqrtC Φ (yInf g) := by
   rw [fT, yInf_of_lastRow h]
 
+/- English proof (translation)
+Rewrite using `[wt, wt, yFin_of_lastRow h, hd]`.
+-/
 theorem wt_of_lastRow_of_detPow {N : ℕ} {x : ℝ} {g g' : GA E (m + 1)} (h : GlobalTheory.ZEul.lastRow g' = GlobalTheory.ZEul.lastRow g)
     (hd : detPow E (m + 1) x g' = detPow E (m + 1) x g) : wt N x g' = wt N x g := by
   rw [wt, wt, yFin_of_lastRow h, hd]

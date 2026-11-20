@@ -26,6 +26,31 @@ namespace GlobalTheory.ConeSmallMidJB
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Introduce `t t' m m' hm hm' h`. Take `⟨m₂, hm₂, hc⟩` from `hC t m hm`. Take `⟨m₂', hm₂', hc'⟩` from `hC t' m' hm'`. Establish `hsc : ∀ (u : (AE F E)ˣ) (ψ : AE F E → ℂ), ∫ c, ψ ((u⁻¹ : (AE F E)ˣ).1 * c) ∂ν = ((absE F E u : ℝ) : ℂ) * ∫ c, ψ c ∂ν`. Introduce `u ψ`.
+
+Rewrite using `[(hS u⁻¹ ψ).2, map_inv, NNReal.coe_inv, Complex.ofReal_inv, inv_inv]`. Establish `hsi : ∀ (u : (AE F E)ˣ) (ψ : AE F E → ℂ), Integrable (fun c => ψ ((u⁻¹ : (AE F E)ˣ).1 * c)) ν → Integrable ψ ν` using `fun u ψ hi => (hS u⁻¹ ψ).1.1 hi`. Use `set A : ℂ := ((absE F E t : ℝ) : ℂ) with hAdef`. Use `set A' : ℂ := ((absE F E t' : ℝ) : ℂ) with hA'def`. Establish `hA0 : A ≠ 0`.
+
+Rewrite using `[hAdef]`. Conclude with `((Group.isUnit t).map (absE F E)).ne_zero` after adjusting the coercions. Establish `hA'0 : A' ≠ 0`. Rewrite using `[hA'def]`. Conclude with `((Group.isUnit t').map (absE F E)).ne_zero` after adjusting the coercions.
+
+Use `set P : ℂ := (χ t : ℂ) * A ^ z with hP`. Use `set P' : ℂ := (χ' t' : ℂ) * A' ^ z' with hP'`. Set `I : UA σ W.J → T₁ → ℂ` to `fun k γ => ∫ c, Gf (w * nn c * emb γ.1 * k) ∂ν`. Establish `eM : ∀ γ : T₁, I (m * h) γ = A * ∫ c, Gf (emb m₂ * (w * nn c * emb γ.1 * h)) ∂ν`. Introduce `γ`.
+
+Establish `e` using `hsc t (fun c => Gf (emb m₂ * (w * nn c * emb γ.1 * h)))`. Rewrite using `[← e]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun c => congrArg Gf (hc γ.1 c h))`. Establish `eM' : ∀ γ : T₁, I (m' * h) γ = A' * ∫ c, Gf (emb m₂' * (w * nn c * emb γ.1 * h)) ∂ν`. Introduce `γ`.
+
+Establish `e` using `hsc t' (fun c => Gf (emb m₂' * (w * nn c * emb γ.1 * h)))`. Rewrite using `[← e]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun c => congrArg Gf (hc' γ.1 c h))`. Establish `eMM : ∀ γ : T₁, I (m' * (m * h)) γ = A' * (A * ∫ c, Gf (emb m₂' * (emb m₂ * (w * nn c * emb γ.1 * h))) ∂ν)`. Introduce `γ`.
+
+Establish `e1` using `hsc t' (fun c => Gf (emb m₂' * (w * nn c * emb γ.1 * (m * h))))`. Establish `e2` using `hsc t (fun c => Gf (emb m₂' * (emb m₂ * (w * nn c * emb γ.1 * h))))`. Rewrite `e2` using `[← hAdef]`. Rewrite `e1` using `[← hA'def]`. Establish `e3 : ∫ c, Gf (emb m₂' * (emb m₂ * (w * nn ((t⁻¹ : (AE F E)ˣ).1 * c) * emb γ.1 * h))) ∂ν = ∫ c, Gf (emb m₂' * (w * nn c * emb γ.1 * (m * h))) ∂ν` using `integral_congr_ae (Filter.Eventually.of_forall fun c => by show Gf (emb m₂' * (emb m₂ * (w * nn ((t⁻¹ : (AE F E)ˣ).1 * c) * emb γ.1 * h))) = Gf (emb m₂' * (w * nn c * emb γ.1 * (m * h)))`.
+
+Rewrite using `[hc γ.1 c h])`. Rewrite using `[← e2, e3, ← e1]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun c => congrArg Gf (hc' γ.1 c (m * h)))`. Establish `iB : ∀ γ : T₁, Integrable (fun c => Gf (emb m₂ * (w * nn c * emb γ.1 * h))) ν` using `fun γ => hsi t _ ((hint (m * h) γ).congr (Filter.Eventually.of_forall fun c => congrArg Gf (hc γ.1 c h)))`. Establish `iC : ∀ γ : T₁, Integrable (fun c => Gf (emb m₂' * (w * nn c * emb γ.1 * h))) ν` using `fun γ => hsi t' _ ((hint (m' * h) γ).congr (Filter.Eventually.of_forall fun c => congrArg Gf (hc' γ.1 c h)))`.
+
+Establish `hAint : ∀ γ : T₁, ∫ c, Gf (emb m₂' * (emb m₂ * (w * nn c * emb γ.1 * h))) ∂ν = P' * ∫ c, Gf (emb m₂ * (w * nn c * emb γ.1 * h)) ∂ν + P * ∫ c, Gf (emb m₂' * (w * nn c * emb γ.1 * h)) ∂ν - P * P' * I h γ`. Introduce `γ`. Establish `hf : (fun c => Gf (emb m₂' * (emb m₂ * (w * nn c * emb γ.1 * h)))) = fun c => P' * Gf (emb m₂ * (w * nn c * emb γ.1 * h)) + P * Gf (emb m₂' * (w * nn c * emb γ.1 * h)) - P * P' * Gf (w * nn c * emb γ.1 * h)`. Use function extensionality and compare the values at `c`. Take the linear combination `hG t t' m₂ m₂' hm₂ hm₂' (w * nn c * emb γ.1 * h)`.
+
+Establish `i1 : Integrable (fun c => P' * Gf (emb m₂ * (w * nn c * emb γ.1 * h)) + P * Gf (emb m₂' * (w * nn c * emb γ.1 * h))) ν` using `((iB γ).const_mul P').add ((iC γ).const_mul P)`. Rewrite using `[hf, integral_sub i1 ((hint h γ).const_mul _), integral_add ((iB γ).const_mul P') ((iC γ).const_mul P), integral_const_mul, integral_const_mul, integral_const_mul]`. Establish `hpow : ∀ (x : ℂ) (y : ℂ), x ≠ 0 → x ^ (y + 1) = x ^ y * x` using `fun x y hx => by`. Rewrite using `[Complex.cpow_add _ _ hx, Complex.cpow_one]`. Establish `hγ : ∀ γ : T₁, I (m' * (m * h)) γ = ((χ' t' : ℂ) * A' ^ (z' + 1)) * I (m * h) γ + ((χ t : ℂ) * A ^ (z + 1)) * I (m' * h) γ - ((χ t : ℂ) * A ^ (z + 1)) * ((χ' t' : ℂ) * A' ^ (z' + 1)) * I h γ`.
+
+Introduce `γ`. Rewrite using `[eMM, eM, eM', hAint, hpow A z hA0, hpow A' z' hA'0, hP, hP']`. Expand and normalize the polynomial expressions, which then agree. Establish `hs : ∀ k, Summable (I k)` using `fun k => (hsum k).of_norm`. Use `show κ * ∑' γ, I (m' * (m * h)) γ - _ * (κ * ∑' γ, I (m * h) γ) - _ * (κ * ∑' γ, I (m' * h) γ) + _ * (κ * ∑' γ, I h γ) = 0`.
+
+Rewrite using `[tsum_congr hγ, Summable.tsum_sub (((hs _).mul_left _).add ((hs _).mul_left _)) ((hs _).mul_left _), Summable.tsum_add ((hs _).mul_left _) ((hs _).mul_left _), tsum_mul_left, tsum_mul_left, tsum_mul_left]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem jrel_of_slices {d d₁ e : ℕ} {W : Spc F E d} {W₁ : Spc F E d₁} {W₂ : Spc F E e}
     {H' : Plane E d d₁} {H₂ : Plane E d₁ e} {emb : UA σ W₁.J → UA σ W.J} {w : UA σ W.J} {nn : AE F E → UA σ W.J}
     {T₁ : Set (UA σ W₁.J)} {κ : ℂ} {ν : @Measure (AE F E) (borel _)} {Gf : UA σ W.J → ℂ}
@@ -116,6 +141,23 @@ theorem jrel_of_slices {d d₁ e : ℕ} {W : Spc F E d} {W₁ : Spc F E d₁} {W
     Summable.tsum_add ((hs _).mul_left _) ((hs _).mul_left _), tsum_mul_left, tsum_mul_left, tsum_mul_left]
   ring
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a b G G₁ H H' hCfg e' he' K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Φ' hΦ'`. Distinguish the cases in `hiso : ∃ z : Fin (a + b) → E, z ≠ 0 ∧ form σ G₁.W.J z z = 0`. Take `⟨V, V', W₁', hT', e, W₂, H₂, i₀, i₁, hH₂⟩` from `GlobalTheory.T.isotropic_vector_reduction_triple hKP F E σ B a b G₁ X om₁ om₁' hT₁ hiso`. Take `⟨emb, hemb, ⟨w, hw⟩, nn, hnn⟩` from `GlobalTheory.T.exists_levi_embedding_swap_shear_of_isAdapted F E σ B a b G G₁ H H' hCfg X om om' om₁ om₁' hT hT₁ V V' W₁' hT' e W₂ H₂ i₀ i₁ hH₂`. Take `⟨s₁g, hg⟩` from `GlobalTheory.T.config_b_stabilizer_ideles_haar_first hKP F E σ B a b G G₁ H H' hCfg e' he' K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Φ' hΦ' V V' W₁' hT' e W₂ H₂ i₀ i₁ hH₂ emb hemb`.
+
+Take `⟨s₁u, hu⟩` from `GlobalTheory.T.config_b_stabilizer_ideles_haar_second hKP F E σ B a b G G₁ H H' hCfg e' he' K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Φ' hΦ' V V' W₁' hT' e W₂ H₂ i₀ i₁ hH₂ emb hemb w hw nn hnn`. Use `⟨max s₁g s₁u, fun T hTr s hs hLU => ?_⟩` and prove the remaining obligations. Take `⟨Gf, hCT, hJ1, hJ2⟩` from `hg s (lt_of_le_of_lt (le_max_left _ _) hs)`. Take `⟨T₁, κ, ν, hν, hc, hsum, hint⟩` from `hu T hTr s (lt_of_le_of_lt (le_max_right _ _) hs) hLU Gf hCT`. Establish `hS` using `GlobalTheory.T.haar_integral_idele_scaling F E σ hT.base.cm ν hν`.
+
+Establish `hC : ∀ t m, IsLevi (W₁` using `G₁.W) H' t 1 m → ∃ m₂ : UA σ G₁.W.J, IsLevi (W₁ := W₂) H₂ t 1 m₂ ∧ ∀ (γ : UA σ G₁.W.J) c h, w * nn c * emb γ * (m * h) = emb m₂ * (w * nn ((t⁻¹ : (AE F E)ˣ).1 * c) * emb γ * h) := by`. Introduce `t m hm`. Take `⟨hcomm, m₂, hm₂, hwn⟩` from `GlobalTheory.T.config_b_reduced_triple_second F E σ B a b G G₁ H H' hCfg X om om' om₁ om₁' hT hT₁ V V' W₁' hT' e W₂ H₂ i₀ i₁ hH₂ emb hemb w hw nn hnn t m hm`. Use `⟨m₂, hm₂, fun γ c h => ?_⟩` and prove the remaining obligations. Establish `e1 : w * nn c * emb γ * (m * h) = (w * nn c * m) * (emb γ * h)`.
+
+Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc (emb γ) m h, hcomm γ, mul_assoc]`. Rewrite using `[e1, hwn c]`. Simplify using `only [mul_assoc]`. Establish `hb2 : (((b + 2 : ℕ) : ℂ) / 2) = ((b : ℕ) : ℂ) / 2 + 1` using `by push_cast; ring`.
+
+Establish `ha2 : (((a + 2 : ℕ) : ℂ) / 2) = ((a : ℕ) : ℂ) / 2 + 1` using `by push_cast; ring`. Use `⟨_, hc, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hb2, ha2]`. Conclude with `jrel_of_slices hS hC hJ1 hsum hint`. Rewrite using `[hb2, ha2]`.
+
+Conclude with `jrel_of_slices hS hC hJ2 hsum hint`. Use `⟨0, fun T hTr s _ _ => ⟨0, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Establish `hE : GlobalTheory.ConeSmallSer.midSet H'.x T = ∅`. Use extensionality with `t`. Simplify using `only [Set.mem_empty_iff_false, iff_false]`.
+
+Introduce `ht`. Conclude with `hiso (GlobalTheory.T.cone_midset_isotropic_vector F E σ B a b G G₁ H H' hCfg X om om' hT T hTr.1 t ht)`. Introduce `μ' 𝓕 _ _ _ h`. Rewrite using `[hE]`. Simplify using `[GlobalTheory.ConeSmallSer.partSum]`.
+
+Introduce `t t' m m' _ _ h`. Simplify using the standard rewrite rules. Introduce `t t' m m' _ _ h`. Simplify using the standard rewrite rules.
+-/
 theorem jb_mid : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ)
     (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →
     ∀ e', IsEv B G.M' G₁.M' H.ι H'.ι (isoB H H') e' → ∀ (K : Subgroup (UA σ G.V'.J)) (μK : Measure K) (μ : Measure (AE F E)ˣ),

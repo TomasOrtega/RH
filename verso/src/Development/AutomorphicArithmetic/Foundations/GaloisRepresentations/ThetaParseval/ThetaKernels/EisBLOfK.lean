@@ -13,6 +13,23 @@ namespace SiegelEisensteinSeries.BRoad
 open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK.Dbl
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n Y r s hB hn hY χ hχ c hc b K a hb hK ha s₁ f hf`. Take `⟨t₀, v, hv, hvh⟩` from `hH F E σ B n Y r s hB hn hY χ hχ c hc b K a hb hK ha s₁ f hf`. Take `⟨A, H, t₁, hA, hAne, hHh, hHs⟩` from `hM F E σ B n Y r s hB hn hY χ hχ c hc b K a hb hK ha s₁ f hf`. Establish `hHv : ∀ s' : ℂ, max t₀ t₁ < s'.re → ∀ x, (H s').1 x = A s' * (v s').1 x`. Introduce `s' hs' x`.
+
+Establish `h1` using `hHs s' (lt_of_le_of_lt (le_max_right _ _) hs') x`. Establish `h2` using `(hv s' (lt_of_le_of_lt (le_max_left _ _) hs') x).mul_left (A s')`. Conclude with `h1.unique h2`. Set `Ehat : ℂ → G2 σ Y → ℂ` to `fun s' x => if max t₀ t₁ < s'.re then (v s').1 x else (H s').1 x / A s'`. Use `⟨Ehat, ⟨max t₀ t₁, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce `s' hs' x`. Simplify using `only [Ehat, if_pos hs']`. Conclude with `hv s' (lt_of_le_of_lt (le_max_left _ _) hs') x`. Introduce `x`. Establish `hd : DifferentiableOn ℂ (fun s' => evAt x (v s')) {s' : ℂ | t₀ < s'.re}` using `hvh (evAt x) (isGrowForm_evAt x)`.
+
+Establish `hd' : DifferentiableOn ℂ (fun s' => (v s').1 x) {s' : ℂ | max t₀ t₁ < s'.re}` using `(hd.mono fun s' (hs' : max t₀ t₁ < s'.re) => (show t₀ < s'.re from lt_of_le_of_lt (le_max_left _ _) hs'))`. Use `hd'.congr fun s' hs' => ?_` and prove the remaining obligations. Simplify using `only [Ehat, if_pos (show max t₀ t₁ < s'.re from hs')]`. Introduce `s₀`. Take `⟨k, U, u, hUo, hs₀U, hud, hUA⟩` from `hF A hA hAne s₀`.
+
+Use `⟨k, U, fun s' => (u s')⁻¹ • H s', hUo.mem_nhds hs₀U, ?_, ?_⟩` and prove the remaining obligations. Introduce `s' hs' hne x`. Take `⟨hu, hAs⟩` from `hUA s' hs'`. Establish `hpow : (s' - s₀) ^ k ≠ 0` using `pow_ne_zero _ (sub_ne_zero.mpr hne)`. Use `show (u s')⁻¹ * (H s').1 x = (s' - s₀) ^ k * Ehat s' x`.
+
+Distinguish the cases in `hre : max t₀ t₁ < s'.re`. Simplify using `only [Ehat, if_pos hre]`. Rewrite using `[hHv s' hre x, hAs]`. Clear the denominators using the available nonvanishing facts. Simplify using `only [Ehat, if_neg hre]`.
+
+Rewrite using `[hAs]`. Clear the denominators using the available nonvanishing facts. Introduce `μ hμ`. Establish `h1 : DifferentiableOn ℂ (fun s' => (u s')⁻¹) U` using `hud.inv fun s' hs' => (hUA s' hs').1`. Establish `h2 : DifferentiableOn ℂ (fun s' => μ (H s')) U` using `(hHh μ hμ).differentiableOn`.
+
+Use `(h1.mul h2).congr fun s' _ => ?_` and prove the remaining obligations. Simplify using `[map_smul, smul_eq_mul]`.
+-/
 theorem eisBL_of_k (hH : _root_.SiegelEisensteinSeries.EisHalf_k) (hM : _root_.SiegelEisensteinSeries.BRoad.SiegelMult_k) (hF : OneVarFactor) : _root_.GlobalTheory.ThK.Dbl.EisBL_k := by
   intro F E _ _ _ _ _ σ B n Y r s hB hn hY χ hχ c hc b K a hb hK ha s₁ f hf
   obtain ⟨t₀, v, hv, hvh⟩ := hH F E σ B n Y r s hB hn hY χ hχ c hc b K a hb hK ha s₁ f hf

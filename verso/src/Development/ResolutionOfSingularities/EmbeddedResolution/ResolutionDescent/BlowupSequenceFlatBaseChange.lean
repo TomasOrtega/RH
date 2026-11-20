@@ -20,6 +20,9 @@ namespace SequenceOfBlowups
 variable {X : Scheme.{u}}
 
 @[simp]
+/- English proof (translation)
+Rewrite using `[s.transitionMap_def, show ((homOfLE h).op : op i ⟶ op i) = 𝟙 (op i) from rfl, s.tower.map_id]`.
+-/
 theorem transitionMap_self_eq_id (s : SequenceOfBlowups X) {i : ℕ} (h : i ≤ i) :
     s.transitionMap h = 𝟙 (s.schemeAt i) := by
   rw [s.transitionMap_def, show ((homOfLE h).op : op i ⟶ op i) = 𝟙 (op i) from rfl, s.tower.map_id]
@@ -29,18 +32,27 @@ instance instIsIsoStructMapZero (s : SequenceOfBlowups X) : IsIso (s.projectionT
   infer_instance
 
 @[reassoc, simp]
+/- English proof (translation)
+The claim follows from `s.pullbackTransitionMap_fst φ h @[reassoc, simp]`.
+-/
 theorem pullbackTransitionMap_comp_fst (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X) {i i' : ℕ}
     (h : i ≤ i') :
     s.pullbackTransitionMap φ h ≫ pullback.fst φ (s.projectionToBase i) = pullback.fst φ (s.projectionToBase i') :=
   s.pullbackTransitionMap_fst φ h
 
 @[reassoc, simp]
+/- English proof (translation)
+The claim follows from `s.pullbackTransitionMap_snd φ h`.
+-/
 theorem pullbackTransitionMap_comp_snd (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X) {i i' : ℕ}
     (h : i ≤ i') :
     s.pullbackTransitionMap φ h ≫ pullback.snd φ (s.projectionToBase i) =
       pullback.snd φ (s.projectionToBase i') ≫ s.transitionMap h :=
   s.pullbackTransitionMap_snd φ h
 
+/- English proof (translation)
+Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[s.pullbackTransitionMap_fst, Category.id_comp]`. Rewrite using `[s.pullbackTransitionMap_snd, s.transitionMap_self_eq_id, Category.comp_id, Category.id_comp]`.
+-/
 private theorem pullbackTransitionMap_refl (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X)
     {a : ℕ} (h : a ≤ a) :
     s.pullbackTransitionMap φ h = 𝟙 (pullback φ (s.projectionToBase a)) := by
@@ -48,6 +60,9 @@ private theorem pullbackTransitionMap_refl (s : SequenceOfBlowups X) {X' : Schem
   · rw [s.pullbackTransitionMap_fst, Category.id_comp]
   · rw [s.pullbackTransitionMap_snd, s.transitionMap_self_eq_id, Category.comp_id, Category.id_comp]
 
+/- English proof (translation)
+Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[s.pullbackTransitionMap_fst, Category.assoc, s.pullbackTransitionMap_fst, s.pullbackTransitionMap_fst]`. Rewrite using `[s.pullbackTransitionMap_snd, Category.assoc, s.pullbackTransitionMap_snd, ← Category.assoc, s.pullbackTransitionMap_snd, Category.assoc, s.transitionMap_trans]`.
+-/
 private theorem pullbackTransitionMap_eq_comp (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X)
     {a b c : ℕ} (hba : b ≤ a) (hcb : c ≤ b) (hca : c ≤ a) :
     s.pullbackTransitionMap φ hca = s.pullbackTransitionMap φ hba ≫ s.pullbackTransitionMap φ hcb := by
@@ -64,14 +79,25 @@ def baseChangeTower (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X) 
     pullbackTransitionMap_eq_comp s φ (leOfHom f.unop) (leOfHom g.unop) (leOfHom (f ≫ g).unop)
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem baseChangeTower_obj (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X) (i : ℕ) :
     (s.baseChangeTower φ).obj (op i) = pullback φ (s.projectionToBase i) := rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem baseChangeTower_map (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X) {i i' : ℕ}
     (h : i ≤ i') :
     (s.baseChangeTower φ).map (homOfLE h).op = s.pullbackTransitionMap φ h := rfl
 
+/- English proof (translation)
+Establish `hcomm : (𝟙 X') ≫ φ = (φ ≫ inv (s.projectionToBase 0)) ≫ s.projectionToBase 0`. Simplify using the standard rewrite rules. Use `⟨pullback.lift (𝟙 X') (φ ≫ inv (s.projectionToBase 0)) hcomm, ?_, ?_⟩` and prove the remaining obligations. Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.lift_fst, Category.comp_id, Category.id_comp]`.
+
+Rewrite using `[Category.assoc, pullback.lift_snd, Category.id_comp, ← Category.assoc, pullback.condition, Category.assoc, IsIso.hom_inv_id, Category.comp_id]`. Rewrite using `[pullback.lift_fst]`.
+-/
 theorem isIso_pullback_fst_projectionToBase_zero (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X) :
     IsIso (pullback.fst φ (s.projectionToBase 0)) := by
   have hcomm : (𝟙 X') ≫ φ = (φ ≫ inv (s.projectionToBase 0)) ≫ s.projectionToBase 0 := by
@@ -92,9 +118,17 @@ def baseChangeTowerObjZeroIso (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : 
   @asIso Scheme.{u} _ _ _ (pullback.fst φ (s.projectionToBase 0)) (s.isIso_pullback_fst_projectionToBase_zero φ)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem baseChangeTowerObjZeroIso_hom (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X) :
     (s.baseChangeTowerObjZeroIso φ).hom = pullback.fst φ (s.projectionToBase 0) := rfl
 
+/- English proof (translation)
+Establish `t : IsPullback (pullback.snd φ (s.projectionToBase i)) (pullback.fst φ (s.projectionToBase i)) (s.projectionToBase i) φ` using `(IsPullback.of_hasPullback φ (s.projectionToBase i)).flip`. Establish `hfst : s.pullbackTransitionMap φ (Nat.le_succ i) ≫ pullback.fst φ (s.projectionToBase i) = pullback.fst φ (s.projectionToBase (i + 1))` using `s.pullbackTransitionMap_fst φ (Nat.le_succ i)`. Establish `hstruct : s.transitionMapSucc i ≫ s.projectionToBase i = s.projectionToBase (i + 1)`. Rewrite using `[s.blowupMorphism_eq_transitionMap, s.transitionMap_comp_projectionToBase]`. Establish `hsnd : pullback.snd φ (s.projectionToBase (i + 1)) ≫ s.transitionMapSucc i = s.pullbackTransitionMap φ (Nat.le_succ i) ≫ pullback.snd φ (s.projectionToBase i)`.
+
+Rewrite using `[s.pullbackTransitionMap_snd, s.blowupMorphism_eq_transitionMap]`. Establish `sq : IsPullback (pullback.snd φ (s.projectionToBase (i + 1))) (s.pullbackTransitionMap φ (Nat.le_succ i) ≫ pullback.fst φ (s.projectionToBase i)) (s.transitionMapSucc i ≫ s.projectionToBase i) φ`. Rewrite using `[hfst, hstruct]`. Conclude with `(IsPullback.of_hasPullback φ (s.projectionToBase (i + 1))).flip`. Conclude with `sq.of_bot hsnd t`.
+-/
 theorem isPullback_pullbackTransitionMap (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X) (i : ℕ) :
     IsPullback (pullback.snd φ (s.projectionToBase (i + 1))) (s.pullbackTransitionMap φ (Nat.le_succ i))
       (s.transitionMapSucc i) (pullback.snd φ (s.projectionToBase i)) := by
@@ -114,6 +148,9 @@ theorem isPullback_pullbackTransitionMap (s : SequenceOfBlowups X) {X' : Scheme.
     exact (IsPullback.of_hasPullback φ (s.projectionToBase (i + 1))).flip
   exact sq.of_bot hsnd t
 
+/- English proof (translation)
+The claim follows from `(s.isBlowupAlongIdealSheaf_blowupMorphism i hi).of_isPullback_of_flat (pullback.snd φ (s.projectionToBase i)) (s.isPullback_pullbackTransitionMap φ i)`.
+-/
 private theorem isBlowupAlongIdealSheaf_baseChangeTower_map (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X)
     [AlgebraicGeometry.Flat φ] (i : ℕ) (hi : i < s.length) :
     Blowup.IsBlowupAlongIdealSheaf ((s.baseChangeTower φ).map (homOfLE (Nat.le_succ i)).op)
@@ -130,31 +167,51 @@ def baseChange (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X) [Alge
   isBlowup i hi := isBlowupAlongIdealSheaf_baseChangeTower_map s φ i hi
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem baseChange_length (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X)
     [AlgebraicGeometry.Flat φ] : (s.baseChange φ).length = s.length := rfl
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem baseChange_schemeAt (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X)
     [AlgebraicGeometry.Flat φ] (i : ℕ) :
     (s.baseChange φ).schemeAt i = pullback φ (s.projectionToBase i) := rfl
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem baseChange_blowupMorphism (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X)
     [AlgebraicGeometry.Flat φ] (i : ℕ) :
     (s.baseChange φ).transitionMapSucc i = s.pullbackTransitionMap φ (Nat.le_succ i) := rfl
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem baseChange_isoObjZero_hom (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X)
     [AlgebraicGeometry.Flat φ] :
     (s.baseChange φ).isoZero.hom = pullback.fst φ (s.projectionToBase 0) := rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem baseChange_center (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X)
     [AlgebraicGeometry.Flat φ] (i : ℕ) :
     (s.baseChange φ).center i = (s.center i).comap (pullback.snd φ (s.projectionToBase i)) := rfl
 
 end SequenceOfBlowups
 
+/- English proof (translation)
+Use `⟨rfl, fun i _ => pullback.snd φ (s.projectionToBase i), ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show pullback.snd φ (s.projectionToBase 0) ≫ s.isoZero.hom = pullback.fst φ (s.projectionToBase 0) ≫ φ`. Rewrite using `[← s.projectionToBase_zero, pullback.condition]`. Introduce `i _`. Conclude with `s.isPullback_pullbackTransitionMap φ i`.
+
+Introduce `i _`. Both sides reduce to the same expression.
+-/
 theorem isStrictPullbackSequenceOfBlowups_baseChange {X X' : Scheme.{u}} (s : SequenceOfBlowups X) (φ : X' ⟶ X)
     [AlgebraicGeometry.Flat φ] : IsStrictPullbackBlowupSeq φ (s.baseChange φ) s := by
   refine ⟨rfl, fun i _ => pullback.snd φ (s.projectionToBase i), ?_, ?_, ?_⟩

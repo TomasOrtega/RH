@@ -16,6 +16,21 @@ open GlobalTheory.RealInd.Stages Finset GlobalTheory.FlagMeas Formalism.REAL
 
 namespace GlobalTheory.RealInd.Stages
 
+/- English proof (translation)
+Introduce `n ε U V _ _ _ _ M Fsp ι μ _ hnorm F hF hmem`. Set `Φ : C(UJ ε, C(KG ε, U))` to `ContinuousMap.curry ⟨fun p : UJ ε × KG ε => F ((p.2 : UJ ε) * p.1), by fun_prop⟩`. Establish `hΦ : ∀ g (k : KG ε), Φ g k = F ((k : UJ ε) * g)` using `fun g k => rfl`. Establish `key : ∀ g g₀, ‖stageFun M Fsp ι F g - stageFun M Fsp ι F g₀‖ ≤ ‖Φ g - Φ g₀‖`. Introduce `g g₀`.
+
+Rewrite using `[stageFun_of_mem ι (hmem g), stageFun_of_mem ι (hmem g₀), ← map_sub]`. Use `set f : Fsp := (⟨_, hmem g⟩ - ⟨_, hmem g₀⟩ : Fsp) with hf`. Use `set C := ‖Φ g - Φ g₀‖`. Establish `hC : 0 ≤ C` using `norm_nonneg _`. Establish `hpt : ∀ k : ↥(KG ε ⊓ M), ‖f.1 k‖ ^ 2 ≤ C ^ 2`.
+
+Introduce `k`. Establish `hkM : (k : UJ ε) ∈ M` using `(Subgroup.mem_inf.1 k.2).2`. Establish `hkK : (k : UJ ε) ∈ KG ε` using `(Subgroup.mem_inf.1 k.2).1`. Establish `: f.1 k = (Φ g - Φ g₀) ⟨k, hkK⟩`. Simplify using `only [hf, Submodule.coe_sub, Pi.sub_apply, ContinuousMap.sub_apply, hΦ, restr_of_mem _ _ hkM]`.
+
+Rewrite using `[this]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (ContinuousMap.norm_coe_le_norm _ _) 2`. Establish `hint : ∫ k : ↥(KG ε ⊓ M), ‖f.1 k‖ ^ 2 ∂μ ≤ C ^ 2`. Establish `h1` using `norm_integral_le_of_norm_le_const (μ := μ) (f := fun k => ‖f.1 k‖ ^ 2) (C := C ^ 2) (Filter.Eventually.of_forall fun k => by`. Rewrite using `[Real.norm_of_nonneg (by positivity)]; exact hpt k)`.
+
+Simplify using `at h1`. Conclude with `(le_abs_self _).trans h1`. Establish `h3 : ‖ι f‖ ^ 2 ≤ C ^ 2` using `(hnorm f).symm ▸ hint`. Conclude with `(pow_le_pow_iff_left₀ (norm_nonneg _) hC two_ne_zero).1 h3`. Rewrite using `[continuous_iff_continuousAt]`.
+
+Introduce `g₀`. Rewrite using `[ContinuousAt, tendsto_iff_norm_sub_tendsto_zero]`. Use `squeeze_zero (fun _ => norm_nonneg _) (fun g => key g g₀) ?_` and prove the remaining obligations. Establish `: Filter.Tendsto (fun g => Φ g - Φ g₀) (nhds g₀) (nhds 0)`. Simplify using `using ((Φ.continuous.tendsto g₀).sub_const (Φ g₀))`.
+
+Simplify using `using this.norm`.
+-/
 theorem stageFun_continuous : ∀ {n : ℕ} {ε : Fin n → Bool} {U V : Type} [NormedAddCommGroup U] [InnerProductSpace ℂ U] [NormedAddCommGroup V] [InnerProductSpace ℂ V] (M : Subgroup (UJ ε)) (Fsp : Submodule ℂ (UJ ε → U)) (ι : Fsp →ₗ[ℂ] V) (μ : Measure ↥(KG ε ⊓ M)) [IsProbabilityMeasure μ], (∀ f : Fsp, ‖ι f‖ ^ 2 = ∫ k : ↥(KG ε ⊓ M), ‖f.1 k‖ ^ 2 ∂μ) → ∀ {F : UJ ε → U}, Continuous F → (∀ g, restr M F g ∈ Fsp) → Continuous (stageFun M Fsp ι F) := by
   intro n ε U V _ _ _ _ M Fsp ι μ _ hnorm F hF hmem
 

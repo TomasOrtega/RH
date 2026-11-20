@@ -29,6 +29,13 @@ def ReducesAt (D : HTChart A K c p R N Ω) (κ : A) (C O : Type) [Field C] [Comm
     (P : HTPoint C O c (algebraMap A O κ) N V Ω') (io : D.om →ₛₗ[algebraMap A O] Ω'),
     D.ReducesTo (algebraMap A O) P io
 
+/- English proof (translation)
+Take `⟨V, Ω', j1, j2, j3, j4, j5, j6, j7, j8, P, io, hr⟩` from `h`. Take `⟨b, hb⟩` from `isUnit_of_coprime hv (by rwa [map_natCast]) ha`. Use `⟨V, Ω', j1, j2, j3, j4, j5, j6, j7, j8, scalePt P b, io, ⟨hr.span_eq, hr.rank_eq, hr.lin, hr.ht_eq, fun x y => ?_⟩⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `hr.e_eq x y`. Establish `h1 : ((D.e x y).val : O) + (p : O) ^ R * ((a * (e x y).val / p ^ R : ℕ) : O) = (a : O) * ((e x y).val : O)`.
+
+Establish `h0 : (D.e x y).val = (a * (e x y).val) % p ^ R`. Rewrite using `[he, ← ZMod.val_natCast, Nat.cast_mul, ZMod.natCast_zmod_val]`. Rewrite using `[h0]`. Conclude with `congrArg (Nat.cast : ℕ → O) (Nat.mod_add_div (a * (e x y).val) (p ^ R))` after adjusting the coercions. Use `⟨((a * (e x y).val / p ^ R : ℕ) : O) + a * z, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `algebraMap O C (b : O) • P.e (P.tate x) (P.tate y) = _`. Rewrite using `[hz, smul_eq_mul, ← map_mul, hb]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `(a : O) * (((e x y).val : O) + (p : O) ^ R * z) = _`. Take the linear combination `-h1`.
+-/
 theorem reducesAt_of_withE [NeZero (p ^ R)] (D : HTChart A K c p R N Ω)
     (e : (Fin N → 𝓞 E) →+ (Fin N → 𝓞 E) →+ ZMod (p ^ R)) (alt adj hs hi) (a : ℕ) (ha : a.Coprime p)
     (he : ∀ x y, D.e x y = (a : ZMod (p ^ R)) * e x y) (κ : A) {C O : Type} [Field C] [CommRing O] [Algebra O C]
@@ -54,6 +61,15 @@ theorem reducesAt_of_withE [NeZero (p ^ R)] (D : HTChart A K c p R N Ω)
 end Chart
 
 open TensorProduct in
+/- English proof (translation)
+Introduce `hPt E _ _ _ H D p _ R K _ _ _ _ _ _ _ _ n Ω _ _ _ _ Dc u hu S _ t x Γ₀ i hi L _ _ M ρ hρ j hj π ζ₀ κ hc hπ he hrank hprop hTate hκ C O _ _ _ _ _ _ _ v hv hp hO hinj`. Take `⟨-, -, hIC, -, hAC, -⟩` from `PositivityTheory.HtPt.Twhopf.padic_alg p C v O hv hp hO`. Use `haveI := hAC`. Use `haveI := hIC`. Establish `hgk : Function.Injective ((algebraMap O (FractionRing O)).comp (algebraMap R O))` using `(IsFractionRing.injective O _).comp hinj`.
+
+Set `f : FractionRing R →+* FractionRing O` to `IsFractionRing.lift hgk`. Establish `hf : ∀ r, f (algebraMap R _ r) = algebraMap O _ (algebraMap R O r)` using `fun r => IsFractionRing.lift_algebraMap hgk r`. Take `⟨I, hI1, hI2⟩` from `hTate (FractionRing O) f`. Establish `hz : spMap f ≫ (BT.genPt R).hom ≫ x = (BT.genPt O).hom ≫ spMap (algebraMap R O) ≫ x`. Rewrite using `[← Category.assoc, ← Category.assoc]`.
+
+Use `congr 1`. Simplify using `only [Over.mk_hom, spMap]`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Conclude with `RingHom.ext hf`.
+
+Take `⟨L', iA', iM', P, io, hio⟩` from `PositivityTheory.HtPt.Htat.TestPts.reduces_at_point hPt E H D p R K n Ω Dc u hu S t x Γ₀ i hi L M ρ hρ j hj π ζ₀ κ hc hπ he hrank hprop hκ C O v hv hp hO hinj f hf _ hz I hI1 hI2`. Conclude with `⟨C ⊗[ℤ] D.La, C ⊗[O] Module.Dual O L', inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, P, io, hio⟩`.
+-/
 theorem reducesAt_of : PointHT → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (p : ℕ) [Fact p.Prime] (R K : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R] [CharZero R] [Field K] [Algebra R K] [IsFractionRing R K] (n : ℕ) (Ω : Type) [AddCommGroup Ω] [Module K Ω] [Module R Ω] [IsScalarTower R K Ω] (Dc : HTChart R K (IsCMField.complexConj E).toRingEquiv p n (D.p + D.q) Ω) (u : Fin (D.p + D.q) → D.La) (hu : IsPolLattice (IsCMField.complexConj E).toRingEquiv p D.EF u) (S : Scheme.{0}) [IsLocallyNoetherian S] (t : SAB H S) (x : Sp R ⟶ S) (Γ₀ : QFGroup R (LevGrp D.La p n)) (i : Γ₀.G.left ⟶ t.G.left) (hi : Γ₀.IsTorsionAlong t.G x (p ^ n) i) (L : Type) [AddCommGroup L] [Module R L] (M : LieModel t.G x L) (ρ : 𝓞 E →+* Module.End R L) (hρ : M.IsActOf t.act.act ρ) (j : Module.Dual R L →ₗ[R] Ω) (hj : IsBaseChange K j) (π : Multiplicative (Fin (D.p + D.q) → 𝓞 E) →* LevGrp D.La p n) (ζ₀ : Rˣ) (κ : R), IsHTChartOf Dc Γ₀ i M ρ j π ζ₀ → (∀ z, π (Multiplicative.ofAdd z) = lev p n (∑ k, z k • u k)) → (∀ z z', Dc.e z z' = ((D.EF (∑ k, z k • u k) (∑ k, z' k • u k) : ℤ) : ZMod (p ^ n))) → 2 * Module.finrank R L = Module.finrank ℤ D.La → IsProper (Limits.pullback.snd t.G.hom ((BT.genPt R).hom ≫ x)) → (∀ (k : Type) [Field k] [IsAlgClosed k] (f : FractionRing R →+* k), ∃ I : TateIso D k (Over.mk (spMap f ≫ (BT.genPt R).hom ≫ x) ⟶ t.G) (fun a g => g ≫ t.act.act a) (fun n g g' c => Out.WeilIs t.G t.PP.L n g g' (unitOn c)), (I.ζ (p ^ n) : k) = f (algebraMap R _ (ζ₀ : R)) ∧ ∀ a, (I.ev (p ^ n) a).left = spMap f ≫ (Γ₀.pt (lev p n a)).left ≫ i) → (if p = 2 then κ = 4 else ∃ ζ : R, IsPrimitiveRoot ζ p ∧ κ = ζ - 1) → ∀ (C O : Type) [Field C] [IsAlgClosed C] [CharZero C] [CommRing O] [IsDomain O] [Algebra O C] [Algebra R O] (v : Valuation C NNReal), v.Integers O → v (p : C) < 1 → IsAdicComplete (Ideal.span {(p : O)}) O → Function.Injective (algebraMap R O) → ReducesAt Dc κ C O := by
   intro hPt E _ _ _ H D p _ R K _ _ _ _ _ _ _ _ n Ω _ _ _ _ Dc u hu S _ t x Γ₀ i hi L _ _ M ρ hρ j hj π ζ₀ κ hc hπ he hrank hprop hTate hκ C O _ _ _ _ _ _ _ v hv hp hO hinj
   obtain ⟨-, -, hIC, -, hAC, -⟩ := PositivityTheory.HtPt.Twhopf.padic_alg p C v O hv hp hO
@@ -79,6 +95,33 @@ theorem reducesAt_of : PointHT → ∀ (E : Type) [Field E] [NumberField E] [IsC
 
 set_option maxHeartbeats 3200000 in
 open PositivityTheory.HtPt.Htat in
+/- English proof (translation)
+Take `⟨h0, hNoe, hIC, hFr⟩` from `chart_facts E H D l Xo c O₀ β Y S Ω K J y 𝔐 d hd p hpS A m hpm O c' hc'`. Take `⟨-, hN, hprop, hTa, hrk, -, -⟩` from `GlobalTheory.T.hodge_tate_free_integral_models E H D l Xo c O₀ β Y S Ω K J y 𝔐 p hpS (zp Ω p) (mem_range_zp Ω p)`. Establish `hp` using `(Fact.out : p.Prime)`. Establish `hn : p ^ 𝔐.R p ≠ 0` using `pow_ne_zero _ hp.ne_zero`. Use `haveI : NeZero (p ^ 𝔐.R p) := ⟨hn⟩`.
+
+Establish `hR : 1 ≤ 𝔐.R p` using `le_trans (by norm_num) (𝔐.R_ge p hpS)`. Establish `hinj : Function.Injective (algebraMap (CR O y c') Ω)` using `IsFractionRing.injective _ _`. Use `haveI : CharZero (CR O y c') := (algebraMap (CR O y c') Ω).charZero`. Take `⟨ev, ζ₀, hev⟩` from `exists_isParam D 𝔐.t 𝔐.ξ GlobalTheory.T.torsion_points_defined_generic (p ^ 𝔐.R p) (Nat.pos_of_ne_zero hn) hpq hprop (𝔐.tors p hpS) hTa`. Take `⟨u, hu, huz⟩` from `exists_coords D 𝔐.t 𝔐.ξ p (𝔐.R p) hR hev G.t₂.pt G.t₂.onto G.t₂.lin`.
+
+Take `⟨π, e, hπ, he, hdec, hsurj, hker, halt, hadj, hes, hei⟩` from `exists_levPairing (HT.cmConj E) p (𝔐.R p) D.EF u hu`. Take `⟨b, hb⟩` from `exists_mulEquiv π (qhom (D.p + D.q) (p ^ 𝔐.R p)) hsurj (qhom_surj _ _) (fun z => (hker z.toAdd).trans (qhom_eq_one _ _ z.toAdd).symm)`. Establish `hζ₀ : IsPrimitiveRoot (ζ₀ : Ω) (p ^ 𝔐.R p)` using `IsPrimitiveRoot.coe_units_iff.2 hev.prim`. Take `⟨a, -, hac, haζ⟩` from `(G.ζ_prim.isPrimitiveRoot_iff).1 hζ₀`. Establish `hap : a.Coprime p` using `Nat.Coprime.coprime_dvd_right (dvd_pow_self p (by omega)) hac`.
+
+Establish `hee : ∀ x x', G.e x x' = (a : ZMod (p ^ 𝔐.R p)) * e x x'`. Introduce `x x'`. Set `i : Ω →+* AlgebraicClosure Ω` to `algebraMap Ω _`. Set `ψ` to `bcPt 𝔐.ξ i _ rfl`. Set `cc : (AlgebraicClosure Ω)ˣ` to `Units.map i.toMonoidHom (ζ₀ ^ D.EF (∑ k, x k • u k) (∑ k, x' k • u k))`.
+
+Establish `h1` using `(hev.weil (∑ k, x k • u k) (∑ k, x' k • u k) _ i (ψ ≫ ev _) (ψ ≫ ev _) cc rfl rfl).2 rfl`. Establish `h2` using `(G.weil x x' _ i _ _ cc (by rw [← huz]; rfl) (by rw [← huz]; rfl)).1 h1`. Establish `h3 : ((ζ₀ ^ D.EF (∑ k, x k • u k) (∑ k, x' k • u k) : Ωˣ) : Ω) = G.ζ ^ (G.e x x').val` using `i.injective h2`. Rewrite `h3` using `[← pow_val_intCast ζ₀ _ hev.prim.pow_eq_one, ← he, Units.val_pow_eq_pow_val, ← haζ, ← pow_val_mul _ _ G.ζ_prim.pow_eq_one]`. Conclude with `ZMod.val_injective _ (G.ζ_prim.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) h3.symm)`.
+
+Use `reducesAt_of_withE P.Dh e halt hadj hes hei a hap (fun x x' => by rw [P.Dh_e, hee]) _ hv hvp ?_` and prove the remaining obligations. Establish `hζ1 : P.ζ ^ (p ^ 𝔐.R p) = 1` using `Units.ext (hinj (by`. Rewrite using `[Units.val_pow_eq_pow_val, map_pow, Units.val_one, map_one]`. Conclude with `(congrArg (· ^ (p ^ 𝔐.R p)) P.ζ_eq).trans G.ζ_prim.pow_eq_one))`. Establish `hζa : algebraMap (CR O y c') Ω ((P.ζ ^ a : (CR O y c')ˣ) : CR O y c') = ζ₀`.
+
+Rewrite using `[Units.val_pow_eq_pow_val, map_pow, ← haζ]`. Conclude with `congrArg (· ^ a) P.ζ_eq`. Set `κ : FractionRing (CR O y c') ≃+* Ω` to `(FractionRing.algEquiv (CR O y c') Ω).toRingEquiv`. Establish `hκ : ∀ r, κ (algebraMap (CR O y c') _ r) = algebraMap (CR O y c') Ω r` using `(FractionRing.algEquiv (CR O y c') Ω).commutes`. Establish `hκf : fracToField (CR O y c') = κ.toRingHom`.
+
+Apply `IsLocalization.ringHom_ext (nonZeroDivisors (CR O y c'))` to reduce the goal to its premises. Use extensionality with `r`. Conclude with `(IsFractionRing.lift_algebraMap (g := algebraMap (CR O y c') Ω) hinj r).trans (hκ r).symm`. Establish `hq : spMap κ.symm.toRingHom ≫ 𝔐.ξ = (BT.genPt (CR O y c')).hom ≫ P.x`. Rewrite using `[← P.x_gen, ← Category.assoc, ← HTTie.spec_comp]`.
+
+Use `congr 3`. Use extensionality with `r`. Conclude with `(RingEquiv.symm_apply_eq κ).2 (hκ r).symm`. Use `haveI := P.fin`. Use `reducesAt_of (GlobalTheory.T.pointHT_of_fargues_hodge_tate hF) E H D p (CR O y c') Ω (𝔐.R p) _ (withE P.Dh e halt hadj hes hei) u hu 𝔐.X 𝔐.t P.x (relabel P.Γ₂ b) P.i₂ ⟨P.tors₂.isOver, P.tors₂.mul, P.tors₂.inj, P.tors₂.kernel⟩ P.L P.M P.ρ P.act P.j P.j_bc π (P.ζ ^ a) (algebraMap O …` and prove the remaining obligations.
+
+Take `⟨χ, w₀, hχ, hh, s, hs, hHT⟩` from `P.isHT.2.2 z`. Use `⟨χ.comp b.toMonoidHom, w₀, fun z' => ?_, hh, s, fun t => hs (b t), hHT⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `χ (b (π _)) = (P.ζ ^ a) ^ (e z z').val`. Rewrite using `[hb, hχ, P.Dh_e, hee, pow_val_mul _ _ hζ1]`. Rewrite using `[← hrk, P.toLi_bc.finrank_eq]`.
+
+Establish `hk : spMap (f.comp κ.symm.toRingHom) ≫ 𝔐.ξ = spMap f ≫ (BT.genPt (CR O y c')).hom ≫ P.x`. Rewrite using `[← hq, Tor.spMap_comp, Category.assoc]`. Take `⟨I, hz, hI⟩` from `hev.tate' D 𝔐.t 𝔐.ξ k _ _ hk`. Use `⟨I, ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hz, ← hζa, ← hκ]`.
+
+Conclude with `congrArg f (κ.symm_apply_apply _)`. Take `⟨z, r, rfl⟩` from `hdec x`. Establish `e1 : HT.lev p (𝔐.R p) (∑ k, z k • u k + (p ^ 𝔐.R p) • r) = π (Multiplicative.ofAdd z)`. Rewrite using `[hπ]`. Use `congrArg Multiplicative.ofAdd ((Submodule.Quotient.eq _).2 ⟨r, ?_⟩)` and prove the remaining obligations.
+
+Conclude with `(add_sub_cancel_left _ _).symm`. Rewrite using `[hI, hev.add, (hev.ker _).2 ⟨r, rfl⟩, _root_.mul_one, huz, P.pts₂, e1, hκf]`. Express the relevant statement in the definitionally equal form `_ = spMap f ≫ (P.Γ₂.pt (b (π _))).left ≫ P.i₂`. Rewrite using `[hb]`. Conclude with `spMap_cancel κ f _`.
+-/
 theorem reducesAt_pack (hF : HT.FarguesHodgeTate) (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O₀ : Type) [CommRing O₀] (β : O₀ →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] [DecidableEq K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (d : ℕ) (hd : IsArithVar (mCoordIdeal y) (d + 1)) (hpq : 0 < D.p + D.q) (p : ℕ) [Fact p.Prime] (hpS : p ∈ S) (A : Type) [CommRing A] [Algebra A Ω] [IsIntegralClosure A ℤ Ω] (m : Ideal A) [m.IsPrime] (hpm : (p : A) ∈ m) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra A O] [IsLocalization.AtPrime O m] [Algebra O Ω] [IsScalarTower A O Ω] (G : GenTors 𝔐 p) (c' : ∀ k, J k) (hc' : mseg y c' ≠ 0) (P : ChartPack G O c')
     (w : O) (hw : HT.IsCp p (algebraMap O Ω w)) (C O' : Type) [Field C] [IsAlgClosed C] [CharZero C] [CommRing O']
     [IsDomain O'] [Algebra O' C] [Algebra (CR O y c') O'] (v : Valuation C NNReal) (hv : v.Integers O')
@@ -162,6 +205,15 @@ theorem reducesAt_pack (hF : HT.FarguesHodgeTate) (E : Type) [Field E] [NumberFi
       rw [hb]
       exact spMap_cancel κ f _
 
+/- English proof (translation)
+Take `⟨h0, hNoe, hIC, hFr⟩` from `chart_facts E H D l Xo c O₀ β Y S Ω K J y 𝔐 d hd p hpS A m hpm O c' hc'`. Establish `hC` using `hT.1`. Take `⟨v, hv, hvp⟩` from `hT.2.1`. Use `haveI : CharZero C := charZero_of_injective_ringHom (algebraMap Ω C).injective`. Establish `hint : v.Integers RC` using `⟨Subtype.val_injective, fun x => (hv _).1 x.2, fun r hr => ⟨⟨r, (hv _).2 hr⟩, rfl⟩⟩`.
+
+Use `letI : Algebra (CR O y c') RC := (toRC (CR O y c') RC hT.2.2.2).toAlgebra`. Establish `hφ : Function.Injective (algebraMap (CR O y c') RC)` using `fun a b h => Subtype.ext ((algebraMap Ω C).injective (congrArg Subtype.val h))`. Take `⟨V, Ω', _, _, _, _, _, _, _, _, Pt, io₀, hr⟩` from `reducesAt_pack hF E H D l Xo c O₀ β Y S Ω K J y 𝔐 d hd hpq p hpS A m hpm O G c' hc' P w hw C RC v hint hvp hT.2.2.1 hφ`. Take `⟨g, io, Hm, Eg, h1, h2, h3, h4, h5, h6, h7⟩` from `chart_matrices (le_trans (by norm_num) (𝔐.R_ge p hpS)) P.Dh hint Pt io₀ hr`. Set `f : 𝔐.Li → (P.Dh.om →ₛₗ[algebraMap (CR O y c') RC] C)` to `fun x => { toFun := fun u => algebraMap Ω C (u.1 x) map_add' := fun a b => by rw [Submodule.coe_add, LinearMap.add_apply, map_add] map_smul' := fun r a => by`.
+
+Express the relevant statement in the definitionally equal form `algebraMap Ω C ((r : Ω) * a.1 x) = algebraMap Ω C (r : Ω) * algebraMap Ω C (a.1 x)`. Rewrite using `[map_mul] }`. Use `choose ev hev using fun x => h2 (f x)`. Use `⟨g, io, ev, Hm, Eg, h1, fun x u => hev x u, h3, h4, h5, fun m m' => ?_, h7⟩` and prove the remaining obligations. Rewrite using `[← P.Dh_e]`.
+
+Conclude with `h6 m m'`.
+-/
 theorem point_data (hF : HT.FarguesHodgeTate) (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O₀ : Type) [CommRing O₀] (β : O₀ →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] [DecidableEq K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (d : ℕ) (hd : IsArithVar (mCoordIdeal y) (d + 1)) (hpq : 0 < D.p + D.q) (p : ℕ) [Fact p.Prime] (hpS : p ∈ S) (A : Type) [CommRing A] [Algebra A Ω] [IsIntegralClosure A ℤ Ω] (m : Ideal A) [m.IsPrime] (hpm : (p : A) ∈ m) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra A O] [IsLocalization.AtPrime O m] [Algebra O Ω] [IsScalarTower A O Ω] (G : GenTors 𝔐 p) (c' : ∀ k, J k) (hc' : mseg y c' ≠ 0) (P : ChartPack G O c') (C : Type) [Field C] [Algebra O C] [Algebra Ω C] [IsScalarTower O Ω C] (RC : Subalgebra O C)
     (w : O) (hw : HT.IsCp p (algebraMap O Ω w)) (hT : IsTestPt p (CR O y c') RC) :
     ∃ (g : ℕ) (io : P.Dh.om →ₛₗ[toRC (CR O y c') RC hT.2.2.2] (Fin g → RC))

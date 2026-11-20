@@ -9,12 +9,23 @@ open scoped ComplexConjugate Classical InnerProductSpace
 
 namespace UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA
 
+/- English proof (translation)
+The claim follows from `continuous_const.mul (KT.continuous_conj_psi n q n)`.
+-/
 private theorem T_cont (n : ℕ) (q : ℤ) : Continuous (T n q) :=
   continuous_const.mul (KT.continuous_conj_psi n q n)
 
+/- English proof (translation)
+Simplify using `only [T, KT.psi_self_inv, map_mul, map_inv₀, Complex.conj_ofReal, starRingEnd_self_apply]`.
+-/
 private theorem T_inv (n : ℕ) (q : ℤ) (k : U2) : T n q k⁻¹ = conj (T n q k) := by
   simp only [T, KT.psi_self_inv, map_mul, map_inv₀, Complex.conj_ofReal, starRingEnd_self_apply]
 
+/- English proof (translation)
+Establish `hc` using `KT.collapse (H := ℂ) n q (fun i => conj (KT.psi n q i k))`. Establish `e : ∀ h, T n q h * T n q (h⁻¹ * k) = ((KT.normSqInt n q : ℂ))⁻¹ * (((KT.normSqInt n q : ℂ))⁻¹ * (conj (KT.psi n q n h) • ∑ i ∈ Finset.range (n + 1), ((n.choose i : ℂ) * KT.psi n q i h) • conj (KT.psi n q i k)))`. Introduce `h`. Simplify using `only [T, KT.psi_inv_mul, map_sum, map_mul, map_natCast, starRingEnd_self_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Repeatedly rewrite using `[e]`. Rewrite using `[integral_const_mul, integral_const_mul]`. Simplify using `only [smul_eq_mul] at hc ⊢`. Rewrite using `[hc]`. Both sides reduce to the same expression.
+-/
 private theorem T_idem (n : ℕ) (q : ℤ) (k : U2) : ∫ h, T n q h * T n q (h⁻¹ * k) ∂μK = T n q k := by
   have hc := KT.collapse (H := ℂ) n q (fun i => conj (KT.psi n q i k))
   have e : ∀ h, T n q h * T n q (h⁻¹ * k) = ((KT.normSqInt n q : ℂ))⁻¹ * (((KT.normSqInt n q : ℂ))⁻¹ *
@@ -28,6 +39,15 @@ private theorem T_idem (n : ℕ) (q : ℤ) (k : U2) : ∫ h, T n q h * T n q (h�
   rw [hc]
   rfl
 
+/- English proof (translation)
+Establish `h1 : ∀ u : U2, ∫ m, G (m * Pi.mulSingle j u) ∂(Measure.pi fun _ : ι => μK) = ∫ m, G m ∂(Measure.pi fun _ : ι => μK)` using `fun u => integral_mul_right_eq_self G _`. Establish `h2 : ∫ m, G m ∂(Measure.pi fun _ : ι => μK) = ∫ u, ∫ m, G (m * Pi.mulSingle j u) ∂(Measure.pi fun _ : ι => μK) ∂μK`. Simplify using `only [h1, integral_const, probReal_univ, one_smul]`. Rewrite using `[h2, integral_integral_swap]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `m`. Rewrite using `[← integral_mul_left_K (fun u => G (Function.update m j u)) (m j)]`. Use `congr 1`. Use function extensionality and compare the values at `u`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = j`. Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hi]`.
+
+Use `Continuous.integrable_of_hasCompactSupport ?_ (HasCompactSupport.of_compactSpace _)` and prove the remaining obligations. Conclude with `hG.comp (continuous_snd.mul ((continuous_mulSingle j).comp continuous_fst))`.
+-/
 private theorem int_update {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E] {ι : Type} [Fintype ι]
     (j : ι) {G : (ι → U2) → E} (hG : Continuous G) :
     ∫ m, G m ∂(Measure.pi fun _ : ι => μK) =
@@ -55,16 +75,28 @@ variable {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] {ι : Type} [
 private noncomputable def glH (i : ι) : GL2C →* G1 K 2 :=
   MonoidHom.mk' (fun g => C.gl i g.1) fun a b => (coLaws K ι C).2.2.2.2.1 i a.1 b.1
 
+/- English proof (translation)
+The claim follows from `((coLaws K ι C).2.2.2.1 i).comp continuous_subtype_val`.
+-/
 private theorem glH_cont (i : ι) : Continuous (glH C i) :=
   ((coLaws K ι C).2.2.2.1 i).comp continuous_subtype_val
 
+/- English proof (translation)
+The claim follows from `continuous_archP.comp continuous_subtype_val`.
+-/
 private theorem continuous_arch_compact_inclusion : Continuous (arc1 : archCompact K 2 → G1 K 2) :=
   continuous_archP.comp continuous_subtype_val
 
+/- English proof (translation)
+The claim follows from `(C.Φ 2).symm.toHomeomorph.measurableEmbedding.integral_map f`.
+-/
 private theorem int_κ {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (f : archCompact K 2 → E) :
     ∫ k, f k ∂C.κ₂ = ∫ m, f ((C.Φ 2).symm m) ∂(Measure.pi fun _ : ι => μK) :=
   (C.Φ 2).symm.toHomeomorph.measurableEmbedding.integral_map f
 
+/- English proof (translation)
+The claim follows from `(coLaws K ι C).1 cont := continuous_finset_prod _ fun i _ => (T_cont _ _).comp ((continuous_apply i).comp (C.Φ 2).continuous) star k := by simp only [Co.p, map_inv, Pi.inv_apply, T_inv, map_prod] idem k := by rw [int_κ] have e : ∀ m : ι → U2, C.p n q ((C.Φ 2).symm m) * C.p n q (( …`.
+-/
 private theorem idemA (n : ι → ℕ) (q : ι → ℤ) : IdemA C.κ₂ (C.p n q) where
   haar := (coLaws K ι C).1
   cont := continuous_finset_prod _ fun i _ => (T_cont _ _).comp ((continuous_apply i).comp (C.Φ 2).continuous)
@@ -86,26 +118,44 @@ private noncomputable def PiH (i : ι) (n : ℕ) (q : ℤ) (v : H) : H := ∫ m,
 
 private noncomputable def sg (i : ι) : UnitaryRep GL2C H := ρ.compHom (glH C i) (glH_cont C i)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem sg_apply (i : ι) (g : GL2C) (v : H) : sg C ρ i g v = ρ (C.gl i g.1) v := rfl
 
+/- English proof (translation)
+Rewrite using `[sg_apply, (coLaws K ι C).2.2.1 i m]`.
+-/
 private theorem sg_kC (i : ι) (m : U2) (v : H) : sg C ρ i (kC m) v = ρ (C.un i m) v := by
   rw [sg_apply, (coLaws K ι C).2.2.1 i m]
 
+/- English proof (translation)
+Simplify using `only [PiH, KT.P, KT.Q, KT.Kint, T, mul_smul, sg_kC]`. Rewrite using `[integral_smul]`.
+-/
 private theorem PiH_eq (i : ι) (n : ℕ) (q : ℤ) (v : H) : PiH C ρ i n q v = KT.P (sg C ρ i) n q v := by
   simp only [PiH, KT.P, KT.Q, KT.Kint, T, mul_smul, sg_kC]
   rw [integral_smul]
 
+/- English proof (translation)
+Use `KT.integrable_of_continuous ((T_cont n q).smul ?_)` and prove the remaining obligations. Simplify using `only [← sg_kC]`. Conclude with `KT.continuous_orbit_K (sg C ρ i) v`.
+-/
 private theorem PiH_int (i : ι) (n : ℕ) (q : ℤ) (v : H) :
     Integrable (fun m => T n q m • ρ (C.un i m) v) μK := by
   refine KT.integrable_of_continuous ((T_cont n q).smul ?_)
   simp only [← sg_kC]
   exact KT.continuous_orbit_K (sg C ρ i) v
 
+/- English proof (translation)
+The claim follows from `Convex.integral_mem (τ.restrictScalars ℝ).convex hc (Eventually.of_forall fun m => τ.smul_mem _ (hi _ _ hv)) (PiH_int C ρ i n q v)`.
+-/
 private theorem PiH_mem (i : ι) (n : ℕ) (q : ℤ) (τ : Submodule ℂ H) (hc : IsClosed (τ : Set H))
     (hi : ∀ g, ∀ v ∈ τ, ρ g v ∈ τ) (v : H) (hv : v ∈ τ) : PiH C ρ i n q v ∈ τ :=
   Convex.integral_mem (τ.restrictScalars ℝ).convex hc
     (Eventually.of_forall fun m => τ.smul_mem _ (hi _ _ hv)) (PiH_int C ρ i n q v)
 
+/- English proof (translation)
+Simplify using `only [PiH]`. Rewrite using `[← ContinuousLinearMap.integral_comp_comm _ (PiH_int C ρ i n q v)]`. Use `congr 1`. Use function extensionality and compare the values at `m`. Rewrite using `[map_smul, ← UnitaryRep.map_mul_apply, ← UnitaryRep.map_mul_apply, (coLaws K ι C).2.2.1 i m, (hh _).eq]`.
+-/
 private theorem PiH_comm (i : ι) (n : ℕ) (q : ℤ) (h : G1 K 2) (hh : ∀ b, Commute h (C.gl i b)) (v : H) :
     PiH C ρ i n q (ρ h v) = ρ h (PiH C ρ i n q v) := by
   simp only [PiH]
@@ -113,6 +163,15 @@ private theorem PiH_comm (i : ι) (n : ℕ) (q : ℤ) (h : G1 K 2) (hh : ∀ b, 
   congr 1; funext m
   rw [map_smul, ← UnitaryRep.map_mul_apply, ← UnitaryRep.map_mul_apply, (coLaws K ι C).2.2.1 i m, (hh _).eq]
 
+/- English proof (translation)
+Establish `hP : ∀ v, KT.PL (sg C ρ i) n q v = PiH C ρ i n q v` using `fun v => (PiH_eq C ρ i n q v).symm`. Use `⟨KT.PL (sg C ρ i) n q, hP, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric]`. Introduce `x y`. Conclude with `KT.inner_P_left (sg C ρ i) n q x y`.
+
+Use `ext1 v`. Conclude with `KT.P_P (sg C ρ i) n q v`. Introduce `a b ext1 v`. Establish `key` using `congrArg (fun T => ((T ⟨KT.P (sg C ρ i) n q v, KT.P_mem_alt _ n q v⟩ : KT.W (sg C ρ i) n q) : H)) (KT.compr_comm (sg C ρ i) n q ⟨a, Subgroup.mem_top a⟩ ⟨b, Subgroup.mem_top b⟩)`. Simplify using `only [ContinuousLinearMap.mul_apply, KT.coe_compr_apply, sg_apply] at key`.
+
+Simplify using `only [ContinuousLinearMap.mul_apply, ContinuousLinearMap.comp_apply, KT.PL_apply, KT.P_P]`. Simplify `key` using `only [KT.P_P, sg_apply]`. Introduce `h hh ext1 v`. Simplify using `only [ContinuousLinearMap.mul_apply, hP]`. Conclude with `PiH_comm C ρ i n q h hh v`.
+
+Introduce `τ hc hi v hv`. Rewrite using `[hP]`. Conclude with `PiH_mem C ρ i n q τ hc hi v hv`.
+-/
 private theorem part1 (i : ι) (n : ℕ) (q : ℤ) : ∃ P : H →L[ℂ] H, (∀ v, P v = PiH C ρ i n q v) ∧ IsSelfAdjoint P ∧ P ∘L P = P ∧
         (∀ a b, Commute (P ∘L ρ (C.gl i a) ∘L P) (P ∘L ρ (C.gl i b) ∘L P)) ∧
         (∀ h : G1 K 2, (∀ b, Commute h (C.gl i b)) → Commute P (ρ h)) ∧
@@ -139,6 +198,17 @@ private theorem part1 (i : ι) (n : ℕ) (q : ℤ) : ∃ P : H →L[ℂ] H, (∀
     rw [hP]
     exact PiH_mem C ρ i n q τ hc hi v hv
 
+/- English proof (translation)
+Set `Wd : Submodule ℂ H` to `{ carrier := {y | ∀ (n : ℕ) (q : ℤ) (g : G1 K 2), KT.P (sg C ρ i) n q (ρ g y) = 0} add_mem' := fun {x y} hx hy n q g => by rw [map_add, KT.P_add, hx, hy, add_zero] zero_mem' := fun n q g => by rw [map_zero]; simpa using KT.P_smul (sg C ρ i) n q 0 0 smul_mem' := fun c x hx n q g = …`. Establish `hcl : IsClosed (Wd : Set H)`. Establish `: (Wd : Set H) = ⋂ (n : ℕ) (q : ℤ) (g : G1 K 2), {y | KT.PL (sg C ρ i) n q (ρ g y) = 0}`. Use extensionality with `y`. Simplify using `[Wd]`.
+
+Rewrite using `[this]`. Conclude with `isClosed_iInter fun n => isClosed_iInter fun q => isClosed_iInter fun g => isClosed_eq ((KT.PL (sg C ρ i) n q).continuous.comp (ρ g).continuous) continuous_const`. Use `haveI : CompleteSpace Wd := hcl.completeSpace_coe`. Establish `hinv : ρ.IsInvariant Wd` using `fun g y hy n q g' => by`. Rewrite using `[← UnitaryRep.map_mul_apply]`.
+
+Conclude with `hy n q (g' * g)`. Set `σ' : UnitaryRep GL2C Wd` to `(ρ.restrict Wd hinv).compHom (glH C i) (glH_cont C i)`. Establish `hQ : ∀ (n : ℕ) (q : ℤ) (y : Wd), KT.Q σ' n q n y = 0`. Introduce `n q y`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Establish `h1 : ((KT.Q σ' n q n y : Wd) : H) = KT.Q (sg C ρ i) n q n (y : H)`. Simplify using `only [KT.Q, KT.Kint]`. Conclude with `(ContinuousLinearMap.integral_comp_comm Wd.subtypeL (KT.integrable_Kint σ' (KT.continuous_conj_psi n q n) y)).symm`. Establish `h2` using `y.2 n q 1`. Rewrite `h2` using `[UnitaryRep.map_one_apply, KT.P]`.
+
+Establish `hne : ((KT.normSqInt n q : ℂ))⁻¹ ≠ 0` using `inv_ne_zero (by exact_mod_cast (KT.normSqInt_pos n q).ne')`. Rewrite using `[h1, (smul_eq_zero.1 h2).resolve_left hne]`. Both sides reduce to the same expression. Establish `hvW : v ∈ Wd` using `fun n q g => by rw [← PiH_eq]; exact hv n q g`. Conclude with `congrArg Subtype.val (KT.eq_zero_of_forall_Q_eq_zero σ' hQ ⟨v, hvW⟩)`.
+-/
 private theorem part4 (i : ι) (v : H) (hv : ∀ n q g, PiH C ρ i n q (ρ g v) = 0) : v = 0 := by
   let Wd : Submodule ℂ H :=
     { carrier := {y | ∀ (n : ℕ) (q : ℤ) (g : G1 K 2), KT.P (sg C ρ i) n q (ρ g y) = 0}
@@ -171,6 +241,9 @@ private theorem part4 (i : ι) (v : H) (hv : ∀ n q g, PiH C ρ i n q (ρ g v) 
 
 variable (n : ι → ℕ) (q : ι → ℤ)
 
+/- English proof (translation)
+The claim follows from `map_mul (archP K 2) _ _`.
+-/
 private theorem arch_compact_inclusion_mul (a b : archCompact K 2) : (arc1 (a * b) : G1 K 2) = arc1 a * arc1 b :=
   map_mul (archP K 2) _ _
 
@@ -181,18 +254,29 @@ private noncomputable def cS (S : Finset ι) (m : ι → U2) : archCompact K 2 :
 private noncomputable def wS (S : Finset ι) (v : H) (m : ι → U2) : H :=
   (∏ i ∈ S, T (n i) (q i) (m i)) • ρ (arc1 (cS C S m)) v
 
+/- English proof (translation)
+The claim follows from `(C.Φ 2).symm.continuous.comp (continuous_pi fun i => by by_cases hi : i ∈ S · simpa [Finset.piecewise, hi] using continuous_apply i · simpa [Finset.piecewise, hi] using continuous_const)`.
+-/
 private theorem cS_cont (S : Finset ι) : Continuous (cS C S) :=
   (C.Φ 2).symm.continuous.comp (continuous_pi fun i => by
     by_cases hi : i ∈ S
     · simpa [Finset.piecewise, hi] using continuous_apply i
     · simpa [Finset.piecewise, hi] using continuous_const)
 
+/- English proof (translation)
+The claim follows from `(continuous_finset_prod _ fun i _ => (T_cont _ _).comp (continuous_apply i)).smul ((ρ.continuous_orbit v).comp (continuous_arch_compact_inclusion.comp (cS_cont C S)))`.
+-/
 private theorem wS_cont (S : Finset ι) (v : H) : Continuous (wS C ρ n q S v) :=
   (continuous_finset_prod _ fun i _ => (T_cont _ _).comp (continuous_apply i)).smul
     ((ρ.continuous_orbit v).comp (continuous_arch_compact_inclusion.comp (cS_cont C S)))
 
 private noncomputable def AS (S : Finset ι) (v : H) : H := ∫ m, wS C ρ n q S v m ∂(Measure.pi fun _ : ι => μK)
 
+/- English proof (translation)
+Establish `: ∀ m, wS C ρ n q ∅ v m = v`. Introduce `m`. Establish `h1 : cS C ∅ m = 1`. Rewrite using `[cS, Finset.piecewise_empty]`. Conclude with `map_one (C.Φ 2).symm`.
+
+Establish `h2 : (arc1 (1 : archCompact K 2) : G1 K 2) = 1` using `map_one (archP K 2)`. Rewrite using `[wS, h1, h2, Finset.prod_empty, one_smul, UnitaryRep.map_one_apply]`. Simplify using `only [AS, this, integral_const, probReal_univ, one_smul]`.
+-/
 private theorem AS_empty (v : H) : AS C ρ n q ∅ v = v := by
   have : ∀ m, wS C ρ n q ∅ v m = v := by
     intro m
@@ -202,6 +286,11 @@ private theorem AS_empty (v : H) : AS C ρ n q ∅ v = v := by
     rw [wS, h1, h2, Finset.prod_empty, one_smul, UnitaryRep.map_one_apply]
   simp only [AS, this, integral_const, probReal_univ, one_smul]
 
+/- English proof (translation)
+Rewrite using `[cS, cS, ← map_mul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = j`. Substitute `hi` using the available equality.
+
+Simplify using `[Finset.piecewise, hj]`. Apply the tactic sequence `by_cases hs : i ∈ S <;> simp [Finset.piecewise, hi, hs]`.
+-/
 private theorem cS_insert {S : Finset ι} {j : ι} (hj : j ∉ S) (u : U2) (m : ι → U2) :
     cS C (insert j S) (Function.update m j u) = (C.Φ 2).symm (Pi.mulSingle j u) * cS C S m := by
   rw [cS, cS, ← map_mul]
@@ -211,6 +300,13 @@ private theorem cS_insert {S : Finset ι} {j : ι} (hj : j ∉ S) (u : U2) (m : 
   · subst hi; simp [Finset.piecewise, hj]
   · by_cases hs : i ∈ S <;> simp [Finset.piecewise, hi, hs]
 
+/- English proof (translation)
+Establish `e : ∀ m, ∫ u, wS C ρ n q (insert j S) v (Function.update m j u) ∂μK = KT.PL (sg C ρ j) (n j) (q j) (wS C ρ n q S v m)`. Introduce `m`. Rewrite using `[KT.PL_apply, ← PiH_eq, PiH]`. Use `congr 1`. Use function extensionality and compare the values at `u`.
+
+Establish `hp : ∏ i ∈ S, T (n i) (q i) (Function.update m j u i) = ∏ i ∈ S, T (n i) (q i) (m i)` using `Finset.prod_congr rfl fun i hi => by rw [Function.update_of_ne (ne_of_mem_of_not_mem hi hj)]`. Rewrite using `[wS, wS, Finset.prod_insert hj, Function.update_self, cS_insert C hj, hp, arch_compact_inclusion_mul, UnitaryRep.map_mul_apply, mul_smul, map_smul]`. Both sides reduce to the same expression. Simplify using `only [AS]`. Rewrite using `[int_update j (wS_cont C ρ n q _ v)]`.
+
+Repeatedly rewrite using `[e]`. Rewrite using `[ContinuousLinearMap.integral_comp_comm _ ((wS_cont C ρ n q S v).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)), KT.PL_apply, ← PiH_eq]`.
+-/
 private theorem AS_insert {S : Finset ι} {j : ι} (hj : j ∉ S) (v : H) :
     AS C ρ n q (insert j S) v = PiH C ρ j (n j) (q j) (AS C ρ n q S v) := by
   have e : ∀ m, ∫ u, wS C ρ n q (insert j S) v (Function.update m j u) ∂μK =
@@ -229,11 +325,23 @@ private theorem AS_insert {S : Finset ι} {j : ι} (hj : j ∉ S) (v : H) :
   rw [ContinuousLinearMap.integral_comp_comm _
     ((wS_cont C ρ n q S v).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)), KT.PL_apply, ← PiH_eq]
 
+/- English proof (translation)
+Rewrite using `[pH, int_κ, AS]`. Use `congr 1`. Use function extensionality and compare the values at `m`. Simplify using `only [wS, cS, Co.p, Finset.piecewise_univ, ContinuousMulEquiv.apply_symm_apply]`.
+-/
 private theorem AS_univ (v : H) : AS C ρ n q Finset.univ v = pH C ρ (C.p n q) v := by
   rw [pH, int_κ, AS]
   congr 1; funext m
   simp only [wS, cS, Co.p, Finset.piecewise_univ, ContinuousMulEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h j`. Establish `h1 : AS C ρ n q Finset.univ v = PiH C ρ j (n j) (q j) (AS C ρ n q (Finset.univ.erase j) v)`. Rewrite using `[← AS_insert C ρ n q (Finset.notMem_erase j _), Finset.insert_erase (Finset.mem_univ j)]`. Rewrite `h1` using `[AS_univ, h]`.
+
+Establish `h2 : ∀ x, PiH C ρ j (n j) (q j) (PiH C ρ j (n j) (q j) x) = PiH C ρ j (n j) (q j) x` using `fun x => by`. Simplify using `only [PiH_eq]`. Conclude with `KT.P_P _ _ _ x`. Conclude with `(congrArg _ h1).trans ((h2 _).trans h1.symm)`. Introduce `h`.
+
+Establish `: ∀ S : Finset ι, AS C ρ n q S v = v`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact AS_empty C ρ n q v`. Consider the case `insert j S hj ih => rw [AS_insert C ρ n q hj, ih, h]`.
+
+Rewrite using `[← AS_univ, this]`.
+-/
 private theorem part2 (v : H) : pH C ρ (C.p n q) v = v ↔ ∀ i, PiH C ρ i (n i) (q i) v = v := by
   constructor
   · intro h j
@@ -255,6 +363,9 @@ end
 
 end UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA
 
+/- English proof (translation)
+Introduce `K _ _ _ ι _ C μ _`. Use `⟨fun i n q => ?_, fun n q v => part2 C (rightRegularRep (Gam K 2) μ) n q v, fun n q => idemA C n q, fun i v hv => part4 C (rightRegularRep (Gam K 2) μ) i v hv⟩` and prove the remaining obligations. Take `⟨P, h1, h2, h3, h4, h5, h6⟩` from `part1 C (rightRegularRep (Gam K 2) μ) i n q`. Conclude with `⟨P, h1, h2, h3, h4, h5, fun τ hτ v hv => h6 τ hτ.closed hτ.inv v hv⟩`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA.piLaws :
     ∀ (K : Type) [Field K] [NumberField K] [IsTotallyComplex K] (ι : Type) [Fintype ι] (C : Co K ι) (μ : Measure (G1 K 2)) [μ.IsHaarMeasure], (∀ i n q, ∃ P : LL μ →L[ℂ] LL μ, (∀ v, P v = C.Pi μ i n q v) ∧ IsSelfAdjoint P ∧ P ∘L P = P ∧
         (∀ a b, Commute (P ∘L rightRegularRep (Gam K 2) μ (C.gl i a) ∘L P) (P ∘L rightRegularRep (Gam K 2) μ (C.gl i b) ∘L P)) ∧

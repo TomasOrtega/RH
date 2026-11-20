@@ -96,6 +96,17 @@ structure BrHyp2 (Cc : ℝ) : Prop where
 
   real : ∃ e : W.DD W.one, UnitGen W e ∧ BKExt W e ∧ ∀ hR : Ring9 W, Realised2 hR e
 
+/- English proof (translation)
+Introduce `T₁ T₂ F hG hc₁ hc₂ hon j Gp S η h ty cuts arcLen Mb₁ hb₁ Mb₂ hb₂ hC hK hJ hg hS hT hb1 hb2 _`. Take `⟨e, he, hbk, hreal⟩` from `H.real`. Establish `h5` using `H.five_le`. Establish `hp2 : PD.p ≠ 2` using `by omega`. Establish `hR : Ring9 W` using `ring_condition_of_delta_invariants (H.P9 T₁ hc₁.2.2.2) H.s_one hp2 (unram_of H.unram)`.
+
+Take `⟨D, P⟩` from `hreal hR T₁ T₂ F hG hc₁ hc₂ hon j Gp S η h ty cuts arcLen hC hK hJ hg hS hT`. Take `⟨-, -, hO, hD, -⟩` from `hG`. Use `hO` as an intermediate fact. Use `hD` as an intermediate fact. Take `⟨ϖ, eO, x, hϖ, hprim, hu⟩` from `ground_of hR H.s_one (by omega) H.valRing H.complete`.
+
+Establish `hcard : IsUnit ((W.DelF.card : ℕ) : O)` using `cardΔ_of (not_isUnit_p W H.valRing) (card_DelF H.s_one hp2 (unram_of H.unram) (H.P9 T₁ hc₁.2.2.2))`. Establish `Q : LocalWachInputs W (baseIdOf hR)` using `{ s_one := H.s_one p_ne_two := hp2 unram := unram_of H.unram P9 := H.P9 P5 := H.P5 P6 := H.P6 tools := H.tools p_ne_zero := p_ne_zero_of W cardΔ := hcard inj := baseIdOf_inj hR full := baseIdOf_full hR }`. Establish `hK₂ : ∀ i, JumpsAtE PD T₂ W.emb i ((ty i).win Gp S η)` using `fun i => kind_quot H.hodge F hc₁ hc₂ hon (hK i)`. Establish `hl₁` using `finalLat_of Q hc₁.2.2.2 hC hg hS (fun i => jumpsAtE_mono (hK i) Set.subset_union_left) D.C₁`. Establish `hl₂` using `finalLat_of Q hc₂.2.2.2 hC hg hS (fun i => jumpsAtE_mono (hK₂ i) Set.subset_union_left) D.C₂`.
+
+Establish `hunit` using `primUnit_of (baseIdOf_inj hR) (baseIdOf_full hR) he D.C₀ D.e₀ P.he₀`. Use `⟨{ I := baseIdOf hR, C₁ := D.C₁, C₂ := D.C₂, C₀ := D.C₀, h := D.h, e₀ := D.e₀, ϖ := ϖ, eO := eO, u := W.χΓ W.gam, x := x, Ks := D.Ks, Δ := D.Δ }, ?_⟩` and prove the remaining obligations. Conclude with `{ irr := hϖ prim := hprim u_eq := hu lat₁ := hl₁ lat₂ := hl₂ unit := hunit rho := rho_field H.f1 H.f2 hc₁.2.2.2 h hJ (by omega) D.C₁ hl₁.prim.p5M (cutsOf hC) _ j _ _`. Use extensionality with `:= fun κ hκ => by`. Take `⟨R, hE, hses, hY, hrep⟩` from `ext_of' he H.hodge hbk hc₂.2.2.2 D.C₂ D.C₀ D.e₀ P.he₀ κ hκ`.
+
+Conclude with `⟨R.ext hE, hrep, primExt_of Q H.hodge hC hS hK₂ R hE hses hY D.e₀ (lift_of' H.unram H.s_one hp2 H.wr H.wx H.hodge R hE hcard hses hY (Mb₁ + hb₁) Mb₂ hb₂ hb2 D.e₀ (fun i => by rw [hunit.N_eq i]; exact Submodule.mem_span_singleton_self _) hC)⟩`. Use `wprime := wprimeCuts_of' H.unram H.s_one hp2 H.wr H.wx D.h hcard hc₁ hc₂ hon Mb₁ hb₁ (Mb₂ + hb₂) hb1 hC`. Use `arcs := P.arcs ϖ hϖ }`.
+-/
 theorem realised_of {Cc : ℝ} (H : BrHyp2 W Cc) : Realised W := by
     intro T₁ T₂ F hG hc₁ hc₂ hon j Gp S η h ty cuts arcLen Mb₁ hb₁ Mb₂ hb₂ hC hK hJ hg hS hT hb1 hb2 _
     obtain ⟨e, he, hbk, hreal⟩ := H.real
@@ -150,12 +161,22 @@ theorem realised_of {Cc : ℝ} (H : BrHyp2 W Cc) : Realised W := by
           (Mb₂ + hb₂) hb1 hC
         arcs := P.arcs ϖ hϖ }
 
+/- English proof (translation)
+The claim follows from `H.s_one herr := fun T hT => (H.herr T hT).2 nat := hnat real := realised_of H`.
+-/
 theorem brHyp_of {Cc : ℝ} (H : BrHyp2 W Cc) (hnat : W.ClKNat) : BrHyp W where
   s_one := H.s_one
   herr := fun T hT => (H.herr T hT).2
   nat := hnat
   real := realised_of H
 
+/- English proof (translation)
+Introduce `_ h5 T₁ T₂ F hG hc₁ hc₂ hon j Gp S η h ty cuts arcLen Mb₁ hb₁ Mb₂ hb₂ hK hJ hg hS hC hT hb1 hb2 hW`. Take `⟨D, P⟩` from `realised_of H T₁ T₂ F hG hc₁ hc₂ hon j Gp S η h ty cuts arcLen Mb₁ hb₁ Mb₂ hb₂ hC hK hJ hg hS hT hb1 hb2 hW`. Take `⟨-, -, hO, hD, hF⟩` from `hG`. Use `hO` as an intermediate fact. Use `hD` as an intermediate fact.
+
+Establish `hnum` using `finalNum_of PD.p (by omega) n j Gp S η h ty cuts arcLen (Mb₁ + hb₁) (Mb₂ + hb₂) hC hg hS hT hW`. Establish `hnum' : Formalism.ExponentWindows.E.FinalNum D.I.Bs.ℓ (cutsOf hC) (kdOf ty) (bbOf ty) j (gPar Gp S η) Gp S η h (sigPar PD.p (gPar Gp S η) h j) (rrPar PD.p n (Mb₁ + hb₁) (Mb₂ + hb₂) cuts) (kapPar PD.p (gPar Gp S η) h (ellMax cuts arcLen)) (ellMax cuts arcLen)`. Rewrite using `[D.I.ℓ_eq]`. Conclude with `hnum`. Establish `hJ₂ : ∀ τ : K →ₐ[Qp] LL, JumpsInV PD T₂.ρ τ (Set.Icc (-(h : ℤ)) h)` using `fun τ a ha => hJ τ a (H.hodge.1 T₁ T₂ F hc₁ hc₂ hon τ a ha)`.
+
+Establish `key` using `Formalism.ExponentWindows.E.theorem_E_final_form O D.ϖ P.irr D.I.Bs D.eO n (cutsOf hC) (kdOf ty) (bbOf ty) j (gPar Gp S η) Gp S η h _ _ _ _ D.u D.x LL D.Ks D.Δ D.C₁.V D.C₂.V D.C₀.V (latOf D.C₁) (latOf D.C₂) (latOf D.C₀) D.e₀ (latHomOf D.h) (ZfN D.C₁ F) (Zf D.C₂) ⟨P.prim, P.u_eq, …`. Rewrite `key` using `[parE_eq_ePar]`. Conclude with `liftF_ofN D.h H.s_one (by omega) (H.herr T₂ hc₂.2.2.2).2 _ key`.
+-/
 theorem crystalline_lifting_second_form {Cc : ℝ} (H : BrHyp2 W Cc) : ThmELiftAt PD (O := O) n W.emb v := by
   intro _ h5 T₁ T₂ F hG hc₁ hc₂ hon j Gp S η h ty cuts arcLen Mb₁ hb₁ Mb₂ hb₂ hK hJ hg hS hC hT hb1 hb2
     hW
@@ -183,6 +204,9 @@ theorem crystalline_lifting_second_form {Cc : ℝ} (H : BrHyp2 W Cc) : ThmELiftA
   rw [parE_eq_ePar] at key
   exact liftF_ofN D.h H.s_one (by omega) (H.herr T₂ hc₂.2.2.2).2 _ key
 
+/- English proof (translation)
+Introduce `hL`. Take `⟨a, rfl⟩` from `exists_rot (PD := PD) W.emb_bij.2 hL.2.2.2.2.1 W.emb_σ`. Conclude with `thmELiftAt_rot W.emb a (crystalline_lifting_second_form H) hL`.
+-/
 theorem crystalline_lifting_every_ordering {Cc : ℝ} (H : BrHyp2 W Cc) (emb : ZMod n → (K₀ →ₐ[Qp] LL)) :
     ThmELiftAt PD (O := O) n emb v := by
   intro hL

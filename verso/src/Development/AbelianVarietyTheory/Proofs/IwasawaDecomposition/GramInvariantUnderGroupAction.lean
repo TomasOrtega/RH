@@ -28,6 +28,9 @@ section Lin
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.period_coordinates_quadratic_relation E r X hr τ₁ κ hκ hopen S cov`.
+-/
 theorem scalar_of_cover (X : Data E r) (hr : 0 < r) (τ₁ : E →+* ℂ)
     (κ : Frame X.Ψ r → Fin r → ℂ) (hκ : ContinuousOn κ X.dom)
     (hopen : ∀ O : Set (Frame X.Ψ r), IsOpen O → O ⊆ X.dom → ∀ x ∈ O, ∀ ξ : Fin r → ℂ,
@@ -39,6 +42,9 @@ theorem scalar_of_cover (X : Data E r) (hr : 0 < r) (τ₁ : E →+* ℂ)
     ∃ W ∈ S, ∃ ζ : E, W = ζ • (1 : Matrix (Fin r) (Fin r) E) :=
   GlobalTheory.T.period_coordinates_quadratic_relation E r X hr τ₁ κ hκ hopen S cov
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_affine_period_coordinate E r X τ₁ h i hi`.
+-/
 theorem exists_row (X : Data E r) (τ₁ : E →+* ℂ) (h : τ₁ ∈ X.Ψ) (i : ℕ) (hi : X.p0 + i + 1 = r) :
     ∃ κ : Frame X.Ψ r → Fin r → ℂ, ContinuousOn κ X.dom ∧
       (∀ O : Set (Frame X.Ψ r), IsOpen O → O ⊆ X.dom → ∀ x ∈ O, ∀ ξ : Fin r → ℂ,
@@ -46,6 +52,9 @@ theorem exists_row (X : Data E r) (τ₁ : E →+* ℂ) (h : τ₁ ∈ X.Ψ) (i 
       ∀ x ∈ X.dom, ∀ v, Formalism.L2.PjFree.perFr X x v τ₁ i = κ x ⬝ᵥ Data.emb τ₁ v :=
   GlobalTheory.T.exists_affine_period_coordinate E r X τ₁ h i hi
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_affine_period_coordinate_conj E r X τ₁ h i hi`.
+-/
 theorem exists_col (X : Data E r) (τ₁ : E →+* ℂ) (h : τ₁ ∉ X.Ψ) (i : ℕ) (hi : X.p0 = i + 1) :
     ∃ κ : Frame X.Ψ r → Fin r → ℂ, ContinuousOn κ X.dom ∧
       (∀ O : Set (Frame X.Ψ r), IsOpen O → O ⊆ X.dom → ∀ x ∈ O, ∀ ξ : Fin r → ℂ,
@@ -53,10 +62,16 @@ theorem exists_col (X : Data E r) (τ₁ : E →+* ℂ) (h : τ₁ ∉ X.Ψ) (i 
       ∀ x ∈ X.dom, ∀ v, Formalism.L2.PjFree.perFr X x v τ₁ i = κ x ⬝ᵥ Data.emb τ₁ v :=
   GlobalTheory.T.exists_affine_period_coordinate_conj E r X τ₁ h i hi
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_matrix_of_lattice_endomorphism E r X w`.
+-/
 theorem exists_matrix (X : Data E r) (w : X.Λ →ₗ[𝓞 E] X.Λ) :
     ∃ W : Matrix (Fin r) (Fin r) E, ∀ v : X.Λ, W *ᵥ (v : Fin r → E) = (w v : Fin r → E) :=
   GlobalTheory.T.exists_matrix_of_lattice_endomorphism E r X w
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.norm_one_of_trace_form_preserved E r X hr ζ h`.
+-/
 theorem unit_of_trace (X : Data E r) (hr : 0 < r) (ζ : E)
     (h : ∀ u ∈ X.Λ, ∀ v ∈ X.Λ, Algebra.trace ℚ E (-X.ξ0 * (ζ * cc ζ * herm X.Gm u v)) =
       Algebra.trace ℚ E (-X.ξ0 * herm X.Gm u v)) : ζ * cc ζ = 1 :=
@@ -68,6 +83,9 @@ section Top
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.triangular_frame_eigen_scalar E H Dw g e h tri τ i hi`.
+-/
 theorem top_eig {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)) (h : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ))
     (tri : ∀ τ (i : Fin (Dw.mult τ)), ∃ cf : Fin (Dw.mult τ) → ℂ, IsUnit (cf i) ∧ (∀ j, i < j → cf j = 0) ∧
       eb e τ i = h (∑ j, cf j • eb e τ j))
@@ -85,6 +103,9 @@ open GlobalTheory.PeriodTorus
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Simplify using `only [herm, Finset.mul_sum, Pi.smul_apply, smul_eq_mul, cc, map_mul]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`.
+-/
 theorem herm_smul {r : ℕ} (G : Matrix (Fin r) (Fin r) E) (ζ : E) (u v : Fin r → E) :
     herm G (ζ • u) (ζ • v) = ζ * cc ζ * herm G u v := by
   simp only [herm, Finset.mul_sum, Pi.smul_apply, smul_eq_mul, cc, map_mul]
@@ -99,6 +120,53 @@ open GlobalTheory.PeriodTorus
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ}
 
+/- English proof (translation)
+Establish `hU'` using `hU`. Take `⟨hr', hty, -, hbor, -, g, e, F, ik, φ, hEF, hF⟩` from `hU`. Take `⟨hEU, hEL, hTE, -⟩` from `GlobalTheory.exp_four_clauses E H Dw l Xo c σ hσ g e F`. Use `choose P h1 h2 h3 h4 h5 using hF k`. Set `x' : (U.X k).dom → (U.X k).dom` to `fun x => ⟨lact g₀ x.1, KU.lact_dom _ hg x.2⟩`.
+
+Establish `S1 : ∀ x, ∃ (gam : (F.Di (ik k)).La ≃ₗ[𝓞 E] (F.Di (ik k)).La) (h : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)), (∀ a b, (F.Di (ik k)).EF (gam a) (gam b) = (F.Di (ik k)).EF a b) ∧ (∀ a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) (F.Di (ik k)).La), ∃ e, gam a = a + l.M • e) ∧ (∀ a, …`. Introduce `x`. Establish `hpt : (U.un k (x' x)).x = (U.un k x).x` using `PointWell.pt_lact hU' k x hg`. Establish `hu : F.u (ik k) (P x) = F.u (ik k) (P (x' x))` using `by rw [← h3, ← h3, hpt]`. Take `⟨gam, h, c0, c1, c2, c3⟩` from `(F.fibre _ _ _ (h2 x) (h2 (x' x))).1 hu`.
+
+Use `⟨gam, h, c0, c1, c2, c3, ?_⟩` and prove the remaining obligations. Establish `hexp` using `hEU (ik k) _ _ (h2 x) (h2 (x' x)) gam h c0 c1 c2 c3`. Take `⟨t, ht⟩` from `(hbor k k x (x' x)).2 ⟨g₀, hg, fun _ => (1 : Matrix (Fin r) (Fin r) ℂ), fun τ => ⟨by show (1 : Matrix (Fin r) (Fin r) ℂ).det ≠ 0 simp, fun a b h => one_apply_ne h.ne'⟩, by`. Use `congr 1`. Use function extensionality and compare the values at `τ`.
+
+Conclude with `(Matrix.mul_one (mat (lact g₀ x.1) τ)).symm⟩`. Introduce `τ i`. Take `⟨cf, hcf, hz, hc⟩` from `ht.2.1 τ i`. Use `⟨cf, hcf ▸ (t _).isUnit, hz, ?_⟩` and prove the remaining obligations. Establish `d1` using `h4 (x' x) τ i`.
+
+Establish `d2` using `derivAt_of_comb (e := e) (F := F) hEL (h2 x) (w := eb e τ) (fun j => h4 x τ j) (by rw [← h3 x]; exact hc)`. Establish `d3` using `isDerivAt0_comp (e2 := fun z => (F.ex (ik k) (P (x' x)) z).left) h (fun z => hexp z) d2`. Conclude with `derivAt_unique hTE (h2 (x' x)) d1 d3`. Establish `hstab` using `(U.X k).Γ_stab g₀ hg`. Set `GΛ : (U.X k).Λ ≃ₗ[𝓞 E] (U.X k).Λ` to `gamL (U.X k) hstab`.
+
+Set `wm : ((F.Di (ik k)).La ≃ₗ[𝓞 E] (F.Di (ik k)).La) → ((U.X k).Λ ≃ₗ[𝓞 E] (U.X k).Λ)` to `fun gam => (φ k).symm.trans (gam.trans ((φ k).trans GΛ.symm))`. Establish `hgl : ∀ gam a, (g₀ : Matrix (Fin r) (Fin r) E) *ᵥ (wm gam (φ k a) : Fin r → E) = (φ k (gam a) : Fin r → E)` using `fun gam a => by`. Rewrite using `[← gamL_coe (U.X k) hstab]`. Use `show ((GΛ (GΛ.symm (φ k (gam ((φ k).symm (φ k a))))) : (U.X k).Λ) : Fin r → E) = _`. Simplify using the standard rewrite rules.
+
+Establish `hP : ∀ (x : (U.X k).dom) a q, P x a q = Formalism.L2.PjFree.perFr (U.X k) x.1 (φ k a : Fin r → E) (e q).1 (e q).2` using `fun x a q => by`. Rewrite using `[h1 x a q, hrel]`. Establish `hlact : ∀ (x : (U.X k).dom) (v : Fin r → E) τ (i : ℕ), Formalism.L2.PjFree.perFr (U.X k) (x' x).1 ((g₀ : Matrix (Fin r) (Fin r) E) *ᵥ v) τ i = Formalism.L2.PjFree.perFr (U.X k) x.1 v τ i` using `fun x v τ i => perFr_lact_fx (U.X k) x.1 hstab v τ i`. Choose the witnesses or unpack the hypotheses as in `⟨τ₁, i₁, htop, κ, hκ, hopen, hper⟩ : ∃ (τ₁ : E →+* ℂ) (i₁ : Fin (Dw.mult τ₁)), (∀ j, j ≤ i₁) ∧ ∃ κ : Frame (U.X k).Ψ r → Fin r → ℂ, ContinuousOn κ (U.X k).dom ∧ (∀ O : Set (Frame (U.X k).Ψ r), IsOpen O → O ⊆ (U.X k).dom → ∀ x ∈ O, ∀ ξ : Fin r → ℂ, ∀ᶠ t in nhdsWithin (0 : ℂ) {0}ᶜ, …`. Take `⟨hp0, hΨ⟩` from `hty k`.
+
+Take `⟨τ0⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `hcm` using `(U.X k).cmType`. Break down `Nat.eq_zero_or_pos Dw.p with hp | hp` into its components or cases. Choose the witnesses or unpack the hypotheses as in `⟨τ₁, hτ⟩ : ∃ τ, τ ∉ (U.X k).Ψ := by`. Distinguish the cases in `h : τ0 ∈ (U.X k).Ψ`.
+
+Conclude with `⟨_, (hcm τ0).1 h⟩`. Conclude with `⟨τ0, h⟩`. Establish `hm : Dw.mult τ₁ = Dw.q` using `if_neg fun h => hτ ((hΨ τ₁).2 h)`. Use `⟨τ₁, ⟨Dw.q - 1, by omega⟩, fun j => ?_, exists_col (U.X k) τ₁ hτ _ (by simp only; omega)⟩` and prove the remaining obligations. Use `j.2` as an intermediate fact.
+
+Conclude with `Fin.le_def.2 (by simp only; omega)`. Choose the witnesses or unpack the hypotheses as in `⟨τ₁, hτ⟩ : ∃ τ, τ ∈ (U.X k).Ψ := by`. Distinguish the cases in `h : τ0 ∈ (U.X k).Ψ`. Conclude with `⟨τ0, h⟩`. Conclude with `⟨_, by_contra fun h' => h ((hcm τ0).2 h')⟩`.
+
+Establish `hm : Dw.mult τ₁ = Dw.p` using `if_pos ((hΨ τ₁).1 hτ)`. Use `⟨τ₁, ⟨Dw.p - 1, by omega⟩, fun j => ?_, exists_row (U.X k) τ₁ hτ _ (by simp only; omega)⟩` and prove the remaining obligations. Use `j.2` as an intermediate fact. Conclude with `Fin.le_def.2 (by simp only; omega)`. Set `S : Set (Matrix (Fin r) (Fin r) E)` to `{W | ∃ gam : (F.Di (ik k)).La ≃ₗ[𝓞 E] (F.Di (ik k)).La, (∀ a b, (F.Di (ik k)).EF (gam a) (gam b) = (F.Di (ik k)).EF a b) ∧ (∀ a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) (F.Di (ik k)).La), ∃ e, gam a = a + l.M • e) ∧ (∀ a, ∃ e, gam a = a + l.A • e) ∧ ∀ v : (U.X k).Λ …`.
+
+Take `⟨W, ⟨gam, c0, c1, c2, hW⟩, ζ, rfl⟩` from `scalar_of_cover (U.X k) hr τ₁ κ hκ hopen S (by`. Introduce `x hx`. Take `⟨gam, h, c0, c1, c2, c3, tri⟩` from `S1 ⟨x, hx⟩`. Take `⟨W, hW⟩` from `exists_matrix (U.X k) (wm gam).toLinearMap`. Take `⟨y, hy⟩` from `top_eig e h tri τ₁ i₁ htop`.
+
+Establish `key : ∀ a, κ x ⬝ᵥ Data.emb τ₁ (W *ᵥ (φ k a : Fin r → E)) = y * (κ x ⬝ᵥ Data.emb τ₁ (φ k a : Fin r → E))` using `fun a => by`. Establish `e1` using `hP (x' ⟨x, hx⟩) (gam a) (e.symm ⟨τ₁, i₁⟩)`. Establish `e2` using `hP ⟨x, hx⟩ a (e.symm ⟨τ₁, i₁⟩)`. Rewrite `e1` using `[c3 a, hy, e2, Equiv.apply_symm_apply, ← hgl gam a, hlact ⟨x, hx⟩]`. Rewrite using `[hW (φ k a), ← hper x hx, ← hper x hx]`.
+
+Conclude with `e1.symm`. Use `⟨W, ⟨gam, c0, c1, c2, hW⟩, fun v hv w hw => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `(φ k).surjective ⟨v, hv⟩`. Take `⟨b, hb⟩` from `(φ k).surjective ⟨w, hw⟩`. Establish `ea : (φ k a : Fin r → E) = v` using `congrArg Subtype.val ha`.
+
+Establish `eb' : (φ k b : Fin r → E) = w` using `congrArg Subtype.val hb`. Rewrite using `[← ea, ← eb', key a, key b]`. Use the proof step `ring)`. Establish `hζv : ∀ a, (φ k (gam a) : Fin r → E) = ζ • ((g₀ : Matrix (Fin r) (Fin r) E) *ᵥ (φ k a : Fin r → E))` using `fun a => by`. Establish `e1` using `hW (φ k a)`.
+
+Rewrite `e1` using `[Matrix.smul_mulVec, Matrix.one_mulVec]`. Rewrite using `[← hgl gam a, ← e1, Matrix.mulVec_smul]`. Establish `hcc : ζ * cc ζ = 1` using `unit_of_trace (U.X k) hr ζ fun u hu v hv => by`. Take `⟨a, ha⟩` from `(φ k).surjective ⟨u, hu⟩`. Take `⟨b, hb⟩` from `(φ k).surjective ⟨v, hv⟩`.
+
+Establish `ea : (φ k a : Fin r → E) = u` using `congrArg Subtype.val ha`. Establish `eb' : (φ k b : Fin r → E) = v` using `congrArg Subtype.val hb`. Establish `e1` using `hEF k (gam a) (gam b)`. Rewrite `e1` using `[c0, hEF k a b, hζv, hζv, herm_smul, hstab.1, ea, eb']`. Conclude with `e1.symm`.
+
+Establish `hnorm : ∀ τ : E →+* ℂ, ‖τ ζ‖ = 1` using `fun τ => by`. Establish `e1` using `congrArg τ hcc`. Rewrite `e1` using `[map_mul, map_one, cc, IsCMField.complexEmbedding_complexConj, Complex.mul_conj]`. Establish `e2 : Complex.normSq (τ ζ) = 1` using `by exact_mod_cast e1`. Rewrite `e2` using `[Complex.normSq_eq_norm_sq]`.
+
+Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 e2`. Establish `hd : ∀ j, (e j).1 ζ ≠ 0` using `fun j h0 => by`. Use `hnorm (e j).1` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`. Conclude with `zero_ne_one this`.
+
+Set `Dz : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)` to `LinearEquiv.piCongrRight fun j => LinearEquiv.smulOfNeZero ℂ ℂ _ (hd j)`. Establish `hDz : ∀ z q, Dz z q = (e q).1 ζ * z q` using `fun z q => rfl`. Use `⟨fun τ => τ ζ, hnorm, fun x τ i => ?_⟩` and prove the remaining obligations. Establish `rel : ∀ a, P (x' x) (gam a) = Dz (P x a)` using `fun a => by`. Use function extensionality and compare the values at `q`.
+
+Rewrite using `[hDz, hP, hP, hζv, perFr_smul, hlact]`. Establish `hexp` using `hEU (ik k) _ _ (h2 x) (h2 (x' x)) gam Dz c0 c1 c2 rel`. Establish `d'` using `isDerivAt0_comp (e2 := fun z => (F.ex (ik k) (P (x' x)) z).left) Dz (fun z => hexp z) (h4 x τ i)`. Establish `hw : Dz (Pi.single (e.symm ⟨τ, i⟩) 1) = ∑ j, (Pi.single i (τ ζ) : Fin (Dw.mult τ) → ℂ) j • eb e τ j`. Rewrite using `[Finset.sum_eq_single i (fun j _ hj => by rw [Pi.single_eq_of_ne hj, zero_smul]) (fun h => absurd (Finset.mem_univ i) h), Pi.single_eq_same]`.
+
+Use function extensionality and compare the values at `q`. Rewrite using `[hDz]`. Distinguish the cases in `hq : q = e.symm ⟨τ, i⟩`. Substitute `hq` using the available equality. Simplify using `[eb]`.
+
+Simplify using `[eb, Pi.single_eq_of_ne hq]`. Rewrite `d'` using `[hw]`. Use `hEL (ik k) _ (h2 (x' x)) _ (eb e τ) ((U.un k (x' x)).u τ) (Pi.single i (τ ζ)) _ (fun j => h4 (x' x) τ j) d'` as an intermediate fact. Rewrite using `[h3 (x' x)]`. Conclude with `this`.
+-/
 theorem lie_scalar (U : Formalism.L2.PjFree.Unf Xo c σ r) (hU : Formalism.L2.PjFree.IsUnf U) (hσ : Formalism.L2.PjFree.GoodEmb c σ) (hrel : ∀ τ, Formalism.L2.PjFree.relab c σ τ = τ)
     (k : U.Comp) {g₀ : GL (Fin r) E} (hg : g₀ ∈ (U.X k).Γ) (hr : 0 < r) :
     ∃ ρ : (E →+* ℂ) → ℂ, (∀ τ, ‖ρ τ‖ = 1) ∧ ∀ (x : (U.X k).dom) τ (i : Fin (Dw.mult τ)),
@@ -257,6 +325,23 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β}
   {σ : c.F →+* ℂ}
 
+/- English proof (translation)
+Take `⟨x1, o1, u1, t1, e1, b1, s1, g1⟩` from `y`. Take `⟨x2, o2, u2, t2, e2, b2, s2, g2⟩` from `y'`. Take `rfl : x1 = x2` from `e`. Set `ρ' : CAt σ` to `ρ`. Establish `key : ∀ i, IsCombAtG Z.t ((cxPt Z ⟨x1, o2, u2, t2, e2, b2, s2, g2⟩).1 ≫ genι Z) ((cxFrame Z ⟨x1, o2, u2, t2, e2, b2, s2, g2⟩).v τ) (fun a => (ρ • (1 : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) ℂ)) a i) ((cxFrame Z ⟨x1, o1, u1, t1, e1, b1, s1, g1⟩).v τ i)` using `fun i => by`.
+
+Establish `e3 : tanOf (t` using `Xo.univ.t) (t1 τ i) = ρ' • tanOf (t := Xo.univ.t) (t2 τ i) := by`. Use `(LieMet.isComb_iff (fun j => tanOf (t := Xo.univ.t) (t2 τ j)) (Pi.single i ρ') (tanOf (t := Xo.univ.t) (t1 τ i))).1 (h i)` as an intermediate fact. Establish `hs : (∑ j, (Pi.single i ρ' : Fin (Dw.mult τ) → CAt σ) j • tanOf (t` using `Xo.univ.t) (t2 τ j)) = ρ' • tanOf (t := Xo.univ.t) (t2 τ i) := by`. Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[Pi.single_eq_same]`.
+
+Introduce `j _ hj`. Rewrite using `[Pi.single_eq_of_ne hj, zero_smul]`. Introduce `hi`. Conclude with `absurd (Finset.mem_univ i) hi`. Conclude with `this.trans hs`.
+
+Use `(LieMet.isComb_iff ((cxFrame Z ⟨x1, o2, u2, t2, e2, b2, s2, g2⟩).vec τ) _ ((cxFrame Z ⟨x1, o1, u1, t1, e1, b1, s1, g1⟩).vec τ i)).2 ?_` and prove the remaining obligations. Use `Eq.trans ?_ (Finset.sum_eq_single i ?_ ?_).symm` and prove the remaining obligations. Use `rotate_left`. Introduce `j _ hj`. Simplify using `[Matrix.one_apply_ne hj]`.
+
+Introduce `hi`. Conclude with `absurd (Finset.mem_univ i) hi`. Establish `e4 : (cxFrame Z ⟨x1, o1, u1, t1, e1, b1, s1, g1⟩).vec τ i = lieEquiv Z (⟨x1, o2, u2, t2, e2, b2, s2, g2⟩ : FrPt Xo c (CAt σ)) (Category.assoc _ _ _).symm (tanOf (t` using `Xo.univ.t) (t1 τ i)) := tan_ext rfl`. Establish `e5 : (cxFrame Z ⟨x1, o2, u2, t2, e2, b2, s2, g2⟩).vec τ i = lieEquiv Z (⟨x1, o2, u2, t2, e2, b2, s2, g2⟩ : FrPt Xo c (CAt σ)) (Category.assoc _ _ _).symm (tanOf (t` using `Xo.univ.t) (t2 τ i)) := tan_ext rfl`. Rewrite using `[e4, e5, e3, map_smul]`.
+
+Establish `h1 : (ρ • (1 : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) ℂ)) i i = ρ` using `by simp`. Use `beta_reduce`. Rewrite using `[h1]`. Both sides reduce to the same expression. Establish `hc` using `x.gram_change (cxFrame Z ⟨x1, o2, u2, t2, e2, b2, s2, g2⟩) (cxFrame Z ⟨x1, o1, u1, t1, e1, b1, s1, g1⟩) τ _ key`.
+
+Use `hc.trans ?_` and prove the remaining obligations. Establish `h1 : (starRingEnd ℂ) ρ * ρ = 1`. Rewrite using `[mul_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq, hρ]`. Simplify using the standard rewrite rules. Rewrite using `[Matrix.conjTranspose_smul, Matrix.conjTranspose_one, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul, Matrix.mul_one, smul_smul]`.
+
+Rewrite using `[mul_comm, show star ρ = (starRingEnd ℂ) ρ from rfl, h1, one_smul]`.
+-/
 theorem gram_frPt [SmoothOfRelativeDimension Dw.dim (genStr Z)] (x : OddPrimesWithRootsOfUnity Z) (y y' : FrPt Xo c (CAt σ))
     (e : y.x = y'.x) (τ : E →+* ℂ) (ρ : ℂ) (hρ : ‖ρ‖ = 1)
     (h : ∀ i, IsCombAt (S := CAt σ) y'.x (y'.u τ) (Pi.single i ρ) (y.u τ i)) :
@@ -312,6 +397,11 @@ end GlobalTheory.FrameGam
 
 namespace GlobalTheory.FrameGam
 
+/- English proof (translation)
+Introduce `D A N j S κ s L k x g₀ hg f f' hf t`. Take `rfl : f' = ⟨lact g₀ f.1, KU.lact_dom _ hg f.2⟩` from `Subtype.ext hf`. Take `⟨ρ, hρ, hc⟩` from `lie_scalar (s.U κ.σ₀) s.isUnf κ.good_σ₀ (fun τ => rfl) k hg (lt_of_lt_of_le two_pos S.two_le)`. Establish `hgram : ∀ τ, x.gram (s.framePt k ⟨lact g₀ f.1, KU.lact_dom _ hg f.2⟩) (s.lieFrame k ⟨lact g₀ f.1, KU.lact_dom _ hg f.2⟩) τ = x.gram (s.framePt k f) (s.lieFrame k f) τ` using `fun τ => (gram_frPt x _ _ (PointWell.pt_lact s.isUnf k f hg).symm τ (ρ τ) (hρ τ) (hc f τ)).symm`. Prove the components needed by the constructor for the conclusion.
+
+Simplify using `only [ToroidalCompactificationData.gramW, hgram]`. Simplify using `only [ToroidalCompactificationData.gramOm, hgram]`.
+-/
 theorem gram_lact : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (L : CmList A) (k : s.Comp) (x : ToroidalCompactificationData s) (g₀ : GL (Fin N) D.host.E), g₀ ∈ (s.fd k).Γ → ∀ (f f' : (s.fd k).dom), f'.1 = ReciprocityTheory.ChartRestriction.G.FD.lact g₀ f.1 → ∀ t, x.gramW L k f' t = x.gramW L k f t ∧ x.gramOm L k f' t = x.gramOm L k f t := by
   intro D A N j S κ s L k x g₀ hg f f' hf t
   obtain rfl : f' = ⟨lact g₀ f.1, KU.lact_dom _ hg f.2⟩ := Subtype.ext hf

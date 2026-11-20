@@ -5,6 +5,9 @@ open GlobalTheory.KeyKa
 
 namespace GlobalTheory.SeriesNakayama
 
+/- English proof (translation)
+Rewrite using `[Ideal.span_singleton_pow, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Simplify using the standard rewrite rules.
+-/
 theorem mem_pow_smul_top_iff {O M : Type*} [CommRing O] [AddCommGroup M] [Module O M] (π : O)
     (n : ℕ) (x : M) :
     x ∈ (Ideal.span {π} ^ n • ⊤ : Submodule O M) ↔ ∃ y : M, π ^ n • y = x := by
@@ -12,6 +15,9 @@ theorem mem_pow_smul_top_iff {O M : Type*} [CommRing O] [AddCommGroup M] [Module
     Submodule.mem_smul_pointwise_iff_exists]
   simp
 
+/- English proof (translation)
+Simplify using `only [mem_pow_smul_top_iff]`. Use `⟨fun ⟨y, hy⟩ i => ⟨y i, congrFun hy i⟩, fun h => ?_⟩` and prove the remaining obligations. Use `choose y hy using h`. Conclude with `⟨y, funext hy⟩`.
+-/
 theorem mem_pow_smul_top_pi {O ι : Type*} [CommRing O] (π : O) (n : ℕ) (x : ι → O) :
     x ∈ (Ideal.span {π} ^ n • ⊤ : Submodule O (ι → O)) ↔
       ∀ i, x i ∈ (Ideal.span {π} ^ n • ⊤ : Submodule O O) := by
@@ -20,6 +26,13 @@ theorem mem_pow_smul_top_pi {O ι : Type*} [CommRing O] (π : O) (n : ℕ) (x : 
   choose y hy using h
   exact ⟨y, funext hy⟩
 
+/- English proof (translation)
+Establish `: IsPrecomplete (Ideal.span {π}) (ι → O)`. Use `⟨fun u hu => ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ i, ∃ L : O, ∀ k, u k i ≡ L [SMOD (Ideal.span {π} ^ k • ⊤ : Submodule O O)]` using `fun i => IsPrecomplete.prec' (fun k => u k i) fun {a b} hab => SModEq.sub_mem.2 ((mem_pow_smul_top_pi π a _).1 (SModEq.sub_mem.1 (hu hab)) i)`. Use `choose L hL using h1`. Conclude with `⟨L, fun k => SModEq.sub_mem.2 ((mem_pow_smul_top_pi π k _).2 fun i => SModEq.sub_mem.1 (hL i k))⟩`.
+
+Establish `: IsHausdorff (Ideal.span {π}) (κ → O)`. Use `⟨fun x hx => funext fun j => IsHausdorff.haus' (I := Ideal.span {π}) (x j) fun n => ?_⟩` and prove the remaining obligations. Conclude with `SModEq.sub_mem.2 ((mem_pow_smul_top_pi π n _).1 (SModEq.sub_mem.1 (hx n)) j)`. Use `surjective_of_mkQ_comp_surjective (I := Ideal.span {π}) fun G => ?_` and prove the remaining obligations. Take `⟨G, rfl⟩` from `Submodule.Quotient.mk_surjective _ G`.
+
+Take `⟨x, hx⟩` from `h G`. Use `⟨x, ((Submodule.Quotient.eq _).2 ?_).symm⟩` and prove the remaining obligations. Use `(mem_pow_smul_top_pi π 1 (G - Φ x)).2 fun j => by simpa using hx j` as an intermediate fact. Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis.
+-/
 theorem surjective_of_mod {O ι κ : Type*} [CommRing O] (π : O)
     [IsAdicComplete (Ideal.span {π}) O] (Φ : (ι → O) →ₗ[O] (κ → O))
     (h : ∀ G : κ → O, ∃ x, ∀ j, G j - Φ x j ∈ Ideal.span {π}) : Function.Surjective Φ := by
@@ -41,6 +54,13 @@ theorem surjective_of_mod {O ι κ : Type*} [CommRing O] (π : O)
   have := (mem_pow_smul_top_pi π 1 (G - Φ x)).2 fun j => by simpa using hx j
   rwa [pow_one] at this
 
+/- English proof (translation)
+Set `φ : IsLocalRing.ResidueField O →+* K` to `Ideal.Quotient.lift _ f fun a ha => by rwa [← hf] at ha`. Establish `hφ : ∀ o, φ (IsLocalRing.residue O o) = f o` using `fun _ => rfl`. Use `letI := φ.toAlgebra`. Take `⟨r, hr⟩` from `(Algebra.linearMap (IsLocalRing.ResidueField O) K).exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 φ.injective)`. Use `choose l hl using fun a => IsLocalRing.residue_surjective (R := O) (r a)`.
+
+Use `⟨φ.toAddMonoidHom.comp r.toAddMonoidHom, l, fun a => ?_, fun a o => ?_, fun o => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = φ (r a)`. Rewrite using `[← hl, hφ]`. Express the relevant statement in the definitionally equal form `φ (r _) = φ (r a) * _`. Establish `: a * f o = IsLocalRing.residue O o • a` using `mul_comm _ _`.
+
+Rewrite using `[this, map_smul, smul_eq_mul, map_mul, hφ, mul_comm]`. Express the relevant statement in the definitionally equal form `φ (r _) = _`. Establish `: r (f o) = IsLocalRing.residue O o` using `LinearMap.congr_fun hr (IsLocalRing.residue O o)`. Rewrite using `[this, hφ]`.
+-/
 theorem exists_projection {O K : Type*} [CommRing O] [IsLocalRing O] [Field K] (f : O →+* K)
     (hf : RingHom.ker f = IsLocalRing.maximalIdeal O) :
     ∃ (μ : K →+ K) (l : K → O), (∀ a, f (l a) = μ a) ∧ (∀ a o, μ (a * f o) = μ a * f o) ∧
@@ -62,6 +82,19 @@ theorem exists_projection {O K : Type*} [CommRing O] [IsLocalRing O] [Field K] (
     have : r (f o) = IsLocalRing.residue O o := LinearMap.congr_fun hr (IsLocalRing.residue O o)
     rw [this, hφ]
 
+/- English proof (translation)
+Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hm` using `hπ.maximalIdeal_eq`. Establish `: IsAdicComplete (Ideal.span {π}) O` using `hm ▸ ‹_›`. Take `⟨μ, l, hl, hμ, hμ1⟩` from `exists_projection f hf`. Set `Φ : (Fin N ⊕ (Y × Fin g × (Fin g →₀ ℕ)) → O) →ₗ[O] (Y × (Fin g →₀ ℕ) → O)` to `{ toFun := fun x j => ∑ k, x (.inl k) * MvPowerSeries.coeff j.2 (ρ j.1 k) + ∑ i, ∑ p ∈ Finset.HasAntidiagonal.antidiagonal j.2, x (.inr (j.1, i, p.1)) * MvPowerSeries.coeff p.2 (F j.1 i) map_add' := fun x x' => funext fun j => by`.
+
+Simplify using `only [Pi.add_apply, add_mul, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree. Use the proof step `map_smul' := fun c x => funext fun j => by`. Simplify using `only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply, mul_add, Finset.mul_sum, mul_assoc] }`. Establish `hΦ : Function.Surjective Φ`.
+
+Use `surjective_of_mod π Φ fun G => ?_` and prove the remaining obligations. Set `G' : Y → MvPowerSeries (Fin g) K` to `fun y d => f (G (y, d))`. Take `⟨v, hv⟩` from `h G'`. Use `choose H hH using fun y => (Ideal.mem_span_range_iff_exists_fun).1 (hv y)`. Use `⟨Sum.elim (fun k => l (v k)) fun q => l (MvPowerSeries.coeff q.2.2 (H q.1 q.2.1)), ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨y, d⟩`. Rewrite using `[← hm, ← hf, RingHom.mem_ker]`. Establish `h1` using `congrArg (fun s => μ (MvPowerSeries.coeff d s)) (eq_sub_iff_add_eq.1 (hH y))`. Establish `h2 : MvPowerSeries.coeff d (G' y) = f (G (y, d))` using `rfl`. Simplify using `only [map_add, map_sum, MvPowerSeries.coeff_mul, MvPowerSeries.coeff_map, MvPowerSeries.coeff_smul, hμ, hμ1, h2] at h1`.
+
+Simplify using `only [Φ, LinearMap.coe_mk, AddHom.coe_mk, map_sub, map_add, map_sum, map_mul, Sum.elim_inl, Sum.elim_inr, hl]`. Rewrite using `[← h1, add_comm, sub_self]`. Take `⟨x, hx⟩` from `hΦ fun j => MvPowerSeries.coeff j.2 (G j.1)`. Use `⟨fun k => x (.inl k), fun y => Ideal.mem_span_range_iff_exists_fun.2 ⟨fun i => (show MvPowerSeries (Fin g) O from fun d => x (.inr (y, i, d))), ?_⟩⟩` and prove the remaining obligations. Use extensionality with `d`.
+
+Establish `h1 : _ = MvPowerSeries.coeff d (G y)` using `congrFun hx (y, d)`. Simplify using `only [map_sub, map_sum, MvPowerSeries.coeff_mul, MvPowerSeries.coeff_smul, ← h1, Φ, LinearMap.coe_mk, AddHom.coe_mk, add_sub_cancel_left]`. Conclude with `Finset.sum_congr rfl fun i _ => MvPowerSeries.coeff_mul d _ _`.
+-/
 theorem span_mod_equations_lift (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [IsAdicComplete (IsLocalRing.maximalIdeal O) O] (K : Type) [Field K] (f : O →+* K) (g N : ℕ)
     (Y : Type) (F : Y → Fin g → (MvPowerSeries (Fin g) O))

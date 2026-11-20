@@ -6,6 +6,11 @@ noncomputable section
 
 namespace GroundTheory.Heights₂.Heights.TheoremB
 
+/- English proof (translation)
+Establish `h1` using `d.one_le_j`. Establish `h2` using `d.j_lt_N`. Unfold `rankLie`. Use `split_ifs`. Prove the components needed by the constructor for the conclusion.
+
+Conclude with `(by omega : 1 ≤ d.N - d.j)` after adjusting the coercions. Conclude with `(by omega : d.N - d.j ≤ d.N)` after adjusting the coercions. Prove the components needed by the constructor for the conclusion. Conclude with `h1` after adjusting the coercions. Conclude with `h2.le` after adjusting the coercions.
+-/
 theorem rankLie_bounds (d : IndexData) (e : Emb d) :
     1 ≤ (rankLie d e : ℝ) ∧ (rankLie d e : ℝ) ≤ d.N := by
   have h1 := d.one_le_j
@@ -19,6 +24,13 @@ theorem rankLie_bounds (d : IndexData) (e : Emb d) :
     · exact_mod_cast h1
     · exact_mod_cast h2.le
 
+/- English proof (translation)
+Establish `hp' : (2 : ℝ) ≤ p` using `by exact_mod_cast hp`. Establish `hq0 : 0 ≤ (p : ℝ)⁻¹` using `inv_nonneg.mpr (by linarith)`. Establish `hq1 : (p : ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ (by linarith)`. Establish `h` using `(hasSum_geometric_of_lt_one hq0 hq1).mul_left (p : ℝ)⁻¹`. Establish `hfun : (fun n : ℕ => (p : ℝ)⁻¹ * (p : ℝ)⁻¹ ^ n) = fun n : ℕ => ((p : ℝ) ^ (n + 1))⁻¹`.
+
+Use function extensionality and compare the values at `n`. Rewrite using `[← inv_pow, pow_succ, mul_comm]`. Rewrite `h` using `[hfun]`. Establish `hp0 : (p : ℝ) ≠ 0` using `by linarith`. Establish `hsub : (1 : ℝ) - (p : ℝ)⁻¹ = ((p : ℝ) - 1) / p` using `by field_simp`.
+
+Establish `hv : (p : ℝ)⁻¹ * (1 - (p : ℝ)⁻¹)⁻¹ = 1 / ((p : ℝ) - 1)`. Rewrite using `[hsub, inv_div, ← mul_div_assoc, inv_mul_cancel₀ hp0]`. Rewrite `h` using `[hv]`. Conclude with `h`.
+-/
 theorem geom_succ_inv (p : ℕ) (hp : 2 ≤ p) :
     HasSum (fun n : ℕ => ((p : ℝ) ^ (n + 1))⁻¹) (1 / ((p : ℝ) - 1)) := by
   have hp' : (2 : ℝ) ≤ p := by exact_mod_cast hp
@@ -36,6 +48,15 @@ theorem geom_succ_inv (p : ℕ) (hp : 2 ≤ p) :
   rw [hv] at h
   exact h
 
+/- English proof (translation)
+Introduce `d p φ hp _ τ`. Establish `hp2` using `hp.two_le`. Establish `hp' : (2 : ℝ) ≤ p` using `by exact_mod_cast hp2`. Establish `hg` using `geom_succ_inv p hp2`. Use `set a : ℕ → ℝ := fun n => ((p : ℝ) ^ (n + 1))⁻¹ with ha`.
+
+Use `set r : ℕ → ℝ := fun n => (rankLie d ((φ ^ (n + 1)) (τ, false)) : ℝ) with hr`. Establish `ha0 : ∀ n, 0 < a n` using `fun n => inv_pos.mpr (pow_pos (by linarith) _)`. Establish `hterm0 : ∀ n, 0 ≤ a n * r n` using `fun n => mul_nonneg (ha0 n).le (by linarith [(rankLie_bounds d ((φ ^ (n + 1)) (τ, false))).1])`. Establish `htermle : ∀ n, a n * r n ≤ (d.N : ℝ) * a n` using `fun n => by`. Rewrite using `[mul_comm (d.N : ℝ)]`.
+
+Conclude with `mul_le_mul_of_nonneg_left (rankLie_bounds d ((φ ^ (n + 1)) (τ, false))).2 (ha0 n).le`. Establish `hNs : HasSum (fun n => (d.N : ℝ) * a n) ((d.N : ℝ) * (1 / ((p : ℝ) - 1)))` using `hg.mul_left _`. Establish `hsum : Summable (fun n => a n * r n)` using `Summable.of_nonneg_of_le hterm0 htermle hNs.summable`. Establish `hk : kaP d p φ τ = ∑' n, a n * r n` using `rfl`. Rewrite using `[hk]`.
+
+Prove the components needed by the constructor for the conclusion. Establish `h0 : 0 < a 0 * r 0` using `mul_pos (ha0 0) (by linarith [(rankLie_bounds d ((φ ^ (0 + 1)) (τ, false))).1])`. Conclude with `hsum.tsum_pos hterm0 0 h0`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem KaPBound.proof : KaPBound.Statement := by
   intro d p φ hp _ τ
   have hp2 := hp.two_le

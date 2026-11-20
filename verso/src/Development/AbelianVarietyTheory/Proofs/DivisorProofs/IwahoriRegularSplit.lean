@@ -6,6 +6,17 @@ open Polynomial ValuativeRel
 
 namespace GlobalTheory.IwahoriRegular
 
+/- English proof (translation)
+Introduce `k _ _ _ _ N ϖ hϖ ν hν x hx y hy`. Use `letI := IsTopologicalAddGroup.rightUniformSpace k`. Use `haveI := isUniformAddGroup_of_addCommGroup (G := k)`. Establish `hlt : valuation k (ϖ : k) < 1` using `hϖ ▸ uniformizer_lt_one`. Set `w : 𝒪[k]` to `⟨ϖ, hlt.le⟩`.
+
+Establish `hw : Irreducible w`. Rewrite using `[IsDiscreteValuationRing.irreducible_iff_uniformizer]`. Use extensionality with `z`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, Valuation.Integer.not_isUnit_iff_valuation_lt_one, Ideal.mem_span_singleton, (Valuation.integer.integers (valuation k)).dvd_iff_le, ← le_uniformizer_iff, ← hϖ]`. Both sides reduce to the same expression.
+
+Take `⟨x', hx', rfl⟩` from `hx`. Take `⟨y', hy', rfl⟩` from `hy`. Establish `low : ∀ h : GL (Fin N) 𝒪[k], h ∈ (GlobalTheory.SmGL.borel 𝓀[k] (Fin N)).comap (Matrix.GeneralLinearGroup.map (n` using `Fin N) (IsLocalRing.residue 𝒪[k])) → ∀ i j, j < i → (h : Matrix (Fin N) (Fin N) 𝒪[k]) i j ∈ IsLocalRing.maximalIdeal 𝒪[k] := by`. Introduce `h hh i j hij`. Use `(GlobalTheory.SmGL.mem_borel _).1 hh i j hij` as an intermediate fact.
+
+Conclude with `(IsLocalRing.residue_eq_zero_iff _).1 this`. Take `⟨r, hr, hchar⟩` from `GlobalTheory.IwahoriRoots.iwahori_roots 𝒪[k] k w hw N ν hν x' y' (low x' hx') (low y' hy')`. Establish `hinj : Function.Injective r` using `fun i j h => hν.injective (by rw [← (hr i).2, ← (hr j).2, h])`. Establish `e : ((Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) x' * GlobalTheory.GLDoubling.torusElt k (Fin N) ϖ ν * Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) y' : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) = (x' : Matrix (Fin N) (Fin N) 𝒪[k]).map (algebraMap 𝒪[k] k) * Matrix.dia …`. Rewrite using `[Units.val_mul, Units.val_mul, GlobalTheory.GLDoubling.val_torusElt]`.
+
+Both sides reduce to the same expression. Use `show Separable (Matrix.charpoly _) ∧ Splits (Matrix.charpoly _)`. Rewrite using `[e, hchar]`. Conclude with `⟨separable_prod_X_sub_C_iff.2 hinj, Polynomial.Splits.prod fun i _ => Polynomial.Splits.X_sub_C _⟩`.
+-/
 theorem regular_split : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (N : ℕ) (ϖ : kˣ),
   ValuativeRel.valuation k (ϖ : k) = ValuativeRel.uniformizer k →
   ∀ ν : Fin N → ℤ, StrictAnti ν → ∀ x ∈ GlobalTheory.SmGL.iwahori k (Fin N), ∀ y ∈ GlobalTheory.SmGL.iwahori k (Fin N),

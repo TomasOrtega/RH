@@ -21,6 +21,11 @@ variable {X : Scheme.{0}} (A : Over X) [GrpObj A] [IsCommMonObj A] (L : RigLB A)
 
 omit [IsCommMonObj A] in
 
+/- English proof (translation)
+Establish `h : rigPow A L.L L.rig (-1) = LB.invGen L.L (fun _ : PUnit => eSec A) (fun _ => 1) L.rig`. Unfold `rigPow LB.invGen`. Use `congr 1`. Use function extensionality and compare the values at `j`. Conclude with `zpow_neg_one _`.
+
+Unfold `IsNormEnd IsNormMul`. Rewrite using `[h]`.
+-/
 theorem normEnd_iff (N : ℕ)
     (α₀ : LB.Gen (LB.LinComb L.L (K := Fin 2) ![𝟙 A.left, (mulA A N).left] ![(N : ℤ) ^ 2, -1])) :
     IsNormEnd A L (mulA A N) ((N : ℤ) ^ 2) 1 α₀ ↔ IsNormMul A L.L L.rig N α₀ := by
@@ -32,6 +37,11 @@ theorem normEnd_iff (N : ℕ)
   unfold IsNormEnd IsNormMul
   rw [h]
 
+/- English proof (translation)
+Establish `e : snd T A ≫ mulA A N = snd T A ^ N` using `by rw [MonObj.comp_pow, Category.comp_id]`. Unfold `IsNormPull mulT endT`. Simplify using `only [normEnd_iff]`. Generalize the expression as in `snd T A ^ N = m at e ⊢`. Substitute `e` using the available equality.
+
+Both sides reduce to the same expression.
+-/
 theorem normPull_iff (N : ℕ) {T : Over X} (s : LB.Sec (LPow A L.L 1 T))
     (s₁ : LB.Sec (LPow A L.L ((N : ℤ) ^ 2) T)) :
     IsNormPull A L (mulA A N) ((N : ℤ) ^ 2) 1 s s₁ ↔
@@ -47,6 +57,9 @@ theorem normPull_iff (N : ℕ) {T : Over X} (s : LB.Sec (LPow A L.L 1 T))
   subst e
   rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Simplify using `only [normPull_iff]`. Conclude with `⟨fun ⟨α₀, α, s₁, s₂, U₁, U₂, a1, a2, a3, a4, a5, a6, a7, a8⟩ => ⟨s₁, s₂, ⟨α₀, α, a1, a2, a3, a4⟩, ⟨U₁, a5, a6⟩, U₂, a7, a8⟩, fun ⟨s₁, s₂, ⟨α₀, α, a1, a2, a3, a4⟩, ⟨U₁, a5, a6⟩, U₂, a7, a8⟩ => ⟨α₀, α, s₁, s₂, U₁, U₂, a1, a2, a3, a4, a5, a6, a7, a8⟩⟩`.
+-/
 theorem uu_iff (N : ℕ) {T : Over X} (s : LB.Sec (LPow A L.L 1 T)) (x₁ x₂ : T ⟶ A)
     (F : LB.Sec (LPow A L.L ((N : ℤ) ^ 2) T)) (k : ℤ) (h : (N : ℤ) ^ 2 = k) :
     IsUUOver A L N s x₁ x₂ F ↔ ∃ F₀ F₁ : LB.Sec (LPow A L.L k T), IsNormPull A L (mulA A N) k 1 s F₀ ∧
@@ -59,6 +72,9 @@ theorem uu_iff (N : ℕ) {T : Over X} (s : LB.Sec (LPow A L.L 1 T)) (x₁ x₂ :
     fun ⟨s₁, s₂, ⟨α₀, α, a1, a2, a3, a4⟩, ⟨U₁, a5, a6⟩, U₂, a7, a8⟩ =>
       ⟨α₀, α, s₁, s₂, U₁, U₂, a1, a2, a3, a4, a5, a6, a7, a8⟩⟩
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `hk F`.
+-/
 theorem triv_cast {T : Over X} (n : ℕ) {k k' : ℤ} (h : k = k')
     (hk : ∀ F : LB.Sec (LPow A L.L k T), ∃ U : ThetaGrp A L.L k T, SymLift A L.L k n 1 U ∧ IsActOf A L.L k U F F)
     (F : LB.Sec (LPow A L.L k' T)) : ∃ U : ThetaGrp A L.L k' T, SymLift A L.L k' n 1 U ∧ IsActOf A L.L k' U F F := by
@@ -67,6 +83,11 @@ theorem triv_cast {T : Over X} (n : ℕ) {k k' : ℤ} (h : k = k')
 
 end General
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Establish `h` using `t.act.add 0 0`. Rewrite `h` using `[add_zero]`. Establish `h1 : t.act.act 0 = 1` using `by simpa using h`.
+
+Simplify using `[h1]`. Consider the case `succ n ih => rw [Nat.cast_succ, t.act.add, ih, t.act.one, mulA, mulA, pow_succ]`.
+-/
 theorem act_natCast_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {S : Scheme.{0}} (t : SAB H S)
     (n : ℕ) : t.act.act (n : 𝓞 E) = mulA t.G n := by
   induction n with
@@ -82,6 +103,11 @@ end GlobalTheory.PlaceInt.TwoLifts
 namespace GlobalTheory.PlaceInt
 open TwoLifts
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo S _ x N hN s`. Use `⟨fun x₁ x₂ F h₁ h₂ => ?_, fun ok t F _ hV => ?_⟩` and prove the remaining obligations. Rewrite using `[uu_iff _ _ N s x₁ x₂ F ((N ^ 2 : ℕ) : ℤ) (Nat.cast_pow N 2).symm]`. Unfold `Pulls Moves IsSymAct sqN`. Rewrite using `[act_natCast_eq]`.
+
+Conclude with `⟨fun ⟨F₀, F₁, a, b, c⟩ => ⟨F₀, F₁, a, ⟨h₁, b⟩, h₂, c⟩, fun ⟨F₀, F₁, a, ⟨_, b⟩, _, c⟩ => ⟨F₀, F₁, a, b, c⟩⟩`. Take `⟨t', α₀, α, s₁, U, a1, a2, a3, a4, a5, a6, a7, a8⟩` from `hV`. Take `⟨U₁, b1, b2⟩` from `triv_cast Xo.univ.t.G Xo.univ.t.PP (N ^ 2) (Nat.cast_pow N 2) (fun G => (GlobalTheory.existsUnique_moves E H Dw l Xo S x (N ^ 2) hN.pow 1 (one_pow _) G).2.2) s₁`. Conclude with `⟨t', a1, a2, α₀, α, s₁, s₁, U₁, U, a3, a4, a5, a6, b1, b2, a7, a8⟩`.
+-/
 theorem uu_through_moves : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (S : Type) [CommRing S] (x : Sp S ⟶ Xo.X) (N : ℕ), Odd N → ∀ (s : SecN Xo x 1), (∀ (x₁ x₂ : (ptO Xo x ⟶ Xo.univ.t.G)) (F), x₁ ^ (N ^ 2) = 1 → x₂ ^ (N ^ 2) = 1 → (IsUUOver Xo.univ.t.G Xo.univ.t.PP N s x₁ x₂ F ↔ ∃ F₀ F₁ : SecN Xo x (N ^ 2), Pulls Xo (N : 𝓞 E) s F₀ ∧ Moves Xo x₁ F₀ F₁ ∧ Moves Xo x₂ F₁ (sqN Xo N F))) ∧ ∀ (ok : (ptO Xo x ⟶ Xo.univ.t.G) → Prop) (t : (ptO Xo x ⟶ Xo.univ.t.G)) (F), t ^ N = 1 → IsVtOver Xo.univ.t.G Xo.univ.t.PP N ok s t F → ∃ t' : (ptO Xo x ⟶ Xo.univ.t.G), t' ^ N = t ∧ ok t' ∧ IsUUOver Xo.univ.t.G Xo.univ.t.PP N s 1 t' F := by
   intro E _ _ _ H Dw l Xo S _ x N hN s
   refine ⟨fun x₁ x₂ F h₁ h₂ => ?_, fun ok t F _ hV => ?_⟩

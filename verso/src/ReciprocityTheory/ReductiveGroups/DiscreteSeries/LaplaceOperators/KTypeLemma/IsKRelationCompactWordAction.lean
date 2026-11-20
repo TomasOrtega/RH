@@ -15,6 +15,9 @@ variable {n : ℕ} {M : Type*} [AddCommGroup M] [Module ℂ M] {MM : Type*} [Add
 def sC (V : Submodule ℂ M) (a b : Fin n) : Module.End ℂ (KS (n := n) V) :=
   Finsupp.lsum ℂ fun p => if p.2 = b then Finsupp.lsingle (p.1, a) else 0
 
+/- English proof (translation)
+Apply the tactic sequence `simp only [sC, Finsupp.lsum_single]; split_ifs <;> rfl`.
+-/
 theorem sC_single (a b : Fin n) (p : List (Fin n × Fin n) × Fin n) (v : V) :
     sC V a b (Finsupp.single p v) = if p.2 = b then Finsupp.single (p.1, a) v else 0 := by
   simp only [sC, Finsupp.lsum_single]; split_ifs <;> rfl
@@ -23,6 +26,9 @@ def compactWordAction (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End 
     (hV : IsKStableSub ε E V) (a b : Fin n) : Module.End ℂ (KS (n := n) V) :=
   sA ε E V hV a b - sC V a b
 
+/- English proof (translation)
+Rewrite using `[compactWordAction, LinearMap.sub_apply, sC_single, sub_eq_iff_eq_add]`. Simplify using `only [sA, Finsupp.lsum_single, LinearMap.add_apply, LinearMap.sum_apply, LinearMap.smul_apply, Finsupp.lsingle_apply]`. Use `congr 1`. Apply the tactic sequence `congr 1 split_ifs <;> rfl`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem compactWordAction_single (hV : IsKStableSub ε E V) (a b : Fin n) (p : List (Fin n × Fin n) × Fin n) (v : V) :
     compactWordAction ε E V hV a b (Finsupp.single p v) =
       (∑ w' ∈ (adLW a b p.1).support, adLW a b p.1 w' • Finsupp.single (w', p.2) v) +
@@ -35,11 +41,17 @@ theorem compactWordAction_single (hV : IsKStableSub ε E V) (a b : Fin n) (p : L
     split_ifs <;> rfl
   · split_ifs <;> rfl
 
+/- English proof (translation)
+Use `Finsupp.lhom_ext fun p v => ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, sC_single]`. Apply the tactic sequence `by_cases h1 : p.2 = d <;> by_cases h2 : b = c <;> simp [h1, h2, sC_single, eq_comm]`.
+-/
 theorem sC_mul (a b c d : Fin n) : sC V a b * sC V c d = if b = c then sC V a d else 0 := by
   refine Finsupp.lhom_ext fun p v => ?_
   rw [Module.End.mul_apply, sC_single]
   by_cases h1 : p.2 = d <;> by_cases h2 : b = c <;> simp [h1, h2, sC_single, eq_comm]
 
+/- English proof (translation)
+Use `Finsupp.lhom_ext fun p v => ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, sC_single, compactWordAction_single, map_add, map_sum]`. Apply the tactic sequence `by_cases h1 : p.2 = d <;> by_cases h : ε a = ε b <;>`. Simplify using `only [h1, h, if_true, if_false, dif_pos, dif_neg, not_false_eq_true, compactWordAction_single, map_smul, sC_single, map_zero, smul_zero, sum_const_zero, add_zero]`.
+-/
 theorem compactWordAction_commute (hV : IsKStableSub ε E V) (a b c d : Fin n) :
     compactWordAction ε E V hV a b * sC V c d = sC V c d * compactWordAction ε E V hV a b := by
   refine Finsupp.lhom_ext fun p v => ?_
@@ -48,6 +60,11 @@ theorem compactWordAction_commute (hV : IsKStableSub ε E V) (a b c d : Fin n) :
     simp only [h1, h, if_true, if_false, dif_pos, dif_neg, not_false_eq_true, compactWordAction_single, map_smul,
       sC_single, map_zero, smul_zero, sum_const_zero, add_zero]
 
+/- English proof (translation)
+Introduce `a b c d hab hcd`. Establish `h1` using `sA_isKRel ε E V hV hE a b c d hab hcd`. Establish `e : ∀ x y, sA ε E V hV x y = compactWordAction ε E V hV x y + sC V x y` using `fun x y => by simp [compactWordAction]`. Rewrite `h1` using `[e a b, e c d, e a d, e c b]`. Simplify using `only [add_mul, mul_add, sC_mul, compactWordAction_commute] at h1`.
+
+Establish `h2 : compactWordAction ε E V hV a b * compactWordAction ε E V hV c d - compactWordAction ε E V hV c d * compactWordAction ε E V hV a b = ((if b = c then compactWordAction ε E V hV a d + sC V a d else 0) - if d = a then compactWordAction ε E V hV c b + sC V c b else 0) - ((if b = …`. Rewrite using `[← h1]`. Normalize the expressions using the abelian group laws. Rewrite using `[h2]`. Apply the tactic sequence `split_ifs <;> abel`.
+-/
 theorem isKRelation_compactWordAction (hV : IsKStableSub ε E V) (hE : IsGlRep E) : IsKRel ε (compactWordAction ε E V hV) := by
   intro a b c d hab hcd
   have h1 := sA_isKRel ε E V hV hE a b c d hab hcd
@@ -62,6 +79,11 @@ theorem isKRelation_compactWordAction (hV : IsKStableSub ε E V) (hE : IsGlRep E
   rw [h2]
   split_ifs <;> abel
 
+/- English proof (translation)
+Proceed by induction on `x using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x y h h' => simp only [map_add, h, h', Pi.add_apply, Pi.single_add]`. Consider the case `single p v`. Take `⟨w, c⟩` from `p`.
+
+Rewrite using `[sC_single, sT_single]`. Distinguish the cases in `h : c = b`. Substitute `h` using the available equality. Simplify using `[sT_single]`. Simplify using `[h, Ne.symm h]`.
+-/
 theorem sT_sC (a b : Fin n) (x : KS (n := n) V) :
     sT E V (sC V a b x) = Pi.single a (sT E V x b) := by
   induction x using Finsupp.induction_linear with
@@ -74,6 +96,11 @@ theorem sT_sC (a b : Fin n) (x : KS (n := n) V) :
     · subst h; simp [sT_single]
     · simp [h, Ne.symm h]
 
+/- English proof (translation)
+Proceed by induction on `x using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x y h h' => simp only [map_add, h, h', Pi.add_apply, Pi.single_add]`. Consider the case `single p v`. Take `⟨w, c⟩` from `p`.
+
+Rewrite using `[sC_single, sθ_single]`. Distinguish the cases in `h : c = b`. Substitute `h` using the available equality. Simplify using `[sθ_single]`. Simplify using `[h, Ne.symm h]`.
+-/
 theorem sθ_sC (EM : Fin n → Fin n → Module.End ℂ MM) (φ : MM) (ℓ : V →ₗ[ℂ] ℂ) (a b : Fin n)
     (x : KS (n := n) V) : sθ V EM φ ℓ (sC V a b x) = Pi.single a (sθ V EM φ ℓ x b) := by
   induction x using Finsupp.induction_linear with
@@ -86,16 +113,31 @@ theorem sθ_sC (EM : Fin n → Fin n → Module.End ℂ MM) (φ : MM) (ℓ : V �
     · subst h; simp [sθ_single]
     · simp [h, Ne.symm h]
 
+/- English proof (translation)
+Simplify using `only [tensV, LinearMap.pi_apply, LinearMap.add_apply, LinearMap.comp_apply, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem tensV_eq (E : Fin n → Fin n → Module.End ℂ M) (a b : Fin n) (f : Fin n → M) (c : Fin n) :
     tensV E a b f c = E a b (f c) + (Pi.single a (f b) : Fin n → M) c := by
   simp only [tensV, LinearMap.pi_apply, LinearMap.add_apply, LinearMap.comp_apply, Pi.single_apply]
   split_ifs <;> rfl
 
+/- English proof (translation)
+Rewrite using `[compactWordAction, LinearMap.sub_apply, map_sub, sT_sA ε E V hV hE a b hab, sT_sC, Pi.sub_apply, tensV_eq, add_sub_cancel_right]`.
+-/
 theorem contraction_compactWordAction (hV : IsKStableSub ε E V) (hE : IsGlRep E) (a b : Fin n) (hab : ε a = ε b)
     (x : KS (n := n) V) (c : Fin n) : sT E V (compactWordAction ε E V hV a b x) c = E a b (sT E V x c) := by
   rw [compactWordAction, LinearMap.sub_apply, map_sub, sT_sA ε E V hV hE a b hab, sT_sC, Pi.sub_apply, tensV_eq,
     add_sub_cancel_right]
 
+/- English proof (translation)
+Set `G : Set (KS (n` to `n) V) := {x | x ∈ W0 ∨ ∃ c d, ∃ y ∈ W0, x = sC V c d y}`. Use `⟨Submodule.span ℂ G, fun x hx => Submodule.subset_span (Or.inl hx), fun a b hab x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Use `(Submodule.span_le (p := (Submodule.span ℂ G).comap (sA ε E V hV a b))).mpr ?_ hx` and prove the remaining obligations. Establish `e : ∀ y, sA ε E V hV a b y = compactWordAction ε E V hV a b y + sC V a b y` using `fun y => by simp [compactWordAction]`. Introduce and unpack `y (hy | ⟨c, d, y, hy, rfl⟩)`.
+
+Use `show sA ε E V hV a b y ∈ Submodule.span ℂ G`. Rewrite using `[e]`. Conclude with `add_mem (Submodule.subset_span (Or.inl (hW0 a b hab y hy))) (Submodule.subset_span (Or.inr ⟨a, b, y, hy, rfl⟩))`. Use `show sA ε E V hV a b (sC V c d y) ∈ Submodule.span ℂ G`. Rewrite using `[e, ← Module.End.mul_apply, compactWordAction_commute, ← Module.End.mul_apply (sC V a b), sC_mul]`.
+
+Use `add_mem (Submodule.subset_span (Or.inr ⟨c, d, _, hW0 a b hab y hy, rfl⟩)) ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `Submodule.subset_span (Or.inr ⟨a, d, y, hy, rfl⟩)`. Conclude with `Submodule.zero_mem _`. Use `(Submodule.span_le (p := LinearMap.ker (sθ V EM φ ℓ))).mpr ?_ hx` and prove the remaining obligations.
+
+Introduce and unpack `y (hy | ⟨c, d, y, hy, rfl⟩)`. Conclude with `hθ y hy`. Use `show sθ V EM φ ℓ (sC V c d y) = 0`. Rewrite using `[sθ_sC, hθ y hy]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_stable (hV : IsKStableSub ε E V) (EM : Fin n → Fin n → Module.End ℂ MM) (φ : MM)
     (ℓ : V →ₗ[ℂ] ℂ) (W0 : Submodule ℂ (KS (n := n) V)) (hW0 : IsKStableSub ε (compactWordAction ε E V hV) W0)
     (hθ : ∀ x ∈ W0, sθ V EM φ ℓ x = 0) :
@@ -123,6 +165,11 @@ theorem exists_stable (hV : IsKStableSub ε E V) (EM : Fin n → Fin n → Modul
     · show sθ V EM φ ℓ (sC V c d y) = 0
       rw [sθ_sC, hθ y hy]; simp
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hμ`. Use `hx0 (vc_eq_zero_of_mem_span EM (fun β => InRootCone (β - ν)) hμ hx ?_)` and prove the remaining obligations. Establish `h1` using `vc_genSub_le_mon EM hEM φ ⊥ (fun a b y hy => by simp_all) (fun a b h => by simp [hlow a b h]) (fun a => ⟨_, hwt a⟩)`. Rewrite `h1` using `[hgen, sup_bot_eq]`. Use `Submodule.span_mono ?_ (h1 Submodule.mem_top)` and prove the remaining obligations.
+
+Introduce `w hw`. Take `⟨k, hk⟩` from `Set.mem_iUnion.mp hw`. Take `⟨β, h2, h3, -⟩` from `vcMon_weight EM hEM hwt k w hk`. Conclude with `⟨β, h3, h2⟩`.
+-/
 theorem verma_weight (EM : Fin n → Fin n → Module.End ℂ MM) (hEM : IsGlRep EM) (φ : MM) (ν : Fin n → ℝ)
     (hlow : ∀ a b, b < a → EM a b φ = 0) (hwt : ∀ a, EM a a φ = ((ν a : ℝ) : ℂ) • φ)
     (hgen : genSub EM (Submodule.span ℂ {φ}) = ⊤) {μ : Fin n → ℝ} {x : MM} (hx0 : x ≠ 0)

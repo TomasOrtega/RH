@@ -18,10 +18,16 @@ open GlobalTheory.UU
 noncomputable section
 namespace GlobalTheory.UU.ToChart
 
+/- English proof (translation)
+The claim follows from `(gm_res _ y h hy _).trans ((gm_pull (𝟙 Y) g y U (h hy) a).trans (by rw [Category.id_comp]))`.
+-/
 theorem gm_res_pull {X Y : Scheme.{0}} (g : Y ⟶ X) {U : X.Opens} {V : Y.Opens} (h : V ≤ g ⁻¹ᵁ U) {y : Y} (hy : y ∈ V)
     (a : Γ(X, U)ˣ) : gm (𝟙 Y) y V (res h (pullU g U a)) = gm g y U a :=
   (gm_res _ y h hy _).trans ((gm_pull (𝟙 Y) g y U (h hy) a).trans (by rw [Category.id_comp]))
 
+/- English proof (translation)
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `H'` using `congrArg Additive.ofMul H`. Simplify using `only [ofMul_mul, ofMul_inv] at H' ⊢`. Take the linear combination `(norm := abel) H'`.
+-/
 theorem cub_alg' {M : Type} [CommGroup M] {C C' a b c d e g h k : M} (H : C * b * c * d * k = a * e * g * h * C') :
     C = a * b⁻¹ * c⁻¹ * d⁻¹ * e * g * h * k⁻¹ * C' := by
   apply Additive.ofMul.injective
@@ -29,6 +35,9 @@ theorem cub_alg' {M : Type} [CommGroup M] {C C' a b c d e g h k : M} (H : C * b 
   simp only [ofMul_mul, ofMul_inv] at H' ⊢
   linear_combination (norm := abel) H'
 
+/- English proof (translation)
+The claim follows from `congrArg (fun q => q.left) ((psum_hom (preHom (lift (β (x 0)) (lift (β (x 1)) (β (x 2))))) (x3 G) k.down).trans ((congrArg (fun q => psum G q k.down) (funext fun i => by fin_cases i <;> simp [preHom, x3])).trans (psum_hom β x k.down).symm))`.
+-/
 theorem cube_left {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [IsCommMonObj G] [GrpObj G']
     [IsCommMonObj G'] {T : Over S} {T' : Over S'} (β : (T' ⟶ G') →* (T ⟶ G)) (x : Fin 3 → (T' ⟶ G')) (k : thK) :
     (lift (β (x 0)) (lift (β (x 1)) (β (x 2)))).left ≫ thφ G (x3 G) k = (β (psum G' x k.down)).left :=
@@ -55,6 +64,9 @@ def projHom (g : GtCoord I D e G) (T : Over (Spec (CommRingCat.of (R ⧸ I ^ (e 
 
 variable {A : PolAV (Spec (CommRingCat.of (FractionRing R)))} (U : PreU I D A G)
 
+/- English proof (translation)
+Use `unit_ext fun y hy => ?_` and prove the remaining obligations. Use `U.w_compat e _ (𝟙 _) y (p.1 PUnit.unit) (p.2 PUnit.unit) (mem_pull.1 (h₂ hy).1) (mem_pull.1 (h₂ hy).2)` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Conclude with `(gm_res_pull _ h₁ hy _).trans (this.trans (gm_res _ y h₂ hy _).symm)`.
+-/
 theorem w_compat (e : ℕ) (p : (PUnit → D.P.L.ι) × (PUnit → U.P.L.L.ι))
     (V : (thickObj R I e G).left.Opens)
     (h₁ : V ≤ thickMap R I e G ⁻¹ᵁ ((D.P.L.pull (U.gt (e + 1)).pG.left).U p.1 ⊓
@@ -66,6 +78,13 @@ theorem w_compat (e : ℕ) (p : (PUnit → D.P.L.ι) × (PUnit → U.P.L.L.ι))
   rw [Category.id_comp] at this
   exact (gm_res_pull _ h₁ hy _).trans (this.trans (gm_res _ y h₂ hy _).symm)
 
+/- English proof (translation)
+Use `unit_ext fun y hy => ?_` and prove the remaining obligations. Take `⟨JG, hJG, eG⟩` from `exists_good U.P.L.L U.P.L.isLB y (K := Fin 2) ![thick R I e ≫ eSec G, eSec (thickObj R I e G) ≫ (fstG I e G).left] (fun _ => p.2 PUnit.unit) (fun _ _ _ => rfl) (Fin.forall_fin_two.2 ⟨Set.mem_iInter.1 (h₂ hy) PUnit.unit, Set.mem_iInter.1 (h₁ hy).2 PUnit.unit⟩)`. Take `⟨J, hJ, eB⟩` from `exists_good D.P.L D.P.isLB y (K := Fin 2) ![thick R I e ≫ eSec D.P.A, eSec (thickObj R I e G) ≫ (U.gt e).pG.left] (fun _ => p.1 PUnit.unit) (fun _ _ _ => rfl) (Fin.forall_fin_two.2 ⟨Set.mem_iInter.1 (h₃ hy) PUnit.unit, Set.mem_iInter.1 (h₁ hy).1 PUnit.unit⟩)`. Establish `H` using `(U.w_vals e (𝟙_ _) y JG J hJG hJ _ (fun _ => rfl)).1`. Establish `o : (1 : 𝟙_ _ ⟶ thickObj R I e G).left = eSec (thickObj R I e G)` using `(one_left _ _).trans (Category.id_comp _)`.
+
+Establish `t : (𝟙_ (Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))))).hom ≫ thick R I e = thick R I e` using `Category.id_comp _`. Rewrite `H` using `[o, t]`. Establish `a` using `val_of (L := D.P.L) (φ := fun _ : PUnit => eSec D.P.A) (ε := fun _ => 1) D.rig (thick R I e) y J p.1 (fun _ => eB 0)`. Establish `b` using `val_of (L := U.P.L.L) (φ := fun _ : PUnit => eSec G) (ε := fun _ => 1) U.P.L.rig (thick R I e) y JG p.2 (fun _ => eG 0)`. Establish `c` using `congrArg₂ (fun j k => gw (U.w e) (eSec (thickObj R I e G)) y j (fun _ => k)) (eB 1) (eG 1)`.
+
+Use `(map_mul _ _ _).trans (Eq.trans ?_ (gm_res_pull _ h₃ hy _).symm)` and prove the remaining obligations. Use `(congrArg₂ (· * ·) (gm_res_pull _ h₁ hy _) (gm_res_pull _ h₂ hy _)).trans ?_` and prove the remaining obligations. Conclude with `(a.symm.trans (H.trans (congrArg₂ (· * ·) c b))).symm`.
+-/
 theorem w_rig (e : ℕ) (p : (PUnit → D.P.L.ι) × (PUnit → U.P.L.L.ι))
     (V : (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))).Opens)
     (h₁ : V ≤ eSec (thickObj R I e G) ⁻¹ᵁ
@@ -96,6 +115,13 @@ theorem w_rig (e : ℕ) (p : (PUnit → D.P.L.ι) × (PUnit → U.P.L.L.ι))
   refine (congrArg₂ (· * ·) (gm_res_pull _ h₁ hy _) (gm_res_pull _ h₂ hy _)).trans ?_
   exact (a.symm.trans (H.trans (congrArg₂ (· * ·) c b))).symm
 
+/- English proof (translation)
+Use `unit_ext fun y hy => ?_` and prove the remaining obligations. Take `⟨JG, hJG, eG⟩` from `exists_good U.P.L.L U.P.L.isLB y _ jS cS (fun k => Set.mem_iInter.1 (h₄ hy) k)`. Take `⟨J, hJ, eB⟩` from `exists_good D.P.L D.P.isLB y _ jT cT (fun k => Set.mem_iInter.1 (h₁ hy) k)`. Establish `H` using `(U.w_vals e _ y JG J hJG hJ _ (fun _ => rfl)).2.1 (𝟙 _)`. Establish `o : ((𝟙 (thickObj R I e G))⁻¹).left = (ι[thickObj R I e G]).left` using `by rw [Hom.inv_def, Category.id_comp]`.
+
+Establish `iG : ((𝟙 (thickObj R I e G))⁻¹).left ≫ (fstG I e G).left = (fstG I e G).left ≫ (ι[G]).left` using `(congrArg (fun q => q.left) (map_inv (fstHom I e G _) (𝟙 _))).trans (congrArg (· ≫ (ι[G]).left) (Category.id_comp (fstG I e G).left))`. Establish `iB : ((𝟙 (thickObj R I e G))⁻¹).left ≫ (U.gt e).pG.left = (U.gt e).pG.left ≫ (ι[D.P.A]).left` using `(congrArg (fun q => q.left) (map_inv (projHom (U.gt e) _) (𝟙 _))).trans (congrArg (· ≫ (ι[D.P.A]).left) (Category.id_comp (U.gt e).pG.left))`. Establish `g₀ : JG ((fstG I e G).left ≫ (ι[G]).left) = jS 0` using `eG 0`. Establish `g₁ : JG (fstG I e G).left = jS 1` using `(congrArg JG (Category.comp_id _).symm).trans (eG 1)`. Establish `b₀ : J ((U.gt e).pG.left ≫ (ι[D.P.A]).left) = jT 0` using `eB 0`.
+
+Establish `b₁ : J (U.gt e).pG.left = jT 1` using `(congrArg J (Category.comp_id _).symm).trans (eB 1)`. Rewrite `H` using `[iG, iB, o, g₀, b₀, Over.id_left, Category.id_comp, Category.id_comp, g₁, b₁, val_of _ _ _ _ jT eB, val_of _ _ _ _ jS eG]`. Use `(map_mul _ _ _).trans (Eq.trans ?_ (map_mul _ _ _).symm)` and prove the remaining obligations. Conclude with `(congrArg₂ (· * ·) (gm_res_pull _ h₁ hy _) (gm_res _ y h₂ hy _)).trans (H.trans (congrArg₂ (· * ·) (gm_res_pull _ h₃ hy _) (gm_res_pull _ h₄ hy _)).symm)`.
+-/
 theorem w_even (e : ℕ) (jS : Fin 2 → U.P.L.L.ι) (jT : Fin 2 → D.P.L.ι)
     (cS : LB.Coh U.P.L.L (fun k => (fstG I e G).left ≫ (![(ι[G]).left, 𝟙 G.left] : Fin 2 → _) k) jS)
     (cT : LB.Coh D.P.L
@@ -134,6 +160,13 @@ theorem w_even (e : ℕ) (jS : Fin 2 → U.P.L.L.ι) (jT : Fin 2 → D.P.L.ι)
   exact (congrArg₂ (· * ·) (gm_res_pull _ h₁ hy _) (gm_res _ y h₂ hy _)).trans
     (H.trans (congrArg₂ (· * ·) (gm_res_pull _ h₃ hy _) (gm_res_pull _ h₄ hy _)).symm)
 
+/- English proof (translation)
+Use `unit_ext fun y hy => ?_` and prove the remaining obligations. Take `⟨JG, hJG, eG⟩` from `exists_good U.P.L.L U.P.L.isLB y _ jL cL (fun k => Set.mem_iInter.1 (hG hy) k)`. Take `⟨J, hJ, eB⟩` from `exists_good D.P.L D.P.isLB y _ jM cM (fun k => Set.mem_iInter.1 (hB hy) k)`. Take `⟨h, hh⟩ : ∃ h : (T.left ⟶ (thickObj R I e G).left) → (T.left.presheaf.stalk y)ˣ, ∀ q, h q = gw (U.w e) q y (J (q ≫ (U.gt e).pG.left)) (fun _ => JG (q ≫ (fstG I e G).left))` from `⟨_, fun _ => rfl⟩`. Establish `H` using `(U.w_vals e T y JG J hJG hJ (fun a => h a.left) (fun _ => hh _)).2.2 (x 0) (x 1) (x 2)`.
+
+Establish `P` using `prod_cub (x 0) (x 1) (x 2) h`. Establish `Q : ∀ k : thK, gm (𝟙 T.left) y V (res (hw k) (pullU (psum (thickObj R I e G) x k.down).left _ ((U.w e).s (fun _ => jM k, fun _ => jL k)))) = h ((lift (x 0) (lift (x 1) (x 2))).left ≫ thφ (thickObj R I e G) (x3 _) k)` using `fun k => by`. Establish `g : JG ((psum (thickObj R I e G) x k.down).left ≫ (fstG I e G).left) = jL k` using `(congrArg JG (cube_left (fstHom I e G T) x k).symm).trans (eG k)`. Establish `b : J ((psum (thickObj R I e G) x k.down).left ≫ (U.gt e).pG.left) = jM k` using `(congrArg J (cube_left (projHom (U.gt e) T) x k).symm).trans (eB k)`. Use `(gm_res_pull _ (hw k) hy _).trans (Eq.trans ?_ (congrArg h (cube_left (MonoidHom.id _) x k)).symm)` and prove the remaining obligations.
+
+Conclude with `((hh _).trans (congrArg₂ (fun j l => gw (U.w e) (psum (thickObj R I e G) x k.down).left y j (fun _ => l)) b g)).symm`. Establish `a` using `val_of (L := D.P.L) (φ := thφ D.P.A (x3 D.P.A)) (ε := thε) D.cub.t _ y J jM eB`. Establish `b` using `val_of (L := U.P.L.L) (φ := thφ G (x3 G)) (ε := thε) U.P.c.t _ y JG jL eG`. Use `(gm_res_pull _ hB hy _).trans (Eq.trans ?_ ((map_mul _ _ _).trans (congrArg₂ (· * ·) (((map_prod _ _ _).trans (Finset.prod_congr rfl fun k _ => (map_zpow _ _ _).trans (congrArg (· ^ thε k) (Q k)))).trans P) (gm_res_pull _ hG hy _))).symm)` and prove the remaining obligations. Conclude with `a.symm.trans ((cub_alg' H).trans (congrArg₂ (· * ·) rfl b))`.
+-/
 theorem w_cub (e : ℕ) (T : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))))
     (x : Fin 3 → (T ⟶ thickObj R I e G)) (jL : thK → U.P.L.L.ι) (jM : thK → D.P.L.ι)
     (cL : LB.Coh U.P.L.L (fun k => (lift ((Over.map (thick R I e)).map (x 0) ≫ fstG I e G)
@@ -182,6 +215,9 @@ theorem w_cub (e : ℕ) (T : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))))
       (congrArg (· ^ thε k) (Q k)))).trans P) (gm_res_pull _ hG hy _))).symm)
   exact a.symm.trans ((cub_alg' H).trans (congrArg₂ (· * ·) rfl b))
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ U` and use `⟨{ smooth := U.semi.smooth separated := U.semi.separated gen := U.gen gen_hom := U.gen_hom LG := U.P.L cubG := U.P.c symG := U.P.sym symG_gen := U.P.sym_gen symG_rig := U.P.sym_rig ext := ⟨U.wA, U.wA_gen⟩ gt := U.gt gt_q := U.gt_q gt_t := U.gt_t w := U.w w_gen := U.w_gen w_rig := …`.
+-/
 theorem exists_match : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegData R I) (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (U : PreU I D.toPre A G), ∃ U' : UnifPre I D A G, Match U U' :=
   fun _ _ _ _ _ _ _ _ _ U =>
     ⟨{ smooth := U.semi.smooth

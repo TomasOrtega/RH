@@ -8,6 +8,19 @@ open scoped TensorProduct Classical
 
 namespace GlobalTheory.TorCls
 
+/- English proof (translation)
+Introduce `p _ G L β x t hx y r₁`. Use `letI : TopologicalSpace (AfP p ⊗[ℚ] G.C) := moduleTopology (AfP p) (AfP p ⊗[ℚ] G.C)`. Use `haveI : IsModuleTopology (AfP p) (AfP p ⊗[ℚ] G.C) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AfP p ⊗[ℚ] G.C) := IsModuleTopology.isTopologicalRing (AfP p) (AfP p ⊗[ℚ] G.C)`. Set `K' : Set G.GAf` to `(fun g : G.GAf => r₁⁻¹ * g * r₁) ⁻¹' (L.K : Set G.GAf)`.
+
+Establish `hK'o : IsOpen K'` using `L.K.isOpen.preimage ((continuous_const.mul continuous_id).mul continuous_const)`. Take `⟨V, hVo, hV⟩` from `isOpen_induced_iff.1 hK'o`. Use `⟨psiAway G x ⁻¹' V, hVo.preimage ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show Continuous (fun z : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ => ((x * z.1 * x⁻¹, z.2) : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ))`. Conclude with `((continuous_const.mul continuous_fst).mul continuous_const).prodMk continuous_snd`.
+
+Establish `h1 : (1 : G.GAf) ∈ K'` using `by show r₁⁻¹ * 1 * r₁ ∈ (L.K : Set G.GAf)`. Rewrite using `[mul_one, inv_mul_cancel]`. Conclude with `L.K.one_mem`. Rewrite `h1` using `[← hV]`. Use `show psiAway G x 1 ∈ V`.
+
+Rewrite using `[map_one]`. Conclude with `h1`. Introduce `z hz hT`. Establish `hw : psiAway G x z ∈ UPts G.star (AfP p)`. Rewrite using `[psiAway_apply]`.
+
+Conclude with `conj_mul_star (starT G.star (AfP p)) (inC G (AfP p) (β : G.C)) x z.1 t (z.2 : AfP p) hx hT.1`. Set `g : G.GAf` to `⟨psiAway G x z, hw⟩`. Establish `hg : g ∈ K'`. Rewrite using `[← hV]`. Conclude with `hz`.
+
+Use `⟨r₁⁻¹ * g * r₁, hg, ?_⟩` and prove the remaining obligations. Establish `: r₁ * (r₁⁻¹ * g * r₁) * r₁⁻¹ = g` using `by group`. Rewrite using `[this]`.
+-/
 theorem exists_open_psiAway_mem_conj_level : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (L : G.Level) (β : G.Cˣ)
     (x : (AfP p ⊗[ℚ] G.C)ˣ) (t : (AfP p)ˣ) (hx : Triv G (AfP p) β x t) (y : G.C) (r₁ : G.GAf),
     letI : TopologicalSpace (AfP p ⊗[ℚ] G.C) := moduleTopology (AfP p) (AfP p ⊗[ℚ] G.C);

@@ -20,6 +20,17 @@ noncomputable section
 
 namespace GlobalTheory.IdemCharLift
 
+/- English proof (translation)
+Use `choose L hL using hlift`. Establish `key : ∀ m m', (∀ i ∈ Q, R i m = R i m') → χ m = χ m'`. Introduce `m m' h`. Establish `h1` using `hker (m - m') (fun i hi => by rw [map_sub, h i hi, sub_self])`. Combine the equalities or inequalities in the displayed calculation.
+
+Set `ψP : ∀ i, AddChar (k i) ℂ` to `fun i => { toFun := fun a => χ (L (Pi.single i a)) map_zero_eq_one' := by`. Rewrite using `[← AddChar.map_zero_eq_one χ]`. Use `key _ _ fun j hj => ?_` and prove the remaining obligations. Rewrite using `[hL _ j hj, map_zero, Pi.single_zero, Pi.zero_apply]`. Use the proof step `map_add_eq_mul' := fun a b => by`.
+
+Rewrite using `[← AddChar.map_add_eq_mul]`. Use `key _ _ fun j hj => ?_` and prove the remaining obligations. Rewrite using `[hL _ j hj, map_add, hL _ j hj, hL _ j hj, Pi.single_add, Pi.add_apply] }`. Use `⟨ψP, fun m => ?_⟩` and prove the remaining obligations. Establish `hs : χ m = χ (∑ i ∈ Q, L (Pi.single i (R i m)))`.
+
+Use `key _ _ fun j hj => ?_` and prove the remaining obligations. Rewrite using `[map_sum, Finset.sum_congr rfl (fun i _ => hL (Pi.single i (R i m)) j hj), Finset.sum_eq_single j (fun i _ hij => Pi.single_eq_of_ne (Ne.symm hij) _) (fun h => absurd hj h), Pi.single_eq_same]`. Establish `hprod : ∀ (s : Finset ι) (f : ι → M), χ (∑ i ∈ s, f i) = ∏ i ∈ s, χ (f i)`. Introduce `s f`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_empty, Finset.prod_empty, AddChar.map_zero_eq_one]`. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha, AddChar.map_add_eq_mul, ih]`. Rewrite using `[hs, hprod]`. Both sides reduce to the same expression.
+-/
 theorem exists_factor {M ι : Type} [AddCommGroup M] (k : ι → Type) [∀ i, AddCommGroup (k i)]
     (χ : AddChar M ℂ) (Q : Finset ι) (R : ∀ i, M →+ k i)
     (hker : ∀ m, (∀ i ∈ Q, R i m = 0) → χ m = 1)
@@ -79,6 +90,11 @@ def resG (D : D7) (e : AE D) (ϖ : 𝓞 D.host.E) (PP : Pl D.host.E) : supG D e 
 def chiA (D : D7) (ψ : AddChar (AF D.host.F) ℂ) : AddChar (AE D) ℂ :=
   ψ.compAddMonoidHom ((Algebra.trace (AF D.host.F) (AE D)).toAddMonoidHom.comp (AddMonoidHom.mulLeft (incA D D.host.xi0)))
 
+/- English proof (translation)
+Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, RingHom.map_zero _⟩`. Consider the case `add x y hx hy`. Take `⟨a, rfl⟩` from `hx`.
+
+Take `⟨b, rfl⟩` from `hy`. Conclude with `⟨a + b, RingHom.map_add _ _ _⟩`. Consider the case `tmul x a => exact ⟨pairA D.host.F 0 a ⊗ₜ[D.host.F] x, rfl⟩`.
+-/
 theorem toEAf_surj (D : D7) : Function.Surjective (toEAf D) := by
   intro z
   induction z using TensorProduct.induction_on with
@@ -93,6 +109,33 @@ end GlobalTheory.IdemCharLift
 
 namespace GlobalTheory.IdemCharLift
 
+/- English proof (translation)
+Introduce `D ψ Q e he ϖ hϖ0 hϖ H`. Establish `hee : e * e = e` using `GlobalTheory.PlaceDatum.idemSum_mul_self he`. Establish `heI : toEAf D e ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `GlobalTheory.LatHalfInt.toEAf_mem_of_finPart (GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by rw [← RingHom.map_mul, hee]))`. Take `⟨⟨es, hes, hsum⟩, hc⟩` from `he`. Establish `hc' : (∑ PP ∈ Q, es PP) * cA D (∑ PP ∈ Q, es PP) = 0` using `hsum ▸ hc`.
+
+Establish `hϖE : (ϖ : D.host.E) ≠ 0` using `by exact_mod_cast hϖ0`. Establish `hinv : incA D ((ϖ : D.host.E)⁻¹) * incA D (ϖ : D.host.E) = 1`. Rewrite using `[← map_mul, inv_mul_cancel₀ hϖE, map_one]`. Establish `hdiv : ∀ m : supG D e ϖ, (toEAf D (m : AE D) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E ↔ ∀ PP ∈ Q, resG D e ϖ PP m = 0)`. Introduce `m`.
+
+Establish `h1` using `GlobalTheory.T.idempotentSum_integral_div_uniformisers_iff_reduction_zero D Q es (fun _ => ϖ) hes hc' (fun PP hP => hϖ PP hP) (toEAf D (incA D (ϖ : D.host.E) * m)) m.2.2 (by rw [← hsum, ← map_mul, ← mul_assoc, mul_comm e, mul_assoc, m.2.1])`. Establish `h2 : toEAf D (∑ PP ∈ Q, es PP * incA D ((ϖ : D.host.E)⁻¹)) * toEAf D (incA D (ϖ : D.host.E) * m) = toEAf D m`. Rewrite using `[← Finset.sum_mul, ← hsum, ← map_mul]`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite `h1` using `[h2]`. Conclude with `h1`. Establish `hker : ∀ m : supG D e ϖ, (∀ PP ∈ Q, resG D e ϖ PP m = 0) → ((chiA D ψ).compAddMonoidHom (supG D e ϖ).subtype) m = 1`. Introduce `m hm`. Establish `h1` using `(H m m.2.1).1 ((hdiv m).2 hm) e hee heI`.
+
+Rewrite `h1` using `[mul_comm (m : AE D) e, m.2.1]`. Conclude with `h1`. Establish `hlift : ∀ Y : ∀ PP : Pl D.host.E, kP PP, ∃ m : supG D e ϖ, ∀ PP ∈ Q, resG D e ϖ PP m = Y PP`. Introduce `Y`. Take `⟨N, hN, hNe, hNY⟩` from `GlobalTheory.T.exists_integral_lift_residues_idempotentSum D Q es hes hc' Y`.
+
+Take `⟨w, hw⟩` from `toEAf_surj D N`. Establish `hm1 : e * (e * incA D ((ϖ : D.host.E)⁻¹) * w) = e * incA D ((ϖ : D.host.E)⁻¹) * w`. Rewrite using `[← mul_assoc, ← mul_assoc, hee]`. Establish `hm0 : incA D (ϖ : D.host.E) * (e * incA D ((ϖ : D.host.E)⁻¹) * w) = e * w`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hm2 : toEAf D (incA D (ϖ : D.host.E) * (e * incA D ((ϖ : D.host.E)⁻¹) * w)) = N`. Rewrite using `[hm0, map_mul, hw, hsum]`. Conclude with `hNe`. Use `⟨⟨_, hm1, hm2 ▸ hN⟩, fun PP hP => ?_⟩` and prove the remaining obligations. Rewrite using `[← hNY PP hP]`.
+
+Use `show resS D.host.F PP ⟨_, _⟩ = resS D.host.F PP ⟨N, hN⟩`. Conclude with `congrArg _ (Subtype.ext hm2)`. Take `⟨ψP, hψP⟩` from `exists_factor (fun PP : Pl D.host.E => kP PP) ((chiA D ψ).compAddMonoidHom (supG D e ϖ).subtype) Q (resG D e ϖ) hker hlift`. Use `⟨ψP, fun PP hP => ?_, fun Z hZ h => ?_⟩` and prove the remaining obligations. Use `haveI := PP.isMaximal`.
+
+Use `letI := Ideal.Quotient.field PP.asIdeal`. Use `AddChar.IsPrimitive.of_ne_one fun h1 => ?_` and prove the remaining obligations. Take `⟨m1, hm1⟩` from `hlift (Pi.single PP 1)`. Establish `hnI : toEAf D (m1 : AE D) ∉ Formalism.L2.Herm.intAf D.host.F D.host.E` using `fun hI => by`. Establish `h3` using `(hdiv m1).1 hI PP hP`.
+
+Rewrite `h3` using `[hm1 PP hP, Pi.single_eq_same]`. Conclude with `one_ne_zero h3`. Choose the witnesses or unpack the hypotheses as in `⟨Z', hZ'e, hZ'I, hne⟩ : ∃ Z' : AE D, e * Z' = Z' ∧ toEAf D Z' ∈ Formalism.L2.Herm.intAf D.host.F D.host.E ∧ ψ (Algebra.trace (AF D.host.F) (AE D) (incA D D.host.xi0 * ((m1 : AE D) * Z'))) ≠ 1 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+
+Conclude with `hnI ((H m1 m1.2.1).2 hcon)`. Set `m2 : supG D e ϖ` to `⟨(m1 : AE D) * Z', by rw [← mul_assoc, m1.2.1], by rw [← mul_assoc, map_mul]; exact mul_mem m1.2.2 hZ'I⟩`. Establish `hres : ∀ QQ : Pl D.host.E, resG D e ϖ QQ m2 = resG D e ϖ QQ m1 * resS D.host.F QQ ⟨toEAf D Z', hZ'I⟩`. Introduce `QQ`. Use `show resS D.host.F QQ ⟨_, _⟩ = resS D.host.F QQ ⟨_, _⟩ * resS D.host.F QQ ⟨_, _⟩`.
+
+Rewrite using `[← map_mul]`. Conclude with `congrArg _ (Subtype.ext (by show toEAf D (incA D (ϖ : D.host.E) * ((m1 : AE D) * Z')) = toEAf D (incA D (ϖ : D.host.E) * m1) * toEAf D Z'`. Rewrite using `[← map_mul, mul_assoc]))`. Establish `h2` using `hψP m2`. Rewrite using `[Finset.prod_eq_single PP (fun QQ hQ hQP => by`.
+
+Rewrite using `[hres, hm1 QQ hQ, Pi.single_eq_of_ne hQP, zero_mul, AddChar.map_zero_eq_one])`. Use the proof step `(fun h => absurd hP h), h1, AddChar.one_apply] at h2`. Conclude with `hne h2`. Conclude with `(hψP ⟨Z, hZ, h⟩).trans (Finset.prod_attach Q (fun PP => ψP PP (resG D e ϖ PP ⟨Z, hZ, h⟩))).symm`.
+-/
 theorem factor_prim : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (Q : Finset (Pl D.host.E)) (e : AE D), IsIdemSum e Q → ∀ ϖ : 𝓞 D.host.E, ϖ ≠ 0 → (∀ PP ∈ Q, ϖ ∈ PP.asIdeal ∧ ϖ ∉ PP.asIdeal ^ 2) → (∀ Z : AE D, e * Z = Z → (toEAf D Z ∈ Formalism.L2.Herm.intAf D.host.F D.host.E ↔ ∀ Z' : AE D, e * Z' = Z' → toEAf D Z' ∈ Formalism.L2.Herm.intAf D.host.F D.host.E → ψ (Algebra.trace (AF D.host.F) (AE D) (incA D D.host.xi0 * (Z * Z'))) = 1)) → ∃ ψP : ∀ PP : Pl D.host.E, AddChar (kP PP) ℂ, (∀ PP ∈ Q, (ψP PP).IsPrimitive) ∧ ∀ Z : AE D, e * Z = Z → ∀ h : toEAf D (incA D (ϖ : D.host.E) * Z) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E, ψ (Algebra.trace (AF D.host.F) (AE D) (incA D D.host.xi0 * Z)) = ∏ PP ∈ Q.attach, ψP PP.1 (resS D.host.F PP.1 ⟨toEAf D (incA D (ϖ : D.host.E) * Z), h⟩) := by
   intro D ψ Q e he ϖ hϖ0 hϖ H
   have hee : e * e = e := GlobalTheory.PlaceDatum.idemSum_mul_self he

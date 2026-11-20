@@ -9,6 +9,23 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 attribute [-instance] UpperTheory.V.Z.Sym.Glob.rpMul UpperTheory.V.Z.Sym.Glob.rpInv
 
+/- English proof (translation)
+Introduce `L _ _ _ B y m₀ hm₀`. Take `⟨N₁, hN₁, h₁⟩` from `den_DA y`. Take `⟨N₂, hN₂, h₂⟩` from `den_DA y⁻¹`. Establish `hm : m₀ * (N₁ * N₂) ≠ 0` using `mul_ne_zero hm₀ (mul_ne_zero hN₁ hN₂)`. Use `⟨m₀ * (N₁ * N₂), hm, fun g v hg i j => ?_⟩` and prove the remaining obligations.
+
+Generalize the expression as in `hmm : m₀ * (N₁ * N₂) = m at hm hg`. Use `haveI : CharZero (Kv v) := charZero_of_injective_algebraMap (algebraMap (Lp L) (Kv v)).injective`. Establish `hmK : (m : Kv v) ≠ 0` using `Nat.cast_ne_zero.2 hm`. Establish `hinv : (m : Lsq (Kv v) (cv v B.Δ)) * algebraMap (Kv v) (Lsq (Kv v) (cv v B.Δ)) (m : Kv v)⁻¹ = 1`. Rewrite using `[← map_natCast (algebraMap (Kv v) (Lsq (Kv v) (cv v B.Δ))), ← map_mul, mul_inv_cancel₀ hmK, map_one]`.
+
+Establish `hE : ∀ k l, ∃ b, IsIntegral (Ov v) b ∧ (mt ((g : DA B.Δ).1 v) - 1) k l = (m : Lsq (Kv v) (cv v B.Δ)) * b`. Introduce `k l`. Use `⟨algebraMap (Kv v) _ (m : Kv v)⁻¹ * (mt ((g : DA B.Δ).1 v) - 1) k l, ?_, ?_⟩` and prove the remaining obligations. Use `(B.ρ_int v _).2 fun w h => ?_` and prove the remaining obligations. Substitute `h` using the available equality.
+
+Take `⟨a, ha, e⟩` from `hg w rfl k l`. Rewrite `e` using `[B.bS_loc]`. Establish `e2 : B.ρ _ w rfl ((mt ((g : DA B.Δ).1 (un w)) - 1) k l) = (m : Kw w) * a`. Rewrite using `[← e]`. Simplify using `[Matrix.sub_apply, Matrix.one_apply, apply_ite (B.ρ _ w rfl)]`.
+
+Establish `e3 : B.ρ _ w rfl (algebraMap (Kv (un w)) _ (m : Kv (un w))⁻¹) * (m : Kw w) = 1`. Rewrite using `[← map_natCast (B.ρ _ w rfl), ← map_mul, mul_comm, hinv, map_one]`. Rewrite using `[map_mul, e2, ← mul_assoc, e3, one_mul]`. Conclude with `ha`. Rewrite using `[← mul_assoc, hinv, one_mul]`.
+
+Use `choose E hE hE' using hE`. Establish `hAB : mt ((y⁻¹ : DA B.Δ).1 v) * mt (y.1 v) = 1`. Establish `h : (y⁻¹ : DA B.Δ).1 v * y.1 v = 1` using `inv_mul_cancel (y.1 v)`. Conclude with `congrArg Glob.mt h`. Establish `hprod : mt ((y⁻¹ * g * y : DA B.Δ).1 v) = mt ((y⁻¹ : DA B.Δ).1 v) * mt ((g : DA B.Δ).1 v) * mt (y.1 v)` using `rfl`.
+
+Use `⟨∑ k, ∑ l, ((N₂ : Lsq (Kv v) (cv v B.Δ)) * mt ((y⁻¹ : DA B.Δ).1 v) i k) * E k l * ((N₁ : Lsq (Kv v) (cv v B.Δ)) * mt (y.1 v) l j), IsIntegral.sum _ fun k _ => IsIntegral.sum _ fun l _ => ((h₂ v i k).mul (hE k l)).mul (h₁ v l j), ?_⟩` and prove the remaining obligations. Establish `hsub : mt ((y⁻¹ * g * y : DA B.Δ).1 v) - 1 = mt ((y⁻¹ : DA B.Δ).1 v) * (mt ((g : DA B.Δ).1 v) - 1) * mt (y.1 v)`. Rewrite using `[hprod, mul_sub, sub_mul, mul_one, hAB]`. Rewrite using `[hsub]`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_two, hE', ← hmm]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.V.Z.Sym.Dict.Br.integral_congr_of_forall_above :
     ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (B : Bridge L), ∀ (y : DA B.Δ) (m₀ : ℕ), m₀ ≠ 0 → ∃ m : ℕ, m ≠ 0 ∧ ∀ (g : SA B.Δ) (v : Pl (Lp L)), (∀ w, un w = v → ∀ i j, ∃ a ∈ w.adicCompletionIntegers L, (mL w (B.bS g : UA L 2) - 1) i j = (m : Kw w) * a) → ∀ i j, ∃ a, IsIntegral (Ov v) a ∧ (mt ((y⁻¹ * g * y : DA B.Δ).1 v) - 1) i j = (m₀ : Lsq (Kv v) (cv v B.Δ)) * a := by
   intro L _ _ _ B y m₀ hm₀

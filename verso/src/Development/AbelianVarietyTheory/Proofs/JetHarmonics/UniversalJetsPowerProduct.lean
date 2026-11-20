@@ -16,6 +16,9 @@ namespace GlobalTheory.PowGerm.UnivPow
 
 variable {V : Type} [CommRing V]
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show Spec.map (CommRingCat.ofHom (g : B →+* C)) ≫ Spec.map (CommRingCat.ofHom (f : A →+* B)) = Spec.map (CommRingCat.ofHom ((g.comp f : A →ₐ[V] C) : A →+* C))`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem homAt_comp {A B C : Type} [CommRing A] [Algebra V A] [CommRing B] [Algebra V B] [CommRing C] [Algebra V C]
     (f : A →ₐ[V] B) (g : B →ₐ[V] C) :
     Formalism.L2.Pj.homAt (𝟙 (Sp V)) g ≫ Formalism.L2.Pj.homAt (𝟙 (Sp V)) f = Formalism.L2.Pj.homAt (𝟙 (Sp V)) (g.comp f) := by
@@ -25,6 +28,9 @@ theorem homAt_comp {A B C : Type} [CommRing A] [Algebra V A] [CommRing B] [Algeb
   rw [← Spec.map_comp]
   rfl
 
+/- English proof (translation)
+Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Conclude with `h i`.
+-/
 theorem jet_ext {κ : Type} {m : ℕ} {B : Type} [CommRing B] [Algebra V B] (f g : Jet V κ m →ₐ[V] B)
     (h : ∀ i, f (Ideal.Quotient.mk _ (MvPolynomial.X i)) = g (Ideal.Quotient.mk _ (MvPolynomial.X i))) : f = g := by
   apply Ideal.Quotient.algHom_ext
@@ -32,6 +38,9 @@ theorem jet_ext {κ : Type} {m : ℕ} {B : Type} [CommRing B] [Algebra V B] (f g
   intro i
   exact h i
 
+/- English proof (translation)
+Use `show Ideal.Quotient.mk _ (MvPolynomial.aeval (fun p : Fin 1 × Fin d => (MvPolynomial.X (i, p.2) : MvPolynomial (Fin n × Fin d) V)) (MvPolynomial.X p : MvPolynomial _ V)) = _`. Rewrite using `[MvPolynomial.aeval_X]`.
+-/
 theorem jetCopy_X {n d m : ℕ} (i : Fin n) (p : Fin 1 × Fin d) :
     (jetCopy d m i : Jet V (Fin 1 × Fin d) m →ₐ[V] Jet V (Fin n × Fin d) m) (Ideal.Quotient.mk _ (MvPolynomial.X p)) =
       Ideal.Quotient.mk _ (MvPolynomial.X (i, p.2)) := by
@@ -39,23 +48,38 @@ theorem jetCopy_X {n d m : ℕ} (i : Fin n) (p : Fin 1 × Fin d) :
     (MvPolynomial.X (i, p.2) : MvPolynomial (Fin n × Fin d) V)) (MvPolynomial.X p : MvPolynomial _ V)) = _
   rw [MvPolynomial.aeval_X]
 
+/- English proof (translation)
+Use `show MvPolynomial.aeval (fun _ : κ => (0 : V)) (MvPolynomial.X i : MvPolynomial κ V) = 0`. Rewrite using `[MvPolynomial.aeval_X]`.
+-/
 theorem jetAug_X {κ : Type} {m : ℕ} (i : κ) :
     (jetAug : Jet V κ m →ₐ[V] V) (Ideal.Quotient.mk _ (MvPolynomial.X i)) = 0 := by
   show MvPolynomial.aeval (fun _ : κ => (0 : V)) (MvPolynomial.X i : MvPolynomial κ V) = 0
   rw [MvPolynomial.aeval_X]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem jetTrunc_mk {κ : Type} {m : ℕ} (p : MvPolynomial κ V) :
     (jetTrunc : Jet V κ (m + 1) →ₐ[V] Jet V κ m) (Ideal.Quotient.mk _ p) = Ideal.Quotient.mk _ p := rfl
 
+/- English proof (translation)
+The claim follows from `pG.lim.fac _ ⟨i⟩`.
+-/
 theorem zV_pr {G G' : Over (Sp V)} [GrpObj G] [GrpObj G'] {n d : ℕ} (pG : IsPowGrp G' G n)
     (xT : ∀ m, jOG (𝟙 (Sp V)) d m 1 ⟶ G) (m : ℕ) (i : Fin n) :
     zV pG xT m ≫ pG.pr i = Formalism.L2.Pj.homAt (𝟙 (Sp V)) (jetCopy d m i) ≫ xT m :=
   pG.lim.fac _ ⟨i⟩
 
+/- English proof (translation)
+The claim follows from `pG.lim.hom_ext fun i => h i.as`.
+-/
 theorem pow_ext {G G' : Over (Sp V)} [GrpObj G] [GrpObj G'] {n : ℕ} (pG : IsPowGrp G' G n) {T : Over (Sp V)}
     (f g : T ⟶ G') (h : ∀ i, f ≫ pG.pr i = g ≫ pG.pr i) : f = g :=
   pG.lim.hom_ext fun i => h i.as
 
+/- English proof (translation)
+Use `haveI := pG.hom i`. Conclude with `MonObj.one_comp _`.
+-/
 theorem one_pr {G G' : Over (Sp V)} [GrpObj G] [GrpObj G'] {n : ℕ} (pG : IsPowGrp G' G n) {T : Over (Sp V)} (i : Fin n) :
     (1 : T ⟶ G') ≫ pG.pr i = 1 := by
   haveI := pG.hom i
@@ -66,6 +90,31 @@ end GlobalTheory.PowGerm.UnivPow
 namespace GlobalTheory.PowGerm
 open UnivPow
 
+/- English proof (translation)
+Introduce `V _ G G' _ _ n d pG xT ⟨hT, hA, hU⟩`. Use `⟨fun m => pow_ext pG _ _ fun i => ?_, fun m => pow_ext pG _ _ fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, zV_pr, zV_pr, ← hT m, ← Category.assoc, ← Category.assoc, homAt_comp, homAt_comp]`. Use `congr 2`. Apply `jet_ext` to reduce the goal to its premises.
+
+Introduce `p`. Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, jetCopy_X, jetTrunc_mk, jetTrunc_mk, jetCopy_X]`. Rewrite using `[Category.assoc, zV_pr, one_pr, ← hA m, ← Category.assoc, homAt_comp]`. Use `congr 2`. Apply `jet_ext` to reduce the goal to its premises.
+
+Introduce `p`. Rewrite using `[AlgHom.comp_apply, jetCopy_X, jetAug_X, jetAug_X]`. Introduce `A _ _ aug m hm y hy`. Establish `hi : ∀ i : Fin n, ∃! ψ : Jet V (Fin 1 × Fin d) m →ₐ[V] A, aug.comp ψ = jetAug ∧ y ≫ pG.pr i = Formalism.L2.Pj.homAt (𝟙 (Sp V)) ψ ≫ xT m` using `fun i => hU A aug m hm (y ≫ pG.pr i) (by rw [← Category.assoc, hy, one_pr])`. Use `choose ψ hψ hψu using hi`.
+
+Set `a : Fin n × Fin d → A` to `fun p => ψ p.1 (Ideal.Quotient.mk _ (MvPolynomial.X ((0 : Fin 1), p.2)))`. Establish `ha : ∀ p, aug (a p) = 0` using `fun p => by`. Use `congrArg (fun f : Jet V (Fin 1 × Fin d) m →ₐ[V] V => f (Ideal.Quotient.mk _ (MvPolynomial.X ((0 : Fin 1), p.2)))) (hψ p.1).1` as an intermediate fact. Simplify using `only [AlgHom.comp_apply, jetAug_X] at this`. Conclude with `this`.
+
+Establish `hsp : Ideal.span (Set.range fun p => (MvPolynomial.aeval a : MvPolynomial (Fin n × Fin d) V →ₐ[V] A) (MvPolynomial.X p)) ^ (m + 1) = ⊥`. Apply `le_bot_iff.1` to reduce the goal to its premises. Rewrite using `[← hm]`. Apply `Ideal.pow_right_mono` to reduce the goal to its premises. Rewrite using `[Ideal.span_le]`.
+
+Introduce and unpack `_ ⟨p, rfl⟩`. Simplify using `only [MvPolynomial.aeval_X]`. Conclude with `ha p`. Set `Ψ : Jet V (Fin n × Fin d) m →ₐ[V] A` to `liftJet (MvPolynomial.aeval a) hsp`. Establish `hΨ : ∀ p, Ψ (Ideal.Quotient.mk _ (MvPolynomial.X p)) = a p` using `fun p => by show (MvPolynomial.aeval a : MvPolynomial (Fin n × Fin d) V →ₐ[V] A) (MvPolynomial.X p) = a p`.
+
+Rewrite using `[MvPolynomial.aeval_X]`. Establish `hc : ∀ i, Ψ.comp (jetCopy d m i) = ψ i` using `fun i => by`. Apply `jet_ext` to reduce the goal to its premises. Introduce and unpack `⟨u, j⟩`. Take `rfl : u = 0` from `Subsingleton.elim _ _`.
+
+Rewrite using `[AlgHom.comp_apply, jetCopy_X, hΨ]`. Use `⟨Ψ, ⟨?_, pow_ext pG _ _ fun i => ?_⟩, ?_⟩` and prove the remaining obligations. Apply `jet_ext` to reduce the goal to its premises. Introduce `p`. Rewrite using `[AlgHom.comp_apply, hΨ, ha, jetAug_X]`.
+
+Rewrite using `[Category.assoc, zV_pr, ← Category.assoc, homAt_comp, hc]`. Conclude with `(hψ i).2`. Introduce and unpack `Φ ⟨h1, h2⟩`. Establish `hd : ∀ i, Φ.comp (jetCopy d m i) = ψ i` using `fun i => by`. Apply `hψu i` to reduce the goal to its premises.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← AlgHom.comp_assoc, h1]`. Apply `jet_ext` to reduce the goal to its premises. Introduce `p`. Rewrite using `[AlgHom.comp_apply, jetCopy_X, jetAug_X, jetAug_X]`.
+
+Rewrite using `[h2, Category.assoc, zV_pr, ← Category.assoc, homAt_comp]`. Apply `jet_ext` to reduce the goal to its premises. Introduce and unpack `⟨i, j⟩`. Rewrite using `[hΨ]`. Use `show _ = ψ i _`.
+
+Rewrite using `[← hd i, AlgHom.comp_apply, jetCopy_X]`.
+-/
 theorem univPow : UnivPowSt := by
   intro V _ G G' _ _ n d pG xT ⟨hT, hA, hU⟩
   refine ⟨fun m => pow_ext pG _ _ fun i => ?_, fun m => pow_ext pG _ _ fun i => ?_, ?_⟩

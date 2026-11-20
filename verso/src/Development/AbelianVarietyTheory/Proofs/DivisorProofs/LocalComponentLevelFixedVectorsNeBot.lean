@@ -10,6 +10,35 @@ noncomputable section
 
 namespace GlobalTheory.BCT.LocFix
 
+/- English proof (translation)
+Introduce `E _ _ _ hU n _ S hS lam K' hK' π hπ _ hne w hw σ hσ`. Take `⟨p, hp, -, f, hf0, hfm, hf⟩` from `hσ`. Take `⟨e, he⟩` from `GlobalTheory.BCT.LocCompU.exists_equiv hU n w`. Establish `hpe : ∀ x, p x = e x` using `fun x => Subtype.ext ((hp x).trans (he x).symm)`. Establish `hps : Function.Surjective p` using `fun g => ⟨e.symm g, by rw [hpe, e.apply_symm_apply]⟩`.
+
+Take `⟨r, -, -, hr⟩` from `GlobalTheory.DefU.LocRet.exists_ret E n w`. Set `π' : GlobalTheory.DefU.AutSub E n` to `⟨π, hπ⟩`. Set `F : Representation.IntertwiningMap (σ.ρ.comp p) (π'.rep.comp (locU n w).subtype)` to `⟨f.codRestrict π hfm, fun x => LinearMap.ext fun v => Subtype.ext (hf x v)⟩`. Establish `hF0 : F ≠ 0` using `fun h => hf0 (LinearMap.ext fun v => congrArg Subtype.val (DFunLike.congr_fun h v))`. Establish `hσirr` using `GlobalTheory.BCT.LocCompU.isIrreducible_comp_of_surjective σ.ρ p hps σ.irred`.
+
+Establish `htop` using `(GlobalTheory.CuspRep.CompUniq.isotypic (UA E n) (locU n w) π σ.V σ.V π'.rep (locU n w).subtype (σ.ρ.comp p) (σ.ρ.comp p) π'.isIrreducible_rep hσirr hσirr (fun g => ⟨r g, fun y => hr g y⟩) F hF0).1`. Take `⟨φ, hφ, hφ0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Establish `hφπ : φ ∈ π` using `(Submodule.mem_inf.1 hφ).1`. Establish `hφfix : φ ∈ fixed (RF E n) (globLev S K')` using `(Submodule.mem_inf.1 hφ).2`. Establish `hfixx : ∀ x : locU n w, p x ∈ K' w → RU E n (x : UA E n) φ = φ`.
+
+Introduce `x hx`. Establish `hxfin : (x : UA E n) ∈ finU E n` using `(Subgroup.mem_inf.1 x.2).1`. Establish `hy : (⟨x, hxfin⟩ : finU E n) ∈ globLev S K'`. Simplify using `only [globLev, Subgroup.mem_iInf]`. Introduce `w' hw'`.
+
+Rewrite using `[Subgroup.mem_comap, Subgroup.mem_map]`. Distinguish the cases in `hww : w' = w`. Substitute `hww` using the available equality. Conclude with `⟨p x, hx, hp x⟩`. Establish `hund : w'.under (𝓞 (maximalRealSubfield E)) ≠ w.under (𝓞 (maximalRealSubfield E))` using `fun h => hww ((hS w).unique ⟨hw', h⟩ ⟨hw, rfl⟩)`.
+
+Establish `h1 : cLoc w' (x : UA E n) = 1`. Establish `h2` using `(Subgroup.mem_inf.1 x.2).2`. Rewrite `h2` using `[Subgroup.mem_iInf]`. Conclude with `Subgroup.mem_iInf.1 (h2 w') hund`. Conclude with `⟨1, (K' w').one_mem, by simp [h1]⟩`.
+
+Establish `h3 : RF E n ⟨x, hxfin⟩ φ = φ` using `by simpa using hφfix ⟨_, hy⟩`. Conclude with `h3`. Establish `hmem : (⟨φ, hφπ⟩ : π) ∈ ⨆ F : Representation.IntertwiningMap (σ.ρ.comp p) (π'.rep.comp (locU n w).subtype), LinearMap.range F.toLinearMap`. Rewrite using `[htop]`. Discharge the goal by the elementary cases of `trivial`.
+
+Take `⟨c, hc, hsum⟩` from `(Submodule.mem_iSup_iff_exists_finsupp _ _).1 hmem`. Use `choose u hu using fun i => LinearMap.mem_range.1 (hc i)`. Set `ρK : Representation ℂ (K' w) σ.V` to `σ.ρ.comp (K' w).subtype`. Establish `hsumF : ∀ g : K' w, ∑ i ∈ c.support, (i.toLinearMap : σ.V →ₗ[ℂ] π) (ρK g (u i)) = (((1 : K' w →* ℂˣ) g : ℂˣ) : ℂ) • (⟨φ, hφπ⟩ : π)`. Introduce `g`.
+
+Establish `hpx : p (e.symm g) = g` using `by rw [hpe, e.apply_symm_apply]`. Establish `hterm : ∀ i ∈ c.support, (i.toLinearMap : σ.V →ₗ[ℂ] π) (ρK g (u i)) = π'.rep (e.symm g : UA E n) (c i)`. Introduce `i _`. Establish `h1` using `LinearMap.congr_fun (i.isIntertwining' (e.symm g)) (u i)`. Simplify using `only [LinearMap.comp_apply, MonoidHom.comp_apply, Subgroup.coe_subtype] at h1`.
+
+Rewrite `h1` using `[hpx]`. Rewrite using `[← hu i]`. Conclude with `h1`. Rewrite using `[Finset.sum_congr rfl hterm, ← map_sum]`. Establish `hs : ∑ i ∈ c.support, c i = (⟨φ, hφπ⟩ : π)` using `hsum`.
+
+Rewrite using `[hs]`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul]`. Conclude with `hfixx (e.symm g) (by rw [hpx]; exact g.2)`. Set `H : Subgroup (K' w)` to `⨅ i ∈ c.support, GlobalTheory.LocVec.stabSub ρK (u i)`.
+
+Establish `hHo : IsOpen (H : Set (K' w))`. Simplify using `only [H, Subgroup.coe_iInf]`. Use `isOpen_biInter_finset fun i _ => ?_` and prove the remaining obligations. Establish `: (GlobalTheory.LocVec.stabSub ρK (u i) : Set (K' w)) = (fun g : K' w => (g : UL n w)) ⁻¹' {x | σ.ρ x (u i) = u i}` using `rfl`. Rewrite using `[this]`.
+
+Conclude with `(σ.smooth (u i)).preimage continuous_subtype_val`. Establish `hKc` using `(GlobalTheory.BCT.LocCompU.isOpen_isCompact_KL hU n w).2`. Use `haveI : H.FiniteIndex := GlobalTheory.LocVec.finiteIndex_of_isOpen (K' w) hKc (fun g hg => (hK'.1 w).2.1 hg) H hHo`. Take `⟨v, hv0, hv⟩` from `GlobalTheory.LocVec.exists_eigen_of_sum ρK (1 : K' w →* ℂˣ) H (fun h _ => MonoidHom.mem_ker.2 rfl) c.support u (fun i hi h hh => (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hh i) hi)) (fun i => (i.toLinearMap : σ.V →ₗ[ℂ] π)) ⟨φ, hφπ⟩ (fun h => hφ0 (congrArg Subtype.val h)) hsumF`. Establish `hvmem : v ∈ fixed σ.ρ (K' w)` using `fun h => hv h`.
+
+Introduce `hb`. Rewrite `hvmem` using `[hb]`. Conclude with `hv0 ((Submodule.mem_bot ℂ).1 hvmem)`.
+-/
 theorem fixed_ne_bot : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n : ℕ, 1 ≤ n →
     ∀ (S : Set (Pl E)), IsSection S → ∀ (lam : InfinitePlace E → DomWeight n) (K' : ∀ w : Pl E, Subgroup (UL n w)),
     IsLevelFam (fun w : Pl E => MonoidHom.id (UL n w)) (KL n) K' → ∀ π : Submodule ℂ (UA E n → ℂ), IsAutRepU π →

@@ -12,6 +12,9 @@ set_option autoImplicit false
 
 namespace GlobalTheory.HSCore
 
+/- English proof (translation)
+Rewrite using `[G.mulW_apply]`. Unfold `mulPow`. Use `tw_ext (isLB_tens G.K.isLB G.isLBA) G.isLB fun c k y hy hc hk => ?_` and prove the remaining obligations. Rewrite using `[germ_mulMono _ _ _ _ _ _ _ _ _ _ hc hk, germ_mulMono _ _ _ _ _ _ _ _ _ _ hc hk, germ_mulSec _ _ _ _ _ _ _ _ _ hc hk, monoVal_mulVar, mul_comm (secGer _ _ _ _ _), mul_assoc]`.
+-/
 theorem mulPow_mulVar {K : Type} [Field K] [NumberField K] (G : Geo K) (s : Fin G.D → Fin G.N → K) {a j l : ℕ}
     (h : j + (a + 1) = l) (h' : (j + 1) + a = l) (α : MonoDeg (Fin G.D) a) (i : Fin G.D) (m : G.Sec j) :
     mulPow G s h (MonoDeg.mulVar i α) m = mulPow G s h' α (G.mulW j (s i) m) := by
@@ -21,6 +24,19 @@ theorem mulPow_mulVar {K : Type} [Field K] [NumberField K] (G : Geo K) (s : Fin 
   rw [germ_mulMono _ _ _ _ _ _ _ _ _ _ hc hk, germ_mulMono _ _ _ _ _ _ _ _ _ _ hc hk,
     germ_mulSec _ _ _ _ _ _ _ _ _ hc hk, monoVal_mulVar, mul_comm (secGer _ _ _ _ _), mul_assoc]
 
+/- English proof (translation)
+Introduce `H K _ _ G hnef hbig s hs a`. Proceed by induction on `a with`. Consider the case `zero`. Introduce `j l h _ f hf`. Take `rfl : j = l` from `h`.
+
+Establish `: Subsingleton (MonoDeg (Fin G.D) 0)` using `⟨fun α β => Subtype.ext (((Finsupp.degree_eq_zero_iff _).1 α.2).trans ((Finsupp.degree_eq_zero_iff _).1 β.2).symm)⟩`. Use `⟨fun _ => f, fun _ => hf.1, ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.sum_subsingleton _ (⟨0, rfl⟩ : MonoDeg (Fin G.D) 0)]`. Conclude with `(mulMono_zero _ _ _ _ _ f).symm`. Consider the case `succ a ih => classical`.
+
+Introduce `j l h hj f hf`. Establish `h' : (j + 1) + a = l` using `by omega`. Establish `hfa : f ∈ Fil (G.ideal s) a (G.global l)` using `Fil_anti (Nat.le_succ a) hf`. Take `⟨m, hm, e⟩` from `ih (j + 1) l h' (by omega) f hfa`. Establish `h0 : hs.sym h' (G.global l) ⟨f, hfa⟩ = 0` using `(sym_eq_zero_iff _ _ _ _ _ _ _ _ _ _ _).2 hf`.
+
+Establish `h1 : hs.sym h' (G.global l) ⟨f, hfa⟩ = fun α => hs.res (j + 1) (m α)` using `sym_sum _ _ _ _ _ _ _ _ _ _ m _ e`. Establish `hv : ∀ α, m α ∈ Fil (G.ideal s) 1 (G.global (j + 1))` using `fun α => ⟨hm α, (Res_eq_zero_iff _ _ _ _ _ _ _ _ _ _).1 (congrFun (h1.symm.trans h0) α)⟩`. Use `choose m' hm' e' using fun α => H K G hnef hbig s hs j (by omega) (m α) (hv α)`. Use `⟨fun γ => ∑ p ∈ Finset.univ.filter (fun p : MonoDeg (Fin G.D) a × Fin G.D => MonoDeg.mulVar p.2 p.1 = γ), m' p.1 p.2, fun γ => sum_mem fun p _ => hm' _ _, ?_⟩` and prove the remaining obligations. Establish `key : ∀ γ : MonoDeg (Fin G.D) (a + 1), mulPow G s h γ (∑ p ∈ Finset.univ.filter (fun p : MonoDeg (Fin G.D) a × Fin G.D => MonoDeg.mulVar p.2 p.1 = γ), m' p.1 p.2) = ∑ p ∈ Finset.univ.filter (fun p : MonoDeg (Fin G.D) a × Fin G.D => MonoDeg.mulVar p.2 p.1 = γ), mulPow G s h' p.1 ( …` using `fun γ => by`.
+
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Rewrite using `[← (Finset.mem_filter.1 hp).2, mulPow_mulVar G s h h']`. Rewrite using `[Finset.sum_congr rfl fun γ _ => key γ, Finset.sum_fiberwise, Fintype.sum_prod_type, e]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[e' α, map_sum]`.
+-/
 theorem filMono_of_kerRes : KerRes → FilMono := by
   intro H K _ _ G hnef hbig s hs a
   induction a with

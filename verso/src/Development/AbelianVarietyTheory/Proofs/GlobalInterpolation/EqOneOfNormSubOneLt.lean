@@ -2,6 +2,11 @@ import Mathlib
 
 namespace GlobalTheory.CharacterConductorBall
 
+/- English proof (translation)
+Establish `h1 : w * w - 1 = (w - 1) * (w + 1)` using `by ring`. Establish `h2 : (2 : ℝ) ≤ ‖w + 1‖ + ‖w - 1‖`. Use `norm_sub_le (w + 1) (w - 1)` as an intermediate fact. Establish `e : (w + 1) - (w - 1) = (2 : ℂ)` using `by ring`. Rewrite `this` using `[e]`.
+
+Simplify using `using this`. Rewrite using `[h1, norm_mul]`. Use polynomial arithmetic with `[norm_nonneg (w - 1)]`.
+-/
 private lemma norm_sub_one_le_norm_mul_self_sub_one (w : ℂ) (h : ‖w - 1‖ < 1 / 2) :
     3 / 2 * ‖w - 1‖ ≤ ‖w * w - 1‖ := by
   have h1 : w * w - 1 = (w - 1) * (w + 1) := by ring
@@ -13,6 +18,15 @@ private lemma norm_sub_one_le_norm_mul_self_sub_one (w : ℂ) (h : ‖w - 1‖ <
   rw [h1, norm_mul]
   nlinarith [norm_nonneg (w - 1)]
 
+/- English proof (translation)
+Establish `key : ∀ k : ℕ, ∀ x ∈ B, (3 / 2 : ℝ) ^ k * ‖ψ x - 1‖ < 1 / 2`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro x hx`. Simplify using `using hψ x hx`.
+
+Consider the case `succ k ih`. Introduce `x hx`. Establish `h2` using `ih (x + x) (hB x hx)`. Establish `h3` using `norm_sub_one_le_norm_mul_self_sub_one (ψ x) (hψ x hx)`. Rewrite `h2` using `[AddChar.map_add_eq_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Introduce `x hx`. Assume the negation of the conclusion as `hne`. Establish `hpos : 0 < ‖ψ x - 1‖` using `norm_pos_iff.2 (sub_ne_zero.2 hne)`. Take `⟨k, hk⟩` from `pow_unbounded_of_one_lt (1 / 2 / ‖ψ x - 1‖) (by norm_num : (1 : ℝ) < 3 / 2)`.
+
+Use `key k x hx` as an intermediate fact. Rewrite `hk` using `[div_lt_iff₀ hpos]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem eq_one_of_norm_sub_one_lt {A : Type} [AddMonoid A] (ψ : AddChar A ℂ) (B : Set A)
     (hB : ∀ x ∈ B, x + x ∈ B) (hψ : ∀ x ∈ B, ‖ψ x - 1‖ < 1 / 2) : ∀ x ∈ B, ψ x = 1 := by
 
@@ -36,6 +50,15 @@ theorem eq_one_of_norm_sub_one_lt {A : Type} [AddMonoid A] (ψ : AddChar A ℂ) 
   rw [div_lt_iff₀ hpos] at hk
   linarith
 
+/- English proof (translation)
+Establish `hnhds : (ψ : K → ℂ) ⁻¹' {w : ℂ | ‖w - 1‖ < 1 / 2} ∈ nhds (0 : K)`. Apply `hc.continuousAt.preimage_mem_nhds` to reduce the goal to its premises. Rewrite using `[AddChar.map_zero_eq_one]`. Conclude with `(isOpen_lt (continuous_norm.comp (continuous_id.sub continuous_const)) continuous_const).mem_nhds (by simp)`. Take `⟨γ, hγ⟩` from `Valued.mem_nhds_zero.1 hnhds`.
+
+Use `set c := MonoidWithZeroHom.ValueGroup₀.embedding γ.1 with hc_def`. Establish `hc0 : c ≠ 0`. Use `MonoidWithZeroHom.ValueGroup₀.embedding_strictMono (zero_lt_iff.2 γ.ne_zero)` as an intermediate fact. Rewrite `this` using `[map_zero]`. Conclude with `this.ne'`.
+
+Establish `hlt : ∀ y ∈ {y : K | Valued.v y < c}, ψ y = 1`. Use `eq_one_of_norm_sub_one_lt ψ _ (fun y hy => ?_) (fun y hy => ?_)` and prove the remaining obligations. Conclude with `lt_of_le_of_lt ((Valued.v.map_add y y).trans (max_self _).le) hy`. Apply `hγ` to reduce the goal to its premises. Simplify `hy` using `[Valuation.restrict_lt_iff_lt_embedding]`.
+
+Use `⟨WithZero.log c - 1, fun x hx => hlt x ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_ball_trivial {K : Type} [Field K] [Valued K (WithZero (Multiplicative ℤ))]
     (ψ : AddChar K ℂ) (hc : Continuous (ψ : K → ℂ)) :
     ∃ m : ℤ, ∀ x : K, Valued.v x ≤ WithZero.exp m → ψ x = 1 := by
@@ -62,6 +85,13 @@ theorem exists_ball_trivial {K : Type} [Field K] [Valued K (WithZero (Multiplica
     _ < WithZero.exp (WithZero.log c) := WithZero.exp_lt_exp.2 (by omega)
     _ = c := WithZero.exp_log hc0
 
+/- English proof (translation)
+Introduce `s hs`. Distinguish the cases in `h0 : t = 0`. Substitute `h0` using the available equality. Establish `: t' = 0` using `by simpa using hle`. Simplify using `[this, AddChar.map_zero_eq_one]`.
+
+Establish `hv : Valued.v t ≠ 0` using `by simpa using h0`. Establish `e : t' * s = t * (t' * t⁻¹ * s)` using `by field_simp`. Rewrite using `[e]`. Apply `ht` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, map_inv₀]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma addChar_trivial_mul_of_valuation_le {K : Type} [Field K] [Valued K (WithZero (Multiplicative ℤ))]
     (ψ : AddChar K ℂ) {t t' : K}
     (ht : ∀ s : K, Valued.v s ≤ (1 : WithZero (Multiplicative ℤ)) → ψ (t * s) = 1)
@@ -81,6 +111,21 @@ private lemma addChar_trivial_mul_of_valuation_le {K : Type} [Field K] [Valued K
           gcongr
       _ = 1 := by rw [mul_one, mul_inv_cancel₀ hv]
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `exists_ball_trivial ψ hc`. Take `⟨t₀, ht₀⟩` from `hψ`. Establish `ht₀0 : t₀ ≠ 0` using `by rintro rfl; simp [AddChar.map_zero_eq_one] at ht₀`. Establish `hnot : ¬ ∀ s : K, Valued.v s ≤ (1 : WithZero (Multiplicative ℤ)) → ψ (t₀ * s) = 1` using `fun h => ht₀ (by simpa using h 1 (by simp))`. Establish `hmem : ∀ t : K, Valued.v t ≤ WithZero.exp m → ∀ s : K, Valued.v s ≤ (1 : WithZero (Multiplicative ℤ)) → ψ (t * s) = 1`.
+
+Introduce `t ht s hs`. Apply `hm` to reduce the goal to its premises. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hbdd : ∃ b : ℤ, ∀ k : ℤ, (∀ t : K, Valued.v t ≤ WithZero.exp k → ∀ s : K, Valued.v s ≤ (1 : WithZero (Multiplicative ℤ)) → ψ (t * s) = 1) → k ≤ b`.
+
+Use `⟨WithZero.log (Valued.v t₀), fun k hk => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Apply `hnot` to reduce the goal to its premises. Apply `hk` to reduce the goal to its premises. Establish `hv : Valued.v t₀ ≠ 0` using `by simpa using ht₀0`.
+
+Rewrite using `[← WithZero.exp_log hv]`. Conclude with `WithZero.exp_le_exp.2 (by omega)`. Take `⟨n, hn, hmax⟩` from `Int.exists_greatest_of_bdd hbdd ⟨m, hmem⟩`. Use `⟨n, fun t => ⟨fun hS => ?_, fun ht => hn t ht⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hgt`.
+
+Rewrite `hgt` using `[not_le]`. Establish `hv : Valued.v t ≠ 0` using `ne_of_gt (lt_trans WithZero.exp_pos hgt)`. Establish `hj : WithZero.log (Valued.v t) ≤ n`. Apply `hmax` to reduce the goal to its premises. Introduce `t' ht'`.
+
+Rewrite `ht'` using `[WithZero.exp_log hv]`. Conclude with `addChar_trivial_mul_of_valuation_le ψ hS ht'`. Establish `: Valued.v t ≤ WithZero.exp n`. Rewrite using `[← WithZero.exp_log hv]`. Conclude with `WithZero.exp_le_exp.2 hj`.
+
+Conclude with `absurd hgt (not_lt.2 this)`.
+-/
 theorem exists_conductor {K : Type} [Field K] [Valued K (WithZero (Multiplicative ℤ))]
     (ψ : AddChar K ℂ) (hc : Continuous (ψ : K → ℂ)) (hψ : ∃ t : K, ψ t ≠ 1) :
     ∃ n : ℤ, ∀ t : K,

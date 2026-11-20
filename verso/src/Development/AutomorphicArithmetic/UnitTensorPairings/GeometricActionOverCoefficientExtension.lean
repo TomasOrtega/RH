@@ -21,6 +21,15 @@ private def RhoP {Rl L G : Type} [Field L] {n : ℕ} (P : Rl → Prop) (act : G 
   ((∀ g f, P f → P (act g f)) → ∀ g (f : Subtype P), ∃ hf : P (act g f.1), e ⟨act g f.1, hf⟩ = ρ g (e f)) ∧
     (¬ (∀ g f, P f → P (act g f)) → ∀ g, ρ g = 1)
 
+/- English proof (translation)
+Establish `hc : ∀ (x : Fin n → L) (x' : Fin n → L'), (∀ k, x' k = ι (x k)) → CrdOver ι x x'` using `fun x x' hx => ⟨rfl, fun k k' hk => by obtain rfl : k = k' := Fin.ext hk; exact hx k⟩`. Use `⟨fun hk g f => ?_, fun hk g => ?_⟩` and prove the remaining obligations. Take `⟨hf, h2⟩` from `h.1 hk g f`. Use `⟨hf, funext fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[he, h2]`.
+
+Conclude with `((hρ g _ _ (hc _ _ (he f))).2 k k rfl).symm`. Establish `h1` using `h.2 hk g`. Use `LinearMap.pi_ext' fun j => LinearMap.ext_ring ?_` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Establish `h3` using `(hρ g (Pi.single j 1) (Pi.single j 1) (hc _ _ fun k => by`.
+
+Distinguish the cases in `hjk : k = j`. Substitute `hjk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne hjk])).2 k k rfl`. Simplify using `only [LinearMap.comp_apply, LinearMap.single_apply, Module.End.one_apply]`.
+
+Rewrite using `[h3, h1, Module.End.one_apply]`. Distinguish the cases in `hjk : k = j`. Substitute `hjk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne hjk]`.
+-/
 private theorem rhoP_move {Rl L L' G : Type} [Field L] [Field L'] {n : ℕ} (P : Rl → Prop) (act : G → Rl → Rl)
     (e : Subtype P → Fin n → L) (e' : Subtype P → Fin n → L')
     (ρ : G → (Fin n → L) →ₗ[L] (Fin n → L)) (ρ' : G → (Fin n → L') →ₗ[L'] (Fin n → L')) (ι : L →+* L')
@@ -47,6 +56,9 @@ private theorem rhoP_move {Rl L L' G : Type} [Field L] [Field L'] {n : ℕ} (P :
     · subst hjk; simp
     · simp [Pi.single_eq_of_ne hjk]
 
+/- English proof (translation)
+Substitute `ha hm hG hn` using the available equality. Consider the cases of `hi`. Consider the cases of `hl`. Conclude with `rhoP_move _ _ e e' ρ ρ' ι (fun φ k => emb'.injective ((he φ φ HEq.rfl k k rfl).trans (hι _).symm)) (fun g => hρ g g HEq.rfl) h`.
+-/
 private theorem rhoP_core {D : D7} (T : CoreJ D) (i : Fin D.R.m)
     {a a' : (D.host.E →+* ℂ) × ℕ → ℕ} (ha : a' = a) {m m' : ℕ} (hm : m' = m)
     {G G' : Type} [iG : Group G] [iG' : Group G'] (hG : G' = G) (hi : HEq iG' iG)
@@ -65,6 +77,9 @@ private theorem rhoP_core {D : D7} (T : CoreJ D) (i : Fin D.R.m)
   exact rhoP_move _ _ e e' ρ ρ' ι (fun φ k => emb'.injective ((he φ φ HEq.rfl k k rfl).trans (hι _).symm))
     (fun g => hρ g g HEq.rfl) h
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 private theorem rhoGeo_iff {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
     {T : CoreJ D} [Algebra T.Q.c.F D.what₂.LL] {R : RealDat D A T.Q.c.F} {κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)}
     {v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec} (fw : FWTie T R κ v₀)
@@ -77,6 +92,23 @@ end UpperTheory.RhoMove
 end
 
 open UpperTheory.RhoMove in
+/- English proof (translation)
+Introduce `B B' f f' T T' w w' Z Z' hX hX' Wt Wt' z hE hpx core' alg' halg' hcore Xg tr R' cG' hP hRS κ' hκ v₀' fw' hcrd O' hO`. Take `⟨h1, -, -, hR⟩` from `hE`. Establish `hι` using `enlEmb_spec hR`. Break down `B' with ⟨P'⟩` into its components or cases. Express the relevant statement in the definitionally equal form `P' = B.toPre at h1`.
+
+Substitute `h1` using the available equality. Establish `hpx' : w'.px = w.px` using `eq_of_heq hpx`. Establish `hG : Gc _ w'.px = Gc B w.px` using `by rw [hpx']; rfl`. Establish `hi : HEq (inferInstance : Group (Gc _ w'.px)) (inferInstance : Group (Gc B w.px))` using `by rw [hpx']; exact HEq.rfl`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, hI, -⟩` from `hRS.1`.
+
+Break down `core' with ⟨⟨⟨H', l', c', Dw', Xo', eO'⟩, U', V', dict', mu', Kf', pb'⟩, cE', chiW', x₀', iota'⟩` into its components or cases. Take `⟨hH, hl, hc, hDw, hXo, hU, -, -, -, -, -, -, -, -⟩` from `hcore`. Take `rfl : H' = z.core.Q.H` from `eq_of_heq hH`. Take `rfl : l' = z.core.Q.l` from `eq_of_heq hl`. Take `rfl : c' = z.core.Q.c` from `eq_of_heq hc`.
+
+Take `rfl : Dw' = z.core.Q.Dw` from `eq_of_heq hDw`. Take `rfl : Xo' = z.core.Q.Xo` from `eq_of_heq hXo`. Take `rfl : U' = z.core.U` from `eq_of_heq hU`. Use `(rhoGeo_iff fw' O').2 fun i => ?_` and prove the remaining obligations. Establish `hk` using `hκ i i rfl`.
+
+Establish `a1` using `hk.1`. Establish `a2` using `hk.2.1`. Establish `a3` using `hk.2.2`. Establish `ha : wtA (κ' i) = wtA (z.geo.κ i)`. Establish `e1` using `eq_of_heq a1`.
+
+Establish `e2` using `eq_of_heq a2`. Unfold `wtA`. Rewrite using `[e1, e2]`. Both sides reduce to the same expression. Establish `hιc` using `(hI i i rfl).2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2 (enlEmb hR) hι`.
+
+Establish `hρ` using `hιc.2.2.2.1`. Establish `hW` using `hιc.2.1.2`. Establish `hn : z.R.nW i = R'.nW i` using `(hW 0 (Submodule.zero_mem _)).elim fun _ h => h.1`. Establish `hz` using `(@rhoGeo_iff _ _ _ _ _ _ _ _ z.alg _ _ _ z.geo.fw z.geo.O).1 z.geo.rhoGeo i`. Establish `key` using `rhoP_core z.core i ha a3 hG hi (hO i i rfl) hn _ ((by with_unfolding_all exact ((fun φ => ((fw'.e i φ : (R'.FW i).WK) : Fin (R'.nW i) → (w'.st Z').toD7.what₂.LL)) :))) _ (fun g => (R'.FW i).ρ g) (enlEmb hR) (w.st Z).toD7.what₂.embLL (w'.st Z').toD7.what₂.embLL hι ((by with_unfold …`.
+
+Conclude with `(by with_unfolding_all exact (key :))`.
+-/
 theorem UpperTheory.geometric_action_over_coefficient_extension :
     ∀ {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} (w : ColW B f T) (w' : ColW B' f' T')
         (Z : w.Lt) (Z' : w'.Lt) (hX : B.fields.Ok) (hX' : B'.fields.Ok) (Wt : Set B.places.Pl) (Wt' : Set B'.places.Pl)

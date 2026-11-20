@@ -6,6 +6,11 @@ noncomputable section
 
 namespace DensInertW
 
+/- English proof (translation)
+Unfold `valZ`. Consider the cases of `d with`. Consider the case `zero`. Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree.
+
+Consider the case `succ d`. Rewrite using `[show 2 * (d + 1 + 1) - 1 = 2 * d + 3 by omega, show d + 1 + 1 - 1 = d + 1 by omega, show 2 * (d + 1) - 1 = 2 * d + 1 by omega, show d + 1 - 1 = d by omega]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem valZ_succ (q d : ℕ) :
     valZ q (d + 1) + q * valZ q d = ((q : ℤ) + 1) * ((q : ℤ) ^ 2) ^ d := by
   unfold valZ
@@ -18,6 +23,11 @@ theorem valZ_succ (q d : ℕ) :
       show 2 * (d + 1) - 1 = 2 * d + 1 by omega, show d + 1 - 1 = d by omega]
     ring
 
+/- English proof (translation)
+Unfold `valN`. Consider the cases of `d with`. Consider the case `zero => norm_num`. Consider the case `succ d`. Rewrite using `[show d + 1 + 1 - 1 = d + 1 by omega, show d + 1 - 1 = d by omega]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem valN_succ (q d : ℕ) :
     valN q (d + 1) + q * valN q d = ((q : ℤ) + 1) * ((q : ℤ) ^ 2) ^ d := by
   unfold valN
@@ -31,6 +41,49 @@ section
 variable {K L : Type} [Field K] [Fintype K] [Field L] [Fintype L] [Algebra K L] {n : ℕ}
   {M : Matrix (Fin n) (Fin n) L}
 
+/- English proof (translation)
+Establish `hbq : (hf (Fintype.card K) M e e) ^ Fintype.card K = (hf (Fintype.card K) M e e)` using `val_fixed h2 hM e`. Set `F : L × (valPerp (Fintype.card K) M W e) → (Fin n → L)` to `fun p => p.1 • e + (p.2 : Fin n → L)`. Establish `hFe : ∀ p : L × (valPerp (Fintype.card K) M W e), hf (Fintype.card K) M (F p) e = p.1 * (hf (Fintype.card K) M e e)`. Introduce `p`. Establish `hw` using `(mem_valPerp.1 p.2.2).2`.
+
+Use `show hf (Fintype.card K) M (p.1 • e + (p.2 : Fin n → L)) e = p.1 * (hf (Fintype.card K) M e e)`. Rewrite using `[val_add_left, val_smul_left, hw, add_zero]`. Establish `hFv : ∀ p : L × (valPerp (Fintype.card K) M W e), hf (Fintype.card K) M (F p) (F p) = p.1 ^ (Fintype.card K + 1) * (hf (Fintype.card K) M e e) + hf (Fintype.card K) M (p.2 : Fin n → L) p.2`. Introduce `p`. Conclude with `val_expand h2 hM e p.2 (mem_valPerp.1 p.2.2).2 p.1`.
+
+Establish `hFinj : Function.Injective F`. Introduce and unpack `⟨l, w⟩ ⟨l', w'⟩ h`. Establish `h1 : l = l'`. Establish `h3` using `congrArg (fun v => hf (Fintype.card K) M v e) h`. Establish `h4 : l * (hf (Fintype.card K) M e e) = l' * (hf (Fintype.card K) M e e)`.
+
+Establish `e1` using `hFe (l, w)`. Establish `e2` using `hFe (l', w')`. Rewrite using `[← e1, ← e2]`. Conclude with `h3`. Conclude with `mul_right_cancel₀ hb h4`.
+
+Substitute `h1` using the available equality. Establish `h5 : (w : Fin n → L) = w'`. Establish `h6 : l • e + (w : Fin n → L) = l • e + (w' : Fin n → L)` using `h`. Conclude with `add_left_cancel h6`. Conclude with `Prod.ext rfl (Subtype.ext h5)`.
+
+Establish `hS : {v | v ∈ W ∧ hf (Fintype.card K) M v v = a} = F '' {p | p.1 ^ (Fintype.card K + 1) * (hf (Fintype.card K) M e e) + hf (Fintype.card K) M (p.2 : Fin n → L) p.2 = a}`. Use extensionality with `v`. Simplify using `only [Set.mem_setOf_eq, Set.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hvW, hva⟩`.
+
+Take `⟨l, hl⟩ : ∃ l : L, l = hf (Fintype.card K) M v e / (hf (Fintype.card K) M e e)` from `⟨_, rfl⟩`. Establish `hwP : v - l • e ∈ (valPerp (Fintype.card K) M W e)`. Use `mem_valPerp.2 ⟨W.sub_mem hvW (W.smul_mem l he), ?_⟩` and prove the remaining obligations. Rewrite using `[val_sub_left, val_smul_left, hl, div_mul_cancel₀ _ hb, sub_self]`. Establish `hFl : F (l, ⟨v - l • e, hwP⟩) = v` using `by show l • e + (v - l • e) = v`.
+
+Normalize the expressions using the abelian group laws. Use `⟨(l, ⟨v - l • e, hwP⟩), ?_, hFl⟩` and prove the remaining obligations. Establish `h3` using `hFv (l, ⟨v - l • e, hwP⟩)`. Rewrite `h3` using `[hFl, hva]`. Conclude with `h3.symm`.
+
+Introduce and unpack `⟨⟨l, w⟩, hp, rfl⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `W.add_mem (W.smul_mem l he) (mem_valPerp.1 w.2).1`. Conclude with `(hFv (l, w)).trans hp`. Establish `hcardS : ({v | v ∈ W ∧ hf (Fintype.card K) M v v = a} : Set (Fin n → L)).ncard = (Finset.univ.filter (fun p : L × (valPerp (Fintype.card K) M W e) => p.1 ^ (Fintype.card K + 1) * (hf (Fintype.card K) M e e) + hf (Fintype.card K) M (p.2 : Fin n → L) p.2 = a)).card`.
+
+Rewrite using `[hS, Set.ncard_image_of_injective _ hFinj, Set.ncard_eq_toFinset_card']`. Use `congr 1`. Use extensionality with `p`. Simplify using the standard rewrite rules. Establish `hcardP : ({v | v ∈ (valPerp (Fintype.card K) M W e) ∧ hf (Fintype.card K) M v v = a} : Set (Fin n → L)).ncard = (Finset.univ.filter (fun w : (valPerp (Fintype.card K) M W e) => hf (Fintype.card K) M (w : Fin n → L) w = a)).card`.
+
+Establish `h3 : {v | v ∈ (valPerp (Fintype.card K) M W e) ∧ hf (Fintype.card K) M v v = a} = Subtype.val '' {w : (valPerp (Fintype.card K) M W e) | hf (Fintype.card K) M (w : Fin n → L) w = a}`. Use extensionality with `v`. Simplify using `only [Set.mem_setOf_eq, Set.mem_image, Subtype.exists, exists_and_right, exists_eq_right]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hv, hva⟩`.
+
+Conclude with `⟨hv, hva⟩`. Introduce and unpack `⟨hv, hva⟩`. Conclude with `⟨hv, hva⟩`. Rewrite using `[h3, Set.ncard_image_of_injective _ Subtype.val_injective, Set.ncard_eq_toFinset_card']`. Use `congr 1`.
+
+Use extensionality with `w`. Simplify using the standard rewrite rules. Establish `hinner : ∀ w : (valPerp (Fintype.card K) M W e), (∑ l : L, if l ^ (Fintype.card K + 1) * (hf (Fintype.card K) M e e) + hf (Fintype.card K) M (w : Fin n → L) w = a then (1 : ℤ) else 0) = if hf (Fintype.card K) M (w : Fin n → L) w = a then (1 : ℤ) else (Fintype.card K + 1)`. Introduce `w`. Establish `ht : (a - hf (Fintype.card K) M (w : Fin n → L) w) ^ Fintype.card K = a - hf (Fintype.card K) M (w : Fin n → L) w`.
+
+Rewrite using `[frob_sub (K := K), ha, val_fixed h2 hM]`. Establish `hfib` using `val_fibre h2 (hf (Fintype.card K) M e e) (a - hf (Fintype.card K) M (w : Fin n → L) w) hb hbq ht`. Establish `h4 : (∑ l : L, if l ^ (Fintype.card K + 1) * (hf (Fintype.card K) M e e) + hf (Fintype.card K) M (w : Fin n → L) w = a then (1 : ℤ) else 0) = ((Finset.univ.filter (fun l : L => l ^ (Fintype.card K + 1) * (hf (Fintype.card K) M e e) = a - hf (Fintype.card K) M (w : Fin n → L) w)). …`. Rewrite using `[Finset.card_filter]`. Use `push_cast`.
+
+Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `only [eq_sub_iff_add_eq]`. Rewrite using `[h4]`. Establish `h5 : ((Finset.univ.filter (fun l : L => l ^ (Fintype.card K + 1) * (hf (Fintype.card K) M e e) = a - hf (Fintype.card K) M (w : Fin n → L) w)).card : ℤ) = ((if a - hf (Fintype.card K) M (w : Fin n → L) w = 0 then 1 else Fintype.card K + 1 : ℕ) : ℤ)`. Rewrite using `[← hfib]`.
+
+Rewrite using `[h5]`. Distinguish the cases in `hc : hf (Fintype.card K) M (w : Fin n → L) w = a`. Establish `h6 : a - hf (Fintype.card K) M (w : Fin n → L) w = 0` using `by rw [hc, sub_self]`. Rewrite using `[if_pos h6, if_pos hc]`. Evaluate the numerical expressions.
+
+Establish `h6 : a - hf (Fintype.card K) M (w : Fin n → L) w ≠ 0` using `sub_ne_zero.2 (Ne.symm hc)`. Rewrite using `[if_neg h6, if_neg hc]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hprod : ((Finset.univ.filter (fun p : L × (valPerp (Fintype.card K) M W e) => p.1 ^ (Fintype.card K + 1) * (hf (Fintype.card K) M e e) + hf (Fintype.card K) M (p.2 : Fin n → L) p.2 = a)).card : ℤ) = ∑ w : (valPerp (Fintype.card K) M W e), if hf (Fintype.card K) M (w : Fin n → L) …`.
+
+Rewrite using `[Finset.card_filter]`. Use `push_cast`. Rewrite using `[Fintype.sum_prod_type_right]`. Conclude with `Finset.sum_congr rfl fun w _ => hinner w`. Establish `hc2 : ((Finset.univ.filter (fun w : (valPerp (Fintype.card K) M W e) => hf (Fintype.card K) M (w : Fin n → L) w = a)).card : ℤ) = ∑ w : (valPerp (Fintype.card K) M W e), if hf (Fintype.card K) M (w : Fin n → L) w = a then (1 : ℤ) else 0`.
+
+Rewrite using `[Finset.card_filter]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hcardP' : (Fintype.card (valPerp (Fintype.card K) M W e) : ℤ) = (Fintype.card L : ℤ) ^ finrank L (valPerp (Fintype.card K) M W e)`. Conclude with `Module.card_eq_pow_finrank (K := L) (V := (valPerp (Fintype.card K) M W e))` after adjusting the coercions.
+
+Rewrite using `[hcardS, hcardP, hprod, hc2, ← hcardP', Finset.mul_sum, ← Finset.sum_add_distrib]`. Establish `h7 : ∀ w : (valPerp (Fintype.card K) M W e), ((if hf (Fintype.card K) M (w : Fin n → L) w = a then (1 : ℤ) else (Fintype.card K + 1)) + (Fintype.card K : ℤ) * (if hf (Fintype.card K) M (w : Fin n → L) w = a then (1 : ℤ) else 0)) = (Fintype.card K + 1)`. Introduce `w`. Apply the tactic sequence `split_ifs <;> ring`. Rewrite using `[Finset.sum_congr rfl fun w _ => h7 w, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem val_recursion (h2 : finrank K L = 2) (hM : IsHerm (Fintype.card K) M)
     {W : Submodule L (Fin n → L)} {e : Fin n → L} (he : e ∈ W)
     (hb : hf (Fintype.card K) M e e ≠ 0) (a : L) (ha : a ^ Fintype.card K = a) :
@@ -160,6 +213,29 @@ theorem val_recursion (h2 : finrank K L = 2) (hM : IsHerm (Fintype.card K) M)
   ring
 
 open Classical in
+/- English proof (translation)
+Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `W hW hd a ha`. Establish `hW0 : W = ⊥` using `by first`.
+
+Consider the case `exact Submodule.finrank_eq_zero.mp hd`. Consider the case `exact finrank_eq_zero.mp hd`. Substitute `hW0` using the available equality. Establish `h00 : hf (Fintype.card K) M 0 0 = 0` using `by first`. Consider the case `simp [hf]`.
+
+Consider the case `(unfold hf; simp [Fintype.card_ne_zero])`. Distinguish the cases in `ha0 : a = 0`. Substitute `ha0` using the available equality. Establish `hs : {v | v ∈ (⊥ : Submodule L (Fin n → L)) ∧ hf (Fintype.card K) M v v = 0} = ({0} : Set (Fin n → L))`. Use extensionality with `v`.
+
+Simplify using `only [Submodule.mem_bot, Set.mem_setOf_eq, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => h.1`. Introduce and unpack `rfl`. Conclude with `⟨rfl, h00⟩`.
+
+Rewrite using `[hs, Set.ncard_singleton, if_pos rfl]`. Simplify using `[valZ]`. Establish `hs : {v | v ∈ (⊥ : Submodule L (Fin n → L)) ∧ hf (Fintype.card K) M v v = a} = (∅ : Set (Fin n → L))`. Use extensionality with `v`. Simplify using `only [Submodule.mem_bot, Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, not_and]`.
+
+Introduce and unpack `rfl`. Rewrite using `[h00]`. Conclude with `fun h => ha0 h.symm`. Rewrite using `[hs, Set.ncard_empty, if_neg ha0]`. Simplify using `[valN]`.
+
+Consider the case `succ d ih`. Introduce `W hW hd a ha`. Establish `hne : W ≠ ⊥`. Introduce `h`. Rewrite `hd` using `[h, finrank_bot]`.
+
+Use linear arithmetic over natural numbers and integers. Take `⟨e, he, hb⟩` from `val_aniso h2 hM hW hne`. Establish `hrec` using `val_recursion h2 hM he hb a ha`. Establish `hfr : finrank L (valPerp (Fintype.card K) M W e) = d`. Establish `h` using `finrank_valPerp (q := Fintype.card K) (M := M) he hb`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hih` using `ih (valPerp (Fintype.card K) M W e) (nondeg_valPerp h2 hM hW he hb) hfr a ha`. Establish `hcardL : (Fintype.card L : ℤ) = (Fintype.card K : ℤ) ^ 2`. Establish `h` using `Module.card_eq_pow_finrank (K := K) (V := L)`. Rewrite `h` using `[h2]`.
+
+Conclude with `h` after adjusting the coercions. Rewrite `hrec` using `[hfr, hcardL, hih]`. Use `split_ifs with ha0`. Rewrite `hrec` using `[if_pos ha0]`. Establish `h` using `valZ_succ (Fintype.card K) d`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hrec` using `[if_neg ha0]`. Establish `h` using `valN_succ (Fintype.card K) d`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem val_main (h2 : finrank K L = 2) (hM : IsHerm (Fintype.card K) M) :
     ∀ (d : ℕ) (W : Submodule L (Fin n → L)), NonDeg (Fintype.card K) M W →
       finrank L W = d → ∀ a : L, a ^ Fintype.card K = a →
@@ -227,6 +303,9 @@ theorem val_main (h2 : finrank K L = 2) (hM : IsHerm (Fintype.card K) M) :
 
 end
 
+/- English proof (translation)
+Introduce `K L _ _ _ _ _ h2 n M W hM hW a ha`. Use `first`. Consider the case `exact val_main h2 hM _ W hW rfl a ha`. Consider the case `convert val_main h2 hM _ W hW rfl a ha`.
+-/
 theorem valuation_count : ValCount := by
   intro K L _ _ _ _ _ h2 n M W hM hW a ha
   first

@@ -7,6 +7,9 @@ import Development.WeilBound.CoreStatements.PublishedTheorems.JacquetShalikaRigi
 open NumberField IsDedekindDomain
 open GlobalTheory.CuspRep GlobalTheory.UnitaryBC GlobalTheory.DiscSpec PositivityTheory.Rg.Rs PositivityTheory.Rg.BcB PositivityTheory.Rg.BcB.F UpperTheory.V.Z.Tf.GOne
 
+/- English proof (translation)
+Establish `hmem : ∀ ψ ∈ V, ψ ∈ ⨆ f : SatakeVectors.SatakeVectorEventually.MapsD V w σ, LinearMap.range f.1` using `fun ψ hψ => by`. Rewrite using `[SatakeVectors.SatakeVectorEventually.iSup_range_eq hV w σ hσ]`. Conclude with `hψ`. Establish `key : ∀ ψ ∈ V, (∀ k ∈ GlobalTheory.LFun.KGL w N, finRep E N (locGL E N w k) ψ = ψ) → ψ ≠ 0 → GlobalTheory.LFun.IsSatVecGL w ((finRep E N).comp (locGL E N w)) ψ B` using `fun ψ hψ hψK hψ0 => GlobalTheory.HeightCounting.Blocks.isSatVecGL_of_mem_iSup σ.irred hB (fun f : SatakeVectors.SatakeVectorEventually.MapsD V w σ => f.1) (fun f => f.2.2) (hmem ψ hψ) (GlobalTheory.LGrp.mem_fixed.2 hψK) hψ0`. Conclude with `⟨⟨φ, hφ, key φ hφ hfix h0⟩, key⟩`.
+-/
 private theorem satV_of_locComp {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {N : ℕ}
     {V : Submodule ℂ (Sm E N)} (hV : IsDiscrete V) {w : HeightOneSpectrum (𝓞 E)}
     {σ : SmIrr (Matrix.GeneralLinearGroup (Fin N) (w.adicCompletion E))} (hσ : IsLocCompGL V w σ) {B : Multiset ℂˣ}
@@ -20,6 +23,19 @@ private theorem satV_of_locComp {E : Type} [Field E] [NumberField E] [IsTotallyC
       (hmem ψ hψ) (GlobalTheory.LGrp.mem_fixed.2 hψK) hψ0
   exact ⟨⟨φ, hφ, key φ hφ hfix h0⟩, key⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ N a d V P π ha hd hV hA h`. Establish `hNa : d * a = N`. Take `⟨e, -⟩` from `hA`. Simplify using `using e`. Establish `hN : 1 ≤ N`.
+
+Rewrite using `[← hNa]`. Conclude with `Nat.mul_pos (by omega) ha`. Take `⟨φ, hφ, h0⟩` from `(Submodule.ne_bot_iff _).1 hV.ne_bot`. Establish `hlev` using `GlobalTheory.CuspRep.LocSph.eventually_mem (E := E) ((hV.aut φ hφ).level.mem_nhds (by simp))`. Establish `key : ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ∃ (B : Fin d → Multiset ℂˣ) (B' : Unit → Multiset ℂˣ), (∀ i, ((CG.mk P).twist (GlobalTheory.CuspRep.Model.absC E (spehExp d i : ℂ))).HasSat w (B i)) ∧ (∀ _j : Unit, (CG.mk π).HasSat w (B' ())) ∧ ∑ i, B i = ∑ j, B' j` using `by filter_upwards [h, satAsc_holds E N a d V P hV hA, hlev] with w hw hs hl`.
+
+Take `⟨σ, B, hσ, hB, hπ⟩` from `hw`. Take `⟨B₀, hB₀, hall⟩` from `hs`. Establish `hfix : ∀ k ∈ GlobalTheory.LFun.KGL w N, finRep E N (locGL E N w k) φ = φ` using `fun k hk => by`. Take `⟨g, rfl⟩` from `hk`. Conclude with `hl g`.
+
+Establish `e` using `hall B (satV_of_locComp hV hσ hB hφ h0 hfix)`. Use `⟨fun i => B₀.map (· * (GlobalTheory.CuspRep.Model.absC E (spehExp d i : ℂ)).val w), fun _ => B, fun i => StrStepB.hasSat_twist_absC P hB₀ _, fun _ => hπ, ?_⟩` and prove the remaining obligations. Apply `Multiset.map_injective (f := fun b : ℂˣ => (b : ℂ)) Units.val_injective` to reduce the goal to its premises. Simplify using `only [Finset.univ_unique, Finset.sum_singleton]`. Rewrite using `[e, StrStepC.map_fsum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[SatakeVectors.satTw_eq]`. Simplify using `only [Multiset.map_map]`. Use `Multiset.map_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `[StrStepB.absC_val]`.
+
+Take `⟨s, -⟩` from `PositivityTheory.AdelicQuotientData.jacquetShalikaRigidity E (Fin d) Unit (fun _ => a) (fun _ => N) (fun i => (CG.mk P).twist (GlobalTheory.CuspRep.Model.absC E (spehExp d i : ℂ))) (fun _ => CG.mk π) (fun _ => ha) (fun _ => hN) key`. Establish `hc` using `Fintype.card_congr s`. Simplify using `at hc`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem UpperTheory.V.Z.Tf.GOne.notTwo :
     NotTwo := by
   intro E _ _ _ N a d V P π ha hd hV hA h

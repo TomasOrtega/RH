@@ -13,6 +13,37 @@ section op
 
 variable {k r : ℕ} {E E' : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAddCommGroup E'] [NormedSpace ℂ E']
 
+/- English proof (translation)
+Establish `hP : Pr O UU ⊤ a Φ` using `⟨ha, hΦ, hz⟩`. Use `⟨hP.ck hO hcov, fun n => ?_⟩` and prove the remaining obligations. Use `choose Ca hCa using hab`. Use `choose cF hcF using hΦg`. Use `set Ka : ℝ := ∑ j ∈ Finset.range (n + 1), |Ca j| with hKa`.
+
+Use `set K : ℝ := ∑ j ∈ Finset.range (n + 1), |cF j| with hK`. Establish `hKaj : ∀ j ≤ n, |Ca j| ≤ Ka` using `fun j hj => Finset.single_le_sum (f := fun j => |Ca j|) (fun i _ => abs_nonneg _) (Finset.mem_range.2 (Nat.lt_succ_of_le hj))`. Establish `hKj : ∀ j ≤ n, |cF j| ≤ K` using `fun j hj => Finset.single_le_sum (f := fun j => |cF j|) (fun i _ => abs_nonneg _) (Finset.mem_range.2 (Nat.lt_succ_of_le hj))`. Establish `hKa0 : 0 ≤ Ka` using `Finset.sum_nonneg fun i _ => abs_nonneg _`. Establish `hK0 : 0 ≤ K` using `Finset.sum_nonneg fun i _ => abs_nonneg _`.
+
+Establish `hCK : 0 ≤ Ka * K` using `mul_nonneg hKa0 hK0`. Use `⟨2 ^ n * (Ka * K), sCkOn_mono le_top (hP.ck hO hcov), fun u v hu hv hl g hg => ?_⟩` and prove the remaining obligations. Establish `hlie` using `lie_LR (unit_lie hu) (unit_lie hv)`. Establish `hw : (wL u ++ wR v).length = u.length + v.length` using `len_LR u v`. Establish `hP' : Pr O UU ((wL u ++ wR v).length : ℕ) a Φ` using `hP.mono le_top`.
+
+Establish `hp` using `gN_pos hg`. Establish `hg1` using `gN_ge_one hg`. Rewrite using `[dLR_eq]`. Distinguish the cases in `hgO : g ∈ O`. Rewrite using `[Dw_vanish hO hlie (hP'.mono zero_le).apz g hg hgO]`.
+
+Simplify using `only [norm_zero, mul_zero]`. Conclude with `mul_nonneg (by positivity) hCK`. Establish `hb` using `leib_bound hO hcov g hg (Ka * K * B.gN g ^ (d + Bg * (((wL u ++ wR v).length : ℕ) : ℝ) - A)) (wL u ++ wR v) a Φ hlie hP' (by`. Introduce `w₁ w₂ hs₁ hs₂ hl₁₂`. Take `⟨u₁, v₁, hu₁, hv₁, rfl⟩` from `sub_LR hs₁`.
+
+Take `⟨u₂, v₂, hu₂, hv₂, rfl⟩` from `sub_LR hs₂`. Rewrite `hl₁₂` using `[len_LR, len_LR]`. Establish `hl₁ : u₁.length + v₁.length ≤ n`. Use `hu₁.length_le` as an intermediate fact. Use `hv₁.length_le` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `hl₂ : u₂.length + v₂.length ≤ n`. Use `hu₂.length_le` as an intermediate fact. Use `hv₂.length_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Establish `hu₁' : ∀ X ∈ u₁, B.unitLie k r X` using `fun X hX => hu X (hu₁.subset hX)`. Establish `hv₁' : ∀ X ∈ v₁, B.unitLie k r X` using `fun X hX => hv X (hv₁.subset hX)`. Establish `hu₂' : ∀ X ∈ u₂, B.unitLie k r X` using `fun X hX => hu X (hu₂.subset hX)`. Establish `hv₂' : ∀ X ∈ v₂, B.unitLie k r X` using `fun X hX => hv X (hv₂.subset hX)`. Use `set L₁ : ℝ := ((u₁.length + v₁.length : ℕ) : ℝ) with hL₁`.
+
+Use `set L₂ : ℝ := ((u₂.length + v₂.length : ℕ) : ℝ) with hL₂`. Establish `b1 : ‖Dw (wL u₁ ++ wR v₁) a g‖ ≤ Ka * B.gN g ^ (d + Bg * L₁)`. Rewrite using `[← dLR_eq]`. Establish `h1` using `hCa (u₁.length + v₁.length) u₁ v₁ hu₁' hv₁' le_rfl g hg hgO`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `b2 : ‖Dw (wL u₂ ++ wR v₂) Φ g‖ ≤ K * B.gN g ^ (Bg * L₂ - A)`. Rewrite using `[← dLR_eq]`. Establish `h1` using `(hcF (u₂.length + v₂.length)).2 u₂ v₂ hu₂' hv₂' le_rfl g hg`. Establish `e : B.gN g ^ (Bg * L₂ - A) * B.gN g ^ (A - Bg * L₂) = 1`. Rewrite using `[← Real.rpow_add hp]`.
+
+Simplify using the standard rewrite rules. Establish `h4 : ‖B.dLR u₂ v₂ Φ g‖ = B.gN g ^ (Bg * L₂ - A) * (B.gN g ^ (A - Bg * L₂) * ‖B.dLR u₂ v₂ Φ g‖)`. Rewrite using `[← mul_assoc, e, one_mul]`. Rewrite using `[h4]`. Establish `h5 : B.gN g ^ (A - Bg * L₂) * ‖B.dLR u₂ v₂ Φ g‖ ≤ K`.
+
+Use `le_trans ?_ (hKj _ hl₂)` and prove the remaining obligations. Use `le_trans ?_ (le_abs_self _)` and prove the remaining obligations. Simplify `h1` using `[hL₂]`. Combine the equalities or inequalities in the displayed calculation. Establish `hsum : (d + Bg * L₁) + (Bg * L₂ - A) = d + Bg * (((wL u ++ wR v).length : ℕ) : ℝ) - A`.
+
+Rewrite using `[← hl₁₂, hL₁, hL₂]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.rpow_add hp, hsum])`.
+
+Establish `hlen : ((wL u ++ wR v).length : ℕ) ≤ n` using `by rw [hw]; exact hl`. Establish `e2 : B.gN g ^ (A - d - Bg * n) * B.gN g ^ (d + Bg * (((wL u ++ wR v).length : ℕ) : ℝ) - A) ≤ 1`. Rewrite using `[← Real.rpow_add hp]`. Use `Real.rpow_le_one_of_one_le_of_nonpos hg1 ?_` and prove the remaining obligations. Establish `h6 : (((wL u ++ wR v).length : ℕ) : ℝ) ≤ n` using `by exact_mod_cast hlen`.
+
+Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h6 hBg]`. Establish `e3 : (2 : ℝ) ^ (wL u ++ wR v).length ≤ 2 ^ n` using `pow_le_pow_right₀ (by norm_num) hlen`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem coefLeib {O UU : Set (B.Mat k r)} (hO : IsOpen O) (hcov : ∀ g ∈ B.GV k r, g ∈ O ∨ g ∈ UU)
     {a : B.Mat k r → (E →L[ℂ] E')} {Φ : B.Mat k r → E} {d Bg A : ℝ} (hBg : 0 ≤ Bg)
     (ha : B.CkOn ⊤ UU a)
@@ -111,6 +142,11 @@ theorem coefLeib {O UU : Set (B.Mat k r)} (hO : IsOpen O) (hcov : ∀ g ∈ B.GV
           mul_le_mul_of_nonneg_left e2 (mul_nonneg (by positivity) hCK)
       _ ≤ 2 ^ n * (Ka * K) := by rw [mul_one]; exact mul_le_mul_of_nonneg_right e3 hCK
 
+/- English proof (translation)
+Use `⟨?_, fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[← Dw_wR]`. Apply `CkOn_Dw (fun x hx => lie_LR (u := []) (by simp) hw x (by simpa [wL] using hx))` to reduce the goal to its premises. Simplify using `using hΦ`. Establish `h` using `InCC_Rw (m := m) hw (hΦg (m + w.length))`.
+
+Establish `e : A - Bg * ((m + w.length : ℕ) : ℝ) = A - Bg * w.length - Bg * m` using `by push_cast; ring`. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem rwG {w : List (B.Mat k r)} (hw : ∀ X ∈ w, B.inLie k r X) {Φ : B.Mat k r → E} {A Bg : ℝ}
     (hΦ : B.CkOn ⊤ (B.GV k r) Φ) (hΦg : ∀ m : ℕ, B.InCC (A - Bg * m) m Φ) :
     B.CkOn ⊤ (B.GV k r) (B.Rw w Φ) ∧ ∀ m : ℕ, B.InCC (A - Bg * w.length - Bg * m) m (B.Rw w Φ) := by
@@ -122,6 +158,13 @@ theorem rwG {w : List (B.Mat k r)} (hw : ∀ X ∈ w, B.inLie k r X) {Φ : B.Mat
     have e : A - Bg * ((m + w.length : ℕ) : ℝ) = A - Bg * w.length - Bg * m := by push_cast; ring
     rwa [e] at h
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil`. Simplify using `only [List.map_nil, List.sum_nil]`. Conclude with `⟨CkOn_zero, fun m => ⟨0, CCle_zero⟩⟩`. Consider the case `cons i l ih`.
+
+Establish `hi` using `h i (by simp)`. Establish `hl` using `ih (fun j hj => h j (by simp [hj]))`. Simplify using `only [List.map_cons, List.sum_cons]`. Use `⟨CkOn_add hi.1 hl.1, fun m => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `hi.2 m`.
+
+Take `⟨c', hc'⟩` from `hl.2 m`. Conclude with `⟨c + c', CCle_add hc hc'⟩`.
+-/
 theorem listSumG {ι : Type*} (l : List ι) (f : ι → B.Mat k r → E) {A Bg : ℝ}
     (h : ∀ i ∈ l, B.CkOn ⊤ (B.GV k r) (f i) ∧ ∀ m : ℕ, B.InCC (A - Bg * m) m (f i)) :
     B.CkOn ⊤ (B.GV k r) (fun g => (l.map fun i => f i g).sum) ∧
@@ -141,6 +184,23 @@ theorem listSumG {ι : Type*} (l : List ι) (f : ι → B.Mat k r → E) {A Bg :
 
 end op
 
+/- English proof (translation)
+Introduce `k r Wp Wq _ _ _ _ _ _ Bs Θ d Bg A η F hη hBg hSC hCG hF hFg hz`. Use `set O : Set (B.Mat k r) := {g | Gf k r Bs.z Bs.z' g < η} with hOdef`. Establish `hO : IsOpen O` using `isOpen_lt (Gf_cont _ _) continuous_const`. Establish `hcov : ∀ g ∈ B.GV k r, g ∈ O ∨ g ∈ B.GPos Bs`. Introduce `g hg`.
+
+Distinguish the cases in `h : Gf k r Bs.z Bs.z' g < η`. Conclude with `Or.inl h`. Conclude with `Or.inr ⟨hg, lt_of_lt_of_le hη (not_lt.1 h)⟩`. Establish `hzO : ∀ g ∈ B.GV k r, g ∈ O → F g = 0` using `fun g hg h => hz g hg h`. Establish `hoff : ∀ g, g ∉ O → η ≤ Gf k r Bs.z Bs.z' g` using `fun g h => not_lt.1 h`.
+
+Establish `hab1 : ∀ T ∈ Θ, ∀ m : ℕ, ∃ C : ℝ, ∀ u v : List (B.Mat k r), (∀ X ∈ u, B.unitLie k r X) → (∀ X ∈ v, B.unitLie k r X) → u.length + v.length ≤ m → ∀ g ∈ B.GV k r, g ∉ O → ‖B.dLR u v T.coef g‖ ≤ C * B.gN g ^ (d + Bg * m)`. Introduce `T hT m`. Take `⟨C, hC⟩` from `hCG T hT η hη m`. Conclude with `⟨C, fun u v hu hv hl g hg hgO => (hC u v hu hv hl g hg (hoff g hgO)).1⟩`. Establish `hab2 : ∀ T ∈ Θ, ∀ m : ℕ, ∃ C : ℝ, ∀ u v : List (B.Mat k r), (∀ X ∈ u, B.unitLie k r X) → (∀ X ∈ v, B.unitLie k r X) → u.length + v.length ≤ m → ∀ g ∈ B.GV k r, g ∉ O → ‖B.dLR u v T.coefAdj g‖ ≤ C * B.gN g ^ (d + Bg * m)`.
+
+Introduce `T hT m`. Take `⟨C, hC⟩` from `hCG T hT η hη m`. Conclude with `⟨C, fun u v hu hv hl g hg hgO => (hC u v hu hv hl g hg (hoff g hgO)).2⟩`. Establish `hApp : ∀ T ∈ Θ, B.CkOn ⊤ (B.GV k r) (ap T.coef (B.Rw T.word F)) ∧ ∀ m : ℕ, B.InCC (A - d - Bg * (B.opOrder Θ : ℝ) - Bg * m) m (ap T.coef (B.Rw T.word F))`. Introduce `T hT`.
+
+Establish `hR` using `rwG T.word_lie hF hFg`. Establish `hzR : ∀ g ∈ B.GV k r, g ∈ O → B.Rw T.word F g = 0` using `Rw_vanish hO T.word_lie hzO`. Establish `hc` using `coefLeib hO hcov hBg (hSC T hT).1 (hab1 T hT) hR.1 hR.2 hzR`. Establish `hlen : (T.word.length : ℝ) ≤ (B.opOrder Θ : ℝ)`. Conclude with `Formalism.FourierDecayAlt.P.B5.len_le_order Θ hT` after adjusting the coercions.
+
+Use `⟨hc.1, fun m => sInCC_mono ?_ le_rfl (hc.2 m)⟩` and prove the remaining obligations. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hlen hBg]`. Establish `hAdj : ∀ T ∈ Θ, B.CkOn ⊤ (B.GV k r) (fun g => ((-1 : ℂ) ^ T.word.length) • B.Rw T.word.reverse (fun x => T.coefAdj x (F x)) g) ∧ ∀ m : ℕ, B.InCC (A - d - Bg * (B.opOrder Θ : ℝ) - Bg * m) m (fun g => ((-1 : ℂ) ^ T.word.length) • B.Rw T.word.reverse (fun x => T.coefAdj x (F x)) g)`. Introduce `T hT`. Establish `hc` using `coefLeib hO hcov hBg (hSC T hT).2 (hab2 T hT) hF hFg hzO`.
+
+Establish `hR` using `rwG (w := T.word.reverse) (fun X hX => T.word_lie X (List.mem_reverse.1 hX)) hc.1 hc.2`. Establish `hlen : (T.word.length : ℝ) ≤ (B.opOrder Θ : ℝ)`. Conclude with `Formalism.FourierDecayAlt.P.B5.len_le_order Θ hT` after adjusting the coercions. Use `⟨CkOn_smul _ hR.1, fun m => ?_⟩` and prove the remaining obligations. Establish `h2` using `hR.2 m`.
+
+Rewrite `h2` using `[List.length_reverse]`. Take `⟨c, hcc⟩` from `sInCC_mono (A := A - d - Bg * (B.opOrder Θ : ℝ) - Bg * m) (by`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hlen hBg]) le_rfl h2`. Conclude with `⟨_, CCle_smul _ hcc⟩`. Conclude with `⟨listSumG Θ (fun T => ap T.coef (B.Rw T.word F)) hApp, listSumG Θ (fun T g => ((-1 : ℂ) ^ T.word.length) • B.Rw T.word.reverse (fun x => T.coefAdj x (F x)) g) hAdj⟩`.
+-/
 theorem operator_in_class_holds : OpCCg := by
   intro k r Wp Wq _ _ _ _ _ _ Bs Θ d Bg A η F hη hBg hSC hCG hF hFg hz
   set O : Set (B.Mat k r) := {g | Gf k r Bs.z Bs.z' g < η} with hOdef

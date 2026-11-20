@@ -20,6 +20,9 @@ def homO {X Y : Type*} [AddCommGroup X] [Module k X] [AddCommGroup Y] [Module k 
   add_mem' {S T} hS hT a := by rw [LinearMap.add_comp, LinearMap.comp_add, hS a, hT a]
   smul_mem' c T hT a := by rw [LinearMap.smul_comp, LinearMap.comp_smul, hT a]
 
+/- English proof (translation)
+Simplify using `only [homO, Submodule.mem_mk, AddSubmonoid.mem_mk, AddSubsemigroup.mem_mk, Set.mem_setOf_eq, LinearMap.ext_iff, LinearMap.comp_apply]`.
+-/
 theorem mem_homO {X Y : Type*} [AddCommGroup X] [Module k X] [AddCommGroup Y] [Module k Y]
     (σX : O →+* Module.End k X) (σY : O →+* Module.End k Y) (T : X →ₗ[k] Y) :
     T ∈ homO σX σY ↔ ∀ a x, T (σX a x) = σY a (T x) := by
@@ -34,6 +37,9 @@ def rAct (σ : O →+* Module.End k H) (X : Submodule k H) (h : ∀ a, ∀ x ∈
   map_zero' := by ext; simp
   map_add' a b := by ext; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem rAct_apply (σ : O →+* Module.End k H) (X : Submodule k H) (h : ∀ a, ∀ x ∈ X, σ a x ∈ X)
     (a : O) (x : X) : ((rAct σ X h a x : X) : H) = σ a x := rfl
 
@@ -45,9 +51,19 @@ def qAct (σ : O →+* Module.End k H) (X : Submodule k H) (h : ∀ a, ∀ x ∈
   map_zero' := by ext; simp
   map_add' a b := by ext; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem qAct_mk (σ : O →+* Module.End k H) (X : Submodule k H) (h : ∀ a, ∀ x ∈ X, σ a x ∈ X)
     (a : O) (x : H) : qAct σ X h a (X.mkQ x) = X.mkQ (σ a x) := rfl
 
+/- English proof (translation)
+Introduce `a x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨c, y, hy, rfl⟩` from `hz`. Use `Submodule.subset_span ⟨c, σ a y, hX a y hy, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_sub, map_smul, ← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, Algebra.commutes]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [map_smul]`.
+
+Conclude with `Submodule.smul_mem _ c hx`.
+-/
 theorem mSub_stable (σ : O →+* Module.End k H) (χ : C →+* k) (X : Submodule k H)
     (hX : ∀ a, ∀ x ∈ X, σ a x ∈ X) : ∀ a, ∀ x ∈ mSub σ χ X, σ a x ∈ mSub σ χ X := by
   intro a x hx
@@ -61,6 +77,13 @@ theorem mSub_stable (σ : O →+* Module.End k H) (χ : C →+* k) (X : Submodul
   | add x y _ _ hx hy => rw [map_add]; exact add_mem hx hy
   | smul c x _ hx => rw [map_smul]; exact Submodule.smul_mem _ c hx
 
+/- English proof (translation)
+Introduce `a x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨r, lam, c, y, hy, hc, rfl⟩` from `hz`. Use `Submodule.subset_span ⟨r, lam, c, σ a y, hX a y hy, hc, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, ← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, Algebra.commutes]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+
+Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c hx`.
+-/
 theorem jSub_stable {ι : Type*} (σ : O →+* Module.End k H) (χ : ι → C →+* k) (X : Submodule k H)
     (hX : ∀ a, ∀ x ∈ X, σ a x ∈ X) : ∀ a, ∀ x ∈ jSub σ χ X, σ a x ∈ jSub σ χ X := by
   intro a x hx
@@ -75,6 +98,9 @@ theorem jSub_stable {ι : Type*} (σ : O →+* Module.End k H) (χ : ι → C �
   | add x y _ _ hx hy => rw [map_add]; exact add_mem hx hy
   | smul c x _ hx => rw [map_smul]; exact Submodule.smul_mem _ c hx
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, Submodule.mkQ_apply, LinearMap.smul_apply, Module.End.one_apply]`. Express the relevant statement in the definitionally equal form `(mSub σ χ ⊤).mkQ (σ (algebraMap C O c) x) = χ c • (mSub σ χ ⊤).mkQ x`. Rewrite using `[← map_smul, ← sub_eq_zero, ← map_sub, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `Submodule.subset_span ⟨c, x, trivial, rfl⟩`.
+-/
 theorem qAct_mSub_algebraMap (σ : O →+* Module.End k H) (χ : C →+* k) (c : C) :
     qAct σ (mSub σ χ ⊤) (mSub_stable σ χ ⊤ (fun _ _ _ => trivial)) (algebraMap C O c) = χ c • 1 := by
   ext x

@@ -9,6 +9,13 @@ open scoped Classical
 
 namespace GlobalTheory.FlagCmp
 
+/- English proof (translation)
+Establish `iso : ∀ j, (comb (Sum.elim L M) (fun i => if i = Sum.inl j then (1 : ℤ) else 0)).Isometric (L j)` using `fun j => by`. Use `HermLB.icls_eq_iff.1 ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.ArInt.icls_comb, Fintype.sum_sum_type]`. Simplify using `[ite_smul]`. Establish `h` using `((hI k X p D hX).2 (ι ⊕ κ) (Sum.elim L M) Ψ hΨ).2.2 ι L _ iso`.
+
+Establish `e` using `GlobalTheory.ArInt.Model.isArFun_unique hX hΦ h`. Rewrite using `[e]`. Express the relevant statement in the definitionally equal form `_ = Ψ (aeval _ P)`. Use `congr 1`. Establish `: (aeval fun j => lin fun i : ι ⊕ κ => (((if i = Sum.inl j then (1 : ℤ) else 0 : ℤ)) : ℝ)) = (rename Sum.inl : MvPolynomial ι ℝ →ₐ[ℝ] MvPolynomial (ι ⊕ κ) ℝ)`.
+
+Use `MvPolynomial.algHom_ext fun j => ?_` and prove the remaining obligations. Simplify using `[lin, apply_ite]`. Rewrite using `[this]`.
+-/
 theorem isArFun_restrict_inl (hI : Published.ArIso) {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k}
     {D : ℕ} (hX : IsArithVar p D) {ι κ : Type} [Fintype ι] [Fintype κ] (L : ι → HermLB p) (M : κ → HermLB p)
     {Φ : MvPolynomial ι ℝ →ₗ[ℝ] ℝ} {Ψ : MvPolynomial (ι ⊕ κ) ℝ →ₗ[ℝ] ℝ} (hΦ : IsArFun L D Φ)

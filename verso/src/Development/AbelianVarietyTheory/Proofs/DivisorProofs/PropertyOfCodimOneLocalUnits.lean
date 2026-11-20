@@ -24,16 +24,27 @@ noncomputable def toFrac (p : Ideal A) [p.IsPrime] : Localization.AtPrime p →+
     (fun s => IsUnit.mk0 _ (IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors
       (p.primeCompl_le_nonZeroDivisors s.2)))
 
+/- English proof (translation)
+The claim follows from `IsLocalization.lift_comp _`.
+-/
 theorem toFrac_comp (p : Ideal A) [p.IsPrime] :
     (toFrac p).comp (algebraMap A (Localization.AtPrime p)) = algebraMap A (FractionRing A) :=
   IsLocalization.lift_comp _
 
+/- English proof (translation)
+Rewrite using `[toFrac, IsLocalization.lift_injective_iff]`. Introduce `x y`. Rewrite using `[(IsLocalization.injective (Localization.AtPrime p) p.primeCompl_le_nonZeroDivisors).eq_iff, (IsFractionRing.injective A (FractionRing A)).eq_iff]`.
+-/
 theorem toFrac_injective (p : Ideal A) [p.IsPrime] : Function.Injective (toFrac p) := by
   rw [toFrac, IsLocalization.lift_injective_iff]
   intro x y
   rw [(IsLocalization.injective (Localization.AtPrime p) p.primeCompl_le_nonZeroDivisors).eq_iff,
     (IsFractionRing.injective A (FractionRing A)).eq_iff]
 
+/- English proof (translation)
+Take `⟨⟨m, s⟩, e⟩` from `IsLocalization.surj p.primeCompl w`. Use `⟨s, s.2, m, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (toFrac p) e`. Simplify using `only [map_mul] at h`. Rewrite `h` using `[← RingHom.comp_apply (toFrac p), ← RingHom.comp_apply (toFrac p), toFrac_comp]`.
+
+Rewrite using `[Algebra.smul_def, mul_comm, h]`.
+-/
 theorem toFrac_mem (p : Ideal A) [p.IsPrime] (w : Localization.AtPrime p) :
     ∃ s, s ∉ p ∧ s • toFrac p w ∈ (algebraMap A (FractionRing A)).range := by
   obtain ⟨⟨m, s⟩, e⟩ := IsLocalization.surj p.primeCompl w
@@ -43,6 +54,25 @@ theorem toFrac_mem (p : Ideal A) [p.IsPrime] (w : Localization.AtPrime p) :
   rw [← RingHom.comp_apply (toFrac p), ← RingHom.comp_apply (toFrac p), toFrac_comp] at h
   rw [Algebra.smul_def, mul_comm, h]
 
+/- English proof (translation)
+Introduce `A _ _ _ _ P good hbot hloc ⟨k, _, φ, hinj, huniq⟩ hbad`. Set `K` to `FractionRing A`. Set `ψ : K →+* k` to `IsFractionRing.lift hinj`. Establish `hφ : ψ.comp (algebraMap A K) = φ` using `RingHom.ext fun a => IsFractionRing.lift_algebraMap hinj a`. Take `⟨u₀, hu₀⟩` from `hloc ⟨⊥, Ideal.isPrime_bot⟩ (Or.inl hbot)`.
+
+Set `x : K` to `toFrac _ (u₀ : Localization.AtPrime (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum A).asIdeal)`. Set `y : K` to `toFrac _ ((u₀⁻¹ : (Localization.AtPrime (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum A).asIdeal)ˣ) : Localization.AtPrime (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum A).asIdeal)`. Establish `hxy : x * y = 1` using `by simp only [x, y, ← map_mul, Units.mul_inv, map_one]`. Establish `key : ∀ (𝔭 : PrimeSpectrum A) (u : (Localization.AtPrime 𝔭.asIdeal)ˣ), (∀ (k : Type) [Field k] (φ : Localization.AtPrime 𝔭.asIdeal →+* k), P k (φ.comp (algebraMap A _)) (φ u)) → toFrac 𝔭.asIdeal u = x`. Introduce `𝔭 u hu`.
+
+Establish `h1` using `hu k (ψ.comp (toFrac 𝔭.asIdeal))`. Establish `h0` using `hu₀ k (ψ.comp (toFrac _))`. Rewrite `h1`, `h0` using `[RingHom.comp_assoc, toFrac_comp, hφ]`. Conclude with `ψ.injective (huniq _ _ h1 h0)`. Establish `hmem : ∀ z : K, (∀ 𝔭 : PrimeSpectrum A, 𝔭.asIdeal.height = 1 → ∃ w, toFrac 𝔭.asIdeal w = z) → ∃ a : A, algebraMap A K a = z`.
+
+Introduce `z hz`. Use `RingHom.mem_range.mp ((GlobalTheory.mem_range_algebraMap_iff_forall_height_eq_one (A := A) z).mpr ?_)` and prove the remaining obligations. Introduce `p _ hp`. Take `⟨w, hw⟩` from `hz ⟨p, inferInstance⟩ hp`. Rewrite using `[GlobalTheory.mem_primeLocalSubalgebra_iff, ← hw]`.
+
+Conclude with `toFrac_mem p w`. Establish `hx0 : x ≠ 0` using `left_ne_zero_of_mul_eq_one hxy`. Take `⟨a, ha⟩` from `hmem x fun 𝔭 hp => by`. Take `⟨u, hu⟩` from `hloc 𝔭 (Or.inr hp)`. Conclude with `⟨u, key 𝔭 u hu⟩`.
+
+Take `⟨b, hb⟩` from `hmem y fun 𝔭 hp => by`. Take `⟨u, hu⟩` from `hloc 𝔭 (Or.inr hp)`. Use `⟨((u⁻¹ : (Localization.AtPrime 𝔭.asIdeal)ˣ) : Localization.AtPrime 𝔭.asIdeal), ?_⟩` and prove the remaining obligations. Apply `mul_left_cancel₀ hx0` to reduce the goal to its premises. Rewrite using `[hxy, ← key 𝔭 u hu, ← map_mul, Units.mul_inv, map_one]`.
+
+Establish `hab : a * b = 1` using `IsFractionRing.injective A K (by rw [map_mul, ha, hb, hxy, map_one])`. Set `f : Aˣ` to `⟨a, b, hab, by rw [mul_comm]; exact hab⟩`. Use `⟨f, fun k' _ φ' => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hg : (⟨RingHom.ker φ', RingHom.ker_isPrime φ'⟩ : PrimeSpectrum A) ∈ good`. Take `⟨u, hu⟩` from `hloc _ (Or.inl hg)`.
+
+Set `φl : Localization.AtPrime (RingHom.ker φ') →+* k'` to `IsLocalization.lift (M := (RingHom.ker φ').primeCompl) (g := φ') (fun s => IsUnit.mk0 _ (fun h => s.2 (RingHom.mem_ker.mpr h)))`. Establish `hl : φl.comp (algebraMap A _) = φ'` using `IsLocalization.lift_comp _`. Establish `h` using `hu k' φl`. Rewrite `h` using `[hl]`. Establish `hu' : (u : Localization.AtPrime (RingHom.ker φ')) = algebraMap A _ (f : A)` using `toFrac_injective _ (by rw [key _ u hu, ← RingHom.comp_apply, toFrac_comp]; exact ha.symm)`.
+
+Rewrite `h` using `[hu', ← RingHom.comp_apply, hl]`. Then use the resulting hypothesis. Conclude with `hbad k' φ' _ hg`.
+-/
 theorem exists_unit_of_local_units : ∀ (A : Type) [CommRing A] [IsDomain A] [IsIntegrallyClosed A] [IsNoetherianRing A]
     (P : ∀ (k : Type) [Field k], (A →+* k) → k → Prop) (good : Set (PrimeSpectrum A)),
     (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum A) ∈ good →

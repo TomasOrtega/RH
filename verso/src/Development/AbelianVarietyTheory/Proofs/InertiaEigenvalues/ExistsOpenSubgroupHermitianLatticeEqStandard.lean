@@ -28,6 +28,17 @@ open GlobalTheory.LevelSeries
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D V h1`. Use `⟨(GlobalTheory.Member.PrincLevel.levelGroup V 1).map (finHom V).rangeRestrict, GlobalTheory.SmoothVac.isOpen_map_levelGroup V one_pos, ?_⟩` and prove the remaining obligations. Introduce and unpack `x ⟨k, hk, rfl⟩`. Rewrite using `[← h1]`. Establish `hk'` using `GlobalTheory.Member.PrincLevel.finCong_inv hk.2`.
+
+Establish `hm` using `GlobalTheory.Member.PrincLevel.finCong_map hk.2`. Establish `hm'` using `GlobalTheory.Member.PrincLevel.finCong_map hk'`. Establish `hL` using `GlobalTheory.StdFrameCong.pj_latHat_eq V`. Establish `e1 : ((((finHom V).rangeRestrict k)⁻¹ : Bridge.Gf V) : GL (Fin V.rank) (Af D.host.F ⊗[D.host.F] D.host.E)) = finHom V k⁻¹`. Rewrite using `[← map_inv]`.
+
+Both sides reduce to the same expression. Establish `e0 : (((1 : Bridge.Gf V)⁻¹ : Bridge.Gf V) : GL (Fin V.rank) (Af D.host.F ⊗[D.host.F] D.host.E)) = 1`. Rewrite using `[inv_one]`. Both sides reduce to the same expression. Unfold `Bridge.hLat`.
+
+Use `congrArg (Submodule.span _) (Set.ext fun v => ?_)` and prove the remaining obligations. Use `show _ ∈ latHat D.host.F D.host.E (L0c D V) ↔ _ ∈ latHat D.host.F D.host.E (L0c D V)`. Rewrite using `[e1, e0, Units.val_one, Matrix.one_mulVec, ← hL]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Use `hm _ h` as an intermediate fact. Establish `ekk : (finHom V k).1 * (finHom V k⁻¹).1 = 1`. Rewrite using `[← Units.val_mul, ← map_mul (finHom V) k k⁻¹, mul_inv_cancel k, map_one, Units.val_one]`. Rewrite `this` using `[Matrix.mulVec_mulVec, ekk, Matrix.one_mulVec]`. Then use the resulting hypothesis. Conclude with `hm' _`.
+-/
 theorem GlobalTheory.LatOpen.exists_open_hLat_std : ∀ (D : D7) (V : HSp D), Bridge.hLat V 1 = Formalism.L2.Pj.stdLat D.host.E V.rank → ∃ J : Subgroup (Bridge.Gf V), IsOpen (J : Set (Bridge.Gf V)) ∧ ∀ x ∈ J, Bridge.hLat V x = Formalism.L2.Pj.stdLat D.host.E V.rank := by
   intro D V h1
   refine ⟨(GlobalTheory.Member.PrincLevel.levelGroup V 1).map (finHom V).rangeRestrict,

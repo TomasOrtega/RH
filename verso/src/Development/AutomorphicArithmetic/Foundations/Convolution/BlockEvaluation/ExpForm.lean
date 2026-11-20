@@ -6,6 +6,11 @@ namespace UpperTheory.ConvolutionTheory.Ci.ExponentialForm
 
 open Polynomial
 
+/- English proof (translation)
+Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simpa only [map_add] using hp.add_right hq`. Consider the case `monomial n c`. Simplify using `only [aeval_monomial, ← Algebra.smul_def]`. Use `(h.pow_right n).eq` as an intermediate fact.
+
+Unfold `SemiconjBy`. Rewrite using `[mul_smul_comm, smul_mul_assoc, this]`.
+-/
 private theorem semiconj_aeval {A : Type} [Ring A] [Algebra ℂ A] {a x y : A} (h : SemiconjBy a x y) (p : ℂ[X]) :
     SemiconjBy a (aeval x p) (aeval y p) := by
   induction p using Polynomial.induction_on' with
@@ -16,6 +21,19 @@ private theorem semiconj_aeval {A : Type} [Ring A] [Algebra ℂ A] {a x y : A} (
     unfold SemiconjBy
     rw [mul_smul_comm, smul_mul_assoc, this]
 
+/- English proof (translation)
+Establish `h1 : ∀ (m : ℕ) (i : ZMod l), B ^ m * M i = M (i + m) * B ^ m`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro i`. Simplify using the standard rewrite rules.
+
+Consider the case `succ m ih`. Introduce `i`. Rewrite using `[pow_succ', mul_assoc, ih, ← mul_assoc, hB, mul_assoc, Nat.cast_succ, add_assoc]`. Establish `h2 : ∀ m : ℕ, ∃ P : A, Commute (M 0) P ∧ (M 0 * B) ^ (m + 1) = M 0 * (P * B ^ (m + 1))`. Introduce `m`.
+
+Proceed by induction on `m with`. Consider the case `zero => exact ⟨1, Commute.one_right _, by simp⟩`. Consider the case `succ m ih`. Take `⟨P, hP, h⟩` from `ih`. Use `⟨P * M (0 + ((m + 1 : ℕ) : ZMod l)), hP.mul_right (hc _ _), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[pow_succ, h, pow_succ B (m + 1)]`. Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc (B ^ (m + 1)) (M 0), h1, mul_assoc]`. Take `⟨m, rfl⟩ : ∃ m, l = m + 1` from `⟨l - 1, by omega⟩`. Take `⟨P, hP, h⟩` from `h2 m`.
+
+Establish `h3 : Commute (M 0) (B ^ (m + 1))`. Use `h1 (m + 1) 0` as an intermediate fact. Rewrite `this` using `[ZMod.natCast_self, add_zero]`. Conclude with `this.symm`. Establish `h4 : IsNilpotent ((M 0 * B) ^ (m + 1))`.
+
+Rewrite using `[h]`. Conclude with `(hP.mul_right h3).isNilpotent_mul_right h0`. Conclude with `h4.of_pow`.
+-/
 private theorem nil_mul {A : Type} [Ring A] (l : ℕ) (hl : 0 < l) (M : ZMod l → A) (B : A)
     (hc : ∀ i k, Commute (M i) (M k)) (hB : ∀ i, B * M i = M (i + 1) * B) (h0 : IsNilpotent (M 0)) :
     IsNilpotent (M 0 * B) := by
@@ -47,6 +65,11 @@ private theorem nil_mul {A : Type} [Ring A] (l : ℕ) (hl : 0 < l) (M : ZMod l �
     exact (hP.mul_right h3).isNilpotent_mul_right h0
   exact h4.of_pow
 
+/- English proof (translation)
+Use `set r := Lagrange.nodal U.charpoly.roots.toFinset id with hr`. Establish `h1 : U.charpoly = (U.charpoly.roots.map fun a => X - C a).prod` using `(IsAlgClosed.splits U.charpoly).eq_prod_roots_of_monic U.charpoly_monic`. Establish `h2 : (U.charpoly.roots.map fun a => X - C a).prod ∣ (U.charpoly.roots.map fun _ => r).prod` using `Multiset.prod_dvd_prod_of_dvd _ _ fun a ha => Lagrange.X_sub_C_dvd_nodal id (Multiset.mem_toFinset.2 ha)`. Rewrite `h2` using `[← h1, Multiset.map_const', Multiset.prod_replicate]`. Take `⟨q, hq⟩` from `h2`.
+
+Use `⟨U.charpoly.roots.card, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow, hq, map_mul, LinearMap.aeval_self_charpoly, zero_mul]`.
+-/
 private theorem nil_nodal {W : Type} [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W] (U : Module.End ℂ W) :
     IsNilpotent (aeval U (Lagrange.nodal U.charpoly.roots.toFinset id)) := by
   classical
@@ -61,6 +84,13 @@ private theorem nil_nodal {W : Type} [AddCommGroup W] [Module ℂ W] [FiniteDime
   refine ⟨U.charpoly.roots.card, ?_⟩
   rw [← map_pow, hq, map_mul, LinearMap.aeval_self_charpoly, zero_mul]
 
+/- English proof (translation)
+Establish `h : Lagrange.nodal s id ∣ X ^ j - ∑ z ∈ s, C (z ^ j) * Lagrange.basis s id z`. Unfold `Lagrange.nodal`. Use `Finset.prod_dvd_of_coprime ?_ ?_` and prove the remaining obligations. Introduce `a _ b _ hab`. Conclude with `isCoprime_X_sub_C_of_isUnit_sub (sub_ne_zero.2 hab).isUnit`.
+
+Introduce `a ha`. Rewrite using `[dvd_iff_isRoot, IsRoot.def, eval_sub]`. Use `Lagrange.eval_interpolate_at_node (s := s) (v := id) (fun z : ℂ => z ^ j) (Set.injOn_id _) ha` as an intermediate fact. Rewrite `this` using `[Lagrange.interpolate_apply]`. Rewrite using `[this]`.
+
+Simplify using the standard rewrite rules. Take `⟨q, hq⟩` from `h`. Conclude with `⟨q, by rw [← hq]; ring⟩`.
+-/
 private theorem pow_eq (s : Finset ℂ) (j : ℕ) :
     ∃ q : ℂ[X], X ^ j = Lagrange.nodal s id * q + ∑ z ∈ s, C (z ^ j) * Lagrange.basis s id z := by
   classical
@@ -78,6 +108,13 @@ private theorem pow_eq (s : Finset ℂ) (j : ℕ) :
   obtain ⟨q, hq⟩ := h
   exact ⟨q, by rw [← hq]; ring⟩
 
+/- English proof (translation)
+Use `⟨(U 0).charpoly.roots.toFinset, Lagrange.basis (U 0).charpoly.roots.toFinset id, fun j => ?_⟩` and prove the remaining obligations. Take `⟨q, hq⟩` from `pow_eq (U 0).charpoly.roots.toFinset j`. Establish `hn` using `nil_nodal (U 0)`. Use `set r := Lagrange.nodal (U 0).charpoly.roots.toFinset id with hr`. Establish `h1 : IsNilpotent (aeval (U 0) (r * q) * B)`.
+
+Use `nil_mul l hl (fun i => aeval (U i) (r * q)) B (fun i k => ?_) (fun i => semiconj_aeval (hB i) _) ?_` and prove the remaining obligations. Conclude with `Commute.symm (semiconj_aeval (Commute.symm (semiconj_aeval (hc i k) _)) _)`. Establish `: Commute (aeval (U 0) r) (aeval (U 0) q)` using `(Commute.all r q).map _`. Simplify using `only [map_mul]`. Conclude with `this.isNilpotent_mul_right hn`.
+
+Establish `h2 : LinearMap.trace ℂ W (aeval (U 0) (r * q) * B) = 0` using `(LinearMap.isNilpotent_trace_of_isNilpotent h1).eq_zero`. Establish `h3 : U 0 ^ j = aeval (U 0) (X ^ j : ℂ[X])` using `by simp`. Rewrite using `[h3, hq, map_add, add_mul, map_add, h2, zero_add, map_sum, Finset.sum_mul, map_sum]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul (aeval (U 0)), aeval_C, ← Algebra.smul_def, smul_mul_assoc, map_smul, smul_eq_mul, mul_comm]`.
+-/
 private theorem trace_eq {W : Type} [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W] (l : ℕ) (hl : 0 < l)
     (U : ZMod l → Module.End ℂ W) (B : Module.End ℂ W) (hc : ∀ i k, Commute (U i) (U k))
     (hB : ∀ i, B * U i = U (i + 1) * B) :
@@ -103,6 +140,11 @@ private theorem trace_eq {W : Type} [AddCommGroup W] [Module ℂ W] [FiniteDimen
 
 end UpperTheory.ConvolutionTheory.Ci.ExponentialForm
 
+/- English proof (translation)
+Introduce `W _ _ _ l hl U B hc hB`. Take `⟨s, p, h⟩` from `ExponentialForm.trace_eq l hl U B hc hB`. Use `⟨s.erase 0, fun z => LinearMap.trace ℂ W (Polynomial.aeval (U 0) (p z) * B), Finset.notMem_erase _ _, fun j hj => ?_⟩` and prove the remaining obligations. Rewrite using `[h j]`. Use `(Finset.sum_erase _ ?_).symm` and prove the remaining obligations.
+
+Break down `Nat.eq_zero_or_pos j with rfl | hj0` into its components or cases. Establish `: Subsingleton W` using `Module.finrank_zero_iff.1 (Nat.le_zero.1 hj)`. Rewrite using `[Subsingleton.elim (Polynomial.aeval (U 0) (p 0) * B) 0, map_zero, zero_mul]`. Rewrite using `[zero_pow hj0.ne', mul_zero]`.
+-/
 theorem UpperTheory.ConvolutionTheory.Ci.expForm :
     ExpForm := by
   classical

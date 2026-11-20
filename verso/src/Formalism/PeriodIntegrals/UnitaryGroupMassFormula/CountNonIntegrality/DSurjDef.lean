@@ -16,6 +16,9 @@ def PiSurj : Prop :=
     Continuous (algebraMap ℚ_[ℓ] Fp) → FiniteDimensional ℚ_[ℓ] Fp → ∀ (ι : K →+* Fp), DenseRange ι →
       Function.Surjective (piMap K ℓ Fp ι)
 
+/- English proof (translation)
+Simplify using `[piMap]`.
+-/
 theorem piMap_one_tmul (K : Type) [Field K] [CharZero K] (ℓ : ℕ) [Fact ℓ.Prime] (Fp : Type) [Field Fp] [CharZero Fp] [Algebra ℚ_[ℓ] Fp]
     (ι : K →+* Fp) (y : K) : piMap K ℓ Fp ι (1 ⊗ₜ y) = ι y := by
   simp [piMap]

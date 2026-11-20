@@ -11,6 +11,13 @@ section General
 
 variable {O V W : Type*} [CommRing O] [AddCommGroup V] [Module O V] [AddCommGroup W] [Module O W]
 
+/- English proof (translation)
+Set `g : ↥A →ₗ[O] (↥(A.map f) ⧸ P.comap (A.map f).subtype)` to `(P.comap (A.map f).subtype).mkQ ∘ₗ f.submoduleMap A`. Establish `hk : S.comap A.subtype ≤ LinearMap.ker g`. Introduce `x hx`. Rewrite using `[LinearMap.mem_ker]`. Use `show (P.comap (A.map f).subtype).mkQ (f.submoduleMap A x) = 0`.
+
+Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `h ⟨x, hx, rfl⟩`. Use `Module.length_le_of_surjective ((S.comap A.subtype).liftQ g hk) ?_` and prove the remaining obligations. Introduce `z`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`.
+
+Take `⟨x, rfl⟩` from `f.submoduleMap_surjective A z`. Conclude with `⟨Submodule.Quotient.mk x, rfl⟩`.
+-/
 theorem ql_map_le (A S : Submodule O V) (f : V →ₗ[O] W) (P : Submodule O W) (h : S.map f ≤ P) :
     ql (A.map f) P ≤ ql A S := by
   let g : ↥A →ₗ[O] (↥(A.map f) ⧸ P.comap (A.map f).subtype) :=
@@ -27,6 +34,11 @@ theorem ql_map_le (A S : Submodule O V) (f : V →ₗ[O] W) (P : Submodule O W) 
   obtain ⟨x, rfl⟩ := f.submoduleMap_surjective A z
   exact ⟨Submodule.Quotient.mk x, rfl⟩
 
+/- English proof (translation)
+Use `ql_map_le _ _ _ _ ?_` and prove the remaining obligations. Rewrite using `[Submodule.map_sup]`. Use `sup_le_sup ?_ ?_` and prove the remaining obligations. Use `le_inf (Submodule.map_mono h1) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+
+Conclude with `NK.smul_mem r (h2 hx)`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Conclude with `le_of_eq rfl`.
+-/
 theorem ql_scaled_le (r : O) (M Mgg NK : Submodule O V) {n : ℕ} (th : Fin n → V) (h1 : Mgg ≤ M)
     (h2 : Mgg ≤ NK) :
     ql (M.map (r • (LinearMap.id : V →ₗ[O] V)))
@@ -44,6 +56,13 @@ theorem ql_scaled_le (r : O) (M Mgg NK : Submodule O V) {n : ℕ} (th : Fin n �
 
 end General
 
+/- English proof (translation)
+Use `set S : Submodule O ↥M := Mgg.comap M.subtype with hS`. Use `set T : Submodule O ↥M := Submodule.span O (Set.range fun j => (⟨th j, h2 j⟩ : ↥M)) with hT`. Establish `e1 : Submodule.span O (Set.range fun j => (Submodule.Quotient.mk ⟨th j, h2 j⟩ : ↥M ⧸ S)) = T.map S.mkQ`. Rewrite using `[hT, Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+
+Establish `hth : Submodule.span O (Set.range th) ≤ M` using `Submodule.span_le.2 (by rintro _ ⟨j, rfl⟩; exact h2 j)`. Establish `e2 : (Mgg ⊔ Submodule.span O (Set.range th)).comap M.subtype = S ⊔ T`. Apply `Submodule.map_injective_of_injective M.injective_subtype` to reduce the goal to its premises. Rewrite using `[Submodule.map_comap_subtype, Submodule.map_sup, hS, Submodule.map_comap_subtype, hT, Submodule.map_span, ← Set.range_comp, inf_eq_right.2 (sup_le h1 hth), inf_eq_right.2 h1]`. Both sides reduce to the same expression.
+
+Rewrite using `[e1, e2]`. Conclude with `(Submodule.quotientQuotientEquivQuotientSup S T).length_eq`.
+-/
 theorem length_quot_quot {O V : Type*} [CommRing O] [AddCommGroup V] [Module O V]
     (M Mgg : Submodule O V) {n : ℕ} (th : Fin n → V) (h1 : Mgg ≤ M) (h2 : ∀ j, th j ∈ M) :
     Module.length O ((↥M ⧸ Mgg.comap M.subtype) ⧸ Submodule.span O (Set.range fun j =>
@@ -90,6 +109,25 @@ def LocalStepQ : Prop :=
           ((Module.length O (↥AA ⧸ N₁'.comap AA.subtype)).toNat : ℤ) +
           ((Module.length O (↥Zm ⧸ Z.comap Zm.subtype)).toNat : ℤ) + (q : ℤ)
 
+/- English proof (translation)
+Introduce `O K V W _ _ _ _ _ _ _ _ _ _ _ _ _ ϖ hϖ M Θ N₁ Z Zm N' Mgg e n q th AA AA' N₁' ρ hMl hΘl hNΘ _ hthΘ hgg hggK hq hXN hN₁ hZ hZm hρ hkρ himg _ _ hf1 hf2 hf3 V'`. Use `set X : Submodule O V := M.map ((ϖ ^ e) • (LinearMap.id : V →ₗ[O] V)) with hX`. Use `set NK : Submodule O V := (Submodule.span K ((N₁ ⊔ Z : Submodule O V) : Set V)).restrictScalars O with hNK`. Establish `hsm : ∀ v : V, (algebraMap O K ϖ) ^ e • v = ϖ ^ e • v`. Introduce `v`.
+
+Rewrite using `[← map_pow, algebraMap_smul]`. Establish `hIdx` using `Formalism.IncomingBounds.index_last_reduction_holds O K V ϖ hϖ (e : ℤ) M Θ hMl hΘl V'`. Establish `hbridge : M.map ((((algebraMap O K ϖ) ^ (e : ℤ)) • LinearMap.id : V →ₗ[K] V).restrictScalars O) = X`. Use extensionality with `x`. Simplify using `only [Submodule.mem_map, LinearMap.restrictScalars_apply, LinearMap.smul_apply, LinearMap.id_coe, id_eq, zpow_natCast, X, LinearMap.smul_apply]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨y, hy, (hsm y).symm⟩`. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨y, hy, hsm y⟩`.
+
+Rewrite `hIdx` using `[hbridge]`. Set `Tj : Submodule O V` to `Submodule.span O (Set.range fun j => ϖ ^ e • th j)`. Establish `hTΘ : Tj ≤ Θ` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `Θ.smul_mem _ (hthΘ j))`.
+
+Establish `hggNK : Mgg ≤ NK` using `fun x hx => hggK (Submodule.subset_span hx)`. Establish `r1` using `reduction X Θ (N₁ ⊔ Z) Tj NK hNΘ hTΘ`. Establish `r2` using `levels N' ((X ⊓ NK) ⊔ (N₁ ⊔ Z)) N₁ Z Zm AA AA' N₁' ρ (sup_le hXN (sup_le hN₁ (hZ.trans hZm))) hρ hkρ himg`. Establish `r3 : ql X ((X ⊓ NK) ⊔ Tj) ≤ (q : ℕ∞)` using `(ql_scaled_le (ϖ ^ e) M Mgg NK th hgg hggNK).trans hq`. Use `set L1 := Module.length O (↥AA' ⧸ AA.comap AA'.subtype)`.
+
+Use `set L2 := Module.length O (↥AA ⧸ N₁'.comap AA.subtype)`. Use `set L3 := Module.length O (↥Zm ⧸ Z.comap Zm.subtype)`. Use `set L := Formalism.LatticeIndexTer.qlen O V (X ⊔ Θ) Θ with hL`. Establish `hLA' : L ≤ L1 + L2 + L3 + ((q : ℕ) : ℕ∞)` using `r1.trans (add_le_add r2 r3)`. Establish `hsum : L1 + L2 + L3 + ((q : ℕ) : ℕ∞) = ((L1.toNat + L2.toNat + L3.toNat + q : ℕ) : ℕ∞)`.
+
+Rewrite using `[← ENat.natCast_toNat hf1, ← ENat.natCast_toNat hf2, ← ENat.natCast_toNat hf3]`. Simplify using `only [ENat.toNat_natCast]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite `hLA'` using `[hsum]`.
+
+Establish `hLt : L.toNat ≤ L1.toNat + L2.toNat + L3.toNat + q`. Establish `hLne : L ≠ ⊤` using `ne_top_of_le_ne_top (by simp) hLA'`. Rewrite `hLA'` using `[← ENat.natCast_toNat hLne]`. Conclude with `hLA'` after adjusting the coercions. Establish `h5 : ((L.toNat : ℕ) : ℤ) ≤ (L1.toNat : ℤ) + (L2.toNat : ℤ) + (L3.toNat : ℤ) + (q : ℤ)`.
+
+Conclude with `hLt` after adjusting the coercions. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem localStepQ : LocalStepQ := by
   intro O K V W _ _ _ _ _ _ _ _ _ _ _ _ _ ϖ hϖ M Θ N₁ Z Zm N' Mgg e n q th AA AA' N₁'
     ρ hMl hΘl hNΘ _ hthΘ hgg hggK hq hXN hN₁ hZ hZm hρ hkρ himg _ _ hf1 hf2 hf3 V'
@@ -166,6 +204,19 @@ def LocalStepLevelsQ : Prop :=
             (R : ℝ) * ((T : ℝ) * c' * ∑ z, ((ep z : ℝ) * f z) * v z) + (R : ℝ) * (I : ℝ) +
             ((Module.length O (↥Zm ⧸ Z.comap Zm.subtype)).toNat : ℝ) + (q : ℝ)
 
+/- English proof (translation)
+Introduce `ι _ ep f ν v νs c' T R I hep hT hc hv hν O K V W _ _ _ _ _ _ _ _ _ _ _ _ _ ϖ hϖ M Θ N₁ Z Zm N' Mgg e n q th AA AA' N₁' ρ hM hΘ h1 h2 h3 h4 h5 h6 h8 h9 h10 h11 h12 h13 h14 h15 h16 h17 hcase hA hN V'`. Establish `h` using `localStepQ O K V W ϖ hϖ M Θ N₁ Z Zm N' Mgg e n q th AA AA' N₁' ρ hM hΘ h1 h2 h3 h4 h5 h6 h8 h9 h10 h11 h12 h13 h14 h15 h16 (ne_top_of_le_ne_top (ENat.natCast_ne_top _) hA) (ne_top_of_le_ne_top (ENat.natCast_ne_top _) hN) h17 V'`. Establish `hAn` using `ENat.toNat_le_of_le_natCast hA`. Establish `hNn` using `ENat.toNat_le_of_le_natCast hN`. Establish `hlev : ∑ z, ((max 0 ⌈(ep z : ℝ) * ((T : ℝ) * ν z - ((e : ℤ) : ℝ))⌉ : ℤ) : ℝ) * f z ≤ T * c' * ∑ z, ((ep z : ℝ) * f z) * v z`.
+
+Break down `hcase with h0 | h0` into its components or cases. Conclude with `levelsChain ι ep f ν v νs c' T (e : ℤ) hep hT hc hv hν (Or.inl (by exact_mod_cast h0))`. Conclude with `levelsChain_of_add_one_le ι ep f ν v νs c' T (e : ℤ) hep hT hc hv hν (by exact_mod_cast h0)`. Simplify using `only [Int.cast_natCast] at hlev`. Establish `hsumcast : (((∑ z, (max 0 ⌈(ep z : ℝ) * ((T : ℝ) * ν z - (e : ℝ))⌉).toNat * f z : ℕ)) : ℝ) = ∑ z, ((max 0 ⌈(ep z : ℝ) * ((T : ℝ) * ν z - (e : ℝ))⌉ : ℤ) : ℝ) * f z`.
+
+Rewrite using `[Nat.cast_sum]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_mul]`. Use `congr 1`. Establish `h0 : (0 : ℤ) ≤ max 0 ⌈(ep z : ℝ) * ((T : ℝ) * ν z - (e : ℝ))⌉` using `le_max_left _ _`.
+
+Rewrite using `[← Int.cast_natCast, Int.toNat_of_nonneg h0]`. Establish `hRnn : (0 : ℝ) ≤ R` using `Nat.cast_nonneg R`. Establish `key : ((Module.length O (↥AA' ⧸ AA.comap AA'.subtype)).toNat : ℝ) ≤ (R : ℝ) * ((T : ℝ) * c' * ∑ z, ((ep z : ℝ) * f z) * v z)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hAn` after adjusting the coercions.
+
+Use `_ ≤ _ := by`. Rewrite using `[Nat.cast_mul, hsumcast]`. Conclude with `mul_le_mul_of_nonneg_left hlev hRnn`. Establish `key2 : ((Module.length O (↥AA ⧸ N₁'.comap AA.subtype)).toNat : ℝ) ≤ (R : ℝ) * (I : ℝ)`. Conclude with `hNn` after adjusting the coercions.
+
+Establish `hR : (Formalism.LatticeIndexTer.idx O V (M ⊓ V'.restrictScalars O) (Θ ⊓ V'.restrictScalars O) : ℝ) ≤ (e : ℝ) * (finrank K V' : ℝ) + ((Module.length O (↥AA' ⧸ AA.comap AA'.subtype)).toNat : ℝ) + ((Module.length O (↥AA ⧸ N₁'.comap AA.subtype)).toNat : ℝ) + ((Module.length O (↥Zm ⧸ …`. Conclude with `h` after adjusting the coercions. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem localStepLevelsQ : LocalStepLevelsQ := by
   intro ι _ ep f ν v νs c' T R I hep hT hc hv hν O K V W _ _ _ _ _ _ _ _ _ _ _ _ _
     ϖ hϖ M Θ N₁ Z Zm N' Mgg e n q th AA AA' N₁' ρ hM hΘ h1 h2 h3 h4 h5 h6 h8 h9 h10
@@ -263,6 +314,15 @@ def LocalStepClosedQ : Prop :=
             (R : ℝ) * ((T : ℝ) * c' * ∑ z, ((ep z : ℝ) * f z) * v z) + (R : ℝ) * (I : ℝ) +
             ((Module.length O (↥Zm ⧸ Z.comap Zm.subtype)).toNat : ℝ) + (q : ℝ)
 
+/- English proof (translation)
+Introduce `ι _ ep f ν v νs c' T R I hep hT hc' hv hν O K V W _ _ _ _ _ _ _ _ _ _ _ _ _ ϖ hϖ M Θ N₁ Z Zm N' Mgg e n q th AA AA' N₁' ρ hM hΘ h1 h2 h3 h4 h5 h6 h8 h9 h10 h11 h12 h13 h14 h15 h16 h17 hcase Rr Aq _ _ _ _ _ _ _ _ xq nq Fq rq hF0 hFn hFd hFi hFl hsum hres hequiv A0 _ _ n1 F1 ι1 _ _ …`. Take `⟨eqv⟩` from `hequiv`. Use `set mmz : ι → ℕ := fun z => (max 0 ⌈(ep z : ℝ) * ((T : ℝ) * ν z - (e : ℝ))⌉).toNat with hmmz`. Establish `hL` using `levelsLengthSum O ι Rr Aq xq mmz nq Fq rq R hF0 hFn hFd hFi hFl hsum`. Establish `hA : Module.length O (↥AA' ⧸ AA.comap AA'.subtype) ≤ ((R * ∑ z, mmz z * f z : ℕ) : ℕ∞)`.
+
+Rewrite using `[eqv.length_eq, hL]`. Use `le_of_eq ?_` and prove the remaining obligations. Simplify using `only [hres]`. Use `push_cast`. Rewrite using `[Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hN : Module.length O (↥AA ⧸ N₁'.comap AA.subtype) ≤ ((R * I : ℕ) : ℕ∞)`. Rewrite using `[hspan, leadingTermLength O (↥AA) A0 n1 F1 ι1 deg δ t σ u hG0 hGn hGd hker hsurj hdeg hlead hind, hcard, hI]`. Use `push_cast`.
+
+Conclude with `le_rfl`. Conclude with `localStepLevelsQ ι ep f ν v νs c' T R I hep hT hc' hv hν O K V W ϖ hϖ M Θ N₁ Z Zm N' Mgg e n q th AA AA' N₁' ρ hM hΘ h1 h2 h3 h4 h5 h6 h8 h9 h10 h11 h12 h13 h14 h15 h16 h17 hcase hA hN V'`.
+-/
 theorem localStepClosedQ : LocalStepClosedQ := by
   intro ι _ ep f ν v νs c' T R I hep hT hc' hv hν O K V W _ _ _ _ _ _ _ _ _ _ _ _ _
     ϖ hϖ M Θ N₁ Z Zm N' Mgg e n q th AA AA' N₁' ρ hM hΘ h1 h2 h3 h4 h5 h6 h8 h9
@@ -295,6 +355,13 @@ section Semilinear
 variable {O O' : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CommRing O']
   [IsDomain O'] [IsDiscreteValuationRing O'] [Algebra O O']
 
+/- English proof (translation)
+Distinguish the cases in `hQ : Module.length O Q = ⊤`. Rewrite using `[hQ]`. Conclude with `le_top`. Set `_ : Module O Q'` to `Module.compHom Q' (algebraMap O O')`. Establish `: IsScalarTower O O' Q'` using `⟨fun a b x => by show (a • b) • x = (algebraMap O O' a) • (b • x)`.
+
+Rewrite using `[Algebra.smul_def, mul_smul]⟩`. Set `g' : Q →ₗ[O] Q'` to `{ toFun := g, map_add' := g.map_add, map_smul' := fun a x => g.map_smulₛₗ a x }`. Establish `hs : Function.Surjective (g'.liftBaseChange O')`. Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← hg, Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`.
+
+Conclude with `⟨TensorProduct.tmul O 1 x, by rw [LinearMap.liftBaseChange_tmul, one_smul]; rfl⟩`. Establish `h` using `Module.length_le_of_surjective _ hs`. Rewrite `h` using `[lengthBaseChangeLocal O O' Q ϖ (algebraMap O O' ϖ) 1 1 hϖ hϖ' (by simp) hQ]`. Simplify using `using h`.
+-/
 theorem length_le_of_semilinear {Q Q' : Type} [AddCommGroup Q] [Module O Q] [AddCommGroup Q']
     [Module O' Q'] (ϖ : O) (hϖ : Irreducible ϖ) (hϖ' : Irreducible (algebraMap O O' ϖ))
     (g : Q →ₛₗ[algebraMap O O'] Q') (hg : Submodule.span O' (Set.range g) = ⊤) :
@@ -315,6 +382,15 @@ theorem length_le_of_semilinear {Q Q' : Type} [AddCommGroup Q] [Module O Q] [Add
   rw [lengthBaseChangeLocal O O' Q ϖ (algebraMap O O' ϖ) 1 1 hϖ hϖ' (by simp) hQ] at h
   simpa using h
 
+/- English proof (translation)
+Use `set A₁ : Submodule O' V₁ := Submodule.span O' (jj '' (A : Set V)) with hA₁`. Set `g0 : ↥A →ₛₗ[algebraMap O O'] (↥A₁ ⧸ S₁.comap A₁.subtype)` to `(S₁.comap A₁.subtype).mkQ.comp ((jj.comp A.subtype).codRestrict A₁ fun x => Submodule.subset_span ⟨x, x.2, rfl⟩)`. Establish `hk : S.comap A.subtype ≤ LinearMap.ker g0`. Introduce `x hx`. Rewrite using `[LinearMap.mem_ker]`.
+
+Use `show (S₁.comap A₁.subtype).mkQ _ = 0`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `h x hx`. Use `length_le_of_semilinear ϖ hϖ hϖ' ((S.comap A.subtype).liftQ g0 hk) ?_` and prove the remaining obligations. Rewrite using `[eq_top_iff]`.
+
+Introduce `z hz`. Use `clear hz`. Take `⟨⟨y, hy⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`.
+
+Take `⟨x, hx, rfl⟩` from `hy`. Conclude with `Submodule.subset_span ⟨Submodule.Quotient.mk ⟨x, hx⟩, rfl⟩`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add a b ha hb iha ihb => exact Submodule.add_mem _ iha ihb`. Consider the case `smul r a ha ih => exact Submodule.smul_mem _ r ih`.
+-/
 theorem ql_span_le {V V₁ : Type} [AddCommGroup V] [Module O V] [AddCommGroup V₁] [Module O' V₁]
     (ϖ : O) (hϖ : Irreducible ϖ) (hϖ' : Irreducible (algebraMap O O' ϖ))
     (jj : V →ₛₗ[algebraMap O O'] V₁) (A S : Submodule O V) (S₁ : Submodule O' V₁)
@@ -411,6 +487,9 @@ def LocalStepClosedQDescUp : Prop :=
             (R : ℝ) * ((T : ℝ) * c' * ∑ z, ((ep z : ℝ) * f z) * v z) + (R : ℝ) * (I : ℝ) +
             ((Module.length O' (↥Zm ⧸ Z.comap Zm.subtype)).toNat : ℝ) + (q : ℝ)
 
+/- English proof (translation)
+Introduce `ι _ ep f ν v νs c' T R I hep hT hc' hv hν O O' K K' V V₁ W _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ j hj ϖ hϖ hϖ' M Θ N₁ Z Zm N' Mgg e n q th AA AA' N₁' ρ hM hΘ h1 h2 h3 h4 h5 h6 h8 h9 h10 h11 h12 h13 h14 h15 h16 h17 hcase Rr Aq _ _ _ _ _ _ _ _ xq nq Fq rq hF0 …`. Establish `: FiniteDimensional K' V₁` using `Module.Finite.equiv hj.equiv`. Establish `h` using `localStepClosedQ ι ep f ν v νs c' T R I hep hT hc' hv hν O' K' V₁ W (algebraMap O O' ϖ) hϖ' (Submodule.span O' (j '' (M : Set V))) (Submodule.span O' (j '' (Θ : Set V))) N₁ Z Zm N' Mgg e n q th AA AA' N₁' ρ (isLattice_span_image_alt O O' K K' V V₁ j hj M hM) (isLattice_span_image …`. Establish `hd` using `localStepDescent O O' K K' V V₁ j hj ϖ hϖ hϖ' M Θ V' hM hΘ 1 ((R : ℝ) * ((T : ℝ) * c' * ∑ z, ((ep z : ℝ) * f z) * v z) + (R : ℝ) * (I : ℝ) + ((Module.length O' (↥Zm ⧸ Z.comap Zm.subtype)).toNat : ℝ) + (q : ℝ)) 0 e (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem localStepClosedQDescUp : LocalStepClosedQDescUp := by
   intro ι _ ep f ν v νs c' T R I hep hT hc' hv hν O O' K K' V V₁ W
     _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ j hj ϖ hϖ hϖ'
@@ -494,6 +573,15 @@ def LocalStepClosedQDesc : Prop :=
             (R : ℝ) * ((T : ℝ) * c' * ∑ z, ((ep z : ℝ) * f z) * v z) + (R : ℝ) * (I : ℝ) +
             ((Module.length O' (↥Zm ⧸ Z.comap Zm.subtype)).toNat : ℝ) + (q : ℝ)
 
+/- English proof (translation)
+Introduce `ι _ ep f ν v νs c' T R I hep hT hc' hv hν O O' K K' V V₁ W _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ j hj ϖ hϖ hϖ' M Θ Mgg N₁ Z Zm N' e n q th AA AA' N₁' ρ hM hΘ h1 h2 h3 h4 h5 h6`. Set `jj : V →ₛₗ[algebraMap O O'] V₁` to `{ toFun := j map_add' := j.map_add map_smul' := fun a x => by show j (a • x) = algebraMap O O' a • j x`. Rewrite using `[← algebraMap_smul K a x, j.map_smul, ← algebraMap_smul K' (algebraMap O K a) (j x), ← IsScalarTower.algebraMap_apply O K K', IsScalarTower.algebraMap_apply O O' K', algebraMap_smul] }`. Establish `hlen : ql (Submodule.span O' (j '' (M : Set V))) (Submodule.span O' (j '' (Mgg : Set V)) ⊔ Submodule.span O' (Set.range fun i => j (th i))) ≤ ql M (Mgg ⊔ Submodule.span O (Set.range th))`. Use `ql_span_le ϖ hϖ hϖ' jj M _ _ ?_` and prove the remaining obligations.
+
+Establish `hle : Mgg ⊔ Submodule.span O (Set.range th) ≤ (Submodule.span O' (j '' (Mgg : Set V)) ⊔ Submodule.span O' (Set.range fun i => j (th i))).comap jj`. Use `sup_le (fun x hx => ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Conclude with `Submodule.mem_sup_left (Submodule.subset_span ⟨x, hx, rfl⟩)`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Submodule.mem_sup_right (Submodule.subset_span ⟨i, rfl⟩)`.
+
+Conclude with `fun x hx => hle hx`. Use `localStepClosedQDescUp ι ep f ν v νs c' T R I hep hT hc' hv hν O O' K K' V V₁ W j hj ϖ hϖ hϖ' M Θ N₁ Z Zm N' (Submodule.span O' (j '' (Mgg : Set V))) e n q (fun i => j (th i)) AA AA' N₁' ρ hM hΘ h1 (fun i => Submodule.subset_span ⟨th i, h2 i, rfl⟩) (fun i => Submodule.subset_span …` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Establish `hle : Submodule.span O' (j '' (Mgg : Set V)) ≤ (Submodule.span K' ((N₁ ⊔ Z : Submodule O' V₁) : Set V₁)).restrictScalars O'`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `h5 x hx`. Conclude with `fun x hx => hle hx`.
+-/
 theorem localStepClosedQDesc : LocalStepClosedQDesc := by
   intro ι _ ep f ν v νs c' T R I hep hT hc' hv hν O O' K K' V V₁ W
     _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ j hj ϖ hϖ hϖ'

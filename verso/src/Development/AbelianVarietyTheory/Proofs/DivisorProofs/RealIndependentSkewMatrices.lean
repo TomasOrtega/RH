@@ -5,6 +5,31 @@ open NumberField Matrix ReciprocityTheory.ChartRestriction.G.FD
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `E _ _ _ r n G hG e he hF`. Establish `cc_mul' : ∀ x y : E, cc (x * y) = cc x * cc y` using `fun x y => map_mul (IsCMField.complexConj E) x y`. Establish `cc_add' : ∀ x y : E, cc (x + y) = cc x + cc y` using `fun x y => map_add (IsCMField.complexConj E) x y`. Establish `cc_cc' : ∀ x : E, cc (cc x) = x` using `fun x => IsCMField.complexConj_apply_apply E x`. Establish `hmap : ∀ g : Fin n → E, (∑ i, g i • e i).map cc = ∑ i, cc (g i) • (e i).map cc`.
+
+Introduce `g`. Use extensionality with `a b`. Simplify using `[Matrix.sum_apply, cc, map_sum]`. Establish `hinj : ∀ M : Matrix (Fin r) (Fin r) E, Mᵀ * G = 0 → M = 0`. Introduce `M hM`.
+
+Establish `hu : IsUnit G.det` using `isUnit_iff_ne_zero.mpr hG`. Establish `h0 : Mᵀ = 0`. Use `congrArg (· * G⁻¹) hM` as an intermediate fact. Simplify `this` using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv G hu]`. Simplify using `using congrArg Matrix.transpose h0`.
+
+Establish `key : ∀ g : Fin n → E, ∑ i, g i • e i = 0 → ∑ i, cc (g i) • e i = 0`. Introduce `g hg`. Apply `hinj` to reduce the goal to its premises. Establish `h2 : G * (∑ i, g i • e i).map cc = 0`. Rewrite using `[hg]`.
+
+Use extensionality with `a b`. Simplify using `[Matrix.mul_apply, cc]`. Rewrite `h2` using `[hmap, Finset.mul_sum]`. Establish `h3 : (∑ i, cc (g i) • e i)ᵀ * G = - ∑ i, G * (cc (g i) • (e i).map cc)`. Rewrite using `[Matrix.transpose_sum, Finset.sum_mul, ← Finset.sum_neg_distrib]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.transpose_smul, Matrix.smul_mul, Matrix.mul_smul, ← smul_neg]`. Use `congr 1`. Conclude with `eq_neg_of_add_eq_zero_left (he i)`. Rewrite using `[h3, h2, neg_zero]`.
+
+Establish `real : ∀ g : Fin n → E, (∀ i, cc (g i) = g i) → ∑ i, g i • e i = 0 → ∀ i, g i = 0`. Introduce `g hc hg i`. Establish `hm : ∀ i, g i ∈ maximalRealSubfield E` using `fun i => (IsCMField.complexConj_eq_self_iff E _).mp (hc i)`. Use `Fintype.linearIndependent_iff.mp hF (fun i => ⟨g i, hm i⟩) hg i` as an intermediate fact. Simplify using `using congrArg (Subtype.val) this`.
+
+Take `⟨x, hx⟩` from `DFunLike.ne_iff.mp (IsCMField.complexConj_ne_one E)`. Establish `hx' : cc x ≠ x` using `hx`. Establish `sum_real : ∀ g : Fin n → E, ∑ i, g i • e i = 0 → ∀ i, g i + cc (g i) = 0`. Introduce `g hg`. Apply `real` to reduce the goal to its premises.
+
+Introduce `i`. Rewrite using `[cc_add', cc_cc', add_comm]`. Simplify using `only [add_smul, Finset.sum_add_distrib, hg, key g hg, add_zero]`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`.
+
+Establish `h1` using `sum_real g hg i`. Establish `hxg : ∑ i, (x * g i) • e i = 0`. Simplify using `only [mul_smul, ← Finset.smul_sum, hg, smul_zero]`. Establish `h2` using `sum_real (fun i => x * g i) hxg i`. Simplify using `only [cc_mul'] at h2`.
+
+Establish `h3 : cc (g i) = - g i` using `eq_neg_of_add_eq_zero_right h1`. Rewrite `h2` using `[h3]`. Establish `h4 : (x - cc x) * g i = 0` using `by linear_combination h2`. Break down `mul_eq_zero.mp h4 with h | h` into its components or cases. Conclude with `absurd (sub_eq_zero.mp h).symm hx'`.
+
+Conclude with `h`.
+-/
 theorem linearIndependent_of_skew_of_real : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E]
     {r n : ℕ} (G : Matrix (Fin r) (Fin r) E), G.det ≠ 0 →
     ∀ e : Fin n → Matrix (Fin r) (Fin r) E, (∀ i, (e i)ᵀ * G + G * (e i).map cc = 0) →

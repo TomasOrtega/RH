@@ -54,9 +54,15 @@ def toQuot : AdjoinRoot (topPoly f m c) →ₐ[R] (R[X][X] ⧸ relIdeal f m c) :
     rw [map_sub, map_pow] at h
     exact h)
 
+/- English proof (translation)
+Simplify using `[toQuot]`.
+-/
 theorem toQuot_root : toQuot f m c (AdjoinRoot.root _) = Ideal.Quotient.mk (relIdeal f m c) X := by
   simp [toQuot]
 
+/- English proof (translation)
+Establish `h : baseToQuot f m c (AdjoinRoot.root f) = Ideal.Quotient.mk (relIdeal f m c) (C X)` using `AdjoinRoot.liftAlgHom_root _ _ _ _`. Rewrite using `[← h]`. Simplify using `[toQuot]`.
+-/
 theorem toQuot_of_root : toQuot f m c (AdjoinRoot.of _ (AdjoinRoot.root f)) =
     Ideal.Quotient.mk (relIdeal f m c) (C X) := by
   have h : baseToQuot f m c (AdjoinRoot.root f) = Ideal.Quotient.mk (relIdeal f m c) (C X) :=
@@ -64,10 +70,16 @@ theorem toQuot_of_root : toQuot f m c (AdjoinRoot.of _ (AdjoinRoot.root f)) =
   rw [← h]
   simp [toQuot]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `eval₂ _ _ X = _`. Rewrite using `[eval₂_X]`.
+-/
 theorem toAdj_X : toAdj f m c (Ideal.Quotient.mk (relIdeal f m c) X) = AdjoinRoot.root _ := by
   change eval₂ _ _ X = _
   rw [eval₂_X]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `eval₂ _ _ (C X) = _`. Rewrite using `[eval₂_C, RingHom.coe_coe, aeval_X]`.
+-/
 theorem toAdj_C_X : toAdj f m c (Ideal.Quotient.mk (relIdeal f m c) (C X)) =
     AdjoinRoot.of _ (AdjoinRoot.root f) := by
   change eval₂ _ _ (C X) = _
@@ -95,6 +107,15 @@ def adjEquiv : AdjoinRoot (topPoly f m c) ≃ₐ[R] (R[X][X] ⧸ relIdeal f m c)
         rw [← toQuot_root] at this
         exact this)
 
+/- English proof (translation)
+Set `b₁ : Module.Basis (Fin d) R (AdjoinRoot f)` to `(AdjoinRoot.powerBasis' hf).basis.reindex (finCongr hd)`. Establish `hb₁ : ∀ i, b₁ i = AdjoinRoot.root f ^ (i : ℕ)`. Introduce `i`. Simplify using `only [b₁, Module.Basis.reindex_apply, PowerBasis.coe_basis]`. Both sides reduce to the same expression.
+
+Use `haveI : Nontrivial (AdjoinRoot f) := nontrivial_of_ne _ _ (b₁.ne_zero ⟨0, hd0⟩)`. Establish `hg : (topPoly f m c).Monic` using `monic_X_pow_sub_C _ hm`. Establish `hgd : (topPoly f m c).natDegree = m` using `natDegree_X_pow_sub_C`. Set `b₂ : Module.Basis (Fin m) (AdjoinRoot f) (AdjoinRoot (topPoly f m c))` to `(AdjoinRoot.powerBasis' hg).basis.reindex (finCongr hgd)`. Establish `hb₂ : ∀ j, b₂ j = AdjoinRoot.root (topPoly f m c) ^ (j : ℕ)`.
+
+Introduce `j`. Simplify using `only [b₂, Module.Basis.reindex_apply, PowerBasis.coe_basis]`. Both sides reduce to the same expression. Use `⟨(b₁.smulTower b₂).map (adjEquiv f m c).toLinearEquiv, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.map_apply, Module.Basis.smulTower_apply, hb₁, hb₂, Algebra.smul_def, AdjoinRoot.algebraMap_eq, ← toQuot_of_root, ← toQuot_root, ← map_pow (toQuot f m c), ← map_pow (toQuot f m c), ← map_mul, map_pow]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_basis [Nontrivial R] (hf : f.Monic) (d : ℕ) (hd : f.natDegree = d) (hd0 : 0 < d)
     (hm : m ≠ 0) :
     ∃ b : Module.Basis (Fin d × Fin m) R (R[X][X] ⧸ relIdeal f m c),
@@ -123,6 +144,9 @@ theorem exists_basis [Nontrivial R] (hf : f.Monic) (d : ℕ) (hd : f.natDegree =
 
 end General
 
+/- English proof (translation)
+Break down `subsingleton_or_nontrivial (O0 p) with h | h` into its components or cases. Use `haveI : Subsingleton (On p n) := Module.subsingleton (O0 p) _`. Conclude with `⟨Module.Basis.ofRepr (LinearEquiv.ofSubsingleton _ _), fun _ _ => Subsingleton.elim _ _⟩`. Establish `hpos : 0 < p ^ n` using `pow_pos hp.out.pos n`. Conclude with `exists_basis (cyclotomic (p ^ n) (O0 p)) (p ^ n) (qO p) (cyclotomic.monic _ _) _ (natDegree_cyclotomic _ _) (Nat.totient_pos.2 hpos) hpos.ne'`.
+-/
 theorem on_free (p : ℕ) [hp : Fact p.Prime] (n : ℕ) :
     ∃ b : Module.Basis (Fin (Nat.totient (p ^ n)) × Fin (p ^ n)) (O0 p) (On p n),
       ∀ i j, b (i, j) = xn p n ^ (i : ℕ) * yn p n ^ (j : ℕ) := by

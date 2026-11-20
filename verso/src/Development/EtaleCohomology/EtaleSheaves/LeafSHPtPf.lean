@@ -6,6 +6,13 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace LateralTheory.E.LeafSHPtPf
 open LateralTheory.E.E4 LateralTheory.E.LeafGhostCut LateralTheory.E.EtaleTopologySheaves LateralTheory.E.LeafDegCut LateralTheory.E.LeafInj0Pf LateralTheory.E.LeafInj0VPf
 
+/- English proof (translation)
+Establish `hA9 : A9` using `hH.2.2.2.2.2.2.2.1`. Establish `hB1 : B1` using `hH.2.2.2.2.2.2.2.2.2.2.1`. Take `⟨-, eq, hnat, -⟩` from `hA9 (ZMod q) (tw q i)`. Take `⟨j⟩` from `IsFiltered.nonempty (C := J)`. Use `set z : Ht q (sp (D.obj j)) 0 i := eq _ (Sec.res (e j ≫ (a j).left) s) with hz`.
+
+Establish `h0 : pull _ (spMap (c.ι.app j).hom) _ _ z = 0`. Rewrite using `[hz, spMap, hnat, ← res_comp, ht, hs, map_zero]`. Take `⟨k, f, hk⟩` from `(hB1 q D c hc 0 i).2 j z (hq j) h0`. Rewrite `hk` using `[hz, spMap, hnat, ← res_comp, hcomp]`. Establish `hk' : Sec.res (e k ≫ (a k).left) s = 0` using `(eq _).injective (by rw [hk, map_zero])`.
+
+Use `⟨V k, a k, y k, hy k, ?_⟩` and prove the remaining obligations. Use `congrArg (Sec.res (inv (e k))) hk'` as an intermediate fact. Rewrite `this` using `[← res_comp, IsIso.inv_hom_id_assoc]`. Simplify using `using this`.
+-/
 theorem germ (hH : Hyps) (q : ℕ) [NeZero q] (i : ℤ) {B : Scheme.{0}} (U : B.Etale) (x : U.left)
     {J : Type} [SmallCategory J] [IsFiltered J] (D : J ⥤ CommRingCat.{0}) (c : Cocone D) (hc : IsColimit c)
     (V : J → B.Etale) (a : ∀ j, V j ⟶ U) (y : ∀ j, (V j).left) (e : ∀ j, Sp (D.obj j) ⟶ (V j).left)
@@ -48,6 +55,9 @@ def LeafSHTop : Prop := ∀ {B : Scheme.{0}} (U : B.Etale) (x : U.left) {J : Typ
   (∀ O : U.left.Opens, x ∈ O → Set.range t ⊆ O) ∧
   (∀ S ∈ (EtTop B) U, ∃ (U' : B.Etale) (a' : U' ⟶ U), S a' ∧ ∃ t' : Sp c.pt ⟶ U'.left, t' ≫ a'.left = t)
 
+/- English proof (translation)
+Introduce `hH q _ k _ hq i B U s0 x`. Take `⟨J, _, _, D, c, hc, V, a, y, e, t, he, hy, hqj, hcomp, ht, hSH, hcof⟩` from `hN hH q k hq U s0 x`. Establish `: Nonempty J` using `IsFiltered.nonempty`. Take `⟨hO, hL⟩` from `hT U x D c V a e t ht hcof`. Conclude with `⟨c.pt, inferInstance, t, hSH, hO, hL, fun s hs => germ hH q i U x D c hc V a y e t he hy hqj hcomp ht s hs⟩`.
+-/
 theorem LeafSHPt_of (hN : LeafSHNb) (hT : LeafSHTop) : LeafSHPt := by
   intro hH q _ k _ hq i B U s0 x
   obtain ⟨J, _, _, D, c, hc, V, a, y, e, t, he, hy, hqj, hcomp, ht, hSH, hcof⟩ := hN hH q k hq U s0 x

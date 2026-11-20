@@ -18,6 +18,13 @@ open ReciprocityTheory.ChartRestriction.G.DVR GlobalTheory.UT GlobalTheory.UT.Co
 section
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F] [Algebra (FractionRing R) F]
 
+/- English proof (translation)
+Take `⟨u, hu, vu⟩` from `exists_gen D.P.isLB (φ' := DegPre.lineφ D F b) (ε' := DegPre.lineε k) (fun U _ h => by`. Establish `a₁ : jFK (R` using `R) F ≫ D.xK y = (cP D (TF (R := R) F) y).left := (Category.assoc _ _ _).symm`. Establish `a₂ : jFK (R` using `R) F ≫ (toUnit (TK R)).left ≫ eSec D.P.A = (1 : TF (R := R) F ⟶ D.P.A).left := (Category.assoc _ _ _).symm`. Establish `a₃ : ∏ i, h (DegPre.gtφ D F g.b y i) ^ ((k : ℤ) * DegPre.gtε i) = (∏ i, h (DegPre.gtφ D F g.b y i) ^ DegPre.gtε i) ^ (k : ℤ)`. Rewrite using `[← Finset.prod_zpow]`.
+
+Conclude with `Finset.prod_congr rfl fun i _ => by rw [← zpow_mul, mul_comm]`. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Fintype.prod_unique, a₁, a₂]`. Rewrite using `[a₃, prod_gt, prod_line, prod_line, hb, mul_comm g.b]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow]`.
+
+Use the proof step `module)`. Use the proof step `(LB.mulGen D.P.L _ _ _ _ (LB.mulGen D.P.L _ _ _ _ w (GeneratorPullback.powGen D.P.L _ _ (g.s y) k)) (LB.pullGen D.P.L _ _ (LB.mulGen D.P.L _ _ _ _ (GeneratorPullback.powGen D.P.L _ _ (D.psi y) k) (GeneratorPullback.powGen D.P.L _ _ D.rigK k)) (jFK (R := R) F)))`. Use the proof step `(mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ hw (powGen_isGen _ _ _ _ (g.isGen y) k)) (pullGen_isGen _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ (powGen_isGen _ _ _ _ (D.psi_gen y) k) (powGen_isGen _ _ _ _ (pullGen_isGen _ _ _ _ D.rig_gen _) k)) _))`. Use `⟨u, hu, fun z J hJ => ?_⟩` and prove the remaining obligations. Conclude with `(vu _ _ z J hJ).trans ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl (map_pow _ _ _))) ((val_pull hJ _ _ _).trans (val_mul hJ _ _ _))))`.
+-/
 theorem exists_frame {k : ℕ} (y : D.X) (g : GtPtF D F) (w : Frm D F k g.b) (hw : w.IsGen)
     (b : TF (R := R) F ⟶ D.P.A) (hb : b = g.b * cP D _ y) :
     ∃ ω : Frm D F k b, ω.IsGen ∧ ∀ z J, Good D.P.L z J → val ω (𝟙 _) z J =
@@ -47,6 +54,19 @@ theorem exists_frame {k : ℕ} (y : D.X) (g : GtPtF D F) (w : Frm D F k g.b) (hw
   exact (vu _ _ z J hJ).trans ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans
     (congrArg₂ (· * ·) rfl (map_pow _ _ _))) ((val_pull hJ _ _ _).trans (val_mul hJ _ _ _))))
 
+/- English proof (translation)
+Take `⟨hb, hs⟩` from `(isAdd_iff _ _ _).1 hadd`. Take `⟨ιb, ιv⟩` from `(isIota_iff _ _).1 hι`. Rewrite `hb` using `[ιb]`. Take `⟨ω, hω, vω⟩` from `exists_frame y g w hw g'.b hb`. Use `⟨ω, hω, fun s α => coef_eq fun z J hJ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨⟨u, hu, hc⟩, hv⟩` from `gen_fe (D := D) (F := F) hG k y α`. Establish `e₁` using `(secRel_iff D.P.isLB _ _ _ _ _ _ _ _ _ u).1 (s.fe y α u hu hc) _ (lift (𝟙 (TF (R := R) F)) g.b).left z J hJ`. Establish `t : lift (𝟙 (TF (R` using `R) F)) g.b ≫ DegPre.trF D F y = lift (𝟙 (TF (R := R) F)) g'.b := by`. Rewrite using `[trF_eq]`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, tr_fst, lift_fst, lift_fst]`. Rewrite using `[lift_snd, hb, Category.assoc]`. Use `(congrArg (_ ≫ ·) (tr_pr D F _)).trans ?_` and prove the remaining obligations. Rewrite using `[MonObj.comp_mul, lift_fst_assoc, Category.id_comp, lift_snd]`. Rewrite `e₁` using `[hv u hu hc _ _ z J hJ, ← Over.comp_left, t, val_famMult _ hJ, uVal, lift_fst_assoc, lift_fst, lift_snd, Category.id_comp, Over.id_left]`.
+
+Establish `e₂` using `gt_nsmul (𝟙 (TF (R := R) F)) hJ g α y k`. Rewrite `e₂` using `[Category.id_comp, Over.id_left]`. Establish `e₃` using `hs α z J hJ`. Establish `e₄ : th D z J (cP D _ α) g.b h.b = th D z J (cP D _ α) g.b (cP D _ y)` using `by rw [ιb]`. Establish `e₅ : val (h.s α) (𝟙 _) z J = val (D.tau y α) (𝟙 (TF (R` using `R) F).left ≫ jFK (R := R) F) z J := ιv α z J hJ`.
+
+Rewrite `e₃` using `[e₅, e₄]`. Rewrite using `[isCoef_coef g' hω α s z J hJ, e₁, vω z J hJ]`. Simplify using `only [_root_.mul_assoc, ← Units.val_mul]`. Use `congr 2`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Establish `a₂` using `congrArg Additive.ofMul e₂`. Establish `a₃` using `congrArg Additive.ofMul e₃`. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_pow] at a₂ a₃ ⊢`. Take the linear combination `(norm := module) a₃ - a₂`.
+-/
 theorem coef_shift_frame (hG : GlobalFnsSt) {k : ℕ} {y : D.X} {g h g' : GtPtF D F} (hι : GtPtF.IsIota y h)
     (hadd : GtPtF.IsAdd g h g') (w : Frm D F k g.b) (hw : w.IsGen) :
     ∃ ω : Frm D F k g'.b, ω.IsGen ∧ ∀ (s : Fam D F k) α, coef s g w (α + k • y) = coef s g' ω α := by
@@ -82,6 +102,9 @@ theorem coef_shift_frame (hG : GlobalFnsSt) {k : ℕ} {y : D.X} {g h g' : GtPtF 
   simp only [ofMul_mul, ofMul_inv, ofMul_pow] at a₂ a₃ ⊢
   linear_combination (norm := module) a₃ - a₂
 
+/- English proof (translation)
+Take `⟨ω, hω, e⟩` from `coef_shift_frame hG hι hadd w hw`. Take `⟨c, hc, -, e'⟩` from `((coef_basic R D F k g').2.2 ω hω).2.2.1 w' hw'`. Conclude with `⟨c, hc, fun s α => by rw [e', e]⟩`.
+-/
 theorem coef_shift (hG : GlobalFnsSt) {k : ℕ} {y : D.X} {g h g' : GtPtF D F} (hι : GtPtF.IsIota y h)
     (hadd : GtPtF.IsAdd g h g') (w : Frm D F k g.b) (hw : w.IsGen) (w' : Frm D F k g'.b) (hw' : w'.IsGen) :
     ∃ c : F, c ≠ 0 ∧ ∀ (s : Fam D F k) α, coef s g' w' α = c * coef s g w (α + k • y) := by
@@ -91,6 +114,15 @@ theorem coef_shift (hG : GlobalFnsSt) {k : ℕ} {y : D.X} {g h g' : GtPtF D F} (
 
 end
 
+/- English proof (translation)
+Introduce `hL o Ω _ _ _ _ S ρ p _ y₀ u k a g h g' y _ hι hadd`. Prove the components needed by the constructor for the conclusion. Introduce `H w' hw' l hl`. Take `⟨w, hw⟩` from `(coef_basic u.V u.D.toPre (PadicAlgCl p) k g).1`. Take `⟨c, hc, e⟩` from `coef_shift hL.1.globalFns hι hadd w hw w' hw'`.
+
+Take `⟨κ, hκ, hs⟩` from `H w hw l hl`. Use `⟨c * κ, mul_ne_zero hc hκ, fun σ s hσ => ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.mul_assoc, funext (e s)]`. Conclude with `((Equiv.addRight (k • y)).hasSum_iff.2 (hs σ s hσ)).mul_left c`. Introduce `H w hw l hl`.
+
+Take `⟨w', hw'⟩` from `(coef_basic u.V u.D.toPre (PadicAlgCl p) k g').1`. Take `⟨c, hc, e⟩` from `coef_shift hL.1.globalFns hι hadd w hw w' hw'`. Take `⟨κ, hκ, hs⟩` from `H w' hw' l hl`. Use `⟨c⁻¹ * κ, mul_ne_zero (inv_ne_zero hc) hκ, fun σ s hσ => ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.mul_assoc]`.
+
+Use `(Equiv.addRight (k • y)).hasSum_iff.1 ?_` and prove the remaining obligations. Use `(hs σ s hσ).mul_left c⁻¹` as an intermediate fact. Simplify using `only [e s, inv_mul_cancel_left₀ hc] at this`. Conclude with `this`.
+-/
 theorem parAt_add_iota : GlobalTheory.UT.LL → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (k : ℕ) (a : u.PtC) (g h g' : GtPtF u.D.toPre (PadicAlgCl p)) (y : u.D.toPre.X), 1 ≤ k → GtPtF.IsIota y h → GtPtF.IsAdd g h g' → (u.ParAt k a g ↔ u.ParAt k a g') := by
   intro hL o Ω _ _ _ _ S ρ p _ y₀ u k a g h g' y _ hι hadd
   constructor

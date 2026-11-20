@@ -13,6 +13,11 @@ open scoped TensorProduct
 
 namespace UpperTheory.Gal.G3
 
+/- English proof (translation)
+Set `L : k' ⊗[k] M →ₗ[k] N` to `TensorProduct.lift (((Algebra.linearMap k' (Module.End k' (M →ₗ[k] N))).flip f).restrictScalars k)`. Set `E` to `TensorProduct.equivFinsuppOfBasisLeft (N := M) e`. Establish `hL : bcSum e ψ = L.toAddMonoidHom.comp E.symm.toLinearMap.toAddMonoidHom` using `Finsupp.addHom_ext fun j m ↦ by`. Rewrite using `[bcSum_single]`. Simplify using `[L, E, hf]`.
+
+Express the relevant statement in the definitionally equal form `Function.Bijective (bcSum e ψ) ↔ Function.Bijective L`. Rewrite using `[hL]`. Conclude with `Function.Bijective.of_comp_iff L E.symm.bijective`.
+-/
 private theorem isBC_iff {k k' : Type} [CommRing k] [CommRing k'] [Algebra k k'] {J : Type}
     (e : Module.Basis J k k') {M N : Type*} [AddCommGroup M] [Module k M] [AddCommGroup N]
     [Module k' N] [Module k N] [IsScalarTower k k' N] (ψ : M →ₛₗ[algebraMap k k'] N)
@@ -29,6 +34,9 @@ private theorem isBC_iff {k k' : Type} [CommRing k] [CommRing k'] [Algebra k k']
   rw [hL]
   exact Function.Bijective.of_comp_iff L E.symm.bijective
 
+/- English proof (translation)
+The claim follows from `IsBaseChange.of_equiv ((Algebra.IsPushout.cancelBaseChange k k' B B' P).symm ≪≫ₗ hu.equiv.restrictScalars k') fun p ↦ by simp`.
+-/
 private theorem isBaseChange_bottom {k k' B B' : Type} [CommRing k] [CommRing k'] [CommRing B]
     [CommRing B'] [Algebra k k'] [Algebra k B] [Algebra k B'] [Algebra B B'] [Algebra k' B']
     [IsScalarTower k B B'] [IsScalarTower k k' B'] [Algebra.IsPushout k k' B B'] {P Q : Type*}
@@ -40,6 +48,11 @@ private theorem isBaseChange_bottom {k k' B B' : Type} [CommRing k] [CommRing k'
     ((Algebra.IsPushout.cancelBaseChange k k' B B' P).symm ≪≫ₗ hu.equiv.restrictScalars k')
     fun p ↦ by simp
 
+/- English proof (translation)
+Use `IsBaseChange.of_equiv (tensorKaehlerEquiv k k' B B') fun ω ↦ ?_` and prove the remaining obligations. Establish `h : ((tensorKaehlerEquiv k k' B B').toLinearMap.restrictScalars B) ∘ₗ (TensorProduct.mk B B' Ω[B⁄k] 1) = KaehlerDifferential.map k k' B B'`. Apply `Derivation.liftKaehlerDifferential_unique` to reduce the goal to its premises. Use extensionality with `b`. Simplify using `[tensorKaehlerEquiv_tmul_D]`.
+
+Conclude with `LinearMap.congr_fun h ω`.
+-/
 private theorem isBaseChange_map (k k' B B' : Type) [CommRing k] [CommRing k'] [CommRing B]
     [CommRing B'] [Algebra k k'] [Algebra k B] [Algebra k B'] [Algebra B B'] [Algebra k' B']
     [IsScalarTower k B B'] [IsScalarTower k k' B'] [Algebra.IsPushout k k' B B'] :
@@ -52,6 +65,17 @@ private theorem isBaseChange_map (k k' B B' : Type) [CommRing k] [CommRing k'] [
     simp [tensorKaehlerEquiv_tmul_D]
   exact LinearMap.congr_fun h ω
 
+/- English proof (translation)
+Introduce `k k' _ _ _ J e B B' _ _ _ _ α hα hB j`. Use `letI : Algebra B B' := α.toAlgebra`. Use `letI : Algebra k B' := ((algebraMap k' B').comp (algebraMap k k')).toAlgebra`. Use `haveI : IsScalarTower k k' B' := .of_algebraMap_eq fun _ ↦ rfl`. Use `haveI : IsScalarTower k B B' := .of_algebraMap_eq fun r ↦ (hα.map_algebraMap r).symm`.
+
+Use `haveI : Algebra.IsPushout k k' B B' := ⟨(isBC_iff e (semiSl hα) _ fun _ ↦ rfl).1 hB⟩`. Establish `hone (ω : Ω[B⁄k]) : hα.m1 ω = KaehlerDifferential.map k k' B B' ω`. Proceed by induction on `ω using ind1 with`. Consider the case `h b c => rw [hα.oneFormMap_smul_semilinear, hα.m1_D, map_smul, map_D]`. Both sides reduce to the same expression.
+
+Consider the case `h0 => simp`. Consider the case `ha x y hx hy => simp only [map_add, hx, hy]`. Set `pull : Om k B j →ₗ[B] Om k' B' j` to `{ toFun := hα.mOm j map_add' := map_add _ map_smul' := fun b x ↦ hα.mOm_smul b x }`. Establish `hpull : exteriorPowerMapOver B' j (KaehlerDifferential.map k k' B B') = pull`. Apply `exteriorPower.linearMap_ext` to reduce the goal to its premises.
+
+Use `ext1 v`. Simplify using `only [LinearMap.compAlternatingMap_apply, exteriorPowerMapOver_ιMulti]`. Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = hα.mDR (exteriorPower.ιMulti B j v : DR k B)`. Rewrite using `[exteriorPower.ιMulti_apply_coe, exteriorPower.ιMulti_apply_coe, ExteriorAlgebra.ιMulti_apply, ExteriorAlgebra.ιMulti_apply, map_list_prod, List.map_ofFn]`.
+
+Use `congr 2`. Use function extensionality and compare the values at `i`. Conclude with `((hα.mDR_ι (v i)).trans (congrArg ι1 (hone (v i)))).symm`. Conclude with `(isBC_iff e (hα.mOm j) _ fun x ↦ LinearMap.congr_fun hpull x).2 (isBaseChange_bottom (k := k) (k' := k') (B := B) (B' := B') (TopForm.isBaseChange_exteriorPower (isBaseChange_map k k' B B') j))`.
+-/
 theorem jHForms : P_forms := by
   intro k k' _ _ _ J e B B' _ _ _ _ α hα hB j
   letI : Algebra B B' := α.toAlgebra

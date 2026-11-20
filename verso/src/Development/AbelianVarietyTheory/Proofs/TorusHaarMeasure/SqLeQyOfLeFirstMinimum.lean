@@ -28,6 +28,9 @@ def SignDecayOn (S : Set ℝ) (E : Type) [Field E] [NumberField E] [IsCMField E]
       ‖X.fj la ξ ν P x‖ * X.nfac la x ≤
         Cη * X.la1 x ^ (-A) * Real.exp (-4 * Real.pi * (1 - η) * ∑ τ, ν τ * X.tt ξ x τ)
 
+/- English proof (translation)
+Introduce `r X la P C A hA` and use `h r X la P C A (hST hA)`.
+-/
 theorem SignDecayOn.mono {S T : Set ℝ} (h : SignDecayOn T E) (hST : S ⊆ T) : SignDecayOn S E :=
   fun r X la P C A hA => h r X la P C A (hST hA)
 

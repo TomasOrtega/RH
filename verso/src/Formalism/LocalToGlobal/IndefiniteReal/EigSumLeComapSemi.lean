@@ -22,6 +22,11 @@ def cxSys {I : Type} (σ : K →+* ℂ) (C : (I → K) → Prop) : (I → ℂ) �
 
 variable {V E : Type} [AddCommGroup V] [Module K V] [AddCommGroup E] [Module ℂ E]
 
+/- English proof (translation)
+Proceed by induction on `k generalizing v with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ, Module.End.mul_apply, ih, pow_succ, Module.End.mul_apply]`. Use `congr 1`.
+
+Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, map_sub, map_smulₛₗ, h]`.
+-/
 theorem map_pow_sub (f : V →ₛₗ[σ] E) (T : Module.End K V) (S : Module.End ℂ E)
     (h : ∀ v, f (T v) = S (f v)) (a : K) (k : ℕ) (v : V) :
     f (((T - a • 1) ^ k) v) = ((S - σ a • 1) ^ k) (f v) := by
@@ -32,6 +37,9 @@ theorem map_pow_sub (f : V →ₛₗ[σ] E) (T : Module.End K V) (S : Module.End
     congr 1
     simp only [LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, map_sub, map_smulₛₗ, h]
 
+/- English proof (translation)
+Rewrite `hv`, the goal using `[Module.End.mem_maxGenEigenspace]`. Take `⟨k, hk⟩` from `hv`. Conclude with `⟨k, by rw [← map_pow_sub f T S h a k v, hk, map_zero]⟩`.
+-/
 theorem map_maxGen (f : V →ₛₗ[σ] E) {T : Module.End K V} {S : Module.End ℂ E}
     (h : ∀ v, f (T v) = S (f v)) {a : K} {v : V} (hv : v ∈ T.maxGenEigenspace a) :
     f v ∈ S.maxGenEigenspace (σ a) := by
@@ -41,6 +49,9 @@ theorem map_maxGen (f : V →ₛₗ[σ] E) {T : Module.End K V} {S : Module.End 
 
 variable {I : Type}
 
+/- English proof (translation)
+Unfold `eigAt at hv ⊢`. Rewrite `hv`, the goal using `[Submodule.mem_iInf]`. Conclude with `fun i => map_maxGen f (hf i) (hv i)`.
+-/
 theorem map_eigAt (f : V →ₛₗ[σ] E) {op : I → Module.End K V} {h : I → Module.End ℂ E}
     (hf : ∀ i v, f (op i v) = h i (f v)) {x : I → K} {v : V} (hv : v ∈ eigAt op x) :
     f v ∈ eigAt h (fun i => σ (x i)) := by
@@ -48,6 +59,9 @@ theorem map_eigAt (f : V →ₛₗ[σ] E) {op : I → Module.End K V} {h : I →
   rw [Submodule.mem_iInf] at hv ⊢
   exact fun i => map_maxGen f (hf i) (hv i)
 
+/- English proof (translation)
+Use `show (⨆ (x : I → K) (_ : C x), eigAt op x) ≤ _`. Use `iSup₂_le fun x hx => ?_` and prove the remaining obligations. Introduce `v hv`. Rewrite using `[Submodule.mem_comap]`. Conclude with `eigAt_le_eigSum (op := h) ⟨x, hx, rfl⟩ (map_eigAt f hf hv)`.
+-/
 theorem eigSum_le_comap_semi (f : V →ₛₗ[σ] E) {op : I → Module.End K V} {h : I → Module.End ℂ E}
     (hf : ∀ i v, f (op i v) = h i (f v)) (C : (I → K) → Prop) :
     eigSum op C ≤ (eigSum h (cxSys σ C)).comap f := by
@@ -57,6 +71,17 @@ theorem eigSum_le_comap_semi (f : V →ₛₗ[σ] E) {op : I → Module.End K V}
   rw [Submodule.mem_comap]
   exact eigAt_le_eigSum (op := h) ⟨x, hx, rfl⟩ (map_eigAt f hf hv)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hv'`. Conclude with `eigSum_le_comap_semi f hf C hv'`. Introduce `hfv`. Establish `hpv : eigProj hc hs C v ∈ eigSum op C` using `eigProj_apply_mem hc hs C v`.
+
+Establish `h2 : v - eigProj hc hs C v ∈ eigSum op (fun x => ¬ C x)` using `sub_eigProj_mem hc hs C v`. Establish `hZ2 : v - eigProj hc hs C v ∈ Z` using `Z.sub_mem hv (eigProj_mem_of_stable hc hs C hZ hv)`. Establish `hf1 : f (v - eigProj hc hs C v) ∈ eigSum h (cxSys σ C)`. Rewrite using `[map_sub]`. Conclude with `Submodule.sub_mem _ hfv (eigSum_le_comap_semi f hf C hpv)`.
+
+Establish `hf2 : f (v - eigProj hc hs C v) ∈ eigSum h (cxSys σ fun x => ¬ C x)` using `eigSum_le_comap_semi f hf _ h2`. Establish `hdis : Disjoint (eigSum h (cxSys σ C)) (eigSum h (cxSys σ fun x => ¬ C x))`. Apply `disjoint_eigSum hch` to reduce the goal to its premises. Introduce and unpack `y ⟨x, hx, rfl⟩ ⟨x', hx', hxx⟩`. Apply `hx'` to reduce the goal to its premises.
+
+Establish `e : x' = x` using `funext fun i => (σ.injective (congrFun hxx i)).symm`. Rewrite using `[e]`. Conclude with `hx`. Establish `h0 : f (v - eigProj hc hs C v) = 0` using `(Submodule.disjoint_def.1 hdis) _ hf1 hf2`. Establish `e` using `hinj _ hZ2 h0`.
+
+Rewrite `e` using `[sub_eq_zero]`. Rewrite using `[e]`. Conclude with `hpv`.
+-/
 theorem mem_eigSum_iff_map [FiniteDimensional K V] [FiniteDimensional ℂ E] (f : V →ₛₗ[σ] E)
     {op : I → Module.End K V} (hc : PairComm op) (hs : SplitOver op)
     {h : I → Module.End ℂ E} (hch : PairComm h) (hf : ∀ i v, f (op i v) = h i (f v))
@@ -88,6 +113,13 @@ theorem mem_eigSum_iff_map [FiniteDimensional K V] [FiniteDimensional ℂ E] (f 
     rw [e]
     exact hpv
 
+/- English proof (translation)
+Use `(injective_iff_map_eq_zero f).2 fun v hv => ?_` and prove the remaining obligations. Establish `e` using `b.linearCombination_repr v`. Rewrite `e` using `[Finsupp.linearCombination_apply, Finsupp.sum]`. Establish `h3 : ∑ i ∈ (b.repr v).support, σ (b.repr v i) • f (b i) = f v`. Rewrite using `[← congrArg f e, map_sum]`.
+
+Simplify using `only [map_smulₛₗ]`. Establish `hall` using `linearIndependent_iff'.1 h _ _ (h3.trans hv)`. Establish `hr : b.repr v = 0`. Use extensionality with `i`. Assume the negation of the conclusion as `hi`.
+
+Conclude with `hi (σ.injective ((hall i (Finsupp.mem_support_iff.2 hi)).trans (map_zero σ).symm))`. Simplify using `using congrArg b.repr.symm hr`.
+-/
 theorem inj_of_li {ι : Type*} (b : Basis ι K V) (f : V →ₛₗ[σ] E)
     (h : LinearIndependent ℂ fun k => f (b k)) : Function.Injective f := by
   refine (injective_iff_map_eq_zero f).2 fun v hv => ?_
@@ -111,6 +143,9 @@ namespace CxData
 
 variable {Bs : DefBase K} {A : DefAmb Bs} (X : CxData A)
 
+/- English proof (translation)
+Simplify using `only [CxData.Z, Submodule.mem_comap, LinearMap.mem_range] at hz`. Take `⟨w, hw⟩` from `hz`. Establish `h1 : X.jR t z = 0`. Rewrite using `[← inner_self_eq_zero (𝕜 := ℂ), ← hw, LinearMap.adjoint_inner_left, hw, h0, inner_zero_right]`. Conclude with `inj_of_li (bR (A := A) t) (X.jR t) (hR t).1 (h1.trans (map_zero _).symm)`.
+-/
 theorem theta_jR_inj (hR : X.KFormR) (t : Bs.Tup) (z : A.FR t) (hz : z ∈ X.Z t)
     (h0 : X.Θ t (X.jR t z) = 0) : z = 0 := by
   simp only [CxData.Z, Submodule.mem_comap, LinearMap.mem_range] at hz
@@ -119,6 +154,9 @@ theorem theta_jR_inj (hR : X.KFormR) (t : Bs.Tup) (z : A.FR t) (hz : z ∈ X.Z t
     rw [← inner_self_eq_zero (𝕜 := ℂ), ← hw, LinearMap.adjoint_inner_left, hw, h0, inner_zero_right]
   exact inj_of_li (bR (A := A) t) (X.jR t) (hR t).1 (h1.trans (map_zero _).symm)
 
+/- English proof (translation)
+Simplify using `only [CxData.Zl, Submodule.mem_comap, LinearMap.mem_range] at hz`. Take `⟨w, hw⟩` from `hz`. Establish `h1 : X.jL j t z = 0`. Rewrite using `[← inner_self_eq_zero (𝕜 := ℂ), ← hw, LinearMap.adjoint_inner_left, hw, h0, inner_zero_right]`. Conclude with `inj_of_li (bL (A := A) j t) (X.jL j t) (hL j t).1 (h1.trans (map_zero _).symm)`.
+-/
 theorem theta_jL_inj (hL : X.KFormL) (j : Bs.J) (t : Bs.Tup) (z : A.FL j t) (hz : z ∈ X.Zl j t)
     (h0 : X.θ' j t (X.jL j t z) = 0) : z = 0 := by
   simp only [CxData.Zl, Submodule.mem_comap, LinearMap.mem_range] at hz
@@ -129,6 +167,9 @@ theorem theta_jL_inj (hL : X.KFormL) (j : Bs.J) (t : Bs.Tup) (z : A.FL j t) (hz 
 
 variable {fc : DefSub A → DefFace Bs} (cr : Crd A fc) (b : Bool)
 
+/- English proof (translation)
+Establish `hx : x = ∑ k, x k • Pi.single k (1 : K)`. Use function extensionality and compare the values at `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `conv_rhs => rw [hx]`. Simplify using `only [map_sum, map_smul, map_smulₛₗ, CxData.iC, lin, Fintype.linearCombination_apply, cpt]`.
+-/
 theorem iC_cpt_eq (t : Bs.Tup) (x : Fin ((lv (fc X.zs) b).dQ t) → K) :
     X.iC cr b t (cpt Bs.v0.embedding x) = X.Θ t (X.jR t (cr.toR X.zs b t x)) := by
   have hx : x = ∑ k, x k • Pi.single k (1 : K) := by
@@ -137,6 +178,9 @@ theorem iC_cpt_eq (t : Bs.Tup) (x : Fin ((lv (fc X.zs) b).dQ t) → K) :
   conv_rhs => rw [hx]
   simp only [map_sum, map_smul, map_smulₛₗ, CxData.iC, lin, Fintype.linearCombination_apply, cpt]
 
+/- English proof (translation)
+Establish `hx : x = ∑ k, x k • Pi.single k (1 : K)`. Use function extensionality and compare the values at `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `conv_rhs => rw [hx]`. Simplify using `only [map_sum, map_smul, map_smulₛₗ, CxData.tC, lin, Fintype.linearCombination_apply, cpt]`.
+-/
 theorem tC_cpt_eq (j : Bs.J) (t : Bs.Tup) (x : Fin ((lv (fc X.zs) b).dZ j t) → K) :
     X.tC cr b j t (cpt Bs.v0.embedding x) = X.θ' j t (X.jL j t (cr.toL X.zs b j t x)) := by
   have hx : x = ∑ k, x k • Pi.single k (1 : K) := by
@@ -173,16 +217,25 @@ structure HeckeThetaL (hW : ∀ j t, (A.fam.L j t).Pl × ℕ → Module.End ℂ 
 
 variable {A X}
 
+/- English proof (translation)
+Rewrite using `[hH.intw, hu, map_zero]`.
+-/
 theorem kerStabR_hecke {hE : ∀ t, (A.fam.R t).Pl × ℕ → Module.End ℂ X.EE} (hH : HeckeThetaR A X hE)
     (t : T) (i : (A.fam.R t).Pl × ℕ) (u : X.FC t) (hu : X.Θ t u = 0) :
     X.Θ t (X.opC t (Sum.inl i) u) = 0 := by
   rw [hH.intw, hu, map_zero]
 
+/- English proof (translation)
+Rewrite using `[hH.intw, hu, map_zero]`.
+-/
 theorem kerStabL_hecke {hW : ∀ j t, (A.fam.L j t).Pl × ℕ → Module.End ℂ (X.W j)} (hH : HeckeThetaL A X hW)
     (j : Fin m) (t : T) (i : (A.fam.L j t).Pl × ℕ) (u : X.FLC j t) (hu : X.θ' j t u = 0) :
     X.θ' j t (X.opLC j t (Sum.inl i) u) = 0 := by
   rw [hH.intw, hu, map_zero]
 
+/- English proof (translation)
+Introduce `t i u hu`. Break down `i with i | g` into its components or cases. Conclude with `kerStabR_hecke hH t i u hu`. Conclude with `hG t g u hu`.
+-/
 theorem kerStabR_of {hE : ∀ t, (A.fam.R t).Pl × ℕ → Module.End ℂ X.EE} (hH : HeckeThetaR A X hE)
     (hG : ∀ t (g : G) (u : X.FC t), X.Θ t u = 0 → X.Θ t (X.opC t (Sum.inr g) u) = 0) : X.KerStabR := by
   intro t i u hu
@@ -190,6 +243,9 @@ theorem kerStabR_of {hE : ∀ t, (A.fam.R t).Pl × ℕ → Module.End ℂ X.EE} 
   · exact kerStabR_hecke hH t i u hu
   · exact hG t g u hu
 
+/- English proof (translation)
+Introduce `j t i u hu`. Break down `i with i | g` into its components or cases. Conclude with `kerStabL_hecke hH j t i u hu`. Conclude with `hG j t g u hu`.
+-/
 theorem kerStabL_of {hW : ∀ j t, (A.fam.L j t).Pl × ℕ → Module.End ℂ (X.W j)} (hH : HeckeThetaL A X hW)
     (hG : ∀ j t (g : G) (u : X.FLC j t), X.θ' j t u = 0 → X.θ' j t (X.opLC j t (Sum.inr g) u) = 0) :
     X.KerStabL := by
@@ -198,6 +254,13 @@ theorem kerStabL_of {hW : ∀ j t, (A.fam.L j t).Pl × ℕ → Module.End ℂ (X
   · exact kerStabL_hecke hH j t i u hu
   · exact hG j t g u hu
 
+/- English proof (translation)
+Establish `h1 : (B.zE ℓ Z).mulVec y ∈ B.Z0 ℓ Z`. Rewrite using `[BlockDat.zE, subE_mulVec]`. Conclude with `Submodule.coe_mem _`. Simplify using `only [BlockDat.Z0, BlockDat.inV0, BlockDat.coord, Submodule.mem_comap, Submodule.mem_map, Matrix.mulVecLin_apply] at h1`. Take `⟨w, hw, hwe⟩` from `h1`.
+
+Establish `e : B.toF ℓ Z y = w`. Simplify using `only [BlockDat.toF, LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe, Matrix.mulVecLin_apply]`. Rewrite using `[← hwe]`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
+
+Conclude with `hw`.
+-/
 theorem toF_mem_Z {B : BlockDat K G Pl0} (ℓ : Lvl K G) (Z : Submodule K B.S.Forms) (y : Fin (B.dZ ℓ Z) → K) :
     B.toF ℓ Z y ∈ Z := by
   have h1 : (B.zE ℓ Z).mulVec y ∈ B.Z0 ℓ Z := by
@@ -214,6 +277,13 @@ theorem toF_mem_Z {B : BlockDat K G Pl0} (ℓ : Lvl K G) (Z : Submodule K B.S.Fo
   rw [e]
   exact hw
 
+/- English proof (translation)
+Establish `hB` using `hOk.what₂ A.fam.μ0`. Establish `hZ : ∀ i, X.Z A.fam.μ0 ≤ (X.Z A.fam.μ0).comap ((A.fam.R A.fam.μ0).op i)` using `fun i => Submodule.map_le_iff_le_comap.1 (hst.1 A.fam.μ0 (Sum.inl i))`. Establish `hmemZ` using `toF_mem_Z ℓ (X.Z A.fam.μ0) y`. Establish `e1 : y ∈ (A.fam.R A.fam.μ0).part ℓ (X.Z A.fam.μ0) p.1 ↔ (A.fam.R A.fam.μ0).toF ℓ (X.Z A.fam.μ0) y ∈ (A.fam.R A.fam.μ0).partF p.1`. Simplify using `only [BlockDat.part, BlockDat.inV0, BlockDat.coord, Submodule.mem_comap, Submodule.mem_map, BlockDat.toF, LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, hwe⟩`. Rewrite using `[← hwe, LinearEquiv.symm_apply_apply]`. Conclude with `hw`. Introduce `h`.
+
+Conclude with `⟨_, h, LinearEquiv.apply_symm_apply _ _⟩`. Rewrite using `[e1, hH.parts p]`. Conclude with `mem_eigSum_iff_map ((X.Θ A.fam.μ0).comp (X.jR A.fam.μ0)) hB.comm hB.split hH.comm (fun i v => by`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, show (A.fam.R A.fam.μ0).op i v = A.fam.amb.opR A.fam.μ0 (Sum.inl i) v from rfl, X.jR_opR hR, hH.intw])`. Use `hZ (fun z hz h0 => X.theta_jR_inj hR _ z hz h0) _ hmemZ`.
+-/
 theorem part_iff_rows (hR : X.KFormR) (hst : X.zs.Stable) {s : ℕ} (hOk : A.fam.Ok s)
     {hE : ∀ t, (A.fam.R t).Pl × ℕ → Module.End ℂ X.EE} (hH : HeckeThetaR A X hE) (p : A.fam.base.Ix)
     (ℓ : Lvl K G) (y : Fin ((A.fam.R A.fam.μ0).dZ ℓ (X.Z A.fam.μ0)) → K) :
@@ -241,6 +311,13 @@ theorem part_iff_rows (hR : X.KFormR) (hst : X.zs.Stable) {s : ℕ} (hOk : A.fam
         X.jR_opR hR, hH.intw])
     hZ (fun z hz h0 => X.theta_jR_inj hR _ z hz h0) _ hmemZ
 
+/- English proof (translation)
+Establish `hB` using `hOk.lifts j A.fam.μ0`. Establish `hZ : ∀ i, X.Zl j A.fam.μ0 ≤ (X.Zl j A.fam.μ0).comap ((A.fam.L j A.fam.μ0).op i)` using `fun i => Submodule.map_le_iff_le_comap.1 (hst.2 j A.fam.μ0 (Sum.inl i))`. Establish `hmemZ` using `toF_mem_Z ℓ (X.Zl j A.fam.μ0) y`. Establish `e1 : y ∈ (A.fam.L j A.fam.μ0).part ℓ (X.Zl j A.fam.μ0) (A.fam.tr j p.1) ↔ (A.fam.L j A.fam.μ0).toF ℓ (X.Zl j A.fam.μ0) y ∈ (A.fam.L j A.fam.μ0).partF (A.fam.tr j p.1)`. Simplify using `only [BlockDat.part, BlockDat.inV0, BlockDat.coord, Submodule.mem_comap, Submodule.mem_map, BlockDat.toF, LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, hwe⟩`. Rewrite using `[← hwe, LinearEquiv.symm_apply_apply]`. Conclude with `hw`. Introduce `h`.
+
+Conclude with `⟨_, h, LinearEquiv.apply_symm_apply _ _⟩`. Rewrite using `[e1, hH.parts j p]`. Conclude with `mem_eigSum_iff_map ((X.θ' j A.fam.μ0).comp (X.jL j A.fam.μ0)) hB.comm hB.split (hH.comm j) (fun i v => by`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, show (A.fam.L j A.fam.μ0).op i v = A.fam.amb.opL j A.fam.μ0 (Sum.inl i) v from rfl, X.jL_opL hL, hH.intw])`. Use `hZ (fun z hz h0 => X.theta_jL_inj hL j _ z hz h0) _ hmemZ`.
+-/
 theorem part_iff_lifts (hL : X.KFormL) (hst : X.zs.Stable) {s : ℕ} (hOk : A.fam.Ok s)
     {hW : ∀ j t, (A.fam.L j t).Pl × ℕ → Module.End ℂ (X.W j)} (hH : HeckeThetaL A X hW) (j : Fin m)
     (p : A.fam.base.Ix) (ℓ : Lvl K G) (y : Fin ((A.fam.L j A.fam.μ0).dZ ℓ (X.Zl j A.fam.μ0)) → K) :
@@ -272,6 +349,9 @@ variable (P0 : Subgroup G) (ψ0 : P0 →* Kˣ) (P1 : Subgroup G) (ψ1 : P1 →* 
   (Dc : ∀ Zs : DefSub A.fam.amb, DefCols (A.side P1 ψ1 Zs)) (Sp : ∀ Zs : DefSub A.fam.amb, SPer (Dc Zs))
   (Zsc : DefSub A.fam.amb → IndefScale A.fam.base)
 
+/- English proof (translation)
+Introduce `p x`. Rewrite using `[X.iC_cpt_eq]`. Consider the cases of `b`. Conclude with `part_iff_rows hR hst hOk hH p (A.fam.lvl P0 ψ0) x`. Conclude with `part_iff_rows hR hst hOk hH p (A.fam.lvl P1 ψ1) x`.
+-/
 theorem equivRows_of (hR : X.KFormR) (hst : X.zs.Stable) {s : ℕ} (hOk : A.fam.Ok s)
     {hE : ∀ t, (A.fam.R t).Pl × ℕ → Module.End ℂ X.EE} (hH : HeckeThetaR A X hE) (b : Bool) :
     X.H3 (crdOf A P0 ψ0 P1 ψ1 Dc Sp Zsc) b := by
@@ -281,6 +361,9 @@ theorem equivRows_of (hR : X.KFormR) (hst : X.zs.Stable) {s : ℕ} (hOk : A.fam.
   · exact part_iff_rows hR hst hOk hH p (A.fam.lvl P0 ψ0) x
   · exact part_iff_rows hR hst hOk hH p (A.fam.lvl P1 ψ1) x
 
+/- English proof (translation)
+Introduce `j p x`. Rewrite using `[X.tC_cpt_eq]`. Consider the cases of `b`. Conclude with `part_iff_lifts hL hst hOk hH j p (A.fam.lvlA P0 ψ0) x`. Conclude with `part_iff_lifts hL hst hOk hH j p (A.fam.lvlA P1 ψ1) x`.
+-/
 theorem equivLifts_of (hL : X.KFormL) (hst : X.zs.Stable) {s : ℕ} (hOk : A.fam.Ok s)
     {hW : ∀ j t, (A.fam.L j t).Pl × ℕ → Module.End ℂ (X.W j)} (hH : HeckeThetaL A X hW) (b : Bool) :
     X.H3W (crdOf A P0 ψ0 P1 ψ1 Dc Sp Zsc) b := by

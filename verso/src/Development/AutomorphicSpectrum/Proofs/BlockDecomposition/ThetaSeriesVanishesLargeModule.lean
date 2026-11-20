@@ -9,6 +9,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.BasePsi
 
+/- English proof (translation)
+Establish `hc : Continuous fun y : Ainf F => ∏ w : InfinitePlace F, ‖y w‖ ^ w.mult` using `continuous_finset_prod _ fun w _ => ((continuous_apply w).norm).pow _`. Take `⟨B, hB⟩` from `(hC.image hc).bddAbove`. Conclude with `⟨max B 0, le_max_right _ _, fun y hy => (hB ⟨y, hy, rfl⟩).trans (le_max_left _ _)⟩`.
+-/
 theorem exists_bound_inf {F : Type} [Field F] [NumberField F] (C : Set (Ainf F)) (hC : IsCompact C) :
     ∃ B : ℝ, 0 ≤ B ∧ ∀ y ∈ C, ∏ w : InfinitePlace F, ‖y w‖ ^ w.mult ≤ B := by
   have hc : Continuous fun y : Ainf F => ∏ w : InfinitePlace F, ‖y w‖ ^ w.mult :=
@@ -16,11 +19,25 @@ theorem exists_bound_inf {F : Type} [Field F] [NumberField F] (C : Set (Ainf F))
   obtain ⟨B, hB⟩ := (hC.image hc).bddAbove
   exact ⟨max B 0, le_max_right _ _, fun y hy => (hB ⟨y, hy, rfl⟩).trans (le_max_left _ _)⟩
 
+/- English proof (translation)
+Take `⟨B, hB⟩` from `(hC.image continuous_norm).bddAbove`. Conclude with `⟨max B 1, le_max_right _ _, fun y hy => (hB ⟨y, hy, rfl⟩).trans (le_max_left _ _)⟩`.
+-/
 theorem exists_bound_fin {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
     (C : Set (Fv F v)) (hC : IsCompact C) : ∃ B : ℝ, 1 ≤ B ∧ ∀ y ∈ C, ‖y‖ ≤ B := by
   obtain ⟨B, hB⟩ := (hC.image continuous_norm).bddAbove
   exact ⟨max B 1, le_max_right _ _, fun y hy => (hB ⟨y, hy, rfl⟩).trans (le_max_left _ _)⟩
 
+/- English proof (translation)
+Establish `hfin` using `IdeleGroup.finite_mulSupport_norm (K := F) b`. Use `set T : Finset (HeightOneSpectrum (𝓞 F)) := hfin.toFinset ∪ S with hT`. Establish `hsub : Function.mulSupport (fun v : HeightOneSpectrum (𝓞 F) => ‖(b : AF F).2 v‖) ⊆ (T : Set _)`. Introduce `v hv`. Simplify using `only [hT, Finset.coe_union, Set.Finite.coe_toFinset]`.
+
+Conclude with `Or.inl hv`. Establish `hfp : ∏ᶠ v : HeightOneSpectrum (𝓞 F), ‖(b : AF F).2 v‖ ≤ ∏ v ∈ S, c v`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ hsub]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.prod_le_prod (fun _ _ => norm_nonneg _) fun v _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hv : v ∈ S`. Simplify `hS v hv` using `[hv]`. Simplify `(Valued.toNormedField.norm_le_one_iff).2 ((HeightOneSpectrum.mem_adicCompletionIntegers (R := 𝓞 F) F v).1 (hout v hv))` using `[hv]`. Use `_ = ∏ v ∈ S, (if v ∈ S then c v else 1) := by`. Use `(Finset.prod_subset Finset.subset_union_right fun v _ hv => ?_).symm` and prove the remaining obligations.
+
+Simplify using `[hv]`. Use `_ = ∏ v ∈ S, c v := Finset.prod_congr rfl fun v hv => by simp [hv]`. Establish `hcS : 0 ≤ ∏ v ∈ S, c v` using `Finset.prod_nonneg fun v hv => zero_le_one.trans (hc v hv)`. Establish `hB0 : 0 ≤ ∏ w : InfinitePlace F, ‖(b : AF F).1 w‖ ^ w.mult` using `Finset.prod_nonneg fun w _ => pow_nonneg (norm_nonneg _) _`. Establish `hfp0 : 0 ≤ ∏ᶠ v : HeightOneSpectrum (𝓞 F), ‖(b : AF F).2 v‖` using `finprod_nonneg fun _ => norm_nonneg _`.
+
+Rewrite using `[md, IdeleGroup.ideleModule_eq]`. Conclude with `mul_le_mul hinf hfp hfp0 (hB0.trans hinf)`.
+-/
 theorem md_le_of_bounds {F : Type} [Field F] [NumberField F] (S : Finset (HeightOneSpectrum (𝓞 F)))
     (B : ℝ) (c : HeightOneSpectrum (𝓞 F) → ℝ) (hc : ∀ v ∈ S, 1 ≤ c v) (b : (AF F)ˣ)
     (hinf : ∏ w : InfinitePlace F, ‖(b : AF F).1 w‖ ^ w.mult ≤ B)
@@ -53,6 +70,15 @@ theorem md_le_of_bounds {F : Type} [Field F] [NumberField F] (S : Finset (Height
   rw [md, IdeleGroup.ideleModule_eq]
   exact mul_le_mul hinf hfp hfp0 (hB0.trans hinf)
 
+/- English proof (translation)
+Introduce `F _ _ S G g hG hg`. Take `⟨B, -, hB⟩` from `exists_bound_inf (F := F) (tsupport G) hG`. Establish `hfin : ∀ v ∈ S, ∃ B : ℝ, 1 ≤ B ∧ ∀ y ∈ tsupport (g v), ‖y‖ ≤ B` using `fun v hv => exists_bound_fin v _ (hg v hv)`. Use `choose! c hc1 hc using hfin`. Use `⟨B * ∏ v ∈ S, c v, fun a ha => ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hne`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t : Fˣ, PositivityTheory.Rg.Base1.pure S G g (fun v => rv v 0) (pr t * a) ≠ 0 := by`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Conclude with `hne (by simp [th, hall])`.
+
+Rewrite `ht` using `[pure_rv_zero_apply]`. Use `split_ifs at ht with hint`. Establish `hprod : G ((pr t * a : (AF F)ˣ) : AF F).1 * ∏ v ∈ S, g v (((pr t * a : (AF F)ˣ) : AF F).2 v) ≠ 0` using `fun h => ht (by rw [h]; simp)`. Establish `hGne` using `left_ne_zero_of_mul hprod`. Establish `hgne` using `Finset.prod_ne_zero_iff.1 (right_ne_zero_of_mul hprod)`.
+
+Establish `hle` using `md_le_of_bounds S B c hc1 (pr t * a) (hB _ (subset_tsupport _ (Function.mem_support.2 hGne))) (fun v hv => hc v hv _ (subset_tsupport _ (Function.mem_support.2 (hgne v hv)))) hint`. Rewrite `hle` using `[md_mul, md_pr, one_mul]`. Conclude with `absurd ha (not_lt.2 hle)`. Conclude with `ht rfl`.
+-/
 theorem th_pure_vanish : ∀ (F : Type) [Field F] [NumberField F] (S : Finset (HeightOneSpectrum (𝓞 F))) (G : Ainf F → ℝ)
     (g : ∀ v : HeightOneSpectrum (𝓞 F), Fv F v → ℝ), HasCompactSupport G → (∀ v ∈ S, HasCompactSupport (g v)) →
     ∃ R : ℝ, ∀ a : (AF F)ˣ, R < md a → th (PositivityTheory.Rg.Base1.pure S G g fun v => rv v 0) a = 0 := by

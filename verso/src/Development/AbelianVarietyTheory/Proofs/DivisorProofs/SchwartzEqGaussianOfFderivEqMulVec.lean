@@ -6,6 +6,19 @@ open scoped Real SchwartzMap ComplexConjugate
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `l _ _ τ f _hτ H x`. Use `set v : l → ℂ := fun i => (x i : ℂ) with hv`. Use `set c : ℂ := v ⬝ᵥ τ *ᵥ v with hc`. Establish `hx : x = ∑ a, x a • EuclideanSpace.single a (1 : ℝ)` using `by conv_lhs => rw [← (EuclideanSpace.basisFun l ℝ).toBasis.sum_repr x]`. Simplify using the standard rewrite rules.
+
+Establish `hD : ∀ t : ℝ, fderiv ℝ f (t • x) x = 2 * π * I * (t * c) * f (t • x)`. Introduce `t`. Rewrite using `[show fderiv ℝ f (t • x) x = fderiv ℝ f (t • x) (∑ a, x a • EuclideanSpace.single a (1 : ℝ)) from congrArg _ hx]`. Simplify using `only [map_sum, map_smul, H, Complex.real_smul]`. Establish `hvt : (fun i => ((t • x) i : ℂ)) = (t : ℂ) • v`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[hv]`. Rewrite using `[hvt, Matrix.mulVec_smul, hc, dotProduct]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Finset.mul_sum, Finset.sum_mul, hv]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Use `set φ : ℝ → ℂ := fun t => f (t • x) * cexp (-(π * I * c) * ((t ^ 2 : ℝ) : ℂ)) with hφ`. Establish `hφd : ∀ t : ℝ, HasDerivAt φ 0 t`. Introduce `t`. Establish `h1 : HasDerivAt (fun t : ℝ => f (t • x)) (fderiv ℝ f (t • x) ((1 : ℝ) • x)) t` using `(f.differentiableAt (x := t • x)).hasFDerivAt.comp_hasDerivAt t ((hasDerivAt_id t).smul_const x)`.
+
+Establish `h2 : HasDerivAt (fun t : ℝ => cexp (-(π * I * c) * ((t ^ 2 : ℝ) : ℂ))) (cexp (-(π * I * c) * ((t ^ 2 : ℝ) : ℂ)) * (-(π * I * c) * (((2 : ℕ) * t ^ (2 - 1) : ℝ) : ℂ))) t` using `(((hasDerivAt_pow 2 t).ofReal_comp).const_mul _).cexp`. Use `(h1.mul h2).congr_deriv ?_` and prove the remaining obligations. Rewrite using `[one_smul, hD]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hconst` using `is_const_of_deriv_eq_zero (fun t => (hφd t).differentiableAt) (fun t => (hφd t).deriv) 1 0`. Simplify using `only [hφ, one_smul, zero_smul, one_pow, ofReal_one, mul_one] at hconst`. Evaluate the numerical expressions using `at hconst`. Rewrite using `[← hconst, mul_assoc, ← Complex.exp_add]`. Simplify using the standard rewrite rules.
+-/
 theorem schwartz_eq_gaussian_of_fderiv_eq_mulVec :
     ∀ (l : Type) [Fintype l] [DecidableEq l] (τ : Matrix l l ℂ) (f : Sch l), τ.IsSymm →
       (∀ (a : l) (x : EuclideanSpace ℝ l),

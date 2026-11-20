@@ -18,6 +18,17 @@ noncomputable def withRight {k r : ℕ} {Wp Wq Wq' : Type} [NormedAddCommGroup W
     π_cont := Bs.π_cont, π'_cont := h.2.2.1, haarG := Bs.haarG, haarW := Bs.haarW, haarN := Bs.haarN,
     haarW' := Bs.haarW', sec := Bs.sec, χ_smooth := Bs.χ_smooth, χ_supp := Bs.χ_supp, χ_int := Bs.χ_int }
 
+/- English proof (translation)
+Take `⟨Cb, hCb, hTL⟩` from `Formalism.FourierDecayAlt.P.top_lift_exists`. Use `⟨Cb, hCb, ?_⟩` and prove the remaining obligations. Introduce `P Wp _ _ _ Wq _ _ _ Wq' _ _ _ p u u' π'' l0 hPl hl1 hl2`. Take `⟨T, h1, h2, h3, h4, hN⟩` from `Formalism.FourierDecayAlt.P.exists_normalized_tower P.k P.r Wp Wq' (withRight p.T.base π'' u' hPl.2.2.2.2.2.2)`. Express the relevant statement in the definitionally equal form `T.base.z = p.T.base.z at h1`.
+
+Express the relevant statement in the definitionally equal form `T.base.z' = p.T.base.z' at h2`. Express the relevant statement in the definitionally equal form `T.base.π = p.T.base.π at h3`. Express the relevant statement in the definitionally equal form `T.base.π' = π'' at h4`. Establish `hPT : Q.IsPlace (⟨P.k, P.r, P.T, P.T', u, u'⟩ : M.Par) T.base.z T.base.z' T.base.π T.base.π'`. Rewrite using `[h1, h2, h3, h4]`.
+
+Conclude with `hPl`. Establish `hF : D.IsBaseFrame T.base p.ν' p.m₀`. Use `p.hF` as an intermediate fact. Unfold `D.IsBaseFrame at this ⊢`. Rewrite using `[h1, h2]`.
+
+Conclude with `this`. Take `⟨-, μ, -, -, ⟨-, hμ, -⟩, -⟩` from `p.hΘ`. Take `⟨X⟩` from `Formalism.FourierDecayAlt.P.actual_operators_exist _ _ _ _ _ _ _ hPT`. Take `⟨L, st, g1, g2, g3, g4, g5, g6⟩` from `Formalism.FourierDecayAlt.P.level_start_actual _ _ _ _ _ _ _ hPT X l0`. Establish `hD : P5.IsData (⟨P.k, P.r, P.T, P.T', u, u'⟩ : M.Par) T.base.z T.base.z' T.base.π T.base.π' X μ L st l0` using `⟨hPT, hμ, g1, g2, g3, g4, g5, g6⟩`.
+
+Take `⟨f1, f2, f3⟩` from `Formalism.FourierDecayAlt.P.HaarMassHermitianCurvature.frameVec_facts T.base p.ν' p.m₀ hF`. Take `⟨Θ, hI, hC⟩` from `hTL Wp Wq' (⟨P.k, P.r, P.T, P.T', u, u'⟩ : M.Par) T.base X μ L st l0 hl1 hl2 hD`. Take `⟨TP⟩` from `Formalism.FourierDecayAlt.P.type_projectors_exist Wp Wq' (⟨P.k, P.r, P.T, P.T', u, u'⟩ : M.Par) T.base.z T.base.z' T.base.π T.base.π' (p.m₀.mulVec p.ν') hPT f1 f2 f3`. Conclude with `⟨⟨l0, T, p.ν', p.m₀, Θ, TP, ⟨hl1, hl2, p.hl.2.2⟩, hN, hF, hPT, ⟨X, μ, L, st, hD, hI⟩⟩, rfl, h1, h2, h3, h4, rfl, rfl, hC⟩`.
+-/
 theorem exists_place_other_right_type : ∃ Cb : ℝ, 0 ≤ Cb ∧ ∀ (P : M.Par) (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp] (Wq : Type) [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (Wq' : Type) [NormedAddCommGroup Wq'] [InnerProductSpace ℂ Wq'] [FiniteDimensional ℂ Wq'] (p : KB.Pl P Wp Wq) (u u' : ℕ → ℝ) (π'' : B.Mat P.k P.r → (Wq' →L[ℂ] Wq')) (l0 : ℕ), Q.IsPlace (⟨P.k, P.r, P.T, P.T', u, u'⟩ : M.Par) p.T.base.z p.T.base.z' p.T.base.π π'' → 1 ≤ l0 → l0 ≤ P.k → ∃ q : KB.Pl (⟨P.k, P.r, P.T, P.T', u, u'⟩ : M.Par) Wp Wq', q.l0 = l0 ∧ q.T.base.z = p.T.base.z ∧ q.T.base.z' = p.T.base.z' ∧ q.T.base.π = p.T.base.π ∧ q.T.base.π' = π'' ∧ q.ν' = p.ν' ∧ q.m₀ = p.m₀ ∧ KB.InDDplus2 (⟨P.k, P.r, P.T, P.T', u, u'⟩ : M.Par) q.l0 q.T.base Cb q.Θ := by
   obtain ⟨Cb, hCb, hTL⟩ := Formalism.FourierDecayAlt.P.top_lift_exists
   refine ⟨Cb, hCb, ?_⟩

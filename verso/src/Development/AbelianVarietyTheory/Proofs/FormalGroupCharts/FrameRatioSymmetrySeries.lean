@@ -13,6 +13,11 @@ set_option autoImplicit false
 noncomputable section
 namespace GlobalTheory.FrameRatioSym
 
+/- English proof (translation)
+Introduce `e he`. Rewrite `h` using `[psJet, psJet, FBIdJet.psTrunc_eq, FBIdJet.psTrunc_eq]`. Establish `h' : Ideal.Quotient.mk (MvPolynomial.idealOfVars σ R ^ (m + 1)) (MvPowerSeries.truncTotal (m + 1) f) = Ideal.Quotient.mk _ (MvPowerSeries.truncTotal (m + 1) g)` using `h`. Rewrite `h'` using `[Ideal.Quotient.eq, MvPolynomial.mem_pow_idealOfVars_iff']`. Use `h' e (Nat.lt_succ_of_le he)` as an intermediate fact.
+
+Rewrite `this` using `[MvPolynomial.coeff_sub, MvPowerSeries.coeff_truncTotal _ (Nat.lt_succ_of_le he), MvPowerSeries.coeff_truncTotal _ (Nat.lt_succ_of_le he), sub_eq_zero]`. Then use the resulting hypothesis.
+-/
 theorem jEq_of_psJet {R σ : Type} [CommRing R] [Fintype σ] [DecidableEq σ] {m : ℕ} {f g : MvPowerSeries σ R}
     (h : psJet m f = psJet m g) : JEq m f g := by
   intro e he
@@ -29,6 +34,11 @@ variable {V : Type} [CommRing V] {E : Type} [Field E] [NumberField E] [IsCMField
   {e : ∀ m, FrTyG t (𝟙 (Sp V)) d x m} {e' : ∀ m, FrTyG t (𝟙 (Sp V)) d x' m}
   {y : (jOG (𝟙 (Sp V)) d m n).left} {J : ((jOG (𝟙 (Sp V)) d m n).left ⟶ t.G.left) → t.PP.L.ι}
 
+/- English proof (translation)
+Take `⟨U, hU, h⟩` from `hf m`. Establish `hc` using `gm_unit (y := y) U ![u, v]`. Generalize the expression as in `hq : gm (Formalism.L2.Pj.homAt (𝟙 (Sp V)) (jQ m ![u, v])).left y ⊤ (unitΓ U) = c at hc`. Establish `k : ee x e y J u v = c⁻¹ * ee x e y J v u` using `(val_corr hJ h _).trans ((val_scale hJ _ _ _).trans (congrArg₂ (· * ·) (((congrArg _ (map_inv (Units.map (toΓ _).toMonoidHom) U)).trans (map_inv _ _)).trans (congrArg (·⁻¹) hq)) (peXX hJ _ 1 0)))`. Use `(hc _ hU).symm.trans (congrArg Units.val ?_)` and prove the remaining obligations.
+
+Rewrite using `[k, mul_inv, inv_inv, mul_comm c, mul_inv_cancel_left]`.
+-/
 theorem val_sy (hJ : Good t.PP.L y J) {sy : PS V 2 d} (hf : FamSy t (𝟙 (Sp V)) d x sy e) (u v : Q V d n) :
     VV m y (E2 sy u v) = (ee x e y J v u * (ee x e y J u v)⁻¹).val := by
   obtain ⟨U, hU, h⟩ := hf m
@@ -40,6 +50,11 @@ theorem val_sy (hJ : Good t.PP.L y J) {sy : PS V 2 d} (hf : FamSy t (𝟙 (Sp V)
   refine (hc _ hU).symm.trans (congrArg Units.val ?_)
   rw [k, mul_inv, inv_inv, mul_comm c, mul_inv_cancel_left]
 
+/- English proof (translation)
+Take `⟨U, hU, h⟩` from `hr`. Establish `hc` using `gm_unit (y := y) U ![u, v]`. Establish `hφ : ∀ (i : Fin 2) (j : Fin d), (Ideal.Quotient.mk _ (psIn d m ![i] (φ.1 j)) : Jet V (Fin 2 × Fin d) m) = psJet m ((ac φ (gen i) : Q V d 2).1 j)` using `fun i j => (mk_psIn m _ _).trans (congrArg (fun b => psJet m (sb b (φ.1 j))) (funext fun l => by fin_cases l; rfl))`. Establish `e₀` using `val_peG x hJ e ![u, v] ![fun j => psIn d m ![0] (φ.1 j), fun j => psIn d m ![1] (φ.1 j)] (ac φ (gen 0)) (ac φ (gen 1)) (by rintro ⟨l, j⟩; fin_cases l; exacts [hφ 0 j, hφ 1 j]) (by rintro ⟨l, j⟩; fin_cases l; exacts [(cc_psIn d m _ _).trans (φ.2 j), (cc_psIn d m _ _).trans (φ.2 j) …`. Rewrite `e₀` using `[sq_ac, sq_ac, sq_gen, sq_gen]`.
+
+Establish `k : ee x' e' y J u v = _ * ee x e y J (ac φ u) (ac φ v)` using `(val_corr hJ h _).trans ((val_scale hJ _ _ _).trans (congrArg₂ (· * ·) rfl e₀))`. Conclude with `(hc _ hU).symm.trans (congrArg Units.val (eq_mul_inv_of_mul_eq k.symm))`.
+-/
 theorem val_ratio (hJ : Good t.PP.L y J) (φ : Q V d 1) {ε : PS V 2 d} (hr : FrRel t x x' e e' φ.1 m ε) (u v : Q V d n) :
     VV m y (E2 ε u v) = (ee x' e' y J u v * (ee x e y J (ac φ u) (ac φ v))⁻¹).val := by
   obtain ⟨U, hU, h⟩ := hr
@@ -55,6 +70,13 @@ theorem val_ratio (hJ : Good t.PP.L y J) (φ : Q V d 1) {ε : PS V 2 d} (hr : Fr
     (val_corr hJ h _).trans ((val_scale hJ _ _ _).trans (congrArg₂ (· * ·) rfl e₀))
   exact (hc _ hU).symm.trans (congrArg Units.val (eq_mul_inv_of_mul_eq k.symm))
 
+/- English proof (translation)
+Introduce `E _ _ _ H _ V _ _ t d B B' κ κ' _ _ tg tg' uv uv' x x' e e' φ φi m ε _ _ hi _ _ _ _ _ hr hs hs'`. Set `p : Q V d 1` to `⟨φ, hi.1⟩`. Establish `key : psJet m (E2 B'.sy (gen 0 : Q V d 2) (gen 1) * E2 ε (gen 0) (gen 1)) = psJet m (E2 B.sy (ac p (gen 0 : Q V d 2)) (ac p (gen 1)) * E2 ε (gen 1) (gen 0))` using `cst_ext fun y => by choose J hJ using fun ψ : (jOG (𝟙 (Sp V)) d m 2).left ⟶ t.G.left => exists_chart t.PP.isLB (ψ y)`. Establish `hJ' : Good t.PP.L (Z` using `(jOG (𝟙 (Sp V)) d m 2).left) y J := hJ`. Use `show VV (x0 := 𝟙 (Sp V)) m y _ = VV (x0 := 𝟙 (Sp V)) m y _`.
+
+Rewrite using `[VV_mul, VV_mul, val_sy hJ' hs, val_sy hJ' hs', val_ratio hJ' p hr, val_ratio hJ' p hr, ← Units.val_mul, ← Units.val_mul]`. Use `congrArg Units.val (Additive.ofMul.injective ?_)` and prove the remaining obligations. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws. Rewrite `key` using `[formalSeriesValueAtTwoPoints_genericPoints, formalSeriesValueAtTwoPoints_genericPoints, formalSeriesValueAtTwoPoints_eq_ev, formalSeriesValueAtTwoPoints_eq_ev, ac_val, ac_val]`.
+
+Conclude with `jEq_of_psJet key`.
+-/
 theorem frameRatio_sy : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)] (V : Type) [CommRing V] [IsLocalRing V] (t : SAB H (Sp V)) (d : ℕ) (B B' : FB V d (𝓞 E)) (κ κ' : Type) [Fintype κ] [Fintype κ'] (tg : κ → (Sp (DualNumber V) ⟶ t.G.left)) (tg' : κ' → (Sp (DualNumber V) ⟶ t.G.left)) (uv : κ → Fin d → V) (uv' : κ' → Fin d → V) (x x' : ∀ m, jOG (𝟙 (Sp V)) d m 1 ⟶ t.G) (e : ∀ m, FrTyG t (𝟙 (Sp V)) d x m) (e' : ∀ m, FrTyG t (𝟙 (Sp V)) d x' m) (φ φi : Pt V 1 d) (m : ℕ) (ε : PS V 2 d), IsChartG t (𝟙 (Sp V)) d B.G.F B.A.act tg uv x → IsChartG t (𝟙 (Sp V)) d B'.G.F B'.A.act tg' uv' x' → IsInvPair φ φi → CoordRel x x' φ → (∀ i, B'.G.F i = transF B.G.F φ φi i) → (∀ a, B'.A.act a = comp1 φi (comp1 (B.A.act a) φ)) → (∀ m, (e m).IsGen) → (∀ m, (e' m).IsGen) → FrRel t x x' e e' φ m ε → FamSy t (𝟙 (Sp V)) d x B.sy e → FamSy t (𝟙 (Sp V)) d x' B'.sy e' → JEq m (B'.sy * ε) (ev (n := 2) ![comp1 φ (pt V (n := 2) d 0), comp1 φ (pt V (n := 2) d 1)] B.sy * ev (n := 2) ![pt V (n := 2) d 1, pt V (n := 2) d 0] ε) := by
   intro E _ _ _ H _ V _ _ t d B B' κ κ' _ _ tg tg' uv uv' x x' e e' φ φi m ε _ _ hi _ _ _ _ _ hr hs hs'
   let p : Q V d 1 := ⟨φ, hi.1⟩

@@ -4,6 +4,19 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 
 namespace GlobalTheory.TameInertiaGen
 
+/- English proof (translation)
+Establish `key : ∀ n a b, θ n (a⁻¹ * b) = 1 ↔ θ n b = θ n a`. Introduce `n a b`. Rewrite using `[map_mul, map_inv, inv_mul_eq_one, eq_comm]`. Establish `hker' : ∀ n a b, θ (n + 1) b = θ (n + 1) a → θ n b = θ n a` using `fun n a b h => (key n a b).1 (hker n _ ((key _ a b).2 h))`. Set `S : ℕ → Set H` to `fun n => θ n ⁻¹' {m | ∀ σ, ∃ k : ℤ, θ n σ = m ^ k}`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨γ, hγ⟩ : (⋂ n, S n).Nonempty := by`. Use `IsCompact.nonempty_iInter_of_sequence_nonempty_isCompact_isClosed S ?_ ?_ (hcl _ _).isCompact (fun n => hcl _ _)` and prove the remaining obligations. Introduce `n γ h σ`. Take `⟨k, hk⟩` from `h σ`. Use `⟨k, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hk`, the goal using `[← map_zpow]`. Conclude with `hker' n _ _ hk`. Introduce `n`. Take `⟨⟨_, γ, rfl⟩, hg⟩` from `(hcyc n).exists_generator`. Use `⟨γ, fun σ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨k, hk⟩` from `hg ⟨θ n σ, σ, rfl⟩`. Conclude with `⟨k, (congrArg Subtype.val hk).symm⟩`. Use `⟨γ, fun σ => ?_⟩` and prove the remaining obligations. Set `T : ℕ → Set H` to `fun n => closure (Subgroup.zpowers γ : Set H) ∩ θ n ⁻¹' {θ n σ}`. Choose the witnesses or unpack the hypotheses as in `⟨h, hh⟩ : (⋂ n, T n).Nonempty := by`.
+
+Use `IsCompact.nonempty_iInter_of_sequence_nonempty_isCompact_isClosed T ?_ ?_ (isClosed_closure.inter (hcl _ _)).isCompact (fun n => isClosed_closure.inter (hcl _ _))` and prove the remaining obligations. Introduce `n h hh`. Conclude with `⟨hh.1, hker' n _ _ hh.2⟩`. Introduce `n`. Take `⟨k, hk⟩` from `Set.mem_iInter.1 hγ n σ`.
+
+Conclude with `⟨γ ^ k, subset_closure ⟨k, rfl⟩, by simp [hk]⟩`. Rewrite `hh` using `[Set.mem_iInter]`. Conclude with `⟨h, (hh 0).1, fun n => (key n _ _).2 (hh n).2.symm⟩`.
+-/
 theorem exists_topGen {H M : Type*} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [CompactSpace H]
     [Group M] (θ : ℕ → H →* M) (hcl : ∀ n (s : Set M), IsClosed (θ n ⁻¹' s))
     (hcyc : ∀ n, IsCyclic (θ n).range) (hker : ∀ n σ, θ (n + 1) σ = 1 → θ n σ = 1) :
@@ -40,6 +53,21 @@ theorem exists_topGen {H M : Type*} [Group H] [TopologicalSpace H] [IsTopologica
   rw [Set.mem_iInter] at hh
   exact ⟨h, (hh 0).1, fun n => (key n _ _).2 (hh n).2.symm⟩
 
+/- English proof (translation)
+Establish `hle : ∀ z : ℤ, A.valuation (z : Ω) ≤ 1` using `fun z => (A.valuation_le_one_iff _).mpr (intCast_mem A z)`. Choose the witnesses or unpack the hypotheses as in `⟨p, hp0, hp⟩ : ∃ p : ℕ, p ≠ 0 ∧ ∀ q : ℕ, q.Prime → q = p ∨ A.valuation (q : Ω) = 1 := by`. Distinguish the cases in `h : ∃ p : ℕ, p.Prime ∧ A.valuation (p : Ω) < 1`. Take `⟨p, hp, hv⟩` from `h`. Use `⟨p, hp.ne_zero, fun q hq => ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_or]`. Establish `hq1 : A.valuation (q : Ω) < 1` using `lt_of_le_of_ne (by simpa using hle q) hc.2`. Take `⟨x, y, hxy⟩ : IsCoprime (q : ℤ) (p : ℤ)` from `Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes hq hp).2 hc.1)`. Establish `e : (x : Ω) * q + (y : Ω) * p = 1` using `by exact_mod_cast congrArg (Int.cast : ℤ → Ω) hxy`.
+
+Establish `: A.valuation ((x : Ω) * q + (y : Ω) * p) < 1`. Use `Valuation.map_add_lt _ ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_right (hle x) zero_le hq1`. Rewrite using `[map_mul]`.
+
+Conclude with `mul_lt_one_of_nonneg_of_lt_one_right (hle y) zero_le hv`. Rewrite `this` using `[e, map_one]`. Conclude with `lt_irrefl _ this`. Use `⟨1, one_ne_zero, fun q hq => Or.inr ?_⟩` and prove the remaining obligations. Conclude with `le_antisymm (by simpa using hle q) (not_lt.1 fun h' => h ⟨q, hq, h'⟩)`.
+
+Use `⟨p, hp0, fun a => ?_⟩` and prove the remaining obligations. Proceed by induction on `a using Nat.recOnMul with`. Consider the case `zero => intro h`. Conclude with `absurd rfl h`. Consider the case `one => intro _; exact ⟨0, by simp⟩`.
+
+Consider the case `prime q hq`. Introduce `_`. Break down `hp q hq with rfl | h` into its components or cases. Conclude with `⟨1, by simp⟩`. Conclude with `⟨0, by simp [h]⟩`.
+
+Consider the case `mul a b ha hb`. Introduce `h`. Take `⟨k, hk⟩` from `ha (left_ne_zero_of_mul h)`. Take `⟨l, hl⟩` from `hb (right_ne_zero_of_mul h)`. Conclude with `⟨k + l, by rw [Nat.cast_mul, map_mul, hk, hl, pow_add]⟩`.
+-/
 theorem exists_nat_gen {Ω : Type*} [Field Ω] [CharZero Ω] (A : ValuationSubring Ω) :
     ∃ p : ℕ, p ≠ 0 ∧ ∀ a : ℕ, a ≠ 0 → ∃ k : ℕ, A.valuation (a : Ω) = A.valuation (p : Ω) ^ k := by
   have hle : ∀ z : ℤ, A.valuation (z : Ω) ≤ 1 := fun z =>
@@ -77,6 +105,25 @@ theorem exists_nat_gen {Ω : Type*} [Field Ω] [CharZero Ω] (A : ValuationSubri
     obtain ⟨l, hl⟩ := hb (right_ne_zero_of_mul h)
     exact ⟨k + l, by rw [Nat.cast_mul, map_mul, hk, hl, pow_add]⟩
 
+/- English proof (translation)
+Take `⟨f, hf0, hf⟩` from `hy`. Establish `hz : ∀ a : ℤ, a ≠ 0 → ∃ k : ℕ, A.valuation (a : Ω) = A.valuation (p : Ω) ^ k`. Introduce `a ha`. Take `⟨k, hk⟩` from `hp a.natAbs (Int.natAbs_ne_zero.2 ha)`. Use `⟨k, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hk]`. Break down `Int.natAbs_eq a with h | h` into its components or cases. Use `conv_lhs => rw [h]`. Simplify using the standard rewrite rules. Use `conv_lhs => rw [h]`.
+
+Simplify using the standard rewrite rules. Establish `hvy : A.valuation y ≠ 0` using `by simpa using hy0`. Establish `hvp : A.valuation (p : Ω) ≠ 0` using `by simpa using hp0`. Set `t : ℕ → Ω` to `fun i => (f.coeff i : Ω) * y ^ i`. Establish `hsum : ∑ i ∈ f.support, t i = 0`.
+
+Rewrite using `[← hf, Polynomial.aeval_def, Polynomial.eval₂_eq_sum, Polynomial.sum_def]`. Simplify using `[t]`. Take `⟨i, hi, hmax⟩` from `f.support.exists_max_image (fun i => A.valuation (t i)) (Polynomial.support_nonempty.2 hf0)`. Establish `hti : ∀ i ∈ f.support, A.valuation (t i) ≠ 0`. Introduce `i hi`.
+
+Use `Polynomial.mem_support_iff.1 hi` as an intermediate fact. Simplify using `[t, this, hy0]`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj, hji, he⟩ : ∃ j ∈ f.support, j ≠ i ∧ A.valuation (t j) = A.valuation (t i) := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+
+Establish `h1 : A.valuation (∑ j ∈ f.support.erase i, t j) < A.valuation (t i)` using `Valuation.map_sum_lt _ (hti i hi) fun j hj => lt_of_le_of_ne (hmax j (Finset.mem_of_mem_erase hj)) (hc j (Finset.mem_of_mem_erase hj) (Finset.ne_of_mem_erase hj))`. Rewrite `hsum` using `[← Finset.add_sum_erase _ _ hi, add_eq_zero_iff_eq_neg]`. Rewrite `h1` using `[hsum, Valuation.map_neg]`. Conclude with `lt_irrefl _ h1`. Establish `main : ∀ i ∈ f.support, ∀ j ∈ f.support, i < j → A.valuation (t j) = A.valuation (t i) → ∃ (m : ℕ) (k : ℤ), m ≠ 0 ∧ A.valuation y ^ m = A.valuation (p : Ω) ^ k`.
+
+Introduce `i hi j hj hij he`. Take `⟨a, ha⟩` from `hz _ (Polynomial.mem_support_iff.1 hi)`. Take `⟨b, hb⟩` from `hz _ (Polynomial.mem_support_iff.1 hj)`. Take `⟨m, rfl⟩` from `Nat.exists_eq_add_of_lt hij`. Use `⟨m + 1, (a : ℤ) - b, by omega, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [t, map_mul, map_pow, ha, hb] at he`. Rewrite using `[zpow_sub₀ hvp, zpow_natCast, zpow_natCast, eq_div_iff (pow_ne_zero _ hvp)]`. Apply `mul_right_cancel₀ (pow_ne_zero i hvy)` to reduce the goal to its premises. Rewrite using `[← he, add_assoc, pow_add (A.valuation y) i]`. The two sides agree by associativity and commutativity.
+
+Break down `lt_or_gt_of_ne hji with h | h` into its components or cases. Conclude with `main j hj i hi h he.symm`. Conclude with `main i hi j hj h he`.
+-/
 theorem exists_pow_eq {Ω : Type*} [Field Ω] [CharZero Ω] (A : ValuationSubring Ω) {p : ℕ} (hp0 : p ≠ 0)
     (hp : ∀ a : ℕ, a ≠ 0 → ∃ k : ℕ, A.valuation (a : Ω) = A.valuation (p : Ω) ^ k)
     {y : Ω} (hy0 : y ≠ 0) (hy : IsAlgebraic ℤ y) :
@@ -137,10 +184,18 @@ noncomputable def cob (σ : G E Ω) : Ωˣ →* Ωˣ :=
   Units.map (σ : Ω →* Ω) / MonoidHom.id Ωˣ
 
 omit [NumberField E] in
+/- English proof (translation)
+Simplify using `[cob]`.
+-/
 theorem coe_cob (σ : G E Ω) (y : Ωˣ) : (cob σ y : Ω) = σ y / y := by
   simp [cob]
 
 omit [NumberField E] in
+/- English proof (translation)
+Use `ext`. Establish `h1 : (y : Ω) ≠ 0` using `y.ne_zero`. Establish `h2 : σ (y : Ω) ≠ 0` using `by simpa using h1`. Establish `h3 : τ (y : Ω) ≠ 0` using `by simpa using h1`. Simplify using `only [Units.val_mul, coe_cob, AlgEquiv.mul_apply, map_div₀]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem cob_mul (σ τ : G E Ω) (y : Ωˣ) : cob (σ * τ) y = cob σ (cob τ y) * cob σ y * cob τ y := by
   ext
   have h1 : (y : Ω) ≠ 0 := y.ne_zero
@@ -149,11 +204,17 @@ theorem cob_mul (σ τ : G E Ω) (y : Ωˣ) : cob (σ * τ) y = cob σ (cob τ y
   simp only [Units.val_mul, coe_cob, AlgEquiv.mul_apply, map_div₀]
   field_simp
 
+/- English proof (translation)
+Rewrite using `[ValuationSubring.mem_principalUnitGroup_iff, coe_cob, div_sub_one u.ne_zero, map_div₀, hu, div_one]`. Conclude with `hσ.2 _ hu.le`.
+-/
 theorem cob_mem_of_unit {A : ValuationSubring Ω} {σ : G E Ω} (hσ : σ ∈ Ine (F := E) A) {u : Ωˣ}
     (hu : A.valuation (u : Ω) = 1) : cob σ u ∈ A.principalUnitGroup := by
   rw [ValuationSubring.mem_principalUnitGroup_iff, coe_cob, div_sub_one u.ne_zero, map_div₀, hu, div_one]
   exact hσ.2 _ hu.le
 
+/- English proof (translation)
+Establish `e : y = (y / r ^ k) * r ^ k` using `by simp`. Rewrite using `[e, map_mul, map_zpow]`. Use `mul_mem (cob_mem_of_unit hσ ?_) (zpow_mem hr k)` and prove the remaining obligations. Establish `h : A.valuation (r : Ω) ^ k ≠ 0` using `zpow_ne_zero _ (by simp)`. Simplify using `[hy, h]`.
+-/
 theorem cob_mem_of_zpow {A : ValuationSubring Ω} {σ : G E Ω} (hσ : σ ∈ Ine (F := E) A) {r y : Ωˣ} {k : ℤ}
     (hr : cob σ r ∈ A.principalUnitGroup) (hy : A.valuation (y : Ω) = A.valuation (r : Ω) ^ k) :
     cob σ y ∈ A.principalUnitGroup := by
@@ -164,6 +225,9 @@ theorem cob_mem_of_zpow {A : ValuationSubring Ω} {σ : G E Ω} (hσ : σ ∈ In
   simp [hy, h]
 
 omit [NumberField E] in
+/- English proof (translation)
+Rewrite using `[← map_pow]`. Use `ext`. Rewrite using `[coe_cob, Units.val_pow_eq_pow_val, hr, map_natCast, div_self (hr ▸ pow_ne_zero _ r.ne_zero), Units.val_one]`.
+-/
 theorem cob_pow_eq_one (σ : G E Ω) {r : Ωˣ} {N p : ℕ} (hr : (r : Ω) ^ N = p) : cob σ r ^ N = 1 := by
   rw [← map_pow]
   ext
@@ -178,10 +242,16 @@ noncomputable def tameChar (A : ValuationSubring Ω) {r : Ωˣ} {N p : ℕ} (hN 
     rw [Subgroup.coe_mul, cob_mul, QuotientGroup.mk_mul, QuotientGroup.mk_mul,
       (QuotientGroup.eq_one_iff _).2 h, one_mul]
 
+/- English proof (translation)
+The claim follows from `QuotientGroup.eq_one_iff _`.
+-/
 theorem tameChar_eq_one {A : ValuationSubring Ω} {r : Ωˣ} {N p : ℕ} (hN : N ≠ 0) (hr : (r : Ω) ^ N = p)
     (σ : Ine (F := E) A) : tameChar A hN hr σ = 1 ↔ cob σ.1 r ∈ A.principalUnitGroup :=
   QuotientGroup.eq_one_iff _
 
+/- English proof (translation)
+Establish `: NeZero N` using `⟨hN⟩`. Establish `: IsCyclic ((rootsOfUnity N Ω).map (QuotientGroup.mk' A.principalUnitGroup))` using `isCyclic_of_surjective _ ((QuotientGroup.mk' A.principalUnitGroup).subgroupMap_surjective _)`. Use `Subgroup.isCyclic_of_le (H' := (rootsOfUnity N Ω).map (QuotientGroup.mk' A.principalUnitGroup)) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨σ, rfl⟩`. Conclude with `⟨cob σ.1 r, cob_pow_eq_one σ.1 hr, rfl⟩`.
+-/
 theorem isCyclic_range (A : ValuationSubring Ω) {r : Ωˣ} {N p : ℕ} (hN : N ≠ 0) (hr : (r : Ω) ^ N = p) :
     IsCyclic (tameChar (E := E) A hN hr).range := by
   have : NeZero N := ⟨hN⟩
@@ -191,6 +261,11 @@ theorem isCyclic_range (A : ValuationSubring Ω) {r : Ωˣ} {N p : ℕ} (hN : N 
   rintro _ ⟨σ, rfl⟩
   exact ⟨cob σ.1 r, cob_pow_eq_one σ.1 hr, rfl⟩
 
+/- English proof (translation)
+Establish `h` using `(isClosed_setOf_apply (F := E) (r : Ω) (fun t => ∃ u : Ωˣ, (u : Ω) = t / r ∧ QuotientGroup.mk u ∈ s)).preimage (continuous_subtype_val (p := fun σ : G E Ω => σ ∈ Ine (F := E) A))`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `σ`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Conclude with `⟨cob σ.1 r, coe_cob _ _, h⟩`. Introduce and unpack `⟨u, hu, h⟩`. Establish `: u = cob σ.1 r` using `Units.ext (hu.trans (coe_cob _ _).symm)`. Substitute `this` using the available equality. Conclude with `h`.
+-/
 theorem isClosed_preimage [IsAlgClosure E Ω] (A : ValuationSubring Ω) {r : Ωˣ} {N p : ℕ} (hN : N ≠ 0)
     (hr : (r : Ω) ^ N = p) (s : Set (Ωˣ ⧸ A.principalUnitGroup)) :
     IsClosed (tameChar (E := E) A hN hr ⁻¹' s) := by
@@ -207,6 +282,25 @@ theorem isClosed_preimage [IsAlgClosure E Ω] (A : ValuationSubring Ω) {r : Ω�
     subst this
     exact h
 
+/- English proof (translation)
+Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed E`. Establish `: CharZero Ω` using `charZero_of_injective_algebraMap (algebraMap E Ω).injective`. Establish `: IsGalois E Ω` using `{}`. Establish `: CompactSpace (Ine (F` using `E) A) := isCompact_iff_compactSpace.1 (isClosed_Ine A).isCompact`. Take `⟨p, hp0, hp⟩` from `exists_nat_gen A`.
+
+Establish `hroot : ∀ n : ℕ, ∃ r : Ωˣ, (r : Ω) ^ n.factorial = p`. Introduce `n`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq (p : Ω) n.factorial_pos`. Establish `hz0 : z ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `hz` using `[zero_pow n.factorial_ne_zero]`. Conclude with `hp0 (by exact_mod_cast hz.symm)`. Conclude with `⟨Units.mk0 z hz0, hz⟩`. Use `choose r hr using hroot`. Establish `hvr : ∀ n, A.valuation (p : Ω) = A.valuation (r n : Ω) ^ (n.factorial : ℤ)` using `fun n => by`.
+
+Rewrite using `[← hr n, map_pow, zpow_natCast]`. Take `⟨γ, hγ⟩` from `exists_topGen (fun n => tameChar (E := E) A n.factorial_ne_zero (hr n)) (fun n s => isClosed_preimage A _ _ s) (fun n => isCyclic_range A _ _) (fun n σ h => by`. Rewrite `h`, the goal using `[tameChar_eq_one]`. Use `cob_mem_of_zpow σ.2 (k := (n + 1 : ℕ)) h ?_` and prove the remaining obligations. Rewrite using `[zpow_natCast, ← pow_left_inj₀ zero_le zero_le n.factorial_ne_zero, ← pow_mul, ← Nat.factorial_succ, ← map_pow, ← map_pow, hr, hr])`.
+
+Use `⟨γ.1, γ.2, fun σ hσ => ?_⟩` and prove the remaining obligations. Take `⟨h, hh, hw⟩` from `hγ ⟨σ, hσ⟩`. Use `set C : Subgroup (G E Ω) := Subgroup.closure (insert γ.1 {σ : G E Ω | ∀ y : Ω, y ≠ 0 → A.valuation (σ y / y - 1) < 1}) with hC`. Establish `h1 : h.1 ∈ C.topologicalClosure`. Use `closure_mono ?_ (image_closure_subset_closure_image continuous_subtype_val ⟨h, hh, rfl⟩)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨_, ⟨k, rfl⟩, rfl⟩`. Conclude with `zpow_mem (Subgroup.subset_closure (Set.mem_insert _ _) : γ.1 ∈ C) k`. Establish `h2 : h.1⁻¹ * σ ∈ C`. Use `Subgroup.subset_closure (Set.mem_insert_of_mem _ fun y hy => ?_)` and prove the remaining obligations. Establish `halg : IsAlgebraic ℤ y`.
+
+Establish `: Algebra.IsAlgebraic ℚ Ω` using `Algebra.IsAlgebraic.trans ℚ E Ω`. Conclude with `(IsFractionRing.isAlgebraic_iff ℤ ℚ Ω).2 (Algebra.IsAlgebraic.isAlgebraic y)`. Take `⟨m, k, hm, hk⟩` from `exists_pow_eq A hp0 hp hy halg`. Take `⟨m, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hm`. Use `cob_mem_of_zpow (y := Units.mk0 y hy) (k := (m.factorial : ℤ) * k) (h⁻¹ * ⟨σ, hσ⟩).2 ((tameChar_eq_one _ _ _).1 (hw (m + 1))) (by` as an intermediate fact.
+
+Rewrite using `[Units.val_mk0, ← pow_left_inj₀ zero_le zero_le hm, hk, hvr (m + 1), ← zpow_natCast, ← zpow_mul, ← zpow_mul, Nat.factorial_succ]`. Use `congr 1`. Use `push_cast`. Use the proof step `ring)`. Rewrite `this` using `[ValuationSubring.mem_principalUnitGroup_iff, coe_cob]`.
+
+Conclude with `this`. Establish `h3` using `C.topologicalClosure.mul_mem h1 (C.le_topologicalClosure h2)`. Rewrite `h3` using `[mul_inv_cancel_left]`. Conclude with `h3`.
+-/
 theorem exists_tameGenAt_of_valuationSubring [IsAlgClosure E Ω] (A : ValuationSubring Ω) :
     ∃ γ : G E Ω, TameGenAt A γ := by
   have : IsAlgClosed Ω := IsAlgClosure.isAlgClosed E
@@ -261,6 +355,9 @@ theorem exists_tameGenAt_of_valuationSubring [IsAlgClosure E Ω] (A : ValuationS
 
 end
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ A _` and use `exists_tameGenAt_of_valuationSubring A`.
+-/
 theorem exists_tameGenAt : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     (v : HeightOneSpectrum (𝓞 E)) (A : ValuationSubring Ω), IsPlaceOver A v → ∃ γ : G E Ω, TameGenAt A γ :=
   fun _ _ _ _ _ _ _ _ A _ => exists_tameGenAt_of_valuationSubring A

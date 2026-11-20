@@ -68,6 +68,9 @@ def FlatDegreeBound.Statement : Prop :=
 
 section Examples
 
+/- English proof (translation)
+Simplify using `only [hermForm, Matrix.mulVec_smul, dotProduct_smul, star_smul, smul_dotProduct, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hermForm_smul {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (a b : ℂ) (x y : Fin n → ℂ) :
     hermForm H (a • x) (b • y) = star a * b * hermForm H x y := by
   simp only [hermForm, Matrix.mulVec_smul, dotProduct_smul, star_smul, smul_dotProduct,
@@ -76,6 +79,9 @@ theorem hermForm_smul {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (a b : ℂ) (x 
 
 def exH : Matrix (Fin (1 + 1)) (Fin (1 + 1)) ℂ := Matrix.diagonal ![1, -1]
 
+/- English proof (translation)
+Rewrite using `[exH, Matrix.IsHermitian, Matrix.diagonal_conjTranspose]`. Use `congr 1`. Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp`.
+-/
 theorem exH_isHermitian : exH.IsHermitian := by
   rw [exH, Matrix.IsHermitian, Matrix.diagonal_conjTranspose]
   congr 1
@@ -86,28 +92,52 @@ def exU : Fin (1 + 1) → ℂ := ![1, 1 / 2]
 
 def exW : Fin (1 + 1) → ℂ := ![1 / 2, 1]
 
+/- English proof (translation)
+Simplify using `[hermForm, exH, exU, exW, dotProduct, Fin.sum_univ_two, Matrix.mulVec, Matrix.diagonal, map_ofNat]`. Apply the tactic sequence `try norm_num`.
+-/
 theorem exU_exW : hermForm exH exU exW = 0 := by
   simp [hermForm, exH, exU, exW, dotProduct, Fin.sum_univ_two, Matrix.mulVec, Matrix.diagonal, map_ofNat]
   try norm_num
 
+/- English proof (translation)
+Simplify using `[hermForm, exH, exU, dotProduct, Fin.sum_univ_two, Matrix.mulVec, Matrix.diagonal, map_ofNat]`. Apply the tactic sequence `try norm_num`.
+-/
 theorem exU_exU : hermForm exH exU exU = 3 / 4 := by
   simp [hermForm, exH, exU, dotProduct, Fin.sum_univ_two, Matrix.mulVec, Matrix.diagonal, map_ofNat]
   try norm_num
 
+/- English proof (translation)
+Simplify using `[hermForm, exH, exW, dotProduct, Fin.sum_univ_two, Matrix.mulVec, Matrix.diagonal, map_ofNat]`. Apply the tactic sequence `try norm_num`.
+-/
 theorem exW_exW : hermForm exH exW exW = -3 / 4 := by
   simp [hermForm, exH, exW, dotProduct, Fin.sum_univ_two, Matrix.mulVec, Matrix.diagonal, map_ofNat]
   try norm_num
 
+/- English proof (translation)
+Introduce `h`. Use `congrFun h 0` as an intermediate fact. Simplify using `[exU] at this`.
+-/
 theorem exU_ne : exU ≠ 0 := by
   intro h
   have := congrFun h 0
   simp [exU] at this
 
+/- English proof (translation)
+Introduce `h`. Use `congrFun h 1` as an intermediate fact. Simplify using `[exW] at this`.
+-/
 theorem exW_ne : exW ≠ 0 := by
   intro h
   have := congrFun h 1
   simp [exW] at this
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[Submodule.disjoint_def]`. Introduce `x hx hy`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.mp hx`. Take `⟨b, hb⟩` from `Submodule.mem_span_singleton.mp hy`.
+
+Establish `h0` using `congrFun hb 0`. Establish `h1` using `congrFun hb 1`. Simplify using `[exU, exW] at h0 h1`. Establish `ha : a = 0` using `by linear_combination (-4 / 3 : ℂ) * h0 + (2 / 3 : ℂ) * h1`. Simplify using `[ha]`.
+
+Rewrite using `[codisjoint_iff, eq_top_iff]`. Introduce `z _`. Rewrite using `[Submodule.mem_sup]`. Use `⟨((4 * z 0 - 2 * z 1) / 3) • exU, Submodule.mem_span_singleton.mpr ⟨_, rfl⟩, ((4 * z 1 - 2 * z 0) / 3) • exW, Submodule.mem_span_singleton.mpr ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i`.
+
+Apply the tactic sequence `fin_cases i <;> simp [exU, exW] <;> ring`.
+-/
 theorem ex_isCompl : IsCompl (ℂ ∙ exU) (ℂ ∙ exW) := by
   constructor
   · rw [Submodule.disjoint_def]
@@ -163,23 +193,35 @@ def exPoint : PeriodPoint 1 1 exH where
     norm_num
     exact ha
 
+/- English proof (translation)
+Use `⟨exH_isHermitian, fun k ↦ ?_⟩` and prove the remaining obligations. Use `fin_cases k`. Conclude with `Submodule.mem_span_singleton_self exW`.
+-/
 theorem FlatNormConstant.hypotheses_example :
     exH.IsHermitian ∧ ∀ k, (![exW] : Fin 1 → Fin (1 + 1) → ℂ) k ∈ exPoint.minus := by
   refine ⟨exH_isHermitian, fun k ↦ ?_⟩
   fin_cases k
   exact Submodule.mem_span_singleton_self exW
 
+/- English proof (translation)
+The claim follows from `h 1 1 exH exH_isHermitian exPoint _ _ FlatNormConstant.hypotheses_example.2`.
+-/
 theorem FlatNormConstant.at_example (h : FlatNormConstant.Statement) :
     hodgeNormSq exPoint ![![1, 0]] ![exW] =
       Complex.normSq (frameMatrix ![![1, 0]] ![exW]).det * |exH.det.re| :=
   h 1 1 exH exH_isHermitian exPoint _ _ FlatNormConstant.hypotheses_example.2
 
+/- English proof (translation)
+The claim follows from `(h ℚ (CyclotomicField 4 ℚ)).1`.
+-/
 theorem DifferentNorms.at_example (h : DifferentNorms.Statement) :
     (Ideal.absNorm (differentIdeal (𝓞 ℚ) (𝓞 (CyclotomicField 4 ℚ))) : ℝ) ^
         ((Module.finrank ℚ (CyclotomicField 4 ℚ) : ℝ)⁻¹) =
       rootDiscr (CyclotomicField 4 ℚ) / rootDiscr ℚ :=
   (h ℚ (CyclotomicField 4 ℚ)).1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem FlatDegreeBound.hypotheses_example :
     let c : ℝ := -((((2 : ℕ) : ℝ) - ((1 : ℕ) : ℝ)) / 2 * 1 +
         ((1 : ℕ) : ℝ) * (2 * Real.log (rootDiscr ℚ) -
@@ -188,6 +230,9 @@ theorem FlatDegreeBound.hypotheses_example :
         ((1 : ℕ) : ℝ) * (2 * Real.log (rootDiscr ℚ) -
           Real.log (rootDiscr (CyclotomicField 4 ℚ)))) := rfl
 
+/- English proof (translation)
+The claim follows from `|-((((2 : ℕ) : ℝ) - ((1 : ℕ) : ℝ)) / 2 * 1 + ((1 : ℕ) : ℝ) * (2 * Real.log (rootDiscr ℚ) - Real.log (rootDiscr (CyclotomicField 4 ℚ)))) + (((2 : ℕ) : ℝ) - ((1 : ℕ) : ℝ)) / 2 * 1| ≤ ((1 : ℕ) : ℝ) * Real.log (rootDiscr (CyclotomicField 4 ℚ)) := h ℚ (CyclotomicField 4 ℚ) 2 1 1 _ Fla …`.
+-/
 theorem FlatDegreeBound.at_example (h : FlatDegreeBound.Statement) :
     |-((((2 : ℕ) : ℝ) - ((1 : ℕ) : ℝ)) / 2 * 1 +
         ((1 : ℕ) : ℝ) * (2 * Real.log (rootDiscr ℚ) -

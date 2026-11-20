@@ -9,6 +9,15 @@ open GlobalTheory.Doubling (absE)
 
 namespace GlobalTheory.SigDet
 
+/- English proof (translation)
+Introduce `n M r s h`. Take `⟨hn, A, hA⟩` from `h`. Set `e : Fin r ⊕ Fin s ≃ Fin n` to `finSumFinEquiv.trans (finCongr hn)`. Use `set B : Matrix (Fin n) (Fin n) ℂ := A.submatrix id e.symm with hB`. Establish `key : Bᵀ * M * B.map star = (Matrix.fromBlocks 1 0 0 (-1) : Matrix (Fin r ⊕ Fin s) (Fin r ⊕ Fin s) ℂ).submatrix e.symm e.symm`.
+
+Rewrite using `[← hA]`. Establish `t1 : Bᵀ = Aᵀ.submatrix e.symm id` using `rfl`. Establish `t2 : B.map star = (A.map star).submatrix id e.symm` using `rfl`. Rewrite using `[t1, t2, Matrix.submatrix_mul _ _ _ _ _ Function.bijective_id, Matrix.submatrix_mul _ _ _ _ _ Function.bijective_id]`. Both sides reduce to the same expression.
+
+Establish `hd` using `congrArg Matrix.det key`. Rewrite `hd` using `[Matrix.det_submatrix_equiv_self, Matrix.det_fromBlocks_zero₂₁, Matrix.det_mul, Matrix.det_mul]`. Introduce `h0`. Rewrite `hd` using `[h0]`. Rewrite `hd` using `[Matrix.det_neg]`.
+
+Simplify using `at hd`. Conclude with `pow_ne_zero s (neg_ne_zero.mpr one_ne_zero) hd.symm`.
+-/
 theorem det_ne_zero_of_hasSig : ∀ (n : ℕ) (M : Matrix (Fin n) (Fin n) ℂ) (r s : ℕ), HasSig M r s → M.det ≠ 0 := by
   intro n M r s h
   obtain ⟨hn, A, hA⟩ := h

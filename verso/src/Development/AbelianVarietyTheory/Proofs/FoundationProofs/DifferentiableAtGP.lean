@@ -16,6 +16,11 @@ def gS (q a : ℂ) : ℂ := ∑' m : ℕ, q ^ (m + 1) * a / (1 - q ^ (m + 1) * a
 
 open scoped UpperHalfPlane MatrixGroups Manifold in
 open Filter Topology in
+/- English proof (translation)
+Establish `hs : Summable fun m : ℕ => ‖-(q ^ (m + 1) * a)‖`. Use `(summable_geometric_of_lt_one (norm_nonneg q) hq).mul_right (‖q‖ * ‖a‖)` as an intermediate fact. Use `this.congr fun m => ?_` and prove the remaining obligations. Rewrite using `[norm_neg, norm_mul, norm_pow, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hm` using `multipliable_one_add_of_summable hs`. Simplify using `only [← sub_eq_add_neg] at hm`. Conclude with `hm.hasProd`.
+-/
 theorem _root_.GlobalTheory.Sieg.DlogOne.hasProd_gP {q : ℂ} (hq : ‖q‖ < 1) (a : ℂ) :
     HasProd (fun m : ℕ => 1 - q ^ (m + 1) * a) (_root_.GlobalTheory.Sieg.DlogOne.gP q a) := by
   have hs : Summable fun m : ℕ => ‖-(q ^ (m + 1) * a)‖ := by
@@ -27,12 +32,20 @@ theorem _root_.GlobalTheory.Sieg.DlogOne.hasProd_gP {q : ℂ} (hq : ‖q‖ < 1)
   simp only [← sub_eq_add_neg] at hm
   exact hm.hasProd
 
+/- English proof (translation)
+Take `⟨P, hP, pP⟩` from `hasProd_geom hq a h`. Rewrite using `[gP, pP.tprod_eq]` and apply the resulting hypothesis.
+-/
 theorem gP_ne_zero {q : ℂ} (hq : ‖q‖ < 1) {a : ℂ} (h : ∀ m : ℕ, 1 - q ^ (m + 1) * a ≠ 0) : gP q a ≠ 0 := by
   obtain ⟨P, hP, pP⟩ := hasProd_geom hq a h
   rwa [gP, pP.tprod_eq]
 
 open scoped UpperHalfPlane MatrixGroups Manifold in
 open Filter Topology in
+/- English proof (translation)
+Establish `hq0 : Tendsto (fun m : ℕ => q ^ (m + 1)) atTop (𝓝 0)` using `(tendsto_pow_atTop_nhds_zero_of_norm_lt_one hq).comp (tendsto_add_atTop_nat 1)`. Establish `hden : Tendsto (fun m : ℕ => (1 - q ^ (m + 1) * a)⁻¹) atTop (𝓝 1)`. Establish `: Tendsto (fun m : ℕ => 1 - q ^ (m + 1) * a) atTop (𝓝 (1 - 0 * a))` using `tendsto_const_nhds.sub (hq0.mul tendsto_const_nhds)`. Simplify using `using this.inv₀ (by simp)`. Establish `hsum : Summable fun m : ℕ => ‖q‖ ^ (m + 1)`.
+
+Simplify `(summable_geometric_of_lt_one (norm_nonneg _) hq).mul_right ‖q‖` using `[pow_succ]`. Use `summable_of_isBigO_nat hsum ?_` and prove the remaining obligations. Establish `h1 : (fun m : ℕ => (1 - q ^ (m + 1) * a)⁻¹) =O[atTop] (fun _ => (1 : ℝ))` using `hden.isBigO_one ℝ`. Establish `h2 : (fun m : ℕ => q ^ (m + 1)) =O[atTop] (fun m : ℕ => ‖q‖ ^ (m + 1))` using `Asymptotics.isBigO_of_le _ fun m => by simp [norm_pow]`. Simplify `h2.mul h1` using `[div_eq_mul_inv]`.
+-/
 theorem _root_.GlobalTheory.Sieg.DlogOne.summable_lambert {q : ℂ} (hq : ‖q‖ < 1) (a : ℂ) :
     Summable fun m : ℕ => q ^ (m + 1) / (1 - q ^ (m + 1) * a) := by
   have hq0 : Tendsto (fun m : ℕ => q ^ (m + 1)) atTop (𝓝 0) :=
@@ -50,6 +63,9 @@ theorem _root_.GlobalTheory.Sieg.DlogOne.summable_lambert {q : ℂ} (hq : ‖q�
     Asymptotics.isBigO_of_le _ fun m => by simp [norm_pow]
   simpa [div_eq_mul_inv] using h2.mul h1
 
+/- English proof (translation)
+Simplify using `only [sub_eq_add_neg]`. Use `(((summable_nat_add_iff 1).mpr (summable_geometric_of_lt_one (norm_nonneg _) hq)).mul_right R).multipliableLocallyUniformlyOn_nat_one_add Metric.isOpen_ball (.of_forall fun n z hz ↦ ?_) (fun _ ↦ by fun_prop)` and prove the remaining obligations. Rewrite using `[norm_neg, norm_mul, norm_pow]`. Establish `: ‖z‖ ≤ R` using `(mem_ball_zero_iff.1 hz).le`. Use `gcongr`.
+-/
 theorem multLoc {q : ℂ} (hq : ‖q‖ < 1) (R : ℝ) :
     MultipliableLocallyUniformlyOn (fun (m : ℕ) (a : ℂ) => 1 - q ^ (m + 1) * a) (Metric.ball 0 R) := by
   simp only [sub_eq_add_neg]
@@ -60,6 +76,9 @@ theorem multLoc {q : ℂ} (hq : ‖q‖ < 1) (R : ℝ) :
   have : ‖z‖ ≤ R := (mem_ball_zero_iff.1 hz).le
   gcongr
 
+/- English proof (translation)
+Establish `ha : a ∈ Metric.ball (0 : ℂ) (‖a‖ + 1)` using `by simp`. Use `(multLoc hq (‖a‖ + 1)).hasProdLocallyUniformlyOn.differentiableOn (.of_forall fun _ ↦ by simpa [Finset.prod_fn] using DifferentiableOn.finsetProd (fun _ _ ↦ by fun_prop)) Metric.isOpen_ball` as an intermediate fact. Conclude with `this.differentiableAt (Metric.isOpen_ball.mem_nhds ha)`.
+-/
 theorem differentiableAt_gP {q : ℂ} (hq : ‖q‖ < 1) (a : ℂ) : DifferentiableAt ℂ (gP q) a := by
   have ha : a ∈ Metric.ball (0 : ℂ) (‖a‖ + 1) := by simp
   have := (multLoc hq (‖a‖ + 1)).hasProdLocallyUniformlyOn.differentiableOn
@@ -69,12 +88,20 @@ theorem differentiableAt_gP {q : ℂ} (hq : ‖q‖ < 1) (a : ℂ) : Differentia
 
 def LD (f : ℂ → ℂ) (L z : ℂ) : Prop := HasDerivAt f (L * f z) z
 
+/- English proof (translation)
+Use `HasDerivAt.fun_mul hf hg` as an intermediate fact. Use `HasDerivAt.congr_deriv this ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem LD.mul {f g : ℂ → ℂ} {L M z : ℂ} (hf : LD f L z) (hg : LD g M z) :
     LD (fun w => f w * g w) (L + M) z := by
   have := HasDerivAt.fun_mul hf hg
   refine HasDerivAt.congr_deriv this ?_
   ring
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simpa [LD] using hasDerivAt_const z (1 : ℂ)`. Consider the case `succ k ih`. Use `ih.mul hf` as an intermediate fact. Simplify using `only [← pow_succ] at this`.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem LD.pow {f : ℂ → ℂ} {L z : ℂ} (hf : LD f L z) (k : ℕ) : LD (fun w => f w ^ k) (k * L) z := by
   induction k with
   | zero => simpa [LD] using hasDerivAt_const z (1 : ℂ)
@@ -83,15 +110,24 @@ theorem LD.pow {f : ℂ → ℂ} {L z : ℂ} (hf : LD f L z) (k : ℕ) : LD (fun
     simp only [← pow_succ] at this
     convert this using 1; push_cast; ring
 
+/- English proof (translation)
+Use `HasDerivAt.fun_inv hf h0` as an intermediate fact. Use `HasDerivAt.congr_deriv this ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts.
+-/
 theorem LD.inv {f : ℂ → ℂ} {L z : ℂ} (hf : LD f L z) (h0 : f z ≠ 0) : LD (fun w => (f w)⁻¹) (-L) z := by
   have := HasDerivAt.fun_inv hf h0
   refine HasDerivAt.congr_deriv this ?_
   field_simp
 
+/- English proof (translation)
+Simplify `hf.mul (hg.inv h0)` using `only [div_eq_mul_inv, sub_eq_add_neg]`.
+-/
 theorem LD.div {f g : ℂ → ℂ} {L M z : ℂ} (hf : LD f L z) (hg : LD g M z) (h0 : g z ≠ 0) :
     LD (fun w => f w / g w) (L - M) z := by
   simpa only [div_eq_mul_inv, sub_eq_add_neg] using hf.mul (hg.inv h0)
 
+/- English proof (translation)
+Establish `h1 : -f z ≠ 0` using `neg_ne_zero.2 h0`. Use `(hasDerivAt_zpow k (-f z) (Or.inl h1)).comp z (HasDerivAt.fun_neg hf)` as an intermediate fact. Use `HasDerivAt.congr_deriv this ?_` and prove the remaining obligations. Rewrite using `[zpow_sub_one₀ h1]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem LD.zpow_neg {f : ℂ → ℂ} {L z : ℂ} (hf : LD f L z) (h0 : f z ≠ 0) (k : ℤ) :
     LD (fun w => (-f w) ^ k) (k * L) z := by
   have h1 : -f z ≠ 0 := neg_ne_zero.2 h0
@@ -99,6 +135,13 @@ theorem LD.zpow_neg {f : ℂ → ℂ} {L z : ℂ} (hf : LD f L z) (h0 : f z ≠ 
   refine HasDerivAt.congr_deriv this ?_
   rw [zpow_sub_one₀ h1]; field_simp
 
+/- English proof (translation)
+Establish `ha : f z ∈ Metric.ball (0 : ℂ) (‖f z‖ + 1)` using `by simp`. Establish `e : ∀ m : ℕ, logDeriv (fun a : ℂ => 1 - q ^ (m + 1) * a) (f z) = -(q ^ (m + 1) / (1 - q ^ (m + 1) * f z))`. Introduce `m`. Simplify using `[logDeriv_apply, neg_div]`. Establish `hne` using `gP_ne_zero hq h`.
+
+Establish `key` using `logDeriv_tprod_eq_tsum Metric.isOpen_ball ha (f := fun (m : ℕ) (a : ℂ) => 1 - q ^ (m + 1) * a) h (fun _ => by fun_prop) (by simpa only [e] using (summable_lambert hq (f z)).neg) (multLoc hq _) hne`. Simplify using `only [e, tsum_neg] at key`. Establish `key' : deriv (DlogOne.gP q) (f z) / DlogOne.gP q (f z) = -∑' m : ℕ, q ^ (m + 1) / (1 - q ^ (m + 1) * f z)` using `key`. Rewrite `key'` using `[div_eq_iff hne]`. Use `(differentiableAt_gP hq (f z)).hasDerivAt.comp z hf` as an intermediate fact.
+
+Establish `e2 : gS q (f z) = (∑' m : ℕ, q ^ (m + 1) / (1 - q ^ (m + 1) * f z)) * f z`. Rewrite using `[gS, ← tsum_mul_right]; exact tsum_congr fun m => by ring`. Use `HasDerivAt.congr_deriv this ?_` and prove the remaining obligations. Rewrite using `[key', e2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem LD.gP {q : ℂ} (hq : ‖q‖ < 1) {f : ℂ → ℂ} {L z : ℂ} (hf : LD f L z)
     (h : ∀ m : ℕ, 1 - q ^ (m + 1) * f z ≠ 0) : LD (fun w => gP q (f w)) (-(L * gS q (f z))) z := by
   have ha : f z ∈ Metric.ball (0 : ℂ) (‖f z‖ + 1) := by simp
@@ -122,6 +165,9 @@ def E (q t : ℂ) : ℂ := -(t / (1 - t)) - gS q t + gS q t⁻¹
 
 open scoped UpperHalfPlane MatrixGroups Manifold in
 open Filter Topology in
+/- English proof (translation)
+Establish `hA` using `(_root_.GlobalTheory.Sieg.Model.hasProd_pow (_root_.GlobalTheory.Sieg.DlogOne.hasProd_gP hq t) (c ^ 2)).mul (_root_.GlobalTheory.Sieg.Model.hasProd_pow (_root_.GlobalTheory.Sieg.DlogOne.hasProd_gP hq t⁻¹) (c ^ 2))`. Establish `hB` using `_root_.GlobalTheory.Sieg.Model.hasProd_inv ((_root_.GlobalTheory.Sieg.DlogOne.hasProd_gP hq (t ^ c)).mul (_root_.GlobalTheory.Sieg.DlogOne.hasProd_gP hq (t ^ c)⁻¹)) h`. Rewrite using `[div_eq_mul_inv, ← (hA.mul hB).tprod_eq]`. Use `congr 1`.
+-/
 theorem _root_.GlobalTheory.Sieg.DlogOne.tprod_cthFac_eq {q : ℂ} (hq : ‖q‖ < 1) (c : ℕ) {t : ℂ}
     (h : _root_.GlobalTheory.Sieg.DlogOne.gP q (t ^ c) * _root_.GlobalTheory.Sieg.DlogOne.gP q (t ^ c)⁻¹ ≠ 0) :
     ∏' m : ℕ, _root_.GlobalTheory.Sieg.cthFac c q t (m + 1) =
@@ -136,6 +182,9 @@ theorem _root_.GlobalTheory.Sieg.DlogOne.tprod_cthFac_eq {q : ℂ} (hq : ‖q‖
 
 open scoped UpperHalfPlane MatrixGroups Manifold in
 open Filter Topology in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.Sieg.ee`. Rewrite using `[← Complex.exp_int_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem _root_.GlobalTheory.Sieg.DlogOne.ee_int_mul (n : ℤ) (z : ℂ) :
     _root_.GlobalTheory.Sieg.ee (n * z) = _root_.GlobalTheory.Sieg.ee z ^ n := by
   unfold _root_.GlobalTheory.Sieg.ee
@@ -147,6 +196,9 @@ def u (x : Fin 2 → ℚ) (τ : ℍ) (n : ℤ) : ℂ := ee (((x 0 + n : ℚ) : �
 
 open scoped UpperHalfPlane MatrixGroups Manifold in
 open Filter Topology in
+/- English proof (translation)
+Rewrite using `[← _root_.GlobalTheory.Sieg.DlogOne.ee_int_mul, ← _root_.GlobalTheory.Sieg.Model.ee_add]`. Unfold `_root_.GlobalTheory.Sieg.DlogOne.u _root_.GlobalTheory.Sieg.pt`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma u_eq_ee_zpow_mul_ee_pt (x : Fin 2 → ℚ) (τ : ℍ) (n : ℤ) :
     _root_.GlobalTheory.Sieg.DlogOne.u x τ n =
       _root_.GlobalTheory.Sieg.ee τ ^ n * _root_.GlobalTheory.Sieg.ee (_root_.GlobalTheory.Sieg.pt x τ) := by
@@ -158,12 +210,18 @@ private lemma u_eq_ee_zpow_mul_ee_pt (x : Fin 2 → ℚ) (τ : ℍ) (n : ℤ) :
 
 open scoped UpperHalfPlane MatrixGroups Manifold in
 open Filter Topology in
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 private lemma im_shifted_lattice_point (x : Fin 2 → ℚ) (τ : ℍ) (p : ℤ) :
     (((x 0 + p : ℚ) : ℂ) * (τ : ℂ) + ((x 1 : ℚ) : ℂ)).im = ((x 0 + p : ℚ) : ℝ) * τ.im := by
   simp
 
 open scoped UpperHalfPlane MatrixGroups Manifold in
 open Filter Topology in
+/- English proof (translation)
+Rewrite using `[_root_.GlobalTheory.Sieg.DlogOne.u, _root_.GlobalTheory.Sieg.Model.norm_ee, Real.exp_lt_one_iff, neg_lt_zero, im_shifted_lattice_point]`. Establish `ha : (0 : ℝ) < ((x 0 + p : ℚ) : ℝ)` using `by exact_mod_cast h`. Conclude with `mul_pos (mul_pos two_pos Real.pi_pos) (mul_pos ha τ.im_pos)`.
+-/
 private lemma norm_u_lt_one_of_pos {x : Fin 2 → ℚ} {τ : ℍ} {p : ℤ}
     (h : 0 < x 0 + p) : ‖_root_.GlobalTheory.Sieg.DlogOne.u x τ p‖ < 1 := by
   rw [_root_.GlobalTheory.Sieg.DlogOne.u, _root_.GlobalTheory.Sieg.Model.norm_ee, Real.exp_lt_one_iff, neg_lt_zero,
@@ -173,6 +231,19 @@ private lemma norm_u_lt_one_of_pos {x : Fin 2 → ℚ} {τ : ℍ} {p : ℤ}
 
 open scoped UpperHalfPlane MatrixGroups Manifold in
 open Filter Topology in
+/- English proof (translation)
+Establish `hu` using `norm_u_lt_one_of_pos (τ := τ) h`. Establish `hgeo : HasSum (fun n : ℕ => _root_.GlobalTheory.Sieg.DlogOne.u x τ p ^ (n + 1)) (_root_.GlobalTheory.Sieg.DlogOne.u x τ p / (1 - _root_.GlobalTheory.Sieg.DlogOne.u x τ p))`. Simplify `(hasSum_geometric_of_norm_lt_one hu).mul_left (_root_.GlobalTheory.Sieg.DlogOne.u x τ p)` using `only [pow_succ', div_eq_mul_inv]`. Establish `hnat : HasSum (fun n : ℕ => _root_.GlobalTheory.Sieg.fTerm 1 x τ (p, (n : ℤ))) (_root_.GlobalTheory.Sieg.DlogOne.u x τ p / (1 - _root_.GlobalTheory.Sieg.DlogOne.u x τ p))`. Use `(hasSum_nat_add_iff' 1).mp ?_` and prove the remaining obligations.
+
+Establish `h0 : _root_.GlobalTheory.Sieg.fTerm 1 x τ (p, ((0 : ℕ) : ℤ)) = 0`. Simplify using `[_root_.GlobalTheory.Sieg.fTerm]`. Simplify using `only [Finset.range_one, Finset.sum_singleton, h0, sub_zero]`. Use `hgeo.congr_fun fun n => ?_` and prove the remaining obligations. Establish `hn : (0 : ℤ) < ((n + 1 : ℕ) : ℤ)` using `by positivity`.
+
+Simplify using `only [_root_.GlobalTheory.Sieg.fTerm]`. Use `split_ifs with hc`. Rewrite using `[Int.sign_eq_one_of_pos hn, mul_assoc _ (_root_.GlobalTheory.Sieg.ee _), ← _root_.GlobalTheory.Sieg.Model.ee_add, _root_.GlobalTheory.Sieg.DlogOne.u, ← _root_.GlobalTheory.Sieg.Model.ee_nat_mul]`. Simplify using `only [Int.cast_one, one_mul, Nat.sub_self, pow_zero]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. It suffices to derive a contradiction. Apply `hc` to reduce the goal to its premises. Establish `: (0 : ℚ) < ((n + 1 : ℕ) : ℤ)` using `by exact_mod_cast hn`.
+
+Conclude with `mul_pos h this`. Establish `hneg : HasSum (fun n : ℕ => _root_.GlobalTheory.Sieg.fTerm 1 x τ (p, -((n : ℤ) + 1))) 0`. Use `hasSum_zero.congr_fun fun n => ?_` and prove the remaining obligations. Simplify using `only [_root_.GlobalTheory.Sieg.fTerm]`. Use `split_ifs with hc`.
+
+It suffices to derive a contradiction. Move the coercions through the operations in `at hc`. Use polynomial arithmetic with `[(n.cast_nonneg : (0 : ℚ) ≤ n)]`. Both sides reduce to the same expression. Simplify `HasSum.of_nat_of_neg_add_one (f := fun n : ℤ => _root_.GlobalTheory.Sieg.fTerm 1 x τ (p, n)) hnat hneg` using `only [add_zero]`.
+-/
 private lemma hasSum_fTerm_fiber_of_pos {x : Fin 2 → ℚ} {τ : ℍ} {p : ℤ} (h : 0 < x 0 + p) :
     HasSum (fun n : ℤ => _root_.GlobalTheory.Sieg.fTerm 1 x τ (p, n))
       (_root_.GlobalTheory.Sieg.DlogOne.u x τ p / (1 - _root_.GlobalTheory.Sieg.DlogOne.u x τ p)) := by
@@ -214,6 +285,9 @@ private lemma hasSum_fTerm_fiber_of_pos {x : Fin 2 → ℚ} {τ : ℍ} {p : ℤ}
 
 open scoped UpperHalfPlane MatrixGroups Manifold in
 open Filter Topology in
+/- English proof (translation)
+Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Rewrite using `[← _root_.GlobalTheory.Sieg.Model.ee_add, neg_add_cancel]`. Simplify using `[_root_.GlobalTheory.Sieg.ee]`.
+-/
 private lemma ee_neg' (z : ℂ) :
     _root_.GlobalTheory.Sieg.ee (-z) = (_root_.GlobalTheory.Sieg.ee z)⁻¹ := by
   refine eq_inv_of_mul_eq_one_left ?_
@@ -222,6 +296,9 @@ private lemma ee_neg' (z : ℂ) :
 
 open scoped UpperHalfPlane MatrixGroups Manifold in
 open Filter Topology in
+/- English proof (translation)
+Rewrite using `[_root_.GlobalTheory.Sieg.DlogOne.u, ← ee_neg', _root_.GlobalTheory.Sieg.Model.norm_ee, Real.exp_lt_one_iff, neg_lt_zero, Complex.neg_im, im_shifted_lattice_point]`. Establish `ha : ((x 0 + p : ℚ) : ℝ) < 0` using `by exact_mod_cast h`. Use polynomial arithmetic with `[Real.pi_pos, τ.im_pos, mul_neg_of_neg_of_pos ha τ.im_pos]`.
+-/
 private lemma norm_inv_u_lt_one_of_neg {x : Fin 2 → ℚ} {τ : ℍ} {p : ℤ}
     (h : x 0 + p < 0) : ‖(_root_.GlobalTheory.Sieg.DlogOne.u x τ p)⁻¹‖ < 1 := by
   rw [_root_.GlobalTheory.Sieg.DlogOne.u, ← ee_neg', _root_.GlobalTheory.Sieg.Model.norm_ee,
@@ -231,6 +308,19 @@ private lemma norm_inv_u_lt_one_of_neg {x : Fin 2 → ℚ} {τ : ℍ} {p : ℤ}
 
 open scoped UpperHalfPlane MatrixGroups Manifold in
 open Filter Topology in
+/- English proof (translation)
+Establish `hw` using `norm_inv_u_lt_one_of_neg (τ := τ) h`. Establish `hgeo : HasSum (fun n : ℕ => -((_root_.GlobalTheory.Sieg.DlogOne.u x τ p)⁻¹ ^ (n + 1))) (-((_root_.GlobalTheory.Sieg.DlogOne.u x τ p)⁻¹ / (1 - (_root_.GlobalTheory.Sieg.DlogOne.u x τ p)⁻¹)))`. Simplify `((hasSum_geometric_of_norm_lt_one hw).mul_left (_root_.GlobalTheory.Sieg.DlogOne.u x τ p)⁻¹).neg` using `only [pow_succ', div_eq_mul_inv]`. Establish `hnat : HasSum (fun n : ℕ => _root_.GlobalTheory.Sieg.fTerm 1 x τ (p, (n : ℤ))) 0`. Use `hasSum_zero.congr_fun fun n => ?_` and prove the remaining obligations.
+
+Simplify using `only [_root_.GlobalTheory.Sieg.fTerm]`. Use `split_ifs with hc`. It suffices to derive a contradiction. Move the coercions through the operations in `at hc`. Use polynomial arithmetic with `[(n.cast_nonneg : (0 : ℚ) ≤ n)]`.
+
+Both sides reduce to the same expression. Establish `hneg : HasSum (fun n : ℕ => _root_.GlobalTheory.Sieg.fTerm 1 x τ (p, -((n : ℤ) + 1))) (-((_root_.GlobalTheory.Sieg.DlogOne.u x τ p)⁻¹ / (1 - (_root_.GlobalTheory.Sieg.DlogOne.u x τ p)⁻¹)))`. Use `hgeo.congr_fun fun n => ?_` and prove the remaining obligations. Establish `hn : -((n : ℤ) + 1) < 0` using `by omega`. Simplify using `only [_root_.GlobalTheory.Sieg.fTerm]`.
+
+Use `split_ifs with hc`. Rewrite using `[Int.sign_eq_neg_one_of_neg hn, mul_assoc _ (_root_.GlobalTheory.Sieg.ee _), ← _root_.GlobalTheory.Sieg.Model.ee_add, _root_.GlobalTheory.Sieg.DlogOne.u, ← ee_neg', ← _root_.GlobalTheory.Sieg.Model.ee_nat_mul]`. Simplify using `only [Nat.sub_self, pow_zero, mul_one, Int.cast_neg, Int.cast_one, neg_one_mul]`. Use `congr 2`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. It suffices to derive a contradiction. Apply `hc` to reduce the goal to its premises. Use `push_cast`. Use polynomial arithmetic with `[(n.cast_nonneg : (0 : ℚ) ≤ n)]`.
+
+Simplify `HasSum.of_nat_of_neg_add_one (f := fun n : ℤ => _root_.GlobalTheory.Sieg.fTerm 1 x τ (p, n)) hnat hneg` using `only [zero_add]`.
+-/
 private lemma hasSum_fTerm_fiber_of_neg {x : Fin 2 → ℚ} {τ : ℍ} {p : ℤ} (h : x 0 + p < 0) :
     HasSum (fun n : ℤ => _root_.GlobalTheory.Sieg.fTerm 1 x τ (p, n))
       (-((_root_.GlobalTheory.Sieg.DlogOne.u x τ p)⁻¹ / (1 - (_root_.GlobalTheory.Sieg.DlogOne.u x τ p)⁻¹))) := by
@@ -269,18 +359,49 @@ private lemma hasSum_fTerm_fiber_of_neg {x : Fin 2 → ℚ} {τ : ℍ} {p : ℤ}
 
 open scoped UpperHalfPlane MatrixGroups Manifold in
 open Filter Topology in
+/- English proof (translation)
+The claim follows from `((_root_.GlobalTheory.Sieg.DlogOne.summable_lambert hq a).mul_left a).congr fun m => by ring`.
+-/
 private lemma summable_lambert_term {q : ℂ} (hq : ‖q‖ < 1) (a : ℂ) :
     Summable fun m : ℕ => q ^ (m + 1) * a / (1 - q ^ (m + 1) * a) :=
   ((_root_.GlobalTheory.Sieg.DlogOne.summable_lambert hq a).mul_left a).congr fun m => by ring
 
 open scoped UpperHalfPlane MatrixGroups Manifold in
 open Filter Topology in
+/- English proof (translation)
+The claim follows from `(summable_lambert_term hq a).hasSum`.
+-/
 private lemma hasSum_lambert_gS {q : ℂ} (hq : ‖q‖ < 1) (a : ℂ) :
     HasSum (fun m : ℕ => q ^ (m + 1) * a / (1 - q ^ (m + 1) * a)) (_root_.GlobalTheory.Sieg.DlogOne.gS q a) :=
   (summable_lambert_term hq a).hasSum
 
 open scoped UpperHalfPlane MatrixGroups Manifold in
 open Filter Topology in
+/- English proof (translation)
+Establish `hq : ‖_root_.GlobalTheory.Sieg.ee τ‖ < 1` using `_root_.GlobalTheory.Sieg.Model.norm_ee_lt_one τ`. Establish `hne` using `_root_.GlobalTheory.Sieg.Model.ne_one_of_not_int hx τ`. Use `set q := _root_.GlobalTheory.Sieg.ee τ with hq_def`. Use `set t := _root_.GlobalTheory.Sieg.ee (_root_.GlobalTheory.Sieg.pt x τ) with ht_def`. Establish `hu : ∀ n : ℤ, _root_.GlobalTheory.Sieg.DlogOne.u x τ n = q ^ n * t` using `fun n => u_eq_ee_zpow_mul_ee_pt x τ n`.
+
+Set `g : ℤ → ℂ` to `fun p => if 0 < x 0 + p then _root_.GlobalTheory.Sieg.DlogOne.u x τ p / (1 - _root_.GlobalTheory.Sieg.DlogOne.u x τ p) else if x 0 + p < 0 then -((_root_.GlobalTheory.Sieg.DlogOne.u x τ p)⁻¹ / (1 - (_root_.GlobalTheory.Sieg.DlogOne.u x τ p)⁻¹)) else 0`. Establish `hfib : ∀ p : ℤ, HasSum (fun n : ℤ => _root_.GlobalTheory.Sieg.fTerm 1 x τ (p, n)) (g p)`. Introduce `p`. Simplify using `only [g]`. Use `split_ifs with hp hp'`.
+
+Conclude with `hasSum_fTerm_fiber_of_pos hp`. Conclude with `hasSum_fTerm_fiber_of_neg hp'`. Establish `hz : x 0 + p = 0` using `by linarith [not_lt.mp hp, not_lt.mp hp']`. Use `hasSum_zero.congr_fun fun n => ?_` and prove the remaining obligations. Simplify using `[_root_.GlobalTheory.Sieg.fTerm, hz]`.
+
+Establish `hg` using `(_root_.GlobalTheory.Sieg.Model.summable_fTerm 1 x τ).hasSum.prod_fiberwise hfib`. Establish `hgpos : ∀ n : ℕ, g ((n + 1 : ℕ) : ℤ) = q ^ (n + 1) * t / (1 - q ^ (n + 1) * t)`. Introduce `n`. Establish `hc : 0 < x 0 + (((n + 1 : ℕ) : ℤ) : ℚ)`. Use `push_cast`.
+
+Combine the linear relations using `[(n.cast_nonneg : (0 : ℚ) ≤ n)]`. Simplify using `only [g, if_pos hc, hu, zpow_natCast]`. Establish `hgneg : ∀ n : ℕ, g (-((n : ℤ) + 1)) = -(q ^ (n + 1) * t⁻¹ / (1 - q ^ (n + 1) * t⁻¹))`. Introduce `n`. Establish `h2 : x 0 + ((-((n : ℤ) + 1) : ℤ) : ℚ) < 0`.
+
+Use `push_cast`. Combine the linear relations using `[(n.cast_nonneg : (0 : ℚ) ≤ n)]`. Establish `h3 : ¬ 0 < x 0 + ((-((n : ℤ) + 1) : ℤ) : ℚ)` using `not_lt.mpr h2.le`. Establish `h4 : (_root_.GlobalTheory.Sieg.DlogOne.u x τ (-((n : ℤ) + 1)))⁻¹ = q ^ (n + 1) * t⁻¹`. Rewrite using `[hu, mul_inv, zpow_neg, inv_inv]`.
+
+Use `norm_cast`. Simplify using `only [g, if_neg h3, if_pos h2, h4]`. Establish `hnat : HasSum (fun n : ℕ => g n) (g 0 + _root_.GlobalTheory.Sieg.DlogOne.gS q t)`. Use `(hasSum_nat_add_iff' 1).mp ?_` and prove the remaining obligations. Simplify using `only [Finset.range_one, Finset.sum_singleton, Nat.cast_zero, add_sub_cancel_left]`.
+
+Conclude with `(hasSum_lambert_gS hq t).congr_fun fun n => hgpos n`. Establish `hneg : HasSum (fun n : ℕ => g (-((n : ℤ) + 1))) (-_root_.GlobalTheory.Sieg.DlogOne.gS q t⁻¹)`. Conclude with `(hasSum_lambert_gS hq t⁻¹).neg.congr_fun fun n => hgneg n`. Establish `hsum : ∑' p, _root_.GlobalTheory.Sieg.fTerm 1 x τ p = g 0 + _root_.GlobalTheory.Sieg.DlogOne.gS q t + -_root_.GlobalTheory.Sieg.DlogOne.gS q t⁻¹` using `hg.unique (HasSum.of_nat_of_neg_add_one (f := g) hnat hneg)`. Establish `hg0 : g 0 = if x 0 = 0 then 0 else t / (1 - t)`.
+
+Break down `h0.eq_or_lt with h | h` into its components or cases. Simplify using `[g, ← h]`. Simplify using `[g, h, h.ne', hu]`. Establish `hfr : Int.fract (x 0) = x 0` using `Int.fract_eq_self.mpr ⟨h0, h1⟩`. Rewrite using `[_root_.GlobalTheory.Sieg.F, hsum, hg0]`.
+
+Simplify using `only [_root_.GlobalTheory.Sieg.DlogOne.E, _root_.GlobalTheory.Sieg.f0, ↓reduceIte, hfr]`. Break down `h0.eq_or_lt with h | h` into its components or cases. Establish `hx0 : x 0 = 0` using `h.symm`. Establish `hte : t = _root_.GlobalTheory.Sieg.ee (x 1)`. Rewrite using `[ht_def, _root_.GlobalTheory.Sieg.pt, hx0]`.
+
+Simplify using the standard rewrite rules. Establish `h1t : 1 - t ≠ 0` using `by simpa using (hne 0).1`. Rewrite using `[if_pos hx0, if_pos hx0, ← hte, hx0]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[if_neg h.ne', if_neg h.ne']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma E_ee_pt_eq_neg_F_of_mem_Ico {x : Fin 2 → ℚ}
     (hx : ¬ (x 0 ∈ Set.range ((↑) : ℤ → ℚ) ∧ x 1 ∈ Set.range ((↑) : ℤ → ℚ)))
     (h0 : 0 ≤ x 0) (h1 : x 0 < 1) (τ : ℍ) :
@@ -354,6 +475,17 @@ private lemma E_ee_pt_eq_neg_F_of_mem_Ico {x : Fin 2 → ℚ}
 
 open scoped UpperHalfPlane MatrixGroups Manifold in
 open Filter Topology in
+/- English proof (translation)
+Establish `h1 : _root_.GlobalTheory.Sieg.DlogOne.gS q t = q * t / (1 - q * t) + _root_.GlobalTheory.Sieg.DlogOne.gS q (q * t)`. Unfold `_root_.GlobalTheory.Sieg.DlogOne.gS`. Rewrite using `[(summable_lambert_term hq t).tsum_eq_zero_add]`. Use `congr 1`. Simplify using the standard rewrite rules.
+
+Conclude with `tsum_congr fun m => by ring`. Establish `hterm : ∀ m : ℕ, q ^ (m + 1) * (q * t)⁻¹ = q ^ m * t⁻¹` using `fun m => by`. Rewrite using `[pow_succ, mul_inv]`. Clear the denominators using the available nonvanishing facts. Establish `hsum : Summable fun m : ℕ => q ^ m * t⁻¹ / (1 - q ^ m * t⁻¹)` using `(summable_nat_add_iff 1).mp (summable_lambert_term hq t⁻¹)`.
+
+Establish `h2 : _root_.GlobalTheory.Sieg.DlogOne.gS q (q * t)⁻¹ = t⁻¹ / (1 - t⁻¹) + _root_.GlobalTheory.Sieg.DlogOne.gS q t⁻¹`. Unfold `_root_.GlobalTheory.Sieg.DlogOne.gS`. Repeatedly rewrite using `[hterm]`. Rewrite using `[hsum.tsum_eq_zero_add]`. Simplify using `only [pow_zero, one_mul]`.
+
+Establish `key : t⁻¹ / (1 - t⁻¹) = -(t / (1 - t)) - 1`. Establish `h3 : 1 - t ≠ 0` using `sub_ne_zero.mpr (Ne.symm ht1)`. Establish `h4 : t - 1 ≠ 0` using `sub_ne_zero.mpr ht1`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [_root_.GlobalTheory.Sieg.DlogOne.E]`. Rewrite using `[h1, h2, key]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma E_mul_left_eq_sub_one {q : ℂ} (hq : ‖q‖ < 1) (hq0 : q ≠ 0) {t : ℂ}
     (ht0 : t ≠ 0) (ht1 : t ≠ 1) :
     _root_.GlobalTheory.Sieg.DlogOne.E q (q * t) = _root_.GlobalTheory.Sieg.DlogOne.E q t - 1 := by
@@ -384,6 +516,13 @@ private lemma E_mul_left_eq_sub_one {q : ℂ} (hq : ‖q‖ < 1) (hq0 : q ≠ 0)
 
 open scoped UpperHalfPlane MatrixGroups Manifold in
 open Filter Topology in
+/- English proof (translation)
+Use `Int.induction_on k ?_ ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `n ih`. Rewrite using `[zpow_add_one₀ hq0, mul_comm (q ^ (n : ℤ)) q, mul_assoc, E_mul_left_eq_sub_one hq hq0 (mul_ne_zero (zpow_ne_zero _ hq0) ht0) (ht n), ih]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `n ih`. Establish `h` using `E_mul_left_eq_sub_one hq hq0 (mul_ne_zero (zpow_ne_zero (-(n : ℤ) - 1) hq0) ht0) (ht (-(n : ℤ) - 1))`. Rewrite `h` using `[← mul_assoc, ← zpow_one_add₀ hq0, show 1 + (-(n : ℤ) - 1) = -n by ring, ih]`. Move the coercions through the operations in `at h ⊢`.
+
+Take the linear combination `-h`.
+-/
 private lemma E_zpow_mul_eq_sub {q : ℂ} (hq : ‖q‖ < 1) (hq0 : q ≠ 0) {t : ℂ}
     (ht0 : t ≠ 0) (ht : ∀ k : ℤ, q ^ k * t ≠ 1) (k : ℤ) :
     _root_.GlobalTheory.Sieg.DlogOne.E q (q ^ k * t) = _root_.GlobalTheory.Sieg.DlogOne.E q t - k := by
@@ -403,6 +542,25 @@ private lemma E_zpow_mul_eq_sub {q : ℂ} (hq : ‖q‖ < 1) (hq0 : q ≠ 0) {t 
 
 open scoped UpperHalfPlane MatrixGroups Manifold in
 open Filter Topology in
+/- English proof (translation)
+Set `y : Fin 2 → ℚ` to `![Int.fract (x 0), x 1]`. Establish `hy0 : y 0 = Int.fract (x 0)` using `rfl`. Establish `hy1 : y 1 = x 1` using `rfl`. Establish `hy : ¬ (y 0 ∈ Set.range ((↑) : ℤ → ℚ) ∧ y 1 ∈ Set.range ((↑) : ℤ → ℚ))`. Introduce and unpack `⟨⟨m, hm⟩, h1⟩`.
+
+Rewrite `h1` using `[hy1]`. Use `hx ⟨⟨m + ⌊x 0⌋, ?_⟩, h1⟩` and prove the remaining obligations. Rewrite `hm` using `[hy0]`. Use `push_cast`. Rewrite using `[hm, Int.fract_add_floor]`.
+
+Establish `hq0` using `_root_.GlobalTheory.Sieg.Model.ee_ne_zero (τ : ℂ)`. Establish `hq` using `_root_.GlobalTheory.Sieg.Model.norm_ee_lt_one τ`. Establish `hne` using `_root_.GlobalTheory.Sieg.Model.ne_one_of_not_int hy τ`. Establish `ht0` using `_root_.GlobalTheory.Sieg.Model.ee_ne_zero (_root_.GlobalTheory.Sieg.pt y τ)`. Establish `hpt : _root_.GlobalTheory.Sieg.ee (_root_.GlobalTheory.Sieg.pt x τ) = _root_.GlobalTheory.Sieg.ee τ ^ ⌊x 0⌋ * _root_.GlobalTheory.Sieg.ee (_root_.GlobalTheory.Sieg.pt y τ)`.
+
+Rewrite using `[← _root_.GlobalTheory.Sieg.DlogOne.ee_int_mul, ← _root_.GlobalTheory.Sieg.Model.ee_add]`. Use `congr 1`. Simplify using `only [_root_.GlobalTheory.Sieg.pt, hy0, hy1, Int.fract]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hzt : ∀ j : ℤ, _root_.GlobalTheory.Sieg.ee τ ^ j * _root_.GlobalTheory.Sieg.ee (_root_.GlobalTheory.Sieg.pt y τ) ≠ 1`. Introduce `j hj`. Take `⟨m, rfl | rfl⟩` from `Int.eq_nat_or_neg j`. Rewrite `hj` using `[zpow_natCast]`. Conclude with `(hne m).1 (by rw [hj, sub_self])`.
+
+Rewrite `hj` using `[zpow_neg, zpow_natCast, inv_mul_eq_one₀ (pow_ne_zero _ hq0)]`. Conclude with `(hne m).2 (by rw [← hj, mul_inv_cancel₀ (pow_ne_zero _ hq0), sub_self])`. Establish `hF : _root_.GlobalTheory.Sieg.F 1 x τ = _root_.GlobalTheory.Sieg.F 1 y τ`. Simplify using `only [_root_.GlobalTheory.Sieg.F]`. Use `congr 1`.
+
+Simplify using `only [_root_.GlobalTheory.Sieg.f0, hy0, hy1, Int.fract_fract]`. Use `(tsum_congr fun p => ?_).trans (Equiv.tsum_eq (Equiv.prodCongr (Equiv.addRight ⌊x 0⌋) (Equiv.refl ℤ)) (_root_.GlobalTheory.Sieg.fTerm 1 y τ))` and prove the remaining obligations. Establish `key : x 0 + (p.1 : ℚ) = y 0 + ((p.1 + ⌊x 0⌋ : ℤ) : ℚ)`. Rewrite using `[hy0, Int.fract]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [_root_.GlobalTheory.Sieg.fTerm, Equiv.prodCongr_apply, Equiv.coe_addRight, Equiv.coe_refl, Prod.map_apply, id_eq, hy1]`. Rewrite using `[key]`. Both sides reduce to the same expression. Establish `hbase` using `E_ee_pt_eq_neg_F_of_mem_Ico hy (Int.fract_nonneg _) (Int.fract_lt_one _) τ`.
+
+Rewrite using `[hpt, E_zpow_mul_eq_sub hq hq0 ht0 hzt, hbase, hF, hy0]`. Establish `hx0 : ((x 0 : ℚ) : ℂ) = ((Int.fract (x 0) : ℚ) : ℂ) + ((⌊x 0⌋ : ℤ) : ℂ)`. Conclude with `(Int.fract_add_floor (x 0)).symm` after adjusting the coercions. Rewrite using `[hx0]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem _root_.GlobalTheory.Sieg.DlogOne.E_eq {x : Fin 2 → ℚ}
     (hx : ¬ (x 0 ∈ Set.range ((↑) : ℤ → ℚ) ∧ x 1 ∈ Set.range ((↑) : ℤ → ℚ))) (τ : ℍ) :
     _root_.GlobalTheory.Sieg.DlogOne.E (_root_.GlobalTheory.Sieg.ee τ) (_root_.GlobalTheory.Sieg.ee (_root_.GlobalTheory.Sieg.pt x τ)) =

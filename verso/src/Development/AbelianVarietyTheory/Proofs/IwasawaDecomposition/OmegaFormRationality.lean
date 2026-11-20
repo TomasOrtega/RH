@@ -24,6 +24,11 @@ noncomputable section
 
 namespace GlobalTheory.OneMapRef.IoCmp
 
+/- English proof (translation)
+Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[MvPolynomial.rename_C, MvPolynomial.rename_C, ← mul_one (MvPolynomial.C a : MvPolynomial ι ℂ), ← mul_one (MvPolynomial.C a : MvPolynomial ι' ℂ), MvPolynomial.C_mul', MvPolynomial.C_mul', map_smul, map_smul, GlobalTheory.FockIndep.pure_one, GlobalTheory.FockIndep.pure_one]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp`.
+
+Rewrite using `[mul_comm, map_mul (MvPolynomial.rename e), map_mul (MvPolynomial.rename e'), MvPolynomial.rename_X, MvPolynomial.rename_X, hX, hX', hp, h]`.
+-/
 theorem pure_rename {ι ι' κ X : Type} {A : ι → (X → ℂ) → (X → ℂ)} {A' : ι' → (X → ℂ) → (X → ℂ)} {g : X → ℂ}
     (hX : ∀ v Q, pureTensorL A g (MvPolynomial.X v * Q) = A v (pureTensorL A g Q))
     (hX' : ∀ v Q, pureTensorL A' g (MvPolynomial.X v * Q) = A' v (pureTensorL A' g Q))
@@ -38,6 +43,11 @@ theorem pure_rename {ι ι' κ X : Type} {A : ι → (X → ℂ) → (X → ℂ)
   | mul_X p v hp =>
     rw [mul_comm, map_mul (MvPolynomial.rename e), map_mul (MvPolynomial.rename e'), MvPolynomial.rename_X, MvPolynomial.rename_X, hX, hX', hp, h]
 
+/- English proof (translation)
+Use `conv_lhs => rw [Q.as_sum]`. Use `conv_rhs => rw [Q.as_sum]`. Rewrite using `[map_sum, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hd : m.degree = N`.
+
+Use `hQ (MvPolynomial.mem_support_iff.1 hm)` as an intermediate fact. Rewrite using `[Finsupp.degree_eq_weight_one]` and apply the resulting hypothesis. Rewrite using `[MvPolynomial.rename_eq_aeval, MvPolynomial.aeval_monomial, MvPolynomial.aeval_monomial, ← hd]`. Simplify using `only [mul_pow, Finsupp.prod, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, Function.comp_apply, map_pow, Finsupp.degree_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem aeval_scale {L Y : Type} (f : L → Y) (s : ℂ) {N : ℕ} {Q : MvPolynomial L ℂ} (hQ : Q.IsHomogeneous N) :
     MvPolynomial.aeval (fun ℓ => MvPolynomial.C s * MvPolynomial.X (f ℓ)) Q =
       MvPolynomial.C (s ^ N) * MvPolynomial.rename f Q := by
@@ -53,6 +63,11 @@ theorem aeval_scale {L Y : Type} (f : L → Y) (s : ℂ) {N : ℕ} {Q : MvPolyno
     Finsupp.degree_apply]
   ring
 
+/- English proof (translation)
+Use `(Submodule.span_le (p := MvPolynomial.homogeneousSubmodule _ k _)).2 (fun Q hQ m hm => ?_) hP` and prove the remaining obligations. Establish `h` using `hQ.2.2 m (MvPolynomial.mem_support_iff.2 hm)`. Use `Eq.trans (b := m.degree) (by rw [Finsupp.degree_eq_weight_one]; rfl) ?_` and prove the remaining obligations. Rewrite using `[Finsupp.degree_eq_sum, Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Fintype.sum_prod_type]`. Conclude with `Finset.sum_congr rfl fun i _ => h σ i`.
+-/
 theorem isHomogeneous_of_span {T : Type} [Fintype T] (r : T → ℕ) (n : ℕ) (k : Type) [Field k] (cc : T → T) (isX : T → Prop)
     (a : T → ℕ → ℕ) {P : MvPolynomial (Letter T r n) k} (hP : P ∈ Submodule.span k (HHa r n k cc isX a)) :
     P.IsHomogeneous (∑ σ, ∑ i : Fin (r σ), a σ i) := by
@@ -64,6 +79,11 @@ theorem isHomogeneous_of_span {T : Type} [Fintype T] (r : T → ℕ) (n : ℕ) (
   rw [Fintype.sum_prod_type]
   exact Finset.sum_congr rfl fun i _ => h σ i
 
+/- English proof (translation)
+Establish `h : 0 < 2 * Real.pi * xiR D` using `by positivity`. Establish `h2 : (Real.sqrt (2 * Real.pi * xiR D))⁻¹ = Real.exp (-(Real.log (2 * Real.pi * xiR D) / 2))`. Rewrite using `[Real.exp_neg, ← Real.log_sqrt h.le, Real.exp_log (Real.sqrt_pos.2 h)]`. Rewrite using `[h2, ← Real.exp_nat_mul, lieFac]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lieFac_eq_pow {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} (Dw : Datum H) (hx : 0 < xiR D)
     (a : (D.host.E →+* ℂ) × ℕ → ℕ) :
     lieFac Dw (xiR D) a = (Real.sqrt (2 * Real.pi * xiR D))⁻¹ ^ (∑ σ, ∑ i : Fin (Dw.mult σ), a (σ, i)) := by
@@ -75,9 +95,17 @@ theorem lieFac_eq_pow {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor
   push_cast
   ring
 
+/- English proof (translation)
+Rewrite using `[fockScale, ReciprocityTheory.ChartRestriction.G.PullbackSections.PfModelLatB.norm_embedding_hostFormConstant_eq, div_mul_cancel_left₀ two_ne_zero]`.
+-/
 theorem two_div_fockScale (D : D7) (τ : D.what₂.Tau) : 2 / fockScale D τ = (Real.sqrt (2 * Real.pi * xiR D))⁻¹ := by
   rw [fockScale, ReciprocityTheory.ChartRestriction.G.PullbackSections.PfModelLatB.norm_embedding_hostFormConstant_eq, div_mul_cancel_left₀ two_ne_zero]
 
+/- English proof (translation)
+Unfold `Formalism.IndefR.Datum.unitMap`. Use `congr 1`. Use extensionality with `a b`. Distinguish the cases in `h : b = j`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Matrix.mul_single_apply_of_ne _ _ _ _ _ h]`.
+-/
 theorem unitMap_submatrix {m n : ℕ} (B : Matrix (Fin n) (Fin n) ℂ) (B' : Matrix (Fin m) (Fin m) ℂ) (π : Fin m → Fin m)
     (c : Fin m) (j : Fin n) :
     Formalism.IndefR.Datum.unitMap B (B'.submatrix id π) c j = Formalism.IndefR.Datum.unitMap B B' (π c) j := by
@@ -89,6 +117,11 @@ theorem unitMap_submatrix {m n : ℕ} (B : Matrix (Fin n) (Fin n) ℂ) (B' : Mat
     simp
   · simp [Matrix.mul_single_apply_of_ne _ _ _ _ _ h]
 
+/- English proof (translation)
+Establish `hX : ∀ B' v Q, pureTensorL (aPlusAll (heisO ψ S T) θ (fun τ => cplxO 1 (s τ)) B B') f (MvPolynomial.X v * Q) = aPlusAll (heisO ψ S T) θ (fun τ => cplxO 1 (s τ)) B B' v (pureTensorL (aPlusAll (heisO ψ S T) θ (fun τ => cplxO 1 (s τ)) B B') f Q)` using `fun B' v Q => by`. Use `GlobalTheory.FockIndep.pure_X_mul (P := IsThetaFunO ψ S T) (fun _ _ => GlobalTheory.OrientedHeis.theta_add) (fun a _ => GlobalTheory.OrientedHeis.theta_smul a) (fun _ _ h => GlobalTheory.FockIndep.aPlus_theta hψ hθ _ _ _ h) ?_ ?_ ?_ hf Q v` and prove the remaining obligations. Conclude with `fun i j _ h => GlobalTheory.FockIndep.aPlus_comm' (sS := fun _ => 1) hψ hθ i.1 _ hS hT j.1 _ h`. Conclude with `fun _ _ _ h h' => GlobalTheory.FockIndep.aPlus_add hψ hθ _ _ _ h h'`. Conclude with `fun _ a _ h => GlobalTheory.FockIndep.aPlus_smul hψ hθ _ _ _ a h`.
+
+Unfold `pureTensorO`. Use `pure_rename (hX Z) (hX Z') _ _ (fun k => ?_) Q` and prove the remaining obligations. Simplify using `only [aPlusAll, hZ, unitMap_submatrix]`.
+-/
 theorem pureTensorO_rename {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D} (hψ : IsStdChar D ψ (-1))
     (hθ : IsInfFam θ) {s : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ} (hS : ∀ τ, IsCartanInv (gramAt D S τ) 1)
     (hT : ∀ τ, IsCartanInv (gramAt D T τ) (s τ)) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f)

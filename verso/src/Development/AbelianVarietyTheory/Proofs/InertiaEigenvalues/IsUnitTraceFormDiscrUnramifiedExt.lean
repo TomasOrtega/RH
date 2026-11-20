@@ -9,6 +9,15 @@ namespace GlobalTheory.UnitLemma.Unr.ResDisc
 
 open IsLocalRing
 
+/- English proof (translation)
+Use `haveI : Module.Free R S := Module.Free.of_basis b`. Use `haveI : Module.Finite R S := Module.Finite.of_basis b`. Use `letI := Ideal.Quotient.field (maximalIdeal R)`. Use `letI := Ideal.Quotient.field (Ideal.map (algebraMap R S) (maximalIdeal R))`. Use `haveI : Finite (R ⧸ maximalIdeal R) := ‹Finite (ResidueField R)›`.
+
+Use `haveI : Module.Finite (R ⧸ maximalIdeal R) (S ⧸ Ideal.map (algebraMap R S) (maximalIdeal R)) := Module.Finite.of_basis (basisQuotient b)`. Use `haveI : Algebra.IsSeparable (R ⧸ maximalIdeal R) (S ⧸ Ideal.map (algebraMap R S) (maximalIdeal R)) := inferInstance`. Establish `h1 : Ideal.Quotient.mk (maximalIdeal R) (Algebra.discr R b) = Algebra.discr (R ⧸ maximalIdeal R) (basisQuotient b)`. Rewrite using `[Algebra.discr_def, Algebra.discr_def, RingHom.map_det]`. Use `congr 1`.
+
+Use extensionality with `k m`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Algebra.traceMatrix_apply, Algebra.traceForm_apply, basisQuotient_apply, ← map_mul, Algebra.trace_quotient_mk]`. Establish `h2` using `Algebra.discr_not_zero_of_basis (R ⧸ maximalIdeal R) (basisQuotient b)`. Rewrite `h2` using `[← h1]`. Assume the negation of the conclusion as `h`.
+
+Conclude with `h2 (Ideal.Quotient.eq_zero_iff_mem.2 ((mem_maximalIdeal _).2 h))`.
+-/
 theorem isUnit_discr_of_isMaximal_map {R S : Type} [CommRing R] [IsLocalRing R] [CommRing S] [Algebra R S]
     [Finite (ResidueField R)] {ι : Type} [Fintype ι] [DecidableEq ι] (b : Module.Basis ι R S)
     (hmax : (Ideal.map (algebraMap R S) (maximalIdeal R)).IsMaximal) :
@@ -34,6 +43,41 @@ theorem isUnit_discr_of_isMaximal_map {R S : Type} [CommRing R] [IsLocalRing R] 
   by_contra h
   exact h2 (Ideal.Quotient.eq_zero_iff_mem.2 ((mem_maximalIdeal _).2 h))
 
+/- English proof (translation)
+Introduce `K K' d φ _ π π' hππ' hm hm'`. Use `letI : Algebra K.E K'.E := φ.toAlgebra`. Introduce `w hw`. Establish `hj : Function.Injective (algebraMap K'.O K'.E)` using `IsFractionRing.injective K'.O K'.E`. Establish `hi : Function.Injective (algebraMap K.O K.E)` using `IsFractionRing.injective K.O K.E`.
+
+Establish `hφ : ∀ e : K.E, φ e = algebraMap K.E K'.E e` using `fun _ => rfl`. Establish `hlift : ∀ a : K.O, φ (algebraMap K.O K.E a) ∈ (algebraMap K'.O K'.E).range`. Introduce `a`. Apply `(hw _).2` to reduce the goal to its premises. Introduce `k`.
+
+Take `⟨c, hc⟩` from `(hw 1).1 ⟨1, map_one _⟩ k`. Use `⟨a * c, ?_⟩` and prove the remaining obligations. Establish `h1 : φ (algebraMap K.O K.E a) = (algebraMap K.O K.E a) • (1 : K'.E)`. Rewrite using `[Algebra.smul_def, mul_one]`. Both sides reduce to the same expression.
+
+Rewrite using `[h1, map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul, hc]`. Set `e : K'.O ≃+* (algebraMap K'.O K'.E).range` to `RingEquiv.ofBijective (algebraMap K'.O K'.E).rangeRestrict ⟨fun x y h => hj (congrArg Subtype.val h), (algebraMap K'.O K'.E).rangeRestrict_surjective⟩`. Set `ι : K.O →+* K'.O` to `e.symm.toRingHom.comp ((φ.comp (algebraMap K.O K.E)).codRestrict _ hlift)`. Establish `hι : ∀ a, algebraMap K'.O K'.E (ι a) = φ (algebraMap K.O K.E a)`. Introduce `a`.
+
+Conclude with `congrArg Subtype.val (e.apply_symm_apply ((φ.comp (algebraMap K.O K.E)).codRestrict _ hlift a))`. Use `letI : Algebra K.O K'.O := ι.toAlgebra`. Establish `hsm : ∀ (a : K.O) (y : K'.O), algebraMap K'.O K'.E (a • y) = algebraMap K.O K.E a • algebraMap K'.O K'.E y`. Introduce `a y`. Rewrite using `[Algebra.smul_def, map_mul, Algebra.smul_def]`.
+
+Conclude with `congrArg (· * _) (hι a)`. Establish `hsum : ∀ (g : Fin d → K.O) (v : Fin d → K'.O), algebraMap K'.O K'.E (∑ k, g k • v k) = ∑ k, algebraMap K.O K.E (g k) • algebraMap K'.O K'.E (v k)`. Introduce `g v`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => hsm _ _`.
+
+Establish `hw1 : ∀ k, ∃ y : K'.O, algebraMap K'.O K'.E y = w k`. Introduce `k`. Apply `(hw _).2` to reduce the goal to its premises. Introduce `m`. Use `⟨if m = k then 1 else 0, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[w.repr_self, Finsupp.single_apply]`. Use `split_ifs with h1 h2 h2`. Simplify using the standard rewrite rules. Conclude with `absurd h1.symm h2`. Conclude with `absurd h2.symm h1`.
+
+Simplify using the standard rewrite rules. Use `choose bv hbv using hw1`. Establish `hcoord : ∀ (y : K'.O) (k : Fin d), ∃ a : K.O, algebraMap K.O K.E a = w.repr (algebraMap K'.O K'.E y) k` using `fun y => (hw _).1 ⟨y, rfl⟩`. Use `choose c hc using hcoord`. Establish `hli : LinearIndependent K.O bv`.
+
+Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg k`. Establish `h1` using `congrArg (algebraMap K'.O K'.E) hg`. Rewrite `h1` using `[hsum, map_zero]`. Simplify using `only [hbv] at h1`.
+
+Establish `h2` using `(Fintype.linearIndependent_iff.1 w.linearIndependent) _ h1 k`. Conclude with `hi (by rw [h2, map_zero])`. Establish `hsp : ⊤ ≤ Submodule.span K.O (Set.range bv)`. Introduce `y _`. Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`.
+
+Use `⟨c y, hj ?_⟩` and prove the remaining obligations. Rewrite using `[hsum]`. Simplify using `only [hbv, hc]`. Conclude with `w.sum_repr _`. Set `b : Module.Basis (Fin d) K.O K'.O` to `Module.Basis.mk hli hsp`.
+
+Establish `hb : ∀ k, algebraMap K'.O K'.E (b k) = w k` using `fun k => by`. Rewrite using `[Module.Basis.mk_apply]`. Conclude with `hbv k`. Establish `hrep : ∀ y k, algebraMap K.O K.E (b.repr y k) = w.repr (algebraMap K'.O K'.E y) k`. Introduce `y k`.
+
+Use `conv_rhs => rw [← b.sum_repr y, hsum]`. Simplify using `only [hb]`. Rewrite using `[w.repr_sum_self]`. Establish `hTr : ∀ y, algebraMap K.O K.E (Algebra.trace K.O K'.O y) = Algebra.trace K.E K'.E (algebraMap K'.O K'.E y)`. Introduce `y`.
+
+Rewrite using `[Algebra.trace_eq_matrix_trace b, Algebra.trace_eq_matrix_trace w, Matrix.trace, Matrix.trace, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.diag_apply, Algebra.leftMulMatrix_apply, LinearMap.toMatrix_apply, Algebra.coe_lmul_eq_mul, LinearMap.mul_apply', hrep, map_mul, hb]`. Establish `hιπ : ι π = π'` using `hj (by rw [hι, hππ'])`. Establish `hmax : (Ideal.map (algebraMap K.O K'.O) (IsLocalRing.maximalIdeal K.O)).IsMaximal`.
+
+Rewrite using `[hm, Ideal.map_span, Set.image_singleton]`. Establish `h1 : algebraMap K.O K'.O π = π'` using `hιπ`. Rewrite using `[h1, ← hm']`. Conclude with `IsLocalRing.maximalIdeal.isMaximal _`. Use `⟨Algebra.discr K.O b, isUnit_discr_of_isMaximal_map b hmax, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Algebra.discr_def, RingHom.map_det]`. Use `congr 1`. Use extensionality with `k m`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Algebra.traceMatrix_apply, Algebra.traceForm_apply, Matrix.of_apply, hTr, map_mul, hb]`.
+-/
 theorem discr_trace_isUnit : ∀ (K K' : UQ) (d : ℕ) (φ : K.E →+* K'.E), IsUnrExt K K' d φ → ∀ (π : K.O) (π' : K'.O), algebraMap K'.O K'.E π' = φ (algebraMap K.O K.E π) → IsLocalRing.maximalIdeal K.O = Ideal.span {π} → IsLocalRing.maximalIdeal K'.O = Ideal.span {π'} → letI : Algebra K.E K'.E := φ.toAlgebra; ∀ w : Module.Basis (Fin d) K.E K'.E, (∀ z : K'.E, (∃ y : K'.O, algebraMap K'.O K'.E y = z) ↔ ∀ k, ∃ a : K.O, algebraMap K.O K.E a = w.repr z k) → ∃ u : K.O, IsUnit u ∧ algebraMap K.O K.E u = (Matrix.of fun k m => Algebra.trace K.E K'.E (w k * w m)).det := by
   intro K K' d φ _ π π' hππ' hm hm'
   letI : Algebra K.E K'.E := φ.toAlgebra

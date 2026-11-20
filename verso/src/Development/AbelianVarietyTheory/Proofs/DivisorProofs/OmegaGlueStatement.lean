@@ -17,6 +17,9 @@ variable {X : Scheme.{0}} {F : X.Modules} {r : ℕ}
 abbrev spanOn {V : X.Opens} (η : Fin r → Γ(F, V)) {U : X.Opens} (h : U ≤ V) : Submodule Γ(X, U) Γ(F, U) :=
   Submodule.span Γ(X, U) (Set.range fun l => resM F h (η l))
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 hs`. Simplify using `only [map_sum, resM_smul, resM_resM]`. Conclude with `Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨l, rfl⟩)`.
+-/
 theorem resM_mem_spanOn {V U W : X.Opens} (η : Fin r → Γ(F, V)) (h : U ≤ V) (h' : W ≤ U) {s : Γ(F, U)}
     (hs : s ∈ spanOn η h) : resM F h' s ∈ spanOn η (h'.trans h) := by
   obtain ⟨a, rfl⟩ := (Submodule.mem_span_range_iff_exists_fun _).1 hs
@@ -51,11 +54,25 @@ def locSpan {V : X.Opens} (η : Fin r → Γ(F, V)) : Sub F where
     obtain ⟨W', g, g', hW', k⟩ := hs z hW hz'
     exact ⟨W', g.trans h, g', hW', by simpa only [resM_resM] using k⟩
 
+/- English proof (translation)
+Introduce `z hz' hz` and use `have ⟨U, g, g', hU, k⟩ := h z hz hz' ⟨U, g', g, hU, k j⟩`.
+-/
 theorem mem_locSpan {V V' : X.Opens} {η : Fin r → Γ(F, V)} {η' : Fin r → Γ(F, V')} (h : LocInSpan η η') (j : Fin r) :
     η' j ∈ (locSpan η).sec V' := fun z hz' hz =>
   have ⟨U, g, g', hU, k⟩ := h z hz hz'
   ⟨U, g', g, hU, k j⟩
 
+/- English proof (translation)
+Establish `key (U : X.Opens) (h : U ≤ V) (a : Fin r → Γ(X, U)) : N.incl.app U (Fintype.linearCombination Γ(X, U) (fun l => resM N.toMod h (N.mkSec (η l) (hη l))) a) = Fintype.linearCombination Γ(X, U) (fun l => resM F h (η l)) a`. Simplify using `only [Fintype.linearCombination_apply, map_sum, Scheme.Modules.Hom.app_smul, app_resM, Sub.incl_app_mkSec]`. Establish `inj (U : X.Opens) (h : U ≤ V) : Function.Injective (Fintype.linearCombination Γ(X, U) fun l => resM N.toMod h (N.mkSec (η l) (hη l)))` using `fun a b hab => by`. Use `congrArg (N.incl.app U) hab` as an intermediate fact. Rewrite `this` using `[key, key]`.
+
+Conclude with `(hi U h).fintypeLinearCombination_injective this`. Introduce `U h`. Use `⟨inj U h, fun s => ?_⟩` and prove the remaining obligations. Establish `hs` using `hN U (N.incl_app_mem s)`. Use `choose W hW hW' hx hb using fun x : U => hs x x.2 (h x.2)`.
+
+Establish `hc : U ≤ iSup W` using `fun x hxU => TopologicalSpace.Opens.mem_iSup.2 ⟨⟨x, hxU⟩, hx _⟩`. Use `choose a ha using fun x => (Submodule.mem_span_range_iff_exists_fun _).1 (hb x)`. Establish `ha' (x : U) : Fintype.linearCombination Γ(X, W x) (fun l => resM N.toMod ((hW x).trans h) (N.mkSec (η l) (hη l))) (a x) = resM N.toMod (hW x) s`. Apply `N.incl_app_injective` to reduce the goal to its premises. Rewrite using `[key, app_resM, ← ha x, Fintype.linearCombination_apply]`.
+
+Establish `agree (x y : U) : (fun i => resG X (inf_le_left : W x ⊓ W y ≤ W x) (a x i)) = fun i => resG X (inf_le_right : W x ⊓ W y ≤ W y) (a y i)`. Apply `inj _ (inf_le_left.trans ((hW x).trans h))` to reduce the goal to its premises. Rewrite using `[← resM_linearCombination _ ((hW x).trans h), ← resM_linearCombination _ ((hW y).trans h), ha', ha', resM_resM, resM_resM]`. Use `choose b hb' using fun i => GlobalTheory.LB.exists_fun_of_cover W hW hc (fun x => a x i) fun x y => congrFun (agree x y) i`. Use `⟨b, GlobalTheory.Twist.sec_ext_of_cover W hW hc fun x => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[resM_linearCombination, ← ha' x]`. Conclude with `congrArg _ (funext fun i => hb' i x)`.
+-/
 theorem isFrame_mkSec (N : Sub F) {V : X.Opens} {η : Fin r → Γ(F, V)} (hη : ∀ l, η l ∈ N.sec V)
     (hi : ∀ (U : X.Opens) (h : U ≤ V), LinearIndependent Γ(X, U) fun l => resM F h (η l))
     (hN : ∀ U, N.sec U ≤ (locSpan η).sec U) : IsFrame fun l => N.mkSec (η l) (hη l) := by
@@ -89,6 +106,11 @@ theorem isFrame_mkSec (N : Sub F) {V : X.Opens} {η : Fin r → Γ(F, V)} (hη :
   rw [resM_linearCombination, ← ha' x]
   exact congrArg _ (funext fun i => hb' i x)
 
+/- English proof (translation)
+Introduce `X F r J V η hc hi hs`. Set `N : Sub F` to `Sub.iInf fun α => locSpan (η α)`. Establish `hη (α : J) (l : Fin r) : η α l ∈ N.sec (V α)` using `(Submodule.mem_iInf _).2 fun β => mem_locSpan (hs β α) l`. Establish `hf (α : J) : IsFrame fun l => N.mkSec (η α l) (hη α l)` using `isFrame_mkSec N (hη α) (hi α) fun U => iInf_le (fun β => (locSpan (η β)).sec U) α`. Use `⟨N.toMod, N.incl, fun z => ?_, fun α => ⟨_, hf α, fun l => rfl⟩⟩` and prove the remaining obligations.
+
+Take `⟨α, hα⟩` from `hc z`. Conclude with `⟨V α, _, hα, hf α⟩`.
+-/
 theorem glue : GlueSt := by
   intro X F r J V η hc hi hs
   let N : Sub F := Sub.iInf fun α => locSpan (η α)

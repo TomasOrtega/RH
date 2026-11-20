@@ -14,6 +14,11 @@ noncomputable section
 
 attribute [local instance] algebraOfOver
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `isCompact_univ.elim_finite_subcover (fun V : X.affineOpens => (V : Set X)) (fun V => V.1.isOpen) (fun x _ => by`. Take `⟨_, ⟨V, hV, rfl⟩, hx, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ`. Conclude with `Set.mem_iUnion.2 ⟨⟨V, hV⟩, hx⟩)`. Use `⟨s, inferInstance, fun V => V.1.1, ?_, fun m t => IsAffineOpen.iInf fun a => (t a).1.2⟩` and prove the remaining obligations. Apply `le_antisymm le_top` to reduce the goal to its premises.
+
+Introduce `x _`. Take `⟨V, hV, hx⟩` from `Set.mem_iUnion₂.1 (hs (Set.mem_univ x))`. Conclude with `Opens.mem_iSup.2 ⟨⟨V, hV⟩, hx⟩`.
+-/
 theorem exists_finite_affineCover (X : Scheme.{u}) [CompactSpace X] [X.IsSeparated] :
     ∃ (ι : Type u) (_ : Finite ι) (𝔘 : ι → X.Opens), iSup 𝔘 = ⊤ ∧
       ∀ (m : ℕ) (t : Fin (m + 1) → ι), IsAffineOpen (⨅ a, 𝔘 (t a)) := by
@@ -31,11 +36,19 @@ theorem exists_finite_affineCover (X : Scheme.{u}) [CompactSpace X] [X.IsSeparat
 variable {A : Type u} [CommRing A] [IsNoetherianRing A] (I : Ideal A) {X : Scheme.{u}}
   [X.Over (Spec (.of A))] {F : X.Modules}
 
+/- English proof (translation)
+Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[show terminal.from X = (X ↘ Spec (.of A)) ≫ terminal.from _ from terminal.hom_ext _ _]`. Use `infer_instance`.
+-/
 lemma isSeparated_of_over [IsSeparated (X ↘ Spec (.of A))] : X.IsSeparated := by
   refine ⟨?_⟩
   rw [show terminal.from X = (X ↘ Spec (.of A)) ≫ terminal.from _ from terminal.hom_ext _ _]
   infer_instance
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨z, rfl⟩`. Use `⟨cechH.linearMap 𝔘 A (idealPowSucc I F n) p z, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (fun f => f.hom) (show modulesAbMap (idealPowSucc I F n) ≫ modulesAbMap (idealPowι I F n) = modulesAbMap (idealPowι I F (n + 1)) by`. Rewrite using `[← modulesAbMap_comp, idealPowSucc_ι])`. Express the relevant statement in the definitionally equal form `cechHMap 𝔘 (modulesAbMap (idealPowι I F n)).hom p (cechHMap 𝔘 (modulesAbMap (idealPowSucc I F n)).hom p z) = cechHMap 𝔘 (modulesAbMap (idealPowι I F (n + 1))).hom p z`.
+
+Rewrite using `[← cechHMap_comp]`. Conclude with `congrArg (fun f => cechHMap 𝔘 f p z) h`.
+-/
 lemma cechK_succ_le {ι : Type u} (𝔘 : ι → X.Opens) (p n : ℕ) :
     cechK I 𝔘 p (F := F) (n + 1) ≤ cechK I 𝔘 p n := by
   rintro _ ⟨z, rfl⟩
@@ -49,6 +62,9 @@ lemma cechK_succ_le {ι : Type u} (𝔘 : ι → X.Opens) (p n : ℕ) :
   rw [← cechHMap_comp]
   exact congrArg (fun f => cechHMap 𝔘 f p z) h
 
+/- English proof (translation)
+The claim follows from `| 0, y => by change (y : Sheaf.H.{u} (modulesAb (idealPow I F (n + 1))) (q + 1)) = H.linearMap A (𝟙 _) (q + 1) y rw [H.linearMap_id] rfl | c + 1, y => by change ((towerComp (E := fun m => formalQ I F q m) (formalτQ I F q) n c (formalτQ I F q (n + c) y) : formalQ I F q n) : Sheaf. …`.
+-/
 lemma towerComp_formalτQ_val (q n : ℕ) : ∀ (c : ℕ) (y : formalQ I F q (n + c)),
     ((towerComp (E := fun m => formalQ I F q m) (formalτQ I F q) n c y : formalQ I F q n) :
       Sheaf.H.{u} (modulesAb (idealPow I F (n + 1))) (q + 1)) =
@@ -67,6 +83,15 @@ lemma towerComp_formalτQ_val (q n : ℕ) : ∀ (c : ℕ) (y : formalQ I F q (n 
 variable [IsProper (X ↘ Spec (.of A))] (hF : IsCoherent F)
 
 include hF in
+/- English proof (translation)
+Use `hF.1` as an intermediate fact. Establish `: CompactSpace X` using `QuasiCompact.compactSpace_of_compactSpace (X ↘ Spec (.of A))`. Use `isSeparated_of_over (A := A) (X := X)` as an intermediate fact. Take `⟨ι, _, 𝔘, hUtop, hU⟩` from `exists_finite_affineCover X`. Take `⟨c, hc⟩` from `exists_cechK_eq_pow_smul I hF 𝔘 hU q hUtop`.
+
+Use `⟨c, fun n => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`. Take `⟨zČ, rfl⟩` from `(cechHLinearEquivH 𝔘 hUtop hU A (idealPow I F (n + c + 1)) q).surjective z`. Rewrite using `[formalα, ← cechHLinearEquivH_naturality]`. Establish `h2` using `cechK_succ_le I 𝔘 q (n + c) (F := F) ⟨zČ, rfl⟩`.
+
+Rewrite `h2` using `[hc n]`. Establish `hmem : cechH.linearMap 𝔘 A (idealPowι I F (n + c + 1)) q zČ ∈ I ^ n • (⊤ : Submodule A (cechH (modulesAb F).obj 𝔘 q))` using `Submodule.smul_mono le_rfl le_top h2`. Use `Submodule.smul_induction_on hmem (fun a ha y _ => ?_) (fun y y' hy hy' => ?_)` and prove the remaining obligations. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem_smul ha trivial`.
+
+Rewrite using `[map_add]`. Conclude with `add_mem hy hy'`.
+-/
 lemma exists_formalK_le (q : ℕ) : ∃ c, ∀ n, formalK I F q (n + c) ≤
     I ^ n • (⊤ : Submodule A (Sheaf.H.{u} (modulesAb F) q)) := by
   have := hF.1
@@ -90,6 +115,15 @@ lemma exists_formalK_le (q : ℕ) : ∃ c, ∀ n, formalK I F q (n + c) ≤
     exact add_mem hy hy'
 
 include hF in
+/- English proof (translation)
+Use `hF.1` as an intermediate fact. Establish `: CompactSpace X` using `QuasiCompact.compactSpace_of_compactSpace (X ↘ Spec (.of A))`. Use `isSeparated_of_over (A := A) (X := X)` as an intermediate fact. Take `⟨ι, _, 𝔘, hUtop, hU⟩` from `exists_finite_affineCover X`. Take `⟨c, hc⟩` from `exists_transMap_eq_zero I hF 𝔘 hU (q + 1) hUtop`.
+
+Use `⟨c, fun n => LinearMap.ext fun y => Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[towerComp_formalτQ_val, LinearMap.zero_apply, ZeroMemClass.coe_zero]`. Take `⟨x, hx⟩` from `y.2`. Take `⟨yČ, hyČ⟩` from `(cechHLinearEquivH 𝔘 hUtop hU A (idealPow I F (n + c + 1)) (q + 1)).surjective y.1`. Establish `hι : cechHMap 𝔘 (modulesAbMap (idealPowι I F (n + c + 1))).hom (q + 1) yČ = 0`.
+
+Apply `(cechHLinearEquivH 𝔘 hUtop hU A F (q + 1)).injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Express the relevant statement in the definitionally equal form `cechHLinearEquivH 𝔘 hUtop hU A F (q + 1) (cechH.linearMap 𝔘 A (idealPowι I F (n + c + 1)) (q + 1) yČ) = 0`. Rewrite using `[cechHLinearEquivH_naturality, hyČ, ← hx]`. Conclude with `H.map_f_δ (shortExact_abSC_quotPow I F (n + c)) rfl x`.
+
+Rewrite using `[← hyČ, ← cechHLinearEquivH_naturality]`. Express the relevant statement in the definitionally equal form `cechHLinearEquivH 𝔘 hUtop hU A (idealPow I F (n + 1)) (q + 1) (cechHMap 𝔘 (modulesAbMap (transMap I F n c)).hom (q + 1) yČ) = 0`. Rewrite using `[hc n yČ hι, map_zero]`.
+-/
 lemma exists_towerComp_formalτQ_eq_zero (q : ℕ) :
     ∃ c, ∀ n, towerComp (E := fun m => formalQ I F q m) (formalτQ I F q) n c = 0 := by
   have := hF.1
@@ -116,6 +150,9 @@ lemma exists_towerComp_formalτQ_eq_zero (q : ℕ) :
 
 include hF in
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `exists_towerComp_formalτQ_eq_zero I hF q`. Conclude with `mem_range_formalβ_of_mem_towerLimit hc hx n`.
+-/
 theorem formalFunctions_mem_range (q : ℕ) {x : ∀ n, Sheaf.H.{u} (modulesAb (quotPow I F n)) q}
     (hx : x ∈ towerLimit (E := fun m => Sheaf.H.{u} (modulesAb (quotPow I F m)) q)
       (formalτE I F q)) (n : ℕ) : x n ∈ LinearMap.range (formalβ I F q n) := by

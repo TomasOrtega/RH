@@ -17,11 +17,17 @@ noncomputable def kerModRangeEquivOfSurjective {f g : A →+ A} (φ : f.ker →+
       rw [AddMonoidHom.mem_ker, hk, AddSubgroup.mem_addSubgroupOf])).trans
     (QuotientAddGroup.quotientKerEquivOfSurjective φ hs)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem kerModRangeEquivOfSurjective_mk {f g : A →+ A} (φ : f.ker →+ B)
     (hs : Function.Surjective φ) (hk : ∀ a : f.ker, φ a = 0 ↔ (a : A) ∈ g.range) (a : f.ker) :
     kerModRangeEquivOfSurjective φ hs hk (QuotientAddGroup.mk a : KerModRange f g) = φ a :=
   rfl
 
+/- English proof (translation)
+Apply `e.injective` to reduce the goal to its premises. Simplify using `only [AddEquiv.coe_toAddMonoidHom, AddEquiv.apply_symm_apply, hf]`.
+-/
 theorem addEquiv_symm_apply_comm {f : A →+ A} {f' : B →+ B} (e : A ≃+ B)
     (hf : ∀ a, e (f a) = f' (e a)) (b : B) :
     e.symm.toAddMonoidHom (f' b) = f (e.symm.toAddMonoidHom b) := by
@@ -42,6 +48,9 @@ noncomputable def kerModRangeCongr {fA gA : A →+ A} {fB gB : B →+ B} (e : A 
     | H a => exact congrArg QuotientAddGroup.mk (Subtype.ext (e.apply_symm_apply (a : B)))
   map_add' := map_add _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem kerModRangeCongr_mk {fA gA : A →+ A} {fB gB : B →+ B} (e : A ≃+ B)
     (hf : ∀ a, e (fA a) = fB (e a)) (hg : ∀ a, e (gA a) = gB (e a)) (a : fA.ker) :
     kerModRangeCongr e hf hg (QuotientAddGroup.mk a : KerModRange fA gA) =
@@ -82,6 +91,9 @@ noncomputable def kerModRangePiEquiv {ι : Type*} {A : ι → Type*} [∀ i, Add
         show g i (y i) = (x : ∀ i, A i) i
         rw [← hG, hy])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem kerModRangePiEquiv_mk {ι : Type*} {A : ι → Type*} [∀ i, AddCommGroup (A i)]
     (F G : (∀ i, A i) →+ (∀ i, A i)) (f g : ∀ i, A i →+ A i) (hF : ∀ x i, F x i = f i (x i))
     (hG : ∀ x i, G x i = g i (x i)) (x : F.ker) (i : ι) :
@@ -99,10 +111,18 @@ variable {k G V : Type*} [CommRing k] [Group G] [AddCommGroup V] [Module k V]
 def cycSubOne (ρ : Representation k G V) (σ : G) : V →+ V :=
   (ρ σ - 1 : Module.End k V).toAddMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cycSubOne_apply (ρ : Representation k G V) (σ : G) (x : V) :
     cycSubOne ρ σ x = ρ σ x - x :=
   rfl
 
+/- English proof (translation)
+Use `hσ g` as an intermediate fact. Rewrite `this` using `[Subgroup.zpowers_eq_closure]`. Proceed by induction on `this using Subgroup.closure_induction with`. Consider the case `mem y hy => rw [Set.mem_singleton_iff.1 hy, hx]`. Consider the case `one => simp`.
+
+Consider the case `mul a b _ _ ha hb => rw [map_mul, Module.End.mul_apply, hb, ha]`. Consider the case `inv a _ ha => conv_lhs => rw [← ha]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+-/
 theorem apply_eq_self_of_generator (ρ : Representation k G V) {σ : G}
     (hσ : ∀ g, g ∈ Subgroup.zpowers σ) {x : V} (hx : ρ σ x = x) (g : G) : ρ g x = x := by
   have := hσ g
@@ -115,12 +135,24 @@ theorem apply_eq_self_of_generator (ρ : Representation k G V) {σ : G}
     conv_lhs => rw [← ha]
     rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]
 
+/- English proof (translation)
+Rewrite using `[AddMonoidHom.mem_ker, cycSubOne_apply, sub_eq_zero]`. Conclude with `⟨fun h => apply_eq_self_of_generator ρ hσ h, fun h => h σ⟩`.
+-/
 theorem mem_ker_cycSubOne_iff (ρ : Representation k G V) {σ : G}
     (hσ : ∀ g, g ∈ Subgroup.zpowers σ) (x : V) :
     x ∈ (cycSubOne ρ σ).ker ↔ ∀ g, ρ g x = x := by
   rw [AddMonoidHom.mem_ker, cycSubOne_apply, sub_eq_zero]
   exact ⟨fun h => apply_eq_self_of_generator ρ hσ h, fun h => h σ⟩
 
+/- English proof (translation)
+Use `hσ g` as an intermediate fact. Rewrite `this` using `[Subgroup.zpowers_eq_closure]`. Proceed by induction on `this using Subgroup.closure_induction generalizing x with`. Consider the case `mem y hy`. Rewrite using `[Set.mem_singleton_iff.1 hy]`.
+
+Conclude with `⟨x, rfl⟩`. Consider the case `one => simp`. Consider the case `mul a b _ _ ha hb`. Establish `: ρ (a * b) x - x = (ρ a (ρ b x) - ρ b x) + (ρ b x - x)`. Rewrite using `[map_mul, Module.End.mul_apply]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Conclude with `add_mem (ha _) (hb _)`. Consider the case `inv a _ ha`. Establish `: ρ a⁻¹ x - x = -(ρ a (ρ a⁻¹ x) - ρ a⁻¹ x)`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Conclude with `neg_mem (ha _)`.
+-/
 theorem apply_sub_self_mem_range_cycSubOne (ρ : Representation k G V) {σ : G}
     (hσ : ∀ g, g ∈ Subgroup.zpowers σ) (g : G) (x : V) :
     ρ g x - x ∈ (cycSubOne ρ σ).range := by
@@ -143,6 +175,11 @@ theorem apply_sub_self_mem_range_cycSubOne (ρ : Representation k G V) {σ : G}
     rw [this]
     exact neg_mem (ha _)
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `AddSubgroup.subset_closure ⟨σ, x, rfl⟩`. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `_ ⟨g, x, rfl⟩`.
+
+Conclude with `apply_sub_self_mem_range_cycSubOne ρ hσ g x`.
+-/
 theorem range_cycSubOne_eq_closure (ρ : Representation k G V) {σ : G}
     (hσ : ∀ g, g ∈ Subgroup.zpowers σ) :
     (cycSubOne ρ σ).range = AddSubgroup.closure {y | ∃ g x, ρ g x - x = y} := by
@@ -158,14 +195,23 @@ variable [Fintype G]
 def cycNorm (ρ : Representation k G V) : V →+ V :=
   ρ.norm.toAddMonoidHom
 
+/- English proof (translation)
+Simplify using `[cycNorm, Representation.norm, LinearMap.sum_apply]`.
+-/
 theorem cycNorm_apply (ρ : Representation k G V) (x : V) : cycNorm ρ x = ∑ g : G, ρ g x := by
   simp [cycNorm, Representation.norm, LinearMap.sum_apply]
 
+/- English proof (translation)
+Rewrite using `[cycSubOne_apply, sub_eq_zero]`. Conclude with `ρ.self_norm_apply σ x`.
+-/
 theorem cycSubOne_cycNorm (ρ : Representation k G V) (σ : G) (x : V) :
     cycSubOne ρ σ (cycNorm ρ x) = 0 := by
   rw [cycSubOne_apply, sub_eq_zero]
   exact ρ.self_norm_apply σ x
 
+/- English proof (translation)
+Rewrite using `[cycSubOne_apply, map_sub, sub_eq_zero]`. Conclude with `ρ.norm_self_apply σ x`.
+-/
 theorem cycNorm_cycSubOne (ρ : Representation k G V) (σ : G) (x : V) :
     cycNorm ρ (cycSubOne ρ σ x) = 0 := by
   rw [cycSubOne_apply, map_sub, sub_eq_zero]
@@ -180,6 +226,9 @@ abbrev CycTateNegOne (ρ : Representation k G V) (σ : G) : Type _ :=
 noncomputable def cycHerbrand (ρ : Representation k G V) (σ : G) : ℚ :=
   herbrandQuotient (cycSubOne ρ σ) (cycNorm ρ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cycHerbrand_eq (ρ : Representation k G V) (σ : G) :
     cycHerbrand ρ σ = (Nat.card (CycTateZero ρ σ) : ℚ) / Nat.card (CycTateNegOne ρ σ) :=
   rfl
@@ -203,6 +252,9 @@ noncomputable def cycTateNegOneCongr {ρ : Representation k G V} {ρ' : Represen
   kerModRangeCongr e (fun v => by simp [cycNorm_apply, map_sum, he])
     (fun v => by simp [cycSubOne_apply, he])
 
+/- English proof (translation)
+Rewrite using `[cycHerbrand_eq, cycHerbrand_eq, Nat.card_congr (cycTateZeroCongr e he σ).toEquiv, Nat.card_congr (cycTateNegOneCongr e he σ).toEquiv]`.
+-/
 theorem cycHerbrand_congr {ρ : Representation k G V} {ρ' : Representation k G W}
     (e : V ≃+ W) (he : ∀ g v, e (ρ g v) = ρ' g (e v)) (σ : G) :
     cycHerbrand ρ σ = cycHerbrand ρ' σ := by
@@ -222,16 +274,25 @@ def piRep (ρ : ∀ i, Representation k G (V i)) : Representation k G (∀ i, V 
   map_mul' g h := by ext; simp
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem piRep_apply (ρ : ∀ i, Representation k G (V i)) (g : G) (x : ∀ i, V i) (i : ι) :
     piRep ρ g x i = ρ i g (x i) :=
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cycSubOne_piRep_apply (ρ : ∀ i, Representation k G (V i)) (σ : G) (x : ∀ i, V i)
     (i : ι) : cycSubOne (piRep ρ) σ x i = cycSubOne (ρ i) σ (x i) :=
   rfl
 
 variable [Fintype G]
 
+/- English proof (translation)
+Rewrite using `[cycNorm_apply, cycNorm_apply, Finset.sum_apply]`. Both sides reduce to the same expression.
+-/
 theorem cycNorm_piRep_apply (ρ : ∀ i, Representation k G (V i)) (x : ∀ i, V i) (i : ι) :
     cycNorm (piRep ρ) x i = cycNorm (ρ i) (x i) := by
   rw [cycNorm_apply, cycNorm_apply, Finset.sum_apply]
@@ -245,6 +306,9 @@ noncomputable def cycTateNegOnePiEquiv (ρ : ∀ i, Representation k G (V i)) (�
     CycTateNegOne (piRep ρ) σ ≃+ ∀ i, CycTateNegOne (ρ i) σ :=
   kerModRangePiEquiv _ _ _ _ (cycNorm_piRep_apply ρ) (cycSubOne_piRep_apply ρ σ)
 
+/- English proof (translation)
+Simplify using `only [cycHerbrand_eq]`. Rewrite using `[Nat.card_congr (cycTateZeroPiEquiv ρ σ).toEquiv, Nat.card_congr (cycTateNegOnePiEquiv ρ σ).toEquiv, Nat.card_pi, Nat.card_pi, Nat.cast_prod, Nat.cast_prod, Finset.prod_div_distrib]`.
+-/
 theorem cycHerbrand_pi [Fintype ι] (ρ : ∀ i, Representation k G (V i)) (σ : G) :
     cycHerbrand (piRep ρ) σ = ∏ i, cycHerbrand (ρ i) σ := by
   simp only [cycHerbrand_eq]

@@ -17,6 +17,17 @@ open CategoryTheory AlgebraicGeometry
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Establish `: CharZero T.base` using `hT.charZero`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `_ x`.
+
+Establish `: AlgebraicGeometry.IsOpenImmersion s.toSequenceOfBlowups.isoZero.hom` using `inferInstance`. Rewrite using `[s.ideal_zero, orderAt_comap_of_isOpenImmersion]`. Conclude with `hord _`. Consider the case `succ k ih`. Introduce `hk x`.
+
+Establish `hlt : k < s.toSequenceOfBlowups.length` using `hk`. Establish `hprev` using `ih (le_of_lt hlt)`. Establish `hnoeth : AlgebraicGeometry.IsNoetherian (s.toSequenceOfBlowups.schemeAt (k + 1))` using `MarkedSequenceOfBlowups.isNoetherian_schemeAt effectiveCartierSupportContainsNoComponent hT s (k + 1) hk`. Establish `: AlgebraicGeometry.IsLocallyNoetherian (s.toSequenceOfBlowups.schemeAt (k + 1))` using `inferInstance`. Establish `hsmooth : AlgebraicGeometry.Smooth (s.projectionToSpec k)` using `MarkedSequenceOfBlowups.smooth_projectionToSpec effectiveCartierSupportContainsNoComponent hT s k (le_of_lt hlt)`.
+
+Establish `hS : HasStrictNormalCrossingsWith (s.projectionToSpec k) (s.toSequenceOfBlowups.center k) (s.boundary k)`. Rewrite using `[MarkedSequenceOfBlowups.projectionToSpec_eq]`. Conclude with `s.center_snc k hlt`. Establish `hI : s.ideal k ≤ s.toSequenceOfBlowups.center k ^ T.mult` using `le_pow_of_hasStrictNormalCrossingsWith (s.projectionToSpec k) (s.toSequenceOfBlowups.center k) (s.ideal k) (s.boundary k) hS T.mult (s.center_order k hlt)`. Establish `hEq : s.ideal (k + 1) = controlledTransform (s.toSequenceOfBlowups.transitionMapSucc k) (s.toSequenceOfBlowups.center k) (s.ideal k) T.mult (s.toSequenceOfBlowups.isBlowupAlongIdealSheaf_blowupMorphism k hlt) hI` using `eq_controlledTransform_of_mul_eq_comap (s.toSequenceOfBlowups.transitionMapSucc k) (s.toSequenceOfBlowups.center k) (s.ideal k) T.mult (s.toSequenceOfBlowups.isBlowupAlongIdealSheaf_blowupMorphism k hlt) hI (s.ideal (k + 1)) (s.ideal_succ k hlt)`.
+
+Rewrite using `[hEq]`. Conclude with `orderAt_controlledTransform_le_of_forall_le T.base (s.projectionToSpec k) (s.toSequenceOfBlowups.transitionMapSucc k) (s.toSequenceOfBlowups.center k) (s.boundary k) hS (s.toSequenceOfBlowups.isBlowupAlongIdealSheaf_blowupMorphism k hlt) (s.ideal k) T.mult hI hprev x`.
+-/
 theorem orderAt_ideal_le_mult_along_sequence (T : MarkedIdealWithBoundary.{u}) (hT : T.IsAdmissible)
     (hord : ∀ x : ↥T.scheme, orderAt T.ideal x ≤ (T.mult : ℕ∞)) (s : T.SequenceOfBlowups) :
     ∀ (i : ℕ), i ≤ s.toSequenceOfBlowups.length →

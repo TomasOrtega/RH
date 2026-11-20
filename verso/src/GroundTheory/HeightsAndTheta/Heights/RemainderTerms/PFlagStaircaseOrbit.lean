@@ -6,6 +6,9 @@ namespace GroundTheory.Heights₂.Heights.RestTerms
 
 noncomputable section
 
+/- English proof (translation)
+Use `Finite.injective_iff_bijective.mp ?_` and prove the remaining obligations. Introduce `i j h`. Conclude with `hinj (congrArg Fin.val h)`.
+-/
 theorem FlagStaircaseOrbit.bijective_of_injective {f N : ℕ} (γ : Fin f × Fin N →₀ ℕ) (τ : Fin f)
     (hlt : ∀ i, γ (τ, i) < N) (hinj : Function.Injective fun i : Fin N => γ (τ, i)) :
     Function.Bijective fun i : Fin N => (⟨γ (τ, i), hlt i⟩ : Fin N) := by
@@ -13,6 +16,11 @@ theorem FlagStaircaseOrbit.bijective_of_injective {f N : ℕ} (γ : Fin f × Fin
   intro i j h
   exact hinj (congrArg Fin.val h)
 
+/- English proof (translation)
+Introduce `f N α β hα hβ iα iβ`. Set `A : Fin f → (Fin N ≃ Fin N)` to `fun τ => Equiv.ofBijective _ (FlagStaircaseOrbit.bijective_of_injective α τ (hα τ) (iα τ))`. Set `B : Fin f → (Fin N ≃ Fin N)` to `fun τ => Equiv.ofBijective _ (FlagStaircaseOrbit.bijective_of_injective β τ (hβ τ) (iβ τ))`. Use `⟨fun τ => (B τ).trans (A τ).symm, fun τ i => ?_⟩` and prove the remaining obligations. Establish `h : A τ ((A τ).symm (B τ i)) = B τ i` using `Equiv.apply_symm_apply _ _`.
+
+Establish `h'` using `congrArg Fin.val h`. Conclude with `h'`.
+-/
 theorem FlagStaircaseOrbit.proof : FlagStaircaseOrbit.Statement := by
   intro f N α β hα hβ iα iβ
   let A : Fin f → (Fin N ≃ Fin N) := fun τ =>

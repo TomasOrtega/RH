@@ -7,6 +7,11 @@ open NumberField
 
 namespace GlobalTheory.MaximalIdealDividingNorm
 
+/- English proof (translation)
+Take `⟨P, hmax, hunder, hdiv⟩` from `Ideal.exists_isMaximal_dvd_of_dvd_absNorm' hp 𝔪 hd`. Use `⟨P, hmax, Ideal.le_of_dvd hdiv, ?_⟩` and prove the remaining obligations. Establish `h1 : (p : ℤ) ∈ Ideal.under ℤ P`. Rewrite using `[hunder]`. Conclude with `Ideal.mem_span_singleton_self _`.
+
+Establish `h2 : algebraMap ℤ (𝓞 K) (p : ℤ) ∈ P` using `Ideal.mem_comap.mp h1`. Rewrite `h2` using `[map_natCast]`. Then use the resulting hypothesis.
+-/
 theorem exists_maximal_above_of_dvd_norm {K : Type*} [Field K] [NumberField K]
     (𝔪 : Ideal (𝓞 K)) {p : ℕ} (hp : p.Prime) (hd : p ∣ Ideal.absNorm 𝔪) :
     ∃ P : Ideal (𝓞 K), P.IsMaximal ∧ 𝔪 ≤ P ∧ (p : 𝓞 K) ∈ P := by
@@ -18,6 +23,9 @@ theorem exists_maximal_above_of_dvd_norm {K : Type*} [Field K] [NumberField K]
   have h2 : algebraMap ℤ (𝓞 K) (p : ℤ) ∈ P := Ideal.mem_comap.mp h1
   rwa [map_natCast] at h2
 
+/- English proof (translation)
+The claim follows from `exists_maximal_above_of_dvd_norm 𝔪 hp hd`.
+-/
 theorem exists_maximal_above_of_dvd_norm_host (D : Formalism.BasicNotions.D7)
     (𝔪 : Ideal (𝓞 (Formalism.BasicNotions.D7.host D).E)) (_h𝔪 : 𝔪 ≠ ⊥)
     {p : ℕ} (hp : p.Prime) (hd : p ∣ Ideal.absNorm 𝔪) :

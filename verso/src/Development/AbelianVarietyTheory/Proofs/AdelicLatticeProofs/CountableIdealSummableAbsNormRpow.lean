@@ -9,6 +9,15 @@ namespace GlobalTheory
 open NumberField IsDedekindDomain NumberField.mixedEmbedding MeasureTheory Complex Classical in
 open scoped ContDiff nonZeroDivisors in
 
+/- English proof (translation)
+Introduce `K _ _`. Use `⟨?_, fun σ hσ => ?_⟩` and prove the remaining obligations. Establish `hU : (Set.univ : Set (Ideal (𝓞 K))) = ⋃ n : ℕ, {I | Ideal.absNorm I = n}`. Use extensionality with `I`. Simplify using the standard rewrite rules.
+
+Establish `hc : (Set.univ : Set (Ideal (𝓞 K))).Countable`. Rewrite using `[hU]`. Conclude with `Set.countable_iUnion fun n => (Ideal.finite_setOfPred_absNorm_eq n).countable`. Conclude with `Set.countable_univ_iff.mp hc`. Establish `hsum : Summable fun I : Ideal (𝓞 K) => (Ideal.absNorm I : ℝ) ^ (-σ)`.
+
+Establish `h` using `_root_.GlobalTheory.Mem.summable_norm_absNorm_cpow K (s := (σ : ℂ)) (by simpa using hσ)`. Use `h.congr fun I => ?_` and prove the remaining obligations. Rewrite using `[Complex.norm_natCast_cpow_of_re_ne_zero _ (by simp; linarith)]`. Simplify using the standard rewrite rules. Use `⟨hsum, ?_⟩` and prove the remaining obligations.
+
+Establish `hinj : Function.Injective fun P : HeightOneSpectrum (𝓞 K) => P.asIdeal` using `fun P Q h => HeightOneSpectrum.ext h`. Conclude with `hsum.comp_injective hinj`.
+-/
 theorem _root_.GlobalTheory.countable_ideal_and_summable_absNorm_rpow :
     ∀ (K : Type) [Field K] [NumberField K], Countable (Ideal (𝓞 K)) ∧ ∀ σ : ℝ, 1 < σ → (Summable fun I : Ideal (𝓞 K) => (Ideal.absNorm I : ℝ) ^ (-σ)) ∧ Summable fun P : HeightOneSpectrum (𝓞 K) => (Ideal.absNorm P.asIdeal : ℝ) ^ (-σ) := by
   intro K _ _

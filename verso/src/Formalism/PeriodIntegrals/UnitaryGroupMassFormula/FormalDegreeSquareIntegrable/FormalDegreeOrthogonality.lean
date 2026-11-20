@@ -8,6 +8,9 @@ namespace PIW.HCFdeg
 open MeasureTheory PI.UpqRep
 open scoped InnerProductSpace
 
+/- English proof (translation)
+The claim follows from `g.2`.
+-/
 lemma umat_mem {n : ℕ} {ε : Fin n → Bool} (g : UJ ε) : umat g ∈ UJset ε := g.2
 
 def repOf {n : ℕ} (ε : Fin n → Bool) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
@@ -17,6 +20,9 @@ def repOf {n : ℕ} (ε : Fin n → Bool) {H : Type} [NormedAddCommGroup H] [Inn
   map_one' := h.1
   map_mul' g g' := h.2 _ (umat_mem g) _ (umat_mem g')
 
+/- English proof (translation)
+Introduce `S hS hst`. Use `hI S hS ?_` and prove the remaining obligations. Introduce `g hg v hv`. Take `⟨x, rfl⟩ : g ∈ Set.range (coeMatrixAlt ε)` from `by rw [range_coeMatrix]; exact hg`. Conclude with `hst x v hv`.
+-/
 lemma irr_repOf {n : ℕ} (ε : Fin n → Bool) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (h : IsCRepOn (UJset ε) σ)
     (hI : IsIrredOn (UJset ε) σ) : Irr (repOf ε σ h) := by
@@ -26,6 +32,9 @@ lemma irr_repOf {n : ℕ} (ε : Fin n → Bool) {H : Type} [NormedAddCommGroup H
   obtain ⟨x, rfl⟩ : g ∈ Set.range (coeMatrixAlt ε) := by rw [range_coeMatrix]; exact hg
   exact hst x v hv
 
+/- English proof (translation)
+Introduce `hOrth hUni n ε H _ _ _ _ σ hU hI hSq`. Use `haveI := (hUni n ε).1`. Use `haveI := (hUni n ε).2`. Take `⟨d, hd, h⟩` from `hOrth (UJ ε) (muG ε) H (repOf ε σ hU.1) (fun g v => hU.2.1 _ (umat_mem g) v) (fun v => (hU.2.2 v).comp_continuous (continuous_coeMatrix ε) umat_mem) (irr_repOf ε σ hU.1 hI) (fun v w => hSq v w)`. Conclude with `⟨d, hd, fun v w v' w' => h v w v' w'⟩`.
+-/
 theorem formal_degree_orthogonality : FormalDegreeFromOrthogonality := by
   intro hOrth hUni n ε H _ _ _ _ σ hU hI hSq
   haveI := (hUni n ε).1

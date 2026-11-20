@@ -17,6 +17,11 @@ noncomputable section
 
 namespace GlobalTheory.FlagConnect
 
+/- English proof (translation)
+Introduce `B Y π ι _ E r fl _ hF L _ q₁ q₂ hq`. Take `⟨T, g, t₁, t₂, G, v₁, v₂, hT, h₁, h₂⟩` from `GlobalTheory.T.flags_connected_irreducible_base L B (q₁ ≫ π) ι E r (carried π E r fl q₁ (q₁ ≫ π) rfl) (carried π E r fl q₂ (q₁ ≫ π) hq.symm)`. Take `⟨f, ⟨wf, hf⟩, -⟩` from `hF T g G`. Establish `key : ∀ (q : Spec (CommRingCat.of L) ⟶ Y) (hq' : q ≫ π = q₁ ≫ π) (t : Spec (CommRingCat.of L) ⟶ T) (v : t ≫ g = q₁ ≫ π), Carries g E r G t (q₁ ≫ π) v (carried π E r fl q (q₁ ≫ π) hq') → t ≫ f = q`. Introduce `q hq' t v ht`.
+
+Take `⟨x, -, hx⟩` from `hF _ (q₁ ≫ π) (carried π E r fl q (q₁ ≫ π) hq')`. Establish `e₁` using `hx q ⟨hq', carries_carried π E r fl q _ hq'⟩`. Establish `e₂` using `hx (t ≫ f) ⟨by rw [Category.assoc, wf, v], carries_comp π E r fl f g wf G t _ v _ _ hf ht⟩`. Rewrite using `[e₁, e₂]`. Conclude with `⟨T, t₁, t₂, f, hT, key q₁ rfl t₁ v₁ h₁, key q₂ hq.symm t₂ v₂ h₂⟩`.
+-/
 theorem exists_irreducible_through : ∀ (B Y : Scheme.{0}) (π : Y ⟶ B) (ι : Type) [Fintype ι] (E : ι → B.Modules) (r : ι → ℕ) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)), (∀ a, GlobalTheory.VB.IsVB (E a) (r a)) → IsFlagBundle π E r fl → ∀ (L : Type) [Field L] (q₁ q₂ : Spec (CommRingCat.of L) ⟶ Y), q₁ ≫ π = q₂ ≫ π → ∃ (T : Scheme.{0}) (t₁ t₂ : Spec (CommRingCat.of L) ⟶ T) (f : T ⟶ Y), IrreducibleSpace T ∧ t₁ ≫ f = q₁ ∧ t₂ ≫ f = q₂ := by
   intro B Y π ι _ E r fl _ hF L _ q₁ q₂ hq
   obtain ⟨T, g, t₁, t₂, G, v₁, v₂, hT, h₁, h₂⟩ := GlobalTheory.T.flags_connected_irreducible_base L B (q₁ ≫ π) ι E r

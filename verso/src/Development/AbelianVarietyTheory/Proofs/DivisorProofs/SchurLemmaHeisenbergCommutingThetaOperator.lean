@@ -25,22 +25,37 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {nS nT : ℕ} {JS : Matrix (Fin nS) (Fin nS) E} {JT : Matrix (Fin nT) (Fin nT) E} {ξ₀ : E}
   {ψ : AddChar (AF F) ℂ}
 
+/- English proof (translation)
+Simplify using `only [symplOHF, ← add_mul, ← map_add]`. Evaluate the numerical expressions.
+-/
 theorem half_add_half (x y : WOF F E nS nT) :
     symplOHF σ JS JT ξ₀ x y + symplOHF σ JS JT ξ₀ x y = symplOF σ JS JT ξ₀ x y := by
   simp only [symplOHF, ← add_mul, ← map_add]
   norm_num
 
+/- English proof (translation)
+Simplify using `only [symplOF, hOF, Matrix.add_apply, mul_add, Finset.sum_add_distrib, map_add]`.
+-/
 theorem symplOF_add_left (x x' y : WOF F E nS nT) :
     symplOF σ JS JT ξ₀ (x + x') y = symplOF σ JS JT ξ₀ x y + symplOF σ JS JT ξ₀ x' y := by
   simp only [symplOF, hOF, Matrix.add_apply, mul_add, Finset.sum_add_distrib, map_add]
 
+/- English proof (translation)
+Simplify using `only [symplOF, hOF, Matrix.add_apply, map_add, mul_add, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem symplOF_add_right (x y y' : WOF F E nS nT) :
     symplOF σ JS JT ξ₀ x (y + y') = symplOF σ JS JT ξ₀ x y + symplOF σ JS JT ξ₀ x y' := by
   simp only [symplOF, hOF, Matrix.add_apply, map_add, mul_add, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `[symplOF, hOF]`.
+-/
 theorem symplOF_zero_right (x : WOF F E nS nT) : symplOF σ JS JT ξ₀ x 0 = 0 := by
   simp [symplOF, hOF]
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.HeisThetaF.continuous_symplOHF_left (σ := σ) (JS := JS) (JT := JT) (xi0 := ξ₀) y`. Establish `e : (fun x => symplOF σ JS JT ξ₀ x y) = fun x => symplOHF σ JS JT ξ₀ x y + symplOHF σ JS JT ξ₀ x y`. Use function extensionality and compare the values at `fun x => (half_add_half x y).symm`. Rewrite using `[e]`. Conclude with `h.add h`.
+-/
 theorem continuous_symplOF_left (y : WOF F E nS nT) : Continuous fun x => symplOF σ JS JT ξ₀ x y := by
   have h := GlobalTheory.HeisThetaF.continuous_symplOHF_left (σ := σ) (JS := JS) (JT := JT) (xi0 := ξ₀) y
   have e : (fun x => symplOF σ JS JT ξ₀ x y) = fun x => symplOHF σ JS JT ξ₀ x y + symplOHF σ JS JT ξ₀ x y :=
@@ -48,10 +63,18 @@ theorem continuous_symplOF_left (y : WOF F E nS nT) : Continuous fun x => symplO
   rw [e]
   exact h.add h
 
+/- English proof (translation)
+Rewrite using `[Complex.star_def, Complex.mul_conj', hψ a]`. Simplify using the standard rewrite rules.
+-/
 theorem mul_star_psi (hψ : ∀ a, ‖ψ a‖ = 1) (a : AF F) : ψ a * star (ψ a) = 1 := by
   rw [Complex.star_def, Complex.mul_conj', hψ a]
   simp
 
+/- English proof (translation)
+Take `⟨γ, rfl⟩` from `hγ`. Establish `hs : symplOHF σ JS JT ξ₀ (ratWF γ) x = -symplOHF σ JS JT ξ₀ x (ratWF γ)`. Simplify using `only [symplOHF]`. Rewrite using `[hskew, mul_neg]`. Use `show ψ (symplOHF σ JS JT ξ₀ x (ratWF γ)) * f (x + ratWF γ) = ψ (symplOF σ JS JT ξ₀ x (ratWF γ)) * f x`.
+
+Rewrite using `[add_comm x, hf.quasi, hs, neg_neg, ← mul_assoc, ← AddChar.map_add_eq_mul, half_add_half]`.
+-/
 theorem heis_rat (hskew : ∀ x y : WOF F E nS nT, symplOF σ JS JT ξ₀ y x = -symplOF σ JS JT ξ₀ x y)
     {f : WOF F E nS nT → ℂ} (hf : IsThetaFunOF σ JS JT ξ₀ ψ f) {γ : WOF F E nS nT} (hγ : γ ∈ ratLF F E nS nT)
     (x : WOF F E nS nT) : heisOF σ JS JT ξ₀ ψ γ f x = ψ (symplOF σ JS JT ξ₀ x γ) * f x := by
@@ -62,6 +85,9 @@ theorem heis_rat (hskew : ∀ x y : WOF F E nS nT, symplOF σ JS JT ξ₀ y x = 
   show ψ (symplOHF σ JS JT ξ₀ x (ratWF γ)) * f (x + ratWF γ) = ψ (symplOF σ JS JT ξ₀ x (ratWF γ)) * f x
   rw [add_comm x, hf.quasi, hs, neg_neg, ← mul_assoc, ← AddChar.map_add_eq_mul, half_add_half]
 
+/- English proof (translation)
+Take `⟨γ, rfl⟩` from `hγ`. Use `show f (ratWF γ + x) * star (f' (ratWF γ + x)) = _`. Rewrite using `[hf.quasi, hf'.quasi, star_mul']`. Take the linear combination `(f x * star (f' x)) * mul_star_psi hψ (-(symplOHF σ JS JT ξ₀ (ratWF γ) x))`.
+-/
 theorem prod_periodic (hψ : ∀ a, ‖ψ a‖ = 1) {f f' : WOF F E nS nT → ℂ} (hf : IsThetaFunOF σ JS JT ξ₀ ψ f)
     (hf' : IsThetaFunOF σ JS JT ξ₀ ψ f') {γ : WOF F E nS nT} (hγ : γ ∈ ratLF F E nS nT) (x : WOF F E nS nT) :
     f (γ + x) * star (f' (γ + x)) = f x * star (f' x) := by
@@ -70,6 +96,15 @@ theorem prod_periodic (hψ : ∀ a, ‖ψ a‖ = 1) {f f' : WOF F E nS nT → �
   rw [hf.quasi, hf'.quasi, star_mul']
   linear_combination (f x * star (f' x)) * mul_star_psi hψ (-(symplOHF σ JS JT ξ₀ (ratWF γ) x))
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, K, hK, hKc⟩` from `GlobalTheory.T.rationalMatrices_discrete_cocompact_adelicMatrixSpace F E nS nT`. Use `haveI : BorelSpace (WOF F E nS nT) := ⟨rfl⟩`. Use `haveI : Countable (ratLF F E nS nT) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Use `haveI : IsFiniteMeasure (μ.restrict 𝓕) := ⟨by`. Rewrite using `[Measure.restrict_apply_univ]`.
+
+Conclude with `GlobalTheory.measure_addFundamentalDomain_lt_top_of_cocompact (G := WOF F E nS nT) (ratLF F E nS nT) hK hKc μ h𝓕⟩`. Establish `hb : ∀ g ∈ GlobalTheory.WeilPartsF.thetaSubF σ JS JT ξ₀ ψ, ∃ C : ℝ, ∀ w, ‖g w‖ ≤ C` using `fun g (hg : IsThetaFunOF σ JS JT ξ₀ ψ g) => by`. Establish `hp : ∀ γ ∈ ratLF F E nS nT, ∀ w, ‖g (γ + w)‖ = ‖g w‖`. Introduce and unpack `_ ⟨γ, rfl⟩ w`. Conclude with `(congrArg norm (hg.quasi γ w)).trans (by rw [norm_mul, hψ, one_mul])`.
+
+Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn hg.cont.continuousOn`. Use `⟨C, fun w => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, h⟩` from `hKc w`. Rewrite using `[← hp γ hγ w]`. Conclude with `hC _ h`.
+
+Conclude with `GlobalTheory.Mem.LiftPolar.integral_mul_star_eq (μ.restrict 𝓕) (GlobalTheory.WeilPartsF.thetaSubF σ JS JT ξ₀ ψ) (fun g (hg : IsThetaFunOF σ JS JT ξ₀ ψ g) => hg.cont.measurable) hb M hM hn f f' hf hf'`.
+-/
 theorem scalar_eq (hψ : ∀ a, ‖ψ a‖ = 1) (μ : Measure (WOF F E nS nT)) (𝓕 : Set (WOF F E nS nT))
     (hμ : μ.IsAddHaarMeasure) (h𝓕 : IsAddFundamentalDomain (ratLF F E nS nT) 𝓕 μ)
     (M : Module.End ℂ (WOF F E nS nT → ℂ))
@@ -96,6 +131,19 @@ theorem scalar_eq (hψ : ∀ a, ‖ψ a‖ = 1) (μ : Measure (WOF F E nS nT)) (
   exact GlobalTheory.Mem.LiftPolar.integral_mul_star_eq (μ.restrict 𝓕) (GlobalTheory.WeilPartsF.thetaSubF σ JS JT ξ₀ ψ)
     (fun g (hg : IsThetaFunOF σ JS JT ξ₀ ψ g) => hg.cont.measurable) hb M hM hn f f' hf hf'
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, K, hK, hKc⟩` from `GlobalTheory.T.rationalMatrices_discrete_cocompact_adelicMatrixSpace F E nS nT`. Use `haveI : BorelSpace (WOF F E nS nT) := ⟨rfl⟩`. Use `haveI : Countable (ratLF F E nS nT) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Take `⟨μ, 𝓕, hμ, h𝓕, -⟩` from `(GlobalTheory.meanSquare_addFundamentalDomain_of_cocompact (WOF F E nS nT) (ratLF F E nS nT) K hK hKc).1`. Use `haveI : IsFiniteMeasure (μ.restrict 𝓕) := ⟨by`.
+
+Rewrite using `[Measure.restrict_apply_univ]`. Conclude with `GlobalTheory.measure_addFundamentalDomain_lt_top_of_cocompact (G := WOF F E nS nT) (ratLF F E nS nT) hK hKc μ h𝓕⟩`. Establish `hint : ∀ g g', IsThetaFunOF σ JS JT ξ₀ ψ g → IsThetaFunOF σ JS JT ξ₀ ψ g' → Integrable (fun x => g x * star (g' x)) (μ.restrict 𝓕)` using `fun g g' hg hg' => by`. Establish `hcont : Continuous fun x => g x * star (g' x)` using `hg.cont.mul hg'.cont.star`. Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn hcont.continuousOn`.
+
+Use `Integrable.of_bound hcont.aestronglyMeasurable C (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Take `⟨γ, hγ, h⟩` from `hKc w`. Rewrite using `[← prod_periodic hψ.2.1 hg hg' hγ w]`. Conclude with `hC _ h`. Establish `key` using `GlobalTheory.SeparatingCharacters.eq_zero_of_coefficients_eq_zero (WOF F E nS nT) (ratLF F E nS nT) K hK hKc (ratLF F E nS nT) (fun γ x => ψ (symplOF σ JS JT ξ₀ x γ)) (fun γ => hψ.1.comp (continuous_symplOF_left _)) (fun γ x y => by simp only [symplOF_add_left, AddChar.map_add_eq …`.
+
+Rewrite using `[← hann x]`. Conclude with `⟨fun h γ hγ => h ⟨γ, hγ⟩, fun h γ => h γ γ.2⟩)`. Use `μ 𝓕 hμ h𝓕 (fun x => M f x * star (M f' x) - f x * star (f' x))`. Use the proof step `(((hM f hf).cont.mul (hM f' hf').cont.star).sub (hf.cont.mul hf'.cont.star))`. Use the proof step `(fun γ hγ x => by`.
+
+Rewrite using `[prod_periodic hψ.2.1 hf hf' hγ, prod_periodic hψ.2.1 (hM f hf) (hM f' hf') hγ])`. Use the proof step `(fun γ => by`. Establish `e : (fun x => ψ (symplOF σ JS JT ξ₀ x γ) * (M f x * star (M f' x) - f x * star (f' x))) = fun x => M (heisOF σ JS JT ξ₀ ψ γ f) x * star (M f' x) - heisOF σ JS JT ξ₀ ψ γ f x * star (f' x)`. Use function extensionality and compare the values at `x`. Rewrite using `[hc _ f hf, heis_rat hskew hf γ.2, heis_rat hskew (hM f hf) γ.2]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, integral_sub (hint _ _ (hM _ (hth _ f hf)) (hM f' hf')) (hint _ _ (hth _ f hf) hf'), scalar_eq hψ.2.1 μ 𝓕 hμ h𝓕 M hM (hn μ 𝓕 hμ h𝓕) _ _ (hth _ f hf) hf', sub_self])`. Conclude with `sub_eq_zero.1 (congrFun key x)`.
+-/
 theorem prod_eq (hψ : IsCharAF F ψ)
     (hskew : ∀ x y : WOF F E nS nT, symplOF σ JS JT ξ₀ y x = -symplOF σ JS JT ξ₀ x y)
     (hann : ∀ x : WOF F E nS nT, (∀ γ ∈ ratLF F E nS nT, ψ (symplOF σ JS JT ξ₀ x γ) = 1) ↔ x ∈ ratLF F E nS nT)
@@ -150,6 +198,21 @@ theorem prod_eq (hψ : IsCharAF F ψ)
 
 end Lemmas
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hJS hJT ξ₀ hξ hσξ M hM hc hn`. Establish `hψ : IsCharAF F B.ψ` using `(GlobalTheory.StdCharWeilDatum.isStdCharF_of_isGood F E σ B hB).1`. Establish `hinv : ∀ e, σ (σ e) = e` using `fun e => by`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises.
+
+Rewrite using `[hB.cm.2.2.2 τ, hB.cm.2.2.2 τ, star_star]`. Establish `hskew` using `GlobalTheory.T.adelicSymplecticTraceForm_alternating_swap F E σ hinv nS nT JS JT hJS hJT ξ₀ hσξ`. Establish `hann` using `GlobalTheory.T.rational_points_self_annihilator_symplectic_standardChar F E σ B hB nS nT JS JT hJS hJT ξ₀ hξ`. Establish `hth : ∀ w f, IsThetaFunOF σ JS JT ξ₀ B.ψ f → IsThetaFunOF σ JS JT ξ₀ B.ψ (heisOF σ JS JT ξ₀ B.ψ w f)` using `fun w f hf => GlobalTheory.HeisThetaF.isThetaFunOF_heisOF F E σ B hB nS nT JS JT ξ₀ w f hf`. Establish `h2 : ∀ f f', IsThetaFunOF σ JS JT ξ₀ B.ψ f → IsThetaFunOF σ JS JT ξ₀ B.ψ f' → ∀ x y, M f x * star (M f' y) = f x * star (f' y)` using `fun f f' hf hf' x y => by`.
+
+Establish `h` using `prod_eq hψ hskew hann hth M hM hc hn hf (hth (y - x) f' hf') x`. Rewrite `h` using `[hc _ _ hf']`. Simplify using `only [heisOF, add_sub_cancel, star_mul'] at h`. Take the linear combination `B.ψ (symplOHF σ JS JT ξ₀ x (y - x)) * h - (M f x * star (M f' y) - f x * star (f' y)) * mul_star_psi hψ.2.1 (symplOHF σ JS JT ξ₀ x (y - x))`. Distinguish the cases in `h0 : ∃ f₀ y, IsThetaFunOF σ JS JT ξ₀ B.ψ f₀ ∧ f₀ y ≠ 0`.
+
+Take `⟨f₀, y, hf₀, hy⟩` from `h0`. Establish `h1` using `h2 f₀ f₀ hf₀ hf₀ y y`. Establish `hn1 : ‖M f₀ y‖ = ‖f₀ y‖`. Use `congrArg norm h1` as an intermediate fact. Rewrite `this` using `[norm_mul, norm_mul, norm_star, norm_star]`.
+
+Conclude with `(mul_self_inj_of_nonneg (norm_nonneg _) (norm_nonneg _)).1 this`. Establish `hy' : M f₀ y ≠ 0`. Rewrite using `[← norm_ne_zero_iff, hn1]`. Conclude with `norm_ne_zero_iff.2 hy`. Establish `hs : star (M f₀ y) ≠ 0` using `star_ne_zero.2 hy'`.
+
+Use `⟨star (f₀ y) / star (M f₀ y), fun f hf => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Rewrite using `[Pi.smul_apply, smul_eq_mul, div_mul_eq_mul_div, eq_div_iff hs, h2 f f₀ hf hf₀, mul_comm]`. Use `⟨1, fun f hf => ?_⟩` and prove the remaining obligations. Establish `: f = 0` using `funext fun y => by`.
+
+Assume the negation of the conclusion as `hy`. Conclude with `h0 ⟨f, y, hf, hy⟩`. Rewrite using `[this, map_zero, smul_zero]`.
+-/
 theorem schur : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
       IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ → ∀ M : Module.End ℂ (WOF F E nS nT → ℂ),

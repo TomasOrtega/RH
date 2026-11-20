@@ -4,6 +4,23 @@ open scoped TensorProduct
 
 namespace GlobalTheory.CompanionTheory.KaehlerTower
 
+/- English proof (translation)
+Establish `happ : Fin.append (fun i => f (u i)) w = Sum.elim (fun i => f (u i)) w ∘ finSumFinEquiv.symm`. Use function extensionality and compare the values at `i`. Use `Fin.addCases (fun j => ?_) (fun j => ?_) i` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+
+Establish `hfu : LinearIndependent A (fun i => f (u i))` using `hu.map' f (LinearMap.ker_eq_bot.mpr hf)`. Establish `hw' : LinearIndependent A w` using `LinearIndependent.of_comp g hw`. Establish `hcomp : ∀ y, g (f y) = 0` using `fun y => (hfg (f y)).mpr ⟨y, rfl⟩`. Establish `hdisj : Disjoint (Submodule.span A (Set.range fun i => f (u i))) (Submodule.span A (Set.range w))`. Rewrite using `[Submodule.disjoint_def]`.
+
+Introduce `x hx hx'`. Establish `hgx : g x = 0`. Establish `hle : Submodule.span A (Set.range fun i => f (u i)) ≤ LinearMap.ker g`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+
+Conclude with `hcomp _`. Conclude with `hle hx`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun A).mp hx'`. Establish `h0 : ∑ i, c i • g (w i) = 0` using `by simpa [map_sum] using hgx`. Establish `hc` using `(Fintype.linearIndependent_iff.mp hw) c h0`.
+
+Simplify using `[hc]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[happ]`. Conclude with `(hfu.sum_type hw' hdisj).comp _ finSumFinEquiv.symm.injective`. Rewrite using `[happ, Set.range_comp, finSumFinEquiv.symm.surjective.range_eq, Set.image_univ, Set.Sum.elim_range, Submodule.span_union, eq_top_iff]`.
+
+Introduce `x _`. Establish `hgx : g x ∈ Submodule.span A (Set.range fun i => g (w i))` using `hws ▸ Submodule.mem_top`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun A).mp hgx`. Establish `hker : g (x - ∑ i, c i • w i) = 0`. Simplify using `[map_sum, hc]`.
+
+Take `⟨y, hy⟩` from `(hfg _).mp hker`. Establish `hy' : y ∈ Submodule.span A (Set.range u)` using `hus ▸ Submodule.mem_top`. Establish `hfy : f y ∈ Submodule.span A (Set.range fun i => f (u i))`. Use `Submodule.mem_map_of_mem (f := f) hy'` as an intermediate fact. Rewrite `this` using `[Submodule.map_span, ← Set.range_comp]`. Then use the resulting hypothesis.
+
+Establish `hsum : ∑ i, c i • w i ∈ Submodule.span A (Set.range w)` using `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `hx : x = f y + ∑ i, c i • w i` using `by rw [hy]; abel`. Rewrite using `[hx]`. Conclude with `Submodule.add_mem_sup hfy hsum`.
+-/
 theorem append_of_shortExact {A M₁ M₂ M₃ : Type*} [CommRing A]
     [AddCommGroup M₁] [AddCommGroup M₂] [AddCommGroup M₃]
     [Module A M₁] [Module A M₂] [Module A M₃]
@@ -60,6 +77,17 @@ theorem append_of_shortExact {A M₁ M₂ M₃ : Type*} [CommRing A]
     rw [hx]
     exact Submodule.add_mem_sup hfy hsum
 
+/- English proof (translation)
+Introduce `R S T _ _ _ _ _ _ _ _ e m z w hz hzs hw hws`. Establish `hinj : Function.Injective (KaehlerDifferential.mapBaseChange R S T)`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨y, rfl⟩` from `(Algebra.H1Cotangent.exact_δ_mapBaseChange R S T x).mp hx`.
+
+Establish `: Subsingleton (Algebra.H1Cotangent S T)` using `Algebra.FormallySmooth.subsingleton_h1Cotangent`. Rewrite using `[Subsingleton.elim y 0, map_zero]`. Establish `hex : Function.Exact (KaehlerDifferential.mapBaseChange R S T) (KaehlerDifferential.map R S T T)` using `KaehlerDifferential.exact_mapBaseChange_map R S T`. Set `b : Module.Basis (Fin e) S (Ω[S⁄R])` to `Module.Basis.mk hz hzs.ge`. Set `bT` to `Algebra.TensorProduct.basis T b`.
+
+Establish `hb : ∀ i, bT i = (1 : T) ⊗ₜ[S] KaehlerDifferential.D R S (z i)`. Introduce `i`. Simplify using `[bT, b]`. Establish `hmain` using `append_of_shortExact (KaehlerDifferential.mapBaseChange R S T) (KaehlerDifferential.map R S T T) hinj hex (fun i => bT i) (fun i => KaehlerDifferential.D R T (w i)) bT.linearIndependent bT.span_eq (by simpa [KaehlerDifferential.map_D] using hw) (by simpa [KaehlerDifferential.map_ …`. Establish `hfun : (fun i => KaehlerDifferential.D R T (Fin.append (fun i => algebraMap S T (z i)) w i)) = Fin.append (fun i => KaehlerDifferential.mapBaseChange R S T (bT i)) (fun i => KaehlerDifferential.D R T (w i))`.
+
+Use function extensionality and compare the values at `i`. Use `Fin.addCases (fun j => ?_) (fun j => ?_) i` and prove the remaining obligations. Simplify using `[hb, KaehlerDifferential.mapBaseChange_tmul, KaehlerDifferential.map_D]`. Simplify using the standard rewrite rules. Rewrite using `[hfun]`.
+
+Conclude with `hmain`.
+-/
 theorem kaehler_basis_tower : ∀ (R S T : Type) [CommRing R] [CommRing S] [CommRing T] [Algebra R S] [Algebra S T] [Algebra R T]
     [IsScalarTower R S T] [Algebra.FormallySmooth S T] (e m : ℕ) (z : Fin e → S) (w : Fin m → T),
     LinearIndependent S (fun i => KaehlerDifferential.D R S (z i)) →

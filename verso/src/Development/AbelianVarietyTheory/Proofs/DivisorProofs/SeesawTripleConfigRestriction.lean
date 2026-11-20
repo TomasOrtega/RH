@@ -15,6 +15,29 @@ open scoped Classical
 
 namespace GlobalTheory.ConeLv1
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a b G G₁ H H' X om om' om₁ om₁' hC hT hT₁ e' he' ei ev hei hev hpure K hK μKv μv hμK hμ l hl hne`. Use `set Λ := coneFin B G.M' om' B.v₁ (ev B.v₁) K μKv μv (shiftB σ H H') X.ν ((a - (b + 2)) / 2 + 1) with hΛ`. Establish `hsupp : ∀ φ ∈ G.M'.SoLoc B.ψ B.τ₁, Λ φ ∈ G₁.M'.SoLoc B.ψ B.τ₁` using `fun φ hφ => GlobalTheory.T.config_b_stabilizer_theta B G G₁ H H' hC e' he' K hK X om om' om₁ om₁' hT hT₁ ei ev hei hev hpure μKv μv hμK hμ φ hφ`. Establish `hgood : X.Good B.v₁` using `hT₁.chars.good`. Establish `hroot` using `GlobalTheory.T.character_at_uniformizer_not_root_of_unity F E σ B a b G₁ X om₁ om₁' hT₁ B.v₁ hgood`.
+
+Use `set N := Submodule.span ℂ (Λ '' G.M'.SoLoc B.ψ B.τ₁) ⊔ augAt om₁' B.v₁ with hN`. Establish `haugSB : augAt om₁' B.v₁ ≤ SB _`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `z ⟨g, -, φ, hφ, φ₁, hφ₁, -, rfl⟩`. Conclude with `sub_mem hφ₁ hφ`.
+
+Establish `hNSB : N ≤ SB _`. Use `sup_le (Submodule.span_le.2 ?_) haugSB` and prove the remaining obligations. Introduce and unpack `z ⟨φ, hφ, rfl⟩`. Conclude with `(hsupp φ hφ).1`. Establish `hirr` using `GlobalTheory.T.augmentation_submodule_second_factor hKP.base F E σ B a b G₁ X om₁ om₁' hT₁ B.v₁ hgood hroot N le_sup_right hNSB (GlobalTheory.T.seesaw_type_b_triple_sixth_form hKP F E σ B a b G G₁ H H' X om om' om₁ om₁' hC hT hT₁ e' he' ei ev hei hev hpure K hK μKv μv hμK hμ)`.
+
+Establish `hNtop : N = SB _`. Break down `hirr with h | h` into its components or cases. It suffices to derive a contradiction. Take `⟨φ, hφ, hn⟩` from `GlobalTheory.T.seesaw_type_b_triple_seventh_form hKP F E σ B a b G G₁ H H' X om om' om₁ om₁' hC hT hT₁ e' he' ei ev hei hev hpure K hK μKv μv hμK hμ`. Conclude with `hn (h ▸ (le_sup_left : _ ≤ N) (Submodule.subset_span ⟨φ, hφ, rfl⟩))`.
+
+Conclude with `h`. Take `⟨ψ, hψ, hlψ⟩` from `hne`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Establish `hkill : ∀ y ∈ Submodule.span ℂ (Λ '' G.M'.SoLoc B.ψ B.τ₁), l y = 0`.
+
+Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨φ, hφ, rfl⟩` from `hx`. Conclude with `hall φ hφ (hsupp φ hφ)`.
+
+Consider the case `zero => exact map_zero l`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy, add_zero]`. Consider the case `smul c x _ hx => rw [map_smul, hx, smul_zero]`. Establish `hψN : ψ ∈ N` using `hNtop ▸ hψ.1`. Take `⟨s, hs, t, ht, hst⟩` from `Submodule.mem_sup.1 hψN`.
+
+Establish `htspan : t ∈ Submodule.span ℂ (G₁.M'.SoLoc B.ψ B.τ₁)`. Establish `: t = ψ - s` using `by rw [← hst]; abel`. Rewrite using `[this]`. Use `sub_mem (Submodule.subset_span hψ) ?_` and prove the remaining obligations. Use `Submodule.span_mono ?_ hs` and prove the remaining obligations.
+
+Introduce and unpack `z ⟨φ, hφ, rfl⟩`. Conclude with `hsupp φ hφ`. Establish `hkill2 : ∀ y ∈ Submodule.span ℂ {y | ∃ g ∈ UAt σ G₁.V' (evFin F B.v₁), ∃ ψ ∈ G₁.M'.SoLoc B.ψ B.τ₁, ∃ ψ' ∈ G₁.M'.SoLoc B.ψ B.τ₁, Acts (evFin F B.v₁) (om₁' (g, 1)) ψ ψ' ∧ y = ψ' - ψ}, l y = 0`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`.
+
+Consider the case `mem x hx`. Take `⟨g, hg, ψ₀, hψ₀, ψ₁, hψ₁, hA, rfl⟩` from `hx`. Rewrite using `[map_sub, hl g hg ψ₀ hψ₀ ψ₁ hψ₁ hA, sub_self]`. Consider the case `zero => exact map_zero l`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy, add_zero]`.
+
+Consider the case `smul c x _ hx => rw [map_smul, hx, smul_zero]`. Establish `hlt : l t = 0` using `hkill2 t (GlobalTheory.T.augmented_span_translate_generators hKP F E σ B a b G₁ X om₁ om₁' hT₁ t ht htspan)`. Apply `hlψ` to reduce the goal to its premises. Rewrite using `[← hst, map_add, hkill s hs, hlt, add_zero]`.
+-/
 theorem coneFin_ne_zero : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b))
     (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (om₁ : Rep σ G₁.V G₁.W) (om₁' : Rep σ G₁.V' G₁.W),

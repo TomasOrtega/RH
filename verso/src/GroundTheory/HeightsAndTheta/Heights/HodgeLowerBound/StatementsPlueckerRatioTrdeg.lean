@@ -16,6 +16,9 @@ def PlueckerRatioTrdeg.Statement : Prop :=
     (c : ∀ k, Pl.ιY k), (∀ k, Pl.yY ⟨k, c k⟩ ≠ 0) →
     Algebra.trdeg ℤ (Subfield.closure (coneRatios Pl.yY c)) = ((D.n + D.flagDim : ℕ) : Cardinal)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem PlueckerData.yY_inl {II : IntersectionSystem} {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {K : Type} [Fintype K]
     {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω] [Algebra ℚ Ω] {E : Ψ → Type} [∀ τ, AddCommGroup (E τ)]
     [∀ τ, Module Ω (E τ)] {D : ComponentData II Ψ K ι Ω E} (Pl : PlueckerData D) (k : K) (t : ι k) :

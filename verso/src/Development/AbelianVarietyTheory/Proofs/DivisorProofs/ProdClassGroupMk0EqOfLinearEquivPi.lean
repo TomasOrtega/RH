@@ -8,6 +8,11 @@ variable {R : Type} [CommRing R] {ι : Type} [Fintype ι] [DecidableEq ι]
 def mat {I J : ι → Ideal R} (φ : ((i : ι) → I i) →ₗ[R] ((i : ι) → J i)) (a : (i : ι) → I i) :
     Matrix ι ι R := fun j i => (φ (Pi.single i (a i)) j : R)
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_apply]`. Use `Ideal.sum_mem _ fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def]`. Use `Submodule.smul_of_tower_mem _ _ ?_` and prove the remaining obligations. Establish `h : ∏ i, (mat φ a) (σ i) i ∈ ∏ i, J (σ i)` using `Ideal.prod_mem_prod fun i _ => (φ (Pi.single i (a i)) (σ i)).2`.
+
+Rewrite `h` using `[Equiv.prod_comp σ J]`. Then use the resulting hypothesis.
+-/
 theorem det_mem {I J : ι → Ideal R} (φ : ((i : ι) → I i) →ₗ[R] ((i : ι) → J i))
     (a : (i : ι) → I i) : (mat φ a).det ∈ ∏ j, J j := by
   rw [Matrix.det_apply]
@@ -18,6 +23,15 @@ theorem det_mem {I J : ι → Ideal R} (φ : ((i : ι) → I i) →ₗ[R] ((i : 
     Ideal.prod_mem_prod fun i _ => (φ (Pi.single i (a i)) (σ i)).2
   rwa [Equiv.prod_comp σ J] at h
 
+/- English proof (translation)
+Establish `key : mat φ a * Matrix.diagonal (fun i => (b i : R)) = mat φ b * Matrix.diagonal (fun i => (a i : R))`. Use extensionality with `j i`. Simplify using `only [Matrix.mul_diagonal, mat]`. Establish `h1 : (b i : R) • (Pi.single i (a i) : (k : ι) → I k) = (a i : R) • (Pi.single i (b i) : (k : ι) → I k)`. Use function extensionality and compare the values at `k`.
+
+Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[mul_comm]`. Simplify using `[Pi.single_eq_of_ne hk]`.
+
+Establish `h2` using `congrArg (fun x => ((φ x) j : R)) h1`. Simplify using `only [map_smul, Pi.smul_apply, Submodule.coe_smul, smul_eq_mul] at h2`. Rewrite using `[mul_comm, h2, mul_comm]`. Establish `h` using `congrArg Matrix.det key`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal, Matrix.det_diagonal]`.
+
+Rewrite using `[mul_comm, h, mul_comm]`.
+-/
 theorem det_swap {I J : ι → Ideal R} (φ : ((i : ι) → I i) →ₗ[R] ((i : ι) → J i))
     (a b : (i : ι) → I i) :
     (∏ i, (b i : R)) * (mat φ a).det = (∏ i, (a i : R)) * (mat φ b).det := by
@@ -41,6 +55,15 @@ theorem det_swap {I J : ι → Ideal R} (φ : ((i : ι) → I i) →ₗ[R] ((i :
   rw [mul_comm, h, mul_comm]
 
 open Pointwise in
+/- English proof (translation)
+Rewrite using `[Ideal.span_singleton_mul_le_iff]`. Introduce `z hz`. Establish `hP : ∏ i, I i = Submodule.span R (∏ i, (I i : Set R))`. Rewrite using `[← Submodule.prod_span]`. Simplify using `only [Submodule.span_eq]`.
+
+Rewrite `hz` using `[hP]`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨g, hg, rfl⟩` from `(Set.mem_finsetProd _ _ _).mp hx`. Establish `hs` using `det_swap φ (fun i => ⟨g i, hg (Finset.mem_univ i)⟩) b`.
+
+Simplify using `only at hs`. Rewrite using `[mul_comm ((mat φ b).det), ← hs]`. Conclude with `Ideal.mul_mem_mul (Ideal.mem_span_singleton_self _) (det_mem φ _)`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`.
+
+Rewrite using `[mul_add]`. Conclude with `Ideal.add_mem _ hx hy`. Consider the case `smul r x _ hx`. Rewrite using `[smul_eq_mul, mul_left_comm]`. Conclude with `Ideal.mul_mem_left _ r hx`.
+-/
 theorem span_mul_le {I J : ι → Ideal R} (φ : ((i : ι) → I i) →ₗ[R] ((i : ι) → J i))
     (b : (i : ι) → I i) :
     Ideal.span {(mat φ b).det} * ∏ i, I i ≤ Ideal.span {∏ i, (b i : R)} * ∏ j, J j := by
@@ -65,6 +88,17 @@ theorem span_mul_le {I J : ι → Ideal R} (φ : ((i : ι) → I i) →ₗ[R] ((
     rw [smul_eq_mul, mul_left_comm]
     exact Ideal.mul_mem_left _ r hx
 
+/- English proof (translation)
+Use extensionality with `j k`. Simplify using `only [Matrix.mul_apply, mat, Matrix.diagonal_apply, LinearEquiv.coe_coe]`. Use `set v := φ (Pi.single k ⟨c, hI k⟩) with hv`. Establish `hsw : ∀ i, (v i : R) • (Pi.single i ⟨c, hJ i⟩ : (l : ι) → J l) = c • (Pi.single i (v i) : (l : ι) → J l)`. Introduce `i`.
+
+Use function extensionality and compare the values at `l`. Distinguish the cases in `hl : l = i`. Substitute `hl` using the available equality. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[mul_comm]`.
+
+Simplify using `[Pi.single_eq_of_ne hl]`. Establish `hsum : ∑ i, (v i : R) • (Pi.single i ⟨c, hJ i⟩ : (l : ι) → J l) = c • v`. Repeatedly rewrite using `[hsw, ← Finset.smul_sum, Finset.univ_sum_single]`. Establish `h` using `congrArg (fun x => ((φ.symm x) j : R)) hsum`. Simplify using `only [map_sum, map_smul, hv, LinearEquiv.symm_apply_apply, Finset.sum_apply, Pi.smul_apply, Submodule.coe_sum, Submodule.coe_smul, smul_eq_mul] at h`.
+
+Repeatedly rewrite using `[mul_comm _ ((v _ : J _) : R)]`. Rewrite using `[h]`. Distinguish the cases in `hjk : j = k`. Substitute `hjk` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[hjk]`.
+-/
 theorem mat_mul {I J : ι → Ideal R} (φ : ((i : ι) → I i) ≃ₗ[R] ((i : ι) → J i))
     (c : R) (hI : ∀ i, c ∈ I i) (hJ : ∀ i, c ∈ J i) :
     mat φ.symm.toLinearMap (fun i => ⟨c, hJ i⟩) * mat φ.toLinearMap (fun i => ⟨c, hI i⟩)
@@ -93,6 +127,15 @@ theorem mat_mul {I J : ι → Ideal R} (φ : ((i : ι) → I i) ≃ₗ[R] ((i : 
     simp
   · simp [hjk]
 
+/- English proof (translation)
+Use `set d : R := ∏ _i : ι, c with hd`. Establish `h1` using `span_mul_le φ.toLinearMap (fun i => ⟨c, hI i⟩)`. Establish `h2` using `span_mul_le φ.symm.toLinearMap (fun i => ⟨c, hJ i⟩)`. Simplify using `only at h1 h2`. Rewrite `h1`, `h2` using `[← hd]`.
+
+Use `set x := (mat φ.toLinearMap (fun i => ⟨c, hI i⟩)).det`. Use `set y := (mat φ.symm.toLinearMap (fun i => ⟨c, hJ i⟩)).det`. Establish `hyx : y * x = d * d`. Establish `h` using `congrArg Matrix.det (mat_mul φ c hI hJ)`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_diagonal, Finset.prod_mul_distrib]`.
+
+Conclude with `h`. Establish `hd0 : d ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun _ _ => hc0`. Establish `hdd : d * d ≠ 0` using `mul_ne_zero hd0 hd0`. Establish `hy0 : y ≠ 0` using `fun h => hdd (by rw [← hyx, h, zero_mul])`. Use `⟨d * d, d * y, hdd, mul_ne_zero hd0 hy0, le_antisymm ?_ ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hyx, ← Ideal.span_singleton_mul_span_singleton, mul_assoc, ← Ideal.span_singleton_mul_span_singleton, mul_comm (Ideal.span {d}), mul_assoc]`. Conclude with `Ideal.mul_mono_right h1`. Rewrite using `[← Ideal.span_singleton_mul_span_singleton, mul_assoc, ← Ideal.span_singleton_mul_span_singleton, mul_assoc]`. Conclude with `Ideal.mul_mono_right h2`.
+-/
 theorem exists_span_mul_eq [IsDomain R] {I J : ι → Ideal R}
     (φ : ((i : ι) → I i) ≃ₗ[R] ((i : ι) → J i))
     (c : R) (hc0 : c ≠ 0) (hI : ∀ i, c ∈ I i) (hJ : ∀ i, c ∈ J i) :
@@ -123,6 +166,13 @@ end GlobalTheory.DetClass
 
 open GlobalTheory.DetClass in
 
+/- English proof (translation)
+Take `⟨φ⟩` from `h`. Establish `hne : ∀ K : (Ideal R)⁰, ∃ e : R, e ∈ (K : Ideal R) ∧ e ≠ 0` using `fun K => Submodule.exists_mem_ne_zero_of_ne_bot (nonZeroDivisors.coe_ne_zero K)`. Use `choose e he he0 using hne`. Use `set c : R := (∏ i, e (I i)) * ∏ i, e (J i) with hc`. Establish `hc0 : c ≠ 0` using `mul_ne_zero (Finset.prod_ne_zero_iff.mpr fun i _ => he0 _) (Finset.prod_ne_zero_iff.mpr fun i _ => he0 _)`.
+
+Establish `hI : ∀ i, c ∈ (I i : Ideal R)` using `fun i => Ideal.mul_mem_right _ _ (Ideal.mem_of_dvd _ (Finset.dvd_prod_of_mem _ (Finset.mem_univ i)) (he _))`. Establish `hJ : ∀ i, c ∈ (J i : Ideal R)` using `fun i => Ideal.mul_mem_left _ _ (Ideal.mem_of_dvd _ (Finset.dvd_prod_of_mem _ (Finset.mem_univ i)) (he _))`. Take `⟨x, y, hx, hy, hxy⟩` from `exists_span_mul_eq φ c hc0 hI hJ`. Rewrite using `[← map_prod, ← map_prod, ClassGroup.mk0_eq_mk0_iff]`. Use `⟨x, y, hx, hy, ?_⟩` and prove the remaining obligations.
+
+Simplify `hxy` using `only [Submonoid.coe_finsetProd]`.
+-/
 theorem GlobalTheory.prod_classGroup_mk0_eq_of_pi_linearEquiv (R : Type) [CommRing R] [IsDedekindDomain R]
     (ι : Type) [Fintype ι] (I J : ι → (Ideal R)⁰)
     (h : Nonempty (((i : ι) → (I i : Ideal R)) ≃ₗ[R] ((i : ι) → (J i : Ideal R)))) :

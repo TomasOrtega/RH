@@ -27,6 +27,17 @@ noncomputable section
 
 namespace GlobalTheory.ProdHodge
 
+/- English proof (translation)
+Establish `ex {T : Over S} (x : T ⟶ A₁) (y : T ⟶ A₂) : ∃ z : T ⟶ A, z ≫ π₁ = x ∧ z ≫ π₂ = y` using `⟨_, (BinaryFan.IsLimit.lift' l x y).2⟩`. Take `⟨ι₁, a₁, b₁⟩` from `ex (𝟙 A₁) 1`. Take `⟨ι₂, a₂, b₂⟩` from `ex 1 (𝟙 A₂)`. Establish `ext {T : Over S} {x y : T ⟶ A} (h₁ : x ≫ π₁ = y ≫ π₁) (h₂ : x ≫ π₂ = y ≫ π₂) : x = y` using `BinaryFan.IsLimit.hom_ext l h₁ h₂`. Establish `o₁ : η[A₁] ≫ (1 : A₁ ⟶ A₂) = η[A₂]` using `by simp [Hom.one_def]`.
+
+Establish `o₂ : η[A₂] ≫ (1 : A₂ ⟶ A₁) = η[A₁]` using `by simp [Hom.one_def]`. Establish `p₁` using `IsMonHom.one_hom π₁`. Establish `p₂` using `IsMonHom.one_hom π₂`. Establish `u₁ : η[A₁] ≫ ι₁ = η[A]` using `ext (by rw [Category.assoc, a₁, p₁, Category.comp_id]) (by rw [Category.assoc, b₁, p₂, o₁])`. Establish `u₂ : η[A₂] ≫ ι₂ = η[A]` using `ext (by rw [Category.assoc, a₂, p₁, o₂]) (by rw [Category.assoc, b₂, p₂, Category.comp_id])`.
+
+Establish `e : (π₁ ≫ ι₁) * (π₂ ≫ ι₂) = 𝟙 A` using `ext (by rw [MonObj.mul_comp, Category.assoc, Category.assoc, a₁, a₂, MonObj.comp_one, _root_.mul_one, Category.comp_id, Category.id_comp]) (by rw [MonObj.mul_comp, Category.assoc, Category.assoc, b₁, b₂, MonObj.comp_one, _root_.one_mul, Category.comp_id, Category.id_comp])`. Establish `x₁ : η[A] ≫ π₁ ≫ ι₁ = η[A]` using `by rw [reassoc_of% p₁, u₁]`. Establish `x₂ : η[A] ≫ π₂ ≫ ι₂ = η[A]` using `by rw [reassoc_of% p₂, u₂]`. Set `j₁ : omega A ⟶ omega A₁` to `cotMap ι₁ u₁`. Set `j₂ : omega A ⟶ omega A₂` to `cotMap ι₂ u₂`.
+
+Establish `c₁₁ : omegaMap π₁ ≫ j₁ = 𝟙 _` using `(LieVB.cotMap_comp p₁ u₁ a₁ (Category.comp_id _)).trans (LieVB.cotMap_id rfl _)`. Establish `c₁₂ : omegaMap π₁ ≫ j₂ = 0` using `(LieVB.cotMap_comp p₁ u₂ a₂ o₂).trans (LieVB.cotMap_eq_zero rfl _)`. Establish `c₂₁ : omegaMap π₂ ≫ j₁ = 0` using `(LieVB.cotMap_comp p₂ u₁ b₁ o₁).trans (LieVB.cotMap_eq_zero rfl _)`. Establish `c₂₂ : omegaMap π₂ ≫ j₂ = 𝟙 _` using `(LieVB.cotMap_comp p₂ u₂ b₂ (Category.comp_id _)).trans (LieVB.cotMap_id rfl _)`. Establish `c : j₁ ≫ omegaMap π₁ + j₂ ≫ omegaMap π₂ = 𝟙 _` using `(congrArg₂ (· + ·) (LieVB.cotMap_comp u₁ p₁ rfl x₁) (LieVB.cotMap_comp u₂ p₂ rfl x₂)).trans ((LieVB.cotMap_mul x₁ x₂ (e ▸ Category.comp_id _)).symm.trans (LieVB.cotMap_id e _))`.
+
+Use `clear_value j₁ j₂`. Use `⟨biprod.lift j₁ j₂, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `refine biprod.hom_ext _ _ (biprod.hom_ext' _ _ ?_ ?_) (biprod.hom_ext' _ _ ?_ ?_) <;>`. Simplify using `[c₁₁, c₁₂, c₂₁, c₂₂]`. Rewrite using `[biprod.lift_desc, c]`.
+-/
 theorem isIso_desc {S : Scheme.{0}} {A A₁ A₂ : Over S} [GrpObj A] [GrpObj A₁] [GrpObj A₂]
     [QuasiSeparated A.hom] (π₁ : A ⟶ A₁) (π₂ : A ⟶ A₂) [IsMonHom π₁] [IsMonHom π₂]
     (l : IsLimit (BinaryFan.mk π₁ π₂)) : IsIso (biprod.desc (omegaMap π₁) (omegaMap π₂)) := by
@@ -71,6 +82,17 @@ theorem isIso_desc {S : Scheme.{0}} {A A₁ A₂ : Over S} [GrpObj A] [GrpObj A�
       simp [c₁₁, c₁₂, c₂₁, c₂₂]
   · rw [biprod.lift_desc, c]
 
+/- English proof (translation)
+Establish `hfn : d.fn W (π.left.appLE W' W k f) =ᶠ[nhds 0] d'.fn W' f ∘ Q` using `(CovFactor.eventually_le d h).mono fun z hz => by`. Simplify using `only [PPAS.RiemannData.fn, Function.comp_apply, hQ]`. Rewrite using `[CovFactor.valR_appLE hz k f, Category.assoc]`. Use `set M := LinearMap.toMatrix' Q with hM`. Establish `hMv : ∀ z, M *ᵥ z = Q z` using `fun z => LinearMap.toMatrix'_mulVec Q z`.
+
+Establish `hTd : ∀ v, fderiv ℂ (⇑Q) 0 v = Q v` using `fun v => by`. Use `(LinearMap.toContinuousLinearMap Q).fderiv (x := 0)` as an intermediate fact. Conclude with `congrArg (fun L => L v) this`. Use function extensionality and compare the values at `a`. Establish `hd` using `d'.differentiableAt_fn f h'`.
+
+Establish `hd' : DifferentiableAt ℂ (d'.fn W' f) (Q 0)` using `by rw [map_zero]; exact hd`. Establish `hTdiff : DifferentiableAt ℂ (⇑Q) 0` using `(LinearMap.toContinuousLinearMap Q).differentiableAt`. Simplify using `only [PPAS.RiemannData.cov]`. Rewrite using `[hfn.fderiv_eq, fderiv_comp 0 hd' hTdiff, ContinuousLinearMap.comp_apply, hTd, map_zero, ← hMv, mulVec_single_one]`. Express the relevant statement in the definitionally equal form `_ = ∑ b, M.col a b * fderiv ℂ (d'.fn W' f) 0 (Pi.single b 1)`.
+
+Generalize the expression as in `fderiv ℂ (d'.fn W' f) 0 = L`. Use `conv_lhs => rw [pi_eq_sum_univ (M.col a)]`. Simplify using `only [map_sum, map_smul, smul_eq_mul]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `congr 2`.
+
+Use function extensionality and compare the values at `j`. Simplify using `[Pi.single_apply, eq_comm]`.
+-/
 theorem cov_appLE {S : Scheme.{0}} {P P' : PPAS S} {y : Sp ℂ ⟶ S} (d : P.RiemannData y)
     (d' : P'.RiemannData y) (π : P.A ⟶ P'.A) (Q : (Fin P.g → ℂ) →ₗ[ℂ] (Fin P'.g → ℂ))
     (hQ : ∀ z, (d'.u.ex (Q z)).left ≫ d'.φ = (d.u.ex z).left ≫ d.φ ≫ π.left)
@@ -104,6 +126,19 @@ theorem cov_appLE {S : Scheme.{0}} {P P' : PPAS S} {y : Sp ℂ ⟶ S} (d : P.Rie
 
 variable {k : Type} [CommRing k] {S : Scheme.{0}} {p : S ⟶ Sp k} {P P₁ P₂ : PPAS S}
 
+/- English proof (translation)
+Take `⟨U₁, W₁, hx₁, le₁, c₁⟩` from `Conormal.exists_isChart (LieVB.sec_hom (MonObj.one (X := P₁.A))) (mem_ptsIn.1 hy)`. Take `⟨U, W₂, hx, le₂, c₂⟩` from `Conormal.exists_isChart (LieVB.sec_hom (MonObj.one (X := P₂.A))) hx₁`. Establish `hU : y ∈ ptsIn p σ U` using `mem_ptsIn.2 hx`. Establish `le` using `le₂.trans le₁`. Establish `k₁ : U ≤ unitSec P₁.A ⁻¹ᵁ W₁` using `le₂.trans c₁.le`.
+
+Establish `k₂ : U ≤ unitSec P₂.A ⁻¹ᵁ W₂` using `c₂.le`. Establish `sur₁ (s : Γ(omega P₁.A, V)) : ∃ f, dUnit P₁.A k₁ f = resM _ le s`. Take `⟨f, hf⟩` from `c₁.d_surjective (LieVB.sec_hom (MonObj.one (X := P₁.A))) (resM (omega P₁.A) le₁ s)`. Conclude with `⟨f, (LieVB.resM_dUnit P₁.A c₁.le le₂ f).symm.trans ((congrArg (resM (omega P₁.A) le₂) hf).trans (Twist.resM_resM _ _ _))⟩`. Establish `sur₂ (s : Γ(omega P₂.A, V)) : ∃ f, dUnit P₂.A k₂ f = resM _ le s` using `c₂.d_surjective (LieVB.sec_hom (MonObj.one (X := P₂.A))) (resM (omega P₂.A) le s)`.
+
+Take `⟨f₁, e₁⟩` from `sur₁ s₁`. Take `⟨g₁, e₁'⟩` from `sur₁ t₁`. Take `⟨f₂, e₂⟩` from `sur₂ s₂`. Take `⟨g₂, e₂'⟩` from `sur₂ t₂`. Set `W : P.A.left.Opens` to `π₁.left ⁻¹ᵁ W₁ ⊓ π₂.left ⁻¹ᵁ W₂`.
+
+Establish `q₁ : unitSec P.A ≫ π₁.left = unitSec P₁.A` using `congrArg (·.left) (IsMonHom.one_hom π₁)`. Establish `q₂ : unitSec P.A ≫ π₂.left = unitSec P₂.A` using `congrArg (·.left) (IsMonHom.one_hom π₂)`. Establish `kW : U ≤ unitSec P.A ⁻¹ᵁ W` using `fun x hx' => ⟨show x ∈ (unitSec P.A ≫ π₁.left) ⁻¹ᵁ W₁ from q₁ ▸ k₁ hx', show x ∈ (unitSec P.A ≫ π₂.left) ⁻¹ᵁ W₂ from q₂ ▸ k₂ hx'⟩`. Establish `key {s : Γ(omega P₁.A, V)} {t : Γ(omega P₂.A, V)} {f : Γ(P₁.A.left, W₁)} {g : Γ(P₂.A.left, W₂)} (a : dUnit P₁.A k₁ f = resM _ le s) (b : dUnit P₂.A k₂ g = resM _ le t) : resM _ le ((omegaMap π₁).app V s + (omegaMap π₂).app V t) = dUnit P.A kW (π₁.left.appLE W₁ W inf_le_left f + π …`. Rewrite using `[map_add, map_add, ← Twist.app_resM, ← Twist.app_resM, ← a, ← b, LieVB.omegaMap_dUnit π₁ k₁ kW inf_le_left, LieVB.omegaMap_dUnit π₂ k₂ kW inf_le_right]`.
+
+Take `⟨d⟩` from `(H σ y).1`. Take `⟨d₁⟩` from `(H₁ σ y).1`. Take `⟨d₂⟩` from `(H₂ σ y).1`. Take `⟨Q₁, Q₂, hQ₁, hQ₂, hH⟩` from `GlobalTheory.T.riemann_data_product_projection S P P₁ P₂ π₁ π₂ inferInstance inferInstance hc y.1 d d₁ d₂`. Establish `ty` using `DualRiemannEx.top_le_of_mem hU`.
+
+Establish `m : ⊤ ≤ (y.1 ≫ unitSec P.A) ⁻¹ᵁ W` using `ty.trans (y.1.preimage_mono kW)`. Establish `m₁ : ⊤ ≤ (y.1 ≫ unitSec P₁.A) ⁻¹ᵁ W₁` using `ty.trans (y.1.preimage_mono k₁)`. Establish `m₂ : ⊤ ≤ (y.1 ≫ unitSec P₂.A) ⁻¹ᵁ W₂` using `ty.trans (y.1.preimage_mono k₂)`. Rewrite using `[← Met.form_resM _ _ _ le hU, ← Met.form_resM _ s₁ _ le hU, ← Met.form_resM _ s₂ _ le hU, key e₁ e₂, key e₁' e₂', ← e₁, ← e₁', ← e₂, ← e₂', (H σ y).2 d U W kW _ _ hU, (H₁ σ y).2 d₁ U W₁ k₁ _ _ hU, (H₂ σ y).2 d₂ U W₂ k₂ _ _ hU, CovFactor.cov_add d m, CovFactor.cov_add d m, cov_app …`. Conclude with `GlobalTheory.T.theta_product_orthogonal_sum _ _ _ hg d.H d₁.H d₂.H _ _ d.posDef d₁.posDef d₂.posDef (fun z w => by simp only [LinearMap.toMatrix'_mulVec]; exact hH z w) _ Real.pi_pos _ _ _ _`.
+-/
 theorem form_add (π₁ : P.A ⟶ P₁.A) (π₂ : P.A ⟶ P₂.A) [IsMonHom π₁] [IsMonHom π₂] (hg : P.g = P₁.g + P₂.g)
     (hc : P.c = CechPic.pull (π₁ ⊗ₘ π₁).left P₁.c + CechPic.pull (π₂ ⊗ₘ π₂).left P₂.c)
     {h : VMetric p (omega P.A) P.g} {h₁ : VMetric p (omega P₁.A) P₁.g} {h₂ : VMetric p (omega P₂.A) P₂.g}
@@ -157,6 +192,13 @@ theorem form_add (π₁ : P.A ⟶ P₁.A) (π₂ : P.A ⟶ P₂.A) [IsMonHom π�
   exact GlobalTheory.T.theta_product_orthogonal_sum _ _ _ hg d.H d₁.H d₂.H _ _ d.posDef d₁.posDef d₂.posDef
     (fun z w => by simp only [LinearMap.toMatrix'_mulVec]; exact hH z w) _ Real.pi_pos _ _ _ _
 
+/- English proof (translation)
+Take `⟨π₁, π₂, _, _, ⟨l⟩, hg, e⟩` from `hP`. Establish `I` using `form_add π₁ π₂ hg e H H₁ H₂`. Use `isIso_desc π₁ π₂ l` as an intermediate fact. Use `clear H`. Use `revert h`.
+
+Rewrite using `[hg]`. Introduce `h I`. Apply the tactic sequence `have J : (h₁.orthSum h₂).IsIsometry h (asIso (biprod.desc (omegaMap π₁) (omegaMap π₂))) := by`. Introduce `σ V s t y hy`. Establish `a (s : Γ(omega P₁.A ⊞ omega P₂.A, V)) : (asIso (biprod.desc (omegaMap π₁) (omegaMap π₂))).hom.app V s = (omegaMap π₁).app V ((biprod.fst : _ ⊞ omega P₂.A ⟶ _).app V s) + (omegaMap π₂).app V ((biprod.snd : omega P₁.A ⊞ _ ⟶ _).app V s)` using `congr(($(biprod.desc_eq (f := omegaMap π₁) (g := omegaMap π₂))).app V s)`.
+
+Rewrite using `[a, a, I σ V _ _ _ _ y hy]`. Conclude with `(VMetric.isOrthSum_orthSum h₁ h₂ σ V s t y hy).symm`. Apply the tactic sequence `exact (IsometryPullback.isCh2Deg_iff_of_isIsometry (Iso.refl S) (Category.id_comp p) (IsometryPullback.isIsometry_trans (VMetric.isIsometry_pull_id_comp k S p _ _ _).1 J) c).2 hc`.
+-/
 theorem isCh2Deg_of_isProd [IsIntegral S] (hP : P.IsProd P₁ P₂)
     {h : VMetric p (omega P.A) P.g} {h₁ : VMetric p (omega P₁.A) P₁.g} {h₂ : VMetric p (omega P₂.A) P₂.g}
     (H : P.IsHodge h) (H₁ : P₁.IsHodge h₁) (H₂ : P₂.IsHodge h₂) {c : ℝ}
@@ -182,6 +224,13 @@ theorem isCh2Deg_of_isProd [IsIntegral S] (hP : P.IsProd P₁ P₂)
 
 end GlobalTheory.ProdHodge
 
+/- English proof (translation)
+Introduce `hP hR k _ S p _ hS P₁ P₂ hT₁ hT₂`. Take `⟨P, hPr⟩` from `GlobalTheory.T.exists_product_polarized_abelian S P₁ P₂`. Establish `hg : P.g = P₁.g + P₂.g` using `hPr.g_eq`. Use `⟨P, hg, GlobalTheory.T.hasTheta_of_isProd' S P P₁ P₂ hPr hT₁ hT₂, ?_, fun a b ha hb => ?_⟩` and prove the remaining obligations. Take `⟨π₁, π₂, _, _, ⟨l⟩, -, -⟩` from `hPr`.
+
+Use `ProdHodge.isIso_desc π₁ π₂ l` as an intermediate fact. Unfold `PPAS.degOmega`. Rewrite using `[hg, ← cxDeg_congr (asIso (biprod.desc (omegaMap π₁) (omegaMap π₂))), GlobalTheory.T.complex_degree_direct_sum k S p hS.toIsArithVar _ _ _ _ P₁.isVB_omega P₂.isVB_omega]`. Take `⟨h, H⟩` from `PPAS.exists_isDualRiemann k S p P _ Real.pi_pos`. Take `⟨h₁, H₁, ha⟩` from `ha`.
+
+Take `⟨h₂, H₂, hb⟩` from `hb`. Conclude with `⟨h, H, ProdHodge.isCh2Deg_of_isProd hPr H H₁ H₂ (VMetric.isCh2Deg_orthSum hP.p4 k S p (fun Y q _ hq => GlobalTheory.RegCoverExists.nonempty_regCover hR k Y q hq) hS.toIsArithVar _ _ _ _ h₁ h₂ a b (P₁.isCInfNorm_of_isHodge H₁) (P₂.isCInfNorm_of_isHodge H₂) ha hb)⟩`.
+-/
 theorem GlobalTheory.PPAS.exists_prod_ch2Omega : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.Published.RegularAlteration → ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k) [IsIntegral S], IsRegSurf p → ∀ P₁ P₂ : PPAS S, P₁.HasTheta → P₂.HasTheta → ∃ P : PPAS S, P.g = P₁.g + P₂.g ∧ P.HasTheta ∧ P.degOmega p = P₁.degOmega p + P₂.degOmega p ∧ ∀ a b : ℝ, P₁.IsCh2Omega p a → P₂.IsCh2Omega p b → P.IsCh2Omega p (a + b) := by
   intro hP hR k _ S p _ hS P₁ P₂ hT₁ hT₂
   obtain ⟨P, hPr⟩ := GlobalTheory.T.exists_product_polarized_abelian S P₁ P₂

@@ -14,6 +14,11 @@ open scoped TensorProduct NNReal Matrix SchwartzMap Classical
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK.Dbl GlobalTheory.Cont PositivityTheory.Rg.Sw
 namespace PositivityTheory.SiegelWeilFormula.KSing
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ d R w f hf hinv hL ψ₀ hψ nr hnr g a b`. Establish `hG : IsTopologicalGroup d.G` using `(hAux F E σ d).2.2.1`. Take `⟨y, x, rfl, hx⟩` from `_root_.PositivityTheory.SiegelWeilFormula.KSing.split_k d R w g`. Establish `h0` using `_root_.PositivityTheory.SiegelWeilFormula.KSing.fourierStep_k hCE hFZ hAux d R w f hf hinv hL ψ₀ hψ nr hnr`. Establish `h2` using `_root_.PositivityTheory.SiegelWeilFormula.KSing.twoSidedW_k hDW d R w hG f hf hinv ψ₀ hψ.1 hψ.2.1 nr hnr h0 x (y * a) b`.
+
+Establish `e : ∀ t, R.ι w y * x * R.ι w (a * nr t * b) = R.ι w (y * a * nr t * b) * x` using `fun t => by`. Rewrite using `[mul_assoc, hx, ← mul_assoc]`. Simplify using `only [map_mul, mul_assoc]`. Repeatedly rewrite using `[e]`. Conclude with `h2`.
+-/
 theorem lamSing_of_k (hCE : _root_.PositivityTheory.SiegelWeilFormula.CoefEx_k) (hFZ : _root_.PositivityTheory.SiegelWeilFormula.FourierZero_k) (hDW : _root_.PositivityTheory.SiegelWeilFormula.DenseW_k) (hAux : _root_.PositivityTheory.SiegelWeilFormula.SiegelWeilDatumProperties) : _root_.PositivityTheory.SiegelWeilFormula.LamSing_k := by
   intro F E _ _ _ _ _ σ d R w f hf hinv hL ψ₀ hψ nr hnr g a b
   have hG : IsTopologicalGroup d.G := (hAux F E σ d).2.2.1

@@ -46,6 +46,9 @@ def Wpt {d : ℕ} {X : Scheme.{0}} (v : WVec d X) : sch.obj X ⟶ Wsp d where
         exact ((WVec.map d g.unop).map_id ((WVec.map d f).obj v)).symm }
   naturality n m f := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem wpt_incl {d : ℕ} {X : Scheme.{0}} (v : WVec d X) : Wpt v ≫ Wincl d = Pj.pt v.1 := rfl
 
 def wvec1 {d : ℕ} {A : Type} [CommRing A] (x : Fin d → A) : WVec d (Spec (CommRingCat.of A)) :=
@@ -60,12 +63,22 @@ def wb (d : ℕ) (R : Type) [CommRing R] : W d R ⟶ PR (d + 1) 0 R := prod.map 
 def wa (d : ℕ) (R : Type) [CommRing R] : sp (MvPolynomial (Fin d) R) ⟶ W d R :=
   prod.lift (Wpt (wvec1 MvPolynomial.X)) (spMap MvPolynomial.C)
 
+/- English proof (translation)
+Simplify using `only [wa, wb, prod.lift_map, Category.comp_id, wpt_incl]`. Both sides reduce to the same expression.
+-/
 theorem wa_wb (d : ℕ) (R : Type) [CommRing R] : wa d R ≫ wb d R =
     (prod.lift (Pj.pt (vec1 MvPolynomial.X)) (spMap MvPolynomial.C) :
       sp (MvPolynomial (Fin d) R) ⟶ PR (d + 1) 0 R) := by
   simp only [wa, wb, prod.lift_map, Category.comp_id, wpt_incl]
   rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Mono (sch.map U.ι)`. Establish `h : ∀ n, Mono ((sch.map U.ι).app n)`. Introduce `n`. Establish `: ∀ V, Mono (((sch.map U.ι).app n).app V)`. Introduce `V`.
+
+Rewrite using `[mono_iff_injective]`. Introduce `f g h`. Express the relevant statement in the definitionally equal form `f ≫ U.ι = g ≫ U.ι at h`. Conclude with `(cancel_mono U.ι).1 h`. Conclude with `NatTrans.mono_of_mono_app _`.
+
+Conclude with `NatTrans.mono_of_mono_app _`.
+-/
 theorem opn_mono {X : Scheme.{0}} (U : X.Opens) : Mono (opn U).hom := by
   change Mono (sch.map U.ι)
   have h : ∀ n, Mono ((sch.map U.ι).app n) := by
@@ -95,6 +108,11 @@ end LateralTheory.CohomologicalPurity.Thom.ExcP.Chart
 namespace LateralTheory.CohomologicalPurity.Thom.ExcP
 
 open Chart in
+/- English proof (translation)
+Introduce `hH q _ d R _ I hI hq Φ hΦ`. Use `hG.1 d R` as an intermediate fact. Establish `hab : wa d R ≫ wb d R = Φ.right` using `by rw [hΦ, wa_wb]`. Establish `hw : ((opn (off (MvPolynomial (Fin d) R) I)).hom ≫ wa d R) ≫ wb d R = Φ.left ≫ (pr d R).hom` using `by erw [Category.assoc, hab]; exact (Arrow.w Φ).symm`. Set `P : Arrow Spc` to `Arrow.mk (pullback.fst (wb d R) (pr d R).hom)`.
+
+Set `β : P ⟶ pr d R` to `Arrow.homMk (pullback.snd _ _) (wb d R) pullback.condition.symm`. Set `α : opn (off (MvPolynomial (Fin d) R) I) ⟶ P` to `Arrow.homMk (pullback.lift _ _ hw) (wa d R) (pullback.lift_fst _ _ _)`. Use `⟨P, α, β, ?_, opn_mono _, (IsPullback.of_hasPullback (wb d R) (pr d R).hom).mono_fst_of_mono this, hL hH q d R I hI hq _ (pullback.lift_fst _ _ _), hR hH q d R hq, IsPullback.of_hasPullback _ _, hC hH q d R hq⟩` and prove the remaining obligations. Conclude with `hom_ext (hG.1 d R) (by rw [Arrow.comp_right]; exact hab)`.
+-/
 theorem LeafChartFact_of (hG : LeafGeo) (hC : LeafWCov) (hR : LeafWEqvR) (hL : LeafWEqvL) :
     LeafChartFact := by
   intro hH q _ d R _ I hI hq Φ hΦ

@@ -30,12 +30,21 @@ section large₂
 
 variable {KP : ∀ B : GlobalTheory.Mem.Base, Fr B.toPre → Prop} {Q Q' : V4.Slot}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ _ _ _ => True, largeBaseProperty_true, h _⟩`.
+-/
 theorem eventually_coreProperty_of_forall {r : V4.Slot → Prop} (h : ∀ S, r S) : Lg1 KP Q Q' r :=
   ⟨fun _ _ _ _ _ => True, largeBaseProperty_true, h _⟩
 
+/- English proof (translation)
+The claim follows from `let ⟨R, hR, h⟩ := h; ⟨R, hR, hi _ h⟩`.
+-/
 theorem eventually_coreProperty_mono {r r' : V4.Slot → Prop} (h : Lg1 KP Q Q' r) (hi : ∀ S, r S → r' S) : Lg1 KP Q Q' r' :=
   let ⟨R, hR, h⟩ := h; ⟨R, hR, hi _ h⟩
 
+/- English proof (translation)
+The claim follows from `RowL.and (KP := KP) (Q := Q) (Q' := Q') h h'`.
+-/
 theorem forall_linked_bundles_and {Lk : LkT Bundle} {H H' : ∀ 𝒜 : FamClass, RawSel Bundle 𝒜 → Prop}
     (h : Lg1 KP Q Q' fun S => Row S Lk H) (h' : Lg1 KP Q Q' fun S => Row S Lk H') :
     Lg1 KP Q Q' fun S => Row S Lk fun 𝒜 σ => H 𝒜 σ ∧ H' 𝒜 σ :=
@@ -43,12 +52,18 @@ theorem forall_linked_bundles_and {Lk : LkT Bundle} {H H' : ∀ 𝒜 : FamClass,
 
 end large₂
 
+/- English proof (translation)
+Take `⟨q, b', ⟨w⟩, e⟩` from `h`. Use `⟨q, b'.R, w.recPin, ?_⟩` and prove the remaining obligations. Conclude with `congrArg (fun t : Σ (D : D7) (O : Obj D), Bundle D O c => (⟨t.1, t.2.1, t.2.2.R⟩ : Σ (D : D7) (O : Obj D), BdRec D O c)) e`.
+-/
 theorem linkR_of_isLinked {hL : GlobalTheory.Published.LocalLanglandsGL} (p : Prm hL) (K : Ctx) (β : BPt K) (c : ℝ) (b : Bundle β.D β.O c)
     (h : IsLinked p K β c b) : LinkR p K β c b.R := by
   obtain ⟨q, b', ⟨w⟩, e⟩ := h
   refine ⟨q, b'.R, w.recPin, ?_⟩
   exact congrArg (fun t : Σ (D : D7) (O : Obj D), Bundle D O c => (⟨t.1, t.2.1, t.2.2.R⟩ : Σ (D : D7) (O : Obj D), BdRec D O c)) e
 
+/- English proof (translation)
+Introduce `hA hSW p1 p2 p3 p4 p5 h3 h4 hL N S Γ NN o hl3 hfun hN`. Establish `six` using `GlobalTheory.T.period_entries_at_built (prmR N S Γ).s (IsLinked (prmR N S Γ))`. Establish `hU` using `GlobalTheory.VolRatioFromSiegelWeil.volumeRatio hSW`. Establish `loc` using `GlobalTheory.LocalRows.rows_lg hSW KPx (IsBuiltE (prmR N S Γ).s) (IsGoodE (prmR N S Γ).s) (IsLinked (prmR N S Γ))`. Conclude with `{ hn4 := eventually_coreProperty_of_forall fun Q => (R0.classCountBound_paramsLambda_constructedPoints _ Q _).1 jOn := eventually_coreProperty_mono o.hPA fun Q h => JOnBundle.row_jOn_of_row_hPA Q _ h hInstR := eventually_coreProperty_of_forall fun Q => GlobalTheory.row_hInstR_of_ …`.
+-/
 theorem allRows_of_open0 : GlobalTheory.Published.GlobalArtinReciprocity → HeckeCharacterZeroLocus.SiegelWeilU.SiegelWeilUnitaryConvergent → GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.DiscreteSeriesClassification → GlobalTheory.BigOn.OntoX → GlobalTheory.BigTop.LamLow → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (N : NExt hL) (S : SExt) (Γ : GeoP) (NN : FamClass → Prop), S0.Open0 (prmR N S Γ) → RL.At (prmR N S Γ) S0.CovolumeBound' → RL.At (prmR N S Γ) S0.FunctorialityCondition → RL.At (prmR N S Γ) (fun Q L => R1.PredicateAtBundlePoints Q L NN) → AllRows KPx (IsBuiltE (prmR N S Γ).s) (IsGoodE (prmR N S Γ).s) (IsLinked (prmR N S Γ)) NN DRS := by
   intro hA hSW p1 p2 p3 p4 p5 h3 h4 hL N S Γ NN o hl3 hfun hN
   have six := GlobalTheory.T.period_entries_at_built (prmR N S Γ).s (IsLinked (prmR N S Γ))

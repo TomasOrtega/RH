@@ -4,6 +4,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.CaOve
 open IsLocalRing UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 open scoped TensorProduct
 
+/- English proof (translation)
+Establish `h : algebraMap O (PowerSeries K) = (PowerSeries.C : K →+* PowerSeries K).comp (algebraMap O K)` using `RingHom.ext fun a => PowerSeries.algebraMap_apply`. Rewrite `hy` using `[h, ← Polynomial.eval₂_map, hs.eq_prod_roots_of_monic (hm.map _), Polynomial.eval₂_multiset_prod, Multiset.prod_eq_zero_iff, Multiset.map_map, Multiset.mem_map]`. Take `⟨c, -, hc⟩` from `hy`. Simplify using `only [Function.comp_apply, Polynomial.eval₂_sub, Polynomial.eval₂_X, Polynomial.eval₂_C] at hc`. Conclude with `⟨c, sub_eq_zero.1 hc⟩`.
+-/
 private theorem root_const {O K : Type} [CommRing O] [Field K] [Algebra O K] (P : Polynomial O) (hm : P.Monic)
     (hs : (P.map (algebraMap O K)).Splits) (y : PowerSeries K)
     (hy : Polynomial.eval₂ (algebraMap O (PowerSeries K)) y P = 0) : ∃ c : K, y = PowerSeries.C c := by
@@ -15,6 +18,15 @@ private theorem root_const {O K : Type} [CommRing O] [Field K] [Algebra O K] (P 
   simp only [Function.comp_apply, Polynomial.eval₂_sub, Polynomial.eval₂_X, Polynomial.eval₂_C] at hc
   exact ⟨c, sub_eq_zero.1 hc⟩
 
+/- English proof (translation)
+Establish `hne : RingHom.ker φ ≠ ⊥`. Introduce `h`. Establish `hi : Function.Injective φ` using `(RingHom.injective_iff_ker_eq_bot φ).2 h`. Use `haveI : Finite O' := Finite.of_injective φ hi`. Conclude with `IsDiscreteValuationRing.not_isField O' (Finite.isField_of_domain O')`.
+
+Use `haveI : (RingHom.ker φ).IsPrime := RingHom.ker_isPrime φ`. Establish `hmax : RingHom.ker φ = maximalIdeal O'` using `IsLocalRing.eq_maximalIdeal (Ring.DimensionLEOne.maximalOfPrime hne inferInstance)`. Set `g : ResidueField O' →+* K` to `Ideal.Quotient.lift (maximalIdeal O') φ (fun a ha => by`. Rewrite `ha` using `[← hmax]`. Conclude with `ha)`.
+
+Establish `hg : Function.Bijective g` using `by haveI : Finite (ResidueField O') := Finite.of_injective g g.injective`. Conclude with `(Nat.bijective_iff_injective_and_card g).2 ⟨g.injective, hc⟩`. Introduce `k`. Take `⟨a, ha⟩` from `hg.2 k`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective a`.
+
+Conclude with `⟨b, ha⟩`.
+-/
 private theorem surj_of_card {O' K : Type} [CommRing O'] [IsDomain O'] [IsDiscreteValuationRing O'] [Field K]
     [Finite K] (φ : O' →+* K) (hc : Nat.card (ResidueField O') = Nat.card K) : Function.Surjective φ := by
   have hne : RingHom.ker φ ≠ ⊥ := by
@@ -35,6 +47,23 @@ private theorem surj_of_card {O' K : Type} [CommRing O'] [IsDomain O'] [IsDiscre
   obtain ⟨b, rfl⟩ := Ideal.Quotient.mk_surjective a
   exact ⟨b, ha⟩
 
+/- English proof (translation)
+Use `letI : Algebra B (O' ⊗[O] B) := Algebra.TensorProduct.rightAlgebra`. Establish `hB : ∀ b : B, algebraMap B (O' ⊗[O] B) b = 1 ⊗ₜ b` using `fun b => rfl`. Establish `hcomp : (algebraMap B (O' ⊗[O] B)).comp (algebraMap O B) = (Algebra.TensorProduct.includeLeftRingHom : O' →+* O' ⊗[O] B).comp (algebraMap O O')` using `Algebra.TensorProduct.includeLeftRingHom_comp_algebraMap.symm`. Take `⟨x, hx1, hx2⟩` from `UpperTheory.V.AlgebraTools.exists_lift_ker_eq B (O' ⊗[O] B) (PowerSeries K) f.toRingHom Unit (fun _ => α ⊗ₜ 1) (fun _ => P.map (algebraMap O B)) (by`. Establish `hl : ∀ o : O', o ⊗ₜ[O] (1 : B) ∈ Algebra.adjoin B (Set.range fun _ : Unit => α ⊗ₜ[O] (1 : B))`.
+
+Introduce `o`. Establish `ho : o ∈ Algebra.adjoin O {α}` using `hα ▸ Algebra.mem_top`. Proceed by induction on `ho using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Rewrite using `[Set.mem_singleton_iff.1 hy]`.
+
+Conclude with `Algebra.subset_adjoin ⟨(), rfl⟩`. Consider the case `algebraMap r`. Use `RingHom.congr_fun hcomp r` as an intermediate fact. Express the relevant statement in the definitionally equal form `algebraMap B (O' ⊗[O] B) (algebraMap O B r) = algebraMap O O' r ⊗ₜ 1 at this`. Rewrite using `[← this]`.
+
+Conclude with `Subalgebra.algebraMap_mem _ _`. Consider the case `add y z _ _ hy hz => rw [TensorProduct.add_tmul]`. Conclude with `add_mem hy hz`. Consider the case `mul y z _ _ hy hz`. Use `mul_mem hy hz` as an intermediate fact.
+
+Rewrite `this` using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one]`. Then use the resulting hypothesis. Rewrite using `[eq_top_iff]`. Introduce and unpack `s -`. Proceed by induction on `s using TensorProduct.induction_on with`. Consider the case `zero => exact zero_mem _`.
+
+Consider the case `tmul o b`. Use `mul_mem (hl o) (Subalgebra.algebraMap_mem _ b)` as an intermediate fact. Rewrite `this` using `[hB, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Then use the resulting hypothesis. Consider the case `add y z hy hz => exact add_mem hy hz)`. Use the proof step `(fun _ => ⟨hm.map _, by`.
+
+Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_map, hcomp]`. Use `Polynomial.hom_eval₂ P (algebraMap O O') (Algebra.TensorProduct.includeLeftRingHom : O' →+* O' ⊗[O] B) α` as an intermediate fact. Rewrite `this` using `[← Polynomial.aeval_def, h0, map_zero]`. Conclude with `this.symm, by`. Establish `h : f.toRingHom.comp (algebraMap O B) = (PowerSeries.C : K →+* PowerSeries K).comp (algebraMap O K)` using `RingHom.ext fun a => (f.commutes a).trans PowerSeries.algebraMap_apply`.
+
+Rewrite using `[Polynomial.map_map, h, ← Polynomial.map_map]`. Conclude with `hs.map _⟩) Q hQ hc`. Conclude with `⟨x, fun b => RingHom.congr_fun hx1 b, hx2⟩`.
+-/
 private theorem exists_pt {O O' B K : Type} [CommRing O] [CommRing O'] [Algebra O O'] [CommRing B] [Algebra O B]
     [Field K] [Algebra O K] (α : O') (P : Polynomial O) (f : B →ₐ[O] PowerSeries K) (Q : Ideal (O' ⊗[O] B))
     (hα : Algebra.adjoin O {α} = ⊤) (hm : P.Monic) (h0 : Polynomial.aeval α P = 0)
@@ -84,6 +113,25 @@ private theorem exists_pt {O O' B K : Type} [CommRing O] [CommRing O'] [Algebra 
       exact hs.map _⟩) Q hQ hc
   exact ⟨x, fun b => RingHom.congr_fun hx1 b, hx2⟩
 
+/- English proof (translation)
+Introduce `l _ O O' _ _ _ _ _ _ α P B _ _ K _ _ _ f Q hα hm h0 hs hcard hQ hc`. Take `⟨x, hx1, hx2⟩` from `exists_pt α P f Q hα hm h0 hs hQ hc`. Set `y : O' →+* PowerSeries K` to `x.comp (Algebra.TensorProduct.includeLeftRingHom : O' →+* O' ⊗[O] B)`. Establish `hyO : y.comp (algebraMap O O') = algebraMap O (PowerSeries K)`. Use `RingHom.ext fun r => ?_` and prove the remaining obligations.
+
+Use `RingHom.congr_fun (Algebra.TensorProduct.includeLeftRingHom_comp_algebraMap (R := O) (A := O') (B := B)) r` as an intermediate fact. Express the relevant statement in the definitionally equal form `x ((Algebra.TensorProduct.includeLeftRingHom.comp (algebraMap O O')) r) = _`. Rewrite using `[this]`. Conclude with `(hx1 _).trans (f.commutes r)`. Establish `hconst : ∀ o : O', ∃ c : K, y o = PowerSeries.C c`.
+
+Introduce `o`. Establish `ho : o ∈ Algebra.adjoin O {α}` using `hα ▸ Algebra.mem_top`. Proceed by induction on `ho using Algebra.adjoin_induction with`. Consider the case `mem z hz`. Rewrite using `[Set.mem_singleton_iff.1 hz]`.
+
+Use `root_const P hm hs _ ?_` and prove the remaining obligations. Rewrite using `[← hyO, ← Polynomial.hom_eval₂, ← Polynomial.aeval_def, h0, map_zero]`. Consider the case `algebraMap r => exact ⟨algebraMap O K r, (RingHom.congr_fun hyO r).trans PowerSeries.algebraMap_apply⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨a', ha⟩` from `ha`.
+
+Take `⟨b', hb⟩` from `hb`. Conclude with `⟨a' + b', by rw [map_add, map_add, ha, hb]⟩`. Consider the case `mul a b _ _ ha hb`. Take `⟨a', ha⟩` from `ha`. Take `⟨b', hb⟩` from `hb`.
+
+Conclude with `⟨a' * b', by rw [map_mul, map_mul, ha, hb]⟩`. Set `φ : O' →+* K` to `(PowerSeries.constantCoeff : PowerSeries K →+* K).comp y`. Establish `hφ : ∀ o, y o = PowerSeries.C (φ o)`. Introduce `o`. Take `⟨c, hc⟩` from `hconst o`.
+
+Express the relevant statement in the definitionally equal form `_ = PowerSeries.C (PowerSeries.constantCoeff (y o))`. Rewrite using `[hc, PowerSeries.constantCoeff_C]`. Take `⟨g, hg1, hg2⟩` from `UpperTheory.V.Pa.BC.ps_ev (O' ⊗[O] B) K x`. Use `letI : Algebra O' K := φ.toAlgebra`. Set `g' : Til O O' B →+* PowerSeries K` to `g`.
+
+Establish `hg1' : ∀ a, g' (Til.C O O' B a) = x a` using `hg1`. Use `⟨this, { g' with commutes' := fun o => ?_ }, surj_of_card φ hcard, fun b => ?_, hg2, ?_⟩` and prove the remaining obligations. Establish `h : algebraMap O' (Til O O' B) o = Til.C O O' B (algebraMap O' (O' ⊗[O] B) o)` using `PowerSeries.algebraMap_apply`. Express the relevant statement in the definitionally equal form `g' (algebraMap O' (Til O O' B) o) = _`. Rewrite using `[h, hg1', PowerSeries.algebraMap_apply]`.
+
+Conclude with `hφ o`. Conclude with `(hg1' _).trans (hx1 b)`. Use extensionality with `a`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, ← hx2, RingHom.mem_ker, ← hg1']`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.Pa.BC.pt_lift :
     ∀ (l : ℕ) [Fact l.Prime] (O O' : Type) [CommRing O] [CommRing O'] [IsDomain O'] [IsDiscreteValuationRing O'] [IsCoef l O'] [Algebra O O'] (α : O') (P : Polynomial O) (B : Type) [CommRing B] [Algebra O B] (K : Type) [Field K] [Finite K] [Algebra O K] (f : B →ₐ[O] PowerSeries K) (Q : Ideal (O' ⊗[O] B)), Algebra.adjoin O {α} = ⊤ → P.Monic → Polynomial.aeval α P = 0 → (P.map (algebraMap O K)).Splits → Nat.card (ResidueField O') = Nat.card K → Q.IsPrime → Q.comap (Algebra.TensorProduct.includeRight : B →ₐ[O] O' ⊗[O] B) = RingHom.ker f → ∃ (_ : Algebra O' K) (f' : Til O O' B →ₐ[O'] PowerSeries K), Function.Surjective (algebraMap O' K) ∧ (∀ b, f' (Til.ι O O' B b) = f b) ∧ f' (Til.s O O' B) = PowerSeries.X ∧ (RingHom.ker f').comap (Til.C O O' B) = Q := by
   intro l _ O O' _ _ _ _ _ _ α P B _ _ K _ _ _ f Q hα hm h0 hs hcard hQ hc

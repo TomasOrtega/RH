@@ -8,11 +8,23 @@ import ReciprocityTheory.CommutativeAlgebra.SaturatedChains.RingKrullDimLocaliza
 
 open IsLocalRing MvPowerSeries UpperTheory.V.Alg
 
+/- English proof (translation)
+Take `⟨xs, h1, h2, h3⟩` from `PI.UnitaryGroupMassFormula.RLRS.IsRegularLocalRing.exists_isRegular_ofList_eq_maximalIdeal A`. Conclude with `⟨inferInstance, xs.length, h2.symm, xs, rfl, fun r hr => h1 ▸ Ideal.subset_span hr, h3⟩`.
+-/
 private theorem cm_of_regular (A : Type) [CommRing A] [IsRegularLocalRing A] : ReciprocityTheory.CA.IsCM A := by
   obtain ⟨xs, h1, h2, h3⟩ :=
     PI.UnitaryGroupMassFormula.RLRS.IsRegularLocalRing.exists_isRegular_ofList_eq_maximalIdeal A
   exact ⟨inferInstance, xs.length, h2.symm, xs, rfl, fun r hr => h1 ▸ Ideal.subset_span hr, h3⟩
 
+/- English proof (translation)
+Establish `h` using `cm_of_regular A`. Use `set Q := p.comap (Ideal.Quotient.mk P) with hQ`. Establish `hPQ : P ≤ Q` using `fun x hx => by`. Rewrite using `[hQ, Ideal.mem_comap, Ideal.Quotient.eq_zero_iff_mem.2 hx]`. Conclude with `p.zero_mem`.
+
+Establish `hp : Q.map (Ideal.Quotient.mk P) = p` using `Ideal.map_comap_of_surjective _ Ideal.Quotient.mk_surjective p`. Establish `e1` using `h.height_add_ringKrullDim_quotient P`. Establish `e2` using `h.height_add_ringKrullDim_quotient Q`. Establish `e3` using `h.height_eq_height_add_height_map_quotient P Q hPQ`. Establish `e4 : ringKrullDim ((A ⧸ P) ⧸ p) = ringKrullDim (A ⧸ Q)`.
+
+Rewrite using `[← ringKrullDim_eq_of_ringEquiv (DoubleQuot.quotQuotEquivQuotOfLE hPQ), hp]`. Rewrite `e3` using `[hp]`. Rewrite using `[e4]`. Rewrite `e2` using `[e3, ← e1, WithBot.coe_add, add_assoc]`. Take `⟨n, hn⟩` from `ENat.ne_top_iff_exists.mp (P.height_ne_top (Ideal.IsPrime.ne_top ‹_›))`.
+
+Rewrite `e2` using `[← hn]`. Conclude with `ENat.WithBot.natCast_add_cancel.1 e2`.
+-/
 private theorem dim_quot (A : Type) [CommRing A] [IsRegularLocalRing A] (P : Ideal A) [P.IsPrime]
     (p : Ideal (A ⧸ P)) [p.IsPrime] :
     (p.height : WithBot ℕ∞) + ringKrullDim ((A ⧸ P) ⧸ p) = ringKrullDim (A ⧸ P) := by
@@ -34,6 +46,15 @@ private theorem dim_quot (A : Type) [CommRing A] [IsRegularLocalRing A] (P : Ide
   rw [← hn] at e2
   exact ENat.WithBot.natCast_add_cancel.1 e2
 
+/- English proof (translation)
+Introduce `O _ _ _ _ R _ _ hR _ p _`. Establish `hn : IsNoetherianRing R` using `hR.toIsNoetherian`. Take `⟨s, hs⟩ : (maximalIdeal R).FG` from `IsNoetherian.noetherian _`. Use `haveI := co_mvps O O s`. Take `⟨F, ⟨-, hF⟩, -⟩` from `co_ev O O R s (Algebra.ofId O R) (fun i => i.1) (fun i => hs ▸ Ideal.subset_span i.2)`.
+
+Establish `hsurj : Function.Surjective F`. Use `co_surj O _ R F (le_sup_of_le_left ?_)` and prove the remaining obligations. Rewrite using `[← hs, Ideal.span_le]`. Introduce `y hy`. Use `hF ⟨y, hy⟩` as an intermediate fact.
+
+Simplify using `only at this`. Rewrite using `[← this]`. Conclude with `Ideal.mem_map_of_mem _ (GlobalTheory.FormalIsogeny.mem_maximalIdeal_iff_constantCoeff.2 (by simp))`. Use `haveI : IsRegularLocalRing (MvPowerSeries s O) := GlobalTheory.FormalIsogeny.isRegularLocalRing_mvPowerSeries O s`. Use `haveI : (RingHom.ker F).IsPrime := RingHom.ker_isPrime _`.
+
+Set `e : (MvPowerSeries s O ⧸ RingHom.ker F) ≃+* R` to `RingHom.quotientKerEquivOfSurjective hsurj`. Establish `h` using `dim_quot (MvPowerSeries s O) (RingHom.ker F) (p.comap e)`. Rewrite `h` using `[RingEquiv.height_comap, ringKrullDim_eq_of_ringEquiv e, ringKrullDim_eq_of_ringEquiv (Ideal.quotientEquiv (p.comap e) p e (Ideal.map_comap_of_surjective _ e.surjective p).symm)]`. Conclude with `h`.
+-/
 theorem UpperTheory.V.Alg.co_caten :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] (R : Type) [CommRing R] [Algebra O R] [IsCO O R] [IsDomain R] (p : Ideal R) [p.IsPrime], (p.height : WithBot ℕ∞) + ringKrullDim (R ⧸ p) = ringKrullDim R := by
   intro O _ _ _ _ R _ _ hR _ p _

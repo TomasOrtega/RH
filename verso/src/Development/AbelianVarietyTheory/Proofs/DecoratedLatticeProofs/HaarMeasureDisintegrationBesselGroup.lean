@@ -16,6 +16,23 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Core.Mi.Disint
 
+/- English proof (translation)
+Introduce `D X h u ψ A B`. Take `⟨μSf, hHaar, hσ, c₁, hc₁, hfin⟩` from `GlobalTheory.T.haar_finite_adele_disintegration_stabilizer_compact D X u`. Take `⟨c₃, hc₃, hR⟩` from `GlobalTheory.T.lintegral_besselGroup_haar_eq_const_mul_prod D X h u ψ A B μSf hHaar hσ (GlobalTheory.T.real_stabilizer_product_measure_isHaarOnSet D X u)`. Use `⟨c₁ / c₃, div_pos hc₁ hc₃, ?_⟩` and prove the remaining obligations. Introduce `G hGm hsupp`.
+
+Use `haveI : SecondCountableTopology X.B.I.Gf := Formalism.L2.SG.Pf.gf_secondCountable X.B.I`. Use `haveI := hσ`. Use `set μS := ((X.muN u).prod (X.muH u)).map (fun p : X.B.I.Ginf × X.B.I.Ginf => p.1 * p.2) with hμS`. Use `set g : X.B.I.Ginf → ENNReal := fun x => ∫⁻ t, ∫⁻ k in X.K2, G (x, t.1 * X.xu u * k) ∂X.B.μf ∂μSf with hgdef`. Establish `hg : Measurable g`.
+
+Establish `hΨ : Measurable (fun p : (X.B.I.Ginf × Formalism.L2.SG.Pf.SfinSub X.B.I X.eR (X.zR u)) × X.B.I.Gf => G (p.1.1, p.1.2.1 * X.xu u * p.2))` using `hGm.comp (measurable_fst.fst.prodMk (((measurable_subtype_coe.comp measurable_fst.snd).mul_const _).mul measurable_snd))`. Conclude with `(hΨ.lintegral_prod_right' (ν := X.B.μf.restrict X.K2)).lintegral_prod_right' (ν := μSf)`. Establish `hL : ∫⁻ x, G x ∂(X.B.I.muA X.B.μf) = ENNReal.ofReal c₁ * ∫⁻ y, ∫⁻ a, g (a * y) ∂μS ∂(X.nuQ u)`. Establish `e0 : X.B.I.muA X.B.μf = (Formalism.L2.SG.ProjRows.muInf X.B.I).prod X.B.μf` using `rfl`. Rewrite using `[e0, lintegral_prod _ hGm.aemeasurable]`.
+
+Establish `e1 : ∀ x, ∫⁻ z, G (x, z) ∂X.B.μf = ENNReal.ofReal c₁ * g x` using `fun x => hfin (fun z => G (x, z)) (hGm.comp measurable_prodMk_left) (fun z hz => hsupp (x, z) hz)`. Repeatedly rewrite using `[e1]`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, X.nuQ_weil u g hg]`. Establish `hRy : ∀ y : X.B.I.Ginf, ∫⁻ s, ∫⁻ k in X.K2, G (iotaX X h s.1 * (y, X.xu u) * (1, k)) ∂X.B.μf ∂B.lev.μR = ENNReal.ofReal c₃ * ∫⁻ a, g (a * y) ∂μS`. Introduce `y`.
+
+Use `set Φ : X.B.I.GA → ENNReal := fun p => ∫⁻ k in X.K2, G (p.1 * y, p.2 * X.xu u * k) ∂X.B.μf with hΦ`. Establish `hΦm : Measurable Φ`. Establish `: Measurable (fun q : X.B.I.GA × X.B.I.Gf => G (q.1.1 * y, q.1.2 * X.xu u * q.2))` using `hGm.comp ((measurable_fst.fst.mul_const y).prodMk ((measurable_fst.snd.mul_const _).mul measurable_snd))`. Conclude with `this.lintegral_prod_right' (ν := X.B.μf.restrict X.K2)`. Establish `e : ∀ s : besGrp B.d B.o, ∫⁻ k in X.K2, G (iotaX X h s.1 * (y, X.xu u) * (1, k)) ∂X.B.μf = Φ (iotaX X h s.1)`.
+
+Introduce `s`. Use `lintegral_congr fun k => ?_` and prove the remaining obligations. Use `congr 1`. Apply the tactic sequence `ext <;> simp`. Repeatedly rewrite using `[e]`.
+
+Rewrite using `[hR Φ hΦm]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ← ENNReal.ofReal_mul (div_pos hc₁ hc₃).le, div_mul_cancel₀ _ hc₃.ne']`. Use `_ = _ := by`. Use `congr 1`.
+
+Rewrite using `[← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Conclude with `(lintegral_congr fun y => hRy y).symm`.
+-/
 theorem disint : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (u : D.what₂.Word) (ψ : AddChar (AF D.host.F) ℂ) (A : HSp D) (B : SBes X h u ψ A), ∃ c : ℝ, 0 < c ∧ ∀ G : X.B.I.GA → ENNReal, Measurable G → (∀ x, G x ≠ 0 → ∃ s ∈ SfinU X u, ∃ k ∈ X.K2, x.2 = s * X.xu u * k) → ∫⁻ x, G x ∂(X.B.I.muA X.B.μf) = ENNReal.ofReal c * ∫⁻ y, ∫⁻ s, ∫⁻ k in X.K2, G (iotaX X h s.1 * (y, X.xu u) * (1, k)) ∂X.B.μf ∂B.lev.μR ∂(X.nuQ u) := by
   intro D X h u ψ A B
   obtain ⟨μSf, hHaar, hσ, c₁, hc₁, hfin⟩ := GlobalTheory.T.haar_finite_adele_disintegration_stabilizer_compact D X u

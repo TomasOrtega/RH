@@ -31,6 +31,9 @@ def secMulOn {N : LB X} {a b c : ℤ} (h : a + b = c) {V : X.Opens} (x : SecOn (
     rw [show (AbLaw.pw N a).g i j = N.g i j ^ a from rfl, show (AbLaw.pw N b).g i j = N.g i j ^ b from rfl]
     exact mul_mul_mul_comm _ _ _ _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coord_secMulOn {N : LB X} {a b c : ℤ} (h : a + b = c) {V : X.Opens}
     (x : SecOn (pw N a) V) (y : SecOn (pw N b) V) (i : N.ι) :
     GlobalTheory.LB.coord (secMulOn h x y) i =
@@ -48,6 +51,9 @@ def mulRight (f : X ⟶ Spec (CommRingCat.of R)) {N : LB X} {a b c : ℤ} (h : a
   map_add' x x' := GlobalTheory.LB.sec_ext fun (i : N.ι) => add_mul (R := Γ(X, V ⊓ N.U i)) _ _ _
   map_smul' r x := GlobalTheory.LB.sec_ext fun (i : N.ι) => mul_assoc (G := Γ(X, V ⊓ N.U i)) _ _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coord_mulRight (f : X ⟶ Spec (CommRingCat.of R)) {N : LB X} {a b c : ℤ} (h : a + b = c)
     {V : X.Opens} (y : SecOn (pw N b) V) (x : SecOnR f (pw N a) V) (i : N.ι) :
     SecOnR.coord (mulRight f h y x) i =
@@ -69,6 +75,9 @@ abbrev toR (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) (
     (Y e).left ⟶ Spec (CommRingCat.of R) :=
   (Y e).hom ≫ thick R I e
 
+/- English proof (translation)
+Rewrite using `[CommRingCat.ofHom_id, Spec.map_id, Category.comp_id, toR, toR, ← Category.assoc, (hβ e).w, Category.assoc, thickTrans_comp]`.
+-/
 theorem toR_w (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))))
     (β : ∀ e, (Y e).left ⟶ (Y (e + 1)).left)
     (hβ : ∀ e, IsPullback (β e) (Y e).hom (Y (e + 1)).hom (thickTrans R I e)) (e : ℕ) :
@@ -91,6 +100,11 @@ def mulT (e : ℕ) (t : ℤ) (S : Finset ι) (σ : SecOn (pw (N e) d) (D e S)) :
     Tm I Y N D d e t S →ₗ[R] Tm I Y N D d e (t + 1) S :=
   mulRight (toR I Y e) (by ring) σ
 
+/- English proof (translation)
+Use `SecOnR.ext_iff.mpr fun i => ?_` and prove the remaining obligations. Unfold `mulT`. Use `first`. Consider the case `(erw [coord_mulRight, coord_mulRight, coord_mulRight, coord_mulRight]; exact mul_right_comm _ _ _)`. Consider the case `(simp only [coord_mulRight]; exact mul_right_comm _ _ _)`.
+
+Consider the case `(simp only [coord_mulRight]; ring)`.
+-/
 theorem mulT_comm (e : ℕ) (t : ℤ) (S : Finset ι) (σ τ : SecOn (pw (N e) d) (D e S))
     (x : Tm I Y N D d e t S) :
     mulT I Y N D d e (t + 1) S σ (mulT I Y N D d e t S τ x) =
@@ -130,22 +144,37 @@ section Sub
 
 variable {ι : Type} [DecidableEq ι]
 
+/- English proof (translation)
+The claim follows from `Finset.singleton_subset_iff.2 (Finset.mem_insert_self _ _)`.
+-/
 theorem sub_pair_left (i j : ι) : ({i} : Finset ι) ⊆ {i, j} :=
   Finset.singleton_subset_iff.2 (Finset.mem_insert_self _ _)
 
+/- English proof (translation)
+The claim follows from `Finset.singleton_subset_iff.2 (Finset.mem_insert_of_mem (Finset.mem_singleton_self _))`.
+-/
 theorem sub_pair_right (i j : ι) : ({j} : Finset ι) ⊆ {i, j} :=
   Finset.singleton_subset_iff.2 (Finset.mem_insert_of_mem (Finset.mem_singleton_self _))
 
+/- English proof (translation)
+Introduce `x hx`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hx ⊢`. The claim follows by propositional logic.
+-/
 theorem sub_triple_ij (i j k : ι) : ({i, j} : Finset ι) ⊆ {i, j, k} := by
   intro x hx
   simp only [Finset.mem_insert, Finset.mem_singleton] at hx ⊢
   tauto
 
+/- English proof (translation)
+Introduce `x hx`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hx ⊢`. The claim follows by propositional logic.
+-/
 theorem sub_triple_jk (i j k : ι) : ({j, k} : Finset ι) ⊆ {i, j, k} := by
   intro x hx
   simp only [Finset.mem_insert, Finset.mem_singleton] at hx ⊢
   tauto
 
+/- English proof (translation)
+Introduce `x hx`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hx ⊢`. The claim follows by propositional logic.
+-/
 theorem sub_triple_ik (i j k : ι) : ({i, k} : Finset ι) ⊆ {i, j, k} := by
   intro x hx
   simp only [Finset.mem_insert, Finset.mem_singleton] at hx ⊢

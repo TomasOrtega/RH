@@ -7,6 +7,9 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta Measure
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `p q r s T0 T1 T2`. Take `⟨Om, h⟩` from `GlobalTheory.T.exists_oscillatorRepresentation_unitaryCover _ _ T0 (GlobalTheory.Mem.Osc.seqFock _)`. Conclude with `GlobalTheory.Osc.nonempty_fockData_iff.2 ⟨h.toOsc⟩`.
+-/
 theorem nonempty_fockData_pair :
     ∀ (p q r s : ℕ) (T0 : GrpData (p * r + q * s) (p * s + q * r)) (T1 : GrpData p q) (T2 : GrpData r s),
       Nonempty (FockData T0 T1 T2) := by

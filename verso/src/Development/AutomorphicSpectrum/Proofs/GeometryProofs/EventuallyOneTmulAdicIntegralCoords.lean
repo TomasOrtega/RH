@@ -25,6 +25,11 @@ def lieModelOfEquiv {S : Scheme.{0}} {R : Type} [CommRing R] {G : Over S} [GrpOb
   add v w := by rw [map_add, M.add]
   smul c v := by rw [map_smul, M.smul]
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo σ y n a ha hy`. Take `⟨t, ⟨m⟩⟩` from `exists_sab y Xo.univ.t`. Take `⟨i, -⟩` from `ObjMaps.exists_sab_id t`. Use `t.semi.smooth` as an intermediate fact. Use `t.semi.geomConnected` as an intermediate fact.
+
+Establish `: ConnectedSpace t.G.left` using `GeometricallyConnected.geometrically_connectedSpace (f := t.G.hom) (𝟙 _) (𝟙 _) t.G.hom (IsPullback.of_horiz_isIso ⟨by simp⟩)`. Take `⟨g, hg⟩` from `exists_dim_of_preconnected t.G.hom (eSec t.G (default : PrimeSpectrum ℂ))`. Take `⟨F, _, _, ⟨M⟩⟩` from `lieModel_exists _ t.G ℂ (𝟙 _)`. Take `⟨b⟩` from `GlobalTheory.T.lie_model_free_of_smooth _ t.G g hg ℂ (𝟙 _) F M`. Use `⟨{ a_le := ha, R := ℂ, t := t, g := g, dim := hg, M := lieModelOfEquiv M b.equivFun.symm, ψ := fun _ => RingHom.id ℂ, hol := ⟨Metric.isOpen_ball, fun r => differentiableOn_const _⟩, V := Sp ℂ, j := 𝟙 _, j_open := inferInstance, k := y, tV := t, m₁ := i, m₂ := m, pt := fun _ => 𝟙 …` and prove the remaining obligations.
+-/
 theorem exists_bdryChart_point : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H)
     (l : Level H) (Xo : Moduli D l) (σ : KA l →+* ℂ) (y : Sp ℂ ⟶ Xo.X) (n a : ℕ), a ≤ n → y ≫ Xo.s = spMap σ →
     ∃ C : BdryChart Xo σ n a, ∀ z, C.pt z ≫ C.k = y := by

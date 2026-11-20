@@ -9,6 +9,11 @@ open GlobalTheory.Unf
 
 namespace GlobalTheory.HeckeSplitAll
 
+/- English proof (translation)
+Introduce `D ν hν`. Take `⟨N, hN, hker, -⟩` from `GlobalTheory.CharFin.char_finUnit_finite_order D ν hν`. Use `⟨N, hN, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨h1, ⟨r, hr, hxr⟩, h3⟩` from `hx`. Establish `hNr : (N : Af D.host.F ⊗[D.host.F] D.host.E) * r = N • r` using `(nsmul_eq_mul _ _).symm`.
+
+Establish `hfin : finPart D (x : AE D) ∈ intAE D`. Establish `: finPart D (x : AE D) = 1 + N • r` using `by rw [← hNr, ← hxr]; ring`. Rewrite using `[this]`. Conclude with `add_mem (AddSubgroup.subset_closure ⟨1, fun w => by rw [map_one]; exact one_mem _, 1, by simp [Algebra.TensorProduct.one_def]⟩) (nsmul_mem hr N)`. Conclude with `hker x ⟨h1, hfin, h3⟩ ⟨r, hr, by rw [hxr, hNr]⟩`.
+-/
 theorem char_trivial_modSet : ∀ (D : D7) (ν : (AE D)ˣ →* Circle), Continuous ν →
     ∃ N : ℕ, 0 < N ∧ ∀ x ∈ GlobalTheory.HeckeSplitAll.modSet D N, ν x = 1 := by
   intro D ν hν

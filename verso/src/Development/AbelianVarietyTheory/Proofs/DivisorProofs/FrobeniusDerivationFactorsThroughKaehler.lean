@@ -14,6 +14,9 @@ instance : AddCommGroup (FrobTwist K p M) := inferInstanceAs (AddCommGroup M)
 noncomputable instance : Module K (FrobTwist K p M) :=
   Module.compHom M (frobenius K p)
 
+/- English proof (translation)
+Use `show (frobenius K p c) • (show M from m) = _`. Rewrite using `[frobenius_def]`.
+-/
 theorem twist_smul (c : K) (m : FrobTwist K p M) :
     c • m = (c ^ p • (show M from m) : M) := by
   show (frobenius K p c) • (show M from m) = _
@@ -22,6 +25,15 @@ theorem twist_smul (c : K) (m : FrobTwist K p M) :
 end GlobalTheory.DI.FrobDeriv
 
 open GlobalTheory.DI.FrobDeriv in
+/- English proof (translation)
+Introduce `K _ M _ _ p _ _ φ hφ`. Set `ψ : K →ₗ[ℤ] FrobTwist K p M` to `(φ : K →+ M).toIntLinearMap`. Establish `hone : φ 1 = 0`. Establish `h` using `hφ 1 1`. Simplify using `only [mul_one, one_pow, one_smul] at h`.
+
+Establish `: φ 1 + φ 1 = φ 1 + 0` using `by rw [add_zero]; exact h.symm`. Conclude with `add_left_cancel this`. Set `D : Derivation ℤ K (FrobTwist K p M)` to `{ toLinearMap := ψ map_one_eq_zero' := hone leibniz' := fun a b => by show φ (a * b) = a • (show FrobTwist K p M from φ b) + b • (show FrobTwist K p M from φ a)`. Rewrite using `[twist_smul, twist_smul, hφ]`. Use `rfl }`.
+
+Use `⟨(D.liftKaehlerDifferential).toAddMonoidHom, ?_, ?_⟩` and prove the remaining obligations. Introduce `c v show D.liftKaehlerDifferential (c • v) = _`. Rewrite using `[LinearMap.map_smul, twist_smul]`. Both sides reduce to the same expression. Introduce `a show D.liftKaehlerDifferential (KaehlerDifferential.D ℤ K a) = φ a`.
+
+Rewrite using `[Derivation.liftKaehlerDifferential_comp_D]`. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.DI.frobDeriv_factors_kaehler : ∀ {K : Type} [CommRing K] {M : Type} [AddCommGroup M] [Module K M] (p : ℕ) [Fact p.Prime] [CharP K p] (φ : K →+ M), (∀ a b : K, φ (a * b) = a ^ p • φ b + b ^ p • φ a) → ∃ f : Ω[K⁄ℤ] →+ M, (∀ (c : K) v, f (c • v) = c ^ p • f v) ∧ ∀ a, f (KaehlerDifferential.D ℤ K a) = φ a := by
   intro K _ M _ _ p _ _ φ hφ
   let ψ : K →ₗ[ℤ] FrobTwist K p M := (φ : K →+ M).toIntLinearMap

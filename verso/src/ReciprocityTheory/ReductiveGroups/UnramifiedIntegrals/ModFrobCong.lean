@@ -16,6 +16,11 @@ open NumberField IsDedekindDomain Formalism.L2.Th1.CM Neutral.HilbertClassField
 
 namespace ReciprocityTheory.ChartRestriction.L1
 
+/- English proof (translation)
+Establish `hmem : ((Nat.card (𝓞 E ⧸ v.asIdeal) : ℕ) : 𝓞 E) ∈ v.asIdeal`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Break down `finite_or_infinite (𝓞 E ⧸ v.asIdeal) with hf | hf` into its components or cases. Use `Fintype.ofFinite (𝓞 E ⧸ v.asIdeal)` as an intermediate fact. Rewrite using `[Nat.card_eq_fintype_card]`.
+
+Conclude with `Nat.cast_card_eq_zero _`. Rewrite using `[Nat.card_eq_zero_of_infinite, Nat.cast_zero]`. Establish `h2` using `(h _).mpr hmem`. Simplify using `using h2`.
+-/
 theorem natCard_mem {E Ω : Type*} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] {A : ValuationSubring Ω}
     {v : HeightOneSpectrum (𝓞 E)} (h : LiesAbove A v) :
     ((Nat.card (𝓞 E ⧸ v.asIdeal) : ℕ) : Ω) ∈ A.nonunits := by
@@ -29,6 +34,21 @@ theorem natCard_mem {E Ω : Type*} [Field E] [NumberField E] [Field Ω] [Algebra
   have h2 := (h _).mpr hmem
   simpa using h2
 
+/- English proof (translation)
+Use `set N := Nat.card (𝓞 (KQ d) ⧸ v.asIdeal) with hN`. Establish `hd0 : 0 < d` using `by omega`. Take `⟨c, τ, hτ⟩` from `latTau L`. Establish `hj : jInv L = jT τ` using `jInv_eq_jT hτ`. Take `⟨a, b, hab⟩` from `princ_form hsf hd v hv`.
+
+Take `⟨A', B', C', D', h1, h2, h3⟩` from `cmPoint hd0 hL hτ a b`. Establish `hG : Gm N τ = 0`. Apply `Gm_vanish hp.pos τ A' B' C' D'` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[← h1, h2]`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨r, hr, hrel⟩` from `kronPt hp hG`. Take `⟨r0, hr0m, hr0⟩` from `one_sub_zeta_pow hp`. Establish `hzint : IsIntegral ℤ (zetaC N)` using `(zetaC_isPrimitiveRoot hp.ne_zero).isIntegral hp.pos`. Establish `hr0int : IsIntegral ℤ r0`.
+
+Establish `hle : Rm N ≤ (integralClosure ℤ ℂ).toSubring` using `Subring.closure_le.mpr (Set.singleton_subset_iff.mpr hzint)`. Conclude with `hle hr0m`. Take `⟨r', hr'c, hr'i⟩` from `exists_Om d hr`. Take `⟨r0', hr0'c, hr0'i⟩` from `exists_Om d hr0int`. Establish `hC : (((x ^ N - x) ^ (2 * N) : Om d) : ℂ) = (((N : Om d) * r0' * r' ^ N : Om d) : ℂ)`.
+
+Use `push_cast`. Rewrite using `[hr'c, hr0'c, hx, hj, pow_mul, hrel, mul_pow, hr0]`. Establish `hEq : (x ^ N - x) ^ (2 * N) = (N : Om d) * r0' * r' ^ N` using `Subtype.ext hC`. Establish `hNu` using `natCard_mem hA`. Rewrite `hNu`, the goal using `[ValuationSubring.mem_nonunits_iff]`.
+
+Establish `hv1 : A.valuation r0' ≤ 1` using `(A.valuation_le_one_iff _).mpr (mem_of_isIntegral A hr0'i)`. Establish `hv2 : A.valuation r' ≤ 1` using `(A.valuation_le_one_iff _).mpr (mem_of_isIntegral A hr'i)`. Establish `hv3 : A.valuation ((x ^ N - x) ^ (2 * N)) < 1`. Rewrite using `[hEq, map_mul, map_mul, map_pow]`. Conclude with `mul_lt_one_of_lt_of_le (mul_lt_one_of_lt_of_le hNu hv1) (pow_le_one' hv2 _)`.
+
+Assume the negation of the conclusion as `hcon`. Rewrite `hv3` using `[map_pow]`. Conclude with `absurd hv3 (not_lt.mpr (one_le_pow_of_one_le' (not_lt.mp hcon) _))`.
+-/
 theorem frobCong {d : ℕ} {L : PeriodPair} (hsf : Squarefree d) (hd : d % 4 = 3) (hL : HasCMBy d L)
     (x : Om d) (hx : (x : ℂ) = jInv L) (A : ValuationSubring (Om d)) (v : HeightOneSpectrum (𝓞 (KQ d)))
     (hA : LiesAbove A v) (hp : (Nat.card (𝓞 (KQ d) ⧸ v.asIdeal)).Prime)

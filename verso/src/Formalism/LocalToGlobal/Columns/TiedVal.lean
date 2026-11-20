@@ -92,6 +92,13 @@ def DilT (Q : ValCrd W Λ σ₀ u i) : Prop :=
 
 end Val
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Establish `h : ((i * (R.t + 1) / 2 : ℕ) : ℤ) = (i : ℤ) * (((R.t + 1) / 2 : ℕ) : ℤ)`. Take `⟨b, hb⟩` from `R.t_odd`. Establish `h2 : R.t + 1 = 2 * (b + 1)` using `by omega`. Rewrite using `[h2, Nat.mul_div_cancel_left _ (by norm_num : 0 < 2), Nat.mul_left_comm, Nat.mul_div_cancel_left _ (by norm_num : 0 < 2)]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Unfold `Wts.lamTrue shiftW shW`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+
+Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lamTrue_eq_shW (u : Pr.Word) (i : ℕ) :
     W.lamTrue u i = fun τ => shW (W.lamN u i τ) ((i * (R.t + 1) / 2 : ℕ) : ℤ) := by
   funext τ
@@ -107,6 +114,13 @@ theorem lamTrue_eq_shW (u : Pr.Word) (i : ℕ) :
   rw [h]
   ring
 
+/- English proof (translation)
+Take `⟨⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩, lt, rfl⟩` from `Q`. Use `⟨1, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[cT]`. Introduce `x`. Simplify using `only [Units.val_one, Matrix.one_mulVec]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hx a`. Conclude with `Submodule.mem_one.1 (hx a trivial)`. Introduce `hx a _`. Conclude with `Submodule.mem_one.2 (hx a)`.
+
+Introduce `τ z`. Simplify using `only [Units.val_one, Matrix.det_one, map_one, one_mul]`. Both sides reduce to the same expression.
+-/
 theorem Val.de (Q : ValCrd W Λ σ₀ u i) : Val.De W Λ hc σ₀ u i Q := by
   obtain ⟨⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩, lt, rfl⟩ := Q
   refine ⟨1, ?_, ?_, ?_⟩
@@ -122,6 +136,11 @@ theorem Val.de (Q : ValCrd W Λ σ₀ u i) : Val.De W Λ hc σ₀ u i Q := by
     simp only [Units.val_one, Matrix.det_one, map_one, one_mul]
     rfl
 
+/- English proof (translation)
+Take `⟨⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩, lt, rfl⟩` from `Q`. Introduce `o ho P _ P' _`. Establish `h` using `ipFr_fnOf (gramC (1 : Matrix (Fin (R.N i)) (Fin (R.N i)) X.E) (embAt σ₀ X.emb)) (W.lamTrue u i) (stdFrC _) o (fun τ => by simp [stdFrC, gramC]) (frame_std _ o ho) P P'`. Establish `h2 : nfAll (W.lamTrue u i) P' P = nfAll (W.lamN u i) P' P`. Rewrite using `[lamTrue_eq_shW]`.
+
+Conclude with `nfAll_shW _ _ _ _`. Rewrite using `[← h2]`. Conclude with `h`.
+-/
 theorem Val.ipV (Q : ValCrd W Λ σ₀ u i) : Val.IpV W Λ σ₀ hσ u i Q := by
   obtain ⟨⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩, lt, rfl⟩ := Q
   intro o ho P _ P' _
@@ -139,6 +158,9 @@ section Rec
 
 variable {d : ColDat} (a : ColArgs d)
 
+/- English proof (translation)
+The claim follows from `(lamTrue_eq_shW (Pr := d.Pr) d.W u i).symm`.
+-/
 theorem lamT_eq (u : d.what₂.Word) (i : ℕ) : CF.lamT (D := d.colRec a) u i = d.W.lamTrue u i :=
   (lamTrue_eq_shW (Pr := d.Pr) d.W u i).symm
 

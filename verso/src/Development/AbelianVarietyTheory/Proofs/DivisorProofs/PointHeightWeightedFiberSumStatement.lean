@@ -25,6 +25,9 @@ open CategoryTheory AlgebraicGeometry GlobalTheory GlobalTheory.Mean4O GlobalThe
 open GlobalTheory.TrueGeo GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.Mean4
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Mean4O.WeightHt.main | exact GlobalTheory.Mean4O.WeightHt.main | (intros; apply GlobalTheory.Mean4O.WeightHt.main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.point_height_weighted_fiber_sum : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Cover Y)
     (u : ∀ σ : 𝓞 F →+* ℂ, GlobalTheory.CxPts V.p σ → ℝ) (hu : ∀ σ y, GlobalTheory.CxPts.CInfAt (u σ) y)
     (hc : ∀ σ σ', (GlobalTheory.Weight.ofFun (u σ)).IsConj (GlobalTheory.Weight.ofFun (u σ'))) (w : V.G), IsClosed ({w} : Set V.G) →

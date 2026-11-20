@@ -7,9 +7,19 @@ open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Forma
 
 namespace GlobalTheory.CCRFock
 
+/- English proof (translation)
+Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp [lineSign]`.
+-/
 theorem lineSign_mul_self {P Q R S : ℕ} (a : Ix P Q) (b : Ix R S) : lineSign a b * lineSign a b = 1 := by
   rcases a with a | a <;> rcases b with b | b <;> simp [lineSign]
 
+/- English proof (translation)
+Rewrite using `[Fintype.sum_prod_type]`. Use `conv_lhs => rw [← Finset.univ_sum_single c]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`. Use `conv_lhs => rw [Matrix.matrix_eq_sum_single (c w)]`.
+
+Use function extensionality and compare the values at `v`. Simplify using `only [unitAt, Finset.sum_apply]`. Distinguish the cases in `h : v = w`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[h]`.
+-/
 theorem sum_unitAt {W : Type} [Fintype W] [DecidableEq W] {P Q R S : ℕ} (c : W → Matrix (Ix P Q) (Ix R S) ℂ) :
     c = ∑ j : W × (Ix P Q × Ix R S), unitAt j (c j.1 j.2.1 j.2.2) := by
   rw [Fintype.sum_prod_type]
@@ -24,11 +34,27 @@ theorem sum_unitAt {W : Type} [Fintype W] [DecidableEq W] {P Q R S : ℕ} (c : W
     simp
   · simp [h]
 
+/- English proof (translation)
+Simplify using `only [unitAt, ← Pi.single_smul', ← Pi.single_add, Matrix.smul_single, ← Matrix.single_add, smul_eq_mul, mul_one, Complex.re_add_im]`.
+-/
 theorem unitAt_re_im {W : Type} [DecidableEq W] {P Q R S : ℕ} (j : W × (Ix P Q × Ix R S)) (z : ℂ) :
     unitAt j z = ((z.re : ℝ) : ℂ) • unitAt j 1 + ((z.im : ℝ) : ℂ) • unitAt j Complex.I := by
   simp only [unitAt, ← Pi.single_smul', ← Pi.single_add, Matrix.smul_single, ← Matrix.single_add, smul_eq_mul, mul_one,
     Complex.re_add_im]
 
+/- English proof (translation)
+Introduce `V _ _ W _ _ P Q R S H hadd hsmul c`. Establish `h0 : H 0 = 0`. Use `hadd 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_add.mp this`.
+
+Set `H' : (W → Matrix (Ix P Q) (Ix R S) ℂ) →+ Module.End ℂ V` to `⟨⟨H, h0⟩, hadd⟩`. Establish `hsum : H c = ∑ j : W × (Ix P Q × Ix R S), H (unitAt j (c j.1 j.2.1 j.2.2))` using `by conv_lhs => rw [sum_unitAt c]`. Conclude with `map_sum H' _ _`. Rewrite using `[hsum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[unitAt_re_im, hadd, hsmul, hsmul]`. Establish `hs : ((Real.sqrt (2 * Real.pi) : ℝ) : ℂ) ≠ 0`. Establish `: 0 < Real.sqrt (2 * Real.pi)` using `Real.sqrt_pos.mpr (by positivity)`. Conclude with `this.ne'` after adjusting the coercions. Establish `he` using `lineSign_mul_self j.2.1 j.2.2`.
+
+Unfold `fockM fockD coefM coefD`. Generalize the expression as in `((Real.sqrt (2 * Real.pi) : ℝ) : ℂ) = s at hs ⊢`. Generalize the expression as in `lineSign j.2.1 j.2.2 = e at he ⊢`. Generalize the expression as in `H (unitAt j 1) = A`. Generalize the expression as in `H (unitAt j Complex.I) = B`.
+
+Generalize the expression as in `((c j.1 j.2.1 j.2.2).re : ℂ) = x`. Generalize the expression as in `((c j.1 j.2.1 j.2.2).im : ℂ) = y`. Establish `hI` using `Complex.I_mul_I`. Use `match_scalars`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Clear the denominators using the available nonvanishing facts. Take the linear combination `(2 * y * e * e) * hI - 2 * y * he`.
+-/
 theorem heis_expand : ∀ {V : Type} [AddCommGroup V] [Module ℂ V] {W : Type} [Fintype W] [DecidableEq W] {P Q R S : ℕ}
     (H : (W → Matrix (Ix P Q) (Ix R S) ℂ) → Module.End ℂ V),
     (∀ c c', H (c + c') = H c + H c') → (∀ (r : ℝ) c, H ((r : ℂ) • c) = (r : ℂ) • H c) →

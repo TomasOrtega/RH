@@ -26,12 +26,21 @@ def singleHom (v : ι) : G v →* Πʳ w, [G w, K w] where
   map_one' := RestrictedProduct.mulSingle_one K v
   map_mul' x y := RestrictedProduct.mulSingle_mul K v x y
 
+/- English proof (translation)
+The claim follows from `RestrictedProduct.mulSingle_eq_same K v x`.
+-/
 theorem singleHom_apply_self (v : ι) (x : G v) : singleHom K v x v = x :=
   RestrictedProduct.mulSingle_eq_same K v x
 
+/- English proof (translation)
+The claim follows from `RestrictedProduct.mulSingle_eq_of_ne K x h`.
+-/
 theorem singleHom_apply_of_ne {v w : ι} (x : G v) (h : w ≠ v) : singleHom K v x w = 1 :=
   RestrictedProduct.mulSingle_eq_of_ne K x h
 
+/- English proof (translation)
+Use extensionality with `w`. Simplify using `only [RestrictedProduct.mul_apply]`. Apply the tactic sequence `rcases h w with h | h <;> simp [h]`.
+-/
 theorem commute_of_forall {a b : Πʳ w, [G w, K w]} (h : ∀ w, a w = 1 ∨ b w = 1) :
     a * b = b * a := by
   ext w
@@ -41,18 +50,32 @@ theorem commute_of_forall {a b : Πʳ w, [G w, K w]} (h : ∀ w, a w = 1 ∨ b w
 def eraseAt (v : ι) (g : Πʳ w, [G w, K w]) : Πʳ w, [G w, K w] :=
   (singleHom K v (g v))⁻¹ * g
 
+/- English proof (translation)
+Simplify using `[eraseAt, RestrictedProduct.mul_apply, RestrictedProduct.inv_apply, singleHom_apply_self]`.
+-/
 theorem eraseAt_apply_self (v : ι) (g : Πʳ w, [G w, K w]) : eraseAt v g v = 1 := by
   simp [eraseAt, RestrictedProduct.mul_apply, RestrictedProduct.inv_apply, singleHom_apply_self]
 
+/- English proof (translation)
+Simplify using `[eraseAt, RestrictedProduct.mul_apply, RestrictedProduct.inv_apply, singleHom_apply_of_ne _ h]`.
+-/
 theorem eraseAt_apply_of_ne {v w : ι} (g : Πʳ w, [G w, K w]) (h : w ≠ v) :
     eraseAt v g w = g w := by
   simp [eraseAt, RestrictedProduct.mul_apply, RestrictedProduct.inv_apply,
     singleHom_apply_of_ne _ h]
 
+/- English proof (translation)
+Simplify using `[eraseAt]`.
+-/
 theorem single_mul_eraseAt (v : ι) (g : Πʳ w, [G w, K w]) :
     singleHom K v (g v) * eraseAt v g = g := by
   simp [eraseAt]
 
+/- English proof (translation)
+Introduce `w`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[eraseAt_apply_self]`. Conclude with `(K' w).one_mem`.
+
+Rewrite using `[eraseAt_apply_of_ne _ hw]`. Conclude with `hg w`.
+-/
 theorem eraseAt_mem_boxSubgroup {K' : ∀ v, Subgroup (G v)} (v : ι) {g : Πʳ w, [G w, K w]}
     (hg : g ∈ boxSubgroup K K') : eraseAt v g ∈ boxSubgroup K K' := by
   intro w
@@ -63,6 +86,11 @@ theorem eraseAt_mem_boxSubgroup {K' : ∀ v, Subgroup (G v)} (v : ι) {g : Πʳ 
   · rw [eraseAt_apply_of_ne _ hw]
     exact hg w
 
+/- English proof (translation)
+Introduce `w`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[singleHom_apply_self]`. Conclude with `hx`.
+
+Rewrite using `[singleHom_apply_of_ne _ hw]`. Conclude with `(K' w).one_mem`.
+-/
 theorem singleHom_mem_boxSubgroup {K' : ∀ v, Subgroup (G v)} {v : ι} {x : G v}
     (hx : x ∈ K' v) : singleHom K v x ∈ boxSubgroup K K' := by
   intro w
@@ -73,6 +101,9 @@ theorem singleHom_mem_boxSubgroup {K' : ∀ v, Subgroup (G v)} {v : ι} {x : G v
   · rw [singleHom_apply_of_ne _ hw]
     exact (K' w).one_mem
 
+/- English proof (translation)
+The claim follows from `commute_of_forall fun w => by by_cases hw : w = v · subst hw; exact Or.inr hb · exact Or.inl (singleHom_apply_of_ne _ hw)`.
+-/
 theorem commute_singleHom {v : ι} (x : G v) {b : Πʳ w, [G w, K w]} (hb : b v = 1) :
     singleHom K v x * b = b * singleHom K v x :=
   commute_of_forall fun w => by
@@ -95,6 +126,9 @@ variable [DecidableEq ι]
 
 omit hK'c hK'o hK'e in
 
+/- English proof (translation)
+Use `conv_lhs => rw [← single_mul_eraseAt v h]`. Rewrite using `[map_mul, Module.End.mul_apply, hu _ (eraseAt_mem_boxSubgroup v hh) (eraseAt_apply_self v h)]`.
+-/
 theorem apply_eq_apply_single (v : ι) {u : V}
     (hu : ∀ h ∈ boxSubgroup K K', h v = 1 → ρ h u = u) {h : Πʳ w, [G w, K w]}
     (hh : h ∈ boxSubgroup K K') : ρ h u = ρ (singleHom K v (h v)) u := by
@@ -103,6 +137,9 @@ theorem apply_eq_apply_single (v : ι) {u : V}
 
 omit hK'c hK'o hK'e in
 
+/- English proof (translation)
+Rewrite using `[← Module.End.mul_apply, ← map_mul, ← commute_singleHom x hv, map_mul, Module.End.mul_apply, hm h hh]`.
+-/
 theorem apply_single_fixed (v : ι) (x : G v) {m : V} (hm : m ∈ fixedVectors ρ (boxSubgroup K K'))
     {h : Πʳ w, [G w, K w]} (hh : h ∈ boxSubgroup K K') (hv : h v = 1) :
     ρ h (ρ (singleHom K v x) m) = ρ (singleHom K v x) m := by
@@ -111,6 +148,13 @@ theorem apply_single_fixed (v : ι) (x : G v) {m : V} (hm : m ∈ fixedVectors �
 
 include hK'c hK'o hK'e in
 
+/- English proof (translation)
+Use extensionality with `m`. Rewrite using `[Module.End.mul_apply, heckeOp_mul_apply]`. Introduce `h hh`. Use `⟨eraseAt v h, eraseAt_mem_boxSubgroup v hh, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(commute_singleHom x (eraseAt_apply_self v h)).symm`.
+
+Establish `h1 : (eraseAt v h)⁻¹ * h = singleHom K v (h v)`. Establish `hc` using `commute_singleHom (K := K) (h v) (eraseAt_apply_self v h)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[single_mul_eraseAt]`. Use `_ = singleHom K v (h v) := by rw [hc, inv_mul_cancel_left]`.
+
+Rewrite using `[h1]`. Conclude with `commute_singleHom (h v) hb`.
+-/
 theorem heckeOp_single_mul (v : ι) (x : G v) {b : Πʳ w, [G w, K w]} (hb : b v = 1) :
     heckeOp hρ (isCompact_boxSubgroup_of_eq hK'c hK'e) (isOpen_boxSubgroup hK'o hK'e)
         (singleHom K v x * b) =
@@ -134,6 +178,9 @@ def placeOps (v : ι) : Set (End ℂ (fixedVectors ρ (boxSubgroup K K'))) :=
   range fun x : G v => heckeOp hρ (isCompact_boxSubgroup_of_eq hK'c hK'e)
     (isOpen_boxSubgroup hK'o hK'e) (singleHom K v x)
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨x, rfl⟩ _ ⟨y, rfl⟩`. Establish `h1` using `heckeOp_single_mul hρ hK'c hK'o hK'e v x (b := singleHom K w y) (singleHom_apply_of_ne y hvw)`. Establish `h2` using `heckeOp_single_mul hρ hK'c hK'o hK'e w y (b := singleHom K v x) (singleHom_apply_of_ne x hvw.symm)`. Use `show _ * _ = _ * _`. Rewrite using `[← h1, ← h2, commute_singleHom x (singleHom_apply_of_ne y hvw)]`.
+-/
 theorem commute_placeOps {v w : ι} (hvw : v ≠ w) :
     ∀ a ∈ placeOps hρ hK'c hK'o hK'e v, ∀ b ∈ placeOps hρ hK'c hK'o hK'e w, Commute a b := by
   rintro _ ⟨x, rfl⟩ _ ⟨y, rfl⟩
@@ -144,6 +191,15 @@ theorem commute_placeOps {v w : ι} (hvw : v ≠ w) :
   show _ * _ = _ * _
   rw [← h1, ← h2, commute_singleHom x (singleHom_apply_of_ne y hvw)]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on generalizing g with`. Consider the case `empty`. Rewrite using `[heckeOp_of_mem _ _ _ (show g ∈ boxSubgroup K K' from fun v => hg v (Finset.notMem_empty v))]`. Conclude with `Subalgebra.one_mem _`. Consider the case `insert a s has ih`.
+
+Establish `herase : ∀ v ∉ s, eraseAt a g v ∈ K' v`. Introduce `v hv`. Distinguish the cases in `hva : v = a`. Substitute `hva` using the available equality. Rewrite using `[eraseAt_apply_self]`.
+
+Conclude with `(K' v).one_mem`. Rewrite using `[eraseAt_apply_of_ne _ hva]`. Conclude with `hg v (by simp [hva, hv])`. Establish `hmono : Algebra.adjoin ℂ (⋃ v ∈ s, placeOps hρ hK'c hK'o hK'e v) ≤ Algebra.adjoin ℂ (⋃ v ∈ insert a s, placeOps hρ hK'c hK'o hK'e v)` using `Algebra.adjoin_mono (biUnion_subset_biUnion_left (by simp))`. Rewrite using `[← single_mul_eraseAt a g, heckeOp_single_mul hρ hK'c hK'o hK'e a (g a) (eraseAt_apply_self a g)]`.
+
+Use `Subalgebra.mul_mem _ (Algebra.subset_adjoin ?_) (hmono (ih herase))` and prove the remaining obligations. Conclude with `mem_biUnion (Finset.mem_insert_self a s) ⟨g a, rfl⟩`.
+-/
 theorem heckeOp_mem_adjoin (s : Finset ι) {g : Πʳ w, [G w, K w]} (hg : ∀ v ∉ s, g v ∈ K' v) :
     heckeOp hρ (isCompact_boxSubgroup_of_eq hK'c hK'e) (isOpen_boxSubgroup hK'o hK'e) g ∈
       Algebra.adjoin ℂ (⋃ v ∈ s, placeOps hρ hK'c hK'o hK'e v) := by
@@ -166,6 +222,9 @@ theorem heckeOp_mem_adjoin (s : Finset ι) {g : Πʳ w, [G w, K w]} (hg : ∀ v 
     refine Subalgebra.mul_mem _ (Algebra.subset_adjoin ?_) (hmono (ih herase))
     exact mem_biUnion (Finset.mem_insert_self a s) ⟨g a, rfl⟩
 
+/- English proof (translation)
+The claim follows from `fixedProj_comp_eq (singleHom K v) hρ hρv _ _ (hK'c v) (hK'o v) (fun k hk => singleHom_mem_boxSubgroup hk) (fun h hh => ⟨h v, hh v, apply_eq_apply_single v hu hh⟩)`.
+-/
 theorem fixedProj_single_eq (v : ι) (hρv : IsSmooth (ρ.comp (singleHom K v))) {u : V}
     (hu : ∀ h ∈ boxSubgroup K K', h v = 1 → ρ h u = u) :
     (fixedProj (ρ.comp (singleHom K v)) hρv (hK'c v) (hK'o v) u : V) =

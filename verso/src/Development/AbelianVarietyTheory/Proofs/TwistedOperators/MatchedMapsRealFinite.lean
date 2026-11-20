@@ -22,6 +22,11 @@ open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 
 namespace GlobalTheory.SquareAgree
 
+/- English proof (translation)
+Introduce `hU hR hMg hP F E _ _ _ _ _ σ a a' Bs Γ Xc om om' R Rf hM N hN hne Φ hΦ`. Establish `hFin` using `GlobalTheory.T.howe_duality_finite_of_unitary hP hU`. Use `GlobalTheory.T.matched_maps_gaussian_kernel F E σ Bs a a' Γ Xc om om' R Rf hM (fun v => ?_) (GlobalTheory.T.howeDuality_realPlaces_trivialChar_fockLift_smallPair hR F E σ Bs a a' Γ Xc om om' R Rf hM) N hN hne Φ hΦ` and prove the remaining obligations. Break down `isEmpty_or_nonempty (E →ₐ[F] Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) with h | h` into its components or cases. Conclude with `GlobalTheory.T.matched_maps_gaussian_identity hFin F E σ Bs a a' Γ Xc om om' R Rf hM v h`.
+
+Conclude with `GlobalTheory.T.matched_maps_gaussian_sum hP hMg F E σ Bs a a' Γ Xc om om' R Rf hM v h`.
+-/
 theorem polMatch_zero_of_thetaSubG : GlobalTheory.Published.HoweDualityUnitary → GlobalTheory.Published.HoweDualityReal → GlobalTheory.Published.MinguezThetaGL → GlobalTheory.FunPr.Hypotheses₂ → ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {a a' : ℕ}
     (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (Xc : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)
     (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ Γ.V Γ.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ Γ.V' Γ.W) (R : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.RealMaps F a a')

@@ -12,6 +12,9 @@ def Stmt : Prop :=
         ∀ Y : ℝ, 1 ≤ Y → C * Real.log (m : ℝ) ^ 2 ≤ Real.log Y →
           Y ^ (1 - ε') ≤ (count K m Y : ℝ)
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 example : 0 < (1 : ℕ) ∧ 0 < (4 : ℕ) ∧ 4 * 1 ∣ (4 : ℕ) := by decide
 
 end Formalism.MainNotions.N.Lit.RayPrimeCountQ

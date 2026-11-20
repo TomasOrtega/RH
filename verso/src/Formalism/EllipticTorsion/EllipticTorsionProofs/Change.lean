@@ -10,9 +10,15 @@ universe u
 section
 variable {K : Type u} [NormedField K] [IsUltrametricDist K]
 
+/- English proof (translation)
+The claim follows from `(IsUltrametricDist.norm_add_le_max x y).trans (max_le hx hy)`.
+-/
 lemma addle {x y : K} {B : ℝ} (hx : ‖x‖ ≤ B) (hy : ‖y‖ ≤ B) : ‖x + y‖ ≤ B :=
   (IsUltrametricDist.norm_add_le_max x y).trans (max_le hx hy)
 
+/- English proof (translation)
+Rewrite using `[norm_mul, norm_pow]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma tb {a r : K} (k n : ℕ) (ha : ‖a‖ ≤ 1) (hr : 1 ≤ ‖r‖) (hk : k ≤ n) :
     ‖a * r ^ k‖ ≤ ‖r‖ ^ n := by
   rw [norm_mul, norm_pow]
@@ -20,6 +26,11 @@ lemma tb {a r : K} (k n : ℕ) (ha : ‖a‖ ≤ 1) (hr : 1 ≤ ‖r‖) (hk : k
         mul_le_mul ha (pow_le_pow_right₀ hr hk) (by positivity) zero_le_one
     _ = _ := one_mul _
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hr`. Use `push Not at hr`. Establish `e : r ^ 2 = -(a * r ^ 1 + b * r ^ 0)` using `by linear_combination h`. Establish `hb' : ‖a * r ^ 1 + b * r ^ 0‖ ≤ ‖r‖ ^ 1` using `addle (tb 1 1 ha hr.le le_rfl) (tb 0 1 hb hr.le (by norm_num))`. Rewrite `hb'` using `[← norm_neg, ← e, norm_pow]`.
+
+Establish `: ‖r‖ ^ 1 < ‖r‖ ^ 2` using `pow_lt_pow_right₀ hr (by norm_num)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma root2 {a b r : K} (ha : ‖a‖ ≤ 1) (hb : ‖b‖ ≤ 1) (h : r ^ 2 + a * r + b = 0) :
     ‖r‖ ≤ 1 := by
   by_contra hr; push Not at hr
@@ -30,6 +41,11 @@ lemma root2 {a b r : K} (ha : ‖a‖ ≤ 1) (hb : ‖b‖ ≤ 1) (h : r ^ 2 + a
   have : ‖r‖ ^ 1 < ‖r‖ ^ 2 := pow_lt_pow_right₀ hr (by norm_num)
   linarith
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hr`. Use `push Not at hr`. Establish `e : c * r ^ 3 = -(a * r ^ 2 + b * r ^ 1 + d * r ^ 0)` using `by linear_combination h`. Establish `hb' : ‖a * r ^ 2 + b * r ^ 1 + d * r ^ 0‖ ≤ ‖r‖ ^ 2` using `addle (addle (tb 2 2 ha hr.le le_rfl) (tb 1 2 hb hr.le (by norm_num))) (tb 0 2 hd hr.le (by norm_num))`. Rewrite `hb'` using `[← norm_neg, ← e, norm_mul, norm_pow, hc, one_mul]`.
+
+Establish `: ‖r‖ ^ 2 < ‖r‖ ^ 3` using `pow_lt_pow_right₀ hr (by norm_num)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma root3 {c a b d r : K} (hc : ‖c‖ = 1) (ha : ‖a‖ ≤ 1) (hb : ‖b‖ ≤ 1) (hd : ‖d‖ ≤ 1)
     (h : c * r ^ 3 + a * r ^ 2 + b * r + d = 0) : ‖r‖ ≤ 1 := by
   by_contra hr; push Not at hr
@@ -41,6 +57,11 @@ lemma root3 {c a b d r : K} (hc : ‖c‖ = 1) (ha : ‖a‖ ≤ 1) (hb : ‖b�
   have : ‖r‖ ^ 2 < ‖r‖ ^ 3 := pow_lt_pow_right₀ hr (by norm_num)
   linarith
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hr`. Use `push Not at hr`. Establish `e' : c * r ^ 4 = -(a * r ^ 3 + b * r ^ 2 + d * r ^ 1 + e * r ^ 0)`. Take the linear combination `h`. Establish `hb' : ‖a * r ^ 3 + b * r ^ 2 + d * r ^ 1 + e * r ^ 0‖ ≤ ‖r‖ ^ 3` using `addle (addle (addle (tb 3 3 ha hr.le le_rfl) (tb 2 3 hb hr.le (by norm_num))) (tb 1 3 hd hr.le (by norm_num))) (tb 0 3 he hr.le (by norm_num))`.
+
+Rewrite `hb'` using `[← norm_neg, ← e', norm_mul, norm_pow, hc, one_mul]`. Establish `: ‖r‖ ^ 3 < ‖r‖ ^ 4` using `pow_lt_pow_right₀ hr (by norm_num)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma root4 {c a b d e r : K} (hc : ‖c‖ = 1) (ha : ‖a‖ ≤ 1) (hb : ‖b‖ ≤ 1) (hd : ‖d‖ ≤ 1)
     (he : ‖e‖ ≤ 1) (h : c * r ^ 4 + a * r ^ 3 + b * r ^ 2 + d * r + e = 0) : ‖r‖ ≤ 1 := by
   by_contra hr; push Not at hr
@@ -53,10 +74,19 @@ lemma root4 {c a b d e r : K} (hc : ‖c‖ = 1) (ha : ‖a‖ ≤ 1) (hb : ‖b
   have : ‖r‖ ^ 3 < ‖r‖ ^ 4 := pow_lt_pow_right₀ hr (by norm_num)
   linarith
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 lemma memB {x : K} : x ∈ unitBall K ↔ ‖x‖ ≤ 1 := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `memB.2 (IsUltrametricDist.norm_natCast_le_one K n)`.
+-/
 lemma natB (n : ℕ) : (n : K) ∈ unitBall K := memB.2 (IsUltrametricDist.norm_natCast_le_one K n)
 
+/- English proof (translation)
+Use `natB (K := K) n` as an intermediate fact. Conclude with `this`.
+-/
 lemma ofNatB (n : ℕ) [n.AtLeastTwo] : (OfNat.ofNat n : K) ∈ unitBall K := by
   have := natB (K := K) n
   exact this
@@ -67,6 +97,11 @@ macro "change_aux_intm" : tactic => `(tactic| (repeat (first
   | assumption | apply ofNatB
   | apply add_mem | apply sub_mem | apply mul_mem | apply pow_mem | apply neg_mem)))
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [WeierstrassCurve.b₂]`. Use `change_aux_intm`. Simplify using `only [WeierstrassCurve.b₄]`. Use `change_aux_intm`.
+
+Simplify using `only [WeierstrassCurve.b₆]`. Use `change_aux_intm`. Simplify using `only [WeierstrassCurve.b₈]`. Use `change_aux_intm`.
+-/
 lemma bmem {K : Type u} [NormedField K] [IsUltrametricDist K] (W : WeierstrassCurve K)
     (h1 : W.a₁ ∈ unitBall K) (h2 : W.a₂ ∈ unitBall K) (h3 : W.a₃ ∈ unitBall K)
     (h4 : W.a₄ ∈ unitBall K) (h6 : W.a₆ ∈ unitBall K) :
@@ -77,6 +112,35 @@ lemma bmem {K : Type u} [NormedField K] [IsUltrametricDist K] (W : WeierstrassCu
   · simp only [WeierstrassCurve.b₆]; change_aux_intm
   · simp only [WeierstrassCurve.b₈]; change_aux_intm
 
+/- English proof (translation)
+Introduce `K _ _ W C hW hW' hΔ0 hΔ`. Use `set W' := C • W with hW'def`. Take `⟨h1, h2, h3, h4, h6⟩` from `hW`. Take `⟨h1', h2', h3', h4', h6'⟩` from `hW'`. Establish `hv : ‖((C.u⁻¹ : Kˣ) : K)‖ = 1`.
+
+Establish `e` using `WeierstrassCurve.variableChange_Δ W C`. Rewrite `e` using `[← hW'def]`. Rewrite `hΔ` using `[e, norm_mul, norm_pow]`. Establish `hn : ‖W.Δ‖ ≠ 0` using `norm_ne_zero_iff.2 hΔ0`. Establish `: ‖((C.u⁻¹ : Kˣ) : K)‖ ^ 12 = 1`.
+
+Use `mul_right_cancel₀ hn (hΔ.trans (one_mul _).symm)` as an intermediate fact. Conclude with `this`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (by norm_num)).1 this`. Establish `hu : ‖(C.u : K)‖ = 1`. Rewrite `hv` using `[Units.val_inv_eq_inv_val, norm_inv, inv_eq_one]`.
+
+Conclude with `hv`. Use `set u : K := (C.u : K)`. Use `set v : K := ((C.u⁻¹ : Kˣ) : K)`. Establish `hvu : v * u = 1` using `by simp [u, v]`. Establish `hvu2 : v ^ 2 * u ^ 2 = 1` using `by rw [← mul_pow, hvu, one_pow]`.
+
+Establish `hvu6 : v ^ 6 * u ^ 6 = 1` using `by rw [← mul_pow, hvu, one_pow]`. Establish `hvu8 : v ^ 8 * u ^ 8 = 1` using `by rw [← mul_pow, hvu, one_pow]`. Rewrite `h1`, `h2`, `h3`, `h4`, `h6`, `h1'`, `h2'`, `h3'`, `h4'`, `h6'` using `[← memB]`. Establish `hu' : u ∈ unitBall K` using `by rw [memB, hu]`. Take `⟨hb2, hb4, hb6, hb8⟩` from `bmem W h1 h2 h3 h4 h6`.
+
+Take `⟨-, -, hb6', hb8'⟩` from `bmem W' h1' h2' h3' h4' h6'`. Establish `hr : C.r ∈ unitBall K`. Rewrite using `[memB]`. Break down `(IsUltrametricDist.norm_natCast_le_one K 2).lt_or_eq with h2lt | h2eq` into its components or cases. Establish `h3n : ‖(3 : K)‖ = 1`.
+
+Establish `h3le : ‖(3 : K)‖ ≤ 1` using `by exact_mod_cast IsUltrametricDist.norm_natCast_le_one K 3`. Establish `: ‖(1 : K)‖ ≤ max ‖(3 : K)‖ ‖(2 : K)‖`. Use `IsUltrametricDist.norm_add_le_max (3 : K) (-2)` as an intermediate fact. Rewrite `this` using `[norm_neg]`. Establish `e : (3 : K) + -2 = 1` using `by norm_num`.
+
+Rewrite `this` using `[e]`. Then use the resulting hypothesis. Rewrite `this` using `[norm_one]`. Move the coercions through the operations in `at h2lt`. Break down `le_max_iff.1 this with h | h` into its components or cases. Conclude with `le_antisymm h3le h`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `e8` using `WeierstrassCurve.variableChange_b₈ W C`. Rewrite `e8` using `[← hW'def]`. Establish `key : (3 : K) * C.r ^ 4 + W.b₂ * C.r ^ 3 + (3 * W.b₄) * C.r ^ 2 + (3 * W.b₆) * C.r + (W.b₈ - u ^ 8 * W'.b₈) = 0`. Take the linear combination `(-u ^ 8) * e8 - (W.b₈ + 3 * C.r * W.b₆ + 3 * C.r ^ 2 * W.b₄ + C.r ^ 3 * W.b₂ + 3 * C.r ^ 4) * hvu8`.
+
+Use `root4 h3n (memB.1 hb2) (memB.1 (by change_aux_intm)) (memB.1 (by change_aux_intm)) (memB.1 (by change_aux_intm)) key` and prove the remaining obligations. Establish `h4n : ‖(4 : K)‖ = 1`. Establish `: (4 : K) = 2 * 2` using `by norm_num`. Rewrite using `[this, norm_mul]`. Move the coercions through the operations in `at h2eq`.
+
+Rewrite using `[h2eq]`. Evaluate the numerical expressions. Establish `e6` using `WeierstrassCurve.variableChange_b₆ W C`. Rewrite `e6` using `[← hW'def]`. Establish `key : (4 : K) * C.r ^ 3 + W.b₂ * C.r ^ 2 + (2 * W.b₄) * C.r + (W.b₆ - u ^ 6 * W'.b₆) = 0`.
+
+Take the linear combination `(-u ^ 6) * e6 - (W.b₆ + 2 * C.r * W.b₄ + C.r ^ 2 * W.b₂ + 4 * C.r ^ 3) * hvu6`. Conclude with `root3 h4n (memB.1 hb2) (memB.1 (by change_aux_intm)) (memB.1 (by change_aux_intm)) key`. Establish `hs : C.s ∈ unitBall K`. Establish `e2 : W'.a₂ = v ^ 2 * (W.a₂ - C.s * W.a₁ + 3 * C.r - C.s ^ 2)` using `rfl`. Establish `key : C.s ^ 2 + W.a₁ * C.s + (-W.a₂ - 3 * C.r + u ^ 2 * W'.a₂) = 0`.
+
+Take the linear combination `u ^ 2 * e2 + (W.a₂ - C.s * W.a₁ + 3 * C.r - C.s ^ 2) * hvu2`. Conclude with `memB.2 (root2 (memB.1 h1) (memB.1 (by change_aux_intm)) key)`. Establish `ht : C.t ∈ unitBall K`. Establish `e6 : W'.a₆ = v ^ 6 * (W.a₆ + C.r * W.a₄ + C.r ^ 2 * W.a₂ + C.r ^ 3 - C.t * W.a₃ - C.t ^ 2 - C.r * C.t * W.a₁)` using `rfl`. Establish `key : C.t ^ 2 + (W.a₃ + C.r * W.a₁) * C.t + (-(W.a₆ + C.r * W.a₄ + C.r ^ 2 * W.a₂ + C.r ^ 3) + u ^ 6 * W'.a₆) = 0`.
+
+Take the linear combination `u ^ 6 * e6 + (W.a₆ + C.r * W.a₄ + C.r ^ 2 * W.a₂ + C.r ^ 3 - C.t * W.a₃ - C.t ^ 2 - C.r * C.t * W.a₁) * hvu6`. Conclude with `memB.2 (root2 (memB.1 (by change_aux_intm)) (memB.1 (by change_aux_intm)) key)`. Conclude with `⟨hu, memB.1 hr, memB.1 hs, memB.1 ht⟩`.
+-/
 theorem change_of_variables_integral_of : ChangeIntegral.{u} := by
   intro K _ _ W C hW hW' hΔ0 hΔ
   set W' := C • W with hW'def
@@ -161,6 +225,9 @@ namespace Formalism.ELL
 
 universe v
 
+/- English proof (translation)
+The claim follows from `Formalism.ELL.RootExponentBounds.change_of_variables_integral_of`.
+-/
 theorem change_of_variables_integral : ChangeIntegral.{v} := Formalism.ELL.RootExponentBounds.change_of_variables_integral_of
 
 end Formalism.ELL

@@ -5,6 +5,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.Ordi
 import Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.OrdinaryHeckeCharacters.JPT
 open UpperTheory.V UpperTheory.V.Th UpperTheory.V.Hi UpperTheory.V.Hi.CaseU
 
+/- English proof (translation)
+Introduce `P l _ L Ω _ _ _ _ _ _ s V hS c n hn r B Λ ι`. Take `⟨R⟩` from `hdEx P l L Ω s n hn V (QData.empty V hS) c r ι Λ`. Set `K : (hset (QData.empty V hS) R.τ₀).Lev` to `⟨fun q => Empty.elim q, fun q => Empty.elim q⟩`. Take `⟨J, hJ⟩` from `jEx P l L Ω s n hn V _ c r ι B Λ R K`. Conclude with `⟨J, jPT P l L Ω s n hn V _ c r ι B Λ R K hS J hJ, Th.AnnihilatorQuotientFinite.levelX P l L Ω s n hn V _ c r ι B Λ R K hS J hJ⟩`.
+-/
 theorem UpperTheory.V.Th.hidaX :
     Af.HypothesesH → HidaX := by
   intro P l _ L Ω _ _ _ _ _ _ s V hS c n hn r B Λ ι

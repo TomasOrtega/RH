@@ -18,6 +18,9 @@ noncomputable section
 
 namespace GlobalTheory.FreeTwistH2
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, SetLike.mem_coe, SetLike.mem_coe, mem_powSub, Ideal.mem_span_singleton']`. Simplify using `only [smul_eq_mul, mul_comm]`.
+-/
 theorem powSub_eq {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {ϖ : O}
     (hϖ : Irreducible ϖ) (n : ℕ) :
     ((powSub (M := O) ϖ n : Submodule O O) : Set O) = ((IsLocalRing.maximalIdeal O ^ n : Ideal O) : Set O) := by
@@ -26,6 +29,11 @@ theorem powSub_eq {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing 
     mem_powSub, Ideal.mem_span_singleton']
   simp only [smul_eq_mul, mul_comm]
 
+/- English proof (translation)
+Use `haveI := hO.ring`. Take `⟨h1, h2⟩` from `(isAdic_iff).1 hO.adic`. Use `⟨fun n => ?_, fun U hU => ?_⟩` and prove the remaining obligations. Rewrite using `[powSub_eq hϖ]`. Conclude with `h1 n`.
+
+Take `⟨n, hn⟩` from `h2 U hU`. Conclude with `⟨n, by rw [powSub_eq hϖ]; exact hn⟩`.
+-/
 theorem powSub_open_basis {p : ℕ} {O : Type} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] [TopologicalSpace O] (hO : PadicCoeff p O) {ϖ : O} (hϖ : Irreducible ϖ) :
     (∀ n : ℕ, IsOpen ((powSub (M := O) ϖ n : Submodule O O) : Set O)) ∧
@@ -37,6 +45,35 @@ theorem powSub_open_basis {p : ℕ} {O : Type} [CommRing O] [IsDomain O]
   · obtain ⟨n, hn⟩ := h2 U hU
     exact ⟨n, by rw [powSub_eq hϖ]; exact hn⟩
 
+/- English proof (translation)
+Introduce `p _ K O _ _ _ _ _ G _ _ hT hK hO i ε hε`. Use `haveI := hO.compact`. Use `haveI := hO.t2`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨hopen, hbasis⟩` from `powSub_open_basis hO hϖ`.
+
+Use `haveI := GlobalTheory.T.isAdicComplete_of_padicCoeff' hO`. Establish `hd : ∀ n : ℕ, ringChar (O ⧸ IsLocalRing.maximalIdeal O ^ n) ∣ p ^ n` using `fun n => by`. Apply `ringChar.dvd` to reduce the goal to its premises. Rewrite using `[← map_natCast (Ideal.Quotient.mk (IsLocalRing.maximalIdeal O ^ n)), Ideal.Quotient.eq_zero_iff_mem, Nat.cast_pow]`. Conclude with `Ideal.pow_mem_pow hO.p_mem n`.
+
+Set `φ : ℤ_[p] →+* O` to `IsAdicComplete.liftRingHom (IsLocalRing.maximalIdeal O) (fun n => (ZMod.castHom (hd n) (O ⧸ IsLocalRing.maximalIdeal O ^ n)).comp (PadicInt.toZModPow n)) (fun {m n} hle => by`. Rewrite using `[← PadicInt.zmod_cast_comp_toZModPow m n hle, ← RingHom.comp_assoc, ← RingHom.comp_assoc]`. Use `congr 1`. Conclude with `RingHom.ext_zmod _ _)`. Establish `hφ : Continuous φ` using `GlobalTheory.T.padicInt_ringHom_continuous_of_padicCoeff' hO φ`.
+
+Set `χZ : Formalism.GaloisCohomology.GK p K →* ℤ_[p]ˣ` to `(cyclotomicCharacter (PadicAlgCl p) p).comp (MulSemiringAction.toRingAut (Formalism.GaloisCohomology.GK p K) (PadicAlgCl p))`. Establish `hχc : Continuous fun g => (χZ g : ℤ_[p])` using `Units.continuous_val.comp (cyclotomicCharacter.continuous p K (PadicAlgCl p))`. Take `⟨c, hc⟩` from `GlobalTheory.TateTop.exists_gen_all hχc fun r => by`. Establish `: NeZero (p ^ (r + 1))` using `⟨pow_ne_zero _ (Fact.out : p.Prime).ne_zero⟩`. Conclude with `GlobalTheory.TateTop.exists_gen hχc (hT p K hK (r + 1) (ZMod (p ^ (r + 1))) (ReciprocityTheory.Gal.charRep (GlobalTheory.Cyc.TwistLift.redChar χZ (r + 1))) (Nat.succ_pos _) (GlobalTheory.Cyc.TwistLift.contAction_charRep _ ((GlobalTheory.PadicH2Separated.continuous_reduction _).co …`.
+
+Set `e : G ≃* Formalism.GaloisCohomology.GK p K` to `i.toMulEquiv`. Establish `he : Continuous e` using `i.continuous`. Establish `he' : Continuous e.symm` using `i.symm.continuous`. Set `χ : G →* ℤ_[p]ˣ` to `χZ.comp e.toMonoidHom`. Set `cG : G × G → ℤ_[p]` to `fun q => c (e q.1, e q.2)`.
+
+Establish `hcG : ∀ r, GlobalTheory.TateTop.Gen χ r cG` using `fun r => (hc r).transport e he he'`. Establish `hεφ : ∀ g, ((ε g : Oˣ) : O) = φ (χ g : ℤ_[p])` using `fun g => GlobalTheory.T.eq_cyclotomicCharacter_of_isCyc hO φ i hε g`. Establish `hχGc : Continuous fun g => (χ g : ℤ_[p])` using `hχc.comp he`. Establish `hεc : Continuous fun g => ((ε g : Oˣ) : O)`. Repeatedly rewrite using `[hεφ]`.
+
+Conclude with `hφ.comp hχGc`. Establish `hcont : ContAction (twist ε O)` using `by show Continuous fun q : G × O => twist ε O q.1 q.2`. Simplify using `only [twist_apply, smul_eq_mul]`. Conclude with `(hεc.comp continuous_fst).mul continuous_snd`. Establish `hfin` using `fun n => GlobalTheory.T.finite_cocycles_quotient_pow_smul_of_isOpen hT hK hO.p_mem i (twist ε O) hcont ϖ hϖ hopen n`.
+
+Establish `hG` using `fun r => GlobalTheory.GenSpan.gen_zmod (hcG r)`. Establish `hcc : Continuous cG` using `GlobalTheory.PadicH2Separated.continuous_of_reductions cG fun s => (hG (s + 1)).1.1.continuous`. Establish `hcoc : ∀ g h k, (χ g : ℤ_[p]) * cG (h, k) - cG (g * h, k) + cG (g, h * k) - cG (g, h) = 0`. Introduce `g h k`. Rewrite using `[← PadicInt.ext_of_toZModPow]`.
+
+Introduce `n`. Simplify `(hG n).1.2 g h k` using `only [map_sub, map_add, map_mul, map_zero]`. Set `z0 : G × G → O` to `fun q => φ (cG q)`. Establish `hz0 : z0 ∈ Z2 (twist ε O)`. Use `(mem_cocycles2 _ _).2 ⟨hφ.comp hcc, fun g h k => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [twist_apply, smul_eq_mul, z0, hεφ]`. Rewrite using `[← map_mul, ← map_sub, ← map_add, ← map_sub, hcoc, map_zero]`. Set `Z : H2 (twist ε O)` to `Submodule.Quotient.mk ⟨z0, hz0⟩`. Use `⟨Z, fun a b hab => ?_, fun y => ?_⟩` and prove the remaining obligations. Establish `h0 : (a - b) • Z = 0`.
+
+Rewrite using `[sub_smul]`. Conclude with `sub_eq_zero.2 hab`. Rewrite `h0` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Take `⟨f, hf, hfd⟩` from `(separated_dvr_second_cohomology_mem _ _).1 h0`. Use `sub_eq_zero.1 (GlobalTheory.T.fundamentalTwoCocycle_multiple_not_coboundary χ cG hcG φ ε hεφ ϖ hϖ hO.p_mem hopen (a - b) f hf fun g h => ?_)` and prove the remaining obligations.
+
+Establish `e1` using `congrFun hfd (g, h)`. Rewrite using `[e1]`. Both sides reduce to the same expression. Proceed by induction on `y using Submodule.Quotient.induction_on with`. Consider the case `H w`.
+
+Take `⟨a, ha⟩` from `GlobalTheory.T.twoCocycle_fundamental_multiple_mod_pow χ cG hcG φ ε hεφ ϖ hϖ hO.p_mem hopen w.1 w.2`. Use `⟨a, ?_⟩` and prove the remaining obligations. Use `show a • Z = Submodule.Quotient.mk w`. Rewrite using `[← Submodule.Quotient.mk_smul, eq_comm, Submodule.Quotient.eq]`. Use `show (w.1 - a • z0) ∈ B2 (twist ε O)`.
+
+Use `GlobalTheory.T.twoCocycle_mem_coboundaries_of_mod_uniformizer_pow ε ϖ hopen hbasis hfin _ (sub_mem w.2 (Submodule.smul_mem _ a hz0)) fun n => ?_` and prove the remaining obligations. Take `⟨b, hb, hbd⟩` from `ha n`. Conclude with `⟨b, hb, fun g h => by rw [hbd]; rfl⟩`.
+-/
 theorem exists_free_H2_twist : ∀ {p : ℕ} [Fact p.Prime] {K : IntermediateField ℚ_[p] (PadicAlgCl p)} {O : Type}
     [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [TopologicalSpace O] [IsTopologicalRing O]
     {G : Type} [Group G] [TopologicalSpace G], Formalism.GaloisCohomology.LocalTateDualityK → FiniteDimensional ℚ_[p] K →

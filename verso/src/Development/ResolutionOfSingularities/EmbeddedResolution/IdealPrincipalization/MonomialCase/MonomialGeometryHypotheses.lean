@@ -29,40 +29,67 @@ def pullbackOverField (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : T
   mult := T.mult
   boundary := T.boundary.map fun D => D.comap h
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pullbackOverField_baseField (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type u) [Field k']
     (q : Y ⟶ Spec (CommRingCat.of k')) (h : Y ⟶ T.scheme) :
     (T.pullbackOverField Y k' q h).base = k' := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem pullbackOverField_scheme (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type u) [Field k']
     (q : Y ⟶ Spec (CommRingCat.of k')) (h : Y ⟶ T.scheme) :
     (T.pullbackOverField Y k' q h).scheme = Y := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pullbackOverField_structureMorphism (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type u) [Field k']
     (q : Y ⟶ Spec (CommRingCat.of k')) (h : Y ⟶ T.scheme) :
     (T.pullbackOverField Y k' q h).structMap = q := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem pullbackOverField_ideal (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type u) [Field k']
     (q : Y ⟶ Spec (CommRingCat.of k')) (h : Y ⟶ T.scheme) :
     (T.pullbackOverField Y k' q h).ideal = T.ideal.comap h := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem pullbackOverField_mult (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type u) [Field k']
     (q : Y ⟶ Spec (CommRingCat.of k')) (h : Y ⟶ T.scheme) :
     (T.pullbackOverField Y k' q h).mult = T.mult := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem pullbackOverField_boundary (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type u)
     [Field k'] (q : Y ⟶ Spec (CommRingCat.of k')) (h : Y ⟶ T.scheme) :
     (T.pullbackOverField Y k' q h).boundary = T.boundary.map fun D => D.comap h := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pullbackOverField_eq_pullbackAlong (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u})
     (q : Y ⟶ Spec (CommRingCat.of T.base)) (h : Y ⟶ T.scheme) :
     T.pullbackOverField Y T.base q h = T.pullbackAlong Y q h :=
   rfl
 
+/- English proof (translation)
+The claim follows from `List.length_map _`.
+-/
 theorem pullbackOverField_boundary_length (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type u)
     [Field k'] (q : Y ⟶ Spec (CommRingCat.of k')) (h : Y ⟶ T.scheme) :
     (T.pullbackOverField Y k' q h).boundary.length = T.boundary.length :=
   List.length_map _
 
+/- English proof (translation)
+The claim follows from `(congrArg List.length (MarkedIdealWithBoundary.pullbackAlong_boundary T Y q h)).trans (List.length_map _)`.
+-/
 theorem pullbackAlong_boundary_length (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u})
     (q : Y ⟶ Spec (CommRingCat.of T.base)) (h : Y ⟶ T.scheme) :
     (T.pullbackAlong Y q h).boundary.length = T.boundary.length :=
@@ -75,6 +102,9 @@ def pullbackOverFieldIndex (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k
     Fin T.boundary.length → Fin (T.pullbackOverField Y k' q h).boundary.length :=
   Fin.cast (MarkedIdealWithBoundary.pullbackOverField_boundary_length T Y k' q h).symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pullbackOverFieldIndex_val (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type u) [Field k']
     (q : Y ⟶ Spec (CommRingCat.of k')) (h : Y ⟶ T.scheme) (j : Fin T.boundary.length) :
     ((pullbackOverFieldIndex T Y k' q h j : Fin (T.pullbackOverField Y k' q h).boundary.length) : ℕ)
@@ -85,6 +115,9 @@ def pullbackAlongIndex (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u})
     Fin T.boundary.length → Fin (T.pullbackAlong Y q h).boundary.length :=
   Fin.cast (MarkedIdealWithBoundary.pullbackAlong_boundary_length T Y q h).symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pullbackAlongIndex_val (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u})
     (q : Y ⟶ Spec (CommRingCat.of T.base)) (h : Y ⟶ T.scheme) (j : Fin T.boundary.length) :
     ((pullbackAlongIndex T Y q h j : Fin (T.pullbackAlong Y q h).boundary.length) : ℕ)
@@ -93,6 +126,9 @@ theorem pullbackAlongIndex_val (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}
 def IsIrreducibleComponentOf {Y : Scheme.{u}} (C S : Set ↥Y) : Prop :=
   IsIrreducible C ∧ C ⊆ S ∧ ∀ C' : Set ↥Y, IsIrreducible C' → C ⊆ C' → C' ⊆ S → C' = C
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_intersectionComponents_iff {Y : Scheme.{u}} (L : List Y.IdealSheafData)
     (J : Finset (Fin L.length)) (C : Set ↥Y) :
     C ∈ intersectionComponents L J ↔ IsIrreducibleComponentOf C ↑(intersectionIdeal L J).support :=
@@ -102,6 +138,9 @@ abbrev transformedBoundary {X' X : Scheme.{u}} (π : X' ⟶ X) (Z : X.IdealSheaf
     (L : List X.IdealSheafData) : List X'.IdealSheafData :=
   L.map (Blowup.strictTransform π Z) ++ [Blowup.exceptionalIdeal π Z]
 
+/- English proof (translation)
+Simplify using `[transformedBoundary]`.
+-/
 theorem transformedBoundary_length {X' X : Scheme.{u}} (π : X' ⟶ X) (Z : X.IdealSheafData)
     (L : List X.IdealSheafData) :
     (transformedBoundary π Z L).length = L.length + 1 := by
@@ -112,6 +151,9 @@ def strictTransformIndex {X' X : Scheme.{u}} (π : X' ⟶ X) (Z : X.IdealSheafDa
     Fin (transformedBoundary π Z L).length :=
   Fin.cast (transformedBoundary_length π Z L).symm j.castSucc
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem strictTransformIndex_val {X' X : Scheme.{u}} (π : X' ⟶ X) (Z : X.IdealSheafData)
     (L : List X.IdealSheafData) (j : Fin L.length) :
     ((strictTransformIndex π Z L j : Fin (transformedBoundary π Z L).length) : ℕ) = (j : ℕ) := rfl
@@ -120,6 +162,9 @@ def exceptionalIndex {X' X : Scheme.{u}} (π : X' ⟶ X) (Z : X.IdealSheafData)
     (L : List X.IdealSheafData) : Fin (transformedBoundary π Z L).length :=
   Fin.cast (transformedBoundary_length π Z L).symm (Fin.last L.length)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem exceptionalIndex_val {X' X : Scheme.{u}} (π : X' ⟶ X) (Z : X.IdealSheafData)
     (L : List X.IdealSheafData) :
     ((exceptionalIndex π Z L : Fin (transformedBoundary π Z L).length) : ℕ) = L.length := rfl
@@ -129,6 +174,9 @@ def preimageStrictTransformIndex {X' X : Scheme.{u}} (π : X' ⟶ X) (Z : X.Idea
     (J' : Finset (Fin (transformedBoundary π Z L).length)) : Finset (Fin L.length) :=
   Finset.univ.filter fun j => strictTransformIndex π Z L j ∈ J'
 
+/- English proof (translation)
+Simplify using `[preimageStrictTransformIndex]`.
+-/
 theorem mem_preimageStrictTransformIndex_iff {X' X : Scheme.{u}} (π : X' ⟶ X) (Z : X.IdealSheafData)
     (L : List X.IdealSheafData)
     (J' : Finset (Fin (transformedBoundary π Z L).length)) (j : Fin L.length) :
@@ -145,6 +193,9 @@ def componentUnionIdeal {Y : Scheme.{u}} (L : List Y.IdealSheafData) (J : Finset
     Y.IdealSheafData :=
   Scheme.Hom.ker ((componentUnionOpens L J 𝒞 hop).ι ≫ (intersectionIdeal L J).subschemeι)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem componentUnionIdeal_eq_ker {Y : Scheme.{u}} (L : List Y.IdealSheafData)
     (J : Finset (Fin L.length)) (𝒞 : Set (Set ↥Y))
     (hop : IsOpen (⇑(intersectionIdeal L J).subschemeι ⁻¹' ⋃₀ 𝒞)) :

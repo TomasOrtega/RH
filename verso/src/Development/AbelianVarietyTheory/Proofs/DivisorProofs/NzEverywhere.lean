@@ -13,6 +13,11 @@ noncomputable section
 
 namespace GlobalTheory.UMin
 
+/- English proof (translation)
+Take `⟨x, hc, hx⟩` from `h`. Use `haveI : Smooth (fst (Over.mk χ) G).left := by`. Express the relevant statement in the definitionally equal form `Smooth (pullback.fst χ G.hom)`. Use `infer_instance`. Establish `ho : IsOpen ((fst (Over.mk χ) G).left '' (nonzeroLocus σ : Set _))` using `(fst (Over.mk χ) G).left.isOpenMap _ (nonzeroLocus σ).isOpen`.
+
+Introduce `y`. Take `⟨g, hg, e⟩` from `(IsLocalRing.specializes_closedPoint (R := R) y).mem_open ho ⟨x, hx, hc⟩`. Conclude with `⟨g, e, hg⟩`.
+-/
 theorem nz_everywhere {S : Scheme.{0}} (G : Over S) [GrpObj G] [Smooth G.hom] (L : LB G.left) {R : Type} [CommRing R]
     [IsLocalRing R] (χ : Sp R ⟶ S) (σ : LB.Sec (LPow G L ((1 : ℕ) : ℤ) (Over.mk χ))) (h : NZ G L χ σ) :
     ∀ y : (Over.mk χ).left, ∃ g, (fst (Over.mk χ) G).left g = y ∧ g ∈ nonzeroLocus σ := by
@@ -26,6 +31,9 @@ theorem nz_everywhere {S : Scheme.{0}} (G : Over S) [GrpObj G] [Smooth G.hom] (L
   obtain ⟨g, hg, e⟩ := (IsLocalRing.specializes_closedPoint (R := R) y).mem_open ho ⟨x, hx, hc⟩
   exact ⟨g, e, hg⟩
 
+/- English proof (translation)
+Introduce `S G _ L hL hG R V _ _ _ _ χ σ φ h`. Use `haveI : Smooth G.hom := hG.smooth`. Conclude with `nz_pullS G hL σ (nz_everywhere G L χ σ h) (spMap φ ≫ χ) _`.
+-/
 theorem nz_pull : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (L : LB G.left), L.IsLB → IsSemiAbelian G →
     ∀ (R V : Type) [CommRing R] [IsLocalRing R] [CommRing V] [IsLocalRing V] (χ : Sp R ⟶ S) (σ : SecAt G L χ)
       (φ : R →+* V), NZ G L χ σ → NZ G L (spMap φ ≫ χ) (SecAt.pull G L σ φ) := by

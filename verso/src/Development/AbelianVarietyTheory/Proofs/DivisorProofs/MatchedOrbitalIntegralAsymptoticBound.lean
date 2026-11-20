@@ -33,6 +33,13 @@ section Abstract
 variable {M A S Y : Type} [AddCommGroup M] [Module ℂ M] [AddCommGroup A] [Module ℂ A] [AddCommGroup S] [Module ℂ S]
   [AddCommGroup Y] [Module ℂ Y]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `hle : Submodule.span ℂ s ≤ N` using `Submodule.span_le.2 hs`. Use `h ?_` and prove the remaining obligations. Use `clear h`.
+
+Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx => exact hc x hx`. Consider the case `zero`. Use `hadd 0 N.zero_mem 0 N.zero_mem` as an intermediate fact. Rewrite `this` using `[add_zero]`.
+
+Take the linear combination `-this`. Consider the case `add x y hx hy h1 h2 => rw [hadd x (hle hx) y (hle hy), h1, h2, add_zero]`. Consider the case `smul c x hx h1 => exact hsmul c x (hle hx) h1`.
+-/
 theorem exists_ne_of_span (N : Submodule ℂ M) (l : M → ℂ) (hadd : ∀ x ∈ N, ∀ y ∈ N, l (x + y) = l x + l y)
     (hsmul : ∀ (c : ℂ), ∀ x ∈ N, l x = 0 → l (c • x) = 0) {s : Set M} (hs : s ⊆ N) {f : M}
     (hf : f ∈ Submodule.span ℂ s) (h : l f ≠ 0) : ∃ x ∈ s, l x ≠ 0 := by
@@ -50,6 +57,17 @@ theorem exists_ne_of_span (N : Submodule ℂ M) (l : M → ℂ) (hadd : ∀ x �
   | add x y hx hy h1 h2 => rw [hadd x (hle hx) y (hle hy), h1, h2, add_zero]
   | smul c x hx h1 => exact hsmul c x (hle hx) h1
 
+/- English proof (translation)
+Set `ι₀ : s →ₗ[ℂ] t` to `ι.restrict fun x hx => hι.mapsTo hx`. Establish `hb : Function.Bijective ι₀`. Use `⟨fun x y h => Subtype.ext (hι.injOn x.2 y.2 (congrArg Subtype.val h)), fun y => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, e⟩` from `hι.surjOn y.2`. Conclude with `⟨⟨x, hx⟩, Subtype.ext e⟩`.
+
+Set `j : t ≃ₗ[ℂ] s` to `(LinearEquiv.ofBijective ι₀ hb).symm`. Establish `hj : ∀ φ ∈ s, ∀ Ψ : t, Ψ.1 = ι φ → (j Ψ).1 = φ` using `fun φ hφ Ψ h => by`. Establish `: j Ψ = ⟨φ, hφ⟩`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Conclude with `Subtype.ext h`.
+
+Rewrite using `[this]`. Use `⟨LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun Ψ Ψ' => L (T (j Ψ).1) (U (j Ψ').1)) ?_ ?_ ?_ ?_, ?_⟩` and prove the remaining obligations. Introduce `x y z`. Rewrite using `[map_add, Submodule.coe_add, map_add, add₁ _ (hT _ (j x).2) _ (hT _ (j y).2) _ (hU _ (j z).2)]`. Introduce `c x z`.
+
+Rewrite using `[map_smul, Submodule.coe_smul, map_smul, smul₁]`. Both sides reduce to the same expression. Introduce `x y z`. Rewrite using `[map_add, Submodule.coe_add, map_add, add₂ _ (hT _ (j x).2) _ (hU _ (j y).2) _ (hU _ (j z).2)]`. Introduce `c x z`.
+
+Rewrite using `[map_smul, Submodule.coe_smul, map_smul, smul₂]`. Both sides reduce to the same expression. Introduce `φ hφ φ' hφ' Ψ Ψ' h h'`. Rewrite using `[LinearMap.mk₂'ₛₗ_apply, hj φ hφ Ψ h, hj φ' hφ' Ψ' h']`.
+-/
 theorem exists_form (N : Submodule ℂ M) (sch : Submodule ℂ A) (s : Submodule ℂ S) (t : Submodule ℂ Y) (L : M → A → ℂ)
     (add₁ : ∀ x ∈ N, ∀ y ∈ N, ∀ a ∈ sch, L (x + y) a = L x a + L y a)
     (smul₁ : ∀ (c : ℂ) x a, L (c • x) a = c * L x a)
@@ -113,6 +131,9 @@ def Dec : Submodule ℂ (UA σ J → ℂ) where
     rw [Pi.smul_apply, norm_smul, mul_assoc]
     exact mul_le_mul_of_nonneg_left (h1 h) (norm_nonneg _)
 
+/- English proof (translation)
+Rewrite using `[show qht (h * y) = ⨅ γ : ratU σ J, ht (γ.1 * (h * y)) from rfl, NNReal.iInf_mul]`. Use `le_ciInf fun γ => ciInf_le_of_le (OrderBot.bddBelow _) γ ?_` and prove the remaining obligations. Establish `e : γ.1 * h = γ.1 * (h * y) * y⁻¹` using `by group`. Rewrite using `[e]`. Conclude with `heightGL_mul_le F _ _`.
+-/
 theorem qht_le_mul (h y : UA σ J) : qht h ≤ qht (h * y) * ht y⁻¹ := by
   rw [show qht (h * y) = ⨅ γ : ratU σ J, ht (γ.1 * (h * y)) from rfl, NNReal.iInf_mul]
   refine le_ciInf fun γ => ciInf_le_of_le (OrderBot.bddBelow _) γ ?_
@@ -120,6 +141,11 @@ theorem qht_le_mul (h y : UA σ J) : qht h ≤ qht (h * y) * ht y⁻¹ := by
   rw [e]
   exact heightGL_mul_le F _ _
 
+/- English proof (translation)
+Take `⟨c1, i1, d1⟩` from `hf`. Use `haveI := (GlobalTheory.UnipCT.topFacts σ J).1`. Use `⟨c1.comp (continuous_id.mul continuous_const), fun γ hγ x => by simp only [mul_assoc, i1 γ hγ], fun N => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `d1 N`. Use `⟨C * (ht y⁻¹ : ℝ) ^ N, fun h => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : (qht h : ℝ) ≤ qht (h * y) * ht y⁻¹` using `by exact_mod_cast qht_le_mul h y`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem shift_mem_Dec (y : UA σ J) {f : UA σ J → ℂ} (hf : f ∈ Dec σ J) : (fun h => f (h * y)) ∈ Dec σ J := by
   obtain ⟨c1, i1, d1⟩ := hf
   haveI := (GlobalTheory.UnipCT.topFacts σ J).1
@@ -132,6 +158,11 @@ theorem shift_mem_Dec (y : UA σ J) {f : UA σ J → ℂ} (hf : f ∈ Dec σ J) 
     _ = ‖f (h * y)‖ * (qht (h * y) : ℝ) ^ N * (ht y⁻¹ : ℝ) ^ N := by ring
     _ ≤ C * (ht y⁻¹ : ℝ) ^ N := mul_le_mul_of_nonneg_right (hC _) (by positivity)
 
+/- English proof (translation)
+Take `⟨C, m, hC⟩` from `kb`. Take `⟨Cf, hCf⟩` from `hf.2.2 m`. Use `haveI : IsFiniteMeasure (μ.restrict 𝓕) := isFiniteMeasure_restrict.2 hfin`. Use `haveI : BorelSpace (UA σ J) := ⟨rfl⟩`. Use `Integrable.mono' (integrable_const (max C 0 * Cf)) (hf.1.mul (Complex.continuous_conj.comp kc)).aestronglyMeasurable (Eventually.of_forall fun h => ?_)` and prove the remaining obligations.
+
+Rewrite using `[norm_mul, Complex.norm_conj]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem integrableOn_mul_conj {μ : Measure (UA σ J)} {𝓕 : Set (UA σ J)} (hfin : μ 𝓕 ≠ ⊤) {f k : UA σ J → ℂ}
     (hf : f ∈ Dec σ J) (kc : Continuous k) (ki : ∀ γ ∈ ratU σ J, ∀ x, k (γ * x) = k x)
     (kb : ∃ (C : ℝ) (m : ℕ), ∀ h, ‖k h‖ ≤ C * (ht h : ℝ) ^ m) :
@@ -148,6 +179,13 @@ theorem integrableOn_mul_conj {μ : Measure (UA σ J)} {𝓕 : Set (UA σ J)} (h
     _ = max C 0 * (‖f h‖ * (qht h : ℝ) ^ m) := by ring
     _ ≤ max C 0 * Cf := mul_le_mul_of_nonneg_left (hCf h) (le_max_right _ _)
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, -⟩` from `GlobalTheory.UnipCT.topFacts σ J`. Use `haveI : BorelSpace (UA σ J) := ⟨rfl⟩`. Use `haveI := GlobalTheory.UnitaryVol.countable_ratU σ J`. Use `haveI := GlobalTheory.UnitU.isMulRightInvariant_of_fundamentalDomain (ratU σ J) μ h𝓕 h0 h1`. Establish `hmp : MeasurePreserving (· * y⁻¹) μ μ` using `measurePreserving_mul_right μ y⁻¹`.
+
+Establish `h2 : IsFundamentalDomain (ratU σ J) ((· * y⁻¹) ⁻¹' 𝓕) μ` using `h𝓕.preimage_of_equiv hmp.quasiMeasurePreserving (e := id) Function.bijective_id fun γ x => by`. Simplify using `only [id, Subgroup.smul_def, smul_eq_mul, mul_assoc]`. Establish `h3` using `hmp.setIntegral_preimage_emb (MeasurableEquiv.mulRight y⁻¹).measurableEmbedding (fun h => φ (h * y)) 𝓕`. Simplify using `only [inv_mul_cancel_right] at h3`. Rewrite using `[← h3]`.
+
+Use `haveI : MeasurableConstSMul (ratU σ J) (UA σ J) := ⟨fun γ => (continuous_const.mul continuous_id : Continuous fun x : UA σ J => γ.1 * x).measurable⟩`. Use `haveI : SMulInvariantMeasure (ratU σ J) (UA σ J) μ := ⟨fun γ A _ => measure_preimage_mul μ γ.1 A⟩`. Conclude with `h2.setIntegral_eq h𝓕 fun γ x => hφ γ.1 γ.2 x`.
+-/
 theorem setIntegral_shift {μ : Measure (UA σ J)} [μ.IsHaarMeasure] {𝓕 : Set (UA σ J)}
     (h𝓕 : IsFundamentalDomain (ratU σ J) 𝓕 μ) (h0 : μ 𝓕 ≠ 0) (h1 : μ 𝓕 ≠ ⊤) {φ : UA σ J → ℂ}
     (hφ : ∀ γ ∈ ratU σ J, ∀ x, φ (γ * x) = φ x) (y : UA σ J) :
@@ -179,6 +217,13 @@ def tensL (v : Pl F) (r : (κ → AF F) → ℂ) : ((κ → Fv F v) → ℂ) →
   map_add' φ φ' := funext fun x => by simp only [tens, Pi.add_apply]; ring
   map_smul' c φ := funext fun x => by simp only [tens, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]; ring
 
+/- English proof (translation)
+Take `⟨T, m, f, φ, hSB, hstd, rfl⟩` from `GlobalTheory.SchADecomp.exists_sum_pure F κ Ψ hΨ`. Use `Submodule.sum_mem _ fun i _ => Submodule.subset_span ?_` and prove the remaining obligations. Establish `hc : ∀ᶠ w in cofinite, φ i w = Set.indicator {x | ∀ j, x j ∈ w.adicCompletionIntegers F} 1` using `T.eventually_cofinite_notMem.mono fun w hw => hstd i w hw`. Take `⟨r, hr, e⟩` from `GlobalTheory.PureFactor.exists_rest_factor v (f i) (φ i) hc`. Use `⟨r, fun ψ hψ => ⟨hr, ?_⟩, φ i v, hSB i v, by rw [e, Function.update_eq_self]⟩` and prove the remaining obligations.
+
+Rewrite using `[e]`. Use `GlobalTheory.TensUniq.pure_mem_schA _ _ (fun w => ?_) (GlobalTheory.PureFactor.update_eventually _ v ψ hc)` and prove the remaining obligations. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[Function.update_self]`.
+
+Conclude with `hψ`. Rewrite using `[Function.update_of_ne hw]`. Conclude with `hSB i w`.
+-/
 theorem mem_span_tens (v : Pl F) {Ψ : (κ → AF F) → ℂ} (hΨ : Ψ ∈ schA F κ) :
     Ψ ∈ Submodule.span ℂ {Φ | ∃ r, (∀ φ ∈ SB (κ → Fv F v), Rest (evFin F v) φ r) ∧
       ∃ φ ∈ SB (κ → Fv F v), Φ = tens (evFin F v) φ r} := by
@@ -222,11 +267,19 @@ def piVals : Set (UA σ G.W.J → ℂ) :=
       ∀ φ₁ ∈ SB (Fin a' × Fin (a + a') → Fv F B.v₁),
       Acts (evFin F B.v₁) (om' (1, y)) φ φ₁ → ∀ h, T (Rf.p' B.v₁ φ₁) h = T (Rf.p' B.v₁ φ) (h * y)) ∧ ∃ ξ, f = T ξ}
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.T.differences_span_intertwiners hKP F E σ B a a' G X om om' R Rf hM c).trans (Submodule.span_mono fun _ ⟨T, _, h2, h3⟩ => ⟨T, h2, h3⟩)`.
+-/
 theorem diffs_le_piVals (hKP : KP) (hM : IsMatched B G X om om' R Rf) (c : ℂ) :
     Diffs B G X om om' R Rf c ≤ Submodule.span ℂ (piVals B G om' Rf) :=
   (GlobalTheory.T.differences_span_intertwiners hKP F E σ B a a' G X om om' R Rf hM c).trans
     (Submodule.span_mono fun _ ⟨T, _, h2, h3⟩ => ⟨T, h2, h3⟩)
 
+/- English proof (translation)
+Take `⟨m1, m2, -⟩` from `GlobalTheory.T.local_matching_exists hKP F E σ B a a' G X om om' R Rf hM`. Take `⟨Φ₁', hS₁, hP₁⟩` from `m1 Φ hΦ`. Take `⟨Φ₂, hP₂⟩` from `m2 Φ' hΦ'.1`. Establish `e : (fun h => G.M.I om Φ h - c * G.M'.I om' Φ' h) = (fun h => G.M.I om Φ₂ h - c * G.M'.I om' Φ' h) + ((fun h => G.M.I om Φ h - 0 * G.M'.I om' Φ₁' h) - fun h => G.M.I om Φ₂ h - 0 * G.M'.I om' Φ' h)`. Use function extensionality and compare the values at `h`.
+
+Simplify using `only [Pi.add_apply, Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Submodule.add_mem_sup (Submodule.subset_span ⟨Φ₂, Φ', hΦ'.2, hP₂, rfl⟩) (Submodule.sub_mem _ (Submodule.subset_span ⟨Φ, Φ₁', hS₁, hP₁, rfl⟩) (Submodule.subset_span ⟨Φ₂, Φ', hΦ'.2, hP₂, rfl⟩))`.
+-/
 theorem diff_mem_sup (hKP : KP) (hM : IsMatched B G X om om' R Rf) (c : ℂ) {Φ : Fn F a (a + a')} (hΦ : Φ ∈ PolData B G.M)
     {Φ' : Fn F a' (a + a')} (hΦ' : Φ' ∈ PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁) :
     (fun h => G.M.I om Φ h - c * G.M'.I om' Φ' h) ∈ Diffs B G X om om' R Rf c ⊔ Diffs B G X om om' R Rf 0 := by
@@ -242,6 +295,27 @@ theorem diff_mem_sup (hKP : KP) (hM : IsMatched B G X om om' R Rf) (c : ℂ) {Φ
   exact Submodule.add_mem_sup (Submodule.subset_span ⟨Φ₂, Φ', hΦ'.2, hP₂, rfl⟩)
     (Submodule.sub_mem _ (Submodule.subset_span ⟨Φ, Φ₁', hS₁, hP₁, rfl⟩) (Submodule.subset_span ⟨Φ₂, Φ', hΦ'.2, hP₂, rfl⟩))
 
+/- English proof (translation)
+Establish `hA` using `GlobalTheory.ThK.LocalOps.actsEx hKP.base`. Establish `ex` using `(hA F E σ B _ _ _ _ G.M _ _ om _ _ _ _ (GlobalTheory.ThK.Inhab.pairV hM.triple) B.v₁).1`. Establish `ex'` using `(hA F E σ B _ _ _ _ G.M' _ _ om' _ _ _ _ (GlobalTheory.ThK.Inhab.pairV' hM.triple) B.v₁).1`. Establish `one_mem : ∀ {n : ℕ} (Y : Spc F E n), (1 : UA σ Y.J) ∈ UAt σ Y (evFin F B.v₁)`. Introduce `n Y u _`.
+
+Express the relevant statement in the definitionally equal form `u • ((1 : Matrix (Fin n) (Fin n) (AE F E)) - 1) = 0`. Rewrite using `[sub_self, smul_zero]`. Set `ι` to `UAt σ G.W (evFin F B.v₁)`. Set `Rel : ι → Rf.Pi B.v₁ → Rf.Pi B.v₁ → Prop` to `fun y ξ ξ₁ => ∃ φ ∈ SB (Fin a × Fin (a + a') → Fv F B.v₁), ∃ φ₁ ∈ SB (Fin a × Fin (a + a') → Fv F B.v₁), Acts (evFin F B.v₁) (om (1, y.1)) φ φ₁ ∧ Rf.p B.v₁ φ = ξ ∧ Rf.p B.v₁ φ₁ = ξ₁`. Set `ρ : ι → (UA σ G.W.J → ℂ) →ₗ[ℂ] (UA σ G.W.J → ℂ)` to `fun y => LinearMap.funLeft ℂ ℂ (· * y.1)`.
+
+Establish `ρ_apply : ∀ y (F₀ : UA σ G.W.J → ℂ) h, ρ y F₀ h = F₀ (h * y.1)` using `fun _ _ _ => rfl`. Establish `onto : ∀ ξ, ∃ φ ∈ SB (Fin a × Fin (a + a') → Fv F B.v₁), Rf.p B.v₁ φ = ξ` using `fun ξ => by`. Establish `: ξ ∈ (SB _).map (Rf.p B.v₁)` using `by rw [hM.fin.onto B.v₁]; trivial`. Conclude with `Submodule.mem_map.1 this`. Establish `onto' : ∀ ξ, ∃ φ ∈ SB (Fin a' × Fin (a + a') → Fv F B.v₁), Rf.p' B.v₁ φ = ξ` using `fun ξ => by`.
+
+Establish `: ξ ∈ (SB _).map (Rf.p' B.v₁)` using `by rw [hM.fin.onto' B.v₁]; trivial`. Conclude with `Submodule.mem_map.1 this`. Establish `tot : ∀ y ξ, ∃ ξ₁, Rel y ξ ξ₁`. Introduce `y ξ`. Take `⟨φ, hφ, rfl⟩` from `onto ξ`.
+
+Take `⟨φ₁, hφ₁, hact⟩` from `(ex 1 (one_mem G.V) y.1 y.2 φ hφ).exists`. Conclude with `⟨_, φ, hφ, φ₁, hφ₁, hact, rfl, rfl⟩`. Establish `irred : ∀ Q : Submodule ℂ (Rf.Pi B.v₁), (∀ y ξ ξ₁, Rel y ξ ξ₁ → ξ ∈ Q → ξ₁ ∈ Q) → Q = ⊥ ∨ Q = ⊤` using `fun Q hQ => hM.fin.irred B.v₁ Q fun h hh φ hφ φ₁ hφ₁ hact hmem => hQ ⟨h, hh⟩ _ _ ⟨φ, hφ, φ₁, hφ₁, hact, rfl, rfl⟩ hmem`. Establish `hN' : ∀ y, ∀ x ∈ N, ρ y x ∈ N` using `fun y x hx => hN y.1 y.2 x hx`. Establish `transfer : ∀ T : Rf.Pi B.v₁ →ₗ[ℂ] (UA σ G.W.J → ℂ), (∀ y ∈ UAt σ G.W (evFin F B.v₁), ∀ φ ∈ SB (Fin a' × Fin (a + a') → Fv F B.v₁), ∀ φ₁ ∈ SB (Fin a' × Fin (a + a') → Fv F B.v₁), Acts (evFin F B.v₁) (om' (1, y)) φ φ₁ → ∀ h, T (Rf.p' B.v₁ φ₁) h = T (Rf.p' B.v₁ φ) (h * y)) → ∀ y ξ ξ …`.
+
+Introduce and unpack `T hT y _ _ ⟨φ, hφ, φ₁, hφ₁, hact, rfl, rfl⟩`. Take `⟨φ', hφ', he⟩` from `onto' (Rf.p B.v₁ φ)`. Take `⟨φ₁', hφ₁', hact'⟩` from `(ex' 1 (one_mem G.V') y.1 y.2 φ' hφ').exists`. Establish `e₁` using `hM.fin.equiv B.v₁ y.1 y.2 φ hφ φ' hφ' φ₁ hφ₁ φ₁' hφ₁' hact hact' he.symm`. Use function extensionality and compare the values at `h`.
+
+Rewrite using `[e₁, hT y.1 y.2 φ' hφ' φ₁' hφ₁' hact' h, ρ_apply, he]`. Take `⟨m, k, g, hg⟩` from `Submodule.mem_span_set'.1 hI`. Use `choose T hTe ξ hξ using fun j => (g j).2`. Establish `hsum : f = ∑ j, T j (k j • ξ j)`. Rewrite using `[← hg]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, ← hξ j]`. Establish `key` using `TransMaps.sum_mem_span Rel ρ tot irred N hN' T (fun j => transfer (T j) (hTe j)) (fun j => k j • ξ j) (hsum ▸ hfN)`. Rewrite using `[hsum]`. Use `Submodule.span_mono ?_ key` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨S, hSN, hSe, ζ, rfl⟩`. Take `⟨φ, hφ, rfl⟩` from `onto ζ`. Use `⟨S ∘ₗ Rf.p B.v₁, fun _ _ => hSN _, fun z hz => ?_, ?_, φ, hφ, rfl⟩` and prove the remaining obligations. Establish `: z ∈ LinearMap.ker (Rf.p B.v₁)` using `hM.fin.inv B.v₁ hz`. Rewrite `this`, the goal using `[LinearMap.mem_ker]`.
+
+Simplify using `[this]`. Introduce `y hy φ₀ hφ₀ φ₁ hφ₁ hact h`. Use `hSe ⟨y, hy⟩ _ _ ⟨φ₀, hφ₀, φ₁, hφ₁, hact, rfl, rfl⟩` as an intermediate fact. Conclude with `congrFun this h`.
+-/
 theorem mem_span_mapVals (hKP : KP) (hM : IsMatched B G X om om' R Rf) (N : Submodule ℂ (UA σ G.W.J → ℂ))
     (hN : ∀ y ∈ UAt σ G.W (evFin F B.v₁), ∀ F₀ ∈ N, (fun h => F₀ (h * y)) ∈ N) {f : UA σ G.W.J → ℂ}
     (hI : f ∈ Submodule.span ℂ (piVals B G om' Rf)) (hfN : f ∈ N) : f ∈ Submodule.span ℂ (mapVals B G om N) := by
@@ -311,6 +385,47 @@ section Global
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
   {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W}
 
+/- English proof (translation)
+Take `⟨ν₀, β₀, ι, ℓ, ψv, s1, s2, s3, s4, s5, s6, s7, s8, hι, mV, mW, mH⟩` from `GlobalTheory.T.theta_lift_hyp_plane_split hKP F E σ B a a' G X om om' hT d₂ H hH`. Establish `hker` using `GlobalTheory.T.pair_hyp_plane_split hKP F E σ B _ _ G.V G.W G.M _ _ om _ _ _ _ (GlobalTheory.ThK.Inhab.pairV hT) d₂ H hH V₁ M₁ e hV₁ hM₁ he`. Establish `hsp` using `IsUWeilPair.isUSplitting hT.weil`. Establish `pres : ∀ x, ∀ Φ ∈ schA F (Fin a × Fin (a + a')), om x Φ ∈ schA F (Fin a × Fin (a + a'))` using `hsp.pres`. Establish `hcm` using `hT.base.cm`.
+
+Establish `hσ : ∀ x, σ (σ x) = x` using `GlobalTheory.SiegelSet.sigma_sigma hcm`. Establish `hd` using `GlobalTheory.ThK.DescB.Nondeg.det_ne_zero_of_cartan B G.W hT.geo.hW.cartan`. Take `⟨c₀, hc₀, hcs⟩` from `GlobalTheory.CMImag.exists_imag_ne_zero F E σ hcm`. Establish `hJ` using `GlobalTheory.ThKOrthVInt.isHermND_smul_of_skew hσ hT.geo.hW.skew hd hc₀ hcs`. Establish `hfin` using `(GlobalTheory.ThKOrthVInt.measure_fundDom_lt_top_smul hKP.siegelSetUnitary hcm hc₀ hJ h𝓕).ne`.
+
+Establish `h0 : μ 𝓕 ≠ 0` using `fun h => hne (by rw [Measure.restrict_eq_zero.2 h, integral_zero_measure])`. Set `K : Fn F a (a + a') → UA σ G.W.J → ℂ` to `fun Φ h => thetaSum F (e (om (1, h) Φ))`. Set `L : (UA σ G.W.J → ℂ) → Fn F a (a + a') → ℂ` to `fun F₀ Φ => ∫ h in 𝓕, F₀ h * starRingEnd ℂ (K Φ h) ∂μ`. Establish `hint : ∀ F₀ ∈ Dec σ G.W.J, ∀ Φ ∈ schA F (Fin a × Fin (a + a')), IntegrableOn (fun h => F₀ h * starRingEnd ℂ (K Φ h)) 𝓕 μ` using `fun F₀ hF₀ Φ hΦ => integrableOn_mul_conj hfin hF₀ (hker Φ hΦ).1 (hker Φ hΦ).2.1 (hker Φ hΦ).2.2`. Establish `add₁ : ∀ x ∈ Dec σ G.W.J, ∀ y ∈ Dec σ G.W.J, ∀ Φ ∈ schA F (Fin a × Fin (a + a')), L (x + y) Φ = L x Φ + L y Φ`.
+
+Introduce `x hx y hy Φ hΦ`. Simplify using `only [L, Pi.add_apply, add_mul]`. Conclude with `integral_add (hint x hx Φ hΦ) (hint y hy Φ hΦ)`. Establish `smul₁ : ∀ (c : ℂ) x Φ, L (c • x) Φ = c * L x Φ`. Introduce `c x Φ`.
+
+Simplify using `only [L, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Conclude with `integral_const_mul _ _`. Establish `add₂ : ∀ x ∈ Dec σ G.W.J, ∀ Φ ∈ schA F (Fin a × Fin (a + a')), ∀ Φ₂ ∈ schA F (Fin a × Fin (a + a')), L x (Φ + Φ₂) = L x Φ + L x Φ₂`. Introduce `x hx Φ hΦ Φ₂ hΦ₂`. Establish `hK : ∀ h, K (Φ + Φ₂) h = K Φ h + K Φ₂ h` using `fun h => by`.
+
+Simplify using `only [K, map_add]`. Conclude with `thetaSum_add F (he.maps _ (pres _ _ hΦ)) (he.maps _ (pres _ _ hΦ₂))`. Simplify using `only [L, hK, map_add, mul_add]`. Conclude with `integral_add (hint x hx Φ hΦ) (hint x hx Φ₂ hΦ₂)`. Establish `smul₂ : ∀ (c : ℂ) x Φ, L x (c • Φ) = starRingEnd ℂ c * L x Φ`.
+
+Introduce `c x Φ`. Establish `hK : ∀ h, K (c • Φ) h = c * K Φ h` using `fun h => by`. Simplify using `only [K, map_smul]`. Conclude with `thetaSum_smul F c _`. Simplify using `only [L, hK, map_mul]`.
+
+Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hΨ₀` using `pres (g, 1) Ψ hΨ`. Establish `hne₀ : L f (om (g, 1) Ψ) ≠ 0`.
+
+Establish `hK : ∀ h, K (om (g, 1) Ψ) h = thetaSum F (e (om (g, h) Ψ))` using `fun h => by`. Establish `: om (1, h) (om (g, 1) Ψ) = om (g, h) Ψ`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul, mul_one]`. Simplify using `only [K, this]`. Simplify `hne` using `only [L, hK]`.
+
+Take `⟨_, ⟨T, hTN, hTa, hTe, φ₀, hφ₀, rfl⟩, hne₁⟩` from `exists_ne_of_span (Dec σ G.W.J) (fun x => L x (om (g, 1) Ψ)) (fun x hx y hy => add₁ x hx y hy _ hΨ₀) (fun c x _ h => by simp only [smul₁, h, mul_zero]) (by rintro _ ⟨T, hTN, -, -, φ, hφ, rfl⟩; exact hTN φ hφ) hf hne₀`. Take `⟨_, ⟨r, hr, φ₂, hφ₂, rfl⟩, hne₂⟩` from `exists_ne_of_span (schA F (Fin a × Fin (a + a'))) (fun Φ => L (T φ₀) Φ) (add₂ _ (hTN φ₀ hφ₀)) (fun c x _ h => by simp only [smul₂, h, mul_zero]) (by rintro _ ⟨r, hr, φ, hφ, rfl⟩; exact (hr φ hφ).2) (mem_span_tens B.v₁ hΨ₀) hne₁`. Take `⟨Bf, hB⟩` from `exists_form (Dec σ G.W.J) (schA F (Fin a × Fin (a + a'))) (SB _) (SB _) L add₁ smul₁ add₂ smul₂ ι hι T hTN (tensL B.v₁ r) (fun φ hφ => (hr φ hφ).2)`. Establish `hU : ∀ φ, tensL B.v₁ r φ = tens (evFin F B.v₁) φ r` using `fun _ => rfl`. Establish `pre : ∀ Ψ₁ : SB (Matrix (Fin a) (Fin (a + a')) (Fv F B.v₁)), ∃ φ ∈ SB (Fin a × Fin (a + a') → Fv F B.v₁), Ψ₁.1 = ι φ` using `fun Ψ₁ => by`.
+
+Take `⟨φ, hφ, h⟩` from `hι.surjOn Ψ₁.2`. Conclude with `⟨φ, hφ, h.symm⟩`. Use `⟨ν₀, β₀, ℓ, ψv, Bf, s1, s2, s3, s4, s5, s6, s7, s8, fun hz => hne₂ ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `hB φ₀ hφ₀ φ₂ hφ₂ ⟨_, hι.mapsTo hφ₀⟩ ⟨_, hι.mapsTo hφ₂⟩ rfl rfl` as an intermediate fact. Rewrite `this` using `[hz]`.
+
+Conclude with `this.symm`. Introduce `g' Ψ₁ Ψ₁' Ψ₂ h`. Take `⟨φ, hφ, e₁⟩` from `pre Ψ₁`. Take `⟨φ', hφ', e₂⟩` from `pre Ψ₂`. Take `⟨x, hx, hmod⟩` from `mV g'`.
+
+Take `⟨φ₁, hφ₁, hact, e₃⟩` from `hmod φ hφ`. Establish `hk : T φ₁ = T φ`. Establish `: φ₁ - φ ∈ LinearMap.ker T` using `hTa (Submodule.subset_span ⟨x, hx, φ, hφ, φ₁, hφ₁, hact, rfl⟩)`. Rewrite `this` using `[LinearMap.mem_ker, map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Rewrite using `[hB φ₁ hφ₁ φ' hφ' Ψ₁' Ψ₂ (by rw [h, e₁, e₃]) e₂, hB φ hφ φ' hφ' Ψ₁ Ψ₂ e₁ e₂, hk]`.
+
+Introduce `h' Ψ₁ Ψ₁' Ψ₂ Ψ₂' h₁ h₂`. Take `⟨φ, hφ, e₁⟩` from `pre Ψ₁`. Take `⟨φ', hφ', e₂⟩` from `pre Ψ₂`. Take `⟨y, hy, hmod⟩` from `mW h'`. Take `⟨φ₁, hφ₁, hact, e₃⟩` from `hmod φ hφ`.
+
+Take `⟨φ₁', hφ₁', hact', e₄⟩` from `hmod φ' hφ'`. Rewrite using `[hB φ₁ hφ₁ φ₁' hφ₁' Ψ₁' Ψ₂' (by rw [h₁, e₁, e₃]) (by rw [h₂, e₂, e₄]), hB φ hφ φ' hφ' Ψ₁ Ψ₂ e₁ e₂, hU, hU, ← hact' r (hr φ' hφ')]`. Establish `hK : ∀ h, K (om (1, y) (tens (evFin F B.v₁) φ' r)) h = K (tens (evFin F B.v₁) φ' r) (h * y)` using `fun h => by`. Establish `: om (1, h) (om (1, y) (tens (evFin F B.v₁) φ' r)) = om (1, h * y) (tens (evFin F B.v₁) φ' r)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul]`.
+
+Simplify using `only [K, this]`. Simplify using `only [L, hK, hTe y hy φ hφ φ₁ hφ₁ hact]`. Use `setIntegral_shift h𝓕 h0 hfin (φ := fun h => T φ h * starRingEnd ℂ (K (tens (evFin F B.v₁) φ' r) h)) (fun γ hγ x => ?_) y` and prove the remaining obligations. Establish `i1` using `(hTN φ hφ).2.1 γ hγ x`. Establish `i2` using `(hker _ (hr φ' hφ').2).2.1 γ hγ x`.
+
+Simplify using `only [K, i1, i2]`. Introduce `z Ψ₁ Ψ₂ Ψ₂' h₂`. Take `⟨φ, hφ, e₁⟩` from `pre Ψ₁`. Take `⟨φ', hφ', e₂⟩` from `pre Ψ₂`. Take `⟨u, ⟨w, hw⟩, -, hmod⟩` from `mH z`.
+
+Take `⟨φ₁', hφ₁', hact', e₄⟩` from `hmod φ' hφ'`. Rewrite using `[hB φ hφ φ₁' hφ₁' Ψ₁ Ψ₂' e₁ (by rw [h₂, e₂, e₄]), hB φ hφ φ' hφ' Ψ₁ Ψ₂ e₁ e₂, hU, hU, ← hact' r (hr φ' hφ')]`. Establish `hK : ∀ h, K (G.M.co.rho B.ψ u (tens (evFin F B.v₁) φ' r)) h = K (tens (evFin F B.v₁) φ' r) h` using `fun h => by`. Establish `h3` using `hsp.impl ((1 : UA σ G.V.J), h) u _ (hr φ' hφ').2`. Establish `h4 : actAB (cA σ) ((1 : UA σ G.V.J), h) u = Matrix.vecMulVec (incV F H.x) (mat h *ᵥ w)` using `by show (1 : Matrix (Fin a) (Fin a) (AE F E)) * u * (mat h)ᵀ = _`.
+
+Rewrite using `[Matrix.one_mul, hw]`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.vecMulVec_apply, Matrix.transpose_apply, Matrix.mulVec, dotProduct, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Rewrite `h3` using `[h4]`.
+
+Simplify using `only [K]`. Rewrite using `[h3, he.inv _ ⟨_, rfl⟩ _ (pres _ _ (hr φ' hφ').2)]`. Simplify using `only [L, hK]`.
+-/
 theorem form_of_span (hKP : KP) (hT : IsTriple B G X om om') {f : UA σ G.W.J → ℂ}
     (hf : f ∈ Submodule.span ℂ (mapVals B G om (Dec σ G.W.J))) {d₂ : ℕ} (H : Plane E a d₂)
     (hH : d₂ + 2 = a ∧ form σ G.V.J H.x H.x = 0 ∧ form σ G.V.J H.y H.y = 0 ∧ form σ G.V.J H.x H.y = 1 ∧
@@ -447,6 +562,11 @@ theorem form_of_span (hKP : KP) (hT : IsTriple B G X om om') {f : UA σ G.W.J �
       rw [h3, he.inv _ ⟨_, rfl⟩ _ (pres _ _ (hr φ' hφ').2)]
     simp only [L, hK]
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM c Φ hΦ Φ' hΦ' hdec d₂ H hH V₁ M₁ e hV₁ hM₁ he μ 𝓕 hμ h𝓕 g Ψ hΨ hne`. Establish `hsup` using `diff_mem_sup hKP hM c hΦ hΦ'`. Establish `hreg : Continuous (fun h => G.M.I om Φ h - c * G.M'.I om' Φ' h) ∧ ∀ γ ∈ ratU σ G.W.J, ∀ x, (fun h => G.M.I om Φ h - c * G.M'.I om' Φ' h) (γ * x) = (fun h => G.M.I om Φ h - c * G.M'.I om' Φ' h) x`. Take `⟨f₁, h₁, f₂, h₂, e₀⟩` from `Submodule.mem_sup.1 hsup`. Take `⟨c1, i1⟩` from `Nondeg.diffs_reg hKP hM c f₁ h₁`.
+
+Take `⟨c2, i2⟩` from `Nondeg.diffs_reg hKP hM 0 f₂ h₂`. Rewrite using `[← e₀]`. Conclude with `⟨c1.add c2, fun γ hγ x => by simp only [Pi.add_apply, i1 γ hγ, i2 γ hγ]⟩`. Establish `hspan` using `mem_span_mapVals hKP hM (Dec σ G.W.J) (fun y _ F₀ hF₀ => shift_mem_Dec y hF₀) (sup_le (diffs_le_piVals hKP hM c) (diffs_le_piVals hKP hM 0) hsup) ⟨hreg.1, hreg.2, hdec⟩`. Conclude with `form_of_span hKP hM.triple hspan H hH V₁ M₁ e hV₁ hM₁ he μ 𝓕 hμ h𝓕 g Ψ hΨ hne`.
+-/
 theorem form_of_integral_ne_zero : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'), IsMatched B G X om om' R Rf →
     ∀ c : ℂ, ∀ Φ ∈ PolData B G.M, ∀ Φ' ∈ PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁,

@@ -17,6 +17,19 @@ def mapVVι {K K' : Type} [Field K] [Field K'] (ι : K →+* K') {T : Type} [Fin
     (v : VV K lam) : VV K' lam :=
   ⟨MvPolynomial.map ι v.1, GlobalTheory.Proof.TensorMapDescent.map_mem_VV ι lam _ v.2⟩
 
+/- English proof (translation)
+Substitute `c'` using the available equality. Establish `hcomp : emb'.comp ι = D.what₂.embLL` using `RingHom.ext hι`. Establish `hinj : ∀ a b : VV K' lam, MvPolynomial.map emb' a.1 = MvPolynomial.map emb' b.1 → a = b` using `fun a b h => Subtype.ext (MvPolynomial.map_injective emb' emb'.injective h)`. Establish `hmap : ∀ v : VV D.what₂.LL lam, MvPolynomial.map emb' (mapVVι ι lam v).1 = MvPolynomial.map D.what₂.embLL v.1` using `fun v => by show MvPolynomial.map emb' (MvPolynomial.map ι v.1) = _`. Rewrite using `[MvPolynomial.map_map, hcomp]`.
+
+Establish `hsm : ∀ (a : D.what₂.LL) (v : VV D.what₂.LL lam), mapVVι ι lam (a • v) = ι a • mapVVι ι lam v` using `fun a v => Subtype.ext (by show MvPolynomial.map ι (a • v.1) = ι a • MvPolynomial.map ι v.1`. Rewrite using `[MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, ← MvPolynomial.smul_eq_C_mul])`. Set `c1 : VV D.what₂.LL lam →ₛₗ[D.what₂.embLL] c.W` to `{ toFun := fun v => c0' (mapVVι ι lam v) map_add' := fun a b => by`. Rewrite using `[← map_add]`. Use `congr 1`.
+
+Conclude with `Subtype.ext (map_add _ _ _)`. Use the proof step `map_smul' := fun a v => by show c0' (mapVVι ι lam (a • v)) = D.what₂.embLL a • c0' (mapVVι ι lam v)`. Rewrite using `[hsm, map_smulₛₗ, hι] }`. Establish `hrho : ∀ γE v, mapVVι ι lam (rhoVr tau lam γE v) = rhoVr tau' lam γE (mapVVι ι lam v)` using `fun γE v => by`. Use `hinj _ _ ?_` and prove the remaining obligations.
+
+Rewrite using `[hmap]`. Establish `e1` using `congrArg Subtype.val (GlobalTheory.ConjTwist.mapVV_rhoVr D.what₂.embLL tau lam γE v)`. Establish `e2` using `congrArg Subtype.val (GlobalTheory.ConjTwist.mapVV_rhoVr emb' tau' lam γE (mapVVι ι lam v))`. Rewrite `e1`, `e2` using `[GlobalTheory.CoefModel.mapVV_coe]`. Rewrite using `[e1, e2]`.
+
+Establish `e3 : (fun τ => emb'.comp (tau' τ)) = fun τ => D.what₂.embLL.comp (tau τ)` using `funext htau`. Establish `e4 : GlobalTheory.CoefModel.mapVV emb' lam (mapVVι ι lam v) = GlobalTheory.CoefModel.mapVV D.what₂.embLL lam v` using `Subtype.ext (hmap v)`. Rewrite using `[e3, e4]`. Take `⟨μ, hμ⟩` from `RowCoord.exists_smul_eq c hc h0 c1 fun γ γE hγ v => by show c0' (mapVVι ι lam (rhoVr tau lam γE v)) = c.coef.ρ γ (c0' (mapVVι ι lam v))`. Rewrite using `[hrho]`.
+
+Conclude with `h1 γ γE hγ _`. Use `⟨μ, fun v v' hv => heq_of_eq ?_⟩` and prove the remaining obligations. Establish `: v' = mapVVι ι lam v` using `hinj _ _ (hv.trans (hmap v).symm)`. Substitute `this` using the available equality. Conclude with `hμ v`.
+-/
 theorem exists_smul_eq_enl {D : D7} {V : HSp D} (c : CoefA V) (hc : c.Is) {K' : Type} [Field K'] (ι : D.what₂.LL →+* K')
     (emb' : K' →+* ℂ) (hι : ∀ x, emb' (ι x) = D.what₂.embLL x) (tau : D.what₂.Tau → D.host.E →+* D.what₂.LL)
     (tau' : D.what₂.Tau → D.host.E →+* K') (htau : ∀ τ, emb'.comp (tau' τ) = D.what₂.embLL.comp (tau τ))
@@ -72,6 +85,11 @@ end
 noncomputable section
 namespace GlobalTheory.Mem.R3.Rw.OmExt
 
+/- English proof (translation)
+Consider the cases of `c`. Consider the cases of `c'`. Simplify using `only at hW hρ hn hi`. Consider the cases of `hW`. Consider the cases of `hn`.
+
+Consider the cases of `hi`. Consider the cases of `hρ`. Both sides reduce to the same expression.
+-/
 theorem coefA_eq {D : D7} {V : HSp D} (c c' : CoefA V) (hW : HEq c'.W c.W) (hρ : HEq c'.ρ c.ρ) (hn : HEq c'.nW c.nW)
     (hi : HEq c'.iW c.iW) : c' = c := by
   cases c
@@ -85,6 +103,15 @@ theorem coefA_eq {D : D7} {V : HSp D} (c c' : CoefA V) (hW : HEq c'.W c.W) (hρ 
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `B B' f f' T T' w w' Z Z' hX hX' Wt Wt' z hE hff hpx hstd Ks _ _ _ Xg tr R' cG' hP hL hB hRS i i' hii c0L hc c0L'' hc''`. Take `⟨gR, c0R, ht⟩` from `hc`. Take `⟨gR', c0R', ht'⟩` from `hc''`. Take `⟨hW, hρ, hnW, hiW, -⟩` from `hRS.2.2.2.2.2.2.2.2.2.2.2.2.1 i i' hii`. Establish `hcI` using `z.pins.char.base.models.cV i`.
+
+Establish `hmapL` using `ht.mapL i`. Establish `hmapL'` using `ht'.mapL i'`. Establish `htau` using `ht.tauL_ok`. Establish `htau'` using `ht'.tauL_ok`. Take `⟨hpre, -, -, hR⟩` from `hE`.
+
+Consider the cases of `B with | mk P => cases B' with | mk P' =>`. Simplify using `only at hpre`. Substitute `hpre` using the available equality. Take `rfl : i = i'` from `Fin.ext hii`. Set `ι : (w.st Z).toD7.what₂.LL →+* (w'.st Z').toD7.what₂.LL` to `(enlEmb hR)`.
+
+Establish `hι : ∀ x, (w'.st Z').toD7.what₂.embLL (ι x) = (w.st Z).toD7.what₂.embLL x` using `(enlEmb_spec hR)`. Set `c'' : CoefA (Vc (w.st Z).toD7 i)` to `{ W := (R'.cV i).W, nW := (R'.cV i).nW, iW := (R'.cV i).iW, fW := (R'.cV i).fW, ρ := (R'.cV i).ρ }`. Establish `hcc : c'' = z.R.cV i` using `coefA_eq _ _ hW hρ hnW hiW`. Take `⟨μ, hμ⟩` from `exists_smul_eq_enl (z.R.cV i) hcI ι (w'.st Z').toD7.what₂.embLL hι (labLL (w.st Z).toD7) (labLL (w'.st Z').toD7) (fun τ => (htau' τ).trans (htau τ).symm) (c0L i) hmapL c'' hcc (c0L'' i) hmapL'.1`. Conclude with `⟨μ, fun v v' hv => hμ v v' (eq_of_heq hv)⟩`.
+-/
 theorem coef_schur : ∀ {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} {w : ColW B f T} {w' : ColW B' f' T'}
   {Z : w.Lt} {Z' : w'.Lt} {hX : B.fields.Ok} {hX' : B'.fields.Ok} {Wt : Set B.places.Pl} {Wt' : Set B'.places.Pl}
   (z : Dat (w.st Z) w.I hX T Wt), Enl0 B B' → HEq f' f → HEq w'.px w.px → z.Std →

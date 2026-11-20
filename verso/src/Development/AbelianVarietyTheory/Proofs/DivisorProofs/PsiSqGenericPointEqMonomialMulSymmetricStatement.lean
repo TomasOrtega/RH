@@ -14,6 +14,9 @@ open GlobalTheory GlobalTheory.USep
 open GlobalTheory.Poinc.ThetaOne GlobalTheory.Poinc.Sep GlobalTheory.UT GlobalTheory.FieldBaseChange
 open ReciprocityTheory.ChartRestriction.G.DVR GlobalTheory.Poinc.Sep.Frames GlobalTheory.UT.CoefBasic
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PsiSqGeneric.main | exact GlobalTheory.PsiSqGeneric.main | (intros; apply GlobalTheory.PsiSqGeneric.main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.psi_sq_genericPoint_eq_monomial_mul_symmetric : ∀ (V : Type) [CommRing V] [IsDomain V] (D : DegPre V), D.PsiEven →
     (∀ (Z : Scheme.{0}) (r : Z ⟶ (TK V).left) (z : Z) J, Good D.P.L z J →
       val (D.psi 0) r z J * val D.rigK r z J = 1) →

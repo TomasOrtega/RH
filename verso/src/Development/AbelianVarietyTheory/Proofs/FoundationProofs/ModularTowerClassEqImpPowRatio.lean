@@ -8,6 +8,25 @@ namespace GlobalTheory
 
 open TensorProduct
 
+/- English proof (translation)
+Set `M` to `Additive G`. Set `P : Submodule ℤ M` to `LinearMap.range (DistribMulAction.toLinearMap ℤ M (((l : ℤ)) ^ n))`. Use `haveI : NeZero (l ^ n) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Establish `hkill : ∀ q : M ⧸ P, (l ^ n) • q = 0`. Introduce `q`.
+
+Proceed by induction on `q using Submodule.Quotient.induction_on with`. Consider the case `H m`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨m, by change ((l : ℤ) ^ n) • m = l ^ n • m; rw [← Nat.cast_pow, natCast_zsmul]⟩`. Use `letI : Module (ZMod (l ^ n)) (M ⧸ P) := AddCommGroup.zmodModule hkill`.
+
+Set `B : ℤ_[l] →ₗ[ℤ] M →ₗ[ℤ] M ⧸ P` to `LinearMap.mk₂ ℤ (fun c m => (PadicInt.toZModPow n c) • P.mkQ m) (fun c c' m => by simp [add_smul]) (fun k c m => by`. Rewrite using `[map_zsmul, ← Int.cast_smul_eq_zsmul (ZMod (l ^ n)), ← Int.cast_smul_eq_zsmul (ZMod (l ^ n)), smul_smul, smul_eq_mul])`. Use the proof step `(fun c m m' => by simp [smul_add])`. Use the proof step `(fun k c m => by`. Rewrite using `[map_zsmul, ← Int.cast_smul_eq_zsmul (ZMod (l ^ n)), ← Int.cast_smul_eq_zsmul (ZMod (l ^ n)), smul_smul, smul_smul, mul_comm])`.
+
+Set `φ : ℤ_[l] ⊗[ℤ] M →ₗ[ℤ] M ⧸ P` to `TensorProduct.lift B`. Establish `hφ : ∀ c m, φ (c ⊗ₜ m) = (PadicInt.toZModPow n c) • P.mkQ m` using `fun c m => by`. Conclude with `TensorProduct.lift.tmul (f' := B) c m`. Establish `hI : (Ideal.span {(l : ℤ_[l])}) ^ n = RingHom.ker (PadicInt.toZModPow (p` using `l) n) := by`. Rewrite using `[PadicInt.ker_toZModPow, Ideal.span_singleton_pow]`.
+
+Establish `hzero : ∀ x ∈ ((Ideal.span {(l : ℤ_[l])}) ^ n • (⊤ : Submodule ℤ_[l] (ℤ_[l] ⊗[ℤ] M))), φ x = 0`. Introduce `x hx`. Use `Submodule.smul_induction_on hx (fun r hr y hy => ?_) (fun a b ha hb => by rw [map_add, ha, hb, add_zero])` and prove the remaining obligations. Rewrite `hr` using `[hI, RingHom.mem_ker]`. Use `clear hy`.
+
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul c m`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, hφ, map_mul, hr, zero_mul, zero_smul]`. Consider the case `add a b ha hb => rw [smul_add, map_add, ha, hb, add_zero]`.
+
+Establish `h0` using `hzero _ h`. Rewrite `h0` using `[map_sub, hφ, hφ, map_one, one_smul, one_smul, sub_eq_zero, Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Take `⟨y, hy⟩` from `h0`. Use `⟨Additive.toMul y, ?_⟩` and prove the remaining obligations. Establish `hy' : Additive.toMul (((l : ℤ) ^ n) • y) = f' / f`.
+
+Establish `hy2 : ((l : ℤ) ^ n) • y = Additive.ofMul f' - Additive.ofMul f` using `hy`. Rewrite using `[hy2]`. Both sides reduce to the same expression. Rewrite `hy'` using `[toMul_zsmul]`. Rewrite using `[← div_eq_iff_eq_mul', ← hy']`.
+
+Use `norm_cast`.
+-/
 theorem tensor_padic_cls_eq {G : Type} [CommGroup G] (l : ℕ) [Fact l.Prime] (n : ℕ) (f f' : G)
     (h : ((1 : ℤ_[l]) ⊗ₜ[ℤ] Additive.ofMul f' - (1 : ℤ_[l]) ⊗ₜ[ℤ] Additive.ofMul f) ∈
       ((Ideal.span {(l : ℤ_[l])}) ^ n • (⊤ : Submodule ℤ_[l] (ℤ_[l] ⊗[ℤ] Additive G)))) :
@@ -60,6 +79,9 @@ theorem tensor_padic_cls_eq {G : Type} [CommGroup G] (l : ℕ) [Fact l.Prime] (n
   rw [← div_eq_iff_eq_mul', ← hy']
   norm_cast
 
+/- English proof (translation)
+Unfold `Tower.cls at h`. Rewrite `h` using `[Submodule.Quotient.eq']`. Take `⟨u, hu⟩` from `tensor_padic_cls_eq l n f f' (by simpa [neg_add_eq_sub] using h)`. Conclude with `⟨u, by rw [hu]; push_cast; rfl⟩`.
+-/
 theorem Tower.cls_eq_pow {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) (l : ℕ) [Fact l.Prime]
     (n : ℕ) (f f' : X.Kˣ) (h : X.cls l n f = X.cls l n f') :
     ∃ u : X.Kˣ, (f' : X.K) = f * (u : X.K) ^ (l ^ n) := by

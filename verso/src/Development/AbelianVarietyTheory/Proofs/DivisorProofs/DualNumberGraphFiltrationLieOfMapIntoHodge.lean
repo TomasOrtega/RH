@@ -11,6 +11,9 @@ namespace GlobalTheory.HTRealise.LieCond
 
 variable {k : Type} [Field k] {A₀ : Over (Sp k)} [GrpObj A₀]
 
+/- English proof (translation)
+Establish `k'` using `(homMor (dp0 k) (𝟙 _) g).comp (constMor A₀)`. Establish `e1 : primPull (epsDP k) (GlobalTheory.DeRham.epsRed k) g ((constMor A₀).pull c) = k'.pull c` using `GrpMor.pull_pull (constMor A₀) (homMor _ _ g) k' (fun _ => rfl) (by simp) c`. Establish `e2 : (constMor A₀).pull (primPull (dp0 k) (𝟙 _) g c) = k'.pull c` using `GrpMor.pull_pull (homMor _ _ g) (constMor A₀) k' (fun _ => rfl) rfl c`. Rewrite using `[push_apply, e1, ← e2, h]`. Both sides reduce to the same expression.
+-/
 theorem push_coords (g : A₀ ⟶ A₀) [IsMonHom g] {d : Crys (epsDP k) (GlobalTheory.DeRham.epsRed k) A₀} {u v : HdR A₀}
     (h : ∀ c : primDR A₀, d ((constMor A₀).pull c) = TrivSqZeroExt.inl (u c) + TrivSqZeroExt.inr (v c))
     (c : primDR A₀) :
@@ -24,6 +27,9 @@ theorem push_coords (g : A₀ ⟶ A₀) [IsMonHom g] {d : Crys (epsDP k) (Global
   rw [push_apply, e1, ← e2, h]
   rfl
 
+/- English proof (translation)
+Rewrite using `[LinearMap.smul_apply, h, smul_eq_mul]`. Apply the tactic sequence `ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem smul_coords (r : k) {d : Crys (epsDP k) (GlobalTheory.DeRham.epsRed k) A₀} {u v : HdR A₀}
     (h : ∀ c : primDR A₀, d ((constMor A₀).pull c) = TrivSqZeroExt.inl (u c) + TrivSqZeroExt.inr (v c))
     (c : primDR A₀) :
@@ -32,6 +38,13 @@ theorem smul_coords (r : k) {d : Crys (epsDP k) (GlobalTheory.DeRham.epsRed k) A
   rw [LinearMap.smul_apply, h, smul_eq_mul]
   ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, y, hy, e⟩`. Establish `hu : u = x` using `LinearMap.ext fun c => by`. Use `congrArg TrivSqZeroExt.fst ((h c).symm.trans (e c))` as an intermediate fact. Simplify using `using this`.
+
+Establish `hv : v = f x + y` using `LinearMap.ext fun c => by`. Use `congrArg TrivSqZeroExt.snd ((h c).symm.trans (e c))` as an intermediate fact. Simplify using `using this`. Substitute `hu hv` using the available equality. Conclude with `⟨hx, by simpa using hy⟩`.
+
+Introduce and unpack `⟨hu, hv⟩`. Conclude with `⟨u, hu, v - f u, hv, fun c => by rw [h c]; simp⟩`.
+-/
 theorem mem_graphFil_iff_coords {f : HdR A₀ →ₗ[k] HdR A₀} {d : Crys (epsDP k) (GlobalTheory.DeRham.epsRed k) A₀}
     {u v : HdR A₀}
     (h : ∀ c : primDR A₀, d ((constMor A₀).pull c) = TrivSqZeroExt.inl (u c) + TrivSqZeroExt.inr (v c)) :
@@ -60,14 +73,25 @@ def algAct (o₀ : GlobalTheory.UPel.HT.Obj b N s) : MonoidAlgebra k (𝓞 D.F) 
 def algChar (b : GlobalTheory.UPel.HT.Base D R) (β : R →+* k) (i : Fin D.a) : MonoidAlgebra k (𝓞 D.F) →ₐ[k] k :=
   MonoidAlgebra.lift k k (𝓞 D.F) (β.comp (b.t i)).toMonoidHom
 
+/- English proof (translation)
+Simplify using `[algAct]`.
+-/
 theorem algAct_single (o₀ : GlobalTheory.UPel.HT.Obj b N s) (c : 𝓞 D.F) :
     algAct o₀ (MonoidAlgebra.single c (1 : k)) = GlobalTheory.HTCount.crysAct o₀ (algebraMap (𝓞 D.F) D.O c) := by
   simp [algAct]
 
+/- English proof (translation)
+Simplify using `[algAct, algChar]`.
+-/
 theorem algChar_single (β : R →+* k) (i : Fin D.a) (c : 𝓞 D.F) :
     algChar b β i (MonoidAlgebra.single c (1 : k)) = β (b.t i c) := by
   simp [algAct, algChar]
 
+/- English proof (translation)
+Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨g.coeff.support.card, fun l => g.coeff (g.coeff.support.equivFin.symm l), fun l => (g.coeff.support.equivFin.symm l : 𝓞 D.F), y, hy, fun i => ?_, ?_⟩` and prove the remaining obligations. Use `hg i` as an intermediate fact. Rewrite `this` using `[algChar, MonoidAlgebra.lift_apply, Finsupp.sum, ← Finset.sum_coe_sort g.coeff.support, ← Equiv.sum_comp g.coeff.support.equivFin.symm]`. Simplify `this` using `[smul_eq_mul]`.
+
+Rewrite using `[algAct, MonoidAlgebra.lift_apply, Finsupp.sum, ← Finset.sum_coe_sort g.coeff.support, ← Equiv.sum_comp g.coeff.support.equivFin.symm, LinearMap.sum_apply]`. Both sides reduce to the same expression.
+-/
 theorem algAct_mem_lieZ (o₀ : GlobalTheory.UPel.HT.Obj b N s) (β : R →+* k) (g : MonoidAlgebra k (𝓞 D.F))
     (hg : ∀ i, algChar b β i g = 0) {y : HdR o₀.A} (hy : y ∈ GlobalTheory.HTCount.rhoPart o₀ β) :
     algAct o₀ g y ∈ GlobalTheory.HTCount.lieZ o₀ β := by
@@ -83,6 +107,15 @@ theorem algAct_mem_lieZ (o₀ : GlobalTheory.UPel.HT.Obj b N s) (β : R →+* k)
       ← Equiv.sum_comp g.coeff.support.equivFin.symm, LinearMap.sum_apply]
     rfl
 
+/- English proof (translation)
+Establish `: ∀ i j : Fin D.a, ∃ x, i ≠ j → β (b.t i x) ≠ β (b.t j x)` using `fun i j => by`. Distinguish the cases in `h : i = j`. Conclude with `⟨0, fun h' => (h' h).elim⟩`. Take `⟨x, hx⟩` from `hx i j h`. Conclude with `⟨x, fun _ => hx⟩`.
+
+Use `choose x hx' using this`. Set `q : Fin D.a → Fin D.a → MonoidAlgebra k (𝓞 D.F)` to `fun i j => (β (b.t i (x i j)) - β (b.t j (x i j)))⁻¹ • (MonoidAlgebra.single (x i j) 1 - algebraMap k _ (β (b.t j (x i j))))`. Establish `hq : ∀ i j m, algChar b β m (q i j) = (β (b.t i (x i j)) - β (b.t j (x i j)))⁻¹ * (β (b.t m (x i j)) - β (b.t j (x i j)))`. Introduce `i j m`. Simplify using `only [q, map_smul, map_sub, algChar_single, AlgHom.commutes, smul_eq_mul]`.
+
+Both sides reduce to the same expression. Use `⟨fun i => ∏ j ∈ Finset.univ.erase i, q i j, fun i m => ?_⟩` and prove the remaining obligations. Rewrite using `[map_prod]`. Use `split_ifs with h`. Rewrite using `[h]`.
+
+Use `Finset.prod_eq_one fun j hj => ?_` and prove the remaining obligations. Rewrite using `[hq]`. Conclude with `inv_mul_cancel₀ (sub_ne_zero.2 (hx' i j (Finset.ne_of_mem_erase hj).symm))`. Use `Finset.prod_eq_zero (Finset.mem_erase.2 ⟨h, Finset.mem_univ m⟩) ?_` and prove the remaining obligations. Rewrite using `[hq, sub_self, mul_zero]`.
+-/
 theorem exists_idem (β : R →+* k) (hx : ∀ i j : Fin D.a, i ≠ j → ∃ x, β (b.t i x) ≠ β (b.t j x)) :
     ∃ e : Fin D.a → MonoidAlgebra k (𝓞 D.F), ∀ i j, algChar b β j (e i) = if j = i then 1 else 0 := by
   have : ∀ i j : Fin D.a, ∃ x, i ≠ j → β (b.t i x) ≠ β (b.t j x) := fun i j => by
@@ -108,6 +141,13 @@ theorem exists_idem (β : R →+* k) (hx : ∀ i j : Fin D.a, i ≠ j → ∃ x,
   · refine Finset.prod_eq_zero (Finset.mem_erase.2 ⟨h, Finset.mem_univ m⟩) ?_
     rw [hq, sub_self, mul_zero]
 
+/- English proof (translation)
+Introduce `i j hij`. Assume the negation of the conclusion as `h`. Simplify using `only [not_exists, not_not] at h`. Establish `h1` using `congrArg (Ideal.map β) (b.comax i j hij)`. Rewrite `h1` using `[Ideal.map_span, Ideal.map_top]`.
+
+Establish `h2 : Ideal.span (β '' Set.range fun x => b.t i x - b.t j x) = ⊥`. Rewrite using `[Ideal.span_eq_bot]`. Introduce and unpack `_ ⟨_, ⟨x, rfl⟩, rfl⟩`. Simplify using `[map_sub, h x]`. Rewrite `h1` using `[h2]`.
+
+Conclude with `bot_ne_top h1`.
+-/
 theorem chars_ne (β : R →+* k) : ∀ i j : Fin D.a, i ≠ j → ∃ x, β (b.t i x) ≠ β (b.t j x) := by
   intro i j hij
   by_contra h
@@ -121,6 +161,17 @@ theorem chars_ne (β : R →+* k) : ∀ i j : Fin D.a, i ≠ j → ∃ x, β (b.
   rw [h2] at h1
   exact bot_ne_top h1
 
+/- English proof (translation)
+Establish `hρ` using `congrArg β b.ρ_root`. Simplify using `only [map_add, map_sub, map_pow, map_mul, map_intCast, map_zero] at hρ`. Use `set n : ℕ := (4 * D.nm - D.tr ^ 2).toNat`. Establish `hpos : 0 < 4 * D.nm - D.tr ^ 2` using `by linarith [D.disc_neg]`. Establish `hn : (n : ℤ) = 4 * D.nm - D.tr ^ 2` using `Int.toNat_of_nonneg hpos.le`.
+
+Establish `hcop : n.Coprime p`. Use `Nat.Coprime.symm ((Nat.Prime.coprime_iff_not_dvd (Fact.out)).2 fun hd => D.disc_p ?_)` and prove the remaining obligations. Establish `: (p : ℤ) ∣ (n : ℤ)` using `Int.natCast_dvd_natCast.2 hd`. Rewrite `this` using `[hn]`. Establish `h' : D.tr ^ 2 - 4 * D.nm = -(4 * D.nm - D.tr ^ 2)` using `by ring`.
+
+Rewrite using `[h']`. Conclude with `(dvd_neg).2 this`. Establish `hu : IsUnit (n : k)`. Use `(b.unit n hcop).map β` as an intermediate fact. Simplify using `using this`.
+
+Introduce `h0`. Apply `hu.ne_zero` to reduce the goal to its premises. Establish `hnk : (n : k) = ((4 * D.nm - D.tr ^ 2 : ℤ) : k)` using `by rw [← hn]; simp`. Rewrite using `[hnk]`. Use `push_cast`.
+
+Establish `: (β b.ρ - ((D.tr : k) - β b.ρ)) ^ 2 = 0` using `by rw [h0]; ring`. Take the linear combination `-this + 4 * hρ`.
+-/
 theorem delta_ne (β : R →+* k) : β b.ρ - ((D.tr : k) - β b.ρ) ≠ 0 := by
   have hρ := congrArg β b.ρ_root
   simp only [map_add, map_sub, map_pow, map_mul, map_intCast, map_zero] at hρ
@@ -151,16 +202,25 @@ namespace GlobalTheory.HTRealise.LieCond
 variable {p : ℕ} [Fact p.Prime] {D : GlobalTheory.UPel.HT.Datum p} {R : Type} [CommRing R] {b : GlobalTheory.UPel.HT.Base D R}
   {N : ℕ} {k : Type} [Field k] {s : Sp k ⟶ Sp R}
 
+/- English proof (translation)
+Use `(algAct o₀).toLinearMap.map_smul r g` as an intermediate fact. Conclude with `LinearMap.congr_fun this z`.
+-/
 theorem algAct_smul_apply (o₀ : GlobalTheory.UPel.HT.Obj b N s) (r : k) (g : MonoidAlgebra k (𝓞 D.F)) (z : HdR o₀.A) :
     algAct o₀ (r • g) z = r • algAct o₀ g z := by
   have := (algAct o₀).toLinearMap.map_smul r g
   exact LinearMap.congr_fun this z
 
+/- English proof (translation)
+Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+-/
 theorem algAct_mul_apply (o₀ : GlobalTheory.UPel.HT.Obj b N s) (g h : MonoidAlgebra k (𝓞 D.F)) (z : HdR o₀.A) :
     algAct o₀ (g * h) z = algAct o₀ g (algAct o₀ h z) := by
   rw [map_mul]
   rfl
 
+/- English proof (translation)
+The claim follows from `o₀.act.hom (algebraMap (𝓞 D.F) D.O c) algAct o₀ (MonoidAlgebra.single c (1 : k)) z = push (dp0 k) (𝟙 _) (o₀.act.act (algebraMap (𝓞 D.F) D.O c)) z := by rw [algAct_single] rfl`.
+-/
 theorem algAct_single_apply (o₀ : GlobalTheory.UPel.HT.Obj b N s) (c : 𝓞 D.F) (z : HdR o₀.A) :
     haveI := o₀.act.hom (algebraMap (𝓞 D.F) D.O c)
     algAct o₀ (MonoidAlgebra.single c (1 : k)) z = push (dp0 k) (𝟙 _) (o₀.act.act (algebraMap (𝓞 D.F) D.O c)) z := by
@@ -171,15 +231,24 @@ end GlobalTheory.HTRealise.LieCond
 
 namespace GlobalTheory.HTRealise.LieCond
 
+/- English proof (translation)
+Rewrite using `[← smul_sub, show X - r' • z - (X - r • z) = (r - r') • z by rw [sub_smul]; abel, inv_smul_smul₀ h]`.
+-/
 theorem inv_sub_smul_sub_sub_inv_sub_smul_sub_eq {k V : Type*} [Field k] [AddCommGroup V] [Module k V] (X z : V) (r r' : k)
     (h : r - r' ≠ 0) : (r - r')⁻¹ • (X - r' • z) - (r - r')⁻¹ • (X - r • z) = z := by
   rw [← smul_sub, show X - r' • z - (X - r • z) = (r - r') • z by rw [sub_smul]; abel, inv_smul_smul₀ h]
 
+/- English proof (translation)
+Rewrite using `[map_add, map_smul, smul_sub]`. Normalize the expressions using the abelian group laws.
+-/
 theorem smul_add_sub_linearMap_smul_add_eq {k V : Type*} [Field k] [AddCommGroup V] [Module k V] (f : V →ₗ[k] V) (a : k)
     (X Y P Q : V) : (a • Y + Q) - f (a • X + P) = a • (Y - f X) + (Q - f P) := by
   rw [map_add, map_smul, smul_sub]
   abel
 
+/- English proof (translation)
+Rewrite using `[← h, neg_smul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem sub_eq_neg_smul_add_of_sub_smul_eq {k V : Type*} [Field k] [AddCommGroup V] [Module k V] (u u' S X : V) (a : k)
     (h : u' - a • X = u) : u - S = (-a) • X + (u' - S) := by
   rw [← h, neg_smul]
@@ -191,6 +260,9 @@ namespace GlobalTheory.HTRealise.LieCond
 
 variable {k : Type} [Field k] {A₀ : Over (Sp k)} [GrpObj A₀]
 
+/- English proof (translation)
+Rewrite using `[LinearMap.sub_apply, h, h']`. Apply the tactic sequence `ext <;> simp`.
+-/
 theorem coords_sub {d d' : Crys (epsDP k) (GlobalTheory.DeRham.epsRed k) A₀} {u v u' v' : HdR A₀}
     (h : ∀ c : primDR A₀, d ((constMor A₀).pull c) = TrivSqZeroExt.inl (u c) + TrivSqZeroExt.inr (v c))
     (h' : ∀ c : primDR A₀, d' ((constMor A₀).pull c) = TrivSqZeroExt.inl (u' c) + TrivSqZeroExt.inr (v' c))
@@ -199,6 +271,11 @@ theorem coords_sub {d d' : Crys (epsDP k) (GlobalTheory.DeRham.epsRed k) A₀} {
   rw [LinearMap.sub_apply, h, h']
   ext <;> simp
 
+/- English proof (translation)
+Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_empty, Finset.sum_empty, Finset.sum_empty, LinearMap.zero_apply]`. Apply the tactic sequence `ext <;> simp`. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, Finset.sum_insert ha, LinearMap.add_apply, h, ih]`.
+
+Apply the tactic sequence `ext <;> simp`.
+-/
 theorem coords_sum {Idx : Type} (s : Finset Idx) (d : Idx → Crys (epsDP k) (GlobalTheory.DeRham.epsRed k) A₀)
     (u v : Idx → HdR A₀)
     (h : ∀ i, ∀ c : primDR A₀, d i ((constMor A₀).pull c) = TrivSqZeroExt.inl (u i c) + TrivSqZeroExt.inr (v i c))
@@ -220,6 +297,29 @@ namespace GlobalTheory.HTRealise
 set_option maxHeartbeats 2000000 in
 open LieCond in
 
+/- English proof (translation)
+Introduce `p _ D R _ b N k _ β s o₀ f hZ hfZ d hd`. Use `haveI := o₀.act.hom`. Take `⟨u, v, huv⟩` from `exists_coords d`. Use `set Ω := GlobalTheory.HTCount.crysAct o₀ (algebraMap (𝓞 D.F) D.O D.ω) with hΩ`. Use `set ρ := β b.ρ with hρ`.
+
+Use `set ρ' := (D.tr : k) - ρ with hρ'`. Use `set δ := ρ - ρ' with hδdef`. Establish `hδ : δ ≠ 0` using `delta_ne (b := b) β`. Establish `hcoord` using `coords_sub (fun c => push_coords (o₀.act.act (algebraMap (𝓞 D.F) D.O D.ω)) huv c) (fun c => smul_coords ρ huv c)`. Take `⟨hx, hy⟩` from `(mem_graphFil_iff_coords (f := f) hcoord).1 hd`.
+
+Express the relevant statement in the definitionally equal form `Ω u - ρ • u ∈ Fil o₀.A at hx`. Express the relevant statement in the definitionally equal form `Ω v - ρ • v - f (Ω u - ρ • u) ∈ Fil o₀.A at hy`. Take `⟨e, he⟩` from `exists_idem (b := b) β (chars_ne β)`. Take `⟨u', hu'def⟩ : ∃ u', u' = δ⁻¹ • (Ω u - ρ' • u)` from `⟨_, rfl⟩`. Take `⟨v', hv'def⟩ : ∃ v', v' = δ⁻¹ • (Ω v - ρ' • v)` from `⟨_, rfl⟩`.
+
+Establish `hrho : ∀ z, δ⁻¹ • (Ω z - ρ' • z) ∈ GlobalTheory.HTCount.rhoPart o₀ β` using `fun z => Submodule.smul_mem _ _ ⟨z, by simp [Ω, ρ', ρ]⟩`. Establish `key : ∀ g, (∀ j, algChar b β j g = 0) → algAct o₀ g u' ∈ Fil o₀.A ∧ algAct o₀ g v' - f (algAct o₀ g u') ∈ Fil o₀.A` using `fun g hg => ⟨hZ (algAct_mem_lieZ o₀ β g hg (hu'def ▸ hrho u)), sub_mem (hZ (algAct_mem_lieZ o₀ β g hg (hv'def ▸ hrho v))) (hfZ _ (algAct_mem_lieZ o₀ β g hg (hu'def ▸ hrho u)))⟩`. Use `choose w hw using fun i => exists_crys o₀.ab (algAct o₀ (e i) u') (algAct o₀ (e i) v')`. Use `⟨w, ?_, ?_⟩` and prove the remaining obligations. Introduce `i c`.
+
+Establish `hc` using `coords_sub (fun c' => push_coords (o₀.act.act (algebraMap (𝓞 D.F) D.O c)) (hw i) c') (fun c' => smul_coords (β (b.t i c)) (hw i) c')`. Rewrite using `[mem_graphFil_iff_coords hc]`. Establish `hg : ∀ j, algChar b β j (MonoidAlgebra.single c (1 : k) * e i - β (b.t i c) • e i) = 0`. Introduce `j`. Rewrite using `[map_sub, map_mul, map_smul, algChar_single, he, smul_eq_mul]`.
+
+Use `split_ifs with h`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. Establish `e1 : ∀ z, push (dp0 k) (𝟙 _) (o₀.act.act (algebraMap (𝓞 D.F) D.O c)) (algAct o₀ (e i) z) - β (b.t i c) • algAct o₀ (e i) z = algAct o₀ (MonoidAlgebra.single c (1 : k) * e i - β (b.t i c) • e i) z`.
+
+Introduce `z`. Rewrite using `[map_sub, LinearMap.sub_apply, algAct_mul_apply, algAct_smul_apply, algAct_single_apply]`. Rewrite using `[e1, e1]`. Conclude with `key _ hg`. Establish `hs` using `coords_sub huv (coords_sum Finset.univ w (fun i => algAct o₀ (e i) u') (fun i => algAct o₀ (e i) v') (fun i c => hw i c))`.
+
+Rewrite using `[mem_graphFil_iff_coords hs]`. Establish `hg0 : ∀ j, algChar b β j (1 - ∑ i, e i) = 0`. Introduce `j`. Rewrite using `[map_sub, map_one, map_sum]`. Simplify using `[he]`.
+
+Take `⟨k1, k2⟩` from `key _ hg0`. Establish `decu : u' - δ⁻¹ • (Ω u - ρ • u) = u` using `by rw [hu'def]; exact inv_sub_smul_sub_sub_inv_sub_smul_sub_eq _ _ _ _ hδ`. Establish `decv : v' - δ⁻¹ • (Ω v - ρ • v) = v` using `by rw [hv'def]; exact inv_sub_smul_sub_sub_inv_sub_smul_sub_eq _ _ _ _ hδ`. Establish `hsum : ∀ z, algAct o₀ (1 - ∑ i, e i) z = z - ∑ i, algAct o₀ (e i) z`. Introduce `z`.
+
+Rewrite using `[map_sub, map_one, map_sum, LinearMap.sub_apply, LinearMap.sum_apply]`. Both sides reduce to the same expression. Rewrite using `[sub_eq_neg_smul_add_of_sub_smul_eq u u' _ _ _ decu, sub_eq_neg_smul_add_of_sub_smul_eq v v' _ _ _ decv, ← hsum, ← hsum]`. Use `⟨add_mem (Submodule.smul_mem _ _ hx) k1, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add_sub_linearMap_smul_add_eq]`.
+
+Conclude with `add_mem (Submodule.smul_mem _ _ hy) k2`.
+-/
 theorem eigen_decomp_graphFil : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R]
     (b : GlobalTheory.UPel.HT.Base D R) (N : ℕ) (k : Type) [Field k] (β : R →+* k) (s : Sp k ⟶ Sp R)
     (o₀ : GlobalTheory.UPel.HT.Obj b N s) (f : HdR o₀.A →ₗ[k] HdR o₀.A), GlobalTheory.HTCount.lieZ o₀ β ≤ Fil o₀.A →

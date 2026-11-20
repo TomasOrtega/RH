@@ -11,19 +11,33 @@ section MatAlg
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Use `(Matrix.mem_unitaryGroup_iff').mp hu` as an intermediate fact. Rewrite `this` using `[Matrix.star_eq_conjTranspose]`. Then use the resulting hypothesis.
+-/
 lemma unit_star_mul {u : Matrix (Fin n) (Fin n) ℂ} (hu : u ∈ Matrix.unitaryGroup (Fin n) ℂ) :
     uᴴ * u = 1 := by
   have := (Matrix.mem_unitaryGroup_iff').mp hu
   rwa [Matrix.star_eq_conjTranspose] at this
 
+/- English proof (translation)
+Use `(Matrix.mem_unitaryGroup_iff).mp hu` as an intermediate fact. Rewrite `this` using `[Matrix.star_eq_conjTranspose]`. Then use the resulting hypothesis.
+-/
 lemma unit_mul_star {u : Matrix (Fin n) (Fin n) ℂ} (hu : u ∈ Matrix.unitaryGroup (Fin n) ℂ) :
     u * uᴴ = 1 := by
   have := (Matrix.mem_unitaryGroup_iff).mp hu
   rwa [Matrix.star_eq_conjTranspose] at this
 
+/- English proof (translation)
+The claim follows from `Matrix.inv_eq_left_inv (unit_star_mul hu)`.
+-/
 lemma unit_inv {u : Matrix (Fin n) (Fin n) ℂ} (hu : u ∈ Matrix.unitaryGroup (Fin n) ℂ) :
     u⁻¹ = uᴴ := Matrix.inv_eq_left_inv (unit_star_mul hu)
 
+/- English proof (translation)
+Establish `ha' : aᴴ * Formalism.REAL.Jm ε * a = Formalism.REAL.Jm ε` using `ha`. Establish `hb' : bᴴ * Formalism.REAL.Jm ε * b = Formalism.REAL.Jm ε` using `hb`. Use `show (a * b)ᴴ * Formalism.REAL.Jm ε * (a * b) = Formalism.REAL.Jm ε`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+
+Use `_ = Formalism.REAL.Jm ε := by rw [ha', hb']`.
+-/
 private theorem conj_mem_lemma {ε : Fin n → Bool} {a b : Matrix (Fin n) (Fin n) ℂ}
     (ha : a ∈ UJset ε) (hb : b ∈ UJset ε) : a * b ∈ UJset ε := by
   have ha' : aᴴ * Formalism.REAL.Jm ε * a = Formalism.REAL.Jm ε := ha
@@ -33,12 +47,20 @@ private theorem conj_mem_lemma {ε : Fin n → Bool} {a b : Matrix (Fin n) (Fin 
         simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
     _ = Formalism.REAL.Jm ε := by rw [ha', hb']
 
+/- English proof (translation)
+Take `⟨hU, hc⟩` from `hu`. Use `show uᴴ * Formalism.REAL.Jm ε * u = Formalism.REAL.Jm ε`. Rewrite using `[Matrix.mul_assoc, ← hc, ← Matrix.mul_assoc, unit_star_mul hU, Matrix.one_mul]`.
+-/
 private theorem mem_UJset_of_mem_Kset_local_weight_charts {ε : Fin n → Bool} {u : Matrix (Fin n) (Fin n) ℂ}
     (hu : u ∈ Formalism.REAL.Kset ε) : u ∈ UJset ε := by
   obtain ⟨hU, hc⟩ := hu
   show uᴴ * Formalism.REAL.Jm ε * u = Formalism.REAL.Jm ε
   rw [Matrix.mul_assoc, ← hc, ← Matrix.mul_assoc, unit_star_mul hU, Matrix.one_mul]
 
+/- English proof (translation)
+Take `⟨hU, hc⟩` from `hu`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `Matrix.mem_unitaryGroup_iff.2 ?_` and prove the remaining obligations. Rewrite using `[Matrix.star_eq_conjTranspose, Matrix.conjTranspose_conjTranspose]`. Conclude with `unit_star_mul hU`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc, unit_mul_star hU, Matrix.mul_one]`. Use `_ = uᴴ * (u * Formalism.REAL.Jm ε) * uᴴ := by rw [hc]`. Use `_ = Formalism.REAL.Jm ε * uᴴ := by`. Simplify using `only [← Matrix.mul_assoc, unit_star_mul hU, Matrix.one_mul]`.
+-/
 private theorem conjTranspose_mem_Kset' {ε : Fin n → Bool} {u : Matrix (Fin n) (Fin n) ℂ}
     (hu : u ∈ Formalism.REAL.Kset ε) : uᴴ ∈ Formalism.REAL.Kset ε := by
   obtain ⟨hU, hc⟩ := hu
@@ -52,10 +74,18 @@ private theorem conjTranspose_mem_Kset' {ε : Fin n → Bool} {u : Matrix (Fin n
       _ = Formalism.REAL.Jm ε * uᴴ := by
           simp only [← Matrix.mul_assoc, unit_star_mul hU, Matrix.one_mul]
 
+/- English proof (translation)
+Conclude with `conj_mem_lemma (conj_mem_lemma (mem_UJset_of_mem_Kset_local_weight_charts (conjTranspose_mem_Kset' hu)) hg) (mem_UJset_of_mem_Kset_local_weight_charts hu)`.
+-/
 lemma conj_mem {ε : Fin n → Bool} {u : Matrix (Fin n) (Fin n) ℂ} (hu : u ∈ Formalism.REAL.Kset ε)
     {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) : uᴴ * g * u ∈ UJset ε := by
   exact conj_mem_lemma (conj_mem_lemma (mem_UJset_of_mem_Kset_local_weight_charts (conjTranspose_mem_Kset' hu)) hg) (mem_UJset_of_mem_Kset_local_weight_charts hu)
 
+/- English proof (translation)
+Take `⟨hU, hc⟩` from `hu`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `Matrix.mem_unitaryGroup_iff.2 ?_` and prove the remaining obligations. Rewrite using `[Matrix.star_eq_conjTranspose, Matrix.conjTranspose_conjTranspose]`. Conclude with `unit_star_mul hU`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc, unit_mul_star hU, Matrix.mul_one]`. Use `_ = uᴴ * (u * Formalism.REAL.Jm ε) * uᴴ := by rw [hc]`. Use `_ = Formalism.REAL.Jm ε * uᴴ := by`. Simplify using `only [← Matrix.mul_assoc, unit_star_mul hU, Matrix.one_mul]`.
+-/
 lemma star_mem_K {ε : Fin n → Bool} {u : Matrix (Fin n) (Fin n) ℂ} (hu : u ∈ Formalism.REAL.Kset ε) :
     uᴴ ∈ Formalism.REAL.Kset ε := by
   obtain ⟨hU, hc⟩ := hu
@@ -69,12 +99,20 @@ lemma star_mem_K {ε : Fin n → Bool} {u : Matrix (Fin n) (Fin n) ℂ} (hu : u 
       _ = Formalism.REAL.Jm ε * uᴴ := by
           simp only [← Matrix.mul_assoc, unit_star_mul hU, Matrix.one_mul]
 
+/- English proof (translation)
+Take `⟨hU, hJ⟩` from `hu`. Use `show uᴴ * Formalism.REAL.Jm ε * u = Formalism.REAL.Jm ε`. Rewrite using `[Matrix.mul_assoc, ← hJ, ← Matrix.mul_assoc, unit_star_mul hU, Matrix.one_mul]`.
+-/
 lemma K_mem_UJ {ε : Fin n → Bool} {u : Matrix (Fin n) (Fin n) ℂ} (hu : u ∈ Formalism.REAL.Kset ε) :
     u ∈ UJset ε := by
   obtain ⟨hU, hJ⟩ := hu
   show uᴴ * Formalism.REAL.Jm ε * u = Formalism.REAL.Jm ε
   rw [Matrix.mul_assoc, ← hJ, ← Matrix.mul_assoc, unit_star_mul hU, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `ha' : aᴴ * Formalism.REAL.Jm ε * a = Formalism.REAL.Jm ε` using `ha`. Establish `hb' : bᴴ * Formalism.REAL.Jm ε * b = Formalism.REAL.Jm ε` using `hb`. Use `show (a * b)ᴴ * Formalism.REAL.Jm ε * (a * b) = Formalism.REAL.Jm ε`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+
+Use `_ = Formalism.REAL.Jm ε := by rw [ha', hb']`.
+-/
 lemma mul_mem_UJ {ε : Fin n → Bool} {a b : Matrix (Fin n) (Fin n) ℂ} (ha : a ∈ UJset ε) (hb : b ∈ UJset ε) :
     a * b ∈ UJset ε := by
   have ha' : aᴴ * Formalism.REAL.Jm ε * a = Formalism.REAL.Jm ε := ha
@@ -95,23 +133,37 @@ def Inter : Prop := ∀ g ∈ Formalism.REAL.Kset ε, ∀ v : H, σ' g (T v) = T
 
 variable {σ σ' T}
 
+/- English proof (translation)
+Introduce `g hg v`. Use `hT g hg (T.symm v)` as an intermediate fact. Rewrite `this` using `[T.apply_symm_apply]`. Rewrite using `[this, T.symm_apply_apply]`.
+-/
 lemma inter_symm (hT : Inter (ε := ε) σ σ' T) : Inter (ε := ε) σ' σ T.symm := by
   intro g hg v
   have := hT g hg (T.symm v)
   rw [T.apply_symm_apply] at this
   rw [this, T.symm_apply_apply]
 
+/- English proof (translation)
+Introduce `θ hθ`. Rewrite using `[hT _ hθ, hv θ hθ, map_smul]`.
+-/
 lemma wt_map (hT : Inter (ε := ε) σ σ' T) {μ : Fin n → ℝ} {v : H}
     (hv : IsWtOn (Formalism.REAL.Kset ε) σ μ v) : IsWtOn (Formalism.REAL.Kset ε) σ' μ (T v) := by
   intro θ hθ
   rw [hT _ hθ, hv θ hθ, map_smul]
 
+/- English proof (translation)
+Introduce `g hg w hw`. Take `⟨v, hv, rfl⟩` from `Submodule.mem_map.1 hw`. Conclude with `Submodule.mem_map.2 ⟨σ g v, hS g hg v hv, by simp [hT g hg v]⟩`.
+-/
 lemma stab_map (hT : Inter (ε := ε) σ σ' T) {S : Submodule ℂ H} (hS : IsKStableOn ε σ S) :
     IsKStableOn ε σ' (S.map (T : H →ₗ[ℂ] H)) := by
   intro g hg w hw
   obtain ⟨v, hv, rfl⟩ := Submodule.mem_map.1 hw
   exact Submodule.mem_map.2 ⟨σ g v, hS g hg v hv, by simp [hT g hg v]⟩
 
+/- English proof (translation)
+Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, ⟨x, hx, rfl⟩, rfl⟩`. Simplify using `using hx`. Introduce `hv`.
+
+Conclude with `⟨T.symm v, ⟨v, hv, rfl⟩, by simp⟩`.
+-/
 lemma map_symm_map (S : Submodule ℂ H) : (S.map (T.symm : H →ₗ[ℂ] H)).map (T : H →ₗ[ℂ] H) = S := by
   ext v
   constructor
@@ -120,6 +172,17 @@ lemma map_symm_map (S : Submodule ℂ H) : (S.map (T.symm : H →ₗ[ℂ] H)).ma
   · intro hv
     exact ⟨T.symm v, ⟨v, hv, rfl⟩, by simp⟩
 
+/- English proof (translation)
+Take `⟨hfin, hst, hirr, ⟨v, hvS, hv0, hvw⟩, hdom⟩` from `hS`. Use `⟨?_, stab_map hT hst, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `haveI := hfin infer_instance`. Introduce `S' hS' hst'`. Establish `hle : S'.map (T.symm : H →ₗ[ℂ] H) ≤ S`.
+
+Establish `h1` using `Submodule.map_mono (f := (T.symm : H →ₗ[ℂ] H)) hS'`. Establish `h2 : (S.map (T : H →ₗ[ℂ] H)).map (T.symm : H →ₗ[ℂ] H) = S`. Simplify using `using map_symm_map (T := T.symm) S`. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis. Break down `hirr _ hle (stab_map (inter_symm hT) hst') with h | h` into its components or cases.
+
+Use `left`. Rewrite using `[← map_symm_map (T := T) S', h, Submodule.map_bot]`. Use `right`. Rewrite using `[← map_symm_map (T := T) S', h]`. Conclude with `⟨T v, Submodule.mem_map_of_mem hvS, (LinearEquiv.map_ne_zero_iff T).2 hv0, wt_map hT hvw⟩`.
+
+Introduce `μ w hw hw0 hww`. Take `⟨x, hx, rfl⟩` from `Submodule.mem_map.1 hw`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Conclude with `hw0 (by simp)`.
+
+Establish `hxw` using `wt_map (inter_symm hT) hww`. Simplify using `only [LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply] at hxw`. Conclude with `hdom μ x hx hx0 hxw`.
+-/
 lemma ktype_map (hT : Inter (ε := ε) σ σ' T) {Λ : Fin n → ℝ} {S : Submodule ℂ H}
     (hS : IsKTypeOf ε σ Λ S) : IsKTypeOf ε σ' Λ (S.map (T : H →ₗ[ℂ] H)) := by
   obtain ⟨hfin, hst, hirr, ⟨v, hvS, hv0, hvw⟩, hdom⟩ := hS
@@ -154,6 +217,33 @@ section Conj
 variable {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {ε : Fin n → Bool} {lam : Fin n → ℝ} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
+/- English proof (translation)
+Take `⟨hc, hnt, ⟨⟨h1, hmul⟩, hnorm, hcont⟩, hirr, hsq, ⟨S0, hS0⟩, hmin⟩` from `hσ`. Establish `huJ : u ∈ UJset ε` using `K_mem_UJ hu`. Establish `husJ : uᴴ ∈ UJset ε` using `K_mem_UJ (star_mem_K hu)`. Establish `huu : uᴴ * u = 1` using `unit_star_mul hu.1`. Establish `huu' : u * uᴴ = 1` using `unit_mul_star hu.1`.
+
+Establish `hconj : ∀ g ∈ UJset ε, uᴴ * g * u ∈ UJset ε` using `fun g hg => conj_mem hu hg`. Establish `key : ∀ g ∈ UJset ε, ∀ x : H, σ (uᴴ * g * u) x = σ uᴴ (σ g (σ u x))`. Introduce `g hg x`. Rewrite using `[hmul _ (mul_mem_UJ husJ hg) _ huJ, hmul _ husJ _ hg]`. Both sides reduce to the same expression.
+
+Establish `hinv1 : ∀ x : H, σ u (σ uᴴ x) = x`. Introduce `x`. Establish `h` using `hmul u huJ uᴴ husJ`. Rewrite `h` using `[huu', h1]`. Conclude with `(congrArg (fun L : H →L[ℂ] H => L x) h).symm`.
+
+Establish `hinv2 : ∀ x : H, σ uᴴ (σ u x) = x`. Introduce `x`. Establish `h` using `hmul uᴴ husJ u huJ`. Rewrite `h` using `[huu, h1]`. Conclude with `(congrArg (fun L : H →L[ℂ] H => L x) h).symm`.
+
+Set `T : H ≃ₗ[ℂ] H` to `LinearEquiv.ofLinear (σ uᴴ : H →ₗ[ℂ] H) (σ u : H →ₗ[ℂ] H) (LinearMap.ext fun x => hinv2 x) (LinearMap.ext fun x => hinv1 x)`. Establish `hT : ∀ x, T x = σ uᴴ x` using `fun x => rfl`. Establish `hInter : Inter (ε` using `ε) σ (fun g => σ (uᴴ * g * u)) T := by`. Introduce `g hg x`. Use `show σ (uᴴ * g * u) (T x) = T (σ g x)`.
+
+Rewrite using `[hT, hT, key g (K_mem_UJ hg), hinv1]`. Use `⟨hc, hnt, ⟨⟨?_, ?_⟩, ?_, ?_⟩, ?_, ?_, ⟨S0.map (T : H →ₗ[ℂ] H), ktype_map hInter hS0⟩, ?_⟩` and prove the remaining obligations. Use `show σ (uᴴ * 1 * u) = 1`. Rewrite using `[Matrix.mul_one, huu, h1]`. Introduce `a ha b hb show σ (uᴴ * (a * b) * u) = σ (uᴴ * a * u) ∘L σ (uᴴ * b * u)`.
+
+Rewrite using `[← hmul _ (hconj a ha) _ (hconj b hb)]`. Use `congr 1`. Rewrite using `[show uᴴ * a * u * (uᴴ * b * u) = uᴴ * a * (u * uᴴ) * b * u by simp only [Matrix.mul_assoc], huu', Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`. Introduce `g hg x`.
+
+Conclude with `hnorm _ (hconj g hg) x`. Introduce `x`. Establish `hc' : Continuous fun g : Matrix (Fin n) (Fin n) ℂ => uᴴ * g * u` using `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`. Conclude with `(hcont x).comp hc'.continuousOn (fun g hg => hconj g hg)`. Introduce `S hS hst`.
+
+Apply `hirr S hS` to reduce the goal to its premises. Introduce `h hh x hx`. Establish `hm` using `conj_mem (star_mem_K hu) hh`. Rewrite `hm` using `[Matrix.conjTranspose_conjTranspose]`. Establish `hx'` using `hst _ hm x hx`.
+
+Establish `e : uᴴ * (u * h * uᴴ) * u = h`. Rewrite using `[show uᴴ * (u * h * uᴴ) * u = (uᴴ * u) * h * (uᴴ * u) by simp only [Matrix.mul_assoc], huu, Matrix.one_mul, Matrix.mul_one]`. Simplify using `only at hx'`. Rewrite `hx'` using `[e]`. Then use the resulting hypothesis. Introduce `v w`.
+
+Establish `hsq'` using `hsq (σ u v) (σ u w)`. Set `Lu : H →ₗᵢ[ℂ] H` to `⟨(σ u : H →ₗ[ℂ] H), fun x => hnorm u huJ x⟩`. Establish `hfun : coefOn (ε` using `ε) (fun g => σ (uᴴ * g * u)) v w = coefOn (ε := ε) σ (σ u v) (σ u w) := by`. Use function extensionality and compare the values at `g`. Establish `hg : umat g ∈ UJset ε` using `g.2`.
+
+Use `show ⟪w, σ (uᴴ * umat g * u) v⟫_ℂ = ⟪σ u w, σ (umat g) (σ u v)⟫_ℂ`. Rewrite using `[key _ hg]`. Establish `h2` using `Lu.inner_map_map w (σ uᴴ (σ (umat g) (σ u v)))`. Establish `h3 : Lu (σ uᴴ (σ (umat g) (σ u v))) = σ (umat g) (σ u v)` using `hinv1 _`. Rewrite `h2` using `[h3]`.
+
+Conclude with `h2.symm`. Rewrite using `[hfun]`. Conclude with `hsq'`. Introduce `μ S hS`. Conclude with `hmin μ _ (ktype_map (inter_symm hInter) hS)`.
+-/
 theorem isDS_conj (hσ : IsDS ε lam σ) {u : Matrix (Fin n) (Fin n) ℂ} (hu : u ∈ Formalism.REAL.Kset ε) :
     IsDS ε lam (fun g => σ (uᴴ * g * u)) := by
   obtain ⟨hc, hnt, ⟨⟨h1, hmul⟩, hnorm, hcont⟩, hirr, hsq, ⟨S0, hS0⟩, hmin⟩ := hσ
@@ -233,6 +323,15 @@ section Cayley
 
 variable {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool}
 
+/- English proof (translation)
+Take `⟨⟨_, hP⟩, hU⟩` from `hP`. Take `⟨⟨_, hP'⟩, hU'⟩` from `hP'`. Establish `eJ : Formalism.REAL.Jm ε = P * Formalism.QuantumDeterminants.Hpk k r * Pᴴ`. Rewrite using `[← hP, show P * (Pᴴ * Formalism.REAL.Jm ε * P) * Pᴴ = (P * Pᴴ) * Formalism.REAL.Jm ε * (P * Pᴴ) by`. Simplify using `only [Matrix.mul_assoc], unit_mul_star hU, Matrix.one_mul, Matrix.mul_one]`.
+
+Establish `eJ' : Formalism.REAL.Jm ε = P' * Formalism.QuantumDeterminants.Hpk k r * P'ᴴ`. Rewrite using `[← hP', show P' * (P'ᴴ * Formalism.REAL.Jm ε * P') * P'ᴴ = (P' * P'ᴴ) * Formalism.REAL.Jm ε * (P' * P'ᴴ) by`. Simplify using `only [Matrix.mul_assoc], unit_mul_star hU', Matrix.one_mul, Matrix.mul_one]`. Establish `hPs : Pᴴ ∈ Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ`. Use `Matrix.mem_unitaryGroup_iff.2 ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.star_eq_conjTranspose, Matrix.conjTranspose_conjTranspose]`. Conclude with `unit_star_mul hU`. Use `⟨Submonoid.mul_mem _ hU' hPs, ?_⟩` and prove the remaining obligations. Establish `e1 : P' * Pᴴ * Formalism.REAL.Jm ε = P' * Formalism.QuantumDeterminants.Hpk k r * Pᴴ` using `by conv_lhs => rw [eJ]`. Rewrite using `[show P' * Pᴴ * (P * Formalism.QuantumDeterminants.Hpk k r * Pᴴ) = P' * (Pᴴ * P) * Formalism.QuantumDeterminants.Hpk k r * Pᴴ by`.
+
+Simplify using `only [Matrix.mul_assoc], unit_star_mul hU, Matrix.mul_one]`. Establish `e2 : Formalism.REAL.Jm ε * (P' * Pᴴ) = P' * Formalism.QuantumDeterminants.Hpk k r * Pᴴ` using `by conv_lhs => rw [eJ']`. Rewrite using `[show P' * Formalism.QuantumDeterminants.Hpk k r * P'ᴴ * (P' * Pᴴ) = P' * Formalism.QuantumDeterminants.Hpk k r * (P'ᴴ * P') * Pᴴ by`. Simplify using `only [Matrix.mul_assoc], unit_star_mul hU', Matrix.mul_one]`. Rewrite using `[e1, e2]`.
+-/
 lemma cayley_K {P P' : Mat k r} (hP : IsCayleyU k r ε P) (hP' : IsCayleyU k r ε P') :
     P' * Pᴴ ∈ Formalism.REAL.Kset ε := by
   obtain ⟨⟨_, hP⟩, hU⟩ := hP
@@ -258,6 +357,13 @@ lemma cayley_K {P P' : Mat k r} (hP : IsCayleyU k r ε P) (hP' : IsCayleyU k r �
       simp only [Matrix.mul_assoc], unit_star_mul hU', Matrix.mul_one]
   rw [e1, e2]
 
+/- English proof (translation)
+Establish `hK` using `cayley_K hP hP'`. Establish `hU` using `hP.2`. Establish `hU'` using `hP'.2`. Establish `h` using `isDS_conj hσ hK`. Establish `hfun : (fun g => σ (P⁻¹ * ((P' * Pᴴ)ᴴ * g * (P' * Pᴴ)) * P)) = (fun g => σ (P'⁻¹ * g * P'))`.
+
+Use function extensionality and compare the values at `g`. Use `congr 1`. Rewrite using `[unit_inv hU, unit_inv hU', Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, show Pᴴ * (P * P'ᴴ * g * (P' * Pᴴ)) * P = (Pᴴ * P) * (P'ᴴ * g * P') * (Pᴴ * P) by`. Simplify using `only [Matrix.mul_assoc],`. Use `unit_star_mul hU, Matrix.one_mul, Matrix.mul_one]`.
+
+Rewrite using `[← hfun]`. Conclude with `h`.
+-/
 theorem isDS_cayley {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {lam : Fin (2 * r + k + 1) → ℝ}
     {σ : Mat k r → (H →L[ℂ] H)} {P P' : Mat k r} (hP : IsCayleyU k r ε P) (hP' : IsCayleyU k r ε P')
     (hσ : IsDS ε lam (fun g => σ (P⁻¹ * g * P))) : IsDS ε lam (fun g => σ (P'⁻¹ * g * P')) := by

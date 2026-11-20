@@ -6,6 +6,9 @@ noncomputable section
 
 namespace PI.UnitaryGroupMassFormula.CntFormula
 
+/- English proof (translation)
+The claim follows from `orbitReps_of_stage2 orbit_count_second_stage`.
+-/
 theorem orbit_representatives : OrbitReps := orbitReps_of_stage2 orbit_count_second_stage
 
 end PI.UnitaryGroupMassFormula.CntFormula

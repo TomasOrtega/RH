@@ -19,6 +19,11 @@ namespace GlobalTheory.ToricTransport
 
 variable {E : Type} [Field E] [NumberField E] {I : Type} [Fintype I]
 
+/- English proof (translation)
+Take `⟨i₀, -⟩` from `hφ (Classical.arbitrary _)`. Take `⟨Λ, hΛ⟩` from `GlobalTheory.ToricDistribution.exists_isHeckeL_of_hasInf E I φ _ χ hφ hχ.1 hχ.2.2.1 ⟨i₀, by omega⟩`. Choose the witnesses or unpack the hypotheses as in `⟨P₀⟩ : Nonempty (HeightOneSpectrum (𝓞 E)) := by`. Take `⟨M, hM⟩` from `Ideal.exists_maximal (𝓞 E)`. Conclude with `⟨⟨M, hM.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hM (RingOfIntegers.not_isField _)⟩⟩`.
+
+Establish `t1` using `GlobalTheory.ToricSumValue.toricSum_eq GlobalTheory.ToricDistribution.exists_isHeckeL_of_hasInf E I φ hφ s κ 𝔣 ∅ χ (fun _ => P₀) Λ hU hs hb (fun _ h => absurd h (Finset.notMem_empty _)) hχ (fun _ h => absurd h (Finset.notMem_empty _)) hΛ`. Rewrite `t1` using `[Finset.filter_empty, Finset.prod_empty, mul_one]`. Conclude with `⟨Λ s, t1, hΛ.ne_zero_nat hχ.1 hs⟩`.
+-/
 theorem exists_toricSum_ne_zero [IsCMField E] {φ : I → E →+* ℂ} {s : ℕ} {κ : I → ℕ} {𝔣 : Ideal (OF E)} {χ : HChar E}
     (hU : UnramFin E) (hφ : IsCMType φ) (hs : 1 ≤ s) (hb : IsBaseCond 𝔣) (hχ : IsValChar φ s κ 𝔣 ∅ χ) :
     ∃ T₀ : ℂ, IsToricSum φ s κ (condQ 𝔣 ∅) χ T₀ ∧ T₀ ≠ 0 := by
@@ -32,9 +37,17 @@ theorem exists_toricSum_ne_zero [IsCMField E] {φ : I → E →+* ℂ} {s : ℕ}
   rw [Finset.filter_empty, Finset.prod_empty, mul_one] at t1
   exact ⟨Λ s, t1, hΛ.ne_zero_nat hχ.1 hs⟩
 
+/- English proof (translation)
+The claim follows from `mul_ne_zero hb.1 (Finset.prod_ne_zero_iff.2 fun q _ => q.ne_bot)`.
+-/
 theorem condQ_ne_bot {𝔣 : Ideal (OF E)} (hb : IsBaseCond 𝔣) (Q : Finset (HeightOneSpectrum (OF E))) : condQ 𝔣 Q ≠ ⊥ :=
   mul_ne_zero hb.1 (Finset.prod_ne_zero_iff.2 fun q _ => q.ne_bot)
 
+/- English proof (translation)
+Establish `h0` using `OrderUnits.finPart_eq_one E I φ hφ s κ 𝔣 ∅ χ hU hb (fun _ h => absurd h (Finset.notMem_empty _)) hχ`. Establish `hle : condQ 𝔣 Q ≤ condQ 𝔣 ∅`. Rewrite using `[show condQ 𝔣 ∅ = 𝔣 by simp [condQ]]`. Conclude with `Ideal.dvd_iff_le.1 (dvd_mul_right 𝔣 _)`. Use `choose S hS using fun q : PicO (condQ 𝔣 Q) => LatEnt.exists_isLatSum GlobalTheory.ToricDistribution.exists_isHeckeL_of_hasInf E I φ hφ s κ 𝔣 _ χ hU hs hb (dvd_mul_right _ _) (condQ_ne_bot hb Q) hχ.1 hχ.2.2.1 (fun y hy => h0 y (hatOUnits_mono hle hy)) q.out`.
+
+Conclude with `⟨_, PicFin.finite_picO E _ (condQ_ne_bot hb Q), S, hS, rfl⟩`.
+-/
 theorem exists_twistedSum [IsCMField E] {φ : I → E →+* ℂ} {s : ℕ} {κ : I → ℕ} {𝔣 : Ideal (OF E)} {χ : HChar E}
     (hU : UnramFin E) (hφ : IsCMType φ) (hs : 1 ≤ s) (hb : IsBaseCond 𝔣) (hχ : IsValChar φ s κ 𝔣 ∅ χ)
     (Q : Finset (HeightOneSpectrum (OF E))) (ψ : PicO (condQ 𝔣 Q) →* ℂˣ) : ∃ T, IsTwistedSum φ s κ (condQ 𝔣 Q) χ ψ T := by
@@ -47,13 +60,32 @@ theorem exists_twistedSum [IsCMField E] {φ : I → E →+* ℂ} {s : ℕ} {κ :
       (condQ_ne_bot hb Q) hχ.1 hχ.2.2.1 (fun y hy => h0 y (hatOUnits_mono hle hy)) q.out
   exact ⟨_, PicFin.finite_picO E _ (condQ_ne_bot hb Q), S, hS, rfl⟩
 
+/- English proof (translation)
+Simplify using `[IsTwistedSum, IsToricSum, GlobalTheory.IndefiniteRowSideFullHecke.ToricSymbols.lamF]`.
+-/
 theorem isTwistedSum_one {φ : I → E →+* ℂ} {s : ℕ} {κ : I → ℕ} {c : Ideal (OF E)} {χ : HChar E} (T : ℂ) :
     IsTwistedSum φ s κ c χ 1 T ↔ IsToricSum φ s κ c χ T := by
   simp [IsTwistedSum, IsToricSum, GlobalTheory.IndefiniteRowSideFullHecke.ToricSymbols.lamF]
 
+/- English proof (translation)
+The claim follows from `MonoidHom.ext fun _ => Units.ext (map_one g)`.
+-/
 theorem conjChar_one {c : Ideal (OF E)} (g : ℂ ≃+* ℂ) : conjChar g (1 : PicO c →* ℂˣ) = 1 :=
   MonoidHom.ext fun _ => Units.ext (map_one g)
 
+/- English proof (translation)
+Introduce `E _ _ _ K _ _ _ d δ ι I _ φ s κ 𝔣 Q χ hU hK hd hδ hφ hι hs hκ hb hQ hχ`. Take `⟨Ω₀, hΩ₀, halg, hconj⟩` from `hT K d δ ι hK hd hδ`. Take `⟨T₀, hT₀, h0⟩` from `exists_toricSum_ne_zero hU hφ hs hb hχ`. Use `choose T hTw using exists_twistedSum hU hφ hs hb hχ Q`. Establish `hD : IsDatum ι φ s κ 𝔣 Q χ` using `⟨hU, hφ, hι, hs, hκ, hb, hQ, hχ⟩`.
+
+Establish `hD₀ : IsDatum ι φ s κ 𝔣 ∅ χ` using `⟨hU, hφ, hι, hs, hκ, hb, fun _ h => absurd h (Finset.notMem_empty _), hχ⟩`. Establish `hT₀'` using `(isTwistedSum_one T₀).2 hT₀`. Establish `e : condQ 𝔣 ∅ = 𝔣` using `by simp [condQ]`. Use `⟨T₀, T, e ▸ hT₀, h0, hTw, fun ψ => ?_, fun Ω _ _ _ j art hj ha g σ t hgE hgl hσ ht ψ => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← coordIn_div E hd hs κ hΩ₀, div_eq_mul_inv]`.
+
+Conclude with `(halg E I φ s κ 𝔣 Q χ hD ψ _ (hTw ψ)).mul (halg E I φ s κ 𝔣 ∅ χ hD₀ 1 _ hT₀').inv`. Take `⟨Ω₁, hΩ₁, h⟩` from `hconj Ω j art hj ha g σ t hσ ht`. Establish `hw : IsConjWt φ g κ κ` using `fun i i' hi => by`. Establish `: φ i = φ i'` using `RingHom.ext fun x => (hgE i x).symm.trans (hi x)`. Rewrite using `[(hφ (φ i)).unique (Or.inl rfl) (Or.inl this)]`.
+
+Establish `hc : IsConjChar φ s κ g χ χ` using `⟨fun y => (hgl y).symm, hχ.2.2.1⟩`. Establish `h1` using `h E I φ s κ 𝔣 Q χ hD κ χ hw hc ψ _ _ (hTw ψ) (hTw _)`. Establish `h2` using `h E I φ s κ 𝔣 ∅ χ hD₀ κ χ hw hc 1 T₀ T₀ hT₀' (by rw [conjChar_one]; exact hT₀')`. Establish `hl` using `GlobalTheory.IndefiniteRowSideFullHecke.LatticeNormTransport.lamF_ne_zero s χ (upIdele K E t)`. Establish `hm : ((modF t : ℝ) : ℂ) ≠ 0`.
+
+Use `GlobalTheory.IndefiniteRowSideFullHecke.LatticeNormTransport.lamF_ne_zero 1 (1 : HChar K) t` as an intermediate fact. Rewrite `this` using `[lamF, pow_one]`. Conclude with `right_ne_zero_of_mul this`. Rewrite using `[← coordIn_div E hd hs κ hΩ₀, map_div₀, h1, h2, coordIn_div E hd hs κ hΩ₁, conjChar_one]`. Simplify using `only [MonoidHom.one_apply, Units.val_one, mul_one]`.
+
+Use `(conjChar g ψ (classOf K (condQ 𝔣 Q) t)).ne_zero` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Use `PicFin.finite_picO E _ (condQ_ne_bot hb Q)` as an intermediate fact. Conclude with `(conjChar g ψ).isOfFinOrder (isOfFinOrder_of_finite _)`.
+-/
 theorem toricRatioConjugates_of_transport (hT : TwistedTransport) : ToricRatioConjugates := by
   intro E _ _ _ K _ _ _ d δ ι I _ φ s κ 𝔣 Q χ hU hK hd hδ hφ hι hs hκ hb hQ hχ
   obtain ⟨Ω₀, hΩ₀, halg, hconj⟩ := hT K d δ ι hK hd hδ

@@ -17,6 +17,9 @@ open MvPolynomial Formalism.DegreeFormula Formalism.BasicNotions Formalism.Basic
 
 namespace GlobalTheory.Mean4
 
+/- English proof (translation)
+Take `⟨hw, hv, -⟩` from `h`. Establish `hc : Fintype.card Y.Comp ≠ 0` using `Fintype.card_ne_zero`. Establish `hne : Nonempty Y.Comp` using `Fintype.card_pos_iff.mp (Nat.pos_of_ne_zero hc)`. Rewrite using `[hv]`. Conclude with `Finset.sum_pos (fun c _ => hw c) Finset.univ_nonempty`.
+-/
 theorem vol_pos_assembly {D : D7} {Y : ShimX D.what₂.Tau} {A : SlopeTestRemainingChoices Y} (h : Degrees A) : 0 < Y.vol := by
   obtain ⟨hw, hv, -⟩ := h
   have hc : Fintype.card Y.Comp ≠ 0 := Fintype.card_ne_zero

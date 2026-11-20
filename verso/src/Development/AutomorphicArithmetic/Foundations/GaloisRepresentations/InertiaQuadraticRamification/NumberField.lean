@@ -20,6 +20,9 @@ def fixGrp (F Ω : Type) [Field F] [Field Ω] [Algebra F Ω] (K : Type) [Field K
     rw [← AlgEquiv.mul_apply, inv_mul_cancel, AlgEquiv.one_apply] at this
     exact this.symm
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_fixGrp {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] {K : Type} [Field K] [Algebra K Ω] {g : G F Ω} :
     g ∈ fixGrp F Ω K ↔ Fixes K g := Iff.rfl
 
@@ -28,13 +31,22 @@ structure Good {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] (H : Subgroup (
   comm : commutator (G F Ω) ≤ H
   real : ∀ (j : Ω →+* ℂ) (c : G F Ω), (∀ x, j (c x) = starRingEnd ℂ (j x)) → c ∈ H
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isOpen_univ, le_top, fun _ _ _ => trivial⟩`.
+-/
 theorem Good.top {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] : Good (⊤ : Subgroup (G F Ω)) :=
   ⟨isOpen_univ, le_top, fun _ _ _ => trivial⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.isOpen.inter h'.isOpen, le_inf h.comm h'.comm, fun j c hc => ⟨h.real j c hc, h'.real j c hc⟩⟩`.
+-/
 theorem Good.inf {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] {H H' : Subgroup (G F Ω)} (h : Good H) (h' : Good H') :
     Good (H ⊓ H') :=
   ⟨h.isOpen.inter h'.isOpen, le_inf h.comm h'.comm, fun j c hc => ⟨h.real j c hc, h'.real j c hc⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Subgroup.isOpen_mono hle h.isOpen, h.comm.trans hle, fun j c hc => hle (h.real j c hc)⟩`.
+-/
 theorem Good.mono {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] {H H' : Subgroup (G F Ω)} (hle : H ≤ H') (h : Good H) :
     Good H' :=
   ⟨Subgroup.isOpen_mono hle h.isOpen, h.comm.trans hle, fun j c hc => hle (h.real j c hc)⟩
@@ -73,20 +85,35 @@ def Layer (S : Set (HeightOneSpectrum (𝓞 E))) (X Y : Fld E Ω) : Prop :=
 def Tower (S : Set (HeightOneSpectrum (𝓞 E))) (X : Fld E Ω) : Prop :=
   Relation.ReflTransGen (Layer S) (Fld.base E Ω) X
 
+/- English proof (translation)
+The claim follows from `Relation.ReflTransGen.refl`.
+-/
 theorem Tower.base (S : Set (HeightOneSpectrum (𝓞 E))) : Tower S (Fld.base E Ω) := Relation.ReflTransGen.refl
 
+/- English proof (translation)
+The claim follows from `Relation.ReflTransGen.tail h h'`.
+-/
 theorem Tower.step {S : Set (HeightOneSpectrum (𝓞 E))} {X Y : Fld E Ω} (h : Tower S X) (h' : Layer S X Y) : Tower S Y :=
   Relation.ReflTransGen.tail h h'
 
+/- English proof (translation)
+Take `⟨a, b, c, h1, h2, u, hu, h3⟩` from `h`. Conclude with `⟨a, b, c, h1, h2, u, fun h => hu (hS h), h3⟩`.
+-/
 theorem Layer.mono {S S' : Set (HeightOneSpectrum (𝓞 E))} (hS : S ⊆ S') {X Y : Fld E Ω} (h : Layer S' X Y) : Layer S X Y := by
   obtain ⟨a, b, c, h1, h2, u, hu, h3⟩ := h
   exact ⟨a, b, c, h1, h2, u, fun h => hu (hS h), h3⟩
 
+/- English proof (translation)
+Proceed by induction on `h with`. Consider the case `refl => exact Relation.ReflTransGen.refl`. Consider the case `tail _ h2 ih => exact Relation.ReflTransGen.tail ih (Layer.mono hS h2)`.
+-/
 theorem Tower.mono {S S' : Set (HeightOneSpectrum (𝓞 E))} (hS : S ⊆ S') {X : Fld E Ω} (h : Tower S' X) : Tower S X := by
   induction h with
   | refl => exact Relation.ReflTransGen.refl
   | tail _ h2 ih => exact Relation.ReflTransGen.tail ih (Layer.mono hS h2)
 
+/- English proof (translation)
+Proceed by induction on `h with`. Consider the case `refl => exact h0`. Consider the case `tail h1 h2 ih => exact hs _ _ h1 h2 ih`.
+-/
 theorem Tower.induction {S : Set (HeightOneSpectrum (𝓞 E))} {P : Fld E Ω → Prop} (h0 : P (Fld.base E Ω))
     (hs : ∀ X Y, Tower S X → Layer S X Y → P X → P Y) {X : Fld E Ω} (h : Tower S X) : P X := by
   induction h with

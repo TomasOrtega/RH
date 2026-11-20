@@ -10,6 +10,9 @@ section gen
 
 variable {K V : Type} [Field K] [CharZero K] [AddCommGroup V] [Module K V] {n : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ', pow_succ', Module.End.mul_apply, Module.End.mul_apply]`. Conclude with `congrArg (G.E a b) ih`.
+-/
 theorem wl_pow_coe (G : GlW K V n) (U : Submodule K V) (hU : G.Stable U) (a b : Fin n) (k : ℕ) (x : U) :
     ((((res G U hU).E a b ^ k) x : U) : V) = (G.E a b ^ k) (x : V) := by
   induction k with
@@ -18,17 +21,29 @@ theorem wl_pow_coe (G : GlW K V n) (U : Submodule K V) (hU : G.Stable U) (a b : 
     rw [pow_succ', pow_succ', Module.End.mul_apply, Module.End.mul_apply]
     exact congrArg (G.E a b) ih
 
+/- English proof (translation)
+The claim follows from `G.gS_stable _`.
+-/
 theorem wl_iso_stable (G : GlW K V n) (W : Submodule K V) (la : Fin n → ℤ) : G.Stable (IsoW G W la) :=
   G.gS_stable _
 
+/- English proof (translation)
+The claim follows from `G.gS_le (fun _ hv => hv.2) hW`.
+-/
 theorem wl_iso_le (G : GlW K V n) {W : Submodule K V} (hW : G.Stable W) (la : Fin n → ℤ) : IsoW G W la ≤ W :=
   G.gS_le (fun _ hv => hv.2) hW
 
+/- English proof (translation)
+The claim follows from `G.gS_le (fun v hv => Submodule.mem_iSup_of_mem (⟨v, hv⟩ : {v : V // G.IsHW la v ∧ v ∈ W}) (G.subset_gS _ (Set.mem_singleton v))) (GlX.iSup_stable G fun _ => G.gS_stable _)`.
+-/
 theorem wl_iso_le_iSup (G : GlW K V n) (W : Submodule K V) (la : Fin n → ℤ) :
     IsoW G W la ≤ ⨆ v : {v : V // G.IsHW la v ∧ v ∈ W}, G.gS {(v : V)} :=
   G.gS_le (fun v hv => Submodule.mem_iSup_of_mem (⟨v, hv⟩ : {v : V // G.IsHW la v ∧ v ∈ W})
     (G.subset_gS _ (Set.mem_singleton v))) (GlX.iSup_stable G fun _ => G.gS_stable _)
 
+/- English proof (translation)
+Use `Submodule.iSup_induction _ (motive := fun x => G.comp ν x = 0) (wl_iso_le_iSup G W la hx) (fun v y hy => ?_) (by simp) (fun y z hy hz => by rw [map_add, hy, hz, add_zero])` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hν (G.wt_le_of_mem v.2.1 hy h)`.
+-/
 theorem wl_iso_wt (G : GlW K V n) (W : Submodule K V) (la : Fin n → ℤ) {x : V} (hx : x ∈ IsoW G W la)
     {ν : Fin n → ℤ} (hν : ¬ Dle ν la) : G.comp ν x = 0 := by
   refine Submodule.iSup_induction _ (motive := fun x => G.comp ν x = 0) (wl_iso_le_iSup G W la hx)
@@ -36,6 +51,11 @@ theorem wl_iso_wt (G : GlW K V n) (W : Submodule K V) (la : Fin n → ℤ) {x : 
   by_contra h
   exact hν (G.wt_le_of_mem v.2.1 hy h)
 
+/- English proof (translation)
+Use `⟨G.isWt_comp la x, fun a b hab => ?_⟩` and prove the remaining obligations. Establish `e` using `G.shift a b (la + dl a b) x`. Rewrite `e` using `[add_sub_cancel_right]`. Rewrite using `[← e]`. Use `wl_iso_wt G W la (G.gS_stable _ a b x hx) (fun hle => ?_)` and prove the remaining obligations.
+
+Use `Dle_antisymm hle (Dle_raise la hab)` as an intermediate fact. Conclude with `dl_ne_zero (ne_of_lt hab) (by simpa using this)`.
+-/
 theorem wl_comp_hw (G : GlW K V n) (W : Submodule K V) (la : Fin n → ℤ) {x : V} (hx : x ∈ IsoW G W la) :
     G.IsHW la (G.comp la x) := by
   refine ⟨G.isWt_comp la x, fun a b hab => ?_⟩
@@ -46,6 +66,11 @@ theorem wl_comp_hw (G : GlW K V n) (W : Submodule K V) (la : Fin n → ℤ) {x :
   have := Dle_antisymm hle (Dle_raise la hab)
   exact dl_ne_zero (ne_of_lt hab) (by simpa using this)
 
+/- English proof (translation)
+Establish `hwt : ∀ ν, G₂.IsWt ν (θ (G₁.comp ν x))` using `fun ν => GlX.isWt_of_eig G₂ (fun c => by`. Rewrite using `[← hθ, G₁.diag, map_smul])`. Take `⟨S, hS⟩` from `G₁.dec x`. Establish `hx'` using `G₁.sum_comp x (insert μ S) (fun ν hν => hS ν (fun h => hν (Finset.mem_insert_of_mem h)))`. Use `conv_rhs => rw [← hx']`.
+
+Rewrite using `[map_sum, map_sum, Finset.sum_eq_single μ (fun ν _ hν => by rw [G₂.comp_of_isWt (hwt ν), if_neg (Ne.symm hν)]) (fun h => absurd (Finset.mem_insert_self μ S) h), G₂.comp_of_isWt (hwt μ), if_pos rfl]`.
+-/
 theorem wl_comp_comm {U : Type} [AddCommGroup U] [Module K U] (G₁ : GlW K U n) (G₂ : GlW K V n) (θ : U →ₗ[K] V)
     (hθ : ∀ c x, θ (G₁.E c c x) = G₂.E c c (θ x)) (μ : Fin n → ℤ) (x : U) :
     θ (G₁.comp μ x) = G₂.comp μ (θ x) := by
@@ -58,6 +83,11 @@ theorem wl_comp_comm {U : Type} [AddCommGroup U] [Module K U] (G₁ : GlW K U n)
   rw [map_sum, map_sum, Finset.sum_eq_single μ (fun ν _ hν => by rw [G₂.comp_of_isWt (hwt ν), if_neg (Ne.symm hν)])
     (fun h => absurd (Finset.mem_insert_self μ S) h), G₂.comp_of_isWt (hwt μ), if_pos rfl]
 
+/- English proof (translation)
+Establish `hk` using `GlX.ker_le G hW hWf hh hh' hhW hh'W h0`. Use `⟨GlX.tr G hk ∘ₗ (LinearEquiv.ofEq _ _ (GlX.range_Lv G h).symm).toLinearMap, fun a b x => ?_, fun y => ?_, fun m hm => ?_⟩` and prove the remaining obligations. Conclude with `GlX.tr_E G hk a b (LinearEquiv.ofEq _ _ (GlX.range_Lv G h).symm x) _`. Rewrite using `[← GlX.range_Lv]`. Conclude with `GlX.tr_mem G hk _`.
+
+Rewrite `hm` using `[← GlX.range_Lv]`. Take `⟨c, rfl⟩` from `hm`. Use `⟨⟨GlX.Lv G h c, by rw [← GlX.range_Lv]; exact LinearMap.mem_range_self _ c⟩, ?_⟩` and prove the remaining obligations. Conclude with `GlX.tr_apply G hk c`.
+-/
 theorem wl_transport (G : GlW K V n) {W : Submodule K V} (hW : G.Stable W) (hWf : G.FinW W) {la : Fin n → ℤ}
     {h h' : V} (hh : G.IsHW la h) (hh' : G.IsHW la h') (hhW : h ∈ W) (hh'W : h' ∈ W) (h0 : h ≠ 0) :
     ∃ θ : G.gS {h} →ₗ[K] V, (∀ a b x, θ ((res G _ (G.gS_stable {h})).E a b x) = G.E a b (θ x)) ∧
@@ -73,6 +103,11 @@ theorem wl_transport (G : GlW K V n) {W : Submodule K V} (hW : G.Stable W) (hWf 
     refine ⟨⟨GlX.Lv G h c, by rw [← GlX.range_Lv]; exact LinearMap.mem_range_self _ c⟩, ?_⟩
     exact GlX.tr_apply G hk c
 
+/- English proof (translation)
+Establish `hmem : h ∈ G.gS {h}` using `G.subset_gS {h} rfl`. Establish `hp : LinearMap.IsProj (K ∙ (⟨h, hmem⟩ : G.gS {h})) ((res G _ (G.gS_stable {h})).comp la)`. Use `⟨fun x => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `G.comp_top_of_mem hh x.2`. Conclude with `Submodule.mem_span_singleton.mpr ⟨c, Subtype.ext hc.symm⟩`.
+
+Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.mp hx`. Rewrite using `[map_smul]`. Use `congr 1`. Conclude with `Subtype.ext hh.1`. Rewrite using `[hp.trace, finrank_span_singleton (fun e => h0 (congrArg Subtype.val e)), Nat.cast_one]`.
+-/
 theorem wl_trace (G : GlW K V n) {la : Fin n → ℤ} {h : V} (hh : G.IsHW la h) (h0 : h ≠ 0)
     [FiniteDimensional K (G.gS {h})] :
     LinearMap.trace K _ ((res G _ (G.gS_stable {h})).comp la) = 1 := by
@@ -90,6 +125,13 @@ theorem wl_trace (G : GlW K V n) {la : Fin n → ℤ} {h : V} (hh : G.IsHW la h)
 def topC (G : GlW K V n) (W : Submodule K V) (la : Fin n → ℤ) : IsoW G W la →ₗ[K] V :=
   G.comp la ∘ₗ (IsoW G W la).subtype
 
+/- English proof (translation)
+Establish `e1` using `hNat K (IsoW G W la →ₗ[K] V) (G.gS {h} →ₗ[K] V) (Fin n) (homAct (res G (IsoW G W la) (wl_iso_stable G W la)).E G.E) (homAct (res G _ (G.gS_stable {h})).E G.E) (LinearMap.lcomp K V (θ.codRestrict (IsoW G W la) hθY)) (fun a b φ => homAct_precomp (res G (IsoW G W la) (wl_iso_stable …`. Establish `e2` using `hNat K (G.gS {h} →ₗ[K] G.gS {h}) (G.gS {h} →ₗ[K] V) (Fin n) (homAct (res G _ (G.gS_stable {h})).E (res G _ (G.gS_stable {h})).E) (homAct (res G _ (G.gS_stable {h})).E G.E) (LinearMap.llcomp K _ _ V θ) (fun a b φ => homAct_postcomp (res G _ (G.gS_stable {h})).E (res G _ (G.gS_stab …`. Establish `e3 : LinearMap.lcomp K V (θ.codRestrict (IsoW G W la) hθY) (topC G W la) = LinearMap.llcomp K _ _ V θ ((res G _ (G.gS_stable {h})).comp la)`. Use extensionality with `x`. Conclude with `(wl_comp_comm (res G _ (G.gS_stable {h})) G θ (fun c x => hθ c c x) la x).symm`.
+
+Establish `h0' : ∀ c, homAct (res G _ (G.gS_stable {h})).E (res G _ (G.gS_stable {h})).E c c ((res G _ (G.gS_stable {h})).comp la) = 0`. Introduce `c`. Use extensionality with `x`. Rewrite using `[homAct_apply, (res G _ (G.gS_stable {h})).diag, (res G _ (G.gS_stable {h})).comp_Ecc, sub_self]`. Both sides reduce to the same expression.
+
+Rewrite `e1` using `[e3, ← e2, hSch _ h0', wl_trace G hh h0, map_smul, one_div]`. Conclude with `LinearMap.congr_fun e1 y`.
+-/
 theorem wl_key (hNat : InvNat) (G : GlW K V n) (W : Submodule K V) (la : Fin n → ℤ) (l : ℕ) {h : V}
     (hh : G.IsHW la h) (h0 : h ≠ 0) [FiniteDimensional K (G.gS {h})]
     (hSch : ∀ φ : (G.gS {h}) →ₗ[K] (G.gS {h}),
@@ -130,16 +172,25 @@ section padic
 
 variable (p : ℕ) [Fact p.Prime] {V : Type} [AddCommGroup V] [Module ℚ_[p] V] {n : ℕ}
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite using `[SetLike.mem_coe, DeltaLat, AddSubgroup.mem_sInf]`. Conclude with `fun L hL => hL.1 hx`.
+-/
 theorem subset_deltaLat (G : GlW ℚ_[p] V n) (s : Set V) : s ⊆ DeltaLat p G s := by
   intro x hx
   rw [SetLike.mem_coe, DeltaLat, AddSubgroup.mem_sInf]
   exact fun L hL => hL.1 hx
 
+/- English proof (translation)
+Introduce `c hc x hx`. Rewrite `hx`, the goal using `[DeltaLat, AddSubgroup.mem_sInf]`. Conclude with `fun L hL => hL.2.1 c hc x (hx L hL)`.
+-/
 theorem deltaLat_closed (G : GlW ℚ_[p] V n) (s : Set V) : ZpClosed p (DeltaLat p G s) := by
   intro c hc x hx
   rw [DeltaLat, AddSubgroup.mem_sInf] at hx ⊢
   exact fun L hL => hL.2.1 c hc x (hx L hL)
 
+/- English proof (translation)
+Introduce `a b hab k x hx`. Rewrite `hx`, the goal using `[DeltaLat, AddSubgroup.mem_sInf]`. Conclude with `fun L hL => hL.2.2 a b hab k x (hx L hL)`.
+-/
 theorem deltaLat_div (G : GlW ℚ_[p] V n) (s : Set V) : DivStable G.E (DeltaLat p G s) := by
   intro a b hab k x hx
   rw [DeltaLat, AddSubgroup.mem_sInf] at hx ⊢
@@ -147,6 +198,29 @@ theorem deltaLat_div (G : GlW ℚ_[p] V n) (s : Set V) : DivStable G.E (DeltaLat
 
 end padic
 
+/- English proof (translation)
+Introduce `p _ V _ _ n G W M l D la x hx hxM`. Distinguish the cases in `hex : ∃ h, G.IsHW la h ∧ h ∈ W ∧ h ≠ 0`. Use `swap`. Use `push Not at hex`. Establish `hbot : IsoW G W la ≤ ⊥` using `G.gS_le (fun v hv => by`.
+
+Rewrite using `[SetLike.mem_coe, Submodule.mem_bot]`. Conclude with `hex v hv.1 hv.2) G.bot_stable`. Rewrite using `[(Submodule.mem_bot _).mp (hbot hx), smul_zero]`. Conclude with `AddSubgroup.zero_mem _`. Take `⟨h, hh, hhW, h0⟩` from `hex`.
+
+Establish `hUW : G.gS {h} ≤ W` using `G.gS_le (by simpa using hhW) D.stable`. Use `D.fd` as an intermediate fact. Establish `: FiniteDimensional ℚ_[p] (G.gS {h})` using `Submodule.finiteDimensional_of_le hUW`. Establish `hmem : h ∈ G.gS {h}` using `G.subset_gS {h} rfl`. Establish `: Nontrivial (G.gS {h})` using `⟨⟨⟨h, hmem⟩, 0, fun e => h0 (congrArg Subtype.val e)⟩⟩`.
+
+Establish `hfr : (Module.finrank ℚ_[p] (G.gS {h}) : ℚ_[p]) ≠ 0`. Conclude with `(Module.finrank_pos (R := ℚ_[p]) (M := G.gS {h})).ne'` after adjusting the coercions. Use `set Δ := DeltaLat p G {h | G.IsHW la h ∧ h ∈ W ∧ h ∈ M} with hΔ`. Establish `hΔZ : ZpClosed p Δ` using `deltaLat_closed p G _`. Establish `hΔD : DivStable G.E Δ` using `deltaLat_div p G _`.
+
+Establish `hid : ∀ z : IsoW G W la, InvOp (homAct (res G (IsoW G W la) (wl_iso_stable G W la)).E G.E) l (List.finRange n) (topC G W la) z = ((Module.finrank ℚ_[p] (G.gS {h}) : ℚ_[p]))⁻¹ • (z : V)`. Establish `hle : (⨆ v : {v : V // G.IsHW la v ∧ v ∈ W}, G.gS {(v : V)}) ≤ Submodule.map (IsoW G W la).subtype (LinearMap.eqLocus (InvOp (homAct (res G (IsoW G W la) (wl_iso_stable G W la)).E G.E) l (List.finRange n) (topC G W la)) (((Module.finrank ℚ_[p] (G.gS {h}) : ℚ_[p]))⁻¹ • (IsoW G W l …`. Use `iSup_le fun v m hm => ?_` and prove the remaining obligations. Take `⟨θ, hθ, hθm, hsur⟩` from `wl_transport G D.stable D.finW hh v.2.1 hhW v.2.2 h0`. Establish `hvY : G.gS {(v : V)} ≤ IsoW G W la` using `G.gS_le (by`.
+
+Introduce `y hy`. Rewrite `hy` using `[Set.mem_singleton_iff]`. Substitute `hy` using the available equality. Conclude with `G.subset_gS _ v.2) (G.gS_stable _)`. Take `⟨y, rfl⟩` from `hsur m hm`.
+
+Conclude with `⟨⟨θ y, hvY (hθm y)⟩, wl_key hNat G W la l hh h0 (fun φ hφ => hSchur ℚ_[p] V n G W l D.stable D.fd D.finW D.bound la h hh hhW h0 φ hφ) θ hθ (fun y => hvY (hθm y)) y, rfl⟩`. Introduce `z`. Take `⟨z', hz', hzz⟩` from `hle (wl_iso_le_iSup G W la z.2)`. Establish `: z' = z` using `Subtype.ext hzz`. Rewrite using `[← this]`.
+
+Conclude with `hz'`. Establish `hLd : DivStable (res G (IsoW G W la) (wl_iso_stable G W la)).E (M.comap (IsoW G W la).subtype.toAddMonoidHom)`. Introduce `a b hab j y hy`. Use `show ((((j.factorial : ℚ_[p]))⁻¹ • ((res G (IsoW G W la) (wl_iso_stable G W la)).E a b ^ j) y : IsoW G W la) : V) ∈ M`. Rewrite using `[Submodule.coe_smul, wl_pow_coe]`.
+
+Conclude with `D.div a b hab j _ hy`. Take `⟨hHZ, hHD⟩` from `hom_divided_holds p (IsoW G W la) V (Fin n) (res G (IsoW G W la) (wl_iso_stable G W la)).E G.E (M.comap (IsoW G W la).subtype.toAddMonoidHom) Δ hΔZ hLd hΔD`. Establish `hrel` using `hom_relation_holds ℚ_[p] (IsoW G W la) V (Fin n) (res G (IsoW G W la) (wl_iso_stable G W la)).E G.E (glRel_of (res G (IsoW G W la) (wl_iso_stable G W la))) (glRel_of G)`. Establish `hφ : topC G W la ∈ HomLat (K` using `ℚ_[p]) (M.comap (IsoW G W la).subtype.toAddMonoidHom) Δ := by`. Introduce `y hy`.
+
+Conclude with `subset_deltaLat p G _ ⟨wl_comp_hw G W la y.2, G.graded_of D.stable la _ (wl_iso_le G D.stable la y.2), D.graded la _ hy⟩`. Establish `h2` using `invariant_integral_holds p _ (Fin n) _ hrel _ hHZ hHD l (List.finRange n) (List.nodup_finRange n) _ hφ`. Rewrite `h2` using `[List.length_finRange]`. Establish `h3` using `h2 ⟨x, hx⟩ hxM`. Rewrite `h3` using `[LinearMap.smul_apply, hid]`.
+
+Establish `h4` using `hΔZ (Module.finrank ℚ_[p] (G.gS {h}) : ℚ_[p]) (by simpa using Padic.norm_int_le_one (p := p) (Module.finrank ℚ_[p] (G.gS {h}) : ℤ)) _ h3`. Rewrite `h4` using `[smul_comm, smul_smul (Module.finrank ℚ_[p] (G.gS {h}) : ℚ_[p]), mul_inv_cancel₀ hfr, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem weylInt_of (hNat : InvNat) (hSchur : SchurTrace) : WeylInt := by
   intro p _ V _ _ n G W M l D la x hx hxM
   by_cases hex : ∃ h, G.IsHW la h ∧ h ∈ W ∧ h ≠ 0
@@ -214,6 +288,9 @@ theorem weylInt_of (hNat : InvNat) (hSchur : SchurTrace) : WeylInt := by
     (by simpa using Padic.norm_int_le_one (p := p) (Module.finrank ℚ_[p] (G.gS {h}) : ℤ)) _ h3
   rwa [smul_comm, smul_smul (Module.finrank ℚ_[p] (G.gS {h}) : ℚ_[p]), mul_inv_cancel₀ hfr, one_smul] at h4
 
+/- English proof (translation)
+The claim follows from `weylInt_of invariant_natural_holds (schurTrace_of invariant_inverse_holds)`.
+-/
 theorem weyl_integral_holds : WeylInt := weylInt_of invariant_natural_holds (schurTrace_of invariant_inverse_holds)
 
 end Formalism.InvariantFactorPaths.PW

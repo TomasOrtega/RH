@@ -16,6 +16,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O _ β Y u hyp`. Take `⟨hinj, hnoeth, hfrac⟩` from `hyp`. Establish `hmem` using `irreducibleComponent_mem_irreducibleComponents u`. Take `⟨Z⟩` from `nonempty_cptOver_of_fraction hinj hfrac Y _ hmem`. Take `⟨U', hU', -⟩` from `cptOver_isOpen_isDomain E H D l Xo c O β Y _ Z ⟨hinj, hnoeth, hfrac⟩`.
+
+Use `⟨irreducibleComponent u, Z, mem_irreducibleComponent, ⟨isClosed_of_mem_irreducibleComponents _ hmem, ?_⟩, isIrreducible_irreducibleComponent⟩` and prove the remaining obligations. Rewrite using `[← hU']`. Conclude with `U'.isOpen`.
+-/
 theorem exists_cptOver_mem_isClopen_isIrreducible : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (u : Xo.XF c), (Function.Injective β ∧ IsNoetherianRing O ∧ ∀ x : c.F, ∃ a b : O, β b ≠ 0 ∧ x * β b = β a) → ∃ (U : Set (Xo.XF c)) (_ : CptOver Y U), u ∈ U ∧ IsClopen U ∧ IsIrreducible U := by
   intro E _ _ _ H D l Xo c O _ β Y u hyp
   obtain ⟨hinj, hnoeth, hfrac⟩ := hyp

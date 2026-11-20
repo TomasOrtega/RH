@@ -9,11 +9,19 @@ open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Forma
 
 namespace GlobalTheory.FockVac
 
+/- English proof (translation)
+Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Simplify using `[Jm, Formalism.UG.Jpq, lineSign, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply]`.
+-/
 theorem jm_mul_jm_apply {P Q R S : ℕ} (c : Matrix (Ix P Q) (Ix R S) ℂ) (i : Ix P Q) (j : Ix R S) :
     (Jm P Q * c * Jm R S : Matrix (Ix P Q) (Ix R S) ℂ) i j = lineSign (p := P) (q := Q) (r := R) (s := S) i j * c i j := by
   rcases i with i | i <;> rcases j with j | j <;>
     simp [Jm, Formalism.UG.Jpq, lineSign, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply]
 
+/- English proof (translation)
+Simplify using `only [heisOp, LinearMap.smul_apply, LinearMap.sum_apply, LinearMap.sub_apply]`. Rewrite using `[smul_comm Complex.I]`. Use `congr 1`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl ?_` and prove the remaining obligations.
+
+Introduce and unpack `⟨i, j⟩ -`. Rewrite using `[Matrix.smul_apply, jm_mul_jm_apply]`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Simplify using `[raiB, lowB, linePos, lineSign, smul_smul]`.
+-/
 theorem heisOp_one {P Q R S : ℕ} (c : Matrix (Ix P Q) (Ix R S) ℂ) :
     heisOp (Complex.I • (Jm P Q * c * Jm R S)) (1 : Formalism.BasicNotions.TH.Pol P Q R S) = Complex.I • heisOp c 1 := by
   simp only [heisOp, LinearMap.smul_apply, LinearMap.sum_apply, LinearMap.sub_apply]
@@ -26,6 +34,11 @@ theorem heisOp_one {P Q R S : ℕ} (c : Matrix (Ix P Q) (Ix R S) ℂ) :
   rcases i with i | i <;> rcases j with j | j <;>
     simp [raiB, lowB, linePos, lineSign, smul_smul]
 
+/- English proof (translation)
+Unfold `atPl`. Rewrite using `[PiTensorProduct.map_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = w`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne h]`.
+-/
 theorem atPl_tprod {ι : Type} [Fintype ι] [DecidableEq ι] {V : ι → Type} [∀ i, AddCommGroup (V i)] [∀ i, Module ℂ (V i)]
     (w : ι) (L : Module.End ℂ (V w)) (v : ∀ i, V i) :
     atPl w L (PiTensorProduct.tprod ℂ v) = PiTensorProduct.tprod ℂ (Function.update v w (L (v w))) := by
@@ -37,6 +50,9 @@ theorem atPl_tprod {ι : Type} [Fintype ι] [DecidableEq ι] {V : ι → Type} [
   · subst h; simp
   · simp [Function.update_of_ne h]
 
+/- English proof (translation)
+Simplify using `only [sumPl, LinearMap.sum_apply, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[atPl_tprod, atPl_tprod, heisOp_one, MultilinearMap.map_update_smul]`.
+-/
 theorem sumPl_heisOp_vacuum {ι : Type} [Fintype ι] [DecidableEq ι] {P Q R S : ℕ} (c : ι → Matrix (Ix P Q) (Ix R S) ℂ) :
     sumPl (V := fun _ : ι => Pol P Q R S) (fun w => heisOp (Complex.I • (Jm P Q * c w * Jm R S)))
       (PiTensorProduct.tprod ℂ fun _ => 1) =

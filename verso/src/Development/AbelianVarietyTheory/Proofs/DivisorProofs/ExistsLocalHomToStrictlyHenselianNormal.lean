@@ -11,6 +11,11 @@ open IsLocalRing Polynomial
 
 namespace GlobalTheory.NormalStrictHens
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨Classical.arbitrary ι, by simp⟩`. Consider the case `insert x s _ ih`. Take `⟨i, hi⟩` from `ih`. Take `⟨j, hj⟩` from `hcov x`.
+
+Take `⟨k, hik, hjk⟩` from `directed_of (· ≤ ·) i j`. Use `⟨k, fun y hy => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hy with rfl | hy` into its components or cases. Conclude with `hmono hjk hj`. Conclude with `hmono hik (hi y hy)`.
+-/
 theorem exists_mem_finset {S : Type} [CommRing S] {ι : Type} [Preorder ι] [IsDirected ι (· ≤ ·)]
     [Nonempty ι] (R : ι → Subring S) (hmono : Monotone R) (hcov : ∀ x : S, ∃ i, x ∈ R i)
     (s : Finset S) : ∃ i, ∀ x ∈ s, x ∈ R i := by
@@ -26,6 +31,11 @@ theorem exists_mem_finset {S : Type} [CommRing S] {ι : Type} [Preorder ι] [IsD
     · exact hmono hjk hj
     · exact hmono hik (hi y hy)
 
+/- English proof (translation)
+Use `haveI : NoZeroDivisors S := ⟨fun {x y} hxy => by`. Take `⟨k, hk⟩` from `exists_mem_finset R hmono hcov {x, y}`. Use `haveI := hdom k`. Establish `hx : x ∈ R k` using `hk x (by simp)`. Establish `hy : y ∈ R k` using `hk y (by simp)`.
+
+Establish `h : (⟨x, hx⟩ : R k) * ⟨y, hy⟩ = 0` using `Subtype.ext hxy`. Break down `mul_eq_zero.1 h with h | h` into its components or cases. Conclude with `Or.inl (congrArg Subtype.val h)`. Conclude with `Or.inr (congrArg Subtype.val h)⟩`. Conclude with `NoZeroDivisors.to_isDomain S`.
+-/
 theorem isDomain_of_directed {S : Type} [CommRing S] [Nontrivial S] {ι : Type} [Preorder ι]
     [IsDirected ι (· ≤ ·)] [Nonempty ι] (R : ι → Subring S) (hmono : Monotone R)
     (hcov : ∀ x : S, ∃ i, x ∈ R i) (hdom : ∀ i, IsDomain (R i)) : IsDomain S := by
@@ -41,6 +51,21 @@ theorem isDomain_of_directed {S : Type} [CommRing S] [Nontrivial S] {ι : Type} 
     · exact Or.inr (congrArg Subtype.val h)⟩
   exact NoZeroDivisors.to_isDomain S
 
+/- English proof (translation)
+Rewrite using `[isIntegrallyClosed_iff (FractionRing S)]`. Introduce `x hx`. Take `⟨f, hfm, hf⟩` from `hx`. Take `⟨⟨a, b⟩, rfl⟩` from `IsLocalization.mk'_surjective (nonZeroDivisors S) x`. Take `⟨k, hk⟩` from `exists_mem_finset R hmono hcov (insert a (insert (b : S) f.coeffs))`.
+
+Use `haveI := hdom k`. Use `haveI := hic k`. Establish `ha : a ∈ R k` using `hk a (by simp)`. Establish `hb : (b : S) ∈ R k` using `hk b (by simp)`. Establish `hcf : (f.coeffs : Set S) ⊆ R k` using `fun c hc => hk c (Finset.mem_insert_of_mem (Finset.mem_insert_of_mem hc))`.
+
+Establish `hgm : (f.toSubring (R k) hcf).Monic` using `(monic_toSubring f (R k) hcf).2 hfm`. Establish `hgf : (f.toSubring (R k) hcf).map (R k).subtype = f` using `map_toSubring f (R k) hcf`. Establish `hinj : Function.Injective ((algebraMap S (FractionRing S)).comp (R k).subtype)` using `(IsFractionRing.injective S (FractionRing S)).comp Subtype.val_injective`. Set `φ : FractionRing (R k) →+* FractionRing S` to `IsFractionRing.lift hinj`. Establish `hφ : ∀ r : R k, φ (algebraMap (R k) (FractionRing (R k)) r) = algebraMap S (FractionRing S) r` using `fun r => IsFractionRing.lift_algebraMap hinj r`.
+
+Establish `hb0 : (⟨b, hb⟩ : R k) ∈ nonZeroDivisors (R k)`. Rewrite using `[mem_nonZeroDivisors_iff_ne_zero]`. Introduce `h`. Conclude with `nonZeroDivisors.coe_ne_zero b (congrArg Subtype.val h)`. Establish `hφy : φ (IsLocalization.mk' (FractionRing (R k)) (⟨a, ha⟩ : R k) ⟨⟨b, hb⟩, hb0⟩) = IsLocalization.mk' (FractionRing S) a b`.
+
+Rewrite using `[IsFractionRing.lift_mk', IsFractionRing.mk'_eq_div]`. Both sides reduce to the same expression. Establish `hcomp : φ.comp (algebraMap (R k) (FractionRing (R k))) = (algebraMap S (FractionRing S)).comp (R k).subtype`. Use extensionality with `r`. Conclude with `hφ r`.
+
+Establish `hy : IsIntegral (R k) (IsLocalization.mk' (FractionRing (R k)) (⟨a, ha⟩ : R k) ⟨⟨b, hb⟩, hb0⟩)`. Use `⟨f.toSubring (R k) hcf, hgm, ?_⟩` and prove the remaining obligations. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[map_zero, hom_eval₂, hφy, hcomp, ← eval₂_map, hgf]`. Conclude with `hf`.
+
+Take `⟨c, hc⟩` from `(isIntegrallyClosed_iff (FractionRing (R k))).1 inferInstance hy`. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[← hφ, hc, hφy]`.
+-/
 theorem isIntegrallyClosed_of_directed {S : Type} [CommRing S] [IsDomain S] {ι : Type} [Preorder ι]
     [IsDirected ι (· ≤ ·)] [Nonempty ι] (R : ι → Subring S) (hmono : Monotone R)
     (hcov : ∀ x : S, ∃ i, x ∈ R i) (hdom : ∀ i, IsDomain (R i))
@@ -91,6 +116,19 @@ namespace GlobalTheory
 
 open GlobalTheory.NormalStrictHens in
 
+/- English proof (translation)
+Introduce `T _ _ _ hT A _ _ _ _ _ i hi`. Use `haveI := hi`. Take `⟨hThens, hTac, -⟩` from `GlobalTheory.AbsIntClosedLocal.henselian_isAlgClosed_pow_surj T ⟨inferInstance, hT⟩`. Use `haveI := hThens`. Use `haveI := hTac`.
+
+Take `⟨S, _, _, _, hloc, hsc, -, hmax, -, ι, _, _, _, Si, hmono, hcov, hSi⟩` from `GlobalTheory.exists_strictHenselisation A (SeparableClosure (ResidueField A))`. Use `haveI := hsc`. Establish `hind : GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.IsIndEtale (algebraMap A S)` using `GlobalTheory.StrictHensUnion.indEtale_of_directed_union A S ι Si hmono hcov fun k => by`. Take `⟨B, _, _, _, q, _, ⟨e⟩⟩` from `hSi k`. Conclude with `GlobalTheory.StrictHensUnion.indEtale_of_algEquiv e (GlobalTheory.StrictHensUnion.indEtale_localization_of_etale A B q.primeCompl)`.
+
+Establish `hsh : GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.IsStrictHenselisation (algebraMap A S)` using `⟨inferInstance, hsc, hloc, hind⟩`. Use `haveI : IsNoetherianRing S := GlobalTheory.StalkNoeth.isNoetherianRing_of_indEt A S hind`. Establish `hdi : ∀ k, IsDomain (Si k).toSubring ∧ IsIntegrallyClosed (Si k).toSubring` using `fun k => by`. Take `⟨B, _, _, _, q, _, ⟨e⟩⟩` from `hSi k`. Take `⟨h1, h2⟩` from `GlobalTheory.etale_localization_atPrime_isDomain_isIntegrallyClosed A B q`.
+
+Set `e' : Localization.AtPrime q ≃+* (Si k).toSubring` to `e.toRingEquiv.trans { toFun := fun x => ⟨x.1, x.2⟩ invFun := fun x => ⟨x.1, x.2⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl map_mul' := fun _ _ => rfl map_add' := fun _ _ => rfl }`. Conclude with `⟨e'.symm.toMulEquiv.isDomain _, IsIntegrallyClosed.of_equiv e'⟩`. Establish `hmono' : Monotone fun k => (Si k).toSubring` using `fun _ _ h => hmono h`. Use `haveI : IsDomain S := isDomain_of_directed _ hmono' hcov fun k => (hdi k).1`. Establish `hic : IsIntegrallyClosed S` using `isIntegrallyClosed_of_directed _ hmono' hcov (fun k => (hdi k).1) fun k => (hdi k).2`.
+
+Take `⟨α, hα⟩` from `GlobalTheory.NCyc.StrictLocLift.exists_ringHom_of_isStrictHenselisation (algebraMap A S) hsh i`. Establish `hle : maximalIdeal S ≤ (maximalIdeal T).comap α`. Rewrite using `[← hmax, Ideal.map_le_iff_le_comap, Ideal.comap_comap, hα]`. Introduce `a ha`. Conclude with `map_nonunit i a ha`.
+
+Use `⟨S, inferInstance, inferInstance, inferInstance, hsc, inferInstance, hic, algebraMap A S, α, hα, ⟨fun s hs => ?_⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `(mem_maximalIdeal _).1 (hle ((mem_maximalIdeal s).2 h)) hs`.
+-/
 theorem exists_strictlyHenselian_normal_between : ∀ (T : Type) [CommRing T] [IsDomain T] [IsLocalRing T],
     GlobalTheory.LocAcyc.AbsIntClosed T →
     ∀ (A : Type) [CommRing A] [IsDomain A] [IsLocalRing A] [IsNoetherianRing A] [IsIntegrallyClosed A]

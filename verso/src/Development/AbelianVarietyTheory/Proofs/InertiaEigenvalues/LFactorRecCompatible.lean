@@ -21,6 +21,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.LocLanglands
 
+/- English proof (translation)
+Introduce `hEx hMS hSC hZP hGL hBZ E Ω _ _ _ _ _ A w h a ha e rc H x`. Prove the components needed by the constructor for the conclusion. Introduce `hs`. Take `⟨α, hα⟩` from `GlobalTheory.SatakeExists.main hBZ (w.adicCompletion E) x.1 ⟨x.2.rep.V, x.2.rep.ρ, x.2.rep.smooth, x.2.rep.irr⟩ hs`. Rewrite using `[GlobalTheory.T.epsilon_factor_rec_compatible hEx hMS hSC hZP hGL hBZ E Ω A w h a ha e rc H x α hα]`.
+
+Conclude with `(WD.unr_mk _).2 (WDRep.unr_diag _)`. Introduce `hu`. Take `⟨α, hα⟩` from `GlobalTheory.T.unramified_weilDeligne_eq_diagonal_inv E Ω A w h (rc x) hu`. Take `⟨π, hπ⟩` from `GlobalTheory.CuspRep.ParLaws.exists_hasSatake (k := w.adicCompletion E) α`. Establish `φ` using `equivRep π`.
+
+Establish `hπ' : HasSatake (cls π).rep α` using `⟨IrrRep.irr _, fixed_ne_bot_of_equiv φ hπ.2.1, (IsSubquotient.of_surjective φ.toIntertwiningMap φ.toLinearEquiv.surjective).trans hπ.2.2⟩`. Establish `e1` using `GlobalTheory.T.epsilon_factor_rec_compatible hEx hMS hSC hZP hGL hBZ E Ω A w h a ha e rc H (cls π) α hπ'`. Establish `e2 : cls π = x` using `H.bij.1 (e1.trans hα.symm)`. Rewrite using `[← e2]`. Conclude with `hπ'.2.1`.
+-/
 theorem isSpherical_iff_unr_of_lawsLit : LanglandsExhaustionGL → LanglandsMultisegments → StandardCosocleGL → ZelevinskyPolynomialRing → GeometricLemma → BernsteinZelevinskyFiniteness → ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (a : Weil h →* (w.adicCompletion E)ˣ) (ha : IsLocalArtin h a) (e : AddChar (w.adicCompletion E) Circle → WD h → ℂˣ) (rc : IrrGL (w.adicCompletion E) → WD h), LawsLit a ha e rc → ∀ x : IrrGL (w.adicCompletion E), IsSpherical x.rep ↔ (rc x).unr := by
   intro hEx hMS hSC hZP hGL hBZ E Ω _ _ _ _ _ A w h a ha e rc H x
   constructor

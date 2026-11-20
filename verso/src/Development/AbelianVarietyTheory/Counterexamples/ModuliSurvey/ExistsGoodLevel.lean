@@ -10,6 +10,13 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
 
+/- English proof (translation)
+Establish `hne : (Ideal.span {(p : (⊥ : Subring ℂ))}) ≠ ⊤`. Rewrite using `[Ne, Ideal.span_singleton_eq_top]`. Introduce `hu`. Take `⟨v, hv⟩` from `hu.exists_right_inv`. Take `⟨n, hn⟩` from `Subring.mem_bot.1 v.2`.
+
+Establish `h1 : ((p : ℤ) * n : ℤ) = 1`. Use `congrArg Subtype.val hv` as an intermediate fact. Simplify using `only [Subring.coe_mul, Subring.coe_natCast, Subring.coe_one] at this`. Rewrite `this` using `[← hn]`. Conclude with `this` after adjusting the coercions.
+
+Use `Int.isUnit_iff_natAbs_eq.1 (IsUnit.of_mul_eq_one _ h1)` as an intermediate fact. Simplify using `at this`. Conclude with `hp.one_lt.ne' this`. Take `⟨W, -, hW⟩` from `Ideal.image_subset_nonunits_valuationSubring _ hne`. Conclude with `⟨W, hW ⟨p, Ideal.mem_span_singleton_self _, by simp⟩⟩`.
+-/
 theorem exists_place (p : ℕ) (hp : p.Prime) : ∃ W : ValuationSubring ℂ, (p : ℂ) ∈ W.nonunits := by
   have hne : (Ideal.span {(p : (⊥ : Subring ℂ))}) ≠ ⊤ := by
     rw [Ne, Ideal.span_singleton_eq_top]
@@ -27,6 +34,13 @@ theorem exists_place (p : ℕ) (hp : p.Prime) : ∃ W : ValuationSubring ℂ, (p
   obtain ⟨W, -, hW⟩ := Ideal.image_subset_nonunits_valuationSubring _ hne
   exact ⟨W, hW ⟨p, Ideal.mem_span_singleton_self _, by simp⟩⟩
 
+/- English proof (translation)
+Establish `hm : ∀ x : 𝓞 c.F, algebraMap (𝓞 c.F) c.F x ∈ c.V W`. Introduce `x`. Establish `hi : IsIntegral (c.V W) (x : c.F)` using `(RingOfIntegers.isIntegral_coe x).tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hi`. Establish `: (y : c.F) = x` using `hy`.
+
+Express the relevant statement in the definitionally equal form `(x : c.F) ∈ c.V W`. Rewrite using `[← this]`. Conclude with `y.2`. Use `⟨(algebraMap (𝓞 c.F) c.F).codRestrict (c.V W).toSubring hm, fun x => rfl, fun b hb => ?_⟩` and prove the remaining obligations. Use extensionality with `x`.
+
+Conclude with `congrArg _ (hb x)`.
+-/
 theorem exists_incl {l : Level H} (c : Coeff l) (W : ValuationSubring ℂ) :
     ∃! b : 𝓞 c.F →+* c.V W, ∀ x, ((b x : c.V W) : c.F) = (x : c.F) := by
   have hm : ∀ x : 𝓞 c.F, algebraMap (𝓞 c.F) c.F x ∈ c.V W := by
@@ -40,6 +54,13 @@ theorem exists_incl {l : Level H} (c : Coeff l) (W : ValuationSubring ℂ) :
   ext x
   exact congrArg _ (hb x)
 
+/- English proof (translation)
+Introduce `hu`. Take `⟨v, hv⟩` from `hu.exists_right_inv`. Establish `hvW : ((v : c.F) : ℂ) ∈ W` using `v.2`. Establish `h1 : (p : ℂ) * ((v : c.F) : ℂ) = 1`. Use `congrArg (fun z : c.V W => ((z : c.F) : ℂ)) hv` as an intermediate fact.
+
+Simplify using `using this`. Rewrite `hW` using `[ValuationSubring.mem_nonunits_iff]`. Establish `h2` using `(W.valuation_le_one_iff _).2 hvW`. Establish `h3` using `congrArg W.valuation h1`. Rewrite `h3` using `[map_mul, map_one]`.
+
+Establish `: W.valuation p * W.valuation ((v : c.F) : ℂ) < 1` using `mul_lt_one_of_lt_of_le hW h2`. Conclude with `this.ne h3`.
+-/
 theorem not_isUnit {l : Level H} (c : Coeff l) (W : ValuationSubring ℂ) (p : ℕ) (hW : (p : ℂ) ∈ W.nonunits) :
     ¬ IsUnit (p : c.V W) := by
   intro hu
@@ -55,6 +76,9 @@ theorem not_isUnit {l : Level H} (c : Coeff l) (W : ValuationSubring ℂ) (p : �
   have : W.valuation p * W.valuation ((v : c.F) : ℂ) < 1 := mul_lt_one_of_lt_of_le hW h2
   exact this.ne h3
 
+/- English proof (translation)
+Establish `hc : (c.V W).subtype.comp b = algebraMap (𝓞 c.F) c.F` using `RingHom.ext hb`. Use `⟨pullback.lift Y.j (pullback.snd _ _ ≫ spMap (c.V W).subtype) ?_, pullback.lift_fst _ _ _⟩` and prove the remaining obligations. Rewrite using `[Model.j, Category.assoc, pullback.condition, ← Category.assoc, Y.jQ_over, Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hc]`.
+-/
 theorem exists_lift {l : Level H} {Xo : Moduli D l} {c : Coeff l} (W : ValuationSubring ℂ)
     (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (b : 𝓞 c.F →+* c.V W)
     (hb : ∀ x, ((b x : c.V W) : c.F) = (x : c.F)) :
@@ -64,6 +88,11 @@ theorem exists_lift {l : Level H} {Xo : Moduli D l} {c : Coeff l} (W : Valuation
   rw [Model.j, Category.assoc, pullback.condition, ← Category.assoc, Y.jQ_over, Category.assoc,
     ← Spec.map_comp, ← CommRingCat.ofHom_comp, hc]
 
+/- English proof (translation)
+Unfold `Level.GoodAt`. Establish `hM0 : l.M ≠ 0` using `by have := l.three_le; omega`. Establish `key : ∀ c, 3 ≤ c → c ∣ l.M → ¬ p ∣ c → 3 ≤ l.M / p ^ l.M.factorization p` using `fun c hc hd hn => hc.trans (Nat.le_of_dvd (Nat.ordCompl_pos p hM0) (Nat.dvd_ordCompl_of_dvd_not_dvd hd hn))`. Distinguish the cases in `h : p ∣ a`. Use `key b hb (hM ▸ dvd_mul_left _ _) fun h' => hp.one_lt.ne' ?_` and prove the remaining obligations.
+
+Conclude with `Nat.eq_one_of_dvd_coprimes hab h h'`. Conclude with `key a ha (hM ▸ dvd_mul_right _ _) h`.
+-/
 theorem goodAt_of_coprime (l : Level H) (a b : ℕ) (ha : 3 ≤ a) (hb : 3 ≤ b) (hab : a.Coprime b)
     (hM : l.M = a * b) (p : ℕ) (hp : p.Prime) : l.GoodAt p := by
   unfold Level.GoodAt
@@ -75,12 +104,56 @@ theorem goodAt_of_coprime (l : Level H) (a b : ℕ) (ha : 3 ≤ a) (hb : 3 ≤ b
     exact Nat.eq_one_of_dvd_coprimes hab h h'
   · exact key a ha (hM ▸ dvd_mul_right _ _) h
 
+/- English proof (translation)
+Unfold `Level.GoodAt`. Rewrite using `[hM, Nat.factorization_pow, Finsupp.smul_apply, hp.factorization_self, smul_eq_mul, mul_one, Nat.div_self (pow_pos hp.pos k)]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem not_goodAt_pow (l : Level H) (p k : ℕ) (hp : p.Prime) (hM : l.M = p ^ k) : ¬ l.GoodAt p := by
   unfold Level.GoodAt
   rw [hM, Nat.factorization_pow, Finsupp.smul_apply, hp.factorization_self, smul_eq_mul, mul_one,
     Nat.div_self (pow_pos hp.pos k)]
   omega
 
+/- English proof (translation)
+Establish `hd` using `H.d_mod`. Take `⟨e, he⟩ : ∃ e, H.d = 16 * e + 7` from `⟨H.d / 16, by omega⟩`. Establish `hrt : H.rt = 2 * H.w0 - 1` using `by rw [H.two_weight_eq_one_add_root]; ring`. Establish `hbar : H.bar H.rt = -H.rt`. Establish `h2 : (H.bar H.rt) ^ 2 = H.rt ^ 2` using `by rw [← map_pow, H.rt_sq]; simp`.
+
+Break down `sq_eq_sq_iff_eq_or_eq_neg.1 h2 with h | h` into its components or cases. It suffices to derive a contradiction. Establish `h3 : IsCMField.complexConj E (H.rt : E) = H.rt` using `by rw [← H.bar_eq, h]`. Establish `φ : E →+* ℂ` using `Classical.choice inferInstance`. Establish `h4` using `IsCMField.complexEmbedding_complexConj E φ (H.rt : E)`.
+
+Rewrite `h4` using `[h3]`. Establish `h5 : φ (H.rt : E) ^ 2 = -(H.d : ℂ)`. Use `congrArg (fun z : 𝓞 E => φ (z : E)) H.rt_sq` as an intermediate fact. Simplify using `using this`. Establish `h6 : (φ (H.rt : E)).im = 0` using `Complex.conj_eq_iff_im.1 h4.symm`.
+
+Establish `h7` using `congrArg Complex.re h5`. Simplify using `[sq, h6] at h7`. Establish `: (0 : ℝ) < H.d` using `by exact_mod_cast (by omega : 0 < H.d)`. Use polynomial arithmetic with `[mul_self_nonneg (φ (H.rt : E)).re]`. Conclude with `h`.
+
+Use `set r := H.rt with hr`. Establish `hr2 : r ^ 2 = -(H.d : 𝓞 E)` using `H.rt_sq`. Use `set N₁ : ℕ := H.d + 4 with hN₁`. Use `set N₂ : ℕ := 4 * N₁ ^ 2 + H.d with hN₂`. Establish `hcop : N₁.Coprime N₂`.
+
+Establish `h1 : N₁.Coprime H.d`. Rewrite using `[hN₁, Nat.coprime_self_add_left]`. Conclude with `(Nat.coprime_pow_left_iff (by norm_num : 0 < 2) 2 H.d).2 ((Nat.coprime_two_left).2 ⟨8 * e + 3, by omega⟩)`. Establish `: N₂ = H.d + N₁ * (4 * N₁)` using `by rw [hN₂]; ring`. Rewrite using `[this, Nat.coprime_add_mul_left_right]`.
+
+Conclude with `h1`. Establish `o1 : Odd N₁` using `⟨8 * e + 5, by omega⟩`. Establish `o2 : Odd N₂` using `⟨2 * N₁ ^ 2 + 8 * e + 3, by omega⟩`. Set `α : 𝓞 E` to `(2 + r) * (2 * N₁ + r)`. Establish `hα : H.bar α = (2 - r) * (2 * N₁ - r)`.
+
+Simplify using `only [α, map_mul, map_add, map_natCast, map_ofNat, hbar]`. Expand and normalize the polynomial expressions, which then agree. Establish `n1 : (2 + r) * (2 - r) = (N₁ : 𝓞 E)` using `by rw [hN₁]; push_cast; linear_combination -hr2`. Establish `n2 : (2 * N₁ + r) * (2 * N₁ - r) = (N₂ : 𝓞 E)` using `by rw [hN₂]; push_cast; linear_combination -hr2`. Establish `cZ : ∀ a b : ℕ, a.Coprime b → IsCoprime (a : 𝓞 E) (b : 𝓞 E)` using `fun a b h => Nat.Coprime.cast h`.
+
+Establish `c4 : ∀ n : ℕ, Odd n → IsCoprime (n : 𝓞 E) (4 : 𝓞 E)` using `fun n hn => by`. Use `cZ n 4 ((Nat.coprime_pow_right_iff (by norm_num : 0 < 2) n 2).2 (Nat.coprime_two_right.2 hn))` as an intermediate fact. Simplify using `using this`. Establish `c12` using `cZ _ _ hcop`. Establish `k1 : IsCoprime (2 + r) (2 - r)`.
+
+Use `c4 _ o1` as an intermediate fact. Rewrite `this` using `[← n1]`. Establish `h` using `this.of_mul_left_left`. Establish `e4 : (4 : 𝓞 E) = (2 - r) + (2 + r) * 1` using `by ring`. Rewrite `h` using `[e4]`.
+
+Conclude with `h.of_add_mul_left_right`. Establish `k2 : IsCoprime (2 * (N₁ : 𝓞 E) + r) (2 * N₁ - r)`. Use `(c4 _ o2).mul_right c12.symm` as an intermediate fact. Rewrite `this` using `[← n2]`. Establish `h` using `this.of_mul_left_left`.
+
+Establish `e4 : (4 : 𝓞 E) * N₁ = (2 * N₁ - r) + (2 * N₁ + r) * 1` using `by ring`. Rewrite `h` using `[e4]`. Conclude with `h.of_add_mul_left_right`. Establish `k3 : IsCoprime (2 + r) (2 * (N₁ : 𝓞 E) - r)`. Use `c12` as an intermediate fact.
+
+Rewrite `this` using `[← n2]`. Use `conv at this => lhs`. Rewrite using `[← n1]`. Conclude with `this.of_mul_left_left.of_mul_right_right`. Establish `k4 : IsCoprime (2 * (N₁ : 𝓞 E) + r) (2 - r)`.
+
+Use `c12.symm` as an intermediate fact. Rewrite `this` using `[← n2]`. Use `conv at this => rhs`. Rewrite using `[← n1]`. Conclude with `this.of_mul_left_left.of_mul_right_right`.
+
+Establish `hmap : (Ideal.span {α}).map (H.bar : 𝓞 E →+* 𝓞 E) = Ideal.span {H.bar α}`. Rewrite using `[Ideal.map_span, Set.image_singleton]`. Both sides reduce to the same expression. Establish `hmem : α ∈ Algebra.adjoin ℤ {H.w0}`. Establish `hw : H.w0 ∈ Algebra.adjoin ℤ {H.w0}` using `Algebra.subset_adjoin rfl`.
+
+Establish `hr' : r ∈ Algebra.adjoin ℤ {H.w0}`. Rewrite using `[hrt]`. Conclude with `sub_mem (mul_mem (ofNat_mem _ 2) hw) (one_mem _)`. Conclude with `mul_mem (add_mem (ofNat_mem _ 2) hr') (add_mem (mul_mem (ofNat_mem _ 2) (natCast_mem _ _)) hr')`. Set `l : Level H` to `{ M := N₁ * N₂ three_le := by nlinarith [show 3 ≤ N₁ by omega, show 3 ≤ N₂ by omega] odd := o1.mul o2 Mb := Ideal.span {α} fromK := le_antisymm (Ideal.span_mono (by`.
+
+Introduce and unpack `x rfl`. Conclude with `⟨Ideal.mem_span_singleton_self _, hmem⟩))`. Use the proof step `(Ideal.span_le.2 fun x hx => hx.1)`. Use `prod := by`. Rewrite using `[hmap, Ideal.span_singleton_mul_span_singleton, hα]`.
+
+Use `congr 2`. Use `push_cast`. Rewrite using `[← n2]`. Use `conv_rhs => lhs`. Rewrite using `[← n1]`.
+
+Simplify using `only [α]`. Expand and normalize the polynomial expressions, which then agree. Use `coprime := by`. Rewrite using `[hmap, ← Ideal.isCoprime_iff_sup_eq, Ideal.isCoprime_span_singleton_iff, hα]`. Conclude with `(k1.mul_right k3).mul_left (k4.mul_right k2)`.
+
+Use `A := 1`. Use `A_pos := one_pos }`. Conclude with `⟨l, rfl, goodAt_of_coprime l N₁ N₂ (by omega) (by omega) hcop rfl⟩`.
+-/
 theorem exists_good_level (H : Host E) : ∃ l : Level H, l.A = 1 ∧ ∀ p : ℕ, p.Prime → l.GoodAt p := by
   have hd := H.d_mod
   obtain ⟨e, he⟩ : ∃ e, H.d = 16 * e + 7 := ⟨H.d / 16, by omega⟩
@@ -177,6 +250,21 @@ theorem exists_good_level (H : Host E) : ∃ l : Level H, l.A = 1 ∧ ∀ p : �
       A_pos := one_pos }
   exact ⟨l, rfl, goodAt_of_coprime l N₁ N₂ (by omega) (by omega) hcop rfl⟩
 
+/- English proof (translation)
+Take `⟨b, hb, -⟩` from `exists_incl c W`. Establish `hn` using `not_isUnit c W p hW`. Establish `hpm : (p : 𝓞 c.F) ∈ (IsLocalRing.maximalIdeal (c.V W)).comap b`. Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `hn`.
+
+Set `v : IsDedekindDomain.HeightOneSpectrum (𝓞 c.F)` to `⟨(IsLocalRing.maximalIdeal (c.V W)).comap b, inferInstance, fun h => by`. Rewrite `hpm` using `[h, Ideal.mem_bot]`. Conclude with `hp.ne_zero (by exact_mod_cast hpm)⟩`. Use `⟨v, hpm, ?_⟩` and prove the remaining obligations. Use `haveI : IsLocalization v.asIdeal.primeCompl (v.valuationSubringAtPrime c.F) := Localization.subalgebra.isLocalization_ofField c.F v.asIdeal.primeCompl v.asIdeal.primeCompl_le_nonZeroDivisors`.
+
+Use `haveI : IsDiscreteValuationRing (v.valuationSubringAtPrime c.F) := IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain (𝓞 c.F) v.ne_bot _`. Use `ValuationSubring.eq_of_le_of_ne_top _ ?_ ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨⟨a, s⟩, h⟩` from `IsLocalization.surj v.asIdeal.primeCompl (⟨x, hx⟩ : v.valuationSubringAtPrime c.F)`. Establish `hs : IsUnit (b s)`.
+
+Assume the negation of the conclusion as `h'`. Conclude with `s.2 h'`. Take `⟨u, hu⟩` from `hs.exists_right_inv`. Establish `h1 : x * ((s : 𝓞 c.F) : c.F) = (a : c.F)` using `congrArg Subtype.val h`. Establish `h2 : ((s : 𝓞 c.F) : c.F) * (u : c.F) = 1`.
+
+Rewrite using `[← hb]`. Conclude with `congrArg Subtype.val hu`. Establish `: x = ((b a * u : c.V W) : c.F)`. Use `push_cast`. Rewrite using `[hb, ← h1, mul_assoc, h2, mul_one]`.
+
+Rewrite using `[this]`. Conclude with `(b a * u).2`. Introduce `h`. Apply `hn` to reduce the goal to its premises. Establish `hp0 : (p : c.F) ≠ 0` using `by exact_mod_cast hp.ne_zero`.
+
+Use `IsUnit.of_mul_eq_one ⟨(p : c.F)⁻¹, h ▸ ValuationSubring.mem_top _⟩ (Subtype.ext ?_)` and prove the remaining obligations. Simplify using `[hp0]`.
+-/
 theorem exists_prime_eq {l : Level H} (c : Coeff l) (W : ValuationSubring ℂ) (p : ℕ) (hp : p.Prime)
     (hW : (p : ℂ) ∈ W.nonunits) [NumberField c.F] :
     ∃ v : IsDedekindDomain.HeightOneSpectrum (𝓞 c.F), (p : 𝓞 c.F) ∈ v.asIdeal ∧

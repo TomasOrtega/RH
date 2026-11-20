@@ -13,6 +13,9 @@ def PointChartField.Statement : Prop :=
     relDim (mIdealOver F y) = ((0 : ℕ) : WithBot (WithTop ℤ)) →
     ∀ c : ∀ k, ι k, (∀ k, y ⟨k, c k⟩ ≠ 0) → IsField (chartRingOver F y c)
 
+/- English proof (translation)
+The claim follows from `h F Unit (IndefiniteRowSideFullHecke.Kleiman2.pnIdx 0) (IndefiniteRowSideFullHecke.Kleiman2.pnField F 0) (IndefiniteRowSideFullHecke.Kleiman2.pnPt F 0) (IndefiniteRowSideFullHecke.Kleiman2.relDim_pnPt F 0) (fun _ => 0) (fun _ => IndefiniteRowSideFullHecke.Kleiman2.pnPt_ne_zero F …`.
+-/
 example (F : Type) [Field F] (h : PointChartField.Statement) :=
   h F Unit (IndefiniteRowSideFullHecke.Kleiman2.pnIdx 0) (IndefiniteRowSideFullHecke.Kleiman2.pnField F 0) (IndefiniteRowSideFullHecke.Kleiman2.pnPt F 0)
     (IndefiniteRowSideFullHecke.Kleiman2.relDim_pnPt F 0) (fun _ => 0) (fun _ => IndefiniteRowSideFullHecke.Kleiman2.pnPt_ne_zero F 0 _)

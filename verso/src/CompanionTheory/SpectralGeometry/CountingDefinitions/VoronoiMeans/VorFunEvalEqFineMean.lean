@@ -25,30 +25,51 @@ namespace CMOrd
 
 variable {O : Type} [CommRing O] {bar : O → O}
 
+/- English proof (translation)
+Introduce `a b` and use `by obtain ⟨σ, hσ⟩ := h.emb exact hσ (by simp [h.conj])`.
+-/
 theorem add (h : CMOrd O bar) : ∀ a b, bar (a + b) = bar a + bar b := fun a b => by
   obtain ⟨σ, hσ⟩ := h.emb
   exact hσ (by simp [h.conj])
 
+/- English proof (translation)
+Introduce `a b` and use `by obtain ⟨σ, hσ⟩ := h.emb exact hσ (by simp [h.conj])`.
+-/
 theorem mul (h : CMOrd O bar) : ∀ a b, bar (a * b) = bar a * bar b := fun a b => by
   obtain ⟨σ, hσ⟩ := h.emb
   exact hσ (by simp [h.conj])
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `h.emb`. Conclude with `hσ (by simp [h.conj])`.
+-/
 theorem one (h : CMOrd O bar) : bar 1 = 1 := by
   obtain ⟨σ, hσ⟩ := h.emb
   exact hσ (by simp [h.conj])
 
+/- English proof (translation)
+Introduce `τ a` and use `by obtain ⟨σ, hσ⟩ := h.emb exact hσ (by rw [h.conj]; exact h.conj (σ.comp τ.toRingHom) a)`.
+-/
 theorem comm (h : CMOrd O bar) : ∀ (τ : O ≃+* O) (a : O), τ (bar a) = bar (τ a) := fun τ a => by
   obtain ⟨σ, hσ⟩ := h.emb
   exact hσ (by rw [h.conj]; exact h.conj (σ.comp τ.toRingHom) a)
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `h.emb`. Conclude with `funext fun a => hσ ((h.conj σ a).trans (h'.conj σ a).symm)`.
+-/
 theorem bar_unique {bar' : O → O} (h : CMOrd O bar) (h' : CMOrd O bar') : bar = bar' := by
   obtain ⟨σ, hσ⟩ := h.emb
   exact funext fun a => hσ ((h.conj σ a).trans (h'.conj σ a).symm)
 
+/- English proof (translation)
+Take `⟨σ, -⟩` from `h.emb`. Conclude with `σ.charZero`.
+-/
 theorem charZero (h : CMOrd O bar) : CharZero O := by
   obtain ⟨σ, -⟩ := h.emb
   exact σ.charZero
 
+/- English proof (translation)
+Establish `: Module.Free ℤ O` using `Module.free_of_finite_type_torsion_free'`. Use `ClassGroup.fintypeOfAdmissibleOfAlgebraic (Module.finBasis ℤ O) AbsoluteValue.absIsAdmissible` as an intermediate fact. Use `infer_instance`.
+-/
 theorem finite_classGroup (O : Type) [CommRing O] [IsDedekindDomain O] [Module.Finite ℤ O] [CharZero O] :
     Finite (ClassGroup O) := by
   classical
@@ -58,6 +79,17 @@ theorem finite_classGroup (O : Type) [CommRing O] [IsDedekindDomain O] [Module.F
 
 open GlobalTheory.ProjModClasses in
 
+/- English proof (translation)
+Introduce `q`. Use `h.ded` as an intermediate fact. Use `h.fin` as an intermediate fact. Use `h.charZero` as an intermediate fact. Use `finite_classGroup O` as an intermediate fact.
+
+Set `T` to `Σ r : Fin (q + 1), (Fin r → ClassGroup O)`. Set `g : T → ModuleCat.{0} O` to `fun t => ModuleCat.of O (Model t.2)`. Set `P : T → Prop` to `fun t => Module.Finite O (g t) ∧ Module.Projective O (g t) ∧ Module.finrank O (g t) ≤ q`. Set `S` to `{t : T // P t}`. Establish `: Finite S` using `inferInstance`.
+
+Set `eS` to `Finite.equivFin S`. Use `⟨Nat.card S, fun k => g (eS.symm k).1, fun k => (eS.symm k).2, ?_⟩` and prove the remaining obligations. Introduce `X _ _ _ _ hq`. Take `⟨c, ⟨eX⟩⟩` from `exists_equiv_model (R := O) (Module.finrank O X) X rfl`. Set `t : T` to `⟨⟨Module.finrank O X, Nat.lt_succ_of_le hq⟩, c⟩`.
+
+Establish `ht : P t`. Use `⟨Module.Finite.equiv eX, Module.Projective.of_equiv eX, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Module.finrank O (Model c) ≤ q`. Rewrite using `[← eX.finrank_eq]`. Conclude with `hq`.
+
+Use `⟨eS ⟨t, ht⟩, ?_⟩` and prove the remaining obligations. Use `show Nonempty (X ≃ₗ[O] (g (eS.symm (eS ⟨t, ht⟩)).1))`. Rewrite using `[Equiv.symm_apply_apply]`. Conclude with `⟨eX⟩`.
+-/
 theorem classes (h : CMOrd O bar) : ∀ q : ℕ, ∃ (n : ℕ) (R : Fin n → ModuleCat.{0} O),
     (∀ k, Module.Finite O (R k) ∧ Module.Projective O (R k) ∧ Module.finrank O (R k) ≤ q) ∧
     ∀ (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X], Module.finrank O X ≤ q →
@@ -87,9 +119,17 @@ theorem classes (h : CMOrd O bar) : ∀ q : ℕ, ∃ (n : ℕ) (R : Fin n → Mo
   rw [Equiv.symm_apply_apply]
   exact ⟨eX⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun σ a => by simp, ⟨Int.castRingHom ℂ, Int.cast_injective⟩, inferInstance, inferInstance⟩`.
+-/
 theorem int : CMOrd ℤ id :=
   ⟨fun σ a => by simp, ⟨Int.castRingHom ℂ, Int.cast_injective⟩, inferInstance, inferInstance⟩
 
+/- English proof (translation)
+Establish `hσ : Function.Injective σ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Assume the negation of the conclusion as `h0`. Establish `hk : RingHom.ker σ ≠ ⊥` using `fun h => h0 (by simpa [h] using (RingHom.mem_ker.2 hx : x ∈ RingHom.ker σ))`.
+
+Take `⟨n, hn, hn0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot (Ideal.IsIntegral.comap_ne_bot ℤ hk)`. Conclude with `hn0 (by simpa [Ideal.mem_comap, RingHom.mem_ker] using hn)`. Conclude with `⟨IsFractionRing.lift hσ, fun x => IsFractionRing.lift_algebraMap hσ x⟩`.
+-/
 theorem exists_extend {E : Type} [Field E] [NumberField E] (σ : 𝓞 E →+* ℂ) :
     ∃ φ : E →+* ℂ, ∀ x : 𝓞 E, φ (x : E) = σ x := by
   have hσ : Function.Injective σ := by
@@ -101,6 +141,9 @@ theorem exists_extend {E : Type} [Field E] [NumberField E] (σ : 𝓞 E →+* �
     exact hn0 (by simpa [Ideal.mem_comap, RingHom.mem_ker] using hn)
   exact ⟨IsFractionRing.lift hσ, fun x => IsFractionRing.lift_algebraMap hσ x⟩
 
+/- English proof (translation)
+Use `⟨fun σ a => ?_, ?_, inferInstance, inferInstance⟩` and prove the remaining obligations. Take `⟨φ, h⟩` from `exists_extend σ`. Rewrite using `[← h, ← h, hb]`. Take `⟨φ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Conclude with `⟨φ.comp (algebraMap _ E), φ.injective.comp RingOfIntegers.coe_injective⟩`.
+-/
 theorem of_field {E : Type} [Field E] [NumberField E] {b : 𝓞 E → 𝓞 E}
     (hb : ∀ (φ : E →+* ℂ) (a : 𝓞 E), φ (b a : E) = starRingEnd ℂ (φ (a : E))) : CMOrd (𝓞 E) b := by
   refine ⟨fun σ a => ?_, ?_, inferInstance, inferInstance⟩
@@ -109,6 +152,15 @@ theorem of_field {E : Type} [Field E] [NumberField E] {b : 𝓞 E → 𝓞 E}
   · obtain ⟨φ⟩ : Nonempty (E →+* ℂ) := inferInstance
     exact ⟨φ.comp (algebraMap _ E), φ.injective.comp RingOfIntegers.coe_injective⟩
 
+/- English proof (translation)
+Establish `d : ∀ a : GaussianInt, a = (a.re : GaussianInt) + (a.im : GaussianInt) * Zsqrtd.sqrtd` using `fun a => by`. Apply the tactic sequence `ext <;> simp`. Use `⟨fun σ a => ?_, ⟨GaussianInt.toComplex, fun _ _ h => GaussianInt.toComplex_inj.1 h⟩, inferInstance, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `have d' : star a = (a.re : GaussianInt) - (a.im : GaussianInt) * Zsqrtd.sqrtd := by ext <;> simp`. Apply the tactic sequence `have s : (Zsqrtd.sqrtd : GaussianInt) * Zsqrtd.sqrtd = -1 := by ext <;> simp`.
+
+Establish `h : σ Zsqrtd.sqrtd ^ 2 = Complex.I ^ 2`. Rewrite using `[sq, ← map_mul, s]`. Simplify using the standard rewrite rules. Establish `h2 : starRingEnd ℂ (σ Zsqrtd.sqrtd) = - σ Zsqrtd.sqrtd`. Apply the tactic sequence `rcases sq_eq_sq_iff_eq_or_eq_neg.1 h with e | e <;> simp [e]`.
+
+Rewrite using `[d']`. Use `conv_rhs => rw [d a]`. Simplify using `only [map_add, map_sub, map_mul, map_intCast, h2]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨⟨{1, Zsqrtd.sqrtd}, ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[eq_top_iff]`. Introduce `a _`. Rewrite using `[Finset.coe_pair, Submodule.mem_span_pair]`. Apply the tactic sequence `exact ⟨a.re, a.im, by ext <;> simp⟩`.
+-/
 theorem gauss : CMOrd GaussianInt star := by
   have d : ∀ a : GaussianInt, a = (a.re : GaussianInt) + (a.im : GaussianInt) * Zsqrtd.sqrtd := fun a => by
     ext <;> simp
@@ -129,6 +181,13 @@ theorem gauss : CMOrd GaussianInt star := by
     rw [Finset.coe_pair, Submodule.mem_span_pair]
     exact ⟨a.re, a.im, by ext <;> simp⟩
 
+/- English proof (translation)
+Use `h.ded` as an intermediate fact. Use `h.fin` as an intermediate fact. Use `⟨fun σ a => ?_, ?_, ?_, Module.Finite.equiv e.toAddEquiv.toIntLinearEquiv⟩` and prove the remaining obligations. Simplify using `using h.conj (σ.comp e.toRingHom) (e.symm a)`. Take `⟨σ, hσ⟩` from `h.emb`.
+
+Conclude with `⟨σ.comp e.symm.toRingHom, hσ.comp e.symm.injective⟩`. Establish `: IsDomain O'` using `MulEquiv.isDomain O e.symm.toMulEquiv`. Establish `: IsNoetherianRing O'` using `isNoetherianRing_of_ringEquiv O e`. Establish `: IsIntegrallyClosed O'` using `IsIntegrallyClosed.of_equiv e`. Establish `: Ring.DimensionLEOne O'` using `⟨fun {p} hp hp' => by`.
+
+Establish `hm : (p.comap e).IsMaximal` using `Ring.DimensionLEOne.maximalOfPrime (fun h0 => hp (by rw [← Ideal.map_comap_of_surjective e e.surjective p, h0, Ideal.map_bot])) (Ideal.comap_isPrime e p)`. Rewrite using `[← Ideal.map_comap_of_surjective e e.surjective p]`. Conclude with `hm.map_bijective e e.bijective⟩`. Conclude with `{}`.
+-/
 theorem of_equiv {O' : Type} [CommRing O'] (h : CMOrd O bar) (e : O ≃+* O') : CMOrd O' fun a => e (bar (e.symm a)) := by
   have := h.ded
   have := h.fin
@@ -148,11 +207,17 @@ theorem of_equiv {O' : Type} [CommRing O'] (h : CMOrd O bar) (e : O ≃+* O') : 
 
 end CMOrd
 
+/- English proof (translation)
+Introduce `h` and use `by have := h.fin have : Algebra.IsIntegral ℤ ℚ := inferInstance exact Int.not_isField (isField_of_isIntegral_of_isField (R := ℤ) (S := ℚ) Int.cast_injective (Field.toIsField ℚ))`.
+-/
 example : ¬ CMOrd ℚ id := fun h => by
   have := h.fin
   have : Algebra.IsIntegral ℤ ℚ := inferInstance
   exact Int.not_isField (isField_of_isIntegral_of_isField (R := ℤ) (S := ℚ) Int.cast_injective (Field.toIsField ℚ))
 
+/- English proof (translation)
+Introduce `h` and use `by have := congrFun (h.bar_unique CMOrd.gauss) Zsqrtd.sqrtd simpa using congrArg Zsqrtd.im this`.
+-/
 example : ¬ CMOrd GaussianInt id := fun h => by
   have := congrFun (h.bar_unique CMOrd.gauss) Zsqrtd.sqrtd
   simpa using congrArg Zsqrtd.im this
@@ -181,14 +246,23 @@ def IsSpanned {O : Type} [CommRing O] (bar : O → O) [Module O X] (K : Set (X �
   ∃ (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X), (∀ i, γ i ∈ balForms bar X) ∧ (∀ i y, 0 ≤ γ i y y) ∧
     (∀ i, toReal (γ i) ∈ K) ∧ K ⊆ rcone γ
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨zero_mem_psdCone, fun _ _ => le_rfl⟩`.
+-/
 theorem zero_mem_contact {O : Type} [CommRing O] (bar : O → O) [Module O X] {ι : Type} (a : ι → X) :
     (0 : X →ₗ[ℤ] X →ₗ[ℤ] ℝ) ∈ contact bar a := ⟨zero_mem_psdCone, fun _ _ => le_rfl⟩
 
+/- English proof (translation)
+Introduce `y` and use `by rcases Int.even_or_odd' y with ⟨k, h | h⟩ · exact ⟨0, k, by simp; omega⟩ · exact ⟨1, k, by simp; omega⟩`.
+-/
 example : Covers2 (![0, 1] : Fin 2 → ℤ) := fun y => by
   rcases Int.even_or_odd' y with ⟨k, h | h⟩
   · exact ⟨0, k, by simp; omega⟩
   · exact ⟨1, k, by simp; omega⟩
 
+/- English proof (translation)
+Rewrite using `[vorFun, eval_baseFun]`. Establish `: zeroFun.eval X B = 0` using `rfl`. Simplify using `[this, fineDen]`.
+-/
 theorem vorFun_eval_eq_fineMean {O : Type} [CommRing O] [Module.Finite ℤ O] (g : ℕ) {X : Type} [AddCommGroup X] [Module O X]
     [Module.Finite O X] [Module.Finite ℤ X] (B : X → X → ℝ) :
     (vorFun O g).eval X B = 2 ^ g * (fineMean 1).eval X B := by
@@ -196,6 +270,17 @@ theorem vorFun_eval_eq_fineMean {O : Type} [CommRing O] [Module.Finite ℤ O] (g
   have : zeroFun.eval X B = 0 := rfl
   simp [this, fineDen]
 
+/- English proof (translation)
+Rewrite using `[vorFun_eval_eq_fineMean, (fineMean 1).eval_eq (n := 1) (r := LinearMap.proj 0) fun x => ⟨fun _ => x, rfl⟩]`. Establish `h0 : classMin 1 (fun a b : Fin 1 → ℤ => ((a 0 * b 0 : ℤ) : ℝ)) (fun _ => 0) = 0`. Use `IsLeast.csInf_eq ⟨⟨0, funext fun i => by simp [redV], by simp⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `x ⟨a, -, rfl⟩`. Use `show (0 : ℝ) ≤ ((a 0 * a 0 : ℤ) : ℝ)`.
+
+Conclude with `mul_self_nonneg (a 0)` after adjusting the coercions. Establish `h1 : classMin 1 (fun a b : Fin 1 → ℤ => ((a 0 * b 0 : ℤ) : ℝ)) (fun _ => 1) = 1`. Use `IsLeast.csInf_eq ⟨⟨1, funext fun i => by simp [redV], by simp⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `x ⟨a, ha, rfl⟩`. Establish `h2 : a 0 ≠ 0` using `fun h => by`.
+
+Use `congrFun ha 0` as an intermediate fact. Simplify using `[redV, h] at this`. Establish `: (1 : ℤ) ≤ a 0 * a 0` using `mul_self_pos.2 h2`. Use `show (1 : ℝ) ≤ ((a 0 * a 0 : ℤ) : ℝ)`. Conclude with `this` after adjusting the coercions.
+
+Establish `hs : ∀ f : (Fin 1 → ZMod (1 + 1)) → ℝ, ∑ y, f y = f (fun _ => 0) + f (fun _ => 1)` using `fun f => by`. Rewrite using `[← (Equiv.funUnique (Fin 1) (ZMod (1 + 1))).symm.sum_comp f]`. Conclude with `Fin.sum_univ_two _`. Use `show 2 ^ g * (((((1 : ℕ) : ℝ) + 1) ^ 1)⁻¹ * ∑ y, classMin 1 (fun a b : Fin 1 → ℤ => ((a 0 * b 0 : ℤ) : ℝ)) y - ((0 * 0 : ℤ) : ℝ)) = _`. Rewrite using `[hs, h0, h1]`.
+
+Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree.
+-/
 example (g : ℕ) : (vorFun ℤ g).eval ℤ (fun a b => ((a * b : ℤ) : ℝ)) = 2 ^ g / 2 := by
   rw [vorFun_eval_eq_fineMean, (fineMean 1).eval_eq (n := 1) (r := LinearMap.proj 0) fun x => ⟨fun _ => x, rfl⟩]
   have h0 : classMin 1 (fun a b : Fin 1 → ℤ => ((a 0 * b 0 : ℤ) : ℝ)) (fun _ => 0) = 0 := by

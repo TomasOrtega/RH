@@ -15,6 +15,9 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.IndefR Formal
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `h : (star (L.piT P.u₀ : L.host.E) : L.host.E) = L.host.conj (L.piT P.u₀ : L.host.E)` using `bridge_star_holds P.R L.host _`. Rewrite using `[h, mul_comm]`. Conclude with `L.piT_norm _`.
+-/
 theorem star_piT_mul {P : PreCh} (L : LevCh P) :
     (star (L.piT P.u₀ : L.host.E) : L.host.E) * (L.piT P.u₀ : L.host.E) = (L.T P.u₀ : L.host.E) := by
   have h : (star (L.piT P.u₀ : L.host.E) : L.host.E) = L.host.conj (L.piT P.u₀ : L.host.E) :=
@@ -28,6 +31,9 @@ def coordPre (P : PreCh) (L : LevCh P) : Pre :=
     (fun j _ hj => DiagSp.spacesNorm_hasFrame _ _ _ _ _ _ j hj) (fun _ _ _ => rfl)
     (DiagSp.spacesNorm_z_norm _ _ _ _ _ _)
 
+/- English proof (translation)
+The claim follows from `DiagSp.spacesNorm_coord _ _ _ _ _ _`.
+-/
 theorem diagSpaces_coordPre (P : PreCh) (L : LevCh P) : DiagSpaces (coordPre P L).sp :=
   DiagSp.spacesNorm_coord _ _ _ _ _ _
 

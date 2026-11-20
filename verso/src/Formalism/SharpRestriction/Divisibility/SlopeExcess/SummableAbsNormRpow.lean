@@ -9,6 +9,9 @@ namespace Formalism.MainNotions.DIV.Proofs.QuadraticNormBounds
 section Sum
 variable (K : Type) [Field K] [NumberField K]
 
+/- English proof (translation)
+Rewrite using `[← Set.ncard_eq_toFinset_card _ (Ideal.finite_setOfPred_absNorm_eq (S := 𝓞 K) k), ← Nat.card_coe_set_eq]`. Both sides reduce to the same expression.
+-/
 lemma card_fib (k : ℕ) :
     Nat.card {I : Ideal (𝓞 K) // Ideal.absNorm I = k} =
       (Ideal.finite_setOfPred_absNorm_eq (S := 𝓞 K) k).toFinset.card := by
@@ -16,6 +19,21 @@ lemma card_fib (k : ℕ) :
     ← Nat.card_coe_set_eq]
   rfl
 
+/- English proof (translation)
+Establish `hle` using `Ideal.finite_setOfPred_absNorm_le (S := 𝓞 K) n`. Use `set T := hle.toFinset with hTdef`. Establish `hT : Nat.card {I : Ideal (𝓞 K) // (Ideal.absNorm I : ℝ) ≤ n} = T.card`. Establish `hs : {I : Ideal (𝓞 K) | (Ideal.absNorm I : ℝ) ≤ n} = {I | Ideal.absNorm I ≤ n}`. Use extensionality with `I`.
+
+Simplify using the standard rewrite rules. Rewrite using `[← Set.ncard_eq_toFinset_card _ hle, ← hs, ← Nat.card_coe_set_eq]`. Both sides reduce to the same expression. Establish `hfib : ∀ k ∈ Finset.Icc 1 n, Nat.card {I : Ideal (𝓞 K) // Ideal.absNorm I = k} = (T.filter (fun I => Ideal.absNorm I = k)).card`. Introduce `k hk`.
+
+Rewrite using `[card_fib]`. Use `congr 1`. Use extensionality with `I`. Simplify using `only [Set.Finite.mem_toFinset, Set.mem_ofPred_eq, Finset.mem_filter, hTdef]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h; exact ⟨by rw [h]; exact (Finset.mem_Icc.1 hk).2, h⟩`. Introduce `h`. Conclude with `h.2`. Establish `hsum : T.card = ∑ k ∈ Finset.range (n + 1), (T.filter (fun I => Ideal.absNorm I = k)).card`. Apply `Finset.card_eq_sum_card_fiberwise` to reduce the goal to its premises.
+
+Introduce `I hI`. Simplify using `only [hTdef, Finset.coe_range, Set.mem_Iio, Set.Finite.coe_toFinset, Set.mem_ofPred_eq] at hI ⊢`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hT, hsum, Finset.sum_congr rfl (fun k hk => by rw [hfib k hk])]`. Use `push_cast`.
+
+Apply `Finset.sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises. Introduce `k hk`. Simplify using `only [Finset.mem_Icc] at hk`. Simplify using `only [Finset.mem_range]`. Use linear arithmetic over natural numbers and integers.
+
+Use `intros`. Check the signs of the components of the expression.
+-/
 lemma sum_le_count (n : ℕ) :
     ∑ k ∈ Finset.Icc 1 n, (Nat.card {I : Ideal (𝓞 K) // Ideal.absNorm I = k} : ℝ) ≤
       (Nat.card {I : Ideal (𝓞 K) // (Ideal.absNorm I : ℝ) ≤ n} : ℝ) := by
@@ -48,6 +66,13 @@ lemma sum_le_count (n : ℕ) :
   · intro k hk; simp only [Finset.mem_Icc] at hk; simp only [Finset.mem_range]; omega
   · intros; positivity
 
+/- English proof (translation)
+Establish `h` using `NumberField.Ideal.tendsto_norm_le_div_atTop K`. Establish `h1` using `h.isBigO_one ℝ`. Establish `h2 : (fun s : ℝ => (Nat.card {I : Ideal (𝓞 K) // (Ideal.absNorm I : ℝ) ≤ s} : ℝ)) =O[atTop] (fun s : ℝ => s)`. Use `h1.mul (isBigO_refl (fun s : ℝ => s) atTop)` as an intermediate fact. Use `this.congr' ?_ ?_` and prove the remaining obligations.
+
+Use `filter_upwards [eventually_gt_atTop 0] with s hs`. Clear the denominators using the available nonvanishing facts. Use `filter_upwards with s`. Simplify using the standard rewrite rules. Establish `h3` using `h2.comp_tendsto tendsto_natCast_atTop_atTop`.
+
+Simplify `h3` using `[Function.comp_def, Real.rpow_one]`.
+-/
 lemma count_isBigO :
     (fun n : ℕ => (Nat.card {I : Ideal (𝓞 K) // (Ideal.absNorm I : ℝ) ≤ n} : ℝ)) =O[atTop]
       (fun n : ℕ => (n : ℝ) ^ (1 : ℝ)) := by
@@ -63,6 +88,11 @@ lemma count_isBigO :
   have h3 := h2.comp_tendsto tendsto_natCast_atTop_atTop
   simpa [Function.comp_def, Real.rpow_one] using h3
 
+/- English proof (translation)
+Apply `LSeriesSummable_of_sum_norm_bigO_and_nonneg (r := 1)` to reduce the goal to its premises. Use `(isBigO_of_le _ (fun n => ?_)).trans (count_isBigO K)` and prove the remaining obligations. Rewrite using `[Real.norm_of_nonneg (Finset.sum_nonneg (fun _ _ => by positivity)), Real.norm_of_nonneg (by positivity)]`. Conclude with `sum_le_count K n`. Introduce `n`.
+
+Check the signs of the components of the expression. Evaluate the numerical expressions. Simplify using `using hσ`.
+-/
 lemma lseries_summable {σ : ℝ} (hσ : 1 < σ) :
     LSeriesSummable (fun n => ((Nat.card {I : Ideal (𝓞 K) // Ideal.absNorm I = n} : ℝ) : ℂ)) (σ : ℂ) := by
   apply LSeriesSummable_of_sum_norm_bigO_and_nonneg (r := 1)
@@ -74,6 +104,23 @@ lemma lseries_summable {σ : ℝ} (hσ : 1 < σ) :
   · norm_num
   · simpa using hσ
 
+/- English proof (translation)
+Use `set c : ℕ → ℝ := fun n => (Nat.card {I : Ideal (𝓞 K) // Ideal.absNorm I = n} : ℝ) with hc`. Establish `hL` using `lseries_summable K hσ`. Use `set a : ℕ → ℝ := fun k => ‖LSeries.term (fun n => ((c n : ℝ) : ℂ)) (σ : ℂ) k‖ with ha_def`. Establish `ha : Summable a` using `hL.norm`. Establish `ha_eq : ∀ k, k ≠ 0 → a k = c k * (k : ℝ) ^ (-σ)`.
+
+Introduce `k hk`. Simplify using `only [ha_def, LSeries.term, hk, if_false]`. Rewrite using `[norm_div, Complex.norm_natCast_cpow_of_pos (Nat.pos_of_ne_zero hk)]`. Rewrite using `[Complex.norm_real, Real.norm_of_nonneg (by positivity), Real.rpow_neg (by positivity)]`. Simplify using `[div_eq_mul_inv]`.
+
+Use `summable_of_sum_le (fun w => by positivity) (c := ∑' k, a k) ?_` and prove the remaining obligations. Introduce `u`. Set `N' : HeightOneSpectrum (𝓞 K) → ℕ` to `fun w => Ideal.absNorm w.asIdeal`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to (g := N') (t := u.image N') (fun w hw => Finset.mem_image_of_mem _ hw)]`. Combine the equalities or inequalities in the displayed calculation.
+
+Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `k hk`. Take `⟨w0, -, rfl⟩` from `Finset.mem_image.1 hk`. Establish `hk0 : N' w0 ≠ 0`. Simplify using `only [N']`.
+
+Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `w0.ne_bot`. Rewrite using `[ha_eq _ hk0]`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => ((N' w0 : ℕ) : ℝ) ^ (-σ)) (fun w hw => by show ((N' w : ℕ) : ℝ) ^ (-σ) = _; rw [(Finset.mem_filter.1 hw).2])]`. Rewrite using `[Finset.sum_const, nsmul_eq_mul]`.
+
+Apply `mul_le_mul_of_nonneg_right _ (by positivity)` to reduce the goal to its premises. Simplify using `only [hc]`. Rewrite using `[card_fib]`. Conclude with `Finset.card_le_card_of_injOn (fun w : HeightOneSpectrum (𝓞 K) => w.asIdeal) (fun w hw => by` after adjusting the coercions. Establish `hw' : w ∈ u.filter (fun i => N' i = N' w0)` using `hw`.
+
+Establish `hmem : w.asIdeal ∈ (Ideal.finite_setOfPred_absNorm_eq (S` using `𝓞 K) (N' w0)).toFinset := by`. Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `(Finset.mem_filter.1 hw').2`. Conclude with `hmem)`. Use the proof step `(fun w1 _ w2 _ h => HeightOneSpectrum.ext h)`.
+
+Use `_ ≤ ∑' k, a k := ha.sum_le_tsum _ (fun k _ => norm_nonneg _)`.
+-/
 theorem summable_absNorm_rpow {σ : ℝ} (hσ : 1 < σ) :
     Summable (fun w : HeightOneSpectrum (𝓞 K) => ((Ideal.absNorm w.asIdeal : ℕ) : ℝ) ^ (-σ)) := by
   classical
@@ -151,6 +198,9 @@ variable (E) in
 
 def LL (n M : ℕ) (S : Finset (Pl F)) (s : ℂ) : ℂ := ∑' w, ell (qS S) (εS E n M S) n w s
 
+/- English proof (translation)
+Introduce `w j`. Simplify using `only [εS, norm_pow]`. Unfold `etaV`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 lemma εS_le (n M : ℕ) (S : Finset (Pl F)) : ∀ w j, ‖εS E n M S w j‖ ≤ 1 := by
   intro w j
   simp only [εS, norm_pow]

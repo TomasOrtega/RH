@@ -15,12 +15,31 @@ section GRLipPf
 
 variable {L : Type} [Field L] [NumberField L] {N : ℕ}
 
+/- English proof (translation)
+Unfold `rho`. Conclude with `Real.smoothTransition.nonneg _`.
+-/
 private theorem rho_nonneg' (x : ℝ) : 0 ≤ rho x := by
   unfold rho; exact Real.smoothTransition.nonneg _
 
+/- English proof (translation)
+Unfold `rho`. Conclude with `Real.smoothTransition.le_one _`.
+-/
 private theorem rho_le_one' (x : ℝ) : rho x ≤ 1 := by
   unfold rho; exact Real.smoothTransition.le_one _
 
+/- English proof (translation)
+Take `⟨K, hK⟩` from `(Real.smoothTransition.contDiff (n := 1)).contDiffOn.exists_lipschitzOnWith (s := Set.Icc (0:ℝ) 1) one_ne_zero (convex_Icc 0 1) isCompact_Icc`. Establish `hst : ∀ x : ℝ, Real.smoothTransition x = Real.smoothTransition (max 0 (min 1 x))`. Introduce `x`. Break down `le_total x 0 with hx | hx` into its components or cases. Rewrite using `[max_eq_left (min_le_of_right_le hx)]`.
+
+Rewrite using `[Real.smoothTransition.zero_of_nonpos hx, Real.smoothTransition.zero_of_nonpos le_rfl]`. Break down `le_total 1 x with hx1 | hx1` into its components or cases. Rewrite using `[min_eq_left hx1, max_eq_right zero_le_one]`. Rewrite using `[Real.smoothTransition.one_of_one_le hx1, Real.smoothTransition.one_of_one_le le_rfl]`. Rewrite using `[min_eq_right hx1, max_eq_right hx]`.
+
+Establish `hmem : ∀ x : ℝ, max 0 (min 1 x) ∈ Set.Icc (0:ℝ) 1` using `fun x => ⟨le_max_left _ _, max_le zero_le_one (min_le_left _ _)⟩`. Establish `hc : ∀ x y : ℝ, |max 0 (min 1 x) - max 0 (min 1 y)| ≤ |x - y|`. Introduce `x y`. Establish `h1` using `abs_max_sub_max_le_abs (min 1 x) (min 1 y) 0`. Establish `h2 : |min 1 x - min 1 y| ≤ |x - y|` using `abs_min_sub_min_le_max 1 x 1 y |>.trans (by simp)`.
+
+Rewrite using `[max_comm 0 (min 1 x), max_comm 0 (min 1 y)]`. Conclude with `h1.trans h2`. Use `⟨K, K.2, fun x y => ?_⟩` and prove the remaining obligations. Unfold `rho`. Rewrite using `[hst ((4 - x) / 3), hst ((4 - y) / 3)]`.
+
+Establish `h` using `hK.dist_le_mul _ (hmem ((4 - x) / 3)) _ (hmem ((4 - y) / 3))`. Rewrite `h` using `[Real.dist_eq, Real.dist_eq]`. Establish `h3` using `hc ((4 - x) / 3) ((4 - y) / 3)`. Establish `h4 : |(4 - x) / 3 - (4 - y) / 3| ≤ |x - y|`. Rewrite using `[show (4 - x) / 3 - (4 - y) / 3 = (y - x) / 3 by ring, abs_div, abs_sub_comm]`.
+
+Establish `: (0:ℝ) ≤ |x - y|` using `abs_nonneg _`. Rewrite using `[abs_of_pos (by norm_num : (0:ℝ) < 3)]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem exists_abs_rho_sub_le_mul_abs_sub : ∃ K : ℝ, 0 ≤ K ∧ ∀ x y : ℝ, |rho x - rho y| ≤ K * |x - y| := by
   obtain ⟨K, hK⟩ := (Real.smoothTransition.contDiff (n := 1)).contDiffOn.exists_lipschitzOnWith
     (s := Set.Icc (0:ℝ) 1) one_ne_zero (convex_Icc 0 1) isCompact_Icc
@@ -55,6 +74,13 @@ private theorem exists_abs_rho_sub_le_mul_abs_sub : ∃ K : ℝ, 0 ≤ K ∧ ∀
   calc _ ≤ (K:ℝ) * |max 0 (min 1 ((4 - x) / 3)) - max 0 (min 1 ((4 - y) / 3))| := h
     _ ≤ K * |x - y| := mul_le_mul_of_nonneg_left (h3.trans h4) K.2
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on_max with`. Consider the case `empty`. Introduce `m _`. Simplify using `only [Finset.sum_empty]`. Check the signs of the components of the expression.
+
+Consider the case `insert a s ha ih`. Introduce `m hm`. Establish `has : a ∉ s` using `fun h => lt_irrefl a (ha a h)`. Rewrite using `[Finset.sum_insert has]`. Establish `h1` using `ih (a - 1) (fun j hj => by have := ha j hj; omega)`.
+
+Establish `h2 : (4:ℝ) ^ (a - 1) = (4:ℝ) ^ a / 4`. Rewrite using `[zpow_sub_one₀ (by norm_num : (4:ℝ) ≠ 0)]; ring`. Establish `h3 : (4:ℝ) ^ a ≤ (4:ℝ) ^ m` using `zpow_le_zpow_right₀ (by norm_num) (hm a (Finset.mem_insert_self a s))`. Rewrite `h1` using `[h2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem pf_GRLip_lemma_2 (T : Finset ℤ) :
     ∀ m : ℤ, (∀ j ∈ T, j ≤ m) → ∑ j ∈ T, (4:ℝ) ^ j ≤ 4 / 3 * (4:ℝ) ^ m := by
   induction T using Finset.induction_on_max with
@@ -74,6 +100,15 @@ private theorem pf_GRLip_lemma_2 (T : Finset ℤ) :
     rw [h2] at h1
     linarith
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on_min with`. Consider the case `empty`. Introduce `m _`. Simplify using `only [Finset.sum_empty]`. Check the signs of the components of the expression.
+
+Consider the case `insert a s ha ih`. Introduce `m hm`. Establish `has : a ∉ s` using `fun h => lt_irrefl a (ha a h)`. Rewrite using `[Finset.sum_insert has]`. Establish `h1` using `ih (a + 1) (fun j hj => by have := ha j hj; omega)`.
+
+Establish `h2 : ((4:ℝ) ^ (a + 1))⁻¹ = ((4:ℝ) ^ a)⁻¹ / 4`. Rewrite using `[zpow_add_one₀ (by norm_num : (4:ℝ) ≠ 0)]; field_simp`. Establish `h3 : ((4:ℝ) ^ a)⁻¹ ≤ ((4:ℝ) ^ m)⁻¹`. Apply `inv_anti₀ (by positivity)` to reduce the goal to its premises. Conclude with `zpow_le_zpow_right₀ (by norm_num) (hm a (Finset.mem_insert_self a s))`.
+
+Rewrite `h1` using `[h2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem pf_GRLip_lemma_3 (T : Finset ℤ) :
     ∀ m : ℤ, (∀ j ∈ T, m ≤ j) → ∑ j ∈ T, ((4:ℝ) ^ j)⁻¹ ≤ 4 / 3 * ((4:ℝ) ^ m)⁻¹ := by
   induction T using Finset.induction_on_min with
@@ -94,6 +129,9 @@ private theorem pf_GRLip_lemma_3 (T : Finset ℤ) :
     rw [h2] at h1
     linarith
 
+/- English proof (translation)
+The claim follows from `|(b * Q' + ∑ j ∈ S, r' j * t' j) - (a * Q + ∑ j ∈ S, r j * t j)| ≤ ((1 + 2 * Cm + 80 * K * Cm) + 2 * Cm * (3 + Cm) + Ct * 256 / (9 * c) + 2 * Cm * 256 / c) * (1 + (lam * lamD)⁻¹) * δ * (a * Q) := by have ha0 : 0 < a := lt_of_lt_of_le (mul_pos hc hlamD) ha have hQQ' := abs_le.mp h …`.
+-/
 private theorem pf_GRLip_lemma_6 (K Cm Ct c δ a b Q Q' lam lamD : ℝ) (S : Finset ℤ) (lo hi : ℤ)
     (r r' t t' : ℤ → ℝ) (hK : 0 ≤ K) (hCm : 0 ≤ Cm) (hCt : 0 ≤ Ct) (hc : 0 < c)
     (hlam : 0 < lam) (hlamD : 0 < lamD) (ha : c * lamD ≤ a) (hb : 0 < b)
@@ -325,6 +363,9 @@ private theorem pf_GRLip_lemma_6 (K Cm Ct c δ a b Q Q' lam lamD : ℝ) (S : Fin
       _ ≤ (3 + Cm) * (a * Q) + 256 / c * (a * Q * (lam * lamD)⁻¹) := by linarith
       _ ≤ _ := by linarith
 
+/- English proof (translation)
+Unfold `qR mat`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl (fun w _ => ?_)` and prove the remaining obligations. Simplify using `only [Submodule.coe_add, Pi.add_apply, ← Matrix.of_add_of, Matrix.add_mulVec, dotProduct_add, Complex.add_re]`.
+-/
 private theorem pf_GRLip_lemma_4 (h k : HS L N) (z : VR L N) : qR (h + k) z = qR h z + qR k z := by
   unfold qR mat
   rw [← Finset.sum_add_distrib]
@@ -332,6 +373,9 @@ private theorem pf_GRLip_lemma_4 (h k : HS L N) (z : VR L N) : qR (h + k) z = qR
   simp only [Submodule.coe_add, Pi.add_apply, ← Matrix.of_add_of, Matrix.add_mulVec, dotProduct_add,
     Complex.add_re]
 
+/- English proof (translation)
+Unfold `qR mat`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun w _ => ?_)` and prove the remaining obligations. Simplify using `only [Submodule.coe_smul, Pi.smul_apply, ← Matrix.smul_of, Matrix.smul_mulVec, dotProduct_smul, Complex.smul_re, smul_eq_mul]`.
+-/
 private theorem pf_GRLip_lemma_5 (c : ℝ) (h : HS L N) (z : VR L N) : qR (c • h) z = c * qR h z := by
   unfold qR mat
   rw [Finset.mul_sum]
@@ -339,6 +383,15 @@ private theorem pf_GRLip_lemma_5 (c : ℝ) (h : HS L N) (z : VR L N) : qR (c •
   simp only [Submodule.coe_smul, Pi.smul_apply, ← Matrix.smul_of, Matrix.smul_mulVec, dotProduct_smul,
     Complex.smul_re, smul_eq_mul]
 
+/- English proof (translation)
+Set `F : HS L N →+ ℝ` to `AddMonoidHom.mk' (fun x => qR x z) (fun x y => pf_GRLip_lemma_4 x y z)`. Establish `hs : Function.support (fun j : ℤ => rho ((4:ℝ) ^ j * μ g) • term ((4:ℝ) ^ j) g) ⊆ ↑S`. Introduce `j hj`. Assume the negation of the conclusion as `hn`. Conclude with `hj (hsup j hn)`.
+
+Unfold `ret`. Rewrite using `[pf_GRLip_lemma_4, pf_GRLip_lemma_5]`. Use `congr 1`. Establish `h1 : qR (∑ᶠ j : ℤ, rho ((4:ℝ) ^ j * μ g) • term ((4:ℝ) ^ j) g) z = F (∑ᶠ j : ℤ, rho ((4:ℝ) ^ j * μ g) • term ((4:ℝ) ^ j) g)` using `rfl`. Rewrite using `[h1, map_finsum F (S.finite_toSet.subset hs)]`.
+
+Rewrite using `[finsum_eq_sum_of_support_subset _ (fun j hj => hs (fun h0 => hj (by`. Establish `h0' : rho ((4:ℝ) ^ j * μ g) • term ((4:ℝ) ^ j) g = 0` using `h0`. Rewrite using `[h0']`. Conclude with `map_zero F)))]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations.
+
+Conclude with `pf_GRLip_lemma_5 _ _ z`.
+-/
 private theorem pf_GRLip_lemma_7 (μ : HS L N → ℝ) (g : HS L N) (z : VR L N) (S : Finset ℤ)
     (hsup : ∀ j : ℤ, j ∉ S → rho ((4:ℝ) ^ j * μ g) • term ((4:ℝ) ^ j) g = 0) :
     qR (ret μ g) z = μ g * qR g z + ∑ j ∈ S, rho ((4:ℝ) ^ j * μ g) * qR (term ((4:ℝ) ^ j) g) z := by
@@ -361,6 +414,55 @@ private theorem pf_GRLip_lemma_7 (μ : HS L N → ℝ) (g : HS L N) (z : VR L N)
   exact pf_GRLip_lemma_5 _ _ z
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `hB hR hT`. Unfold `Basic at hB`. Unfold `REqv at hR`. Unfold `TLip at hT`. Unfold `RLip`.
+
+Introduce `L₁ _ _ N₁ hN μ hμ`. Take `⟨CT, hCT⟩` from `hT L₁ N₁ hN`. Establish `hB1` using `hB L₁ N₁ hN`. Establish `hR1` using `hR L₁ N₁ hN μ hμ`. Take `⟨-, -, ⟨c, Cu, hc, hcC⟩, ⟨Cμ, hCμ⟩⟩` from `hμ`.
+
+Take `⟨K, hK0, hK⟩` from `exists_abs_rho_sub_le_mul_abs_sub`. Establish `hCn : 0 ≤ (1 + 2 * |Cμ| + 80 * K * |Cμ|) + 2 * |Cμ| * (3 + |Cμ|) + |CT| * 256 / (9 * c) + 2 * |Cμ| * 256 / c`. Establish `h1 : 0 ≤ |CT| * 256 / (9 * c)` using `div_nonneg (by positivity) (by linarith)`. Establish `h2 : 0 ≤ 2 * |Cμ| * 256 / c` using `div_nonneg (by positivity) hc.le`. Establish `h3 : 0 ≤ 80 * K * |Cμ|` using `by positivity`.
+
+Establish `h4 : 0 ≤ 2 * |Cμ| * (3 + |Cμ|)` using `by positivity`. Establish `h5 : 0 ≤ |Cμ|` using `abs_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨_, hCn, ?_⟩` and prove the remaining obligations. Introduce `δ hδ0 hδ4 h hh k hk`.
+
+Establish `hkP : k ∈ Pos L₁ N₁` using `(hB1.2.2.2.1 δ hδ0 (by linarith) h hh k hk).1`. Establish `hlamP : ∀ g ∈ Pos L₁ N₁, 0 < lam g` using `fun g hg => (hB1.1 g hg).1`. Establish `hlamDP : ∀ g ∈ Pos L₁ N₁, 0 < lamD g` using `fun g hg => by`. Establish `e : lamD g = lam (dualH g)` using `rfl`. Rewrite using `[e]`.
+
+Conclude with `hlamP _ (hB1.1 g hg).2.2.2.1`. Establish `hμP : ∀ g ∈ Pos L₁ N₁, 0 < μ g` using `fun g hg => lt_of_lt_of_le (mul_pos hc (hlamDP g hg)) (hcC g hg).1`. Establish `hlamk : 3 / 4 * lam h ≤ lam k`. Take `⟨v0, hv0, -⟩` from `(hB1.1 h hh).2.2.1`. Unfold `lam`.
+
+Use `haveI : Nonempty {v : UpperTheory.V.KT.Lat L₁ N₁ // v ≠ 0} := ⟨⟨v0, hv0⟩⟩`. Apply `le_ciInf` to reduce the goal to its premises. Introduce `y`. Establish `e1 : lam h ≤ q h y` using `(hB1.1 h hh).2.1 y y.2`. Establish `e2` using `hk (toR (y : UpperTheory.V.KT.Lat L₁ N₁))`.
+
+Establish `e3 : q k y = qR k (toR (y : UpperTheory.V.KT.Lat L₁ N₁))` using `rfl`. Establish `e4 : q h y = qR h (toR (y : UpperTheory.V.KT.Lat L₁ N₁))` using `rfl`. Establish `e5` using `hlamP h hh`. Rewrite `e2` using `[abs_le]`. Establish `e6 : lam h = ⨅ y : {v : UpperTheory.V.KT.Lat L₁ N₁ // v ≠ 0}, q h y` using `rfl`.
+
+Rewrite using `[← e6]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hlamh` using `hlamP h hh`. Establish `hah` using `hμP h hh`. Establish `hbk` using `hμP k hkP`.
+
+Use `set lo : ℤ := Int.log 4 (3 * lam h / 16) with hlo_def`. Use `set hi : ℤ := max (Int.log 4 (4 / μ h)) (Int.log 4 (4 / μ k)) with hhi_def`. Establish `hlo' : 3 * lam h / 64 < (4:ℝ) ^ lo`. Establish `e` using `Int.lt_zpow_succ_log_self (R := ℝ) (b := 4) (by norm_num) (3 * lam h / 16)`. Rewrite `e` using `[zpow_add_one₀ (by norm_num)]`.
+
+Move the coercions through the operations in `at e`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlo2 : (4:ℝ) ^ lo ≤ 3 * lam h / 16`. Establish `e` using `Int.zpow_log_le_self (R := ℝ) (b := 4) (by norm_num) (by positivity : 0 < 3 * lam h / 16)`. Move the coercions through the operations in `at e`.
+
+Conclude with `e`. Establish `hA : ∀ x : ℝ, 0 < x → ∀ j : ℤ, Int.log 4 (4 / x) < j → 4 < (4:ℝ) ^ j * x`. Introduce `x hx j hj`. Establish `e` using `Int.lt_zpow_succ_log_self (R := ℝ) (b := 4) (by norm_num) (4 / x)`. Move the coercions through the operations in `at e`.
+
+Establish `e2 : (4:ℝ) ^ (Int.log 4 (4 / x) + 1) ≤ (4:ℝ) ^ j` using `zpow_le_zpow_right₀ (by norm_num) (by omega)`. Establish `e3 : 4 / x < (4:ℝ) ^ j` using `lt_of_lt_of_le e e2`. Rewrite `e3` using `[div_lt_iff₀ hx]`. Then use the resulting hypothesis. Establish `hrho0 : ∀ x : ℝ, 4 ≤ x → rho x = 0`. Introduce `x hx`.
+
+Unfold `rho`. Conclude with `Real.smoothTransition.zero_of_nonpos (by linarith)`. Establish `hrho1 : ∀ x : ℝ, x ≤ 1 → rho x = 1`. Introduce `x hx`. Unfold `rho`.
+
+Conclude with `Real.smoothTransition.one_of_one_le (by linarith)`. Establish `hsup : ∀ g ∈ Pos L₁ N₁, 3 / 4 * lam h ≤ lam g → Int.log 4 (4 / μ g) ≤ hi → ∀ j : ℤ, j ∉ Finset.Icc lo hi → rho ((4:ℝ) ^ j * μ g) • term ((4:ℝ) ^ j) g = 0`. Introduce `g hg hlg hgi j hj`. Rewrite `hj` using `[Finset.mem_Icc, not_and_or, not_le, not_le]`. Break down `hj with hj | hj` into its components or cases.
+
+Establish `e1 : (4:ℝ) ^ (j + 1) ≤ (4:ℝ) ^ lo` using `zpow_le_zpow_right₀ (by norm_num) (by omega)`. Rewrite `e1` using `[zpow_add_one₀ (by norm_num)]`. Establish `e2 : 4 * (4:ℝ) ^ j ≤ lam g` using `by linarith`. Rewrite using `[((hCT ((4:ℝ) ^ j) (by positivity) g hg 0).2.1 e2), smul_zero]`. Rewrite using `[hrho0 _ (hA _ (hμP g hg) j (by omega)).le, zero_smul]`.
+
+Establish `hret : ∀ g ∈ Pos L₁ N₁, 3 / 4 * lam h ≤ lam g → Int.log 4 (4 / μ g) ≤ hi → ∀ z : VR L₁ N₁, qR (ret μ g) z = μ g * qR g z + ∑ j ∈ Finset.Icc lo hi, rho ((4:ℝ) ^ j * μ g) * qR (term ((4:ℝ) ^ j) g) z` using `fun g hg hlg hgi z => pf_GRLip_lemma_7 μ g z _ (hsup g hg hlg hgi)`. Establish `hhi' : (4:ℝ) ^ hi * min (μ h) (μ k) ≤ 4`. Establish `eA : ∀ x : ℝ, 0 < x → (4:ℝ) ^ Int.log 4 (4 / x) * x ≤ 4`. Introduce `x hx`. Establish `e` using `Int.zpow_log_le_self (R := ℝ) (b := 4) (by norm_num) (by positivity : 0 < 4 / x)`.
+
+Move the coercions through the operations in `at e`. Rewrite `e` using `[le_div_iff₀ hx]`. Then use the resulting hypothesis. Break down `le_total (Int.log 4 (4 / μ h)) (Int.log 4 (4 / μ k)) with hle | hle` into its components or cases. Rewrite using `[hhi_def, max_eq_right hle]`. Conclude with `(mul_le_mul_of_nonneg_left (min_le_right _ _) (by positivity)).trans (eA _ hbk)`.
+
+Rewrite using `[hhi_def, max_eq_left hle]`. Conclude with `(mul_le_mul_of_nonneg_left (min_le_left _ _) (by positivity)).trans (eA _ hah)`. Unfold `Cl`. Introduce `z`. Rewrite using `[hret k hkP hlamk (le_max_right _ _) z, hret h hh (by linarith) (le_max_left _ _) z]`.
+
+Establish `hQ : 0 ≤ qR h z`. Establish `e` using `(hCT 1 one_pos h hh z).1`. Combine the linear relations using `[e.1, e.2]`. Establish `hab : |μ k - μ h| ≤ |Cμ| * δ * μ h`. Use `(hCμ δ hδ0 hδ4 h hh k hk).trans ?_` and prove the remaining obligations.
+
+Establish `: Cμ ≤ |Cμ|` using `le_abs_self _`. Establish `: 0 ≤ δ * μ h` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `key` using `pf_GRLip_lemma_6 K |Cμ| |CT| c δ (μ h) (μ k) (qR h z) (qR k z) (lam h) (lamD h) (Finset.Icc lo hi) lo hi (fun j => rho ((4:ℝ) ^ j * μ h)) (fun j => rho ((4:ℝ) ^ j * μ k)) (fun j => qR (term ((4:ℝ) ^ j) h) z) (fun j => qR (term ((4:ℝ) ^ j) k) z) hK0 (abs_nonneg _) (abs_nonneg _) h …`. Use `((hCT _ (by positivity) h hh z).2.2 δ hδ0 hδ4 k hk).trans ?_` and prove the remaining obligations.
+
+Establish `: CT ≤ |CT|` using `le_abs_self _`. Establish `: 0 ≤ δ / (4:ℝ) ^ j * qR h z` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Use the proof step `(fun j hj => (Finset.mem_Icc.mp hj).1) hlo' (fun j hj => (Finset.mem_Icc.mp hj).2) hhi'`. Use `key.trans ?_` and prove the remaining obligations.
+
+Establish `hR2` using `(hR1 h hh).2.2 z`. Establish `hcoef : 0 ≤ ((1 + 2 * |Cμ| + 80 * K * |Cμ|) + 2 * |Cμ| * (3 + |Cμ|) + |CT| * 256 / (9 * c) + 2 * |Cμ| * 256 / c) * (1 + (lam h * lamD h)⁻¹) * δ`. Establish `: 0 ≤ (lam h * lamD h)⁻¹` using `inv_nonneg.mpr (mul_pos hlamh (hlamDP h hh)).le`. Establish `: 0 ≤ 1 + (lam h * lamD h)⁻¹` using `by linarith`. Check the signs of the components of the expression.
+
+Rewrite using `[← hret h hh (by linarith) (le_max_left _ _) z]`. Conclude with `mul_le_mul_of_nonneg_left hR2 hcoef`.
+-/
 theorem pf_GRLip : GRLip := by
   intro hB hR hT
   unfold Basic at hB

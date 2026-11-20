@@ -21,6 +21,27 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 open GlobalTheory.LineNorm.Chart GlobalTheory.LieMet
 
+/- English proof (translation)
+Introduce `hPt E _ _ _ H X _ t hX F _ _ Y V ρ' ρ hρ g f T hind v hp c J hgen U U' hU hU' n n' e e' h h' M M' he he' hd hd' hM hM' ε y z yt hz hyt hin hin' hiso ψ₀ hψ₀`. Take `⟨y, hy⟩` from `y`. Simplify using `only at hz hψ₀ ⊢`. Substitute `hz` using the available equality. Substitute `hψ₀` using the available equality.
+
+Establish `h1` using `ioOf_le_one_iff (resP v) (residueCharacteristic_mem v) ε`. Generalize the expression as in `ioOf (resP v) ε = io at h1 hiso ⊢`. Set `ioO : ε.O →+* intO ℂ_[resP v]` to `(io.comp ε.O.subtype).codRestrict _ fun b => (h1 b).2 b.2`. Establish `hio : (intO ℂ_[resP v]).subtype.comp ioO = io.comp ε.O.subtype` using `rfl`. Establish `hmem : ∀ W : V.X.Opens, ⊤ ≤ yt ⁻¹ᵁ W → V.j (below z) ∈ W` using `fun W hW => by`.
+
+Establish `: (spMap ε.O.subtype ≫ yt) (IsLocalRing.closedPoint _) ∈ W` using `hW (Set.mem_univ _)`. Rewrite `this` using `[hyt]`. Then use the resulting hypothesis. Take `⟨α, a, hα, ha, hMα⟩` from `hM _ (hmem U hin)`. Take `⟨α', a', hα', ha', hMα'⟩` from `hM' _ (hmem U' hin')`. Take `⟨ψ, hψ⟩ : ∃ ψ : V.G.presheaf.stalk (below z) →+* ℂ_[resP v], ψ = io.comp (Scheme.stalkClosedPointTo z).hom` from `⟨_, rfl⟩`.
+
+Take `⟨β, hβ, hβα, hb⟩` from `GlobalTheory.HtGen.FlagPoint.chart V.j ρ' ε.O io ioO hio z yt hyt hU hin e α hα a _ ha ψ hψ`. Take `⟨β', hβ', hβα', hb'⟩` from `GlobalTheory.HtGen.FlagPoint.chart V.j ρ' ε.O io ioO hio z yt hyt hU' hin' e' α' hα' a' _ ha' ψ hψ`. Take `⟨φ, hφ⟩ : ∃ φ : Y.X.presheaf.stalk (V.π (below z)) →+* ℂ_[resP v], φ = io.comp (Scheme.stalkClosedPointTo (z ≫ V.π)).hom` from `⟨_, rfl⟩`. Establish `hφψ : ψ.comp (V.π.stalkMap (below z)).hom = φ`. Rewrite using `[hφ, hψ, Scheme.stalkClosedPointTo_comp]`.
+
+Both sides reduce to the same expression. Simplify using `only [dual_comp _ ψ, hφψ] at hb hb'`. Establish `hx : spMap φ ≫ GlobalTheory.ShFam.stalkPt Y (V.π (below z)) ≫ ρ = spMap (intO ℂ_[resP v]).subtype ≫ (spMap ioO ≫ yt) ≫ ρ'`. Establish `e1 : spMap (Scheme.stalkClosedPointTo z).hom ≫ V.G.fromSpecStalk (below z) = z` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk z`. Establish `e2 : spMap (V.π.stalkMap (below z)).hom ≫ GlobalTheory.ShFam.stalkPt Y (V.π (below z)) = V.G.fromSpecStalk (below z) ≫ V.π` using `Scheme.SpecMap_stalkMap_fromSpecStalk V.π`.
+
+Rewrite using `[← hφψ, ← spMap_comp', Category.assoc, ← Category.assoc _ _ ρ, e2, Category.assoc, ← hρ, hψ, ← spMap_comp', Category.assoc, ← Category.assoc _ (V.G.fromSpecStalk _), e1, Category.assoc, ← Category.assoc (spMap (intO ℂ_[resP v]).subtype), spMap_comp', hio, ← spMap_comp', Category. …`. Establish `hy0 : spMap (intO ℂ_[resP v]).subtype ≫ spMap ioO ≫ yt = spMap io ≫ z ≫ V.j`. Rewrite using `[← Category.assoc, spMap_comp', hio, ← spMap_comp', Category.assoc, hyt]`. Establish `hB` using `GlobalTheory.LineNorm.WedgeMax.isTanBasis_map t β he`. Establish `hB'` using `GlobalTheory.LineNorm.WedgeMax.isTanBasis_map t β' he'`.
+
+Rewrite `hB` using `[← Category.assoc, hβ]`. Rewrite `hB'` using `[← Category.assoc, hβ']`. Establish `hli : LinearIndependent ℂ_[resP v] fun l i => ψ (a l i)` using `linInd (GlobalTheory.LineNorm.WedgeMax.isTanBasis_map t _ hB).1 hb (hx ▸ hind _ _ φ)`. Take `⟨k1, k2⟩` from `hPt E H X t hX (resP v) ((spMap ioO ≫ yt) ≫ ρ') n n' _ _ hB hB' g (fun j => c j (spMap ioO ≫ yt)) J _ _ (hgen _) (hiso _ hy0) (hd β _ hβ) (hd' β' _ hβ') _ _ _ hli hb hb'`. Rewrite `k1`, `k2` using `[← hx]`.
+
+Establish `hval : ∀ r, io (TrueGeo.valAt z (algebraMap (V.G.presheaf.stalk (below z)) V.G.functionField r)) = ψ r` using `fun r => by rw [hψ, Base.valAt_stalk]; rfl`. Establish `hm : (valMat V M (T (V.π (below z))) z).map io = Matrix.of fun r l => ∑ i, ((β (h r i) : intO ℂ_[resP v]) : ℂ_[resP v]) * ψ (a l i)`. Use extensionality with `r l`. Simplify using `only [Matrix.map_apply, valMat, Matrix.of_apply]`. Rewrite using `[hMα, hval, map_sum]`.
+
+Simplify using `only [map_mul, hβα]`. Establish `hm' : (valMat V M' (T (V.π (below z))) z).map io = Matrix.of fun r l => ∑ i, ((β' (h' r i) : intO ℂ_[resP v]) : ℂ_[resP v]) * ψ (a' l i)`. Use extensionality with `r l`. Simplify using `only [Matrix.map_apply, valMat, Matrix.of_apply]`. Rewrite using `[hMα', hval, map_sum]`.
+
+Simplify using `only [map_mul, hβα']`. Substitute `hφ` using the available equality. Use `⟨k1, ?_⟩` and prove the remaining obligations. Conclude with `(congrArg₂ (fun A B => Clauses (fun b : ℂ_[resP v] => ‖b‖) J _ A B) hm hm').mpr k2`.
+-/
 theorem testSt_of_ptSt : PtSt → TestSt := by
   intro hPt E _ _ _ H X _ t hX F _ _ Y V ρ' ρ hρ g f T hind v hp c J hgen U U' hU hU' n n' e e' h h' M M' he he' hd hd'
     hM hM' ε y z yt hz hyt hin hin' hiso ψ₀ hψ₀

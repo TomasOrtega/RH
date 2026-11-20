@@ -17,11 +17,17 @@ namespace GlobalTheory.ChernMass
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ} {L : LB X}
 
+/- English proof (translation)
+Rewrite using `[ψ.trans _ i y (mem_pick φ.isLB y) hi, φ.trans _ i y (mem_pick φ.isLB y) hi]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sub_pick_eq (φ ψ : Weight p σ L) {y : CxPts p σ} {i : L.ι} (hi : y ∈ ptsIn p σ (L.U i)) :
     ψ.φ (pick φ.isLB y) y - φ.φ (pick φ.isLB y) y = ψ.φ i y - φ.φ i y := by
   rw [ψ.trans _ i y (mem_pick φ.isLB y) hi, φ.trans _ i y (mem_pick φ.isLB y) hi]
   ring
 
+/- English proof (translation)
+Establish `hx` using `mem_pick φ.isLB x`. Use `(((hψ _ x hx).add (hφ _ x hx).neg).const_mul 2⁻¹).congr ?_` and prove the remaining obligations. Use `filter_upwards [(isOpen_ptsIn _).mem_nhds hx] with z hz`. Rewrite using `[sub_pick_eq φ ψ hz]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cInfAt_half_sub {φ ψ : Weight p σ L} (hφ : φ.IsCInf) (hψ : ψ.IsCInf) (x : CxPts p σ) :
     CInfAt (fun y => (ψ.φ (pick φ.isLB y) y - φ.φ (pick φ.isLB y) y) / 2) x := by
   have hx := mem_pick φ.isLB x
@@ -30,6 +36,11 @@ theorem cInfAt_half_sub {φ ψ : Weight p σ L} (hφ : φ.IsCInf) (hψ : ψ.IsCI
   rw [sub_pick_eq φ ψ hz]
   ring
 
+/- English proof (translation)
+Establish `hP : IsPotential A φ.locPot` using `((Weight.isCInf_iff_isSmooth hA.anRead).1 hφ).isPotential hA`. Establish `hu : A.Smooth fun y => (ψ.φ (pick φ.isLB y) y - φ.φ (pick φ.isLB y) y) / 2` using `(hA.smooth_iff hA.anRead).2 ((cInfAt_iff_smoothOn hA.anRead isOpen_univ).1 fun y _ => cInfAt_half_sub hφ hψ y)`. Rewrite using `[← massIndep A (fun _ => φ.locPot) (fun _ => _) (fun _ => hP) fun _ => hu]`. Use `SameForm.mInt_eq (fun _ j y hy => hessCGerm _ _ _ ?_) _` and prove the remaining obligations. Use `eventually_of_mem (((A.chart j).isOpen_inter_preimage_symm (isOpen_ptsIn _)).mem_nhds ⟨hy, mem_pick φ.isLB ((A.chart j).symm y)⟩) fun w hw => ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `φ.φ _ _ / 2 + (_ - _) / 2 = ψ.φ (pick φ.isLB _) _ / 2`. Rewrite using `[sub_pick_eq φ ψ hw.2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mInt_one_eq {D : ℕ} [CompactSpace (CxPts p σ)] [T2Space (CxPts p σ)]
     {A : FinHolAtlas D (CxPts p σ)} (hA : IsAlgAtlas A) {φ ψ : Weight p σ L} (hφ : φ.IsCInf)
     (hψ : ψ.IsCInf) :
@@ -47,6 +58,9 @@ theorem mInt_one_eq {D : ℕ} [CompactSpace (CxPts p σ)] [T2Space (CxPts p σ)]
   rw [sub_pick_eq φ ψ hw.2]
   ring
 
+/- English proof (translation)
+Introduce `Y L φ ψ hφ hψ` and use `by obtain ⟨h₁, h₂, -, A, hA⟩ := GlobalTheory.T.complexPoints_smoothProjVariety_compact_manifold Y rw [(GlobalTheory.T.chernIntegral_one_eq_mongeAmpereIntegral Y L φ hφ).2 A hA, (GlobalTheory.T.chernIntegral_one_eq_mongeAmpereIntegral Y L ψ hψ).2 A hA] exact mInt_one_eq hA hφ hψ`.
+-/
 theorem chernInt_one_eq : ∀ (Y : Var ℂ) (L : LB Y.X) (φ ψ : Weight Y.str (RingHom.id ℂ) L), φ.IsCInf → ψ.IsCInf → Weight.chernInt φ Y.dim Set.univ (fun _ => 1) = Weight.chernInt ψ Y.dim Set.univ (fun _ => 1) := fun Y L φ ψ hφ hψ => by
   obtain ⟨h₁, h₂, -, A, hA⟩ := GlobalTheory.T.complexPoints_smoothProjVariety_compact_manifold Y
   rw [(GlobalTheory.T.chernIntegral_one_eq_mongeAmpereIntegral Y L φ hφ).2 A hA, (GlobalTheory.T.chernIntegral_one_eq_mongeAmpereIntegral Y L ψ hψ).2 A hA]

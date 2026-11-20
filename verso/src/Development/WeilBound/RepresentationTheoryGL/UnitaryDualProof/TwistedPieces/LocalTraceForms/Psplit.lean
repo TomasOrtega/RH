@@ -11,6 +11,9 @@ open PositivityTheory.RgUd.T PositivityTheory.RgUd.TP
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use `hSp n Z F (fun i => ⟨(hF.1 i).1, (hF.1 i).2.2⟩) hF.2.1 ξ ?_ hI` and prove the remaining obligations. Introduce `f hf h0`. Use `hS f hf fun p hp => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `hF.2.2 p.1 hp.1.1 hp.1.2`. Conclude with `h0 p ⟨mem_iUnion.2 ⟨i, hi⟩, mem_univ _⟩`.
+-/
 theorem fib_split (hSp : PositivityTheory.RgUd.TP.Loc.Split k) {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (χ : k[X]) {m : ℕ}
     (F : Fin m → Set (Matrix (Fin n) (Fin n) k)) (hF : IsPieces Z χ F) (ξ : (Sp k n → ℂ) →ₗ[ℂ] ℂ)
     (hS : Supp ξ ((Bz Z ∩ {x | x.charpoly = χ}) ×ˢ univ)) (hI : Inv Z ξ) :
@@ -22,6 +25,11 @@ theorem fib_split (hSp : PositivityTheory.RgUd.TP.Loc.Split k) {n : ℕ} (Z : Su
   obtain ⟨i, hi⟩ := hF.2.2 p.1 hp.1.1 hp.1.2
   exact h0 p ⟨mem_iUnion.2 ⟨i, hi⟩, mem_univ _⟩
 
+/- English proof (translation)
+Introduce `hSp hLC n Z _hZ hP ξ hS hI`. Establish `hU : IsOpen {p : Sp k n | p.2 ≠ 0}` using `(isClosed_eq continuous_snd continuous_const).isOpen_compl`. Use `hLC n Z _ hU (fun χ ξ' hS' hI' f hf => ?_) ξ hS hI` and prove the remaining obligations. Take `⟨m, F, hF, hi⟩` from `hP χ`. Take `⟨η, hη, hsum⟩` from `fib_split hSp Z χ F hF ξ' hS' hI'`.
+
+Rewrite using `[hsum f (supportedIn_mono (subset_univ _) hf)]`. Conclude with `Finset.sum_eq_zero fun i _ => hi i (η i) (hη i).1 (hη i).2 f hf`.
+-/
 theorem locAll_of_pf : PositivityTheory.RgUd.TP.Loc.Split k → PositivityTheory.RgUd.TP.Loc.LocChi k → LocAll k := by
   intro hSp hLC n Z _hZ hP ξ hS hI
   have hU : IsOpen {p : Sp k n | p.2 ≠ 0} := (isClosed_eq continuous_snd continuous_const).isOpen_compl
@@ -31,6 +39,13 @@ theorem locAll_of_pf : PositivityTheory.RgUd.TP.Loc.Split k → PositivityTheory
   rw [hsum f (supportedIn_mono (subset_univ _) hf)]
   exact Finset.sum_eq_zero fun i _ => hi i (η i) (hη i).1 (hη i).2 f hf
 
+/- English proof (translation)
+Introduce `hSp hLC n Z _hZ hP ξ hS hI U hU hUp`. Use `hLC n Z U hU (fun χ ξ' hS' hI' f hf => ?_) ξ hS hI` and prove the remaining obligations. Take `⟨m, F, hF, hi⟩` from `hP χ`. Take `⟨η, hη, hsum⟩` from `fib_split hSp Z χ F hF ξ' hS' hI'`. Rewrite using `[hsum f (supportedIn_mono (subset_univ _) hf)]`.
+
+Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Break down `hi i with ⟨c, hc, hnil⟩ | hv` into its components or cases. Use `(hη i).1 f (supportedIn_mono (subset_univ _) hf) fun p hp => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Conclude with `((hUp p (hf.2 h0)).2) ⟨⟨c, hc, hnil p.1 hp.1⟩, (hF.1 i).2.1 hp.1⟩`.
+
+Conclude with `hv (η i) (hη i).1 (hη i).2 f (supportedIn_mono (fun p hp => (hUp p hp).1) hf)`.
+-/
 theorem locOff_of_pf : PositivityTheory.RgUd.TP.Loc.Split k → PositivityTheory.RgUd.TP.Loc.LocChi k → LocOff k := by
   intro hSp hLC n Z _hZ hP ξ hS hI U hU hUp
   refine hLC n Z U hU (fun χ ξ' hS' hI' f hf => ?_) ξ hS hI
@@ -44,12 +59,24 @@ theorem locOff_of_pf : PositivityTheory.RgUd.TP.Loc.Split k → PositivityTheory
     exact ((hUp p (hf.2 h0)).2) ⟨⟨c, hc, hnil p.1 hp.1⟩, (hF.1 i).2.1 hp.1⟩
   · exact hv (η i) (hη i).1 (hη i).2 f (supportedIn_mono (fun p hp => (hUp p hp).1) hf)
 
+/- English proof (translation)
+The claim follows from `split_pf`.
+-/
 theorem split (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] :
     PositivityTheory.RgUd.TP.Loc.Split k := split_pf
+/- English proof (translation)
+The claim follows from `locChi_pf`.
+-/
 theorem locChi (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] :
     PositivityTheory.RgUd.TP.Loc.LocChi k := locChi_pf
+/- English proof (translation)
+The claim follows from `locOff_of_pf`.
+-/
 theorem locOff_of (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] :
     PositivityTheory.RgUd.TP.Loc.Split k → PositivityTheory.RgUd.TP.Loc.LocChi k → LocOff k := locOff_of_pf
+/- English proof (translation)
+The claim follows from `locAll_of_pf`.
+-/
 theorem locAll_of (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] :
     PositivityTheory.RgUd.TP.Loc.Split k → PositivityTheory.RgUd.TP.Loc.LocChi k → LocAll k := locAll_of_pf
 

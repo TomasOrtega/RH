@@ -7,6 +7,21 @@ open scoped InnerProductSpace ENNReal
 
 namespace GlobalTheory.Amp.GramVol
 
+/- English proof (translation)
+Introduce `k j _ hjk m hm P hP0`. Establish `hP : k - 2 ≤ Module.finrank ℂ P` using `by omega`. Take `⟨d, rfl⟩ : ∃ d, k = d + 2` from `⟨k - 2, by omega⟩`. Establish `hd : d + 2 - 2 = d` using `by omega`. Rewrite `hP`, the goal using `[hd]`.
+
+Establish `key` using `vol_le d 3 j (by omega) m⁻¹ (norm_det_inv_eq_one hm) P hP`. Take `⟨s, hs⟩ : ∃ s, d = j + s` from `⟨d - j, by omega⟩`. Establish `hs1 : 1 ≤ s` using `by omega`. Establish `hs2 : d - j = s` using `by omega`. Rewrite `key`, the goal using `[hs2]`.
+
+Use `⟨?_, fun M y hM hy => ?_⟩` and prove the remaining obligations. Establish `hz : ∀ N : ℕ, volume {B : Fin j → Fin (d + 2 + 1) → ℂ | (∀ b, eucl (m⁻¹ *ᵥ B b) ≤ (N : ℝ) + 1) ∧ gramProj P (fun b => m⁻¹ *ᵥ B b) ≤ 0} = 0` using `fun N => by`. Use `key ((N : ℝ) + 1) 0 (by positivity) le_rfl` as an intermediate fact. Rewrite `this` using `[zero_pow (by omega)]`. Simplify using `using this`.
+
+Use `measure_mono_null ?_ (measure_iUnion_null hz)` and prove the remaining obligations. Introduce `B hB`. Take `⟨N, hN⟩` from `exists_nat_ge (∑ b, eucl (m⁻¹ *ᵥ B b))`. Use `Set.mem_iUnion.2 ⟨N, fun b => ?_, le_of_eq hB⟩` and prove the remaining obligations. Establish `: eucl (m⁻¹ *ᵥ B b) ≤ ∑ b, eucl (m⁻¹ *ᵥ B b)` using `Finset.single_le_sum (f := fun b => eucl (m⁻¹ *ᵥ B b)) (fun _ _ => Real.sqrt_nonneg _) (Finset.mem_univ b)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `le_trans (measure_mono fun B hB => ?_) (le_trans (key M (2 * y) (by positivity) (by positivity)) (ENNReal.ofReal_le_ofReal ?_))` and prove the remaining obligations. Conclude with `⟨hB.1, hB.2.2⟩`. Establish `hpi` using `Real.pi_pos`. Establish `h1 : (1 / (s.factorial : ℝ)) ^ j ≤ ((Real.exp 1 / s) ^ s) ^ j` using `pow_le_pow_left₀ (by positivity) (inv_factorial_le s hs1) j`.
+
+Establish `h2 : M ^ (2 * j ^ 2) ≤ 4 * M ^ (2 * j ^ 2 + 2 * j)`. Establish `h3 : M ^ (2 * j ^ 2) ≤ M ^ (2 * j ^ 2 + 2 * j)` using `pow_le_pow_right₀ hM (Nat.le_add_right _ _)`. Establish `h4 : 0 ≤ M ^ (2 * j ^ 2 + 2 * j)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hs, mul_add j j s, pow_add, ← sq j, one_div, inv_pow, div_eq_mul_inv]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (Real.pi * M ^ 2) ^ (3 * j) * (4 * M ^ (2 * j ^ 2 + 2 * j)) * Real.pi ^ (j ^ 2) * (Real.pi ^ (j * s) * ((Real.exp 1 / s) ^ s) ^ j) * (2 * y) ^ (2 * s) := by gcongr`. Use `_ = _ := by`. Rewrite using `[← pow_mul (Real.exp 1 / s), mul_comm s j, ← mul_pow, mul_div_assoc, mul_assoc _ (4 : ℝ)]`.
+-/
 theorem vol_gram_codim_three : ∀ (k r : ℕ), 1 ≤ r → 2 * r + 6 ≤ k → ∀ m ∈ UH (Hb k), ∀ P₀ : Submodule ℂ (EuclideanSpace ℂ (Fin (k + 1))), (Module.finrank ℂ P₀ = k - 2 ∨ Module.finrank ℂ P₀ = k - 1) → volume {B : Fin r → Fin (k + 1) → ℂ | gramProj P₀ (fun b => m⁻¹ *ᵥ B b) = 0} = 0 ∧ ∀ R' y : ℝ, 1 ≤ R' → 0 < y → volume {B : Fin r → Fin (k + 1) → ℂ | (∀ b, eucl (m⁻¹ *ᵥ B b) ≤ R') ∧ y < gramProj P₀ (fun b => m⁻¹ *ᵥ B b) ∧ gramProj P₀ (fun b => m⁻¹ *ᵥ B b) ≤ 2 * y} ≤ ENNReal.ofReal ((Real.pi * R' ^ 2) ^ (3 * r) * 4 * R' ^ (2 * r ^ 2 + 2 * r) * Real.pi ^ (r ^ 2) * (Real.pi * Real.exp 1 / ((k - 2 - r : ℕ) : ℝ)) ^ (r * (k - 2 - r)) * (2 * y) ^ (2 * (k - 2 - r))) := by
   intro k j _ hjk m hm P hP0
   have hP : k - 2 ≤ Module.finrank ℂ P := by omega

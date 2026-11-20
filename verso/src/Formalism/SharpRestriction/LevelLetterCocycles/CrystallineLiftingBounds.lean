@@ -51,6 +51,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL] [TopologicalSpace LL]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
 
+/- English proof (translation)
+Establish `e` using `W.gamK_eq_one h1 h2`. Introduce `x hx`. Unfold `Formalism.BasicNotions.LocWach.wachCocyclesDelta Formalism.BasicNotions.herrZ1Δ at hx`. Establish `hx1` using `(Submodule.mem_inf.mp hx).1`. Rewrite `hx1` using `[e]`.
+
+Conclude with `hx1`.
+-/
 theorem invariant_cocycle_le_gamma_cocycle (W : LocWach PD LL O v n) (h1 : W.s = 1) (h2 : PD.p ≠ 2) (T : LocLat G Qp LL O) :
     W.wachCocyclesDelta T ≤ W.divisibleCocycles T := by
   have e := W.gamK_eq_one h1 h2
@@ -98,6 +103,9 @@ def adm21 (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop :=
   ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL),
     ((HW l).W K s LL h).ClNat ∧ (s = 1 → l ≠ 2 → ((HW l).W K s LL h).ClKNat)
 
+/- English proof (translation)
+Introduce `h1 h2 T w`. Conclude with `((F l).E K s LL h).tie.clK_res (((HW l).W K s LL h).gamK_eq_one h1 h2) T w _ rfl`.
+-/
 theorem resK_holds (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l)
     (h : Good K s LL) : coreResK ((HW l).W K s LL h) := by
   intro h1 h2 T w
@@ -122,12 +130,28 @@ def aux₃ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (CA CB CK : �
 
 def Stmt (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) (CA CB CK : ℝ) : Prop := admitted D HW F Cm → aux₃ D HW F CA CB CK
 
+/- English proof (translation)
+Take `⟨-, ⟨hX, hB, hA, -⟩, -, -, -, -, -, hL⟩` from `h`. Unfold `aux₃ Conclusion1 Conclusion2`. Conclude with `⟨⟨hX, hB, hA⟩, hL⟩`.
+-/
 theorem lifting_bounds_of_wach_theorem (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (C CA CB CK : ℝ) (h : Formalism.MainNotions.LiftingTheory.aux₃ D HW F C CA CB CK) :
     aux₃ D HW F CA CB CK := by
   obtain ⟨-, ⟨hX, hB, hA, -⟩, -, -, -, -, -, hL⟩ := h
   unfold aux₃ Conclusion1 Conclusion2
   exact ⟨⟨hX, hB, hA⟩, hL⟩
 
+/- English proof (translation)
+Unfold `admitted`. Unfold `Formalism.MainNotions.DeltaInvariantLattices.ConclusionL at h`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, h17, h18, h19, h20, h21, h22, h23⟩` and prove the remaining obligations. Apply the tactic sequence `all_goals intro l _ K s LL hg`. Apply the tactic sequence `all_goals obtain ⟨⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10⟩, hc, ⟨ha, hb, hcc, hd⟩, hl⟩ := h l K s LL hg`.
+
+Introduce `T hT`. Take `⟨a, -, -⟩` from `h1`. Conclude with `a T hT`. Conclude with `h2`. Conclude with `h3`.
+
+Conclude with `h4`. Conclude with `h5`. Conclude with `h6`. Conclude with `h7`. Conclude with `h8`.
+
+Conclude with `h9`. Introduce `T hT`. Take `⟨a, -⟩` from `h10`. Conclude with `a T hT`. Introduce `T hT`.
+
+Take `⟨-, a, -⟩` from `hc T hT`. Conclude with `a`. Conclude with `ha`. Conclude with `hb`. Conclude with `hcc`.
+
+Conclude with `hd`. Conclude with `hl`.
+-/
 theorem lifting_hyps_of_wach_properties (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) (h : Formalism.MainNotions.DeltaInvariantLattices.ConclusionL D.loc HW D.locA F Cm) (h17 : adm17 D HW F) (h18 : adm18 D HW F)
     (h19 : adm19 D HW F) (h20 : adm20 D HW F) (h21 : adm21 D HW F) (h22 : adm22 D HW F) (h23 : adm23 D HW F) : admitted D HW F Cm := by
   unfold admitted

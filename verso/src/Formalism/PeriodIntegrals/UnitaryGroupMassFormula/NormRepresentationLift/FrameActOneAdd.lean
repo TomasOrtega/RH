@@ -13,16 +13,27 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNo
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T : E}
 
+/- English proof (translation)
+Use `show Submodule.span E (F.fl.e '' {i | i.1 < j}) ≤ Submodule.span E (F.fl.e '' {i | i.1 < j + 1})`. Conclude with `Submodule.span_mono (Set.image_mono fun i hi => by`. Simplify using `only [Set.mem_setOf_eq] at hi ⊢`. Use the proof step `omega)`.
+-/
 theorem Xflag_mono (F : LFlag S r T) (j : ℕ) : Xflag F j ≤ Xflag F (j + 1) := by
   show Submodule.span E (F.fl.e '' {i | i.1 < j}) ≤ Submodule.span E (F.fl.e '' {i | i.1 < j + 1})
   exact Submodule.span_mono (Set.image_mono fun i hi => by
     simp only [Set.mem_setOf_eq] at hi ⊢
     omega)
 
+/- English proof (translation)
+Use `show Submodule.span E (F.fl.e '' {i | i.1 < j}) ≤ Submodule.span E (Set.range F.fl.e)`. Conclude with `Submodule.span_mono (Set.image_subset_range _ _)`.
+-/
 theorem Xflag_le (F : LFlag S r T) (j : ℕ) : Xflag F j ≤ Xsp F := by
   show Submodule.span E (F.fl.e '' {i | i.1 < j}) ≤ Submodule.span E (Set.range F.fl.e)
   exact Submodule.span_mono (Set.image_subset_range _ _)
 
+/- English proof (translation)
+Introduce `x hx`. Simplify using `only [orth, Submodule.mem_iInf, LinearMap.mem_ker]`. Introduce `y hy`. Use `span_zero (φ := S.hT y) (fun z hz => ?_) hx` and prove the remaining obligations. Take `⟨i, rfl⟩` from `hz`.
+
+Rewrite using `[herm_eq, span_zero (φ := S.hT (F.fl.e i)) (fun z hz => by`. Take `⟨k, rfl⟩` from `hz`. Conclude with `F.fl.e_iso i k) hy, star_zero]`.
+-/
 theorem X_le_orth (F : LFlag S r T) : Xsp F ≤ orth S (Xsp F) := by
   intro x hx
   simp only [orth, Submodule.mem_iInf, LinearMap.mem_ker]
@@ -33,6 +44,19 @@ theorem X_le_orth (F : LFlag S r T) : Xsp F ≤ orth S (Xsp F) := by
     obtain ⟨k, rfl⟩ := hz
     exact F.fl.e_iso i k) hy, star_zero]
 
+/- English proof (translation)
+Simplify using `only [NLam, IsAutLam, Set.mem_setOf_eq] at h₁ h₂ ⊢`. Take `⟨⟨hi₁, hg₁⟩, hf₁, ho₁⟩` from `h₁`. Take `⟨⟨hi₂, hg₂⟩, hf₂, ho₂⟩` from `h₂`. Use `⟨⟨Subgroup.mul_mem _ hi₁ hi₂, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hg₁`, `hg₂`, the goal using `[gmap_eq_iff]`.
+
+Use `⟨fun y hy => hg₁.1 _ (hg₂.1 y hy), fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨w₁, hw₁, rfl⟩` from `hg₁.2 y hy`. Take `⟨w₂, hw₂, rfl⟩` from `hg₂.2 w₁ hw₁`. Conclude with `⟨w₂, hw₂, rfl⟩`. Introduce `j x hx`.
+
+Establish `h2` using `hf₂ j x hx`. Establish `hmem : n₂ x ∈ Xflag F (j + 1)`. Establish `h3` using `Submodule.add_mem _ (Xflag_mono F j h2) hx`. Rewrite `h3` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `h1` using `hf₁ j (n₂ x) hmem`.
+
+Establish `h4` using `Submodule.add_mem _ h1 h2`. Rewrite `h4` using `[sub_add_sub_cancel]`. Conclude with `h4`. Introduce `x hx`. Establish `h2` using `ho₂ x hx`.
+
+Establish `hmem : n₂ x ∈ orth S (Xsp F)`. Establish `h3` using `Submodule.add_mem _ (X_le_orth F h2) hx`. Rewrite `h3` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `h1` using `ho₁ (n₂ x) hmem`. Establish `h4` using `Submodule.add_mem _ h1 h2`.
+
+Rewrite `h4` using `[sub_add_sub_cancel]`. Conclude with `h4`.
+-/
 theorem NLam_mul (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T) {n₁ n₂ : S.V ≃ₗ[E] S.V}
     (h₁ : n₁ ∈ NLam Λ F) (h₂ : n₂ ∈ NLam Λ F) : n₁ * n₂ ∈ NLam Λ F := by
   simp only [NLam, IsAutLam, Set.mem_setOf_eq] at h₁ h₂ ⊢
@@ -63,6 +87,9 @@ theorem NLam_mul (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T) {n₁ n₂ : S.
     rw [sub_add_sub_cancel] at h4
     exact h4
 
+/- English proof (translation)
+Introduce `P hP`. Use `haveI := P.isPrime`. Use `show ∃ s ∈ P.asIdeal.primeCompl, s • x ∈ Ideal.span {(g : 𝓞 E)} • Λ`. Conclude with `⟨1, Submonoid.one_mem _, by rwa [one_smul]⟩`.
+-/
 theorem modG_of_mem (Λ : Submodule (𝓞 E) S.V) (g : ℕ) {x : S.V}
     (hx : x ∈ Ideal.span {(g : 𝓞 E)} • Λ) : ModG S Λ g x := by
   intro P hP
@@ -70,11 +97,21 @@ theorem modG_of_mem (Λ : Submodule (𝓞 E) S.V) (g : ℕ) {x : S.V}
   show ∃ s ∈ P.asIdeal.primeCompl, s • x ∈ Ideal.span {(g : 𝓞 E)} • Λ
   exact ⟨1, Submonoid.one_mem _, by rwa [one_smul]⟩
 
+/- English proof (translation)
+Introduce `P hP`. Conclude with `Submodule.add_mem _ (hx P hP) (hy P hP)`.
+-/
 theorem modG_add (Λ : Submodule (𝓞 E) S.V) (g : ℕ) {x y : S.V} (hx : ModG S Λ g x) (hy : ModG S Λ g y) :
     ModG S Λ g (x + y) := by
   intro P hP
   exact Submodule.add_mem _ (hx P hP) (hy P hP)
 
+/- English proof (translation)
+Introduce `P hP`. Establish `hx'` using `hx P hP`. Use `haveI := P.isPrime`. Take `⟨s, hs, hsx⟩ : ∃ s ∈ P.asIdeal.primeCompl, s • x ∈ Ideal.span {(g : 𝓞 E)} • Λ` from `hx'`. Use `show ∃ s ∈ P.asIdeal.primeCompl, s • n x ∈ Ideal.span {(g : 𝓞 E)} • Λ`.
+
+Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Establish `hmap : (Ideal.span {(g : 𝓞 E)} • Λ).map ((n : S.V →ₗ[E] S.V).restrictScalars (𝓞 E)) = Ideal.span {(g : 𝓞 E)} • Λ`. Rewrite using `[Submodule.map_smul'']`. Unfold `Formalism.HermitianLatticesTheory.gmap at hn`. Rewrite using `[hn]`.
+
+Establish `hmem` using `Submodule.mem_map_of_mem (f := (n : S.V →ₗ[E] S.V).restrictScalars (𝓞 E)) hsx`. Rewrite `hmem` using `[hmap]`. Establish `he : ((n : S.V →ₗ[E] S.V).restrictScalars (𝓞 E)) (s • x) = s • n x` using `map_smul ((n : S.V →ₗ[E] S.V).restrictScalars (𝓞 E)) s x`. Rewrite `hmem` using `[he]`. Conclude with `hmem`.
+-/
 theorem modG_map (Λ : Submodule (𝓞 E) S.V) (g : ℕ) (n : S.V ≃ₗ[E] S.V) (hn : Formalism.HermitianLatticesTheory.gmap n Λ = Λ)
     {x : S.V} (hx : ModG S Λ g x) : ModG S Λ g (n x) := by
   intro P hP
@@ -95,6 +132,9 @@ theorem modG_map (Λ : Submodule (𝓞 E) S.V) (g : ℕ) (n : S.V ≃ₗ[E] S.V)
   rw [he] at hmem
   exact hmem
 
+/- English proof (translation)
+Unfold `frameAct`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Rewrite using `[smul_coe]`. Conclude with `Λ.smul_mem _ (hf a)`.
+-/
 theorem frameAct_mem (Λ : Submodule (𝓞 E) S.V) {n : ℕ} (f : Fin n → S.V) (hf : ∀ c, f c ∈ Λ)
     (Q : Matrix (Fin n) (Fin n) (𝓞 E)) (b : Fin n) : frameAct f Q b ∈ Λ := by
   unfold frameAct
@@ -102,6 +142,9 @@ theorem frameAct_mem (Λ : Submodule (𝓞 E) S.V) {n : ℕ} (f : Fin n → S.V)
   rw [smul_coe]
   exact Λ.smul_mem _ (hf a)
 
+/- English proof (translation)
+Establish `h1` using `frameAct_one f b`. Unfold `frameAct at h1 ⊢`. Simplify using `only [smul_coe] at h1 ⊢`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, add_smul, Finset.sum_add_distrib, h1, mul_smul, Finset.smul_sum]`.
+-/
 theorem frameAct_one_add {n : ℕ} (f : Fin n → S.V) (g : 𝓞 E) (Q : Matrix (Fin n) (Fin n) (𝓞 E)) (b : Fin n) :
     frameAct f (1 + g • Q) b = f b + g • frameAct f Q b := by
   have h1 := frameAct_one f b
@@ -110,6 +153,29 @@ theorem frameAct_one_add {n : ℕ} (f : Fin n → S.V) (g : 𝓞 E) (Q : Matrix 
   simp only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, add_smul, Finset.sum_add_distrib, h1,
     mul_smul, Finset.smul_sum]
 
+/- English proof (translation)
+Establish `hone : (1 : S.V ≃ₗ[E] S.V) ∈ NLam Λ F`. Simplify using `only [NLam, IsAutLam, Set.mem_setOf_eq]`. Use `⟨⟨Subgroup.one_mem _, ?_⟩, fun j x _ => ?_, fun x _ => ?_⟩` and prove the remaining obligations. Rewrite using `[gmap_eq_iff]`. Conclude with `⟨fun y hy => hy, fun y hy => ⟨y, hy, rfl⟩⟩`.
+
+Use `show x - x ∈ _`. Rewrite using `[sub_self]`. Conclude with `Submodule.zero_mem _`. Use `show x - x ∈ _`. Rewrite using `[sub_self]`.
+
+Conclude with `Submodule.zero_mem _`. Establish `hrow' : ∀ a : Fin (r + 1), a.val < r → ∀ t : Fin (r + 1) → 𝓞 E, ∃ w : Fin (r + 1) → 𝓞 E, (∀ c, c ≤ a → w c = 0) ∧ (∀ c, a < c → ∃ q, w c = t c + g * q) ∧ (∃ n ∈ NLam Λ F, ActsBy n (frame F) (1 + rowMat a w))`. Introduce `a ha t`. Take `⟨v, hv, l, hl, hperp, hcong⟩` from `hrow ⟨a.val, ha⟩ t`. Establish `hca : Fin.castSucc (⟨a.val, ha⟩ : Fin r) = a` using `Fin.ext rfl`.
+
+Rewrite `hcong` using `[hca]`. Use `choose q hq using hcong`. Set `w : Fin (r + 1) → 𝓞 E` to `fun c => if h : a < c then t c + g * q c h else 0`. Establish `hee : S.hT (F.fl.e ⟨a.val, ha⟩) (F.fl.e ⟨a.val, ha⟩) = 0` using `F.fl.e_iso _ _`. Establish `hve : S.hT v (F.fl.e ⟨a.val, ha⟩) = 0` using `hperp _ le_rfl`.
+
+Establish `hev : S.hT (F.fl.e ⟨a.val, ha⟩) v = 0` using `by rw [herm_eq, hve, star_zero]`. Establish `hw : ∀ c, S.hT v (frame F c) = (w c : E)`. Introduce `c`. Distinguish the cases in `hc : a < c`. Simplify using `only [w, dif_pos hc]`.
+
+Conclude with `hq c hc`. Simplify using `only [w, dif_neg hc]`. Establish `hcr : c.val < r`. Establish `h' : ¬ a.val < c.val` using `fun h => hc (Fin.lt_def.mpr h)`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨c', rfl⟩ : ∃ c' : Fin r, Fin.castSucc c' = c` from `⟨⟨c.val, hcr⟩, Fin.ext rfl⟩`. Establish `hfc : frame F (Fin.castSucc c') = F.fl.e c'` using `by show Fin.snoc (α := fun _ => S.V) F.fl.e F.fl.z (Fin.castSucc c') = F.fl.e c'`. Conclude with `Fin.snoc_castSucc ..`. Establish `hle : c' ≤ (⟨a.val, ha⟩ : Fin r)`. Establish `h' : ¬ a.val < c'.val` using `fun h => hc (Fin.lt_def.mpr (by simpa using h))`.
+
+Conclude with `Fin.le_def.mpr (by simp only; omega)`. Rewrite using `[hfc, hperp c' hle]`. Simplify using the standard rewrite rules. Use `⟨w, fun c hc => ?_, fun c hc => ⟨q c hc, by simp only [w, dif_pos hc]⟩, ?_⟩` and prove the remaining obligations. Establish `hnc : ¬ a < c` using `not_lt.mpr hc`.
+
+Simplify using `only [w, dif_neg hnc]`. Use `⟨tvEquiv (F.fl.e ⟨a.val, ha⟩) v (l : E) hee hev hve, tv_mem_NLam Λ hint F ⟨a.val, ha⟩ (hfe _) v hv hperp l hl hee hev hve, ?_⟩` and prove the remaining obligations. Establish `hact` using `tv_actsBy F ⟨a.val, ha⟩ v (l : E) hee hev hve w hw`. Rewrite `hact` using `[hca]`. Conclude with `hact`.
+
+Take `⟨M, ⟨n, hn, hact⟩, Q, hQ⟩` from `row_elim g (fun M => ∃ n ∈ NLam Λ F, ActsBy n (frame F) M) ⟨1, hone, actsBy_one _⟩ (fun M N hM hN => by`. Take `⟨n₁, h₁, a₁⟩` from `hM`. Take `⟨n₂, h₂, a₂⟩` from `hN`. Conclude with `⟨n₁ * n₂, NLam_mul Λ F h₁ h₂, actsBy_mul a₁ a₂⟩)`. Use the proof step `hrow' ξ hξ`.
+
+Conclude with `⟨n, hn, M, hact, Q, hQ⟩`.
+-/
 theorem exists_undo (Λ : Submodule (𝓞 E) S.V) (hint : IntLat Λ) (F : LFlag S r T) (g : 𝓞 E)
     (hrow : ∀ (a : Fin r) (t : Fin (r + 1) → 𝓞 E), ∃ v ∈ Λ, ∃ l : 𝓞 E,
       (l : E) + star (l : E) = -S.hT v v ∧ (∀ i, i ≤ a → S.hT v (F.fl.e i) = 0) ∧

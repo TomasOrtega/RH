@@ -14,6 +14,9 @@ attribute [local instance] Formalism.MainNotions.G.GAtP.ringO Formalism.MainNoti
 variable {p : ℕ} [Fact p.Prime] (X : Sys p) [IsFractionRing X.G.O X.G.Kf]
   (Kc : Type) [Field Kc] [Algebra (K0 p) Kc] [Algebra X.G.Kf Kc] [CharZero Kc]
 
+/- English proof (translation)
+Take `⟨-, -, hanti, -⟩` from `hS p X j b`. Unfold `nuT`. Use `split_ifs`. Conclude with `BidetPairing.kap_antitone (hanti _) _`. Conclude with `hanti _`.
+-/
 theorem nuT_antitone (hS : XShape) (j : ℕ) (b : BX X) : Antitone (nuT X j b) := by
   obtain ⟨-, -, hanti, -⟩ := hS p X j b
   unfold nuT
@@ -21,6 +24,13 @@ theorem nuT_antitone (hS : XShape) (j : ℕ) (b : BX X) : Antitone (nuT X j b) :
   · exact BidetPairing.kap_antitone (hanti _) _
   · exact hanti _
 
+/- English proof (translation)
+Take `⟨-, -, hanti, hle, -⟩` from `hS p X j b`. Distinguish the cases in `ho : IsOddPos b.2`. Establish `h1 : szT X j b = fun k => NJ X (j + 1) - colH (muX X j (NJ X (j + 1)) b) k.val`. Use function extensionality and compare the values at `k`. Conclude with `if_pos ho`.
+
+Rewrite using `[h1, show nuT X j b = _ from if_pos ho]`. Conclude with `shape_odd_holds _ _ (hanti _) _ (hle _)`. Establish `h1 : szT X j b = fun k => colH (muX X j (NJ X (j + 1)) b) k.val`. Use function extensionality and compare the values at `k`. Conclude with `if_neg ho`.
+
+Rewrite using `[h1, show nuT X j b = _ from if_neg ho]`. Conclude with `shape_even_holds _ _ (hanti _) _ (hle _)`.
+-/
 theorem shape_szT (hS : XShape) (j : ℕ) (b : BX X) : shapeDeg (szT X j b) = nuT X j b := by
   obtain ⟨-, -, hanti, hle, -⟩ := hS p X j b
   by_cases ho : IsOddPos b.2
@@ -33,6 +43,23 @@ theorem shape_szT (hS : XShape) (j : ℕ) (b : BX X) : shapeDeg (szT X j b) = nu
     rw [h1, show nuT X j b = _ from if_neg ho]
     exact shape_even_holds _ _ (hanti _) _ (hle _)
 
+/- English proof (translation)
+Distinguish the cases in `hI : ∀ b k, Function.Injective (I b k)`. Take `⟨Ist, ε, hε, hmid⟩` from `hMid p X Kc j La La' φ i0 I hI set TI := map (algebraMap X.G.Kf Kc) (∏ b, rename (emX X (j + 1) b) (rowAct X.G.Kf (mF X (j + 1) b (φ.g' b.1) * DgX X X.G.Kf j i0 b.1).transpose (bideterminant X.G.Kf (szT X j b) (szT_le X j b) (I b)))) with hTI set cc : Kc := ∏ b, cN Kc (nuT X j b) …`. Establish `hcc0 : cc ≠ 0` using `Finset.prod_ne_zero_iff.2 fun b _ => cN_ne Kc _`. Use `set S1 : X.G.Kf := ((∏ v : X.Pl, (p : X.G.Kf) ^ (Nprime (X.G.P.lam0 v) (X.w v) (j + 1) (i0 v))) * ((∏ v : X.Pl, (p : X.G.Kf) ^ (X.vm v (j + 1) * len X v j La.2)) * (∏ v : X.Pl, (p : X.G.Kf) ^ (X.vm v (j + 1) * len X v (j + 1) La'.2))⁻¹)) with hS1`. Use `set s1 : X.G.Kf := (∏ b : BX X, (mF X (j + 1) b (φ.g' b.1) * DgX X X.G.Kf j i0 b.1).det ^ (-(eJ X (j + 1) b.1 b.2)))⁻¹ with hs1`.
+
+Establish `hp0 : (p : Kc) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero`. Establish `hu` using `hU p X Kc Oc hO hp0 j La.2 La'.2 φ.g φ.g' φ.hg φ.hg' i0 h3`. Rewrite `hu` using `[← hS1, ← hs1]`. Use `set U0 := numericalIdentityScalar X Kc j (fun v => φ.g v) (fun v => φ.g' v) i0 with hU0`. Establish `hεO : ε ∈ Oc`.
+
+Break down `hε with h | h` into its components or cases. Rewrite using `[h]`. Conclude with `Oc.one_mem`. Rewrite using `[h]`. Conclude with `Oc.neg_mem Oc.one_mem`.
+
+Establish `key` using `phi_mem X Kc hS hBrS hInj j La.2 φ.g φ.hg (MG p Oc hval gg) (fun o a ha => geX_mul (hO o) ha) (PhiX X Kc j (fockL TI) (cc⁻¹ * algebraMap X.G.Kf Kc (S1 * s1)) (linSub (bc Kc φ) f)) (C (ε * (algebraMap X.G.Kf Kc (S1 * sX X j (fun v => φ.g v) * s1) * U0)) * applyD (X.PI j Ist i0) f) …`. Rewrite using `[coeff_C_mul]`. Conclude with `geX_mul (Oc.mul_mem hεO hu) (hf Ist m))`. Use the proof step `(fun x => by`. Rewrite using `[PhiX_apply, map_smul, LinearMap.smul_apply, ← algebraMap_smul Kc (sX X j fun v => φ.g v), map_smul, smul_eq_mul]`.
+
+Use `show _ * (_ * fockR _ TI) = _`. Rewrite using `[hmid f x]`. Simplify using `only [map_mul, eval_C]`. Use the proof step `field_simp) G hG`. Use `⟨_, key, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[PhiX_apply, ← algebraMap_smul Kc (S1 * s1), fockR_smul_left]`. Use `show _ = _ * _ * fockR _ TI * cc`. Clear the denominators using the available nonvanishing facts. Use `push Not at hI`. Take `⟨b0, k0, hk⟩` from `hI`.
+
+Use `⟨0, AddSubgroup.zero_mem _, ?_⟩` and prove the remaining obligations. Establish `hb : bideterminant X.G.Kf (szT X j b0) (szT_le X j b0) (I b0) = 0`. Unfold `bideterminant`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ k0) (minor_zero_holds _ _ _ _ _ _ hk)`. Establish `hz : (∏ b, rename (emX X (j + 1) b) (rowAct X.G.Kf (mF X (j + 1) b (φ.g' b.1) * DgX X X.G.Kf j i0 b.1).transpose (bideterminant X.G.Kf (szT X j b) (szT_le X j b) (I b)))) = 0` using `Finset.prod_eq_zero (Finset.mem_univ b0) (by rw [hb, map_zero, map_zero])`.
+
+Rewrite using `[hz, map_zero, fockR_comm, fockR_zero_left, zero_mul]`.
+-/
 theorem xPair (hS : XShape) (hBrS : XBrS) (hInj : XInj) (hMid : XMid) (hU : XUnit)
     (Oc : Subring Kc) (hval : ∀ x : Kc, x ∈ Oc ∨ x⁻¹ ∈ Oc)
     (hO : ∀ o : X.G.O, algebraMap X.G.Kf Kc (algebraMap X.G.O X.G.Kf o) ∈ Oc)

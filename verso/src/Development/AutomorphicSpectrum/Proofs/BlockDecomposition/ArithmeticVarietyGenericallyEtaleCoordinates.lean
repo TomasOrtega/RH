@@ -13,6 +13,9 @@ open ReciprocityTheory.ChartRestriction.G.AI.I2 (IsRatSectionOn logNormRat)
 
 namespace GlobalTheory.CompanionTheory.MixZ.GenericCoords
 
+/- English proof (translation)
+Introduce `_ _ _ _ h` and use `GlobalTheory.GenericEtale.exists_etale_coords h`.
+-/
 theorem exists_etale_coords_int : ∀ (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp ℤ) (D : ℕ), GlobalTheory.IsArithVar p D →
     ∃ (U : X.Opens) (x : Fin D → Γ(X, U)), IsAffineOpen U ∧ genericPoint X ∈ U ∧
       (MvPolynomial.eval₂Hom (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p U) x).Etale :=

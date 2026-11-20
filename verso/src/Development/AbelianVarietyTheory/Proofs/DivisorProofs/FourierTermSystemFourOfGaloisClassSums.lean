@@ -12,6 +12,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.Poinc.SFour
 
+/- English proof (translation)
+Use `letI := io.toAlgebra`. Use `haveI : Module.Finite V V' := hfin`. Take `⟨E, hE⟩` from `GlobalTheory.Poinc.OrbTrace.exists_pow_le (A := V) (B := V') (maximalIdeal V') (maximalIdeal.isMaximal V') 1`. Establish `h1 : maximalIdeal V' ^ E ≤ (maximalIdeal V).map io`. Introduce `x hx`.
+
+Take `⟨u, hu, hux⟩` from `hE x hx`. Establish `hu' : IsUnit u`. Assume the negation of the conclusion as `h`. Conclude with `hu ((IsLocalRing.mem_maximalIdeal _).2 h)`. Rewrite `hux` using `[pow_one]`.
+
+Conclude with `(Ideal.unit_mul_mem_iff_mem _ hu').1 hux`. Use `⟨E, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[pow_mul, Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono h1 j`.
+-/
 theorem pow_le_map {V V' : Type} [CommRing V] [IsLocalRing V] [IsNoetherianRing V] [CommRing V'] [IsLocalRing V']
     (io : V →+* V') (hfin : io.Finite) :
     ∃ J : ℕ, ∀ j : ℕ, maximalIdeal V' ^ (J * j) ≤ (maximalIdeal V ^ j).map io := by
@@ -33,6 +40,11 @@ theorem pow_le_map {V V' : Type} [CommRing V] [IsLocalRing V] [IsNoetherianRing 
 variable {O : Type} [CommRing O] {bar : O → O} {q s : ℕ} {W : Matrix (Fin s) (Fin s) ℤ} {A : Type} [CommRing A]
   [IsLocalRing A]
 
+/- English proof (translation)
+Establish `hnn : ∀ i, 0 ≤ qW W (Φ.δ y i) mu` using `fun i => qW_nonneg Φ.posW (Φ.bal y i).1 (Φ.nonneg y i) mu`. Establish `hle : j ≤ ∑ i, (qW W (Φ.δ y i) mu).toNat`. Establish `e1 : ((∑ i, (qW W (Φ.δ y i) mu).toNat : ℕ) : ℤ) = ∑ i, qW W (Φ.δ y i) mu`. Use `push_cast`. Conclude with `Finset.sum_congr rfl fun i _ => Int.toNat_of_nonneg (hnn i)`.
+
+Rewrite `hj` using `[← e1]`. Conclude with `hj` after adjusting the coercions. Use `Ideal.mul_mem_left _ _ (Ideal.pow_le_pow_right hle ?_)` and prove the remaining obligations. Rewrite using `[← Finset.prod_pow_eq_pow_sum]`. Conclude with `Ideal.prod_mem_prod fun i _ => Ideal.pow_mem_pow (Φ.t_mem y i).1 _`.
+-/
 theorem term_mem (Φ : VPre bar q W A) (y : Φ.Y) (mu : Fin s → Φ.X y) (cc : Φ.Q) (j : ℕ)
     (hj : (j : ℤ) ≤ ∑ i, qW W (Φ.δ y i) mu) : Φ.term y mu cc ∈ maximalIdeal (Φ.V y) ^ j := by
   have hnn : ∀ i, 0 ≤ qW W (Φ.δ y i) mu := fun i => qW_nonneg Φ.posW (Φ.bal y i).1 (Φ.nonneg y i) mu
@@ -50,6 +62,41 @@ end GlobalTheory.Poinc.SFour
 
 namespace GlobalTheory.Poinc.SFour
 
+/- English proof (translation)
+Introduce `O _ bar q s W A _ _ _ _ Φ N₁ hcs y₀ N₀`. Take `⟨N, hN0, hN1, hNd, k, hk0, hk, L, _, _, _, _, _, _, 𝔷, f, hz, hf, hy, hσ⟩` from `hcs y₀ N₀`. Use `⟨N, hN0, hNd, k, hk0, hk, fun l a c e => ?_⟩` and prove the remaining obligations. Take `⟨C, hC1, hC2, hC3⟩` from `OrbTrace.exists_classes (O := O) (N₁ := N₁) hN1 a`. Use `set F : integralClosure A L := ∑ c' ∈ C, ∏ i, f (fun u => c' (i, u)) (c i) with hF`.
+
+Establish `hFix : ∀ σ : L ≃ₐ[FractionRing A] L, (∀ x x' : integralClosure A L, (x' : L) = σ x → (x ∈ 𝔷 ↔ x' ∈ 𝔷)) → σ (F : L) = F`. Introduce `σ hσ'`. Take `⟨ga, h1, h2, h3, h4⟩` from `hσ σ hσ'`. Establish `e1 : ((F : integralClosure A L) : L) = ∑ c' ∈ C, ∏ i, (f (fun u => c' (i, u)) (c i) : L)`. Rewrite using `[hF]`.
+
+Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[e1, map_sum]`. Simplify using `only [map_prod, h4]`. Conclude with `OrbTrace.sum_comp_eq C hC1 hC2 hC3 ga h1 h2 h3 (fun c' => ∏ i, (f (fun u => c' (i, u)) (c i) : L)) (fun c₁ c₂ h => Finset.prod_congr rfl fun i _ => by rw [hf _ _ _ fun u => h _])`.
+
+Use `haveI := hz`. Take `⟨g₀, b, hb, hbF⟩` from `GlobalTheory.DecompFixed.exists_approx_integralClosure A (FractionRing A) L 𝔷 F hFix e`. Use `⟨g₀, fun y j => ?_⟩` and prove the remaining obligations. Take `⟨V', _, _, io, ev', hfin, hloc, hpure, hcomm, hcomap, hcls⟩` from `hy y`. Use `haveI : IsNoetherianRing (Φ.V y) := (Φ.cn y).1`.
+
+Take `⟨J, hJ⟩` from `pow_le_map io hfin`. Use `set j' := J * j + j with hj'`. Establish `hjj : j ≤ j'` using `Nat.le_add_left _ _`. Establish `hJj : maximalIdeal V' ^ j' ≤ (maximalIdeal (Φ.V y) ^ j).map io` using `(Ideal.pow_le_pow_right (Nat.le_add_right _ _)).trans (hJ j)`. Establish `hmap : ∀ n, (maximalIdeal (Φ.V y) ^ n).map io ≤ maximalIdeal V' ^ n`.
+
+Introduce `n`. Rewrite using `[Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono (Ideal.map_le_iff_le_comap.2 fun x hx => Ideal.mem_comap.2 <| (IsLocalRing.mem_maximalIdeal _).2 fun h => (IsLocalRing.mem_maximalIdeal _).1 hx (isUnit_of_map_unit io x h)) n`. Use `choose S₀ hSa hSb hSc using fun κ cc => hcls κ cc j'`. Use `set T : Finset (Fin s → Φ.X y) := C.biUnion (fun c' => Finset.univ.biUnion (fun i => S₀ (fun u => c' (i, u)) (c i))) with hT`.
+
+Establish `hSfin : {mu : Fin l × Fin s → Φ.X y | mu ∈ orbit O N₁ N (k y) a ∧ ∀ i, (fun u => mu (i, u)) ∈ T}.Finite`. Use `((Set.Finite.pi' (fun _ : Fin l => T.finite_toSet)).image (fun x j => x j.1 j.2)).subset ?_` and prove the remaining obligations. Introduce `mu hmu`. Conclude with `⟨fun i u => mu (i, u), hmu.2, rfl⟩`. Use `⟨hSfin.toFinset, fun mu hmu => (hSfin.mem_toFinset.1 hmu).1, fun mu hmu hmuS => ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hmuS` using `[hSfin.mem_toFinset]`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, (fun u => mu (i, u)) ∉ T := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hmuS ⟨hmu, hcon⟩`.
+
+Take `⟨gm, g1, g2, g3, g4⟩` from `hmu`. Take `⟨c', hc', hcc⟩` from `hC3 (fun idx => gm (a idx)) ⟨gm, g1, g2, g3, fun idx => OrbTrace.cm_refl _⟩`. Establish `hcong : ∀ v, CongMod N (mu (i, v)) (k y (c' (i, v)))` using `fun v => OrbTrace.cm_trans (g4 _) (OrbTrace.cm_map (k y) (OrbTrace.cm_symm (hcc _)))`. Establish `hnot : (fun u => mu (i, u)) ∉ S₀ (fun u => c' (i, u)) (c i)` using `fun h => hi (Finset.mem_biUnion.2 ⟨c', hc', Finset.mem_biUnion.2 ⟨i, Finset.mem_univ _, h⟩⟩)`. Establish `h1` using `hSb (fun u => c' (i, u)) (c i) (fun u => mu (i, u)) hcong hnot`.
+
+Establish `hnn : ∀ fi i', 0 ≤ qW W (Φ.δ y fi) (fun u => mu (i', u))` using `fun fi i' => qW_nonneg Φ.posW (Φ.bal y fi).1 (Φ.nonneg y fi) _`. Combine the equalities or inequalities in the displayed calculation. Establish `key : ∀ c' ∈ C, ∀ i (U : Finset (Fin s → Φ.X y)), S₀ (fun u => c' (i, u)) (c i) ⊆ U → (∀ ν ∈ U, ∀ v, CongMod N (ν v) (k y (c' (i, v)))) → ev' (f (fun u => c' (i, u)) (c i)) - io (∑ ν ∈ U, Φ.u y ν (c i) * mono W (Φ.t y) (Φ.δ y) ν) ∈ maximalIdeal V' ^ j'`. Introduce `c' hc' i U hU hU'`. Rewrite using `[← Finset.sum_sdiff hU, map_add]`.
+
+Establish `e2 : ∀ x y z : V', x - (y + z) = (x - z) - y` using `fun _ _ _ => by ring`. Rewrite using `[e2]`. Use `sub_mem (hSc _ _) (hmap j' (Ideal.mem_map_of_mem io (Ideal.sum_mem _ fun ν hν => ?_)))` and prove the remaining obligations. Take `⟨hνU, hνS⟩` from `Finset.mem_sdiff.1 hν`. Conclude with `term_mem Φ y ν (c i) j' (hSb _ _ ν (hU' ν hνU) hνS)`.
+
+Establish `hsum` using `OrbTrace.sum_orbit_eq C hC1 hC2 hC3 (k y) (hk y) T hSfin.toFinset (fun mu => hSfin.mem_toFinset) (fun i ν => Φ.u y ν (c i) * mono W (Φ.t y) (Φ.δ y) ν)`. Establish `hF' : ev' F - io (∑ mu ∈ hSfin.toFinset, ∏ i, Φ.u y (fun v => mu (i, v)) (c i) * mono W (Φ.t y) (Φ.δ y) (fun v => mu (i, v))) ∈ maximalIdeal V' ^ j'`. Rewrite using `[hsum]`. Rewrite using `[← Ideal.Quotient.eq]`. Rewrite using `[hF, map_sum ev', map_sum io, map_sum (Ideal.Quotient.mk _), map_sum (Ideal.Quotient.mk _)]`.
+
+Use `Finset.sum_congr rfl fun c' hc' => ?_` and prove the remaining obligations. Rewrite using `[map_prod ev', map_prod io, map_prod (Ideal.Quotient.mk _), map_prod (Ideal.Quotient.mk _)]`. Use `Finset.prod_congr rfl fun i _ => Ideal.Quotient.eq.2 (key c' hc' i _ ?_ ?_)` and prove the remaining obligations. Introduce `ν hν`. Conclude with `Finset.mem_filter.2 ⟨Finset.mem_biUnion.2 ⟨c', hc', Finset.mem_biUnion.2 ⟨i, Finset.mem_univ _, hν⟩⟩, hSa _ _ ν hν⟩`.
+
+Introduce `ν hν`. Conclude with `(Finset.mem_filter.1 hν).2`. Establish `hD : ev' F - io (Φ.ev y g₀) ∈ ((maximalIdeal A ^ e).map (Φ.ev y)).map io`. Establish `h1` using `Ideal.mem_map_of_mem ev' hbF`. Rewrite `h1` using `[Ideal.map_map, hcomm, ← Ideal.map_map, map_mul, map_sub]`.
+
+Establish `hu : IsUnit (ev' b)`. Assume the negation of the conclusion as `h`. Conclude with `hb (by rw [← hcomap]; exact Ideal.mem_comap.2 ((IsLocalRing.mem_maximalIdeal _).2 h))`. Establish `h2` using `(Ideal.unit_mul_mem_iff_mem _ hu).1 h1`. Establish `h3 : ev' (algebraMap A (integralClosure A L) g₀) = io (Φ.ev y g₀)` using `RingHom.congr_fun hcomm g₀`.
+
+Rewrite `h2` using `[h3]`. Then use the resulting hypothesis. Rewrite using `[← hpure (maximalIdeal (Φ.V y) ^ j ⊔ (maximalIdeal A ^ e).map (Φ.ev y))]`. Use `Ideal.mem_comap.2 ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_sup, map_sub]`. Establish `h4` using `sub_mem (Ideal.mem_sup_left (T := ((maximalIdeal A ^ e).map (Φ.ev y)).map io) (hJj hF')) (Ideal.mem_sup_right (S := (maximalIdeal (Φ.V y) ^ j).map io) hD)`.
+
+Rewrite `h4` using `[sub_sub_sub_cancel_left]`. Then use the resulting hypothesis.
+-/
 theorem four_of_classSums : ∀ (O : Type) [CommRing O] (bar : O → O) (q s : ℕ) (W : Matrix (Fin s) (Fin s) ℤ) (A : Type) [CommRing A] [IsLocalRing A] [IsDomain A] [IsIntegrallyClosed A] (Φ : VPre bar q W A) (N₁ : ℕ), Φ.ClassSums N₁ → Φ.Four N₁ := by
   intro O _ bar q s W A _ _ _ _ Φ N₁ hcs y₀ N₀
   classical

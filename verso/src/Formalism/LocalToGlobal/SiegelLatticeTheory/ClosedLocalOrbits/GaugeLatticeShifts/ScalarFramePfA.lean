@@ -15,6 +15,9 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 variable {M : Loc.Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : Loc.HermSp M V)
 
+/- English proof (translation)
+The claim follows from `H.h_herm y x`.
+-/
 theorem h_swap (x y : V) : H.h x y = M.L.cj (H.h y x) := H.h_herm y x
 
 def hl (y : V) : V →ₗ[E] E where
@@ -22,27 +25,51 @@ def hl (y : V) : V →ₗ[E] E where
   map_add' x x' := H.h_add_left x x' y
   map_smul' a x := by simp only [H.h_smul_left, smul_eq_mul, RingHom.id_apply]
 
+/- English proof (translation)
+Rewrite using `[h_swap H x (y + y'), H.h_add_left, map_add, ← h_swap H x y, ← h_swap H x y']`.
+-/
 theorem h_add_right (x y y' : V) : H.h x (y + y') = H.h x y + H.h x y' := by
   rw [h_swap H x (y + y'), H.h_add_left, map_add, ← h_swap H x y, ← h_swap H x y']
 
+/- English proof (translation)
+Rewrite using `[h_swap H x (a • y), H.h_smul_left, map_mul, ← h_swap H x y]`.
+-/
 theorem h_smul_right (a : E) (x y : V) : H.h x (a • y) = M.L.cj a * H.h x y := by
   rw [h_swap H x (a • y), H.h_smul_left, map_mul, ← h_swap H x y]
 
+/- English proof (translation)
+Rewrite using `[h_swap H x 0, H.h_zero_left, map_zero]`.
+-/
 theorem h_zero_right (x : V) : H.h x 0 = 0 := by
   rw [h_swap H x 0, H.h_zero_left, map_zero]
 
+/- English proof (translation)
+Rewrite using `[← neg_one_smul E x, H.h_smul_left, neg_one_mul]`.
+-/
 theorem h_neg_left (x y : V) : H.h (-x) y = - H.h x y := by
   rw [← neg_one_smul E x, H.h_smul_left, neg_one_mul]
 
+/- English proof (translation)
+Rewrite using `[← neg_one_smul E y, h_smul_right H, map_neg, map_one, neg_one_mul]`.
+-/
 theorem h_neg_right (x y : V) : H.h x (-y) = - H.h x y := by
   rw [← neg_one_smul E y, h_smul_right H, map_neg, map_one, neg_one_mul]
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg, H.h_add_left, h_neg_left H, ← sub_eq_add_neg]`.
+-/
 theorem h_sub_left (x x' y : V) : H.h (x - x') y = H.h x y - H.h x' y := by
   rw [sub_eq_add_neg, H.h_add_left, h_neg_left H, ← sub_eq_add_neg]
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg, h_add_right H, h_neg_right H, ← sub_eq_add_neg]`.
+-/
 theorem h_sub_right (x y y' : V) : H.h x (y - y') = H.h x y - H.h x y' := by
   rw [sub_eq_add_neg, h_add_right H, h_neg_right H, ← sub_eq_add_neg]
 
+/- English proof (translation)
+Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_empty, Finset.sum_empty]`. Conclude with `H.h_zero_left y`. Introduce `i t hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi, H.h_add_left, ih]`.
+-/
 theorem h_sum_left {ι : Type} (s : Finset ι) (g : ι → V) (y : V) :
     H.h (∑ i ∈ s, g i) y = ∑ i ∈ s, H.h (g i) y := by
   classical
@@ -52,6 +79,13 @@ theorem h_sum_left {ι : Type} (s : Finset ι) (g : ι → V) (y : V) :
   · intro i t hi ih
     rw [Finset.sum_insert hi, Finset.sum_insert hi, H.h_add_left, ih]
 
+/- English proof (translation)
+Establish `key : ∀ S : Submodule E V, v ∈ H.perp S ↔ ∀ x ∈ S, H.h v x = 0` using `fun S => Iff.rfl`. Rewrite using `[key]`. Prove the components needed by the constructor for the conclusion. Introduce `hv x hx`. Conclude with `hv x (Submodule.subset_span hx)`.
+
+Introduce `hs x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact hs y hy`. Consider the case `zero => exact h_zero_right H v`. Consider the case `add y z _ _ hy hz => rw [h_add_right H, hy, hz, add_zero]`.
+
+Consider the case `smul a y _ hy => rw [h_smul_right H, hy, mul_zero]`.
+-/
 theorem mem_perp_span (s : Set V) (v : V) :
     v ∈ H.perp (Submodule.span E s) ↔ ∀ x ∈ s, H.h v x = 0 := by
   have key : ∀ S : Submodule E V, v ∈ H.perp S ↔ ∀ x ∈ S, H.h v x = 0 := fun S => Iff.rfl
@@ -66,6 +100,11 @@ theorem mem_perp_span (s : Set V) (v : V) :
     | add y z _ _ hy hz => rw [h_add_right H, hy, hz, add_zero]
     | smul a y _ hy => rw [h_smul_right H, hy, mul_zero]
 
+/- English proof (translation)
+Establish `hx' : ∀ z ∈ S, H.h x z = 0` using `hx`. Establish `hy' : ∀ z ∈ S, H.h y z = 0` using `hy`. Take `⟨a, haS, rfl⟩ : ∃ a ∈ S, x₂ = x - a` from `⟨x - x₂, ha, (sub_sub_cancel x x₂).symm⟩`. Take `⟨b, hbS, rfl⟩ : ∃ b ∈ S, y₂ = y - b` from `⟨y - y₂, hb, (sub_sub_cancel y y₂).symm⟩`. Establish `hay : H.h a y = 0` using `by rw [h_swap H a y, hy' a haS, map_zero]`.
+
+Rewrite using `[h_sub_left H, h_sub_right H, h_sub_right H, hx' b hbS, hay, hS a haS b hbS]`. Simplify using `only [sub_zero]`.
+-/
 theorem h_eq_of_sub_mem (S : Submodule E V) (hS : ∀ a ∈ S, ∀ b ∈ S, H.h a b = 0)
     {x x₂ y y₂ : V} (hx : x ∈ H.perp S) (hy : y ∈ H.perp S) (ha : x - x₂ ∈ S) (hb : y - y₂ ∈ S) :
     H.h x₂ y₂ = H.h x y := by
@@ -88,10 +127,18 @@ def sF (Z : LocDat D) (p : PlF D) (a : Fin (D.R.rS + 1)) : (D.s.atP p).Ep := sgn
 def sF' (Z : LocDat D) (p : PlF D) (b : Fin (D.R.rS + 1)) : (D.s.atP p).Ep :=
   sgnP' D p b * frFac Z.δ p b
 
+/- English proof (translation)
+Unfold `gpart`. Apply the tactic sequence `split_ifs <;> simp [(D.host.g_prime _).ne_zero]`.
+-/
 theorem gpart_ne (p : PlF D) : (gpart p : ℚ) ≠ 0 := by
   unfold gpart
   split_ifs <;> simp [(D.host.g_prime _).ne_zero]
 
+/- English proof (translation)
+Unfold `uP`. Establish `h1 : gpart p ≠ 0` using `by exact_mod_cast gpart_ne p`. Establish `h2 : Lat.gS D ≠ 0`. Unfold `Lat.gS`. Conclude with `mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero`.
+
+Simplify using `[h1, h2]`.
+-/
 theorem unitAt_ne (p : PlF D) : (uP p : D.host.E) ≠ 0 := by
   unfold uP
   have h1 : gpart p ≠ 0 := by exact_mod_cast gpart_ne p
@@ -100,6 +147,9 @@ theorem unitAt_ne (p : PlF D) : (uP p : D.host.E) ≠ 0 := by
     exact mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero
   simp [h1, h2]
 
+/- English proof (translation)
+Unfold `frFac`. Establish `hδ : IsUnit (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (Z.δ p))` using `(isUnit_iff_ne_zero.2 (Z.agree p).2.1).map _`. Establish `hu : IsUnit ((D.s.atP p).ιE (uP p : D.host.E))` using `(isUnit_iff_ne_zero.2 (unitAt_ne p)).map _`. Establish `h : IsUnit ((algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (Z.δ p) * (D.s.atP p).ιE (uP p : D.host.E)) ^ (D.R.rS - a.val))` using `(hδ.mul hu).pow _`. Simplify using `using h`.
+-/
 theorem isUnit_frFac (Z : LocDat D) (p : PlF D) (a : Fin (D.R.rS + 1)) : IsUnit (frFac Z.δ p a) := by
   unfold frFac
   have hδ : IsUnit (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (Z.δ p)) :=
@@ -109,16 +159,27 @@ theorem isUnit_frFac (Z : LocDat D) (p : PlF D) (a : Fin (D.R.rS + 1)) : IsUnit 
       (D.s.atP p).ιE (uP p : D.host.E)) ^ (D.R.rS - a.val)) := (hδ.mul hu).pow _
   simpa using h
 
+/- English proof (translation)
+Unfold `sgnP`. Use `split`. Conclude with `IsUnit.map _ (Prod.isUnit_iff.2 ⟨isUnit_one.neg.pow _, isUnit_one⟩)`. Conclude with `isUnit_one`.
+-/
 private theorem isUnit_sgnP (p : PlF D) (a : Fin (D.R.rS + 1)) : IsUnit (sgnP D p a) := by
   unfold sgnP
   split
   · exact IsUnit.map _ (Prod.isUnit_iff.2 ⟨isUnit_one.neg.pow _, isUnit_one⟩)
   · exact isUnit_one
 
+/- English proof (translation)
+Unfold `sF`. Conclude with `(isUnit_sgnP p a).mul (isUnit_frFac Z p a)`.
+-/
 theorem isUnit_sF (Z : LocDat D) (p : PlF D) (a : Fin (D.R.rS + 1)) : IsUnit (sF Z p a) := by
   unfold sF
   exact (isUnit_sgnP p a).mul (isUnit_frFac Z p a)
 
+/- English proof (translation)
+Unfold `sF'`. Use `IsUnit.mul ?_ (isUnit_frFac Z p a)` and prove the remaining obligations. Unfold `sgnP'`. Use `split`. Conclude with `isUnit_sgnP p a`.
+
+Conclude with `isUnit_one.neg.pow _`.
+-/
 theorem isUnit_sF' (Z : LocDat D) (p : PlF D) (a : Fin (D.R.rS + 1)) : IsUnit (sF' Z p a) := by
   unfold sF'
   refine IsUnit.mul ?_ (isUnit_frFac Z p a)
@@ -153,6 +214,9 @@ def Gom (u v : Fin (D.R.rS + 1) → (VS D).V) : (VS D).V :=
 
 variable (Z : LocDat D) (p : PlF D)
 
+/- English proof (translation)
+Use `conv_lhs => rw [← (VS D).frame.sum_repr x, ← (VS D).frame.sum_repr y]`. Simplify using `only [brS, gramV, map_sum, map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, RingHom.id_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem brS_eq_double_sum_repr_gramV (x y : (VS D).V) :
     brS (VS D) x y = ∑ i, ∑ j, (VS D).frame.repr x i * star ((VS D).frame.repr y j) * gramV D i j := by
   conv_lhs => rw [← (VS D).frame.sum_repr x, ← (VS D).frame.sum_repr y]
@@ -161,6 +225,9 @@ private theorem brS_eq_double_sum_repr_gramV (x y : (VS D).V) :
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Rewrite using `[(locH Z p).h_smul_left, h_smul_right (locH Z p), ← mul_assoc]`. Use `congr 1`. Rewrite using `[brS_eq_double_sum_repr_gramV]`. Simplify using `only [locH, locHerm, LocFacts₂, baseChange₂, AddMonoidHom.coe_mk, ZeroHom.coe_mk, cj_iota (Z.hcj p), map_sum, map_mul]`.
+-/
 theorem h_bcP (a b : (D.s.atP p).Ep) (x y : (VS D).V) :
     (locH Z p).h (a • baseChange₂ D p x) (b • baseChange₂ D p y) =
       a * (Z.M p).L.cj b * (D.s.atP p).ιE (brS (VS D) x y) := by
@@ -169,6 +236,9 @@ theorem h_bcP (a b : (D.s.atP p).Ep) (x y : (VS D).V) :
   rw [brS_eq_double_sum_repr_gramV]
   simp only [locH, locHerm, LocFacts₂, baseChange₂, AddMonoidHom.coe_mk, ZeroHom.coe_mk, cj_iota (Z.hcj p), map_sum, map_mul]
 
+/- English proof (translation)
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Simplify using `[baseChange₂, map_mul]`.
+-/
 theorem baseChangeAt_sum {ι : Type} (s : Finset ι) (c : ι → D.host.E) (v : ι → (VS D).V) :
     baseChange₂ D p (∑ i ∈ s, c i • v i) = ∑ i ∈ s, (D.s.atP p).ιE (c i) • baseChange₂ D p (v i) := by
   rw [map_sum]
@@ -176,6 +246,9 @@ theorem baseChangeAt_sum {ι : Type} (s : Finset ι) (c : ι → D.host.E) (v : 
   funext j
   simp [baseChange₂, map_mul]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [Loc.HermSp.Zhat, Matrix.of_apply, h_bcP Z p, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.map_apply, GZ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem zhat_loc (u v : Fin (D.R.rS + 1) → (VS D).V) (c c' : Fin (D.R.rS + 1) → (D.s.atP p).Ep) :
     (locH Z p).Zhat (fun a => c a • baseChange₂ D p (u a)) (fun b => c' b • baseChange₂ D p (v b)) =
       Matrix.diagonal (fun a => (Z.M p).L.cj (c a)) * (GZ u v).map (D.s.atP p).ιE *
@@ -184,6 +257,11 @@ theorem zhat_loc (u v : Fin (D.R.rS + 1) → (VS D).V) (c c' : Fin (D.R.rS + 1) 
   simp only [Loc.HermSp.Zhat, Matrix.of_apply, h_bcP Z p, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.map_apply, GZ]
   ring
 
+/- English proof (translation)
+Rewrite using `[Loc.HermSp.Dl, dif_pos hl, zhat_loc, GDl, dif_pos hl]`. Establish `e : (Matrix.diagonal (fun a => (Z.M p).L.cj (c a)) * (GZ u v).map (D.s.atP p).ιE * Matrix.diagonal c').submatrix (Fin.castLE hl) (Fin.castLE hl) = Matrix.diagonal (fun i => (Z.M p).L.cj (c (Fin.castLE hl i))) * ((GZ u v).submatrix (Fin.castLE hl) (Fin.castLE hl)).map (D.s.atP p). …`. Use extensionality with `i j`. Simplify using `[Matrix.diagonal_mul, Matrix.mul_diagonal]`. Rewrite using `[e, Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal, Matrix.det_diagonal, RingHom.map_det]`.
+
+Simplify using `only [RingHom.mapMatrix_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dl_loc (u v : Fin (D.R.rS + 1) → (VS D).V) (c c' : Fin (D.R.rS + 1) → (D.s.atP p).Ep) (l : ℕ)
     (hl : l ≤ D.R.rS + 1) :
     (locH Z p).Dl (fun a => c a • baseChange₂ D p (u a)) (fun b => c' b • baseChange₂ D p (v b)) l =
@@ -201,6 +279,11 @@ theorem dl_loc (u v : Fin (D.R.rS + 1) → (VS D).V) (c c' : Fin (D.R.rS + 1) �
   simp only [RingHom.mapMatrix_apply]
   ring
 
+/- English proof (translation)
+Establish `hadj : ((GZ u v).map (D.s.atP p).ιE).adjugate = (GZ u v).adjugate.map (D.s.atP p).ιE` using `(RingHom.map_adjugate (D.s.atP p).ιE (GZ u v)).symm`. Rewrite using `[Loc.HermSp.om', zhat_loc, Gom', baseChangeAt_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.adjugate_mul_distrib, Matrix.adjugate_mul_distrib, Matrix.adjugate_diagonal, Matrix.adjugate_diagonal, hadj]`. Simplify using `only [Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.map_apply, smul_smul]`.
+
+Rewrite using `[← Finset.mul_prod_erase Finset.univ c' (Finset.mem_univ b)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem om'_loc (u v : Fin (D.R.rS + 1) → (VS D).V) (c c' : Fin (D.R.rS + 1) → (D.s.atP p).Ep) :
     (locH Z p).om' (fun a => c a • baseChange₂ D p (u a)) (fun b => c' b • baseChange₂ D p (v b)) =
       ((∏ j, c' j) * ∏ j ∈ Finset.univ.erase (Fin.last _), (Z.M p).L.cj (c j)) • baseChange₂ D p (Gom' u v) := by
@@ -215,6 +298,11 @@ theorem om'_loc (u v : Fin (D.R.rS + 1) → (VS D).V) (c c' : Fin (D.R.rS + 1) �
   congr 1
   ring
 
+/- English proof (translation)
+Establish `hadj : ((GZ u v).map (D.s.atP p).ιE).adjugate = (GZ u v).adjugate.map (D.s.atP p).ιE` using `(RingHom.map_adjugate (D.s.atP p).ιE (GZ u v)).symm`. Rewrite using `[Loc.HermSp.om, zhat_loc, Gom, baseChangeAt_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.adjugate_mul_distrib, Matrix.adjugate_mul_distrib, Matrix.adjugate_diagonal, Matrix.adjugate_diagonal, hadj]`. Simplify using `only [Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.map_apply, smul_smul, map_mul, map_prod, (Z.M p).L.cj_cj, cj_iota (Z.hcj p)]`.
+
+Rewrite using `[← Finset.mul_prod_erase Finset.univ c (Finset.mem_univ a)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem om_loc (u v : Fin (D.R.rS + 1) → (VS D).V) (c c' : Fin (D.R.rS + 1) → (D.s.atP p).Ep) :
     (locH Z p).om (fun a => c a • baseChange₂ D p (u a)) (fun b => c' b • baseChange₂ D p (v b)) =
       ((Z.M p).L.cj (∏ j ∈ Finset.univ.erase (Fin.last _), c' j) * ∏ j, c j) • baseChange₂ D p (Gom u v) := by

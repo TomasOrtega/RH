@@ -17,12 +17,28 @@ set_option autoImplicit false
 noncomputable section
 namespace GlobalTheory.TwistBelow
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.effective_cartier_local_equation`.
+-/
 theorem l1 : ∀ (Y : Scheme.{0}) [IsIntegral Y] (J : Y.IdealSheafData), FinalTheorems.EffCartier J → ∃ E : CartierDiv Y, E.Eff ∧ E.supp = J.support ∧ ∀ (y : Y) (U : Y.affineOpens) (f : Γ(Y, U.1)) (hy : y ∈ U.1) (hf : fnOf U.1 (gen_mem hy) f ≠ 0), J.ideal U = Ideal.span {f} → E.IsEqn y (Units.mk0 _ hf) := GlobalTheory.T.effective_cartier_local_equation
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.ideal_sections_locally_generated`.
+-/
 theorem l2 : ∀ (X : Scheme.{0}) (M : LB X), M.IsLB → ∀ (I : X.IdealSheafData), IsGloballyGenerated (twist (idealModule I) M) → ∃ (n : ℕ) (σ : Fin n → M.Sec), (∀ (k : Fin n) (i : M.ι) (W : X.affineOpens) (h : W.1 ≤ M.U i), resG X h ((σ k).f i) ∈ I.ideal W) ∧ ∀ (x : X) (i : M.ι) (hx : x ∈ M.U i) (W : X.affineOpens) (hxW : x ∈ W.1) (a : Γ(X, W.1)), a ∈ I.ideal W → X.presheaf.germ W.1 x hxW a ∈ Ideal.span (Set.range fun k => X.presheaf.germ (M.U i) x hx ((σ k).f i)) := GlobalTheory.T.ideal_sections_locally_generated
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.ideal_pullback_locally_generated`.
+-/
 theorem l3 : ∀ (Y₀ Y₁ : Scheme.{0}) [IsIntegral Y₁] (t : Y₁ ⟶ Y₀) (I : Y₀.IdealSheafData) (y : Y₁) (U : Y₀.Opens) (hx : t y ∈ U) (n : ℕ) (b : Fin n → Γ(Y₀, U)), (∀ (k : Fin n) (W : Y₀.affineOpens) (h : W.1 ≤ U), resG Y₀ h (b k) ∈ I.ideal W) → (∀ (W : Y₀.affineOpens) (hxW : t y ∈ W.1) (a : Γ(Y₀, W.1)), a ∈ I.ideal W → Y₀.presheaf.germ W.1 (t y) hxW a ∈ Ideal.span (Set.range fun k => Y₀.presheaf.germ U (t y) hx (b k))) → ∀ (U' : Y₁.affineOpens) (f : Γ(Y₁, U'.1)) (hyU' : y ∈ U'.1), fnOf U'.1 (gen_mem hyU') f ≠ 0 → (I.comap t).ideal U' = Ideal.span {f} → ∀ (V : Y₁.Opens) (hV : V ≤ t ⁻¹ᵁ U) (hyV : y ∈ V), (∀ k, RegAt y (fnOf V (gen_mem hyV) (t.appLE U V hV (b k)) / fnOf U'.1 (gen_mem hyU') f)) ∧ ∃ k, UnitAt y (fnOf V (gen_mem hyV) (t.appLE U V hV (b k)) / fnOf U'.1 (gen_mem hyU') f) := GlobalTheory.T.ideal_pullback_locally_generated
 
+/- English proof (translation)
+Establish `h` using `presents_toLB D`. Set `s : Fin n → (toLB D).Sec` to `fun k => h.secEquiv.symm ⟨f k, hf k⟩`. Establish `hs : ∀ k, h.rat (s k) = f k`. Introduce `k`. Rewrite using `[← h.coe_secEquiv]`.
+
+Simplify using `[s]`. Establish `hgen : IsGenerated (toLB D)`. Use `⟨n, s, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `y _`.
+
+Take `⟨k, hk⟩` from `hg y`. Rewrite using `[TopologicalSpace.Opens.mem_iSup]`. Conclude with `⟨k, (h.generatesAt_rat_iff (s k)).1 (by rw [hs]; exact hk)⟩`. Establish `hiso : LBIso P (toLB D)` using `(cls_eq_iff hP (isLB_toLB D)).1 (e.trans h.toPic_eq)`. Conclude with `hgen.of_lbIso hP hiso`.
+-/
 theorem isGenerated_of_sections {Y : Scheme.{0}} [IsIntegral Y] (D : CartierDiv Y) {n : ℕ}
     (f : Fin n → Y.functionField) (hf : ∀ k, f k ∈ D.sections) (hg : ∀ y, ∃ k, D.GeneratesAt y (f k))
     (P : LB Y) (hP : P.IsLB) (e : cls P hP = toPic D) : IsGenerated P := by
@@ -42,6 +58,13 @@ theorem isGenerated_of_sections {Y : Scheme.{0}} [IsIntegral Y] (D : CartierDiv 
   have hiso : LBIso P (toLB D) := (cls_eq_iff hP (isLB_toLB D)).1 (e.trans h.toPic_eq)
   exact hgen.of_lbIso hP hiso
 
+/- English proof (translation)
+Establish `hij : genericPoint X ∈ L.U i ⊓ L.U j` using `⟨hi, hj⟩`. Establish `hr` using `h.isRatSec i j hij`. Establish `hc` using `congrArg (fnOf (L.U i ⊓ L.U j) hij) (s.compat i j)`. Simplify using `only [map_mul] at hc`. Simplify using `only [fnOf, TopCat.Presheaf.germ_res_apply] at hc hr ⊢`.
+
+Rewrite using `[hc, hr]`. Establish `hne : (X.presheaf.germ (L.U i ⊓ L.U j) (genericPoint X) hij).hom (L.g i j : Γ(X, L.U i ⊓ L.U j)) ≠ 0`. Introduce `h0`. Use `congrArg (fun z => z * (X.presheaf.germ (L.U i ⊓ L.U j) (genericPoint X) hij).hom ((L.g i j)⁻¹ : (Γ(X, L.U i ⊓ L.U j))ˣ)) h0` as an intermediate fact. Simplify using `only [zero_mul, ← map_mul, Units.mul_inv, map_one] at this`.
+
+Conclude with `one_ne_zero this`. Rewrite using `[mul_div_mul_left _ _ hne]`.
+-/
 private theorem fnOf_div_eq_fnOf_div_of_presents {X : Scheme.{0}} [IsIntegral X] {D : CartierDiv X} {L : LB X}
     {r : L.ι → (X.functionField)ˣ} (h : Presents D L r) (s : L.Sec) (i j : L.ι)
     (hi : genericPoint X ∈ L.U i) (hj : genericPoint X ∈ L.U j) :
@@ -61,6 +84,9 @@ private theorem fnOf_div_eq_fnOf_div_of_presents {X : Scheme.{0}} [IsIntegral X]
     exact one_ne_zero this
   rw [mul_div_mul_left _ _ hne]
 
+/- English proof (translation)
+Simplify using `only [Presents.rat, LinearMap.coe_mk, AddHom.coe_mk]`. Conclude with `fnOf_div_eq_fnOf_div_of_presents h s _ j _ hj`.
+-/
 private theorem Presents_rat_eq_fnOf_div {X : Scheme.{0}} [IsIntegral X] {D : CartierDiv X} {L : LB X}
     {r : L.ι → (X.functionField)ˣ} (h : Presents D L r) (s : L.Sec) (j : L.ι)
     (hj : genericPoint X ∈ L.U j) :
@@ -68,6 +94,27 @@ private theorem Presents_rat_eq_fnOf_div {X : Scheme.{0}} [IsIntegral X] {D : Ca
   simp only [Presents.rat, LinearMap.coe_mk, AddHom.coe_mk]
   exact fnOf_div_eq_fnOf_div_of_presents h s _ j _ hj
 
+/- English proof (translation)
+Introduce `Y₀ Y₁ _ _ t I hEff A hA`. Take `⟨E, hEeff, hEsupp, hEq⟩` from `l1 Y₁ (I.comap t) hEff`. Use `⟨E, hEeff, hEsupp, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hA.eventually_isGloballyGenerated_twist (idealModule I)] with c hc`. Introduce `P hP hcls`.
+
+Establish `hM : (lbPow A c).IsLB` using `isLB_lbPow hA.isLB c`. Take `⟨n, σ, hσ1, hσ2⟩` from `l2 Y₀ (lbPow A c) hM I hc`. Establish `hL : ((lbPow A c).pull t).IsLB` using `LB.isLB_pull hM t`. Establish `hcov : ∀ y : Y₁, ∃ j, y ∈ ((lbPow A c).pull t).U j`. Introduce `y`.
+
+Establish `: y ∈ ⨆ i, ((lbPow A c).pull t).U i` using `by rw [hL.cover]; trivial`. Conclude with `TopologicalSpace.Opens.mem_iSup.1 this`. Take `⟨i₀, hi₀⟩` from `hcov (genericPoint Y₁)`. Establish `h` using `presents_ofLB hL i₀ hi₀`. Establish `hcls' : cls P hP = toPic (ofLB hL i₀ hi₀ - E)`.
+
+Rewrite using `[map_sub, h.toPic_eq, cls_pull hM t, cls_lbPow hA.isLB c, hcls, map_nsmul]`. Establish `key : ∀ y : Y₁, ∃ g : (Y₁.functionField)ˣ, (ofLB hL i₀ hi₀ - E).IsEqn y g ∧ (∀ k, RegAt y (h.rat (secPull (σ k) t) * g)) ∧ ∃ k, UnitAt y (h.rat (secPull (σ k) t) * g)`. Introduce `y`. Take `⟨j, hj⟩` from `hcov y`. Establish `hx : t y ∈ (lbPow A c).U (j PUnit.unit)` using `Set.mem_iInter.1 hj PUnit.unit`.
+
+Establish `hV : ((lbPow A c).pull t).U j ≤ t ⁻¹ᵁ (lbPow A c).U (j PUnit.unit)` using `fun z hz => Set.mem_iInter.1 hz PUnit.unit`. Take `⟨U', f, hyU', hfnzd, hspan⟩` from `hEff y`. Establish `hf : fnOf U'.1 (gen_mem hyU') f ≠ 0` using `by haveI : Nonempty U'.1 := ⟨⟨y, hyU'⟩⟩`. Introduce `h0`. Rewrite `h0` using `[← map_zero (fnOf U'.1 (gen_mem hyU'))]`.
+
+Conclude with `nonZeroDivisors.ne_zero hfnzd (fnOf_injective _ _ h0)`. Establish `hEy` using `hEq y U' f hyU' hf hspan`. Establish `hDy` using `(h.isEqn j y hj).sub hEy`. Take `⟨hreg, hunit⟩` from `l3 Y₀ Y₁ t I y ((lbPow A c).U (j PUnit.unit)) hx n (fun k => (σ k).f (j PUnit.unit)) (fun k W hW => hσ1 k _ W hW) (fun W hxW a ha => hσ2 (t y) _ hx W hxW a ha) U' f hyU' hf hspan _ hV hj`. Establish `hrat : ∀ k, h.rat (secPull (σ k) t) * ↑(frameRat _ i₀ hi₀ j / Units.mk0 _ hf) = fnOf _ (gen_mem hj) (Scheme.Hom.appLE t ((lbPow A c).U (j PUnit.unit)) _ hV ((σ k).f (j PUnit.unit))) / fnOf U'.1 (gen_mem hyU') f`.
+
+Introduce `k`. Rewrite using `[Presents_rat_eq_fnOf_div h _ j (gen_mem hj)]`. Establish `he : fnOf _ (gen_mem hj) ((secPull (σ k) t).f j) = fnOf _ (gen_mem hj) (Scheme.Hom.appLE t ((lbPow A c).U (j PUnit.unit)) _ hV ((σ k).f (j PUnit.unit)))` using `rfl`. Rewrite using `[he]`. Establish `hr0 : ((frameRat _ i₀ hi₀ j : (Y₁.functionField)ˣ) : Y₁.functionField) ≠ 0` using `Units.ne_zero _`.
+
+Simplify using `only [Units.val_div_eq_div_val, Units.val_mk0]`. Clear the denominators using the available nonvanishing facts. Conclude with `⟨_, hDy, fun k => by rw [hrat]; exact hreg k, by obtain ⟨k, hk⟩ := hunit; exact ⟨k, by rw [hrat]; exact hk⟩⟩`. Apply `isGenerated_of_sections (ofLB hL i₀ hi₀ - E) (fun k => h.rat (secPull (σ k) t)) _ _ P hP hcls'` to reduce the goal to its premises. Introduce `k`.
+
+Rewrite using `[CartierDiv.mem_sections]`. Introduce `y`. Take `⟨g, hg, hreg, -⟩` from `key y`. Conclude with `hg.regularAt_iff.2 (hreg k)`. Introduce `y`.
+
+Take `⟨g, hg, -, k, hk⟩` from `key y`. Conclude with `⟨k, hg.generatesAt_iff.2 hk⟩`.
+-/
 theorem exists_eff_isGenerated : ∀ (Y₀ Y₁ : Scheme.{0}) [IsNoetherian Y₀] [IsIntegral Y₁] (t : Y₁ ⟶ Y₀) (I : Y₀.IdealSheafData), FinalTheorems.EffCartier (I.comap t) → ∀ (A : LB Y₀) (hA : IsAmpleLB A), ∃ E : CartierDiv Y₁, E.Eff ∧ E.supp = (I.comap t).support ∧ ∀ᶠ c : ℕ in atTop, ∀ (P : LB Y₁) (hP : P.IsLB), cls P hP = c • CechPic.pull t (cls A hA.isLB) - toPic E → IsGenerated P := by
   intro Y₀ Y₁ _ _ t I hEff A hA
   obtain ⟨E, hEeff, hEsupp, hEq⟩ := l1 Y₁ (I.comap t) hEff

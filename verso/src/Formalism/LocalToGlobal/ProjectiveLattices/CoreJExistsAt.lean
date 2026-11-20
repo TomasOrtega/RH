@@ -65,6 +65,9 @@ structure PkgOK2 (Q : Par D) (j : ℕ) (σ : Q.c.F →+* ℂ) (p : PkgT Q j σ) 
   cuNe : σ = Q.c.F.val.toRingHom → FJ.CuNeF p.1.X (WeightFamilies.rho D j)
   expo : σ = Q.c.F.val.toRingHom → FJ.ExpoMatch p.1.X 1 (WeightFamilies.rho D j) (D.host.g 0 * D.host.g 1)
 
+/- English proof (translation)
+The claim follows from `isUnf_unfOf _ _ _ _ P.frameEx.choose_spec.1 P.modelEx.choose_spec.1 P.cover P.fibre (readSecU_of _ _ _ _ P.frameEx.choose_spec P.modelEx.choose_spec.1 hWt) unTest := unTest_of hA _ chi1 := P.modelEx.choose_spec.1.chi dictU := ⟨_, _, fun _ τ => ((hI : ∀ τ : D.host.E →+* ℂ, ∃ θ : A …`.
+-/
 theorem pkgJ_ok {hN : N1c} {Q : Par D} {hpq : ∀ j, 1 ≤ (Q.Dw j).p + (Q.Dw j).q} {hI : InfPlaceEx D} {j : ℕ}
     {hj : InR D j} {hIo : IotaEx Q j hj} {σ : Q.c.F →+* ℂ} {hσ : GoodEmb Q.c σ} {χ : (AE D)ˣ →* Circle}
     (P : PkgRows hN Q hpq hI j hj hIo σ hσ χ) (hA : AllTest (Q.Xo j) Q.c) (hX : XiConst D)
@@ -107,6 +110,9 @@ structure PkgOKJ (Q : Par D) (j : ℕ) (σ : Q.c.F →+* ℂ) (χ : (AE D)ˣ →
     LatEmb (D.sp.W j) ι ∧ LatIsom (D.sp.W j) (Q.Dw j).EF ι ∧ (∀ k τ, Formalism.MainNotions.StandardLattice.IsInfEmb τ.1 (th k τ)) ∧
       DictLat p.1 (D.sp.W j) hr p.2.1 ι e F ik φ th x₀
 
+/- English proof (translation)
+The claim follows from `pkgJ_ok P hA hX hWt (muOK_of R P.unitFr) muVal := muVal_muOf R.detRoot R.chiWD modelW := ⟨_, P.modelEx.choose_spec.2⟩ familyUniformisationBasePointOrthogonal := fun k => by have hB := P.modelEx.choose_spec.1 have hW := P.modelEx.choose_spec.2 refine base_frame_orthonormal_of_eq ( …`.
+-/
 theorem pkgJ_okJ {hN : N1c} {Q : Par D} {hpq : ∀ j, 1 ≤ (Q.Dw j).p + (Q.Dw j).q} {hI : InfPlaceEx D} {j : ℕ}
     {hj : InR D j} {hIo : IotaEx Q j hj} {σ : Q.c.F →+* ℂ} {hσ : GoodEmb Q.c σ} {χ : (AE D)ˣ →* Circle}
     (P : PkgRows hN Q hpq hI j hj hIo σ hσ χ) (hA : AllTest (Q.Xo j) Q.c) (hX : XiConst D)
@@ -146,6 +152,9 @@ open Classical in
 def iotaOf (L : LawsJRest hN Q hpq chiW) (j : ℕ) : (Q.Dw j).La →ₗ[𝓞 D.host.E] (Fin D.R.r → D.host.E) :=
   if hj : InR D j then (L.iota j hj).choose else 0
 
+/- English proof (translation)
+Distinguish the cases in `hj : InR D j`. Distinguish the cases in `hσ : GoodEmb Q.c σ`. Conclude with `⟨(pkgJ (L.pkg j hj σ hσ), x0J (L.pkg j hj σ hσ).modelEx), fun _ _ => pkgJ_okJ (L.pkg j hj σ hσ) (L.allTest j hj) (xiConst_holds D) (L.wtC j hj σ hσ) (L.muRows j hj σ hσ)⟩`. Conclude with `⟨(Classical.choice (L.dataAll j σ), fun _ => 1), fun _ h => absurd h hσ⟩`. Conclude with `⟨(Classical.choice (L.dataAll j σ), fun _ => 1), fun h => absurd h hj⟩`.
+-/
 theorem pkgExJ (L : LawsJRest hN Q hpq chiW) (j : ℕ) (σ : Q.c.F →+* ℂ) :
     ∃ q : PkgT Q j σ × ((D.host.E →+* ℂ) → Matrix (Fin D.R.r) (Fin D.R.r) ℂ),
       ∀ hj : InR D j, GoodEmb Q.c σ → PkgOKJ Q j σ (chiW j σ) (L.iota j hj).choose q.1 q.2 := by

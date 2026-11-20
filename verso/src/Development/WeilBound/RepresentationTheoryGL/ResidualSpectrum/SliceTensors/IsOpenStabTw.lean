@@ -18,6 +18,15 @@ open SatakeVectors PInfInd2A
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
+/- English proof (translation)
+Introduce `ψ hψ`. Take `⟨φ, hφ, rfl⟩` from `Submodule.mem_map.1 hψ`. Use `set χ := Model.absC E z`. Establish `hA : IsOpen {g : GL (Fin m) (w.adicCompletion E) | finRep E m (locGL E m w g) φ = φ}` using `(hV.aut φ hφ).level.preimage (CuspSub.continuous_locGL w)`. Establish `hC` using `CuspSub.isOpen_ker_locDet (a := m) χ w`.
+
+Set `H : Subgroup (GL (Fin m) (w.adicCompletion E))` to `{ carrier := {g | finRep E m (locGL E m w g) (mulChi m χ φ) = mulChi m χ φ} one_mem' := by simp mul_mem' := fun {a b} ha hb => by`. Express the relevant statement in the definitionally equal form `finRep E m (locGL E m w (a * b)) _ = _`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, hb, ha]`. Use the proof step `inv_mem' := fun {a} ha => by`. Express the relevant statement in the definitionally equal form `finRep E m (locGL E m w a⁻¹) _ = _`.
+
+Use `conv_lhs => rw [← ha]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← map_mul, inv_mul_cancel, map_one, map_one, Module.End.one_apply] }`. Establish `hsub : {g : GL (Fin m) (w.adicCompletion E) | finRep E m (locGL E m w g) φ = φ} ∩ {g | CuspSub.locDet m χ w g = 1} ⊆ (H : Set _)` using `fun g hg => by`. Express the relevant statement in the definitionally equal form `finRep E m (locGL E m w g) (mulChi m χ φ) = mulChi m χ φ`. Rewrite using `[finRep_mulChi]`.
+
+Establish `e1 : χ.loc w (Matrix.GeneralLinearGroup.det g) = 1` using `hg.2`. Rewrite using `[e1, Units.val_one, one_smul, hg.1]`. Conclude with `H.isOpen_of_mem_nhds (Filter.mem_of_superset ((hA.inter hC).mem_nhds ⟨(by simp : finRep E m (locGL E m w 1) φ = φ), by simp⟩) hsub)`.
+-/
 theorem isOpen_stab_tw {m : ℕ} {V : Submodule ℂ (Sm E m)} (hV : IsDiscrete V) (z : ℂ) (w : HeightOneSpectrum (𝓞 E)) :
     ∀ ψ ∈ tw V z, IsOpen {g : GL (Fin m) (w.adicCompletion E) | finRep E m (locGL E m w g) ψ = ψ} := by
   intro ψ hψ
@@ -52,6 +61,29 @@ def blkS (B₁ B₂ : Multiset ℂˣ) : Fin 2 → Multiset ℂˣ
 end SatakeInductionStabiliserOpen
 
 open SatakeVectors SatakeInductionStabiliserOpen PInfInd2A in
+/- English proof (translation)
+Introduce `E _ _ _ r s V V₁ V₂ z₁ z₂ hV hV₁ hV₂ hemb`. Use `filter_upwards [eventually_satV hV, eventually_satV hV₁, eventually_satV hV₂] with w hB hB₁ hB₂`. Take `⟨B, hB⟩` from `hB`. Take `⟨B₁, hB₁⟩` from `hB₁`. Take `⟨B₂, hB₂⟩` from `hB₂`.
+
+Use `⟨B, B₁, B₂, hB, hB₁, hB₂, ?_⟩` and prove the remaining obligations. Take `⟨f, hfP, hfi, hfe⟩` from `hemb`. Take `⟨φ, hφ, hsat⟩` from `hB.1`. Establish `hF0 : f φ ≠ 0` using `fun e => hsat.1 (hfi φ hφ e)`. Establish `hsatD : GlobalTheory.LFun.IsSatVecGL w (GlobalTheory.DiscLocEx.locRepD hV.stable w) ⟨φ, hφ⟩ B` using `GlobalTheory.LFun.IsSatVecGL.of_map (ρ' := (finRep E (r + s)).comp (locGL E (r + s) w)) V.subtype (fun _ _ => rfl) Subtype.val_injective hsat`.
+
+Establish `hFB : GlobalTheory.LFun.IsSatVecGL w ((finRep E (r + s)).comp (locGL E (r + s) w)) (f φ) B` using `hsatD.map (f ∘ₗ V.subtype) (fun g v => hfe (.fin (locGL E (r + s) w g)) v.1 v.2) hF0`. Establish `hFK : ∀ k ∈ GlobalTheory.LFun.KGL w (r + s), finRep E (r + s) (locGL E (r + s) w k) (f φ) = f φ` using `fun k hk => GlobalTheory.LGrp.mem_fixed.1 hFB.2.1 k hk`. Establish `h : ∑ i, (![r, s] : Fin 2 → ℕ) i = r + s` using `GlobalTheory.CompanionTheory.CTFin.CapFactor.two_sum _`. Establish `hcore` using `isSatVecGL_of_ind (n := ![r, s]) h (blkV (tw V₁ z₁) (tw V₂ z₂)) (fun i => by fin_cases i`. Conclude with `fun g ψ hψ => ParabolicProjection.isStable_tw hV₁.stable z₁ (.fin g) ψ hψ`.
+
+Conclude with `fun g ψ hψ => ParabolicProjection.isStable_tw hV₂.stable z₂ (.fin g) ψ hψ)`. Use the proof step `(fun i => by fin_cases i`. Conclude with `isOpen_stab_tw hV₁ z₁ w`. Conclude with `isOpen_stab_tw hV₂ z₂ w)`. Use the proof step `(blkS (B₁.map (· * qU w (-z₁))) (B₂.map (· * qU w (-z₂))))`.
+
+Use the proof step `(fun i => by fin_cases i`. Conclude with `satLike_tw (satLike_of_satV hB₁) z₁`. Conclude with `satLike_tw (satLike_of_satV hB₂) z₂)`. Use `hF0 hFK`. Use the proof step `(fun u hu g => by`.
+
+Take `⟨x, rfl⟩` from `GlobalTheory.CompanionTheory.CTFin.CapFactor.exists_unip_of_mem ![r, s] h hu`. Conclude with `(hfP φ hφ).1 x g)`. Use the proof step `(fun k g => by`. Use `tensorSp_of_tens2 (n := ![r, s]) (tw V₁ z₁) (tw V₂ z₂) ((hfP φ hφ).2 k g)` as an intermediate fact. Use `this using 2 with m` and compare the differences between its conclusion and the goal.
+
+Establish `e` using `GlobalTheory.CompanionTheory.CTFin.CapFactor.lev_eq_leviEmb (![r, s]) h (m 0, m 1)`. Rewrite `e` using `[levPair_eta]`. Conclude with `congrArg (fun x => (f φ).1 (x * (infGL E (r + s) (Unitary.toUnits k) * finGL E (r + s) g))) e.symm)`. Establish `hBeq` using `GlobalTheory.LFun.IsSatVecGL.unique hFB hcore`. Establish `q0 : ((Ideal.absNorm w.asIdeal : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (NumberField.HeightOneSpectrum.one_lt_absNorm w).ne_bot`.
+
+Rewrite using `[hBeq, Fin.sum_univ_two, Multiset.map_add]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `((B₁.map (· * qU w (-z₁))).map (· * qU w ((modExp (fun i => Fin (![r, s] i)) 0 : ℂ) / 2))).map (fun b : ℂˣ => (b : ℂ)) = _`. Rewrite using `[GlobalTheory.CompanionTheory.CTFin.CapFactor.modExp_zero, satTw_eq, Multiset.map_map, Multiset.map_map, Multiset.map_map]`. Use `Multiset.map_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Function.comp_apply, Units.val_mul, qU_val]`. Rewrite using `[mul_assoc, ← Complex.cpow_add _ _ q0]`. Use `congr 2`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+
+Express the relevant statement in the definitionally equal form `((B₂.map (· * qU w (-z₂))).map (· * qU w ((modExp (fun i => Fin (![r, s] i)) 1 : ℂ) / 2))).map (fun b : ℂˣ => (b : ℂ)) = _`. Rewrite using `[GlobalTheory.CompanionTheory.CTFin.CapFactor.modExp_one, satTw_eq, Multiset.map_map, Multiset.map_map, Multiset.map_map]`. Use `Multiset.map_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Units.val_mul, qU_val]`. Rewrite using `[mul_assoc, ← Complex.cpow_add _ _ q0]`.
+
+Use `congr 2`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem satInd2_holds : SatInd2 := by
   intro E _ _ _ r s V V₁ V₂ z₁ z₂ hV hV₁ hV₂ hemb
   filter_upwards [eventually_satV hV, eventually_satV hV₁, eventually_satV hV₂] with w hB hB₁ hB₂

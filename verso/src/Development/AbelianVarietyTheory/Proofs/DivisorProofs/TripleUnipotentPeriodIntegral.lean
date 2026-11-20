@@ -16,6 +16,21 @@ namespace GlobalTheory.ThK.UnipIntSo
 
 open GlobalTheory.ThKContSmall
 
+/- English proof (translation)
+Establish `hPair` using `isPair_small hT`. Establish `hS : Φ' ∈ schA F _` using `so_le_schA hT.geo.hM' _ hSo`. Establish `hB` using `(GlobalTheory.T.theta_basic_properties hP.base F E σ B _ _ _ _ _ _ _ _ _ _ _ _ hPair).1 Φ' hS`. Use `⟨?_, fun γ hγ h => ?_⟩` and prove the remaining obligations. Take `⟨C, k, hC⟩` from `GlobalTheory.T.schwartz_orbit_decay hP F E σ B _ _ _ _ _ _ _ _ _ _ _ _ hPair Φ' hSo 0 haveI : BorelSpace (UA σ G.V'.J) := ⟨rfl⟩`.
+
+Establish `hv` using `measure_dom_lt_top hP.siegelSetUnitary hT.base hT.geo.hV' hT.geo.hM'`. Establish `hht : Continuous (fun h : UA σ G.W.J => (ht h : ℝ))` using `NNReal.continuous_coe.comp ((GlobalTheory.Grow.continuous_heightGL F).comp continuous_subtype_val)`. Use `haveI : SecondCountableTopology (AF F) := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI : SecondCountableTopology (AE F E) := by`.
+
+Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`. Conclude with `e.secondCountableTopology`. Use `haveI hMat : SecondCountableTopology (Matrix (Fin (a + a')) (Fin (a + a')) (AE F E)) := inferInstanceAs (SecondCountableTopology (Fin (a + a') → Fin (a + a') → AE F E))`. Use `haveI : SecondCountableTopology (Matrix (Fin (a + a')) (Fin (a + a')) (AE F E))ᵐᵒᵖ := (MulOpposite.opHomeomorph (M := Matrix (Fin (a + a')) (Fin (a + a')) (AE F E))).symm.secondCountableTopology`. Use `haveI : SecondCountableTopology (GL (Fin (a + a')) (AE F E)) := Units.isEmbedding_embedProduct.secondCountableTopology`.
+
+Use `haveI : SecondCountableTopology (UA σ G.W.J) := (Topology.IsEmbedding.subtypeVal (p := fun x : GL (Fin (a + a')) (AE F E) => x ∈ GlobalTheory.WeilM.UG (cA σ) (incM F G.W.J))).secondCountableTopology`. Use `haveI : FirstCountableTopology (UA σ G.W.J) := TopologicalSpace.SecondCountableTopology.to_firstCountableTopology _`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `h₀`. Establish `hev : ∀ᶠ h in 𝓝 h₀, (ht h : ℝ) < ht h₀ + 1` using `hht.continuousAt.eventually_lt continuousAt_const (lt_add_one _)`.
+
+Unfold `Model.I`. Use `continuousAt_of_dominated (bound := fun _ => max C 0 * ((ht h₀ : ℝ) + 1) ^ k) ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `Eventually.of_forall fun h => (hB.1.comp (continuous_id.prodMk continuous_const)).aestronglyMeasurable`. Use `filter_upwards [hev] with h hh`. Use `Eventually.of_forall fun g => ?_` and prove the remaining obligations.
+
+Establish `h1` using `hC g h`. Rewrite `h1` using `[pow_zero, mul_one]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `integrableOn_const hv.ne`. Conclude with `Eventually.of_forall fun g => (hB.1.comp (continuous_const.prodMk continuous_id)).continuousAt`.
+
+Unfold `Model.I`. Use `integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Establish `e` using `hB.2.1 1 (one_mem _) γ hγ g h`. Rewrite `e` using `[one_mul]`. Conclude with `e`.
+-/
 theorem cont_inv (hP : GlobalTheory.ThK.KP) (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W)
     (om' : Rep σ G.V' G.W) (hT : IsTriple B G X om om') (Φ' : _) (hSo : Φ' ∈ G.M'.So B.ψ B.τ₁) :
@@ -71,6 +86,11 @@ theorem cont_inv (hP : GlobalTheory.ThK.KP) (F E : Type) [Field F] [NumberField 
     rw [one_mul] at e
     exact e
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH' Φ hΦ μ 𝓕 hμ h𝓕 h1 h`. Take `⟨hc, hinv⟩` from `cont_inv hKP F E σ B a a' G X om om' hT Φ hΦ`. Take `⟨C, hC⟩` from `GlobalTheory.ThK.UnipBound.bounded_on_unip F E σ B (a + a') d₁ G.W W₁ H' i₀ i₁ _ _ hT.base hT.geo.hW hH' _ hc hinv h`. Take `⟨i1, -, -, -⟩` from `GlobalTheory.UnipCT.topFacts (F := F) σ G.W.J`. Use `haveI : BorelSpace (UA σ G.W.J) := ⟨rfl⟩`.
+
+Establish `hcont : Continuous (fun u : unip σ G.W H' => G.M'.I om' Φ (u.1 * h))` using `hc.comp (continuous_subtype_val.mul continuous_const)`. Establish `hfin : μ 𝓕 ≠ ⊤` using `by rw [h1]; exact ENNReal.one_ne_top`. Use `Measure.integrableOn_of_bounded hfin hcont.aestronglyMeasurable (M := C) ?_` and prove the remaining obligations. Conclude with `Filter.Eventually.of_forall fun u => hC u.1 u.2`.
+-/
 theorem integrableOn_unip : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' → ∀ (d₁ : ℕ) (W₁ : Spc F E d₁) (H' : Plane E (a + a') d₁) (i₀ i₁ : ℕ), H'.IsAdapted σ B G.W W₁ i₀ i₁ → ∀ Φ ∈ G.M'.So B.ψ B.τ₁, ∀ (μ : Measure (unip σ G.W H')) (𝓕 : Set (unip σ G.W H')), μ.IsHaarMeasure → IsFundamentalDomain ((ratU σ G.W.J).subgroupOf (unip σ G.W H')) 𝓕 μ → μ 𝓕 = 1 → ∀ h : UA σ G.W.J, IntegrableOn (fun u : unip σ G.W H' => G.M'.I om' Φ (u.1 * h)) 𝓕 μ := by
   intro hKP F E _ _ _ _ _ σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH' Φ hΦ μ 𝓕 hμ h𝓕 h1 h
   obtain ⟨hc, hinv⟩ := cont_inv hKP F E σ B a a' G X om om' hT Φ hΦ

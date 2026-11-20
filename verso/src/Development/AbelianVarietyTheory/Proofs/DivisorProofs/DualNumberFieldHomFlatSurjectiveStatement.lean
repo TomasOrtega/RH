@@ -8,5 +8,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.DualOpen.dualNumber_map_flat_surjective | exact GlobalTheory.DualOpen.dualNumber_map_flat_surjective | (intros; apply GlobalTheory.DualOpen.dualNumber_map_flat_surjective <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.dualNumber_fieldHom_flat_surjective : ∀ (k K : Type) [Field k] [Field K] (φ : k →+* K), ∃ ψ : DualNumber k →+* DualNumber K, ψ.comp (dnInl k) = (dnInl K).comp φ ∧ (dnFst K).comp ψ = φ.comp (dnFst k) ∧ Flat (spMap ψ) ∧ Surjective (spMap ψ) := by
   first | exact @GlobalTheory.DualOpen.dualNumber_map_flat_surjective | exact GlobalTheory.DualOpen.dualNumber_map_flat_surjective | (intros; apply GlobalTheory.DualOpen.dualNumber_map_flat_surjective <;> assumption)

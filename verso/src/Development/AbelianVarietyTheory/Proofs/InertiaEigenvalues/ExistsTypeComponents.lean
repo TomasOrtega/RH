@@ -9,6 +9,11 @@ attribute [local instance] GlobalTheory.TypeRec.factG
 
 namespace GlobalTheory.TypeRec
 
+/- English proof (translation)
+Establish `: ∀ σ k v, ∃ c : GlobalTheory.GoodTypes.LocRep D k, ∃ (s : ReciprocityTheory.Aut.SplitPlace D.host.E) (h : s.w = D.naut.plGw k v) (τ : GlobalTheory.SmGL.IrrRep (GL (Fin D.R.r) ((D.naut.plGw k v).adicCompletion D.host.E))), GlobalTheory.HeightCounting.IsLocS (rep σ).S s (h ▸ τ) ∧ …`. Introduce `σ k v`. Take `⟨s, τ, hs, h1, -⟩` from `h σ k v`. Establish `gen : ∀ (w) (e : s.w = w), ∃ τ' : GlobalTheory.SmGL.IrrRep (GL (Fin D.R.r) (w.adicCompletion D.host.E)), GlobalTheory.HeightCounting.IsLocS (rep σ).S s (e ▸ τ')`. Introduce and unpack `_ rfl`.
+
+Conclude with `⟨τ, h1⟩`. Take `⟨τ', a⟩` from `gen _ hs`. Conclude with `⟨_, s, hs, τ', a, rfl⟩`. Use `choose c hc using this`. Conclude with `⟨c, hc⟩`.
+-/
 theorem exists_isComp_of_rowDepth {D : D7} (I : Ident D) (rep : D.what₂.FT → NG.FinTyp D.host.E D.R.r)
     (h : GlobalTheory.HeightCounting.RowDepth D rep) : ∃ cp, IsComp I rep cp := by
   have : ∀ σ k v, ∃ c : GlobalTheory.GoodTypes.LocRep D k, ∃ (s : ReciprocityTheory.Aut.SplitPlace D.host.E) (h : s.w = D.naut.plGw k v)
@@ -25,6 +30,9 @@ theorem exists_isComp_of_rowDepth {D : D7} (I : Ident D) (rep : D.what₂.FT →
   choose c hc using this
   exact ⟨c, hc⟩
 
+/- English proof (translation)
+Take `⟨cp, hc⟩` from `exists_isComp_of_rowDepth I rep h2`. Use `⟨cp, hc, fun σ k v => ⟨?_, Model.param_eq hrc hc h1 σ k v⟩⟩` and prove the remaining obligations. Take `⟨s, hs, τ, -, e⟩` from `hc σ k v`. Rewrite using `[e]`. Conclude with `Model.irrSm_pull I k v τ`.
+-/
 theorem exists_comp_irrSm_param (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (T : GlobalTheory.RowTie.WDTie D.nd D.naut)
     (I : Ident D) (rc : GlobalTheory.SerSys.Corr D) (hrc : IsRc hL T I rc) (Rw : GlobalTheory.HeightCounting.RowSide D)
     (rep : D.what₂.FT → NG.FinTyp D.host.E D.R.r)

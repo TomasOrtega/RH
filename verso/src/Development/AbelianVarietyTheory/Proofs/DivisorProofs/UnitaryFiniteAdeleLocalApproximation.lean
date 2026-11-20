@@ -17,6 +17,9 @@ variable {S : Type} [CommRing S] {ι : Type} [Fintype ι] [DecidableEq ι]
 
 def cut (ε : S) (A : Matrix ι ι S) : Matrix ι ι S := ε • A + (1 - ε) • 1
 
+/- English proof (translation)
+Establish `h1 : ε * (1 - ε) = 0` using `by rw [mul_sub, mul_one, he, sub_self]`. Establish `h1' : (1 - ε) * ε = 0` using `by rw [mul_comm, h1]`. Establish `h2 : (1 - ε) * (1 - ε) = 1 - ε` using `by linear_combination he`. Simplify using `only [cut, add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.one_mul, Matrix.mul_one, he, h1, h1', h2, zero_smul, add_zero, zero_add]`.
+-/
 theorem cut_mul {ε : S} (he : ε * ε = ε) (A B : Matrix ι ι S) : cut ε A * cut ε B = cut ε (A * B) := by
   have h1 : ε * (1 - ε) = 0 := by rw [mul_sub, mul_one, he, sub_self]
   have h1' : (1 - ε) * ε = 0 := by rw [mul_comm, h1]
@@ -24,17 +27,29 @@ theorem cut_mul {ε : S} (he : ε * ε = ε) (A B : Matrix ι ι S) : cut ε A *
   simp only [cut, add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.one_mul, Matrix.mul_one, he, h1,
     h1', h2, zero_smul, add_zero, zero_add]
 
+/- English proof (translation)
+Rewrite using `[cut, ← add_smul, add_sub_cancel, one_smul]`.
+-/
 theorem cut_one (ε : S) : cut ε (1 : Matrix ι ι S) = 1 := by
   rw [cut, ← add_smul, add_sub_cancel, one_smul]
 
+/- English proof (translation)
+Simplify using `[cut, Matrix.transpose_add, Matrix.transpose_smul, Matrix.transpose_one]`.
+-/
 theorem cut_transpose (ε : S) (A : Matrix ι ι S) : (cut ε A)ᵀ = cut ε Aᵀ := by
   simp [cut, Matrix.transpose_add, Matrix.transpose_smul, Matrix.transpose_one]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [cut, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp [hc]`.
+-/
 theorem cut_map {G : Type} [FunLike G S S] [RingHomClass G S S] (ε : S) (c : G) (hc : c ε = ε) (A : Matrix ι ι S) : (cut ε A).map c = cut ε (A.map c) := by
   ext i j
   simp only [cut, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, Matrix.one_apply]
   split_ifs <;> simp [hc]
 
+/- English proof (translation)
+Establish `h1 : ε * (1 - ε) = 0` using `by rw [mul_sub, mul_one, he, sub_self]`. Establish `h1' : (1 - ε) * ε = 0` using `by rw [mul_comm, h1]`. Establish `h2 : (1 - ε) * (1 - ε) = 1 - ε` using `by linear_combination he`. Simplify using `only [cut, add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.one_mul, Matrix.mul_one, he, h1, h1', h2, zero_smul, add_zero, zero_add]`.
+-/
 theorem cut_mul_mul {ε : S} (he : ε * ε = ε) (A J B : Matrix ι ι S) :
     cut ε A * J * cut ε B = ε • (A * J * B) + (1 - ε) • J := by
   have h1 : ε * (1 - ε) = 0 := by rw [mul_sub, mul_one, he, sub_self]
@@ -49,6 +64,13 @@ section Adelic
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use `Prod.ext ?_ ?_` and prove the remaining obligations. Conclude with `zero_mul _`. Express the relevant statement in the definitionally equal form `GlobalTheory.AdelicU.singleFin v 1 * b.2 = GlobalTheory.AdelicU.singleFin v (evFin F v b)`. Apply `GlobalTheory.AdelicU.af_ext` to reduce the goal to its premises. Introduce `w`.
+
+Rewrite using `[map_mul]`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[GlobalTheory.AdelicU.evalV_singleFin_self, GlobalTheory.AdelicU.evalV_singleFin_self, one_mul]`. Both sides reduce to the same expression.
+
+Rewrite using `[GlobalTheory.AdelicU.evalV_singleFin_ne hw, GlobalTheory.AdelicU.evalV_singleFin_ne hw, zero_mul]`.
+-/
 theorem liftV_one_mul_eq (v : Pl F) (b : AF F) :
     GlobalTheory.LatVac.liftV v 1 * b = GlobalTheory.LatVac.liftV v (evFin F v b) := by
   refine Prod.ext ?_ ?_
@@ -63,22 +85,37 @@ theorem liftV_one_mul_eq (v : Pl F) (b : AF F) :
       rfl
     · rw [GlobalTheory.AdelicU.evalV_singleFin_ne hw, GlobalTheory.AdelicU.evalV_singleFin_ne hw, zero_mul]
 
+/- English proof (translation)
+Rewrite using `[liftV_one_mul_eq, GlobalTheory.LatVac.evFin_liftV]`.
+-/
 theorem liftV_one_idem (v : Pl F) : GlobalTheory.LatVac.liftV v 1 * GlobalTheory.LatVac.liftV v 1 = (GlobalTheory.LatVac.liftV v 1 : AF F) := by
   rw [liftV_one_mul_eq, GlobalTheory.LatVac.evFin_liftV]
 
 def idem (v : Pl F) : AE F E := algebraMap (AF F) (AE F E) (GlobalTheory.LatVac.liftV v 1)
 
+/- English proof (translation)
+Rewrite using `[idem, ← map_mul, liftV_one_idem]`.
+-/
 theorem idem_mul (v : Pl F) : (idem v : AE F E) * idem v = idem v := by
   rw [idem, ← map_mul, liftV_one_idem]
 
 variable {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
 
+/- English proof (translation)
+Simplify using `[mat]`.
+-/
 theorem mat_mul_inv (g : UA σ J) : mat g * mat g⁻¹ = 1 := by
   simp [mat]
 
+/- English proof (translation)
+Simplify using `[mat]`.
+-/
 theorem mat_inv_mul (g : UA σ J) : mat g⁻¹ * mat g = 1 := by
   simp [mat]
 
+/- English proof (translation)
+The claim follows from `g.2`.
+-/
 theorem mat_unitary (g : UA σ J) : (mat g)ᵀ * incM F J * (mat g).map (cA σ) = incM F J := g.2
 
 def atV (v : Pl F) (g : UA σ J) : UA σ J :=
@@ -89,6 +126,9 @@ def atV (v : Pl F) (g : UA σ J) : UA σ J :=
     show (cut (idem v) (mat g))ᵀ * incM F J * (cut (idem v) (mat g)).map (cA σ) = incM F J
     rw [cut_transpose, cut_map _ _ hc, cut_mul_mul (idem_mul v), mat_unitary, ← add_smul, add_sub_cancel, one_smul]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_atV (v : Pl F) (g : UA σ J) : mat (atV v g) = cut (idem v) (mat g) := rfl
 
 end Adelic
@@ -97,10 +137,16 @@ section Main
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Matrix.smul_apply, Algebra.smul_def]`.
+-/
 theorem smul_eq_alg {ι : Type} (u : AF F) (B : Matrix ι ι (AE F E)) : u • B = algebraMap (AF F) (AE F E) u • B := by
   ext i j
   simp [Matrix.smul_apply, Algebra.smul_def]
 
+/- English proof (translation)
+Simplify using `only [cut, smul_sub, sub_smul, one_smul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem cut_sub_one {S ι : Type} [CommRing S] [Fintype ι] [DecidableEq ι] (ε : S) (A : Matrix ι ι S) :
     cut ε A - 1 = ε • (A - 1) := by
   simp only [cut, smul_sub, sub_smul, one_smul]
@@ -110,6 +156,13 @@ variable {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
 
 end Main
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ d W hf`. Use `⟨fun v => atV v hf, fun v => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce `w hw`. Rewrite using `[mat_atV, cut_sub_one, smul_eq_alg, smul_smul, idem, ← map_mul, mul_comm, liftV_one_mul_eq, hw, map_zero, map_zero, zero_smul]`. Introduce `u hu`.
+
+Establish `h1 : evFin F v (1 - GlobalTheory.LatVac.liftV v 1) = 0`. Rewrite using `[map_sub, map_one, GlobalTheory.LatVac.evFin_liftV, sub_self]`. Establish `h2 : (1 - GlobalTheory.LatVac.liftV v 1) * u = 0` using `hu _ h1`. Establish `h3 : u * GlobalTheory.LatVac.liftV v 1 = u` using `by linear_combination -h2`. Establish `h4 : u * (1 - GlobalTheory.LatVac.liftV v 1) = 0` using `by linear_combination h2`.
+
+Rewrite using `[mat_atV, smul_eq_alg, smul_eq_alg u (mat hf), cut, smul_add, smul_smul, smul_smul, idem, ← map_mul, h3, ← map_one (algebraMap (AF F) (AE F E)), ← map_sub, ← map_mul, h4, map_zero, zero_smul, add_zero]`.
+-/
 theorem localComponents : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (d : ℕ) (W : Spc F E d) (hf : UA σ W.J), ∃ h : Pl F → UA σ W.J, ∀ v, h v ∈ UAt σ W (evFin F v) ∧
       ∀ u : AF F, At (evFin F v) u → u • mat (h v) = u • mat hf := by

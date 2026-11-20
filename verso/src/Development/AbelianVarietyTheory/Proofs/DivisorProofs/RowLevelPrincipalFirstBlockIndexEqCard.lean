@@ -12,6 +12,11 @@ section Gen
 
 variable {κ : Type} [CommRing κ]
 
+/- English proof (translation)
+Substitute `e` using the available equality. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Rewrite using `[blockZero_val]`. Use `show (diagEmb κ h p : Matrix (Fin n) (Fin n) κ) (Fin.castLE h i) (Fin.castLE h j) = _`.
+
+Rewrite using `[diagEmb_val, diagMat_of_lt _ (show (Fin.castLE h i).val < r from i.2) (show (Fin.castLE h j).val < r from j.2)]`. Both sides reduce to the same expression.
+-/
 theorem firstDiagonalBlock_of_diagonal_embedding {n r : ℕ} (h : r ≤ n) (bl : List ℕ) (p : GL (Fin r) κ) (M : GL (Fin n) κ)
     (hM : M ∈ blockUT n κ r bl) (e : M = diagEmb κ h p) : blk0 n κ h bl ⟨M, hM⟩ = p := by
   subst e
@@ -22,6 +27,9 @@ theorem firstDiagonalBlock_of_diagonal_embedding {n r : ℕ} (h : r ≤ n) (bl :
   rw [diagEmb_val, diagMat_of_lt _ (show (Fin.castLE h i).val < r from i.2) (show (Fin.castLE h j).val < r from j.2)]
   rfl
 
+/- English proof (translation)
+Rewrite using `[HK_eq_HPar h bl]`. Introduce `M hM`. Take `⟨hb, h0⟩` from `mem_HPar.mp hM`. Conclude with `mem_HPar.mpr ⟨hb, by rw [Subgroup.mem_bot] at h0; rw [h0]; exact H₀.one_mem⟩`.
+-/
 theorem HK_le_HPar {n r : ℕ} (h : r ≤ n) (bl : List ℕ) (H₀ : Subgroup (GL (Fin r) κ)) :
     HK n κ r bl ≤ HPar n κ h bl H₀ := by
   rw [HK_eq_HPar h bl]
@@ -29,6 +37,11 @@ theorem HK_le_HPar {n r : ℕ} (h : r ≤ n) (bl : List ℕ) (H₀ : Subgroup (G
   obtain ⟨hb, h0⟩ := mem_HPar.mp hM
   exact mem_HPar.mpr ⟨hb, by rw [Subgroup.mem_bot] at h0; rw [h0]; exact H₀.one_mem⟩
 
+/- English proof (translation)
+Rewrite using `[HK_eq_HPar h bl, mem_HPar]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, h0⟩`. Conclude with `(Subgroup.mem_bot).mp h0`. Introduce `h0`.
+
+Conclude with `⟨hM, (Subgroup.mem_bot).mpr h0⟩`.
+-/
 theorem mem_HK_iff {n r : ℕ} (h : r ≤ n) (bl : List ℕ) (M : GL (Fin n) κ) (hM : M ∈ blockUT n κ r bl) :
     M ∈ HK n κ r bl ↔ blk0 n κ h bl ⟨M, hM⟩ = 1 := by
   rw [HK_eq_HPar h bl, mem_HPar]
@@ -49,17 +62,29 @@ open Classical in
 
 abbrev inL (v : Pr.vGs) : rowSG Pr sel mu := ⟨v.1, Finset.mem_union_left _ v.2⟩
 
+/- English proof (translation)
+The claim follows from `LevFam.glue_of_mem _ _ _ v.2`.
+-/
 theorem rowTy_inL (P : LevFam X.E X.K R.r Pr.vGs) (v : Pr.vGs) :
     rowTy Ch sel mu P (inL sel mu v) = rowTyG Ch P v := LevFam.glue_of_mem _ _ _ v.2
 
+/- English proof (translation)
+The claim follows from `LevFam.glue_of_mem _ _ _ v.2`.
+-/
 theorem rowTyKK_inL (v : Pr.vGs) :
     rowTyKK Ch sel mu (inL sel mu v) = rowTyK Ch v := LevFam.glue_of_mem _ _ _ v.2
 
+/- English proof (translation)
+Unfold `rowTy rowTyKK`. Rewrite using `[LevFam.glue_of_not _ _ _ hw, LevFam.glue_of_not _ _ _ hw]`.
+-/
 theorem rowTy_H_of_not (P : LevFam X.E X.K R.r Pr.vGs) (w : rowSG Pr sel mu) (hw : w.1 ∉ Pr.vGs) :
     (rowTy Ch sel mu P w).H = (rowTyKK Ch sel mu w).H := by
   unfold rowTy rowTyKK
   rw [LevFam.glue_of_not _ _ _ hw, LevFam.glue_of_not _ _ _ hw]
 
+/- English proof (translation)
+Establish `h` using `x.2 (inL sel mu v) (Set.mem_univ _)`. Express the relevant statement in the definitionally equal form `x.1 (inL sel mu v) ∈ (rowTy Ch sel mu P (inL sel mu v)).H at h`. Rewrite `h` using `[rowTy_inL]`. Conclude with `h`.
+-/
 theorem memP (P : LevFam X.E X.K R.r Pr.vGs) (x : ↥(rowTy Ch sel mu P).inv.grp) (v : Pr.vGs) :
     x.1 (inL sel mu v) ∈ HPar (R.N R.m - 1) (𝓞 X.E ⧸ v.1.asIdeal) (r_le_X' R) (List.replicate R.m R.t) (P v).H := by
   have h := x.2 (inL sel mu v) (Set.mem_univ _)
@@ -67,6 +92,13 @@ theorem memP (P : LevFam X.E X.K R.r Pr.vGs) (x : ↥(rowTy Ch sel mu P).inv.grp
   rw [rowTy_inL] at h
   exact h
 
+/- English proof (translation)
+Introduce `x hx w _`. Establish `h` using `hx w (Set.mem_univ _)`. Express the relevant statement in the definitionally equal form `x w ∈ (rowTyKK Ch sel mu w).H at h`. Express the relevant statement in the definitionally equal form `x w ∈ (rowTy Ch sel mu P w).H`. Distinguish the cases in `hw : w.1 ∈ Pr.vGs`.
+
+Establish `e1` using `rowTyKK_inL Ch sel mu ⟨w.1, hw⟩`. Establish `e2` using `rowTy_inL Ch sel mu P ⟨w.1, hw⟩`. Express the relevant statement in the definitionally equal form `rowTyKK Ch sel mu w = _ at e1`. Express the relevant statement in the definitionally equal form `rowTy Ch sel mu P w = _ at e2`. Rewrite `h` using `[e1]`.
+
+Rewrite using `[e2]`. Conclude with `GlobalTheory.RowLevIndex.HK_le_HPar _ _ _ h`. Rewrite using `[rowTy_H_of_not Ch sel mu P w hw]`. Conclude with `h`.
+-/
 theorem grp_le (P : LevFam X.E X.K R.r Pr.vGs) :
     (rowTyKK Ch sel mu).inv.grp ≤ (rowTy Ch sel mu P).inv.grp := by
   intro x hx w _
@@ -106,12 +138,26 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
 def incl : FormG (rowTyKK Ch sel mu).inv →* FormG (rowTy Ch sel mu P).inv :=
   MonoidHom.prodMap (MonoidHom.id _) (Subgroup.inclusion (grp_le Ch sel mu P))
 
+/- English proof (translation)
+Introduce `a b e`. Establish `e1` using `congrArg Prod.fst e`. Establish `e2` using `congrArg (fun x => (x.2 : GLG X.E (R.N R.m - 1) (rowSG Pr sel mu))) e`. Conclude with `Prod.ext e1 (Subtype.ext e2)`.
+-/
 theorem incl_injective : Function.Injective (incl Ch sel mu P) := by
   intro a b e
   have e1 := congrArg Prod.fst e
   have e2 := congrArg (fun x => (x.2 : GLG X.E (R.N R.m - 1) (rowSG Pr sel mu))) e
   exact Prod.ext e1 (Subtype.ext e2)
 
+/- English proof (translation)
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Rewrite using `[MonoidHom.mem_ker]`. Use function extensionality and compare the values at `v`.
+
+Establish `h` using `y.2.2 (inL sel mu v) (Set.mem_univ _)`. Express the relevant statement in the definitionally equal form `y.2.1 (inL sel mu v) ∈ (rowTyKK Ch sel mu (inL sel mu v)).H at h`. Rewrite `h` using `[rowTyKK_inL]`. Conclude with `(GlobalTheory.RowLevIndex.mem_HK_iff (r_le_X' R) _ _ _).mp h`. Introduce `hx`.
+
+Rewrite `hx` using `[MonoidHom.mem_ker]`. Establish `hmem : x.2.1 ∈ (rowTyKK Ch sel mu).inv.grp`. Introduce `w _`. Express the relevant statement in the definitionally equal form `x.2.1 w ∈ (rowTyKK Ch sel mu w).H`. Distinguish the cases in `hw : w.1 ∈ Pr.vGs`.
+
+Establish `e1` using `rowTyKK_inL Ch sel mu ⟨w.1, hw⟩`. Express the relevant statement in the definitionally equal form `rowTyKK Ch sel mu w = _ at e1`. Rewrite using `[e1]`. Conclude with `(GlobalTheory.RowLevIndex.mem_HK_iff (r_le_X' R) _ _ (HPar_le _ _ _ (memP Ch sel mu P x.2 ⟨w.1, hw⟩))).mpr (congrFun hx ⟨w.1, hw⟩)`. Rewrite using `[← rowTy_H_of_not Ch sel mu P w hw]`.
+
+Conclude with `x.2.2 w (Set.mem_univ _)`. Conclude with `⟨(x.1, ⟨x.2.1, hmem⟩), rfl⟩`.
+-/
 theorem range_incl : (incl Ch sel mu P).range = (blkMap Ch sel mu P).ker := by
   ext x
   constructor
@@ -138,6 +184,19 @@ theorem range_incl : (incl Ch sel mu P).range = (blkMap Ch sel mu P).ker := by
     exact ⟨(x.1, ⟨x.2.1, hmem⟩), rfl⟩
 
 open Classical in
+/- English proof (translation)
+Use extensionality with `p`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Introduce `v _`. Take `⟨_, h0⟩` from `mem_HPar.mp (memP Ch sel mu P x.2 v)`.
+
+Conclude with `h0`. Introduce `hp`. Set `h : GLG X.E (R.N R.m - 1) (rowSG Pr sel mu)` to `fun w => if hw : w.1 ∈ Pr.vGs then diagEmb _ (r_le_X' R) (p ⟨w.1, hw⟩) else 1`. Establish `hmem : h ∈ (rowTy Ch sel mu P).inv.grp`. Introduce `w _`.
+
+Express the relevant statement in the definitionally equal form `h w ∈ (rowTy Ch sel mu P w).H`. Distinguish the cases in `hw : w.1 ∈ Pr.vGs`. Establish `e2` using `rowTy_inL Ch sel mu P ⟨w.1, hw⟩`. Express the relevant statement in the definitionally equal form `rowTy Ch sel mu P w = _ at e2`. Rewrite using `[e2]`.
+
+Establish `hh : h w = diagEmb _ (r_le_X' R) (p ⟨w.1, hw⟩)` using `dif_pos hw`. Rewrite using `[hh]`. Conclude with `mem_HPar.mpr ⟨diagEmb_mem_blockUT _ _ _, by`. Rewrite using `[GlobalTheory.RowLevIndex.firstDiagonalBlock_of_diagonal_embedding _ _ (p ⟨w.1, hw⟩) _ _ rfl]`. Conclude with `hp ⟨w.1, hw⟩ (Set.mem_univ _)⟩`.
+
+Establish `hh : h w = 1` using `dif_neg hw`. Rewrite using `[hh]`. Conclude with `Subgroup.one_mem _`. Use `⟨((1 : UF X.E (R.N R.m - 1)), ⟨h, hmem⟩), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `v`.
+
+Conclude with `GlobalTheory.RowLevIndex.firstDiagonalBlock_of_diagonal_embedding _ _ (p v) _ _ (dif_pos v.2)`.
+-/
 theorem range_blkMap : (blkMap Ch sel mu P).range = P.grp := by
   ext p
   constructor
@@ -168,6 +227,9 @@ theorem range_blkMap : (blkMap Ch sel mu P).range = P.grp := by
 
 end Rows2
 
+/- English proof (translation)
+Introduce `X Pr R W Ch sel S mu P`. Use `⟨incl Ch sel mu P, incl_injective Ch sel mu P, fun a d => rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[range_incl, Subgroup.index_ker, range_blkMap]`.
+-/
 theorem index_eq : ∀ {X : Fields} {Pr : Primes X} {R : Ranks} (W : Formalism.L2.Col.Wts X Pr.Word R) (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S) (P : LevFam X.E X.K R.r Pr.vGs), ∃ ι : (mtildeKGSD W Ch sel mu).G →* (mtildeGSD W Ch sel mu P).G, Function.Injective ι ∧ (∀ (a : (mtildeKGSD W Ch sel mu).G) (d : (mtildeKGSD W Ch sel mu).D), ι a • d = a • d) ∧ ι.range.index = Nat.card P.grp := by
   intro X Pr R W Ch sel S mu P
   refine ⟨incl Ch sel mu P, incl_injective Ch sel mu P, fun a d => rfl, ?_⟩

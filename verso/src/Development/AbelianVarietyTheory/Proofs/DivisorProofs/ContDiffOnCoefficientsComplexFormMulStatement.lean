@@ -6,6 +6,9 @@ open GlobalTheory GlobalTheory.CxForm GlobalTheory.GoodMetric
 open ReciprocityTheory.L2DbarEstimates (V)
 open scoped ContDiff ComplexConjugate Topology
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CxForm.contDiff_coeff_mul | exact GlobalTheory.CxForm.contDiff_coeff_mul | (intros; apply GlobalTheory.CxForm.contDiff_coeff_mul <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.contDiffOn_coefficients_complexForm_mul : ∀ (n m : ℕ) (F G : V m → Alt n),
     (∀ s : Set (V m), (∀ S, ContDiffOn ℝ ∞ (fun v => (bas n).repr (F v) S) s) →
       (∀ S, ContDiffOn ℝ ∞ (fun v => (bas n).repr (G v) S) s) →

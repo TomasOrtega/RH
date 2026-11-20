@@ -9,6 +9,9 @@ namespace GlobalTheory.Svd
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `D O N h H hT hk`. Take `⟨h0, LC, hLC⟩` from `H hT hk`. Use `⟨h0, LC, fun μ hμ u w hg hq => ?_⟩` and prove the remaining obligations. Take `⟨c1, c2⟩` from `hLC μ hμ u w hg hq`. Conclude with `⟨GlobalTheory.T.latticeChainComparison_indep_divisionLattices D N h _ _ u μ w hg _ _ _ c1, GlobalTheory.T.siteAdmissible_indep_divisionLattices D N h u w hg _ _ _ c2⟩`.
+-/
 theorem modelsAt_tr : ∀ (D : D7) (O : Obj D) (N : ∀ u, Submodule (𝓞 D.what₂.LL) (D.div.Nu u).V) (h : D.what₂.Word → ℝ),
     ModelsAt D O → ModelsAt (setDiv D N h) (O.tr N h) := by
   intro D O N h H hT hk

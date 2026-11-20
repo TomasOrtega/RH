@@ -10,30 +10,48 @@ open scoped Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL
 
+/- English proof (translation)
+Rewrite using `[← Complex.Gammaℝ_mul_Gammaℝ_add_one]`. Use `mul_ne_zero (Complex.Gammaℝ_ne_zero_of_re_pos hs) (Complex.Gammaℝ_ne_zero_of_re_pos ?_)` and prove the remaining obligations. Simplify using `only [Complex.add_re, Complex.one_re]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private lemma gC_ne {s : ℂ} (hs : 0 < s.re) : Complex.Gammaℂ s ≠ 0 := by
   rw [← Complex.Gammaℝ_mul_Gammaℝ_add_one]
   refine mul_ne_zero (Complex.Gammaℝ_ne_zero_of_re_pos hs) (Complex.Gammaℝ_ne_zero_of_re_pos ?_)
   simp only [Complex.add_re, Complex.one_re]; linarith
 
+/- English proof (translation)
+Establish `h` using `(Complex.differentiable_Gammaℂ_inv s).inv (inv_ne_zero (gC_ne hs))`. Establish `e : (fun z : ℂ => (Complex.Gammaℂ z)⁻¹)⁻¹ = Complex.Gammaℂ`. Use function extensionality and compare the values at `z`. Simplify using the standard rewrite rules. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+-/
 private lemma gC_diff {s : ℂ} (hs : 0 < s.re) : DifferentiableAt ℂ Complex.Gammaℂ s := by
   have h := (Complex.differentiable_Gammaℂ_inv s).inv (inv_ne_zero (gC_ne hs))
   have e : (fun z : ℂ => (Complex.Gammaℂ z)⁻¹)⁻¹ = Complex.Gammaℂ := by
     funext z; simp
   rwa [e] at h
 
+/- English proof (translation)
+Rewrite using `[← Complex.Gammaℝ_mul_Gammaℝ_add_one s]`. Simplify using `only [arch, Ad3.lR, if_true, add_zero, Bool.false_eq_true, if_false]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma arch_eq (k : ℕ) (s : ℂ) : arch k s = Complex.Gammaℂ (s + k - 1) ^ 2 * Complex.Gammaℂ s := by
   rw [← Complex.Gammaℝ_mul_Gammaℝ_add_one s]
   simp only [arch, Ad3.lR, if_true, add_zero, Bool.false_eq_true, if_false]
   ring
 
+/- English proof (translation)
+Establish `: (3 : ℝ) ≤ k` using `by exact_mod_cast hk`. Simplify using `only [Complex.sub_re, Complex.add_re, Complex.natCast_re, Complex.one_re]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private lemma sh_pos {k : ℕ} (hk : 3 ≤ k) {s : ℂ} (hs : 0 < s.re) : 0 < (s + (k : ℂ) - 1).re := by
   have : (3 : ℝ) ≤ k := by exact_mod_cast hk
   simp only [Complex.sub_re, Complex.add_re, Complex.natCast_re, Complex.one_re]; linarith
 
+/- English proof (translation)
+Rewrite using `[arch_eq]`. Conclude with `mul_ne_zero (pow_ne_zero _ (gC_ne (sh_pos hk hs))) (gC_ne hs)`.
+-/
 private lemma arch_ne {k : ℕ} (hk : 3 ≤ k) {s : ℂ} (hs : 0 < s.re) : arch k s ≠ 0 := by
   rw [arch_eq]
   exact mul_ne_zero (pow_ne_zero _ (gC_ne (sh_pos hk hs))) (gC_ne hs)
 
+/- English proof (translation)
+Establish `e : arch k = fun s => Complex.Gammaℂ (s + k - 1) ^ 2 * Complex.Gammaℂ s` using `funext (arch_eq k)`. Rewrite using `[e]`. Establish `h1 : DifferentiableAt ℂ (fun z : ℂ => Complex.Gammaℂ (z + (k : ℂ) - 1)) s` using `DifferentiableAt.comp (𝕜 := ℂ) (g := Complex.Gammaℂ) (f := fun z : ℂ => z + (k : ℂ) - 1) s (gC_diff (sh_pos hk hs)) ((differentiableAt_id.add_const _).sub_const 1)`. Conclude with `(h1.pow 2).mul (gC_diff hs)`.
+-/
 private lemma arch_diff {k : ℕ} (hk : 3 ≤ k) {s : ℂ} (hs : 0 < s.re) : DifferentiableAt ℂ (arch k) s := by
   have e : arch k = fun s => Complex.Gammaℂ (s + k - 1) ^ 2 * Complex.Gammaℂ s := funext (arch_eq k)
   rw [e]
@@ -42,9 +60,15 @@ private lemma arch_diff {k : ℕ} (hk : 3 ≤ k) {s : ℂ} (hs : 0 < s.re) : Dif
       (gC_diff (sh_pos hk hs)) ((differentiableAt_id.add_const _).sub_const 1)
   exact (h1.pow 2).mul (gC_diff hs)
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Simplify using `at hs`.
+-/
 private lemma ne_of_pos {s : ℂ} (hs : 0 < s.re) : s ≠ 0 := by
   rintro rfl; simp at hs
 
+/- English proof (translation)
+Establish `e : s + 1 + (k : ℂ) - 1 = (s + k - 1) + 1` using `by ring`. Establish `hπ : (Real.pi : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr Real.pi_ne_zero`. Rewrite using `[arch_eq, arch_eq, e, Complex.Gammaℂ_add_one (ne_of_pos (sh_pos hk hs)), Complex.Gammaℂ_add_one (ne_of_pos hs)]`. Clear the denominators using the available nonvanishing facts.
+-/
 private lemma arch_succ {k : ℕ} (hk : 3 ≤ k) {s : ℂ} (hs : 0 < s.re) :
     arch k (s + 1) = arch k s * ((s + k - 1) ^ 2 * s) * ((2 * (Real.pi : ℂ)) ^ 3)⁻¹ := by
   have e : s + 1 + (k : ℂ) - 1 = (s + k - 1) + 1 := by ring
@@ -52,6 +76,13 @@ private lemma arch_succ {k : ℕ} (hk : 3 ≤ k) {s : ℂ} (hs : 0 < s.re) :
   rw [arch_eq, arch_eq, e, Complex.Gammaℂ_add_one (ne_of_pos (sh_pos hk hs)), Complex.Gammaℂ_add_one (ne_of_pos hs)]
   field_simp
 
+/- English proof (translation)
+Establish `hq0 : (q : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr (by linarith)`. Establish `h1 : DifferentiableAt ℂ (fun z : ℂ => (q : ℂ) ^ (-z)) s` using `differentiableAt_id.neg.const_cpow (Or.inl hq0)`. Establish `h2 : DifferentiableAt ℂ (fun z : ℂ => (q : ℂ) ^ (1 - z)) s` using `(differentiableAt_id.const_sub 1).const_cpow (Or.inl hq0)`. Establish `h3 : DifferentiableAt ℂ (fun z : ℂ => P.eval ((q : ℂ) ^ (-z))) s` using `DifferentiableAt.comp (g := fun x => P.eval x) s (P.differentiableAt) h1`. Establish `h4 : DifferentiableAt ℂ (fun z : ℂ => P.eval ((q : ℂ) ^ (1 - z))) s` using `DifferentiableAt.comp (g := fun x => P.eval x) s (P.differentiableAt) h2`.
+
+Establish `h5 : DifferentiableAt ℂ (fun z : ℂ => c₀ * Complex.exp (t * z)) s` using `by fun_prop`. Establish `h6 : P.eval ((q : ℂ) ^ (1 - s)) ≠ 0`. Apply `hP` to reduce the goal to its premises. Rewrite using `[Complex.norm_cpow_eq_rpow_re_of_pos (by linarith)]`. Apply `Real.one_lt_rpow hq` to reduce the goal to its premises.
+
+Simplify using `only [Complex.sub_re, Complex.one_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(h5.mul h3).div h4 h6`.
+-/
 private lemma fac_diff (c₀ : ℂ) (t : ℝ) {q : ℝ} (hq : 1 < q) {P : ℂ[X]} (hP : ∀ x : ℂ, 1 < ‖x‖ → P.eval x ≠ 0)
     {s : ℂ} (hs : s.re < 1) : DifferentiableAt ℂ (fac c₀ t q P) s := by
   have hq0 : (q : ℂ) ≠ 0 := Complex.ofReal_ne_zero.mpr (by linarith)
@@ -71,6 +102,11 @@ private lemma fac_diff (c₀ : ℂ) (t : ℝ) {q : ℝ} (hq : 1 < q) {P : ℂ[X]
     simp only [Complex.sub_re, Complex.one_re]; linarith
   exact (h5.mul h3).div h4 h6
 
+/- English proof (translation)
+Establish `a : ∀ s : ℂ, 1 / 4 < s.re → (if 1 / 4 < s.re then F s else G s) = F s` using `fun s hs => if_pos hs`. Establish `b : ∀ s : ℂ, s.re < 3 / 4 → (if 1 / 4 < s.re then F s else G s) = G s` using `fun s hs => by split_ifs with h'`. Conclude with `h s h' hs`. Both sides reduce to the same expression. Use `⟨fun s => if 1 / 4 < s.re then F s else G s, fun s => ?_, a, b⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hs : 1 / 4 < s.re`. Use `(hF s hs).congr_of_eventuallyEq ?_ filter_upwards [(isOpen_lt continuous_const Complex.continuous_re).mem_nhds hs] with z hz using a z hz` and prove the remaining obligations. Establish `hs' : s.re < 3 / 4` using `by linarith [not_lt.mp hs]`. Use `(hG s hs').congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [(isOpen_lt Complex.continuous_re continuous_const).mem_nhds hs'] with z hz using b z hz`.
+-/
 private lemma glue (F G : ℂ → ℂ) (hF : ∀ s : ℂ, 1 / 4 < s.re → DifferentiableAt ℂ F s)
     (hG : ∀ s : ℂ, s.re < 3 / 4 → DifferentiableAt ℂ G s)
     (h : ∀ s : ℂ, 1 / 4 < s.re → s.re < 3 / 4 → F s = G s) :
@@ -88,6 +124,21 @@ private lemma glue (F G : ℂ → ℂ) (hF : ∀ s : ℂ, 1 / 4 < s.re → Diffe
     refine (hG s hs').congr_of_eventuallyEq ?_
     filter_upwards [(isOpen_lt Complex.continuous_re continuous_const).mem_nhds hs'] with z hz using b z hz
 
+/- English proof (translation)
+Introduce `k L L' Λ Λ' g c₀ t q P hk hq hΛ hΛ' hL hL' ⟨s₀, hs₀, hne⟩ hP hFE`. Establish `hopen : IsOpen {s : ℂ | 1 / 4 < s.re}` using `isOpen_lt continuous_const Complex.continuous_re`. Establish `hπ : (2 * (Real.pi : ℂ)) ^ 3 ≠ 0` using `pow_ne_zero _ (mul_ne_zero two_ne_zero (Complex.ofReal_ne_zero.mpr Real.pi_ne_zero))`. Take `⟨Z, hZ, hZr, hZl⟩` from `glue (fun s => Λ s * arch k s) (fun s => g * arch k (1 - s) * fac c₀ t q P s * Λ' (1 - s)) (fun s hs => (hΛ.differentiableAt (hopen.mem_nhds hs)).mul (arch_diff hk (by linarith))) (fun s hs => by`. Establish `h1 : 1 / 4 < (1 - s).re` using `by simp only [Complex.sub_re, Complex.one_re]; linarith`.
+
+Establish `h2 : DifferentiableAt ℂ (fun z : ℂ => arch k (1 - z)) s` using `DifferentiableAt.comp (g := arch k) (f := fun z : ℂ => 1 - z) s (arch_diff hk (by linarith)) (differentiableAt_id.const_sub 1)`. Establish `h3 : DifferentiableAt ℂ (fun z : ℂ => Λ' (1 - z)) s` using `DifferentiableAt.comp (g := Λ') (f := fun z : ℂ => 1 - z) s (hΛ'.differentiableAt (hopen.mem_nhds h1)) (differentiableAt_id.const_sub 1)`. Conclude with `((h2.const_mul g).mul (fac_diff c₀ t hq hP (by linarith))).mul h3) hFE`. Use `⟨(X + C ((k : ℂ) - 1)) ^ 2 * X * ((X - C ((k : ℂ) - 1)) ^ 2 * (-X)), ?_, Z, fun s => Z (s + 1) * ((s - (k - 1)) ^ 2 * (-s)), arch k, fun s => g * arch k (1 - s), ((2 * (Real.pi : ℂ)) ^ 3)⁻¹, (2 * (Real.pi : ℂ)) ^ 3, c₀, t, 1, hZ, ?_, ?_, inv_ne_zero hπ, hπ, ?_, ?_⟩` and prove the remaining obligations. Conclude with `mul_ne_zero (mul_ne_zero (pow_ne_zero _ (X_add_C_ne_zero _)) X_ne_zero) (mul_ne_zero (pow_ne_zero _ (X_sub_C_ne_zero _)) (neg_ne_zero.mpr X_ne_zero))`.
+
+Conclude with `(hZ.comp (differentiable_id.add_const 1)).mul (by fun_prop)`. Introduce `h0`. Establish `h1` using `hZr s₀ (by linarith)`. Rewrite `h1` using `[h0, hL s₀ hs₀]`. Conclude with `mul_ne_zero hne (arch_ne hk (by linarith)) h1.symm`.
+
+Introduce `s hs`. Establish `h1 : 1 < (s + 1).re` using `by simp only [Complex.add_re, Complex.one_re]; linarith`. Use `⟨by rw [hZr s (by linarith), hL s hs], ?_⟩` and prove the remaining obligations. Use `show Z (s + 1) * _ = _`. Rewrite using `[hZr (s + 1) (by linarith), hL _ h1, arch_succ hk (by linarith)]`.
+
+Simplify using `only [eval_mul, eval_pow, eval_add, eval_sub, eval_neg, eval_X, eval_C]`. Expand and normalize the polynomial expressions, which then agree. Introduce `s hs`. Establish `h1 : (s + 1).re < 0` using `by simp only [Complex.add_re, Complex.one_re]; linarith`. Establish `h2 : 0 < (-s).re` using `by simp only [Complex.neg_re]; linarith`.
+
+Use `⟨by rw [hZl s (by linarith), hL' s (by linarith)]; ring, ?_⟩` and prove the remaining obligations. Use `show Z (s + 1) * _ = _ * _ * (g * arch k (1 - s)) * _`. Establish `e1 : (1 : ℂ) - s = -s + 1` using `by ring`. Establish `e2 : (1 : ℂ) - (s + 1) = -s` using `by ring`. Rewrite using `[hZl (s + 1) (by linarith), hL' _ h1, e1, e2, arch_succ hk h2]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.functional_equation_from_continuation :
     ∀ (k : ℕ) (L L' Λ Λ' : ℂ → ℂ) (g c₀ : ℂ) (t q : ℝ) (P : ℂ[X]), 3 ≤ k → 1 < q →
         DifferentiableOn ℂ Λ {s | 1 / 4 < s.re} → DifferentiableOn ℂ Λ' {s | 1 / 4 < s.re} →

@@ -4,6 +4,15 @@ open IsLocalRing TensorProduct
 
 namespace GlobalTheory.EtaleAway
 
+/- English proof (translation)
+Use `set P : Ideal S := Q.under S with hP`. Set `M : Submonoid B` to `Algebra.algebraMapSubmonoid B P.primeCompl`. Set `Bp` to `Localization M`. Establish `hpush : Algebra.IsPushout S (Localization.AtPrime P) B Bp` using `(Algebra.isPushout_of_isLocalization P.primeCompl (Localization.AtPrime P) B Bp).symm`. Set `e : Localization.AtPrime P ⊗[S] B ≃ₐ[Localization.AtPrime P] Bp` to `hpush.equiv`.
+
+Establish `h1 : Algebra.FormallyEtale (Localization.AtPrime P) Bp` using `Algebra.FormallyEtale.of_equiv e`. Establish `h0 : Algebra.FormallyEtale S (Localization.AtPrime P)` using `Algebra.FormallyEtale.of_isLocalization P.primeCompl`. Establish `h2 : Algebra.FormallyEtale S Bp` using `Algebra.FormallyEtale.comp S (Localization.AtPrime P) Bp`. Establish `hle : M ≤ Q.primeCompl`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+
+Simplify `hx` using `[P, Ideal.under]`. Use `letI : Algebra Bp (Localization.AtPrime Q) := IsLocalization.localizationAlgebraOfSubmonoidLe Bp (Localization.AtPrime Q) M Q.primeCompl hle`. Use `haveI : IsScalarTower B Bp (Localization.AtPrime Q) := IsLocalization.localization_isScalarTower_of_submonoid_le Bp (Localization.AtPrime Q) M Q.primeCompl hle`. Use `haveI : IsLocalization (Algebra.algebraMapSubmonoid Bp Q.primeCompl) (Localization.AtPrime Q) := IsLocalization.isLocalization_of_submonoid_le Bp (Localization.AtPrime Q) M Q.primeCompl hle`. Establish `h3 : Algebra.FormallyEtale Bp (Localization.AtPrime Q)` using `Algebra.FormallyEtale.of_isLocalization (Algebra.algebraMapSubmonoid Bp Q.primeCompl)`.
+
+Use `haveI : IsScalarTower S Bp (Localization.AtPrime Q) := IsScalarTower.of_algebraMap_eq (fun s => by`. Rewrite using `[IsScalarTower.algebraMap_apply S B Bp, ← IsScalarTower.algebraMap_apply B Bp, ← IsScalarTower.algebraMap_apply S B])`. Conclude with `Algebra.FormallyEtale.comp S Bp (Localization.AtPrime Q)`.
+-/
 theorem isEtaleAt_of_formallyEtale_baseChange (S B : Type) [CommRing S] [CommRing B] [Algebra S B]
     (Q : Ideal B) [Q.IsPrime]
     (h : Algebra.FormallyEtale (Localization.AtPrime (Q.under S))
@@ -39,6 +48,15 @@ end GlobalTheory.EtaleAway
 
 namespace GlobalTheory.EtaleAway
 
+/- English proof (translation)
+Introduce `R _ _ _ A _ _ _ he g hg`. Use `set S := Localization.Away g`. Use `set B := S ⊗[R] A`. Use `Algebra.etaleLocus_eq_univ_iff.mp (Set.eq_univ_iff_forall.mpr fun Q => ?_)` and prove the remaining obligations. Use `show Algebra.FormallyEtale S (Localization.AtPrime Q.asIdeal)`.
+
+Apply `isEtaleAt_of_formallyEtale_baseChange` to reduce the goal to its premises. Use `set P : Ideal S := Q.asIdeal.under S`. Use `set q : Ideal R := P.under R with hq`. Establish `hqm : q ≠ maximalIdeal R`. Introduce `h`.
+
+Establish `hgq : g ∈ q` using `h ▸ hg`. Establish `: algebraMap R S g ∈ P` using `hgq`. Conclude with `(Ideal.IsPrime.ne_top inferInstance) (P.eq_top_of_isUnit_mem this (IsLocalization.Away.algebraMap_isUnit g))`. Use `haveI := he q hqm`. Use `haveI : P.LiesOver q := ⟨rfl⟩`.
+
+Use `letI := Localization.AtPrime.algebraOfLiesOver q P`. Set `e : Localization.AtPrime P ⊗[Localization.AtPrime q] (Localization.AtPrime q ⊗[R] A) ≃ₐ[Localization.AtPrime P] Localization.AtPrime P ⊗[S] (S ⊗[R] A)` to `(Algebra.TensorProduct.cancelBaseChange R (Localization.AtPrime q) (Localization.AtPrime P) (Localization.AtPrime P) A).trans (Algebra.TensorProduct.cancelBaseChange R S (Localization.AtPrime P) (Localization.AtPrime P) A).symm`. Use `haveI : Algebra.Etale (Localization.AtPrime P) (Localization.AtPrime P ⊗[S] (S ⊗[R] A)) := Algebra.Etale.of_equiv e`. Use `infer_instance`.
+-/
 theorem formallyEtale_away : ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R]
     (A : Type) [CommRing A] [Algebra R A] [Module.Finite R A],
     (∀ (p : Ideal R) [p.IsPrime], p ≠ maximalIdeal R →

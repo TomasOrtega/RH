@@ -8,9 +8,25 @@ open scoped Classical
 
 namespace GlobalTheory.Shin.HCChar
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[gal]`.
+-/
 theorem gal_id_apply {F : Type} [Field F] (n : ℕ) (y : GL (Fin n) F) : gal (RingHom.id F) n y = y := by
   ext i j; simp [gal]
 
+/- English proof (translation)
+Introduce `F _ _ a b n hn α β hα hβ`. Take `⟨H, π, hH, -, hπ, -, -⟩` from `GlobalTheory.T.exists_blockParabolic_subgroup_levi_projection F a b n hn`. Use `haveI : Finite (GL (Fin n) F) := inferInstance`. Establish `h1 : IsChar ℂ ℂ (fun p : H => α (π p).1)`. Take `⟨m, ρ, hρ⟩` from `hα`.
+
+Conclude with `⟨m, ρ.comp ((MonoidHom.fst _ _).comp π), fun p => hρ _⟩`. Establish `h2 : IsChar ℂ ℂ (fun p : H => β (π p).2)`. Take `⟨m, ρ, hρ⟩` from `hβ`. Conclude with `⟨m, ρ.comp ((MonoidHom.snd _ _).comp π), fun p => hρ _⟩`. Establish `hψ : IsChar ℂ ℂ ((fun p : H => α (π p).1) * (fun p : H => β (π p).2))` using `isChar_mul_complex h1 h2`.
+
+Establish `hind` using `isChar_ind ℂ ℂ (GL (Fin n) F) H _ hψ`. Use `hind using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Establish `hcard : (Nat.card {p : GL (Fin n) F // InPar a p} : ℂ) = (Nat.card H : ℂ)`. Use `congr 1`.
+
+Conclude with `Nat.card_congr (Equiv.subtypeEquivRight (fun x => (hH x).symm))`. Unfold `hc hcTw ind`. Rewrite using `[hcard]`. Use `congr 1`. Apply `finsum_congr` to reduce the goal to its premises.
+
+Introduce `y`. Rewrite using `[gal_id_apply]`. Unfold `ext0`. Distinguish the cases in `hy : y⁻¹ * x * y ∈ H`. Rewrite using `[dif_pos hy, if_pos ((hH _).1 hy), Pi.mul_apply, hπ]`.
+
+Rewrite using `[dif_neg hy, if_neg (fun e => hy ((hH _).2 e))]`.
+-/
 theorem hc_isChar : ∀ (F : Type) [Field F] [Finite F], ∀ (a b n : ℕ), n = a + b → ∀ (α : GL (Fin a) F → ℂ) (β : GL (Fin b) F → ℂ), IsChar ℂ ℂ α → IsChar ℂ ℂ β → IsChar ℂ ℂ (hc a b α β n) := by
   intro F _ _ a b n hn α β hα hβ
   obtain ⟨H, π, hH, -, hπ, -, -⟩ := GlobalTheory.T.exists_blockParabolic_subgroup_levi_projection F a b n hn

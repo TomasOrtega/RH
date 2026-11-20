@@ -17,6 +17,11 @@ variable {K : Type} {ι : K → Type}
 
 def oldV (N : ℕ) : (Σ k, ι k) → (Σ k, addIdx ι N k) := fun p => ⟨some p.1, p.2⟩
 
+/- English proof (translation)
+Use `⟨Option.some_injective K, ?_, fun _ => rfl, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨k, i⟩ ⟨k', i'⟩ h`. Establish `h1 : k = k'` using `Option.some_injective K (congrArg Sigma.fst h)`. Substitute `h1` using the available equality. Establish `h2 : i = i'` using `eq_of_heq (Sigma.mk.inj_iff.mp h).2`.
+
+Rewrite using `[h2]`. Introduce and unpack `⟨_ | k, i⟩ ⟨k', hk'⟩`. Conclude with `absurd hk' (Option.some_ne_none k')`. Conclude with `⟨⟨k, i⟩, rfl⟩`.
+-/
 theorem isBlockMap_oldV (N : ℕ) :
     ReciprocityTheory.ChartRestriction.G.AI.I1.IsBlockMap (ι := ι) (ι' := addIdx ι N) some (oldV N) := by
   refine ⟨Option.some_injective K, ?_, fun _ => rfl, ?_⟩

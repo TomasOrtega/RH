@@ -34,6 +34,9 @@ def ReadsInv (p : PtAt ex Csz) (r : TwoRuns p.T p.P.Gp) (i : Fin D.R.m) (v : Hei
       Submodule.Quotient.mk (p := p.T.Q.l.Mb • (⊤ : Submodule (𝓞 D.host.E) (lattice₂ D ((uAt r v i).X k').Λ))) ⟨_, hw⟩ =
         ψ k' (γ.symm ((ψ k).symm (Submodule.Quotient.mk w)))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hm, h₁, h₂⟩`.
+-/
 theorem isTransp_of_movesAt {p : PtAt ex Csz} {r : TwoRuns p.T p.P.Gp} {i : Fin D.R.m}
     {v : HeightOneSpectrum (𝓞 D.what₂.LL)}
     {ψ : ∀ k : (uAt r v i).Comp, LaMod (p.T.Q.Dw ((i : ℕ) + 1)) p.T.Q.l ≃ₗ[𝓞 D.host.E] latQ p r i v k}

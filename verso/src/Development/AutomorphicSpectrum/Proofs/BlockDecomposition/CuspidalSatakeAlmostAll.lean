@@ -13,6 +13,21 @@ open Formalism.UG GlobalTheory.PRep GlobalTheory.LFun GlobalTheory.LGrp GlobalTh
 
 namespace GlobalTheory.CompanionTheory.SatAe
 
+/- English proof (translation)
+Distinguish the cases in `hF : Nontrivial F`. Use `swap`. Rewrite `hF` using `[not_nontrivial_iff_subsingleton]`. Conclude with `⟨0, fun x => Subsingleton.elim _ _⟩`. Take `⟨c, hc⟩` from `GlobalTheory.LocGL.exists_not_isUnit_sub hr T`.
+
+Use `set S : Module.End ℂ F := T - algebraMap ℂ _ c with hS`. Establish `hSc : ∀ f ∈ A, f * S = S * f` using `fun f hf => by`. Rewrite using `[hS, mul_sub, sub_mul, hT f hf, Algebra.commutes]`. Establish `h1` using `hs (LinearMap.ker S) fun f hf x hx => by`. Rewrite `hx`, the goal using `[LinearMap.mem_ker]`.
+
+Use `LinearMap.congr_fun (hSc f hf) x` as an intermediate fact. Simplify using `only [Module.End.mul_apply, hx, map_zero] at this`. Conclude with `this.symm`. Establish `h2` using `hs (LinearMap.range S) fun f hf x hx => by`. Take `⟨y, rfl⟩` from `hx`.
+
+Conclude with `⟨f y, (LinearMap.congr_fun (hSc f hf) y).symm⟩`. Use `⟨c, fun x => ?_⟩` and prove the remaining obligations. Break down `h1 with h1 | h1` into its components or cases. It suffices to derive a contradiction. Apply `hc` to reduce the goal to its premises.
+
+Rewrite using `[Module.End.isUnit_iff]`. Use `⟨LinearMap.ker_eq_bot.1 h1, ?_⟩` and prove the remaining obligations. Break down `h2 with h2 | h2` into its components or cases. It suffices to derive a contradiction. Take `⟨v, hv⟩` from `exists_ne (0 : F)`.
+
+Establish `h3 : S v ∈ LinearMap.range S` using `⟨v, rfl⟩`. Rewrite `h3` using `[h2]`. Establish `h4 : v ∈ LinearMap.ker S` using `(Submodule.mem_bot ℂ).1 h3`. Rewrite `h4` using `[h1]`. Conclude with `hv ((Submodule.mem_bot ℂ).1 h4)`.
+
+Conclude with `LinearMap.range_eq_top.1 h2`. Establish `h3 : x ∈ LinearMap.ker S` using `h1 ▸ Submodule.mem_top`. Establish `e : S x = 0` using `h3`. Establish `e2 : T x - c • x = 0` using `by simpa [hS, Module.algebraMap_end_apply] using e`. Conclude with `sub_eq_zero.1 e2`.
+-/
 theorem scalar_of_simple {F : Type} [AddCommGroup F] [Module ℂ F] (hr : Module.rank ℂ F ≤ Cardinal.aleph0)
     (A : Set (Module.End ℂ F))
     (hs : ∀ W : Submodule ℂ F, (∀ f ∈ A, ∀ x ∈ W, f x ∈ W) → W = ⊥ ∨ W = ⊤)
@@ -53,6 +68,25 @@ theorem scalar_of_simple {F : Type} [AddCommGroup F] [Module ℂ F] (hr : Module
     have e2 : T x - c • x = 0 := by simpa [hS, Module.algebraMap_end_apply] using e
     exact sub_eq_zero.1 e2
 
+/- English proof (translation)
+Take `⟨x0, hx0, h0⟩` from `(Submodule.ne_bot_iff _).1 hne`. Establish `hc' : ∀ x : M, ∃ C : Set M, C.Countable ∧ C ⊆ S ∧ (x ∈ S → ∀ i, O i x ∈ Submodule.span ℂ C)` using `fun x => by`. Distinguish the cases in `hx : x ∈ S`. Take `⟨C, h1, h2, h3⟩` from `hc x hx`. Conclude with `⟨C, h1, h2, fun _ => h3⟩`.
+
+Conclude with `⟨∅, Set.countable_empty, Set.empty_subset _, fun h => absurd h hx⟩`. Use `choose c c1 c2 c3 using hc'`. Set `T : ℕ → Set M` to `fun n => Nat.rec {x0} (fun _ s => s ∪ ⋃ x ∈ s, c x) n`. Establish `Ts : ∀ n, T (n + 1) = T n ∪ ⋃ x ∈ T n, c x` using `fun _ => rfl`. Establish `hTc : ∀ n, (T n).Countable` using `fun n => by`.
+
+Proceed by induction on `n with`. Consider the case `zero => exact Set.countable_singleton _`. Consider the case `succ n ih => rw [Ts]`. Conclude with `ih.union (ih.biUnion fun x _ => c1 x)`. Establish `hTS : ∀ n, T n ⊆ S` using `fun n => by`.
+
+Proceed by induction on `n with`. Consider the case `zero => exact Set.singleton_subset_iff.2 hx0`. Consider the case `succ n ih`. Rewrite using `[Ts]`. Conclude with `Set.union_subset ih (Set.iUnion₂_subset fun x _ => c2 x)`.
+
+Establish `hUc : (⋃ n, T n).Countable` using `Set.countable_iUnion hTc`. Establish `hW : Submodule.span ℂ (⋃ n, T n) ≤ S` using `Submodule.span_le.2 (Set.iUnion_subset hTS)`. Establish `hst : ∀ i, ∀ x ∈ Submodule.span ℂ (⋃ n, T n), O i x ∈ Submodule.span ℂ (⋃ n, T n)`. Introduce `i x hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+
+Consider the case `mem x hx`. Take `⟨n, hn⟩` from `Set.mem_iUnion.1 hx`. Conclude with `Submodule.span_mono (fun y hy => Set.mem_iUnion.2 ⟨n + 1, by`. Rewrite using `[Ts]`. Conclude with `Or.inr (Set.mem_biUnion hn hy)⟩) (c3 x (hTS n hn) i)`.
+
+Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`. Consider the case `smul r a _ ha => rw [map_smul]`. Conclude with `Submodule.smul_mem _ r ha`.
+
+Establish `hx0U : x0 ∈ Submodule.span ℂ (⋃ n, T n)` using `Submodule.subset_span (Set.mem_iUnion.2 ⟨0, rfl⟩)`. Establish `e : Submodule.span ℂ (⋃ n, T n) = S` using `(hirr _ hW hst).resolve_left fun h => h0 (by`. Rewrite `hx0U` using `[h]`. Conclude with `(Submodule.mem_bot ℂ).1 hx0U)`. Rewrite using `[← e]`.
+
+Conclude with `(rank_span_le _).trans (Cardinal.le_aleph0_iff_set_countable.2 hUc)`.
+-/
 theorem rank_le_of_simple {M ι : Type} [AddCommGroup M] [Module ℂ M] (S : Submodule ℂ M) (O : ι → Module.End ℂ M)
     (hne : S ≠ ⊥) (hirr : ∀ W ≤ S, (∀ i, ∀ x ∈ W, O i x ∈ W) → W = ⊥ ∨ W = S)
     (hc : ∀ x ∈ S, ∃ C : Set M, C.Countable ∧ C ⊆ S ∧ ∀ i, O i x ∈ Submodule.span ℂ C) :
@@ -97,6 +131,9 @@ theorem rank_le_of_simple {M ι : Type} [AddCommGroup M] [Module ℂ M] (S : Sub
   rw [← e]
   exact (rank_span_le _).trans (Cardinal.le_aleph0_iff_set_countable.2 hUc)
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Yhd2.main ρ x h`.
+-/
 theorem countable_orbit {G M : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G]
     [AddCommGroup M] [Module ℂ M] (ρ : Representation ℂ G M) (x : M) (h : IsOpen {g | ρ g x = x}) :
     (Set.range fun g => ρ g x).Countable :=
@@ -107,6 +144,9 @@ section Cusp
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 omit [IsTotallyComplex E] in
+/- English proof (translation)
+Use `haveI := Formalism.L2.Fam.ThC.sc_Af E`. Use `haveI : SecondCountableTopology (Matrix (Fin a) (Fin a) (Af E)) := inferInstanceAs (SecondCountableTopology (Fin a → Fin a → Af E))`. Use `haveI : SecondCountableTopology (Matrix (Fin a) (Fin a) (Af E))ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.secondCountableTopology`. Conclude with `Units.isEmbedding_embedProduct.secondCountableTopology`.
+-/
 theorem secondCountable_GL : SecondCountableTopology (GL (Fin a) (Af E)) := by
   haveI := Formalism.L2.Fam.ThC.sc_Af E
   haveI : SecondCountableTopology (Matrix (Fin a) (Fin a) (Af E)) :=
@@ -115,6 +155,17 @@ theorem secondCountable_GL : SecondCountableTopology (GL (Fin a) (Af E)) := by
     MulOpposite.opHomeomorph.symm.secondCountableTopology
   exact Units.isEmbedding_embedProduct.secondCountableTopology
 
+/- English proof (translation)
+Use `haveI := secondCountable_GL (E := E) (a := a)`. Use `rank_le_of_simple π.V (act (E := E) (a := a)) π.ne_bot (fun W hW hs => π.irred W hW hs) fun x hx => ?_` and prove the remaining obligations. Establish `hcusp` using `(π.cusp x hx).1`. Establish `hk` using `hcusp.kfin`. Take `⟨s, hs1, hs2⟩` from `(Submodule.fg_span_iff_fg_span_finset_subset _).1 (Module.Finite.iff_fg.1 hk)`.
+
+Set `b` to `Module.finBasis ℝ (Lie E a)`. Use `⟨(Set.range fun g => finRep E a g x) ∪ ((s : Set (Sm E a)) ∪ Set.range fun i => lie E a (b i) x), (countable_orbit _ _ hcusp.level).union (s.countable_toSet.union (Set.countable_range _)), ?_, fun o => ?_⟩` and prove the remaining obligations. Introduce and unpack `y (⟨g, rfl⟩ | hy | ⟨i, rfl⟩)`. Conclude with `π.stable (.fin g) x hx`. Take `⟨k, rfl⟩` from `hs1 hy`.
+
+Conclude with `π.stable (.cpt k) x hx`. Conclude with `π.stable (.lie (b i)) x hx`. Consider the cases of `o with`. Consider the case `fin k => exact Submodule.subset_span (Or.inl ⟨k, rfl⟩)`. Consider the case `cpt k`.
+
+Establish `h1 : cptRep E a k x ∈ Submodule.span ℂ (s : Set (Sm E a))` using `hs2 ▸ Submodule.subset_span ⟨k, rfl⟩`. Conclude with `Submodule.span_mono (fun y hy => Or.inr (Or.inl hy)) h1`. Consider the case `lie X`. Express the relevant statement in the definitionally equal form `lie E a X x ∈ _`. Establish `e : lie E a X = ∑ i, b.repr X i • lie E a (b i)` using `by conv_lhs => rw [← b.sum_repr X, map_sum]`.
+
+Simplify using `only [map_smul]`. Rewrite using `[e, LinearMap.sum_apply]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, ← algebraMap_smul ℂ (b.repr X i)]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (Or.inr (Or.inr ⟨i, rfl⟩)))`.
+-/
 theorem rank_cuspSub (π : CuspSub E a) : Module.rank ℂ π.V ≤ Cardinal.aleph0 := by
   haveI := secondCountable_GL (E := E) (a := a)
   refine rank_le_of_simple π.V (act (E := E) (a := a)) π.ne_bot (fun W hW hs => π.irred W hW hs) fun x hx => ?_
@@ -152,6 +203,15 @@ section Hecke
 variable {G V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup V] [Module ℂ V]
   {π : Representation ℂ G V} {K : Subgroup G}
 
+/- English proof (translation)
+Establish `hm` using `Final.DosetIndMem G K ℂ g`. Establish `hfin` using `Formalism.UG.P.finite_support_cosets hK hm.2`. Establish `hS : ∀ c : G ⧸ K, c ∈ hfin.toFinset ↔ c.out ∈ DoubleCoset.doubleCoset g (K : Set G) K` using `fun c => by`. Simplify using `[dosetInd]`. Use `⟨hfin.toFinset.card, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `Nat.cast_ne_zero.2 (Finset.card_ne_zero.2 ⟨(g : G ⧸ K), (hS _).2 ?_⟩)` and prove the remaining obligations. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul K g`. Conclude with `DoubleCoset.mem_doubleCoset.2 ⟨1, K.one_mem, k, k.2, by rw [hk, one_mul]⟩`. Rewrite using `[← idem_of_mem hs hc (heckeVec_mem_fixed hK hm hz), heckeVec, finsum_eq_sum_of_support_subset (s := hfin.toFinset), map_sum, Nat.cast_smul_eq_nsmul, ← Finset.sum_const]`. Use `Finset.sum_congr rfl fun c hcS => ?_` and prove the remaining obligations.
+
+Establish `h1` using `(hS c).1 hcS`. Take `⟨a, ha, b, hb, e⟩` from `DoubleCoset.mem_doubleCoset.1 h1`. Rewrite using `[dosetInd, Set.indicator_of_mem h1, e, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, GlobalTheory.LGrp.mem_fixed.1 hz b hb]`. Simplify using `using idem_apply_mem hs hc ha (π g z)`. Introduce `c hc'`.
+
+Use `Finset.mem_coe.2 ((hS c).2 ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Conclude with `hc' (by simp [dosetInd, h0])`.
+-/
 theorem heckeVec_dosetInd_eq_idem (hs : IsSmooth π) (hc : IsCompact (K : Set G)) (hK : IsCommensurated K)
     (g : G) {z : V} (hz : z ∈ fixed π K) :
     ∃ N : ℂ, N ≠ 0 ∧ heckeVec π K (dosetInd ℂ K g) z = N • idem hs hc (π g z) := by
@@ -181,6 +241,27 @@ def IsBiSimple (π : Representation ℂ G V) : Prop :=
   ∀ S : Submodule ℂ V, (∀ g, ∀ x ∈ S, π g x ∈ S) →
     (∀ b : Module.End ℂ V, (∀ g, b * π g = π g * b) → ∀ x ∈ S, b x ∈ S) → S = ⊥ ∨ S = ⊤
 
+/- English proof (translation)
+Distinguish the cases in `h0 : W = ⊥`. Conclude with `Or.inl h0`. Use `Or.inr (le_antisymm hW fun x hx => ?_)` and prove the remaining obligations. Take `⟨w0, hw0, hw00⟩` from `(Submodule.ne_bot_iff _).1 h0`. Set `C : Set V` to `{y | ∃ g, ∃ b : Module.End ℂ V, (∀ g, b * π g = π g * b) ∧ y = π g (b w0)}`.
+
+Establish `h1 : ∀ g, ∀ y ∈ Submodule.span ℂ C, π g y ∈ Submodule.span ℂ C` using `fun g y hy => by`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨g', b, hb, rfl⟩` from `hy`. Conclude with `Submodule.subset_span ⟨g * g', b, hb, by rw [map_mul, Module.End.mul_apply]⟩`.
+
+Consider the case `zero => simp`. Consider the case `add u v _ _ hu hv => rw [map_add]`. Conclude with `add_mem hu hv`. Consider the case `smul r u _ hu => rw [map_smul]`. Conclude with `Submodule.smul_mem _ r hu`.
+
+Establish `h2 : ∀ b : Module.End ℂ V, (∀ g, b * π g = π g * b) → ∀ y ∈ Submodule.span ℂ C, b y ∈ Submodule.span ℂ C` using `fun b hb y hy => by`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨g', b', hb', rfl⟩` from `hy`. Use `Submodule.subset_span ⟨g', b * b', fun g => by rw [mul_assoc, hb' g, ← mul_assoc, hb g, mul_assoc], ?_⟩` and prove the remaining obligations.
+
+Use `LinearMap.congr_fun (hb g') (b' w0)` as an intermediate fact. Simplify `this` using `[Module.End.mul_apply]`. Consider the case `zero => simp`. Consider the case `add u v _ _ hu hv => rw [map_add]`. Conclude with `add_mem hu hv`.
+
+Consider the case `smul r u _ hu => rw [map_smul]`. Conclude with `Submodule.smul_mem _ r hu`. Establish `hw0C : w0 ∈ Submodule.span ℂ C` using `Submodule.subset_span ⟨1, 1, fun g => by rw [one_mul, mul_one], by simp⟩`. Establish `htop : Submodule.span ℂ C = ⊤` using `(hirr _ h1 h2).resolve_left fun h => hw00 (by`. Rewrite `hw0C` using `[h]`.
+
+Conclude with `(Submodule.mem_bot ℂ).1 hw0C)`. Establish `key : ∀ y ∈ Submodule.span ℂ C, idem hs hc y ∈ W` using `fun y hy => by`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨g, b, hb, rfl⟩` from `hy`.
+
+Establish `hbw` using `hB b hb w0 hw0`. Take `⟨N, hN, e⟩` from `heckeVec_dosetInd_eq_idem hs hc hK g (hW hbw)`. Establish `e2 : idem hs hc (π g (b w0)) = N⁻¹ • heckeVec π K (dosetInd ℂ K g) (b w0)`. Rewrite using `[e, smul_smul, inv_mul_cancel₀ hN, one_smul]`. Rewrite using `[e2]`.
+
+Conclude with `W.smul_mem _ (hH _ (Final.DosetIndMem G K ℂ g) _ hbw)`. Consider the case `zero => simp`. Consider the case `add u v _ _ hu hv => rw [map_add]`. Conclude with `add_mem hu hv`. Consider the case `smul r u _ hu => rw [map_smul]`.
+
+Conclude with `Submodule.smul_mem _ r hu`. Use `key x (htop ▸ Submodule.mem_top)` as an intermediate fact. Rewrite `this` using `[idem_of_mem hs hc hx]`. Then use the resulting hypothesis.
+-/
 theorem fixed_simple (hs : IsSmooth π) (hc : IsCompact (K : Set G)) (hK : IsCommensurated K) (hirr : IsBiSimple π)
     (W : Submodule ℂ V) (hW : W ≤ fixed π K)
     (hH : ∀ f ∈ Hecke ℂ K, ∀ x ∈ W, heckeVec π K f x ∈ W)
@@ -230,6 +311,21 @@ theorem fixed_simple (hs : IsSmooth π) (hc : IsCompact (K : Set G)) (hK : IsCom
   have := key x (htop ▸ Submodule.mem_top)
   rwa [idem_of_mem hs hc hx] at this
 
+/- English proof (translation)
+Establish `hbF : ∀ b : Module.End ℂ V, (∀ g, b * π g = π g * b) → ∀ x ∈ fixed π K, b x ∈ fixed π K` using `fun b hb x hx => GlobalTheory.LGrp.mem_fixed.2 fun k hk => by`. Use `LinearMap.congr_fun (hb k) x` as an intermediate fact. Simplify using `only [Module.End.mul_apply, GlobalTheory.LGrp.mem_fixed.1 hx k hk] at this`. Conclude with `this.symm`. Set `R : ∀ f, f ∈ Hecke ℂ K → Module.End ℂ (fixed π K)` to `fun f hf => (heckeLin hK hf π).restrict fun x hx => heckeVec_mem_fixed hK hf hx`.
+
+Set `Rb : ∀ b : Module.End ℂ V, (∀ g, b * π g = π g * b) → Module.End ℂ (fixed π K)` to `fun b hb => b.restrict (hbF b hb)`. Set `A : Set (Module.End ℂ (fixed π K))` to `{f | ∃ f' hf, f = R f' hf} ∪ {f | ∃ b hb, f = Rb b hb}`. Establish `hrF : Module.rank ℂ (fixed π K) ≤ Cardinal.aleph0` using `(Submodule.rank_le _).trans hr`. Establish `hsim : ∀ W : Submodule ℂ (fixed π K), (∀ f ∈ A, ∀ x ∈ W, f x ∈ W) → W = ⊥ ∨ W = ⊤`. Introduce `W hWs`.
+
+Establish `hWf : W.map (fixed π K).subtype ≤ fixed π K`. Introduce and unpack `_ ⟨x, -, rfl⟩`. Conclude with `x.2`. Use `fixed_simple hs hc hK hirr (W.map (fixed π K).subtype) hWf (by` as an intermediate fact. Introduce and unpack `f hf _ ⟨x, hx, rfl⟩`.
+
+Conclude with `⟨_, hWs _ (Or.inl ⟨f, hf, rfl⟩) x hx, rfl⟩) (by`. Introduce and unpack `b hb _ ⟨x, hx, rfl⟩`. Conclude with `⟨_, hWs _ (Or.inr ⟨b, hb, rfl⟩) x hx, rfl⟩)`. Use `this.imp (fun e => ?_) fun e => ?_` and prove the remaining obligations. Conclude with `Submodule.map_injective_of_injective (Submodule.subtype_injective _) (by rw [e, Submodule.map_bot])`.
+
+Use `Submodule.map_injective_of_injective (Submodule.subtype_injective (fixed π K)) ?_` and prove the remaining obligations. Rewrite using `[e, Submodule.map_top, Submodule.range_subtype]`. Establish `hcm : ∀ f ∈ A, f * R h hh = R h hh * f`. Introduce and unpack `f (⟨f', hf, rfl⟩ | ⟨b, hb, rfl⟩)`. Use `LinearMap.ext fun x => Subtype.ext ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `heckeVec π K f' (heckeVec π K h x.1) = heckeVec π K h (heckeVec π K f' x.1)`. Rewrite using `[← heckeVec_conv hK hf hh x.2, ← heckeVec_conv hK hh hf x.2, hcomm _ hf _ hh]`. Use `LinearMap.ext fun x => Subtype.ext ?_` and prove the remaining obligations. Conclude with `map_heckeVec hK hh b (fun g y => LinearMap.congr_fun (hb g) y) x.1`. Take `⟨c, hc'⟩` from `scalar_of_simple hrF A hsim (R h hh) hcm`.
+
+Conclude with `⟨c, fun x hx => congrArg Subtype.val (hc' ⟨x, hx⟩)⟩`.
+-/
 theorem exists_scalar (hs : IsSmooth π) (hc : IsCompact (K : Set G)) (hK : IsCommensurated K)
     (hcomm : ∀ f₁ ∈ Hecke ℂ K, ∀ f₂ ∈ Hecke ℂ K, conv K f₁ f₂ = conv K f₂ f₁) (hirr : IsBiSimple π)
     (hr : Module.rank ℂ V ≤ Cardinal.aleph0) (h : G → ℂ) (hh : h ∈ Hecke ℂ K) :
@@ -277,6 +373,21 @@ section Main
 variable {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {n : ℕ}
   {V : Type} [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Establish `hK : IsCommensurated (KGL w n)` using `Final.GLintComm E w n`. Take `⟨ϖ, hu⟩` from `exists_isUnifV w`. Establish `h0` using `ne_zero_of_isUnifV hu`. Take `⟨x, hx, hx0⟩` from `(Submodule.ne_bot_iff _).1 hs`. Use `choose c hc using fun j => hsc _ (Tj_mem_hecke (n := n) hu j)`.
+
+Establish `c0 : c 0 = 1`. Establish `e : Tj ℂ n (Ov E w) ϖ 0 = dosetInd ℂ (KGL w n) 1`. Rewrite using `[Tj_eq h0]`. Use `congr 1`. Use `smul_left_injective ℂ hx0 ?_` and prove the remaining obligations.
+
+Simplify using `only [← hc 0 x hx, e, heckeVec_one hK hx, one_smul]`. Establish `cn : c n ≠ 0`. Introduce `e`. Establish `h1` using `hc n x hx`. Establish `hTn : Tj ℂ n (Ov E w) ϖ n = dosetInd ℂ (KGL w n) (tor h0 fun _ => 1)`.
+
+Rewrite using `[Tj_eq h0]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[e, zero_smul, hTn, heckeVec_dosetInd (R := {tor h0 fun _ => 1}) hx, Finset.sum_singleton]`. Conclude with `hx0 (by simpa [← Module.End.mul_apply, ← map_mul] using congrArg (π (tor h0 fun _ => 1)⁻¹) h1)`. Introduce `γ hγ`.
+
+Conclude with `mem_doset.2 ⟨1, one_mem _, 1, one_mem _, by simpa using hγ⟩`. Introduce `g hg`. Take `⟨a, ha, b, hb, rfl⟩` from `mem_doset.1 hg`. Use `⟨_, ⟨Finset.mem_singleton_self _, ?_⟩, fun γ hγ => Finset.mem_singleton.1 hγ.1⟩` and prove the remaining obligations. Rewrite using `[← tor_const_comm, mul_assoc, inv_mul_cancel_left]`.
+
+Conclude with `mul_mem ha hb`. Take `⟨B, hB, hBc⟩` from `GlobalTheory.T.exists_multiset_satakeEigenvalue_eq (qV E w) n (qV_ne_zero w) c c0 cn`. Use `⟨B, hs, fun y hy hy0 => ⟨hy0, hy, hB, fun ϖ' hu' j hj => ?_⟩⟩` and prove the remaining obligations. Establish `hv : Valued.v (ϖ' / ϖ) = 1`. Rewrite using `[map_div₀, hu, hu', div_self WithZero.coe_ne_zero]`.
+
+Establish `e` using `Final.TjIndep _ (Ov E w) ϖ (ϖ' / ϖ) ℂ n j hv.le (show Valued.v (ϖ' / ϖ)⁻¹ ≤ 1 by rw [map_inv₀, hv, inv_one]) (div_ne_zero (ne_zero_of_isUnifV hu') h0)`. Rewrite `e` using `[div_mul_cancel₀ _ h0]`. Rewrite using `[e, hc j y hy, hBc j hj]`.
+-/
 theorem exists_hasSatGL_of_scalar {π : Representation ℂ (GL (Fin n) (w.adicCompletion E)) V}
     (hsc : ∀ h ∈ Hecke ℂ (KGL w n), ∃ c : ℂ, ∀ x ∈ fixed π (KGL w n), heckeVec π (KGL w n) h x = c • x)
     (hs : GlobalTheory.LGrp.IsSpherical π (KGL w n)) : ∃ B, HasSatGL w π B := by
@@ -316,6 +427,21 @@ theorem exists_hasSatGL_of_scalar {π : Representation ℂ (GL (Fin n) (w.adicCo
 
 variable [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+Introduce `S h1 h2`. Establish `comm : ∀ o : Op E a, (∀ g, act o * finRep E a (locGL E a w g) = finRep E a (locGL E a w g) * act o) → ∀ x ∈ S, π.op o x ∈ S` using `fun o ho => h2 (π.op o) fun g => LinearMap.ext fun φ => Subtype.ext (LinearMap.congr_fun (ho g) φ.1)`. Establish `hop : ∀ o : Op E a, ∀ x ∈ S, π.op o x ∈ S`. Introduce `o x hx`. Consider the cases of `o with`.
+
+Consider the case `fin k`. Set `g` to `Matrix.GeneralLinearGroup.map (pLoc E w) k`. Establish `h3` using `comm (.fin (k * (locGL E a w g)⁻¹)) (fun g' => by`. Express the relevant statement in the definitionally equal form `finRep E a _ * _ = _ * finRep E a _`. Rewrite using `[← map_mul, ← map_mul, LocSph.comm_locGL w _ (by rw [map_mul, map_inv, pLoc_locGL, mul_inv_cancel])])`.
+
+Use `_ (h1 g x hx)`. Establish `h4 : π.op (.fin (k * (locGL E a w g)⁻¹)) (π.locRep w g x) = π.op (.fin k) x`. Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `finRep E a _ (finRep E a _ x.1) = finRep E a k x.1`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel_right]`.
+
+Rewrite `h3` using `[h4]`. Then use the resulting hypothesis. Consider the case `cpt k`. Use `comm (.cpt k) (fun g => ?_) x hx` and prove the remaining obligations. Establish `h3` using `congrArg (rt E a) (infGL_comm (Unitary.toUnits k) (locGL E a w g))`. Rewrite `h3` using `[map_mul, map_mul]`.
+
+Conclude with `h3`. Consider the case `lie X => exact comm (.lie X) (fun g => lie_rt_fin X (locGL E a w g)) x hx`. Establish `hle : S.map π.V.subtype ≤ π.V`. Introduce and unpack `_ ⟨x, -, rfl⟩`. Conclude with `x.2`.
+
+Use `(π.irred _ hle ?_).imp (fun e => ?_) fun e => ?_` and prove the remaining obligations. Introduce and unpack `o _ ⟨x, hx, rfl⟩`. Conclude with `⟨_, hop o x hx, rfl⟩`. Conclude with `Submodule.map_injective_of_injective (Submodule.subtype_injective _) (by rw [e, Submodule.map_bot])`. Use `Submodule.map_injective_of_injective (Submodule.subtype_injective π.V) ?_` and prove the remaining obligations.
+
+Rewrite using `[e, Submodule.map_top, Submodule.range_subtype]`.
+-/
 theorem isBiSimple_locRep (π : CuspSub E a) (w : HeightOneSpectrum (𝓞 E)) : IsBiSimple (π.locRep w) := by
   intro S h1 h2
   have comm : ∀ o : Op E a, (∀ g, act o * finRep E a (locGL E a w g) = finRep E a (locGL E a w g) * act o) →
@@ -351,11 +477,19 @@ theorem isBiSimple_locRep (π : CuspSub E a) (w : HeightOneSpectrum (𝓞 E)) : 
   · refine Submodule.map_injective_of_injective (Submodule.subtype_injective π.V) ?_
     rw [e, Submodule.map_top, Submodule.range_subtype]
 
+/- English proof (translation)
+The claim follows from `exists_hasSatGL_of_scalar (fun h hh => exists_scalar (π.isSmooth_locRep w) (isOpen_isCompact_KGL w a).2 (Final.GLintComm E w a) (Final.HeckeCommGL E w a ℂ) (isBiSimple_locRep π w) (rank_cuspSub π) h hh) hs`.
+-/
 theorem exists_hasSatGL_locRep (π : CuspSub E a) (w : HeightOneSpectrum (𝓞 E))
     (hs : GlobalTheory.LGrp.IsSpherical (π.locRep w) (KGL w a)) : ∃ B, HasSatGL w (π.locRep w) B :=
   exists_hasSatGL_of_scalar (fun h hh => exists_scalar (π.isSmooth_locRep w) (isOpen_isCompact_KGL w a).2
     (Final.GLintComm E w a) (Final.HeckeCommGL E w a ℂ) (isBiSimple_locRep π w) (rank_cuspSub π) h hh) hs
 
+/- English proof (translation)
+Introduce `E _ _ _ a π`. Take `⟨y, hy, h0⟩` from `(Submodule.ne_bot_iff _).1 π.ne_bot`. Set `x : π.V` to `⟨y, hy⟩`. Establish `hx : x ≠ 0` using `fun e => h0 (congrArg Subtype.val e)`. Use `filter_upwards [AeFix.eventually_mem_fixed E a π x] with w hw`.
+
+Conclude with `exists_hasSatGL_locRep π w ((Submodule.ne_bot_iff _).2 ⟨x, hw, hx⟩)`.
+-/
 theorem eventually_exists_hasSat : ∀ {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ},
     ∀ (π : CuspSub E a), ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ∃ B : Multiset ℂˣ, (CG.mk π).HasSat w B := by
   intro E _ _ _ a π

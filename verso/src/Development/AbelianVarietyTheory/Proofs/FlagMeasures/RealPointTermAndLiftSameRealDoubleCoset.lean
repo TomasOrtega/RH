@@ -20,10 +20,18 @@ section Bessel
 
 variable {D : D7} {X : HidaSetting D} {θ : ℝ}
 
+/- English proof (translation)
+Conclude with `((C.isT τ).2.2.2 b b rfl).1`.
+-/
 theorem q_e (C : Choice X θ) (τ : D.what₂.Tau) (b : Fin D.R.rS) :
     C.Q τ *ᵥ Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.eI D.R.k D.R.rS b) = frS D ^ (D.R.rS - (b : ℕ)) • rv X.B.I (vOf X τ) (X.eR b) := by
   exact ((C.isT τ).2.2.2 b b rfl).1
 
+/- English proof (translation)
+Establish `h1` using `(C.isT τ).1`. Establish `hc : (frS D ^ (D.R.rS - (b : ℕ))) ≠ 0` using `pow_ne_zero _ (Formalism.L2.SG.Pf.Choice.frS_ne D)`. Establish `h2 : C.Qi τ *ᵥ (C.Q τ *ᵥ Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.eI D.R.k D.R.rS b)) = Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.eI D.R.k D.R.rS b)`. Rewrite using `[Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]`. Rewrite `h2` using `[q_e C τ b, Matrix.mulVec_smul]`.
+
+Rewrite using `[← h2, smul_smul, inv_mul_cancel₀ hc, one_smul]`.
+-/
 theorem qi_e (C : Choice X θ) (τ : D.what₂.Tau) (b : Fin D.R.rS) :
     C.Qi τ *ᵥ rv X.B.I (vOf X τ) (X.eR b) = (frS D ^ (D.R.rS - (b : ℕ)))⁻¹ • Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.eI D.R.k D.R.rS b) := by
   have h1 := (C.isT τ).1
@@ -34,6 +42,11 @@ theorem qi_e (C : Choice X θ) (τ : D.what₂.Tau) (b : Fin D.R.rS) :
   rw [q_e C τ b, Matrix.mulVec_smul] at h2
   rw [← h2, smul_smul, inv_mul_cancel₀ hc, one_smul]
 
+/- English proof (translation)
+Rewrite using `[Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.JL.SetCorrespondence.mem_supSub]`. Introduce `i hi`. Simplify using `only [Formalism.QuantumDeterminants.bvec]`. Rewrite using `[Pi.single_apply, if_neg]`. Introduce `h`.
+
+Establish `h' : i.val = b.val` using `congrArg Fin.val h`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem bvec_supSub' (a : ℕ) (b : Fin D.R.rS) (hb : b.val < a) :
     Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.eI D.R.k D.R.rS b) ∈ supSub D.R.k D.R.rS a := by
   rw [Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.JL.SetCorrespondence.mem_supSub]
@@ -44,6 +57,11 @@ theorem bvec_supSub' (a : ℕ) (b : Fin D.R.rS) (hb : b.val < a) :
   have h' : i.val = b.val := congrArg Fin.val h
   omega
 
+/- English proof (translation)
+Establish `hle : spanLt (fun b => rv X.B.I (vOf X τ) (X.eR b)) a ≤ (supSub D.R.k D.R.rS a).comap (C.Qi τ).mulVecLin`. Unfold `spanLt`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, Matrix.mulVecLin_apply]`.
+
+Rewrite using `[qi_e C τ b]`. Conclude with `Submodule.smul_mem _ _ (bvec_supSub' a b hb)`. Conclude with `hle hw`.
+-/
 theorem qi_span (C : Choice X θ) (τ : D.what₂.Tau) (a : ℕ) (w : Fin X.B.I.n → ℂ)
     (hw : w ∈ spanLt (fun b => rv X.B.I (vOf X τ) (X.eR b)) a) :
     C.Qi τ *ᵥ w ∈ supSub D.R.k D.R.rS a := by
@@ -57,6 +75,21 @@ theorem qi_span (C : Choice X θ) (τ : D.what₂.Tau) (a : ℕ) (w : Fin X.B.I.
     exact Submodule.smul_mem _ _ (bvec_supSub' a b hb)
   exact hle hw
 
+/- English proof (translation)
+Take `⟨h1, h2, hg, -⟩` from `C.isT τ`. Establish `hS : Formalism.L2.SG.HidaSetting.InS (fun a => rv X.B.I (vOf X τ) (X.eR a)) (rv X.B.I (vOf X τ) (X.zR u)) (uMat (x (vOf X τ)))` using `hx (vOf X τ)`. Establish `hU : (uMat (x (vOf X τ)))ᴴ * Formalism.REAL.Jm (X.B.I.ε (vOf X τ)) * uMat (x (vOf X τ)) = Formalism.REAL.Jm (X.B.I.ε (vOf X τ))` using `(x (vOf X τ)).2`. Establish `key : ∀ v, (Formalism.L2.SG.RealObj.trG (C.Q τ) (C.Qi τ) (x (vOf X τ)) - 1) *ᵥ v = C.Qi τ *ᵥ ((uMat (x (vOf X τ)) - 1) *ᵥ (C.Q τ *ᵥ v))`. Introduce `v`.
+
+Establish `hM : Formalism.L2.SG.RealObj.trG (C.Q τ) (C.Qi τ) (x (vOf X τ)) - 1 = C.Qi τ * (uMat (x (vOf X τ)) - 1) * C.Q τ` using `by show C.Qi τ * uMat (x (vOf X τ)) * C.Q τ - 1 = _`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, h1]`. Rewrite using `[hM, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Apply `Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.JL.SetCorrespondence.fwd` to reduce the goal to its premises. Establish `hmid : (C.Qi τ)ᴴ * Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS * C.Qi τ = Formalism.REAL.Jm (X.B.I.ε (vOf X τ))`.
+
+Rewrite using `[← hg]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm (X.B.I.ε (vOf X τ)) := by`. Rewrite using `[h2, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`.
+
+Use `show (C.Qi τ * uMat (x (vOf X τ)) * C.Q τ)ᴴ * Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS * (C.Qi τ * uMat (x (vOf X τ)) * C.Q τ) = Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (C.Q τ)ᴴ * ((uMat (x (vOf X τ)))ᴴ * (Formalism.REAL.Jm (X.B.I.ε (vOf X τ)) * uMat (x (vOf X τ)))) * C.Q τ := by rw [hmid]`. Use `_ = (C.Q τ)ᴴ * Formalism.REAL.Jm (X.B.I.ε (vOf X τ)) * C.Q τ := by`.
+
+Rewrite using `[← Matrix.mul_assoc (uMat (x (vOf X τ)))ᴴ, hU]`. Use `_ = Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS := hg`. Conclude with `(Formalism.L2.SG.Pf.zTr C u τ).1`. Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Establish `he : C.Q τ *ᵥ Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.JL.SetCorrespondence.stdX D.R.k D.R.rS a = frS D ^ (D.R.rS - (a : ℕ)) • rv X.B.I (vOf X τ) (X.eR a)` using `q_e C τ a`.
+
+Rewrite using `[key, he, Matrix.mulVec_smul, Matrix.mulVec_smul]`. Conclude with `Submodule.smul_mem _ _ (qi_span C τ a.1 _ (hS.1 a))`. Establish `hz' : C.Q τ *ᵥ zB X (C.Qi τ) u τ = rv X.B.I (vOf X τ) (X.zR u)`. Simplify using `only [zB]`. Rewrite using `[Matrix.mulVec_mulVec, h2, Matrix.one_mulVec]`.
+
+Rewrite using `[key, hz']`. Conclude with `qi_span C τ D.R.rS _ hS.2`.
+-/
 theorem sset_of_sinf (C : Choice X θ) (τ : D.what₂.Tau) (u : D.what₂.Word) {x : X.B.I.Ginf} (hx : x ∈ X.SinfU u) :
     Formalism.L2.SG.RealObj.trG (C.Q τ) (C.Qi τ) (x (vOf X τ)) ∈ Formalism.QuantumDeterminants.Sset D.R.k D.R.rS (zB X (C.Qi τ) u τ) := by
   obtain ⟨h1, h2, hg, -⟩ := C.isT τ
@@ -114,6 +147,11 @@ section Main
 
 open Formalism.L2.SG.TermOp Formalism.L2.SG.Pf.FinXP
 
+/- English proof (translation)
+Use `show Qi * uMat (a * b) * Q = Qi * uMat a * Q * (Qi * uMat b * Q)`. Establish `hm : uMat (a * b) = uMat a * uMat b` using `rfl`. Rewrite using `[hm]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hQ, Matrix.mul_one]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = Qi * uMat a * Q * (Qi * uMat b * Q) := by simp only [Matrix.mul_assoc]`.
+-/
 theorem trG_mul {n m : ℕ} {ε : Fin n → Bool} (Q : Matrix (Fin n) (Fin m) ℂ) (Qi : Matrix (Fin m) (Fin n) ℂ)
     (hQ : Q * Qi = 1) (a b : Formalism.REAL.UJ ε) :
     Formalism.L2.SG.RealObj.trG Q Qi (a * b) = Formalism.L2.SG.RealObj.trG Q Qi a * Formalism.L2.SG.RealObj.trG Q Qi b := by
@@ -125,6 +163,11 @@ theorem trG_mul {n m : ℕ} {ε : Fin n → Bool} (Q : Matrix (Fin n) (Fin m) �
         simp only [Matrix.mul_assoc]
     _ = Qi * uMat a * Q * (Qi * uMat b * Q) := by simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Use `show Qi * uMat a⁻¹ * Q = (Qi * uMat a * Q)⁻¹`. Use `symm`. Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Establish `hm : uMat a * uMat a⁻¹ = 1` using `by show ((a : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) * (((a⁻¹ : Formalism.REAL.UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) = 1`. Rewrite using `[Subgroup.coe_inv, Units.mul_inv]`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Qi * Q := by rw [hQ, Matrix.mul_one, Matrix.mul_assoc Qi (uMat a), hm, Matrix.mul_one]`. Use `_ = 1 := h1`.
+-/
 theorem trG_inv {n m : ℕ} {ε : Fin n → Bool} (Q : Matrix (Fin n) (Fin m) ℂ) (Qi : Matrix (Fin m) (Fin n) ℂ)
     (h1 : Qi * Q = 1) (hQ : Q * Qi = 1) (a : Formalism.REAL.UJ ε) :
     Formalism.L2.SG.RealObj.trG Q Qi a⁻¹ = (Formalism.L2.SG.RealObj.trG Q Qi a)⁻¹ := by
@@ -142,6 +185,9 @@ theorem trG_inv {n m : ℕ} {ε : Fin n → Bool} (Q : Matrix (Fin n) (Fin m) �
 
 variable {D : D7} {X : HidaSetting D} {Y : Full X}
 
+/- English proof (translation)
+Substitute `hs` using the available equality. Conclude with `(Formalism.L2.SG.TermTieOf.eqIff_base (Y := Y) (u' := u') s.lam s.mem ⟨s.frame, s.rep.2.2.2.2⟩ (Quot.out s.toTerm.cls)).1 (Quot.out_eq _).symm`.
+-/
 theorem dc_repF {u u' : D.what₂.Word} (s : TT Y u u') {T : RT Y u u'} (hs : s.toTerm = T) :
     Formalism.L2.SG.TermDef.DCRel s.lam (lf D (X.Fu u)) s.frame (repF T) := by
   subst hs
@@ -158,6 +204,47 @@ section Top
 
 open Formalism.L2.SG.TermOp Formalism.L2.SG.Pf.FinXP Formalism.MainNotions.S.Lat
 
+/- English proof (translation)
+Introduce `D X Y hF hI θ C u u' t s hst τ`. Take `⟨h1, h2, -, -⟩` from `C.isT τ`. Establish `hex` using `frameLiftEx_holds hI u u' t`. Establish `hL : IsFrameLift hI t (linOf hI t)`. Unfold `linOf`.
+
+Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec`. Take `⟨hgI, hge, hgz⟩` from `hL`. Establish `hexg` using `Formalism.L2.SG.Pf.ratPt_holds D X (linOf hI t) hgI`. Establish `hxg : RatLink X (ptR hI t) (linOf hI t)`.
+
+Unfold `ptR`. Rewrite using `[dif_pos hexg]`. Conclude with `hexg.choose_spec`. Take `⟨n, hn, m, hm, hfr, -⟩` from `dc_repF s hst`. Take `⟨xn, hxn⟩` from `Formalism.L2.SG.Pf.ratPt_holds D X n hn.1.1`.
+
+Take `⟨xm, hxm⟩` from `Formalism.L2.SG.Pf.ratPt_holds D X m hm.1.1`. Establish `hxs : RatLink X s.pt s.lin` using `s.rep.2.1`. Establish `hse : ∀ i, s.frame.fl.e i = s.lin (X.eX i)`. Introduce `i`. Establish `h` using `frame_apply s (Fin.castSucc i)`.
+
+Simplify using `only [Formalism.MainNotions.S.Lat.frame, Formalism.MainNotions.S.FlagG.fvec, Fin.snoc_castSucc] at h`. Rewrite using `[h]`. Conclude with `congrArg s.lin (congrFun (X.Fu_e u') i)`. Establish `hsz : s.frame.fl.z = s.lin (X.zu u')`. Establish `h` using `frame_apply s (Fin.last D.R.rS)`.
+
+Simplify using `only [Formalism.MainNotions.S.Lat.frame, Formalism.MainNotions.S.FlagG.fvec, Fin.snoc_last] at h`. Rewrite using `[h]`. Conclude with `congrArg s.lin (X.flagZVector u')`. Establish `hinv : ∀ (φ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (v : (VS D).V), φ⁻¹ (φ v) = v`. Introduce `φ v`.
+
+Use `show (φ⁻¹ * φ) v = v`. Rewrite using `[inv_mul_cancel]`. Both sides reduce to the same expression. Establish `hce : ∀ i, ((linOf hI t)⁻¹ * n * m * s.lin) (X.eX i) = X.eX i`. Introduce `i`.
+
+Use `show (linOf hI t)⁻¹ (n (m (s.lin (X.eX i)))) = X.eX i`. Establish `h` using `hfr (Fin.castSucc i)`. Simplify using `only [Formalism.MainNotions.S.Lat.frame, Formalism.MainNotions.S.FlagG.fvec, Fin.snoc_castSucc] at h`. Rewrite `h` using `[hse]`. Rewrite using `[← h, ← hge i, hinv]`.
+
+Conclude with `congrFun (X.Fu_e u') i`. Establish `hcz : ((linOf hI t)⁻¹ * n * m * s.lin) (X.zu u') = X.zu u'` using `by show (linOf hI t)⁻¹ (n (m (s.lin (X.zu u')))) = X.zu u'`. Establish `h` using `hfr (Fin.last D.R.rS)`. Simplify using `only [Formalism.MainNotions.S.Lat.frame, Formalism.MainNotions.S.FlagG.fvec, Fin.snoc_last] at h`. Rewrite `h` using `[hsz]`.
+
+Rewrite using `[← h, ← hgz, hinv]`. Conclude with `X.flagZVector u'`. Establish `hXu : ∀ j, Xflag (lf D (X.Fu u)) j = Submodule.span D.host.E (X.eX '' {i | i.1 < j})`. Introduce `j`. Use `show Submodule.span D.host.E ((X.Fu u).e '' {i | i.1 < j}) = _`.
+
+Rewrite using `[X.Fu_e u]`. Establish `hXsu : Xsp (lf D (X.Fu u)) = Submodule.span D.host.E (Set.range X.eX)` using `by show Submodule.span D.host.E (Set.range (X.Fu u).e) = _`. Rewrite using `[X.Fu_e u]`. Establish `hnE : ∀ a : Fin D.R.rS, n (X.eX a) - X.eX a ∈ Submodule.span D.host.E (X.eX '' {i | i.1 < a.1})`. Introduce `a`.
+
+Establish `h` using `hn.2.1 a.val _ (Formalism.L2.SG.FourParts.e_mem_Xflag (lf D (X.Fu u)) a)`. Rewrite `h` using `[hXu, show (lf D (X.Fu u)).fl.e a = X.eX a from congrFun (X.Fu_e u) a]`. Conclude with `h`. Establish `hnZ : n (X.zu u) - X.zu u ∈ Submodule.span D.host.E (Set.range X.eX)`. Establish `h` using `hn.2.2 _ (Formalism.L2.SG.FourParts.z_mem_orth (lf D (X.Fu u)))`.
+
+Rewrite `h` using `[hXsu, show (lf D (X.Fu u)).fl.z = X.zu u from X.flagZVector u]`. Conclude with `h`. Establish `hpull : ∀ (S : Set (Fin D.R.rS)) (y : (VS D).V), y ∈ Submodule.span D.host.E (s.frame.fl.e '' S) → s.lin⁻¹ y ∈ Submodule.span D.host.E (X.eX '' S)`. Introduce `S y hy`. Establish `hle : Submodule.span D.host.E (s.frame.fl.e '' S) ≤ (Submodule.span D.host.E (X.eX '' S)).comap (s.lin⁻¹ : (VS D).V ≃ₗ[D.host.E] (VS D).V).toLinearMap`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, hi, rfl⟩`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, LinearEquiv.coe_coe]`. Rewrite using `[hse i, hinv]`. Conclude with `Submodule.subset_span ⟨i, hi, rfl⟩`.
+
+Conclude with `hle hy`. Establish `hμE : ∀ a : Fin D.R.rS, (s.lin⁻¹ * m * s.lin) (X.eX a) - X.eX a ∈ Submodule.span D.host.E (X.eX '' {i | i.1 < a.1})`. Introduce `a`. Establish `h` using `hpull _ _ (hm.2.1 a.val _ (Formalism.L2.SG.FourParts.e_mem_Xflag s.frame a))`. Rewrite `h` using `[map_sub, hse a, hinv]`.
+
+Conclude with `h`. Establish `hμZ : (s.lin⁻¹ * m * s.lin) (X.zu u') - X.zu u' ∈ Submodule.span D.host.E (Set.range X.eX)`. Establish `h0` using `hm.2.2 _ (Formalism.L2.SG.FourParts.z_mem_orth s.frame)`. Establish `h0' : m s.frame.fl.z - s.frame.fl.z ∈ Submodule.span D.host.E (s.frame.fl.e '' Set.univ)`. Rewrite using `[Set.image_univ]`.
+
+Conclude with `h0`. Establish `h` using `hpull _ _ h0'`. Rewrite `h` using `[Set.image_univ, map_sub, hsz, hinv]`. Conclude with `h`. Establish `hxc : RatLink X ((ptR hI t)⁻¹ * xn * xm * s.pt) ((linOf hI t)⁻¹ * n * m * s.lin)` using `Formalism.L2.SG.TermOp.Vanish.ratLink_mul X (Formalism.L2.SG.TermOp.Vanish.ratLink_mul X (Formalism.L2.SG.TermOp.Vanish.ratLink_mul X (Formalism.L2.SG.TermOp.Vanish.ratLink_inv X hxg) hxn) hxm) hxs`.
+
+Establish `hxμ : RatLink X (s.pt⁻¹ * xm * s.pt) (s.lin⁻¹ * m * s.lin)` using `Formalism.L2.SG.TermOp.Vanish.ratLink_mul X (Formalism.L2.SG.TermOp.Vanish.ratLink_mul X (Formalism.L2.SG.TermOp.Vanish.ratLink_inv X hxs) hxm) hxs`. Establish `hSn` using `Formalism.L2.SG.Pf.IdMeet.pt_srat X hxn hnE hnZ`. Establish `hSc` using `Formalism.L2.SG.Pf.IdMeet.pt_srat X hxc (fun i => by rw [hce i, sub_self]; exact Submodule.zero_mem _) (by rw [hcz, sub_self]; exact Submodule.zero_mem _)`. Establish `hSμ` using `Formalism.L2.SG.Pf.IdMeet.pt_srat X hxμ hμE hμZ`. Establish `hA` using `(Formalism.L2.SG.PoincareInHH.Cut.sratComp_holds X u _ (inv_mem hSn)).1`.
+
+Establish `hA'` using `(Formalism.L2.SG.PoincareInHH.Cut.sratComp_holds X u' _ (mul_mem hSμ (inv_mem hSc))).1`. Establish `hpt : s.pt = xn⁻¹ * ptR hI t * ((s.pt⁻¹ * xm * s.pt) * ((ptR hI t)⁻¹ * xn * xm * s.pt)⁻¹)⁻¹` using `by group`. Use `⟨_, sset_of_sinf C τ u hA, _, sset_of_sinf C τ u' hA', ?_⟩` and prove the remaining obligations. Establish `hv : s.pt.1 (vOf X τ) = (xn⁻¹).1 (vOf X τ) * (ptR hI t).1 (vOf X τ) * (((s.pt⁻¹ * xm * s.pt) * ((ptR hI t)⁻¹ * xn * xm * s.pt)⁻¹).1 (vOf X τ))⁻¹` using `by conv_lhs => rw [hpt]`. Both sides reduce to the same expression.
+
+Rewrite using `[hv, trG_mul (C.Q τ) (C.Qi τ) h2, trG_mul (C.Q τ) (C.Qi τ) h2, trG_inv (C.Q τ) (C.Qi τ) h1 h2]`. Both sides reduce to the same expression.
+-/
 theorem dcoset : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (hF : FinX Y) (hI : SIso D.s (sOf hF)) (θ : ℝ) (C : Choice X θ) (u u' : D.what₂.Word) (t : D.s.Term u u') (s : TT Y u u'), s.toTerm = tc hI t → ∀ τ, ∃ a ∈ Formalism.QuantumDeterminants.Sset D.R.k D.R.rS (zB X (C.Qi τ) u τ), ∃ a' ∈ Formalism.QuantumDeterminants.Sset D.R.k D.R.rS (zB X (C.Qi τ) u' τ), Formalism.L2.SG.RealObj.trG (C.Q τ) (C.Qi τ) (s.pt.1 (vOf X τ)) = a * gamR hI C t τ * a'⁻¹ := by
   intro D X Y hF hI θ C u u' t s hst τ
   obtain ⟨h1, h2, -, -⟩ := C.isT τ

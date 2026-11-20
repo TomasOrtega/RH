@@ -12,6 +12,11 @@ namespace Formalism.L2.SG.Pf.CarrierTop
 
 open Formalism.L2.SG.RealObj
 
+/- English proof (translation)
+Establish `h : (X.B.I.φ (X.pl.symm ((Formalism.L2.Geo.Rec.StarEmbeddingNorm.ePl D).symm x))).comp X.ιE.symm.toRingHom = Formalism.BasicNotions.DV.tauEmb D ((Formalism.L2.Geo.Rec.StarEmbeddingNorm.ePl D).symm x)`. Use extensionality with `y`. Use `show X.B.I.φ _ (X.ιE.symm y) = _`. Rewrite using `[X.φ_eq, Equiv.apply_symm_apply, RingEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+
+Rewrite using `[h]`. Conclude with `(Formalism.L2.Geo.Rec.StarEmbeddingNorm.ePl D).apply_symm_apply x`.
+-/
 theorem placeTie_ePl {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (x : InfinitePlace D.host.E) :
     InfinitePlace.mk ((X.B.I.φ (X.pl.symm ((Formalism.L2.Geo.Rec.StarEmbeddingNorm.ePl D).symm x))).comp X.ιE.symm.toRingHom) = x := by
   have h : (X.B.I.φ (X.pl.symm ((Formalism.L2.Geo.Rec.StarEmbeddingNorm.ePl D).symm x))).comp X.ιE.symm.toRingHom =
@@ -27,6 +32,11 @@ section Mat
 
 variable {r : ℕ}
 
+/- English proof (translation)
+Establish `hsub : (Matrix.diagonal a * Z * Matrix.diagonal b).submatrix (Fin.castLE hl) (Fin.castLE hl) = Matrix.diagonal (fun i => a (Fin.castLE hl i)) * Z.submatrix (Fin.castLE hl) (Fin.castLE hl) * Matrix.diagonal (fun i => b (Fin.castLE hl i))`. Use extensionality with `i j`. Simplify using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Simplify using `only [RealObj.Dl, dif_pos hl]`. Rewrite using `[hsub, Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal, Matrix.det_diagonal]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dl_diag (a b : Fin (r + 1) → ℂ) (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) {l : ℕ} (hl : l ≤ r + 1) :
     RealObj.Dl (Matrix.diagonal a * Z * Matrix.diagonal b) l =
       (∏ i : Fin l, a (Fin.castLE hl i)) * (∏ i : Fin l, b (Fin.castLE hl i)) * RealObj.Dl Z l := by
@@ -39,6 +49,9 @@ theorem dl_diag (a b : Fin (r + 1) → ℂ) (Z : Matrix (Fin (r + 1)) (Fin (r + 
   rw [hsub, Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal, Matrix.det_diagonal]
   ring
 
+/- English proof (translation)
+Rewrite using `[Fin.prod_univ_castSucc]`. Both sides reduce to the same expression.
+-/
 theorem prod_castLE_succ (x : Fin (r + 1) → ℂ) (h : r + 1 ≤ r + 1) :
     ∏ i : Fin (r + 1), x (Fin.castLE h i) = (∏ i : Fin r, x (Fin.castLE (Nat.le_succ r) i)) * x (Fin.last r) := by
   rw [Fin.prod_univ_castSucc]
@@ -46,6 +59,9 @@ theorem prod_castLE_succ (x : Fin (r + 1) → ℂ) (h : r + 1 ≤ r + 1) :
 
 def sgnV (r : ℕ) : Fin (r + 1) → ℂ := fun b => (-1 : ℂ) ^ (r - b.1)
 
+/- English proof (translation)
+Use extensionality with `a b`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Simplify using `only [RealObj.ZhatO, sgnV]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem zhatO_eq_mul (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) :
     RealObj.ZhatO Z = Matrix.diagonal (fun _ => 1) * Z * Matrix.diagonal (sgnV r) := by
   ext a b
@@ -53,20 +69,32 @@ theorem zhatO_eq_mul (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) :
   simp only [RealObj.ZhatO, sgnV]
   ring
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [RealObj.ZhatO]`. Rewrite using `[← mul_assoc, ← pow_add, Even.neg_one_pow ⟨r - b.1, rfl⟩, one_mul]`.
+-/
 theorem zhatO_invol (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) : RealObj.ZhatO (RealObj.ZhatO Z) = Z := by
   ext a b
   simp only [RealObj.ZhatO]
   rw [← mul_assoc, ← pow_add, Even.neg_one_pow ⟨r - b.1, rfl⟩, one_mul]
 
+/- English proof (translation)
+Rewrite using `[norm_prod]`. Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `i _`. Simplify using `[sgnV]`.
+-/
 theorem norm_prod_sgn {l : ℕ} (hl : l ≤ r + 1) : ‖∏ i : Fin l, sgnV r (Fin.castLE hl i)‖ = 1 := by
   rw [norm_prod]
   apply Finset.prod_eq_one
   intro i _
   simp [sgnV]
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem prod_one' (l : ℕ) (hl : l ≤ r + 1) : ∏ _i : Fin l, (fun _ : Fin (r + 1) => (1 : ℂ)) (Fin.castLE hl _i) = 1 := by
   simp
 
+/- English proof (translation)
+Rewrite using `[zhatO_eq_mul, dl_diag _ _ _ hl, norm_mul, norm_mul, norm_prod_sgn hl]`. Simplify using the standard rewrite rules.
+-/
 theorem norm_dl_zhatO (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) {l : ℕ} (hl : l ≤ r + 1) :
     ‖RealObj.Dl Z l‖ = ‖RealObj.Dl (RealObj.ZhatO Z) l‖ := by
   rw [zhatO_eq_mul, dl_diag _ _ _ hl, norm_mul, norm_mul, norm_prod_sgn hl]
@@ -76,6 +104,9 @@ end Mat
 
 section Pt
 
+/- English proof (translation)
+The claim follows from `| [], _, _, _, hi, _ => by simp at hi | (t, s) :: bs, L1, i, j, hi, hj => by simp only [List.map_cons, List.sum_cons] at hi hj simp only [List.cons_append, ptEntry] split_ifs <;> first | rfl | exact ptEntry_app_lt bs L1 (i - s) (j - s) (by omega) (by omega)`.
+-/
 theorem ptEntry_app_lt {K : Type*} [Zero K] : ∀ (L0 L1 : List (K × ℕ)) (i j : ℕ),
     i < (L0.map Prod.snd).sum → j < (L0.map Prod.snd).sum → ptEntry (L0 ++ L1) i j = ptEntry L0 i j
   | [], _, _, _, hi, _ => by simp at hi
@@ -84,6 +115,9 @@ theorem ptEntry_app_lt {K : Type*} [Zero K] : ∀ (L0 L1 : List (K × ℕ)) (i j
     simp only [List.cons_append, ptEntry]
     split_ifs <;> first | rfl | exact ptEntry_app_lt bs L1 (i - s) (j - s) (by omega) (by omega)
 
+/- English proof (translation)
+The claim follows from `| [], L1, i, j, _ => by simp | (t, s) :: bs, L1, i, j, hi => by simp only [List.map_cons, List.sum_cons] at hi ⊢ simp only [List.cons_append, ptEntry] rw [if_neg (by omega)] by_cases hs : s ≤ j · rw [if_pos ⟨by omega, hs⟩, ptEntry_app_ge bs L1 (i - s) (j - s) (by omega)] by_cases …`.
+-/
 theorem ptEntry_app_ge {K : Type*} [Zero K] : ∀ (L0 L1 : List (K × ℕ)) (i j : ℕ),
     (L0.map Prod.snd).sum ≤ i →
     ptEntry (L0 ++ L1) i j =
@@ -102,6 +136,25 @@ theorem ptEntry_app_ge {K : Type*} [Zero K] : ∀ (L0 L1 : List (K × ℕ)) (i j
 
 variable {K : Type} [Field K] {r : ℕ}
 
+/- English proof (translation)
+Establish `hL : ∀ b ∈ L, b.1 ≠ 0 ∧ 1 ≤ b.2` using `fun b hb => w.2.1 b (by rw [hw]; exact List.mem_append_left _ hb)`. Set `w0 : Point K r` to `⟨L, hL, hs⟩`. Use `set M : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ := (ptMat w).map σ with hM`. Establish `hsub : M.submatrix Fin.castSucc Fin.castSucc = (ptMat w0).map σ`. Use extensionality with `i j`.
+
+Simplify using `only [hM, Matrix.submatrix_apply, Matrix.map_apply, ptMat, Fin.val_castSucc]`. Rewrite using `[hw, ptEntry_app_lt L _ i j (by rw [hs]; exact i.2) (by rw [hs]; exact j.2)]`. Establish `hDr : RealObj.Dl M r = ((ptMat w0).map σ).det`. Unfold `RealObj.Dl`. Rewrite using `[dif_pos (Nat.le_succ r), ← hsub]`.
+
+Both sides reduce to the same expression. Establish `hDtop : RealObj.Dl M (r + 1) = M.det`. Unfold `RealObj.Dl`. Rewrite using `[dif_pos le_rfl]`. Both sides reduce to the same expression.
+
+Establish `hrow : ∀ j : Fin (r + 1), M (Fin.last r) j = if j = Fin.last r then σ t else 0`. Introduce `j`. Simplify using `only [hM, Matrix.map_apply, ptMat, Fin.val_last]`. Rewrite using `[hw, ptEntry_app_ge L _ r j (by rw [hs]), hs]`. Distinguish the cases in `hj : j = Fin.last r`.
+
+Substitute `hj` using the available equality. Simplify using `[ptEntry]`. Establish `hjr : (j : ℕ) < r`. Use `j.2` as an intermediate fact. Establish `: (j : ℕ) ≠ r` using `fun h => hj (Fin.ext h)`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg (by omega), if_neg hj, map_zero]`. Establish `hdet : M.det = σ t * ((ptMat w0).map σ).det`. Rewrite using `[Matrix.det_succ_row M (Fin.last r), Finset.sum_eq_single (Fin.last r)]`. Rewrite using `[hrow, if_pos rfl, Fin.succAbove_last, hsub, Fin.val_last, ← two_mul, pow_mul, neg_one_sq, one_pow, one_mul]`.
+
+Introduce `j _ hj`. Rewrite using `[hrow, if_neg hj]`. Simplify using the standard rewrite rules. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+
+Establish `hne : ((ptMat w0).map σ).det ≠ 0`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(map_ne_zero σ).mpr (Formalism.MainNotions.BridgeLemma.ptMat_det_ne w0)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hDtop, hDr, hdet, mul_comm]`.
+
+Rewrite using `[hDr]`. Conclude with `hne`.
+-/
 theorem dl_pt_last (σ : K →+* ℂ) (w : Point K (r + 1)) (L : List (K × ℕ)) (t : K)
     (hw : w.1 = L ++ [(t, 1)]) (hs : (L.map Prod.snd).sum = r) :
     RealObj.Dl ((ptMat w).map σ) (r + 1) = RealObj.Dl ((ptMat w).map σ) r * σ t ∧ RealObj.Dl ((ptMat w).map σ) r ≠ 0 := by
@@ -156,6 +209,9 @@ section Sign
 
 open Formalism.L2.SG.DataInst
 
+/- English proof (translation)
+The claim follows from `| b, [], y => by simp [signAux] | b, (s, t) :: rest, y => by simp only [List.cons_append, signAux, List.map_cons, List.sum_cons, List.cons.injEq, true_and] rw [signFlip_append r (b + s) rest y, add_assoc]`.
+-/
 theorem signFlip_append {K : Type} [Ring K] (r : ℕ) : ∀ (b : ℕ) (x y : Formalism.FourierDecayAlt.TB.Pt K),
     signAux r b (x ++ y) = signAux r b x ++ signAux r (b + (x.map Prod.fst).sum) y
   | b, [], y => by simp [signAux]
@@ -163,9 +219,27 @@ theorem signFlip_append {K : Type} [Ring K] (r : ℕ) : ∀ (b : ℕ) (x y : For
     simp only [List.cons_append, signAux, List.map_cons, List.sum_cons, List.cons.injEq, true_and]
     rw [signFlip_append r (b + s) rest y, add_assoc]
 
+/- English proof (translation)
+Simplify using `[signAux]`.
+-/
 theorem signFlip_singleton_last {K : Type} [Ring K] (r : ℕ) (t : K) : signAux r (r + 1) [(1, t)] = [(1, t)] := by
   simp [signAux]
 
+/- English proof (translation)
+Unfold `ptOfL ptOfList at hp`. Use `split_ifs at hp with hPt`. Take `rfl` from `Option.some.inj hp`. Establish `hsum : ((signPt D.R.rS p).map Prod.fst).sum = D.R.rS + 1` using `hPt.1`. Unfold `signPt at hsum`.
+
+Rewrite `hsum` using `[sign_list_fst]`. Establish `hne : p ≠ []`. Introduce and unpack `rfl`. Simplify using `at hsum`. Take `⟨q, hq⟩ : ∃ q, p.getLast? = some q` from `⟨p.getLast hne, List.getLast?_eq_some_getLast hne⟩`.
+
+Establish `hq1 : q.1 = 1`. Rewrite `h1` using `[hq]`. Simplify using `using h1`. Establish `hp' : p = p.dropLast ++ [q]`. Rewrite `hq` using `[List.getLast?_eq_some_getLast hne, Option.some.injEq]`.
+
+Rewrite using `[← hq]`. Conclude with `(List.dropLast_append_getLast hne).symm`. Take `⟨s, t⟩` from `q`. Simplify using `only at hq1`. Substitute `hq1` using the available equality.
+
+Establish `hs0 : ((p.dropLast).map Prod.fst).sum = D.R.rS`. Rewrite `hsum` using `[hp']`. Simplify using `only [List.map_append, List.sum_append, List.map_cons, List.map_nil, List.sum_cons, List.sum_nil] at hsum`. Use linear arithmetic over natural numbers and integers. Use `⟨(signAux D.R.rS 1 p.dropLast).map Prod.swap, t, ?_, ?_, hq⟩` and prove the remaining obligations.
+
+Use `show (signPt D.R.rS p).map Prod.swap = _`. Unfold `signPt`. Use `conv_lhs => rw [hp']`. Rewrite using `[signFlip_append, hs0, add_comm, signFlip_singleton_last, List.map_append]`. Both sides reduce to the same expression.
+
+Rewrite using `[List.map_map]`. Establish `: Prod.snd ∘ Prod.swap = (Prod.fst : ℕ × D.host.E → ℕ)` using `rfl`. Rewrite using `[this, sign_list_fst, hs0]`.
+-/
 theorem pt_last {D : D7} (p : Formalism.FourierDecayAlt.TB.Pt D.host.E) (w : Point D.host.E (D.R.rS + 1))
     (hp : ptOfL (D := D) (D.R.rS + 1) p = some w) (h1 : p.getLast?.map Prod.fst = some 1) :
     ∃ (L : List (D.host.E × ℕ)) (t : D.host.E), w.1 = L ++ [(t, 1)] ∧ (L.map Prod.snd).sum = D.R.rS ∧
@@ -214,6 +288,9 @@ variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
 
 def cS (r : ℕ) (sc : ℝ) : Fin (r + 1) → ℂ := fun a => ((sc : ℂ) ^ (r - a.1))⁻¹
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [ZX, Zhat, frm, famSc, Formalism.L2.SG.HidaSetting.hJ, Matrix.mul_diagonal, Matrix.diagonal_mul, cS]`. Simplify using `only [Complex.ofReal_one, one_pow, inv_one, one_smul, Matrix.mulVec_smul, star_smul, smul_eq_mul, Complex.star_def, map_inv₀, map_pow, Complex.conj_ofReal]`. Simplify using `only [smul_dotProduct, dotProduct_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem zx_sc (u u' : D.what₂.Word) (sc : ℝ) (γ : X.B.I.Ginf) (v : InfinitePlace X.B.I.F) :
     ZX X u u' sc γ v = Matrix.diagonal (cS D.R.rS sc) * ZX X u u' 1 γ v * Matrix.diagonal (cS D.R.rS sc) := by
   ext a b
@@ -226,6 +303,31 @@ theorem zx_sc (u u' : D.what₂.Word) (sc : ℝ) (γ : X.B.I.Ginf) (v : Infinite
 variable {Wp Wq : InfinitePlace D.host.E → Type} [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)]
   [∀ x, NormedAddCommGroup (Wq x)] [∀ x, InnerProductSpace ℂ (Wq x)]
 
+/- English proof (translation)
+Introduce `j p w hp hex h1`. Establish `hrep : IsPtRep X u u' w (gamW X u u' w)`. Unfold `gamW`. Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec`.
+
+Establish `hloc : ∀ (σ : D.host.E →+* ℂ), (Formalism.FourierDecayAlt.C.loc σ p).getLast? = p.getLast?.map (fun b => (b.1, σ b.2))`. Introduce `σ`. Unfold `Formalism.FourierDecayAlt.C.loc`. Rewrite using `[List.getLast?_map]`. Establish `h1' : p.getLast?.map Prod.fst = some 1`.
+
+Unfold `Formalism.FourierDecayAlt.D.ptLast at h1`. Rewrite `h1` using `[hloc]`. Consider the cases of `hq : p.getLast? with`. Consider the case `none => rw [hq] at h1`. Simplify using `at h1`.
+
+Consider the case `some q => rw [hq] at h1`. Simplify using `using h1`. Take `⟨L, t, hw, hs, hlast⟩` from `pt_last p w hp h1'`. Set `σ : D.host.E →+* ℂ` to `(X.B.I.φ (τ j)).comp X.ιE.symm.toRingHom`. Establish `hσ : S.emb j t = σ t`.
+
+Use `hemb j (X.ιE.symm t)` as an intermediate fact. Rewrite `this` using `[RingEquiv.apply_symm_apply]`. Rewrite using `[this]`. Both sides reduce to the same expression. Establish `hL : Formalism.FourierDecayAlt.D.ptLast (Formalism.FourierDecayAlt.C.loc (S.emb j) p) = (1, σ t)`.
+
+Unfold `Formalism.FourierDecayAlt.D.ptLast`. Rewrite using `[hloc, hlast]`. Simplify using `[hσ]`. Rewrite using `[hG, hL]`. Take `⟨hA, hB⟩` from `dl_pt_last σ w L t hw hs`.
+
+Establish `hP : ptC X (τ j) w = (ptMat w).map σ` using `rfl`. Establish `hZ1 : ZX X u u' 1 (gamW X u u' w) (τ j) = RealObj.ZhatO ((ptMat w).map σ)`. Rewrite using `[← hP, ← hrep (τ j), zhatO_invol]`. Establish `hrd : 0 < D.host.rdE`. Unfold `Formalism.BasicNotions.Host.rdE`.
+
+Conclude with `Real.rpow_pos_of_pos (abs_pos.mpr (by exact_mod_cast NumberField.discr_ne_zero D.host.E)) _`. Establish `hc0 : ∀ a, cS D.R.rS D.host.rdE a ≠ 0` using `fun a => by`. Unfold `cS`. Conclude with `inv_ne_zero (pow_ne_zero _ (by exact_mod_cast hrd.ne'))`. Establish `hclast : cS D.R.rS D.host.rdE (Fin.last D.R.rS) = 1` using `by simp [cS]`.
+
+Use `set P := (ptMat w).map σ with hPdef`. Use `set a : ℂ := ∏ i : Fin D.R.rS, cS D.R.rS D.host.rdE (Fin.castLE (Nat.le_succ D.R.rS) i) with ha`. Establish `ha0 : a ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun i _ => hc0 _`. Establish `hZ` using `zx_sc X u u' D.host.rdE (gamW X u u' w) (τ j)`. Establish `hN : ∀ {l : ℕ} (hl : l ≤ D.R.rS + 1), ‖RealObj.Dl (ZX X u u' D.host.rdE (gamW X u u' w) (τ j)) l‖ = ‖∏ i : Fin l, cS D.R.rS D.host.rdE (Fin.castLE hl i)‖ ^ 2 * ‖RealObj.Dl P l‖`.
+
+Introduce `l hl`. Rewrite using `[hZ, dl_diag _ _ _ hl, norm_mul, norm_mul, hZ1, ← norm_dl_zhatO _ hl]`. Expand and normalize the polynomial expressions, which then agree. Establish `hNr` using `hN (Nat.le_succ D.R.rS)`. Establish `hNt` using `hN (le_refl (D.R.rS + 1))`.
+
+Rewrite `hNt` using `[prod_castLE_succ, hclast, mul_one, ← ha, hA, norm_mul]`. Rewrite `hNr` using `[← ha]`. Unfold `GX Gv`. Rewrite using `[hNt, hNr, Complex.normSq_eq_norm_sq]`. Establish `hB' : ‖RealObj.Dl P D.R.rS‖ ≠ 0` using `norm_ne_zero_iff.mpr hB`.
+
+Establish `ha' : ‖a‖ ≠ 0` using `norm_ne_zero_iff.mpr ha0`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem topTie_G (S : Formalism.FourierDecayAlt.C.HidaSetting D.host.E Wp Wq) (u u' : D.what₂.Word) (τ : Fin S.f ≃ InfinitePlace X.B.I.F)
     (hemb : ∀ j x, S.emb j (X.ιE x) = X.B.I.φ (τ j) x)
     (hG : ∀ j q, (S.pd j).G q = Complex.normSq (Formalism.FourierDecayAlt.D.ptLast q).2 - Tw (D := D) u * Tw (D := D) u') :
@@ -295,6 +397,9 @@ theorem topTie_G (S : Formalism.FourierDecayAlt.C.HidaSetting D.host.E Wp Wq) (u
   have ha' : ‖a‖ ≠ 0 := norm_ne_zero_iff.mpr ha0
   field_simp
 
+/- English proof (translation)
+Conclude with `⟨hPG, hemb, topTie_G X S u u' τ hemb hG⟩`.
+-/
 theorem topTie_of (S : Formalism.FourierDecayAlt.C.HidaSetting D.host.E Wp Wq) (u u' : D.what₂.Word) (sc : ℝ)
     (i0 i0' : ∀ _ : InfinitePlace X.B.I.F, Fin D.R.k) (FdN FdN' : Set X.B.I.Ginf)
     (νq : X.B.I.Ginf → Measure X.B.I.Ginf) (τ : Fin S.f ≃ InfinitePlace X.B.I.F)

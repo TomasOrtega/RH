@@ -4,6 +4,13 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.PolynomialCoeff
 
 open MvPolynomial Filter Topology PositivityTheory.Rg.Fx
 
+/- English proof (translation)
+Establish `h1 : Tendsto (fun j : ℕ => Real.log L * ((d j : ℝ) / j + 1 / j)) atTop (𝓝 (Real.log L * (0 + 0)))` using `(hd.add tendsto_one_div_atTop_nhds_zero_nat).const_mul _`. Establish `h2` using `h1.eventually (gt_mem_nhds (show Real.log L * (0 + 0) < 1 by simp))`. Use `filter_upwards [h2, eventually_gt_atTop 0] with j hj hj0`. Establish `hjp : (0 : ℝ) < j` using `by exact_mod_cast hj0`. Establish `h3 : Real.log L * ((d j : ℝ) + 1) ≤ j`.
+
+Establish `: Real.log L * ((d j : ℝ) / j + 1 / j) = Real.log L * ((d j : ℝ) + 1) / j` using `by ring`. Rewrite `hj` using `[this, div_lt_one hjp]`. Conclude with `hj.le`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.rpow_def_of_pos hL]`.
+
+Rewrite using `[← Real.rpow_natCast]`. Use `push_cast`. Both sides reduce to the same expression. Use `_ ≤ _ := Real.exp_le_exp.2 h3`.
+-/
 private lemma pow_le_exp_eventually (d : ℕ → ℕ) (hd : Tendsto (fun j : ℕ => (d j : ℝ) / j) atTop (𝓝 0))
     (L : ℝ) (hL : 0 < L) : ∀ᶠ j : ℕ in atTop, L ^ (d j + 1) ≤ Real.exp j := by
   have h1 : Tendsto (fun j : ℕ => Real.log L * ((d j : ℝ) / j + 1 / j)) atTop
@@ -21,6 +28,25 @@ private lemma pow_le_exp_eventually (d : ℕ → ℕ) (hd : Tendsto (fun j : ℕ
         rw [← Real.rpow_natCast]; push_cast; rfl
     _ ≤ _ := Real.exp_le_exp.2 h3
 
+/- English proof (translation)
+Establish `hFp : 0 < F` using `(Real.exp_pos _).trans_le hF`. Use `set m := j / p with hm`. Use `set g := Real.log (4 / a₀) with hg`. Establish `hq : (η / a₀) ^ m * (4 / η) ^ m = (4 / a₀) ^ m`. Rewrite using `[← mul_pow]`.
+
+Use `congr 1`. Clear the denominators using the available nonvanishing facts. Establish `h4 : (4 / a₀) ^ m ≤ Real.exp (g * j)`. Establish `: (1 : ℝ) ≤ 4 / a₀` using `by rw [le_div_iff₀ h0]; linarith`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[mul_comm, Real.exp_nat_mul, hg, Real.exp_log (by positivity)]`. Establish `h5 : (η / a₀) ^ m ≤ Real.exp (-(m * p * A))`. Establish `: η / a₀ ≤ Real.exp (-(p * A))` using `by rw [div_le_iff₀ h0, mul_comm]; exact hη`. Combine the equalities or inequalities in the displayed calculation. Establish `hmp : (j : ℝ) ≤ m * p + p`.
+
+Use `Nat.lt_div_mul_add (a := j) hp` as an intermediate fact. Rewrite `this` using `[← hm]`. Conclude with `this.le` after adjusting the coercions. Establish `hj : (0 : ℝ) ≤ j` using `Nat.cast_nonneg j`. Establish `hA0 : 0 ≤ A` using `by rw [hA]; positivity`.
+
+Establish `hA1 : c₁ + cq + 2 ≤ A` using `by have := le_abs_self (c₁ + cq + 1); linarith`. Establish `t1 : Real.exp ((cq + 1) * j) * (η / a₀) ^ m * Real.exp (c₁ * j) ≤ Real.exp (p * A) * Real.exp (-j)`. Use `le_trans (b := Real.exp ((cq + 1) * j) * Real.exp (-(m * p * A)) * Real.exp (c₁ * j)) (by gcongr) ?_` and prove the remaining obligations. Rewrite using `[← Real.exp_add, ← Real.exp_add, ← Real.exp_add]`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises.
+
+Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hmp hA0, mul_le_mul_of_nonneg_right hA1 hj]`. Establish `t2 : Real.exp ((cq + 1) * j) * Real.exp (c₁ * j) * (4 / a₀) ^ m / F ≤ Real.exp (-j)`. Rewrite using `[div_le_iff₀ hFp]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.exp_add, ← Real.exp_add, ← Real.exp_add]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := by gcongr`. Establish `t3 : Real.exp ((cq + 1) * j) * (4 / a₀) ^ m * Real.exp (-(cq + 2 + g) * j) ≤ Real.exp (-j)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← Real.exp_add, ← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite `t2`, `t3` using `[← hq]`. Combine the equalities or inequalities in the displayed calculation.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := by linarith`.
+-/
 private lemma err_bound2 (p : ℕ) (hp : 0 < p) (c₁ cq a₀ : ℝ) (h0 : 0 < a₀) (h1 : a₀ ≤ 1)
     (A η : ℝ) (hA : A = |c₁ + cq + 1| + 1) (hηp : 0 < η) (hη : η ≤ a₀ * Real.exp (-(p * A))) (j : ℕ) (F : ℝ)
     (hF : Real.exp ((c₁ + cq + 2 + Real.log (4 / a₀)) * j) ≤ F) :
@@ -74,6 +100,21 @@ private lemma err_bound2 (p : ℕ) (hp : 0 < p) (c₁ cq a₀ : ℝ) (h0 : 0 < a
         ring
     _ ≤ _ := by linarith
 
+/- English proof (translation)
+Establish `h0 : 0 < a₀` using `hη.trans hηa`. Establish `hb : a₀ / η ≤ 2 * a / η - 1`. Rewrite using `[div_sub_one hη.ne', div_le_div_iff_of_pos_right hη]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hb0 : 0 < a₀ / η` using `by positivity`.
+
+Establish `hl : x * a₀ ^ (d + 1) * (a₀ / η) ^ m * Real.exp (-cq) ^ j ≤ x * a ^ d * (2 * a / η - 1) ^ m * z ^ j`. Establish `: a₀ ^ (d + 1) ≤ a ^ d` using `(pow_le_pow_of_le_one h0.le h1 (Nat.le_succ d)).trans (pow_le_pow_left₀ h0.le ha d)`. Establish `h2 : 0 ≤ a` using `by linarith`. Establish `h3 : 0 ≤ 2 * a / η - 1` using `by linarith`. Use `gcongr`.
+
+Establish `hr : K₁ * (K ^ (d + 1) * E) ≤ a₀ ^ (d + 1) * Real.exp j * E`. Establish `e1 : |K₁| ≤ (|K₁| + 1) ^ (d + 1)` using `(by linarith : |K₁| ≤ |K₁| + 1).trans (le_self_pow₀ (by linarith [abs_nonneg K₁]) (Nat.succ_ne_zero d))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[abs_mul, abs_mul, abs_pow, abs_of_nonneg hE, mul_assoc]`. Use `_ ≤ (|K₁| + 1) ^ (d + 1) * |K| ^ (d + 1) * E := by gcongr`.
+
+Use `_ = a₀ ^ (d + 1) * ((|K₁| + 1) * |K| / a₀) ^ (d + 1) * E := by`. Rewrite using `[← mul_pow, ← mul_pow]`. Use `congr 2`. Clear the denominators using the available nonvanishing facts. Use `_ ≤ a₀ ^ (d + 1) * ((|K₁| + 1) * |K| / a₀ + 1) ^ (d + 1) * E := by gcongr; linarith`.
+
+Use `_ ≤ _ := by gcongr`. Establish `h6` using `(hl.trans h).trans hr`. Establish `hpos : 0 < a₀ ^ (d + 1) * (a₀ / η) ^ m * Real.exp (-cq) ^ j` using `by positivity`. Establish `e2 : (η / a₀) ^ m * (a₀ / η) ^ m = 1`. Rewrite using `[← mul_pow]`.
+
+Establish `: η / a₀ * (a₀ / η) = 1` using `by field_simp`. Rewrite using `[this, one_pow]`. Establish `e3 : Real.exp ((cq + 1) * j) * Real.exp (-cq) ^ j = Real.exp j`. Rewrite using `[← Real.exp_nat_mul, ← Real.exp_add]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `le_of_mul_le_mul_right ?_ hpos` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma solve_bound2 (x a z η a₀ cq K₁ K E : ℝ) (d m j : ℕ) (hx : 0 ≤ x) (hη : 0 < η)
     (hηa : η < a₀) (h1 : a₀ ≤ 1) (ha : a₀ ≤ a) (hz : Real.exp (-cq) ≤ z) (hE : 0 ≤ E)
     (hL : ((|K₁| + 1) * |K| / a₀ + 1) ^ (d + 1) ≤ Real.exp j)
@@ -118,6 +159,17 @@ private lemma solve_bound2 (x a z η a₀ cq K₁ K E : ℝ) (d m j : ℕ) (hx :
         ((η / a₀) ^ m * (a₀ / η) ^ m) * E := by rw [e2, e3, mul_one]
     _ = _ := by ring
 
+/- English proof (translation)
+Introduce `d hd hfac p hp c₁ cq a₀ h0 h1`. Take `⟨A, hA⟩ : ∃ A, A = |c₁ + cq + 1| + 1` from `⟨_, rfl⟩`. Establish `hη₀a : a₀ * Real.exp (-(p * A)) < a₀`. Establish `hA0 : 0 < A` using `by rw [hA]; positivity`. Establish `hp' : (0 : ℝ) < p` using `by exact_mod_cast hp`.
+
+Establish `: Real.exp (-(p * A)) < 1` using `Real.exp_lt_one_iff.2 (by nlinarith [mul_pos hp' hA0])`. Use the polynomial consequences of the given equalities and inequalities. Use `⟨a₀ * Real.exp (-(p * A)), by positivity, hη₀a, ?_⟩` and prove the remaining obligations. Introduce `η hηp hη`. Establish `hηa : η < a₀` using `hη.trans_lt hη₀a`.
+
+Use `⟨cq + 2 + Real.log (4 / a₀), ?_⟩` and prove the remaining obligations. Introduce `I _ a ζ ha hζ0 hinj c c' hc hbd i hi hζ`. Take `⟨s₀, K₁, hsep⟩` from `UpperTheory.ConvolutionTheory.FX.separate0 η hηp I a ζ ha hζ0 hinj`. Take `⟨K, hK⟩` from `hbd s₀`. Establish `hev : ∀ᶠ j : ℕ in atTop, ‖c j i‖ ≤ (Real.exp (p * A) + 2) * Real.exp (-j)` using `by filter_upwards [hK, hfac (c₁ + cq + 2 + Real.log (4 / a₀)), pow_le_exp_eventually d hd ((|K₁| + 1) * |K| / a₀ + 1) (by positivity)] with j hj hF hL`.
+
+Establish `h` using `hsep (j / p) j (fun i => c j i * (a i : ℂ) ^ d j) _ hj i`. Establish `hai : 0 ≤ a i` using `by linarith`. Simplify using `only [norm_mul, norm_pow, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hai] at h`. Conclude with `(solve_bound2 _ _ _ η a₀ cq K₁ K _ _ _ _ (norm_nonneg _) hηp hηa h1 hi hζ (by positivity) hL h).trans (err_bound2 p hp c₁ cq a₀ h0 h1 A η hA hηp hη j _ hF)`. Establish `hlim : Tendsto (fun j : ℕ => (Real.exp (p * A) + 2) * Real.exp (-j)) atTop (𝓝 0)`.
+
+Use `(Real.tendsto_exp_neg_atTop_nhds_zero.comp tendsto_natCast_atTop_atTop).const_mul (Real.exp (p * A) + 2)` as an intermediate fact. Simplify using `using this`. Conclude with `tendsto_nhds_unique (hc i) (squeeze_zero_norm' hev hlim)`.
+-/
 theorem UpperTheory.ConvolutionTheory.FX.exponents2 :
     ∀ (d : ℕ → ℕ), Tendsto (fun j : ℕ => (d j : ℝ) / j) atTop (𝓝 0) →
     (∀ B : ℝ, ∀ᶠ j : ℕ in atTop, Real.exp (B * j) ≤ (d j).factorial) →

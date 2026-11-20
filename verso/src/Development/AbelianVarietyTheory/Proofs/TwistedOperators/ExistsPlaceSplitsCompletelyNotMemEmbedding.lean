@@ -28,6 +28,11 @@ namespace GlobalTheory.SplitAway
 
 open GroundTheory.Global Filter
 
+/- English proof (translation)
+Introduce `w hw`. Take `⟨W⟩` from `GroundTheory.Global.nonempty_placesOver M w`. Establish `h1 : W.1.asIdeal.LiesOver w.asIdeal` using `W.2`. Establish `h2 : W.1.asIdeal.LiesOver u.asIdeal` using `Ideal.LiesOver.trans W.1.asIdeal w.asIdeal u.asIdeal`. Take `⟨he, hf⟩` from `h W.1 h2`.
+
+Rewrite `he` using `[Ideal.ramificationIdx_tower (R := 𝓞 K) w.asIdeal W.1.asIdeal]`. Rewrite `hf` using `[Ideal.inertiaDeg_tower (R := 𝓞 K) w.asIdeal W.1.asIdeal]`. Conclude with `⟨(mul_eq_one.1 he).1, (mul_eq_one.1 hf).1⟩`.
+-/
 theorem splitsCompletely_of_tower {K E M : Type*} [Field K] [NumberField K] [Field E] [NumberField E]
     [Field M] [NumberField M] [Algebra K E] [Algebra E M] [Algebra K M] [IsScalarTower K E M]
     {u : HeightOneSpectrum (𝓞 K)} (h : SplitsCompletely M u) : SplitsCompletely E u := by
@@ -40,6 +45,13 @@ theorem splitsCompletely_of_tower {K E M : Type*} [Field K] [NumberField K] [Fie
   rw [Ideal.inertiaDeg_tower (R := 𝓞 K) w.asIdeal W.1.asIdeal] at hf
   exact ⟨(mul_eq_one.1 he).1, (mul_eq_one.1 hf).1⟩
 
+/- English proof (translation)
+Use `haveI : Algebra.IsAlgebraic ℚ (AlgebraicClosure E) := Algebra.IsAlgebraic.trans ℚ E (AlgebraicClosure E)`. Use `haveI : IsAlgClosure ℚ (AlgebraicClosure E) := ⟨inferInstance, inferInstance⟩`. Set `M` to `IntermediateField.normalClosure ℚ E (AlgebraicClosure E)`. Use `haveI : IsGalois ℚ (AlgebraicClosure E) := IsAlgClosure.isGalois ℚ _`. Use `haveI : IsGalois ℚ M := IsGalois.normalClosure ℚ E (AlgebraicClosure E)`.
+
+Use `haveI : NumberField M := { to_charZero := inferInstance, to_finiteDimensional := inferInstance }`. Establish `hd` using `GroundTheory.Global.hasDirichletDensity_setOf_splitsCompletely ℚ M`. Establish `hsub : {u : HeightOneSpectrum (𝓞 ℚ) | SplitsCompletely M u} ⊆ {u : HeightOneSpectrum (𝓞 ℚ) | SplitsCompletely E u}` using `fun u hu => splitsCompletely_of_tower (M := M) hu`. Introduce `hfin`. Establish `h0` using `GroundTheory.Global.hasDirichletDensity_zero_of_finite (hfin.subset hsub)`.
+
+Establish `e` using `tendsto_nhds_unique hd h0`. Establish `hpos : (0 : ℝ) < 1 / (Module.finrank ℚ M : ℝ)`. Use `Module.finrank_pos (R := ℚ) (M := M)` as an intermediate fact. Check the signs of the components of the expression. Conclude with `hpos.ne' e`.
+-/
 theorem infinite_setOf_splitsCompletely (E : Type) [Field E] [NumberField E] :
     {u : HeightOneSpectrum (𝓞 ℚ) | SplitsCompletely E u}.Infinite := by
   classical
@@ -60,6 +72,13 @@ theorem infinite_setOf_splitsCompletely (E : Type) [Field E] [NumberField E] :
     positivity
   exact hpos.ne' e
 
+/- English proof (translation)
+Establish `hs : Function.Surjective (algebraMap ℤ (𝓞 ℚ))` using `fun x => ⟨Rat.ringOfIntegersEquiv x, by`. Rewrite using `[eq_intCast, ← map_intCast Rat.ringOfIntegersEquiv.symm, Int.cast_id, RingEquiv.symm_apply_apply]⟩`. Use extensionality with `Q`. Simplify using `only [Ideal.primesOver, Set.mem_setOf_eq]`. Use `and_congr_right fun _ => ?_` and prove the remaining obligations.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[h.over, Ideal.under_under]`. Introduce `h`.
+
+Use `⟨Ideal.comap_injective_of_surjective _ hs ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.under ℤ u.asIdeal = Ideal.under ℤ (Q.under (𝓞 ℚ))`. Rewrite using `[Ideal.under_under, ← h.over]`.
+-/
 theorem primesOver_rat_eq (E : Type) [Field E] [NumberField E] (u : HeightOneSpectrum (𝓞 ℚ)) :
     u.asIdeal.primesOver (𝓞 E) = (u.asIdeal.under ℤ).primesOver (𝓞 E) := by
   have hs : Function.Surjective (algebraMap ℤ (𝓞 ℚ)) := fun x =>
@@ -80,6 +99,15 @@ theorem primesOver_rat_eq (E : Type) [Field E] [NumberField E] (u : HeightOneSpe
 end GlobalTheory.SplitAway
 
 open GlobalTheory.SplitAway GroundTheory.Global in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ P`. Take `⟨u, huS, huT⟩` from `((infinite_setOf_splitsCompletely E).diff (P.finite_toSet.image fun v : HeightOneSpectrum (𝓞 F) => v.under (𝓞 ℚ))).nonempty`. Establish `hu : SplitsCompletely E u` using `huS`. Take `⟨⟨v, hv⟩⟩` from `GroundTheory.Global.nonempty_placesOver F u`. Use `⟨v, fun hP => huT ⟨v, hP, HeightOneSpectrum.ext hv.over.symm⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `show ((v.asIdeal.under ℤ).primesOver (𝓞 E)).ncard = Module.finrank ℚ E`. Establish `e1 : v.asIdeal.under ℤ = u.asIdeal.under ℤ`. Rewrite using `[hv.over, Ideal.under_under]`. Rewrite using `[e1, ← primesOver_rat_eq]`. Conclude with `(splitsCompletely_iff_ncard_primesOver E u).1 hu`.
+
+Establish `hF : SplitsCompletely E v` using `hu.of_liesOver v haveI := (splitsCompletely_iff_isFiniteSplit (L := E) v).1 hF`. Take `⟨n, ⟨e⟩⟩` from `Algebra.IsFiniteSplit.nonempty_algEquiv_fun (v.adicCompletion F) (v.adicCompletion F ⊗[F] E)`. Establish `hn : 0 < n`. Break down `Nat.eq_zero_or_pos n with rfl | h` into its components or cases. Use `exfalso haveI : Subsingleton (v.adicCompletion F ⊗[F] E) := e.toEquiv.subsingleton`.
+
+Establish `h1 : Module.finrank (v.adicCompletion F) (v.adicCompletion F ⊗[F] E) = Module.finrank F E` using `Module.finrank_baseChange`. Rewrite `h1` using `[Module.finrank_zero_of_subsingleton]`. Conclude with `(Module.finrank_pos (R := F) (M := E)).ne h1`. Conclude with `h`. Conclude with `⟨(((Pi.evalAlgHom (v.adicCompletion F) (fun _ : Fin n => v.adicCompletion F) ⟨0, hn⟩).comp e.toAlgHom).restrictScalars F).comp Algebra.TensorProduct.includeRight⟩`.
+-/
 theorem GlobalTheory.SplitAway.exists_splitsFully_notMem : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (P : Finset (HeightOneSpectrum (𝓞 F))),
     ∃ v ∉ P, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SplitsFully E v ∧ Nonempty (E →ₐ[F] Fv F v) := by

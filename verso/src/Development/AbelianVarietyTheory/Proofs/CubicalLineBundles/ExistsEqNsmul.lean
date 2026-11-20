@@ -10,6 +10,11 @@ open GlobalTheory GlobalTheory.CM
 noncomputable section
 namespace GlobalTheory.CM.RationalTorsion
 
+/- English proof (translation)
+Establish `h1 : Surjective t` using `⟨fun x => ⟨IsLocalRing.closedPoint k, Subsingleton.elim _ _⟩⟩`. Establish `h2 : Flat t` using `inferInstance`. Establish `h3 : Epi t` using `Flat.epi_of_flat_of_surjective t`. Establish `h4 : (toUnit (Over.mk t)).left = t` using `by simp`. Establish `h5 : Epi (toUnit (Over.mk t)).left` using `by rw [h4]; exact h3`.
+
+Establish `h6 : Epi (toUnit (Over.mk t))` using `Over.epi_of_epi_left _`. Conclude with `(cancel_epi _).1 h`.
+-/
 theorem section_ext {K k : Type} [Field K] [Field k] (t : Sp k ⟶ Sp K) {G : Over (Sp K)}
     {s s' : 𝟙_ (Over (Sp K)) ⟶ G} (h : toUnit (Over.mk t) ≫ s = toUnit (Over.mk t) ≫ s') : s = s' := by
   have h1 : Surjective t := ⟨fun x => ⟨IsLocalRing.closedPoint k, Subsingleton.elim _ _⟩⟩
@@ -22,11 +27,19 @@ theorem section_ext {K k : Type} [Field K] [Field k] (t : Sp k ⟶ Sp K) {G : Ov
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Rewrite using `[I.add, (I.ker n hn _).2 ⟨c, rfl⟩, _root_.mul_one]`.
+-/
 theorem ev_add_smul {D : Datum H} {k : Type} [Field k] {Q : Type} [Group Q] {act : 𝓞 E → Q → Q}
     {e : ℕ → Q → Q → kˣ → Prop} (I : TateIso D k Q act e) {n : ℕ} (hn : 0 < n) (a c : D.La) :
     I.ev n (a + n • c) = I.ev n a := by
   rw [I.add, (I.ker n hn _).2 ⟨c, rfl⟩, _root_.mul_one]
 
+/- English proof (translation)
+Establish `h1 : e • a ∈ (J * J') • (⊤ : Submodule (𝓞 E) D.La)`. Rewrite using `[Submodule.mul_smul]`. Conclude with `Submodule.smul_mem_smul he ha`. Rewrite `h1` using `[hJ, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Take `⟨c, -, hc⟩` from `h1`.
+
+Conclude with `⟨c, by rw [← hc, Nat.cast_smul_eq_nsmul]⟩`.
+-/
 theorem exists_eq_nsmul (D : Datum H) (l : Level H) {J J' : Ideal (𝓞 E)}
     (hJ : J * J' = Ideal.span {(l.M : 𝓞 E)}) {e : 𝓞 E} (he : e ∈ J) {a : D.La}
     (ha : a ∈ J' • (⊤ : Submodule (𝓞 E) D.La)) : ∃ c, e • a = l.M • c := by
@@ -36,6 +49,23 @@ theorem exists_eq_nsmul (D : Datum H) (l : Level H) {J J' : Ideal (𝓞 E)}
   obtain ⟨c, -, hc⟩ := h1
   exact ⟨c, by rw [← hc, Nat.cast_smul_eq_nsmul]⟩
 
+/- English proof (translation)
+Introduce `laws E _ _ _ H D l B _ b K _ _ j σ T I hty hζ hrat`. Establish `hM : 0 < l.M` using `lt_of_lt_of_le (by norm_num) l.three_le`. Establish `hA : 0 < l.A` using `l.A_pos`. Establish `hsec : ∀ n : ℕ, 0 < n → n ∣ l.M' → ∀ a, ∃ s : 𝟙_ (Over (Sp K)) ⟶ T.t.G, toUnit _ ≫ s = I.ev n a`. Introduce and unpack `n hn ⟨m, hm⟩ a`.
+
+Apply `hrat` to reduce the goal to its premises. Rewrite using `[hm, pow_mul, (I.onto n hn _).2 ⟨a, rfl⟩, one_pow]`. Use `choose sA hsA using hsec l.A hA (Nat.dvd_lcm_right _ _)`. Use `choose sM hsM using hsec l.M hM (Nat.dvd_lcm_left _ _)`. Take `⟨f, hf, e, he, hfe⟩ : ∃ f ∈ l.Mb, ∃ e ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E), f + e = 1` from `Submodule.mem_sup.1 (by rw [l.coprime]; trivial)`.
+
+Use `⟨{ t := T.t proper := T.ab.proper ample := T.ample ktriv := T.ktriv eta := fun a => sM (e • a) eta_add := fun a c => section_ext (spMap σ) (by` and prove the remaining obligations. Rewrite using `[MonObj.comp_mul, hsM, hsM, hsM, smul_add, I.add])`. Use `eta_ker := fun a ha => section_ext (spMap σ) (by`. Take `⟨c, hc⟩` from `exists_eq_nsmul D l (by rw [mul_comm]; exact l.prod) he ha`. Rewrite using `[MonObj.comp_one, hsM]`.
+
+Conclude with `(I.ker _ hM _).2 ⟨c, hc⟩)`. Use `etaA := sA`. Use `etaA_add := fun a c => section_ext (spMap σ) (by`. Rewrite using `[MonObj.comp_mul, hsA, hsA, hsA, I.add])`. Use `etaA_ker := fun a => section_ext (spMap σ) (by`.
+
+Rewrite using `[MonObj.comp_one, hsA]`. Conclude with `(I.ker _ hA _).2 ⟨a, rfl⟩)`. Use `geom := ?_ }, rfl⟩`. Introduce `k _ _ x β hx`. Take `⟨ν, rfl⟩ : ∃ ν : K →+* k, x = spMap ν` from `⟨(Spec.preimage x).hom, (Spec.map_preimage x).symm⟩`.
+
+Establish `hβ : β = ν.comp j`. Establish `h1 : spMap (ν.comp j) = spMap β`. Rewrite using `[← hx, ← Spec.map_comp]`. Both sides reduce to the same expression. Establish `h2` using `Spec.map_injective h1`.
+
+Conclude with `(congrArg CommRingCat.Hom.hom h2).symm`. Substitute `hβ` using the available equality. Use `⟨hty k ν ν.injective, ?_⟩` and prove the remaining obligations. Take `⟨I', hζ', hev⟩` from `GlobalTheory.T.tate_iso_exists_alg_closed laws E H D K σ T I k ν`. Use `⟨I', hζ' _ _ hA hζ, fun a => hev _ a _ hA (hsA a), fun a ha => ?_⟩` and prove the remaining obligations.
+
+Take `⟨c, hc⟩` from `exists_eq_nsmul D l l.prod hf ha`. Establish `h1 : a = e • a + l.M • c` using `by rw [← hc, ← add_smul, add_comm, hfe, one_smul]`. Rewrite using `[hev _ (e • a) _ hM (hsM _)]`. Use `conv_rhs => rw [h1]`. Conclude with `(ev_add_smul I' hM _ _).symm`.
+-/
 theorem exists_obj : Out.Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (B : Type) [CommRing B] (b : Base l B) (K : Type) [Field K] [NumberField K] (j : B →+* K) (σ : K →+* ℂ) (T : PAT H (Sp K)) (I : TateIso D ℂ (Over.mk (spMap σ) ⟶ T.t.G) (fun a x => x ≫ T.t.act.act a) (fun n x x' c => Out.WeilIs T.t.G T.t.PP.L n x x' (unitOn c))), HasType H T.t.act (j b.ρ) D.p D.q → (I.ζ l.A : ℂ) = σ (j b.ζ) → (∀ x : Over.mk (spMap σ) ⟶ T.t.G, x ^ l.M' = 1 → ∃ s : 𝟙_ (Over (Sp K)) ⟶ T.t.G, toUnit _ ≫ s = x) → ∃ o : Obj D l b (spMap j), o.t = T.t := by
   intro laws E _ _ _ H D l B _ b K _ _ j σ T I hty hζ hrat
   have hM : 0 < l.M := lt_of_lt_of_le (by norm_num) l.three_le

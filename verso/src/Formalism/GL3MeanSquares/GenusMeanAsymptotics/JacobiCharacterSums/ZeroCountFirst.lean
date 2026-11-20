@@ -10,6 +10,29 @@ namespace Formalism.HermitianLattices.Ext.PrimesInProgressions.Dens
 
 open Formalism.HermitianLattices.Ext.PrimitiveCharacterCasts.ZD Formalism.ZeroFreeDirichlet
 
+/- English proof (translation)
+Use `set q := qd M T with hqdef`. Use `set x : ℝ := (M : ℝ) * T with hx`. Establish `hM' : (3 : ℝ) ≤ M` using `by exact_mod_cast hM`. Establish `hx6 : 6 ≤ x` using `by rw [hx]; nlinarith`. Establish `hxq : x ≤ q` using `Nat.le_ceil x`.
+
+Establish `hqx1 : (q : ℝ) < x + 1` using `Nat.ceil_lt_add_one (by linarith)`. Establish `hqx : (q : ℝ) ≤ 2 * x` using `by linarith`. Establish `hq' : (512 : ℝ) ≤ q` using `by exact_mod_cast hq`. Establish `hl1 : 1 ≤ Real.log x` using `one_le_log_of_three_le' (by linarith)`. Establish `hLq1 : 1 ≤ Real.log q` using `one_le_log_of_three_le' (by linarith)`.
+
+Establish `hLq : Real.log q ≤ 2 * Real.log x`. Establish `h1 : Real.log q ≤ Real.log (2 * x)` using `Real.log_le_log (by linarith) hqx`. Rewrite `h1` using `[Real.log_mul (by norm_num) (by linarith)]`. Establish `h2 : Real.log 2 ≤ Real.log x` using `Real.log_le_log (by norm_num) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hU : 1 ≤ U` using `le_trans (Nat.one_le_pow _ _ (by omega)) hU1`. Establish `hU' : (1 : ℝ) ≤ U` using `by exact_mod_cast hU`. Establish `hJ : ((pJd M T : ℕ) : ℝ) + 1 ≤ 25 * Real.log q` using `dyadic_index_le_log q (by omega)`. Establish `hJ0 : (0 : ℝ) < (pJd M T : ℝ) + 1` using `by positivity`. Establish `hl0 : 0 ≤ Real.log (2 * (U : ℝ))` using `Real.log_nonneg (by linarith)`.
+
+Establish `hl : 1 + Real.log (2 * (U : ℝ)) ≤ 13 * Real.log q`. Establish `h1 : (2 * (U : ℝ)) ≤ (q : ℝ) ^ 12` using `by exact_mod_cast hU2`. Establish `h2 : Real.log (2 * (U : ℝ)) ≤ Real.log ((q : ℝ) ^ 12)` using `Real.log_le_log (by linarith) h1`. Rewrite `h2` using `[Real.log_pow]`. Move the coercions through the operations in `at h2`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hG : 9 + 8 * Real.log (2 * T + 1) ≤ 17 * Real.log x`. Establish `h1 : Real.log (2 * T + 1) ≤ Real.log x` using `Real.log_le_log (by linarith) (by rw [hx]; nlinarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hG0 : 0 ≤ 9 + 8 * Real.log (2 * T + 1)`.
+
+Establish `: 0 ≤ Real.log (2 * T + 1)` using `Real.log_nonneg (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hK0 : 0 ≤ 8 * (((1 : ℕ) : ℝ) + 1) * (2 + 2 * T)` using `by positivity`. Establish `hK : 8 * (((1 : ℕ) : ℝ) + 1) * (2 + 2 * T) ≤ 16 * q`. Establish `: 8 * (((1 : ℕ) : ℝ) + 1) * (2 + 2 * T) ≤ 16 * x`.
+
+Rewrite using `[hx]`. Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hθ : (0 : ℝ) < c / (((pJd M T : ℝ) + 1) * Real.log q)` using `by positivity`.
+
+Establish `hsmall` using `first_small_condition ((U : ℝ) ^ (1 - 2 * σ)) (1 + Real.log (2 * (U : ℝ))) (8 * (((1 : ℕ) : ℝ) + 1) * (2 + 2 * T)) ((pJd M T : ℝ) + 1) q (Real.sqrt q) (Real.log q) c (by linarith) (Real.sqrt_pos.2 (by linarith)) hc0 (rpow_neg_exponent_bound q U σ (by omega) hσ hU1) (by linarith) …`. Establish `hmain` using `dyadic_block_count S (fun p n => p.1 (n : ZMod 1)) (fun p => p.2) (pYd M T) N U σ (c / (((pJd M T : ℝ) + 1) * Real.log q)) (9 + 8 * Real.log (2 * T + 1)) (8 * (((1 : ℕ) : ℝ) + 1) * (2 + 2 * T)) hU hθ (by linarith) hG0 hK0 (fun p _ n => DirichletCharacter.norm_le_one _ _) (fun p h …`. Use `hmain.trans ?_` and prove the remaining obligations. Establish `hu2` using `rpow_pos_exponent_bound q U x σ (by linarith) hqx hσ hσ1 (by omega)`. Establish `hu0 : 0 ≤ (U : ℝ) ^ (2 - 2 * σ)` using `by positivity`.
+
+Establish `he : 4 * (U : ℝ) ^ (2 - 2 * σ) * (1 + Real.log (2 * (U : ℝ))) ^ 3 * (9 + 8 * Real.log (2 * T + 1)) / (c / (((pJd M T : ℝ) + 1) * Real.log q)) ^ 2 = 4 * (U : ℝ) ^ (2 - 2 * σ) * (1 + Real.log (2 * (U : ℝ))) ^ 3 * (9 + 8 * Real.log (2 * T + 1)) * ((((pJd M T : ℝ) + 1) * Real.log q) …`. Establish `hLq0 : Real.log q ≠ 0` using `by linarith`. Clear the denominators using the available nonvanishing facts. Rewrite using `[he]`. Establish `hl' : 1 + Real.log (2 * (U : ℝ)) ≤ 26 * Real.log x` using `by linarith`.
+
+Establish `hJ' : (pJd M T : ℝ) + 1 ≤ 50 * Real.log x` using `by linarith`. Establish `hl00 : 0 ≤ 1 + Real.log (2 * (U : ℝ))` using `by linarith`. Establish `hLq00 : 0 ≤ Real.log q` using `by linarith`. Use `gcongr`.
+-/
 theorem count_block0 (M : ℕ) (T σ c : ℝ) (S : Finset (DirichletCharacter ℂ 1 × ℂ)) (N U : ℕ)
     (hM : 3 ≤ M) (hT : 2 ≤ T) (hσ : 3 / 4 ≤ σ) (hσ1 : σ ≤ 1) (hq : 512 ≤ qd M T) (hc0 : 0 < c)
     (hc : 87880000 / c ^ 2 * Real.log (qd M T) ^ 7 ≤ Real.sqrt (qd M T))
@@ -87,6 +110,39 @@ theorem count_block0 (M : ℕ) (T σ c : ℝ) (S : Finset (DirichletCharacter �
   have hLq00 : 0 ≤ Real.log q := by linarith
   gcongr
 
+/- English proof (translation)
+Take `⟨c, hc0, q₂, hdet⟩` from `zero_detection_first`. Take `⟨q₁, hq₁⟩` from `log_pow_seven_le_sqrt (87880000 / c ^ 2)`. Use `⟨100 * (4 * 64 * 26 ^ 3 * 17 * (100 ^ 2 / c ^ 2)), max (max q₁ q₂) 512, ?_⟩` and prove the remaining obligations. Introduce `M _ T σ S hM hT hσ hq hS hsp`. Establish `hq512 : 512 ≤ qd M T` using `le_trans (le_max_right _ _) hq`.
+
+Establish `hc` using `hq₁ (qd M T) (le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hq)`. Establish `hq2 : q₂ ≤ qd M T` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hq`. Establish `hM' : (3 : ℝ) ≤ M` using `by exact_mod_cast hM`. Establish `hx6 : 6 ≤ (M : ℝ) * T` using `by nlinarith`. Establish `hl1 : 1 ≤ Real.log ((M : ℝ) * T)` using `one_le_log_of_three_le' (by linarith)`.
+
+Establish `hX0 : 0 ≤ ((M : ℝ) * T) ^ (24 * (1 - σ))` using `by positivity`. Break down `S.eq_empty_or_nonempty with rfl | ⟨p₀, hp₀⟩` into its components or cases. Simplify using `only [card_empty, Nat.cast_zero]`. Check the signs of the components of the expression. Establish `hσ1 : σ ≤ 1`.
+
+Take `⟨-, h1, h2, -⟩` from `hS p₀ hp₀`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set B : ℝ := 4 * (64 * ((M : ℝ) * T) ^ (24 * (1 - σ))) * (26 * Real.log ((M : ℝ) * T)) ^ 3 * (17 * Real.log ((M : ℝ) * T)) * ((50 * Real.log ((M : ℝ) * T) * (2 * Real.log ((M : ℝ) * T))) ^ 2 / c ^ 2) with hB`. Establish `hB0 : 0 ≤ B` using `by rw [hB]; positivity`. Set `e : DirichletCharacter ℂ M × ℂ → DirichletCharacter ℂ 1 × ℂ` to `fun p => (1, p.2)`.
+
+Establish `hinj : Set.InjOn e (S : Set (DirichletCharacter ℂ M × ℂ))`. Introduce `p hp p' hp' h`. Establish `h2 : (e p).2 = (e p').2` using `congrArg Prod.snd h`. Conclude with `Prod.ext ((hS p hp).1.trans (hS p' hp').1.symm) h2`. Use `set S' : Finset (DirichletCharacter ℂ 1 × ℂ) := S.image e with hS'`.
+
+Establish `hcard : S'.card = S.card` using `card_image_of_injOn hinj`. Set `Sij : ℕ × ℕ → Finset (DirichletCharacter ℂ 1 × ℂ)` to `fun ij => S'.filter (fun p => c / (((pJd M T : ℝ) + 1) * Real.log (qd M T)) ≤ ‖blkD (pYd M T) (2 ^ ij.1 * pNd M T) (pYd M T * 2 ^ ij.2) (fun n => p.1 (n : ZMod 1)) p.2‖)`. Establish `hsub : S' ⊆ (range 2 ×ˢ range (pJd M T + 1)).biUnion Sij`. Introduce `p hp`. Take `⟨a, ha, rfl⟩` from `mem_image.1 hp`.
+
+Take `⟨h1, h2, h3, h4, h5⟩` from `hS a ha`. Rewrite `h5` using `[h1]`. Take `⟨i, hi, j, hj, hjb⟩` from `hdet M T hT hM hq2 a.2 (by linarith) h4 h5`. Conclude with `mem_biUnion.2 ⟨(i, j), mem_product.2 ⟨hi, hj⟩, mem_filter.2 ⟨hp, hjb⟩⟩`. Establish `hj : ∀ ij ∈ range 2 ×ˢ range (pJd M T + 1), ((Sij ij).card : ℝ) ≤ B`.
+
+Introduce `ij hij`. Establish `hjJ : ij.2 < pJd M T + 1` using `mem_range.1 (mem_product.1 hij).2`. Establish `hYN : 2 * (qd M T ^ 3 * 2 ^ pJd M T) ≤ qd M T ^ 12` using `dyadic_size_le_pow_twelve (qd M T) hq512`. Apply `count_block0 M T σ c (Sij ij) (2 ^ ij.1 * pNd M T) (pYd M T * 2 ^ ij.2) hM hT hσ hσ1 hq512 hc0 hc` to reduce the goal to its premises. Conclude with `Nat.le_mul_of_pos_right _ (by positivity)`.
+
+Combine the equalities or inequalities in the displayed calculation. Unfold `pYd`. Use `gcongr`. Evaluate the numerical expressions. Use linear arithmetic over natural numbers and integers.
+
+Use `_ ≤ _ := hYN`. Introduce `p hp`. Take `⟨a, ha, rfl⟩` from `mem_image.1 (mem_filter.1 hp).1`. Take `⟨-, h2, h3, h4, -⟩` from `hS a ha`. Conclude with `⟨h2, h3.le, h4⟩`.
+
+Introduce `p hp p' hp' hne`. Take `⟨a, ha, rfl⟩` from `mem_image.1 (mem_filter.1 hp).1`. Take `⟨a', ha', rfl⟩` from `mem_image.1 (mem_filter.1 hp').1`. Conclude with `hsp a ha a' ha' (fun h => hne (by rw [h]))`. Introduce `p hp`.
+
+Conclude with `(mem_filter.1 hp).2`. Establish `h1 : (S.card : ℝ) ≤ ∑ ij ∈ range 2 ×ˢ range (pJd M T + 1), ((Sij ij).card : ℝ)`. Use `(card_le_card hsub).trans card_biUnion_le` as an intermediate fact. Rewrite `this` using `[hcard]`. Conclude with `this` after adjusting the coercions.
+
+Establish `h2 : ∑ ij ∈ range 2 ×ˢ range (pJd M T + 1), ((Sij ij).card : ℝ) ≤ 2 * ((pJd M T : ℝ) + 1) * B`. Use `sum_le_card_nsmul (range 2 ×ˢ range (pJd M T + 1)) (fun ij => ((Sij ij).card : ℝ)) B hj` as an intermediate fact. Simplify using `using this`. Establish `hJ' : (pJd M T : ℝ) + 1 ≤ 50 * Real.log ((M : ℝ) * T)`. Establish `hJ : ((pJd M T : ℕ) : ℝ) + 1 ≤ 25 * Real.log (qd M T)` using `dyadic_index_le_log (qd M T) (by omega)`.
+
+Establish `hqx1 : ((qd M T : ℕ) : ℝ) < (M : ℝ) * T + 1` using `Nat.ceil_lt_add_one (by linarith)`. Establish `hq' : (512 : ℝ) ≤ (qd M T : ℝ)` using `by exact_mod_cast hq512`. Establish `h3 : Real.log (qd M T) ≤ Real.log (2 * ((M : ℝ) * T))` using `Real.log_le_log (by linarith) (by linarith)`. Rewrite `h3` using `[Real.log_mul (by norm_num) (by linarith)]`. Establish `h4 : Real.log 2 ≤ Real.log ((M : ℝ) * T)` using `Real.log_le_log (by norm_num) (by linarith)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : 2 * ((pJd M T : ℝ) + 1) * B ≤ 2 * (50 * Real.log ((M : ℝ) * T)) * B` using `by gcongr`. Establish `h4 : 2 * (50 * Real.log ((M : ℝ) * T)) * B = 100 * (4 * 64 * 26 ^ 3 * 17 * (100 ^ 2 / c ^ 2)) * ((M : ℝ) * T) ^ (24 * (1 - σ)) * Real.log ((M : ℝ) * T) ^ 9`. Rewrite using `[hB]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h5 : Real.log ((M : ℝ) * T) ^ 9 ≤ Real.log ((M : ℝ) * T) ^ 10` using `pow_le_pow_right₀ hl1 (by norm_num)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem zero_count_first : Count0 := by
   obtain ⟨c, hc0, q₂, hdet⟩ := zero_detection_first
   obtain ⟨q₁, hq₁⟩ := log_pow_seven_le_sqrt (87880000 / c ^ 2)

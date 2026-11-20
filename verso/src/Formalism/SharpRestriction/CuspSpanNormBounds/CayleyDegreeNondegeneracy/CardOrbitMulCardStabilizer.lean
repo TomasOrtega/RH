@@ -10,6 +10,11 @@ open MulAction
 
 variable {Γ 𝒳 𝒴 : Type} [Group Γ] [MulAction Γ 𝒳] [MulAction Γ 𝒴]
 
+/- English proof (translation)
+Establish `h1 : Nat.card (orbit A x) = Nat.card (A ⧸ stabilizer A x)` using `Nat.card_congr (orbitEquivQuotientStabilizer A x)`. Establish `h2 : stabilizer A x = (stabilizer Γ x).subgroupOf A`. Use extensionality with `a`. Simplify using `[mem_stabilizer_iff, Subgroup.mem_subgroupOf, Subgroup.smul_def]`. Establish `h3 : Nat.card (stabilizer A x) = Nat.card (stabilizer Γ x)`.
+
+Rewrite using `[h2]`. Conclude with `Nat.card_congr (Subgroup.subgroupOfEquivOfLe hle).toEquiv`. Rewrite using `[h1, ← h3, ← Subgroup.card_eq_card_quotient_mul_card_subgroup]`.
+-/
 theorem card_orbit_mul_card_stabilizer (A : Subgroup Γ) (x : 𝒳) (hle : stabilizer Γ x ≤ A) :
     Nat.card (orbit A x) * Nat.card (stabilizer Γ x) = Nat.card A := by
   have h1 : Nat.card (orbit A x) = Nat.card (A ⧸ stabilizer A x) :=
@@ -22,10 +27,40 @@ theorem card_orbit_mul_card_stabilizer (A : Subgroup Γ) (x : 𝒳) (hle : stabi
     exact Nat.card_congr (Subgroup.subgroupOfEquivOfLe hle).toEquiv
   rw [h1, ← h3, ← Subgroup.card_eq_card_quotient_mul_card_subgroup]
 
+/- English proof (translation)
+The claim follows from `Nat.card_congr (stabilizerEquivStabilizerOfOrbitRel (G := Γ) (a := g • y) (b := y) ⟨g, rfl⟩).toEquiv`.
+-/
 theorem card_stabilizer_smul_eq (g : Γ) (y : 𝒳) :
     Nat.card (stabilizer Γ (g • y)) = Nat.card (stabilizer Γ y) :=
   Nat.card_congr (stabilizerEquivStabilizerOfOrbitRel (G := Γ) (a := g • y) (b := y) ⟨g, rfl⟩).toEquiv
 
+/- English proof (translation)
+Set `O : 𝒳 → Set 𝒳` to `fun y => {x | (x ∈ R ∧ m x = M) ∧ ∃ γ : Γ, γ • y = x}`. Establish `hOfin : ∀ y, (O y).Finite` using `fun y => hfin.subset fun x hx => hx.1`. Establish `hApos : (0 : ℝ) < (Nat.card (stabilizer Γ M) : ℝ)` using `by exact_mod_cast Nat.card_pos`. Establish `hcard : ∀ y ∈ s.filter (fun y => ∃ γ : Γ, γ • M = m y), (O y).ncard * Nat.card (stabilizer Γ y) = Nat.card (stabilizer Γ M)`. Introduce `y hy`.
+
+Take `⟨hys, γ0, hγ0⟩` from `Finset.mem_filter.1 hy`. Establish `hmx : m (γ0⁻¹ • y) = M` using `by rw [hm, ← hγ0, inv_smul_smul]`. Establish `hle : stabilizer Γ (γ0⁻¹ • y) ≤ stabilizer Γ M`. Introduce `γ hγ`. Rewrite `hγ`, the goal using `[mem_stabilizer_iff]`.
+
+Rewrite using `[← hmx, ← hm, hγ]`. Establish `hO : O y = orbit (stabilizer Γ M) (γ0⁻¹ • y)`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨_, hxM⟩, γ, rfl⟩`.
+
+Use `⟨⟨γ * γ0, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_stabilizer_iff, mul_smul, hγ0, ← hm, hxM]`. Express the relevant statement in the definitionally equal form `(γ * γ0) • γ0⁻¹ • y = γ • y`. Rewrite using `[mul_smul, smul_inv_smul]`. Introduce and unpack `⟨⟨a, ha⟩, rfl⟩`.
+
+Rewrite `ha` using `[mem_stabilizer_iff]`. Use `⟨⟨hR a _ (hR _ _ (hsR y hys)), ?_⟩, a * γ0⁻¹, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `m (a • γ0⁻¹ • y) = M`. Rewrite using `[hm, hmx, ha]`. Express the relevant statement in the definitionally equal form `(a * γ0⁻¹) • y = a • γ0⁻¹ • y`.
+
+Rewrite using `[mul_smul]`. Rewrite using `[hO, ← card_stabilizer_smul_eq γ0⁻¹ y, ← Nat.card_coe_set_eq]`. Conclude with `card_orbit_mul_card_stabilizer _ _ hle`. Establish `hpart : {x | x ∈ R ∧ m x = M}.ncard = ∑ y ∈ s.filter (fun y => ∃ γ : Γ, γ • M = m y), (O y).ncard`. Rewrite using `[Set.ncard_eq_toFinset_card _ hfin]`.
+
+Establish `hU : hfin.toFinset = (s.filter (fun y => ∃ γ : Γ, γ • M = m y)).biUnion fun y => (hOfin y).toFinset`. Use extensionality with `x`. Simplify using `only [Set.Finite.mem_toFinset, Finset.mem_biUnion, Finset.mem_filter]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Take `⟨y, ⟨hy, γ, hγ⟩, _⟩` from `hs x hx.1`. Use `⟨y, ⟨hy, γ⁻¹, ?_⟩, hx, γ, hγ⟩` and prove the remaining obligations. Rewrite using `[← hx.2, ← hγ, hm, inv_smul_smul]`. Introduce and unpack `⟨y, _, hx, _⟩`. Conclude with `hx`.
+
+Rewrite using `[hU, Finset.card_biUnion]`. Conclude with `Finset.sum_congr rfl fun y _ => (Set.ncard_eq_toFinset_card _ (hOfin y)).symm`. Introduce `y hy y' hy' hne`. Rewrite using `[Function.onFun, Finset.disjoint_left]`. Rewrite `hy`, `hy'` using `[Finset.mem_coe]`.
+
+Introduce `x hx hx'`. Rewrite `hx`, `hx'` using `[Set.Finite.mem_toFinset]`. Take `⟨y0, _, huniq⟩` from `hs x hx.1.1`. Conclude with `hne ((huniq y ⟨(Finset.mem_filter.1 hy).1, hx.2⟩).trans (huniq y' ⟨(Finset.mem_filter.1 hy').1, hx'.2⟩).symm)`. Rewrite using `[hpart, Nat.cast_sum, Finset.sum_div]`.
+
+Use `Finset.sum_congr rfl fun y hy => ?_` and prove the remaining obligations. Establish `h` using `hcard y hy`. Establish `h' : ((O y).ncard : ℝ) * (Nat.card (stabilizer Γ y) : ℝ) = (Nat.card (stabilizer Γ M) : ℝ)`. Conclude with `h` after adjusting the coercions. Establish `hs0 : (Nat.card (stabilizer Γ y) : ℝ) ≠ 0`.
+
+Introduce `h0`. Rewrite `h'` using `[h0, mul_zero]`. Conclude with `hApos.ne h'`. Rewrite using `[← h']`. Establish `hO0 : ((O y).ncard : ℝ) ≠ 0`.
+
+Introduce `h0`. Rewrite `h'` using `[h0, zero_mul]`. Conclude with `hApos.ne h'`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem sum_fibre_inv_card_stabilizer (m : 𝒳 → 𝒴) (hm : ∀ (γ : Γ) x, m (γ • x) = γ • m x) (R : Set 𝒳)
     (hR : ∀ (γ : Γ), ∀ x ∈ R, γ • x ∈ R) (s : Finset 𝒳) (hsR : ∀ x ∈ s, x ∈ R)
     (hs : ∀ x ∈ R, ∃! y, y ∈ s ∧ ∃ γ : Γ, γ • y = x) (M : 𝒴) (hA : Finite (stabilizer Γ M))

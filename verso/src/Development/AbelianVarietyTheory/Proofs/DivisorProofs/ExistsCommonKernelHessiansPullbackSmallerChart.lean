@@ -18,6 +18,9 @@ namespace GlobalTheory.HessKer
 
 open ReciprocityTheory.L2DbarEstimates (V cHess bas)
 
+/- English proof (translation)
+Establish `hk : LinearMap.ker P.vecMulLinear ≠ ⊥` using `LinearMap.ker_ne_bot_of_finrank_lt (by simpa using h)`. Take `⟨ξ, hξ, h0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hk`. Conclude with `⟨ξ, h0, by simpa using hξ⟩`.
+-/
 theorem exists_vecMul_eq_zero {D D' : ℕ} (h : D' < D) (P : Matrix (Fin D) (Fin D') ℂ) :
     ∃ ξ : Fin D → ℂ, ξ ≠ 0 ∧ Matrix.vecMul ξ P = 0 := by
   have hk : LinearMap.ker P.vecMulLinear ≠ ⊥ :=
@@ -25,6 +28,19 @@ theorem exists_vecMul_eq_zero {D D' : ℕ} (h : D' < D) (P : Matrix (Fin D) (Fin
   obtain ⟨ξ, hξ, h0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot hk
   exact ⟨ξ, h0, by simpa using hξ⟩
 
+/- English proof (translation)
+Introduce `k _ X Y p q σ D D' hD π hπ c c' y hy hy0`. Use `set m := PtsOver.map π hπ (spMap σ)`. Establish `hm : ∀ z, (m z).1 = z.1 ≫ π` using `fun _ => rfl`. Use `set F : V D → V D' := c.e ∘ m ∘ c'.e.symm with hFdef`. Use `set U := c'.e.target ∩ c'.e.symm ⁻¹' (m ⁻¹' c.e.source)`.
+
+Establish `hU : IsOpen U` using `isOpen_over c'.e (c.e.open_source.preimage (continuous_of_comp hm))`. Establish `hyU : c'.e y ∈ U` using `mem_over c'.e hy hy0`. Establish `hF0 : DifferentiableOn ℂ F U` using `AlgChart.holo_map hm c' c`. Establish `hF : ContDiffOn ℂ 2 F U` using `(contDiffOn_piLp 2).2 fun a => (ReciprocityTheory.L2DbarEstimates.contDiffOn_of_differentiableOn D _ U hU (differentiableOn_euclidean.1 hF0 a)).of_le (by norm_cast)`. Establish `hFy : F (c'.e y) = c.e (m y)`.
+
+Simplify using `only [hFdef, Function.comp_apply, c'.e.left_inv hy]`. Take `⟨ξ, hξ, hP⟩` from `exists_vecMul_eq_zero hD (Matrix.of fun j b => fderiv ℂ F (c'.e y) (bas D j) b)`. Use `⟨ξ, hξ, fun A i hi => ?_⟩` and prove the remaining obligations. Establish `him : m y ∈ ptsIn p σ (A.B.U (i PUnit.unit))` using `mem_of_mem_linComb (m := fun _ => m y) (fun _ => rfl) hi PUnit.unit`. Use `set g : V D' → ℂ := fun v => (A.φ.φ (i PUnit.unit) (c.e.symm v) : ℂ)`.
+
+Establish `hg : ContDiffAt ℝ 2 g (F (c'.e y))` using `hFy ▸ Complex.ofRealCLM.contDiff.contDiffAt.comp _ (A.cInf.contDiffAt c hy0 him)`. Establish `e : (fun v => ((A.pull π hπ).φ.φ i (c'.e.symm v) : ℂ)) =ᶠ[𝓝 (c'.e y)] g ∘ F` using `by filter_upwards [hU.mem_nhds hyU] with v hv`. Use `Weight.pull_φ A.φ π hπ i (c'.e.symm v)` as an intermediate fact. Simplify using `only [g, hFdef, Function.comp_apply, c.e.left_inv hv.2]`. Conclude with `congrArg _ this`.
+
+Establish `key : c'.hess (A.pull π hπ).φ i y = (Matrix.of fun j b => fderiv ℂ F (c'.e y) (bas D j) b) * (cHess D' g (F (c'.e y)) * Matrix.of fun a l => (starRingEnd ℂ) (fderiv ℂ F (c'.e y) (bas D l) a))` using `by show cHess D _ (c'.e y) = _`. Rewrite using `[ReciprocityTheory.L2DbarEstimates.Y.cmpb_cHess_congr e, ← Matrix.mul_assoc]`. Use extensionality with `j l`. Rewrite using `[GlobalTheory.HessPull.cHess_comp_apply D D' g F U hU _ hyU hF hg j l, Matrix.mul_apply]`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, Finset.sum_mul]`.
+
+Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`. Rewrite using `[key, ← Matrix.vecMul_vecMul, hP, Matrix.zero_vecMul]`.
+-/
 theorem exists_common_kernel : ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) (p : X ⟶ Sp k) (q : Y ⟶ Sp k) (σ : k →+* ℂ) (D D' : ℕ), D' < D → ∀ (π : Y ⟶ X) (hπ : π ≫ p = q) (c : AlgChart p σ D') (c' : AlgChart q σ D) (w : CxPts q σ), w ∈ c'.e.source → ptMap π hπ σ w ∈ c.e.source → ∃ ξ : Fin D → ℂ, ξ ≠ 0 ∧ ∀ (A : MLine p σ) (i : (A.pull π hπ).B.ι), w ∈ ptsIn q σ ((A.pull π hπ).B.U i) → Matrix.vecMul ξ (c'.hess (A.pull π hπ).φ i w) = 0 := by
   intro k _ X Y p q σ D D' hD π hπ c c' y hy hy0
   set m := PtsOver.map π hπ (spMap σ)

@@ -23,6 +23,11 @@ set_option synthInstance.maxHeartbeats 400000
 
 namespace GlobalTheory.IdemHalf
 
+/- English proof (translation)
+Take `⟨h1, h2, v, ε, ⟨α, rfl, -, -⟩, hε⟩` from `h`. Establish `hz : infPart D (algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 α)) = 0` using `by show infPart D ((pairA D.host.F 0 α) ⊗ₜ[D.host.F] (1 : D.host.E)) = 0 show (fstA D.host.F (pairA D.host.F 0 α)) ⊗ₜ[D.host.F] (1 : D.host.E) = 0`. Rewrite using `[show fstA D.host.F (pairA D.host.F 0 α) = 0 from rfl, TensorProduct.zero_tmul]`. Establish `hs : infPart D e + infPart D (cA D e) = 0` using `by rw [← (infPart D).map_add, hε, hz]`. Establish `hm : infPart D e * infPart D (cA D e) = 0` using `by rw [← (infPart D).map_mul, h2, (infPart D).map_zero]`.
+
+Establish `hi : infPart D e * infPart D e = infPart D e` using `by rw [← (infPart D).map_mul, h1]`. Establish `hb : infPart D (cA D e) = - infPart D e` using `eq_neg_of_add_eq_zero_right hs`. Rewrite `hm` using `[hb, mul_neg, hi]`. Establish `ha : infPart D e = 0` using `neg_eq_zero.mp hm`. Conclude with `⟨ha, by rw [hb, ha, neg_zero]⟩`.
+-/
 theorem infPart_eq_zero_of_isSplitIdem {D : D7} {e : AE D} (h : IsSplitIdem D e) :
     infPart D e = 0 ∧ infPart D (cA D e) = 0 := by
   obtain ⟨h1, h2, v, ε, ⟨α, rfl, -, -⟩, hε⟩ := h
@@ -38,6 +43,13 @@ theorem infPart_eq_zero_of_isSplitIdem {D : D7} {e : AE D} (h : IsSplitIdem D e)
   have ha : infPart D e = 0 := neg_eq_zero.mp hm
   exact ⟨ha, by rw [hb, ha, neg_zero]⟩
 
+/- English proof (translation)
+Introduce `D P e he m n y hy`. Take `⟨⟨es, hes, rfl⟩, -⟩` from `he`. Establish `h0 : infPart D (∑ PP ∈ P, es PP) = 0`. Rewrite using `[map_sum (infPart D)]`. Conclude with `Finset.sum_eq_zero fun PP hPP => (infPart_eq_zero_of_isSplitIdem (hes PP hPP).1).1`.
+
+Establish `h1 : infPart D (cA D (∑ PP ∈ P, es PP)) = 0`. Rewrite using `[map_sum (cA D), map_sum (infPart D)]`. Conclude with `Finset.sum_eq_zero fun PP hPP => (infPart_eq_zero_of_isSplitIdem (hes PP hPP).1).2`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.zero_apply]`.
+
+Break down `hy with hy | hy` into its components or cases. Rewrite using `[← hy i j, (infPart D).map_mul, h0, zero_mul]`. Rewrite using `[← hy i j, (infPart D).map_mul, h1, zero_mul]`.
+-/
 theorem halfFin : ∀ {D : D7} (P : Finset (Formalism.L2.DIV.Pl D.host.E)) (e : AE D), IsIdemSum e P → ∀ {m n : ℕ} (y : Mx D m n), (IsHalf e y ∨ IsHalf (cA D e) y) → y.map (infPart D) = 0 := by
   intro D P e he m n y hy
   obtain ⟨⟨es, hes, rfl⟩, -⟩ := he

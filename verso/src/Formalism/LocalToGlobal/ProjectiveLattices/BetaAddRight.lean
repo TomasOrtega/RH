@@ -39,6 +39,9 @@ namespace DatAt
 
 variable {Y : Model Xo c β} {p : ℕ} {C : SCF p} {P : PointsOfFlagModel.PtC Y C}
 
+/- English proof (translation)
+Rewrite using `[A.beta_symm, hA C P A, A.beta_symm b, A.beta_symm b']`.
+-/
 theorem beta_add_right (hA : BetaAdd Y p) (A : DatAt Y P) (a b b' : A.Ylat) :
     A.beta a (b + b') = A.beta a b + A.beta a b' := by
   rw [A.beta_symm, hA C P A, A.beta_symm b, A.beta_symm b']
@@ -50,6 +53,9 @@ def beLin (hA : BetaAdd Y p) (A : DatAt Y P) : A.Ylat →ₗ[ℤ] A.Ylat →ₗ[
       ext b
       simp [hA C P A a a' b])).toIntLinearMap
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem beLin_apply (hA : BetaAdd Y p) (A : DatAt Y P) (a b : A.Ylat) : A.beLin hA a b = A.beta a b := rfl
 
 end DatAt

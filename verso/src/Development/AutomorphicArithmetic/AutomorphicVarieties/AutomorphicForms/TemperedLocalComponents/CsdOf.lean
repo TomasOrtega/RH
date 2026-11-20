@@ -4,6 +4,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.T
 
 open NumberField Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.GalOfCusp GlobalTheory.HeckeGal
 
+/- English proof (translation)
+Introduce `hP F₀ F Ω _ _ _ _ _ _ _ _ _ _ _ _ l _ ι n hn r c P hc haut hpair`. Take `⟨π, hreg, hatt⟩` from `((UpperTheory.V.Af.autBridge hP F Ω l ι n r).2.1).1 haut`. Use `haveI : IsAlgClosure (maximalRealSubfield F) Ω := ⟨IsAlgClosure.isAlgClosed F, Algebra.IsAlgebraic.trans (maximalRealSubfield F) F Ω⟩`. Take `⟨art, hart⟩ : ∃ art : Neutral.B1.Ideles (maximalRealSubfield F) →* Gab (maximalRealSubfield F) Ω, IsGlobalArtin art` from `hP.toClassicalTheorems.litN.aut.art _ Ω`. Establish `h1 : IsLAdicCharOf (E` using `F) (Ω := Ω) ι 1 1 := by`.
+
+Use `⟨continuous_const, art, 0, hart, fun k _ => ?_, fun x σ _ => ?_⟩` and prove the remaining obligations. Simplify using `[HChar.inf]`. Rewrite using `[infPow_zero, lPow_zero]`. Express the relevant statement in the definitionally equal form `(1 : Qbar l) = ι.symm (1 * 1⁻¹) * 1`. Simplify using the standard rewrite rules.
+
+Take `⟨j, hj⟩` from `hc`. Set `c' : G (maximalRealSubfield F) Ω` to `AlgEquiv.ofRingEquiv (f := c.toRingEquiv) fun x => by`. Apply `j.injective` to reduce the goal to its premises. Use `(hj _).trans ?_` and prove the remaining obligations. Conclude with `(mem_maximalRealSubfield_iff x.1).1 x.2 (j.comp (algebraMap F Ω))`.
+
+Establish `hd` using `UpperTheory.V.Af.selfDualC hP F Ω l ι n hn r π hatt 1 1 h1 c' P ⟨j, hj⟩ (by`. Introduce `s s' hs`. Rewrite using `[MonoidHom.one_comp, mul_one]`. Use `hpair s s' (AlgEquiv.ext fun x => ?_)` and prove the remaining obligations. Conclude with `DFunLike.congr_fun hs x)`.
+
+Rewrite `hd` using `[map_one, GlobalTheory.ContraPair.dualIsConjBy_one]`. Conclude with `⟨π, hreg, hd, hatt⟩`.
+-/
 theorem UpperTheory.V.Af.csdOf :
     UpperTheory.V.Af.HypothesesH → UpperTheory.V.Af.CsdOf := by
   intro hP F₀ F Ω _ _ _ _ _ _ _ _ _ _ _ _ l _ ι n hn r c P hc haut hpair

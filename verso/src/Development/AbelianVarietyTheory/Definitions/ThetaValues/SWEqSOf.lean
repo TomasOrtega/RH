@@ -13,6 +13,9 @@ variable {D : D7}
 def sOf (B : WeightFamilies.Prov D) (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D) {j : ℕ} (w : WeightFamilies.Wt D j) : 𝓞 B.KO :=
   nnW B hinj EX w * (pPow D (c2 D w) (Formalism.MainNotions.DIV.Cons.cHalf w) (Formalism.MainNotions.DIV.Cons.cHalf w) : 𝓞 B.KO)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sW_eq_sOf (B : WeightFamilies.Prov D) (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D) (p : ℕ) {j : ℕ}
     (ka wL wF : WeightFamilies.Wt D j) (T : ℕ) : (scalOfP B hinj EX p ka wL wF T).sW = sOf B hinj EX wL := rfl
 

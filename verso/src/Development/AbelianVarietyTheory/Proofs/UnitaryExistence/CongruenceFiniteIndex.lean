@@ -16,6 +16,9 @@ open scoped nonZeroDivisors in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
   {Gm : Matrix (Fin r) (Fin r) E} {Λ : Submodule (𝓞 E) (Fin r → E)} in
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Rewrite using `[Units.val_mul, Matrix.mulVec_mulVec]`.
+-/
 theorem _root_.GlobalTheory.CongruenceIndex.mul_mulVec (γ δ : GL (Fin r) E) (v : Fin r → E) :
     ((γ * δ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ v =
       (γ : Matrix (Fin r) (Fin r) E) *ᵥ ((δ : Matrix (Fin r) (Fin r) E) *ᵥ v) := by
@@ -26,12 +29,18 @@ open scoped nonZeroDivisors in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
   {Gm : Matrix (Fin r) (Fin r) E} {Λ : Submodule (𝓞 E) (Fin r → E)} in
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`.
+-/
 theorem _root_.GlobalTheory.CongruenceIndex.mulVec_inv_mulVec (γ : GL (Fin r) E) (v : Fin r → E) :
     (γ : Matrix (Fin r) (Fin r) E) *ᵥ (((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ v)
       = v := by
   rw [Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Rewrite using `[← mul_mulVec, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
+-/
 theorem inv_mulVec_mulVec (γ : GL (Fin r) E) (v : Fin r → E) :
     ((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ ((γ : Matrix (Fin r) (Fin r) E) *ᵥ v)
       = v := by
@@ -41,6 +50,9 @@ open NumberField Matrix in
 open scoped nonZeroDivisors in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
   {Gm : Matrix (Fin r) (Fin r) E} {Λ : Submodule (𝓞 E) (Fin r → E)} in
+/- English proof (translation)
+Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.IsUStab`. Conclude with `⟨fun x y => by simp, fun x => by simp⟩`.
+-/
 theorem _root_.GlobalTheory.CongruenceIndex.isUStab_one : _root_.ReciprocityTheory.ChartRestriction.G.FD.IsUStab Gm Λ 1 := by
   unfold _root_.ReciprocityTheory.ChartRestriction.G.FD.IsUStab
   exact ⟨fun x y => by simp, fun x => by simp⟩
@@ -49,6 +61,9 @@ open NumberField Matrix in
 open scoped nonZeroDivisors in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
   {Gm : Matrix (Fin r) (Fin r) E} {Λ : Submodule (𝓞 E) (Fin r → E)} in
+/- English proof (translation)
+Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.IsUStab at *`. Use `⟨fun x y => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.GlobalTheory.CongruenceIndex.mul_mulVec, _root_.GlobalTheory.CongruenceIndex.mul_mulVec, hγ.1, hδ.1]`. Rewrite using `[_root_.GlobalTheory.CongruenceIndex.mul_mulVec]`. Conclude with `(hδ.2 x).trans (hγ.2 _)`.
+-/
 theorem _root_.GlobalTheory.CongruenceIndex.isUStab_mul {γ δ : GL (Fin r) E} (hγ : _root_.ReciprocityTheory.ChartRestriction.G.FD.IsUStab Gm Λ γ) (hδ : _root_.ReciprocityTheory.ChartRestriction.G.FD.IsUStab Gm Λ δ) :
     _root_.ReciprocityTheory.ChartRestriction.G.FD.IsUStab Gm Λ (γ * δ) := by
   unfold _root_.ReciprocityTheory.ChartRestriction.G.FD.IsUStab at *
@@ -61,6 +76,11 @@ open NumberField Matrix in
 open scoped nonZeroDivisors in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
   {Gm : Matrix (Fin r) (Fin r) E} {Λ : Submodule (𝓞 E) (Fin r → E)} in
+/- English proof (translation)
+Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.IsUStab at *`. Use `⟨fun x y => ?_, fun x => ?_⟩` and prove the remaining obligations. Establish `h` using `hγ.1 (((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ x) (((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ y)`. Rewrite `h` using `[_root_.GlobalTheory.CongruenceIndex.mulVec_inv_mulVec, _root_.GlobalTheory.CongruenceIndex.mulVec_inv_mulVec]`. Conclude with `h.symm`.
+
+Establish `h` using `hγ.2 (((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ x)`. Rewrite `h` using `[_root_.GlobalTheory.CongruenceIndex.mulVec_inv_mulVec]`. Conclude with `h.symm`.
+-/
 theorem _root_.GlobalTheory.CongruenceIndex.isUStab_inv {γ : GL (Fin r) E} (hγ : _root_.ReciprocityTheory.ChartRestriction.G.FD.IsUStab Gm Λ γ) :
     _root_.ReciprocityTheory.ChartRestriction.G.FD.IsUStab Gm Λ γ⁻¹ := by
   unfold _root_.ReciprocityTheory.ChartRestriction.G.FD.IsUStab at *
@@ -94,6 +114,9 @@ def congruenceSubgroup (Gm : Matrix (Fin r) (Fin r) E) (Λ : Submodule (𝓞 E) 
     rw [smul_neg, ← sub_eq_add_neg, eq_sub_iff_add_eq]
     exact e.symm
 
+/- English proof (translation)
+Use `haveI : Module.Finite (𝓞 E) Λ := Module.Finite.iff_fg.2 hΛ`. Use `haveI : Module.Finite ℤ Λ := Module.Finite.trans (𝓞 E) Λ`. Use `haveI : AddGroup.FG Λ := Module.Finite.iff_addGroup_fg.1 inferInstance`. Use `haveI := AddSubgroup.finiteIndex_range_nsmulAddMonoidHom_of_fg Λ hM.ne'`. Use `infer_instance`.
+-/
 theorem finite_quotient (hΛ : Λ.FG) {M : ℕ} (hM : 0 < M) :
     Finite (Λ ⧸ (nsmulAddMonoidHom M : Λ →+ Λ).range) := by
   haveI : Module.Finite (𝓞 E) Λ := Module.Finite.iff_fg.2 hΛ
@@ -106,6 +129,17 @@ open NumberField Matrix in
 open scoped nonZeroDivisors in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
   {Gm : Matrix (Fin r) (Fin r) E} {Λ : Submodule (𝓞 E) (Fin r → E)} in
+/- English proof (translation)
+Establish `hsi` using `_root_.GlobalTheory.CongruenceIndex.isUStab_inv hs`. Use `⟨_root_.GlobalTheory.CongruenceIndex.isUStab_mul hsi hγ, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite `hv` using `[← hT]`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem t ht`.
+
+Take `⟨w, hw, e⟩` from `h t ht`. Use `⟨((s⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ w, (hsi.2 w).1 hw, ?_⟩` and prove the remaining obligations. Establish `hst` using `_root_.GlobalTheory.CongruenceIndex.mulVec_inv_mulVec s⁻¹ t`. Rewrite `hst` using `[inv_inv]`. Rewrite using `[_root_.GlobalTheory.CongruenceIndex.mul_mulVec, e, Matrix.mulVec_add, hst, Matrix.mulVec_smul]`.
+
+Consider the case `zero => exact ⟨0, Λ.zero_mem, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨w, hw, ex⟩` from `hx`. Take `⟨w', hw', ey⟩` from `hy`. Use `⟨w + w', Λ.add_mem hw hw', ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.mulVec_add, ex, ey, smul_add]`. Normalize the expressions using the abelian group laws. Consider the case `smul a x _ hx`. Take `⟨w, hw, ex⟩` from `hx`. Use `⟨a • w, Λ.smul_mem a hw, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.mulVec_smul, ex, smul_add, smul_comm a M w]`.
+-/
 private theorem inv_mul_mem_congruenceSubgroup_of_agree_mod {T : Finset (Fin r → E)}
     (hT : Submodule.span (𝓞 E) (T : Set (Fin r → E)) = Λ) {M : ℕ} {s γ : GL (Fin r) E}
     (hs : _root_.ReciprocityTheory.ChartRestriction.G.FD.IsUStab Gm Λ s) (hγ : _root_.ReciprocityTheory.ChartRestriction.G.FD.IsUStab Gm Λ γ)
@@ -138,6 +172,21 @@ open NumberField Matrix in
 open scoped nonZeroDivisors in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
   {Gm : Matrix (Fin r) (Fin r) E} {Λ : Submodule (𝓞 E) (Fin r → E)} in
+/- English proof (translation)
+Take `⟨T, hT⟩` from `id hΛ`. Use `set I : Ideal (𝓞 E) := Ideal.span {(M : 𝓞 E)} with hIdef`. Establish `hI : I ≠ ⊥`. Rewrite using `[hIdef, Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hM.ne'` after adjusting the coercions.
+
+Use `haveI : Finite (𝓞 E ⧸ I) := Ideal.finiteQuotientOfFreeOfNeBot I hI`. Use `haveI : Module.Finite (𝓞 E) Λ := Module.Finite.iff_fg.mpr hΛ`. Use `haveI : Subsingleton (Λ ⧸ (⊤ : Submodule (𝓞 E) Λ)) := Submodule.Quotient.subsingleton_iff.2 rfl`. Use `haveI : Finite (Λ ⧸ I • (⊤ : Submodule (𝓞 E) Λ)) := Submodule.finite_quotient_smul I (Module.Finite.fg_top)`. Set `St` to `{γ : GL (Fin r) E // _root_.ReciprocityTheory.ChartRestriction.G.FD.IsUStab Gm Λ γ}`.
+
+Set `Φ : St → (T → Λ ⧸ I • (⊤ : Submodule (𝓞 E) Λ))` to `fun γ t => Submodule.Quotient.mk ⟨(γ.1 : Matrix (Fin r) (Fin r) E) *ᵥ t.1, (γ.2.2 t.1).1 (hT ▸ Submodule.subset_span t.2)⟩`. Use `haveI : Fintype (T → Λ ⧸ I • (⊤ : Submodule (𝓞 E) Λ)) := Fintype.ofFinite _`. Set `rep : (T → Λ ⧸ I • (⊤ : Submodule (𝓞 E) Λ)) → GL (Fin r) E` to `fun x => if h : ∃ γ : St, Φ γ = x then h.choose.1 else 1`. Use `⟨Finset.univ.image rep, fun γ hγ => ⟨rep (Φ ⟨γ, hγ⟩), Finset.mem_image_of_mem _ (Finset.mem_univ _), ?_⟩⟩` and prove the remaining obligations. Establish `hex : ∃ δ : St, Φ δ = Φ ⟨γ, hγ⟩` using `⟨_, rfl⟩`.
+
+Establish `hrep : rep (Φ ⟨γ, hγ⟩) = hex.choose.1` using `dif_pos hex`. Rewrite using `[hrep]`. Use `inv_mul_mem_congruenceSubgroup_of_agree_mod hT hex.choose.2 hγ (fun t ht => ?_)` and prove the remaining obligations. Establish `hq` using `congrFun hex.choose_spec ⟨t, ht⟩`. Establish `hmem` using `(Submodule.Quotient.eq _).1 hq.symm`.
+
+Establish `hdiv : ∀ x : Λ, x ∈ I • (⊤ : Submodule (𝓞 E) Λ) → ∃ b : Λ, (M : 𝓞 E) • b = x`. Introduce `x hx`. Rewrite `hx` using `[hIdef, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Take `⟨b, -, hb⟩` from `hx`. Conclude with `⟨b, hb⟩`.
+
+Take `⟨b, hb⟩` from `hdiv _ hmem`. Use `⟨b.1, b.2, ?_⟩` and prove the remaining obligations. Establish `hb'` using `congrArg Subtype.val hb`. Simplify using `only [Submodule.coe_smul, Submodule.coe_sub] at hb'`. Rewrite `hb'` using `[Nat.cast_smul_eq_nsmul]`.
+
+Rewrite using `[hb']`. Normalize the expressions using the abelian group laws.
+-/
 theorem _root_.GlobalTheory.CongruenceIndex.exists_finset_cosets (hΛ : Λ.FG) {M : ℕ} (hM : 0 < M) :
     ∃ S : Finset (GL (Fin r) E), ∀ γ, _root_.ReciprocityTheory.ChartRestriction.G.FD.IsUStab Gm Λ γ →
       ∃ s ∈ S, s⁻¹ * γ ∈ _root_.GlobalTheory.CongruenceIndex.congruenceSubgroup Gm Λ M := by
@@ -186,6 +235,9 @@ open scoped nonZeroDivisors in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
   {Gm : Matrix (Fin r) (Fin r) E} {Λ : Submodule (𝓞 E) (Fin r → E)} in
 
+/- English proof (translation)
+Introduce `E _ _ _ r M Gm Λ hΛ hM`. Conclude with `⟨_root_.GlobalTheory.CongruenceIndex.congruenceSubgroup Gm Λ M, fun γ => Iff.rfl, _root_.GlobalTheory.CongruenceIndex.exists_finset_cosets (Gm := Gm) hΛ hM⟩`.
+-/
 theorem _root_.GlobalTheory.CongruenceIndex.congruence_finiteIndex : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r M : ℕ) (Gm : Matrix (Fin r) (Fin r) E) (Λ : Submodule (𝓞 E) (Fin r → E)), Λ.FG → 0 < M → ∃ Γ : Subgroup (GL (Fin r) E), (∀ γ, γ ∈ Γ ↔ _root_.ReciprocityTheory.ChartRestriction.G.FD.IsUStab Gm Λ γ ∧ (∀ v ∈ Λ, ∃ w ∈ Λ, (γ : Matrix (Fin r) (Fin r) E) *ᵥ v = v + M • w)) ∧ ∃ S : Finset (GL (Fin r) E), ∀ γ, _root_.ReciprocityTheory.ChartRestriction.G.FD.IsUStab Gm Λ γ → ∃ s ∈ S, s⁻¹ * γ ∈ Γ := by
   intro E _ _ _ r M Gm Λ hΛ hM
   exact ⟨_root_.GlobalTheory.CongruenceIndex.congruenceSubgroup Gm Λ M, fun γ => Iff.rfl,

@@ -10,6 +10,19 @@ namespace Formalism.MainNotions.N.Ln34.MLL
 
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Module Formalism.MainNotions.ElementDenominator Formalism.MainNotions.ElementDenominator.CongruenceModules TensorProduct Formalism.MainNotions.N.Ln34.ModelFPf
 
+/- English proof (translation)
+Introduce `τ ζ hpt m m' a y hy b z hz h`. Establish `hs : ((HW l).W K 1 LL hG).s = 1` using `(HW l).W_s K 1 LL hG`. Establish `hp : ((D.loc l).PD K).p = l` using `(D.loc l).PD_p K`. Establish `hprim : IsPrimitiveRoot ζ l` using `framepf_pt_prim D HW hG c ζ τ hpt`. Establish `hprim' : IsPrimitiveRoot ζ ((D.loc l).PD K).p` using `by rw [hp]; exact hprim`.
+
+Use `haveI : IsDiscreteValuationRing ↥(OL LL) := GenPf.isDVR (D.loc l) LL`. Establish `hinj : Function.Injective (algebraMap ↥(OL LL) ↥LL.1)` using `Subtype.val_injective`. Take `⟨-, -, -, h4W, -⟩` from `hA.1 l K 1 LL hG`. Establish `hone : ∃ j : ℕ, IsPrimitiveRoot (1 : ↥LL.1) (((D.loc l).PD K).p ^ j)` using `⟨0, by simp⟩`. Establish `hπ1 : PowerSeries.constantCoeff (((HW l).W K 1 LL hG).lev (c - 1) 1 letπ) = 0`.
+
+Rewrite using `[CrystallineExponents.cc_lev_pi ((HW l).W K 1 LL hG) (c - 1) 1 hone, sub_self]`. Establish `hX : ((HW l).W K 1 LL hG).X = letπ` using `by simp [LocWach.X, hs]`. Establish `hd` using `Formalism.MainNotions.N.Ln34.DvdPf.dvdCondition l hl K LL hG`. Establish `hl2 : 2 ≤ l` using `(Fact.out : l.Prime).two_le`. Establish `he : 0 < eK K` using `Nat.pos_of_ne_zero fun h0 => by`.
+
+Rewrite `hd` using `[h0, zero_dvd_iff]`. Use linear arithmetic over natural numbers and integers. Establish `hsK : 1 ≤ sK l K` using `Nat.div_pos (Nat.le_of_dvd (by omega) hd) he`. Establish `hπ : PowerSeries.constantCoeff (((HW l).W K 1 LL hG).lev (c - 1) 1 π') = 0`. Take `⟨w, hw⟩` from `hr.2.2.1`.
+
+Rewrite using `[hw, map_mul, map_pow, map_mul, map_pow, hπ1, zero_pow (by omega), mul_zero]`. Establish `hQ` using `framepf_Q_at ((HW l).W K 1 LL hG) hs c ζ hprim'`. Establish `hP : MLA.PtHyp (W` using `(HW l).W K 1 LL hG) T c ζ := by`. Use `⟨hT, ⟨1, by rw [pow_one]; exact hprim'⟩, hprim'.pow_eq_one, hQ.1, hQ.2, ?_, ?_⟩` and prove the remaining obligations. Introduce `x k hk`.
+
+Establish `h4` using `((h4W T hT).1 (c - 1) 1 ⟨0, by simp⟩ (by rw [hX]; exact hπ1)).1 x k`. Conclude with `h4.2 hk`. Introduce `x hx`. Conclude with `((HW l).W K 1 LL hG).N_φ T x hx`. Conclude with `MLA.expS_wd ((Cm l).C K 1 LL hG).tie T hinj hP π' hπ a y hy b z hz h`.
+-/
 theorem rec_WD (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (CA CB CK : ℝ) (hA : Adm1 D HW F Cm CA CB CK) (l : ℕ) [Fact l.Prime] (hl : l ≠ 2) (K LL : FinExt l)
     (hG : Good K 1 LL) (π' : LetA ↥(OL LL) (finrank ℚ_[l] ↥(K0 K)))
@@ -50,6 +63,17 @@ theorem rec_WD (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpO
   exact MLA.expS_wd ((Cm l).C K 1 LL hG).tie T hinj hP π' hπ a y hy b z hz h
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Establish `hs : ((HW l).W K 1 LL hG).s = 1` using `(HW l).W_s K 1 LL hG`. Establish `hp : ((D.loc l).PD K).p = l` using `(D.loc l).PD_p K`. Establish `hgam : ((HW l).W K 1 LL hG).gamK = ((HW l).W K 1 LL hG).gam` using `((HW l).W K 1 LL hG).gamK_eq_one hs (by rw [hp]; exact hl)`. Take `⟨hπΔ, -, ⟨w0, hw0⟩, -, ⟨w, hw⟩, -, ⟨w2, hw2⟩, -⟩` from `hr`. Establish `hd` using `Formalism.MainNotions.N.Ln34.DvdPf.dvdCondition l hl K LL hG`.
+
+Establish `hl2 : 2 ≤ l` using `(Fact.out : l.Prime).two_le`. Establish `he : 0 < eK K` using `Nat.pos_of_ne_zero fun h0 => by`. Rewrite `hd` using `[h0, zero_dvd_iff]`. Use linear arithmetic over natural numbers and integers. Establish `hsK : 1 ≤ sK l K` using `Nat.div_pos (Nat.le_of_dvd (by omega) hd) he`.
+
+Establish `hEΔ : Formalism.MainNotions.DeltaInvariantLattices.Eat E π' ∈ ((HW l).W K 1 LL hG).AΔ`. Introduce `δ hδ`. Use function extensionality and compare the values at `i`. Use `show ((HW l).W K 1 LL hG).γ₀ δ (Polynomial.aeval (π' i) (E i)) = Polynomial.aeval (π' i) (E i)`. Rewrite using `[← Polynomial.aeval_algHom_apply]`.
+
+Conclude with `congrArg (fun t => Polynomial.aeval t (E i)) (congrFun (hπΔ δ hδ) i)`. Take `⟨u, hu, hγ⟩` from `gam_unit ((HW l).W K 1 LL hG) π' E hsK w2 hw2 w0 hw0`. Establish `hpO : (((D.loc l).PD K).p : ↥(OL LL)) ≠ 0` using `fun h0 => by`. Apply `p_ne_zero ((HW l).W K 1 LL hG)` to reduce the goal to its premises. Rewrite using `[← map_natCast (algebraMap ↥(OL LL) ↥LL.1), h0, map_zero]`.
+
+Establish `hnz` using `Eπ_nzd ((HW l).W K 1 LL hG) hw (q0_ne_two_and_ne_q_and_ne_d ((HW l).W K 1 LL hG) hpO)`. Establish `huΔ` using `u_mem_AΔ ((HW l).W K 1 LL hG) hEΔ hnz hγ`. Establish `hu'Δ` using `inv_mem_AΔ ((HW l).W K 1 LL hG) huΔ hu.val_inv_mul`. Use `⟨((hu.unit⁻¹ : (LetA ↥(OL LL) (finrank ℚ_[l] ↥(K0 K)))ˣ) : LetA _ _) ^ h', Subalgebra.pow_mem _ hu'Δ h', ?_⟩` and prove the remaining obligations. Rewrite using `[hgam, map_pow, hγ, mul_pow, ← mul_assoc, ← mul_pow, hu.val_inv_mul, one_pow, one_mul]`.
+-/
 theorem exists_mul_gamma_Eat_pow_eq_Eat_pow (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (CA CB CK : ℝ) (hA : Adm1 D HW F Cm CA CB CK) (l : ℕ) [Fact l.Prime] (hl : l ≠ 2) (K LL : FinExt l)
     (hG : Good K 1 LL) (π' : LetA ↥(OL LL) (finrank ℚ_[l] ↥(K0 K)))
@@ -85,6 +109,11 @@ theorem exists_mul_gamma_Eat_pow_eq_Eat_pow (D : D7) (HW : HWOf D.loc) (F : FonO
   rw [hgam, map_pow, hγ, mul_pow, ← mul_assoc, ← mul_pow, hu.val_inv_mul, one_pow, one_mul]
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Establish `hs : ((HW l).W K 1 LL hG).s = 1` using `(HW l).W_s K 1 LL hG`. Establish `hp : ((D.loc l).PD K).p = l` using `(D.loc l).PD_p K`. Establish `hgam : ((HW l).W K 1 LL hG).gamK = ((HW l).W K 1 LL hG).gam` using `((HW l).W K 1 LL hG).gamK_eq_one hs (by rw [hp]; exact hl)`. Establish `hprim : IsPrimitiveRoot ζ (((D.loc l).PD K).p ^ 1)`. Rewrite using `[pow_one, hp]`.
+
+Conclude with `framepf_pt_prim D HW hG c ζ τ hpt`. Establish `hv : ((1 : ℕ) : WithTop ℚ) ≤ (D.loc l).v LL (algebraMap ↥(OL LL) ↥LL.1 ((((HW l).W K 1 LL hG).χΓ ((HW l).W K 1 LL hG).gamK : (↥(OL LL))ˣ) : ↥(OL LL)) - ((1 : ℕ) : ↥LL.1))`. Rewrite using `[hgam, Nat.cast_one (R := ↥LL.1), ((HW l).W K 1 LL hG).gam_gen, hs]`. Use `((Cm l).C K 1 LL hG).tie.lev_Γ ((HW l).W K 1 LL hG).gamK c ζ ζ 1 1 hprim hv (by rw [pow_one]) a` as an intermediate fact. Conclude with `this`.
+-/
 theorem rec_lev (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (l : ℕ) [Fact l.Prime] (hl : l ≠ 2) (K LL : FinExt l) (hG : Good K 1 LL)
     (c : ZMod (finrank ℚ_[l] ↥(K0 K))) (τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1) (ζ : ↥LL.1)
@@ -106,6 +135,19 @@ theorem rec_lev (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : Cmp
   exact this
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Establish `hs : ((HW l).W K 1 LL hG).s = 1` using `(HW l).W_s K 1 LL hG`. Establish `hp : ((D.loc l).PD K).p = l` using `(D.loc l).PD_p K`. Establish `hgam : ((HW l).W K 1 LL hG).gamK = ((HW l).W K 1 LL hG).gam` using `((HW l).W K 1 LL hG).gamK_eq_one hs (by rw [hp]; exact hl)`. Establish `hd` using `Formalism.MainNotions.N.Ln34.DvdPf.dvdCondition l hl K LL hG`. Establish `hl2 : 2 ≤ l` using `(Fact.out : l.Prime).two_le`.
+
+Establish `he : 0 < eK K` using `Nat.pos_of_ne_zero fun h0 => by`. Rewrite `hd` using `[h0, zero_dvd_iff]`. Use linear arithmetic over natural numbers and integers. Establish `hsK : 1 ≤ sK l K` using `Nat.div_pos (Nat.le_of_dvd (by omega) hd) he`. Establish `har` using `(framepf_hyp_arith D HW l hl K LL hG 1 hsK).1`.
+
+Rewrite using `[hgam]`. Use `set χ := ((((HW l).W K 1 LL hG).χΓ ((HW l).W K 1 LL hG).gam : (↥(OL LL))ˣ) : ↥(OL LL)) with hχ`. Establish `hnat : ∀ k : ℕ, 1 ≤ k → (algebraMap ↥(OL LL) ↥LL.1 χ) ^ k ≠ 1`. Introduce `k hk h1`. Establish `h2 : χ ^ k = 1`.
+
+Apply `Subtype.val_injective` to reduce the goal to its premises. Use `h1` as an intermediate fact. Rewrite `this` using `[← map_pow]`. Simplify using `using this`. Apply `har k hk` to reduce the goal to its premises.
+
+Rewrite using `[← pow_mul, mul_comm, pow_mul, h2, one_pow]`. Use `⟨((Units.isUnit _).map (algebraMap ↥(OL LL) ↥LL.1)).ne_zero, fun i hi h1 => ?_⟩` and prove the remaining obligations. Break down `lt_or_gt_of_ne hi with hneg | hpos` into its components or cases. Apply `hnat (-i).toNat (by omega)` to reduce the goal to its premises. Establish `: (algebraMap ↥(OL LL) ↥LL.1 χ) ^ (-i) = 1` using `by rw [zpow_neg, h1, inv_one]`.
+
+Rewrite using `[← zpow_natCast, Int.toNat_of_nonneg (by omega)]` and apply the resulting hypothesis. Apply `hnat i.toNat (by omega)` to reduce the goal to its premises. Rewrite using `[← zpow_natCast, Int.toNat_of_nonneg (by omega)]` and apply the resulting hypothesis.
+-/
 theorem rec_u (D : D7) (HW : HWOf D.loc) (l : ℕ) [Fact l.Prime] (hl : l ≠ 2) (K LL : FinExt l)
     (hG : Good K 1 LL) :
     algebraMap ↥(OL LL) ↥LL.1 ((((HW l).W K 1 LL hG).χΓ ((HW l).W K 1 LL hG).gamK : (↥(OL LL))ˣ) :

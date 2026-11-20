@@ -3,6 +3,35 @@ open MeasureTheory
 
 namespace GlobalTheory.Twist
 
+/- English proof (translation)
+Establish `hm : Measurable (fun z : E × G => z.2 * e z.1)` using `measurable_snd.mul (he.comp measurable_fst)`. Use `set ν : Measure G := Measure.map (fun z : E × G => z.2 * e z.1) (lam.prod mK) with hν`. Establish `hint : ∀ f : G → ENNReal, Measurable f → ∫⁻ g, f g ∂ν = ∫⁻ B, ∫⁻ k, f (k * e B) ∂mK ∂lam`. Introduce `f hf`. Rewrite using `[hν, lintegral_map hf hm]`.
+
+Conclude with `lintegral_prod (fun z : E × G => f (z.2 * e z.1)) (hf.comp hm).aemeasurable`. Establish `hH : ∀ f : G → ENNReal, Measurable f → Measurable (fun B => ∫⁻ k, f (k * e B) ∂mK)`. Introduce `f hf`. Conclude with `Measurable.lintegral_prod_right' (f := fun z : E × G => f (z.2 * e z.1)) (hf.comp hm)`. Establish `hR : ν.IsMulRightInvariant`.
+
+Use `⟨fun g => ?_⟩` and prove the remaining obligations. Take `⟨ψ, hψ, hψl, hψe⟩` from `hact g`. Use `Measure.ext_of_lintegral _ (fun f hf => ?_)` and prove the remaining obligations. Establish `hg : Measurable (fun x : G => x * g)` using `measurable_mul_const g`. Rewrite using `[lintegral_map hf hg, hint (fun x => f (x * g)) (hf.comp hg), hint f hf]`.
+
+Establish `h1 : ∀ B, ∫⁻ k, f (k * e B * g) ∂mK = ∫⁻ k, f (k * e (ψ B)) ∂mK`. Introduce `B`. Take `⟨κ, hκ, hk⟩` from `hψe B`. Establish `h2` using `lintegral_map (μ := mK) (f := fun x => f (x * e (ψ B))) (g := fun x => x * κ) (hf.comp (measurable_mul_const _)) (measurable_mul_const κ)`. Rewrite `h2` using `[hinv κ hκ]`.
+
+Rewrite using `[h2]`. Simplify using `only [mul_assoc, hk]`. Simplify using `only [h1]`. Establish `h3` using `lintegral_map (μ := lam) (hH f hf) hψ`. Rewrite `h3` using `[hψl]`.
+
+Conclude with `h3.symm`. Establish `hF : IsFiniteMeasureOnCompacts ν`. Use `⟨fun C hC => ?_⟩` and prove the remaining obligations. Establish `hCm : MeasurableSet C` using `hC.measurableSet`. Establish `h1` using `hint (C.indicator 1) (measurable_one.indicator hCm)`.
+
+Rewrite `h1` using `[lintegral_indicator_one hCm]`. Rewrite using `[h1]`. Use `set S := {B | ∃ k ∈ K, k * e B ∈ C} with hS`. Use `lt_of_le_of_lt ?_ (hfin C hC)` and prove the remaining obligations. Rewrite using `[← measure_toMeasurable, ← lintegral_indicator_one (measurableSet_toMeasurable _ _)]`.
+
+Use `lintegral_mono (fun B => ?_)` and prove the remaining obligations. Distinguish the cases in `hB : B ∈ toMeasurable lam S`. Rewrite using `[Set.indicator_of_mem hB]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Set.indicator_of_notMem hB]`.
+
+Establish `hB' : B ∉ S` using `fun h => hB (subset_toMeasurable _ _ h)`. Establish `hae : ∀ᵐ k ∂mK, k ∈ K` using `hK`. Establish `: ∫⁻ k, C.indicator (1 : G → ENNReal) (k * e B) ∂mK = ∫⁻ _k, 0 ∂mK`. Use `lintegral_congr_ae (hae.mono fun k hk => ?_)` and prove the remaining obligations. Conclude with `Set.indicator_of_notMem (fun h => hB' ⟨k, hk, h⟩) _`.
+
+Simplify using `[this]`. Establish `hν0 : ν ≠ 0`. Introduce `h`. Establish `h1` using `hint (fun _ => 1) measurable_const`. Rewrite `h1` using `[h]`.
+
+Simplify using `at h1`. Conclude with `hlam (Measure.measure_univ_eq_zero.mp h1.symm)`. Establish `hmul` using `Measure.isMulLeftInvariant_eq_smul ν.inv μ`. Use `set c := Measure.haarScalarFactor ν.inv μ with hc`. Establish `hνc : ν = c • μ`.
+
+Establish `: ν.inv.inv = (c • μ).inv` using `by rw [← hmul]`. Rewrite `this` using `[Measure.inv_inv]`. Rewrite using `[this]`. Express the relevant statement in the definitionally equal form `Measure.map _ (c • μ) = _`. Rewrite using `[Measure.map_smul, Measure.map_inv_eq_self]`.
+
+Establish `hc0 : c ≠ 0`. Introduce `h`. Apply `hν0` to reduce the goal to its premises. Rewrite using `[hνc, h, zero_smul]`. Use `⟨((c⁻¹ : NNReal) : ℝ), by exact_mod_cast inv_pos.mpr (pos_iff_ne_zero.mpr hc0), fun f hf => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hint f hf, hνc, lintegral_smul_measure, ENNReal.ofReal_coe_nnreal, ENNReal.smul_def, smul_eq_mul, ← mul_assoc, ← ENNReal.coe_mul, inv_mul_cancel₀ hc0]`. Simplify using the standard rewrite rules.
+-/
 theorem lintegral_haar_eq_transversal (G E : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [T2Space G] [LocallyCompactSpace G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
     [MeasurableSpace E] (μ mK : Measure G) [μ.IsHaarMeasure] [μ.IsInvInvariant]

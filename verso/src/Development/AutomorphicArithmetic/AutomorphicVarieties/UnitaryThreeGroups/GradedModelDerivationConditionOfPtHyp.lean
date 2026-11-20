@@ -11,6 +11,9 @@ section SlopeTestRemainingChoices
 variable {O A K : Type} [CommRing O] [CommRing A] [Algebra O A] (𝒜 : ℤ → Submodule O A) [GradedAlgebra 𝒜]
   [Field K] [Algebra O K]
 
+/- English proof (translation)
+Use `⟨(DirectSum.toModule O ℤ K (fun j => ((t ^ j : Kˣ) : K) • (D ∘ₗ (𝒜 j).subtype))) ∘ₗ (DirectSum.decomposeLinearEquiv 𝒜).toLinearMap, ?_⟩` and prove the remaining obligations. Introduce `j a ha`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_toLinearMap, DirectSum.decomposeLinearEquiv_apply, DirectSum.decompose_of_mem 𝒜 ha]`. Rewrite using `[← DirectSum.lof_eq_of O, DirectSum.toModule_lof]`. Simplify using `[smul_eq_mul]`.
+-/
 private theorem exists_twist (t : Kˣ) (D : A →ₗ[O] K) :
     ∃ E : A →ₗ[O] K, ∀ j, ∀ a ∈ 𝒜 j, E a = ((t ^ j : Kˣ) : K) * D a := by
   classical
@@ -22,9 +25,23 @@ private theorem exists_twist (t : Kˣ) (D : A →ₗ[O] K) :
   rw [← DirectSum.lof_eq_of O, DirectSum.toModule_lof]
   simp [smul_eq_mul]
 
+/- English proof (translation)
+The claim follows from `act_of_mem 𝒜 _ ξ ha`.
+-/
 private theorem act_tz (t : Kˣ) (ξ : A →ₐ[O] K) {j : ℤ} {a : A} (ha : a ∈ 𝒜 j) :
     act 𝒜 (tz t) ξ a = ((t ^ j : Kˣ) : K) * ξ a := act_of_mem 𝒜 _ ξ ha
 
+/- English proof (translation)
+Establish `hD' : ∀ f g : A, D (f * g) = ξ f • D g + ξ g • D f` using `hD`. Use `show ∀ f g : A, E (f * g) = act 𝒜 (tz t) ξ f • E g + act 𝒜 (tz t) ξ g • E f`. Introduce `f g`. Use `DirectSum.Decomposition.inductionOn 𝒜 (motive := fun f => E (f * g) = act 𝒜 (tz t) ξ f • E g + act 𝒜 (tz t) ξ g • E f) ?_ ?_ ?_ f` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Introduce `i a`. Use `DirectSum.Decomposition.inductionOn 𝒜 (motive := fun g => E (a * g) = act 𝒜 (tz t) ξ a • E g + act 𝒜 (tz t) ξ g • E a) ?_ ?_ ?_ g` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `j b`. Establish `hab : (a : A) * b ∈ 𝒜 (i + j)` using `SetLike.GradedMul.mul_mem a.2 b.2`.
+
+Rewrite using `[hE _ _ hab, hE _ _ b.2, hE _ _ a.2, act_tz 𝒜 t ξ a.2, act_tz 𝒜 t ξ b.2, hD', _root_.zpow_add, Units.val_mul]`. Simplify using `only [smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce `g g' h h'`. Simplify using `only [mul_add, map_add, smul_add, add_smul, smul_eq_mul] at h h' ⊢`.
+
+Rewrite using `[h, h']`. Expand and normalize the polynomial expressions, which then agree. Introduce `f f' h h'`. Simplify using `only [add_mul, map_add, smul_add, add_smul, smul_eq_mul] at h h' ⊢`. Rewrite using `[h, h']`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem twist_der (t : Kˣ) (ξ : A →ₐ[O] K) (D E : A →ₗ[O] K) (hD : D ∈ PtDer ξ K)
     (hE : ∀ j, ∀ a ∈ 𝒜 j, E a = ((t ^ j : Kˣ) : K) * D a) : E ∈ PtDer (act 𝒜 (tz t) ξ) K := by
   have hD' : ∀ f g : A, D (f * g) = ξ f • D g + ξ g • D f := hD
@@ -50,6 +67,15 @@ private theorem twist_der (t : Kˣ) (ξ : A →ₐ[O] K) (D E : A →ₗ[O] K) (
     ring
 
 omit [GradedAlgebra 𝒜] in
+/- English proof (translation)
+Introduce `y hy`. Establish `hξ' : ∀ f ∈ Q.ideal, ξ f = 0` using `hξ`. Establish `hE'' : ∀ f g : A, E (f * g) = ξ f • E g + ξ g • E f` using `hE'`. Establish `hgen : ∀ z ∈ (Set.range Q.F ∪ Set.range Q.G ∪ Set.range Q.E ∪ Set.range Q.E' ∪ Set.range Q.Z), E z = 0`. Introduce `z hz`.
+
+Establish `hzI : z ∈ Q.ideal` using `Ideal.subset_span hz`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, z ∈ 𝒜 j := by`. Break down `hz with (((⟨i, rfl⟩ | ⟨i, rfl⟩) | ⟨i, rfl⟩) | ⟨i, rfl⟩) | ⟨i, rfl⟩` into its components or cases. Use `exacts [⟨_, Q.hF i⟩, ⟨_, Q.hG i⟩, ⟨_, Q.hE i⟩, ⟨_, Q.hE' i⟩, ⟨_, (Q.hZ i).1⟩]`. Rewrite using `[hE j z hj, hD z hzI, mul_zero]`.
+
+Establish `hy' : y ∈ Submodule.span A (Set.range Q.F ∪ Set.range Q.G ∪ Set.range Q.E ∪ Set.range Q.E' ∪ Set.range Q.Z)` using `hy`. Use `clear hy`. Proceed by induction on `hy' using Submodule.span_induction with`. Consider the case `mem z hz => exact hgen z hz`. Consider the case `zero => simp`.
+
+Consider the case `add a b _ _ ha hb => simp [ha, hb]`. Consider the case `smul a b hb hb0`. Rewrite using `[smul_eq_mul, hE'', hb0, hξ' b hb]`. Simplify using the standard rewrite rules.
+-/
 private theorem twist_kills {x : A →ₐ[O] O} {r s r' s' m : ℕ} (Q : Eqns 𝒜 x r s r' s' m) (t : Kˣ)
     (ξ : A →ₐ[O] K) (D E : A →ₗ[O] K) (hξ : OnS Q.ideal ξ) (hE' : E ∈ PtDer ξ K)
     (hE : ∀ j, ∀ a ∈ 𝒜 j, E a = ((t ^ j : Kˣ) : K) * D a) (hD : ∀ y ∈ Q.ideal, D y = 0) :
@@ -74,15 +100,24 @@ private theorem twist_kills {x : A →ₐ[O] O} {r s r' s' m : ℕ} (Q : Eqns �
     rw [smul_eq_mul, hE'', hb0, hξ' b hb]
     simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Simplify using `only [cob, map_smul, Pi.smul_apply, smul_sub]`.
+-/
 private theorem cob_smul {G C : Type} [Group G] [CommRing C] {m : ℕ} (r : G →* GG m C) (a : C)
     (X : Matrix (Fin m) (Fin m) C) : cob r (a • X) = a • cob r X := by
   funext g
   simp only [cob, map_smul, Pi.smul_apply, smul_sub]
 
+/- English proof (translation)
+Simplify using `[zmat]`.
+-/
 private theorem zmat_map {G R R' : Type} [Group G] [CommRing R] [CommRing R'] (f : R →+* R') (r : G →* GG 3 R)
     (c g₁ : G) (a b : Fin 3) : zmat c g₁ ((GG.map f).comp r) a b = f (zmat c g₁ r a b) := by
   simp [zmat]
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[GG.map_mat, h.atc]`. Rewrite using `[zmat_map, h.z12, map_zero]`. Rewrite using `[zmat_map, h.z21, map_zero]`.
+-/
 private theorem normalised_map {G R R' : Type} [Group G] [CommRing R] [CommRing R'] (f : R →+* R')
     (r : G →* GG 3 R) (c g₁ : G) (h : Normalised c g₁ r) : Normalised c g₁ ((GG.map f).comp r) := by
   refine ⟨?_, ?_, ?_⟩
@@ -90,6 +125,13 @@ private theorem normalised_map {G R R' : Type} [Group G] [CommRing R] [CommRing 
   · rw [zmat_map, h.z12, map_zero]
   · rw [zmat_map, h.z21, map_zero]
 
+/- English proof (translation)
+Establish `hm : Marks η (barChar O Ψ) c g₁`. Use `⟨h.csq, h.ηc, by simp [barChar, h.Ψc], h.ηg, ?_⟩` and prove the remaining obligations. Use `h.Ψg.map (residue O)` as an intermediate fact. Rewrite `this` using `[map_sub, map_pow, map_one]`. Conclude with `this`.
+
+Establish `h1` using `(zeta_reducible_rep_eq_sub_inv_and_isUnit η (barChar O Ψ) c g₁ hm).2`. Establish `h2 : (GG.map (res O R : R →+* ResidueField O)).comp r.hom = r0 η (barChar O Ψ)` using `MonoidHom.ext r.red`. Rewrite `h1` using `[← h2, zeta, zmat_map]`. Assume the negation of the conclusion as `hn`. Establish `h3 : res O R (zeta c g₁ r.hom) = 0` using `(res_eq_zero_iff O R _).2 hn`.
+
+Conclude with `h1.ne_zero h3`.
+-/
 private theorem isUnit_zeta {O : Type} [CommRing O] [IsLocalRing O] {Γ : Type} [Group Γ] [TopologicalSpace Γ]
     {η : Γ →* ℤˣ} {Ψ : Γ →* Oˣ} {R : Type} [CommRing R] [Algebra O R] [IsCO O R] (r : GLift O η Ψ R)
     {c g₁ : Γ} (h : Marks η Ψ c g₁) : IsUnit (zeta c g₁ r.hom) := by
@@ -108,6 +150,53 @@ private theorem isUnit_zeta {O : Type} [CommRing O] [IsLocalRing O] {Γ : Type} 
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `l _ c Γ H _ _ _ _ _ _ η Ψ N ι hι U I cc g₁ S M hl hm hM2 hpt`. Introduce `ξ hξ hsign D hD D' hD' hDI hD'I`. Take `⟨t, f, hf, hact⟩` from `M.pts hM2 ξ hξ`. Take `⟨E, hE⟩` from `exists_twist M.𝒜 t D`. Take `⟨E', hE'⟩` from `exists_twist M.𝒜 t D'`.
+
+Establish `hEd : E ∈ PtDer (f.comp M.q) (PadicAlgCl l)` using `hact ▸ twist_der M.𝒜 t ξ D E hD hE`. Establish `hE'd : E' ∈ PtDer (f.comp M.q) (PadicAlgCl l)` using `hact ▸ twist_der M.𝒜 t ξ D' E' hD' hE'`. Establish `hon : OnS M.Q.ideal (f.comp M.q)`. Introduce `y hy`. Establish `: M.q y = 0`.
+
+Rewrite using `[← RingHom.mem_ker, M.ker_q]`. Conclude with `hy`. Simplify using `[this]`. Establish `hEI : ∀ y ∈ M.Q.ideal, E y = 0` using `twist_kills M.𝒜 M.Q t (f.comp M.q) D E hon hEd hE hDI`. Establish `hE'I : ∀ y ∈ M.Q.ideal, E' y = 0` using `twist_kills M.𝒜 M.Q t (f.comp M.q) D' E' hon hE'd hE' hD'I`.
+
+Take `⟨F, hF, hFE⟩` from `M.der hM2 f hf E hEd hEI`. Take `⟨F', hF', hFE'⟩` from `M.der hM2 f hf E' hE'd hE'I`. Establish `htne : ∀ j : ℤ, ((t ^ j : (PadicAlgCl l)ˣ) : PadicAlgCl l) ≠ 0` using `fun j => Units.ne_zero _`. Establish `hneg : NegZero M.𝒜 (f.comp M.q) ↔ NegZero M.𝒜 ξ`. Rewrite using `[← hact]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h j hj y hy`. Use `h j hj y hy` as an intermediate fact. Rewrite `this` using `[act_tz M.𝒜 t ξ hy]`. Conclude with `(mul_eq_zero.1 this).resolve_left (htne j)`.
+
+Introduce `h j hj y hy`. Rewrite using `[act_tz M.𝒜 t ξ hy, h j hj y hy, mul_zero]`. Establish `hpos : PosZero M.𝒜 (f.comp M.q) ↔ PosZero M.𝒜 ξ`. Rewrite using `[← hact]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h j hj y hy`. Use `h j hj y hy` as an intermediate fact. Rewrite `this` using `[act_tz M.𝒜 t ξ hy]`. Conclude with `(mul_eq_zero.1 this).resolve_left (htne j)`. Introduce `h j hj y hy`.
+
+Rewrite using `[act_tz M.𝒜 t ξ hy, h j hj y hy, mul_zero]`. Establish `hsg` using `model_signs S M hl hm f hf`. Establish `htwo : TwoPt η S.r.hom f` using `⟨hf, fun h => hsign.1 (hneg.1 (hsg.1.2 h)), fun h => hsign.2 (hpos.1 (hsg.2.1.2 h))⟩`. Establish `hrig` using `hpt.rigid f htwo`. Take `⟨X, hX⟩` from `hrig F hF`.
+
+Take `⟨X', hX'⟩` from `hrig F' hF'`. Establish `hN0` using `((S.rep S.R).1 (AlgHom.id _ _)).1`. Establish `hN : Normalised cc g₁ S.r.hom`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `hN0.atc` as an intermediate fact.
+
+Simplify `this` using `[GLift.map, GG.map_mat]`. Use `hN0.z12` as an intermediate fact. Simplify using `only [GLift.map] at this`. Rewrite `this` using `[zmat_map ((AlgHom.id c.O S.R : S.R →ₐ[c.O] S.R) : S.R →+* S.R)]`. Simplify using `using this`.
+
+Use `hN0.z21` as an intermediate fact. Simplify using `only [GLift.map] at this`. Rewrite `this` using `[zmat_map ((AlgHom.id c.O S.R : S.R →ₐ[c.O] S.R) : S.R →+* S.R)]`. Simplify using `using this`. Establish `hright : ∀ g, (S.r.hom g).right = η g`.
+
+Introduce `g`. Use `congrArg SemidirectProduct.right (S.r.red g)` as an intermediate fact. Simplify `this` using `[GG.map, SemidirectProduct.map_right, rbar, r0]`. Establish `hc : (push f S.r.hom cc).right = -1`. Simplify using `[push, GG.map, SemidirectProduct.map_right, hright, hm.ηc]`.
+
+Establish `hg : (push f S.r.hom g₁).right = 1`. Simplify using `[push, GG.map, SemidirectProduct.map_right, hright, hm.ηg]`. Establish `hPN : Normalised cc g₁ (push f S.r.hom)` using `normalised_map (f : S.R →+* PadicAlgCl l) S.r.hom cc g₁ hN`. Establish `hz : IsUnit (zeta cc g₁ (push f S.r.hom))`. Use `(isUnit_zeta S.r hm).map (f : S.R →+* PadicAlgCl l)` as an intermediate fact.
+
+Simplify `this` using `[zeta, push, zmat_map]`. Establish `h2 : IsUnit (2 : PadicAlgCl l)` using `isUnit_iff_ne_zero.2 two_ne_zero`. Establish `hdet` using `tanCoc_determines S M hl hm F (hF ▸ hf)`. Establish `hdet'` using `tanCoc_determines S M hl hm F' (hF' ▸ hf)`. Establish `hXm : X ∈ unitaryThreeTorusLieAlgebra (PadicAlgCl l)`.
+
+Use `hdet.2.1` as an intermediate fact. Rewrite `this` using `[hF, hX]`. Conclude with `(normCoc_cob_iff _ cc g₁ X h2 hc hg hPN hz).1 this`. Establish `hX'm : X' ∈ unitaryThreeTorusLieAlgebra (PadicAlgCl l)`. Use `hdet'.2.1` as an intermediate fact.
+
+Rewrite `this` using `[hF', hX']`. Conclude with `(normCoc_cob_iff _ cc g₁ X' h2 hc hg hPN hz).1 this`. Take `⟨x, rfl⟩` from `Submodule.mem_span_singleton.1 hXm`. Take `⟨x', rfl⟩` from `Submodule.mem_span_singleton.1 hX'm`. Choose the witnesses or unpack the hypotheses as in `⟨a, a', hne, hrel⟩ : ∃ a a' : PadicAlgCl l, (a ≠ 0 ∨ a' ≠ 0) ∧ a • tanCoc F S.r.hom + a' • tanCoc F' S.r.hom = 0 := by`.
+
+Rewrite using `[hX, hX', cob_smul, cob_smul]`. Distinguish the cases in `hx' : x' = 0`. Use `⟨0, 1, Or.inr one_ne_zero, ?_⟩` and prove the remaining obligations. Simplify using `[hx']`. Use `⟨x', -x, Or.inl hx', ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `g`. Simplify using `only [Pi.add_apply, Pi.smul_apply, Pi.zero_apply, smul_smul]`. Rewrite using `[← add_smul]`. Establish `: x' * x + -x * x' = 0` using `by ring`. Rewrite using `[this, zero_smul]`.
+
+Establish `hall` using `hdet.2.2.2.2 F' (by rw [hF, hF']) a a' hrel`. Establish `hEE : ∀ y : M.A, a * E y + a' * E' y = 0`. Introduce `y`. Rewrite using `[← hFE y, ← hFE' y]`. Conclude with `hall (M.q y)`.
+
+Use `⟨a, a', hne, ?_⟩` and prove the remaining obligations. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`. Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, LinearMap.zero_apply, smul_eq_mul]`. Use `DirectSum.Decomposition.inductionOn M.𝒜 (motive := fun y => a * D y + a' * D' y = 0) ?_ ?_ ?_ y` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Introduce `j z`. Establish `h` using `hEE z`. Rewrite `h` using `[hE j z z.2, hE' j z z.2]`. Establish `h' : ((t ^ j : (PadicAlgCl l)ˣ) : PadicAlgCl l) * (a * D z + a' * D' z) = 0`.
+
+Rewrite using `[← h]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `(mul_eq_zero.1 h').resolve_left (htne j)`. Introduce `y y' h h'`. Simplify using `only [map_add]`.
+
+Take the linear combination `h + h'`.
+-/
 theorem UpperTheory.V.U3.gradedModel_derivationCondition_of_ptHyp :
     ∀ {l : ℕ} [Fact l.Prime] {c : Coef l} {Γ H : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
       {η : Γ →* ℤˣ} {Ψ : Γ →* (c.O)ˣ} {N : Set Γ} {ι : H →* Γ} {hι : Continuous ι}

@@ -74,6 +74,13 @@ structure TwPEvzS {Tw : TwForms D} {T : Formalism.L2.Herm.TwChTied D inQ} {H : F
     (∀ z ∈ (Tw.fm u μ).ptC, ∃ G, jM u μ G = z) ∧ (∀ G, jM u μ G ∈ (Tw.fm u μ).ptC) ∧
       ∀ w G, (D.PTw u μ).period w G = (Tw.fm u μ).ipP (jM u μ G) w
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Establish `hw : ((Tw.fm u μ).sg τ).w = ((D.fm u).sg τ).w`. Use function extensionality and compare the values at `i`. Establish `h1` using `(P.val u μ hμ).sg τ i`. Establish `h2` using `(F u).valP.sg τ i`.
+
+Conclude with `h1.trans h2.symm` after adjusting the coercions. Use `revert hw`. Generalize the expression as in `(Tw.fm u μ).sg τ = a`. Generalize the expression as in `(D.fm u).sg τ = b`. Introduce `hw`.
+
+Consider the cases of `a`. Consider the cases of `b`. Consider the cases of `hw`. Both sides reduce to the same expression.
+-/
 theorem TwPTiedS.sg_eq {Tw : TwForms D} {T : Formalism.L2.Herm.TwChTied D inQ} {H : Formalism.L2.Herm.HermColsCh D} {J : Formalism.L2.Herm.TwChJointS T H}
     {F : ∀ u, FormsTiedSym D u (H.Ch u) (H.chOf u)} {W : TwFormsTiedS D Tw T J F} {Lv : SymmetricTwistedLevelData W} (P : TwPTiedS Lv)
     (u : D.what₂.Word) (μ : D.what₂.Tup) (hμ : μ ≠ D.what₂.mu0) :

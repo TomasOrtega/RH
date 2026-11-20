@@ -14,9 +14,15 @@ variable (p : ℕ) [hp : Fact p.Prime] {C : Type} [Field C] [IsAlgClosed C] [Cha
   (hv : v.Integers O) (ε : PreTilt O p)
   (hε : IsPrimitiveRoot (((frobeniusEquiv (PreTilt O p) p).symm ε).untilt) p)
 
+/- English proof (translation)
+Introduce `y` and use `Ideal.Quotient.mk_surjective (I := Ideal.span {(p : O) ^ (0 + 1)}) y`.
+-/
 theorem surjective_ainfTower_zero : Function.Surjective ((ainfTowerL p O hv ε hε).q 0).1 :=
   fun y => Ideal.Quotient.mk_surjective (I := Ideal.span {(p : O) ^ (0 + 1)}) y
 
+/- English proof (translation)
+Use extensionality with `a`. Rewrite using `[RingHom.mem_ker, Ideal.mem_span_singleton]`. Establish `hq : ((ainfTowerL p O hv ε hε).q 0).1 a = Ideal.Quotient.mk (Ideal.span {(p : O) ^ (0 + 1)}) a` using `rfl`. Rewrite using `[hq]`. Conclude with `(Ideal.Quotient.eq_zero_iff_dvd _ _).trans (by rw [pow_one]; rfl)`.
+-/
 theorem ker_ainfTower_zero : RingHom.ker ((ainfTowerL p O hv ε hε).q 0).1 =
     Ideal.span {((p : ℕ) : ((ainfTowerL p O hv ε hε).O : Type))} := by
   ext a
@@ -26,6 +32,11 @@ theorem ker_ainfTower_zero : RingHom.ker ((ainfTowerL p O hv ε hε).q 0).1 =
   rw [hq]
   exact (Ideal.Quotient.eq_zero_iff_dvd _ _).trans (by rw [pow_one]; rfl)
 
+/- English proof (translation)
+Establish `hz : (((ainfTowerL p O hv ε hε).ζ 0 : ((ainfTowerL p O hv ε hε).O : Type)ˣ) : ((ainfTowerL p O hv ε hε).O : Type)) = ((frobeniusEquiv (PreTilt O p) p).symm ε).untilt` using `by show zetaV p O ε 0 = _`. Simplify using `[zetaV, root, fontaineTheta_teichmuller]`. Rewrite using `[hz]`. Use `clear hz`. Use `haveI : NoZeroDivisors O := hv.hom_inj.noZeroDivisors _ (map_zero _) (map_mul _)`.
+
+Use `set z := ((frobeniusEquiv (PreTilt O p) p).symm ε).untilt with hzdef`. Use `clear_value z`. Rewrite `hε` using `[h2]`. Conclude with `hε.eq_neg_one_of_two_right`.
+-/
 theorem ainf_zeta0 (h2 : p = 2) :
     (((ainfTowerL p O hv ε hε).ζ 0 : ((ainfTowerL p O hv ε hε).O : Type)ˣ) :
       ((ainfTowerL p O hv ε hε).O : Type)) = -1 := by

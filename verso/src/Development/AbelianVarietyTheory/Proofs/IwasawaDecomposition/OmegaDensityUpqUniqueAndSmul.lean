@@ -7,6 +7,9 @@ open Formalism.BasicNotions MeasureTheory Filter Topology Matrix
 
 namespace GlobalTheory.OmegaDensityScale
 
+/- English proof (translation)
+Take `⟨l, hl, ht⟩` from `h`. Take `⟨l', hl', ht'⟩` from `h'`. Establish `e : l = l'` using `GlobalTheory.OmegaLebUnique.omegaLeb_unique P Q l l' hl hl'`. Substitute `e` using the available equality. Conclude with `tendsto_nhds_unique ht' ht`.
+-/
 theorem omegaDensity_unique {P Q : ℕ} {μ : Measure (UpqT P Q)} {c c' : ENNReal}
     (h : OmegaDensity μ c) (h' : OmegaDensity μ c') : c' = c := by
   obtain ⟨l, hl, ht⟩ := h
@@ -15,6 +18,9 @@ theorem omegaDensity_unique {P Q : ℕ} {μ : Measure (UpqT P Q)} {c c' : ENNRea
   subst e
   exact tendsto_nhds_unique ht' ht
 
+/- English proof (translation)
+Take `⟨l, hl, ht⟩` from `h`. Use `⟨l, hl, ?_⟩` and prove the remaining obligations. Establish `h2` using `ENNReal.Tendsto.const_mul (a := (a : ENNReal)) ht (Or.inr ENNReal.coe_ne_top)`. Use `h2.congr fun r => ?_` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, smul_eq_mul, mul_div_assoc]`.
+-/
 theorem omegaDensity_smul {P Q : ℕ} {μ : Measure (UpqT P Q)} {c : ENNReal}
     (h : OmegaDensity μ c) (a : NNReal) : OmegaDensity ((a : ENNReal) • μ) (a * c) := by
   obtain ⟨l, hl, ht⟩ := h
@@ -23,6 +29,9 @@ theorem omegaDensity_smul {P Q : ℕ} {μ : Measure (UpqT P Q)} {c : ENNReal}
   refine h2.congr fun r => ?_
   rw [Measure.smul_apply, smul_eq_mul, mul_div_assoc]
 
+/- English proof (translation)
+Introduce `_ _ _ _ h` and use `⟨fun _ h' => omegaDensity_unique h h', fun a => omegaDensity_smul h a⟩`.
+-/
 theorem omegaDensity_unique_and_smul : ∀ (P Q : ℕ) (μ : Measure (UpqT P Q)) (c : ENNReal),
     OmegaDensity μ c → (∀ c', OmegaDensity μ c' → c' = c) ∧
       ∀ a : NNReal, OmegaDensity ((a : ENNReal) • μ) (a * c) :=

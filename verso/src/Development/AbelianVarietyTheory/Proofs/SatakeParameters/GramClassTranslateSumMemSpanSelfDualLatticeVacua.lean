@@ -8,6 +8,19 @@ open Matrix
 
 namespace GlobalTheory.Hk3.HoweG
 
+/- English proof (translation)
+Establish `h0 : ∀ y ∈ Y, χ 0 y = 1`. Introduce `y hy`. Establish `e` using `hmul 0 0 y hy`. Rewrite `e` using `[add_zero]`. Conclude with `mul_left_cancel₀ (hne 0 y hy) (by rw [mul_one]; exact e.symm)`.
+
+Establish `key : ∀ y ∈ Y, ∑ b, (χ b x)⁻¹ * χ b y = if (∀ b, χ b y = χ b x) then (Fintype.card B : ℂ) else 0`. Introduce `y hy`. Use `split_ifs with hP`. Simplify using `[hP, inv_mul_cancel₀ (hne _ x hx)]`. Set `φ : AddChar B ℂ` to `{ toFun := fun b => (χ b x)⁻¹ * χ b y map_zero_eq_one' := by simp [h0 x hx, h0 y hy] map_add_eq_mul' := by`.
+
+Introduce `b b'`. Use `show (χ (b + b') x)⁻¹ * χ (b + b') y = ((χ b x)⁻¹ * χ b y) * ((χ b' x)⁻¹ * χ b' y)`. Rewrite using `[hmul b b' x hx, hmul b b' y hy, mul_inv]`. Use `ring }`. Establish `hφ : φ ≠ 1`.
+
+Introduce `h1`. Apply `hP` to reduce the goal to its premises. Introduce `b`. Establish `e : φ b = 1` using `by rw [h1, AddChar.one_apply]`. Conclude with `((inv_mul_eq_one₀ (hne b x hx)).mp e).symm`.
+
+Use `show ∑ b, φ b = 0`. Conclude with `AddChar.sum_eq_zero_of_ne_one hφ`. Combine the equalities or inequalities in the displayed calculation. Repeatedly rewrite using `[Finset.smul_sum, smul_smul, Finset.sum_smul]`. Conclude with `Finset.sum_comm`.
+
+Use `_ = ∑ y ∈ Y, (if (∀ b, χ b y = χ b x) then (Fintype.card B : ℂ) else 0) • v y := Finset.sum_congr rfl (fun y hy => by rw [key y hy])`. Use `_ = _ := by`. Rewrite using `[Finset.smul_sum, Finset.sum_filter]`. Use `Finset.sum_congr rfl (fun y _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem sum_charSum_eq_card_filter {B ι M : Type} [AddCommGroup B] [Fintype B] [AddCommGroup M] [Module ℂ M]
     (Y : Finset ι) (x : ι) (hx : x ∈ Y) (χ : B → ι → ℂ)
     (hmul : ∀ b b', ∀ y ∈ Y, χ (b + b') y = χ b y * χ b' y) (hne : ∀ b, ∀ y ∈ Y, χ b y ≠ 0) (v : ι → M)
@@ -55,6 +68,35 @@ namespace GlobalTheory.Hk3.HoweG
 
 open GlobalTheory.Hk3
 
+/- English proof (translation)
+Introduce `L _ _ _ _ ϖ σ q δ n n' JS JT ψ M _ _ ρ ω hP s hvac x hx`. Establish `hP'` using `hP`. Take `⟨hU, hodd, hSint, hTint, hS, hT, hδ, hpsi_int, hpsi_ne, -, hρ, -, -, -⟩` from `hP'`. Take `⟨a, ha1, ha2, ha3, ha4⟩` from `GlobalTheory.T.selfDual_lattice_of_integral_gramMatrix L ϖ σ q n n' JS JT hU hodd hSint hTint hS hT x hx`. Take `⟨Y, hxY, hYA, hYd, B, _, _, b0, l, hb0, hl, hcov, hmul, hsep⟩` from `GlobalTheory.T.exists_gramClass_reps_selfDualLattice_group L ϖ σ q δ n n' JS JT ψ hU hodd hSint hTint hS hT hδ hpsi_int hpsi_ne x hx a ⟨ha1, ha2, ha3, ha4⟩`.
+
+Establish `hψinv : ∀ a, ψ a * ψ (-a) = 1` using `fun a => by`. Rewrite using `[← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one]`. Establish `hshift : ∀ y u, u ∈ HoweDuality.intMat L n' n → ρ (y + u) s = ψ (-((locH σ δ JS JT y u + σ (locH σ δ JS JT y u)) / 2)) • ρ y s`. Introduce `y u hu`. Establish `h1 : ρ y s = ψ ((locH σ δ JS JT y u + σ (locH σ δ JS JT y u)) / 2) • ρ (y + u) s`.
+
+Use `congrArg (fun f => f s) (hρ y u)` as an intermediate fact. Simplify using `only [Module.End.mul_apply, LinearMap.smul_apply] at this`. Rewrite `this` using `[hvac u hu]`. Then use the resulting hypothesis. Rewrite using `[h1, smul_smul, mul_comm, hψinv, one_smul]`. Use `set χ : B → Matrix (Fin n') (Fin n) L → ℂ := fun b y => ψ (-((locH σ δ JS JT y (l b y) + σ (locH σ δ JS JT y (l b y))) / 2)) with hχ`.
+
+Establish `hne : ∀ b, ∀ y ∈ Y, χ b y ≠ 0`. Introduce `b y _ h0`. Use `hψinv (-((locH σ δ JS JT y (l b y) + σ (locH σ δ JS JT y (l b y))) / 2))` as an intermediate fact. Rewrite `this` using `[show ψ (-((locH σ δ JS JT y (l b y) + σ (locH σ δ JS JT y (l b y))) / 2)) = χ b y from rfl, h0, zero_mul]`. Conclude with `zero_ne_one this`.
+
+Use `set Spn := Submodule.span ℂ {w : M | ∃ a : GL (Fin n) L, SelfDual σ JS a ∧ ∀ u : Matrix (Fin n') (Fin n) L, (∀ i j, u i j ∈ Formalism.UG.intL L) → ρ (u * ((a⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)) w = w} with hSpn`. Establish `hvacb : ∀ b, ∑ y ∈ Y, χ b y • ρ y s ∈ Spn`. Introduce `b`. Establish `hinj : Set.InjOn (fun y => y + l b y) Y`. Introduce `y hy y' hy' e`.
+
+Use `hYd y hy y' hy' ?_` and prove the remaining obligations. Establish `e' : y - y' = l b y' - l b y`. Use `congrArg (fun z => z - l b y - y') e` as an intermediate fact. Simplify using `only at this`. Rewrite `this` using `[show y + l b y - l b y - y' = y - y' by abel, show y' + l b y' - l b y - y' = l b y' - l b y by abel]`.
+
+Conclude with `this`. Rewrite using `[e']`. Conclude with `(HoweDuality.intMat L n' n).sub_mem (hl b y' hy').1 (hl b y hy).1`. Establish `hsum : ∑ y ∈ Y, χ b y • ρ y s = ∑ z ∈ Y.image (fun y => y + l b y), ρ z s`. Rewrite using `[Finset.sum_image hinj]`.
+
+Conclude with `Finset.sum_congr rfl (fun y hy => (hshift y (l b y) (hl b y hy).1).symm)`. Rewrite using `[hsum]`. Use `Submodule.subset_span ⟨b0 b, hb0 b, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.T.vacuumTranslateSum_selfDualLattice_fixed L ϖ σ q δ n n' JS JT ψ M ρ ω hP s hvac (b0 b) (hb0 b) _ ?_ ?_ ?_` and prove the remaining obligations. Introduce `z hz`.
+
+Take `⟨y, hy, rfl⟩` from `Finset.mem_image.mp hz`. Conclude with `(hl b y hy).2`. Introduce `z hz z' hz' hzz`. Take `⟨y, hy, rfl⟩` from `Finset.mem_image.mp hz`. Take `⟨y', hy', rfl⟩` from `Finset.mem_image.mp hz'`.
+
+Establish `: y = y'`. Use `hYd y hy y' hy' ?_` and prove the remaining obligations. Establish `e : y - y' = (y + l b y - (y' + l b y')) + (l b y' - l b y)` using `by abel`. Rewrite using `[e]`. Conclude with `(HoweDuality.intMat L n' n).add_mem hzz ((HoweDuality.intMat L n' n).sub_mem (hl b y' hy').1 (hl b y hy).1)`.
+
+Rewrite using `[this]`. Introduce `u hu`. Take `⟨y, hy, hm⟩` from `hcov b u hu`. Conclude with `⟨y + l b y, Finset.mem_image_of_mem _ hy, hm⟩`. Establish `hF` using `sum_charSum_eq_card_filter Y x hxY χ hmul hne (fun y => ρ y s)`.
+
+Establish `hcard : (Fintype.card B : ℂ) ≠ 0`. Establish `: 0 < Fintype.card B` using `Fintype.card_pos`. Conclude with `this.ne'` after adjusting the coercions. Use `⟨Y.filter (fun y => ∀ b, χ b y = χ b x), fun _ => 1, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Finset.mem_filter.mpr ⟨hxY, fun _ => rfl⟩`.
+
+Introduce `y hy`. Take `⟨hy1, hy2⟩` from `Finset.mem_filter.mp hy`. Conclude with `⟨one_ne_zero, hYA y hy1, (hsep y hy1).mpr hy2⟩`. Introduce `y hy y' hy' hne' hm`. Conclude with `hne' (hYd y (Finset.mem_filter.mp hy).1 y' (Finset.mem_filter.mp hy').1 hm)`.
+
+Simplify using `only [one_smul]`. Establish `e : ∑ y ∈ Y.filter (fun y => ∀ b, χ b y = χ b x), ρ y s = (Fintype.card B : ℂ)⁻¹ • ∑ b, (χ b x)⁻¹ • ∑ y ∈ Y, χ b y • ρ y s`. Rewrite using `[hF, smul_smul, inv_mul_cancel₀ hcard, one_smul]`. Rewrite using `[e]`. Use `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (hvacb b))` and prove the remaining obligations.
+-/
 theorem gramClass_sum_mem_span_selfDual_vac : ∀ (L : Type) [Field L] [CharZero L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L) (σ : L →+* L) (q : ℕ) (δ : L)
     (n n' : ℕ) (JS : GL (Fin n) L) (JT : GL (Fin n') L) (ψ : AddChar L ℂ) (M : Type) [AddCommGroup M] [Module ℂ M]
     (ρ : Matrix (Fin n') (Fin n) L → Module.End ℂ M)

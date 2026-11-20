@@ -27,6 +27,9 @@ section Sz
 
 open Formalism.MainNotions.G
 
+/- English proof (translation)
+Take `⟨x0, hx0⟩` from `sz_constant_term eps Fm.Ct Fm.CGam Fm.Cc Fm.CT2 Fm.PK`. Use `⟨x0, fun x hx hx1 i => hx0 (Fm.D x i) (Fm.L x i) (Fm.params x hx1 i) ⟨Fm.L_eps x i, Fm.Ct_eq x i, Fm.CGam_eq x i, Fm.Cc_eq x i, Fm.secondConstant_eq x i, Fm.params_K x hx1 i⟩ (by rw [Fm.L_x x i hx1]; exact hx) (Fm.sizes x hx1 i)⟩` and prove the remaining obligations.
+-/
 theorem szCt_fam {eps : ℝ} (Fm : FamP eps) : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ (hx : Fm.x1 < x) (i : Fm.Ix x),
     ∀ j ∈ SizeData₂.lifts (Fm.D x i), ∀ u : (Fm.D x i).what₂.Word, ∑ t : HH (Fm.D x i), ctD (Fm.D x i) u j t ≤
       2 * ((Fm.D x i).host.TT.card : ℝ) * (Fm.L x i).sc.b + 2 * ((Fm.D x i).R.f : ℝ) * (Fm.D x i).R.k * (Fm.L x i).sc.b' := by
@@ -35,6 +38,9 @@ theorem szCt_fam {eps : ℝ} (Fm : FamP eps) : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ (
     ⟨Fm.L_eps x i, Fm.Ct_eq x i, Fm.CGam_eq x i, Fm.Cc_eq x i, Fm.secondConstant_eq x i, Fm.params_K x hx1 i⟩
     (by rw [Fm.L_x x i hx1]; exact hx) (Fm.sizes x hx1 i)⟩
 
+/- English proof (translation)
+Take `⟨C, hC, x0, hx0⟩` from `sz_eat_identity Fm.GK Fm.cX.err eps Fm.Ct Fm.CGam Fm.Cc Fm.CT2 Fm.PK`. Use `⟨C, hC, x0, fun x hx hx1 i => hx0 (Fm.D x i) (Fm.L x i) (Fm.params x hx1 i) ⟨Fm.L_eps x i, Fm.Ct_eq x i, Fm.CGam_eq x i, Fm.Cc_eq x i, Fm.secondConstant_eq x i, Fm.params_K x hx1 i⟩ (by rw [Fm.L_x x i hx1]; exact hx) (Fm.sizes x hx1 i)⟩` and prove the remaining obligations.
+-/
 theorem szEatI_fam {eps : ℝ} (Fm : FamP eps) : ∃ C : ℝ, 0 ≤ C ∧ ∃ x0 : ℝ, ∀ x ≥ x0,
     ∀ (hx : Fm.x1 < x) (i : Fm.Ix x), ∀ j ∈ SizeData₂.lifts (Fm.D x i), ∀ S : Finset ℕ,
       (∀ p ∈ S, p.Prime ∧ (IsResidueClassZero (Fm.D x i) p ∨ IsSg (Fm.D x i) p) ∧ ¬ (IsResidueClassZero (Fm.D x i) p ∧ hP (Fm.D x i) p = 0) ∧
@@ -46,6 +52,11 @@ theorem szEatI_fam {eps : ℝ} (Fm : FamP eps) : ∃ C : ℝ, 0 ≤ C ∧ ∃ x0
     ⟨Fm.L_eps x i, Fm.Ct_eq x i, Fm.CGam_eq x i, Fm.Cc_eq x i, Fm.secondConstant_eq x i, Fm.params_K x hx1 i⟩
     (by rw [Fm.L_x x i hx1]; exact hx) (Fm.sizes x hx1 i)⟩
 
+/- English proof (translation)
+Take `⟨τ⟩` from `S.Inh.tau_index_set_nonempty D`. Establish `hX : SizeXpp L` using `h.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1`. Establish `hw : L.sc.w'' D.R.n ≤ wj D 1 τ` using `S.wj_ge L τ 1 le_rfl hm`. Establish `hpos : 0 < wj D 1 τ` using `lt_of_lt_of_le (S.w''_pos L) hw`. Establish `hr` using `hX 1 τ 1 τ le_rfl hm le_rfl hm`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem one_le_Xpp {D : D7} (L : SizeData₂ D) (h : SizesAt L) (hm : 1 ≤ D.R.m) : 1 ≤ L.sc.X'' D.R.n := by
   obtain ⟨τ⟩ := S.Inh.tau_index_set_nonempty D
   have hX : SizeXpp L := h.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1
@@ -54,6 +65,15 @@ theorem one_le_Xpp {D : D7} (L : SizeData₂ D) (h : SizesAt L) (hm : 1 ≤ D.R.
   have hr := hX 1 τ 1 τ le_rfl hm le_rfl hm
   nlinarith
 
+/- English proof (translation)
+Take `⟨xz, hz⟩` from `szCt_fam Fm`. Take `⟨Ce, hCe, xe, he⟩` from `szEatI_fam Fm`. Take `⟨Cd, xd, hd⟩` from `hD`. Use `⟨max Ce (max Cd 0), le_trans (le_max_right _ _) (le_max_right _ _), max xz (max xe xd), fun x hx h1 i => ?_⟩` and prove the remaining obligations. Simplify using `only [max_le_iff] at hx`.
+
+Take `⟨ez, ee, ed⟩` from `hx`. Use `⟨hz x ez h1 i, J.factDGam_mono (hd x ed i) (le_trans (le_max_left _ _) (le_max_right _ _)), fun j hj S hS => ?_⟩` and prove the remaining obligations. Establish `hm : 1 ≤ (Fm.D x i).R.m`. Simplify using `only [SizeData₂.lifts, Finset.mem_Icc] at hj`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hlog : 0 ≤ Real.log ((Fm.L x i).sc.X'' (Fm.D x i).R.n)` using `Real.log_nonneg (one_le_Xpp (Fm.L x i) (Fm.sizes x h1 i) hm)`. Establish `hb : 0 < (Fm.L x i).sc.b` using `by unfold Scale.b; positivity`. Establish `hf : (0 : ℝ) ≤ ((Fm.D x i).R.f : ℝ)` using `Nat.cast_nonneg _`. Establish `hnn : 0 ≤ ((Fm.D x i).R.f : ℝ) * (Fm.L x i).sc.b * Real.log ((Fm.L x i).sc.X'' (Fm.D x i).R.n)` using `mul_nonneg (mul_nonneg hf hb.le) hlog`. Use `(he x ee h1 i j hj S hS).trans ?_` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem admissible_size_family {eps : ℝ} (Fm : FamP eps) (hD : DGamSize Fm) : ∃ C : ℝ, 0 ≤ C ∧ ∃ x0 : ℝ, ∀ x ≥ x0,
     ∀ (_ : Fm.x1 < x) (i : Fm.Ix x), WeilJacquetShalikaLaw.TypePrimeSizeConds (Fm.D x i) (Fm.L x i) Fm.GK Fm.cX.err C := by
   obtain ⟨xz, hz⟩ := szCt_fam Fm
@@ -95,6 +115,11 @@ def reY {D : D7} (Y : LatInst D)
 
 def reW {D : D7} (Y : LatInst D) (LC : _) : WeilJacquetShalikaLaw.TwLoc D (reY Y LC) := ⟨LC, fun _ _ _ => rfl⟩
 
+/- English proof (translation)
+Unfold `WeilJacquetShalikaLaw.Serv at h ⊢`. Use `⟨h.1, ?_, h.2.2⟩` and prove the remaining obligations. Establish `h2` using `h.2.1`. Unfold `WeilJacquetShalikaLaw.Conclusion1 at h2 ⊢`. Introduce `hT`.
+
+Establish `hT' : WeilJacquetShalikaLaw.Ties9 D L X (reY Y LC) c` using `{ hT with }`. Conclude with `h2 hT'`.
+-/
 theorem serv_re {D : D7} {L : SizeData₂ D} {X : Inst D L} {Y : LatInst D} {K : Consts} {c : LatCmp D} {Dx : DivX D}
     {T : TwForms D} {lev : LevelData D} {Xe : ErrX D} {ce : ErrC} {C : ℝ} (LC : _)
     (h : WeilJacquetShalikaLaw.Serv D L X (reY Y LC) K c Dx T lev Xe ce C) : WeilJacquetShalikaLaw.Serv D L X Y K c Dx T lev Xe ce C := by
@@ -106,6 +131,9 @@ theorem serv_re {D : D7} {L : SizeData₂ D} {X : Inst D L} {Y : LatInst D} {K :
   have hT' : WeilJacquetShalikaLaw.Ties9 D L X (reY Y LC) c := { hT with }
   exact h2 hT'
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem num_re {D : D7} {L : SizeData₂ D} {X : Inst D L} {Y : LatInst D} {K : Consts} (LC : _)
     (h : FormalGroupSystem.SmallResidueCharComparison D L X Y K) : FormalGroupSystem.SmallResidueCharComparison D L X (reY Y LC) K := h
 
@@ -146,6 +174,9 @@ structure SumOverPrimesHypotheses (𝒞 : FamClass) : Prop where
         OrbitPlaces.ThetaKernelShapeAtD (OrbitPlaces.ofKer (nuRowOK (Fm.D x i)) E ep be sg) (Fm.X x i) ∧
         OrbitPlaces.Shape (Fm.D x i) (Fm.L x i) (Fm.Gx x i) (OrbitPlaces.ofKer (nuRowOK (Fm.D x i)) E ep be sg)
 
+/- English proof (translation)
+Establish `hs` using `P.level_split _ (D.host.g_level k)`. Introduce `h`. Rewrite `hs` using `[h]`. Simplify using `only [Host.cls, primeClass] at hs`. Use `split_ifs at hs`.
+-/
 theorem typeG_ne_d {D : D7} {L : SizeData₂ D} (P : ParameterChoice' D L) (k : Fin 2) : D.host.g k ≠ D.host.d := by
   have hs := P.level_split _ (D.host.g_level k)
   intro h
@@ -153,6 +184,13 @@ theorem typeG_ne_d {D : D7} {L : SizeData₂ D} (P : ParameterChoice' D L) (k : 
   simp only [Host.cls, primeClass] at hs
   split_ifs at hs
 
+/- English proof (translation)
+Unfold `Closed at hP ⊢`. Take `⟨ε1, hε1, hP⟩` from `hP`. Use `⟨ε1, hε1, fun eps he he1 => ?_⟩` and prove the remaining obligations. Take `⟨K, hK⟩` from `hP eps he he1`. Use `⟨⟨max K.pre K0.pre, fun l => max (K.t l) (K0.t l), fun l => max (K.mid l) (K0.mid l), fun l => max (K.last l) (K0.last l)⟩, fun Fm CH hC hL => ?_⟩` and prove the remaining obligations.
+
+Unfold `Formalism.MainNotions.FamP.Large at hL`. Take `⟨h1, -, h3, h4⟩` from `hL`. Establish `hLK : Fm.Large K CH`. Unfold `Formalism.MainNotions.FamP.Large`. Conclude with `⟨fun c hc => (le_max_left _ _).trans (h1 c hc), trivial, fun c hc => (le_max_left _ _).trans (h3 c hc), fun c hc => (le_max_left _ _).trans (h4 c hc)⟩`.
+
+Establish `hLK0 : Fm.Large K0 CH`. Unfold `Formalism.MainNotions.FamP.Large`. Conclude with `⟨fun c hc => (le_max_right _ _).trans (h1 c hc), trivial, fun c hc => (le_max_right _ _).trans (h3 c hc), fun c hc => (le_max_right _ _).trans (h4 c hc)⟩`. Conclude with `h Fm CH he hLK0 (hK Fm CH hC hLK)`.
+-/
 theorem closed_large_pos {𝒞 : FamClass} {P Q : ∀ {eps : ℝ}, FamP eps → ℝ → Prop} (K0 : TransportedAlt) (hP : Closed 𝒞 P)
     (h : ∀ {eps : ℝ} (Fm : FamP eps) (CH : ℝ), 0 < eps → Fm.Large K0 CH → P Fm CH → Q Fm CH) : Closed 𝒞 Q := by
   unfold Closed at hP ⊢
@@ -173,6 +211,11 @@ theorem closed_large_pos {𝒞 : FamClass} {P Q : ∀ {eps : ℝ}, FamP eps → 
       fun c hc => (le_max_right _ _).trans (h3 c hc), fun c hc => (le_max_right _ _).trans (h4 c hc)⟩
   exact h Fm CH he hLK0 (hK Fm CH hC hLK)
 
+/- English proof (translation)
+Establish `hez : 0 < Fm.ez` using `by rw [← Fm.L_ez x i]; exact (Fm.L x i).sc.ez_pos`. Establish `hL` using `(Fm.L x i).split_tie`. Rewrite `hL` using `[Fm.L_x x i h1, Fm.L_ez x i]`. Use `le_trans (Nat.le_floor ?_) hL` and prove the remaining obligations. Establish `he : 5 / Fm.ez * (Fm.ez / 5) = 1` using `by field_simp`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.rpow_mul (by norm_num), he, Real.rpow_one]; norm_num`. Use `_ ≤ x ^ (Fm.ez / 5) := Real.rpow_le_rpow (by positivity) hx (by positivity)`.
+-/
 theorem three_le_split {eps : ℝ} (Fm : FamP eps) (h0 : 0 < eps) {x : ℝ} (hx : (3 : ℝ) ^ (5 / Fm.ez) ≤ x) (h1 : Fm.x1 < x)
     (i : Fm.Ix x) : 3 ≤ (Fm.D x i).host.splitBound := by
   have hez : 0 < Fm.ez := by rw [← Fm.L_ez x i]; exact (Fm.L x i).sc.ez_pos
@@ -184,6 +227,15 @@ theorem three_le_split {eps : ℝ} (Fm : FamP eps) (h0 : 0 < eps) {x : ℝ} (hx 
         rw [← Real.rpow_mul (by norm_num), he, Real.rpow_one]; norm_num
     _ ≤ x ^ (Fm.ez / 5) := Real.rpow_le_rpow (by positivity) hx (by positivity)
 
+/- English proof (translation)
+Establish `hpdv` using `h.pdv`. Establish `h01 : OrbitPlaces.OrbitLetterBoundsAll 11 1` using `DIV.Bridge.DworkPowerSeriesWeights.split_bound_eleven_one`. Use `closed_large_pos ⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩ (hD.and (h.twU.and (hpdv.and (G.num_closed 𝒞 FormalGroupSystem.Pf.stmtNumE)))) fun {eps} Fm CH hpos hL ⟨hDg, ⟨xb, hb⟩, ⟨xc, hc⟩, ⟨xn, hnum⟩⟩ => ?_` and prove the remaining obligations. Establish `hpr1 : 1 ≤ Fm.GK.Pr1` using `le_of_eq Fm.fixed.1.symm`. Establish `hCL : OrbitPlaces.CLarge 11 1 Fm.GK Fm.cX.err` using `OrbitPlaces.cLarge_of_fixed Fm.fixed.2.2.2.2.1 Fm.fixed.2.2.2.2.2.1 Fm.fixed.2.1 (by rw [Fm.fixed.2.2.1]; norm_num)`.
+
+Take `⟨Cs, hCs, xa, ha⟩` from `admissible_size_family Fm hDg`. Use `⟨Cs, hCs, max (max xa xb) (max (max xc ((3 : ℝ) ^ (5 / Fm.ez))) xn), fun x hx h1 i => ?_⟩` and prove the remaining obligations. Simplify using `only [max_le_iff] at hx`. Take `⟨⟨ea, eb⟩, ⟨ec, ef⟩, en⟩` from `hx`. Take `⟨LC, hV, hSys⟩` from `hb x eb h1 i`.
+
+Establish `hU` using `G.Joints.unit_bound_of_sum_over_primes _ _ _ _ _ _ (reW (Fm.Gy x i) LC) _ _ _ 1 (FormalGroupSystem.Pf.stmt_proved _) hSys (num_re LC (hnum x en i)) (G.TopChoiceBounds.hLarge_proved _ _ Fm.GK_nonneg hpr1 (Fm.params x h1 i))`. Take `⟨E, ⟨hUn, hR, hKF, hS0⟩, ep, be, sg, b0, b0c, a', ei, sd, sh⟩` from `hc x ec h1 i`. Establish `gd : OrbitPlaces.TypePrimeNotDiscriminant (Fm.D x i)` using `fun k => typeG_ne_d (Fm.params x h1 i) k`. Establish `o` using `DIV.Inh.orbit_admissible_of_split_bound (Fm.D x i) (three_le_split Fm hpos ef h1 i)`. Establish `hW : OrbitPlaces.SB E` using `fun _ _ _ _ _ _ B hB => (DIV.Lemmas.theta_isometry_facts_hold (Fm.D x i) _ _ _ _ _ B).1 hB`.
+
+Establish `hK : OrbitPlaces.KForm (OrbitPlaces.ofKer (nuRowOK (Fm.D x i)) E ep be sg) (Fm.X x i) (Fm.ex x h1 i).tw 1` using `OrbitPlaces.kform_of_ker E _ (fun _ _ => rfl) rfl hW hUn hR hKF (Or.inr ⟨rfl, hS0⟩)`. Establish `hA : OrbitPlaces.admitted (Fm.D x i) (Fm.L x i) (Fm.Gx x i) Fm.GK (Fm.X x i) (Fm.ex x h1 i).tw (OrbitPlaces.ofKer (nuRowOK (Fm.D x i)) E ep be sg) Fm.cX.err 1 11 1` using `⟨hK, o, gd, b0, b0c, h01, a', ei, sd, sh, hCL⟩`. Take `⟨n, c, d, it⟩` from `J.four_orbit_conditions_of_proof (lev := (Fm.ex x h1 i).lev) (Xe := (Fm.ex x h1 i).errX) (OrbitPlaces.lift_bounds_of_essential hA (DIV.Lemmas.OrbitEntryBounds.orbit_entry_bounds_hold _ _ _ _ _ _ _ 11 1 h01 sd sh hCL))`. Establish `hAdm : WeilJacquetShalikaLaw.admitted (Fm.D x i) (Fm.L x i) (Fm.Gx x i) (reY (Fm.Gy x i) LC) Fm.GK (Fm.X x i) (Fm.ex x h1 i).tw (reW (Fm.Gy x i) LC) (Fm.ex x h1 i).lev (Fm.ex x h1 i).errX Fm.cX.err 1` using `⟨hU, WeilJacquetShalikaLaw.local_theorem_of_statement _ (FormalGroupSystem.Pf.stmtAt_proved _), it, n, c, d⟩`. Conclude with `serv_re LC (WeilJacquetShalikaLaw.serv_of (WeilJacquetShalikaLaw.Proof.stmt_proved _ _ _ _ _ _ _) (reW (Fm.Gy x i) LC) hV hAdm (ha x ea h1 i))`.
+-/
 theorem sum_over_primes_service (𝒞 : FamClass) (hD : Closed 𝒞 fun Fm _ => DGamSize Fm) (h : SumOverPrimesHypotheses 𝒞) :
     Closed 𝒞 fun Fm _ => WeilJacquetShalikaLaw.ServF Fm := by
   have hpdv := h.pdv

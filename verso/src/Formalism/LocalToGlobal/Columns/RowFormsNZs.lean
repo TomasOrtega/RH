@@ -21,6 +21,9 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} [NeZero n]
 
 def nzPt (a : GLG E n SG) : DecoSet E n ∅ SG := ((1 : UF E n), a) • DecoSet.base E n ∅ SG
 
+/- English proof (translation)
+Establish `h1 : (fun i => algebraMap (𝓞 E) E (x i) : Sp E n) ∈ stdLat E n` using `(mem_stdLat _).2 fun i => ⟨x i, rfl⟩`. Simplify using `only [Deco.base]`. Rewrite using `[if_pos (le_locP _ _ h1)]`. Use function extensionality and compare the values at `i`. Rewrite using `[reduction_coe]`.
+-/
 theorem nz_base_be (w : SG) (x : Fin n → 𝓞 E) :
     (Deco.base E n ∅ SG).be w (fun i => algebraMap (𝓞 E) E (x i)) = fun i => Ideal.Quotient.mk w.1.asIdeal (x i) := by
   have h1 : (fun i => algebraMap (𝓞 E) E (x i) : Sp E n) ∈ stdLat E n := (mem_stdLat _).2 fun i => ⟨x i, rfl⟩
@@ -29,15 +32,36 @@ theorem nz_base_be (w : SG) (x : Fin n → 𝓞 E) :
   funext i
   rw [reduction_coe]
 
+/- English proof (translation)
+Use `show gmap (1 : Sp E n ≃ₗ[E] Sp E n) (stdLat E n) = stdLat E n`. Use extensionality with `x`. Rewrite using `[mem_gmap]`. Both sides reduce to the same expression.
+-/
 theorem nzPt_N (a : GLG E n SG) : (nzPt a).1.N = stdLat E n := by
   show gmap (1 : Sp E n ≃ₗ[E] Sp E n) (stdLat E n) = stdLat E n
   ext x
   rw [mem_gmap]
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem nzPt_be (a : GLG E n SG) (w : SG) (x : Sp E n) :
     (nzPt a).1.be w x = (a w).1.mulVec ((Deco.base E n ∅ SG).be w x) := rfl
 
+/- English proof (translation)
+Establish `eN : gmap γ.1 (nzPt a).1.N = (nzPt a).1.N` using `congrArg (fun d : DecoSet E n ∅ SG => d.1.N) e`. Rewrite `eN` using `[nzPt_N]`. Establish `hmem : ∀ j, γ.1 (Pi.single j 1) ∈ stdLat E n`. Introduce `j`. Rewrite using `[← eN, mem_gmap, LinearEquiv.symm_apply_apply]`.
+
+Use `single_mem_stdLat (E := E) (n := n) j 1` as an intermediate fact. Rewrite `this` using `[map_one]`. Then use the resulting hypothesis. Use `choose G hG using fun j => (mem_stdLat _).1 (hmem j)`. Use `⟨Matrix.of fun i j => G j i, fun i j => hG j i, fun w => ?_⟩` and prove the remaining obligations. Establish `eB : ∀ x, (h w).1.mulVec ((nzPt a).1.be w (γ.1.symm x)) = (nzPt a).1.be w x` using `fun x => congrFun (congrFun (congrArg (fun d : DecoSet E n ∅ SG => d.1.be) e) w) x`.
+
+Use extensionality with `i j`. Establish `h1` using `congrFun (eB (γ.1 (Pi.single j 1))) i`. Rewrite `h1` using `[LinearEquiv.symm_apply_apply, nzPt_be, nzPt_be]`. Establish `h2 : (Pi.single j 1 : Sp E n) = fun i => algebraMap (𝓞 E) E ((Pi.single j 1 : Fin n → 𝓞 E) i)`. Use function extensionality and compare the values at `i`.
+
+Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hij]`. Establish `h3 : γ.1 (Pi.single j 1) = fun i => algebraMap (𝓞 E) E (G j i)` using `funext fun i => (hG j i).symm`.
+
+Rewrite `h1` using `[h3, nz_base_be, h2, nz_base_be, Matrix.mulVec_mulVec]`. Establish `h4 : (fun i => Ideal.Quotient.mk w.1.asIdeal ((Pi.single j 1 : Fin n → 𝓞 E) i)) = (Pi.single j 1 : Fin n → 𝓞 E ⧸ w.1.asIdeal)`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[hij]`. Rewrite `h1` using `[h4, Matrix.mulVec_single_one]`. Rewrite `h1` using `[Matrix.col_apply]`. Rewrite using `[h1, Matrix.mul_apply]`.
+
+Both sides reduce to the same expression.
+-/
 theorem nz_stab (a : GLG E n SG) (γ : UF E n) (h : GLG E n SG) (e : (γ, h) • nzPt a = nzPt a) :
     ∃ G : Matrix (Fin n) (Fin n) (𝓞 E), (∀ i j, algebraMap (𝓞 E) E (G i j) = γ.1 (Pi.single j 1) i) ∧
       ∀ w, (h w).1 * (a w).1 = (a w).1 * G.map (Ideal.Quotient.mk w.1.asIdeal) := by
@@ -73,6 +97,9 @@ theorem nz_stab (a : GLG E n SG) (γ : UF E n) (h : GLG E n SG) (e : (γ, h) •
   rw [h1, Matrix.mul_apply]
   rfl
 
+/- English proof (translation)
+Establish `h1` using `γ.2 (Pi.single j 1) (Pi.single k 1)`. Rewrite `h1` using `[hStd_apply, hStd_single_left]`. Simplify using `only [hG]`. Rewrite using `[h1, Pi.single_apply]`.
+-/
 theorem nz_unitary (γ : UF E n) (G : Matrix (Fin n) (Fin n) (𝓞 E))
     (hG : ∀ i j, algebraMap (𝓞 E) E (G i j) = γ.1 (Pi.single j 1) i) (j k : Fin n) :
     ∑ i, star (algebraMap (𝓞 E) E (G i j)) * algebraMap (𝓞 E) E (G i k) = if j = k then 1 else 0 := by
@@ -81,6 +108,9 @@ theorem nz_unitary (γ : UF E n) (G : Matrix (Fin n) (Fin n) (𝓞 E))
   simp only [hG]
   rw [h1, Pi.single_apply]
 
+/- English proof (translation)
+Use `show (LinearMap.toMatrix' ((γ.1 : Sp E n ≃ₗ[E] Sp E n) : Sp E n →ₗ[E] Sp E n)) i j = _`. Rewrite using `[LinearMap.toMatrix'_apply]`. Use `congr 2`.
+-/
 theorem nz_ufGL_apply (γ : UF E n) (i j : Fin n) :
     ((ufGL E n γ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) i j = γ.1 (Pi.single j 1) i := by
   show (LinearMap.toMatrix' ((γ.1 : Sp E n ≃ₗ[E] Sp E n) : Sp E n →ₗ[E] Sp E n)) i j = _
@@ -93,6 +123,9 @@ section Comb
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (s j)]`. Rewrite using `[pM_apply, if_pos rfl, mul_one]`. Introduce `b _ hb`. Rewrite using `[pM_apply, if_neg hb, mul_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem mul_pM_apply (R : Type) [CommRing R] (M : Matrix (Fin n) (Fin n) R) (s : Equiv.Perm (Fin n)) (i j : Fin n) :
     (M * pM R s) i j = M i (s j) := by
   rw [Matrix.mul_apply, Finset.sum_eq_single (s j)]
@@ -101,6 +134,9 @@ theorem mul_pM_apply (R : Type) [CommRing R] (M : Matrix (Fin n) (Fin n) R) (s :
     rw [pM_apply, if_neg hb, mul_zero]
   · simp
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (s⁻¹ i)]`. Rewrite using `[pM_apply, if_pos (by simp), one_mul]`. Introduce `b _ hb`. Rewrite using `[pM_apply, if_neg (fun h => hb (by rw [h]; simp)), zero_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem pM_mul_apply (R : Type) [CommRing R] (M : Matrix (Fin n) (Fin n) R) (s : Equiv.Perm (Fin n)) (i j : Fin n) :
     (pM R s * M) i j = M (s⁻¹ i) j := by
   rw [Matrix.mul_apply, Finset.sum_eq_single (s⁻¹ i)]
@@ -109,9 +145,23 @@ theorem pM_mul_apply (R : Type) [CommRing R] (M : Matrix (Fin n) (Fin n) R) (s :
     rw [pM_apply, if_neg (fun h => hb (by rw [h]; simp)), zero_mul]
   · simp
 
+/- English proof (translation)
+The claim follows from `(Finset.sum_eq_sum_iff_of_le (fun b _ => h b)).mp (Equiv.sum_comp s φ) b (Finset.mem_univ b)`.
+-/
 theorem nz_perm_of_le {φ : Fin n → ℕ} (s : Equiv.Perm (Fin n)) (h : ∀ b, φ (s b) ≤ φ b) (b : Fin n) : φ (s b) = φ b :=
   (Finset.sum_eq_sum_iff_of_le (fun b _ => h b)).mp (Equiv.sum_comp s φ) b (Finset.mem_univ b)
 
+/- English proof (translation)
+Establish `key : ∀ b : Fin n, (b.val < r → s b = b) ∧ coarse r bl (s b).val = coarse r bl b.val`. Introduce `b`. Establish `hb` using `h b`. Unfold `fine at hb`. Distinguish the cases in `h1 : b.val < r`.
+
+Rewrite `hb` using `[if_pos h1]`. Distinguish the cases in `h2 : (s b).val < r`. Rewrite `hb` using `[if_pos h2]`. Establish `: s b = b` using `Fin.ext hb`. Conclude with `⟨fun _ => this, by rw [this]⟩`.
+
+Rewrite `hb` using `[if_neg h2]`. Use linear arithmetic over natural numbers and integers. Rewrite `hb` using `[if_neg h1]`. Distinguish the cases in `h2 : (s b).val < r`. Rewrite `hb` using `[if_pos h2]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite `hb` using `[if_neg h2]`. Use `⟨fun h => absurd h h1, ?_⟩` and prove the remaining obligations. Rewrite using `[coarse_of_le (Nat.not_lt.mp h2), coarse_of_le (Nat.not_lt.mp h1)]`. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `⟨fun b => (key b).1, fun b => (key b).2⟩`.
+-/
 theorem nz_fine {r : ℕ} {bl : List ℕ} (s : Equiv.Perm (Fin n)) (h : ∀ b : Fin n, fine r bl (s b).val = fine r bl b.val) :
     (∀ b : Fin n, b.val < r → s b = b) ∧ ∀ b : Fin n, coarse r bl (s b).val = coarse r bl b.val := by
   have key : ∀ b : Fin n, (b.val < r → s b = b) ∧ coarse r bl (s b).val = coarse r bl b.val := by
@@ -136,6 +186,11 @@ theorem nz_fine {r : ℕ} {bl : List ℕ} (s : Equiv.Perm (Fin n)) (h : ∀ b : 
         omega
   exact ⟨fun b => (key b).1, fun b => (key b).2⟩
 
+/- English proof (translation)
+Establish `h1 : ∀ b : Fin n, fine r bl (s b).val ≤ fine r bl b.val`. Introduce `b`. Assume the negation of the conclusion as `hc`. Use `mem_btG.mp hm.1 (s b) b (Nat.not_le.mp hc)` as an intermediate fact. Rewrite `this` using `[hM, if_pos rfl]`.
+
+Conclude with `hu b this`. Take `⟨h2, h3⟩` from `nz_fine s (nz_perm_of_le (φ := fun b => fine r bl b.val) s h1)`. Use `⟨h2, fun b hb => ?_, h3⟩` and prove the remaining obligations. Use `hm.2 b hb` as an intermediate fact. Rewrite `this` using `[hM, if_pos (h2 b hb).symm]`. Then use the resulting hypothesis.
+-/
 theorem nz_uni {κ : Type} [CommRing κ] {r : ℕ} {bl : List ℕ} (s : Equiv.Perm (Fin n)) (u : Fin n → κ) (hu : ∀ b, u b ≠ 0)
     (M : GL (Fin n) κ) (hM : ∀ a b, M.1 a b = if a = s b then u b else 0) (hm : M ∈ uniUT n κ r bl) :
     (∀ b : Fin n, b.val < r → s b = b) ∧ (∀ b : Fin n, b.val < r → u b = 1) ∧
@@ -151,6 +206,11 @@ theorem nz_uni {κ : Type} [CommRing κ] {r : ℕ} {bl : List ℕ} (s : Equiv.Pe
   have := hm.2 b hb
   rwa [hM, if_pos (h2 b hb).symm] at this
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hc`. Rewrite `h` using `[hfix b (Nat.not_le.mp hc)]`. Conclude with `hc h`.
+
+Introduce `h`. Assume the negation of the conclusion as `hc`. Use `hfix (s b) (Nat.not_le.mp hc)` as an intermediate fact. Rewrite `hc` using `[s.injective this]`. Conclude with `hc h`.
+-/
 theorem nz_ge_of_fix {r : ℕ} (s : Equiv.Perm (Fin n)) (hfix : ∀ b : Fin n, b.val < r → s b = b) (b : Fin n) :
     r ≤ (s b).val ↔ r ≤ b.val := by
   constructor
@@ -164,6 +224,9 @@ theorem nz_ge_of_fix {r : ℕ} (s : Equiv.Perm (Fin n)) (hfix : ∀ b : Fin n, b
     rw [s.injective this] at hc
     exact hc h
 
+/- English proof (translation)
+Rewrite using `[Equiv.Perm.inv_eq_iff_eq]`. Conclude with `(hfix b hb).symm`.
+-/
 theorem nz_fix_inv {r : ℕ} (s : Equiv.Perm (Fin n)) (hfix : ∀ b : Fin n, b.val < r → s b = b) (b : Fin n) (hb : b.val < r) :
     s⁻¹ b = b := by
   rw [Equiv.Perm.inv_eq_iff_eq]
@@ -173,8 +236,16 @@ variable (κ : Type) [CommRing κ]
 
 def nzN (n r : ℕ) (i0 : Fin n) : Matrix (Fin n) (Fin n) κ := Matrix.of fun a b => if r ≤ a.val ∧ b = i0 then 1 else 0
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem nzN_apply {r : ℕ} (i0 a b : Fin n) : nzN κ n r i0 a b = if r ≤ a.val ∧ b = i0 then 1 else 0 := rfl
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i0]`. Rewrite using `[nzN_apply]`. Distinguish the cases in `h : r ≤ a.val`. Rewrite using `[if_pos ⟨h, rfl⟩, if_pos h, one_mul]`. Rewrite using `[if_neg (fun hh => h hh.1), if_neg h, zero_mul]`.
+
+Introduce `b _ hb`. Rewrite using `[nzN_apply, if_neg (fun hh => hb hh.2), zero_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem nzN_mul {r : ℕ} (i0 : Fin n) (M : Matrix (Fin n) (Fin n) κ) (a c : Fin n) :
     (nzN κ n r i0 * M) a c = if r ≤ a.val then M i0 c else 0 := by
   rw [Matrix.mul_apply, Finset.sum_eq_single i0]
@@ -186,6 +257,9 @@ theorem nzN_mul {r : ℕ} (i0 : Fin n) (M : Matrix (Fin n) (Fin n) κ) (a c : Fi
     rw [nzN_apply, if_neg (fun hh => hb hh.2), zero_mul]
   · simp
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (s⁻¹ a)]`. Apply the tactic sequence `rw [hM, if_pos (by simp), nzN_apply] split_ifs <;> simp`. Introduce `b _ hb`. Rewrite using `[hM, if_neg (fun h => hb (by rw [h]; simp)), zero_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem nz_mono_mul_nzN {r : ℕ} (i0 : Fin n) (s : Equiv.Perm (Fin n)) (u : Fin n → κ) (M : Matrix (Fin n) (Fin n) κ)
     (hM : ∀ a b, M a b = if a = s b then u b else 0) (a c : Fin n) :
     (M * nzN κ n r i0) a c = if r ≤ (s⁻¹ a).val ∧ c = i0 then u (s⁻¹ a) else 0 := by
@@ -196,6 +270,11 @@ theorem nz_mono_mul_nzN {r : ℕ} (i0 : Fin n) (s : Equiv.Perm (Fin n)) (u : Fin
     rw [hM, if_neg (fun h => hb (by rw [h]; simp)), zero_mul]
   · simp
 
+/- English proof (translation)
+Use extensionality with `a c`. Establish `h0 : nzN κ n r i0 i0 c = 0`. Rewrite using `[nzN_apply]`. Conclude with `if_neg (fun h => absurd h.1 (Nat.not_le.mpr hi))`. Rewrite using `[nzN_mul, h0]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem nzN_sq {r : ℕ} (i0 : Fin n) (hi : i0.val < r) : nzN κ n r i0 * nzN κ n r i0 = 0 := by
   ext a c
   have h0 : nzN κ n r i0 i0 c = 0 := by
@@ -216,6 +295,17 @@ def nzA {r : ℕ} (i0 : Fin n) (hi : i0.val < r) : GL (Fin n) κ where
 
 variable {κ}
 
+/- English proof (translation)
+Establish `e' : ∀ a c, h.1 a c + (if r ≤ a.val then h.1 i0 c else 0) = M a c + if r ≤ (s⁻¹ a).val ∧ c = i0 then u (s⁻¹ a) else 0`. Introduce `a c`. Use `congrFun (congrFun e a) c` as an intermediate fact. Express the relevant statement in the definitionally equal form `((1 + nzN κ n r i0) * h.1) a c = (M * (1 + nzN κ n r i0)) a c at this`. Rewrite `this` using `[add_mul, mul_add, one_mul, mul_one, Matrix.add_apply, Matrix.add_apply, nzN_mul, nz_mono_mul_nzN κ i0 s u M hM]`.
+
+Conclude with `this`. Establish `h1` using `e' i0 i0`. Rewrite `h1` using `[if_neg (Nat.not_le.mpr hi), nz_fix_inv s hfix i0 hi, if_neg (fun hh => absurd hh.1 (Nat.not_le.mpr hi)), hM, if_pos (hfix i0 hi).symm, hu0, add_zero, add_zero]`. Establish `h2` using `e' (s b) i0`. Establish `hsb : r ≤ (s b).val` using `(nz_ge_of_fix s hfix b).mpr hb`.
+
+Establish `h3 : h.1 (s b) i0 = 0`. Apply `mem_btG.mp hh` to reduce the goal to its premises. Rewrite using `[coarse_of_lt hi, coarse_of_le hsb]`. Use linear arithmetic over natural numbers and integers. Establish `h4 : s⁻¹ (s b) = b` using `by simp`.
+
+Establish `h5 : s b ≠ s i0` using `fun hc => by`. Use `s.injective hc` as an intermediate fact. Rewrite `hb` using `[this]`. Use linear arithmetic over natural numbers and integers. Rewrite `h2` using `[if_pos hsb, h3, h1, h4, if_pos ⟨hb, rfl⟩, hM, if_neg h5, zero_add, zero_add]`.
+
+Conclude with `h2.symm`.
+-/
 theorem permutation_scalars_eq_one {r : ℕ} {bl : List ℕ} (i0 : Fin n) (hi : i0.val < r) (s : Equiv.Perm (Fin n)) (u : Fin n → κ)
     (hfix : ∀ b : Fin n, b.val < r → s b = b) (hu0 : u i0 = 1) (M : Matrix (Fin n) (Fin n) κ)
     (hM : ∀ a b, M a b = if a = s b then u b else 0) (h : GL (Fin n) κ) (hh : h ∈ blockUT n κ r bl)
@@ -245,6 +335,17 @@ theorem permutation_scalars_eq_one {r : ℕ} {bl : List ℕ} (i0 : Fin n) (hi : 
   rw [if_pos hsb, h3, h1, h4, if_pos ⟨hb, rfl⟩, hM, if_neg h5, zero_add, zero_add] at h2
   exact h2.symm
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use `show pM κ s * (1 + nzN κ n r i0) = (1 + nzN κ n r i0) * pM κ s`. Rewrite using `[mul_add, add_mul, mul_one, one_mul]`. Use `congr 1`. Use extensionality with `a c`.
+
+Rewrite using `[nzN_mul, nz_mono_mul_nzN κ i0 s (fun _ => 1) (pM κ s) (fun a b => pM_apply κ s a b), pM_apply]`. Establish `h1 : r ≤ (s⁻¹ a).val ↔ r ≤ a.val`. Use `nz_ge_of_fix s hfix (s⁻¹ a)` as an intermediate fact. Rewrite `this` using `[show s (s⁻¹ a) = a by simp]`. Conclude with `this.symm`.
+
+Establish `h2 : i0 = s c ↔ c = i0`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h3` using `hfix i0 hi`. Rewrite `h3` using `[h]`.
+
+Use `s.injective h3` as an intermediate fact. Rewrite using `[h, this]`. Introduce `h`. Rewrite using `[h, hfix i0 hi]`. Distinguish the cases in `ha : r ≤ a.val`.
+
+Distinguish the cases in `hc : c = i0`. Rewrite using `[if_pos ⟨h1.mpr ha, hc⟩, if_pos ha, if_pos (h2.mpr hc)]`. Rewrite using `[if_neg (fun h => hc h.2), if_pos ha, if_neg (fun h => hc (h2.mp h))]`. Rewrite using `[if_neg (fun h => ha (h1.mp h.1)), if_neg ha]`.
+-/
 theorem nz_comm {r : ℕ} (i0 : Fin n) (hi : i0.val < r) (s : Equiv.Perm (Fin n))
     (hfix : ∀ b : Fin n, b.val < r → s b = b) : permGL κ s * nzA κ i0 hi = nzA κ i0 hi * permGL κ s := by
   apply Units.ext
@@ -278,6 +379,19 @@ section Stab
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
 
+/- English proof (translation)
+Establish `h1 : ∀ j, ∃ i, star ((G i j : 𝓞 E) : E) * ((G i j : 𝓞 E) : E) = 1 ∧ ∀ i', i' ≠ i → G i' j = 0` using `fun j => nz_mono hconj (fun i => G i j) (by`. Use `hU j j` as an intermediate fact. Rewrite `this` using `[if_pos rfl]`. Conclude with `this)`. Use `choose s0 hs1 hs2 using h1`.
+
+Establish `hinj : Function.Injective s0`. Introduce `j k hjk`. Assume the negation of the conclusion as `hne`. Establish `h2` using `hU j k`. Rewrite `h2` using `[if_neg hne, Finset.sum_eq_single (s0 j)]`.
+
+Establish `h3 : algebraMap (𝓞 E) E (G (s0 j) j) ≠ 0`. Introduce `h0`. Use `hs1 j` as an intermediate fact. Express the relevant statement in the definitionally equal form `star (algebraMap (𝓞 E) E (G (s0 j) j)) * algebraMap (𝓞 E) E (G (s0 j) j) = 1 at this`. Rewrite `this` using `[h0, mul_zero]`.
+
+Conclude with `zero_ne_one this`. Establish `h4 : algebraMap (𝓞 E) E (G (s0 j) k) ≠ 0`. Introduce `h0`. Use `hs1 k` as an intermediate fact. Rewrite `this` using `[← hjk]`.
+
+Express the relevant statement in the definitionally equal form `star (algebraMap (𝓞 E) E (G (s0 j) k)) * algebraMap (𝓞 E) E (G (s0 j) k) = 1 at this`. Rewrite `this` using `[h0, mul_zero]`. Conclude with `zero_ne_one this`. Conclude with `mul_ne_zero (star_ne_zero.mpr h3) h4 h2`. Introduce `i _ hi`.
+
+Rewrite using `[hs2 j i hi, map_zero, star_zero, zero_mul]`. Simplify using the standard rewrite rules. Conclude with `⟨Equiv.ofBijective s0 (Finite.injective_iff_bijective.mp hinj), hs1, fun i j hij => hs2 j i hij⟩`.
+-/
 theorem nz_monomial (hconj : ∀ (φ : E →+* ℂ) (x : E), φ (star x) = starRingEnd ℂ (φ x))
     (G : Matrix (Fin n) (Fin n) (𝓞 E))
     (hU : ∀ j k, ∑ i, star (algebraMap (𝓞 E) E (G i j)) * algebraMap (𝓞 E) E (G i k) = if j = k then 1 else 0) :
@@ -324,6 +438,35 @@ open Classical in
 def nzFr (pos : Equiv.Perm (Fin n)) {r : ℕ} (i0 : Fin n) (hi : i0.val < r) (w1 : SG) : GLG X.E n SG := fun w =>
   if w = w1 then (nzA _ i0 hi)⁻¹ * permGL _ pos⁻¹ else permGL _ pos⁻¹
 
+/- English proof (translation)
+Take `⟨G, hG, hh⟩` from `nz_stab _ γ h e`. Take `⟨s0, hs1, hs2⟩` from `nz_monomial hX.conjE G (nz_unitary γ G hG)`. Use `set s : Equiv.Perm (Fin n) := pos⁻¹ * s0 * pos with hs`. Establish `hsa : ∀ a b : Fin n, a = s b ↔ pos a = s0 (pos b)`. Introduce `a b`.
+
+Rewrite using `[hs, Equiv.Perm.mul_apply, Equiv.Perm.mul_apply, Equiv.Perm.eq_inv_iff_eq]`. Use `set z : Fin n → 𝓞 X.E := fun b => G (s0 (pos b)) (pos b) with hz`. Establish `hzu : ∀ b, star ((z b : 𝓞 X.E) : X.E) * ((z b : 𝓞 X.E) : X.E) = 1` using `fun b => hs1 (pos b)`. Establish `hGz : ∀ a b, G (pos a) (pos b) = if a = s b then z b else 0`. Introduce `a b`.
+
+Distinguish the cases in `hab : a = s b`. Rewrite using `[if_pos hab, hz] show G (pos a) (pos b) = G (s0 (pos b)) (pos b)`. Rewrite using `[(hsa a b).mp hab]`. Rewrite using `[if_neg hab]`. Conclude with `hs2 _ _ fun hc => hab ((hsa a b).mpr hc)`.
+
+Set `Gh : ∀ w : SG, GL (Fin n) (𝓞 X.E ⧸ w.1.asIdeal)` to `fun w => permGL _ pos⁻¹ * ((nzFr pos i0 hi w1 w)⁻¹ * h w * nzFr pos i0 hi w1 w) * (permGL _ pos⁻¹)⁻¹`. Establish `hGh : ∀ (w : SG) (a b : Fin n), (Gh w).1 a b = if a = s b then Ideal.Quotient.mk w.1.asIdeal (z b) else 0`. Introduce `w a b`. Establish `e1 : ((nzFr pos i0 hi w1 w)⁻¹ * h w * nzFr pos i0 hi w1 w).1 = G.map (Ideal.Quotient.mk w.1.asIdeal)`. Rewrite using `[mul_assoc, Units.val_mul, Units.val_mul, hh w, ← mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_mul]`.
+
+Establish `e2 : (Gh w).1 = pM _ pos⁻¹ * G.map (Ideal.Quotient.mk w.1.asIdeal) * pM _ pos` using `by show (permGL _ pos⁻¹ * ((nzFr pos i0 hi w1 w)⁻¹ * h w * nzFr pos i0 hi w1 w) * (permGL _ pos⁻¹)⁻¹).1 = _`. Rewrite using `[Units.val_mul, Units.val_mul, e1, ← map_inv, inv_inv]`. Both sides reduce to the same expression. Rewrite using `[e2, mul_pM_apply, pM_mul_apply, inv_inv, Matrix.map_apply, hGz]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Establish `hGh2 : Gh w2 = h w2` using `by show permGL _ pos⁻¹ * ((nzFr pos i0 hi w1 w2)⁻¹ * h w2 * nzFr pos i0 hi w1 w2) * (permGL _ pos⁻¹)⁻¹ = h w2`. Establish `: nzFr (X` using `X) pos i0 hi w1 w2 = permGL _ pos⁻¹ := if_neg hne`. Rewrite using `[this]`. Use `group`. Establish `hne0 : ∀ (w : SG) (b : Fin n), Ideal.Quotient.mk w.1.asIdeal (z b) ≠ 0` using `fun w b hc => nz_unit_notMem (hzu b) w.1 (Ideal.Quotient.eq_zero_iff_mem.mp hc)`.
+
+Take `⟨hfix, hu1, hco⟩` from `nz_uni s (fun b => Ideal.Quotient.mk w2.1.asIdeal (z b)) (hne0 w2) (Gh w2) (hGh w2) (by rw [hGh2]; exact h2)`. Establish `hone : ∀ (w : SG) (b : Fin n), Ideal.Quotient.mk w.1.asIdeal (z b) = 1 → z b - 1 ∈ w.1.asIdeal`. Introduce `w b hb`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, hb, map_one, sub_self]`. Establish `hz1 : ∀ b : Fin n, b.val < r → z b = 1` using `fun b hb => nz_root_one hX w2.1 hg2 hgw2 hb2 (hzu b) (hone w2 b (hu1 b hb))`.
+
+Establish `hA : (nzA _ i0 hi) * h w1 = Gh w1 * nzA _ i0 hi` using `by show _ = permGL _ pos⁻¹ * ((nzFr pos i0 hi w1 w1)⁻¹ * h w1 * nzFr pos i0 hi w1 w1) * (permGL _ pos⁻¹)⁻¹ * _`. Establish `: nzFr (X` using `X) pos i0 hi w1 w1 = (nzA _ i0 hi)⁻¹ * permGL _ pos⁻¹ := if_pos rfl`. Rewrite using `[this]`. Use `group`. Establish `hz2 : ∀ b : Fin n, r ≤ b.val → z b = 1` using `fun b hb => nz_root_one hX w1.1 hg1 hgw1 hb1 (hzu b) (hone w1 b (permutation_scalars_eq_one (bl := bl) i0 hi s (fun b => Ideal.Quotient.mk w1.1.asIdeal (z b)) hfix (by rw [hz1 i0 hi, map_one]) (Gh w1).1 (hGh w1) (h w1) h1 (congrArg Units.val hA) b hb))`.
+
+Establish `hzall : ∀ b, z b = 1` using `fun b => by`. Distinguish the cases in `hb : b.val < r`. Conclude with `hz1 b hb`. Conclude with `hz2 b (Nat.not_lt.mp hb)`. Establish `hGp : ∀ w : SG, Gh w = permGL _ s`.
+
+Introduce `w`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`. Rewrite using `[hGh, hzall, map_one]`. Both sides reduce to the same expression.
+
+Use `⟨s, hfix, hco, ?_, fun w => ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Rewrite using `[nz_ufGL_apply, ← hG, permGL_val, pM_apply]`. Establish `h3` using `hGz (pos⁻¹ i) (pos⁻¹ j)`.
+
+Rewrite `h3` using `[show pos (pos⁻¹ i) = i by simp, show pos (pos⁻¹ j) = j by simp, hzall]`. Rewrite using `[h3]`. Establish `h4 : pos⁻¹ i = s (pos⁻¹ j) ↔ i = (pos * s * pos⁻¹) j` using `by show pos⁻¹ i = s (pos⁻¹ j) ↔ i = pos (s (pos⁻¹ j))`. Conclude with `Equiv.Perm.inv_eq_iff_eq`. Distinguish the cases in `h5 : pos⁻¹ i = s (pos⁻¹ j)`.
+
+Rewrite using `[if_pos h5, if_pos (h4.mp h5), map_one]`. Rewrite using `[if_neg h5, if_neg (fun hc => h5 (h4.mpr hc)), map_zero]`. Distinguish the cases in `hw : w = w1`. Substitute `hw` using the available equality. Rewrite `hA` using `[hGp, nz_comm i0 hi s hfix]`.
+
+Conclude with `mul_left_cancel hA`. Rewrite using `[← hGp w] show h w = permGL _ pos⁻¹ * ((nzFr pos i0 hi w1 w)⁻¹ * h w * nzFr pos i0 hi w1 w) * (permGL _ pos⁻¹)⁻¹`. Establish `: nzFr (X` using `X) pos i0 hi w1 w = permGL _ pos⁻¹ := if_neg hw`. Rewrite using `[this]`. Use `group`.
+-/
 theorem nz_stab_perm (hX : X.Ok) (pos : Equiv.Perm (Fin n)) {r : ℕ} (bl : List ℕ) (i0 : Fin n) (hi : i0.val < r)
     (w1 w2 : SG) (hne : w2 ≠ w1) {g1 g2 : ℕ} (hg1 : g1.Prime) (hg2 : g2.Prime)
     (hgw1 : (g1 : 𝓞 X.E) ∈ w1.1.asIdeal) (hgw2 : (g2 : 𝓞 X.E) ∈ w2.1.asIdeal) (hb1 : 2 * X.f + 1 < g1)

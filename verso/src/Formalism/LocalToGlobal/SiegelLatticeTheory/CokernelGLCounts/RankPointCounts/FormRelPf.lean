@@ -18,12 +18,18 @@ namespace Formalism.L2.SG.Pf.FormRelPf
 def ofPts {K : Type} {i : ℕ} (s : Σ c : Composition (i + 1), (Fin c.length → K)) : List (K × ℕ) :=
   List.ofFn fun a => (s.2 a, s.1.blocksFun a)
 
+/- English proof (translation)
+Apply `List.ext_get` to reduce the goal to its premises. Simplify using `[ofPts, toPts, Composition.length]`. Introduce `n h1 h2`. Simplify using `[ofPts, toPts, Composition.blocksFun]`.
+-/
 theorem ofPts_toPts {K : Type} [Zero K] {i : ℕ} (p : Point K (i + 1)) : ofPts (toPts p) = p.1 := by
   apply List.ext_get
   · simp [ofPts, toPts, Composition.length]
   · intro n h1 h2
     simp [ofPts, toPts, Composition.blocksFun]
 
+/- English proof (translation)
+Introduce `p q h`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← ofPts_toPts p, ← ofPts_toPts q, h]`.
+-/
 theorem toPts_injective {K : Type} [Zero K] {i : ℕ} :
     Function.Injective (toPts : Point K (i + 1) → Σ c : Composition (i + 1), (Fin c.length → K)) := by
   intro p q h
@@ -38,6 +44,17 @@ open Formalism.L2.SG.Pf.FormRel Formalism.L2.SG.Pf.FormRelPf
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `Cg cb Cw cT CT C0`. Use `⟨0, 0, fun C' Cl _ _ D large₂ X Y u u' _ ν hν t ht hv => ?_⟩` and prove the remaining obligations. Establish `hG : t.G ≠ 0` using `Formalism.L2.SG.Pf.RowForm.realDecomp_G_ne X Y u u' t ht`. Establish `hrel : t.relevant`. Assume the negation of the conclusion as `hr`.
+
+Apply `hv` to reduce the goal to its premises. Establish `h0 : OOt t = 0` using `Formalism.L2.SG.TermOp.Vanish.ooVanish_of Formalism.L2.SG.Closed.AvgCore_holds Formalism.L2.SG.Pf.ginfUnimod_holds Formalism.L2.SG.Pf.nLamNinf_holds Formalism.L2.SG.Closed.ChiTrivialC_holds Formalism.L2.SG.Pf.psiInfChar_holds Formalism.L2.SG.Pf.rClosedC_holds Formalism.L2.SG.Pf.r …`. Use `show vec (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') t = 0`. Unfold `vec ampN`. Rewrite using `[h0]`.
+
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Take `⟨hpt, hall⟩` from `hRD D X Y u u' t hrel hG`. Use `⟨⟨_, rfl, hpt⟩, fun w hw hwr => ?_⟩` and prove the remaining obligations. Establish `hw' : w = Formalism.L2.SG.PairVal.ptOf t.toTerm` using `toPts_injective hw`.
+
+Substitute `hw'` using the available equality. Establish `hγ` using `Formalism.L2.SG.Pf.RowForm.isPtRep_gamW X u u' hwr`. Take `⟨g, hg, g', hg', hdec⟩` from `hall _ hγ`. Take `⟨c, hc⟩` from `formTransp_any (X := X) (Y := Y) (u := u) (u' := u') (νq := ν) hν.2 hRC t hrel hwr g hg g' hg' hdec`. Use `FiniteDimensional.complete ℂ (X.Vpi u)` as an intermediate fact.
+
+Use `FiniteDimensional.complete ℂ (X.Vpi u')` as an intermediate fact. Use `⟨(c : ℂ) * (X.psiInfU u g * conj (X.psiInfU u' g')), ((Formalism.L2.SG.RealObj.InfCut.piIso X u g hg).toContinuousLinearEquiv : X.Vpi u →L[ℂ] X.Vpi u), ((Formalism.L2.SG.RealObj.InfCut.piIso X u' g' hg').symm.toContinuousLinearEquiv : X.Vpi u' →L[ℂ] X.Vpi u'), ?_⟩` and prove the remaining obligations. Rewrite using `[hc, hdec, Formalism.L2.SG.Pf.RowForm.ClassFrameNormal.oo_map_mulLeft _ _ _ _ g g' (X.psiInfU u g) (X.psiInfU u' g') (Formalism.L2.SG.RealObj.InfCut.piIso X u g hg) (Formalism.L2.SG.RealObj.InfCut.piIso X u' g' hg') (fun x => (X.Wu_spec u).1 g hg x) (fun x => (X.Wu_spec u').1 g' …`.
+-/
 theorem formRelC_of (hRD : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word),
       Formalism.L2.SG.Pf.RowForm.RealDecompC X Y u u')
     (hRC : Formalism.L2.SG.Pf.RelCharC) : FormRelC := by

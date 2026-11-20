@@ -2,6 +2,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.T
 
 open CategoryTheory
 
+/- English proof (translation)
+Introduce `hP Γ I _ _ K p`. Simplify using `only [UpperTheory.V.Af.BA.Cx.alt, UpperTheory.V.Af.BA.Cx.d, Linear.smul_comp, Linear.comp_smul, Preadditive.sum_comp, Preadditive.comp_sum, UpperTheory.V.Af.BA.Cx.reC_comp]`. Simplify using `only [Finset.smul_sum, smul_smul]`. Use `set c : ℂ := ((p + 1 + 1).factorial : ℂ)⁻¹ with hc`. Establish `hx : ∀ x : Fin (p + 2), ∑ σ : Equiv.Perm (Fin (p + 2)), ((-1 : ℂ) ^ (x : ℕ) * (c * (((Equiv.Perm.sign σ : ℤ)) : ℂ))) • K.reC (σ ∘ x.succAbove) = ∑ q : Fin (p + 2) × Equiv.Perm (Fin (p + 1)), (c * ((-1 : ℂ) ^ (q.1 : ℕ) * ((Equiv.Perm.sign q.2 : ℤ) : ℂ))) • K.reC (q.1.succAbove ∘ q …`.
+
+Introduce `x`. Take `⟨e, he⟩` from `hP (p + 1) x`. Rewrite using `[← e.sum_comp]`. Use `Finset.sum_congr rfl ?_` and prove the remaining obligations. Introduce and unpack `⟨i, τ⟩ -`.
+
+Take `⟨hs, hk⟩` from `he i τ`. Establish `hf : (e (i, τ) : Fin (p + 2) → Fin (p + 2)) ∘ x.succAbove = i.succAbove ∘ τ` using `funext hk`. Rewrite using `[hf, hs]`. Use `congr 1`. Use `push_cast`.
+
+Establish `h1 : (-1 : ℂ) ^ (x : ℕ) * (-1 : ℂ) ^ (x : ℕ) = 1`. Rewrite using `[← pow_add, ← two_mul, pow_mul]`. Simplify using the standard rewrite rules. Take the linear combination `(c * (-1 : ℂ) ^ (i : ℕ) * ((Equiv.Perm.sign τ : ℤ) : ℂ)) * h1`. Rewrite using `[Finset.sum_congr rfl (fun x _ => hx x), Finset.sum_const, Finset.card_univ, Fintype.card_fin]`.
+
+Use `conv_rhs => rw [Finset.sum_comm, ← Fintype.sum_prod_type']`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl ?_` and prove the remaining obligations. Introduce and unpack `⟨i, τ⟩ -`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_smul]`.
+
+Use `congr 1`. Establish `hF : ((p + 1).factorial : ℂ) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero _`. Establish `hP2 : ((p : ℂ) + 2) ≠ 0` using `by exact_mod_cast (by omega : p + 2 ≠ 0)`. Rewrite using `[hc, Nat.factorial_succ (p + 1)]`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts. Put the polynomial expressions in normal form. Establish `h2 : (2 + (p : ℂ)) ≠ 0` using `by rwa [add_comm]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.altChain_of_permSplit :
     UpperTheory.V.Af.BA.PermSplit → UpperTheory.V.Af.BA.AltChain := by
   intro hP Γ I _ _ K p

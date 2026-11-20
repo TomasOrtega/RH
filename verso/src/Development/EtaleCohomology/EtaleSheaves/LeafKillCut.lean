@@ -11,6 +11,15 @@ def LeafOne : Prop := Hyps → ∀ (q : ℕ) [NeZero q] (Ω : Type) [Field Ω] [
   ∀ {C : Scheme.{0}} (c : C ⟶ Sp Ω), IsCurve c → ∀ m i : ℤ, 0 < m → ∀ x : Ht q (sch.obj C) m i,
   ∃ (C' : Scheme.{0}) (γ : C' ⟶ C), IsCurve (γ ≫ c) ∧ Surjective γ ∧ pl q i γ m x = 0
 
+/- English proof (translation)
+Introduce `hy q _ Ω _ _ hq C c hc m i hm hfin`. Establish `key : ∀ s : Finset (Ht q (sch.obj C) m i), ∃ (C' : Scheme.{0}) (γ : C' ⟶ C), IsCurve (γ ≫ c) ∧ Surjective γ ∧ ∀ x ∈ s, pl q i γ m x = 0`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨C, 𝟙 C, by simpa using hc, inferInstance, by simp⟩`.
+
+Consider the case `insert a s ha IH`. Take `⟨C1, γ1, h1, s1, k1⟩` from `IH`. Take `⟨C2, γ2, h2, s2, k2⟩` from `hOne hy q Ω hq (γ1 ≫ c) h1 m i hm (pl q i γ1 m a)`. Use `s1` as an intermediate fact. Use `s2` as an intermediate fact.
+
+Use `⟨C2, γ2 ≫ γ1, by simpa [Category.assoc] using h2, inferInstance, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[pl_comp]`. Break down `Finset.mem_insert.1 hx with rfl | hx` into its components or cases. Conclude with `k2`.
+
+Rewrite using `[k1 x hx, map_zero]`. Use `Fintype.ofFinite (Ht q (sch.obj C) m i)` as an intermediate fact. Take `⟨C', γ, h1, h2, h3⟩` from `key Finset.univ`. Conclude with `⟨C', γ, h1, h2, AddMonoidHom.ext fun x => by simpa using h3 x (Finset.mem_univ x)⟩`.
+-/
 theorem goal_of (hOne : LeafOne) : LateralTheory.E.E4.LeafKill := by
   intro hy q _ Ω _ _ hq C c hc m i hm hfin
   classical

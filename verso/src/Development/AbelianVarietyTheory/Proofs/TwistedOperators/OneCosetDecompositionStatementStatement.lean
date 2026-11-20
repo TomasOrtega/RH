@@ -9,5 +9,8 @@ open GlobalTheory.FinPl (Lat idAt idOff intAt grpAt grpOff MxAt latV latA InK Mo
 open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CosetFJ.one_coset_decomposition_base | exact GlobalTheory.CosetFJ.one_coset_decomposition_base | (intros; apply GlobalTheory.CosetFJ.one_coset_decomposition_base <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.one_coset_decomposition_statement : OnStd fun {D} _ _ {sc} {G} W F => ∀ σ (h : 2 * (σ + 1) + 2 ≤ D.R.m) (h' : 2 * σ + 2 ≤ D.R.m), ∀ g ∈ grpAt _ (fun v => v ∈ G.pl.S0), Cond (F.dB σ h') (pcFB W F σ h h') (xFB F σ h') 0 W.ψ (fun v => v ∈ G.pl.S0) g → ∃ r ∈ Rgrp _ (xFB F σ h'), r ∈ grpAt _ (fun v => v ∈ G.pl.S0) ∧ ∃ k ∈ lev G (.grid (2 * σ + 2) 0), k ∈ grpAt _ (fun v => v ∈ G.pl.S0) ∧ g = r * k := by
   first | exact @GlobalTheory.CosetFJ.one_coset_decomposition_base | exact GlobalTheory.CosetFJ.one_coset_decomposition_base | (intros; apply GlobalTheory.CosetFJ.one_coset_decomposition_base <;> assumption)

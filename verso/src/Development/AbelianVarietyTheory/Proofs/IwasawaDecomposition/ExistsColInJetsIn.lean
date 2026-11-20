@@ -13,6 +13,11 @@ namespace GlobalTheory.Mem.Col2
 
 namespace JetEx
 
+/- English proof (translation)
+Take `⟨sp, hT, hY, hA, hV, hz, rfl, -⟩` from `h`. Establish `hx : 0 < K.s.x` using `zero_lt_one.trans K.s.one_lt_alt`. Use `⟨(Delv K.s K.cD : ℚ), K.c, Nat.cast_pos.2 (Nat.ceil_pos.2 (Real.rpow_pos_of_pos hx _)), K.ok.inj, fun w τ l hl => ?_, K.ok.code⟩` and prove the remaining obligations. Establish `h1` using `(K.ok.hc w).1 τ`. Express the relevant statement in the definitionally equal form `l + 1 < K.P.R.k - 1 at hl`.
+
+Use `show (K.P.hcW w τ).v ⟨l, by omega⟩ - (K.P.hcW w τ).v ⟨l + 1, hl⟩ = _`. Rewrite using `[h1, h1, show K.P.R.k - 2 - l = K.P.R.k - 2 - (l + 1) + 1 by omega]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hasLetters_of_over {K : Ctx} {P : Pre} (h : K.Over P) : StagesInhab.HasLetters P := by
   obtain ⟨sp, hT, hY, hA, hV, hz, rfl, -⟩ := h
   have hx : 0 < K.s.x := zero_lt_one.trans K.s.one_lt_alt
@@ -25,12 +30,18 @@ theorem hasLetters_of_over {K : Ctx} {P : Pre} (h : K.Over P) : StagesInhab.HasL
   push_cast
   ring
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ _ => ∅, fun _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, fun P f _ _ Ξ => gens P f.chiPsi Ξ, by simp, fun P f _ _ Ξ => gens_algebraic P f.chiPsi Ξ, fun _ _ _ _ h _ _ => h.2⟩`.
+-/
 theorem lg_gens (K : Ctx) : large₂ K fun B f T => ∀ z ∈ gens B.toPre f.chiPsi (T.set f), z ∈ B.embLL.fieldRange :=
   ⟨fun _ _ _ => ∅, fun _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, fun P f _ _ Ξ => gens P f.chiPsi Ξ, by simp,
     fun P f _ _ Ξ => gens_algebraic P f.chiPsi Ξ, fun _ _ _ _ h _ _ => h.2⟩
 
 end JetEx
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨JetEx.gens, JetEx.gens_algebraic, fun _ _ _ hL h hK => JetEx.exists_jetsIn hL h hK⟩`.
+-/
 theorem exists_bound_jetsIn : ∃ Z : ∀ P : Pre, HChar P.host.E → Set (HChar P.host.E) → Finset ℂ,
     (∀ P χ Ξ, ∀ z ∈ Z P χ Ξ, IsAlgebraic ℚ z) ∧
     ∀ (B : Base) (X : PreX B.toPre) (I : ColIn B X), StagesInhab.HasLetters B.toPre → I.Ok →

@@ -67,17 +67,30 @@ def univR (D : D7) (HW : HWOf D.loc) : Prop :=
           (l ^ (sigA l (sK l K) h' + y2K l K h' S η) : ℕ) • x ∈
             F.ImF ((D.loc l).PD K) ⊔ Submodule.span ↥(OL LL) (s₀ : Set (↥(GK K) → T₂.V))
 
+/- English proof (translation)
+Unfold `YA`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem YA_split (l e s h' S η : ℕ) :
     YA l e s h' S η = (rhoA l e h' + sigA l s h') + (sigA l s h' +
       (2 * sigA l s h' + kapA l e h' S + rhoA l e h' + max (2 * sigA l s h') (ycA l h' η))) := by
   unfold YA
   ring
 
+/- English proof (translation)
+Rewrite using `[YA_split, YA_split]`. Unfold `ycA`. Use `gcongr`.
+-/
 theorem YA_mono (l e s h' S : ℕ) {η₁ η : ℕ} (h : η₁ ≤ η) : YA l e s h' S η₁ ≤ YA l e s h' S η := by
   rw [YA_split, YA_split]
   unfold ycA
   gcongr
 
+/- English proof (translation)
+Establish `key : (⨆ c, J c) ≤ (Submodule.span O ((Finset.univ.biUnion s : Finset M) : Set M) ⊔ Im).comap (b • LinearMap.id : M →ₗ[O] M)`. Use `iSup_le fun c y hy => ?_` and prove the remaining obligations. Establish `h1` using `hU c y hy`. Establish `hle : Im ⊔ Submodule.span O (s c : Set M) ≤ Submodule.span O ((Finset.univ.biUnion s : Finset M) : Set M) ⊔ Im`. Use `sup_le le_sup_right (le_sup_of_le_left (Submodule.span_mono ?_))` and prove the remaining obligations.
+
+Introduce `z hz`. Conclude with `Finset.mem_coe.2 (Finset.mem_biUnion.2 ⟨c, Finset.mem_univ _, Finset.mem_coe.1 hz⟩)`. Use `show b • y ∈ (Submodule.span O ((Finset.univ.biUnion s : Finset M) : Set M) ⊔ Im)`. Conclude with `hle h1`. Take `⟨x, hx, y, hy, hxy⟩` from `Submodule.mem_sup.1 hp`.
+
+Rewrite using `[← hxy, smul_add]`. Establish `hx' : b • x ∈ Submodule.span O ((Finset.univ.biUnion s : Finset M) : Set M) ⊔ Im` using `key hx`. Conclude with `Submodule.add_mem _ hx' (Submodule.mem_sup_right (nsmul_mem (hB hy) b))`.
+-/
 theorem annihilation_of_scaled_spans {O M ι : Type} [CommRing O] [AddCommGroup M] [Module O M] [Fintype ι] [DecidableEq M]
     (J : ι → Submodule O M) (B Im : Submodule O M) (s : ι → Finset M) (hB : B ≤ Im) (a b : ℕ) (p : M)
     (hp : a • p ∈ (⨆ c, J c) ⊔ B) (hU : ∀ c, ∀ x ∈ J c, b • x ∈ Im ⊔ Submodule.span O (s c : Set M)) :
@@ -102,6 +115,29 @@ theorem annihilation_of_scaled_spans {O M ι : Type} [CommRing O] [AddCommGroup 
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Unfold `killR`. Introduce `l _ hl K LL hG`. Unfold `killA`. Introduce `T₁ T₂ F r S η m h up b hA`. Establish `hjmp : ∀ τ (X : Set ℤ), JumpsInV ((D.loc l).PD K) T₁.ρ τ X → JumpsInV ((D.loc l).PD K) T₂.ρ τ X` using `hq l hl K LL hG T₁ T₂ F hA.1 hA.2.1 hA.2.2.1`.
+
+Take `⟨η₁, h', b', hη, hh', hN⟩` from `hn l hl K LL hG T₁ T₂ F r S η m h up b hA hjmp`. Establish `hc2` using `hN.2.1`. Establish `hj2` using `hN.2.2.2.2.1`. Establish `hηb` using `hN.2.2.2.2.2.1`. Establish `hbS` using `hN.2.2.2.2.2.2.1`.
+
+Establish `hh1` using `hN.2.2.2.2.2.2.2.1`. Take `⟨π', E, h9'⟩` from `h9 l hl K LL hG T₂ hc2`. Establish `hjmp2 : ∀ τ, JumpsInV ((D.loc l).PD K) T₂.ρ τ (Set.Icc (-(h' : ℤ)) h')`. Introduce `τ a ha`. Establish `hmem` using `hj2 τ a ha`.
+
+Establish `h1` using `hηb τ`. Establish `h2` using `hbS τ`. Break down `hmem with hmem | hmem` into its components or cases. Unfold `deep at hmem split_ifs at hmem`. Take `⟨x1, x2⟩` from `hmem`.
+
+Apply the tactic sequence `constructor <;> omega`. Take `⟨x1, x2⟩` from `hmem`. Apply the tactic sequence `constructor <;> omega`. Take `⟨x1, x2⟩` from `hmem`. Apply the tactic sequence `constructor <;> omega`.
+
+Establish `hSp` using `hS l hl K LL hG π' E h9' T₂ h' hh1 hc2 hjmp2`. Use `choose s₀ hs₀card hs₀sub hs₀J using fun c => hU l hl K LL hG π' E h9' T₁ T₂ F S η₁ m h' up b' hN c`. Establish `hB : latticeCoboundaries T₂.L ≤ F.ImF ((D.loc l).PD K)`. Unfold `LatHom.ImF`. Conclude with `le_sup_right`.
+
+Use `haveI : FiniteDimensional ℚ_[l] ↥K.1 := K.2`. Use `haveI : NeZero (finrank ℚ_[l] ↥(K0 K)) := by first`. Consider the case `infer_instance`. Consider the case `exact ⟨Module.finrank_pos.ne'⟩`. Consider the case `exact ⟨(Formalism.MainNotions.N.Ln34.max_unramified_finrank_pos K).ne'⟩`.
+
+Consider the case `exact ⟨(Formalism.MainNotions.N.PreambleDegrees.finrank_maxUnramifiedSubfield_padicFinExt_pos K).ne'⟩`. Consider the case `(haveI := Formalism.MainNotions.WachCoordinates.Br.finiteDimensional_max_unramified K; exact ⟨Module.finrank_pos.ne'⟩)`. Consider the case `(haveI := FiniteDimensional.left ℚ_[l] ↥(K0 K) ↥K.1; exact ⟨Module.finrank_pos.ne'⟩)`. Use `⟨sK l K, h', Nat.mul_div_cancel' (hd l hl K LL hG), hh1, hh', Finset.univ.biUnion s₀, ?_, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.sum_const, Finset.card_univ, ZMod.card, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce `x hx`. Take `⟨c, -, hc⟩` from `Finset.mem_biUnion.1 (Finset.mem_coe.1 hx)`. Conclude with `hs₀sub c hc`.
+
+Introduce `p hp`. Establish `hk` using `annihilation_of_scaled_spans _ _ _ s₀ hB _ _ p (hSp p hp) (fun c x hx => hs₀J c x hx)`. Establish `hY : (l ^ YA l (eK K) (sK l K) h' S η₁ : ℕ) • p ∈ Submodule.span ↥(OL LL) ((Finset.univ.biUnion s₀ : Finset _) : Set (↥(GK K) → T₂.V)) ⊔ F.ImF ((D.loc l).PD K)`. Rewrite using `[YA_split, pow_add, mul_comm, mul_smul]`. Conclude with `hk`.
+
+Establish `e1 : YA l (eK K) (sK l K) h' S η = (YA l (eK K) (sK l K) h' S η - YA l (eK K) (sK l K) h' S η₁) + YA l (eK K) (sK l K) h' S η₁` using `(Nat.sub_add_cancel (YA_mono l (eK K) (sK l K) h' S hη)).symm`. Rewrite using `[e1, pow_add, mul_smul]`. Conclude with `nsmul_mem hY _`.
+-/
 theorem killR_of_steps (D : D7) (HW : HWOf D.loc) (hd : dvdR) (hq : quotR D) (hn : normR D)
     (h9 : p9R D HW) (hS : splitR D HW) (hU : univR D HW) : killR D := by
   classical

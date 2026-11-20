@@ -3,6 +3,11 @@ import Mathlib
 open NumberField IsDedekindDomain
 open scoped Matrix WithZero
 
+/- English proof (translation)
+Set `v : HeightOneSpectrum (𝓞 K)` to `w.under (𝓞 K)`. Establish `: w.asIdeal.LiesOver v.asIdeal` using `⟨rfl⟩`. Establish `hc` using `(HeightOneSpectrum.uniformContinuous_algebraMap_liesOver K L v w).continuous`. Use `⟨v, ((HeightOneSpectrum.adicCompletion.equiv L w).symm.toRingHom.comp (UniformSpace.Completion.mapRingHom (algebraMap (WithVal (v.valuation K)) (WithVal (w.valuation L))) hc)).comp (HeightOneSpectrum.adicCompletion.equiv K v).toRingHom, fun x => ?_⟩` and prove the remaining obligations. Apply `HeightOneSpectrum.adicCompletion.ext` to reduce the goal to its premises.
+
+Conclude with `UniformSpace.Completion.mapRingHom_coe hc (WithVal.toVal _ x)`.
+-/
 theorem GlobalTheory.LocalQuad.exists_ringHom_adicCompletion (K L : Type) [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L] (w : HeightOneSpectrum (𝓞 L)) :
     ∃ (v : HeightOneSpectrum (𝓞 K)) (φ : v.adicCompletion K →+* w.adicCompletion L),

@@ -7,12 +7,20 @@ namespace GlobalTheory.NL.Twist
 
 variable {L M : Type} [Field L] [TopologicalSpace L] [AddCommGroup M] [Module L M]
 
+/- English proof (translation)
+Unfold `conv`. Conclude with `finsum_induction (· ∈ S) S.zero_mem (fun _ _ => S.add_mem) (fun i => S.smul_mem _ (h i))`.
+-/
 theorem conv_mem_of_forall (w : PowerSeries L) (g : ℤ → M) (S : Submodule L M) (j : ℤ)
     (h : ∀ i : ℕ, g (j - i) ∈ S) : conv w g j ∈ S := by
   unfold conv
   exact finsum_induction (· ∈ S) S.zero_mem (fun _ _ => S.add_mem)
     (fun i => S.smul_mem _ (h i))
 
+/- English proof (translation)
+Unfold `conv`. Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises. Introduce `i hi`. Simplify using `only [Function.mem_support] at hi`. Simplify using `only [Finset.coe_range, Set.mem_Iio]`.
+
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `hi` to reduce the goal to its premises. Establish `: g (k - i) = 0` using `hg _ (by omega)`. Simplify using `[this]`.
+-/
 theorem conv_eq_sum (w : PowerSeries L) (g : ℤ → M) (m : ℤ) (hg : ∀ j < m, g j = 0) (k : ℤ) :
     conv w g k = ∑ i ∈ Finset.range ((k - m).toNat + 1), PowerSeries.coeff i w • g (k - i) := by
   unfold conv
@@ -26,6 +34,13 @@ theorem conv_eq_sum (w : PowerSeries L) (g : ℤ → M) (m : ℤ) (hg : ∀ j < 
   have : g (k - i) = 0 := hg _ (by omega)
   simp [this]
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `hf`. Establish `hg : ∀ j < m, (fun m => u ^ m • f m) j = 0` using `fun j hj => by simp [hm j hj]`. Use `⟨⟨m, fun j hj => ?_⟩, fun j => ?_, fun j hj => ?_, ?_⟩` and prove the remaining obligations. Use `(Submodule.mem_bot L).1 (conv_mem_of_forall w _ ⊥ j (fun i => ?_))` and prove the remaining obligations. Rewrite using `[hm _ (by omega), smul_zero]`.
+
+Conclude with `Submodule.zero_mem _`. Conclude with `conv_mem_of_forall w _ _ j (fun i => Submodule.smul_mem _ _ (hSub (by omega : j - (i : ℤ) ≤ j) (hfS _)))`. Conclude with `conv_mem_of_forall w _ _ j (fun i => Submodule.smul_mem _ _ (hSub (by omega : j - (i : ℤ) - y ≤ j - y) (hk _ (by omega))))`. Rewrite using `[conv_eq_sum w _ m hg k, Finset.sum_range_succ']`. Establish `h0 : PowerSeries.coeff 0 w • (u ^ (k - ((0 : ℕ) : ℤ)) • f (k - ((0 : ℕ) : ℤ))) - (PowerSeries.constantCoeff w * u ^ k) • f k = 0`.
+
+Simplify using `[mul_smul]`. Rewrite using `[add_sub_assoc, h0, add_zero]`. Use `Submodule.sum_mem _ (fun i _ => Submodule.smul_mem _ _ (Submodule.smul_mem _ _ ?_))` and prove the remaining obligations. Conclude with `hSub (by omega : k - ((i + 1 : ℕ) : ℤ) - y ≤ k - y) (hk _ (by omega))`.
+-/
 theorem tri (w : PowerSeries L) (u : L) (Sub : ℤ → Submodule L M) (hSub : Monotone Sub) (y : ℕ)
     (f : ℤ → M) (hf : ∃ m : ℤ, ∀ j < m, f j = 0) (hfS : ∀ j, f j ∈ Sub j) (k : ℤ)
     (hk : ∀ j < k, f j ∈ Sub (j - y)) :

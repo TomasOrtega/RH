@@ -11,16 +11,28 @@ section SlopeTestRemainingChoices
 variable {O K : Type*} [CommRing O] [IsDomain O] [Field K] [Algebra O K] [IsFractionRing O K]
   {r : ℕ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma toK_apply (x : Fin r → O) (i : Fin r) : toK O K r x i = algebraMap O K (x i) := rfl
 
+/- English proof (translation)
+Introduce `x y h`. Use function extensionality and compare the values at `i`. Conclude with `IsFractionRing.injective O K (congr_fun h i)`.
+-/
 lemma toK_injective : Function.Injective (toK O K r) := by
   intro x y h
   funext i
   exact IsFractionRing.injective O K (congr_fun h i)
 
+/- English proof (translation)
+The claim follows from `(map_ne_zero_iff _ (IsFractionRing.injective O K)).2 ha`.
+-/
 lemma algebraMap_ne_zero {a : O} (ha : a ≠ 0) : algebraMap O K a ≠ 0 :=
   (map_ne_zero_iff _ (IsFractionRing.injective O K)).2 ha
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors O) y`. Use `choose x hx using hb`. Use `⟨b, nonZeroDivisors.ne_zero b.2, x, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Rewrite using `[toK_apply, hx i, Pi.smul_apply, Algebra.smul_def, smul_eq_mul]`.
+-/
 lemma exists_toK_eq_smul (y : Fin r → K) :
     ∃ d : O, d ≠ 0 ∧ ∃ x : Fin r → O, toK O K r x = algebraMap O K d • y := by
   obtain ⟨b, hb⟩ := IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors O) y
@@ -29,6 +41,11 @@ lemma exists_toK_eq_smul (y : Fin r → K) :
   funext i
   rw [toK_apply, hx i, Pi.smul_apply, Algebra.smul_def, smul_eq_mul]
 
+/- English proof (translation)
+Introduce `y hy`. Take `⟨d, hd, x, hx⟩` from `exists_toK_eq_smul (O := O) y`. Establish `hxW : x ∈ (W.restrictScalars O).comap (toK O K r)`. Rewrite using `[Submodule.mem_comap, Submodule.restrictScalars_mem, hx]`. Conclude with `W.smul_mem _ hy`.
+
+Establish `hy' : y = (algebraMap O K d)⁻¹ • toK O K r x`. Rewrite using `[hx, smul_smul, inv_mul_cancel₀ (algebraMap_ne_zero hd), one_smul]`. Rewrite using `[hy']`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨x, hxW, rfl⟩)`.
+-/
 lemma le_span_comap (W : Submodule K (Fin r → K)) :
     W ≤ Submodule.span K (toK O K r '' ((W.restrictScalars O).comap (toK O K r) : Set _)) := by
   intro y hy
@@ -43,6 +60,13 @@ lemma le_span_comap (W : Submodule K (Fin r → K)) :
 
 variable [IsPrincipalIdealRing O]
 
+/- English proof (translation)
+Take `⟨n, b⟩` from `Submodule.basisOfPid (Pi.basisFun O (Fin r)) N`. Rewrite using `[Module.finrank_eq_card_basis b, Fintype.card_fin]`. Establish `hker : LinearMap.ker ((toK O K r).comp N.subtype) = ⊥`. Rewrite using `[LinearMap.ker_eq_bot]`. Conclude with `(toK_injective (K := K)).comp Subtype.val_injective`.
+
+Establish `hli : LinearIndependent O (((toK O K r).comp N.subtype) ∘ b)` using `b.linearIndependent.map' ((toK O K r).comp N.subtype) hker`. Establish `hK : LinearIndependent K (((toK O K r).comp N.subtype) ∘ b)` using `LinearIndependent.localization K (nonZeroDivisors O) hli`. Establish `h` using `finrank_span_eq_card hK`. Rewrite `h` using `[Fintype.card_fin]`. Rewrite using `[← h]`.
+
+Apply `Submodule.finrank_mono` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Submodule.subset_span ⟨_, (b i).2, rfl⟩`.
+-/
 lemma finrank_le_finrank_span (N : Submodule O (Fin r → O)) :
     Module.finrank O N ≤ Module.finrank K (Submodule.span K (toK O K r '' (N : Set _))) := by
   obtain ⟨n, b⟩ := Submodule.basisOfPid (Pi.basisFun O (Fin r)) N
@@ -62,6 +86,15 @@ lemma finrank_le_finrank_span (N : Submodule O (Fin r → O)) :
   rintro _ ⟨i, rfl⟩
   exact Submodule.subset_span ⟨_, (b i).2, rfl⟩
 
+/- English proof (translation)
+Take `⟨n, b⟩` from `Submodule.basisOfPid (Pi.basisFun O (Fin r)) N`. Rewrite using `[Module.finrank_eq_card_basis b, Fintype.card_fin]`. Establish `hsp : Submodule.span K (toK O K r '' (N : Set _)) = Submodule.span K (Set.range fun i => toK O K r (b i : Fin r → O))`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `hx' : (⟨x, hx⟩ : N) ∈ Submodule.span O (Set.range b)`. Rewrite using `[b.span_eq]`. Conclude with `Submodule.mem_top`. Establish `h1 : x ∈ Submodule.span O (Set.range fun i => (b i : Fin r → O))`.
+
+Use `Submodule.mem_map_of_mem (f := N.subtype) hx'` as an intermediate fact. Rewrite `this` using `[Submodule.map_span, ← Set.range_comp]`. Then use the resulting hypothesis. Establish `h2` using `Submodule.mem_map_of_mem (f := toK O K r) h1`. Rewrite `h2` using `[Submodule.map_span, ← Set.range_comp]`. Conclude with `Submodule.span_le_restrictScalars O K _ h2`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Submodule.subset_span ⟨_, (b i).2, rfl⟩`. Rewrite using `[hsp]`. Conclude with `(finrank_range_le_card _).trans (by simp)`.
+-/
 lemma finrank_span_le_finrank (N : Submodule O (Fin r → O)) :
     Module.finrank K (Submodule.span K (toK O K r '' (N : Set _))) ≤ Module.finrank O N := by
   obtain ⟨n, b⟩ := Submodule.basisOfPid (Pi.basisFun O (Fin r)) N
@@ -87,6 +120,17 @@ lemma finrank_span_le_finrank (N : Submodule O (Fin r → O)) :
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Establish `: Module.IsTorsionFree O (M ⧸ N)`. Rewrite using `[Module.isTorsionFree_iff_smul_eq_zero]`. Introduce `a q h`. Proceed by induction on `q using Submodule.Quotient.induction_on with`. Consider the case `_ x`.
+
+Distinguish the cases in `ha : a = 0`. Conclude with `Or.inl ha`. Use `right`. Rewrite `h` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`.
+
+Conclude with `hsat a x ha h`. Take `⟨s, hs⟩` from `Module.projective_lifting_property N.mkQ LinearMap.id (Submodule.mkQ_surjective N)`. Set `g : M →ₗ[O] M` to `LinearMap.id - s ∘ₗ N.mkQ`. Establish `hg : ∀ x, g x ∈ N`. Introduce `x`.
+
+Establish `h1 : N.mkQ (s (N.mkQ x)) = N.mkQ x` using `LinearMap.congr_fun hs (N.mkQ x)`. Establish `h2 : N.mkQ (g x) = 0`. Simplify using `only [g, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply, map_sub, h1, sub_self]`. Rewrite `h2` using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Then use the resulting hypothesis. Use `⟨LinearMap.ker (g.codRestrict N hg), LinearMap.isCompl_of_proj fun x => ?_⟩` and prove the remaining obligations.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Establish `hx : N.mkQ (x : M) = 0`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `x.2`. Simplify using `[g, hx]`.
+-/
 lemma exists_isCompl_of_sat {O : Type*} [CommRing O] [IsDomain O] [IsPrincipalIdealRing O]
     {M : Type*} [AddCommGroup M] [Module O M] [Module.Finite O M]
     (N : Submodule O M) (hsat : ∀ (a : O) (x : M), a ≠ 0 → a • x ∈ N → x ∈ N) :
@@ -118,6 +162,11 @@ lemma exists_isCompl_of_sat {O : Type*} [CommRing O] [IsDomain O] [IsPrincipalId
     rw [Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]; exact x.2
   simp [g, hx]
 
+/- English proof (translation)
+Take `⟨L₂, h⟩` from `exists_isCompl_of_sat L' hsat`. Use `⟨L₂, h, ?_⟩` and prove the remaining obligations. Establish `h1` using `Submodule.finrank_quotient_add_finrank L'`. Rewrite `h1` using `[Module.finrank_fin_fun]`. Rewrite using `[← (Submodule.quotientEquivOfIsCompl L' L₂ h).finrank_eq]`.
+
+Conclude with `h1`.
+-/
 lemma exists_isCompl_finrank_add_of_saturated_of_isPrincipalIdealRing {O : Type*} [CommRing O] [IsDomain O]
     [IsPrincipalIdealRing O] {r : ℕ} (L' : Submodule O (Fin r → O))
     (hsat : ∀ (a : O) (x : Fin r → O), a ≠ 0 → a • x ∈ L' → x ∈ L') :
@@ -130,6 +179,11 @@ lemma exists_isCompl_finrank_add_of_saturated_of_isPrincipalIdealRing {O : Type*
   rw [← (Submodule.quotientEquivOfIsCompl L' L₂ h).finrank_eq]
   exact h1
 
+/- English proof (translation)
+Use `⟨fun a x ha h => ?_, ?_⟩` and prove the remaining obligations. Rewrite `h` using `[Submodule.mem_comap, Submodule.restrictScalars_mem, map_smul, ← algebraMap_smul K a]`. Rewrite using `[Submodule.mem_comap, Submodule.restrictScalars_mem]`. Use `W.smul_mem (algebraMap O K a)⁻¹ h` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ (algebraMap_ne_zero ha), one_smul]`. Then use the resulting hypothesis.
+
+Use `(finrank_le_finrank_span (K := K) _).trans (Submodule.finrank_mono ?_)` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hx`.
+-/
 lemma saturated_comap_coordinateMap_of_isPrincipalIdealRing {O K : Type*} [CommRing O] [IsDomain O] [IsPrincipalIdealRing O]
     [Field K] [Algebra O K] [IsFractionRing O K] {r : ℕ} (W : Submodule K (Fin r → K)) :
     (∀ (a : O) (x : Fin r → O), a ≠ 0 → a • x ∈ (W.restrictScalars O).comap (toK O K r) →
@@ -146,6 +200,39 @@ lemma saturated_comap_coordinateMap_of_isPrincipalIdealRing {O K : Type*} [CommR
     rintro _ ⟨x, hx, rfl⟩
     exact hx
 
+/- English proof (translation)
+Use `set W : Submodule K (Fin r → K) := ⨅ τ, C τ with hWdef`. Use `set V : Submodule K (Fin r → K) := ⨆ τ, F τ with hVdef`. Establish `hW : r ≤ Module.finrank K W + Fintype.card ι₁ * m`. Set `φ : (Fin r → K) →ₗ[K] ((τ : ι₁) → (Fin r → K) ⧸ C τ)` to `LinearMap.pi fun τ => (C τ).mkQ`. Establish `hker : LinearMap.ker φ = W`.
+
+Rewrite using `[LinearMap.ker_pi]`. Simplify using `only [Submodule.ker_mkQ, hWdef]`. Establish `h1` using `LinearMap.finrank_range_add_finrank_ker φ`. Rewrite `h1` using `[hker, Module.finrank_fin_fun]`. Establish `h2 : Module.finrank K (LinearMap.range φ) ≤ Fintype.card ι₁ * m`.
+
+Use `(Submodule.finrank_le _).trans ?_` and prove the remaining obligations. Rewrite using `[Module.finrank_pi_fintype]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun τ _ => ?_` and prove the remaining obligations. Establish `h3` using `Submodule.finrank_quotient_add_finrank (C τ)`.
+
+Rewrite `h3` using `[Module.finrank_fin_fun]`. Establish `h4` using `hC τ`. Use linear arithmetic over natural numbers and integers. Use `_ = Fintype.card ι₁ * m := by simp`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hV : Module.finrank K V ≤ Fintype.card ι₂ * m`. Establish `key : ∀ s : Finset ι₂, Module.finrank K ↥(s.sup F) ≤ s.card * m`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`.
+
+Consider the case `insert a s ha ih`. Rewrite using `[Finset.sup_insert, Finset.card_insert_of_notMem ha]`. Combine the equalities or inequalities in the displayed calculation. Establish `hVs : V = Finset.univ.sup F` using `by rw [hVdef, Finset.sup_univ_eq_iSup]`. Rewrite using `[hVs]`.
+
+Simplify using `using key Finset.univ`. Take `⟨hsat', -⟩` from `saturated_comap_coordinateMap_of_isPrincipalIdealRing (O := O) W`. Establish `hrkL' : Module.finrank K W ≤ Module.finrank O ((W.restrictScalars O).comap (toK O K r))` using `(Submodule.finrank_mono (le_span_comap (O := O) W)).trans (finrank_span_le_finrank _)`. Take `⟨L₂, hc, hrk2⟩` from `exists_isCompl_finrank_add_of_saturated_of_isPrincipalIdealRing _ hsat'`. Use `set L' := (W.restrictScalars O).comap (toK O K r) with hL'`.
+
+Use `set Y : Submodule K (Fin r → K) := V ⊔ Submodule.span K (toK O K r '' (L₂ : Set _)) with hYdef`. Take `⟨hsatS, hrkS⟩` from `saturated_comap_coordinateMap_of_isPrincipalIdealRing (O := O) Y`. Use `set S := (Y.restrictScalars O).comap (toK O K r) with hS`. Set `N : Submodule O L'` to `S.comap L'.subtype`. Establish `hsatN : ∀ (a : O) (x : L'), a ≠ 0 → a • x ∈ N → x ∈ N` using `fun a x ha h => hsatS a x ha h`.
+
+Take `⟨N₂, hN⟩` from `exists_isCompl_of_sat N hsatN`. Use `⟨N₂.map L'.subtype, S, ⟨?_, ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.disjoint_def]`. Introduce `x hx hxS`. Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.1 hx`.
+
+Establish `hyN : y ∈ N` using `hxS`. Use `Submodule.disjoint_def.1 hN.disjoint y hyN hy` as an intermediate fact. Simplify using `[this]`. Rewrite using `[codisjoint_iff, eq_top_iff]`. Introduce and unpack `x -`.
+
+Establish `hx : x ∈ L' ⊔ L₂` using `hc.sup_eq_top ▸ Submodule.mem_top`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hx`. Establish `ha' : (⟨a, ha⟩ : L') ∈ N ⊔ N₂` using `hN.sup_eq_top ▸ Submodule.mem_top`. Take `⟨n, hn, n₂, hn₂, hnn⟩` from `Submodule.mem_sup.1 ha'`. Establish `hbS : b ∈ S`.
+
+Rewrite using `[hS, Submodule.mem_comap, Submodule.restrictScalars_mem]`. Conclude with `Submodule.mem_sup_right (Submodule.subset_span ⟨b, hb, rfl⟩)`. Establish `hnS : (n : Fin r → O) ∈ S` using `hn`. Establish `hsum : a + b = (n₂ : Fin r → O) + ((n : Fin r → O) + b)`. Establish `h5` using `congrArg Subtype.val hnn`.
+
+Simplify using `only [Submodule.coe_add] at h5`. Rewrite using `[← h5]`. Normalize the expressions using the abelian group laws. Rewrite using `[hsum]`. Conclude with `Submodule.add_mem_sup (Submodule.mem_map_of_mem hn₂) (S.add_mem hnS hbS)`.
+
+Establish `h1 : Module.finrank K Y ≤ Module.finrank K V + Module.finrank K (Submodule.span K (toK O K r '' (L₂ : Set _)))` using `Submodule.finrank_add_le_finrank_add_finrank _ _`. Establish `h2` using `finrank_span_le_finrank (K := K) L₂`. Rewrite using `[add_mul]`. Generalize the expression as in `Fintype.card ι₁ * m = A at *`. Generalize the expression as in `Fintype.card ι₂ * m = B at *`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `τ x hx`. Take `⟨y, -, rfl⟩` from `Submodule.mem_map.1 hx`. Establish `hy : toK O K r (y : Fin r → O) ∈ W` using `y.2`. Conclude with `(iInf_le C τ) hy`.
+
+Introduce `τ`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem decomp {O K : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [Field K] [Algebra O K] [IsFractionRing O K] {r m : ℕ} {ι₁ ι₂ : Type*}
     [Fintype ι₁] [Fintype ι₂]

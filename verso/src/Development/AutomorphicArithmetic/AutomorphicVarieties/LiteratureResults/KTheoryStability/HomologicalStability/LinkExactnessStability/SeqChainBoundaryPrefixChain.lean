@@ -5,11 +5,19 @@ open GlobalTheory.SeqCx Matrix
 
 namespace GlobalTheory.SeqCx
 
+/- English proof (translation)
+Simplify using `[bd, Finsupp.linearCombination_single]`.
+-/
 private theorem bd_single_eq_sum_neg_one_pow_eraseIdx (V : Type) (l : List V) :
     bd V (Finsupp.single l 1) =
       ∑ i ∈ Finset.range l.length, (-1 : ℤ) ^ i • Finsupp.single (l.eraseIdx i) 1 := by
   simp [bd, Finsupp.linearCombination_single]
 
+/- English proof (translation)
+Rewrite using `[bd_single_eq_sum_neg_one_pow_eraseIdx, bd_single_eq_sum_neg_one_pow_eraseIdx, bd_single_eq_sum_neg_one_pow_eraseIdx, List.length_append, Finset.sum_range_add, Finsupp.mapDomain_finset_sum, Finsupp.mapDomain_finset_sum, Finset.smul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite `hi` using `[Finset.mem_range]`. Rewrite using `[Finsupp.mapDomain_smul, Finsupp.mapDomain_single, List.eraseIdx_append_of_lt_length hi]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.mapDomain_smul, Finsupp.mapDomain_single, List.eraseIdx_append_of_length_le (Nat.le_add_right _ _), Nat.add_sub_cancel_left, pow_add, mul_smul]`.
+-/
 theorem bd_single_append (V : Type) (τ w : List V) :
     bd V (Finsupp.single (τ ++ w) 1) =
       Finsupp.mapDomain (fun σ => σ ++ w) (bd V (Finsupp.single τ 1)) +
@@ -25,6 +33,13 @@ theorem bd_single_append (V : Type) (τ w : List V) :
       List.eraseIdx_append_of_length_le (Nat.le_add_right _ _), Nat.add_sub_cancel_left,
       pow_add, mul_smul]
 
+/- English proof (translation)
+Introduce `V τ c`. Proceed by induction on `c using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f g hf hg`. Rewrite using `[Finsupp.mapDomain_add, map_add, hf, hg, map_add, Finsupp.mapDomain_add, smul_add, Finsupp.sum_add_index' (by intro; simp) (by intros; simp [add_smul])]`.
+
+Normalize the expressions using the abelian group laws. Consider the case `single w a`. Rewrite using `[Finsupp.mapDomain_single, Finsupp.sum_single_index (by simp)]`. Establish `h1 : Finsupp.single (τ ++ w) a = a • Finsupp.single (τ ++ w) (1 : ℤ)`. Rewrite using `[Finsupp.smul_single, smul_eq_mul, mul_one]`.
+
+Establish `h2 : Finsupp.single w a = a • Finsupp.single w (1 : ℤ)`. Rewrite using `[Finsupp.smul_single, smul_eq_mul, mul_one]`. Rewrite using `[h1, h2, map_smul, map_smul, bd_single_append, Finsupp.mapDomain_smul, smul_add, smul_comm a]`.
+-/
 theorem bd_mapDomain_prepend : ∀ (V : Type) (τ : List V) (c : List V →₀ ℤ), bd V (Finsupp.mapDomain (fun w => τ ++ w) c) = (c.sum fun w a => a • Finsupp.mapDomain (fun σ => σ ++ w) (bd V (Finsupp.single τ 1))) + (-1 : ℤ) ^ τ.length • Finsupp.mapDomain (fun w => τ ++ w) (bd V c) := by
   intro V τ c
   induction c using Finsupp.induction_linear with
@@ -45,6 +60,9 @@ end GlobalTheory.SeqCx
 
 section
 open GlobalTheory.SeqCx Matrix
+/- English proof (translation)
+Use `first`. Consider the case `exact @GlobalTheory.SeqCx.bd_mapDomain_prepend`. Consider the case `exact @GlobalTheory.SeqCx.bd_single_append`.
+-/
 theorem _root_.GlobalTheory.T.seqChain_boundary_prefix_chain : ∀ (V : Type) (τ : List V) (c : List V →₀ ℤ), bd V (Finsupp.mapDomain (fun w => τ ++ w) c) = (c.sum fun w a => a • Finsupp.mapDomain (fun σ => σ ++ w) (bd V (Finsupp.single τ 1))) + (-1 : ℤ) ^ τ.length • Finsupp.mapDomain (fun w => τ ++ w) (bd V c) := by
   first
   | exact @GlobalTheory.SeqCx.bd_mapDomain_prepend

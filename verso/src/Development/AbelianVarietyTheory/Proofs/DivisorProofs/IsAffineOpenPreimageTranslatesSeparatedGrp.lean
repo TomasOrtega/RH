@@ -9,20 +9,34 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.TransAff
 
+/- English proof (translation)
+Rewrite using `[Hom.mul_def, Hom.mul_def, ← Category.assoc, comp_lift]`.
+-/
 theorem comp_mul_hom {R' : Type} [CommRing R'] {G' T T' : Over (Sp R')} [GrpObj G'] (x : T' ⟶ T) (f g : T ⟶ G') :
     x ≫ (f * g) = (x ≫ f) * (x ≫ g) := by
   rw [Hom.mul_def, Hom.mul_def, ← Category.assoc, comp_lift]
 
+/- English proof (translation)
+Simplify using `[Hom.one_def]`.
+-/
 theorem comp_one_hom {R' : Type} [CommRing R'] {G' T T' : Over (Sp R')} [GrpObj G'] (x : T' ⟶ T) :
     x ≫ (1 : T ⟶ G') = 1 := by
   simp [Hom.one_def]
 
+/- English proof (translation)
+Rewrite using `[comp_mul_hom, Category.comp_id, ← Category.assoc, toUnit_unique (_ ≫ toUnit G') (toUnit G'), _root_.mul_assoc, ← comp_mul_hom, hab, comp_one_hom, _root_.mul_one]`.
+-/
 theorem comp_inv_eq (R' : Type) [CommRing R'] (G' : Over (Sp R')) [GrpObj G']
     (a : 𝟙_ (Over (Sp R')) ⟶ G') (b : 𝟙_ (Over (Sp R')) ⟶ G') (hab : a * b = 1) :
     (𝟙 G' * (toUnit G' ≫ a)) ≫ (𝟙 G' * (toUnit G' ≫ b)) = 𝟙 G' := by
   rw [comp_mul_hom, Category.comp_id, ← Category.assoc, toUnit_unique (_ ≫ toUnit G') (toUnit G'),
     _root_.mul_assoc, ← comp_mul_hom, hab, comp_one_hom, _root_.mul_one]
 
+/- English proof (translation)
+Introduce `R' _ G' _ hs a W hW`. Establish `e1` using `comp_inv_eq R' G' a a⁻¹ (mul_inv_cancel a)`. Establish `e2` using `comp_inv_eq R' G' a⁻¹ a (inv_mul_cancel a)`. Establish `i1 : IsIso (𝟙 G' * (toUnit G' ≫ a)).left` using `⟨⟨(𝟙 G' * (toUnit G' ≫ a⁻¹)).left, by rw [← Over.comp_left, e1]; rfl, by rw [← Over.comp_left, e2]; rfl⟩⟩`. Establish `i2 : IsIso (𝟙 G' * (toUnit G' ≫ a⁻¹)).left` using `⟨⟨(𝟙 G' * (toUnit G' ≫ a)).left, by rw [← Over.comp_left, e2]; rfl, by rw [← Over.comp_left, e1]; rfl⟩⟩`.
+
+Establish `: IsSeparated G'.hom` using `hs`. Establish `: G'.left.IsSeparated` using `⟨by rw [← terminal.comp_from G'.hom]; infer_instance⟩`. Conclude with `(hW.preimage_of_isIso _).inf (hW.preimage_of_isIso _)`.
+-/
 theorem isAffineOpen_translates :
     ∀ (R' : Type) [CommRing R'] (G' : Over (Sp R')) [GrpObj G'], IsSeparated G'.hom → ∀ (a : 𝟙_ (Over (Sp R')) ⟶ G') (W : G'.left.Opens), IsAffineOpen W → IsAffineOpen ((𝟙 G' * (toUnit G' ≫ a)).left ⁻¹ᵁ W ⊓ (𝟙 G' * (toUnit G' ≫ a⁻¹)).left ⁻¹ᵁ W) := by
   intro R' _ G' _ hs a W hW

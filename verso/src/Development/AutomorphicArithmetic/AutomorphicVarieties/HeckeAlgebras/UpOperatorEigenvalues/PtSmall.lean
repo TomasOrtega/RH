@@ -9,6 +9,13 @@ set_option synthInstance.maxHeartbeats 200000
 
 namespace UpperTheory.V.Hi.Up
 
+/- English proof (translation)
+Establish `hi : IsIntegral ℚ_[l] x` using `Algebra.IsIntegral.isIntegral x`. Establish `h0 : ‖x‖ = spectralValue (minpoly ℚ_[l] x)` using `rfl`. Rewrite using `[h0, spectralValue_le_one_iff (minpoly.monic hi)]`. Prove the components needed by the constructor for the conclusion. Introduce `h n`.
+
+Rewrite using `[minpoly.isIntegrallyClosed_eq_field_fractions' ℚ_[l] h, coeff_map]`. Conclude with `PadicInt.norm_le_one _`. Introduce `h`. Establish `hl' : minpoly ℚ_[l] x ∈ lifts (algebraMap ℤ_[l] ℚ_[l])` using `(lifts_iff_coeff_lifts _).mpr fun n => ⟨⟨_, h n⟩, rfl⟩`. Take `⟨q, hq, -, hqm⟩` from `lifts_and_degree_eq_and_monic hl' (minpoly.monic hi)`.
+
+Conclude with `⟨q, hqm, by rw [← aeval_def, ← aeval_map_algebraMap ℚ_[l], hq, minpoly.aeval]⟩`.
+-/
 private theorem int_iff {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) : IsIntegral ℤ_[l] x ↔ ‖x‖ ≤ 1 := by
   have hi : IsIntegral ℚ_[l] x := Algebra.IsIntegral.isIntegral x
   have h0 : ‖x‖ = spectralValue (minpoly ℚ_[l] x) := rfl
@@ -25,6 +32,9 @@ private theorem int_iff {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) : IsIntegral
 
 variable {l : ℕ} [Fact l.Prime] {c : Coef l}
 
+/- English proof (translation)
+The claim follows from `(int_iff _).1 ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) a).map c.O.val)`.
+-/
 theorem coef_le (a : c.O) : ‖algebraMap c.O (Qbar l) a‖ ≤ 1 :=
   (int_iff _).1 ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) a).map c.O.val)
 
@@ -32,28 +42,55 @@ section Pt
 
 variable {R : Type} [CommRing R] [Algebra c.O R]
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Gs4b.pt_lt y a ha`.
+-/
 theorem pt_lt [IsLocalRing R] (y : R →ₐ[c.O] Qbar l) (a : R) (ha : a ∈ maximalIdeal R) : ‖y a‖ < 1 :=
   _root_.UpperTheory.Reformulated.B.Gs4b.pt_lt y a ha
 
 variable [Alg.IsCO c.O R] (y : R →ₐ[c.O] Qbar l)
 
+/- English proof (translation)
+Rewrite using `[← y.commutes, ← map_sub]`. Use `pt_lt y _ ((Alg.res_eq_zero_iff c.O R _).1 ?_)` and prove the remaining obligations. Rewrite using `[map_sub, h, AlgHom.commutes]`. Conclude with `sub_self _`.
+-/
 theorem pt_res (b : R) (a : c.O) (h : Alg.res c.O R b = residue c.O a) : ‖y b - algebraMap c.O (Qbar l) a‖ < 1 := by
   rw [← y.commutes, ← map_sub]
   refine pt_lt y _ ((Alg.res_eq_zero_iff c.O R _).1 ?_)
   rw [map_sub, h, AlgHom.commutes]
   exact sub_self _
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `Alg.IsCO.res_surj (O := c.O) b`. Establish `h` using `IsUltrametricDist.norm_add_le_max (y (b - algebraMap c.O R a)) (algebraMap c.O (Qbar l) a)`. Rewrite `h` using `[← y.commutes, ← map_add, sub_add_cancel, y.commutes]`. Conclude with `h.trans (max_le (pt_lt y _ ha).le (coef_le a))`.
+-/
 theorem pt_le (b : R) : ‖y b‖ ≤ 1 := by
   obtain ⟨a, ha⟩ := Alg.IsCO.res_surj (O := c.O) b
   have h := IsUltrametricDist.norm_add_le_max (y (b - algebraMap c.O R a)) (algebraMap c.O (Qbar l) a)
   rw [← y.commutes, ← map_add, sub_add_cancel, y.commutes] at h
   exact h.trans (max_le (pt_lt y _ ha).le (coef_le a))
 
+/- English proof (translation)
+Establish `h : ‖y b‖ * ‖y (b⁻¹ : Rˣ)‖ = 1` using `by rw [← norm_mul, ← map_mul, Units.mul_inv, map_one, norm_one]`. Use `le_antisymm (pt_le y _) ?_` and prove the remaining obligations. Use polynomial arithmetic with `[pt_le y (b⁻¹ : Rˣ), norm_nonneg (y b), norm_nonneg (y (b⁻¹ : Rˣ))]`.
+-/
 theorem pt_unit (b : Rˣ) : ‖y b‖ = 1 := by
   have h : ‖y b‖ * ‖y (b⁻¹ : Rˣ)‖ = 1 := by rw [← norm_mul, ← map_mul, Units.mul_inv, map_one, norm_one]
   refine le_antisymm (pt_le y _) ?_
   nlinarith [pt_le y (b⁻¹ : Rˣ), norm_nonneg (y b), norm_nonneg (y (b⁻¹ : Rˣ))]
 
+/- English proof (translation)
+Establish `key : ∀ (I : Ideal R) (S : Set R) (t : ℝ), 0 ≤ t → (∀ b ∈ S, ‖y b‖ ≤ t) → ∀ b ∈ Ideal.span S, ‖y b‖ ≤ t`. Introduce `I S t ht hS b hb`. Proceed by induction on `hb using Submodule.span_induction with`. Consider the case `mem z hz => exact hS z hz`. Consider the case `zero => simpa using ht`.
+
+Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ha hb)`. Consider the case `smul a b _ hb`. Rewrite using `[smul_eq_mul, map_mul, norm_mul]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) (pt_le y a)).trans hb`.
+
+Take `⟨S, hS⟩ : (maximalIdeal R).FG` from `IsNoetherian.noetherian _`. Choose the witnesses or unpack the hypotheses as in `⟨t, t0, t1, ht⟩ : ∃ t : ℝ, 0 ≤ t ∧ t < 1 ∧ ∀ b ∈ maximalIdeal R, ‖y b‖ ≤ t := by`. Use `⟨((S.sup fun b => ‖y b‖₊ : NNReal) : ℝ), NNReal.coe_nonneg _, ?_, ?_⟩` and prove the remaining obligations. Establish `: (S.sup fun b => ‖y b‖₊) < 1` using `(Finset.sup_lt_iff (by simp)).2 fun b hb => pt_lt y b (hS ▸ Ideal.subset_span hb)`. Conclude with `this` after adjusting the coercions.
+
+Rewrite using `[← hS]`. Conclude with `key ⊥ _ _ (NNReal.coe_nonneg _) fun b hb => Finset.le_sup (f := fun b => ‖y b‖₊) hb`. Establish `hp : ∀ N : ℕ, ∀ b ∈ maximalIdeal R ^ N, ‖y b‖ ≤ t ^ N`. Introduce `N`. Proceed by induction on `N with`.
+
+Consider the case `zero => intro b _`. Simplify using `using pt_le y b`. Consider the case `succ N ih`. Introduce `b hb`. Rewrite `hb` using `[pow_succ]`.
+
+Use `Submodule.mul_induction_on hb (fun a ha b hb => ?_) fun a b ha hb => ?_` and prove the remaining obligations. Rewrite using `[map_mul, norm_mul, pow_succ]`. Conclude with `mul_le_mul (ih a ha) (ht b hb) (norm_nonneg _) (pow_nonneg t0 _)`. Rewrite using `[map_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ha hb)`.
+
+Take `⟨N, hN⟩` from `exists_pow_lt_of_lt_one hε t1`. Conclude with `⟨N, fun b hb => (hp N b hb).trans_lt hN⟩`.
+-/
 theorem pt_small (ε : ℝ) (hε : 0 < ε) : ∃ N : ℕ, ∀ b ∈ maximalIdeal R ^ N, ‖y b‖ < ε := by
   have key : ∀ (I : Ideal R) (S : Set R) (t : ℝ), 0 ≤ t → (∀ b ∈ S, ‖y b‖ ≤ t) → ∀ b ∈ Ideal.span S, ‖y b‖ ≤ t := by
     intro I S t ht hS b hb
@@ -86,6 +123,9 @@ theorem pt_small (ε : ℝ) (hε : 0 < ε) : ∃ N : ℕ, ∀ b ∈ maximalIdeal
   obtain ⟨N, hN⟩ := exists_pow_lt_of_lt_one hε t1
   exact ⟨N, fun b hb => (hp N b hb).trans_lt hN⟩
 
+/- English proof (translation)
+Use `continuous_iff_continuousAt.2 fun g => Metric.continuousAt_iff'.2 fun ε hε => ?_` and prove the remaining obligations. Take `⟨N, hN⟩` from `pt_small y ε hε`. Use `filter_upwards [(hf N).eventually_eq g] with g' hg'`. Rewrite using `[dist_eq_norm, ← map_sub]`. Conclude with `hN _ (Ideal.Quotient.eq.1 hg')`.
+-/
 theorem pt_cont {Γ : Type} [TopologicalSpace Γ] {f : Γ → R} (hf : Alg.AdicCont (maximalIdeal R) f) :
     Continuous fun g => y (f g) := by
   refine continuous_iff_continuousAt.2 fun g => Metric.continuousAt_iff'.2 fun ε hε => ?_
@@ -94,6 +134,11 @@ theorem pt_cont {Γ : Type} [TopologicalSpace Γ] {f : Γ → R} (hf : Alg.AdicC
   rw [dist_eq_norm, ← map_sub]
   exact hN _ (Ideal.Quotient.eq.1 hg')
 
+/- English proof (translation)
+Use `AlgHom.ext fun b => eq_of_forall_dist_le fun ε hε => ?_` and prove the remaining obligations. Take `⟨N, hN⟩` from `pt_small x ε hε`. Take `⟨M, hM⟩` from `pt_small y ε hε`. Take `⟨z, hz, hb⟩` from `hS (max N M) b`. Establish `e : x z = y z` using `Algebra.adjoin_le (S := AlgHom.equalizer x y) h hz`.
+
+Establish `h1` using `hN _ (Ideal.pow_le_pow_right (le_max_left _ _) hb)`. Establish `h2` using `hM _ (Ideal.pow_le_pow_right (le_max_right _ _) hb)`. Rewrite `h1`, `h2` using `[map_sub, ← dist_eq_norm]`. Rewrite `h2` using `[← e, dist_comm]`. Conclude with `(IsUltrametricDist.dist_triangle_max _ _ _).trans (max_le h1.le h2.le)`.
+-/
 theorem pt_ext (x : R →ₐ[c.O] Qbar l) (S : Set R)
     (hS : ∀ (N : ℕ) (b : R), ∃ z ∈ Algebra.adjoin c.O S, b - z ∈ maximalIdeal R ^ N) (h : ∀ z ∈ S, x z = y z) : x = y := by
   refine AlgHom.ext fun b => eq_of_forall_dist_le fun ε hε => ?_

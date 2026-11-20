@@ -14,6 +14,17 @@ def OneEx : Prop := ∀ (q : ℕ) [NeZero q] (A : Type) [CommRing A], SH A → I
     CohomologyClass.mk α = c ∧
     ∀ (U : Scheme.{0}) (x : Sx (sp A) 0 U) (ζ : Prim q Γ(U, ⊤)), ev α.1 0 0 (by simp) U x = resGen 0 ζ
 
+/- English proof (translation)
+Introduce `h9 q _ A _ hA hq`. Take `⟨hne, hb⟩` from `hT q A hA hq`. Take `⟨ζ⟩` from `hne`. Establish `hb0` using `hb 0 ζ`. Take `⟨_, e, -, he⟩` from `h9 (ZMod q) (tw q 0)`.
+
+Establish `hone : one q (sp A) = e (Spec (CommRingCat.of A)) (twGen 0 ζ)`. Take `⟨α, hα, hv⟩` from `pick_spec (hO q A hA hq)`. Establish `hα' : CohomologyClass.mk α = one q (sp A)` using `hα`. Take `⟨β, hβ, hβv⟩` from `he (Spec (CommRingCat.of A)) (twGen 0 ζ)`. Rewrite using `[← hα', ← hβ]`.
+
+Conclude with `hC _ _ _ α β ((hv _ (𝟙 _) ζ).trans hβv.symm)`. Establish `hlin : ∀ t : ZMod q, t • one q (sp A) = e (Spec (CommRingCat.of A)) ((ULift.up t : ULift.{1} (ZMod q)) • twGen 0 ζ)`. Introduce `t`. Rewrite using `[hone]`. Establish `h1 : t = ((t.val : ℕ) : ZMod q)` using `(ZMod.natCast_zmod_val t).symm`.
+
+Establish `h2 : (ULift.up t : ULift.{1} (ZMod q)) = ((t.val : ℕ) : ULift.{1} (ZMod q))`. Apply `ULift.ext` to reduce the goal to its premises. Rewrite using `[ULift.down_natCast]`. Conclude with `h1`. Rewrite using `[h2, Nat.cast_smul_eq_nsmul, map_nsmul]`.
+
+Use `conv_lhs => rw [h1]`. Rewrite using `[Nat.cast_smul_eq_nsmul]`. Establish `hfun : (fun t : ZMod q => t • one q (sp A)) = (e (Spec (CommRingCat.of A))) ∘ (fun t : ZMod q => (ULift.up t : ULift.{1} (ZMod q)) • twGen 0 ζ)` using `funext hlin`. Rewrite using `[hfun]`. Conclude with `(e _).bijective.comp hb0`.
+-/
 theorem etale_kummer_degree_zero_cohomology_of_twist_section_class_and_root_ex (hT : TwSec) (hC : Cls0) (hO : OneEx) : H0 := by
   intro h9 q _ A _ hA hq
   obtain ⟨hne, hb⟩ := hT q A hA hq

@@ -12,6 +12,9 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.Mum.UnifFibre
 
+/- English proof (translation)
+Introduce `R _ _ _ hB D A G _ _ hG U W hW` and use `GlobalTheory.T.uniformised_group_abelian_where_trivialisations_units R hB D A G hG U W hW`.
+-/
 theorem fibres_abelian_of_psiUnitOn : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ U : Unif (maximalIdeal R) D A G, ∀ W : (Sp R).Opens, (∀ y, PsiUnitOn D.toPre y W) → (W : Set (Sp R)) ⊆ abLocus G :=
   fun R _ _ _ hB D A G _ _ hG U W hW => GlobalTheory.T.uniformised_group_abelian_where_trivialisations_units R hB D A G hG U W hW
 

@@ -368,6 +368,11 @@ def ClosedAbsoluteShare (𝒞 : Formalism.MainNotions.FamClass) (𝒪 : ObjClass
 section
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
+/- English proof (translation)
+Unfold `frS`. Use `split_ifs with h`. Conclude with `hA _`. Establish `: ((A.X (InfinitePlace.mk s)).map (starRingEnd ℂ)).det = starRingEnd ℂ (A.X (InfinitePlace.mk s)).det`. Rewrite using `[RingHom.map_det]`.
+
+Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `(hA _).map (starRingEnd ℂ)`.
+-/
 theorem frS_det (A : HLat K) (hA : ∀ v, IsUnit (A.X v).det) (s : K →+* ℂ) : IsUnit (frS A s).det := by
   unfold frS
   split_ifs with h
@@ -377,6 +382,13 @@ theorem frS_det (A : HLat K) (hA : ∀ v, IsUnit (A.X v).det) (s : K →+* ℂ) 
     rw [this]
     exact (hA _).map (starRingEnd ℂ)
 
+/- English proof (translation)
+Unfold `mapS ptS`. Establish `h1 : Matrix.mulVec ((LinearMap.toMatrix A.b B.b φ).map s) (fun i => s (A.b.repr x i)) = fun i => s (B.b.repr (φ x) i)`. Use function extensionality and compare the values at `i`. Use `RingHom.map_mulVec s (LinearMap.toMatrix A.b B.b φ) (fun i => A.b.repr x i) i` as an intermediate fact. Rewrite `this` using `[LinearMap.toMatrix_mulVec_repr]`.
+
+Conclude with `this.symm`. Establish `h2 : (frS A s) * (frS A s)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ (frS_det A hA s)`. Rewrite using `[Matrix.toLpLin_apply]`. Use `congr 1`. Use `show Matrix.mulVec _ (Matrix.mulVec (frS A s)⁻¹ _) = _`.
+
+Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_assoc, h2, Matrix.mul_one, ← Matrix.mulVec_mulVec, h1]`.
+-/
 theorem mapS_ptS (A B : HLat K) (hA : ∀ v, IsUnit (A.X v).det) (s : K →+* ℂ) (φ : A.V →ₗ[K] B.V) (x : A.V) :
     mapS A B s φ (ptS A s x) = ptS B s (φ x) := by
   unfold mapS ptS
@@ -392,6 +404,13 @@ theorem mapS_ptS (A B : HLat K) (hA : ∀ v, IsUnit (A.X v).det) (s : K →+* �
   show Matrix.mulVec _ (Matrix.mulVec (frS A s)⁻¹ _) = _
   rw [Matrix.mulVec_mulVec, Matrix.mul_assoc, h2, Matrix.mul_one, ← Matrix.mulVec_mulVec, h1]
 
+/- English proof (translation)
+Unfold `ptS at h`. Establish `h0 : Matrix.mulVec (frS A s)⁻¹ (fun i => s (A.b.repr x i)) = 0`. Use `congrArg (WithLp.equiv 2 (A.ι → ℂ)) h` as an intermediate fact. Simplify using `using this`. Establish `h2 : (frS A s) * (frS A s)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ (frS_det A hA s)`.
+
+Establish `h3 : (fun i => s (A.b.repr x i)) = 0`. Use `congrArg (Matrix.mulVec (frS A s)) h0` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, h2, Matrix.one_mulVec, Matrix.mulVec_zero]`. Then use the resulting hypothesis. Establish `h4 : A.b.repr x = 0`. Use extensionality with `i`.
+
+Use `congrFun h3 i` as an intermediate fact. Simplify using `using this`. Simplify using `using h4`.
+-/
 theorem ptS_inj (A : HLat K) (hA : ∀ v, IsUnit (A.X v).det) (s : K →+* ℂ) (x : A.V) (h : ptS A s x = 0) : x = 0 := by
   unfold ptS at h
   have h0 : Matrix.mulVec (frS A s)⁻¹ (fun i => s (A.b.repr x i)) = 0 := by
@@ -407,6 +426,9 @@ theorem ptS_inj (A : HLat K) (hA : ∀ v, IsUnit (A.X v).det) (s : K →+* ℂ) 
     simpa using this
   simpa using h4
 
+/- English proof (translation)
+Take `⟨x, hx, hx0⟩` from `U.ne_bot_iff.mp hU`. Introduce `h`. Establish `: ptS A s x ∈ spS A s U` using `Submodule.subset_span ⟨x, hx, rfl⟩`. Rewrite `this` using `[h, Submodule.mem_bot]`. Conclude with `hx0 (ptS_inj A hA s x this)`.
+-/
 theorem spS_ne_bot (A : HLat K) (hA : ∀ v, IsUnit (A.X v).det) (s : K →+* ℂ) (U : Submodule K A.V) (hU : U ≠ ⊥) :
     spS A s U ≠ ⊥ := by
   obtain ⟨x, hx, hx0⟩ := U.ne_bot_iff.mp hU
@@ -417,6 +439,9 @@ theorem spS_ne_bot (A : HLat K) (hA : ∀ v, IsUnit (A.X v).det) (s : K →+* �
 
 end
 
+/- English proof (translation)
+Unfold `sumHkC InnerProductFormulaField.sumHk`. Conclude with `Equiv.sum_comp c.ga.symm (fun τ => InnerProductFormulaField.logHk (D.R.sigW j).1 (DV.aPlus D j τ) + InnerProductFormulaField.logHk (D.R.sigW j).2 (fun i => DV.aMinus D j τ ((D.R.sigW j).2 - 1 - i)))`.
+-/
 theorem sumHkC_eq (D : D7) {s : D.what₂.LL →+* ℂ} (c : CjDat D s) (j : ℕ) : sumHkC D c j = InnerProductFormulaField.sumHk D j := by
   unfold sumHkC InnerProductFormulaField.sumHk
   exact Equiv.sum_comp c.ga.symm (fun τ => InnerProductFormulaField.logHk (D.R.sigW j).1 (DV.aPlus D j τ) +
@@ -426,6 +451,9 @@ section GlueD
 
 variable (D : D7) (L : SizeData₂ D) (Z : DivX D) (Y : Loc D Z) (Cj : CjFam D)
 
+/- English proof (translation)
+Introduce `h0`. Apply `h` to reduce the goal to its premises. Establish `: D.what₂.isot j π ≤ DV.sum₃ E j (E.cOf π)` using `le_iSup₂ (f := fun (π' : D.what₂.FT) (_ : E.cOf π' = E.cOf π) => D.what₂.isot j π') π rfl`. Conclude with `le_bot_iff.mp (h0 ▸ this)`.
+-/
 theorem isotypicPart_ne_bot {D : D7} {Z : DivX D} (E : EigIdx D Z) (j : ℕ) (π : D.what₂.FT) (h : D.what₂.isot j π ≠ ⊥) :
     DV.sum₃ E j (E.cOf π) ≠ ⊥ := by
   intro h0
@@ -434,6 +462,9 @@ theorem isotypicPart_ne_bot {D : D7} {Z : DivX D} (E : EigIdx D Z) (j : ℕ) (π
     le_iSup₂ (f := fun (π' : D.what₂.FT) (_ : E.cOf π' = E.cOf π) => D.what₂.isot j π') π rfl
   exact le_bot_iff.mp (h0 ▸ this)
 
+/- English proof (translation)
+Establish `h : ∃ π', E.cOf π' = E.cOf π ∧ D.what₂.isot j π' ≠ ⊥` using `⟨π, rfl, hπ⟩`. Unfold `DV.logLamC`. Rewrite using `[dif_pos h]`. Conclude with `E.lam_const j hj _ _ s h.choose_spec.2 hπ h.choose_spec.1`.
+-/
 theorem logLamC_cOf {D : D7} {Z : DivX D} (E : EigIdx D Z) (j : ℕ) (hj : j ∈ SizeData₂.lifts D) (π : D.what₂.FT)
     (hπ : D.what₂.isot j π ≠ ⊥) (s : D.what₂.LL →+* ℂ) : DV.logLamC E j (E.cOf π) s = Z.logLam j π s := by
   have h : ∃ π', E.cOf π' = E.cOf π ∧ D.what₂.isot j π' ≠ ⊥ := ⟨π, rfl, hπ⟩
@@ -441,6 +472,9 @@ theorem logLamC_cOf {D : D7} {Z : DivX D} (E : EigIdx D Z) (j : ℕ) (hj : j ∈
   rw [dif_pos h]
   exact E.lam_const j hj _ _ s h.choose_spec.2 hπ h.choose_spec.1
 
+/- English proof (translation)
+Introduce `h0`. Apply `isotypicPart_ne_bot Y.ix j π h` to reduce the goal to its premises. Rewrite using `[← ((hR j h1 h2).2.1 π), h0]`. Simplify using the standard rewrite rules.
+-/
 theorem MjPart_ne_bot (hR : ThetaRationalityOverField D Z Y) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (π : D.what₂.FT)
     (h : D.what₂.isot j π ≠ ⊥) : MjPart D Z Y j π ≠ ⊥ := by
   intro h0
@@ -448,6 +482,11 @@ theorem MjPart_ne_bot (hR : ThetaRationalityOverField D Z Y) (j : ℕ) (h1 : 1 �
   rw [← ((hR j h1 h2).2.1 π), h0]
   simp
 
+/- English proof (translation)
+Establish `hne` using `spS_ne_bot (Z.MjH j) (Z.MjH_good j).1 s _ h0`. Take `⟨y, hy, hy0⟩` from `(Submodule.ne_bot_iff _).mp hne`. Establish `e` using `(h y hy).symm.trans (h' y hy)`. Establish `: ((c : ℂ) - c') • y = 0` using `by rw [sub_smul, e, sub_self]`. Break down `smul_eq_zero.mp this with h3 | h3` into its components or cases.
+
+Conclude with `sub_eq_zero.mp h3` after adjusting the coercions. Conclude with `absurd h3 hy0`.
+-/
 theorem IsLamS_unique (j : ℕ) (π : D.what₂.FT) (s : D.what₂.LL →+* ℂ) (c c' : ℝ) (h0 : MjPart D Z Y j π ≠ ⊥)
     (h : IsLamS D Z Y j π s c) (h' : IsLamS D Z Y j π s c') : c = c' := by
   have hne := spS_ne_bot (Z.MjH j) (Z.MjH_good j).1 s _ h0
@@ -458,6 +497,9 @@ theorem IsLamS_unique (j : ℕ) (π : D.what₂.FT) (s : D.what₂.LL →+* ℂ)
   · exact_mod_cast sub_eq_zero.mp h3
   · exact absurd h3 hy0
 
+/- English proof (translation)
+The claim follows from `|Real.log lam - InnerProductFormulaField.sumHk D j| ≤ C * D.R.f * (D.R.nV : ℝ) ^ 2 * InnerProductFormulaField.Lp D L := by obtain ⟨uT, uM, Rz, ka, hka, hRz, hth, hpart, -, -⟩ := hI s h j h1 h2 have hC : (Cj s h).isotC j π ≠ ⊥ := by rw [← hpart π] intro h0 have := spS_ne_bot (Z.Mj …`.
+-/
 theorem lamS_of_ident (C : ℝ) (hR : ThetaRationalityOverField D Z Y) (hA : ConjugateDatumSingularValueBound D L Cj C) (hI : EmbeddingIsometryIdentity D Z Y Cj)
     (s : D.what₂.LL →+* ℂ) (h : SameK D s) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (π : D.what₂.FT)
     (hne : D.what₂.isot j π ≠ ⊥) :
@@ -496,9 +538,17 @@ theorem lamS_of_ident (C : ℝ) (hR : ThetaRationalityOverField D Z Y) (hA : Con
     rw [Complex.mul_conj, Complex.normSq_eq_norm_sq, hka]; simp
   rw [this, one_mul]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using the standard rewrite rules.
+-/
 theorem conj_conj' (s : D.what₂.LL →+* ℂ) : ComplexEmbedding.conjugate (ComplexEmbedding.conjugate s) = s := by
   ext x; simp
 
+/- English proof (translation)
+Introduce `s j h1 h2 π hne`. Break down `hK s with h | h` into its components or cases. Conclude with `lamS_of_ident D L Z Y Cj C hR hA hI s h j h1 h2 π hne`. Take `⟨lam, hp, hl, hs⟩` from `lamS_of_ident D L Z Y Cj C hR hA hI _ h j h1 h2 π hne`. Use `⟨lam, hp, ?_, hs⟩` and prove the remaining obligations.
+
+Use `(hc j (ComplexEmbedding.conjugate s)).2.2 π lam hl` as an intermediate fact. Rewrite `this` using `[conj_conj']`. Then use the resulting hypothesis.
+-/
 theorem stmtD (C : ℝ) (hR : ThetaRationalityOverField D Z Y) (hK : EmbeddingAgreesOnSubfieldUpToConjugation D) (hA : ConjugateDatumSingularValueBound D L Cj C) (hI : EmbeddingIsometryIdentity D Z Y Cj)
     (hc : ConjugationNormInvariance D Z Y) : ThetaAdjointPositiveScalar D L Z Y C := by
   intro s j h1 h2 π hne
@@ -509,18 +559,33 @@ theorem stmtD (C : ℝ) (hR : ThetaRationalityOverField D Z Y) (hK : EmbeddingAg
     have := (hc j (ComplexEmbedding.conjugate s)).2.2 π lam hl
     rwa [conj_conj'] at this
 
+/- English proof (translation)
+Introduce `hdef j h1 h2 π hne s`. Take `⟨lam, _, hl, hs⟩` from `hD s j h1 h2 π hne`. Rewrite using `[hdef j h1 h2 π (MjPart_ne_bot D Z Y hR j h1 h2 π hne) s lam hl]`. Conclude with `hs`.
+-/
 theorem stmtDlog (C : ℝ) (hR : ThetaRationalityOverField D Z Y) (hD : ThetaAdjointPositiveScalar D L Z Y C) : LogEigenvalueDeviation D L Z Y C := by
   intro hdef j h1 h2 π hne s
   obtain ⟨lam, _, hl, hs⟩ := hD s j h1 h2 π hne
   rw [hdef j h1 h2 π (MjPart_ne_bot D Z Y hR j h1 h2 π hne) s lam hl]
   exact hs
 
+/- English proof (translation)
+Introduce `hdef j h1 h2 π hne s`. Take `⟨lam, _, hl, _⟩` from `hD s j h1 h2 π hne`. Rewrite using `[hdef j h1 h2 π (MjPart_ne_bot D Z Y hR j h1 h2 π hne) s lam hl, hdef j h1 h2 π (MjPart_ne_bot D Z Y hR j h1 h2 π hne) _ lam ((hc j s).2.2 π lam hl)]`.
+-/
 theorem stmtConj (C : ℝ) (hR : ThetaRationalityOverField D Z Y) (hD : ThetaAdjointPositiveScalar D L Z Y C) (hc : ConjugationNormInvariance D Z Y) : LogEigenvaluesConjugateInvariant D Z Y := by
   intro hdef j h1 h2 π hne s
   obtain ⟨lam, _, hl, _⟩ := hD s j h1 h2 π hne
   rw [hdef j h1 h2 π (MjPart_ne_bot D Z Y hR j h1 h2 π hne) s lam hl,
     hdef j h1 h2 π (MjPart_ne_bot D Z Y hR j h1 h2 π hne) _ lam ((hc j s).2.2 π lam hl)]
 
+/- English proof (translation)
+Introduce `hdef j hj π hne s`. Establish `hj'` using `Finset.mem_Icc.mp hj`. Establish `h` using `abs_le.mp (hD hdef j hj'.1 hj'.2 π hne s)`. Establish `e : InnerProductFormulaField.sumHk D j = InnerProductFormulaField.sumHkP D j + InnerProductFormulaField.sumHkM D j`. Unfold `InnerProductFormulaField.sumHk InnerProductFormulaField.sumHkP InnerProductFormulaField.sumHkM`.
+
+Rewrite using `[Finset.sum_add_distrib]`. Establish `hmm` using `hm j hj'.1 hj'.2`. Establish `hN' : (D.R.nV : ℝ) ^ 2 ≤ (D.R.N D.R.m : ℝ) ^ 2`. Establish `: (D.R.nV : ℝ) ≤ (D.R.N D.R.m : ℝ)` using `by exact_mod_cast hN`. Conclude with `pow_le_pow_left₀ (Nat.cast_nonneg _) this 2`.
+
+Establish `hf : (0 : ℝ) ≤ D.R.f` using `Nat.cast_nonneg _`. Establish `b1 : C * D.R.f * (D.R.nV : ℝ) ^ 2 * InnerProductFormulaField.Lp D L ≤ C * D.R.f * (D.R.N D.R.m : ℝ) ^ 2 * (K * L.La)`. Establish `hKL : 0 ≤ K * L.La` using `h0.trans hK`. Combine the equalities or inequalities in the displayed calculation. Use `h.1` as an intermediate fact.
+
+Use polynomial arithmetic with `[this, b1, hmm]`.
+-/
 theorem log_singular_value_bound_scaled (C K : ℝ) (hm : RealPlaceHeightSumNonneg D) (hD : LogEigenvalueDeviation D L Z Y C) (hC : 0 ≤ C) (h0 : 0 ≤ InnerProductFormulaField.Lp D L)
     (hK : InnerProductFormulaField.Lp D L ≤ K * L.La) (hN : D.R.nV ≤ D.R.N D.R.m) : LogEigenvalueLowerBound D L Z Y (C * K) := by
   intro hdef j hj π hne s
@@ -550,18 +615,33 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 def cj {ι : Type} (v : EuclideanSpace ℂ ι) : EuclideanSpace ℂ ι := WithLp.toLp 2 (fun i => starRingEnd ℂ (v.ofLp i))
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[cj]`.
+-/
 theorem cj_cj {ι : Type} (v : EuclideanSpace ℂ ι) : cj (cj v) = v := by
   ext i; simp [cj]
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[cj]`.
+-/
 theorem cj_add {ι : Type} (v w : EuclideanSpace ℂ ι) : cj (v + w) = cj v + cj w := by
   ext i; simp [cj]
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[cj]`.
+-/
 theorem cj_smul {ι : Type} (a : ℂ) (v : EuclideanSpace ℂ ι) : cj (a • v) = starRingEnd ℂ a • cj v := by
   ext i; simp [cj]
 
+/- English proof (translation)
+Simplify using `[cj, PiLp.inner_apply, map_sum]`.
+-/
 theorem cj_inner {ι : Type} [Fintype ι] (v w : EuclideanSpace ℂ ι) : inner ℂ (cj v) (cj w) = starRingEnd ℂ (inner ℂ v w) := by
   simp [cj, PiLp.inner_apply, map_sum]
 
+/- English proof (translation)
+Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv _ h]`. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`.
+-/
 theorem map_conj_inv {ι : Type} [Fintype ι] [DecidableEq ι] (M : Matrix ι ι ℂ) (h : IsUnit M.det) :
     (M.map (starRingEnd ℂ))⁻¹ = (M⁻¹).map (starRingEnd ℂ) := by
   apply Matrix.inv_eq_right_inv
@@ -569,6 +649,11 @@ theorem map_conj_inv {ι : Type} [Fintype ι] [DecidableEq ι] (M : Matrix ι ι
   ext i j
   by_cases hij : i = j <;> simp [Matrix.one_apply, hij]
 
+/- English proof (translation)
+Unfold `frS`. Rewrite using `[InfinitePlace.mk_conjugate_eq]`. Break down `InfinitePlace.embedding_mk_eq s with h | h` into its components or cases. Rewrite using `[if_pos h, if_neg (by rw [h]; exact fun e => hs e.symm)]`. Rewrite using `[if_pos h, if_neg (by rw [h]; exact hs)]`.
+
+Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 theorem frS_conj (A : HLat K) (s : K →+* ℂ) (hs : ComplexEmbedding.conjugate s ≠ s) :
     frS A (ComplexEmbedding.conjugate s) = (frS A s).map (starRingEnd ℂ) := by
   unfold frS
@@ -578,6 +663,9 @@ theorem frS_conj (A : HLat K) (s : K →+* ℂ) (hs : ComplexEmbedding.conjugate
   · rw [if_pos h, if_neg (by rw [h]; exact hs)]
     ext i j; simp
 
+/- English proof (translation)
+Rewrite using `[Matrix.toLpLin_apply, Matrix.toLpLin_apply]`. Unfold `cj`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec (starRingEnd ℂ) M v.ofLp i).symm`.
+-/
 theorem toEuc_cj {ι κ : Type} [Fintype ι] [DecidableEq ι] (M : Matrix κ ι ℂ) (v : EuclideanSpace ℂ ι) :
     Matrix.toEuclideanLin (M.map (starRingEnd ℂ)) (cj v) = cj (Matrix.toEuclideanLin M v) := by
   rw [Matrix.toLpLin_apply, Matrix.toLpLin_apply]
@@ -586,6 +674,11 @@ theorem toEuc_cj {ι κ : Type} [Fintype ι] [DecidableEq ι] (M : Matrix κ ι 
   funext i
   exact (RingHom.map_mulVec (starRingEnd ℂ) M v.ofLp i).symm
 
+/- English proof (translation)
+Unfold `ptS cj`. Rewrite using `[frS_conj A s hs, map_conj_inv _ (frS_det A hA s)]`. Use `show WithLp.toLp 2 _ = WithLp.toLp 2 _`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Conclude with `(RingHom.map_mulVec (starRingEnd ℂ) (frS A s)⁻¹ (fun i => s (A.b.repr x i)) i).symm`.
+-/
 theorem ptS_conj (A : HLat K) (hA : ∀ v, IsUnit (A.X v).det) (s : K →+* ℂ) (hs : ComplexEmbedding.conjugate s ≠ s) (x : A.V) :
     ptS A (ComplexEmbedding.conjugate s) x = cj (ptS A s x) := by
   unfold ptS cj
@@ -595,6 +688,9 @@ theorem ptS_conj (A : HLat K) (hA : ∀ v, IsUnit (A.X v).det) (s : K →+* ℂ)
   funext i
   exact (RingHom.map_mulVec (starRingEnd ℂ) (frS A s)⁻¹ (fun i => s (A.b.repr x i)) i).symm
 
+/- English proof (translation)
+Unfold `mapS`. Rewrite using `[← toEuc_cj, frS_conj A s hs, frS_conj B s hs, map_conj_inv _ (frS_det B hB s), Matrix.map_mul, Matrix.map_mul]`. Use `congr 3`.
+-/
 theorem mapS_conj (A B : HLat K) (hB : ∀ v, IsUnit (B.X v).det) (s : K →+* ℂ)
     (hs : ComplexEmbedding.conjugate s ≠ s) (φ : A.V →ₗ[K] B.V) (v : EuclideanSpace ℂ A.ι) :
     mapS A B (ComplexEmbedding.conjugate s) φ (cj v) = cj (mapS A B s φ v) := by
@@ -602,6 +698,9 @@ theorem mapS_conj (A B : HLat K) (hB : ∀ v, IsUnit (B.X v).det) (s : K →+* �
   rw [← toEuc_cj, frS_conj A s hs, frS_conj B s hs, map_conj_inv _ (frS_det B hB s), Matrix.map_mul, Matrix.map_mul]
   congr 3
 
+/- English proof (translation)
+Use `ext_inner_right ℂ fun w => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.adjoint_inner_left]`. Use `conv_lhs => rw [← cj_cj w]`. Use `conv_rhs => rw [← cj_cj w]`. Rewrite using `[mapS_conj A B hB s hs, cj_inner, cj_inner, LinearMap.adjoint_inner_left]`.
+-/
 theorem adj_conj (A B : HLat K) (hB : ∀ v, IsUnit (B.X v).det) (s : K →+* ℂ)
     (hs : ComplexEmbedding.conjugate s ≠ s) (φ : A.V →ₗ[K] B.V) (y : EuclideanSpace ℂ B.ι) :
     LinearMap.adjoint (mapS A B (ComplexEmbedding.conjugate s) φ) (cj y) = cj (LinearMap.adjoint (mapS A B s φ) y) := by
@@ -611,6 +710,13 @@ theorem adj_conj (A B : HLat K) (hB : ∀ v, IsUnit (B.X v).det) (s : K →+* �
   conv_rhs => rw [← cj_cj w]
   rw [mapS_conj A B hB s hs, cj_inner, cj_inner, LinearMap.adjoint_inner_left]
 
+/- English proof (translation)
+Unfold `spS at hy ⊢`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨x, hx, rfl⟩` from `hz`. Rewrite using `[ptS_conj A hA s hs, cj_cj]`.
+
+Conclude with `Submodule.subset_span ⟨x, hx, rfl⟩`. Consider the case `zero`. Establish `: cj (0 : EuclideanSpace ℂ A.ι) = 0` using `by ext i; simp [cj]`. Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`.
+
+Consider the case `add a b _ _ ha hb => rw [cj_add]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul a z _ hz => rw [cj_smul]`. Conclude with `Submodule.smul_mem _ _ hz`.
+-/
 theorem spS_conj (A : HLat K) (hA : ∀ v, IsUnit (A.X v).det) (s : K →+* ℂ) (hs : ComplexEmbedding.conjugate s ≠ s)
     (U : Submodule K A.V) (y : EuclideanSpace ℂ A.ι) (hy : y ∈ spS A (ComplexEmbedding.conjugate s) U) :
     cj y ∈ spS A s U := by
@@ -626,17 +732,30 @@ theorem spS_conj (A : HLat K) (hA : ∀ v, IsUnit (A.X v).det) (s : K →+* ℂ)
   | add a b _ _ ha hb => rw [cj_add]; exact Submodule.add_mem _ ha hb
   | smul a z _ hz => rw [cj_smul]; exact Submodule.smul_mem _ _ hz
 
+/- English proof (translation)
+Simplify using `[cj, EuclideanSpace.norm_eq]`.
+-/
 theorem cj_norm {ι : Type} [Fintype ι] (v : EuclideanSpace ℂ ι) : ‖cj v‖ = ‖v‖ := by
   simp [cj, EuclideanSpace.norm_eq]
 
 end
 
+/- English proof (translation)
+Introduce `h`. Establish `hr : ComplexEmbedding.IsReal s` using `h`. Establish `h1 : (InfinitePlace.mk s).IsReal` using `⟨s, hr, rfl⟩`. Conclude with `(InfinitePlace.not_isReal_iff_isComplex.mpr (IsTotallyComplex.isComplex (InfinitePlace.mk s))) h1`.
+-/
 theorem conj_ne (D : D7) (s : D.what₂.LL →+* ℂ) : ComplexEmbedding.conjugate s ≠ s := by
   intro h
   have hr : ComplexEmbedding.IsReal s := h
   have h1 : (InfinitePlace.mk s).IsReal := ⟨s, hr, rfl⟩
   exact (InfinitePlace.not_isReal_iff_isComplex.mpr (IsTotallyComplex.isComplex (InfinitePlace.mk s))) h1
 
+/- English proof (translation)
+Introduce `j s`. Establish `hs` using `conj_ne D s`. Use `⟨fun x => ?_, fun x => ?_, fun π c h y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[ptS_conj _ (Z.MjH_good j).1 s hs, cj_norm]`. Rewrite using `[ptS_conj _ (Y.MtjH_good j).1 s hs, cj_norm]`.
+
+Establish `hy'` using `spS_conj _ (Z.MjH_good j).1 s hs _ y hy`. Establish `e` using `h (cj y) hy'`. Establish `e2` using `congrArg cj e`. Unfold `thS at e2 ⊢`. Rewrite `e2` using `[← mapS_conj _ _ (Z.MjH_good j).1 s hs, ← adj_conj _ _ (Z.MjH_good j).1 s hs, cj_cj, cj_smul, cj_cj]`.
+
+Simplify using `using e2`.
+-/
 theorem conjugation_norm_invariance_holds (D : D7) (Z : DivX D) (Y : Loc D Z) : ConjugationNormInvariance D Z Y := by
   intro j s
   have hs := conj_ne D s
@@ -650,6 +769,9 @@ theorem conjugation_norm_invariance_holds (D : D7) (Z : DivX D) (Y : Loc D Z) : 
     rw [← mapS_conj _ _ (Z.MjH_good j).1 s hs, ← adj_conj _ _ (Z.MjH_good j).1 s hs, cj_cj, cj_smul, cj_cj] at e2
     simpa using e2
 
+/- English proof (translation)
+Unfold `Ranks.nV Ranks.N Ranks.r`. Establish `h1 : R.t ≤ R.m * R.t` using `Nat.le_mul_of_pos_left _ (by have := R.two_le_m; omega)`. Establish `h2 : R.m * (R.t + 1) = R.m * R.t + R.m` using `by ring`. Use `R.two_le_m` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem nV_le (R : Ranks) : R.nV ≤ R.N R.m := by
   unfold Ranks.nV Ranks.N Ranks.r
   have h1 : R.t ≤ R.m * R.t := Nat.le_mul_of_pos_left _ (by have := R.two_le_m; omega)
@@ -660,6 +782,13 @@ theorem nV_le (R : Ranks) : R.nV ≤ R.N R.m := by
 section
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
+/- English proof (translation)
+Establish `key : ∀ s' : K →+* ℂ, (InfinitePlace.mk s').embedding = s' → ‖ptS A s' x‖ = Formalism.HermitianLatticesTheory.normAt A.b A.X (InfinitePlace.mk s') x`. Introduce `s' h`. Unfold `ptS frS Formalism.HermitianLatticesTheory.normAt Formalism.HermitianLatticesTheory.cnorm Formalism.HermitianLatticesTheory.fcoord Formalism.HermitianLatticesTheory.vecAt`. Rewrite using `[if_pos h, h, EuclideanSpace.norm_eq]`. Both sides reduce to the same expression.
+
+Distinguish the cases in `h : (InfinitePlace.mk s).embedding = s`. Conclude with `key s h`. Establish `h' : (InfinitePlace.mk s).embedding = ComplexEmbedding.conjugate s` using `(InfinitePlace.embedding_mk_eq s).resolve_left h`. Establish `hcc : ComplexEmbedding.conjugate (ComplexEmbedding.conjugate s) = s` using `by ext y; simp`. Establish `hne : ComplexEmbedding.conjugate (ComplexEmbedding.conjugate s) ≠ ComplexEmbedding.conjugate s`.
+
+Rewrite using `[hcc]; intro e; exact h (by rw [h', ← e])`. Establish `e1` using `ptS_conj A hA (ComplexEmbedding.conjugate s) hne x`. Rewrite `e1` using `[hcc]`. Rewrite using `[e1, cj_norm, key (ComplexEmbedding.conjugate s) (by rw [InfinitePlace.mk_conjugate_eq]; exact h'), InfinitePlace.mk_conjugate_eq]`.
+-/
 theorem ptS_norm (A : HLat K) (hA : ∀ v, IsUnit (A.X v).det) (s : K →+* ℂ) (x : A.V) :
     ‖ptS A s x‖ = Formalism.HermitianLatticesTheory.normAt A.b A.X (InfinitePlace.mk s) x := by
   have key : ∀ s' : K →+* ℂ, (InfinitePlace.mk s').embedding = s' →
@@ -682,6 +811,9 @@ theorem ptS_norm (A : HLat K) (hA : ∀ v, IsUnit (A.X v).det) (s : K →+* ℂ)
 
 end
 
+/- English proof (translation)
+Establish `hc` using `conjugation_norm_invariance_holds D Z Y`. Establish `hD` using `stmtD D L Z Y Cj C hR hK hA hI hc`. Establish `hl` using `stmtDlog D L Z Y C hR hD`. Conclude with `⟨hc, hD, hl, stmtConj D L Z Y C hR hD hc, fun h0 h1 h2 => log_singular_value_bound_scaled D L Z Y C K hm hl h0 h1 h2 (nV_le D.R)⟩`.
+-/
 theorem stmt_singular (D : D7) (L : SizeData₂ D) (Z : DivX D) (Y : Loc D Z) (Cj : CjFam D) (C K : ℝ)
     (hR : ThetaRationalityOverField D Z Y) (hK : EmbeddingAgreesOnSubfieldUpToConjugation D) (hA : ConjugateDatumSingularValueBound D L Cj C) (hm : RealPlaceHeightSumNonneg D) (hI : EmbeddingIsometryIdentity D Z Y Cj) :
     ConjugationNormInvariance D Z Y ∧ ThetaAdjointPositiveScalar D L Z Y C ∧ LogEigenvalueDeviation D L Z Y C ∧ LogEigenvaluesConjugateInvariant D Z Y ∧

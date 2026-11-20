@@ -19,18 +19,29 @@ def leviOf (H : (Fin n → ℂ) →L[ℝ] (Fin n → ℂ) →L[ℝ] ℝ) (u v : 
   ((H u v + H (Complex.I • u) (Complex.I • v) : ℝ) +
     Complex.I * ((H u (Complex.I • v) - H (Complex.I • u) v : ℝ))) / 4
 
+/- English proof (translation)
+Simplify using `only [leviOf, smul_add, map_add]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem leviOf_add_right (H : (Fin n → ℂ) →L[ℝ] (Fin n → ℂ) →L[ℝ] ℝ) (u v w : Fin n → ℂ) :
     leviOf H u (v + w) = leviOf H u v + leviOf H u w := by
   simp only [leviOf, smul_add, map_add]
   push_cast
   ring
 
+/- English proof (translation)
+Simplify using `only [leviOf, smul_comm Complex.I r v, map_smul, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem leviOf_real_smul_right (H : (Fin n → ℂ) →L[ℝ] (Fin n → ℂ) →L[ℝ] ℝ) (u v : Fin n → ℂ) (r : ℝ) :
     leviOf H u (r • v) = r * leviOf H u v := by
   simp only [leviOf, smul_comm Complex.I r v, map_smul, smul_eq_mul]
   push_cast
   ring
 
+/- English proof (translation)
+Establish `h : Complex.I • Complex.I • v = -v` using `by rw [smul_smul, Complex.I_mul_I, neg_one_smul]`. Simplify using `only [leviOf, h, map_neg]`. Use `push_cast`. Put the polynomial expressions in normal form. Rewrite using `[Complex.I_sq]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem leviOf_I_smul_right (H : (Fin n → ℂ) →L[ℝ] (Fin n → ℂ) →L[ℝ] ℝ) (u v : Fin n → ℂ) :
     leviOf H u (Complex.I • v) = -Complex.I * leviOf H u v := by
   have h : Complex.I • Complex.I • v = -v := by rw [smul_smul, Complex.I_mul_I, neg_one_smul]
@@ -40,6 +51,9 @@ theorem leviOf_I_smul_right (H : (Fin n → ℂ) →L[ℝ] (Fin n → ℂ) →L[
   rw [Complex.I_sq]
   ring
 
+/- English proof (translation)
+Proceed by induction on `(Finset.univ : Finset (Fin n)) using Finset.induction_on with`. Consider the case `empty`. Establish `h0 : leviOf H u 0 = 0` using `by simp [leviOf]`. Simplify using `using h0`. Consider the case `insert j s hj ih => rw [Finset.sum_insert hj, Finset.sum_insert hj, leviOf_add_right, ih]`.
+-/
 theorem leviOf_sum_right (H : (Fin n → ℂ) →L[ℝ] (Fin n → ℂ) →L[ℝ] ℝ) (u : Fin n → ℂ) (v : Fin n → Fin n → ℂ) :
     leviOf H u (∑ j, v j) = ∑ j, leviOf H u (v j) := by
   classical
@@ -49,6 +63,13 @@ theorem leviOf_sum_right (H : (Fin n → ℂ) →L[ℝ] (Fin n → ℂ) →L[ℝ
     simpa using h0
   | insert j s hj ih => rw [Finset.sum_insert hj, Finset.sum_insert hj, leviOf_add_right, ih]
 
+/- English proof (translation)
+Use `set H := fderiv ℝ (fderiv ℝ f) y`. Establish `hx : x = ∑ j, ((x j).re • (Pi.single j 1 : Fin n → ℂ) + (x j).im • (Complex.I • (Pi.single j 1 : Fin n → ℂ)))`. Use function extensionality and compare the values at `p`. Simplify using `only [Finset.sum_apply, Pi.add_apply, Pi.smul_apply, Pi.single_apply, Complex.real_smul, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_add_distrib, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Use `conv_lhs => rw [← Complex.re_add_im (x p)]`.
+
+Establish `hent : ∀ j, cxHessian f y i j = leviOf H (Pi.single i 1) (Pi.single j 1)` using `fun j => rfl`. Use `conv_rhs => rw [hx]`. Rewrite using `[leviOf_sum_right]`. Simplify using `only [mulVec, dotProduct, hent]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[leviOf_add_right, leviOf_real_smul_right, leviOf_real_smul_right, leviOf_I_smul_right]`. Establish `hs : star (x j) = ((x j).re : ℂ) - (x j).im * Complex.I`. Apply the tactic sequence `apply Complex.ext <;> simp`. Simplify using `only [Pi.star_apply, hs]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cxHessian_mulVec_star (f : (Fin n → ℂ) → ℝ) (y x : Fin n → ℂ) (i : Fin n) :
     (cxHessian f y *ᵥ star x) i = leviOf (fderiv ℝ (fderiv ℝ f) y) (Pi.single i 1) x := by
   set H := fderiv ℝ (fderiv ℝ f) y
@@ -75,6 +96,9 @@ section Ambient
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+The claim follows from `((hA.contDiffAt (isOpen_blockNonzero.mem_nhds hz)).of_le (WithTop.coe_le_coe.mpr le_top)).log (A.pos z hz).ne'`.
+-/
 theorem logh_contDiffAt {A : HermLine ι} (hA : IsSmoothHerm A) {z : (Σ k, ι k) → ℂ}
     (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) : ContDiffAt ℝ 2 (fun z' => Real.log (A.h z')) z :=
   ((hA.contDiffAt (isOpen_blockNonzero.mem_nhds hz)).of_le (WithTop.coe_le_coe.mpr le_top)).log
@@ -84,10 +108,22 @@ def bsmulCLM (d : K → ℂ) : ((Σ k, ι k) → ℂ) →L[ℂ] ((Σ k, ι k) �
   ContinuousLinearMap.pi fun p => d p.1 • ContinuousLinearMap.proj p
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Simplify using `[bsmulCLM, bsmul]`.
+-/
 theorem bsmulCLM_apply (d : K → ℂ) (z : (Σ k, ι k) → ℂ) : bsmulCLM d z = bsmul d z := by
   funext p
   simp [bsmulCLM, bsmul]
 
+/- English proof (translation)
+Use `set φ : ((Σ k, ι k) → ℂ) → ℝ := fun z' => Real.log (A.h z')`. Establish `hφ : HasFDerivAt φ (fderiv ℝ φ z) z` using `((logh_contDiffAt hA hz).differentiableAt (by norm_num)).hasFDerivAt`. Establish `hpath : HasDerivAt (fun s : ℝ => z + s • bsmul d z) (bsmul d z) 0`. Simplify using `using ((hasDerivAt_id (0 : ℝ)).smul_const (bsmul d z)).const_add z`. Establish `h1 : HasDerivAt (fun s : ℝ => φ (z + s • bsmul d z)) (fderiv ℝ φ z (bsmul d z)) 0`.
+
+Conclude with `hφ.comp_hasDerivAt_of_eq (0 : ℝ) hpath (by simp)`. Establish `hne : ∀ᶠ s : ℝ in 𝓝 0, ∀ k, 1 + (s : ℂ) * d k ≠ 0` using `eventually_all.mpr fun k => ContinuousAt.eventually_ne (by fun_prop) (by simp)`. Establish `heq : (fun s : ℝ => φ (z + s • bsmul d z)) =ᶠ[𝓝 0] fun s : ℝ => Real.log (∏ k, ‖1 + (s : ℂ) * d k‖ ^ A.a k) + φ z` using `by filter_upwards [hne] with s hs`. Establish `hp : z + s • bsmul d z = fun p => (1 + (s : ℂ) * d p.1) * z p`. Use function extensionality and compare the values at `p`.
+
+Simplify using `only [Pi.add_apply, Pi.smul_apply, bsmul, Complex.real_smul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hpos : 0 < ∏ k, ‖1 + (s : ℂ) * d k‖ ^ A.a k` using `Finset.prod_pos fun k _ => zpow_pos (norm_pos_iff.mpr (hs k)) _`. Simplify using `only [φ]`. Rewrite using `[hp, A.smul (fun k => 1 + (s : ℂ) * d k) z hs, Real.log_mul hpos.ne' (A.pos z hz).ne']`.
+
+Rewrite using `[(h1.congr_of_eventuallyEq heq.symm).deriv.symm, deriv_add_const]`.
+-/
 theorem fderiv_logh_bsmul (A : HermLine ι) (hA : IsSmoothHerm A) (d : K → ℂ) {z : (Σ k, ι k) → ℂ}
     (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) :
     fderiv ℝ (fun z' => Real.log (A.h z')) z (bsmul d z) =
@@ -114,6 +150,13 @@ theorem fderiv_logh_bsmul (A : HermLine ι) (hA : IsSmoothHerm A) (d : K → ℂ
     rw [hp, A.smul (fun k => 1 + (s : ℂ) * d k) z hs, Real.log_mul hpos.ne' (A.pos z hz).ne']
   rw [(h1.congr_of_eventuallyEq heq.symm).deriv.symm, deriv_add_const]
 
+/- English proof (translation)
+Use `set φ : ((Σ k, ι k) → ℂ) → ℝ := fun z' => Real.log (A.h z')`. Use `set L : ((Σ k, ι k) → ℂ) →L[ℝ] ((Σ k, ι k) → ℂ) := (bsmulCLM d).restrictScalars ℝ`. Establish `hL : ∀ v, L v = bsmul d v` using `fun v => bsmulCLM_apply d v`. Establish `hconst : (fun z' => fderiv ℝ φ z' (L z')) =ᶠ[𝓝 z] fun _ => deriv (fun s : ℝ => Real.log (∏ k, ‖1 + (s : ℂ) * d k‖ ^ A.a k)) 0` using `by filter_upwards [isOpen_blockNonzero.mem_nhds hz] with z' hz'`. Rewrite using `[hL]`.
+
+Conclude with `fderiv_logh_bsmul A hA d hz'`. Establish `hd1 : DifferentiableAt ℝ (fderiv ℝ φ) z` using `((logh_contDiffAt hA hz).fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Establish `h0 : fderiv ℝ (fun z' => fderiv ℝ φ z' (L z')) z w = 0`. Rewrite using `[hconst.fderiv_eq]`. Simplify using the standard rewrite rules.
+
+Rewrite `h0` using `[fderiv_clm_apply hd1 L.differentiableAt, L.fderiv]`. Simplify using `only [_root_.add_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.flip_apply, hL] at h0`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem hess_logh_bsmul (A : HermLine ι) (hA : IsSmoothHerm A) (d : K → ℂ) {z : (Σ k, ι k) → ℂ}
     (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) (w : (Σ k, ι k) → ℂ) :
     fderiv ℝ (fderiv ℝ (fun z' => Real.log (A.h z'))) z w (bsmul d z) =
@@ -142,6 +185,15 @@ section Chain
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {n : ℕ}
 
+/- English proof (translation)
+Establish `hψ : ContDiffAt ℝ 2 (fun y' => φ (F y')) y` using `hφ.comp y (hF.contDiffAt.restrict_scalars ℝ)`. Establish `hψ1 : DifferentiableAt ℝ (fderiv ℝ (fun y' => φ (F y'))) y` using `(hψ.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Establish `hφev : ∀ᶠ y' in 𝓝 y, ContDiffAt ℝ 2 φ (F y')` using `hF.continuousAt.tendsto.eventually (hφ.eventually (by simp))`. Establish `hFev` using `hF.eventually_analyticAt`. Establish `hcw : fderiv ℝ (fderiv ℝ (fun y' => φ (F y'))) y u v = fderiv ℝ (fun y' => fderiv ℝ (fun y'' => φ (F y'')) y' v) y u`.
+
+Rewrite using `[fderiv_clm_apply hψ1 (differentiableAt_const v)]`. Simplify using the standard rewrite rules. Establish `hev : (fun y' => fderiv ℝ (fun y'' => φ (F y'')) y' v) =ᶠ[𝓝 y] fun y' => fderiv ℝ φ (F y') (fderiv ℂ F y' v)` using `by filter_upwards [hφev, hFev] with y' h1 h2`. Rewrite using `[fderiv_fun_comp y' (h1.differentiableAt (by norm_num)) (h2.differentiableAt.restrictScalars ℝ), h2.differentiableAt.fderiv_restrictScalars ℝ]`. Both sides reduce to the same expression.
+
+Establish `hd1 : DifferentiableAt ℝ (fderiv ℝ φ) (F y)` using `(hφ.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Establish `hc : DifferentiableAt ℝ (fun y' => fderiv ℝ φ (F y')) y` using `hd1.comp y (hF.differentiableAt.restrictScalars ℝ)`. Establish `hG : DifferentiableAt ℂ (fun y' => fderiv ℂ F y' v) y` using `hF.fderiv.differentiableAt.clm_apply (differentiableAt_const v)`. Rewrite using `[hcw, hev.fderiv_eq, fderiv_clm_apply hc (hG.restrictScalars ℝ), fderiv_fun_comp y hd1 (hF.differentiableAt.restrictScalars ℝ), hG.fderiv_restrictScalars ℝ, hF.differentiableAt.fderiv_restrictScalars ℝ]`. Simplify using `only [_root_.add_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.flip_apply, ContinuousLinearMap.coe_restrictScalars']`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hess_comp_holo {φ : ((Σ k, ι k) → ℂ) → ℝ} {F : (Fin n → ℂ) → (Σ k, ι k) → ℂ} {y : Fin n → ℂ}
     (hφ : ContDiffAt ℝ 2 φ (F y)) (hF : AnalyticAt ℂ F y) (u v : Fin n → ℂ) :
     fderiv ℝ (fderiv ℝ (fun y' => φ (F y'))) y u v =
@@ -178,6 +230,23 @@ theorem hess_comp_holo {φ : ((Σ k, ι k) → ℂ) → ℝ} {F : (Fin n → ℂ
 
 end Chain
 
+/- English proof (translation)
+Introduce `K _ ι _ A n F y x c hA hF hblk hx`. Establish `hφ : ContDiffAt ℝ 2 (fun z' => Real.log (A.h z')) (F y)` using `logh_contDiffAt hA hblk`. Establish `hchain : ∀ u v, fderiv ℝ (fderiv ℝ (fun y' => Real.log (A.h (F y')))) y u v = fderiv ℝ (fderiv ℝ (fun z' => Real.log (A.h z'))) (F y) (fderiv ℂ F y u) (fderiv ℂ F y v) + fderiv ℝ (fun z' => Real.log (A.h z')) (F y) (fderiv ℂ (fun y' => fderiv ℂ F y' v) y u)` using `fun u v => hess_comp_holo (φ := fun z' => Real.log (A.h z')) hφ hF u v`. Establish `hG : DifferentiableAt ℂ (fun y' => fderiv ℂ F y' x) y` using `hF.fderiv.differentiableAt.clm_apply (differentiableAt_const x)`. Establish `hGI : fderiv ℂ (fun y' => fderiv ℂ F y' (Complex.I • x)) y = Complex.I • fderiv ℂ (fun y' => fderiv ℂ F y' x) y`.
+
+Establish `: (fun y' => fderiv ℂ F y' (Complex.I • x)) = fun y' => Complex.I • fderiv ℂ F y' x`. Use function extensionality and compare the values at `y'`. Conclude with `map_smul _ _ _`. Rewrite using `[this, fderiv_fun_const_smul hG]`. Establish `hJIx : fderiv ℂ F y (Complex.I • x) = bsmul (fun k => Complex.I * c k) (F y)`.
+
+Rewrite using `[map_smul, hx]`. Use function extensionality and compare the values at `p`. Simplify using `only [Pi.smul_apply, bsmul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hbI : ∀ (d : K → ℂ) (w : (Σ k, ι k) → ℂ), bsmul d (Complex.I • w) = bsmul (fun k => Complex.I * d k) w`.
+
+Introduce `d w`. Use function extensionality and compare the values at `p`. Simplify using `only [Pi.smul_apply, bsmul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hbII : ∀ (d : K → ℂ) (w : (Σ k, ι k) → ℂ), bsmul (fun k => Complex.I * d k) (Complex.I • w) = -bsmul d w`.
+
+Introduce `d w`. Use function extensionality and compare the values at `p`. Simplify using `only [Pi.smul_apply, Pi.neg_apply, bsmul, smul_eq_mul]`. Take the linear combination `(d p.1 * w p) * Complex.I_sq`. Establish `hII : ∀ w : (Σ k, ι k) → ℂ, Complex.I • Complex.I • w = -w` using `fun w => by`.
+
+Rewrite using `[smul_smul, Complex.I_mul_I, neg_one_smul]`. Establish `heul` using `fun d w => hess_logh_bsmul A hA d hblk w`. Use function extensionality and compare the values at `i`. Rewrite using `[cxHessian_mulVec_star, Pi.zero_apply]`. Unfold `leviOf`.
+
+Rewrite using `[hchain, hchain, hchain, hchain, hJIx, hx, hGI]`. Simplify using `only [map_smul, _root_.smul_apply]`. Rewrite using `[heul, heul, heul, heul, hbII, hbI, hII]`. Simplify using `only [map_neg]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem proof : pointFormEuler_holds.Statement := by
   intro K _ ι _ A n F y x c hA hF hblk hx
   have hφ : ContDiffAt ℝ 2 (fun z' => Real.log (A.h z')) (F y) := logh_contDiffAt hA hblk

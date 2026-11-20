@@ -15,6 +15,11 @@ def flat (σ : Type) [Fintype σ] : σ ≃ Fin (Fintype.card σ) × Unit :=
 def fis (P Q : MvPolynomial σ ℂ) : ℂ :=
   ReciprocityTheory.PGsh.fischer (rename (flat σ) P) (rename (flat σ) Q)
 
+/- English proof (translation)
+Unfold `fis`. Use `set P' := rename (flat σ) P`. Use `set Q' := rename (flat σ) Q`. Rewrite using `[ReciprocityTheory.PGsh.fischer_eq_sum P' Q' (P'.support ∪ Q'.support) Finset.subset_union_left, ReciprocityTheory.PGsh.fischer_eq_sum Q' P' (P'.support ∪ Q'.support) Finset.subset_union_right, map_sum]`. Use `Finset.sum_congr rfl fun A _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [ReciprocityTheory.PGsh.fw, map_mul, Complex.conj_conj, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fis_conj (P Q : MvPolynomial σ ℂ) : starRingEnd ℂ (fis P Q) = fis Q P := by
   classical
   unfold fis
@@ -26,6 +31,11 @@ theorem fis_conj (P Q : MvPolynomial σ ℂ) : starRingEnd ℂ (fis P Q) = fis Q
   simp only [ReciprocityTheory.PGsh.fw, map_mul, Complex.conj_conj, map_natCast]
   ring
 
+/- English proof (translation)
+Unfold `fis`. Use `set P' := rename (flat σ) P`. Rewrite using `[ReciprocityTheory.PGsh.fischer_eq_sum P' P' P'.support subset_rfl, Complex.re_sum]`. Use `Finset.sum_nonneg fun A _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.mul_conj, ReciprocityTheory.PGsh.fw, ← Complex.ofReal_natCast, ← Complex.ofReal_mul, Complex.ofReal_re]`.
+
+Conclude with `mul_nonneg (Complex.normSq_nonneg _) (Nat.cast_nonneg _)`.
+-/
 theorem fis_self_re_nonneg (P : MvPolynomial σ ℂ) : 0 ≤ (fis P P).re := by
   classical
   unfold fis
@@ -35,22 +45,37 @@ theorem fis_self_re_nonneg (P : MvPolynomial σ ℂ) : 0 ≤ (fis P P).re := by
   rw [Complex.mul_conj, ReciprocityTheory.PGsh.fw, ← Complex.ofReal_natCast, ← Complex.ofReal_mul, Complex.ofReal_re]
   exact mul_nonneg (Complex.normSq_nonneg _) (Nat.cast_nonneg _)
 
+/- English proof (translation)
+The claim follows from `ReciprocityTheory.PGsh.fischer_self_ne_zero _ fun h => hP (rename_injective _ (flat σ).injective (h.trans (map_zero _).symm))`.
+-/
 theorem fis_self_ne_zero {P : MvPolynomial σ ℂ} (hP : P ≠ 0) : fis P P ≠ 0 :=
   ReciprocityTheory.PGsh.fischer_self_ne_zero _ fun h =>
     hP (rename_injective _ (flat σ).injective (h.trans (map_zero _).symm))
 
+/- English proof (translation)
+Unfold `fis`. Rewrite using `[map_add, ReciprocityTheory.PGsh.fischer_add_right]`.
+-/
 theorem fis_add_right (P Q Q' : MvPolynomial σ ℂ) : fis P (Q + Q') = fis P Q + fis P Q' := by
   unfold fis
   rw [map_add, ReciprocityTheory.PGsh.fischer_add_right]
 
+/- English proof (translation)
+Unfold `fis`. Rewrite using `[map_smul, ReciprocityTheory.PGsh.fischer_smul_right]`.
+-/
 theorem fis_smul_right (c : ℂ) (P Q : MvPolynomial σ ℂ) : fis P (c • Q) = starRingEnd ℂ c * fis P Q := by
   unfold fis
   rw [map_smul, ReciprocityTheory.PGsh.fischer_smul_right]
 
+/- English proof (translation)
+Unfold `fis`. Rewrite using `[map_add, ReciprocityTheory.PGsh.fischer_add_left]`.
+-/
 theorem fis_add_left (P P' Q : MvPolynomial σ ℂ) : fis (P + P') Q = fis P Q + fis P' Q := by
   unfold fis
   rw [map_add, ReciprocityTheory.PGsh.fischer_add_left]
 
+/- English proof (translation)
+Unfold `fis`. Rewrite using `[map_smul, ReciprocityTheory.PGsh.fischer_smul_left]`.
+-/
 theorem fis_smul_left (c : ℂ) (P Q : MvPolynomial σ ℂ) : fis (c • P) Q = c * fis P Q := by
   unfold fis
   rw [map_smul, ReciprocityTheory.PGsh.fischer_smul_left]

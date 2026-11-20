@@ -6,6 +6,9 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FinrankLette
 
 open Module
 
+/- English proof (translation)
+Establish `h1` using `LinearMap.finrank_range_add_finrank_ker f`. Establish `h2` using `LinearMap.finrank_range_add_finrank_ker p`. Rewrite `h2` using `[LinearMap.range_eq_top.mpr hp, finrank_top, LinearMap.exact_iff.mp hex]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem finrank_add_of_exact {k A B C : Type} [Field k] [AddCommGroup A] [Module k A] [AddCommGroup B]
     [Module k B] [AddCommGroup C] [Module k C] [FiniteDimensional k A] [FiniteDimensional k B] (f : A →ₗ[k] B)
     (p : B →ₗ[k] C) (hp : Function.Surjective p) (hex : Function.Exact f p) :
@@ -16,6 +19,15 @@ private theorem finrank_add_of_exact {k A B C : Type} [Field k] [AddCommGroup A]
   omega
 
 open Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.Pst GlobalTheory.Pst.DpstMap in
+/- English proof (translation)
+Introduce `l _ ι K L V' V V'' _ _ _ _ _ _ _ _ _ _ _ _ _ ρ' ρ ρ'' f p hf hp hfi hps hex hV`. Take `⟨hV', hV'', hds⟩` from `UpperTheory.dpst_right_exact l K L V' V V'' ρ' ρ ρ'' f p hf hp hfi hps hex hV`. Take `⟨-, hde⟩` from `UpperTheory.weilDeligne_dpst_leftExact l (UpperTheory.V.Loc.PP l) K L V' V V'' ρ' ρ ρ'' f p hf hp hfi hex`. Use `haveI : FiniteDimensional ↥L.1 V' := FiniteDimensional.of_injective f hfi`. Use `haveI : FiniteDimensional ↥L.1 V'' := Module.Finite.of_surjective p hps`.
+
+Establish `key : Function.Exact (wdLin (UpperTheory.V.Loc.PP l) ι hf) (wdLin (UpperTheory.V.Loc.PP l) ι hp) ∧ Function.Surjective (wdLin (UpperTheory.V.Loc.PP l) ι hp)`. Use `letI := algC ι L`. Use the proof step `UpperTheory.weilDeligne_functor_exact _ _ _ _ _ ℂ (mulD (UpperTheory.V.Loc.PP l) ρ') (mulD (UpperTheory.V.Loc.PP l) ρ) (mulD (UpperTheory.V.Loc.PP l) ρ'') (urC ι) (dmap (UpperTheory.V.Loc.PP l) hf) (dmap (UpperTheory.V.Loc.PP l) hp) _ _ hde hds`. Use `⟨hV', hV'', ?_, key.2, key.1⟩` and prove the remaining obligations. Use `haveI := hV.finite`.
+
+Use `haveI := hV'.finite`. Establish `h1` using `finrank_add_of_exact _ _ key.2 key.1`. Establish `h2` using `finrank_add_of_exact f p hps hex`. Rewrite `h1` using `[LetterDim.finrank_wdSpace l _ ι K L V ρ hV, LetterDim.finrank_wdSpace l _ ι K L V' ρ' hV', LetterDim.finrank_wdSpace l _ ι K L V'' ρ'' hV'']`. Rewrite `h2` using `[LinearMap.ker_eq_bot.mpr hfi, finrank_bot]`.
+
+Rewrite using `[← LinearMap.ker_eq_bot, ← Submodule.finrank_eq_zero]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem UpperTheory.weil_deligne_functor_exactness :
     UpperTheory.V.Af.Wd.WdExact := by
   intro l _ ι K L V' V V'' _ _ _ _ _ _ _ _ _ _ _ _ _ ρ' ρ ρ'' f p hf hp hfi hps hex hV

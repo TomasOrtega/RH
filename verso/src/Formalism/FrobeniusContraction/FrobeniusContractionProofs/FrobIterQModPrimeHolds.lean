@@ -8,6 +8,9 @@ open Formalism.WachCohomologyFacts
 
 variable {O A : Type} [CommRing O] [CommRing A] [Algebra O A]
 
+/- English proof (translation)
+Unfold `Base.p`. Proceed by induction on `s with`. Consider the case `zero => rfl`. Consider the case `succ n ih`. Rewrite using `[pow_succ', AlgHom.mul_apply, Function.iterate_succ_apply', ih]`.
+-/
 lemma p_eq_pow (B : Base O A) (s : ℕ) : B.p s = (B.φ ^ s) B.q := by
   unfold Base.p
   induction s with
@@ -15,6 +18,9 @@ lemma p_eq_pow (B : Base O A) (s : ℕ) : B.p s = (B.φ ^ s) B.q := by
   | succ n ih =>
     rw [pow_succ', AlgHom.mul_apply, Function.iterate_succ_apply', ih]
 
+/- English proof (translation)
+Rewrite using `[p_eq_pow, Base.q, map_add, map_natCast]`.
+-/
 lemma p_eq (B : Base O A) (s : ℕ) : B.p s = (B.φ ^ s) B.X + (B.ℓ : A) := by
   rw [p_eq_pow, Base.q, map_add, map_natCast]
 

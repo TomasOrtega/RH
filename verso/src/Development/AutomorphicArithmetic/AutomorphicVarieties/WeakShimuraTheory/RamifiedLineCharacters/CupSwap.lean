@@ -2,6 +2,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
+/- English proof (translation)
+Introduce `O Γ R _ _ _ _ Φ a w w' x y z m n hx hm hy hn hz`. Establish `e : ∀ g, a (Φ.rt (w + w') g) = a (Φ.rt w g) * a (Φ.rt w' g)` using `fun g => by`. Rewrite using `[Fr.rt_add, Units.val_mul, map_mul]`. Use `⟨?_, fun g h => ?_, fun g hg => ?_, fun v => ?_⟩` and prove the remaining obligations. Conclude with `(hx.lc.comp₂ hy.lc (· * ·)).comp₂ hz.lc (· - ·)`.
+
+Simplify using `only [Pi.sub_apply, Pi.mul_apply]`. Rewrite using `[add_comm w' w, hx.coc, hy.coc, hz.coc, e]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Pi.sub_apply, Pi.mul_apply]`. Rewrite using `[hx.kill g hg, hz.kill g hg, zero_mul, sub_zero]`.
+
+Take `⟨o, ho⟩` from `hz.loc v`. Use `⟨m v * n v - o, fun s hs => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.sub_apply, Pi.mul_apply]`. Rewrite using `[add_comm w' w, ho s hs, e, hm v s hs, hn v s hs]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.V.Ws.Gys.cupSwap :
     ∀ {O Γ R : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] [CommRing R] (Φ : Fr O Γ) (a : O →+* R) (w w' : ℤ × ℤ) (x y z : Γ → R) (m n : Φ.ι → R), Φ.Coc a w x → Φ.LocTriv a w x m → Φ.Coc a w' y → Φ.LocTriv a w' y n →
       Φ.Cup a w w' x y z m → Φ.Cup a w' w y x (x * y - z) n := by

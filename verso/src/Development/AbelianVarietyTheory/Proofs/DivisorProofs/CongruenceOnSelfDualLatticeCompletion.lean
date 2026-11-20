@@ -9,23 +9,48 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.LatHatCong
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_zero, sub_zero, smul_zero, smul_zero]`.
+-/
 theorem cong_zero {R : Type} [CommRing R] {n : ℕ} (K : Matrix (Fin n) (Fin n) R) (t : R) (M : ℕ) :
     t • (K *ᵥ 0 - 0) = M • (0 : Fin n → R) := by
   rw [Matrix.mulVec_zero, sub_zero, smul_zero, smul_zero]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_add, add_sub_add_comm, smul_add, e, e', smul_add]`.
+-/
 theorem cong_add {R : Type} [CommRing R] {n : ℕ} {K : Matrix (Fin n) (Fin n) R} {t : R} {M : ℕ} {u w y y' : Fin n → R}
     (e : t • (K *ᵥ u - u) = M • y) (e' : t • (K *ᵥ w - w) = M • y') :
     t • (K *ᵥ (u + w) - (u + w)) = M • (y + y') := by
   rw [Matrix.mulVec_add, add_sub_add_comm, smul_add, e, e', smul_add]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_neg, sub_neg_eq_add, neg_add_eq_sub, ← neg_sub, smul_neg, e, smul_neg]`.
+-/
 theorem cong_neg {R : Type} [CommRing R] {n : ℕ} {K : Matrix (Fin n) (Fin n) R} {t : R} {M : ℕ} {u y : Fin n → R}
     (e : t • (K *ᵥ u - u) = M • y) : t • (K *ᵥ (-u) - (-u)) = M • (-y) := by
   rw [Matrix.mulVec_neg, sub_neg_eq_add, neg_add_eq_sub, ← neg_sub, smul_neg, e, smul_neg]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_smul, ← smul_sub, smul_comm t, e, smul_comm]`.
+-/
 theorem cong_smul {R : Type} [CommRing R] {n : ℕ} {K : Matrix (Fin n) (Fin n) R} {t c : R} {M : ℕ} {u y : Fin n → R}
     (e : t • (K *ᵥ u - u) = M • y) : t • (K *ᵥ (c • u) - c • u) = M • (c • y) := by
   rw [Matrix.mulVec_smul, ← smul_sub, smul_comm t, e, smul_comm]
 
+/- English proof (translation)
+Introduce `D V β Λ hβ K t M h z hz`. Establish `hl : Formalism.L2.Pj.latHat V = GlobalTheory.AdLat.hat D.host.F (Λ : Set (Fin V.rank → D.host.E))` using `(GlobalTheory.OneMapRef.Lift.hatV_eq hβ).symm`. Rewrite `h`, `hz`, the goal using `[hl]`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem w hw`.
+
+Take `⟨a, ha, x, hx, rfl⟩` from `hw`. Take `⟨y, hy, e⟩` from `h x hx`. Establish `hm : (1 : D.host.E) ⊗ₜ[D.host.F] a ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `Subring.subset_closure (Or.inr ⟨⟨a, ha⟩, rfl⟩)`. Establish `hy'` using `GlobalTheory.PrincInLevel.smul_mem_hat Λ _ hm y hy`. Establish `hc : (Algebra.TensorProduct.comm D.host.F _ D.host.E).symm ((1 : D.host.E) ⊗ₜ[D.host.F] a) = a ⊗ₜ[D.host.F] (1 : D.host.E)` using `rfl`.
+
+Rewrite `hy'` using `[hc]`. Establish `hv : (fun i => a ⊗ₜ[D.host.F] x i) = (a ⊗ₜ[D.host.F] (1 : D.host.E)) • finVec V x`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `_ = (a ⊗ₜ[D.host.F] (1 : D.host.E)) * ((1 : FiniteAdeleRing (𝓞 D.host.F) D.host.F) ⊗ₜ[D.host.F] x i)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`.
+
+Use `⟨_, hy', ?_⟩` and prove the remaining obligations. Rewrite using `[hv]`. Conclude with `cong_smul e`. Consider the case `zero`. Conclude with `⟨0, AddSubgroup.zero_mem _, cong_zero K t M⟩`.
+
+Consider the case `add u w _ _ hu hw`. Take `⟨y, hy, e⟩` from `hu`. Take `⟨y', hy', e'⟩` from `hw`. Conclude with `⟨y + y', add_mem hy hy', cong_add e e'⟩`. Consider the case `neg u _ hu`.
+
+Take `⟨y, hy, e⟩` from `hu`. Conclude with `⟨-y, neg_mem hy, cong_neg e⟩`.
+-/
 theorem cong_on_hat : ∀ {D : D7} (V : HSp D) {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)}, IsSDFrame V β Λ 1 → ∀ (K : Matrix (Fin V.rank) (Fin V.rank) (FiniteAdeleRing (𝓞 D.host.F) D.host.F ⊗[D.host.F] D.host.E)) (t : FiniteAdeleRing (𝓞 D.host.F) D.host.F ⊗[D.host.F] D.host.E) (M : ℕ), (∀ x ∈ Λ, ∃ y ∈ latHat V, t • (K *ᵥ finVec V x - finVec V x) = M • y) → ∀ z ∈ latHat V, ∃ y ∈ latHat V, t • (K *ᵥ z - z) = M • y := by
   intro D V β Λ hβ K t M h z hz
   have hl : Formalism.L2.Pj.latHat V = GlobalTheory.AdLat.hat D.host.F (Λ : Set (Fin V.rank → D.host.E)) :=

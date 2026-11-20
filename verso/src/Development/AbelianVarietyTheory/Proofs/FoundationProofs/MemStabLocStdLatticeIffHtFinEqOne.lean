@@ -10,6 +10,17 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add y z hy hz`. Take `⟨x, hx⟩` from `hy`. Take `⟨x', hx'⟩` from `hz`.
+
+Use `⟨x + x', ?_⟩` and prove the remaining obligations. Rewrite using `[TensorProduct.tmul_add, add_sub_add_comm]`. Conclude with `add_mem hx hx'`. Consider the case `tmul a e`. Take `⟨m, hm, he⟩` from `exists_integral_multiples ℤ ℚ ({e} : Finset E)`.
+
+Establish `he' : IsIntegral ℤ (m • e)` using `he e (Finset.mem_singleton_self e)`. Establish `hmF : (m : F) ≠ 0` using `by exact_mod_cast hm`. Establish `hO : IsOpen (v.adicCompletionIntegers F : Set (Fv F v))` using `Valued.isOpen_valuationSubring _`. Establish `hcont : Continuous fun z : Fv F v => (m : F)⁻¹ • a - z` using `continuous_sub_left _`. Take `⟨k, hk⟩` from `(HeightOneSpectrum.denseRange_algebraMap (R := 𝓞 F) F v).exists_mem_open (hO.preimage hcont) ⟨(m : F)⁻¹ • a, by simp⟩`.
+
+Use `⟨k • (m • e), ?_⟩` and prove the remaining obligations. Establish `hk' : (m : F)⁻¹ • a - algebraMap F (Fv F v) k ∈ v.adicCompletionIntegers F` using `hk`. Establish `h` using `tmul_mem_intLoc (E := E) hk' ⟨m • e, he'⟩`. Use `h using 1` and compare the differences between its conclusion and the goal. Express the relevant statement in the definitionally equal form `_ = ((m : F)⁻¹ • a - algebraMap F (Fv F v) k) ⊗ₜ[F] (m • e)`.
+
+Rewrite using `[TensorProduct.sub_tmul, TensorProduct.smul_tmul, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul, ← Int.cast_smul_eq_zsmul F m e, inv_smul_smul₀ hmF]`.
+-/
 theorem exists_sub_mem_intLoc (v : HeightOneSpectrum (𝓞 F)) (y : Fv F v ⊗[F] E) :
     ∃ x : E, y - (1 : Fv F v) ⊗ₜ[F] x ∈ intLoc F E v := by
   induction y using TensorProduct.induction_on with
@@ -36,6 +47,19 @@ theorem exists_sub_mem_intLoc (v : HeightOneSpectrum (𝓞 F)) (y : Fv F v ⊗[F
     rw [TensorProduct.sub_tmul, TensorProduct.smul_tmul, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul,
       ← Int.cast_smul_eq_zsmul F m e, inv_smul_smul₀ hmF]
 
+/- English proof (translation)
+Establish `hint : IsIntegral F x` using `Algebra.IsIntegral.isIntegral x`. Establish `hmon` using `minpoly.monic hint`. Establish `h1 : (minpoly F x).map (algebraMap F (FvBar F v)) ∈ Polynomial.lifts (valBar F v).integer.subtype`. Use `Polynomial.Splits.mem_lift_of_roots_mem_range (IsAlgClosed.splits _) (hmon.map _) _ fun a ha => ?_` and prove the remaining obligations. Establish `ha' : a ∈ (minpoly F x).rootSet (FvBar F v)`.
+
+Rewrite using `[Polynomial.rootSet_def]`. Simplify `ha` using `[Polynomial.aroots_def]`. Rewrite `ha'` using `[← Algebra.IsAlgebraic.range_eval_eq_rootSet_minpoly]`. Take `⟨τ, rfl⟩` from `ha'`. Conclude with `⟨⟨τ x, hx τ⟩, rfl⟩`.
+
+Establish `h2 : minpoly F x ∈ Polynomial.lifts (v.valuationSubringAtPrime F).subtype`. Rewrite `h1`, the goal using `[Polynomial.lifts_iff_coeff_lifts]`. Introduce `n`. Take `⟨c, hc⟩` from `h1 n`. Establish `h3 : absBar F v (algebraMap F (FvBar F v) ((minpoly F x).coeff n)) ≤ 1`.
+
+Rewrite using `[← Polynomial.coeff_map, ← hc]`. Conclude with `c.2`. Rewrite `h3` using `[IsScalarTower.algebraMap_apply F (Fv F v) (FvBar F v), absBar_algebraMap]`. Establish `h4 : Valued.v (algebraMap F (Fv F v) ((minpoly F x).coeff n)) ≤ 1` using `Valued.toNormedField.norm_le_one_iff.1 (by exact_mod_cast h3)`. Use `⟨⟨(minpoly F x).coeff n, ?_⟩, rfl⟩` and prove the remaining obligations.
+
+Rewrite using `[HeightOneSpectrum.valuationSubringAtPrime_eq_valuationSubring]`. Conclude with `(HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v _).symm.trans_le h4`. Take `⟨q, hq, -, hqm⟩` from `Polynomial.lifts_and_degree_eq_and_monic h2 hmon`. Use `⟨q, hqm, ?_⟩` and prove the remaining obligations. Rewrite using `[← Polynomial.eval₂_map, hq]`.
+
+Conclude with `minpoly.aeval F x`.
+-/
 theorem isIntegral_of_absBar_le_one (v : HeightOneSpectrum (𝓞 F)) (x : E)
     (hx : ∀ τ : E →ₐ[F] FvBar F v, absBar F v (τ x) ≤ 1) :
     ∃ p : Polynomial (v.valuationSubringAtPrime F), p.Monic ∧
@@ -67,6 +91,13 @@ theorem isIntegral_of_absBar_le_one (v : HeightOneSpectrum (𝓞 F)) (x : E)
   rw [← Polynomial.eval₂_map, hq]
   exact minpoly.aeval F x
 
+/- English proof (translation)
+Set `: Algebra (v.valuationSubringAtPrime F) E` to `((algebraMap F E).comp (v.valuationSubringAtPrime F).subtype).toAlgebra`. Establish `: IsScalarTower (𝓞 F) (v.valuationSubringAtPrime F) E` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `h1 : IsIntegral (v.valuationSubringAtPrime F) x` using `isIntegral_of_absBar_le_one v x fun τ => by simpa using (absFin_le_iff F v).1 hx τ`. Take `⟨⟨s, hs⟩, h2⟩` from `IsIntegral.exists_multiple_integral_of_isLocalization v.asIdeal.primeCompl x h1`. Establish `h3 : IsIntegral ℤ ((s : F) • x)` using `isIntegral_trans _ h2`.
+
+Establish `hv : v.valuation F (s : F) = 1` using `(HeightOneSpectrum.valuation_eq_one_iff_notMem v).2 hs`. Establish `hs0 : (s : F) ≠ 0` using `fun e => by simp [e] at hv`. Establish `h4 : algebraMap F (Fv F v) (s : F)⁻¹ ∈ v.adicCompletionIntegers F` using `(HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v (s : F)⁻¹).trans_le (by rw [map_inv₀, hv, inv_one])`. Establish `h` using `tmul_mem_intLoc (E := E) h4 ⟨_, h3⟩`. Use `h using 1` and compare the differences between its conclusion and the goal.
+
+Express the relevant statement in the definitionally equal form `_ = (algebraMap F (Fv F v) (s : F)⁻¹) ⊗ₜ[F] ((s : F) • x)`. Rewrite using `[Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul, inv_smul_smul₀ hs0]`.
+-/
 theorem one_tmul_mem_intLoc (v : HeightOneSpectrum (𝓞 F)) (x : E)
     (hx : absFin F v ((1 : Fv F v) ⊗ₜ[F] x) ≤ 1) : (1 : Fv F v) ⊗ₜ[F] x ∈ intLoc F E v := by
   let : Algebra (v.valuationSubringAtPrime F) E :=
@@ -86,6 +117,11 @@ theorem one_tmul_mem_intLoc (v : HeightOneSpectrum (𝓞 F)) (x : E)
   change _ = (algebraMap F (Fv F v) (s : F)⁻¹) ⊗ₜ[F] ((s : F) • x)
   rw [Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul, inv_smul_smul₀ hs0]
 
+/- English proof (translation)
+Use `⟨absFin_le_one_of_mem_intLoc, fun hy => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `exists_sub_mem_intLoc v y`. Establish `h1 : absFin F v ((1 : Fv F v) ⊗ₜ[F] x) ≤ 1`. Use `absFin_add_le F v y (-(y - (1 : Fv F v) ⊗ₜ[F] x))` as an intermediate fact. Rewrite `this` using `[absFin_neg, ← sub_eq_add_neg, sub_sub_cancel]`.
+
+Conclude with `this.trans (max_le hy (absFin_le_one_of_mem_intLoc hx))`. Simplify using `using add_mem hx (one_tmul_mem_intLoc v x h1)`.
+-/
 theorem mem_intLoc_iff_absFin_le_one {v : HeightOneSpectrum (𝓞 F)} {y : Fv F v ⊗[F] E} :
     y ∈ intLoc F E v ↔ absFin F v y ≤ 1 := by
   refine ⟨absFin_le_one_of_mem_intLoc, fun hy => ?_⟩
@@ -96,6 +132,11 @@ theorem mem_intLoc_iff_absFin_le_one {v : HeightOneSpectrum (𝓞 F)} {y : Fv F 
     exact this.trans (max_le hy (absFin_le_one_of_mem_intLoc hx))
   simpa using add_mem hx (one_tmul_mem_intLoc v x h1)
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add y z hy hz => simp only [map_add, Finsupp.add_apply, hy, hz, add_mul, Finset.sum_add_distrib]`. Consider the case `tmul a e`. Rewrite using `[Algebra.TensorProduct.basis_repr_tmul, Finsupp.smul_apply, Finsupp.mapRange_apply, smul_eq_mul, map_mul, ← IsScalarTower.algebraMap_apply, Module.Basis.traceDual_repr_apply, Algebra.traceForm_apply, trace_eq_sum_embeddings, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[finEmb_tmul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem algebraMap_basis_repr {ι : Type} [Fintype ι] [DecidableEq ι] (b : Module.Basis ι F E)
     (v : HeightOneSpectrum (𝓞 F)) (y : Fv F v ⊗[F] E) (i : ι) :
     algebraMap (Fv F v) (FvBar F v) ((Algebra.TensorProduct.basis (Fv F v) b.traceDual).repr y i) =
@@ -110,6 +151,11 @@ theorem algebraMap_basis_repr {ι : Type} [Fintype ι] [DecidableEq ι] (b : Mod
     refine Finset.sum_congr rfl fun τ _ => ?_
     rw [finEmb_tmul, map_mul]; ring
 
+/- English proof (translation)
+Use `⟨fun hy => ?_, fun h => by rw [h, absFin_zero]⟩` and prove the remaining obligations. Establish `h0 : ∀ τ : E →ₐ[F] FvBar F v, finEmb F v τ y = 0` using `fun τ => (absBar_eq_zero F v).1 (le_antisymm ((absFin_le_iff F v).1 hy.le τ) zero_le)`. Set `b` to `Module.finBasis F E`. Use `(Algebra.TensorProduct.basis (Fv F v) b.traceDual).ext_elem fun i => ?_` and prove the remaining obligations. Use `(algebraMap (Fv F v) (FvBar F v)).injective ?_` and prove the remaining obligations.
+
+Rewrite using `[algebraMap_basis_repr]`. Simplify using `[h0]`.
+-/
 theorem absFin_eq_zero_iff {v : HeightOneSpectrum (𝓞 F)} {y : Fv F v ⊗[F] E} : absFin F v y = 0 ↔ y = 0 := by
   refine ⟨fun hy => ?_, fun h => by rw [h, absFin_zero]⟩
   have h0 : ∀ τ : E →ₐ[F] FvBar F v, finEmb F v τ y = 0 := fun τ =>
@@ -120,10 +166,20 @@ theorem absFin_eq_zero_iff {v : HeightOneSpectrum (𝓞 F)} {y : Fv F v ⊗[F] E
   rw [algebraMap_basis_repr]
   simp [h0]
 
+/- English proof (translation)
+Simplify using `only [normFin_le_iff, mem_intLoc_iff_absFin_le_one]`.
+-/
 theorem normFin_le_one_iff {v : HeightOneSpectrum (𝓞 F)} {m n : Type} [Fintype m] [Fintype n]
     {y : Matrix m n (Fv F v ⊗[F] E)} : normFin F v y ≤ 1 ↔ ∀ i j, y i j ∈ intLoc F E v := by
   simp only [normFin_le_iff, mem_intLoc_iff_absFin_le_one]
 
+/- English proof (translation)
+Rewrite using `[htFin, htOf_eq_one]`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Establish `h1` using `normFin_conj_le_one isLatticeFrame_one hg`. Establish `h2` using `normFin_conj_le_one isLatticeFrame_one (inv_mem hg)`.
+
+Rewrite `h1`, `h2` using `[map_one, inv_one, one_mul, mul_one]`. Rewrite `h2` using `[map_inv]`. Conclude with `⟨h1, h2⟩`. Introduce and unpack `⟨h1, h2⟩`. Establish `key : ∀ (M : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)), normFin F v M ≤ 1 → ∀ y, y ∈ latLoc F (stdLattice E n) v → M *ᵥ y ∈ latLoc F (stdLattice E n) v` using `fun M hM y hy => mem_latLoc_stdLattice.2 fun i => by`.
+
+Express the relevant statement in the definitionally equal form `∑ j, M i j * y j ∈ _`. Conclude with `sum_mem fun j _ => mul_mem (normFin_le_one_iff.1 hM i j) (mem_latLoc_stdLattice.1 hy j)`. Use `mem_stabLoc.2 fun y => ⟨key _ h1 y, fun hy => ?_⟩` and prove the remaining obligations. Use `key _ h2 _ hy` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+-/
 theorem mem_stabLoc_stdLattice_iff_htFin_eq_one {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
     {v : HeightOneSpectrum (𝓞 F)} {g : GLoc σ J v} :
     g ∈ stabLoc σ J (stdLattice E n) v ↔ htFin F v (matHom _ σ J g) = 1 := by
@@ -145,6 +201,9 @@ theorem mem_stabLoc_stdLattice_iff_htFin_eq_one {σ : E →ₐ[F] E} {n : ℕ} {
     have := key _ h2 _ hy
     rwa [Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec] at this
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => mem_intLoc_iff_absFin_le_one, fun _ => absFin_eq_zero_iff, fun _ => mem_stabLoc_stdLattice_iff_htFin_eq_one⟩`.
+-/
 theorem intLoc_absFin_htFin (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v : HeightOneSpectrum (𝓞 F)) :
     (∀ y : Fv F v ⊗[F] E, y ∈ intLoc F E v ↔ absFin F v y ≤ 1) ∧
     (∀ y : Fv F v ⊗[F] E, absFin F v y = 0 ↔ y = 0) ∧

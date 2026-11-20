@@ -19,6 +19,21 @@ namespace GlobalTheory.EX.DC
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Formalism.FrobeniusOrbits Formalism.L2.GlobalTheoryTheory GlobalTheory.EX NumberField
 
+/- English proof (translation)
+Take `⟨p, hp, hm, hle⟩` from `hS _ (one_lt_rPrH_mul H)`. Establish `hq : (q0H H : ℝ) ≤ p` using `by exact_mod_cast globalTwisting_le_fact H hc hp hm`. Establish `hN : 2 ≤ H.QS * H.q * H.d`. Establish `a1` using `H.QS_pos`. Establish `a2` using `H.hyp.1.two_le`.
+
+Establish `a3` using `H.hyp.2.1.pos`. Apply the tactic sequence `have : 1 * 2 * 1 ≤ H.QS * H.q * H.d := by gcongr <;> omega`. Use linear arithmetic over natural numbers and integers. Establish `e : ((H.QS : ℝ) * H.q * H.d) = ((H.QS * H.q * H.d : ℕ) : ℝ)` using `by push_cast; ring`. Rewrite `h1`, `h2`, the goal using `[e]`.
+
+Establish `a2 : 0 < H.pde - 1` using `Nat.sub_pos_of_lt H.pde_prime.one_lt`. Establish `a3 : 0 < H.pde' - 1` using `Nat.sub_pos_of_lt H.pde'_prime.one_lt`. Establish `hr : rPrH H ≤ 2 * (H.QS * H.q * H.d * (H.pde - 1) * (H.pde' - 1))`. Establish `hM : 0 < H.QS * H.q * H.d * (H.pde - 1) * (H.pde' - 1)` using `Nat.mul_pos (Nat.mul_pos (by omega) a2) a3`. Take `⟨r, hr, hr1, hr2⟩` from `Nat.exists_prime_lt_and_le_two_mul _ hM.ne'`.
+
+Use `(rPrH_le H hr ?_).trans hr2` and prove the remaining obligations. Rewrite using `[hc, Ideal.absNorm_top, mul_one]`. Conclude with `Nat.not_dvd_of_pos_of_lt hM hr1`. Generalize the expression as in `H.QS * H.q * H.d = N at *`. Establish `hN' : (2 : ℝ) ≤ N` using `by exact_mod_cast hN`.
+
+Establish `hN0 : (0 : ℝ) < N` using `by linarith`. Apply the tactic sequence `have hr' : rPrH H ≤ N * (N * H.pde * H.pde') := hr.trans (by gcongr <;> omega)`. Establish `hr'' : (rPrH H : ℝ) ≤ N * (N * H.pde * H.pde')` using `by exact_mod_cast hr'`. Establish `hb : ((rPrH H * N : ℕ) : ℝ) ≤ (N : ℝ) ^ (3 + 2 * C)`. Establish `: (N : ℝ) ^ (3 + 2 * C) = N * (N * N ^ C * N ^ C) * N`.
+
+Rewrite using `[show 3 + 2 * C = ((3 : ℕ) : ℝ) + C + C by push_cast; ring, Real.rpow_add hN0, Real.rpow_add hN0, Real.rpow_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Nat.cast_mul]`. Use `mul_le_mul_of_nonneg_right (hr''.trans ?_) hN0.le` and prove the remaining obligations. Use `gcongr`.
+
+Rewrite using `[Real.rpow_mul hN0.le]`. Conclude with `hq.trans (hle.trans (Real.rpow_le_rpow (Nat.cast_nonneg _) hb (by linarith)))`.
+-/
 theorem auxiliaryPrime_le_conductor_rpow {A C : ℝ} (hA : 1 ≤ A) (hS : ∀ M : ℕ, 2 ≤ M → ∃ p : ℕ, p.Prime ∧ p % M = 1 ∧ (p : ℝ) ≤ (M : ℝ) ^ A)
     {R : Ranks} (H : Host R) (hc : H.ccK = ⊤) (h1 : (H.pde : ℝ) ≤ ((H.QS : ℝ) * H.q * H.d) ^ C)
     (h2 : (H.pde' : ℝ) ≤ ((H.QS : ℝ) * H.q * H.d) ^ C) :
@@ -57,6 +72,9 @@ theorem auxiliaryPrime_le_conductor_rpow {A C : ℝ} (hA : 1 ≤ A) (hS : ∀ M 
   rw [Real.rpow_mul hN0.le]
   exact hq.trans (hle.trans (Real.rpow_le_rpow (Nat.cast_nonneg _) hb (by linarith)))
 
+/- English proof (translation)
+Establish `h1 : Nat.Coprime (q0H H) (H.QS * H.q * H.d)`. Rewrite using `[Nat.Coprime, Nat.gcd_comm, Nat.gcd_rec, mod_cond H, Nat.gcd_one_left]`. Conclude with `h1.coprime_dvd_right ⟨H.q * H.d, by ring⟩`.
+-/
 theorem auxiliaryPrime_coprime_smallConductor {R : Ranks} (H : Host R) : Nat.Coprime (q0H H) H.QS := by
   have h1 : Nat.Coprime (q0H H) (H.QS * H.q * H.d) := by
     rw [Nat.Coprime, Nat.gcd_comm, Nat.gcd_rec, mod_cond H, Nat.gcd_one_left]
@@ -79,6 +97,17 @@ def relevel {R : Ranks} (H : Host R) (hc : H.ccK = ⊤) (q0 : ℕ)
       · exact H.level_coprimeS _ H.pde_level.2
       · exact hq }
 
+/- English proof (translation)
+Take `⟨A, hA, hS⟩` from `hS`. Introduce `eps he he'`. Take `⟨CT2, C8, C5, c6, Cb, x0, h8, h5, h6, hb, S, hH⟩` from `hH eps he he'`. Establish `hC : C8 ≤ (3 + 2 * C8) * A` using `by nlinarith`. Use `⟨CT2, (3 + 2 * C8) * A, C5, c6, Cb, x0, h8.trans hC, h5, h6, hb, S, fun s hs hx hm => ?_⟩` and prove the remaining obligations.
+
+Take `⟨R, H, q0, hR, hT, ⟨hv, har, g1, g2, g3, g4, g5, g6, g7, g8, g9, g10, -, hlev⟩, hp⟩` from `hH s hs hx hm`. Establish `hc : H.ccK = ⊤` using `hv.2.2.2.2.2.2.1`. Establish `hv' : HostVal s ((3 + 2 * C8) * A) (relevel H hc (q0H H))` using `hv.mono hC`. Establish `hq` using `auxiliaryPrime_le_conductor_rpow hA hS H hc hv.2.2.2.1.1 hv.2.2.2.1.2`. Establish `har' : HostArith (relevel H hc (q0H H))` using `?_`.
+
+Conclude with `⟨R, relevel H hc (q0H H), q0H H, hR, hT, ⟨hv', har', g1, g2, g3, g4, g5, g6, g7, g8, g9, g10, ⟨(globalTwisting_spec_fact H).1, mod_cond H, hq, q0H_ne_pde_and_ne_pde' H⟩, rfl⟩, globalTwisting_congr_fact _ rfl rfl rfl rfl rfl rfl, hP _ _ _ _ _ hc hp⟩`. Use `⟨har.1, har.2.1, har.2.2.1, fun l hl => ?_⟩` and prove the remaining obligations. Establish `hl' : l ∈ ({H.g 0, H.g 1, H.pde, H.pde', q0H H} : Finset ℕ)` using `hl`. Use `show H.cls l = .splitK`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hl'`.
+
+Apply the tactic sequence `rcases hl' with h | h | h | h | h <;> rw [h]`. Conclude with `har.2.2.2 _ (H.g_level 0)`. Conclude with `har.2.2.2 _ (H.g_level 1)`. Conclude with `har.2.2.2 _ H.pde_level.1`. Conclude with `har.2.2.2 _ H.pde_level.2`.
+
+Conclude with `(GlobalTheory.HostSplit.split_of_one_mod R H _ (globalTwisting_spec_fact H).1 (mod_cond H)).2`.
+-/
 theorem hostExQW_of_hostExW (hS : SmallPrimeOne) {la : ℝ} {P : HostReq}
     (hP : ∀ (c : ℝ) (s : Scale) (R : Ranks) (H : Host R) (q0 : ℕ) (hc : H.ccK = ⊤), P c s R H q0 →
       P c s R (relevel H hc (q0H H)) (q0H H))
@@ -106,10 +135,16 @@ theorem hostExQW_of_hostExW (hS : SmallPrimeOne) {la : ℝ} {P : HostReq}
   · exact har.2.2.2 _ H.pde_level.2
   · exact (GlobalTheory.HostSplit.split_of_one_mod R H _ (globalTwisting_spec_fact H).1 (mod_cond H)).2
 
+/- English proof (translation)
+The claim follows from `let ⟨la, h1, h2⟩ := hH ⟨la, h1, HostExW.imp (hostExQW_of_hostExW hS (fun _ _ _ _ _ _ h => h) h2) fun _ _ _ _ _ h => h.1⟩`.
+-/
 theorem hostExQ_of_hostEx (hS : SmallPrimeOne) (hH : HostEx) : HostExQ :=
   let ⟨la, h1, h2⟩ := hH
   ⟨la, h1, HostExW.imp (hostExQW_of_hostExW hS (fun _ _ _ _ _ _ h => h) h2) fun _ _ _ _ _ h => h.1⟩
 
+/- English proof (translation)
+Establish `h` using `(GlobalTheory.Mem.An.normOne_modEq_one_and_of_dvd D.host.d _ _ (by have := D.host.hyp.2.2.2.1; omega) ((GlobalTheory.Mem.An.normOne_iff_host D.R D.host _ _).2 (D.T_norm u))).1`. Establish `h' : (D.mem u).A.T ≡ 1 [MOD D.host.g 0]` using `Nat.ModEq.of_dvd (Dvd.dvd.mul_left ⟨D.host.g 0 * D.host.g 1 ^ 2, by ring⟩ _) h`. Establish `h1` using `(D.mem u).A.T_prime.one_lt`. Use `Nat.le_of_dvd (by omega) ((Nat.modEq_iff_dvd' h1.le).1 h'.symm)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem firstTypePrime_lt_rowPrime (D : D7) (u : D.what₂.Word) : D.host.g 0 < (D.mem u).A.T := by
   have h := (GlobalTheory.Mem.An.normOne_modEq_one_and_of_dvd D.host.d _ _ (by have := D.host.hyp.2.2.2.1; omega)
     ((GlobalTheory.Mem.An.normOne_iff_host D.R D.host _ _).2 (D.T_norm u))).1
@@ -118,6 +153,25 @@ theorem firstTypePrime_lt_rowPrime (D : D7) (u : D.what₂.Word) : D.host.g 0 < 
   have := Nat.le_of_dvd (by omega) ((Nat.modEq_iff_dvd' h1.le).1 h'.symm)
   omega
 
+/- English proof (translation)
+Take `⟨ε0, h0, h⟩` from `h`. Use `⟨ε0, h0, fun eps C8 C5 c6 Cb a1 a2 a3 a4 => ?_⟩` and prove the remaining obligations. Take `⟨K0, h⟩` from `h eps C8 C5 c6 Cb a1 a2 a3 a4`. Use `⟨K0, fun C b1 b2 b3 => ?_⟩` and prove the remaining obligations. Take `⟨c1, h⟩` from `h C b1 b2 b3`.
+
+Take `⟨c1', hP⟩` from `explicitConstants_parameterConditions_large eps a1 a3 C b1`. Use `⟨max c1 c1', fun cD hcD => ?_⟩` and prove the remaining obligations. Take `⟨c2, h⟩` from `h cD ((le_max_left _ _).trans hcD)`. Take `⟨c2', hP⟩` from `hP cD ((le_max_right _ _).trans hcD)`. Use `⟨max c2 c2', fun ch hch => ?_⟩` and prove the remaining obligations.
+
+Take `⟨x0, h⟩` from `h ch ((le_max_left _ _).trans hch)`. Take `⟨x1, hP⟩` from `hP ch ((le_max_right _ _).trans hch)`. Take `⟨x2, hq⟩` from `small_prime_lt eps C8 a1 a4`. Take `⟨x3, hJ⟩` from `GlobalTheory.ClassDuty.windowsAt_of eps a1 a3 C b1`. Use `⟨max (max x0 x1) (max x2 x3), fun s R H q0 a b M c u0 d1 d2 d3 d4 d5 d0 d6 d7 d8 d9 => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [max_le_iff] at d2`. Take `⟨p, e1, e2, e3, e4, e5, e6⟩` from `h s R H q0 a b M c u0 d1 d2.1.1 d3 d4 d5 d0 d6 d7 d8 d9`. Use `⟨p, e1, e2, e3, e4, e5, e6, ?_⟩` and prove the remaining obligations. Substitute `e1` using the available equality. Use `show GlobalTwistingFacts p.L`.
+
+Take `⟨hv, -, -, -, -, -, -, -, -, -, -, -, ⟨-, -, hle, -⟩, hlev⟩` from `d5`. Establish `eq0 : q0Av p.D = q0` using `(eq_of_from p e4 e2.host.2.2.2.2.2.2.1 hv.2.2.2.2.2.2.1).trans d0.symm`. Establish `hX : (q0Av p.D : ℝ) < p.L.sc.X'`. Rewrite using `[eq0]`. Conclude with `hq _ _ q0 d1 d2.2.1 (by exact_mod_cast cond_pos H) hv.log_cond_le hle`.
+
+Take `⟨P, -⟩` from `hP _ _ d1 d2.1.2 e2 e3`. Establish `hXb` using `X'_le_b p.L.sc`. Establish `hs` using `globalTwisting_spec_fact p.D.host`. Establish `hg : ∀ j, q0Av p.D < p.D.host.g j`. Introduce `j`.
+
+Establish `hg` using `(e2.host.2.2.2.2.1 j).1`. Establish `hk : (1 : ℝ) ≤ p.D.R.k`. Use `p.D.R.m_add_three_le_k` as an intermediate fact. Conclude with `(by omega : 1 ≤ p.D.R.k)` after adjusting the coercions. Establish `hb1 : 1 ≤ p.L.sc.b` using `Real.one_le_exp (Real.rpow_nonneg (by linarith [p.L.sc.one_lt_alt]) _)`.
+
+Establish `h5 : p.L.sc.b ≤ (p.D.R.k : ℝ) * p.L.sc.b` using `le_mul_of_one_le_left (by linarith) hk`. Establish `h6 : (p.D.R.k : ℝ) * p.L.sc.b ≤ ((p.D.R.k : ℝ) * p.L.sc.b) ^ 8` using `le_self_pow₀ (by linarith) (by norm_num)`. Conclude with `(show (q0Av p.D : ℝ) < p.D.host.g j by linarith)` after adjusting the coercions. Use `⟨?_, hs.1, hs.2.1, ?_, hX, hX.le.trans (hJ cD ch _ _ d1 d2.2.2 e2 P).2, (q0H_ne_pde_and_ne_pde' _).1, (q0H_ne_pde_and_ne_pde' _).2, fun j => (hg j).ne, fun u => ((hg 0).trans (firstTypePrime_lt_rowPrime _ u)).ne⟩` and prove the remaining obligations. Rewrite using `[eq0]`.
+
+Conclude with `e4.2.2.2.2.2.2.2.2.1 (by rw [hlev]; simp)`. Rewrite using `[Real.log_le_iff_le_exp (by exact_mod_cast hs.1.pos)]`. Conclude with `hX.le.trans hXb`.
+-/
 theorem ObjC.and_q0Pt {Q : PtProp} (h : ObjC Q) : ObjC (Q.and twistingGlobalPointProp) := by
   obtain ⟨ε0, h0, h⟩ := h
   refine ⟨ε0, h0, fun eps C8 C5 c6 Cb a1 a2 a3 a4 => ?_⟩
@@ -164,9 +218,17 @@ theorem ObjC.and_q0Pt {Q : PtProp} (h : ObjC Q) : ObjC (Q.and twistingGlobalPoin
   · rw [Real.log_le_iff_le_exp (by exact_mod_cast hs.1.pos)]
     exact hX.le.trans hXb
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => h.imp fun _ _ hp => ⟨hp.1.1, hp.2⟩, fun h => h.and_q0Pt.imp fun _ _ hp => ⟨⟨hp.1.1, hp.2⟩, hp.1.2⟩⟩`.
+-/
 theorem objC_withObj_iff (Q : PtProp) : ObjC (withObj Q) ↔ ObjC (Q.and (TamePt.and (MinkPt.and TwPt))) :=
   ⟨fun h => h.imp fun _ _ hp => ⟨hp.1.1, hp.2⟩, fun h => h.and_q0Pt.imp fun _ _ hp => ⟨⟨hp.1.1, hp.2⟩, hp.1.2⟩⟩
 
+/- English proof (translation)
+Use `⟨1, one_pos, fun eps he _ he1 => ?_⟩` and prove the remaining obligations. Take `⟨CT2, C8, C5, c6, Cb, xH, h8, h5, h6, hb, S, hH⟩` from `hH eps he he1`. Take `⟨KW, hW⟩` from `hW eps C8 he he1`. Use `⟨CT2, C8, C5, c6, Cb, KW, h8, h5, h6, hb, fun C hC _ _ hL => ⟨0, fun cD hcD => ⟨0, fun ch _ => ?_⟩⟩⟩` and prove the remaining obligations. Take `⟨xW, hW⟩` from `hW C hC hL cD ch hcD`.
+
+Use `⟨max xH xW, S, fun s hs hx hm => ?_⟩` and prove the remaining obligations. Simplify using `only [max_le_iff] at hx`. Take `⟨R, H, q0, hRV, hT, hG, hq, hp⟩` from `hH s hs hx.1 hm`. Take `⟨a, b, h0, h1, h2⟩` from `hW s R H hs hx.2 hRV hG.1`. Conclude with `⟨R, H, q0, a, b, hRV, hT, hG, hq, h0, h1, h2, hp⟩`.
+-/
 theorem hostWW_of_hostExQW_weightEx {la : ℝ} {P : HostReq} (hH : HostExQW la P) (hW : WeightEx) : HostWW la P := by
   refine ⟨1, one_pos, fun eps he _ he1 => ?_⟩
   obtain ⟨CT2, C8, C5, c6, Cb, xH, h8, h5, h6, hb, S, hH⟩ := hH eps he he1
@@ -179,10 +241,22 @@ theorem hostWW_of_hostExQW_weightEx {la : ℝ} {P : HostReq} (hH : HostExQW la P
   obtain ⟨a, b, h0, h1, h2⟩ := hW s R H hs hx.2 hRV hG.1
   exact ⟨R, H, q0, a, b, hRV, hT, hG, hq, h0, h1, h2, hp⟩
 
+/- English proof (translation)
+The claim follows from `let ⟨la, h1, h2⟩ := hH ⟨la, h1, hostWW_of_hostExQW_weightEx (HostExW.imp h2 fun _ _ _ _ _ h => ⟨h, trivial⟩) hW⟩`.
+-/
 theorem hostW_of_hostExQ_weightEx (hH : HostExQ) (hW : WeightEx) : HostW :=
   let ⟨la, h1, h2⟩ := hH
   ⟨la, h1, hostWW_of_hostExQW_weightEx (HostExW.imp h2 fun _ _ _ _ _ h => ⟨h, trivial⟩) hW⟩
 
+/- English proof (translation)
+Introduce and unpack `⟨εO, hεO, hObj⟩`. Take `⟨la, hla, εH, hεH, hHost⟩` from `hHost`. Take `⟨eps, he, e1, e2, he1⟩ : ∃ eps : ℝ, 0 < eps ∧ eps ≤ εH ∧ eps ≤ εO ∧ eps < 1 / 52` from `⟨min (min εH εO) (1 / 53), by positivity, (min_le_left _ _).trans (min_le_left _ _), (min_le_left _ _).trans (min_le_right _ _), (min_le_right _ _).trans_lt (by norm_num)⟩`. Take `⟨CT2, C8, C5, c6, Cb, KW, h8, -, -, -, hHost⟩` from `hHost eps he e1 he1`. Take `⟨KO, hObj⟩` from `hObj eps C8 C5 c6 Cb he e2 he1 h8`.
+
+Take `⟨C, hC, hT, hP, hLW, hLO, -⟩` from `exists_std_large KW KO CT2 C8 h8`. Take `⟨c1, hObj⟩` from `hObj C hC hP hLO`. Take `⟨c1', hHost⟩` from `hHost C hC hT hP hLW`. Take `⟨c2, hObj⟩` from `hObj _ (le_max_left c1 c1')`. Take `⟨c2', hHost⟩` from `hHost _ (le_max_right c1 c1')`.
+
+Take `⟨xO, hObj⟩` from `hObj _ (le_max_left c2 c2')`. Take `⟨xH, S, hHost⟩` from `hHost _ (le_max_right c2 c2')`. Establish `hmid` using `hC.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1`. Take `⟨xC, hCode⟩` from `exists_injective_words eps C.CGam C.P.CF he he1 (zero_le_one.trans (hmid _ (by simp [FC.cMid]))) (zero_le_one.trans (hmid _ (by simp [FC.cMid])))`. Take `⟨s, hs, hx, hm⟩` from `S.exists_mem hla.le he he1 (max xO (max xH xC))`.
+
+Simplify using `only [max_le_iff] at hx`. Take `⟨R, H, q0, a, b, hRV, hHT, hH, hq, -, hWin, -⟩` from `hHost s hs hx.2.1 hm`. Take `⟨c, hc, -⟩` from `hCode s R hs hx.2.2 hRV`. Take `⟨p, -, -, -, -, -, hp⟩` from `hObj s R H q0 a b _ c 0 hs hx.1 hRV (hHT.trans hT.symm) hH hq hWin rfl hc R.ord_pos`. Conclude with `hp`.
+-/
 theorem not_objC_false (hHost : HostW) : ¬ ObjC (fun _ _ _ _ _ _ _ _ _ => False) := by
   rintro ⟨εO, hεO, hObj⟩
   obtain ⟨la, hla, εH, hεH, hHost⟩ := hHost
@@ -209,6 +283,11 @@ theorem not_objC_false (hHost : HostW) : ¬ ObjC (fun _ _ _ _ _ _ _ _ _ => False
     R.ord_pos
   exact hp
 
+/- English proof (translation)
+Introduce and unpack `⟨la, hla, ε0, h0, h⟩`. Take `⟨eps, he, e1, he1⟩ : ∃ eps : ℝ, 0 < eps ∧ eps ≤ ε0 ∧ eps < 1 / 52` from `⟨min ε0 (1 / 53), by positivity, min_le_left _ _, (min_le_right _ _).trans_lt (by norm_num)⟩`. Take `⟨CT2, C8, K0, h8, h⟩` from `h eps he e1 he1`. Take `⟨C, hC, hT, hP, hL, -⟩` from `exists_std_large K0 K0 CT2 C8 h8`. Take `⟨c1, h⟩` from `h C hC hT hP hL`.
+
+Take `⟨c2, h⟩` from `h c1 le_rfl`. Take `⟨C5, Cb, x0, -, -, S, h⟩` from `h c2 le_rfl`. Take `⟨s, hs, hx, hm⟩` from `S.exists_mem hla.le he he1 x0`. Take `⟨k, hk⟩` from `h s hs hx hm`. Conclude with `k.ne.elim fun i => (hk i).1`.
+-/
 theorem not_kitC_false : ¬ KitC (fun _ _ _ _ _ _ _ _ _ => False) := by
   rintro ⟨la, hla, ε0, h0, h⟩
   obtain ⟨eps, he, e1, he1⟩ : ∃ eps : ℝ, 0 < eps ∧ eps ≤ ε0 ∧ eps < 1 / 52 :=

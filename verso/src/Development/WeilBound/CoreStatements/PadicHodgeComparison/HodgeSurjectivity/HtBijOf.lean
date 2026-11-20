@@ -40,6 +40,9 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OneResOfOneLow
 
 namespace CrystallineSemistableComparison.Onto
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompanionTheory.Onto.mvBij surj := GlobalTheory.CompanionTheory.OneSurjC.oneSurj cov := GlobalTheory.CompanionTheory.CovDescent.covDesc site := siteLaws_pf on := onIso_pf zar := zarAbs_pf laws := GlobalTheory.CompanionTheory.OntoForms.formLaws dw := GlobalTheory.Comp …`.
+-/
 theorem parts  : Parts where
   mv := GlobalTheory.CompanionTheory.Onto.mvBij
   surj := GlobalTheory.CompanionTheory.OneSurjC.oneSurj
@@ -76,6 +79,9 @@ theorem parts  : Parts where
   onto := ontoOf3_pf
   slant := GlobalTheory.CompanionTheory.KunGlue.slantOf topRes_pf
 
+/- English proof (translation)
+The claim follows from `htBij_of_parts (parts ) rank_equality hH hS hD hF`.
+-/
 theorem htBij_of  (hH : HT.HodgeTateMapExists) (hS : SqEx3) (hD : DiagEt3) (hF : EtFin) : HTBij :=
   htBij_of_parts (parts ) rank_equality hH hS hD hF
 

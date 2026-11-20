@@ -10,6 +10,25 @@ namespace GlobalTheory.HodgeCoh
 section Alg
 open GlobalTheory.CechDR
 
+/- English proof (translation)
+Use `set A := AddSubgroup.closure {w : DR k B | ∃ (q : ℕ) (c : B) (v : Fin q → B), w = c • ExteriorAlgebra.ιMulti B q (fun i => D k B (v i))} with hA`. Establish `hsmul : ∀ (b : B) (a : DR k B), a ∈ A → b • a ∈ A`. Introduce `b a ha`. Proceed by induction on `ha using AddSubgroup.closure_induction with`. Consider the case `mem w hw`.
+
+Take `⟨q, c, v, rfl⟩` from `hw`. Conclude with `AddSubgroup.subset_closure ⟨q, b * c, v, by rw [smul_smul]⟩`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`.
+
+Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `neg_mem hx`. Establish `key : ∀ z : DR k B, ∀ a ∈ A, z * a ∈ A`. Introduce `z`.
+
+Proceed by induction on `z using indDR with`. Consider the case `h b => intro a ha`. Rewrite using `[← Algebra.smul_def]`. Conclude with `hsmul b a ha`. Consider the case `hd b`.
+
+Introduce `a ha`. Proceed by induction on `ha using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨q, c, v, rfl⟩` from `hw`. Use `AddSubgroup.subset_closure ⟨q + 1, c, Fin.cons b v, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mul_smul_comm, ExteriorAlgebra.ιMulti_succ_apply]`. Simplify using `[Matrix.vecTail, Function.comp_def]`. Consider the case `zero => rw [mul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [mul_add]`.
+
+Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [mul_neg]`. Conclude with `neg_mem hx`. Consider the case `hm x y hx hy => intro a ha`. Rewrite using `[mul_assoc]`.
+
+Conclude with `hx _ (hy a ha)`. Consider the case `ha x y hx hy => intro a ha`. Rewrite using `[add_mul]`. Conclude with `add_mem (hx a ha) (hy a ha)`. Establish `h1 : (1 : DR k B) ∈ A` using `AddSubgroup.subset_closure ⟨0, 1, Fin.elim0, by rw [ExteriorAlgebra.ιMulti_zero_apply, one_smul]⟩`.
+
+Simplify using `using key z 1 h1`.
+-/
 theorem mem_closure_smul_ιMulti_D (k B : Type) [CommRing k] [CommRing B] [Algebra k B] (z : DR k B) :
     z ∈ AddSubgroup.closure {w : DR k B | ∃ (q : ℕ) (c : B) (v : Fin q → B),
       w = c • ExteriorAlgebra.ιMulti B q (fun i => D k B (v i))} := by
@@ -48,6 +67,11 @@ theorem mem_closure_smul_ιMulti_D (k B : Type) [CommRing k] [CommRing B] [Algeb
 variable {R R' R'' B B' B'' : Type} [CommRing R] [CommRing B] [Algebra R B]
   [CommRing R'] [CommRing B'] [Algebra R' B'] [CommRing R''] [CommRing B''] [Algebra R'' B'']
 
+/- English proof (translation)
+Rewrite using `[ExteriorAlgebra.ιMulti_apply, ExteriorAlgebra.ιMulti_apply, map_list_prod, List.map_ofFn]`. Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp_apply]`.
+
+Conclude with `(SemiHom.mDR_ι h _).trans (congrArg ι1 (SemiHom.m1_D h _))`.
+-/
 theorem SemiHom.mDR_ιMulti_D {σ : R →+* R'} {α : B →+* B'} (h : SemiHom σ α) (q : ℕ) (v : Fin q → B) :
     h.mDR (ExteriorAlgebra.ιMulti B q fun i => D R B (v i)) =
       ExteriorAlgebra.ιMulti B' q fun i => D R' B' (α (v i)) := by
@@ -58,6 +82,9 @@ theorem SemiHom.mDR_ιMulti_D {σ : R →+* R'} {α : B →+* B'} (h : SemiHom �
   simp only [Function.comp_apply]
   exact (SemiHom.mDR_ι h _).trans (congrArg ι1 (SemiHom.m1_D h _))
 
+/- English proof (translation)
+Proceed by induction on `x using indDR with`. Consider the case `h b => simp [e]`. Consider the case `hd b => simp [e]`. Consider the case `hm x y hx hy => simp only [map_mul, hx, hy]`. Consider the case `ha x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem SemiHom.mDR_mDR {σ : R →+* R'} {α : B →+* B'} {τ : R' →+* R''} {β : B' →+* B''}
     {ρ : R →+* R''} {γ : B →+* B''} (h : SemiHom σ α) (h' : SemiHom τ β) (h'' : SemiHom ρ γ)
     (e : ∀ b, β (α b) = γ b) (x : DR R B) : h'.mDR (h.mDR x) = h''.mDR x := by
@@ -67,6 +94,11 @@ theorem SemiHom.mDR_mDR {σ : R →+* R'} {α : B →+* B'} {τ : R' →+* R''} 
   | hm x y hx hy => simp only [map_mul, hx, hy]
   | ha x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `mem_closure_smul_ιMulti_D k B z using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨q, c, v, rfl⟩` from `hw`. Rewrite using `[SemiHom.mDR_smul, SemiHom.mDR_ιMulti_D, hφ q (g c) (fun i => g (v i)), SemiHom.mDR_smul, SemiHom.mDR_ιMulti_D]`. Simplify using `only [e]`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, map_add, hx, hy, map_add]`. Consider the case `neg x _ hx => rw [map_neg, map_neg, hx, map_neg]`.
+-/
 theorem isDRMap_mDR {k K K' : Type} [Field k] [Field K] [Field K'] [Algebra k K] [Algebra k K']
     [Algebra k B] {g : B →+* K} {γ : B →+* K'} (hg : SemiHom (RingHom.id k) g)
     (hγ : SemiHom (RingHom.id k) γ) {ψ : K →ₐ[k] K'} {φ : DR k K →ₗ[k] DR k K'}
@@ -83,6 +115,17 @@ theorem isDRMap_mDR {k K K' : Type} [Field k] [Field K] [Field K'] [Algebra k K]
 
 end Alg
 
+/- English proof (translation)
+Introduce `Z Z' _ _ p p' inst inst' hinst hinst' f hf ψ φ hφ hψ j V V' hV hV' hη hη' h y`. Substitute `hinst hinst'` using the available equality. Use `letI := algΓ p`. Use `letI := algΓ p'`. Use `set x := (toOmEquiv p j hV).symm (sectionsOn.toΓ _ _ y) with hx`.
+
+Establish `hy : sectionsOn.toΓ _ _ y = toOm p j V x`. Conclude with `(LinearEquiv.apply_symm_apply (toOmEquiv p j hV) _).symm`. Establish `hz : sectionsOn.toΓ _ _ (sectionsOn.res ℂ (Omega p' j) h (sectionsOn.mapOver (appTop_algebraMap hf) (omegaPull hf j) V y)) = toOm p' j V' (formRes p' h j (formPull hf V j x))`. Establish `h2 : (omegaPull hf j).app V (toOm p j V x) = toOm p' j (f ⁻¹ᵁ V) (formPull hf V j x)` using `omegaPull_toOmega hf j V x`. Rewrite using `[sectionsOn.toΓ_res, sectionsOn.toΓ_mapOver, hy, h2, res_toOm]`.
+
+Use `letI := ffAlg p`. Use `letI := ffAlg p'`. Rewrite using `[formGermI_ffAlg, formGermI_ffAlg]`. Simplify using `only [formGerm, LinearMap.coe_mk, AddHom.coe_mk]`. Rewrite using `[hz, ← toOmEquiv_apply p' j hV', LinearEquiv.symm_apply_apply, ← hx]`.
+
+Establish `hγ : SemiHom (RingHom.id ℂ) ((germSec p' (h hη')).comp (appSec p p' f V))` using `fun r b ↦ (semiHom_appSec hf V).comp (semiHom_germSec p' (h hη')) r b`. Rewrite using `[isDRMap_mDR (semiHom_germSec p hη) hγ hφ (fun b ↦ hψ V hη (h hη') b)]`. Express the relevant statement in the definitionally equal form `(semiHom_germSec p' hη').mDR ((SemiHom.of_algHom (Sec.res p' h)).mDR ((semiHom_appSec hf V).mDR (x : DR ℂ (Sec p V)))) = _`. Rewrite using `[SemiHom.mDR_mDR (semiHom_appSec hf V) (SemiHom.of_algHom (Sec.res p' h)) ((semiHom_appSec hf V).comp (SemiHom.of_algHom (Sec.res p' h))) (fun _ ↦ rfl)]`. Use `SemiHom.mDR_mDR _ (semiHom_germSec p' hη') hγ (fun b ↦ ?_) _` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(Z'.presheaf.germ V' (genericPoint Z') hη').hom ((Z'.presheaf.map (homOfLE h).op).hom ((f.app V).hom b)) = (Z'.presheaf.germ (f ⁻¹ᵁ V) (genericPoint Z') (h hη')).hom ((f.app V).hom b)`. Rewrite using `[← CommRingCat.comp_apply, TopCat.Presheaf.germ_res]`.
+-/
 theorem formGermI_res_mapOver : ∀ (Z Z' : Scheme.{0}) [IsIntegral Z] [IsIntegral Z'] (p : Z ⟶ Sp ℂ) (p' : Z' ⟶ Sp ℂ),
     letI := algΓ p; letI := algΓ p'
     ∀ [inst : Algebra ℂ Z.functionField] [inst' : Algebra ℂ Z'.functionField] (hinst : inst = ffAlg p)

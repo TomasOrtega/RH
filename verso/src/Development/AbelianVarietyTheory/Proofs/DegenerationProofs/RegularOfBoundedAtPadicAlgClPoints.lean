@@ -14,6 +14,11 @@ namespace GlobalTheory
 
 namespace BoundedRegular
 
+/- English proof (translation)
+Establish `h' : ⊤ ≤ (spMap f ≫ t) ⁻¹ᵁ U` using `fun q _ => ht (Set.mem_univ (spMap f q))`. Rewrite using `[valF, dif_pos h']`. Establish `e : (spMap f ≫ t).appLE U ⊤ h' ≫ (Scheme.ΓSpecIso (CommRingCat.of F')).hom = t.appLE U ⊤ ht ≫ (Scheme.ΓSpecIso (CommRingCat.of F)).hom ≫ CommRingCat.ofHom f`. Rewrite using `[← Scheme.ΓSpecIso_naturality, ← Scheme.Hom.appLE_comp_appLE (spMap f) t U ⊤ ⊤ ht le_rfl, Category.assoc]`. Both sides reduce to the same expression.
+
+Conclude with `congrArg (fun g => g.hom φ) e`.
+-/
 theorem valF_spMap_comp_eq {F F' : Type} [Field F] [Field F'] (f : F →+* F') {X : Scheme.{0}}
     (t : Sp F ⟶ X) (U : X.Opens) (ht : ⊤ ≤ t ⁻¹ᵁ U) (φ : Γ(X, U)) :
     valF (spMap f ≫ t) U φ =
@@ -27,12 +32,22 @@ theorem valF_spMap_comp_eq {F F' : Type} [Field F] [Field F'] (f : F →+* F') {
     rfl
   exact congrArg (fun g => g.hom φ) e
 
+/- English proof (translation)
+Establish `h' : ⊤ ≤ t ⁻¹ᵁ U` using `fun q _ => ht ⟨q, rfl⟩`. Rewrite using `[valF, valF, dif_pos h', dif_pos h', ← map_mul, ← map_mul, h, map_one, map_one]`.
+-/
 theorem valF_mul_valF_eq_one {F : Type} [Field F] {X : Scheme.{0}} (t : Sp F ⟶ X) (U : X.Opens)
     (ht : Set.range t ⊆ U) {φ φ' : Γ(X, U)} (h : φ * φ' = 1) :
     valF t U φ * valF t U φ' = 1 := by
   have h' : ⊤ ≤ t ⁻¹ᵁ U := fun q _ => ht ⟨q, rfl⟩
   rw [valF, valF, dif_pos h', dif_pos h', ← map_mul, ← map_mul, h, map_one, map_one]
 
+/- English proof (translation)
+Use `haveI := isLocalHom_integralClosureToPadicAlgClIntegers K`. Establish `e : gPt p ≫ spMap (integralClosureToPadicAlgClIntegers K) ≫ y = spMap K.val.toRingHom ≫ Spec.map (CommRingCat.ofHom (algebraMap (integralClosure ℤ_[p] K) K)) ≫ y`. Rewrite using `[← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp]`. Both sides reduce to the same expression. Use `⟨spMap (integralClosureToPadicAlgClIntegers K) ≫ y, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `(Scheme.Hom.comp_apply _ _ _).trans (congrArg y ?_)` and prove the remaining obligations. Conclude with `IsLocalRing.comap_closedPoint (integralClosureToPadicAlgClIntegers K)`. Rewrite using `[e]`. Introduce and unpack `_ ⟨q, rfl⟩`. Conclude with `hy (Set.mem_univ (spMap K.val.toRingHom q))`.
+
+Rewrite using `[e, valF_spMap_comp_eq _ _ U hy]`. Both sides reduce to the same expression.
+-/
 theorem exists_point_norm_valF_eq {X : Scheme.{0}} {p : ℕ} [Fact p.Prime]
     (K : IntermediateField ℚ_[p] (PadicAlgCl p)) [FiniteDimensional ℚ_[p] K]
     (y : Spec (.of (integralClosure ℤ_[p] K)) ⟶ X) (U : X.Opens)
@@ -58,6 +73,11 @@ theorem exists_point_norm_valF_eq {X : Scheme.{0}} {p : ℕ} [Fact p.Prime]
   · rw [e, valF_spMap_comp_eq _ _ U hy]
     rfl
 
+/- English proof (translation)
+Use `haveI : Nonempty U := hU.to_subtype`. Use `haveI : Nonempty W := (hU.mono h).to_subtype`. Take `⟨ψ, hψ⟩` from `exists_germToFunctionField_eq_of_frequently_norm_le_one π U W (fun x _ _ _ => (hX x).2) (φ := φ) fun p _ K hK => ⟨K, hK, le_rfl, fun y hy hW _ _ => by`. Take `⟨y', h1, h2, h3⟩` from `exists_point_norm_valF_eq K y U hy φ`. Rewrite using `[← h3]`.
+
+Conclude with `H p y' (h1 ▸ hW) h2⟩`. Establish `e : resG X h ψ = φ` using `X.germToFunctionField_injective U ((X.presheaf.germ_res_apply (homOfLE h) _ _ ψ).trans hψ)`. Conclude with `⟨ψ, e, fun ψ' h' => map_injective_of_isIntegral X (homOfLE h) (h'.trans e.symm)⟩`.
+-/
 theorem existsUnique_resG_eq {X : Scheme.{0}} [IsIntegral X] (π : X ⟶ Sp ℤ) [Flat π]
     [LocallyOfFiniteType π] (hX : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X) {U W : X.Opens}
     (h : U ≤ W) (φ : Γ(X, U)) (hU : (U : Set X).Nonempty)
@@ -79,6 +99,17 @@ end BoundedRegular
 
 open BoundedRegular in
 
+/- English proof (translation)
+Use `⟨fun X _ π _ _ x hx hn U φ hU H => ?_, fun X _ π _ _ hX U W h φ hU => ⟨existsUnique_resG_eq π hX h φ hU, fun hφ H => ?_⟩⟩` and prove the remaining obligations. Use `haveI : Nonempty U := hU.to_subtype`. Take `⟨p, hp, hpx⟩` from `exists_prime_residueField_eq_zero π hx`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Establish `hm` using `mem_range_stalk_of_forall_norm_le_one π hx hpx (φ := φ) fun K _ y hy hyx => by`.
+
+Take `⟨y', h1, h2, h3⟩` from `exists_point_norm_valF_eq K y U hy φ`. Rewrite using `[← h3]`. Conclude with `H p y' (h1.trans hyx) h2`. Take `⟨V, hV, s, hxV, -, hs⟩` from `exists_germToFunctionField_eq_of_mem_range_stalk hm (W := ⊤) trivial`. Establish `hg : ∀ (W : X.Opens) [Nonempty W], genericPoint X ∈ W` using `fun W h => ((genericPoint_spec X).mem_open_set_iff W.isOpen).mpr (by simpa using h)`.
+
+Use `haveI : Nonempty (V ⊓ U : X.Opens) := ⟨⟨_, hg V, hg U⟩⟩`. Use `⟨V, s, hxV, X.germToFunctionField_injective (V ⊓ U) ?_⟩` and prove the remaining obligations. Conclude with `(X.presheaf.germ_res_apply (homOfLE inf_le_left) _ _ s).trans (hs.trans (X.presheaf.germ_res_apply (homOfLE inf_le_right) _ _ φ).symm)`. Use `haveI : Nonempty U := hU.to_subtype`. Take `⟨φ', hφ'⟩` from `hφ.exists_right_inv`.
+
+Take `⟨ψ, hψ, -⟩` from `existsUnique_resG_eq π hX h φ hU fun p _ y h1 h2 => (H p y h1 h2).le`. Take `⟨ψ', hψ', -⟩` from `existsUnique_resG_eq π hX h φ' hU fun p _ y h1 h2 => by`. Establish `e` using `congrArg norm (valF_mul_valF_eq_one _ U h2 hφ')`. Rewrite `e` using `[norm_mul, H p y h1 h2, _root_.one_mul, norm_one]`. Conclude with `e.le`.
+
+Use `⟨ψ, IsUnit.of_mul_eq_one ψ' (map_injective_of_isIntegral X (homOfLE h) ?_), hψ⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `resG X h (ψ * ψ') = resG X h 1`. Rewrite using `[map_mul, hψ, hψ', hφ', map_one]`.
+-/
 theorem regular_of_bounded_at_padicAlgCl_points :
     (∀ (X : Scheme.{0}) [IsIntegral X] (π : X ⟶ Sp ℤ) [Flat π] [LocallyOfFiniteType π] (x : X),
       IsClosed ({x} : Set X) → IsIntegrallyClosed (X.presheaf.stalk x) →

@@ -16,6 +16,11 @@ open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHeck
 open Formalism.IndefR.DatumF
 namespace PositivityTheory.ThKW.S
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ hξσ hLat χS χT hcS hcT rS rT`. Take `⟨η, hη1, hη2, hη3, hη4⟩` from `_root_.PositivityTheory.ThKW.exists_eta_k F E σ B hB`. Take `⟨Λ, hΛ1, hΛ2⟩` from `hLat`. Establish `hc : GlobalTheory.FinLatF.HeisClosedF σ JS JT ξ₀ B.ψ` using `_root_.GlobalTheory.T.theta_function_heisenberg_translate F E σ B hB nS nT JS JT ξ₀`. Take `⟨w, lam, Om, hO⟩` from `_root_.UpperTheory.TP.W.latK F E σ B hB nS nT JS JT hS hT ξ₀ hξ hξσ Λ hΛ1 hΛ2 hc`.
+
+Take `⟨om, hom⟩` from `_root_.UpperTheory.TP.W.datumK_k F E σ B hB nS nT JS JT hS hT ξ₀ hξ hξσ Λ hΛ1 hΛ2 hc w lam Om hO η hη1 hη2 hη3 hη4`. Take `⟨om', hom'⟩` from `_root_.GlobalTheory.T.weil_datum_splitting_characters F E σ B hB nS nT JS JT hS hT ξ₀ hξ hξσ _ _ ((η ^ nS)⁻¹ * χS) ((η ^ nT)⁻¹ * χT) om hom (isHeckeCharF_div_pow hcS hη1 _) (isHeckeCharF_div_pow hcT hη1 _) (resEtaF_div_pow rS hη2) (resEtaF_div_pow rT hη2)`. Rewrite `hom'` using `[mul_inv_cancel_left, mul_inv_cancel_left]`. Conclude with `⟨om', hom'⟩`.
+-/
 theorem exists_isWeilDatumOF_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
       IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ → PositivityTheory.ThKW.LatH σ JS JT ξ₀ →

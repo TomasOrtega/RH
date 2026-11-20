@@ -43,11 +43,23 @@ def valEquiv {β : Type} {n : β → ℕ} {t : ℕ} (a₀ : β) (ha₀ : n a₀ 
       omega
   right_inv x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem val_valEquiv {β : Type} {n : β → ℕ} {t : ℕ} (a₀ : β) (ha₀ : n a₀ = t)
     (h0 : ∀ j, j ≠ a₀ → n j = 0) (p : Σ j, Fin (n j)) : (valEquiv a₀ ha₀ h0 p).val = p.2.val := rfl
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Rewrite using `[deltaHalf_apply]`. Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Distinguish the cases in `ha : a = a₀`. Substitute `ha` using the available equality. Establish `hs : ∀ s : Finset β, a ∉ s → ∑ b ∈ s, (Fintype.card (Fin (n b)) : ℤ) = 0` using `fun s hs => Finset.sum_eq_zero fun b hb => by`.
+
+Establish `hba : b ≠ a` using `fun e => hs (e ▸ hb)`. Simplify using `[h0 b hba]`. Establish `hm : modExp (fun j => Fin (n j)) a = 0`. Unfold `modExp`. Rewrite using `[hs _ (by simp), hs _ (by simp), sub_zero]`.
+
+Rewrite using `[hm]`. Simplify using the standard rewrite rules. Use `haveI : IsEmpty (Fin (n a)) := ⟨fun x => absurd x.2 (by have := x.2; have := h0 a ha; omega)⟩`. Establish `: Matrix.GeneralLinearGroup.det (g a) = 1`. Use `ext`.
+
+Simplify using `[Matrix.det_isEmpty]`. Rewrite using `[this, map_one]`.
+-/
 theorem deltaHalf_eq_one_of_single {β : Type} [Fintype β] [LinearOrder β] {n : β → ℕ} (a₀ : β)
     (h0 : ∀ j, j ≠ a₀ → n j = 0) (g : Levi k (fun j => Fin (n j))) :
     deltaHalf k (fun j => Fin (n j)) g = 1 := by
@@ -70,6 +82,9 @@ theorem deltaHalf_eq_one_of_single {β : Type} [Fintype β] [LinearOrder β] {n 
       simp [Matrix.det_isEmpty]
     rw [this, map_one]
 
+/- English proof (translation)
+Use `mem_parab_iff.2 fun a b i j hab => ?_` and prove the remaining obligations. Distinguish the cases in `ha : a = a₀`. Establish `hb : b ≠ a₀` using `fun e => by rw [e, ha] at hab; exact lt_irrefl _ hab`. Conclude with `absurd j.2 (by have := j.2; have := h0 b hb; omega)`. Conclude with `absurd i.2 (by have := i.2; have := h0 a ha; omega)`.
+-/
 theorem mem_parab_of_single {R : Type} [CommRing R] {β : Type} [LinearOrder β] {n : β → ℕ} {t : ℕ}
     (e : (Σ j, Fin (n j)) ≃ Fin t) (a₀ : β) (h0 : ∀ j, j ≠ a₀ → n j = 0) (x : GL (Fin t) R) :
     x ∈ parab R e := by
@@ -79,6 +94,13 @@ theorem mem_parab_of_single {R : Type} [CommRing R] {β : Type} [LinearOrder β]
     exact absurd j.2 (by have := j.2; have := h0 b hb; omega)
   · exact absurd i.2 (by have := i.2; have := h0 a ha; omega)
 
+/- English proof (translation)
+Take `⟨-, h2⟩` from `mem_unipRad.1 hg`. Use `Units.ext (Matrix.ext fun x y => ?_)` and prove the remaining obligations. Take `⟨⟨a, i⟩, rfl⟩` from `e.surjective x`. Take `⟨⟨b, j⟩, rfl⟩` from `e.surjective y`. Distinguish the cases in `ha : a = a₀`.
+
+Distinguish the cases in `hb : b = a₀`. Take `rfl : b = a` from `hb.trans ha.symm`. Rewrite using `[h2 b i j]`. Simplify using `[Matrix.one_apply]`. Conclude with `absurd j.2 (by have := j.2; have := h0 b hb; omega)`.
+
+Conclude with `absurd i.2 (by have := i.2; have := h0 a ha; omega)`.
+-/
 theorem eq_one_of_mem_unipRad_single {R : Type} [CommRing R] {β : Type} [Fintype β] [LinearOrder β]
     {n : β → ℕ} {t : ℕ} (e : (Σ j, Fin (n j)) ≃ Fin t) (a₀ : β) (h0 : ∀ j, j ≠ a₀ → n j = 0)
     {g : GL (Fin t) R} (hg : g ∈ unipRad R e) : g = 1 := by
@@ -96,6 +118,13 @@ theorem eq_one_of_mem_unipRad_single {R : Type} [CommRing R] {β : Type} [Fintyp
 
 open scoped TensorProduct
 
+/- English proof (translation)
+It suffices to establish `H : (PiTensorProduct.reindex ℂ (fun i => (σ i).V) (Equiv.swap 0 1)).toLinearMap ∘ₗ (piTensor fun i => (σ i).π) γ = (piTensor fun j => (σ (Equiv.swap 0 1 j)).π) p ∘ₗ (PiTensorProduct.reindex ℂ (fun i => (σ i).V) (Equiv.swap 0 1)).toLinearMap from LinearMap.congr_fun H y`. Use `PiTensorProduct.ext (MultilinearMap.ext fun z => ?_)` and prove the remaining obligations. Establish `e1 : (((piTensor fun j => (σ (Equiv.swap 0 1 j)).π) p ∘ₗ (PiTensorProduct.reindex ℂ (fun i => (σ i).V) (Equiv.swap 0 1)).toLinearMap).compMultilinearMap (PiTensorProduct.tprod ℂ)) z = (piTensor fun j => (σ (Equiv.swap 0 1 j)).π) p (PiTensorProduct.reindex ℂ (fun i => (σ i).V) (Eq …` using `rfl`. Establish `e2` using `PiTensorProduct.reindex_tprod (R := ℂ) (s := fun i => (σ i).V) (Equiv.swap 0 1) z`. Establish `e3` using `piTensor_tprod (fun j => (σ (Equiv.swap 0 1 j)).π) p (fun j => z (Equiv.swap 0 1 j))`.
+
+Use `Eq.trans ?_ e1.symm` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (fun w => (piTensor fun j => (σ (Equiv.swap 0 1 j)).π) p w) e2).symm` and prove the remaining obligations. Use `Eq.trans ?_ e3.symm` and prove the remaining obligations. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.comp_apply, LinearEquiv.coe_coe, piTensor_tprod, PiTensorProduct.reindex_tprod]`. Use `congrArg (PiTensorProduct.tprod ℂ (s := fun j => (σ (Equiv.swap 0 1 j)).V)) (funext fun j => ?_)` and prove the remaining obligations.
+
+Use `show (σ (Equiv.swap 0 1 j)).π (γ (Equiv.swap 0 1 j)) (z (Equiv.swap 0 1 j)) = _`. Rewrite using `[h j]`.
+-/
 theorem reindex_piTensor {d : Fin 2 → ℕ} (σ : ∀ i, Irr k (d i)) (γ : ∀ i, GL (Fin (d i)) k)
     (p : ∀ j, GL (Fin (d (Equiv.swap 0 1 j))) k) (h : ∀ j, γ (Equiv.swap 0 1 j) = p j)
     (y : ⨂[ℂ] i, (σ i).V) :
@@ -122,6 +151,43 @@ theorem reindex_piTensor {d : Fin 2 → ℕ} (σ : ∀ i, Irr k (d i)) (γ : ∀
   show (σ (Equiv.swap 0 1 j)).π (γ (Equiv.swap 0 1 j)) (z (Equiv.swap 0 1 j)) = _
   rw [h j]
 
+/- English proof (translation)
+Introduce `k _ _ _ _ d σ hd b hb`. Establish `r0` using `b.2.1 0`. Establish `r1` using `b.2.1 1`. Establish `c0` using `b.2.2 0`. Establish `c1` using `b.2.2 1`.
+
+Simplify using `only [Fin.sum_univ_two, Fintype.card_fin, Equiv.swap_apply_left, Equiv.swap_apply_right] at r0 r1 c0 c1`. Establish `h00 : b.1 0 0 = 0` using `by omega`. Establish `h11 : b.1 1 1 = 0` using `by omega`. Establish `hrz : ∀ i j, j ≠ Equiv.swap 0 1 i → b.1 i j = 0`. Introduce `i j hj`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all`. Establish `hcz : ∀ j i, i ≠ Equiv.swap 0 1 j → b.1 i j = 0`. Introduce `j i hi`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all`. Establish `hrf : ∀ i, b.1 i (Equiv.swap 0 1 i) = d i`.
+
+Introduce `i`. Apply the tactic sequence `fin_cases i <;> simp <;> omega`. Establish `hcf : ∀ j, b.1 (Equiv.swap 0 1 j) j = d (Equiv.swap 0 1 j)`. Introduce `j`. Apply the tactic sequence `fin_cases j <;> simp <;> omega`.
+
+Set `f : ∀ i, (Σ j, Fin (b.1 i j)) ≃ Fin (d i)` to `fun i => valEquiv (Equiv.swap 0 1 i) (hrf i) (fun j hj => hrz i j hj)`. Set `g : ∀ j, (Σ i, Fin (b.1 i j)) ≃ Fin (d (Equiv.swap 0 1 j))` to `fun j => valEquiv (Equiv.swap 0 1 j) (hcf j) (fun i hi => hcz j i hi)`. Use `⟨f, g, ?_⟩` and prove the remaining obligations. Establish `hbot : twKer (piTensor fun i => (σ i).π) (relUnip k f) 1 = ⊥`. Use `eq_bot_iff.2 (Submodule.span_le.2 ?_)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨n, v, rfl⟩`. Establish `: (n : Levi k (fun i => Fin (d i))) = 1` using `funext fun i => eq_one_of_mem_unipRad_single (f i) (Equiv.swap 0 1 i) (fun j hj => hrz i j hj) (n.2 i trivial)`. Simplify using `[this]`. Establish `hδ : ∀ z, relDeltaHalf k (fun i j => Fin (b.1 i j)) z = 1` using `fun z => by`. Rewrite using `[relDeltaHalf_apply]`.
+
+Conclude with `Finset.prod_eq_one fun i _ => deltaHalf_eq_one_of_single (Equiv.swap 0 1 i) (fun j hj => hrz i j hj) (z i)`. Establish `hδ' : ∀ z, relDeltaHalf k (fun j i => Fin (b.1 i j)) z = 1` using `fun z => by`. Rewrite using `[relDeltaHalf_apply]`. Conclude with `Finset.prod_eq_one fun j _ => deltaHalf_eq_one_of_single (Equiv.swap 0 1 j) (fun i hi => hcz j i hi) (z j)`. Establish `hP : ∀ x, x ∈ relParab k g` using `fun x j _ => mem_parab_of_single (g j) (Equiv.swap 0 1 j) (fun i hi => hcz j i hi) (x j)`.
+
+Establish `hγ : ∀ (p : relParab k g) j, relEmb k f (swapBlocks k (fun i j => Fin (b.1 i j)) (relProj k g p)) (Equiv.swap 0 1 j) = (p : Levi k (fun j => Fin (d (Equiv.swap 0 1 j)))) j`. Introduce `p j`. Rewrite using `[relEmb_apply]`. Use `Units.ext (Matrix.ext fun x y => ?_)` and prove the remaining obligations. Take `⟨⟨a, t⟩, rfl⟩` from `(f (Equiv.swap 0 1 j)).surjective x`.
+
+Take `⟨⟨a', s⟩, rfl⟩` from `(f (Equiv.swap 0 1 j)).surjective y`. Establish `ha : a = j`. Assume the negation of the conclusion as `hne`. Establish `h1` using `hrz (Equiv.swap 0 1 j) a (by rwa [Equiv.swap_apply_self])`. Establish `h2` using `t.2`.
+
+Use linear arithmetic over natural numbers and integers. Establish `ha' : a' = j`. Assume the negation of the conclusion as `hne`. Establish `h1` using `hrz (Equiv.swap 0 1 j) a' (by rwa [Equiv.swap_apply_self])`. Establish `h2` using `s.2`.
+
+Use linear arithmetic over natural numbers and integers. Substitute `ha` using the available equality. Substitute `ha'` using the available equality. Rewrite using `[leviEmb_apply_same]`. Both sides reduce to the same expression.
+
+Establish `hsm : IsSmooth (piTensor fun j => (σ (Equiv.swap 0 1 j)).π)` using `isSmooth_piTensor fun j => (σ (Equiv.swap 0 1 j)).smooth`. Set `R` to `PiTensorProduct.reindex ℂ (fun i => (σ i).V) (Equiv.swap 0 1)`. Set `Ψ : (⨂[ℂ] j, (σ (Equiv.swap 0 1 j)).V) ≃ₗ[ℂ] Jacquet (piTensor fun i => (σ i).π) (relUnip k f)` to `R.symm.trans (Submodule.quotEquivOfEqBot _ hbot).symm`. Establish `hΨ : ∀ u, Ψ u = Submodule.Quotient.mk (R.symm u)` using `fun u => rfl`. Set `τ` to `(twist ((relJac f (piTensor fun i => (σ i).π)).comp (swapBlocks k (fun i j => Fin (b.1 i j)))) (relDeltaHalf k (fun j i => Fin (b.1 i j)))).comp (relProj k g)`.
+
+Establish `law : ∀ (p : relParab k g) u, τ p (Ψ u) = Ψ ((piTensor fun j => (σ (Equiv.swap 0 1 j)).π) p u)`. Introduce `p u`. Rewrite using `[MonoidHom.comp_apply, twist_apply, MonoidHom.comp_apply, hΨ, relJac_mk, hδ, hδ', hΨ]`. Simplify using `only [inv_one, Units.val_one, one_smul]`. Use `congr 1`.
+
+Apply `R.injective` to reduce the goal to its premises. Rewrite using `[reindex_piTensor σ _ (p : Levi k (fun j => Fin (d (Equiv.swap 0 1 j)))) (hγ p)]`. Conclude with `(congrArg (fun w => (piTensor fun j => (σ (Equiv.swap 0 1 j)).π) (p : Levi k (fun j => Fin (d (Equiv.swap 0 1 j)))) w) (R.apply_symm_apply u)).trans (R.apply_symm_apply _).symm`. Set `F : (piTensor fun j => (σ (Equiv.swap 0 1 j)).π).IntertwiningMap (cellFunctor f g (piTensor fun i => (σ i).π))` to `{ toFun := fun u => ⟨⟨fun x => Ψ ((piTensor fun j => (σ (Equiv.swap 0 1 j)).π) x u), fun p x => by show Ψ ((piTensor fun j => (σ (Equiv.swap 0 1 j)).π) (↑p * x) u) = _`. Rewrite using `[map_mul, Module.End.mul_apply]`.
+
+Conclude with `(law p _).symm⟩,`. Use `mem_smoothPart_of_nhds (Filter.mem_of_superset ((hsm u).mem_nhds (by simp)) fun x hx => by`. Establish `hx' : (piTensor fun j => (σ (Equiv.swap 0 1 j)).π) x u = u` using `hx`. Use `Subtype.ext (funext fun y => ?_)` and prove the remaining obligations. Use `show Ψ ((piTensor fun j => (σ (Equiv.swap 0 1 j)).π) (y * x) u) = Ψ ((piTensor fun j => (σ (Equiv.swap 0 1 j)).π) y u)`.
+
+Rewrite using `[map_mul, Module.End.mul_apply, hx'])⟩`. Use the proof step `map_add' := fun u w => Subtype.ext (Subtype.ext (funext fun x => by simp))`. Use the proof step `map_smul' := fun c u => Subtype.ext (Subtype.ext (funext fun x => by simp))`. Use the proof step `isIntertwining' := fun h => LinearMap.ext fun u => Subtype.ext (Subtype.ext (funext fun x => by show Ψ ((piTensor fun j => (σ (Equiv.swap 0 1 j)).π) x ((piTensor fun j => (σ (Equiv.swap 0 1 j)).π) h u)) = Ψ ((piTensor fun j => (σ (Equiv.swap 0 1 j)).π) (x * h) u)`. Rewrite using `[map_mul, Module.End.mul_apply])) }`.
+
+Use `⟨(LocGL.equivOfBijective F ⟨fun u w hw => ?_, fun φ => ⟨Ψ.symm (φ.1.1 1), Subtype.ext (Subtype.ext (funext fun x => ?_))⟩⟩).symm⟩` and prove the remaining obligations. Establish `h1 : Ψ ((piTensor fun j => (σ (Equiv.swap 0 1 j)).π) 1 u) = Ψ ((piTensor fun j => (σ (Equiv.swap 0 1 j)).π) 1 w)` using `congrArg (fun φ => φ.1.1 1) hw`. Simplify using `using h1`. Use `show Ψ ((piTensor fun j => (σ (Equiv.swap 0 1 j)).π) x (Ψ.symm (φ.1.1 1))) = φ.1.1 x`. Use `(law ⟨x, hP x⟩ (Ψ.symm (φ.1.1 1))).symm.trans ?_` and prove the remaining obligations.
+
+Use `(congrArg (τ ⟨x, hP x⟩) (Ψ.apply_symm_apply (φ.1.1 1))).trans ?_` and prove the remaining obligations. Use `(φ.1.2 ⟨x, hP x⟩ 1).symm.trans ?_` and prove the remaining obligations. Conclude with `congrArg φ.1.1 (mul_one x)`.
+-/
 theorem cellFunctor_swap_equiv : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (d : Fin 2 → ℕ) (σ : ∀ i, Irr k (d i)), d 1 = 1 →
     ∀ (b : SizeMatrix (fun i : Fin 2 => Fin (d i)) (fun j : Fin 2 => Fin (d (Equiv.swap 0 1 j)))), b.1 1 0 = 1 →

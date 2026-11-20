@@ -21,6 +21,9 @@ open scoped ComplexOrder
 
 namespace GlobalTheory.SeeSaw.YRat
 
+/- English proof (translation)
+Apply `D.host.φ₀.injective` to reduce the goal to its premises. Establish `h1 : D.host.φ₀ (D.host.conj x) = starRingEnd ℂ (D.host.φ₀ x)` using `Formalism.HC.HostAx.conjE_apply _ _ _`. Rewrite using `[h1]`. Use `haveI := D.host.isCMField_hostE`. Conclude with `IsCMField.complexEmbedding_complexConj _ _ _`.
+-/
 theorem star_eq_conj (D : D7) (x : D.host.E) : star x = D.host.conj x := by
   apply D.host.φ₀.injective
   have h1 : D.host.φ₀ (D.host.conj x) = starRingEnd ℂ (D.host.φ₀ x) := Formalism.HC.HostAx.conjE_apply _ _ _
@@ -28,6 +31,15 @@ theorem star_eq_conj (D : D7) (x : D.host.E) : star x = D.host.conj x := by
   haveI := D.host.isCMField_hostE
   exact IsCMField.complexEmbedding_complexConj _ _ _
 
+/- English proof (translation)
+Take `⟨e, P, hP⟩` from `h`. Establish `hJ : Formalism.UG.Jpq n 0 = 1`. Use extensionality with `i j`. Break down `i with i | i` into its components or cases. Break down `j with j | j` into its components or cases.
+
+Simplify using `[Formalism.UG.Jpq, Matrix.one_apply]`. Conclude with `j.elim0`. Conclude with `i.elim0`. Establish `hcT : Formalism.UG.cT (starRingEnd ℂ) P.val = P.valᴴ`. Use extensionality with `i j`.
+
+Simplify using `[Formalism.UG.cT, Matrix.conjTranspose_apply]`. Rewrite `hP` using `[hcT, hJ]`. Establish `h1 : (P.valᴴ * G.reindex e e * P.val).PosDef` using `by rw [hP]; exact Matrix.PosDef.one`. Establish `h2 : (G.reindex e e).PosDef` using `(Matrix.IsUnit.posDef_star_left_conjugate_iff P.isUnit).1 h1`. Establish `h3 : G = (G.reindex e e).submatrix e e` using `by ext i j; simp`.
+
+Rewrite using `[h3]`. Conclude with `h2.submatrix e.injective`.
+-/
 theorem posDef_of_sig {n : ℕ} (G : Matrix (Fin n) (Fin n) ℂ) (h : Formalism.UG.HasSignature G n 0) : G.PosDef := by
   obtain ⟨e, P, hP⟩ := h
   have hJ : Formalism.UG.Jpq n 0 = 1 := by
@@ -46,6 +58,11 @@ theorem posDef_of_sig {n : ℕ} (G : Matrix (Fin n) (Fin n) ℂ) (h : Formalism.
   rw [h3]
   exact h2.submatrix e.injective
 
+/- English proof (translation)
+Establish `hs : (D.sp.X j).SigOK` using `D.sp.X_sig j`. Establish `hr : (D.sp.X j).rank = D.R.N j` using `D.sp.X_rank j hj`. Use `⟨hs, fun τ => by rw [hX j hj τ, hr], ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.Unf.CoCptOf.coCpt_of_isAniso_or_posDef D (D.sp.X j)).2 fun τ => ?_` and prove the remaining obligations. Establish `h1` using `hs (tauE D τ)`.
+
+Rewrite `h1` using `[hX j hj (tauE D τ)]`. Conclude with `posDef_of_sig _ h1`.
+-/
 theorem defSpace {D : D7} (hX : ∀ j, j ≤ D.R.m → (D.sp.X j).IsPosDef) {j : ℕ} (hj : j ≤ D.R.m) :
     (D.sp.X j).SigOK ∧ (∀ τ, (D.sp.X j).sig τ = (D.R.N j, 0)) ∧ CoCpt (D.sp.X j) := by
   have hs : (D.sp.X j).SigOK := D.sp.X_sig j
@@ -56,6 +73,33 @@ theorem defSpace {D : D7} (hX : ∀ j, j ≤ D.R.m → (D.sp.X j).IsPosDef) {j :
   rw [hX j hj (tauE D τ)] at h1
   exact posDef_of_sig _ h1
 
+/- English proof (translation)
+Introduce `D u hX`. Establish `hsum` using `GlobalTheory.T.exists_orthogonalSum_and_hyperbolicSum_spaces D`. Establish `hvol` using `GlobalTheory.Unf.VolExist.measures_exist D`. Establish `hxi : D.host.xi0 ≠ 0` using `GlobalTheory.ChiGrid.cmHost_imaginaryGenerator_ne_zero`. Take `⟨π, -, hπ, -⟩` from `D.T_norm u`.
+
+Establish `hππ : (π : D.host.E) * star (π : D.host.E) = (((D.mem u).A.T : ℕ) : D.host.E)`. Rewrite using `[star_eq_conj]`. Conclude with `hπ`. Establish `hT0 : (((D.mem u).A.T : ℕ) : D.host.E) ≠ 0`. Use `(D.mem u).A.T_prime.ne_zero` as an intermediate fact.
+
+Conclude with `this` after adjusting the coercions. Establish `hπ0 : (π : D.host.E) ≠ 0`. Introduce `h0`. Apply `hT0` to reduce the goal to its premises. Rewrite using `[← hππ, h0, zero_mul]`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `j ρ h`. Take `⟨hXs, hXsig, hXc⟩` from `defSpace hX (j := j) (by omega)`. Establish `hXr : (D.sp.X j).rank = D.R.N j` using `D.sp.X_rank j (by omega)`. Use `set c : D.host.E := (π : D.host.E) / D.host.xi0 ^ (j / 2) with hc`.
+
+Establish `hc0 : c ≠ 0` using `div_ne_zero hπ0 (pow_ne_zero _ hxi)`. Take `⟨L, ζ, hline, hLs, hLn, hLsig⟩` from `GlobalTheory.T.exists_hermitianLine_vector_prescribed_norm D c (-1) hc0`. Take `⟨V₀, o, hV₀s, hV₀sig⟩` from `hsum.1 (D.sp.X j) L hXs hLs`. Take `⟨V, d, hVs, hVsig⟩` from `hsum.2 V₀ ρ hV₀s`. Use `⟨V, ⟨V₀, L, d, o, ζ, hline, hXc, (hvol.2.1 _ _ _ d).some⟩, ?_, hVs, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `d.rank_add`. Establish `h2` using `o.rank_add`. Establish `h3 : L.rank = 1` using `hline.1`. Establish `h4 : j * (D.R.t + 1) = j * D.R.t + j` using `by ring`. Simplify using `only [Ranks.rankY, Ranks.r]`.
+
+Rewrite `h2` using `[hXr]`. Simplify using `only [Ranks.N] at h2`. Use linear arithmetic over natural numbers and integers. Introduce `τ`. Establish `hL : L.sig τ = (0, 1)` using `by rw [hLsig τ]; decide`.
+
+Rewrite using `[hVsig τ, hV₀sig τ, hXsig τ, hL]`. Establish `h4 : j * (D.R.t + 1) = j * D.R.t + j` using `by ring`. Simplify using `only [sigYD, Ranks.rankY, Ranks.r, Ranks.N, Prod.mk_add_mk, Prod.mk.injEq]`. Apply the tactic sequence `constructor <;> omega`. Use `show (star ζ ⬝ᵥ L.gram *ᵥ ζ) * (D.host.xi0 * star D.host.xi0) ^ (j / 2) = _`.
+
+Rewrite using `[hLn, ← hππ, hc, star_div₀, star_pow]`. Establish `hs0 : star D.host.xi0 ≠ 0` using `star_ne_zero.2 hxi`. Clear the denominators using the available nonvanishing facts. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `j ρ h`. Take `⟨hXs, hXsig, hXc⟩` from `defSpace hX (j := j + 1) (by omega)`. Establish `hXr : (D.sp.X (j + 1)).rank = D.R.N (j + 1)` using `D.sp.X_rank (j + 1) (by omega)`. Take `⟨V, d, hVs, hVsig⟩` from `hsum.2 (D.sp.X (j + 1)) ρ hXs`. Use `⟨V, ⟨d, hXc, (hvol.2.1 _ _ _ d).some⟩, ?_, hVs, ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `d.rank_add`. Rewrite `h1` using `[hXr]`. Establish `h4 : (j + 1) * (D.R.t + 1) = (j + 1) * D.R.t + (j + 1)` using `by ring`. Simplify using `only [Ranks.N] at h1`. Simplify using `only [Ranks.rankY, Ranks.r]`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `τ`. Rewrite using `[hVsig τ, hXsig τ]`. Establish `h4 : (j + 1) * (D.R.t + 1) = (j + 1) * D.R.t + (j + 1)` using `by ring`. Simplify using `only [sigYD, Ranks.rankY, Ranks.r, Ranks.N, Prod.mk_add_mk, Prod.mk.injEq]`.
+
+Apply the tactic sequence `constructor <;> omega`.
+-/
 theorem spaces_of_index : ∀ (D : D7) (u : D.what₂.Word), (∀ j, j ≤ D.R.m → (D.sp.X j).IsPosDef) → (∀ j ρ, j + 2 * ρ + 2 = D.R.m → ∃ (V : HSp D) (b : BesAt V (D.sp.X j) ρ), V.rank = D.R.rankY j ∧ V.SigOK ∧ (∀ τ, V.sig τ = sigYD D.R j) ∧ (star b.ζ ⬝ᵥ b.L.gram *ᵥ b.ζ) * (D.host.xi0 * star D.host.xi0) ^ (j / 2) = -(((D.mem u).A.T : ℕ) : D.host.E)) ∧ ∀ j ρ, j + 2 * ρ + 2 = D.R.m → ∃ (V : HSp D) (_ : JacAt V (D.sp.X (j + 1)) ρ), V.rank = D.R.rankY (j + 1) ∧ V.SigOK ∧ ∀ τ, V.sig τ = sigYD D.R (j + 1) := by
   intro D u hX
   have hsum := GlobalTheory.T.exists_orthogonalSum_and_hyperbolicSum_spaces D

@@ -57,11 +57,20 @@ variable {Z Z' : Scheme.{0}} (C : Coc Z) {S S' : Type} [CommRing S] [CommRing S'
 def tr (α β : C.A) (z : Sp S ⟶ Z) (hα : ⊤ ≤ z ⁻¹ᵁ C.B α) (hβ : ⊤ ≤ z ⁻¹ᵁ C.B β) :
     Matrix (Fin (C.n α)) (Fin (C.n β)) S := (C.T α β).map (ev z _ (le_preimage_inf hα hβ))
 
+/- English proof (translation)
+The claim follows from `C.refl α S z h`.
+-/
 theorem tr_self (α : C.A) (z : Sp S ⟶ Z) (h : ⊤ ≤ z ⁻¹ᵁ C.B α) : C.tr α α z h h = 1 := C.refl α S z h
 
+/- English proof (translation)
+The claim follows from `C.coc α β γ S z hα hβ hγ`.
+-/
 theorem tr_mul (α β γ : C.A) (z : Sp S ⟶ Z) (hα : ⊤ ≤ z ⁻¹ᵁ C.B α) (hβ : ⊤ ≤ z ⁻¹ᵁ C.B β) (hγ : ⊤ ≤ z ⁻¹ᵁ C.B γ) :
     C.tr α β z hα hβ * C.tr β γ z hβ hγ = C.tr α γ z hα hγ := C.coc α β γ S z hα hβ hγ
 
+/- English proof (translation)
+Substitute `e` using the available equality. Rewrite using `[tr, tr, ev_spMap φ z _ (le_preimage_inf hα hβ), Matrix.map_map]`. Both sides reduce to the same expression.
+-/
 theorem tr_spMap (α β : C.A) (φ : S →+* S') (z : Sp S ⟶ Z) (hα : ⊤ ≤ z ⁻¹ᵁ C.B α) (hβ : ⊤ ≤ z ⁻¹ᵁ C.B β)
     {z' : Sp S' ⟶ Z} (e : spMap φ ≫ z = z') (hα' : ⊤ ≤ z' ⁻¹ᵁ C.B α) (hβ' : ⊤ ≤ z' ⁻¹ᵁ C.B β) :
     C.tr α β z' hα' hβ' = (C.tr α β z hα hβ).map φ := by
@@ -88,6 +97,9 @@ def refine {Γ : Type} (a : Γ → C.A) (D : Γ → Z.Opens) (aff : ∀ γ, IsAf
       exact ev_res z _ _ _ _
     rw [key γ δ h₁ h₂, key δ ε h₂ h₃, key γ ε h₁ h₃, tr_mul]
 
+/- English proof (translation)
+Use extensionality with `i j`. Conclude with `ev_res z _ _ _ _`.
+-/
 theorem refine_tr {Γ : Type} (a : Γ → C.A) (D : Γ → Z.Opens) (aff : ∀ γ, IsAffineOpen (D γ))
     (cover : ∀ x : Z, ∃ γ, x ∈ D γ) (le : ∀ γ, D γ ≤ C.B (a γ)) (γ δ : Γ) (z : Sp S ⟶ Z) (h₁ : ⊤ ≤ z ⁻¹ᵁ D γ)
     (h₂ : ⊤ ≤ z ⁻¹ᵁ D δ) : (C.refine a D aff cover le).tr γ δ z h₁ h₂ =
@@ -170,15 +182,29 @@ abbrev TVecs (x : Sp S ⟶ X) : Type := ∀ σ : E →+* ℂ, Fin (Dw.mult σ) �
 
 def up {x : Sp S ⟶ X} (u : TVecs Dw t x) : Vecs Dw t S := fun σ i => (tv (u σ i)).left
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun σ i => tanOf (h σ i), rfl⟩`.
+-/
 theorem exists_up {x : Sp S ⟶ X} {u : Vecs Dw t S} (h : ∀ σ i, IsTanAtG t x (u σ i)) :
     ∃ U : TVecs Dw t x, up U = u := ⟨fun σ i => tanOf (h σ i), rfl⟩
 
+/- English proof (translation)
+The claim follows from `funext fun σ => funext fun i => tan_ext (congrFun (congrFun h σ) i)`.
+-/
 theorem up_injective {x : Sp S ⟶ X} {u u' : TVecs Dw t x} (h : up u = up u') : u = u' :=
   funext fun σ => funext fun i => tan_ext (congrFun (congrFun h σ) i)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem up_tanPull (φ : S →+* S') {x : Sp S ⟶ X} {x' : Sp S' ⟶ X} (e : spMap φ ≫ x = x') (u : TVecs Dw t x) :
     up (Dw := Dw) (fun σ i => tanPull φ e (u σ i)) = (up u).bc φ := rfl
 
+/- English proof (translation)
+Use `forall_congr' fun σ => forall_congr' fun k => forall_congr' fun _ => ⟨fun h => Submodule.span_le.2 ?_, fun h i hi => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨i, hi, rfl⟩`. Take `⟨cf, h1, h2⟩` from `h i hi`. Conclude with `mem_initSpan.2 ⟨cf, h1, ((isComb_iff (u σ) cf (u' σ i)).1 h2).symm⟩`. Take `⟨cf, h1, h2⟩` from `mem_initSpan.1 (h (Submodule.subset_span ⟨i, hi, rfl⟩))`.
+
+Conclude with `⟨cf, h1, (isComb_iff (u σ) cf (u' σ i)).2 h2.symm⟩`.
+-/
 theorem sameFlag_up_iff {ty : (E →+* ℂ) → Finset ℕ} {x : Sp S ⟶ X} (u u' : TVecs Dw t x) :
     SameFlag ty t x (up u) (up u') ↔ ∀ σ, ∀ k ∈ ty σ, initSpan S (u' σ) k ≤ initSpan S (u σ) k := by
   refine forall_congr' fun σ => forall_congr' fun k => forall_congr' fun _ => ⟨fun h => Submodule.span_le.2 ?_, fun h i hi => ?_⟩
@@ -196,10 +222,20 @@ def eig {l : Level H} {c : Coeff l} (f : c.F →+* S) (x : Sp S ⟶ X) (σ : E �
   add_mem' := fun hu hv a => by rw [map_add, hu a, hv a, smul_add]
   smul_mem' := fun r v hv a => by rw [map_smul, hv a, smul_comm]
 
+/- English proof (translation)
+The claim follows from `forall_congr' fun _ => ⟨fun h => congrArg (fun V => (tv V).left) h, fun h => tan_ext h⟩`.
+-/
 theorem mem_eig_iff {l : Level H} {c : Coeff l} (f : c.F →+* S) (x : Sp S ⟶ X) (σ : E →+* ℂ) (v : TanM x t.G) :
     v ∈ eig t f x σ ↔ ∀ a : 𝓞 E, (tv v).left ≫ (t.act.act a).left = spMap (epsMul (f (embK c σ a))) ≫ (tv v).left :=
   forall_congr' fun _ => ⟨fun h => congrArg (fun V => (tv V).left) h, fun h => tan_ext h⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ σ`. Establish `hm : ∀ i, u σ i ∈ eig t f x σ` using `fun i => (mem_eig_iff f x σ _).2 (h1 σ i).2`. Establish `h3 : ∀ w ∈ eig t f x σ, ∃! a : Fin (Dw.mult σ) → S, w = ∑ i, a i • u σ i` using `fun w hw => (existsUnique_congr fun a => isComb_iff (u σ) a w).1 (h2 σ _ (isTan_tv w) ((mem_eig_iff f x σ w).1 hw))`. Use `⟨Fintype.linearIndependent_iff.2 fun a ha => congrFun ((h3 0 (Submodule.zero_mem _)).unique ha.symm (by simp : (0 : TanM x t.G) = ∑ i, (0 : Fin (Dw.mult σ) → S) i • u σ i)), le_antisymm ?_ fun w hw => ?_⟩` and prove the remaining obligations.
+
+Conclude with `Submodule.span_le.2 (Set.range_subset_iff.2 hm)`. Take `⟨a, rfl, -⟩` from `h3 w hw`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Introduce `h`. Use `⟨fun σ i => ⟨isTan_tv _, (mem_eig_iff f x σ _).1 ((h σ).2 ▸ Submodule.subset_span ⟨i, rfl⟩)⟩, fun σ w hw he => ?_⟩` and prove the remaining obligations.
+
+Establish `hm : tanOf hw ∈ Submodule.span S (Set.range (u σ))` using `(h σ).2 ▸ (mem_eig_iff f x σ _).2 he`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun S).1 hm`. Use `(existsUnique_congr fun a => isComb_iff (u σ) a (tanOf hw)).2 ⟨a, ha.symm, fun b hb => funext ?_⟩` and prove the remaining obligations. Conclude with `Fintype.linearIndependent_iffₛ.1 (h σ).1 _ _ (hb.symm.trans ha.symm)`.
+-/
 theorem isFrame_up_iff {l : Level H} {c : Coeff l} (f : c.F →+* S) {x : Sp S ⟶ X} (u : TVecs Dw t x) :
     LocM.IsFrame t f x (up u) ↔ ∀ σ, LinearIndependent S (u σ) ∧ Submodule.span S (Set.range (u σ)) = eig t f x σ := by
   constructor
@@ -220,6 +256,11 @@ theorem isFrame_up_iff {l : Level H} {c : Coeff l} (f : c.F →+* S) {x : Sp S �
     refine (existsUnique_congr fun a => isComb_iff (u σ) a (tanOf hw)).2 ⟨a, ha.symm, fun b hb => funext ?_⟩
     exact Fintype.linearIndependent_iffₛ.1 (h σ).1 _ _ (hb.symm.trans ha.symm)
 
+/- English proof (translation)
+Substitute `e` using the available equality. Use `Fintype.ofFinite κ` as an intermediate fact. Set `q` to `Fintype.equivFin κ`. Establish `h0 : FrameBC.Full (t` using `t) b := fun n => ⟨b.repr n, (b.sum_repr n).symm, fun a ha => by rw [ha]; exact (b.repr_sum_self a).symm⟩`. Establish `h1` using `FrameBC.full_equiv q (FrameBC.full_bc φ (FrameBC.full_equiv q.symm h0))`.
+
+Simplify using `only [Equiv.symm_apply_apply] at h1`. Use `⟨Module.Basis.mk (v := fun i => tanPull φ rfl (b i)) (Fintype.linearIndependent_iff.2 fun a ha => congrFun ((h1 0).unique ha.symm (by simp : (0 : TanM _ t.G) = ∑ i, (0 : κ → S') i • FrameBC.resM φ (b i)))) fun w _ => ?_, fun i => Module.Basis.mk_apply _ _ i⟩` and prove the remaining obligations. Take `⟨a, rfl, -⟩` from `h1 w`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+-/
 theorem exists_basis_tanPull (φ : S →+* S') {x : Sp S ⟶ X} {x' : Sp S' ⟶ X} (e : spMap φ ≫ x = x') {κ : Type}
     [Finite κ] (b : Module.Basis κ S (TanM x t.G)) :
     ∃ b' : Module.Basis κ S' (TanM x' t.G), ∀ i, b' i = tanPull φ e (b i) := by
@@ -240,10 +281,16 @@ def basPull (φ : S →+* S') {x : Sp S ⟶ X} {x' : Sp S' ⟶ X} (e : spMap φ 
     [Finite κ] (b : Module.Basis κ S (TanM x t.G)) : Module.Basis κ S' (TanM x' t.G) :=
   (exists_basis_tanPull φ e b).choose
 
+/- English proof (translation)
+The claim follows from `(exists_basis_tanPull φ e b).choose_spec i`.
+-/
 theorem basPull_apply (φ : S →+* S') {x : Sp S ⟶ X} {x' : Sp S' ⟶ X} (e : spMap φ ≫ x = x') {κ : Type}
     [Finite κ] (b : Module.Basis κ S (TanM x t.G)) (i : κ) : basPull φ e b i = tanPull φ e (b i) :=
   (exists_basis_tanPull φ e b).choose_spec i
 
+/- English proof (translation)
+Use `Fintype.ofFinite κ` as an intermediate fact. Use `conv_lhs => rw [← b.sum_repr v, map_sum]`. Simplify using `only [map_smulₛₗ, ← basPull_apply]`. Conclude with `congrFun ((basPull φ e b).repr_sum_self _) i`.
+-/
 theorem basPull_repr (φ : S →+* S') {x : Sp S ⟶ X} {x' : Sp S' ⟶ X} (e : spMap φ ≫ x = x') {κ : Type}
     [Finite κ] (b : Module.Basis κ S (TanM x t.G)) (v : TanM x t.G) (i : κ) :
     (basPull φ e b).repr (tanPull φ e v) i = φ (b.repr v i) := by
@@ -252,6 +299,9 @@ theorem basPull_repr (φ : S →+* S') {x : Sp S ⟶ X} {x' : Sp S' ⟶ X} (e : 
   simp only [map_smulₛₗ, ← basPull_apply]
   exact congrFun ((basPull φ e b).repr_sum_self _) i
 
+/- English proof (translation)
+Apply `tan_ext` to reduce the goal to its premises. Rewrite using `[FlagMod.tanPull_left, FlagMod.tanPull_left, FlagMod.tanPull_left, FlagMod.dualMap_comp, ← spMap_comp', Category.assoc]`.
+-/
 theorem tanPull_tanPull {S'' : Type} [CommRing S''] (φ : S →+* S') (ψ : S' →+* S'') {x : Sp S ⟶ X} {x' : Sp S' ⟶ X}
     {x'' : Sp S'' ⟶ X} (e : spMap φ ≫ x = x') (e' : spMap ψ ≫ x' = x'') (e'' : spMap (ψ.comp φ) ≫ x = x'')
     (v : TanM x t.G) : tanPull ψ e' (tanPull φ e v) = tanPull (ψ.comp φ) e'' v := by
@@ -265,10 +315,16 @@ def basAt (b : Module.Basis κ Γ(Z, U) (TanM (tau hU ≫ π) t.G)) (w : Sp S �
     Module.Basis κ S (TanM (w ≫ π) t.G) :=
   basPull (ev w U hw) (by rw [← Category.assoc, tau, spMap_ev]) b
 
+/- English proof (translation)
+Rewrite using `[basAt, basPull_apply]`. Both sides reduce to the same expression.
+-/
 theorem basAt_left (b : Module.Basis κ Γ(Z, U) (TanM (tau hU ≫ π) t.G)) (w : Sp S ⟶ Z) (hw : ⊤ ≤ w ⁻¹ᵁ U) (i : κ) :
     (tv (basAt b w hw i)).left = spMap (dualMap (ev w U hw)) ≫ (tv (b i)).left := by
   rw [basAt, basPull_apply]; rfl
 
+/- English proof (translation)
+Substitute `e` using the available equality. Apply `tan_ext` to reduce the goal to its premises. Rewrite using `[FlagMod.tanPull_left, basAt_left, basAt_left, ev_spMap φ w U hw, FlagMod.dualMap_comp, ← spMap_comp']`. Conclude with `(Category.assoc _ _ _).symm`.
+-/
 theorem tanPull_basAt (b : Module.Basis κ Γ(Z, U) (TanM (tau hU ≫ π) t.G)) (φ : S →+* S') (w : Sp S ⟶ Z)
     (hw : ⊤ ≤ w ⁻¹ᵁ U) {w' : Sp S' ⟶ Z} (e : spMap φ ≫ w = w') (hw' : ⊤ ≤ w' ⁻¹ᵁ U) (e' : spMap φ ≫ w ≫ π = w' ≫ π)
     (i : κ) : tanPull φ e' (basAt b w hw i) = basAt b w' hw' i := by
@@ -277,6 +333,9 @@ theorem tanPull_basAt (b : Module.Basis κ Γ(Z, U) (TanM (tau hU ≫ π) t.G)) 
   rw [FlagMod.tanPull_left, basAt_left, basAt_left, ev_spMap φ w U hw, FlagMod.dualMap_comp, ← spMap_comp']
   exact (Category.assoc _ _ _).symm
 
+/- English proof (translation)
+Establish `: basAt b w' hw' = basPull φ e' (basAt b w hw)` using `Module.Basis.eq_of_apply_eq fun i => by rw [basPull_apply, tanPull_basAt b φ w hw e hw']`. Rewrite using `[this, basPull_repr]`.
+-/
 theorem basAt_repr (b : Module.Basis κ Γ(Z, U) (TanM (tau hU ≫ π) t.G)) (φ : S →+* S') (w : Sp S ⟶ Z)
     (hw : ⊤ ≤ w ⁻¹ᵁ U) {w' : Sp S' ⟶ Z} (e : spMap φ ≫ w = w') (hw' : ⊤ ≤ w' ⁻¹ᵁ U) (e' : spMap φ ≫ w ≫ π = w' ≫ π)
     (v : TanM (w ≫ π) t.G) (i : κ) : (basAt b w' hw').repr (tanPull φ e' v) i = φ ((basAt b w hw).repr v i) := by
@@ -322,6 +381,9 @@ variable {M : Model Xo c V.subtype} {X : Scheme.{0}} {π : X ⟶ M.X} {ty : (E �
 abbrev Atlas.FlagAt (A : Atlas M π ty) {k : Type} [Field k] (w : Sp k ⟶ X) (u : Vecs Dw M.t k) : Prop :=
   A.toPreAtlas.FlagAt π ty w u
 
+/- English proof (translation)
+Establish `key : ∀ {v : Fin m → N}, LinearIndependent K v → Module.finrank K (initSpan K v k) = Fintype.card {j : Fin m // (j : ℕ) < k}` using `fun {v} hv => by`. Use `finrank_span_eq_card (hv.comp (fun j : {j : Fin m // (j : ℕ) < k} => j.1) Subtype.val_injective)` as an intermediate fact. Rewrite using `[← this, initSpan, Set.range_comp, Subtype.range_coe_subtype]`. Establish `: FiniteDimensional K (initSpan K u k)` using `FiniteDimensional.span_of_finite K (Set.toFinite _)`. Conclude with `Submodule.eq_of_le_of_finrank_eq h (by rw [key hu, key hu'])`.
+-/
 theorem initSpan_eq_of_le {K N : Type} [Field K] [AddCommGroup N] [Module K N] {m : ℕ} {u u' : Fin m → N}
     (hu : LinearIndependent K u) (hu' : LinearIndependent K u') {k : ℕ} (h : initSpan K u' k ≤ initSpan K u k) :
     initSpan K u' k = initSpan K u k := by
@@ -332,6 +394,11 @@ theorem initSpan_eq_of_le {K N : Type} [Field K] [AddCommGroup N] [Module K N] {
   have : FiniteDimensional K (initSpan K u k) := FiniteDimensional.span_of_finite K (Set.toFinite _)
   exact Submodule.eq_of_le_of_finrank_eq h (by rw [key hu, key hu'])
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `Set.mem_iUnion.1 h`. Establish `h1 : ⊤ ≤ w ⁻¹ᵁ (ch.χ a).opensRange` using `((IsLocalRing.closed_point_mem_iff (U := w ⁻¹ᵁ (ch.χ a).opensRange)).1 ha).ge`. Establish `h' : Set.range w ⊆ Set.range (ch.χ a)`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `h1 (Set.mem_univ x)`.
+
+Use `⟨a, (Spec.preimage (IsOpenImmersion.lift (ch.χ a) w h')).hom, ?_⟩` and prove the remaining obligations. Use `show Spec.map (Spec.preimage _) ≫ _ = _`. Rewrite using `[Spec.map_preimage]`. Conclude with `IsOpenImmersion.lift_fac _ _ _`.
+-/
 theorem Charts.exists_fac (ch : Charts X) {S : Type} [CommRing S] [IsLocalRing S] (w : Sp S ⟶ X)
     (h : w (IsLocalRing.closedPoint S) ∈ ch.carrier) : ∃ (a : ch.ι) (φ : ch.R a →+* S), spMap φ ≫ ch.χ a = w := by
   obtain ⟨a, ha⟩ := Set.mem_iUnion.1 h
@@ -345,6 +412,9 @@ theorem Charts.exists_fac (ch : Charts X) {S : Type} [CommRing S] [IsLocalRing S
   rw [Spec.map_preimage]
   exact IsOpenImmersion.lift_fac _ _ _
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `Set.mem_iUnion.2 ⟨a, spMap φ x, by rw [← e]; rfl⟩`.
+-/
 theorem Charts.range_subset (ch : Charts X) {S : Type} [CommRing S] {a : ch.ι} {φ : ch.R a →+* S} {w : Sp S ⟶ X}
     (e : spMap φ ≫ ch.χ a = w) : Set.range w ⊆ ch.carrier := by
   rintro _ ⟨x, rfl⟩
@@ -354,32 +424,57 @@ namespace Atlas
 
 variable (A : Atlas M π ty) {S : Type} [CommRing S] {K : Type} [Field K]
 
+/- English proof (translation)
+Rewrite using `[← e, Category.assoc, A.alg_s, spMap_comp', RingHom.comp_assoc]`.
+-/
 theorem affineOpenChart_comp_structure_eq_spMap {a : A.ch.ι} {φ : A.ch.R a →+* S} {w : Sp S ⟶ X} (e : spMap φ ≫ A.ch.χ a = w) :
     w ≫ π ≫ M.s = spMap ((φ.comp (A.alg a)).comp V.subtype) := by
   rw [← e, Category.assoc, A.alg_s, spMap_comp', RingHom.comp_assoc]
 
+/- English proof (translation)
+The claim follows from `IsLocalization.ringHom_ext (nonZeroDivisors V) (congrArg CommRingCat.Hom.hom (Spec.map_injective ((A.affineOpenChart_comp_structure_eq_spMap e).symm.trans (A.affineOpenChart_comp_structure_eq_spMap e'))))`.
+-/
 theorem alg_eq {a a' : A.ch.ι} {φ : A.ch.R a →+* S} {φ' : A.ch.R a' →+* S} {w : Sp S ⟶ X}
     (e : spMap φ ≫ A.ch.χ a = w) (e' : spMap φ' ≫ A.ch.χ a' = w) : φ.comp (A.alg a) = φ'.comp (A.alg a') :=
   IsLocalization.ringHom_ext (nonZeroDivisors V)
     (congrArg CommRingCat.Hom.hom (Spec.map_injective ((A.affineOpenChart_comp_structure_eq_spMap e).symm.trans (A.affineOpenChart_comp_structure_eq_spMap e'))))
 
+/- English proof (translation)
+Rewrite using `[← e, Category.assoc]`. Conclude with `GlobalTheory.LocM.isFrame_bc E H Dw l c _ M.t _ _ _ φ _ _ (A.frame a)`.
+-/
 theorem isFrame_bc {a : A.ch.ι} {φ : A.ch.R a →+* S} {w : Sp S ⟶ X} (e : spMap φ ≫ A.ch.χ a = w) :
     LocM.IsFrame M.t (φ.comp (A.alg a)) (w ≫ π) ((A.fr a).bc φ) := by
   rw [← e, Category.assoc]
   exact GlobalTheory.LocM.isFrame_bc E H Dw l c _ M.t _ _ _ φ _ _ (A.frame a)
 
+/- English proof (translation)
+The claim follows from `exists_up fun σ i => ((A.isFrame_bc e).1 σ i).1`.
+-/
 theorem exists_up_fr {a : A.ch.ι} {φ : A.ch.R a →+* S} {w : Sp S ⟶ X} (e : spMap φ ≫ A.ch.χ a = w) :
     ∃ u : TVecs Dw M.t (w ≫ π), up u = (A.fr a).bc φ := exists_up fun σ i => ((A.isFrame_bc e).1 σ i).1
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨a, φ, e, A.isFrame_bc e, SameFlag.refl fun σ i => ((A.isFrame_bc e).1 σ i).1⟩`.
+-/
 theorem flagAt_fr {a : A.ch.ι} {φ : A.ch.R a →+* K} {w : Sp K ⟶ X} (e : spMap φ ≫ A.ch.χ a = w) :
     A.FlagAt w ((A.fr a).bc φ) :=
   ⟨a, φ, e, A.isFrame_bc e, SameFlag.refl fun σ i => ((A.isFrame_bc e).1 σ i).1⟩
 
+/- English proof (translation)
+Take `⟨a, φ, -, hf, -⟩` from `h`. Conclude with `DRFlag.exists_up fun σ i => (hf.1 σ i).1`.
+-/
 theorem FlagAt.exists_up {A : Atlas M π ty} {w : Sp K ⟶ X} {u : Vecs Dw M.t K} (h : A.FlagAt w u) :
     ∃ U : TVecs Dw M.t (w ≫ π), up U = u := by
   obtain ⟨a, φ, -, hf, -⟩ := h
   exact DRFlag.exists_up fun σ i => (hf.1 σ i).1
 
+/- English proof (translation)
+Use `⟨fun ⟨a', φ', e', hf, hs⟩ => ?_, fun ⟨hf, hs⟩ => ⟨a, φ, e, hf, ?_⟩⟩` and prove the remaining obligations. Take `⟨u₁, h₁⟩` from `A.exists_up_fr e'`. Establish `g` using `A.glue K a a' φ φ' (e.trans e'.symm)`. Rewrite `g` using `[← Category.assoc, e, ← h₀, ← h₁, sameFlag_up_iff]`. Rewrite `hs` using `[← h₁, sameFlag_up_iff]`.
+
+Rewrite `hf` using `[← A.alg_eq e e']`. Establish `f₀` using `A.isFrame_bc e`. Rewrite `f₀` using `[← h₀]`. Conclude with `⟨hf, fun σ j hj => initSpan_eq_of_le ((isFrame_up_iff _ _).1 f₀ σ).1 ((isFrame_up_iff _ _).1 hf σ).1 ((hs σ j hj).trans (g σ j hj))⟩`. Rewrite using `[← h₀, sameFlag_up_iff]`.
+
+Conclude with `fun σ j hj => (hs σ j hj).le`.
+-/
 theorem flagAt_iff {a : A.ch.ι} {φ : A.ch.R a →+* K} {w : Sp K ⟶ X} (e : spMap φ ≫ A.ch.χ a = w)
     {u₀ : TVecs Dw M.t (w ≫ π)} (h₀ : up u₀ = (A.fr a).bc φ) (u : TVecs Dw M.t (w ≫ π)) :
     A.FlagAt w (up u) ↔ LocM.IsFrame M.t (φ.comp (A.alg a)) (w ≫ π) (up u) ∧
@@ -397,6 +492,9 @@ theorem flagAt_iff {a : A.ch.ι} {φ : A.ch.R a →+* K} {w : Sp K ⟶ X} (e : s
   · rw [← h₀, sameFlag_up_iff]
     exact fun σ j hj => (hs σ j hj).le
 
+/- English proof (translation)
+Take `⟨a, φ, e, -⟩` from `id h`. Take `⟨u₀, h₀⟩` from `A.exists_up_fr e`. Rewrite using `[((A.flagAt_iff e h₀ u).1 h).2 σ j hj, ((A.flagAt_iff e h₀ u').1 h').2 σ j hj]`.
+-/
 theorem FlagAt.initSpan_eq {A : Atlas M π ty} {w : Sp K ⟶ X} {u u' : TVecs Dw M.t (w ≫ π)} (h : A.FlagAt w (up u))
     (h' : A.FlagAt w (up u')) (σ : E →+* ℂ) {j : ℕ} (hj : j ∈ ty σ) : initSpan K (u σ) j = initSpan K (u' σ) j := by
   obtain ⟨a, φ, e, -⟩ := id h
@@ -409,6 +507,15 @@ namespace Atlas
 
 variable (A : Atlas M π ty) {S : Type} [CommRing S] {K : Type} [Field K]
 
+/- English proof (translation)
+Use `M.jQ_open` as an intermediate fact. Establish `hp : IsPreimmersion (spMap V.subtype)` using `IsPreimmersion.of_isLocalization (R := V) (S := c.F) (nonZeroDivisors V)`. Establish `: IsPreimmersion (pullback.fst M.s (spMap V.subtype))` using `inferInstance`. Set `y' : Sp S ⟶ pullback M.s (spMap V.subtype)` to `pullback.lift (w ≫ π) (spMap (φ.comp (A.alg a))) (by rw [Category.assoc, A.affineOpenChart_comp_structure_eq_spMap e, spMap_comp'])`. Establish `h1 : y' ≫ pullback.fst _ _ = w ≫ π` using `pullback.lift_fst _ _ _`.
+
+Establish `hr : Set.range y' ⊆ Set.range M.jQ`. Introduce and unpack `_ ⟨x, rfl⟩`. Establish `hx` using `A.ch.range_subset e ⟨x, rfl⟩`. Rewrite `hx` using `[A.cover]`. Take `⟨q, hq⟩` from `hx`.
+
+Use `⟨q, (pullback.fst M.s (spMap V.subtype)).isEmbedding.injective ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, h1, Scheme.Hom.comp_apply w]`. Conclude with `hq`. Use `⟨IsOpenImmersion.lift M.jQ y' hr, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Model.j, IsOpenImmersion.lift_fac_assoc, h1]`.
+
+Rewrite using `[← M.jQ_over, IsOpenImmersion.lift_fac_assoc]`. Conclude with `pullback.lift_snd _ _ _`.
+-/
 theorem exists_xF {a : A.ch.ι} {φ : A.ch.R a →+* S} {w : Sp S ⟶ X} (e : spMap φ ≫ A.ch.χ a = w) :
     ∃ y : Sp S ⟶ Xo.XF c, y ≫ M.j = w ≫ π ∧ y ≫ pullback.snd _ _ = spMap (φ.comp (A.alg a)) := by
   have := M.jQ_open
@@ -430,12 +537,18 @@ theorem exists_xF {a : A.ch.ι} {φ : A.ch.R a →+* S} {w : Sp S ⟶ X} (e : sp
   · rw [← M.jQ_over, IsOpenImmersion.lift_fac_assoc]
     exact pullback.lift_snd _ _ _
 
+/- English proof (translation)
+Take `⟨a, φ, ea, hf, -⟩` from `id h`. Take `⟨y, hy, hy'⟩` from `A.exists_xF ea`. Conclude with `(A.bij K _ y hy' u (hy ▸ hf)).unique ⟨hy.symm, h⟩ ⟨e.symm.trans hy.symm, h'⟩`.
+-/
 theorem FlagAt.point_eq {A : Atlas M π ty} {w w' : Sp K ⟶ X} {u : Vecs Dw M.t K} (h : A.FlagAt w u) (h' : A.FlagAt w' u)
     (e : w ≫ π = w' ≫ π) : w = w' := by
   obtain ⟨a, φ, ea, hf, -⟩ := id h
   obtain ⟨y, hy, hy'⟩ := A.exists_xF ea
   exact (A.bij K _ y hy' u (hy ▸ hf)).unique ⟨hy.symm, h⟩ ⟨e.symm.trans hy.symm, h'⟩
 
+/- English proof (translation)
+Take `⟨a, φ, ea, hf, -⟩` from `h`. Take `⟨y, hy, hy'⟩` from `A.exists_xF ea`. Take `⟨w', hw', -⟩` from `A'.bij K _ y hy' u (hy ▸ hf)`. Conclude with `⟨w', hw'.1.trans hy, hw'.2⟩`.
+-/
 theorem FlagAt.exists_point {A : Atlas M π ty} {w : Sp K ⟶ X} {u : Vecs Dw M.t K} (h : A.FlagAt w u) {X' : Scheme.{0}}
     {π' : X' ⟶ M.X} {ty' : (E →+* ℂ) → Finset ℕ} (A' : Atlas M π' ty') :
     ∃ w' : Sp K ⟶ X', w' ≫ π' = w ≫ π ∧ A'.FlagAt w' u := by
@@ -497,9 +610,15 @@ def atlasOf (Z : Mdl Y i₀) : Atlas (Y Z.i) Z.π Z.ty where
   glue := Z.glue
   bij := Z.bij
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem atlasOf_flagAt (Z : Mdl Y i₀) {k : Type} [Field k] (w : Sp k ⟶ Z.X) (u : Vecs Dw (Y Z.i).t k) :
     (atlasOf Z).FlagAt w u ↔ Z.FlagAt w u := Iff.rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Z.n, Z.I.subschemeι, inferInstance, Z.π_s.symm⟩ normal := have := Z.normal; GlobalTheory.IsNormalScheme.pred _ flat := by rw [Z.π_s]; exact Z.flat dense := Z.dense`.
+-/
 theorem geoOf (Z : Mdl Y i₀) : Geo (Y Z.i) Z.π where
   proj := ⟨Z.n, Z.I.subschemeι, inferInstance, Z.π_s.symm⟩
   normal := have := Z.normal; GlobalTheory.IsNormalScheme.pred _
@@ -520,6 +639,9 @@ def LocMaps (Z : Mdl Y i₀) (A : Atlas (Y i) π ty) : Prop :=
     ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsIntegrallyClosed R] [Algebra R K] [IsFractionRing R K]
       (z : Sp R ⟶ Z.X), spMap (algebraMap R K) ≫ z = w → ∃ z' : Sp R ⟶ X, spMap (algebraMap R K) ≫ z' = y
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem isMap_iff (Z₁ Z₂ : Mdl Y i₀) (g : Z₁.X ⟶ Z₂.X) : IsMap Z₁ Z₂ g ↔ LocM.Corr Z₁ Z₂ ∧ MapsTo Z₁ (atlasOf Z₂) g :=
   Iff.rfl
 

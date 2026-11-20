@@ -11,6 +11,11 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 open scoped TensorProduct
 
+/- English proof (translation)
+Establish `hcm : (Ideal.comap (algebraMap K B) q).IsMaximal` using `Ideal.IsPrime.isMaximal' (Ideal.comap_isPrime _ _)`. Establish `hmax : q.IsMaximal` using `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap (R := K) q hcm`. Establish `hs : Function.Surjective (IsScalarTower.toAlgHom K B q.ResidueField)` using `Ideal.algebraMap_residueField_surjective q`. Establish `: Algebra.IsIntegral K q.ResidueField` using `Algebra.IsIntegral.of_surjective _ hs`. Establish `: CharZero q.ResidueField` using `charZero_of_injective_algebraMap (algebraMap K q.ResidueField).injective`.
+
+Establish `h0 : Algebra.trdeg K q.ResidueField = 0` using `trdeg_eq_zero`. Rewrite using `[← trdeg_add_eq ℤ K (A := q.ResidueField), h0, add_zero]`.
+-/
 theorem trdeg_residueField_of_isIntegral {K B : Type} [Field K] [CharZero K] [CommRing B] [Algebra K B]
     [Algebra.IsIntegral K B] (q : Ideal B) [q.IsPrime] :
     Algebra.trdeg ℤ q.ResidueField = Algebra.trdeg ℤ K := by
@@ -25,10 +30,16 @@ theorem trdeg_residueField_of_isIntegral {K B : Type} [Field K] [CharZero K] [Co
   have h0 : Algebra.trdeg K q.ResidueField = 0 := trdeg_eq_zero
   rw [← trdeg_add_eq ℤ K (A := q.ResidueField), h0, add_zero]
 
+/- English proof (translation)
+The claim follows from `(AlgEquiv.ofRingEquiv (f := e) (fun n => by simp [eq_intCast (algebraMap ℤ A), eq_intCast (algebraMap ℤ B)])).trdeg_eq`.
+-/
 theorem trdeg_int_eq_of_ringEquiv {A B : Type} [CommRing A] [CommRing B] [Algebra ℤ A] [Algebra ℤ B] (e : A ≃+* B) :
     Algebra.trdeg ℤ A = Algebra.trdeg ℤ B :=
   (AlgEquiv.ofRingEquiv (f := e) (fun n => by simp [eq_intCast (algebraMap ℤ A), eq_intCast (algebraMap ℤ B)])).trdeg_eq
 
+/- English proof (translation)
+Use `⟨RingHom.injective _, fun b => ?_⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `X.residue_surjective x b`. Take `⟨d, rfl⟩` from `SurjectiveOnStalks.stalkMap_surjective f x c`. Conclude with `⟨Y.residue (f x) d, congr($(Scheme.residue_residueFieldMap f x).hom d)⟩`.
+-/
 theorem residueFieldMap_bijective {X Y : Scheme.{0}} (f : X ⟶ Y) [SurjectiveOnStalks f] (x : X) :
     Function.Bijective (f.residueFieldMap x).hom := by
   refine ⟨RingHom.injective _, fun b => ?_⟩
@@ -36,6 +47,15 @@ theorem residueFieldMap_bijective {X Y : Scheme.{0}} (f : X ⟶ Y) [SurjectiveOn
   obtain ⟨d, rfl⟩ := SurjectiveOnStalks.stalkMap_surjective f x c
   exact ⟨Y.residue (f x) d, congr($(Scheme.residue_residueFieldMap f x).hom d)⟩
 
+/- English proof (translation)
+Use `letI := β.toAlgebra`. Use `letI := g₀.toAlgebra`. Establish `hsurj : SurjectiveOnStalks ξ₀`. Establish `: IsIso (Scheme.stalkClosedPointTo ξ₀)` using `(ConcreteCategory.isIso_iff_bijective _).2 h₀.bij`. Rewrite using `[← Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ₀]`.
+
+Use `infer_instance`. Take `⟨z, rfl, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := pullback.fst s (spMap β)) (g := ξ₀) y (IsLocalRing.closedPoint Ω₀) hy`. Establish `sq : IsPullback (pullback.snd (pullback.fst s (spMap β)) ξ₀) (pullback.fst (pullback.fst s (spMap β)) ξ₀ ≫ pullback.snd s (spMap β)) (spMap g₀) (spMap β)`. Rewrite using `[← hs]`. Conclude with `(IsPullback.of_hasPullback (pullback.fst s (spMap β)) ξ₀).flip.paste_vert (IsPullback.of_hasPullback s (spMap β))`.
+
+Set `e` to `sq.isoPullback ≪≫ pullbackSpecIso O Ω₀ F`. Establish `hint : Algebra.IsIntegral Ω₀ (Ω₀ ⊗[O] F)` using `HodgeBasic.isIntegral_tensor hγ hF`. Set `p : PrimeSpectrum (Ω₀ ⊗[O] F)` to `e.hom z`. Establish `h1 : Algebra.trdeg ℤ p.asIdeal.ResidueField = Algebra.trdeg ℤ Ω₀` using `trdeg_residueField_of_isIntegral (K := Ω₀) p.asIdeal`. Establish `hst : SurjectiveOnStalks (pullback.fst (pullback.fst s (spMap β)) ξ₀)` using `MorphismProperty.of_isPullback (IsPullback.of_hasPullback (pullback.fst s (spMap β)) ξ₀).flip hsurj`.
+
+Establish `h2` using `trdeg_int_eq_of_ringEquiv (RingEquiv.ofBijective _ (residueFieldMap_bijective (pullback.fst (pullback.fst s (spMap β)) ξ₀) z))`. Establish `h3` using `trdeg_int_eq_of_ringEquiv (asIso (e.hom.residueFieldMap z)).commRingCatIsoToRingEquiv`. Establish `h4 : Algebra.trdeg ℤ ((Spec (.of (Ω₀ ⊗[O] F))).residueField p) = Algebra.trdeg ℤ p.asIdeal.ResidueField` using `trdeg_int_eq_of_ringEquiv (B := p.asIdeal.ResidueField) (Scheme.Spec.residueFieldIso (.of (Ω₀ ⊗[O] F)) p).commRingCatIsoToRingEquiv`. Conclude with `h2.trans (h3.symm.trans (h4.trans h1))`.
+-/
 theorem trdeg_residueField_of_fst {X : Scheme.{0}} {O F Ω₀ : Type} [CommRing O] [Field F] [Field Ω₀] [CharZero Ω₀]
     (s : X ⟶ Sp O) (β : O →+* F) (g₀ : O →+* Ω₀) (ξ₀ : Sp Ω₀ ⟶ X) (h₀ : IsCptGen ξ₀) (hs : ξ₀ ≫ s = spMap g₀)
     (hγ : Function.Injective g₀)
@@ -70,6 +90,27 @@ theorem trdeg_residueField_of_fst {X : Scheme.{0}} {O F Ω₀ : Type} [CommRing 
       (Scheme.Spec.residueFieldIso (.of (Ω₀ ⊗[O] F)) p).commRingCatIsoToRingEquiv
   exact h2.trans (h3.symm.trans (h4.trans h1))
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O _ β Y Ω₀ _ ξ₀ Ω _ x i hβ h₀ hx`. Use `c.fin` as an intermediate fact. Use `Y.jQ_open` as an intermediate fact. Set `g₀ : O →+* Ω₀` to `(Spec.preimage (ξ₀ ≫ Y.s)).hom`. Establish `hs : ξ₀ ≫ Y.s = spMap g₀` using `by show _ = Spec.map (CommRingCat.ofHom (Spec.preimage (ξ₀ ≫ Y.s)).hom)`.
+
+Rewrite using `[CommRingCat.ofHom_hom, Spec.map_preimage]`. Set `str` to `pullback.snd Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom)`. Set `cst : c.F →+* Ω` to `(Spec.preimage (x ≫ str)).hom`. Establish `hc : x ≫ str = spMap cst` using `by show _ = Spec.map (CommRingCat.ofHom (Spec.preimage (x ≫ str)).hom)`. Rewrite using `[CommRingCat.ofHom_hom, Spec.map_preimage]`.
+
+Establish `hj : Y.j ≫ Y.s = str ≫ spMap β`. Simplify using `only [Model.j, Category.assoc, pullback.condition]`. Rewrite using `[← Category.assoc, Y.jQ_over]`. Establish `hcomp : i.comp g₀ = cst.comp β`. Establish `h1 : spMap (i.comp g₀) = spMap (cst.comp β)`.
+
+Establish `h2 : spMap i ≫ ξ₀ ≫ Y.s = x ≫ str ≫ spMap β`. Rewrite using `[← hj, ← Category.assoc, ← Category.assoc, ← hx]`. Rewrite `h2` using `[hs, ← Category.assoc, hc]`. Simplify `h2` using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective h1)`.
+
+Establish `hg : Function.Injective g₀`. Use `Function.Injective.of_comp (f := i) ?_` and prove the remaining obligations. Establish `h3 : (i ∘ g₀) = cst ∘ β` using `congrArg DFunLike.coe hcomp`. Rewrite using `[h3]`. Conclude with `cst.injective.comp hβ`.
+
+Establish `hΩ : CharZero Ω` using `charZero_of_injective_ringHom cst.injective`. Establish `hΩ₀ : CharZero Ω₀` using `(RingHom.charZero_iff i.injective).2 hΩ`. Set `w : Xo.XF c` to `x (IsLocalRing.closedPoint Ω)`. Establish `hy : pullback.fst Y.s (spMap β) (Y.jQ w) = genPt ξ₀`. Establish `h4 : pullback.fst Y.s (spMap β) (Y.jQ w) = (x ≫ Y.j) (IsLocalRing.closedPoint Ω)` using `rfl`.
+
+Establish `h6 : (Spec.map (CommRingCat.ofHom i) ≫ ξ₀) (IsLocalRing.closedPoint Ω) = ξ₀ ((Spec.map (CommRingCat.ofHom i)) (IsLocalRing.closedPoint Ω))` using `rfl`. Establish `h5 : (Spec.map (CommRingCat.ofHom i)) (IsLocalRing.closedPoint Ω) = IsLocalRing.closedPoint Ω₀` using `Subsingleton.elim (α := PrimeSpectrum _) _ _`. Rewrite using `[h4, hx, h6, h5]`. Both sides reduce to the same expression. Establish `hF` using `HodgeBasic.exists_integral_multiple_of_injective β hβ`.
+
+Establish `hw : ∀ w' : Xo.XF c, w' ⤳ w → w' = w` using `fun w' h => Y.jQ.isOpenEmbedding.injective (HodgeBasic.eq_of_specializes_of_fst Y.s β g₀ ξ₀ h₀ hs hg hF hy (h.map Y.jQ.continuous))`. Establish `hsm : SmoothOfRelativeDimension D.dim str` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback (IsPullback.of_hasPullback _ _) Xo.smooth`. Take `⟨-, htr⟩` from `GlobalTheory.residueField_fg_trdeg_of_smoothOfRelativeDimension str D.dim hsm w hw`. Use `letI : Algebra c.F ((Xo.XF c).residueField w) := (Spec.preimage ((Xo.XF c).fromSpecResidueField w ≫ str)).hom.toAlgebra`. Establish `: CharZero ((Xo.XF c).residueField w)` using `charZero_of_injective_algebraMap (algebraMap c.F ((Xo.XF c).residueField w)).injective`.
+
+Establish `h6 : Algebra.trdeg ℤ ((Xo.XF c).residueField w) = (D.dim : Cardinal)`. Establish `hal : Algebra.IsAlgebraic ℤ c.F` using `⟨fun u => (IsFractionRing.isAlgebraic_iff ℤ ℚ c.F).2 (Algebra.IsAlgebraic.isAlgebraic u)⟩`. Establish `h0 : Algebra.trdeg ℤ c.F = 0` using `trdeg_eq_zero`. Rewrite using `[← trdeg_add_eq ℤ c.F (A := (Xo.XF c).residueField w), h0, zero_add]`. Conclude with `htr`.
+
+Establish `h7` using `trdeg_int_eq_of_ringEquiv (asIso (Y.jQ.residueFieldMap w)).commRingCatIsoToRingEquiv`. Establish `h8` using `trdeg_residueField_of_fst Y.s β g₀ ξ₀ h₀ hs hg hF hy`. Rewrite using `[← h8, h7, h6]`.
+-/
 theorem trdeg_eq_dim : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (Ω₀ : Type) [Field Ω₀] (ξ₀ : Spec (CommRingCat.of Ω₀) ⟶ Y.X) (Ω : Type) [Field Ω] (x : Sp Ω ⟶ Xo.XF c) (i : Ω₀ →+* Ω), Function.Injective β → IsCptGen ξ₀ → x ≫ Y.j = Spec.map (CommRingCat.ofHom i) ≫ ξ₀ → Algebra.trdeg ℤ Ω₀ = ((D.dim : ℕ) : Cardinal) := by
   intro E _ _ _ H D l Xo c O _ β Y Ω₀ _ ξ₀ Ω _ x i hβ h₀ hx
   have := c.fin

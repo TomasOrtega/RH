@@ -17,6 +17,13 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `μ hμ i v`. Establish `key : ∀ (t : x.T) (μ : D.what₂.Tup) (e : x.Y.tup t = μ) (hμ : Formalism.IndefR.RecTie.Used0 D μ) (e' : x.Y.tupT μ = t) (v : D.what₂.MtL μ ((i : ℕ) + 1)), HEq (x.Y.IL.jMt μ hμ i (D.what₂.jMt μ ((i : ℕ) + 1) v)).1 (x.R.toRealDat.extV i t (x.R.toRealDat.jV i t (liftForm x.A3.A x.F.P …`. Introduce `t μ e hμ e' v`. Substitute `e` using the available equality. Use `x.Y.mtRead i t hμ ((x.Y.eMt i t).symm v)` as an intermediate fact.
+
+Rewrite `this` using `[LinearEquiv.apply_symm_apply]`. Conclude with `heq_of_eq this`. Use `eq_of_heq (key _ μ (x.Y.tupTie μ hμ) hμ rfl v)` as an intermediate fact. Rewrite using `[this]`. Unfold `twPOf`.
+
+Rewrite using `[dif_pos hμ]`. Both sides reduce to the same expression.
+-/
 theorem liftGroupForms_eq_extended_rationalForms_companion (x : TwIn ex) : Formalism.IndefR.RecTie.MtRead x.R.toRealDat x.F.lv2 x.Y.tupT x.Y.hm x.Y.hTop x.Y.hinj x.Y.IL
     (twPOf (divisionPairOfAdelicFormsFaceColumnsData x) x.Y.tupT x.Y.tupTie) := by
   intro μ hμ i v
@@ -37,6 +44,11 @@ theorem liftGroupForms_eq_extended_rationalForms_companion (x : TwIn ex) : Forma
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `i v`. Establish `h1` using `x.Y.mjRead i (x.Z.jW i v)`. Establish `h2` using `x.Z.jW_read i v`. Establish `h3 : x.Y.mj.eW i (x.Z.jW i v) ∈ LinearMap.range (x.Y.mj.eW i)` using `⟨_, rfl⟩`. Rewrite `h3` using `[x.Y.mj.eW_range i]`.
+
+Establish `h4` using `h3.2`. Establish `h5 : Mult.postOn _ (x.R.toRealDat.eWf i (sg0 D x.A3.A)) ((x.R.HW i (sg0 D x.A3.A)).e (x.Y.mj.eW i (x.Z.jW i v))) = (x.R.HW i (sg0 D x.A3.A)).e (x.Y.mj.eW i (x.Z.jW i v))` using `sub_eq_zero.1 h4`. Use `h1.trans (congrArg _ ?_)` and prove the remaining obligations. Rewrite using `[← h5, h2]`. Both sides reduce to the same expression.
+-/
 theorem mjRead_realization_equal (x : TwIn ex) {Rc : Formalism.L2.RecT ex} {S : Formalism.L2.SG.SpectralTiesReal.STiesR Rc} (y : RealIn x Rc S) :
     Formalism.IndefR.RecTie.MjRead x.R.toRealDat x.F.lv2 x.Y.tupT x.Y.hm x.Y.hTop x.Y.hinj x.Y.IL
     (fun i => (x.A3.indefDown (s0Of x.R x.F)).dW i) (fun i v => x.Z.jW i v) ((jDT (realTOf y))) := by
@@ -54,6 +66,9 @@ theorem mjRead_realization_equal (x : TwIn ex) {Rc : Formalism.L2.RecT ex} {S : 
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl K Yd cX ex x Rc S y _`. Conclude with `⟨liftGroupForms_eq_extended_rationalForms_companion x, mjRead_realization_equal x y⟩`.
+-/
 theorem mt_mj_read : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : Formalism.MainNotions.G.Inst D L) (Gl : Formalism.MainNotions.G.LatInst D) (K : Formalism.MainNotions.G.Consts) (Yd : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl K Yd cX) (x : TwIn ex) (Rc : Formalism.L2.RecT ex) (S : Formalism.L2.SG.SpectralTiesReal.STiesR Rc) (y : RealIn x Rc S), Holds x.R x.F → Formalism.IndefR.RecTie.MtRead x.R.toRealDat x.F.lv2 x.Y.tupT x.Y.hm x.Y.hTop x.Y.hinj x.Y.IL (twPOf (divisionPairOfAdelicFormsFaceColumnsData x) x.Y.tupT x.Y.tupTie) ∧ Formalism.IndefR.RecTie.MjRead x.R.toRealDat x.F.lv2 x.Y.tupT x.Y.hm x.Y.hTop x.Y.hinj x.Y.IL (fun i => (x.A3.indefDown (s0Of x.R x.F)).dW i) (fun i v => x.Z.jW i v) ((jDT (realTOf y))) := by
   intro D L hT Gi Gl K Yd cX ex x Rc S y _
   exact ⟨liftGroupForms_eq_extended_rationalForms_companion x, mjRead_realization_equal x y⟩

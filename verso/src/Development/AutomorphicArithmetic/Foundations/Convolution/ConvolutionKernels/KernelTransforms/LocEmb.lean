@@ -14,6 +14,11 @@ open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalS
 open scoped TensorProduct InnerProductSpace ComplexConjugate Pointwise
 
 open scoped RestrictedProduct in
+/- English proof (translation)
+Establish `hS : Filter.cofinite ≤ Filter.principal ({v}ᶜ : Set ι)`. Rewrite using `[Filter.le_principal_iff]`. Conclude with `(Set.finite_singleton v).compl_mem_cofinite`. Set `g : G v → Πʳ i, [G i, A i]_[Filter.principal ({v}ᶜ : Set ι)]` to `fun x => ⟨Pi.mulSingle v x, by`. Rewrite using `[Filter.eventually_principal]`.
+
+Introduce `i hi`. Rewrite using `[Pi.mulSingle_eq_of_ne hi]`. Conclude with `one_mem _⟩`. Establish `hg : Continuous g` using `RestrictedProduct.continuous_rng_of_principal.mpr (continuous_mulSingle v)`. Conclude with `(RestrictedProduct.continuous_inclusion hS).comp hg`.
+-/
 private theorem cont_mulSingle {ι : Type} [DecidableEq ι] {G : ι → Type} [∀ i, Group (G i)] [∀ i, TopologicalSpace (G i)]
     (A : ∀ i, Subgroup (G i)) (v : ι) : Continuous (RestrictedProduct.mulSingle A v) := by
   have hS : Filter.cofinite ≤ Filter.principal ({v}ᶜ : Set ι) := by
@@ -28,6 +33,15 @@ private theorem cont_mulSingle {ι : Type} [DecidableEq ι] {G : ι → Type} [�
   have hg : Continuous g := RestrictedProduct.continuous_rng_of_principal.mpr (continuous_mulSingle v)
   exact (RestrictedProduct.continuous_inclusion hS).comp hg
 
+/- English proof (translation)
+Introduce `K _ _ n v`. Establish `e : ∀ (w : HeightOneSpectrum (𝓞 K)) (y : AdelicGLn.FiniteAdelicGL K n), finAt w (finEmb K n y) = AdelicGLn.finiteRestrictedEquiv K n y w` using `fun w y => rfl`. Establish `a : ∀ (u w : HeightOneSpectrum (𝓞 K)) x, AdelicGLn.finiteRestrictedEquiv K n (AdelicGLn.localEmbedding u x) w = Pi.mulSingle (M` using `fun t : HeightOneSpectrum (𝓞 K) => GL (Fin n) (t.adicCompletion K)) u x w := by`. Introduce `u w x`. Express the relevant statement in the definitionally equal form `AdelicGLn.finiteRestrictedEquiv K n ((AdelicGLn.finiteRestrictedEquiv K n).symm _) w = _`.
+
+Rewrite using `[ContinuousMulEquiv.apply_symm_apply]`. Conclude with `RestrictedProduct.coe_mulSingle_apply _ _ _ _`. Establish `c : ∀ (h : AdelicGLn.FiniteAdelicGL K n), finAt v (finEmb K n h) = 1 → ∀ x, AdelicGLn.localEmbedding v x * h = h * AdelicGLn.localEmbedding v x`. Introduce `h hh x`. Apply `(AdelicGLn.finiteRestrictedEquiv K n).injective` to reduce the goal to its premises.
+
+Use `DFunLike.ext _ _ fun w => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, RestrictedProduct.mul_apply, RestrictedProduct.mul_apply, a]`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[← e, hh, mul_one, one_mul]`.
+
+Rewrite using `[Pi.mulSingle_eq_of_ne hw, mul_one, one_mul]`. Use `⟨(AdelicGLn.finiteRestrictedEquiv K n).symm.continuous.comp (cont_mulSingle _ v), fun x => ?_, fun w hw x => ?_, fun w hw x y => c _ ?_ x, c⟩` and prove the remaining obligations. Rewrite using `[e, a, Pi.mulSingle_eq_same]`. Rewrite using `[e, a, Pi.mulSingle_eq_of_ne hw]`. Rewrite using `[e, a, Pi.mulSingle_eq_of_ne hw.symm]`.
+-/
 theorem UpperTheory.ConvolutionTheory.Tf.locEmb :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (v : HeightOneSpectrum (𝓞 K)),
       Continuous (AdelicGLn.localEmbedding (K := K) (n := n) v) ∧

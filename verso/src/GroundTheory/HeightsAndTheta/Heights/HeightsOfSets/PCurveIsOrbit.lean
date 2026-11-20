@@ -17,6 +17,9 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι] {n : ι → ℕ}
 
 attribute [local instance] MvPolynomial.weightedGradedAlgebra
 
+/- English proof (translation)
+Take `⟨S, hS, rfl⟩` from `hW`. Establish `hh : (Ideal.span S).IsHomogeneous (weightedHomogeneousSubmodule ℤ (coordDeg n))` using `Ideal.homogeneous_span _ _ fun g hg ↦ by`. Take `⟨a, ha⟩` from `hS g hg`. Conclude with `⟨a, (mem_weightedHomogeneousSubmodule _ _ _ _).mpr ((geoMultiHomog_iff g a).mp ha)⟩`. Conclude with `(mem_iff_weightedHomogeneousComponent_mem _ _ hh f).mp hf m`.
+-/
 theorem component_mem {W : Ideal (MvPolynomial (Coord n) ℤ)}
     (hW : Geo.IsMultiHomogIdeal (ι := blockIdx n) W) {f : MvPolynomial (Coord n) ℤ} (hf : f ∈ W)
     (m : ι → ℕ) : weightedHomogeneousComponent (coordDeg n) m f ∈ W := by
@@ -38,6 +41,9 @@ def toArithVariety {W : Ideal (MvPolynomial (Coord n) ℤ)}
     have h : a ∈ W.comap (C : ℤ →+* MvPolynomial (Coord n) ℤ) := ha
     rwa [hW.2.2.1, Ideal.mem_bot] at h
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `Ideal.exists_maximal B`. Set `` to `Ideal.Quotient.field m`. Establish `: Algebra.FiniteType ℚ (B ⧸ m)` using `Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ ℚ m) (Ideal.Quotient.mkₐ_surjective ℚ m)`. Establish `: Module.Finite ℚ (B ⧸ m)` using `finite_of_finite_type_of_isJacobsonRing ℚ (B ⧸ m)`. Conclude with `⟨(IsAlgClosed.lift : B ⧸ m →ₐ[ℚ] AlgebraicClosure ℚ).comp (Ideal.Quotient.mkₐ ℚ m)⟩`.
+-/
 theorem exists_algHom_algebraicClosure (B : Type*) [CommRing B] [Nontrivial B] [Algebra ℚ B]
     [Algebra.FiniteType ℚ B] : Nonempty (B →ₐ[ℚ] AlgebraicClosure ℚ) := by
   obtain ⟨m, hm⟩ := Ideal.exists_maximal B
@@ -47,6 +53,13 @@ theorem exists_algHom_algebraicClosure (B : Type*) [CommRing B] [Nontrivial B] [
   have : Module.Finite ℚ (B ⧸ m) := finite_of_finite_type_of_isJacobsonRing ℚ (B ⧸ m)
   exact ⟨(IsAlgClosed.lift : B ⧸ m →ₐ[ℚ] AlgebraicClosure ℚ).comp (Ideal.Quotient.mkₐ ℚ m)⟩
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Take `⟨f, hfW', hfW⟩` from `SetLike.exists_of_lt (lt_of_le_of_ne hle hne)`. Establish `hr : Ideal.Quotient.mk W f ∈ nonZeroDivisors (R ⧸ W)` using `mem_nonZeroDivisors_of_ne_zero (by rwa [ne_eq, Ideal.Quotient.eq_zero_iff_mem])`. Establish `h1` using `ringKrullDim_quotient_succ_le_of_nonZeroDivisor hr`. Establish `hg : ∀ a ∈ Ideal.span {Ideal.Quotient.mk W f}, Ideal.Quotient.factor hle a = 0`.
+
+Introduce `a ha`. Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.mp ha`. Rewrite using `[map_mul, Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem.mpr hfW', mul_zero]`. Establish `h2 : ringKrullDim (R ⧸ W') ≤ ringKrullDim ((R ⧸ W) ⧸ Ideal.span {Ideal.Quotient.mk W f})` using `ringKrullDim_le_of_surjective _ (Ideal.Quotient.lift_surjective_of_surjective _ hg (Ideal.Quotient.factor_surjective hle))`. Establish `h3` using `(add_le_add_left h2 1).trans h1`.
+
+Rewrite `h3` using `[hW, hW']`. Establish `h4 : ((d + 1 : ℕ) : WithBot ℕ∞) ≤ ((d : ℕ) : WithBot ℕ∞)` using `by exact_mod_cast h3`. Establish `h5 : d + 1 ≤ d` using `by exact_mod_cast h4`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem eq_of_le_of_ringKrullDim_eq {R : Type*} [CommRing R] {W W' : Ideal R} [W.IsPrime]
     (hle : W ≤ W') {d : ℕ} (hW : ringKrullDim (R ⧸ W) = d) (hW' : ringKrullDim (R ⧸ W') = d) :
     W = W' := by
@@ -68,6 +81,11 @@ theorem eq_of_le_of_ringKrullDim_eq {R : Type*} [CommRing R] {W W' : Ideal R} [W
   have h5 : d + 1 ≤ d := by exact_mod_cast h4
   omega
 
+/- English proof (translation)
+Introduce `ι _ _ n W hW`. Set `P` to `toArithVariety hW`. Take `⟨c, hc⟩` from `P.exists_chart`. Take `⟨ψ⟩` from `exists_algHom_algebraicClosure (P.ChartAlg c)`. Establish `hx` using `(mem_points_iff_le_orbitIdeal P _).mp (P.chartPoint_mem c hc ψ)`.
+
+Use `⟨P.chartPoint c ψ, hx.1, ?_⟩` and prove the remaining obligations. Establish `: Nonempty ι` using `hW.1`. Establish `: W.IsPrime` using `hW.2.1.1`. Conclude with `eq_of_le_of_ringKrullDim_eq hx.2 hW.2.2.2 (OrbitCurve.full ι n _ hx.1).2.2.2`.
+-/
 theorem full : CurveIsOrbit.Statement := by
   intro ι _ _ n W hW
   let P := toArithVariety hW

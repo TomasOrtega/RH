@@ -26,29 +26,44 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Proceed by induction on `E with`. Consider the case `nil => rfl`. Consider the case `cons a l ih => rw [List.map_cons, Scheme.IdealSheafData.comap_id, ih]`.
+-/
 theorem map_comap_id (X : Scheme.{u}) (E : List X.IdealSheafData) :
     E.map (fun D => D.comap (𝟙 X)) = E := by
   induction E with
   | nil => rfl
   | cons a l ih => rw [List.map_cons, Scheme.IdealSheafData.comap_id, ih]
 
+/- English proof (translation)
+Rewrite using `[Scheme.IdealSheafData.comap_id, heq]`.
+-/
 theorem get_eq_comap_id {X : Scheme.{u}} (E₁ E₂ : List X.IdealSheafData) (j₁ j₂ : ℕ)
     (hj₁ : j₁ < E₁.length) (hj₂ : j₂ < E₂.length)
     (heq : E₁.get ⟨j₁, hj₁⟩ = E₂.get ⟨j₂, hj₂⟩) :
     E₂.get ⟨j₂, hj₂⟩ = (E₁.get ⟨j₁, hj₁⟩).comap (𝟙 X) := by
   rw [Scheme.IdealSheafData.comap_id, heq]
 
+/- English proof (translation)
+Rewrite using `[Scheme.IdealSheafData.comap_id]`. Conclude with `h`.
+-/
 private theorem eq_comap_id_of_eq {X : Scheme.{u}} {A B : X.IdealSheafData} (h : A = B) :
     A = B.comap (𝟙 X) := by
   rw [Scheme.IdealSheafData.comap_id]
   exact h
 
+/- English proof (translation)
+Rewrite using `[map_comap_id]`. Conclude with `h`.
+-/
 private theorem sameNontrivialBoundary_map_comap_id {X : Scheme.{u}} {A B : List X.IdealSheafData}
     (h : MarkedIdealWithBoundary.SameNontrivialBoundary A B) :
     MarkedIdealWithBoundary.SameNontrivialBoundary A (B.map fun D => D.comap (𝟙 X)) := by
   rw [map_comap_id]
   exact h
 
+/- English proof (translation)
+Proceed by induction on `E₁ with`. Consider the case `nil => rfl`. Consider the case `cons a l ih => exact ih _`.
+-/
 private theorem get_append_cons_length {X : Scheme.{u}} (E₁ : List X.IdealSheafData)
     (D : X.IdealSheafData) (E₂ : List X.IdealSheafData)
     (h : E₁.length < (E₁ ++ D :: E₂).length) :
@@ -57,6 +72,9 @@ private theorem get_append_cons_length {X : Scheme.{u}} (E₁ : List X.IdealShea
   | nil => rfl
   | cons a l ih => exact ih _
 
+/- English proof (translation)
+Proceed by induction on `E₁ with`. Consider the case `nil => rfl`. Consider the case `cons a l ih => simp [ih]`.
+-/
 private theorem eraseIdx_append_cons_length {X : Scheme.{u}} (E₁ : List X.IdealSheafData)
     (D : X.IdealSheafData) (E₂ : List X.IdealSheafData) :
     (E₁ ++ D :: E₂).eraseIdx E₁.length = E₁ ++ E₂ := by
@@ -64,6 +82,15 @@ private theorem eraseIdx_append_cons_length {X : Scheme.{u}} (E₁ : List X.Idea
   | nil => rfl
   | cons a l ih => simp [ih]
 
+/- English proof (translation)
+Unfold `IsStrictPullbackBlowupSeq at h`. Take `⟨hlen, σ, h0, hpb, hc⟩` from `h`. Establish `hiso : ∀ (i : ℕ) (hi : i ≤ A.length), IsIso (σ i hi)`. Introduce `i`. Proceed by induction on `i with`.
+
+Consider the case `zero`. Introduce `hi`. Establish `hh : σ 0 hi = A.isoZero.hom ≫ B.isoZero.inv`. Rewrite using `[Iso.eq_comp_inv]`. Simplify using `using h0`.
+
+Rewrite using `[hh]`. Use `infer_instance`. Consider the case `succ k ih`. Introduce `hi`. Establish `hk : k < A.length` using `hi`.
+
+Conclude with `(hpb k hk).isIso_fst_of_isIso (ih (le_of_lt hk))`. Unfold `SequenceOfBlowups.Isomorphic`. Conclude with `⟨hlen, fun i hi => @asIso Scheme _ _ _ (σ i hi) (hiso i hi), by simpa using h0, fun i hi => (hpb i hi).w, fun i hi => (hc i hi).symm⟩`.
+-/
 private theorem isomorphic_of_isStrictPullbackAlongId {X : Scheme.{u}} (A B : SequenceOfBlowups X)
     (h : IsStrictPullbackBlowupSeq (𝟙 X) A B) : A.Isomorphic B := by
   unfold IsStrictPullbackBlowupSeq at h
@@ -88,6 +115,9 @@ private theorem isomorphic_of_isStrictPullbackAlongId {X : Scheme.{u}} (A B : Se
 
 namespace DivisorReduction
 
+/- English proof (translation)
+Rewrite using `[containedComponentsIdeal_eq_componentsInOrderLocusIdeal (T.withBoundary L₁) j₁ hj₁, containedComponentsIdeal_eq_componentsInOrderLocusIdeal (T.withBoundary L₂) j₂ hj₂]`. Use `show componentsInOrderLocusIdeal T.ideal T.mult (L₁.get ⟨j₁, hj₁⟩) = componentsInOrderLocusIdeal T.ideal T.mult (L₂.get ⟨j₂, hj₂⟩)`. Rewrite using `[heq]`.
+-/
 theorem containedComponentsIdeal_withBoundary_congr (T : MarkedIdealWithBoundary.{u})
     (L₁ L₂ : List T.scheme.IdealSheafData) (j₁ : ℕ) (hj₁ : j₁ < L₁.length) (j₂ : ℕ)
     (hj₂ : j₂ < L₂.length) (heq : L₁.get ⟨j₁, hj₁⟩ = L₂.get ⟨j₂, hj₂⟩) :
@@ -115,6 +145,9 @@ structure BoundaryReindexingInvariance : Prop where
         (List.take (L₂.length - 1) ((lowerBoundaryAfterBlowup (T.withBoundary L₂) j₂ hj₂).eraseIdx j₂))
         (List.take (L₁.length - 1) ((lowerBoundaryAfterBlowup (T.withBoundary L₁) j₁ hj₁).eraseIdx j₁))
 
+/- English proof (translation)
+Rewrite `hV₂`, `hd₂`, the goal using `[← hid]`. Establish `hBE' : MarkedIdealWithBoundary.SameNontrivialBoundary ((restrictToBoundaryDivisor S j hj I₀ E₀).pullbackAlong D'.subscheme (D'.subschemeι ≫ S.structMap) ψ).boundary (List.map (fun Dd => Dd.comap D'.subschemeι) F)` using `hBE`. Establish `hVp : (((restrictToBoundaryDivisor S j hj I₀ E₀).pullbackAlong D'.subscheme (D'.subschemeι ≫ S.structMap) ψ).withBoundary (List.map (fun Dd => Dd.comap D'.subschemeι) F)).IsAdmissible` using `hV₂`. Establish `hdp : (((restrictToBoundaryDivisor S j hj I₀ E₀).pullbackAlong D'.subscheme (D'.subschemeι ≫ S.structMap) ψ).withBoundary (List.map (fun Dd => Dd.comap D'.subschemeι) F)).krullDimSucc < n` using `hd₂`. Conclude with `hL.smooth_pullback_strict (restrictToBoundaryDivisor S j hj I₀ E₀) hV₁ hd₁ D'.subscheme (D'.subschemeι ≫ S.structMap) ψ hq (List.map (fun Dd => Dd.comap D'.subschemeι) F) hBE' hVp hdp`.
+-/
 private theorem isStrictPullbackBlowupSeq_restrictToBoundaryDivisor_of_smooth (n : ℕ) (L O : PrincipalizationAssignment.{u})
     (hL : IsMaxOrderReduction (fun d => d < n) L O)
     (S : MarkedIdealWithBoundary.{u}) (j : ℕ) (hj : j < S.boundary.length)
@@ -155,6 +188,13 @@ private theorem isStrictPullbackBlowupSeq_restrictToBoundaryDivisor_of_smooth (n
     (D'.subschemeι ≫ S.structMap) ψ hq (List.map (fun Dd => Dd.comap D'.subschemeι) F)
     hBE' hVp hdp
 
+/- English proof (translation)
+Establish `hD : L₂.get ⟨j₂, hj₂⟩ = (L₁.get ⟨j₁, hj₁⟩).comap (𝟙 T.scheme)` using `get_eq_comap_id L₁ L₂ j₁ j₂ hj₁ hj₂ heq`. Establish `hsmid : AlgebraicGeometry.Smooth (𝟙 T.scheme)` using `hsh.smooth_id T.scheme`. Establish `hsuid : AlgebraicGeometry.Surjective (𝟙 T.scheme)` using `hsh.surjective_id T.scheme`. Establish `hsq` using `isPullback_divisorPullbackMap hbc (T.withBoundary L₁) j₁ hj₁ I₀ E₀ T.scheme (𝟙 T.scheme) (L₂.get ⟨j₂, hj₂⟩) hD`. Establish `hsmo : AlgebraicGeometry.Smooth (divisorPullbackMap (T.withBoundary L₁) j₁ hj₁ I₀ E₀ T.scheme (𝟙 T.scheme) (L₂.get ⟨j₂, hj₂⟩) hD)` using `hbc.smooth_of_isPullback T.scheme T.scheme ((T.withBoundary L₁).boundary.get ⟨j₁, hj₁⟩).subscheme (L₂.get ⟨j₂, hj₂⟩).subscheme ((T.withBoundary L₁).boundary.get ⟨j₁, hj₁⟩).subschemeι (L₂.get ⟨j₂, hj₂⟩).subschemeι (𝟙 T.scheme) (divisorPullbackMap (T.withBoundary L₁) j₁ hj₁ I₀ E₀ T …`.
+
+Establish `hsur : AlgebraicGeometry.Surjective (divisorPullbackMap (T.withBoundary L₁) j₁ hj₁ I₀ E₀ T.scheme (𝟙 T.scheme) (L₂.get ⟨j₂, hj₂⟩) hD)` using `@surjective_snd_of_isPullback_of_surjective T.scheme T.scheme ((T.withBoundary L₁).boundary.get ⟨j₁, hj₁⟩).subscheme (L₂.get ⟨j₂, hj₂⟩).subscheme ((T.withBoundary L₁).boundary.get ⟨j₁, hj₁⟩).subschemeι (L₂.get ⟨j₂, hj₂⟩).subschemeι (𝟙 T.scheme) (divisorPullbackMap (T.withBoundary …`. Establish `hw : (divisorPullbackMap (T.withBoundary L₁) j₁ hj₁ I₀ E₀ T.scheme (𝟙 T.scheme) (L₂.get ⟨j₂, hj₂⟩) hD) ≫ ((T.withBoundary L₁).boundary.get ⟨j₁, hj₁⟩).subschemeι = (L₂.get ⟨j₂, hj₂⟩).subschemeι`. Simplify using `using hsq.w`. Establish `h2 : ((divisorPullbackMap (T.withBoundary L₁) j₁ hj₁ I₀ E₀ T.scheme (𝟙 T.scheme) (L₂.get ⟨j₂, hj₂⟩) hD) ≫ ((T.withBoundary L₁).boundary.get ⟨j₁, hj₁⟩).subschemeι) ≫ (T.withBoundary L₁).structMap = (L₂.get ⟨j₂, hj₂⟩).subschemeι ≫ (T.withBoundary L₁).structMap` using `congrArg (fun f => f ≫ (T.withBoundary L₁).structMap) hw`. Establish `hq : (divisorPullbackMap (T.withBoundary L₁) j₁ hj₁ I₀ E₀ T.scheme (𝟙 T.scheme) (L₂.get ⟨j₂, hj₂⟩) hD) ≫ (restrictToBoundaryDivisor (T.withBoundary L₁) j₁ hj₁ I₀ E₀).structMap = (L₂.get ⟨j₂, hj₂⟩).subschemeι ≫ (T.withBoundary L₁).structMap` using `(Category.assoc _ _ _).symm.trans h2`.
+
+Use `@isStrictPullbackBlowupSeq_restrictToBoundaryDivisor_of_smooth n L O hL (T.withBoundary L₁) j₁ hj₁ I₀ E₀ (L₂.get ⟨j₂, hj₂⟩) (divisorPullbackMap (T.withBoundary L₁) j₁ hj₁ I₀ E₀ T.scheme (𝟙 T.scheme) (L₂.get ⟨j₂, hj₂⟩) hD) hsmo hsur hq I₀' (List.take (L₂.length - 1) (E₀'.eraseIdx …` and prove the remaining obligations. Rewrite using `[hI]`. Conclude with `comap_subschemeMapOfComap (𝟙 T.scheme) ((T.withBoundary L₁).boundary.get ⟨j₁, hj₁⟩) (L₂.get ⟨j₂, hj₂⟩) hD I₀`. Conclude with `(sameNontrivialBoundary_comap_subschemeι (𝟙 T.scheme) ((T.withBoundary L₁).boundary.get ⟨j₁, hj₁⟩) (L₂.get ⟨j₂, hj₂⟩) hD (List.take (L₁.length - 1) (E₀.eraseIdx j₁)) (List.take (L₂.length - 1) (E₀'.eraseIdx j₂)) hE).symm`.
+-/
 theorem isStrictPullbackBlowupSeq_restrictToBoundaryDivisor_of_get_eq
     (hbc : SmoothPullbackCompatibility.{u}) (hsh : BoundaryReindexingInvariance.{u})
     (n : ℕ) (L O : PrincipalizationAssignment.{u}) (hL : IsMaxOrderReduction (fun d => d < n) L O)
@@ -227,6 +267,17 @@ theorem isStrictPullbackBlowupSeq_restrictToBoundaryDivisor_of_get_eq
       (List.take (L₁.length - 1) (E₀.eraseIdx j₁))
       (List.take (L₂.length - 1) (E₀'.eraseIdx j₂)) hE).symm
 
+/- English proof (translation)
+Establish `hZ₂ : containedComponentsIdeal (T.withBoundary L₂) j₂ hj₂ = ⊤`. Rewrite using `[← containedComponentsIdeal_withBoundary_congr T L₁ L₂ j₁ hj₁ j₂ hj₂ heq]`. Conclude with `hZ`. Establish `hlen₁ : (L₁.eraseIdx j₁).length = L₁.length - 1`. Simplify using `[List.length_eraseIdx, hj₁]`.
+
+Establish `hlen₂ : (L₂.eraseIdx j₂).length = L₂.length - 1`. Simplify using `[List.length_eraseIdx, hj₂]`. Establish `ht₁ : List.take (L₁.length - 1) (L₁.eraseIdx j₁) = L₁.eraseIdx j₁`. Rewrite using `[← hlen₁]`. Simplify using the standard rewrite rules.
+
+Establish `ht₂ : List.take (L₂.length - 1) (L₂.eraseIdx j₂) = L₂.eraseIdx j₂`. Rewrite using `[← hlen₂]`. Simplify using the standard rewrite rules. Establish `hI : lowerIdealWithoutBlowup (T.withBoundary L₂) = (lowerIdealWithoutBlowup (T.withBoundary L₁)).comap (𝟙 T.scheme)` using `(Scheme.IdealSheafData.comap_id _).symm`. Establish `hE : MarkedIdealWithBoundary.SameNontrivialBoundary (List.take (L₂.length - 1) ((lowerBoundaryWithoutBlowup (T.withBoundary L₂)).eraseIdx j₂)) (List.map (fun D => D.comap (𝟙 T.scheme)) (List.take (L₁.length - 1) ((lowerBoundaryWithoutBlowup (T.withBoundary L₁)).eraseIdx j₁)))`.
+
+Rewrite using `[lowerBoundaryWithoutBlowup_eq (T.withBoundary L₂), lowerBoundaryWithoutBlowup_eq (T.withBoundary L₁)]`. Use `show MarkedIdealWithBoundary.SameNontrivialBoundary (List.take (L₂.length - 1) (L₂.eraseIdx j₂)) (List.map (fun D => D.comap (𝟙 T.scheme)) (List.take (L₁.length - 1) (L₁.eraseIdx j₁)))`. Rewrite using `[ht₁, ht₂, map_comap_id]`. Conclude with `hBE`. Establish `hVa : (restrictToDivisor (T.withBoundary L₁) j₁ hj₁).IsAdmissible` using `hfacts.valid_lowerTop (T.withBoundary L₁) hV₁ hO₁ hDB₁ j₁ hj₁ hZ`.
+
+Establish `hVb : (restrictToDivisor (T.withBoundary L₂) j₂ hj₂).IsAdmissible` using `hfacts.valid_lowerTop (T.withBoundary L₂) hV₂ hO₂ hDB₂ j₂ hj₂ hZ₂`. Establish `hda : (restrictToDivisor (T.withBoundary L₁) j₁ hj₁).krullDimSucc < n` using `lt_of_lt_of_le (hfacts.lowerTriple_dim_lt (T.withBoundary L₁) hV₁ hcs₁ j₁ hj₁ (lowerIdealWithoutBlowup (T.withBoundary L₁)) (lowerBoundaryWithoutBlowup (T.withBoundary L₁))) hdim₁`. Establish `hdb : (restrictToDivisor (T.withBoundary L₂) j₂ hj₂).krullDimSucc < n` using `lt_of_lt_of_le (hfacts.lowerTriple_dim_lt (T.withBoundary L₂) hV₂ hcs₂ j₂ hj₂ (lowerIdealWithoutBlowup (T.withBoundary L₂)) (lowerBoundaryWithoutBlowup (T.withBoundary L₂))) hdim₂`. Conclude with `isStrictPullbackBlowupSeq_restrictToBoundaryDivisor_of_get_eq hbc hsh n L O hL T L₁ L₂ j₁ hj₁ j₂ hj₂ heq (lowerIdealWithoutBlowup (T.withBoundary L₁)) (lowerBoundaryWithoutBlowup (T.withBoundary L₁)) (lowerIdealWithoutBlowup (T.withBoundary L₂)) (lowerBoundaryWithoutBlowup (T.wit …`.
+-/
 theorem isStrictPullbackBlowupSeq_restrictToDivisor_of_get_eq_of_eq_top
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian)
@@ -291,6 +342,11 @@ theorem isStrictPullbackBlowupSeq_restrictToDivisor_of_get_eq_of_eq_top
     (lowerIdealWithoutBlowup (T.withBoundary L₂)) (lowerBoundaryWithoutBlowup (T.withBoundary L₂))
     hI hE hVa hda hVb hdb
 
+/- English proof (translation)
+Establish `hZ₂ : containedComponentsIdeal (T.withBoundary L₂) j₂ hj₂ ≠ ⊤`. Rewrite using `[← containedComponentsIdeal_withBoundary_congr T L₁ L₂ j₁ hj₁ j₂ hj₂ heq]`. Conclude with `hZ`. Establish `hI` using `eq_comap_id_of_eq (hsh.lowerIdealPre_shift T L₁ L₂ j₁ hj₁ j₂ hj₂ heq)`. Establish `hE` using `sameNontrivialBoundary_map_comap_id (hsh.boundaryEquiv_restrictedBoundary_reindex T L₁ L₂ j₁ hj₁ j₂ hj₂ heq hBE)`.
+
+Establish `hVa : (restrictTwistedToDivisor (T.withBoundary L₁) j₁ hj₁).IsAdmissible` using `hfacts.valid_lowerPre (T.withBoundary L₁) hV₁ hO₁ hDB₁ j₁ hj₁ hZ`. Establish `hVb : (restrictTwistedToDivisor (T.withBoundary L₂) j₂ hj₂).IsAdmissible` using `hfacts.valid_lowerPre (T.withBoundary L₂) hV₂ hO₂ hDB₂ j₂ hj₂ hZ₂`. Establish `hda : (restrictTwistedToDivisor (T.withBoundary L₁) j₁ hj₁).krullDimSucc < n` using `lt_of_lt_of_le (hfacts.lowerTriple_dim_lt (T.withBoundary L₁) hV₁ hcs₁ j₁ hj₁ (lowerIdealAfterBlowup (T.withBoundary L₁) j₁ hj₁) (lowerBoundaryAfterBlowup (T.withBoundary L₁) j₁ hj₁)) hdim₁`. Establish `hdb : (restrictTwistedToDivisor (T.withBoundary L₂) j₂ hj₂).krullDimSucc < n` using `lt_of_lt_of_le (hfacts.lowerTriple_dim_lt (T.withBoundary L₂) hV₂ hcs₂ j₂ hj₂ (lowerIdealAfterBlowup (T.withBoundary L₂) j₂ hj₂) (lowerBoundaryAfterBlowup (T.withBoundary L₂) j₂ hj₂)) hdim₂`. Conclude with `isStrictPullbackBlowupSeq_restrictToBoundaryDivisor_of_get_eq hbc hsh n L O hL T L₁ L₂ j₁ hj₁ j₂ hj₂ heq (lowerIdealAfterBlowup (T.withBoundary L₁) j₁ hj₁) (lowerBoundaryAfterBlowup (T.withBoundary L₁) j₁ hj₁) (lowerIdealAfterBlowup (T.withBoundary L₂) j₂ hj₂) (lowerBoundaryAfter …`.
+-/
 theorem isStrictPullbackBlowupSeq_restrictTwistedToDivisor_of_get_eq
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian)
@@ -352,6 +408,13 @@ structure StrictBoundaryReindexingInvariance (hres : FunctorialResolution.Blowup
         (((canonicalAlgorithmRules hres).divisorFamily L j₂ (T.withBoundary L₂)).toSequenceOfBlowups)
         (((canonicalAlgorithmRules hres).divisorFamily L j₁ (T.withBoundary L₁)).toSequenceOfBlowups)
 
+/- English proof (translation)
+Use `⟨?_⟩` and prove the remaining obligations. Introduce `T hdim hO hft hbal E₁ E₂ E₁' E₂' D hBE1 hBE2 hV1 hV2`. Establish `hlen1 : E₁.length < (E₁ ++ D :: E₂).length` using `by simp`. Establish `hlen2 : E₁'.length < (E₁' ++ D :: E₂').length` using `by simp`. Establish `hget : (E₁' ++ D :: E₂').get ⟨E₁'.length, hlen2⟩ = (E₁ ++ D :: E₂).get ⟨E₁.length, hlen1⟩`.
+
+Rewrite using `[get_append_cons_length, get_append_cons_length]`. Establish `hbe : MarkedIdealWithBoundary.SameNontrivialBoundary ((E₁ ++ D :: E₂).eraseIdx E₁.length) ((E₁' ++ D :: E₂').eraseIdx E₁'.length)`. Rewrite using `[eraseIdx_append_cons_length, eraseIdx_append_cons_length]`. Conclude with `hBE1.append hBE2`. Establish `hmain` using `hsh.isStrictPullbackSeq_divisorFamily (T.withBoundary (E₁' ++ D :: E₂')) hV2 hdim hO hbal (E₁' ++ D :: E₂') (E₁ ++ D :: E₂) E₁'.length hlen2 E₁.length hlen1 hget hbe hV2 hV1`.
+
+Conclude with `isomorphic_of_isStrictPullbackAlongId _ _ hmain`.
+-/
 theorem isBoundaryPositionInvariant_divisorFamily (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) (n : ℕ)
     (L : PrincipalizationAssignment.{u}) (hsh : StrictBoundaryReindexingInvariance hres n L) :
     IsBoundaryPositionInvariant (fun d => d ≤ n) fun j => (canonicalAlgorithmRules hres).divisorFamily L j := by

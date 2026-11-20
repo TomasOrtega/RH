@@ -11,6 +11,9 @@ section
 
 variable (C0 CE1 CE2 : ℝ) (X : Loc) [NeZero X.m] (j : Fin (numSeg X.TT))
 
+/- English proof (translation)
+Introduce `ω ωL hB`. Take `⟨h1, h2, h3⟩` from `hB`. Establish `hw` using `ssz_wh O X.p _ _ _ mm b ω ωL h1 h2 h3 u hu (mem_support_iff.1 hμ)`. Rewrite `hw` using `[Finsupp.weight_apply, Finsupp.sum_fintype _ (fun i c => c • ω i) (fun _ => zero_smul _ _)]`. Simplify `hw` using `[smul_eq_mul]`.
+-/
 theorem hom_of_ssz {O : Type} [CommRing O] [IsDomain O] (b : SegBlock (segS X.TT j) X.m) (mm : ℝ)
     (u : MvPolynomial (BV C0 CE1 CE2 X j) (KK O)) (hu : u ∈ sszB O C0 CE1 CE2 X j mm b) (μ : BV C0 CE1 CE2 X j →₀ ℕ)
     (hμ : μ ∈ u.support) : HomExp C0 CE1 CE2 X j b μ := by
@@ -20,6 +23,41 @@ theorem hom_of_ssz {O : Type} [CommRing O] [IsDomain O] (b : SegBlock (segS X.TT
   rw [Finsupp.weight_apply, Finsupp.sum_fintype _ (fun i c => c • ω i) (fun _ => zero_smul _ _)] at hw
   simpa [smul_eq_mul] using hw
 
+/- English proof (translation)
+Establish `hrz : ∀ i c, b.rz i c = b'.rz i c`. Introduce `i c`. Establish `h1` using `ioExp_mod C0 CE1 CE2 X j b hb μ i true c`. Establish `h2` using `ioExp_mod C0 CE1 CE2 X j b' hb' μ' i true c`. Rewrite `h1` using `[he, if_pos rfl]`.
+
+Rewrite `h2` using `[if_pos rfl]`. Conclude with `h1.symm.trans h2`. Establish `hry : ∀ i c, b.ry i c = b'.ry i c`. Introduce `i c`. Establish `h1` using `ioExp_mod C0 CE1 CE2 X j b hb μ i false c`.
+
+Establish `h2` using `ioExp_mod C0 CE1 CE2 X j b' hb' μ' i false c`. Rewrite `h1` using `[he, if_neg Bool.false_ne_true]`. Rewrite `h2` using `[if_neg Bool.false_ne_true]`. Conclude with `h1.symm.trans h2`. Establish `hrz' : b.rz = b'.rz` using `funext fun i => funext fun c => hrz i c`.
+
+Establish `hry' : b.ry = b'.ry` using `funext fun i => funext fun c => hry i c`. Establish `hA : ∀ i, coarseA X.p (X.seg C0 CE1 CE2 j) b i = coarseA X.p (X.seg C0 CE1 CE2 j) b' i`. Introduce `i`. Unfold `coarseA`. Rewrite using `[hrz']`.
+
+Establish `hC : ∀ i, coarseC X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) b i = coarseC X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) b' i`. Introduce `i`. Unfold `coarseC`. Rewrite using `[hry']`. Establish `hS : ∀ i : Fin (segS X.TT j), (i : ℕ) < (X.seg C0 CE1 CE2 j).sigma → b.w i = b'.w i ∧ b.sg i = b'.sg i`.
+
+Introduce `i hi`. Establish `hP : 0 < (X.seg C0 CE1 CE2 j).P X.p i` using `pow_pos hp _`. Establish `k1` using `hb.2.2.1 i hi`. Establish `k1'` using `hb'.2.2.1 i hi`. Establish `v1` using `congrArg (fun e => e ((topOdd X j i, true), (0 : Fin (X.m + 1)))) he`.
+
+Establish `v2` using `congrArg (fun e => e ((topOdd X j i, false), (0 : Fin (X.m + 1)))) he`. Simplify using `only [ioExp, Finsupp.add_apply] at v1 v2`. Rewrite `v1` using `[coarse_spec C0 CE1 CE2 X j μ i true hi, coarse_spec C0 CE1 CE2 X j μ' i true hi, add_zero, add_zero, baseExp_odd, baseExp_odd, if_pos rfl, if_pos rfl, if_pos (⟨hi, rfl⟩ : _ ∧ _), if_pos (⟨hi, rfl⟩ : _ ∧ _), if_pos rfl, if_pos rfl, hrz i 0, hA i]`. Rewrite `v2` using `[coarse_spec C0 CE1 CE2 X j μ i false hi, coarse_spec C0 CE1 CE2 X j μ' i false hi, add_zero, add_zero, baseExp_odd, baseExp_odd, if_neg Bool.false_ne_true, if_neg Bool.false_ne_true, if_pos (⟨hi, rfl⟩ : _ ∧ _), if_pos (⟨hi, rfl⟩ : _ ∧ _), if_neg Bool.false_ne_true, if_neg Bool.f …`. Establish `w1` using `Nat.eq_of_mul_eq_mul_left hP (Nat.add_left_cancel v1)`.
+
+Establish `w2` using `Nat.eq_of_mul_eq_mul_left hP (Nat.add_left_cancel v2)`. Establish `a1` using `k1.2.1`. Establish `a2` using `k1'.2.1`. Rewrite `a1` using `[hA i]`. Conclude with `⟨by omega, w2⟩`.
+
+Establish `hbase : baseExp C0 CE1 CE2 X j b = baseExp C0 CE1 CE2 X j b'`. Unfold `baseExp`. Rewrite using `[hrz', hry']`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Use `split_ifs with hi`. Rewrite using `[(hS i hi).1, (hS i hi).2, hA i]`. Both sides reduce to the same expression. Establish `hμμ : μ = μ'`. Unfold `ioExp at he`.
+
+Rewrite `he` using `[hbase]`. Establish `h'` using `add_left_cancel he`. Use extensionality with `v0`. Use `DFunLike.congr_fun h' (symVar C0 CE1 CE2 X j v0)` as an intermediate fact. Rewrite `this` using `[coarse_eval, coarse_eval]`.
+
+Conclude with `Nat.eq_of_mul_eq_mul_left (symLev_pos C0 CE1 CE2 X hp j v0) this`. Substitute `hμμ` using the available equality. Establish `ho : ∀ l, b.o (uTop (X.seg C0 CE1 CE2 j) l) = b'.o (uTop (X.seg C0 CE1 CE2 j) l)`. Introduce `l`. Rewrite using `[← omB_ωo C0 CE1 CE2 X j b l, ← omB_ωo C0 CE1 CE2 X j b' l, ← hμ _ _ (ωo_bal C0 CE1 CE2 X j l), ← hμ' _ _ (ωo_bal C0 CE1 CE2 X j l)]`.
+
+Establish `hoP : b.oPlus = b'.oPlus`. Rewrite using `[← omB_ωp C0 CE1 CE2 X j b, ← omB_ωp C0 CE1 CE2 X j b', ← hμ _ _ (ωp_bal C0 CE1 CE2 X j), ← hμ' _ _ (ωp_bal C0 CE1 CE2 X j)]`. Establish `hofun : b.o = b'.o` using `funext fun i => by`. Distinguish the cases in `hi : (i : ℕ) < (X.seg C0 CE1 CE2 j).sigma`. Rewrite using `[(hb.2.2.1 i hi).1, (hb'.2.2.1 i hi).1]`.
+
+Establish `hl : (i : ℕ) - (X.seg C0 CE1 CE2 j).sigma < (X.seg C0 CE1 CE2 j).t`. Use `i.2` as an intermediate fact. Unfold `SegData.t`. Use linear arithmetic over natural numbers and integers. Establish `e : uTop (X.seg C0 CE1 CE2 j) ⟨(i : ℕ) - (X.seg C0 CE1 CE2 j).sigma, hl⟩ = i` using `Fin.ext (by show (X.seg C0 CE1 CE2 j).sigma + ((i : ℕ) - (X.seg C0 CE1 CE2 j).sigma) = i; omega)`.
+
+Rewrite using `[← e]`. Conclude with `ho _`. Establish `hwfun : b.w = b'.w` using `funext fun i => by`. Distinguish the cases in `hi : (i : ℕ) < (X.seg C0 CE1 CE2 j).sigma`. Conclude with `(hS i hi).1`.
+
+Rewrite using `[(hb.2.1 i (not_lt.1 hi)).2.2.1, (hb'.2.1 i (not_lt.1 hi)).2.2.1]`. Establish `hsgfun : b.sg = b'.sg` using `funext fun i => by`. Distinguish the cases in `hi : (i : ℕ) < (X.seg C0 CE1 CE2 j).sigma`. Conclude with `(hS i hi).2`. Rewrite using `[(hb.2.1 i (not_lt.1 hi)).2.2.2, (hb'.2.1 i (not_lt.1 hi)).2.2.2]`.
+
+Consider the cases of `b`. Consider the cases of `b'`. Simplify using `only at hrz' hry' hofun hwfun hsgfun hoP`. Rewrite using `[hrz', hry', hofun, hwfun, hsgfun, hoP]`.
+-/
 theorem sep (hp : 0 < X.p) (b b' : SegBlock (segS X.TT j) X.m)
     (hb : Kept X.p X.m (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) b)
     (hb' : Kept X.p X.m (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) b') (μ μ' : BV C0 CE1 CE2 X j →₀ ℕ)
@@ -113,6 +151,9 @@ theorem sep (hp : 0 < X.p) (b b' : SegBlock (segS X.TT j) X.m)
   simp only at hrz' hry' hofun hwfun hsgfun hoP
   rw [hrz', hry', hofun, hwfun, hsgfun, hoP]
 
+/- English proof (translation)
+Set `f : MvPolynomial (BV C0 CE1 CE2 X j) K →ₗ[K] MvPolynomial ((X.TT × Bool) × Fin (X.m + 1)) K` to `(LinearMap.mulLeft K (digitMon K C0 CE1 CE2 X j b * sTopMon K X.p C0 CE1 CE2 X j b)).comp (aeval (fun v => (MvPolynomial.X (symVar C0 CE1 CE2 X j v) : MvPolynomial ((X.TT × Bool) × Fin (X.m + 1)) K) ^ symLev X.p C0 CE1 CE2 X j v)).toLinearMap`. Establish `hf : ∀ t, ioBlock K X.p C0 CE1 CE2 X j b t = f t` using `fun _ => rfl`. Use `conv_lhs => rw [hf, ← t.support_sum_monomial_coeff, map_sum]`. Conclude with `Finset.sum_congr rfl fun μ _ => by rw [← hf, ioBlock_monomial]`.
+-/
 theorem ioBlock_eq_sum (K : Type) [Field K] (b : SegBlock (segS X.TT j) X.m) (t : MvPolynomial (BV C0 CE1 CE2 X j) K) :
     ioBlock K X.p C0 CE1 CE2 X j b t = ∑ μ ∈ t.support, monomial (ioExp C0 CE1 CE2 X j b μ) (t.coeff μ) := by
   let f : MvPolynomial (BV C0 CE1 CE2 X j) K →ₗ[K] MvPolynomial ((X.TT × Bool) × Fin (X.m + 1)) K :=
@@ -125,6 +166,13 @@ theorem ioBlock_eq_sum (K : Type) [Field K] (b : SegBlock (segS X.TT j) X.m) (t 
 
 end
 
+/- English proof (translation)
+Introduce `X _ O _ _ mm hD1 j b b' hb hb' hne s hs s' hs'`. Establish `hp : 0 < X.p` using `hD1.1.pos`. Rewrite using `[ioBlock_eq_sum C0 CE1 CE2 X j (KK O) b s, Formalism.MainNotions.G.GLWeightTheory.fock_form_finset_sum _ _ _ (support_sum)]`. Use `Finset.sum_eq_zero fun e he => ?_` and prove the remaining obligations. Take `⟨μ, hμ, he'⟩` from `Finset.mem_biUnion.1 he`.
+
+Establish `hem` using `support_monomial_subset he'`. Rewrite `hem` using `[Finset.mem_singleton]`. Substitute `hem` using the available equality. Establish `h0 : coeff (ioExp C0 CE1 CE2 X j b μ) (ioBlock (KK O) X.p C0 CE1 CE2 X j b' s') = 0`. Rewrite using `[ioBlock_eq_sum C0 CE1 CE2 X j (KK O) b' s', coeff_sum]`.
+
+Use `Finset.sum_eq_zero fun μ' hμ' => ?_` and prove the remaining obligations. Rewrite using `[coeff_monomial, if_neg]`. Introduce `h`. Conclude with `hne (sep C0 CE1 CE2 X j hp b' b hb' hb μ' μ (hom_of_ssz C0 CE1 CE2 X j b' mm s' hs' μ' hμ') (hom_of_ssz C0 CE1 CE2 X j b mm s hs μ hμ) h).symm`. Rewrite using `[h0, mul_zero, zero_mul]`.
+-/
 theorem orthAt (C0 CE1 CE2 : ℝ) : OrthAt C0 CE1 CE2 := by
   classical
   intro X _ O _ _ mm hD1 j b b' hb hb' hne s hs s' hs'

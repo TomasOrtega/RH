@@ -2,6 +2,11 @@ import Mathlib
 
 namespace GlobalTheory.PolynomialEvaluationMembership
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => intro x hx`. Simplify using `using hx`. Consider the case `succ n ih`. Introduce `x hx`.
+
+Rewrite using `[pow_succ, Module.End.mul_apply]`. Conclude with `ih _ (hW x hx)`.
+-/
 theorem pow_apply_mem {F V : Type} [Field F] [AddCommGroup V] [Module F V]
     (g : Module.End F V) (W : Submodule F V) (hW : ∀ x ∈ W, g x ∈ W) (n : ℕ) :
     ∀ x ∈ W, (g ^ n) x ∈ W := by
@@ -12,6 +17,11 @@ theorem pow_apply_mem {F V : Type} [Field F] [AddCommGroup V] [Module F V]
     rw [pow_succ, Module.End.mul_apply]
     exact ih _ (hW x hx)
 
+/- English proof (translation)
+Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq`. Introduce `x hx`. Rewrite using `[map_add, LinearMap.add_apply]`. Conclude with `W.add_mem (hp x hx) (hq x hx)`.
+
+Consider the case `monomial n a`. Introduce `x hx`. Rewrite using `[Polynomial.aeval_monomial, Module.End.mul_apply, Module.algebraMap_end_apply]`. Conclude with `W.smul_mem a (pow_apply_mem g W hW n x hx)`.
+-/
 theorem aeval_apply_mem {F V : Type} [Field F] [AddCommGroup V] [Module F V]
     (g : Module.End F V) (W : Submodule F V) (hW : ∀ x ∈ W, g x ∈ W) (p : Polynomial F) :
     ∀ x ∈ W, (Polynomial.aeval g p) x ∈ W := by

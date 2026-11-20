@@ -17,6 +17,11 @@ section Infinite
 
 variable {L : Type*} [Field L] [NumberField L] [IsGalois ℚ L]
 
+/- English proof (translation)
+Establish `hc : ComplexEmbedding.IsConj w.embedding (conjAt ℚ w)`. Distinguish the cases in `hw : w.IsReal`. Rewrite using `[conjAt_of_isReal hw]`. Conclude with `ComplexEmbedding.isConj_one_iff.2 (InfinitePlace.isReal_iff.1 hw)`. Conclude with `isConj_conjAt (InfinitePlace.isRamified_iff.2 ⟨InfinitePlace.not_isReal_iff_isComplex.1 hw, RationalIdeles.isReal_infinitePlace _⟩)`.
+
+Apply `w.embedding.injective` to reduce the goal to its premises. Rewrite using `[hc.eq, map_inv₀, ← starRingEnd_apply, ← Complex.inv_eq_conj]`. Conclude with `Complex.norm_eq_one_of_pow_eq_one (by rw [← map_pow, hζ, map_one]) hn`.
+-/
 theorem conjAt_apply_of_pow_eq_one (w : InfinitePlace L) {ζ : L} {n : ℕ} (hn : n ≠ 0)
     (hζ : ζ ^ n = 1) : conjAt ℚ w ζ = ζ⁻¹ := by
   have hc : ComplexEmbedding.IsConj w.embedding (conjAt ℚ w) := by
@@ -31,6 +36,9 @@ theorem conjAt_apply_of_pow_eq_one (w : InfinitePlace L) {ζ : L} {n : ℕ} (hn 
 
 variable (L) [IsMulCommutative (L ≃ₐ[ℚ] L)]
 
+/- English proof (translation)
+Take `⟨w'⟩` from `IdeleNorm.nonempty_infinitePlacesOver L w`. Rewrite using `[infiniteLocalSymbol_apply L w (RationalIdeles.isReal_infinitePlace w) w' x]`. Use `split_ifs`. Conclude with `conjAt_apply_of_pow_eq_one _ hn hζ`. Both sides reduce to the same expression.
+-/
 theorem infiniteLocalSymbol_apply_of_pow_eq_one (w : InfinitePlace ℚ) (x : w.Completionˣ) {ζ : L}
     {n : ℕ} (hn : n ≠ 0) (hζ : ζ ^ n = 1) :
     infiniteLocalSymbol L w x ζ =
@@ -42,6 +50,9 @@ theorem infiniteLocalSymbol_apply_of_pow_eq_one (w : InfinitePlace ℚ) (x : w.C
   · exact conjAt_apply_of_pow_eq_one _ hn hζ
   · rfl
 
+/- English proof (translation)
+Take `rfl : w = default` from `Subsingleton.elim _ _`. Rewrite using `[RationalIdeles.coe_realPart, RationalIdeles.realEquiv_apply]`. Both sides reduce to the same expression.
+-/
 theorem extensionEmbeddingOfIsReal_infiniteProj (w : InfinitePlace ℚ) (y : IdeleGroup ℚ) :
     InfinitePlace.Completion.extensionEmbeddingOfIsReal (RationalIdeles.isReal_infinitePlace w)
       (infiniteProj w y : w.Completion) = (RationalIdeles.realPart y : ℝ) := by
@@ -51,6 +62,9 @@ theorem extensionEmbeddingOfIsReal_infiniteProj (w : InfinitePlace ℚ) (y : Ide
 
 end Infinite
 
+/- English proof (translation)
+Use `⟨∏ᶠ i ∈ Set.univ \ (T : Set ι), f i, finprod_mem_induction (· ∈ H) H.one_mem (fun _ _ ↦ H.mul_mem) (fun i hi ↦ hT i hi.2), ?_⟩` and prove the remaining obligations. Rewrite using `[← finprod_mem_coe_finset, finprod_mem_mul_sdiff' (Set.subset_univ _) (by simpa using hf), finprod_mem_univ]`.
+-/
 theorem exists_finprod_eq_prod_mul {ι G : Type*} [CommGroup G] (H : Subgroup G) {f : ι → G}
     (hf : (Function.mulSupport f).Finite) (T : Finset ι) (hT : ∀ i ∉ T, f i ∈ H) :
     ∃ h ∈ H, ∏ᶠ i, f i = (∏ i ∈ T, f i) * h := by
@@ -63,6 +77,9 @@ section Symbol
 
 variable (L : Type*) [Field L] [NumberField L] [IsGalois ℚ L] [IsMulCommutative (L ≃ₐ[ℚ] L)]
 
+/- English proof (translation)
+Take `⟨h, hh, heq⟩` from `exists_finprod_eq_prod_mul (MulAction.stabilizer (L ≃ₐ[ℚ] L) ζ) (hasFiniteMulSupport_localSymbol L y) T fun v hv ↦ by`. Rewrite using `[MulAction.mem_stabilizer_iff, AlgEquiv.smul_def]`. Conclude with `hT v hv`. Rewrite `hh` using `[MulAction.mem_stabilizer_iff, AlgEquiv.smul_def]`. Rewrite using `[ideleSymbol_apply, heq, Fintype.prod_subsingleton _ default, mul_right_comm, AlgEquiv.mul_apply, hh, AlgEquiv.mul_apply]`.
+-/
 theorem ideleSymbol_apply_eq_of_forall_notMem (y : IdeleGroup ℚ) (ζ : L)
     (T : Finset (HeightOneSpectrum (𝓞 ℚ)))
     (hT : ∀ v ∉ T, localSymbol L v (finiteProj v y) ζ = ζ) :
@@ -82,15 +99,24 @@ section Generators
 
 variable (L : Type*) [Field L] [NumberField L] [IsGalois ℚ L] [IsMulCommutative (L ≃ₐ[ℚ] L)]
 
+/- English proof (translation)
+Set `f : ℚ →+* ℚ_[prime v]` to `(padicRingEquiv v).toRingHom.comp (@algebraMap ℚ (v.adicCompletion ℚ) _ _ (HeightOneSpectrum.instAlgebraAdicCompletion (𝓞 ℚ) ℚ v))`. Conclude with `eq_ratCast f (a : ℚ)`.
+-/
 theorem padicRingEquiv_finiteProj_diagonal (v : HeightOneSpectrum (𝓞 ℚ)) (a : ℚˣ) :
     padicRingEquiv v (finiteProj v (diagonal ℚ a) : v.adicCompletion ℚ) = ((a : ℚ) : ℚ_[prime v]) := by
   let f : ℚ →+* ℚ_[prime v] := (padicRingEquiv v).toRingHom.comp
     (@algebraMap ℚ (v.adicCompletion ℚ) _ _ (HeightOneSpectrum.instAlgebraAdicCompletion (𝓞 ℚ) ℚ v))
   exact eq_ratCast f (a : ℚ)
 
+/- English proof (translation)
+The claim follows from `fun _ _ h ↦ Rat.HeightOneSpectrum.primesEquiv.injective (Subtype.ext h)`.
+-/
 theorem prime_injective : Function.Injective prime := fun _ _ h ↦
   Rat.HeightOneSpectrum.primesEquiv.injective (Subtype.ext h)
 
+/- English proof (translation)
+The claim follows from `(Nat.coprime_primes Fact.out Fact.out).2 fun e ↦ h (prime_injective e)`.
+-/
 theorem coprime_prime {v v' : HeightOneSpectrum (𝓞 ℚ)} (h : v ≠ v') :
     (prime v).Coprime (prime v') :=
   (Nat.coprime_primes Fact.out Fact.out).2 fun e ↦ h (prime_injective e)
@@ -98,6 +124,9 @@ theorem coprime_prime {v v' : HeightOneSpectrum (𝓞 ℚ)} (h : v ≠ v') :
 def primeUnit {v v' : HeightOneSpectrum (𝓞 ℚ)} (h : v ≠ v') : ℤ_[prime v]ˣ :=
   (PadicInt.isUnit_iff.2 (PadicInt.norm_natCast_eq_one_iff.2 (coprime_prime h))).unit
 
+/- English proof (translation)
+Simplify using `[primeUnit]`.
+-/
 theorem coe_primeUnit {v v' : HeightOneSpectrum (𝓞 ℚ)} (h : v ≠ v') :
     ((primeUnit h : ℤ_[prime v]ˣ) : ℤ_[prime v]) = (prime v' : ℤ_[prime v]) := by
   simp [primeUnit]
@@ -107,15 +136,24 @@ def primeRat (v : HeightOneSpectrum (𝓞 ℚ)) : ℚˣ :=
 
 def placeOf (p : Nat.Primes) : HeightOneSpectrum (𝓞 ℚ) := Rat.HeightOneSpectrum.primesEquiv.symm p
 
+/- English proof (translation)
+The claim follows from `congrArg Subtype.val (Rat.HeightOneSpectrum.primesEquiv.apply_symm_apply p) @[simp]`.
+-/
 theorem prime_placeOf (p : Nat.Primes) : prime (placeOf p) = p :=
   congrArg Subtype.val (Rat.HeightOneSpectrum.primesEquiv.apply_symm_apply p)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_primeRat (v : HeightOneSpectrum (𝓞 ℚ)) : ((primeRat v : ℚˣ) : ℚ) = (prime v : ℚ) :=
   rfl
 
 variable {L}
 
+/- English proof (translation)
+Rewrite using `[localSymbol_apply_of_pow_eq_one_of_coprime v L _ (-1) 0 (by rw [padicRingEquiv_finiteProj_diagonal]; simp) (Nat.Coprime.pow_left n (coprime_prime hv.symm)) hζ, pow_zero, pow_one]`.
+-/
 theorem localSymbol_neg_one_of_ne {v v₀ : HeightOneSpectrum (𝓞 ℚ)} (hv : v ≠ v₀) {n : ℕ} {ζ : L}
     (hζ : ζ ^ (prime v₀ ^ n) = 1) :
     localSymbol L v (finiteProj v (diagonal ℚ (-1))) ζ = ζ := by
@@ -123,6 +161,9 @@ theorem localSymbol_neg_one_of_ne {v v₀ : HeightOneSpectrum (𝓞 ℚ)} (hv : 
     (by rw [padicRingEquiv_finiteProj_diagonal]; simp) (Nat.Coprime.pow_left n (coprime_prime hv.symm)) hζ,
     pow_zero, pow_one]
 
+/- English proof (translation)
+Rewrite using `[localSymbol_apply_of_pow_eq_one_of_prime_pow v₀ L _ (-1) 0 (by rw [padicRingEquiv_finiteProj_diagonal]; simp) hζ]`. Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[← pow_succ, LocalField.pow_eq_pow_of_natCast_eq hζ (b := 0) (by simp [ZMod.natCast_val]), pow_zero]`.
+-/
 theorem localSymbol_neg_one_self (v₀ : HeightOneSpectrum (𝓞 ℚ)) {n : ℕ} {ζ : L}
     (hζ : ζ ^ (prime v₀ ^ n) = 1) :
     localSymbol L v₀ (finiteProj v₀ (diagonal ℚ (-1))) ζ = ζ⁻¹ := by
@@ -132,6 +173,9 @@ theorem localSymbol_neg_one_self (v₀ : HeightOneSpectrum (𝓞 ℚ)) {n : ℕ}
   rw [← pow_succ, LocalField.pow_eq_pow_of_natCast_eq hζ (b := 0) (by simp [ZMod.natCast_val]),
     pow_zero]
 
+/- English proof (translation)
+Rewrite using `[localSymbol_apply_of_pow_eq_one_of_coprime v L _ (primeUnit hv') 0 (by rw [padicRingEquiv_finiteProj_diagonal, coe_primeUnit]; simp) (Nat.Coprime.pow_left n (coprime_prime hv₀.symm)) hζ, pow_zero, pow_one]`.
+-/
 theorem localSymbol_prime_of_ne {v v₀ v' : HeightOneSpectrum (𝓞 ℚ)} (hv₀ : v ≠ v₀) (hv' : v ≠ v')
     {n : ℕ} {ζ : L} (hζ : ζ ^ (prime v₀ ^ n) = 1) :
     localSymbol L v (finiteProj v (diagonal ℚ (primeRat v'))) ζ = ζ := by
@@ -139,6 +183,9 @@ theorem localSymbol_prime_of_ne {v v₀ v' : HeightOneSpectrum (𝓞 ℚ)} (hv�
     (by rw [padicRingEquiv_finiteProj_diagonal, coe_primeUnit]; simp)
     (Nat.Coprime.pow_left n (coprime_prime hv₀.symm)) hζ, pow_zero, pow_one]
 
+/- English proof (translation)
+Rewrite using `[localSymbol_apply_of_pow_eq_one_of_prime_pow v₀ L _ 1 1 (by rw [padicRingEquiv_finiteProj_diagonal]; simp) hζ]`. Use `conv_rhs => rw [← pow_one ζ]`. Conclude with `LocalField.pow_eq_pow_of_natCast_eq hζ (by simp [ZMod.natCast_val])`.
+-/
 theorem localSymbol_prime_self (v₀ : HeightOneSpectrum (𝓞 ℚ)) {n : ℕ} {ζ : L}
     (hζ : ζ ^ (prime v₀ ^ n) = 1) :
     localSymbol L v₀ (finiteProj v₀ (diagonal ℚ (primeRat v₀))) ζ = ζ := by
@@ -147,6 +194,9 @@ theorem localSymbol_prime_self (v₀ : HeightOneSpectrum (𝓞 ℚ)) {n : ℕ} {
   conv_rhs => rw [← pow_one ζ]
   exact LocalField.pow_eq_pow_of_natCast_eq hζ (by simp [ZMod.natCast_val])
 
+/- English proof (translation)
+The claim follows from `localSymbol_apply_of_pow_eq_one_of_prime_pow v₀ L _ (primeUnit h) 0 (by rw [padicRingEquiv_finiteProj_diagonal, coe_primeUnit]; simp) hζ`.
+-/
 theorem localSymbol_prime_at_other {v₀ v' : HeightOneSpectrum (𝓞 ℚ)} (h : v₀ ≠ v') {n : ℕ} {ζ : L}
     (hζ : ζ ^ (prime v₀ ^ n) = 1) :
     localSymbol L v₀ (finiteProj v₀ (diagonal ℚ (primeRat v'))) ζ =
@@ -154,6 +204,9 @@ theorem localSymbol_prime_at_other {v₀ v' : HeightOneSpectrum (𝓞 ℚ)} (h :
   localSymbol_apply_of_pow_eq_one_of_prime_pow v₀ L _ (primeUnit h) 0
     (by rw [padicRingEquiv_finiteProj_diagonal, coe_primeUnit]; simp) hζ
 
+/- English proof (translation)
+Rewrite using `[localSymbol_apply_of_pow_eq_one_of_coprime v' L _ 1 1 (by rw [padicRingEquiv_finiteProj_diagonal]; simp) (Nat.Coprime.pow_left n (coprime_prime h)) hζ, pow_one]`.
+-/
 theorem localSymbol_prime_at_self {v₀ v' : HeightOneSpectrum (𝓞 ℚ)} (h : v₀ ≠ v') {n : ℕ} {ζ : L}
     (hζ : ζ ^ (prime v₀ ^ n) = 1) :
     localSymbol L v' (finiteProj v' (diagonal ℚ (primeRat v'))) ζ = ζ ^ prime v' := by
@@ -163,6 +216,9 @@ theorem localSymbol_prime_at_self {v₀ v' : HeightOneSpectrum (𝓞 ℚ)} (h : 
 
 variable (L)
 
+/- English proof (translation)
+Establish `hn : prime v₀ ^ n ≠ 0` using `pow_ne_zero _ (Fact.out : (prime v₀).Prime).ne_zero`. Rewrite using `[ideleSymbol_apply_eq_of_forall_notMem L _ ζ {v₀} (fun v hv ↦ localSymbol_neg_one_of_ne (by simpa using hv) hζ), Finset.prod_singleton, infiniteLocalSymbol_apply_of_pow_eq_one L _ _ hn hζ, extensionEmbeddingOfIsReal_infiniteProj, if_pos (by rw [RationalIdeles.realPart_diagonal]; …`.
+-/
 theorem ideleSymbol_diagonal_neg_one (v₀ : HeightOneSpectrum (𝓞 ℚ)) {n : ℕ} {ζ : L}
     (hζ : ζ ^ (prime v₀ ^ n) = 1) : ideleSymbol ℚ L (diagonal ℚ (-1)) ζ = ζ := by
   have hn : prime v₀ ^ n ≠ 0 := pow_ne_zero _ (Fact.out : (prime v₀).Prime).ne_zero
@@ -172,6 +228,15 @@ theorem ideleSymbol_diagonal_neg_one (v₀ : HeightOneSpectrum (𝓞 ℚ)) {n : 
     extensionEmbeddingOfIsReal_infiniteProj, if_pos (by rw [RationalIdeles.realPart_diagonal]; simp),
     map_inv₀, localSymbol_neg_one_self v₀ hζ, inv_inv]
 
+/- English proof (translation)
+Establish `hn : prime v₀ ^ n ≠ 0` using `pow_ne_zero _ (Fact.out : (prime v₀).Prime).ne_zero`. Establish `hinf : infiniteLocalSymbol L default (infiniteProj default (diagonal ℚ (primeRat v'))) ζ = ζ`. Rewrite using `[infiniteLocalSymbol_apply_of_pow_eq_one L _ _ hn hζ, extensionEmbeddingOfIsReal_infiniteProj, if_neg (by rw [RationalIdeles.realPart_diagonal]; simp)]`. Distinguish the cases in `h : v₀ = v'`. Substitute `h` using the available equality.
+
+Rewrite using `[ideleSymbol_apply_eq_of_forall_notMem L _ ζ {v₀} (fun v hv ↦ localSymbol_prime_of_ne (by simpa using hv) (by simpa using hv) hζ), Finset.prod_singleton, hinf, localSymbol_prime_self v₀ hζ]`. Establish `: NeZero (prime v₀ ^ n)` using `⟨hn⟩`. Rewrite using `[ideleSymbol_apply_eq_of_forall_notMem L _ ζ {v₀, v'} (fun v hv ↦ by`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton, not_or] at hv`. Conclude with `localSymbol_prime_of_ne hv.1 hv.2 hζ),`.
+
+Use the proof step `Finset.prod_pair h, hinf, AlgEquiv.mul_apply, localSymbol_prime_at_self h hζ, map_pow,`. Use `localSymbol_prime_at_other h hζ, ← pow_mul]`. Use `conv_rhs => rw [← pow_one ζ]`. Use `LocalField.pow_eq_pow_of_natCast_eq hζ ?_` and prove the remaining obligations. Establish `hu : ((prime v' : ℕ) : ℤ_[prime v₀]) = ((primeUnit h : ℤ_[prime v₀]ˣ) : ℤ_[prime v₀])` using `(coe_primeUnit h).symm`.
+
+Rewrite using `[Nat.cast_mul, ZMod.natCast_zmod_val, ← map_natCast (PadicInt.toZModPow (p := prime v₀) n), hu, ← map_mul, Units.inv_mul, map_one, Nat.cast_one]`.
+-/
 theorem ideleSymbol_diagonal_prime (v₀ v' : HeightOneSpectrum (𝓞 ℚ)) {n : ℕ} {ζ : L}
     (hζ : ζ ^ (prime v₀ ^ n) = 1) : ideleSymbol ℚ L (diagonal ℚ (primeRat v')) ζ = ζ := by
   have hn : prime v₀ ^ n ≠ 0 := pow_ne_zero _ (Fact.out : (prime v₀).Prime).ne_zero
@@ -201,6 +266,23 @@ theorem ideleSymbol_diagonal_prime (v₀ v' : HeightOneSpectrum (𝓞 ℚ)) {n :
 
 end Generators
 
+/- English proof (translation)
+Establish `hnat : ∀ n : ℕ, ∀ h : (n : ℚ) ≠ 0, Units.mk0 (n : ℚ) h ∈ H`. Introduce `n`. Proceed by induction on `n using Nat.recOnMul with`. Consider the case `zero => intro h`. Conclude with `absurd Nat.cast_zero h`.
+
+Consider the case `one`. Introduce `h`. Use `H.one_mem` and compare the differences between its conclusion and the goal. Use `ext`. Simplify using the standard rewrite rules.
+
+Consider the case `prime p hp'`. Introduce `h`. Use `hp (placeOf ⟨p, hp'⟩) using 1` and compare the differences between its conclusion and the goal. Use `ext`. Rewrite using `[Units.val_mk0, coe_primeRat, prime_placeOf ⟨p, hp'⟩]`.
+
+Consider the case `mul a b ha hb`. Introduce `h`. Establish `ha0 : (a : ℚ) ≠ 0` using `fun h0 ↦ h (by rw [Nat.cast_mul, h0, zero_mul])`. Establish `hb0 : (b : ℚ) ≠ 0` using `fun h0 ↦ h (by rw [Nat.cast_mul, h0, mul_zero])`. Use `H.mul_mem (ha ha0) (hb hb0) using 1` and compare the differences between its conclusion and the goal.
+
+Use `ext`. Simplify using the standard rewrite rules. Establish `hint : ∀ z : ℤ, ∀ h : (z : ℚ) ≠ 0, Units.mk0 (z : ℚ) h ∈ H`. Introduce `z h`. Establish `h' : ((z.natAbs : ℕ) : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 (Int.natAbs_ne_zero.2 (Int.cast_ne_zero.1 h))`.
+
+Break down `Int.natAbs_eq z with hz | hz` into its components or cases. Use `hnat _ h' using 1` and compare the differences between its conclusion and the goal. Use `ext`. Rewrite using `[Units.val_mk0, Units.val_mk0, ← Int.cast_natCast, ← hz]`. Use `H.mul_mem hneg (hnat _ h') using 1` and compare the differences between its conclusion and the goal.
+
+Use `ext`. Rewrite using `[Units.val_mul, Units.val_neg, Units.val_one, Units.val_mk0, Units.val_mk0, neg_one_mul, ← Int.cast_natCast, ← Int.cast_neg, ← hz]`. Establish `h1` using `hint a.1.num (Int.cast_ne_zero.2 (Rat.num_ne_zero.2 a.ne_zero))`. Establish `h2` using `hint (a.1.den : ℤ) (by exact_mod_cast a.1.den_nz)`. Use `H.mul_mem h1 (H.inv_mem h2) using 1` and compare the differences between its conclusion and the goal.
+
+Use `ext`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, Units.val_mk0, Units.val_mk0, Int.cast_natCast, ← div_eq_mul_inv, Rat.num_div_den]`.
+-/
 theorem mem_of_neg_one_mem_of_primeRat_mem (H : Subgroup ℚˣ) (hneg : -1 ∈ H)
     (hp : ∀ v, primeRat v ∈ H) (a : ℚˣ) : a ∈ H := by
   have hnat : ∀ n : ℕ, ∀ h : (n : ℚ) ≠ 0, Units.mk0 (n : ℚ) h ∈ H := by
@@ -243,6 +325,15 @@ theorem mem_of_neg_one_mem_of_primeRat_mem (H : Subgroup ℚˣ) (hneg : -1 ∈ H
   rw [Units.val_mul, Units.val_inv_eq_inv_val, Units.val_mk0, Units.val_mk0, Int.cast_natCast,
     ← div_eq_mul_inv, Rat.num_div_den]
 
+/- English proof (translation)
+Proceed by induction on `n using Nat.recOnPosPrimePosCoprime generalizing ζ with`. Consider the case `prime_pow p k hp _ => exact hσ p k hp ζ hζ`. Consider the case `zero => exact absurd rfl hn`. Consider the case `one => rw [pow_one] at hζ`. Rewrite using `[hζ, map_one]`.
+
+Consider the case `coprime a b ha hb hab iha ihb`. Establish `hζ0 : ζ ≠ 0`. Introduce and unpack `rfl`. Rewrite `hζ` using `[zero_pow hn]`. Conclude with `zero_ne_one hζ`.
+
+Establish `hA : σ (ζ ^ a) = ζ ^ a` using `ihb (by omega) (by rw [← pow_mul, hζ])`. Establish `hB : σ (ζ ^ b) = ζ ^ b` using `iha (by omega) (by rw [← pow_mul, mul_comm b a, hζ])`. Establish `e : (1 : ℤ) = a * Nat.gcdA a b + b * Nat.gcdB a b`. Rewrite using `[← Nat.gcd_eq_gcd_ab, hab.gcd_eq_one, Nat.cast_one]`. Establish `hz : ζ = (ζ ^ a) ^ Nat.gcdA a b * (ζ ^ b) ^ Nat.gcdB a b`.
+
+Rewrite using `[← zpow_natCast, ← zpow_natCast ζ b, ← zpow_mul, ← zpow_mul, ← zpow_add₀ hζ0, ← e, zpow_one]`. Rewrite using `[hz, map_mul, map_zpow₀, map_zpow₀, hA, hB]`.
+-/
 theorem apply_eq_of_pow_eq_one_of_forall_prime_pow {L : Type*} [Field L] [CharZero L] (σ : L ≃ₐ[ℚ] L)
     (hσ : ∀ p k : ℕ, p.Prime → ∀ ζ : L, ζ ^ (p ^ k) = 1 → σ ζ = ζ) {n : ℕ} (hn : n ≠ 0) {ζ : L}
     (hζ : ζ ^ n = 1) : σ ζ = ζ := by
@@ -270,6 +361,9 @@ section Main
 
 variable (L : Type*) [Field L] [NumberField L] [IsGalois ℚ L] [IsMulCommutative (L ≃ₐ[ℚ] L)]
 
+/- English proof (translation)
+Set `H : Subgroup ℚˣ` to `(MulAction.stabilizer (L ≃ₐ[ℚ] L) ζ).comap ((ideleSymbol ℚ L).comp (diagonal ℚ))`. Establish `key : ∀ b, b ∈ H ↔ ideleSymbol ℚ L (diagonal ℚ b) ζ = ζ` using `fun b ↦ by`. Simplify using `only [H, Subgroup.mem_comap, MonoidHom.comp_apply, MulAction.mem_stabilizer_iff, AlgEquiv.smul_def]`. Conclude with `(key a).1 (mem_of_neg_one_mem_of_primeRat_mem H ((key _).2 (ideleSymbol_diagonal_neg_one L v₀ hζ)) (fun v' ↦ (key _).2 (ideleSymbol_diagonal_prime L v₀ v' hζ)) a)`.
+-/
 theorem ideleSymbol_diagonal_apply_of_pow_eq_one_of_prime_pow (a : ℚˣ)
     (v₀ : HeightOneSpectrum (𝓞 ℚ)) {n : ℕ} {ζ : L} (hζ : ζ ^ (prime v₀ ^ n) = 1) :
     ideleSymbol ℚ L (diagonal ℚ a) ζ = ζ := by
@@ -282,12 +376,18 @@ theorem ideleSymbol_diagonal_apply_of_pow_eq_one_of_prime_pow (a : ℚˣ)
     ((key _).2 (ideleSymbol_diagonal_neg_one L v₀ hζ))
     (fun v' ↦ (key _).2 (ideleSymbol_diagonal_prime L v₀ v' hζ)) a)
 
+/- English proof (translation)
+The claim follows from `apply_eq_of_pow_eq_one_of_forall_prime_pow _ (fun p k hp ξ hξ ↦ by exact ideleSymbol_diagonal_apply_of_pow_eq_one_of_prime_pow L a (placeOf ⟨p, hp⟩) (n := k) (by rw [prime_placeOf ⟨p, hp⟩]; exact hξ)) hn hζ`.
+-/
 theorem ideleSymbol_diagonal_apply_of_pow_eq_one (a : ℚˣ) {n : ℕ} (hn : n ≠ 0) {ζ : L}
     (hζ : ζ ^ n = 1) : ideleSymbol ℚ L (diagonal ℚ a) ζ = ζ :=
   apply_eq_of_pow_eq_one_of_forall_prime_pow _ (fun p k hp ξ hξ ↦ by
     exact ideleSymbol_diagonal_apply_of_pow_eq_one_of_prime_pow L a (placeOf ⟨p, hp⟩) (n := k)
       (by rw [prime_placeOf ⟨p, hp⟩]; exact hξ)) hn hζ
 
+/- English proof (translation)
+The claim follows from `IsCyclotomicExtension.algEquiv_eq_of_apply_eq S ℚ L fun m hm hm0 ↦ by obtain ⟨r, hr⟩ := IsCyclotomicExtension.exists_isPrimitiveRoot ℚ L hm hm0 exact ⟨r, hr, ideleSymbol_diagonal_apply_of_pow_eq_one L a hm0 hr.pow_eq_one⟩`.
+-/
 theorem ideleSymbol_diagonal_eq_one (S : Set ℕ) [IsCyclotomicExtension S ℚ L] (a : ℚˣ) :
     ideleSymbol ℚ L (diagonal ℚ a) = 1 :=
   IsCyclotomicExtension.algEquiv_eq_of_apply_eq S ℚ L fun m hm hm0 ↦ by

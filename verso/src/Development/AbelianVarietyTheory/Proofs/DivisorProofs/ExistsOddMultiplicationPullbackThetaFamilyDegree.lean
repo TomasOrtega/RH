@@ -17,6 +17,9 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Introduce `R _ _ _ hR D C m hm F₁ θ₀`. Take `⟨G, hG⟩` from `GlobalTheory.T.exists_multiplicationPullback_integralFamily_odd R hR D m hm F₁`. Take `⟨S, hS⟩` from `GlobalTheory.T.exists_multiplicationPullback_genericSection_cover R hR D C m hm θ₀`. Conclude with `⟨G, S, GlobalTheory.T.multiplicationPullback_family_ne_zero_odd R hR D m hm F₁ G hG, fun W _ _ _ T a b ha h => GlobalTheory.T.expansion_oddMultiplicationPullback_at_trait R hR D C m hm F₁ G θ₀ S hG hS W T a b ha h⟩`.
+-/
 theorem exists_mulPull : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (C : LabCover D) (m : ℕ), Odd m → ∀ (F₁ : IntFam (maximalIdeal R) D.toPre 1) (θ₀ : SecK C.P.L.L C.α 1), ∃ (G : IntFam (maximalIdeal R) D.toPre (m ^ 2)) (S : SecK C.P.L.L C.α (m ^ 2)), ((∃ α j, (F₁.f α).f j ≠ 0) → ∃ α j, (G.f α).f j ≠ 0) ∧ ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] (T : Trait C W) (a b : W), a ≠ 0 → T.Exp a b θ₀ F₁ → ∃ v : Wˣ, T.Exp a (b * v) S G := by
   intro R _ _ _ hR D C m hm F₁ θ₀
   obtain ⟨G, hG⟩ := GlobalTheory.T.exists_multiplicationPullback_integralFamily_odd R hR D m hm F₁

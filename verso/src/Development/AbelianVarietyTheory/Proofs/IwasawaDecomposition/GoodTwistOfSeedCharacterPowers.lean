@@ -9,6 +9,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.HeightCounting.Up.GoodPrimeSelection
 
+/- English proof (translation)
+Substitute `hP hTw hY` using the available equality. Consider the cases of `hRCG`. Consider the cases of `hgR`. Consider the cases of `hOk`. Consider the cases of `hcO`.
+
+Consider the cases of `h1`. Consider the cases of `h2`. Consider the cases of `h3`. Consider the cases of `h4`. Consider the cases of `hw`.
+
+Both sides reduce to the same expression.
+-/
 theorem heq_sigma_app {P P' Tw Tw' Y Y' : Type} (hP : P = P') (hTw : Tw = Tw') (hY : Y = Y')
     {RCG : Tw → Finset Y → Type} {RCG' : Tw' → Finset Y' → Type} {gR : ∀ i Q, CommGroup (RCG i Q)} {gR' : ∀ i Q, CommGroup (RCG' i Q)}
     {Ok : Tw → ℕ → Type} {Ok' : Tw' → ℕ → Type} {cO : ∀ i k, CommRing (Ok i k)} {cO' : ∀ i k, CommRing (Ok' i k)}
@@ -23,6 +30,11 @@ theorem heq_sigma_app {P P' Tw Tw' Y Y' : Type} (hP : P = P') (hTw : Tw = Tw') (
   cases hRCG; cases hgR; cases hOk; cases hcO; cases h1; cases h2; cases h3; cases h4; cases hw
   rfl
 
+/- English proof (translation)
+Substitute `hTw hY` using the available equality. Consider the cases of `hRCG`. Consider the cases of `hgR`. Consider the cases of `hOk`. Consider the cases of `hcO`.
+
+Consider the cases of `hp`. Both sides reduce to the same expression.
+-/
 theorem heq_sigma_pow {Tw Tw' Y Y' : Type} (hTw : Tw = Tw') (hY : Y = Y')
     {RCG : Tw → Finset Y → Type} {RCG' : Tw' → Finset Y' → Type} {gR : ∀ i Q, CommGroup (RCG i Q)} {gR' : ∀ i Q, CommGroup (RCG' i Q)}
     {Ok : Tw → ℕ → Type} {Ok' : Tw' → ℕ → Type} {cO : ∀ i k, CommRing (Ok i k)} {cO' : ∀ i k, CommRing (Ok' i k)}
@@ -35,19 +47,35 @@ theorem heq_sigma_pow {Tw Tw' Y Y' : Type} (hTw : Tw = Tw') (hY : Y = Y')
   cases hRCG; cases hgR; cases hOk; cases hcO; cases hp
   rfl
 
+/- English proof (translation)
+Substitute `hR` using the available equality. Consider the cases of `hH`. Consider the cases of `hA`. Consider the cases of `hB`. Conclude with `h`.
+-/
 theorem disjoint_of_heq {R R' : Ranks} (hR : R = R') {H : Host R} {H' : Host R'} (hH : HEq H H')
     {A B : Finset (PlE H)} {A' B' : Finset (PlE H')} (hA : HEq A A') (hB : HEq B B') (h : Disjoint A B) : Disjoint A' B' := by
   subst hR; cases hH; cases hA; cases hB; exact h
 
+/- English proof (translation)
+Substitute `hR` using the available equality. Consider the cases of `hH`. Both sides reduce to the same expression.
+-/
 theorem plE_eq {R R' : Ranks} (hR : R = R') {H : Host R} {H' : Host R'} (hH : HEq H H') : PlE H = PlE H' := by
   subst hR; cases hH; rfl
 
+/- English proof (translation)
+Consider the cases of `D`. Consider the cases of `D'`. Simplify using `only at hR hH`. Substitute `hR` using the available equality. Consider the cases of `hH`.
+
+Both sides reduce to the same expression.
+-/
 theorem auxiliaryPrime_eq_of_same_ranks_host {D D' : D7} (hR : D.R = D'.R) (hH : HEq D.host D'.host) : AbsolutelyIrreducibleSpan.q0 D = AbsolutelyIrreducibleSpan.q0 D' := by
   cases D; cases D'
   dsimp only at hR hH
   subst hR; cases hH
   rfl
 
+/- English proof (translation)
+Consider the cases of `D`. Consider the cases of `D'`. Simplify using `only at hR hH`. Substitute `hR` using the available equality. Consider the cases of `hH`.
+
+Both sides reduce to the same expression.
+-/
 theorem discr_eq {D D' : D7} (hR : D.R = D'.R) (hH : HEq D.host D'.host) :
     (NumberField.discr D.host.E).natAbs.primeFactors = (NumberField.discr D'.host.E).natAbs.primeFactors := by
   cases D; cases D'
@@ -55,6 +83,11 @@ theorem discr_eq {D D' : D7} (hR : D.R = D'.R) (hH : HEq D.host D'.host) :
   subst hR; cases hH
   rfl
 
+/- English proof (translation)
+Unfold `avD`. Rewrite using `[Finset.mem_union, mem_avRec, mem_avDesign]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(⟨p, hp, hv⟩ | ⟨p, hp, hv⟩)`. Conclude with `⟨p, Finset.mem_union_left _ hp, hv⟩`.
+
+Conclude with `⟨p, Finset.mem_union_right _ hp, hv⟩`. Introduce and unpack `⟨p, hp, hv⟩`. Break down `Finset.mem_union.1 hp with hp | hp` into its components or cases. Conclude with `Or.inl ⟨p, hp, hv⟩`. Conclude with `Or.inr ⟨p, hp, hv⟩`.
+-/
 theorem mem_avD_iff {D : D7} (i : D.ntw.Tw) (v : PlE D.host) :
     v ∈ avD D (avDesign D) i ↔ ∃ p ∈ avPrimes D ∪ avPrimesDesign D i, v ∈ placesOver D.host.E p := by
   classical
@@ -69,6 +102,11 @@ theorem mem_avD_iff {D : D7} (i : D.ntw.Tw) (v : PlE D.host) :
     · exact Or.inl ⟨p, hp, hv⟩
     · exact Or.inr ⟨p, hp, hv⟩
 
+/- English proof (translation)
+Establish `hl : D.ntw.l i = D'.ntw.l i'` using `((same_basic h.gal h.set h.frm).2.2.2.2 i i' hi).1`. Establish `hd : avPrimesDesign D i = avPrimesDesign D' i'`. Unfold `avPrimesDesign`. Rewrite using `[hl, auxiliaryPrime_eq_of_same_ranks_host h.gal.R h.gal.host, discr_eq h.gal.R h.gal.host]`. Use `heq_places h.gal.R h.gal.host (s := avPrimes D ∪ avPrimesDesign D i) (mem_avD_iff i) ?_` and prove the remaining obligations.
+
+Introduce `v`. Rewrite using `[mem_avD_iff i' v, h.av, hd]`.
+-/
 theorem avD_heq {D D' : D7} (h : SameExport D D') {i : D.ntw.Tw} {i' : D'.ntw.Tw} (hi : HEq i i') :
     HEq (avD D (avDesign D) i) (avD D' (avDesign D') i') := by
   have hl : D.ntw.l i = D'.ntw.l i' := ((same_basic h.gal h.set h.frm).2.2.2.2 i i' hi).1
@@ -87,6 +125,9 @@ def normE {D : D7} (xd : ThData D) (h : XdAll xd) : IntegralHeckeForms.XD D wher
     · rw [if_neg hj] at ha
       exact ha.elim
 
+/- English proof (translation)
+Introduce `i j hj b`. Rewrite `hj` using `[Finset.mem_Icc]`. Use `show (if 1 ≤ j ∧ j ≤ D.R.m then Set.univ else ∅) = xd.xd0 i j b`. Rewrite using `[if_pos hj, h i j b hj.1 hj.2]`.
+-/
 theorem normE_eq {D : D7} (xd : ThData D) (h : XdAll xd) :
     ∀ i, ∀ j ∈ Finset.Icc 1 D.R.m, ∀ b, (normE xd h).Dat0 i j b = (twEOf xd).Dat0 i j b := by
   intro i j hj b
@@ -94,16 +135,27 @@ theorem normE_eq {D : D7} (xd : ThData D) (h : XdAll xd) :
   show (if 1 ≤ j ∧ j ≤ D.R.m then Set.univ else ∅) = xd.xd0 i j b
   rw [if_pos hj, h i j b hj.1 hj.2]
 
+/- English proof (translation)
+Substitute `hT hm` using the available equality. Consider the cases of `hD`. Both sides reduce to the same expression.
+-/
 theorem heq_ite_univ {T T' : Type} (hT : T = T') {Dat : T → ℕ → Bool → Type} {Dat' : T' → ℕ → Bool → Type}
     (hD : HEq Dat Dat') {m m' : ℕ} (hm : m = m') :
     HEq (fun i j b => (if 1 ≤ j ∧ j ≤ m then Set.univ else ∅ : Set (Dat i j b)))
       (fun i j b => (if 1 ≤ j ∧ j ≤ m' then Set.univ else ∅ : Set (Dat' i j b))) := by
   subst hT hm; cases hD; rfl
 
+/- English proof (translation)
+The claim follows from `heq_ite_univ (eq_of_heq h.set.Tw) h.frm.Dat (by rw [h.gal.R])`.
+-/
 theorem normE_heq {D D' : D7} (h : SameExport D D') (xd : ThData D) (hx : XdAll xd) (xd' : ThData D') (hx' : XdAll xd') :
     HEq (normE xd hx).Dat0 (normE xd' hx').Dat0 :=
   heq_ite_univ (eq_of_heq h.set.Tw) h.frm.Dat (by rw [h.gal.R])
 
+/- English proof (translation)
+Unfold `IntegralHeckeForms.GoodTw at h ⊢`. Take `⟨h1, ⟨eB, h0, hs, hI⟩, h3, h4⟩` from `h`. Use `⟨h1, ⟨eB, h0, hs, fun j hj b => ?_⟩, fun j hj b => ?_, h4⟩` and prove the remaining obligations. Use `hI j hj b` as an intermediate fact. Unfold `IntegralHeckeForms.SgJ at this ⊢`.
+
+Rewrite using `[← hE i j hj b]` and apply the resulting hypothesis. Use `h3 j hj b` as an intermediate fact. Unfold `IntegralHeckeForms.SgJ at this ⊢`. Rewrite using `[← hE i j hj b]` and apply the resulting hypothesis.
+-/
 theorem goodTw_swap {D : D7} {E E' : IntegralHeckeForms.XD D} (hE : ∀ i, ∀ j ∈ Finset.Icc 1 D.R.m, ∀ b, E.Dat0 i j b = E'.Dat0 i j b)
     {N0 : D.ntw.Tw → ℕ} {i : D.ntw.Tw} {e : ℝ} {S : ∀ (j : ℕ) (b : Bool), Finset (D.nexp.Dat i j b)}
     {A Q : Finset (PlE D.host)} {k : ℕ} {ψ : D.ntw.RCG i Q →* (D.ntw.Ok i k)ˣ}
@@ -118,6 +170,11 @@ theorem goodTw_swap {D : D7} {E E' : IntegralHeckeForms.XD D} (hE : ∀ i, ∀ j
     unfold IntegralHeckeForms.SgJ at this ⊢
     rwa [← hE i j hj b]
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `h`. Use `⟨fun j hj b => ?_, fun j hj b => ?_⟩` and prove the remaining obligations. Use `h1 j hj b` as an intermediate fact. Unfold `TwIn.Sg IntegralHeckeForms.SgJ IntegralHeckeForms.FullRk at this ⊢`. Rewrite using `[← hE i j hj b]`.
+
+Conclude with `this`. Use `h2 j hj b` as an intermediate fact. Unfold `TwIn.Sg IntegralHeckeForms.SgJ at this ⊢`. Rewrite using `[← hE i j hj b, ← hS]`. Conclude with `this`.
+-/
 theorem ok_swap {D : D7} {I I' : TwIn D} (hE : ∀ i, ∀ j ∈ Finset.Icc 1 D.R.m, ∀ b, I.E.Dat0 i j b = I'.E.Dat0 i j b)
     (hS : I.S = I'.S) {i : D.ntw.Tw} (h : I.Ok i) : I'.Ok i := by
   obtain ⟨h1, h2⟩ := h
@@ -131,6 +188,11 @@ theorem ok_swap {D : D7} {I I' : TwIn D} (hE : ∀ i, ∀ j ∈ Finset.Icc 1 D.R
     rw [← hE i j hj b, ← hS]
     exact this
 
+/- English proof (translation)
+Take `⟨-, -, -, h1, h2⟩` from `same_basic h.gal h.set h.frm`. Take `⟨h3, h4, h5, h6⟩` from `h1 p p' hp`. Take `⟨h7, h8, -⟩` from `h2 _ _ h3`. Take `⟨i, Q, k, ψ⟩` from `p`. Take `⟨i', Q', k', ψ'⟩` from `p'`.
+
+Simplify using `only at h3 h4 h5 h6 h7 h8 hg ⊢`. Substitute `h5` using the available equality. Establish `he : twEps D' i' = twEps D i` using `by rw [twEps, twEps, h7]`. Rewrite using `[he]`. Conclude with `goodTw_transfer h.gal h.set h.frm (B := BlochKatoReduction.bk0 D) (B' := BlochKatoReduction.bk0 D') h.br rfl rfl hE hN h3 _ (h8 _ _ hS).1 hA h4 k h6 hg`.
+-/
 theorem good_pack {D D' : D7} (h : SameExport D D') {I : TwIn D} {I' : TwIn D'} (hE : HEq I.E.Dat0 I'.E.Dat0)
     (hN : HEq I.N0 I'.N0) (hS : HEq I.S I'.S) {p : TwPack D} {p' : TwPack D'} (hp : HEq p p')
     {A : Finset (PlE D.host)} {A' : Finset (PlE D'.host)} (hA : HEq A A')
@@ -147,6 +209,9 @@ theorem good_pack {D D' : D7} (h : SameExport D D') {I : TwIn D} {I' : TwIn D'} 
   rw [he]
   exact goodTw_transfer h.gal h.set h.frm (B := BlochKatoReduction.bk0 D) (B' := BlochKatoReduction.bk0 D') h.br rfl rfl hE hN h3 _ (h8 _ _ hS).1 hA h4 k h6 hg
 
+/- English proof (translation)
+Take `⟨e, he, h⟩` from `Formalism.MainNotions.N.TwAll.psiAt_side_zpow true b ψ (a * c)`. Use `⟨e, by rw [he, Int.natAbs_mul], ?_⟩` and prove the remaining obligations. Rewrite using `[← zpow_mul, h]`. Simplify using `[BlochKatoReduction.Gen.psiAt]`.
+-/
 theorem psiAt_pow_pow {Γ A : Type} [Group Γ] [CommGroup A] (b : Bool) (ψ : Γ →* A) (a c : ℤ) :
     ∃ e : ℤ, e.natAbs = a.natAbs * c.natAbs ∧ BlochKatoReduction.Gen.psiAt b ((ψ ^ a) ^ c) = ψ ^ e := by
   obtain ⟨e, he, h⟩ := Formalism.MainNotions.N.TwAll.psiAt_side_zpow true b ψ (a * c)
@@ -154,6 +219,27 @@ theorem psiAt_pow_pow {Γ A : Type} [Group Γ] [CommGroup A] (b : Bool) (ψ : Γ
   rw [← zpow_mul, h]
   simp [BlochKatoReduction.Gen.psiAt]
 
+/- English proof (translation)
+Introduce `D₁ D₂ D₃ A σ C₂ C₃ xd u h12 hK hav hPl hxd hA hu`. Establish `h23 : SameExport D₂ D₃` using `⟨hK.gal, hK.set, hK.forms, hK.br, hav⟩`. Establish `h13 : SameExport D₁ D₃` using `h12.trans h23`. Take `⟨hTw, -, hSS, hcomp, hsame⟩` from `same_basic h13.gal h13.set h13.frm`. Establish `hY : PlE D₁.host = PlE D₃.host` using `plE_eq h13.gal.R h13.gal.host`.
+
+Establish `key : ∀ v, TwistedAt D₃ v → TwistedAt D₁ (u v) ∧ ∃ a : ℤ, Nat.Coprime a.natAbs (D₁.ntw.l (σ.s (u v))) ∧ HEq (GlobalTheory.HeightCounting.twPackPow D₁ a (σ.pack (u v))) (rawPack C₃ v)`. Introduce `v hv`. Take `⟨ht, a, ha, hp⟩` from `hu (cast hPl.symm v) v (cast_heq _ _) hv`. Use `⟨ht, a, ha, hp.symm.trans ?_⟩` and prove the remaining obligations. Conclude with `heq_sigma_app (RCG := D₂.ntw.RCG) (RCG' := D₃.ntw.RCG) (gR := D₂.ntw.grpRCG) (gR' := D₃.ntw.grpRCG) (Ok := D₂.ntw.Ok) (Ok' := D₃.ntw.Ok) (cO := D₂.ntw.crOk) (cO' := D₃.ntw.crOk) hPl (eq_of_heq hK.set.Tw) (plE_eq hK.gal.R hK.gal.host) hK.set.RCG hK.set.grpRCG hK.set.Ok hK.set.crOk …`.
+
+Establish `hN0 : (D₁.ntw.Tw → ℕ) = (D₃.ntw.Tw → ℕ)` using `by rw [hTw]`. Set `I₁ : TwIn D₁` to `⟨normE σ.xd σ.all, σ.N0, σ.S⟩`. Set `In : TwIn D₃` to `⟨normE xd hxd, cast hN0 σ.N0, cast hSS σ.S⟩`. Set `I₃ : TwIn D₃` to `⟨twEOf xd, cast hN0 σ.N0, cast hSS σ.S⟩`. Establish `hE : HEq I₁.E.Dat0 In.E.Dat0` using `normE_heq h13 σ.xd σ.all xd hxd`.
+
+Establish `hN : HEq I₁.N0 In.N0` using `(cast_heq _ _).symm`. Establish `hS : HEq I₁.S In.S` using `(cast_heq _ _).symm`. Establish `h1n : ∀ i, ∀ j ∈ Finset.Icc 1 D₁.R.m, ∀ b, (twEOf σ.xd).Dat0 i j b = (normE σ.xd σ.all).Dat0 i j b` using `fun i j hj b => (normE_eq σ.xd σ.all i j hj b).symm`. Establish `h3n : ∀ i, ∀ j ∈ Finset.Icc 1 D₃.R.m, ∀ b, In.E.Dat0 i j b = I₃.E.Dat0 i j b` using `normE_eq xd hxd`. Establish `pw : ∀ v, TwistedAt D₃ v → ∀ c : ℤ, Nat.Coprime c.natAbs (D₃.ntw.l (C₃.twI v)) → ∀ (B₁ : Finset (PlE D₁.host)) (B₃ : Finset (PlE D₃.host)), HEq B₁ B₃ → B₁ ⊆ A (σ.s (u v)) → I₃.Ok (C₃.twI v) ∧ IntegralHeckeForms.GoodTw D₃.nexp (BlochKatoReduction.bk0 D₃) I₃.E I₃.N0 (C₃.twI v) (twE …`.
+
+Introduce `v hv c hc B₁ B₃ hB hBA`. Take `⟨ht, a, ha, hp⟩` from `key v hv`. Establish `hl : D₁.ntw.l (σ.s (u v)) = D₃.ntw.l (C₃.twI v)` using `(hsame _ _ (hcomp _ _ hp).1).1`. Establish `hq` using `heq_sigma_pow (RCG := D₁.ntw.RCG) (RCG' := D₃.ntw.RCG) (gR := D₁.ntw.grpRCG) (gR' := D₃.ntw.grpRCG) (Ok := D₁.ntw.Ok) (Ok' := D₃.ntw.Ok) (cO := D₁.ntw.crOk) (cO' := D₃.ntw.crOk) hTw hY h13.set.RCG h13.set.grpRCG h13.set.Ok h13.set.crOk hp (C₃.sd v) c`. Take `⟨e, he, hpe⟩` from `psiAt_pow_pow (C₃.sd v) (σ.ψ (σ.s (u v))) a c`.
+
+Establish `hce : Nat.Coprime e.natAbs (D₁.ntw.l (σ.s (u v)))`. Rewrite using `[he]`. Conclude with `Nat.Coprime.mul ha (hl ▸ hc)`. Take `⟨hok, hg⟩` from `σ.good (u v) ht`. Establish `g1` using `goodTw_swap h1n (hg e hce)`.
+
+Rewrite `g1` using `[← hpe]`. Establish `g2 : IntegralHeckeForms.GoodTw D₁.nexp (BlochKatoReduction.bk0 D₁) I₁.E I₁.N0 (σ.s (u v)) (twEps D₁ (σ.s (u v))) (I₁.S (σ.s (u v))) B₁ (σ.Q (σ.s (u v))) (σ.k (σ.s (u v))) (BlochKatoReduction.Gen.psiAt (C₃.sd v) ((σ.ψ (σ.s (u v)) ^ a) ^ c))` using `expGood_anti (I := I₁) (p := ⟨σ.Q (σ.s (u v)), σ.k (σ.s (u v)), _⟩) hBA g1`. Establish `ok1 : I₁.Ok (σ.s (u v))` using `ok_swap (I := ⟨twEOf σ.xd, σ.N0, σ.S⟩) (I' := I₁) h1n rfl hok`. Establish `g3` using `good_pack h13 hE hN hS hq hB g2`. Establish `ok3` using `(SameExport.good h13 hE hN hS hq ⟨ok1, expGood_anti (I := I₁) (p := ⟨σ.Q (σ.s (u v)), σ.k (σ.s (u v)), _⟩) ((avRec_subset_avD D₁ (avDesign D₁) _).trans (hA _)) g1⟩).1`.
+
+Conclude with `⟨ok_swap h3n rfl ok3, goodTw_swap h3n g3⟩`. Use `⟨⟨I₃, rfl, fun v hv => ?_, fun v hv _ => ?_⟩, fun v v' hv hv' hne => ?_⟩` and prove the remaining obligations. Take `⟨ht, a, ha, hp⟩` from `key v hv`. Conclude with `⟨(pw v hv 1 (by simp) _ _ h13.avRec ((avRec_subset_avD D₁ (avDesign D₁) _).trans (hA _))).1, fun c hc => (pw v hv c hc _ _ h13.avRec ((avRec_subset_avD D₁ (avDesign D₁) _).trans (hA _))).2⟩`. Take `⟨ht, a, ha, hp⟩` from `key v hv`.
+
+Establish `h` using `(pw v hv 1 (by simp) _ _ (avD_heq h13 (hcomp _ _ hp).1) (hA _)).2`. Rewrite `h` using `[zpow_one]`. Conclude with `h`. Take `⟨ht, a, ha, hp⟩` from `key v hv`. Take `⟨ht', a', ha', hp'⟩` from `key v' hv'`.
+
+Take `⟨hi, hQ, -, -⟩` from `hcomp _ _ hp`. Take `⟨hi', hQ', -, -⟩` from `hcomp _ _ hp'`. Use `disjoint_of_heq h13.gal.R h13.gal.host hQ hQ' (σ.sep (u v) (u v') ht ht' fun he => hne ?_)` and prove the remaining obligations. Conclude with `eq_of_heq ((hi.symm.trans (heq_of_eq he)).trans hi')`.
+-/
 theorem goodO_of_seed : ∀ (D₁ D₂ D₃ : D7) (A : D₁.ntw.Tw → Finset (PlE D₁.host)) (σ : Seed D₁ A) (C₂ : NChoice D₂)
     (C₃ : NChoice D₃) (xd : ThData D₃) (u : D₃.what₂.places.Pl → D₁.what₂.places.Pl), SameExport D₁ D₂ → Kept C₂ C₃ →
     avPrimes D₂ = avPrimes D₃ → D₂.what₂.places.Pl = D₃.what₂.places.Pl → XdAll xd → (∀ i, avD D₁ (avDesign D₁) i ⊆ A i) →

@@ -12,6 +12,17 @@ open scoped InnerProductSpace ENNReal
 
 namespace GlobalTheory.Amp.StabHaar
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `ι.exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 hι)`. Set `M : Module.End ℝ E` to `g ∘ₗ N ∘ₗ ι`. Establish `hM : ∀ x, ι (M x) = N (ι x)` using `fun x => by`. Take `⟨y, hy⟩` from `h x`. Establish `: g (ι y) = y` using `LinearMap.congr_fun hg y`.
+
+Simplify using `only [M, LinearMap.comp_apply, ← hy, this]`. Establish `hp : ∀ (n : ℕ) x, ι ((M ^ n) x) = (N ^ n) (ι x)` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => intro x`.
+
+Rewrite using `[pow_succ', pow_succ', Module.End.mul_apply, Module.End.mul_apply, hM, ih]`. Establish `hMn : IsNilpotent M`. Take `⟨n, hn⟩` from `hN`. Conclude with `⟨n, LinearMap.ext fun x => hι (by rw [hp, hn]; simp)⟩`. Establish `hd : LinearMap.det (1 + M) = 1`.
+
+Establish `h1` using `hMn.neg.charpoly_eq_X_pow_finrank`. Establish `h2` using `LinearMap.eval_charpoly (-M) 1`. Rewrite `h2` using `[h1]`. Simplify using `using h2.symm`. Establish `hm : MeasurePreserving (1 + M : Module.End ℝ E) μ μ`.
+
+Use `⟨(LinearMap.continuous_of_finiteDimensional _).measurable, ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.map_linearMap_addHaar_eq_smul_addHaar μ (by rw [hd]; exact one_ne_zero), hd]`. Simplify using the standard rewrite rules. Use `⟨fun x => x₀ + (1 + M) x, (measurePreserving_add_left μ x₀).comp hm, fun x => ?_⟩` and prove the remaining obligations. Simplify using `[hM]`.
+-/
 theorem exists_mp {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [MeasurableSpace E]
     [BorelSpace E] (μ : Measure E) [μ.IsAddHaarMeasure] [AddCommGroup F] [Module ℝ F] (ι : E →ₗ[ℝ] F)
     (hι : Function.Injective ι) (N : Module.End ℝ F) (hN : IsNilpotent N) (h : ∀ x, N (ι x) ∈ Set.range ι) (x₀ : E) :
@@ -43,6 +54,13 @@ theorem exists_mp {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [Fini
 
 variable {r : ℕ}
 
+/- English proof (translation)
+Establish `: ∀ (n : ℕ) (a b : Fin r), b.val < a.val + n → (A ^ n) a b = 0` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => intro a b h`. Rewrite using `[pow_zero, Matrix.one_apply_ne]`. Introduce and unpack `rfl`.
+
+Use linear arithmetic over natural numbers and integers. Consider the case `succ n ih`. Introduce `a b h`. Rewrite using `[pow_succ, Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hc : c < b`. Rewrite using `[ih a c (by have : c.val < b.val := hc; omega), zero_mul]`. Rewrite using `[hA c b hc, mul_zero]`. Conclude with `⟨r, Matrix.ext fun a b => this r a b (by omega)⟩`.
+-/
 theorem nilp_of_strict (A : Matrix (Fin r) (Fin r) ℂ) (hA : ∀ a b, ¬ a < b → A a b = 0) : IsNilpotent A := by
   have : ∀ (n : ℕ) (a b : Fin r), b.val < a.val + n → (A ^ n) a b = 0 := fun n => by
     induction n with
@@ -61,12 +79,21 @@ def strIn (β : Fin r → ℕ) : (UTin β → ℂ) →ₗ[ℝ] Matrix (Fin r) (F
   map_add' x y := by ext a b; simp only [Matrix.add_apply, Matrix.of_apply]; split_ifs <;> simp
   map_smul' c x := by ext a b; simp only [Matrix.smul_apply, Matrix.of_apply]; split_ifs <;> simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem strIn_apply (β : Fin r → ℕ) (x : UTin β → ℂ) (a b : Fin r) :
     strIn β x a b = if h : a < b ∧ β a = β b then x ⟨⟨(a, b), h.1⟩, h.2⟩ else 0 := rfl
 
+/- English proof (translation)
+The claim follows from `dif_neg h`.
+-/
 theorem strIn_zero (β : Fin r → ℕ) (x : UTin β → ℂ) {a b : Fin r} (h : ¬ (a < b ∧ β a = β b)) : strIn β x a b = 0 :=
   dif_neg h
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [upperIn, upper, Matrix.add_apply, strIn_apply, Matrix.one_apply]`. Distinguish the cases in `h : a < b`. Apply the tactic sequence `by_cases h' : β a = β b <;> simp [h, h', h.ne]`. Simplify using `[h]`.
+-/
 theorem upperIn_eq (β : Fin r → ℕ) (x : UTin β → ℂ) : upperIn β x = 1 + strIn β x := by
   ext a b
   simp only [upperIn, upper, Matrix.add_apply, strIn_apply, Matrix.one_apply]
@@ -74,11 +101,19 @@ theorem upperIn_eq (β : Fin r → ℕ) (x : UTin β → ℂ) : upperIn β x = 1
   · by_cases h' : β a = β b <;> simp [h, h', h.ne]
   · simp [h]
 
+/- English proof (translation)
+Introduce `x y h` and use `by funext p have := congrFun (congrFun h p.1.1.1) p.1.1.2 rwa [strIn_apply, strIn_apply, dif_pos ⟨p.1.2, p.2⟩, dif_pos ⟨p.1.2, p.2⟩] at this`.
+-/
 theorem strIn_inj (β : Fin r → ℕ) : Function.Injective (strIn β) := fun x y h => by
   funext p
   have := congrFun (congrFun h p.1.1.1) p.1.1.2
   rwa [strIn_apply, strIn_apply, dif_pos ⟨p.1.2, p.2⟩, dif_pos ⟨p.1.2, p.2⟩] at this
 
+/- English proof (translation)
+Use `⟨fun p => A p.1.1.1 p.1.1.2, ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Rewrite using `[strIn_apply]`. Use `split_ifs with h`. Both sides reduce to the same expression.
+
+Conclude with `(hA a b h).symm`.
+-/
 theorem mem_strIn (β : Fin r → ℕ) (A : Matrix (Fin r) (Fin r) ℂ) (hA : ∀ a b, ¬ (a < b ∧ β a = β b) → A a b = 0) :
     A ∈ Set.range (strIn β) := by
   refine ⟨fun p => A p.1.1.1 p.1.1.2, ?_⟩
@@ -88,9 +123,17 @@ theorem mem_strIn (β : Fin r → ℕ) (A : Matrix (Fin r) (Fin r) ℂ) (hA : �
   · rfl
   · exact (hA a b h).symm
 
+/- English proof (translation)
+The claim follows from `nilp_of_strict _ fun _ _ h => strIn_zero β x fun h' => h h'.1`.
+-/
 theorem strIn_nilp (β : Fin r → ℕ) (x : UTin β → ℂ) : IsNilpotent (strIn β x) :=
   nilp_of_strict _ fun _ _ h => strIn_zero β x fun h' => h h'.1
 
+/- English proof (translation)
+Use `mem_strIn β _ fun a b h => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `h1 : a < c ∧ β a = β c`. Rewrite using `[strIn_zero β y fun h2 => h ⟨h1.1.trans h2.1, h1.2.trans h2.2⟩, mul_zero]`.
+
+Rewrite using `[strIn_zero β x h1, zero_mul]`.
+-/
 theorem strIn_mul (β : Fin r → ℕ) (x y : UTin β → ℂ) : strIn β x * strIn β y ∈ Set.range (strIn β) := by
   refine mem_strIn β _ fun a b h => ?_
   rw [Matrix.mul_apply]
@@ -99,6 +142,9 @@ theorem strIn_mul (β : Fin r → ℕ) (x y : UTin β → ℂ) : strIn β x * st
   · rw [strIn_zero β y fun h2 => h ⟨h1.1.trans h2.1, h1.2.trans h2.2⟩, mul_zero]
   · rw [strIn_zero β x h1, zero_mul]
 
+/- English proof (translation)
+Take `⟨T, hT, h⟩` from `exists_mp volume (strIn β) (strIn_inj β) (LinearMap.mulLeft ℝ (strIn β x₀)) ((LinearMap.isNilpotent_mulLeft_iff _ _).2 (strIn_nilp β x₀)) (fun x => strIn_mul β x₀ x) x₀`. Use `⟨T, hT, fun x => ?_⟩` and prove the remaining obligations. Simplify using `only [upperIn_eq, h, LinearMap.mulLeft_apply]`. Use `noncomm_ring`.
+-/
 theorem upperIn_left (β : Fin r → ℕ) (x₀ : UTin β → ℂ) : ∃ T : (UTin β → ℂ) → (UTin β → ℂ),
     MeasurePreserving T volume volume ∧ ∀ x, upperIn β x₀ * upperIn β x = upperIn β (T x) := by
   obtain ⟨T, hT, h⟩ := exists_mp volume (strIn β) (strIn_inj β) (LinearMap.mulLeft ℝ (strIn β x₀))
@@ -107,6 +153,9 @@ theorem upperIn_left (β : Fin r → ℕ) (x₀ : UTin β → ℂ) : ∃ T : (UT
   simp only [upperIn_eq, h, LinearMap.mulLeft_apply]
   noncomm_ring
 
+/- English proof (translation)
+Take `⟨T, hT, h⟩` from `exists_mp volume (strIn β) (strIn_inj β) (LinearMap.mulRight ℝ (strIn β x₀)) ((LinearMap.isNilpotent_mulRight_iff _ _).2 (strIn_nilp β x₀)) (fun x => strIn_mul β x x₀) x₀`. Use `⟨T, hT, fun x => ?_⟩` and prove the remaining obligations. Simplify using `only [upperIn_eq, h, LinearMap.mulRight_apply]`. Use `noncomm_ring`.
+-/
 theorem upperIn_right (β : Fin r → ℕ) (x₀ : UTin β → ℂ) : ∃ T : (UTin β → ℂ) → (UTin β → ℂ),
     MeasurePreserving T volume volume ∧ ∀ x, upperIn β x * upperIn β x₀ = upperIn β (T x) := by
   obtain ⟨T, hT, h⟩ := exists_mp volume (strIn β) (strIn_inj β) (LinearMap.mulRight ℝ (strIn β x₀))
@@ -120,6 +169,9 @@ variable {k : ℕ}
 def gm (B B' : Matrix (Fin r) (Fin (k + 1)) ℂ) : Matrix (Fin r) (Fin r) ℂ :=
   Matrix.of fun a b => herm (Hb k) (B' b) (B a)
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [gm, Matrix.of_apply, Rad.herm_Hb, Matrix.mul_apply, Rad.Hb_apply, Matrix.transpose_apply, Matrix.conjTranspose_apply]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `[mul_assoc]`.
+-/
 theorem gm_eq (B B' : Matrix (Fin r) (Fin (k + 1)) ℂ) : gm B B' = Bᴴᵀ * Hb k * B'ᵀ := by
   ext a b
   simp only [gm, Matrix.of_apply, Rad.herm_Hb, Matrix.mul_apply, Rad.Hb_apply, Matrix.transpose_apply,
@@ -127,11 +179,21 @@ theorem gm_eq (B B' : Matrix (Fin r) (Fin (k + 1)) ℂ) : gm B B' = Bᴴᵀ * Hb
   refine Finset.sum_congr rfl fun c _ => ?_
   simp [mul_assoc]
 
+/- English proof (translation)
+Establish `: (vᴴᵀ)ᴴᵀ = v` using `by ext a b; simp`. Simplify using `only [gm_eq, Matrix.conjTranspose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, this, Matrix.mul_assoc]`.
+-/
 theorem gm_conj (v : Matrix (Fin r) (Fin r) ℂ) (B : Matrix (Fin r) (Fin (k + 1)) ℂ) :
     gm (vᴴᵀ * B) (vᴴᵀ * B) = v * gm B B * vᴴ := by
   have : (vᴴᵀ)ᴴᵀ = v := by ext a b; simp
   simp only [gm_eq, Matrix.conjTranspose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, this, Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `em : ∀ a j, uEmb k r v (eI k r a) (wI k r j) = 0` using `UEmb.u_em v`. Establish `me : ∀ a j, uEmb k r v (wI k r j) (eI k r a) = 0` using `fun a j => UEmb.u_me v a j`. Establish `mm : ∀ i j, uEmb k r v (wI k r i) (wI k r j) = if i = j then 1 else 0` using `UEmb.u_mm v`. Establish `ms : ∀ a j, uEmb k r v (wI k r j) (esI k r a) = 0` using `fun a j => UEmb.u_ms v a j`. Establish `sm : ∀ a j, uEmb k r v (esI k r a) (wI k r j) = 0` using `UEmb.u_sm v`.
+
+Use extensionality with `x y`. Rewrite using `[Matrix.mul_apply, Matrix.mul_apply, Rad.sum3, Rad.sum3]`. Apply the tactic sequence `induction x using Rad.cases3 <;> induction y using Rad.cases3 <;>`. Simplify using `only [Rad.pEl_ee, Rad.pEl_ew, Rad.pEl_es, Rad.pEl_we, Rad.pEl_ww, Rad.pEl_ws, Rad.pEl_se, Rad.pEl_sw, Rad.pEl_ss, UEmb.u_ee, UEmb.u_es, UEmb.u_se, UEmb.u_ss, em, me, mm, ms, sm, mul_zero, zero_mul, Finset.sum_const_zero, add_zero, zero_add, mul_ite, ite_mul, mul_one, one_mul, Fin …`. Simplify using `[e1, Finset.sum_mul, mul_assoc]`.
+
+Conclude with `e2 _ _`. Conclude with `e3 _ _`.
+-/
 theorem unitary_embed_parabolic_commute (v : Matrix (Fin r) (Fin r) ℂ) (B B' : Fin r → Fin (k + 1) → ℂ) (S S' : Matrix (Fin r) (Fin r) ℂ)
     (e1 : ∀ a i, B' a i = ∑ c, star (v a c) * B c i)
     (e2 : ∀ a b, ∑ c, v a c * (S c b - herm (Hb k) (B b) (B c) / 2) =
@@ -153,6 +215,11 @@ theorem unitary_embed_parabolic_commute (v : Matrix (Fin r) (Fin r) ℂ) (B B' :
   · exact e2 _ _
   · exact e3 _ _
 
+/- English proof (translation)
+Establish `h1 : vᴴ * (v⁻¹)ᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, Matrix.nonsing_inv_mul v hv, Matrix.conjTranspose_one]`. Establish `h2 : v * (S - (2⁻¹ : ℂ) • gm B B) = (v * S * vᴴ - (2⁻¹ : ℂ) • gm (vᴴᵀ * B) (vᴴᵀ * B)) * (v⁻¹)ᴴ`. Rewrite using `[gm_conj, Matrix.sub_mul, Matrix.smul_mul, Matrix.mul_assoc _ vᴴ, Matrix.mul_assoc _ vᴴ, h1]`. Simplify using `[Matrix.mul_sub]`. Establish `h3 : Bᵀ = (vᴴᵀ * B)ᵀ * (v⁻¹)ᴴ`.
+
+Rewrite using `[Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc, h1, Matrix.mul_one]`. Use `unitary_embed_parabolic_commute v _ _ _ _ (fun a i => rfl) (fun a b => ?_) fun i b => congrFun (congrFun h3 i) b` and prove the remaining obligations. Use `congrFun (congrFun h2 a) b` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Matrix.mul_apply]`. Simplify `this` using `only [Matrix.sub_apply, Matrix.smul_apply, gm, Matrix.of_apply, smul_eq_mul, Matrix.conjTranspose_apply, inv_mul_eq_div]`.
+-/
 theorem uEmb_pEl (v : Matrix (Fin r) (Fin r) ℂ) (hv : IsUnit v.det) (B : Matrix (Fin r) (Fin (k + 1)) ℂ)
     (S : Matrix (Fin r) (Fin r) ℂ) :
     uEmb k r v * pEl k r B S = pEl k r (vᴴᵀ * B : Matrix _ _ ℂ) (v * S * vᴴ) * uEmb k r v := by
@@ -185,13 +252,25 @@ def topL (k r j : ℕ) : PTop k r j →ₗ[ℝ] Amb k r where
 
 variable {j : ℕ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pTop_eq (q : PTop k r j) : pTop k r j q = pEl k r (topL k r j q).1 (topL k r j q).2 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem topL_fst (q : PTop k r j) (a : Fin r) : (topL k r j q).1 a = if h : j ≤ a.val then q.1 ⟨a, h⟩ else 0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem topL_snd (q : PTop k r j) : (topL k r j q).2 =
   skewM (fun p => if h : j ≤ p.1.1.val then q.2.1 ⟨p, h⟩ else 0) (fun a => if h : j ≤ a.val then q.2.2 ⟨a, h⟩ else 0) := rfl
 
+/- English proof (translation)
+Introduce `x y h` and use `by refine Prod.ext (funext fun a => ?_) (Prod.ext (funext fun p => ?_) (funext fun a => ?_)) · have := congrFun (congrArg Prod.fst h) a.1 rwa [topL_fst, topL_fst, dif_pos a.2, dif_pos a.2] at this · have := congrFun (congrFun (congrArg Prod.snd h) p.1.1.1) p.1.1.2 simpa [topL_snd …`.
+-/
 theorem topL_inj : Function.Injective (topL k r j) := fun x y h => by
   refine Prod.ext (funext fun a => ?_) (Prod.ext (funext fun p => ?_) (funext fun a => ?_))
   · have := congrFun (congrArg Prod.fst h) a.1
@@ -204,6 +283,11 @@ theorem topL_inj : Function.Injective (topL k r j) := fun x y h => by
 def TopC (j : ℕ) (y : Amb k r) : Prop :=
   (∀ a : Fin r, a.val < j → y.1 a = 0) ∧ y.2ᴴ = -y.2 ∧ ∀ a b : Fin r, a.val < j → y.2 a b = 0
 
+/- English proof (translation)
+Use `⟨fun a ha => by rw [topL_fst, dif_neg (by omega)], Rad.skewM_skew _ _, fun a b ha => ?_⟩` and prove the remaining obligations. Simplify using `only [topL_snd, skewM]`. Use `split_ifs with h1 h2 h3 h4 h5`. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
+
+Establish `: b.val < a.val` using `h3`. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
+-/
 theorem topC_topL (q : PTop k r j) : TopC j (topL k r j q) := by
   refine ⟨fun a ha => by rw [topL_fst, dif_neg (by omega)], Rad.skewM_skew _ _, fun a b ha => ?_⟩
   simp only [topL_snd, skewM]
@@ -216,6 +300,15 @@ theorem topC_topL (q : PTop k r j) : TopC j (topL k r j q) := by
   · omega
   · simp
 
+/- English proof (translation)
+Take `⟨p, hp, -⟩` from `Rad.skewM_unique y.2 h.2.1`. Use `⟨(fun a => y.1 a.1, fun q => p.1 q.1, fun a => p.2 a.1), Prod.ext ?_ ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Rewrite using `[topL_fst]`. Use `split_ifs with ha`.
+
+Both sides reduce to the same expression. Conclude with `(h.1 a (by omega)).symm`. Rewrite using `[topL_snd, hp]`. Use `congr 1`. Use function extensionality and compare the values at `q split_ifs with ha`.
+
+Both sides reduce to the same expression. Use `h.2.2 q.1.1 q.1.2 (by omega)` as an intermediate fact. Rewrite `this` using `[hp]`. Simplify `this.symm` using `[skewM, q.2]`. Use function extensionality and compare the values at `a split_ifs with ha`.
+
+Both sides reduce to the same expression. Use `h.2.2 a a (by omega)` as an intermediate fact. Rewrite `this` using `[hp]`. Use `symm`. Simplify `this` using `[skewM]`.
+-/
 theorem TopC.mem {y : Amb k r} (h : TopC j y) : y ∈ Set.range (topL k r j) := by
   obtain ⟨p, hp, -⟩ := Rad.skewM_unique y.2 h.2.1
   refine ⟨(fun a => y.1 a.1, fun q => p.1 q.1, fun a => p.2 a.1), Prod.ext ?_ ?_⟩
@@ -256,11 +349,17 @@ def hm (B : Matrix (Fin r) (Fin (k + 1)) ℂ) : Matrix (Fin r) (Fin (k + 1)) ℂ
       RingHom.id_apply, ← smul_sub]
     exact smul_comm _ _ _
 
+/- English proof (translation)
+Use `show (2⁻¹ : ℂ) * (herm (Hb k) (B b) (B' a) - herm (Hb k) (B' b) (B a)) = _`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hm_apply (B B' : Matrix (Fin r) (Fin (k + 1)) ℂ) (a b : Fin r) :
     hm B B' a b = (herm (Hb k) (B b) (B' a) - herm (Hb k) (B' b) (B a)) / 2 := by
   show (2⁻¹ : ℂ) * (herm (Hb k) (B b) (B' a) - herm (Hb k) (B' b) (B a)) = _
   ring
 
+/- English proof (translation)
+Use `(Rad.pEl_mul _ _ _ _).trans ?_` and prove the remaining obligations. Use `congr 2`. Use extensionality with `a b`. Conclude with `(hm_apply _ _ a b).symm`.
+-/
 theorem pEl_mul' (y y' : Amb k r) :
     pEl k r y.1 y.2 * pEl k r y'.1 y'.2 = pEl k r (y.1 + y'.1) (y.2 + y'.2 + hm y.1 y'.1) := by
   refine (Rad.pEl_mul _ _ _ _).trans ?_
@@ -268,10 +367,20 @@ theorem pEl_mul' (y y' : Amb k r) :
   ext a b
   exact (hm_apply _ _ a b).symm
 
+/- English proof (translation)
+Use extensionality with `a b`. Rewrite using `[neg_one_smul, Matrix.neg_apply, hm_apply, hm_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hm_swap (B B' : Matrix (Fin r) (Fin (k + 1)) ℂ) : hm B B' = (-1 : ℝ) • hm B' B := by
   ext a b
   rw [neg_one_smul, Matrix.neg_apply, hm_apply, hm_apply]; ring
 
+/- English proof (translation)
+Set `N : Module.End ℝ (Amb k r)` to `LinearMap.inr ℝ _ _ ∘ₗ (c • hm (topL k r j q₀).1) ∘ₗ LinearMap.fst ℝ _ _`. Establish `hN : ∀ y, N y = (0, c • hm (topL k r j q₀).1 y.1)` using `fun _ => rfl`. Take `⟨T, hT, h⟩` from `exists_mp volume (topL k r j) topL_inj N ⟨2, LinearMap.ext fun y => by rw [pow_two, Module.End.mul_apply, hN, hN]; simp⟩ (fun q => TopC.mem (by`. Rewrite using `[hN]`. Use `⟨fun a _ => rfl, ?_, fun a b ha => ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `a b`. Simplify using `only [Matrix.conjTranspose_apply, Matrix.neg_apply, Matrix.smul_apply, hm_apply, star_smul, star_trivial, star_div₀, star_sub, Rad.herm_star, star_ofNat, Complex.real_smul]`. Simplify using `[Rad.herm_star]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Matrix.smul_apply, hm_apply, (topC_topL q).1 a ha, (topC_topL q₀).1 a ha]`.
+
+Simplify using `[herm])) q₀`. Use `⟨T, hT, fun q => ?_⟩` and prove the remaining obligations. Rewrite using `[h, hN]`. Apply the tactic sequence `ext <;> simp [add_assoc]`.
+-/
 theorem pTop_shear (c : ℝ) (q₀ : PTop k r j) : ∃ T : PTop k r j → PTop k r j, MeasurePreserving T volume volume ∧
     ∀ q, topL k r j (T q) = ((topL k r j q₀).1 + (topL k r j q).1,
       (topL k r j q₀).2 + (topL k r j q).2 + c • hm (topL k r j q₀).1 (topL k r j q).1) := by
@@ -292,17 +401,50 @@ theorem pTop_shear (c : ℝ) (q₀ : PTop k r j) : ∃ T : PTop k r j → PTop k
   rw [h, hN]
   ext <;> simp [add_assoc]
 
+/- English proof (translation)
+Take `⟨T, hT, h⟩` from `pTop_shear 1 q₀`. Conclude with `⟨T, hT, fun q => by rw [pTop_eq, pTop_eq, pTop_eq, h, pEl_mul', one_smul]⟩`.
+-/
 theorem pTop_left (q₀ : PTop k r j) : ∃ T : PTop k r j → PTop k r j, MeasurePreserving T volume volume ∧
     ∀ q, pTop k r j q₀ * pTop k r j q = pTop k r j (T q) := by
   obtain ⟨T, hT, h⟩ := pTop_shear 1 q₀
   exact ⟨T, hT, fun q => by rw [pTop_eq, pTop_eq, pTop_eq, h, pEl_mul', one_smul]⟩
 
+/- English proof (translation)
+Take `⟨T, hT, h⟩` from `pTop_shear (-1) q₀`. Conclude with `⟨T, hT, fun q => by`. Rewrite using `[pTop_eq, pTop_eq, pTop_eq, h, pEl_mul', hm_swap, add_comm (topL k r j q).1, add_comm (topL k r j q).2]⟩`.
+-/
 theorem pTop_right (q₀ : PTop k r j) : ∃ T : PTop k r j → PTop k r j, MeasurePreserving T volume volume ∧
     ∀ q, pTop k r j q * pTop k r j q₀ = pTop k r j (T q) := by
   obtain ⟨T, hT, h⟩ := pTop_shear (-1) q₀
   exact ⟨T, hT, fun q => by
     rw [pTop_eq, pTop_eq, pTop_eq, h, pEl_mul', hm_swap, add_comm (topL k r j q).1, add_comm (topL k r j q).2]⟩
 
+/- English proof (translation)
+Use `set A := strIn β x with hA`. Establish `hAn : IsNilpotent A` using `strIn_nilp β x`. Establish `hA0 : ∀ a c : Fin r, a.val < j → j ≤ c.val → A a c = 0` using `fun a c ha hc => strIn_zero β x fun h => by have := (hβ a c hc).1 h.2; omega`. Set `N₁ : Module.End ℝ (Matrix (Fin r) (Fin (k + 1)) ℂ)` to `{ toFun := fun B => Aᴴᵀ * B, map_add' := fun _ _ => Matrix.mul_add _ _ _, map_smul' := fun _ _ => Matrix.mul_smul _ _ _ }`. Set `L : Module.End ℝ (Matrix (Fin r) (Fin r) ℂ)` to `LinearMap.mulLeft ℝ A`.
+
+Set `R : Module.End ℝ (Matrix (Fin r) (Fin r) ℂ)` to `LinearMap.mulRight ℝ Aᴴ`. Establish `hL : IsNilpotent L` using `(LinearMap.isNilpotent_mulLeft_iff _ _).2 hAn`. Establish `hR : IsNilpotent R` using `(LinearMap.isNilpotent_mulRight_iff _ _).2 (by`. Take `⟨n, hn⟩` from `hAn`. Conclude with `⟨n, by rw [← Matrix.conjTranspose_pow, hn, Matrix.conjTranspose_zero]⟩)`.
+
+Establish `hc : Commute L R` using `LinearMap.commute_mulLeft_right _ _`. Establish `h2 : IsNilpotent (L + R + L * R)` using `Commute.isNilpotent_add (((Commute.refl L).mul_right hc).add_left (hc.symm.mul_right (Commute.refl R))) (hc.isNilpotent_add hL hR) (hc.isNilpotent_mul_right hL)`. Establish `h1 : IsNilpotent N₁`. Take `⟨n, hn⟩` from `nilp_of_strict Aᴴᵀ fun a b h => by`. Rewrite using `[Matrix.transpose_apply, Matrix.conjTranspose_apply, hA, strIn_zero β x fun h' => h h'.1, star_zero]`.
+
+Establish `: ∀ (m : ℕ) B, (N₁ ^ m) B = Aᴴᵀ ^ m * B` using `fun m => by`. Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih => intro B`. Rewrite using `[pow_succ', pow_succ', Module.End.mul_apply, ih, Matrix.mul_assoc]`.
+
+Both sides reduce to the same expression. Conclude with `⟨n, LinearMap.ext fun B => by rw [this, hn]; simp⟩`. Set `N : Module.End ℝ (Amb k r)` to `LinearMap.prodMap N₁ (L + R + L * R)`. Establish `hN : ∀ y : Amb k r, y + N y = ((1 + A)ᴴᵀ * y.1, (1 + A) * y.2 * (1 + A)ᴴ)` using `fun y => by`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+
+Use `show y.1 + Aᴴᵀ * y.1 = _`. Simplify using `[Matrix.add_mul]`. Use `show y.2 + (A * y.2 + y.2 * Aᴴ + A * (y.2 * Aᴴ)) = (1 + A) * y.2 * (1 + A)ᴴ`. Rewrite using `[Matrix.conjTranspose_add, Matrix.conjTranspose_one]`. Use `noncomm_ring`.
+
+Establish `hNn : IsNilpotent N`. Take `⟨n, hn⟩` from `h1`. Take `⟨m, hm⟩` from `h2`. Establish `: ∀ p : ℕ, N ^ p = LinearMap.prodMap (N₁ ^ p) ((L + R + L * R) ^ p)` using `fun p => by`. Proceed by induction on `p with`.
+
+Consider the case `zero => exact LinearMap.prodMap_id.symm`. Consider the case `succ p ih => rw [pow_succ, ih, pow_succ, pow_succ]`. Both sides reduce to the same expression. Conclude with `⟨n + m, by rw [this, pow_add, pow_add, hn, hm, zero_mul, mul_zero]; exact LinearMap.prodMap_zero⟩`. Take `⟨T, hT, h⟩` from `exists_mp volume (topL k r j) topL_inj N hNn (fun q => TopC.mem (by`.
+
+Establish `hq` using `topC_topL q`. Establish `hS : ∀ a b : Fin r, a.val < j → (A * (topL k r j q).2) a b = 0` using `fun a b ha => by`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `hc : c.val < j`.
+
+Rewrite using `[hq.2.2 c b hc, mul_zero]`. Rewrite using `[hA0 a c ha (by omega), zero_mul]`. Use `⟨fun a ha => funext fun i => ?_, ?_, fun a b ha => ?_⟩` and prove the remaining obligations. Use `show (Aᴴᵀ * (topL k r j q).1) a i = 0`. Rewrite using `[Matrix.mul_apply]`.
+
+Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `hc : c.val < j`. Rewrite using `[hq.1 c hc]`. Simplify using the standard rewrite rules. Rewrite using `[Matrix.transpose_apply, Matrix.conjTranspose_apply, hA0 a c ha (by omega), star_zero, zero_mul]`.
+
+Use `show (A * (topL k r j q).2 + (topL k r j q).2 * Aᴴ + A * ((topL k r j q).2 * Aᴴ))ᴴ = -(A * (topL k r j q).2 + (topL k r j q).2 * Aᴴ + A * ((topL k r j q).2 * Aᴴ))`. Simplify using `only [Matrix.conjTranspose_add, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hq.2.1]`. Use `noncomm_ring`. Use `show (A * (topL k r j q).2 + (topL k r j q).2 * Aᴴ + A * ((topL k r j q).2 * Aᴴ)) a b = 0`. Rewrite using `[← Matrix.mul_assoc, Matrix.add_apply, Matrix.add_apply, hS a b ha, Matrix.mul_apply, Matrix.mul_apply]`.
+
+Simplify using `[hS a _ ha, hq.2.2 a _ ha])) 0`. Use `⟨T, hT, fun q => ?_⟩` and prove the remaining obligations. Establish `hd : IsUnit (upperIn β x).det` using `by rw [upperIn, UEmb.det_upper]; exact isUnit_one`. Rewrite using `[pTop_eq, pTop_eq, h, map_zero, zero_add, hN, uEmb_pEl _ hd, upperIn_eq]`.
+-/
 theorem pTop_conj {β : Fin r → ℕ} (hβ : ∀ a b : Fin r, j ≤ b.val → (β a = β b ↔ j ≤ a.val)) (x : UTin β → ℂ) :
     ∃ T : PTop k r j → PTop k r j, MeasurePreserving T volume volume ∧
       ∀ q, uEmb k r (upperIn β x) * pTop k r j q = pTop k r j (T q) * uEmb k r (upperIn β x) := by
@@ -371,6 +513,13 @@ theorem pTop_conj {β : Fin r → ℕ} (hβ : ∀ a b : Fin r, j ≤ b.val → (
   have hd : IsUnit (upperIn β x).det := by rw [upperIn, UEmb.det_upper]; exact isUnit_one
   rw [pTop_eq, pTop_eq, h, map_zero, zero_add, hN, uEmb_pEl _ hd, upperIn_eq]
 
+/- English proof (translation)
+Establish `h1 : Continuous (upperIn β)`. Rewrite using `[funext (upperIn_eq β)]`. Conclude with `continuous_const.add (strIn β).continuous_of_finiteDimensional`. Establish `h2 : ∀ x, (upperIn β x)⁻¹ = (upperIn β x).adjugate` using `fun x => by`. Rewrite using `[Matrix.inv_def, upperIn, UEmb.det_upper]`.
+
+Simplify using the standard rewrite rules. Use `measurable_pi_iff.2 fun a => measurable_pi_iff.2 fun b => Continuous.measurable ?_` and prove the remaining obligations. Simplify using `only [Matrix.of_symm_apply, uEmb, h2]`. Use `split_ifs`. Conclude with `h1.matrix_elem _ _`.
+
+Conclude with `(h1.matrix_adjugate.matrix_elem _ _).star`. Conclude with `continuous_const`. Conclude with `continuous_const`.
+-/
 theorem measurable_uIn (β : Fin r → ℕ) :
     Measurable fun x : UTin β → ℂ => (Matrix.of.symm (uEmb k r (upperIn β x)) : Mt k r) := by
   have h1 : Continuous (upperIn β) := by
@@ -386,6 +535,9 @@ theorem measurable_uIn (β : Fin r → ℕ) :
   · exact continuous_const
   · exact continuous_const
 
+/- English proof (translation)
+Apply the tactic sequence `induction a using Rad.cases3 <;> induction b using Rad.cases3 <;>`. Apply the tactic sequence `simp only [Rad.pEl_ee, Rad.pEl_ew, Rad.pEl_es, Rad.pEl_we, Rad.pEl_ww, Rad.pEl_ws, Rad.pEl_se, Rad.pEl_sw, Rad.pEl_ss, Rad.herm_Hb] <;> fun_prop`.
+-/
 theorem continuous_pEl {X : Type*} [TopologicalSpace X] (f : X → Fin r → Fin (k + 1) → ℂ)
     (g : X → Matrix (Fin r) (Fin r) ℂ) (hf : ∀ a i, Continuous fun q => f q a i) (hg : ∀ a b, Continuous fun q => g q a b)
     (a b : Fin (2 * r + k + 1)) : Continuous fun q => pEl k r (f q) (g q) a b := by
@@ -393,12 +545,18 @@ theorem continuous_pEl {X : Type*} [TopologicalSpace X] (f : X → Fin r → Fin
     simp only [Rad.pEl_ee, Rad.pEl_ew, Rad.pEl_es, Rad.pEl_we, Rad.pEl_ww, Rad.pEl_ws, Rad.pEl_se, Rad.pEl_sw, Rad.pEl_ss,
       Rad.herm_Hb] <;> fun_prop
 
+/- English proof (translation)
+Establish `h` using `(topL k r j).continuous_of_finiteDimensional`. Conclude with `measurable_pi_iff.2 fun a => measurable_pi_iff.2 fun b => Continuous.measurable (continuous_pEl (fun q => (topL k r j q).1) (fun q => (topL k r j q).2) (fun a i => (continuous_fst.comp h).matrix_elem a i) (fun a b => (continuous_snd.comp h).matrix_elem a b) a b)`.
+-/
 theorem measurable_pTop : Measurable fun q : PTop k r j => (Matrix.of.symm (pTop k r j q) : Mt k r) := by
   have h := (topL k r j).continuous_of_finiteDimensional
   exact measurable_pi_iff.2 fun a => measurable_pi_iff.2 fun b => Continuous.measurable
     (continuous_pEl (fun q => (topL k r j q).1) (fun q => (topL k r j q).2)
       (fun a i => (continuous_fst.comp h).matrix_elem a i) (fun a b => (continuous_snd.comp h).matrix_elem a b) a b)
 
+/- English proof (translation)
+Introduce `q q' h` and use `by refine topL_inj ?_ have h1 : (topL k r j q).1 = (topL k r j q').1 := Matrix.ext fun b i => (Rad.pEl_ws _ _ b i).symm.trans ((congrFun (congrFun h _) _).trans (Rad.pEl_ws _ _ b i)) refine Prod.ext h1 (Matrix.ext fun a b => ?_) have := (Rad.pEl_es _ _ a b).symm.trans ((congrFun …`.
+-/
 theorem pTop_inj : Function.Injective (pTop k r j) := fun q q' h => by
   refine topL_inj ?_
   have h1 : (topL k r j q).1 = (topL k r j q').1 := Matrix.ext fun b i =>
@@ -409,11 +567,17 @@ theorem pTop_inj : Function.Injective (pTop k r j) := fun q q' h => by
     (topL k r j q').2 a b - herm _ ((topL k r j q').1 b) ((topL k r j q').1 a) / 2 at this
   rwa [h1, sub_left_inj] at this
 
+/- English proof (translation)
+Establish `hd : IsUnit (upperIn β x).det` using `by rw [upperIn, UEmb.det_upper]; exact isUnit_one`. Conclude with `Matrix.isUnit_det_of_left_inverse (B := uEmb k r (upperIn β x)⁻¹) (by rw [← UEmb.uEmb_mul, Matrix.nonsing_inv_mul _ hd, UEmb.uEmb_one])`.
+-/
 theorem isUnit_uIn (β : Fin r → ℕ) (x : UTin β → ℂ) : IsUnit (uEmb k r (upperIn β x)).det := by
   have hd : IsUnit (upperIn β x).det := by rw [upperIn, UEmb.det_upper]; exact isUnit_one
   exact Matrix.isUnit_det_of_left_inverse (B := uEmb k r (upperIn β x)⁻¹)
     (by rw [← UEmb.uEmb_mul, Matrix.nonsing_inv_mul _ hd, UEmb.uEmb_one])
 
+/- English proof (translation)
+Introduce `q q' h` and use `by have e : ∀ (q : (UTin β → ℂ) × PTop k r j) a b, rEl k r j β q (eI k r a) (eI k r b) = upperIn β q.1 a b := fun q a b => by have e1 : ∀ c, pTop k r j q.2 (eI k r c) (eI k r b) = if c = b then 1 else 0 := fun c => Rad.pEl_ee _ _ c b have e2 : ∀ c, pTop k r j q.2 (wI k r c) (eI k …`.
+-/
 theorem rEl_inj (β : Fin r → ℕ) : Function.Injective (rEl k r j β) := fun q q' h => by
   have e : ∀ (q : (UTin β → ℂ) × PTop k r j) a b, rEl k r j β q (eI k r a) (eI k r b) = upperIn β q.1 a b := fun q a b => by
     have e1 : ∀ c, pTop k r j q.2 (eI k r c) (eI k r b) = if c = b then 1 else 0 := fun c => Rad.pEl_ee _ _ c b
@@ -429,23 +593,38 @@ theorem rEl_inj (β : Fin r → ℕ) : Function.Injective (rEl k r j β) := fun 
   rw [rEl, rEl, h1] at h
   exact ((Matrix.isUnit_iff_isUnit_det _).2 (isUnit_uIn β q'.1)).mul_left_cancel h
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.HaarInversion.measurable_mulM hu hv`.
+-/
 theorem measurable_mul {α : Type*} [MeasurableSpace α] {u v : α → Mat k r}
     (hu : Measurable fun a => (Matrix.of.symm (u a) : Mt k r)) (hv : Measurable fun a => (Matrix.of.symm (v a) : Mt k r)) :
     Measurable fun a => (Matrix.of.symm (u a * v a) : Mt k r) :=
   GlobalTheory.HaarInversion.measurable_mulM hu hv
 
+/- English proof (translation)
+The claim follows from `measurable_mul ((measurable_uIn β).comp measurable_fst) (measurable_pTop.comp measurable_snd)`.
+-/
 theorem measurable_rEl (β : Fin r → ℕ) : Measurable fun q => (Matrix.of.symm (rEl k r j β q) : Mt k r) :=
   measurable_mul ((measurable_uIn β).comp measurable_fst) (measurable_pTop.comp measurable_snd)
 
+/- English proof (translation)
+Rewrite using `[Measure.map_map hf hφ, show f ∘ φ = φ ∘ T from funext h, ← Measure.map_map hφ hT.measurable, hT.map_eq]`.
+-/
 theorem map_eq_of_lift {Q Y : Type*} [MeasurableSpace Q] [MeasurableSpace Y] {μ : Measure Q} {φ : Q → Y} (hφ : Measurable φ)
     {f : Y → Y} (hf : Measurable f) {T : Q → Q} (hT : MeasurePreserving T μ μ) (h : ∀ q, f (φ q) = φ (T q)) :
     (μ.map φ).map f = μ.map φ := by
   rw [Measure.map_map hf hφ, show f ∘ φ = φ ∘ T from funext h, ← Measure.map_map hφ hT.measurable, hT.map_eq]
 
+/- English proof (translation)
+The claim follows from `measurable_mul (measurable_pTop.comp measurable_snd) ((measurable_uIn β).comp measurable_fst)`.
+-/
 theorem measurable_rEl' (β : Fin r → ℕ) : Measurable fun q : (UTin β → ℂ) × PTop k r j =>
     (Matrix.of.symm (pTop k r j q.2 * uEmb k r (upperIn β q.1)) : Mt k r) :=
   measurable_mul (measurable_pTop.comp measurable_snd) ((measurable_uIn β).comp measurable_fst)
 
+/- English proof (translation)
+Rewrite using `[Rad.pEl_mul, ← Rad.pEl_zero]`. Use `congr 1`. Simplify using the standard rewrite rules. Use extensionality with `a b`. Simplify using `[Rad.herm_neg_left, Rad.herm_neg_right]`.
+-/
 theorem pEl_mul_neg (B : Fin r → Fin (k + 1) → ℂ) (S : Matrix (Fin r) (Fin r) ℂ) : pEl k r B S * pEl k r (-B) (-S) = 1 := by
   rw [Rad.pEl_mul, ← Rad.pEl_zero]
   congr 1
@@ -454,6 +633,13 @@ theorem pEl_mul_neg (B : Fin r → Fin (k + 1) → ℂ) (S : Matrix (Fin r) (Fin
 
 set_option synthInstance.maxSize 1024 in
 
+/- English proof (translation)
+Use `choose T hT h using pTop_conj (k := k) hβ`. Establish `hemb : MeasurableEmbedding fun q : PTop k r j => (Matrix.of.symm (pTop k r j q) : Mt k r)` using `measurable_pTop.measurableEmbedding (Matrix.of.symm.injective.comp pTop_inj)`. Establish `hm : Measurable (Function.uncurry T)`. Rewrite using `[← hemb.measurable_comp_iff]`. Establish `: ((fun q : PTop k r j => (Matrix.of.symm (pTop k r j q) : Mt k r)) ∘ Function.uncurry T) = fun q => Matrix.of.symm (rEl k r j β q * (uEmb k r (upperIn β q.1))⁻¹)`.
+
+Use function extensionality and compare the values at `q`. Rewrite using `[rEl, h, Matrix.mul_nonsing_inv_cancel_right _ _ (isUnit_uIn β q.1)]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `measurable_mul (measurable_rEl β) (measurable_invM.comp ((measurable_uIn β).comp measurable_fst))`.
+
+Establish `hs : MeasurePreserving (fun q : (UTin β → ℂ) × PTop k r j => (id q.1, T q.1 q.2)) volume volume` using `(MeasurePreserving.id volume).skew_product hm (Filter.Eventually.of_forall fun x => (hT x).map_eq)`. Rewrite using `[← hs.map_eq, Measure.map_map (measurable_rEl' β) hs.measurable, lebR0]`. Use `congr 1`. Use function extensionality and compare the values at `q`. Conclude with `congrArg Matrix.of.symm (h q.1 q.2)`.
+-/
 theorem range_eq_and_injective_parabolic_unipotent_product {β : Fin r → ℕ} (hβ : ∀ a b : Fin r, j ≤ b.val → (β a = β b ↔ j ≤ a.val)) :
     lebR0 k r j β = (volume : Measure ((UTin β → ℂ) × PTop k r j)).map fun q =>
       (Matrix.of.symm (pTop k r j q.2 * uEmb k r (upperIn β q.1)) : Mt k r) := by
@@ -476,9 +662,19 @@ theorem range_eq_and_injective_parabolic_unipotent_product {β : Fin r → ℕ} 
   funext q
   exact congrArg Matrix.of.symm (h q.1 q.2)
 
+/- English proof (translation)
+The claim follows from `measurable_mul (u := fun _ => a) (v := fun x : Mt k r => Matrix.of x) measurable_const measurable_id`.
+-/
 theorem measurable_lmulM (a : Mat k r) : Measurable (lmulM a : Mt k r → Mt k r) :=
   measurable_mul (u := fun _ => a) (v := fun x : Mt k r => Matrix.of x) measurable_const measurable_id
 
+/- English proof (translation)
+Establish `h1 : (lebR0 k r j β).map (lmulM (uEmb k r (upperIn β q₀.1))) = lebR0 k r j β`. Take `⟨T, hT, h⟩` from `upperIn_left β q₀.1`. Use `map_eq_of_lift (measurable_rEl β) (measurable_lmulM _) (hT.prod (MeasurePreserving.id volume)) fun q => ?_` and prove the remaining obligations. Use `show uEmb k r (upperIn β q₀.1) * (uEmb k r (upperIn β q.1) * pTop k r j q.2) = uEmb k r (upperIn β (T q.1)) * pTop k r j q.2`. Rewrite using `[← Matrix.mul_assoc, ← UEmb.uEmb_mul, h]`.
+
+Establish `h2 : (lebR0 k r j β).map (lmulM (pTop k r j q₀.2)) = lebR0 k r j β`. Take `⟨T, hT, h⟩` from `pTop_left q₀.2`. Rewrite using `[range_eq_and_injective_parabolic_unipotent_product hβ]`. Use `map_eq_of_lift (measurable_rEl' β) (measurable_lmulM _) ((MeasurePreserving.id volume).prod hT) fun q => ?_` and prove the remaining obligations. Use `show pTop k r j q₀.2 * (pTop k r j q.2 * uEmb k r (upperIn β q.1)) = pTop k r j (T q.2) * uEmb k r (upperIn β q.1)`.
+
+Rewrite using `[← Matrix.mul_assoc, h]`. Establish `e : (lmulM (rEl k r j β q₀) : Mt k r → Mt k r) = lmulM (uEmb k r (upperIn β q₀.1)) ∘ lmulM (pTop k r j q₀.2)`. Use function extensionality and compare the values at `fun x => Matrix.mul_assoc _ _ (Matrix.of x : Mat k r)`. Rewrite using `[e, ← Measure.map_map (measurable_lmulM _) (measurable_lmulM _), h2, h1]`.
+-/
 theorem lebesgue_left_mul_invariant {β : Fin r → ℕ} (hβ : ∀ a b : Fin r, j ≤ b.val → (β a = β b ↔ j ≤ a.val))
     (q₀ : (UTin β → ℂ) × PTop k r j) : (lebR0 k r j β).map (lmulM (rEl k r j β q₀)) = lebR0 k r j β := by
   have h1 : (lebR0 k r j β).map (lmulM (uEmb k r (upperIn β q₀.1))) = lebR0 k r j β := by
@@ -498,6 +694,13 @@ theorem lebesgue_left_mul_invariant {β : Fin r → ℕ} (hβ : ∀ a b : Fin r,
     funext fun x => Matrix.mul_assoc _ _ (Matrix.of x : Mat k r)
   rw [e, ← Measure.map_map (measurable_lmulM _) (measurable_lmulM _), h2, h1]
 
+/- English proof (translation)
+Establish `h1 : (lebR0 k r j β).map (rmulM (uEmb k r (upperIn β q₀.1))) = lebR0 k r j β`. Take `⟨T, hT, h⟩` from `upperIn_right β q₀.1`. Rewrite using `[range_eq_and_injective_parabolic_unipotent_product hβ]`. Use `map_eq_of_lift (measurable_rEl' β) (continuous_rmulM _).measurable (hT.prod (MeasurePreserving.id volume)) fun q => ?_` and prove the remaining obligations. Use `show pTop k r j q.2 * uEmb k r (upperIn β q.1) * uEmb k r (upperIn β q₀.1) = pTop k r j q.2 * uEmb k r (upperIn β (T q.1))`.
+
+Rewrite using `[Matrix.mul_assoc, ← UEmb.uEmb_mul, h]`. Establish `h2 : (lebR0 k r j β).map (rmulM (pTop k r j q₀.2)) = lebR0 k r j β`. Take `⟨T, hT, h⟩` from `pTop_right q₀.2`. Use `map_eq_of_lift (measurable_rEl β) (continuous_rmulM _).measurable ((MeasurePreserving.id volume).prod hT) fun q => ?_` and prove the remaining obligations. Use `show uEmb k r (upperIn β q.1) * pTop k r j q.2 * pTop k r j q₀.2 = uEmb k r (upperIn β q.1) * pTop k r j (T q.2)`.
+
+Rewrite using `[Matrix.mul_assoc, h]`. Establish `e : (rmulM (rEl k r j β q₀) : Mt k r → Mt k r) = rmulM (pTop k r j q₀.2) ∘ rmulM (uEmb k r (upperIn β q₀.1))`. Use function extensionality and compare the values at `fun x => (Matrix.mul_assoc (Matrix.of x : Mat k r) _ _).symm`. Rewrite using `[e, ← Measure.map_map (continuous_rmulM _).measurable (continuous_rmulM _).measurable, h1, h2]`.
+-/
 theorem lebesgue_right_mul_invariant {β : Fin r → ℕ} (hβ : ∀ a b : Fin r, j ≤ b.val → (β a = β b ↔ j ≤ a.val))
     (q₀ : (UTin β → ℂ) × PTop k r j) : (lebR0 k r j β).map (rmulM (rEl k r j β q₀)) = lebR0 k r j β := by
   have h1 : (lebR0 k r j β).map (rmulM (uEmb k r (upperIn β q₀.1))) = lebR0 k r j β := by
@@ -521,6 +724,11 @@ theorem lebesgue_right_mul_invariant {β : Fin r → ℕ} (hβ : ∀ a b : Fin r
 
 set_option synthInstance.maxSize 1024 in
 
+/- English proof (translation)
+Establish `hemb : MeasurableEmbedding fun q => (Matrix.of.symm (rEl k r j β q) : Mt k r)` using `(measurable_rEl β).measurableEmbedding (Matrix.of.symm.injective.comp (rEl_inj β))`. Use `⟨hemb.sigmaFinite_map, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[lebR0, Ne, Measure.map_eq_zero_iff hemb.measurable.aemeasurable] haveI : (volume : Measure ((UTin β → ℂ) × PTop k r j)).IsAddHaarMeasure := Measure.prod.instIsAddHaarMeasure _ _`. Conclude with `NeZero.ne _`. Rewrite using `[lebR0, hemb.map_apply]`.
+
+Use `measure_empty (μ := (volume : Measure ((UTin β → ℂ) × PTop k r j)))` and compare the differences between its conclusion and the goal. Conclude with `Set.eq_empty_of_forall_notMem fun q hq => hq ⟨q, rfl⟩`. Introduce and unpack `_ ⟨q, rfl⟩`. Conclude with `lebesgue_left_mul_invariant hβ q`.
+-/
 theorem isHaarOn_range {β : Fin r → ℕ} (hβ : ∀ a b : Fin r, j ≤ b.val → (β a = β b ↔ j ≤ a.val)) :
     IsHaarOn (Set.range (rEl k r j β)) (lebR0 k r j β) := by
   have hemb : MeasurableEmbedding fun q => (Matrix.of.symm (rEl k r j β q) : Mt k r) :=
@@ -535,6 +743,15 @@ theorem isHaarOn_range {β : Fin r → ℕ} (hβ : ∀ a b : Fin r, j ≤ b.val 
   · rintro _ ⟨q, rfl⟩
     exact lebesgue_left_mul_invariant hβ q
 
+/- English proof (translation)
+Introduce `k r j hj z z' g₀ β c hz hz' hT hg`. Take `⟨e, hS⟩` from `GlobalTheory.T.commonStabilizerSet_eq_range_normalForm k r j hj z z' g₀ β c hz hz' hT hg`. Establish `hβ` using `hg.2.2.2.2.1`. Rewrite `hS`, the goal using `[e]`. Establish `hH` using `isHaarOn_range (k := k) hβ`.
+
+Establish `hR : ∀ s ∈ Set.range (rEl k r j β), (lebR0 k r j β).map (rmulM s) = lebR0 k r j β`. Introduce and unpack `_ ⟨q, rfl⟩`. Conclude with `lebesgue_right_mul_invariant hβ q`. Use `⟨hH, hR, ?_⟩` and prove the remaining obligations. Establish `hG : PI.IsMatGroup (Set.range (rEl k r j β))`.
+
+Use `⟨hS.2.1, hS.2.2.1, hS.2.2.2.1, fun a ha => ⟨hS.2.2.2.2 a ha, Matrix.mul_nonsing_inv _ ?_⟩⟩` and prove the remaining obligations. Take `⟨q, rfl⟩` from `ha`. Rewrite using `[rEl, Matrix.det_mul]`. Conclude with `(isUnit_uIn β q.1).mul (Matrix.isUnit_det_of_right_inverse (pEl_mul_neg _ _))`. Use extensionality with `s hs`.
+
+Use `GlobalTheory.HaarInversion.lintegral_inv_eq _ _ _ hG hH hR (s.indicator 1) (measurable_one.indicator hs)` as an intermediate fact. Rewrite `this` using `[lintegral_indicator_one hs]`. Rewrite using `[← lintegral_indicator_one hs, lintegral_map (measurable_one.indicator hs) measurable_invM]`. Conclude with `this`.
+-/
 theorem lebesgue_haar_unimodular_stabilizer : ∀ (k r j : ℕ) (hj : j ≤ r) (z z' : (Fin (2 * r + k + 1) → ℂ)), ∀ (g₀ : Mat k r) (β : Fin r → ℕ) (c : ℂ), inWb k r z → inWb k r z' → 0 < Tz k r z → IsNormal0 k r hj β c z z' g₀ → IsHaarOn (Rset k r g₀) (lebR0 k r j β) ∧ IsUnimod (Rset k r g₀) (lebR0 k r j β) := by
   intro k r j hj z z' g₀ β c hz hz' hT hg
   obtain ⟨e, hS⟩ := GlobalTheory.T.commonStabilizerSet_eq_range_normalForm k r j hj z z' g₀ β c hz hz' hT hg

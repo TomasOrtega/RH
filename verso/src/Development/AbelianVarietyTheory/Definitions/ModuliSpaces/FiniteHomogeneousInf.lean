@@ -77,12 +77,20 @@ def vanIdeal {R σ Hh : Type} [CommRing R] (d : ℕ) (p : Hh → σ → R) : Ide
 def CutBy {K σ Hh : Type} [Field K] (I : Ideal (MvPolynomial σ K)) (Q : Polynomial ℚ) (d : ℕ) (p : Hh → σ → K) : Prop :=
   ∀ e ≥ d, (dimDeg I e : ℚ) = Q.eval (e : ℚ) ∧ ∀ F, F.IsHomogeneous e → (F ∈ I ↔ F ∈ vanIdeal d p)
 
+/- English proof (translation)
+Establish `: Module.Finite K ↥(MvPolynomial.homogeneousSubmodule σ K e)` using `Module.Finite.iff_fg.2 (MvPolynomial.homogeneousSubmodule_fg (σ := σ) (R := K) e)`. Conclude with `Submodule.finiteDimensional_inf_left _ _`.
+-/
 theorem finite_homogeneous_inf {K σ : Type} [Field K] [Finite σ] (I : Ideal (MvPolynomial σ K)) (e : ℕ) :
     Module.Finite K ↥(MvPolynomial.homogeneousSubmodule σ K e ⊓ I.restrictScalars K) := by
   have : Module.Finite K ↥(MvPolynomial.homogeneousSubmodule σ K e) :=
     Module.Finite.iff_fg.2 (MvPolynomial.homogeneousSubmodule_fg (σ := σ) (R := K) e)
   exact Submodule.finiteDimensional_inf_left _ _
 
+/- English proof (translation)
+Use `haveI := finite_homogeneous_inf I e`. Unfold `dimDeg`. Rewrite using `[Submodule.finrank_eq_zero, Submodule.eq_bot_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h F hF hd`.
+
+Conclude with `h F ⟨(MvPolynomial.mem_homogeneousSubmodule e F).2 hd, hF⟩`. Introduce and unpack `h F ⟨hd, hF⟩`. Conclude with `h F hF ((MvPolynomial.mem_homogeneousSubmodule e F).1 hd)`.
+-/
 theorem dimDeg_eq_zero_iff {K σ : Type} [Field K] [Finite σ] (I : Ideal (MvPolynomial σ K)) (e : ℕ) :
     dimDeg I e = 0 ↔ ∀ F ∈ I, F.IsHomogeneous e → F = 0 := by
   haveI := finite_homogeneous_inf I e
@@ -94,8 +102,16 @@ theorem dimDeg_eq_zero_iff {K σ : Type} [Field K] [Finite σ] (I : Ideal (MvPol
   · rintro h F ⟨hd, hF⟩
     exact h F hF ((MvPolynomial.mem_homogeneousSubmodule e F).1 hd)
 
+/- English proof (translation)
+Introduce `q _ hq hf` and use `⟨q, hq, hq, le_rfl, hf⟩`.
+-/
 theorem veryDense_primes (R : Type) [CommRing R] : VeryDense {p : Ideal R | p.IsPrime} := fun q _ hq hf => ⟨q, hq, hq, le_rfl, hf⟩
 
+/- English proof (translation)
+Introduce `q f hq hf`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Apply `hf` to reduce the goal to its premises. Rewrite using `[← IsJacobsonRing.out' q hq.isRadical, Ideal.jacobson, Ideal.mem_sInf]`.
+
+Introduce and unpack `m ⟨hqm, hm⟩`. Conclude with `hne m hm hm.isPrime hqm`.
+-/
 theorem veryDense_maximals (R : Type) [CommRing R] [IsJacobsonRing R] : VeryDense {p : Ideal R | p.IsMaximal} := by
   intro q f hq hf
   by_contra hne
@@ -105,11 +121,23 @@ theorem veryDense_maximals (R : Type) [CommRing R] [IsJacobsonRing R] : VeryDens
   rintro m ⟨hqm, hm⟩
   exact hne m hm hm.isPrime hqm
 
+/- English proof (translation)
+Introduce `h` and use `by have hp : (Ideal.span {(2 : ℤ)}).IsPrime := (Ideal.span_singleton_prime two_ne_zero).2 Int.prime_two obtain ⟨p, rfl, -, h1, -⟩ := h _ 1 hp ((Ideal.ne_top_iff_one _).1 hp.ne_top) exact two_ne_zero (Ideal.mem_bot.1 (h1 (Ideal.mem_span_singleton_self (2 : ℤ))))`.
+-/
 example : ¬ VeryDense {(⊥ : Ideal ℤ)} := fun h => by
   have hp : (Ideal.span {(2 : ℤ)}).IsPrime := (Ideal.span_singleton_prime two_ne_zero).2 Int.prime_two
   obtain ⟨p, rfl, -, h1, -⟩ := h _ 1 hp ((Ideal.ne_top_iff_one _).1 hp.ne_top)
   exact two_ne_zero (Ideal.mem_bot.1 (h1 (Ideal.mem_span_singleton_self (2 : ℤ))))
 
+/- English proof (translation)
+Use `Ideal.span_eq_bot.2 ?_` and prove the remaining obligations. Introduce and unpack `F ⟨hF, h0⟩`. Establish `key : ∀ m : Unit →₀ ℕ, m ≠ Finsupp.single () d → F.coeff m = 0`. Introduce `m hm`. Apply `hF.coeff_eq_zero` to reduce the goal to its premises.
+
+Introduce `hdeg`. Apply `hm` to reduce the goal to its premises. Use `ext`. Simplify `hdeg` using `[Finsupp.degree_eq_sum]`. Establish `hF' : F = MvPolynomial.monomial (Finsupp.single () d) (F.coeff (Finsupp.single () d))`.
+
+Use extensionality with `m`. Rewrite using `[MvPolynomial.coeff_monomial]`. Use `split_ifs with h`. Rewrite using `[h]`. Conclude with `key m (Ne.symm h)`.
+
+Establish `h1` using `h0 ()`. Rewrite `h1` using `[hF', MvPolynomial.eval_monomial]`. Simplify using `at h1`. Rewrite using `[hF', h1, map_zero]`.
+-/
 theorem vanIdeal_unit_one (K : Type) [Field K] (d : ℕ) : vanIdeal d (fun (_ : Unit) (_ : Unit) => (1 : K)) = ⊥ := by
   refine Ideal.span_eq_bot.2 ?_
   rintro F ⟨hF, h0⟩
@@ -131,6 +159,9 @@ theorem vanIdeal_unit_one (K : Type) [Field K] (d : ℕ) : vanIdeal d (fun (_ : 
   simp at h1
   rw [hF', h1, map_zero]
 
+/- English proof (translation)
+Introduce `e _`. Use `⟨?_, fun F _ => by rw [vanIdeal_unit_one]⟩` and prove the remaining obligations. Rewrite using `[(dimDeg_eq_zero_iff _ e).2 (fun F hF _ => Ideal.mem_bot.1 hF)]`. Simplify using the standard rewrite rules.
+-/
 theorem cutBy_bot (K : Type) [Field K] (d : ℕ) :
     CutBy (⊥ : Ideal (MvPolynomial Unit K)) 0 d (fun (_ : Unit) (_ : Unit) => (1 : K)) := by
   intro e _
@@ -138,6 +169,9 @@ theorem cutBy_bot (K : Type) [Field K] (d : ℕ) :
   rw [(dimDeg_eq_zero_iff _ e).2 (fun F hF _ => Ideal.mem_bot.1 hF)]
   simp
 
+/- English proof (translation)
+Introduce `h` and use `by have h1 := ((h d le_rfl).2 (MvPolynomial.X () ^ d) (by simpa using (MvPolynomial.isHomogeneous_X K ()).pow d)).1 trivial rw [vanIdeal_unit_one, Ideal.mem_bot] at h1 exact pow_ne_zero d (MvPolynomial.X_ne_zero ()) h1`.
+-/
 example (K : Type) [Field K] (Q : Polynomial ℚ) (d : ℕ) :
     ¬ CutBy (⊤ : Ideal (MvPolynomial Unit K)) Q d (fun (_ : Unit) (_ : Unit) => (1 : K)) := fun h => by
   have h1 := ((h d le_rfl).2 (MvPolynomial.X () ^ d) (by simpa using (MvPolynomial.isHomogeneous_X K ()).pow d)).1 trivial
@@ -149,12 +183,28 @@ namespace OnePoint
 def unitSec (X : Scheme.{0}) : (Out.Inh.trivLB X).Sec :=
   ⟨fun _ => 1, fun _ _ => (_root_.one_mul _).symm⟩
 
+/- English proof (translation)
+Simplify using `only [resG]`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem restrict_restrict {X : Scheme.{0}} {U V W : X.Opens} (h : V ≤ U) (h' : W ≤ V) (a : Γ(X, U)) :
     resG X h' (resG X h a) = resG X (h'.trans h) a := by
   simp only [resG]
   rw [← CommRingCat.comp_apply, ← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Establish `hU : ∀ j, ((Out.Inh.trivLB X).pull x).U j = ⊤`. Introduce `j`. Simplify using `[LB.pull, LB.LinComb, LB.wchart, Out.Inh.trivLB]`. Establish `hres : ∀ (h : (⊤ : (Sp R).Opens) ≤ ⊤) (a : Γ(Sp R, ⊤)), resG (Sp R) h a = a`. Introduce `h a`.
+
+Simplify using `[resG]`. Establish `hone : ∀ (j : PUnit.{1} → (Out.Inh.trivLB X).ι) (h : ((Out.Inh.trivLB X).pull x).U j ≤ x ⁻¹ᵁ (Out.Inh.trivLB X).U (j PUnit.unit)), (x.appLE _ _ h).hom ((unitSec X).f (j PUnit.unit)) = 1` using `fun j h => map_one _`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨τ, -, hτ⟩`. Establish `e` using `hτ default (fun _ => PUnit.unit) ((hU (fun _ => PUnit.unit)).le.trans (by simp [Out.Inh.trivLB]))`.
+
+Establish `hu : IsUnit (resG (Sp R) (le_top : ((Out.Inh.trivLB X).pull x).U (fun _ => PUnit.unit) ≤ ⊤) ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (v default)))` using `isUnit_iff_exists_inv.2 ⟨_, ((hone _ _).symm.trans e).symm⟩`. Establish `hu2` using `hu.map (resG (Sp R) (hU (fun _ => PUnit.unit)).ge)`. Rewrite `hu2` using `[restrict_restrict, hres]`. Simplify using `using hu2.map (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom`. Introduce `hv`.
+
+Use `⟨⟨fun j => (Units.map ((resG (Sp R) (le_top : ((Out.Inh.trivLB X).pull x).U j ≤ ⊤)).comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom).toMonoidHom hv.unit)⁻¹⟩, ?_, ?_⟩` and prove the remaining obligations. Unfold `LB.Gen.IsGen`. Introduce `i j`. Take `rfl : i = j` from `Subsingleton.elim (α := PUnit.{1} → PUnit.{1}) i j`. Establish `hg : ((Out.Inh.trivLB X).pull x).g i i = 1`.
+
+Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [LB.pull, LB.LinComb, Out.Inh.trivLB]`. Simplify using `[res, pullU]`. Use `erw [Units.coe_map, Units.val_one, map_one]`. Both sides reduce to the same expression.
+
+Rewrite using `[hg, _root_.one_mul]`. Introduce `i j h`. Rewrite using `[hone, Unique.eq_default i]`. Simplify using `only [Units.coe_map_inv, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe, RingHom.coe_comp, Function.comp_apply, ← map_mul, IsUnit.mul_val_inv, map_one]`.
+-/
 theorem secCoord_one {X : Scheme.{0}} {I : Type} [Unique I] {R : Type} [CommRing R] (x : Sp R ⟶ X) (v : I → R) :
     SecCoord (Out.Inh.trivLB X) (fun _ : I => unitSec X) x v ↔ IsUnit (v default) := by
   have hU : ∀ j, ((Out.Inh.trivLB X).pull x).U j = ⊤ := by
@@ -195,6 +245,17 @@ theorem secCoord_one {X : Scheme.{0}} {I : Type} [Unique I] {R : Type} [CommRing
 
 attribute [local instance] MvPolynomial.gradedAlgebra in
 
+/- English proof (translation)
+Use `⟨0, ?_⟩` and prove the remaining obligations. Establish `hX : (MvPolynomial.X 0 : MvPolynomial (Fin (0 + 1)) R) ∈ MvPolynomial.homogeneousSubmodule (Fin (0 + 1)) R 1` using `MvPolynomial.isHomogeneous_X R 0`. Set `L : Localization.Away (MvPolynomial.X 0 : MvPolynomial (Fin (0 + 1)) R) →+* R` to `IsLocalization.Away.lift (MvPolynomial.X 0 : MvPolynomial (Fin (0 + 1)) R) (g := MvPolynomial.eval fun _ => (1 : R)) (by simp)`. Set `φ : HomogeneousLocalization.Away (MvPolynomial.homogeneousSubmodule (Fin (0 + 1)) R) (MvPolynomial.X 0) →+* R` to `L.comp (algebraMap _ _)`. Establish `key : (φ.comp (HomogeneousLocalization.fromZeroRingHom _ _)).comp (algebraMap R ↥(MvPolynomial.homogeneousSubmodule (Fin (0 + 1)) R 0)) = RingHom.id R`.
+
+Use extensionality with `r`. Simplify using `only [RingHom.comp_apply, φ, L, HomogeneousLocalization.algebraMap_apply, RingHom.id_apply]`. Rewrite using `[show (HomogeneousLocalization.fromZeroRingHom _ _ (algebraMap R ↥(MvPolynomial.homogeneousSubmodule (Fin (0 + 1)) R 0) r)).val = algebraMap (MvPolynomial (Fin (0 + 1)) R) (Localization.Away (MvPolynomial.X 0 : MvPolynomial (Fin (0 + 1)) R)) (MvPolynomial.C r) from by`. Simplify using `[HomogeneousLocalization.fromZeroRingHom]`. Use the proof step `rfl]`.
+
+Rewrite using `[IsLocalization.Away.lift_eq, MvPolynomial.eval_C]`. Set `i` to `Spec.map (CommRingCat.ofHom φ) ≫ Proj.awayι _ _ hX one_pos`. Establish `hi : i ≫ Proj.toSpecZero (MvPolynomial.homogeneousSubmodule (Fin (0 + 1)) R) ≫ spMap (algebraMap R ↥(MvPolynomial.homogeneousSubmodule (Fin (0 + 1)) R 0)) = 𝟙 (Sp R)`. Simplify using `only [i, Category.assoc, Proj.awayι_toSpecZero_assoc, spMap, ← Spec.map_comp]`. Rewrite using `[← Spec.map_id]`.
+
+Use `congr 1`. Use extensionality with `r`. Conclude with `congrArg (fun f => f r) key`. Establish `: IsClosedImmersion (i ≫ Proj.toSpecZero (MvPolynomial.homogeneousSubmodule (Fin (0 + 1)) R) ≫ spMap (algebraMap R ↥(MvPolynomial.homogeneousSubmodule (Fin (0 + 1)) R 0)))`. Rewrite using `[hi]`.
+
+Use `infer_instance`. Establish `: IsClosedImmersion i` using `IsClosedImmersion.of_comp i (Proj.toSpecZero (MvPolynomial.homogeneousSubmodule (Fin (0 + 1)) R) ≫ spMap (algebraMap R ↥(MvPolynomial.homogeneousSubmodule (Fin (0 + 1)) R 0)))`. Conclude with `⟨i, inferInstance, inferInstance, hi⟩`.
+-/
 theorem isQProjOver_id (R : Type) [CommRing R] : IsQProjOver (𝟙 (Sp R)) := by
   classical
   refine ⟨0, ?_⟩
@@ -230,6 +291,11 @@ theorem isQProjOver_id (R : Type) [CommRing R] : IsQProjOver (𝟙 (Sp R)) := by
 
 end OnePoint
 
+/- English proof (translation)
+Establish `key : ∀ {R' : Type} [CommRing R'] (v : Unit → R'), Ideal.span (Set.range v) = ⊤ ↔ IsUnit (v ())`. Introduce `R' _ v`. Rewrite using `[Set.range_unique, Ideal.span_singleton_eq_top]`. Use `⟨Out.Inh.trivLB_isLB _, fun R' _ β x v _ h => ⟨(key v).2 ((OnePoint.secCoord_one x v).1 h), fun F hF => by` and prove the remaining obligations. Rewrite using `[Ideal.mem_bot.1 hF, MvPolynomial.eval₂_zero]⟩, fun R' _ β v hv _ =>`.
+
+Use the proof step `⟨spMap β, ⟨by simp, (OnePoint.secCoord_one _ v).2 ((key v).1 hv)⟩, fun y hy => by simpa using hy.1⟩⟩`.
+-/
 theorem projRep_point (R : Type) [CommRing R] :
     ProjRep (⊥ : Ideal (MvPolynomial Unit R)) (𝟙 (Sp R)) (Out.Inh.trivLB _) (fun _ => OnePoint.unitSec _) := by
   have key : ∀ {R' : Type} [CommRing R'] (v : Unit → R'), Ideal.span (Set.range v) = ⊤ ↔ IsUnit (v ()) := by
@@ -239,6 +305,13 @@ theorem projRep_point (R : Type) [CommRing R] :
     rw [Ideal.mem_bot.1 hF, MvPolynomial.eval₂_zero]⟩, fun R' _ β v hv _ =>
     ⟨spMap β, ⟨by simp, (OnePoint.secCoord_one _ v).2 ((key v).1 hv)⟩, fun y hy => by simpa using hy.1⟩⟩
 
+/- English proof (translation)
+Establish `hsub : ∀ b : Ix 0 (N' ^ 2), b = a` using `fun b => funext fun i => i.elim0`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩`. Assume the negation of the conclusion as `hu`. Take `⟨m, hm, ham⟩` from `exists_max_ideal_of_mem_nonunits hu`.
+
+Take `⟨c, hc⟩` from `h m hm.isPrime a`. Rewrite `hc` using `[hsub (a + (N' / n) • c)]`. Conclude with `hc ham`. Introduce `hu`. Use `⟨fun F hF => by rw [Ideal.mem_bot.1 hF, MvPolynomial.eval₂_zero], fun q hq b => ⟨0, ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[hsub (b + (N' / n) • 0)]`. Conclude with `fun h => hq.ne_top (Ideal.eq_top_of_isUnit_mem _ h hu)`.
+-/
 theorem inMM_zero_iff (n N' : ℕ) {R : Type} [CommRing R] (β : o →+* R) (v : Ix 0 (N' ^ 2) → R) (a : Ix 0 (N' ^ 2)) :
     InMM n N' (⊥ : Ideal (MvPolynomial (Ix 0 (N' ^ 2)) o)) β v ↔ IsUnit (v a) := by
   have hsub : ∀ b : Ix 0 (N' ^ 2), b = a := fun b => funext fun i => i.elim0
@@ -269,6 +342,9 @@ def mmPrePoint (o : Type) [CommRing o] [_root_.IsReduced o] (n N' : ℕ) :
     pts := fun R _ β v h => ⟨spMap β, ⟨by simp, (OnePoint.secCoord_one _ v).2 ((inMM_zero_iff n N' β v default).1 h)⟩,
       fun y hy => by simpa using hy.1⟩ }
 
+/- English proof (translation)
+The claim follows from `inferInstanceAs (Nonempty (PrimeSpectrum ℤ))`.
+-/
 example (n N' : ℕ) : Nonempty (mmPrePoint ℤ n N').MM := inferInstanceAs (Nonempty (PrimeSpectrum ℤ))
 
 end GlobalTheory.ZM

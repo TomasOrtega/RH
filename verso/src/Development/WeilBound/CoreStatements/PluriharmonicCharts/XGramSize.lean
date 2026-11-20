@@ -7,6 +7,11 @@ open scoped ComplexOrder
 
 namespace PositivityTheory.Xgp.gram_size
 
+/- English proof (translation)
+Establish `h1 : A.det.re ≤ ((m : ℂ) • B).det.re` using `GroundTheory.Heights₂.Heights.FourB.HermitianDetMono.proof k ((m : ℂ) • B) A hA.posSemidef h`. Establish `e : ((m : ℂ) • B).det.re = m ^ k * B.det.re`. Rewrite using `[det_smul, Fintype.card_fin, ← Complex.ofReal_pow, Complex.re_ofReal_mul]`. Establish `hA' : 0 < A.det.re` using `by simpa using (Complex.lt_def.mp hA.det_pos).1`. Establish `hB' : 0 < B.det.re` using `by simpa using (Complex.lt_def.mp hB.det_pos).1`.
+
+Establish `hm' : 0 < m` using `by linarith`. Rewrite `h1` using `[e]`. Establish `h2` using `Real.log_le_log hA' h1`. Rewrite `h2` using `[Real.log_mul (by positivity) hB'.ne', Real.log_pow]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem one {k : ℕ} (A B : Matrix (Fin k) (Fin k) ℂ) (m : ℝ) (hm : 1 ≤ m) (hA : A.PosDef) (hB : B.PosDef)
     (h : ((m : ℂ) • B - A).PosSemidef) : Real.log A.det.re - Real.log B.det.re ≤ k * Real.log m := by
   have h1 : A.det.re ≤ ((m : ℂ) • B).det.re :=
@@ -23,6 +28,15 @@ theorem one {k : ℕ} (A B : Matrix (Fin k) (Fin k) ℂ) (m : ℝ) (hm : 1 ≤ m
 
 end PositivityTheory.Xgp.gram_size
 
+/- English proof (translation)
+Introduce `n k G G₀ V m hm hG₀ hG h1 h2 hV`. Establish `hinj : Function.Injective V.mulVec` using `Matrix.mulVec_injective_iff.mpr hV`. Establish `hA : (Vᴴ * G * V).PosDef` using `hG.conjTranspose_mul_mul_same hinj`. Establish `hB : (Vᴴ * G₀ * V).PosDef` using `hG₀.conjTranspose_mul_mul_same hinj`. Establish `e1 : Vᴴ * ((m : ℂ) • G₀ - G) * V = (m : ℂ) • (Vᴴ * G₀ * V) - Vᴴ * G * V`.
+
+Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_smul, Matrix.smul_mul]`. Establish `e2 : Vᴴ * ((m : ℂ) • G - G₀) * V = (m : ℂ) • (Vᴴ * G * V) - Vᴴ * G₀ * V`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_smul, Matrix.smul_mul]`. Establish `p1` using `h1.conjTranspose_mul_mul_same V`. Establish `p2` using `h2.conjTranspose_mul_mul_same V`.
+
+Rewrite `p1` using `[e1]`. Rewrite `p2` using `[e2]`. Establish `a1` using `PositivityTheory.Xgp.gram_size.one _ _ m hm hA hB p1`. Establish `a2` using `PositivityTheory.Xgp.gram_size.one _ _ m hm hB hA p2`. Rewrite using `[abs_sub_le_iff]`.
+
+Apply the tactic sequence `constructor <;> linarith`.
+-/
 theorem PositivityTheory.Xgp.t_gram_size : ∀ (n k : ℕ) (G G₀ : Matrix (Fin n) (Fin n) ℂ) (V : Matrix (Fin n) (Fin k) ℂ) (m : ℝ), 1 ≤ m → G₀.PosDef → G.PosDef → ((m : ℂ) • G₀ - G).PosSemidef → ((m : ℂ) • G - G₀).PosSemidef → LinearIndependent ℂ Vᵀ → |Real.log (Vᴴ * G * V).det.re - Real.log (Vᴴ * G₀ * V).det.re| ≤ k * Real.log m := by
   intro n k G G₀ V m hm hG₀ hG h1 h2 hV
   have hinj : Function.Injective V.mulVec := Matrix.mulVec_injective_iff.mpr hV

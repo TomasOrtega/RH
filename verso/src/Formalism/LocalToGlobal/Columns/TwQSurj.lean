@@ -40,24 +40,45 @@ def QLift (q : QLoc hc n Q Θ) : Prop :=
       κ ∈ stabGL (Formalism.L2.Herm.locL (qv F P.1) (stdLat E n)) ∧
       bc ((RingHom.fst _ _).comp (q.sp P).toRingHom) κ = k
 
+/- English proof (translation)
+Use `show bc _ (bc (prV (E := E) (qv F P.1)) (x * rll_put n v g)) = _`. Rewrite using `[map_mul, rll_put_ne n v (qv F P.1) hv g, mul_one]`.
+-/
 theorem qdf_at_put_ne (q : QLoc hc n Q Θ) (P : Q) (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (v : HeightOneSpectrum (𝓞 F))
     (hv : qv F P.1 ≠ v) (g : GL (Fin n) (E ⊗[F] v.adicCompletion F)) : q.at P (x * rll_put n v g) = q.at P x := by
   show bc _ (bc (prV (E := E) (qv F P.1)) (x * rll_put n v g)) = _
   rw [map_mul, rll_put_ne n v (qv F P.1) hv g, mul_one]
 
+/- English proof (translation)
+Use `show bc _ (bc (prV (E := E) (qv F P.1)) (x * rll_put n (qv F P.1) g)) = _`. Rewrite using `[map_mul, rll_put_self, map_mul]`.
+-/
 theorem qdf_at_put_self (q : QLoc hc n Q Θ) (P : Q) (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))
     (g : GL (Fin n) (E ⊗[F] (qv F P.1).adicCompletion F)) :
     q.at P (x * rll_put n (qv F P.1) g) = q.at P x * bc ((RingHom.fst _ _).comp (q.sp P).toRingHom) g := by
   show bc _ (bc (prV (E := E) (qv F P.1)) (x * rll_put n (qv F P.1) g)) = _
   rw [map_mul, rll_put_self, map_mul]
 
+/- English proof (translation)
+The claim follows from `inv_mem h`.
+-/
 theorem qdf_inv_mem_UPts {v : HeightOneSpectrum (𝓞 F)} {κ : GL (Fin n) (E ⊗[F] v.adicCompletion F)}
     (h : κ ∈ UPts hc.sig (1 : Matrix (Fin n) (Fin n) E) (v.adicCompletion F)) :
     κ⁻¹ ∈ UPts hc.sig (1 : Matrix (Fin n) (Fin n) E) (v.adicCompletion F) := inv_mem h
 
+/- English proof (translation)
+The claim follows from `inv_mem h`.
+-/
 theorem qdf_inv_mem_stab {v : HeightOneSpectrum (𝓞 F)} {κ : GL (Fin n) (E ⊗[F] v.adicCompletion F)}
     (h : κ ∈ stabGL (Formalism.L2.Herm.locL v (stdLat E n))) : κ⁻¹ ∈ stabGL (Formalism.L2.Herm.locL v (stdLat E n)) := inv_mem h
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨ptOf hc n ST SG p.deco, decoOf_ptOf hc n ST SG hS p.deco, fun P hP => absurd hP (Finset.notMem_empty P)⟩`. Consider the case `insert P S hPS ih`. Take `⟨x, hx, hxS⟩` from `ih`. Take `⟨κ, hκU, hκS, hκ⟩` from `hL P _ (hF x p hx P)`.
+
+Establish `hput : rll_put n (qv F P.1) κ⁻¹ ∈ K1 hc n ST SG` using `put_mem_kOne_of_not_over ST SG (fun P' hP' => hQ.off P P' (Or.inl hP')) (fun P' hP' => hQ.off P P' (Or.inr hP')) (rll_put_mem_UAd hc n (qv F P.1) (qdf_inv_mem_UPts hκU)) (qdf_inv_mem_stab hκS)`. Establish `hputU : rll_put n (qv F P.1) κ⁻¹ ∈ UAd hc n` using `rll_put_mem_UAd hc n (qv F P.1) (qdf_inv_mem_UPts hκU)`. Use `⟨x * ⟨_, hputU⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show decoOf ST SG ((x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) * rll_put n (qv F P.1) κ⁻¹) = _`. Rewrite using `[decoration_mul_principal hc n ST SG _ hput, hx]`.
+
+Introduce `P' hP' show (bc (q.phi P') (qGL n (p.fr P')))⁻¹ * q.at P' ((x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) * rll_put n (qv F P.1) κ⁻¹) ∈ q.U P'`. Break down `Finset.mem_insert.1 hP' with rfl | hP'` into its components or cases. Rewrite using `[qdf_at_put_self, map_inv, hκ, ← mul_assoc, mul_inv_cancel]`. Conclude with `one_mem _`. Establish `hne : qv F P'.1 ≠ qv F P.1` using `fun h => hPS (hQ.inj P' P h ▸ hP')`.
+
+Rewrite using `[qdf_at_put_ne q P' _ _ hne]`. Conclude with `hxS P' hP'`.
+-/
 theorem exists_adelic_point_of_local_frames (hS : DecoPtSurj hc n ST SG) (hQ : QOff (F := F) ST SG Q) (q : QLoc hc n Q Θ) (hF : FrLat ST SG q) (hL : QLift q)
     (p : DecoF E n ST SG Q) (S : Finset Q) :
     ∃ x : UAd hc n, decoOf ST SG (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = p.deco ∧
@@ -85,6 +106,9 @@ theorem exists_adelic_point_of_local_frames (hS : DecoPtSurj hc n ST SG) (hQ : Q
         rw [qdf_at_put_ne q P' _ _ hne]
         exact hxS P' hP'
 
+/- English proof (translation)
+Introduce `p`. Take `⟨x, hx, hxS⟩` from `exists_adelic_point_of_local_frames hS hQ q hF hL p Finset.univ`. Conclude with `⟨x, hx, fun P => hxS P (Finset.mem_univ P)⟩`.
+-/
 theorem decoPtSurjF_of (hS : DecoPtSurj hc n ST SG) (hQ : QOff (F := F) ST SG Q) (q : QLoc hc n Q Θ) (hF : FrLat ST SG q) (hL : QLift q) :
     DecoPtSurjF hc n ST SG Q q := by
   classical

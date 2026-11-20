@@ -14,6 +14,9 @@ namespace PI.UnitaryGroupMassFormula.CntFormula.RowsMassW
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D` and use `Formalism.MainNotions.BridgeLemma.l_theta D.host.E D.sp.cm.cmUnram`.
+-/
 theorem trace_one_unramified : TraceOne := fun D =>
   Formalism.MainNotions.BridgeLemma.l_theta D.host.E D.sp.cm.cmUnram
 
@@ -21,6 +24,23 @@ section Dual
 
 variable {D : D7} {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T)
 
+/- English proof (translation)
+Set `Φ : (VS D).V →ₗ[D.host.E] (Fin D.R.rS → D.host.E)` to `LinearMap.pi (fun a => (VS D).hT (F0.e a))`. Establish `hsurj : LinearMap.range Φ = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨f, hf0, hle⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.2 hne)`. Use `set μ : Fin D.R.rS → D.host.E := fun a => f (fun j => if a = j then 1 else 0) with hμdef`.
+
+Establish `hv : ∀ v, ∑ a, (VS D).hT (F0.e a) v * μ a = 0`. Introduce `v`. Establish `h1 : f (Φ v) = 0` using `hle (LinearMap.mem_range_self Φ v)`. Rewrite `h1` using `[LinearMap.pi_apply_eq_sum_univ f (Φ v)]`. Simplify `h1` using `[Φ, LinearMap.pi_apply, smul_eq_mul, μ]`.
+
+Establish `hx : ∑ a, star (μ a) • F0.e a = 0`. Apply `(VS D).nondeg.1` to reduce the goal to its premises. Introduce `v`. Rewrite using `[map_sum, LinearMap.sum_apply]`. Simplify using `only [map_smulₛₗ, LinearMap.smul_apply, starRingEnd_apply, star_star, smul_eq_mul]`.
+
+Rewrite using `[← hv v]`. Conclude with `Finset.sum_congr rfl (fun a _ => mul_comm _ _)`. Establish `hμ : ∀ a, μ a = 0`. Introduce `a`. Use `Fintype.linearIndependent_iff.1 F0.e_indep (fun a => star (μ a)) hx a` as an intermediate fact.
+
+Simplify using `using this`. Apply `hf0` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `u`. Rewrite using `[LinearMap.pi_apply_eq_sum_univ f u]`.
+
+Simplify using `only [LinearMap.zero_apply]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `a _`. Establish `: f (fun j => if a = j then 1 else 0) = 0` using `hμ a`. Rewrite using `[this, smul_zero]`.
+
+Use `⟨fun b => Classical.choose (LinearMap.range_eq_top.1 hsurj (Pi.single b 1)), ?_⟩` and prove the remaining obligations. Introduce `a b`. Establish `h` using `Classical.choose_spec (LinearMap.range_eq_top.1 hsurj (Pi.single b 1))`. Establish `h2` using `congrFun h a`. Simplify using `only [Φ, LinearMap.pi_apply] at h2`.
+
+Rewrite using `[h2, Pi.single_apply]`.
+-/
 theorem exists_dual0 : ∃ g0 : Fin D.R.rS → (VS D).V, IsDual0 F0 g0 := by
   let Φ : (VS D).V →ₗ[D.host.E] (Fin D.R.rS → D.host.E) := LinearMap.pi (fun a => (VS D).hT (F0.e a))
   have hsurj : LinearMap.range Φ = ⊤ := by
@@ -61,6 +81,21 @@ theorem exists_dual0 : ∃ g0 : Fin D.R.rS → (VS D).V, IsDual0 F0 g0 := by
 
 end Dual
 
+/- English proof (translation)
+Introduce `D u F0 Λ hΛ`. Take `⟨g0, hg0⟩` from `exists_dual0 F0`. Establish `hlat : Submodule.IsLattice D.host.E Λ` using `hΛ.2.1.1`. Establish `hu : Formalism.HermitianLatticesTheory.IsUnimodular (VS D).hT Λ` using `hΛ.2.1.2.1`. Establish `hiso : ∀ x ∈ F0.X, ∀ y ∈ F0.X, (VS D).hT x y = 0` using `fun x hx y hy => hX_X F0 hx hy`.
+
+Take `⟨P, P', hadj, hid, hX, _, hint', _⟩` from `Formalism.MainNotions.BridgeLemma.l_iso Formalism.MainNotions.BridgeLemma.l_adj Formalism.MainNotions.BridgeLemma.l_retr Formalism.MainNotions.BridgeLemma.l_theta D.host.E (VS D) Λ F0.X D.sp.cm.cmUnram hlat hu hiso`. Establish `hker : ∀ w ∈ perpS (VS D) F0.X, P' w = 0`. Introduce `w hw`. Apply `(VS D).nondeg.2` to reduce the goal to its premises. Introduce `x`.
+
+Rewrite using `[← hadj x w]`. Conclude with `hw _ (hX x)`. Use `⟨fun b => P' (g0 b), ?_, ?_⟩` and prove the remaining obligations. Introduce `a b show (VS D).hT (F0.e a) (P' (g0 b)) = _`. Rewrite using `[← hadj, hid _ (e_mem_X F0 a), hg0 a b]`.
+
+Introduce `v hv`. Establish `hg0' : ∀ a b, (VS D).hT (F0.e a) (g0 b) = if a = b then 1 else 0` using `hg0`. Establish `hyc : ycL F0 (fun b => P' (g0 b)) v = P' (ycL F0 g0 v)`. Rewrite using `[ycL_apply, ycL_apply, map_sum]`. Conclude with `Finset.sum_congr rfl (fun b _ => by rw [map_smul])`.
+
+Establish `hperp : v - ycL F0 g0 v ∈ perpS (VS D) F0.X`. Apply `mem_perp_of F0` to reduce the goal to its premises. Introduce `a`. Rewrite using `[map_sub, ycL_apply, map_sum]`. Simplify using `[hg0']`.
+
+Establish `h1 : P' (ycL F0 g0 v) = P' v`. Use `hker _ hperp` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Conclude with `this.symm`. Rewrite using `[hyc, h1]`.
+
+Conclude with `hint' v hv`.
+-/
 theorem row_dual_frame : RowDualFrame := by
   intro D u F0 Λ hΛ
   obtain ⟨g0, hg0⟩ := exists_dual0 F0
@@ -98,6 +133,9 @@ theorem row_dual_frame : RowDualFrame := by
     rw [hyc, h1]
     exact hint' v hv
 
+/- English proof (translation)
+The claim follows from `rowClass_of_three row_dual_frame h trace_one_unramified`.
+-/
 theorem rowClass_of_zunit (h : RowZUnit) : RowClass :=
   rowClass_of_three row_dual_frame h trace_one_unramified
 

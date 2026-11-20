@@ -14,20 +14,32 @@ section SlopeTestRemainingChoices
 
 open Formalism.GaloisCohomology
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.LocallyConstantOfKernel.lc_of_ker ψ h`.
+-/
 private theorem df_locConst {Γ A : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [Group A] (ψ : Γ →* A)
     (h : IsOpen (ψ.ker : Set Γ)) : IsLocallyConstant ψ :=
   _root_.UpperTheory.Reformulated.B.LocallyConstantOfKernel.lc_of_ker ψ h
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Qj5.df_exists_prime v n hn h`.
+-/
 private theorem df_exists_prime (v : HeightOneSpectrum (𝓞 ℚ)) (n : ℕ) (hn : n ≠ 0) (h : (n : 𝓞 ℚ) ∈ v.asIdeal) :
     ∃ p : ℕ, p.Prime ∧ p ∣ n ∧ (p : 𝓞 ℚ) ∈ v.asIdeal :=
   _root_.UpperTheory.Reformulated.B.Qj5.df_exists_prime v n hn h
 
+/- English proof (translation)
+Take `⟨x, y, h⟩ : IsCoprime (a : 𝓞 ℚ) (b : 𝓞 ℚ)` from `hab.cast`. Conclude with `v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (h ▸ v.asIdeal.add_mem (v.asIdeal.mul_mem_left _ ha) (v.asIdeal.mul_mem_left _ hb)))`.
+-/
 private theorem df_not_both (v : HeightOneSpectrum (𝓞 ℚ)) {a b : ℕ} (hab : a.Coprime b) (ha : (a : 𝓞 ℚ) ∈ v.asIdeal)
     (hb : (b : 𝓞 ℚ) ∈ v.asIdeal) : False := by
   obtain ⟨x, y, h⟩ : IsCoprime (a : 𝓞 ℚ) (b : 𝓞 ℚ) := hab.cast
   exact v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2
     (h ▸ v.asIdeal.add_mem (v.asIdeal.mul_mem_left _ ha) (v.asIdeal.mul_mem_left _ hb)))
 
+/- English proof (translation)
+Establish `h` using `hv ((n : ℕ) : 𝓞 ℚ)`. Establish `e : algebraMap ℚ Ω (((n : ℕ) : 𝓞 ℚ) : ℚ) = (n : Ω)` using `by simp`. Rewrite `h` using `[e]`. Conclude with `h`.
+-/
 private theorem df_val {Ω : Type} [Field Ω] [CharZero Ω] {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 ℚ)} (hv : IsPlaceOver A v) (n : ℕ) :
     A.valuation (n : Ω) < 1 ↔ ((n : ℕ) : 𝓞 ℚ) ∈ v.asIdeal := by
   have h := hv ((n : ℕ) : 𝓞 ℚ)
@@ -35,6 +47,13 @@ private theorem df_val {Ω : Type} [Field Ω] [CharZero Ω] {A : ValuationSubrin
   rw [e] at h
   exact h
 
+/- English proof (translation)
+Rewrite using `[orderOf_eq_iff hn]`. Use `⟨Units.ext ?_, fun k hk hk0 h => ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val, hu, ← Nat.cast_pow, ← hm]`. Simplify using the standard rewrite rules. Establish `h1 : ((q ^ k : ℕ) : ZMod m) = ((1 : ℕ) : ZMod m)`.
+
+Rewrite using `[Nat.cast_pow, ← hu, ← Units.val_pow_eq_pow_val, h]`. Simplify using the standard rewrite rules. Establish `h2 : 1 < q ^ k` using `Nat.one_lt_pow hk0.ne' hq`. Establish `h3 : q ^ k < q ^ n` using `Nat.pow_lt_pow_right hq hk`. Establish `h4` using `(Nat.modEq_iff_dvd' h2.le).1 ((ZMod.natCast_eq_natCast_iff _ _ _).1 h1).symm`.
+
+Establish `h5` using `Nat.le_of_dvd (by omega) h4`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem df_order {q n m : ℕ} (hq : 1 < q) (hn : 0 < n) (hm : m + 1 = q ^ n) (u : (ZMod m)ˣ)
     (hu : (u : ZMod m) = q) : orderOf u = n := by
   rw [orderOf_eq_iff hn]
@@ -50,6 +69,35 @@ private theorem df_order {q n m : ℕ} (hq : 1 < q) (hn : 0 < n) (hm : m + 1 = q
     have h5 := Nat.le_of_dvd (by omega) h4
     omega
 
+/- English proof (translation)
+Substitute `hD hI` using the available equality. Use `haveI : IsGalois ℚ Ω := {}`. Take `⟨γ, hγ⟩` from `exists_isFrob hv`. Use `⟨⟨γ, hγ.1⟩, ?_, fun n hn => ?_⟩` and prove the remaining obligations. Establish `key` using `ProfiniteGrp.closedSubgroup_eq_sInf_open (G := G ℚ Ω) ⟨(Ine (F := ℚ) A ⊔ Subgroup.zpowers γ).topologicalClosure, Subgroup.isClosed_topologicalClosure _⟩`.
+
+Establish `h1 : Dec (F` using `ℚ) A ≤ (Ine (F := ℚ) A ⊔ Subgroup.zpowers γ).topologicalClosure := by`. Use `le_trans (le_sInf ?_) key.ge` and prove the remaining obligations. Introduce and unpack `N ⟨hNo, hN⟩`. Establish `h` using `(Subgroup.le_topologicalClosure _).trans hN`. Conclude with `Kum.decGen ℚ Ω A _ γ N hv hγ hNo (le_sup_left.trans h) (h (Subgroup.mem_sup_right (Subgroup.mem_zpowers γ)))`.
+
+Establish `h2 : ((Ine (F` using `ℚ) A).subgroupOf (Dec (F := ℚ) A) ⊔ Subgroup.zpowers (⟨γ, hγ.1⟩ : Dec (F := ℚ) A)).map (Dec (F := ℚ) A).subtype = Ine (F := ℚ) A ⊔ Subgroup.zpowers γ := by`. Rewrite using `[Subgroup.map_sup, Subgroup.subgroupOf_map_subtype, MonoidHom.map_zpowers, inf_eq_left.2 (Ine_le_Dec A)]`. Both sides reduce to the same expression. Rewrite using `[eq_top_iff]`. Introduce `x _`.
+
+Establish `h3` using `h1 x.2`. Rewrite `h3` using `[← h2]`. Conclude with `closure_subtype.2 h3`. Establish `hq : normV v = Ideal.absNorm v.asIdeal`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+
+Both sides reduce to the same expression. Establish `hq1 : 1 < normV v`. Rewrite using `[hq]`. Establish `h0 : Ideal.absNorm v.asIdeal ≠ 0` using `fun h => v.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`. Establish `h1 : Ideal.absNorm v.asIdeal ≠ 1` using `fun h => v.isPrime.ne_top (Ideal.absNorm_eq_one_iff.1 h)`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hqv : ((normV v : ℕ) : 𝓞 ℚ) ∈ v.asIdeal` using `hq ▸ Ideal.absNorm_mem _`. Take `⟨p, hp, hpq, hpv⟩` from `df_exists_prime v _ (by omega) hqv`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Establish `h1 : 1 < normV v ^ n` using `Nat.one_lt_pow hn.ne' hq1`.
+
+Take `⟨m, hm⟩ : ∃ m, m + 1 = normV v ^ n` from `⟨normV v ^ n - 1, by omega⟩`. Use `haveI : NeZero m := ⟨by omega⟩`. Establish `hmp : m.Coprime p`. Use `((Nat.Prime.coprime_iff_not_dvd hp).2 fun h => ?_).symm` and prove the remaining obligations. Establish `h2 : p ∣ m + 1` using `hm ▸ hpq.trans (dvd_pow_self _ hn.ne')`.
+
+Conclude with `hp.one_lt.ne' (Nat.dvd_one.1 ((Nat.dvd_add_right h).1 h2))`. Establish `hA` using `(df_val hv p).2 hpv`. Take `⟨hopen, -, -, -, hIne⟩` from `Chr.clsFacts ℚ Ω m`. Establish `hI` using `hIne A fun h => df_not_both v hmp ((df_val hv m).1 h) hpv`. Establish `hu : ((Chr.cls ℚ Ω m γ : (ZMod m)ˣ) : ZMod m) = normV v` using `by haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`.
+
+Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω m`. Establish `hv1 : A.valuation ζ ≤ 1`. Establish `h1 : A.valuation ζ ^ m = 1` using `by rw [← map_pow, hζ.pow_eq_one, map_one]`. Conclude with `((pow_eq_one_iff_left (NeZero.ne m)).1 h1).le`. Establish `h2 : γ ζ = ζ ^ normV v`.
+
+Use `(LDataCardLeFinrank.ineFixRoots ℚ Ω p A hA m hmp (ζ ^ normV v) ?_).1 (γ ζ) ?_ (hγ.2 ζ hv1)` and prove the remaining obligations. Rewrite using `[← pow_mul, mul_comm, pow_mul, hζ.pow_eq_one, one_pow]`. Rewrite using `[← map_pow, hζ.pow_eq_one, map_one]`. Rewrite `h2` using `[Chr.cls_spec m γ ζ hζ.pow_eq_one, pow_eq_pow_mod (normV v) hζ.pow_eq_one]`. Establish `h3` using `hζ.pow_inj (ZMod.val_lt _) (Nat.mod_lt _ (NeZero.pos m)) h2`.
+
+Rewrite using `[← ZMod.natCast_zmod_val ((Chr.cls ℚ Ω m γ : (ZMod m)ˣ) : ZMod m), h3, ZMod.natCast_mod]`. Establish `hord` using `df_order hq1 hn hm _ hu`. Establish `hle : Dec (F` using `ℚ) A ≤ (Subgroup.zpowers (Chr.cls ℚ Ω m γ)).comap (Chr.cls ℚ Ω m) := by`. Establish `hk : (Chr.cls ℚ Ω m).ker ≤ (Subgroup.zpowers (Chr.cls ℚ Ω m γ)).comap (Chr.cls ℚ Ω m)` using `Subgroup.ker_le_comap _ _`. Conclude with `Kum.decGen ℚ Ω A _ γ _ hv hγ (Subgroup.isOpen_mono hk hopen) (hI.trans hk) (Subgroup.mem_zpowers _)`.
+
+Set `f : Dec (F` to `ℚ) A →* Subgroup.zpowers (Chr.cls ℚ Ω m γ) := ((Chr.cls ℚ Ω m).comp (Dec (F := ℚ) A).subtype).codRestrict _ fun x => hle x.2`. Establish `hg : ∀ x : Subgroup.zpowers (Chr.cls ℚ Ω m γ), x ∈ Subgroup.zpowers (f ⟨γ, hγ.1⟩)`. Introduce and unpack `⟨_, k, rfl⟩`. Conclude with `⟨k, rfl⟩`. Establish `hc : Nat.card (Subgroup.zpowers (Chr.cls ℚ Ω m γ)) = n` using `by rw [Nat.card_zpowers, hord]`.
+
+Establish `hf1 : ∀ s : Dec (F` using `ℚ) A, Chr.cls ℚ Ω m s = 1 → f s = 1 := fun s hs => Subtype.ext hs`. Use `⟨(zmodMulEquivOfGenerator hg hc).symm.toMonoidHom.comp f, df_locConst _ ?_, fun s hs => ?_, ?_⟩` and prove the remaining obligations. Use `Subgroup.isOpen_mono (H₁ := (Chr.cls ℚ Ω m).ker.subgroupOf _) (fun s hs => ?_) (hopen.preimage continuous_subtype_val)` and prove the remaining obligations. Rewrite using `[MonoidHom.mem_ker, MonoidHom.comp_apply, hf1 s hs, map_one]`. Rewrite using `[MonoidHom.comp_apply, hf1 s (hI hs), map_one]`.
+
+Conclude with `zmodMulEquivOfGenerator_symm_apply_generator hg hc`.
+-/
 private theorem df_frob (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 ℚ))
     (hv : IsPlaceOver A v) (D I : Subgroup (G ℚ Ω)) (hD : D = Dec (F := ℚ) A) (hI : I = Ine (F := ℚ) A) :
     ∃ φ : D, (I.subgroupOf D ⊔ Subgroup.zpowers φ).topologicalClosure = ⊤ ∧
@@ -132,6 +180,13 @@ private theorem df_frob (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ �
 end SlopeTestRemainingChoices
 
 open Formalism.GaloisCohomology in
+/- English proof (translation)
+Introduce `Ω _ _ _ A v hv`. Use `haveI : IsGalois ℚ Ω := {}`. Take `⟨φ, h1, h2⟩` from `df_frob Ω A v hv _ _ rfl rfl`. Use `⟨isCompact_iff_compactSpace.1 (isClosed_Dec A).isCompact, inferInstance, isClosed_Ine A, ⟨φ, h1⟩, fun n hn => ?_⟩` and prove the remaining obligations. Take `⟨d, hd, hI, hφ⟩` from `h2 n hn`.
+
+Use `haveI : NeZero n := ⟨hn.ne'⟩`. Use `⟨d.ker, hd {1}, fun s hs => hI s hs, ?_⟩` and prove the remaining obligations. Establish `hs : d.range = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `x _`.
+
+Use `⟨φ ^ (Multiplicative.toAdd x).val, ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow, hφ, ← ofAdd_nsmul, nsmul_eq_mul, mul_one, ZMod.natCast_zmod_val, ofAdd_toAdd]`. Rewrite using `[Subgroup.index_ker, hs, Subgroup.card_top, Nat.card_eq_fintype_card, Fintype.card_multiplicative, ZMod.card]`.
+-/
 theorem UpperTheory.exists_decompositionField_frobenius_data :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 ℚ)), IsPlaceOver A v →
           CompactSpace (Dec (F := ℚ) A) ∧ ((Ine (F := ℚ) A).subgroupOf (Dec (F := ℚ) A)).Normal ∧ IsClosed (Ine (F := ℚ) A : Set (G ℚ Ω)) ∧

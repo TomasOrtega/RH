@@ -8,6 +8,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.CechPic
 
+/- English proof (translation)
+Introduce `S Y U YU _ _ f _ _ j _ ρ fU hd hpb σ hσ δ hρ hσδ`. Take `⟨N, hN, rfl⟩` from `cls_surj δ`. Establish `hdom : IsDominant j` using `⟨hd⟩`. Establish `hgi : GeometricallyIntegral f` using `GlobalTheory.forall_geometricallyIntegral_of_smooth_of_geometricallyConnected Y S f inferInstance inferInstance`. Establish `hfst : pullback.fst f j = hpb.isoPullback.inv ≫ ρ` using `(IsPullback.isoPullback_inv_fst hpb).symm`.
+
+Establish `h1 : cls (N.pull σ) (pull_isLB hN σ) = 0` using `by rw [cls_pull hN]; exact hσδ`. Establish `h2 : cls (N.pull (pullback.fst f j)) (pull_isLB hN _) = 0`. Rewrite using `[cls_pull hN, hfst, pull_comp, hρ, map_zero]`. Take `⟨t, ht⟩` from `GlobalTheory.GenericExtend.exists_isGen_of_densePart S U j (GlobalTheory.IsNormalScheme.pred S) inferInstance inferInstance hdom inferInstance (Over.mk f) σ N hσ (show Smooth f from inferInstance) hgi hN ((cls_eq_zero_iff _).1 h1) ((cls_eq_zero_iff _).1 h2)`. Conclude with `(cls_eq_zero_iff hN).2 ⟨t, ht⟩`.
+-/
 theorem eq_zero_of_pull_densePart_of_pull_section : ∀ {S Y U YU : Scheme.{0}} [IsLocallyNoetherian S]
     [GlobalTheory.IsNormalScheme S] (f : Y ⟶ S) [Smooth f] [GeometricallyConnected f] (j : U ⟶ S)
     [IsOpenImmersion j] (ρ : YU ⟶ Y) (fU : YU ⟶ U), Dense (Set.range j) → IsPullback ρ fU f j →

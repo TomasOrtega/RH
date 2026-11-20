@@ -15,6 +15,45 @@ def JacOneCFor (Pr : ChartPred) : Prop := ∀ {D : D7} (X : HidaSetting D) (u' :
     ∀ Ω₂ ⊆ Ω, Ω₂ ∈ 𝓝 (TI X u' hT) → ∀ c : HmI X → ENNReal, ContinuousAt c (TI X u' hT) →
       PolId X u' μinf νinf a Ω₂ c → c (TI X u' hT) = (ENNReal.ofReal (KVal X u'))⁻¹
 
+/- English proof (translation)
+Introduce `D X u' ψ hT μinf νinf fibInf hP Ω a hC hPr Ω₂ hΩ₂ hΩ₂n c hcc hid`. Take `⟨V, W, hVW, hsh, hlim⟩` from `hR X u' ψ hT μinf νinf fibInf hP Ω a hC hPr Ω₂ hΩ₂ hΩ₂n`. Establish `hK0 : 0 < KVal X u'` using `hK X u' ψ hT μinf νinf fibInf hP`. Use `set L : ℕ → ENNReal := fun n => μinf (BoxT X u' a (V n) (W n)) with hL`. Use `set B : ℕ → ENNReal := fun n => νinf (W n) with hB`.
+
+Use `set M : ℕ → ENNReal := fun n => X.measG.μGinf (TubeG X u' (V n)) with hM`. Use `set A : ℕ → ENNReal := fun n => ∫⁻ T in W n, c T ∂νinf with hA`. Establish `key : ∀ n, L n = A n * M n`. Introduce `n`. Take `⟨hWm, hWs, -, -, hU, hBm, hBI, -, hTm, -, hMt⟩` from `hVW n`.
+
+Establish `h` using `hid ((BoxT X u' a (V n) (W n)).indicator 1) (measurable_one.indicator hBm) (W n) hWs hWm`. Establish `hsub : BoxT X u' a (V n) (W n) ⊆ gramR (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J ⁻¹' (Subtype.val '' (W n)) ∩ IndI X`. Introduce `y hy`. Use `⟨?_, hBI hy⟩` and prove the remaining obligations. Take `⟨T, hTW, g, -, rfl⟩` from `hy`.
+
+Use `⟨T, hTW, ?_⟩` and prove the remaining obligations. Rewrite using `[gramR_smul, hC.2.2.2 T (hΩ₂ (hWs hTW))]`. Rewrite `h` using `[lintegral_indicator_one hBm, Measure.restrict_apply hBm, Set.inter_eq_left.2 hsub]`. Establish `hin : ∀ T ∈ W n, ∫⁻ g, (BoxT X u' a (V n) (W n)).indicator 1 (g • rmulT X (a T) (Y0 X u')) ∂X.measG.μGinf = M n`. Introduce `T hTW`.
+
+Establish `hs` using `pre_box X u' hT hC (V n) (hWs.trans hΩ₂) hU T hTW`. Establish `e : (fun g : HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J => (BoxT X u' a (V n) (W n)).indicator (1 : TupI X → ENNReal) (g • rmulT X (a T) (Y0 X u'))) = (TubeG X u' (V n)).indicator 1`. Use function extensionality and compare the values at `g`. Distinguish the cases in `hg : g ∈ TubeG X u' (V n)`. Establish `h4 : g • rmulT X (a T) (Y0 X u') ∈ BoxT X u' a (V n) (W n)` using `by rw [← hs] at hg; exact hg`.
+
+Rewrite using `[Set.indicator_of_mem hg, Set.indicator_of_mem h4]`. Both sides reduce to the same expression. Establish `h4 : g • rmulT X (a T) (Y0 X u') ∉ BoxT X u' a (V n) (W n)` using `by rw [← hs] at hg; exact hg`. Rewrite using `[Set.indicator_of_notMem hg, Set.indicator_of_notMem h4]`. Rewrite using `[e, lintegral_indicator_one hTm]`.
+
+Rewrite `h` using `[setLIntegral_congr_fun hWm (fun T hT' => by rw [hin T hT'])]`. Rewrite `h` using `[lintegral_mul_const' _ _ hMt.ne]`. Conclude with `h`. Establish `hAt : ∀ n, A n ≠ ⊤`. Introduce `n hA'`.
+
+Take `⟨-, -, -, -, -, -, -, hLt, -, hM0, -⟩` from `hVW n`. Establish `: L n = ⊤` using `by rw [key n, hA', ENNReal.top_mul hM0.ne']`. Conclude with `absurd this hLt.ne`. Establish `e1 : ∀ n, (L n).toReal / ((B n).toReal * (M n).toReal) = (A n).toReal / (B n).toReal`. Introduce `n`.
+
+Take `⟨-, -, hB0, hBt, -, -, -, -, -, hM0, hMt⟩` from `hVW n`. Establish `hMr : 0 < (M n).toReal` using `ENNReal.toReal_pos hM0.ne' hMt.ne`. Rewrite using `[key n, ENNReal.toReal_mul]`. Clear the denominators using the available nonvanishing facts. Establish `hlim' : Tendsto (fun n => (L n).toReal / ((B n).toReal * (M n).toReal)) atTop (𝓝 (KVal X u')⁻¹)` using `hlim`.
+
+Establish `hge : ∀ b : ENNReal, b < c (TI X u' hT) → b.toReal ≤ (KVal X u')⁻¹`. Introduce `b hb`. Establish `hU : c ⁻¹' Set.Ioi b ∈ 𝓝 (TI X u' hT)` using `hcc (Ioi_mem_nhds hb)`. Use `ge_of_tendsto hlim' ?_` and prove the remaining obligations. Use `filter_upwards [hsh _ hU] with n hn`.
+
+Take `⟨hWm, -, hB0, hBt, -⟩` from `hVW n`. Establish `hBr : 0 < (B n).toReal` using `ENNReal.toReal_pos hB0.ne' hBt.ne`. Establish `hlow : b * B n ≤ A n`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1 n, le_div_iff₀ hBr, ← ENNReal.toReal_mul]`.
+
+Conclude with `ENNReal.toReal_mono (hAt n) hlow`. Establish `hle : ∀ b : ENNReal, c (TI X u' hT) < b → b ≠ ⊤ → (KVal X u')⁻¹ ≤ b.toReal`. Introduce `b hb hbt`. Establish `hU : c ⁻¹' Set.Iio b ∈ 𝓝 (TI X u' hT)` using `hcc (Iio_mem_nhds hb)`. Use `le_of_tendsto hlim' ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hsh _ hU] with n hn`. Take `⟨hWm, -, hB0, hBt, -⟩` from `hVW n`. Establish `hBr : 0 < (B n).toReal` using `ENNReal.toReal_pos hB0.ne' hBt.ne`. Establish `hup : A n ≤ b * B n`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[e1 n, div_le_iff₀ hBr, ← ENNReal.toReal_mul]`. Conclude with `ENNReal.toReal_mono (ENNReal.mul_ne_top hbt hBt.ne) hup`. Establish `hfin : c (TI X u' hT) ≠ ⊤`. Introduce `htop`. Establish `h1` using `hge (ENNReal.ofReal ((KVal X u')⁻¹ + 1)) (by rw [htop]; exact ENNReal.ofReal_lt_top)`.
+
+Rewrite `h1` using `[ENNReal.toReal_ofReal (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set c₀ : ℝ := (c (TI X u' hT)).toReal with hc₀`. Establish `hle' : c₀ ≤ (KVal X u')⁻¹`. Use `le_of_forall_pos_le_add fun ε hε => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hcε : c₀ - ε ≤ 0`. Establish `: 0 < (KVal X u')⁻¹` using `inv_pos.2 hK0`. Combine the linear equalities and inequalities to obtain the conclusion. Use `push_neg at hcε`. Establish `hb : ENNReal.ofReal (c₀ - ε) < c (TI X u' hT)`.
+
+Rewrite using `[← ENNReal.ofReal_toReal hfin, ← hc₀]`. Conclude with `(ENNReal.ofReal_lt_ofReal_iff (by linarith)).2 (by linarith)`. Use `hge _ hb` as an intermediate fact. Rewrite `this` using `[ENNReal.toReal_ofReal hcε.le]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hge' : (KVal X u')⁻¹ ≤ c₀`. Use `le_of_forall_pos_le_add fun ε hε => ?_` and prove the remaining obligations. Establish `hc0 : 0 ≤ c₀` using `ENNReal.toReal_nonneg`. Establish `hb : c (TI X u' hT) < ENNReal.ofReal (c₀ + ε)`. Rewrite using `[← ENNReal.ofReal_toReal hfin, ← hc₀]`.
+
+Conclude with `(ENNReal.ofReal_lt_ofReal_iff (by linarith)).2 (by linarith)`. Use `hle _ hb ENNReal.ofReal_ne_top` as an intermediate fact. Rewrite `this` using `[ENNReal.toReal_ofReal (by linarith)]`. Then use the resulting hypothesis. Establish `hceq : c₀ = (KVal X u')⁻¹` using `le_antisymm hle' hge'`. Rewrite using `[← ENNReal.ofReal_toReal hfin, ← hc₀, hceq, ENNReal.ofReal_inv_of_pos hK0]`.
+-/
 theorem jacOneCFor_of {Pr : ChartPred} (hK : KPos) (hR : LocRatioFor Pr) : JacOneCFor Pr := by
   intro D X u' ψ hT μinf νinf fibInf hP Ω a hC hPr Ω₂ hΩ₂ hΩ₂n c hcc hid
   obtain ⟨V, W, hVW, hsh, hlim⟩ := hR X u' ψ hT μinf νinf fibInf hP Ω a hC hPr Ω₂ hΩ₂ hΩ₂n
@@ -124,6 +163,17 @@ theorem jacOneCFor_of {Pr : ChartPred} (hK : KPos) (hR : LocRatioFor Pr) : JacOn
   have hceq : c₀ = (KVal X u')⁻¹ := le_antisymm hle' hge'
   rw [← ENNReal.ofReal_toReal hfin, ← hc₀, hceq, ENNReal.ofReal_inv_of_pos hK0]
 
+/- English proof (translation)
+Introduce `D X u' ψ hT μinf νinf fibInf hP Ω a hC Ω₂ hΩ₂ hΩ₂n c hcc hid`. Take `⟨Ω', a₂, hC₂, hgood⟩` from `hG X u' ψ hT μinf νinf fibInf hP`. Establish `hev : ∀ᶠ T in 𝓝 (TI X u' hT), ∃ h : HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J, rmulT X (a T) (Y0 X u') = h • rmulT X (a₂ T) (Y0 X u')`. Take `⟨ι, _, κ, -, η, _, eT, eH, cμ, cν, Ψ', U, -, -, -, -, -, -, -, -, hev0, -⟩` from `hgood`. Use `filter_upwards [hev0, hC.1, hC₂.1] with T h1 h2 h3`.
+
+Conclude with `hW X u' ψ hT μinf νinf fibInf hP Ω a Ω' a₂ hC hC₂ T ⟨h2, h3⟩ h1.1`. Use `set Ω₃ := Ω₂ ∩ Ω' ∩ {T | ∃ h : HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J, rmulT X (a T) (Y0 X u') = h • rmulT X (a₂ T) (Y0 X u')} with hΩ₃`. Establish `hΩ₃n : Ω₃ ∈ 𝓝 (TI X u' hT)` using `inter_mem (inter_mem hΩ₂n hC₂.1) hev`. Establish `hid₂ : PolId X u' μinf νinf a₂ Ω₃ c`. Introduce `φ hφ S hS hSm`.
+
+Rewrite using `[hid φ hφ S (hS.trans (Set.inter_subset_left.trans Set.inter_subset_left)) hSm]`. Use `setLIntegral_congr_fun hSm (fun T hT' => ?_)` and prove the remaining obligations. Take `⟨h, eh⟩` from `(hS hT').2`. Rewrite using `[eh]`. Use `congr 1`.
+
+Establish `e : ∀ g : HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J, φ (g • h • rmulT X (a₂ T) (Y0 X u')) = (fun g' => φ (g' • rmulT X (a₂ T) (Y0 X u'))) (g * h)`. Introduce `g`. Simplify using `only [mul_smul]`. Repeatedly rewrite using `[e]`. Conclude with `hU X u' ψ hT μinf νinf fibInf hP (fun g' => φ (g' • rmulT X (a₂ T) (Y0 X u'))) h`.
+
+Conclude with `jacOneCFor_of hK (locRatioFor_of hK splitAsym_good) X u' ψ hT μinf νinf fibInf hP Ω' a₂ hC₂ hgood Ω₃ (Set.inter_subset_left.trans Set.inter_subset_right) hΩ₃n c hcc hid₂`.
+-/
 theorem jacOneC_of_charts (hK : KPos) (hU : UnimodInf) (hW : WittNear) (hG : GoodChartEx) : JacOneC := by
   intro D X u' ψ hT μinf νinf fibInf hP Ω a hC Ω₂ hΩ₂ hΩ₂n c hcc hid
   obtain ⟨Ω', a₂, hC₂, hgood⟩ := hG X u' ψ hT μinf νinf fibInf hP

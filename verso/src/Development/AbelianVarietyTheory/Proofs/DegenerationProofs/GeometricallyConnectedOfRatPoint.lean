@@ -13,6 +13,11 @@ namespace GlobalTheory.RatPointConn
 
 universe u
 
+/- English proof (translation)
+Set `t : Spec (.of K) ⟶ Z` to `h.lift (y ≫ s) (𝟙 _) (by simp [hs])`. Establish `ht : IsPullback t y p s`. Use `IsPullback.of_right (h₁₂ := q) (v₁₃ := y) (h₂₂ := f) ?_ (by simp [t]) h.flip` and prove the remaining obligations. Rewrite using `[hs, show t ≫ q = 𝟙 _ by simp [t]]`. Conclude with `IsPullback.of_id_fst`.
+
+Take `⟨a', rfl, -⟩` from `Scheme.exists_preimage_of_isPullback ht a (IsLocalRing.closedPoint k) ha`. Take `⟨b', rfl, -⟩` from `Scheme.exists_preimage_of_isPullback ht b (IsLocalRing.closedPoint k) hb`. Rewrite using `[Subsingleton.elim a' b']`.
+-/
 theorem fibre_subsingleton {k K : Type u} [Field k] [Field K] {X Z : Scheme.{u}}
     {f : X ⟶ Spec (.of k)} {y : Spec (.of K) ⟶ Spec (.of k)} {p : Z ⟶ X} {q : Z ⟶ Spec (.of K)}
     (h : IsPullback p q f y) (s : Spec (.of k) ⟶ X) (hs : s ≫ f = 𝟙 _) (a b : Z)
@@ -27,6 +32,17 @@ theorem fibre_subsingleton {k K : Type u} [Field k] [Field K] {X Z : Scheme.{u}}
   obtain ⟨b', rfl, -⟩ := Scheme.exists_preimage_of_isPullback ht b (IsLocalRing.closedPoint k) hb
   rw [Subsingleton.elim a' b']
 
+/- English proof (translation)
+Use `⟨fun K _ y Z p q h => ?_⟩` and prove the remaining obligations. Use `LocallyOfFiniteType.jacobsonSpace f` as an intermediate fact. Establish `hy : Surjective y` using `⟨fun a => ⟨Classical.arbitrary _, Subsingleton.elim _ _⟩⟩`. Establish `hs : Surjective p` using `MorphismProperty.of_isPullback h.flip hy`. Establish `ho : UniversallyOpen p` using `MorphismProperty.of_isPullback h.flip (inferInstance : UniversallyOpen y)`.
+
+Establish `fib : ∀ x : X, IsClosed {x} → ∀ a b : Z, p a = x → p b = x → a = b`. Introduce `x hx a b ha hb`. Conclude with `fibre_subsingleton h (pointOfClosedPoint f x hx) (pointOfClosedPoint_comp f x hx) a b (ha.trans (pointOfClosedPoint_apply f x hx _).symm) (hb.trans (pointOfClosedPoint_apply f x hx _).symm)`. Establish `hne : Nonempty Z` using `(p.surjective (Classical.arbitrary X)).nonempty`. Establish `: PreconnectedSpace Z` using `⟨fun U V hU hV hUV hU' hV' => by`.
+
+Rewrite `hU'`, `hV'`, the goal using `[Set.univ_inter]`. Establish `o₁ : IsOpen (p '' U)` using `p.isOpenMap _ hU`. Establish `o₂ : IsOpen (p '' V)` using `p.isOpenMap _ hV`. Establish `hc : Set.univ ⊆ p '' U ∪ p '' V`. Introduce `x _`.
+
+Take `⟨z, rfl⟩` from `p.surjective x`. Conclude with `(hUV (Set.mem_univ z)).imp (fun hz => ⟨z, hz, rfl⟩) (fun hz => ⟨z, hz, rfl⟩)`. Establish `hi` using `isPreconnected_univ _ _ o₁ o₂ hc (by simpa using hU') (by simpa using hV')`. Rewrite `hi` using `[Set.univ_inter]`. Take `⟨x, ⟨⟨a, ha, hax⟩, ⟨b, hb, hbx⟩⟩, hxc⟩` from `nonempty_inter_closedPoints hi (o₁.inter o₂).isLocallyClosed`.
+
+Conclude with `⟨a, ha, fib x hxc a b hax hbx ▸ hb⟩⟩`. Conclude with `⟨hne⟩`.
+-/
 theorem of_isAlgClosed {k : Type u} [Field k] [IsAlgClosed k]
     {X : Scheme.{u}} (f : X ⟶ Spec (.of k)) [LocallyOfFiniteType f] [ConnectedSpace X] :
     GeometricallyConnected f := by
@@ -57,6 +73,17 @@ theorem of_isAlgClosed {k : Type u} [Field k] [IsAlgClosed k]
     exact ⟨a, ha, fib x hxc a b hax hbx ▸ hb⟩⟩
   exact ⟨hne⟩
 
+/- English proof (translation)
+Establish `key : ∀ U : Set Z, IsClopen U → U.Nonempty → ∃ a ∈ U, p a = x`. Introduce `U hU hne`. Establish `h1 : IsClopen (p '' U)` using `⟨hc _ hU.1, ho _ hU.2⟩`. Establish `h2` using `h1.eq_univ (hne.image _)`. Conclude with `h2.ge (Set.mem_univ x)`.
+
+Use `⟨(isPreconnected_iff_subset_of_disjoint).2 fun U V hU hV hUV hd => ?_⟩` and prove the remaining obligations. Rewrite `hd` using `[Set.univ_inter]`. Establish `hdis : Disjoint U V` using `Set.disjoint_iff_inter_eq_empty.2 hd`. Establish `hcompl : IsCompl U V` using `⟨hdis, codisjoint_iff.2 (Set.univ_subset_iff.1 hUV)⟩`. Establish `cU : IsClopen U` using `⟨⟨by rw [hcompl.compl_eq]; exact hV⟩, hU⟩`.
+
+Establish `cV : IsClopen V` using `⟨⟨by rw [hcompl.symm.compl_eq]; exact hU⟩, hV⟩`. Break down `U.eq_empty_or_nonempty with rfl | nU` into its components or cases. Use `right`. Simplify using `using hUV`. Break down `V.eq_empty_or_nonempty with rfl | nV` into its components or cases.
+
+Use `left`. Simplify using `using hUV`. Take `⟨a, ha, hax⟩` from `key U cU nU`. Take `⟨b, hb, hbx⟩` from `key V cV nV`. Take `rfl` from `hx a b hax hbx`.
+
+Conclude with `absurd hb (Set.disjoint_left.1 hdis ha)`.
+-/
 theorem preconnectedSpace_of_fibre {Z X : Type*} [TopologicalSpace Z] [TopologicalSpace X]
     [PreconnectedSpace X] {p : Z → X} (ho : IsOpenMap p) (hc : IsClosedMap p) (x : X)
     (hx : ∀ a b, p a = x → p b = x → a = b) : PreconnectedSpace Z := by
@@ -80,6 +107,13 @@ theorem preconnectedSpace_of_fibre {Z X : Type*} [TopologicalSpace Z] [Topologic
   obtain rfl := hx a b hax hbx
   exact absurd hb (Set.disjoint_left.1 hdis ha)
 
+/- English proof (translation)
+Use `⟨fun K _ y W p q hW => ?_⟩` and prove the remaining obligations. Take `⟨w⟩ : Nonempty ↥(pullback j y)` from `((pullback.snd j y).surjective (Classical.arbitrary _)).nonempty`. Set `r` to `(pullback j y).fromSpecResidueField w`. Set `a` to `r ≫ pullback.fst j y`. Set `b` to `r ≫ pullback.snd j y`.
+
+Establish `hab : a ≫ j = b ≫ y` using `by simp [a, b, pullback.condition]`. Establish `H : IsPullback (pullback.fst q b ≫ p) (pullback.snd q b) g (b ≫ y)` using `(IsPullback.of_hasPullback q b).paste_horiz hW`. Rewrite `H` using `[← hab]`. Establish `H'` using `IsPullback.of_right' H h`. Establish `: ConnectedSpace ↥(pullback q b)` using `GeometricallyConnected.geometrically_connectedSpace (f := f) a _ _ H'`.
+
+Establish `hb : Surjective b` using `⟨fun a => ⟨Classical.arbitrary _, Subsingleton.elim _ _⟩⟩`. Conclude with `(pullback.fst q b).surjective.connectedSpace (pullback.fst q b).continuous`.
+-/
 theorem of_isPullback {A G U Z : Scheme.{u}} {φ : A ⟶ G} {f : A ⟶ U} {g : G ⟶ Z} {j : U ⟶ Z}
     [Surjective j] (h : IsPullback φ f g j) [GeometricallyConnected f] :
     GeometricallyConnected g := by
@@ -99,6 +133,13 @@ theorem of_isPullback {A G U Z : Scheme.{u}} {φ : A ⟶ G} {f : A ⟶ U} {g : G
   have hb : Surjective b := ⟨fun a => ⟨Classical.arbitrary _, Subsingleton.elim _ _⟩⟩
   exact (pullback.fst q b).surjective.connectedSpace (pullback.fst q b).continuous
 
+/- English proof (translation)
+Set `y : Spec (.of (AlgebraicClosure k)) ⟶ Spec (.of k)` to `Spec.map (CommRingCat.ofHom (algebraMap k (AlgebraicClosure k)))`. Establish `hy : Surjective y` using `⟨fun a => ⟨Classical.arbitrary _, Subsingleton.elim _ _⟩⟩`. Establish `hi : IsIntegralHom y`. Rewrite using `[IsIntegralHom.SpecMap_iff]`. Conclude with `algebraMap_isIntegral_iff.2 inferInstance`.
+
+Establish `h` using `IsPullback.of_hasPullback f y`. Establish `ho : UniversallyOpen (pullback.fst f y)` using `MorphismProperty.of_isPullback h.flip (inferInstance : UniversallyOpen y)`. Establish `: PreconnectedSpace ↥(pullback f y)` using `preconnectedSpace_of_fibre (pullback.fst f y).isOpenMap (pullback.fst f y).isClosedMap _ (fibre_subsingleton h s hs)`. Establish `: ConnectedSpace ↥(pullback f y)` using `⟨((pullback.fst f y).surjective (Classical.arbitrary X)).nonempty⟩`. Use `of_isAlgClosed (pullback.snd f y)` as an intermediate fact.
+
+Conclude with `of_isPullback h`.
+-/
 theorem of_section {k : Type u} [Field k] {X : Scheme.{u}} (f : X ⟶ Spec (.of k))
     [LocallyOfFiniteType f] [ConnectedSpace X] (s : Spec (.of k) ⟶ X) (hs : s ≫ f = 𝟙 _) :
     GeometricallyConnected f := by
@@ -119,6 +160,9 @@ theorem of_section {k : Type u} [Field k] {X : Scheme.{u}} (f : X ⟶ Spec (.of 
   have := of_isAlgClosed (pullback.snd f y)
   exact of_isPullback h
 
+/- English proof (translation)
+Introduce and unpack `k _ X _ - _ ⟨s⟩`. Conclude with `of_section (k := k) X.hom s.left (Over.w s)`.
+-/
 theorem geometricallyConnected_of_ratPoint :
     ∀ (k : Type) [Field k] (X : Over (Sp k)), LocallyOfFiniteType X.hom → QuasiCompact X.hom → ConnectedSpace X.left → Nonempty (𝟙_ (Over (Sp k)) ⟶ X) → GeometricallyConnected X.hom := by
   rintro k _ X _ - _ ⟨s⟩

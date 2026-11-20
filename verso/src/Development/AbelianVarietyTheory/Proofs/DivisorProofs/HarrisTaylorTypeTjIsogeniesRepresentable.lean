@@ -38,6 +38,13 @@ namespace GlobalTheory.UPel.HT.ES.IsogRep
 section
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ}
 
+/- English proof (translation)
+Establish `sq : IsSquare (h₁.φ ≫ h₂.φ) (h₁.φ₂ ≫ h₂.φ₂)`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Category.assoc, h₂.sq.1, ← Category.assoc, h₁.sq.1, Category.assoc]`. Rewrite using `[Category.assoc, h₂.sq.2, ← Category.assoc, h₁.sq.2, Category.assoc]`. Establish `act : ∀ c, (o₁.act.act c).left ≫ (h₁.φ ≫ h₂.φ) = (h₁.φ ≫ h₂.φ) ≫ (o₃.act.act c).left`.
+
+Introduce `c`. Rewrite using `[← Category.assoc, h₁.act, Category.assoc, h₂.act, Category.assoc]`. Establish `eta : ∀ y, (o₁.eta y).left ≫ (h₁.φ ≫ h₂.φ) = (f ≫ g) ≫ (o₃.eta y).left`. Introduce `y`. Rewrite using `[← Category.assoc, h₁.eta, Category.assoc, h₂.eta, Category.assoc]`.
+
+Establish `H : LBIso (o₂.P.pull h₁.φ₂) ((o₃.P.pull h₂.φ₂).pull h₁.φ₂)` using `LBIso.chartPull (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull o₂.P h₁.φ₂ h₁.φ₂ rfl) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull (o₃.P.pull h₂.φ₂) h₁.φ₂ h₁.φ₂ rfl) h₂.pol`. Establish `H' : LBIso (o₂.P.pull h₁.φ₂) (o₃.P.pull (h₁.φ₂ ≫ h₂.φ₂))` using `LBIso.chartPull (chartPullId _) (chartPullIn o₃.P (fun _ : PUnit => h₂.φ₂) (fun _ => 1) h₁.φ₂) H`. Establish `pol : LBIso o₁.P (o₃.P.pull (h₁.φ₂ ≫ h₂.φ₂))` using `LBIso.trans o₁.isLB (pull_isLB o₂.isLB _) (pull_isLB o₃.isLB _) h₁.pol H'`. Conclude with `⟨⟨h₁.φ ≫ h₂.φ, h₁.φ₂ ≫ h₂.φ₂, h₁.cart.comp h₂.cart, sq, act, pol, eta⟩, rfl⟩`.
+-/
 theorem exists_comp {S₁ S₂ S₃ : Scheme.{0}} {s₁ : S₁ ⟶ Sp R} {s₂ : S₂ ⟶ Sp R} {s₃ : S₃ ⟶ Sp R} {o₁ : Obj b N s₁}
     {o₂ : Obj b N s₂} {o₃ : Obj b N s₃} {f : S₁ ⟶ S₂} {g : S₂ ⟶ S₃} (h₁ : ObjMap o₁ o₂ f) (h₂ : ObjMap o₂ o₃ g) :
     ∃ m : ObjMap o₁ o₃ (f ≫ g), m.φ = h₁.φ ≫ h₂.φ := by
@@ -60,6 +67,9 @@ theorem exists_comp {S₁ S₂ S₃ : Scheme.{0}} {s₁ : S₁ ⟶ Sp R} {s₂ :
     LBIso.trans o₁.isLB (pull_isLB o₂.isLB _) (pull_isLB o₃.isLB _) h₁.pol H'
   exact ⟨⟨h₁.φ ≫ h₂.φ, h₁.φ₂ ≫ h₂.φ₂, h₁.cart.comp h₂.cart, sq, act, pol, eta⟩, rfl⟩
 
+/- English proof (translation)
+Substitute `e` using the available equality. Take `⟨m'⟩` from `GlobalTheory.T.harrisTaylorPullback_comp_factors p D R b N _ _ _ _ _ _ o₀ o₁ o g h m₁ m`. Take `⟨n, hn⟩` from `exists_comp m' m₁`. Conclude with `⟨m', hn.symm.trans (GlobalTheory.T.harrisTaylor_pullback_abelian_map_unique_of_base_eq p D R b N hN hNp _ _ _ _ _ _ _ _ n m rfl)⟩`.
+-/
 theorem exists_factor (hN : 3 ≤ N) (hNp : N.Coprime p) {S₀ S₁ T : Scheme.{0}} {s₀ : S₀ ⟶ Sp R} {s₁ : S₁ ⟶ Sp R}
     {t : T ⟶ Sp R} {o₀ : Obj b N s₀} {o₁ : Obj b N s₁} {o : Obj b N t} {g : S₁ ⟶ S₀} {h : T ⟶ S₁} {x : T ⟶ S₀}
     (e : h ≫ g = x) (m₁ : ObjMap o₁ o₀ g) (m : ObjMap o o₀ x) : ∃ m' : ObjMap o o₁ h, m'.φ ≫ m₁.φ = m.φ := by
@@ -68,17 +78,32 @@ theorem exists_factor (hN : 3 ≤ N) (hNp : N.Coprime p) {S₀ S₁ T : Scheme.{
   obtain ⟨n, hn⟩ := exists_comp m' m₁
   exact ⟨m', hn.symm.trans (GlobalTheory.T.harrisTaylor_pullback_abelian_map_unique_of_base_eq p D R b N hN hNp _ _ _ _ _ _ _ _ n m rfl)⟩
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `GlobalTheory.T.exists_harrisTaylorObject_pullback p D R b N S S' s f o`.
+-/
 theorem exists_pull {S S' : Scheme.{0}} {s : S ⟶ Sp R} (f : S' ⟶ S) (o : Obj b N s) {s' : S' ⟶ Sp R}
     (e : f ≫ s = s') : ∃ o' : Obj b N s', Nonempty (ObjMap o' o f) := by
   subst e
   exact GlobalTheory.T.exists_harrisTaylorObject_pullback p D R b N S S' s f o
 
+/- English proof (translation)
+Take `⟨e, rfl⟩` from `hc`. Use `(hp.pow e).map (s.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom)` as an intermediate fact. Rewrite `this` using `[← Nat.cast_pow, map_natCast]`. Then use the resulting hypothesis.
+-/
 theorem isUnit_pow {S : Scheme.{0}} (s : S ⟶ Sp R) (hp : IsUnit ((p : ℕ) : R)) {c : ℕ} (hc : ∃ e : ℕ, c = p ^ e) :
     IsUnit (c : Γ(S, ⊤)) := by
   obtain ⟨e, rfl⟩ := hc
   have := (hp.pow e).map (s.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom)
   rwa [← Nat.cast_pow, map_natCast] at this
 
+/- English proof (translation)
+Take `⟨act', hact⟩` from `GlobalTheory.T.exists_orderAction_descent_along_isogeny p D R b N c Y s o B ψ ψ' hp hc hB hq h1`. Take `⟨P', hP', w1, w2⟩` from `GlobalTheory.T.exists_polarization_descent_of_quasi_isogeny p D R b N c Y s o B ψ ψ' hp hc hB hq h2`. Establish `hlie` using `GlobalTheory.T.harrisTaylor_lie_of_quasiInverseIsogeny p D R b N c Y s o B ψ ψ' hp hc hB hq act' hact`. Use `haveI := hq.1`. Set `o' : Obj b N s` to `{ A := B, ab := hB, act := act', P := P', isLB := hP'.1, rig₁ := hP'.2.1, rig₂ := hP'.2.2`.
+
+Use symmetry as in `:= GlobalTheory.T.quasiInverse_root_bundle_symmetric p D R b N c Y s o B ψ ψ' hp hc hB hq P' hP' w1 w2`. Use `ample := GlobalTheory.T.relAmple_diag_root_pullback_quasiInverse p D R b N c Y s o B ψ ψ' hp hc hB hq P' hP' w1 w2`. Use `kerP := GlobalTheory.T.polarization_descent_along_quasi_isogeny_compat p D R b N c Y s o B ψ ψ' hp hc hB hq h2 P' hP' w1 w2`. Use `rosati := GlobalTheory.T.quasiInverse_root_bundle_rosati_descended_action p D R b N c Y s o B ψ ψ' hp hc hB hq P' hP' w1 w2 act' hact`. Use `lie := hlie.1, lieRank := hlie.2`.
+
+Use `eta := fun y => o.eta y ≫ ψ`. Use `eta_add := fun x y => by rw [o.eta_add, MonObj.mul_comp]`. Use `eta_lin := fun a x => by rw [o.eta_lin, Category.assoc, hact, Category.assoc]`. Use `eta_ker := fun x => by rw [o.eta_ker, MonObj.one_comp]`. Use `geom := GlobalTheory.T.pow_polarization_iso_pullback_of_descent p D R b N c Y s o B ψ ψ' hp hc hB hq P' hP' w1 w2 act' hact }`.
+
+Conclude with `⟨o', ψ, 𝟙 _, ⟨hc, hq.1, hact, fun _ => rfl, ⟨w2⟩, ψ', hq.2.1, hq.2.2.1, hq.2.2.2⟩, GlobalTheory.SiegLower.isGrpPullback_id B, (Category.comp_id _).symm⟩`.
+-/
 theorem exists_obj {c : ℕ} {Y : Scheme.{0}} [IsLocallyNoetherian Y] {s : Y ⟶ Sp R} (o : Obj b N s) (B : Over Y)
     [GrpObj B] [IsCommMonObj B] (ψ : o.A ⟶ B) (ψ' : B ⟶ o.A) (hp : IsUnit ((p : ℕ) : R)) (hc : ∃ e : ℕ, c = p ^ e)
     (hB : IsAbelianScheme B) (hq : IsQuasiInv c ψ ψ') (h1 : KerStableAt o ψ (𝟙 Y)) (h2 : PolKerAt o ψ' c (𝟙 Y)) :
@@ -105,6 +130,31 @@ theorem exists_obj {c : ℕ} {Y : Scheme.{0}} [IsLocallyNoetherian Y] {s : Y ⟶
 
 end
 
+/- English proof (translation)
+Introduce `p _ D R _ _ b N hN hNp hp r w j c _ _ _ hc0 _ S _ s o`. Establish `hc : ∃ e : ℕ, c = p ^ e` using `hc0.imp fun _ h => h.1`. Establish `hcpos : 0 < c`. Take `⟨e, rfl⟩` from `hc`. Conclude with `pow_pos (Fact.out : p.Prime).pos e`.
+
+Take `⟨Z, hZf, hZe, hZ⟩` from `GlobalTheory.T.isogeny_representable_finite_etale S o.A c o.ab hcpos (isUnit_pow s hp hc)`. Take `⟨oZ, ⟨mZ⟩⟩` from `exists_pull Z.hom o rfl`. Take `⟨B, _, _, ψ, ψ', hB, hq, huniv⟩` from `hZ oZ.A mZ.φ mZ.cart`. Take `⟨W₁, a₁, c₁, H₁⟩` from `GlobalTheory.T.exists_clopen_kernelStable_harrisTaylor p D R b N c _ _ oZ B ψ ψ' hp hc hB hq`. Take `⟨W₂, a₂, c₂, H₂⟩` from `GlobalTheory.T.harrisTaylor_pullback_kernel_locus_isClopen p D R b N c _ _ oZ B ψ ψ' hp hc hB hq`.
+
+Take `⟨W₃, a₃, c₃, H₃⟩` from `GlobalTheory.T.exists_clopen_locus_of_annihilator p D R b N c _ _ oZ B ψ ψ' hp hc hB hq r w j`. Use `haveI := hZf`. Use `haveI := hZe`. Take `⟨Y, i, hYf, hYe, hmono, Hi⟩` from `GlobalTheory.LevCover.exists_sub (Z := Z) ⟨W₁ ∩ W₂ ∩ W₃, (a₁.inter a₂).inter a₃⟩ ((c₁.inter c₂).inter c₃)`. Use `haveI := hYf`.
+
+Use `haveI : IsLocallyNoetherian Y.left := LocallyOfFiniteType.isLocallyNoetherian Y.hom`. Establish `hi : Set.range i.left.base ⊆ W₁ ∩ W₂ ∩ W₃` using `(Hi Y i).2 ⟨𝟙 Y, Category.id_comp i⟩`. Take `⟨o₀, ⟨mi⟩⟩` from `exists_pull i.left oZ (s' := Y.hom ≫ s) (by rw [← Category.assoc, Over.w i])`. Choose the witnesses or unpack the hypotheses as in `⟨m₀, hm₀⟩ : ∃ m₀ : ObjMap o₀ o Y.hom, m₀.φ = mi.φ ≫ mZ.φ := by`. Establish `H : ∀ g, i.left ≫ Z.hom = g → ∃ m₀ : ObjMap o₀ o g, m₀.φ = mi.φ ≫ mZ.φ`.
+
+Introduce and unpack `_ rfl`. Conclude with `exists_comp mi mZ`. Conclude with `H _ (Over.w i)`. Take `⟨B₀, _, _, θ₀, ψ₀, ψ₀', hB₀, hθ₀, hq₀, e₀, e₀'⟩` from `GlobalTheory.T.quasiInverseIsogenyPair_baseChange_grpPullback _ _ i.left oZ.A B c ψ ψ' o₀.A mi.φ hB hq mi.cart`. Take `⟨o', χ, θ₁, hχ, hθ₁, e₁⟩` from `exists_obj o₀ B₀ ψ₀ ψ₀' hp hc hB₀ hq₀ ((GlobalTheory.T.kernelStable_iff_pulledBack_identity p D R b N _ _ _ _ _ o₀ oZ mi B₀ B θ₀ ψ₀ ψ hθ₀ e₀).1 ((H₁ _ _).1 fun z hz => (hi hz).1.1)) ((GlobalTheory.T.polKerAt_pullback_of_isGrpPullback p D R b N _ _ _ _ _ o₀ oZ mi B₀ B θ₀ ψ₀' ψ' c …`.
+
+Establish `hθ : IsGrpPullback o'.A B i.left (θ₁ ≫ θ₀)` using `(hθ₁.comp hθ₀).congr (Category.id_comp _) rfl`. Establish `eχ : mi.φ ≫ ψ.left = χ.left ≫ θ₁ ≫ θ₀` using `by rw [e₀, e₁, Category.assoc]`. Establish `htj : IsTj r w j o₀ o' χ` using `(tjAt_id_iff r w j o₀ o' χ).1 ((GlobalTheory.T.harrisTaylorType_iff_pulledBack_identity p D R b N _ _ _ _ _ o₀ oZ mi o'.A B (θ₁ ≫ θ₀) χ ψ r w j hθ eχ).1 ((H₃ _ _).1 fun z hz => (hi hz).2))`. Use `⟨Y, o₀, m₀, o', χ, hYf, hYe, hχ, htj, fun T x o₁ o₁' m ψ₁ h1 h2 => ?_⟩` and prove the remaining obligations. Take `⟨ψ₁', hq₁⟩` from `h1.exists_quasiInv`.
+
+Take `⟨z, ⟨hz, θ, θ', eθ, hθa, hθb, eψ⟩, zu⟩` from `huniv T x o₁.A m.φ o₁'.A ψ₁ ψ₁' m.cart o₁'.ab hq₁`. Take `⟨mz, hmz⟩` from `exists_factor hN hNp hz mZ m`. Take `rfl : θ = mz.φ` from `mZ.cart.1.hom_ext (eθ.trans hmz.symm) (hθa.1.w.trans mz.cart.1.w.symm)`. Establish `eψ'` using `GlobalTheory.T.quasiInverseIsogeny_square_compat_comp_quasiInv _ _ z oZ.A B c ψ ψ' o₁.A o₁'.A mz.φ θ' ψ₁ ψ₁' o₁'.ab hcpos hq hq₁ mz.cart eψ`. Establish `hr : Set.range z.base ⊆ W₁ ∩ W₂ ∩ W₃` using `Set.subset_inter (Set.subset_inter ((H₁ _ z).2 ((GlobalTheory.T.kernelStable_iff_pulledBack_identity p D R b N _ _ _ _ _ o₁ oZ mz o₁'.A B θ' ψ₁ ψ hθb eψ).2 (h1.kerStableAt _))) ((H₂ _ z).2 ((GlobalTheory.T.polKerAt_pullback_of_isGrpPullback p D R b N _ _ _ _ _ o₁ oZ mz o₁'.A B θ' …`.
+
+Take `⟨y, hy⟩` from `(Hi (Over.mk x) (Over.homMk z hz)).1 hr`. Establish `hyz : y.left ≫ i.left = z` using `congrArg CommaMorphism.left hy`. Use `haveI : Mono i.left := inferInstanceAs (Mono ((Over.forget S).map i))`. Use `⟨y.left, ⟨Over.w y, ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨m₀', hm⟩` from `exists_factor hN hNp hyz mi mz`.
+
+Set `φ₁ : o₁'.A.left ⟶ o'.A.left` to `hθ.1.lift θ' (o₁'.A.hom ≫ y.left) (by rw [hθb.1.w, Category.assoc, hyz])`. Establish `f1 : φ₁ ≫ θ₁ ≫ θ₀ = θ'` using `hθ.1.lift_fst _ _ _`. Establish `f2 : φ₁ ≫ o'.A.hom = o₁'.A.hom ≫ y.left` using `hθ.1.lift_snd _ _ _`. Establish `hφ₁ : IsGrpPullback o₁'.A o'.A y.left φ₁` using `hθ.cancel (hθb.congr hyz.symm f1.symm) f2`. Establish `e : m₀'.φ ≫ χ.left = ψ₁.left ≫ φ₁`.
+
+Apply `hθ.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, ← eχ, ← Category.assoc, hm, eψ, Category.assoc, f1]`. Rewrite using `[Category.assoc, Over.w χ, m₀'.cart.1.w, Category.assoc, f2, ← Category.assoc, Over.w ψ₁]`. Take `⟨m₁, hm₁⟩` from `GlobalTheory.T.exists_objMap_of_p_isogeny_pullback p D R b N c _ _ _ _ y.left o₁ o₁' o₀ o' m₀' ψ₁ χ φ₁ hp h1 hχ hφ₁ e`. Conclude with `⟨m₀', m₁, by rw [hm₁, e]⟩`.
+
+Introduce and unpack `y' ⟨hy', n₀, n₁, e⟩`. Rewrite using `[← cancel_mono i.left, hyz]`. Establish `hx : (y' ≫ i.left) ≫ Z.hom = x` using `by rw [Category.assoc, Over.w i, hy']`. Take `⟨n, hn⟩` from `exists_comp n₀ mi`. Take `⟨n', hn'⟩` from `exists_comp n mZ`.
+
+Use `zu _ ⟨hx, n₀.φ ≫ mi.φ, n₁.φ ≫ θ₁ ≫ θ₀, ?_, n₀.cart.comp mi.cart, n₁.cart.comp hθ, ?_⟩` and prove the remaining obligations. Rewrite using `[← hn, ← hn']`. Conclude with `GlobalTheory.T.harrisTaylor_pullback_abelian_map_unique_of_base_eq p D R b N hN hNp _ _ _ _ _ _ _ _ n' m hx`. Rewrite using `[Category.assoc, eχ, ← Category.assoc, e, Category.assoc]`.
+-/
 theorem exists_rep : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] [IsNoetherianRing R] (b : Base D R) (N : ℕ), 3 ≤ N → N.Coprime p → IsUnit ((p : ℕ) : R) → ∀ (r : ℤ) (w : Ideal (𝓞 D.F)) (j c : ℕ), w.IsMaximal → uIdeal D r ≤ w → j ≤ D.n → (∃ e : ℕ, c = p ^ e ∧ (0 < j → 0 < e)) → D.m = 1 → ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (s : S ⟶ Sp R) (o : Obj b N s), ∃ (Y : Over S) (o₀ : Obj b N (Y.hom ≫ s)) (m₀ : ObjMap o₀ o Y.hom) (o' : Obj b N (Y.hom ≫ s)) (ψ : o₀.A ⟶ o'.A), IsFinite Y.hom ∧ Etale Y.hom ∧ IsPIsog c o₀ o' ψ ∧ IsTj r w j o₀ o' ψ ∧ ∀ (T : Scheme.{0}) (x : T ⟶ S) (o₁ o₁' : Obj b N (x ≫ s)) (m : ObjMap o₁ o x) (ψ₁ : o₁.A ⟶ o₁'.A), IsPIsog c o₁ o₁' ψ₁ → IsTj r w j o₁ o₁' ψ₁ → ∃! y : T ⟶ Y.left, y ≫ Y.hom = x ∧ ∃ (m₀' : ObjMap o₁ o₀ y) (m₁ : ObjMap o₁' o' y), m₀'.φ ≫ ψ.left = ψ₁.left ≫ m₁.φ := by
   intro p _ D R _ _ b N hN hNp hp r w j c _ _ _ hc0 _ S _ s o
   have hc : ∃ e : ℕ, c = p ^ e := hc0.imp fun _ h => h.1

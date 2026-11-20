@@ -14,6 +14,29 @@ open GlobalTheory.SS
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `T K _ _ _ _ _ _ G G' _ _ hG hG' f hf`. Take `⟨hcomm, hsm, hsep, hqc, hgc⟩` from `hG`. Use `hG'.comm` as an intermediate fact. Use `hG'.smooth` as an intermediate fact. Use `hG'.separated` as an intermediate fact.
+
+Use `hG'.quasiCompact` as an intermediate fact. Establish `hGflat : Flat G.hom` using `inferInstance`. Take `⟨n, hn, hnT⟩` from `exists_prime_isUnit_of_isLocalRing T`. Set `Φ` to `Over.pullback (spMap (algebraMap T K))`. Set `i : Φ.obj G ⟶ Φ.obj (G ⊗ G')` to `lift (𝟙 _) f ≫ Functor.LaxMonoidal.μ Φ G G'`.
+
+Establish `hi : IsMonHom i` using `inferInstance`. Establish `hi1 : i ≫ Φ.map (fst G G') = 𝟙 _`. Rewrite using `[Category.assoc, Functor.Monoidal.μ_fst, lift_fst]`. Establish `hi2 : i ≫ Φ.map (snd G G') = f` using `by simp [i]`. Establish `hs1 : IsSeparated (fst G G').left` using `inferInstanceAs (IsSeparated (pullback.fst G.hom G'.hom))`.
+
+Establish `hs2 : LocallyOfFiniteType (fst G G').left` using `inferInstanceAs (LocallyOfFiniteType (pullback.fst G.hom G'.hom))`. Establish `hs3 : QuasiCompact (fst G G').left` using `inferInstanceAs (QuasiCompact (pullback.fst G.hom G'.hom))`. Establish `hsP : IsSeparated (G ⊗ G').hom` using `inferInstanceAs (IsSeparated (pullback.fst G.hom G'.hom ≫ G.hom))`. Establish `hlP : LocallyOfFiniteType (G ⊗ G').hom` using `inferInstanceAs (LocallyOfFiniteType (pullback.fst G.hom G'.hom ≫ G.hom))`. Establish `hs4 : IsSeparated (Φ.map (fst G G')).left`.
+
+Establish `h1 : IsSeparated (Φ.obj (G ⊗ G')).hom` using `inferInstanceAs (IsSeparated (pullback.snd (G ⊗ G').hom _))`. Rewrite `h1` using `[← Over.w (Φ.map (fst G G'))]`. Conclude with `IsSeparated.of_comp _ (Φ.obj G).hom`. Establish `hic : IsClosedImmersion i.left`. Establish `h1 : IsClosedImmersion (i.left ≫ (Φ.map (fst G G')).left)`.
+
+Rewrite using `[← Over.comp_left, hi1, Over.id_left]`. Use `infer_instance`. Conclude with `IsClosedImmersion.of_comp i.left (Φ.map (fst G G')).left`. Take `⟨Ga, io, e, hio, hGa, he⟩` from `exists_flat_closure T K (G ⊗ G') (Φ.obj G) i hic`. Take `⟨_, hio', -, hc⟩` from `flat_closure_subgroup T K (G ⊗ G') Ga io (Φ.obj G) i e hio hGa hi he`.
+
+Use `hc inferInstance` as an intermediate fact. Establish `hp : IsMonHom (io ≫ fst G G')` using `inferInstance`. Establish `hpK : Φ.map (io ≫ fst G G') = e.hom`. Rewrite using `[Functor.map_comp, ← he, Category.assoc, hi1, Category.comp_id]`. Establish `hpKi : IsIso (Φ.map (io ≫ fst G G'))` using `by rw [hpK]; infer_instance`.
+
+Establish `hGaS : IsSeparated Ga.hom` using `by rw [← Over.w io]; infer_instance`. Establish `hGaL : LocallyOfFiniteType Ga.hom` using `by rw [← Over.w io]; infer_instance`. Establish `hp1 : IsSeparated (io ≫ fst G G').left` using `by rw [Over.comp_left]; infer_instance`. Establish `hp2 : LocallyOfFiniteType (io ≫ fst G G').left` using `by rw [Over.comp_left]; infer_instance`. Establish `hp3 : QuasiCompact (io ≫ fst G G').left` using `by rw [Over.comp_left]; infer_instance`.
+
+Establish `hnt` using `KernelNoTorsion.eq_one_of_pow_eq_one_of_comp_eq_one T K Ga G (io ≫ fst G G') n hp hGaS (etale_mulN_torsion_dvr T Ga n hnT hGa hGaL).2 (etale_mulN_torsion_dvr T G n hnT hGflat inferInstance).2 hpKi`. Establish `hnS : IsUnit (n : Γ(Sp T, ⊤))`. Simplify using `using hnT.map (Scheme.ΓSpecIso (CommRingCat.of T)).inv.hom`. Establish `hker` using `finite_geometric_kernel_of_pow_eq_one AbelianSubgroupFinite.finite_of_torsionFree (Sp T) G G' Ga io n hG' hio' hio hn hnS hnt`. Establish `hqf` using `locallyQuasiFinite_of_finite_geometric_ker (Sp T) Ga G (io ≫ fst G G') hp hp2 hp3 hker`.
+
+Establish `hiso` using `isIso_of_quasiFinite_of_isIso_genericFibre_dvr T K Ga G (io ≫ fst G G') hp hGa hp1 hp2 hp3 hqf hsm hgc hpKi`. Establish `hF : Φ.map (inv (io ≫ fst G G') ≫ io ≫ snd G G') = f`. Rewrite using `[Functor.map_comp, Functor.map_inv, IsIso.inv_comp_eq, hpK, Functor.map_comp, ← he, Category.assoc, hi2]`. Use `⟨inv (io ≫ fst G G') ≫ io ≫ snd G G', ⟨?_, hF⟩, fun F hF' => ?_⟩` and prove the remaining obligations. Use `flat_dvr_generic_fibre.2.2 T K G G' _ hGflat hG'.separated ?_` and prove the remaining obligations.
+
+Conclude with `hF ▸ hf`. Conclude with `flat_dvr_generic_fibre.1 T K G G' hGflat hG'.separated _ _ (hF'.2.trans hF.symm)`.
+-/
 theorem existsUnique_hom_extension_smConn_semiAbelian_dvr :
     ∀ (T K : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [Field K] [Algebra T K] [IsFractionRing T K] (H G : Over (Sp T)) [GrpObj H] [GrpObj G], SmConn H → IsSemiAbelian G → ∀ f : (Over.pullback (spMap (algebraMap T K))).obj H ⟶ (Over.pullback (spMap (algebraMap T K))).obj G, IsMonHom f → ∃! F : H ⟶ G, IsMonHom F ∧ (Over.pullback (spMap (algebraMap T K))).map F = f := by
   intro T K _ _ _ _ _ _ G G' _ _ hG hG' f hf

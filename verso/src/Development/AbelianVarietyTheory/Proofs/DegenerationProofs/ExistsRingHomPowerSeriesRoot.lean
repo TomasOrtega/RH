@@ -13,10 +13,20 @@ noncomputable def residuePart (k l : ℕ) : PowerSeries O →+ PowerSeries O whe
   map_zero' := by ext n; simp
   map_add' f g := by ext n; simp
 
+/- English proof (translation)
+Simplify using `[residuePart]`.
+-/
 theorem coeff_residuePart (k l n : ℕ) (f : PowerSeries O) :
     coeff n (residuePart k l f) = coeff (k * n + l) f := by
   simp [residuePart]
 
+/- English proof (translation)
+Rewrite using `[coeff_X_pow_mul', coeff_expand]`. Distinguish the cases in `h : m % k = j`. Establish `hm : m = k * (m / k) + j` using `by rw [← h]; exact (Nat.div_add_mod m k).symm`. Establish `h1 : j ≤ m` using `by omega`. Establish `h2 : m - j = k * (m / k)` using `by omega`.
+
+Rewrite using `[if_pos h1, if_pos h, h2, if_pos (dvd_mul_right _ _), Nat.mul_div_cancel_left _ (Nat.pos_of_ne_zero hk)]`. Rewrite using `[if_neg h] split_ifs with h1 h2`. It suffices to derive a contradiction. Take `⟨c, hc⟩` from `h2`. Apply `h` to reduce the goal to its premises.
+
+Establish `: m = j + k * c` using `by omega`. Rewrite using `[this, Nat.add_mul_mod_self_left, Nat.mod_eq_of_lt hj]`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+-/
 theorem coeff_X_pow_mul_expand {k : ℕ} (hk : k ≠ 0) {j : ℕ} (hj : j < k) (g : PowerSeries O)
     (m : ℕ) :
     coeff m (X ^ j * expand k hk g) = if m % k = j then coeff (m / k) g else 0 := by
@@ -37,6 +47,9 @@ theorem coeff_X_pow_mul_expand {k : ℕ} (hk : k ≠ 0) {j : ℕ} (hj : j < k) (
     · rfl
     · rfl
 
+/- English proof (translation)
+Use extensionality with `m`. Rewrite using `[map_sum, Finset.sum_congr rfl (fun l hl => coeff_X_pow_mul_expand hk (Finset.mem_range.1 hl) _ m), Finset.sum_ite_eq, if_pos (Finset.mem_range.2 (Nat.mod_lt _ (Nat.pos_of_ne_zero hk))), coeff_residuePart, Nat.div_add_mod]`.
+-/
 theorem sum_residuePart {k : ℕ} (hk : k ≠ 0) (f : PowerSeries O) :
     ∑ l ∈ Finset.range k, X ^ l * expand k hk (residuePart k l f) = f := by
   ext m
@@ -45,6 +58,9 @@ theorem sum_residuePart {k : ℕ} (hk : k ≠ 0) (f : PowerSeries O) :
     if_pos (Finset.mem_range.2 (Nat.mod_lt _ (Nat.pos_of_ne_zero hk))), coeff_residuePart,
     Nat.div_add_mod]
 
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[coeff_residuePart, coeff_X_pow_mul_expand hk hj, Nat.mul_add_mod, Nat.mod_eq_of_lt hl, Nat.mul_add_div (Nat.pos_of_ne_zero hk), Nat.div_eq_of_lt hl, add_zero]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem residuePart_X_pow_mul_expand {k : ℕ} (hk : k ≠ 0) {j l : ℕ} (hj : j < k) (hl : l < k)
     (g : PowerSeries O) :
     residuePart k l (X ^ j * expand k hk g) = if l = j then g else 0 := by
@@ -60,9 +76,17 @@ noncomputable def extendAdd (φ : PowerSeries O →+* K) (k : ℕ) (t : K) : Pow
   map_zero' := by simp
   map_add' f g := by simp [mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem extendAdd_apply (φ : PowerSeries O →+* K) (k : ℕ) (t : K) (f : PowerSeries O) :
     extendAdd φ k t f = ∑ l ∈ Finset.range k, t ^ l * φ (residuePart k l f) := rfl
 
+/- English proof (translation)
+Rewrite using `[extendAdd_apply, Finset.sum_eq_single j]`. Rewrite using `[residuePart_X_pow_mul_expand hk hj hj, if_pos rfl]`. Introduce `l hl hlj`. Rewrite using `[residuePart_X_pow_mul_expand hk hj (Finset.mem_range.1 hl), if_neg hlj, map_zero, mul_zero]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_range.2 hj) h`.
+-/
 theorem extendAdd_X_pow_mul_expand_of_lt (φ : PowerSeries O →+* K) {k : ℕ} (hk : k ≠ 0) (t : K)
     {j : ℕ} (hj : j < k) (g : PowerSeries O) :
     extendAdd φ k t (X ^ j * expand k hk g) = t ^ j * φ g := by
@@ -74,6 +98,9 @@ theorem extendAdd_X_pow_mul_expand_of_lt (φ : PowerSeries O →+* K) {k : ℕ} 
   · intro h
     exact absurd (Finset.mem_range.2 hj) h
 
+/- English proof (translation)
+Establish `h : (X : PowerSeries O) ^ j * expand k hk g = X ^ (j % k) * expand k hk (X ^ (j / k) * g)`. Rewrite using `[map_mul, map_pow, expand_X, ← pow_mul, ← mul_assoc, ← pow_add, Nat.mod_add_div]`. Rewrite using `[h, extendAdd_X_pow_mul_expand_of_lt φ hk t (Nat.mod_lt _ (Nat.pos_of_ne_zero hk)), map_mul, map_pow, ← ht, ← pow_mul, ← mul_assoc, ← pow_add, Nat.mod_add_div]`.
+-/
 theorem extendAdd_X_pow_mul_expand (φ : PowerSeries O →+* K) {k : ℕ} (hk : k ≠ 0) {t : K}
     (ht : t ^ k = φ X) (j : ℕ) (g : PowerSeries O) :
     extendAdd φ k t (X ^ j * expand k hk g) = t ^ j * φ g := by
@@ -83,6 +110,11 @@ theorem extendAdd_X_pow_mul_expand (φ : PowerSeries O →+* K) {k : ℕ} (hk : 
   rw [h, extendAdd_X_pow_mul_expand_of_lt φ hk t (Nat.mod_lt _ (Nat.pos_of_ne_zero hk)),
     map_mul, map_pow, ← ht, ← pow_mul, ← mul_assoc, ← pow_add, Nat.mod_add_div]
 
+/- English proof (translation)
+Use `conv_lhs => rw [← sum_residuePart hk f, ← sum_residuePart hk g]`. Rewrite using `[extendAdd_apply φ k t f, extendAdd_apply φ k t g, Finset.sum_mul_sum, Finset.sum_mul_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_mul_mul_comm, ← pow_add, ← map_mul, extendAdd_X_pow_mul_expand φ hk ht, map_mul, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem extendAdd_mul (φ : PowerSeries O →+* K) {k : ℕ} (hk : k ≠ 0) {t : K}
     (ht : t ^ k = φ X) (f g : PowerSeries O) :
     extendAdd φ k t (f * g) = extendAdd φ k t f * extendAdd φ k t g := by
@@ -104,12 +136,18 @@ noncomputable def extendHom (φ : PowerSeries O →+* K) {k : ℕ} (hk : k ≠ 0
   map_one' := by simpa using extendAdd_X_pow_mul_expand φ hk ht 0 1
   map_mul' := extendAdd_mul φ hk ht
 
+/- English proof (translation)
+Use `extendAdd_X_pow_mul_expand φ hk ht 0 g` as an intermediate fact. Rewrite `this` using `[pow_zero, pow_zero, one_mul, one_mul]`. Conclude with `this`.
+-/
 theorem extendHom_expand (φ : PowerSeries O →+* K) {k : ℕ} (hk : k ≠ 0) {t : K}
     (ht : t ^ k = φ X) (g : PowerSeries O) : extendHom φ hk ht (expand k hk g) = φ g := by
   have := extendAdd_X_pow_mul_expand φ hk ht 0 g
   rw [pow_zero, pow_zero, one_mul, one_mul] at this
   exact this
 
+/- English proof (translation)
+Use `extendAdd_X_pow_mul_expand φ hk ht 1 1` as an intermediate fact. Rewrite `this` using `[pow_one, pow_one, map_one, map_one, mul_one, mul_one]`. Conclude with `this`.
+-/
 theorem extendHom_X (φ : PowerSeries O →+* K) {k : ℕ} (hk : k ≠ 0) {t : K}
     (ht : t ^ k = φ X) : extendHom φ hk ht X = t := by
   have := extendAdd_X_pow_mul_expand φ hk ht 1 1
@@ -118,6 +156,11 @@ theorem extendHom_X (φ : PowerSeries O →+* K) {k : ℕ} (hk : k ≠ 0) {t : K
 
 end SeriesRoot
 
+/- English proof (translation)
+Introduce `O K _ _ φ k t hk ht`. Use `⟨SeriesRoot.extendHom φ hk.ne' ht, fun a => ?_, SeriesRoot.extendHom_X φ hk.ne' ht, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[← SeriesRoot.extendHom_expand φ hk.ne' ht (PowerSeries.C a), expand_C]`. Express the relevant statement in the definitionally equal form `∑ l ∈ Finset.range k, t ^ l * φ (SeriesRoot.residuePart k l f) ∈ _`. Use `Subring.sum_mem _ fun l _ => Subring.mul_mem _ (Subring.pow_mem _ ?_ l) ?_` and prove the remaining obligations.
+
+Conclude with `Subring.subset_closure (Or.inr rfl)`. Conclude with `Subring.subset_closure (Or.inl ⟨_, rfl⟩)`.
+-/
 theorem exists_ringHom_powerSeries_root :
     ∀ (O K : Type) [CommRing O] [CommRing K] (φ : PowerSeries O →+* K) (k : ℕ) (t : K), 0 < k →
       t ^ k = φ PowerSeries.X → ∃ Φ : PowerSeries O →+* K,

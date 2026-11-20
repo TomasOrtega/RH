@@ -10,6 +10,9 @@ open GlobalTheory.FlagMeas GlobalTheory.GaussMean
 
 namespace GlobalTheory.GaussMean
 
+/- English proof (translation)
+Introduce `h` and use `GlobalTheory.GaussMean.Step.volumeStep_of_siegelMean (GlobalTheory.GaussMean.Limit.siegelMean_of_cc (GlobalTheory.OneVectorMean.siegelMeanCc_of_oneVectorCc (GlobalTheory.GaussMean.oneVectorCc_of_siegelWeil h)))`.
+-/
 theorem volumeStep_of_siegelWeil :
     HeckeCharacterZeroLocus.SiegelWeilU.SiegelWeilUnitaryConvergent → VolumeStep := fun h =>
   GlobalTheory.GaussMean.Step.volumeStep_of_siegelMean

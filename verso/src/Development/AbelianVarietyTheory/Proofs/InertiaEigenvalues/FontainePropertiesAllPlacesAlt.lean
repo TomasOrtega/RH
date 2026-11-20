@@ -8,6 +8,9 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 
 namespace GlobalTheory.FontaineAdm
 
+/- English proof (translation)
+Introduce `D i` and use `Formalism.MainNotions.Pk.font_of_all_places (fun l _ K LL => GlobalTheory.FontaineAll.fontaineAt_all D l K LL) i`.
+-/
 theorem fontaineProperties_all_places : ∀ (D : D7) (i : D.nd.Loc), Formalism.MainNotions.TruncatedSeriesCountingIdentities.FontaineAtPlacesOverL (D := D) i :=
   fun D i => Formalism.MainNotions.Pk.font_of_all_places (fun l _ K LL => GlobalTheory.FontaineAll.fontaineAt_all D l K LL) i
 

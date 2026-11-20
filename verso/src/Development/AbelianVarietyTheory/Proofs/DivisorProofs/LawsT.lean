@@ -15,6 +15,9 @@ noncomputable section
 
 namespace GlobalTheory.CuspRep.ParLawsT
 
+/- English proof (translation)
+The claim follows from `host_isCMField H (∀ {a} (π : HostCGu H a) w, (locGT hT pl π w).lpDim = a) ∧ (∀ {a} (π : HostCGu H a), ∀ᶠ w in Filter.cofinite, (locGT hT pl π w).unr) ∧ (∀ {a} (π : HostCGu H a) (χ : HostCGu H 1) w, UpperTheory.Zero.LLC.Good (⟨a, ParLaws.toCl (π.1.loc w)⟩ : IrrGL (w.adicCompletion …`.
+-/
 theorem lawsT : ∀ (hT : UpperTheory.Zero.LLC.RecTExists) (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL) {R : Ranks}
     (H : Formalism.BasicNotions.Host R) (Ω : Type) [Field Ω] [Algebra H.E Ω] [IsAlgClosure H.E Ω] (pl : Formalism.GaloisCohomology.Places H.E Ω),
     haveI := host_isCMField H

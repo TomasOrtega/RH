@@ -4,6 +4,15 @@ import Development.AutomorphicArithmetic.CyclotomicBounds.TraceDuality.ValGen
 open NumberField
 open scoped NNReal
 
+/- English proof (translation)
+Introduce `E _ _ _ p hp d m hd hm hdiv φ`. Establish `hnp : ‖(p : ℂ_[p])‖ = (p : ℝ)⁻¹`. Rewrite using `[← map_natCast (algebraMap ℚ_[p] ℂ_[p]) p, norm_algebraMap', Padic.norm_p]`. Set `v : Valuation ℂ_[p] ℝ≥0` to `NormedField.valuation`. Establish `hv : ∀ x, ((v x : ℝ≥0) : ℝ) = ‖x‖` using `fun x => rfl`.
+
+Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast hp.1.one_lt`. Establish `hlt : v (p : ℂ_[p]) < 1`. Rewrite using `[← NNReal.coe_lt_coe, hv, hnp, NNReal.coe_one]`. Conclude with `inv_lt_one_of_one_lt₀ hp1`. Establish `h` using `UpperTheory.WildB.valGen E p hp.1 d m hd hm hdiv ℂ_[p] v hlt φ`.
+
+Establish `h2` using `congrArg (fun x : ℝ≥0 => Real.log (x : ℝ)) h`. Simplify using `only [NNReal.coe_pow, hv, hnp, Real.log_pow, Real.log_inv] at h2`. Establish `hn : (Module.finrank ℚ E : ℝ) ≠ 0`. Conclude with `(Module.finrank_pos (R := ℚ) (M := E)).ne'` after adjusting the coercions. Unfold `GlobalTheory.ShFam.Pad.vDiff`.
+
+Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem UpperTheory.WildB.normGen :
     ∀ (E : Type) [Field E] [NumberField E] [IsGalois ℚ E] (p : ℕ) [Fact p.Prime] (d : 𝓞 E) (m : ℕ), d ∈ differentIdeal ℤ (𝓞 E) → ¬ p ∣ m → (∀ a ∈ differentIdeal ℤ (𝓞 E), d ∣ (m : 𝓞 E) * a) → ∀ φ : E →+* ℂ_[p], Real.log ‖φ (d : E)‖ = -(GlobalTheory.ShFam.Pad.vDiff E p * Real.log p) := by
   intro E _ _ _ p hp d m hd hm hdiv φ

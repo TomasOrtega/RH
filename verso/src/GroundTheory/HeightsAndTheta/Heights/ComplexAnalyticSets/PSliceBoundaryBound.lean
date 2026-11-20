@@ -21,6 +21,13 @@ noncomputable section
 
 namespace SliceBoundaryBound
 
+/- English proof (translation)
+Set `L : (Fin n → ℂ) →L[ℂ] (Fin (n + 1) → ℂ)` to `LinearMap.toContinuousLinearMap (Matrix.mulVecLin (FubiniStudyLogRegularization.regMat h 0 1))`. Establish `hL : ∀ x, L x = FubiniStudyLogRegularization.regMat h 0 1 *ᵥ x` using `fun x => rfl`. Establish `hσ : AnalyticAt ℂ (L ∘ τ) z` using `(L.analyticAt _).comp hτ`. Establish `hS : sqSum ((L ∘ τ) z) ≠ 0`. Rewrite using `[Function.comp_apply, hL]`.
+
+Conclude with `SheetLogNormDensity.sqSum_ne_zero (FubiniStudyLogRegularization.regMat_mulVec_ne_zero h 0 one_pos hz)`. Establish `hfun : (fun x => Real.log (h.dualNorm x)) ∘ τ = phi ∘ (L ∘ τ)`. Use function extensionality and compare the values at `y`. Simplify using `only [Function.comp_apply, hL]`. Rewrite using `[FubiniStudyLogRegularization.log_dualNorm_eq]`.
+
+Conclude with `SheetLogNormDensity.log_sqrt_eq_phi _`. Rewrite using `[hfun, levi_comp ξ hσ (contDiffAt_phi hS)]`. Conclude with `GroundTheory.Heights₂.Heights.Inter.TorusInvariantLevi.leviForm_phi_nonneg hS _`.
+-/
 theorem levi_log_dualNorm_comp_nonneg {n D : ℕ} (h : HermNorm n) {τ : (Fin D → ℂ) → Fin n → ℂ}
     {z : Fin D → ℂ} (hτ : AnalyticAt ℂ τ z) (hz : τ z ≠ 0) (ξ : Fin D → ℂ) :
     0 ≤ levi ((fun x => Real.log (h.dualNorm x)) ∘ τ) z ξ := by
@@ -39,6 +46,9 @@ theorem levi_log_dualNorm_comp_nonneg {n D : ℕ} (h : HermNorm n) {τ : (Fin D 
   rw [hfun, levi_comp ξ hσ (contDiffAt_phi hS)]
   exact GroundTheory.Heights₂.Heights.Inter.TorusInvariantLevi.leviForm_phi_nonneg hS _
 
+/- English proof (translation)
+Establish `hev : ∀ᶠ z in 𝓝 y, AnalyticAt ℂ s z ∧ s z ≠ 0` using `hs.eventually_analyticAt.and (hs.continuousAt.eventually_ne hy)`. Take `⟨U, hU, hUo, hyU⟩` from `eventually_nhds_iff.mp hev`. Use `⟨U, hUo, hyU, fun z hz => ?_, fun z hz ξ => levi_log_dualNorm_comp_nonneg h (hU z hz).1 (hU z hz).2 ξ⟩` and prove the remaining obligations. Establish `hc : ContDiffAt ℝ 2 (fun x => Real.log (h.dualNorm x)) (s z)` using `((contDiffOn_log_dualNorm h).contDiffAt (isOpen_compl_singleton.mem_nhds (hU z hz).2)).of_le (WithTop.coe_le_coe.mpr le_top)`. Conclude with `(hc.comp z (hU z hz).1.restrictScalars.contDiffAt).contDiffWithinAt`.
+-/
 theorem exists_psh_nhd {n D : ℕ} (h : HermNorm n) {s : (Fin D → ℂ) → Fin n → ℂ} {y : Fin D → ℂ}
     (hs : AnalyticAt ℂ s y) (hy : s y ≠ 0) :
     ∃ U : Set (Fin D → ℂ), IsOpen U ∧ y ∈ U ∧
@@ -54,10 +64,16 @@ theorem exists_psh_nhd {n D : ℕ} (h : HermNorm n) {s : (Fin D → ℂ) → Fin
       (WithTop.coe_le_coe.mpr le_top)
   exact (hc.comp z (hU z hz).1.restrictScalars.contDiffAt).contDiffWithinAt
 
+/- English proof (translation)
+Rewrite using `[one_mul, ← Real.sqrt_mul ha]`. Conclude with `Real.abs_le_sqrt h`.
+-/
 theorem abs_le_of_sq_le {v a b : ℝ} (ha : 0 ≤ a) (h : v ^ 2 ≤ a * b) : |v| ≤ 1 * √a * √b := by
   rw [one_mul, ← Real.sqrt_mul ha]
   exact Real.abs_le_sqrt h
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k x`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) k <;> simp`.
+-/
 theorem vecCons_log_eq {n e : ℕ} (h : HermNorm n) (f : (Fin n → ℂ) → ℝ) :
     (vecCons f fun _ x => Real.log (h.dualNorm x) : Fin (e + 1) → (Fin n → ℂ) → ℝ) =
       fun k x => (vecCons 0 fun _ => 1 : Fin (e + 1) → ℝ) k * Real.log (h.dualNorm x) +
@@ -69,6 +85,43 @@ end SliceBoundaryBound
 
 open SliceBoundaryBound in
 
+/- English proof (translation)
+Introduce `n e h W g ℓ A F G hW hg hℓ hA hF0 hG0 hFs hGs`. Take `⟨hIp, hdim, -⟩` from `SliceIdeal.proof n (e + 1) W g ℓ hW hg hℓ`. Establish `hZ0 : ∀ x ∈ zeroSet (W ⊔ Ideal.span {linForm ℓ - 1}), x ≠ 0` using `fun x hx => ne_zero_of_mem_zeroSet_slice hx`. Establish `hU0 : IsOpen {x : Fin n → ℂ | x ≠ 0}` using `isOpen_ne`. Establish `hsm : ∀ f : (Fin n → ℂ) → ℝ, ContDiffOn ℝ ∞ f {x | x ≠ 0} → SmoothNear (zeroSet (W ⊔ Ideal.span {linForm ℓ - 1})) f` using `fun f hf => ⟨_, hU0, fun x hx => hZ0 x hx, hf⟩`.
+
+Establish `hLs : ContDiffOn ℝ ∞ (fun x : Fin n → ℂ => Real.log (h.dualNorm x)) {x | x ≠ 0}` using `(contDiffOn_log_dualNorm h).mono fun x hx => hx`. Establish `hω : ∀ i : Fin e, SmoothNear (zeroSet (W ⊔ Ideal.span {linForm ℓ - 1})) ((fun _ x => Real.log (h.dualNorm x)) i : (Fin n → ℂ) → ℝ)` using `fun _ => hsm _ hLs`. Establish `hcons : ∀ (f : (Fin n → ℂ) → ℝ) (ψ : Fin e → (Fin n → ℂ) → ℝ), SmoothNear (zeroSet (W ⊔ Ideal.span {linForm ℓ - 1})) f → (∀ i, SmoothNear (zeroSet (W ⊔ Ideal.span {linForm ℓ - 1})) (ψ i)) → ∀ i, SmoothNear (zeroSet (W ⊔ Ideal.span {linForm ℓ - 1})) (vecCons f ψ i)`. Introduce `f ψ hf hψ i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations.
+
+Simplify using `using hf`. Simplify using `using hψ i`. Establish `hoff : ∀ f : (Fin n → ℂ) → ℝ, ContinuousOn f {x | x ≠ 0} → ContinuousOn f (zeroSet (W ⊔ Ideal.span {linForm ℓ - 1}))` using `fun f hf => hf.mono fun x hx => hZ0 x hx`. Establish `hFc : ContinuousOn F {x | x ≠ 0}` using `hFs.continuousOn`. Establish `hGc : ContinuousOn G {x | x ≠ 0}` using `hGs.continuousOn`.
+
+Establish `hslice : ∀ w f : (Fin n → ℂ) → ℝ, (∀ (t : ℂ) (x : Fin n → ℂ), t ≠ 0 → w (t • x) = w x) → ContinuousOn w {x | x ≠ 0} → (∀ (t : ℂ) (x : Fin n → ℂ), t ≠ 0 → f (t • x) = f x) → ContDiffOn ℝ ∞ f {x | x ≠ 0} → Integrable (chartDens (W ⊔ Ideal.span {linForm ℓ - 1}) A w (vecCons f fun _ …`. Introduce `w f hw0 hwc hf0 hfs`. Establish `hI` using `hSM n e h W g ℓ A w (vecCons 0 fun _ => 1) (vecCons f fun _ _ => 0) hW hg hℓ hA hw0 hwc (fun k => Fin.cases (fun t x ht => by simpa using hf0 t x ht) (fun i t x _ => by simp) k) (fun k => Fin.cases (by simpa using hfs) (fun i => by simpa using contDiffOn_const) k)`. Rewrite `hI` using `[← vecCons_log_eq]`. Conclude with `hI.mono' (measurable_chartDens hIp hdim hA (hoff w hwc) (hcons _ _ (hsm f hfs) hω)).aestronglyMeasurable (Eventually.of_forall fun y => by simpa [Real.norm_eq_abs] using abs_chartDens_le _ A _ _ y)`.
+
+Establish `hG2 : ∀ (t : ℂ) (x : Fin n → ℂ), t ≠ 0 → (fun x => G x ^ 2) (t • x) = (fun x => G x ^ 2) x` using `fun t x ht => by simp only [hG0 t x ht]`. Establish `hf₁` using `hslice (fun x => G x ^ 2) (fun x => F x ^ 2 / 2) hG2 (hGc.pow 2) (fun t x ht => by simp only [hF0 t x ht]) ((hFs.pow 2).div_const 2)`. Establish `hf₂` using `hslice (fun x => G x ^ 2 * F x) F (fun t x ht => by simp only [hG0 t x ht, hF0 t x ht]) ((hGc.pow 2).mul hFc) hF0 hFs`. Use `set Φ := ∫ y, (chartDens (W ⊔ Ideal.span {linForm ℓ - 1}) A (fun x => G x ^ 2) (vecCons (fun x => F x ^ 2 / 2) fun _ x => Real.log (h.dualNorm x)) y - chartDens (W ⊔ Ideal.span {linForm ℓ - 1}) A (fun x => G x ^ 2 * F x) (vecCons F fun _ x => Real.log (h.dualNorm x)) y) with hΦ`. Take `⟨M₀, hM₀⟩` from `bounded_of_degree_zero (fun x => G x * F x) (fun t x ht => by simp only [hG0 t x ht, hF0 t x ht]) (hGc.mul hFc)`.
+
+Establish `hM₀0 : 0 ≤ M₀` using `(abs_nonneg _).trans (hM₀ 0)`. Use `⟨max M₀ (2 * 1 * √(max Φ 1)), le_max_of_le_left hM₀0, fun χ hχ hχcs => ?_⟩` and prove the remaining obligations. Establish `hχc : Continuous χ` using `hχ.continuous`. Establish `hχn` using `hsm χ hχ.contDiffOn`. Establish `hχFn` using `hsm (fun x => χ x * F x) (hχ.contDiffOn.mul hFs)`.
+
+Establish `hχ2n` using `hsm (fun x => χ x ^ 2 / 2) ((hχ.pow 2).div_const 2).contDiffOn`. Establish `hFn` using `hsm F hFs`. Establish `hχ2cs : HasCompactSupport (fun x => χ x ^ 2 / 2)` using `hχcs.mono fun x hx h0 => hx (by simp [h0])`. Establish `hD₁` using `integrable_chartDens hM hIp hdim hA (hoff G hGc) (hcons _ _ hχFn hω) (Or.inr ⟨0, by rw [Matrix.cons_val_zero]; exact (hχcs.mul_right : HasCompactSupport (χ * F))⟩)`. Establish `hD₂` using `integrable_chartDens hM hIp hdim hA (f := fun x => χ x * G x) (hχc.continuousOn.mul (hoff G hGc)) (hcons _ _ hFn hω) (Or.inl (hχcs.mul_right : HasCompactSupport (χ * G)))`.
+
+Establish `ha` using `hM n (e + 1) _ A (fun _ => 1) _ hIp hdim hA continuousOn_const (hcons _ _ hχn hω) (Or.inr ⟨0, by rw [Matrix.cons_val_zero]; exact hχcs⟩)`. Establish `he₁` using `integrable_chartDens hM hIp hdim hA (f := fun _ => 1) continuousOn_const (hcons _ _ hχ2n hω) (Or.inr ⟨0, by rw [Matrix.cons_val_zero]; exact hχ2cs⟩)`. Establish `he₂` using `integrable_chartDens hM hIp hdim hA (f := χ) hχc.continuousOn (hcons _ _ hχn hω) (Or.inl hχcs)`. Establish `hle2 : (2 : WithTop ℕ∞) ≤ ∞` using `WithTop.coe_le_coe.mpr le_top`. Establish `key : ∀ t > 0, ∀ y, |chartDens (W ⊔ Ideal.span {linForm ℓ - 1}) A G (vecCons (fun x => χ x * F x) fun _ x => Real.log (h.dualNorm x)) y - chartDens (W ⊔ Ideal.span {linForm ℓ - 1}) A (fun x => χ x * G x) (vecCons F fun _ x => Real.log (h.dualNorm x)) y| ≤ M₀ * chartAbsDens (W ⊔ I …`.
+
+Introduce `t ht y`. Establish `hfin` using `(FibreBound.proof n (e + 1) _ A hIp hdim hA y).2.1`. Unfold `chartDens chartAbsDens`. Use `abs_sheetSum_sub_le hfin _ _ _ _ _ _ _ _ _ _ fun x hx s hs => ?_` and prove the remaining obligations. Take `⟨hxZ, hAx⟩` from `hx`.
+
+Establish `hsx : s y = x`. Take `⟨_, _, _, _, h, -⟩` from `hs`. Rewrite using `[← hAx]`. Conclude with `h`. Establish `han : AnalyticAt ℂ s y`.
+
+Rewrite using `[← hAx]`. Conclude with `analyticAt_of_isSheetAt hs`. Establish `hsc : ContDiffAt ℝ 2 s y` using `han.restrictScalars.contDiffAt`. Establish `hy0 : s y ≠ 0` using `hsx ▸ hZ0 x hxZ`. Establish `c2 : ∀ f : (Fin n → ℂ) → ℝ, ContDiffOn ℝ ∞ f {x | x ≠ 0} → ContDiffAt ℝ 2 (f ∘ s) y` using `fun f hf => ((hf.contDiffAt (hU0.mem_nhds hy0)).of_le hle2).comp y hsc`.
+
+Establish `hχs` using `c2 χ hχ.contDiffOn`. Establish `hFs'` using `c2 F hFs`. Take `⟨U, hUo, hyU, hC2, hlev⟩` from `exists_psh_nhd h han hy0`. Simplify using `only [vecCons_comp]`. Establish `e₁ : maDens (Fin.cons ((fun x => χ x * F x) ∘ s) fun _ => (fun x => Real.log (h.dualNorm x)) ∘ s) y = (χ ∘ s) y * maDens (Fin.cons (F ∘ s) fun _ => (fun x => Real.log (h.dualNorm x)) ∘ s) y + (F ∘ s) y * maDens (Fin.cons (χ ∘ s) fun _ => (fun x => Real.log (h.dualNorm x)) ∘ s) y …` using `(MaDensLeibniz.proof e (fun _ => (fun x => Real.log (h.dualNorm x)) ∘ s) (χ ∘ s) (F ∘ s) y hχs hFs').1`.
+
+Establish `e₂ : maDens (Fin.cons ((fun x => χ x ^ 2 / 2) ∘ s) fun _ => (fun x => Real.log (h.dualNorm x)) ∘ s) y = (χ ∘ s) y * maDens (Fin.cons (χ ∘ s) fun _ => (fun x => Real.log (h.dualNorm x)) ∘ s) y + gradDens (fun _ => (fun x => Real.log (h.dualNorm x)) ∘ s) (χ ∘ s) (χ ∘ s) y` using `(MaDensLeibniz.proof e (fun _ => (fun x => Real.log (h.dualNorm x)) ∘ s) (χ ∘ s) (χ ∘ s) y hχs hχs).2`. Establish `e₃ : maDens (Fin.cons ((fun x => F x ^ 2 / 2) ∘ s) fun _ => (fun x => Real.log (h.dualNorm x)) ∘ s) y = (F ∘ s) y * maDens (Fin.cons (F ∘ s) fun _ => (fun x => Real.log (h.dualNorm x)) ∘ s) y + gradDens (fun _ => (fun x => Real.log (h.dualNorm x)) ∘ s) (F ∘ s) (F ∘ s) y` using `(MaDensLeibniz.proof e (fun _ => (fun x => Real.log (h.dualNorm x)) ∘ s) (F ∘ s) (F ∘ s) y hFs' hFs').2`. Establish `hEχ` using `gradDensNonneg_thm e (fun _ => (fun x => Real.log (h.dualNorm x)) ∘ s) (χ ∘ s) U hUo (fun _ => hC2) (fun _ => hlev) y hyU`. Establish `hEF` using `gradDensNonneg_thm e (fun _ => (fun x => Real.log (h.dualNorm x)) ∘ s) (F ∘ s) U hUo (fun _ => hC2) (fun _ => hlev) y hyU`. Establish `h₁` using `abs_le_of_sq_le hEχ (gradDensCauchySchwarz_thm e (fun _ => (fun x => Real.log (h.dualNorm x)) ∘ s) (χ ∘ s) (F ∘ s) U hUo (fun _ => hC2) (fun _ => hlev) y hyU)`.
+
+Establish `h₂` using `abs_le_of_sq_le hEF (gradDensCauchySchwarz_thm e (fun _ => (fun x => Real.log (h.dualNorm x)) ∘ s) (F ∘ s) (χ ∘ s) U hUo (fun _ => hC2) (fun _ => hlev) y hyU)`. Rewrite using `[e₁, e₂, e₃]`. Simplify using `only [Function.comp_apply, hsx] at hEχ hEF h₁ h₂ ⊢`. Rewrite using `[show ∀ m E : ℝ, 1 * (χ x * m + E) - χ x * m = 1 * E from fun m E => by ring, show ∀ m E : ℝ, G x ^ 2 * (F x * m + E) - G x ^ 2 * F x * m = G x ^ 2 * E from fun m E => by ring]`. Conclude with `term_bound ht zero_le_one (hM₀ x) hEχ hEF h₁ h₂`.
+
+Use `final_bound zero_le_one (integral_nonneg fun y => chartAbsDens_nonneg _ A _ _ y) fun t ht => ?_` and prove the remaining obligations. Use `set D₁ := chartDens (W ⊔ Ideal.span {linForm ℓ - 1}) A G (vecCons (fun x => χ x * F x) fun _ x => Real.log (h.dualNorm x)) with hD₁def`. Use `set D₂ := chartDens (W ⊔ Ideal.span {linForm ℓ - 1}) A (fun x => χ x * G x) (vecCons F fun _ x => Real.log (h.dualNorm x)) with hD₂def`. Use `set a := chartAbsDens (W ⊔ Ideal.span {linForm ℓ - 1}) A (fun _ => 1) (vecCons χ fun _ x => Real.log (h.dualNorm x)) with hadef`. Use `set e₁ := chartDens (W ⊔ Ideal.span {linForm ℓ - 1}) A (fun _ => 1) (vecCons (fun x => χ x ^ 2 / 2) fun _ x => Real.log (h.dualNorm x)) with he₁def`.
+
+Use `set e₂ := chartDens (W ⊔ Ideal.span {linForm ℓ - 1}) A χ (vecCons χ fun _ x => Real.log (h.dualNorm x)) with he₂def`. Use `set f₁ := chartDens (W ⊔ Ideal.span {linForm ℓ - 1}) A (fun x => G x ^ 2) (vecCons (fun x => F x ^ 2 / 2) fun _ x => Real.log (h.dualNorm x)) with hf₁def`. Use `set f₂ := chartDens (W ⊔ Ideal.span {linForm ℓ - 1}) A (fun x => G x ^ 2 * F x) (vecCons F fun _ x => Real.log (h.dualNorm x)) with hf₂def`. Establish `h1 : chartInt (W ⊔ Ideal.span {linForm ℓ - 1}) A G (vecCons (fun x => χ x * F x) fun _ x => Real.log (h.dualNorm x)) - chartInt (W ⊔ Ideal.span {linForm ℓ - 1}) A (fun x => χ x * G x) (vecCons F fun _ x => Real.log (h.dualNorm x)) = ∫ y, (D₁ y - D₂ y)` using `(integral_sub hD₁ hD₂).symm`. Establish `h2 : chartInt (W ⊔ Ideal.span {linForm ℓ - 1}) A (fun _ => 1) (vecCons (fun x => χ x ^ 2 / 2) fun _ x => Real.log (h.dualNorm x)) - chartInt (W ⊔ Ideal.span {linForm ℓ - 1}) A χ (vecCons χ fun _ x => Real.log (h.dualNorm x)) = ∫ y, (e₁ y - e₂ y)` using `(integral_sub he₁ he₂).symm`.
+
+Establish `h3 : ∫ y, (M₀ * a y + 1 * t * (e₁ y - e₂ y) + 1 / t * (f₁ y - f₂ y)) = M₀ * (∫ y, a y) + 1 * t * (∫ y, (e₁ y - e₂ y)) + 1 / t * Φ`. Rewrite using `[integral_add, integral_add, integral_const_mul, integral_const_mul, integral_const_mul]`. Apply the tactic sequence `all_goals first`. Consider the case `exact ha.const_mul _`. Consider the case `exact (he₁.sub he₂).const_mul _`.
+
+Consider the case `exact (hf₁.sub hf₂).const_mul _`. Consider the case `exact (ha.const_mul _).add ((he₁.sub he₂).const_mul _)`. Rewrite using `[h1, h2, ← h3]`. Use `le_trans ?_ (integral_mono (hD₁.sub hD₂).abs (((ha.const_mul _).add ((he₁.sub he₂).const_mul _)).add ((hf₁.sub hf₂).const_mul _)) fun y => key t ht y)` and prove the remaining obligations. Conclude with `(by simpa only [Real.norm_eq_abs] using norm_integral_le_integral_norm fun y => D₁ y - D₂ y : |∫ y, (D₁ y - D₂ y)| ≤ ∫ y, |D₁ y - D₂ y|)`.
+-/
 theorem SliceBoundaryBound.proof (hM : ChartMassCompact.Statement) (hSM : SliceFormMass.Statement) :
     SliceBoundaryBound.Statement := by
   intro n e h W g ℓ A F G hW hg hℓ hA hF0 hG0 hFs hGs

@@ -16,9 +16,27 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K]
 
 def kap (K : Type) [Field K] [NumberField K] : ℝ := Formalism.HN.logDisc K / (finrank ℚ K : ℝ) - Real.log 2
 
+/- English proof (translation)
+The claim follows from `isNoetherian_submodule.mp (isNoetherian_of_fg_of_noetherian A.L hA.2.1) M hM`.
+-/
 lemma fg_of_le_L (A : Formalism.BasicNotions.HLat K) (hA : A.Good) (M : Submodule (𝓞 K) A.V) (hM : M ≤ A.L) : M.FG :=
   isNoetherian_submodule.mp (isNoetherian_of_fg_of_noetherian A.L hA.2.1) M hM
 
+/- English proof (translation)
+Establish `hpl` using `Formalism.HN.plLat K A.V A.ι A.b A.X hA.1 M (fg_of_le_L A hA M hM)`. Establish `hq : (finrank ℚ K : ℝ) ≠ 0` using `by exact_mod_cast (Module.finrank_pos (R := ℚ) (M := K)).ne'`. Unfold `degL Formalism.HN.muDef kap`. Distinguish the cases in `h0 : Formalism.HN.rkK M = 0`. Establish `hMb : M = ⊥`.
+
+Establish `hs : Submodule.span K (M : Set A.V) = ⊥`. Establish `: FiniteDimensional K A.V` using `Module.Finite.of_basis A.b`. Conclude with `Submodule.finrank_eq_zero.mp h0`. Rewrite using `[eq_bot_iff]`. Introduce `x hx`.
+
+Establish `: x ∈ Submodule.span K (M : Set A.V)` using `Submodule.subset_span hx`. Rewrite `this` using `[hs]`. Conclude with `(Submodule.mem_bot K).mp this ▸ (Submodule.mem_bot _).mpr rfl`. Establish `hdeg : Formalism.HN.deg (Formalism.HermitianLatticesTheory.realize A.b A.X) M = 0`. Rewrite using `[hMb]`.
+
+Unfold `Formalism.HN.deg`. Establish `: Formalism.HN.zl (Formalism.HermitianLatticesTheory.realize A.b A.X) (⊥ : Submodule (𝓞 K) A.V) = ⊥`. Use extensionality with `u`. Simplify using `[Formalism.HN.zl]`. Rewrite using `[this]`.
+
+Unfold `Formalism.F.deg`. Rewrite using `[(Formalism.F.covolBasic _).1, Real.log_one, neg_zero]`. Rewrite using `[h0, hdeg]`. Simplify using the standard rewrite rules. Establish `hrk : (Formalism.HN.rk (Formalism.HermitianLatticesTheory.realize A.b A.X) M : ℝ) = (finrank ℚ K : ℝ) * (Formalism.HN.rkK M : ℝ)`.
+
+Rewrite using `[hpl.2.1]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h0' : (Formalism.HN.rkK M : ℝ) ≠ 0` using `by exact_mod_cast h0`. Unfold `Formalism.HN.slope Formalism.F.slope`.
+
+Establish `: (Formalism.F.rk (Formalism.HN.zl (Formalism.HermitianLatticesTheory.realize A.b A.X) M) : ℝ) = (finrank ℚ K : ℝ) * (Formalism.HN.rkK M : ℝ)` using `hrk`. Rewrite using `[this]`. Unfold `Formalism.HN.deg`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma degL_eq (A : Formalism.BasicNotions.HLat K) (hA : A.Good) (M : Submodule (𝓞 K) A.V) (hM : M ≤ A.L) :
     degL A M = (2 / (finrank ℚ K : ℝ)) * Formalism.HN.deg (Formalism.HermitianLatticesTheory.realize A.b A.X) M +
       (Formalism.HN.rkK M : ℝ) * kap K := by

@@ -9,6 +9,13 @@ open scoped ComplexConjugate ComplexOrder ContDiff
 
 noncomputable section
 
+/- English proof (translation)
+Establish `hl` using `ReciprocityTheory.L2DbarEstimates.H.leviLogNormSq n 1 (fun _ => h) v0 ξ (fun _ => hh.contDiffAt.of_le two_le_infty) (by intro h'; exact hne (congrFun h' 0))`. Establish `e1 : (fun y => ((Real.log (sqNorm (fun i : Fin 1 => (fun _ => h) i y)) : ℝ) : ℂ)) = fun y => ((Real.log (Complex.normSq (h y)) : ℝ) : ℂ)`. Use function extensionality and compare the values at `y`. Simplify using `[sqNorm]`. Rewrite `hl` using `[e1]`.
+
+Rewrite using `[hl]`. Establish `hn : (Complex.normSq (h v0) : ℂ) ≠ 0`. Conclude with `(Complex.normSq_pos.2 hne).ne'` after adjusting the coercions. Establish `hP : projPerp (fun _ : Fin 1 => h v0) = 0`. Use extensionality with `i l`.
+
+Use `fin_cases i`. Use `fin_cases l`. Simplify using `[projPerp, sqNorm, vecMulVec_apply, Complex.mul_conj, hn]`. Simplify using `[hP, sqNorm]`.
+-/
 theorem levi_logNormSq_zero {n : ℕ} (h : V n → ℂ) (hh : ContDiff ℂ ∞ h) (v0 : V n)
     (hne : h v0 ≠ 0) (ξ : Fin n → ℂ) :
     leviV n (fun y => ((Real.log (Complex.normSq (h y)) : ℝ) : ℂ)) v0 ξ = 0 := by
@@ -27,6 +34,15 @@ theorem levi_logNormSq_zero {n : ℕ} (h : V n → ℂ) (hh : ContDiff ℂ ∞ h
     simp [projPerp, sqNorm, vecMulVec_apply, Complex.mul_conj, hn]
   simp [hP, sqNorm]
 
+/- English proof (translation)
+Set `g : Fin (n + 1) → V n → ℂ` to `fun i => Fin.cons (α := fun _ => V n → ℂ) (fun _ : V n => (1 : ℂ)) (fun j : Fin n => fun y : V n => y j) i`. Establish `hc : ∀ i, ContDiffAt ℂ 2 (g i) v0`. Introduce `i`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `only [g, Fin.cons_zero]`.
+
+Conclude with `contDiffAt_const`. Simplify using `only [g, Fin.cons_succ]`. Conclude with `(cd_coord _).contDiffAt.of_le two_le_infty`. Establish `hne : (fun i => g i v0) ≠ 0`. Introduce `h`.
+
+Use `congrFun h 0` as an intermediate fact. Simplify using `[g] at this`. Establish `h` using `ReciprocityTheory.L2DbarEstimates.H.leviLogNormSq n (n + 1) g v0 ξ hc hne`. Establish `e1 : (fun y => ((Real.log (sqNorm (fun i => g i y)) : ℝ) : ℂ)) = fun y => ((Real.log (1 + ‖y‖ ^ 2) : ℝ) : ℂ)`. Use function extensionality and compare the values at `y`.
+
+Simplify using `[sqNorm, Fin.sum_univ_succ, g, EuclideanSpace.norm_sq_eq, Complex.normSq_eq_norm_sq]`. Rewrite `h` using `[e1]`. Rewrite using `[h, Complex.ofReal_re]`. Conclude with `div_nonneg (sqNorm_nonneg' _) (sqNorm_nonneg' _)`.
+-/
 theorem leviT_nonneg {n : ℕ} (v0 : V n) (ξ : Fin n → ℂ) :
     0 ≤ (leviV n (fun y => ((Real.log (1 + ‖y‖ ^ 2) : ℝ) : ℂ)) v0 ξ).re := by
   let g : Fin (n + 1) → V n → ℂ := fun i =>
@@ -51,6 +67,13 @@ theorem leviT_nonneg {n : ℕ} (v0 : V n) (ξ : Fin n → ℂ) :
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
 
+/- English proof (translation)
+Establish `key : ∀ τ, 0 < (Am X y τ).det.re ∧ ‖(Am X y τ).det‖ = (Am X y τ).det.re`. Introduce `τ`. Establish `hpos` using `((mem_OmF_iff X x0 ho y).1 hy τ).det_pos`. Establish `h` using `Complex.lt_def.1 hpos`. Simplify using `only [Complex.zero_re, Complex.zero_im] at h`.
+
+Use `⟨h.1, ?_⟩` and prove the remaining obligations. Rewrite using `[show (Am X y τ).det = ((Am X y τ).det.re : ℂ) from Complex.ext (by simp) (by simp [← h.2])]`. Rewrite using `[Complex.norm_real, Complex.ofReal_re, Real.norm_of_nonneg h.1.le]`. Rewrite using `[rhF_eq_sum X x0 ho y, Real.log_prod (fun τ _ => (key τ).1.ne')]`. Use `congr 1`.
+
+Conclude with `Finset.sum_congr rfl fun τ _ => by rw [(key τ).2]`.
+-/
 theorem rhF_eq_log (x0 : Frame X.Ψ r) (ho : IsOrth X x0) {y : V (nd X)} (hy : y ∈ OmF X x0) :
     rhF X x0 y = -Real.log (∏ τ, (Am X y τ).det.re) := by
   have key : ∀ τ, 0 < (Am X y τ).det.re ∧ ‖(Am X y τ).det‖ = (Am X y τ).det.re := by
@@ -65,6 +88,31 @@ theorem rhF_eq_log (x0 : Frame X.Ψ r) (ho : IsOrth X x0) {y : V (nd X)} (hy : y
   congr 1
   exact Finset.sum_congr rfl fun τ _ => by rw [(key τ).2]
 
+/- English proof (translation)
+Use `set Hf : V (nd X) → ℂ := fun y => ∏ τ, (1 - Zt X y τ * (Zt X z0 τ)ᴴ).det with hHf`. Establish `hHcd : ContDiff ℂ ∞ Hf`. Use `contDiff_prod fun τ _ => contDiff_det_of fun a b => ?_` and prove the remaining obligations. Simplify using `only [Matrix.sub_apply, Matrix.mul_apply, conjTranspose_apply]`. Conclude with `contDiff_const.sub (ContDiff.sum fun c _ => (cd_Zt X τ a c).mul contDiff_const)`.
+
+Use `set P : V (nd X) → ℝ := fun y => ∏ τ, (Am X y τ).det.re with hP`. Establish `hAm : ∀ y ∈ OmF X x0, ∀ τ, (Am X y τ).PosDef` using `fun y hy => (mem_OmF_iff X x0 ho y).1 hy`. Establish `hPpos : ∀ y ∈ OmF X x0, 0 < P y` using `fun y hy => Finset.prod_pos fun τ _ => (det_re_pos_im (hAm y hy τ)).1`. Establish `hle : ∀ y ∈ OmF X x0, P y * P z0 ≤ Complex.normSq (Hf y)`. Introduce `y hy`.
+
+Simplify using `only [hP, hHf]`. Rewrite using `[← Finset.prod_mul_distrib, map_prod]`. Conclude with `Finset.prod_le_prod (fun τ _ => mul_nonneg (det_re_pos_im (hAm y hy τ)).1.le (det_re_pos_im (hAm z0 hz0 τ)).1.le) (fun τ _ => det_mul_det_le_normSq_det _ _ (hAm y hy τ) (hAm z0 hz0 τ))`. Establish `hself : Complex.normSq (Hf z0) = P z0 * P z0`. Simplify using `only [hP, hHf]`.
+
+Rewrite using `[← Finset.prod_mul_distrib, map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `e : (1 - Zt X z0 τ * (Zt X z0 τ)ᴴ) = Am X z0 τ` using `rfl`. Rewrite using `[e, det_eq_ofReal (hAm z0 hz0 τ), Complex.normSq_ofReal]`. Simplify using the standard rewrite rules.
+
+Use `set F : V (nd X) → ℝ := fun y => rhF X x0 y + Real.log (Complex.normSq (Hf y)) with hF`. Establish `hmin : ∀ y ∈ OmF X x0, F z0 ≤ F y`. Introduce `y hy`. Establish `h2` using `Real.log_le_log (mul_pos (hPpos y hy) (hPpos z0 hz0)) (hle y hy)`. Rewrite `h2` using `[Real.log_mul (hPpos y hy).ne' (hPpos z0 hz0).ne']`.
+
+Establish `h3 : F z0 = Real.log (P z0)`. Simplify using `only [hF]`. Rewrite using `[hself, rhF_eq_log X x0 ho hz0, Real.log_mul (hPpos z0 hz0).ne' (hPpos z0 hz0).ne']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3]`.
+
+Simplify using `only [hF]`. Rewrite using `[rhF_eq_log X x0 ho hy]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmax : IsLocalMax (fun y => -F y) z0`. Establish `: IsLocalMin F z0` using `Filter.eventually_of_mem ((isOpen_OmF X x0).mem_nhds hz0) fun y hy => hmin y hy`.
+
+Conclude with `this.neg`. Establish `hNpos : Complex.normSq (Hf z0) ≠ 0`. Rewrite using `[hself]`. Use `hPpos z0 hz0` as an intermediate fact. Check the signs of the components of the expression.
+
+Establish `hHne : Hf z0 ≠ 0` using `fun h => hNpos (by rw [h]; simp)`. Establish `hc1 : ContDiffAt ℝ 2 (fun y => rhF X x0 y) z0` using `(rhF_contDiffAt X x0 ho hz0).of_le two_le_infty`. Establish `hc2 : ContDiffAt ℝ 2 (fun y => Real.log (Complex.normSq (Hf y))) z0`. Establish `hn : ContDiff ℝ ∞ fun y : V (nd X) => Complex.normSq (Hf y)`. Simplify using `only [Complex.normSq_eq_norm_sq]`.
+
+Conclude with `(contDiff_norm_sq ℝ).comp (hHcd.restrict_scalars ℝ)`. Conclude with `((Real.contDiffAt_log.2 hNpos).comp z0 hn.contDiffAt).of_le two_le_infty`. Establish `hcF : ContDiffAt ℝ 2 F z0` using `hc1.add hc2`. Establish `h1` using `ReciprocityTheory.L2DbarEstimates.Y.LocalMaximumSecondDerivative.leviV_re_nonpos_of_isLocalMax hcF.neg hmax ξ`. Establish `e1 : (fun y => ((-F y : ℝ) : ℂ)) = fun y => (((-1) * F y : ℝ) : ℂ)`.
+
+Use function extensionality and compare the values at `y`. Simplify using the standard rewrite rules. Rewrite `h1` using `[e1, ReciprocityTheory.L2DbarEstimates.Y.LocalMaximumSecondDerivative.leviV_ofReal_const_mul (-1) hcF ξ]`. Establish `e2 : (fun y => ((F y : ℝ) : ℂ)) = fun y => ((rhF X x0 y + Real.log (Complex.normSq (Hf y)) : ℝ) : ℂ)` using `rfl`. Rewrite `h1` using `[e2, ReciprocityTheory.L2DbarEstimates.Y.LocalMaximumSecondDerivative.leviV_ofReal_add hc1 hc2 ξ, levi_logNormSq_zero Hf hHcd z0 hHne ξ]`.
+
+Simplify using `at h1`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem levi_rhF_nonneg (x0 : Frame X.Ψ r) (ho : IsOrth X x0) {z0 : V (nd X)} (hz0 : z0 ∈ OmF X x0) (ξ : Fin (nd X) → ℂ) :
     0 ≤ (leviV (nd X) (fun y => ((rhF X x0 y : ℝ) : ℂ)) z0 ξ).re := by
   set Hf : V (nd X) → ℂ := fun y => ∏ τ, (1 - Zt X y τ * (Zt X z0 τ)ᴴ).det with hHf
@@ -128,6 +176,17 @@ theorem levi_rhF_nonneg (x0 : Frame X.Ψ r) (ho : IsOrth X x0) {z0 : V (nd X)} (
   simp at h1
   linarith
 
+/- English proof (translation)
+Establish `hH : (1 - Z * Zᴴ).IsHermitian` using `h.isHermitian`. Establish `hev : ∀ i, 0 ≤ hH.eigenvalues i ∧ hH.eigenvalues i ≤ 1`. Introduce `i`. Use `⟨h.eigenvalues_nonneg i, ?_⟩` and prove the remaining obligations. Rewrite using `[hH.eigenvalues_eq i]`.
+
+Use `set v := (hH.eigenvectorBasis i).ofLp with hvdef`. Establish `hv : star v ⬝ᵥ v = 1`. Establish `h1 : ‖hH.eigenvectorBasis i‖ = 1` using `hH.eigenvectorBasis.orthonormal.1 i`. Rewrite `h1` using `[EuclideanSpace.norm_eq, Real.sqrt_eq_one]`. Simplify using `only [dotProduct, Pi.star_apply, RCLike.star_def, RCLike.conj_mul]`.
+
+Rewrite using `[hvdef]`. Establish `h2` using `congrArg (fun t : ℝ => (t : ℂ)) h1`. Move the coercions through the operations in `at h2`. Conclude with `h2`. Establish `hq : 0 ≤ star v ⬝ᵥ (Z * Zᴴ) *ᵥ v` using `(posSemidef_self_mul_conjTranspose Z).dotProduct_mulVec_nonneg v`.
+
+Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, dotProduct_sub, hv, map_sub, RCLike.one_re]`. Use `(RCLike.nonneg_iff.1 hq).1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hd : (1 - Z * Zᴴ).det = ((∏ i, hH.eigenvalues i : ℝ) : ℂ)`. Rewrite using `[hH.det_eq_prod_eigenvalues]`.
+
+Use `push_cast`. Both sides reduce to the same expression. Establish `h0 : 0 ≤ ∏ i, hH.eigenvalues i` using `Finset.prod_nonneg fun i _ => (hev i).1`. Rewrite using `[hd, Complex.ofReal_re, Complex.norm_real, Real.norm_of_nonneg h0]`. Conclude with `⟨h0, Finset.prod_le_one (fun i _ => (hev i).1) fun i _ => (hev i).2, rfl⟩`.
+-/
 private theorem det_one_sub_mul_conjTranspose_mem_Icc {p q : ℕ} (Z : Matrix (Fin p) (Fin q) ℂ) (h : (1 - Z * Zᴴ).PosSemidef) :
     0 ≤ (1 - Z * Zᴴ).det.re ∧ (1 - Z * Zᴴ).det.re ≤ 1 ∧ ‖(1 - Z * Zᴴ).det‖ = (1 - Z * Zᴴ).det.re := by
   have hH : (1 - Z * Zᴴ).IsHermitian := h.isHermitian
@@ -156,6 +215,9 @@ private theorem det_one_sub_mul_conjTranspose_mem_Icc {p q : ℕ} (Z : Matrix (F
   rw [hd, Complex.ofReal_re, Complex.norm_real, Real.norm_of_nonneg h0]
   exact ⟨h0, Finset.prod_le_one (fun i _ => (hev i).1) fun i _ => (hev i).2, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[rhF_eq_sum X x0 ho z, neg_nonneg]`. Use `Finset.sum_nonpos fun τ _ => Real.log_nonpos (norm_nonneg _) ?_` and prove the remaining obligations. Take `⟨h0, h1, h2⟩ : 0 ≤ (Am X z τ).det.re ∧ (Am X z τ).det.re ≤ 1 ∧ ‖(Am X z τ).det‖ = (Am X z τ).det.re` from `det_one_sub_mul_conjTranspose_mem_Icc (Zt X z τ) ((mem_OmF_iff X x0 ho z).1 hz τ).posSemidef`. Rewrite using `[h2]`. Conclude with `h1`.
+-/
 theorem rhF_nonneg (x0 : Frame X.Ψ r) (ho : IsOrth X x0) {z : V (nd X)} (hz : z ∈ OmF X x0) : 0 ≤ rhF X x0 z := by
   rw [rhF_eq_sum X x0 ho z, neg_nonneg]
   refine Finset.sum_nonpos fun τ _ => Real.log_nonpos (norm_nonneg _) ?_
@@ -164,6 +226,21 @@ theorem rhF_nonneg (x0 : Frame X.Ψ r) (ho : IsOrth X x0) {z : V (nd X)} (hz : z
   rw [h2]
   exact h1
 
+/- English proof (translation)
+Use extensionality with `z`. Simplify using `only [Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hz, hle⟩`. Establish `hpd` using `(mem_OmF_iff X x0 ho z).1 hz`.
+
+Use `⟨fun τ => (hpd τ).posSemidef, ?_⟩` and prove the remaining obligations. Establish `hpos : ∀ τ, 0 < (Am X z τ).det.re` using `fun τ => by`. Establish `h` using `Complex.lt_def.1 (hpd τ).det_pos`. Simplify using `only [Complex.zero_re] at h`. Conclude with `h.1`.
+
+Unfold `eF at hle`. Rewrite `hle` using `[rhF_eq_log X x0 ho hz]`. Establish `hP : 0 < ∏ τ, (Am X z τ).det.re` using `Finset.prod_pos fun τ _ => hpos τ`. Rewrite using `[← Real.exp_log hP]`. Conclude with `Real.exp_le_exp.2 (by linarith)`.
+
+Introduce and unpack `⟨hpsd, hle⟩`. Establish `hP : 0 < ∏ τ, (Am X z τ).det.re` using `lt_of_lt_of_le (Real.exp_pos _) hle`. Establish `hpos : ∀ τ, 0 < (Am X z τ).det.re`. Introduce `τ`. Take `⟨h0, -, -⟩ : 0 ≤ (Am X z τ).det.re ∧ (Am X z τ).det.re ≤ 1 ∧ ‖(Am X z τ).det‖ = (Am X z τ).det.re` from `det_one_sub_mul_conjTranspose_mem_Icc (Zt X z τ) (hpsd τ)`.
+
+Break down `h0.eq_or_lt with h0 | h0` into its components or cases. Conclude with `absurd hP (by rw [Finset.prod_eq_zero (Finset.mem_univ τ) h0.symm]; exact lt_irrefl 0)`. Conclude with `h0`. Establish `hz : z ∈ OmF X x0` using `(mem_OmF_iff X x0 ho z).2 fun τ => ((hpsd τ).posDef_iff_isUnit).2 ((Matrix.isUnit_iff_isUnit_det _).2 (isUnit_iff_ne_zero.2 fun h => by`. Use `hpos τ` as an intermediate fact.
+
+Rewrite `this` using `[h, Complex.zero_re]`. Conclude with `lt_irrefl 0 this))`. Use `⟨hz, ?_⟩` and prove the remaining obligations. Unfold `eF`. Rewrite using `[rhF_eq_log X x0 ho hz]`.
+
+Use `Real.log_le_log (Real.exp_pos _) hle` as an intermediate fact. Rewrite `this` using `[Real.log_exp]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sub_eqF (x0 : Frame X.Ψ r) (ho : IsOrth X x0) (a : ℝ) :
     {z : V (nd X) | z ∈ OmF X x0 ∧ eF X x0 z ≤ a} =
       {z | (∀ τ, (Am X z τ).PosSemidef) ∧
@@ -204,6 +281,13 @@ theorem sub_eqF (x0 : Frame X.Ψ r) (ho : IsOrth X x0) (a : ℝ) :
     rw [Real.log_exp] at this
     linarith
 
+/- English proof (translation)
+Establish `hset : {z : V (nd X) | ∀ τ, (Am X z τ).PosSemidef} = ⋂ τ, ⋂ x : Fin X.p0 → ℂ, {z | 0 ≤ star x ⬝ᵥ (Am X z τ) *ᵥ x}`. Use extensionality with `z`. Simplify using `only [Set.mem_setOf_eq, Set.mem_iInter]`. Use `⟨fun h τ x => (h τ).dotProduct_mulVec_nonneg x, fun h τ => ?_⟩` and prove the remaining obligations. Conclude with `Matrix.PosSemidef.of_dotProduct_mulVec_nonneg (Matrix.isHermitian_one.sub (Matrix.isHermitian_mul_conjTranspose_self _)) (h τ)`.
+
+Rewrite using `[hset]`. Use `isClosed_iInter fun τ => isClosed_iInter fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `have he : ∀ a c, Continuous fun z : V (nd X) => Am X z τ a c := fun a c => (cd_Am_entry X τ a c).continuous`. Establish `hf : Continuous fun z : V (nd X) => star x ⬝ᵥ (Am X z τ) *ᵥ x`. Simplify using `only [dotProduct, Matrix.mulVec]`.
+
+Conclude with `continuous_finset_sum _ fun a _ => continuous_const.mul (continuous_finset_sum _ fun c _ => (he a c).mul continuous_const)`. Conclude with `isClosed_le continuous_const hf`.
+-/
 theorem isClosed_psdF : IsClosed {z : V (nd X) | ∀ τ, (Am X z τ).PosSemidef} := by
   have hset : {z : V (nd X) | ∀ τ, (Am X z τ).PosSemidef} =
       ⋂ τ, ⋂ x : Fin X.p0 → ℂ, {z | 0 ≤ star x ⬝ᵥ (Am X z τ) *ᵥ x} := by
@@ -221,6 +305,13 @@ theorem isClosed_psdF : IsClosed {z : V (nd X) | ∀ τ, (Am X z τ).PosSemidef}
       continuous_const.mul (continuous_finset_sum _ fun c _ => (he a c).mul continuous_const)
   exact isClosed_le continuous_const hf
 
+/- English proof (translation)
+Rewrite using `[sub_eqF X x0 ho a, Set.setOf_and]`. Apply `Metric.isCompact_of_isClosed_isBounded` to reduce the goal to its premises. Use `(isClosed_psdF X).inter (isClosed_le ?_ ?_)` and prove the remaining obligations. Conclude with `Real.continuous_exp.comp ((Continuous.log (continuous_const.add (continuous_norm.pow 2)) fun z => (by positivity : (0 : ℝ) < 1 + ‖z‖ ^ 2).ne').sub continuous_const)`. Conclude with `continuous_finset_prod _ fun τ _ => Complex.continuous_re.comp (cd_detAm X τ).continuous`.
+
+Use `(Metric.isBounded_iff_subset_closedBall 0).2 ⟨Real.exp a, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨hpsd, hle⟩` from `hz`. Establish `hP : ∏ τ, (Am X z τ).det.re ≤ 1` using `Finset.prod_le_one (fun τ _ => (det_one_sub_mul_conjTranspose_mem_Icc (Zt X z τ) (hpsd τ)).1) fun τ _ => (det_one_sub_mul_conjTranspose_mem_Icc (Zt X z τ) (hpsd τ)).2.1`. Establish `h1 : Real.log (1 + ‖z‖ ^ 2) - a ≤ 0` using `Real.exp_le_one_iff.1 (le_trans hle hP)`. Establish `h2 : 1 + ‖z‖ ^ 2 ≤ Real.exp a`.
+
+Rewrite using `[← Real.exp_log (by positivity : (0 : ℝ) < 1 + ‖z‖ ^ 2)]`. Conclude with `Real.exp_le_exp.2 (by linarith)`. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`. Use polynomial arithmetic with `[sq_nonneg (‖z‖ - 1), norm_nonneg z]`.
+-/
 theorem isCompact_subF (x0 : Frame X.Ψ r) (ho : IsOrth X x0) (a : ℝ) : IsCompact {z : V (nd X) | z ∈ OmF X x0 ∧ eF X x0 z ≤ a} := by
   rw [sub_eqF X x0 ho a, Set.setOf_and]
   apply Metric.isCompact_of_isClosed_isBounded

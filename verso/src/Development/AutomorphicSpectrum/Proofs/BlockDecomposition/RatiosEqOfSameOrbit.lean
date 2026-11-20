@@ -52,16 +52,25 @@ def pieceSet {X : Scheme.{0}} [IsIntegral X] (i : X ⟶ MP ℤ m n) (Ψ : LinPro
     Set (GlobalTheory.CxPts (i ≫ mpStr ℤ m n) σ₀) :=
   {y | ∃ e Γ, IsPiece i Ψ N e Γ ∧ y ∈ e.source}
 
+/- English proof (translation)
+The claim follows from `isOpen_iff_forall_mem_open.mpr fun _ ⟨e, Γ, hp, hy⟩ => ⟨e.source, fun _ hy' => ⟨e, Γ, hp, hy'⟩, e.open_source, hy⟩`.
+-/
 theorem isOpen_pieceSet {X : Scheme.{0}} [IsIntegral X] (i : X ⟶ MP ℤ m n) (Ψ : LinProj n D) (N : Pol n) :
     IsOpen (pieceSet i Ψ N) := isOpen_iff_forall_mem_open.mpr fun _ ⟨e, Γ, hp, hy⟩ =>
   ⟨e.source, fun _ hy' => ⟨e, Γ, hp, hy'⟩, e.open_source, hy⟩
 
+/- English proof (translation)
+Substitute `h` using the available equality. Use function extensionality and compare the values at `a`. Simplify using `[ReciprocityTheory.ChartRestriction.G.Geo.segre, Finset.prod_mul_distrib]`.
+-/
 theorem segre_orbit {z z' : (Σ k, Bk n k) → ℂ} {c : Fin (m + 1) → ℂ} (h : z = fun p => c p.1 * z' p) :
     segre z = (∏ k, c k) • segre z' := by
   subst h
   funext a
   simp [ReciprocityTheory.ChartRestriction.G.Geo.segre, Finset.prod_mul_distrib]
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `h`. Establish `hprod : (∏ k, c k) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => hc k`. Use function extensionality and compare the values at `a`. Simplify using `only [ratios, segre_orbit (c := c) rfl, map_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `mul_div_mul_left _ _ hprod`.
+-/
 theorem ratios_eq_of_sameOrbit (Ψ : LinProj n D) {z z' : (Σ k, Bk n k) → ℂ} (h : SameOrbit z z')
     (h0 : Ψ (segre z') 0 ≠ 0) : ratios Ψ z = ratios Ψ z' := by
   obtain ⟨c, hc, rfl⟩ := h
@@ -70,11 +79,17 @@ theorem ratios_eq_of_sameOrbit (Ψ : LinProj n D) {z z' : (Σ k, Bk n k) → ℂ
   simp only [ratios, segre_orbit (c := c) rfl, map_smul, Pi.smul_apply, smul_eq_mul]
   exact mul_div_mul_left _ _ hprod
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Simplify using `[ratios, h]`.
+-/
 theorem ratios_of_proj (Ψ : LinProj n D) {z : (Σ k, Bk n k) → ℂ} {v : Fin D → ℂ}
     (h : Ψ (segre z) = Fin.cons 1 v) : ratios Ψ z = v := by
   funext a
   simp [ratios, h]
 
+/- English proof (translation)
+Introduce `d hd k`. Take `⟨x, hx, y, hy, rfl⟩` from `Finset.mem_add.1 (MvPolynomial.support_mul f g hd)`. Simplify using `only [Finsupp.add_apply, Finset.sum_add_distrib, hf x hx k, hg y hy k, Pi.add_apply]`.
+-/
 theorem homog_mul {f g : Pol n} {a b : Fin (m + 1) → ℕ} (hf : IsMultiHomog f a) (hg : IsMultiHomog g b) :
     IsMultiHomog (f * g) (a + b) := by
   classical

@@ -20,6 +20,23 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.Plug
 
+/- English proof (translation)
+Introduce `hG E _ _ _ H Dw l Xo c r U h e hL x hx Y _ T o B b Fr Z Rd u f hf`. Take `⟨R, w, hw, hval⟩` from `GlobalTheory.T.comp_laws_model_root_bound hG E H Dw l Xo c r U h e hL x hx _ _ Y _ _ _ _ _ Fr Z Rd u f hf`. Take `⟨f₀, hf₀, hint⟩` from `GlobalTheory.T.root_origin_exists_form E H Dw l Xo c _ _ Y _ _ _ _ (o.toTowerOrigin.Or B b)`. Take `⟨hJ, inst, hsm⟩` from `o.smooth B b`. Use `GlobalTheory.T.holomorphic_disc_component_growth GlobalTheory.T.holomorphic_disc_ratio_growth _ _ _ (T.M B b).y (degOf (T.M B b) u) _ (fun z => R * ∏ r, ((o.toTowerOrigin.Or B b).sing r).h z ^ nOf u (some r)) w f₀ (T.M B b).birational hsm hw hf₀ hval ?_` and prove the remaining obligations.
+
+Introduce `Zf hol hmem hne`. Establish `hJ' : (o.toTowerOrigin.Or B b).Re.J = ⊤` using `hJ`. Take `⟨C₁, ρ₁, hρ₁, hb⟩` from `GlobalTheory.T.holomorphic_disc_orbit_bound _ _ _ _ _ _ (o.toTowerOrigin.Or B b).Re hJ' Zf hol hmem (fun z hz hz0 x' hx' => hint _ (hmem z hz) (hne z hz hz0) x' hx')`. Take `⟨C₂, M, hC₂, hev⟩` from `GlobalTheory.T.root_origin_weight_section E H Dw l Xo c _ _ Y _ _ _ _ (o.toTowerOrigin.Or B b) (fun r => nOf u (some r)) (Zf 0) (hmem 0 (by simp))`. Establish `hcont : ContinuousAt Zf 0`.
+
+Use `continuousAt_pi.2 fun p => ?_` and prove the remaining obligations. Conclude with `(hol p).continuousOn.continuousAt (Metric.ball_mem_nhds _ one_pos)`. Take `⟨ρ₂, hρ₂, hball⟩` from `Metric.eventually_nhds_iff.1 (hcont.eventually hev)`. Use `⟨|R| * C₂ * C₁ ^ M, min ρ₁ (min ρ₂ 1), M, lt_min hρ₁ (lt_min hρ₂ one_pos), fun z hz0 hz => ?_⟩` and prove the remaining obligations. Establish `hz₁ : ‖z‖ < ρ₁` using `hz.trans_le (min_le_left _ _)`.
+
+Establish `hz₂ : ‖z‖ < ρ₂` using `hz.trans_le ((min_le_right _ _).trans (min_le_left _ _))`. Establish `hz₃ : ‖z‖ < 1` using `hz.trans_le ((min_le_right _ _).trans (min_le_right _ _))`. Establish `hzb : z ∈ Metric.ball (0 : ℂ) 1` using `by simpa using hz₃`. Establish `hz00 : z ≠ 0` using `norm_pos_iff.1 hz0`. Establish `hnot : Zf z ∉ mcPts (o.toTowerOrigin.Or B b).Re.J`.
+
+Rewrite using `[hJ']`. Introduce `hm`. Use `hm.2 1 trivial` as an intermediate fact. Simplify using `at this`. Take `⟨x', hx'⟩` from `(o.toTowerOrigin.Or B b).Re.R.surj (Zf z) (hmem z hzb) hnot`.
+
+Establish `hop` using `hint _ (hmem z hzb) (hne z hzb hz00) x' hx'`. Establish `h1` using `hball (by simpa using hz₂) (hmem z hzb) x' hx' hop`. Establish `h2` using `hb z hz0 hz₁ x' hx'`. Establish `h3 : 0 ≤ ReciprocityTheory.AnForm.P.rW ((o.toTowerOrigin.Sys b).L) ((o.toTowerOrigin.Sys b).s) ((o.toTowerOrigin.Or B b).Re.π x')`. Use `(o.toTowerOrigin.Sys b).norm_le ((o.toTowerOrigin.Or B b).Re.π x')` as an intermediate fact.
+
+Establish `he` using `Real.exp_pos 1`. Unfold `ReciprocityTheory.AnForm.P.rW`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpos : 0 ≤ ∏ r, ((o.toTowerOrigin.Or B b).sing r).h (Zf z) ^ nOf u (some r)` using `Finset.prod_nonneg fun r _ => (zpow_pos (((o.toTowerOrigin.Or B b).sing r).pos _ (hmem z hzb).1) _).le`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `mul_le_mul_of_nonneg_left (h1.trans ?_) (abs_nonneg R)` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ h3 h2 M) hC₂`. Use `_ = |R| * C₂ * C₁ ^ M * (1 + |Real.log ‖z‖|) ^ M := by rw [mul_pow]; ring`.
+-/
 theorem cusp_mem_chartLatNm : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (h : GenFrEx Xo c) (e : Comp Xo c → Rul Xo c), CompLaws U h e → ∀ x : ℝ, (∀ σ, GoodEmb c σ → ∀ k (τ : E →+* ℂ), ‖τ ((U σ).X k).ξ0‖ = x) → ∀ (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) [DecidableEq (CMType H)] (T : Top.RootTower (CMType H) (Dw.p + Dw.q)) (o : Top.GoodOrigin Y T) (B : ℕ) (b : T.Comp) (Fr : Small.GenFrame (o.toTowerOrigin.Or B b)) (Z : Comp Xo c) (Rd : Reading Fr h Z) (u : GlobalTheory.AllWt.Weight Dw), ∀ f ∈ GlobalTheory.AllWt.cuspOn U Z (GlobalTheory.AllWt.wtOf Dw u 0), ∃ N : ℕ, 0 < N ∧ (N : (T.M B b).Ω) * (gauge Rd u * Rd.φ (evC h Z f)) ∈ chartLatNm (T.M B b).y (degOf (T.M B b) u) 1 := by
   intro hG E _ _ _ H Dw l Xo c r U h e hL x hx Y _ T o B b Fr Z Rd u f hf
   obtain ⟨R, w, hw, hval⟩ := GlobalTheory.T.comp_laws_model_root_bound hG E H Dw l Xo c r U h e hL x hx _ _ Y _ _ _ _ _ Fr Z Rd u f hf

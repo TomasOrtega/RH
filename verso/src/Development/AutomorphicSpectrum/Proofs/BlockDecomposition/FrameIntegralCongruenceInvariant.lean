@@ -9,6 +9,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.WeilSiegel.Deg
 
+/- English proof (translation)
+Establish `hm : (x * a).map (D.sp.cm.sig : D.host.E → D.host.E) = x.map (D.sp.cm.sig : D.host.E → D.host.E) * a.map (D.sp.cm.sig : D.host.E → D.host.E)` using `Matrix.map_mul (f := (D.sp.cm.sig : D.host.E →+* D.host.E))`. Unfold `gramQ`. Rewrite using `[hm, Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem gramQ_mul_right (D : D7) (V : HSp D) {r : ℕ} (x : Matrix (Fin V.rank) (Fin r) D.host.E)
     (a : Matrix (Fin r) (Fin r) D.host.E) :
     gramQ V (x * a) = (a.map (D.sp.cm.sig : D.host.E → D.host.E))ᵀ * gramQ V x * a := by
@@ -58,6 +61,11 @@ def congrEquiv (D : D7) (V : HSp D) {r : ℕ} (β : HermE D r) (a : Matrix (Fin 
       change x.1 * a⁻¹ * a = x.1
       rw [Matrix.mul_assoc, hi', Matrix.mul_one]) }
 
+/- English proof (translation)
+Introduce `D V ν r φ β a ha`. Establish `key : (fun h : GA D V => ∑' x : {x : Matrix (Fin V.rank) (Fin r) D.host.E // x.rank = r ∧ gramQ V x = (congrH a β).1}, φ (HMul.hMul (Formalism.L2.Theta.mt V h⁻¹) (x.1.map (incA D)))) = (fun h : GA D V => ∑' x : {x : Matrix (Fin V.rank) (Fin r) D.host.E // x.rank = r ∧ gramQ V x = …`. Use function extensionality and compare the values at `h`. Rewrite using `[← (congrEquiv D V β a ha).tsum_eq]`. Use `tsum_congr fun x => ?_` and prove the remaining obligations.
+
+Establish `hm : (x.1 * a).map (incA D) = HMul.hMul (x.1.map (incA D)) (a.map (incA D))` using `Matrix.map_mul (f := incA D)`. Express the relevant statement in the definitionally equal form `φ (HMul.hMul (Formalism.L2.Theta.mt V h⁻¹) ((x.1 * a).map (incA D))) = φ (HMul.hMul (HMul.hMul (Formalism.L2.Theta.mt V h⁻¹) (x.1.map (incA D))) (a.map (incA D)))`. Rewrite using `[hm, Matrix.mul_assoc]`. Unfold `IfrB`. Rewrite using `[key]`.
+-/
 theorem ifrB_congrH : ∀ (D : D7) (V : HSp D) (ν : Measure (GA D V)) (r : ℕ) (φ : Mx D V.rank r → ℂ) (β : HermE D r)
     (a : Matrix (Fin r) (Fin r) D.host.E), a.det ≠ 0 →
     IfrB V ν φ (GlobalTheory.CompanionTheory.WeilSiegel.Deg.congrH a β) = IfrB V ν (pull a φ) β := by

@@ -10,6 +10,11 @@ open scoped TensorProduct Matrix
 
 namespace GlobalTheory.InertSph
 
+/- English proof (translation)
+Introduce `F _ _ κ _ v φ hφ hne`. Take `⟨R, hR0, hR⟩` from `GlobalTheory.RestWitness.exists_rest κ v`. Take `⟨x, hx⟩` from `Function.ne_iff.1 hne`. Use `⟨R, hR φ hφ, fun h => ?_⟩` and prove the remaining obligations. Establish `hz : At (evFin F v) (fun i => GlobalTheory.LatVac.liftV v (x i))` using `fun u hu => funext fun i => GlobalTheory.LatVac.at_liftV v _ u hu`.
+
+Establish `h1` using `(hR φ hφ).1 0 _ hz`. Rewrite `h1` using `[zero_add]`. Establish `e` using `congrFun h (fun i => GlobalTheory.LatVac.liftV v (x i))`. Simplify using `only [tens, GlobalTheory.LatVac.evFin_liftV, h1, Pi.zero_apply] at e`. Conclude with `mul_ne_zero hx hR0 e`.
+-/
 theorem exists_rest_tens_ne_zero : ∀ {F : Type} [Field F] [NumberField F] (κ : Type) [Fintype κ] (v : Pl F),
     ∀ φ ∈ SB (κ → Fv F v), φ ≠ 0 →
     ∃ r : (κ → AF F) → ℂ, Rest (evFin F v) φ r ∧ tens (evFin F v) φ r ≠ 0 := by

@@ -17,6 +17,9 @@ variable {V' V F : Type} [NormedAddCommGroup V'] [NormedSpace ℝ V'] [NormedAdd
 def pb (H : V' → V) {q : ℕ} (w : V → V [⋀^Fin q]→L[ℝ] F) (p : V') : V' [⋀^Fin q]→L[ℝ] F :=
   (w (H p)).compContinuousLinearMap (fderiv ℝ H p)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pb_apply (H : V' → V) {q : ℕ} (w : V → V [⋀^Fin q]→L[ℝ] F) (p : V') (v : Fin q → V') :
     pb H w p v = w (H p) fun i => fderiv ℝ H p (v i) := rfl
 
@@ -25,6 +28,9 @@ def flow (W : V → V) (t : ℝ) (p : V) : V := p + t • W p
 def hk (W : V → V) (t : ℝ) {q : ℕ} (w : V → V [⋀^Fin (q + 1)]→L[ℝ] F) (p : V) : V [⋀^Fin q]→L[ℝ] F :=
   ((w (flow W t p)).curryLeft (W p)).compContinuousLinearMap (fderiv ℝ (flow W t) p)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hk_apply (W : V → V) (t : ℝ) {q : ℕ} (w : V → V [⋀^Fin (q + 1)]→L[ℝ] F) (p : V) (v : Fin q → V) :
     hk W t w p v = w (flow W t p) (Matrix.vecCons (W p) fun i => fderiv ℝ (flow W t) p (v i)) := rfl
 
@@ -45,6 +51,9 @@ structure IsFlow (W : S → V → V) : Prop where
   equiv : ∀ γ s, ∀ p ∈ G.Y, W (G.σ γ s) (G.ρ γ p) = G.ρ γ (W s p)
   homog : ∀ s (t : ℝ), 0 < t → ∀ p ∈ G.Y, W s (t • p) = t • W s p
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => ⟨contDiffOn_const, fun p hp t _ => by simpa [flow] using hp⟩, fun _ _ _ _ => by simp, fun _ _ _ _ _ => by simp⟩`.
+-/
 theorem isFlow_zero : IsFlow G 0 :=
   ⟨fun _ => ⟨contDiffOn_const, fun p hp t _ => by simpa [flow] using hp⟩, fun _ _ _ _ => by simp, fun _ _ _ _ _ => by simp⟩
 
@@ -56,6 +65,9 @@ def toOm {q : ℕ} (z : S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)) : G.
       ⟨(h s).congr fun _ hp => Set.indicator_of_mem hp _, fun _ hp => Set.indicator_of_notMem hp _⟩⟩
   else 0
 
+/- English proof (translation)
+Rewrite using `[toOm, dif_pos h]`. Conclude with `Set.indicator_of_mem hp _`.
+-/
 theorem toOm_apply {q : ℕ} {z : S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)} (h : ∀ s, ContDiffOn ℝ ∞ (z s) G.Y) (s : S) {p : V}
     (hp : p ∈ G.Y) : (toOm G z).1 s p = z s p := by
   rw [toOm, dif_pos h]
@@ -84,9 +96,19 @@ structure IsFld (U : Subgroup (GL (Fin a) (Af E))) (Y : GA E a → Herm E a) (C 
   root : ∀ g (t : ℝ), |t| ≤ 1 → ∃ h : GL (Fin a) (Cinf E), h.val * star h.val = 1 + t • (Y g).1 ∧
     ‖toL h.val‖ ≤ C ∧ ‖toL (h⁻¹).val‖ ≤ C
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.Y_sm, h.Y_left, h.Y_cpt, h.Y_lev, h.root⟩`.
+-/
 theorem IsStep.fld {U : Subgroup (GL (Fin a) (Af E))} {f : GA E a → ℝ} {Y : GA E a → Herm E a} {C c f₀ : ℝ}
     (h : IsStep U f Y C c f₀) : IsFld U Y C := ⟨h.Y_sm, h.Y_left, h.Y_cpt, h.Y_lev, h.root⟩
 
+/- English proof (translation)
+Take `⟨φ, h1, h2⟩` from `h.sm i j w`. Use `⟨-φ, fun g => congrArg Neg.neg (h1 g), fun X l => ?_⟩` and prove the remaining obligations. Take `⟨B, hB⟩` from `h2 X l`. Conclude with `⟨B, fun g => by rw [map_neg]; exact (norm_neg _).trans_le (hB g)⟩`. Use `left γ t g := congrArg Neg.neg (h.left γ t g)`.
+
+Use `cpt k g := by`. Establish `e` using `congrArg Subtype.val (h.cpt k g)`. Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `k.1 * (-(Y (g * infGL E a (Unitary.toUnits k))).1) * star k.1 = -(Y g).1`. Rewrite using `[mul_neg, neg_mul, ← e]`.
+
+Both sides reduce to the same expression. Use `lev u hu g := congrArg Neg.neg (h.lev u hu g)`. Use `root g t ht := by`. Take `⟨x, h1, h2⟩` from `h.root g (-t) (by rwa [abs_neg])`. Conclude with `⟨x, by rw [h1, neg_smul]; exact congrArg (1 + ·) (smul_neg t (Y g).1).symm, h2⟩`.
+-/
 theorem IsFld.neg {U : Subgroup (GL (Fin a) (Af E))} {Y : GA E a → Herm E a} {C : ℝ} (h : IsFld U Y C) :
     IsFld U (-Y) C where
   sm i j w := by
@@ -110,6 +132,9 @@ def FCorr (U : Subgroup (GL (Fin a) (Af E))) (Y : GA E a → Herm E a) (W : (GL 
   ∀ (g : GL (Fin a) (Cinf E)) (x : GL (Fin a) (Af E)),
     W (x : GL (Fin a) (Af E) ⧸ U) (sand g (hOne E a)) = sand g (hv (Y (infGL E a g * finGL E a x)))
 
+/- English proof (translation)
+Introduce `g x` and use `by simp only [Pi.neg_apply, map_neg, h g x]`.
+-/
 theorem FCorr.neg {U : Subgroup (GL (Fin a) (Af E))} {Y : GA E a → Herm E a}
     {W : (GL (Fin a) (Af E) ⧸ U) → HV E a → HV E a} (h : FCorr U Y W) : FCorr U (-Y) (-W) := fun g x => by
   simp only [Pi.neg_apply, map_neg, h g x]
@@ -117,9 +142,15 @@ theorem FCorr.neg {U : Subgroup (GL (Fin a) (Af E))} {Y : GA E a → Herm E a}
 def Bd {Ξ : AlgRep E a} {q : ℕ} (α : Co Ξ q) (g : GA E a) (M : ℝ) : Prop :=
   ∀ X : Fin q → Herm E a, ‖ev (α X) (retractOne g : KernelIndexFullLattice.G1 E a).1‖ ≤ M * ∏ i, ‖hv (X i)‖
 
+/- English proof (translation)
+Introduce `X` and use `(h X).trans (mul_le_mul_of_nonneg_right hM (Finset.prod_nonneg fun _ _ => norm_nonneg _))`.
+-/
 theorem Bd.mono {Ξ : AlgRep E a} {q : ℕ} {α : Co Ξ q} {g : GA E a} {M M' : ℝ} (h : Bd α g M) (hM : M ≤ M') : Bd α g M' :=
   fun X => (h X).trans (mul_le_mul_of_nonneg_right hM (Finset.prod_nonneg fun _ _ => norm_nonneg _))
 
+/- English proof (translation)
+Introduce `X` and use `by rw [AlternatingMap.sub_apply, map_sub, Pi.sub_apply, add_mul] exact (norm_sub_le _ _).trans (add_le_add (h X) (h' X))`.
+-/
 theorem Bd.sub {Ξ : AlgRep E a} {q : ℕ} {α β : Co Ξ q} {g : GA E a} {M M' : ℝ} (h : Bd α g M) (h' : Bd β g M') :
     Bd (α - β) g (M + M') := fun X => by
   rw [AlternatingMap.sub_apply, map_sub, Pi.sub_apply, add_mul]

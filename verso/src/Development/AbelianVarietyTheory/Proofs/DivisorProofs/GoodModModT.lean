@@ -47,11 +47,25 @@ def mass (D : D7) (N : ℕ) : ℂ := ∑ᶠ x : Cls D N (intG D N), ((gam D (int
 def fockSum (D : D7) (a d : ℕ) (n : D.what₂.Tau → ℕ) : ℂ :=
   ∑ T : Tup D a d n, GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.fockIp (minorPol D T) (minorPol D T)
 
+/- English proof (translation)
+Use `⟨top_ne_bot, top_sup_eq _, by rw [← Ideal.one_eq_top]; exact isCoprime_one_left, fun v => ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.notMem_empty, false_iff, not_exists, not_and]`. Conclude with `fun w h => absurd (top_le_iff.1 h) w.isPrime.ne_top`.
+-/
 theorem goodMod_top (D : D7) : GoodMod D ⊤ ∅ := by
   refine ⟨top_ne_bot, top_sup_eq _, by rw [← Ideal.one_eq_top]; exact isCoprime_one_left, fun v => ?_⟩
   simp only [Finset.notMem_empty, false_iff, not_exists, not_and]
   exact fun w h => absurd (top_le_iff.1 h) w.isPrime.ne_top
 
+/- English proof (translation)
+Use `⟨GlobalTheory.FunObj.StdDatum.TwBig.modT_ne_bot G t, GlobalTheory.SqTop.modT_sup_conj hL G t, GlobalTheory.BotPairSmallTw.modT_isCoprime_two_q hL hpq hpq' G t, fun v => ?_⟩` and prove the remaining obligations. Establish `key : ∀ w : HeightOneSpectrum (𝓞 D.host.E), modT G t ≤ w.asIdeal ↔ w ∈ locPl G t`. Introduce `w`. Establish `hp` using `w.isPrime`. Apply the tactic sequence `have hc : ∀ v, SqNum.condExp G.pl v ≠ 0 := fun v => by unfold SqNum.condExp; split_ifs <;> omega`.
+
+Unfold `modT condE`. Rewrite using `[hp.mul_le, hp.prod_le, hp.prod_le]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(⟨v, hv, h⟩ | ⟨w', hw', h⟩)`. Establish `h1 : (G.pl.w v).asIdeal ≤ w.asIdeal` using `(Ideal.IsPrime.pow_le_iff (hc v)).1 h`.
+
+Establish `h2 : G.pl.w v = w` using `HeightOneSpectrum.ext ((G.pl.w v).isMaximal.eq_of_le hp.ne_top h1)`. Unfold `locPl Places.W0`. Conclude with `Finset.mem_union_left _ (h2 ▸ Finset.mem_image_of_mem _ hv)`. Establish `h2 : w' = w` using `HeightOneSpectrum.ext (w'.isMaximal.eq_of_le hp.ne_top h)`. Substitute `h2` using the available equality.
+
+Conclude with `(Finset.mem_filter.1 hw').1`. Introduce `hw`. Distinguish the cases in `h0 : w ∈ G.pl.W0`. Unfold `Places.W0 at h0`. Take `⟨v, hv, rfl⟩` from `Finset.mem_image.1 h0`.
+
+Conclude with `Or.inl ⟨v, hv, Ideal.pow_le_self (hc v)⟩`. Conclude with `Or.inr ⟨w, Finset.mem_filter.2 ⟨hw, h0⟩, le_rfl⟩`. Unfold `sfB`. Simplify using `only [Finset.mem_image, key]`.
+-/
 theorem goodMod_modT {T : Type} {L : LevCh D T} {sc : Consts} {μ₀ : T} (hL : L.Is μ₀) (hpq : Nat.Coprime D.host.pde (D.host.QS * D.host.q))
     (hpq' : Nat.Coprime D.host.pde' (D.host.QS * D.host.q)) (G : GridData L sc) (t : T) : GoodMod D (modT G t) (sfB G t) := by
   refine ⟨GlobalTheory.FunObj.StdDatum.TwBig.modT_ne_bot G t, GlobalTheory.SqTop.modT_sup_conj hL G t,

@@ -9,6 +9,11 @@ open scoped TensorProduct
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `h.1 1`. Establish `hxy : IsDetRoot V 1 (x * y)`. Unfold `IsDetRoot at hx ⊢`. Rewrite using `[Units.val_mul, map_mul, hy, ← mul_assoc, ← hx]`. Establish `e2` using `h.2 1 (x * y) hxy`.
+
+Rewrite `e2` using `[h.2 1 x hx, map_mul]`. Establish `e3 : χ x * 1 = χ x * χ y`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify `e2` using `[Circle.coe_mul]`. Conclude with `(mul_left_cancel e3).symm`.
+-/
 theorem MuVal.eq_one_of_fixed {D : D7} {V : HSp D} {χ : (AE D)ˣ →* Circle} {mu : GA D V → ℂ}
     (h : MuVal V χ mu) (y : (AE D)ˣ)
     (hy : sigR (AF D.host.F) D.sp.cm.sig (y : AE D) = y) : χ y = 1 := by

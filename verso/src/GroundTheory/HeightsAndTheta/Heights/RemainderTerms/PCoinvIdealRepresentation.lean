@@ -10,6 +10,21 @@ noncomputable section
 
 open Coinv in
 
+/- English proof (translation)
+Introduce `K _ f n J hJ`. Proceed by induction on `hJ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨m₀, b₀, h1, h2, rfl⟩` from `hx`. Use `⟨fun m b => if m = m₀ ∧ b = b₀ then 1 else 0, ?_⟩` and prove the remaining obligations.
+
+Establish `hm₀ : m₀ ∈ Finset.Icc 1 n` using `Finset.mem_Icc.mpr ⟨h1, h2⟩`. Use `symm`. Rewrite using `[Finset.sum_eq_single m₀]`. Rewrite using `[Finset.sum_eq_single b₀]`. Simplify using the standard rewrite rules.
+
+Introduce `b _ hb`. Simplify using `[hb]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ b₀) h`. Introduce `m _ hm`.
+
+Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `b _`. Simplify using `[hm]`. Introduce `h`. Conclude with `absurd hm₀ h`.
+
+Consider the case `zero`. Conclude with `⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, rfl⟩` from `hx`. Take `⟨a', rfl⟩` from `hy`.
+
+Use `⟨a + a', ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, mul_add, Finset.sum_add_distrib]`. Consider the case `smul r x _ hx`. Take `⟨a, rfl⟩` from `hx`. Use `⟨fun m b => r * a m b, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem CoinvIdealRepresentation.proof : CoinvIdealRepresentation.Statement := by
   intro K _ f n J hJ
   induction hJ using Submodule.span_induction with

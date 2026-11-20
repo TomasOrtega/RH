@@ -4,6 +4,31 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.CaCpl
 
 open IsLocalRing UpperTheory.V.AlgebraTools TensorProduct
 
+/- English proof (translation)
+Establish `hmem : ∀ a : p, algebraMap Λ L a ∈ m` using `fun a => hm ▸ Ideal.mem_map_of_mem _ a.2`. Set `ι : p →+ m` to `{ toFun := fun a => ⟨algebraMap Λ L a, hmem a⟩ map_zero' := by ext; simp map_add' := fun a b => by ext; simp }`. Set `σ : p ⊗[Λ] N →+ m ⊗[L] N` to `TensorProduct.liftAddHom (AddMonoidHom.mk' (fun a => (TensorProduct.mk L m N (ι a)).toAddMonoidHom) (fun a b => by ext n; simp [TensorProduct.add_tmul])) (fun r a n => by`. Express the relevant statement in the definitionally equal form `ι (r • a) ⊗ₜ[L] n = ι a ⊗ₜ[L] (r • n)`. Establish `h : ι (r • a) = algebraMap Λ L r • ι a`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `algebraMap Λ L (r • (a : Λ)) = algebraMap Λ L r * algebraMap Λ L a`. Rewrite using `[smul_eq_mul, map_mul]`. Rewrite using `[h, TensorProduct.smul_tmul, algebraMap_smul])`. Establish `key : ∀ y, y ∈ Submodule.span L (algebraMap Λ L '' (p : Set Λ)) → ∀ (hy : y ∈ m) (n : N), (⟨y, hy⟩ : m) ⊗ₜ[L] n ∈ σ.range`.
+
+Introduce `y hy'`. Proceed by induction on `hy' using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, rfl⟩` from `hy`. Introduce `hy n`.
+
+Conclude with `AddMonoidHom.mem_range.mpr ⟨(⟨a, ha⟩ : p) ⊗ₜ[Λ] n, by`. Rewrite using `[TensorProduct.liftAddHom_tmul]`. Use the proof step `rfl⟩`. Consider the case `zero`. Introduce `hy n`.
+
+Establish `h : (⟨0, hy⟩ : m) = 0` using `rfl`. Rewrite using `[h, TensorProduct.zero_tmul]`. Conclude with `zero_mem _`. Consider the case `add y₁ y₂ h₁ h₂ ih₁ ih₂`. Introduce `hy n`.
+
+Establish `m₁ : y₁ ∈ m` using `by rw [← hm]; exact h₁`. Establish `m₂ : y₂ ∈ m` using `by rw [← hm]; exact h₂`. Establish `h : (⟨y₁ + y₂, hy⟩ : m) = ⟨y₁, m₁⟩ + ⟨y₂, m₂⟩` using `rfl`. Rewrite using `[h, TensorProduct.add_tmul]`. Conclude with `add_mem (ih₁ m₁ n) (ih₂ m₂ n)`.
+
+Consider the case `smul l y h₁ ih`. Introduce `hy n`. Establish `m₁ : y ∈ m` using `by rw [← hm]; exact h₁`. Establish `h : (⟨l • y, hy⟩ : m) = l • ⟨y, m₁⟩` using `rfl`. Rewrite using `[h, TensorProduct.smul_tmul]`.
+
+Conclude with `ih m₁ (l • n)`. Establish `hsurj : ∀ z : m ⊗[L] N, z ∈ σ.range`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact zero_mem _`.
+
+Consider the case `tmul a n`. Conclude with `key a.1 (show (a : L) ∈ p.map (algebraMap Λ L) by rw [hm]; exact a.2) a.2 n`. Consider the case `add x y hx hy => exact add_mem hx hy`. Establish `hcomp : ∀ w : p ⊗[Λ] N, TensorProduct.lid L N (m.subtype.rTensor N (σ w)) = TensorProduct.lid Λ N (p.subtype.rTensor N w)`. Introduce `w`.
+
+Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a n`. Rewrite using `[TensorProduct.liftAddHom_tmul]`. Express the relevant statement in the definitionally equal form `TensorProduct.lid L N (m.subtype.rTensor N ((⟨algebraMap Λ L a, hmem a⟩ : m) ⊗ₜ[L] n)) = _`.
+
+Simplify using `[algebraMap_smul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`. Take `⟨w, rfl⟩` from `AddMonoidHom.mem_range.mp (hsurj z)`.
+
+Establish `hw : p.subtype.rTensor N w = 0`. Apply `(TensorProduct.lid Λ N).injective` to reduce the goal to its premises. Rewrite using `[← hcomp, hz, map_zero, map_zero]`. Establish `hw0 : w = 0` using `Module.Flat.rTensor_preserves_injective_linearMap p.subtype Subtype.val_injective (by rw [hw, map_zero])`. Rewrite using `[hw0, map_zero]`.
+-/
 private theorem rTensor_inj_of_map {Λ : Type} [CommRing Λ] (p : Ideal Λ) {L : Type} [CommRing L]
     [Algebra Λ L] (m : Ideal L) (hm : p.map (algebraMap Λ L) = m)
     (N : Type) [AddCommGroup N] [Module Λ N] [Module L N] [IsScalarTower Λ L N]
@@ -79,6 +104,9 @@ private theorem rTensor_inj_of_map {Λ : Type} [CommRing Λ] (p : Ideal Λ) {L :
     Subtype.val_injective (by rw [hw, map_zero])
   rw [hw0, map_zero]
 
+/- English proof (translation)
+Introduce `Λ _ _ p L _ _ _ N _ _ _ _ _ _ h`. Use `haveI := h.noeth`. Use `haveI : Module.FinitePresentation L N := Module.finitePresentation_of_finite L N`. Apply `Module.free_of_maximalIdeal_rTensor_injective` to reduce the goal to its premises. Conclude with `rTensor_inj_of_map p _ (by simpa using IsCplAt.map_pow_eq Λ p L h 1) N`.
+-/
 theorem UpperTheory.V.AlgebraTools.IsCplAt.free_of_flat :
     ∀ (Λ : Type) [CommRing Λ] [IsNoetherianRing Λ] (p : Ideal Λ) (L : Type) [CommRing L] [IsLocalRing L] [Algebra Λ L]
       (N : Type) [AddCommGroup N] [Module Λ N] [Module L N] [IsScalarTower Λ L N] [Module.Finite L N]

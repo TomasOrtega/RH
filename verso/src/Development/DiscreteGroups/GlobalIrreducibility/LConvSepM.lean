@@ -14,17 +14,26 @@ namespace DiscreteGroups.sglob.LConv
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {m : ℕ}
 
+/- English proof (translation)
+Simplify using `only [superDiag, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j hj => GlobalTheory.LocGL.unipB_mul_apply ⟨u, hu⟩ ⟨v, hv⟩ (Finset.mem_filter.1 hj).2`.
+-/
 theorem superDiag_mul {u v : GL (Fin m) k} (hu : u ∈ unipB k (Fin m)) (hv : v ∈ unipB k (Fin m)) :
     superDiag (u * v) = superDiag u + superDiag v := by
   simp only [superDiag, ← Finset.sum_add_distrib]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j hj =>
     GlobalTheory.LocGL.unipB_mul_apply ⟨u, hu⟩ ⟨v, hv⟩ (Finset.mem_filter.1 hj).2
 
+/- English proof (translation)
+Use `superDiag_mul (one_mem (unipB k (Fin m))) (one_mem (unipB k (Fin m)))` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `left_eq_add.1 this`.
+-/
 theorem superDiag_one : superDiag (1 : GL (Fin m) k) = 0 := by
   have := superDiag_mul (one_mem (unipB k (Fin m))) (one_mem (unipB k (Fin m)))
   rw [mul_one] at this
   exact left_eq_add.1 this
 
+/- English proof (translation)
+Unfold `superDiag`. Conclude with `continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ => Units.continuous_val.matrix_elem i j`.
+-/
 theorem continuous_superDiag : Continuous (superDiag : GL (Fin m) k → k) := by
   unfold superDiag
   exact continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ =>
@@ -52,6 +61,9 @@ def WT : Submodule ℂ (GL (Fin m) k → ℂ) where
     simp only [Pi.smul_apply, smul_eq_mul, h1 u hu g]
     ring
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_WT {f : GL (Fin m) k → ℂ} : f ∈ WT ψ ↔ IsWhitTest ψ f := Iff.rfl
 
 def rhoW : Representation ℂ (GL (Fin m) k) (WT (m := m) ψ) where
@@ -72,19 +84,37 @@ def rhoW : Representation ℂ (GL (Fin m) k) (WT (m := m) ψ) where
     ext f g
     simp [mul_assoc]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem rhoW_apply (x : GL (Fin m) k) (f : WT (m := m) ψ) (g : GL (Fin m) k) :
     (rhoW ψ x f : GL (Fin m) k → ℂ) g = (f : GL (Fin m) k → ℂ) (g * x) := rfl
 
 variable {ψ}
 
+/- English proof (translation)
+The claim follows from `x.2.1 u hu g`.
+-/
 theorem WT.left (x : WT (m := m) ψ) {u : GL (Fin m) k} (hu : u ∈ unipB k (Fin m)) (g : GL (Fin m) k) :
     (x : GL (Fin m) k → ℂ) (u * g) = (ψ (superDiag u) : ℂ) * (x : GL (Fin m) k → ℂ) g := x.2.1 u hu g
 
+/- English proof (translation)
+Take `⟨r, -, hr⟩` from `(GroundTheory.Automorphic.GLnLocal.hasBasis_nhds_one k m).mem_iff.1 hU`. Conclude with `⟨r, hr⟩`.
+-/
 theorem exists_congruence_subset {U : Set (GL (Fin m) k)} (hU : U ∈ 𝓝 (1 : GL (Fin m) k)) :
     ∃ r : ℕ, (congruenceSubgroup k m r : Set (GL (Fin m) k)) ⊆ U := by
   obtain ⟨r, -, hr⟩ := (GroundTheory.Automorphic.GLnLocal.hasBasis_nhds_one k m).mem_iff.1 hU
   exact ⟨r, hr⟩
 
+/- English proof (translation)
+Take `⟨h1, h2, C, hC, h3⟩` from `x.2`. Establish `hlc : IsLocallyConstant fun p : GL (Fin m) k × GL (Fin m) k => (x : GL (Fin m) k → ℂ) (p.1 * p.2) - (x : GL (Fin m) k → ℂ) p.1` using `(h2.comp_continuous (continuous_fst.mul continuous_snd)).sub (h2.comp_continuous continuous_fst)`. Take `⟨U, V, -, hV, hCU, h1V, hUV⟩` from `generalized_tube_lemma hC (isCompact_singleton (x := (1 : GL (Fin m) k))) (hlc.isOpen_fiber 0) (by`. Introduce and unpack `⟨c, y⟩ ⟨-, hy⟩`. Establish `: y = 1` using `hy`.
+
+Simplify using `[this])`. Take `⟨r, hr⟩` from `exists_congruence_subset (hV.mem_nhds (h1V rfl))`. Establish `key : ∀ κ ∈ congruenceSubgroup k m r, ∀ g, (x : GL (Fin m) k → ℂ) g ≠ 0 → (x : GL (Fin m) k → ℂ) (g * κ) = (x : GL (Fin m) k → ℂ) g`. Introduce `κ hκ g hg`. Take `⟨u, hu, c, hc, rfl⟩` from `h3 g hg`.
+
+Establish `h4 : (x : GL (Fin m) k → ℂ) (c * κ) - (x : GL (Fin m) k → ℂ) c = 0` using `hUV (Set.mk_mem_prod (hCU hc) (hr hκ))`. Rewrite using `[mul_assoc, h1 u hu, h1 u hu, sub_eq_zero.1 h4]`. Use `⟨r, fun κ hκ => Subtype.ext (funext fun g => ?_)⟩` and prove the remaining obligations. Rewrite using `[rhoW_apply]`. Distinguish the cases in `hg : (x : GL (Fin m) k → ℂ) g = 0`.
+
+Assume the negation of the conclusion as `hne`. Use `key κ⁻¹ (inv_mem hκ) (g * κ) (by rw [← hg]; exact hne)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_right]`. Conclude with `hne this.symm`. Conclude with `key κ hκ g hg`.
+-/
 theorem exists_fix_congruence (x : WT (m := m) ψ) :
     ∃ r : ℕ, ∀ κ ∈ congruenceSubgroup k m r, rhoW ψ κ x = x := by
   obtain ⟨h1, h2, C, hC, h3⟩ := x.2
@@ -113,11 +143,17 @@ theorem exists_fix_congruence (x : WT (m := m) ψ) :
     exact hne this.symm
   · exact key κ hκ g hg
 
+/- English proof (translation)
+Take `⟨r, hr⟩` from `exists_fix_congruence x`. Conclude with `⟨_, isOpen_congruenceSubgroup k m r, isCompact_congruenceSubgroup k m r, hr⟩`.
+-/
 theorem exists_fix (x : WT (m := m) ψ) : ∃ K : Subgroup (GL (Fin m) k), IsOpen (K : Set (GL (Fin m) k)) ∧
     IsCompact (K : Set (GL (Fin m) k)) ∧ ∀ κ ∈ K, rhoW ψ κ x = x := by
   obtain ⟨r, hr⟩ := exists_fix_congruence x
   exact ⟨_, isOpen_congruenceSubgroup k m r, isCompact_congruenceSubgroup k m r, hr⟩
 
+/- English proof (translation)
+Introduce `x` and use `by obtain ⟨K, hK, -, h⟩ := exists_fix x refine isOpen_iff_mem_nhds.2 fun g hg => ?_ have hg' : rhoW ψ g x = x := hg refine Filter.mem_of_superset ((hK.preimage (continuous_const.mul continuous_id : Continuous fun y => g⁻¹ * y)).mem_nhds (by simp)) ?_ intro y hy show rhoW ψ y x = …`.
+-/
 theorem isSmooth_rhoW : IsSmooth (rhoW (m := m) ψ) := fun x => by
   obtain ⟨K, hK, -, h⟩ := exists_fix x
   refine isOpen_iff_mem_nhds.2 fun g hg => ?_
@@ -135,10 +171,24 @@ def Good (K : Subgroup (GL (Fin m) k)) : Prop :=
   IsOpen (K : Set (GL (Fin m) k)) ∧ IsCompact (K : Set (GL (Fin m) k)) ∧
     ∀ u ∈ unipB k (Fin m), u ∈ K → ψ (superDiag u) = 1
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨ho, hK.2.1.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ ho) h, fun u hu hu' => hK.2.2 u hu (h hu')⟩`.
+-/
 theorem Good.mono {K K' : Subgroup (GL (Fin m) k)} (hK : Good ψ K) (h : K' ≤ K)
     (ho : IsOpen (K' : Set (GL (Fin m) k))) : Good ψ K' :=
   ⟨ho, hK.2.1.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ ho) h, fun u hu hu' => hK.2.2 u hu (h hu')⟩
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hz`. Establish `h1 : (z : ℂ) ≠ 1` using `fun e => hz (Subtype.ext e)`. Establish `hb : ∀ n : ℕ, ‖∑ i ∈ Finset.range n, (z : ℂ) ^ i‖ ≤ 2 / ‖(z : ℂ) - 1‖` using `fun n => by`. Rewrite using `[geom_sum_eq h1, norm_div]`. Use `div_le_div_of_nonneg_right ((norm_sub_le _ _).trans ?_) (norm_nonneg _)` and prove the remaining obligations.
+
+Rewrite using `[norm_pow, Circle.norm_coe, one_pow, norm_one]`. Evaluate the numerical expressions. Establish `hq : ∀ n : ℕ, (1 / 2 : ℝ) ≤ ((z : ℂ) ^ n).re` using `fun n => by`. Establish `h2` using `h (2 * n)`. Establish `h0` using `h n`.
+
+Establish `hn : ((z : ℂ) ^ n).re ^ 2 + ((z : ℂ) ^ n).im ^ 2 = 1`. Establish `: Complex.normSq ((z : ℂ) ^ n) = 1`. Rewrite using `[map_pow, Circle.normSq_coe, one_pow]`. Rewrite `this` using `[Complex.normSq_apply]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Rewrite `h0` using `[Circle.coe_pow]`. Rewrite `h2` using `[Circle.coe_pow, mul_comm, pow_mul, sq, Complex.mul_re]`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨n, hn⟩` from `exists_nat_gt (2 * (2 / ‖(z : ℂ) - 1‖))`. Establish `h3 : (n : ℝ) * (1 / 2) ≤ (∑ i ∈ Finset.range n, (z : ℂ) ^ i).re`.
+
+Rewrite using `[Complex.re_sum]`. Combine the equalities or inequalities in the displayed calculation. Establish `h4` using `(Complex.re_le_norm _).trans (hb n)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem circle_eq_one {z : Circle} (h : ∀ n : ℕ, 0 < ((z ^ n : Circle) : ℂ).re) : z = 1 := by
   by_contra hz
   have h1 : (z : ℂ) ≠ 1 := fun e => hz (Subtype.ext e)
@@ -166,6 +216,11 @@ theorem circle_eq_one {z : Circle} (h : ∀ n : ℕ, 0 < ((z ^ n : Circle) : ℂ
   have h4 := (Complex.re_le_norm _).trans (hb n)
   linarith
 
+/- English proof (translation)
+Establish `hc : Continuous fun g : GL (Fin m) k => ((ψ (superDiag g) : Circle) : ℂ).re` using `Complex.continuous_re.comp (continuous_subtype_val.comp (hψ.comp continuous_superDiag))`. Establish `hV : {g : GL (Fin m) k | 0 < ((ψ (superDiag g) : Circle) : ℂ).re} ∈ 𝓝 (1 : GL (Fin m) k)` using `(isOpen_lt continuous_const hc).mem_nhds (by simp [superDiag_one])`. Take `⟨r, hr⟩` from `exists_congruence_subset (Filter.inter_mem hU hV)`. Use `⟨congruenceSubgroup k m r, ⟨isOpen_congruenceSubgroup k m r, isCompact_congruenceSubgroup k m r, fun u hu huK => circle_eq_one fun n => ?_⟩, fun g hg => (hr hg).1⟩` and prove the remaining obligations. Establish `hp : ∀ n : ℕ, ψ (superDiag (u ^ n)) = ψ (superDiag u) ^ n` using `fun n => by`.
+
+Proceed by induction on `n with`. Consider the case `zero => simp [superDiag_one]`. Consider the case `succ n ih => rw [pow_succ, superDiag_mul (pow_mem hu n) hu, AddChar.map_add_eq_mul, ih, pow_succ]`. Rewrite using `[← hp]`. Conclude with `(hr (pow_mem huK n)).2`.
+-/
 theorem exists_good (hψ : Continuous ψ) {U : Set (GL (Fin m) k)} (hU : U ∈ 𝓝 (1 : GL (Fin m) k)) :
     ∃ K : Subgroup (GL (Fin m) k), Good ψ K ∧ (K : Set (GL (Fin m) k)) ⊆ U := by
   have hc : Continuous fun g : GL (Fin m) k => ((ψ (superDiag g) : Circle) : ℂ).re :=
@@ -188,6 +243,11 @@ variable (ψ) in
 def deltaFun (K : Subgroup (GL (Fin m) k)) (g : GL (Fin m) k) : ℂ :=
   if h : ∃ u ∈ unipB k (Fin m), ∃ κ ∈ K, g = u * κ then (ψ (superDiag h.choose) : ℂ) else 0
 
+/- English proof (translation)
+Establish `h : ∃ u' ∈ unipB k (Fin m), ∃ κ' ∈ K, u * κ = u' * κ'` using `⟨u, hu, κ, hκ, rfl⟩`. Rewrite using `[deltaFun, dif_pos h]`. Take `⟨hu', κ', hκ', e⟩` from `h.choose_spec`. Use `set u' := h.choose`. Establish `e2 : u'⁻¹ * u = κ' * κ⁻¹`.
+
+Rewrite using `[eq_mul_inv_iff_mul_eq, mul_assoc, e, inv_mul_cancel_left]`. Establish `h1` using `hK.2.2 _ (mul_mem (inv_mem hu') hu) (e2 ▸ mul_mem hκ' (inv_mem hκ))`. Establish `h2` using `superDiag_mul hu' (mul_mem (inv_mem hu') hu)`. Rewrite `h2` using `[mul_inv_cancel_left]`. Rewrite using `[h2, AddChar.map_add_eq_mul, h1, mul_one]`.
+-/
 theorem deltaFun_mul {K : Subgroup (GL (Fin m) k)} (hK : Good ψ K) {u κ : GL (Fin m) k}
     (hu : u ∈ unipB k (Fin m)) (hκ : κ ∈ K) : deltaFun ψ K (u * κ) = (ψ (superDiag u) : ℂ) := by
   have h : ∃ u' ∈ unipB k (Fin m), ∃ κ' ∈ K, u * κ = u' * κ' := ⟨u, hu, κ, hκ, rfl⟩
@@ -201,10 +261,18 @@ theorem deltaFun_mul {K : Subgroup (GL (Fin m) k)} (hK : Good ψ K) {u κ : GL (
   rw [mul_inv_cancel_left] at h2
   rw [h2, AddChar.map_add_eq_mul, h1, mul_one]
 
+/- English proof (translation)
+Rewrite using `[deltaFun, dif_neg h]`.
+-/
 theorem deltaFun_eq_zero {K : Subgroup (GL (Fin m) k)} {g : GL (Fin m) k}
     (h : ¬ ∃ u ∈ unipB k (Fin m), ∃ κ ∈ K, g = u * κ) : deltaFun ψ K g = 0 := by
   rw [deltaFun, dif_neg h]
 
+/- English proof (translation)
+Distinguish the cases in `h : ∃ u ∈ unipB k (Fin m), ∃ κ ∈ K, g = u * κ`. Take `⟨u, hu, κ', hκ', rfl⟩` from `h`. Rewrite using `[mul_assoc, deltaFun_mul hK hu (mul_mem hκ' hκ), deltaFun_mul hK hu hκ']`. Rewrite using `[deltaFun_eq_zero h, deltaFun_eq_zero]`. Introduce and unpack `⟨u, hu, κ', hκ', e⟩`.
+
+Conclude with `h ⟨u, hu, κ' * κ⁻¹, mul_mem hκ' (inv_mem hκ), by rw [← mul_assoc, ← e, mul_inv_cancel_right]⟩`.
+-/
 theorem deltaFun_right {K : Subgroup (GL (Fin m) k)} (hK : Good ψ K) (g : GL (Fin m) k) {κ : GL (Fin m) k}
     (hκ : κ ∈ K) : deltaFun ψ K (g * κ) = deltaFun ψ K g := by
   by_cases h : ∃ u ∈ unipB k (Fin m), ∃ κ ∈ K, g = u * κ
@@ -214,6 +282,13 @@ theorem deltaFun_right {K : Subgroup (GL (Fin m) k)} (hK : Good ψ K) (g : GL (F
     rintro ⟨u, hu, κ', hκ', e⟩
     exact h ⟨u, hu, κ' * κ⁻¹, mul_mem hκ' (inv_mem hκ), by rw [← mul_assoc, ← e, mul_inv_cancel_right]⟩
 
+/- English proof (translation)
+Use `⟨fun v hv g => ?_, ?_, K, hK.2.1, fun g hg => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : ∃ u ∈ unipB k (Fin m), ∃ κ ∈ K, g = u * κ`. Take `⟨u, hu, κ, hκ, rfl⟩` from `h`. Rewrite using `[← mul_assoc, deltaFun_mul hK (mul_mem hv hu) hκ, deltaFun_mul hK hu hκ, superDiag_mul hv hu, AddChar.map_add_eq_mul, Circle.coe_mul]`. Rewrite using `[deltaFun_eq_zero h, deltaFun_eq_zero, mul_zero]`.
+
+Introduce and unpack `⟨u, hu, κ, hκ, e⟩`. Conclude with `h ⟨v⁻¹ * u, mul_mem (inv_mem hv) hu, κ, hκ, by rw [mul_assoc, ← e, inv_mul_cancel_left]⟩`. Use `(IsLocallyConstant.iff_exists_open _).2 fun g => ⟨(fun y => g⁻¹ * y) ⁻¹' K, hK.1.preimage (continuous_const.mul continuous_id), by simp, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[← deltaFun_right hK g hy, mul_inv_cancel_left]`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hg (deltaFun_eq_zero h)`.
+-/
 theorem isWhitTest_deltaFun {K : Subgroup (GL (Fin m) k)} (hK : Good ψ K) : IsWhitTest ψ (deltaFun ψ K) := by
   refine ⟨fun v hv g => ?_, ?_, K, hK.2.1, fun g hg => ?_⟩
   · by_cases h : ∃ u ∈ unipB k (Fin m), ∃ κ ∈ K, g = u * κ
@@ -235,14 +310,23 @@ variable (ψ) in
 def delta (K : Subgroup (GL (Fin m) k)) : WT (m := m) ψ :=
   if h : Good ψ K then ⟨deltaFun ψ K, isWhitTest_deltaFun h⟩ else 0
 
+/- English proof (translation)
+Rewrite using `[delta, dif_pos hK]`.
+-/
 theorem coe_delta {K : Subgroup (GL (Fin m) k)} (hK : Good ψ K) :
     (delta ψ K : GL (Fin m) k → ℂ) = deltaFun ψ K := by
   rw [delta, dif_pos hK]
 
+/- English proof (translation)
+Rewrite using `[coe_delta hK, deltaFun_mul hK hu hκ]`.
+-/
 theorem delta_mul {K : Subgroup (GL (Fin m) k)} (hK : Good ψ K) {u κ : GL (Fin m) k}
     (hu : u ∈ unipB k (Fin m)) (hκ : κ ∈ K) : (delta ψ K : GL (Fin m) k → ℂ) (u * κ) = (ψ (superDiag u) : ℂ) := by
   rw [coe_delta hK, deltaFun_mul hK hu hκ]
 
+/- English proof (translation)
+Distinguish the cases in `hK : Good ψ K`. Rewrite using `[coe_delta hK, deltaFun_eq_zero h]`. Rewrite using `[delta, dif_neg hK]`. Both sides reduce to the same expression.
+-/
 theorem delta_eq_zero {K : Subgroup (GL (Fin m) k)} {g : GL (Fin m) k}
     (h : ¬ ∃ u ∈ unipB k (Fin m), ∃ κ ∈ K, g = u * κ) : (delta ψ K : GL (Fin m) k → ℂ) g = 0 := by
   by_cases hK : Good ψ K
@@ -250,6 +334,9 @@ theorem delta_eq_zero {K : Subgroup (GL (Fin m) k)} {g : GL (Fin m) k}
   · rw [delta, dif_neg hK]
     rfl
 
+/- English proof (translation)
+Distinguish the cases in `hK : Good ψ K`. Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Rewrite using `[rhoW_apply, coe_delta hK, deltaFun_right hK g hκ]`. Rewrite using `[delta, dif_neg hK, map_zero]`.
+-/
 theorem rhoW_delta {K : Subgroup (GL (Fin m) k)} {κ : GL (Fin m) k} (hκ : κ ∈ K) :
     rhoW ψ κ (delta ψ K) = delta ψ K := by
   by_cases hK : Good ψ K
@@ -257,10 +344,18 @@ theorem rhoW_delta {K : Subgroup (GL (Fin m) k)} {κ : GL (Fin m) k} (hκ : κ �
     rw [rhoW_apply, coe_delta hK, deltaFun_right hK g hκ]
   · rw [delta, dif_neg hK, map_zero]
 
+/- English proof (translation)
+Rewrite using `[← rhoW_apply, h]`.
+-/
 theorem apply_mul_of_fixed {x : WT (m := m) ψ} {κ : GL (Fin m) k} (h : rhoW ψ κ x = x) (g : GL (Fin m) k) :
     (x : GL (Fin m) k → ℂ) (g * κ) = (x : GL (Fin m) k → ℂ) g := by
   rw [← rhoW_apply, h]
 
+/- English proof (translation)
+Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Use `show _ = (x : GL (Fin m) k → ℂ) 1 * (delta ψ K : GL (Fin m) k → ℂ) g`. Distinguish the cases in `h : ∃ u ∈ unipB k (Fin m), ∃ κ ∈ K, g = u * κ`. Take `⟨u, hu, κ, hκ, rfl⟩` from `h`. Rewrite using `[delta_mul hK hu hκ, apply_mul_of_fixed (hx κ hκ), mul_comm, ← WT.left x hu, mul_one]`.
+
+Rewrite using `[delta_eq_zero h, mul_zero]`. Assume the negation of the conclusion as `h0`. Conclude with `h (hs g h0)`.
+-/
 theorem eq_smul_delta {K : Subgroup (GL (Fin m) k)} (hK : Good ψ K) (x : WT (m := m) ψ)
     (hx : ∀ κ ∈ K, rhoW ψ κ x = x)
     (hs : ∀ g, (x : GL (Fin m) k → ℂ) g ≠ 0 → ∃ u ∈ unipB k (Fin m), ∃ κ ∈ K, g = u * κ) :
@@ -274,6 +369,9 @@ theorem eq_smul_delta {K : Subgroup (GL (Fin m) k)} (hK : Good ψ K) (x : WT (m 
     by_contra h0
     exact h (hs g h0)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨κ, hκ, rfl⟩`. Simplify `hκ` using `[mul_assoc]`. Introduce `h`. Conclude with `⟨_, h, by simp [mul_assoc]⟩`.
+-/
 theorem mem_conj {K : Subgroup (GL (Fin m) k)} {g y : GL (Fin m) k} :
     y ∈ K.map (MulAut.conj g).toMonoidHom ↔ g⁻¹ * y * g ∈ K := by
   constructor
@@ -282,6 +380,29 @@ theorem mem_conj {K : Subgroup (GL (Fin m) k)} {g y : GL (Fin m) k} :
   · intro h
     exact ⟨_, h, by simp [mul_assoc]⟩
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `_ x _ hs`. Establish `: x = 0` using `Subtype.ext (funext fun y => by`. Assume the negation of the conclusion as `h`.
+
+Take `⟨g, hg, -⟩` from `hs y h`. Simplify using `at hg)`. Rewrite using `[this]`. Conclude with `zero_mem _`. Consider the case `insert g s _ ih`.
+
+Introduce `hD x hx hs`. Establish `hD' : ∀ g ∈ s, g ∈ D` using `fun a ha => hD a (Finset.mem_insert_of_mem ha)`. Establish `hval : ∀ u ∈ unipB k (Fin m), ∀ κ ∈ K, (x : GL (Fin m) k → ℂ) (u * g * κ) = (ψ (superDiag u) : ℂ) * (x : GL (Fin m) k → ℂ) g` using `fun u hu κ hκ => by`. Rewrite using `[apply_mul_of_fixed (hx κ hκ), WT.left x hu]`. Distinguish the cases in `hg : (x : GL (Fin m) k → ℂ) g = 0`.
+
+Use `ih hD' x hx fun y hy => ?_` and prove the remaining obligations. Take `⟨a, ha, u, hu, κ, hκ, e⟩` from `hs y hy`. Break down `Finset.mem_insert.1 ha with rfl | ha` into its components or cases. Conclude with `absurd (by rw [e, hval u hu κ hκ, hg, mul_zero]) hy`. Conclude with `⟨a, ha, u, hu, κ, hκ, e⟩`.
+
+Establish `hgood : Good ψ (K.map (MulAut.conj g).toMonoidHom)`. Use `⟨?_, ?_, fun u hu huK => ?_⟩` and prove the remaining obligations. Establish `: ((K.map (MulAut.conj g).toMonoidHom : Subgroup _) : Set (GL (Fin m) k)) = (fun y => g⁻¹ * y * g) ⁻¹' K` using `Set.ext fun y => mem_conj`. Rewrite using `[this]`. Conclude with `hKo.preimage ((continuous_const.mul continuous_id).mul continuous_const)`.
+
+Rewrite using `[Subgroup.coe_map]`. Conclude with `hKc.image ((continuous_const.mul continuous_id).mul continuous_const : Continuous fun y => g * y * g⁻¹)`. Establish `h1` using `apply_mul_of_fixed (hx _ (mem_conj.1 huK)) g`. Rewrite `h1` using `[← mul_assoc, mul_inv_cancel_left, WT.left x hu]`. Conclude with `Subtype.ext ((mul_eq_right₀ hg).1 h1)`.
+
+Use `set d := rhoW ψ g⁻¹ (delta ψ (K.map (MulAut.conj g).toMonoidHom)) with hd`. Establish `hdK : ∀ κ ∈ K, rhoW ψ κ d = d` using `fun κ hκ => by`. Establish `e : κ * g⁻¹ = g⁻¹ * (g * κ * g⁻¹)` using `by simp [mul_assoc]`. Rewrite using `[hd, ← Module.End.mul_apply, ← map_mul, e, map_mul, Module.End.mul_apply, rhoW_delta (mem_conj.2 (by simpa [mul_assoc] using hκ))]`. Establish `h2` using `ih hD' (x - (x : GL (Fin m) k → ℂ) g • d) (fun κ hκ => by rw [map_sub, map_smul, hx κ hκ, hdK κ hκ]) fun y hy => by`.
+
+Establish `hy' : (x : GL (Fin m) k → ℂ) y - (x : GL (Fin m) k → ℂ) g * (delta ψ (K.map (MulAut.conj g).toMonoidHom) : GL (Fin m) k → ℂ) (y * g⁻¹) ≠ 0` using `hy`. Distinguish the cases in `h : ∃ u ∈ unipB k (Fin m), ∃ κ ∈ K, y = u * g * κ`. Take `⟨u, hu, κ, hκ, rfl⟩` from `h`. Establish `e : u * g * κ * g⁻¹ = u * (g * κ * g⁻¹)` using `by simp [mul_assoc]`. Rewrite `hy'` using `[e, delta_mul hgood hu (mem_conj.2 (by simpa [mul_assoc] using hκ)), hval u hu κ hκ]`.
+
+Conclude with `absurd (by ring) hy'`. Rewrite `hy'` using `[delta_eq_zero, mul_zero, sub_zero]`. Take `⟨a, ha, hrest⟩` from `hs y hy'`. Break down `Finset.mem_insert.1 ha with rfl | ha` into its components or cases. Conclude with `absurd hrest h`.
+
+Conclude with `⟨a, ha, hrest⟩`. Introduce and unpack `⟨u, hu, κ, hκ, e⟩`. Use `h ⟨u, hu, _, mem_conj.1 hκ, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_inv_eq_iff_eq_mul.1 e]`. Simplify using `[mul_assoc]`.
+
+Establish `h3 : d ∈ Submodule.span ℂ {y | ∃ g ∈ D, Good ψ (K.map (MulAut.conj g).toMonoidHom) ∧ y = rhoW ψ g⁻¹ (delta ψ (K.map (MulAut.conj g).toMonoidHom))}` using `Submodule.subset_span ⟨g, hD g (Finset.mem_insert_self _ _), hgood, rfl⟩`. Establish `h4` using `add_mem h2 (Submodule.smul_mem _ ((x : GL (Fin m) k → ℂ) g) h3)`. Rewrite `h4` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 theorem mem_span_delta_of_cover {K : Subgroup (GL (Fin m) k)} (hKo : IsOpen (K : Set (GL (Fin m) k)))
     (hKc : IsCompact (K : Set (GL (Fin m) k))) (D : Set (GL (Fin m) k)) (s : Finset (GL (Fin m) k)) :
     (∀ g ∈ s, g ∈ D) → ∀ x : WT (m := m) ψ, (∀ κ ∈ K, rhoW ψ κ x = x) →
@@ -351,6 +472,11 @@ theorem mem_span_delta_of_cover {K : Subgroup (GL (Fin m) k)} (hKo : IsOpen (K :
       have h4 := add_mem h2 (Submodule.smul_mem _ ((x : GL (Fin m) k → ℂ) g) h3)
       rwa [sub_add_cancel] at h4
 
+/- English proof (translation)
+Take `⟨-, -, C, hC, h3⟩` from `x.2`. Take `⟨t, ht⟩` from `hC.elim_finite_subcover (fun d : D => (fun y => (d : GL (Fin m) k)⁻¹ * y) ⁻¹' K) (fun d => hKo.preimage (continuous_const.mul continuous_id)) fun c _ => by`. Take `⟨d, hd, hdD⟩` from `hD.inter_open_nonempty ((fun y => y⁻¹ * c) ⁻¹' K) (hKo.preimage (continuous_inv.mul continuous_const)) ⟨c, by simp⟩`. Conclude with `Set.mem_iUnion.2 ⟨⟨d, hdD⟩, hd⟩`. Use `mem_span_delta_of_cover hKo hKc D (t.image Subtype.val) (fun g hg => ?_) x hx fun y hy => ?_` and prove the remaining obligations.
+
+Take `⟨d, -, rfl⟩` from `Finset.mem_image.1 hg`. Conclude with `d.2`. Take `⟨u, hu, c, hc, rfl⟩` from `h3 y hy`. Take `⟨d, hd, hcd⟩` from `Set.mem_iUnion₂.1 (ht hc)`. Conclude with `⟨d, Finset.mem_image_of_mem _ hd, u, hu, _, hcd, by simp [mul_assoc]⟩`.
+-/
 theorem mem_span_delta_of_dense {K : Subgroup (GL (Fin m) k)} (hKo : IsOpen (K : Set (GL (Fin m) k)))
     (hKc : IsCompact (K : Set (GL (Fin m) k))) {D : Set (GL (Fin m) k)} (hD : Dense D) (x : WT (m := m) ψ)
     (hx : ∀ κ ∈ K, rhoW ψ κ x = x) :
@@ -370,12 +496,20 @@ theorem mem_span_delta_of_dense {K : Subgroup (GL (Fin m) k)} (hKo : IsOpen (K :
     obtain ⟨d, hd, hcd⟩ := Set.mem_iUnion₂.1 (ht hc)
     exact ⟨d, Finset.mem_image_of_mem _ hd, u, hu, _, hcd, by simp [mul_assoc]⟩
 
+/- English proof (translation)
+The claim follows from `Submodule.span_mono (by rintro _ ⟨g, -, h⟩; exact ⟨g, h⟩) (mem_span_delta_of_dense hKo hKc dense_univ x hx)`.
+-/
 theorem mem_span_delta {K : Subgroup (GL (Fin m) k)} (hKo : IsOpen (K : Set (GL (Fin m) k)))
     (hKc : IsCompact (K : Set (GL (Fin m) k))) (x : WT (m := m) ψ) (hx : ∀ κ ∈ K, rhoW ψ κ x = x) :
     x ∈ Submodule.span ℂ {y | ∃ g, Good ψ (K.map (MulAut.conj g).toMonoidHom) ∧
       y = rhoW ψ g⁻¹ (delta ψ (K.map (MulAut.conj g).toMonoidHom))} :=
   Submodule.span_mono (by rintro _ ⟨g, -, h⟩; exact ⟨g, h⟩) (mem_span_delta_of_dense hKo hKc dense_univ x hx)
 
+/- English proof (translation)
+Establish `: SecondCountableTopology (GL (Fin m) k)` using `GlobalTheory.LocGL.secondCountableTopology_GL k _`. Take `⟨D, hDc, hDd⟩` from `TopologicalSpace.exists_countable_dense (GL (Fin m) k)`. Use `⟨⋃ r : ℕ, (fun g => rhoW ψ g⁻¹ (delta ψ ((congruenceSubgroup k m r).map (MulAut.conj g).toMonoidHom))) '' D, Set.countable_iUnion fun r => hDc.image _, eq_top_iff.2 fun x _ => ?_⟩` and prove the remaining obligations. Take `⟨r, hr⟩` from `exists_fix_congruence x`. Use `Submodule.span_mono ?_ (mem_span_delta_of_dense (isOpen_congruenceSubgroup k m r) (isCompact_congruenceSubgroup k m r) hDd x hr)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨g, hg, -, rfl⟩`. Conclude with `Set.mem_iUnion.2 ⟨r, g, hg, rfl⟩`.
+-/
 theorem exists_countable_span : ∃ s : Set (WT (m := m) ψ), s.Countable ∧ Submodule.span ℂ s = ⊤ := by
   have : SecondCountableTopology (GL (Fin m) k) := GlobalTheory.LocGL.secondCountableTopology_GL k _
   obtain ⟨D, hDc, hDd⟩ := TopologicalSpace.exists_countable_dense (GL (Fin m) k)
@@ -387,6 +521,11 @@ theorem exists_countable_span : ∃ s : Set (WT (m := m) ψ), s.Countable ∧ Su
   rintro _ ⟨g, hg, -, rfl⟩
   exact Set.mem_iUnion.2 ⟨r, g, hg, rfl⟩
 
+/- English proof (translation)
+Take `⟨h1, h2, C, hC, h3⟩` from `x.2`. Use `⟨fun u hu g => ?_, h2.mul hlc, C, hC, fun g hg => h3 g (left_ne_zero_of_mul hg)⟩` and prove the remaining obligations. Establish `hpp : (ψ (superDiag u) : ℂ) * ((ψ⁻¹ : AddChar k Circle) (superDiag u) : ℂ) = 1`. Rewrite using `[AddChar.inv_apply', Circle.coe_inv]`. Conclude with `mul_inv_cancel₀ (Circle.coe_ne_zero _)`.
+
+Use `beta_reduce`. Rewrite using `[h1 u hu, hW u hu]`. Take the linear combination `((x : GL (Fin m) k → ℂ) g * W g) * hpp`.
+-/
 theorem isTestFun_mul (x : WT (m := m) ψ) (W : GL (Fin m) k → ℂ)
     (hW : ∀ u ∈ unipB k (Fin m), ∀ g, W (u * g) = (ψ⁻¹ (superDiag u) : ℂ) * W g) (hlc : IsLocallyConstant W) :
     IsTestFun fun g => (x : GL (Fin m) k → ℂ) g * W g := by

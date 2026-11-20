@@ -11,6 +11,9 @@ open ReciprocityTheory.ChartRestriction.DS
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Unfold `inUJ at *`. Rewrite using `[Matrix.conjTranspose_mul, show hᴴ * gᴴ * Jm ε * (g * h) = hᴴ * (gᴴ * Jm ε * g) * h by simp only [Matrix.mul_assoc], hg]`. Conclude with `hh`.
+-/
 lemma inUJ_mul {ε : Fin n → Bool} {g h : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) (hh : inUJ ε h) :
     inUJ ε (g * h) := by
   unfold inUJ at *
@@ -18,6 +21,19 @@ lemma inUJ_mul {ε : Fin n → Bool} {g h : Matrix (Fin n) (Fin n) ℂ} (hg : in
     show hᴴ * gᴴ * Jm ε * (g * h) = hᴴ * (gᴴ * Jm ε * g) * h by simp only [Matrix.mul_assoc], hg]
   exact hh
 
+/- English proof (translation)
+Establish `hprod : ∀ l : List (Module.End ℂ M), (∀ A ∈ l, ∀ y ∈ S, A y ∈ S) → ∀ y ∈ S, l.prod y ∈ S`. Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => intro _ y hy`. Simplify using `using hy`.
+
+Consider the case `cons A l ih`. Introduce `hl y hy`. Rewrite using `[List.prod_cons, Module.End.mul_apply]`. Conclude with `hl A List.mem_cons_self _ (ih (fun B hB => hl B (List.mem_cons_of_mem _ hB)) y hy)`. Introduce `y hy`.
+
+Unfold `Capelli.capelliC Capelli.cminor`. Rewrite using `[LinearMap.sum_apply]`. Use `Submodule.sum_mem _ fun s _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply]`. Use `zsmul_mem (hprod _ ?_ y hy) _` and prove the remaining obligations.
+
+Introduce `A hA`. Rewrite `hA` using `[List.mem_ofFn]`. Take `⟨j, rfl⟩` from `hA`. Introduce `z hz`. Unfold `Capelli.capEntry`.
+
+Rewrite using `[LinearMap.add_apply]`. Use `S.add_mem (hS _ _ z hz) ?_` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[Algebra.algebraMap_eq_smul_one, LinearMap.smul_apply, Module.End.one_apply]`. Conclude with `S.smul_mem _ hz`.
+
+Simplify using the standard rewrite rules.
+-/
 lemma capelliC_mem {M : Type*} [AddCommGroup M] [Module ℂ M] (E : Fin n → Fin n → Module.End ℂ M)
     (S : Submodule ℂ M) (hS : ∀ a b, ∀ x ∈ S, E a b x ∈ S) (u : ℂ) :
     ∀ y ∈ S, Capelli.capelliC E u y ∈ S := by
@@ -58,6 +74,11 @@ variable (ε σ V) in
 def clo : Submodule ℂ H :=
   (Submodule.span ℂ {x : H | ∃ g, inUJ ε g ∧ ∃ v : D, v ∈ V ∧ x = σ g (v : H)}).topologicalClosure
 
+/- English proof (translation)
+Establish `hle : Submodule.span ℂ {x : H | ∃ g, inUJ ε g ∧ ∃ v : D, v ∈ V ∧ x = σ g (v : H)} ≤ (clo V ε σ).comap (σ h : H →ₗ[ℂ] H)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `y ⟨g, hg, v, hv, rfl⟩`. Use `show σ h (σ g (v : H)) ∈ clo V ε σ`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hσ.1.2 h hh g hg]`.
+
+Conclude with `Submodule.le_topologicalClosure _ (Submodule.subset_span ⟨h * g, inUJ_mul hh hg, v, hv, rfl⟩)`. Establish `hcl : IsClosed (((clo V ε σ).comap (σ h : H →ₗ[ℂ] H) : Submodule ℂ H) : Set H)` using `(Submodule.isClosed_topologicalClosure _).preimage (σ h).continuous`. Conclude with `Submodule.topologicalClosure_minimal _ hle hcl hx`.
+-/
 lemma sig_mem_clo (hσ : IsURepOn (UJset ε) σ) {h : Matrix (Fin n) (Fin n) ℂ} (hh : inUJ ε h) {x : H}
     (hx : x ∈ clo V ε σ) : σ h x ∈ clo V ε σ := by
   have hle : Submodule.span ℂ {x : H | ∃ g, inUJ ε g ∧ ∃ v : D, v ∈ V ∧ x = σ g (v : H)} ≤
@@ -71,17 +92,26 @@ lemma sig_mem_clo (hσ : IsURepOn (UJset ε) σ) {h : Matrix (Fin n) (Fin n) ℂ
     (Submodule.isClosed_topologicalClosure _).preimage (σ h).continuous
   exact Submodule.topologicalClosure_minimal _ hle hcl hx
 
+/- English proof (translation)
+Use `hK.mem_of_tendsto (hasDerivAt_iff_tendsto_slope.mp hf) (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Rewrite using `[slope_def_module]`. Conclude with `Submodule.smul_of_tower_mem K _ (K.sub_mem (hm t) (hm 0))`.
+-/
 lemma mem_of_hasDerivAt {K : Submodule ℂ H} (hK : IsClosed (K : Set H)) {f : ℝ → H} {f' : H}
     (hf : HasDerivAt f f' 0) (hm : ∀ t, f t ∈ K) : f' ∈ K := by
   refine hK.mem_of_tendsto (hasDerivAt_iff_tendsto_slope.mp hf) (Filter.Eventually.of_forall fun t => ?_)
   rw [slope_def_module]
   exact Submodule.smul_of_tower_mem K _ (K.sub_mem (hm t) (hm 0))
 
+/- English proof (translation)
+The claim follows from `mem_of_hasDerivAt (Submodule.isClosed_topologicalClosure _) (hD.deriv X hX x) fun t => sig_mem_clo hσ (inUJ_exp ε hX t) hx`.
+-/
 lemma actM_mem_clo (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) {X : Matrix (Fin n) (Fin n) ℂ}
     (hX : inG ε X) {x : D} (hx : (x : H) ∈ clo V ε σ) : ((actM E X x : D) : H) ∈ clo V ε σ :=
   mem_of_hasDerivAt (Submodule.isClosed_topologicalClosure _) (hD.deriv X hX x)
     fun t => sig_mem_clo hσ (inUJ_exp ε hX t) hx
 
+/- English proof (translation)
+Establish `hs : S7.cpart1 ε (Matrix.single a b 1) + Complex.I • S7.cpart2 ε (Matrix.single a b 1) = Matrix.single a b 1` using `LemK.ta_cpart_sum ε _`. Rewrite using `[← SmDerA.actM_single E a b, ← hs, SmDerA.actM_add, SmDerA.actM_smul, LinearMap.add_apply, LinearMap.smul_apply, Submodule.coe_add, Submodule.coe_smul]`. Conclude with `add_mem (actM_mem_clo hσ hD (LemK.ta_inG_cpart1 ε _) hx) (Submodule.smul_mem _ _ (actM_mem_clo hσ hD (LemK.ta_inG_cpart2 ε _) hx))`.
+-/
 lemma E_mem_clo (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) (a b : Fin n) {x : D}
     (hx : (x : H) ∈ clo V ε σ) : ((E a b x : D) : H) ∈ clo V ε σ := by
   have hs : S7.cpart1 ε (Matrix.single a b 1) + Complex.I • S7.cpart2 ε (Matrix.single a b 1) =
@@ -93,6 +123,35 @@ lemma E_mem_clo (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) (a b
 
 end Clos
 
+/- English proof (translation)
+Introduce `n ε lam _h H _ _ _ σ D E V T μ ι hσ hD _hV _hcas _hVK hμ hcoef _hHC _hgap _hh _hq ω m hm`. Use `set P : ℂ := ∏ t, (ω + ((LemK.thV lam t : ℝ) : ℂ)) with hP`. Use `set C := Capelli.capelliC E ω with hC`. Establish `hΨ : ∀ g, inUJ ε g → S7.PsiM T μ g = opC σ ι g 1`. Introduce `g hg`.
+
+Use `ContinuousLinearMap.ext fun x => ext_inner_left ℂ fun x' => ?_` and prove the remaining obligations. Take `⟨v, rfl⟩` from `ι.surjective x`. Take `⟨v', rfl⟩` from `ι.surjective x'`. Rewrite using `[opC_coef σ ι g 1 v v', ← hcoef g hg v v']`. Both sides reduce to the same expression.
+
+Establish `hval : ∀ g, inUJ ε g → ∀ v v' : V, ⟪((v' : D) : H), σ g ((C v : D) : H)⟫_ℂ = P * ⟪((v' : D) : H), σ g ((v : D) : H)⟫_ℂ`. Introduce `g hg v v'`. Establish `h1` using `S7.psiM_capelli T μ hμ (ω - ((n : ℂ) - 1) / 2) hg`. Rewrite `h1` using `[show ω - ((n : ℂ) - 1) / 2 + ((n : ℂ) - 1) / 2 = ω by ring]`. Rewrite `h1` using `[show Formalism.QuantumDeterminants.capelli ε ω (S7.PsiM T μ) = Formalism.QuantumDeterminants.qdetOp (Formalism.REAL.EabV ε) ω (S7.PsiM T μ) from rfl, qdet_opC hσ hD ι hΨ hg ω]`.
+
+Establish `h3 : Formalism.QuantumDeterminants.capP (fun s => (lam s : ℂ)) (ω - ((n : ℂ) - 1) / 2) = P`. Unfold `Formalism.QuantumDeterminants.capP`. Rewrite using `[hP]`. Use `Finset.prod_congr rfl fun t _ => ?_` and prove the remaining obligations. Unfold `LemK.thV`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← opC_coef σ ι g C v v', ← mul_one C, h1, h3, hΨ g hg, _root_.smul_apply, inner_smul_right, opC_coef]`. Both sides reduce to the same expression. Establish `hA : ∀ v : V, C v = P • (v : D)`.
+
+Introduce `v`. Use `set u : D := C v - P • (v : D) with hu`. Establish `horth : ∀ g, inUJ ε g → ∀ v' : V, ⟪((v' : D) : H), σ g (u : H)⟫_ℂ = 0`. Introduce `g hg v'`. Rewrite using `[hu, Submodule.coe_sub, Submodule.coe_smul, map_sub, map_smul, inner_sub_right, inner_smul_right, hval g hg v v', sub_self]`.
+
+Set `S : Submodule ℂ D` to `(clo V ε σ).comap D.subtype`. Establish `hSE : ∀ a b, ∀ x ∈ S, E a b x ∈ S` using `fun a b x hx => E_mem_clo hσ hD a b hx`. Establish `hvS : (v : D) ∈ S` using `by show ((v : D) : H) ∈ clo V ε σ`. Use `Submodule.le_topologicalClosure _ (Submodule.subset_span ⟨1, inUJ_one ε, v, v.2, ?_⟩)` and prove the remaining obligations. Rewrite using `[hσ.1.1]`.
+
+Both sides reduce to the same expression. Establish `huS : u ∈ S` using `S.sub_mem (capelliC_mem E S hSE ω _ hvS) (S.smul_mem P hvS)`. Establish `hle : clo V ε σ ≤ (innerSL ℂ (u : H)).ker`. Use `Submodule.topologicalClosure_minimal _ ?_ (ContinuousLinearMap.isClosed_ker _)` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `y ⟨g, hg, w, hw, rfl⟩`. Establish `h0` using `horth _ (inUJ_jAdj hg) ⟨w, hw⟩`. Establish `h1 : ⟪σ g (w : H), (u : H)⟫_ℂ = 0`. Rewrite using `[inner_sig_left hσ hg]`. Conclude with `h0`.
+
+Use `show innerSL ℂ (u : H) (σ g (w : H)) = 0`. Rewrite using `[innerSL_apply_apply, ← inner_conj_symm, h1, map_zero]`. Establish `hin : innerSL ℂ (u : H) (u : H) = 0` using `hle huS`. Rewrite `hin` using `[innerSL_apply_apply]`. Establish `hu0 : u = 0`.
+
+Establish `: (u : H) = 0` using `inner_self_eq_zero.mp hin`. Conclude with `this` after adjusting the coercions. Rewrite `hu0` using `[hu, sub_eq_zero]`. Conclude with `hu0`. Establish `hB : genSub E V ≤ LinearMap.ker (C - P • (1 : Module.End ℂ D))`.
+
+Use `sInf_le ⟨?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`. Conclude with `hA ⟨x, hx⟩`. Introduce `a b x hx`.
+
+Rewrite `hx`, the goal using `[LinearMap.mem_ker]`. Establish `hcomm` using `Capelli.capelliCentral (Module.End ℂ D) n E ω ((Capelli.isGlRep_iff_glRelR E).mp hD.glRep) a b`. Establish `hce : C (E a b x) = E a b (C x)`. Use `congrArg (fun A : Module.End ℂ D => A x) hcomm.eq` as an intermediate fact. Simplify `this.symm` using `[Module.End.mul_apply]`.
+
+Rewrite `hx`, the goal using `[LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply]`. Rewrite using `[hce, ← map_smul, ← map_sub, hx, map_zero]`. Establish `hm'` using `hB hm`. Rewrite `hm'` using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`. Conclude with `hm'`.
+-/
 theorem capVal_main : CapValStatement := by
   intro n ε lam _h H _ _ _ σ D E V T μ ι hσ hD _hV _hcas _hVK hμ hcoef _hHC _hgap _hh _hq ω m hm
   set P : ℂ := ∏ t, (ω + ((LemK.thV lam t : ℝ) : ℂ)) with hP
@@ -175,6 +234,9 @@ end ReciprocityTheory.ChartRestriction.DS.Lap.CapelliClosureMembership
 
 namespace ReciprocityTheory.ChartRestriction.DS.Lap
 
+/- English proof (translation)
+The claim follows from `CapelliClosureMembership.capVal_main`.
+-/
 theorem capVal : CapValStatement := CapelliClosureMembership.capVal_main
 
 end ReciprocityTheory.ChartRestriction.DS.Lap

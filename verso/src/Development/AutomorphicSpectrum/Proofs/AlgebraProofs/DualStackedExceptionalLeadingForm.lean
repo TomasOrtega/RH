@@ -9,6 +9,13 @@ open GroundTheory.Heights₂.Heights ReciprocityTheory.ChartRestriction.G.Geo Mv
 namespace GlobalTheory.CompanionTheory.Ar.Giv.LeadForm
 noncomputable section
 
+/- English proof (translation)
+Proceed by induction on `Y using Finset.induction_on with`. Consider the case `empty => exact ⟨1, one_mem _, by simp⟩`. Consider the case `insert a Y _ ih`. Take `⟨s, hs, hsY⟩` from `ih fun y hy => h y (Finset.mem_insert_of_mem hy)`. Take `⟨u, hu, hua⟩` from `h a (Finset.mem_insert_self _ _)`.
+
+Use `⟨s * u, mul_mem hs hu, fun y hy => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hy with rfl | hy` into its components or cases. Rewrite using `[mul_smul]`. Conclude with `M.smul_mem _ hua`. Rewrite using `[mul_comm, mul_smul]`.
+
+Conclude with `M.smul_mem _ (hsY y hy)`.
+-/
 theorem common_den {R V : Type} [CommRing R] [AddCommGroup V] [Module R V] (S : Submonoid R) (M : Submodule R V)
     (Y : Finset V) [DecidableEq V] (h : ∀ y ∈ Y, ∃ s ∈ S, s • y ∈ M) : ∃ s ∈ S, ∀ y ∈ Y, s • y ∈ M := by
   induction Y using Finset.induction_on with
@@ -21,12 +28,40 @@ theorem common_den {R V : Type} [CommRing R] [AddCommGroup V] [Module R V] (S : 
     · rw [mul_smul]; exact M.smul_mem _ hua
     · rw [mul_comm, mul_smul]; exact M.smul_mem _ (hsY y hy)
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.SpanDenominator.den_of_span P M x hx`.
+-/
 theorem den_of_span {K : Type} [Field K] [NumberField K] {i : ℕ} (P : Ideal (𝓞 K)) [P.IsPrime]
     (M : Submodule (𝓞 K) (Fin i → K)) (x : Fin i → K)
     (hx : x ∈ Submodule.span (Localization.subalgebra.ofField K P.primeCompl P.primeCompl_le_nonZeroDivisors)
       (M : Set (Fin i → K))) : ∃ s ∈ P.primeCompl, s • x ∈ M :=
   _root_.UpperTheory.Reformulated.B.SpanDenominator.den_of_span P M x hx
 
+/- English proof (translation)
+Introduce `K _ _ i P hP h0 L hL`. Use `haveI : P.IsPrime := hP.isPrime`. Set `A : Subalgebra (𝓞 K) K` to `Localization.subalgebra.ofField K P.primeCompl P.primeCompl_le_nonZeroDivisors`. Use `haveI : IsDiscreteValuationRing A := IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain (𝓞 K) h0 A`. Set `N : Submodule A (Fin i → K)` to `Submodule.span A (L : Set (Fin i → K))`.
+
+Take `⟨G, hG⟩` from `hL`. Use `haveI : Module.Finite A N := by`. Rewrite using `[Module.Finite.iff_fg]`. Use `⟨G, ?_⟩` and prove the remaining obligations. Rewrite using `[show N = Submodule.span A (L : Set (Fin i → K)) from rfl, ← hG, Submodule.span_span_of_tower]`.
+
+Use `haveI : Module.IsTorsionFree A N := inferInstance`. Use `haveI : Module.Free A N := Module.free_of_finite_type_torsion_free'`. Set `q` to `Module.Free.chooseBasis A N`. Set `ι` to `Module.Free.ChooseBasisIndex A N`. Take `⟨s₀, hs₀, hs₀q⟩` from `common_den P.primeCompl L (Finset.univ.image fun j : ι => ((q j : N) : Fin i → K)) (by`.
+
+Introduce `y hy`. Take `⟨j, -, rfl⟩` from `Finset.mem_image.1 hy`. Conclude with `den_of_span P L _ (q j).2)`. Establish `hs₀0 : algebraMap (𝓞 K) K s₀ ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors (P.primeCompl_le_nonZeroDivisors hs₀)`. Set `p : ι → Fin i → K` to `fun j => s₀ • ((q j : N) : Fin i → K)`.
+
+Establish `hpL : ∀ j, p j ∈ L` using `fun j => hs₀q _ (Finset.mem_image_of_mem _ (Finset.mem_univ j))`. Establish `hqA : LinearIndependent A (fun j => ((q j : N) : Fin i → K))` using `q.linearIndependent.map' N.subtype N.ker_subtype`. Establish `hqK : LinearIndependent K (fun j => ((q j : N) : Fin i → K))` using `(LinearIndependent.iff_fractionRing A K).1 hqA`. Establish `hpK : LinearIndependent K p`. Use `hqK.units_smul (fun _ => Units.mk0 _ hs₀0)` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Simplify using `[p, Units.smul_def, algebraMap_smul]`. Use `set Q : Submodule (𝓞 K) (Fin i → K) := Submodule.span (𝓞 K) (Set.range p) with hQ`. Establish `hNQ : ∀ x ∈ N, x ∈ Submodule.span A (Q : Set (Fin i → K))`.
+
+Introduce `x hx`. Establish `hx'` using `q.sum_repr ⟨x, hx⟩`. Establish `: x = ∑ j, (q.repr ⟨x, hx⟩ j) • ((q j : N) : Fin i → K)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this]`.
+
+Use `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `hu : (algebraMap (𝓞 K) K s₀)⁻¹ ∈ A` using `⟨1, s₀, hs₀, by simp⟩`. Establish `: ((q j : N) : Fin i → K) = (⟨_, hu⟩ : A) • p j`. Rewrite using `[Subalgebra.smul_def]`. Simplify using `only [p]`.
+
+Rewrite using `[← algebraMap_smul K s₀, smul_smul]`. Simplify using `[hs₀0]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (Submodule.subset_span ⟨j, rfl⟩))`. Take `⟨s₁, hs₁, hs₁G⟩` from `common_den P.primeCompl Q G (by`.
+
+Introduce `y hy`. Establish `hyL : y ∈ L` using `hG ▸ Submodule.subset_span hy`. Conclude with `den_of_span P Q y (hNQ y (Submodule.subset_span hyL)))`. Use `⟨ι, inferInstance, p, s₁, hs₁, hpL, hpK, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite `hv` using `[← hG]`.
+
+Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem y hy => exact hs₁G y hy`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [smul_add]`. Conclude with `Q.add_mem hy hz`.
+
+Consider the case `smul a y _ hy => rw [smul_comm]`. Conclude with `Q.smul_mem a hy`.
+-/
 theorem frame : ∀ (K : Type) [Field K] [NumberField K] (i : ℕ) (P : Ideal (𝓞 K)), P.IsMaximal → P ≠ ⊥ →
     ∀ L : Submodule (𝓞 K) (Fin i → K), L.FG →
     ∃ (ι : Type) (_ : Fintype ι) (p : ι → Fin i → K) (s : 𝓞 K), s ∉ P ∧ (∀ j, p j ∈ L) ∧
@@ -98,6 +133,9 @@ def ev {T B : Type} [Fintype T] [CommRing B] (x y : T → B) : MRing (stackedBlo
     | ⟨.inl _, t⟩ => x t
     | ⟨.inr _, t⟩ => y t
 
+/- English proof (translation)
+Establish `: h.comp (ev x y) = ev (fun t => h (x t)) (fun t => h (y t))`. Use `MvPolynomial.ringHom_ext (by simp [ev]) ?_` and prove the remaining obligations. Apply the tactic sequence `rintro ⟨⟨⟩ | ⟨⟩, t⟩ <;> simp [ev]`. Conclude with `congrArg (fun g => g f) this`.
+-/
 theorem ev_map {T B B' : Type} [Fintype T] [CommRing B] [CommRing B'] (h : B →+* B') (x y : T → B)
     (f : MRing (stackedBlocks T)) : h (ev x y f) = ev (fun t => h (x t)) (fun t => h (y t)) f := by
   have : h.comp (ev x y) = ev (fun t => h (x t)) (fun t => h (y t)) := by
@@ -105,6 +143,13 @@ theorem ev_map {T B B' : Type} [Fintype T] [CommRing B] [CommRing B'] (h : B →
     rintro ⟨⟨⟩ | ⟨⟩, t⟩ <;> simp [ev]
   exact congrArg (fun g => g f) this
 
+/- English proof (translation)
+Simplify using `only [ev, coe_eval₂Hom]`. Rewrite using `[eval₂_eq', eval₂_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `h1` using `hf m hm (Sum.inl ())`. Establish `h2` using `hf m hm (Sum.inr ())`.
+
+Simplify using `only [bidegree, Sum.elim_inl, Sum.elim_inr] at h1 h2`. Simplify using `only [Fintype.prod_sigma, Fintype.prod_sum_type, Fintype.prod_unique]`. Establish `h1' : ∑ t, m ⟨Sum.inl default, t⟩ = d` using `h1`. Establish `h2' : ∑ t, m ⟨Sum.inr default, t⟩ = n` using `h2`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]`.
+
+Use `erw [h1', h2']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ev_scale {T B : Type} [Fintype T] [CommRing B] (p q : B) (x y : T → B) (d n : ℕ)
     (f : MRing (stackedBlocks T)) (hf : IsMultiHomog f (bidegree d n)) :
     ev (fun t => p * x t) (fun t => q * y t) f = p ^ d * q ^ n * ev x y f := by
@@ -122,6 +167,9 @@ theorem ev_scale {T B : Type} [Fintype T] [CommRing B] (p q : B) (x y : T → B)
   erw [h1', h2']
   ring
 
+/- English proof (translation)
+Use `MvPolynomial.ringHom_ext (by simp [ev, stackedFormEval]) ?_` and prove the remaining obligations. Apply the tactic sequence `rintro ⟨⟨⟩ | ⟨⟩, t⟩ <;> simp [ev, stackedFormEval]`.
+-/
 theorem stackedFormEval_eq_ev {K : Type} [Field K] [NumberField K] {i : ℕ} {F F' : HermLattice K i} {T : Type}
     [Fintype T] (b : Module.Basis T ℤ (dualLattice F)) (b' : Module.Basis T ℤ (dualLattice F')) :
     stackedFormEval b b' = ev (fun t => ∑ j, C ((b' t : Fin i → K) j) * X j)
@@ -129,11 +177,19 @@ theorem stackedFormEval_eq_ev {K : Type} [Field K] [NumberField K] {i : ℕ} {F 
   refine MvPolynomial.ringHom_ext (by simp [ev, stackedFormEval]) ?_
   rintro ⟨⟨⟩ | ⟨⟩, t⟩ <;> simp [ev, stackedFormEval]
 
+/- English proof (translation)
+Use `MvPolynomial.ringHom_ext (by simp [ev, linPointMap]) ?_` and prove the remaining obligations. Apply the tactic sequence `rintro ⟨⟨⟩ | ⟨⟩, t⟩ <;> simp [ev, linPointMap]`.
+-/
 theorem linPointMap_eq_ev {T : Type} [Fintype T] {k : Type} [Field k] {n : ℕ} (α : T → k) (M : T → Fin n → k) :
     linPointMap α M = ev (fun t => C (α t) * X none) (fun t => ∑ j, C (M t j) * X (some j)) := by
   refine MvPolynomial.ringHom_ext (by simp [ev, linPointMap]) ?_
   rintro ⟨⟨⟩ | ⟨⟩, t⟩ <;> simp [ev, linPointMap]
 
+/- English proof (translation)
+Establish `hv : v = ∑ l, v l • (Pi.single l 1 : Fin i → K)`. Use function extensionality and compare the values at `a`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `conv_rhs => rw [hv]`. Simplify using `only [map_sum, map_mul, aeval_X, algHom_C, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_smul, algebraMap_eq, Finset.mul_sum, Finset.sum_mul]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem subst_form {K : Type} [Field K] {i : ℕ} {ι : Type} [Fintype ι]
     (c : (Fin i → K) →ₗ[K] (ι → K)) (W : ι → MvPolynomial ι K) (v : Fin i → K) :
     aeval (fun l : Fin i => ∑ j, C (c (Pi.single l 1) j) * W j) (∑ l, C (v l) * X l : MvPolynomial (Fin i) K) =
@@ -148,6 +204,47 @@ theorem subst_form {K : Type} [Field K] {i : ℕ} {ι : Type} [Fintype ι]
   refine Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => ?_
   ring
 
+/- English proof (translation)
+Introduce `K _ _ i F F' T _ _ b b' k _ α M ρ ι _ _ e j₀ π S Cc D lam N he hπ hρπ hS hC hD hα hM d n f hf h0`. Use `set am := algebraMap (𝓞 K) K with ham`. Establish `hinj : LinearMap.ker (Fintype.linearCombination K e) = ⊥`. Use `LinearMap.ker_eq_bot'.2 fun y hy => ?_` and prove the remaining obligations. Use `Fintype.linearIndependent_iff.1 he y (by simpa [Fintype.linearCombination_apply] using hy)` as an intermediate fact.
+
+Conclude with `funext this`. Take `⟨c, hc⟩` from `(Fintype.linearCombination K e).exists_leftInverse_of_injective hinj`. Establish `hcy : ∀ y : ι → K, c (∑ l, y l • e l) = y`. Introduce `y`. Use `LinearMap.congr_fun hc y` as an intermediate fact.
+
+Simplify `this` using `[Fintype.linearCombination_apply]`. Set `W : ι → MvPolynomial ι K` to `fun j => if j = j₀ then X j else C (am π) * X j`. Set `h1 : MvPolynomial (Fin i) K →+* MvPolynomial ι K` to `(aeval (fun l : Fin i => ∑ j, C (c (Pi.single l 1) j) * W j) : MvPolynomial (Fin i) K →ₐ[K] MvPolynomial ι K).toRingHom`. Set `h2 : MvPolynomial ι (𝓞 K) →+* MvPolynomial ι K` to `map am`. Set `h3 : MvPolynomial ι (𝓞 K) →+* MvPolynomial ι k` to `map ρ`.
+
+Set `P : T → MvPolynomial ι (𝓞 K)` to `fun t => ∑ j, C (Cc t j) * (if j = j₀ then X j else C π * X j)`. Set `Q : T → MvPolynomial ι (𝓞 K)` to `fun t => ∑ j, C (D t j) * X j`. Establish `hform : ∀ v : Fin i → K, h1 (∑ l, C (v l) * X l) = ∑ j, C (c v j) * W j` using `fun v => subst_form c W v`. Establish `hscale : ∀ (s : K) (v : Fin i → K), (C s * ∑ l, C (v l) * X l : MvPolynomial (Fin i) K) = ∑ l, C ((s • v) l) * X l`. Introduce `s v`.
+
+Simplify using `[Finset.mul_sum, mul_assoc]`. Establish `hx : ∀ t, h1 (C (am S) * ∑ l, C ((b' t : Fin i → K) l) * X l) = 1 * h2 (P t)`. Introduce `t`. Rewrite using `[hscale, hform, hC t, hcy (fun l => am (Cc t l)), one_mul]`. Simplify using `only [h2, P, map_sum, map_mul, map_C]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hj : j = j₀ <;> simp [W, hj]`. Establish `hy : ∀ t, h1 (C (am S) * ∑ l, C ((b t : Fin i → K) l) * X l) = C (am π) * h2 (Q t)`. Introduce `t`. Establish `hv : ∑ l, am (D t l) • (if l = j₀ then am π • e l else e l) = ∑ l, (am (D t l) * (if l = j₀ then am π else 1)) • e l`.
+
+Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : l = j₀ <;> simp [h, smul_smul]`. Rewrite using `[hscale, hform, hD t, hv, hcy (fun l => am (D t l) * (if l = j₀ then am π else 1))]`. Simplify using `only [h2, Q, map_sum, map_mul, map_C, Finset.mul_sum, map_X]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hj : j = j₀`. Simplify using `only [W, hj, if_true, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [W, hj, if_false, map_mul, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hamπ : (C (am π) : MvPolynomial ι K) ≠ 0`. Rewrite using `[Ne, C_eq_zero]`. Conclude with `fun h => hπ ((map_eq_zero_iff am RingOfIntegers.coe_injective).1 h)`. Establish `h2inj : Function.Injective h2` using `map_injective _ RingOfIntegers.coe_injective`. Rewrite `h0` using `[stackedFormEval_eq_ev]`.
+
+Establish `e1` using `ev_scale (C (am S)) (C (am S)) (fun t => ∑ l, C ((b' t : Fin i → K) l) * X l) (fun t => ∑ l, C ((b t : Fin i → K) l) * X l) d n f hf`. Rewrite `e1` using `[h0, mul_zero]`. Establish `e2` using `congrArg h1 e1`. Rewrite `e2` using `[ev_map, map_zero]`. Simplify using `only [hx, hy] at e2`.
+
+Rewrite `e2` using `[ev_scale 1 (C (am π)) (fun t => h2 (P t)) (fun t => h2 (Q t)) d n f hf, one_pow, one_mul]`. Establish `e3 : ev (fun t => h2 (P t)) (fun t => h2 (Q t)) f = 0` using `(mul_eq_zero.1 e2).resolve_left (pow_ne_zero _ hamπ)`. Rewrite `e3` using `[← ev_map]`. Establish `e4 : ev P Q f = 0` using `h2inj (by rw [e3, map_zero])`. Establish `e5` using `congrArg h3 e4`.
+
+Rewrite `e5` using `[ev_map, map_zero]`. Establish `hP3 : ∀ t, h3 (P t) = X j₀ * C (ρ (Cc t j₀))`. Introduce `t`. Simplify using `only [h3, P, map_sum, map_mul, map_C]`. Rewrite using `[Finset.sum_eq_single j₀]`.
+
+Simplify using `[mul_comm]`. Introduce `j _ hj`. Simplify using `[hj, hρπ]`. Simplify using the standard rewrite rules. Simplify using `only [hP3] at e5`.
+
+Establish `e5' : ev (fun t => X j₀ * (C (ρ (Cc t j₀)) : MvPolynomial ι k)) (fun t => 1 * h3 (Q t)) f = 0`. Simplify `e5` using `only [one_mul]`. Use `replace e5 := e5'`. Rewrite `e5` using `[ev_scale (X j₀) 1 (fun t => C (ρ (Cc t j₀))) (fun t => h3 (Q t)) d n f hf, one_pow, mul_one]`. Establish `e6 : ev (fun t => (C (ρ (Cc t j₀)) : MvPolynomial ι k)) (fun t => h3 (Q t)) f = 0` using `(mul_eq_zero.1 e5).resolve_left (pow_ne_zero _ (X_ne_zero _))`.
+
+Set `h4 : MvPolynomial ι k →+* MvPolynomial (Option (Fin i)) k` to `eval₂Hom C (fun j => ∑ l, C (N j l) * X (some l))`. Establish `e7` using `congrArg h4 e6`. Rewrite `e7` using `[ev_map, map_zero]`. Establish `hC4 : ∀ t, h4 (C (ρ (Cc t j₀))) = C (ρ (Cc t j₀))` using `fun t => by simp [h4]`. Establish `hyq : ∀ t, h4 (h3 (Q t)) = C (ρ S) * ∑ l, C (M t l) * X (some l)`.
+
+Introduce `t`. Establish `hMl : ∀ l, ρ S * M t l = ∑ j, ρ (D t j) * N j l`. Introduce `l`. Use `congrFun (hM t) l` as an intermediate fact. Simplify `this` using `[Finset.sum_apply]`.
+
+Simplify using `only [h3, h4, Q, map_sum, map_mul, map_C, map_X, coe_eval₂Hom, eval₂_mul, eval₂_C, eval₂_X, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← C_mul, hMl, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[C_mul, mul_assoc]`. Simplify using `only [hC4, hyq] at e7`. Establish `e8` using `ev_scale (C lam * X none) 1 (fun t => (C (ρ (Cc t j₀)) : MvPolynomial (Option (Fin i)) k)) (fun t => C (ρ S) * ∑ l, C (M t l) * X (some l)) d n f hf`. Rewrite `e8` using `[e7, mul_zero]`. Establish `hxq : ∀ t, (C lam * X none : MvPolynomial (Option (Fin i)) k) * C (ρ (Cc t j₀)) = C (ρ S) * (C (α t) * X none)`.
+
+Introduce `t`. Rewrite using `[← mul_assoc, ← C_mul, hα t, C_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hxq, one_mul] at e8`. Rewrite `e8` using `[ev_scale (C (ρ S)) (C (ρ S)) (fun t => C (α t) * X none) (fun t => ∑ l, C (M t l) * X (some l)) d n f hf]`.
+
+Rewrite using `[linPointMap_eq_ev]`. Establish `hS' : (C (ρ S) : MvPolynomial (Option (Fin i)) k) ≠ 0` using `by rwa [Ne, C_eq_zero]`. Conclude with `(mul_eq_zero.1 e8).resolve_left (mul_ne_zero (pow_ne_zero _ hS') (pow_ne_zero _ hS'))`.
+-/
 theorem poly : ∀ (K : Type) [Field K] [NumberField K] (i : ℕ) (F F' : HermLattice K i) (T : Type) [Fintype T]
     [DecidableEq T] (b : Module.Basis T ℤ (dualLattice F)) (b' : Module.Basis T ℤ (dualLattice F'))
     (k : Type) [Field k] (α : T → k) (M : T → Fin i → k) (ρ : 𝓞 K →+* k)
@@ -269,10 +366,18 @@ theorem poly : ∀ (K : Type) [Field K] [NumberField K] (i : ℕ) (F F' : HermLa
   have hS' : (C (ρ S) : MvPolynomial (Option (Fin i)) k) ≠ 0 := by rwa [Ne, C_eq_zero]
   exact (mul_eq_zero.1 e8).resolve_left (mul_ne_zero (pow_ne_zero _ hS') (pow_ne_zero _ hS'))
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Yde5.main P hP h0`.
+-/
 theorem unif {R : Type} [CommRing R] [IsDedekindDomain R] (P : Ideal R) (hP : P.IsMaximal) (h0 : P ≠ ⊥) :
     ∃ π : R, π ≠ 0 ∧ π ∈ P ∧ ∃ s : R, s ∉ P ∧ ∀ y ∈ P, ∃ c, s * y = π * c :=
   _root_.UpperTheory.Reformulated.B.Yde5.main P hP h0
 
+/- English proof (translation)
+Establish `: v = ∑ j, (⟨algebraMap (𝓞 K) K (y j) • (q j : Fin i → K), hΛ _ _ (q j).2⟩ : Λ)`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hv]`. Simplify using the standard rewrite rules. Rewrite using `[this, map_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => hτ _ _ _ rfl`.
+-/
 theorem semi_sum {K : Type} [Field K] [NumberField K] {i : ℕ} {k W : Type} [Field k] [AddCommGroup W] [Module k W]
     (ρ : 𝓞 K →+* k) (Λ : Submodule ℤ (Fin i → K))
     (hΛ : ∀ (μ : 𝓞 K) v, v ∈ Λ → algebraMap (𝓞 K) K μ • v ∈ Λ) (τ : Λ →+ W)
@@ -287,6 +392,9 @@ theorem semi_sum {K : Type} [Field K] [NumberField K] {i : ℕ} {k W : Type} [Fi
   rw [this, map_sum]
   exact Finset.sum_congr rfl fun j _ => hτ _ _ _ rfl
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨c, hc⟩` from `hv x hx`. Use `⟨μ * c, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_dotProduct, ← hc, map_mul, smul_eq_mul]`.
+-/
 theorem dual_stable {K : Type} [Field K] [NumberField K] {i : ℕ} (F : HermLattice K i) (μ : 𝓞 K)
     (v : Fin i → K) (hv : v ∈ dualLattice F) : algebraMap (𝓞 K) K μ • v ∈ dualLattice F := by
   intro x hx
@@ -303,6 +411,13 @@ def dualO {K : Type} [Field K] [NumberField K] {i : ℕ} (F : HermLattice K i) :
     rw [← algebraMap_smul K μ φ]
     exact dual_stable F μ φ hφ
 
+/- English proof (translation)
+Establish `: dualO F = Submodule.span (𝓞 K) (Set.range fun t => (b t : Fin i → K))`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Establish `hx'` using `b.sum_repr ⟨x, hx⟩`. Establish `hxs : x = ∑ t, (b.repr ⟨x, hx⟩ t) • (b t : Fin i → K)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hxs]`. Use `Submodule.sum_mem _ fun t _ => ?_` and prove the remaining obligations. Establish `hm : (b t : Fin i → K) ∈ Submodule.span (𝓞 K) (Set.range fun t => (b t : Fin i → K))` using `Submodule.subset_span ⟨t, rfl⟩`. Conclude with `(Submodule.span (𝓞 K) (Set.range fun t => (b t : Fin i → K))).toAddSubgroup.zsmul_mem hm _`.
+
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨t, rfl⟩`. Conclude with `(b t).2`. Rewrite using `[this]`. Conclude with `Submodule.fg_span (Set.finite_range _)`.
+-/
 theorem dualO_fg {K : Type} [Field K] [NumberField K] {i : ℕ} (F : HermLattice K i) {T : Type} [Fintype T]
     (b : Module.Basis T ℤ (dualLattice F)) : (dualO F).FG := by
   have : dualO F = Submodule.span (𝓞 K) (Set.range fun t => (b t : Fin i → K)) := by
@@ -323,6 +438,67 @@ theorem dualO_fg {K : Type} [Field K] [NumberField K] {i : ℕ} (F : HermLattice
   rw [this]
   exact Submodule.fg_span (Set.finite_range _)
 
+/- English proof (translation)
+Introduce `K _ _ i F F' T _ _ b b' a hi hlt hcov hstack k _ α M hres d n f hf h0`. Take `⟨ρ, ρ', σ, hρs, hρ's, hσs, hker, hρ'l, hσl, hα, hM⟩` from `hres`. Use `set am := algebraMap (𝓞 K) K with ham`. Set `P : Ideal (𝓞 K)` to `RingHom.ker ρ`. Establish `hP : P.IsMaximal` using `RingHom.ker_isMaximal_of_surjective ρ hρs`.
+
+Establish `h0P : P ≠ ⊥`. Introduce `h`. Establish `hinj : Function.Injective ρ` using `(RingHom.injective_iff_ker_eq_bot ρ).2 h`. Establish `e : 𝓞 K ≃+* k` using `RingEquiv.ofBijective ρ ⟨hinj, hρs⟩`. Conclude with `RingOfIntegers.not_isField K (e.toMulEquiv.isField (Field.toIsField k))`.
+
+Take `⟨π, hπ0, hπP, s₁, hs₁, hs₁y⟩` from `unif P hP h0P`. Take `⟨ι, _, p, s, hs, hpL, hpK, hsp⟩` from `frame K i P hP h0P (dualO F') (dualO_fg F' b')`. Establish `hρπ : ρ π = 0` using `hπP`. Establish `hρs₁ : ρ s₁ ≠ 0` using `hs₁`. Establish `hρs0 : ρ s ≠ 0` using `hs`.
+
+Set `pL : ι → dualLattice F'` to `fun j => ⟨p j, hpL j⟩`. Establish `hcoordp : ∀ v : dualLattice F', ∃ y : ι → 𝓞 K, am s • (v : Fin i → K) = ∑ j, am (y j) • p j`. Introduce `v`. Establish `h1` using `hsp v v.2`. Take `⟨y, hy⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 K)).1 h1`.
+
+Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite using `[ham, algebraMap_smul, ← hy]`. Conclude with `(Finset.sum_congr rfl fun j _ => (algebraMap_smul K (y j) (p j)).symm).symm ▸ rfl`. Establish `hρ'sum` using `fun (y : ι → 𝓞 K) (q : ι → dualLattice F') (v : dualLattice F') hv => semi_sum ρ (dualLattice F') (dual_stable F') ρ' hρ'l y q v hv`. Establish `hsv : ∀ (μ : 𝓞 K) (v : dualLattice F'), ρ' ⟨am μ • (v : Fin i → K), dual_stable F' μ _ v.2⟩ = ρ μ * ρ' v` using `fun μ v => hρ'l μ v _ rfl`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨j₀, hj₀⟩ : ∃ j₀, ρ' (pL j₀) ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Take `⟨v₀, hv₀⟩` from `hρ's 1`. Take `⟨y₀, hy₀⟩` from `hcoordp v₀`.
+
+Establish `h1` using `hρ'sum y₀ pL ⟨am s • (v₀ : Fin i → K), dual_stable F' s _ v₀.2⟩ hy₀`. Rewrite `h1` using `[hsv, hv₀, mul_one]`. Apply `hρs0` to reduce the goal to its premises. Rewrite using `[h1]`. Simplify using `[hcon]`.
+
+Use `set lam := ρ' (pL j₀) with hlam`. Use `choose c hc using fun j => hρs (ρ' (pL j) / lam)`. Set `cc : ι → 𝓞 K` to `fun j => if j = j₀ then 0 else c j`. Set `e : ι → Fin i → K` to `fun j => p j - am (cc j) • p j₀`. Establish `hemem : ∀ j, e j ∈ dualLattice F'` using `fun j => (dualLattice F').sub_mem (pL j).2 (dual_stable F' _ _ (pL j₀).2)`.
+
+Set `eL : ι → dualLattice F'` to `fun j => ⟨e j, hemem j⟩`. Establish `he₀ : e j₀ = p j₀` using `by simp [e, cc]`. Establish `hρe₀ : ρ' (eL j₀) = lam`. Rewrite using `[hlam]`. Use `congr 1`.
+
+Conclude with `Subtype.ext he₀`. Establish `hρe : ∀ j, j ≠ j₀ → ρ' (eL j) = 0`. Introduce `j hj`. Establish `h1 : eL j = pL j - ⟨am (c j) • (pL j₀ : Fin i → K), dual_stable F' _ _ (pL j₀).2⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `[eL, e, cc, hj, pL]`. Rewrite using `[h1, map_sub, hsv, hc, ← hlam]`. Clear denominators, using `[hj₀]` for the nonvanishing conditions. Simplify using the standard rewrite rules. Establish `hei : LinearIndependent K e`.
+
+Use `Fintype.linearIndependent_iff.2 fun g hg => ?_` and prove the remaining obligations. Use `set A : K := ∑ l, g l * am (cc l) with hA`. Establish `h1 : ∑ j, (g j - if j = j₀ then A else 0) • p j = 0`. Establish `: ∑ j, (g j - if j = j₀ then A else 0) • p j = ∑ j, g j • e j`. Simplify using `only [e, sub_smul, smul_sub, Finset.sum_sub_distrib, smul_smul, ite_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true, ← Finset.sum_smul, hA]`.
+
+Rewrite using `[this, hg]`. Establish `h2` using `Fintype.linearIndependent_iff.1 hpK _ h1`. Establish `h3 : ∀ j, j ≠ j₀ → g j = 0` using `fun j hj => by simpa [hj] using h2 j`. Establish `h4 : A = 0`. Rewrite using `[hA]`.
+
+Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : l = j₀`. Simplify using `[hl, cc]`. Simplify using `[h3 l hl]`. Introduce `j`.
+
+Distinguish the cases in `hj : j = j₀`. Substitute `hj` using the available equality. Simplify `h2 j` using `[h4]`. Conclude with `h3 j hj`. Establish `hcoord : ∀ v : dualLattice F', ∃ y : ι → 𝓞 K, am s • (v : Fin i → K) = ∑ j, am (y j) • e j`.
+
+Introduce `v`. Take `⟨y, hy⟩` from `hcoordp v`. Use `⟨fun j => y j + if j = j₀ then ∑ l, y l * cc l else 0, ?_⟩` and prove the remaining obligations. Rewrite using `[hy]`. Simplify using `only [map_add, add_smul, Finset.sum_add_distrib, apply_ite am, map_zero, ite_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true, he₀]`.
+
+Simplify using `only [e, smul_sub, Finset.sum_sub_distrib, smul_smul, map_sum, map_mul, Finset.sum_smul]`. Normalize the expressions using the abelian group laws. Establish `hlmem : ∀ j, (if j = j₀ then am π • e j else e j) ∈ dualLattice F`. Introduce `j`. Distinguish the cases in `hj : j = j₀`.
+
+Substitute `hj` using the available equality. Simplify using `only [if_true]`. Establish `h2` using `(hker ⟨am π • e j, dual_stable F' _ _ (hemem j)⟩).1 (by`. Use `hsv π (eL j)` as an intermediate fact. Rewrite `this` using `[hρπ, zero_mul]`.
+
+Conclude with `this)`. Conclude with `h2`. Simplify using `only [hj, if_false]`. Conclude with `(hker (eL j)).1 (hρe j hj)`. Set `lL : ι → dualLattice F` to `fun j => ⟨_, hlmem j⟩`.
+
+Set `N : ι → Fin i → k` to `fun j => σ (lL j)`. Establish `hbmem : ∀ t, (b t : Fin i → K) ∈ dualLattice F'` using `fun t => by`. Rewrite using `[hstack t]`. Conclude with `(dualLattice F').smul_mem _ (b' t).2`. Set `bL : T → dualLattice F'` to `fun t => ⟨b t, hbmem t⟩`.
+
+Use `choose yC hyC using fun t => hcoord (b' t)`. Use `choose yD hyD using fun t => hcoord (bL t)`. Establish `hyD0 : ∀ t, yD t j₀ ∈ P`. Introduce `t`. Establish `h1` using `hρ'sum (yD t) eL ⟨am s • ((bL t : dualLattice F') : Fin i → K), dual_stable F' s _ (bL t).2⟩ (hyD t)`.
+
+Establish `hb0 : ρ' (bL t) = 0` using `(hker (bL t)).2 (b t).2`. Rewrite `h1` using `[hsv, hb0, mul_zero, Finset.sum_eq_single j₀ (fun j _ hj => by simp [hρe j hj]) (by simp), hρe₀]`. Establish `h2 : ρ (yD t j₀) * lam = 0` using `h1.symm`. Conclude with `(mul_eq_zero.1 h2).resolve_right hj₀`. Use `choose cD hcD using fun t => hs₁y (yD t j₀) (hyD0 t)`.
+
+Use `poly K i F F' T b b' k α M ρ ι e j₀ π (s₁ * s) (fun t j => s₁ * yC t j) (fun t j => if j = j₀ then cD t else s₁ * yD t j) lam N hei hπ0 hρπ (by rw [map_mul]; exact mul_ne_zero hρs₁ hρs0) ?_ ?_ ?_ ?_ d n f hf h0` and prove the remaining obligations. Introduce `t`. Rewrite using `[map_mul, mul_smul, hyC t, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, mul_smul]`.
+
+Introduce `t`. Establish `hbt : am s • (b t : Fin i → K) = ∑ j, am (yD t j) • e j` using `hyD t`. Rewrite using `[map_mul, mul_smul, hbt, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : j = j₀`.
+
+Substitute `hj` using the available equality. Simplify using `only [if_true, smul_smul]`. Rewrite using `[← map_mul, ← map_mul, hcD t, mul_comm π]`. Use `beta_reduce`. Rewrite using `[if_neg hj, if_neg hj, map_mul, mul_smul]`.
+
+Introduce `t`. Establish `hv : ((⟨am (s₁ * s) • (b' t : Fin i → K), dual_stable F' _ _ (b' t).2⟩ : dualLattice F') : Fin i → K) = ∑ j, am (s₁ * yC t j) • (eL j : Fin i → K)` using `by show am (s₁ * s) • (b' t : Fin i → K) = ∑ j, am (s₁ * yC t j) • e j`. Rewrite using `[map_mul, mul_smul, hyC t, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, mul_smul]`.
+
+Establish `h1` using `hρ'sum _ eL _ hv`. Rewrite `h1` using `[hsv, ← hα t, Finset.sum_eq_single j₀ (fun j _ hj => by simp [hρe j hj]) (by simp), hρe₀]`. Conclude with `h1`. Introduce `t`. Establish `hv : ((⟨am (s₁ * s) • (b t : Fin i → K), dual_stable F _ _ (b t).2⟩ : dualLattice F) : Fin i → K) = ∑ j, am (if j = j₀ then cD t else s₁ * yD t j) • (lL j : Fin i → K)` using `by show am (s₁ * s) • (b t : Fin i → K) = ∑ j, am (if j = j₀ then cD t else s₁ * yD t j) • (if j = j₀ then am π • e j else e j)`.
+
+Establish `hbt : am s • (b t : Fin i → K) = ∑ j, am (yD t j) • e j` using `hyD t`. Rewrite using `[map_mul, mul_smul, hbt, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : j = j₀`. Substitute `hj` using the available equality.
+
+Simplify using `only [if_true, smul_smul]`. Rewrite using `[← map_mul, ← map_mul, hcD t, mul_comm π]`. Use `beta_reduce`. Rewrite using `[if_neg hj, if_neg hj, map_mul, mul_smul]`. Establish `h1` using `semi_sum ρ (dualLattice F) (dual_stable F) σ hσl _ lL _ hv`.
+
+Rewrite `h1` using `[hσl (s₁ * s) (b t) _ rfl, ← hM t]`. Conclude with `h1`.
+-/
 theorem dualStackedExcLeadForm : GroundTheory.Heights₂.Heights.DualStackedExcLeadForm.Statement := by
   intro K _ _ i F F' T _ _ b b' a hi hlt hcov hstack k _ α M hres d n f hf h0
   classical

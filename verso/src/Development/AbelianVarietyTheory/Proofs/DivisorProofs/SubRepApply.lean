@@ -13,6 +13,9 @@ def subRep (π : Representation k Γ V) (S : Submodule k V) (hS : Stab π S) : R
   map_one' := by ext x; simp
   map_mul' g h := by ext x; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem subRep_apply (π : Representation k Γ V) (S : Submodule k V) (hS : Stab π S) (g : Γ) (x : S) :
     ((subRep π S hS g x : S) : V) = π g x := rfl
 

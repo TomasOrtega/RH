@@ -18,18 +18,29 @@ namespace GlobalTheory.AdForm.SplitGen
 
 variable {D : D7}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `only [xiN, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem xiN_smul (θ : InfFam D) (S T : HSp D) {a b : ℕ} (hS : S.rank = a) (hT : T.rank = b) (δ : ℂ) (sc : ℝ)
     (c : ℂ) (f : WO S T → ℂ) : xiN θ S T hS hT δ sc (c • f) = c • xiN θ S T hS hT δ sc f := by
   funext z
   simp only [xiN, Pi.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `only [xiN, Finset.sum_apply, Finset.mul_sum]`.
+-/
 theorem xiN_sum (θ : InfFam D) (S T : HSp D) {a b : ℕ} (hS : S.rank = a) (hT : T.rank = b) (δ : ℂ) (sc : ℝ)
     {ι : Type} (s : Finset ι) (F : ι → WO S T → ℂ) :
     xiN θ S T hS hT δ sc (∑ i ∈ s, F i) = ∑ i ∈ s, xiN θ S T hS hT δ sc (F i) := by
   funext z
   simp only [xiN, Finset.sum_apply, Finset.mul_sum]
 
+/- English proof (translation)
+Establish `e : gramAt D V τ = 1`. Unfold `gramAt`. Rewrite using `[hV]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Rewrite using `[e]`.
+
+Conclude with `⟨by simp, by simp, by open scoped ComplexOrder in simpa using Matrix.PosDef.one⟩`.
+-/
 theorem cartan_of_gram (V : HSp D) (hV : V.gram = 1) (τ : D.what₂.Tau) : IsCartanInv (gramAt D V τ) 1 := by
   have e : gramAt D V τ = 1 := by
     unfold gramAt; rw [hV]; exact Matrix.map_one _ (map_zero _) (map_one _)
@@ -37,6 +48,9 @@ theorem cartan_of_gram (V : HSp D) (hV : V.gram = 1) (τ : D.what₂.Tau) : IsCa
   exact ⟨by simp, by simp, by
     open scoped ComplexOrder in simpa using Matrix.PosDef.one⟩
 
+/- English proof (translation)
+Unfold `toHom`. Rewrite using `[← map_sub]`. Both sides reduce to the same expression.
+-/
 theorem toHom_sub (S T : HSp D) {a b : ℕ} (hS : S.rank = a) (hT : T.rank = b)
     (γ γ' : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     toHom S T hS hT (γ - γ') = toHom S T hS hT γ - toHom S T hS hT γ' := by
@@ -44,6 +58,11 @@ theorem toHom_sub (S T : HSp D) {a b : ℕ} (hS : S.rank = a) (hT : T.rank = b)
   rw [← map_sub]
   rfl
 
+/- English proof (translation)
+Establish `h1` using `GlobalTheory.LatVac.heisO_heisO ψ x (2 • l) X`. Rewrite `h1` using `[h2]`. Establish `h3 : ψ (symplOH S T x (2 • l)) = 1`. Rewrite using `[two_nsmul]`. Establish `e : symplOH S T x (l + l) = symplOH S T x l + symplOH S T x l`.
+
+Simplify using `only [symplOH, GlobalTheory.LatVac.symplO_add_right, mul_add]`. Rewrite using `[e, ψ.map_add_eq_mul]`. Conclude with `GlobalTheory.LatVac.char_half hph`. Rewrite using `[h1, h3, one_smul]`.
+-/
 theorem heisO_add_two (ψ : AddChar (AF D.host.F) ℂ) {S T : HSp D} {x l : WO S T} {X : WO S T → ℂ}
     (h2 : heisO ψ S T (2 • l) X = X) (hph : ψ (symplO S T x l) = 1) :
     heisO ψ S T (x + 2 • l) X = heisO ψ S T x X := by
@@ -59,6 +78,59 @@ theorem heisO_add_two (ψ : AddChar (AF D.host.F) ℂ) {S T : HSp D} {x l : WO S
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `D ψ θ S T a b hS hT δ sc hP μ om hW ΛS ΛS' ΛT ΛT' hΛS hΛS' hΛT hΛT' e he s s' hs hs' x₀ y₀ hx₀ hy₀ hmove A₁ A₂ hA₁ hA₂ hA₂γ hsd hα₁ hα₂ hidx f hf hfix₁ hfix₂ hne`. Establish `hψ` using `hW.std`. Establish `he'` using `GlobalTheory.SplitScalar.isSplitIdem_conj he`. Establish `hom` using `GlobalTheory.WeilVacMove.isVacO_om D ψ θ S T μ μ om hW hP.inf (fun _ => 1) (fun _ => 1) (fun _ => 1) (fun _ => 1) _ _ _ _ s s' (fun τ => by rw [GlobalTheory.SplitScalar.compAt_mt he hs]) (fun τ => by rw [GlobalTheory.SplitScalar.compAt_mt he hs']) hmove f hf`. Establish `hdΛ : ∀ u ∈ (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True), ∀ u' ∈ (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True), ψ (symplO S T u u') = 1` using `fun u hu u' hu' => GlobalTheory.LatVac.char_sympl_eq_one hψ hΛS hΛT hu hu'`.
+
+Establish `hdΛ' : ∀ u ∈ (latO S T (ΛS' : Set (Fin S.rank → D.host.E)) (ΛT' : Set (Fin T.rank → D.host.E)) fun _ => True), ∀ u' ∈ (latO S T (ΛS' : Set (Fin S.rank → D.host.E)) (ΛT' : Set (Fin T.rank → D.host.E)) fun _ => True), ψ (symplO S T u u') = 1` using `fun u hu u' hu' => GlobalTheory.LatVac.char_sympl_eq_one hψ hΛS' hΛT' hu hu'`. Establish `hst` using `@GlobalTheory.SplitScalar.idem_smul_mem D S T ΛS ΛT _ he.1`. Establish `hstc` using `@GlobalTheory.SplitScalar.idem_smul_mem D S T ΛS ΛT _ he'.1`. Establish `hst'` using `@GlobalTheory.SplitScalar.idem_smul_mem D S T ΛS' ΛT' _ he.1`. Establish `hstc'` using `@GlobalTheory.SplitScalar.idem_smul_mem D S T ΛS' ΛT' _ he'.1`.
+
+Establish `hoff : ∀ u ∈ (latO S T (ΛS' : Set (Fin S.rank → D.host.E)) (ΛT' : Set (Fin T.rank → D.host.E)) fun _ => True), (1 - (e + cA D e)) • u ∈ (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True)`. Introduce `u hu`. Take `⟨u₀, hu₀, rfl⟩` from `(hmove u).1 hu`. Rewrite using `[GlobalTheory.SplitScalar.off_smul_actO hs hs', sub_smul, add_smul, one_smul]`. Conclude with `sub_mem hu₀ (add_mem (hst _ hu₀) (hstc _ hu₀))`.
+
+Establish `hfo : ∀ γ, GlobalTheory.AdTh.IsFinOf S T γ (GlobalTheory.LatVac.finTens 1 γ)` using `fun γ => (GlobalTheory.VacSign.isFinOf_iff _ _).2 rfl`. Establish `hzsub : ∀ γ γ', embH (tauE D) δ (toHom S T hS hT γ) - embH (tauE D) δ (toHom S T hS hT γ') = embH (tauE D) δ (toHom S T hS hT (γ - γ'))` using `fun γ γ' => by rw [toHom_sub, map_sub]`. Use `set Λ := (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True) with hΛ`. Use `set Λ' := (latO S T (ΛS' : Set (Fin S.rank → D.host.E)) (ΛT' : Set (Fin T.rank → D.host.E)) fun _ => True) with hΛ'`. Establish `: (A₁.addSubgroupOf A₂).FiniteIndex` using `⟨hidx⟩`.
+
+Use `letI : Fintype (A₂ ⧸ A₁.addSubgroupOf A₂) := Fintype.ofFinite _`. Establish `hch : ∀ c : A₂ ⧸ A₁.addSubgroupOf A₂, ∃ γ, ((Quotient.out c : A₂) : VCx D.what₂.Tau a b) = embH (tauE D) δ (toHom S T hS hT γ)` using `fun c => hA₂γ _ (Quotient.out c).2`. Use `choose γc hγc using hch`. Establish `hcov : ∀ u ∈ Λ', ∃ c ∈ (Finset.univ : Finset (A₂ ⧸ A₁.addSubgroupOf A₂)), u - GlobalTheory.LatVac.finTens 1 (γc c) ∈ Λ`. Introduce `u hu`.
+
+Take `⟨γ, l, hl, hl', hγ⟩` from `GlobalTheory.LatApprox.exists_rat_sub_two_nsmul D S T ΛS ΛS' ΛT ΛT' hΛS hΛS' hΛT hΛT' u hu`. Establish `hx' : GlobalTheory.LatVac.finTens 1 γ ∈ Λ'`. Rewrite using `[show GlobalTheory.LatVac.finTens 1 γ = u - 2 • l by rw [← hγ, sub_sub_cancel]]`. Conclude with `sub_mem hu (nsmul_mem hl' 2)`. Establish `hz : embH (tauE D) δ (toHom S T hS hT γ) ∈ A₂` using `(hA₂ γ _ (hfo γ)).1 hx'`.
+
+Use `⟨QuotientAddGroup.mk (⟨_, hz⟩ : A₂), Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Establish `hq : embH (tauE D) δ (toHom S T hS hT γ) - embH (tauE D) δ (toHom S T hS hT (γc (QuotientAddGroup.mk (⟨_, hz⟩ : A₂)))) ∈ A₁`. Rewrite using `[← hγc]`. Take `⟨h, hh⟩` from `QuotientAddGroup.mk_out_eq_add (A₁.addSubgroupOf A₂) (⟨_, hz⟩ : A₂)`. Rewrite using `[hh, AddSubgroup.coe_add, sub_add_cancel_left]`.
+
+Conclude with `neg_mem (AddSubgroup.mem_addSubgroupOf.1 h.2)`. Rewrite `hq` using `[hzsub]`. Establish `h1` using `(hA₁ _ _ (hfo _)).2 hq`. Rewrite `h1` using `[GlobalTheory.AdTh.SplitClass.finTens_sub]`. Establish `e1 : u - GlobalTheory.LatVac.finTens 1 (γc (QuotientAddGroup.mk (⟨_, hz⟩ : A₂))) = 2 • l + (GlobalTheory.LatVac.finTens 1 γ - GlobalTheory.LatVac.finTens 1 (γc (QuotientAddGroup.mk (⟨_, hz⟩ : A₂))))`.
+
+Rewrite using `[← hγ]`. Normalize the expressions using the abelian group laws. Rewrite using `[e1]`. Conclude with `add_mem (nsmul_mem hl 2) h1`. Take `⟨R, hR, hRu⟩` from `GlobalTheory.AdTh.SplitClass.exists_reps Λ (fun u => u ∈ Λ' ∧ IsHalf e u) Finset.univ (fun c => GlobalTheory.LatVac.finTens 1 (γc c)) fun u hu => hcov u hu.1`.
+
+Take `⟨R', hR', hRu'⟩` from `GlobalTheory.AdTh.SplitClass.exists_reps Λ (fun u => u ∈ Λ' ∧ IsHalf (cA D e) u) Finset.univ (fun c => GlobalTheory.LatVac.finTens 1 (γc c)) fun u hu => hcov u hu.1`. Establish `hRu2 : ∀ u ∈ Λ', IsHalf e u → ∃! v, v ∈ R ∧ u - v ∈ Λ` using `fun u hu hue => hRu u ⟨hu, hue⟩`. Establish `hRu2' : ∀ u ∈ Λ', IsHalf (cA D e) u → ∃! v, v ∈ R' ∧ u - v ∈ Λ` using `fun u hu hue => hRu' u ⟨hu, hue⟩`. Establish `hmain` using `GlobalTheory.SplitScalar.om_vacuum_eq_splitFac_smul_sum D ψ θ S T μ μ om hW hP.inf hP.sigS hP.sigT (fun _ => 1) (fun _ => 1) (cartan_of_gram S hP.gS) (cartan_of_gram T hP.gT) ΛS ΛS' ΛT ΛT' hΛS hΛS' hΛT hΛT' e he s s' hs hs' x₀ y₀ hx₀ hy₀ hmove R R' hR hRu2 hR' hRu2' f hf`. Establish `hpair : ∀ p : WO S T × WO S T, ∃ γ : Matrix (Fin T.rank) (Fin S.rank) D.host.E, ∃ l : WO S T, p ∈ R ×ˢ R' → (l ∈ Λ ∧ l ∈ Λ' ∧ p.1 + p.2 - GlobalTheory.LatVac.finTens 1 γ = 2 • l)`.
+
+Introduce `p`. Distinguish the cases in `hp : p ∈ R ×ˢ R'`. Take `⟨hu, hu'⟩` from `Finset.mem_product.1 hp`. Take `⟨γ, l, h1, h2, h3⟩` from `GlobalTheory.LatApprox.exists_rat_sub_two_nsmul D S T ΛS ΛS' ΛT ΛT' hΛS hΛS' hΛT hΛT' (p.1 + p.2) (add_mem (hR _ hu).1 (hR' _ hu').1)`. Conclude with `⟨γ, l, fun _ => ⟨h1, h2, h3⟩⟩`.
+
+Conclude with `⟨0, 0, fun h => absurd h hp⟩`. Use `choose γ l hγl using hpair`. Establish `hxeq : ∀ p ∈ R ×ˢ R', GlobalTheory.LatVac.finTens 1 (γ p) = p.1 + p.2 - 2 • l p` using `fun p hp => by`. Rewrite using `[← (hγl p hp).2.2, sub_sub_cancel]`. Establish `hxΛ' : ∀ p ∈ R ×ˢ R', GlobalTheory.LatVac.finTens 1 (γ p) ∈ Λ'`.
+
+Introduce `p hp`. Take `⟨hu, hu'⟩` from `Finset.mem_product.1 hp`. Rewrite using `[hxeq p hp]`. Conclude with `sub_mem (add_mem (hR _ hu).1 (hR' _ hu').1) (nsmul_mem (hγl p hp).2.1 2)`. Establish `hwx : ∀ p ∈ R ×ˢ R', p.1 + p.2 = GlobalTheory.LatVac.finTens 1 (γ p) + 2 • l p` using `fun p hp => by`.
+
+Rewrite using `[hxeq p hp, sub_add_cancel]`. Establish `hz₂ : ∀ p ∈ R ×ˢ R', embH (tauE D) δ (toHom S T hS hT (γ p)) ∈ A₂` using `fun p hp => (hA₂ _ _ (hfo _)).1 (hxΛ' p hp)`. Establish `hpf : ∀ p ∈ R ×ˢ R', heisO ψ S T p.1 (heisO ψ S T p.2 f) = ψ (symplOH S T p.1 p.2) • heisO ψ S T (GlobalTheory.LatVac.finTens 1 (γ p)) f`. Introduce `p hp`. Rewrite using `[GlobalTheory.LatVac.heisO_heisO, hwx p hp, heisO_add_two ψ (hf.2.lat.1 _ (hγl p hp).1) (hdΛ' _ (hxΛ' p hp) _ (hγl p hp).2.1)]`.
+
+Establish `hph : ∀ p ∈ R ×ˢ R', ψ (symplOH S T p.1 p.2) = alV D.host.d sc (embH (tauE D) δ (toHom S T hS hT (γ p)))`. Introduce `p hp`. Take `⟨hu, hu'⟩` from `Finset.mem_product.1 hp`. Establish `hF : heisO ψ S T p.1 (heisO ψ S T p.2 (om (s, s') f)) = om (s, s') f`. Rewrite using `[hom.2.lat.2 _ he' p.2 (hR' _ hu').1 (hR' _ hu').2, hom.2.lat.2 _ he p.1 (hR _ hu).1 (hR _ hu).2]`.
+
+Rewrite `hF` using `[GlobalTheory.LatVac.heisO_heisO, hwx p hp, heisO_add_two ψ (hom.2.lat.1 _ (hγl p hp).2.1) (hdΛ' _ (hxΛ' p hp) _ (hγl p hp).2.1)]`. Establish `hG` using `congrArg (xiN θ S T hS hT δ sc) hF`. Rewrite `hG` using `[xiN_smul, GlobalTheory.AdForm.HeisRead.xiN_heisO_finOf D ψ θ S T a b hS hT δ sc hP _ hom.2.theta _ _ (hfo _)]`. Take `⟨w, hw⟩` from `Function.ne_iff.1 hne`. Establish `h1` using `congrFun hG w`.
+
+Establish `h2` using `hfix₂ _ (hz₂ p hp) w`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at h1 hw`. Establish `hU : Formalism.L2.Th1.H.opU (HV sc) (embH (tauE D) δ (toHom S T hS hT (γ p))) (xiN θ S T hS hT δ sc (om (s, s') f)) w ≠ 0`. Introduce `h0`. Rewrite `h1` using `[h0, mul_zero]`.
+
+Conclude with `hw h1.symm`. Conclude with `mul_right_cancel₀ hU (h1.trans h2.symm)`. Establish `hinj : ∀ p ∈ R ×ˢ R', ∀ q ∈ R ×ˢ R', embH (tauE D) δ (toHom S T hS hT (γ p)) - embH (tauE D) δ (toHom S T hS hT (γ q)) ∈ A₁ → p = q`. Introduce `p hp q hq hpq`. Rewrite `hpq` using `[hzsub]`.
+
+Establish `h1` using `(hA₁ _ _ (hfo _)).2 hpq`. Rewrite `h1` using `[GlobalTheory.AdTh.SplitClass.finTens_sub]`. Take `⟨hu, hu'⟩` from `Finset.mem_product.1 hp`. Take `⟨hv, hv'⟩` from `Finset.mem_product.1 hq`. Assume the negation of the conclusion as `hne'`.
+
+Use `GlobalTheory.SplitScalar.sum_sub_notMem he hst hstc hR hRu2 hR' hRu2' hu hv hu' hv' (by rw [Prod.mk.eta, Prod.mk.eta]; exact hne') ?_` and prove the remaining obligations. Establish `e2 : p.1 + p.2 - (q.1 + q.2) = (GlobalTheory.LatVac.finTens 1 (γ p) - GlobalTheory.LatVac.finTens 1 (γ q)) + 2 • (l p - l q)`. Rewrite using `[hwx p hp, hwx q hq]`. Normalize the expressions using the abelian group laws. Rewrite using `[e2]`.
+
+Conclude with `add_mem h1 (nsmul_mem (sub_mem (hγl p hp).1 (hγl q hq).1) 2)`. Establish `hsurj : ∀ y ∈ A₂, ∃ p ∈ R ×ˢ R', y - embH (tauE D) δ (toHom S T hS hT (γ p)) ∈ A₁`. Introduce `y hy`. Take `⟨γ₀, rfl⟩` from `hA₂γ y hy`. Establish `hv : GlobalTheory.LatVac.finTens 1 γ₀ ∈ Λ'` using `(hA₂ _ _ (hfo _)).2 hy`.
+
+Establish `hh1 : IsHalf e (e • GlobalTheory.LatVac.finTens 1 γ₀)` using `(GlobalTheory.SplitScalar.isHalf_iff _ _).2 (by rw [smul_smul, he.1])`. Establish `hh2 : IsHalf (cA D e) (cA D e • GlobalTheory.LatVac.finTens 1 γ₀)` using `(GlobalTheory.SplitScalar.isHalf_iff _ _).2 (by rw [smul_smul, he'.1])`. Take `⟨r, ⟨hr, hrΛ⟩, -⟩` from `hRu2 _ (hst' _ hv) hh1`. Take `⟨r', ⟨hr', hrΛ'⟩, -⟩` from `hRu2' _ (hstc' _ hv) hh2`. Establish `hp : (r, r') ∈ R ×ˢ R'` using `Finset.mem_product.2 ⟨hr, hr'⟩`.
+
+Use `⟨(r, r'), hp, ?_⟩` and prove the remaining obligations. Rewrite using `[hzsub]`. Use `(hA₁ _ _ (hfo _)).1 ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.AdTh.SplitClass.finTens_sub, hxeq _ hp]`. Establish `e3 : GlobalTheory.LatVac.finTens 1 γ₀ - ((r, r').1 + (r, r').2 - 2 • l (r, r')) = (e • GlobalTheory.LatVac.finTens 1 γ₀ - r) + (cA D e • GlobalTheory.LatVac.finTens 1 γ₀ - r') + (1 - (e + cA D e)) • GlobalTheory.LatVac.finTens 1 γ₀ + 2 • l (r, r')`.
+
+Simplify using `only [sub_smul, add_smul, one_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e3]`. Conclude with `add_mem (add_mem (add_mem hrΛ hrΛ') (hoff _ hv)) (nsmul_mem (hγl _ hp).1 2)`. Establish `hsum` using `GlobalTheory.ThetaInter.inter_eq_sum_reps (HV sc) (alV D.host.d sc) A₁ A₂ (herm_HV sc) hsd hα₁ hα₂ (R ×ˢ R') (fun p => embH (tauE D) δ (toHom S T hS hT (γ p))) hz₂ hinj hsurj _ hfix₁`.
+
+Establish `hF : xiN θ S T hS hT δ sc (om (s, s') f) = ((splitFacO μ μ x₀ y₀ : ℂ) * ((Real.sqrt ((R.card : ℝ) * R'.card) : ℝ) : ℂ)⁻¹) • ∑ p ∈ R ×ˢ R', alV D.host.d sc (embH (tauE D) δ (toHom S T hS hT (γ p))) • Formalism.L2.Th1.H.opU (HV sc) (embH (tauE D) δ (toHom S T hS hT (γ p))) (xiN θ S …`. Rewrite using `[hmain, xiN_smul, ← Finset.sum_product', xiN_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Rewrite using `[hpf p hp, xiN_smul, GlobalTheory.AdForm.HeisRead.xiN_heisO_finOf D ψ θ S T a b hS hT δ sc hP _ hf.2.theta _ _ (hfo _), hph p hp]`.
+
+Use function extensionality and compare the values at `w`. Rewrite using `[hF, hsum w]`. Simplify using `only [Pi.smul_apply, Finset.sum_apply, smul_eq_mul, splitFacO, Circle.coe_mul, Circle.coe_inv, Finset.card_product, Nat.cast_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem moves_reading : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (a b : ℕ) (hS : S.rank = a) (hT : T.rank = b) (δ : ℂ) (sc : ℝ), StdPair θ S T δ sc ψ → ∀ (μ : (AE D)ˣ →* Circle) (om : Om S T), IsWeilDatumO ψ S T μ μ om → ∀ (ΛS ΛS' : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT ΛT' : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)), IsSelfDualC S ΛS → IsSelfDualC S ΛS' → IsSelfDualC T ΛT → IsSelfDualC T ΛT' → ∀ e, IsSplitIdem D e → ∀ (s : GA D S) (s' : GA D T), SuppAt e S s → SuppAt e T s' → ∀ x₀ y₀, IsDetAt e S s x₀ → IsDetAt e T s' y₀ → (∀ u : WO S T, u ∈ (latO S T (ΛS' : Set (Fin S.rank → D.host.E)) (ΛT' : Set (Fin T.rank → D.host.E)) fun _ => True) ↔ ∃ u₀ ∈ (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True), u = actO S T s s' u₀) → ∀ A₁ A₂ : AddSubgroup (VCx D.what₂.Tau a b), (∀ γ v, GlobalTheory.AdTh.IsFinOf S T γ v → (v ∈ (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True) ↔ embH (tauE D) δ (toHom S T hS hT γ) ∈ A₁)) → (∀ γ v, GlobalTheory.AdTh.IsFinOf S T γ v → (v ∈ (latO S T (ΛS' : Set (Fin S.rank → D.host.E)) (ΛT' : Set (Fin T.rank → D.host.E)) fun _ => True) ↔ embH (tauE D) δ (toHom S T hS hT γ) ∈ A₂)) → (∀ z ∈ A₂, ∃ γ, z = embH (tauE D) δ (toHom S T hS hT γ)) → Formalism.L2.Th1.H.IsSelfDual (HV sc) A₂ → Formalism.L2.Th1.H.IsSemiChar (HV sc) A₁ (alV D.host.d sc) → Formalism.L2.Th1.H.IsSemiChar (HV sc) A₂ (alV D.host.d sc) → Formalism.L2.Th1.H.relIdx A₁ A₂ ≠ 0 → ∀ f, IsVacO ψ θ S T (fun _ => 1) (fun _ => 1) (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) f → xiN θ S T hS hT δ sc f ∈ Formalism.L2.Th1.H.fixedBy (HV sc) (alV D.host.d sc) A₁ → xiN θ S T hS hT δ sc (om (s, s') f) ∈ Formalism.L2.Th1.H.fixedBy (HV sc) (alV D.host.d sc) A₂ → xiN θ S T hS hT δ sc (om (s, s') f) ≠ 0 → xiN θ S T hS hT δ sc (om (s, s') f) = fun z => ((μ x₀ : ℂ))⁻¹ * (μ y₀ : ℂ) * Formalism.L2.Th1.H.inter (HV sc) (alV D.host.d sc) A₁ A₂ (xiN θ S T hS hT δ sc f) z := by
   intro D ψ θ S T a b hS hT δ sc hP μ om hW ΛS ΛS' ΛT ΛT' hΛS hΛS' hΛT hΛT' e he s s' hs hs' x₀ y₀ hx₀ hy₀ hmove
     A₁ A₂ hA₁ hA₂ hA₂γ hsd hα₁ hα₂ hidx f hf hfix₁ hfix₂ hne

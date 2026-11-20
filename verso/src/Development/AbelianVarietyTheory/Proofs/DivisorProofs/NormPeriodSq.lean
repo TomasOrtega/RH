@@ -19,9 +19,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {r : D.host.E}
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.CurveLattice.lattice_of_curve D (GlobalTheory.InducedType.induced_type D).1 cc δ h).2.1`.
+-/
 theorem delta_ne_zero (h : Formalism.MainNotions.StandardLatticesGL3.Crv D cc δ) : δ ≠ 0 :=
   (GlobalTheory.CurveLattice.lattice_of_curve D (GlobalTheory.InducedType.induced_type D).1 cc δ h).2.1
 
+/- English proof (translation)
+Take `⟨hxi, hN, hd⟩` from `ReciprocityTheory.ChartRestriction.G.PullbackSections.PfModelDataX.xiR_facts D`. Rewrite using `[GlobalTheory.MomDict.area_lamOf D cc δ h.1.1]`. Establish `h1 : (0 : ℝ) < Ideal.absNorm cc`. Conclude with `Nat.pos_of_ne_zero (Ideal.absNorm_eq_zero_iff.not.2 h.1.1)` after adjusting the coercions. Establish `h2` using `Complex.normSq_pos.2 (delta_ne_zero h)`.
+
+Establish `h3 : (0 : ℝ) < Real.sqrt D.host.d` using `by linarith`. Check the signs of the components of the expression.
+-/
 theorem area_pos (h : Formalism.MainNotions.StandardLatticesGL3.Crv D cc δ) : 0 < area (lamOf D cc δ) := by
   obtain ⟨hxi, hN, hd⟩ := ReciprocityTheory.ChartRestriction.G.PullbackSections.PfModelDataX.xiR_facts D
   rw [GlobalTheory.MomDict.area_lamOf D cc δ h.1.1]
@@ -31,6 +39,9 @@ theorem area_pos (h : Formalism.MainNotions.StandardLatticesGL3.Crv D cc δ) : 0
   have h3 : (0 : ℝ) < Real.sqrt D.host.d := by linarith
   positivity
 
+/- English proof (translation)
+Take `⟨hxi, hN, hd⟩` from `ReciprocityTheory.ChartRestriction.G.PullbackSections.PfModelDataX.xiR_facts D`. Rewrite using `[hxi]`. Establish `h1 : (0 : ℝ) < Ideal.absNorm D.host.ccK` using `by linarith`. Establish `h3 : (0 : ℝ) < Real.sqrt D.host.d` using `by linarith`. Check the signs of the components of the expression.
+-/
 theorem xiR_pos (D : D7) : 0 < Formalism.L2.Pj.xiR D := by
   obtain ⟨hxi, hN, hd⟩ := ReciprocityTheory.ChartRestriction.G.PullbackSections.PfModelDataX.xiR_facts D
   rw [hxi]
@@ -38,6 +49,13 @@ theorem xiR_pos (D : D7) : 0 < Formalism.L2.Pj.xiR D := by
   have h3 : (0 : ℝ) < Real.sqrt D.host.d := by linarith
   positivity
 
+/- English proof (translation)
+Take `⟨hxi, hN, hd⟩` from `ReciprocityTheory.ChartRestriction.G.PullbackSections.PfModelDataX.xiR_facts D`. Establish `hcj : embT D τ (D.host.conj r) = starRingEnd ℂ (embT D τ r)`. Use `D.host.isCMField_hostE` as an intermediate fact. Establish `h : NumberField.IsCMField.complexConj D.host.E r = D.host.conj r`. Apply `D.host.φ₀.injective` to reduce the goal to its premises.
+
+Rewrite using `[NumberField.IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply]`. Rewrite using `[← h, NumberField.IsCMField.complexEmbedding_complexConj]`. Establish `h1` using `congrArg (embT D τ) h`. Rewrite `h1` using `[map_mul, map_mul, hcj, Complex.mul_conj, map_natCast, map_natCast]`. Establish `h2 : Complex.normSq (embT D τ r) * (Ideal.absNorm D.host.ccK : ℝ) = (Ideal.absNorm cc : ℝ)` using `by exact_mod_cast h1`.
+
+Rewrite using `[GlobalTheory.MomDict.area_lamOf D cc δ hc, hxi, map_mul, ← h2]`. Establish `h3 : (Ideal.absNorm D.host.ccK : ℝ) ≠ 0` using `by linarith`. Establish `h4 : Real.sqrt D.host.d ≠ 0` using `by linarith`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem normSq_scale (hc : cc ≠ ⊥) (h : IsScale D cc r) (δ : ℂ) (τ : D.what₂.Tau) :
     Complex.normSq (δ * embT D τ r) = 2 * Formalism.L2.Pj.xiR D * area (lamOf D cc δ) := by
   obtain ⟨hxi, hN, hd⟩ := ReciprocityTheory.ChartRestriction.G.PullbackSections.PfModelDataX.xiR_facts D
@@ -55,11 +73,17 @@ theorem normSq_scale (hc : cc ≠ ⊥) (h : IsScale D cc r) (δ : ℂ) (τ : D.w
   have h4 : Real.sqrt D.host.d ≠ 0 := by linarith
   field_simp
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Establish `h1 : ((Ideal.absNorm cc : ℕ) : D.host.E) = 0` using `by rw [← h]; simp`. Conclude with `hc (Ideal.absNorm_eq_zero_iff.1 (by exact_mod_cast h1))`.
+-/
 theorem IsScale.ne_zero (hc : cc ≠ ⊥) (h : IsScale D cc r) : r ≠ 0 := by
   rintro rfl
   have h1 : ((Ideal.absNorm cc : ℕ) : D.host.E) = 0 := by rw [← h]; simp
   exact hc (Ideal.absNorm_eq_zero_iff.1 (by exact_mod_cast h1))
 
+/- English proof (translation)
+Establish `hx` using `xiR_pos D`. Establish `hp` using `Real.pi_pos`. Rewrite using `[period, norm_div, div_pow, ← Complex.normSq_eq_norm_sq, normSq_scale hc h, Complex.norm_real, Real.norm_of_nonneg (Real.sqrt_nonneg _), Real.sq_sqrt (by positivity)]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem norm_period_sq (hc : cc ≠ ⊥) (h : IsScale D cc r) (δ : ℂ) (τ : D.what₂.Tau) :
     ‖period D δ r τ‖ ^ 2 = area (lamOf D cc δ) / Real.pi := by
   have hx := xiR_pos D
@@ -68,6 +92,13 @@ theorem norm_period_sq (hc : cc ≠ ⊥) (h : IsScale D cc r) (δ : ℂ) (τ : D
     Real.norm_of_nonneg (Real.sqrt_nonneg _), Real.sq_sqrt (by positivity)]
   field_simp
 
+/- English proof (translation)
+Establish `hA : ((area (lamOf D cc δ) : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (area_pos hc).ne'`. Establish `hL : (tor0 D cc δ).abelian₂ = lamOf D cc δ` using `rfl`. Rewrite using `[Hf, hL, div_eq_iff hA]`. Simplify using `only [Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Establish `h1 : δ * embT D τ r * starRingEnd ℂ (δ * embT D τ r) = 2 * ((Formalism.L2.Pj.xiR D : ℝ) : ℂ) * ((area (lamOf D cc δ) : ℝ) : ℂ)`. Rewrite using `[Complex.mul_conj, normSq_scale hc.1.1 h]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_mul (starRingEnd ℂ) (δ * embT D τ r)]`.
+
+Take the linear combination `(Z τ i j * starRingEnd ℂ (X τ i j)) * h1`.
+-/
 theorem Hf_scale (hc : Formalism.MainNotions.StandardLatticesGL3.Crv D cc δ) (h : IsScale D cc r) {a d : ℕ} (Z X : VC D a d) :
     Hf D (tor0 D cc δ) (fun τ i j => δ * embT D τ r * Z τ i j) (fun τ i j => δ * embT D τ r * X τ i j) =
       2 * ((Formalism.L2.Pj.xiR D : ℝ) : ℂ) * ∑ τ, ∑ i, ∑ j, Z τ i j * starRingEnd ℂ (X τ i j) := by
@@ -84,6 +115,13 @@ theorem Hf_scale (hc : Formalism.MainNotions.StandardLatticesGL3.Crv D cc δ) (h
 
 variable {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
 
+/- English proof (translation)
+Establish `hz : ∀ w : WO S T, GlobalTheory.FockPos.zCo θ 1 1 w = fun τ => compAt θ τ w` using `fun w => by`. Use function extensionality and compare the values at `τ`. Establish `e : ∀ n, GlobalTheory.FockPos.frAt (D` using `D) (1 : GL (Fin n) D.host.E) τ = 1 := fun n => Matrix.map_one _ (map_zero _) (map_one _)`. Simplify using `only [GlobalTheory.FockPos.zCo, e, inv_one, Matrix.one_mul, Matrix.mul_one]`. Both sides reduce to the same expression.
+
+Use `and_congr_right fun _ => forall₂_congr fun w _ => ?_` and prove the remaining obligations. Establish `e1 : coordY θ rfl rfl δ r w = fun τ i j => δ * embT D τ r * compAt θ τ w i j` using `rfl`. Establish `e2` using `Hf_scale hc h (fun τ i j => compAt θ τ w i j) (fun τ i j => compAt θ τ w i j)`. Rewrite using `[e1, e2, GlobalTheory.FockPos.gaussO, hz]`. Simplify using `only [Complex.mul_conj']`.
+
+Use `congr! 3`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem reads_iff (hc : Formalism.MainNotions.StandardLatticesGL3.Crv D cc δ) (h : IsScale D cc r) (G : VC D S.rank T.rank → ℂ) (f : WO S T → ℂ) :
     Reads ψ θ rfl rfl cc δ r G f ↔ IsThetaFunO ψ S T f ∧ ∀ w : WO S T, w.map (finPart D) = 0 →
       f w = GlobalTheory.FockPos.gaussO θ 1 1 w *
@@ -105,15 +143,24 @@ theorem reads_iff (hc : Formalism.MainNotions.StandardLatticesGL3.Crv D cc δ) (
 
 variable {a d : ℕ} {hS : S.rank = a} {hT : T.rank = d} {G : VC D a d → ℂ} {f f' : WO S T → ℂ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(GlobalTheory.FinWeilO.thetaSub ψ S T).smul_mem c h.1, fun w hw => by rw [Pi.smul_apply, Pi.smul_apply, h.2 w hw, smul_eq_mul, smul_eq_mul]; ring⟩`.
+-/
 theorem Reads.smul (h : Reads ψ θ hS hT cc δ r G f) (c : ℂ) : Reads ψ θ hS hT cc δ r (c • G) (c • f) :=
   ⟨(GlobalTheory.FinWeilO.thetaSub ψ S T).smul_mem c h.1, fun w hw => by
     rw [Pi.smul_apply, Pi.smul_apply, h.2 w hw, smul_eq_mul, smul_eq_mul]; ring⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(GlobalTheory.FinWeilO.thetaSub ψ S T).add_mem h.1 h'.1, fun w hw => by rw [Pi.add_apply, Pi.add_apply, h.2 w hw, h'.2 w hw]; ring⟩`.
+-/
 theorem Reads.add {G' : VC D a d → ℂ} (h : Reads ψ θ hS hT cc δ r G f) (h' : Reads ψ θ hS hT cc δ r G' f') :
     Reads ψ θ hS hT cc δ r (G + G') (f + f') :=
   ⟨(GlobalTheory.FinWeilO.thetaSub ψ S T).add_mem h.1 h'.1, fun w hw => by
     rw [Pi.add_apply, Pi.add_apply, h.2 w hw, h'.2 w hw]; ring⟩
 
+/- English proof (translation)
+The claim follows from `sub_eq_zero.1 (GlobalTheory.TwistFactorCompare.theta_eq_zero_of_real ((GlobalTheory.FinWeilO.thetaSub ψ S T).sub_mem h.1 h'.1) fun w hw => by rw [Pi.sub_apply, h.2 w hw, h'.2 w hw, sub_self])`.
+-/
 theorem Reads.unique (h : Reads ψ θ hS hT cc δ r G f) (h' : Reads ψ θ hS hT cc δ r G f') : f = f' :=
   sub_eq_zero.1 (GlobalTheory.TwistFactorCompare.theta_eq_zero_of_real ((GlobalTheory.FinWeilO.thetaSub ψ S T).sub_mem h.1 h'.1)
     fun w hw => by rw [Pi.sub_apply, h.2 w hw, h'.2 w hw, sub_self])

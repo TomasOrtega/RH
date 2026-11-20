@@ -29,6 +29,9 @@ open Formalism.L2.Th1.H (Sesq IsSelfDual IsHerm dualLat altE Th alphaQ blk4 pow4
 open Formalism.L2.Th1.F (cmTheta)
 open Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity
 
+/- English proof (translation)
+Take `⟨k, rfl⟩` from `hb`. Use `⟨k, ?_⟩` and prove the remaining obligations. Simplify using `only [cmTheta]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cmTheta_odd (b : ℤ) (hb : Odd b) (d : ℕ) : ∃ k : ℤ, cmTheta b d = cmTheta 1 d + (k : ℂ) := by
   obtain ⟨k, rfl⟩ := hb
   refine ⟨k, ?_⟩
@@ -36,6 +39,11 @@ theorem cmTheta_odd (b : ℤ) (hb : Odd b) (d : ℕ) : ∃ k : ℤ, cmTheta b d 
   push_cast
   ring
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨k, hk⟩` from `cmTheta_odd b hb d`. Rewrite using `[hk, add_smul]`. Use `Λ.add_mem (h x hx) ?_` and prove the remaining obligations. Rewrite using `[Int.cast_smul_eq_zsmul]`.
+
+Conclude with `Λ.zsmul_mem hx k`.
+-/
 theorem stable_of_one {V : Type*} [AddCommGroup V] [Module ℂ V] (Λ : AddSubgroup V) (d : ℕ)
     (h : ∀ x ∈ Λ, cmTheta 1 d • x ∈ Λ) (b : ℤ) (hb : Odd b) : ∀ x ∈ Λ, cmTheta b d • x ∈ Λ := by
   intro x hx
@@ -45,6 +53,19 @@ theorem stable_of_one {V : Type*} [AddCommGroup V] [Module ℂ V] (Λ : AddSubgr
   rw [Int.cast_smul_eq_zsmul]
   exact Λ.zsmul_mem hx k
 
+/- English proof (translation)
+Establish `key : ∀ (x : n → ℂ) (y : Fin 4 × n → ℂ), altE (matH (blk4 h)) (Formalism.L2.Th1.H.CmData.embA 0 x) y = altE (matH h) x (slice 0 y)`. Introduce `x y`. Simplify using `only [altE, Formalism.L2.Th1.H.matrixForm_fourfoldBlock, Formalism.L2.Th1.H.CmData.slice_embA]`. Rewrite using `[Finset.sum_eq_single (0 : Fin 4)]`. Simplify using the standard rewrite rules.
+
+Introduce `b _ hb`. Simplify using `[hb]`. Introduce `hh`. Conclude with `absurd (Finset.mem_univ _) hh`. Use extensionality with `x`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `h1 : Formalism.L2.Th1.H.CmData.embA 0 x ∈ dualLat (matH (blk4 h)) (pow4 Λ)`. Introduce `y hy`. Take `⟨m, hm⟩` from `hx (slice 0 y) (hy 0)`.
+
+Conclude with `⟨m, by rw [key, hm]⟩`. Rewrite `h1` using `[hsd]`. Establish `h2` using `h1 0`. Rewrite `h2` using `[Formalism.L2.Th1.H.CmData.slice_embA, if_pos rfl]`. Then use the resulting hypothesis. Introduce `hx y hy`.
+
+Establish `h1 : Formalism.L2.Th1.H.CmData.embA 0 x ∈ dualLat (matH (blk4 h)) (pow4 Λ)`. Rewrite using `[hsd]`. Conclude with `Formalism.L2.Th1.H.CmData.embA_mem Λ 0 hx`. Take `⟨m, hm⟩` from `h1 _ (Formalism.L2.Th1.H.CmData.embA_mem Λ 0 hy)`. Use `⟨m, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hm` using `[key, Formalism.L2.Th1.H.CmData.slice_embA, if_pos rfl]`. Conclude with `hm`.
+-/
 theorem hermitianSelfDual_of_fourfoldBlock {n : Type} [Fintype n] [DecidableEq n] (h : Matrix n n ℂ) (Λ : AddSubgroup (n → ℂ))
     (hsd : IsSelfDual (matH (blk4 h)) (pow4 Λ)) : IsSelfDual (matH h) Λ := by
   have key : ∀ (x : n → ℂ) (y : Fin 4 × n → ℂ),
@@ -80,6 +101,9 @@ section Base
 
 variable {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ)
 
+/- English proof (translation)
+Establish `h` using `((B.latAll hcc hδ (base_linkage_nonempty D cc δ B)).1 2 2 _ _ (Formalism.MainNotions.GlobalTheoryTheory.Inhab.Adm_std D 2 2 even_two even_two)).1`. Rewrite `h` using `[show TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ) = _ from B.areaOK, show TaylorLogMetric.La D B.tor _ _ = _ from B.lat0OK 2 2]`. Establish `h2` using `SO.selfDual_img _ _ (SO.reix D.what₂.Tau) (SO.reix_isom B.L D.what₂.Tau) _ h`. Rewrite `h2` using `[SO.reix_pow]`. Conclude with `h2`.
+-/
 theorem selfDual_fourfold_curveIdeal_lattice (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) :
     IsSelfDual (matH (blk4 (hOne B.L D.what₂.Tau))) (pow4 B.lamM) := by
   have h := ((B.latAll hcc hδ (base_linkage_nonempty D cc δ B)).1 2 2 _ _
@@ -89,10 +113,16 @@ theorem selfDual_fourfold_curveIdeal_lattice (hcc : TaylorLogMetric.IsCurveIdeal
   rw [SO.reix_pow] at h2
   exact h2
 
+/- English proof (translation)
+The claim follows from `hermitianSelfDual_of_fourfoldBlock _ _ (selfDual_fourfold_curveIdeal_lattice B hcc hδ)`.
+-/
 theorem selfDual_lamM (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) :
     IsSelfDual (matH (hOne B.L D.what₂.Tau)) B.lamM :=
   hermitianSelfDual_of_fourfoldBlock _ _ (selfDual_fourfold_curveIdeal_lattice B hcc hδ)
 
+/- English proof (translation)
+Use `stable_of_one _ _ (fun x hx => ?_) b hb` and prove the remaining obligations. Use `SO.lamMM_smul (AR.om D) hx` as an intermediate fact. Rewrite `this` using `[← SO.theta_eq]`. Conclude with `this`.
+-/
 theorem stable_lamM (b : ℤ) (hb : Odd b) : ∀ x ∈ B.lamM, cmTheta b D.host.d • x ∈ B.lamM := by
   refine stable_of_one _ _ (fun x hx => ?_) b hb
   have := SO.lamMM_smul (AR.om D) hx
@@ -114,6 +144,11 @@ variable {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n']
 
 abbrev reixE : (n' → ℂ) ≃ₗ[ℂ] (n → ℂ) := LinearEquiv.funCongrLeft ℂ ℂ σ.symm
 
+/- English proof (translation)
+Use `show (∑ i, ∑ j, x i * h' i j * conj (y j)) = ∑ i, ∑ j, x (σ.symm i) * h i j * conj (y (σ.symm j))`. Rewrite using `[← Equiv.sum_comp σ.symm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Equiv.sum_comp σ.symm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hh, σ.apply_symm_apply, σ.apply_symm_apply]`.
+-/
 theorem matH_reix (h : Matrix n n ℂ) (h' : Matrix n' n' ℂ) (hh : ∀ i j, h' i j = h (σ i) (σ j)) (x y : n' → ℂ) :
     matH h' x y = matH h (reixE σ x) (reixE σ y) := by
   show (∑ i, ∑ j, x i * h' i j * conj (y j)) = ∑ i, ∑ j, x (σ.symm i) * h i j * conj (y (σ.symm j))
@@ -123,6 +158,39 @@ theorem matH_reix (h : Matrix n n ℂ) (h' : Matrix n' n' ℂ) (hh : ∀ i j, h'
   refine Finset.sum_congr rfl fun j _ => ?_
   rw [hh, σ.apply_symm_apply, σ.apply_symm_apply]
 
+/- English proof (translation)
+Take `⟨g₁, ε, hiso, hnd, hidx, hε, hker⟩` from `H`. Use `set σ₄ : Fin 4 × n' ≃ Fin 4 × n := Equiv.prodCongr (Equiv.refl _) σ with hσ₄`. Use `set E4 := reixE σ₄ with hE4`. Use `set L₀ := cmL a₀ b₀ dK ha hdK lam hlam with hL₀`. Establish `hblk : ∀ w w', blk4 h' w w' = blk4 h (σ₄ w) (σ₄ w')`.
+
+Introduce `w w'`. Simplify using `only [blk4, hσ₄, Equiv.prodCongr_apply, Equiv.coe_refl, Prod.map_fst, Prod.map_snd, id, hh]`. Establish `hstd : ∀ w w' : Fin 4 × n', (((Formalism.L2.Th1.F.area L₀ : ℝ) : ℂ)⁻¹ • (1 : Matrix (Fin 4 × n') (Fin 4 × n') ℂ)) w w' = (((Formalism.L2.Th1.F.area L₀ : ℝ) : ℂ)⁻¹ • (1 : Matrix (Fin 4 × n) (Fin 4 × n) ℂ)) (σ₄ w) (σ₄ w')`. Introduce `w w'`. Simplify using `only [Matrix.smul_apply, Matrix.one_apply, σ₄.injective.eq_iff]`.
+
+Establish `hHs : ∀ x y, Formalism.L2.Th1.H.stdH L₀ (Fin 4 × n') x y = Formalism.L2.Th1.H.stdH L₀ (Fin 4 × n) (E4 x) (E4 y)` using `matH_reix σ₄ _ _ hstd`. Establish `hHb : ∀ x y, matH (blk4 h') x y = matH (blk4 h) (E4 x) (E4 y)` using `matH_reix σ₄ _ _ hblk`. Set `g₁' : (Fin 4 × n' → ℂ) ≃ₗ[ℂ] (Fin 4 × n' → ℂ)` to `E4.trans (g₁.trans E4.symm)`. Establish `hg : ∀ z, E4 (g₁' z) = g₁ (E4 z)` using `fun z => by simp [g₁']`. Establish `hP : pow4 (Λ.comap (reixE σ).toLinearMap.toAddMonoidHom) = (pow4 Λ).comap E4.toLinearMap.toAddMonoidHom`.
+
+Use extensionality with `z`. Conclude with `Iff.rfl`. Establish `hS : Formalism.L2.Th1.H.stdLat L₀ (Fin 4 × n') = (Formalism.L2.Th1.H.stdLat L₀ (Fin 4 × n)).comap E4.toLinearMap.toAddMonoidHom`. Use extensionality with `z`. Simplify using `only [Formalism.L2.Th1.H.stdLat, AddSubgroup.mem_comap, AddSubgroup.mem_pi, Set.mem_univ, true_implies]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hz w`. Conclude with `hz _`. Introduce `hz w`. Establish `h1` using `hz (σ₄ w)`.
+
+Establish `e : (E4.toLinearMap.toAddMonoidHom z) (σ₄ w) = z w` using `by show z (σ₄.symm (σ₄ w)) = z w`. Rewrite using `[σ₄.symm_apply_apply]`. Rewrite `h1` using `[e]`. Then use the resulting hypothesis. Establish `hI : imgLat (g₁' : (Fin 4 × n' → ℂ) →ₗ[ℂ] (Fin 4 × n' → ℂ)) (pow4 (Λ.comap (reixE σ).toLinearMap.toAddMonoidHom)) = (imgLat (g₁ : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) (pow4 Λ)).comap E4.toLinearMap.toAddMonoidHom`. Rewrite using `[hP]`.
+
+Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨E4 x, hx, (hg x).symm⟩`. Introduce and unpack `⟨y, hy, hyz⟩`.
+
+Use `⟨E4.symm y, ?_, ?_⟩` and prove the remaining obligations. Use `show E4 (E4.symm y) ∈ pow4 Λ`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `hy`. Use `show g₁' (E4.symm y) = z`.
+
+Apply `E4.injective` to reduce the goal to its premises. Rewrite using `[hg, LinearEquiv.apply_symm_apply]`. Conclude with `hyz`. Establish `hnz : Formalism.L2.Th1.H.relIdx (Formalism.L2.Th1.H.stdLat L₀ (Fin 4 × n)) (imgLat (g₁ : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) (pow4 Λ)) ≠ 0` using `fun h0 => hnd (h0 ▸ dvd_zero p)`. Establish `SD` using `Formalism.L2.Th1.H.stdDataCm a₀ b₀ c₀ dK ha hdK lam hlam hcm.1 hcm.2.1 hcm.2.2.1 n h Λ g₁ hiso hSD hSt hnz hidx`.
+
+Establish `hF` using `(Formalism.L2.Th1.H.product_theta_mem L₀ (lam * a₀) (Fin 4 × n) SD.per SD.half _ SD.betaStd).1.2`. Establish `hF0 : Formalism.L2.Th1.H.F0 L₀ (lam * a₀) (Fin 4 × n') = fun v => Formalism.L2.Th1.H.F0 L₀ (lam * a₀) (Fin 4 × n) (E4 v)`. Use function extensionality and compare the values at `v`. Conclude with `(Equiv.prod_comp σ₄.symm (fun w' => Formalism.L2.Th1.F.th0 L₀ (lam * a₀ / 2) (v w'))).symm`. Establish `hHerm : IsHerm (Formalism.L2.Th1.H.stdH L₀ (Fin 4 × n))`.
+
+Introduce `x y`. Use `show (∑ i, ∑ j, y i * _ * conj (x j)) = conj (∑ i, ∑ j, x i * _ * conj (y j))`. Simplify using `only [Matrix.smul_apply, Matrix.one_apply, smul_eq_mul, mul_ite, mul_one, mul_zero, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true, map_sum, map_mul, Complex.conj_conj, map_inv₀, Complex.conj_ofReal]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hα : ∀ x, alphaQ (Real.sqrt dK / 2) (Formalism.L2.Th1.H.stdH L₀ (Fin 4 × n')) x = alphaQ (Real.sqrt dK / 2) (Formalism.L2.Th1.H.stdH L₀ (Fin 4 × n)) (E4 x)`. Introduce `x`. Simplify using `only [alphaQ, Formalism.L2.Th1.H.qOf, hHs]`. Establish `e1` using `Formalism.L2.Ker.KS.inter_pb E4 _ _ hHs hHerm (Formalism.L2.Th1.H.stdLat L₀ (Fin 4 × n)) (imgLat (g₁ : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) (pow4 Λ)) _ _ (fun x _ => hα x) (fun x _ => hα x) SD.betaSemi hnz _ hF`. Use `⟨g₁', ε, ?_, ?_, ?_, hε, ?_⟩` and prove the remaining obligations.
+
+Introduce `x y show Formalism.L2.Th1.H.stdH L₀ (Fin 4 × n') (g₁' x) (g₁' y) = matH (blk4 h') x y`. Rewrite using `[hHs, hg, hg, hHb]`. Conclude with `hiso (E4 x) (E4 y)`. Rewrite using `[hS, hI, Formalism.L2.Ker.KS.relIdx_pb]`. Conclude with `hnd`.
+
+Rewrite using `[hS, hI, Formalism.L2.Ker.KS.relIdx_pb]`. Conclude with `hidx`. Use function extensionality and compare the values at `z`. Establish `t1 : Formalism.L2.Th1.H.tens4 (fun z => θ (reixE σ z)) z = Formalism.L2.Th1.H.tens4 θ (E4 z)` using `rfl`. Rewrite using `[t1, hker]`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Use `congr 1`. Unfold `Formalism.L2.Th1.H.kernel4`. Rewrite using `[hS, hI, hF0]`. Establish `e2` using `congrFun e1 (g₁' z)`.
+
+Rewrite `e2` using `[hg]`. Conclude with `e2.symm`.
+-/
 theorem locNorm_reix (a₀ : ℕ) (b₀ c₀ : ℤ) (dK : ℕ) (ha : 0 < a₀) (hdK : 0 < dK) (lam : ℂ) (hlam : lam ≠ 0)
     (hcm : CmOK a₀ b₀ c₀ dK) (h : Matrix n n ℂ) (h' : Matrix n' n' ℂ) (hh : ∀ i j, h' i j = h (σ i) (σ j))
     (Λ : AddSubgroup (n → ℂ)) (hSD : IsSelfDual (matH h) Λ) (hSt : ∀ x ∈ Λ, cmTheta b₀ dK • x ∈ Λ)
@@ -223,14 +291,35 @@ section Main
 
 variable {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ}
 
+/- English proof (translation)
+Simplify using `only [hOne, Matrix.smul_apply, Matrix.one_apply, s.iT.injective.eq_iff]`.
+-/
 theorem hOne_reix {X : Fields} (s : Seam D X) (L : PeriodPair) (i j : X.Tau) :
     hOne L X.Tau i j = hOne L D.what₂.Tau (s.iT i) (s.iT j) := by
   simp only [hOne, Matrix.smul_apply, Matrix.one_apply, s.iT.injective.eq_iff]
 
+/- English proof (translation)
+Simplify using `only [alphaQ, Formalism.L2.Th1.H.qOf, matH_reix s.iT _ _ (hOne_reix s L)]`.
+-/
 theorem alphaQ_reix {X : Fields} (s : Seam D X) (L : PeriodPair) (c : ℝ) (x : X.Tau → ℂ) :
     alphaQ c (matH (hOne L X.Tau)) x = alphaQ c (matH (hOne L D.what₂.Tau)) (reixE s.iT x) := by
   simp only [alphaQ, Formalism.L2.Th1.H.qOf, matH_reix s.iT _ _ (hOne_reix s L)]
 
+/- English proof (translation)
+Introduce `D cc δ hcc hδ B χ hχ X s hok a₀ b₀ c₀ ha hd lam hlam hcm hl N N' L L' hA p _ ι hL hL'`. Establish `hb : Odd b₀` using `Formalism.L2.Ker.KS.Lat.odd_of_cmOK hcm`. Use `set B' := Formalism.L2.Ker.KS.cmBase B a₀ b₀ c₀ ha hd lam hlam hcm hl with hB'`. Establish `hω : (B.ω₀ - lam * a₀) / 2 ∈ (cmL a₀ b₀ D.host.d ha hd lam hlam).lattice`. Establish `e : (1 - Complex.I * (Real.sqrt D.host.d : ℂ)) / 2 = 1 - cmTheta 1 D.host.d`.
+
+Rewrite using `[Formalism.L2.Ker.KS.theta_val']`. Expand and normalize the polynomial expressions, which then agree. Establish `h` using `Formalism.L2.Ker.KS.half_period_unique_CM a₀ b₀ c₀ D.host.d ha hd lam hlam hcm (B.ω₀ / 2) ((Formalism.L2.Ker.KS.mem_lam_iff a₀ b₀ ha hd lam hlam hl _).1 B.t0.1) (by rw [← Formalism.L2.Ker.KS.mem_lam_iff a₀ b₀ ha hd lam hlam hl, Formalism.L2.Ker.KS.theta_val']; exact B.t0.2.1) (by …`. Establish `e2 : (B.ω₀ - lam * a₀) / 2 = B.ω₀ / 2 - lam * a₀ / 2` using `by ring`. Rewrite using `[e2]`.
+
+Conclude with `h`. Establish `hE : B.eNat χ = B'.eNat χ` using `Formalism.L2.Ker.KS.eNat_reBase B _ hl _ _ hω χ`. Establish `hT : B'.tor = B.tor` using `rfl`. Establish `hH : ∀ x y, matH (hOne B'.L X.Tau) x y = matH (hOne B'.L D.what₂.Tau) (reixE s.iT x) (reixE s.iT y)` using `matH_reix s.iT _ _ (hOne_reix s B'.L)`. Establish `hSDM : IsSelfDual (matH (hOne B'.L X.Tau)) (Formalism.L2.Ker.KS.lamM' s B')` using `Formalism.L2.Ker.KS.selfDual_pb (reixE s.iT) _ _ hH (selfDual_lamM B' hcc hδ)`.
+
+Establish `hStM : ∀ x ∈ Formalism.L2.Ker.KS.lamM' s B', cmTheta b₀ D.host.d • x ∈ Formalism.L2.Ker.KS.lamM' s B'`. Introduce `x hx`. Use `show reixE s.iT (cmTheta b₀ D.host.d • x) ∈ B'.lamM`. Rewrite using `[map_smul]`. Conclude with `stable_lamM B' b₀ hb _ hx`.
+
+Establish `hThM : Formalism.L2.Ker.KS.thM' s B' ∈ Th (matH (hOne B'.L X.Tau)) (alphaQ (Real.sqrt D.host.d / 2) (matH (hOne B'.L X.Tau))) (Formalism.L2.Ker.KS.lamM' s B')` using `Formalism.L2.Ker.KS.th_pb (reixE s.iT) _ _ hH (fun x _ => alphaQ_reix s B'.L _ x) (B'.thMM_spec (B'.stdOK hcc hδ)).1`. Establish `hMM0` using `GlobalTheory.T.curveIdeal_baseThetaVector_normalised_every_place D cc δ hcc hδ B' a₀ b₀ c₀ ha hd lam hlam hcm (Formalism.L2.Ker.KS.cmBase_isCm B a₀ b₀ c₀ ha hd lam hlam hcm hl) p ι`. Establish `hMM : LocNorm a₀ b₀ D.host.d ha hd lam hlam (hOne B'.L X.Tau) (Formalism.L2.Ker.KS.lamM' s B') (Formalism.L2.Ker.KS.thM' s B') p ι` using `locNorm_reix s.iT a₀ b₀ c₀ D.host.d ha hd lam hlam hcm _ _ (hOne_reix s B'.L) _ (selfDual_lamM B' hcc hδ) (stable_lamM B' b₀ hb) _ p ι hMM0`. Establish `hχu : ‖ι (Base.chiFac χ N N' L L')‖ ≤ 1`. Set `lm : TaylorLogMetric.Qbar →+* ℂ_[p]` to `(ι : ℂ →+* ℂ_[p]).comp (TaylorLogMetric.Qbar).val.toRingHom`.
+
+Take `⟨h1, h2⟩` from `Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.RestC.chiFacUnit χ hχ p lm N N' L L' hA hL hL'`. Establish `e : TaylorLogMetric.lamC lm (Base.chiFac χ N N' L L') = ι (Base.chiFac χ N N' L L')`. Simplify using `only [TaylorLogMetric.lamC, dif_pos h1]`. Both sides reduce to the same expression. Rewrite using `[← e, h2]`.
+
+Establish `key` using `Formalism.L2.Ker.KS.locNorm_thF_of s B' GlobalTheory.T.localNormalization_integral_scalar GlobalTheory.T.localNormalisation_tensorPowers GlobalTheory.T.localNormalisation_intertwiner_prime_index χ a₀ b₀ c₀ ha hd lam hlam p ι hcc hδ hcm hSDM hStM hThM hMM (Formalism.L2.Ker.KS.Lat. …`. Rewrite `key` using `[← hE, hT]`. Conclude with `⟨hcm, Formalism.L2.Ker.KS.Lat.selfDual_laF s B hcc hδ hA, fun x hx => Formalism.L2.Ker.KS.Lat.theta_laF s B hb hx, Formalism.L2.Ker.KS.Lat.eNat_laF s B hcc hδ χ hA, key⟩`.
+-/
 theorem latAt_std : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), TaylorLogMetric.IsCurveIdeal D cc → TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ → ∀ (B : Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ), TaylorLogMetric.IsChi D χ → ∀ (X : Fields) (s : Seam D X), s.Ok → ∀ (a₀ : ℕ) (b₀ c₀ : ℤ) (ha : 0 < a₀) (hd : 0 < D.host.d) (lam : ℂ) (hlam : lam ≠ 0), CmOK a₀ b₀ c₀ D.host.d → (cmL a₀ b₀ D.host.d ha hd lam hlam).lattice.toAddSubgroup = TaylorLogMetric.lamOf D cc δ → ∀ (N N' : ℕ) (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)), TaylorLogMetric.admitted D N N' L L' → ∀ (p : ℕ) [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]), TaylorLogMetric.EqAt D p (StandardLatticesGL3.stdL D N) L → TaylorLogMetric.EqAt D p (StandardLatticesGL3.stdL D N') L' → GlobalTheory.ThLoc.LatAt a₀ b₀ c₀ D.host.d ha hd lam hlam (Formalism.L2.AlgTh.hSc X.Tau N N' (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ))⁻¹) (s.laF B.tor L L') (fun z => B.eNat χ N N' L L' (s.flatV N N' z)) p ι := by
   intro D cc δ hcc hδ B χ hχ X s hok a₀ b₀ c₀ ha hd lam hlam hcm hl N N' L L' hA p _ ι hL hL'
   have hb : Odd b₀ := Formalism.L2.Ker.KS.Lat.odd_of_cmOK hcm

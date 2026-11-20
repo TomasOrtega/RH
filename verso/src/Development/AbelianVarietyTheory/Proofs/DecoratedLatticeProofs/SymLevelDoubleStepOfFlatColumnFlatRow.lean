@@ -11,14 +11,23 @@ namespace GlobalTheory.LocFlat.DoubleStepProof
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 variable {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Use extensionality with `y`. Simplify using `[mem_box, cball]`.
+-/
 theorem box_eq_pi (c : kˣ) : (box n c : Set (n → k)) = Set.univ.pi (fun _ => cball c) := by
   ext y; simp [mem_box, cball]
 
 variable [MeasurableSpace k] [BorelSpace k]
 
+/- English proof (translation)
+Rewrite using `[box_eq_pi]`. Conclude with `MeasurableSet.univ_pi fun _ => (isOpen_cball c).measurableSet`.
+-/
 theorem measurableSet_box (c : kˣ) : MeasurableSet (box n c : Set (n → k)) := by
   rw [box_eq_pi]; exact MeasurableSet.univ_pi fun _ => (isOpen_cball c).measurableSet
 
+/- English proof (translation)
+Use `secondCountable k` as an intermediate fact. Rewrite using `[box_eq_pi, Measure.pi_pi]`. Use `ENNReal.toReal_pos (Finset.prod_ne_zero_iff.2 fun i _ => ?_) (ENNReal.prod_ne_top fun i _ => ?_)` and prove the remaining obligations. Conclude with `((isOpen_cball c).measure_pos ν ⟨0, by simp [cball]⟩).ne'`. Conclude with `(isCompact_cball c).measure_lt_top.ne`.
+-/
 theorem vol_box_pos (ν : Measure k) [ν.IsAddHaarMeasure] (c : kˣ) :
     0 < ((Measure.pi fun _ : n => ν) (box n c : Set (n → k))).toReal := by
   have := secondCountable k
@@ -28,6 +37,9 @@ theorem vol_box_pos (ν : Measure k) [ν.IsAddHaarMeasure] (c : kˣ) :
   · exact (isCompact_cball c).measure_lt_top.ne
 
 open Classical in
+/- English proof (translation)
+Establish `e : (fun u : n → k => if u ∈ box n c then (1 : ℂ) else 0) = Set.indicator (box n c : Set (n → k)) fun _ => 1`. Use function extensionality and compare the values at `u`. Simplify using `[Set.indicator_apply]`. Rewrite using `[e, integral_indicator_const _ (measurableSet_box c)]`. Simplify using `[Measure.real]`.
+-/
 theorem integral_box (ν : Measure k) (c : kˣ) :
     ∫ u, (if u ∈ box n c then (1 : ℂ) else 0) ∂(Measure.pi fun _ : n => ν) =
       (((Measure.pi fun _ : n => ν) (box n c : Set (n → k))).toReal : ℂ) := by
@@ -38,6 +50,35 @@ theorem integral_box (ν : Measure k) (c : kˣ) :
 
 open Classical in
 
+/- English proof (translation)
+Use `secondCountable k` as an intermediate fact. Establish `hc0 : valuation k (c : k) ≠ 0` using `(Valuation.ne_zero_iff _).2 c.ne_zero`. Use `⟨_, vol_box_pos (n := n) ν c⁻¹, fun u => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hu : u ∈ box n c`. Rewrite using `[if_pos hu, mul_one, ← integral_box (n := n) ν c⁻¹]`.
+
+Unfold `hat`. Use `congr 1`. Use function extensionality and compare the values at `y`. Simplify using `only`. Distinguish the cases in `hy : y ∈ box n c⁻¹`.
+
+Rewrite using `[if_pos hy, one_mul]`. Establish `hm : (-1 : k) * (u ⬝ᵥ y) ∈ cball (1 : kˣ)` using `by show valuation k _ ≤ valuation k ((1 : kˣ) : k)`. Rewrite using `[map_mul, Valuation.map_neg, map_one, one_mul, Units.val_one, map_one]`. Use `Valuation.map_sum_le _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hψ.eq_one hm]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg hy, zero_mul]`. Rewrite using `[if_neg hu, mul_zero]`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, valuation k (c : k) < valuation k (u i) := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hu (mem_box.2 hcon)`. Establish `hui : u i ≠ 0` using `by rintro h0; simp [h0] at hi`.
+
+Establish `hv0 : valuation k (u i) ≠ 0` using `(Valuation.ne_zero_iff _).2 hui`. Use `set x := u i * ((c⁻¹ : kˣ) : k) with hxdef`. Establish `hx : ¬ valuation k x ≤ valuation k ((1 : kˣ) : k)`. Introduce `hle`. Rewrite `hle` using `[hxdef, map_mul, Units.val_inv_eq_inv_val, map_inv₀, Units.val_one, map_one]`.
+
+Establish `: valuation k (u i) ≤ valuation k (c : k)`. Establish `h2` using `mul_le_mul' hle (le_refl (valuation k (c : k)))`. Rewrite `h2` using `[one_mul, mul_assoc, inv_mul_cancel₀ hc0, mul_one]`. Then use the resulting hypothesis. Conclude with `(not_le.2 hi) this`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy1, hy2⟩ : ∃ y, valuation k y ≤ valuation k x ∧ ψ y ≠ 1 := by`.
+
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hx ((hψ x).1 hcon)`. Use `set y₀ : n → k := Pi.single i (-(y / u i)) with hy₀def`. Establish `hy₀ : y₀ ∈ box n c⁻¹`.
+
+Introduce `l`. Distinguish the cases in `hl : l = i`. Substitute `hl` using the available equality. Simplify using `only [hy₀def, Pi.single_eq_same, map_neg, map_div₀]`. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀]`.
+
+Rewrite `hy1` using `[hxdef, map_mul, Units.val_inv_eq_inv_val, map_inv₀]`. Establish `h2` using `mul_le_mul' hy1 (le_refl (valuation k (u l))⁻¹)`. Rewrite `h2` using `[mul_comm (valuation k (u l)) _, mul_assoc, mul_inv_cancel₀ hv0, mul_one, ← div_eq_mul_inv]`. Rewrite using `[Valuation.map_neg, Valuation.map_div]`. Conclude with `h2`.
+
+Simplify using `[hy₀def, hl]`. Establish `hχ : (-1 : k) * (u ⬝ᵥ y₀) = y`. Rewrite using `[hy₀def, dotProduct_single]`. Clear the denominators using the available nonvanishing facts. Use `set F : (n → k) → ℂ := fun y => (if y ∈ box n c⁻¹ then (1 : ℂ) else 0) * (ψ ((-1 : k) * (u ⬝ᵥ y)) : ℂ) with hF`.
+
+Establish `hFt : ∀ z, F (y₀ + z) = (ψ y : ℂ) * F z`. Introduce `z`. Simplify using `only [hF]`. Rewrite using `[if_congr ((box n c⁻¹).add_mem_iff_right hy₀) rfl rfl, dotProduct_add, mul_add, AddChar.map_add_eq_mul, hχ, Circle.coe_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hI` using `integral_add_left_eq_self (μ := Measure.pi fun _ : n => ν) F y₀`. Rewrite `hI` using `[hFt]`. Rewrite `hI` using `[integral_const_mul]`. Establish `hne : (ψ y : ℂ) ≠ 1` using `fun h => hy2 (Circle.coe_inj.1 (by simpa using h))`. Use `show ∫ z, F z ∂(Measure.pi fun _ : n => ν) = 0`.
+
+Establish `h3 : ((ψ y : ℂ) - 1) * ∫ z, F z ∂(Measure.pi fun _ : n => ν) = 0` using `by rw [sub_mul, hI]; ring`. Break down `mul_eq_zero.1 h3 with h | h` into its components or cases. Conclude with `absurd (sub_eq_zero.1 h) hne`. Conclude with `h`.
+-/
 theorem hat_box {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) (ν : Measure k) [ν.IsAddHaarMeasure] (c : kˣ) :
     ∃ V : ℝ, 0 < V ∧ ∀ u, hat ψ ν (-1) (fun y : n → k => if y ∈ box n c⁻¹ then (1 : ℂ) else 0) u =
       (V : ℂ) * (if u ∈ box n c then 1 else 0) := by
@@ -115,6 +156,11 @@ namespace GlobalTheory.LocFlat.DoubleStepProof
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use `ext1`. Express the relevant statement in the definitionally equal form `fromBlocks 1 0 (-(Matrix.of fun (l : Fin c) (s : n) => if l.val + 1 = p then u s else 0)) 1 = fromBlocks 1 0 (Matrix.of fun (l : Fin c) (s : n) => if l.val + 1 = p then (-u) s else 0) 1`. Use `congr 1`. Use extensionality with `l s`. Simplify using `only [Matrix.neg_apply, Matrix.of_apply, Pi.neg_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem rowE_inv' {n : Type} [Fintype n] [DecidableEq n] (c p : ℕ) (u : n → k) :
     (rowE c p u)⁻¹ = rowE c p (-u) := by
   ext1
@@ -125,6 +171,9 @@ theorem rowE_inv' {n : Type} [Fintype n] [DecidableEq n] (c p : ℕ) (u : n → 
   simp only [Matrix.neg_apply, Matrix.of_apply, Pi.neg_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use `ext`. Simplify using `[rowE, lowU]`.
+-/
 theorem det_rowE' {n : Type} [Fintype n] [DecidableEq n] (c p : ℕ) (u : n → k) :
     Matrix.GeneralLinearGroup.det (rowE c p u) = 1 := by
   ext
@@ -132,6 +181,19 @@ theorem det_rowE' {n : Type} [Fintype n] [DecidableEq n] (c p : ℕ) (u : n → 
 
 variable {s κ : ℕ} (S : SymData k s κ) (t : Type) [Fintype t] [DecidableEq t]
 
+/- English proof (translation)
+Use `set F := typeFrame S.ϖ (stdOrd (Fin κ) t (l := s + 1) (j + 1) (c + 1 + 1) (by omega))`. Establish `e : (F.bas⁻¹).val = fromBlocks 1 0 0 (diagonal fun i : Fin (c + 1 + 1) => ((S.ϖ : k) ^ (i.val + 1))⁻¹)`. Use `Units.inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `fromBlocks 1 0 0 (diagonal _) * _ = _`. Simplify using `[fromBlocks_multiply, diagonal_mul_diagonal]`.
+
+Establish `e2 : F.bas.val = fromBlocks 1 0 0 (diagonal fun i : Fin (c + 1 + 1) => ((S.ϖ : k) ^ (i.val + 1)))`. Express the relevant statement in the definitionally equal form `fromBlocks 1 0 0 (diagonal _) = _`. Simplify using the standard rewrite rules. Rewrite using `[LatFrame.conj, MulEquiv.symm_trans_apply, reGL_symm_val, MulAut.conj_symm_apply]`. Use `congr 1`.
+
+Rewrite using `[Units.val_mul, Units.val_mul, e, e2]`. Express the relevant statement in the definitionally equal form `_ * fromBlocks 1 0 _ 1 * _ = _`. Simplify using `only [fromBlocks_multiply, Matrix.one_mul, Matrix.mul_one, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add, diagonal_mul_diagonal]`. Use `congr 1`. Use extensionality with `l x`.
+
+Rewrite using `[diagonal_mul]`. Simplify using `only [Matrix.of_apply]`. Use `split_ifs with h1 h2 h2`. Rewrite using `[show l.val = r by omega]`. Use linear arithmetic over natural numbers and integers.
+
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite using `[← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Conclude with `inv_mul_cancel₀ (pow_ne_zero _ (Units.ne_zero _))`.
+-/
 theorem conj_rowE (j c : ℕ) (H : j + 1 + (c + 1) = s) (r : ℕ) (v : XIx (Fin κ) t (j + 1) → k) :
     ((typeFrame S.ϖ (stdOrd (Fin κ) t (l := s + 1) (j + 1) (c + 1 + 1) (by omega))).conj.symm
       (rowE (c + 1 + 1) (r + 1) v)).val =
@@ -167,6 +229,27 @@ theorem conj_rowE (j c : ℕ) (H : j + 1 + (c + 1) = s) (r : ℕ) (v : XIx (Fin 
     funext i
     exact inv_mul_cancel₀ (pow_ne_zero _ (Units.ne_zero _))
 
+/- English proof (translation)
+Establish `hr : r < S.ρ` using `by have := S.odd; omega`. Use `set ord := stdOrd (Fin κ) t (l := s + 1) (j + 1) (c + 1 + 1) (by omega) with hord`. Establish `hint : ∀ v ∈ box (XIx (Fin κ) t (j + 1)) (S.ϖ ^ (r + 1)), IntM (fromBlocks 1 0 (Matrix.of fun (l : Fin (c + 1 + 1)) x => if l.val = r then (((S.ϖ : k) ^ (r + 1))⁻¹ * v x) else 0) 1 : Matrix (XIx (Fin κ) t (j + 1) ⊕ Fin (c + 1 + 1)) (XIx (Fin κ) t (j + 1) ⊕ Fin (c + 1 + 1)) k)`. Introduce `v hv`. Use `intM_fromBlocks.2 ⟨intM_one, intM_zero, fun l x => ?_, intM_one⟩` and prove the remaining obligations.
+
+Simplify using `only [Matrix.of_apply]`. Use `split_ifs`. Rewrite using `[Valuation.mem_integer_iff, map_mul, map_inv₀]`. Establish `h0 : valuation k ((S.ϖ : k) ^ (r + 1)) ≠ 0` using `(Valuation.ne_zero_iff _).2 (pow_ne_zero _ (Units.ne_zero _))`. Establish `h1` using `hv x`.
+
+Rewrite `h1` using `[Units.val_pow_eq_pow_val]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `zero_mem _`. Express the relevant statement in the definitionally equal form `(typeFrame S.ϖ ord).conj.symm (rowE (c + 1 + 1) (r + 1) u) ∈ (S.P.iter t S.μ S.tame (j + 1)).J`. Rewrite using `[hP (j + 1)]`.
+
+Use `⟨mem_KO.2 ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[conj_rowE S t j c H r u]`. Conclude with `fun a b => hint u hu _ _`. Rewrite using `[← map_inv, rowE_inv', conj_rowE S t j c H r (-u)]`. Conclude with `fun a b => hint (-u) (neg_mem hu) _ _`.
+
+Introduce `a b hab`. Rewrite using `[conj_rowE S t j c H r u]`. It suffices to establish `h : (fromBlocks 1 0 (Matrix.of fun (l : Fin (c + 1 + 1)) x => if l.val = r then (((S.ϖ : k) ^ (r + 1))⁻¹ * u x) else 0) 1 : Matrix (XIx (Fin κ) t (j + 1) ⊕ Fin (c + 1 + 1)) (XIx (Fin κ) t (j + 1) ⊕ Fin (c + 1 + 1)) k) (ord a) (ord b) = (1 : Matrix (XIx (Fin κ) t (j + 1) ⊕ Fin (c …`. Establish `h1 : (1 : Matrix (Ix (Fin κ ⊕ Fin (s + 1)) t (j + 1)) (Ix (Fin κ ⊕ Fin (s + 1)) t (j + 1)) k) a b = (1 : Matrix (XIx (Fin κ) t (j + 1) ⊕ Fin (c + 1 + 1)) (XIx (Fin κ) t (j + 1) ⊕ Fin (c + 1 + 1)) k) (ord a) (ord b)`. Simplify using `only [Matrix.one_apply, ord.injective.eq_iff]`.
+
+Rewrite using `[Matrix.submatrix_apply, h, ← h1, sub_self, map_zero]`. Conclude with `zero_lt_one`. Apply the tactic sequence `rcases hA : ord a with A | A <;> rcases hB : ord b with B | B`. Simplify using `[Matrix.one_apply]`. Simplify using the standard rewrite rules.
+
+Simplify using `only [fromBlocks_apply₂₁, Matrix.of_apply] split_ifs with hAr`. It suffices to derive a contradiction. Apply `hab` to reduce the goal to its premises. Establish `ha : a = .inl (.inr ⟨A.val, by omega⟩)` using `ord.injective (hA.trans (standardOrderExtendedBasis_apply_low_block (Fin κ) t (j + 1) (c + 1 + 1) _ A).symm)`. Substitute `ha` using the available equality.
+
+Break down `B with (B | B) | B` into its components or cases. Establish `hb : b = .inl (.inl B)` using `ord.injective (hB.trans (stdOrd_eps (Fin κ) t (j + 1) (c + 1 + 1) _ B).symm)`. Substitute `hb` using the available equality. Simplify using `only [FreeIx, FreeTop]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hb : b = .inl (.inr ⟨c + 1 + 1 + B.val, by omega⟩)` using `ord.injective (hB.trans (stdOrd_f (Fin κ) t (j + 1) (c + 1 + 1) _ B).symm)`. Substitute `hb` using the available equality. Simplify using `only [FreeIx, FreeTop, Fin.lt_def]`. Use linear arithmetic over natural numbers and integers. Establish `hb : b = .inr B` using `ord.injective (hB.trans (stdOrd_d (Fin κ) t (j + 1) (c + 1 + 1) _ B).symm)`.
+
+Substitute `hb` using the available equality. Simplify using `only [FreeIx]`. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply]`.
+-/
 theorem rowE_mem_lev (hP : S.Pattern t) (j c : ℕ) (H : j + 1 + (c + 1) = s) (r : ℕ) (hc : c = 2 * r)
     (u : XIx (Fin κ) t (j + 1) → k) (hu : u ∈ box (XIx (Fin κ) t (j + 1)) (S.ϖ ^ (r + 1))) :
     rowE (c + 1 + 1) (r + 1) u ∈ ((S.T t).lev (j + 1) (c + 1 + 1) (by omega)).J := by
@@ -230,6 +313,11 @@ theorem rowE_mem_lev (hP : S.Pattern t) (j c : ℕ) (H : j + 1 + (c + 1) = s) (r
       · simp
     · simp [Matrix.one_apply]
 
+/- English proof (translation)
+Establish `hL : (S.T t).Laws` using `Chain.ofType_laws _ _ _ _ _`. Establish `hm` using `rowE_mem_lev S t hP j c H r hc u hu`. Establish `h1` using `(hL.1 (j + 1) (c + 1) H).1 ⟨_, hm⟩`. Use `⟨((((S.T t).lev (j + 1) (c + 1 + 1) (by omega)).lam ⟨_, hm⟩ : ℂˣ) : ℂ), fun y => ?_⟩` and prove the remaining obligations. Establish `h2` using `congrFun h1 y`.
+
+Simplify using `only [om, det_rowE', map_one, inv_one, Units.val_one, nabs_one, Real.one_rpow, Complex.ofReal_one, one_mul, Matrix.one_mul, Pi.smul_apply, smul_eq_mul] at h2`. Conclude with `h2`.
+-/
 theorem Phi_mul_rowE (hP : S.Pattern t) (j c : ℕ) (H : j + 1 + (c + 1) = s) (r : ℕ) (hc : c = 2 * r)
     (u : XIx (Fin κ) t (j + 1) → k) (hu : u ∈ box (XIx (Fin κ) t (j + 1)) (S.ϖ ^ (r + 1))) :
     ∃ a : ℂ, ∀ y, (S.T t).Phi (j + 1) (c + 1) H (y * (rowE (c + 1 + 1) (r + 1) u).val) =
@@ -248,6 +336,33 @@ end GlobalTheory.LocFlat.DoubleStepProof
 open GlobalTheory.LocFlat.DoubleStepProof in
 open Classical in
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ ν hν s κ S t _ _ hP hOne hCol hRow j c H r hc`. Use `haveI := hν.1`. Take `⟨C₁, hC₁, hC1⟩` from `hCol j (c + 1) (by omega) (r + 1) (by omega)`. Take `⟨V, hV, hVe⟩` from `hat_box (n := XIx (Fin κ) t (j + 1)) S.cond ν (S.ϖ ^ (r + 1))`. Apply the tactic sequence `have hhat : ∀ (p : Matrix (XIx (Fin κ) t (j + 1)) (XIx (Fin κ) t j) k × Matrix (XIx (Fin κ) t (j + 1 + 1)) (XIx (Fin κ) t (j + 1)) k) (u : XIx (Fin κ) t (j + 1) → k), hat S.ψ ν (-1) (fun y => flCol S.ψ ν (r + 1 + 1) ((S.T t).Phi j (c + 1 + 1) (by omega)) (fromCols p.1 (Matrix.of …`.
+
+Introduce `p u`. Rewrite using `[← hVe u]`. Unfold `hat`. Rewrite using `[← integral_const_mul]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `y`. Simplify using `only`. Rewrite using `[hC1, toCols₁_fromCols]`. Establish `ey : (fun a => (fromCols p.1 (Matrix.of fun r _ => y r) : Matrix _ _ k) a (Sum.inr ())) = y` using `by funext a; simp`. Rewrite using `[ey]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hΦ₂ : (S.T t).Phi (j + 1) (c + 1) (by omega) ∈ SB _` using `(Chain.ofType_regular _ _ _ _ _).1 (j + 1) (c + 1) (by omega)`. Use `⟨fun h hne => ?_, ?_⟩` and prove the remaining obligations. Take `⟨p, hp⟩` from `Function.ne_iff.mp hne`. Use `hOne (j + 1) (c + 1) (by omega) (r + 1) (by omega) (by omega) h (fun h0 => hp ?_)` and prove the remaining obligations.
+
+Simplify using `only [contr]`. Use `integral_eq_zero_of_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `only [Pi.zero_apply]`. Rewrite using `[hhat p u]`. Distinguish the cases in `hu : u ∈ box (XIx (Fin κ) t (j + 1)) (S.ϖ ^ (r + 1))`.
+
+Establish `e1 : (fromRows p.2 (Matrix.of fun _ => u)) (Sum.inr ()) = u` using `by funext a; simp`. Rewrite using `[GlobalTheory.T.flatRowMap_eq_rootExchangeOperator_translate k S.ψ ν S.cond.continuous hν.1 _ _ (c + 1) (r + 1) (by omega) (by omega) _ (om_mem_SB _ 1 h hΦ₂) _, e1, toRows₁_fromRows]`. Take `⟨a, ha⟩` from `Phi_mul_rowE S t hP j c (by omega) r hc u hu`. Establish `e2 : (fun z => om (S.μ (j + 1 + 1)) 1 h ((S.T t).Phi (j + 1) (c + 1) (by omega)) (z * (rowE (c + 1 + 1) (r + 1) u).val)) = fun z => a * om (S.μ (j + 1 + 1)) 1 h ((S.T t).Phi (j + 1) (c + 1) (by omega)) z`. Use function extensionality and compare the values at `z`.
+
+Simplify using `only [om]`. Rewrite using `[show (h⁻¹ : GL _ k).val * (z * (rowE (c + 1 + 1) (r + 1) u).val) * (1 : GL (XIx (Fin κ) t (j + 1) ⊕ Fin (c + 1 + 1)) k).val = ((h⁻¹ : GL _ k).val * z * (1 : GL (XIx (Fin κ) t (j + 1) ⊕ Fin (c + 1 + 1)) k).val) * (rowE (c + 1 + 1) (r + 1) u).val by`. Simplify using `[Matrix.mul_assoc], ha]`. Expand and normalize the polynomial expressions, which then agree. Establish `e3 : opE S.ψ ν (r + 1) (fun z => a * om (S.μ (j + 1 + 1)) 1 h ((S.T t).Phi (j + 1) (c + 1) (by omega)) z) p.2 = 0`.
+
+Unfold `opE`. Repeatedly rewrite using `[mul_assoc]`. Rewrite using `[integral_const_mul]`. Use `congrFun h0 p.2` as an intermediate fact. Unfold `opE at this`.
+
+Rewrite using `[this]`. Simplify using the standard rewrite rules. Use `mul_eq_zero_of_left ?_ _` and prove the remaining obligations. Rewrite using `[← e3]`. Use `congr 1`.
+
+Rewrite using `[if_neg hu]`. Simplify using the standard rewrite rules. Take `⟨C₂, hC₂, hC2⟩` from `hRow (j + 1) c H r hc`. Establish `hW` using `vol_box_pos (n := XIx (Fin κ) t (j + 1)) ν (S.ϖ ^ (r + 1))`. Use `set W := ((Measure.pi fun _ : XIx (Fin κ) t (j + 1) => ν) (box (XIx (Fin κ) t (j + 1)) (S.ϖ ^ (r + 1)) : Set (XIx (Fin κ) t (j + 1) → k))).toReal with hWdef`.
+
+Use `⟨C₁ * C₂ * V * W, by positivity, fun p => ?_⟩` and prove the remaining obligations. Simplify using `only [contr]`. Apply the tactic sequence `refine (integral_congr_ae (μ := Measure.pi fun _ => ν) (g := fun u => ((C₁ : ℂ) * C₂ * V * (S.T t).entry S.ψ ν j (c + 1) (by omega) 1 1 p.1 * (S.T t).entry S.ψ ν (j + 1) c H 1 1 p.2) * (if u ∈ box (XIx (Fin κ) t (j + 1)) (S.ϖ ^ (r + 1)) then 1 else 0)) (Filter.Eventually.of_foral …`. Simplify using `only`. Rewrite using `[hhat p u, hC2]`.
+
+Establish `e1 : (fromRows p.2 (Matrix.of fun _ => u)) (Sum.inr ()) = u` using `by funext a; simp`. Rewrite using `[e1, toRows₁_fromRows]`. Apply the tactic sequence `split_ifs <;> ring`. Rewrite using `[integral_const_mul, integral_box]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GlobalTheory.LocFlat.doubleStep_of_pureCol_pureRow : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ν : Measure k), IsUnitVol ν → ∀ (s κ : ℕ) (S : SymData k s κ) (t : Type) [Fintype t] [DecidableEq t], S.Pattern t → S.OneIndexAt t ν → GlobalTheory.LocFlat.PureCol S t ν → GlobalTheory.LocFlat.PureRow S t ν → GlobalTheory.LocFlat.DoubleStep S t ν := by
   intro k _ _ _ _ _ _ ν hν s κ S t _ _ hP hOne hCol hRow j c H r hc
   haveI := hν.1

@@ -7,6 +7,15 @@ open scoped Classical
 
 namespace GlobalTheory.TwLat
 
+/- English proof (translation)
+Introduce `E _ _ _ _ w _ K e _ hint _ B m b u Q hQ hu y hy hcp`. Take `⟨z, rfl⟩` from `hy`. Establish `hcoef : ∀ i, Valued.v (Q.coeff i) ≤ 1`. Introduce `i`. Rewrite using `[← hcp]`.
+
+Establish `hm : ((bc (n` using `Fin m) (Ov E w).subtype z : GL (Fin m) (w.adicCompletion E)) : Matrix (Fin m) (Fin m) (w.adicCompletion E)) = (RingHom.mapMatrix (Ov E w).subtype) (z : Matrix (Fin m) (Fin m) (Ov E w)) := rfl`. Rewrite using `[hm, RingHom.mapMatrix_apply, Matrix.charpoly_map, Polynomial.coeff_map]`. Conclude with `(IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (z.val.charpoly.coeff i).2`. Establish `hlift : Q.map e.symm.toRingHom ∈ Polynomial.lifts (algebraMap K.O K.E)`. Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`.
+
+Introduce `i`. Rewrite using `[Polynomial.coeff_map]`. Use `(hint (e.symm (Q.coeff i))).2 (by simpa using hcoef i)` as an intermediate fact. Simplify using `using this`. Take `⟨P, hPm, -, hPmon⟩` from `Polynomial.lifts_and_degree_eq_and_monic hlift (hQ.map _)`.
+
+Use `⟨P, hPmon, ?_⟩` and prove the remaining obligations. Rewrite using `[← Polynomial.aeval_def, ← Polynomial.aeval_map_algebraMap K.E, hPm]`. Conclude with `hu`.
+-/
 theorem isIntegral_of_charpoly_intGL : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (w : Pl E), ¬ IsSplitAt w → ∀ (K : GlobalTheory.UnitLemma.UQ) (e : K.E ≃+* w.adicCompletion E), (∀ x, e (K.c x) = cj w (e x)) → (∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e x) ≤ 1) → (∀ x, GlobalTheory.UnitLemma.val K.O x = ordL (e x)) → ∀ (B : GlobalTheory.UnitLemma.InvAlg K) (m : ℕ) (b : Module.Basis (Fin m) K.E B.A), ∀ (u : B.A) (Q : (w.adicCompletion E)[X]), Q.Monic → aeval u (Q.map e.symm.toRingHom) = 0 → ∀ y : GLw m w, y ∈ GlobalTheory.LFun.KGL w m → y.val.charpoly = Q → IsIntegral K.O u := by
   intro E _ _ _ _ w _ K e _ hint _ B m b u Q hQ hu y hy hcp
   obtain ⟨z, rfl⟩ := hy

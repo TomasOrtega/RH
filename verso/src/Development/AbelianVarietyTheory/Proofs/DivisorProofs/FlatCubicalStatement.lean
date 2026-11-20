@@ -31,6 +31,13 @@ noncomputable section
 
 namespace GlobalTheory.FlatCubicalProof
 
+/- English proof (translation)
+Introduce `g`. Use `⟨fun E _ _ _ B τ hτ => ⟨?_, ?_, GlobalTheory.T.period_map_rigidity hτ⟩, ?_⟩` and prove the remaining obligations. Conclude with `⟨GlobalTheory.T.period_torus_flat_coords_inverse hτ, (GlobalTheory.T.period_flat_map_real_analytic hτ).1, (GlobalTheory.T.period_flat_map_real_analytic hτ).2, fun γ => ⟨(GlobalTheory.T.period_map_symplectic_transform hτ γ).1, (GlobalTheory.T.period_map_symplectic_transform hτ γ). …`. Introduce `j r hj hs hr hp`. Use `⟨GlobalTheory.T.exists_cubical_metric hτ j r hj hs hr hp, fun h h' hh hh' => ?_, fun n => ⟨GlobalTheory.T.exists_square_isomorphism hτ j r hj hs hr hp n, fun h φ hh hφ => GlobalTheory.T.square_iso_isometry_cubical hτ j r hj hs hr hp n h φ hh hφ⟩⟩` and prove the remaining obligations.
+
+Use `GlobalTheory.T.metric_determined_by_curvature_zero_section hτ j h h' hh.1 hh'.1 (fun P hP v w => ?_) (fun b hb => ?_)` and prove the remaining obligations. Establish `e1` using `hh.2.1 P hP v w`. Establish `e2` using `hh'.2.1 P hP v w`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e1` using `hh.2.2 b hb`.
+
+Establish `e2` using `hh'.2.2 b hb`. Establish `hne : ‖r b‖ ^ 2 ≠ 0` using `pow_ne_zero _ (norm_ne_zero_iff.2 (hr.2 b hb))`. Conclude with `mul_right_cancel₀ hne (e1.trans e2.symm)`. Use `⟨(GlobalTheory.T.siegel_period_map_simply_connected g).1, (GlobalTheory.T.siegel_period_map_simply_connected g).2, (GlobalTheory.T.siegel_action_is_mul_action g).1, (GlobalTheory.T.siegel_action_is_mul_action g).2, fun γ => ⟨(GlobalTheory.T.siegel_action_preserves_flat_form g γ). …` and prove the remaining obligations. Conclude with `⟨_, _, (theta_factor (GlobalTheory.T.siegel_period_map_simply_connected g).1).1, (GlobalTheory.T.theta_metric_chern_flat (GlobalTheory.T.siegel_period_map_simply_connected g).1).1, (GlobalTheory.T.theta_metric_chern_flat (GlobalTheory.T.siegel_period_map_simply_connected g).1).2⟩`.
+-/
 theorem flatCubical : FlatCubical := by
   intro g
   refine ⟨fun E _ _ _ B τ hτ => ⟨?_, ?_, GlobalTheory.T.period_map_rigidity hτ⟩, ?_⟩

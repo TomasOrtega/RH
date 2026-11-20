@@ -4,6 +4,11 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 
 namespace UpperTheory.V.GC
 
+/- English proof (translation)
+Set `K` to `(LinearMap.ker τ).map r`. Set `s : W →ₗ[k] P ⧸ K` to `K.mkQ.comp r`. Establish `hs : LinearMap.ker s = LinearMap.ker τ`. Rewrite using `[LinearMap.ker_comp, Submodule.ker_mkQ, Submodule.comap_map_eq, sup_eq_left.2 h]`. Establish `e : LinearMap.range s ≃ₗ[k] LinearMap.range τ` using `s.quotKerEquivRange.symm.trans ((Submodule.quotEquivOfEq _ _ hs).trans τ.quotKerEquivRange)`.
+
+Use `⟨Module.Finite.equiv e, ?_⟩` and prove the remaining obligations. Rewrite using `[← e.finrank_eq, ← K.finrank_quotient_add_finrank]`. Conclude with `add_le_add (Submodule.finrank_le _) (Submodule.finrank_mono hU)`.
+-/
 private theorem inflKer_lin {k W P H : Type} [Field k] [AddCommGroup W] [Module k W] [AddCommGroup P] [Module k P]
     [AddCommGroup H] [Module k H] [Module.Finite k P] (r : W →ₗ[k] P) (τ : W →ₗ[k] H)
     (h : LinearMap.ker r ≤ LinearMap.ker τ) (U : Submodule k P) (hU : U ≤ (LinearMap.ker τ).map r) :
@@ -38,6 +43,13 @@ private def inflW : Submodule k (Z2 ρ × (Γ' → M)) where
     simp only [Prod.smul_snd, Prod.smul_fst, Pi.smul_apply, map_smul, Submodule.coe_smul, ← a3, smul_add, smul_sub]
 
 omit [IsTopologicalGroup Γ'] in
+/- English proof (translation)
+Take `⟨⟨z, β⟩, -, h1, h⟩` from `x`. Simplify using `only at h1 h ⊢`. Establish `a` using `h 1 g`. Establish `b` using `h g 1`. Establish `c` using `h n g`.
+
+Establish `d` using `h g n`. Simplify using `only [h1, hn, map_one, one_mul, mul_one, map_zero, Module.End.one_apply] at a b c d`. Rewrite `c` using `[← a]`. Rewrite `d` using `[← b]`. Prove the components needed by the constructor for the conclusion.
+
+Take the linear combination `(norm := abel1) -c`. Take the linear combination `(norm := abel1) -d`.
+-/
 private theorem inflW_mul (x : inflW p ρ) (n : Γ') (hn : p n = 1) (g : Γ') :
     x.1.2 (n * g) = x.1.2 n + x.1.2 g ∧ x.1.2 (g * n) = x.1.2 g + ρ (p g) (x.1.2 n) := by
   obtain ⟨⟨z, β⟩, -, h1, h⟩ := x
@@ -54,6 +66,9 @@ private theorem inflW_mul (x : inflW p ρ) (n : Γ') (hn : p n = 1) (g : Γ') :
   · linear_combination (norm := abel1) -d
 
 omit [IsTopologicalGroup Γ'] in
+/- English proof (translation)
+Establish `a` using `(inflW_mul p ρ x (g * n * g⁻¹) (by simp [hn]) g).1`. Establish `b` using `(inflW_mul p ρ x n hn g).2`. Rewrite `a` using `[inv_mul_cancel_right, b, add_comm]`. Conclude with `(add_right_cancel a).symm`.
+-/
 private theorem inflW_conj (x : inflW p ρ) (n : Γ') (hn : p n = 1) (g : Γ') :
     x.1.2 (g * n * g⁻¹) = ρ (p g) (x.1.2 n) := by
   have a := (inflW_mul p ρ x (g * n * g⁻¹) (by simp [hn]) g).1
@@ -61,6 +76,17 @@ private theorem inflW_conj (x : inflW p ρ) (n : Γ') (hn : p n = 1) (g : Γ') :
   rw [inv_mul_cancel_right, b, add_comm] at a
   exact (add_right_cancel a).symm
 
+/- English proof (translation)
+Set `N : Subgroup Γ'` to `{ carrier := {n | p n = 1 ∧ x.1.2 n = 0} one_mem' := ⟨map_one _, x.2.2.1⟩ mul_mem' := by`. Introduce and unpack `a b ⟨a1, a2⟩ ⟨b1, b2⟩`. Conclude with `⟨by simp [a1, b1], by rw [(inflW_mul p ρ x a a1 b).1, a2, b2, add_zero]⟩`. Use the proof step `inv_mem' := by`. Introduce and unpack `a ⟨a1, a2⟩`.
+
+Use `⟨by simp [a1], ?_⟩` and prove the remaining obligations. Use `(inflW_mul p ρ x a a1 a⁻¹).1` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, x.2.2.1, a2, zero_add]`. Conclude with `this.symm }`. Use `haveI : N.Normal := ⟨fun n hn g => ⟨by simp [hn.1], by rw [inflW_conj p ρ x n hn.1, hn.2, map_zero]⟩⟩`.
+
+Establish `hc : IsClosed (N : Set Γ')` using `(isClosed_eq hp continuous_const).inter (isClosed_eq x.2.1 continuous_const)`. Establish `hN : p.ker ≤ N`. Rewrite using `[hS]`. Use `Subgroup.topologicalClosure_minimal _ (Subgroup.normalClosure_le_normal fun s h => ⟨?_, hx s h⟩) hc` and prove the remaining obligations. Establish `: s ∈ p.ker` using `hS ▸ Subgroup.le_topologicalClosure _ (Subgroup.subset_normalClosure h)`.
+
+Conclude with `this`. Establish `hb : ∀ g, x.1.2 (Function.surjInv hs (p g)) = x.1.2 g` using `fun g => by`. Establish `h1 : p (g⁻¹ * Function.surjInv hs (p g)) = 1` using `by simp [Function.surjInv_eq hs]`. Use `(inflW_mul p ρ x _ h1 g).2` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left, (hN h1).2, map_zero, add_zero]`.
+
+Conclude with `this`. Use `⟨fun γ => x.1.2 (Function.surjInv hs γ), ?_, hb⟩` and prove the remaining obligations. Rewrite using `[(hp.isClosedMap.isQuotientMap hp hs).continuous_iff]`. Conclude with `x.2.1.congr fun g => (hb g).symm`.
+-/
 private theorem inflW_desc [CompactSpace Γ'] [T2Space Γ] (hp : Continuous p) (hs : Function.Surjective p)
     (S : Set Γ') (hS : p.ker = (Subgroup.normalClosure S).topologicalClosure) (x : inflW p ρ)
     (hx : ∀ s ∈ S, x.1.2 s = 0) : ∃ b : Γ → M, Continuous b ∧ ∀ g, b (p g) = x.1.2 g := by
@@ -112,6 +138,17 @@ private def inflJ : Z1 (ρ.comp p) →ₗ[k] inflW p ρ where
   map_smul' _ _ := by ext <;> simp
 
 omit [IsTopologicalGroup Γ'] in
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, rfl⟩`. Use `(Submodule.Quotient.mk_eq_zero _).2 ((separated_dvr_second_cohomology_mem _ _).2 ⟨x.1.2, x.2.1, ?_⟩)` and prove the remaining obligations. Use function extensionality and compare the values at `q`. Conclude with `x.2.2.2 q.1 q.2`.
+
+Introduce `y hy`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Take `⟨β, hβ, he⟩` from `(separated_dvr_second_cohomology_mem _ _).1 ((Submodule.Quotient.mk_eq_zero _).1 hy)`. Establish `he' : ∀ g h, ρ (p g) (β h) - β (g * h) + β g = z.1 (p g, p h)` using `fun g h => congrFun he (g, h)`. Set `c : Z2 ρ` to `⟨fun q => ρ q.1 (β 1), ?_, fun g h k => by simp⟩`.
+
+Use `⟨⟨(z - c, fun g => β g - β 1), hβ.sub continuous_const, sub_self _, fun g h => ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [c, Submodule.coe_sub, Pi.sub_apply, ← he', map_sub]`. Normalize the expressions using the abelian group laws. Use `(Submodule.Quotient.eq _).2 ((separated_dvr_second_cohomology_mem _ _).2 ⟨fun _ => -β 1, continuous_const, ?_⟩)` and prove the remaining obligations. Use function extensionality and compare the values at `q`.
+
+Simplify using `[c, d1]`. Establish `h1 : β 1 = z.1 (1, 1)` using `by simpa using he' 1 1`. Establish `h2 : ∀ g, ρ g (z.1 (1, 1)) = z.1 (g, 1)` using `fun g => by`. Use `z.2.2 g 1 1` as an intermediate fact. Simplify using `only [mul_one, sub_add_cancel] at this`.
+
+Conclude with `sub_eq_zero.1 this`. Simplify using `only [h1, h2]`. Conclude with `z.2.1.comp (continuous_fst.prodMk continuous_const)`.
+-/
 private theorem inflW_range :
     LinearMap.range ((Submodule.mkQ _ : Z2 ρ →ₗ[k] H2 ρ) ∘ₗ LinearMap.fst _ _ _ ∘ₗ (inflW p ρ).subtype) =
       LinearMap.ker (resH2 ρ p hp) := by
@@ -143,6 +180,27 @@ end
 
 end UpperTheory.V.GC
 
+/- English proof (translation)
+Introduce `l _ Γ' _ _ _ _ _ _ Γ _ _ _ _ _ _ p hp hs k _ _ _ M _ _ _ _ _ ρ _ T _ Dq Jq hker hfin hH`. Establish `hJ : ∀ q, Jq q ≤ p.ker` using `fun q s h => hker ▸ Subgroup.le_topologicalClosure _ (Subgroup.subset_normalClosure (Set.mem_iUnion.2 ⟨q, h⟩))`. Set `r` to `inflR p ρ Dq Jq hJ`. Establish `hd : ∀ x, r x = 0 → ∃ b : Γ → M, Continuous b ∧ ∀ g, b (p g) = x.1.2 g` using `fun x hx => inflW_desc p ρ hp hs _ hker x fun s h => by`. Take `⟨q, hq⟩` from `Set.mem_iUnion.1 h`.
+
+Conclude with `congrFun (congrArg Subtype.val (congrFun hx q)) ⟨s, hq⟩`. Establish `hinj : Function.Injective (resH1 ρ p hp)`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`.
+
+Take `⟨m, hm⟩` from `(mem_coboundaries1 _ _).1 ((Submodule.Quotient.mk_eq_zero _).1 hy)`. Use `(Submodule.Quotient.mk_eq_zero _).2 ((mem_coboundaries1 _ _).2 ⟨m, fun g => ?_⟩)` and prove the remaining obligations. Take `⟨g, rfl⟩` from `hs g`. Conclude with `hm g`. Use `haveI hF : Module.Finite k (H1 ρ) := Module.Finite.of_injective _ hinj`.
+
+Set `r1 : H1 (ρ.comp p) →ₗ[k] ∀ q, eqHom (ρ.comp p) (Dq q) (Jq q)` to `Submodule.liftQ _ (r.comp (inflJ p ρ)) fun f hf => by`. Take `⟨m, hm⟩` from `(mem_coboundaries1 _ _).1 hf`. Use function extensionality and compare the values at `q`. Use `Subtype.ext (funext fun j => (hm j).trans ?_)` and prove the remaining obligations. Establish `: p j = 1` using `hJ q j.2`.
+
+Simplify using `[this]`. Establish `hk1 : LinearMap.ker r1 ≤ LinearMap.range (resH1 ρ p hp)`. Introduce `y hy`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Take `⟨b, hb, he⟩` from `hd (inflJ p ρ z) hy`.
+
+Use `⟨Submodule.Quotient.mk ⟨b, hb, fun g h => ?_⟩, congrArg _ (Subtype.ext (funext he))⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `hs g`. Take `⟨h, rfl⟩` from `hs h`. Rewrite using `[← map_mul, he, he, he]`. Conclude with `z.2.2 g h`.
+
+Take `⟨h1, h2⟩` from `inflKer_lin r ((Submodule.mkQ _ : Z2 ρ →ₗ[k] H2 ρ) ∘ₗ LinearMap.fst _ _ _ ∘ₗ (inflW p ρ).subtype) (fun x hx => by`. Take `⟨b, hb, he⟩` from `hd x hx`. Use `(Submodule.Quotient.mk_eq_zero _).2 ((separated_dvr_second_cohomology_mem _ _).2 ⟨b, hb, ?_⟩)` and prove the remaining obligations. Use function extensionality and compare the values at `⟨g, h⟩`. Take `⟨g, rfl⟩` from `hs g`.
+
+Take `⟨h, rfl⟩` from `hs h`. Rewrite using `[d1_apply, ← map_mul, he, he, he]`. Conclude with `x.2.2.2 g h) (LinearMap.range r1) (by`. Introduce and unpack `_ ⟨y, rfl⟩`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`.
+
+Conclude with `⟨inflJ p ρ z, (Submodule.mkQ _).map_zero, rfl⟩)`. Rewrite `h1`, `h2` using `[inflW_range p hp ρ]`. Use `⟨hF, h1, ?_⟩` and prove the remaining obligations. Rewrite `h2` using `[Module.finrank_pi_fintype]`. Establish `h3` using `r1.finrank_range_add_finrank_ker`.
+
+Establish `h4` using `(Submodule.finrank_mono hk1).trans (LinearMap.finrank_range_le _)`. Establish `h5 : finrank k (H1 (ρ.comp p)) ≤ finrank k (LinearMap.range r1) + finrank k (H1 ρ)` using `h3.symm.le.trans (Nat.add_le_add_left h4 _)`. Use `(Nat.add_le_add_left h5 _).trans ?_` and prove the remaining obligations. Rewrite using `[← add_assoc, add_comm]`. Conclude with `Nat.add_le_add_left h2 _`.
+-/
 theorem UpperTheory.V.GC.inflKer :
     ∀ (l : ℕ) [Fact l.Prime] (Γ' : Type) [Group Γ'] [TopologicalSpace Γ'] [IsTopologicalGroup Γ'] [CompactSpace Γ'] [T2Space Γ'] [TotallyDisconnectedSpace Γ'] (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] [T2Space Γ] [TotallyDisconnectedSpace Γ] (p : Γ' →* Γ) (hp : Continuous p), Function.Surjective p →
     ∀ (k : Type) [Field k] [Finite k] [CharP k l] (M : Type) [AddCommGroup M] [Module k M] [Module.Finite k M] [TopologicalSpace M] [DiscreteTopology M] (ρ : Representation k Γ M), ContAction ρ → ∀ (T : Type) [Fintype T] (Dq Jq : T → Subgroup Γ'), p.ker = (Subgroup.normalClosure (⋃ q, (Jq q : Set Γ'))).topologicalClosure →

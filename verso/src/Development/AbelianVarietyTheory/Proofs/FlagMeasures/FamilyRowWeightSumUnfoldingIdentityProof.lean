@@ -18,6 +18,15 @@ namespace GlobalTheory.SnFam
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `hRel : ∀ p, (FP p).RelG (LocNG.theta ((zOf Y).M p))` using `fun p => (GlobalTheory.T.localisedBaseFrames_relevantPair D (zOf Y) u u' w F F' hw hG p).2 (FP p) (hB p)`. Take `⟨hng, hgen, -, -⟩` from `GlobalTheory.T.nonGeneric_generic_terms_closed_under_localUnitary D X Y u u' F F' w hw hG (zOf Y) FP hB hRel`. Introduce `t t' Λ Λ' hΛ hΛ' hloc ht`. Establish `hGt : ∀ s : TauC Y u u', s.G ≠ 0 → (Y.tO u u').G s ≠ 0` using `fun s hs => by show Formalism.L2.SG.TermOp.Gt s ≠ 0`. Simplify using `[Formalism.L2.SG.TermOp.Gt, hs]`.
+
+Establish `h1` using `hGt t (GlobalTheory.T.term_at_base_point_of_frames D X Y u u' F F' w hw hG t Λ hΛ).1`. Establish `h2` using `hGt t' (GlobalTheory.T.term_at_base_point_of_frames D X Y u u' F F' w hw hG t' Λ' hΛ').1`. Establish `hiff : (Y.tO u u').gener t ↔ (Y.tO u u').gener t'`. Prove the components needed by the constructor for the conclusion. Introduce `hg`.
+
+Conclude with `(hgen t t' Λ Λ' hΛ hΛ' hloc ⟨h1, hg⟩).2`. Introduce `hg'`. Assume the negation of the conclusion as `hg`. Conclude with `(hng t t' Λ Λ' hΛ hΛ' hloc ⟨h1, hg⟩).2 hg'`. Establish `he : (¬ (Y.tO u u').gener t) = (¬ (Y.tO u u').gener t')` using `propext (not_congr hiff)`.
+
+Conclude with `⟨h2, he ▸ ht.2⟩`.
+-/
 theorem setQ_locClosed {D : D7} {X : HidaSetting D} (Y : Full X) (u u' : D.what₂.Word) (S : Prop → Prop)
     (F : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E))
     (w : Point D.host.E (D.R.rS + 1)) (hw : ZhatOM (ZhatL F F') = ptMat w) (hG : Gval F F' ≠ 0)
@@ -43,6 +52,11 @@ theorem setQ_locClosed {D : D7} {X : HidaSetting D} (Y : Full X) (u u' : D.what�
   have he : (¬ (Y.tO u u').gener t) = (¬ (Y.tO u u').gener t') := propext (not_congr hiff)
   exact ⟨h2, he ▸ ht.2⟩
 
+/- English proof (translation)
+Introduce `Cg cb Cw cT CT C0`. Use `⟨0, 0, ?_⟩` and prove the remaining obligations. Introduce `C' Cl _ _ D large₂ X Y u u' _ K S TS cls hF γ _ Fm hT`. Take `⟨hTS, hCR, -⟩` from `hF`. Substitute `hTS` using the available equality.
+
+Conclude with `GlobalTheory.T.unfolding_identity_matched_family_closed_terms D X Y u u' _ cls hCR (fun F F' w hw hG FP hB => setQ_locClosed Y u u' S F F' w hw hG FP hB) γ Fm hT`.
+-/
 theorem familyRowWeightSumUnfoldingIdentity_proof : FamilyWeightSumUnfoldingIdentity := by
   intro Cg cb Cw cT CT C0
   refine ⟨0, 0, ?_⟩

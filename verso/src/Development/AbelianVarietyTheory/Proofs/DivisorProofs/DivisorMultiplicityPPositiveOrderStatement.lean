@@ -16,6 +16,9 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory GlobalTheory.Cart
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SuppP.suppP | exact GlobalTheory.SuppP.suppP | (intros; apply GlobalTheory.SuppP.suppP <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.divisor_multiplicity_p_positive_order : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (q : X ⟶ Sp k) (D : ℕ),
     IsArithVar q D → ∀ (M : HermLB q) (r : M.B.ι → X.functionFieldˣ) (hr : IsRatSec M.B r) (p : ℕ), p.Prime →
     (∀ i, ∀ x ∈ M.B.U i, RegAt x (r i : X.functionField) ∧ (IsUnit (p : X.presheaf.stalk x) → UnitAt x (r i : X.functionField))) →

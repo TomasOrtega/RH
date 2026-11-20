@@ -8,6 +8,11 @@ open NumberField IsDedekindDomain Formalism.L2.Th1.CM Neutral.HilbertClassField
 
 namespace ReciprocityTheory.ChartRestriction.L1
 
+/- English proof (translation)
+Establish `hP : p.map f₀ ≠ 0` using `(Polynomial.map_ne_zero_iff f₀.injective).2 hp`. Establish `hr : ((p.map f₀).map e).roots = (p.map f₀).roots.map e` using `(IsAlgClosed.splits _).roots_map e`. Establish `hf : e.comp f₀ = f` using `Subsingleton.elim _ _`. Establish `hmem : y ∈ ((p.map f₀).map e).roots`. Rewrite using `[Polynomial.mem_roots ((Polynomial.map_ne_zero_iff e.injective).2 hP), Polynomial.map_map, hf, Polynomial.IsRoot.def, Polynomial.eval_map]`.
+
+Conclude with `hy`. Rewrite `hmem` using `[hr, Multiset.mem_map]`. Take `⟨a, -, ha⟩` from `hmem`. Conclude with `⟨a, ha⟩`.
+-/
 theorem exists_of_ratRoot {Ω M : Type*} [Field Ω] [IsAlgClosed Ω] [Field M] (e : Ω →+* M)
     (f₀ : ℚ →+* Ω) (f : ℚ →+* M) {p : Polynomial ℚ} (hp : p ≠ 0) {y : M}
     (hy : p.eval₂ f y = 0) : ∃ a : Ω, e a = y := by
@@ -23,6 +28,13 @@ theorem exists_of_ratRoot {Ω M : Type*} [Field Ω] [IsAlgClosed Ω] [Field M] (
   obtain ⟨a, -, ha⟩ := hmem
   exact ⟨a, ha⟩
 
+/- English proof (translation)
+Take `⟨p, hp, hpx⟩` from `Om_isAlgebraic d x`. Establish `: IsAlgClosed (Om d)` using `(inferInstance : IsAlgClosure (KQ d) (Om d)).isAlgClosed`. Set `f₀ : ℚ →+* Om d` to `algebraMap ℚ (Om d)`. Establish `h0 : p.eval₂ f₀ x = 0`. Apply `(algebraMap (Om d) ℂ).injective` to reduce the goal to its premises.
+
+Rewrite using `[Polynomial.hom_eval₂, map_zero]`. Establish `: (algebraMap (Om d) ℂ).comp f₀ = algebraMap ℚ ℂ` using `Subsingleton.elim _ _`. Rewrite using `[this]`. Conclude with `hpx`. Use `exists_of_ratRoot e f₀ ((r.comp e).comp f₀) hp ?_` and prove the remaining obligations.
+
+Use `congrArg (r.comp e) h0` as an intermediate fact. Rewrite `this` using `[Polynomial.hom_eval₂, map_zero]`. Conclude with `this`.
+-/
 theorem exists_e_eq {d l : ℕ} [Fact l.Prime] (e : Om d →+* PadicAlgCl l)
     (r : PadicAlgCl l →+* PadicAlgCl l) (x : Om d) : ∃ y : Om d, e y = r (e x) := by
   obtain ⟨p, hp, hpx⟩ := Om_isAlgebraic d x
@@ -39,18 +51,31 @@ theorem exists_e_eq {d l : ℕ} [Fact l.Prime] (e : Om d →+* PadicAlgCl l)
   rw [Polynomial.hom_eval₂, map_zero] at this
   exact this
 
+/- English proof (translation)
+Establish `h` using `PadicAlgCl.isNonarchimedean l (r z - z) z`. Rewrite `h` using `[sub_add_cancel]`. Conclude with `lt_of_le_of_lt h (max_lt (hr z hz.le) hz)`.
+-/
 theorem norm_lt_of_res {l : ℕ} [Fact l.Prime] {r : PadicAlgCl l → PadicAlgCl l}
     (hr : ∀ z : PadicAlgCl l, ‖z‖ ≤ 1 → ‖r z - z‖ < 1) {z : PadicAlgCl l} (hz : ‖z‖ < 1) : ‖r z‖ < 1 := by
   have h := PadicAlgCl.isNonarchimedean l (r z - z) z
   rw [sub_add_cancel] at h
   exact lt_of_le_of_lt h (max_lt (hr z hz.le) hz)
 
+/- English proof (translation)
+Establish `h` using `PadicAlgCl.isNonarchimedean l (r z - z) z`. Rewrite `h` using `[sub_add_cancel]`. Conclude with `le_trans h (max_le (hr z hz).le hz)`.
+-/
 theorem norm_le_of_res {l : ℕ} [Fact l.Prime] {r : PadicAlgCl l → PadicAlgCl l}
     (hr : ∀ z : PadicAlgCl l, ‖z‖ ≤ 1 → ‖r z - z‖ < 1) {z : PadicAlgCl l} (hz : ‖z‖ ≤ 1) : ‖r z‖ ≤ 1 := by
   have h := PadicAlgCl.isNonarchimedean l (r z - z) z
   rw [sub_add_cancel] at h
   exact le_trans h (max_le (hr z hz).le hz)
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun h => norm_le_of_res hr h⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hz`. Use `push Not at hz`. Establish `h1 : ‖z⁻¹‖ < 1`. Rewrite using `[norm_inv]`.
+
+Conclude with `inv_lt_one_of_one_lt₀ hz`. Establish `h2` using `norm_lt_of_res hr h1`. Rewrite `h2` using `[map_inv₀, norm_inv]`. Establish `hz0 : z ≠ 0`. Introduce and unpack `rfl`.
+
+Simplify using `at hz`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : 0 < ‖r z‖` using `norm_pos_iff.2 ((map_ne_zero r).2 hz0)`. Establish `h4 : 1 ≤ ‖r z‖⁻¹` using `(one_le_inv₀ h3).2 h`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem norm_le_iff_of_res {l : ℕ} [Fact l.Prime] (r : PadicAlgCl l →+* PadicAlgCl l)
     (hr : ∀ z : PadicAlgCl l, ‖z‖ ≤ 1 → ‖r z - z‖ < 1) (z : PadicAlgCl l) : ‖r z‖ ≤ 1 ↔ ‖z‖ ≤ 1 := by
   refine ⟨fun h => ?_, fun h => norm_le_of_res hr h⟩
@@ -69,6 +94,11 @@ theorem norm_le_iff_of_res {l : ℕ} [Fact l.Prime] (r : PadicAlgCl l →+* Padi
   have h4 : 1 ≤ ‖r z‖⁻¹ := (one_le_inv₀ h3).2 h
   linarith
 
+/- English proof (translation)
+Set `φ₁ : KQ d →ₐ[ℚ] PadicAlgCl l` to `(e.comp (algebraMap (KQ d) (Om d))).toRatAlgHom`. Set `φ₂ : KQ d →ₐ[ℚ] PadicAlgCl l` to `((ρ : PadicAlgCl l →+* PadicAlgCl l).comp (e.comp (algebraMap (KQ d) (Om d)))).toRatAlgHom`. Establish `h : φ₂ = φ₁`. Use `IntermediateField.algHom_ext_of_eq_adjoin ℚ (s := {sqD d}) rfl ?_` and prove the remaining obligations. Introduce `x hx`.
+
+Establish `hx' : x = sqD d` using `hx`. Substitute `hx'` using the available equality. Establish `hm : e (algebraMap (KQ d) (Om d) (sqK d)) ∈ IntermediateField.adjoin ℚ_[l] {e (algebraMap (KQ d) (Om d) (sqK d))}` using `IntermediateField.subset_adjoin _ _ (Set.mem_singleton _)`. Conclude with `ρ.commutes ⟨_, hm⟩`. Conclude with `DFunLike.congr_fun h k`.
+-/
 theorem fix_KQ {d l : ℕ} [Fact l.Prime] (e : Om d →+* PadicAlgCl l)
     (ρ : PadicAlgCl l ≃ₐ[IntermediateField.adjoin ℚ_[l] {e (algebraMap (KQ d) (Om d) (sqK d))}] PadicAlgCl l)
     (k : KQ d) : ρ (e (algebraMap (KQ d) (Om d) k)) = e (algebraMap (KQ d) (Om d) k) := by
@@ -86,6 +116,17 @@ theorem fix_KQ {d l : ℕ} [Fact l.Prime] (e : Om d →+* PadicAlgCl l)
     exact ρ.commutes ⟨_, hm⟩
   exact DFunLike.congr_fun h k
 
+/- English proof (translation)
+Establish `hinj : Function.Injective e` using `e.injective`. Use `choose g hg using exists_e_eq e (ρ : PadicAlgCl l →+* PadicAlgCl l)`. Use `choose g' hg' using exists_e_eq e (ρ.symm : PadicAlgCl l →+* PadicAlgCl l)`. Establish `hg1 : ∀ x, e (g x) = ρ (e x)` using `hg`. Establish `hg2 : ∀ x, e (g' x) = ρ.symm (e x)` using `hg'`.
+
+Set `σ : Om d ≃ₐ[KQ d] Om d` to `{ toFun := g invFun := g' left_inv := fun x => hinj (by rw [hg2, hg1, AlgEquiv.symm_apply_apply]) right_inv := fun x => hinj (by rw [hg1, hg2, AlgEquiv.apply_symm_apply]) map_mul' := fun x y => hinj (by rw [hg1, map_mul, map_mul, map_mul, hg1, hg1]) map_add' := fun x y => hinj (b …`. Establish `hσ : ∀ x, e (σ x) = ρ (e x)` using `hg1`. Establish `hn : ∀ x : Om d, ‖ι (x : ℂ)‖ = ‖e x‖` using `fun x => by`. Rewrite using `[← he, ← PadicComplex.coe_eq, PadicComplex.norm_extends]`. Establish `hiff : ∀ x : Om d, σ x ∈ Aio d l ι ↔ x ∈ Aio d l ι` using `fun x => by`.
+
+Rewrite using `[mem_Aio, mem_Aio, hn, hn, hσ]`. Conclude with `norm_le_iff_of_res (ρ : PadicAlgCl l →+* PadicAlgCl l) hρ (e x)`. Use `⟨σ, ⟨?_, ?_⟩, hσ⟩` and prove the remaining obligations. Use `show σ • Aio d l ι = Aio d l ι`. Use extensionality with `x`.
+
+Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, ← hiff]`. Establish `: σ (σ⁻¹ • x) = x` using `σ.apply_symm_apply x`. Rewrite using `[this]`. Introduce `x hx`. Rewrite using `[mem_nonunits_Aio]`.
+
+Rewrite using `[hn, map_sub, hσ]`. Conclude with `hρ _ (by rw [← hn]; exact (mem_Aio ι x).1 hx)`.
+-/
 theorem locLift {d l : ℕ} [Fact l.Prime] (ι : ℂ ≃+* ℂ_[l]) (e : Om d →+* PadicAlgCl l)
     (he : ∀ x : Om d, algebraMap (PadicAlgCl l) ℂ_[l] (e x) = ι (x : ℂ))
     (ρ : PadicAlgCl l ≃ₐ[IntermediateField.adjoin ℚ_[l] {e (algebraMap (KQ d) (Om d) (sqK d))}] PadicAlgCl l)

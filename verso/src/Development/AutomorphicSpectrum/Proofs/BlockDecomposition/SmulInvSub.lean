@@ -20,6 +20,9 @@ namespace GlobalTheory.CompanionTheory.OrbExist
 
 variable {D : D7} {a b c n r t : ℕ}
 
+/- English proof (translation)
+Unfold `jn mm`. Rewrite using `[← Matrix.mul_fromCols]`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.submatrix_apply, id]`.
+-/
 theorem mm_jn (hn : r + t = n) (M : Mx D c a) (x : Mx D a r) (v : Mx D a t) :
     mm M (jn hn x v) = jn hn (mm M x) (mm M v) := by
   unfold jn mm
@@ -27,6 +30,9 @@ theorem mm_jn (hn : r + t = n) (M : Mx D c a) (x : Mx D a r) (v : Mx D a t) :
   ext i j
   simp only [Matrix.mul_apply, Matrix.submatrix_apply, id]
 
+/- English proof (translation)
+Unfold `jn PositivityTheory.Rg.Rsw.L.mm`. Rewrite using `[show bl hn p q s u = (Matrix.fromBlocks p q s u).submatrix (finSumFinEquiv.trans (finCongr hn)).symm (finSumFinEquiv.trans (finCongr hn)).symm from rfl]`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.fromCols_mul_fromBlocks]`.
+-/
 theorem jn_bl (hn : r + t = n) (w : Mx D a r) (v : Mx D a t) (p : Mx D r r) (q : Mx D r t) (s : Mx D t r) (u : Mx D t t) :
     mm (jn hn w v) (bl hn p q s u) = jn hn (mm w p + mm v s) (mm w q + mm v u) := by
   unfold jn PositivityTheory.Rg.Rsw.L.mm
@@ -35,17 +41,32 @@ theorem jn_bl (hn : r + t = n) (w : Mx D a r) (v : Mx D a t) (p : Mx D r r) (q :
         (finSumFinEquiv.trans (finCongr hn)).symm (finSumFinEquiv.trans (finCongr hn)).symm from rfl]
   rw [Matrix.submatrix_mul_equiv, Matrix.fromCols_mul_fromBlocks]
 
+/- English proof (translation)
+Unfold `bl`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`.
+-/
 theorem block_mul₂ (hn : r + t = n) (p p' : Mx D r r) (q q' : Mx D r t) (s s' : Mx D t r) (u u' : Mx D t t) :
     (bl hn p q s u * bl hn p' q' s' u' : Matrix (Fin n) (Fin n) (AE D)) =
       bl hn (mm p p' + mm q s') (mm p q' + mm q u') (mm s p' + mm u s') (mm s q' + mm u u') := by
   unfold bl
   rw [Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]
 
+/- English proof (translation)
+Unfold `bl`. Rewrite using `[Matrix.fromBlocks_one, Matrix.submatrix_one_equiv]`.
+-/
 theorem blockRowSubstitution_one (hn : r + t = n) :
     bl hn (1 : Mx D r r) (0 : Mx D r t) (0 : Mx D t r) (1 : Mx D t t) = (1 : Matrix (Fin n) (Fin n) (AE D)) := by
   unfold bl
   rw [Matrix.fromBlocks_one, Matrix.submatrix_one_equiv]
 
+/- English proof (translation)
+Establish `h : bl hn p q s u - 1 = bl hn (p - 1) q s (u - 1)`. Rewrite using `[← blockRowSubstitution_one hn]`. Unfold `bl`. Use extensionality with `i j`. Simplify using `only [Matrix.sub_apply, Matrix.submatrix_apply]`.
+
+Apply the tactic sequence `rcases (finSumFinEquiv.trans (finCongr hn)).symm i with i | i <;>`. Apply the tactic sequence `rcases (finSumFinEquiv.trans (finCongr hn)).symm j with j | j <;> simp`. Rewrite using `[h]`. Unfold `bl`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.smul_apply, Matrix.submatrix_apply]`. Apply the tactic sequence `rcases (finSumFinEquiv.trans (finCongr hn)).symm i with i | i <;>`. Apply the tactic sequence `rcases (finSumFinEquiv.trans (finCongr hn)).symm j with j | j <;> simp only [Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂]`. Conclude with `congrFun (congrFun h₁ i) j`. Conclude with `congrFun (congrFun h₂ i) j`.
+
+Conclude with `congrFun (congrFun h₃ i) j`. Conclude with `congrFun (congrFun h₄ i) j`.
+-/
 theorem smul_blockMatrix_sub_one (hn : r + t = n) (e : AE D) (p : Mx D r r) (q : Mx D r t) (s : Mx D t r) (u : Mx D t t)
     (h₁ : e • (p - 1) = p - 1) (h₂ : e • q = q) (h₃ : e • s = s) (h₄ : e • (u - 1) = u - 1) :
     e • (bl hn p q s u - 1) = bl hn p q s u - 1 := by
@@ -90,6 +111,9 @@ def colU (hn : r + t = n) (g : GL (Fin t) (AE D)) : GL (Fin n) (AE D) where
     have : (g⁻¹).1 * g.1 = 1 := by rw [← Units.val_mul, inv_mul_cancel, Units.val_one]
     simpa [mm, this] using blockRowSubstitution_one hn
 
+/- English proof (translation)
+Establish `h1 : (g⁻¹).1 * g.1 = 1` using `by rw [← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `h2 : (g⁻¹).1 - 1 = - ((g⁻¹).1 * (g.1 - 1))`. Rewrite using `[Matrix.mul_sub, h1, Matrix.mul_one, neg_sub]`. Rewrite using `[h2, smul_neg, ← Matrix.mul_smul, h]`.
+-/
 theorem smul_inv_sub (e : AE D) (g : GL (Fin t) (AE D)) (h : e • (g.1 - 1) = g.1 - 1) :
     e • ((g⁻¹).1 - 1) = (g⁻¹).1 - 1 := by
   have h1 : (g⁻¹).1 * g.1 = 1 := by rw [← Units.val_mul, inv_mul_cancel, Units.val_one]
@@ -97,6 +121,13 @@ theorem smul_inv_sub (e : AE D) (g : GL (Fin t) (AE D)) (h : e • (g.1 - 1) = g
     rw [Matrix.mul_sub, h1, Matrix.mul_one, neg_sub]
   rw [h2, smul_neg, ← Matrix.mul_smul, h]
 
+/- English proof (translation)
+Establish `hin : ∀ x, ∫ z, f (Θ z) * k x z ∂σ = (κ₁ : ℂ) * ∫ z, f z * k (c x) z ∂σ`. Introduce `x`. Establish `e₁ : ∫ z, f (Θ z) * k x z ∂σ = ∫ z, (fun w => f w * k (c x) w) (Θ z) ∂σ` using `integral_congr_ae ((hk x).mono fun z hz => by simp only [hz])`. Establish `e₃` using `Θ.measurableEmbedding.integral_map (μ := σ) (fun w => f w * k (c x) w)`. Rewrite using `[e₁, ← e₃, h₁, integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]`.
+
+Simplify using `only [hin]`. Rewrite using `[integral_const_mul]`. Establish `e₂ : ∫ x, ∫ z, f z * k (c x) z ∂σ ∂lam = ∫ x, (fun u => ∫ z, f z * k u z ∂σ) (c x) ∂lam` using `rfl`. Establish `e₄` using `c.measurableEmbedding.integral_map (μ := lam) (fun u => ∫ z, f z * k u z ∂σ)`. Rewrite using `[e₂, ← e₄, h₂, integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem trans_int {X N : Type} [TopologicalSpace X] [MeasurableSpace X] [BorelSpace X] [TopologicalSpace N] [MeasurableSpace N]
     [BorelSpace N] (σ : Measure X) (lam : Measure N) (k : N → X → ℂ) (f : X → ℂ) (Θ : X ≃ₜ X) (c : N ≃ₜ N) (κ₁ κ₂ : ℝ≥0)
     (h₁ : σ.map Θ = κ₁ • σ) (h₂ : lam.map c = κ₂ • lam) (hk : ∀ x, ∀ᵐ z ∂σ, k x z = k (c x) (Θ z)) :
@@ -115,6 +146,9 @@ theorem trans_int {X N : Type} [TopologicalSpace X] [MeasurableSpace X] [BorelSp
   push_cast
   ring
 
+/- English proof (translation)
+Rewrite using `[Measure.map_map hT hi]`. Establish `: T ∘ i = i ∘ Θ` using `funext fun z => (hc z).symm`. Rewrite using `[this, ← Measure.map_map hi hΘ, h, Measure.map_smul]`.
+-/
 theorem map_val_rel {X Y : Type} [MeasurableSpace X] [MeasurableSpace Y] (ν : Measure X) (i : X → Y) (Θ : X → X) (T : Y → Y)
     (κ : ℝ≥0) (hi : Measurable i) (hΘ : Measurable Θ) (hT : Measurable T) (hc : ∀ z, i (Θ z) = T (i z)) (h : ν.map Θ = κ • ν) :
     (ν.map i).map T = κ • ν.map i := by

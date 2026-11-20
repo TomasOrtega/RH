@@ -24,6 +24,9 @@ variable {D : D7} {r : ℕ}
 
 open GlobalTheory.CompanionTheory.SiegelND in
 
+/- English proof (translation)
+Use extensionality with `i a`. Both sides reduce to the same expression.
+-/
 theorem tupOf_act (V : HSp D) (h : GA D V) (X : Fin r → Fin V.rank → AE D) :
     tupOf (GlobalTheory.CompanionTheory.SW.actW (AF D.host.F) D.sp.cm.sig V.gram h X) = mm (mt V h) (tupOf X) := by
   ext i a
@@ -31,6 +34,9 @@ theorem tupOf_act (V : HSp D) (h : GA D V) (X : Fin r → Fin V.rank → AE D) :
 
 open GlobalTheory.CompanionTheory.SiegelND in
 
+/- English proof (translation)
+Use extensionality with `a b`. Conclude with `(GlobalTheory.CompanionTheory.SiegelND.hR_tup V (tupOf X) (tupOf X) a b).symm`.
+-/
 theorem ip_tupOf (V : HSp D) (X : Fin r → Fin V.rank → AE D) :
     ip V (tupOf X) (tupOf X) = HeckeCharacterZeroLocus.SiegelWeilU.gramR (AF D.host.F) D.sp.cm.sig V.gram X := by
   ext a b
@@ -54,6 +60,11 @@ def tupE (D : D7) (m r : ℕ) : (Fin r → Fin m → AE D) ≃ᵐ Mx D m r where
 
 open GlobalTheory.CompanionTheory.SiegelND in
 
+/- English proof (translation)
+Use `⟨fun K hK => ?_⟩` and prove the remaining obligations. Rewrite using `[MeasurableEquiv.map_apply]`. Establish `hs : (tupE D m r) ⁻¹' K = tupInv '' K`. Use extensionality with `X`. Conclude with `⟨fun hX => ⟨tupOf X, hX, rfl⟩, fun ⟨y, hy, hyX⟩ => by subst hyX; exact hy⟩`.
+
+Rewrite using `[hs]`. Conclude with `(hK.image continuous_tupInv).measure_lt_top`.
+-/
 theorem finE {m : ℕ} (ν : Measure (Fin r → Fin m → AE D)) [IsFiniteMeasureOnCompacts ν] :
     IsFiniteMeasureOnCompacts (ν.map (tupE D m r)) := by
   refine ⟨fun K hK => ?_⟩
@@ -66,6 +77,11 @@ theorem finE {m : ℕ} (ν : Measure (Fin r → Fin m → AE D)) [IsFiniteMeasur
 
 open GlobalTheory.CompanionTheory.SiegelND in
 
+/- English proof (translation)
+Rewrite using `[MeasurableEquiv.map_apply]`. Establish `hs : (tupE D V.rank r) ⁻¹' {x | ip V x x ≠ rat T} ⊆ {X | HeckeCharacterZeroLocus.SiegelWeilU.gramR (AF D.host.F) D.sp.cm.sig V.gram X = T.map (HeckeCharacterZeroLocus.SiegelWeilU.inclR (AF D.host.F))}ᶜ`. Introduce `X hX h0`. Apply `hX` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `ip V (tupOf X) (tupOf X) = rat T`.
+
+Rewrite using `[ip_tupOf]`. Conclude with `h0`. Conclude with `measure_mono_null hs h`.
+-/
 theorem suppE (V : HSp D) (T : Matrix (Fin r) (Fin r) D.host.E) (ν : Measure (Fin r → Fin V.rank → AE D))
     (h : ν {X | HeckeCharacterZeroLocus.SiegelWeilU.gramR (AF D.host.F) D.sp.cm.sig V.gram X = T.map (HeckeCharacterZeroLocus.SiegelWeilU.inclR (AF D.host.F))}ᶜ = 0) :
     ν.map (tupE D V.rank r) {x | ip V x x ≠ rat T} = 0 := by
@@ -81,6 +97,11 @@ theorem suppE (V : HSp D) (T : Matrix (Fin r) (Fin r) D.host.E) (ν : Measure (F
 
 open GlobalTheory.CompanionTheory.SiegelND in
 
+/- English proof (translation)
+Use `set e := tupE D V.rank r`. Establish `hg : Measurable fun x : Mx D V.rank r => mm (mt V h) x`. Establish `: (fun x : Mx D V.rank r => mm (mt V h) x) = e ∘ GlobalTheory.CompanionTheory.SW.actW (AF D.host.F) D.sp.cm.sig V.gram h ∘ e.symm`. Use function extensionality and compare the values at `fun x => (tupOf_act V h (tupInv x)).symm`. Rewrite using `[this]`.
+
+Conclude with `e.measurable.comp (hm.comp e.symm.measurable)`. Establish `hc : (fun x : Mx D V.rank r => mm (mt V h) x) ∘ e = e ∘ GlobalTheory.CompanionTheory.SW.actW (AF D.host.F) D.sp.cm.sig V.gram h`. Use function extensionality and compare the values at `fun X => (tupOf_act V h X).symm`. Rewrite using `[Measure.map_map hg e.measurable, hc, ← Measure.map_map e.measurable hm, hν]`.
+-/
 theorem invE (V : HSp D) (ν : Measure (Fin r → Fin V.rank → AE D)) (h : GA D V)
     (hm : Measurable (GlobalTheory.CompanionTheory.SW.actW (AF D.host.F) D.sp.cm.sig V.gram h : (Fin r → Fin V.rank → AE D) → _))
     (hν : ν.map (GlobalTheory.CompanionTheory.SW.actW (AF D.host.F) D.sp.cm.sig V.gram h) = ν) :

@@ -27,16 +27,30 @@ open GlobalTheory.AdelicU
 noncomputable section
 namespace GlobalTheory.LocKerMod
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.localLatticeIndex_cartanDecomposition_eq_normPow`.
+-/
 theorem idxAt_frame : ∀ (D : D7) (T : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E)) (h : w.under (𝓞 D.host.F) = v) (a : GL (Fin T.rank) (w.adicCompletion D.host.E)), GlobalTheory.LFun.IsFrameAt w (frameLat T) a → ∀ ϖ, IsUnifV D.host.E w ϖ → ∀ (d : Fin T.rank → ℤ) (t : GL (Fin T.rank) (w.adicCompletion D.host.E)), t.1 = Matrix.diagonal (fun i => ϖ ^ d i) → ∀ k₁ ∈ KGL w T.rank, ∀ k₂ ∈ KGL w T.rank, ∀ g : GlobalTheory.FinZeta.Gv T v, GlobalTheory.LFun.locMat D.sp.cm.sig T.gram h g = a * (k₁ * t * k₂) * a⁻¹ → idxAt T w h g = qV D.host.E w ^ (∑ i, max (d i) 0).toNat := GlobalTheory.T.localLatticeIndex_cartanDecomposition_eq_normPow
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.selfDualLatticeIndex_inertPlace_eq_localIndex`.
+-/
 theorem latIndex_inert : ∀ (D : D7) (T : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E)) (h : w.under (𝓞 D.host.F) = v), IsInertAt D.host.F D.host.E v w → ∀ g : GlobalTheory.FinZeta.Gv T v, latIndex T (GlobalTheory.FinZeta.embV T v g) = idxAt T w h g := GlobalTheory.T.selfDualLatticeIndex_inertPlace_eq_localIndex
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.selfDualLatticeIndex_splitPlace_eq_mul`.
+-/
 theorem latIndex_split : ∀ (D : D7) (T : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) (w w' : HeightOneSpectrum (𝓞 D.host.E)) (h : w.under (𝓞 D.host.F) = v) (h' : w'.under (𝓞 D.host.F) = v), IsSplit (E := D.host.E) v → w ≠ w' → ∀ g : GlobalTheory.FinZeta.Gv T v, latIndex T (GlobalTheory.FinZeta.embV T v g) = idxAt T w h g * idxAt T w' h' g := GlobalTheory.T.selfDualLatticeIndex_splitPlace_eq_mul
 end GlobalTheory.LocKerMod
 
 namespace GlobalTheory.LocKerMod
 open GlobalTheory.SplitHecke GlobalTheory.LFun.ConjPlace GlobalTheory.LFun.SplitTie
 
+/- English proof (translation)
+Introduce `D T v w h hw c ϖ e hU he d t ht k₁ hk₁ k₂ hk₂`. Take `⟨-, ⟨a, ha, -, hea⟩, -⟩` from `he`. Establish `hϖ : IsUnifV D.host.E w ϖ` using `hU.2.2.2.1`. Establish `hK : ∀ k ∈ KU c T.rank, (k : GL (Fin T.rank) (w.adicCompletion D.host.E)) ∈ KGL w T.rank` using `fun k hk => (Subgroup.mem_subgroupOf.1 hk).2`. Rewrite using `[latIndex_inert D T v w h hw]`.
+
+Use `idxAt_frame D T v w h a ha ϖ hϖ d (t : GL (Fin T.rank) (w.adicCompletion D.host.E)) ht _ (hK k₁ hk₁) _ (hK k₂ hk₂) _ ?_` and prove the remaining obligations. Establish `h1` using `hea (e.symm (k₁ * t * k₂))`. Rewrite `h1` using `[MulEquiv.apply_symm_apply]`. Rewrite using `[show ((k₁ : GL (Fin T.rank) (w.adicCompletion D.host.E)) * t * k₂) = ((k₁ * t * k₂ : GU c T.rank) : GL (Fin T.rank) (w.adicCompletion D.host.E)) by simp, h1]`. Use `group`.
+-/
 theorem idx_inert : ∀ (D : D7) (T : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E)) (h : w.under (𝓞 D.host.F) = v), IsInertAt D.host.F D.host.E v w → ∀ c ϖ e, IsUnramInv ϖ c (qV D.host.F v) → IsInertChart D.sp.cm.sig T.gram (frameLat T) h c e → ∀ (d : Fin T.rank → ℤ) (t : GU c T.rank), t.1.1 = Matrix.diagonal (fun i => ϖ ^ d i) → ∀ k₁ ∈ KU c T.rank, ∀ k₂ ∈ KU c T.rank, latIndex T (GlobalTheory.FinZeta.embV T v (e.symm (k₁ * t * k₂))) = qV D.host.E w ^ (∑ i, max (d i) 0).toNat := by
   intro D T v w h hw c ϖ e hU he d t ht k₁ hk₁ k₂ hk₂
   obtain ⟨-, ⟨a, ha, -, hea⟩, -⟩ := he
@@ -51,6 +65,27 @@ theorem idx_inert : ∀ (D : D7) (T : HSp D) (v : HeightOneSpectrum (𝓞 D.host
   rw [show ((k₁ : GL (Fin T.rank) (w.adicCompletion D.host.E)) * t * k₂) = ((k₁ * t * k₂ : GU c T.rank) : GL (Fin T.rank) (w.adicCompletion D.host.E)) by simp, h1]
   group
 
+/- English proof (translation)
+Introduce `D T v w h hv e he ϖ hϖ d t ht k₁ hk₁ k₂ hk₂`. Establish `hE` using `isCMExt_host D`. Establish `hJ` using `(GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND _ _ D.sp.cm).2 T`. Establish `hL` using `SelfDual.isSelfDualAt_frameLat D T v`. Take `⟨-, w', hne, hu, -, -, -⟩` from `GlobalTheory.LFun.SplitChart.split_chart_and_places hE hJ (frameLat_fg T) (SelfDual.isLattice_frameLat T).span_eq_top h hv hL`.
+
+Establish `h' : w'.under (𝓞 D.host.F) = v` using `(hu w').2 (Or.inr rfl)`. Take `⟨c, hc, hqc, -, he'⟩` from `exists_conj_chart hE hJ hL hne h h' he`. Establish `hϖ0 : ϖ ≠ 0`. Introduce `h0`. Unfold `IsUnifV at hϖ`.
+
+Rewrite `hϖ` using `[h0, map_zero]`. Conclude with `WithZero.zero_ne_coe hϖ`. Establish `hO : ∀ a, c a ∈ Formalism.UG.Ov D.host.E w' ↔ a ∈ Formalism.UG.Ov D.host.E w` using `fun a => map_mem_Ov_iff c hc a`. Establish `htinv : ((t⁻¹ : GL (Fin T.rank) (w.adicCompletion D.host.E)) : Matrix _ _ _) = Matrix.diagonal (fun i => ϖ ^ (-d i))`. Establish `h1 : (t : Matrix _ _ _) * Matrix.diagonal (fun i => ϖ ^ (-d i)) = 1`.
+
+Rewrite using `[ht, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[← zpow_add₀ hϖ0, add_neg_cancel, zpow_zero]`. Rewrite using `[Matrix.coe_units_inv, Matrix.inv_eq_right_inv h1]`.
+
+Establish `hdiag : (invT c T.rank t).1 = Matrix.diagonal (fun i => c ϖ ^ (-d i))`. Use extensionality with `i j`. Rewrite using `[invT_val, htinv, Matrix.diagonal_apply, Matrix.diagonal_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Simplify using `[map_zpow₀]`. Rewrite using `[if_neg (Ne.symm hij), if_neg hij, map_zero]`. Establish `hunif : IsUnifV D.host.E w' (c ϖ)`. Unfold `IsUnifV at hϖ ⊢`. Rewrite using `[hc, hϖ]`.
+
+Establish `hK : ∀ k ∈ KGL w T.rank, invT c T.rank k ∈ KGL w' T.rank` using `fun k hk => (mem_iff_invT c hO k).1 hk`. Take `⟨⟨a, ha, hea⟩, -⟩` from `he`. Take `⟨⟨a', ha', hea'⟩, -⟩` from `he'`. Rewrite using `[latIndex_split D T v w w' h h' hv hne]`. Establish `e1 : GlobalTheory.LFun.locMat D.sp.cm.sig T.gram h (e.symm (k₁ * t * k₂)) = a * (k₁ * t * k₂) * a⁻¹`.
+
+Use `hea (e.symm (k₁ * t * k₂))` as an intermediate fact. Rewrite `this` using `[MulEquiv.apply_symm_apply]`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : GlobalTheory.LFun.locMat D.sp.cm.sig T.gram h' (e.symm (k₁ * t * k₂)) = a' * (invT c T.rank k₁ * invT c T.rank t * invT c T.rank k₂) * a'⁻¹`. Use `hea' (e.symm (k₁ * t * k₂))` as an intermediate fact.
+
+Rewrite `this` using `[MulEquiv.trans_apply, MulEquiv.apply_symm_apply, map_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hs : ∑ i, |d i| = (∑ i, max (d i) 0) + ∑ i, max (-d i) 0`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Break down `le_total 0 (d i) with hd | hd` into its components or cases. Rewrite using `[abs_of_nonneg hd, max_eq_left hd, max_eq_right (by omega), add_zero]`. Rewrite using `[abs_of_nonpos hd, max_eq_right hd, max_eq_left (by omega), zero_add]`. Rewrite using `[idxAt_frame D T v w h a ha ϖ hϖ d t ht k₁ hk₁ k₂ hk₂ _ e1, idxAt_frame D T v w' h' a' ha' (c ϖ) hunif (fun i => -d i) _ hdiag _ (hK k₁ hk₁) _ (hK k₂ hk₂) _ e2, hqc, ← pow_add, hs, Int.toNat_add (Finset.sum_nonneg fun i _ => le_max_right _ _) (Finset.sum_nonneg fun i _ => le_max_ …`.
+-/
 theorem idx_split : ∀ (D : D7) (T : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E)) (h : w.under (𝓞 D.host.F) = v), IsSplit (E := D.host.E) v → ∀ e, IsSplitChart D.sp.cm.sig T.gram (frameLat T) h e → ∀ ϖ, IsUnifV D.host.E w ϖ → ∀ (d : Fin T.rank → ℤ) (t : GL (Fin T.rank) (w.adicCompletion D.host.E)), t.1 = Matrix.diagonal (fun i => ϖ ^ d i) → ∀ k₁ ∈ KGL w T.rank, ∀ k₂ ∈ KGL w T.rank, latIndex T (GlobalTheory.FinZeta.embV T v (e.symm (k₁ * t * k₂))) = qV D.host.E w ^ (∑ i, |d i|).toNat := by
   intro D T v w h hv e he ϖ hϖ d t ht k₁ hk₁ k₂ hk₂
   have hE := isCMExt_host D
@@ -110,6 +145,11 @@ end GlobalTheory.LocKerMod
 
 namespace GlobalTheory.LocKerMod
 
+/- English proof (translation)
+Use `v.isMaximal` as an intermediate fact. Take `⟨Q, hQ, e⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral (S := 𝓞 D.host.E) v.asIdeal (by`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot (algebraMap (𝓞 D.host.F) (𝓞 D.host.E))).1 (FaithfulSMul.algebraMap_injective _ _)]`. Conclude with `bot_le)`. Conclude with `⟨⟨Q, hQ.isPrime, fun h0 => v.ne_bot (by`.
+
+Rewrite using `[← e, h0, Ideal.comap_bot_of_injective _ (FaithfulSMul.algebraMap_injective _ _)])⟩,`. Use the proof step `HeightOneSpectrum.ext e⟩`.
+-/
 theorem exists_over {D : D7} (v : HeightOneSpectrum (𝓞 D.host.F)) :
     ∃ w : HeightOneSpectrum (𝓞 D.host.E), w.under (𝓞 D.host.F) = v := by
   have := v.isMaximal
@@ -120,6 +160,11 @@ theorem exists_over {D : D7} (v : HeightOneSpectrum (𝓞 D.host.F)) :
     rw [← e, h0, Ideal.comap_bot_of_injective _ (FaithfulSMul.algebraMap_injective _ _)])⟩,
     HeightOneSpectrum.ext e⟩
 
+/- English proof (translation)
+Establish `hq' : (0 : ℝ) < q` using `by exact_mod_cast hq`. Rewrite using `[norm_mul, norm_zpow, hz, _root_.one_zpow, one_mul, show (q : ℂ) = ((q : ℝ) : ℂ) by push_cast; rfl, Complex.norm_cpow_eq_rpow_re_of_pos hq']`. Establish `hre : (-((N : ℂ) / 2) * (s : ℂ)).re = -((N : ℝ) / 2) * s`. Simplify using `[Complex.mul_re]`. Rewrite using `[hre, ← Real.rpow_natCast, ← Real.rpow_mul hq'.le, Nat.cast_pow, ← Real.rpow_natCast (q : ℝ) s.toNat, ← Real.rpow_natCast, ← Real.rpow_mul hq'.le, ← Real.rpow_add hq']`.
+
+Establish `: (s.toNat : ℝ) = s` using `by exact_mod_cast Int.toNat_of_nonneg hs`. Rewrite using `[this]`. Establish `: -((N : ℝ) / 2) * s * ((2 : ℕ) : ℝ) + s * N = 0` using `by push_cast; ring`. Rewrite using `[this, Real.rpow_zero]`.
+-/
 theorem norm_split (q : ℕ) (hq : 0 < q) (z : ℂ) (hz : ‖z‖ = 1) (N : ℕ) (m s : ℤ) (hs : 0 ≤ s) :
     ‖z ^ m * (q : ℂ) ^ (-((N : ℂ) / 2) * (s : ℂ))‖ ^ 2 * ((q ^ s.toNat : ℕ) : ℝ) ^ N = 1 := by
   have hq' : (0 : ℝ) < q := by exact_mod_cast hq
@@ -134,6 +179,11 @@ theorem norm_split (q : ℕ) (hq : 0 < q) (z : ℂ) (hz : ‖z‖ = 1) (N : ℕ)
   have : -((N : ℝ) / 2) * s * ((2 : ℕ) : ℝ) + s * N = 0 := by push_cast; ring
   rw [this, Real.rpow_zero]
 
+/- English proof (translation)
+Establish `hq' : (0 : ℝ) < q` using `by exact_mod_cast hq`. Take `⟨k, rfl⟩` from `Int.eq_ofNat_of_zero_le hm`. Simplify using `only [Int.toNat_natCast, zpow_natCast, norm_pow, norm_mul, norm_inv, hz, one_mul, Complex.norm_natCast]`. Use `push_cast`. Rewrite using `[← pow_mul, ← pow_mul, ← pow_mul, inv_pow, ← pow_mul]`.
+
+Rewrite using `[show N * (k * 2) = 2 * (k * N) by ring]`. Conclude with `inv_mul_cancel₀ (pow_ne_zero _ hq'.ne')`.
+-/
 theorem norm_inert (q : ℕ) (hq : 0 < q) (z : ℂ) (hz : ‖z‖ = 1) (N : ℕ) (m : ℤ) (hm : 0 ≤ m) :
     ‖(z * ((q : ℂ) ^ N)⁻¹) ^ m‖ ^ 2 * (((q ^ 2) ^ m.toNat : ℕ) : ℝ) ^ N = 1 := by
   have hq' : (0 : ℝ) < q := by exact_mod_cast hq
@@ -144,6 +194,21 @@ theorem norm_inert (q : ℕ) (hq : 0 < q) (z : ℂ) (hz : ‖z‖ = 1) (N : ℕ)
   rw [show N * (k * 2) = 2 * (k * N) by ring]
   exact inv_mul_cancel₀ (pow_ne_zero _ hq'.ne')
 
+/- English proof (translation)
+Introduce `D T N χ v φ hφ _ a`. Take `⟨w, h⟩` from `exists_over (D := D) v`. Distinguish the cases in `hs : IsSplit (E := D.host.E) v`. Take `⟨e, he⟩` from `(GlobalTheory.ChartsAll.exists_charts D T v w h).1 hs`. Establish `hk` using `(hφ w h).1 hs e he`.
+
+Take `⟨ϖ, hϖ⟩` from `GlobalTheory.LFun.exists_isUnifV (E := D.host.E) w`. Take `⟨d, -, k₁, hk₁, k₂, hk₂, ec⟩` from `Formalism.UG.Final.CartanDecomp D.host.E w T.rank ϖ (GlobalTheory.LFun.mem_Ov_of_isUnifV hϖ) hϖ (e a)`. Establish `htd : (k₁⁻¹ * e a * k₂⁻¹ : GL (Fin T.rank) (w.adicCompletion D.host.E)).1 = Matrix.diagonal (fun i => ϖ ^ d i)`. Rewrite using `[Units.val_mul, Units.val_mul, ec]`. Simplify using `[Matrix.mul_assoc]`.
+
+Both sides reduce to the same expression. Establish `ha : a = e.symm (k₁ * (k₁⁻¹ * e a * k₂⁻¹) * k₂)`. Rewrite using `[show k₁ * (k₁⁻¹ * e a * k₂⁻¹) * k₂ = e a by group, MulEquiv.symm_apply_apply]`. Establish `hv` using `hk ϖ hϖ d _ htd k₁ hk₁ k₂ hk₂`. Rewrite `hv` using `[Function.comp_apply, ← ha]`.
+
+Rewrite using `[hv]`. Use `conv_lhs => rw [ha]`. Rewrite using `[idx_split D T v w h hs e he ϖ hϖ d _ htd k₁ hk₁ k₂ hk₂]`. Conclude with `norm_split _ (Nat.pos_of_ne_zero fun h0 => w.ne_bot (Ideal.absNorm_eq_zero_iff.1 h0)) _ (GlobalTheory.LFun.norm_val χ w) N _ _ (Finset.sum_nonneg fun i _ => abs_nonneg (d i))`. Establish `hI` using `GlobalTheory.LFun.exists_isInertChart D.sp.cm.sig (isCMExt_host D) v`.
+
+Take `⟨hw, -, hch⟩` from `(GlobalTheory.ChartsAll.exists_charts D T v w h).2 hs`. Take `⟨-, ⟨c, hc, -⟩, -, hN, H⟩` from `hI.2 w h hw`. Take `⟨ϖ, hU⟩` from `(H c hc).1`. Take `⟨e, he⟩` from `hch c hc`. Establish `hk` using `(hφ w h).2 hw c ϖ e hU he`.
+
+Take `⟨d, t, -, ht, k₁, hk₁, k₂, hk₂, ea⟩` from `GlobalTheory.LFun.cartanU hU (e a)`. Establish `ha : a = e.symm (k₁ * t * k₂)` using `by rw [← ea, MulEquiv.symm_apply_apply]`. Establish `hv` using `hk d t ht k₁ hk₁ k₂ hk₂`. Rewrite `hv` using `[Function.comp_apply, ← ha]`. Rewrite using `[hv]`.
+
+Use `conv_lhs => rw [ha]`. Rewrite using `[idx_inert D T v w h hw c ϖ e hU he d t ht k₁ hk₁ k₂ hk₂]`. Establish `hq : qV D.host.E w = qV D.host.F v ^ 2` using `hN`. Rewrite using `[hq]`. Conclude with `norm_inert _ (Nat.pos_of_ne_zero fun h0 => v.ne_bot (Ideal.absNorm_eq_zero_iff.1 h0)) _ (GlobalTheory.LFun.norm_val χ w) N _ (Finset.sum_nonneg fun i _ => le_max_right _ _)`.
+-/
 theorem sq_norm_mul_latIndex : ∀ (D : D7) (T : HSp D) (N : ℕ) (χ : (AE D)ˣ →* Circle) (v : HeightOneSpectrum (𝓞 D.host.F)) (φ : GlobalTheory.FinZeta.Gv T v → ℂ), GlobalTheory.FinZeta.IsLocKer T N (GlobalTheory.LFun.val χ) v φ → (∀ w : HeightOneSpectrum (𝓞 D.host.E), w.under (𝓞 D.host.F) = v → GlobalTheory.LFun.UnrAt χ w) → ∀ a : GlobalTheory.FinZeta.Gv T v, ‖φ a‖ ^ 2 * (latIndex T (GlobalTheory.FinZeta.embV T v a) : ℝ) ^ N = 1 := by
   intro D T N χ v φ hφ _ a
   obtain ⟨w, h⟩ := exists_over (D := D) v

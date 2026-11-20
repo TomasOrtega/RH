@@ -11,11 +11,19 @@ namespace GlobalTheory.Hk3.IntWitt.ElemDiv
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
+/- English proof (translation)
+Introduce `i` and use `by simp only [Matrix.mulVec, dotProduct] exact Subring.sum_mem _ fun j _ => Subring.mul_mem _ (hA i j) (hc j)`.
+-/
 theorem mulVec_int {m k : ℕ} {A : Matrix (Fin m) (Fin k) L} (hA : ∀ i j, A i j ∈ Formalism.UG.intL L)
     {c : Fin k → L} (hc : ∀ j, c j ∈ Formalism.UG.intL L) : ∀ i, (A *ᵥ c) i ∈ Formalism.UG.intL L := fun i => by
   simp only [Matrix.mulVec, dotProduct]
   exact Subring.sum_mem _ fun j _ => Subring.mul_mem _ (hA i j) (hc j)
 
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply]`. Rewrite using `[Finset.sum_eq_single j]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Establish `: ¬ ((j : ℕ) = (b : ℕ))` using `fun h => hb (Fin.ext h.symm)`.
+
+Simplify using `[this]`. Simplify using the standard rewrite rules.
+-/
 theorem diag_mulVec_of_lt {n n' : ℕ} (ϖ : L) (a : Fin n' → ℕ) (c : Fin n → L) (j : Fin n) (hj : (j : ℕ) < n') :
     ((Matrix.of fun (i : Fin n') (j : Fin n) => if (i : ℕ) = (j : ℕ) ∧ 0 < a i then ϖ⁻¹ ^ a i else 0) *ᵥ c) ⟨j, hj⟩ =
       (if 0 < a ⟨j, hj⟩ then ϖ⁻¹ ^ a ⟨j, hj⟩ else 0) * c j := by
@@ -27,6 +35,9 @@ theorem diag_mulVec_of_lt {n n' : ℕ} (ϖ : L) (a : Fin n' → ℕ) (c : Fin n 
     simp [this]
   · simp
 
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `b _`. Establish `: ¬ ((i : ℕ) = (b : ℕ))` using `fun h => hi (h ▸ b.isLt)`. Simplify using `[this]`.
+-/
 theorem diag_mulVec_of_ge {n n' : ℕ} (ϖ : L) (a : Fin n' → ℕ) (c : Fin n → L) (i : Fin n') (hi : ¬ (i : ℕ) < n) :
     ((Matrix.of fun (i : Fin n') (j : Fin n) => if (i : ℕ) = (j : ℕ) ∧ 0 < a i then ϖ⁻¹ ^ a i else 0) *ᵥ c) i = 0 := by
   simp only [Matrix.mulVec, dotProduct, Matrix.of_apply]
@@ -41,6 +52,37 @@ end
 
 open GlobalTheory.Hk3.IntWitt.ElemDiv in
 
+/- English proof (translation)
+Introduce `L _ _ ϖ hϖ n n' x`. Establish `hϖ0 : ϖ ≠ 0`. Introduce `h`. Rewrite `hϖ` using `[h, map_zero]`. Conclude with `WithZero.zero_ne_coe hϖ`.
+
+Take `⟨P, P', Q, Q', a, hP, hP', hPP', hQ, hQ', hQQ', hE⟩` from `GlobalTheory.Hk3.smith_int_approx L ϖ hϖ n n' x`. Establish `hQ'Q : Q' * Q = 1` using `mul_eq_one_comm.mp hQQ'`. Establish `hP'P : P' * P = 1` using `mul_eq_one_comm.mp hPP'`. Use `set O := Formalism.UG.intL L with hOdef`. Set `QO : Matrix (Fin n) (Fin n) O` to `Matrix.of fun i j => ⟨Q i j, hQ i j⟩`.
+
+Set `QO' : Matrix (Fin n) (Fin n) O` to `Matrix.of fun i j => ⟨Q' i j, hQ' i j⟩`. Establish `hinj : Function.Injective (O.subtype.mapMatrix : Matrix (Fin n) (Fin n) O →+* Matrix (Fin n) (Fin n) L)`. Introduce `A B h`. Use extensionality with `i j`. Conclude with `congrFun (congrFun h i) j`.
+
+Establish `hm1 : O.subtype.mapMatrix QO = Q` using `by ext i j; rfl`. Establish `hm2 : O.subtype.mapMatrix QO' = Q'` using `by ext i j; rfl`. Establish `e1 : QO * QO' = 1` using `hinj (by rw [map_mul, map_one, hm1, hm2, hQQ'])`. Establish `e2 : QO' * QO = 1` using `hinj (by rw [map_mul, map_one, hm1, hm2, hQ'Q])`. Set `U : GL (Fin n) O` to `⟨QO, QO', e1, e2⟩`.
+
+Set `V : GL (Fin n) L` to `⟨Q, Q', hQQ', hQ'Q⟩`. Use `⟨V, ⟨U, Units.ext hm1⟩, fun j => if h : (j : ℕ) < n' then a ⟨j, h⟩ else 0, ?_⟩` and prove the remaining obligations. Introduce `c hc`. Use `set Dm : Matrix (Fin n') (Fin n) L := Matrix.of (fun (i : Fin n') (j : Fin n) => if (i : ℕ) = (j : ℕ) ∧ 0 < a i then ϖ⁻¹ ^ a i else 0) with hDm`. Establish `hPw : P *ᵥ (x *ᵥ (Q *ᵥ c)) = Dm *ᵥ c + (P * x * Q - Dm) *ᵥ c`.
+
+Rewrite using `[← Matrix.add_mulVec, add_sub_cancel, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc]`. Establish `hEc : ∀ i, ((P * x * Q - Dm) *ᵥ c) i ∈ O` using `mulVec_int hE hc`. Use `show (∀ i, (x *ᵥ (Q *ᵥ c)) i ∈ O) ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `hw j`.
+
+Establish `hDc : ∀ i, (Dm *ᵥ c) i ∈ O`. Introduce `i`. Establish `h1` using `mulVec_int hP hw i`. Rewrite `h1` using `[hPw, Pi.add_apply]`. Use `Subring.sub_mem _ h1 (hEc i)` as an intermediate fact.
+
+Rewrite `this` using `[add_sub_cancel_right]`. Then use the resulting hypothesis. Distinguish the cases in `hj : (j : ℕ) < n'`. Simplify using `only [dif_pos hj]`. Establish `h2` using `hDc ⟨j, hj⟩`. Rewrite `h2` using `[hDm, diag_mulVec_of_lt ϖ a c j hj]`.
+
+Use `split_ifs at h2 with ha`. Use `⟨ϖ⁻¹ ^ a ⟨j, hj⟩ * c j, h2, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← mul_pow, mul_inv_cancel₀ hϖ0, one_pow, one_mul]`. Establish `: a ⟨j, hj⟩ = 0` using `by omega`. Rewrite using `[this]`.
+
+Conclude with `dvdPow_zero_iff.mpr (hc j)`. Simplify using `only [dif_neg hj]`. Conclude with `dvdPow_zero_iff.mpr (hc j)`. Introduce `hd`. Establish `hDc : ∀ i, (Dm *ᵥ c) i ∈ O`.
+
+Introduce `i`. Distinguish the cases in `hi : (i : ℕ) < n`. Establish `hij : i = ⟨((⟨i, hi⟩ : Fin n) : ℕ), i.isLt⟩` using `Fin.ext rfl`. Rewrite using `[hij, hDm, diag_mulVec_of_lt ϖ a c ⟨i, hi⟩ i.isLt]`. Use `split_ifs with ha`.
+
+Establish `h3` using `hd ⟨i, hi⟩`. Simplify using `only [dif_pos i.isLt] at h3`. Take `⟨b, hb, hcb⟩` from `h3`. Rewrite using `[hcb, ← mul_assoc, ← mul_pow, inv_mul_cancel₀ hϖ0, one_pow, one_mul]`. Conclude with `hb`.
+
+Rewrite using `[zero_mul]`. Conclude with `Subring.zero_mem _`. Rewrite using `[hDm, diag_mulVec_of_ge ϖ a c i hi]`. Conclude with `Subring.zero_mem _`. Establish `hPwi : ∀ i, (P *ᵥ (x *ᵥ (Q *ᵥ c))) i ∈ O`.
+
+Introduce `i`. Rewrite using `[hPw, Pi.add_apply]`. Conclude with `Subring.add_mem _ (hDc i) (hEc i)`. Introduce `i`. Establish `key : ∀ w : Fin n' → L, w = P' *ᵥ (P *ᵥ w)` using `fun w => by`.
+
+Rewrite using `[Matrix.mulVec_mulVec, hP'P, Matrix.one_mulVec]`. Rewrite using `[key (x *ᵥ (Q *ᵥ c))]`. Conclude with `mulVec_int hP' hPwi i`.
+-/
 theorem GlobalTheory.Hk3.IntWitt.exists_glInt_mulVec_mem_iff_forall_dvdPow : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L),
     Valued.v ϖ = ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) →
     ∀ (n n' : ℕ) (x : Matrix (Fin n') (Fin n) L),

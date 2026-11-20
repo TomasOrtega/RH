@@ -14,6 +14,13 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {n : ℕ} {lam : Fin n → ℤ}
 
+/- English proof (translation)
+Establish `hmul : ∀ A B : Matrix (Ix n lam) (Ix n lam) ℂ, cjL lam A * cjL lam B = cjL lam (A * B)`. Introduce `A B`. Establish `hc : clm lam (A * B) = clm lam A * clm lam B` using `map_mul Matrix.toEuclideanCLM A B`. Establish `hi : Ring.inverse (sqQ lam) * sqQ lam = 1` using `Ring.inverse_mul_cancel _ hu`. Express the relevant statement in the definitionally equal form `sqQ lam * (clm lam A * Ring.inverse (sqQ lam)) * (sqQ lam * (clm lam B * Ring.inverse (sqQ lam))) = sqQ lam * (clm lam (A * B) * Ring.inverse (sqQ lam))`.
+
+Rewrite using `[hc]`. Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc (Ring.inverse (sqQ lam)) (sqQ lam), hi, one_mul]`. Establish `h0 : lefS n lam 0 = cjL lam (gamM (0 : Matrix (Md n) (Md n) ℂ) ⊗ₖ (1 : Matrix (Jd n lam × Jd n lam) (Jd n lam × Jd n lam) ℂ))`. Simplify using `only [lefS, Complex.ofReal_zero, zero_smul]`.
+
+Rewrite using `[h0, lefFr, fr0, hmul, ← Matrix.mul_kronecker_mul, ← (hG n).2, mul_zero, Matrix.mul_one]`.
+-/
 theorem frame_inv_mul_sym_zero (hu : IsUnit (sqQ lam)) (hG : GamMul) (x : Mat n) :
     lefFr n lam x⁻¹ * lefS n lam 0 =
       cjL lam (gamM (0 : Matrix (Md n) (Md n) ℂ) ⊗ₖ rhoW lam x⁻¹) := by
@@ -30,6 +37,11 @@ theorem frame_inv_mul_sym_zero (hu : IsUnit (sqQ lam)) (hG : GamMul) (x : Mat n)
     simp only [lefS, Complex.ofReal_zero, zero_smul]
   rw [h0, lefFr, fr0, hmul, ← Matrix.mul_kronecker_mul, ← (hG n).2, mul_zero, Matrix.mul_one]
 
+/- English proof (translation)
+Establish `h : (clm lam M u).ofLp = M *ᵥ u.ofLp`. Rewrite using `[clm, ← ContinuousLinearMap.coe_coe, Matrix.coe_toEuclideanCLM_eq_toEuclideanLin]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(clm lam M u).ofLp r = _`. Rewrite using `[h]`.
+
+Both sides reduce to the same expression.
+-/
 theorem clm_entry (M : Matrix (Ix n lam) (Ix n lam) ℂ) (u : EV n lam) (r : Ix n lam) :
     (clm lam M u) r = ∑ c, M r c * u c := by
   have h : (clm lam M u).ofLp = M *ᵥ u.ofLp := by
@@ -39,6 +51,9 @@ theorem clm_entry (M : Matrix (Ix n lam) (Ix n lam) ℂ) (u : EV n lam) (r : Ix 
   rw [h]
   rfl
 
+/- English proof (translation)
+Rewrite using `[Fintype.sum_prod_type (f := fun i : Ix n lam × Ix n lam => (M i.1 i.2 * u i.2) • EuclideanSpace.single i.1 (1 : ℂ))]`. Use extensionality with `r`. Rewrite using `[clm_entry]`. Simplify using `[Finset.sum_apply, EuclideanSpace.single_apply, Pi.single_apply]`.
+-/
 theorem clm_apply' (M : Matrix (Ix n lam) (Ix n lam) ℂ) (u : EV n lam) :
     clm lam M u = ∑ i : Ix n lam × Ix n lam, (M i.1 i.2 * u i.2) • EuclideanSpace.single i.1 (1 : ℂ) := by
   rw [Fintype.sum_prod_type (f := fun i : Ix n lam × Ix n lam => (M i.1 i.2 * u i.2) • EuclideanSpace.single i.1 (1 : ℂ))]
@@ -46,24 +61,39 @@ theorem clm_apply' (M : Matrix (Ix n lam) (Ix n lam) ℂ) (u : EV n lam) :
   rw [clm_entry]
   simp [Finset.sum_apply, EuclideanSpace.single_apply, Pi.single_apply]
 
+/- English proof (translation)
+Simplify using `only [GLs, Set.mem_setOf_eq] at hx ⊢`. Rewrite using `[Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`. Conclude with `inv_ne_zero hx`.
+-/
 theorem mem_GLs_inv' {x : Mat n} (hx : x ∈ GLs n) : x⁻¹ ∈ GLs n := by
   simp only [GLs, Set.mem_setOf_eq] at hx ⊢
   rw [Matrix.det_nonsing_inv, Ring.inverse_eq_inv']
   exact inv_ne_zero hx
 
+/- English proof (translation)
+Establish `h` using `mem_GLs_inv' hx`. Simplify using `only [GLs, Set.mem_setOf_eq] at h ⊢`. Rewrite using `[Matrix.det_conjTranspose]`. Conclude with `star_ne_zero.2 h`.
+-/
 theorem mem_GLs_conjInv {x : Mat n} (hx : x ∈ GLs n) : (x⁻¹)ᴴ ∈ GLs n := by
   have h := mem_GLs_inv' hx
   simp only [GLs, Set.mem_setOf_eq] at h ⊢
   rw [Matrix.det_conjTranspose]
   exact star_ne_zero.2 h
 
+/- English proof (translation)
+Use `contDiff_pi.2 fun i => contDiff_pi.2 fun j => ?_` and prove the remaining obligations. Conclude with `Complex.conjCLE.contDiff.comp ((contDiff_apply ℝ ℂ i).comp (contDiff_apply ℝ (Fin n → ℂ) j))`.
+-/
 theorem contDiff_conjT : ContDiff ℝ ∞ (fun y : Mat n => yᴴ) := by
   refine contDiff_pi.2 fun i => contDiff_pi.2 fun j => ?_
   exact Complex.conjCLE.contDiff.comp ((contDiff_apply ℝ ℂ i).comp (contDiff_apply ℝ (Fin n → ℂ) j))
 
+/- English proof (translation)
+The claim follows from `contDiff_conjT.comp_contDiffOn GlobalTheory.CompanionTheory.MatInv.contDiffOn_inv`.
+-/
 theorem contDiffOn_theta : ContDiffOn ℝ ∞ (fun y : Mat n => (y⁻¹)ᴴ) (GLs n) :=
   contDiff_conjT.comp_contDiffOn GlobalTheory.CompanionTheory.MatInv.contDiffOn_inv
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_one]`. Conclude with `((contDiff_apply ℝ ℂ b).comp (contDiff_apply ℝ (J → ℂ) a)).comp_contDiffOn hf`.
+-/
 theorem contDiffOn_entry {J : Type} [Fintype J] [DecidableEq J] {f : Mat n → Matrix J J ℂ} (hf : ContDiffOn ℝ ∞ f (GLs n))
     (a b : J) : ContDiffOn ℝ ∞ (fun x => (f x * (1 : Matrix J J ℂ) : Matrix J J ℂ) a b) (GLs n) := by
   simp only [Matrix.mul_one]
@@ -79,6 +109,17 @@ open PositivityTheory.RgTw (Mat hb)
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Introduce `hAvg hG hRm hHol hAnti hProd hLoc n lam hlam w`. Take `⟨hu, -, -, -, -⟩` from `hAvg n lam`. Take `⟨hR1, hRmul, hRc⟩` from `hRm n lam`. Set `G0 : Matrix (Finset (Md n)) (Finset (Md n)) ℂ` to `gamM (0 : Matrix (Md n) (Md n) ℂ)`. Set `hh : Ix n lam × Ix n lam → Mat n → ℂ` to `fun i x => (Rm lam x * 1 : Matrix (Jd n lam) (Jd n lam) ℂ) i.2.2.1 i.1.2.1`.
+
+Set `aa : Ix n lam × Ix n lam → Mat n → ℂ` to `fun i x => (Rm lam x⁻¹ᴴ * 1 : Matrix (Jd n lam) (Jd n lam) ℂ) i.2.2.2 i.1.2.2`. Set `vv : Ix n lam × Ix n lam → EV n lam` to `fun i => (G0 i.1.1 i.2.1 * (Ring.inverse (sqQ lam) w) i.2) • sqQ lam (EuclideanSpace.single i.1 (1 : ℂ))`. Apply the tactic sequence `have hE := hProd n (infOf lam) (Ix n lam × Ix n lam) (EV n lam) hh aa vv (fun i => contDiffOn_entry (f := Rm lam) hRc _ _) (fun i => contDiffOn_entry (f := fun x => Rm lam x⁻¹ᴴ) (hRc.comp contDiffOn_theta (fun x hx => mem_GLs_conjInv hx)) _ _) (fun i g hg => hHol n lam hlam 1 _ _ …`. Use `hLoc n (infOf lam) (EV n lam) _ _ ?_ hE` and prove the remaining obligations. Introduce `x hx`.
+
+Establish `hdx : IsUnit (det x)` using `isUnit_iff_ne_zero.2 hx`. Establish `hdx' : IsUnit (det x⁻¹)` using `isUnit_iff_ne_zero.2 (mem_GLs_inv' hx)`. Establish `hinv : (Rm lam x⁻¹)⁻¹ = Rm lam x`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[← hRmul x x⁻¹ hdx hdx', Matrix.mul_nonsing_inv x hdx, hR1]`.
+
+Use `symm`. Rewrite using `[← ContinuousLinearMap.mul_apply, frame_inv_mul_sym_zero hu hG]`. Express the relevant statement in the definitionally equal form `(sqQ lam * (clm lam (gamM (0 : Matrix (Md n) (Md n) ℂ) ⊗ₖ rhoW lam x⁻¹) * Ring.inverse (sqQ lam))) w = _`. Rewrite using `[ContinuousLinearMap.mul_apply, ContinuousLinearMap.mul_apply, clm_apply', map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul]`. Simplify using `only [vv, smul_smul]`. Use `congr 1`. Simplify using `only [hh, aa, G0, rhoW, Matrix.kroneckerMap_apply, Matrix.transpose_apply, Matrix.mul_one, hinv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eigOf : EigOf := by
   intro hAvg hG hRm hHol hAnti hProd hLoc n lam hlam w
   obtain ⟨hu, -, -, -, -⟩ := hAvg n lam

@@ -77,6 +77,9 @@ def ubar (u : Weight d) (τ : Fin d.f) : ℝ := (1 / (d.N : ℝ)) * ∑ i : Fin 
 def cTau (u : Weight d) (τ : Fin d.f) : ℝ :=
   ∑ i ∈ univ.filter (fun i : Fin d.N => i.val < d.j), u (τ, i) - (d.j : ℝ) * ubar d u τ
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨0, by have := d.two_le_N; omega⟩, mem_univ _⟩`.
+-/
 theorem finN_nonempty : (univ : Finset (Fin d.N)).Nonempty :=
   ⟨⟨0, by have := d.two_le_N; omega⟩, mem_univ _⟩
 
@@ -354,28 +357,49 @@ def HeightLimitIdentity.Statement : Prop :=
     ∀ (τ : Fin d.f) (Q : XPoly d), Q.IsHomogeneous d.D → intFl d Q = 1 →
       (d.j : ℝ) * A0 + (d.N : ℝ) * b0 = -S.PP B0 (RestTerms.blockPowerSum d.f d.N 1 τ * Q) / S.vol
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => rfl, Or.inl fun _ => rfl⟩`.
+-/
 theorem isFrobLike_one (d : IndexData) : IsFrobLike d 1 :=
   ⟨fun _ => rfl, Or.inl fun _ => rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Nat.prime_two, isFrobLike_one d1, fun _ => rfl⟩`.
+-/
 theorem KaPSplit.hypotheses_inhabited : Nat.Prime 2 ∧ IsFrobLike d1 1 ∧ IsSplitFrob d1 1 :=
   ⟨Nat.prime_two, isFrobLike_one d1, fun _ => rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Nat.prime_two, ⟨fun _ => rfl, Or.inr fun _ => rfl⟩, fun _ => rfl⟩`.
+-/
 theorem KaPInert.hypotheses_inhabited :
     Nat.Prime 2 ∧ IsFrobLike d1 (conjPerm d1) ∧ IsInertFrob d1 (conjPerm d1) :=
   ⟨Nat.prime_two, ⟨fun _ => rfl, Or.inr fun _ => rfl⟩, fun _ => rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨ShFormula.hypotheses_inhabited.1, ShFormula.hypotheses_inhabited.2.2.2⟩`.
+-/
 theorem RestPWellDefined.hypotheses_inhabited :
     sampleF ≠ 0 ∧ RestTerms.IsPowerSumDecomposition d1.f d1.N sampleF sampleQ :=
   ⟨ShFormula.hypotheses_inhabited.1, ShFormula.hypotheses_inhabited.2.2.2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨ShFormula.hypotheses_inhabited.2.1, ShFormula.hypotheses_inhabited.2.2.1, ShFormula.hypotheses_inhabited.2.2.2⟩`.
+-/
 theorem sample_isHomDecomp : IsHomDecomp d1 sampleF sampleQ :=
   ⟨ShFormula.hypotheses_inhabited.2.1, ShFormula.hypotheses_inhabited.2.2.1,
     ShFormula.hypotheses_inhabited.2.2.2⟩
 
+/- English proof (translation)
+The claim follows from `Nat.one_pos`.
+-/
 theorem ShTotIndependent.hypotheses_inhabited : 0 < d1.f := Nat.one_pos
 
 def uSample : Idx d1 → ℚ := fun p => if p.2.val = 0 then 1 else 0
 
+/- English proof (translation)
+Introduce `τ a b hab`. Establish `hb2 : b.val < 2` using `b.isLt`. Establish `ha : a.val = 0` using `by omega`. Establish `hb : b.val = 1` using `by omega`. Simplify using `[uR, uSample, ha, hb]`.
+-/
 theorem uSample_regular : IsRegular d1 (uR d1 uSample) := by
   intro τ a b hab
   have hb2 : b.val < 2 := b.isLt
@@ -383,11 +407,20 @@ theorem uSample_regular : IsRegular d1 (uR d1 uSample) := by
   have hb : b.val = 1 := by omega
   simp [uR, uSample, ha, hb]
 
+/- English proof (translation)
+Introduce `τ a b hab` and use `(uSample_regular τ a b hab).le`.
+-/
 theorem uSample_dominant : IsDominant d1 (uR d1 uSample) :=
   fun τ a b hab => (uSample_regular τ a b hab).le
 
+/- English proof (translation)
+The claim follows from `uSample_dominant`.
+-/
 theorem CBounds.hypotheses_inhabited : IsDominant d1 (uR d1 uSample) := uSample_dominant
 
+/- English proof (translation)
+The claim follows from `|(s : ℝ) - eval (fun o : Option (Fin 1) => o.elim (s : ℝ) (fun p => (0 : Fin 1 → ℝ) p - s * (0 : Fin 1 → ℝ) p)) (X none : MvPolynomial (Option (Fin 1)) ℝ)| ≤ 0 * s := by refine ⟨one_pos, fun s _ _ => ?_⟩ simp`.
+-/
 theorem LimitTheorem.hypotheses_inhabited :
     (0 : ℝ) < 1 ∧ ∀ s : ℚ, 0 < s → (s : ℝ) ≤ 1 →
       |(s : ℝ) - eval (fun o : Option (Fin 1) => o.elim (s : ℝ) (fun p => (0 : Fin 1 → ℝ) p - s * (0 : Fin 1 → ℝ) p))
@@ -395,6 +428,9 @@ theorem LimitTheorem.hypotheses_inhabited :
   refine ⟨one_pos, fun s _ _ => ?_⟩
   simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Nat.one_pos, one_pos⟩`.
+-/
 theorem NefAtBaseHeight.hypotheses_inhabited : 0 < d1.f ∧ (0 : ℝ) < 1 := ⟨Nat.one_pos, one_pos⟩
 
 end GroundTheory.Heights₂.Heights.TheoremB

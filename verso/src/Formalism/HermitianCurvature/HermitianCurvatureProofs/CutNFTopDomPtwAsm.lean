@@ -9,6 +9,9 @@ open Formalism.FourierDecayAlt Formalism.QuantumDeterminants Filter Topology Mea
 
 noncomputable section
 
+/- English proof (translation)
+Establish `h1 : ‖∑ i, x i‖ ≤ ∑ i, ‖x i‖` using `norm_sum_le _ _`. Establish `h2` using `sq_sum_le_card_mul_sum_sq (s := (Finset.univ : Finset (Fin n))) (f := fun i => ‖x i‖)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma nf_norm_sum_sq_le {E : Type*} [SeminormedAddCommGroup E] {n : ℕ} (x : Fin n → E) :
     ‖∑ i, x i‖ ^ 2 ≤ (n : ℝ) * ∑ i, ‖x i‖ ^ 2 := by
   have h1 : ‖∑ i, x i‖ ≤ ∑ i, ‖x i‖ := norm_sum_le _ _
@@ -16,6 +19,13 @@ lemma nf_norm_sum_sq_le {E : Type*} [SeminormedAddCommGroup E] {n : ℕ} (x : Fi
   calc ‖∑ i, x i‖ ^ 2 ≤ (∑ i, ‖x i‖) ^ 2 := pow_le_pow_left₀ (norm_nonneg _) h1 2
     _ ≤ _ := by simpa using h2
 
+/- English proof (translation)
+Introduce `Tm hTm`. Take `⟨h1, h2, h3⟩` from `h Tm hTm`. Use `⟨h1, h2, fun m => ?_⟩` and prove the remaining obligations. Take `⟨Cb, hCb⟩` from `h3 m`. Use `⟨max Cb 0, fun u w hu hw hl g hg => ?_⟩` and prove the remaining obligations.
+
+Establish `hg1 : 1 ≤ B.gN g` using `Formalism.FourierDecayAlt.P.BetaSesquilinearity.gN_ge_one hg`. Establish `hp : B.gN g ^ d ≤ B.gN g ^ d'` using `Real.rpow_le_rpow_of_exponent_le hg1 hd`. Establish `hp0 : 0 ≤ B.gN g ^ d` using `Real.rpow_nonneg (by linarith) _`. Take `⟨a1, a2⟩` from `hCb u w hu hw hl g hg`. Prove the components needed by the constructor for the conclusion.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma nf_globCoef_mono {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] {Θ : B.DiffOp k r Wp Wq} {d d' : ℝ}
     (h : CutMP.GlobCoef Θ d) (hd : d ≤ d') : CutMP.GlobCoef Θ d' := by
@@ -36,6 +46,13 @@ lemma nf_globCoef_mono {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [Inner
       _ ≤ max Cb 0 * B.gN g ^ d := mul_le_mul_of_nonneg_right (le_max_left _ _) hp0
       _ ≤ max Cb 0 * B.gN g ^ d' := mul_le_mul_of_nonneg_left hp (le_max_right _ _)
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `h`. Establish `hn : 0 ≤ CutMP.nDim P.k P.r` using `by unfold CutMP.nDim; positivity`. Use `⟨h1, h2, nf_globCoef_mono h3 ?_, le_trans h4 ?_⟩` and prove the remaining obligations. Establish `: 0 ≤ ((P.r : ℝ) + 1) * CutMP.nDim P.k P.r * ((N : ℝ) + 1)` using `by positivity`. Establish `e : ∀ x : ℝ, x * ((P.r : ℝ) + 1) * CutMP.nDim P.k P.r * ((N : ℝ) + 1) = x * (((P.r : ℝ) + 1) * CutMP.nDim P.k P.r * ((N : ℝ) + 1))` using `fun x => by ring`.
+
+Rewrite using `[e, e]`. Conclude with `mul_le_mul_of_nonneg_right hC this`. Establish `: 0 ≤ CutMP.nDim P.k P.r * ((N : ℝ) + 1)` using `by positivity`. Establish `e : ∀ x : ℝ, x * CutMP.nDim P.k P.r * ((N : ℝ) + 1) = x * (CutMP.nDim P.k P.r * ((N : ℝ) + 1))` using `fun x => by ring`. Rewrite using `[e, e]`.
+
+Conclude with `mul_le_mul_of_nonneg_right hC this`.
+-/
 lemma nfOpOK_mono {C C' : ℝ} {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
     {p : KB.Pl P Wp Wq} {N : ℕ} {Th : B.DiffOp P.k P.r Wp Wq} (h : NFOpOK C p N Th) (hC : C ≤ C') :
@@ -54,6 +71,21 @@ lemma nfOpOK_mono {C C' : ℝ} {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp
     rw [e, e]
     exact mul_le_mul_of_nonneg_right hC this
 
+/- English proof (translation)
+Use `set γ := TBB.bigPt P.r c with hγ`. Establish `hH : D.cutF p.T.base χ (TBBx4.fpm p f (fun _ => ContinuousLinearMap.id ℂ Wq) p₀) ε = fun g => (((fun y => χ (y / ε) * y ^ p₀) (Gf P.k P.r p.T.base.z p.T.base.z' g) : ℝ) : ℂ) • f g`. Use function extensionality and compare the values at `g`. Simplify using `only [D.cutF, TBBx4.fpm, ContinuousLinearMap.comp_id, smul_smul, Complex.ofReal_mul, Complex.ofReal_pow]`. Establish `h0 : B.opApply Th₀ f = f` using `funext fun g => (hap f g).1`.
+
+Establish `h1 : B.opApply Th₁ f = fun g => (((fun y : ℝ => y ^ N) (Gf P.k P.r p.T.base.z p.T.base.z' g) : ℝ) : ℂ) • f g`. Use function extensionality and compare the values at `fun g => (hap f g).2`. Use `show ‖TBB.Ew p (fun _ => 1) _ (P.r + 1) [] γ‖ ≤ _`. Rewrite using `[Fin.sum_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one]`.
+
+Rewrite using `[hH, h0, h1, TBBx2.Tri.Ew_top p _ hl, TBBx2.Tri.Ew_top p _ hl, TBBx2.Tri.Ew_top p _ hl, hV Wp Wq P p (fun y => χ (y / ε) * y ^ p₀) f γ hl hG, hV Wp Wq P p (fun y : ℝ => y ^ N) f γ hl hG, TBBx4.hsVec_real_smul_sq, TBBx4.hsVec_real_smul_sq]`. Use `set G := TBB.Gp p γ`. Use `set S := Real.sqrt (TBB.nPt P.k P.r (TBB.TTp p) γ) * Real.sqrt (TBB.nPt P.k P.r (TBB.TTp p) γ)`. Use `set v := ‖B.hsVec (p.V f γ)‖ ^ 2`. Use `set x := χ (G / ε)`.
+
+Establish `hS : 0 ≤ S` using `mul_nonneg (Real.sqrt_nonneg _) (Real.sqrt_nonneg _)`. Establish `hv : 0 ≤ v` using `sq_nonneg _`. Establish `hG0 : 0 ≤ G` using `hG.le`. Establish `hx2 : x ^ 2 ≤ K ^ 2`. Rewrite using `[← sq_abs x]`.
+
+Conclude with `pow_le_pow_left₀ (abs_nonneg x) hK 2`. Establish `hGa : G ^ (2 * p₀) = G ^ (2 * p₀ - N) * G ^ N` using `by rw [← pow_add, Nat.sub_add_cancel hNp]`. Establish `hGN : G ^ N ≤ 1 + (G ^ N) ^ 2` using `by nlinarith [sq_nonneg (G ^ N - 1), pow_nonneg hG0 N]`. Establish `hLHS : 0 ≤ S * ((x * G ^ p₀) ^ 2 * v)` using `by positivity`. Rewrite using `[Real.norm_of_nonneg hLHS, Real.norm_of_nonneg hG0]`.
+
+Establish `e1 : S * ((x * G ^ p₀) ^ 2 * v) = (S * v * G ^ (2 * p₀ - N)) * (x ^ 2 * G ^ N)`. Rewrite using `[mul_pow, ← pow_mul, mul_comm p₀ 2, hGa]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : K ^ 2 * (G ^ (2 * p₀ - N) * (S * v) + G ^ (2 * p₀ - N) * (S * ((G ^ N) ^ 2 * v))) = (S * v * G ^ (2 * p₀ - N)) * (K ^ 2 * (1 + (G ^ N) ^ 2))` using `by ring`. Rewrite using `[e1, e2]`.
+
+Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations. Conclude with `mul_le_mul hx2 hGN (pow_nonneg hG0 N) (sq_nonneg K)`.
+-/
 lemma nf_empty_bound (hV : NFVMul) {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
     (p : KB.Pl P Wp Wq) (f : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (p₀ N : ℕ) (hNp : N ≤ 2 * p₀) (χ : ℝ → ℝ) (K : ℝ)
@@ -99,12 +131,22 @@ lemma nf_empty_bound (hV : NFVMul) {P : M.Par} {Wp Wq : Type} [NormedAddCommGrou
   refine mul_le_mul_of_nonneg_left ?_ (by positivity)
   exact mul_le_mul hx2 hGN (pow_nonneg hG0 N) (sq_nonneg K)
 
+/- English proof (translation)
+Use extensionality with `v`. Simplify using `[map_sum, map_smul]`.
+-/
 lemma nf_comp_sum {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] {n : ℕ} (E : Wp →L[ℂ] Wp) (a : Fin n → ℂ) (W : Fin n → (Wq →L[ℂ] Wp)) :
     E.comp (∑ q, a q • W q) = ∑ q, a q • E.comp (W q) := by
   ext v
   simp [map_sum, map_smul]
 
+/- English proof (translation)
+Rewrite using `[nf_comp_sum, TBBx2.Tri.hsVec_sum]`. Simplify using `only [TBBx2.Tri.hsVec_smul]`. Establish `h1` using `nf_norm_sum_sq_le (fun q => ((a q : ℝ) : ℂ) • B.hsVec (E.comp (W q)))`. Establish `h2 : ∀ q, ‖((a q : ℝ) : ℂ) • B.hsVec (E.comp (W q))‖ ^ 2 ≤ Kt ^ 2 * ‖B.hsVec (E.comp (W q))‖ ^ 2`. Introduce `q`.
+
+Rewrite using `[norm_smul, Complex.norm_real, Real.norm_eq_abs, mul_pow]`. Establish `: |a q| ^ 2 ≤ Kt ^ 2` using `pow_le_pow_left₀ (abs_nonneg _) (ha q) 2`. Conclude with `mul_le_mul_of_nonneg_right this (sq_nonneg _)`. Establish `h3 : ∑ q, ‖((a q : ℝ) : ℂ) • B.hsVec (E.comp (W q))‖ ^ 2 ≤ Kt ^ 2 * ∑ q, ‖B.hsVec (E.comp (W q))‖ ^ 2`. Rewrite using `[Finset.mul_sum]`.
+
+Conclude with `Finset.sum_le_sum fun q _ => h2 q`. Establish `hn : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum, Finset.mul_sum, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun q _ => by ring` and prove the remaining obligations.
+-/
 lemma nf_block {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {n : ℕ} (E : Wp →L[ℂ] Wp) (a : Fin n → ℝ) (Kt : ℝ)
     (ha : ∀ q, |a q| ≤ Kt) (W : Fin n → (Wq →L[ℂ] Wp)) (d : ℝ) :

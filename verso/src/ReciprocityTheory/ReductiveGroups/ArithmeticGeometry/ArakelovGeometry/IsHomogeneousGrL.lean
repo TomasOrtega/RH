@@ -13,6 +13,9 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 def lexDeg (a : K → ℕ) : Lex (Fin (Fintype.card K) → ℕ) := toLex (a ∘ (Fintype.equivFin K).symm)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lexDeg_add (a b : K → ℕ) : lexDeg (a + b) = lexDeg a + lexDeg b := rfl
 
 variable (ι) in
@@ -20,6 +23,11 @@ variable (ι) in
 abbrev grL : Lex (Fin (Fintype.card K) → ℕ) → Submodule ℤ (MRing ι) :=
   weightedHomogeneousSubmodule ℤ (lexW (ι := ι) (Fintype.equivFin K))
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `isMultiHomog_of_mem_lex _ h` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`.
+
+Simplify using `[lexDeg]`. Conclude with `mem_lex_of_isMultiHomog _`.
+-/
 theorem mem_grL_iff (f : MRing ι) (a : K → ℕ) : f ∈ grL ι (lexDeg a) ↔ IsMultiHomog f a := by
   constructor
   · intro h
@@ -29,6 +37,9 @@ theorem mem_grL_iff (f : MRing ι) (a : K → ℕ) : f ∈ grL ι (lexDeg a) ↔
     simp [lexDeg]
   · exact mem_lex_of_isMultiHomog _
 
+/- English proof (translation)
+Rewrite using `[mHom]`. Establish `: {s : MRing ι | IsMultiHomog s a} = (grL ι (lexDeg a) : Set (MRing ι))`. Use extensionality with `s`. Conclude with `(mem_grL_iff s a).symm`. Rewrite using `[this, Submodule.span_eq]`.
+-/
 theorem mHom_eq (a : K → ℕ) : mHom ι a = grL ι (lexDeg a) := by
   rw [mHom]
   have : {s : MRing ι | IsMultiHomog s a} = (grL ι (lexDeg a) : Set (MRing ι)) := by
@@ -36,29 +47,51 @@ theorem mHom_eq (a : K → ℕ) : mHom ι a = grL ι (lexDeg a) := by
     exact (mem_grL_iff s a).symm
   rw [this, Submodule.span_eq]
 
+/- English proof (translation)
+Rewrite using `[mHom_eq, mem_grL_iff]`.
+-/
 theorem mem_mHom_iff (f : MRing ι) (a : K → ℕ) : f ∈ mHom ι a ↔ IsMultiHomog f a := by
   rw [mHom_eq, mem_grL_iff]
 
+/- English proof (translation)
+The claim follows from `(isHomogeneous_lex_iff _ J).mpr hJ`.
+-/
 theorem isHomogeneous_grL {J : Ideal (MRing ι)} (hJ : IsMultiHomogIdeal J) :
     J.IsHomogeneous (grL ι) := (isHomogeneous_lex_iff _ J).mpr hJ
 
 def pieceMap (J : Ideal (MRing ι)) (a : K → ℕ) : mHom ι a →ₗ[ℤ] MRing ι ⧸ J :=
   (Ideal.Quotient.mkₐ ℤ J).toLinearMap ∘ₗ (mHom ι a).subtype
 
+/- English proof (translation)
+Rewrite using `[pieceMap, LinearMap.range_comp, Submodule.range_subtype]`. Both sides reduce to the same expression.
+-/
 theorem range_pieceMap (J : Ideal (MRing ι)) (a : K → ℕ) :
     LinearMap.range (pieceMap J a) = mPiece J a := by
   rw [pieceMap, LinearMap.range_comp, Submodule.range_subtype]
   rfl
 
+/- English proof (translation)
+Simplify using `[pieceMap, Ideal.Quotient.eq_zero_iff_mem]`.
+-/
 theorem mem_ker_pieceMap (J : Ideal (MRing ι)) (a : K → ℕ) (x : mHom ι a) :
     x ∈ LinearMap.ker (pieceMap J a) ↔ (x : MRing ι) ∈ J := by
   simp [pieceMap, Ideal.Quotient.eq_zero_iff_mem]
 
+/- English proof (translation)
+Rewrite using `[← range_pieceMap]`. Conclude with `Nat.card_congr (LinearMap.quotKerEquivRange _).toEquiv.symm`.
+-/
 theorem card_mPiece_eq (J : Ideal (MRing ι)) (a : K → ℕ) :
     Nat.card (mPiece J a) = Nat.card (mHom ι a ⧸ LinearMap.ker (pieceMap J a)) := by
   rw [← range_pieceMap]
   exact Nat.card_congr (LinearMap.quotKerEquivRange _).toEquiv.symm
 
+/- English proof (translation)
+Establish `h1` using `Submodule.card_eq_card_quotient_mul_card (B.map A.mkQ)`. Establish `e1 : Nat.card ((V ⧸ A) ⧸ B.map A.mkQ) = Nat.card (V ⧸ B)` using `Nat.card_congr (Submodule.quotientQuotientEquivQuotient A B h).toEquiv`. Set `φ : B →ₗ[R] V ⧸ A` to `A.mkQ ∘ₗ B.subtype`. Establish `hr : LinearMap.range φ = B.map A.mkQ`. Rewrite using `[LinearMap.range_comp, Submodule.range_subtype]`.
+
+Establish `hk : LinearMap.ker φ = A.comap B.subtype`. Rewrite using `[LinearMap.ker_comp, Submodule.ker_mkQ]`. Establish `e2 : Nat.card (B.map A.mkQ) = Nat.card (B ⧸ A.comap B.subtype)`. Rewrite using `[← hr, ← hk]`. Conclude with `Nat.card_congr (LinearMap.quotKerEquivRange φ).toEquiv.symm`.
+
+Rewrite using `[h1, e1, e2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem card_quot_chain {R V : Type*} [Ring R] [AddCommGroup V] [Module R V] (A B : Submodule R V)
     (h : A ≤ B) :
     Nat.card (V ⧸ A) = Nat.card (V ⧸ B) * Nat.card (B ⧸ A.comap B.subtype) := by
@@ -76,12 +109,38 @@ theorem card_quot_chain {R V : Type*} [Ring R] [AddCommGroup V] [Module R V] (A 
   rw [h1, e1, e2]
   ring
 
+/- English proof (translation)
+Rewrite `hf`, `hg`, the goal using `[← mem_grL_iff]`. Rewrite using `[lexDeg_add]`. Conclude with `SetLike.GradedMul.mul_mem hf hg`.
+-/
 theorem isMultiHomog_mul {f g : MRing ι} {a b : K → ℕ} (hf : IsMultiHomog f a) (hg : IsMultiHomog g b) :
     IsMultiHomog (f * g) (a + b) := by
   rw [← mem_grL_iff] at hf hg ⊢
   rw [lexDeg_add]
   exact SetLike.GradedMul.mul_mem hf hg
 
+/- English proof (translation)
+Use `set J' := J ⊔ Ideal.span {f}`. Establish `hJJ' : J ≤ J'` using `le_sup_left`. Use `set A := LinearMap.ker (pieceMap J a)`. Use `set B := LinearMap.ker (pieceMap J' a)`. Establish `hAB : A ≤ B` using `fun x hx => by`.
+
+Rewrite `hx`, the goal using `[mem_ker_pieceMap]`. Conclude with `hJJ' hx`. Rewrite using `[card_mPiece_eq, card_mPiece_eq, card_mPiece_eq, card_quot_chain A B hAB]`. Use `congr 1`. Establish `hac : a - c + c = a` using `funext fun k => Nat.sub_add_cancel (hca k)`.
+
+Establish `hmul : ∀ g : mHom ι (a - c), (g : MRing ι) * f ∈ mHom ι a` using `fun g => by`. Rewrite using `[mem_mHom_iff]`. Use `isMultiHomog_mul ((mem_mHom_iff _ _).mp g.2) hf` as an intermediate fact. Rewrite `this` using `[hac]`. Then use the resulting hypothesis. Set `χ' : mHom ι (a - c) →ₗ[ℤ] B` to `{ toFun := fun g => ⟨⟨(g : MRing ι) * f, hmul g⟩, by`.
+
+Rewrite using `[mem_ker_pieceMap]`. Conclude with `Ideal.mem_sup_right (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self f))⟩`. Use the proof step `map_add' := fun g h => by ext; simp [add_mul]`. Use the proof step `map_smul' := fun r g => by ext; simp [mul_assoc] }`. Set `χ` to `(A.comap B.subtype).mkQ ∘ₗ χ'`.
+
+Establish `hsurj : Function.Surjective χ`. Introduce `z`. Take `⟨⟨⟨x, hxa⟩, hxB⟩, rfl⟩` from `Submodule.mkQ_surjective _ z`. Establish `hxJ' : x ∈ J'` using `(mem_ker_pieceMap J' a ⟨x, hxa⟩).mp hxB`. Take `⟨j, hj, y, hy, hjx⟩` from `Submodule.mem_sup.mp hxJ'`.
+
+Take `⟨h, rfl⟩` from `Ideal.mem_span_singleton'.mp hy`. Establish `hf' : f ∈ grL ι (lexDeg c)` using `(mem_grL_iff f c).mpr hf`. Use `set g := (DirectSum.decompose (grL ι) h (lexDeg (a - c)) : MRing ι)`. Establish `hg : g ∈ mHom ι (a - c)`. Rewrite using `[mHom_eq]`.
+
+Conclude with `SetLike.coe_mem _`. Use `⟨⟨g, hg⟩, ?_⟩` and prove the remaining obligations. Establish `hx : x = (DirectSum.decompose (grL ι) j (lexDeg a) : MRing ι) + g * f`. Establish `h1 : x ∈ grL ι (lexDeg a)` using `by rw [← mHom_eq]; exact hxa`. Use `conv_lhs => rw [← DirectSum.decompose_of_mem_same (grL ι) h1, ← hjx]`.
+
+Rewrite using `[DirectSum.decompose_add, DirectSum.add_apply, Submodule.coe_add]`. Use `congr 1`. Rewrite using `[← hac, lexDeg_add, DirectSum.coe_decompose_mul_add_of_right_mem (grL ι) hf']`. Establish `hjc : (DirectSum.decompose (grL ι) j (lexDeg a) : MRing ι) ∈ J` using `isHomogeneous_grL hJ _ hj`. Use `show (A.comap B.subtype).mkQ (χ' ⟨g, hg⟩) = (A.comap B.subtype).mkQ ⟨⟨x, hxa⟩, hxB⟩`.
+
+Rewrite using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq, Submodule.mem_comap, Submodule.coe_subtype, mem_ker_pieceMap]`. Establish `: (((χ' ⟨g, hg⟩ - ⟨⟨x, hxa⟩, hxB⟩ : B) : mHom ι a) : MRing ι) = g * f - x` using `rfl`. Rewrite using `[this, hx, show g * f - ((DirectSum.decompose (grL ι) j (lexDeg a) : MRing ι) + g * f) = -(DirectSum.decompose (grL ι) j (lexDeg a) : MRing ι) by ring]`. Conclude with `J.neg_mem hjc`. Establish `hker : LinearMap.ker χ = LinearMap.ker (pieceMap q (a - c))`.
+
+Use extensionality with `g`. Rewrite using `[LinearMap.mem_ker, mem_ker_pieceMap, hq]`. Use `show (A.comap B.subtype).mkQ (χ' g) = 0 ↔ _`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.coe_subtype, mem_ker_pieceMap]`. Both sides reduce to the same expression.
+
+Rewrite using `[← hker]`. Conclude with `Nat.card_congr (LinearMap.quotKerEquivOfSurjective χ hsurj).toEquiv.symm`.
+-/
 theorem card_mPiece_step {J : Ideal (MRing ι)} (hJ : IsMultiHomogIdeal J) {f : MRing ι} {c : K → ℕ}
     (hf : IsMultiHomog f c) {q : Ideal (MRing ι)} (hq : ∀ g, g ∈ q ↔ g * f ∈ J) {a : K → ℕ}
     (hca : ∀ k, c k ≤ a k) :

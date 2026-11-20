@@ -12,6 +12,15 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 
 namespace GlobalTheory.FlatModel
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw p _ _ P ev hadd hact htow hone`. Establish `hp : 0 < p` using `(Fact.out : p.Prime).pos`. Establish `h1 : ∀ a k, ev (p ^ k) a ^ p ^ k = 1` using `fun a k => by`. Use `htow 1 (p ^ k) one_pos (pow_pos hp k) a` as an intermediate fact. Rewrite `this` using `[Nat.one_mul, hone]`. Then use the resulting hypothesis.
+
+Establish `h2 : ∀ a k, ev (p ^ (k + 1)) a ^ p = ev (p ^ k) a` using `fun a k => by`. Rewrite using `[pow_succ]`. Conclude with `htow (p ^ k) p (pow_pos hp k) hp a`. Set `f : Dw.La → P.T` to `fun a => Tate.mk (fun k => ev (p ^ k) a) fun k => ⟨h1 a k, h2 a k⟩`. Use `⟨{ toFun := f, map_zero' := ?_, map_add' := ?_ }, fun a k => rfl, ?_⟩` and prove the remaining obligations.
+
+Use `Tate.ext fun n => ?_` and prove the remaining obligations. Use `hadd (p ^ n) 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Express the relevant statement in the definitionally equal form `ev (p ^ n) 0 = 1`. Conclude with `left_eq_mul.1 this`.
+
+Introduce `a b`. Conclude with `Tate.ext fun n => hadd (p ^ n) a b`. Introduce `o a`. Conclude with `Tate.ext fun n => hact (p ^ n) o a`.
+-/
 theorem tateLift_exists : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (Dw : Datum H) (p : ℕ) [Fact p.Prime] [StarRing (𝓞 E)] (P : PtP E p)
     (ev : ℕ → Dw.La → (Over.mk (𝟙 (Sp ℂ_[p])) ⟶ P.A.A)), (∀ k a b, ev k (a + b) = ev k a * ev k b) →

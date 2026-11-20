@@ -14,6 +14,11 @@ open scoped TensorProduct
 
 namespace GlobalTheory.SmGL.RowOneCell
 
+/- English proof (translation)
+Introduce `k _ _ _ _ χ₁ χ₂ h₁ h₂ u v B hB`. Take `⟨b, hb⟩` from `B`. Establish `hb' : b = sz u v` using `eq_sz b hb hB`. Substitute `hb'` using the available equality. Use `Exists.intro (rowPart u v) ?_` and prove the remaining obligations.
+
+Use `Exists.intro (colPart u v) ?_` and prove the remaining obligations. Conclude with `⟨((GlobalTheory.LocGL.compEquiv ((CellSemis.relIndEquiv (colPart u v) (GlobalTheory.T.relative_jacquet_rep_equiv_row χ₁ χ₂ u v).some).trans (GlobalTheory.T.normalised_induction_product_parabolic_piTensor k Bool Bool (Two (Fin 1) (Fin (u + v))) (fun j i => Fin (sz u v i j)) (colPa …`.
+-/
 theorem cell_equiv : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (χ₁ χ₂ : kˣ →* ℂˣ), IsSmoothChar χ₁ → IsSmoothChar χ₂ → ∀ (u v : ℕ)
     (B : SizeMatrix (Two (Fin u) (Fin (v + 1))) (Two (Fin 1) (Fin (u + v)))), B.1 true false = 1 →

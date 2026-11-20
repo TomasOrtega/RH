@@ -14,6 +14,21 @@ set_option maxHeartbeats 2000000
 
 namespace GlobalTheory.Mem.R3.LiftBrg.SplitChi
 
+/- English proof (translation)
+Introduce `X px I hX U Xg tr L hI hV hL cV i t x j hj`. Use `set P0 : Formalism.L2.DIV.Pl X.toD7.host.E := x.1.1.1 with hP0`. Establish `hoff : P0 ∈ Formalism.L2.DIV.offSet ∅ (sgL X I U t) ∅` using `x.1.2`. Establish `e : (envL X I hX U Xg tr L cV i t).lev.χ j = Formalism.L2.DIV.levFn (L.βV i) (flag1L (L.datVt i t)) (Formalism.UG.bc (swapAE X.toD7) (j : Bridge.Gf (Vc X.toD7 i)).1)` using `rfl`. Establish `hm : Formalism.UG.bc (swapAE X.toD7) (j : Bridge.Gf (Vc X.toD7 i)).1 ∈ Formalism.L2.DIV.lev X.toD7.sp.cm (Vc X.toD7 i).gram (L.βV i) (flag1L (L.datVt i t))` using `j.2`.
+
+Establish `hSt` using `Formalism.L2.DIV.parLev_St (Formalism.L2.DIV.lev_le_parLev hm)`. Establish `hj' : isLocEnv (Vc X.toD7 i) (fun P : PlS X.B px => (P.1 : Pl X.toD7.host.E)) ((famR X I hX U Xg tr).A.ok t) x (j : Bridge.Gf (Vc X.toD7 i))` using `hj`. Establish `hle : IsLocElt (Vc X.toD7 i) P0 (j : Bridge.Gf (Vc X.toD7 i))`. Take `⟨e, α, he, hα, hs, hx⟩` from `hj'`. Conclude with `⟨e, e + cA X.toD7 e, α, Or.inl ⟨he, rfl⟩, hα, hx, hs⟩`.
+
+Establish `hloc` using `GlobalTheory.Mem.R3.LiftInertChi.locAt_of_isLocElt (Vc X.toD7 i) _ _ hle`. Establish `hnot : P0 ∉ Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1` using `fun h => hoff.2.1 (Or.inr h)`. Establish `hnotc : ∀ PP ∈ Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1, PP ≠ Formalism.DivisionValues.conjPl P0`. Introduce `PP hPP h`. Apply `hoff.2.2 PP (Or.inr hPP)` to reduce the goal to its premises.
+
+Rewrite using `[Formalism.L2.Col.conjIdeal_asIdeal, GlobalTheory.PlaceDict.conjP_eq_conjPl X.toD7, h]`. Establish `hunder : ∀ PP : Formalism.L2.DIV.Pl X.toD7.host.E, PP ∈ Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1 → PP.under (𝓞 X.toD7.host.F) ≠ P0.under (𝓞 X.toD7.host.F)`. Introduce `PP hPP hu`. Break down `GlobalTheory.GoodPrimes.eq_or_conj_of_under_eq hu with h | h` into its components or cases. Conclude with `hnot (h ▸ hPP)`.
+
+Conclude with `hnotc PP hPP h`. Establish `hred : ∀ PP ∈ Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1, Formalism.L2.DIV.redFn (L.βV i) PP (Formalism.UG.bc (swapAE X.toD7) (j : Bridge.Gf (Vc X.toD7 i)).1) = 1` using `fun PP hPP => GlobalTheory.Mem.R3.LiftInertChi.redFn_eq_one_of_locAt _ _ hSt _ hloc PP (hunder PP hPP)`. Establish `hPg : ∀ PP ∈ (flag1L (L.datVt i t)).Pg, PP ∈ Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1`. Introduce `PP hPP`. Rewrite `hPP` using `[show (flag1L (L.datVt i t)).Pg = L.Pg from rfl, hL.Pg]`.
+
+Conclude with `Finset.mem_union.2 (Or.inl hPP)`. Establish `hQ : ∀ PP ∈ (flag1L (L.datVt i t)).Q, PP ∈ Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1`. Introduce `PP hPP`. Rewrite `hPP` using `[show (flag1L (L.datVt i t)).Q = L.Q t from rfl, hL.Q t]`. Establish `e4 : I.Q (ixOf I U t) = Formalism.L2.Col.QE I.sel t.1`.
+
+Simplify using `only [ColIn.Q, tup_ixOf]`. Rewrite `hPP` using `[e4]`. Conclude with `Finset.mem_union.2 (Or.inr hPP)`. Rewrite using `[e]`. Conclude with `GlobalTheory.LevSplit.levFn_eq_one _ _ _ fun PP hPP => hred PP (hPP.elim (hPg PP) (hQ PP))`.
+-/
 theorem chi_loc_lift : ∀ (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px) (hX : X.B.fields.Ok) (U : Set I.ι) (Xg : Finset (Gc X.B px → X.B.LL)) (tr : TrI X.B px) (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)) (hI : I.Ok) (hV : ValsIn I) (hL : LevOf X I U L) (cV : ∀ i, CoefA (Vc X.toD7 i)) (i : Fin X.toD7.R.m) (t : TupU I U) (x : (famR X I hX U Xg tr).A.ok t × ℕ) (j : (envL X I hX U Xg tr L cV i t).lev.J) (hj : (envL X I hX U Xg tr L cV i t).isLoc x j),
     (envL X I hX U Xg tr L cV i t).lev.χ j = 1 := by
   intro X px I hX U Xg tr L hI hV hL cV i t x j hj

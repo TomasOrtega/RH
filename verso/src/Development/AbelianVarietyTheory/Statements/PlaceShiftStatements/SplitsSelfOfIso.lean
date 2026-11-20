@@ -45,6 +45,11 @@ namespace GlobalTheory.GalV.GaloisTowerConditions
 
 variable {k : Type} [Field k] (Ω : Type) [Field Ω] [Algebra k Ω]
 
+/- English proof (translation)
+Use `⟨⟨GlobalTheory.Et.geomMap Ω q (inv u) (by simp [← hu]), ?_, ?_⟩⟩` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [GlobalTheory.Et.geomMap, Category.assoc, pullback.lift_fst, pullback.lift_fst_assoc, IsIso.hom_inv_id, Category.comp_id, Category.id_comp]`. Simplify using `only [GlobalTheory.Et.geomMap, Category.assoc, pullback.lift_snd, Category.id_comp]`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Simplify using `only [GlobalTheory.Et.geomMap, Category.assoc, pullback.lift_fst, pullback.lift_fst_assoc, IsIso.inv_hom_id, Category.comp_id, Category.id_comp]`. Simplify using `only [GlobalTheory.Et.geomMap, Category.assoc, pullback.lift_snd, Category.id_comp]`.
+-/
 theorem geomMap_isIso {X Y : Scheme.{0}} {p : X ⟶ Spec (CommRingCat.of k)} {q : Y ⟶ Spec (CommRingCat.of k)}
     (u : X ⟶ Y) [IsIso u] (hu : u ≫ q = p) : IsIso (GlobalTheory.Et.geomMap Ω p u hu) := by
   refine ⟨⟨GlobalTheory.Et.geomMap Ω q (inv u) (by simp [← hu]), ?_, ?_⟩⟩
@@ -58,6 +63,13 @@ theorem geomMap_isIso {X Y : Scheme.{0}} {p : X ⟶ Spec (CommRingCat.of k)} {q 
 instance isIso_idTower_sΩ (g : (HTower.idTower k).Γ) : IsIso ((HTower.idTower k).sΩ Ω g) :=
   geomMap_isIso Ω (k := k) (𝟙 _) rfl
 
+/- English proof (translation)
+Use `⟨fun _ => Category.id_comp _, ?_⟩` and prove the remaining obligations. Establish `hl : IsIso (pullback.lift (𝟙 Y) (𝟙 Y) (by simp) : Y ⟶ pullback s s)`. Establish `: IsIso (pullback.lift (𝟙 Y) (𝟙 Y) (by simp) ≫ pullback.fst s s)`. Rewrite using `[pullback.lift_fst]`. Use `infer_instance`.
+
+Conclude with `IsIso.of_isIso_comp_right _ (pullback.fst _ _)`. Use `⟨⟨inv (pullback.lift (𝟙 Y) (𝟙 Y) rfl : Y ⟶ pullback s s) ≫ Sigma.ι (fun _ : Unit => Y) (), ?_, ?_⟩⟩` and prove the remaining obligations. Apply `Sigma.hom_ext` to reduce the goal to its premises. Introduce `j`. Consider the cases of `j`.
+
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 theorem splits_self_of_iso {Y Z : Scheme.{0}} (s : Y ⟶ Z) [IsIso s] : Splits s s (fun _ : Unit => 𝟙 Y) := by
   refine ⟨fun _ => Category.id_comp _, ?_⟩
   have hl : IsIso (pullback.lift (𝟙 Y) (𝟙 Y) (by simp) : Y ⟶ pullback s s) := by
@@ -68,6 +80,9 @@ theorem splits_self_of_iso {Y Z : Scheme.{0}} (s : Y ⟶ Z) [IsIso s] : Splits s
   · apply Sigma.hom_ext; intro j; cases j; simp
   · simp
 
+/- English proof (translation)
+Use `⟨_, (HTower.idTower k).sΩ Ω g, Unit, inferInstance, inferInstance, fun _ => 𝟙 _, Unit, inferInstance, fun _ => 𝟙 _, ⟨inferInstance, inferInstance, inferInstance, rfl, fun _ _ => (Category.id_comp _).symm, splits_self_of_iso _⟩, splits_self_of_iso _, fun x => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.id_apply, Finset.univ_unique, Finset.sum_singleton, Category.id_comp]`. Both sides reduce to the same expression.
+-/
 theorem idTower_isCorrOp (l : ℕ) [Fact l.Prime] (g : (HTower.idTower k).Γ) :
     IsCorrOp l ((HTower.idTower k).sΩ Ω g) ((HTower.idTower k).tΩ Ω g) LinearMap.id := by
   refine ⟨_, (HTower.idTower k).sΩ Ω g, Unit, inferInstance, inferInstance, fun _ => 𝟙 _, Unit, inferInstance,
@@ -76,9 +91,17 @@ theorem idTower_isCorrOp (l : ℕ) [Fact l.Prime] (g : (HTower.idTower k).Γ) :
   simp only [LinearMap.id_apply, Finset.univ_unique, Finset.sum_singleton, Category.id_comp]
   rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, idTower_isCorrOp Ω l g⟩`.
+-/
 example (l : ℕ) [Fact l.Prime] (g : (HTower.idTower k).Γ) :
     ∃ T, IsCorrOp l ((HTower.idTower k).sΩ Ω g) ((HTower.idTower k).tΩ Ω g) T := ⟨_, idTower_isCorrOp Ω l g⟩
 
+/- English proof (translation)
+Establish `hid : pullHQ l (sch.map (𝟙 X)) n i = LinearMap.id`. Rewrite using `[CategoryTheory.Functor.map_id]`. Unfold `pullHQ`. Rewrite using `[pullHl_id]`. Conclude with `LinearMap.baseChange_id`.
+
+Use `⟨(splits_self_of_iso (𝟙 X)).2, ?_⟩` and prove the remaining obligations. Simplify using `only [hid, sub_self, LinearMap.ker_zero, iInf_const, LinearMap.range_id]`. Conclude with `⟨Function.injective_id, trivial⟩`.
+-/
 theorem cohomology_invariants_identity_cover (l : ℕ) [Fact l.Prime] (X : Scheme.{0}) (n i : ℤ) :
     IsIso (Sigma.desc (fun g : Unit => pullback.lift ((fun _ : Unit => 𝟙 X) g) (𝟙 X) (by simp)) :
       ∐ (fun _ : Unit => X) ⟶ pullback (𝟙 X) (𝟙 X)) ∧

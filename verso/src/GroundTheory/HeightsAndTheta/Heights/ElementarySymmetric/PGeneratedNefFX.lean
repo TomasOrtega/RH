@@ -9,6 +9,9 @@ namespace GroundTheory.Heights₂.Heights.HilbertSamuel
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.ArakelovGeometry
 
+/- English proof (translation)
+Introduce `F _ K _ _ ι _ _ I V a hI hgen W hW hVW`. Establish `hgW : KH.GeneratedV F W a` using `GeneratedRestrict.proof F K ι V W a hVW hgen`. Conclude with `GeneratedProductNonneg.proof GeneratedRestrict.proof GeneratedEffectiveSection.proof F K ι I W 1 ![a] hI hW (Fin.forall_fin_one.mpr hgW)`.
+-/
 theorem GeneratedNefF.proof : GeneratedNefF.Statement := by
   intro F _ K _ _ ι _ _ I V a hI hgen W hW hVW
   have hgW : KH.GeneratedV F W a := GeneratedRestrict.proof F K ι V W a hVW hgen

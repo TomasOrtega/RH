@@ -27,16 +27,28 @@ def unitFiltration (n : ℕ) : Subgroup 𝒪[K]ˣ where
     exact Ideal.mul_mem_left _ _ hu
 
 variable {K} in
+/- English proof (translation)
+The claim follows from `Iff.rfl @[simp]`.
+-/
 theorem mem_unitFiltration {n : ℕ} {u : 𝒪[K]ˣ} :
     u ∈ unitFiltration K n ↔ (u : 𝒪[K]) - 1 ∈ 𝓂[K] ^ n := Iff.rfl
 
 @[simp]
+/- English proof (translation)
+Use extensionality with `u`. Simplify using `[mem_unitFiltration]`.
+-/
 theorem unitFiltration_zero : unitFiltration K 0 = ⊤ := by
   ext u; simp [mem_unitFiltration]
 
+/- English proof (translation)
+The claim follows from `fun _ _ hmn _ hu ↦ Ideal.pow_le_pow_right hmn hu`.
+-/
 theorem unitFiltration_antitone : Antitone (unitFiltration K) :=
   fun _ _ hmn _ hu ↦ Ideal.pow_le_pow_right hmn hu
 
+/- English proof (translation)
+The claim follows from `unitFiltration_antitone K n.le_succ`.
+-/
 theorem unitFiltration_succ_le (n : ℕ) : unitFiltration K (n + 1) ≤ unitFiltration K n :=
   unitFiltration_antitone K n.le_succ
 
@@ -46,17 +58,29 @@ section Uniformizer
 
 variable {K}
 
+/- English proof (translation)
+Rewrite using `[hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+-/
 theorem mem_maximalIdeal_pow_iff {ϖ : 𝒪[K]} (hϖ : Irreducible ϖ) {n : ℕ} {x : 𝒪[K]} :
     x ∈ 𝓂[K] ^ n ↔ ϖ ^ n ∣ x := by
   rw [hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.mem_span_singleton]
 
+/- English proof (translation)
+Simplify using `using mem_maximalIdeal_pow_iff hϖ (n := 1) (x := x)`.
+-/
 theorem mem_maximalIdeal_iff_dvd {ϖ : 𝒪[K]} (hϖ : Irreducible ϖ) {x : 𝒪[K]} :
     x ∈ 𝓂[K] ↔ ϖ ∣ x := by
   simpa using mem_maximalIdeal_pow_iff hϖ (n := 1) (x := x)
 
+/- English proof (translation)
+The claim follows from `(mem_maximalIdeal_iff_dvd hϖ).mpr dvd_rfl`.
+-/
 theorem uniformizer_mem_maximalIdeal {ϖ : 𝒪[K]} (hϖ : Irreducible ϖ) : ϖ ∈ 𝓂[K] :=
   (mem_maximalIdeal_iff_dvd hϖ).mpr dvd_rfl
 
+/- English proof (translation)
+The claim follows from `(residue_eq_zero_iff _).mpr (uniformizer_mem_maximalIdeal hϖ)`.
+-/
 theorem residue_uniformizer {ϖ : 𝒪[K]} (hϖ : Irreducible ϖ) : residue 𝒪[K] ϖ = 0 :=
   (residue_eq_zero_iff _).mpr (uniformizer_mem_maximalIdeal hϖ)
 
@@ -71,44 +95,81 @@ noncomputable def normalizedValuation : Valuation K ℤᵐ⁰ :=
 
 variable {K}
 
+/- English proof (translation)
+Simplify using `[normalizedValuation, Valuation.map_apply]`.
+-/
 theorem normalizedValuation_apply (x : K) :
     normalizedValuation K x = IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt K
       (valuation K x) := by
   simp [normalizedValuation, Valuation.map_apply]
 
+/- English proof (translation)
+Rewrite using `[normalizedValuation_apply, normalizedValuation_apply]`. Conclude with `map_le_map_iff _`.
+-/
 theorem normalizedValuation_le_iff {x y : K} :
     normalizedValuation K x ≤ normalizedValuation K y ↔ valuation K x ≤ valuation K y := by
   rw [normalizedValuation_apply, normalizedValuation_apply]
   exact map_le_map_iff _
 
+/- English proof (translation)
+Rewrite using `[normalizedValuation_apply, normalizedValuation_apply]`. Conclude with `map_lt_map_iff _`.
+-/
 theorem normalizedValuation_lt_iff {x y : K} :
     normalizedValuation K x < normalizedValuation K y ↔ valuation K x < valuation K y := by
   rw [normalizedValuation_apply, normalizedValuation_apply]
   exact map_lt_map_iff _
 
+/- English proof (translation)
+Rewrite using `[normalizedValuation_apply, normalizedValuation_apply]`. Conclude with `(IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt K).injective.eq_iff`.
+-/
 theorem normalizedValuation_eq_iff {x y : K} :
     normalizedValuation K x = normalizedValuation K y ↔ valuation K x = valuation K y := by
   rw [normalizedValuation_apply, normalizedValuation_apply]
   exact (IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt K).injective.eq_iff
 
+/- English proof (translation)
+Rewrite using `[← map_one (normalizedValuation K), normalizedValuation_le_iff, map_one]`. Conclude with `(Valuation.mem_integer_iff _ _).symm`.
+-/
 theorem normalizedValuation_le_one_iff {x : K} :
     normalizedValuation K x ≤ 1 ↔ x ∈ 𝒪[K] := by
   rw [← map_one (normalizedValuation K), normalizedValuation_le_iff, map_one]
   exact (Valuation.mem_integer_iff _ _).symm
 
+/- English proof (translation)
+The claim follows from `(Valuation.integer.integers (valuation K)).isUnit_iff_valuation_eq_one.mp u.isUnit`.
+-/
 theorem valuation_unit (u : 𝒪[K]ˣ) : valuation K ((u : 𝒪[K]) : K) = 1 :=
   (Valuation.integer.integers (valuation K)).isUnit_iff_valuation_eq_one.mp u.isUnit
 
+/- English proof (translation)
+Rewrite using `[← map_one (normalizedValuation K), normalizedValuation_eq_iff, map_one]`. Conclude with `valuation_unit u`.
+-/
 theorem normalizedValuation_unit (u : 𝒪[K]ˣ) : normalizedValuation K ((u : 𝒪[K]) : K) = 1 := by
   rw [← map_one (normalizedValuation K), normalizedValuation_eq_iff, map_one]
   exact valuation_unit u
 
+/- English proof (translation)
+Use `lt_of_le_of_ne x.2 fun h ↦ ?_` and prove the remaining obligations. Conclude with `(IsLocalRing.mem_maximalIdeal x).mp hx ((Valuation.integer.integers (valuation K)).isUnit_iff_valuation_eq_one.mpr h)`.
+-/
 theorem valuation_lt_one_of_mem_maximalIdeal {x : 𝒪[K]} (hx : x ∈ 𝓂[K]) :
     valuation K (x : K) < 1 := by
   refine lt_of_le_of_ne x.2 fun h ↦ ?_
   exact (IsLocalRing.mem_maximalIdeal x).mp hx
     ((Valuation.integer.integers (valuation K)).isUnit_iff_valuation_eq_one.mpr h)
 
+/- English proof (translation)
+Establish `hne : normalizedValuation K ϖ ≠ 0`. Rewrite using `[Ne, Valuation.zero_iff]`. Conclude with `hϖ.ne_zero` after adjusting the coercions. Establish `hlt : normalizedValuation K ϖ < 1`. Rewrite using `[← map_one (normalizedValuation K), normalizedValuation_lt_iff, map_one]`.
+
+Conclude with `valuation_lt_one_of_mem_maximalIdeal (uniformizer_mem_maximalIdeal hϖ)`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y : K, normalizedValuation K y = WithZero.exp (-1) := by`. Take `⟨y, hy⟩` from `ValuativeRel.valuation_surjective ((IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt K).symm (WithZero.exp (-1)))`. Conclude with `⟨y, by rw [normalizedValuation_apply, hy]; simp⟩`. Establish `hexp : WithZero.exp (-1 : ℤ) < 1`.
+
+Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions. Establish `hy1 : valuation K y < 1`. Rewrite using `[← map_one (valuation K), ← normalizedValuation_lt_iff, map_one, hy]`. Conclude with `hexp`.
+
+Establish `hymem : (⟨y, hy1.le⟩ : 𝒪[K]) ∈ 𝓂[K]`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, (Valuation.integer.integers (valuation K)).isUnit_iff_valuation_eq_one]`. Conclude with `hy1.ne`. Establish `hyϖ : valuation K y ≤ valuation K ϖ`. Use `hϖ.maximalIdeal_eq_setOfPred_le_v_coe (v := valuation K)` as an intermediate fact.
+
+Establish `h2 : (⟨y, hy1.le⟩ : 𝒪[K]) ∈ (𝓂[K] : Set 𝒪[K])` using `hymem`. Rewrite `h2` using `[this]`. Conclude with `h2`. Rewrite `hyϖ` using `[← normalizedValuation_le_iff, hy]`. Rewrite `hyϖ`, `hlt`, the goal using `[← WithZero.exp_log hne]`.
+
+Rewrite `hlt` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite `hyϖ` using `[WithZero.exp_le_exp]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem normalizedValuation_uniformizer {ϖ : 𝒪[K]} (hϖ : Irreducible ϖ) :
     normalizedValuation K ϖ = WithZero.exp (-1) := by
   have hne : normalizedValuation K ϖ ≠ 0 := by
@@ -143,17 +204,29 @@ theorem normalizedValuation_uniformizer {ϖ : 𝒪[K]} (hϖ : Irreducible ϖ) :
 
 noncomputable def ord (x : K) : ℤ := -WithZero.log (normalizedValuation K x)
 
+/- English proof (translation)
+Rewrite using `[ord, neg_neg, WithZero.exp_log]`. Simplify using `using hx`.
+-/
 theorem normalizedValuation_eq_exp_ord {x : K} (hx : x ≠ 0) :
     normalizedValuation K x = WithZero.exp (-ord x) := by
   rw [ord, neg_neg, WithZero.exp_log]
   simpa using hx
 
+/- English proof (translation)
+Simplify using `[ord, WithZero.log_mul, hx, hy]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ord_mul {x y : K} (hx : x ≠ 0) (hy : y ≠ 0) : ord (x * y) = ord x + ord y := by
   simp [ord, WithZero.log_mul, hx, hy]; ring
 
+/- English proof (translation)
+Simplify using `[ord, normalizedValuation_uniformizer hϖ]`.
+-/
 theorem ord_uniformizer {ϖ : 𝒪[K]} (hϖ : Irreducible ϖ) : ord (ϖ : K) = 1 := by
   simp [ord, normalizedValuation_uniformizer hϖ]
 
+/- English proof (translation)
+Simplify using `[ord, normalizedValuation_unit u]`.
+-/
 theorem ord_unit (u : 𝒪[K]ˣ) : ord ((u : 𝒪[K]) : K) = 0 := by
   simp [ord, normalizedValuation_unit u]
 
@@ -167,14 +240,27 @@ noncomputable def unitsIncl : 𝒪[K]ˣ →* Kˣ :=
 variable {K}
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_unitsIncl (u : 𝒪[K]ˣ) : ((unitsIncl K u : Kˣ) : K) = ((u : 𝒪[K]) : K) := rfl
 
+/- English proof (translation)
+Introduce `u w h`. Use `ext`. Use `congrArg Units.val h` as an intermediate fact. Simplify using `using this`.
+-/
 theorem unitsIncl_injective : Function.Injective (unitsIncl K) := by
   intro u w h
   ext
   have := congrArg Units.val h
   simpa using this
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`. Simplify using `using normalizedValuation_unit u`. Introduce `h`. Establish `h1 : valuation K (x : K) = 1`.
+
+Rewrite `h` using `[← map_one (normalizedValuation K), normalizedValuation_eq_iff, map_one]`. Then use the resulting hypothesis. Establish `h2 : valuation K ((x⁻¹ : Kˣ) : K) = 1`. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, h1, inv_one]`. Use `⟨⟨⟨x, h1.le⟩, ⟨(x⁻¹ : Kˣ), h2.le⟩, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `ext`.
+
+Simplify using the standard rewrite rules. Use `ext`. Simplify using the standard rewrite rules. Use `ext`. Both sides reduce to the same expression.
+-/
 theorem mem_range_unitsIncl_iff {x : Kˣ} :
     x ∈ (unitsIncl K).range ↔ normalizedValuation K x = 1 := by
   constructor
@@ -194,6 +280,9 @@ noncomputable def uniformizerUnit {ϖ : 𝒪[K]} (hϖ : Irreducible ϖ) : Kˣ :=
   Units.mk0 (ϖ : K) (by exact_mod_cast hϖ.ne_zero)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_uniformizerUnit {ϖ : 𝒪[K]} (hϖ : Irreducible ϖ) :
     ((uniformizerUnit hϖ : Kˣ) : K) = ϖ := rfl
 
@@ -201,11 +290,17 @@ noncomputable def unitsOfIntProd {ϖ : 𝒪[K]} (hϖ : Irreducible ϖ) :
     Multiplicative ℤ × 𝒪[K]ˣ →* Kˣ :=
   (zpowersHom Kˣ (uniformizerUnit hϖ)).coprod (unitsIncl K)
 
+/- English proof (translation)
+Simplify using `[unitsOfIntProd, zpowersHom_apply, Units.val_zpow_eq_zpow_val]`.
+-/
 theorem coe_unitsOfIntProd {ϖ : 𝒪[K]} (hϖ : Irreducible ϖ) (n : Multiplicative ℤ)
     (u : 𝒪[K]ˣ) :
     ((unitsOfIntProd hϖ (n, u) : Kˣ) : K) = (ϖ : K) ^ n.toAdd * ((u : 𝒪[K]) : K) := by
   simp [unitsOfIntProd, zpowersHom_apply, Units.val_zpow_eq_zpow_val]
 
+/- English proof (translation)
+Rewrite using `[coe_unitsOfIntProd, map_mul, map_zpow₀, normalizedValuation_uniformizer hϖ, normalizedValuation_unit, mul_one, ← WithZero.exp_zsmul]`. Use `congr 1`. Simplify using the standard rewrite rules.
+-/
 theorem normalizedValuation_unitsOfIntProd {ϖ : 𝒪[K]} (hϖ : Irreducible ϖ)
     (n : Multiplicative ℤ) (u : 𝒪[K]ˣ) :
     normalizedValuation K (unitsOfIntProd hϖ (n, u) : K) = WithZero.exp (-n.toAdd) := by
@@ -214,6 +309,15 @@ theorem normalizedValuation_unitsOfIntProd {ϖ : 𝒪[K]} (hϖ : Irreducible ϖ)
   congr 1
   simp
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_one]`. Introduce and unpack `⟨n, u⟩ h`. Establish `hv` using `normalizedValuation_unitsOfIntProd hϖ n u`. Rewrite `hv` using `[h, Units.val_one, map_one, ← WithZero.exp_zero, WithZero.exp_inj]`.
+
+Establish `hn : n = 1`. Rewrite using `[← toAdd_eq_zero]`. Use linear arithmetic over natural numbers and integers. Substitute `hn` using the available equality. Establish `hu : unitsIncl K u = 1`.
+
+Simplify `h` using `[unitsOfIntProd]`. Rewrite `hu` using `[← map_one (unitsIncl K)]`. Rewrite using `[unitsIncl_injective hu]`. Both sides reduce to the same expression. Introduce `x`.
+
+Take `⟨n, u, hx⟩` from `IsDiscreteValuationRing.exists_units_eq_smul_zpow_of_irreducible (K := K) hϖ x.ne_zero`. Use `⟨(Multiplicative.ofAdd n, u), ?_⟩` and prove the remaining obligations. Use `ext`. Rewrite using `[coe_unitsOfIntProd, hx, Units.smul_def, Algebra.smul_def, toAdd_ofAdd, mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem unitsOfIntProd_bijective {ϖ : 𝒪[K]} (hϖ : Irreducible ϖ) :
     Function.Bijective (unitsOfIntProd hϖ) := by
   constructor
@@ -241,10 +345,18 @@ noncomputable def unitsEquivIntProd {ϖ : 𝒪[K]} (hϖ : Irreducible ϖ) :
     Kˣ ≃* Multiplicative ℤ × 𝒪[K]ˣ :=
   (MulEquiv.ofBijective (unitsOfIntProd hϖ) (unitsOfIntProd_bijective hϖ)).symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem unitsEquivIntProd_symm_apply {ϖ : 𝒪[K]} (hϖ : Irreducible ϖ)
     (p : Multiplicative ℤ × 𝒪[K]ˣ) :
     (unitsEquivIntProd hϖ).symm p = unitsOfIntProd hϖ p := rfl
 
+/- English proof (translation)
+Use `set p := unitsEquivIntProd hϖ x`. Establish `hx : x = unitsOfIntProd hϖ p`. Rewrite using `[← unitsEquivIntProd_symm_apply, MulEquiv.symm_apply_apply]`. Establish `hv` using `normalizedValuation_eq_exp_ord x.ne_zero`. Rewrite `hv` using `[hx, normalizedValuation_unitsOfIntProd, WithZero.exp_inj, neg_inj]`.
+
+Simplify using `only [← hx] at hv`. Rewrite using `[← hv]`. Both sides reduce to the same expression.
+-/
 theorem unitsEquivIntProd_fst {ϖ : 𝒪[K]} (hϖ : Irreducible ϖ) (x : Kˣ) :
     (unitsEquivIntProd hϖ x).1 = Multiplicative.ofAdd (ord (x : K)) := by
   set p := unitsEquivIntProd hϖ x
@@ -256,12 +368,18 @@ theorem unitsEquivIntProd_fst {ϖ : 𝒪[K]} (hϖ : Irreducible ϖ) (x : Kˣ) :
   rw [← hv]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← MulEquiv.eq_symm_apply, unitsEquivIntProd_symm_apply]`. Use `ext`. Simplify using `[coe_unitsOfIntProd]`.
+-/
 theorem unitsEquivIntProd_uniformizer {ϖ : 𝒪[K]} (hϖ : Irreducible ϖ) :
     unitsEquivIntProd hϖ (uniformizerUnit hϖ) = (Multiplicative.ofAdd 1, 1) := by
   rw [← MulEquiv.eq_symm_apply, unitsEquivIntProd_symm_apply]
   ext
   simp [coe_unitsOfIntProd]
 
+/- English proof (translation)
+Rewrite using `[← MulEquiv.eq_symm_apply, unitsEquivIntProd_symm_apply]`. Use `ext`. Simplify using `[coe_unitsOfIntProd]`.
+-/
 theorem unitsEquivIntProd_unitsIncl {ϖ : 𝒪[K]} (hϖ : Irreducible ϖ) (u : 𝒪[K]ˣ) :
     unitsEquivIntProd hϖ (unitsIncl K u) = (1, u) := by
   rw [← MulEquiv.eq_symm_apply, unitsEquivIntProd_symm_apply]
@@ -275,13 +393,22 @@ section Residue
 noncomputable def unitsToResidue : 𝒪[K]ˣ →* 𝓀[K]ˣ :=
   Units.map (residue 𝒪[K]).toMonoidHom
 
+/- English proof (translation)
+The claim follows from `surjective_units_map_of_local_ringHom _ residue_surjective inferInstance @[simp]`.
+-/
 theorem unitsToResidue_surjective : Function.Surjective (unitsToResidue K) :=
   surjective_units_map_of_local_ringHom _ residue_surjective inferInstance
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_unitsToResidue (u : 𝒪[K]ˣ) :
     ((unitsToResidue K u : 𝓀[K]ˣ) : 𝓀[K]) = residue 𝒪[K] u := rfl
 
+/- English proof (translation)
+Use extensionality with `u`. Rewrite using `[MonoidHom.mem_ker, mem_unitFiltration, pow_one, ← residue_eq_zero_iff, map_sub, map_one, sub_eq_zero, Units.ext_iff]`. Both sides reduce to the same expression.
+-/
 theorem ker_unitsToResidue : (unitsToResidue K).ker = unitFiltration K 1 := by
   ext u
   rw [MonoidHom.mem_ker, mem_unitFiltration, pow_one, ← residue_eq_zero_iff, map_sub, map_one,
@@ -293,6 +420,9 @@ noncomputable def unitsModPrincipalEquiv : 𝒪[K]ˣ ⧸ unitFiltration K 1 ≃*
     (QuotientGroup.quotientKerEquivOfSurjective _ (unitsToResidue_surjective K))
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem unitsModPrincipalEquiv_mk (u : 𝒪[K]ˣ) :
     unitsModPrincipalEquiv K (QuotientGroup.mk u) = unitsToResidue K u := rfl
 
@@ -303,6 +433,9 @@ section Graded
 variable {K} {ϖ : 𝒪[K]} (hϖ : Irreducible ϖ)
 include hϖ
 
+/- English proof (translation)
+The claim follows from `(mem_maximalIdeal_pow_iff hϖ).mp u.2`.
+-/
 theorem exists_sub_one_eq_mul {n : ℕ} (u : unitFiltration K n) :
     ∃ a : 𝒪[K], ((u : 𝒪[K]ˣ) : 𝒪[K]) - 1 = ϖ ^ n * a :=
   (mem_maximalIdeal_pow_iff hϖ).mp u.2
@@ -310,14 +443,23 @@ theorem exists_sub_one_eq_mul {n : ℕ} (u : unitFiltration K n) :
 noncomputable def filtrationCoeff {n : ℕ} (u : unitFiltration K n) : 𝒪[K] :=
   (exists_sub_one_eq_mul hϖ u).choose
 
+/- English proof (translation)
+The claim follows from `(exists_sub_one_eq_mul hϖ u).choose_spec`.
+-/
 theorem sub_one_eq_filtrationCoeff {n : ℕ} (u : unitFiltration K n) :
     ((u : 𝒪[K]ˣ) : 𝒪[K]) - 1 = ϖ ^ n * filtrationCoeff hϖ u :=
   (exists_sub_one_eq_mul hϖ u).choose_spec
 
+/- English proof (translation)
+The claim follows from `mul_left_cancel₀ (pow_ne_zero n hϖ.ne_zero) ((sub_one_eq_filtrationCoeff hϖ u).symm.trans h)`.
+-/
 theorem filtrationCoeff_eq {n : ℕ} {u : unitFiltration K n} {a : 𝒪[K]}
     (h : ((u : 𝒪[K]ˣ) : 𝒪[K]) - 1 = ϖ ^ n * a) : filtrationCoeff hϖ u = a :=
   mul_left_cancel₀ (pow_ne_zero n hϖ.ne_zero) ((sub_one_eq_filtrationCoeff hϖ u).symm.trans h)
 
+/- English proof (translation)
+Establish `hm : ϖ ^ n * a ∈ 𝓂[K]` using `Ideal.mul_mem_right _ _ (Ideal.pow_mem_of_mem _ (uniformizer_mem_maximalIdeal hϖ) n (by omega))`. Simplify using `using isUnit_one_sub_self_of_mem_nonunits (-(ϖ ^ n * a)) ((IsLocalRing.mem_maximalIdeal _).mp (neg_mem hm))`.
+-/
 theorem isUnit_one_add_mul {n : ℕ} (hn : 1 ≤ n) (a : 𝒪[K]) : IsUnit (1 + ϖ ^ n * a) := by
   have hm : ϖ ^ n * a ∈ 𝓂[K] :=
     Ideal.mul_mem_right _ _ (Ideal.pow_mem_of_mem _ (uniformizer_mem_maximalIdeal hϖ) n (by omega))
@@ -342,10 +484,16 @@ noncomputable def filtrationGradedHom {n : ℕ} (hn : 1 ≤ n) :
     congr 1
     simp [residue_uniformizer hϖ, zero_pow (by omega : n ≠ 0)]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem filtrationGradedHom_apply {n : ℕ} (hn : 1 ≤ n) (u : unitFiltration K n) :
     filtrationGradedHom hϖ hn u = Multiplicative.ofAdd (residue 𝒪[K] (filtrationCoeff hϖ u)) :=
   rfl
 
+/- English proof (translation)
+Use extensionality with `u`. Rewrite using `[MonoidHom.mem_ker, Subgroup.mem_subgroupOf, mem_unitFiltration, mem_maximalIdeal_pow_iff hϖ, sub_one_eq_filtrationCoeff hϖ u, pow_succ, mul_dvd_mul_iff_left (pow_ne_zero n hϖ.ne_zero), ← mem_maximalIdeal_iff_dvd hϖ, ← residue_eq_zero_iff, filtrationGradedHom_apply]`. Conclude with `ofAdd_eq_one`.
+-/
 theorem ker_filtrationGradedHom {n : ℕ} (hn : 1 ≤ n) :
     (filtrationGradedHom hϖ hn).ker =
       (unitFiltration K (n + 1)).subgroupOf (unitFiltration K n) := by
@@ -356,6 +504,11 @@ theorem ker_filtrationGradedHom {n : ℕ} (hn : 1 ≤ n) :
     ← residue_eq_zero_iff, filtrationGradedHom_apply]
   exact ofAdd_eq_one
 
+/- English proof (translation)
+Introduce `r`. Take `⟨a, ha⟩` from `residue_surjective (Multiplicative.toAdd r)`. Establish `hu` using `isUnit_one_add_mul hϖ hn a`. Use `⟨⟨hu.unit, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_unitFiltration, IsUnit.unit_spec, add_sub_cancel_left, mem_maximalIdeal_pow_iff hϖ]`.
+
+Conclude with `dvd_mul_right _ _`. Rewrite using `[filtrationGradedHom_apply, filtrationCoeff_eq hϖ (a := a) (by simp), ha]`. Both sides reduce to the same expression.
+-/
 theorem filtrationGradedHom_surjective {n : ℕ} (hn : 1 ≤ n) :
     Function.Surjective (filtrationGradedHom hϖ hn) := by
   intro r
@@ -374,6 +527,9 @@ noncomputable def unitFiltrationGradedEquiv {n : ℕ} (hn : 1 ≤ n) :
     (QuotientGroup.quotientKerEquivOfSurjective _ (filtrationGradedHom_surjective hϖ hn))
 
 omit hϖ in
+/- English proof (translation)
+The claim follows from `(Nat.card_congr (unitFiltrationGradedEquiv hϖ hn).toEquiv).trans rfl`.
+-/
 theorem relIndex_unitFiltration_succ {n : ℕ} (hn : 1 ≤ n) (hϖ : Irreducible ϖ) :
     (unitFiltration K (n + 1)).relIndex (unitFiltration K n) = Nat.card 𝓀[K] :=
   (Nat.card_congr (unitFiltrationGradedEquiv hϖ hn).toEquiv).trans rfl
@@ -382,9 +538,17 @@ end Graded
 
 section Index
 
+/- English proof (translation)
+The claim follows from `(Nat.card_congr (unitsModPrincipalEquiv K).toEquiv).trans (Nat.card_units 𝓀[K])`.
+-/
 theorem index_unitFiltration_one : (unitFiltration K 1).index = Nat.card 𝓀[K] - 1 :=
   (Nat.card_congr (unitsModPrincipalEquiv K).toEquiv).trans (Nat.card_units 𝓀[K])
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[K]`. Proceed by induction on `n, hn using Nat.le_induction with`. Consider the case `base => simp [index_unitFiltration_one]`. Consider the case `succ n hn ih`. Rewrite using `[← Subgroup.relIndex_mul_index (unitFiltration_succ_le K n), relIndex_unitFiltration_succ hn hϖ, ih, Nat.add_sub_cancel]`.
+
+Take `⟨k, rfl⟩ : ∃ k, n = k + 1` from `⟨n - 1, by omega⟩`. Simplify using `only [Nat.add_sub_cancel, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem index_unitFiltration {n : ℕ} (hn : 1 ≤ n) :
     (unitFiltration K n).index = (Nat.card 𝓀[K] - 1) * Nat.card 𝓀[K] ^ (n - 1) := by
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible 𝒪[K]
@@ -397,6 +561,9 @@ theorem index_unitFiltration {n : ℕ} (hn : 1 ≤ n) :
     simp only [Nat.add_sub_cancel, pow_succ]
     ring
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[index_unitFiltration K hn]`. Establish `: 1 < Nat.card 𝓀[K]` using `Finite.one_lt_card`. Conclude with `Nat.mul_ne_zero (by omega) (pow_ne_zero _ (by omega))`.
+-/
 theorem index_unitFiltration_ne_zero (n : ℕ) : (unitFiltration K n).index ≠ 0 := by
   rcases Nat.eq_zero_or_pos n with rfl | hn
   · simp

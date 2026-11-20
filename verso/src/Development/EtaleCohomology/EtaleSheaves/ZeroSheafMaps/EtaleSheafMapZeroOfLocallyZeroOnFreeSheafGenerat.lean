@@ -16,6 +16,11 @@ def e0 (B : Scheme.{0}) (q : ℕ) : OU B q ⋙ DerivedCategory.homologyFunctor (
 def EtaleSheafMapZeroOfLocallyZeroOnFreeSheafGenerators : Prop := ∀ (B : Scheme.{0}) (q : ℕ) (H H' : SShv B q) (g : H ⟶ H'),
   (∀ (U : B.Etale) (t : (F0 B q).obj U ⟶ H), Cov U (fun U' a => (F0 B q).map a ≫ t ≫ g = 0)) → g = 0
 
+/- English proof (translation)
+Introduce `B q H H' g h`. Apply `hG B q H H' g` to reduce the goal to its premises. Introduce `U t`. Use `(h U ((e0 B q).hom.app U ≫ t)).mono fun U' a ha => ?_` and prove the remaining obligations. Establish `n : (DerivedCategory.homologyFunctor (SShv B q) 0).map ((OU B q).map a) ≫ (e0 B q).hom.app U = (e0 B q).hom.app U' ≫ (F0 B q).map a` using `(e0 B q).hom.naturality a`.
+
+Rewrite using `[← cancel_epi ((e0 B q).hom.app U'), comp_zero, ← Category.assoc, ← n, Category.assoc]`. Conclude with `ha`.
+-/
 theorem LeafGen_of (hG : EtaleSheafMapZeroOfLocallyZeroOnFreeSheafGenerators) : LeafGen := by
   intro B q H H' g h
   apply hG B q H H' g

@@ -10,6 +10,11 @@ open scoped TensorProduct
 open Formalism.MainNotions.S (AutInst uMat)
 open Formalism.L2.SG.AdBridge
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply `hi I` to reduce the goal to its premises. Rewrite using `[theta_apply, theta_apply]`. Use `Prod.ext (funext fun v => ?_) ?_` and prove the remaining obligations. Conclude with `congrArg (fun M => M i j) (hv v)`.
+
+Conclude with `congrArg (fun M => M i j) hf`.
+-/
 theorem matEq_of_inj (hi : ThetaInj) (I : AutInst)
     {A B : Matrix (Fin I.n) (Fin I.n) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F ⊗[I.F] I.E)}
     (hv : ∀ v, A.map (thetaV I v) = B.map (thetaV I v)) (hf : A.map (tauF I) = B.map (tauF I)) :

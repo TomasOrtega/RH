@@ -5,6 +5,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Bern
 
 open Finset UpperTheory.V.Bern
 
+/- English proof (translation)
+Distinguish the cases in `hc : a.Coprime (N * p)`. Establish `hpa : ¬ p ∣ a` using `fun h => (Nat.Prime.coprime_iff_not_dvd hp).1 (Nat.Coprime.coprime_mul_left_right hc).symm h`. Rewrite using `[if_neg hpa, sub_zero]`. Use `DirichletCharacter.changeLevel_eq_cast_of_dvd χ (dvd_mul_right N p) (ZMod.unitOfCoprime a hc)` as an intermediate fact. Rewrite `this` using `[ZMod.coe_unitOfCoprime, ZMod.cast_natCast (dvd_mul_right N p)]`.
+
+Conclude with `this`. Rewrite using `[MulChar.map_nonunit _ (by rwa [ZMod.isUnit_iff_coprime])] split_ifs with h`. Simplify using the standard rewrite rules. Establish `: ¬ a.Coprime N` using `fun h' => hc (Nat.Coprime.mul_right h' ((Nat.Prime.coprime_iff_not_dvd hp).2 h).symm)`. Rewrite using `[MulChar.map_nonunit _ (by rwa [ZMod.isUnit_iff_coprime]), sub_zero]`.
+-/
 private theorem valuation_power_identity {R : Type} [CommRing R] {N p : ℕ} (χ : DirichletCharacter R N) (hp : p.Prime) (a : ℕ) :
     DirichletCharacter.changeLevel (dvd_mul_right N p) χ (a : ZMod (N * p))
       = χ (a : ZMod N) - if p ∣ a then χ (a : ZMod N) else 0 := by
@@ -21,6 +26,17 @@ private theorem valuation_power_identity {R : Type} [CommRing R] {N p : ℕ} (χ
     · have : ¬ a.Coprime N := fun h' => hc (Nat.Coprime.mul_right h' ((Nat.Prime.coprime_iff_not_dvd hp).2 h).symm)
       rw [MulChar.map_nonunit _ (by rwa [ZMod.isUnit_iff_coprime]), sub_zero]
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_filter]`. Use `symm`. Use `Finset.sum_bij (fun b _ => p * b) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `b hb`. Simplify using `only [mem_Icc, mem_filter] at hb ⊢`.
+
+Use `⟨⟨Nat.mul_pos hp hb.1, ?_⟩, dvd_mul_right _ _⟩` and prove the remaining obligations. Rewrite using `[mul_comm]`. Conclude with `Nat.mul_le_mul_right _ hb.2`. Introduce `a _ b _ h`. Conclude with `Nat.eq_of_mul_eq_mul_left hp h`.
+
+Introduce `a ha`. Simplify using `only [mem_Icc, mem_filter] at ha`. Take `⟨⟨h1, h2⟩, b, rfl⟩` from `ha`. Use `⟨b, ?_, rfl⟩` and prove the remaining obligations. Simplify using `only [mem_Icc]`.
+
+Prove the components needed by the constructor for the conclusion. Conclude with `Nat.pos_of_mul_pos_left h1`. Rewrite `h2` using `[mul_comm]`. Conclude with `Nat.le_of_mul_le_mul_right h2 hp`. Introduce `_ _`.
+
+Both sides reduce to the same expression.
+-/
 private theorem sum_divisible_eq_sum_mul {R : Type} [AddCommMonoid R] {N p : ℕ} (hp : 0 < p) (f : ℕ → R) :
     ∑ a ∈ Icc 1 (N * p), (if p ∣ a then f a else 0) = ∑ b ∈ Icc 1 N, f (p * b) := by
   rw [← Finset.sum_filter]
@@ -42,6 +58,13 @@ private theorem sum_divisible_eq_sum_mul {R : Type} [AddCommMonoid R] {N p : ℕ
     · rw [mul_comm] at h2; exact Nat.le_of_mul_le_mul_right h2 hp
   · intro _ _; rfl
 
+/- English proof (translation)
+Introduce `R _ _ N p k χ hN hp hk`. Establish `hc` using `b_comp (dvd_mul_right N p) k (χ : ZMod N → R) (Nat.mul_pos hN hp.pos)`. Rewrite using `[sub_mul, one_mul]`. Use `nth_rewrite 1 [← hc]`. Unfold `genB`.
+
+Simplify using `only [valuation_power_identity χ hp, map_natCast, sub_mul, Finset.sum_sub_distrib, ite_mul, zero_mul]`. Use `congr 1`. Rewrite using `[sum_divisible_eq_sum_mul hp.pos (fun a => χ (a : ZMod N) * algebraMap ℚ R (bcoef (N * p) k a)), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `hs` using `(b_shift N k b hN).2.1 p hp.pos`.
+
+Establish `e : ((k : ℤ) - 1) = ((k - 1 : ℕ) : ℤ)` using `by omega`. Rewrite `hs` using `[e, zpow_natCast, mul_comm p N]`. Rewrite using `[hs, Nat.cast_mul, map_mul, map_mul, map_pow, map_natCast (algebraMap ℚ R)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.V.Bern.b_step :
     ∀ {R : Type} [CommRing R] [Algebra ℚ R] {N p : ℕ} (k : ℕ) (χ : DirichletCharacter R N), 0 < N → p.Prime → 1 ≤ k → genB k (DirichletCharacter.changeLevel (dvd_mul_right N p) χ : ZMod (N * p) → R) = (1 - χ (p : ZMod N) * (p : R) ^ (k - 1)) * genB k χ := by
   intro R _ _ N p k χ hN hp hk

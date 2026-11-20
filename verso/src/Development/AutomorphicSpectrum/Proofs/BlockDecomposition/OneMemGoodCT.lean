@@ -76,6 +76,9 @@ def goodCT (L : Subgroup (GL (Fin (r + s)) (Af E))) {W : Type} [AddCommGroup W] 
       exact mul_le_mul_of_nonneg_left (h y) (norm_nonneg _)
     · rw [map_smul, a6 z hz, smul_zero]
 
+/- English proof (translation)
+Use `⟨fun x g => rfl, fun γ g => rfl, fun k _ => rfl, fun g => Submodule.subset_span ⟨LinearMap.id, 1, rfl⟩, fun g => ⟨1, 0, fun y => ?_⟩, fun z hz => hz.elim⟩` and prove the remaining obligations. Simplify using `[oneFn]`.
+-/
 theorem one_mem_goodCT (L : Subgroup (GL (Fin (r + s)) (Af E))) :
     oneFn E (r + s) ∈ goodCT L (Representation.trivial ℂ (Kinf E (r + s)) ℂ) ∅ := by
   refine ⟨fun x g => rfl, fun γ g => rfl, fun k _ => rfl, fun g => Submodule.subset_span ⟨LinearMap.id, 1, rfl⟩,

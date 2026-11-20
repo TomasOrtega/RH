@@ -24,12 +24,23 @@ namespace GlobalTheory.EX.WinLow
 
 open Formalism.MainNotions.StandardLattice Finset
 
+/- English proof (translation)
+The claim follows from `letI := H.cmStar (host_cmData R H).cmUnram`.
+-/
 theorem host_cm {R : Ranks} (H : Host R) : letI := H.cmStar; Formalism.HermitianLatticesTheory.IsCMUnram H.E :=
   letI := H.cmStar
   (host_cmData R H).cmUnram
 
+/- English proof (translation)
+The claim follows from `H.finrank_E'`.
+-/
 theorem finrank_E {R : Ranks} (H : Host R) : Module.finrank ℚ H.E = 2 * R.f := H.finrank_E'
 
+/- English proof (translation)
+Set `_` to `H.cmStar`. Establish `: IsTotallyComplex H.E` using `(host_cm H).1`. Establish `h1` using `NumberField.InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces (K := H.E)`. Establish `h2` using `NumberField.InfinitePlace.card_add_two_mul_card_eq_rank H.E`. Establish `h3 : NumberField.InfinitePlace.nrRealPlaces H.E = 0`.
+
+Rewrite using `[NumberField.nrRealPlaces_eq_zero_iff]`. Use `infer_instance`. Establish `h4` using `finrank_E H`. Unfold `Formalism.HermitianLatticesTheory.fDeg`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem fDeg_E {R : Ranks} (H : Host R) : Formalism.HermitianLatticesTheory.fDeg H.E = R.f := by
   let _ := H.cmStar
   have : IsTotallyComplex H.E := (host_cm H).1
@@ -41,12 +52,22 @@ theorem fDeg_E {R : Ranks} (H : Host R) : Formalism.HermitianLatticesTheory.fDeg
   unfold Formalism.HermitianLatticesTheory.fDeg
   omega
 
+/- English proof (translation)
+Unfold `Formalism.HermitianLatticesTheory.vInv Host.v Host.rdE`. Rewrite using `[fDeg_E, finrank_E]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem vInv_E {R : Ranks} (H : Host R) : Formalism.HermitianLatticesTheory.vInv H.E = H.v := by
   unfold Formalism.HermitianLatticesTheory.vInv Host.v Host.rdE
   rw [fDeg_E, finrank_E]
   push_cast
   rfl
 
+/- English proof (translation)
+Establish `hd2 : H.d ≠ 2` using `fun h => H.d_notMem_small (h ▸ H.two_mem_small)`. Establish `hd3 : 3 ≤ H.d` using `by have := H.d_prime.two_le; omega`. Establish `hd : (3 : ℝ) ≤ H.d` using `by exact_mod_cast hd3`. Establish `he : (2 : ℝ) ≤ R.e` using `by exact_mod_cast H.two_le_e`. Establish `hB : (2 : ℝ) ^ (-(R.e : ℝ)) ≤ 1` using `Real.rpow_le_one_of_one_le_of_nonpos (by norm_num) (by linarith)`.
+
+Establish `hlo : (2 : ℝ) ^ (2 : ℝ) ≤ (2 : ℝ) ^ ((R.e : ℝ) + 1 - (2 : ℝ) ^ (-(R.e : ℝ)))` using `Real.rpow_le_rpow_of_exponent_le (by norm_num) (by linarith)`. Establish `hs : 8 / 5 ≤ Real.sqrt (H.d : ℝ)` using `Real.le_sqrt_of_sq_le (by linarith)`. Establish `h8 : 32 / 5 ≤ H.rdE`. Use `le_trans ?_ (factRd R H).1` and prove the remaining obligations. Rewrite `hlo` using `[show (2 : ℝ) ^ (2 : ℝ) = 4 by norm_num]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Use `Real.pi_lt_d2` as an intermediate fact. Unfold `Host.v`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem pi_le_v {R : Ranks} (H : Host R) : Real.pi ≤ H.v := by
   have hd2 : H.d ≠ 2 := fun h => H.d_notMem_small (h ▸ H.two_mem_small)
   have hd3 : 3 ≤ H.d := by have := H.d_prime.two_le; omega
@@ -65,11 +86,19 @@ theorem pi_le_v {R : Ranks} (H : Host R) : Real.pi ≤ H.v := by
   unfold Host.v
   linarith
 
+/- English proof (translation)
+Rewrite using `[standard_form_eq_telescope_form, standard_lattice_eq_telescope_lattice]`. Conclude with `Formalism.HermitianLatticesTheory.massTelescope_std_pos K hK M`.
+-/
 theorem mass_pos (K : Type) [Field K] [NumberField K] [StarRing K] (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (M : ℕ) :
     0 < Formalism.HermitianLatticesTheory.mass (stdForm K M) (stdLat K M) := by
   rw [standard_form_eq_telescope_form, standard_lattice_eq_telescope_lattice]
   exact Formalism.HermitianLatticesTheory.massTelescope_std_pos K hK M
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `h : Formalism.HermitianLatticesTheory.mass (stdForm K (k + n + 1)) (stdLat K (k + n + 1)) / Formalism.HermitianLatticesTheory.mass (stdForm K (k + n)) (stdLat K (k + n)) = _` using `h2b K hK (k + n + 1) (by omega)`. Rewrite `h` using `[div_eq_iff (mass_pos K hK _).ne', ih]`.
+
+Establish `hI : ∏ M ∈ Ico (k + 1) (k + (n + 1) + 1), Formalism.HermitianLatticesTheory.massRatioRightSide K M = (∏ M ∈ Ico (k + 1) (k + n + 1), Formalism.HermitianLatticesTheory.massRatioRightSide K M) * Formalism.HermitianLatticesTheory.massRatioRightSide K (k + n + 1)` using `Finset.prod_Ico_succ_top (by omega : k + 1 ≤ k + n + 1) _`. Rewrite using `[hI]`. Use `h.trans ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mass_tel (h2b : SiegelMassRatioCM) (K : Type) [Field K] [NumberField K] [StarRing K] (hK : Formalism.HermitianLatticesTheory.IsCMUnram K)
     (k : ℕ) (hk : 2 ≤ k) (n : ℕ) :
     Formalism.HermitianLatticesTheory.mass (stdForm K (k + n)) (stdLat K (k + n)) =
@@ -87,6 +116,19 @@ theorem mass_tel (h2b : SiegelMassRatioCM) (K : Type) [Field K] [NumberField K] 
     refine h.trans ?_
     ring
 
+/- English proof (translation)
+Establish `: Fact g.Prime` using `⟨hp⟩`. Establish `hc : Fintype.card (ZMod g) = g` using `ZMod.card _`. Take `⟨⟨θ, hθ1, hθ2, h1⟩, ⟨θ', hθ1', hθ2', h2⟩⟩` from `Formalism.HermitianLattices.GenusMassVolumes.local_index_formula (ZMod g) R.k R.m R.two_le_m R.m_even (by rw [hc]; exact hg)`. Rewrite `h1`, `h2` using `[hc]`. Establish `hgpos : (0 : ℝ) < (g : ℝ)` using `by exact_mod_cast hp.pos`.
+
+Establish `e1 : idxColLoc g R.k = (g : ℝ) ^ (R.k * (R.k + 1) / 2) * θ`. Rewrite using `[← h1]`. Unfold `idxColLoc idxLoc`. Rewrite using `[card_GL_subtype_eq_card_matrix _ det_eq_one_of_unitriangular]`. Use `Formalism.LogVandermondeBounds.StandardLattice.cardUnitriangular (ZMod g) R.k` as an intermediate fact.
+
+Rewrite `this` using `[hc]`. Establish `h3 : Nat.card {A : Matrix (Fin R.k) (Fin R.k) (ZMod g) // IsUnitri A} = g ^ (R.k * (R.k - 1) / 2)` using `this`. Rewrite using `[h3, Nat.card_eq_fintype_card]`. Use `push_cast`. Both sides reduce to the same expression.
+
+Establish `e2 : idxRowLoc g R.k R.m = (g : ℝ) ^ ((R.r ^ 2 + 3 * R.k + 1 + 2 * R.rS) / 2) * θ'`. Establish `h2' : _ = (g : ℝ) ^ ((R.r ^ 2 + 3 * R.k + 1 + 2 * R.rS) / 2) * θ'` using `h2`. Rewrite using `[← h2']`. Unfold `idxRowLoc idxLoc`. Rewrite using `[rowLevCard_holds _ _ _ hp R.two_le_m R.m_even, Nat.card_eq_fintype_card]`.
+
+Use `push_cast`. Both sides reduce to the same expression. Establish `p1 : (0 : ℝ) < (g : ℝ) ^ (R.k * (R.k + 1) / 2)` using `pow_pos hgpos _`. Establish `p2 : (0 : ℝ) < (g : ℝ) ^ ((R.r ^ 2 + 3 * R.k + 1 + 2 * R.rS) / 2)` using `pow_pos hgpos _`. Rewrite using `[e1, e2]`.
+
+Use `⟨by nlinarith, by nlinarith, by nlinarith, by nlinarith⟩` and prove the remaining obligations.
+-/
 theorem idx_place (R : Ranks) (g : ℕ) (hp : g.Prime) (hg : 3 ≤ g) :
     (g : ℝ) ^ (R.k * (R.k + 1) / 2) / 2 ≤ idxColLoc g R.k ∧
     idxColLoc g R.k ≤ (g : ℝ) ^ (R.k * (R.k + 1) / 2) ∧
@@ -121,6 +163,19 @@ theorem idx_place (R : Ranks) (g : ℕ) (hp : g.Prime) (hg : 3 ≤ g) :
   rw [e1, e2]
   refine ⟨by nlinarith, by nlinarith, by nlinarith, by nlinarith⟩
 
+/- English proof (translation)
+Establish `h4a` using `fun i => idx_place R (g i) (hp i) (hg i)`. Establish `hgp : ∀ i, (0 : ℝ) < (g i : ℝ)` using `fun i => by exact_mod_cast (hp i).pos`. Establish `hg1 : ∀ i, (1 : ℝ) ≤ (g i : ℝ)` using `fun i => by exact_mod_cast (hp i).one_lt.le`. Establish `hc : ∀ i, 0 < idxColLoc (g i) R.k` using `fun i => lt_of_lt_of_le (by have := hgp i; positivity) (h4a i).1`. Establish `hr : ∀ i, 0 < idxRowLoc (g i) R.k R.m` using `fun i => lt_of_lt_of_le (by have := hgp i; positivity) (h4a i).2.2.1`.
+
+Use `⟨by have := hc 0; have := hc 1; positivity, by have := hr 0; have := hr 1; positivity, ?_⟩` and prove the remaining obligations. Establish `key` using `Formalism.HermitianLattices.GenusMassVolumes.index_ratio_bound R.f R.k R.m (g 0 : ℝ) (g 1 : ℝ) (idxColLoc (g 0) R.k ^ R.f * idxColLoc (g 1) R.k ^ R.f) (idxRowLoc (g 0) R.k R.m ^ R.f * idxRowLoc (g 1) R.k R.m ^ R.f) (fun i _ => idxColLoc (g i) R.k / (g i : ℝ) ^ (R.k * (R.k + 1) / …`. Introduce `i _`. Take `⟨a1, a2, a3, a4⟩` from `h4a i`. Establish `p1 : (0 : ℝ) < (g i : ℝ) ^ (R.k * (R.k + 1) / 2)` using `pow_pos (hgp i) _`.
+
+Establish `p2 : (0 : ℝ) < (g i : ℝ) ^ ((R.r ^ 2 + 3 * R.k + 1 + 2 * R.rS) / 2)` using `pow_pos (hgp i) _`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[le_div_iff₀ p1]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[div_le_one p1]`.
+
+Conclude with `a2`. Rewrite using `[le_div_iff₀ p2]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[div_le_one p2]`. Conclude with `a4)`.
+
+Use `(key ?_ ?_).1` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_two]`. Simplify using `only [Finset.prod_const, Finset.card_range, Matrix.cons_val_zero, Matrix.cons_val_one]`. Rewrite using `[mul_div_cancel₀ _ (pow_pos (hgp 0) _).ne', mul_div_cancel₀ _ (pow_pos (hgp 1) _).ne']`. Rewrite using `[Fin.prod_univ_two]`.
+
+Simplify using `only [Finset.prod_const, Finset.card_range, Matrix.cons_val_zero, Matrix.cons_val_one]`. Establish `e0 : (g 0 : ℝ) ^ (((R.k + R.m - 1) ^ 2 + 3 * R.k + 1 + 2 * (R.m / 2 - 1)) / 2) * (idxRowLoc (g 0) R.k R.m / (g 0 : ℝ) ^ ((R.r ^ 2 + 3 * R.k + 1 + 2 * R.rS) / 2)) = idxRowLoc (g 0) R.k R.m` using `mul_div_cancel₀ (idxRowLoc (g 0) R.k R.m) (pow_pos (hgp 0) ((R.r ^ 2 + 3 * R.k + 1 + 2 * R.rS) / 2)).ne'`. Establish `e1 : (g 1 : ℝ) ^ (((R.k + R.m - 1) ^ 2 + 3 * R.k + 1 + 2 * (R.m / 2 - 1)) / 2) * (idxRowLoc (g 1) R.k R.m / (g 1 : ℝ) ^ ((R.r ^ 2 + 3 * R.k + 1 + 2 * R.rS) / 2)) = idxRowLoc (g 1) R.k R.m` using `mul_div_cancel₀ (idxRowLoc (g 1) R.k R.m) (pow_pos (hgp 1) ((R.r ^ 2 + 3 * R.k + 1 + 2 * R.rS) / 2)).ne'`. Rewrite using `[e0, e1]`.
+-/
 theorem idx_ratio (R : Ranks) (g : Fin 2 → ℕ) (hp : ∀ i, (g i).Prime) (hg : ∀ i, 3 ≤ g i) :
     0 < idxColLoc (g 0) R.k ^ R.f * idxColLoc (g 1) R.k ^ R.f ∧
     0 < idxRowLoc (g 0) R.k R.m ^ R.f * idxRowLoc (g 1) R.k R.m ^ R.f ∧
@@ -169,8 +224,14 @@ theorem idx_ratio (R : Ranks) (g : Fin 2 → ℕ) (hp : ∀ i, (g i).Prime) (hg 
 
 def seqOf {n : ℕ} (x : Fin n → ℚ) (i : ℕ) : ℝ := if h : i < n then ((x ⟨i, h⟩ : ℚ) : ℝ) else 0
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 theorem seqOf_lt {n : ℕ} (x : Fin n → ℚ) {i : ℕ} (h : i < n) : seqOf x i = ((x ⟨i, h⟩ : ℚ) : ℝ) := dif_pos h
 
+/- English proof (translation)
+Rewrite using `[← dim_weyl_fin_eq_nat]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[seqOf_lt x i.2]`.
+-/
 theorem dimV_col {n : ℕ} (x : Fin n → ℚ) :
     dimV (fun i => ((x i : ℚ) : ℝ)) = Formalism.LogVandermondeBounds.StandardLattice.dimVN (seqOf x) n := by
   rw [← dim_weyl_fin_eq_nat]
@@ -178,6 +239,13 @@ theorem dimV_col {n : ℕ} (x : Fin n → ℚ) :
   funext i
   rw [seqOf_lt x i.2]
 
+/- English proof (translation)
+Rewrite using `[← dim_weyl_fin_eq_nat]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Proceed by induction on `a using Fin.addCases with`. Consider the case `left i`.
+
+Establish `hi : (Fin.castAdd m i).val = i.val` using `rfl`. Unfold `Formalism.LogVandermondeBounds.StandardLattice.rowPar`. Rewrite using `[Fin.append_left, hi, if_pos i.2, seqOf_lt v i.2]`. Consider the case `right j`. Establish `hj : (Fin.natAdd (k - 1) j).val = k - 1 + j.val` using `rfl`.
+
+Unfold `Formalism.LogVandermondeBounds.StandardLattice.rowPar`. Rewrite using `[Fin.append_right, hj, if_neg (by omega), Nat.add_sub_cancel_left, seqOf_lt b j.2]`.
+-/
 theorem dimV_row {k m : ℕ} (v : Fin (k - 1) → ℚ) (b : Fin m → ℚ) :
     dimV (Fin.append (fun i => ((v i : ℚ) : ℝ)) (fun j => -((b j : ℚ) : ℝ))) =
       Formalism.LogVandermondeBounds.StandardLattice.dimVN (Formalism.LogVandermondeBounds.StandardLattice.rowPar k (seqOf v) (seqOf b)) (k - 1 + m) := by
@@ -194,6 +262,21 @@ theorem dimV_row {k m : ℕ} (v : Fin (k - 1) → ℚ) (b : Fin m → ℚ) :
     unfold Formalism.LogVandermondeBounds.StandardLattice.rowPar
     rw [Fin.append_right, hj, if_neg (by omega), Nat.add_sub_cancel_left, seqOf_lt b j.2]
 
+/- English proof (translation)
+Establish `hk` using `R.m_add_three_le_k`. Establish `hm` using `R.two_le_m`. Establish `hv : StrictAnti (fun i => ((p.v i : ℚ) : ℝ))`. Apply `strictAnti_of_succ_lt_alt` to reduce the goal to its premises. Introduce `i j hij`.
+
+Establish `h1` using `p.v_gt_u i`. Establish `h2` using `p.u_gt_v j`. Establish `e : (⟨i.1 + 1, by omega⟩ : Fin R.k) = ⟨j.1, by omega⟩` using `by ext; simp [hij]`. Rewrite `h1` using `[e]`. Conclude with `h2.trans h1` after adjusting the coercions.
+
+Establish `hb : StrictAnti (fun j => -((p.b j : ℚ) : ℝ))`. Apply `strictAnti_of_succ_lt_alt` to reduce the goal to its premises. Introduce `i j hij`. Establish `h1` using `p.gap_be i`. Establish `h2` using `p.gap_eb i (by have := j.2; omega)`.
+
+Establish `e : (⟨i.1 + 1, by have` using `j.2; omega⟩ : Fin R.m) = j := by ext; simp [hij]`. Rewrite `h2` using `[e]`. Establish `ht : (0 : ℚ) ≤ R.t` using `by positivity`. Establish `: p.b i < p.b j` using `by linarith`. Establish `: ((p.b i : ℚ) : ℝ) < ((p.b j : ℚ) : ℝ)` using `by exact_mod_cast this`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `dim_weyl_pos_of_strictAnti _ (strictAnti_fin_append _ _ hv hb fun i j => ?_)` and prove the remaining obligations. Establish `h0` using `p.u_last_gt (by omega) (by omega)`. Establish `h1` using `p.v_gt_u ⟨R.k - 2, by omega⟩`. Establish `e : (⟨(⟨R.k - 2, by omega⟩ : Fin (R.k - 1)).1 + 1, by simp; omega⟩ : Fin R.k) = ⟨R.k - 1, by omega⟩` using `by ext; simp; omega`.
+
+Rewrite `h1` using `[e]`. Establish `h2 : ((p.v ⟨R.k - 2, by omega⟩ : ℚ) : ℝ) ≤ ((p.v i : ℚ) : ℝ)` using `hv.antitone (by rw [Fin.le_def]; have := i.2; simp; omega)`. Establish `h3 : -((p.b j : ℚ) : ℝ) ≤ -((p.b ⟨0, by omega⟩ : ℚ) : ℝ)` using `hb.antitone (by rw [Fin.le_def]; simp)`. Establish `h4 : -((p.b ⟨0, by omega⟩ : ℚ) : ℝ) < ((p.v ⟨R.k - 2, by omega⟩ : ℚ) : ℝ)`. Conclude with `h0.trans h1` after adjusting the coercions.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem dimV_row_pos {R : Ranks} (p : HCParam R) :
     0 < dimV (Fin.append (fun i => ((p.v i : ℚ) : ℝ)) (fun j => -((p.b j : ℚ) : ℝ))) := by
   have hk := R.m_add_three_le_k
@@ -231,12 +314,18 @@ theorem dimV_row_pos {R : Ranks} (p : HCParam R) :
     exact_mod_cast h0.trans h1
   linarith
 
+/- English proof (translation)
+Simplify using `only [Ranks.f, Ranks.n]`. Check the signs of the components of the expression.
+-/
 theorem f_pos (R : Ranks) : 0 < R.f := by
   simp only [Ranks.f, Ranks.n]; positivity
 
 def placeNo {R : Ranks} (H : Host R) (n : ℕ) : Tau R :=
   (Fintype.equivFinOfCardEq (card_Tau H)).symm ⟨n % R.f, Nat.mod_lt _ (f_pos R)⟩
 
+/- English proof (translation)
+Rewrite using `[← Fin.prod_univ_eq_prod_range (fun n => F (placeNo H n)) R.f, ← Equiv.prod_comp (Fintype.equivFinOfCardEq (card_Tau H)).symm F]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Unfold `placeNo`. Use `congr 2`. Conclude with `Fin.ext (Nat.mod_eq_of_lt i.2).symm`.
+-/
 theorem prod_places {R : Ranks} (H : Host R) (F : Tau R → ℝ) : ∏ ρ, F ρ = ∏ n ∈ range R.f, F (placeNo H n) := by
   rw [← Fin.prod_univ_eq_prod_range (fun n => F (placeNo H n)) R.f,
     ← Equiv.prod_comp (Fintype.equivFinOfCardEq (card_Tau H)).symm F]
@@ -245,6 +334,33 @@ theorem prod_places {R : Ranks} (H : Host R) (F : Tau R → ℝ) : ∏ ρ, F ρ 
   congr 2
   exact Fin.ext (Nat.mod_eq_of_lt i.2).symm
 
+/- English proof (translation)
+Establish `hk` using `R.m_add_three_le_k`. Establish `hm` using `R.two_le_m`. Establish `hx0 : 0 < x` using `by linarith`. Establish `hk1 : (1 : ℝ) ≤ R.k` using `by exact_mod_cast (by omega : 1 ≤ R.k)`. Establish `hkΔ : 1 ≤ (R.k : ℝ) * (4 * Δ)` using `by nlinarith`.
+
+Establish `ht : (0 : ℚ) ≤ R.t` using `by positivity`. Establish `hbj : ∀ j : Fin R.m, b1 ≤ ((p.b j : ℚ) : ℝ)` using `fun j => by`. Rewrite using `[(hb j).1]; have : (0 : ℝ) ≤ j.1 * h0 := by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e1 : x * (R.k * (4 * Δ)) ≤ b1` using `by nlinarith`.
+
+Establish `e2 : x * h0 ≤ b1` using `by nlinarith`. Use `⟨⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `i hi`. Rewrite using `[seqOf_lt _ hi, hv]`. Establish `: ((R.k - 2 - i : ℕ) : ℝ) ≤ R.k` using `by exact_mod_cast (by omega : R.k - 2 - i ≤ R.k)`.
+
+Conclude with `⟨by positivity, mul_le_mul_of_nonneg_right this (by positivity)⟩`. Introduce `i hi`. Rewrite using `[seqOf_lt _ hi, seqOf_lt _ (by omega : i < R.k - 1), hv, hv]`. Establish `: ((R.k - 2 - i : ℕ) : ℝ) = ((R.k - 2 - (i + 1) : ℕ) : ℝ) + 1`. Conclude with `(by omega : R.k - 2 - i = R.k - 2 - (i + 1) + 1)` after adjusting the coercions.
+
+Simplify using `only`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Introduce `i hi`. Establish `h1` using `p.u_gt_v ⟨i, hi⟩`.
+
+Establish `h2` using `p.v_gt_u ⟨i, hi⟩`. Rewrite using `[seqOf_lt _ (by omega : i < R.k), seqOf_lt _ (by omega : i + 1 < R.k), seqOf_lt _ hi]`. Conclude with `⟨by exact_mod_cast h1, by exact_mod_cast h2⟩`. Establish `h1` using `p.u_last_gt (by omega) (by omega)`. Rewrite using `[seqOf_lt _ (by omega : R.k - 1 < R.k), seqOf_lt _ (by omega : 0 < R.m)]`.
+
+Conclude with `h1` after adjusting the coercions. Rewrite using `[seqOf_lt p.u (by omega : R.k - 1 < R.k), seqOf_lt p.u (by omega : 0 < R.k), seqOf_lt p.v (by omega : 0 < R.k - 1), seqOf_lt p.v (by omega : R.k - 2 < R.k - 1), hv, hv]`. Break down `hu (by omega) (by omega) with h | ⟨h1, h2⟩` into its components or cases. Conclude with `Or.inl h`. Use `right`.
+
+Rewrite using `[h1, h2]`. Simplify using `only [Nat.sub_zero, Nat.sub_self, Nat.cast_zero]`. Use `⟨by linarith, by linarith, by ring⟩` and prove the remaining obligations. Introduce `j hj`. Establish `g1` using `p.gap_be ⟨j, hj⟩`.
+
+Establish `g2 : p.b ⟨j, hj⟩ < p.e ⟨j, hj⟩` using `by linarith`. Rewrite using `[seqOf_lt _ hj, seqOf_lt _ hj]`. Use `⟨by exact_mod_cast g2, ?_⟩` and prove the remaining obligations. Rewrite using `[(hb _).2, add_sub_cancel_left, abs_of_nonneg (by positivity), le_div_iff₀ hx0]`. Use `hbj ⟨j, hj⟩` as an intermediate fact.
+
+Use the polynomial consequences of the given equalities and inequalities. Introduce `j hj`. Establish `g1` using `p.gap_be ⟨j, by omega⟩`. Establish `g2` using `p.gap_eb ⟨j, by omega⟩ hj`. Establish `g3 : (1 : ℚ) ≤ p.b ⟨j + 1, hj⟩ - p.b ⟨j, by omega⟩` using `by linarith`.
+
+Establish `g4 : p.e ⟨j, by omega⟩ < p.b ⟨j + 1, hj⟩` using `by linarith`. Rewrite using `[seqOf_lt p.b hj, seqOf_lt p.b (by omega : j < R.m), seqOf_lt p.e (by omega : j < R.m)]`. Conclude with `⟨by exact_mod_cast g4, by exact_mod_cast g3⟩`. Rewrite using `[seqOf_lt _ (by omega : 0 < R.m), le_div_iff₀ hx0]`. Use `hbj ⟨0, by omega⟩` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[seqOf_lt _ (by omega : R.m - 1 < R.m), (hb _).2, (hb _).1]`. Establish `: ((R.m - 1 : ℕ) : ℝ) = R.m - 1` using `by rw [Nat.cast_sub (by omega)]; simp`. Simplify using `only [this]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Introduce `j hj`. Rewrite using `[seqOf_lt _ hj, (hb _).2]`. Use `hbj ⟨j, hj⟩` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem place_data {R : Ranks} (p : HCParam R) (x Δ a B h0 b1 : ℝ) (hx : 1 ≤ x) (hΔ : 1 ≤ Δ) (hh : 0 ≤ h0)
     (hv : ∀ i : Fin (R.k - 1), ((p.v i : ℚ) : ℝ) = ((R.k - 2 - i.1 : ℕ) : ℝ) * (4 * Δ))
     (hu : ∀ (h : 0 < R.k) (h' : R.k - 1 < R.k),
@@ -320,6 +436,29 @@ theorem place_data {R : Ranks} (p : HCParam R) (x Δ a B h0 b1 : ℝ) (hx : 1 �
     have := hbj ⟨j, hj⟩
     nlinarith
 
+/- English proof (translation)
+Take `⟨x1, hx1⟩` from `rank_basic_bounds eps h0 h1`. Take `⟨x2, hx2⟩` from `GlobalTheory.scale_poly_comparison eps (5 + cD + ch + 2) (1 / 2) h0 (by norm_num)`. Use `⟨max 12 (max x1 x2), fun s R he hx hR => ?_⟩` and prove the remaining obligations. Simplify using `only [max_le_iff] at hx`. Take `⟨h12, hxa, hxb⟩` from `hx`.
+
+Take `⟨hf, hm, hr, hkr, -⟩` from `hx1 s R he hxa hR`. Take `⟨-, -, -, c4, -, c6, -⟩` from `hx2 s he hxb`. Establish `hx1'` using `s.one_lt_alt`. Establish `hxp : 0 < s.x` using `by linarith`. Establish `hn1 : 1 ≤ R.n` using `Formalism.HC.Frame.ord_pos _`.
+
+Establish `hnf : (R.n : ℝ) ≤ R.f` using `by unfold Ranks.f; push_cast; have : (0 : ℝ) ≤ R.n := by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨c6, c7, -⟩` from `c6 R.n hn1 (hnf.trans hf)`. Establish `hk : (R.k : ℝ) ≤ s.x ^ (5 : ℝ)` using `le_trans (by exact_mod_cast hkr) hr`. Establish `hb1 : 1 ≤ s.b` using `Real.one_le_exp (Real.rpow_nonneg hxp.le _)`.
+
+Establish `hb2 : 1 ≤ s.b ^ (1 - 1 / 2 : ℝ)` using `Real.one_le_rpow hb1 (by norm_num)`. Establish `hb' : 0 ≤ s.b'`. Unfold `Scale.b' Scale.a Scale.b Scale.X'`. Check the signs of the components of the expression. Establish `o1 : 1 ≤ s.x ^ (5 : ℝ)` using `Real.one_le_rpow hx1'.le (by norm_num)`.
+
+Establish `o2 : 1 ≤ s.x ^ cD` using `Real.one_le_rpow hx1'.le hcD`. Establish `o3 : 1 ≤ s.x ^ ch` using `Real.one_le_rpow hx1'.le hch`. Establish `hD : (Delv s cD : ℝ) ≤ 2 * s.x ^ cD`. Use `(Nat.ceil_lt_add_one (show 0 ≤ s.x ^ cD by positivity)).le` as an intermediate fact. Unfold `Delv`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hH : (h0v s ch : ℝ) ≤ 4 * s.x ^ ch`. Use `(Nat.ceil_lt_add_one (show 0 ≤ s.x ^ ch by positivity)).le` as an intermediate fact. Unfold `h0v`. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hy : s.x ^ (5 + cD + ch + 2) = s.x ^ (5 : ℝ) * s.x ^ cD * s.x ^ ch * (s.x * s.x)`. Rewrite using `[Real.rpow_add hxp, Real.rpow_add hxp, Real.rpow_add hxp, Real.rpow_two, sq]`. Rewrite `c4`, `c6` using `[hy]`. Take `⟨z, hz⟩ : ∃ z, z = s.x ^ (5 : ℝ) * s.x ^ cD * s.x ^ ch` from `⟨_, rfl⟩`.
+
+Rewrite `c4`, `c6` using `[← hz]`. Establish `o4 : 1 ≤ s.x ^ (5 : ℝ) * s.x ^ cD` using `one_le_mul_of_one_le_of_one_le o1 o2`. Establish `z1 : s.x ^ (5 : ℝ) * s.x ^ cD ≤ z` using `hz ▸ le_mul_of_one_le_right (by linarith) o3`. Establish `z2 : s.x ^ ch ≤ z` using `hz ▸ le_mul_of_one_le_left (by linarith) o4`. Establish `z3 : s.x ^ (5 : ℝ) ≤ z` using `(le_mul_of_one_le_right (by linarith) o2).trans z1`.
+
+Establish `z4 : (R.k : ℝ) * (Delv s cD : ℝ) ≤ s.x ^ (5 : ℝ) * (2 * s.x ^ cD)` using `mul_le_mul hk hD (by positivity) (by positivity)`. Establish `z0 : 1 ≤ z` using `o1.trans z3`. Establish `hxz : 12 ≤ s.x * z` using `by nlinarith`. Establish `hy12 : 12 * (s.x * z) ≤ z * (s.x * s.x)` using `by nlinarith`. Establish `hw : z * (s.x * s.x) ≤ s.w'' R.n` using `(le_mul_of_one_le_left (by positivity) hb2).trans c6`.
+
+Establish `h3 : 3 * s.b' ≤ s.b` using `by nlinarith`. Establish `hzx : z ≤ s.x * z` using `le_mul_of_one_le_left (by linarith) hx1'.le`. Establish `hmh : (R.m : ℝ) * (h0v s ch : ℝ) ≤ s.x * (4 * z)` using `mul_le_mul hm (by linarith) (by positivity) hxp.le`. Use `⟨?_, c7, hb', h3, by linarith, by linarith, ?_, hk⟩` and prove the remaining obligations. Establish `: (R.k * (4 * (Delv s cD : ℝ)) + (h0v s ch : ℝ)) ≤ 12 * z` using `by linarith`.
+
+Use `mul_le_mul_of_nonneg_left this hxp.le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `Scale.a`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem scale_sizes (eps cD ch : ℝ) (h0 : 0 < eps) (h1 : eps < 1 / 52) (hcD : 0 ≤ cD) (hch : 0 ≤ ch) :
     ∃ x0 : ℝ, ∀ (s : Scale) (R : Ranks), s.eps = eps → x0 ≤ s.x → RankVal s R →
       s.x * (R.k * (4 * (Delv s cD : ℝ)) + (h0v s ch : ℝ)) ≤ s.w'' R.n ∧ s.w'' R.n ≤ s.b' ∧ 0 ≤ s.b' ∧ 3 * s.b' ≤ s.b ∧
@@ -376,6 +515,23 @@ theorem scale_sizes (eps cD ch : ℝ) (h0 : 0 < eps) (h1 : eps < 1 / 52) (hcD : 
     linarith
   · unfold Scale.a; nlinarith
 
+/- English proof (translation)
+Take `⟨CN, x1, hx1⟩` from `GlobalTheory.topCount_and_lambda_bounds eps h0 h1`. Use `⟨max x1 (32 * K.La * CN ^ 2), fun s R he hx hR => ?_⟩` and prove the remaining obligations. Take `⟨-, -, hLa⟩` from `hx1 s he (le_trans (le_max_left _ _) hx)`. Take `⟨hLa1, hLa2⟩` from `hLa K hK`. Establish `hx2 : 32 * K.La * CN ^ 2 ≤ s.x` using `le_trans (le_max_right _ _) hx`.
+
+Take `⟨⟨-, hn⟩, -, ⟨hk, -⟩, -⟩` from `hR`. Establish `hx1' : 1 < s.x` using `s.one_lt_alt`. Establish `hxp : 0 < s.x` using `by linarith`. Establish `hb : 0 < s.b'`. Unfold `Scale.b' Scale.a Scale.b Scale.X'`.
+
+Check the signs of the components of the expression. Establish `hkp : (0 : ℝ) < R.k` using `lt_of_lt_of_le (Real.rpow_pos_of_pos hxp _) hk`. Establish `hd0 : 0 < s.delta1` using `Real.rpow_pos_of_pos hxp _`. Establish `hd1 : s.delta1 ≤ 1` using `Real.rpow_le_one_of_one_le_of_nonpos hx1'.le (by have := s.eps_pos; linarith)`. Establish `hy : 0 < s.x ^ s.eps` using `Real.rpow_pos_of_pos hxp _`.
+
+Establish `hlog0 : 0 ≤ Real.log s.x` using `Real.log_nonneg hx1'.le`. Establish `hlog : Real.log s.x ^ 2 ≤ 4 * s.x`. Establish `h` using `Real.log_le_rpow_div hxp.le (show (0 : ℝ) < 1 / 2 by norm_num)`. Establish `h2 : (s.x ^ (1 / 2 : ℝ)) ^ 2 = s.x`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hxp.le]`.
+
+Evaluate the numerical expressions. Combine the equalities or inequalities in the displayed calculation. Establish `hKC : 0 ≤ K.La * CN ^ 2` using `by positivity`. Establish `hLa3 : G.La K s ≤ s.x ^ (2 : ℝ) / 4 * s.x ^ s.eps`. Use `hLa2.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Real.rpow_two]`. Establish `: K.La * CN ^ 2 * Real.log s.x ^ 2 ≤ s.x / 32 * (4 * s.x)` using `mul_le_mul (by linarith) hlog (by positivity) (by positivity)`. Use the polynomial consequences of the given equalities and inequalities. Establish `hLa0 : 0 ≤ G.La K s` using `hy.le.trans hLa1`. Establish `hmain : 2 * (R.n : ℝ) * s.delta1 * s.x ^ s.eps * G.La K s ≤ R.k`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.rpow_add hxp, ← Real.rpow_add hxp, ← Real.rpow_add hxp]`. Use `_ ≤ s.x ^ (9 / 2 + 10 * s.eps) := Real.rpow_le_rpow_of_exponent_le hx1'.le (by linarith)`. Use `_ ≤ R.k := hk`. Rewrite using `[div_le_iff₀ hkp]`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem bottom_len (eps : ℝ) (K : G.Consts) (h0 : 0 < eps) (h1 : eps < 1 / 52) (hK : 1 ≤ K.La) :
     ∃ x0 : ℝ, ∀ (s : Scale) (R : Ranks), s.eps = eps → x0 ≤ s.x → RankVal s R →
       2 * (R.n : ℝ) * s.delta1 * s.x ^ s.eps * G.La K s * s.b' / (R.k : ℝ) ≤ s.b' := by

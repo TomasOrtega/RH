@@ -18,6 +18,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 open Classical in
 
+/- English proof (translation)
+Use extensionality with `u`. Rewrite using `[mem_aboveF, Finset.mem_insert, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce `hu haveI := v.isMaximal`. Establish `hm : u.asIdeal ∈ v.asIdeal.primesOver (𝓞 E)` using `⟨u.isPrime, ⟨hu ▸ rfl⟩⟩`.
+
+Rewrite `hm` using `[primesOver_eq_split h t]`. Break down `hm with e | e` into its components or cases. Conclude with `Or.inl (HeightOneSpectrum.ext e)`. Conclude with `Or.inr (HeightOneSpectrum.ext e)`. Apply the tactic sequence `rintro (rfl | rfl) <;> exact splitPrime_under _`.
+-/
 theorem aboveF_eq_pair {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {v : Pl F} (t : E →ₐ[F] Fv F v) :
     aboveF (L := E) F v = {splitPrime t, splitPrime (t.comp σ)} := by
   classical
@@ -33,6 +38,9 @@ theorem aboveF_eq_pair {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {v : Pl F} (t :
     · exact Or.inr (HeightOneSpectrum.ext e)
   · rintro (rfl | rfl) <;> exact splitPrime_under _
 
+/- English proof (translation)
+Rewrite using `[chrW, MonoidHom.comp_apply]`. Use `(hu.locChar_eq_val ?_).symm` and prove the remaining obligations. Use `show Valued.v (complMap (splitPrime_under t) (ϖ : Fv F v)) = _`. Rewrite using `[GlobalTheory.LFun.SplitTie.valued_complMap t (splitPrime_under t)]`. Conclude with `hϖ`.
+-/
 theorem val_splitPrime_eq_chrW (χ : Chr F E) {v : Pl F} (t : E →ₐ[F] Fv F v) (hu : UnrAt χ (splitPrime t))
     (ϖ : (Fv F v)ˣ) (hϖ : IsUnifV F v ϖ.1) : val χ (splitPrime t) = chrW χ t ϖ := by
   rw [chrW, MonoidHom.comp_apply]
@@ -41,9 +49,17 @@ theorem val_splitPrime_eq_chrW (χ : Chr F E) {v : Pl F} (t : E →ₐ[F] Fv F v
   rw [GlobalTheory.LFun.SplitTie.valued_complMap t (splitPrime_under t)]
   exact hϖ
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.LFun.npow, ← GlobalTheory.LFun.SplitTie.qV_splitPrime t]`. Both sides reduce to the same expression.
+-/
 theorem npow_splitPrime {v : Pl F} (t : E →ₐ[F] Fv F v) (z : ℂ) : GlobalTheory.LFun.npow (splitPrime t) z = (qV F v : ℂ) ^ z := by
   rw [GlobalTheory.LFun.npow, ← GlobalTheory.LFun.SplitTie.qV_splitPrime t]; rfl
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ h χ d hχ v t hunr ϖ hϖ s`. Establish `e` using `aboveF_eq_pair h t`. Establish `hne : splitPrime t ≠ splitPrime (t.comp σ)` using `(splitPrime_comp_ne h t).symm`. Establish `h1 : UnrAt χ (splitPrime t)` using `hunr _ (by rw [e]; simp)`. Establish `h2 : UnrAt χ (splitPrime (t.comp σ))` using `hunr _ (by rw [e]; simp)`.
+
+Establish `v1` using `val_splitPrime_eq_chrW χ t h1 ϖ hϖ`. Establish `v2` using `val_splitPrime_eq_chrW χ (t.comp σ) h2 ϖ hϖ`. Rewrite `v2` using `[GlobalTheory.OppLagr.chrW_comp h χ hχ t, MonoidHom.inv_apply]`. Rewrite using `[Lv, e, Finset.prod_pair hne, locL, locL, charFam_of_unrAt h1, charFam_of_unrAt h2, eulerFac_singleton, eulerFac_singleton, v1, v2, npow_splitPrime, npow_splitPrime, Units.val_inv_eq_inv_val]`.
+-/
 theorem Lv_charFam_split : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (χ : Chr F E) (d : ℕ), ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range χ d →
     ∀ (v : Pl F) (t : E →ₐ[F] Fv F v), (∀ w ∈ aboveF (L := E) F v, UnrAt χ w) → ∀ (ϖ : (Fv F v)ˣ), IsUnifV F v ϖ.1 → ∀ s : ℂ,
       Lv (charFam χ) v s = (1 - (chrW χ t ϖ : ℂ) * (qV F v : ℂ) ^ (-s))⁻¹ * (1 - (chrW χ t ϖ : ℂ)⁻¹ * (qV F v : ℂ) ^ (-s))⁻¹ := by

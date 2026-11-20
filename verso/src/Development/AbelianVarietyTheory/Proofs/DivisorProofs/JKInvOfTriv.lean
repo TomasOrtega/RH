@@ -16,15 +16,24 @@ variable {l : ℕ} [Fact l.Prime] {ι : Type} [DecidableEq ι] {N : ℕ} (F : Fr
   (jK : F.K →* alg F.O N lam) (W : Type) [AddCommGroup W] [Module F.O W] [Module (alg F.O N lam) W]
   [IsScalarTower F.O (alg F.O N lam) W]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_forms {f : F.G → W} : f ∈ Forms F.O (A := alg F.O N lam) F.Γ jK W ↔
     ∀ (γ : F.Γ) (g : F.G) (κ : F.K), f ((γ : F.G) * g * κ) = jK κ⁻¹ • f g := Iff.rfl
 
 variable {F lam jK} in
 
+/- English proof (translation)
+Rewrite using `[hJ κ', hJ κ, h1, h2]`.
+-/
 theorem jK_eq (hJ : F.IsJ lam jK) {κ κ' : F.K} (h1 : F.kap κ' = F.kap κ) (h2 : F.chi κ' = F.chi κ) : jK κ' = jK κ := by
   rw [hJ κ', hJ κ, h1, h2]
 
 variable {F lam jK} in
+/- English proof (translation)
+Establish `e1 : jK κ'⁻¹ * jK κ' = 1` using `by rw [← map_mul, inv_mul_cancel, map_one]`. Establish `e2 : jK κ * jK κ⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem jK_inv_congr {κ κ' : F.K} (h : jK κ' = jK κ) : jK κ'⁻¹ = jK κ⁻¹ := by
   have e1 : jK κ'⁻¹ * jK κ' = 1 := by rw [← map_mul, inv_mul_cancel, map_one]
   have e2 : jK κ * jK κ⁻¹ = 1 := by rw [← map_mul, mul_inv_cancel, map_one]
@@ -32,10 +41,16 @@ theorem jK_inv_congr {κ κ' : F.K} (h : jK κ' = jK κ) : jK κ'⁻¹ = jK κ�
     _ = (jK κ'⁻¹ * jK κ') * jK κ⁻¹ := by rw [h, mul_assoc]
     _ = jK κ⁻¹ := by rw [e1, one_mul]
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by simp [grpA, grp])`.
+-/
 theorem grpA_one : grpA F.O N lam 1 = 1 := Subtype.ext (by simp [grpA, grp])
 
 variable {F lam jK} in
 
+/- English proof (translation)
+Establish `: jK κ = jK 1` using `by rw [hJ κ, h1, h2, map_one, grpA_one]; simp`. Rewrite using `[jK_inv_congr this, inv_one, map_one]`.
+-/
 theorem jK_inv_of_triv (hJ : F.IsJ lam jK) {κ : F.K} (h1 : F.kap κ = 1) (h2 : F.chi κ = 1) : jK κ⁻¹ = 1 := by
   have : jK κ = jK 1 := by rw [hJ κ, h1, h2, map_one, grpA_one]; simp
   rw [jK_inv_congr this, inv_one, map_one]
@@ -44,6 +59,13 @@ def heckeFn (i : F.I) (f : F.G → W) : F.G → W := fun g => F.cst i • ∑ s 
 
 variable {F lam jK W}
 
+/- English proof (translation)
+Rewrite `hf`, the goal using `[mem_forms]`. Introduce `γ g κ`. Take `⟨σ, hσ⟩` from `hOk.perm i κ`. Establish `key : ∀ s : F.tr i, f ((γ : F.G) * g * κ * s) = jK κ⁻¹ • f (g * (σ s : F.G))`. Introduce `s`.
+
+Take `⟨κ', h1, h2, h3⟩` from `hσ s`. Establish `e : (γ : F.G) * g * κ * s = γ * (g * σ s) * κ'`. Rewrite using `[mul_assoc ((γ : F.G) * g) (κ : F.G) (s : F.G), h1]`. Simplify using `only [mul_assoc]`. Rewrite using `[e, hf γ (g * σ s) κ', jK_inv_congr (jK_eq hJ h2 h3)]`.
+
+Simplify using `only [heckeFn]`. Rewrite using `[← Finset.sum_coe_sort (F.tr i), ← Finset.sum_coe_sort (F.tr i)]`. Repeatedly rewrite using `[key]`. Rewrite using `[← Finset.smul_sum, Equiv.sum_comp σ (fun s : F.tr i => f (g * (s : F.G))), smul_comm]`.
+-/
 theorem heckeFn_mem (hOk : F.Ok) (hJ : F.IsJ lam jK) (i : F.I) {f : F.G → W}
     (hf : f ∈ Forms F.O (A := alg F.O N lam) F.Γ jK W) : heckeFn F W i f ∈ Forms F.O (A := alg F.O N lam) F.Γ jK W := by
   rw [mem_forms] at hf ⊢
@@ -60,6 +82,15 @@ theorem heckeFn_mem (hOk : F.Ok) (hJ : F.IsJ lam jK) (i : F.I) {f : F.G → W}
   simp_rw [key]
   rw [← Finset.smul_sum, Equiv.sum_comp σ (fun s : F.tr i => f (g * (s : F.G))), smul_comm]
 
+/- English proof (translation)
+Rewrite `hf` using `[mem_forms]`. Use function extensionality and compare the values at `g`. Take `⟨σ, hσ⟩` from `hOk.comm i j`. Establish `key : ∀ x : F.tr i × F.tr j, f (g * x.1 * x.2) = f (g * (σ x).1 * (σ x).2)`. Introduce `x`.
+
+Take `⟨hK, h1, h2⟩` from `hσ x`. Establish `e : g * x.1 * x.2 = ((1 : F.Γ) : F.G) * (g * (σ x).1 * (σ x).2) * (⟨_, hK⟩ : F.K)`. Simplify using `only [OneMemClass.coe_one, one_mul, mul_assoc, mul_inv_cancel_left]`. Rewrite using `[e, hf, jK_inv_of_triv hJ h1 h2, one_smul]`. Establish `hsum : ∀ (a b : F.I), heckeFn F W a (heckeFn F W b f) g = F.cst a • F.cst b • ∑ x : F.tr a × F.tr b, f (g * x.1 * x.2)`.
+
+Introduce `a b`. Simplify using `only [heckeFn, Fintype.sum_prod_type, Finset.smul_sum]`. Rewrite using `[← Finset.sum_coe_sort (F.tr a)]`. Use `Fintype.sum_congr _ _ fun s => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_coe_sort (F.tr b)]`.
+
+Rewrite using `[hsum, hsum, smul_comm (F.cst i) (F.cst j)]`. Use `congr 2`. Rewrite using `[Fintype.sum_congr _ _ key, Equiv.sum_comp σ (fun y : F.tr j × F.tr i => f (g * y.1 * y.2))]`.
+-/
 theorem heckeFn_comm (hOk : F.Ok) (hJ : F.IsJ lam jK) (i j : F.I) {f : F.G → W}
     (hf : f ∈ Forms F.O (A := alg F.O N lam) F.Γ jK W) :
     heckeFn F W i (heckeFn F W j f) = heckeFn F W j (heckeFn F W i f) := by
@@ -101,6 +132,9 @@ def op (hOk : F.Ok) (hJ : F.IsJ lam jK) (i : F.I) :
     ext g
     simp [heckeFn, Finset.smul_sum, smul_comm (F.cst i) c]
 
+/- English proof (translation)
+Use extensionality with `f : 1`. Conclude with `Subtype.ext (heckeFn_comm hOk hJ i j f.2)`.
+-/
 theorem op_comm (hOk : F.Ok) (hJ : F.IsJ lam jK) (i j : F.I) :
     (op (W := W) hOk hJ i) * op hOk hJ j = op hOk hJ j * op hOk hJ i := by
   ext f : 1
@@ -121,9 +155,17 @@ def heckeAlg (hOk : F.Ok) (hJ : F.IsJ lam jK) : F.T →ₐ[F.O] Module.End F.O (
   (Algebra.adjoin F.O (Set.range (op (W := W) hOk hJ))).val.comp
     (MvPolynomial.aeval fun i => ⟨op hOk hJ i, Algebra.subset_adjoin ⟨i, rfl⟩⟩)
 
+/- English proof (translation)
+Simplify using `[heckeAlg]`.
+-/
 theorem heckeAlg_X (hOk : F.Ok) (hJ : F.IsJ lam jK) (i : F.I) : heckeAlg (W := W) hOk hJ (X i) = op hOk hJ i := by
   simp [heckeAlg]
 
+/- English proof (translation)
+Introduce `l _ ι _ _ N F lam jK hOk hJ W _ _ _ _`. Use `letI inst : Module F.T (Forms F.O (A := alg F.O N lam) F.Γ jK W) := Module.compHom _ (heckeAlg (W := W) hOk hJ).toRingHom`. Use `⟨inst, ⟨fun c t f => ?_⟩, fun c f => ?_, fun i f g => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `heckeAlg hOk hJ (c • t) f = c • heckeAlg hOk hJ t f`. Rewrite using `[map_smul, LinearMap.smul_apply]`.
+
+Express the relevant statement in the definitionally equal form `heckeAlg hOk hJ (C c) f = c • f`. Rewrite using `[← MvPolynomial.algebraMap_eq, AlgHom.commutes, Module.algebraMap_end_apply]`. Express the relevant statement in the definitionally equal form `((heckeAlg hOk hJ (X i) f : Forms F.O (A := alg F.O N lam) F.Γ jK W) : F.G → W) g = _`. Rewrite using `[heckeAlg_X]`. Both sides reduce to the same expression.
+-/
 theorem hecke_module : ∀ (l : ℕ) [Fact l.Prime] (ι : Type) [Fintype ι] [DecidableEq ι] (N : ℕ) (F : Frame l ι N) (lam : ι → ℕ → ℕ) (jK : F.K →* alg F.O N lam), F.Ok → F.IsJ lam jK → ∀ (W : Type) [AddCommGroup W] [Module F.O W] [Module (alg F.O N lam) W] [IsScalarTower F.O (alg F.O N lam) W], ∃ (_ : Module F.T (Forms F.O (A := alg F.O N lam) F.Γ jK W)) (_ : IsScalarTower F.O F.T (Forms F.O (A := alg F.O N lam) F.Γ jK W)), F.IsHecke lam jK W := by
   intro l _ ι _ _ N F lam jK hOk hJ W _ _ _ _
   letI inst : Module F.T (Forms F.O (A := alg F.O N lam) F.Γ jK W) := Module.compHom _ (heckeAlg (W := W) hOk hJ).toRingHom

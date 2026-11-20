@@ -21,9 +21,15 @@ open scoped Classical in
 def toGL (M : Matrix (Fin a) (Fin a) (ι → ℂ)) : GL (Fin a) (ι → ℂ) :=
   if h : IsUnit M then h.unit else 1
 
+/- English proof (translation)
+Simplify using `[toGL, h]`.
+-/
 theorem coe_toGL {M : Matrix (Fin a) (Fin a) (ι → ℂ)} (h : IsUnit M) : (toGL M : Matrix (Fin a) (Fin a) (ι → ℂ)) = M := by
   simp [toGL, h]
 
+/- English proof (translation)
+The claim follows from `Units.ext (coe_toGL u.isUnit)`.
+-/
 theorem toGL_coe (u : GL (Fin a) (ι → ℂ)) : toGL (u : Matrix (Fin a) (Fin a) (ι → ℂ)) = u :=
   Units.ext (coe_toGL u.isUnit)
 
@@ -33,18 +39,36 @@ def blkRep {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (e : Fin 
 
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
+/- English proof (translation)
+Rewrite using `[blkRep, unblk_blk, toGL_coe]`.
+-/
 theorem blkRep_blk (e : Fin a × ι ≃ Fin n) (σ : GL (Fin a) (ι → ℂ) →* (H →L[ℂ] H)) (u : GL (Fin a) (ι → ℂ)) :
     blkRep e σ (blk e (u : Matrix (Fin a) (Fin a) (ι → ℂ))) = σ u := by
   rw [blkRep, unblk_blk, toGL_coe]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, u.isUnit, rfl⟩`.
+-/
 theorem blk_coe_mem (e : Fin a × ι ≃ Fin n) (u : GL (Fin a) (ι → ℂ)) :
     blk e (u : Matrix (Fin a) (Fin a) (ι → ℂ)) ∈ blkG e := ⟨_, u.isUnit, rfl⟩
 
+/- English proof (translation)
+Take `⟨M, hM, rfl⟩` from `hg`. Conclude with `⟨hM.unit, rfl⟩`.
+-/
 theorem exists_gl_of_mem (e : Fin a × ι ≃ Fin n) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ blkG e) :
     ∃ u : GL (Fin a) (ι → ℂ), g = blk e (u : Matrix (Fin a) (Fin a) (ι → ℂ)) := by
   obtain ⟨M, hM, rfl⟩ := hg
   exact ⟨hM.unit, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[continuousOn_iff_continuous_restrict]`. Establish `hval : ∀ g : blkG e, ((toGL (unblk e g.1) : GL (Fin a) (ι → ℂ)) : Matrix (Fin a) (Fin a) (ι → ℂ)) = unblk e g.1`. Introduce and unpack `⟨_, M, hM, rfl⟩`. Rewrite using `[unblk_blk]`. Conclude with `coe_toGL hM`.
+
+Establish `hinv : ∀ g : blkG e, (((toGL (unblk e g.1))⁻¹ : GL (Fin a) (ι → ℂ)) : Matrix (Fin a) (Fin a) (ι → ℂ)) = unblk e (g.1.det⁻¹ • g.1.adjugate)`. Introduce and unpack `⟨_, M, hM, rfl⟩`. Establish `h` using `blk_inv e hM`. Rewrite `h` using `[Matrix.inv_def, Ring.inverse_eq_inv']`. Simplify using `only [h, unblk_blk]`.
+
+Rewrite using `[Matrix.coe_units_inv, coe_toGL hM]`. Establish `hdet : ∀ g : blkG e, g.1.det ≠ 0` using `fun g => ((Matrix.isUnit_iff_isUnit_det _).1 ((mem_blkG_iff e).1 g.2).1).ne_zero`. Establish `hc : Continuous fun g : blkG e => g.1.det⁻¹ • g.1.adjugate` using `(Continuous.inv₀ continuous_subtype_val.matrix_det hdet).smul continuous_subtype_val.matrix_adjugate`. Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `((continuous_unblk e).comp continuous_subtype_val).congr fun g => (hval g).symm`.
+
+Conclude with `((continuous_unblk e).comp hc).congr fun g => (hinv g).symm`.
+-/
 theorem continuousOn_toGL_unblk (e : Fin a × ι ≃ Fin n) :
     ContinuousOn (fun g => toGL (unblk e g) : Matrix (Fin n) (Fin n) ℂ → GL (Fin a) (ι → ℂ)) (blkG e) := by
   rw [continuousOn_iff_continuous_restrict]
@@ -67,6 +91,11 @@ theorem continuousOn_toGL_unblk (e : Fin a × ι ≃ Fin n) :
   · exact ((continuous_unblk e).comp continuous_subtype_val).congr fun g => (hval g).symm
   · exact ((continuous_unblk e).comp hc).congr fun g => (hinv g).symm
 
+/- English proof (translation)
+Use `⟨⟨?_, ?_⟩, fun g _ v => hσ.norm_apply _ v, fun v => (hσ.continuous_apply v).comp_continuousOn (continuousOn_toGL_unblk e)⟩` and prove the remaining obligations. Establish `h` using `blkRep_blk e σ 1`. Simplify using `using h`. Introduce `g hg h hh`. Take `⟨u, rfl⟩` from `exists_gl_of_mem e hg`.
+
+Take `⟨v, rfl⟩` from `exists_gl_of_mem e hh`. Rewrite using `[← blk_mul, ← Units.val_mul, blkRep_blk, blkRep_blk, blkRep_blk, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem isURepOn_blkRep (e : Fin a × ι ≃ Fin n) {σ : GL (Fin a) (ι → ℂ) →* (H →L[ℂ] H)} (hσ : IsUnitaryRep σ) :
     Formalism.MainNotions.S.IsURepOn (blkG e) (blkRep e σ) := by
   refine ⟨⟨?_, ?_⟩, fun g _ v => hσ.norm_apply _ v, fun v =>
@@ -79,18 +108,27 @@ theorem isURepOn_blkRep (e : Fin a × ι ≃ Fin n) {σ : GL (Fin a) (ι → ℂ
     rw [← blk_mul, ← Units.val_mul, blkRep_blk, blkRep_blk, blkRep_blk, map_mul]
     rfl
 
+/- English proof (translation)
+Introduce `S hS hinv` and use `hi.2 S ⟨hS, fun u v hv => by have h := hinv _ (blk_coe_mem e u) v hv rwa [blkRep_blk] at h⟩`.
+-/
 theorem isIrredOn_blkRep (e : Fin a × ι ≃ Fin n) {σ : GL (Fin a) (ι → ℂ) →* (H →L[ℂ] H)}
     (hi : IsTopIrreducible σ) : Formalism.MainNotions.S.IsIrredOn (blkG e) (blkRep e σ) := fun S hS hinv =>
   hi.2 S ⟨hS, fun u v hv => by
     have h := hinv _ (blk_coe_mem e u) v hv
     rwa [blkRep_blk] at h⟩
 
+/- English proof (translation)
+Use `⟨blk_coe_mem e (Unitary.toUnits k), ?_⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, ← blk_conjTranspose, ← blk_mul, ← Matrix.star_eq_conjTranspose, (Matrix.mem_unitaryGroup_iff).1 k.2, blk_one]`.
+-/
 theorem blk_mem_maxCpt (e : Fin a × ι ≃ Fin n) (k : Matrix.unitaryGroup (Fin a) (ι → ℂ)) :
     blk e k.1 ∈ GlobalTheory.LinRed.maxCpt (blkG e) := by
   refine ⟨blk_coe_mem e (Unitary.toUnits k), ?_⟩
   rw [SetLike.mem_coe, Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, ← blk_conjTranspose, ← blk_mul,
     ← Matrix.star_eq_conjTranspose, (Matrix.mem_unitaryGroup_iff).1 k.2, blk_one]
 
+/- English proof (translation)
+Take `⟨⟨M, -, rfl⟩, hu⟩` from `hg`. Use `⟨⟨M, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite `hu` using `[SetLike.mem_coe, Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, ← blk_conjTranspose, ← blk_mul, ← blk_one e, ← Matrix.star_eq_conjTranspose]`. Rewrite using `[Matrix.mem_unitaryGroup_iff]`. Conclude with `blk_injective e hu`.
+-/
 theorem exists_unitary_of_mem_maxCpt (e : Fin a × ι ≃ Fin n) {g : Matrix (Fin n) (Fin n) ℂ}
     (hg : g ∈ GlobalTheory.LinRed.maxCpt (blkG e)) :
     ∃ k : Matrix.unitaryGroup (Fin a) (ι → ℂ), g = blk e k.1 := by
@@ -101,6 +139,19 @@ theorem exists_unitary_of_mem_maxCpt (e : Fin a × ι ≃ Fin n) {g : Matrix (Fi
   rw [Matrix.mem_unitaryGroup_iff]
   exact blk_injective e hu
 
+/- English proof (translation)
+Set `e` to `Fintype.equivFin (Fin a × ι)`. Establish `hLR` using `isLinRed_blkG e`. Establish `hA` using `GlobalTheory.CompanionTheory.admitted.isAdmissible_of_unitary_irreducible hLR (GlobalTheory.CompanionTheory.AdmIwa.RamifiedPrimeLengthBound hLR (GlobalTheory.CompanionTheory.IwaGen.iwaOn_of_isLinRed hLR)) H (blkRep e σ) (isURepOn_blkRep e hσ) (isIrredOn_blkRep e hi)`. Establish `hrep : ∀ k : Matrix.unitaryGroup (Fin a) (ι → ℂ), blkRep e σ (blk e k.1) = (σ.comp Unitary.toUnits) k` using `fun k => blkRep_blk e σ (Unitary.toUnits k)`. Use `finiteDimensional_isoPart (π := σ.comp Unitary.toUnits) (fun k v => hσ.norm_apply _ v) ?_ _ W ρ rfl` and prove the remaining obligations.
+
+Introduce `S hfd hS hirr`. Establish `hKS : GlobalTheory.LinRed.IsKStable (blkG e) (blkRep e σ) S`. Introduce `g hg w hw`. Take `⟨k, rfl⟩` from `exists_unitary_of_mem_maxCpt e hg`. Rewrite using `[hrep]`.
+
+Conclude with `hS k w hw`. Establish `hirr' : ∀ S' : Submodule ℂ H, S' ≤ S → GlobalTheory.LinRed.IsKStable (blkG e) (blkRep e σ) S' → S' = ⊥ ∨ S' = S` using `fun S' hle hst => hirr S' hle fun k w hw => by`. Establish `h` using `hst _ (blk_mem_maxCpt e k) w hw`. Rewrite `h` using `[hrep]`. Then use the resulting hypothesis. Establish `hfin` using `hA.2.2.2 S hfd hKS hirr'`.
+
+Establish `heq : {S' : Submodule ℂ H | ∃ T : H →ₗ[ℂ] H, S' = S.map T ∧ ∀ k, ∀ w ∈ S, T ((σ.comp Unitary.toUnits) k w) = (σ.comp Unitary.toUnits) k (T w)} = {S' | ∃ T : H →ₗ[ℂ] H, S' = S.map T ∧ ∀ k ∈ GlobalTheory.LinRed.maxCpt (blkG e), ∀ w ∈ S, T (blkRep e σ k w) = blkRep e σ k (T w)}`. Use extensionality with `S'`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨T, rfl, hT⟩`. Use `⟨T, rfl, fun g hg w hw => ?_⟩` and prove the remaining obligations.
+
+Take `⟨k, rfl⟩` from `exists_unitary_of_mem_maxCpt e hg`. Rewrite using `[hrep]`. Conclude with `hT k w hw`. Introduce and unpack `⟨T, rfl, hT⟩`. Use `⟨T, rfl, fun k w hw => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hrep]`. Conclude with `hT _ (blk_mem_maxCpt e k) w hw`. Rewrite using `[heq]`. Conclude with `hfin`.
+-/
 theorem finiteDimensional_isoPart_gl [CompleteSpace H] {σ : GL (Fin a) (ι → ℂ) →* (H →L[ℂ] H)}
     (hσ : IsUnitaryRep σ) (hi : IsTopIrreducible σ) {W : Type} [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
     (ρ : Representation ℂ (Matrix.unitaryGroup (Fin a) (ι → ℂ)) W) :
@@ -142,6 +193,9 @@ theorem finiteDimensional_isoPart_gl [CompleteSpace H] {σ : GL (Fin a) (ι → 
   rw [heq]
   exact hfin
 
+/- English proof (translation)
+Introduce `E _ _ _ a H _ _ _ σ hσ hi W _ _ _ ρ`. Conclude with `finiteDimensional_isoPart_gl hσ hi ρ`.
+-/
 theorem admissible_GL_Cinf : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : GL (Fin a) (Cinf E) →* (H →L[ℂ] H)), IsUnitaryRep σ → IsTopIrreducible σ → ∀ (W : Type) [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W] (ρ : Representation ℂ (Kinf E a) W), FiniteDimensional ℂ ↥(⨆ (T : W →ₗ[ℂ] H) (_ : ∀ k w, T (ρ k w) = σ (Unitary.toUnits k) (T w)), LinearMap.range T : Submodule ℂ H) := by
   intro E _ _ _ a H _ _ _ σ hσ hi W _ _ _ ρ
   classical

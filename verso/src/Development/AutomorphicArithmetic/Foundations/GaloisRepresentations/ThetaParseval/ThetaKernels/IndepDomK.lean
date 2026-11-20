@@ -19,6 +19,15 @@ open scoped TensorProduct NNReal Matrix Classical ComplexOrder
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK.Dbl GlobalTheory.Cont PositivityTheory.Rg.Sw
 namespace PositivityTheory.SiegelWeilFormula.Act
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ d L s₁ f hf z`. Establish `hE` using `_root_.PositivityTheory.SiegelWeilFormula.Act.C1.eis_leftInv_k d hf z`. Use `⟨fun nb lam 𝓖 𝓖₀ h h₀ uM ν 𝓤 𝓤₀ hU hU₀ T T' hT x => ?_, fun nb' lam' 𝓖' 𝓖'₀ h' h'₀ T' x => ?_⟩` and prove the remaining obligations. Establish `step1 : ∀ g, fc d.B.ψ d.b nb lam 𝓖 (d.eis f s₁ z) T g = fc d.B.ψ d.b nb lam 𝓖₀ (d.eis f s₁ z) T g` using `fun g => _root_.PositivityTheory.SiegelWeilFormula.Act.C1.fc_dom_k d h h₀ _ hE T g`. Repeatedly rewrite using `[step1]`.
+
+Use `hU.2.1` as an intermediate fact. Establish `: VAddInvariantMeasure L.ratV (Fin L.n → AE F E) ν` using `⟨fun c s _ => measure_preimage_add ν c.1 s⟩`. Establish `: Countable L.ratV`. Establish `: Countable E` using `(Module.finBasis ℚ E).equivFun.injective.countable`. Use `Function.Surjective.countable (f := fun v : Fin L.n → E => (⟨GlobalTheory.ThK.incV F v, AddSubgroup.subset_closure ⟨v, rfl⟩⟩ : L.ratV)) fun u => ?_` and prove the remaining obligations.
+
+Take `⟨v, hv⟩` from `_root_.PositivityTheory.SiegelWeilFormula.Act.C1.ratV_inc_k u.2`. Conclude with `⟨v, Subtype.ext hv.symm⟩`. Use `hU.2.2.1.setIntegral_eq hU₀.2.2.1 fun u₀ u => ?_` and prove the remaining obligations. Use `show fc d.B.ψ d.b nb lam 𝓖₀ (d.eis f s₁ z) T (uM (u₀.1 + u) * x) = fc d.B.ψ d.b nb lam 𝓖₀ (d.eis f s₁ z) T (uM u * x)`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C1.uM_add_k hU, mul_assoc, _root_.PositivityTheory.SiegelWeilFormula.Act.C1.fc_conj_k h₀ hU _ hE hT u₀.2]`.
+
+Conclude with `_root_.PositivityTheory.SiegelWeilFormula.Act.C1.fc_dom_k L.sd h' h'₀ _ (GlobalTheory.Eis.leftInv_cosetSum (_root_.PositivityTheory.SiegelWeilFormula.Act.C1.phz_j_leftInv_k L hf z x)) T' 1`.
+-/
 theorem indepDom_k : _root_.PositivityTheory.SiegelWeilFormula.Act.IndepDom_k := by
   intro F E _ _ _ _ _ σ d L s₁ f hf z
   have hE := _root_.PositivityTheory.SiegelWeilFormula.Act.C1.eis_leftInv_k d hf z

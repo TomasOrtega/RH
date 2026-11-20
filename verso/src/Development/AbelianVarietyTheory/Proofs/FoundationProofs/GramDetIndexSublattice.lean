@@ -4,6 +4,29 @@ open NumberField IsDedekindDomain
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Set `e : ι ≃ κ` to `Fintype.equivOfCardEq hc`. Use `choose A hA using fun i => (Submodule.mem_span_range_iff_exists_fun ℤ).1 (hv (e i))`. Set `Am : Matrix ι ι ℤ` to `Matrix.of A`. Establish `hAm : ∀ i j, Am i j = A i j` using `fun _ _ => rfl`. Set `Ar : Matrix ι ι ℝ` to `Am.map (Int.castRingHom ℝ)`.
+
+Establish `hAr : ∀ i j, Ar i j = (A i j : ℝ)` using `fun _ _ => rfl`. Establish `hphi : ∀ i, φ (v (e i)) = ∑ j, (A i j : ℝ) • φ (u j)`. Introduce `i`. Rewrite using `[← hA i, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_zsmul, Int.cast_smul_eq_zsmul]`. Establish `h1 : (Matrix.gram ℝ fun k => φ (v k)).submatrix e e = Ar * (Matrix.gram ℝ fun i => φ (u i)) * Arᵀ`. Use extensionality with `i j`. Simplify using `only [Matrix.submatrix_apply, Matrix.gram_apply, Matrix.mul_apply, Matrix.transpose_apply, hAr]`. Rewrite using `[hphi i, hphi j, inner_sum]`.
+
+Simplify using `only [sum_inner, real_inner_smul_left, real_inner_smul_right, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hdetA : Ar.det = (Am.det : ℝ)`. Use `(Int.castRingHom ℝ).map_det Am` as an intermediate fact.
+
+Simplify `this.symm` using `[Ar]`. Use `⟨Am.det.natAbs, ?_, ?_⟩` and prove the remaining obligations. Establish `h2` using `Matrix.det_submatrix_equiv_self e (Matrix.gram ℝ fun k => φ (v k))`. Rewrite using `[← h2, h1, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, hdetA]`. Establish `h3 : ((Am.det.natAbs : ℕ) : ℝ) ^ 2 = (Am.det : ℝ) ^ 2`.
+
+Rewrite using `[Nat.cast_natAbs, Int.cast_abs, sq_abs]`. Rewrite using `[h3]`. Expand and normalize the polynomial expressions, which then agree. Introduce `i`. Establish `hkey : Am.det • u i = ∑ k, Am.adjugate i k • v (e k)`.
+
+Establish `h4 : ∀ j, (Am.adjugate * Am) i j = Am.det * (1 : Matrix ι ι ℤ) i j`. Introduce `j`. Rewrite using `[Matrix.adjugate_mul, Matrix.smul_apply, smul_eq_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[Matrix.one_apply, ite_smul]`.
+
+Use `_ = ∑ j, (∑ k, Am.adjugate i k * A k j) • u j := by`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← h4 j, Matrix.mul_apply]`. Both sides reduce to the same expression. Use `_ = ∑ k, Am.adjugate i k • v (e k) := by`.
+
+Simplify using `only [Finset.sum_smul, ← hA, Finset.smul_sum, mul_smul]`. Conclude with `Finset.sum_comm`. Establish `hmem : Am.det • u i ∈ Submodule.span ℤ (Set.range v)`. Rewrite using `[hkey]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨e k, rfl⟩)`.
+
+Break down `Int.natAbs_eq Am.det with h | h` into its components or cases. Rewrite using `[← h]`. Conclude with `hmem`. Establish `: ((Am.det.natAbs : ℕ) : ℤ) = -Am.det` using `by omega`. Rewrite using `[this, neg_smul]`.
+
+Conclude with `Submodule.neg_mem _ hmem`.
+-/
 theorem gram_det_index_sublattice (U V ι κ : Type) [AddCommGroup U] [NormedAddCommGroup V]
     [InnerProductSpace ℝ V] [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ]
     (φ : U →ₗ[ℤ] V) (u : ι → U) (v : κ → U) (hc : Fintype.card ι = Fintype.card κ)

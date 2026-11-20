@@ -2,5 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeriodComparisonOfGaussManinPeriods
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaussManinPeriodsHolds
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.PeriodFamily.periodComparison_of_gaussManinPeriods GlobalTheory.PeriodFamily.gaussManinPeriods_holds`.
+-/
 theorem GlobalTheory.PeriodFamily.periodComparison_holds : GlobalTheory.Published.PeriodComparison :=
   GlobalTheory.PeriodFamily.periodComparison_of_gaussManinPeriods GlobalTheory.PeriodFamily.gaussManinPeriods_holds

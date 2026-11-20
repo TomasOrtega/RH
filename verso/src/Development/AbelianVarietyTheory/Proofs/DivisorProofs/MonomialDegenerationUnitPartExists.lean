@@ -20,6 +20,11 @@ noncomputable section
 
 namespace GlobalTheory.UnitPart
 
+/- English proof (translation)
+Establish `le : ∀ j, LB.wchart M φ j ≤ LB.wchart M φ j ⊓ LB.wchart M φ j₀` using `fun j w hw => ⟨hw, all w⟩`. Set `t : LB.Gen (LB.LinComb M φ ε)` to `⟨fun j => res (le j) ((LB.LinComb M φ ε).g j j₀) * res (le_top : LB.wchart M φ j ≤ ⊤) v⟩`. Establish `key : ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) (j : K → M.ι), r z ∈ LB.wchart M φ j → gm r z (LB.wchart M φ j) (t.s j) = trF φ ε r z j j₀ * gm r z ⊤ v` using `fun Z r z j h => (map_mul _ _ _).trans (congrArg₂ (· * ·) ((gm_res r z (le j) h _).trans (gm_linComb M φ ε r z j j₀ h (all _))) (gm_res r z le_top h _))`. Use `⟨t, fun j j' => Geo.Tor.unit_ext fun w hw => ?_, key⟩` and prove the remaining obligations. Establish `hm : (𝟙 Y : Y ⟶ Y) w ∈ LB.wchart M φ j ⊓ LB.wchart M φ j'` using `hw`.
+
+Use `((gm_res _ w _ hm _).trans (key _ _ w j hm.1)).trans (Eq.trans ?_ ((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_linComb M φ ε (𝟙 Y) w j j' hm.1 hm.2) ((gm_res _ w _ hm _).trans (key _ _ w j' hm.2)))).symm)` and prove the remaining obligations. Rewrite using `[← trF_trans hM φ ε (𝟙 Y) w hm.1 hm.2 (all _), _root_.mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem exists_gen_of_top {X Y : Scheme.{0}} {M : LB X} (hM : M.IsLB) {K : Type} [Fintype K] (φ : K → (Y ⟶ X))
     (ε : K → ℤ) (j₀ : K → M.ι) (all : ∀ w : Y, w ∈ LB.wchart M φ j₀) (v : Γ(Y, ⊤)ˣ) :
     ∃ t : LB.Gen (LB.LinComb M φ ε), t.IsGen ∧ ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) (j : K → M.ι),
@@ -39,6 +44,9 @@ theorem exists_gen_of_top {X Y : Scheme.{0}} {M : LB X} (hM : M.IsLB) {K : Type}
   rw [← trF_trans hM φ ε (𝟙 Y) w hm.1 hm.2 (all _), _root_.mul_assoc]
   rfl
 
+/- English proof (translation)
+Establish `e : DegPre.toOpen (R` using `R) ⊤ = (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom := by`. Use extensionality with `r`. Simplify using `[DegPre.toOpen]`. Rewrite using `[e]`. Conclude with `(congrArg (fun q => q.hom r) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap R (FractionRing R))))).symm`.
+-/
 theorem jK_app_toOpen {R : Type} [CommRing R] [IsDomain R] (r : R) :
     ((jK R).app ⊤).hom (DegPre.toOpen (R := R) ⊤ r) =
       (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).inv.hom (algebraMap R (FractionRing R) r) := by
@@ -49,6 +57,17 @@ theorem jK_app_toOpen {R : Type} [CommRing R] [IsDomain R] (r : R) :
   exact (congrArg (fun q => q.hom r)
     (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap R (FractionRing R))))).symm
 
+/- English proof (translation)
+Introduce `R _ _ Q m t gam h y`. Take `⟨u, n, hn, hc⟩` from `h y`. Establish `h0 : ∏ i, t i ^ n i ≠ 0` using `right_ne_zero_of_mul (PsiCoordLocal.ne_zero_of_coord hc)`. Establish `h1 : algebraMap R (FractionRing R) (∏ i, t i ^ n i) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective R _)).2 h0`. Take `⟨j₀, hj, hle, e⟩` from `hc`.
+
+Establish `all : ∀ w, w ∈ LB.wchart Q.P.L (K` using `PUnit) (fun _ => (Q.c y).left) j₀ := fun w => Set.mem_iInter.2 fun _ => hj trivial`. Take `⟨ψ₀, hg, hv⟩` from `exists_gen_of_top Q.P.isLB (K := PUnit) (fun _ => (Q.c y).left) (fun _ => -1) j₀ all (unitOn u)`. Use `⟨n, ψ₀, hg, hn, Units.mk0 _ h1, rfl, fun z J hJ => ?_⟩` and prove the remaining obligations. Establish `m₀ : (𝟙 (TK R).left : _ ⟶ _) z ∈ LB.wchart Q.P.L (K` using `PUnit) (fun _ => Q.xK y) j₀ := hle trivial`. Establish `a` using `gen_trans (Q.psi_gen y) (𝟙 (TK R).left) z (hJ.mem (fun _ : PUnit => Q.xK y) (𝟙 _)) m₀`.
+
+Establish `b` using `hv _ (toUnit (TK R)).left z _ (hJ.mem (fun _ : PUnit => (Q.c y).left) (toUnit (TK R)).left)`. Establish `c : gm (𝟙 (TK R).left) z (LB.wchart Q.P.L (K` using `PUnit) (fun _ => Q.xK y) j₀) ((Q.psi y).s j₀) = gm (𝟙 (TK R).left) z ⊤ (unitOn (Units.mk0 _ h1)) * gm (toUnit (TK R)).left z ⊤ (unitOn u) := by`. Establish `d : res hle ((Q.psi y).s j₀) = unitOn (Units.mk0 _ h1) * (show Γ(Sp (FractionRing R), ⊤)ˣ from pullU (jK R) ⊤ (unitOn u))`. Use `Units.ext (e.symm.trans ?_)` and prove the remaining obligations. Rewrite using `[jK_app_toOpen, map_mul, _root_.mul_comm, map_mul]`.
+
+Use `congrArg₂ (· * ·) rfl ?_` and prove the remaining obligations. Rewrite using `[← jK_app_toOpen]`. Conclude with `congrArg _ (by simp [DegPre.toOpen, unitOn])`. Use `(gm_res _ z hle trivial _).symm.trans ((congrArg _ d).trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) rfl ?_)))` and prove the remaining obligations. Conclude with `gm_pull (𝟙 _) (jK R) z ⊤ trivial _`.
+
+Use `a.trans (Eq.trans ?_ (congrArg _ b).symm)` and prove the remaining obligations. Rewrite using `[c, mul_left_comm]`. Both sides reduce to the same expression.
+-/
 theorem exists_isUnitPart : ∀ {R : Type} [CommRing R] [IsDomain R] (Q : DegPre R) {m : ℕ} (t : Fin m → R) (gam : Fin m → LinearMap.BilinForm ℤ Q.X), IsMonomial Q t gam → ∀ y, ∃ n ψ₀, IsUnitPart Q t gam y n ψ₀ := by
   intro R _ _ Q m t gam h y
   obtain ⟨u, n, hn, hc⟩ := h y

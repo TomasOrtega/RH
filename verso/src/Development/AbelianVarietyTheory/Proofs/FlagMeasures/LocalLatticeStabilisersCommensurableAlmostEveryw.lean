@@ -14,21 +14,33 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 namespace GlobalTheory.Unfold.LocStab
 
+/- English proof (translation)
+Rewrite using `[finrank_Vp]`. Use `D.R.two_le_m` as an intermediate fact. Take `⟨t, ht⟩` from `D.R.m_even`. Unfold `Ranks.rS Ranks.r`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_Vp_eq (D : D7) (p : PlF D) :
     Module.finrank (D.s.atP p).Ep (Vp D p) = D.R.k + 2 * D.R.rS + 1 := by
   rw [finrank_Vp]
   have := D.R.two_le_m; obtain ⟨t, ht⟩ := D.R.m_even
   unfold Ranks.rS Ranks.r; omega
 
+/- English proof (translation)
+Rewrite using `[Subgroup.relIndex_comap, Subgroup.map_comap_eq, Subgroup.range_subtype, inf_of_le_right hY]`.
+-/
 theorem relIndex_comap_subtype {G : Type*} [Group G] (U X Y : Subgroup G) (hY : Y ≤ U) :
     (X.comap U.subtype).relIndex (Y.comap U.subtype) = X.relIndex Y := by
   rw [Subgroup.relIndex_comap, Subgroup.map_comap_eq, Subgroup.range_subtype, inf_of_le_right hY]
 
+/- English proof (translation)
+Use extensionality with `g`. Rewrite using `[MulAction.mem_stabilizer_iff, Subgroup.mem_comap, Subgroup.coe_subtype, h g]`.
+-/
 theorem stabilizer_eq_comap {G α : Type*} [Group G] (U : Subgroup G) [MulAction U α] (S : Subgroup G) (d : α)
     (h : ∀ g : U, g.1 ∈ S ↔ g • d = d) : MulAction.stabilizer U d = S.comap U.subtype := by
   ext g
   rw [MulAction.mem_stabilizer_iff, Subgroup.mem_comap, Subgroup.coe_subtype, h g]
 
+/- English proof (translation)
+Use extensionality with `g`. Simplify using the standard rewrite rules.
+-/
 theorem comap_subtype_inf {G : Type*} [Group G] (U A : Subgroup G) :
     (U ⊓ A).comap U.subtype = A.comap U.subtype := by
   ext g; simp
@@ -39,6 +51,19 @@ namespace GlobalTheory.Unfold.LocStab
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D X Y u u' F F' w hw hG Z FP hB hRel _ hMv hSt Λ₀ d0 hLO`. Establish `hOK : ∀ p, (Z.M p).OK` using `fun p => (Z.agree p).1`. Establish `hstab : ∀ p (d : LocNG.Datum (FP p)), MulAction.stabilizer ↥(FP p).UW0 d = (LocNG.Datum.Stab d).comap (FP p).UW0.subtype` using `fun p d => stabilizer_eq_comap _ _ d (fun g => hSt p d g)`. Establish `hle : ∀ p (d : LocNG.Datum (FP p)), LocNG.Datum.Stab d ≤ (FP p).UW0` using `fun p d => Subgroup.closure_le _ |>.2 fun g hg => hg.1`. Use `choose τ0 hτ0 hτ0L using hLO.2`.
+
+Establish `hc` using `fun p => GlobalTheory.T.hermitianTerm_stabilizer_commensurable (Z.M p) (hOK p) (locH Z p) D.R.rS D.R.k (FP p) (finrank_Vp_eq D p) (hRel p) (d0 p) (τ0 p) (hτ0 p)`. Establish `hA : ∀ p, (LocNG.Aut (lattice₂ D Z.M p Λ₀)).comap (FP p).UW0.subtype = ((FP p).UW0 ⊓ LocNG.Aut (τ0 p).abelian₂).comap (FP p).UW0.subtype`. Introduce `p`. Rewrite using `[comap_subtype_inf, hτ0L p]`. Use `⟨fun p => ?_, ?_, fun d hd p => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hA p, hstab p]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[relIndex_comap_subtype _ _ _ inf_le_left, Subgroup.relIndex_eq_one.2 (hc p).1]`. Conclude with `one_ne_zero`. Rewrite using `[relIndex_comap_subtype _ _ _ (hle p (d0 p))]`.
+
+Conclude with `(hc p).2.1`. Establish `hAt : ∀ p, GlobalTheory.LocOver.AtBase Z p F F' (Tu D u) (Tu D u') (FP p)` using `fun p => by`. Take `⟨h1, h2, h3, h4⟩` from `hB p`. Conclude with `⟨h1, h2, h3, h4⟩`. Use `(GlobalTheory.T.finite_places_not_primeTo_baseFrameInvariants D Z u u' F F' hG FP hAt).subset fun p hp hpr => hp ?_` and prove the remaining obligations.
+
+Establish `h2` using `GlobalTheory.T.datumStabilizer_preserves_termLattice_goodPlace (Z.M p) (hOK p) (locH Z p) D.R.rS D.R.k (FP p) (finrank_Vp_eq D p) (hRel p) hpr (d0 p) (τ0 p) (hτ0 p)`. Rewrite using `[hA p, hstab p]`. Conclude with `congrArg _ (le_antisymm (hc p).1 (le_inf (hle p (d0 p)) h2))`. Take `⟨τ, hτ⟩` from `hd p`. Establish `h3` using `(hc p).2.2`.
+
+Establish `hτc` using `GlobalTheory.T.hermitianTerm_stabilizer_commensurable (Z.M p) (hOK p) (locH Z p) D.R.rS D.R.k (FP p) (finrank_Vp_eq D p) (hRel p) (d p) τ hτ`. Rewrite using `[hstab p, hstab p, relIndex_comap_subtype _ _ _ (hle p (d p)), relIndex_comap_subtype _ _ _ (hle p (d0 p))]`. Use `⟨h3 (d p) τ hτ, hτc.2.2 (d0 p) (τ0 p) (hτ0 p), ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.HL.invVol, relIndex_comap_subtype _ _ _ (hle p (d p)), relIndex_comap_subtype _ _ _ (hle p (d0 p)), LocNG.Datum.wt, LocNG.volRel, one_div_div]`.
+-/
 theorem local_stabilisers : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), ∀ (F : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (w : Point D.host.E (D.R.rS + 1)), ZhatOM (ZhatL F F') = ptMat w → Gval F F' ≠ 0 → ∀ (Z : LocDat D) (FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS), Based Z FP (Tu D u) (Tu D u') F F' → (∀ p, (FP p).RelG (LocNG.theta (Z.M p))) → ∀ [∀ p, MulAction ↥(FP p).UW0 (LocNG.Datum (FP p))], (∀ p (g : ↥(FP p).UW0) (d d' : LocNG.Datum (FP p)), LocNG.Datum.Moves g.1 d d' ↔ g • d = d') → (∀ p (d : LocNG.Datum (FP p)) (g : ↥(FP p).UW0), g.1 ∈ LocNG.Datum.Stab d ↔ g • d = d) → ∀ (Λ₀ : LV D) (d0 : Dat Z FP), LocOver Λ₀ d0 → (∀ p, (MulAction.stabilizer ↥(FP p).UW0 (d0 p)).relIndex ((LocNG.Aut (lattice₂ D Z.M p Λ₀)).comap (FP p).UW0.subtype) ≠ 0 ∧ ((LocNG.Aut (lattice₂ D Z.M p Λ₀)).comap (FP p).UW0.subtype).relIndex (MulAction.stabilizer ↥(FP p).UW0 (d0 p)) ≠ 0) ∧ {p | (LocNG.Aut (lattice₂ D Z.M p Λ₀)).comap (FP p).UW0.subtype ≠ MulAction.stabilizer ↥(FP p).UW0 (d0 p)}.Finite ∧ ∀ d : Dat Z FP, (∀ p, ∃ τ, LocNG.IsTermOver (FP p) (d p) τ) → ∀ p, (MulAction.stabilizer ↥(FP p).UW0 (d0 p)).relIndex (MulAction.stabilizer ↥(FP p).UW0 (d p)) ≠ 0 ∧ (MulAction.stabilizer ↥(FP p).UW0 (d p)).relIndex (MulAction.stabilizer ↥(FP p).UW0 (d0 p)) ≠ 0 ∧ GlobalTheory.HL.invVol (MulAction.stabilizer ↥(FP p).UW0 (d0 p)) (MulAction.stabilizer ↥(FP p).UW0 (d p)) = LocNG.Datum.wt (d0 p) (d p) := by
   intro D X Y u u' F F' w hw hG Z FP hB hRel _ hMv hSt Λ₀ d0 hLO
   have hOK : ∀ p, (Z.M p).OK := fun p => (Z.agree p).1

@@ -13,6 +13,9 @@ open ReciprocityTheory.AnForm.R GlobalTheory.ZH GlobalTheory.Poinc GlobalTheory.
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Poinc.Sep.sharp_fibre_theta_object | exact GlobalTheory.Poinc.Sep.sharp_fibre_theta_object | (intros; apply GlobalTheory.Poinc.Sep.sharp_fibre_theta_object <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.fibre_eighth_power_theta_object_subfield : ∀ (W : Matrix (Fin 8) (Fin 8) ℤ), IsE8 W → ∀ (gQ : ℕ), ∃ (J : Type) (_ : Finite J)
     (Mat : J → Matrix (Fin (2 * (8 * gQ))) (Fin (2 * (8 * gQ))) ℤ) (κ : ℕ) (w w' : J),
   ∀ (l : ℕ), l.Prime → Odd l → ∀ j : ℕ, 1 ≤ j →

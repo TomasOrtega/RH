@@ -14,6 +14,13 @@ noncomputable section
 
 namespace GlobalTheory.AV.AbVar
 
+/- English proof (translation)
+Use `set P := ptOver K (AlgebraicClosure K)`. Establish `h1` using `congrArg (CechPic.pull (lift (snd P A.X) (fst P A.X)).left) h`. Rewrite `h1` using `[lam_eq, pull_lam, map_zero, lift_fst, lift_snd_assoc, lam_comm, ← lam_eq]`. Establish `h0 : CechPic.pull (fst P A.X ≫ x).left (cls L hL) = 0`. Rewrite using `[Over.comp_left, pull_comp, GlobalTheory.PrimitiveOverField.pic_field (K := AlgebraicClosure K) (CechPic.pull x.left (cls L hL)), map_zero]`.
+
+Rewrite `h1` using `[AbVar.lam, h0, sub_zero]`. Introduce `p`. Use `⟨⊤, trivial, ?_⟩` and prove the remaining obligations. Establish `hD : (Out.translDiff A.X L x).IsLB` using `LB.isLB_linComb hL _ _`. Use `(cls_eq_zero_iff (pull_isLB hD _)).1 ?_` and prove the remaining obligations.
+
+Rewrite using `[cls_pull hD]`. Use `(congrArg _ ?_).trans (map_zero _)` and prove the remaining obligations. Use `(cls_linComb hL _ _ hD).trans (Eq.trans ?_ h1)` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_two, sub_eq_add_neg]`. Conclude with `congrArg₂ (· + ·) (one_zsmul _) (neg_one_zsmul _)`.
+-/
 theorem memKL_of_lam_geom_eq_zero {K : Type} [Field K] (A : AbVar K) {L : LB A.X.left} (hL : L.IsLB)
     (x : A.Pt) (h : AbVar.lam (cls L hL) (fst A.X (ptOver K (AlgebraicClosure K))) (snd A.X _ ≫ x) = 0) :
     MemKL A.X L x := by
@@ -35,6 +42,13 @@ theorem memKL_of_lam_geom_eq_zero {K : Type} [Field K] (A : AbVar K) {L : LB A.X
 
 end GlobalTheory.AV.AbVar
 
+/- English proof (translation)
+Introduce `K _ A c ⟨L, hL, ha, hc⟩`. Substitute `hc` using the available equality. Take `⟨H, _, i, -, hmono, hfin, -, hH⟩` from `GlobalTheory.kernel_finiteFlat_subgroup K A.X A.ab L hL ha`. Establish `hF` using `GlobalTheory.FlagCovQF.finite_points H.hom (AlgebraicClosure K) (spMap (algebraMap K (AlgebraicClosure K)))`. Use `haveI := hF.to_subtype`.
+
+Establish `hz : ∀ x : {x : A.Pt // AbVar.lam (cls L hL) (fst A.X (ptOver K (AlgebraicClosure K))) (snd A.X _ ≫ x) = 0}, ∃ z : ptOver K (AlgebraicClosure K) ⟶ H, z ≫ i = x.1` using `fun x => (hH _ x.1).1 (memKL_of_lam_geom_eq_zero A hL x.1 x.2)`. Use `choose z hz using hz`. Use `Finite.of_injective (fun x => (⟨(z x).left, Over.w (z x)⟩ : {y : Sp (AlgebraicClosure K) ⟶ H.left | y ≫ H.hom = spMap (algebraMap K (AlgebraicClosure K))})) ?_` and prove the remaining obligations. Introduce `a b hab`. Establish `e : z a = z b` using `Over.OverMorphism.ext (congrArg Subtype.val hab)`.
+
+Conclude with `Subtype.ext ((hz a).symm.trans (e ▸ hz b))`.
+-/
 theorem GlobalTheory.AV.AbVar.finite_lam_eq_zero : ∀ (K : Type) [Field K] (A : AbVar K) (c : Pic A.X.left), IsAmpleCls c → Finite {x : A.Pt // AbVar.lam c (fst A.X (ptOver K (AlgebraicClosure K))) (snd A.X _ ≫ x) = 0} := by
   intro K _ A c ⟨L, hL, ha, hc⟩
   subst hc

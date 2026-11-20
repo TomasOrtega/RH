@@ -12,6 +12,9 @@ namespace PositivityTheory.Xgp.c_fm_exists_flags_dualflag
 section Pure
 variable {G M N : Type} [Field G] [AddCommGroup M] [Module G M] [AddCommGroup N] [Module G N] {r : ℕ}
 
+/- English proof (translation)
+Simplify using `only [colFrame, Finset.smul_sum, smul_smul, Matrix.mulVec, dotProduct, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Put the polynomial expressions in normal form.
+-/
 theorem sum_colFrame (c : Fin r → M) (F : Matrix (Fin r) (Fin r) G) (g : Fin r → G) :
     ∑ b, g b • colFrame c F b = ∑ a, (F *ᵥ g) a • c a := by
   simp only [colFrame, Finset.smul_sum, smul_smul, Matrix.mulVec, dotProduct, Finset.sum_smul]
@@ -19,6 +22,11 @@ theorem sum_colFrame (c : Fin r → M) (F : Matrix (Fin r) (Fin r) G) (g : Fin r
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
   ring_nf
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hd`. Establish `h0 : F.det = 0` using `by simpa [isUnit_iff_ne_zero] using hd`. Take `⟨g, hg, hFg⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr h0`. Apply `hg` to reduce the goal to its premises. Use function extensionality and compare the values at `b`.
+
+Establish `hs : ∑ b, g b • colFrame c F b = 0`. Rewrite using `[sum_colFrame, hFg]`. Simplify using the standard rewrite rules. Conclude with `Fintype.linearIndependent_iff.mp h g hs b`.
+-/
 theorem det_isUnit {c : Fin r → M} {F : Matrix (Fin r) (Fin r) G} (h : LinearIndependent G (colFrame c F)) :
     IsUnit F.det := by
   by_contra hd
@@ -31,6 +39,13 @@ theorem det_isUnit {c : Fin r → M} {F : Matrix (Fin r) (Fin r) G} (h : LinearI
     simp
   exact Fintype.linearIndependent_iff.mp h g hs b
 
+/- English proof (translation)
+Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Rewrite `hg` using `[sum_colFrame]`. Establish `h1 : F *ᵥ g = 0`. Use function extensionality and compare the values at `a`.
+
+Conclude with `Fintype.linearIndependent_iff.mp hc _ hg a`. Establish `h2 : g = F⁻¹ *ᵥ (F *ᵥ g)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ h, Matrix.one_mulVec]`. Introduce `i`. Rewrite using `[h2, h1]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem indep_colFrame {c : Fin r → M} (hc : LinearIndependent G c) {F : Matrix (Fin r) (Fin r) G}
     (h : IsUnit F.det) : LinearIndependent G (colFrame c F) := by
   rw [Fintype.linearIndependent_iff]
@@ -45,6 +60,9 @@ theorem indep_colFrame {c : Fin r → M} (hc : LinearIndependent G c) {F : Matri
   rw [h2, h1]
   simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `b`. Simplify using `only [colFrame, Matrix.mul_apply, Finset.smul_sum, smul_smul, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Put the polynomial expressions in normal form.
+-/
 private theorem colFrame_colFrame_lemma {V : Type} [AddCommGroup V] [Module G V] (e : Fin r → V)
     (A B : Matrix (Fin r) (Fin r) G) : colFrame (colFrame e A) B = colFrame e (A * B) := by
   funext b
@@ -53,6 +71,11 @@ private theorem colFrame_colFrame_lemma {V : Type} [AddCommGroup V] [Module G V]
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun k _ => ?_
   ring_nf
 
+/- English proof (translation)
+Use extensionality with `a b`. Establish `hb` using `congrFun h b`. Establish `hs : ∑ k, (A k b - A' k b) • c k = 0`. Simplify using `only [colFrame] at hb`. Simplify using `only [sub_smul, Finset.sum_sub_distrib, hb, sub_self]`.
+
+Conclude with `sub_eq_zero.mp (Fintype.linearIndependent_iff.mp hc _ hs a)`.
+-/
 private theorem colFrame_inj_lemma_2 {c : Fin r → M} (hc : LinearIndependent G c)
     {A A' : Matrix (Fin r) (Fin r) G} (h : colFrame c A = colFrame c A') : A = A' := by
   ext a b
@@ -62,6 +85,11 @@ private theorem colFrame_inj_lemma_2 {c : Fin r → M} (hc : LinearIndependent G
     simp only [sub_smul, Finset.sum_sub_distrib, hb, sub_self]
   exact sub_eq_zero.mp (Fintype.linearIndependent_iff.mp hc _ hs a)
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[colFrame_colFrame_lemma]`. Establish `huFB : u = F * B` using `colFrame_inj_lemma_2 hc (h.trans (colFrame_colFrame_lemma c F B).symm |>.trans (by rw [colFrame_colFrame_lemma]))`. Establish `hB : IsUnit B.det`. Rewrite `hu` using `[huFB, Matrix.det_mul]`. Conclude with `isUnit_of_mul_isUnit_right hu`.
+
+Use `congr 1`. Rewrite using `[huFB, Matrix.transpose_mul, Matrix.mul_inv_rev, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (by rwa [Matrix.det_transpose]), Matrix.mul_one]`.
+-/
 theorem dual_change {c : Fin r → M} (hc : LinearIndependent G c) (w : Fin r → N)
     {F u B : Matrix (Fin r) (Fin r) G} (hF : IsUnit F.det) (hu : IsUnit u.det)
     (h : colFrame c u = colFrame (colFrame c F) B) :
@@ -75,6 +103,9 @@ theorem dual_change {c : Fin r → M} (hc : LinearIndependent G c) (w : Fin r �
   rw [huFB, Matrix.transpose_mul, Matrix.mul_inv_rev, Matrix.mul_assoc,
     Matrix.nonsing_inv_mul _ (by rwa [Matrix.det_transpose]), Matrix.mul_one]
 
+/- English proof (translation)
+Introduce `l`. Establish `hs : ∑ l, (B l k - d l) • f l = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib, h, sub_self]`. Conclude with `sub_eq_zero.mp (Fintype.linearIndependent_iff.mp hf _ hs l)`.
+-/
 private theorem coeff_lemma_3 {f : Fin r → M} (hf : LinearIndependent G f) (B : Matrix (Fin r) (Fin r) G)
     (d : Fin r → G) (k : Fin r) (h : ∑ l, B l k • f l = ∑ l, d l • f l) : ∀ l, B l k = d l := by
   intro l
@@ -82,6 +113,23 @@ private theorem coeff_lemma_3 {f : Fin r → M} (hf : LinearIndependent G f) (B 
     simp only [sub_smul, Finset.sum_sub_distrib, h, sub_self]
   exact sub_eq_zero.mp (Fintype.linearIndependent_iff.mp hf _ hs l)
 
+/- English proof (translation)
+Use `set B := F⁻¹ * u with hBdef`. Establish `huFB : u = F * B`. Rewrite using `[hBdef, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hF, Matrix.one_mul]`. Establish `h' : colFrame c u = colFrame (colFrame c F) B`. Rewrite using `[colFrame_colFrame_lemma, ← huFB]`.
+
+Establish `hf : LinearIndependent G (colFrame c F)` using `indep_colFrame hc hF`. Establish `htri : ∀ l k : Fin r, k < l → B l k = 0`. Introduce `l k hkl`. Establish `hk : colFrame c u k ∈ flagStep G (colFrame c F) ((k : ℕ) + 1)`. Rewrite using `[← h]`.
+
+Conclude with `Submodule.subset_span ⟨k, by simp, rfl⟩`. Rewrite `hk` using `[flagStep, Finsupp.mem_span_image_iff_linearCombination]`. Take `⟨d, hd, hdx⟩` from `hk`. Rewrite `hdx` using `[Finsupp.linearCombination_apply, Finsupp.sum_fintype _ _ (by simp)]`. Establish `hcoef` using `coeff_lemma_3 hf B (fun l => d l) k ((congrFun h' k).symm.trans hdx.symm)`.
+
+Rewrite using `[hcoef l]`. Rewrite `hd` using `[Finsupp.mem_supported']`. Apply `hd l` to reduce the goal to its premises. Simplify using `only [Set.mem_setOf_eq, not_lt]`. Conclude with `hkl`.
+
+Rewrite using `[dual_change hc w hF hu h']`. Unfold `flagStep`. Apply `Submodule.span_le.mpr` to reduce the goal to its premises. Introduce and unpack `_ ⟨k, hk, rfl⟩`. Simplify using `only [Set.mem_setOf_eq] at hk`.
+
+Express the relevant statement in the definitionally equal form `∑ a, Bᵀ a k.rev • colFrame w uᵀ⁻¹ a ∈ _`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Distinguish the cases in `hak : k.rev ≤ a`. Apply `Submodule.smul_mem` to reduce the goal to its premises. Apply `Submodule.subset_span` to reduce the goal to its premises.
+
+Use `⟨a.rev, ?_, by simp⟩` and prove the remaining obligations. Use `Fin.rev_le_iff.mp hak` as an intermediate fact. Simplify using `only [Set.mem_setOf_eq]`. Conclude with `lt_of_le_of_lt (Fin.le_def.mp this) hk`. Rewrite using `[Matrix.transpose_apply, htri _ _ (not_le.mp hak), zero_smul]`.
+
+Conclude with `Submodule.zero_mem _`.
+-/
 theorem step_le {c : Fin r → M} (hc : LinearIndependent G c) (w : Fin r → N)
     {F u : Matrix (Fin r) (Fin r) G} (hF : IsUnit F.det) (hu : IsUnit u.det)
     (h : ∀ i, flagStep G (colFrame c u) i = flagStep G (colFrame c F) i) (i : ℕ) :
@@ -123,6 +171,17 @@ theorem step_le {c : Fin r → M} (hc : LinearIndependent G c) (w : Fin r → N)
   · rw [Matrix.transpose_apply, htri _ _ (not_le.mp hak), zero_smul]
     exact Submodule.zero_mem _
 
+/- English proof (translation)
+Use `set B := F⁻¹ * u with hBdef`. Establish `huFB : u = F * B`. Rewrite using `[hBdef, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hF, Matrix.one_mul]`. Establish `h' : colFrame c u = colFrame (colFrame c F) B`. Rewrite using `[colFrame_colFrame_lemma, ← huFB]`.
+
+Establish `hf : LinearIndependent G (colFrame c F)` using `indep_colFrame hc hF`. Establish `hR : ∀ l k : Fin r, B l k ∈ R`. Introduce `l k`. Establish `hk : colFrame c u k ∈ Submodule.span R (Set.range (colFrame c F))`. Rewrite using `[← h]`.
+
+Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Rewrite `hk` using `[Submodule.mem_span_range_iff_exists_fun]`. Take `⟨d, hdx⟩` from `hk`. Establish `hcoef` using `coeff_lemma_3 hf B (fun l => (d l : G)) k ((congrFun h' k).symm.trans hdx.symm)`. Rewrite using `[hcoef l]`.
+
+Conclude with `(d l).2`. Rewrite using `[dual_change hc w hF hu h']`. Apply `Submodule.span_le.mpr` to reduce the goal to its premises. Introduce and unpack `_ ⟨k, rfl⟩`. Express the relevant statement in the definitionally equal form `∑ a, Bᵀ a k • colFrame w uᵀ⁻¹ a ∈ _`.
+
+Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Conclude with `Submodule.smul_mem (Submodule.span R (Set.range (colFrame w uᵀ⁻¹))) (⟨B k a, hR k a⟩ : R) (Submodule.subset_span ⟨a, rfl⟩)`.
+-/
 theorem span_le {c : Fin r → M} (hc : LinearIndependent G c) (w : Fin r → N) (R : Subring G)
     {F u : Matrix (Fin r) (Fin r) G} (hF : IsUnit F.det) (hu : IsUnit u.det)
     (h : Submodule.span R (Set.range (colFrame c u)) = Submodule.span R (Set.range (colFrame c F))) :
@@ -151,6 +210,9 @@ theorem span_le {c : Fin r → M} (hc : LinearIndependent G c) (w : Fin r → N)
   exact Submodule.smul_mem (Submodule.span R (Set.range (colFrame w uᵀ⁻¹))) (⟨B k a, hR k a⟩ : R)
     (Submodule.subset_span ⟨a, rfl⟩)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `[colFrame, hj]`.
+-/
 theorem map_colFrame {Ω V : Type} [Field Ω] [AddCommGroup V] [Module Ω V] {i : Ω →+* G} {j : V →+ M}
     (hj : ∀ (a : Ω) (e : V), j (a • e) = i a • j e) (v : Fin r → V) (P : Matrix (Fin r) (Fin r) Ω) :
     (fun k => j (colFrame v P k)) = colFrame (fun a => j (v a)) (P.map i) := by
@@ -159,6 +221,13 @@ theorem map_colFrame {Ω V : Type} [Field Ω] [AddCommGroup V] [Module Ω V] {i 
 
 end Pure
 
+/- English proof (translation)
+Use `⟨fun a e => ?_, fun n b hb => ?_⟩` and prove the remaining obligations. Use `show (1 : G) ⊗ₜ[Ω] (a • e) = algebraMap Ω G a • ((1 : G) ⊗ₜ[Ω] e)`. Rewrite using `[TensorProduct.smul_tmul', ← TensorProduct.smul_tmul, smul_eq_mul, mul_one, Algebra.algebraMap_eq_smul_one]`. Establish `hb' : LinearIndependent Ω b` using `hb`. Establish `hs` using `hb'.linearIndepOn_id`.
+
+Set `Bs` to `Module.Basis.extend hs`. Set `f : Fin n → hs.extend (Set.range b).subset_univ` to `fun k => ⟨b k, hs.subset_extend _ ⟨k, rfl⟩⟩`. Establish `hinj : Function.Injective f` using `fun x y hxy => hb'.injective (by simpa only [f, Subtype.mk.injEq] using hxy)`. Establish `hli` using `(Bs.baseChange G).linearIndependent.comp f hinj`. Use `hli using 1` and compare the differences between its conclusion and the goal.
+
+Apply the tactic sequence `all_goals try (funext k; simp only [Function.comp_apply, Module.Basis.baseChange_apply, Bs, f, Module.Basis.extend_apply_self])`. Apply the tactic sequence `all_goals rfl`.
+-/
 theorem isExtOver_mk (Ω G V : Type) [Field Ω] [Field G] [Algebra Ω G] [AddCommGroup V] [Module Ω V] :
     IsExtOver (algebraMap Ω G) (TensorProduct.mk Ω G V 1).toAddMonoidHom := by
   refine ⟨fun a e => ?_, fun n b hb => ?_⟩
@@ -180,6 +249,11 @@ theorem isExtOver_mk (Ω G V : Type) [Field Ω] [Field G] [Algebra Ω G] [AddCom
 
 end PositivityTheory.Xgp.c_fm_exists_flags_dualflag
 
+/- English proof (translation)
+Establish `h1` using `congrFun (congrFun (Matrix.mul_nonsing_inv _ hPt) a) b`. Rewrite `h1` using `[Matrix.mul_apply, Matrix.one_apply]`. Rewrite using `[← h1]`. Use `show (∑ d, P d a • bO d) (∑ c, Pᵀ⁻¹ c b • v c) = _`. Rewrite using `[LinearMap.sum_apply]`.
+
+Simplify using `only [LinearMap.smul_apply, map_sum, map_smul, hv, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true, Matrix.transpose_apply]`. Conclude with `Finset.sum_congr rfl fun _ _ => mul_comm _ _`.
+-/
 private theorem dual_lemma_4 {Ω V : Type} [Field Ω] [AddCommGroup V] [Module Ω V] {r : ℕ}
     (bO : Module.Basis (Fin r) Ω (Module.Dual Ω V)) (v : Fin r → V)
     (hv : ∀ a b, bO a (v b) = if a = b then 1 else 0) (P : Matrix (Fin r) (Fin r) Ω)
@@ -195,6 +269,41 @@ private theorem dual_lemma_4 {Ω V : Type} [Field Ω] [AddCommGroup V] [Module �
   exact Finset.sum_congr rfl fun _ _ => mul_comm _ _
 
 open PositivityTheory.Xgp.c_fm_exists_flags_dualflag in
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo cc Y S Ω _ K _ J x 𝔐 τ X' G _ _ ξ' pr Li' _ _ j bO v u hj hdom hv hu1 hu0 hflag`. Establish `hmk` using `isExtOver_mk Ω G (Module.Dual Ω (𝔐.Vgen (.inr τ)))`. Use `set mk := (TensorProduct.mk Ω G (Module.Dual Ω (𝔐.Vgen (.inr τ))) 1).toAddMonoidHom with hmkdef`. Establish `hc : LinearIndependent G (fun l => mk (bO l))` using `hmk.2 _ bO bO.linearIndependent`. Establish `hu : IsUnit u.det`.
+
+Rewrite using `[Matrix.det_of_lowerTriangular u (fun _ _ hab => hu0 _ _ hab)]`. Simplify using `[hu1]`. Establish `hw : LinearIndependent G (fun a => j (v a))`. Apply `hj.2` to reduce the goal to its premises. Rewrite using `[Fintype.linearIndependent_iff]`.
+
+Introduce `g hg a`. Establish `h0 : ∑ b, g b • v b = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify `hg` using `[Submodule.coe_sum]`. Establish `h2` using `congrArg (bO a) h0`.
+
+Simplify `h2` using `[map_sum, hv]`. Introduce `p _`. Establish `hp : ∀ q' : Cpt ξ', genPt 𝔐.ξ ⤳ pr q'.1` using `fun q' => by`. Establish `h1` using `q'.2.map pr.continuous`. Rewrite `h1` using `[RegAtDom.map_genPt hdom]`. Then use the resulting hypothesis.
+
+Take `⟨U, hpU, b, hbflag, hbframe⟩` from `hflag p trivial`. Take `⟨U0, hU0, φ, -, hφframe⟩` from `omBundle_isVB 𝔐 τ ⟨pr p.1, hp p⟩ trivial`. Set `Bg` to `bO.baseChange G`. Set `F : Matrix (Fin D.q) (Fin D.q) G` to `fun a k => Bg.repr (b k) a`. Establish `hbF : b = colFrame (fun l => mk (bO l)) F`.
+
+Use function extensionality and compare the values at `k`. Use `conv_lhs => rw [← Bg.sum_repr (b k)]`. Simplify using `only [colFrame, F, Bg, Module.Basis.baseChange_apply]`. Both sides reduce to the same expression. Establish `hbind : LinearIndependent G b` using `(hbframe p trivial hpU).1`.
+
+Establish `hF : IsUnit F.det` using `det_isUnit (hbF ▸ hbind)`. Set `P : Matrix (Fin D.q) (Fin D.q) Ω` to `fun a k => bO.repr (φ k) a`. Establish `hφP : φ = colFrame bO P`. Use function extensionality and compare the values at `k`. Conclude with `(bO.sum_repr (φ k)).symm`.
+
+Establish `hφind : LinearIndependent Ω φ` using `(hφframe _ trivial hU0).1`. Establish `hP : IsUnit P.det` using `det_isUnit (hφP ▸ hφind)`. Establish `hPt : IsUnit Pᵀ.det` using `by rwa [Matrix.det_transpose]`. Set `Q` to `Pᵀ⁻¹`. Set `v' : Fin D.q → 𝔐.Vgen (.inr τ)` to `colFrame v Q`.
+
+Establish `hdual : ∀ a b, φ a (v' b) = if a = b then 1 else 0`. Introduce `a b`. Rewrite using `[hφP]`. Conclude with `dual_lemma_4 bO v hv P hPt a b`. Set `Pm` to `P.map (algebraMap Ω G)`.
+
+Establish `hmkφ : (fun k => mk (φ k)) = colFrame (fun l => mk (bO l)) Pm`. Rewrite using `[hφP]`. Conclude with `map_colFrame hmk.1 bO P`. Establish `hQm : Q.map (algebraMap Ω G) = Pmᵀ⁻¹`. Use `symm`.
+
+Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Use `show (P.map (algebraMap Ω G))ᵀ * (Pᵀ⁻¹).map (algebraMap Ω G) = 1`. Rewrite using `[← Matrix.transpose_map, ← Matrix.map_mul, Matrix.mul_nonsing_inv _ hPt, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hjv' : (fun k => j (v' k : 𝔐.Li)) = colFrame (fun a => j (v a)) Pmᵀ⁻¹`. Rewrite using `[← hQm]`.
+
+Conclude with `map_colFrame (j := j.comp (𝔐.Vgen (.inr τ)).subtype.toAddMonoidHom) (fun a e => hj.1 a e) v Q`. Establish `hPm : IsUnit Pm.det`. Establish `h1 : LinearIndependent G (fun k => mk (φ k))` using `hmk.2 _ φ hφind`. Rewrite `h1` using `[hmkφ]`. Conclude with `det_isUnit h1`.
+
+Use `⟨U ⊓ pr ⁻¹ᵁ U0, ⟨hpU, hU0⟩, fun k => colFrame (fun a => j (v a)) Fᵀ⁻¹ k.rev, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ i, flagStep G (colFrame (fun l => mk (bO l)) u) i = flagStep G (colFrame (fun l => mk (bO l)) F) i` using `fun i => by`. Rewrite using `[← hbF]`. Conclude with `(hbflag i).symm`. Introduce `i`.
+
+Conclude with `le_antisymm (step_le hc _ hF hu h1 i) (step_le hc _ hu hF (fun i => (h1 i).symm) i)`. Introduce and unpack `q' - ⟨hq'U, hq'U0⟩`. Establish `hφq` using `hφframe ⟨pr q'.1, hp q'⟩ trivial hq'U0`. Establish `hVq` using `(omBundle_dualFrame 𝔐 τ _ hφq).2 v' hdual`. Establish `hpV` using `FlagPull.pull_isFrameAt hdom hj q' (hp q') hVq`.
+
+Establish `hpO` using `FlagPull.pull_isFrameAt hdom hmk q' (hp q') hφq`. Establish `hbq` using `hbframe q' trivial hq'U`. Establish `hspan : Submodule.span (regAt ξ' q') (Set.range (colFrame (fun l => mk (bO l)) Pm)) = Submodule.span (regAt ξ' q') (Set.range (colFrame (fun l => mk (bO l)) F))`. Rewrite using `[← hmkφ, ← hbF]`. Conclude with `hpO.2.symm.trans hbq.2`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hind` using `indep_colFrame hw (F := Fᵀ⁻¹) (Matrix.isUnit_nonsing_inv_det _ (by rwa [Matrix.det_transpose]))`. Conclude with `hind.comp Fin.rev Fin.rev_injective`. Rewrite using `[hpV.2, hjv']`. Establish `hr : Set.range (fun (k : Fin D.q) => colFrame (fun a => j (v a)) Fᵀ⁻¹ k.rev) = Set.range (colFrame (fun a => j (v a)) Fᵀ⁻¹)` using `Fin.rev_surjective.range_comp (colFrame (fun a => j (v a)) Fᵀ⁻¹)`.
+
+Rewrite using `[hr]`. Conclude with `le_antisymm (span_le hc _ _ hPm hF hspan.symm) (span_le hc _ _ hF hPm hspan)`.
+-/
 theorem PositivityTheory.Xgp.t_c_fm_exists_flags_dualflag : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) (x : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S x) (τ : CMType H) (X' : Scheme.{0}) (G : Type) [Field G] [Algebra Ω G] (ξ' : Spec (CommRingCat.of G) ⟶ X') (pr : X' ⟶ 𝔐.X) (Li' : Type) [AddCommGroup Li'] [Module G Li'] (j : 𝔐.Li →+ Li') (bO : Module.Basis (Fin D.q) Ω (Module.Dual Ω (𝔐.Vgen (.inr τ)))) (v : Fin D.q → 𝔐.Vgen (.inr τ)) (u : Matrix (Fin D.q) (Fin D.q) G), IsExtOver (algebraMap Ω G) j → GlobalTheory.CompanionTheory.Ar.Dominates ξ' 𝔐.ξ pr (algebraMap Ω G) → (∀ a b, bO a (v b) = if a = b then 1 else 0) → (∀ a, u a a = 1) → (∀ a b, a < b → u a b = 0) → ((omBundle 𝔐 τ).pull ξ' pr (TensorProduct.mk Ω G (Module.Dual Ω (𝔐.Vgen (.inr τ))) 1).toAddMonoidHom).IsFlagVBOn Set.univ (fun k => ∑ l, u l k • TensorProduct.mk Ω G (Module.Dual Ω (𝔐.Vgen (.inr τ))) 1 (bO l)) → ((𝔐.V (.inr τ)).pull ξ' pr j).IsFlagVBOn Set.univ (fun k => colFrame (fun a => j (v a)) uᵀ⁻¹ k.rev) := by
   intro E _ _ _ H D l Xo cc Y S Ω _ K _ J x 𝔐 τ X' G _ _ ξ' pr Li' _ _ j bO v u hj hdom hv hu1 hu0 hflag
   have hmk := isExtOver_mk Ω G (Module.Dual Ω (𝔐.Vgen (.inr τ)))

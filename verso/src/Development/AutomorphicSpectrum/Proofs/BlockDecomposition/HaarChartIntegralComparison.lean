@@ -11,6 +11,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.SobGL.HaarDom
 
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra in
+/- English proof (translation)
+The claim follows from `haveI : CompleteSpace (Matrix (Fin n) (Fin n) ℂ) := FiniteDimensional.complete ℝ _ Units.isOpenEmbedding_val`.
+-/
 theorem isOpenEmbedding_valG (n : ℕ) : Topology.IsOpenEmbedding (Units.val : G n → Mat n) :=
   haveI : CompleteSpace (Matrix (Fin n) (Fin n) ℂ) := FiniteDimensional.complete ℝ _
   Units.isOpenEmbedding_val
@@ -20,6 +23,9 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 def coords {n : ℕ} (M : Mat n) : Idx n → ℝ :=
   fun p => if p.1 then (M p.2.1 p.2.2).re else (M p.2.1 p.2.2).im
 
+/- English proof (translation)
+Simplify using `only [cm, bs, Matrix.sum_apply, Matrix.smul_apply, Fintype.sum_prod_type, Fintype.sum_bool]`. Establish `key : ∀ f : Fin n → Fin n → ℂ, (∑ x, ∑ y, if x = i ∧ y = j then f x y else 0) = f i j`. Introduce `f`. Simplify using `[ite_and, Finset.sum_ite_eq']`. Simplify using `[Matrix.single_apply, Finset.sum_add_distrib, key]`.
+-/
 theorem cm_apply {n : ℕ} (t : Idx n → ℝ) (i j : Fin n) :
     cm t i j = (t (true, i, j) : ℂ) + (t (false, i, j) : ℂ) * Complex.I := by
   simp only [cm, bs, Matrix.sum_apply, Matrix.smul_apply, Fintype.sum_prod_type, Fintype.sum_bool]
@@ -58,6 +64,9 @@ def mu0 (n : ℕ) : Measure (Mat n) := Measure.map (cmE n) volume
 instance isAddHaarMeasure_pushforward (n : ℕ) : (mu0 n).IsAddHaarMeasure :=
   (cmE n).toContinuousLinearEquiv.isAddHaarMeasure_map volume
 
+/- English proof (translation)
+Establish `h1 : Measurable (cmE n)` using `(cmE n).toContinuousLinearEquiv.continuous.measurable`. Establish `h2 : Measurable (fun x : Mat n => (1 : Mat n) + x)` using `(continuous_const.add continuous_id).measurable`. Establish `: (aH n : (Idx n → ℝ) → Mat n) = (fun x : Mat n => (1 : Mat n) + x) ∘ (cmE n)` using `rfl`. Rewrite using `[this, ← Measure.map_map h2 h1]`. Conclude with `map_add_left_eq_self (mu0 n) 1`.
+-/
 theorem map_aH (n : ℕ) : Measure.map (aH n) volume = mu0 n := by
   have h1 : Measurable (cmE n) := (cmE n).toContinuousLinearEquiv.continuous.measurable
   have h2 : Measurable (fun x : Mat n => (1 : Mat n) + x) := (continuous_const.add continuous_id).measurable
@@ -65,6 +74,9 @@ theorem map_aH (n : ℕ) : Measure.map (aH n) volume = mu0 n := by
   rw [this, ← Measure.map_map h2 h1]
   exact map_add_left_eq_self (mu0 n) 1
 
+/- English proof (translation)
+Establish `hemb` using `(aH n).measurableEmbedding`. Rewrite using `[← map_aH, hemb.restrict_map, hemb.lintegral_map, Set.preimage_image_eq _ (aH n).injective]`. Both sides reduce to the same expression.
+-/
 theorem lint_chart {n : ℕ} (g : Mat n → ℝ≥0∞) (Q : Set (Idx n → ℝ)) :
     ∫⁻ t in Q, g (1 + cm t) = ∫⁻ x in aH n '' Q, g x ∂(mu0 n) := by
   have hemb := (aH n).measurableEmbedding
@@ -72,6 +84,11 @@ theorem lint_chart {n : ℕ} (g : Mat n → ℝ≥0∞) (Q : Set (Idx n → ℝ)
     Set.preimage_image_eq _ (aH n).injective]
   rfl
 
+/- English proof (translation)
+Establish `hemb` using `GroundTheory.Automorphic.measurableEmbedding_val_GLComplex (n := Fin n)`. Establish `hV : Measure.map Units.val ((GroundTheory.Automorphic.haarGLComplex (mu0 n)).restrict S) = ((mu0 n).restrict (Units.val '' S)).withDensity GroundTheory.Automorphic.haarDensityGLComplex`. Establish `hVm : MeasurableSet (Units.val '' S)` using `hemb.measurableSet_image.2 hS`. Use extensionality with `s hs`. Rewrite using `[Measure.map_apply hemb.measurable hs, Measure.restrict_apply (hemb.measurable hs), GroundTheory.Automorphic.haarGLComplex_apply, ← restrict_withDensity hVm, Measure.restrict_apply hs, Set.image_preimage_inter]`.
+
+Rewrite using `[← hemb.lintegral_map, hV, lintegral_withDensity_eq_lintegral_mul_non_measurable _ GroundTheory.Automorphic.measurable_haarDensityGLComplex (ae_of_all _ fun x => ENNReal.ofReal_lt_top)]`. Both sides reduce to the same expression.
+-/
 theorem lint_haar {n : ℕ} (g : Mat n → ℝ≥0∞) (S : Set (G n)) (hS : MeasurableSet S) :
     ∫⁻ y in S, g y.val ∂(GroundTheory.Automorphic.haarGLComplex (mu0 n)) =
       ∫⁻ x in Units.val '' S, GroundTheory.Automorphic.haarDensityGLComplex x * g x ∂(mu0 n) := by
@@ -89,6 +106,15 @@ theorem lint_haar {n : ℕ} (g : Mat n → ℝ≥0∞) (S : Set (G n)) (hS : Mea
       (ae_of_all _ fun x => ENNReal.ofReal_lt_top)]
   rfl
 
+/- English proof (translation)
+Establish `hV : MeasurableSet (Units.val '' S)` using `(hS.image Units.continuous_val).isClosed.measurableSet`. Rewrite using `[lint_chart, lint_haar g S hS.measurableSet, ← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono_set ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨t, ht, rfl⟩`.
+
+Take `⟨y, hy, e⟩` from `h t ht`. Conclude with `⟨y, hy, e⟩`. Use `_ ≤ _ := by`. Use `setLIntegral_mono' hV ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+
+Establish `hd : (y : Mat n).det ≠ 0` using `((isUnit_iff_isUnit_det _).1 y.isUnit).ne_zero`. Establish `hpos : 0 < (‖(y : Mat n).det‖ ^ 2) ^ n` using `by positivity`. Establish `h1 : 1 ≤ ENNReal.ofReal B * GroundTheory.Automorphic.haarDensityGLComplex (y : Mat n)`. Rewrite using `[GroundTheory.Automorphic.haarDensityGLComplex, ← ENNReal.ofReal_mul hB0.le, ← ENNReal.ofReal_one]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations.
+
+Rewrite using `[Fintype.card_fin, inv_pow, ← div_eq_mul_inv, one_le_div hpos]`. Conclude with `hB y hy`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem lint_core {n : ℕ} (g : Mat n → ℝ≥0∞) (Q : Set (Idx n → ℝ)) (S : Set (G n)) (hS : IsCompact S)
     (h : ∀ t ∈ Q, ∃ y ∈ S, y.val = 1 + cm t) (B : ℝ) (hB0 : 0 < B)
     (hB : ∀ y ∈ S, (‖(y : Mat n).det‖ ^ 2) ^ n ≤ B) :
@@ -118,6 +144,17 @@ theorem lint_core {n : ℕ} (g : Mat n → ℝ≥0∞) (Q : Set (Idx n → ℝ))
               gcongr
           _ = _ := mul_assoc _ _ _
 
+/- English proof (translation)
+Establish `hH` using `Measure.isMulLeftInvariant_eq_smul (GroundTheory.Automorphic.haarGLComplex (mu0 n)) μ`. Use `set κ := Measure.haarScalarFactor (GroundTheory.Automorphic.haarGLComplex (mu0 n)) μ with hκ`. Establish `hcont : Continuous (fun y : G n => (‖(y : Mat n).det‖ ^ 2) ^ n)` using `(((Units.continuous_val.matrix_det).norm.pow _).pow _)`. Take `⟨B, hB⟩` from `hS.exists_bound_of_continuousOn hcont.continuousOn`. Establish `hB1 : 0 < max B 1` using `lt_of_lt_of_le one_pos (le_max_right _ _)`.
+
+Establish `hB2 : ∀ y ∈ S, (‖(y : Mat n).det‖ ^ 2) ^ n ≤ max B 1` using `fun y hy => ((le_abs_self _).trans (by simpa using hB y hy)).trans (le_max_left _ _)`. Use `⟨max B 1 * κ, by positivity, fun φ hφ h0 => ?_⟩` and prove the remaining obligations. Establish `hmem : ∀ y : G n, (y : Mat n) ∈ GLs n` using `fun y => ((isUnit_iff_isUnit_det _).1 y.isUnit).ne_zero`. Establish `hf : Continuous (fun y : G n => φ y.val)` using `hφ.comp_continuous Units.continuous_val hmem`. Establish `hint2 : IntegrableOn (fun y : G n => φ y.val) S μ` using `hf.continuousOn.integrableOn_compact hS`.
+
+Establish `hint1 : IntegrableOn (fun t => φ (1 + cm t)) Q`. Use `ContinuousOn.integrableOn_compact hQ ?_` and prove the remaining obligations. Use `hφ.comp (aH n).continuous.continuousOn ?_` and prove the remaining obligations. Introduce `t ht`. Take `⟨y, _, e⟩` from `h t ht`.
+
+Use `show 1 + cm t ∈ GLs n`. Rewrite using `[← e]`. Conclude with `hmem y`. Establish `key` using `lint_core (fun x => ENNReal.ofReal (φ x)) Q S hS h (max B 1) hB1 hB2`. Rewrite `key` using `[hH, Measure.restrict_smul, lintegral_smul_measure, ← ofReal_integral_eq_lintegral_ofReal hint1 (ae_of_all _ fun _ => h0 _), ← ofReal_integral_eq_lintegral_ofReal hint2 (ae_of_all _ fun _ => h0 _)]`.
+
+Establish `hR : 0 ≤ ∫ y in S, φ y.val ∂μ` using `integral_nonneg fun _ => h0 _`. Establish `e : ENNReal.ofReal (max B 1) * κ • ENNReal.ofReal (∫ y in S, φ y.val ∂μ) = ENNReal.ofReal (max B 1 * κ * ∫ y in S, φ y.val ∂μ)`. Rewrite using `[ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_mul hB1.le, ENNReal.smul_def, ENNReal.ofReal_coe_nnreal, smul_eq_mul, mul_assoc]`. Rewrite `key` using `[e]`. Conclude with `(ENNReal.ofReal_le_ofReal_iff (by positivity)).1 key`.
+-/
 theorem dom_units (n : ℕ) (μ : Measure (G n)) [μ.IsHaarMeasure]
     (Q : Set (Idx n → ℝ)) (S : Set (G n)) (hQ : IsCompact Q) (hS : IsCompact S)
     (h : ∀ t ∈ Q, ∃ y ∈ S, y.val = 1 + cm t) :
@@ -163,6 +200,9 @@ namespace GlobalTheory.CompanionTheory.SobGL
 
 open scoped GroundTheory.Automorphic in
 
+/- English proof (translation)
+Introduce `n m hB μ hμ Q S hQ hS h`. Establish `e : m = Units.instMeasurableSpace` using `hB.measurable_eq.trans (GroundTheory.Automorphic.borelSpace_GLComplex (n := Fin n)).measurable_eq.symm`. Substitute `e` using the available equality. Conclude with `HaarDom.dom_units n μ Q S hQ hS h`.
+-/
 theorem lebesgue_le_haar :
     ∀ (n : ℕ) [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure]
     (Q : Set (Idx n → ℝ)) (S : Set (G n)), IsCompact Q → IsCompact S → (∀ t ∈ Q, ∃ y ∈ S, y.val = 1 + cm t) →

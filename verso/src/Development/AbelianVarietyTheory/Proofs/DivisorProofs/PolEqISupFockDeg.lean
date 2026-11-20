@@ -17,9 +17,15 @@ def fockDeg (M : Model σ Y W) (ψ : AddChar (AF F) ℂ) (τ : ∀ w : InfiniteP
   Nat.rec (motive := fun _ => Submodule ℂ (SInf F (Fin n × Fin d))) (Submodule.span ℂ {f₀ | M.IsGauss ψ τ f₀})
     (fun _ N => N ⊔ Submodule.span ℂ {f₁ | ∃ u, At (evI F) u ∧ ∃ f ∈ N, ActsD (evI F) (M.heisLine ψ u) f f₁}) k
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fockDeg_zero (M : Model σ Y W) (ψ : AddChar (AF F) ℂ) (τ : ∀ w : InfinitePlace F, EmbOver E w) :
     fockDeg M ψ τ 0 = Submodule.span ℂ {f₀ | M.IsGauss ψ τ f₀} := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fockDeg_succ (M : Model σ Y W) (ψ : AddChar (AF F) ℂ) (τ : ∀ w : InfinitePlace F, EmbOver E w) (k : ℕ) :
     fockDeg M ψ τ (k + 1) = fockDeg M ψ τ k ⊔ Submodule.span ℂ {f₁ | ∃ u, At (evI F) u ∧ ∃ f ∈ fockDeg M ψ τ k,
       ActsD (evI F) (M.heisLine ψ u) f f₁} := rfl
@@ -32,10 +38,18 @@ def lowPartInf (B : Base F E) (M : Model σ Y W) {P : Type} [AddCommGroup P] [Mo
     (p : SInf F (Fin n × Fin d) →ₗ[ℂ] P) : Submodule ℂ P :=
   (fockDeg M B.ψ B.emb (lowDegInf B M p)).map p
 
+/- English proof (translation)
+The claim follows from `monotone_nat_of_le_succ fun _ => le_sup_left`.
+-/
 theorem fockDeg_mono (M : Model σ Y W) (ψ : AddChar (AF F) ℂ) (τ : ∀ w : InfinitePlace F, EmbOver E w) :
     Monotone (fockDeg M ψ τ) :=
   monotone_nat_of_le_succ fun _ => le_sup_left
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => exact Submodule.span_le.2 fun f hf => Submodule.mem_sInf.2 fun N hN => hN.1 f hf`. Consider the case `succ k ih`. Use `sup_le ih (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `f₁ ⟨u, hu, f, hf, hd⟩`.
+
+Conclude with `Submodule.mem_sInf.2 fun N hN => hN.2 u hu f (Submodule.mem_sInf.1 (ih hf) N hN) f₁ hd`.
+-/
 theorem fockDeg_le_pol (M : Model σ Y W) (ψ : AddChar (AF F) ℂ) (τ : ∀ w : InfinitePlace F, EmbOver E w) (k : ℕ) :
     fockDeg M ψ τ k ≤ M.Pol ψ τ := by
   induction k with
@@ -45,6 +59,9 @@ theorem fockDeg_le_pol (M : Model σ Y W) (ψ : AddChar (AF F) ℂ) (τ : ∀ w 
     rintro f₁ ⟨u, hu, f, hf, hd⟩
     exact Submodule.mem_sInf.2 fun N hN => hN.2 u hu f (Submodule.mem_sInf.1 (ih hf) N hN) f₁ hd
 
+/- English proof (translation)
+Use `le_antisymm (sInf_le ⟨fun f₀ hf₀ => ?_, fun u hu f hf f₁ hd => ?_⟩) (iSup_le (fockDeg_le_pol M ψ τ))` and prove the remaining obligations. Conclude with `Submodule.mem_iSup_of_mem 0 (Submodule.subset_span hf₀)`. Take `⟨k, hk⟩` from `(Submodule.mem_iSup_of_directed _ (fockDeg_mono M ψ τ).directed_le).1 hf`. Conclude with `Submodule.mem_iSup_of_mem (k + 1) (Submodule.mem_sup_right (Submodule.subset_span ⟨u, hu, f, hk, hd⟩))`.
+-/
 theorem pol_eq_iSup_fockDeg (M : Model σ Y W) (ψ : AddChar (AF F) ℂ) (τ : ∀ w : InfinitePlace F, EmbOver E w) :
     M.Pol ψ τ = ⨆ k, fockDeg M ψ τ k := by
   refine le_antisymm (sInf_le ⟨fun f₀ hf₀ => ?_, fun u hu f hf f₁ hd => ?_⟩) (iSup_le (fockDeg_le_pol M ψ τ))
@@ -53,6 +70,11 @@ theorem pol_eq_iSup_fockDeg (M : Model σ Y W) (ψ : AddChar (AF F) ℂ) (τ : �
     exact Submodule.mem_iSup_of_mem (k + 1)
       (Submodule.mem_sup_right (Submodule.subset_span ⟨u, hu, f, hk, hd⟩))
 
+/- English proof (translation)
+Take `⟨f, hf, hp⟩` from `h`. Rewrite `hf` using `[pol_eq_iSup_fockDeg]`. Take `⟨k, hk⟩` from `(Submodule.mem_iSup_of_directed _ (fockDeg_mono M B.ψ B.emb).directed_le).1 hf`. Establish `hne : {k | ∃ f ∈ fockDeg M B.ψ B.emb k, p f ≠ 0}.Nonempty` using `⟨k, f, hk, hp⟩`. Take `⟨g, hg, hpg⟩` from `Nat.sInf_mem hne`.
+
+Introduce `hbot`. Conclude with `hpg ((Submodule.eq_bot_iff _).1 hbot (p g) ⟨g, hg, rfl⟩)`.
+-/
 theorem lowPartInf_ne_bot (B : Base F E) (M : Model σ Y W) {P : Type} [AddCommGroup P] [Module ℂ P]
     (p : SInf F (Fin n × Fin d) →ₗ[ℂ] P) (h : ∃ f ∈ M.Pol B.ψ B.emb, p f ≠ 0) : lowPartInf B M p ≠ ⊥ := by
   obtain ⟨f, hf, hp⟩ := h

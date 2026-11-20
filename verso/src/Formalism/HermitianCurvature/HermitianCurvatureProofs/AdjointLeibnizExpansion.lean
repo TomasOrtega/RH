@@ -27,6 +27,9 @@ def hsVecL : (Wq →L[ℂ] Wp) →ₗ[ℂ] PiLp 2 (fun _ : Fin (Module.finrank �
     ext i
     simp
 
+/- English proof (translation)
+Introduce `A B h`. Apply `ContinuousLinearMap.coe_injective` to reduce the goal to its premises. Use `(stdOrthonormalBasis ℂ Wq).toBasis.ext fun i => ?_` and prove the remaining obligations. Use `congrFun (congrArg WithLp.ofLp h) i` as an intermediate fact. Simplify `this` using `[hsVec]`.
+-/
 theorem hsVec_injective : Function.Injective (hsVec : (Wq →L[ℂ] Wp) → PiLp 2 (fun _ : Fin (Module.finrank ℂ Wq) => Wp)) := by
   intro A B h
   apply ContinuousLinearMap.coe_injective
@@ -34,6 +37,11 @@ theorem hsVec_injective : Function.Injective (hsVec : (Wq →L[ℂ] Wp) → PiLp
   have := congrFun (congrArg WithLp.ofLp h) i
   simpa [hsVec] using this
 
+/- English proof (translation)
+Introduce `v`. Use `⟨∑ i, (innerSL ℂ (stdOrthonormalBasis ℂ Wq i)).smulRight (WithLp.ofLp v i), ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `(ext j`. Simplify using `[hsVec, ContinuousLinearMap.sum_apply, ContinuousLinearMap.smulRight_apply, OrthonormalBasis.inner_eq_ite, ite_smul, Finset.sum_ite_eq, Finset.sum_ite_eq'])`.
+
+Consider the case `(apply WithLp.ofLp_injective`. Use function extensionality and compare the values at `j`. Simplify using `[hsVec, ContinuousLinearMap.sum_apply, ContinuousLinearMap.smulRight_apply, OrthonormalBasis.inner_eq_ite, ite_smul, Finset.sum_ite_eq, Finset.sum_ite_eq'])`.
+-/
 theorem hsVec_surjective :
     Function.Surjective (hsVec : (Wq →L[ℂ] Wp) → PiLp 2 (fun _ : Fin (Module.finrank ℂ Wq) => Wp)) := by
   intro v
@@ -50,12 +58,18 @@ theorem hsVec_surjective :
 def hsE : (Wq →L[ℂ] Wp) ≃ₗ[ℂ] PiLp 2 (fun _ : Fin (Module.finrank ℂ Wq) => Wp) :=
   LinearEquiv.ofBijective hsVecL ⟨hsVec_injective, hsVec_surjective⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hsE_apply (A : Wq →L[ℂ] Wp) : hsE A = hsVec A := rfl
 
 def hsAdj (B : (Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wp)) : (Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wp) :=
   LinearMap.toContinuousLinearMap ((hsE.symm.toLinearMap ∘ₗ
     LinearMap.adjoint (hsE.toLinearMap ∘ₗ B.toLinearMap ∘ₗ hsE.symm.toLinearMap)) ∘ₗ hsE.toLinearMap)
 
+/- English proof (translation)
+Simplify using `only [hsInner, ← hsE_apply]`. Unfold `hsAdj`. Simplify using `only [LinearMap.coe_toContinuousLinearMap', LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply, LinearMap.adjoint_inner_left, ContinuousLinearMap.coe_coe, LinearEquiv.symm_apply_apply]`.
+-/
 theorem hsAdj_spec (B : (Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wp)) (A C : Wq →L[ℂ] Wp) :
     hsInner (B A) C = hsInner A (hsAdj B C) := by
   simp only [hsInner, ← hsE_apply]
@@ -70,6 +84,11 @@ section calculus1
 
 variable {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+Introduce `g₀ hg₀`. Take `⟨U, f', hU, hgU, hf', he⟩` from `h g₀ hg₀`. Use `⟨U, fun x => fderiv ℝ f' x (x * X), hU, hgU, ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `hf'.fderiv_of_isOpen (m := (m : WithTop ℕ∞)) hU (by push_cast; exact le_rfl)`. Conclude with `h1.clm_apply (mulRightRealCLM X).contDiff.contDiffOn`.
+
+Introduce `x hx hxG`. Establish `hd : DifferentiableAt ℝ f' x` using `(hf'.differentiableOn (by simp)).differentiableAt (hU.mem_nhds hx)`. Conclude with `(B5.hasDerivAt_of_ext hU hx hxG hX hd he).deriv`.
+-/
 theorem ckOn_RdV' {m : ℕ∞} {UU : Set (Mat k r)} {f : Mat k r → E} {X : Mat k r} (hX : inLie k r X)
     (h : CkOn (m + 1) UU f) : CkOn m UU (RdV X f) := by
   intro g₀ hg₀
@@ -82,6 +101,13 @@ theorem ckOn_RdV' {m : ℕ∞} {UU : Set (Mat k r)} {f : Mat k r → E} {X : Mat
       (hf'.differentiableOn (by simp)).differentiableAt (hU.mem_nhds hx)
     exact (B5.hasDerivAt_of_ext hU hx hxG hX hd he).deriv
 
+/- English proof (translation)
+Establish `key : ∀ (w : List (Mat k r)), (∀ X ∈ w, inLie k r X) → ∀ m : ℕ, m + w.length ≤ N → CkOn (m : ℕ∞) UU (Rw w f)`. Introduce `w`. Proceed by induction on `w with`. Consider the case `nil`. Introduce `_ m hle`.
+
+Introduce `g₀ hg`. Take `⟨U, f', hU, hgU, hf', hff⟩` from `h g₀ hg`. Apply the tactic sequence `exact ⟨U, f', hU, hgU, hf'.of_le (by norm_cast <;> simpa using hle), hff⟩`. Consider the case `cons X w ih`. Introduce `hw m hle`.
+
+Establish `hX : inLie k r X` using `hw X (by simp)`. Establish `h1` using `ih (fun Y hY => hw Y (by simp [hY])) (m + 1) (by simp at hle; omega)`. Establish `h2 : CkOn ((m : ℕ∞) + 1) UU (Rw w f)` using `by exact_mod_cast h1`. Conclude with `ckOn_RdV' hX h2`. Conclude with `key w hw m hle`.
+-/
 theorem ckOn_Rw' {UU : Set (Mat k r)} {f : Mat k r → E} {N : ℕ} (h : CkOn (N : ℕ∞) UU f) (w : List (Mat k r))
     (hw : ∀ X ∈ w, inLie k r X) (m : ℕ) (hle : m + w.length ≤ N) : CkOn (m : ℕ∞) UU (Rw w f) := by
   have key : ∀ (w : List (Mat k r)), (∀ X ∈ w, inLie k r X) → ∀ m : ℕ, m + w.length ≤ N →
@@ -101,6 +127,11 @@ theorem ckOn_Rw' {UU : Set (Mat k r)} {f : Mat k r → E} {N : ℕ} (h : CkOn (N
       exact ckOn_RdV' hX h2
   exact key w hw m hle
 
+/- English proof (translation)
+Introduce `w hw`. Proceed by induction on `w with`. Consider the case `nil => exact h`. Consider the case `cons X w ih`. Establish `hX : inLie k r X` using `hw X (by simp)`.
+
+Establish `h1` using `ih (fun Y hY => hw Y (by simp [hY]))`. Establish `h2 : CkOn ((⊤ : ℕ∞) + 1) UU (Rw w f)` using `by simpa using h1`. Conclude with `ckOn_RdV' hX h2`.
+-/
 theorem ckOn_Rw_top' {UU : Set (Mat k r)} {f : Mat k r → E} (h : CkOn ⊤ UU f) :
     ∀ (w : List (Mat k r)), (∀ X ∈ w, inLie k r X) → CkOn ⊤ UU (Rw w f) := by
   intro w hw
@@ -112,6 +143,9 @@ theorem ckOn_Rw_top' {UU : Set (Mat k r)} {f : Mat k r → E} (h : CkOn ⊤ UU f
     have h2 : CkOn ((⊤ : ℕ∞) + 1) UU (Rw w f) := by simpa using h1
     exact ckOn_RdV' hX h2
 
+/- English proof (translation)
+Take `⟨U, f', hU, hgU, hf', he⟩` from `h g hg`. Establish `hd : DifferentiableAt ℝ f' g` using `(hf'.differentiableOn (by simp)).differentiableAt (hU.mem_nhds hgU)`. Conclude with `(B5.hasDerivAt_of_ext hU hgU hgG hX hd he).differentiableAt.hasDerivAt`.
+-/
 theorem rdV_hasDerivAt' {UU : Set (Mat k r)} {f : Mat k r → E} (h : CkOn 1 UU f) {g X : Mat k r} (hg : g ∈ UU)
     (hgG : g ∈ GV k r) (hX : inLie k r X) :
     HasDerivAt (fun t : ℝ => f (g * NormedSpace.exp ((t : ℂ) • X))) (RdV X f g) 0 := by
@@ -120,6 +154,9 @@ theorem rdV_hasDerivAt' {UU : Set (Mat k r)} {f : Mat k r → E} (h : CkOn 1 UU 
     (hf'.differentiableOn (by simp)).differentiableAt (hU.mem_nhds hgU)
   exact (B5.hasDerivAt_of_ext hU hgU hgG hX hd he).differentiableAt.hasDerivAt
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => simpa using hasDerivAt_const t (0 : F)`. Consider the case `cons i L ih`. Simplify using `only [List.map_cons, List.sum_cons]`. Conclude with `(h i (by simp)).add (ih fun j hj => h j (by simp [hj]))`.
+-/
 theorem hasDerivAt_list_sum {ι F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F] (L : List ι) (g : ι → ℝ → F)
     (g' : ι → F) {t : ℝ} (h : ∀ i ∈ L, HasDerivAt (g i) (g' i) t) :
     HasDerivAt (fun s => (L.map fun i => g i s).sum) (L.map g').sum t := by
@@ -135,6 +172,9 @@ def splits {α : Type*} : List α → List (List α × List α)
   | [] => [([], [])]
   | X :: w => (splits w).map (fun uv => (X :: uv.1, uv.2)) ++ (splits w).map (fun uv => (uv.1, X :: uv.2))
 
+/- English proof (translation)
+The claim follows from `| [], uv, h => by simp [splits] at h; subst h; simp | X :: w, uv, h => by simp only [splits, List.mem_append, List.mem_map] at h rcases h with ⟨uv', h', rfl⟩ | ⟨uv', h', rfl⟩ · obtain ⟨a, b, c⟩ := splits_mem w uv' h' refine ⟨?_, fun Y hY => List.mem_cons_of_mem _ (b Y hY), by sim …`.
+-/
 theorem splits_mem {α : Type*} : ∀ (w : List α), ∀ uv ∈ splits w,
     (∀ X ∈ uv.1, X ∈ w) ∧ (∀ X ∈ uv.2, X ∈ w) ∧ uv.2.length ≤ w.length
   | [], uv, h => by simp [splits] at h; subst h; simp
@@ -154,6 +194,9 @@ theorem splits_mem {α : Type*} : ∀ (w : List α), ∀ uv ∈ splits w,
       · exact List.mem_cons_self
       · exact List.mem_cons_of_mem _ (b Y hY)
 
+/- English proof (translation)
+The claim follows from `| [] => by simp [splits] | X :: w => by simp only [splits, List.mem_append, List.mem_map] exact Or.inr ⟨([], w), splits_full w, rfl⟩`.
+-/
 theorem splits_full {α : Type*} : ∀ (w : List α), (([] : List α), w) ∈ splits w
   | [] => by simp [splits]
   | X :: w => by
@@ -164,6 +207,19 @@ section leib
 
 variable {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => intro _ _ x _`. Simplify using `[splits, Rw]`. Consider the case `cons X w ih`.
+
+Introduce `hw hlen x hx`. Establish `hwL : ∀ Y ∈ w, inLie k r Y` using `fun Y hY => hw Y (List.mem_cons_of_mem _ hY)`. Establish `hX : inLie k r X` using `hw X List.mem_cons_self`. Establish `hlen' : w.length + 1 ≤ N` using `by simpa using hlen`. Establish `hloc` using `PositiveOrbitOpen.rdV_local (f₁ := Rw w (fun y => A y (f y))) (f₂ := fun y => ((splits w).map fun uv => Rw uv.1 A y (Rw uv.2 f y)).sum) (PositiveOrbitOpen.omPlus_open z z') (fun y hy hyG => ih hwL (by omega) y ⟨hyG, hy⟩) hX x hx.2 hx.1`.
+
+Express the relevant statement in the definitionally equal form `RdV X (Rw w (fun y => A y (f y))) x = _`. Rewrite using `[hloc]`. Establish `hd : HasDerivAt (fun t : ℝ => ((splits w).map fun uv => Rw uv.1 A (x * NormedSpace.exp ((t : ℂ) • X)) (Rw uv.2 f (x * NormedSpace.exp ((t : ℂ) • X)))).sum) (((splits w).map fun uv => RdV X (Rw uv.1 A) x (Rw uv.2 f x) + Rw uv.1 A x (RdV X (Rw uv.2 f) x)).sum) 0`. Apply `hasDerivAt_list_sum (splits w) (fun uv t => Rw uv.1 A (x * NormedSpace.exp ((t : ℂ) • X)) (Rw uv.2 f (x * NormedSpace.exp ((t : ℂ) • X))))` to reduce the goal to its premises. Introduce `uv huv`.
+
+Take `⟨h1m, h2m, h2l⟩` from `splits_mem w uv huv`. Establish `h1 : HasDerivAt (fun t : ℝ => Rw uv.1 A (x * NormedSpace.exp ((t : ℂ) • X))) (RdV X (Rw uv.1 A) x) 0` using `rdV_hasDerivAt' (B5.ckOn_mono le_top (ckOn_Rw_top' hA uv.1 fun Y hY => hwL Y (h1m Y hY))) hx hx.1 hX`. Establish `h2 : HasDerivAt (fun t : ℝ => Rw uv.2 f (x * NormedSpace.exp ((t : ℂ) • X))) (RdV X (Rw uv.2 f) x) 0`. Establish `hc` using `ckOn_Rw' hf uv.2 (fun Y hY => hwL Y (h2m Y hY)) 1 (by omega)`. Conclude with `rdV_hasDerivAt' (by exact_mod_cast hc) hx hx.1 hX`.
+
+Establish `h1' : HasDerivAt (fun t : ℝ => ContinuousLinearMap.restrictScalarsL ℂ E E ℝ ℝ (Rw uv.1 A (x * NormedSpace.exp ((t : ℂ) • X)))) (ContinuousLinearMap.restrictScalarsL ℂ E E ℝ ℝ (RdV X (Rw uv.1 A) x)) 0` using `(ContinuousLinearMap.restrictScalarsL ℂ E E ℝ ℝ).hasFDerivAt.comp_hasDerivAt 0 h1`. Establish `h3` using `h1'.clm_apply h2`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `all_goals first | rfl | (rw [B5.curve_zero]; rfl)`. Express the relevant statement in the definitionally equal form `deriv (fun t : ℝ => ((splits w).map fun uv => Rw uv.1 A (x * NormedSpace.exp ((t : ℂ) • X)) (Rw uv.2 f (x * NormedSpace.exp ((t : ℂ) • X)))).sum) 0 = _`.
+
+Rewrite using `[hd.deriv]`. Simplify using `only [splits, List.map_append, List.map_map, List.sum_append, List.sum_map_add]`. Both sides reduce to the same expression.
+-/
 theorem rw_leib (z z' : Fin (2 * r + k + 1) → ℂ) (A : Mat k r → (E →L[ℂ] E)) (f : Mat k r → E) (N : ℕ)
     (hA : CkOn ⊤ (Om k r z z') A) (hf : CkOn (N : ℕ∞) (Om k r z z') f) :
     ∀ (w : List (Mat k r)), (∀ X ∈ w, inLie k r X) → w.length ≤ N → ∀ x ∈ Om k r z z',
@@ -217,16 +273,25 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
 def lieOr (v : List (Mat k r)) : List (Mat k r) := by
   classical exact if ∀ X ∈ v, inLie k r X then v else []
 
+/- English proof (translation)
+Unfold `lieOr`. Use `split_ifs with h`. Conclude with `h`. Simplify using the standard rewrite rules.
+-/
 theorem lieOr_lie (v : List (Mat k r)) : ∀ X ∈ lieOr v, inLie k r X := by
   unfold lieOr
   split_ifs with h
   · exact h
   · simp
 
+/- English proof (translation)
+Unfold `lieOr`. Rewrite using `[if_pos h]`.
+-/
 theorem lieOr_eq {v : List (Mat k r)} (h : ∀ X ∈ v, inLie k r X) : lieOr v = v := by
   unfold lieOr
   rw [if_pos h]
 
+/- English proof (translation)
+Unfold `lieOr`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem lieOr_len (v : List (Mat k r)) : (lieOr v).length ≤ v.length := by
   unfold lieOr
   split_ifs <;> simp
@@ -241,11 +306,23 @@ def adjTerm (T : DTerm k r Wp Wq) (uv : List (Mat k r) × List (Mat k r)) : DTer
 def adjOp (Θ : DiffOp k r Wp Wq) : DiffOp k r Wp Wq :=
   Θ.flatMap fun T => (splits T.word.reverse).map (adjTerm T)
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons x L ih => simp [max_le_iff, ih]`.
+-/
 theorem foldr_max_le_iff (L : List ℕ) (n : ℕ) : L.foldr max 0 ≤ n ↔ ∀ x ∈ L, x ≤ n := by
   induction L with
   | nil => simp
   | cons x L ih => simp [max_le_iff, ih]
 
+/- English proof (translation)
+Establish `key : ∀ (L : List ℕ) (x : ℕ), x ∈ L → x ≤ L.foldr max 0` using `fun L x hx => (foldr_max_le_iff L _).1 le_rfl x hx`. Unfold `opOrder`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[foldr_max_le_iff]`. Introduce `x hx`.
+
+Take `⟨T', hT', rfl⟩` from `List.mem_map.1 hx`. Unfold `adjOp at hT'`. Take `⟨T, hT, hT''⟩` from `List.mem_flatMap.1 hT'`. Take `⟨uv, huv, rfl⟩` from `List.mem_map.1 hT''`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[foldr_max_le_iff]`. Introduce `x hx`. Take `⟨T, hT, rfl⟩` from `List.mem_map.1 hx`. Establish `hlie : ∀ X ∈ T.word.reverse, inLie k r X` using `fun X hX => T.word_lie X (List.mem_reverse.1 hX)`. Establish `hmem : adjTerm T ([], T.word.reverse) ∈ adjOp Θ`.
+
+Unfold `adjOp`. Conclude with `List.mem_flatMap.2 ⟨T, hT, List.mem_map.2 ⟨_, splits_full _, rfl⟩⟩`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lieOr_eq hlie, List.length_reverse]`. Use `_ ≤ _ := key _ _ (List.mem_map.2 ⟨_, hmem, rfl⟩)`.
+-/
 theorem adjOp_order (Θ : DiffOp k r Wp Wq) : opOrder (adjOp Θ) = opOrder Θ := by
   have key : ∀ (L : List ℕ) (x : ℕ), x ∈ L → x ≤ L.foldr max 0 :=
     fun L x hx => (foldr_max_le_iff L _).1 le_rfl x hx
@@ -274,6 +351,17 @@ theorem adjOp_order (Θ : DiffOp k r Wp Wq) : opOrder (adjOp Θ) = opOrder Θ :=
           rw [lieOr_eq hlie, List.length_reverse]
       _ ≤ _ := key _ _ (List.mem_map.2 ⟨_, hmem, rfl⟩)
 
+/- English proof (translation)
+Establish `term : ∀ T ∈ Θ, (((splits T.word.reverse).map (adjTerm T)).map fun T' : DTerm k r Wp Wq => T'.coef g (Rw T'.word f g)).sum = ((-1 : ℂ) ^ T.word.length) • Rw T.word.reverse (fun x => T.coefAdj x (f x)) g`. Introduce `T hT`. Establish `hlen : T.word.reverse.length ≤ opOrder Θ`. Rewrite using `[List.length_reverse]`. Conclude with `(foldr_max_le_iff (Θ.map fun T => T.word.length) (opOrder Θ)).1 le_rfl T.word.length (List.mem_map.2 ⟨T, hT, rfl⟩)`.
+
+Establish `hlie : ∀ X ∈ T.word.reverse, inLie k r X` using `fun X hX => T.word_lie X (List.mem_reverse.1 hX)`. Rewrite using `[rw_leib D.z D.z' T.coefAdj f (opOrder Θ) (hS T hT).2 hf T.word.reverse hlie hlen g hg, List.smul_sum, List.map_map, List.map_map]`. Use `congr 1`. Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `uv huv`.
+
+Establish `hsub : ∀ X ∈ uv.2, inLie k r X` using `fun X hX => hlie X ((splits_mem _ uv huv).2.1 X hX)`. Simplify using `only [Function.comp_apply, adjTerm, lieOr_eq hsub, ContinuousLinearMap.smul_apply]`. Establish `gen : ∀ L : DiffOp k r Wp Wq, (∀ T ∈ L, T ∈ Θ) → ((L.flatMap fun T => (splits T.word.reverse).map (adjTerm T)).map fun T' : DTerm k r Wp Wq => T'.coef g (Rw T'.word f g)).sum = (L.map fun T => ((-1 : ℂ) ^ T.word.length) • Rw T.word.reverse (fun x => T.coefAdj x (f x)) g).sum`. Introduce `L`. Proceed by induction on `L with`.
+
+Consider the case `nil => intro _`. Simplify using the standard rewrite rules. Consider the case `cons T L ih`. Introduce `hL`. Simplify using `only [List.flatMap_cons, List.map_append, List.sum_append]`.
+
+Rewrite using `[term T (hL T (by simp)), ih (fun T' h' => hL T' (by simp [h']))]`. Simplify using the standard rewrite rules. Unfold `opApply opAdj adjOp`. Conclude with `gen Θ (fun T h => h)`.
+-/
 theorem adjOp_apply (D : RealPlaceData k r Wp Wq) (Θ : DiffOp k r Wp Wq) (hS : SmoothCoef (Om k r D.z D.z') Θ)
     (f : Mat k r → (Wq →L[ℂ] Wp)) (hf : CkOn (opOrder Θ : ℕ∞) (Om k r D.z D.z') f) (g : Mat k r)
     (hg : g ∈ Om k r D.z D.z') : opApply (adjOp Θ) f g = opAdj Θ f g := by
@@ -318,6 +406,9 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Fo
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Introduce `k r Wp Wq _ _ _ _ _ _ D Θ hS`. Conclude with `⟨JFxI.adjOp Θ, JFxI.adjOp_order Θ, fun f hf g hg => JFxI.adjOp_apply D Θ hS f hf g hg⟩`.
+-/
 theorem adjoint_leibniz_expansion : Formalism.FourierDecayAlt.P.JFxI.AdjLeibniz := by
   intro k r Wp Wq _ _ _ _ _ _ D Θ hS
   exact ⟨JFxI.adjOp Θ, JFxI.adjOp_order Θ, fun f hf g hg => JFxI.adjOp_apply D Θ hS f hf g hg⟩

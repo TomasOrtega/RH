@@ -19,6 +19,11 @@ open GlobalTheory.KeyKa
 
 namespace GlobalTheory.KeyKa
 
+/- English proof (translation)
+Rewrite using `[← PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim]`. Establish `h₁` using `(PrimeSpectrum.localization_comap_isInducing (R := R) (Localization.AtPrime m) m.primeCompl).comp (PrimeSpectrum.isEmbedding_comap_of_surjective _ (Ideal.Quotient.mk (Ideal.span (Set.range fun j => algebraMap R (Localization.AtPrime m) (f j)))) Ideal.Quotient.mk_surjective).isInd …`. Use `(h₁.codRestrict (s := PrimeSpectrum.zeroLocus (Set.range f)) fun p => ?_).topologicalKrullDim_le` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (algebraMap R (Localization.AtPrime m) (f j)) ∈ p.asIdeal`.
+
+Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span (Set.mem_range_self (f := fun j => algebraMap R (Localization.AtPrime m) (f j)) j))]`. Conclude with `p.asIdeal.zero_mem`.
+-/
 theorem ringKrullDim_localization_quotient_le {R : Type} [CommRing R] {k : ℕ} (f : Fin k → R) (m : Ideal R)
     [m.IsPrime] :
     ringKrullDim (Localization.AtPrime m ⧸
@@ -35,6 +40,11 @@ theorem ringKrullDim_localization_quotient_le {R : Type} [CommRing R] {k : ℕ} 
   rw [Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span (Set.mem_range_self (f := fun j => algebraMap R (Localization.AtPrime m) (f j)) j))]
   exact p.asIdeal.zero_mem
 
+/- English proof (translation)
+Unfold `Ideal.ofList`. Use `congr 1`. Use extensionality with `a`. Simplify using `only [Set.mem_setOf_eq, List.mem_take_iff_getElem, List.length_ofFn, List.getElem_ofFn, Set.mem_image]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨j, hj, rfl⟩`. Conclude with `⟨⟨j, by omega⟩, by simp only; omega, rfl⟩`. Introduce and unpack `⟨j, hj, rfl⟩`. Conclude with `⟨j, by have := j.2; omega, rfl⟩`.
+-/
 theorem ofList_take_ofFn {R : Type} [CommRing R] {g : ℕ} (f : Fin g → R) (i : ℕ) :
     Ideal.ofList ((List.ofFn f).take i) = Ideal.span (f '' {j | j.val < i}) := by
   unfold Ideal.ofList
@@ -47,6 +57,23 @@ theorem ofList_take_ofFn {R : Type} [CommRing R] {g : ℕ} (f : Fin g → R) (i 
   · rintro ⟨j, hj, rfl⟩
     exact ⟨j, by have := j.2; omega, rfl⟩
 
+/- English proof (translation)
+Use `⟨fun i hi => ?_⟩` and prove the remaining obligations. Establish `hi' : i < g` using `by simpa using hi`. Rewrite using `[isSMulRegular_quotient_iff_mem_of_smul_mem, ofList_take_ofFn, List.getElem_ofFn]`. Simplify using `only [smul_eq_mul, Ideal.mul_top]`. Introduce `a ha`.
+
+Use `Ideal.mem_of_localization_maximal fun m hm => ?_` and prove the remaining obligations. Establish `ha'` using `Ideal.mem_map_of_mem (algebraMap R (Localization.AtPrime m)) ha`. Rewrite `ha'` using `[map_mul]`. Distinguish the cases in `hall : ∀ j : Fin g, j.val ≤ i → f j ∈ m`. Take `⟨h₁, h₂⟩` from `hreg m`.
+
+Establish `hk : i + 1 ≤ g` using `hi'`. Establish `hd` using `(ringKrullDim_localization_quotient_le (fun j => f (Fin.castLE hk j)) m).trans (hdim (i + 1) hk ⟨⟨m, hm.isPrime⟩, by`. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `hall _ (by have := j.2; simp only [Fin.val_castLE]; omega)⟩)`. Establish `hr` using `GlobalTheory.isRegular_ofFn_of_ringKrullDim_quotient_add_le (Localization.AtPrime m) g (i + 1) (fun j => algebraMap R (Localization.AtPrime m) (f (Fin.castLE hk j))) h₂ (fun j => (IsLocalization.AtPrime.to_map_mem_maximal_iff _ m _).2 (hall _ (by have := j.2; simp only [Fin.val_c …`.
+
+Rewrite using `[← Nat.cast_add, Nat.sub_add_cancel hk]))`. Establish `h₃` using `hr.toIsWeaklyRegular.regular_mod_prev i (by simp)`. Rewrite `h₃` using `[isSMulRegular_quotient_iff_mem_of_smul_mem, ofList_take_ofFn, List.getElem_ofFn]`. Simplify using `only [smul_eq_mul, Ideal.mul_top] at h₃`. Establish `e : Ideal.map (algebraMap R (Localization.AtPrime m)) (Ideal.span (f '' {j | j.val < i})) = Ideal.span ((fun j : Fin (i + 1) => algebraMap R (Localization.AtPrime m) (f (Fin.castLE hk j))) '' {j | j.val < i})`.
+
+Rewrite using `[Ideal.map_span]`. Use `congr 1`. Use extensionality with `b`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨j, hj, rfl⟩, rfl⟩`.
+
+Conclude with `⟨⟨j, Nat.lt_succ_of_lt hj⟩, hj, rfl⟩`. Introduce and unpack `⟨j, hj, rfl⟩`. Conclude with `⟨_, ⟨Fin.castLE hk j, hj, rfl⟩, rfl⟩`. Rewrite `ha'`, the goal using `[e]`. Conclude with `h₃ _ ha'`.
+
+Use `push Not at hall`. Take `⟨j, hj, hjm⟩` from `hall`. Establish `hu : IsUnit (algebraMap R (Localization.AtPrime m) (f j))` using `IsLocalization.map_units _ (⟨f j, hjm⟩ : m.primeCompl)`. Break down `hj.eq_or_lt with hj | hj` into its components or cases. Substitute `hj` using the available equality.
+
+Conclude with `(Ideal.unit_mul_mem_iff_mem _ hu).1 ha'`. Rewrite using `[Ideal.eq_top_of_isUnit_mem _ (Ideal.mem_map_of_mem _ (Ideal.subset_span (Set.mem_image_of_mem f (show j ∈ {j : Fin g | j.val < i} from hj)))) hu]`. Discharge the goal by the elementary cases of `trivial`.
+-/
 theorem isWeaklyRegular_of_dim_zeroLocus {R : Type} [CommRing R] {g : ℕ} (f : Fin g → R)
     (hreg : ∀ (m : Ideal R) [m.IsMaximal],
       IsRegularLocalRing (Localization.AtPrime m) ∧ ringKrullDim (Localization.AtPrime m) = g)
@@ -102,6 +129,21 @@ theorem isWeaklyRegular_of_dim_zeroLocus {R : Type} [CommRing R] {g : ℕ} (f : 
     · rw [Ideal.eq_top_of_isUnit_mem _ (Ideal.mem_map_of_mem _ (Ideal.subset_span (Set.mem_image_of_mem f (show j ∈ {j : Fin g | j.val < i} from hj)))) hu]
       trivial
 
+/- English proof (translation)
+Introduce `hL K _ _ x n s V c h hn hZ hV`. Use `isWeaklyRegular_of_dim_zeroLocus _ (fun m _ => ?_) fun k hk hne => ?_` and prove the remaining obligations. Conclude with `GlobalTheory.isRegularLocalRing_and_ringKrullDim_eq_of_polAV K x.P Γ(x.P.A.left, V) hV.fromSpec m _ inferInstance`. Set `W : Set x.P.A.left` to `{y | ∀ j : Fin k, y ∉ Out.nonzeroLocus (s (Fin.castLE hk j))}`. Establish `hW : IsClosed W`.
+
+Establish `: W = ⋂ j : Fin k, (Out.nonzeroLocus (s (Fin.castLE hk j)) : Set x.P.A.left)ᶜ`. Use extensionality with `y`. Simplify using `[W]`. Rewrite using `[this]`. Conclude with `isClosed_iInter fun j => (Out.nonzeroLocus _).isOpen.isClosed_compl`.
+
+Establish `hmem : ∀ p : (PrimeSpectrum.zeroLocus (Set.range fun j => resG x.P.A.left h ((s (Fin.castLE hk j)).f c)) : Set (PrimeSpectrum Γ(x.P.A.left, V))), hV.fromSpec p.1 ∈ W`. Introduce `p j hj`. Establish `hpV : hV.fromSpec p.1 ∈ V`. Establish `: hV.fromSpec p.1 ∈ Set.range hV.fromSpec` using `⟨_, rfl⟩`. Rewrite `this` using `[hV.range_fromSpec]`. Then use the resulting hypothesis.
+
+Establish `h₁` using `(GlobalTheory.AmpleSpan.isUnit_gs_iff (𝟙 _) _ _ (h hpV) _).1 ((GlobalTheory.AmpleSpan.mem_nonzeroLocus_iff_gs (s (Fin.castLE hk j)) (𝟙 _) (hV.fromSpec p.1) (k := c) (h hpV)).1 hj)`. Establish `h₂ : hV.fromSpec p.1 ∈ x.P.A.left.basicOpen (resG x.P.A.left h ((s (Fin.castLE hk j)).f c))`. Use `x.P.A.left.basicOpen_res (show Γ(x.P.A.left, x.P.L.U c) from (s (Fin.castLE hk j)).f c) (homOfLE h).op` as an intermediate fact. Conclude with `this.ge ⟨hpV, h₁⟩`. Establish `h₃ : p.1 ∈ hV.fromSpec ⁻¹ᵁ x.P.A.left.basicOpen (resG x.P.A.left h ((s (Fin.castLE hk j)).f c))` using `h₂`.
+
+Rewrite `h₃` using `[hV.fromSpec_preimage_basicOpen]`. Conclude with `h₃ (p.2 ⟨j, rfl⟩)`. Establish `hind : Topology.IsInducing fun p : (PrimeSpectrum.zeroLocus (Set.range fun j => resG x.P.A.left h ((s (Fin.castLE hk j)).f c)) : Set (PrimeSpectrum Γ(x.P.A.left, V))) => hV.fromSpec p.1` using `hV.fromSpec.isOpenEmbedding.isInducing.comp Topology.IsInducing.subtypeVal`. Use `(hind.codRestrict hmem).topologicalKrullDim_le.trans ?_` and prove the remaining obligations. Take `⟨p, hp⟩` from `hne`.
+
+Use `GlobalTheory.T.topologicalKrullDim_le_of_finite_common_zeros hL K x n (x.P.g - k) (fun j => s ⟨k + j, by have := j.2; omega⟩) W hn hW ⟨_, hmem ⟨p, hp⟩⟩ (Set.Finite.subset hZ ?_)` and prove the remaining obligations. Introduce and unpack `y ⟨hy₁, hy₂⟩ i`. Distinguish the cases in `hi : i.val < k`. Conclude with `hy₁ ⟨i, hi⟩`. Use `hy₂ ⟨i - k, by have := i.2; omega⟩` as an intermediate fact.
+
+Simplify using `only [show k + (i.val - k) = i.val by omega] at this`. Conclude with `this`.
+-/
 theorem isWeaklyRegular_of_finZ : Out.Laws → ∀ (K : Type) [Field K] [IsAlgClosed K] (x : KeyIn K) (n : ℕ) (s : Fin x.P.g → RR x n) (V : x.P.A.left.Opens) (c : x.P.L.ι) (h : V ≤ x.P.L.U c), 1 ≤ n → FinZ x s → IsAffineOpen V → RingTheory.Sequence.IsWeaklyRegular Γ(x.P.A.left, V) (List.ofFn fun i => resG x.P.A.left h ((s i).f c)) := by
   intro hL K _ _ x n s V c h hn hZ hV
   refine isWeaklyRegular_of_dim_zeroLocus _ (fun m _ => ?_) fun k hk hne => ?_

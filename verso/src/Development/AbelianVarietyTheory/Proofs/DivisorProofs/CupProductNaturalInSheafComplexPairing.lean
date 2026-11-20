@@ -7,6 +7,15 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R _ I J K I' J' K' μ ν f g u hc E n m k hk a b`. Take `⟨α, rfl⟩` from `a.mk_surjective`. Take `⟨β, rfl⟩` from `b.mk_surjective`. Take `⟨γ, hγ⟩` from `(GlobalTheory.T.cup_eq_class_of_isAW R μ hk).1 α β`. Rewrite using `[(GlobalTheory.T.cup_eq_class_of_isAW R μ hk).2 α β γ hγ]`.
+
+Simplify using `only [cpush, cpost_mk]`. Use `((GlobalTheory.T.cup_eq_class_of_isAW R ν hk).2 _ _ _ ?_).symm` and prove the remaining obligations. Introduce `N w h U x`. Establish `hm` using `fun {L L' : Cx R} (φ : L ⟶ L') {d : ℤ} (c : Cochain ((chains R).obj E) L d) p s hs U x => (GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R (E := E) (I := L) (n := d)).2.2.2.2 φ c p s hs U x`. Express the relevant statement in the definitionally equal form `ev (γ.1.comp (Cochain.ofHom u) (add_zero k)) N w h U x = _`.
+
+Rewrite using `[hm, hγ N w h U x]`. Use `(map_sum ((u.f w).hom.app (op U)).hom _ _).trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Sec.map (u.f w) _ = _ • ν.mul U _ _ w _ (ev (α.1.comp (Cochain.ofHom f) (add_zero n)) _ _ _ U _) (ev (β.1.comp (Cochain.ofHom g) (add_zero m)) _ _ _ U _)`. Rewrite using `[hm, hm, Units.smul_def, Units.smul_def, ← hc]`.
+
+Conclude with `map_zsmul ((u.f w).hom.app (op U)).hom _ _`.
+-/
 theorem cup_natural_in_pairing : ∀ (R : Type) [CommRing R] {I J K I' J' K' : Cx R} (μ : Pair I J K) (ν : Pair I' J' K') (f : I ⟶ I') (g : J ⟶ J') (u : K ⟶ K'), μ.Compat ν f g u → ∀ (E : Spc) {n m k : ℤ} (hk : n + m = k) a b, cpush _ u k (μ.cup E hk a b) = ν.cup E hk (cpush _ f n a) (cpush _ g m b) := by
   intro R _ I J K I' J' K' μ ν f g u hc E n m k hk a b
   obtain ⟨α, rfl⟩ := a.mk_surjective

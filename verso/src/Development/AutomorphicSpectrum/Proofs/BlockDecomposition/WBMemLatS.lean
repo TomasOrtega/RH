@@ -12,14 +12,23 @@ namespace GlobalTheory.CompanionTheory.LTPer
 def latS {l : ℕ} [Fact l.Prime] (K' : IntermediateField ℚ_[l] (Om l)) : Subring (Formalism.Per6.BdRp l) :=
   Subring.closure (Set.range (wB l) ∪ (rB l) '' {x | x ∈ K' ∧ IsIntegral ℤ_[l] x})
 
+/- English proof (translation)
+The claim follows from `Subring.subset_closure (Or.inl ⟨a, rfl⟩)`.
+-/
 theorem wB_mem_latS {l : ℕ} [Fact l.Prime] (K' : IntermediateField ℚ_[l] (Om l)) (a : Wl l) :
     wB l a ∈ latS K' :=
   Subring.subset_closure (Or.inl ⟨a, rfl⟩)
 
+/- English proof (translation)
+The claim follows from `Subring.subset_closure (Or.inr ⟨x, ⟨hx, hi⟩, rfl⟩)`.
+-/
 theorem rB_mem_latS {l : ℕ} [Fact l.Prime] (K' : IntermediateField ℚ_[l] (Om l)) {x : Om l}
     (hx : x ∈ K') (hi : IsIntegral ℤ_[l] x) : rB l x ∈ latS K' :=
   Subring.subset_closure (Or.inr ⟨x, ⟨hx, hi⟩, rfl⟩)
 
+/- English proof (translation)
+The claim follows from `(GroundTheory.PAdicHodge.IsPerfectoidField.maximalIdeal_bDeRhamPlus (K := ℂ_[l]) (p := l)).symm`.
+-/
 theorem ker_thB_eq {l : ℕ} [Fact l.Prime] :
     RingHom.ker (thB l) = IsLocalRing.maximalIdeal (Formalism.Per6.BdRp l) :=
   (GroundTheory.PAdicHodge.IsPerfectoidField.maximalIdeal_bDeRhamPlus (K := ℂ_[l]) (p := l)).symm

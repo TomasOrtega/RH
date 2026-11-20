@@ -10,29 +10,44 @@ open Classical
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Rewrite using `[map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply]`.
+-/
 theorem hT_sum_left (D : Formalism.BasicNotions.D7) {ι : Type} (s : Finset ι) (c : ι → D.host.E) (e : ι → (VS D).V)
     (w : (VS D).V) : (VS D).hT (∑ a ∈ s, c a • e a) w = ∑ a ∈ s, star (c a) * (VS D).hT (e a) w := by
   rw [map_sum, LinearMap.sum_apply]
   refine Finset.sum_congr rfl fun a _ => ?_
   rw [LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply]
 
+/- English proof (translation)
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul]`.
+-/
 theorem hT_sum_right (D : Formalism.BasicNotions.D7) {ι : Type} (s : Finset ι) (c : ι → D.host.E) (e : ι → (VS D).V)
     (v : (VS D).V) : (VS D).hT v (∑ a ∈ s, c a • e a) = ∑ a ∈ s, c a * (VS D).hT v (e a) := by
   rw [map_sum]
   refine Finset.sum_congr rfl fun a _ => ?_
   rw [map_smul, smul_eq_mul]
 
+/- English proof (translation)
+Establish `h` using `(VS D).herm.eq x y`. Rewrite `h` using `[starRingEnd_apply]`. Conclude with `h.symm`.
+-/
 theorem hT_swap (D : Formalism.BasicNotions.D7) (x y : (VS D).V) : (VS D).hT y x = star ((VS D).hT x y) := by
   have h := (VS D).herm.eq x y
   rw [starRingEnd_apply] at h
   exact h.symm
 
+/- English proof (translation)
+Unfold `pW`. Normalize the expressions using the abelian group laws.
+-/
 theorem pW_dec (D : Formalism.BasicNotions.D7) (v : (VS D).V) :
     v = pW D v + ∑ a, (VS D).hT (D.sp.hypF a) v • D.sp.hypE a + ∑ a, (VS D).hT (D.sp.hypE a) v • D.sp.hypF a
       - ((VS D).hT D.sp.zm v / (D.sp.T : D.host.E)) • D.sp.zm := by
   unfold pW
   abel
 
+/- English proof (translation)
+Establish `h : (Δ.conjTranspose * β + β.conjTranspose * Δ) * R = (0 : Matrix (Fin (r + 1)) (Fin (r + 1)) K) * R` using `by rw [hM]`. Rewrite `h` using `[Matrix.add_mul, Matrix.mul_assoc, Matrix.mul_assoc, hR, hΔR, Matrix.mul_one, Matrix.mul_zero, add_zero, Matrix.zero_mul]`. Rewrite using `[← Matrix.conjTranspose_conjTranspose Δ, h, Matrix.conjTranspose_zero]`.
+-/
 theorem delta_zero {K : Type} [Field K] [StarRing K] {r : ℕ} (β Δ : Matrix (Fin r) (Fin (r + 1)) K)
     (R : Matrix (Fin (r + 1)) (Fin r) K) (hR : β * R = 1) (hΔR : Δ * R = 0)
     (hM : Δ.conjTranspose * β + β.conjTranspose * Δ = 0) : Δ = 0 := by
@@ -41,6 +56,43 @@ theorem delta_zero {K : Type} [Field K] [StarRing K] {r : ℕ} (β Δ : Matrix (
     add_zero, Matrix.zero_mul] at h
   rw [← Matrix.conjTranspose_conjTranspose Δ, h, Matrix.conjTranspose_zero]
 
+/- English proof (translation)
+Introduce `D T T' F0 Λ hF Z R hR Wf Af hWf hAf`. Take `⟨-, -, hFe, -, c, hc, hFz⟩` from `hF`. Establish `hE : ∀ x, Good D T' F0 Λ Z x → ∀ (a : Fin D.R.rS) b, (VS D).hT (D.sp.hypE a) (fr D x b) = betaZ D Z a b`. Introduce `x hx a b`. Establish `h` using `hx.2.1 (Fin.castSucc a) b`.
+
+Simplify using `only [brS, FlagG.fvec, Fin.snoc_castSucc, hFe] at h`. Simplify `h` using `[betaZ]`. Establish `hzm : ∀ x, Good D T' F0 Λ Z x → ∀ b, star c * (VS D).hT D.sp.zm (fr D x b) = Z (Fin.last _) b`. Introduce `x hx b`. Establish `h` using `hx.2.1 (Fin.last _) b`.
+
+Simplify using `only [brS, FlagG.fvec, Fin.snoc_last, hFz] at h`. Rewrite `h` using `[LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply]`. Conclude with `h`. Establish `pW_sub : ∀ v v' : (VS D).V, pW D (v - v') = pW D v - pW D v'`. Introduce `v v'`.
+
+Simplify using `only [pW, map_sub, sub_smul, Finset.sum_sub_distrib, sub_div]`. Normalize the expressions using the abelian group laws. Use `Set.Finite.of_injOn (f := fun x => (pWf D x, alM D x * R)) (t := Wf ×ˢ Af) ?_ ?_ (hWf.prod hAf)` and prove the remaining obligations. Introduce `x hx`. Conclude with `⟨hx.2.1, hx.2.2⟩`.
+
+Introduce `x hx x' hx' hxx'`. Take `⟨hp, hal⟩` from `Prod.mk.inj hxx'`. Take `⟨Δ, hΔ⟩ : ∃ Δ, Δ = alM D x - alM D x'` from `⟨_, rfl⟩`. Establish `huE : ∀ a b, (VS D).hT (D.sp.hypE a) (fr D x b - fr D x' b) = 0`. Introduce `a b`.
+
+Rewrite using `[map_sub, hE x hx.1, hE x' hx'.1, sub_self]`. Establish `huz : ∀ b, (VS D).hT D.sp.zm (fr D x b - fr D x' b) = 0`. Introduce `b`. Establish `hsc : star c ≠ 0` using `star_ne_zero.mpr hc`. Establish `h0 : star c * ((VS D).hT D.sp.zm (fr D x b) - (VS D).hT D.sp.zm (fr D x' b)) = 0`.
+
+Rewrite using `[mul_sub, hzm x hx.1, hzm x' hx'.1, sub_self]`. Rewrite using `[map_sub]`. Conclude with `(mul_eq_zero.mp h0).resolve_left hsc`. Establish `huF : ∀ a b, (VS D).hT (D.sp.hypF a) (fr D x b - fr D x' b) = Δ a b`. Introduce `a b`.
+
+Rewrite using `[hΔ, Matrix.sub_apply, map_sub]`. Both sides reduce to the same expression. Establish `hupW : ∀ b, pW D (fr D x b - fr D x' b) = 0`. Introduce `b`. Rewrite using `[pW_sub]`.
+
+Establish `h` using `congrFun hp b`. Simplify using `only [pWf] at h`. Rewrite using `[h, sub_self]`. Establish `hu : ∀ b, fr D x b - fr D x' b = ∑ a, Δ a b • D.sp.hypE a`. Introduce `b`.
+
+Use `conv_lhs => rw [pW_dec D (fr D x b - fr D x' b)]`. Simplify using `only [hupW, huE, huz, huF, zero_smul, Finset.sum_const_zero, zero_div, zero_add, add_zero, sub_zero]`. Establish `hΔR : Δ * R = 0`. Rewrite using `[hΔ, Matrix.sub_mul, hal, sub_self]`. Establish `hM : Δ.conjTranspose * betaZ D Z + (betaZ D Z).conjTranspose * Δ = 0`.
+
+Use extensionality with `a b`. Establish `hG : (VS D).hT (fr D x a) (fr D x b) = (VS D).hT (fr D x' a) (fr D x' b)`. Rewrite using `[hx.1.2.2 a b, hx'.1.2.2 a b]`. Establish `hxa : fr D x a = fr D x' a + ∑ c, Δ c a • D.sp.hypE c`. Rewrite using `[← hu a]`.
+
+Normalize the expressions using the abelian group laws. Establish `hxb : fr D x b = fr D x' b + ∑ c, Δ c b • D.sp.hypE c`. Rewrite using `[← hu b]`. Normalize the expressions using the abelian group laws. Rewrite `hG` using `[hxa, hxb]`.
+
+Simplify using `only [map_add, LinearMap.add_apply] at hG`. Establish `h1 : (VS D).hT (∑ c, Δ c a • D.sp.hypE c) (∑ c, Δ c b • D.sp.hypE c) = 0`. Rewrite using `[hT_sum_left]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Rewrite using `[hT_sum_right]`.
+
+Simplify using `[D.sp.hyp_ee]`. Establish `h2 : (VS D).hT (fr D x' a) (∑ c, Δ c b • D.sp.hypE c) = ((betaZ D Z).conjTranspose * Δ) a b`. Rewrite using `[hT_sum_right, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_apply, ← hE x' hx'.1 c a, hT_swap D (D.sp.hypE c) (fr D x' a)]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h3 : (VS D).hT (∑ c, Δ c a • D.sp.hypE c) (fr D x' b) = (Δ.conjTranspose * betaZ D Z) a b`. Rewrite using `[hT_sum_left, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_apply, hE x' hx'.1 c b]`.
+
+Rewrite using `[Matrix.add_apply, Matrix.zero_apply, ← h2, ← h3]`. Rewrite `hG` using `[h1, add_zero]`. Take the linear combination `hG`. Establish `hΔ0 : Δ = 0` using `delta_zero (betaZ D Z) Δ R hR hΔR hM`. Establish `hfr : ∀ b, fr D x b = fr D x' b`.
+
+Introduce `b`. Establish `h` using `hu b`. Rewrite `h` using `[hΔ0]`. Simplify using `only [Matrix.zero_apply, zero_smul, Finset.sum_const_zero] at h`. Conclude with `sub_eq_zero.mp h`.
+
+Use `Prod.ext (funext fun i => ?_) ?_` and prove the remaining obligations. Establish `h` using `hfr (Fin.castSucc i)`. Simplify `h` using `[fr]`. Establish `h` using `hfr (Fin.last _)`. Simplify `h` using `[fr]`.
+-/
 theorem finite_level_index : FinK := by
   intro D T T' F0 Λ hF Z R hR Wf Af hWf hAf
   obtain ⟨-, -, hFe, -, c, hc, hFz⟩ := hF

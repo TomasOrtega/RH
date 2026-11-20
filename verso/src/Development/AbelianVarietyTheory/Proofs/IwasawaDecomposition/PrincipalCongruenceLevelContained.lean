@@ -23,6 +23,17 @@ namespace GlobalTheory.LatCongImage
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Proceed by induction on `hx using Subring.closure_induction with`. Consider the case `mem y hy`. Apply `Subring.subset_closure` to reduce the goal to its premises. Break down `hy with ⟨a, ha, rfl⟩ | ⟨z, rfl⟩` into its components or cases.
+
+Use `right`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Use `show (Algebra.TensorProduct.comm _ _ _) (a ⊗ₜ[_] (1 : E)) = _`. Rewrite using `[Algebra.TensorProduct.comm_tmul]`. Use `left`.
+
+Use `⟨z, ?_⟩` and prove the remaining obligations. Use `show (Algebra.TensorProduct.comm _ _ _) ((1 : FiniteAdeleRing _ _) ⊗ₜ[_] (z : E)) = _`. Rewrite using `[Algebra.TensorProduct.comm_tmul]`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `one => rw [map_one]`. Conclude with `one_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [map_neg]`.
+
+Conclude with `neg_mem hx`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`. Conclude with `mul_mem hx hy`.
+-/
 theorem swap_mem [IsCMField E] (F : Subfield E) (h : F = maximalRealSubfield E) {x : FiniteAdeleRing (𝓞 F) F ⊗[F] E}
     (hx : x ∈ intT F) : swapCast h x ∈ ReciprocityTheory.Aut.ALint E := by
   subst h
@@ -44,10 +55,24 @@ theorem swap_mem [IsCMField E] (F : Subfield E) (h : F = maximalRealSubfield E) 
   | neg x _ hx => rw [map_neg]; exact neg_mem hx
   | mul x y _ _ hx hy => rw [map_mul]; exact mul_mem hx hy
 
+/- English proof (translation)
+Rewrite using `[Algebra.TensorProduct.natCast_def']`.
+-/
 theorem natCast_eq_tmul (F : Subfield E) (m : ℕ) :
     (m : FiniteAdeleRing (𝓞 F) F ⊗[F] E) = (1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] (m : E) := by
   rw [Algebra.TensorProduct.natCast_def']
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨1, one_pos, by simp⟩`. Consider the case `tmul a e`. Take `⟨d₁, hd₁, ha⟩` from `GlobalTheory.AdelicMatLat.exists_nat_mul_mem F a`. Take `⟨d₂, hd₂, r, hr⟩` from `GlobalTheory.AdelicMatLat.exists_nat_denom E e`.
+
+Use `⟨d₁ * d₂, Nat.mul_pos hd₁ hd₂, ?_⟩` and prove the remaining obligations. Establish `e1 : ((d₁ * d₂ : ℕ) : FiniteAdeleRing (𝓞 F) F ⊗[F] E) * (a ⊗ₜ[F] e) = ((d₁ : FiniteAdeleRing (𝓞 F) F) * a) ⊗ₜ[F] (1 : E) * (1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] (r : E)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul, hr, Nat.cast_mul]`. Establish `c1 : (d₁ : FiniteAdeleRing (𝓞 F) F ⊗[F] E) = (d₁ : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] (1 : E)` using `Algebra.TensorProduct.natCast_def _`. Establish `c2 : (d₂ : FiniteAdeleRing (𝓞 F) F ⊗[F] E) = (1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] (d₂ : E)` using `Algebra.TensorProduct.natCast_def' _`.
+
+Rewrite using `[c1, c2, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Rewrite using `[e1]`. Conclude with `mul_mem (Subring.subset_closure (Or.inl ⟨_, ha, rfl⟩)) (Subring.subset_closure (Or.inr ⟨r, rfl⟩))`. Consider the case `add x y hx hy`. Take `⟨d₁, hd₁, h₁⟩` from `hx`.
+
+Take `⟨d₂, hd₂, h₂⟩` from `hy`. Use `⟨d₁ * d₂, Nat.mul_pos hd₁ hd₂, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_add, Nat.cast_mul]`. Use `add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm (d₁ : FiniteAdeleRing (𝓞 F) F ⊗[F] E), mul_assoc]`.
+
+Conclude with `mul_mem (natCast_mem _ _) h₁`. Rewrite using `[mul_assoc]`. Conclude with `mul_mem (natCast_mem _ _) h₂`.
+-/
 theorem exists_nat_mul_mem (F : Subfield E) (x : FiniteAdeleRing (𝓞 F) F ⊗[F] E) :
     ∃ d : ℕ, 0 < d ∧ (d : FiniteAdeleRing (𝓞 F) F ⊗[F] E) * x ∈ intT F := by
   induction x using TensorProduct.induction_on with
@@ -77,6 +102,9 @@ theorem exists_nat_mul_mem (F : Subfield E) (x : FiniteAdeleRing (𝓞 F) F ⊗[
     · rw [mul_assoc]
       exact mul_mem (natCast_mem _ _) h₂
 
+/- English proof (translation)
+Use `choose d hd r hr using fun i => GlobalTheory.AdelicMatLat.exists_nat_denom E (x i)`. Use `⟨∏ i, d i, Finset.prod_pos fun i _ => hd i, fun i => ⟨((∏ j ∈ Finset.univ.erase i, d j : ℕ) : 𝓞 E) * r i, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ i), Nat.cast_mul, mul_assoc, ← hr i]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem exists_nat_denom_family {ι : Type} [Fintype ι] (x : ι → E) :
     ∃ d : ℕ, 0 < d ∧ ∀ i, ∃ r : 𝓞 E, (r : E) = d * x i := by
   classical
@@ -86,9 +114,17 @@ theorem exists_nat_denom_family {ι : Type} [Fintype ι] (x : ι → E) :
   push_cast
   rfl
 
+/- English proof (translation)
+The claim follows from `(algebraMap_smul D.host.E s w).symm`.
+-/
 theorem smul_eq {D : D7} (V : HSp D) (s : 𝓞 D.host.E) (w : V.V) : s • w = (s : D.host.E) • w :=
   (algebraMap_smul D.host.E s w).symm
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.NatSmulMemLattice.exists_nat_smul_mem_lattice`. Consider the case `exact _root_.GlobalTheory.NatSmulMemLattice.exists_nat_smul_mem_lattice`. Consider the case `(apply _root_.GlobalTheory.NatSmulMemLattice.exists_nat_smul_mem_lattice <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.NatSmulMemLattice.exists_nat_smul_mem_lattice <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.NatSmulMemLattice.exists_nat_smul_mem_lattice <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.NatSmulMemLattice.exists_nat_smul_mem_lattice ..)`.
+-/
 theorem exists_nat_smul_mem_L0 {D : D7} (V : HSp D) (v : V.V) : ∃ d : ℕ, 0 < d ∧ (d : 𝓞 D.host.E) • v ∈ V.L0 := by
   first
   | exact @_root_.GlobalTheory.NatSmulMemLattice.exists_nat_smul_mem_lattice
@@ -98,6 +134,9 @@ theorem exists_nat_smul_mem_L0 {D : D7} (V : HSp D) (v : V.V) : ∃ d : ℕ, 0 <
   | (intros; apply @_root_.GlobalTheory.NatSmulMemLattice.exists_nat_smul_mem_lattice <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.NatSmulMemLattice.exists_nat_smul_mem_lattice ..)
 
+/- English proof (translation)
+Use `choose d hd h using fun j => exists_nat_smul_mem_L0 V (V.frame j)`. Use `⟨∏ j, d j, Finset.prod_pos fun j _ => hd j, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ j), Nat.cast_mul, mul_smul]`. Conclude with `V.L0.smul_mem _ (h j)`.
+-/
 theorem exists_nat_smul_frame {D : D7} (V : HSp D) :
     ∃ d : ℕ, 0 < d ∧ ∀ j, (d : 𝓞 D.host.E) • V.frame j ∈ V.L0 := by
   classical
@@ -106,6 +145,13 @@ theorem exists_nat_smul_frame {D : D7} (V : HSp D) :
   rw [← Finset.prod_erase_mul _ _ (Finset.mem_univ j), Nat.cast_mul, mul_smul]
   exact V.L0.smul_mem _ (h j)
 
+/- English proof (translation)
+Take `⟨d, hd, h⟩` from `exists_nat_smul_frame V`. Use `⟨d, hd, fun j => ?_⟩` and prove the remaining obligations. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises. Use `⟨1, fun v => ?_, _, h j, ?_⟩` and prove the remaining obligations. Conclude with `one_mem _`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[smul_eq V, map_smul, V.frame.repr_self, Finsupp.smul_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[Pi.single_eq_same, Finsupp.single_eq_same, smul_eq_mul, mul_one, natCast_eq_tmul]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[Pi.single_eq_of_ne hij]`. Simplify using `[Ne.symm hij]`.
+-/
 theorem exists_single_mem_latHat {D : D7} (V : HSp D) : ∃ d : ℕ, 0 < d ∧
     ∀ j, (Pi.single j (d : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) :
       Fin V.rank → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) ∈ Formalism.L2.Pj.latHat V := by
@@ -124,6 +170,23 @@ theorem exists_single_mem_latHat {D : D7} (V : HSp D) : ∃ d : ℕ, 0 < d ∧
     · rw [Pi.single_eq_of_ne hij]
       simp [Ne.symm hij]
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `V.standardTuple_isLattice.fg`. Take `⟨d, hd, hr⟩` from `exists_nat_denom_family (E := D.host.E) (fun p : S × Fin V.rank => V.frame.repr (p.1 : V.V) p.2)`. Establish `hL : ∀ x ∈ V.L0, ∀ i, ∃ r : 𝓞 D.host.E, (r : D.host.E) = d * V.frame.repr x i`. Introduce `x hx`. Rewrite `hx` using `[← hS]`.
+
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => intro i`. Conclude with `hr (⟨x, hx⟩, i)`. Consider the case `zero => intro i; exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+
+Introduce `i`. Take `⟨a, ha⟩` from `hx i`. Take `⟨b, hb⟩` from `hy i`. Conclude with `⟨a + b, by rw [map_add, Finsupp.add_apply, mul_add, ← ha, ← hb]; push_cast; rfl⟩`. Consider the case `smul c x _ hx`.
+
+Introduce `i`. Take `⟨a, ha⟩` from `hx i`. Use `⟨c * a, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_eq V, map_smul, Finsupp.smul_apply, smul_eq_mul, ← mul_assoc, mul_comm (d : D.host.E), mul_assoc, ← ha]`. Conclude with `map_mul (algebraMap (𝓞 D.host.E) D.host.E) c a`.
+
+Use `⟨d, hd, fun z hz => ?_⟩` and prove the remaining obligations. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, x, hx, rfl⟩` from `hz`. Introduce `i`.
+
+Take `⟨r, hr'⟩` from `hL x hx i`. Establish `e : (d : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) * (a ⊗ₜ[D.host.F] V.frame.repr x i) = (a ⊗ₜ[D.host.F] (1 : D.host.E)) * ((1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) ⊗ₜ[D.host.F] (r : D.host.E))`. Rewrite using `[natCast_eq_tmul, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one, one_mul, hr']`. Rewrite using `[e]`. Conclude with `mul_mem (Subring.subset_closure (Or.inl ⟨a, ha, rfl⟩)) (Subring.subset_closure (Or.inr ⟨r, rfl⟩))`.
+
+Consider the case `zero => intro i`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy => intro i`. Rewrite using `[Pi.add_apply, mul_add]`. Conclude with `add_mem (hx i) (hy i)`.
+
+Consider the case `neg x _ hx => intro i`. Rewrite using `[Pi.neg_apply, mul_neg]`. Conclude with `neg_mem (hx i)`.
+-/
 theorem exists_nat_mul_mem_of_latHat {D : D7} (V : HSp D) : ∃ d : ℕ, 0 < d ∧
     ∀ z ∈ Formalism.L2.Pj.latHat V, ∀ i, (d : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) * z i ∈ intT D.host.F := by
   classical
@@ -163,6 +226,9 @@ theorem exists_nat_mul_mem_of_latHat {D : D7} (V : HSp D) : ∃ d : ℕ, 0 < d �
   | add x y _ _ hx hy => intro i; rw [Pi.add_apply, mul_add]; exact add_mem (hx i) (hy i)
   | neg x _ hx => intro i; rw [Pi.neg_apply, mul_neg]; exact neg_mem (hx i)
 
+/- English proof (translation)
+Use `choose d hd h using fun i => exists_nat_mul_mem F (x i)`. Use `⟨∏ i, d i, Finset.prod_pos fun i _ => hd i, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ i), Nat.cast_mul, mul_assoc]`. Conclude with `mul_mem (natCast_mem _ _) (h i)`.
+-/
 theorem exists_nat_mul_mem_family (F : Subfield E) {ι : Type} [Fintype ι] (x : ι → FiniteAdeleRing (𝓞 F) F ⊗[F] E) :
     ∃ d : ℕ, 0 < d ∧ ∀ i, (d : FiniteAdeleRing (𝓞 F) F ⊗[F] E) * x i ∈ intT F := by
   classical
@@ -171,12 +237,18 @@ theorem exists_nat_mul_mem_family (F : Subfield E) {ι : Type} [Fintype ι] (x :
   rw [← Finset.prod_erase_mul _ _ (Finset.mem_univ i), Nat.cast_mul, mul_assoc]
   exact mul_mem (natCast_mem _ _) (h i)
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Conclude with `sum_mem fun l _ => mul_mem (hA i l) (hB l j)`.
+-/
 theorem mul_apply_mem {R : Type} [CommRing R] (S : Subring R) {a b c : ℕ} (A : Matrix (Fin a) (Fin b) R)
     (B : Matrix (Fin b) (Fin c) R) (hA : ∀ i j, A i j ∈ S) (hB : ∀ i j, B i j ∈ S) (i : Fin a) (j : Fin c) :
     (A * B) i j ∈ S := by
   rw [Matrix.mul_apply]
   exact sum_mem fun l _ => mul_mem (hA i l) (hB l j)
 
+/- English proof (translation)
+Rewrite using `[← map_natCast (algebraMap F (FiniteAdeleRing (𝓞 F) F ⊗[F] E))]`. Conclude with `(IsUnit.mk0 _ (Nat.cast_ne_zero.2 hm.ne')).map _`.
+-/
 theorem natCast_isUnit (F : Subfield E) {m : ℕ} (hm : 0 < m) : IsUnit (m : FiniteAdeleRing (𝓞 F) F ⊗[F] E) := by
   rw [← map_natCast (algebraMap F (FiniteAdeleRing (𝓞 F) F ⊗[F] E))]
   exact (IsUnit.mk0 _ (Nat.cast_ne_zero.2 hm.ne')).map _
@@ -187,6 +259,37 @@ open GlobalTheory.LatCongImage in
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `D V n P hF hstd N hN`. Take `⟨⟨β, β', hββ', hβ'β, hmat⟩, -⟩` from `hstd`. Take `⟨d₁, hd₁, h₁⟩` from `exists_single_mem_latHat V`. Take `⟨d₂, hd₂, h₂⟩` from `exists_nat_mul_mem_of_latHat V`. Take `⟨d, hd, hβd⟩` from `exists_nat_mul_mem_family D.host.F (fun p : (Fin V.rank × Fin n) ⊕ (Fin n × Fin V.rank) => Sum.elim (fun q => β q.1 q.2) (fun q => β' q.1 q.2) p)`.
+
+Use `⟨N * d ^ 2 * d₁ * d₂, by positivity, ?_⟩` and prove the remaining obligations. Introduce `k hk hc`. Take `⟨κ, rfl⟩` from `P.onto k hk`. Use `⟨κ, ?_, rfl⟩` and prove the remaining obligations. Use `set M := finMat D.sp.cm.sig V.gram (P.ψ κ) with hM`.
+
+Establish `hent : ∀ a b, ∃ y ∈ intT D.host.F, (M - 1) a b = ((N * d ^ 2 : ℕ) : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) * y`. Introduce `a b`. Take `⟨y, hy, e⟩` from `hc _ (h₁ b)`. Use `⟨(d₂ : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) * y a, h₂ y hy a, ?_⟩` and prove the remaining obligations. Establish `e1` using `congrFun e a`.
+
+Establish `e2 : (finHom V (P.ψ κ)).1.mulVec (Pi.single b (d₁ : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)) a - (Pi.single b (d₁ : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) : Fin V.rank → _) a …`. Establish `hfm : (finHom V (P.ψ κ)).1 = M` using `rfl`. Rewrite using `[hfm, Matrix.mulVec_single, Matrix.sub_apply, Matrix.one_apply, Pi.single_apply, sub_mul]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite `e1` using `[Pi.sub_apply, e2, Pi.smul_apply, nsmul_eq_mul]`.
+
+Establish `hu` using `natCast_isUnit (E := D.host.E) D.host.F hd₁`. Apply `hu.mul_left_injective` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[e1]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `choose Y hY hYe using hent`. Establish `hmk` using `hmat κ`. Rewrite `hmk` using `[← hM]`. Establish `hK : κ.1.1.map (swapCast hF).symm - 1 = β' * (M - 1) * β`.
+
+Rewrite using `[hmk, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hβ'β]`. Use `congr 1`. Rewrite using `[show β' * (β * (κ.1.1.map (swapCast hF).symm) * β') * β = (β' * β) * (κ.1.1.map (swapCast hF).symm) * (β' * β) by simp only [Matrix.mul_assoc], hβ'β, Matrix.one_mul, Matrix.mul_one]`. Establish `hMY : M - 1 = ((N * d ^ 2 : ℕ) : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) • Matrix.of Y`. Use extensionality with `a b`.
+
+Rewrite using `[hYe a b, Matrix.smul_apply, Matrix.of_apply, smul_eq_mul]`. Establish `hK2 : ∀ i j, ∃ w ∈ intT D.host.F, (κ.1.1.map (swapCast hF).symm - 1) i j = (N : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) * w`. Introduce `i j`. Use `⟨(((d : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) • β') * Matrix.of Y * ((d : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) • β)) i j, ?_, ?_⟩` and prove the remaining obligations. Use `mul_apply_mem _ _ _ (fun a b => mul_apply_mem _ _ _ ?_ ?_ a b) ?_ i j` and prove the remaining obligations.
+
+Introduce `a b`. Simplify using `using hβd (Sum.inr (a, b))`. Introduce `a b`. Conclude with `hY a b`. Introduce `a b`.
+
+Simplify using `using hβd (Sum.inl (a, b))`. Rewrite using `[hK, hMY]`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_apply, smul_eq_mul]`. Generalize the expression as in `(β' * Matrix.of Y * β) i j = x`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hC : ∀ i j, ∃ y ∈ ReciprocityTheory.Aut.ALint D.host.E, (κ.1 : Matrix (Fin n) (Fin n) (ReciprocityTheory.Aut.AL D.host.E)) i j - (1 : Matrix (Fin n) (Fin n) (ReciprocityTheory.Aut.AL D.host.E)) i j = (N : ReciprocityTheory.Aut.AL D.host.E) * y`. Introduce `i j`. Take `⟨w, hw, e⟩` from `hK2 i j`. Use `⟨swapCast hF w, swap_mem D.host.F hF hw, ?_⟩` and prove the remaining obligations.
+
+Establish `e'` using `congrArg (swapCast hF) e`. Rewrite `e'` using `[Matrix.sub_apply, map_sub, Matrix.map_apply, RingEquiv.apply_symm_apply, map_mul, map_natCast]`. Rewrite using `[← e']`. Use `congr 1`. Rewrite using `[Matrix.one_apply, Matrix.one_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Use `⟨?_, hC⟩` and prove the remaining obligations. Use `show ∀ i j, (κ.1 : Matrix (Fin n) (Fin n) (ReciprocityTheory.Aut.AL D.host.E)) i j ∈ ReciprocityTheory.Aut.ALint D.host.E`. Introduce `i j`. Take `⟨y, hy, e⟩` from `hC i j`.
+
+Rewrite `e` using `[sub_eq_iff_eq_add]`. Rewrite using `[e]`. Use `add_mem (mul_mem (natCast_mem _ _) hy) ?_` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`.
+
+Use `exacts [one_mem _, zero_mem _]`.
+-/
 theorem GlobalTheory.LatCongImage.finCong_mem_levN : ∀ (D : D7) (V : HSp D) (n : ℕ) (P : principalLevelFrame.RowPsi V n) (hF : D.host.F = maximalRealSubfield D.host.E), StdFrame hF P → ∀ N : ℕ, 0 < N → ∃ N' : ℕ, 0 < N' ∧ ∀ k ∈ GfC V, GlobalTheory.Member.FinCong V N' k → k ∈ principalLevelFrame.levN P N := by
   intro D V n P hF hstd N hN
   obtain ⟨⟨β, β', hββ', hβ'β, hmat⟩, -⟩ := hstd

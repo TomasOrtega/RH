@@ -15,6 +15,9 @@ open Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.MainNoti
 def cpy (E : Type) [Field E] (a b : ℕ) : Sp E a →ₗ[E] Sp E b :=
   LinearMap.pi fun l : Fin b => atNL E a l.1
 
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Simplify using `[cpy, atNL, l.2]`.
+-/
 theorem cpy_self (E : Type) [Field E] (a : ℕ) (x : Sp E a) : cpy E a a x = x := by
   funext l
   simp [cpy, atNL, l.2]
@@ -29,6 +32,9 @@ def HasWt (lam : D.what₂.Tau → Fin N → ℤ) (f : Y → ℂ) : Prop :=
   ∀ (y y' : Y) (b : D.what₂.Tau → Matrix (Fin N) (Fin N) ℂ), (∀ τ, (b τ).BlockTriangular id) →
     (∀ τ, frm y' τ = frm y τ * b τ) → f y' = (∏ τ, ∏ k, b τ k k ^ lam τ k) * f y
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨0, 0, fun y => by simp [GL3Theta.evFr]⟩, fun _ _ _ _ _ => by simp⟩`.
+-/
 theorem hasWt_zero (lam : D.what₂.Tau → Fin N → ℤ) : HasWt D frm lam 0 :=
   ⟨⟨0, 0, fun y => by simp [GL3Theta.evFr]⟩, fun _ _ _ _ _ => by simp⟩
 
@@ -210,6 +216,9 @@ def UnfTie : Prop :=
     (D.chTw u μ).unf i c c' (fun y => GL3Theta.evFr D Q (T.O.frm i y)) y' =
       GL3Theta.applyAt0 D (GL3Theta.polD D T.O.dgen Q (T.O.frm (i + 1) y')) (T.O.Th i c c')
 
+/- English proof (translation)
+Introduce `i hi` and use `(h i hi).2`.
+-/
 theorem unfTie_of_liftTie (Tr : TaylorLogMetric.Tor D) (e : TaylorLogMetric.FamE D) (h : ∀ i < D.R.m, GL3Theta.liftTie D Tr e T.O i) : T.UnfTie :=
   fun i hi => (h i hi).2
 

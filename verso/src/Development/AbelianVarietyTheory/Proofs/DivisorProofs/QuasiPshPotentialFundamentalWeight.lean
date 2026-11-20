@@ -18,6 +18,19 @@ open Filter Topology ReciprocityTheory.AnForm
 
 namespace GlobalTheory.FundWeightExt
 
+/- English proof (translation)
+Introduce `x j z hz w`. Establish `hzt : z ∈ (A.chart j).target` using `hz.1`. Establish `hyx : (A.chart j).symm z ∈ Θ.U x` using `hz.2.1`. Establish `hyZ : (A.chart j).symm z ∉ Z` using `hz.2.2`. Take `⟨Wn, hWo, hyW, G, hG, hGe⟩` from `hΘ.2 x ((A.chart j).symm z) ((A.chart j).symm z) ⟨hyx, Θ.mem_U _⟩`.
+
+Establish `hOo : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' (Wn ∩ Θ.U x ∩ Θ.U ((A.chart j).symm z) ∩ Zᶜ))` using `(A.chart j).isOpen_inter_preimage_symm (((hWo.inter (Θ.isOpen_U x)).inter (Θ.isOpen_U _)).inter hZ.isOpen_compl)`. Establish `hzO : z ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' (Wn ∩ Θ.U x ∩ Θ.U ((A.chart j).symm z) ∩ Zᶜ)` using `⟨hzt, ⟨⟨⟨hyW, hyx⟩, Θ.mem_U _⟩, hyZ⟩⟩`. Establish `hO : ∀ᶠ z' in 𝓝 z, z' ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' (Wn ∩ Θ.U x ∩ Θ.U ((A.chart j).symm z) ∩ Zᶜ)` using `hOo.mem_nhds hzO`. Establish `h1 : ContDiffAt ℝ 2 (fun z' => Θ.φ ((A.chart j).symm z) ((A.chart j).symm z')) z`. Establish `hU : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' Θ.U ((A.chart j).symm z))` using `(A.chart j).isOpen_inter_preimage_symm (Θ.isOpen_U _)`.
+
+Conclude with `((hΘ.1 ((A.chart j).symm z) j).contDiffAt (hU.mem_nhds ⟨hzt, Θ.mem_U _⟩)).of_le (by norm_cast)`. Establish `h2 : ContDiffAt ℝ 2 (fun z' => ph ((A.chart j).symm z')) z`. Establish `hU : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' Zᶜ)` using `(A.chart j).isOpen_inter_preimage_symm hZ.isOpen_compl`. Conclude with `((hph j).contDiffAt (hU.mem_nhds ⟨hzt, hyZ⟩)).of_le (by norm_cast)`. Establish `hGa : AnalyticAt ℂ (G ∘ (A.chart j).symm) z` using `hG j z ⟨hzt, hyW⟩`.
+
+Establish `h3 : ContDiffAt ℝ 2 (fun z' => (G ((A.chart j).symm z')).re) z` using `Complex.reCLM.contDiff.contDiffAt.comp z (hGa.restrictScalars (𝕜 := ℝ)).contDiffAt`. Establish `h4 : levi (fun z' => ((G ∘ (A.chart j).symm) z').re) z w = 0` using `levi_re_analytic hGa w`. Establish `hg0 : 0 ≤ levi (fun z' => Θ.φ ((A.chart j).symm z) ((A.chart j).symm z') + ph ((A.chart j).symm z')) z w` using `hpsh j z hzt hyZ w`. Establish `hev : (fun z' => 2 * Θ.φ x ((A.chart j).symm z') + 2 * ph ((A.chart j).symm z')) =ᶠ[𝓝 z] fun z' => (Θ.φ ((A.chart j).symm z) ((A.chart j).symm z') + ph ((A.chart j).symm z')) + 1 * ((Θ.φ ((A.chart j).symm z) ((A.chart j).symm z') + ph ((A.chart j).symm z')) + 2 * (G ((A.chart j). …` using `by filter_upwards [hO] with z' hz'`. Use `hGe ((A.chart j).symm z') ⟨⟨hz'.2.1.1.1, hz'.2.1.1.2⟩, hz'.2.1.2⟩` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `show 0 ≤ levi (fun z' => 2 * Θ.φ x ((A.chart j).symm z') + 2 * ph ((A.chart j).symm z')) z w`. Rewrite using `[levi_congr hev, levi_add_smul 1 (h1.add h2) ((h1.add h2).add (contDiffAt_const.mul h3)), levi_add_smul 2 (h1.add h2) h3]`. Establish `h4' : levi (fun z' => (G ((A.chart j).symm z')).re) z w = 0` using `h4`. Rewrite using `[h4']`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sumNonnegOn_of_pshOff {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X)
     (Θ : LocPot X) (ph : X → ℝ) (Z : Set X) (hZ : IsClosed Z) (hΘ : IsPotential A Θ)
     (hph : A.SmoothOn Zᶜ ph) (hpsh : GlobalTheory.Mean4O.PshOff A Z (Θ + LocPot.ofFun ph)) :
@@ -66,6 +79,23 @@ theorem sumNonnegOn_of_pshOff {e : ℕ} {X : Type} [TopologicalSpace X] (A : Fin
   rw [h4']
   linarith
 
+/- English proof (translation)
+Introduce `h2 hH D O hC hf A T H hR c a τ i hi`. Take `⟨hSize, -⟩` from `GlobalTheory.T.fibre_size_and_range_bound h2 hH D O hC hf A T H hR c`. Take `⟨-, L, s, hB, m, W, hW⟩` from `GlobalTheory.T.component_metric_from_section D O hC A T H hR c a`. Take `⟨hLpot, hsec, hle, hZ, -, hr⟩` from `hB`. Take `⟨-, hsm, hpsh, C, hCb⟩` from `hSize`.
+
+Establish `hopn : GlobalTheory.IndefiniteRowSideFullHecke.QuasiPlurisubharmonic.opn s = ((T.M c).Z a)ᶜ`. Use extensionality with `y`. Rewrite using `[hZ]`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.QuasiPlurisubharmonic.opn, ReciprocityTheory.AnForm.P.bdry]`. Establish `hbd : GlobalTheory.IndefiniteRowSideFullHecke.QuasiPlurisubharmonic.IsBoundary ((T.M c).A a) L s W`.
+
+Use `⟨hLpot, hsec, hW, fun y => ?_⟩` and prove the remaining obligations. Use `hle y` as an intermediate fact. Unfold `logNormSec at this`. Conclude with `(Real.log_nonpos_iff (by positivity)).1 this`. Establish `hP` using `hpsh (fund τ i) (by`.
+
+Introduce `τ' a' b' hab`. Unfold `fund`. Distinguish the cases in `hb : τ' = τ ∧ b' ≤ i`. Rewrite using `[if_pos hb, if_pos ⟨hb.1, le_trans hab hb.2⟩]`. Apply the tactic sequence `rw [if_neg hb]; split_ifs <;> norm_num) a`.
+
+Establish `hsmooth : ((T.M c).A a).SmoothOn (GlobalTheory.IndefiniteRowSideFullHecke.QuasiPlurisubharmonic.opn s) (fun z => 2 * (T.F c).ph (fund τ i) a z)`. Rewrite using `[hopn]`. Introduce `j`. Conclude with `contDiffOn_const.mul (hsm (fund τ i) a j)`. Establish `hsum` using `GlobalTheory.FundWeightExt.sumNonnegOn_of_pshOff ((T.M c).A a) ((T.F c).th (fund τ i) a) ((T.F c).ph (fund τ i) a) ((T.M c).Z a) ((T.M c).bd a).1 (T.th_pot c _ a) (hsm (fund τ i) a) hP`.
+
+Rewrite `hsum` using `[← hopn]`. Establish `hgrow : ∀ y ∈ GlobalTheory.IndefiniteRowSideFullHecke.QuasiPlurisubharmonic.opn s, 2 * (T.F c).ph (fund τ i) a y ≤ (2 * (C * ‖fund τ i‖)) * Real.log (GlobalTheory.IndefiniteRowSideFullHecke.QuasiPlurisubharmonic.rad L s y)`. Introduce `y hy`. Establish `hy' : y ∉ (T.M c).Z a` using `by rw [hopn] at hy; exact hy`. Establish `h1` using `(hCb (fund τ i) a y hy').1`.
+
+Rewrite `h1` using `[hr y hy']`. Establish `h2 : (T.F c).ph (fund τ i) a y ≤ C * ‖fund τ i‖ * Real.log (GlobalTheory.IndefiniteRowSideFullHecke.QuasiPlurisubharmonic.rad L s y)` using `(le_abs_self _).trans h1`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨-, hEq, hQ⟩` from `GlobalTheory.T.extension_statement _ ((T.M c).X a) ((T.M c).A a) L s m W hbd ((T.F c).th (fund τ i) a) (fun z => 2 * (T.F c).ph (fund τ i) a z) (2 * (C * ‖fund τ i‖)) (T.th_pot c _ a) hsmooth hsum hgrow`. Use `⟨_, hQ, fun z hz => ?_⟩` and prove the remaining obligations.
+
+Conclude with `hEq z (by rw [hopn]; exact hz)`.
+-/
 theorem exists_quasiPsh_ext : Hypotheses2 → HypothesesH → OnObj fun D O _ T _ R => ∀ c a τ (i : Fin O.N), (i : ℕ) + 1 < O.N → ∃ v : (T.M c).X a → EReal, GlobalTheory.IndefiniteRowSideFullHecke.QuasiPlurisubharmonic.IsQuasiPsh ((T.M c).A a) ((T.F c).th (fund τ i) a) v ∧ ∀ z, z ∉ (T.M c).Z a → v z = ((2 * (T.F c).ph (fund τ i) a z : ℝ) : EReal) := by
   intro h2 hH D O hC hf A T H hR c a τ i hi
   obtain ⟨hSize, -⟩ := GlobalTheory.T.fibre_size_and_range_bound h2 hH D O hC hf A T H hR c

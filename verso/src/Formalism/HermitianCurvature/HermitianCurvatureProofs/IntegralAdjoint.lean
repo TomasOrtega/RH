@@ -22,6 +22,11 @@ def bInt {Wq : Type} [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
   (star (psi k r z c (Matrix.of p.2)) * ⟪w0, σ (t⁻¹ * γ * Matrix.of p.2 * Matrix.of p.1) y⟫_ℂ) •
     π (Matrix.of p.1)⁻¹
 
+/- English proof (translation)
+Take `⟨p1, p2⟩` from `p`. Simplify using `only at hp1 hp2`. Establish `hh : Matrix.of p1 ∈ UH (Hpk k r)` using `hp1.1`. Establish `hn : Matrix.of p2 ∈ UH (Hpk k r)` using `hp2.1`. Establish `hinv : ((Matrix.of p1)⁻¹)⁻¹ = Matrix.of p1` using `Matrix.inv_eq_left_inv (PI.WBL.Cv.uh_inv hh).1`.
+
+Establish `hmul : σ ((Matrix.of p1)⁻¹ * (Matrix.of p2)⁻¹ * t) = (σ ((Matrix.of p1)⁻¹ * (Matrix.of p2)⁻¹)).comp (σ t)` using `hU.2.1 _ (PI.WBL.Cv.uh_mul (PI.WBL.Cv.uh_inv hh).2.2 (PI.WBL.Cv.uh_inv hn).2.2) t ht`. Establish `hpsi` using `Formalism.QuantumDeterminants.BesselUnipotentEquiv.star_psi_inv z c hz (Matrix.of p2) hp2`. Use `show (⟪a, σ ((Matrix.of p1)⁻¹ * (Matrix.of p2)⁻¹) (σ t w0)⟫_ℂ * star (psi k r z c (Matrix.of p2)⁻¹)) • π ((Matrix.of p1)⁻¹)⁻¹ = (psi k r z c (Matrix.of p2) * ⟪a, σ ((Matrix.of p1)⁻¹ * (Matrix.of p2)⁻¹ * t) w0⟫_ℂ) • π (Matrix.of p1)`. Rewrite using `[hinv, hpsi, hmul, ContinuousLinearMap.comp_apply, mul_comm]`.
+-/
 theorem aInt_eq {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (c : ℂ) (π : Mx k r → (Wp →L[ℂ] Wp))
     {σ : Mx k r → (H →L[ℂ] H)} (hU : PI.WBL.Cv.SigU σ) (w0 a : H) {t : Mx k r} (ht : t ∈ UH (Hpk k r))
@@ -43,6 +48,13 @@ theorem aInt_eq {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
       π (Matrix.of p1)
   rw [hinv, hpsi, hmul, ContinuousLinearMap.comp_apply, mul_comm]
 
+/- English proof (translation)
+Use `haveI : IsFiniteMeasureOnCompacts μW := ⟨fun K hK => hW.finite_compact K hK⟩`. Use `haveI : IsFiniteMeasureOnCompacts μN := ⟨fun K hK => hN.finite_compact K hK⟩`. Rewrite using `[ae_iff]`. Apply `measure_mono_null (t := ((UWset k r z)ᶜ : Set (Mt k r)) ×ˢ (Set.univ : Set (Mt k r)) ∪ (Set.univ : Set (Mt k r)) ×ˢ ((Nset k r)ᶜ : Set (Mt k r)))` to reduce the goal to its premises. Introduce `p hp`.
+
+Simplify using `only [Set.mem_setOf_eq, not_and_or] at hp`. Break down `hp with hp | hp` into its components or cases. Conclude with `Or.inl ⟨hp, Set.mem_univ _⟩`. Conclude with `Or.inr ⟨Set.mem_univ _, hp⟩`. Apply `measure_union_null` to reduce the goal to its premises.
+
+Rewrite using `[Measure.prod_prod, hW.conc, zero_mul]`. Rewrite using `[Measure.prod_prod, hN.conc, mul_zero]`.
+-/
 private theorem ae_mem_uwset_prod_nset_of_isHaarOn {z : Fin (2 * r + k + 1) → ℂ} {μW μN : Measure (Mt k r)}
     (hW : B.IsHaarOn (UWset k r z) μW) (hN : B.IsHaarOn (Nset k r) μN) :
     ∀ᵐ p ∂(μW.prod μN), Matrix.of p.1 ∈ UWset k r z ∧ Matrix.of p.2 ∈ Nset k r := by
@@ -60,6 +72,13 @@ private theorem ae_mem_uwset_prod_nset_of_isHaarOn {z : Fin (2 * r + k + 1) → 
     · rw [Measure.prod_prod, hW.conc, zero_mul]
     · rw [Measure.prod_prod, hN.conc, mul_zero]
 
+/- English proof (translation)
+Use `haveI : IsFiniteMeasureOnCompacts μW := ⟨fun K hK => hW.finite_compact K hK⟩`. Use `haveI : IsFiniteMeasureOnCompacts μN := ⟨fun K hK => hN.finite_compact K hK⟩`. Establish `hmp : MeasurePreserving (Prod.map (B7.invM (k` using `k) (r := r)) (B7.invM (k := k) (r := r))) (μW.prod μN) (μW.prod μN) := (measurePreserving_invM_of_isHaarOn hW).prod (mp_inv_N hN)`. Establish `hae : (fun p => beInt z c π σ (σ t w0) a (Prod.map B7.invM B7.invM p)) =ᵐ[μW.prod μN] aInt z c π σ w0 a t` using `by filter_upwards [ae_mem_uwset_prod_nset_of_isHaarOn hW hN] with p hp`. Conclude with `aInt_eq hz c π hU w0 a ht hp.1 hp.2`.
+
+Establish `hcomp : Integrable (fun p => beInt z c π σ (σ t w0) a (Prod.map B7.invM B7.invM p)) (μW.prod μN)` using `(hmp.integrable_comp hI.aestronglyMeasurable).mpr hI`. Use `⟨hcomp.congr hae, ?_⟩` and prove the remaining obligations. Rewrite using `[← integral_congr_ae hae]`. Unfold `be`. Use `conv_rhs => rw [← hmp.map_eq]`.
+
+Rewrite using `[integral_map hmp.measurable.aemeasurable (by rw [hmp.map_eq]; exact hI.aestronglyMeasurable)]`.
+-/
 theorem sideA {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp]
     {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (c : ℂ) (π : Mx k r → (Wp →L[ℂ] Wp))
     {σ : Mx k r → (H →L[ℂ] H)} (hU : PI.WBL.Cv.SigU σ) {μW μN : Measure (Mt k r)}
@@ -85,6 +104,11 @@ theorem sideA {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Co
   conv_rhs => rw [← hmp.map_eq]
   rw [integral_map hmp.measurable.aemeasurable (by rw [hmp.map_eq]; exact hI.aestronglyMeasurable)]
 
+/- English proof (translation)
+Set `L : (E →L[ℂ] F) ≃ₗᵢ[ℝ] (F →L[ℂ] E)` to `(ContinuousLinearMap.adjoint (𝕜 := ℂ) (E := E) (F := F)).toIsometryEquiv.toRealLinearIsometryEquivOfMapZero (map_zero (ContinuousLinearMap.adjoint (𝕜 := ℂ) (E := E) (F := F)))`. Establish `hL : ∀ g, L g = ContinuousLinearMap.adjoint g` using `fun g => rfl`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `L.toLinearIsometry.toContinuousLinearMap.integrable_comp hf` as an intermediate fact. Simplify `this` using `[hL]`.
+
+Use `L.toLinearIsometry.toContinuousLinearMap.integral_comp_comm hf` as an intermediate fact. Simplify `this` using `[hL]`.
+-/
 theorem integral_adjoint {α : Type*} [MeasurableSpace α] {μ : Measure α} {E F : Type*}
     [NormedAddCommGroup E] [InnerProductSpace ℂ E] [CompleteSpace E]
     [NormedAddCommGroup F] [InnerProductSpace ℂ F] [CompleteSpace F]
@@ -101,6 +125,17 @@ theorem integral_adjoint {α : Type*} [MeasurableSpace α] {μ : Measure α} {E 
   · have := L.toLinearIsometry.toContinuousLinearMap.integral_comp_comm hf
     simpa [hL] using this
 
+/- English proof (translation)
+Take `⟨p1, p2⟩` from `p`. Simplify using `only at hp1 hp2`. Unfold `bInt aInt`. Establish `hh : Matrix.of p1 ∈ UH (Hpk k r)` using `hp1.1`. Establish `hn : Matrix.of p2 ∈ UH (Hpk k r)` using `hp2.1`.
+
+Take `⟨-, hh2, hhi⟩` from `PI.WBL.Cv.uh_inv hh`. Take `⟨-, hn2, hni⟩` from `PI.WBL.Cv.uh_inv hn`. Take `⟨-, hγ2, hγi⟩` from `PI.WBL.Cv.uh_inv hγ`. Take `⟨ht1, -, hti⟩` from `PI.WBL.Cv.uh_inv ht`. Establish `hXU : (Matrix.of p1)⁻¹ * (Matrix.of p2)⁻¹ * (γ⁻¹ * t) ∈ UH (Hpk k r)` using `PI.WBL.Cv.uh_mul (PI.WBL.Cv.uh_mul hhi hni) (PI.WBL.Cv.uh_mul hγi ht)`.
+
+Establish `hYU : t⁻¹ * γ * Matrix.of p2 * Matrix.of p1 ∈ UH (Hpk k r)` using `PI.WBL.Cv.uh_mul (PI.WBL.Cv.uh_mul (PI.WBL.Cv.uh_mul hti hγ) hn) hh`. Establish `hXY : (Matrix.of p1)⁻¹ * (Matrix.of p2)⁻¹ * (γ⁻¹ * t) * (t⁻¹ * γ * Matrix.of p2 * Matrix.of p1) = 1`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc t t⁻¹, ht1, Matrix.one_mul, ← Matrix.mul_assoc γ⁻¹ γ, hγ2, Matrix.one_mul, ← Matrix.mul_assoc (Matrix.of p2)⁻¹ (Matrix.of p2), hn2, Matrix.one_mul, hh2]`. Establish `hσ : σ ((Matrix.of p1)⁻¹ * (Matrix.of p2)⁻¹ * (γ⁻¹ * t)) (σ (t⁻¹ * γ * Matrix.of p2 * Matrix.of p1) y) = y`.
+
+Rewrite using `[← ContinuousLinearMap.comp_apply, ← hU.2.1 _ hXU _ hYU, hXY, hU.1, ContinuousLinearMap.one_apply]`. Set `LX : H →ₗᵢ[ℂ] H` to `{ toLinearMap := (σ ((Matrix.of p1)⁻¹ * (Matrix.of p2)⁻¹ * (γ⁻¹ * t))).toLinearMap norm_map' := hU.2.2 _ hXU }`. Establish `hinner : ⟪σ ((Matrix.of p1)⁻¹ * (Matrix.of p2)⁻¹ * (γ⁻¹ * t)) w0, y⟫_ℂ = ⟪w0, σ (t⁻¹ * γ * Matrix.of p2 * Matrix.of p1) y⟫_ℂ` using `by conv_lhs => rw [← hσ]`. Conclude with `LX.inner_map_map w0 _`. Rewrite using `[map_smulₛₗ, adjoint_pi hrep hun hp1]`.
+
+Use `congr 1`. Rewrite using `[map_mul, inner_conj_symm, hinner]`. Both sides reduce to the same expression.
+-/
 theorem bInt_eq {Wq : Type} [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [CompleteSpace Wq]
     {z : Fin (2 * r + k + 1) → ℂ} (c : ℂ) {π : Mx k r → (Wq →L[ℂ] Wq)} (hrep : IsCRepOn (UWset k r z) π)
     (hun : ∀ h ∈ UWset k r z, ∀ v, ‖π h v‖ = ‖v‖)
@@ -142,6 +177,11 @@ theorem bInt_eq {Wq : Type} [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [
   rw [map_mul, inner_conj_symm, hinner]
   rfl
 
+/- English proof (translation)
+Establish `hγt : γ⁻¹ * t ∈ UH (Hpk k r)` using `PI.WBL.Cv.uh_mul (PI.WBL.Cv.uh_inv hγ).2.2 ht`. Take `⟨hAi, hAe⟩` from `sideA hz c π hU hW hN w0 y hγt hI`. Take `⟨hBi, hBe⟩` from `integral_adjoint hAi`. Establish `hae : bInt z c π σ w0 y t γ =ᵐ[μW.prod μN] fun p => ContinuousLinearMap.adjoint (aInt z c π σ w0 y (γ⁻¹ * t) p)` using `by filter_upwards [ae_mem_uwset_prod_nset_of_isHaarOn hW hN] with p hp`. Conclude with `bInt_eq c hrep hun hU w0 y ht hγ hp.1 hp.2`.
+
+Use `⟨hBi.congr hae.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_congr_ae hae, hBe, hAe, hadj]`.
+-/
 theorem sideB {Wq : Type} [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [CompleteSpace Wq]
     {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (c : ℂ) {π : Mx k r → (Wq →L[ℂ] Wq)}
     (hrep : IsCRepOn (UWset k r z) π) (hun : ∀ h ∈ UWset k r z, ∀ v, ‖π h v‖ = ‖v‖)

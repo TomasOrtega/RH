@@ -11,6 +11,15 @@ open scoped InnerProductSpace ComplexOrder ContDiff
 
 namespace GlobalTheory.Dec
 
+/- English proof (translation)
+Establish `hd : 0 < ∏ v, d v` using `Finset.prod_pos fun v _ => (hF v).1`. Take `⟨hi, hs, hdense⟩` from `B.tens_spec`. Use `isFdegG_of_total B.I.Ginf (muInf B.I) B.Hs B.σs (∏ v, d v) (Set.range B.tens) (GlobalTheory.HilbTensorUnitary.isURep_rows B hU) hd hdense ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩ _ ⟨y, rfl⟩ _ ⟨x', rfl⟩ _ ⟨y', rfl⟩`. Establish `hfun : (fun g : B.I.Ginf => ⟪B.tens y, B.σs g (B.tens x)⟫_ℂ * star ⟪B.tens y', B.σs g (B.tens x')⟫_ℂ) = fun g => ∏ v, (coefOn (B.σ v) (x v) (y v) (g v) * star (coefOn (B.σ v) (x' v) (y' v) (g v)))`.
+
+Use function extensionality and compare the values at `g`. Rewrite using `[hs, hs, hi, hi, star_prod, ← Finset.prod_mul_distrib]`. Both sides reduce to the same expression. Establish `hloc` using `fun v => (hF v).2 (x v) (y v) (x' v) (y' v)`. Rewrite using `[hfun]`.
+
+Unfold `muInf`. Use `⟨Integrable.fintype_prod_dep fun v => (hloc v).1, ?_⟩` and prove the remaining obligations. Use `(integral_fintype_prod_eq_prod (μ := fun v => muG (B.I.ε v)) (fun v g => coefOn (B.σ v) (x v) (y v) g * star (coefOn (B.σ v) (x' v) (y' v) g))).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_congr rfl fun v _ => (hloc v).2, hi, hi, Finset.prod_div_distrib, Finset.prod_mul_distrib]`. Use `push_cast`.
+
+Both sides reduce to the same expression.
+-/
 theorem isFdegG_tensor (B : RowsAut) (d : InfinitePlace B.I.F → ℝ)
     (hU : ∀ v, IsURepOn (UJset (B.I.ε v)) (B.σ v)) (hF : ∀ v, IsFdeg (muG (B.I.ε v)) (B.σ v) (d v)) :
     IsFdegG (muInf B.I) B.σs (∏ v, d v) := by
@@ -35,6 +44,15 @@ theorem isFdegG_tensor (B : RowsAut) (d : InfinitePlace B.I.F → ℝ)
   push_cast
   rfl
 
+/- English proof (translation)
+Introduce `B d hB`. Establish `hU : ∀ v, IsURepOn (UJset (B.I.ε v)) (B.σ v)` using `fun v => (hB v).2.1.2.2.1`. Establish `hF : ∀ v, IsFdeg (muG (B.I.ε v)) (B.σ v) (d v)` using `fun v => (hB v).2.2.2`. Establish `hG` using `isFdegG_tensor B d hU hF`. Take `⟨hi, hs, -⟩` from `B.tens_spec`.
+
+Use `⟨GlobalTheory.HilbTensorUnitary.isURep_rows B hU, (isIrr_and_dense_of_isFdegG _ _ _ _ _ hG).1, hG, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : ⟪B.tens B.w, B.tens B.w⟫_ℂ = 1`. Rewrite using `[hi]`. Use `Finset.prod_eq_one fun v _ => ?_` and prove the remaining obligations. Rewrite using `[inner_self_eq_norm_sq_to_K, (hB v).2.2.1.1]`.
+
+Simplify using the standard rewrite rules. Establish `h2 : ‖B.tens B.w‖ ^ 2 = 1`. Rewrite using `[← inner_self_eq_norm_sq (𝕜 := ℂ), h1]`. Simplify using the standard rewrite rules. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h2`.
+
+Introduce `g`. Rewrite using `[hs, hi]`. Both sides reduce to the same expression.
+-/
 theorem tensorRep : TensorRep := by
   intro B d hB
   have hU : ∀ v, IsURepOn (UJset (B.I.ε v)) (B.σ v) := fun v => (hB v).2.1.2.2.1

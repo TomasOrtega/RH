@@ -25,8 +25,14 @@ def reframe {R : Type} [CommRing R] (x : KeyInput R) (th : LB.Sec x.P.L) (hth : 
     (b : Fin x.P.g → Tan x.P.A) (hb : IsLieBasis b) : KeyInput R :=
   { x with th := th, th_ne := hth, b := b, b_basis := hb }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example {R : Type} [CommRing R] (x : KeyInput R) : reframe x x.th x.th_ne x.b x.b_basis = x := rfl
 
+/- English proof (translation)
+Introduce `i`. Simplify using the standard rewrite rules.
+-/
 example {R : Type} [CommRing R] (A : Over (Sp R)) {L : LB A.left} (s : LB.Sec L) : IsMultiple A 1 s s := by
   intro i
   simp
@@ -74,6 +80,9 @@ def cubNorm_sq {g : ℕ} {La : Submodule ℤ (Fin g → ℂ)} (D : AHDatum La) (
 def wedgeNorm_sq {g : ℕ} {La : Submodule ℤ (Fin g → ℂ)} (D : AHDatum La) (w : Fin g → Fin g → ℂ) : ℝ :=
   (Matrix.of fun i j => (π : ℂ) * D.H (w i) (w j)).det.re
 
+/- English proof (translation)
+Simplify using `[wedgeNorm_sq]`.
+-/
 example {La : Submodule ℤ (Fin 1 → ℂ)} (D : AHDatum La) (w : Fin 1 → Fin 1 → ℂ) :
     wedgeNorm_sq D w = π * (D.H (w 0) (w 0)).re := by
   simp [wedgeNorm_sq]

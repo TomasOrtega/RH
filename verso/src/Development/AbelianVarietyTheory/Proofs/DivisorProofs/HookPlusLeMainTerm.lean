@@ -21,6 +21,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.LowTopBound
 
+/- English proof (translation)
+Establish `h1 : (∑ g, a g • ρ g : H →ₗ[ℂ] H) u = ∑ g, ∑ h, (a h * a (h⁻¹ * g)) • ρ g u`. Simplify using `only [← Finset.sum_smul, ha.2, LinearMap.sum_apply, LinearMap.smul_apply]`. Establish `h2 : (∑ g, a g • ρ g : H →ₗ[ℂ] H) ((∑ g, a g • ρ g : H →ₗ[ℂ] H) u) = ∑ h, ∑ g, (a h * a g) • ρ h (ρ g u)`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+
+Simplify using `only [mul_comm]`. Rewrite using `[h2, h1, Finset.sum_comm (f := fun g h => (a h * a (h⁻¹ * g)) • ρ g u)]`. Use `Finset.sum_congr rfl fun h _ => Fintype.sum_equiv (Equiv.mulLeft h) _ _ fun g => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulLeft, inv_mul_cancel_left, map_mul, Module.End.mul_apply]`.
+-/
 theorem idem_apply {G H : Type} [Group G] [Fintype G] [AddCommGroup H] [Module ℂ H] (ρ : Representation ℂ G H) {a : G → ℂ}
     (ha : GlobalTheory.IndefiniteRowSideFullHecke.GoodBasisCentralIdempotents.IsCentralIdem a) (u : H) :
     (∑ g, a g • ρ g : H →ₗ[ℂ] H) ((∑ g, a g • ρ g : H →ₗ[ℂ] H) u) = (∑ g, a g • ρ g : H →ₗ[ℂ] H) u := by
@@ -34,6 +39,15 @@ theorem idem_apply {G H : Type} [Group G] [Fintype G] [AddCommGroup H] [Module �
   refine Finset.sum_congr rfl fun h _ => Fintype.sum_equiv (Equiv.mulLeft h) _ _ fun g => ?_
   simp only [Equiv.coe_mulLeft, inv_mul_cancel_left, map_mul, Module.End.mul_apply]
 
+/- English proof (translation)
+Establish `hl' : (l : ℂ) ≠ 0` using `by exact_mod_cast hl.ne'`. Establish `hex : e x = x`. Use `smul_right_injective Y hl' ?_` and prove the remaining obligations. Use `show (l : ℂ) • e x = (l : ℂ) • x`. Rewrite using `[← map_smul, ← h, hS, hee]`.
+
+Establish `h1 : LinearMap.adjoint S x = LinearMap.adjoint T x` using `ext_inner_right ℂ fun f => by`. Rewrite using `[LinearMap.adjoint_inner_left, LinearMap.adjoint_inner_left, hS, hadj x hex]`. Establish `h2 : ‖LinearMap.adjoint T x‖ ^ 2 = l * ‖x‖ ^ 2`. Establish `h3 : ⟪LinearMap.adjoint S x, LinearMap.adjoint S x⟫_ℂ = (l : ℂ) * ⟪x, x⟫_ℂ`. Rewrite using `[LinearMap.adjoint_inner_left, h, inner_smul_right]`.
+
+Rewrite `h3` using `[h1, inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K]`. Establish `h4 : ((‖LinearMap.adjoint T x‖ ^ 2 : ℝ) : ℂ) = ((l * ‖x‖ ^ 2 : ℝ) : ℂ)` using `by push_cast; exact h3`. Conclude with `h4` after adjusting the coercions. Establish `h5` using `hm x`. Rewrite `h5` using `[h2]`.
+
+Conclude with `le_of_mul_le_mul_right h5 (by positivity)`.
+-/
 theorem le_eigenvalue {X Y : Type} [NormedAddCommGroup X] [InnerProductSpace ℂ X] [FiniteDimensional ℂ X]
     [NormedAddCommGroup Y] [InnerProductSpace ℂ Y] [FiniteDimensional ℂ Y] (T S : X →ₗ[ℂ] Y) (e : Y →ₗ[ℂ] Y) (m l : ℝ)
     (hS : ∀ y, S y = e (T y)) (hee : ∀ y, e (e y) = e y) (hadj : ∀ x, e x = x → ∀ y, ⟪x, e y⟫_ℂ = ⟪x, y⟫_ℂ)
@@ -57,6 +71,11 @@ theorem le_eigenvalue {X Y : Type} [NormedAddCommGroup X] [InnerProductSpace ℂ
   rw [h2] at h5
   exact le_of_mul_le_mul_right h5 (by positivity)
 
+/- English proof (translation)
+Substitute `hU hP` using the available equality. Distinguish the cases in `hc : P' = ⊥`. Use `⟨_, le_rfl, fun y hy => ?_⟩` and prove the remaining obligations. Establish `h0 : y = 0` using `(Submodule.eq_bot_iff _).1 hc y hy`. Rewrite using `[h0, map_zero, map_zero, smul_zero]`.
+
+Take `⟨l, hl, h1, h2⟩` from `h hc`. Conclude with `⟨l, (Real.le_log_iff_exp_le hl).1 (hm.trans h2), h1⟩`.
+-/
 theorem scalar_of_ne_bot {X Y : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] [Module ℂ Y] (T : X →ₗ[ℂ] Y) (U U' : Y →ₗ[ℂ] X)
     (hU : U' = U) (P P' : Submodule ℂ Y) (hP : P' = P) (m m' : ℝ) (hm : m ≤ m')
     (h : P' ≠ ⊥ → ∃ l : ℝ, 0 < l ∧ (∀ x ∈ P', T (U' x) = (l : ℂ) • x) ∧ m' ≤ Real.log l) :
@@ -74,6 +93,11 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
 
 include R in
 
+/- English proof (translation)
+Establish `hl : ∀ ρ, lab (sg0 D A) ρ = ρ` using `fun ρ => by`. Rewrite using `[show sg0 D A = D.what₂.embLL from sgAt_mk _ R.hv0]`. Conclude with `GlobalTheory.IndefiniteRowSideFullHecke.LiftFormsMainTerm.lab_base ρ`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.mainTerm GlobalTheory.LiftLower.hookPlus GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.aPlAt`. Simplify using `only [hl]`.
+
+Establish `hp : ∀ n a, (1 : ℝ) ≤ (GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.hookOf n a : ℝ)` using `fun n a => by`. Establish `: 0 < GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.hookOf n a` using `GlobalTheory.Survey.LevelVectorSizeBounds.hookProd_pos _`. Conclude with `this` after adjusting the coercions. Use `Finset.sum_le_sum fun ρ _ => Real.log_le_log (lt_of_lt_of_le one_pos (hp _ _)) ?_` and prove the remaining obligations. Conclude with `le_mul_of_one_le_right (zero_le_one.trans (hp _ _)) (hp _ _)`.
+-/
 theorem hookPlus_le_mainTerm (i : Fin D.R.m) : GlobalTheory.LiftLower.hookPlus D i ≤ GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.mainTerm D i (sg0 D A) := by
   have hl : ∀ ρ, lab (sg0 D A) ρ = ρ := fun ρ => by
     rw [show sg0 D A = D.what₂.embLL from sgAt_mk _ R.hv0]; exact GlobalTheory.IndefiniteRowSideFullHecke.LiftFormsMainTerm.lab_base ρ

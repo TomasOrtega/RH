@@ -5,6 +5,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Plug
 
+/- English proof (translation)
+Introduce `𝒮 h K B f T w Z Wt p0 t hx`. Rewrite `hx` using `[h]`. Conclude with `⟨hx.laws, hx.canon, hx.rank, hx.pb⟩`.
+-/
 theorem coreCondition_RX : ∀ (𝒮 : Slots), 𝒮.Rx = RX → CoreSlot 𝒮 := by
   intro 𝒮 h K B f T w Z Wt p0 t hx
   rw [h] at hx

@@ -19,6 +19,11 @@ abbrev uliftIntToIntRep (M : Rep.{0} (ULift.{0} ℤ) Γ) : Rep.{0} ℤ Γ :=
         ext x
         simp [Module.End.mul_apply] }
 
+/- English proof (translation)
+Break down `eq_or_ne (i + 1) j with rfl | h` into its components or cases. Rewrite using `[inhomogeneousCochains.d_def, inhomogeneousCochains.d_def]`. Use function extensionality and compare the values at `g`. Establish `hs : ∀ k : ℕ, ((-1 : ULift.{0} ℤ) ^ k) = (((-1 : ℤ) ^ k : ℤ) : ULift.{0} ℤ)` using `fun k => by`. Simplify using the standard rewrite rules.
+
+Simplify using `only [inhomogeneousCochains.d_hom_apply, hs, Int.cast_smul_eq_zsmul]`. Both sides reduce to the same expression. Establish `h' : ¬ (ComplexShape.up ℕ).Rel i j` using `h`. Rewrite using `[HomologicalComplex.shape _ _ _ h', HomologicalComplex.shape _ _ _ h']`. Both sides reduce to the same expression.
+-/
 theorem inhomogeneousCochains_d_uliftIntToIntRep (M : Rep.{0} (ULift.{0} ℤ) Γ) (i j : ℕ)
     (x : (Fin i → Γ) → M.V) :
     ((inhomogeneousCochains (uliftIntToIntRep M)).d i j).hom x =
@@ -56,6 +61,11 @@ def forget₂HomologyIso {S₁ : ShortComplex (ModuleCat.{0} (ULift.{0} ℤ))}
     (ShortComplex.homologyFunctor Ab).mapIso σ ≪≫
     (ShortComplex.homologyFunctorIso (forget₂ (ModuleCat.{0} ℤ) Ab)).app S₂
 
+/- English proof (translation)
+Establish `n1` using `(ShortComplex.homologyFunctorIso (forget₂ (ModuleCat.{0} (ULift.{0} ℤ)) Ab)).inv.naturality φ₁`. Establish `n2` using `(ShortComplex.homologyFunctorIso (forget₂ (ModuleCat.{0} ℤ) Ab)).hom.naturality φ₂`. Establish `n3 : ((forget₂ (ModuleCat.{0} (ULift.{0} ℤ)) Ab).mapShortComplex ⋙ ShortComplex.homologyFunctor Ab).map φ₁ ≫ (ShortComplex.homologyFunctor Ab).map σT.hom = (ShortComplex.homologyFunctor Ab).map σS.hom ≫ ((forget₂ (ModuleCat.{0} ℤ) Ab).mapShortComplex ⋙ ShortComplex.homologyFuncto …`. Rewrite using `[Functor.comp_map, Functor.comp_map, ← Functor.map_comp, ← Functor.map_comp, h]`. Simplify using `only [forget₂HomologyIso, Iso.trans_hom, Iso.symm_hom, Iso.app_inv, Iso.app_hom, Functor.mapIso_hom, Category.assoc]`.
+
+Use `slice_lhs 1 2 => rw [n1]`. Use `slice_lhs 2 3 => rw [n3]`. Use `slice_lhs 3 4 => rw [n2]`.
+-/
 theorem forget₂_homologyMap_comp_forget₂HomologyIso
     {S₁ T₁ : ShortComplex (ModuleCat.{0} (ULift.{0} ℤ))} {S₂ T₂ : ShortComplex (ModuleCat.{0} ℤ)}
     (φ₁ : S₁ ⟶ T₁) (φ₂ : S₂ ⟶ T₂)
@@ -91,6 +101,9 @@ def groupCohomologyULiftIntAddEquiv (M : Rep.{0} (ULift.{0} ℤ) Γ) (n : ℕ) :
     groupCohomology M n ≃+ groupCohomology (uliftIntToIntRep M) n :=
   (groupCohomologyULiftIntIso M n).addCommGroupIsoToAddEquiv
 
+/- English proof (translation)
+Establish `key` using `forget₂_homologyMap_comp_forget₂HomologyIso ((HomologicalComplex.shortComplexFunctor _ _ n).map (cochainsMap S.subtype (𝟙 (Rep.res S.subtype M)))) ((HomologicalComplex.shortComplexFunctor _ _ n).map (cochainsMap S.subtype (𝟙 (Rep.res S.subtype (uliftIntToIntRep M))))) (cochainsSc …`. Apply the tactic sequence `ext x <;> rfl)`. Conclude with `congrArg (fun f => f.hom x) key`.
+-/
 theorem groupCohomologyULiftIntAddEquiv_map_subtype (M : Rep.{0} (ULift.{0} ℤ) Γ) (S : Subgroup Γ)
     (n : ℕ) (x : groupCohomology M n) :
     groupCohomologyULiftIntAddEquiv (Rep.res S.subtype M) n

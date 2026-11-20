@@ -9,6 +9,19 @@ namespace GlobalTheory.KChar
 
 open Matrix
 
+/- English proof (translation)
+Establish `hf1 : f 1 = 1`. Use `hmul 1 1` as an intermediate fact. Rewrite `this` using `[mul_one]`. Establish `h2 : f 1 * (f 1 - 1) = 0` using `by rw [mul_sub, ← this]; ring`. Break down `mul_eq_zero.mp h2 with h | h` into its components or cases.
+
+Conclude with `absurd h h1`. Conclude with `sub_eq_zero.mp h`. Take `⟨M, hM⟩` from `(isCompact_range hc.norm).bddAbove`. Establish `hb : ∀ a, ‖f a‖ ≤ M` using `fun a => hM ⟨a, rfl⟩`. Establish `hpow : ∀ a (n : ℕ), f (a ^ n) = f a ^ n`.
+
+Introduce `a n`. Proceed by induction on `n with`. Consider the case `zero => simp [hf1]`. Consider the case `succ n ih => rw [pow_succ, hmul, ih, pow_succ]`. Establish `hle : ∀ a, ‖f a‖ ≤ 1`.
+
+Introduce `a`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt M h`. Use `hb (a ^ n)` as an intermediate fact.
+
+Rewrite `this` using `[hpow, norm_pow]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `a`. Establish `hinv : ‖f a‖ * ‖f a⁻¹‖ = 1`. Rewrite using `[← norm_mul, ← hmul, mul_inv_cancel, hf1, norm_one]`.
+
+Establish `h2` using `hle a⁻¹`. Establish `h3` using `hle a`. Establish `h4 : 0 ≤ ‖f a‖` using `norm_nonneg _`. Establish `h5 : 0 ≤ ‖f a⁻¹‖` using `norm_nonneg _`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem norm_eq_one_of_compact {G : Type*} [Group G] [TopologicalSpace G] [CompactSpace G] (f : G → ℂ)
     (hmul : ∀ a b, f (a * b) = f a * f b) (hc : Continuous f) (h1 : f 1 ≠ 0) : ∀ a, ‖f a‖ = 1 := by
   have hf1 : f 1 = 1 := by
@@ -42,6 +55,9 @@ theorem norm_eq_one_of_compact {G : Type*} [Group G] [TopologicalSpace G] [Compa
   have h5 : 0 ≤ ‖f a⁻¹‖ := norm_nonneg _
   nlinarith
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(Matrix.fromBlocks a 0 0 d)ᴴ * Matrix.fromBlocks 1 0 0 (-1) * Matrix.fromBlocks a 0 0 d = Matrix.fromBlocks 1 0 0 (-1)`. Rewrite using `[Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Simplify using `[ha, hd]`.
+-/
 theorem fromBlocks_mem (R S : ℕ) (a : Matrix (Fin R) (Fin R) ℂ) (d : Matrix (Fin S) (Fin S) ℂ)
     (ha : aᴴ * a = 1) (hd : dᴴ * d = 1) :
     (Matrix.fromBlocks a 0 0 d)ᴴ * Jm R S * Matrix.fromBlocks a 0 0 d = Jm R S := by
@@ -50,10 +66,34 @@ theorem fromBlocks_mem (R S : ℕ) (a : Matrix (Fin R) (Fin R) ℂ) (d : Matrix 
   rw [Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]
   simp [ha, hd]
 
+/- English proof (translation)
+Use `Matrix.mem_unitaryGroup_iff'.mp a.2` as an intermediate fact. Simplify `this` using `[Matrix.star_eq_conjTranspose]`.
+-/
 theorem unitary_ch {n : ℕ} (a : Matrix.unitaryGroup (Fin n) ℂ) : (a : Matrix (Fin n) (Fin n) ℂ)ᴴ * a = 1 := by
   have := Matrix.mem_unitaryGroup_iff'.mp a.2
   simpa [Matrix.star_eq_conjTranspose] using this
 
+/- English proof (translation)
+Introduce `R S χ hmul hc hnz`. Use `haveI := GlobalTheory.compactSpace_unitaryGroup (Fin R) ℂ`. Use `haveI := GlobalTheory.compactSpace_unitaryGroup (Fin S) ℂ`. Establish `h1R : (1 : Matrix (Fin R) (Fin R) ℂ)ᴴ * 1 = 1` using `by simp`. Establish `h1S : (1 : Matrix (Fin S) (Fin S) ℂ)ᴴ * 1 = 1` using `by simp`.
+
+Set `fA : Matrix.unitaryGroup (Fin R) ℂ → ℂ` to `fun a => χ (Matrix.fromBlocks (a : Matrix (Fin R) (Fin R) ℂ) 0 0 1)`. Establish `hmA : ∀ a b, fA (a * b) = fA a * fA b`. Introduce `a b`. Establish `e : Matrix.fromBlocks ((a * b : Matrix.unitaryGroup (Fin R) ℂ) : Matrix (Fin R) (Fin R) ℂ) 0 0 (1 : Matrix (Fin S) (Fin S) ℂ) = Matrix.fromBlocks (a : Matrix (Fin R) (Fin R) ℂ) 0 0 1 * Matrix.fromBlocks (b : Matrix (Fin R) (Fin R) ℂ) 0 0 1`. Rewrite using `[Matrix.fromBlocks_multiply]`.
+
+Simplify using the standard rewrite rules. Simplify using `only [fA]`. Rewrite using `[e]`. Conclude with `hmul _ _ (fromBlocks_mem R S _ _ (unitary_ch a) h1S) (fromBlocks_mem R S _ _ (unitary_ch b) h1S)`. Establish `hcA : Continuous fA`.
+
+Use `hc.comp_continuous ?_ (fun a => fromBlocks_mem R S _ _ (unitary_ch a) h1S)` and prove the remaining obligations. Conclude with `Continuous.matrix_fromBlocks continuous_subtype_val continuous_const continuous_const continuous_const`. Establish `hnA : ∀ a, ‖fA a‖ = 1` using `norm_eq_one_of_compact fA hmA hcA (hnz _ (fromBlocks_mem R S _ _ (unitary_ch 1) h1S))`. Take `⟨x, hx⟩` from `GlobalTheory.UpqChar.char_unitary fA hmA hnA hcA`. Set `fD : Matrix.unitaryGroup (Fin S) ℂ → ℂ` to `fun d => χ (Matrix.fromBlocks (1 : Matrix (Fin R) (Fin R) ℂ) 0 0 (d : Matrix (Fin S) (Fin S) ℂ))`.
+
+Establish `hmD : ∀ a b, fD (a * b) = fD a * fD b`. Introduce `a b`. Establish `e : Matrix.fromBlocks (1 : Matrix (Fin R) (Fin R) ℂ) 0 0 ((a * b : Matrix.unitaryGroup (Fin S) ℂ) : Matrix (Fin S) (Fin S) ℂ) = Matrix.fromBlocks 1 0 0 (a : Matrix (Fin S) (Fin S) ℂ) * Matrix.fromBlocks 1 0 0 (b : Matrix (Fin S) (Fin S) ℂ)`. Rewrite using `[Matrix.fromBlocks_multiply]`. Simplify using the standard rewrite rules.
+
+Simplify using `only [fD]`. Rewrite using `[e]`. Conclude with `hmul _ _ (fromBlocks_mem R S _ _ h1R (unitary_ch a)) (fromBlocks_mem R S _ _ h1R (unitary_ch b))`. Establish `hcD : Continuous fD`. Use `hc.comp_continuous ?_ (fun a => fromBlocks_mem R S _ _ h1R (unitary_ch a))` and prove the remaining obligations.
+
+Conclude with `Continuous.matrix_fromBlocks continuous_const continuous_const continuous_const continuous_subtype_val`. Establish `hnD : ∀ a, ‖fD a‖ = 1` using `norm_eq_one_of_compact fD hmD hcD (hnz _ (fromBlocks_mem R S _ _ h1R (unitary_ch 1)))`. Take `⟨y, hy⟩` from `GlobalTheory.UpqChar.char_unitary fD hmD hnD hcD`. Use `⟨x, y, fun a d ha hd => ?_⟩` and prove the remaining obligations. Establish `maU : a ∈ Matrix.unitaryGroup (Fin R) ℂ`.
+
+Rewrite using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose]`. Conclude with `ha`. Establish `mdU : d ∈ Matrix.unitaryGroup (Fin S) ℂ`. Rewrite using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose]`. Conclude with `hd`.
+
+Establish `e : Matrix.fromBlocks a 0 0 d = Matrix.fromBlocks a 0 0 (1 : Matrix (Fin S) (Fin S) ℂ) * Matrix.fromBlocks (1 : Matrix (Fin R) (Fin R) ℂ) 0 0 d`. Rewrite using `[Matrix.fromBlocks_multiply]`. Simplify using the standard rewrite rules. Rewrite using `[e, hmul _ _ (fromBlocks_mem R S _ _ ha h1S) (fromBlocks_mem R S _ _ h1R hd)]`. Establish `hA` using `hx ⟨a, maU⟩`.
+
+Establish `hD` using `hy ⟨d, mdU⟩`. Simplify using `only [fA, fD] at hA hD`. Rewrite using `[hA, hD]`.
+-/
 theorem kchar : ∀ (R S : ℕ) (χ : Mat R S → ℂ),
     (∀ g h : Mat R S, gᴴ * Jm R S * g = Jm R S → hᴴ * Jm R S * h = Jm R S → χ (g * h) = χ g * χ h) →
     ContinuousOn χ {g : Mat R S | gᴴ * Jm R S * g = Jm R S} →

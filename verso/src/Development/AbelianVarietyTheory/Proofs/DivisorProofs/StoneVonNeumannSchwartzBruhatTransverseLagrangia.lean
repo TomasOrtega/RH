@@ -45,10 +45,18 @@ section Char
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Simplify using `using (hc 1).2 (one_mem _) y hy`.
+-/
 theorem triv_int {ψ0 : AddChar k ℂ} (hc : ∀ x : k, (∀ y ∈ 𝒪[k], ψ0 (x * y) = 1) ↔ x ∈ 𝒪[k])
     {y : k} (hy : y ∈ 𝒪[k]) : ψ0 y = 1 := by
   simpa using (hc 1).2 (one_mem _) y hy
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Take `⟨m, hm, h⟩` from `GlobalTheory.SBUnif.exists_nat_mem_mul_integer x⁻¹ (inv_ne_zero hx)`. Rewrite `h` using `[inv_inv]`. Establish `h1 : ψ0 x ^ m = 1`.
+
+Rewrite using `[← AddChar.map_nsmul_eq_pow, nsmul_eq_mul, mul_comm]`. Conclude with `triv_int hc h`. Establish `h2` using `congrArg norm h1`. Rewrite `h2` using `[norm_pow, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hm.ne').1 h2`.
+-/
 theorem norm_eq_one {ψ0 : AddChar k ℂ} (hc : ∀ x : k, (∀ y ∈ 𝒪[k], ψ0 (x * y) = 1) ↔ x ∈ 𝒪[k])
     (x : k) : ‖ψ0 x‖ = 1 := by
   by_cases hx : x = 0
@@ -68,13 +76,26 @@ def toCirc (ψ0 : AddChar k ℂ) (hc : ∀ x : k, (∀ y ∈ 𝒪[k], ψ0 (x * y
   map_zero_eq_one' := by ext; simp
   map_add_eq_mul' a b := by ext; exact AddChar.map_add_eq_mul ψ0 a b
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toCirc_apply {ψ0 : AddChar k ℂ} (hc : ∀ x : k, (∀ y ∈ 𝒪[k], ψ0 (x * y) = 1) ↔ x ∈ 𝒪[k])
     (x : k) : (toCirc ψ0 hc x : ℂ) = ψ0 x := rfl
 
+/- English proof (translation)
+The claim follows from `Continuous.subtype_mk h _`.
+-/
 theorem toCirc_cont {ψ0 : AddChar k ℂ} (hc : ∀ x : k, (∀ y ∈ 𝒪[k], ψ0 (x * y) = 1) ↔ x ∈ 𝒪[k])
     (h : Continuous ψ0) : Continuous (toCirc ψ0 hc) :=
   Continuous.subtype_mk h _
 
+/- English proof (translation)
+Introduce `h`. Take `⟨w, hw0, hw1⟩` from `Valuation.IsNontrivial.exists_lt_one (v := valuation k)`. Establish `hnot : w⁻¹ ∉ 𝒪[k]`. Introduce `hm`. Establish `h3 : valuation k w⁻¹ ≤ 1` using `hm`.
+
+Establish `h4 : valuation k (w * w⁻¹) = 1` using `by rw [mul_inv_cancel₀ hw0, map_one]`. Rewrite `h4` using `[map_mul]`. Establish `h5 : valuation k w * valuation k w⁻¹ ≤ valuation k w * 1` using `by gcongr`. Rewrite `h5` using `[h4, mul_one]`. Conclude with `absurd (lt_of_le_of_lt h5 hw1) (lt_irrefl _)`.
+
+Apply `hnot` to reduce the goal to its premises. Rewrite using `[← hc]`. Introduce `y _`. Use `congrArg (fun χ : AddChar k Circle => (χ (w⁻¹ * y) : ℂ)) h` as an intermediate fact. Simplify `this` using `[toCirc_apply]`.
+-/
 theorem toCirc_ne_one {ψ0 : AddChar k ℂ} (hc : ∀ x : k, (∀ y ∈ 𝒪[k], ψ0 (x * y) = 1) ↔ x ∈ 𝒪[k]) :
     toCirc ψ0 hc ≠ 1 := by
   intro h
@@ -93,6 +114,9 @@ theorem toCirc_ne_one {ψ0 : AddChar k ℂ} (hc : ∀ x : k, (∀ y ∈ 𝒪[k],
   have := congrArg (fun χ : AddChar k Circle => (χ (w⁻¹ * y) : ℂ)) h
   simpa [toCirc_apply] using this
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.IrredSB.sb_irreducible k Y Y' (toCirc ψ0 hc) (toCirc_cont hc hcont) (toCirc_ne_one hc) W hW (fun Φ h x _ => hT Φ h x) (fun Φ h b _ => by have e : (fun t : Matrix Y Y' k => (toCirc ψ0 hc (∑ r, ∑ q, b r q * t r q) : ℂ) * Φ t) = fun t => ψ0 (∑ i, ∑ j, t i j * b i j) * Φ …`.
+-/
 theorem irr_mat [CharZero k] {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y']
     (ψ0 : AddChar k ℂ) (hcont : Continuous ψ0) (hc : ∀ x : k, (∀ y ∈ 𝒪[k], ψ0 (x * y) = 1) ↔ x ∈ 𝒪[k])
     (W : Submodule ℂ (Matrix Y Y' k → ℂ)) (hW : W ≤ GlobalTheory.WeilM.SB (Matrix Y Y' k))
@@ -110,6 +134,11 @@ theorem irr_mat [CharZero k] {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype 
       exact hM Φ h b)
     Φ₀ h0 hne
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.IrredSB.modul_mem_SB (toCirc ψ0 hc) (toCirc_cont hc hcont) hΦ z`. Establish `e : (fun t : Matrix Y Y' k => (toCirc ψ0 hc (GlobalTheory.IrredSB.pair z t) : ℂ) * Φ t) = fun t => ψ0 (∑ i, ∑ j, t i j * z i j) * Φ t`. Use function extensionality and compare the values at `t`. Simplify using `only [toCirc_apply, GlobalTheory.IrredSB.pair, mul_comm (z _ _)]`. Rewrite `h` using `[e]`.
+
+Conclude with `h`.
+-/
 theorem modul_mem [CharZero k] {Y Y' : Type} [Fintype Y] [Fintype Y']
     (ψ0 : AddChar k ℂ) (hcont : Continuous ψ0) (hc : ∀ x : k, (∀ y ∈ 𝒪[k], ψ0 (x * y) = 1) ↔ x ∈ 𝒪[k])
     {Φ : Matrix Y Y' k → ℂ} (hΦ : Φ ∈ GlobalTheory.WeilM.SB (Matrix Y Y' k)) (z : Matrix Y Y' k) :
@@ -122,6 +151,9 @@ theorem modul_mem [CharZero k] {Y Y' : Type} [Fintype Y] [Fintype Y']
   rw [e] at h
   exact h
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.IrredSB.pair_single (k := k) r q c x`. Simplify using `only [GlobalTheory.IrredSB.pair] at h`. Repeatedly rewrite using `[mul_comm (x _ _)]`. Rewrite using `[h, mul_comm]`.
+-/
 theorem sum_single_right {m m' : Type} [Fintype m] [Fintype m'] [DecidableEq m] [DecidableEq m']
     (x : Matrix m m' k) (r : m) (q : m') (c : k) :
     ∑ i, ∑ j, x i j * Matrix.single r q c i j = x r q * c := by
@@ -130,6 +162,9 @@ theorem sum_single_right {m m' : Type} [Fintype m] [Fintype m'] [DecidableEq m] 
   simp_rw [mul_comm (x _ _)]
   rw [h, mul_comm]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.IrredSB.pair_single (k := k) r q c z`.
+-/
 theorem sum_single_left {m m' : Type} [Fintype m] [Fintype m'] [DecidableEq m] [DecidableEq m']
     (z : Matrix m m' k) (r : m) (q : m') (c : k) :
     ∑ i, ∑ j, Matrix.single r q c i j * z i j = c * z r q :=
@@ -141,6 +176,67 @@ end GlobalTheory.StoneVN
 
 namespace GlobalTheory.StoneVN
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ κ _ n d ψ0 hcont hc wT wM hTT hMM hTM hspan`. Set `χ : Matrix (Fin n) (Fin d) k → Matrix (Fin n) (Fin d) k → ℂ` to `fun x z => ψ0 (∑ i, ∑ j, x i j * z i j)`. Set `τ : Matrix (Fin n) (Fin d) k → ((κ → k) → ℂ) →ₗ[ℂ] ((κ → k) → ℂ)` to `fun Y => GlobalTheory.VacLoc.schrL ψ0 (wT Y)`. Set `μ : Matrix (Fin n) (Fin d) k → ((κ → k) → ℂ) →ₗ[ℂ] ((κ → k) → ℂ)` to `fun z => GlobalTheory.VacLoc.schrL ψ0 (wM z)`. Establish `hτa : ∀ Y f, τ Y f = GlobalTheory.WeilM.schr ψ0 (wT Y) f` using `fun _ _ => rfl`.
+
+Establish `hμa : ∀ z f, μ z f = GlobalTheory.WeilM.schr ψ0 (wM z) f` using `fun _ _ => rfl`. Establish `hτ : ∀ x x' f, τ x (τ x' f) = τ (x + x') f`. Introduce `x x' f`. Rewrite using `[hτa, hτa, hτa, GlobalTheory.WeilM.schr_schr, hTT, mul_zero, AddChar.map_zero_eq_one, one_smul, map_add]`. Establish `hμ : ∀ z z' f, μ z (μ z' f) = μ (z + z') f`.
+
+Introduce `z z' f`. Rewrite using `[hμa, hμa, hμa, GlobalTheory.WeilM.schr_schr, hMM, mul_zero, AddChar.map_zero_eq_one, one_smul, map_add]`. Establish `hτμ : ∀ x z f, τ x (μ z f) = χ x z • μ z (τ x f)`. Introduce `x z f`. Rewrite using `[hτa, hμa, hμa, hτa, GlobalTheory.VacLoc.schr_comm, hTM]`.
+
+Establish `hτ0 : ∀ f, τ 0 f = f` using `fun f => by rw [hτa, map_zero]; exact GlobalTheory.VacLoc.schr_zero_vec ψ0 f`. Establish `hμ0 : ∀ f, μ 0 f = f` using `fun f => by rw [hμa, map_zero]; exact GlobalTheory.VacLoc.schr_zero_vec ψ0 f`. Take `⟨f₀, hf₀SB, hf₀ne, hf₀T, hf₀M⟩` from `GlobalTheory.T.exists_vacuum_transverseLagrangian_localField ψ0 hcont hc wT wM hTT hMM hTM hspan`. Establish `hint : ∀ z : Matrix (Fin n) (Fin d) k, (∀ u : Matrix (Fin n) (Fin d) k, (∀ r q, u r q ∈ 𝒪[k]) → χ u z = 1) → ∀ r q, z r q ∈ 𝒪[k]`. Introduce `z hz r q`.
+
+Rewrite using `[← hc]`. Introduce `y hy`. Establish `h` using `hz (Matrix.single r q y) (fun r' q' => by`. Rewrite using `[Matrix.single_apply]`. Use `split_ifs`.
+
+Conclude with `hy`. Conclude with `zero_mem _)`. Simplify using `only [χ, sum_single_left] at h`. Rewrite `h` using `[mul_comm]`. Then use the resulting hypothesis. Establish `hdual : ∀ x : Matrix (Fin n) (Fin d) k, (∀ z, (∀ u : Matrix (Fin n) (Fin d) k, (∀ r q, u r q ∈ 𝒪[k]) → χ u z = 1) → χ x z = 1) → ∀ r q, x r q ∈ 𝒪[k]`.
+
+Introduce `x hx r q`. Rewrite using `[← hc]`. Introduce `y hy`. Establish `h` using `hx (Matrix.single r q y) (fun u hu => by`. Simplify using `only [χ, sum_single_right]`.
+
+Conclude with `triv_int hc (mul_mem (hu r q) hy))`. Simplify `h` using `only [χ, sum_single_right]`. Take `⟨Tm, hTmT, hTmM, hTm1, hTmspan⟩` from `GlobalTheory.SchrodExist.exists_intertwiner_matrix k (Fin n) (Fin d) (Matrix (Fin n) (Fin d) k) χ (fun a b z => by`. Simplify using `only [χ, Matrix.add_apply, add_mul, Finset.sum_add_distrib, AddChar.map_add_eq_mul])`. Use the proof step `(fun a z z' => by`.
+
+Simplify using `only [χ, Matrix.add_apply, mul_add, Finset.sum_add_distrib, AddChar.map_add_eq_mul])`. Use the proof step `(fun z => by simp [χ]) (fun a => by simp [χ])`. Use the proof step `(fun m hm z => ⟨(m : k)⁻¹ • z, by`. Rewrite using `[smul_comm]`. Conclude with `GlobalTheory.SchrodExist.inv_nsmul_nsmul m hm z⟩)`.
+
+Use the proof step `(fun m hm a b hab => by`. Establish `e : m • a = m • b` using `hab`. Rewrite using `[← GlobalTheory.SchrodExist.inv_nsmul_nsmul m hm a, e, GlobalTheory.SchrodExist.inv_nsmul_nsmul m hm b])`. Use `hdual ((κ → k) → ℂ) τ μ hτ hμ hτμ hτ0 hμ0 f₀ (fun u hu => hf₀T u hu) (fun z hz => hf₀M z (hint z hz))`. Establish `hrange : ∀ Φ, Tm Φ ∈ GlobalTheory.WeilM.SB (κ → k)`.
+
+Introduce `Φ`. Use `(Submodule.span_le.2 ?_) (hTmspan Φ)` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `GlobalTheory.T.schroedingerOperatorHeisenberg_preserves_schwartzBruhat ψ0 hcont _ _ (GlobalTheory.T.schroedingerOperatorHeisenberg_preserves_schwartzBruhat ψ0 hcont _ _ hf₀SB)`. Establish `hmodSB : ∀ Φ ∈ GlobalTheory.WeilM.SB (Matrix (Fin n) (Fin d) k), ∀ z, (fun t => χ t z * Φ t) ∈ GlobalTheory.WeilM.SB (Matrix (Fin n) (Fin d) k)` using `fun Φ hΦ z => modul_mem ψ0 hcont hc hΦ z`.
+
+Establish `hind : Set.indicator {x : Matrix (Fin n) (Fin d) k | ∀ r q, x r q ∈ 𝒪[k]} (fun _ => (1 : ℂ)) ∈ GlobalTheory.WeilM.SB (Matrix (Fin n) (Fin d) k)` using `GlobalTheory.LastTwoSteps.intInd_mem_SB (Fin n) (Fin d)`. Establish `hinj : Function.Injective Tm`. Rewrite using `[← LinearMap.ker_eq_bot]`. Assume the negation of the conclusion as `hne`. Take `⟨Φ₀, hΦ₀, hΦ₀ne⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`.
+
+Establish `hW` using `irr_mat ψ0 hcont hc ((LinearMap.ker Tm).map (GlobalTheory.WeilM.SB (Matrix (Fin n) (Fin d) k)).subtype) (by rintro _ ⟨Φ, _, rfl⟩; exact Φ.2) (by`. Introduce and unpack `_ ⟨Φ, hΦ, rfl⟩ x`. Use `⟨⟨fun t => Φ.1 (t + x), GlobalTheory.IrredSB.trans_mem_SB Φ.2 x⟩, ?_, rfl⟩` and prove the remaining obligations. Establish `hΦ' : Tm Φ = 0` using `hΦ`. Use `show Tm _ = 0`.
+
+Use `(hTmT x Φ _ (fun t => rfl)).trans ?_` and prove the remaining obligations. Rewrite using `[hΦ', map_zero])`. Use the proof step `(by`. Introduce and unpack `_ ⟨Φ, hΦ, rfl⟩ z`. Use `⟨⟨fun t => χ t z * Φ.1 t, hmodSB Φ.1 Φ.2 z⟩, ?_, rfl⟩` and prove the remaining obligations.
+
+Establish `hΦ' : Tm Φ = 0` using `hΦ`. Use `show Tm _ = 0`. Use `(hTmM z Φ _ (fun t => rfl)).trans ?_` and prove the remaining obligations. Rewrite using `[hΦ', map_zero])`. Use the proof step `Φ₀.1 ⟨Φ₀, hΦ₀, rfl⟩ (fun h => hΦ₀ne (Subtype.ext h))`.
+
+Establish `h1 : Set.indicator {x : Matrix (Fin n) (Fin d) k | ∀ r q, x r q ∈ 𝒪[k]} (fun _ => (1 : ℂ)) ∈ (LinearMap.ker Tm).map (GlobalTheory.WeilM.SB (Matrix (Fin n) (Fin d) k)).subtype`. Rewrite using `[hW]`. Conclude with `hind`. Take `⟨Φ, hΦ, hΦe⟩` from `h1`. Establish `hΦ' : Tm Φ = 0` using `hΦ`.
+
+Conclude with `hf₀ne ((hTm1 Φ hΦe).symm.trans hΦ')`. Establish `hsurj : ∀ φ ∈ GlobalTheory.WeilM.SB (κ → k), ∃ Φ, Tm Φ = φ`. Establish `hstab : ∀ φ ∈ LinearMap.range Tm, ∀ w, GlobalTheory.WeilM.schr ψ0 w φ ∈ LinearMap.range Tm`. Introduce and unpack `_ ⟨Φ, rfl⟩ w`. Take `⟨Y, z, rfl⟩` from `hspan w`.
+
+Set `Φ1 : GlobalTheory.WeilM.SB (Matrix (Fin n) (Fin d) k)` to `⟨fun t => χ t z * Φ.1 t, hmodSB Φ.1 Φ.2 z⟩`. Set `Φ2 : GlobalTheory.WeilM.SB (Matrix (Fin n) (Fin d) k)` to `⟨fun t => Φ1.1 (t + Y), GlobalTheory.IrredSB.trans_mem_SB Φ1.2 Y⟩`. Establish `h1 : Tm Φ1 = μ z (Tm Φ)` using `hTmM z Φ Φ1 (fun t => rfl)`. Establish `h2 : Tm Φ2 = τ Y (Tm Φ1)` using `hTmT Y Φ1 Φ2 (fun t => rfl)`. Use `set c := ψ0 (⅟(2 : k) * ((wT Y).1 ⬝ᵥ (wM z).2 - (wM z).1 ⬝ᵥ (wT Y).2)) with hcdef`.
+
+Establish `hne : c ≠ 0`. Introduce `h0`. Use `AddChar.map_add_eq_mul ψ0 (⅟(2 : k) * ((wT Y).1 ⬝ᵥ (wM z).2 - (wM z).1 ⬝ᵥ (wT Y).2)) (-(⅟(2 : k) * ((wT Y).1 ⬝ᵥ (wM z).2 - (wM z).1 ⬝ᵥ (wT Y).2)))` as an intermediate fact. Rewrite `this` using `[add_neg_cancel, AddChar.map_zero_eq_one, ← hcdef, h0, zero_mul]`. Conclude with `one_ne_zero this`.
+
+Establish `e : GlobalTheory.WeilM.schr ψ0 (wT Y + wM z) (Tm Φ) = c⁻¹ • Tm Φ2`. Rewrite using `[h2, h1, hτa, hμa, GlobalTheory.WeilM.schr_schr, ← hcdef, smul_smul, inv_mul_cancel₀ hne, one_smul]`. Rewrite using `[e]`. Conclude with `(LinearMap.range Tm).smul_mem _ ⟨Φ2, rfl⟩`. Establish `hW` using `GlobalTheory.T.schwartzBruhat_vector_irreducible_translations_characters ψ0 hcont hc (LinearMap.range Tm) (by rintro _ ⟨Φ, rfl⟩; exact hrange Φ) (fun φ h v => by`.
+
+Establish `h'` using `hstab φ h (v, 0)`. Establish `e : GlobalTheory.WeilM.schr ψ0 (v, 0) φ = fun x => φ (x + v)`. Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.WeilM.schr]`. Rewrite using `[e] at h')` and apply the resulting hypothesis.
+
+Use the proof step `(fun φ h y => by`. Establish `h'` using `hstab φ h (0, y)`. Establish `e : GlobalTheory.WeilM.schr ψ0 (0, y) φ = fun x => ψ0 (x ⬝ᵥ y) * φ x`. Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.WeilM.schr]`.
+
+Rewrite using `[e] at h')` and apply the resulting hypothesis. Use `f₀ ⟨⟨_, hind⟩, hTm1 ⟨_, hind⟩ rfl⟩ hf₀ne`. Introduce `φ hφ`. Rewrite `hφ` using `[← hW]`. Conclude with `hφ`.
+
+Take `⟨C, hC⟩` from `Submodule.exists_isCompl (GlobalTheory.WeilM.SB (κ → k))`. Set `e : GlobalTheory.WeilM.SB (Matrix (Fin n) (Fin d) k) ≃ₗ[ℂ] GlobalTheory.WeilM.SB (κ → k)` to `LinearEquiv.ofBijective (Tm.codRestrict (GlobalTheory.WeilM.SB (κ → k)) hrange) ⟨fun a b h => hinj (congrArg Subtype.val h), fun φ => by`. Take `⟨Φ, hΦ⟩` from `hsurj φ.1 φ.2`. Conclude with `⟨Φ, Subtype.ext hΦ⟩⟩`. Set `ι : ((κ → k) → ℂ) →ₗ[ℂ] (Matrix (Fin n) (Fin d) k → ℂ)` to `(GlobalTheory.WeilM.SB (Matrix (Fin n) (Fin d) k)).subtype ∘ₗ e.symm.toLinearMap ∘ₗ Submodule.linearProjOfIsCompl (GlobalTheory.WeilM.SB (κ → k)) C hC`.
+
+Establish `hιTm : ∀ Φ, ι (Tm Φ) = Φ.1`. Introduce `Φ`. Establish `h1 : Submodule.linearProjOfIsCompl (GlobalTheory.WeilM.SB (κ → k)) C hC (Tm Φ) = ⟨Tm Φ, hrange Φ⟩` using `Submodule.linearProjOfIsCompl_apply_left hC ⟨Tm Φ, hrange Φ⟩`. Establish `h2 : e.symm ⟨Tm Φ, hrange Φ⟩ = Φ` using `e.symm_apply_eq.2 (Subtype.ext rfl)`. Use `show (e.symm (Submodule.linearProjOfIsCompl (GlobalTheory.WeilM.SB (κ → k)) C hC (Tm Φ))).1 = Φ.1`.
+
+Rewrite using `[h1, h2]`. Use `⟨ι, ⟨?_, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `φ hφ`. Take `⟨Φ, rfl⟩` from `hsurj φ hφ`. Rewrite using `[hιTm]`.
+
+Conclude with `Φ.2`. Introduce `φ hφ φ' hφ' h`. Take `⟨Φ, rfl⟩` from `hsurj φ hφ`. Take `⟨Φ', rfl⟩` from `hsurj φ' hφ'`. Rewrite `h` using `[hιTm, hιTm]`.
+
+Rewrite using `[Subtype.ext h]`. Introduce `Φ hΦ`. Conclude with `⟨Tm ⟨Φ, hΦ⟩, hrange _, hιTm _⟩`. Introduce `Y φ hφ`. Take `⟨Φ, rfl⟩` from `hsurj φ hφ`.
+
+Establish `h2 : Tm ⟨fun t => Φ.1 (t + Y), GlobalTheory.IrredSB.trans_mem_SB Φ.2 Y⟩ = τ Y (Tm Φ)` using `hTmT Y Φ _ (fun t => rfl)`. Rewrite `h2` using `[hτa]`. Rewrite using `[← h2, hιTm, hιTm]`. Introduce `z φ hφ`. Take `⟨Φ, rfl⟩` from `hsurj φ hφ`.
+
+Establish `h1 : Tm ⟨fun t => χ t z * Φ.1 t, hmodSB Φ.1 Φ.2 z⟩ = μ z (Tm Φ)` using `hTmM z Φ _ (fun t => rfl)`. Rewrite `h1` using `[hμa]`. Rewrite using `[← h1, hιTm, hιTm]`.
+-/
 theorem intertwiner_matrix : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k]
     [Invertible (2 : k)] {κ : Type} [Fintype κ] {n d : ℕ} (ψ0 : AddChar k ℂ), Continuous ψ0 →
     (∀ x : k, (∀ y ∈ 𝒪[k], ψ0 (x * y) = 1) ↔ x ∈ 𝒪[k]) →

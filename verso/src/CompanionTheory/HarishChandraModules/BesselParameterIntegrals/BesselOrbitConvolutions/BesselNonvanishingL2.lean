@@ -16,21 +16,51 @@ namespace CompanionTheory.D.Upq.BesselFunctionalConstruction
 
 open Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+The claim follows from `G.double_coset_decomposition`.
+-/
 theorem decDD : DecDD := G.double_coset_decomposition
+/- English proof (translation)
+The claim follows from `G.bessel_integral_convergence_of_growth growth_spherical_bound`.
+-/
 theorem beConv : BeConv := G.bessel_integral_convergence_of_growth growth_spherical_bound
+/- English proof (translation)
+The claim follows from `PI.WBL.S5.G.beBessel_of growth_spherical_bound`.
+-/
 theorem beBessel : BeBessel := PI.WBL.S5.G.beBessel_of growth_spherical_bound
+/- English proof (translation)
+The claim follows from `PI.WBL.NIS.G.normIdSm_of growth_spherical_bound growth_group_bound PI.WBL.NIS.measSideP`.
+-/
 theorem normIdSm : NormIdSm :=
   PI.WBL.NIS.G.normIdSm_of growth_spherical_bound growth_group_bound PI.WBL.NIS.measSideP
+/- English proof (translation)
+The claim follows from `kFinForm_of beConv beBessel`.
+-/
 theorem kFinForm : KFinForm := kFinForm_of beConv beBessel
+/- English proof (translation)
+The claim follows from `UnipotentHaarMeasurability.G.zeroCase_of beConv normIdSm schur_hermitian`.
+-/
 theorem zeroCase : ZeroCase := UnipotentHaarMeasurability.G.zeroCase_of beConv normIdSm schur_hermitian
+/- English proof (translation)
+The claim follows from `UnipotentHaarMeasurability.G.zeroCaseDD_of beConv normIdSm schur_hermitian`.
+-/
 theorem zeroCaseDD : ZeroCaseDD := UnipotentHaarMeasurability.G.zeroCaseDD_of beConv normIdSm schur_hermitian
+/- English proof (translation)
+The claim follows from `S3dx4.G.ooConv_of schur_hermitian normIdSm norm_inverse_bound growth_group_bound decDD beConv`.
+-/
 theorem ooConv : OOConv :=
   S3dx4.G.ooConv_of schur_hermitian normIdSm norm_inverse_bound growth_group_bound decDD beConv
+/- English proof (translation)
+Introduce `hIn k r Wp Wq _ _ _ _ _ _ _ _ D ε lam h H _ _ _ σ w0 u u' νq νq' hS1 hS2 l l' hbe hbe'`. Conclude with `⟨fun γ hγ => S3dx4.G.quadA_of schur_hermitian normIdSm norm_inverse_bound growth_group_bound decDD beConv hIn D hS1 hS2 hbe hbe' hγ, S3dx4.G.quadB_of norm_inverse_bound growth_spherical_bound growth_group_bound decDD hIn D hS1 hbe⟩`.
+-/
 theorem quadConv : QuadConv := by
   intro hIn k r Wp Wq _ _ _ _ _ _ _ _ D ε lam h H _ _ _ σ w0 u u' νq νq' hS1 hS2 l l' hbe hbe'
   exact ⟨fun γ hγ => S3dx4.G.quadA_of schur_hermitian normIdSm norm_inverse_bound growth_group_bound
       decDD beConv hIn D hS1 hS2 hbe hbe' hγ,
     S3dx4.G.quadB_of norm_inverse_bound growth_spherical_bound growth_group_bound decDD hIn D hS1 hbe⟩
+/- English proof (translation)
+The claim follows from `MatrixMultiplicationContinuity.G.bessel_nonvanishing_from_L2 schur_hermitian norm_inverse_bound growth_spherical_bound growth_group_bound decDD beConv`.
+-/
 theorem bessel_nonvanishing_L2 : BesselNonvanishingL2 :=
   MatrixMultiplicationContinuity.G.bessel_nonvanishing_from_L2 schur_hermitian norm_inverse_bound growth_spherical_bound
     growth_group_bound decDD beConv

@@ -18,6 +18,11 @@ open Formalism.L2.Pj GlobalTheory.BigTop GlobalTheory.BigOn
 
 namespace GlobalTheory.ExpTie
 
+/- English proof (translation)
+Establish `H` using `atPts_and (atPts_and (atPts_and GlobalTheory.T.parameter_hypothesis_all_points GlobalTheory.T.parameter_large_all_points) (atPts_and GlobalTheory.T.parameter_large_all_points_bound GlobalTheory.T.parameter_height_lt_genus)) (atPts_and GlobalTheory.T.lambda_prime_all_points Global …`. Use `atPts_imp H fun Fm x hx i p h j => ?_` and prove the remaining obligations. Take `⟨⟨⟨hH, hR⟩, ⟨hL, hB⟩⟩, ⟨hF, hW⟩⟩` from `h`. Take `⟨W, hOk, hlam, hbox, hT, hSp⟩` from `hW j`. Use `⟨parOf (Fm.L x i) j, W, ?_, hH j, hL j, hOk, hR j⟩` and prove the remaining obligations.
+
+Conclude with `{ k := rfl, m := rfl, t := rfl, f := rfl card := Nat.card_eq_fintype_card.trans (Fm.D x i).what₂.card_Tau Nr := rfl, x := rfl, log := rfl, b := rfl lam := hlam, forced := hF j, box := hbox, thick := hT, special := hSp, big := hB j }`.
+-/
 theorem numSt : NumSt := by
   have H := atPts_and (atPts_and (atPts_and GlobalTheory.T.parameter_hypothesis_all_points GlobalTheory.T.parameter_large_all_points) (atPts_and GlobalTheory.T.parameter_large_all_points_bound GlobalTheory.T.parameter_height_lt_genus))
     (atPts_and GlobalTheory.T.lambda_prime_all_points GlobalTheory.T.weight_lambda_shift_nonneg)

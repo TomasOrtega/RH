@@ -177,6 +177,19 @@ def DownAt (ep : Bool) {i : D.nd.Loc} {w : HeightOneSpectrum (𝓞 D.host.E)}
   ∃ τ₀ : Br.Kw D.nbr i w hw →ₐ[ℚ_[D.nd.l i]] Br.LL D.nbr i w hw,
     EmbTypeUe (!ep) τ₀ ∧ ∀ x, τ x = C.inc (τ₀ x)
 
+/- English proof (translation)
+Introduce and unpack `⟨⟨τ₀, h0, e0⟩, ⟨τ₁, h1, e1⟩⟩`. Establish `hτ : τ₀ = τ₁`. Use extensionality with `x`. Conclude with `congrArg _ ((C.inc).injective ((e0 x).symm.trans (e1 x)))`. Substitute `hτ` using the available equality.
+
+Establish `hd : (0 : ℝ) < Real.sqrt (D.host.d : ℝ)`. Use `D.host.qd_big.2` as an intermediate fact. Conclude with `Real.sqrt_pos.2 (by exact_mod_cast (by omega : 0 < D.host.d))`. Establish `key : ∀ (ψ₁ ψ₂ : D.host.E →+* ℂ), ψ₁ ∈ D.host.cmType → ψ₂ ∈ D.host.cmType → (∃ y : D.what₂.LL, D.what₂.embLL y = ψ₁ (D.host.sqd) ∧ D.what₂.embLL y = starRingEnd ℂ (ψ₂ (D.host.sqd))) → False`. Introduce `ψ₁ ψ₂ m1 m2 ⟨y, hy1, hy2⟩`.
+
+Establish `h` using `hy1.symm.trans hy2`. Simplify using `only [Formalism.HC.HostRaw.cmType, Set.mem_ofPred_eq] at m1 m2`. Rewrite `h` using `[m1, m2]`. Establish `him` using `congrArg Complex.im h`. Simplify using `at him`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Consider the cases of `ep with`. Consider the case `true`. Take `⟨hr, φ, hφ, hφr⟩` from `h0`. Take `⟨-, φ', hφ', hφ'r⟩` from `h1`.
+
+Take `⟨y, hy⟩` from `hr (D.host.sqd)`. Conclude with `key φ φ' hφ hφ' ⟨y, hφr _ _ hy, hφ'r _ _ hy⟩`. Consider the case `false`. Take `⟨hr, φ, hφ, hφr⟩` from `h0`. Take `⟨-, φ', hφ', hφ'r⟩` from `h1`.
+
+Take `⟨y, hy⟩` from `hr (D.host.sqd)`. Conclude with `key φ' φ hφ' hφ ⟨y, hφ'r _ _ hy, hφr _ _ hy⟩`.
+-/
 theorem not_upAt_and_downAt (ep : Bool) {i : D.nd.Loc} {w : HeightOneSpectrum (𝓞 D.host.E)}
     {hw : w ∈ placesOver D.host.E (D.nd.l i)} (C : Formalism.MainNotions.TruncatedSeriesCountingIdentities.CoefExt D i w hw)
     (τ : Br.Kw D.nbr i w hw →ₐ[ℚ_[D.nd.l i]] ↥C.LL.1) : ¬ (UpAt ep C τ ∧ DownAt ep C τ) := by

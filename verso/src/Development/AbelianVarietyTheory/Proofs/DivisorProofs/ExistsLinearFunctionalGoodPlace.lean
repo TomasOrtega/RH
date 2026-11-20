@@ -40,6 +40,17 @@ noncomputable section
 
 namespace GlobalTheory.LinWAt
 
+/- English proof (translation)
+Use `set q : Ideal ℤ := v.asIdeal.under ℤ with hq`. Take `⟨g, hg⟩` from `(Submodule.IsPrincipal.principal q)`. Establish `hqs : q = Ideal.span {((g.natAbs : ℕ) : ℤ)}`. Rewrite using `[hg]`. Conclude with `Eq.symm (Int.span_natAbs g)`.
+
+Establish `hqne : q ≠ ⊥`. Introduce `h0`. Apply `v.ne_bot` to reduce the goal to its premises. Conclude with `Ideal.eq_bot_of_comap_eq_bot h0`. Establish `hg0 : g ≠ 0` using `by rintro rfl; apply hqne; rw [hg]; simp`.
+
+Establish `hp : (g.natAbs).Prime`. Establish `hI : (Ideal.span {((g.natAbs : ℕ) : ℤ)}).IsPrime` using `hqs ▸ (Ideal.IsPrime.under ℤ v.asIdeal)`. Establish `hne : ((g.natAbs : ℕ) : ℤ) ≠ 0` using `by simpa using hg0`. Conclude with `Nat.prime_iff_prime_int.2 ((Ideal.span_singleton_prime hne).1 hI)`. Establish `hmem : ((g.natAbs : ℕ) : 𝓞 F) ∈ v.asIdeal`.
+
+Establish `: ((g.natAbs : ℕ) : ℤ) ∈ q` using `by rw [hqs]; exact Ideal.subset_span rfl`. Rewrite `this` using `[hq, Ideal.under_def, Ideal.mem_comap]`. Simplify using `using this`. Establish `h : (Ideal.primesOver (Ideal.span {((g.natAbs : ℕ) : ℤ)}) (𝓞 E)).ncard = Module.finrank ℚ E`. Rewrite using `[← hqs]`.
+
+Conclude with `hv`. Rewrite using `[GlobalTheory.AdelicU.nonempty_split_iff hcm]`. Conclude with `GlobalTheory.GoodPlace.ncard_primesOver_eq_two hcm.2.2.1 hp h v hmem`.
+-/
 theorem nonempty_emb_of_splitsFully {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (hv : SplitsFully E v) :
     Nonempty (E →ₐ[F] Fv F v) := by
@@ -69,6 +80,9 @@ end GlobalTheory.LinWAt
 
 namespace GlobalTheory.LinWAt
 
+/- English proof (translation)
+Rewrite using `[co.form]`. Simplify using `[GlobalTheory.LatVac.locCo, dotProduct, map_sum, map_mul, map_sub]`.
+-/
 theorem locCo_form {F : Type} [Field F] [NumberField F] {W : Type} [AddCommGroup W] [Module (AF F) W]
     {B : W → W → AF F} {κ : Type} [Fintype κ] (co : Darboux B κ) (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (x u : W) :
     (GlobalTheory.LatVac.locCo co v x).1 ⬝ᵥ (GlobalTheory.LatVac.locCo co v u).2 -
@@ -76,6 +90,11 @@ theorem locCo_form {F : Type} [Field F] [NumberField F] {W : Type} [AddCommGroup
   rw [co.form]
   simp [GlobalTheory.LatVac.locCo, dotProduct, map_sum, map_mul, map_sub]
 
+/- English proof (translation)
+Use `⟨co.e.symm (fun k => GlobalTheory.LatVac.liftV v (w.1 k), fun k => GlobalTheory.LatVac.liftV v (w.2 k)), ?_, ?_⟩` and prove the remaining obligations. Introduce `a ha`. Rewrite using `[← LinearEquiv.map_smul, ← co.e.symm.map_zero]`. Use `congr 1`. Use `Prod.ext (funext fun k => ?_) (funext fun k => ?_)` and prove the remaining obligations.
+
+Conclude with `GlobalTheory.LatVac.at_liftV v _ a ha`. Conclude with `GlobalTheory.LatVac.at_liftV v _ a ha`. Apply the tactic sequence `refine Prod.ext (funext fun k => ?_) (funext fun k => ?_) <;>`. Simplify using `[GlobalTheory.LatVac.locCo, GlobalTheory.LatVac.evFin_liftV]`.
+-/
 theorem locCo_surj {F : Type} [Field F] [NumberField F] {W : Type} [AddCommGroup W] [Module (AF F) W]
     {B : W → W → AF F} {κ : Type} [Fintype κ] (co : Darboux B κ) (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F)
     (w : (κ → Fv F v) × (κ → Fv F v)) : ∃ u : W, At (evFin F v) u ∧ GlobalTheory.LatVac.locCo co v u = w := by
@@ -89,6 +108,9 @@ theorem locCo_surj {F : Type} [Field F] [NumberField F] {W : Type} [AddCommGroup
   · refine Prod.ext (funext fun k => ?_) (funext fun k => ?_) <;>
       simp [GlobalTheory.LatVac.locCo, GlobalTheory.LatVac.evFin_liftV]
 
+/- English proof (translation)
+Introduce `a ha`. Establish `h` using `GlobalTheory.LatVac.symp_smul_smul σ JA JB (-1) a 1 x u`. Rewrite `h` using `[hx a ha, one_smul, mul_one, GlobalTheory.VacIndic.symp_zero_left]`. Rewrite using `[smul_eq_mul]`. Conclude with `h.symm`.
+-/
 theorem at_symp {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     {n d : ℕ} (JA : Matrix (Fin n) (Fin n) (AE F E)) (JB : Matrix (Fin d) (Fin d) (AE F E)) {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F}
     (x u : Matrix (Fin n) (Fin d) (AE F E)) (hx : At (evFin F v) x) :
@@ -99,11 +121,39 @@ theorem at_symp {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
   rw [smul_eq_mul]
   exact h.symm
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem co_one {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n d : ℕ}
     {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F} (t : E →ₐ[F] Fv F v) (u : Matrix (Fin n) (Fin d) (AE F E)) :
     ((1 : GL (Fin n) (Fv F v))⁻¹).1 * u.map (piW t) * ((1 : GL (Fin d) (Fv F v))⁻¹).1ᵀ = u.map (piW t) := by
   simp
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B a a' G X om om' hTr v hv`. Take `⟨t⟩` from `nonempty_emb_of_splitsFully hTr.base.cm v hv.2`. Take `⟨uT, uM, hT, hM, hspan, hsymp⟩` from `(GlobalTheory.T.local_unipotent_embeddings_exist) F E σ B a a' G X om om' hTr v t`. Establish `hψc : Continuous (GlobalTheory.LatVac.psiAt B.ψ v)` using `GlobalTheory.VacAny.continuous_psiV hTr.base.std.1 v`. Establish `hunr : PsiUnr B.ψ v` using `GlobalTheory.StdCharUnrF.psiUnr_of_not_le F B.ψ hTr.base.std v (GlobalTheory.SplitFullyUnr.not_le_differentIdeal v hv.2)`.
+
+Establish `hunr' : ∀ x : Fv F v, (∀ y ∈ 𝒪[Fv F v], GlobalTheory.LatVac.psiAt B.ψ v (x * y) = 1) ↔ x ∈ 𝒪[Fv F v]`. Introduce `x`. Simplify using `only [GlobalTheory.FinPl.SplitPoint.mem_integer_iff]`. Conclude with `hunr x`. Establish `hcoT : ∀ Y, coW G t (uT Y) = 0` using `fun Y => coW_eq_zero G t _ (hT Y).2.1`.
+
+Use `haveI : CharZero (Fv F v) := charZero_of_injective_algebraMap (algebraMap F _).injective`. Take `⟨ι, hbij, htr, hmu⟩` from `GlobalTheory.T.stoneVonNeumann_schwartzBruhat_transverseLagrangians (GlobalTheory.LatVac.psiAt B.ψ v) hψc hunr' ((GlobalTheory.LatVac.locCo G.M.co v).comp uT) ((GlobalTheory.LatVac.locCo G.M.co v).comp uM) (fun Y Y' => by`. Simplify using `only [AddMonoidHom.comp_apply]`. Rewrite using `[locCo_form, hsymp _ _ (hT Y).1 (hT Y').1, hcoT, hcoT]`. Use the proof step `simp)`.
+
+Use the proof step `(fun z z' => by`. Simplify using `only [AddMonoidHom.comp_apply]`. Rewrite using `[locCo_form, hsymp _ _ (hM z).1 (hM z').1, (hM z).2.1, (hM z').2.1]`. Use the proof step `simp)`. Use the proof step `(fun Y z => by`.
+
+Simplify using `only [AddMonoidHom.comp_apply]`. Rewrite using `[locCo_form, hsymp _ _ (hT Y).1 (hM z).1, (hT Y).2.2, (hM z).2.2, hcoT, (hM z).2.1]`. Use the proof step `simp)`. Use the proof step `(fun w => by`. Take `⟨u, hu, rfl⟩` from `locCo_surj G.M.co v w`.
+
+Take `⟨Y, z, rfl⟩` from `hspan u hu`. Conclude with `⟨Y, z, by simp only [AddMonoidHom.comp_apply, map_add]⟩)`. Establish `hφ₁ : ∀ (u : Matrix (Fin a) (Fin (a + a')) (AE F E)), At (evFin F v) u → ∀ φ ∈ GlobalTheory.WeilM.SB _, ∀ φ₁, Acts (evFin F v) (G.M.co.rho B.ψ u) φ φ₁ → φ₁ = GlobalTheory.WeilM.schr (GlobalTheory.LatVac.psiAt B.ψ v) (GlobalTheory.LatVac.locCo G.M.co v u) φ` using `fun u hu φ hφ φ₁ hact => GlobalTheory.TensUniq.eq_of_tens_eq v φ φ₁ _ hφ fun r hr => (hact r hr).symm.trans (GlobalTheory.VacBridge.rho_acts_locCo G.M.co B.ψ v u hu φ r hr)`. Use `⟨t, ι, hbij, ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu hu0 φ hφ φ₁ _ hact Y`.
+
+Establish `e1` using `hφ₁ u hu φ hφ φ₁ hact`. Take `⟨Y₀, z, rfl⟩` from `hspan u hu`. Establish `hz : z = 0`. Establish `h` using `hu0`. Rewrite `h` using `[Matrix.map_add _ (map_add _), (hT Y₀).2.1, zero_add]`.
+
+Rewrite using `[← (hM z).2.2]`. Conclude with `coW_eq_zero G t _ h`. Substitute `hz` using the available equality. Rewrite `e1`, the goal using `[map_zero, add_zero]`. Rewrite using `[co_one, (hT Y₀).2.2, e1]`.
+
+Conclude with `congrFun (htr Y₀ φ hφ) Y`. Introduce `u hu hu1 φ hφ φ₁ _ hact x hx hx0`. Establish `e1` using `hφ₁ u hu φ hφ φ₁ hact`. Take `⟨Y₀, z, rfl⟩` from `hspan u hu`. Establish `hY : Y₀ = 0`.
+
+Establish `h` using `hu1`. Rewrite `h` using `[Matrix.map_add _ (map_add _), (hM z).2.1, add_zero]`. Rewrite using `[← (hT Y₀).2.2]`. Conclude with `h`. Substitute `hY` using the available equality.
+
+Rewrite `e1`, the goal using `[map_zero, zero_add]`. Rewrite using `[co_one, e1, GlobalTheory.VacIndic.psi_of_at B.ψ (at_symp _ _ _ x (uM z) hx), hsymp x (uM z) hx (hM z).1, coW_eq_zero G t x hx0, (hM z).2.1, (hM z).2.2]`. Establish `h2` using `congrFun (hmu z φ hφ) (x.map (piW t))`. Simplify using `only [AddMonoidHom.comp_apply] at h2`. Rewrite using `[h2, ← GlobalTheory.LatVac.psiAt_apply]`.
+
+Use `congr 2`. Simplify using the standard rewrite rules.
+-/
 theorem exists_isLinW : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ v, X.Good v →

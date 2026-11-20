@@ -6,6 +6,13 @@ open scoped TensorProduct
 
 namespace GlobalTheory.CompanionTheory.Rodier
 
+/- English proof (translation)
+Introduce `x y hxy`. Take `⟨x, hx⟩` from `x`. Take `⟨y, hy⟩` from `y`. Simplify using `only [Fin.mk_le_mk] at hxy`. Use `revert hy`.
+
+Proceed by induction on `y, hxy using Nat.le_induction with`. Consider the case `base => intro hy`. Conclude with `le_rfl`. Consider the case `succ n hxn ih`. Introduce `hy`.
+
+Establish `hn : n < N` using `by omega`. Conclude with `le_trans (hstep ⟨n, hn⟩ ⟨n + 1, hy⟩ rfl) (ih hn)`.
+-/
 theorem antitone_comp_of_adjacent {h N : ℕ} (b : Fin N → Fin h) (w : Equiv.Perm (Fin N))
     (hstep : ∀ i j : Fin N, (j : ℕ) = i + 1 → b (w j) ≤ b (w i)) :
     Antitone (b ∘ w) := by
@@ -21,6 +28,11 @@ theorem antitone_comp_of_adjacent {h N : ℕ} (b : Fin N → Fin h) (w : Equiv.P
     have hn : n < N := by omega
     exact le_trans (hstep ⟨n, hn⟩ ⟨n + 1, hy⟩ rfl) (ih hn)
 
+/- English proof (translation)
+Introduce `x y hxy`. Establish `hm` using `Tuple.monotone_sort (wKey d hd) hxy`. Simplify using `only [Function.comp, wKey] at hm`. Break down `Prod.Lex.toLex_le_toLex.mp hm with h | ⟨h, -⟩` into its components or cases. Conclude with `(OrderDual.toDual_lt_toDual.mp h).le`.
+
+Conclude with `le_of_eq (OrderDual.toDual_inj.mp h).symm`.
+-/
 theorem blk_comp_wOpen_antitone {h N : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N) :
     Antitone (blk (stdBlocks d hd) ∘ wOpen d hd) := by
   intro x y hxy
@@ -30,6 +42,13 @@ theorem blk_comp_wOpen_antitone {h N : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a
   · exact (OrderDual.toDual_lt_toDual.mp h).le
   · exact le_of_eq (OrderDual.toDual_inj.mp h).symm
 
+/- English proof (translation)
+Use `show (↑(pm k v) : Matrix (Fin N) (Fin N) k).BlockTriangular (blk (stdBlocks d hd))`. Introduce `i j hij`. Establish `hne : v⁻¹ i ≠ j`. Introduce `hj`. Substitute `hj` using the available equality.
+
+Establish `hb` using `hv (v⁻¹ i)`. Establish `hvi : v (v⁻¹ i) = i` using `by simp`. Rewrite `hb` using `[hvi]`. Rewrite `hij` using `[← hb]`. Conclude with `lt_irrefl _ hij`.
+
+Express the relevant statement in the definitionally equal form `(Equiv.toPEquiv v⁻¹).toMatrix i j = 0`. Rewrite using `[PEquiv.toMatrix_apply]`. Simplify using `using hne`.
+-/
 theorem pm_mem_parab_of_blk_eq (k : Type) [Field k] {h N : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N)
     (v : Equiv.Perm (Fin N)) (hv : ∀ q, blk (stdBlocks d hd) (v q) = blk (stdBlocks d hd) q) :
     pm k v ∈ parab k (stdBlocks d hd) := by
@@ -47,6 +66,13 @@ theorem pm_mem_parab_of_blk_eq (k : Type) [Field k] {h N : ℕ} (d : Fin h → �
   rw [PEquiv.toMatrix_apply]
   simpa using hne
 
+/- English proof (translation)
+Establish `key : ∀ u u' : Equiv.Perm (Fin N), (∀ p, blk (stdBlocks d hd) (u p) = blk (stdBlocks d hd) (u' p)) → cell k d hd u ⊆ cell k d hd u'`. Introduce `u u' hu g hg`. Simplify using `only [cell, Set.mem_ofPred_eq] at hg ⊢`. Take `⟨p, hp, n, hn, rfl⟩` from `hg`. Establish `hv : ∀ q, blk (stdBlocks d hd) ((u * u'⁻¹) q) = blk (stdBlocks d hd) q`.
+
+Introduce `q`. Rewrite using `[Equiv.Perm.mul_apply, hu]`. Simplify using the standard rewrite rules. Establish `hpm : pm k u = pm k (u * u'⁻¹) * pm k u'`. Unfold `pm`.
+
+Rewrite using `[← map_mul, inv_mul_cancel_right]`. Use `⟨p * pm k (u * u'⁻¹), (parab k (stdBlocks d hd)).mul_mem hp (pm_mem_parab_of_blk_eq k d hd _ hv), n, hn, ?_⟩` and prove the remaining obligations. Rewrite using `[hpm]`. Simplify using `only [mul_assoc]`. Conclude with `Set.Subset.antisymm (key w w' hw) (key w' w fun p => (hw p).symm)`.
+-/
 theorem cell_eq_of_blk_eq (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {h N : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N)
     (w w' : Equiv.Perm (Fin N))
@@ -70,6 +96,11 @@ theorem cell_eq_of_blk_eq (k : Type) [Field k] [ValuativeRel k] [TopologicalSpac
     simp only [mul_assoc]
   exact Set.Subset.antisymm (key w w' hw) (key w' w fun p => (hw p).symm)
 
+/- English proof (translation)
+Introduce `k _ _ _ _ h N d hd w`. Distinguish the cases in `hex : ∃ i j : Fin N, (j : ℕ) = i + 1 ∧ blk (stdBlocks d hd) (w i) < blk (stdBlocks d hd) (w j)`. Conclude with `Or.inl hex`. Use `right`. Simplify using `only [not_exists, not_and, not_lt] at hex`.
+
+Establish `hA` using `antitone_comp_of_adjacent (blk (stdBlocks d hd)) w hex`. Establish `hB` using `blk_comp_wOpen_antitone d hd`. Establish `hU` using `Tuple.unique_monotone (f := fun q => OrderDual.toDual (blk (stdBlocks d hd) q)) (σ := w) (τ := wOpen d hd) (monotone_toDual_comp_iff.mpr hA) (monotone_toDual_comp_iff.mpr hB)`. Use `cell_eq_of_blk_eq k d hd w (wOpen d hd) fun p => ?_` and prove the remaining obligations. Conclude with `OrderDual.toDual_inj.mp (congrFun hU p)`.
+-/
 theorem exists_adjacent_blk_lt_or_cell_eq_open : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (h N : ℕ) (d : Fin h → ℕ) (hd : ∑ a, d a = N) (w : Equiv.Perm (Fin N)),
     (∃ i j : Fin N, (j : ℕ) = i + 1 ∧ blk (stdBlocks d hd) (w i) < blk (stdBlocks d hd) (w j)) ∨

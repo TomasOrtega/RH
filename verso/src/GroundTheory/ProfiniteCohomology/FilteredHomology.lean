@@ -12,12 +12,22 @@ section Elements
 variable {R : Type u} [Ring R] {ι : Type*} {c : ComplexShape ι}
   (K : HomologicalComplex (ModuleCat.{u} R) c)
 
+/- English proof (translation)
+Use `⟨(K.sc i).moduleCatCyclesIso.inv ⟨x, hx⟩, ?_⟩` and prove the remaining obligations. Use `ShortComplex.moduleCatCyclesIso_inv_iCycles_apply (K.sc i) ⟨x, hx⟩` as an intermediate fact. Conclude with `this`.
+-/
 theorem exists_iCycles_eq {i : ι} (x : K.X i) (hx : (K.d i (c.next i)).hom x = 0) :
     ∃ z : K.cycles i, (K.iCycles i).hom z = x := by
   refine ⟨(K.sc i).moduleCatCyclesIso.inv ⟨x, hx⟩, ?_⟩
   have := ShortComplex.moduleCatCyclesIso_inv_iCycles_apply (K.sc i) ⟨x, hx⟩
   exact this
 
+/- English proof (translation)
+Establish `hinj : Function.Injective S.moduleCatHomologyIso.hom.hom` using `(ModuleCat.mono_iff_injective _).1 inferInstance`. Establish `h1 : S.moduleCatHomologyIso.hom.hom (S.homologyπ.hom z) = S.moduleCatLeftHomologyData.π.hom (S.moduleCatCyclesIso.hom.hom z)` using `ShortComplex.π_moduleCatCyclesIso_hom_apply S z`. Establish `h2 : S.moduleCatLeftHomologyData.i.hom (S.moduleCatCyclesIso.hom.hom z) = S.iCycles.hom z` using `ShortComplex.moduleCatCyclesIso_hom_i_apply S z`. Establish `h0 : S.homologyπ.hom z = 0 ↔ S.moduleCatHomologyIso.hom.hom (S.homologyπ.hom z) = 0` using `⟨fun h => by rw [h, map_zero], fun h => hinj (h.trans (map_zero _).symm)⟩`. Rewrite using `[h0, h1]`.
+
+Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (p := LinearMap.range S.moduleCatToCycles) (S.moduleCatCyclesIso.hom.hom z) = 0 ↔ _`. Use `(Submodule.Quotient.mk_eq_zero (LinearMap.range S.moduleCatToCycles) (x := (S.moduleCatCyclesIso.hom.hom z : LinearMap.ker S.g.hom))).trans ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw⟩`. Conclude with `⟨w, (congrArg S.moduleCatLeftHomologyData.i.hom hw).trans h2⟩`.
+
+Introduce and unpack `⟨w, hw⟩`. Conclude with `⟨w, (ModuleCat.mono_iff_injective S.moduleCatLeftHomologyData.i).1 inferInstance (hw.trans h2.symm)⟩`.
+-/
 theorem shortComplex_homologyπ_eq_zero_iff (S : ShortComplex (ModuleCat.{u} R)) (z : S.cycles) :
     S.homologyπ.hom z = 0 ↔ ∃ w : S.X₁, S.f.hom w = S.iCycles.hom z := by
   have hinj : Function.Injective S.moduleCatHomologyIso.hom.hom :=
@@ -42,6 +52,9 @@ theorem shortComplex_homologyπ_eq_zero_iff (S : ShortComplex (ModuleCat.{u} R))
     exact ⟨w, (ModuleCat.mono_iff_injective S.moduleCatLeftHomologyData.i).1 inferInstance
       (hw.trans h2.symm)⟩
 
+/- English proof (translation)
+The claim follows from `shortComplex_homologyπ_eq_zero_iff (K.sc i) z`.
+-/
 theorem homologyπ_eq_zero_iff {i : ι} (z : K.cycles i) :
     (K.homologyπ i).hom z = 0 ↔
       ∃ w : K.X (c.prev i), (K.d (c.prev i) i).hom w = (K.iCycles i).hom z :=
@@ -54,20 +67,32 @@ section Apply
 variable {R : Type u} [Ring R] {ι : Type*} {c : ComplexShape ι}
   {K L : HomologicalComplex (ModuleCat.{u} R) c}
 
+/- English proof (translation)
+The claim follows from `(congrArg (fun g => ModuleCat.Hom.hom g x) (φ.comm i j)).symm`.
+-/
 theorem hom_f_d_apply (φ : K ⟶ L) (i j : ι) (x : K.X i) :
     (φ.f j).hom ((K.d i j).hom x) = (L.d i j).hom ((φ.f i).hom x) :=
   (congrArg (fun g => ModuleCat.Hom.hom g x) (φ.comm i j)).symm
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.comp_apply, ← ModuleCat.hom_comp, K.iCycles_d, ModuleCat.hom_zero, LinearMap.zero_apply]`.
+-/
 theorem iCycles_d_apply (K : HomologicalComplex (ModuleCat.{u} R) c) (i j : ι) (z : K.cycles i) :
     (K.d i j).hom ((K.iCycles i).hom z) = 0 := by
   rw [← LinearMap.comp_apply, ← ModuleCat.hom_comp, K.iCycles_d, ModuleCat.hom_zero,
     LinearMap.zero_apply]
 
+/- English proof (translation)
+The claim follows from `congrArg (fun g => ModuleCat.Hom.hom g z) (HomologicalComplex.cyclesMap_i φ i)`.
+-/
 theorem iCycles_cyclesMap_apply (φ : K ⟶ L) (i : ι) (z : K.cycles i) :
     (L.iCycles i).hom ((HomologicalComplex.cyclesMap φ i).hom z) =
       (φ.f i).hom ((K.iCycles i).hom z) :=
   congrArg (fun g => ModuleCat.Hom.hom g z) (HomologicalComplex.cyclesMap_i φ i)
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.comp_apply, ← ModuleCat.hom_comp, HomologicalComplex.homologyπ_naturality]`. Both sides reduce to the same expression.
+-/
 theorem homologyMap_homologyπ_apply (φ : K ⟶ L) (i : ι) (z : K.cycles i) :
     (HomologicalComplex.homologyMap φ i).hom ((K.homologyπ i).hom z) =
       (L.homologyπ i).hom ((HomologicalComplex.cyclesMap φ i).hom z) :=
@@ -84,12 +109,22 @@ variable {R : Type u} [Ring R] {ι : Type*} {c : ComplexShape ι}
   {F : J ⥤ HomologicalComplex (ModuleCat.{u} R) c} (t : Cocone F)
 
 omit [IsFiltered J] in
+/- English proof (translation)
+The claim follows from `congrArg (fun φ : F.obj j ⟶ t.pt => (φ.f i).hom y) (t.w f)`.
+-/
 theorem cocone_w_apply {j j' : J} (f : j ⟶ j') (i : ι) (y : (F.obj j).X i) :
     ((t.ι.app j').f i).hom (((F.map f).f i).hom y) = ((t.ι.app j).f i).hom y :=
   congrArg (fun φ : F.obj j ⟶ t.pt => (φ.f i).hom y) (t.w f)
 
 omit [IsFiltered J] in
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `(ModuleCat.epi_iff_surjective (t.pt.homologyπ i)).1 inferInstance z`. Take `⟨j, y, hy⟩` from `hsurj ((t.pt.iCycles i).hom z)`. Establish `hdy : ((t.ι.app j).f (c.next i)).hom (((F.obj j).d i (c.next i)).hom y) = 0`. Rewrite using `[hom_f_d_apply, hy]`. Conclude with `iCycles_d_apply t.pt i _ z`.
+
+Take `⟨j', f, hf⟩` from `hinj j _ hdy`. Rewrite `hf` using `[hom_f_d_apply]`. Take `⟨z', hz'⟩` from `exists_iCycles_eq (F.obj j') (((F.map f).f i).hom y) hf`. Use `⟨j', (HomologicalComplex.homologyπ (F.obj j') i).hom z', ?_⟩` and prove the remaining obligations. Rewrite using `[homologyMap_homologyπ_apply]`.
+
+Use `congr 1`. Apply `(ModuleCat.mono_iff_injective (t.pt.iCycles i)).1 inferInstance` to reduce the goal to its premises. Rewrite using `[iCycles_cyclesMap_apply, hz', cocone_w_apply, hy]`.
+-/
 theorem exists_homologyMap_eq_of_cocone (i : ι)
     (hsurj : ∀ x : t.pt.X i, ∃ (j : J) (y : (F.obj j).X i), ((t.ι.app j).f i).hom y = x)
     (hinj : ∀ (j : J) (y : (F.obj j).X (c.next i)), ((t.ι.app j).f (c.next i)).hom y = 0 →
@@ -111,6 +146,17 @@ theorem exists_homologyMap_eq_of_cocone (i : ι)
   apply (ModuleCat.mono_iff_injective (t.pt.iCycles i)).1 inferInstance
   rw [iCycles_cyclesMap_apply, hz', cocone_w_apply, hy]
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `(ModuleCat.epi_iff_surjective ((F.obj j).homologyπ i)).1 inferInstance y`. Rewrite `hy` using `[homologyMap_homologyπ_apply, homologyπ_eq_zero_iff, iCycles_cyclesMap_apply]`. Take `⟨w, hw⟩` from `hy`. Take `⟨j₁, v, hv⟩` from `hsurj w`. Set `m` to `IsFiltered.max j j₁`.
+
+Set `a : j ⟶ m` to `IsFiltered.leftToMax j j₁`. Set `b : j₁ ⟶ m` to `IsFiltered.rightToMax j j₁`. Set `e : (F.obj m).X i` to `((F.map a).f i).hom (((F.obj j).iCycles i).hom z) - ((F.obj m).d (c.prev i) i).hom (((F.map b).f (c.prev i)).hom v)`. Establish `he : ((t.ι.app m).f i).hom e = 0`. Simplify using `only [e, map_sub]`.
+
+Rewrite using `[cocone_w_apply, hom_f_d_apply, cocone_w_apply, hv]`. Conclude with `sub_eq_zero.2 hw.symm`. Take `⟨j', g, hg⟩` from `hinj m e he`. Use `⟨j', a ≫ g, ?_⟩` and prove the remaining obligations. Rewrite using `[homologyMap_homologyπ_apply, homologyπ_eq_zero_iff, iCycles_cyclesMap_apply]`.
+
+Use `⟨((F.map (b ≫ g)).f (c.prev i)).hom v, ?_⟩` and prove the remaining obligations. Simplify using `only [e, map_sub, sub_eq_zero] at hg`. Rewrite using `[F.map_comp, F.map_comp, HomologicalComplex.comp_f, HomologicalComplex.comp_f]`. Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply]`. Rewrite using `[← hom_f_d_apply]`.
+
+Conclude with `hg.symm`.
+-/
 theorem exists_homologyMap_map_eq_zero_of_cocone (i : ι)
     (hsurj : ∀ x : t.pt.X (c.prev i),
       ∃ (j : J) (y : (F.obj j).X (c.prev i)), ((t.ι.app j).f (c.prev i)).hom y = x)

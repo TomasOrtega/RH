@@ -19,6 +19,21 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `E _ _ w c d S T t ν ht hS hν hsum hle`. Establish `hN1 : 1 < Ideal.absNorm w.asIdeal`. Establish `h0 : Ideal.absNorm w.asIdeal ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `w.ne_bot`.
+
+Establish `h1 : Ideal.absNorm w.asIdeal ≠ 1`. Rewrite using `[Ne, Ideal.absNorm_eq_one_iff]`. Conclude with `w.isPrime.ne_top`. Use linear arithmetic over natural numbers and integers. Use `set N := Ideal.absNorm w.asIdeal with hN`.
+
+Establish `hmem : ν * ((N : ℕ) : ℂ) ^ (((t : ℂ) - 1) / 2 - ((0 : ℕ) : ℂ)) ∈ T.map (fun z => (z : ℂ))` using `Multiset.mem_of_le hle (Multiset.mem_map.2 ⟨0, Multiset.mem_range.2 (by omega), rfl⟩)`. Rewrite `hmem` using `[← hsum]`. Take `⟨i, -, hi⟩` from `Multiset.mem_sum.1 hmem`. Take `⟨k, -, hk⟩` from `Multiset.mem_sum.1 hi`. Take `⟨s, hs, hsk⟩` from `Multiset.mem_map.1 hk`.
+
+Establish `hs1 : ‖s‖ = 1`. Simplify using `only [Multiset.bind_def, Multiset.pure_def, Multiset.mem_bind, Multiset.mem_singleton] at hs`. Take `⟨u, hu, rfl⟩` from `hs`. Conclude with `hS i u hu`. Establish `hNpos : 0 < N` using `by omega`.
+
+Establish `hn` using `congrArg (fun z : ℂ => ‖z‖) hsk`. Simplify using `only [norm_mul, hs1, hν, one_mul, Complex.norm_natCast_cpow_of_pos hNpos] at hn`. Establish `hre : ((((d i : ℂ) - 1) / 2 - ((k : ℕ) : ℂ))).re = ((d i : ℝ) - 1) / 2 - (k : ℕ)` using `by simp`. Establish `hre2 : ((((t : ℂ) - 1) / 2 - ((0 : ℕ) : ℂ))).re = ((t : ℝ) - 1) / 2` using `by simp`. Rewrite `hn` using `[hre, hre2]`.
+
+Establish `hN1' : (1 : ℝ) < (N : ℝ)` using `by exact_mod_cast hN1`. Establish `hle'` using `(Real.rpow_le_rpow_left_iff hN1').1 hn.ge`. Establish `hk' : ((k : ℕ) : ℝ) ≥ 0` using `by positivity`. Use `⟨i, ?_⟩` and prove the remaining obligations. Establish `: (t : ℝ) ≤ d i` using `by linarith`.
+
+Conclude with `this` after adjusting the coercions.
+-/
 theorem unitary_string_forces_long_part : ∀ (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (c : ℕ) (d : Fin c → ℕ)
     (S : Fin c → Multiset ℂˣ) (T : Multiset ℂˣ) (t : ℕ) (ν : ℂ),
   1 ≤ t → (∀ i, ∀ s ∈ S i, ‖(s : ℂ)‖ = 1) → ‖ν‖ = 1 →

@@ -8,6 +8,19 @@ open scoped ContDiff
 
 namespace GlobalTheory.CompanionTheory.Ar.Bdry
 
+/- English proof (translation)
+Establish `key` using `GlobalTheory.T.snc_boundary_coordinate_chart e X A L s nb m W hs hn`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← isOpen_compl_iff, isOpen_iff_mem_nhds]`. Introduce `y hy`. Take `⟨ψ, -, hyψ, S, hS⟩` from `key y`.
+
+Establish `hopen : IsOpen (ψ.source ∩ ψ ⁻¹' {z : Fin e → ℂ | ∀ i ∈ S, z i ≠ 0})`. Apply `ψ.continuousOn.isOpen_inter_preimage ψ.open_source` to reduce the goal to its premises. Establish `: {z : Fin e → ℂ | ∀ i ∈ S, z i ≠ 0} = ⋂ i ∈ S, {z : Fin e → ℂ | z i ≠ 0}`. Use extensionality with `z`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this]`. Conclude with `isOpen_biInter_finset fun i _ => isOpen_ne_fun (continuous_apply i) continuous_const`. Establish `hmem : y ∈ ψ.source ∩ ψ ⁻¹' {z : Fin e → ℂ | ∀ i ∈ S, z i ≠ 0}`. Use `⟨hyψ, fun i hi h0 => hy ((hS y hyψ).2 ⟨i, hi, h0⟩)⟩` and prove the remaining obligations. Use `Filter.mem_of_superset (hopen.mem_nhds hmem) ?_` and prove the remaining obligations.
+
+Introduce and unpack `y' ⟨h1, h2⟩ hb`. Take `⟨i, hi, h0⟩` from `(hS y' h1).1 hb`. Conclude with `h2 i hi h0`. Rewrite using `[dense_iff_inter_open]`. Introduce `V hV ⟨x, hx⟩`.
+
+Take `⟨ψ, -, hxψ, S, hS⟩` from `key x`. Establish `hsub : V ∩ ψ.source ⊆ ψ.source` using `Set.inter_subset_right`. Establish `himg : IsOpen (ψ '' (V ∩ ψ.source))` using `ψ.isOpen_image_of_subset_source (hV.inter ψ.open_source) hsub`. Establish `hne : (ψ '' (V ∩ ψ.source)).Nonempty` using `⟨ψ x, x, ⟨hx, hxψ⟩, rfl⟩`. Take `⟨z, hz, hz0⟩` from `(GlobalTheory.T.dense_coordinate_torus e).inter_open_nonempty _ himg hne`.
+
+Take `⟨y, ⟨hyV, hyψ⟩, rfl⟩` from `hz`. Use `⟨y, hyV, fun hb => ?_⟩` and prove the remaining obligations. Take `⟨i, -, h0⟩` from `(hS y hyψ).1 hb`. Conclude with `hz0 i h0`.
+-/
 theorem bdry_isClosed_dense_compl (e : ℕ) (X : Type) [TopologicalSpace X] (A : FinHolAtlas e X) (L : LocPot X)
     (s : X → X → ℂ) (nb : ℕ) (m : Fin nb → ℕ) (W : Fin nb → Set X)
     (hs : IsSection A L s) (hn : IsSNC A L s m W) : IsClosed (bdry s) ∧ Dense (bdry s)ᶜ := by

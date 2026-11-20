@@ -8,11 +8,21 @@ open UpperTheory.V.Af.Fin (emb e1 e2 blk Bdd)
 open GlobalTheory.PRep (fixed)
 open scoped TensorProduct
 
+/- English proof (translation)
+The claim follows from `map_heckeVec hK hh (ρ' := ρ) A (fun g y => LinearMap.congr_fun (hA g).eq y) x`.
+-/
 private theorem hk_comm_of {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V)
     {K : Subgroup G} (hK : IsCommensurated K) {h : G → ℂ} (hh : h ∈ Hecke ℂ K) (A : Module.End ℂ V)
     (hA : ∀ g, Commute A (ρ g)) (x : V) : A (hkOp ρ hK hh x) = hkOp ρ hK hh (A x) :=
   map_heckeVec hK hh (ρ' := ρ) A (fun g y => LinearMap.congr_fun (hA g).eq y) x
 
+/- English proof (translation)
+Introduce `hC E _ _ _ a T i i' φ hφ`. Apply the tactic sequence `rcases i with ⟨t, u⟩ | ⟨⟨w, hw⟩, h, hh⟩ <;> rcases i' with ⟨t', u'⟩ | ⟨⟨w', hw'⟩, h', hh'⟩`. Conclude with `LinearMap.congr_fun ((hC E a t u).2.2.2 t' u').eq φ`. Conclude with `hk_comm_of (fL a w') (Final.GLintComm E w' a) hh' (cap t u) (fun g => (hC E a t u).1 _) φ`. Conclude with `(hk_comm_of (fL a w) (Final.GLintComm E w a) hh (cap t' u') (fun g => (hC E a t' u').1 _) φ).symm`.
+
+Distinguish the cases in `e : w = w'`. Substitute `e` using the available equality. Establish `hK` using `Final.GLintComm E w a`. Express the relevant statement in the definitionally equal form `heckeVec (fL a w) (KGL w a) h (heckeVec (fL a w) (KGL w a) h' φ) = heckeVec (fL a w) (KGL w a) h' (heckeVec (fL a w) (KGL w a) h φ)`. Rewrite using `[← SatCompare.heckeVec_conv hK hh hh' (hφ w hw), ← SatCompare.heckeVec_conv hK hh' hh (hφ w hw), Final.HeckeCommGL E w a ℂ h hh h' hh']`.
+
+Use `hk_comm_of (fL a w') (Final.GLintComm E w' a) hh' (hkOp (fL a w) (Final.GLintComm E w a) hh) (fun g => LinearMap.ext fun y => ?_) φ` and prove the remaining obligations. Use `(hk_comm_of (fL a w) (Final.GLintComm E w a) hh (fL a w' g) (fun k => ?_) y).symm` and prove the remaining obligations. Conclude with `Commute.map (LocUniq.comm_locGL w (pLoc_locGL_of_ne e g) k) (finRep E a)`.
+-/
 theorem UpperTheory.V.Cj.S.opComm :
     UpperTheory.V.Cj.S.CapAct → UpperTheory.V.Cj.S.OpComm := by
   intro hC E _ _ _ a T i i' φ hφ

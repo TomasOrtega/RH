@@ -16,12 +16,28 @@ variable {σ : Type}
 
 def FreeOf (S : Set σ) (G : MvPolynomial σ ℂ) : Prop := ∀ e ∈ G.support, ∀ v ∈ S, e v = 0
 
+/- English proof (translation)
+Introduce `x hx v hv`. Assume the negation of the conclusion as `h`. Conclude with `hv ((mem_supported.1 hF) ((mem_vars_iff_mem_support v).2 ⟨x, hx, Finsupp.mem_support_iff.2 h⟩))`.
+-/
 theorem vars_zero_of_supported {S : Set σ} {F : MvPolynomial σ ℂ} (hF : F ∈ supported ℂ S) :
     ∀ x ∈ F.support, ∀ v ∉ S, x v = 0 := by
   intro x hx v hv
   by_contra h
   exact hv ((mem_supported.1 hF) ((mem_vars_iff_mem_support v).2 ⟨x, hx, Finsupp.mem_support_iff.2 h⟩))
 
+/- English proof (translation)
+Take `⟨e0, he0⟩ : F.support.Nonempty` from `Finset.nonempty_iff_ne_empty.2 (mt support_eq_empty.1 hF0)`. Establish `hvars` using `vars_zero_of_supported hF`. Use `⟨e0 + e', ?_, fun v hv => by simp [hvars e0 he0 v hv]⟩` and prove the remaining obligations. Rewrite using `[mem_support_iff, coeff_mul, Finset.sum_eq_single (e0, e')]`. Conclude with `mul_ne_zero (mem_support_iff.1 he0) (mem_support_iff.1 he')`.
+
+Introduce and unpack `⟨x, y⟩ hxy hne`. Rewrite `hxy` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Assume the negation of the conclusion as `h`. Establish `hx : x ∈ F.support` using `mem_support_iff.2 (left_ne_zero_of_mul h)`. Establish `hy : y ∈ G.support` using `mem_support_iff.2 (right_ne_zero_of_mul h)`.
+
+Apply `hne` to reduce the goal to its premises. Establish `h1 : x = e0`. Use extensionality with `v`. Use `congrArg (fun f => f v) hxy` as an intermediate fact. Simplify using `only [Finsupp.add_apply] at this`.
+
+Distinguish the cases in `hv : v ∈ S`. Rewrite `this` using `[hG y hy v hv, hG e' he' v hv]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hvars x hx v hv, hvars e0 he0 v hv]`. Substitute `h1` using the available equality.
+
+Establish `h2 : y = e'`. Use extensionality with `v`. Use `congrArg (fun f => f v) hxy` as an intermediate fact. Simplify using `only [Finsupp.add_apply] at this`. Use linear arithmetic over natural numbers and integers.
+
+Substitute `h2` using the available equality. Both sides reduce to the same expression. Introduce `h`. Conclude with `absurd (Finset.HasAntidiagonal.mem_antidiagonal.2 (show (e0, e').1 + (e0, e').2 = e0 + e' from rfl)) h`.
+-/
 theorem exists_support_mul {S : Set σ} {F G : MvPolynomial σ ℂ} (hF : F ∈ supported ℂ S) (hF0 : F ≠ 0)
     (hG : FreeOf S G) {e' : σ →₀ ℕ} (he' : e' ∈ G.support) :
     ∃ e ∈ (F * G).support, ∀ v ∉ S, e v = e' v := by
@@ -55,6 +71,9 @@ theorem exists_support_mul {S : Set σ} {F G : MvPolynomial σ ℂ} (hF : F ∈ 
   · intro h
     exact absurd (Finset.HasAntidiagonal.mem_antidiagonal.2 (show (e0, e').1 + (e0, e').2 = e0 + e' from rfl)) h
 
+/- English proof (translation)
+Introduce `e' he' v hv`. Take `⟨e, he, hee⟩` from `exists_support_mul hF hF0 hG he'`. Establish `hvS : v ∉ S` using `fun h => Set.disjoint_left.1 hST h hv`. Rewrite using `[← hee v hvS]`. Conclude with `hH e he v hv`.
+-/
 theorem freeOf_of_mul {S T : Set σ} {F G : MvPolynomial σ ℂ} (hF : F ∈ supported ℂ S) (hF0 : F ≠ 0)
     (hG : FreeOf S G) (hH : FreeOf T (F * G)) (hST : Disjoint S T) : FreeOf T G := by
   intro e' he' v hv
@@ -63,6 +82,9 @@ theorem freeOf_of_mul {S T : Set σ} {F G : MvPolynomial σ ℂ} (hF : F ∈ sup
   rw [← hee v hvS]
   exact hH e he v hv
 
+/- English proof (translation)
+Unfold `bRow`. Simplify using `only [LinearMap.sum_apply, Module.End.mul_apply, LinearMap.mulLeft_apply, Derivation.coeFn_coe, Derivation.leibniz, hF, smul_eq_mul, mul_zero, add_zero, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun k _ => by ring)` and prove the remaining obligations.
+-/
 theorem bRow_mul {m n : ℕ} (ι : Fin m × Fin n → σ) (a b : Fin m) (F G : MvPolynomial σ ℂ)
     (hF : ∀ x, pderiv (ι x) F = 0) : bRow ι a b (F * G) = F * bRow ι a b G := by
   unfold bRow
@@ -70,6 +92,9 @@ theorem bRow_mul {m n : ℕ} (ι : Fin m × Fin n → σ) (a b : Fin m) (F G : M
     Derivation.coeFn_coe, Derivation.leibniz, hF, smul_eq_mul, mul_zero, add_zero, Finset.mul_sum]
   refine Finset.sum_congr rfl (fun k _ => by ring)
 
+/- English proof (translation)
+Unfold `bCol`. Simplify using `only [LinearMap.sum_apply, Module.End.mul_apply, LinearMap.mulLeft_apply, Derivation.coeFn_coe, Derivation.leibniz, hF, smul_eq_mul, mul_zero, add_zero, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun k _ => by ring)` and prove the remaining obligations.
+-/
 theorem bCol_mul {m n : ℕ} (ι : Fin m × Fin n → σ) (c d : Fin n) (F G : MvPolynomial σ ℂ)
     (hF : ∀ x, pderiv (ι x) F = 0) : bCol ι c d (F * G) = F * bCol ι c d G := by
   unfold bCol
@@ -77,12 +102,28 @@ theorem bCol_mul {m n : ℕ} (ι : Fin m × Fin n → σ) (c d : Fin n) (F G : M
     Derivation.coeFn_coe, Derivation.leibniz, hF, smul_eq_mul, mul_zero, add_zero, Finset.mul_sum]
   refine Finset.sum_congr rfl (fun k _ => by ring)
 
+/- English proof (translation)
+The claim follows from `PI.FJMD.shapeProd_mem _ _ _ (fun i k _ _ => by simp only [Matrix.of_apply] exact X_mem_supported.2 ⟨(i, k), rfl⟩)`.
+-/
 theorem shapeProd_supported {m n : ℕ} (ι : Fin m × Fin n → σ) (α : List ℕ) :
     shapeProd (Matrix.of fun i k => (X (ι (i, k)) : MvPolynomial σ ℂ)) α ∈ supported ℂ (Set.range ι) :=
   PI.FJMD.shapeProd_mem _ _ _ (fun i k _ _ => by
     simp only [Matrix.of_apply]
     exact X_mem_supported.2 ⟨(i, k), rfl⟩)
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, h5⟩` from `hP`. Establish `hFd : ∀ x, pderiv (ι x) F = 0` using `fun x => PI.FJMX.pderiv_eq_zero_of_supported hF (hS x)`. Establish `g1 : ∀ a b : Fin m, a < b → bRow ι a b G = 0`. Introduce `a b hab`. Use `h1 a b hab` as an intermediate fact.
+
+Rewrite `this` using `[bRow_mul ι a b F G hFd]`. Conclude with `(mul_eq_zero.1 this).resolve_left hF0`. Establish `g2 : ∀ c d : Fin n, c < d → bCol ι c d G = 0`. Introduce `c d hcd`. Use `h2 c d hcd` as an intermediate fact.
+
+Rewrite `this` using `[bCol_mul ι c d F G hFd]`. Conclude with `(mul_eq_zero.1 this).resolve_left hF0`. Establish `g3 : ∀ e ∈ G.support, (∀ i, ∑ k : Fin n, e (ι (i, k)) = α i) ∧ (∀ k, ∑ i : Fin m, e (ι (i, k)) = β k)`. Introduce `e' he'`. Take `⟨e, he, hee⟩` from `exists_support_mul hF hF0 hG he'`.
+
+Take `⟨k1, k2⟩` from `h3 e he`. Use `⟨fun i => ?_, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[← k1 i]`. Conclude with `Finset.sum_congr rfl (fun k _ => (hee _ (hS _)).symm)`. Rewrite using `[← k2 k]`.
+
+Conclude with `Finset.sum_congr rfl (fun i _ => (hee _ (hS _)).symm)`. Take `⟨r1, r2, r3, Q, hQ, hGQ⟩` from `hC σ m n ι hι α β G hG0 g1 g2 g3 h4 h5`. Use `⟨⟨r1, r2, r3⟩, Q, ?_, hGQ⟩` and prove the remaining obligations. Introduce `e he v hv`. Take `⟨x, rfl⟩` from `hv`.
+
+Conclude with `hQ e he x`.
+-/
 theorem peel (hC : CauchyHW) {m n : ℕ} (ι : Fin m × Fin n → σ) (hι : Function.Injective ι)
     (α : Fin m → ℕ) (β : Fin n → ℕ) (S : Set σ) (F G : MvPolynomial σ ℂ) (hF : F ∈ supported ℂ S)
     (hF0 : F ≠ 0) (hG : FreeOf S G) (hS : ∀ x, ι x ∉ S) (hG0 : G ≠ 0) (hP : IsBlockHighestWeight ι α β (F * G)) :
@@ -122,6 +163,9 @@ variable {σ : Type}
 abbrev blkP {m n : ℕ} (ι : Fin m × Fin n → σ) (α : Fin m → ℕ) : MvPolynomial σ ℂ :=
   shapeProd (Matrix.of fun i k => (X (ι (i, k)) : MvPolynomial σ ℂ)) (List.ofFn α)
 
+/- English proof (translation)
+Introduce `e he v hv`. Break down `hv with hv | hv` into its components or cases. Conclude with `h1 e he v hv`. Conclude with `h2 e he v hv`.
+-/
 theorem freeOf_union {S T : Set σ} {G : MvPolynomial σ ℂ} (h1 : FreeOf S G) (h2 : FreeOf T G) :
     FreeOf (S ∪ T) G := by
   intro e he v hv
@@ -129,6 +173,11 @@ theorem freeOf_union {S T : Set σ} {G : MvPolynomial σ ℂ} (h1 : FreeOf S G) 
   · exact h1 e he v hv
   · exact h2 e he v hv
 
+/- English proof (translation)
+Use extensionality with `m`. Rewrite using `[coeff_C]`. Distinguish the cases in `hm : m = 0`. Substitute `hm` using the available equality. Simplify using the standard rewrite rules.
+
+Rewrite using `[if_neg (Ne.symm hm)]`. Assume the negation of the conclusion as `hc`. Conclude with `hm (h m (mem_support_iff.2 hc))`.
+-/
 theorem eq_C_of_support {Q : MvPolynomial σ ℂ} (h : ∀ e ∈ Q.support, e = 0) : Q = C (coeff 0 Q) := by
   classical
   ext m
@@ -145,37 +194,61 @@ section Line
 
 variable (p q r s : ℕ) (μ : Ix p q → ℚ) (μ' : Ix r s → ℚ)
 
+/- English proof (translation)
+Introduce and unpack `⟨i, k⟩ ⟨i', k'⟩ h`. Simplify using `only [ιA, Prod.mk.injEq, Sum.inl.injEq] at h`. Conclude with `Prod.ext (Fin.castLE_injective _ h.1) (Fin.castLE_injective _ h.2)`.
+-/
 theorem injA : Function.Injective (ιA p q r s μ μ') := by
   rintro ⟨i, k⟩ ⟨i', k'⟩ h
   simp only [ιA, Prod.mk.injEq, Sum.inl.injEq] at h
   exact Prod.ext (Fin.castLE_injective _ h.1) (Fin.castLE_injective _ h.2)
 
+/- English proof (translation)
+Introduce and unpack `⟨i, k⟩ ⟨i', k'⟩ h`. Simplify using `only [ιB, Prod.mk.injEq, Sum.inl.injEq, Sum.inr.injEq, Fin.rev_inj] at h`. Conclude with `Prod.ext (Fin.castLE_injective _ h.1) (Fin.castLE_injective _ h.2)`.
+-/
 theorem injB : Function.Injective (ιB p q r s μ μ') := by
   rintro ⟨i, k⟩ ⟨i', k'⟩ h
   simp only [ιB, Prod.mk.injEq, Sum.inl.injEq, Sum.inr.injEq, Fin.rev_inj] at h
   exact Prod.ext (Fin.castLE_injective _ h.1) (Fin.castLE_injective _ h.2)
 
+/- English proof (translation)
+Introduce and unpack `⟨i, k⟩ ⟨i', k'⟩ h`. Simplify using `only [ιC, Prod.mk.injEq, Sum.inr.injEq] at h`. Conclude with `Prod.ext (Fin.castLE_injective _ h.1) (Fin.castLE_injective _ h.2)`.
+-/
 theorem injC : Function.Injective (ιC p q r s μ μ') := by
   rintro ⟨i, k⟩ ⟨i', k'⟩ h
   simp only [ιC, Prod.mk.injEq, Sum.inr.injEq] at h
   exact Prod.ext (Fin.castLE_injective _ h.1) (Fin.castLE_injective _ h.2)
 
+/- English proof (translation)
+Introduce and unpack `⟨i, k⟩ ⟨i', k'⟩ h`. Simplify using `only [ιD, Prod.mk.injEq, Sum.inl.injEq, Sum.inr.injEq, Fin.rev_inj] at h`. Conclude with `Prod.ext (Fin.castLE_injective _ h.1) (Fin.castLE_injective _ h.2)`.
+-/
 theorem injD : Function.Injective (ιD p q r s μ μ') := by
   rintro ⟨i, k⟩ ⟨i', k'⟩ h
   simp only [ιD, Prod.mk.injEq, Sum.inl.injEq, Sum.inr.injEq, Fin.rev_inj] at h
   exact Prod.ext (Fin.castLE_injective _ h.1) (Fin.castLE_injective _ h.2)
 
+/- English proof (translation)
+Introduce and unpack `x ⟨y, hy⟩`. Simplify using `[ιA, ιB] at hy`.
+-/
 theorem dBA : ∀ x, ιB p q r s μ μ' x ∉ Set.range (ιA p q r s μ μ') := by
   rintro x ⟨y, hy⟩
   simp [ιA, ιB] at hy
 
+/- English proof (translation)
+Apply the tactic sequence `rintro x (⟨y, hy⟩ | ⟨y, hy⟩) <;> simp [ιA, ιB, ιC] at hy`.
+-/
 theorem dCAB : ∀ x, ιC p q r s μ μ' x ∉ Set.range (ιA p q r s μ μ') ∪ Set.range (ιB p q r s μ μ') := by
   rintro x (⟨y, hy⟩ | ⟨y, hy⟩) <;> simp [ιA, ιB, ιC] at hy
 
+/- English proof (translation)
+Apply the tactic sequence `rintro x ((⟨y, hy⟩ | ⟨y, hy⟩) | ⟨y, hy⟩) <;> simp [ιA, ιB, ιC, ιD] at hy`.
+-/
 theorem dDABC : ∀ x, ιD p q r s μ μ' x ∉
     Set.range (ιA p q r s μ μ') ∪ Set.range (ιB p q r s μ μ') ∪ Set.range (ιC p q r s μ μ') := by
   rintro x ((⟨y, hy⟩ | ⟨y, hy⟩) | ⟨y, hy⟩) <;> simp [ιA, ιB, ιC, ιD] at hy
 
+/- English proof (translation)
+Use `Set.disjoint_left.2 ?_` and prove the remaining obligations. Introduce and unpack `v ⟨x, rfl⟩ hv`. Conclude with `h x hv`.
+-/
 theorem disj_of {S : Set (Ln p q r s)} {m n : ℕ} (ι : Fin m × Fin n → Ln p q r s) (h : ∀ x, ι x ∉ S) :
     Disjoint (Set.range ι) S := by
   refine Set.disjoint_left.2 ?_
@@ -184,6 +257,23 @@ theorem disj_of {S : Set (Ln p q r s)} {m n : ℕ} (ι : Fin m × Fin n → Ln p
 
 end Line
 
+/- English proof (translation)
+Establish `hP0 : P ≠ 0` using `hP.2.1`. Take `⟨sqA, QA, fA, eA⟩` from `peel hC (ιA p q r s μ μ') (injA p q r s μ μ') _ _ ∅ 1 P (supported ℂ (∅ : Set (Ln p q r s))).one_mem one_ne_zero (fun _ _ _ h => h.elim) (fun _ h => h) hP0 (by rw [one_mul]; exact hA p q r s μ μ' P hP)`. Establish `hQA0 : QA ≠ 0` using `by rintro rfl; rw [mul_zero] at eA; exact hP0 eA`. Establish `shA0 : blkP (ιA p q r s μ μ') (αA p q r s μ) ≠ 0` using `left_ne_zero_of_mul (show blkP (ιA p q r s μ μ') (αA p q r s μ) * QA ≠ 0 from eA ▸ hP0)`. Establish `suA` using `shapeProd_supported (ιA p q r s μ μ') (List.ofFn (αA p q r s μ))`.
+
+Take `⟨sqB, QB, fB, eB⟩` from `peel hC (ιB p q r s μ μ') (injB p q r s μ μ') _ _ (Set.range (ιA p q r s μ μ')) _ QA suA shA0 fA (dBA p q r s μ μ') hQA0 (by rw [← eA]; exact hB p q r s μ μ' P hP)`. Establish `hQB0 : QB ≠ 0` using `by rintro rfl; rw [mul_zero] at eB; exact hQA0 eB`. Establish `shB0 : blkP (ιB p q r s μ μ') (αB p q r s μ) ≠ 0` using `left_ne_zero_of_mul (show blkP (ιB p q r s μ μ') (αB p q r s μ) * QB ≠ 0 from eB ▸ hQA0)`. Establish `suB` using `shapeProd_supported (ιB p q r s μ μ') (List.ofFn (αB p q r s μ))`. Establish `fBA : FreeOf (Set.range (ιA p q r s μ μ')) QB` using `freeOf_of_mul suB shB0 fB (eB ▸ fA) (disj_of p q r s (ιB p q r s μ μ') (dBA p q r s μ μ'))`.
+
+Take `⟨sqC, QC, fC, eC⟩` from `peel hC (ιC p q r s μ μ') (injC p q r s μ μ') _ _ (Set.range (ιA p q r s μ μ') ∪ Set.range (ιB p q r s μ μ')) _ QB (Subalgebra.mul_mem _ (supported_mono Set.subset_union_left suA) (supported_mono Set.subset_union_right suB)) (mul_ne_zero shA0 shB0) (freeOf_union fBA fB) (dCAB p q …`. Establish `hQC0 : QC ≠ 0` using `by rintro rfl; rw [mul_zero] at eC; exact hQB0 eC`. Establish `shC0 : blkP (ιC p q r s μ μ') (αC p q r s μ) ≠ 0` using `left_ne_zero_of_mul (show blkP (ιC p q r s μ μ') (αC p q r s μ) * QC ≠ 0 from eC ▸ hQB0)`. Establish `suC` using `shapeProd_supported (ιC p q r s μ μ') (List.ofFn (αC p q r s μ))`. Establish `fCAB : FreeOf (Set.range (ιA p q r s μ μ') ∪ Set.range (ιB p q r s μ μ')) QC` using `freeOf_of_mul suC shC0 fC (eC ▸ freeOf_union fBA fB) (disj_of p q r s (ιC p q r s μ μ') (dCAB p q r s μ μ'))`.
+
+Take `⟨sqD, QD, fD, eD⟩` from `peel hC (ιD p q r s μ μ') (injD p q r s μ μ') _ _ (Set.range (ιA p q r s μ μ') ∪ Set.range (ιB p q r s μ μ') ∪ Set.range (ιC p q r s μ μ')) _ QC (Subalgebra.mul_mem _ (Subalgebra.mul_mem _ (supported_mono (Set.subset_union_left.trans Set.subset_union_left) suA) (supported_mono (S …`. Establish `shD0 : blkP (ιD p q r s μ μ') (αD p q r s μ) ≠ 0` using `left_ne_zero_of_mul (show blkP (ιD p q r s μ μ') (αD p q r s μ) * QD ≠ 0 from eD ▸ hQC0)`. Establish `suD` using `shapeProd_supported (ιD p q r s μ μ') (List.ofFn (αD p q r s μ))`. Establish `fDABC : FreeOf (Set.range (ιA p q r s μ μ') ∪ Set.range (ιB p q r s μ μ') ∪ Set.range (ιC p q r s μ μ')) QD` using `freeOf_of_mul suD shD0 fD (eD ▸ freeOf_union fCAB fC) (disj_of p q r s (ιD p q r s μ μ') (dDABC p q r s μ μ'))`. Establish `hF4 : blkP (ιA p q r s μ μ') (αA p q r s μ) * blkP (ιB p q r s μ μ') (αB p q r s μ) * blkP (ιC p q r s μ μ') (αC p q r s μ) * blkP (ιD p q r s μ μ') (αD p q r s μ) ∈ supported ℂ (Set.range (ιA p q r s μ μ') ∪ Set.range (ιB p q r s μ μ') ∪ Set.range (ιC p q r s μ μ') ∪ Set.range ( …` using `Subalgebra.mul_mem _ (Subalgebra.mul_mem _ (Subalgebra.mul_mem _ (supported_mono ((Set.subset_union_left.trans Set.subset_union_left).trans Set.subset_union_left) suA) (supported_mono ((Set.subset_union_right.trans Set.subset_union_left).trans Set.subset_union_left) suB)) (suppor …`.
+
+Establish `hF40` using `mul_ne_zero (mul_ne_zero (mul_ne_zero shA0 shB0) shC0) shD0`. Establish `hPeq : P = blkP (ιA p q r s μ μ') (αA p q r s μ) * blkP (ιB p q r s μ μ') (αB p q r s μ) * blkP (ιC p q r s μ μ') (αC p q r s μ) * blkP (ιD p q r s μ μ') (αD p q r s μ) * QD`. Rewrite using `[eA, eB, eC, eD]`. Expand and normalize the polynomial expressions, which then agree. Establish `fD4` using `freeOf_union fDABC fD`.
+
+Establish `hsupp : ∀ e' ∈ QD.support, e' = 0`. Introduce `e' he'`. Take `⟨e, he, hee⟩` from `exists_support_mul hF4 hF40 fD4 he'`. Rewrite `he` using `[← hPeq]`. Use extensionality with `v`.
+
+Simplify using `only [Finsupp.coe_zero, Pi.zero_apply]`. Assume the negation of the conclusion as `hv`. Establish `hvS : v ∉ Set.range (ιA p q r s μ μ') ∪ Set.range (ιB p q r s μ μ') ∪ Set.range (ιC p q r s μ μ') ∪ Set.range (ιD p q r s μ μ')` using `fun h => hv (fD4 e' he' v h)`. Conclude with `hvS (hCov p q r s μ μ' P hP e he v (by rw [hee v hvS]; exact hv))`. Use `⟨⟨sqA, sqB, sqC, sqD⟩, coeff 0 QD, ?_⟩` and prove the remaining obligations.
+
+Use `conv_lhs => rw [hPeq, eq_C_of_support hsupp]`. Unfold `vLine`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem line_of (hC : CauchyHW) (hA : HypA) (hB : HypB) (hCc : HypC) (hD : HypD) (hCov : CoverJ)
     (p q r s : ℕ) (μ : Ix p q → ℚ) (μ' : Ix r s → ℚ) (P : Pol p q r s) (hP : MinHyp p q r s μ μ' P) :
     BlockFacts p q r s μ μ' ∧ ∃ c : ℂ, P = C c * vLine p q r s μ μ' := by

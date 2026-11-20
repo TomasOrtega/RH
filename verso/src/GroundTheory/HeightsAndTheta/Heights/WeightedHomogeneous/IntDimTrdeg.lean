@@ -6,6 +6,21 @@ open Algebra Cardinal MvPolynomial
 
 noncomputable section
 
+/- English proof (translation)
+Establish `: Nontrivial R` using `(algebraMap R C).domain_nontrivial`. Establish `: FaithfulSMul R C` using `(faithfulSMul_iff_algebraMap_injective R C).2 hinj`. Take `⟨s, hs⟩` from `exists_isTranscendenceBasis R C`. Establish `hCle : trdeg R C ≤ trdeg R B` using `trdeg_le_of_surjective f hf`. Establish `hs_card : #s = trdeg R C` using `hs.cardinalMk_eq_trdeg`.
+
+Establish `: Finite s` using `Cardinal.lt_aleph0_iff_finite.mp (hs_card ▸ hCle.trans_lt hfin)`. Set `y : s → B` to `fun i => Function.surjInv hf (i : C)`. Establish `hfy : ∀ i, f (y i) = i` using `fun i => Function.surjInv_eq hf _`. Establish `hfy' : (fun i => f (y i)) = ((↑) : s → C)` using `funext hfy`. Establish `hy : AlgebraicIndependent R y` using `AlgebraicIndependent.of_comp f (by`.
+
+Express the relevant statement in the definitionally equal form `AlgebraicIndependent R (fun i => f (y i))`. Rewrite using `[hfy']`. Conclude with `hs.1)`. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`.
+
+Establish `hyb : IsTranscendenceBasis R y` using `hy.isTranscendenceBasis_of_trdeg_le_of_finite (hlt.trans hs_card.ge)`. Establish `halg` using `hyb.isAlgebraic`. Take `⟨q, hq, hq0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hker`. Establish `hne` using `Ideal.comap_ne_bot_of_algebraic_mem hq0 hq (halg.isAlgebraic q)`. Take `⟨a, ha, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`.
+
+Establish `ha' : f (a : B) = 0`. Simplify `ha` using `[Ideal.mem_comap, RingHom.mem_ker]`. Choose the witnesses or unpack the hypotheses as in `⟨P, hP⟩ : ∃ P : MvPolynomial s R, aeval y P = a := by`. Establish `h : (a : B) ∈ (aeval y : MvPolynomial s R →ₐ[R] B).range`. Rewrite using `[← Algebra.adjoin_range_eq_range_aeval]`.
+
+Conclude with `a.2`. Conclude with `h`. Establish `hPx : aeval ((↑) : s → C) P = 0`. Rewrite using `[← hfy', ← comp_aeval_apply, hP, ha']`. Establish `hP0 : P = 0` using `hs.1 (hPx.trans (map_zero _).symm)`.
+
+Apply `ha0` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hP, hP0, map_zero]`. Both sides reduce to the same expression.
+-/
 theorem trdeg_lt_of_surjective_of_ker_ne_bot {R B C : Type} [CommRing R] [CommRing B] [IsDomain B]
     [CommRing C] [IsDomain C] [Algebra R B] [Algebra R C] (f : B →ₐ[R] C)
     (hf : Function.Surjective f) (hker : RingHom.ker f ≠ ⊥)
@@ -47,6 +62,27 @@ theorem trdeg_lt_of_surjective_of_ker_ne_bot {R B C : Type} [CommRing R] [CommRi
   rw [← hP, hP0, map_zero]
   rfl
 
+/- English proof (translation)
+Set `` to `ZMod.algebra (B ⧸ Q) p`. Establish `: FaithfulSMul (ZMod p) (B ⧸ Q)` using `(faithfulSMul_iff_algebraMap_injective _ _).2 (algebraMap (ZMod p) (B ⧸ Q)).injective`. Take `⟨s, hs⟩` from `exists_isTranscendenceBasis (ZMod p) (B ⧸ Q)`. Rewrite using `[← hs.cardinalMk_eq_trdeg]`. Set `y : s → B` to `fun i => Function.surjInv Ideal.Quotient.mk_surjective (i : B ⧸ Q)`.
+
+Establish `hy : (fun i => Ideal.Quotient.mkₐ ℤ Q (y i)) = ((↑) : s → B ⧸ Q)`. Use function extensionality and compare the values at `fun i => Function.surjInv_eq Ideal.Quotient.mk_surjective _`. Establish `hp0 : (p : B) ≠ 0`. Introduce `h`. Establish `: algebraMap ℤ B (p : ℤ) = algebraMap ℤ B 0` using `by simpa using h`.
+
+Conclude with `(Nat.Prime.ne_zero (Fact.out : p.Prime)) (by exact_mod_cast hinj this)`. Establish `hred : ∀ P : MvPolynomial s ℤ, aeval y P = 0 → MvPolynomial.map (algebraMap ℤ (ZMod p)) P = 0`. Introduce `P hP`. Apply `hs.1` to reduce the goal to its premises. Establish `hc : (algebraMap (ZMod p) (B ⧸ Q)).comp (algebraMap ℤ (ZMod p)) = algebraMap ℤ (B ⧸ Q)` using `RingHom.ext_int _ _`.
+
+Rewrite using `[map_zero, aeval_def, eval₂_map, hc, ← aeval_def, ← hy, ← comp_aeval_apply, hP, map_zero]`. Establish `key : ∀ n : ℕ, ∀ P : MvPolynomial s ℤ, aeval y P = 0 → ∀ m, P.coeff m ≠ 0 → (P.coeff m).natAbs ≤ n → False`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`.
+
+Introduce `P hP m hm hn`. Establish `hdvd : C (p : ℤ) ∣ P`. Rewrite using `[C_dvd_iff_dvd_coeff]`. Introduce `i`. Use `congrArg (MvPolynomial.coeff i) (hred P hP)` as an intermediate fact.
+
+Rewrite `this` using `[coeff_map, coeff_zero, algebraMap_int_eq, eq_intCast, ZMod.intCast_zmod_eq_zero_iff_dvd]`. Conclude with `this`. Take `⟨P', rfl⟩` from `hdvd`. Establish `hP' : aeval y P' = 0`. Rewrite `hP` using `[map_mul, aeval_C]`.
+
+Break down `mul_eq_zero.mp hP with h | h` into its components or cases. Conclude with `absurd (by simpa using h) hp0`. Conclude with `h`. Rewrite `hm`, `hn` using `[coeff_C_mul]`. Establish `hm' : P'.coeff m ≠ 0` using `right_ne_zero_of_mul hm`.
+
+Establish `hlt : (P'.coeff m).natAbs < n`. Rewrite `hn` using `[Int.natAbs_mul]`. Establish `h2 : 2 ≤ ((p : ℤ)).natAbs`. Simplify using `using (Fact.out : p.Prime).two_le`. Establish `h1 : 0 < (P'.coeff m).natAbs` using `Int.natAbs_pos.mpr hm'`.
+
+Use the polynomial consequences of the given equalities and inequalities. Conclude with `ih _ hlt P' hP' m hm' le_rfl`. Use `AlgebraicIndependent.cardinalMk_le_trdeg (R := ℤ) (x := y) ?_` and prove the remaining obligations. Rewrite using `[algebraicIndependent_iff]`. Introduce `P hP`.
+
+Assume the negation of the conclusion as `hne`. Take `⟨m, hm⟩` from `MvPolynomial.ne_zero_iff.mp hne`. Conclude with `key _ P hP m hm le_rfl`.
+-/
 theorem trdeg_zmod_quotient_le {B : Type} [CommRing B] [IsDomain B] [Algebra ℤ B]
     (hinj : Function.Injective (algebraMap ℤ B)) (p : ℕ) [Fact p.Prime] (Q : Ideal B) [Q.IsPrime]
     [CharP (B ⧸ Q) p] :

@@ -12,6 +12,29 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.ComplFrame
 
+/- English proof (translation)
+Establish `hCC : C * Ci = 1` using `by first`. Consider the case `exact mul_eq_one_comm.mp hCi`. Consider the case `exact Matrix.mul_eq_one_comm_of_equiv (Equiv.refl _) hCi`. Take `⟨Cm, hCm⟩ : ∃ Cm : Matrix (Fin n) (Fin d) K, ∀ i t, Cm i t = C i ⟨a + t.val, by omega⟩` from `⟨fun i t => C i ⟨a + t.val, by omega⟩, fun _ _ => rfl⟩`. Take `⟨Cb, hCb⟩ : ∃ Cb : Matrix (Fin d) (Fin n) K, ∀ t i, Cb t i = Ci ⟨a + t.val, by omega⟩ i` from `⟨fun t i => Ci ⟨a + t.val, by omega⟩ i, fun _ _ => rfl⟩`.
+
+Take `⟨B', hB'⟩ : ∃ B' : Matrix (Fin d) (Fin r) K, ∀ t j, B' t j = (Ci * M) ⟨a + t.val, by omega⟩ j` from `⟨fun t j => (Ci * M) ⟨a + t.val, by omega⟩ j, fun _ _ => rfl⟩`. Establish `hM : M = Cm * B'`. Use extensionality with `i j`. Establish `e1 : M i j = ∑ b : Fin n, C i b * (Ci * M) b j`. Rewrite using `[← Matrix.mul_apply, ← Matrix.mul_assoc, hCC, Matrix.one_mul]`.
+
+Rewrite using `[e1, Matrix.mul_apply]`. Use `symm`. Use `Finset.sum_of_injOn (fun t : Fin d => (⟨a + t.val, by omega⟩ : Fin n)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `t _ t' _ h`. Establish `h'` using `congrArg Fin.val h`.
+
+Conclude with `Fin.ext (by simpa using h')`. Introduce `t _`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Establish `hbo : b.val < a ∨ n ≤ b.val + a`.
+
+Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Apply `hb` to reduce the goal to its premises. Use `⟨⟨b.val - a, by omega⟩, by simp, Fin.ext ?_⟩` and prove the remaining obligations. Use `show a + (b.val - a) = b.val`.
+
+Use linear arithmetic over natural numbers and integers. Simplify using `[hout b j hbo]`. Introduce `t _`. Simplify using `only [hCm, hB']`. Establish `hMP : M * P = Cm`.
+
+Use extensionality with `i t`. Rewrite using `[hP, hCm]`. Establish `hCbm : Cb * Cm = 1`. Use extensionality with `s t`. Rewrite using `[Matrix.mul_apply]`.
+
+Simplify using `only [hCb, hCm]`. Rewrite using `[← Matrix.mul_apply, hCi, Matrix.one_apply, Matrix.one_apply]`. Simplify using `[Fin.ext_iff]`. Establish `h1 : P * B' = 1`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h2 : B' * P = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hrd : r = d`. Apply `le_antisymm` to reduce the goal to its premises. Establish `h` using `Matrix.rank_mul_le_left P B'`.
+
+Rewrite `h` using `[h1, Matrix.rank_one, Fintype.card_fin]`. Conclude with `h.trans (Matrix.rank_le_width P)`. Establish `h` using `Matrix.rank_mul_le_left B' P`. Rewrite `h` using `[h2, Matrix.rank_one, Fintype.card_fin]`. Conclude with `h.trans (Matrix.rank_le_width B')`.
+
+Substitute `hrd` using the available equality. Use `⟨hd, B', P, h2, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[hM, Matrix.mul_apply]`. Simplify using `only [hCm]`.
+-/
 theorem middle_core {K : Type} [Field K] {n r a d : ℕ} (hd : a + d + a = n)
     (C Ci : Matrix (Fin n) (Fin n) K) (hCi : Ci * C = 1)
     (M : Matrix (Fin n) (Fin r) K) (L : Matrix (Fin r) (Fin n) K) (hL : L * M = 1)
@@ -88,9 +111,21 @@ section Pair
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {σ : E →ₐ[F] E} {n m : ℕ} {J : Matrix (Fin n) (Fin n) E} {X Y : Matrix (Fin n) (Fin m) E} {C : GL (Fin n) E}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mulVec_col {p q : Type} [Fintype q] {R : Type} [CommRing R] (A : Matrix p q R) {s : Type} (Z : Matrix q s R) (j : s)
     (l : p) : (A *ᵥ fun k => Z k j) l = (A * Z) l j := rfl
 
+/- English proof (translation)
+Take `⟨-, yy, -, -⟩` from `hW`. Take `⟨hle, colX, columnBlock, -, perpY⟩` from `hC`. Establish `hl` using `l.isLt`. Establish `hb` using `b.isLt`. Distinguish the cases in `h1 : b.val < m`.
+
+Establish `hcol : (fun k => C.1 k b) = fun k => X k ⟨b.val, h1⟩`. Use function extensionality and compare the values at `fun k => colX b ⟨b.val, h1⟩ rfl k`. Rewrite using `[hcol, mulVec_col, hyx, Matrix.one_apply]`. Distinguish the cases in `h : b.val = l.val`. Rewrite using `[if_pos h, if_pos (Fin.ext h.symm)]`.
+
+Rewrite using `[if_neg h, if_neg (fun h' => h (congrArg Fin.val h').symm)]`. Distinguish the cases in `h2 : b.val + m < n`. Rewrite using `[perpY b (by omega) h2, if_neg (by omega)]`. Both sides reduce to the same expression. Establish `hj : n - 1 - b.val < m` using `by omega`.
+
+Establish `hcol : (fun k => C.1 k b) = fun k => Y k ⟨n - 1 - b.val, hj⟩`. Use function extensionality and compare the values at `fun k => columnBlock b ⟨n - 1 - b.val, hj⟩ (by show b.val + (n - 1 - b.val) + 1 = n; omega) k`. Rewrite using `[hcol, mulVec_col, yy, if_neg (by omega)]`. Both sides reduce to the same expression.
+-/
 theorem pairY (hW : GlobalTheory.SiegelSet.IsWittFrame σ J X Y) (hyx : Formalism.UG.cT (σ : E →+* E) Y * J * X = 1)
     (hC : GlobalTheory.BlockForms.IsAdapted σ J X Y C) (l : Fin m) (b : Fin n) :
     ((Formalism.UG.cT (σ : E →+* E) Y * J) *ᵥ fun k => C.1 k b) l = if b.val = l.val then 1 else 0 := by
@@ -114,6 +149,15 @@ theorem pairY (hW : GlobalTheory.SiegelSet.IsWittFrame σ J X Y) (hyx : Formalis
       rw [hcol, mulVec_col, yy, if_neg (by omega)]
       rfl
 
+/- English proof (translation)
+Take `⟨xx, -, xy, -⟩` from `hW`. Take `⟨hle, colX, columnBlock, perpX, -⟩` from `hC`. Establish `hl` using `l.isLt`. Establish `hb` using `b.isLt`. Distinguish the cases in `h1 : b.val < m`.
+
+Establish `hcol : (fun k => C.1 k b) = fun k => X k ⟨b.val, h1⟩`. Use function extensionality and compare the values at `fun k => colX b ⟨b.val, h1⟩ rfl k`. Rewrite using `[hcol, mulVec_col, xx, if_neg (by omega)]`. Both sides reduce to the same expression. Distinguish the cases in `h2 : b.val + m < n`.
+
+Rewrite using `[perpX b (by omega) h2, if_neg (by omega)]`. Both sides reduce to the same expression. Establish `hj : n - 1 - b.val < m` using `by omega`. Establish `hcol : (fun k => C.1 k b) = fun k => Y k ⟨n - 1 - b.val, hj⟩`. Use function extensionality and compare the values at `fun k => columnBlock b ⟨n - 1 - b.val, hj⟩ (by show b.val + (n - 1 - b.val) + 1 = n; omega) k`.
+
+Rewrite using `[hcol, mulVec_col, xy, Matrix.one_apply]`. Distinguish the cases in `h : b.val + l.val + 1 = n`. Rewrite using `[if_pos h, if_pos (Fin.ext (by show l.val = n - 1 - b.val; omega))]`. Rewrite using `[if_neg h, if_neg (fun h' => h (by have := congrArg Fin.val h'; simp at this; omega))]`.
+-/
 theorem pairX (hW : GlobalTheory.SiegelSet.IsWittFrame σ J X Y)
     (hC : GlobalTheory.BlockForms.IsAdapted σ J X Y C) (l : Fin m) (b : Fin n) :
     ((Formalism.UG.cT (σ : E →+* E) X * J) *ᵥ fun k => C.1 k b) l = if b.val + l.val + 1 = n then 1 else 0 := by
@@ -143,6 +187,9 @@ section Main
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hsig : ∀ x : D.host.E, (D.sp.cm.sig : D.host.E →+* D.host.E) x = starRingEnd D.host.E x` using `fun _ => rfl`. Simplify using `only [Module.Basis.equivFun_symm_apply, map_sum, LinearMap.map_smulₛₗ, LinearMap.map_smulₛₗ₂, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct, Matrix.mul_apply, Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply, hsig, Formalism.BasicNotio …`. Use `first`. Consider the case `(refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_; ring)`. Consider the case `(rw [Finset.sum_comm]; refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_; ring)`.
+-/
 theorem pair_vec (V : HSp D) {p : ℕ} (U : Matrix (Fin V.rank) (Fin p) D.host.E) (w : Fin V.rank → D.host.E) (i : Fin p) :
     ((Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) U * V.gram) *ᵥ w) i =
       V.hT (V.frame.equivFun.symm fun k => U k i) (V.frame.equivFun.symm w) := by
@@ -156,6 +203,9 @@ theorem pair_vec (V : HSp D) {p : ℕ} (U : Matrix (Fin V.rank) (Fin p) D.host.E
     | (refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_; ring)
     | (rw [Finset.sum_comm]; refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_; ring)
 
+/- English proof (translation)
+Establish `h` using `pair_vec V U (fun l => V.frame.repr (ι (V'.frame j)) l) i`. Establish `he : V.frame.equivFun.symm (fun l => V.frame.repr (ι (V'.frame j)) l) = ι (V'.frame j)` using `V.frame.equivFun.symm_apply_apply (ι (V'.frame j))`. Rewrite `h` using `[he]`. Rewrite using `[← h, Matrix.mul_apply]`. Simplify using `only [Matrix.mulVec, dotProduct, Formalism.L2.Theta.frameMat, LinearMap.toMatrix_apply]`.
+-/
 theorem pair_frame (V V' : HSp D) (ι : V'.V →ₗ[D.host.E] V.V) {p : ℕ} (U : Matrix (Fin V.rank) (Fin p) D.host.E) (i : Fin p)
     (j : Fin V'.rank) :
     (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) U * V.gram * frameMat V V' ι) i j =
@@ -167,20 +217,72 @@ theorem pair_frame (V V' : HSp D) (ι : V'.V →ₗ[D.host.E] V.V) {p : ℕ} (U 
   rw [← h, Matrix.mul_apply]
   simp only [Matrix.mulVec, dotProduct, Formalism.L2.Theta.frameMat, LinearMap.toMatrix_apply]
 
+/- English proof (translation)
+Simplify using `only [Formalism.UG.cT, Matrix.map_mul, Matrix.transpose_mul]`.
+-/
 private theorem cT_mul_global {A : Type} [CommRing A] (σ : A →+* A) {l q s : Type} [Fintype q]
     (M : Matrix l q A) (N : Matrix q s A) :
     Formalism.UG.cT σ (M * N) = Formalism.UG.cT σ N * Formalism.UG.cT σ M := by
   simp only [Formalism.UG.cT, Matrix.map_mul, Matrix.transpose_mul]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, hσ]`.
+-/
 private theorem cT_cT_of_involutive_global {A : Type} [CommRing A] (σ : A →+* A) (hσ : ∀ x, σ (σ x) = x) {l q : Type}
     (M : Matrix l q A) : Formalism.UG.cT σ (Formalism.UG.cT σ M) = M := by
   ext i j
   simp [Formalism.UG.cT, hσ]
 
+/- English proof (translation)
+Simplify using `[Formalism.UG.cT, Matrix.map_one]`.
+-/
 private theorem cT_one_global {A : Type} [CommRing A] (σ : A →+* A) {q : Type} [DecidableEq q] :
     Formalism.UG.cT σ (1 : Matrix q q A) = 1 := by
   simp [Formalism.UG.cT, Matrix.map_one]
 
+/- English proof (translation)
+Introduce `D V V' ι hiso m X Y hW T hTr C hC a ham hup`. Establish `hsig : ∀ x : D.host.E, (D.sp.cm.sig : D.host.E →+* D.host.E) x = starRingEnd D.host.E x` using `fun _ => rfl`. Establish `hinvol : ∀ x : D.host.E, (D.sp.cm.sig : D.host.E →+* D.host.E) ((D.sp.cm.sig : D.host.E →+* D.host.E) x) = x` using `fun x => by simp [hsig]`. Establish `hle : 2 * m ≤ V.rank` using `hC.le`. Establish `hherm : ∀ x y : V.V, V.hT y x = starRingEnd D.host.E (V.hT x y)`.
+
+Introduce `x y`. Establish `hs` using `V.herm`. Use `first`. Consider the case `exact (hs x y).symm`. Consider the case `exact (hs.eq x y).symm`.
+
+Establish `hG : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) V.gram = V.gram`. Use extensionality with `k l`. Simplify using `only [Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply, hsig, Formalism.BasicNotions.HSpace.gram]`. Conclude with `(hherm _ _).symm`. Establish `hyx : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) Y * V.gram * X = 1`.
+
+Establish `h` using `congrArg (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E)) hW.xy`. Rewrite `h` using `[cT_mul_global, cT_mul_global, cT_cT_of_involutive_global _ hinvol, hG, cT_one_global, ← Matrix.mul_assoc]`. Conclude with `h`. Establish `hperp : ∀ v ∈ LinearMap.range ι, ∀ i : Fin m, i.val < a → V.hT (V.frame.equivFun.symm fun j => X j i) v = 0 ∧ V.hT (V.frame.equivFun.symm fun j => Y j i) v = 0` using `fun v hv i hi => (hTr v).1 hv i ((hup i).2 hi)`. Establish `hmid : ∀ b : Fin V.rank, a ≤ b.val → b.val + a < V.rank → V.frame.equivFun.symm (fun k => C.1 k b) ∈ LinearMap.range ι`.
+
+Introduce `b hb1 hb2`. Use `(hTr _).2 fun i hi => ?_` and prove the remaining obligations. Establish `hi'` using `(hup i).1 hi`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← pair_vec V X (fun k => C.1 k b) i, pairX hW hC i b, if_neg (by omega)]`.
+
+Rewrite using `[← pair_vec V Y (fun k => C.1 k b) i, pairY hW hyx hC i b, if_neg (by omega)]`. Establish `hw : ∀ t : Fin (V.rank - a - a), ∃ w : V'.V, ι w = V.frame.equivFun.symm (fun k => C.1 k ⟨a + t.val, by omega⟩)` using `fun t => LinearMap.mem_range.mp (hmid _ (Nat.le_add_right _ _) (by show a + t.val + a < V.rank; omega))`. Use `choose w hw using hw`. Take `⟨P, hPdef⟩ : ∃ P : Matrix (Fin V'.rank) (Fin (V.rank - a - a)) D.host.E, ∀ k t, P k t = V'.frame.repr (w t) k` from `⟨fun k t => V'.frame.repr (w t) k, fun _ _ => rfl⟩`. Establish `hP : ∀ (i : Fin V.rank) (t : Fin (V.rank - a - a)), (Formalism.L2.Theta.frameMat V V' ι * P) i t = C.1 i ⟨a + t.val, by omega⟩`.
+
+Introduce `i t`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_apply, Matrix.mulVec, dotProduct, hPdef, Formalism.L2.Theta.frameMat]`. Use `_ = V.frame.repr (ι (w t)) i := congrFun (LinearMap.toMatrix_mulVec_repr V'.frame V.frame ι (w t)) i`. Use `_ = C.1 i ⟨a + t.val, by omega⟩ := by`.
+
+Rewrite using `[hw t]`. Conclude with `congrFun (V.frame.equivFun.apply_symm_apply _) i`. Establish `hinj : Function.Injective ι`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`.
+
+Apply `V'.nondeg.1 x` to reduce the goal to its premises. Introduce `y`. Rewrite using `[← hiso x y, hx, map_zero, LinearMap.zero_apply]`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective ι (LinearMap.ker_eq_bot.mpr hinj)`. Establish `hL : LinearMap.toMatrix V.frame V'.frame g * Formalism.L2.Theta.frameMat V V' ι = 1` using `by show LinearMap.toMatrix V.frame V'.frame g * LinearMap.toMatrix V'.frame V.frame ι = 1`.
+
+Rewrite using `[← LinearMap.toMatrix_comp, hg, LinearMap.toMatrix_id]`. Establish `key : ∀ (A : Matrix (Fin m) (Fin V.rank) D.host.E) (l : Fin m) (c0 : Fin V.rank), (∀ c, (A *ᵥ fun k => C.1 k c) l = if c = c0 then 1 else 0) → ∀ j, (A * Formalism.L2.Theta.frameMat V V' ι) l j = ((↑C⁻¹ : Matrix (Fin V.rank) (Fin V.rank) D.host.E) * Formalism.L2.Theta.frameMat V V …`. Introduce `A l c0 hA j`. Establish `hM' : Formalism.L2.Theta.frameMat V V' ι = C.1 * ((↑C⁻¹ : Matrix (Fin V.rank) (Fin V.rank) D.host.E) * Formalism.L2.Theta.frameMat V V' ι)`. Rewrite using `[← Matrix.mul_assoc, C.mul_inv, Matrix.one_mul]`.
+
+Use `conv_lhs => rw [hM']`. Rewrite using `[← Matrix.mul_assoc, Matrix.mul_apply, Finset.sum_eq_single c0]`. Rewrite using `[← mulVec_col, hA, if_pos rfl, one_mul]`. Introduce `c _ hc`. Rewrite using `[← mulVec_col, hA, if_neg hc, zero_mul]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ c0) h`. Establish `hout : ∀ (b : Fin V.rank) (j : Fin V'.rank), (b.val < a ∨ V.rank ≤ b.val + a) → ((↑C⁻¹ : Matrix (Fin V.rank) (Fin V.rank) D.host.E) * Formalism.L2.Theta.frameMat V V' ι) b j = 0`. Introduce `b j hb`. Establish `hbl` using `b.isLt`.
+
+Break down `hb with hb | hb` into its components or cases. Establish `hlm : b.val < m` using `by omega`. Rewrite using `[← key (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) Y * V.gram) ⟨b.val, hlm⟩ b ?_ j]`. Rewrite using `[pair_frame]`. Conclude with `(hperp _ (LinearMap.mem_range_self ι _) ⟨b.val, hlm⟩ hb).2`.
+
+Introduce `c`. Rewrite using `[pairY hW hyx hC _ c]`. Conclude with `if_congr ⟨fun h => Fin.ext h, fun h => congrArg Fin.val h⟩ rfl rfl`. Establish `hlm : V.rank - 1 - b.val < m` using `by omega`. Rewrite using `[← key (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) X * V.gram) ⟨V.rank - 1 - b.val, hlm⟩ b ?_ j]`.
+
+Rewrite using `[pair_frame]`. Conclude with `(hperp _ (LinearMap.mem_range_self ι _) ⟨V.rank - 1 - b.val, hlm⟩ (by show V.rank - 1 - b.val < a; omega)).1`. Introduce `c`. Establish `hcl` using `c.isLt`. Rewrite using `[pairX hW hC _ c]`.
+
+Use `if_congr ⟨fun h => Fin.ext ?_, fun h => ?_⟩ rfl rfl` and prove the remaining obligations. Establish `h' : c.val + (V.rank - 1 - b.val) + 1 = V.rank` using `h`. Use linear arithmetic over natural numbers and integers. Substitute `h show c.val + (V.rank - 1 - c.val) + 1 = V.rank` using the available equality. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨hdim, B, Bi, hBB, hcols⟩` from `middle_core (n := V.rank) (r := V'.rank) (a := a) (d := V.rank - a - a) (by omega) C.1 (↑C⁻¹) C.inv_mul (Formalism.L2.Theta.frameMat V V' ι) (LinearMap.toMatrix V.frame V'.frame g) hL hout P hP`. Use `⟨hdim, B, Bi, hBB, hcols, fun b hb => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Rewrite using `[pair_vec V (Formalism.L2.Theta.frameMat V V' ι) (fun k => C.1 k b) j]`. Establish `hcolj : (fun k => Formalism.L2.Theta.frameMat V V' ι k j) = ⇑(V.frame.repr (ι (V'.frame j)))`.
+
+Use function extensionality and compare the values at `k`. Simplify using `only [Formalism.L2.Theta.frameMat, LinearMap.toMatrix_apply]`. Establish `hvj : V.frame.equivFun.symm (fun k => Formalism.L2.Theta.frameMat V V' ι k j) = ι (V'.frame j)`. Rewrite using `[hcolj]`. Conclude with `V.frame.equivFun.symm_apply_apply _`.
+
+Rewrite using `[hvj, hherm, Pi.zero_apply]`. Establish `hbl` using `b.isLt`. Break down `hb with hb | hb` into its components or cases. Establish `hlm : b.val < m` using `by omega`. Establish `hcol : (fun k => C.1 k b) = fun k => X k ⟨b.val, hlm⟩`.
+
+Use function extensionality and compare the values at `fun k => hC.colX b ⟨b.val, hlm⟩ rfl k`. Rewrite using `[hcol, (hperp _ (LinearMap.mem_range_self ι _) ⟨b.val, hlm⟩ hb).1, map_zero]`. Establish `hlm : V.rank - 1 - b.val < m` using `by omega`. Establish `hcol : (fun k => C.1 k b) = fun k => Y k ⟨V.rank - 1 - b.val, hlm⟩`. Use function extensionality and compare the values at `fun k => hC.columnBlock b ⟨V.rank - 1 - b.val, hlm⟩ (by show b.val + (V.rank - 1 - b.val) + 1 = V.rank; omega) k`.
+
+Rewrite using `[hcol, (hperp _ (LinearMap.mem_range_self ι _) ⟨V.rank - 1 - b.val, hlm⟩ (by show V.rank - 1 - b.val < a; omega)).2, map_zero]`.
+-/
 theorem frame_cols : ∀ (D : D7) (V V' : HSp D) (ι : V'.V →ₗ[D.host.E] V.V), HSpace.IsIsomEmb V' V ι →
     ∀ (m : ℕ) (X Y : Matrix (Fin V.rank) (Fin m) D.host.E), GlobalTheory.SiegelSet.IsWittFrame D.sp.cm.sig V.gram X Y →
     ∀ T : Finset (Fin m), (∀ v : V.V, v ∈ LinearMap.range ι ↔ ∀ i ∈ GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.upTo T, V.hT (V.frame.equivFun.symm fun j => X j i) v = 0 ∧ V.hT (V.frame.equivFun.symm fun j => Y j i) v = 0) →

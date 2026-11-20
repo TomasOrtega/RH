@@ -21,6 +21,13 @@ open GlobalTheory.RecDict
 
 namespace GlobalTheory.RecDict
 
+/- English proof (translation)
+Introduce `HN D Q hQ j hj σ' g ty F _ _ M io th x₀ hM`. Use `⟨GlobalTheory.CuspCentre.latZ _ _ _ _ _, fun k => ?_, ?_⟩` and prove the remaining obligations. Establish `hp : (M.X k).p0 = D.R.m - j` using `((hM.1.type k).1).trans (hQ.2.2.2 j hj).2.1`. Establish `hρ : WeightFamilies.rho D j = D.R.m - j` using `rfl`. Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`.
+
+Establish `hk` using `D.R.m_add_three_le_k`. Establish `h1` using `hj.1`. Establish `h2` using `hj.2`. Conclude with `GlobalTheory.CuspExist.nonempty_cuspFD HN _ _ _ _ (by omega) (by omega) (by omega)`. Rewrite using `[← hQ.2.1.1]`.
+
+Conclude with `GlobalTheory.ExpoModels.expoMatch_models _ _ _ _ _ _ _ _ F _ M _ hM.1 hQ.2.1.2`.
+-/
 theorem lat_cusp_expo : GlobalTheory.Published.HasseNormSt → ∀ (D : D7) (Q : Par D), Q.Pins → ∀ (j : ℕ) (hj : InR D j) (σ' : KA Q.l →+* ℂ) (g : ℕ) (ty : Fin g → (D.host.E →+* ℂ)) (F : FamilyUnif (Q.Xo j) σ' ty), σ' (baseKA Q.l).ρ = Q.H.rt0 → IsTypeFn Q.H (Q.Dw j).p (Q.Dw j).q ty → ∀ (M : GlobalTheory.FrameUnif.ModelsOf F D.R.r) (io : (Q.Dw j).La →ₗ[𝓞 D.host.E] (Fin (D.sp.W j).rank → D.host.E)) (th : ∀ k, (M.X k).Ψ → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (x₀ : (D.host.E →+* ℂ) → Matrix (Fin D.R.r) (Fin D.R.r) ℂ), RecOK M (D.sp.W j) (D.sp.W_rank j hj.1 hj.2) io th x₀ → FJ.LatZ M.X (WeightFamilies.rho D j) ∧ FJ.CuNeF M.X (WeightFamilies.rho D j) ∧ FJ.ExpoMatch M.X 1 (WeightFamilies.rho D j) (D.host.g 0 * D.host.g 1) := by
   intro HN D Q hQ j hj σ' g ty F _ _ M io th x₀ hM
   refine ⟨GlobalTheory.CuspCentre.latZ _ _ _ _ _, fun k => ?_, ?_⟩

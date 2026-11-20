@@ -16,6 +16,13 @@ open GlobalTheory.UU
 
 namespace GlobalTheory.UU
 
+/- English proof (translation)
+Use `(H1.torus_dim S X).smooth` as an intermediate fact. Establish `: Smooth q.left`. Use `MorphismProperty.of_isPullback_of_descendsAlong (P := @Smooth) (Q := @Surjective ⊓ @Flat ⊓ @QuasiCompact) ((H1.torsor_pullback i q hk).map (Over.forget _)).flip ⟨⟨‹_›, ‹_›⟩, inferInstanceAs (QuasiCompact q.left)⟩ ?_` and prove the remaining obligations. Conclude with `smooth_isStableUnderBaseChange.of_isPullback (IsPullback.of_hasPullback _ _) this`. Take `⟨m, W, hW, d₁⟩` from `H1.exists_dim q.left (eSec G y)`.
+
+Establish `g₂ : m = Module.finrank ℤ X` using `H1.dim_base (hk.map (Over.forget _)) d₁ (H1.torus_dim S X) (eSec _ y) ((congrArg (fun k => k.left y ∈ W) (IsMonHom.one_hom i)).mpr hW)`. Establish `d₂ : SmoothOfRelativeDimension (m + g') (W.ι ≫ G.hom)`. Rewrite using `[← Over.w q, ← Category.assoc]`. Use `infer_instance`. Establish `d₃ : SmoothOfRelativeDimension (0 + g) (W.ι ≫ G.hom)` using `inferInstance`.
+
+Use `H1.dim_unique _ d₂ d₃ ⟨_, hW⟩` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem dim_eq_add_finrank_of_kernel {S : Scheme.{0}} (y : S) {X : Type} [AddCommGroup X] [Module.Free ℤ X]
     [Module.Finite ℤ X] {G B : Over S} [GrpObj G] [GrpObj B] (q : G ⟶ B) (i : splitTorus S X ⟶ G) [IsMonHom q]
     [IsMonHom i] [Flat q.left] [Surjective q.left] [IsAffineHom q.left] (hk : IsPullback i (toUnit _) q (η[B]))
@@ -36,6 +43,17 @@ theorem dim_eq_add_finrank_of_kernel {S : Scheme.{0}} (y : S) {X : Type} [AddCom
   have := H1.dim_unique _ d₂ d₃ ⟨_, hW⟩
   omega
 
+/- English proof (translation)
+Introduce `V _ _ _ _ D A G _ _ U`. Establish `hs : Smooth G.hom` using `U.semi.smooth`. Establish `: GeometricallyConnected G.hom` using `U.semi.geomConnected`. Establish `: ConnectedSpace G.left` using `(GroupConn.connectedSpace_group _ G).1`. Take `⟨n, hn⟩` from `exists_dim_of_preconnected G.hom (Classical.arbitrary _)`.
+
+Establish `bc : ∀ {S' : Scheme.{0}} {X : Over (Spec (CommRingCat.of V))} {m : ℕ} (f : S' ⟶ Spec (CommRingCat.of V)), SmoothOfRelativeDimension m X.hom → SmoothOfRelativeDimension m ((Over.pullback f).obj X).hom` using `fun f h => (smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback (IsPullback.of_hasPullback _ _) h`. Establish `h₁ : n = A.g`. Establish `a` using `A.smoothDim`. Establish `b : SmoothOfRelativeDimension (0 + A.g) ((Over.pullback (jK V)).obj G).hom`. Establish `: IsIso U.gen.hom.left` using `inferInstanceAs (IsIso ((Over.forget _).map U.gen.hom))`.
+
+Rewrite using `[← Over.w U.gen.hom]`. Use `infer_instance`. Conclude with `(H1.dim_unique _ (bc _ hn) b (eSec _ (Classical.arbitrary (Spec (CommRingCat.of (FractionRing V)))))).trans (zero_add _)`. Establish `: Nontrivial (V ⧸ IsLocalRing.maximalIdeal V ^ (0 + 1))` using `Ideal.Quotient.nontrivial_iff.2 (by simpa using (IsLocalRing.maximalIdeal.isMaximal V).ne_top)`. Set `c` to `U.gt 0`.
+
+Use `c.q_hom` as an intermediate fact. Use `c.i_hom` as an intermediate fact. Use `c.q_flat` as an intermediate fact. Use `c.q_surj` as an intermediate fact. Use `c.q_affine` as an intermediate fact.
+
+Conclude with `h₁.symm.trans (dim_eq_add_finrank_of_kernel (Classical.arbitrary _) c.q c.i c.isKernel (bc _ hn) (bc _ D.P.smoothDim))`.
+-/
 theorem PreU.dim_eq : (AllPre fun {_} _ _ _ {D} {A} {_} _ _ _ => A.g = D.P.g + D.rank) := by
   intro V _ _ _ _ D A G _ _ U
   have hs : Smooth G.hom := U.semi.smooth

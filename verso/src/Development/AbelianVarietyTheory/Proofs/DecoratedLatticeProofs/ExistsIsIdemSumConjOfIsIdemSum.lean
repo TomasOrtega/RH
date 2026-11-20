@@ -6,6 +6,13 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 
 namespace GlobalTheory.IdemSumConj
 
+/- English proof (translation)
+Introduce `D P e h`. Use `⟨P.image Formalism.L2.DIV.conjPl, ?_⟩` and prove the remaining obligations. Take `⟨⟨es, hes, he⟩, hc⟩` from `h`. Use `⟨⟨fun Q => cA D (es (Formalism.L2.DIV.conjPl Q)), ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `Q hQ`.
+
+Take `⟨PP, hPP, rfl⟩` from `Finset.mem_image.1 hQ`. Use `show Formalism.L2.NTheta.IsIdemAt (cA D (es (Formalism.L2.DIV.conjPl (Formalism.L2.DIV.conjPl PP)))) (Formalism.L2.DIV.conjPl PP)`. Rewrite using `[Formalism.L2.DIV.conjPl_conjPl]`. Conclude with `GlobalTheory.MovedIdem.isIdemAt_conj (hes PP hPP) fun x => Iff.rfl`. Rewrite using `[Finset.sum_image (fun a _ b _ (hab : Formalism.L2.DIV.conjPl a = Formalism.L2.DIV.conjPl b) => by`.
+
+Rewrite using `[← Formalism.L2.DIV.conjPl_conjPl a, hab, Formalism.L2.DIV.conjPl_conjPl b])]`. Simplify using `only [Formalism.L2.DIV.conjPl_conjPl]`. Rewrite using `[he, map_sum]`. Rewrite using `[GlobalTheory.MovedIdem.cA_cA, mul_comm]`. Conclude with `hc`.
+-/
 theorem exists_isIdemSum_cA :
     ∀ (D : D7) (Q : Finset (Formalism.L2.DIV.Pl D.host.E)) (E₂ : AE D), IsIdemSum E₂ Q →
       ∃ Q' : Finset (Formalism.L2.DIV.Pl D.host.E), IsIdemSum (cA D E₂) Q' := by

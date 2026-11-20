@@ -65,6 +65,11 @@ def rhoB (D : D7) (K : Consts) (s : Scale) : ℝ :=
 
 def CbLarge (K : Consts) (s : Scale) : Prop := (N1 s : ℝ) ≤ K.CN * Real.log s.x
 
+/- English proof (translation)
+Unfold `rho rhoB`. Establish `hk : (0 : ℝ) ≤ D.R.k` using `Nat.cast_nonneg _`. Establish `h1 : K.rho * (N1 s : ℝ) * La K s ≤ K.rho * (K.CN * Real.log s.x) * La K s`. Apply `mul_le_mul_of_nonneg_right _ hLa` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_left h hr`.
+
+Establish `h2` using `div_le_div_of_nonneg_right h1 hk`. Rewrite using `[show K.rho * K.CN * Real.log s.x * La K s = K.rho * (K.CN * Real.log s.x) * La K s by ring]`. Combine the linear relations using `[h2]`.
+-/
 theorem rho_le_rhoB (D : D7) (K : Consts) (s : Scale) (hr : 0 ≤ K.rho) (hLa : 0 ≤ La K s) (h : CbLarge K s) :
     rho D K s ≤ rhoB D K s := by
   unfold rho rhoB
@@ -105,14 +110,23 @@ def HEv (D : D7) (p : ℕ) : Prop := Even (addOrderOf (hP D p))
 
 def IsCs (D : D7) (p : ℕ) : Prop := IsResidueClassZero D p ∧ Odd (addOrderOf (hP D p)) ∧ hP D p ≠ 0
 
+/- English proof (translation)
+Introduce `h0`. Unfold `HEv at h`. Rewrite `h` using `[h0, addOrderOf_zero]`. Conclude with `Nat.not_even_one h`.
+-/
 theorem HEv.ne_zero {D : D7} {p : ℕ} (h : HEv D p) : hP D p ≠ 0 := by
   intro h0
   unfold HEv at h
   rw [h0, addOrderOf_zero] at h
   exact Nat.not_even_one h
 
+/- English proof (translation)
+Introduce `hc` and use `Nat.not_even_iff_odd.mpr hc.2.1 h`.
+-/
 theorem HEv.not_isCs {D : D7} {p : ℕ} (h : HEv D p) : ¬ IsCs D p := fun hc => Nat.not_even_iff_odd.mpr hc.2.1 h
 
+/- English proof (translation)
+Distinguish the cases in `he : Even (addOrderOf (hP D p))`. Conclude with `Or.inl he`. Distinguish the cases in `h0 : hP D p = 0`. Conclude with `Or.inr (Or.inl h0)`. Conclude with `Or.inr (Or.inr ⟨h, Nat.not_even_iff_odd.mp he, h0⟩)`.
+-/
 theorem class_zero_trichotomy {D : D7} {p : ℕ} (h : IsResidueClassZero D p) : HEv D p ∨ hP D p = 0 ∨ IsCs D p := by
   by_cases he : Even (addOrderOf (hP D p))
   · exact Or.inl he
@@ -120,6 +134,11 @@ theorem class_zero_trichotomy {D : D7} {p : ℕ} (h : IsResidueClassZero D p) : 
     · exact Or.inr (Or.inl h0)
     · exact Or.inr (Or.inr ⟨h, Nat.not_even_iff_odd.mp he, h0⟩)
 
+/- English proof (translation)
+Take `⟨-, hodd, hne⟩` from `h`. Establish `h1 : addOrderOf (hP D p) ≠ 1` using `fun h1 => hne (by`. Establish `h2` using `addOrderOf_nsmul_eq_zero (hP D p)`. Rewrite using `[h1, one_nsmul] at h2)` and apply the resulting hypothesis. Take `⟨k, hk⟩` from `hodd`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem IsCs.three_le {D : D7} {p : ℕ} (h : IsCs D p) : 3 ≤ addOrderOf (hP D p) := by
   obtain ⟨-, hodd, hne⟩ := h
   have h1 : addOrderOf (hP D p) ≠ 1 := fun h1 => hne (by
@@ -295,6 +314,9 @@ def VV (X : Inst D L) (K : Consts) (a b : HH D → ℤ) (p : ℕ) : Finset (HH D
 def ServedOrbitsContained (X : Inst D L) (K : Consts) (a b : HH D → ℤ) : Prop :=
   ∀ p, Cand D L K p → Sig X K a b p ≤ L.sc.x ^ (-L.sc.eps) → goodReps X p ⊆ VV X K a b p
 
+/- English proof (translation)
+Introduce `p hc hs`. Establish `hv : VV X K a b p = goodReps X p`. Unfold `VV`. Conclude with `if_pos ⟨hc, hs⟩`. Conclude with `hv ▸ Finset.Subset.refl (goodReps X p)`.
+-/
 theorem served_orbits_in_set (X : Inst D L) (K : Consts) (a b : HH D → ℤ) : ServedOrbitsContained X K a b := by
   intro p hc hs
   have hv : VV X K a b p = goodReps X p := by

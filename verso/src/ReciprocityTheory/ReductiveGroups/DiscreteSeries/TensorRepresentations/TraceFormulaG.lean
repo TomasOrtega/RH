@@ -11,6 +11,21 @@ namespace ReciprocityTheory.ChartRestriction.DS
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Set `T : Submodule ℂ M` to `⨅ c, S.comap (LinearMap.single ℂ (fun _ : Fin n => M) c)`. Establish `hT : ∀ m, m ∈ T ↔ ∀ c, (Pi.single c m : Fin n → M) ∈ S` using `fun m => by simp [T, Submodule.mem_iInf]`. Establish `hle : genSub E V ≤ T` using `sInf_le ⟨fun v hv => (hT v).2 fun c => hV (tset_mem.mpr fun d => by`. Distinguish the cases in `h : d = c`. Substitute `h` using the available equality.
+
+Simplify using `using hv`. Simplify using `[h]),`. Use `fun a b m hm => (hT _).2 fun c => by`. Establish `hm'` using `(hT m).1 hm`. Consider the cases of `dual`.
+
+Establish `e : (Pi.single c (E a b m) : Fin n → M) = tensF false E a b (Pi.single c m) - if b = c then Pi.single a m else 0`. Use function extensionality and compare the values at `d`. Simplify using `only [tensF, cond_false, Pi.sub_apply, tensV_coord]`. Apply the tactic sequence `by_cases h1 : d = c <;> by_cases h2 : d = a <;> by_cases h3 : b = c <;>`. Simplify the hypotheses and the goal together.
+
+Rewrite using `[e]`. Use `S.sub_mem (hS a b _ (hm' c)) ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `hm' a`. Conclude with `S.zero_mem`.
+
+Establish `e : (Pi.single c (E a b m) : Fin n → M) = tensF true E a b (Pi.single c m) + if a = c then Pi.single b m else 0`. Use function extensionality and compare the values at `d`. Simplify using `only [tensF, cond_true, Pi.add_apply, tensVd_coord]`. Apply the tactic sequence `by_cases h1 : d = c <;> by_cases h2 : d = b <;> by_cases h3 : a = c <;>`. Simplify the hypotheses and the goal together.
+
+Rewrite using `[e]`. Use `S.add_mem (hS a b _ (hm' c)) ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `hm' b`. Conclude with `S.zero_mem⟩`.
+
+Introduce `f hf`. Rewrite using `[← Finset.univ_sum_single f]`. Conclude with `S.sum_mem fun c _ => (hT _).1 (hle (tset_mem.mp hf c)) c`.
+-/
 theorem tfg_gen {M : Type*} [AddCommGroup M] [Module ℂ M] (dual : Bool)
     (E : Fin n → Fin n → Module.End ℂ M) (V : Submodule ℂ M) (S : Submodule ℂ (Fin n → M))
     (hV : tensSub V ≤ S) (hS : ∀ a b, ∀ f ∈ S, tensF dual E a b f ∈ S) : tensSub (genSub E V) ≤ S := by
@@ -49,6 +64,13 @@ theorem tfg_gen {M : Type*} [AddCommGroup M] [Module ℂ M] (dual : Bool)
   rw [← Finset.univ_sum_single f]
   exact S.sum_mem fun c _ => (hT _).1 (hle (tset_mem.mp hf c)) c
 
+/- English proof (translation)
+Distinguish the cases in `hv : v = 0`. Simplify using `[hv]`. Establish `h1 : inner ℂ (casimir E v) v = inner ℂ v (casimir E v)`. Simplify using `only [casimir, LinearMap.sum_apply, Module.End.mul_apply, sum_inner, inner_sum]`. Use `sum_congr rfl fun a _ => sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Establish `e1` using `hU b a v (E b a v)`. Establish `e2` using `hU a b (E b a v) v`. Establish `e3 : inner ℂ v (E a b (E b a v)) = starRingEnd ℂ (inner ℂ (E a b (E b a v)) v)` using `(inner_conj_symm _ _).symm`. Rewrite using `[e3, e2, map_mul, inner_conj_symm]`. Use `congr 1`.
+
+Apply the tactic sequence `unfold adjSign; split_ifs <;> simp`. Rewrite `h1` using `[h, inner_smul_left, inner_smul_right]`. Establish `h2` using `mul_right_cancel₀ (inner_self_ne_zero.mpr hv) h1`. Rewrite using `[h, Complex.conj_eq_iff_re.mp h2]`.
+-/
 theorem tfg_real {X : Type*} [NormedAddCommGroup X] [InnerProductSpace ℂ X] {ε : Fin n → Bool}
     {E : Fin n → Fin n → Module.End ℂ X} (hU : IsInfUnitary ε E) {c : ℂ} {v : X}
     (h : casimir E v = c • v) : casimir E v = ((c.re : ℝ) : ℂ) • v := by
@@ -68,6 +90,43 @@ theorem tfg_real {X : Type*} [NormedAddCommGroup X] [InnerProductSpace ℂ X] {�
   have h2 := mul_right_cancel₀ (inner_self_ne_zero.mpr hv) h1
   rw [h, Complex.conj_eq_iff_re.mp h2]
 
+/- English proof (translation)
+Establish `hη : ∀ c, (Pi.single c (tfSgn ε c • y) : Fin n → D) ∈ tensSub (genSub E V)` using `fun c => tset_mem.mpr fun d => by`. Distinguish the cases in `h : d = c`. Substitute `h` using the available equality. Simplify using `using Submodule.smul_mem _ _ hy`. Simplify using `[h]`.
+
+Establish `hco : ∀ c, (fun d => (((Pi.single c (tfSgn ε c • y) : Fin n → D) d : D) : H)) = Pi.single c (tfSgn ε c • (y : H))` using `fun c => funext fun d => by`. Distinguish the cases in `h : d = c`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+
+Establish `hce` using `fun c f hf => coef_embed dual hσ hD hsm hgap hV hc hVK hW _ (hη c) f hf`. Simplify using `only [hco] at hce`. Establish `hR` using `tfRdiag_isURepOn ε`. Establish `hDR` using `isDerivedOn_smE hR`. Set `Φ : tensSub (n` to `n) (genSub E V) →ₗ[ℂ] smD ε (tfRdiag ε) := { toFun := fun f => ⟨tfPh dual ε σ (y : H) (fun c => ((f.1 c : D) : H)), tfRdiag_smooth fun c => toL2_mem_smD_of_isSmoothL2 (hce c f.1 f.2).1⟩ map_add' := fun f f' => Subtype.ext (vectorL2_ext fun c => by`.
+
+Use `Eq.trans ?_ (toL2_add_smooth ε ((hce c f.1 f.2).1.2 []) ((hce c f'.1 f'.2).1.2 []))` and prove the remaining obligations. Use `toL2_congr_of_eq_on_UJset fun g _ => ?_` and prove the remaining obligations. Simplify using `[coefMap, tensGrp, sum_add_distrib])`. Use the proof step `map_smul' := fun a f => Subtype.ext (vectorL2_ext fun c => by`. Use `Eq.trans ?_ (toL2_smul_smooth ε a _)` and prove the remaining obligations.
+
+Use `toL2_congr_of_eq_on_UJset fun g _ => ?_` and prove the remaining obligations. Simplify using `[coefMap, tensGrp, mul_sum, mul_left_comm]) }`. Establish `hΦE : ∀ a b (f : tensSub (n` using `n) (genSub E V)), smE ε (tfRdiag ε) a b (Φ f) = Φ ⟨tensF dual E a b f.1, tensSub_stable dual a b f.1 f.2⟩ := fun a b f => Subtype.ext (vectorL2_ext fun c => by`. Use `(tfRdiag_smE (fun c => toL2_mem_smD_of_isSmoothL2 (hce c f.1 f.2).1) a b c).trans ?_` and prove the remaining obligations. Use `(rightDerivative_toL2 (hce c f.1 f.2).1 a b).trans (toL2_congr_of_eq_on_UJset fun g hg => ?_)` and prove the remaining obligations.
+
+Conclude with `(hce c f.1 f.2).2.1 a b g hg)`. Set `P' : Module.End ℂ (tensSub (n` to `n) (genSub E V)) := P.restrict hP.1`. Set `Ξ` to `Φ ∘ₗ P'`. Establish `hΞE : ∀ a b (f : tensSub (n` using `n) (genSub E V)), smE ε (tfRdiag ε) a b (Ξ f) = Ξ ⟨tensF dual E a b f.1, tensSub_stable dual a b f.1 f.2⟩ := fun a b f => by`. Use `(hΦE a b (P' f)).trans (congrArg Φ (Subtype.ext ?_))` and prove the remaining obligations.
+
+Conclude with `(hP.2.1 a b f.1 f.2).symm`. Set `W : Submodule ℂ (tensSub (n` to `n) (genSub E V)) := (tensSub V).comap (tensSub (genSub E V)).subtype`. Use `hV.1` as an intermediate fact. Establish `hVle : tensSub (n` using `n) V ≤ tensSub (genSub E V) := fun f hf => tset_mem.mpr fun c => Submodule.mem_sInf.mpr fun _ hT => hT.1 (tset_mem.mp hf c)`. Establish `hfd : FiniteDimensional ℂ (tensSub (n` using `n) V) := Module.Finite.of_injective (LinearMap.pi fun c => LinearMap.codRestrict V ((LinearMap.proj c : (Fin n → D) →ₗ[ℂ] D) ∘ₗ (tensSub V).subtype) fun f => tset_mem.mp f.2 c) (fun f f' h => Subtype.ext (funext fun c => congrArg Subtype.val (congrFun h c)))`.
+
+Establish `hW' : FiniteDimensional ℂ W` using `Module.Finite.equiv (Submodule.comapSubtypeEquivOfLe hVle).symm`. Establish `hkst : IsKStableSub ε (smE ε (tfRdiag ε)) (W.map Ξ)`. Introduce and unpack `a b hab _ ⟨f, hf, rfl⟩`. Use `⟨_, ?_, (hΞE a b f).symm⟩` and prove the remaining obligations. Establish `hf'` using `tset_mem.mp (show f.1 ∈ tensSub V from hf)`.
+
+Use `tset_mem.mpr fun c => ?_` and prove the remaining obligations. Use `show tensF dual E a b f.1 c ∈ V`. Consider the cases of `dual`. Simplify using `only [tensF, cond_false, tensV_coord]`. Conclude with `V.add_mem (hV.2.1 a b hab _ (hf' c)) (by split_ifs; exacts [hf' b, V.zero_mem])`.
+
+Simplify using `only [tensF, cond_true, tensVd_coord]`. Conclude with `V.sub_mem (hV.2.1 a b hab _ (hf' c)) (by split_ifs; exacts [hf' a, V.zero_mem])`. Establish `hcas : ∀ v ∈ W.map Ξ, casimir (smE ε (tfRdiag ε)) v = (((((casVal lam : ℝ) : ℂ) + n + 2 * z).re : ℝ) : ℂ) • v`. Introduce and unpack `_ ⟨f, -, rfl⟩`. Use `tfg_real (isInfUnitary_of_isDerivedOn hR hDR) ?_` and prove the remaining obligations.
+
+Establish `h3 : diagOp (casimir E) (P f.1) = ((casVal lam : ℝ) : ℂ) • P f.1` using `funext fun c => by`. Rewrite using `[diagOp_coord, casimir_genSub hD.glRep hc _ (tset_mem.mp (hP.1 _ f.2) c)]`. Both sides reduce to the same expression. Establish `h2 : casimir (tensF dual E) (P f.1) = (((casVal lam : ℝ) : ℂ) + n + 2 * z) • P f.1`. Rewrite using `[add_smul, add_smul, mul_smul, ← hEP f.1 f.2, ← h3]`.
+
+Consider the cases of `dual`. Conclude with `LinearMap.congr_fun (casimir_tensV hD.glRep) _`. Conclude with `LinearMap.congr_fun (casimir_tensVd hD.glRep) _`. Use `show casimir _ (Φ (P' f)) = _ • Φ (P' f)`. Rewrite using `[← map_smul]`.
+
+Simplify using `only [casimir, LinearMap.sum_apply, Module.End.mul_apply, hΦE, ← map_sum]`. Use `congrArg Φ (Subtype.ext ?_)` and prove the remaining obligations. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul]`. Rewrite using `[show ((P' f : tensSub (n := n) (genSub E V)) : Fin n → D) = P f.1 from rfl, ← h2]`. Simplify using `only [casimir, LinearMap.sum_apply, Module.End.mul_apply]`.
+
+Establish `hgen : genSub (smE ε (tfRdiag ε)) (W.map Ξ) = LinearMap.range Ξ`. Use `le_antisymm (sInf_le ⟨LinearMap.map_le_range, ?_⟩) ?_` and prove the remaining obligations. Introduce and unpack `a b _ ⟨f, rfl⟩`. Conclude with `⟨_, (hΞE a b f).symm⟩`. Introduce and unpack `_ ⟨f, rfl⟩`.
+
+Establish `h1` using `tfg_gen dual E V (((genSub (smE ε (tfRdiag ε)) (W.map Ξ)).comap Ξ).map (tensSub (genSub E V)).subtype) (fun f hf => ⟨⟨f, hVle hf⟩, Submodule.mem_sInf.mpr fun _ hT => hT.1 ⟨_, hf, rfl⟩, rfl⟩) (by`. Introduce and unpack `a b _ ⟨f, hf, rfl⟩`. Use `⟨⟨_, tensSub_stable dual a b f.1 f.2⟩, ?_, rfl⟩` and prove the remaining obligations. Use `show Ξ _ ∈ genSub _ _`. Rewrite using `[← hΞE]`.
+
+Conclude with `tset_genSub_E _ _ a b hf) f.2`. Take `⟨f', hf', e⟩` from `h1`. Rewrite using `[← Subtype.ext e]` and apply the resulting hypothesis. Establish `hspan : Submodule.span ℂ {v : tfL2n ε | ∃ f ∈ tensSub (genSub E V), v = tfPh dual ε σ (y : H) (fun c => ((P f c : D) : H))} = (genSub (smE ε (tfRdiag ε)) (W.map Ξ)).map (smD ε (tfRdiag ε)).subtype`. Rewrite using `[hgen, ← Submodule.span_eq (Submodule.map _ _)]`.
+
+Use `congr 1`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, hf, rfl⟩`. Conclude with `⟨_, ⟨⟨f, hf⟩, rfl⟩, rfl⟩`.
+
+Introduce and unpack `⟨_, ⟨f, rfl⟩, rfl⟩`. Conclude with `⟨f.1, f.2, rfl⟩`. Rewrite using `[hspan]`. Conclude with `closure_genSub_stable hR hDR inferInstance hkst hcas`.
+-/
 theorem tf_closure_stable (dual : Bool) {lam : Fin n → ℝ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [CompleteSpace H] {ε : Fin n → Bool} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H}
     {E : Fin n → Fin n → Module.End ℂ D} (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)

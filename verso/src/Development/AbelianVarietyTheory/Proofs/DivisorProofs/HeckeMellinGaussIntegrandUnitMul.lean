@@ -8,6 +8,11 @@ noncomputable section
 
 namespace GlobalTheory.HeckeShift
 
+/- English proof (translation)
+Establish `hζ0 : ζ ≠ 0` using `by rintro rfl; simp at hζ`. Unfold `GlobalTheory.HeckeTheta.hmon`. Use `split_ifs with h`. Establish `hc : starRingEnd ℂ ζ = ζ⁻¹`. Rewrite using `[Complex.inv_def, Complex.normSq_eq_norm_sq, hζ]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[map_mul, mul_pow, hc, inv_pow, ← zpow_natCast, ← zpow_neg, Int.toNat_of_nonneg h]`. Rewrite using `[mul_pow, ← zpow_natCast ζ, Int.toNat_of_nonneg (by omega)]`.
+-/
 theorem hmon_mul_unit {ζ : ℂ} (hζ : ‖ζ‖ = 1) (n : ℤ) (v : ℂ) :
     GlobalTheory.HeckeTheta.hmon n (ζ * v) = ζ ^ (-n) * GlobalTheory.HeckeTheta.hmon n v := by
   have hζ0 : ζ ≠ 0 := by rintro rfl; simp at hζ
@@ -18,6 +23,13 @@ theorem hmon_mul_unit {ζ : ℂ} (hζ : ‖ζ‖ = 1) (n : ℤ) (v : ℂ) :
     rw [map_mul, mul_pow, hc, inv_pow, ← zpow_natCast, ← zpow_neg, Int.toNat_of_nonneg h]
   · rw [mul_pow, ← zpow_natCast ζ, Int.toNat_of_nonneg (by omega)]
 
+/- English proof (translation)
+Establish `hn0 : (0 : ℝ) < ‖z‖` using `norm_pos_iff.2 hz`. Establish `hE : Real.exp ((y + Real.log (‖z‖ ^ 2)) / 2) = Real.exp (y / 2) * ‖z‖`. Rewrite using `[Real.log_pow, add_div, Real.exp_add]`. Use `congr 1`. Rewrite using `[show ((2 : ℕ) : ℝ) * Real.log ‖z‖ / 2 = Real.log ‖z‖ by push_cast; ring, Real.exp_log hn0]`.
+
+Establish `hzc : ((‖z‖ : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hn0.ne'`. Establish `hζ : ‖z / ((‖z‖ : ℝ) : ℂ)‖ = 1`. Rewrite using `[norm_div, Complex.norm_real, Real.norm_eq_abs, abs_norm, div_self hn0.ne']`. Establish `hv : (Real.exp (y / 2) : ℂ) * (z * w) = (z / ((‖z‖ : ℝ) : ℂ)) * ((Real.exp ((y + Real.log (‖z‖ ^ 2)) / 2) : ℂ) * w)`. Rewrite using `[hE]`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hv, hmon_mul_unit hζ, norm_mul, hζ, one_mul, mul_assoc]`.
+-/
 theorem factor_shift (n : ℤ) (y : ℝ) {z : ℂ} (hz : z ≠ 0) (w : ℂ) :
     GlobalTheory.HeckeTheta.hmon n ((Real.exp (y / 2) : ℂ) * (z * w)) *
                  Complex.exp ((-2 * Real.pi * ‖(Real.exp (y / 2) : ℂ) * (z * w)‖ ^ 2 : ℝ) : ℂ) =
@@ -37,6 +49,17 @@ theorem factor_shift (n : ℤ) (y : ℝ) {z : ℂ} (hz : z ≠ 0) (w : ℂ) :
     rw [hE]; push_cast; field_simp
   rw [hv, hmon_mul_unit hζ, norm_mul, hζ, one_mul, mul_assoc]
 
+/- English proof (translation)
+Establish `hbij : Function.Bijective (fun i => InfinitePlace.mk (φ i))`. Prove the components needed by the constructor for the conclusion. Introduce `i j hij`. Take `⟨k, _, hk⟩` from `hφ (φ i)`. Establish `hi` using `hk i (Or.inl rfl)`.
+
+Break down `InfinitePlace.mk_eq_iff.1 hij with h | h` into its components or cases. Rewrite using `[hi, hk j (Or.inl h)]`. Rewrite using `[hi, hk j (Or.inr (by rw [← h]; ext x; simp [ComplexEmbedding.conjugate_coe_eq]))]`. Introduce `w`. Take `⟨k, hk, _⟩` from `hφ w.embedding`.
+
+Use `⟨k, ?_⟩` and prove the remaining obligations. Break down `hk with h | h` into its components or cases. Simplify using `only`. Rewrite using `[← h, InfinitePlace.mk_embedding]`. Simplify using `only`.
+
+Rewrite using `[← InfinitePlace.mk_conjugate_eq (φ k), ← h, InfinitePlace.mk_embedding]`. Establish `h0` using `NumberField.Units.sum_mult_mul_log u`. Rewrite `h0` using `[← (Equiv.ofBijective _ hbij).sum_comp]`. Rewrite using `[← h0]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Establish `hm : (InfinitePlace.mk (φ i)).mult = 2` using `InfinitePlace.mult_isComplex ⟨_, IsTotallyComplex.isComplex _⟩`. Simplify using `only [Equiv.ofBijective_apply, InfinitePlace.apply, hm, GlobalTheory.HeckeTheta.ulog, Real.log_pow]`.
+-/
 theorem sum_ulog {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] {I : Type} [Fintype I]
     (φ : I → K →+* ℂ) (hφ : GlobalTheory.CMVal.IsCMType φ) (u : (𝓞 K)ˣ) : ∑ i, GlobalTheory.HeckeTheta.ulog φ u i = 0 := by
   have hbij : Function.Bijective (fun i => InfinitePlace.mk (φ i)) := by
@@ -63,6 +86,13 @@ theorem sum_ulog {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] {I : 
 
 end GlobalTheory.HeckeShift
 
+/- English proof (translation)
+Introduce `K _ _ _ I _ φ hφ n s u α y`. Establish `hsum : (∑ i, (y + GlobalTheory.HeckeTheta.ulog φ u) i) = ∑ i, y i`. Simplify using `only [Pi.add_apply, Finset.sum_add_distrib, GlobalTheory.HeckeShift.sum_ulog φ hφ u, add_zero]`. Establish `hu0 : ((u : 𝓞 K) : K) ≠ 0`. Introduce `h`.
+
+Conclude with `(Units.ne_zero u) (by exact_mod_cast h)`. Unfold `GlobalTheory.HeckeMellin.term`. Rewrite using `[hsum, ← mul_assoc]`. Use `congr 1`. Unfold `GlobalTheory.HeckeTheta.gauss GlobalTheory.HeckeStrip.wt`.
+
+Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [GlobalTheory.HeckeTheta.dil, GlobalTheory.HeckeTheta.emb, GlobalTheory.HeckeTheta.ulog, Pi.add_apply, map_mul]`. Conclude with `GlobalTheory.HeckeShift.factor_shift (n i) (y i) ((map_ne_zero _).2 hu0) (φ i α)`.
+-/
 theorem GlobalTheory.HeckeShift.term_unit_mul : ∀ (K : Type) [Field K] [NumberField K] [NumberField.IsTotallyComplex K] (I : Type) [Fintype I]
     (φ : I → K →+* ℂ), GlobalTheory.CMVal.IsCMType φ → ∀ (n : I → ℤ) (s : ℂ) (u : (𝓞 K)ˣ) (α : K) (y : I → ℝ),
     GlobalTheory.HeckeMellin.term n s (GlobalTheory.HeckeTheta.emb φ (((u : 𝓞 K) : K) * α)) y =

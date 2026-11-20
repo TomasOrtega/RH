@@ -12,6 +12,21 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.PtExt
 
+/- English proof (translation)
+Introduce `R _ A _ p G t c d n D _ _ φ ψ`. Use `set l : G.A n ⊗[R] G.A n →ₐ[R] D := Algebra.TensorProduct.lift φ ψ (fun _ _ ↦ Commute.all _ _) with hl`. Establish `hc` using `(GlobalTheory.T.crystallineCocycleOnPoints_isCocycle_and_eval_eq R A d.f).1`. Establish `e1 : l.comp Algebra.TensorProduct.includeLeft = φ`. Use extensionality with `a`.
+
+Simplify using `[hl]`. Establish `e2 : l.comp Algebra.TensorProduct.includeRight = ψ`. Use extensionality with `a`. Simplify using `[hl]`. Establish `e3 : l.comp (Bialgebra.comulAlgHom R (G.A n)) = (toConv φ * toConv ψ).ofConv`.
+
+Use extensionality with `a`. Rewrite using `[AlgHom.convMul_apply]`. Both sides reduce to the same expression. Establish `e4 : (toConv (Algebra.TensorProduct.includeLeft : G.A n →ₐ[R] G.A n ⊗[R] G.A n) * toConv Algebra.TensorProduct.includeRight).ofConv = Bialgebra.comulAlgHom R (G.A n)`. Use extensionality with `a`.
+
+Rewrite using `[AlgHom.convMul_apply]`. Simplify using the standard rewrite rules. Establish `m` using `t.mul n (G.A n ⊗[R] G.A n) (toConv Algebra.TensorProduct.includeLeft) (toConv Algebra.TensorProduct.includeRight)`. Rewrite `m` using `[e4]`. Establish `a` using `d.add (G.A n ⊗[R] G.A n) D l (spOver Algebra.TensorProduct.includeLeft ≫ t.y n) (spOver Algebra.TensorProduct.includeRight ≫ t.y n)`.
+
+Establish `c1` using `hc _ _ _ Algebra.TensorProduct.includeLeft l (t.y n) (sm_whole _)`. Establish `c2` using `hc _ _ _ Algebra.TensorProduct.includeRight l (t.y n) (sm_whole _)`. Establish `c3` using `hc _ _ _ (Bialgebra.comulAlgHom R (G.A n)) l (t.y n) (sm_whole _)`. Rewrite `a` using `[← m, ← Category.assoc, ← Category.assoc, spOver_comp, spOver_comp, e1, e2]`. Rewrite `c1` using `[e1]`.
+
+Rewrite `c2` using `[e2]`. Rewrite `c3` using `[e3]`. Establish `h3 : l (Coalgebra.comul (d.h n)) = (toConv φ * toConv ψ).ofConv (d.h n)`. Rewrite using `[← e3]`. Both sides reduce to the same expression.
+
+Establish `h1 : l (d.h n ⊗ₜ 1) = φ (d.h n)` using `by simp [hl]`. Establish `h2 : l (1 ⊗ₜ d.h n) = ψ (d.h n)` using `by simp [hl]`. Simplify using `only [Dat.coc, cobOne_apply, map_sub, h1, h2, h3]`. Rewrite using `[c1, c2, c3]`. Take the linear combination `-a`.
+-/
 theorem Dat.lift_coc : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (p : ℕ) (G : PDivGroup p R) (t : G.TorsionTower A) (c : primDR A) (d : Dat t c) (n : ℕ) (D : Type) [CommRing D] [Algebra R D] (φ ψ : G.A n →ₐ[R] D), Algebra.TensorProduct.lift φ ψ (fun _ _ ↦ Commute.all _ _) (d.coc n) = d.g D (spOver φ ≫ t.y n) (spOver ψ ≫ t.y n) - ((fv d.f (G.A n) D (toConv φ * toConv ψ).ofConv (t.y n) + (toConv φ * toConv ψ).ofConv (d.h n)) - (fv d.f (G.A n) D φ (t.y n) + φ (d.h n)) - (fv d.f (G.A n) D ψ (t.y n) + ψ (d.h n))) := by
   intro R _ A _ p G t c d n D _ _ φ ψ
   set l : G.A n ⊗[R] G.A n →ₐ[R] D := Algebra.TensorProduct.lift φ ψ (fun _ _ ↦ Commute.all _ _) with hl

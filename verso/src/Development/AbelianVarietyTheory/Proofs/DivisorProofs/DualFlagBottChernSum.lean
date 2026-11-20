@@ -25,6 +25,11 @@ section Matrices
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ E] [IsScalarTower ℝ ℂ E]
   {N : ℕ} {K : E → Matrix (Fin N) (Fin N) ℂ} {z : E}
 
+/- English proof (translation)
+Simplify using `only [chg_submatrix_emb hT]`. Use `extTrace_chg (A := fun _ => T.submatrix (emb i) (emb i)) (h.submatrix _ _) (hp.mono fun x hx => hx.submatrix (emb_injective i)) (mContDiffAt_const _) ?_ (fun η => mdbar_const _ _ _) (.of_forall fun _ => ?_)` and prove the remaining obligations. Establish `h₁` using `(posDef_chg ((isUnit_iff_isUnit_det _).2 hu) (PosDef.one (n := Fin N) (R := ℂ))).submatrix (emb_injective i)`. Establish `h₂` using `h₁.det_pos.ne'`. Rewrite `h₂` using `[chg_submatrix_emb hT, chg, det_mul, det_mul, det_transpose]`.
+
+Conclude with `(left_ne_zero_of_mul (left_ne_zero_of_mul h₂)).isUnit`. Use extensionality with `a b`. Conclude with `hT _ _ b.isLt`.
+-/
 theorem extTrace_step_chg (h : MContDiffAt 1 K z) (hp : ∀ᶠ x in 𝓝 z, (K x).PosDef)
     {T : Matrix (Fin N) (Fin N) ℂ} (hT : ∀ a c : Fin N, c < a → T a c = 0) (hu : IsUnit T.det) (i : Fin N) :
     extTrace (fun x => (chg T (K x)).submatrix (emb i) (emb i)) z =
@@ -41,6 +46,9 @@ theorem extTrace_step_chg (h : MContDiffAt 1 K z) (hp : ∀ᶠ x in 𝓝 z, (K x
   · ext a b
     exact hT _ _ b.isLt
 
+/- English proof (translation)
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[extTrace_eq_sum_of_eq_one (h.submatrix _ _) (hp.mono fun x hx => hx.submatrix (emb_injective i)) (by rw [h1]; exact submatrix_one _ (emb_injective i)), ← Finset.sum_filter, Finset.filter_gt_eq_Iio, sum_Iio]`. Simplify using `only [Fin.sum_univ_one]`. Both sides reduce to the same expression.
+-/
 theorem sum_extTrace_of_eq_one (h : MContDiffAt 1 K z) (hp : ∀ᶠ x in 𝓝 z, (K x).PosDef) (h1 : K z = 1) (ξ η : E) :
     ∑ i, extTrace (fun x => (K x).submatrix (emb i) (emb i)) z ξ η =
       kappa * ∑ i, ∑ a, if a < i then mdel K z ξ a i * star (mdel K z η a i) else 0 := by
@@ -53,6 +61,19 @@ theorem sum_extTrace_of_eq_one (h : MContDiffAt 1 K z) (hp : ∀ᶠ x in 𝓝 z,
 
 def revDual (M : Matrix (Fin N) (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ := (dualGram M).submatrix Fin.rev Fin.rev
 
+/- English proof (translation)
+Take `⟨T, hT, h1⟩` from `exists_upper_chg_eq_one hp.self_of_nhds`. Establish `hu : IsUnit T.det`. Use `congrArg Matrix.det h1` as an intermediate fact. Rewrite `this` using `[chg, det_mul, det_mul, det_transpose, det_one, mul_assoc]`. Conclude with `IsUnit.of_mul_eq_one _ this`.
+
+Establish `hd {L : E → Matrix (Fin N) (Fin N) ℂ} (h : MContDiffAt 1 L z) (hp : ∀ᶠ x in 𝓝 z, (L x).PosDef) : MContDiffAt 1 (fun x => revDual (L x)) z ∧ ∀ᶠ x in 𝓝 z, (revDual (L x)).PosDef` using `⟨(h.inv hp.self_of_nhds.det_pos.ne'.isUnit).transpose.submatrix _ _, hp.mono fun x hx => (posDef_dualGram hx).submatrix Fin.rev_injective⟩`. Establish `hL : MContDiffAt 1 (fun x => chg T (K x)) z` using `((mContDiffAt_const _).mul h).mul (mContDiffAt_const _)`. Establish `hLp : ∀ᶠ x in 𝓝 z, (chg T (K x)).PosDef` using `hp.mono fun x hx => posDef_chg ((isUnit_iff_isUnit_det _).2 hu) hx`. Establish `hTi : T⁻¹.BlockTriangular id`. Use `invertibleOfIsUnitDet T hu` as an intermediate fact.
+
+Use `blockTriangular_inv_of_blockTriangular fun a c h => hT a c h`. Establish `e (M : Matrix (Fin N) (Fin N) ℂ) : revDual (chg T M) = chg (T⁻¹ᵀ.submatrix Fin.revPerm Fin.revPerm) (revDual M)`. Rewrite using `[revDual, dualGram_chg (mul_nonsing_inv T hu)]`. Conclude with `(chg_submatrix _ _ Fin.revPerm Fin.revPerm).symm`. Establish `e₁ (i : Fin N)` using `extTrace_step_chg h hp hT hu i`.
+
+Establish `e₂ (i : Fin N)` using `extTrace_step_chg (hd h hp).1 (hd h hp).2 (T := T⁻¹ᵀ.submatrix Fin.revPerm Fin.revPerm) (fun a c hc => hTi (Fin.rev_lt_rev.2 hc)) (by rw [det_submatrix_equiv_self, det_transpose]; exact isUnit_nonsing_inv_det _ hu) i`. Simplify using `only [← e] at e₂`. Simplify using `only [← e₁, ← e₂]`. Establish `h2 : revDual (chg T (K z)) = 1`. Rewrite using `[h1, revDual, dualGram, inv_one, transpose_one, submatrix_one _ Fin.rev_injective]`.
+
+Establish `e₃ (ζ : E) (a b : Fin N) : mdel (fun x => revDual (chg T (K x))) z ζ a b = -mdel (fun x => chg T (K x)) z ζ b.rev a.rev`. Use `mdel_inv hL (by rw [h1]; simp) ζ` as an intermediate fact. Rewrite `this` using `[h1, inv_one, Matrix.one_mul, Matrix.mul_one]`. Conclude with `congrFun (congrFun this b.rev) a.rev`. Rewrite using `[sum_extTrace_of_eq_one (hd hL hLp).1 (hd hL hLp).2 h2, sum_extTrace_of_eq_one hL hLp h1, Finset.sum_comm, ← Equiv.sum_comp Fin.revPerm]`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Equiv.sum_comp Fin.revPerm]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [e₃, Fin.revPerm_apply, Fin.rev_rev, Fin.rev_lt_rev, star_neg, neg_mul_neg]`.
+-/
 theorem sum_extTrace_revDual (h : MContDiffAt 1 K z) (hp : ∀ᶠ x in 𝓝 z, (K x).PosDef) (ξ η : E) :
     ∑ i, extTrace (fun x => (revDual (K x)).submatrix (emb i) (emb i)) z ξ η =
       ∑ i, extTrace (fun x => (K x).submatrix (emb i) (emb i)) z ξ η := by
@@ -102,11 +123,25 @@ section Frames
 
 variable {X : Scheme.{0}} {F : X.Modules} {N : ℕ} {fl : Vert.Flag F N} {U : X.Opens} {v : Fin N → Γ(F, U)}
 
+/- English proof (translation)
+Take `⟨s, hs, es⟩` from `H (Fin.last N)`. Use `hs.map_iso (fl.ι (Fin.last N))` as an intermediate fact. Rewrite `this` using `[funext es]`. Then use the resulting hypothesis.
+-/
 theorem isFrame_of_spans (H : Spans fl U v) : IsFrame v := by
   obtain ⟨s, hs, es⟩ := H (Fin.last N)
   have := hs.map_iso (fl.ι (Fin.last N))
   rwa [funext es] at this
 
+/- English proof (translation)
+Use `choose U e hU he using fun k => fl.isVB_gr k x`. Use `choose W hW hxW t ht using fun k => VBExt.exists_lifts (fl.π k) (e k) (hU k)`. Establish `hV (k : Fin N) : Finset.univ.inf W ≤ W k` using `Finset.inf_le (Finset.mem_univ k)`. Establish `ht' (k : Fin N) : IsFrame fun j : Fin 1 => (fl.π k).app _ (resM _ (hV k) (t k j))`. Simplify using `only [app_resM, ht, resM_resM]`.
+
+Conclude with `(he k).res _`. Use `⟨Finset.univ.inf W, fun k => (fl.ι k.succ).app _ (resM _ (hV k) (t k 0)), by` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x ∈ ((Finset.univ.inf W : X.Opens) : Set X)`. Rewrite using `[TopologicalSpace.Opens.coe_finset_inf]`. Simplify using `using hxW, fun l => ?_⟩`.
+
+Proceed by induction on `l using Fin.induction with`. Consider the case `zero`. Establish `z` using `VB.isVB_zero_iff.1 (fl.isVB 0)`. Conclude with `⟨_, (VB.isFrame_freeFrame X (Fin 0)).map_iso ((VB.isVB_zero_iff.1 (VB.isVB_freeModule_fin X 0)).iso z).hom |>.res le_top, fun j => j.elim0⟩`. Consider the case `succ i ih`.
+
+Take `⟨s, hs, es⟩` from `ih`. Establish `h` using `(VBExt.isFrame_sumElim (S := .mk (fl.step i) (Limits.cokernel.π _) (Limits.cokernel.condition _)) { exact := ShortComplex.exact_cokernel _ } (t := fun j : Fin 1 => resM _ (hV i) (t i j)) hs (ht' i)).comp_equiv finSumFinEquiv.symm`. Use `⟨_, h, fun j => ?_⟩` and prove the remaining obligations. Use `Fin.addCases (m := i) (n := 1) (fun j => ?_) (fun j => ?_) j` and prove the remaining obligations. Simplify using `only [Function.comp_apply, finSumFinEquiv_symm_apply_castAdd, Sum.elim_inl]`.
+
+Use `Eq.trans ?_ (es j)` and prove the remaining obligations. Rewrite using `[← fl.step_ι i]`. Both sides reduce to the same expression. Take `rfl : j = 0` from `Subsingleton.elim _ _`. Conclude with `congrArg (fun z => (fl.ι i.succ).app _ (Sum.elim (fun j => (fl.step i).app _ (s j)) (fun j : Fin 1 => resM _ (hV i) (t i j)) z)) (finSumFinEquiv_symm_apply_natAdd (m := i) (n := 1) 0)`.
+-/
 theorem exists_spans (fl : Vert.Flag F N) (x : X) : ∃ (U : X.Opens) (v : Fin N → Γ(F, U)), x ∈ U ∧ Spans fl U v := by
   choose U e hU he using fun k => fl.isVB_gr k x
   choose W hW hxW t ht using fun k => VBExt.exists_lifts (fl.π k) (e k) (hU k)
@@ -137,6 +172,27 @@ theorem exists_spans (fl : Vert.Flag F N) (x : X) : ∃ (U : X.Opens) (v : Fin N
       exact congrArg (fun z => (fl.ι i.succ).app _ (Sum.elim (fun j => (fl.step i).app _ (s j))
         (fun j : Fin 1 => resM _ (hV i) (t i j)) z)) (finSumFinEquiv_symm_apply_natAdd (m := i) (n := 1) 0)
 
+/- English proof (translation)
+Introduce `l`. Take `⟨s, hs, es⟩` from `H l.rev`. Establish `hex (V : X.Opens)` using `QCoh.exact_app_of_exact_of_mono (DualFlag.annSeq_shortExact fl l.rev).exact V`. Establish `hz (j : Fin l) : (dualMap (fl.ι l.rev)).app U (hv.coord (Fin.castLE l.is_le j).rev) = 0`. Use `hs.dual_ext le_rfl fun a => ?_` and prove the remaining obligations.
+
+Rewrite using `[dualApp_dualMap, app_resM, es, hv.dualApp_coord_frame, if_neg]`. Use `dualApp_smul (0 : Γ(X, U)) (0 : Γ(dual (fl.F l.rev), U)) le_rfl` as an intermediate fact. Rewrite `this` using `[zero_smul]`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+
+Introduce `h`. Establish `h₁` using `congrArg Fin.val h`. Establish `h₂` using `a.isLt`. Establish `h₃` using `j.isLt`. Establish `h₄` using `l.is_le`.
+
+Simplify using `only [Fin.val_rev, Fin.val_castLE] at h₁ h₂`. Use linear arithmetic over natural numbers and integers. Use `choose s' hs' using fun j => (hex U _).1 (hz j)`. Establish `inj (V : X.Opens)` using `QCoh.injective_app_of_mono (Limits.kernel.ι (dualMap (fl.ι l.rev))) V`. Establish `hc (V : X.Opens) (h : V ≤ U) (a : Fin l → Γ(X, V)) : (Limits.kernel.ι (dualMap (fl.ι l.rev))).app V (Fintype.linearCombination Γ(X, V) (fun i => resM _ h (s' i)) a) = ∑ j, a j • resM _ h (hv.coord (Fin.castLE l.is_le j).rev)`.
+
+Simplify using `only [Fintype.linearCombination_apply, map_sum, Scheme.Modules.Hom.app_smul, app_resM]`. Conclude with `Finset.sum_congr rfl fun j _ => congrArg (fun w => a j • resM _ h w) (hs' j)`. Establish `hev (V : X.Opens) (h : V ≤ U) (a : Fin l → Γ(X, V)) (b : Fin N) : dualApp (∑ j, a j • resM _ h (hv.coord (Fin.castLE l.is_le j).rev)) le_rfl (resM F h (v b)) = if hb : (b.rev : ℕ) < l then a ⟨b.rev, hb⟩ else 0`. Simplify using `only [dualApp_sum, LinearMap.sum_apply, dualApp_smul, dualApp_res, LinearMap.smul_apply, hv.dualApp_coord_frame, smul_eq_mul, mul_ite, mul_one, mul_zero, LB.resG_self]`. Use `split_ifs with hb`.
+
+Rewrite using `[Finset.sum_eq_single ⟨b.rev, hb⟩ (fun j _ hj => if_neg fun e => hj (by subst e; simp [Fin.ext_iff])) (by simp), if_pos (by simp [Fin.ext_iff]; omega)]`. Conclude with `Finset.sum_eq_zero fun j _ => if_neg fun e => hb (by subst e; simp)`. Use `⟨s', fun V h => ⟨(injective_iff_map_eq_zero _).2 fun a ha => funext fun j => ?_, fun w => ?_⟩, hs'⟩` and prove the remaining obligations. Establish `h₀` using `hc V h a`. Establish `h₁` using `hev V h a (Fin.castLE l.is_le j).rev`.
+
+Use `erw [ha, map_zero] at h₀`. Use `dualApp_smul (0 : Γ(X, V)) (0 : Γ(dual F, V)) le_rfl` as an intermediate fact. Rewrite `this` using `[zero_smul]`. Rewrite `h₁` using `[← h₀, this]`. Simplify using `using h₁.symm`.
+
+Use `⟨fun j => dualApp ((Limits.kernel.ι (dualMap (fl.ι l.rev))).app V w) le_rfl (resM F h (v (Fin.castLE l.is_le j).rev)), inj V ((hc V h _).trans (hv.dual_ext h fun b => ?_))⟩` and prove the remaining obligations. Rewrite using `[hev]`. Use `split_ifs with hb`. Conclude with `congrArg (fun c => dualApp _ le_rfl (resM F h (v c))) (Fin.rev_rev b)`. Establish `hb' : (b : ℕ) < l.rev`.
+
+Use `b.isLt` as an intermediate fact. Simplify using `only [Fin.val_rev] at hb ⊢`. Use linear arithmetic over natural numbers and integers. Establish `h₀ : (dualMap (fl.ι l.rev)).app V ((Limits.kernel.ι (dualMap (fl.ι l.rev))).app V w) = 0` using `(hex V _).2 ⟨w, rfl⟩`. Establish `h₁` using `dualApp_dualMap (fl.ι l.rev) ((Limits.kernel.ι (dualMap (fl.ι l.rev))).app V w) le_rfl (resM _ h (s ⟨b, hb'⟩))`.
+
+Use `dualApp_smul (0 : Γ(X, V)) (0 : Γ(dual (fl.F l.rev), V)) le_rfl` as an intermediate fact. Rewrite `this` using `[zero_smul]`. Rewrite `h₁` using `[h₀, this, app_resM, es]`. Simplify using `using h₁`.
+-/
 theorem spans_dualFlag (H : Spans fl U v) (hv : IsFrame v) :
     Spans (DualFlag.dualFlag fl) U fun j => hv.coord j.rev := by
   intro l
@@ -205,6 +261,9 @@ open GlobalTheory.CurveDens
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ}
 
+/- English proof (translation)
+Use `le_antisymm (iSup_le fun c => Measure.le_iff.2 fun A hA => ?_) Measure.restrict_le_self` and prove the remaining obligations. Establish `hs` using `c.e.open_source.measurableSet`. Rewrite using `[Measure.restrict_apply hA, ChartGlue.chartMeas_apply _ _ hA, ← ChartGlue.chartMeas_apply_of_subset _ (fun y => ENNReal.ofReal (ρ c y)) (hs.inter hA) inter_subset_left]`. Use `(Measure.le_iff'.1 (le_iSup (fun c : AlgChart p σ 1 => ChartGlue.chartMeas c.e fun y => ENNReal.ofReal (ρ c y)) c) _).trans (measure_mono fun y hy => ?_)` and prove the remaining obligations. Conclude with `⟨hy.2, mem_iUnion.2 ⟨c, hy.1⟩⟩`.
+-/
 theorem part_eq_restrict (ρ : AlgChart p σ 1 → CxPts p σ → ℝ) :
     part ρ = (part ρ).restrict (⋃ c : AlgChart p σ 1, c.e.source) := by
   refine le_antisymm (iSup_le fun c => Measure.le_iff.2 fun A hA => ?_) Measure.restrict_le_self
@@ -215,6 +274,13 @@ theorem part_eq_restrict (ρ : AlgChart p σ 1 → CxPts p σ → ℝ) :
     ChartGlue.chartMeas c.e fun y => ENNReal.ofReal (ρ c y)) c) _).trans (measure_mono fun y hy => ?_)
   exact ⟨hy.2, mem_iUnion.2 ⟨c, hy.1⟩⟩
 
+/- English proof (translation)
+Establish `hs : IsDens fun c y => ∑ j, τ j c y` using `MixDens.IsDens.sum Finset.univ h`. Take `⟨T, hT, hTS⟩` from `TopologicalSpace.isOpen_iUnion_countable (fun c : AlgChart p σ 1 => c.e.source) fun c => c.e.open_source`. Rewrite using `[part_eq_restrict fun c y => ∑ j, τ j c y, Finset.sum_congr rfl fun j _ => part_eq_restrict (τ j), show ∀ s : Set (CxPts p σ), ∑ j, (part (τ j)).restrict s = (∑ j, part (τ j)).restrict s from fun s => (map_sum (Measure.restrictₗ s) _ _).symm, ← hTS, Measure.restrict_biUnion_congr …`. Introduce `c _`. Use extensionality with `A hA`.
+
+Establish `hm` using `hA.inter c.e.open_source.measurableSet`. Rewrite using `[Measure.restrict_apply hA, Measure.restrict_apply hA, Measure.finset_sum_apply, hs.part_apply c hm inter_subset_right, Finset.sum_congr rfl fun j _ => (h j).part_apply c hm inter_subset_right, ← lintegral_finset_sum']`. Use `setLIntegral_congr_fun (ChartGlue.measurableSet_image _ hm inter_subset_right) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Simplify using `only [c.e.left_inv hy.2]`.
+
+Conclude with `(ENNReal.ofReal_sum_of_nonneg fun j _ => h₀ j c y hy.2).symm`. Introduce `j _`. Use `ENNReal.measurable_ofReal.comp_aemeasurable ((((h j).2 c).mono ?_).aemeasurable (ChartGlue.measurableSet_image _ hm inter_subset_right))` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `c.e.map_source hy.2`.
+-/
 theorem part_sum [SecondCountableTopology (CxPts p σ)] {J : Type} [Fintype J]
     {τ : J → AlgChart p σ 1 → CxPts p σ → ℝ} (h : ∀ j, IsDens (τ j))
     (h₀ : ∀ j (c : AlgChart p σ 1), ∀ y ∈ c.e.source, 0 ≤ τ j c y) :
@@ -248,6 +314,11 @@ section Main
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {E : X.Modules} {r : ℕ} {h : VMetric p E r}
   {σ : k →+* ℂ}
 
+/- English proof (translation)
+Take `⟨s, t, h₁, h₂, h₃⟩` from `hv.exists_adaptedChart i`. Set `a : VBExt.AdaptedChart (VMetric.stepSeq fl i) i 1` to `⟨U, s, t, h₁, h₂⟩`. Rewrite using `[Met.bcDens_eq (h := (h.stepMet fl i).met σ) _ _ _ a c ((H σ).restrict (fl.isSubbundle i.succ) (fl.isVB i.succ)) hy hU, Met.bcForm, extTrace_congr]`. Use `eventually_of_mem ((ChartGlue.isOpen_over c.e (isOpen_ptsIn U)).mem_nhds (ChartGlue.mem_over c.e hy hU)) fun w hw => ?_` and prove the remaining obligations. Use extensionality with `j l`.
+
+Use `beta_reduce`. Rewrite using `[submatrix_apply, ← hK _ hw.2, Met.gram, Met.gram, of_apply, of_apply, ← h₃, ← h₃]`. Conclude with `Met.form_restrict _ (fl.isSubbundle i.succ) (fl.isVB i.succ) _ _ hw.2`.
+-/
 theorem bcDens_step (H : h.IsCInf) {fl : Vert.Flag E r} {U : X.Opens} {v : Fin r → Γ(E, U)} (hv : Spans fl U v)
     (c : AlgChart p σ 1) {y : CxPts p σ} (hy : y ∈ c.e.source) (hU : y ∈ ptsIn p σ U)
     {K : CxPts p σ → Matrix (Fin r) (Fin r) ℂ} (hK : ∀ z ∈ ptsIn p σ U, (h.met σ).gram v z = K z) (i : Fin r) :
@@ -265,6 +336,11 @@ theorem bcDens_step (H : h.IsCInf) {fl : Vert.Flag E r} {U : X.Opens} {v : Fin r
   rw [submatrix_apply, ← hK _ hw.2, Met.gram, Met.gram, of_apply, of_apply, ← h₃, ← h₃]
   exact Met.form_restrict _ (fl.isSubbundle i.succ) (fl.isVB i.succ) _ _ hw.2
 
+/- English proof (translation)
+Take `⟨U, v, hU, hs⟩` from `exists_spans fl (y.1 (IsLocalRing.closedPoint ℂ))`. Establish `hU' : y ∈ ptsIn p σ U` using `mem_ptsIn.2 hU`. Establish `hv` using `isFrame_of_spans hs`. Set `cE : Chart E r` to `⟨U, v, hv⟩`. Establish `e₁ (z) (hz : z ∈ ptsIn p σ U) : (h.met σ).gram v z = (h.met σ).G cE z` using `Matrix.ext fun a b => (h.met σ).form_frame cE hz a b`.
+
+Establish `e₂ (z) (hz : z ∈ ptsIn p σ U) : (h.dual.met σ).gram (fun j => hv.coord j.rev) z = revDual ((h.met σ).G cE z)`. Rewrite using `[revDual, ← (h.met σ).dual_G cE hz]`. Conclude with `Matrix.ext fun a b => (h.met σ).dual.form_frame cE.dual hz a.rev b.rev`. Simplify using `only [bcDens_step H hs c hy hU' e₁, bcDens_step H.dual (spans_dualFlag hs hv) c hy hU' e₂, ← Finset.mul_sum, diagVal, ← Complex.re_sum]`. Rewrite using `[sum_extTrace_revDual (K := fun w => (h.met σ).G cE (c.e.symm w)) (((H σ cE y hU').mContDiffAt c hy).of_le (by norm_cast)) (eventually_of_mem ((ChartGlue.isOpen_over c.e (isOpen_ptsIn U)).mem_nhds (ChartGlue.mem_over c.e hy hU')) fun w hw => (h.met σ).posDef cE _ hw.2)]`.
+-/
 theorem sum_bcDens_dualFlag (H : h.IsCInf) (fl : Vert.Flag E r) (c : AlgChart p σ 1) {y : CxPts p σ}
     (hy : y ∈ c.e.source) :
     ∑ i, ((h.dual.stepMet (DualFlag.dualFlag fl) i).met σ).bcDens (VMetric.stepSeq_shortExact _ i)
@@ -290,6 +366,9 @@ theorem sum_bcDens_dualFlag (H : h.IsCInf) (fl : Vert.Flag E r) (c : AlgChart p 
 
 end Main
 
+/- English proof (translation)
+Introduce `k _ X p _ E r h H fl σ hX`. Use `CxPts.secondCountableTopology_of_isProjOver σ hX.isProjOver` as an intermediate fact. Establish `key {E : X.Modules} {h : VMetric p E r} (H : h.IsCInf) (fl : Vert.Flag E r)` using `part_sum (τ := fun i c y => ((h.stepMet fl i).met σ).bcDens (VMetric.stepSeq_shortExact fl i) (fl.isVB i.castSucc) (fl.isVB_gr i) c y) (fun i => CurveDens.isDens_bcDens _ _ _ ((H σ).restrict (fl.isSubbundle i.succ) (fl.isVB i.succ))) fun i c y hy => Met.bcDens_nonneg _ _ _ c ((H …`. Simplify using `only [CurveDens.bcMeas_eq_part, ← Measure.finset_sum_apply]`. Rewrite using `[key H fl, key H.dual, CurveDens.part_congr fun c y hy => sum_bcDens_dualFlag H fl c hy]`.
+-/
 theorem sum_bcMeas_dualFlag : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) [IsIntegral X]
     (E : X.Modules) (r : ℕ) (h : VMetric p E r) (_ : h.IsCInf) (fl : Vert.Flag E r) (σ : k →+* ℂ), IsRegSurf p →
     ∑ i, ((h.dual.stepMet (GlobalTheory.DualFlag.dualFlag fl) i).met σ).bcMeas

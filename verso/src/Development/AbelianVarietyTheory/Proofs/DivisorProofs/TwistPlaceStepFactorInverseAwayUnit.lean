@@ -28,6 +28,35 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Chars Base stepFa
 
 namespace GlobalTheory.SqTwist
 
+/- English proof (translation)
+Introduce `D T Lc sc G μ₀ hL W S hN i j t Bs hB v hvT hvS s z hf`. Use `set τ := Bs.τ v with hτ`. Use `set w := GlobalTheory.AdelicU.splitPrime τ with hw`. Establish `hunder : w.under (𝓞 D.host.F) = v.1` using `GlobalTheory.AdelicU.splitPrime_under τ`. Establish `hloc : w ∈ locPl G t` using `hB.2.2.2 v hvT`.
+
+Establish `hW0 : w ∉ G.pl.W0`. Introduce `h`. Take `⟨u, hu, hu'⟩` from `Finset.mem_image.1 h`. Apply `hvS` to reduce the goal to its premises. Use `G.pl.under_w hu` as an intermediate fact.
+
+Rewrite `this` using `[hu']`. Rewrite using `[← hunder, this]`. Conclude with `hu`. Establish `htw : w ∈ twPl G t` using `Finset.mem_filter.2 ⟨hloc, hW0⟩`. Establish `hQ : w ∈ Lc.Q t`.
+
+Break down `Finset.mem_union.1 hloc with h | h` into its components or cases. Conclude with `absurd h hW0`. Conclude with `h`. Establish `hq : Ideal.absNorm w.asIdeal = Ideal.absNorm v.1.asIdeal` using `GlobalTheory.LFun.SplitChart.absNorm_splitPrime τ`. Establish `hQn : 0 < Qn G t`.
+
+Unfold `Qn`. Use `Finset.prod_pos fun u _ => Nat.pos_of_ne_zero ?_` and prove the remaining obligations. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `u.ne_bot`. Establish `hqd : Ideal.absNorm v.1.asIdeal ∣ Qn G t` using `hq ▸ Finset.dvd_prod_of_mem _ htw`.
+
+Take `⟨hmu, hchi⟩` from `GlobalTheory.T.mu0_and_chiH_unrAt_outside_S0 G hL i j t w hQ (by rw [hunder]; exact hvS)`. Establish `hc` using `GlobalTheory.T.twistPlace_stepCharacter_conductorExponent_one G hL i j t τ hmu hchi hQ`. Take `⟨g, hg, hgd⟩` from `GlobalTheory.T.gaussSum_stepCharacter_twistPlace_dvd G W S hL hN i j t τ Bs.ψ (hB.2.2.1 v.1 v.2) hloc hc`. Take `⟨x, hx, hxa⟩` from `GlobalTheory.T.stepCharacter_uniformiserValue_unit_away_twist G W S hL hN i j t τ hmu hchi htw`. Use `set ν := chrW (GlobalTheory.SqStep.chs G i j t).ν τ with hν`.
+
+Use `set s' : (Fv D.host.F v.1)ˣ := Units.map (Int.castRingHom _).toMonoidHom s with hs'`. Establish `hs2 : s' ^ 2 = 1`. Rewrite using `[hs', ← map_pow, Int.units_sq, map_one]`. Establish `hsgn : ((ν s' : ℂˣ) : ℂ) = 1 ∨ ((ν s' : ℂˣ) : ℂ) = -1`. Establish `h2 : ((ν s' : ℂˣ) : ℂ) * ((ν s' : ℂˣ) : ℂ) = 1`.
+
+Rewrite using `[← Units.val_mul, ← map_mul, ← sq, hs2, map_one, Units.val_one]`. Conclude with `mul_self_eq_one_iff.1 h2`. Choose the witnesses or unpack the hypotheses as in `⟨e, he, hea⟩ : ∃ e : D.what₂.LL, D.what₂.embLL e = ((ν s' : ℂˣ) : ℂ) ∧ GlobalTheory.Square.IsAwayUnit (Qn G t) e := by`. Break down `hsgn with h | h` into its components or cases. Conclude with `⟨1, by rw [map_one, h], GlobalTheory.Square.AwayClosure.of_pow_eq_one _ one_pos (one_pow 1)⟩`.
+
+Conclude with `⟨-1, by rw [map_neg, map_one, h], GlobalTheory.Square.AwayClosure.of_pow_eq_one _ two_pos (by norm_num)⟩`. Use `set q : ℕ := Ideal.absNorm v.1.asIdeal with hqdef`. Establish `hqa : GlobalTheory.Square.IsAwayUnit (Qn G t) ((q : D.what₂.LL) ^ (-z))`. Establish `hn : ∀ n : ℕ, GlobalTheory.Square.IsAwayUnit (Qn G t) ((q : D.what₂.LL) ^ n)`. Introduce `n`.
+
+Establish `h1 : (((q : 𝓞 D.what₂.LL) ^ n : 𝓞 D.what₂.LL) : D.what₂.LL) = (q : D.what₂.LL) ^ n`. Simplify using `only [RingOfIntegers.coe_eq_algebraMap, map_pow, map_natCast]`. Rewrite using `[← h1]`. Apply `GlobalTheory.Square.AwayClosure.of_dvd (k := n)` to reduce the goal to its premises. Conclude with `pow_dvd_pow_of_dvd (Nat.cast_dvd_cast hqd) n`.
+
+Break down `Int.eq_nat_or_neg (-z) with ⟨n, hn' | hn'⟩` into its components or cases. Rewrite using `[hn', zpow_natCast]`. Conclude with `hn n`. Rewrite using `[hn', zpow_neg, zpow_natCast]`. Conclude with `GlobalTheory.Square.AwayClosure.inv hQn (hn n)`.
+
+Establish `hga : GlobalTheory.Square.IsAwayUnit (Qn G t) (g : D.what₂.LL)` using `GlobalTheory.Square.AwayClosure.of_dvd (k := 1) (by rw [pow_one]; exact hgd.trans (Nat.cast_dvd_cast hqd))`. Use `set a : D.what₂.LL := e * ((q : D.what₂.LL) ^ (-z) * (g : D.what₂.LL) * x) with ha`. Establish `haA : GlobalTheory.Square.IsAwayUnit (Qn G t) a` using `GlobalTheory.Square.AwayClosure.mul hea (GlobalTheory.Square.AwayClosure.mul (GlobalTheory.Square.AwayClosure.mul hqa hga) hxa)`. Establish `hfa : D.what₂.embLL a = ((ν s' : ℂˣ) : ℂ) * eps Bs.ψ ν z`. Rewrite using `[ha]`.
+
+Unfold `eps`. Rewrite using `[hc]`. Simplify using `only [map_mul, map_zpow₀, map_natCast, he, hg, hx, Nat.cast_one, pow_one]`. Use `congr 1`. Rewrite using `[neg_one_mul]`.
+
+Use `⟨a⁻¹, GlobalTheory.Square.AwayClosure.inv hQn haA, ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv₀, ← hfa]`. Rewrite `hf` using `[← hfa]`. Conclude with `inv_mul_cancel₀ hf`.
+-/
 theorem twist_factor : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : Consts} (G : GridData Lc sc) {μ₀ : T}, Lc.Is μ₀ →
     ∀ (W : G.Weil) (S : GridChoice W Set.univ), NumbersIn D.what₂.embLL S μ₀ → ∀ (i j : Fin D.R.m) (t : T)
     (Bs : Base D.host.F D.host.E), GlobalTheory.SqStep.BaseFits G W i j t Bs → ∀ (v : Bs.P), v.1 ∈ (GlobalTheory.SqStep.chs G i j t).T →

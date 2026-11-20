@@ -3,6 +3,13 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 
 open scoped IntermediateField Algebra TensorProduct Matrix Pointwise NumberField Topology ContDiff NNReal ENNReal Polynomial DirectSum BigOperators InnerProductSpace Manifold
 
+/- English proof (translation)
+Introduce `E _ _ _ H y hy`. Establish `hsq : (H.rt : E) * (H.rt : E) = -(H.d : E)`. Establish `h` using `congrArg (fun z : NumberField.RingOfIntegers E => (z : E)) H.rt_sq`. Simplify `h` using `[sq]`. Proceed by induction on `hy using Algebra.adjoin_induction with`.
+
+Consider the case `mem x hx => exact ⟨0, 1, by rw [Set.mem_singleton_iff.mp hx]; simp⟩`. Consider the case `algebraMap r => exact ⟨r, 0, by simp⟩`. Consider the case `add x z _ _ hx hz`. Take `⟨⟨a, b, rfl⟩, c, e, rfl⟩` from `And.intro hx hz`. Conclude with `⟨a + c, b + e, by push_cast; ring⟩`.
+
+Consider the case `mul x z _ _ hx hz`. Take `⟨⟨a, b, rfl⟩, c, e, rfl⟩` from `And.intro hx hz`. Conclude with `⟨a * c - b * e * H.d, a * e + b * c, by push_cast; linear_combination (b * e : E) * hsq⟩`.
+-/
 theorem UpperTheory.Reformulated.B.ExistsCoordinate.exists_coord :
     ∀ {E : Type} [inst : Field E] [inst_1 : NumberField E]
     [inst_2 : NumberField.IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) {y : E},

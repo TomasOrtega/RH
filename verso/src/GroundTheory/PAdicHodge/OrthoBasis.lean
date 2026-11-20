@@ -10,6 +10,13 @@ variable {k E : Type*} [NontriviallyNormedField k] [IsUltrametricDist k]
 
 omit [IsUltrametricDist k] [IsUltrametricDist E] in
 
+/- English proof (translation)
+Establish `hne : (U : Set E).Nonempty` using `⟨0, U.zero_mem⟩`. Establish `hd : 0 < Metric.infDist x U` using `(hU.notMem_iff_infDist_pos hne).1 hx`. Establish `hlt : Metric.infDist x U < Metric.infDist x U / s`. Rewrite using `[lt_div_iff₀ hs0]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Take `⟨u, huU, hu⟩` from `(Metric.infDist_lt_iff hne).1 hlt`. Use `⟨u, huU, fun u' hu' => ?_⟩` and prove the remaining obligations. Establish `h1 : Metric.infDist x U ≤ dist x (u + u')` using `Metric.infDist_le_dist_of_mem (U.add_mem huU hu')`. Rewrite `h1` using `[dist_eq_norm, ← sub_sub]`. Rewrite `hu` using `[dist_eq_norm]`.
+
+Establish `h2` using `(lt_div_iff₀ hs0).1 hu`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem exists_sub_far_of_isClosed {U : Submodule k E} (hU : IsClosed (U : Set E)) {x : E}
     (hx : x ∉ U) {s : ℝ} (hs0 : 0 < s) (hs1 : s < 1) :
     ∃ u ∈ U, ∀ u' ∈ U, s * ‖x - u‖ ≤ ‖x - u - u'‖ := by
@@ -28,6 +35,15 @@ theorem exists_sub_far_of_isClosed {U : Submodule k E} (hU : IsClosed (U : Set E
 
 omit [IsUltrametricDist k] in
 
+/- English proof (translation)
+Establish `h1 : s * ‖a • w‖ ≤ ‖a • w + u‖`. Distinguish the cases in `ha : a = 0`. Simplify using `[ha]`. Establish `he : a • w + u = a • (w - (-a⁻¹ • u))`. Rewrite using `[smul_sub, smul_smul, mul_neg, mul_inv_cancel₀ ha, neg_one_smul, sub_neg_eq_add]`.
+
+Rewrite using `[he, norm_smul, norm_smul]`. Use `hw (-a⁻¹ • u) (U.smul_mem _ hu)` as an intermediate fact. Use polynomial arithmetic with `[norm_nonneg a]`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `h2 : ‖u‖ ≤ max ‖a • w + u‖ ‖a • w‖`.
+
+Use `IsUltrametricDist.norm_add_le_max (a • w + u) (-(a • w))` as an intermediate fact. Establish `e : a • w + u + -(a • w) = u` using `by abel`. Rewrite `this` using `[e, norm_neg]`. Then use the resulting hypothesis. Break down `le_max_iff.1 h2 with h | h` into its components or cases. Use polynomial arithmetic with `[norm_nonneg u]`.
+
+Use polynomial arithmetic with `[norm_nonneg u]`.
+-/
 theorem le_norm_smul_add_of_far {U : Submodule k E} {w : E} {s : ℝ} (hs0 : 0 < s) (hs1 : s ≤ 1)
     (hw : ∀ u' ∈ U, s * ‖w‖ ≤ ‖w - u'‖) (a : k) {u : E} (hu : u ∈ U) :
     s * ‖a • w‖ ≤ ‖a • w + u‖ ∧ s * ‖u‖ ≤ ‖a • w + u‖ := by
@@ -50,6 +66,33 @@ theorem le_norm_smul_add_of_far {U : Submodule k E} {w : E} {s : ℝ} (hs0 : 0 <
 
 variable [CompleteSpace k]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `v _ τ _ _`. Conclude with `⟨fun i => i.elim0, fun i => i.elim0, fun i => i.elim0, fun _ i => i.elim0⟩`. Consider the case `succ n ih`.
+
+Introduce `v hv τ hτ0 hτ1`. Use `set s := Real.sqrt τ with hs`. Establish `hs0 : 0 < s` using `Real.sqrt_pos.2 hτ0`. Establish `hs1 : s < 1`. Rewrite using `[show (1 : ℝ) = Real.sqrt 1 by simp]`.
+
+Conclude with `Real.sqrt_lt_sqrt hτ0.le hτ1`. Establish `hss : s * s = τ` using `Real.mul_self_sqrt hτ0.le`. Take `⟨w', hw'0, hw'mem, hw'⟩` from `ih (fun i => v i.castSucc) (hv.comp _ (Fin.castSucc_injective n)) hs0 hs1`. Use `set U := Submodule.span k (Set.range w') with hUdef`. Establish `: FiniteDimensional k U` using `FiniteDimensional.span_of_finite k (Set.finite_range w')`.
+
+Establish `hUc : IsClosed (U : Set E)` using `U.closed_of_finiteDimensional`. Establish `hrange : (Set.range fun i : Fin n => v i.castSucc) = v '' Set.range Fin.castSucc` using `Set.range_comp v Fin.castSucc`. Establish `hUv : U ≤ Submodule.span k (Set.range fun i : Fin n => v i.castSucc)` using `Submodule.span_le.2 (Set.range_subset_iff.2 hw'mem)`. Establish `hvv : Submodule.span k (Set.range fun i : Fin n => v i.castSucc) ≤ Submodule.span k (Set.range v)` using `Submodule.span_mono (Set.range_comp_subset_range _ _)`. Establish `hx : v (Fin.last n) ∉ U`.
+
+Introduce `h`. Establish `h'` using `hUv h`. Rewrite `h'` using `[hrange]`. Conclude with `hv.notMem_span_image (s := Set.range Fin.castSucc) (x := Fin.last n) (by rintro ⟨j, hj⟩; exact (Fin.castSucc_lt_last j).ne hj) h'`. Take `⟨u, huU, hu⟩` from `exists_sub_far_of_isClosed hUc hx hs0 hs1`.
+
+Use `set x := v (Fin.last n) - u with hxdef`. Establish `hx0 : x ≠ 0`. Introduce `h`. Apply `hx` to reduce the goal to its premises. Rewrite `h` using `[sub_eq_zero]`.
+
+Rewrite using `[h]`. Conclude with `huU`. Establish `hfar : ∀ u' ∈ U, s * ‖x‖ ≤ ‖x - u'‖` using `hu`. Use `⟨(Fin.snoc w' x : Fin (n + 1) → E), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`.
+
+Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => simpa using hx0`. Consider the case `cast i => simpa using hw'0 i`. Introduce `i`. Proceed by induction on `i using Fin.lastCases with`.
+
+Consider the case `last`. Simplify using `only [Fin.snoc_last]`. Conclude with `Submodule.sub_mem _ (Submodule.subset_span ⟨Fin.last n, rfl⟩) (hvv (hUv huU))`. Consider the case `cast i`. Simplify using `only [Fin.snoc_castSucc]`.
+
+Conclude with `hvv (hw'mem i)`. Introduce `c i`. Establish `hsum : ∑ j, c j • (Fin.snoc w' x : Fin (n + 1) → E) j = c (Fin.last n) • x + ∑ j : Fin n, c j.castSucc • w' j`. Rewrite using `[Fin.sum_univ_castSucc, add_comm]`. Simplify using the standard rewrite rules.
+
+Establish `hu'U : ∑ j : Fin n, c j.castSucc • w' j ∈ U` using `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Take `⟨h1, h2⟩` from `le_norm_smul_add_of_far hs0 hs1.le hfar (c (Fin.last n)) hu'U`. Rewrite using `[hsum]`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`.
+
+Simplify using `only [Fin.snoc_last]`. Establish `: τ * ‖c (Fin.last n) • x‖ ≤ s * ‖c (Fin.last n) • x‖`. Rewrite using `[← hss]`. Conclude with `mul_le_mul_of_nonneg_right (by nlinarith) (norm_nonneg _)`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Consider the case `cast i`. Simplify using `only [Fin.snoc_castSucc]`. Establish `h3` using `hw' (fun j => c j.castSucc) i`. Rewrite using `[← hss, mul_assoc]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem exists_orthogonal_fin (n : ℕ) : ∀ (v : Fin n → E), LinearIndependent k v →
     ∀ {τ : ℝ}, 0 < τ → τ < 1 →
     ∃ w : Fin n → E, (∀ i, w i ≠ 0) ∧ (∀ i, w i ∈ Submodule.span k (Set.range v)) ∧
@@ -127,6 +170,19 @@ theorem exists_orthogonal_fin (n : ℕ) : ∀ (v : Fin n → E), LinearIndepende
         rw [← hss, mul_assoc]
         nlinarith
 
+/- English proof (translation)
+Use `set τ := max t (1 / 2) with hτ`. Establish `hτ0 : 0 < τ` using `lt_max_of_lt_right (by norm_num)`. Establish `hτ1 : τ < 1` using `max_lt ht (by norm_num)`. Set `e` to `Fintype.equivFin ι`. Take `⟨w, hw0, hwmem, hw⟩` from `exists_orthogonal_fin (Fintype.card ι) (v ∘ e.symm) (hv.comp _ e.symm.injective) hτ0 hτ1`.
+
+Establish `hsum : ∀ c : ι → k, ∑ j, c j • w (e j) = ∑ j, (c ∘ e.symm) j • w j`. Introduce `c`. Use `e.sum_comp (fun j => (c ∘ e.symm) j • w j)` as an intermediate fact. Simplify using `using this`. Establish `horth : ∀ (c : ι → k) (i : ι), τ * ‖c i • w (e i)‖ ≤ ‖∑ j, c j • w (e j)‖`.
+
+Introduce `c i`. Rewrite using `[hsum]`. Simplify using `using hw (c ∘ e.symm) (e i)`. Use `⟨fun i => w (e i), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.linearIndependent_iff]`.
+
+Introduce `g hg i`. Establish `h` using `horth g i`. Rewrite `h` using `[hg, norm_zero]`. Establish `h0 : ‖g i • w (e i)‖ = 0` using `le_antisymm (by nlinarith [norm_nonneg (g i • w (e i))]) (norm_nonneg _)`. Rewrite `h0` using `[norm_eq_zero, smul_eq_zero]`.
+
+Conclude with `h0.resolve_right (hw0 (e i))`. Introduce `i`. Use `hwmem (e i)` as an intermediate fact. Rewrite `this` using `[e.symm.surjective.range_comp v]`. Then use the resulting hypothesis. Introduce `c i`.
+
+Conclude with `(mul_le_mul_of_nonneg_right (le_max_left _ _) (norm_nonneg _)).trans (horth c i)`.
+-/
 theorem exists_orthogonal_of_linearIndependent {ι : Type*} [Fintype ι] {v : ι → E}
     (hv : LinearIndependent k v) {t : ℝ} (ht : t < 1) :
     ∃ w : ι → E, LinearIndependent k w ∧ (∀ i, w i ∈ Submodule.span k (Set.range v)) ∧

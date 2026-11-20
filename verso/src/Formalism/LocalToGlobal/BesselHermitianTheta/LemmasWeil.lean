@@ -14,6 +14,11 @@ section Generic
 
 variable {R : Type*} [CommRing R] (c : R →+* R) {n m : ℕ}
 
+/- English proof (translation)
+Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Use `conv_lhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `conv_lhs => arg 2`.
+
+Use extensionality with `k`. Rewrite using `[Finset.sum_comm]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_eq_trace (J : Matrix (Fin n) (Fin n) R) (K : Matrix (Fin m) (Fin m) R) (x y : Matrix (Fin n) (Fin m) R) :
     ∑ i, ∑ j, ∑ k, ∑ l, c (x i j) * J k i * K j l * y k l = ((x.map c)ᵀ * Jᵀ * y * Kᵀ).trace := by
   simp only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply,
@@ -26,6 +31,15 @@ theorem sum_eq_trace (J : Matrix (Fin n) (Fin n) R) (K : Matrix (Fin m) (Fin m) 
   refine Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => ?_
   ring
 
+/- English proof (translation)
+Establish `hgg : (g.map c).map c = g`. Use extensionality with `i j`. Simplify using `[hc]`. Establish `e1 : (g.map c * x * hᵀ).map c = g * x.map c * (h.map c)ᵀ`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hgg, Matrix.transpose_map]`.
+
+Establish `h1 : gᵀ * Jᵀ * g.map c = Jᵀ`. Simplify `congrArg Matrix.transpose hg` using `[Matrix.transpose_mul, Matrix.mul_assoc]`. Establish `hg2 : ∀ M : Matrix (Fin n) (Fin m) R, gᵀ * (Jᵀ * (g.map c * M)) = Jᵀ * M` using `fun M => by`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h1]`. Establish `hh1 : hᵀ * Kᵀ * h.map c = Kᵀ`.
+
+Simplify `congrArg Matrix.transpose hh` using `[Matrix.transpose_mul, Matrix.mul_assoc]`. Establish `hh2 : hᵀ * (Kᵀ * h.map c) = Kᵀ`. Rewrite using `[← Matrix.mul_assoc, hh1]`. Rewrite using `[e1]`. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc, hg2]`.
+
+Use `conv_lhs => rw [Matrix.trace_mul_comm]`. Simplify using `only [Matrix.mul_assoc, hh2]`.
+-/
 theorem inv_hom (hc : ∀ a, c (c a) = a) (J g : Matrix (Fin n) (Fin n) R) (K h : Matrix (Fin m) (Fin m) R)
     (hg : (g.map c)ᵀ * J * g = J) (hh : (h.map c)ᵀ * K * h = K) (x y : Matrix (Fin n) (Fin m) R) :
     (((g.map c * x * hᵀ).map c)ᵀ * Jᵀ * (g.map c * y * hᵀ) * Kᵀ).trace = ((x.map c)ᵀ * Jᵀ * y * Kᵀ).trace := by
@@ -47,6 +61,13 @@ theorem inv_hom (hc : ∀ a, c (c a) = a) (J g : Matrix (Fin n) (Fin n) R) (K h 
   conv_lhs => rw [Matrix.trace_mul_comm]
   simp only [Matrix.mul_assoc, hh2]
 
+/- English proof (translation)
+Establish `hhh : (h.map c).map c = h`. Use extensionality with `i j`. Simplify using `[hc]`. Establish `e1 : (g * x * (h.map c)ᵀ).map c = g.map c * x.map c * hᵀ`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map, hhh]`.
+
+Establish `hg2 : ∀ M : Matrix (Fin n) (Fin m) R, (g.map c)ᵀ * (J * (g * M)) = J * M` using `fun M => by`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hg]`. Establish `hh2 : (h.map c)ᵀ * (K * h) = K`. Rewrite using `[← Matrix.mul_assoc, hh]`. Rewrite using `[e1]`.
+
+Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc, hg2]`. Use `conv_lhs => rw [Matrix.trace_mul_comm]`. Simplify using `only [Matrix.mul_assoc, hh2]`.
+-/
 theorem inv_hom' (hc : ∀ a, c (c a) = a) (J g : Matrix (Fin n) (Fin n) R) (K h : Matrix (Fin m) (Fin m) R)
     (hg : (g.map c)ᵀ * J * g = J) (hh : (h.map c)ᵀ * K * h = K) (x y : Matrix (Fin n) (Fin m) R) :
     (((g * x * (h.map c)ᵀ).map c)ᵀ * J * (g * y * (h.map c)ᵀ) * K).trace = ((x.map c)ᵀ * J * y * K).trace := by
@@ -64,6 +85,17 @@ theorem inv_hom' (hc : ∀ a, c (c a) = a) (J g : Matrix (Fin n) (Fin n) R) (K h
   conv_lhs => rw [Matrix.trace_mul_comm]
   simp only [Matrix.mul_assoc, hh2]
 
+/- English proof (translation)
+Establish `h3 : c e * c e = c e` using `by rw [← map_mul, h1]`. Establish `hf : (1 - (e + c e)) * (1 - (e + c e)) = 1 - (e + c e)`. Take the linear combination `h1 + 2 * h2 + h3`. Establish `hp : ∀ k : ℕ, (1 - (e + c e)) ^ (k + 1) = 1 - (e + c e)`. Introduce `k`.
+
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ, ih, hf]`. Establish `key : (1 - (e + c e)) * g.det = 1 - (e + c e)`. Establish `hM : (1 - (e + c e)) • g = (1 - (e + c e)) • (1 : Matrix (Fin n) (Fin n) R)`.
+
+Use extensionality with `i j`. Use `hs i j` as an intermediate fact. Simplify using `only [Matrix.smul_apply, smul_eq_mul, Matrix.sub_apply] at this ⊢`. Take the linear combination `(-1 : R) * this`. Establish `hd'` using `congrArg Matrix.det hM`.
+
+Rewrite `hd'` using `[Matrix.det_smul, Matrix.det_smul, Matrix.det_one, mul_one, Fintype.card_fin]`. Consider the cases of `n with`. Consider the case `zero => rw [Matrix.det_isEmpty, mul_one]`. Consider the case `succ k => rw [hp k] at hd'`. Conclude with `hd'`.
+
+Simplify using `only [map_add, map_mul, map_sub, map_one]`. Take the linear combination `-key - c e * hd`.
+-/
 theorem idempotent_det_conj_identity (e : R) (h1 : e * e = e) (h2 : e * c e = 0) (g : Matrix (Fin n) (Fin n) R)
     (hs : ∀ i j, (e + c e) * (g - 1) i j = (g - 1) i j) (hd : c g.det * g.det = 1) :
     e * g.det + (1 - e) = g.det * c (e * g.det + (1 - e)) := by
@@ -93,6 +125,13 @@ end Generic
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hs : ∀ x : D.host.E, D.sp.cm.sig (D.sp.cm.sig x) = x`. Introduce `x`. Unfold `Formalism.BasicNotions.CMData.sig`. Conclude with `star_star x`. Unfold `cA sigR`.
+
+Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [Algebra.TensorProduct.map_tmul, hs]`. Consider the case `add x y hx hy`. Simplify using `only [map_add] at *`.
+
+Rewrite using `[hx, hy]`.
+-/
 theorem cA_cA (a : AE D) : cA D (cA D a) = a := by
   have hs : ∀ x : D.host.E, D.sp.cm.sig (D.sp.cm.sig x) = x := by
     intro x
@@ -106,6 +145,9 @@ theorem cA_cA (a : AE D) : cA D (cA D a) = a := by
     simp only [map_add] at *
     rw [hx, hy]
 
+/- English proof (translation)
+Establish `hg` using `g.2`. Unfold `HR at hg`. Simplify using `only [UG.UJ, JR] at hg`. Conclude with `hg`.
+-/
 theorem mt_rel (V : HSp D) (g : GA D V) :
     ((mt V g).map (cA D))ᵀ * V.gram.map (incA D) * mt V g = V.gram.map (incA D) := by
   have hg := g.2
@@ -113,6 +155,13 @@ theorem mt_rel (V : HSp D) (g : GA D V) :
   simp only [UG.UJ, JR] at hg
   exact hg
 
+/- English proof (translation)
+Unfold `hHom actHom`. Establish `hc : ∀ a, cA D (cA D a) = a` using `cA_cA`. Use `split_ifs with hr`. Establish `e1` using `sum_eq_trace (cA D) ((HSpace.gram V).map (incA D)) ((HSpace.gram W).map (incA D)) (cM (mt V g) * x * (mt W h)ᵀ) (cM (mt V g) * y * (mt W h)ᵀ)`. Establish `e2` using `sum_eq_trace (cA D) ((HSpace.gram V).map (incA D)) ((HSpace.gram W).map (incA D)) x y`.
+
+Simplify using `only [Matrix.map_apply] at e1 e2`. Rewrite using `[e1, e2]`. Conclude with `inv_hom (cA D) hc _ _ _ _ (mt_rel V g) (mt_rel W h) x y`. Establish `e1` using `sum_eq_trace (cA D) ((HSpace.gram V).map (incA D))ᵀ ((HSpace.gram W).map (incA D))ᵀ (mt V g * x * (cM (mt W h))ᵀ) (mt V g * y * (cM (mt W h))ᵀ)`. Establish `e2` using `sum_eq_trace (cA D) ((HSpace.gram V).map (incA D))ᵀ ((HSpace.gram W).map (incA D))ᵀ x y`.
+
+Simplify using `only [Matrix.transpose_apply, Matrix.map_apply, Matrix.transpose_transpose] at e1 e2`. Rewrite using `[e1, e2]`. Conclude with `inv_hom' (cA D) hc _ _ _ _ (mt_rel V g) (mt_rel W h) x y`.
+-/
 theorem hHom_actHom (V W : HSp D) (g : GA D V) (h : GA D W) (x y : WA V W) :
     hHom V W (actHom V W g h x) (actHom V W g h y) = hHom V W x y := by
   unfold hHom actHom
@@ -131,11 +180,23 @@ theorem hHom_actHom (V W : HSp D) (g : GA D V) (h : GA D W) (x y : WA V W) :
     rw [e1, e2]
     exact inv_hom' (cA D) hc _ _ _ _ (mt_rel V g) (mt_rel W h) x y
 
+/- English proof (translation)
+Unfold `sympl`. Rewrite using `[hHom_actHom]`.
+-/
 theorem sympl_actHom (V W : HSp D) (g : GA D V) (h : GA D W) (x y : WA V W) :
     sympl V W (actHom V W g h x) (actHom V W g h y) = sympl V W x y := by
   unfold sympl
   rw [hHom_actHom]
 
+/- English proof (translation)
+Unfold `hHom`. Simplify using `only [Matrix.transpose_apply]`. Break down `Nat.lt_or_gt_of_ne hne with hlt | hlt` into its components or cases. Rewrite using `[if_neg (show ¬ W.rank ≤ V.rank by omega), if_pos (show V.rank ≤ W.rank by omega)]`. Establish `e1` using `sum_eq_trace (cA D) ((HSpace.gram W).map (incA D))ᵀ ((HSpace.gram V).map (incA D))ᵀ xᵀ yᵀ`.
+
+Establish `e2` using `sum_eq_trace (cA D) ((HSpace.gram V).map (incA D)) ((HSpace.gram W).map (incA D)) x y`. Simplify using `only [Matrix.transpose_apply, Matrix.map_apply] at e1 e2`. Rewrite using `[e1, e2, ← Matrix.trace_transpose]`. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_map, Matrix.mul_assoc]`. Use `conv_rhs => rw [Matrix.trace_mul_comm]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[if_pos (show W.rank ≤ V.rank by omega), if_neg (show ¬ V.rank ≤ W.rank by omega)]`. Establish `e1` using `sum_eq_trace (cA D) ((HSpace.gram W).map (incA D)) ((HSpace.gram V).map (incA D)) xᵀ yᵀ`. Establish `e2` using `sum_eq_trace (cA D) ((HSpace.gram V).map (incA D))ᵀ ((HSpace.gram W).map (incA D))ᵀ x y`. Simplify using `only [Matrix.transpose_apply, Matrix.map_apply] at e1 e2`.
+
+Rewrite using `[e1, e2, ← Matrix.trace_transpose]`. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_map, Matrix.mul_assoc]`. Use `conv_rhs => rw [Matrix.trace_mul_comm]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem hHom_transpose (V W : HSp D) (hne : V.rank ≠ W.rank) (x y : WA V W) :
     hHom W V x.transpose y.transpose = hHom V W x y := by
   unfold hHom
@@ -158,6 +219,11 @@ theorem hHom_transpose (V W : HSp D) (hne : V.rank ≠ W.rank) (x y : WA V W) :
     conv_rhs => rw [Matrix.trace_mul_comm]
     simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Unfold `actHom`. Break down `Nat.lt_or_gt_of_ne hne with hlt | hlt` into its components or cases. Rewrite using `[if_neg (show ¬ W.rank ≤ V.rank by omega), if_pos (show V.rank ≤ W.rank by omega)]`. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc]`. Rewrite using `[if_pos (show W.rank ≤ V.rank by omega), if_neg (show ¬ V.rank ≤ W.rank by omega)]`.
+
+Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc]`.
+-/
 theorem actHom_swap (V W : HSp D) (hne : V.rank ≠ W.rank) (g : GA D V) (h : GA D W) (x : WA V W) :
     actHom W V h g x.transpose = (actHom V W g h x).transpose := by
   unfold actHom
@@ -167,6 +233,9 @@ theorem actHom_swap (V W : HSp D) (hne : V.rank ≠ W.rank) (g : GA D V) (h : GA
   · rw [if_pos (show W.rank ≤ V.rank by omega), if_neg (show ¬ V.rank ≤ W.rank by omega)]
     simp only [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc]
 
+/- English proof (translation)
+Unfold `splitFac`. Break down `Nat.lt_or_gt_of_ne hne with hlt | hlt` into its components or cases. Rewrite using `[if_neg (show ¬ W.rank ≤ V.rank by omega), if_pos (show V.rank ≤ W.rank by omega), mul_comm]`. Rewrite using `[if_pos (show W.rank ≤ V.rank by omega), if_neg (show ¬ V.rank ≤ W.rank by omega), mul_comm]`.
+-/
 theorem splitFac_swap (V W : HSp D) (hne : V.rank ≠ W.rank) (c c' : (AE D)ˣ →* Circle) (x y : (AE D)ˣ) :
     splitFac W V c' c y x = splitFac V W c c' x y := by
   unfold splitFac
@@ -174,6 +243,15 @@ theorem splitFac_swap (V W : HSp D) (hne : V.rank ≠ W.rank) (c c' : (AE D)ˣ �
   · rw [if_neg (show ¬ W.rank ≤ V.rank by omega), if_pos (show V.rank ≤ W.rank by omega), mul_comm]
   · rw [if_pos (show W.rank ≤ V.rank by omega), if_neg (show ¬ V.rank ≤ W.rank by omega), mul_comm]
 
+/- English proof (translation)
+Introduce `hdet`. Take `⟨v, hv, hJv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hdet`. Apply `hv` to reduce the goal to its premises. Establish `hrow : ∀ i, ∑ j, V.gram i j * v j = 0` using `fun i => by`. Use `congrFun hJv i` as an intermediate fact.
+
+Simplify `this` using `[Matrix.mulVec, dotProduct]`. Establish `hb : V.hT.flip (∑ j, v j • V.frame j) = 0`. Use `V.frame.ext fun i => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.flip_apply, LinearMap.zero_apply, map_sum, ← hrow i]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul, smul_eq_mul]`. Conclude with `mul_comm _ _`. Establish `hy : ∀ x, V.hT x (∑ j, v j • V.frame j) = 0` using `fun x => by`. Use `LinearMap.congr_fun hb x` as an intermediate fact. Rewrite `this` using `[LinearMap.flip_apply, LinearMap.zero_apply]`. Then use the resulting hypothesis.
+
+Establish `h0` using `V.nondeg.2 _ hy`. Use function extensionality and compare the values at `i`. Conclude with `Fintype.linearIndependent_iff.mp V.frame.linearIndependent v h0 i`.
+-/
 theorem gram_det_ne (V : HSp D) : V.gram.det ≠ 0 := by
   intro hdet
   obtain ⟨v, hv, hJv⟩ := Matrix.exists_mulVec_eq_zero_iff.mpr hdet
@@ -194,6 +272,11 @@ theorem gram_det_ne (V : HSp D) : V.gram.det ≠ 0 := by
   funext i
   exact Fintype.linearIndependent_iff.mp V.frame.linearIndependent v h0 i
 
+/- English proof (translation)
+Establish `h` using `congrArg Matrix.det (mt_rel V g)`. Establish `hd1 : ((mt V g).map (cA D)).det = cA D (mt V g).det` using `(RingHom.map_det (cA D) (mt V g)).symm`. Establish `hd2 : (V.gram.map (incA D)).det = incA D V.gram.det` using `(RingHom.map_det (incA D) V.gram).symm`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, hd1, hd2]`. Establish `hu : IsUnit (incA D V.gram.det)` using `(IsUnit.mk0 _ (gram_det_ne V)).map (incA D)`.
+
+Apply `hu.mul_left_cancel` to reduce the goal to its premises. Rewrite using `[mul_one]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem det_conj_mul (V : HSp D) (g : GA D V) : cA D (mt V g).det * (mt V g).det = 1 := by
   have h := congrArg Matrix.det (mt_rel V g)
   have hd1 : ((mt V g).map (cA D)).det = cA D (mt V g).det := (RingHom.map_det (cA D) (mt V g)).symm
@@ -206,6 +289,11 @@ theorem det_conj_mul (V : HSp D) (g : GA D V) : cA D (mt V g).det * (mt V g).det
       = cA D (mt V g).det * incA D V.gram.det * (mt V g).det := by ring
     _ = incA D V.gram.det := h
 
+/- English proof (translation)
+Unfold `IsDetRoot`. Unfold `IsDetAt at hx`. Unfold `SuppAt at hs`. Unfold `IsSplitIdem at he`. Rewrite using `[hx]`.
+
+Conclude with `idempotent_det_conj_identity (cA D) e he.1 he.2.1 (mt V g) hs (det_conj_mul V g)`.
+-/
 theorem isDetAt_root {e : AE D} (he : IsSplitIdem D e) (V : HSp D) (g : GA D V) (hs : SuppAt e V g) (x : (AE D)ˣ)
     (hx : IsDetAt e V g x) : IsDetRoot V g x := by
   unfold IsDetRoot
@@ -217,6 +305,9 @@ theorem isDetAt_root {e : AE D} (he : IsSplitIdem D e) (V : HSp D) (g : GA D V) 
 
 variable {X : ThetaX D} {T : ThetaTied D X}
 
+/- English proof (translation)
+Establish `s` using `Wl.om_swap _ _ (X.carY μ (j + 1) (j + 1)) (X.carY μ (j + 1) j) (rank_Y_ne X j hj) (row_lift_ok T μ (j + 1) (by omega) hj (j + 1) hj) (row_lift_ok T μ (j + 1) (by omega) hj j hj.le) g k (X.PhiY μ j) (X.PhiYup μ j) (h μ j hj) 0`. Rewrite `s` using `[Matrix.transpose_zero]`. Then use the resulting hypothesis.
+-/
 theorem PhiYupTied.kernel {Wl : WeilTied D X T} (h : PhiYupTied Wl) (μ : D.what₂.Tup) (j : ℕ) (hj : j < D.R.m)
     (g : GA D (D.sp.Y (j + 1))) (k : GA D (D.sp.Y j)) :
     Wl.evS _ _ (Wl.om _ _ (X.carY μ (j + 1) j) (X.carY μ (j + 1) (j + 1)) (k, g) (X.PhiYup μ j)) 0 =

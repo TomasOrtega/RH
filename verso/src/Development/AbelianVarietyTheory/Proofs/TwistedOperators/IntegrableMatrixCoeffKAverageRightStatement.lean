@@ -14,5 +14,8 @@ open GlobalTheory.AutomorphicL2Unitary (IsTopIrreducible)
 open GlobalTheory.HCChar GlobalTheory.Published GlobalTheory.Published.Langlands
 open scoped InnerProductSpace Topology ENNReal ComplexConjugate
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.AvgRightLp.integrable_coeff_avg_right | exact GlobalTheory.AvgRightLp.integrable_coeff_avg_right | (intros; apply GlobalTheory.AvgRightLp.integrable_coeff_avg_right <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.integrable_matrixCoeff_K_average_right : ∀ (n : ℕ) (ε : Fin n → Bool) (μ : Measure (UJ ε)) [μ.IsHaarMeasure] (U : Type) [NormedAddCommGroup U] [InnerProductSpace ℂ U] [CompleteSpace U] (π : UJ ε →* (U →L[ℂ] U)), IsUnitaryRep π → ∀ (p : ℝ), 1 ≤ p → ∀ φ : KG ε → ℂ, Continuous φ → ∀ u u' : U, Integrable (fun g => ‖⟪u', π g u⟫_ℂ‖ ^ p) μ → Integrable (fun g => ‖⟪u', π g (∫ k, φ k • π k u ∂(muK ε))⟫_ℂ‖ ^ p) μ := by
   first | exact @GlobalTheory.AvgRightLp.integrable_coeff_avg_right | exact GlobalTheory.AvgRightLp.integrable_coeff_avg_right | (intros; apply GlobalTheory.AvgRightLp.integrable_coeff_avg_right <;> assumption)

@@ -9,6 +9,17 @@ open UpperTheory.V.Af (FrobEig algSat RepIso)
 open UpperTheory.V.Af.Bc (res)
 open UpperTheory.Gal.Int.Core
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ _ l _ ι a π Q P hPc r w B hB hQ1 hyp`. Establish `hAF` using `GlobalTheory.automorphicFormsFiniteGL`. Introduce `Pr AI hT A hA O _ _ _ Bw hj σ hσ hsph`. Establish `hdec` using `hQ1 A hA`. Establish `hjK` using `GlobalTheory.RealGal.bridge_j_mem_Kw_of_dec_le E Ω Q.K l A O Bw hdec`.
+
+Take `⟨Bw', e1, e2, e3⟩` from `UpperTheory.V.Af.Cq.exBridge E Q.K Ω l A O Bw hjK`. Establish `hj' : Induces Bw'` using `fun x => by rw [e2]; exact hj x`. Take `⟨w', h', i, hi⟩` from `GlobalTheory.PlaceIsoDec.exists_placeIso_of_dec_le_range E Ω Q.K w A hA hdec`. Establish `hund : w'.under (𝓞 E) = w`. Use `GlobalTheory.PlaceIsoDec.liesOver_of_isPlaceOver hA h'` as an intermediate fact.
+
+Use `ext1`. Conclude with `this.over.symm`. Take `⟨c, -, -, hq, -⟩` from `GlobalTheory.WeilTransport.weil_equiv E Ω A w hA Q.K Ω A w' h' (RingEquiv.refl Ω) (algebraMap E Q.K) i hi`. Establish `hB' : (CG.mk P).HasSat w' B`. Use `hPc.sat w' 1 B (by rw [pow_one, hund, hq]) (by rw [hund]; exact hB)` as an intermediate fact.
+
+Simplify using `using this`. Take `⟨σ', hσ', -⟩` from `GlobalTheory.CuspRep.LocEx.exists_isLocComp hAF Q.K a P w'`. Take `⟨e, he⟩` from `hPc.loc w w' i hi.cont hi.loc σ σ' hσ hσ'`. Establish `hsph'` using `(GlobalTheory.CompletionIso.iwahori_spherical_transfer E Q.K w w' i hi.cont a σ σ' e he).2 hsph`. Establish `hcr : ClauseAt .crys P ι (r.comp (UpperTheory.V.Af.Bc.res E Ω Q.K)) w'` using `hyp w' hund hB'`.
+
+Conclude with `(GlobalTheory.RealGal.dRSstCrysPstJumps_descend E Ω Q.K l Pr A O Bw Bw' e1 e2 e3 a r).2.2.1 (hcr Pr AI hT A h' O Bw' hj' σ' hσ' hsph')`.
+-/
 theorem UpperTheory.Gal.Int.Core.downCrys_holds :
     SphDown .crys := by
   intro E Ω _ _ _ _ _ _ l _ ι a π Q P hPc r w B hB hQ1 hyp

@@ -18,6 +18,9 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.HermLB GlobalTheory.CxPts Glob
 
 namespace GlobalTheory.SelfCont
 
+/- English proof (translation)
+Set `S : Submodule ℝ (MvPolynomial ι ℝ)` to `{ carrier := {P | Tendsto (fun R => Φ R P) l (𝓝 0)} add_mem' := fun {a b} ha hb => by simpa using Tendsto.add ha hb zero_mem' := by simpa using tendsto_const_nhds smul_mem' := fun c a ha => by simpa using Tendsto.const_mul c ha }`. Assume the negation of the conclusion as `hP`. Take `⟨f, hf, hS⟩` from `S.exists_le_ker_of_lt_top (lt_top_iff_ne_top.2 fun e => hP (show P ∈ S from e ▸ trivial))`. Conclude with `hf (Model.eq_zero_of_pow d f (fun n => hS (h n)) fun Q e he hQ => hS (show Tendsto _ _ _ by simpa only [h' Q e he hQ] using tendsto_const_nhds))`.
+-/
 theorem tendsto_zero_of_pow {ι α : Type} [Fintype ι] {l : Filter α} (d : ℕ) (Φ : α → MvPolynomial ι ℝ →ₗ[ℝ] ℝ)
     (h : ∀ n : ι → ℤ, Tendsto (fun R => Φ R (lin (fun i => (n i : ℝ)) ^ d)) l (𝓝 0))
     (h' : ∀ (P : MvPolynomial ι ℝ) (e : ℕ), e ≠ d → P.IsHomogeneous e → ∀ R, Φ R P = 0) (P : MvPolynomial ι ℝ) :
@@ -34,16 +37,29 @@ theorem tendsto_zero_of_pow {ι α : Type} [Fintype ι] {l : Filter α} (d : ℕ
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k}
 
+/- English proof (translation)
+Rewrite using `[← icls_tens, icls_eq_iff.2 (isometric_tens_fnB _ v hv hd)]`. Conclude with `icls_eq_iff.2 (isometric_of_eqOn fun σ _ y _ => (e σ y).symm)`.
+-/
 theorem icls_fnB_add {u v w : ∀ σ : k →+* ℂ, CxPts p σ → ℝ} (hu hc hv hd hw he) (e : ∀ σ y, w σ y = u σ y + v σ y) :
     (fnB w hw he).icls = (fnB u hu hc).icls + (fnB v hv hd).icls := by
   rw [← icls_tens, icls_eq_iff.2 (isometric_tens_fnB _ v hv hd)]
   exact icls_eq_iff.2 (isometric_of_eqOn fun σ _ y _ => (e σ y).symm)
 
+/- English proof (translation)
+Introduce `i y y' h hy` and use `congrArg (c * ·) (hc σ σ' i y y' h hy)`.
+-/
 theorem isConj_mul {u : ∀ σ : k →+* ℂ, CxPts p σ → ℝ}
     (hc : ∀ σ σ', (Weight.ofFun (u σ)).IsConj (Weight.ofFun (u σ'))) (c : ℝ) (σ σ' : k →+* ℂ) :
     (Weight.ofFun fun y => c * u σ y).IsConj (Weight.ofFun fun y => c * u σ' y) :=
   fun i y y' h hy => congrArg (c * ·) (hc σ σ' i y y' h hy)
 
+/- English proof (translation)
+Establish `key (m : ℤ)` using `icls_fnB_add (p := p) (w := fun σ y => ((m + 1 : ℤ) : ℝ) * u σ y) (u := fun σ y => (m : ℝ) * u σ y) (fun σ y => (hu σ y).const_mul _) (isConj_mul hc _) hu hc (fun σ y => (hu σ y).const_mul _) (isConj_mul hc _) fun σ y => by push_cast; ring`. Proceed by induction on `n using Int.induction_on with`. Consider the case `zero`. Use `icls_fnB_add (p := p) (w := u) (u := fun σ y => ((0 : ℤ) : ℝ) * u σ y) (fun σ y => (hu σ y).const_mul _) (isConj_mul hc _) hu hc hu hc fun σ y => by push_cast; ring` as an intermediate fact. Rewrite using `[zero_smul]`.
+
+Conclude with `right_eq_add.1 this`. Consider the case `succ n ih => rw [key, ih, add_smul, one_smul]`. Consider the case `pred n ih`. Use `key (-(n : ℤ) - 1)` as an intermediate fact. Simplify using `only [sub_add_cancel] at this`.
+
+Rewrite using `[sub_smul, one_smul, ← ih, this, add_sub_cancel_right]`.
+-/
 theorem icls_fnB_mul {u : ∀ σ : k →+* ℂ, CxPts p σ → ℝ} (hu : ∀ σ y, CInfAt (u σ) y)
     (hc : ∀ σ σ', (Weight.ofFun (u σ)).IsConj (Weight.ofFun (u σ'))) (n : ℤ) :
     (fnB (fun σ y => (n : ℝ) * u σ y) (fun σ y => (hu σ y).const_mul _) (isConj_mul hc _)).icls =
@@ -63,6 +79,11 @@ theorem icls_fnB_mul {u : ∀ σ : k →+* ℂ, CxPts p σ → ℝ} (hu : ∀ σ
     simp only [sub_add_cancel] at this
     rw [sub_smul, one_smul, ← ih, this, add_sub_cancel_right]
 
+/- English proof (translation)
+Use `Metric.tendsto_nhds.2 fun ε hε => ?_` and prove the remaining obligations. Establish `h1 : (0 : ℝ) < C + 1` using `by positivity`. Use `filter_upwards [hC, Metric.tendstoUniformly_iff.1 hu _ (div_pos hε h1)] with R h₁ h₂`. Establish `: IsFiniteMeasure (μ R)` using `⟨h₁.trans_lt ENNReal.coe_lt_top⟩`. Establish `h₃ : (μ R).real Set.univ ≤ C` using `ENNReal.toReal_le_coe_of_le_coe h₁`.
+
+Rewrite using `[dist_zero_right]`. Use `(norm_integral_le_of_norm_le_const (C := ε / (C + 1)) (.of_forall fun y => ?_)).trans_lt ?_` and prove the remaining obligations. Simplify `(h₂ y).le` using `only [dist_zero_left]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem tendsto_integral_zero {α β : Type} [MeasurableSpace β] {l : Filter α} {u : α → β → ℝ} {μ : α → Measure β}
     (hu : TendstoUniformly u (fun _ => 0) l) {C : NNReal} (hC : ∀ᶠ R in l, μ R Set.univ ≤ (C : ENNReal)) :
     Tendsto (fun R => ∫ y, u R y ∂μ R) l (𝓝 0) := by
@@ -80,6 +101,11 @@ theorem tendsto_integral_zero {α β : Type} [MeasurableSpace β] {l : Filter α
 
 variable [IsIntegral X] {D : ℕ} {t : ℝ → ℝ} {u : ℝ → ∀ σ : k →+* ℂ, CxPts p σ → ℝ}
 
+/- English proof (translation)
+Use `hX.finite_emb` as an intermediate fact. Use `Fintype.ofFinite (k →+* ℂ)` as an intermediate fact. Simplify using `only [chInt, finsum_eq_sum_of_fintype, Weight.chernInt, Measure.restrict_univ]`. Rewrite using `[← Finset.sum_const_zero (s := (Finset.univ : Finset (k →+* ℂ))), ← sub_zero (0 : ℝ)]`. Use `tendsto_finsetSum _ fun σ _ => ?_` and prove the remaining obligations.
+
+Use `hX.compactSpace σ` as an intermediate fact. Establish `hU` using `tendstoUniformly_of_famAt ht (hf σ)`. Take `⟨C, hC⟩` from `T.chern_part_uniform_bound k X p D hX hs t ht σ N.B (N.φ σ) (N.cInf σ) (fun R y => c * u R σ y) (fun R y => (hu R σ y).const_mul _) fun y => by`. Simplify `(hf σ y).comp_contDiff (Ψ := fun x : ℝ => c * x) (contDiff_const.mul contDiff_id)` using `only [mul_zero]`. Conclude with `(tendsto_integral_zero hU (hC.mono fun R h => h 1)).sub (tendsto_integral_zero hU (hC.mono fun R h => h (-1)))`.
+-/
 theorem tendsto_chInt (hX : IsArithVar p D) (hs : GenSmooth p D) (ht : Tendsto t atTop (𝓝 0))
     (hu : ∀ R σ y, CInfAt (u R σ) y) (hc : ∀ R σ σ', (Weight.ofFun (u R σ)).IsConj (Weight.ofFun (u R σ')))
     (hf : ∀ σ y, FamAt t (fun R => u R σ) (fun _ => 0) y) (N : HermLB p) (c : ℝ) :
@@ -99,6 +125,9 @@ theorem tendsto_chInt (hX : IsArithVar p D) (hs : GenSmooth p D) (ht : Tendsto t
 
 omit [IsIntegral X] in
 
+/- English proof (translation)
+The claim follows from `icls_eq_iff.1 (by rw [← icls_eq_iff.2 (isometric_tens_fnB _ _ _ _), icls_tens, icls_fnB_mul hv hc, icls_zp, icls_comb, Fin.sum_univ_two, add_comm] rfl)`.
+-/
 theorem isometric_comb_raise {v : ∀ σ : k →+* ℂ, CxPts p σ → ℝ} (hv : ∀ σ y, CInfAt (v σ) y)
     (hc : ∀ σ σ', (Weight.ofFun (v σ)).IsConj (Weight.ofFun (v σ'))) (N : HermLB p) (n : Fin 2 → ℤ) :
     (comb ![fnB v hv hc, N] n).Isometric ((zp N (n 1)).raise (fun σ y => (n 0 : ℝ) * v σ y)
@@ -108,6 +137,11 @@ theorem isometric_comb_raise {v : ∀ σ : k →+* ℂ, CxPts p σ → ℝ} (hv 
       Fin.sum_univ_two, add_comm]
     rfl)
 
+/- English proof (translation)
+Set `A : Option (Fin 2) → Fin 2 → ℤ` to `fun j => Pi.single (j.elim 0 id) 1`. Establish `h` using `((H.arIso k X p D hX).2 _ _ Θ hΘ).2.2 (Option (Fin 2)) (fun o => o.elim (fnB v hv hc) ![fnB v hv hc, N]) A (by`. Introduce and unpack `(_ | i)`. Conclude with `isometric_comb_single _ 0`. Conclude with `isometric_comb_single _ i)`.
+
+Establish `e (j : Option (Fin 2)) : (lin fun i => (A j i : ℝ)) = MvPolynomial.X (j.elim 0 id)` using `lin_single _`. Rewrite using `[← H.arChange k X p D hX _ _ v hv hc _ h n, LinearMap.comp_apply, AlgHom.toLinearMap_apply]`. Use `congr 1`. Rewrite using `[map_mul, map_pow, aeval_X, aeval_rename]`. Simplify using `only [Function.comp_def, e, Option.elim_none, Option.elim_some, id, aeval_X_left_apply]`.
+-/
 theorem mixed_eq (H : ArCalc) (hX : IsArithVar p D) {v : ∀ σ : k →+* ℂ, CxPts p σ → ℝ} (hv : ∀ σ y, CInfAt (v σ) y)
     (hc : ∀ σ σ', (Weight.ofFun (v σ)).IsConj (Weight.ofFun (v σ'))) (N : HermLB p)
     {Θ : MvPolynomial (Fin 2) ℝ →ₗ[ℝ] ℝ} (hΘ : IsArFun ![fnB v hv hc, N] D Θ) (n : Fin 2 → ℤ) :
@@ -124,6 +158,15 @@ theorem mixed_eq (H : ArCalc) (hX : IsArithVar p D) {v : ∀ σ : k →+* ℂ, C
   rw [map_mul, map_pow, aeval_X, aeval_rename]
   simp only [Function.comp_def, e, Option.elim_none, Option.elim_some, id, aeval_X_left_apply]
 
+/- English proof (translation)
+Introduce `H k _ X _ p D hX hs t ht L L₀ ⟨u, hu, hc, hL, hf⟩ a a₀ ha ha₀`. Use `choose Θ hΘ using fun R => ((H.arExists k X p D hX).2 _ ![fnB (u R) (hu R) (hc R), L₀]).1`. Take `⟨Q, hQ⟩` from `sub_dvd_pow_sub_pow (MvPolynomial.X 0 + MvPolynomial.X 1 : MvPolynomial (Fin 2) ℝ) (MvPolynomial.X 1) (D + 1)`. Rewrite `hQ` using `[add_sub_cancel_right]`. Establish `key` using `tendsto_zero_of_pow (l := atTop) D (fun R => Θ R ∘ₗ LinearMap.mulLeft ℝ (MvPolynomial.X 0)) (fun n => by`.
+
+Simplify using `only [LinearMap.comp_apply, LinearMap.mulLeft_apply, fun R => mixed_eq H hX (hu R) (hc R) L₀ (hΘ R) n, fun R => (isometric_comb_raise (hu R) (hc R) L₀ n).chInt_eq]`. Simplify `(tendsto_chInt hX hs ht hu hc hf (zp L₀ (n 1)) (n 0)).const_mul (1 / 2))` using `only [mul_zero]`. Use the proof step `(fun P e he hP R => (hΘ R).2 _ (1 + e) (by omega) ((isHomogeneous_X ℝ 0).mul hP)) Q`. Establish `e₀ (R) : a₀ = Θ R (MvPolynomial.X 1 ^ (D + 1))` using `ha₀.unique hX (((H.arIso k X p D hX).2 _ _ _ (hΘ R)).1 1)`. Establish `e₁ (R) : a R = Θ R ((MvPolynomial.X 0 + MvPolynomial.X 1) ^ (D + 1))`.
+
+Establish `i : (comb ![fnB (u R) (hu R) (hc R), L₀] fun _ => 1).Isometric (L R)` using `icls_eq_iff.1 (by`. Rewrite using `[← icls_eq_iff.2 (hL R), ← icls_eq_iff.2 (isometric_tens_fnB _ _ _ _), icls_tens, icls_comb, Fin.sum_univ_two, one_smul, one_smul, add_comm]`. Use the proof step `rfl)`. Use `(ha R).unique hX (i.isSelfInter hX ((hΘ R).1 _))` as an intermediate fact. Simplify `this` using `[lin]`.
+
+Rewrite using `[← tendsto_sub_nhds_zero_iff]`. Use `key.congr fun R => ?_` and prove the remaining obligations. Rewrite using `[e₁ R, e₀ R, ← map_sub, hQ]`. Both sides reduce to the same expression.
+-/
 theorem tendsto_selfInter : ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ),
     IsArithVar p D → GenSmooth p D → ∀ t : ℝ → ℝ, Tendsto t atTop (𝓝 0) → ∀ (L : ℝ → HermLB p) (L₀ : HermLB p),
     LFam t L L₀ → ∀ (a : ℝ → ℝ) (a₀ : ℝ), (∀ R, (L R).IsSelfInter (a R)) → L₀.IsSelfInter a₀ →

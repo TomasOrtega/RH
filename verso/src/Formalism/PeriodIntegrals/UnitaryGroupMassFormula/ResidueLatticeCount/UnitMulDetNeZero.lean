@@ -15,12 +15,23 @@ variable (K : Type) [Field K] [NumberField K]
 def unitMul (u : (𝓞 K)ˣ) : mixedSpace K →ₗ[ℝ] mixedSpace K :=
   LinearMap.mulLeft ℝ (mixedEmbedding K (u : K))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem unitMul_apply (u : (𝓞 K)ˣ) (y : mixedSpace K) : unitMul K u y = u • y := rfl
 
+/- English proof (translation)
+Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, unitMul_apply, mul_smul]`.
+-/
 theorem unitMul_comp (u v : (𝓞 K)ˣ) : unitMul K u ∘ₗ unitMul K v = unitMul K (u * v) := by
   refine LinearMap.ext fun y => ?_
   simp only [LinearMap.comp_apply, unitMul_apply, mul_smul]
 
+/- English proof (translation)
+Introduce `h`. Establish `h1 : unitMul K u ∘ₗ unitMul K u⁻¹ = LinearMap.id`. Rewrite using `[unitMul_comp, mul_inv_cancel]`. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Rewrite using `[unitMul_apply, one_smul, LinearMap.id_apply]`.
+
+Use `congrArg LinearMap.det h1` as an intermediate fact. Rewrite `this` using `[LinearMap.det_comp, h, zero_mul, LinearMap.det_id]`. Conclude with `zero_ne_one this`.
+-/
 theorem unitMul_det_ne_zero (u : (𝓞 K)ˣ) : LinearMap.det (unitMul K u) ≠ 0 := by
   intro h
   have h1 : unitMul K u ∘ₗ unitMul K u⁻¹ = LinearMap.id := by
@@ -31,6 +42,11 @@ theorem unitMul_det_ne_zero (u : (𝓞 K)ˣ) : LinearMap.det (unitMul K u) ≠ 0
   rw [LinearMap.det_comp, h, zero_mul, LinearMap.det_id] at this
   exact zero_ne_one this
 
+/- English proof (translation)
+Use extensionality with `y`. Simplify using `only [Set.mem_preimage, box, Set.mem_ofPred_eq, unitMul_apply, unitSMul_smul, map_mul, normAtPlace_apply]`. Use `forall_congr' fun w => ?_` and prove the remaining obligations. Establish `hw : 0 < w (u : K)`. Use `w.pos_iff.2 ?_` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Rewrite using `[← one_div, lt_div_iff₀' hw]`.
+-/
 theorem preimage_box (u : (𝓞 K)ˣ) :
     (unitMul K u) ⁻¹' (box K fun _ => 1) = box K (fun w => (w (u : K))⁻¹) := by
   ext y
@@ -42,20 +58,34 @@ theorem preimage_box (u : (𝓞 K)ˣ) :
     simp
   rw [← one_div, lt_div_iff₀' hw]
 
+/- English proof (translation)
+Repeatedly rewrite using `[inv_pow]`. Rewrite using `[Finset.prod_inv_distrib, prod_eq_abs_norm, Units.norm, Rat.cast_one, inv_one]`.
+-/
 theorem prod_inv_unit (u : (𝓞 K)ˣ) : ∏ w : InfinitePlace K, ((w (u : K))⁻¹) ^ mult w = 1 := by
   simp_rw [inv_pow]
   rw [Finset.prod_inv_distrib, prod_eq_abs_norm, Units.norm, Rat.cast_one, inv_one]
 
+/- English proof (translation)
+Unfold `vfac`. Use `mul_ne_zero (pow_ne_zero _ two_ne_zero) (pow_ne_zero _ ?_)` and prove the remaining obligations. Conclude with `NNReal.pi_ne_zero` after adjusting the coercions.
+-/
 theorem vfac_ne_zero : vfac K ≠ 0 := by
   unfold vfac
   refine mul_ne_zero (pow_ne_zero _ two_ne_zero) (pow_ne_zero _ ?_)
   exact_mod_cast NNReal.pi_ne_zero
 
+/- English proof (translation)
+Unfold `vfac`. Conclude with `ENNReal.mul_ne_top (ENNReal.pow_ne_top ENNReal.ofNat_ne_top) (ENNReal.pow_ne_top ENNReal.coe_ne_top)`.
+-/
 theorem vfac_ne_top : vfac K ≠ ⊤ := by
   unfold vfac
   exact ENNReal.mul_ne_top (ENNReal.pow_ne_top ENNReal.ofNat_ne_top)
     (ENNReal.pow_ne_top ENNReal.coe_ne_top)
 
+/- English proof (translation)
+Introduce `K _ _ u`. Establish `hdet` using `unitMul_det_ne_zero K u`. Establish `hmap` using `Measure.map_linearMap_addHaar_eq_smul_addHaar (volume : Measure (mixedSpace K)) hdet`. Establish `hpre` using `Measure.addHaar_preimage_linearMap (volume : Measure (mixedSpace K)) hdet (box K fun _ => 1)`. Establish `hw : ∀ w : InfinitePlace K, 0 < (w (u : K))⁻¹` using `fun w => inv_pos.2 (w.pos_iff.2 (by simp))`.
+
+Rewrite `hpre` using `[preimage_box, boxVolume K _ hw, boxVolume K _ (fun _ => one_pos), prod_inv_unit]`. Simplify using `only [one_pow, Finset.prod_const_one, ENNReal.ofReal_one, mul_one] at hpre`. Establish `hc : ENNReal.ofReal |(LinearMap.det (unitMul K u))⁻¹| = 1` using `(ENNReal.mul_left_inj (vfac_ne_zero K) (vfac_ne_top K)).1 (by rw [one_mul]; exact hpre.symm)`. Rewrite `hmap` using `[hc, one_smul]`. Conclude with `⟨(unitMul K u).continuous_of_finiteDimensional.measurable, hmap⟩`.
+-/
 theorem unitPreserving : UnitPreserving := by
   intro K _ _ u
   have hdet := unitMul_det_ne_zero K u

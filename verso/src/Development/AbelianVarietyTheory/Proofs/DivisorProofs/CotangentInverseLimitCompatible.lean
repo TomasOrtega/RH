@@ -15,6 +15,25 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.CompatLift
 
+/- English proof (translation)
+Take `⟨k, f, hf⟩` from `Module.Finite.exists_fin' O W`. Establish `step : ∀ (n : ℕ) (a : Fin k → O), c n (f a) = u n → ∃ a' : Fin k → O, c (n + 1) (f a') = u (n + 1) ∧ ∃ b : Fin k → O, a' = a + p ^ n • b`. Introduce `n a ha`. Take `⟨w', hw'⟩` from `hsurj (n + 1) (u (n + 1))`. Establish `h1 : c n (w' - f a) = 0` using `by rw [map_sub, hcomp n w' hw', ha, sub_self]`.
+
+Establish `h2` using `hker n _ h1`. Rewrite `h2` using `[Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Take `⟨v, -, hv⟩` from `h2`. Take `⟨b, rfl⟩` from `hf v`. Use `⟨a + p ^ n • b, ?_, b, rfl⟩` and prove the remaining obligations.
+
+Rewrite using `[map_add, map_smul, hv, add_sub_cancel, hw']`. Use `choose! g hg using step`. Set `a : ℕ → Fin k → O` to `fun n => Nat.rec 0 (fun m x => g m x) n`. Establish `h0 : ∀ x : C 0, x = 0` using `fun x => by simpa using hkill 0 x`. Establish `ha : ∀ n, c n (f (a n)) = u n`.
+
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => rw [h0 (c 0 _), h0 (u 0)]`. Consider the case `succ n ih => exact (hg n _ ih).1`. Establish `hd : ∀ n, ∃ b : Fin k → O, a (n + 1) = a n + p ^ n • b` using `fun n => (hg n _ (ha n)).2`.
+
+Establish `hcong : ∀ m n, m ≤ n → ∀ i, ∃ e : O, a n i = a m i + p ^ m * e`. Introduce `m n hmn`. Proceed by induction on `n, hmn using Nat.le_induction with`. Consider the case `base => exact fun i => ⟨0, by simp⟩`. Consider the case `succ n hmn ih`.
+
+Introduce `i`. Take `⟨e, he⟩` from `ih i`. Take `⟨b, hb⟩` from `hd n`. Use `⟨e + p ^ (n - m) * b i, ?_⟩` and prove the remaining obligations. Rewrite using `[hb, Pi.add_apply, Pi.smul_apply, smul_eq_mul, he, ← pow_mul_pow_sub p hmn]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hmem : ∀ (m : ℕ) (x y : O), x ≡ y [SMOD (Ideal.span {p} ^ m • ⊤ : Submodule O O)] ↔ ∃ e : O, y = x + p ^ m * e`. Introduce `m x y`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨e, he⟩`. Conclude with `⟨-e, by rw [mul_neg, mul_comm, he]; ring⟩`. Introduce and unpack `⟨e, rfl⟩`. Conclude with `⟨-e, by ring⟩`. Use `choose L hL using fun i => IsPrecomplete.prec' (I := Ideal.span {p}) (fun n => a n i) fun {m n} hmn => (hmem m _ _).2 (hcong m n hmn i)`.
+
+Use `⟨f L, fun n => ?_⟩` and prove the remaining obligations. Use `choose e he using fun i => (hmem n _ _).1 (hL i n)`. Establish `hLe : L = a n + p ^ n • e` using `funext fun i => by`. Rewrite using `[he i, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hLe, map_add, map_smul, map_add, hsmul, hkill, add_zero, ha]`.
+-/
 theorem exists_of_compat {O : Type} [CommRing O] (p : O) [IsPrecomplete (Ideal.span {p}) O]
     {W : Type} [AddCommGroup W] [Module O W] [Module.Finite O W]
     {C : ℕ → Type} [∀ n, AddCommGroup (C n)] [∀ n, Module O (C n)]
@@ -78,6 +97,9 @@ end GlobalTheory.CompatLift
 
 namespace GlobalTheory.SqZeroPt
 
+/- English proof (translation)
+Introduce `p O _ _ G A _ t hfin hsurj hker hres hsmul u`. Conclude with `GlobalTheory.CompatLift.exists_of_compat (p : O) (C := fun n => GlobalTheory.PDiv.Cot O (G.A n)) (cn t) hsurj hker hsmul (fun n x => G.pow_smul_cot n x) (fun n => u.1 n) fun n w hw => by rw [← hres n w, hw]; exact u.2 n`.
+-/
 theorem cn_hits_compatible : ∀ (p : ℕ) (O : Type) [CommRing O] [IsAdicComplete (Ideal.span {(p : O)}) O] (G : GlobalTheory.PDivGroup p O) (A : Over (Sp O)) [GrpObj A] (t : G.TorsionTower A), Module.Finite O (Wmod A) → (∀ n, Function.Surjective (cn t n)) → (∀ (n : ℕ) (w : Wmod A), cn t n w = 0 → w ∈ (Ideal.span {(p : O) ^ n} • ⊤ : Submodule O (Wmod A))) → (∀ (n : ℕ) (w : Wmod A), GlobalTheory.PDiv.cotMap (G.res n) (cn t (n + 1) w) = cn t n w) → (∀ (n : ℕ) (c : O) (w : Wmod A), cn t n (c • w) = c • cn t n w) → ∀ u : G.omega, ∃ w, ∀ n, cn t n w = u.1 n := by
   intro p O _ _ G A _ t hfin hsurj hker hres hsmul u
   exact GlobalTheory.CompatLift.exists_of_compat (p : O) (C := fun n => GlobalTheory.PDiv.Cot O (G.A n)) (cn t)

@@ -55,6 +55,9 @@ def pendOfS (Tf : FormsTiedSym D u Ch chOf) (hL : LowerSymmetricCompatible Tf)
   beOn_eq := hL.beOn
   interlace := sg_interlace Tf.valP
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨pendOfS Tf hL B gP h, archimedeanSignatureMatching_of_trivial_branching_symm Tf _ fun _ => rfl⟩`.
+-/
 theorem brExists_of_tiedS (Tf : FormsTiedSym D u Ch chOf) (hL : LowerSymmetricCompatible Tf)
     (B : D.what₂.places.Pl → (D.fm u).clsP → Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) D.host.E)
     (gP : D.what₂.places.Pl → (D.fm u).clsP → D.what₂.Tau → GL (Fin (D.R.N D.R.m - 1)) ℂ) (h : PendClausesS Tf B gP) :
@@ -63,6 +66,11 @@ theorem brExists_of_tiedS (Tf : FormsTiedSym D u Ch chOf) (hL : LowerSymmetricCo
 
 section Cl
 
+/- English proof (translation)
+Establish `hBi : Function.Injective B'.mulVec` using `Matrix.mulVec_injective_iff_isUnit.mpr ((Matrix.isUnit_iff_isUnit_det _).mpr hB')`. Use `isUnit_det_cols (Nm_succ D.R) (iXm D * B') (fun i => Tf.til.z0 i / ((D.mem u).A.T : D.host.E)) ?_ ?_` and prove the remaining obligations. Introduce `x y h`. Simplify using `only [← Matrix.mulVec_mulVec] at h`. Conclude with `hBi (iXm_mulVec_injective D h)`.
+
+Introduce `x h`. Apply `quotient_not_in_range_symmetric Tf (B' *ᵥ x)` to reduce the goal to its premises. Rewrite using `[Matrix.mulVec_mulVec]`. Conclude with `h`.
+-/
 theorem bZg_isUnitS (Tf : FormsTiedSym D u Ch chOf) (B' : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) D.host.E) (hB' : IsUnit B'.det) :
     IsUnit (bZg u Tf.til.z0 B').det := by
   have hBi : Function.Injective B'.mulVec :=
@@ -75,6 +83,11 @@ theorem bZg_isUnitS (Tf : FormsTiedSym D u Ch chOf) (B' : Matrix (Fin (D.R.N D.R
     apply quotient_not_in_range_symmetric Tf (B' *ᵥ x)
     rw [Matrix.mulVec_mulVec]; exact h
 
+/- English proof (translation)
+Take `⟨P, hP, hv⟩` from `val_repS Tf φ hφ c`. Establish `hM : trEvS Tf c (φ ((D.fm u).til c)) = fnOf _ (shiftOf (lamT u D.R.m)) (mZ u Tf.til.z0) P`. Use function extensionality and compare the values at `y`. Rewrite using `[trEv_eqS, hv, Equiv.apply_symm_apply]`. Establish `hU` using `atInf_inv_isUnit _ (bZg_isUnitS Tf B' hB')`.
+
+Rewrite using `[hM]`. Conclude with `exists_change _ _ _ _ _ hU P hP`.
+-/
 theorem trEv_repS (Tf : FormsTiedSym D u Ch chOf) (B' : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) D.host.E) (hB' : IsUnit B'.det)
     (φ : Fn D u D.R.m) (hφ : φ ∈ (D.fm u).Fi D.R.m) (c : (D.fm u).clsP) :
     ∃ Q ∈ Formalism.L2.Forms.CSpan ((D.fm u).lam D.R.m), trEvS Tf c (φ ((D.fm u).til c)) =
@@ -87,6 +100,13 @@ theorem trEv_repS (Tf : FormsTiedSym D u Ch chOf) (B' : Matrix (Fin (D.R.N D.R.m
   rw [hM]
   exact exists_change _ _ _ _ _ hU P hP
 
+/- English proof (translation)
+Establish `hF` using `(Tf.valP.ptC z).1 hz`. Take `⟨g, hg, hres⟩` from `Submodule.mem_map.1 hF`. Establish `hval` using `(Submodule.mem_pi.1 (Submodule.mem_inf.1 hg).2) (Tf.clsP.y c) (Set.mem_univ _)`. Take `⟨Q0, hQ0, hfn⟩` from `Submodule.mem_map.1 hval`. Establish `hQ0' : Q0 ∈ Formalism.L2.Forms.CSpan (D.fm u).sg`.
+
+Use `CSpan_shW (D.fm u).sg (fun _ => ((D.R.m * (D.R.t + 1) / 2 : ℕ) : ℤ))` as an intermediate fact. Unfold `sgT at hQ0`. Rewrite `hQ0` using `[this]`. Conclude with `hQ0`. Establish `he : Tf.valP.eW z c = fnOf _ (shiftOf (sgT u)) 1 Q0`.
+
+Rewrite using `[hfn, ← hres]`. Both sides reduce to the same expression. Establish `hU` using `atInf_inv_isUnit _ hB'`. Rewrite using `[he]`. Conclude with `exists_change _ _ _ _ _ hU Q0 hQ0'`.
+-/
 theorem eW_repS (Tf : FormsTiedSym D u Ch chOf) (B' : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) D.host.E) (hB' : IsUnit B'.det)
     (z : (D.mem u).P.Wrow) (hz : z ∈ (D.fm u).ptC) (c : (D.fm u).clsP) :
     ∃ Q ∈ Formalism.L2.Forms.CSpan (D.fm u).sg, Tf.valP.eW z c = fnOf _ (shiftOf (sgT u)) (atInf (embT D) B'⁻¹) Q := by
@@ -111,6 +131,11 @@ variable (Tf : FormsTiedSym D u Ch chOf)
 
 include hB
 
+/- English proof (translation)
+Introduce `w c φ hφ`. Take `⟨Q, hQ, hq⟩` from `trEv_repS Tf (B w c) (hB w c) φ hφ c`. Establish `: coMTS Tf B w c (φ ((D.fm u).til c)) = Q`. Simplify using `only [coMTS, LinearMap.coe_comp, Function.comp_apply]`. Rewrite using `[hq, fnInv_fnOf _ _ _ (atInf_inv_isUnit _ (bZg_isUnitS Tf (B w c) (hB w c)))]`.
+
+Rewrite using `[this]`. Conclude with `hQ`.
+-/
 theorem coM_mem_ofS : ∀ w c, ∀ φ ∈ (D.fm u).Fi D.R.m,
     coMTS Tf B w c (φ ((D.fm u).til c)) ∈ Formalism.MainNotions.product_first_zeroth_parts.CSpan ((D.fm u).lam D.R.m) := by
   intro w c φ hφ
@@ -120,6 +145,11 @@ theorem coM_mem_ofS : ∀ w c, ∀ φ ∈ (D.fm u).Fi D.R.m,
     rw [hq, fnInv_fnOf _ _ _ (atInf_inv_isUnit _ (bZg_isUnitS Tf (B w c) (hB w c)))]
   rw [this]; exact hQ
 
+/- English proof (translation)
+Introduce `w z hz c`. Take `⟨Q, hQ, hq⟩` from `eW_repS Tf (B w c) (hB w c) z hz c`. Establish `: coPTS Tf B w z c = Q`. Simplify using `only [coPTS, LinearMap.pi_apply, LinearMap.coe_comp, Function.comp_apply, LinearMap.coe_proj, Function.eval, LinearEquiv.coe_coe]`. Rewrite using `[hq, fnInv_fnOf _ _ _ (atInf_inv_isUnit _ (hB w c))]`.
+
+Rewrite using `[this]`. Conclude with `hQ`.
+-/
 theorem coP_mem_of_isUnit_det' : ∀ w, ∀ z ∈ (D.fm u).ptC, ∀ c, coPTS Tf B w z c ∈ Formalism.MainNotions.product_first_zeroth_parts.CSpan (D.fm u).sg := by
   intro w z hz c
   obtain ⟨Q, hQ, hq⟩ := eW_repS Tf (B w c) (hB w c) z hz c
@@ -129,6 +159,13 @@ theorem coP_mem_of_isUnit_det' : ∀ w, ∀ z ∈ (D.fm u).ptC, ∀ c, coPTS Tf 
     rw [hq, fnInv_fnOf _ _ _ (atInf_inv_isUnit _ (hB w c))]
   rw [this]; exact hQ
 
+/- English proof (translation)
+Introduce `w z hz h0`. Apply `Tf.valP.eW.injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use function extensionality and compare the values at `c`. Take `⟨Q, hQ, hq⟩` from `eW_repS Tf (B w c) (hB w c) z hz c`.
+
+Establish `: coPTS Tf B w z c = Q`. Simplify using `only [coPTS, LinearMap.pi_apply, LinearMap.coe_comp, Function.comp_apply, LinearMap.coe_proj, Function.eval, LinearEquiv.coe_coe]`. Rewrite using `[hq, fnInv_fnOf _ _ _ (atInf_inv_isUnit _ (hB w c))]`. Establish `hQ0 : Q = 0` using `by rw [← this, h0]; rfl`. Rewrite using `[hq, hQ0, map_zero]`.
+
+Both sides reduce to the same expression.
+-/
 theorem coP_inj_of_isUnit_det' : ∀ w, ∀ z ∈ (D.fm u).ptC, coPTS Tf B w z = 0 → z = 0 := by
   intro w z hz h0
   apply Tf.valP.eW.injective
@@ -142,6 +179,15 @@ theorem coP_inj_of_isUnit_det' : ∀ w, ∀ z ∈ (D.fm u).ptC, coPTS Tf B w z =
   have hQ0 : Q = 0 := by rw [← this, h0]; rfl
   rw [hq, hQ0, map_zero]; rfl
 
+/- English proof (translation)
+Introduce `w c φ hφ h0`. Take `⟨Q, hQ, hq⟩` from `trEv_repS Tf (B w c) (hB w c) φ hφ c`. Establish `hc : coMTS Tf B w c (φ ((D.fm u).til c)) = Q`. Simplify using `only [coMTS, LinearMap.coe_comp, Function.comp_apply]`. Rewrite using `[hq, fnInv_fnOf _ _ _ (atInf_inv_isUnit _ (bZg_isUnitS Tf (B w c) (hB w c)))]`.
+
+Establish `ht : trEvS Tf c (φ ((D.fm u).til c)) = 0` using `by rw [hq, ← hc, h0, map_zero]`. Use function extensionality and compare the values at `s'`. Set `ga : GL (Fin (D.R.N D.R.m)) D.host.E` to `(Tf.til.ga c).1`. Establish `hy` using `congrFun ht (((Tf.val D.R.m le_rfl (Or.inr rfl)).eY s').tr (atInf (embT D) (ga : Matrix _ _ D.host.E)) (isUnit_det_atInf (embT D) ga))`. Simplify using `only [trEvS, LinearMap.smul_apply, LinearMap.funLeft_apply, Pi.smul_apply, Pi.zero_apply, smul_eq_mul] at hy`.
+
+Establish `hback : (((Tf.val D.R.m le_rfl (Or.inr rfl)).eY s').tr (atInf (embT D) (ga : Matrix _ _ D.host.E)) (isUnit_det_atInf (embT D) ga)).tr (atInf (embT D) ((ga⁻¹ : GL (Fin (D.R.N D.R.m)) D.host.E) : Matrix _ _ D.host.E)) (isUnit_det_atInf (embT D) ga⁻¹) = (Tf.val D.R.m le_rfl (Or.inr …`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `τ`. Use `show atInf (embT D) ((ga⁻¹ : GL (Fin (D.R.N D.R.m)) D.host.E) : Matrix _ _ D.host.E) τ * (atInf (embT D) (ga : Matrix _ _ D.host.E) τ * ((Tf.val D.R.m le_rfl (Or.inr rfl)).eY s').1 τ) = ((Tf.val D.R.m le_rfl (Or.inr rfl)).eY s').1 τ`. Establish `h1` using `atInf_mul_inv (embT D) ga⁻¹ τ`.
+
+Rewrite `h1` using `[inv_inv]`. Rewrite using `[← Matrix.mul_assoc, h1, Matrix.one_mul]`. Rewrite `hy` using `[hback, Equiv.symm_apply_apply]`. Conclude with `(mul_eq_zero.mp hy).resolve_left (Units.ne_zero _)`.
+-/
 theorem coM_inj_ofS : ∀ w c, ∀ φ ∈ (D.fm u).Fi D.R.m, coMTS Tf B w c (φ ((D.fm u).til c)) = 0 → φ ((D.fm u).til c) = 0 := by
   intro w c φ hφ h0
   obtain ⟨Q, hQ, hq⟩ := trEv_repS Tf (B w c) (hB w c) φ hφ c
@@ -187,6 +233,9 @@ structure PendRestS (gP : D.what₂.places.Pl → (D.fm u).clsP → D.what₂.Ta
     (Formalism.MainNotions.product_first_zeroth_parts.nfAll (D.fm u).sg (blk (fun τ => sqAct ℂ _ (sgTr D u τ) (gP w c τ)) (coPTS Tf B w z c))
       (blk (fun τ => sqAct ℂ _ (sgTr D u τ) (gP w c τ)) (coPTS Tf B w z c))).re
 
+/- English proof (translation)
+The claim follows from `brExists_of_tiedS Tf hL B gP { coM_mem := coM_mem_ofS Tf B hB, coM_inj := coM_inj_ofS Tf B hB, coP_mem := coP_mem_of_isUnit_det' Tf B hB, coP_inj := coP_inj_of_isUnit_det' Tf B hB, exP := h.exP, lat_co := h.lat_co, pt_co := h.pt_co, ipV_co := h.ipV_co, re_petersson_self_eq_sum_co …`.
+-/
 theorem brExists_of_restS (hL : LowerSymmetricCompatible Tf)
     (gP : D.what₂.places.Pl → (D.fm u).clsP → D.what₂.Tau → GL (Fin (D.R.N D.R.m - 1)) ℂ) (h : PendRestS Tf B gP) :
     ∃ P : Pend D u, ArchimedeanSignatureMatching P :=

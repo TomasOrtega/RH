@@ -7,6 +7,9 @@ namespace UpperTheory.V.Z.Sym.Glob
 
 open NumberField IsDedekindDomain Matrix
 
+/- English proof (translation)
+Establish `hf : (Set.range fun x : Set.range φ => x.2.choose).Finite` using `Set.finite_range _`. Use `⟨hf.toFinset, fun a => ⟨(⟨φ a, a, rfl⟩ : Set.range φ).2.choose, hf.mem_toFinset.2 ⟨_, rfl⟩, h _ _ ?_⟩⟩` and prove the remaining obligations. Conclude with `(⟨φ a, a, rfl⟩ : Set.range φ).2.choose_spec`.
+-/
 private theorem fin_reps {A X : Type} [Finite X] (φ : A → X) (r : A → A → Prop) (h : ∀ a b, φ a = φ b → r a b) :
     ∃ S : Finset A, ∀ a, ∃ s ∈ S, r s a := by
   classical
@@ -14,6 +17,29 @@ private theorem fin_reps {A X : Type} [Finite X] (φ : A → X) (r : A → A →
   refine ⟨hf.toFinset, fun a => ⟨(⟨φ a, a, rfl⟩ : Set.range φ).2.choose, hf.mem_toFinset.2 ⟨_, rfl⟩, h _ _ ?_⟩⟩
   exact (⟨φ a, a, rfl⟩ : Set.range φ).2.choose_spec
 
+/- English proof (translation)
+Take `⟨Y, hY⟩` from `hcls`. Use `choose γ y hy k hk e using fun g : N => hY (g * x)`. Set `yy : N → Y` to `fun g => ⟨y g, hy g⟩`. Set `b : N → N` to `fun g => Function.invFun yy (yy g)`. Establish `hb : ∀ g, y (b g) = y g` using `fun g => congrArg Subtype.val (Function.invFun_eq (f := yy) ⟨g, rfl⟩)`.
+
+Establish `rel : ∀ g g' : N, y g = y g' → (g' : G) = ι (γ g' * (γ g)⁻¹) * g * (x * ((k g)⁻¹ * k g') * x⁻¹)`. Introduce `g g' h`. Establish `e1 : (g : G) = ι (γ g) * y g * k g * x⁻¹` using `by rw [← e g]; group`. Establish `e2 : (g' : G) = ι (γ g') * y g * k g' * x⁻¹` using `by rw [h, ← e g']; group`. Rewrite using `[map_mul, map_inv, e1, e2]`.
+
+Use `group`. Establish `hPg : ∀ g, P (γ g * (γ (b g))⁻¹)`. Introduce `g`. Use `hP _ _ (mul_mem (inv_mem (hk (b g))) (hk g)) x ?_` and prove the remaining obligations. Establish `h` using `rel (b g) g (hb g)`.
+
+Establish `h2` using `mul_mem (inv_mem (hN.conj_mem _ (b g).2 (ι (γ g * (γ (b g))⁻¹)))) g.2`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use `conv_rhs => rw [h]`. Use `group`. Take `⟨S₁, hS₁⟩` from `fin_reps (fun g : N => (yy g, c (γ g * (γ (b g))⁻¹))) (fun g g' => ∃ δ ∈ Γ₁, ∃ w ∈ K, (g' : G) = ι δ * g * (x * w * x⁻¹)) (by`.
+
+Introduce `g g' h`. Establish `h1 : yy g = yy g'` using `congrArg Prod.fst h`. Establish `hbb : b g = b g'` using `by simp only [b, h1]`. Take `⟨z, hz, hzc, hz1⟩` from `hc _ _ (hPg g) (hPg g') (congrArg Prod.snd h)`. Use `⟨_, hz1, ι z * ((k g)⁻¹ * k g'), mul_mem hz (mul_mem (inv_mem (hk g)) (hk g')), ?_⟩` and prove the remaining obligations.
+
+Establish `hcm` using `Subgroup.mem_center_iff.1 hzc ((g : G) * x)`. Use `rel g g' (congrArg Subtype.val h1)` as an intermediate fact. Rewrite using `[hbb]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hcm]`.
+
+Simplify using `only [map_mul, map_inv]`. Use the proof step `group)`. Use `choose s hs δ hδ w hw e' using hS₁`. Establish `: Finite (K ⧸ U.subgroupOf K)`. Establish `: (U.subgroupOf K).FiniteIndex` using `⟨hU⟩`.
+
+Use `infer_instance`. Take `⟨S, hS⟩` from `fin_reps (fun g : N => ((⟨s g, hs g⟩ : S₁), ((⟨w g, hw g⟩ : K) : K ⧸ U.subgroupOf K))) (fun g g' => ∃ δ ∈ Γ₁, ∃ u : N, x⁻¹ * u * x ∈ U ∧ (g' : G) = ι δ * g * u) (by`. Introduce `g g' h`. Establish `h1 : s g = s g'` using `congrArg Subtype.val (congrArg Prod.fst h)`. Establish `h2 : (w g)⁻¹ * w g' ∈ U` using `Subgroup.mem_subgroupOf.1 (QuotientGroup.eq.1 (congrArg Prod.snd h : ((⟨w g, hw g⟩ : K) : K ⧸ U.subgroupOf K) = (⟨w g', hw g'⟩ : K)))`.
+
+Establish `h3 : (g' : G) = ι (δ g' * (δ g)⁻¹) * g * (x * ((w g)⁻¹ * w g') * x⁻¹)` using `by conv_lhs => rw [e' g', ← h1] conv_rhs => rw [e' g]`. Simplify using `only [map_mul, map_inv]`. Use `group`. Establish `h4` using `mul_mem (hδ g') (inv_mem (hδ g))`. Use `⟨_, h4, ⟨x * ((w g)⁻¹ * w g') * x⁻¹, ?_⟩, ?_, h3⟩` and prove the remaining obligations.
+
+Establish `h5` using `mul_mem (inv_mem (mul_mem (h₁ _ h4) g.2)) g'.2`. Use `h5 using 1` and compare the differences between its conclusion and the goal. Use `conv_rhs => rw [h3]`. Use `group`. Use `h2 using 1 group)` and compare the differences between its conclusion and the goal.
+
+Use `⟨S, fun g => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, δ, hδ, u, hu, e⟩` from `hS g`. Conclude with `⟨δ, hδ, s, hs, u, hu, e⟩`.
+-/
 theorem su_abs {Γ G X : Type} [Group Γ] [Group G] [Finite X] (ι : Γ →* G) (Γ₁ : Subgroup Γ) (N K U : Subgroup G) [hN : N.Normal]
     (h₁ : ∀ γ ∈ Γ₁, ι γ ∈ N) (hU : U.relIndex K ≠ 0)
     (hcls : ∃ Y : Finset G, ∀ g, ∃ γ, ∃ y ∈ Y, ∃ k ∈ K, g = ι γ * y * k) (x : G) (P : Γ → Prop) (c : Γ → X)
@@ -87,6 +113,11 @@ section Local
 
 variable {K : Type} [Field K] {Δ : K}
 
+/- English proof (translation)
+Establish `h : GeneralLinearGroup.map (starRingEnd (Lsq K Δ)) g.1 = (wJ Δ)⁻¹ * g.1 * (wJ Δ)⁻¹⁻¹` using `g.2`. Establish `h2` using `congrArg (fun a : GL (Fin 2) (Lsq K Δ) => ((GeneralLinearGroup.det a : (Lsq K Δ)ˣ) : Lsq K Δ)) h`. Simplify using `only [map_mul, map_inv, mul_right_comm _ (GeneralLinearGroup.det g.1), mul_inv_cancel, one_mul] at h2`. Establish `h3 : star (mt g).det = (mt g).det` using `((starRingEnd (Lsq K Δ)).map_det (mt g)).trans h2`. Establish `h4` using `congrArg QuadraticAlgebra.im h3`.
+
+Simplify using `only [QuadraticAlgebra.im_star] at h4`. Use `ext`. Simplify using the standard rewrite rules. Simplify using `only [QuadraticAlgebra.algebraMap_im]`. Take the linear combination `(-1 / 2 : K) * h4`.
+-/
 private theorem det_im [CharZero K] (g : DX Δ) : (mt g).det = algebraMap K (Lsq K Δ) (mt g).det.re := by
   have h : GeneralLinearGroup.map (starRingEnd (Lsq K Δ)) g.1 = (wJ Δ)⁻¹ * g.1 * (wJ Δ)⁻¹⁻¹ := g.2
   have h2 := congrArg (fun a : GL (Fin 2) (Lsq K Δ) => ((GeneralLinearGroup.det a : (Lsq K Δ)ˣ) : Lsq K Δ)) h
@@ -99,6 +130,11 @@ private theorem det_im [CharZero K] (g : DX Δ) : (mt g).det = algebraMap K (Lsq
   · simp only [QuadraticAlgebra.algebraMap_im]
     linear_combination (-1 / 2 : K) * h4
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `h`. Establish `: mt g = (a : Matrix (Fin 2) (Fin 2) (integralClosure O (Lsq K Δ))).map (integralClosure O (Lsq K Δ)).val`. Rewrite using `[mt, ← show _ = g.1 from ha]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+
+Establish `h2` using `((integralClosure O (Lsq K Δ)).val : integralClosure O (Lsq K Δ) →+* Lsq K Δ).map_det (a : Matrix (Fin 2) (Fin 2) (integralClosure O (Lsq K Δ)))`. Conclude with `h2 ▸ (a : Matrix (Fin 2) (Fin 2) (integralClosure O (Lsq K Δ))).det.2`.
+-/
 private theorem det_int {O : Type} [CommRing O] [Algebra O K] {g : DX Δ} (h : g ∈ KD Δ O) : IsIntegral O (mt g).det := by
   obtain ⟨a, ha⟩ := h
   have : mt g = (a : Matrix (Fin 2) (Fin 2) (integralClosure O (Lsq K Δ))).map (integralClosure O (Lsq K Δ)).val := by
@@ -108,6 +144,9 @@ private theorem det_int {O : Type} [CommRing O] [Algebra O K] {g : DX Δ} (h : g
     (a : Matrix (Fin 2) (Fin 2) (integralClosure O (Lsq K Δ)))
   exact h2 ▸ (a : Matrix (Fin 2) (Fin 2) (integralClosure O (Lsq K Δ))).det.2
 
+/- English proof (translation)
+Rewrite using `[SU, MonoidHom.mem_ker, ← Units.val_inj]`. Both sides reduce to the same expression.
+-/
 private theorem mem_SU {g : DX Δ} : g ∈ SU Δ ↔ (mt g).det = 1 := by
   rw [SU, MonoidHom.mem_ker, ← Units.val_inj]; rfl
 
@@ -120,8 +159,16 @@ private def scal (z : Kˣ) : DX Δ :=
     fin_cases i <;> fin_cases j <;> simp [wJ, Matrix.mul_apply, Fin.sum_univ_two]
     all_goals (ext <;> simp [starRingEnd_apply])⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem mt_scal (z : Kˣ) : mt (scal Δ z) = scalar (Fin 2) (algebraMap K (Lsq K Δ) z) := rfl
 
+/- English proof (translation)
+Use `⟨GeneralLinearGroup.scalar (Fin 2) (Units.map (algebraMap O (integralClosure O (Lsq K Δ)) : O →* _) u), ?_⟩` and prove the remaining obligations. Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = mt g`. Rewrite using `[hg]`. Use extensionality with `i j : 1`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`.
+-/
 private theorem scal_KD {O : Type} [CommRing O] [Algebra O K] (u : Oˣ) (g : DX Δ)
     (hg : mt g = scalar (Fin 2) (algebraMap O (Lsq K Δ) u)) : g ∈ KD Δ O := by
   refine ⟨GeneralLinearGroup.scalar (Fin 2) (Units.map (algebraMap O (integralClosure O (Lsq K Δ)) : O →* _) u), ?_⟩
@@ -133,6 +180,9 @@ private theorem scal_KD {O : Type} [CommRing O] [Algebra O K] (u : Oˣ) (g : DX 
 
 end Local
 
+/- English proof (translation)
+Use `HeightOneSpectrum.mem_integers_of_valuation_le_one F t fun v => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `IsIntegrallyClosed.isIntegral_iff.1 (h v)`. Use `a.2` as an intermediate fact. Rewrite `this` using `[HeightOneSpectrum.mem_adicCompletionIntegers, show (a : Kv v) = cv v t from ha]`. Rewrite using `[← HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v t]` and apply the resulting hypothesis.
+-/
 private theorem loc_glob {F : Type} [Field F] [NumberField F] (t : F) (h : ∀ v : Pl F, IsIntegral (Ov v) (cv v t)) :
     t ∈ (algebraMap (𝓞 F) F).range := by
   refine HeightOneSpectrum.mem_integers_of_valuation_le_one F t fun v => ?_
@@ -145,30 +195,54 @@ section Global
 
 variable {F : Type} [Field F] [NumberField F] {Δ : F}
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [lmap]`.
+-/
 private theorem lmap_alg (v : Pl F) (t : F) : lmap (cv v) Δ (algebraMap F (Lsq F Δ) t) = algebraMap (Kv v) _ (cv v t) := by
   ext <;> simp [lmap]
 
+/- English proof (translation)
+Rewrite using `[SA, Subgroup.mem_iInf]`. Conclude with `forall_congr' fun v => mem_SU`.
+-/
 private theorem mem_SA {g : DA Δ} : g ∈ SA Δ ↔ ∀ v, (mt (g.1 v)).det = 1 := by
   rw [SA, Subgroup.mem_iInf]
   exact forall_congr' fun v => mem_SU
 
+/- English proof (translation)
+Rewrite using `[RPG.box, Subgroup.mem_iInf]`. Both sides reduce to the same expression.
+-/
 private theorem mem_box {g : DA Δ} : g ∈ (rpg _ _).box (fun v : Pl F => KD (cv v Δ) (Ov v)) ↔ ∀ v, g.1 v ∈ KD (cv v Δ) (Ov v) := by
   rw [RPG.box, Subgroup.mem_iInf]; rfl
 
+/- English proof (translation)
+The claim follows from `Matrix.det_mul _ _`.
+-/
 private theorem det_mul' {K : Type} [Field K] {Δ : K} (a b : DX Δ) : (mt (a * b)).det = (mt a).det * (mt b).det :=
   Matrix.det_mul _ _
 
+/- English proof (translation)
+Rewrite using `[← det_mul', mul_inv_cancel]`. Conclude with `Matrix.det_one`.
+-/
 private theorem det_inv' {K : Type} [Field K] {Δ : K} (a : DX Δ) : (mt a).det * (mt a⁻¹).det = 1 := by
   rw [← det_mul', mul_inv_cancel]; exact Matrix.det_one
 
+/- English proof (translation)
+Rewrite using `[hι]`. Conclude with `((lmap (cv v) Δ).map_det _).symm`.
+-/
 private theorem det_iota {ι : DX Δ →* DA Δ} (hι : IsIotaD ι) (γ : DX Δ) (v : Pl F) :
     (mt ((ι γ).1 v)).det = lmap (cv v) Δ (mt γ).det := by
   rw [hι]; exact ((lmap (cv v) Δ).map_det _).symm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun g hg y => mem_SA.2 fun v => by change (mt (y.1 v * g.1 v * (y.1 v)⁻¹)).det = 1 rw [det_mul', det_mul', mem_SA.1 hg v, mul_one, det_inv']⟩`.
+-/
 private theorem SA_normal : (SA Δ).Normal := ⟨fun g hg y => mem_SA.2 fun v => by
   change (mt (y.1 v * g.1 v * (y.1 v)⁻¹)).det = 1
   rw [det_mul', det_mul', mem_SA.1 hg v, mul_one, det_inv']⟩
 
+/- English proof (translation)
+Use `loc_glob _ fun v => ?_` and prove the remaining obligations. Establish `h1` using `h v`. Rewrite `h1` using `[det_iota hι, det_im, lmap_alg]`. Conclude with `(isIntegral_algebraMap_iff (algebraMap (Kv v) (Lsq (Kv v) (cv v Δ))).injective).1 h1`.
+-/
 private theorem re_int {ι : DX Δ →* DA Δ} (hι : IsIotaD ι) (γ : DX Δ)
     (h : ∀ v, IsIntegral (Ov v) (mt ((ι γ).1 v)).det) : (mt γ).det.re ∈ (algebraMap (𝓞 F) F).range := by
   refine loc_glob _ fun v => ?_
@@ -176,6 +250,17 @@ private theorem re_int {ι : DX Δ →* DA Δ} (hι : IsIotaD ι) (γ : DX Δ)
   rw [det_iota hι, det_im, lmap_alg] at h1
   exact (isIntegral_algebraMap_iff (algebraMap (Kv v) (Lsq (Kv v) (cv v Δ))).injective).1 h1
 
+/- English proof (translation)
+Establish `h1 : ∀ v, (mt ((ι γ).1 v)).det * (mt (k.1 v)).det = 1` using `fun v => by`. Establish `h2 : (mt ((ι γ).1 v * (y.1 v * k.1 v * (y.1 v)⁻¹))).det = 1` using `mem_SA.1 h v`. Rewrite `h2` using `[det_mul', det_mul', det_mul', mul_right_comm, det_inv', one_mul]`. Then use the resulting hypothesis. Take `⟨a, ha⟩` from `re_int hι γ fun v => by`. Establish `h2` using `det_int (inv_mem (mem_box.1 hk v))`.
+
+Establish `h3` using `det_inv' (k.1 v)`. Establish `: (mt ((ι γ).1 v)).det = (mt (k.1 v)⁻¹).det`. Rewrite using `[← mul_one (mt ((ι γ).1 v)).det, ← h3, ← mul_assoc, h1, one_mul]`. Rewrite using `[this]` and apply the resulting hypothesis. Take `⟨b, hb⟩` from `re_int hι γ⁻¹ fun v => by`.
+
+Establish `h2` using `det_int (mem_box.1 hk v)`. Establish `h3` using `det_inv' ((ι γ).1 v)`. Establish `: (mt ((ι γ⁻¹).1 v)).det = (mt (k.1 v)).det`. Rewrite using `[map_inv]`. Express the relevant statement in the definitionally equal form `(mt ((ι γ).1 v)⁻¹).det = _`.
+
+Rewrite using `[← one_mul (mt ((ι γ).1 v)⁻¹).det, ← h1, mul_right_comm, h3, one_mul]`. Rewrite using `[this]` and apply the resulting hypothesis. Establish `hab : a * b = 1`. Apply `IsFractionRing.injective (𝓞 F) F` to reduce the goal to its premises. Apply `(algebraMap F (Lsq F Δ)).injective` to reduce the goal to its premises.
+
+Rewrite using `[map_mul, map_mul, ha, hb, ← det_im, ← det_im, det_inv', map_one, map_one]`. Conclude with `⟨⟨a, b, hab, by rw [mul_comm, hab]⟩, by rw [det_im, ← ha]⟩`.
+-/
 private theorem unit_det {ι : DX Δ →* DA Δ} (hι : IsIotaD ι) (γ : DX Δ) (k : DA Δ)
     (hk : k ∈ (rpg _ _).box (fun v : Pl F => KD (cv v Δ) (Ov v))) (y : DA Δ) (h : ι γ * (y * k * y⁻¹) ∈ SA Δ) :
     ∃ ε : (𝓞 F)ˣ, (mt γ).det = algebraMap F (Lsq F Δ) (algebraMap (𝓞 F) F ε) := by
@@ -202,6 +287,23 @@ private theorem unit_det {ι : DX Δ →* DA Δ} (hι : IsIotaD ι) (γ : DX Δ)
     rw [map_mul, map_mul, ha, hb, ← det_im, ← det_im, det_inv', map_one, map_one]
   exact ⟨⟨a, b, hab, by rw [mul_comm, hab]⟩, by rw [det_im, ← ha]⟩
 
+/- English proof (translation)
+Establish `: Group.FG (𝓞 F)ˣ` using `Group.fg_iff_monoid_fg.2 inferInstance`. Use `Subgroup.finiteIndex_range_powMonoidHom_of_fg (𝓞 F)ˣ (n := 2) two_ne_zero` as an intermediate fact. Use `SA_normal (Δ := Δ)` as an intermediate fact. Set `P : DX Δ → Prop` to `fun γ => ∃ ε : (𝓞 F)ˣ, (mt γ).det = algebraMap F (Lsq F Δ) (algebraMap (𝓞 F) F ε)`. Set `c : DX Δ → (𝓞 F)ˣ ⧸ (powMonoidHom 2 : (𝓞 F)ˣ →* (𝓞 F)ˣ).range` to `fun γ => if h : P γ then (h.choose : (𝓞 F)ˣ) else 1`.
+
+Take `⟨S, hS⟩` from `su_abs ι (SU Δ) (SA Δ) _ D.U2 (fun γ hγ => mem_SA.2 fun v => by rw [det_iota hι, mem_SU.1 hγ, map_one]) hU hcls x P c (unit_det hι) (by`. Introduce `γ γ' h h' e`. Simplify using `only [c, dif_pos h, dif_pos h'] at e`. Take `⟨η, hη⟩` from `QuotientGroup.eq.1 e`. Establish `hη' : h'.choose = h.choose * η ^ 2` using `by rw [show η ^ 2 = _ from hη]; group`.
+
+Set `z` to `scal Δ (Units.map (algebraMap (𝓞 F) F : 𝓞 F →* F) η)`. Establish `hz : ∀ v, mt ((ι z).1 v) = scalar (Fin 2) (algebraMap (Kv v) (Lsq (Kv v) (cv v Δ)) (cv v (algebraMap (𝓞 F) F η)))`. Introduce `v`. Rewrite using `[hι, mt_scal, ← lmap_alg]`. Use extensionality with `i j : 1`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`. Use `⟨z, mem_box.2 fun v => scal_KD (Units.map (algebraMap (𝓞 F) (Ov v) : 𝓞 F →* Ov v) η) _ ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hz]`. Both sides reduce to the same expression. Use `Subgroup.mem_center_iff.2 fun g => Subtype.ext (funext fun v => Subtype.ext (Units.ext ?_))` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `mt (g.1 v) * mt ((ι z).1 v) = mt ((ι z).1 v) * mt (g.1 v)`. Rewrite using `[hz]`. Conclude with `(Matrix.scalar_commute _ (fun r => Commute.all _ r) _).symm.eq`. Establish `hd : (mt z).det = algebraMap F (Lsq F Δ) (algebraMap (𝓞 F) F η) ^ 2`. Rewrite using `[mt_scal, Matrix.scalar_apply, Matrix.det_diagonal]`.
+
+Simplify using the standard rewrite rules. Establish `h3 : (mt γ').det = (mt γ).det * (mt z).det`. Rewrite using `[h'.choose_spec, hη', hd]`. Use `conv_rhs => rw [h.choose_spec]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[mem_SU, det_mul', det_mul', h3]`. Take the linear combination `((mt z).det * (mt z⁻¹).det) * det_inv' γ + det_inv' z)`. Use `⟨S, fun g => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, s, hs, u, hu, e⟩` from `hS g`. Use `⟨⟨γ, hγ⟩, s, hs, u, (hB.U u).2 hu, Subtype.ext ?_⟩` and prove the remaining obligations.
+
+Establish `: (B.ι ⟨γ, hγ⟩ : DA Δ) = ι γ` using `Subtype.ext (funext fun v => Subtype.ext (Units.ext ((hB.ι ⟨γ, hγ⟩ v).trans (hι γ v).symm)))`. Rewrite using `[e, ← this]`. Both sides reduce to the same expression.
+-/
 theorem finS_cls_of (D : Dat Δ) (ι : DX Δ →* DA Δ) (hι : IsIotaD ι)
     (hcls : ∃ Y : Finset (DA Δ), ∀ g, ∃ γ, ∃ y ∈ Y, ∃ k ∈ (rpg _ _).box (fun v : Pl F => KD (cv v Δ) (Ov v)), g = ι γ * y * k)
     (hU : D.U2.relIndex ((rpg _ _).box fun v : Pl F => KD (cv v Δ) (Ov v)) ≠ 0)

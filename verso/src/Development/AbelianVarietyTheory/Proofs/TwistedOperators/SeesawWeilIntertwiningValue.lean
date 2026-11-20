@@ -19,6 +19,9 @@ namespace GlobalTheory.TripleAssembly
 
 variable {D : D7}
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use `show (GlobalTheory.TripleRead.toUX X e hJ 1).1.1 = 1`. Rewrite using `[GlobalTheory.TripleRead.toUX_val]`. Simplify using `[Formalism.L2.Theta.mt]`.
+-/
 theorem toUX_one (X : HSp D) {k : ℕ} (e : Fin k ≃ Fin X.rank) {J : Matrix (Fin k) (Fin k) D.host.E}
     (hJ : J = D.host.xi0 • (X.gramᵀ).submatrix e e) : GlobalTheory.TripleRead.toUX X e hJ 1 = 1 := by
   apply Subtype.ext; apply Units.ext
@@ -28,6 +31,39 @@ theorem toUX_one (X : HSp D) {k : ℕ} (e : Fin k ≃ Fin X.rank) {J : Matrix (F
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hHD hPr D ψ θ hψ hθ W W₁ X A A₁ B α β hT ωA ωB hWA hWB e Bs Γ Xc om om' h hTA hTB R Rf hM`. Establish `hL1` using `GlobalTheory.T.seesaw_weil_triple_norm hHD hPr D ψ θ hψ hθ W W₁ X A A₁ B α β hT ωA ωB hWA hWB e Bs Γ Xc om om' h hTA hTB R Rf hM`. Establish `hL2` using `GlobalTheory.T.triple_unitary_action_unipotent hPr D.host.F D.host.E D.sp.cm.sig Bs W.rank W₁.rank Γ Xc om om' hM.triple`. Use `⟨fun g hg Φ hΦ => ?_, fun g hg Φ hΦ => ?_⟩` and prove the remaining obligations. Establish `key : ∀ Ψ ∈ GlobalTheory.TripleAssembly.darbAlg Γ.M Bs.ψ Bs.emb, om (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU W (1) h.JW g, 1) Ψ ∈ GlobalTheory.TripleAssembly.darbAlg Γ.M Bs.ψ Bs.emb ∧ GlobalTheory.TripleAssembly.liftPure Γ.M R.p Rf.p (GlobalTheory.TripleA …`.
+
+Establish `hfin` using `GlobalTheory.T.archSupported_smul_conjugateUnitary_sub_one_eq_zero D W (1 : D.host.E) h.JW g hg`. Introduce `Ψ hΨ`. Proceed by induction on `hΨ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, φ, hf, hφ, hv, rfl⟩` from `hx`.
+
+Take `⟨φ', hφ', hv', hd, he⟩` from `hL2.1 _ hfin f φ hφ hv`. Rewrite using `[he]`. Use `⟨Submodule.subset_span ⟨f, φ', hf, hφ', hv', rfl⟩, ?_⟩` and prove the remaining obligations. Unfold `GlobalTheory.TripleAssembly.liftPure`. Use `split_ifs with H`.
+
+Rewrite using `[H.choose_spec f φ' hφ' hv', H.choose_spec f φ hφ hv]`. Use `congr 2`. Use function extensionality and compare the values at `v`. Use `hM.fin.inv v (hd v)` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, map_sub, sub_eq_zero]`.
+
+Conclude with `this`. Both sides reduce to the same expression. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add, map_add, map_add, hx.2, hy.2]`.
+
+Conclude with `⟨Submodule.add_mem _ hx.1 hy.1, rfl⟩`. Consider the case `smul c x _ hx`. Rewrite using `[map_smul, map_smul, map_smul, hx.2]`. Conclude with `⟨Submodule.smul_mem _ c hx.1, rfl⟩`. Take `⟨Ψ, hΨ, rfl⟩` from `hL1.1 Φ hΦ`.
+
+Establish `hS` using `GlobalTheory.T.darbouxModelAlgebraicVectors_le_adelicSchwartz D.sp.cm.sig Γ.V Γ.W Γ.M Bs.ψ Bs.emb hM.triple.geo.hM hΨ`. Establish `e1` using `hTA Ψ hS g 1`. Rewrite `e1` using `[toUX_one]`. Use `(congrArg (⇑(GlobalTheory.TripleAssembly.mapA ψ e Bs Γ R Rf)) e1.symm).trans ?_` and prove the remaining obligations. Take `⟨k1, k2⟩` from `key Ψ hΨ`.
+
+Unfold `GlobalTheory.TripleAssembly.mapA`. Unfold `GlobalTheory.TripleAssembly.thetaLift`. Use `split_ifs with H`. Rewrite using `[H.choose_spec _ k1, H.choose_spec _ hΨ, k2]`. Both sides reduce to the same expression.
+
+Establish `key : ∀ Ψ ∈ GlobalTheory.TripleAssembly.darbAlg Γ.M' Bs.ψ Bs.emb, om' (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU W₁ (-1) h.JW₁ g, 1) Ψ ∈ GlobalTheory.TripleAssembly.darbAlg Γ.M' Bs.ψ Bs.emb ∧ GlobalTheory.TripleAssembly.liftPure Γ.M' R.p' Rf.p' (GlobalTheor …`. Establish `hfin` using `GlobalTheory.T.archSupported_smul_conjugateUnitary_sub_one_eq_zero D W₁ (-1 : D.host.E) h.JW₁ g hg`. Introduce `Ψ hΨ`. Proceed by induction on `hΨ using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨f, φ, hf, hφ, hv, rfl⟩` from `hx`. Take `⟨φ', hφ', hv', hd, he⟩` from `hL2.2 _ hfin f φ hφ hv`. Rewrite using `[he]`. Use `⟨Submodule.subset_span ⟨f, φ', hf, hφ', hv', rfl⟩, ?_⟩` and prove the remaining obligations. Unfold `GlobalTheory.TripleAssembly.liftPure`.
+
+Use `split_ifs with H`. Rewrite using `[H.choose_spec f φ' hφ' hv', H.choose_spec f φ hφ hv]`. Use `congr 2`. Use function extensionality and compare the values at `v`. Use `hM.fin.inv' v (hd v)` as an intermediate fact.
+
+Rewrite `this` using `[LinearMap.mem_ker, map_sub, sub_eq_zero]`. Conclude with `this`. Both sides reduce to the same expression. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`.
+
+Rewrite using `[map_add, map_add, map_add, hx.2, hy.2]`. Conclude with `⟨Submodule.add_mem _ hx.1 hy.1, rfl⟩`. Consider the case `smul c x _ hx`. Rewrite using `[map_smul, map_smul, map_smul, hx.2]`. Conclude with `⟨Submodule.smul_mem _ c hx.1, rfl⟩`.
+
+Take `⟨Ψ, hΨ, rfl⟩` from `hL1.2 Φ hΦ`. Establish `hS` using `GlobalTheory.T.darbouxModelAlgebraicVectors_le_adelicSchwartz D.sp.cm.sig Γ.V' Γ.W Γ.M' Bs.ψ Bs.emb hM.triple.geo.hM' hΨ`. Establish `e1` using `hTB Ψ hS g 1`. Rewrite `e1` using `[toUX_one]`. Use `(congrArg (⇑(GlobalTheory.TripleAssembly.mapB ψ e Bs Γ R Rf)) e1.symm).trans ?_` and prove the remaining obligations.
+
+Take `⟨k1, k2⟩` from `key Ψ hΨ`. Unfold `GlobalTheory.TripleAssembly.mapB`. Unfold `GlobalTheory.TripleAssembly.thetaLift`. Use `split_ifs with H`. Rewrite using `[H.choose_spec _ k1, H.choose_spec _ hΨ, k2]`.
+
+Both sides reduce to the same expression.
+-/
 theorem mapA_mapB_invFin : GlobalTheory.Published.HoweDualityReal → GlobalTheory.FunPr.Hypotheses₂ →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
     ∀ (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁) (B : Fr X) (α β : (AE D)ˣ →* Circle), IsTriple W W₁ X α β →

@@ -16,6 +16,19 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 
 namespace GlobalTheory.CompanionTheory.Ar.Fan.OldCellsStarMultiplicity
 
+/- English proof (translation)
+Introduce `O _ _ _ _ bar hb q φ lab w ψ' hDom hφ hlab M hM X _ _ _ _ hX n γ' hγ' hli' hp' m γ hγφ hγψ hw hin`. Take `⟨m', δ, hδ, hδli, -, hδγ⟩` from `hlab.2 X hX m γ hγφ`. Take `⟨δ₁, hδ₁, hδ₁li, hδ₁p, hδδ₁⟩` from `GlobalTheory.T.exists_rescale_primitive_linearIndependent_cell bar φ δ hδ hδli`. Establish `hγδ₁ : ∀ k, InRCone δ₁ (γ k)` using `fun k => hδδ₁ _ (hδγ k)`. Take `⟨h₂, h₂n, h₂z, h₂c⟩` from `GlobalTheory.T.exists_linForm_cut_face_of_cell_in_cone bar φ δ₁ γ hδ₁ hγφ hγδ₁`.
+
+Take `⟨h₁, h₁n, h₁z, h₁c⟩` from `GlobalTheory.T.exists_linForm_cut_face_of_cell_in_cone bar ψ' γ γ' hγψ hγ' hin`. Take `⟨h, hn, hz, hc⟩` from `GlobalTheory.T.exists_linForm_cut_face_of_face_of_cone bar δ₁ γ γ' h₂ h₁ hδ₁.mem hδ₁.nonneg hin h₂n h₂z h₂c h₁n h₁z h₁c`. Establish `hin₁ : ∀ j, InRCone δ₁ (γ' j)` using `fun j => inRCone_trans hγδ₁ (hin j)`. Take `⟨s, hs, hsf⟩` from `GlobalTheory.T.eq_subfamily_of_face_simplicialCone_primitive bar δ₁ γ' hδ₁.mem hγ'.mem h hδ₁li hli' hδ₁p hp' hin₁ hn hz (fun i hi => hc _ (hδ₁.mem i) (hδ₁.nonneg i) (inRCone_self δ₁ i) hi)`. Establish `hγ'eq : γ' = fun j => δ₁ (s j)` using `funext hs`.
+
+Establish `hcut : IsFaceCut δ₁ s h` using `⟨hn, hsf⟩`. Establish `hφ' : IsCell bar φ γ'`. Rewrite using `[hγ'eq]`. Conclude with `GlobalTheory.CompanionTheory.Ar.Fan.FaceCells.isCell_face_of_isFaceCut O bar hb q φ hφ X hX (hDom X) m' δ₁ hδ₁ _ s h hcut`. Use `⟨hφ', ?_, fun β hβ hβn hβc h1 => ?_⟩` and prove the remaining obligations.
+
+Establish `hliB : LinearIndependent ℤ (fun i => (⟨δ₁ i, hδ₁.mem i⟩ : balForms bar X))` using `LinearIndependent.of_comp (balForms bar X).subtype hδ₁li`. Establish `hrange : Set.range (fun j => (⟨γ' j, hφ'.mem j⟩ : balForms bar X)) ⊆ Set.range (fun i => (⟨δ₁ i, hδ₁.mem i⟩ : balForms bar X))`. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `⟨s j, Subtype.ext (hs j).symm⟩`. Establish `hdvd` using `GlobalTheory.T.natCard_torsion_quot_span_dvd_of_range_subset' (balForms bar X) _ _ hliB hrange`.
+
+Establish `hpos` using `GlobalTheory.T.balancedFormCellMultiplicity_pos bar (fun i => (⟨δ₁ i, hδ₁.mem i⟩ : balForms bar X))`. Establish `hle` using `SmoothEnd.cellMult_le_maxMult hX hδ₁ hδ₁li hδ₁p`. Establish `hle' : cellMult bar (fun i => (⟨δ₁ i, hδ₁.mem i⟩ : balForms bar X)) ≤ M`. Conclude with `hle.trans hM` after adjusting the coercions. Conclude with `(Nat.le_of_dvd hpos hdvd).trans hle'`.
+
+Rewrite `h1` using `[hw β hβ hβn (inRCone_trans hin hβc)]`. Conclude with `zero_ne_one h1`.
+-/
 theorem starOld_cell_mult_le : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O), CMOrd O bar → ∀ (q : ℕ) (φ lab w ψ' : InvFun O),
     (∀ (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X], Dominates bar X) →
     IsPolyFan bar q φ → SimpLab bar q φ lab → ∀ M : ℕ, maxMult bar q φ ≤ M →

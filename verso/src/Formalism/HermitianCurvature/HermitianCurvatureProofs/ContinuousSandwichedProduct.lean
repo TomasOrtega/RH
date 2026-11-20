@@ -14,6 +14,11 @@ open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.ThreeDimData
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Distinguish the cases in `hf : AEMeasurable f μ`. Use `conv_rhs => rw [← hμ]`. Rewrite using `[lintegral_map' hG.aemeasurable hf]`. Establish `h0 : μ = 0`. Rewrite using `[← hμ]`.
+
+Conclude with `Measure.map_of_not_aemeasurable hf`. Simplify using `[h0]`.
+-/
 private theorem lintegral_comp_eq_of_map_eq {α : Type*} [MeasurableSpace α] {μ : Measure α} {f : α → α}
     (hμ : μ.map f = μ) {G : α → ℝ≥0∞} (hG : Measurable G) :
     ∫⁻ x, G (f x) ∂μ = ∫⁻ x, G x ∂μ := by
@@ -25,11 +30,31 @@ private theorem lintegral_comp_eq_of_map_eq {α : Type*} [MeasurableSpace α] {�
       exact Measure.map_of_not_aemeasurable hf
     simp [h0]
 
+/- English proof (translation)
+Conclude with `lintegral_comp_eq_of_map_eq hμ hG`.
+-/
 theorem lint_lmul {μ : Measure (Formalism.QuantumDeterminants.Mt k r)} {a : Mx k r} (hμ : μ.map (Formalism.QuantumDeterminants.lmulM a) = μ)
     {G : Formalism.QuantumDeterminants.Mt k r → ℝ≥0∞} (hG : Measurable G) :
     ∫⁻ x, G (Formalism.QuantumDeterminants.lmulM a x) ∂μ = ∫⁻ x, G x ∂μ := by
   exact lintegral_comp_eq_of_map_eq hμ hG
 
+/- English proof (translation)
+Establish `hm1 : Measurable (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => F (fun i j => (h0 * n0 * (Matrix.of p.1 * Matrix.of p.2)) i j))` using `(hF.comp (by`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop : Continuous (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => (fun i j => (h0 * n0 * (Matrix.of p.1 * Matrix.of p.2)) i j : Formalism.QuantumDeterminants.Mt k r))).measurable)`. Establish `hm2 : Measurable (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => F (fun i j => (Matrix.of p.1 * Matrix.of p.2) i j))` using `(hF.comp (by`.
+
+Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop : Continuous (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => (fun i j => (Matrix.of p.1 * Matrix.of p.2) i j : Formalism.QuantumDeterminants.Mt k r))).measurable)`. Establish `hm3 : Measurable (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => F (fun i j => (h0 * Matrix.of p.1 * Matrix.of p.2) i j))` using `(hF.comp (by`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations.
+
+Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop : Continuous (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => (fun i j => (h0 * Matrix.of p.1 * Matrix.of p.2) i j : Formalism.QuantumDeterminants.Mt k r))).measurable)`. Establish `hae : ∀ᵐ x ∂μW, Matrix.of x ∈ Formalism.QuantumDeterminants.UWset k r z` using `ae_iff.mpr hW.2.2.1`. Establish `step1 : (fun x => ∫⁻ y, F (fun i j => (h0 * n0 * (Matrix.of x * Matrix.of y)) i j) ∂μN) =ᵐ[μW] fun x => ∫⁻ y, F (fun i j => (h0 * Matrix.of x * Matrix.of y) i j) ∂μN` using `by filter_upwards [hae] with x hx`. Take `⟨hxi, hx1, -⟩` from `Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.uw_inv hx`.
+
+Establish `hm : (Matrix.of x)⁻¹ * n0 * Matrix.of x ∈ Formalism.QuantumDeterminants.Nset k r`. Establish `h1` using `(Formalism.QuantumDeterminants.uWNormal k r z hz _ hxi n0 hn0).1`. Rewrite `h1` using `[Matrix.nonsing_inv_nonsing_inv _ (Matrix.isUnit_det_of_right_inverse hx1)]`. Then use the resulting hypothesis. Establish `hG : Measurable (fun w : Formalism.QuantumDeterminants.Mt k r => F (fun i j => (h0 * Matrix.of x * Matrix.of w) i j))` using `(hF.comp (by`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations.
+
+Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop : Continuous (fun w : Formalism.QuantumDeterminants.Mt k r => (fun i j => (h0 * Matrix.of x * Matrix.of w) i j : Formalism.QuantumDeterminants.Mt k r))).measurable)`. Establish `e1 : ∀ y : Formalism.QuantumDeterminants.Mt k r, h0 * n0 * (Matrix.of x * Matrix.of y) = h0 * Matrix.of x * Matrix.of (Formalism.QuantumDeterminants.lmulM ((Matrix.of x)⁻¹ * n0 * Matrix.of x) y)`. Introduce `y`. Use `show _ = h0 * Matrix.of x * ((Matrix.of x)⁻¹ * n0 * Matrix.of x * Matrix.of y)`.
+
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (Matrix.of x) (Matrix.of x)⁻¹, hx1, Matrix.one_mul]`. Repeatedly rewrite using `[e1]`. Conclude with `lint_lmul (hN.2.2.2 _ hm) hG`. Rewrite using `[MeasureTheory.lintegral_prod _ hm1.aemeasurable, MeasureTheory.lintegral_prod _ hm2.aemeasurable, MeasureTheory.lintegral_congr_ae step1, MeasureTheory.lintegral_lintegral_swap (f := fun (x y : Formalism.QuantumDeterminants.Mt k r) => F (fun i j => (h0 * Matrix.of x * Matrix.of …`.
+
+Use `MeasureTheory.lintegral_congr fun y => ?_` and prove the remaining obligations. Establish `hG : Measurable (fun w : Formalism.QuantumDeterminants.Mt k r => F (fun i j => (Matrix.of w * Matrix.of y) i j))` using `(hF.comp (by`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop : Continuous (fun w : Formalism.QuantumDeterminants.Mt k r => (fun i j => (Matrix.of w * Matrix.of y) i j : Formalism.QuantumDeterminants.Mt k r))).measurable)`.
+
+Establish `e2 : ∀ x : Formalism.QuantumDeterminants.Mt k r, h0 * Matrix.of x * Matrix.of y = Matrix.of (Formalism.QuantumDeterminants.lmulM h0 x) * Matrix.of y` using `fun x => rfl`. Repeatedly rewrite using `[e2]`. Conclude with `lint_lmul (hW.2.2.2 h0 hh0) hG`.
+-/
 theorem param_left {z : Fin (2 * r + k + 1) → ℂ} {μW μN : Measure (Formalism.QuantumDeterminants.Mt k r)}
     (hW : PI.BesselPeriodGGP.IsHaarOn (Formalism.QuantumDeterminants.UWset k r z) μW)
     (hN : PI.BesselPeriodGGP.IsHaarOn (Formalism.QuantumDeterminants.Nset k r) μN)
@@ -97,16 +122,43 @@ theorem param_left {z : Fin (2 * r + k + 1) → ℂ} {μW μN : Measure (Formali
   simp_rw [e2]
   exact lint_lmul (hW.2.2.2 h0 hh0) hG
 
+/- English proof (translation)
+Conclude with `lintegral_comp_eq_of_map_eq hμ hG`.
+-/
 theorem lint_rmul {μ : Measure (Formalism.QuantumDeterminants.Mt k r)} {a : Mx k r} (hμ : μ.map (B.rmulF a) = μ)
     {G : Formalism.QuantumDeterminants.Mt k r → ℝ≥0∞} (hG : Measurable G) :
     ∫⁻ x, G (B.rmulF a x) ∂μ = ∫⁻ x, G x ∂μ := by
   exact lintegral_comp_eq_of_map_eq hμ hG
 
+/- English proof (translation)
+Conclude with `lintegral_comp_eq_of_map_eq hμ hG`.
+-/
 theorem lint_conj {μ : Measure (Formalism.QuantumDeterminants.Mt k r)} {a : Mx k r} (hμ : μ.map (Formalism.QuantumDeterminants.conjM a) = μ)
     {G : Formalism.QuantumDeterminants.Mt k r → ℝ≥0∞} (hG : Measurable G) :
     ∫⁻ x, G (Formalism.QuantumDeterminants.conjM a x) ∂μ = ∫⁻ x, G x ∂μ := by
   exact lintegral_comp_eq_of_map_eq hμ hG
 
+/- English proof (translation)
+Take `⟨hi, h1, -⟩` from `Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.uw_inv hh0`. Establish `hinv : h0⁻¹⁻¹ = h0` using `Matrix.nonsing_inv_nonsing_inv _ (Matrix.isUnit_det_of_right_inverse h1)`. Establish `hconj : μN.map (Formalism.QuantumDeterminants.conjM h0⁻¹) = μN` using `Formalism.FourierDecayAlt.P.b2_conjInvRaw_proof k r z μN hz hT hN _ hi`. Establish `hm1 : Measurable (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => F (fun i j => (Matrix.of p.1 * Matrix.of p.2 * (h0 * n0)) i j))` using `(hF.comp (by`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations.
+
+Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop : Continuous (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => (fun i j => (Matrix.of p.1 * Matrix.of p.2 * (h0 * n0)) i j : Formalism.QuantumDeterminants.Mt k r))).measurable)`. Establish `hm2 : Measurable (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => F (fun i j => (Matrix.of p.1 * Matrix.of p.2) i j))` using `(hF.comp (by`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`.
+
+Use `fun_prop : Continuous (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => (fun i j => (Matrix.of p.1 * Matrix.of p.2) i j : Formalism.QuantumDeterminants.Mt k r))).measurable)`. Establish `hm3 : Measurable (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => F (fun i j => (Matrix.of p.1 * h0 * Matrix.of p.2) i j))` using `(hF.comp (by`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop : Continuous (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => (fun i j => (Matrix.of p.1 * h0 * Matrix.of p.2) i j : Formalism.QuantumDeterminants.Mt k r))).measurable)`.
+
+Establish `inner : ∀ x : Formalism.QuantumDeterminants.Mt k r, ∫⁻ y, F (fun i j => (Matrix.of x * Matrix.of y * (h0 * n0)) i j) ∂μN = ∫⁻ y, F (fun i j => (Matrix.of x * h0 * Matrix.of y) i j) ∂μN`. Introduce `x`. Establish `hG1 : Measurable (fun w : Formalism.QuantumDeterminants.Mt k r => F (fun i j => (Matrix.of x * h0 * Matrix.of w * n0) i j))` using `(hF.comp (by`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`.
+
+Use `fun_prop : Continuous (fun w : Formalism.QuantumDeterminants.Mt k r => (fun i j => (Matrix.of x * h0 * Matrix.of w * n0) i j : Formalism.QuantumDeterminants.Mt k r))).measurable)`. Establish `hG2 : Measurable (fun w : Formalism.QuantumDeterminants.Mt k r => F (fun i j => (Matrix.of x * h0 * Matrix.of w) i j))` using `(hF.comp (by`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop : Continuous (fun w : Formalism.QuantumDeterminants.Mt k r => (fun i j => (Matrix.of x * h0 * Matrix.of w) i j : Formalism.QuantumDeterminants.Mt k r))).measurable)`.
+
+Establish `e1 : ∀ y : Formalism.QuantumDeterminants.Mt k r, Matrix.of x * Matrix.of y * (h0 * n0) = Matrix.of x * h0 * Matrix.of (Formalism.QuantumDeterminants.conjM h0⁻¹ y) * n0`. Introduce `y`. Use `show _ = Matrix.of x * h0 * (h0⁻¹ * Matrix.of y * h0⁻¹⁻¹) * n0`. Rewrite using `[hinv]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[← Matrix.mul_assoc h0 h0⁻¹, h1, Matrix.one_mul]`. Establish `e2 : ∀ y : Formalism.QuantumDeterminants.Mt k r, Matrix.of x * h0 * Matrix.of y * n0 = Matrix.of x * h0 * Matrix.of (B.rmulF n0 y)`. Introduce `y`. Use `show _ = Matrix.of x * h0 * (Matrix.of y * n0)`. Simplify using `only [Matrix.mul_assoc]`.
+
+Repeatedly rewrite using `[e1]`. Rewrite using `[lint_conj hconj hG1]`. Repeatedly rewrite using `[e2]`. Conclude with `lint_rmul (hN.right n0 hn0) hG2`. Rewrite using `[MeasureTheory.lintegral_prod _ hm1.aemeasurable, MeasureTheory.lintegral_prod _ hm2.aemeasurable]`.
+
+Repeatedly rewrite using `[inner]`. Rewrite using `[MeasureTheory.lintegral_lintegral_swap (f := fun (x y : Formalism.QuantumDeterminants.Mt k r) => F (fun i j => (Matrix.of x * h0 * Matrix.of y) i j)) hm3.aemeasurable, MeasureTheory.lintegral_lintegral_swap (f := fun (x y : Formalism.QuantumDeterminants.Mt k r) => F (fun i j => …`. Use `MeasureTheory.lintegral_congr fun y => ?_` and prove the remaining obligations. Establish `hG3 : Measurable (fun w : Formalism.QuantumDeterminants.Mt k r => F (fun i j => (Matrix.of w * Matrix.of y) i j))` using `(hF.comp (by`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations.
+
+Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop : Continuous (fun w : Formalism.QuantumDeterminants.Mt k r => (fun i j => (Matrix.of w * Matrix.of y) i j : Formalism.QuantumDeterminants.Mt k r))).measurable)`. Establish `e3 : ∀ x : Formalism.QuantumDeterminants.Mt k r, Matrix.of x * h0 * Matrix.of y = Matrix.of (B.rmulF h0 x) * Matrix.of y` using `fun x => rfl`. Repeatedly rewrite using `[e3]`. Conclude with `lint_rmul (hW.right h0 hh0) hG3`.
+-/
 theorem param_right {z : Fin (2 * r + k + 1) → ℂ} {μW μN : Measure (Formalism.QuantumDeterminants.Mt k r)}
     (hW : B.IsHaarOn (Formalism.QuantumDeterminants.UWset k r z) μW) (hN : B.IsHaarOn (Formalism.QuantumDeterminants.Nset k r) μN)
     [SigmaFinite μW] [SigmaFinite μN] (hz : Formalism.QuantumDeterminants.inWb k r z) (hT : 0 < Formalism.QuantumDeterminants.Tz k r z)

@@ -21,10 +21,18 @@ def affVal (V : A.left.affineOpens) (P : GPt A) (h : P.In V.1) : (Pt.aff (A.hom 
         (GlobalTheory.Points.valR_constFn_of_over _ (algebraMap K P.B) P.x P.w V.1 h r) }
   pt := GlobalTheory.Points.specMap_valMap_fromSpec V.2 P.x h
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.Points.valR_eq P.x V.1 h f).symm`.
+-/
 theorem affVal_ρ (V : A.left.affineOpens) (P : GPt A) (h : P.In V.1) (f : CechDR.Sec (A.hom ≫ 𝟙 (Sp K)) V.1) :
     (affVal V P h).ρ f = valR P.x V.1 f :=
   (GlobalTheory.Points.valR_eq P.x V.1 h f).symm
 
+/- English proof (translation)
+Establish `e : ((affVal V P h).comp φ).ρ = (affVal V Q (h.map φ)).ρ`. Use extensionality with `f`. Express the relevant statement in the definitionally equal form `φ.ρ ((affVal V P h).ρ f) = _`. Rewrite using `[affVal_ρ, affVal_ρ, ← φ.pt]`. Conclude with `(GlobalTheory.Points.valR_spMap_comp (φ.ρ : P.B →+* Q.B) P.x V.1 h f).symm`.
+
+Consider the cases of `h1 : (affVal V P h).comp φ`. Consider the cases of `h2 : affVal V Q (h.map φ)`. Rewrite `e` using `[h1, h2]`. Consider the cases of `e`. Both sides reduce to the same expression.
+-/
 theorem affVal_comp (V : A.left.affineOpens) {P Q : GPt A} (h : P.In V.1) (φ : P.Hom Q) :
     (affVal V P h).comp φ = affVal V Q (h.map φ) := by
   have e : ((affVal V P h).comp φ).ρ = (affVal V Q (h.map φ)).ρ := by
@@ -38,6 +46,9 @@ theorem affVal_comp (V : A.left.affineOpens) {P Q : GPt A} (h : P.In V.1) (φ : 
   cases e
   rfl
 
+/- English proof (translation)
+The claim follows from `V.2.fromSpec_preimage_self.ge`.
+-/
 theorem aff_in (V : A.left.affineOpens) : (Pt.aff (A.hom ≫ 𝟙 (Sp K)) V).In V.1 :=
   V.2.fromSpec_preimage_self.ge
 
@@ -45,6 +56,11 @@ def Idx {I : Type} (U : I → A.left.Opens) : Type := {p : I × A.left.affineOpe
 
 omit [GrpObj A] in
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `hx : x ∈ ⨆ i, U i` using `hU.ge trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`. Take `⟨_, ⟨V, hV, rfl⟩, hxV, hVU⟩` from `A.left.isBasis_affineOpens.exists_subset_of_mem_open hi (U i).2`.
+
+Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨(i, ⟨V, hV⟩), hVU⟩, hxV⟩`.
+-/
 theorem iSup_idx {I : Type} (U : I → A.left.Opens) (hU : ⨆ i, U i = ⊤) : ⨆ a : Idx U, a.1.2.1 = ⊤ := by
   rw [eq_top_iff]
   intro x _
@@ -60,6 +76,9 @@ def βa {I : Type} {U : I → A.left.Opens} (β : ∀ P Q : GPt A, P.Hom Q → Q
     PtFn (A.hom ≫ 𝟙 (Sp K)) :=
   fun P ↦ if h : P.In a.1.2.1 then β _ P (affVal a.1.2 P h) else 0
 
+/- English proof (translation)
+Establish `hQ : Q.In a.1.2.1` using `h.map φ`. Simplify using `only [βa, dif_pos h, dif_pos hQ]`. Rewrite using `[← affVal_comp a.1.2 h φ]`. Conclude with `hβ _ P Q _ φ ⟨a.1.1, (aff_in a.1.2).mono a.2⟩`.
+-/
 theorem βa_step {I : Type} {U : I → A.left.Opens} {β : ∀ P Q : GPt A, P.Hom Q → Q.B}
     (hβ : ∀ (P Q T : GPt A) (φ : P.Hom Q) (ψ : Q.Hom T), (∃ i, P.In (U i)) →
       β P T (φ.comp ψ) = ψ.ρ (β P Q φ) + β Q T ψ) (a : Idx U) {P Q : GPt A} (h : P.In a.1.2.1)
@@ -71,6 +90,23 @@ theorem βa_step {I : Type} {U : I → A.left.Opens} {β : ∀ P Q : GPt A, P.Ho
 
 open Classical in
 
+/- English proof (translation)
+Introduce `K _ A _ hA I U hU β hβ v hv`. Set `W : Idx U → A.left.Opens` to `fun a ↦ a.1.2.1`. Establish `hsec : ∀ a b : Idx U, ∃ f : Γ(A.left, W a ⊓ W b), ∀ P : GPt A, P.In (W a ⊓ W b) → βa β a P - βa β b P = valR P.x (W a ⊓ W b) f`. Introduce `a b`. Take `⟨f, hf⟩` from `GlobalTheory.T.exists_section_of_natural_on_algebraPoints_of_cover K A.left (A.hom ≫ 𝟙 (Sp K)) Unit (fun _ ↦ W a ⊓ W b) (W a ⊓ W b) (fun _ ↦ le_rfl) (le_iSup (fun _ : Unit ↦ W a ⊓ W b) ()) (fun P ↦ βa β a P - βa β b P) (fun _ P Q φ hP ↦ by`.
+
+Express the relevant statement in the definitionally equal form `βa β a Q - βa β b Q = φ.ρ (βa β a P - βa β b P)`. Rewrite using `[βa_step hβ a (hP.mono inf_le_left) φ, βa_step hβ b (hP.mono inf_le_right) φ, map_sub]`. Use the proof step `ring)`. Conclude with `⟨f, fun P hP ↦ hf () P hP⟩`. Use `choose φab hφab using hsec`.
+
+Establish `hcoc : ∀ (a b c : Idx U) (P : GPt A), P.In (W a) → P.In (W b) → P.In (W c) → valR P.x _ (φab a b) + valR P.x _ (φab b c) = valR P.x _ (φab a c)`. Introduce `a b c P ha hb hc`. Rewrite using `[← hφab a b P (ha.inf hb), ← hφab b c P (hb.inf hc), ← hφab a c P (ha.inf hc)]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨ψ, hψn, hψ⟩` from `GlobalTheory.T.derivative_cechCocycle_invariantVectorField_isCoboundary K A hA (Idx U) W (iSup_idx U hU) φab hcoc v hv`.
+
+Set `G : PtFn (A.hom ≫ 𝟙 (Sp K))` to `fun P ↦ if h : ∃ a, P.In (W a) then TrivSqZeroExt.snd (R := P.B) (βa β h.choose (P.tr v)) - ψ h.choose P else 0`. Establish `hG : ∀ (a : Idx U) (P : GPt A), P.In (W a) → G P = TrivSqZeroExt.snd (R` using `P.B) (βa β a (P.tr v)) - ψ a P := by`. Introduce `a P ha`. Establish `h : ∃ a, P.In (W a)` using `⟨a, ha⟩`. Establish `hb : P.In (W h.choose)` using `h.choose_spec`.
+
+Establish `e1` using `hφab h.choose a (P.tr v) ((hb.inf ha).tr hv)`. Establish `e2` using `hψ h.choose a P hb ha`. Express the relevant statement in the definitionally equal form `βa β h.choose (P.tr v) - βa β a (P.tr v) = valR (P.trx v) _ (φab h.choose a) at e1`. Rewrite `e2` using `[← e1, TrivSqZeroExt.snd_sub]`. Simplify using `only [G, dif_pos h]`.
+
+Take the linear combination `e2`. Use `⟨G, fun i V hVU P Q φ hP ↦ ?_⟩` and prove the remaining obligations. Set `a : Idx U` to `⟨(i, V), hVU⟩`. Establish `hPa : P.In (W a)` using `hP`. Establish `hQa : Q.In (W a)` using `hP.map φ`.
+
+Rewrite using `[hG a P hPa, hG a Q hQa, hψn a P Q φ hPa]`. Establish `e` using `βa_step hβ a (hPa.tr hv) (φ.tr v)`. Establish `e'` using `congrArg (TrivSqZeroExt.snd (R := Q.B)) e`. Express the relevant statement in the definitionally equal form `TrivSqZeroExt.snd (R := Q.B) (βa β a (Q.tr v)) = TrivSqZeroExt.snd (R := Q.B) (dualAlg φ.ρ (βa β a (P.tr v)) + β (P.tr v) (Q.tr v) (φ.tr v)) at e'`. Rewrite `e'` using `[TrivSqZeroExt.snd_add, snd_dualAlg]`.
+
+Rewrite using `[map_sub]`. Take the linear combination `-e'`.
+-/
 theorem exists_coboundary_snd_tr : ∀ (K : Type) [Field K] (A : Over (Sp K)) [GrpObj A], IsAbelianScheme A → ∀ (I : Type) (U : I → A.left.Opens), ⨆ i, U i = ⊤ → ∀ β : ∀ P Q : GPt A, P.Hom Q → Q.B, (∀ (P Q T : GPt A) (φ : P.Hom Q) (ψ : Q.Hom T), (∃ i, P.In (U i)) → β P T (φ.comp ψ) = ψ.ρ (β P Q φ) + β Q T ψ) → ∀ v : epsR K ⟶ A, IsTangent v → ∃ G : PtFn (A.hom ≫ 𝟙 (Sp K)), ∀ (i : I) (V : A.left.affineOpens), V.1 ≤ U i → ∀ (P Q : GPt A) (φ : P.Hom Q), P.In V.1 → TrivSqZeroExt.snd (R := Q.B) (β (P.tr v) (Q.tr v) (φ.tr v)) = G Q - φ.ρ (G P) := by
   intro K _ A _ hA I U hU β hβ v hv
   let W : Idx U → A.left.Opens := fun a ↦ a.1.2.1

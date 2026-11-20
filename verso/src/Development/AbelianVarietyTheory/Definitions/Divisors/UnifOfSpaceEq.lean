@@ -46,14 +46,23 @@ variable {D : D7} {j : ℕ} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Ho
   {c : Coeff l} {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ D.R.r}
   {dict : ∀ σ : c.F →+* ℂ, GA D (D.sp.W j) → Σ k, Frame ((U σ).X k).Ψ D.R.r}
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.TransferCompare.evalWD_framed Xo c`.
+-/
 theorem Laws.evalWD (_ : Laws D j Xo c U dict) : EvalWD (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) :=
   GlobalTheory.TransferCompare.evalWD_framed Xo c
 
+/- English proof (translation)
+Introduce `σ _ k x` and use `haveI : IsReduced (CAt σ) := inferInstanceAs (IsReduced ℂ) GlobalTheory.TransferCompare.allTest_framed Xo c (CAt σ) ((U σ).un k x)`.
+-/
 theorem Laws.unTest (_ : Laws D j Xo c U dict) : ∀ σ, GoodEmb c σ → ∀ k x,
     FromTest (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) ((U σ).un k x) := fun σ _ k x =>
   haveI : IsReduced (CAt σ) := inferInstanceAs (IsReduced ℂ)
   GlobalTheory.TransferCompare.allTest_framed Xo c (CAt σ) ((U σ).un k x)
 
+/- English proof (translation)
+Introduce `σ hσ k τ`. Take `⟨hr, hm⟩` from `h.modelW σ hσ`. Rewrite using `[(hm k).2, map_neg, norm_neg]`. Conclude with `ReciprocityTheory.ChartRestriction.G.PullbackSections.PfModelLatB.norm_embedding_hostFormConstant_eq D τ`.
+-/
 theorem Laws.xiAbs (h : Laws D j Xo c U dict) : ∀ σ, GoodEmb c σ → ∀ k (τ : D.host.E →+* ℂ), ‖τ ((U σ).X k).ξ0‖ = xiR D := by
   intro σ hσ k τ
   obtain ⟨hr, hm⟩ := h.modelW σ hσ
@@ -65,6 +74,9 @@ end Derived
 def coreDict {D : D7} (T : Core D) (j : ℕ) (σ : T.Q.c.F →+* ℂ) (g : GA D (D.sp.W j)) : Σ k, Frame ((T.U j σ).X k).Ψ D.R.r :=
   open Classical in if h : T.V j σ = D.sp.W j then T.dict j σ (h ▸ g) else T.dict j σ 1
 
+/- English proof (translation)
+Substitute `h` using the available equality. Take `⟨th, hr, h1, h2⟩` from `hd`. Conclude with `⟨Kf, th, hr, hK, h1, h2, hu⟩`.
+-/
 theorem unif_of_space_eq {D : D7} {r : ℕ} {C : Type} {X : C → Data D.host.E r} (V W : HSp D) (h : V = W)
     (dict : GA D V → Σ k, Frame (X k).Ψ r) (M : ℕ) (Kf : Subgroup (GA D V)) (hK : IsLevelK V M Kf)
     (hd : ∃ th hr, (∀ k τ, Formalism.MainNotions.StandardLattice.IsInfEmb τ.1 (th k τ)) ∧ DictIsUnif V dict Kf th hr)
@@ -76,6 +88,9 @@ theorem unif_of_space_eq {D : D7} {r : ℕ} {C : Type} {X : C → Data D.host.E 
   obtain ⟨th, hr, h1, h2⟩ := hd
   exact ⟨Kf, th, hr, hK, h1, h2, hu⟩
 
+/- English proof (translation)
+The claim follows from `hj host := h.pins.1 dat := h.pins.2.2.2 j hj levA := h.pins.2.1.2 unf := h.unf j hj chiTriv := h.chiTriv j hj dictU := fun σ hσ => by have hV := h.spaceW j hj σ hσ have e : coreDict T.toCore j σ = fun g => T.dict j σ (hV ▸ g) := by funext g; simp only [coreDict, dif_pos hV] rw [e …`.
+-/
 theorem laws_core (D : D7) (T : CoreJ D) (j : ℕ) (h : LawsJ T) (hj : InR D j) :
     Laws D j (T.Q.Xo j) T.Q.c (T.U j) (coreDict T.toCore j) where
   inR := hj
@@ -124,16 +139,28 @@ def lamSup (q d M : ℕ) (Om s t : ℝ) : ℝ :=
 
 def lamPet (q d M : ℕ) (Om s t : ℝ) : ℝ := lamSup E r q d M Om s t + 1 / 2 * Real.log (supConst E r d M (s + t + 1))
 
+/- English proof (translation)
+Unfold `multBd`. Use `one_le_pow₀ (le_add_of_nonneg_right ?_)` and prove the remaining obligations. Establish `: 0 ≤ dE E` using `abs_nonneg _`. Check the signs of the components of the expression.
+-/
 theorem one_le_multBd {ε : ℝ} (hε : 0 < ε) : 1 ≤ multBd E r ε := by
   unfold multBd
   refine one_le_pow₀ (le_add_of_nonneg_right ?_)
   have : 0 ≤ dE E := abs_nonneg _
   positivity
 
+/- English proof (translation)
+Simplify using `[dimFl]`.
+-/
 example : dimFl E 1 = 0 := by simp [dimFl]
 
+/- English proof (translation)
+Simplify using `[dimFl]`.
+-/
 example : dimFl E 2 = fdeg E := by simp [dimFl]
 
+/- English proof (translation)
+The claim follows from `min_le_left _ _`.
+-/
 example (d M : ℕ) (w : ℝ) : epsLev E d M w ≤ 1 := min_le_left _ _
 
 end Consts

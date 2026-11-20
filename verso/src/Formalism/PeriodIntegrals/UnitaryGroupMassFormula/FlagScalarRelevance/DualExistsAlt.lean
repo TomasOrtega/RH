@@ -7,6 +7,23 @@ namespace PI.FRS
 
 open NumberField Formalism.BasicNotions Formalism.MainNotions.S
 
+/- English proof (translation)
+Introduce `E _ _ _ S m u hu t`. Set `L : S.V →ₗ[E] (Fin m → E)` to `LinearMap.pi (fun k => S.hT (u k))`. Establish `hL : ∀ v k, L v k = S.hT (u k) v` using `fun v k => rfl`. Establish `hsurj : Function.Surjective L`. Rewrite using `[← LinearMap.range_eq_top]`.
+
+Assume the negation of the conclusion as `hne`. Take `⟨f, hf0, hf⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.2 hne)`. Use `set lam : Fin m → E := fun k => f (fun j => if k = j then 1 else 0) with hlam`. Establish `hfv : ∀ v : S.V, ∑ k, S.hT (u k) v * lam k = 0`. Introduce `v`.
+
+Establish `h1 : f (L v) = 0` using `hf (LinearMap.mem_range_self L v)`. Rewrite `h1` using `[LinearMap.pi_apply_eq_sum_univ]`. Simplify `h1` using `[hL, smul_eq_mul, hlam]`. Use `set w : S.V := ∑ k, star (lam k) • u k with hw`. Establish `hw0 : w = 0`.
+
+Use `S.nondeg.1 w (fun v => ?_)` and prove the remaining obligations. Rewrite using `[hw, map_sum, LinearMap.sum_apply]`. Rewrite using `[← hfv v]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, star_star, mul_comm]`.
+
+Establish `hlam0 : ∀ k, lam k = 0`. Introduce `k`. Use `(Fintype.linearIndependent_iff.1 hu) (fun k => star (lam k)) hw0 k` as an intermediate fact. Simplify using `using this`. Apply `hf0` to reduce the goal to its premises.
+
+Use `LinearMap.pi_ext (fun i x => ?_)` and prove the remaining obligations. Establish `hs : (Pi.single i x : Fin m → E) = x • (fun j => if i = j then 1 else 0)`. Use extensionality with `j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`. Rewrite using `[hs, map_smul]`. Use `hlam0 i` as an intermediate fact. Simplify using `only [hlam] at this`.
+
+Simplify using `[this]`. Take `⟨v, hv⟩` from `hsurj t`. Conclude with `⟨v, fun k => by rw [← hL, hv]⟩`.
+-/
 theorem dualExists : DualExists := by
   intro E _ _ _ S m u hu t
   classical

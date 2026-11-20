@@ -2,6 +2,11 @@ import Formalism.PadicSubsetSums.CentralIdempotents.WindowSums
 
 namespace Formalism.IrreducibleCountingLemmas.WindowSums
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Finset.sum_range_succ, ih, Nat.factorial_succ, padicValNat.mul (Nat.succ_ne_zero n) (Nat.factorial_ne_zero n)]`. Simplify using `only [Nat.succ_eq_add_one]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem sum_one_add_val (l : ℕ) [Fact l.Prime] (n : ℕ) :
     ∑ i ∈ Finset.range n, (1 + padicValNat l (i + 1)) = n + padicValNat l n.factorial := by
   induction n with
@@ -12,6 +17,9 @@ theorem sum_one_add_val (l : ℕ) [Fact l.Prime] (n : ℕ) :
     simp only [Nat.succ_eq_add_one]
     omega
 
+/- English proof (translation)
+Establish `h3 : 3 ≤ l` using `by have := hl.out.two_le; omega`. Establish `key` using `sub_one_mul_padicValNat_factorial (p := l) n`. Establish `hle : (l - 1) * padicValNat l n.factorial ≤ n` using `by rw [key]; exact Nat.sub_le _ _`. Establish `h2le : 2 * padicValNat l n.factorial ≤ (l - 1) * padicValNat l n.factorial` using `Nat.mul_le_mul_right _ (by omega)`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem two_mul_val_factorial_le (l : ℕ) [hl : Fact l.Prime] (h2 : l ≠ 2) (n : ℕ) :
     2 * padicValNat l n.factorial ≤ n := by
   have h3 : 3 ≤ l := by have := hl.out.two_le; omega
@@ -21,16 +29,37 @@ theorem two_mul_val_factorial_le (l : ℕ) [hl : Fact l.Prime] (h2 : l ≠ 2) (n
     Nat.mul_le_mul_right _ (by omega)
   omega
 
+/- English proof (translation)
+Simplify using `only [padicValInt]`. Rewrite using `[show (-((i : ℤ) + 1)).natAbs = i + 1 by omega]`.
+-/
 private theorem padicValInt_neg_natCast_add_one (l i : ℕ) :
     padicValInt l (-((i : ℤ) + 1)) = padicValNat l (i + 1) := by
   simp only [padicValInt]
   rw [show (-((i : ℤ) + 1)).natAbs = i + 1 by omega]
 
+/- English proof (translation)
+Simplify using `only [padicValInt]`. Rewrite using `[show ((i : ℤ) + 1).natAbs = i + 1 by omega]`.
+-/
 private theorem padicValInt_natCast_add_one (l i : ℕ) :
     padicValInt l ((i : ℤ) + 1) = padicValNat l (i + 1) := by
   simp only [padicValInt]
   rw [show ((i : ℤ) + 1).natAbs = i + 1 by omega]
 
+/- English proof (translation)
+Introduce `l h J hl hl2 hJ h0`. Establish `: Fact l.Prime` using `⟨hl⟩`. Use `set f : ℤ → ℕ := fun j => 1 + padicValInt l j with hf`. Use `set A : Finset ℤ := (Finset.range h).image (fun i : ℕ => -((i : ℤ) + 1)) with hA`. Use `set B : Finset ℤ := (Finset.range (2 * h)).image (fun i : ℕ => (i : ℤ) + 1) with hB`.
+
+Establish `hsub : J ⊆ A ∪ B`. Introduce `j hj`. Establish `hm` using `Finset.mem_Icc.mp (hJ hj)`. Establish `hj0 : j ≠ 0` using `fun e => h0 (e ▸ hj)`. Rewrite using `[Finset.mem_union, hA, hB, Finset.mem_image, Finset.mem_image]`.
+
+Break down `lt_or_gt_of_ne hj0 with hneg | hpos` into its components or cases. Use `left`. Conclude with `⟨(-j - 1).toNat, by rw [Finset.mem_range]; omega, by omega⟩`. Use `right`. Conclude with `⟨(j - 1).toNat, by rw [Finset.mem_range]; omega, by omega⟩`.
+
+Establish `hA_sum : ∑ j ∈ A, f j = h + padicValNat l h.factorial`. Rewrite using `[hA, Finset.sum_image (fun x _ y _ e => by simpa using e)]`. Rewrite using `[← sum_one_add_val l h]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Simplify using `only [hf, padicValInt_neg_natCast_add_one]`.
+
+Establish `hB_sum : ∑ j ∈ B, f j = 2 * h + padicValNat l (2 * h).factorial`. Rewrite using `[hB, Finset.sum_image (fun x _ y _ e => by simpa using e)]`. Rewrite using `[← sum_one_add_val l (2 * h)]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Simplify using `only [hf, padicValInt_natCast_add_one]`.
+
+Establish `hJle : ∑ j ∈ J, f j ≤ ∑ j ∈ A ∪ B, f j` using `Finset.sum_le_sum_of_subset hsub`. Establish `hU` using `Finset.sum_union_inter (s₁ := A) (s₂ := B) (f := f)`. Establish `e1` using `two_mul_val_factorial_le l hl2 (2 * (2 * h))`. Establish `e2` using `two_mul_val_factorial_le l hl2 h`. Establish `e3` using `two_mul_val_factorial_le l hl2 (2 * h)`.
+
+Establish `hJ' : ∑ j ∈ J, (1 + padicValInt l j) = ∑ j ∈ J, f j` using `rfl`. Rewrite using `[hJ']`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem valuationSumBound : LiftExp := by
   intro l h J hl hl2 hJ h0
   have : Fact l.Prime := ⟨hl⟩

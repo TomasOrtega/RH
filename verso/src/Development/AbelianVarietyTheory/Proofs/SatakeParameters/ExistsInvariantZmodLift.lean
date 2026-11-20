@@ -26,22 +26,37 @@ def finPart : UA E n →* UA E n where
   map_one' := Subtype.ext (by simp)
   map_mul' a b := Subtype.ext (by simp)
 
+/- English proof (translation)
+The claim follows from `pInf_finGL _`.
+-/
 theorem finPart_mem (g : UA E n) : finPart g ∈ finU E n := pInf_finGL _
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (GlobalTheory.DefU.ClassFin.finGL_pFin ⟨k, hk⟩)`.
+-/
 theorem finPart_of_finU {k : UA E n} (hk : k ∈ finU E n) : finPart k = k :=
   Subtype.ext (GlobalTheory.DefU.ClassFin.finGL_pFin ⟨k, hk⟩)
 
+/- English proof (translation)
+Establish `h : GeneralLinearGroup.map (pFin E) x.1 = 1` using `hx`. Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `finGL E n (GeneralLinearGroup.map (pFin E) x.1) = 1`. Rewrite using `[h, map_one]`.
+-/
 theorem finPart_of_infU {x : UA E n} (hx : x ∈ infU E n) : finPart x = 1 := by
   have h : GeneralLinearGroup.map (pFin E) x.1 = 1 := hx
   refine Subtype.ext ?_
   change finGL E n (GeneralLinearGroup.map (pFin E) x.1) = 1
   rw [h, map_one]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `GeneralLinearGroup.map (pFin E) ((finPart g)⁻¹ * g).1 = 1`. Establish `h : GeneralLinearGroup.map (pFin E) (finPart g).1 = GeneralLinearGroup.map (pFin E) g.1` using `pFin_finGL _`. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_inv, h, inv_mul_cancel]`.
+-/
 theorem inv_finPart_mul_mem (g : UA E n) : (finPart g)⁻¹ * g ∈ infU E n := by
   change GeneralLinearGroup.map (pFin E) ((finPart g)⁻¹ * g).1 = 1
   have h : GeneralLinearGroup.map (pFin E) (finPart g).1 = GeneralLinearGroup.map (pFin E) g.1 := pFin_finGL _
   rw [Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_inv, h, inv_mul_cancel]
 
+/- English proof (translation)
+Establish `h1 : Continuous (GeneralLinearGroup.map (pFin E) : GA E n → GL (Fin n) (Af E))` using `Continuous.units_map _ (continuous_id.matrix_map continuous_snd)`. Conclude with `Continuous.subtype_mk (GlobalTheory.DefU.ClassFin.continuous_finGL.comp (h1.comp continuous_subtype_val)) _`.
+-/
 theorem continuous_finPart : Continuous (finPart (E := E) (n := n)) := by
   have h1 : Continuous (GeneralLinearGroup.map (pFin E) : GA E n → GL (Fin n) (Af E)) :=
     Continuous.units_map _ (continuous_id.matrix_map continuous_snd)

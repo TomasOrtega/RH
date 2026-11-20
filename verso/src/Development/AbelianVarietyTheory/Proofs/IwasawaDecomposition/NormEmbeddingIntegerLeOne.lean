@@ -4,6 +4,17 @@ open NumberField IsDedekindDomain Neutral.B1 ReciprocityTheory.Neutral.Bridge.HC
 
 namespace GlobalTheory.LadicPlace
 
+/- English proof (translation)
+Establish `h : IsIntegral ℤ (τ (a : E))`. Use `(RingOfIntegers.isIntegral_coe a).map τ.toIntAlgHom` as an intermediate fact. Simplify using `using this`. Take `⟨p, hp, hp0⟩` from `h`. Assume the negation of the conclusion as `hlt`.
+
+Use `push_neg at hlt`. Use `set y := τ (a : E)`. Rewrite `hp0` using `[Polynomial.eval₂_eq_sum_range, Finset.sum_range_succ, hp.coeff_natDegree, map_one, one_mul]`. Establish `h1 : y ^ p.natDegree = - ∑ i ∈ Finset.range p.natDegree, algebraMap ℤ (PadicAlgCl l) (p.coeff i) * y ^ i`. Take the linear combination `hp0`.
+
+Establish `hpos : 0 < ‖y‖ ^ p.natDegree` using `pow_pos (by linarith) _`. Establish `h2 : ‖∑ i ∈ Finset.range p.natDegree, algebraMap ℤ (PadicAlgCl l) (p.coeff i) * y ^ i‖ < ‖y‖ ^ p.natDegree`. Use `Finset.sum_induction _ (fun z => ‖z‖ < ‖y‖ ^ p.natDegree) ?_ (by simpa using hpos) ?_` and prove the remaining obligations. Introduce `u v hu hv`. Conclude with `lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max u v) (max_lt hu hv)`.
+
+Introduce `i hi`. Rewrite using `[norm_mul, norm_pow]`. Establish `h3 : ‖algebraMap ℤ (PadicAlgCl l) (p.coeff i)‖ ≤ 1`. Simplify using `using IsUltrametricDist.norm_intCast_le_one (PadicAlgCl l) (p.coeff i)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite `h2` using `[← norm_neg, ← h1, norm_pow]`. Conclude with `lt_irrefl _ h2`.
+-/
 theorem norm_embedding_integer_le_one {E : Type} [Field E] [NumberField E] {l : ℕ} [Fact l.Prime]
     (τ : E →+* PadicAlgCl l) (a : 𝓞 E) : ‖τ (a : E)‖ ≤ 1 := by
   have h : IsIntegral ℤ (τ (a : E)) := by
@@ -34,6 +45,33 @@ theorem norm_embedding_integer_le_one {E : Type} [Field E] [NumberField E] {l : 
   rw [← norm_neg, ← h1, norm_pow] at h2
   exact lt_irrefl _ h2
 
+/- English proof (translation)
+Introduce `E _ _ l hl τ`. Establish `hle : ∀ a : 𝓞 E, ‖τ (a : E)‖ ≤ 1` using `norm_embedding_integer_le_one τ`. Set `P : Ideal (𝓞 E)` to `{ carrier := {a | ‖τ (a : E)‖ < 1} zero_mem' := by simp add_mem' := by`. Introduce `a b ha hb`. Simplify using `only [Set.mem_setOf_eq] at ha hb ⊢`.
+
+Rewrite using `[RingOfIntegers.coe_eq_algebraMap, map_add, map_add]`. Conclude with `lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max _ _) (max_lt ha hb)`. Use the proof step `smul_mem' := by`. Introduce `c a ha`. Simplify using `only [Set.mem_setOf_eq] at ha ⊢`.
+
+Rewrite using `[RingOfIntegers.coe_eq_algebraMap, smul_eq_mul, map_mul, map_mul, norm_mul]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_right (hle c) (norm_nonneg _) ha }`. Establish `hP : ∀ a : 𝓞 E, a ∈ P ↔ ‖τ (algebraMap (𝓞 E) E a)‖ < 1` using `fun a => Iff.rfl`. Establish `hone : ∀ a : 𝓞 E, a ∉ P → ‖τ (algebraMap (𝓞 E) E a)‖ = 1` using `fun a ha => le_antisymm (hle a) (not_lt.mp (fun h => ha ((hP a).mpr h)))`. Establish `hprime : P.IsPrime`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ne, Ideal.eq_top_iff_one, hP]`. Simplify using the standard rewrite rules. Introduce `a b hab`. Assume the negation of the conclusion as `hn`.
+
+Rewrite `hn` using `[not_or]`. Rewrite `hab` using `[hP, map_mul, map_mul, norm_mul, hone a hn.1, hone b hn.2]`. Simplify using `at hab`. Establish `hlP : (l : 𝓞 E) ∈ P`. Rewrite using `[hP, map_natCast, map_natCast]`.
+
+Establish `h1 : ((l : ℕ) : PadicAlgCl l) = ((l : ℚ_[l]) : PadicAlgCl l)`. Simplify using the standard rewrite rules. Rewrite using `[h1, PadicAlgCl.norm_extends]`. Conclude with `Padic.norm_p_lt_one`. Establish `hne : P ≠ ⊥`.
+
+Introduce `h`. Rewrite `hlP` using `[h, Ideal.mem_bot]`. Conclude with `hl.out.ne_zero (by exact_mod_cast hlP)`. Set `v : HeightOneSpectrum (𝓞 E)` to `⟨P, hprime, hne⟩`. Establish `key : ∀ x : E, v.valuation E x ≤ 1 → ∃ a s : 𝓞 E, s ∉ P ∧ x * algebraMap (𝓞 E) E s = algebraMap (𝓞 E) E a`.
+
+Introduce `x hx`. Take `⟨a, s, h⟩` from `v.exists_primeCompl_mul_eq_of_integer x hx`. Conclude with `⟨a, s, s.2, h⟩`. Use `⟨v, fun x => ⟨fun hx => ?_, fun hx => ?_⟩⟩` and prove the remaining obligations. Take `⟨a, s, hs, h⟩` from `key x hx.le`.
+
+Establish `ha : a ∈ P`. Establish `: v.valuation E (algebraMap (𝓞 E) E a) < 1`. Rewrite using `[← h, map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' (v.valuation_le_one s)) hx`. Conclude with `(v.valuation_lt_one_iff_mem a).mp this`.
+
+Rewrite `ha` using `[hP, ← h, map_mul, norm_mul, hone s hs, mul_one]`. Conclude with `ha`. Assume the negation of the conclusion as `hn`. Establish `hn' : 1 ≤ v.valuation E x` using `not_lt.mp hn`. Establish `hx0 : x ≠ 0`.
+
+Introduce and unpack `rfl`. Simplify using `at hn'`. Establish `hinv : v.valuation E x⁻¹ ≤ 1`. Rewrite using `[map_inv₀]`. Conclude with `inv_le_one_of_one_le₀ hn'`.
+
+Take `⟨a, s, hs, h⟩` from `key _ hinv`. Establish `h2 : algebraMap (𝓞 E) E s = x * algebraMap (𝓞 E) E a`. Rewrite using `[← h, ← mul_assoc, mul_inv_cancel₀ hx0, one_mul]`. Establish `h3` using `hone s hs`. Rewrite `h3` using `[h2, map_mul, norm_mul]`.
+
+Establish `h4` using `mul_lt_one_of_nonneg_of_lt_one_left (norm_nonneg _) hx (hle a)`. Conclude with `absurd h3 h4.ne`.
+-/
 theorem exists_place_of_embedding :
     ∀ (E : Type) [Field E] [NumberField E] (l : ℕ) [Fact l.Prime] (τ : E →+* Qbar l),
       ∃ v : HeightOneSpectrum (𝓞 E), ∀ x : E, v.valuation E x < 1 ↔ ‖τ x‖ < 1 := by

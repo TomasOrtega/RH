@@ -5,6 +5,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.IndefLinks
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R h0 hf hm hω hv i`. Take `⟨-, io, hio⟩` from `GlobalTheory.T.exists_lowestKType_fockMap_thetaVectors D G Pl0 T A Ks R h0 hf hm hω hv`. Conclude with `⟨io i, fun t => hio i t⟩`.
+-/
 theorem exists_ioP_of_realDat : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), R.toLevCh.Is A.μ0 → R.IsFam → R.IsModels → R.thP_ωP → R.thP_vP → R.ex_ioP := by
   intro D G _ _ Pl0 T A Ks _ _ _ R h0 hf hm hω hv i
   obtain ⟨-, io, hio⟩ := GlobalTheory.T.exists_lowestKType_fockMap_thetaVectors D G Pl0 T A Ks R h0 hf hm hω hv

@@ -6,6 +6,9 @@ import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.IdealLattice
 
 namespace Formalism.MainNotions.Ext
 
+/- English proof (translation)
+The claim follows from `ideal_lattice_basis`.
+-/
 theorem idealLattice_holds : IdealLattice := ideal_lattice_basis
 
 end Formalism.MainNotions.Ext

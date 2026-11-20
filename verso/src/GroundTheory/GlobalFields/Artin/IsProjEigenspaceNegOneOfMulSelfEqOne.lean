@@ -9,6 +9,11 @@ section Involution
 
 variable {V : Type*} [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Rewrite using `[Module.End.mem_eigenspace_iff, one_smul]`. Establish `: T (T x) = x` using `by simpa using LinearMap.congr_fun hT x`. Simplify using `[this, add_comm]`. Use `map_id x hx := by`. Rewrite `hx` using `[Module.End.mem_eigenspace_iff, one_smul]`.
+
+Simplify using `only [LinearMap.smul_apply, LinearMap.add_apply, Module.End.one_apply, hx]`. Rewrite using `[← two_smul ℂ x, smul_smul]`. Evaluate the numerical expressions.
+-/
 theorem isProj_eigenspace_one_of_mul_self_eq_one {T : Module.End ℂ V} (hT : T * T = 1) :
     LinearMap.IsProj (Module.End.eigenspace T 1) ((2 : ℂ)⁻¹ • (1 + T)) where
   map_mem x := by
@@ -21,6 +26,11 @@ theorem isProj_eigenspace_one_of_mul_self_eq_one {T : Module.End ℂ V} (hT : T 
     rw [← two_smul ℂ x, smul_smul]
     norm_num
 
+/- English proof (translation)
+Rewrite using `[Module.End.mem_eigenspace_iff]`. Establish `: T (T x) = x` using `by simpa using LinearMap.congr_fun hT x`. Simplify using `only [LinearMap.smul_apply, LinearMap.sub_apply, Module.End.one_apply, map_smul, map_sub, this, neg_smul, one_smul, smul_sub]`. Normalize the expressions using the abelian group laws. Use `map_id x hx := by`.
+
+Rewrite `hx` using `[Module.End.mem_eigenspace_iff, neg_smul, one_smul]`. Simplify using `only [LinearMap.smul_apply, LinearMap.sub_apply, Module.End.one_apply, hx, sub_neg_eq_add]`. Rewrite using `[← two_smul ℂ x, smul_smul]`. Evaluate the numerical expressions.
+-/
 theorem isProj_eigenspace_neg_one_of_mul_self_eq_one {T : Module.End ℂ V} (hT : T * T = 1) :
     LinearMap.IsProj (Module.End.eigenspace T (-1)) ((2 : ℂ)⁻¹ • (1 - T)) where
   map_mem x := by
@@ -35,6 +45,15 @@ theorem isProj_eigenspace_neg_one_of_mul_self_eq_one {T : Module.End ℂ V} (hT 
     rw [← two_smul ℂ x, smul_smul]
     norm_num
 
+/- English proof (translation)
+Establish `hP` using `(isProj_eigenspace_one_of_mul_self_eq_one hT).trace`. Establish `hQ` using `(isProj_eigenspace_neg_one_of_mul_self_eq_one hT).trace`. Rewrite using `[← hP, ← hQ]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← map_add, ← smul_add, ← LinearMap.trace_one]`.
+
+Use `congr 1`. Rewrite using `[show (1 : Module.End ℂ V) + T + (1 - T) = (2 : ℂ) • 1 by`. Rewrite using `[two_smul]`. Use the proof step `abel, smul_smul]`. Evaluate the numerical expressions.
+
+Rewrite using `[← map_sub, ← smul_sub]`. Use `congr 1`. Rewrite using `[show (1 : Module.End ℂ V) + T - (1 - T) = (2 : ℂ) • T by`. Rewrite using `[two_smul]`. Use the proof step `abel, smul_smul]`.
+
+Evaluate the numerical expressions.
+-/
 theorem finrank_eigenspace_of_mul_self_eq_one [FiniteDimensional ℂ V] {T : Module.End ℂ V} (hT : T * T = 1) :
     ((finrank ℂ (Module.End.eigenspace T 1) : ℂ) + finrank ℂ (Module.End.eigenspace T (-1))
         = finrank ℂ V) ∧
@@ -67,6 +86,9 @@ noncomputable def complexConjAt (w : InfinitePlace L) : L ≃ₐ[K] L := by
 
 variable {K}
 
+/- English proof (translation)
+Distinguish the cases in `hw : w.IsReal`. Conclude with `⟨1, ComplexEmbedding.isConj_one_iff.mpr (isReal_iff.mp hw)⟩`. Establish `hram : IsRamified K w` using `isRamified_iff.mpr ⟨not_isReal_iff_isComplex.mp hw, hv⟩`. Rewrite `hram` using `[← mk_embedding w]`. Conclude with `exists_isConj_of_isRamified hram`.
+-/
 theorem exists_isConj_of_isReal_comap [IsGalois K L] {w : InfinitePlace L}
     (hv : (w.comap (algebraMap K L)).IsReal) :
     ∃ σ : L ≃ₐ[K] L, ComplexEmbedding.IsConj w.embedding σ := by
@@ -77,6 +99,9 @@ theorem exists_isConj_of_isReal_comap [IsGalois K L] {w : InfinitePlace L}
     rw [← mk_embedding w] at hram
     exact exists_isConj_of_isRamified hram
 
+/- English proof (translation)
+Establish `h` using `exists_isConj_of_isReal_comap hv`. Rewrite using `[complexConjAt, dif_pos h]`. Conclude with `h.choose_spec`.
+-/
 theorem isConj_complexConjAt [IsGalois K L] {w : InfinitePlace L}
     (hv : (w.comap (algebraMap K L)).IsReal) :
     ComplexEmbedding.IsConj w.embedding (complexConjAt K w) := by
@@ -84,6 +109,9 @@ theorem isConj_complexConjAt [IsGalois K L] {w : InfinitePlace L}
   rw [complexConjAt, dif_pos h]
   exact h.choose_spec
 
+/- English proof (translation)
+The claim follows from `AlgEquiv.ext fun x ↦ ComplexEmbedding.isConj_apply_apply (isConj_complexConjAt hv) x`.
+-/
 theorem complexConjAt_mul_self [IsGalois K L] {w : InfinitePlace L}
     (hv : (w.comap (algebraMap K L)).IsReal) :
     complexConjAt K w * complexConjAt K w = 1 :=
@@ -107,22 +135,34 @@ variable {ρ}
 
 omit [FiniteDimensional ℂ V] in
 
+/- English proof (translation)
+Rewrite using `[← map_mul, complexConjAt_mul_self hv, map_one]`.
+-/
 theorem rho_complexConjAt_mul_self [IsGalois K L] {w : InfinitePlace L}
     (hv : (w.comap (algebraMap K L)).IsReal) :
     ρ (complexConjAt K w) * ρ (complexConjAt K w) = 1 := by
   rw [← map_mul, complexConjAt_mul_self hv, map_one]
 
+/- English proof (translation)
+Use `(finrank_eigenspace_of_mul_self_eq_one (rho_complexConjAt_mul_self (ρ := ρ) hv)).1` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+-/
 theorem plusDim_add_minusDim [IsGalois K L] {w : InfinitePlace L}
     (hv : (w.comap (algebraMap K L)).IsReal) :
     plusDim ρ w + minusDim ρ w = finrank ℂ V := by
   have := (finrank_eigenspace_of_mul_self_eq_one (rho_complexConjAt_mul_self (ρ := ρ) hv)).1
   exact_mod_cast this
 
+/- English proof (translation)
+The claim follows from `(finrank_eigenspace_of_mul_self_eq_one (rho_complexConjAt_mul_self (ρ := ρ) hv)).2`.
+-/
 theorem character_complexConjAt [IsGalois K L] {w : InfinitePlace L}
     (hv : (w.comap (algebraMap K L)).IsReal) :
     ρ.character (complexConjAt K w) = (plusDim ρ w : ℂ) - minusDim ρ w :=
   (finrank_eigenspace_of_mul_self_eq_one (rho_complexConjAt_mul_self (ρ := ρ) hv)).2
 
+/- English proof (translation)
+Rewrite using `[Representation.char_one, character_complexConjAt hv, ← plusDim_add_minusDim hv]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem plusDim_eq_character [IsGalois K L] {w : InfinitePlace L}
     (hv : (w.comap (algebraMap K L)).IsReal) :
     (plusDim ρ w : ℂ) = (ρ.character 1 + ρ.character (complexConjAt K w)) / 2 := by
@@ -130,6 +170,9 @@ theorem plusDim_eq_character [IsGalois K L] {w : InfinitePlace L}
   push_cast
   ring
 
+/- English proof (translation)
+Rewrite using `[Representation.char_one, character_complexConjAt hv, ← plusDim_add_minusDim hv]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem minusDim_eq_character [IsGalois K L] {w : InfinitePlace L}
     (hv : (w.comap (algebraMap K L)).IsReal) :
     (minusDim ρ w : ℂ) = (ρ.character 1 - ρ.character (complexConjAt K w)) / 2 := by
@@ -137,11 +180,17 @@ theorem minusDim_eq_character [IsGalois K L] {w : InfinitePlace L}
   push_cast
   ring
 
+/- English proof (translation)
+The claim follows from `LinearMap.trace_prodMap' (ρ g) (σ g)`.
+-/
 theorem character_prod {W : Type*} [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
     (σ : Representation ℂ (L ≃ₐ[K] L) W) (g : L ≃ₐ[K] L) :
     (ρ.prod σ).character g = ρ.character g + σ.character g :=
   LinearMap.trace_prodMap' (ρ g) (σ g)
 
+/- English proof (translation)
+Establish `h1` using `plusDim_eq_character (ρ := ρ.prod σ) hv`. Rewrite `h1` using `[character_prod, character_prod, add_add_add_comm, add_div, ← plusDim_eq_character hv, ← plusDim_eq_character hv]`. Conclude with `h1` after adjusting the coercions.
+-/
 theorem plusDim_prod {W : Type*} [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
     (σ : Representation ℂ (L ≃ₐ[K] L) W) [IsGalois K L] {w : InfinitePlace L}
     (hv : (w.comap (algebraMap K L)).IsReal) :
@@ -151,6 +200,9 @@ theorem plusDim_prod {W : Type*} [AddCommGroup W] [Module ℂ W] [FiniteDimensio
     ← plusDim_eq_character hv] at h1
   exact_mod_cast h1
 
+/- English proof (translation)
+Establish `h1` using `minusDim_eq_character (ρ := ρ.prod σ) hv`. Rewrite `h1` using `[character_prod, character_prod, add_sub_add_comm, add_div, ← minusDim_eq_character hv, ← minusDim_eq_character hv]`. Conclude with `h1` after adjusting the coercions.
+-/
 theorem minusDim_prod {W : Type*} [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
     (σ : Representation ℂ (L ≃ₐ[K] L) W) [IsGalois K L] {w : InfinitePlace L}
     (hv : (w.comap (algebraMap K L)).IsReal) :
@@ -165,6 +217,9 @@ variable (L) in
 noncomputable def placeOver [Algebra.IsAlgebraic K L] (v : InfinitePlace K) : InfinitePlace L :=
   (comap_surjective (k := K) (K := L) v).choose
 
+/- English proof (translation)
+The claim follows from `(comap_surjective (k := K) (K := L) v).choose_spec`.
+-/
 theorem comap_placeOver [Algebra.IsAlgebraic K L] (v : InfinitePlace K) :
     (placeOver L v).comap (algebraMap K L) = v :=
   (comap_surjective (k := K) (K := L) v).choose_spec
@@ -177,6 +232,9 @@ noncomputable def gammaFactorAt [Algebra.IsAlgebraic K L] (v : InfinitePlace K) 
     Gammaℝ s ^ plusDim ρ (placeOver L v) * Gammaℝ (s + 1) ^ minusDim ρ (placeOver L v)
   else Gammaℂ s ^ finrank ℂ V
 
+/- English proof (translation)
+Distinguish the cases in `hv : v.IsReal`. Establish `hv' : ((placeOver L v).comap (algebraMap K L)).IsReal` using `by rwa [comap_placeOver]`. Simplify using `only [gammaFactorAt, if_pos hv, plusDim_prod σ hv', minusDim_prod σ hv', pow_add]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [gammaFactorAt, if_neg hv, Module.finrank_prod, pow_add]`.
+-/
 theorem gammaFactorAt_prod [IsGalois K L] [Algebra.IsAlgebraic K L]
     {W : Type*} [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
     (σ : Representation ℂ (L ≃ₐ[K] L) W) (v : InfinitePlace K) (s : ℂ) :
@@ -192,6 +250,9 @@ variable (ρ) in
 noncomputable def gammaFactor [NumberField K] [Algebra.IsAlgebraic K L] (s : ℂ) : ℂ :=
   ∏ v : InfinitePlace K, gammaFactorAt ρ v s
 
+/- English proof (translation)
+Simplify using `only [gammaFactor, gammaFactorAt_prod, Finset.prod_mul_distrib]`.
+-/
 theorem gammaFactor_prod [NumberField K] [IsGalois K L] [Algebra.IsAlgebraic K L]
     {W : Type*} [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
     (σ : Representation ℂ (L ≃ₐ[K] L) W) (s : ℂ) :
@@ -200,6 +261,9 @@ theorem gammaFactor_prod [NumberField K] [IsGalois K L] [Algebra.IsAlgebraic K L
 
 end Factor
 
+/- English proof (translation)
+The claim follows from `gammaFactor_prod σ s`.
+-/
 example {K L V W : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
     [IsGalois K L] [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]

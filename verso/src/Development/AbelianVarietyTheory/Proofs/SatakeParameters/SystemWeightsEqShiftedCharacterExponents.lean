@@ -10,6 +10,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.TwV.Xc
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `R.k_even`. Take `⟨b, hb⟩` from `R.t_odd`. Establish `h1 : j * (R.t + 1) / 2 = j * (b + 1)`. Rewrite using `[hb, show j * (2 * b + 1 + 1) = 2 * (j * (b + 1)) by ring]; omega`. Establish `h2 : R.N (j + 1) / 2 = a + (j + 1) * (b + 1)` using `by show (R.k + (j + 1) * (R.t + 1)) / 2 = _`.
+
+Rewrite using `[hb, ha, show a + a + (j + 1) * (2 * b + 1 + 1) = 2 * (a + (j + 1) * (b + 1)) by ring]; omega`. Rewrite using `[h1, h2]`. Unfold `Formalism.BasicNotions.wG`. Rewrite using `[ha, hb]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem wG_succ_eq_shift (R : Ranks) (z : ℤ) (j : ℕ) :
     Formalism.BasicNotions.wG R (z : ℚ) (j + 1) = ((z - ((j * (R.t + 1) / 2 : ℕ) : ℤ) - ((R.N (j + 1) / 2 : ℕ) : ℤ) : ℤ) : ℚ) := by
   obtain ⟨a, ha⟩ := R.k_even
@@ -27,6 +34,21 @@ theorem wG_succ_eq_shift (R : Ranks) (z : ℤ) (j : ℕ) :
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hD hS j hj c`. Establish `hj' : j + 1 ≤ D.R.m` using `hj`. Establish `c' : Lv.comp (j + 1)` using `c`. Establish `hW` using `(H.core j hj' ((I.at' j hj').st.eC.symm c').1).wt`. Rewrite `hW` using `[J.pos j hj']`.
+
+Establish `ht : (Gl.Fl u w hg).t = D.R.t` using `X.fl_t`. Establish `hk` using `hT.gat_k u w hg`. Establish `rk` using `rk_of hT w hg (Gl.Fl u w hg) ht j`. Introduce `e he v s`. Use `show (Gl.Fl u w hg).w v (j + 1) s = e (hT.gat_pos u w hg ⟨v, s⟩) - ((j * ((Gl.Fl u w hg).t + 1) / 2 : ℕ) : ℤ) - (((((Gl.Fl u w hg).Pj (j + 1)).m + 1) / 2 : ℕ) : ℤ)`.
+
+Establish `hlt : (D.gat u w hg).P.m + 1 + j * ((Gl.Fl u w hg).t + 1) < ((Gl.Fl u w hg).Pj (j + 1)).m + 1` using `by show _ < (D.gat u w hg).P.m + (j + 1) * ((Gl.Fl u w hg).t + 1) + 1`. Use the polynomial consequences of the given equalities and inequalities. Establish `h` using `hW v s ⟨_, hlt⟩`. Establish `h0` using `(congrArg (fun z : ℤ => (z : ℚ)) h).trans (((I.at' j hj').M).lam_eq (j + 1) hj' (hT.gat_pos u w hg ⟨v, s⟩) _)`. Establish `hi : ¬ (D.gat u w hg).P.m + 1 + j * ((Gl.Fl u w hg).t + 1) < D.R.k` using `by omega`.
+
+Establish `hq : ((D.gat u w hg).P.m + 1 + j * ((Gl.Fl u w hg).t + 1) - D.R.k) / (D.R.t + 1) = j`. Rewrite using `[← hk, ← ht, Nat.add_sub_cancel_left]`. Conclude with `Nat.mul_div_cancel _ (Nat.succ_pos _)`. Simplify using `only [finCongr_apply, Fin.coe_cast] at h0`. Rewrite `h0` using `[dif_neg hi]`.
+
+Simplify using `only [hq] at h0`. Establish `hL : ((Gl.Fl u w hg).Pj (j + 1)).lam0 v s ⟨_, hlt⟩ = -((Gl.Fl u w hg).w v (j + 1) s)` using `by show liftWt (Gl.Fl u w hg).t (D.gat u w hg).P.m ((D.gat u w hg).P.lam0 v s) (fun a => (Gl.Fl u w hg).w v a s) (j + 1) ⟨_, hlt⟩ = _`. Unfold `liftWt`. Rewrite using `[dif_neg (Nat.not_lt.mpr (Nat.le_add_right _ _))]`. Use `congr 2`.
+
+Simplify using `only [Nat.add_sub_cancel_left]`. Rewrite using `[Nat.mul_div_cancel _ (Nat.succ_pos _)]`. Rewrite `h0` using `[hL, Int.cast_neg, neg_inj, D.hcW_e, ← he]`. Rewrite using `[rk, ht]`. Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises.
+
+Rewrite using `[h0]`. Conclude with `wG_succ_eq_shift D.R _ j`.
+-/
 theorem fillAt_of_comp : Sites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S =>
     ∀ j (hj : j < D.R.m), (sysS H X std).Lv.comp (j + 1) → FillAt (hT := hT) (H := H) (X := X) std j hj) := by
   intro D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hD hS j hj c

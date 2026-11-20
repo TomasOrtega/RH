@@ -11,6 +11,9 @@ namespace GroundTheory.Heights₂.Heights.Inter
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I4 IndefiniteRowSideFullHecke.Inter
 
+/- English proof (translation)
+Unfold `semiLocRing`. Use `Subring.closure_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, w, a, hw, -, hu, hwa, rfl⟩`. Conclude with `⟨u, w, a, hw, fun _ h => h.elim, hu, hwa, rfl⟩`.
+-/
 theorem semiLocRing_le_empty {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] (P : Ideal (MRing ι))
     (𝒲 : Set (Ideal (MRing ι))) : semiLocRing P 𝒲 ≤ semiLocRing P ∅ := by
   unfold semiLocRing
@@ -18,6 +21,15 @@ theorem semiLocRing_le_empty {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fi
   rintro _ ⟨u, w, a, hw, -, hu, hwa, rfl⟩
   exact ⟨u, w, a, hw, fun _ h => h.elim, hu, hwa, rfl⟩
 
+/- English proof (translation)
+Introduce `K _ ι _ K' _ ι' _ κ v P' n s α W hv hP' hQ hs hsQ hW`. Use `hP'.2.1.1` as an intermediate fact. Set `_` to `(locToSemiloc hv P' W).toAlgebra`. Establish `hN : IsNoetherianRing (locRing (imageZ v P') W)` using `(h₃ K ι (imageZ v P') s α W hQ.2.1 hs hsQ hW).1`. Establish `hint` using `h₁ K ι K' ι' κ v P' n s α W hv hP' hQ hs hsQ hW`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Set `_` to `((fracMapZ v P').comp (locRing (imageZ v P') W).subtype).toAlgebra`. Set `_ : Module (locRing (imageZ v P') W) (FractionRing (MRing ι' ⧸ P'))` to `Algebra.toModule`. Take `⟨t, ht⟩` from `h₂ K ι K' ι' κ v P' n s α W hv hP' hQ hs hsQ hW`. Set `g : semiLocRing P' (fibreOver v P' W) →ₗ[locRing (imageZ v P') W] FractionRing (MRing ι' ⧸ P')` to `{ toFun := Subtype.val, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`.
+
+Establish `hg : ∀ b, g b ∈ Submodule.span (locRing (imageZ v P') W) (t : Set (FractionRing (MRing ι' ⧸ P')))` using `fun b => ht _ (semiLocRing_le_empty P' _ b.2) ((hint.isIntegral b).map_of_comp_eq (RingHom.id (locRing (imageZ v P') W)) (semiLocRing P' (fibreOver v P' W)).subtype (RingHom.ext fun _ => rfl))`. Establish `: IsNoetherian (locRing (imageZ v P') W) (Submodule.span (locRing (imageZ v P') W) (t : Set (FractionRing (MRing ι' ⧸ P'))))` using `isNoetherian_span_of_finite _ t.finite_toSet`. Conclude with `Module.Finite.of_injective (g.codRestrict _ hg) fun b c hbc => by`. Establish `h` using `congrArg Subtype.val hbc`. Conclude with `Subtype.ext h`.
+
+Use `imageZ_isPrime_of_prime v P'` as an intermediate fact. Rewrite using `[Module.isTorsionFree_iff_algebraMap_injective]`. Introduce `a b hab`. Conclude with `Subtype.val_injective ((fracMapZ v P').injective (congrArg Subtype.val hab))`.
+-/
 theorem SemilocFinite.proof (h₁ : SemilocIntegral.Statement) (h₂ : LocRingIntClosureFinite.Statement)
     (h₃ : LocRingDimOne.Statement) : SemilocFinite.Statement := by
   intro K _ ι _ K' _ ι' _ κ v P' n s α W hv hP' hQ hs hsQ hW

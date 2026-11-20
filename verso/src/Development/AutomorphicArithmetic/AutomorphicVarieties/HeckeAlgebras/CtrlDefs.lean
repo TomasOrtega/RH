@@ -9,6 +9,9 @@ namespace UpperTheory.V.Hi
 def mIm (O Ω : Type) [CommRing O] [IsLocalRing O] [Field Ω] [Algebra O Ω] (k : ℕ) : Submodule O Ω :=
   Submodule.map (Algebra.linearMap O Ω) (maximalIdeal O ^ k)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_mIm {O Ω : Type} [CommRing O] [IsLocalRing O] [Field Ω] [Algebra O Ω] {k : ℕ} {w : Ω} :
     w ∈ mIm O Ω k ↔ ∃ x ∈ maximalIdeal O ^ k, algebraMap O Ω x = w := Iff.rfl
 
@@ -22,9 +25,15 @@ def unt : Module.End Ω (Fin m → X.Fn Ω (W.d + 1)) where
   map_add' F F' := by ext i g k; simp only [Pi.add_apply, mulVec_add]
   map_smul' c F := by ext i g k; simp only [Pi.smul_apply, mulVec_smul, RingHom.id_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem unt_apply (F : Fin m → X.Fn Ω (W.d + 1)) (i : Fin m) (g : Ga × Gp) :
     X.unt m W F i g = ((W.ξ g.2)⁻¹).val *ᵥ F i g := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ctrl_apply (F : Fin m → X.Fn Ω (W.d + 1)) (g : Ga × Gp) (i : Fin m) :
     X.ctrl m W F g i = X.unt m W F i g 0 := rfl
 
@@ -35,6 +44,9 @@ def Lat (Λ : Submodule O Ω) : Submodule O (Fin m → X.Fn Ω (W.d + 1)) where
   smul_mem' c F h i g k := by
     rw [LinearMap.map_smul_of_tower]; exact Λ.smul_mem c (h i g k)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_lat (Λ : Submodule O Ω) (F : Fin m → X.Fn Ω (W.d + 1)) :
     F ∈ X.Lat m W Λ ↔ ∀ i g k, X.unt m W F i g k ∈ Λ := Iff.rfl
 

@@ -10,6 +10,25 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.SepPer
 
+/- English proof (translation)
+Introduce `D θ hθ Y V d A B hAd x τ y u`. Set `φ : AF D.host.F ⊗[D.host.F] D.host.E →+* ℂ` to `(θ τ).comp (Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E)).toRingHom`. Establish `hinc : ∀ e, φ (incA D e) = tauE D τ e`. Introduce `e`. Use `(hθ τ).1 e` as an intermediate fact.
+
+Simplify `this` using `[φ, incA, inclR]`. Establish `hcmp : ∀ {W : HSp D} (g : GA D W), cmp θ τ g = (matHom W g).1.map φ`. Introduce `W g`. Both sides reduce to the same expression. Establish `hinv : (stabilizerEmbedding d x)⁻¹ = stabilizerEmbedding d x⁻¹` using `(map_inv (MonoidHom.mk' (stabilizerEmbedding d) (GlobalTheory.UnitaryEmbeddingProperties.unitaryEmbedding_mul d)) x).symm`.
+
+Use `set P := (frameMat V Y d.ι).map (tauE D τ) with hP`. Use `set Q := (GlobalTheory.UnitaryEmbeddingProperties.qM d).map (tauE D τ) with hQ`. Establish `key : cmp θ τ (stabilizerEmbedding d x)⁻¹ = GlobalTheory.UnitaryEmbeddingProperties.ex P Q (cmp θ τ x⁻¹)`. Rewrite using `[hinv, hcmp, hcmp, GlobalTheory.UnitaryEmbeddingProperties.unitaryEmbedding_matrix_formula, GlobalTheory.UnitaryEmbeddingProperties.ex_map, Matrix.map_map, Matrix.map_map]`. Establish `hf : (⇑φ ∘ ⇑(incA D)) = ⇑(tauE D τ)` using `funext hinc`.
+
+Rewrite using `[hf]`. Establish `hQP : Q * P = 1` using `GlobalTheory.UnitaryEmbeddingProperties.qM_mul_map (tauE D τ) d`. Establish `hQz0 : GlobalTheory.UnitaryEmbeddingProperties.qM d *ᵥ zv d = 0`. Establish `hp` using `d.perp`. Establish `h0 : (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (frameMat V Y d.ι) * V.gram) *ᵥ zv d = 0`.
+
+Use function extensionality and compare the values at `i`. Use `congr_fun (congr_fun hp i) 0` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, zv]`. Rewrite using `[GlobalTheory.UnitaryEmbeddingProperties.qM, ← Matrix.mulVec_mulVec, h0, Matrix.mulVec_zero]`. Establish `hQz : Q *ᵥ (fun i => tauE D τ (zv d i)) = 0`.
+
+Use function extensionality and compare the values at `i`. Use `congr_fun hQz0 i` as an intermediate fact. Rewrite using `[hQ]`. Express the relevant statement in the definitionally equal form `((GlobalTheory.UnitaryEmbeddingProperties.qM d).map (tauE D τ) *ᵥ (⇑(tauE D τ) ∘ zv d)) i = 0`. Rewrite using `[← RingHom.map_mulVec, this]`.
+
+Conclude with `map_zero _`. Establish `hvec : (fun i => tauE D τ ((frameMat V Y d.ι *ᵥ y + u • zv d) i)) = P *ᵥ (fun i => tauE D τ (y i)) + tauE D τ u • fun i => tauE D τ (zv d i)`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, map_add, map_mul, hP, RingHom.map_mulVec]`. Both sides reduce to the same expression.
+
+Establish `hex : ∀ (h : Matrix (Fin Y.rank) (Fin Y.rank) ℂ) (w : Fin Y.rank → ℂ) (a : ℂ), GlobalTheory.UnitaryEmbeddingProperties.ex P Q h *ᵥ (P *ᵥ w + a • fun i => tauE D τ (zv d i)) = P *ᵥ (h *ᵥ w) + a • fun i => tauE D τ (zv d i)`. Introduce `h w a`. Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_mulVec, GlobalTheory.UnitaryEmbeddingProperties.ex_mul_P P Q hQP, ← Matrix.mulVec_mulVec]`. Use `congr 2`. Rewrite using `[GlobalTheory.UnitaryEmbeddingProperties.ex, Matrix.add_mulVec, Matrix.one_mulVec, ← Matrix.mulVec_mulVec, hQz, Matrix.mulVec_zero, add_zero]`.
+
+Unfold `nrm`. Rewrite using `[key, hvec, hex]`. Conclude with `hAd τ _ _`.
+-/
 theorem norm_sq_unitaryEmbedding_add : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (Y V : HSp D) (d : HermitianOrthogonalExtensionData Y V 1 1) (A : Fr Y) (B : Fr V), Adapted d A B → ∀ (x : GA D Y) (τ : D.what₂.Tau) (y : Fin Y.rank → D.host.E) (u : D.host.E), nrm θ B (stabilizerEmbedding d x) τ (frameMat V Y d.ι *ᵥ y + u • zv d) ^ 2 = nrm θ A x τ y ^ 2 + ‖tauE D τ u‖ ^ 2 := by
   intro D θ hθ Y V d A B hAd x τ y u
   let φ : AF D.host.F ⊗[D.host.F] D.host.E →+* ℂ :=

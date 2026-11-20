@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HolomorphicParamInt
 import Mathlib
 open MeasureTheory Filter Topology
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.differentiableOn_double_integral_of_bounded_holomorphic | exact GlobalTheory.differentiableOn_double_integral_of_bounded_holomorphic | (intros; apply GlobalTheory.differentiableOn_double_integral_of_bounded_holomorphic <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.holomorphic_param_integral : ∀ {α β : Type} [MeasurableSpace α] [MeasurableSpace β] (μ : Measure α) (ν : Measure β) [IsFiniteMeasure μ]
     [IsFiniteMeasure ν] (θ : β → α → ℂ) (H : ℂ → α → ℂ) (s₀ : ℂ) (r M : ℝ),
     (∀ s ∈ Metric.ball s₀ r, AEStronglyMeasurable (fun p : β × α => θ p.1 p.2 * H s p.2) (ν.prod μ)) →

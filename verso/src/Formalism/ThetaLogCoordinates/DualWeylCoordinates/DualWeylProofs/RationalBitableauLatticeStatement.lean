@@ -5,6 +5,9 @@ open MvPolynomial
 
 namespace Formalism.InvariantFactorPaths.ColumnFamilies
 
+/- English proof (translation)
+Introduce `n _ mu hmu`. Establish `h` using `qn_main n (qn_nu mu) (qn_nu_anti hmu) (fun I : TIdx mu => brkPol mu I) (canT mu) (fun I => bracket_mem_dualWeyl hmu I) (dualWeyl_le_span_bracket hmu) (eval_id_bracket_canonical mu)`. Rewrite `h` using `[qn_nu_cast hmu]`. Conclude with `h`.
+-/
 theorem highest_weight_corollary_two : RationalBitableauLatticeStatement := by
   intro n _ mu hmu
   have h := qn_main n (qn_nu mu) (qn_nu_anti hmu) (fun I : TIdx mu => brkPol mu I) (canT mu)

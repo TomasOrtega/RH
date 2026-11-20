@@ -12,6 +12,9 @@ namespace GlobalTheory.LamF
 section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Introduce `h`. Establish `h2` using `H.sqrt_neg_disc_sq`. Rewrite `h2` using `[h]`. Establish `: (H.d : ℂ) = 0` using `by simpa using h2.symm`. Conclude with `H.d_prime.ne_zero (by exact_mod_cast this)`.
+-/
 theorem cmHost_rootNegDiscriminant_ne_zero (H : Host E) : H.rt0 ≠ 0 := by
   intro h
   have h2 := H.sqrt_neg_disc_sq
@@ -19,11 +22,21 @@ theorem cmHost_rootNegDiscriminant_ne_zero (H : Host E) : H.rt0 ≠ 0 := by
   have : (H.d : ℂ) = 0 := by simpa using h2.symm
   exact H.d_prime.ne_zero (by exact_mod_cast this)
 
+/- English proof (translation)
+Introduce `h`. Apply `cmHost_rootNegDiscriminant_ne_zero H` to reduce the goal to its premises. Take the linear combination `h / 2`.
+-/
 theorem cmHost_rootNegDiscriminant_ne_neg_self (H : Host E) : H.rt0 ≠ -H.rt0 := by
   intro h
   apply cmHost_rootNegDiscriminant_ne_zero H
   linear_combination h / 2
 
+/- English proof (translation)
+Establish `h2` using `H.sqrt_neg_disc_sq`. Establish `him` using `congrArg Complex.im h2`. Establish `hre` using `congrArg Complex.re h2`. Simplify using `[pow_two] at him hre`. Establish `hd : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`.
+
+Establish `h0 : H.rt0.re = 0`. Assume the negation of the conclusion as `hne`. Establish `: H.rt0.im = 0`. Establish `: H.rt0.re * H.rt0.im = 0` using `by linarith`. Conclude with `(mul_eq_zero.1 this).resolve_left hne`.
+
+Rewrite `hre` using `[this]`. Use polynomial arithmetic with `[mul_self_nonneg H.rt0.re]`. Apply the tactic sequence `apply Complex.ext <;> simp [h0]`.
+-/
 theorem cmHost_conj_sqrtNegDisc (H : Host E) : starRingEnd ℂ H.rt0 = -H.rt0 := by
   have h2 := H.sqrt_neg_disc_sq
   have him := congrArg Complex.im h2
@@ -39,11 +52,19 @@ theorem cmHost_conj_sqrtNegDisc (H : Host E) : starRingEnd ℂ H.rt0 = -H.rt0 :=
     nlinarith [mul_self_nonneg H.rt0.re]
   apply Complex.ext <;> simp [h0]
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun a : 𝓞 E => τ (a : E)) H.rt_sq`. Rewrite using `[H.sqrt_neg_disc_sq]`. Simplify using `using h`.
+-/
 theorem host_emb_rt_sq (H : Host E) (τ : E →+* ℂ) : τ (H.rt : E) ^ 2 = H.rt0 ^ 2 := by
   have h := congrArg (fun a : 𝓞 E => τ (a : E)) H.rt_sq
   rw [H.sqrt_neg_disc_sq]
   simpa using h
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `¬ (τ (H.rt : E) = H.rt0) ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `(sq_eq_sq_iff_eq_or_eq_neg.1 (host_emb_rt_sq H τ)).resolve_left h`. Introduce `h h'`.
+
+Conclude with `cmHost_rootNegDiscriminant_ne_neg_self H (h'.symm.trans h)`.
+-/
 theorem host_mem_compl_psiSet (H : Host E) (τ : E →+* ℂ) :
     τ ∈ (psiSet H)ᶜ ↔ τ (H.rt : E) = -H.rt0 := by
   change ¬ (τ (H.rt : E) = H.rt0) ↔ _
@@ -53,6 +74,11 @@ theorem host_mem_compl_psiSet (H : Host E) (τ : E →+* ℂ) :
   · intro h h'
     exact cmHost_rootNegDiscriminant_ne_neg_self H (h'.symm.trans h)
 
+/- English proof (translation)
+Use `Nat.card_congr { toFun := fun τ => ⟨ComplexEmbedding.conjugate τ.1, ?_⟩ invFun := fun τ => ⟨ComplexEmbedding.conjugate τ.1, ?_⟩ left_inv := fun τ => Subtype.ext (star_star τ.1) right_inv := fun τ => Subtype.ext (star_star τ.1) }` and prove the remaining obligations. Rewrite using `[host_mem_compl_psiSet, ComplexEmbedding.conjugate_coe_eq, ← cmHost_conj_sqrtNegDisc]`. Conclude with `congrArg _ τ.2`. Establish `h` using `(host_mem_compl_psiSet H τ.1).1 τ.2`. Express the relevant statement in the definitionally equal form `_ = H.rt0`.
+
+Rewrite using `[ComplexEmbedding.conjugate_coe_eq, h, map_neg, cmHost_conj_sqrtNegDisc, neg_neg]`.
+-/
 theorem card_psiSet_eq_card_compl (H : Host E) :
     Nat.card (psiSet H) = Nat.card ((psiSet H)ᶜ : Set (E →+* ℂ)) := by
   refine Nat.card_congr
@@ -66,6 +92,11 @@ theorem card_psiSet_eq_card_compl (H : Host E) :
     change _ = H.rt0
     rw [ComplexEmbedding.conjugate_coe_eq, h, map_neg, cmHost_conj_sqrtNegDisc, neg_neg]
 
+/- English proof (translation)
+Establish `h1` using `Set.ncard_add_ncard_compl (psiSet H)`. Establish `h2` using `card_psiSet_eq_card_compl H`. Rewrite `h2` using `[Nat.card_coe_set_eq, Nat.card_coe_set_eq]`. Rewrite `h1` using `[Nat.card_eq_fintype_card, Embeddings.card E ℂ]`. Rewrite using `[Nat.card_coe_set_eq]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem card_psiSet (H : Host E) : Nat.card (psiSet H) = Module.finrank ℚ E / 2 := by
   have h1 := Set.ncard_add_ncard_compl (psiSet H)
   have h2 := card_psiSet_eq_card_compl H
@@ -76,17 +107,26 @@ theorem card_psiSet (H : Host E) : Nat.card (psiSet H) = Module.finrank ℚ E / 
 
 variable {H : Host E} {l : Level H}
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `algebraMap c.F K (Formalism.L2.Pj.embF c τ a) = _ ↔ _`. Rewrite using `[(algebraMap c.F K).injective.eq_iff, Subtype.ext_iff]`. Both sides reduce to the same expression.
+-/
 theorem labK_eq_iff (c : Coeff l) (K : Type) [Field K] [Algebra c.F K] (τ : E →+* ℂ) (a : E) (x : c.F) :
     labK c K τ a = algebraMap c.F K x ↔ τ a = (x : ℂ) := by
   change algebraMap c.F K (Formalism.L2.Pj.embF c τ a) = _ ↔ _
   rw [(algebraMap c.F K).injective.eq_iff, Subtype.ext_iff]
   rfl
 
+/- English proof (translation)
+Introduce `τ τ' h`. Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Conclude with `(labK_eq_iff c K τ a (Formalism.L2.Pj.embF c τ' a)).1 (DFunLike.congr_fun h a)`.
+-/
 theorem labK_injective (c : Coeff l) (K : Type) [Field K] [Algebra c.F K] : Function.Injective (labK c K) := by
   intro τ τ' h
   refine RingHom.ext fun a => ?_
   exact (labK_eq_iff c K τ a (Formalism.L2.Pj.embF c τ' a)).1 (DFunLike.congr_fun h a)
 
+/- English proof (translation)
+Establish `: Finite (E →+* K)` using `Finite.of_equiv _ (RingHom.equivRatAlgHom E K).symm`. Use `(labK_injective c K).bijective_of_nat_card_le ?_` and prove the remaining obligations. Rewrite using `[Nat.card_eq_fintype_card (α := E →+* ℂ), Embeddings.card E ℂ]`. Conclude with `card_ringHom_le_finrank`.
+-/
 theorem labK_bijective (c : Coeff l) (K : Type) [Field K] [NumberField K] [Algebra c.F K] :
     Function.Bijective (labK c K) := by
   have : Finite (E →+* K) := Finite.of_equiv _ (RingHom.equivRatAlgHom E K).symm
@@ -96,6 +136,19 @@ theorem labK_bijective (c : Coeff l) (K : Type) [Field K] [NumberField K] [Algeb
 
 end
 
+/- English proof (translation)
+Introduce `E _ _ _ H l c K _ _ _`. Establish `hb` using `labK_bijective c K`. Use `⟨hb, ?_, fun τ => ⟨RingOfIntegers.mapRingHom (labK c K τ), fun a => rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[splits_iff_card, ← Nat.card_eq_of_bijective _ hb, Nat.card_eq_fintype_card, Embeddings.card E ℂ]`. Set `r : c.F` to `⟨H.rt0, c.le (baseKA l).ρ.2⟩`.
+
+Establish `hr : r ^ 2 = -(H.d : c.F)` using `Subtype.ext (by simpa [r] using H.sqrt_neg_disc_sq)`. Establish `hK : (algebraMap c.F K r) ^ 2 = -(H.d : K)`. Rewrite using `[← map_pow, hr]`. Simplify using the standard rewrite rules. Establish `hint : IsIntegral ℤ (algebraMap c.F K r)`.
+
+Use `IsIntegral.of_pow (n := 2) (by norm_num) ?_` and prove the remaining obligations. Rewrite using `[hK]`. Conclude with `(isIntegral_natCast H.d).neg`. Take `⟨ρ, hρ⟩ : ∃ ρ : 𝓞 K, algebraMap (𝓞 K) K ρ = algebraMap c.F K r` from `⟨⟨_, hint⟩, rfl⟩`. Use `⟨ρ, RingOfIntegers.ext ?_, fun τ => ?_, fun τ => ?_, card_psiSet H, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `algebraMap (𝓞 K) K (_ ^ 2) = algebraMap (𝓞 K) K (-_)`. Rewrite using `[map_pow, map_neg, map_natCast, hρ]`. Conclude with `hK`. Express the relevant statement in the definitionally equal form `_ ↔ _ = algebraMap (𝓞 K) K ρ`. Rewrite using `[hρ]`.
+
+Conclude with `(labK_eq_iff c K τ _ r).symm`. Rewrite using `[host_mem_compl_psiSet]`. Use `(labK_eq_iff c K τ (H.rt : E) (-r)).symm` as an intermediate fact. Rewrite `this` using `[map_neg, ← hρ, ← map_neg]`. Conclude with `this`.
+
+Rewrite using `[← card_psiSet_eq_card_compl, card_psiSet]`.
+-/
 theorem labK_spec : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (l : Level H) (c : Coeff l) (K : Type) [Field K] [NumberField K] [Algebra c.F K], Function.Bijective (labK c K) ∧ Splits E K ∧ (∀ τ, ∃ t : 𝓞 E →+* 𝓞 K, ∀ a : 𝓞 E, (t a : K) = labK c K τ (a : E)) ∧ ∃ ρ : 𝓞 K, ρ ^ 2 = -(H.d : 𝓞 K) ∧ (∀ τ, τ ∈ psiSet H ↔ labK c K τ (H.rt : E) = (ρ : K)) ∧ (∀ τ, τ ∈ (psiSet H)ᶜ ↔ labK c K τ (H.rt : E) = ((-ρ : 𝓞 K) : K)) ∧ Nat.card (psiSet H) = Module.finrank ℚ E / 2 ∧ Nat.card ((psiSet H)ᶜ : Set (E →+* ℂ)) = Module.finrank ℚ E / 2 := by
   intro E _ _ _ H l c K _ _ _
   have hb := labK_bijective c K

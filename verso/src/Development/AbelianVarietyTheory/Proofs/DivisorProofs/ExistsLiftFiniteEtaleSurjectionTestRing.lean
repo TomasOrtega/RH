@@ -12,6 +12,23 @@ open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.Chart
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `Y Z π hfin het hsurj K _ p x`. Set `P` to `pullback π x`. Set `f : P ⟶ Sp p.R` to `pullback.snd π x`. Establish `: IsFinite f` using `inferInstance`. Establish `: Etale f` using `inferInstance`.
+
+Establish `: Surjective f` using `inferInstance`. Establish `: IsAffine P` using `isAffine_of_isAffineHom f`. Set `g : Spec Γ(P, ⊤) ⟶ Spec (CommRingCat.of p.R)` to `P.isoSpec.inv ≫ f`. Set `φ : CommRingCat.of p.R ⟶ Γ(P, ⊤)` to `Spec.preimage g`. Establish `hφ : Spec.map φ = g` using `Spec.map_preimage g`.
+
+Establish `hg_et : Etale (Spec.map φ)` using `by rw [hφ]; infer_instance`. Establish `hg_surj : Surjective (Spec.map φ)` using `by rw [hφ]; infer_instance`. Establish `hφet : φ.hom.Etale` using `(HasRingHomProperty.Spec_iff (P := @Etale)).1 hg_et`. Establish `hφff : φ.hom.FaithfullyFlat` using `(flat_and_surjective_SpecMap_iff φ).1 ⟨inferInstance, hg_surj⟩`. Use `letI : Algebra p.R Γ(P, ⊤) := φ.hom.toAlgebra`.
+
+Establish `hBet : Algebra.Etale p.R Γ(P, ⊤)` using `hφet`. Establish `hBff : Module.FaithfullyFlat p.R Γ(P, ⊤)` using `hφff`. Establish `hpred : _root_.IsReduced p.R` using `(Ideal.isRadical_iff_quotient_reduced _).1 p.rad`. Establish `hBred : _root_.IsReduced Γ(P, ⊤)` using `GlobalTheory.isReduced_algebra_of_smooth_of_isReduced p.R Γ(P, ⊤)`. Use `letI : Algebra K Γ(P, ⊤) := (φ.hom.comp (algebraMap K p.R)).toAlgebra`.
+
+Use `haveI : IsScalarTower K p.R Γ(P, ⊤) := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI : Algebra.FiniteType K Γ(P, ⊤) := Algebra.FiniteType.trans (S := p.R) inferInstance inferInstance`. Take `⟨n, s, hs⟩` from `Algebra.FiniteType.iff_quotient_mvPolynomial''.1 (inferInstance : Algebra.FiniteType K Γ(P, ⊤))`. Establish `hrad : (RingHom.ker s).IsRadical` using `(Ideal.isRadical_iff_quotient_reduced _).2 (isReduced_of_injective (Ideal.kerLiftAlg s) (Ideal.kerLiftAlg_injective s))`. Set `q : TRing K` to `⟨n, RingHom.ker s, hrad⟩`.
+
+Set `e : q.R ≃ₐ[K] Γ(P, ⊤)` to `Ideal.quotientKerAlgEquivOfSurjective hs`. Set `φK : p.R →ₐ[K] Γ(P, ⊤)` to `{ φ.hom with commutes' := fun _ => rfl }`. Set `ι : p.R →ₐ[K] q.R` to `e.symm.toAlgHom.comp φK`. Use `⟨q, ι, ?_, ?_⟩` and prove the remaining obligations. Use `letI := ι.toRingHom.toAlgebra`.
+
+Set `e' : Γ(P, ⊤) ≃ₐ[p.R] q.R` to `AlgEquiv.ofRingEquiv (f := e.symm.toRingEquiv) (fun _ => rfl)`. Conclude with `⟨Module.FaithfullyFlat.of_linearEquiv _ _ e'.symm.toLinearEquiv, Algebra.Etale.of_equiv e'⟩`. Use `⟨Spec.map (CommRingCat.ofHom e.symm.toRingHom) ≫ P.isoSpec.inv ≫ pullback.fst π x, ?_⟩` and prove the remaining obligations. Establish `hι : CommRingCat.ofHom ι.toRingHom = φ ≫ CommRingCat.ofHom e.symm.toRingHom` using `rfl`. Rewrite using `[Category.assoc, Category.assoc, pullback.condition]`.
+
+Express the relevant statement in the definitionally equal form `_ ≫ g ≫ x = _`. Rewrite using `[← hφ, ← Category.assoc, ← Spec.map_comp, ← hι]`.
+-/
 theorem exists_lift_finiteEtale_testRing : ∀ (Y Z : Scheme.{0}) (π : Z ⟶ Y), IsFinite π → Etale π → Surjective π →
     ∀ (K : Type) [Field K] (p : TRing K) (x : Sp p.R ⟶ Y), ∃ (q : TRing K) (ι : p.R →ₐ[K] q.R),
       (letI := ι.toRingHom.toAlgebra; Module.FaithfullyFlat p.R q.R ∧ Algebra.Etale p.R q.R) ∧

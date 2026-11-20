@@ -13,6 +13,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨boxRosati, BoxTauLin.boxTauBal_of_linear allSixLaws.1.globalFns, powOAct_of_globalFns allSixLaws.1.globalFns⟩`.
+-/
 theorem powerRosati_tauBal_action : BoxRosatiSt ∧ BoxTauBalSt ∧ PowOActSt :=
   ⟨boxRosati, BoxTauLin.boxTauBal_of_linear allSixLaws.1.globalFns,
     powOAct_of_globalFns allSixLaws.1.globalFns⟩

@@ -16,6 +16,41 @@ def Wpsi {r : ℕ} (X : Data E r) (la : Wt X.Ψ r) (ψ : Frame X.Ψ r → ℝ) (
   classical
   exact if x ∈ X.dom then ENNReal.ofReal (Real.exp (-(phla X la x + ψ x))) else 0
 
+/- English proof (translation)
+Establish `hlact1 : ∀ y : Frame X.Ψ r, lact (1 : GL (Fin r) E) y = y`. Introduce `y`. Use function extensionality and compare the values at `τ a c`. Simplify using `[lact, mat]`. Establish `hψr : ∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, ψ (rmul x b) = ψ x`.
+
+Introduce `x hx b hb`. Establish `h` using `hψ 1 X.Γ.one_mem x hx b hb`. Rewrite `h` using `[hlact1]`. Then use the resulting hypothesis. Establish `hψl : ∀ γ ∈ X.Γ, ∀ x ∈ X.dom, ψ (lact γ x) = ψ x`. Introduce `γ hγ x hx`.
+
+Establish `h` using `hψ γ hγ x hx (ExtFPf.oneF X) (ExtFPf.oneF_mem (X := X))`. Rewrite `h` using `[ExtFPf.rmul_oneF]`. Then use the resulting hypothesis. Establish `hnpos : ∀ x ∈ X.dom, 0 < X.nfac la x`. Introduce `x hx`. Unfold `ReciprocityTheory.ChartRestriction.G.FD.Data.nfac`.
+
+Use `Finset.prod_pos fun τ _ => Finset.prod_pos fun i _ => Real.rpow_pos_of_pos ?_ _` and prove the remaining obligations. Conclude with `norm_pos_iff.mpr (div_ne_zero (ReciprocityTheory.ChartRestriction.G.FD.FlowCoefficientBounds.dmin_ne (X := X) hx τ _) (ReciprocityTheory.ChartRestriction.G.FD.FlowCoefficientBounds.dmin_ne (X := X) hx τ _))`. Establish `hopen : IsOpen X.dom` using `ReciprocityTheory.ChartRestriction.G.FD.FourierCoefficientDomain.isOpen_dom (X := X)`. Establish `hphr : ∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, 0 < ‖bchar la b‖ ∧ phla X la (rmul x b) = phla X la x + 2 * Real.log ‖bchar la b‖`. Introduce `x hx b hb`.
+
+Establish `hn` using `hnpos x hx`. Establish `h1` using `hnpos (rmul x b) (OntoS.dom_rmul (X := X) hx hb)`. Rewrite `h1` using `[hR r X la x hx b hb]`. Establish `hinv : 0 < ‖bchar la b‖⁻¹`. Assume the negation of the conclusion as `hc`.
+
+Use `push_neg at hc`. Use the polynomial consequences of the given equalities and inequalities. Use `⟨inv_pos.mp hinv, ?_⟩` and prove the remaining obligations. Unfold `phla`. Rewrite using `[hR r X la x hx b hb, Real.log_mul hinv.ne' hn.ne', Real.log_inv]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hphl : ∀ γ ∈ X.Γ, ∀ x ∈ X.dom, phla X la (lact γ x) = phla X la x`. Introduce `γ hγ x hx`. Unfold `phla`. Rewrite using `[hLa r X la γ hγ x hx]`.
+
+Establish `hψc : ContinuousOn ψ X.dom`. Introduce `x hx`. Take `⟨x1, ho, b, hb, hxe⟩` from `hO r X x hx`. Take `⟨Δ, zOf, bOf, hΔ, -, hz, -, hdec, hcomp⟩` from `hLU r X x1 ho`. Establish `hn0 : nmat X (0 : V (nd X)) = ExtFPf.oneF X`.
+
+Use function extensionality and compare the values at `τ a c`. Simplify using `only [nmat, ExtFPf.oneF, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; subst_vars; exact lt_irrefl _ ‹_ < _›) | simp_all`. Establish `hc0 : cpt X x1 0 = x1`. Unfold `cpt`.
+
+Rewrite using `[hn0, ExtFPf.rmul_oneF]`. Establish `hΔx : Δ x ≠ 0`. Establish `h` using `(hcomp 0 (zero_mem_OmF (X := X) x1 ho) b hb).1`. Rewrite `h` using `[hc0, ← hxe]`. Then use the resulting hypothesis. Establish `hUo : IsOpen {y | y ∈ X.dom ∧ Δ y ≠ 0}` using `hopen.inter (isOpen_ne_fun hΔ.continuous continuous_const)`.
+
+Establish `hmap : Set.MapsTo zOf {y | y ∈ X.dom ∧ Δ y ≠ 0} (OmF X x1)` using `fun y hy => (hdec y hy.1 hy.2).1`. Establish `hcomp' : ContinuousOn ((fun z => ψ (cpt X x1 z)) ∘ zOf) {y | y ∈ X.dom ∧ Δ y ≠ 0}` using `(hψs x1 ho).continuousOn.comp hz.continuousOn hmap`. Establish `heq : Set.EqOn ψ ((fun z => ψ (cpt X x1 z)) ∘ zOf) {y | y ∈ X.dom ∧ Δ y ≠ 0}`. Introduce `y hy`. Take `⟨hzy, hby, hye⟩` from `hdec y hy.1 hy.2`.
+
+Establish `hmem : cpt X x1 (zOf y) ∈ X.dom` using `hzy`. Use `show ψ y = ψ (cpt X x1 (zOf y))`. Conclude with `(congrArg ψ hye).trans (hψr _ hmem _ hby)`. Conclude with `((hcomp'.congr heq).continuousAt (hUo.mem_nhds ⟨hx, hΔx⟩)).continuousWithinAt`. Establish `hphc : ContinuousOn (phla X la) X.dom` using `by show ContinuousOn (fun x => -2 * Real.log (X.nfac la x)) X.dom`.
+
+Conclude with `continuousOn_const.mul ((ExtFPf.nfac_contOn (X := X) la).log fun x hx => (hnpos x hx).ne')`. Establish `hcont : ContinuousOn (fun x => ENNReal.ofReal (Real.exp (-(phla X la x + ψ x)))) X.dom` using `ENNReal.continuous_ofReal.comp_continuousOn (Real.continuous_exp.comp_continuousOn (hphc.add hψc).neg)`. Establish `hW : ∀ x ∈ X.dom, Wpsi X la ψ x = ENNReal.ofReal (Real.exp (-(phla X la x + ψ x)))`. Introduce `x hx`. Simplify using `[Wpsi, hx]`.
+
+Establish `hWeq : Wpsi X la ψ = X.dom.piecewise (fun x => ENNReal.ofReal (Real.exp (-(phla X la x + ψ x)))) (fun _ => 0)`. Use function extensionality and compare the values at `x`. Apply the tactic sequence `by_cases hx : x ∈ X.dom <;> simp [Wpsi, Set.piecewise, hx]`. Unfold `IsMetricW WLower`. Use `⟨⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hWeq]`. Conclude with `ContinuousOn.measurable_piecewise hcont continuousOn_const hopen.measurableSet`. Introduce `x hx b hb`. Take `⟨hB, hph⟩` from `hphr x hx b hb`. Rewrite using `[hW _ (OntoS.dom_rmul (X := X) hx hb), hW x hx, hph, hψr x hx b hb, ← ENNReal.ofReal_div_of_pos (pow_pos hB 2)]`.
+
+Use `congr 1`. Rewrite using `[show -(phla X la x + 2 * Real.log ‖bchar la b‖ + ψ x) = -(phla X la x + ψ x) - Real.log (‖bchar la b‖ ^ 2) by rw [Real.log_pow]; push_cast; ring, Real.exp_sub, Real.exp_log (pow_pos hB 2)]`. Introduce `γ hγ x hx`. Rewrite using `[hW _ (OntoS.dom_lact (X := X) hγ hx), hW x hx, hphl γ hγ x hx, hψl γ hγ x hx]`. Take `⟨C, hC⟩` from `hψb`.
+
+Use `⟨Real.exp (-C), Real.exp_pos _, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[hW x hx, ← Real.exp_add]`. Conclude with `ENNReal.ofReal_le_ofReal (Real.exp_le_exp.mpr (by linarith [hC x hx]))`.
+-/
 theorem metricW_of (hR : NfacRmulStatement (E := E)) (hLa : NfacLactStatement (E := E))
     (hO : OrthoStatement (E := E)) (hLU : LUStatement (E := E)) {r : ℕ} (X : Data E r) (la : Wt X.Ψ r)
     (ψ : Frame X.Ψ r → ℝ) (hψ : IsInvFn X ψ)

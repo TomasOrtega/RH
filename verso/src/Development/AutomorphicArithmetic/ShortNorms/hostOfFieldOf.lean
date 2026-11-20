@@ -14,6 +14,15 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormOneIffOf
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Formalism.HC GlobalTheory.EX UpperTheory.Top HostParam.Seam
 
+/- English proof (translation)
+Establish `hp : d.Prime` using `Fact.out`. Use `haveI : NeZero d := ⟨hp.ne_zero⟩`. Establish `hch : ringChar (ZMod d) ≠ 2`. Rewrite using `[ZMod.ringChar_zmod_n]`. Use linear arithmetic over natural numbers and integers.
+
+Use `⟨?_, fun a ha => ?_⟩` and prove the remaining obligations. Break down `(Nat.dvd_prime hp).1 (DirichletCharacter.conductor_dvd_level ((quadraticChar (ZMod d)).ringHomComp (Int.castRingHom ℂ))) with h | h` into its components or cases. Conclude with `absurd (DirichletCharacter.eq_one_iff_conductor_eq_one.2 h) ((MulChar.ringHomComp_ne_one_iff (Int.cast_injective)).2 (quadraticChar_ne_one hch))`. Conclude with `h`. Establish `ha0 : 0 < a`.
+
+Break down `Nat.eq_zero_or_pos a with h | h` into its components or cases. Substitute `h` using the available equality. Conclude with `absurd (Nat.coprime_zero_left M |>.1 ha) hM`. Conclude with `h`. Rewrite using `[GlobalTheoryTheory.chDir, GlobalTheoryTheory.kron, GlobalTheory.kronSym_neg_eq_jacobiSym_and_two.1 d a hd ha0, ← jacobiSym.legendreSym.to_jacobiSym, legendreSym]`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem hof_quadraticChar_induces (d M : ℕ) [Fact d.Prime] (hd : d % 4 = 3) (hM : M ≠ 1) :
     GlobalTheoryTheory.Induces ((quadraticChar (ZMod d)).ringHomComp (Int.castRingHom ℂ) : DirichletCharacter ℂ d)
       (GlobalTheoryTheory.chDir d) M := by
@@ -35,6 +44,9 @@ private theorem hof_quadraticChar_induces (d M : ℕ) [Fact d.Prime] (hd : d % 4
       ← jacobiSym.legendreSym.to_jacobiSym, legendreSym]
     simp
 
+/- English proof (translation)
+The claim follows from `|dlogH H| ≤ C * Real.log x := by haveI : Fact H.d.Prime := ⟨H.hyp.2.1⟩ haveI : NeZero H.d := ⟨H.hyp.2.1.ne_zero⟩ have hd : H.d % 16 = 7 := H.hyp.2.2.2.1 have h1 := (h.2.1 H.d _ (hof_quadraticChar_induces H.d (8 * H.q * H.d) (by omega) (by rw [mul_assoc]; omega))).2 exact (Complex …`.
+-/
 private theorem hof_abs_dlogH_le {R : Ranks} (H : Host R) {x eps C : ℝ} (h : QDq x eps C H.q H.d) :
     |dlogH H| ≤ C * Real.log x := by
   haveI : Fact H.d.Prime := ⟨H.hyp.2.1⟩
@@ -44,6 +56,11 @@ private theorem hof_abs_dlogH_le {R : Ranks} (H : Host R) {x eps C : ℝ} (h : Q
     rw [mul_assoc]; omega))).2
   exact (Complex.abs_re_le_norm _).trans h1
 
+/- English proof (translation)
+Establish `h` using `(isLittleO_log_rpow_atTop he).bound (inv_pos.2 hC)`. Take `⟨x0, h0⟩` from `Filter.eventually_atTop.1 h`. Use `⟨max x0 1, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1` using `h0 x (le_of_max_le_left hx)`. Establish `hx1 : 1 ≤ x` using `le_of_max_le_right hx`.
+
+Rewrite `h1` using `[Real.norm_of_nonneg (Real.log_nonneg hx1), Real.norm_of_nonneg (by positivity)]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem hof_log_le_rpow (eps C : ℝ) (he : 0 < eps) (hC : 0 < C) :
     ∃ x0 : ℝ, ∀ x, x0 ≤ x → C * Real.log x ≤ x ^ eps := by
   have h := (isLittleO_log_rpow_atTop he).bound (inv_pos.2 hC)
@@ -55,6 +72,11 @@ private theorem hof_log_le_rpow (eps C : ℝ) (he : 0 < eps) (hC : 0 < C) :
   calc C * Real.log x ≤ C * (C⁻¹ * x ^ eps) := by gcongr
     _ = x ^ eps := by field_simp
 
+/- English proof (translation)
+Establish `he` using `s.eps_pos`. Establish `h1 : (⌈(405 : ℝ) * Real.log s.x⌉₊ : ℝ) < 405 * Real.log s.x + 1` using `Nat.ceil_lt_add_one (by linarith)`. Establish `h2 : (⌈30 / s.eps⌉₊ : ℝ) < 30 / s.eps + 1` using `Nat.ceil_lt_add_one (by positivity)`. Establish `h3 : 60 / s.eps = 2 * (30 / s.eps)` using `by ring`. Establish `h4 : 0 < 30 / s.eps` using `by positivity`.
+
+Unfold `Lwv`. Use `push_cast`. Rewrite using `[h3]`. Use polynomial arithmetic with `[mul_nonneg h4.le (sub_nonneg.mpr hy)]`.
+-/
 private theorem hof_Lwv_le (s : Scale) (hy : 1 ≤ Real.log s.x) :
     (Lwv s : ℝ) ≤ (4084 + 60 / s.eps) * Real.log s.x := by
   have he := s.eps_pos
@@ -68,6 +90,15 @@ private theorem hof_Lwv_le (s : Scale) (hy : 1 ≤ Real.log s.x) :
   rw [h3]
   nlinarith [mul_nonneg h4.le (sub_nonneg.mpr hy)]
 
+/- English proof (translation)
+Take `⟨C, -, hT⟩` from `UpperTheory.BernoulliSumsFrobeniusOrbits.thickFrame2`. Use `⟨C, fun eps Co he he' => ?_⟩` and prove the remaining obligations. Take `⟨x0, hT⟩` from `hT eps (max Co 2) (4084 + 60 / eps) he he'`. Use `⟨max x0 (Real.exp 1), fun s R hs hx hR ho => ?_⟩` and prove the remaining obligations. Establish `hx0 : 0 < s.x` using `lt_trans one_pos s.one_lt_alt`.
+
+Establish `hy1 : 1 ≤ Real.log s.x` using `(Real.le_log_iff_exp_le hx0).mpr ((le_max_right _ _).trans hx)`. Establish `hL : 2 ≤ Lwv s` using `by unfold Lwv; omega`. Establish `hLK` using `hof_Lwv_le s hy1`. Establish `hn1` using `hR.n_lo`. Establish `hn2` using `hR.n_up`.
+
+Rewrite `hLK`, `hn1`, `hn2` using `[hs]`. Establish `hp0 : 0 < s.x ^ (2 + 8 * eps)` using `Real.rpow_pos_of_pos hx0 _`. Establish `hlo : s.x ^ UpperTheory.BernoulliSumsFrobeniusOrbits.hE eps / 2 ≤ (R.n : ℝ)`. Unfold `UpperTheory.BernoulliSumsFrobeniusOrbits.hE`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hup : (R.n : ℝ) ≤ max Co 2 * s.x ^ UpperTheory.BernoulliSumsFrobeniusOrbits.hE eps` using `hn2.trans (mul_le_mul_of_nonneg_right (le_max_right _ _) hp0.le)`. Take `⟨T, t1, t2, t3, t4, t5⟩` from `hT s.x ((le_max_left _ _).trans hx) R.toFrame (Lwv s) hL hLK (ho.trans (le_max_left _ _)) hlo hup`. Conclude with `⟨T, t1, t2, t3, hs ▸ t4, t5, hL⟩`.
+-/
 private theorem hof_thick :
     ∃ CT2 : ℝ, ∀ eps Co : ℝ, 0 < eps → eps < 1 / 52 → ∃ x0 : ℝ, ∀ (s : Scale) (R : Ranks), s.eps = eps → x0 ≤ s.x →
       RankVal s R → (R.o : ℝ) ≤ Co → ∃ T : Finset ℕ, (∀ a ∈ T, 4 * Lwv s * a < R.n0) ∧ Formalism.FrobeniusOrbits.NoRel T (Lwv s) ∧
@@ -94,6 +125,11 @@ private theorem hof_thick :
     (ho.trans (le_max_left _ _)) hlo hup
   exact ⟨T, t1, t2, t3, hs ▸ t4, t5, hL⟩
 
+/- English proof (translation)
+Apply the tactic sequence `obtain ⟨D, rfl, h2, h3⟩ := hA b { levelPrimes := {g 0, g 1, p, p', q0}, g := g, g_prime := hg, g_ne := hne g_level := by intro i; fin_cases i <;> simp pde := p, pde' := p', pde_prime := hp, pde'_prime := hp', pde_ne := hpp, pde_level := by simp pde_mod := hm, pde_ne_g := hpg, ccK …`. Establish `h1` using `congrArg Ideal.absNorm (top_le_iff.1 h)`. Rewrite `h1` using `[Ideal.absNorm_span_natCast, Ideal.absNorm_top, NumberField.RingOfIntegers.rank, H0.toHostRaw.finrank_K]`. Use the polynomial consequences of the given equalities and inequalities. Use `ccK_split := fun P hP h => absurd (top_le_iff.1 h) hP.ne_top, ccK_coprime := by simp, ccK_coprimeS := by simp`.
+
+Use `level_coprimeS := hS`. Use `TT := ∅, T2 := T, u0 := 0, Lw := Lw, two_le_Lw := hL, second_set_range := hT, second_set_no_relation := hT', CT2 := CT2 } hF hbig`. Establish `e` using `eq_of_heq h3`. Conclude with `⟨D, rfl, h2, congrArg Choices.g e, congrArg Choices.pde e, congrArg Choices.pde' e, congrArg Choices.levelPrimes e, congrArg Choices.ccK e, congrArg Choices.T2 e, congrArg Choices.Lw e, congrArg Choices.CT2 e⟩`.
+-/
 private theorem hof_exists_host (R : Ranks) (H0 : HostAx R.toFrame) (hA : admitted R H0) (b : ℕ) (hF : FieldRows H0.toHostRaw b)
     (hbig : 4 * R.t * R.r + 1 < H0.q ∧ 4 * R.t * R.r + 1 < H0.d)
     (g : Fin 2 → ℕ) (p p' q0 : ℕ) (hg : ∀ i, (g i).Prime) (hne : g 0 ≠ g 1) (hp : p.Prime) (hp' : p'.Prime)
@@ -118,11 +154,19 @@ private theorem hof_exists_host (R : Ranks) (H0 : HostAx R.toFrame) (hA : admitt
   exact ⟨D, rfl, h2, congrArg Choices.g e, congrArg Choices.pde e, congrArg Choices.pde' e, congrArg Choices.levelPrimes e,
     congrArg Choices.ccK e, congrArg Choices.T2 e, congrArg Choices.Lw e, congrArg Choices.CT2 e⟩
 
+/- English proof (translation)
+Establish `h1 : Nat.Coprime l (Q * q * d)`. Rewrite using `[Nat.Coprime, Nat.gcd_comm, Nat.gcd_rec, h, Nat.gcd_one_left]`. Conclude with `h1.coprime_mul_right_right.coprime_mul_right_right`.
+-/
 private theorem hof_coprime {l Q q d : ℕ} (h : l % (Q * q * d) = 1) : Nat.Coprime l Q := by
   have h1 : Nat.Coprime l (Q * q * d) := by
     rw [Nat.Coprime, Nat.gcd_comm, Nat.gcd_rec, h, Nat.gcd_one_left]
   exact h1.coprime_mul_right_right.coprime_mul_right_right
 
+/- English proof (translation)
+Establish `h'` using `h.trans (Nat.lcm_dvd_mul _ _)`. Use `⟨fun l hl hd => ?_, ?_⟩` and prove the remaining obligations. Break down `hl.dvd_mul.1 (hd.trans h') with h1 | h1` into its components or cases. Conclude with `(hl.dvd_of_dvd_pow h1).mul_right _`. Conclude with `h1.mul_left _`.
+
+Conclude with `((Nat.coprime_ordCompl Nat.prime_two hQ).symm.pow_right k).dvd_of_dvd_mul_left ((Nat.ordCompl_dvd _ _).trans h')`.
+-/
 private theorem hof_odd {Q k M : ℕ} (hQ : Q ≠ 0) (h : Q ∣ Nat.lcm (2 ^ k) M) :
     (∀ l : ℕ, l.Prime → l ∣ Q → l ∣ 2 * M) ∧ ordCompl[2] Q ∣ M := by
   have h' := h.trans (Nat.lcm_dvd_mul _ _)
@@ -132,6 +176,17 @@ private theorem hof_odd {Q k M : ℕ} (hQ : Q ≠ 0) (h : Q ∣ Nat.lcm (2 ^ k) 
     · exact h1.mul_left _
   · exact ((Nat.coprime_ordCompl Nat.prime_two hQ).symm.pow_right k).dvd_of_dvd_mul_left ((Nat.ordCompl_dvd _ _).trans h')
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hof_odd H.QS_pos.ne' hQ`. Take `⟨a, b⟩` from `UpperTheory.Top.realBox M R.toFrame H.toHostRaw eps Y X hM h1 h2 hG`. Use `⟨fun N _ χ hχ hr => ?_, b⟩` and prove the remaining obligations. Establish `hle : ((ordCompl[2] H.QS : ℕ) : ℝ) ≤ M` using `by exact_mod_cast Nat.le_of_dvd hM h2`. Establish `hmono : ∀ j, height (ordCompl[2] H.QS) eps Y j ≤ height M eps Y j` using `fun j => by`.
+
+Unfold `height`. Use `gcongr`. Establish `key` using `a ⟨N, χ, hχ.1⟩ ((isCharH_iff H χ).1 hχ) hr`. Use `⟨fun hd => ?_, fun hq hd => ?_⟩` and prove the remaining obligations. Take `⟨k1, k2⟩` from `key (Or.inr hd)`.
+
+Rewrite `k1`, `k2` using `[if_pos hd]`. Establish `e : 8 * ((ordCompl[2] H.QS : ℕ) : ℝ) * GlobalTheoryTheory.X1 Y eps * GlobalTheoryTheory.X2 Y eps = height (ordCompl[2] H.QS) eps Y 1`. Simplify using `[height, GlobalTheoryTheory.X1, GlobalTheoryTheory.X2]`. Rewrite using `[e]`. Conclude with `⟨hχ.1, hr, k2, fun z z1 z2 => k1 z z1 (z2.trans (hmono _))⟩`.
+
+Take `⟨k1, k2⟩` from `key (Or.inl hq)`. Rewrite `k1`, `k2` using `[if_neg hd]`. Establish `e : 8 * ((ordCompl[2] H.QS : ℕ) : ℝ) * GlobalTheoryTheory.X1 Y eps = height (ordCompl[2] H.QS) eps Y 0`. Simplify using `[height, GlobalTheoryTheory.X1]`. Rewrite using `[e]`.
+
+Conclude with `⟨hχ.1, hr, k2, fun z z1 z2 => k1 z z1 (z2.trans (hmono _))⟩`.
+-/
 private theorem hof_box {R : Ranks} (H : Host R) {M : ℕ} {eps Y X : ℝ} (hM : 0 < M) (hQ : H.QS ∣ Nat.lcm (2 ^ (R.e + 2)) M)
     (hG : PairGood M eps Y X H.q H.d) : BoxH H Y eps ∧ UpperTheory.Top.RealBox H.toHostRaw := by
   obtain ⟨h1, h2⟩ := hof_odd H.QS_pos.ne' hQ
@@ -156,6 +211,41 @@ private theorem hof_box {R : Ranks} (H : Host R) {M : ℕ} {eps Y X : ℝ} (hM :
     rw [e]
     exact ⟨hχ.1, hr, k2, fun z z1 z2 => k1 z z1 (z2.trans (hmono _))⟩
 
+/- English proof (translation)
+Introduce `hSN hSO eps C0 he he' hC0`. Take `⟨C1, hC1, hL⟩` from `UpperTheory.T3.levelData hSN hSO`. Take `⟨xa, hL⟩` from `hL eps he he'`. Take `⟨c6, hc6, hThin⟩` from `QH.thinH`. Take `⟨xb, hThin⟩` from `hThin C0 eps he he'`.
+
+Take `⟨Cb, xc, hCb, hTops⟩` from `UpperTheory.BernoulliSumsFrobeniusOrbits.topsChoiceH eps C0 he he'`. Take `⟨xd, hP⟩` from `UpperTheory.Top.pairRows eps C0 he he'`. Take `⟨CT2, hT⟩` from `hof_thick`. Take `⟨xe, hT⟩` from `hT eps C0 he he'`. Take `⟨xf, hlog⟩` from `hof_log_le_rpow eps 4 he (by norm_num)`.
+
+Take `⟨xg, hbig⟩` from `UpperTheory.T3.qdBig eps C0 he he'`. Use `⟨CT2, max C0 C1, c6, Cb, max (max (max xa xb) (max xc xd)) (max (max xe xf) xg), le_max_left _ _, hc6, hCb, fun s R H0 M Y hs hx hR hJ ho hQS hM hMC hQ hW hG hF hA => ?_⟩` and prove the remaining obligations. Simplify using `only [max_le_iff] at hx`. Take `⟨⟨⟨ha, hb⟩, hc, hd⟩, ⟨hxe, hf⟩, hg⟩` from `hx`. Substitute `hs` using the available equality.
+
+Take `⟨hqd, h100⟩` from `hbig s R Y H0.q H0.d rfl hg hR hJ hW hG.pair`. Establish `hN : Real.log ((H0.QS : ℝ) * H0.q * H0.d) ≤ 2 * s.x ^ (s.eps / 5) * Real.log s.x ^ 2`. Take `⟨c⟩` from `nonempty_choices H0.toHostRaw`. Take `⟨D0, h0, -⟩` from `hA _ c hF hqd`. Use `clear c`.
+
+Substitute `h0` using the available equality. Establish `h1` using `(hP s R D0 M Y rfl hd hR ⟨hJ, ho, hQS⟩ hM hW hG).1.2.2.2.2.2.2.2.2.2.2`. Establish `h2` using `hW.z_log_sq_le`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hN0 : 0 < H0.QS * H0.q * H0.d` using `Nat.mul_pos (Nat.mul_pos H0.QS_pos hG.pair.q_prime.pos) hG.pair.d_prime.pos`.
+
+Establish `hN1 : 1 < H0.QS * H0.q * H0.d` using `lt_of_lt_of_le (by omega) (Nat.le_of_dvd hN0 (dvd_mul_left H0.d _))`. Establish `hd4 : H0.d % 4 = 3` using `by have := hG.pair.d_mod; omega`. Take `⟨g, p, p', q0, hgi, hg01, hdisj, hp, hp', hq0, hpp, hq0p, hq0p', mp, mp', mq0, lp, lp', lq0, hpg⟩` from `hL s R (H0.QS * H0.q * H0.d) H0.d rfl ha hR ⟨hG.pair.d_prime, hd4, h100, hN0, dvd_mul_left _ _, by`. Establish `h1 : 0 ≤ s.x ^ (s.eps / 5) * Real.log s.x ^ 2` using `by have := s.one_lt_alt; positivity`. Use `push_cast`.
+
+Use the proof step `linarith⟩`. Establish `hm : ((H0.QS * H0.q * H0.d : ℕ) : ℝ) ^ C1 ≤ ((H0.QS : ℝ) * H0.q * H0.d) ^ max C0 C1`. Use `push_cast`. Conclude with `Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast hN0) (le_max_right _ _)`. Use `replace lp := lp.trans hm`.
+
+Use `replace lp' := lp'.trans hm`. Use `replace lq0 := lq0.trans hm`. Use `replace mp := mod_lcm_of_mod_mul hN0 mp`. Use `replace mp' := mod_lcm_of_mod_mul hN0 mp'`. Take `⟨T, t1, t2, t3, t4, t5, t6⟩` from `hT s R rfl hxe hR ho`.
+
+Establish `hgm : ∀ i, g i % (H0.QS * H0.q * H0.d) = 1` using `fun i => Eq.trans (GlobalTheory.Mem.An.normOne_modEq_one_and_of_dvd _ _ _ hd4 (hgi i).2.2.2).1 (Nat.mod_eq_of_lt hN1)`. Take `⟨D, e1, e3, e4, e5, e6, e7, e8, e9, e10, e11⟩` from `hof_exists_host R H0 hA _ hF hqd g p p' q0 (fun i => (hgi i).1) hg01 hp hp' hpp ⟨(mod_of_mod_lcm hN1 mp).1, (mod_of_mod_lcm hN1 mp').1⟩ hpg T (Lwv s) t6 t1 t2 CT2 (fun l hl => by`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hl`. Break down `hl with rfl | rfl | rfl | rfl | rfl` into its components or cases. Use `exacts [hof_coprime (hgm 0), hof_coprime (hgm 1), hof_coprime (mod_of_mod_lcm hN1 mp).2, hof_coprime (mod_of_mod_lcm hN1 mp').2, hof_coprime mq0])`.
+
+Substitute `e1 e4 e5 e6 e9 e11` using the available equality. Take `⟨hrow, hq, hbox, -⟩` from `hP s R D M Y rfl hd hR ⟨hJ, ho, hQS⟩ hM hW hG`. Take `⟨TT, tt1, tt2, hbad, hsh⟩` from `hTops s R D rfl hc hR ⟨hJ, ho, hQS⟩ ⟨Y, hW, hrow⟩`. Establish `hnorm` using `fun i => (GlobalTheory.Mem.An.normOne_iff_host R D _ _).1 (hgi i).2.2.2`. Establish `hsplit` using `GlobalTheory.HostSplit.split_of_one_mod R D`.
+
+Take `⟨bH, bR⟩` from `hof_box { D with TT := TT } hM hQ hG`. Establish `hC : C0 ≤ max C0 C1` using `le_max_left _ _`. Use `⟨{ D with TT := TT }, q0, rfl, rfl, ⟨ ⟨⟨Y, hW, hrow⟩, ⟨tt1, tt2⟩, t4, ⟨lp, lp'⟩, fun i => ⟨(hgi i).2.1, (hgi i).2.2.1⟩, e10, e8, ?_, hJ.trans hC, ho.trans hC, hQS.trans (mul_le_mul_of_nonneg_right hC (Nat.cast_nonneg _))⟩, ⟨fun i => ?_, hgm, ⟨?_, ?_⟩, fun l hl => ?_⟩, ?_, ?_, hq, …` and prove the remaining obligations. Conclude with `(Nat.floor_le_floor (hW.rpow_ez_le (by norm_num))).trans e3.ge`. Take `⟨π, h1, h2, -⟩` from `hnorm i`.
+
+Conclude with `⟨π, h1, h2⟩`. Conclude with `(GlobalTheory.HostSplit.ncard_placesOver D.E hp).symm.trans (hsplit _ hp (mod_of_mod_lcm hN1 mp).2).1`. Conclude with `(GlobalTheory.HostSplit.ncard_placesOver D.E hp').symm.trans (hsplit _ hp' (mod_of_mod_lcm hN1 mp').2).1`. Establish `hl' : l ∈ D.levelPrimes` using `hl`. Rewrite `hl'` using `[e7]`.
+
+Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hl'`. Break down `hl' with rfl | rfl | rfl | rfl | rfl` into its components or cases. Conclude with `(hsplit _ (hgi 0).1 (hgm 0)).2`. Conclude with `(hsplit _ (hgi 1).1 (hgm 1)).2`. Conclude with `(hsplit _ hp (mod_of_mod_lcm hN1 mp).2).2`.
+
+Conclude with `(hsplit _ hp' (mod_of_mod_lcm hN1 mp').2).2`. Conclude with `(hsplit _ hq0 mq0).2`. Rewrite `t3` using `[← e10]`. Conclude with `t3`. Rewrite `t5` using `[← e10]`.
+
+Conclude with `t5`. Conclude with `(hof_abs_dlogH_le { D with TT := TT } hq).trans (hlog s.x hf)`. Use `(thinScales_iff_hostBound s c6 _).2 (hThin s.x hb R.toFrame D.toHostRaw ?_ ?_ bR)` and prove the remaining obligations. Establish `h1 : ((ordCompl[2] D.QS : ℕ) : ℝ) ≤ M` using `by exact_mod_cast Nat.le_of_dvd hM (hof_odd D.QS_pos.ne' hQ).2`. Conclude with `h1.trans hMC`.
+
+Establish `h1 : (D.condN : ℝ) = (D.QS : ℝ) * D.q * D.d`. Rewrite using `[show D.condN = D.QS * D.q * D.d from rfl]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[h1]`.
+
+Conclude with `hN`.
+-/
 theorem UpperTheory.T3.hostOfFieldOf :
     UpperTheory.T3.ShortNorm → UpperTheory.T3.SmallOne → ∀ eps C0 : ℝ, 0 < eps → eps < 1 / 52 → 1 ≤ C0 → ∃ CT2 C8 c6 Cb x0 : ℝ, C0 ≤ C8 ∧ 0 < c6 ∧ 0 < Cb ∧
       ∀ (s : Scale) (R : Ranks) (H0 : HostAx R.toFrame) (M : ℕ) (Y : ℝ), s.eps = eps → x0 ≤ s.x → RankVal s R →

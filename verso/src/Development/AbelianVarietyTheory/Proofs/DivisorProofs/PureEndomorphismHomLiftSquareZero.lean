@@ -12,6 +12,19 @@ noncomputable section
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `GM p hp R R₀ _ _ π hR hπ h2 g g' A B _ _ A₀ B₀ _ _ i j hA hgA hB hgB hi hj U V U₀ V₀ _ _ _ _ eU eV r s r' s' hU hV hu f₀ _ ef₀`. Establish `h2' : RingHom.ker π ^ 2 = 0` using `by rw [Ideal.zero_eq_bot]; exact h2`. Take `⟨Hc, -, Hl⟩` from `GM p hp R hR _ (GlobalTheory.Cris.divided₂ h2') (GlobalTheory.Cris.isDPNilpotent_squareZero h2') R₀ π hπ rfl`. Use `set κ := GlobalTheory.Cris.divided₂ h2'`. Establish `inj` using `(Hc.crysToDR_bijective hi hA hgA).1`.
+
+Establish `key : ∀ d ∈ GlobalTheory.DeRham.liftFil κ hi, GlobalTheory.DeRham.push κ (spMap π) f₀ d ∈ GlobalTheory.DeRham.liftFil κ hj`. Introduce `d hd`. Establish `hd' : GlobalTheory.DeRham.crysToDR κ hi d ∈ GlobalTheory.DeRham.Fil A` using `hd`. Establish `h1 : GlobalTheory.DeRham.push κ (spMap π) U₀ d = r • d`. Apply `inj` to reduce the goal to its premises.
+
+Rewrite using `[GlobalTheory.DeRham.crysToDR_push κ hi hi U₀ U eU, map_smul]`. Conclude with `hU.1 _ hd'`. Establish `h3 : GlobalTheory.DeRham.push κ (spMap π) V₀ (GlobalTheory.DeRham.push κ (spMap π) f₀ d) = r • GlobalTheory.DeRham.push κ (spMap π) f₀ d`. Use `congrArg (fun φ => φ d) (GlobalTheory.DeRham.push_comp κ (spMap π) U₀ f₀)` as an intermediate fact. Establish `h4` using `congrArg (fun φ => φ d) (GlobalTheory.DeRham.push_comp κ (spMap π) f₀ V₀)`.
+
+Simplify using `only [LinearMap.comp_apply] at this h4`. Rewrite using `[← h4, ← GlobalTheory.DeRham.push_congr κ (spMap π) ef₀, this, h1, map_smul]`. Use `show GlobalTheory.DeRham.crysToDR κ hj _ ∈ GlobalTheory.DeRham.Fil B`. Use `IsPure.mem_Fil hV hu ?_` and prove the remaining obligations. Rewrite using `[← GlobalTheory.DeRham.crysToDR_push κ hj hj V₀ V eV, h3, map_smul]`.
+
+Take `⟨f, ⟨hf, ef⟩, uf⟩` from `Hl g A₀ A i hi hA hgA g' B₀ B j hj hB hgB f₀ key`. Use `⟨f, hf, ef, ?_, fun f' hf' ef' => uf f' ⟨hf', ef'⟩⟩` and prove the remaining obligations. Establish `e1 : i ≫ (U ≫ f).left = (U₀ ≫ f₀).left ≫ j`. Simplify using `only [Over.comp_left, ← Category.assoc, eU]`. Simplify using `only [Category.assoc, ef]`.
+
+Establish `e2 : i ≫ (f ≫ V).left = (U₀ ≫ f₀).left ≫ j`. Rewrite using `[Over.comp_left, ← Category.assoc, ef, Category.assoc, eV, ← Category.assoc, ← Over.comp_left, ← ef₀]`. Conclude with `Hl.unique hi hA hgA hj hB hgB (U₀ ≫ f₀) e1 e2`.
+-/
 theorem pureLift_step : GlobalTheory.Published.GrothendieckMessing → ∀ p : ℕ, p.Prime → ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (π : R →+* R₀), IsNilpotent (p : R) → Function.Surjective π → RingHom.ker π ^ 2 = ⊥ → ∀ (g g' : ℕ) (A B : Over (Sp R)) [GrpObj A] [GrpObj B] (A₀ B₀ : Over (Sp R₀)) [GrpObj A₀] [GrpObj B₀] (i : A₀.left ⟶ A.left) (j : B₀.left ⟶ B.left), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → IsAbelianScheme B → SmoothOfRelativeDimension g' B.hom → IsGrpPullback A₀ A (spMap π) i → IsGrpPullback B₀ B (spMap π) j → ∀ (U : A ⟶ A) (V : B ⟶ B) (U₀ : A₀ ⟶ A₀) (V₀ : B₀ ⟶ B₀) [IsMonHom U] [IsMonHom V] [IsMonHom U₀] [IsMonHom V₀], i ≫ U.left = U₀.left ≫ i → j ≫ V.left = V₀.left ≫ j → ∀ r s r' s' : R, IsPure A U r s → IsPure B V r' s' → IsUnit (r - s') → ∀ (f₀ : A₀ ⟶ B₀) [IsMonHom f₀], U₀ ≫ f₀ = f₀ ≫ V₀ → ∃ f : A ⟶ B, IsMonHom f ∧ i ≫ f.left = f₀.left ≫ j ∧ U ≫ f = f ≫ V ∧ ∀ f' : A ⟶ B, IsMonHom f' → i ≫ f'.left = f₀.left ≫ j → f' = f := by
   intro GM p hp R R₀ _ _ π hR hπ h2 g g' A B _ _ A₀ B₀ _ _ i j hA hgA hB hgB hi hj U V U₀ V₀ _ _ _ _ eU eV
     r s r' s' hU hV hu f₀ _ ef₀

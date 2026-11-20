@@ -27,9 +27,15 @@ def matQ (q : A ≃+* (B × B) × C) : Matrix (Fin n) (Fin n) A ≃+*
     (Matrix (Fin n) (Fin n) B × Matrix (Fin n) (Fin n) B) × Matrix (Fin n) (Fin n) C :=
   (q.mapMatrix).trans (matProd.trans (RingEquiv.prodCongr matProd (RingEquiv.refl _)))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem matQ_apply (q : A ≃+* (B × B) × C) (M : Matrix (Fin n) (Fin n) A) :
     matQ q M = ((M.map fun x => (q x).1.1, M.map fun x => (q x).1.2), M.map fun x => (q x).2) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem matQ_symm_apply (q : A ≃+* (B × B) × C)
     (p : (Matrix (Fin n) (Fin n) B × Matrix (Fin n) (Fin n) B) × Matrix (Fin n) (Fin n) C) :
     (matQ q).symm p = Matrix.of fun i j => q.symm ((p.1.1 i j, p.1.2 i j), p.2 i j) := rfl
@@ -68,10 +74,18 @@ def q₁ : A →+* B := (RingHom.fst B B).comp ((RingHom.fst (B × B) C).comp q.
 def q₂ : A →+* B := (RingHom.snd B B).comp ((RingHom.fst (B × B) C).comp q.toRingHom)
 def q₃ : A →+* C := (RingHom.snd (B × B) C).comp q.toRingHom
 
+/- English proof (translation)
+Apply the tactic sequence `refine Prod.ext (Prod.ext ?_ ?_) ?_ <;> exact Units.ext (by ext i j; rfl)`.
+-/
 theorem glQ_apply (g : GL (Fin n) A) : glQ q hq hq' g =
     ((GeneralLinearGroup.map (q₁ q) g, GeneralLinearGroup.map (q₂ q) g), GeneralLinearGroup.map (q₃ q) g) := by
   refine Prod.ext (Prod.ext ?_ ?_) ?_ <;> exact Units.ext (by ext i j; rfl)
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`. Establish `: (((GeneralLinearGroup.map p g)⁻¹ : GL (Fin n) S) : Matrix (Fin n) (Fin n) S) j i = p (((g⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) j i)`. Rewrite using `[← map_inv]`. Both sides reduce to the same expression.
+
+Express the relevant statement in the definitionally equal form `p (σ _) = τ _`. Rewrite using `[this, h]`.
+-/
 theorem map_thetaR {R S : Type} [CommRing R] [CommRing S] (p : R →+* S) (σ : R →+* R) (τ : S →+* S)
     (h : ∀ x, p (σ x) = τ (p x)) (g : GL (Fin n) R) :
     GeneralLinearGroup.map p (thetaR σ n g) = thetaR τ n (GeneralLinearGroup.map p g) := by
@@ -83,6 +97,9 @@ theorem map_thetaR {R S : Type} [CommRing R] [CommRing S] (p : R →+* S) (σ : 
   change p (σ _) = τ _
   rw [this, h]
 
+/- English proof (translation)
+Simplify using `only [glQ_apply]`. Rewrite using `[map_thetaR _ σ τ h₁, map_thetaR _ σ τ h₂, map_thetaR _ σ ρ h₃]`.
+-/
 theorem glQ_thetaR (σ : A →+* A) (τ : B →+* B) (ρ : C →+* C)
     (h₁ : ∀ x, q₁ q (σ x) = τ (q₁ q x)) (h₂ : ∀ x, q₂ q (σ x) = τ (q₂ q x))
     (h₃ : ∀ x, q₃ q (σ x) = ρ (q₃ q x)) (g : GL (Fin n) A) : glQ q hq hq' (thetaR σ n g) =
@@ -90,6 +107,13 @@ theorem glQ_thetaR (σ : A →+* A) (τ : B →+* B) (ρ : C →+* C)
   simp only [glQ_apply]
   rw [map_thetaR _ σ τ h₁, map_thetaR _ σ τ h₂, map_thetaR _ σ ρ h₃]
 
+/- English proof (translation)
+Establish `key` using `fun g : GL (Fin n) A => glQ_thetaR q hq hq' σ τ ρ h₁ h₂ h₃ g`. Establish `mem : ∀ g, g ∈ twCent (thetaR σ n) δ ↔ glQ q hq hq' g ∈ ((twCent (thetaR τ n) (glQ q hq hq' δ).1.1).prod (twCent (thetaR τ n) (glQ q hq hq' δ).1.2)).prod (twCent (thetaR ρ n) (glQ q hq hq' δ).2)`. Introduce `g`. Express the relevant statement in the definitionally equal form `twConj _ g δ = δ ↔ ((twConj _ (glQ q hq hq' g).1.1 (glQ q hq hq' δ).1.1 = (glQ q hq hq' δ).1.1 ∧ twConj _ (glQ q hq hq' g).1.2 (glQ q hq hq' δ).1.2 = (glQ q hq hq' δ).1.2) ∧ twConj _ (glQ q hq hq' g).2 (glQ q hq hq' δ).2 = (glQ q hq hq' δ).2)`. Rewrite using `[← (glQ q hq hq').injective.eq_iff]`.
+
+Simplify using `only [twConj, map_mul, map_inv, key]`. Simplify using `only [Prod.ext_iff, Prod.fst_mul, Prod.snd_mul, Prod.fst_inv, Prod.snd_inv]`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, rfl⟩`.
+
+Conclude with `(mem g).1 hg`. Introduce `hx`. Use `⟨(glQ q hq hq').symm x, (mem _).2 (by simpa using hx), (glQ q hq hq').apply_symm_apply x⟩` and prove the remaining obligations.
+-/
 theorem map_twCent (σ : A →+* A) (τ : B →+* B) (ρ : C →+* C)
     (h₁ : ∀ x, q₁ q (σ x) = τ (q₁ q x)) (h₂ : ∀ x, q₂ q (σ x) = τ (q₂ q x))
     (h₃ : ∀ x, q₃ q (σ x) = ρ (q₃ q x)) (δ : GL (Fin n) A) :
@@ -114,6 +138,9 @@ theorem map_twCent (σ : A →+* A) (τ : B →+* B) (ρ : C →+* C)
   · intro hx
     refine ⟨(glQ q hq hq').symm x, (mem _).2 (by simpa using hx), (glQ q hq hq').apply_symm_apply x⟩
 
+/- English proof (translation)
+The claim follows from `haveI : LocallyCompactSpace (Matrix (Fin n) (Fin n) R) := inferInstanceAs (LocallyCompactSpace (Fin n → Fin n → R)) haveI : LocallyCompactSpace (Matrix (Fin n) (Fin n) R)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isClosedEmbedding.locallyCompactSpace Units.isClosedEmbedding_embedProduc …`.
+-/
 theorem gl_lc {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] [T2Space R]
     [LocallyCompactSpace R] : LocallyCompactSpace (GL (Fin n) R) :=
   haveI : LocallyCompactSpace (Matrix (Fin n) (Fin n) R) :=
@@ -122,6 +149,9 @@ theorem gl_lc {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R]
     MulOpposite.opHomeomorph.symm.isClosedEmbedding.locallyCompactSpace
   Units.isClosedEmbedding_embedProduct.locallyCompactSpace
 
+/- English proof (translation)
+The claim follows from `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) R) := inferInstanceAs (SecondCountableTopology (Fin n → Fin n → R)) haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) R)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology Units.isEmbedding_embedPr …`.
+-/
 theorem gl_sc {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R]
     [SecondCountableTopology R] : SecondCountableTopology (GL (Fin n) R) :=
   haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) R) :=
@@ -132,6 +162,11 @@ theorem gl_sc {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R]
 
 end Generic
 
+/- English proof (translation)
+Set `μ₁ : Measure P` to `Measure.haar`. Set `μ₃ : Measure Q` to `Measure.haar`. Use `haveI : (μ.map e).IsHaarMeasure := e.isHaarMeasure_map μ`. Establish `h` using `Measure.isMulLeftInvariant_eq_smul (μ.map e) ((μ₁.prod μ₁).prod μ₃)`. Establish `hc` using `Measure.haarScalarFactor_pos_of_isHaarMeasure (μ.map e) ((μ₁.prod μ₁).prod μ₃)`.
+
+Use `⟨μ₁, Measure.haarScalarFactor (μ.map e) ((μ₁.prod μ₁).prod μ₃) • μ₃, inferInstance, Measure.IsHaarMeasure.nnreal_smul _ hc.ne', ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.prod_smul_right]`. Conclude with `h`.
+-/
 theorem haar_split {X P Q : Type} [Group X] [TopologicalSpace X] [IsTopologicalGroup X] [MeasurableSpace X]
     [BorelSpace X] [Group P] [TopologicalSpace P] [IsTopologicalGroup P] [LocallyCompactSpace P]
     [SecondCountableTopology P] [MeasurableSpace P] [BorelSpace P] [Group Q] [TopologicalSpace Q]
@@ -153,13 +188,22 @@ section Field
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun w => (InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp (continuous_apply w)`.
+-/
 theorem continuous_infEq_symm : Continuous (infEq E).symm :=
   continuous_pi fun w => (InfinitePlace.Completion.isometryEquivComplexOfIsComplex
     (IsTotallyComplex.isComplex w)).continuous.comp (continuous_apply w)
 
+/- English proof (translation)
+The claim follows from `(continuous_apply v).comp (continuous_infEq_symm.comp continuous_fst)`.
+-/
 theorem continuous_cV (v : InfinitePlace E) : Continuous (cV v) :=
   (continuous_apply v).comp (continuous_infEq_symm.comp continuous_fst)
 
+/- English proof (translation)
+The claim follows from `continuous_snd`.
+-/
 theorem continuous_pFin : Continuous (pFin E) := continuous_snd
 
 variable (v₁ v₂ : InfinitePlace E)
@@ -208,12 +252,20 @@ def qAd (h : v₁ ≠ v₂) : Ad E ≃+* (ℂ × ℂ) × Rest v₁ v₂ where
   map_mul' := map_mul (qHom v₁ v₂)
   map_add' := map_add (qHom v₁ v₂)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Continuous fun x : Ad E => (((cV v₁ x, cV v₂ x), ((fun w : Oth v₁ v₂ => cV w.1 x), pFin E x)) : (ℂ × ℂ) × Rest v₁ v₂)`. Establish `h₃ : Continuous fun x : Ad E => (fun w : Oth v₁ v₂ => cV w.1 x)` using `continuous_pi fun w : Oth v₁ v₂ => continuous_cV w.1`. Conclude with `((continuous_cV v₁).prodMk (continuous_cV v₂)).prodMk (h₃.prodMk continuous_pFin)`.
+-/
 theorem continuous_qAd (h : v₁ ≠ v₂) : Continuous (qAd h) := by
   change Continuous fun x : Ad E => (((cV v₁ x, cV v₂ x), ((fun w : Oth v₁ v₂ => cV w.1 x), pFin E x)) : (ℂ × ℂ) × Rest v₁ v₂)
   have h₃ : Continuous fun x : Ad E => (fun w : Oth v₁ v₂ => cV w.1 x) :=
     continuous_pi fun w : Oth v₁ v₂ => continuous_cV w.1
   exact ((continuous_cV v₁).prodMk (continuous_cV v₂)).prodMk (h₃.prodMk continuous_pFin)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Continuous fun p : (ℂ × ℂ) × Rest v₁ v₂ => ((infEq E (glue v₁ v₂ p.1.1 p.1.2 p.2.1), p.2.2) : InfiniteAdeleRing E × Af E)`. Use `((continuous_infEq E).comp (continuous_pi fun w => ?_)).prodMk (continuous_snd.comp continuous_snd)` and prove the remaining obligations. Unfold `glue`. Use `split_ifs with h₁ h₂`. Conclude with `continuous_fst.comp continuous_fst`.
+
+Conclude with `continuous_snd.comp continuous_fst`. Conclude with `(continuous_apply _).comp (continuous_fst.comp continuous_snd)`.
+-/
 theorem continuous_qAd_symm (h : v₁ ≠ v₂) : Continuous (qAd h).symm := by
   change Continuous fun p : (ℂ × ℂ) × Rest v₁ v₂ =>
     ((infEq E (glue v₁ v₂ p.1.1 p.1.2 p.2.1), p.2.2) : InfiniteAdeleRing E × Af E)
@@ -229,26 +281,41 @@ variable (v₁ v₂) in
 def conjRest : Rest v₁ v₂ →+* Rest v₁ v₂ :=
   RingHom.prodMap (starRingEnd (Oth v₁ v₂ → ℂ)) (conjFin (IsCMField.complexConj E).toRingEquiv)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(infEq E).symm (infEq E _) v = _`. Rewrite using `[RingEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+-/
 theorem cV_conjAd (v : InfinitePlace E) (x : Ad E) : cV v (conjAd E x) = starRingEnd ℂ (cV v x) := by
   change (infEq E).symm (infEq E _) v = _
   rw [RingEquiv.symm_apply_apply]
   rfl
 
+/- English proof (translation)
+The claim follows from `Prod.ext (funext fun w => cV_conjAd w.1 x) rfl`.
+-/
 theorem q₃_conjAd (h : v₁ ≠ v₂) (x : Ad E) :
     q₃ (qAd h) (conjAd E x) = conjRest v₁ v₂ (q₃ (qAd h) x) :=
   Prod.ext (funext fun w => cV_conjAd w.1 x) rfl
 
+/- English proof (translation)
+The claim follows from `Units.ext (by ext i j; rfl)`.
+-/
 theorem map_eval (f : InfinitePlace E → GL (Fin n) ℂ) (w : InfinitePlace E) :
     GeneralLinearGroup.map (Pi.evalRingHom (fun _ : InfinitePlace E => ℂ) w)
       (Units.map (Matrix.piRingEquiv (n := Fin n) (β := fun _ : InfinitePlace E => ℂ)).symm.toMonoidHom
         ((MulEquiv.piUnits (M := fun _ : InfinitePlace E => Matrix (Fin n) (Fin n) ℂ)).symm f)) = f w :=
   Units.ext (by ext i j; rfl)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(infEq E).symm (infEq E x) w = _`. Rewrite using `[RingEquiv.symm_apply_apply]`.
+-/
 theorem cV_sInf (w : InfinitePlace E) (x : Cinf E) : cV w (sInf E x) = x w := by
   change (infEq E).symm (infEq E x) w = _
   rw [RingEquiv.symm_apply_apply]
 
 open Classical in
+/- English proof (translation)
+Use `map_cornerGL_of_hom (a := n) (sInf E) (cV w) (Pi.evalRingHom (fun _ : InfinitePlace E => ℂ) w) (fun x => cV_sInf w x)` as an intermediate fact. Unfold `embInf`. Simplify using `only [MonoidHom.comp_apply]`. Rewrite using `[infGL, this]`. Conclude with `map_eval _ w`.
+-/
 theorem map_cV_embInf (v w : InfinitePlace E) (y : GL (Fin n) ℂ) :
     GeneralLinearGroup.map (cV w) (embInf n v y) =
       (Pi.mulSingle v y : InfinitePlace E → GL (Fin n) ℂ) w := by
@@ -259,6 +326,9 @@ theorem map_cV_embInf (v w : InfinitePlace E) (y : GL (Fin n) ℂ) :
   rw [infGL, this]
   exact map_eval _ w
 
+/- English proof (translation)
+Unfold `embInf`. Simplify using `only [MonoidHom.comp_apply]`. Rewrite using `[infGL]`. Conclude with `map_cornerGL_of_zero _ _ (fun x => rfl) _`.
+-/
 theorem map_pFin_embInf (v : InfinitePlace E) (y : GL (Fin n) ℂ) :
     GeneralLinearGroup.map (pFin E) (embInf n v y) = 1 := by
   unfold embInf
@@ -266,17 +336,35 @@ theorem map_pFin_embInf (v : InfinitePlace E) (y : GL (Fin n) ℂ) :
   rw [infGL]
   exact map_cornerGL_of_zero _ _ (fun x => rfl) _
 
+/- English proof (translation)
+The claim follows from `Units.ext (by ext i j exact pInf_algebraMap _ v)`.
+-/
 theorem map_cV_ratGL (v : InfinitePlace E) (d : GL (Fin n) E) :
     GeneralLinearGroup.map (cV v) (ratGL E n d) = PositivityTheory.Rg.BcB.D4.locGL v d :=
   Units.ext (by
     ext i j
     exact pInf_algebraMap _ v)
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun _ => rfl`.
+-/
 theorem q₁_qAd (h : v₁ ≠ v₂) : q₁ (qAd h) = cV v₁ := RingHom.ext fun _ => rfl
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun _ => rfl`.
+-/
 theorem q₂_qAd (h : v₁ ≠ v₂) : q₂ (qAd h) = cV v₂ := RingHom.ext fun _ => rfl
 
 open Classical in
+/- English proof (translation)
+Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Establish `hw : w.1 ≠ v`. Break down `hv with rfl | rfl` into its components or cases.
+
+Conclude with `w.2.1`. Conclude with `w.2.2`. Establish `h₀` using `map_cV_embInf v w.1 y`. Rewrite `h₀` using `[Pi.mulSingle_eq_of_ne hw]`. Establish `h₁` using `congrArg (fun g : GL (Fin n) ℂ => (g : Matrix (Fin n) (Fin n) ℂ) i j) h₀`.
+
+Establish `h₂ : ((1 : Matrix (Fin n) (Fin n) (Rest v₁ v₂)) i j).1 w = (1 : Matrix (Fin n) (Fin n) ℂ) i j`. Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> rfl`. Conclude with `h₁.trans h₂.symm`. Establish `h₁` using `congrArg (fun g : GL (Fin n) (Af E) => (g : Matrix (Fin n) (Fin n) (Af E)) i j) (map_pFin_embInf (n := n) v y)`.
+
+Establish `h₂ : ((1 : Matrix (Fin n) (Fin n) (Rest v₁ v₂)) i j).2 = (1 : Matrix (Fin n) (Fin n) (Af E)) i j`. Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> rfl`. Conclude with `h₁.trans h₂.symm`.
+-/
 theorem q₃_embInf (h : v₁ ≠ v₂) {v : InfinitePlace E} (hv : v = v₁ ∨ v = v₂) (y : GL (Fin n) ℂ) :
     GeneralLinearGroup.map (q₃ (qAd h)) (embInf n v y) = 1 := by
   refine Units.ext (Matrix.ext fun i j => ?_)
@@ -300,6 +388,9 @@ theorem q₃_embInf (h : v₁ ≠ v₂) {v : InfinitePlace E} (hv : v = v₁ ∨
       split_ifs <;> rfl
     exact h₁.trans h₂.symm
 
+/- English proof (translation)
+Use `haveI : T2Space (InfiniteAdeleRing E × Af E) := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField E`. Establish `hinj : Function.Injective (fun x : Af E => ((0, x) : InfiniteAdeleRing E × Af E))` using `fun a b h => (Prod.ext_iff.1 h).2`. Conclude with `T2Space.of_injective_continuous hinj (continuous_const.prodMk continuous_id)`.
+-/
 theorem t2Space_finiteAdeleRing_cmField : T2Space (Af E) := by
   haveI : T2Space (InfiniteAdeleRing E × Af E) := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField E
   have hinj : Function.Injective (fun x : Af E => ((0, x) : InfiniteAdeleRing E × Af E)) :=
@@ -310,6 +401,23 @@ end Field
 
 open Classical in
 
+/- English proof (translation)
+Introduce `E _ _ _ n v₁ v₂ hne _ _ μ _`. Use `haveI : T2Space (Af E) := t2Space_finiteAdeleRing_cmField`. Use `haveI : LocallyCompactSpace (Af E) := GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAdele E`. Use `haveI : SecondCountableTopology (Af E) := GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele E`. Use `haveI lc₁ : LocallyCompactSpace (GL (Fin n) ℂ) := gl_lc`.
+
+Use `haveI sc₁ : SecondCountableTopology (GL (Fin n) ℂ) := gl_sc`. Use `haveI lc₂ : LocallyCompactSpace (GL (Fin n) (Rest v₁ v₂)) := gl_lc`. Use `haveI sc₂ : SecondCountableTopology (GL (Fin n) (Rest v₁ v₂)) := gl_sc`. Use `letI m₁ : MeasurableSpace (GL (Fin n) ℂ) := borel _`. Use `haveI b₁ : BorelSpace (GL (Fin n) ℂ) := ⟨rfl⟩`.
+
+Use `letI m₂ : MeasurableSpace (GL (Fin n) (Rest v₁ v₂)) := borel _`. Use `haveI b₂ : BorelSpace (GL (Fin n) (Rest v₁ v₂)) := ⟨rfl⟩`. Take `⟨μ₁, μ₂, h₁, h₂, h₃⟩` from `haar_split (glQ (n := n) (qAd hne) (continuous_qAd hne) (continuous_qAd_symm hne)) μ`. Establish `t₁ : ∀ x, q₁ (qAd hne) (conjAd E x) = starRingEnd ℂ (q₁ (qAd hne) x)` using `fun x => by`. Rewrite using `[q₁_qAd]`.
+
+Conclude with `cV_conjAd v₁ x`. Establish `t₂ : ∀ x, q₂ (qAd hne) (conjAd E x) = starRingEnd ℂ (q₂ (qAd hne) x)` using `fun x => by`. Rewrite using `[q₂_qAd]`. Conclude with `cV_conjAd v₂ x`. Establish `t₃` using `q₃_conjAd (E := E) hne`.
+
+Use `⟨GL (Fin n) (Rest v₁ v₂), inferInstance, inferInstance, inferInstance, lc₂, sc₂, m₂, b₂, m₁, b₁, glQ (n := n) (qAd hne) (continuous_qAd hne) (continuous_qAd_symm hne), μ₁, μ₂, thetaR (conjRest v₁ v₂) n, h₁, h₂, h₃, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g`. Rewrite using `[glQ_apply, q₁_qAd, q₂_qAd]`. Introduce `y`. Rewrite using `[glQ_apply, q₁_qAd, q₂_qAd, q₃_embInf hne (Or.inl rfl), map_cV_embInf, map_cV_embInf, Pi.mulSingle_eq_same, Pi.mulSingle_eq_of_ne hne.symm]`.
+
+Introduce `y`. Rewrite using `[glQ_apply, q₁_qAd, q₂_qAd, q₃_embInf hne (Or.inr rfl), map_cV_embInf, map_cV_embInf, Pi.mulSingle_eq_same, Pi.mulSingle_eq_of_ne hne]`. Introduce `g`. Conclude with `glQ_thetaR _ _ _ _ _ _ t₁ t₂ t₃ g`. Introduce `d`.
+
+Establish `key` using `map_twCent (n := n) (qAd hne) (continuous_qAd hne) (continuous_qAd_symm hne) (conjAd E) (starRingEnd ℂ) (conjRest v₁ v₂) t₁ t₂ t₃ (ratGL E n d)`. Establish `a₁ : (glQ (n` using `n) (qAd hne) (continuous_qAd hne) (continuous_qAd_symm hne) (ratGL E n d)).1.1 = PositivityTheory.Rg.BcB.D4.locGL v₁ d := by`. Rewrite using `[glQ_apply, q₁_qAd, map_cV_ratGL]`. Establish `a₂ : (glQ (n` using `n) (qAd hne) (continuous_qAd hne) (continuous_qAd_symm hne) (ratGL E n d)).1.2 = PositivityTheory.Rg.BcB.D4.locGL v₂ d := by`. Rewrite using `[glQ_apply, q₂_qAd, map_cV_ratGL]`.
+
+Rewrite `key` using `[a₁, a₂]`. Conclude with `key`.
+-/
 theorem splitAt2 : SplitAt2 := by
   intro E _ _ _ n v₁ v₂ hne _ _ μ _
   haveI : T2Space (Af E) := t2Space_finiteAdeleRing_cmField

@@ -17,6 +17,63 @@ noncomputable section
 namespace GlobalTheory.DblTargetRestrictCore
 
 open Formalism.IndefR.DatumF GlobalTheory.DblTargetDelta GlobalTheory.WeilSchrodinger.DblTargetF in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ hσξ χS χT ω hω ωd hωd h hd hhd f₁ f₂ hf₁ hf₂`. Take `⟨ι, hιc, hιm, hιq, hιs, hιd⟩` from `GlobalTheory.T.exists_continuous_unitaryDiagonalEmbedding_doubled F E σ nT JT`. Establish `ext : ∀ a b : GAF σ (dblG JT), mtF σ (dblG JT) a = mtF σ (dblG JT) b → a = b` using `fun a b hab => (HR (AF F) σ (dblG JT)).subtype_injective (Units.ext hab)`. Establish `hdι : hd = ι h` using `ext _ _ (by rw [hhd, hιm])`. Substitute `hdι` using the available equality.
+
+Establish `hsc` using `fun h' => GlobalTheory.T.weilDatum_doubleSpace_acts_unitScalar_seesaw_CM F E σ B hB nS nT JS JT hS hT ξ₀ hξ hσξ χS χT ω hω ωd hωd h' (ι h') (hιm h')`. Use `choose c hc1 hc using hsc`. Establish `hth` using `GlobalTheory.T.isThetaFunction_doublingThetaTensor_CM F E σ B hB nS nT JS JT hS hT ξ₀ hξ hσξ`. Distinguish the cases in `h0 : ∃ f₀, IsThetaFunOF σ JS JT ξ₀ B.ψ f₀ ∧ f₀ ≠ 0`. Use `swap`.
+
+Use `push_neg at h0`. Rewrite using `[h0 f₁ hf₁]`. Establish `hz : ∀ g : WOF F E nS nT → ℂ, deltaT (0 : WOF F E nS nT → ℂ) g = 0` using `fun g => by`. Use function extensionality and compare the values at `x`. Simplify using `[deltaT]`.
+
+Simplify using `only [map_zero, hz]`. Take `⟨f₀, hf₀, hf₀0⟩` from `h0`. Take `⟨y, hy⟩` from `Function.ne_iff.1 hf₀0`. Use `set fs := heisOF σ JS JT ξ₀ B.ψ y f₀ with hfs`. Establish `hfsθ : IsThetaFunOF σ JS JT ξ₀ B.ψ fs` using `GlobalTheory.HeisThetaF.isThetaFunOF_heisOF F E σ B hB nS nT JS JT ξ₀ y f₀ hf₀`.
+
+Establish `hfs0 : fs 0 ≠ 0`. Establish `: symplOHF σ JS JT ξ₀ 0 y = 0` using `by simp [symplOHF, symplOF, hOF]`. Simplify using `only [hfs, heisOF, this, AddChar.map_zero_eq_one, one_mul, zero_add]`. Conclude with `hy`. Establish `top0 : topR (0 : WOF F E nS (nT + nT)) = 0` using `by ext i j; rfl`.
+
+Establish `bot0 : botR (0 : WOF F E nS (nT + nT)) = 0` using `by ext i j; rfl`. Establish `dl0 : ∀ a b : WOF F E nS nT → ℂ, deltaT a b 0 = a 0 * conj (b 0)` using `fun a b => by`. Rewrite using `[deltaT_apply, top0, bot0, neg_zero]`. Establish `hfsn : fs 0 * conj (fs 0) ≠ 0` using `mul_ne_zero hfs0 ((map_ne_zero _).2 hfs0)`. Establish `omi : ∀ h' : GAF σ JT, ω (1, h') (ω (1, h')⁻¹ fs) = fs` using `fun h' => by`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Establish `pres` using `hω.om_pres`. Establish `key : ∀ h' (a : ℂ), ωd (1, ι h') (deltaT (ω (1, h')⁻¹ fs) fs) 0 = a * (fs 0 * conj (fs 0)) → c h' = a`. Introduce `h' a ha`. Establish `e` using `congrFun (hc h' (ω (1, h')⁻¹ fs) fs (pres _ _ hfsθ) hfsθ) 0`.
+
+Rewrite `e` using `[Pi.smul_apply, smul_eq_mul, omi, dl0, ha]`. Conclude with `(mul_right_cancel₀ hfsn e).symm`. Establish `hone : c 1 = 1`. Use `key 1 1 ?_` and prove the remaining obligations. Establish `p1 : ((1 : GAF σ JS), (1 : GAF σ JT)) = 1` using `rfl`.
+
+Establish `p2 : ((1 : GAF σ JS), (1 : GAF σ (dblG JT))) = 1` using `rfl`. Rewrite using `[map_one, p1, p2, inv_one, map_one, map_one, Module.End.one_apply, Module.End.one_apply, dl0, one_mul]`. Establish `hmul : ∀ a b, c (a * b) = c a * c b`. Introduce `a b`. Use `key (a * b) _ ?_` and prove the remaining obligations.
+
+Establish `e1 : ((1 : GAF σ JS), ι (a * b)) = (1, ι a) * (1, ι b)` using `by rw [map_mul, Prod.mk_mul_mk, one_mul]`. Use `set g := ω ((1 : GAF σ JS), a * b)⁻¹ fs with hg`. Establish `hgθ : IsThetaFunOF σ JS JT ξ₀ B.ψ g` using `pres _ _ hfsθ`. Establish `comb : ω (1, a) (ω (1, b) g) = fs`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul, hg, omi]`.
+
+Rewrite using `[e1, map_mul, Module.End.mul_apply, hc b g fs hgθ hfsθ, map_smul, hc a (ω (1, b) g) fs (pres _ _ hgθ) hfsθ, comb]`. Rewrite using `[Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul, dl0]`. Expand and normalize the polynomial expressions, which then agree. Set `cc : GAF σ JT →* Circle` to `{ toFun := fun h' => ⟨c h', mem_sphere_zero_iff_norm.2 (hc1 h')⟩ map_one' := Circle.ext hone map_mul' := fun a b => Circle.ext (hmul a b) }`. Establish `hcc : ∀ h', (cc h' : ℂ) = c h'` using `fun _ => rfl`.
+
+Establish `hcont : Continuous cc`. Use `continuous_induced_rng.2 (continuous_iff_continuousAt.2 fun h₀ => ?_)` and prove the remaining obligations. Use `set g₁ := ω (1, h₀)⁻¹ fs`. Establish `hg₁ : IsThetaFunOF σ JS JT ξ₀ B.ψ g₁` using `pres _ _ hfsθ`. Establish `hN : Continuous fun h' : GAF σ JT => ωd (1, ι h') (deltaT g₁ fs) 0` using `(hωd.om_cont _ (hth _ _ hg₁ hfsθ) 0).comp (continuous_const.prodMk hιc)`.
+
+Establish `hD : Continuous fun h' : GAF σ JT => ω (1, h') g₁ 0 * conj (fs 0)` using `((hω.om_cont _ hg₁ 0).comp (continuous_const.prodMk continuous_id)).mul continuous_const`. Establish `hD0 : ω (1, h₀) g₁ 0 * conj (fs 0) ≠ 0` using `by rw [omi]; exact hfsn`. Establish `hev : ∀ᶠ h' in nhds h₀, ω (1, h') g₁ 0 * conj (fs 0) ≠ 0` using `hD.continuousAt.eventually_ne hD0`. Use `((hN.continuousAt).div hD.continuousAt hD0).congr (hev.mono fun h' hh' => ?_)` and prove the remaining obligations. Use `show ωd (1, ι h') (deltaT g₁ fs) 0 / (ω (1, h') g₁ 0 * conj (fs 0)) = c h'`.
+
+Rewrite using `[hc h' g₁ fs hg₁ hfsθ, Pi.smul_apply, smul_eq_mul, dl0, mul_div_assoc, div_self hh', mul_one]`. Establish `hrat : ∀ γ ∈ GQF σ JT, cc γ = 1`. Introduce `γ hγ`. Apply `Circle.ext` to reduce the goal to its premises. Rewrite using `[hcc, Circle.coe_one]`.
+
+Establish `e1` using `hωd.om_aut 1 (Subgroup.one_mem _) (ι γ) (hιq γ hγ) _ (hth _ _ hfsθ hfsθ)`. Establish `e2` using `hω.om_aut 1 (Subgroup.one_mem _) γ hγ fs hfsθ`. Rewrite `e1` using `[hc γ fs fs hfsθ hfsθ, Pi.smul_apply, smul_eq_mul, dl0, dl0, e2]`. Use `mul_right_cancel₀ hfsn (e1.trans (one_mul _).symm)` as an intermediate fact. Conclude with `this`.
+
+Establish `hsplit : ∀ e, IsSplitIdemF σ e → ∀ g, SuppAtF σ e JT g → cc g = 1`. Introduce `e he g hg`. Establish `hee : e * e = e` using `he.1`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y : (AEF F E)ˣ, IsDetAtF σ e JT g y := by`. Establish `hd1 : (mtF σ JT g).det * ((Matrix.GeneralLinearGroup.det (matHomF σ JT g))⁻¹ : (AEF F E)ˣ) = 1` using `(Matrix.GeneralLinearGroup.det (matHomF σ JT g)).mul_inv`.
+
+Establish `hd2 : ((Matrix.GeneralLinearGroup.det (matHomF σ JT g))⁻¹ : (AEF F E)ˣ) * (mtF σ JT g).det = 1` using `(Matrix.GeneralLinearGroup.det (matHomF σ JT g)).inv_mul`. Use `⟨⟨e * (mtF σ JT g).det + (1 - e), e * ((Matrix.GeneralLinearGroup.det (matHomF σ JT g))⁻¹ : (AEF F E)ˣ) + (1 - e), ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Take the linear combination `((mtF σ JT g).det * ((Matrix.GeneralLinearGroup.det (matHomF σ JT g))⁻¹ : (AEF F E)ˣ) - (mtF σ JT g).det - ((Matrix.GeneralLinearGroup.det (matHomF σ JT g))⁻¹ : (AEF F E)ˣ) + 1) * hee + e * hd1`. Take the linear combination `((mtF σ JT g).det * ((Matrix.GeneralLinearGroup.det (matHomF σ JT g))⁻¹ : (AEF F E)ˣ) - (mtF σ JT g).det - ((Matrix.GeneralLinearGroup.det (matHomF σ JT g))⁻¹ : (AEF F E)ˣ) + 1) * hee + e * hd2`. Establish `m1 : mtF σ JS (1 : GAF σ JS) = 1` using `by unfold mtF; rw [map_one]; rfl`.
+
+Establish `hx1 : IsDetAtF σ e JS 1 1` using `by show ((1 : (AEF F E)ˣ) : AEF F E) = e * (mtF σ JS 1).det + (1 - e)`. Rewrite using `[m1, Matrix.det_one, Units.val_one]`. Expand and normalize the polynomial expressions, which then agree. Establish `hS1 : SuppAtF σ e JS 1` using `fun i j => by rw [m1, sub_self]; simp`. Take `⟨rd, hrd, hrd'⟩` from `hωd.om_split e he 1 (ι g) hS1 (hιs e g hg) 1 y hx1 (hιd e g y hy)`.
+
+Take `⟨r, hr, hr'⟩` from `hω.om_split e he 1 g hS1 hg 1 y hx1 hy`. Take `⟨ℓ, hℓ, a, b, ha, hb, hℓab⟩` from `GlobalTheory.T.exists_invariant_form_doubled_space_split_place F E σ B hB nS nT JS JT hS hT ξ₀ hξ hσξ e he`. Establish `hheis` using `GlobalTheory.T.heisenbergOp_doubledGram_doublingThetaTensor F E σ B hB nS nT JS JT hS hT ξ₀ hξ hσξ`. Establish `dadd : ∀ f f' : WOF F E nS nT → ℂ, deltaT (f + f') b = deltaT f b + deltaT f' b` using `fun f f' => by`. Use function extensionality and compare the values at `x`.
+
+Simplify using `only [deltaT_apply, Pi.add_apply, add_mul]`. Establish `dsmul : ∀ (s : ℂ) (f : WOF F E nS nT → ℂ), deltaT (s • f) b = s • deltaT f b` using `fun s f => by`. Use function extensionality and compare the values at `x`. Simplify using `only [deltaT_apply, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Set `ℓ₁ : (WOF F E nS nT → ℂ) →ₗ[ℂ] ℂ` to `{ toFun := fun f => ℓ (deltaT f b) map_add' := fun f f' => by simp only [dadd, map_add] map_smul' := fun s f => by simp only [dsmul, map_smul, RingHom.id_apply] }`.
+
+Establish `hℓ₁ : ∀ u : WOF F E nS nT, (∀ i j, cAF σ e * u i j = u i j) → ∀ f, IsThetaFunOF σ JS JT ξ₀ B.ψ f → ℓ₁ (heisOF σ JS JT ξ₀ B.ψ u f) = ℓ₁ f`. Introduce `u hu f hf`. Set `ũ : WOF F E nS (nT + nT)` to `(Matrix.fromRows u 0).submatrix finSumFinEquiv.symm id`. Establish `ht : topR ũ = u`. Use extensionality with `i j`.
+
+Simplify using `only [ũ, topR, Matrix.submatrix_apply, Function.comp_apply, Equiv.symm_apply_apply, Matrix.fromRows_apply_inl, id]`. Establish `hb0 : botR ũ = 0`. Use extensionality with `i j`. Simplify using `only [ũ, botR, Matrix.submatrix_apply, Function.comp_apply, Equiv.symm_apply_apply, Matrix.fromRows_apply_inr, Matrix.zero_apply, id]`. Establish `hu' : ∀ i j, cAF σ e * ũ i j = ũ i j`.
+
+Introduce `i j`. Take `⟨i, rfl⟩` from `finSumFinEquiv.surjective i`. Apply the tactic sequence `rcases i with i | i <;>`. Simplify using `only [ũ, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromRows_apply_inl, Matrix.fromRows_apply_inr, Matrix.zero_apply, mul_zero, id, hu]`. Establish `h0b : heisOF σ JS JT ξ₀ B.ψ 0 b = b`.
+
+Use function extensionality and compare the values at `x`. Simplify using `[heisOF, symplOHF, symplOF, hOF]`. Use `show ℓ (deltaT (heisOF σ JS JT ξ₀ B.ψ u f) b) = ℓ (deltaT f b)`. Establish `e3` using `hheis ũ f b`. Rewrite `e3` using `[ht, hb0, neg_zero, h0b]`.
+
+Rewrite using `[← e3, hℓ ũ hu' _ (hth f b hf hb)]`. Establish `E1` using `hrd' ℓ hℓ _ (hth a b ha hb)`. Rewrite `E1` using `[hc g a b ha hb, map_smul, smul_eq_mul]`. Establish `E2 : ℓ (deltaT (ω (1, g) a) b) = (r : ℂ) * (splitFacOF χS χT 1 y : ℂ) * ℓ (deltaT a b)` using `hr' ℓ₁ hℓ₁ a ha`. Establish `s1 : (splitFacOF χS χT 1 y : ℂ) = χS y` using `by simp [splitFacOF]`.
+
+Establish `s2 : (splitFacOF χS 1 1 y : ℂ) = χS y` using `by simp [splitFacOF]`. Rewrite `E1` using `[E2, s1]`. Rewrite `E1` using `[s2]`. Establish `hs : (χS y : ℂ) ≠ 0` using `Circle.coe_ne_zero _`. Establish `hcr : c g * r = rd` using `mul_right_cancel₀ (mul_ne_zero hs hℓab) (by linear_combination E1)`.
+
+Establish `hcg : c g = ((rd / r : ℝ) : ℂ)`. Rewrite using `[Complex.ofReal_div, eq_div_iff (by exact_mod_cast hr.ne'), hcr]`. Establish `hn` using `hc1 g`. Rewrite `hn` using `[hcg, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (div_pos hrd hr)]`. Apply `Circle.ext` to reduce the goal to its premises.
+
+Rewrite using `[hcc, Circle.coe_one, hcg, hn, Complex.ofReal_one]`. Establish `hall` using `GlobalTheory.T.unitaryChar_eq_one_of_trivial_rational_splitPlace F E σ B hB nT JT hT cc hcont hrat hsplit h`. Rewrite using `[hc h f₁ f₂ hf₁ hf₂, ← hcc, hall, Circle.coe_one, one_smul]`.
+-/
 theorem restrict_core : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
       IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ →

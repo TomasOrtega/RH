@@ -25,6 +25,11 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
 
 variable {D : D7} {n : ℕ}
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `GlobalTheory.T.exists_summable_bound_schwartz_majorant_rational_translates D θ hθ m n`. Take `⟨-, K, hK, hC⟩` from `GlobalTheory.T.schwartzBruhatAdelicMatrix_continuous_le_majorant D θ hθ m n φ.1 (GlobalTheory.SchwartzPure.isSchwartzBruhat_of_mem_schwartzA D θ hθ m n φ.1 φ.2)`. Take `⟨C, hC⟩` from `hC N`. Take `⟨b, hb, hb'⟩` from `hN K {0} hK isCompact_singleton`. Use `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun ξ => (hC _).trans ?_) (hb.mul_left |C|)` and prove the remaining obligations.
+
+Use `hb' 0 rfl ξ` as an intermediate fact. Rewrite `this` using `[zero_add]`. Conclude with `mul_le_mul (le_abs_self C) this (GlobalTheory.Unf.maj_nonneg _ _ _ _) (abs_nonneg C)`.
+-/
 theorem summable_rat {θ : InfFam D} (hθ : IsInfFam θ) {m : ℕ} (φ : schwartzA θ m n) :
     Summable fun ξ : Matrix (Fin m) (Fin n) D.host.E => ‖φ.1 (ξ.map (incA D))‖ := by
   obtain ⟨N, hN⟩ := GlobalTheory.T.exists_summable_bound_schwartz_majorant_rational_translates D θ hθ m n
@@ -37,6 +42,9 @@ theorem summable_rat {θ : InfFam D} (hθ : IsInfFam θ) {m : ℕ} (φ : schwart
   rw [zero_add] at this
   exact mul_le_mul (le_abs_self C) this (GlobalTheory.Unf.maj_nonneg _ _ _ _) (abs_nonneg C)
 
+/- English proof (translation)
+Establish `h : adj (rat T : Mx D m m) = rat T`. Use extensionality with `i j`. Conclude with `(GlobalTheory.DualPairCheck.cA_incA _).trans (congrArg (incA D) (hT.1 i j))`. Express the relevant statement in the definitionally equal form `adj ((adj x ⬝ (rat T : Mx D m m)) ⬝ y) = (adj y ⬝ (rat T : Mx D m m)) ⬝ x`. Rewrite using `[adj_mul, adj_mul, adj_adj, h, Matrix.mul_assoc]`.
+-/
 theorem gramQ_adj {m : ℕ} {T : Matrix (Fin m) (Fin m) D.host.E} (hT : IsHermND D.sp.cm.sig T) (x y : Mx D m n) :
     adj (GramMatrixBlocks.gramQ T x y) = GramMatrixBlocks.gramQ T y x := by
   have h : adj (rat T : Mx D m m) = rat T := by
@@ -45,6 +53,15 @@ theorem gramQ_adj {m : ℕ} {T : Matrix (Fin m) (Fin m) D.host.E} (hT : IsHermND
   change adj ((adj x ⬝ (rat T : Mx D m m)) ⬝ y) = (adj y ⬝ (rat T : Mx D m m)) ⬝ x
   rw [adj_mul, adj_mul, adj_adj, h, Matrix.mul_assoc]
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, K, hK, hKc⟩` from `lattice_Mx D m n`. Use `haveI : BorelSpace (Mx D m n) := ⟨rfl⟩`. Take `⟨h1, h2⟩` from `GlobalTheory.T.rationalAdelicMatrices_self_annihilator D m n T hT ψ hψ`. Establish `hs : ∀ x y : Mx D m n, GramMatrixBlocks.pairing T ψ x y = GramMatrixBlocks.pairing T ψ y x` using `fun x y => by`. Unfold `GramMatrixBlocks.pairing GramMatrixBlocks.trA`.
+
+Rewrite using `[← gramQ_adj hT x y, ← GlobalTheory.DualPairCheck.trace_cA (Matrix.trace (GramMatrixBlocks.gramQ T x y))]`. Use `congr 2`. Simplify using `only [Matrix.trace, map_sum]`. Both sides reduce to the same expression. Use `GlobalTheory.T.selfDual_of_fundamentalDomain_volume_eq_one _ (ratMx D m n) K hK hKc _ (fun y => ?_) hs (fun x x' y => ?_) (fun x y => hψ.2.1 _) h1 h2 μ 𝓕 hμ.1 hμ.2.1 hμ.2.2` and prove the remaining obligations.
+
+Simplify using `only [hs _ y] haveI := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F) haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩`. Establish `ht : Continuous (GramMatrixBlocks.trA (D` using `D)) := IsModuleTopology.continuous_of_linearMap (Algebra.trace (AF D.host.F) (AE D))`. Conclude with `hψ.1.comp (ht.comp (continuous_const.matrix_mul continuous_id).matrix_trace)`. Simplify using `only [hs _ y]`. Unfold `GramMatrixBlocks.pairing GramMatrixBlocks.trA GramMatrixBlocks.gramQ GramMatrixBlocks.mmul`.
+
+Rewrite using `[Matrix.mul_add, Matrix.trace_add, map_add, AddChar.map_add_eq_mul]`.
+-/
 theorem selfDual_of_covolOne {m : ℕ} {T : Matrix (Fin m) (Fin m) D.host.E} (hT : IsHermND D.sp.cm.sig T)
     {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) {μ : Measure (Mx D m n)} {𝓕 : Set (Mx D m n)}
     (hμ : IsCovolOne (ratMx D m n) μ 𝓕) : SelfDual μ (GramMatrixBlocks.pairing (n := n) T ψ) := by
@@ -69,6 +86,13 @@ theorem selfDual_of_covolOne {m : ℕ} {T : Matrix (Fin m) (Fin m) D.host.E} (hT
     unfold GramMatrixBlocks.pairing GramMatrixBlocks.trA GramMatrixBlocks.gramQ GramMatrixBlocks.mmul
     rw [Matrix.mul_add, Matrix.trace_add, map_add, AddChar.map_add_eq_mul]
 
+/- English proof (translation)
+Establish `key : ∀ g : G D n, (∀ i j, mat g (finSumFinEquiv (.inr i)) (finSumFinEquiv (.inl j)) = 0) → ∀ x ∈ upperHalf D n, (mat g).mulVec x ∈ upperHalf D n`. Introduce `g h x hx`. Use extensionality with `i`. Establish `hx' : ∀ j, x (finSumFinEquiv (Sum.inr j : Fin n ⊕ Fin n)) = 0` using `fun j => congrFun hx j`. Simplify using `only [LinearMap.funLeft_apply, Matrix.mulVec, dotProduct, Pi.zero_apply]`.
+
+Rewrite using `[← finSumFinEquiv.sum_comp, Fintype.sum_sum_type]`. Simplify using `only [h, hx', zero_mul, mul_zero, Finset.sum_const_zero, add_zero]`. Use `fun x => ⟨key g h x, fun hx => ?_⟩` and prove the remaining obligations. Use `key _ h' _ hx` as an intermediate fact. Express the relevant statement in the definitionally equal form `(mat g⁻¹).mulVec ((mat g).mulVec x) ∈ _ at this`.
+
+Rewrite `this` using `[Matrix.mulVec_mulVec, show mat g⁻¹ * mat g = mat (g⁻¹ * g) from rfl, inv_mul_cancel, show mat (1 : G D n) = 1 from rfl, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+-/
 theorem mem_siegelParabolic_of_lowerLeft_entries_eq_zero {g : G D n}
     (h : ∀ i j, mat g (finSumFinEquiv (.inr i)) (finSumFinEquiv (.inl j)) = 0)
     (h' : ∀ i j, mat g⁻¹ (finSumFinEquiv (.inr i)) (finSumFinEquiv (.inl j)) = 0) : g ∈ P D n := by
@@ -86,6 +110,11 @@ theorem mem_siegelParabolic_of_lowerLeft_entries_eq_zero {g : G D n}
   rwa [Matrix.mulVec_mulVec, show mat g⁻¹ * mat g = mat (g⁻¹ * g) from rfl, inv_mul_cancel,
     show mat (1 : G D n) = 1 from rfl, Matrix.one_mulVec] at this
 
+/- English proof (translation)
+Establish `lower : ∀ g : G D n, g ∈ GramMatrixBlocks.siegel D n → ∀ i j, mat g (finSumFinEquiv (.inr i)) (finSumFinEquiv (.inl j)) = 0` using `fun g hg i j => hg (by simp [GramMatrixBlocks.blockIdx])`. Use extensionality with `g`. Use `⟨fun hg => mem_siegelParabolic_of_lowerLeft_entries_eq_zero (lower g hg) (lower _ ((GramMatrixBlocks.siegel D n).inv_mem hg)), fun hg i j hij => ?_⟩` and prove the remaining obligations. Take `⟨i, rfl⟩` from `finSumFinEquiv.surjective i`. Take `⟨j, rfl⟩` from `finSumFinEquiv.surjective j`.
+
+Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Simplify using `[GramMatrixBlocks.blockIdx] at hij`. Simplify using `[GramMatrixBlocks.blockIdx] at hij`. Conclude with `lower_eq_zero hg i j`. Simplify using `[GramMatrixBlocks.blockIdx] at hij`.
+-/
 theorem siegel_eq : GramMatrixBlocks.siegel D n = P D n := by
   have lower : ∀ g : G D n, g ∈ GramMatrixBlocks.siegel D n →
       ∀ i j, mat g (finSumFinEquiv (.inr i)) (finSumFinEquiv (.inl j)) = 0 := fun g hg i j =>
@@ -100,6 +129,11 @@ theorem siegel_eq : GramMatrixBlocks.siegel D n = P D n := by
   · exact lower_eq_zero hg i j
   · simp [GramMatrixBlocks.blockIdx] at hij
 
+/- English proof (translation)
+Use `conv_rhs => rw [← V.frame.sum_equivFun x, ← V.frame.sum_equivFun y]`. Simplify using `only [hE, Formalism.UG.hform, HSpace.gram, map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ₂, map_smul, smul_eq_mul, LinearMap.smul_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `star _ * _ * _ = _ * (star _ * _)`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hE_equivFun (V : HSp D) (x y : V.V) :
     hE D.sp.cm.sig V.gram (V.frame.equivFun x) (V.frame.equivFun y) = V.hT x y := by
   conv_rhs => rw [← V.frame.sum_equivFun x, ← V.frame.sum_equivFun y]
@@ -110,6 +144,13 @@ theorem hE_equivFun (V : HSp D) (x y : V.V) :
   change star _ * _ * _ = _ * (star _ * _)
   ring
 
+/- English proof (translation)
+Unfold `GramMatrixBlocks.wittIdx Formalism.MainNotions.SchurIrreducible.wittIdx`. Use `congrArg sSup (Set.ext fun r => ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce and unpack `⟨W, hW, hr⟩`. Use `⟨W.map V.frame.equivFun.symm.toLinearMap, (LinearEquiv.finrank_map_eq V.frame.equivFun.symm W).trans hr, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩ _ ⟨y, hy, rfl⟩`.
+
+Use `(hE_equivFun V _ _).symm.trans ?_` and prove the remaining obligations. Rewrite using `[LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Conclude with `hW x hx y hy`. Introduce and unpack `⟨W, hr, hW⟩`. Use `⟨W.map V.frame.equivFun.toLinearMap, ?_, (LinearEquiv.finrank_map_eq V.frame.equivFun W).trans hr⟩` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩ _ ⟨y, hy, rfl⟩`. Conclude with `(hE_equivFun V x y).trans (hW x hx y hy)`.
+-/
 theorem wittIdx_eq (V : HSp D) : GramMatrixBlocks.wittIdx V.gram = Formalism.MainNotions.SchurIrreducible.wittIdx V := by
   unfold GramMatrixBlocks.wittIdx Formalism.MainNotions.SchurIrreducible.wittIdx
   refine congrArg sSup (Set.ext fun r => ⟨?_, ?_⟩)
@@ -126,10 +167,16 @@ theorem wittIdx_eq (V : HSp D) : GramMatrixBlocks.wittIdx V.gram = Formalism.Mai
 
 variable {V : HSp D} {θ : InfFam D} {ψ : AddChar (AF D.host.F) ℂ} {χ : (AE D)ˣ →* Circle}
 
+/- English proof (translation)
+The claim follows from `Matrix.mul_assoc _ _ _`.
+-/
 theorem gramQ_eq (x y : Mx D V.rank n) : GramMatrixBlocks.gramQ V.gram x y = StdUnn.inner V x y := Matrix.mul_assoc _ _ _
 
 def resG (ω : GramMatrixBlocks.Rep θ n V.gram) : G D n →* Module.End ℂ (schwartzA θ V.rank n) := ω.comp (MonoidHom.inl _ _)
 
+/- English proof (translation)
+Use `GlobalTheory.T.unitaryUnn_subgroup_eq_top_of_leviUnipotentWeyl D n (ω.toHomUnits.eqLocus ω'.toHomUnits) (fun g a hg => Units.ext (LinearMap.ext fun Φ => Subtype.ext (funext fun x => (h.levi g a hg Φ x).trans (h'.levi g a hg Φ x).symm))) (fun g b hg => Units.ext (LinearMap.ext fun …` as an intermediate fact. Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations. Establish `hg : g ∈ ω.toHomUnits.eqLocus ω'.toHomUnits` using `this ▸ Subgroup.mem_top g`. Conclude with `congrArg Units.val hg`.
+-/
 theorem isWeilSch_unique {μ : Measure (Mx D V.rank n)} {ω ω' : G D n →* Module.End ℂ (schwartzA θ V.rank n)}
     (h : IsWeilSch ψ χ θ V μ ω) (h' : IsWeilSch ψ χ θ V μ ω') : ω = ω' := by
   have := GlobalTheory.T.unitaryUnn_subgroup_eq_top_of_leviUnipotentWeyl D n (ω.toHomUnits.eqLocus ω'.toHomUnits)
@@ -143,19 +190,33 @@ theorem isWeilSch_unique {μ : Measure (Mx D V.rank n)} {ω ω' : G D n →* Mod
   have hg : g ∈ ω.toHomUnits.eqLocus ω'.toHomUnits := this ▸ Subgroup.mem_top g
   exact congrArg Units.val hg
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sect_eq (ω : GramMatrixBlocks.Rep θ n V.gram) (H : G D n → ℝ≥0) (Φ : schwartzA θ V.rank n) (z : ℂ) :
     GramMatrixBlocks.sect H ω Φ z = sect (resG ω) H Φ z := rfl
 
+/- English proof (translation)
+Rewrite using `[← siegel_eq]`. Both sides reduce to the same expression.
+-/
 theorem summable_iff (ω : GramMatrixBlocks.Rep θ n V.gram) (H : G D n → ℝ≥0) (Φ : schwartzA θ V.rank n) (g : G D n) (z : ℂ) :
     (Summable fun γ => ‖GramMatrixBlocks.eisTerm H ω Φ g z γ‖) ↔ Eis.CosetConv (P D n) (GF D n) (sect (resG ω) H Φ z) g := by
   rw [← siegel_eq]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← siegel_eq]`. Both sides reduce to the same expression.
+-/
 theorem tsum_eq (ω : GramMatrixBlocks.Rep θ n V.gram) (H : G D n → ℝ≥0) (Φ : schwartzA θ V.rank n) (g : G D n) (z : ℂ) :
     ∑' γ, GramMatrixBlocks.eisTerm H ω Φ g z γ = Eis.cosetSum (P D n) (GF D n) (sect (resG ω) H Φ z) g := by
   rw [← siegel_eq]
   rfl
 
+/- English proof (translation)
+Introduce `γ hγ h`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : ∃ u : GL (Fin V.rank) D.host.E, mt V γ⁻¹ = rat u.1 := by`. Take `⟨u, -, hu⟩` from `(GQ V).inv_mem hγ`. Conclude with `⟨u, (congrArg Units.val hu).symm⟩`. Set `e : Matrix (Fin V.rank) (Fin n) D.host.E ≃ Matrix (Fin V.rank) (Fin n) D.host.E` to `⟨fun ξ => u.1 * ξ, fun ξ => (u⁻¹).1 * ξ, fun ξ => by simp [← Matrix.mul_assoc], fun ξ => by simp [← Matrix.mul_assoc]⟩`.
+
+Use `(tsum_congr fun ξ => ?_).trans (e.tsum_eq _)` and prove the remaining obligations. Establish `: mt V (γ * h)⁻¹ = mt V h⁻¹ * mt V γ⁻¹` using `by rw [mul_inv_rev]; rfl`. Rewrite using `[this, hu, Matrix.mul_assoc, ← rat_mul]`. Both sides reduce to the same expression.
+-/
 theorem leftInv_theta (ω : G D n →* Module.End ℂ (schwartzA θ V.rank n)) (Φ : schwartzA θ V.rank n) (g : G D n) :
     LeftInv (GQ V) (theta ω Φ g) := by
   intro γ hγ h

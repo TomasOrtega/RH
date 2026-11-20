@@ -14,6 +14,9 @@ section JetPair
 
 variable {K : Type u} [Field K] {ι : Type}
 
+/- English proof (translation)
+Unfold `jetPair`. Use `Finset.sum_subset hS ?_` and prove the remaining obligations. Introduce `κ _ hκ`. Establish `h0 : MvPolynomial.coeff κ P = 0` using `by simpa [MvPolynomial.mem_support_iff] using hκ`. Simplify using `[h0]`.
+-/
 lemma jetPair_eq_sum (P : MvPolynomial ι K) (F : MvPowerSeries ι K) (S : Finset (ι →₀ ℕ))
     (hS : P.support ⊆ S) :
     jetPair P F =
@@ -25,6 +28,9 @@ lemma jetPair_eq_sum (P : MvPolynomial ι K) (F : MvPowerSeries ι K) (S : Finse
   have h0 : MvPolynomial.coeff κ P = 0 := by simpa [MvPolynomial.mem_support_iff] using hκ
   simp [h0]
 
+/- English proof (translation)
+Rewrite using `[jetPair_eq_sum (P + Q) F (P.support ∪ Q.support) MvPolynomial.support_add, jetPair_eq_sum P F (P.support ∪ Q.support) Finset.subset_union_left, jetPair_eq_sum Q F (P.support ∪ Q.support) Finset.subset_union_right, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl (fun κ _ => ?_)` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma jetPair_add_left (P Q : MvPolynomial ι K) (F : MvPowerSeries ι K) :
     jetPair (P + Q) F = jetPair P F + jetPair Q F := by
   classical
@@ -35,9 +41,17 @@ lemma jetPair_add_left (P Q : MvPolynomial ι K) (F : MvPowerSeries ι K) :
   rw [MvPolynomial.coeff_add]
   ring
 
+/- English proof (translation)
+Simplify using `[jetPair]`.
+-/
 lemma jetPair_zero_left (F : MvPowerSeries ι K) : jetPair (0 : MvPolynomial ι K) F = 0 := by
   simp [jetPair]
 
+/- English proof (translation)
+Rewrite using `[jetPair_eq_sum (MvPolynomial.C c * P) F P.support, jetPair, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun κ _ => ?_)` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_C_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce `κ hκ`.
+
+Rewrite `hκ`, the goal using `[MvPolynomial.mem_support_iff]`. Rewrite `hκ` using `[MvPolynomial.coeff_C_mul]`. Conclude with `right_ne_zero_of_mul hκ`.
+-/
 lemma jetPair_C_mul_left (c : K) (P : MvPolynomial ι K) (F : MvPowerSeries ι K) :
     jetPair (MvPolynomial.C c * P) F = c * jetPair P F := by
   classical
@@ -50,6 +64,9 @@ lemma jetPair_C_mul_left (c : K) (P : MvPolynomial ι K) (F : MvPowerSeries ι K
     rw [MvPolynomial.coeff_C_mul] at hκ
     exact right_ne_zero_of_mul hκ
 
+/- English proof (translation)
+Use `Finset.induction_on s (by simp [jetPair_zero_left]) ?_` and prove the remaining obligations. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, jetPair_add_left, ih]`.
+-/
 lemma jetPair_sum_left {α : Type*} (s : Finset α) (P : α → MvPolynomial ι K)
     (F : MvPowerSeries ι K) : jetPair (∑ a ∈ s, P a) F = ∑ a ∈ s, jetPair (P a) F := by
   classical
@@ -57,21 +74,35 @@ lemma jetPair_sum_left {α : Type*} (s : Finset α) (P : α → MvPolynomial ι 
   intro a s ha ih
   rw [Finset.sum_insert ha, Finset.sum_insert ha, jetPair_add_left, ih]
 
+/- English proof (translation)
+Simplify using `only [jetPair, map_add, mul_add, Finset.sum_add_distrib]`.
+-/
 lemma jetPair_add_right (P : MvPolynomial ι K) (F G : MvPowerSeries ι K) :
     jetPair P (F + G) = jetPair P F + jetPair P G := by
   simp only [jetPair, map_add, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [jetPair, MvPowerSeries.coeff_C_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun κ _ => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma jetPair_C_mul_right (c : K) (P : MvPolynomial ι K) (F : MvPowerSeries ι K) :
     jetPair P (MvPowerSeries.C c * F) = c * jetPair P F := by
   simp only [jetPair, MvPowerSeries.coeff_C_mul, Finset.mul_sum]
   refine Finset.sum_congr rfl (fun κ _ => ?_)
   ring
 
+/- English proof (translation)
+Simplify using `only [jetPair, map_sum, Finset.mul_sum]`. Conclude with `Finset.sum_comm`.
+-/
 lemma jetPair_sum_right {α : Type*} (s : Finset α) (P : MvPolynomial ι K)
     (F : α → MvPowerSeries ι K) : jetPair P (∑ a ∈ s, F a) = ∑ a ∈ s, jetPair P (F a) := by
   simp only [jetPair, map_sum, Finset.mul_sum]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Rewrite using `[jetPair_eq_sum (MvPolynomial.C c) F {0}]`. Simplify using `[mfact, MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Introduce `κ hκ`. Rewrite `hκ` using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_C]`. Rewrite using `[Finset.mem_singleton]`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hκ (if_neg (fun h' => h h'.symm))`.
+-/
 lemma jetPair_C_left (c : K) (F : MvPowerSeries ι K) :
     jetPair (MvPolynomial.C c) F = c * MvPowerSeries.constantCoeff F := by
   classical
@@ -83,6 +114,15 @@ lemma jetPair_C_left (c : K) (F : MvPowerSeries ι K) :
     by_contra h
     exact hκ (if_neg (fun h' => h h'.symm))
 
+/- English proof (translation)
+Unfold `mfact`. Establish `key : ∀ (μ : ι →₀ ℕ) (s : Finset ι), μ.support ⊆ s → (μ.prod fun _ k => k.factorial) = ∏ j ∈ s, (μ j).factorial` using `fun μ s h => Finsupp.prod_of_support_subset μ h (fun _ k => k.factorial) (fun _ _ => Nat.factorial_zero)`. Establish `h1 : κ.support ⊆ insert i (κ.support.erase i)` using `Finset.subset_insert_iff.mpr (Finset.Subset.refl _)`. Establish `hsub : (κ + Finsupp.single i 1).support ⊆ insert i (κ.support.erase i)`. Introduce `j hj`.
+
+Rewrite `hj` using `[Finsupp.mem_support_iff, Finsupp.add_apply, Finsupp.single_apply]`. Distinguish the cases in `h : i = j`. Rewrite using `[← h]`. Conclude with `Finset.mem_insert_self _ _`. Rewrite `hj` using `[if_neg h, add_zero]`.
+
+Conclude with `Finset.mem_insert_of_mem (Finset.mem_erase.mpr ⟨Ne.symm h, Finsupp.mem_support_iff.mpr hj⟩)`. Establish `hnot : i ∉ κ.support.erase i` using `by simp`. Rewrite using `[key κ _ h1, key _ _ hsub, Finset.prod_insert hnot, Finset.prod_insert hnot]`. Establish `hrest : ∏ j ∈ κ.support.erase i, ((κ + Finsupp.single i 1 : ι →₀ ℕ) j).factorial = ∏ j ∈ κ.support.erase i, (κ j).factorial`. Use `Finset.prod_congr rfl (fun j hj => ?_)` and prove the remaining obligations.
+
+Rewrite using `[Finsupp.add_apply, Finsupp.single_apply, if_neg (fun h => (Finset.ne_of_mem_erase hj) h.symm), add_zero]`. Rewrite using `[hrest, Finsupp.add_apply, Finsupp.single_eq_same, Nat.factorial_succ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma mfact_add_single (κ : ι →₀ ℕ) (i : ι) :
     mfact (κ + Finsupp.single i 1) = mfact κ * (κ i + 1) := by
   classical
@@ -111,6 +151,9 @@ lemma mfact_add_single (κ : ι →₀ ℕ) (i : ι) :
   rw [hrest, Finsupp.add_apply, Finsupp.single_eq_same, Nat.factorial_succ]
   ring
 
+/- English proof (translation)
+Rewrite using `[jetPair, MvPolynomial.support_mul_X, Finset.sum_map, jetPair]`. Use `Finset.sum_congr rfl (fun κ _ => ?_)` and prove the remaining obligations. Simplify using `only [addRightEmbedding_apply, MvPolynomial.coeff_mul_X, mfact_add_single, MvPowerSeries.coeff_pderiv]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma jetPair_mul_X (P : MvPolynomial ι K) (i : ι) (F : MvPowerSeries ι K) :
     jetPair (P * MvPolynomial.X i) F = jetPair P (MvPowerSeries.pderiv K i F) := by
   classical
@@ -130,11 +173,23 @@ variable {K : Type u} [Field K] {ι ι' : Type} [Fintype ι] [Fintype ι']
 def linP (A : ι → ι' → K) (j : ι') : MvPolynomial ι K :=
   ∑ i : ι, MvPolynomial.C (A i j) * MvPolynomial.X i
 
+/- English proof (translation)
+Simplify using `[linP, MvPolynomial.pderiv_X, Pi.single_apply]`.
+-/
 lemma pderiv_linP (A : ι → ι' → K) (i : ι) (j : ι') :
     MvPolynomial.pderiv i (linP A j) = MvPolynomial.C (A i j) := by
   classical
   simp [linP, MvPolynomial.pderiv_X, Pi.single_apply]
 
+/- English proof (translation)
+Proceed by induction on `G using MvPolynomial.induction_on`. Simplify using the standard rewrite rules. Name the introduced variables `p q hp hq`. Simplify using `only [map_add, hp, hq, mul_add, Finset.sum_add_distrib]`. Name the introduced variables `p j hp`.
+
+Establish `hk : ∀ k : ι', MvPolynomial.aeval (linP A) (MvPolynomial.pderiv k (p * MvPolynomial.X j)) = MvPolynomial.aeval (linP A) p * (if j = k then 1 else 0) + linP A j * MvPolynomial.aeval (linP A) (MvPolynomial.pderiv k p)`. Introduce `k`. Rewrite using `[Derivation.leibniz, MvPolynomial.pderiv_X, smul_eq_mul, smul_eq_mul, map_add, map_mul, map_mul, MvPolynomial.aeval_X, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [hk, mul_add, Finset.sum_add_distrib]`.
+
+Rewrite using `[map_mul, MvPolynomial.aeval_X, Derivation.leibniz, pderiv_linP, hp, smul_eq_mul, smul_eq_mul]`. Establish `h1 : ∑ k : ι', MvPolynomial.C (A i k) * (MvPolynomial.aeval (linP A) p * (if j = k then 1 else 0)) = MvPolynomial.aeval (linP A) p * MvPolynomial.C (A i j)`. Rewrite using `[Finset.sum_eq_single j (fun k _ hk => by rw [if_neg (Ne.symm hk)]; ring) (fun h => absurd (Finset.mem_univ j) h), if_pos rfl]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, Finset.mul_sum]`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma pderiv_aeval_linP (A : ι → ι' → K) (i : ι) (G : MvPolynomial ι' K) :
     MvPolynomial.pderiv i (MvPolynomial.aeval (linP A) G) =
       ∑ j, MvPolynomial.C (A i j) * MvPolynomial.aeval (linP A) (MvPolynomial.pderiv j G) := by
@@ -167,6 +222,11 @@ lemma pderiv_aeval_linP (A : ι → ι' → K) (i : ι) (G : MvPolynomial ι' K)
 def linP' (A : ι → ι' → K) (i : ι) : MvPolynomial ι' K :=
   ∑ j : ι', MvPolynomial.C (A i j) * MvPolynomial.X j
 
+/- English proof (translation)
+Proceed by induction on `G using MvPolynomial.induction_on`. Simplify using the standard rewrite rules. Name the introduced variables `p q hp hq`. Simplify using `only [map_add, hp, hq]`. Name the introduced variables `p j hp`.
+
+Simplify using `only [map_mul, MvPolynomial.aeval_X, hp, MvPolynomial.constantCoeff_X, mul_zero]`. Simplify using `[linP]`.
+-/
 lemma constantCoeff_aeval_linP (A : ι → ι' → K) (G : MvPolynomial ι' K) :
     MvPolynomial.constantCoeff (MvPolynomial.aeval (linP A) G) = MvPolynomial.constantCoeff G := by
   induction G using MvPolynomial.induction_on
@@ -177,6 +237,9 @@ lemma constantCoeff_aeval_linP (A : ι → ι' → K) (G : MvPolynomial ι' K) :
     simp only [map_mul, MvPolynomial.aeval_X, hp, MvPolynomial.constantCoeff_X, mul_zero]
     simp [linP]
 
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[MvPowerSeries.coeff_pderiv, MvPolynomial.coeff_coe, MvPolynomial.coeff_coe, MvPolynomial.coeff_pderiv]`.
+-/
 private theorem mvPowerSeries_pderiv_coe_eq_coe_pderiv {L : Type u} [Field L] {σ : Type} (i : σ)
     (G : MvPolynomial σ L) :
     MvPowerSeries.pderiv L i (G : MvPowerSeries σ L) =
@@ -185,6 +248,17 @@ private theorem mvPowerSeries_pderiv_coe_eq_coe_pderiv {L : Type u} [Field L] {�
   rw [MvPowerSeries.coeff_pderiv, MvPolynomial.coeff_coe, MvPolynomial.coeff_coe,
     MvPolynomial.coeff_pderiv]
 
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on`. Name the introduced variables `c`. Introduce `G`. Rewrite using `[jetPair_C_left, MvPolynomial.aeval_C, MvPolynomial.algebraMap_eq, jetPair_C_left]`. Use `congr 1`.
+
+Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, ← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPolynomial.coeff_coe, MvPolynomial.coeff_coe]`. Establish `h` using `constantCoeff_aeval_linP A G`. Use `first`. Consider the case `exact h`. Consider the case `simpa [MvPolynomial.constantCoeff_eq] using h`.
+
+Name the introduced variables `P Q hP hQ`. Introduce `G`. Rewrite using `[jetPair_add_left, hP, hQ, map_add, jetPair_add_left]`. Name the introduced variables `P i hP`. Introduce `G`.
+
+Establish `hsum : ∀ (f : ι' → MvPolynomial ι K), ((∑ j, f j : MvPolynomial ι K) : MvPowerSeries ι K) = ∑ j, (f j : MvPowerSeries ι K)`. Introduce `f`. Rewrite using `[← MvPolynomial.coeToMvPowerSeries.ringHom_apply, map_sum]`. Simplify using `only [MvPolynomial.coeToMvPowerSeries.ringHom_apply]`. Rewrite using `[jetPair_mul_X, mvPowerSeries_pderiv_coe_eq_coe_pderiv, pderiv_aeval_linP, hsum, jetPair_sum_right]`.
+
+Rewrite using `[map_mul, MvPolynomial.aeval_X]`. Rewrite using `[linP']`. Rewrite using `[Finset.mul_sum, jetPair_sum_left]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[MvPolynomial.coe_mul, MvPolynomial.coe_C, jetPair_C_mul_right, hP, show MvPolynomial.aeval (linP' A) P * (MvPolynomial.C (A i j) * MvPolynomial.X j) = MvPolynomial.C (A i j) * (MvPolynomial.aeval (linP' A) P * MvPolynomial.X j) by ring, jetPair_C_mul_left, jetPair_mul_X, mvPower …`.
+-/
 lemma jetPair_poly (A : ι → ι' → K) (P : MvPolynomial ι K) :
     ∀ G : MvPolynomial ι' K,
       jetPair P ((MvPolynomial.aeval (linP A) G : MvPolynomial ι K) : MvPowerSeries ι K) =
@@ -222,6 +296,11 @@ lemma jetPair_poly (A : ι → ι' → K) (P : MvPolynomial ι K) :
         MvPolynomial.C (A i j) * (MvPolynomial.aeval (linP' A) P * MvPolynomial.X j) by ring,
       jetPair_C_mul_left, jetPair_mul_X, mvPowerSeries_pderiv_coe_eq_coe_pderiv]
 
+/- English proof (translation)
+Rewrite using `[jetPair_eq_sum P _ (insert μ P.support) (Finset.subset_insert _ _), Finset.sum_eq_single μ]`. Simplify using `[MvPolynomial.coeff_coe]`. Introduce `κ _ hκ`. Rewrite using `[MvPolynomial.coeff_coe, MvPolynomial.coeff_monomial, if_neg (Ne.symm hκ), mul_zero]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_insert_self μ _) h`.
+-/
 lemma jetPair_monomial_right (P : MvPolynomial ι' K) (μ : ι' →₀ ℕ) :
     jetPair P ((MvPolynomial.monomial μ (1 : K) : MvPolynomial ι' K) : MvPowerSeries ι' K) =
       MvPolynomial.coeff μ P * ((mfact μ : ℕ) : K) := by
@@ -233,6 +312,23 @@ lemma jetPair_monomial_right (P : MvPolynomial ι' K) (μ : ι' →₀ ℕ) :
   · intro h
     exact absurd (Finset.mem_insert_self μ _) h
 
+/- English proof (translation)
+Introduce `K _ ι ι' _ _ A P F`. Use `set a : ι' → MvPowerSeries ι K := fun j => ∑ i : ι, MvPowerSeries.C (A i j) * MvPowerSeries.X i with ha`. Establish `ha0 : ∀ j, MvPowerSeries.constantCoeff (a j) = 0` using `fun j => by simp [ha]`. Establish `hs : MvPowerSeries.HasSubst a` using `MvPowerSeries.hasSubst_of_constantCoeff_zero ha0`. Establish `hcoe : ∀ j, a j = ((linP A j : MvPolynomial ι K) : MvPowerSeries ι K)` using `fun j => by`.
+
+Rewrite using `[ha, linP, ← MvPolynomial.coeToMvPowerSeries.ringHom_apply, map_sum]`. Simplify using the standard rewrite rules. Establish `hmon : ∀ μ : ι' →₀ ℕ, (μ.prod fun s e => a s ^ e) = ((MvPolynomial.aeval (linP A) (MvPolynomial.monomial μ (1 : K)) : MvPolynomial ι K) : MvPowerSeries ι K)` using `fun μ => by`. Rewrite using `[MvPolynomial.aeval_monomial, ← MvPolynomial.coeToMvPowerSeries.ringHom_apply, map_mul, Finsupp.prod, Finsupp.prod, map_prod]`. Simplify using `[hcoe]`.
+
+Express the relevant statement in the definitionally equal form `jetPair P (MvPowerSeries.subst a F) = jetPair (MvPolynomial.aeval (linP' A) P) F`. Use `set P' := MvPolynomial.aeval (linP' A) P with hP'`. Establish `hfin` using `fun κ => MvPowerSeries.coeff_subst_finite hs F κ`. Use `set T : Finset (ι' →₀ ℕ) := (P.support.biUnion fun κ => (hfin κ).toFinset) ∪ P'.support with hT`. Rewrite using `[jetPair_eq_sum P' F T Finset.subset_union_right]`.
+
+Establish `h1 : ∀ κ ∈ P.support, MvPowerSeries.coeff κ (MvPowerSeries.subst a F) = ∑ μ ∈ T, MvPowerSeries.coeff μ F * MvPowerSeries.coeff κ (μ.prod fun s e => a s ^ e)`. Introduce `κ hκ`. Rewrite using `[MvPowerSeries.coeff_subst hs, finsum_eq_sum_of_support_subset]`. Both sides reduce to the same expression. Introduce `μ hμ`.
+
+Rewrite using `[hT, Finset.coe_union]`. Use `left`. Rewrite using `[Finset.coe_biUnion]`. Conclude with `Set.mem_biUnion hκ (by simpa using hμ)`. Unfold `jetPair`.
+
+Rewrite using `[Finset.sum_congr rfl fun κ hκ => by rw [h1 κ hκ, Finset.mul_sum]]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Establish `h2` using `jetPair_poly A P (MvPolynomial.monomial μ (1 : K))`. Rewrite `h2` using `[jetPair_monomial_right, ← hmon]`.
+
+Rewrite `h2` using `[← hP']`. Rewrite using `[← h2]`. Unfold `jetPair`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun κ _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem jet_pair_linearity : JetPairLin.{u} := by
   classical
   intro K _ ι ι' _ _ A P F
@@ -281,6 +377,13 @@ end Chain
 
 section Frames
 
+/- English proof (translation)
+Establish `ha : MvPowerSeries.HasSubst (fun j : ι' => (∑ i : ι, MvPowerSeries.C (A i j) * MvPowerSeries.X i : MvPowerSeries ι K))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun j => by simp)`. Establish `hC : ∀ c : K, MvPowerSeries.subst (fun j : ι' => (∑ i : ι, MvPowerSeries.C (A i j) * MvPowerSeries.X i : MvPowerSeries ι K)) (MvPowerSeries.C c : MvPowerSeries ι' K) = MvPowerSeries.C c`. Introduce `c`. Use `first`. Consider the case `simpa using (MvPowerSeries.substAlgHom ha).commutes c`.
+
+Consider the case `(rw [← MvPowerSeries.coe_substAlgHom ha]; simpa using (MvPowerSeries.substAlgHom ha).commutes c)`. Consider the case `(rw [← MvPowerSeries.coe_substAlgHom ha]`. Conclude with `(MvPowerSeries.substAlgHom ha).commutes c)`. Unfold `linSub`. Rewrite using `[← MvPowerSeries.coe_substAlgHom ha, map_sum]`.
+
+Simplify using `only [map_mul, MvPowerSeries.coe_substAlgHom, hC, MvPowerSeries.subst_X ha, h, map_sum, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun y _ => ?_))` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma subst_linSub {K : Type u} [Field K] {d N0 N1 : ℕ} {ι ι' : Type} [Fintype ι] [Fintype ι']
     (M : ZV d N0 N1 → ι' → K) (A : ι → ι' → K) (Mg : ZV d N0 N1 → ι → K)
     (h : ∀ z i, Mg z i = ∑ y, M z y * A i y) (z : ZV d N0 N1) :
@@ -307,6 +410,9 @@ lemma subst_linSub {K : Type u} [Field K] {d N0 N1 : ℕ} {ι ι' : Type} [Finty
   refine Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun y _ => ?_))
   ring
 
+/- English proof (translation)
+Unfold `mvExp`. Establish `hf' : MvPowerSeries.HasSubst (fun _ : Unit => f)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ => hf)`. Unfold `PowerSeries.subst`. Conclude with `MvPowerSeries.subst_comp_subst_apply hf' hs _`.
+-/
 lemma subst_mvExp {K : Type u} [NormedField K] [CharZero K] {ι ι' : Type} {a : ι' → MvPowerSeries ι K}
     (hs : MvPowerSeries.HasSubst a) (f : MvPowerSeries ι' K)
     (hf : MvPowerSeries.constantCoeff f = 0) :
@@ -317,6 +423,11 @@ lemma subst_mvExp {K : Type u} [NormedField K] [CharZero K] {ι ι' : Type} {a :
   unfold PowerSeries.subst
   exact MvPowerSeries.subst_comp_subst_apply hf' hs _
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_subset (Finset.subset_univ (Finset.univ.image (fun k : Fin N0 => ((s, k, b) : ZV d N0 N1))))]`. Rewrite using `[Finset.sum_image]`. Introduce `k₁ _ k₂ _ h`. Simplify using `using h`. Introduce `y _ hy`.
+
+Apply `hf` to reduce the goal to its premises. Introduce and unpack `⟨h1, h2⟩`. Conclude with `hy (Finset.mem_image.mpr ⟨y.2.1, Finset.mem_univ _, Prod.ext h1.symm (Prod.ext rfl h2.symm)⟩)`.
+-/
 lemma sum_ZV_slice {d N0 N1 : ℕ} [NeZero d] {M : Type*} [AddCommMonoid M] (s : ZMod d)
     (b : Fin N1) (f : ZV d N0 N1 → M) (hf : ∀ y, ¬ (y.1 = s ∧ y.2.2 = b) → f y = 0) :
     ∑ y, f y = ∑ k, f (s, k, b) := by
@@ -335,6 +446,13 @@ def genA {K : Type u} [Field K] {d N0 N1 : ℕ} (TT : Finset (ZMod d))
     (T : ZMod d → Fin N0 → Fin N0 → K) : ZV d N0 N1 → ZV d N0 N1 → K :=
   fun y y' => if y'.1 = y.1 ∧ y'.2.2 = y.2.2 then effMat TT T y.1 y.2.1 y'.2.1 else 0
 
+/- English proof (translation)
+Rewrite using `[sum_ZV_slice z.1 z.2.2]`. Simplify using `only [frameM, genA, eq_self_iff_true, and_self, ↓reduceIte]`. Distinguish the cases in `h : i.1 = z.1 ∧ i.2.2 = z.2.2`. Rewrite using `[if_pos h, hxg]`. Take `⟨h1, h2⟩` from `h`.
+
+Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[if_pos ⟨h1.symm, h2.symm⟩, h1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg h]`. Use `(Finset.sum_eq_zero (fun k _ => ?_)).symm` and prove the remaining obligations.
+
+Rewrite using `[if_neg (fun h' => h ⟨h'.1.symm, h'.2.symm⟩), mul_zero]`. Introduce `y hy`. Simplify using `only [frameM]`. Rewrite using `[if_neg hy, zero_mul]`.
+-/
 lemma frameM_genA {K : Type u} [Field K] {d N0 N1 : ℕ} [NeZero d] (TT : Finset (ZMod d))
     (T : ZMod d → Fin N0 → Fin N0 → K) (x xg : ZMod d × Fin N0 × Fin N0 → K)
     (hxg : ∀ s i a, xg (s, i, a) = ∑ k : Fin N0, effMat TT T s i k * x (s, k, a))
@@ -356,6 +474,15 @@ lemma frameM_genA {K : Type u} [Field K] {d N0 N1 : ℕ} [NeZero d] (TT : Finset
     simp only [frameM]
     rw [if_neg hy, zero_mul]
 
+/- English proof (translation)
+Rewrite using `[sum_ZV_slice s b]`. Simplify using `only [genA, rowOp, effMat, eq_self_iff_true, and_self, ↓reduceIte]`. Distinguish the cases in `h : s ∈ TT ∧ i.val = 0`. Simplify using `only [if_pos h]`. Rewrite using `[Finset.sum_eq_single i]`.
+
+Simplify using the standard rewrite rules. Introduce `k _ hk`. Simplify using `[hk]`. Introduce `hi`. Conclude with `absurd (Finset.mem_univ i) hi`.
+
+Simplify using `only [if_neg h]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Introduce `y hy`. Simplify using `only [genA]`.
+
+Rewrite using `[if_neg hy, map_zero, zero_mul]`.
+-/
 lemma sum_genA_eq_rowOp {K : Type u} [Field K] {d N0 N1 : ℕ} [NeZero d] (TT : Finset (ZMod d))
     (T : ZMod d → Fin N0 → Fin N0 → K) (s : ZMod d) (i : Fin N0) (b : Fin N1) :
     (∑ j : ZV d N0 N1, MvPolynomial.C (genA TT T (s, i, b) j) * MvPolynomial.X j :
@@ -378,6 +505,9 @@ lemma sum_genA_eq_rowOp {K : Type u} [Field K] {d N0 N1 : ℕ} [NeZero d] (TT : 
     simp only [genA]
     rw [if_neg hy, map_zero, zero_mul]
 
+/- English proof (translation)
+Unfold `minorProd`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl (fun c _ => ?_)` and prove the remaining obligations. Rewrite using `[AlgHom.map_det]`. Use `congr 1`.
+-/
 lemma map_minorProd {R : Type u} [CommRing R] {σ σ' : Type} {N0 N1 C : ℕ}
     (φ : MvPolynomial σ R →ₐ[R] MvPolynomial σ' R)
     (row : Fin N0 → Fin N1 → MvPolynomial σ R) (p : Fin C → ℕ) (hp : ∀ c, p c ≤ N0)
@@ -391,6 +521,11 @@ lemma map_minorProd {R : Type u} [CommRing R] {σ σ' : Type} {N0 N1 C : ℕ}
 
 end Frames
 
+/- English proof (translation)
+Establish `ha : MvPowerSeries.HasSubst a` using `MvPowerSeries.hasSubst_of_constantCoeff_zero ha0`. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.coeff_subst ha, finsum_eq_single _ 0]`. Simplify using the standard rewrite rules. Introduce `e he`. Rewrite using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply, Finsupp.prod, map_prod]`.
+
+Take `⟨s, hs⟩` from `Finsupp.support_nonempty_iff.mpr he`. Rewrite using `[Finset.prod_eq_zero hs (by rw [map_pow, ha0, zero_pow (Finsupp.mem_support_iff.mp hs)]), smul_zero]`.
+-/
 private theorem cc_subst_lemma {K : Type u} [Field K] {σ τ : Type} [Finite σ]
     (a : σ → MvPowerSeries τ K) (ha0 : ∀ s, MvPowerSeries.constantCoeff (a s) = 0)
     (f : MvPowerSeries σ K) :
@@ -406,6 +541,27 @@ private theorem cc_subst_lemma {K : Type u} [Field K] {σ τ : Type} [Finite σ]
     rw [Finset.prod_eq_zero hs
       (by rw [map_pow, ha0, zero_pow (Finsupp.mem_support_iff.mp hs)]), smul_zero]
 
+/- English proof (translation)
+Unfold `ThmAGen`. Introduce `K _ _ _ l d N0 N1 _ hl hl3 hd hde hlt h0 K0 hK0 ζ hζ be hbe x hx g hg0 hg U hU ε hε TT colN p hp hp1 I T hT xg hxg nu1 nu2 size hnu1 hnu2 hsize a ha hsa spec hs1 hs2 hs3`. Establish `hOp` using `thmAOp.{u}`. Unfold `ThmAOp at hOp`. Establish `key` using `hOp K l d N0 N1 hl hl3 hd hde hlt h0 K0 hK0 ζ hζ be hbe x hx g hg0 hg U hU ε hε TT colN p hp hp1 I T hT nu1 nu2 size hnu1 hnu2 hsize a ha hsa spec hs1 hs2 hs3`.
+
+Establish `hJ` using `jet_pair_linearity.{u}`. Unfold `JetPairLin at hJ`. Establish `hsub : MvPowerSeries.HasSubst (fun j : ZV d N0 N1 => (∑ i : ZV d N0 N1, MvPowerSeries.C (genA TT T i j) * MvPowerSeries.X i : MvPowerSeries (ZV d N0 N1) K))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun j => by simp)`. Establish `hlin : ∀ z, MvPowerSeries.subst (fun j : ZV d N0 N1 => (∑ i : ZV d N0 N1, MvPowerSeries.C (genA TT T i j) * MvPowerSeries.X i : MvPowerSeries (ZV d N0 N1) K)) (linSub (frameM (N1` using `N1) x) z) = linSub (frameM (N1 := N1) xg) z := fun z => subst_linSub (frameM (N1 := N1) x) (genA TT T) (frameM (N1 := N1) xg) (fun z i => frameM_genA TT T x xg hxg z i) z`. Establish `hL : ∀ (a0 : Fin N0) (b0 : Fin N1), MvPowerSeries.HasSubst (fun s : ZMod d => linSub (frameM (N1` using `N1) x) (s, a0, b0)) := fun a0 b0 => MvPowerSeries.hasSubst_of_constantCoeff_zero (fun s => by simp [linSub])`.
+
+Establish `hLx : MvPowerSeries.HasSubst (linSub (frameM (N1` using `N1) x)) := MvPowerSeries.hasSubst_of_constantCoeff_zero (fun s => by simp [linSub])`. Establish `hbe0 : MvPowerSeries.constantCoeff be = 0`. Assume the negation of the conclusion as `hne`. Establish `h1` using `hbe.2.2.1 0 (by rwa [MvPowerSeries.coeff_zero_eq_constantCoeff_apply])`. Simplify using `[degE] at h1`.
+
+Establish `hB : MvPowerSeries.constantCoeff (bSum (frameM (N1` using `N1) x) be) = 0 := by`. Simplify using `only [bSum, map_sum]`. Use `Finset.sum_eq_zero (fun ab _ => ?_)` and prove the remaining obligations. Rewrite using `[cc_subst_lemma, hbe0]`. Introduce `s`.
+
+Simplify using `[linSub]`. Establish `hf0 : MvPowerSeries.constantCoeff (ε • bSum (frameM (N1` using `N1) x) be) = 0 := by first`. Consider the case `(rw [MvPowerSeries.smul_eq_C_mul, map_mul, hB, mul_zero])`. Consider the case `(rw [← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.coeff_smul, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hB]; simp)`. Establish `hF : MvPowerSeries.subst (fun j : ZV d N0 N1 => (∑ i : ZV d N0 N1, MvPowerSeries.C (genA TT T i j) * MvPowerSeries.X i : MvPowerSeries (ZV d N0 N1) K)) (MvPowerSeries.subst (linSub (frameM (N1` using `N1) x)) (MvPowerSeries.subst g U) * mvExp (ε • bSum (frameM (N1 := N1) x) be)) = MvPowerSeries.subst (linSub (frameM (N1 := N1) xg)) (MvPowerSeries.subst g U) * mvExp (ε • bSum (frameM (N1 := N1) xg) be) := by`.
+
+Rewrite using `[MvPowerSeries.subst_mul hsub, MvPowerSeries.subst_comp_subst_apply hLx hsub, subst_mvExp hsub _ hf0]`. Use `congr 2`. Use function extensionality and compare the values at `z`. Conclude with `hlin z`. Rewrite using `[← MvPowerSeries.coe_substAlgHom hsub, map_smul]`.
+
+Use `congr 1`. Simplify using `only [bSum, map_sum]`. Use `Finset.sum_congr rfl (fun ab _ => ?_)` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coe_substAlgHom, MvPowerSeries.subst_comp_subst_apply (hL ab.1 ab.2) hsub]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `s`. Conclude with `hlin _`. Establish `hP : MvPolynomial.aeval (fun i : ZV d N0 N1 => (∑ j : ZV d N0 N1, MvPolynomial.C (genA TT T i j) * MvPolynomial.X j : MvPolynomial (ZV d N0 N1) K)) (∏ s : ZMod d, minorProd (fun (i : Fin N0) (b : Fin N1) => (MvPolynomial.X (s, i, b) : MvPolynomial (ZV d N0 N1) K)) (p s) (hp s) (I …` using `N1) TT T s) (p s) (hp s) (I s) := by`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl (fun s _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[map_minorProd]`. Use `congr 1`. Use function extensionality and compare the values at `i b`. Rewrite using `[MvPolynomial.aeval_X]`. Conclude with `sum_genA_eq_rowOp TT T s i b`.
+
+Establish `e1` using `hJ K (ZV d N0 N1) (ZV d N0 N1) (genA TT T) (∏ s : ZMod d, minorProd (fun (i : Fin N0) (b : Fin N1) => (MvPolynomial.X (s, i, b) : MvPolynomial (ZV d N0 N1) K)) (p s) (hp s) (I s)) (MvPowerSeries.subst (linSub (frameM (N1 := N1) x)) (MvPowerSeries.subst g U) * mvExp (ε • bSum (fra …`. Rewrite `e1` using `[hF, hP]`. Rewrite using `[e1]`. Conclude with `key`.
+-/
 theorem thmAGen : ThmAGen.{u} := by
   unfold ThmAGen
   intro K _ _ _ l d N0 N1 _ hl hl3 hd hde hlt h0 K0 hK0 ζ hζ be hbe x hx g hg0 hg U hU ε hε

@@ -19,6 +19,11 @@ def StepIntG : Prop :=
     ∀ c ∈ Good X u u', ∀ γ, HasDiag X u u' sc c γ →
       TermOp.OOInt (Formalism.L2.SG.ProjRows.muInf X.B.I) Set.univ (X.Wu u) (X.Wu u') γ
 
+/- English proof (translation)
+Establish `hm : ∀ v, Measurable (fun x : Formalism.REAL.UJ (X.B.I.ε v) => ‖X.Wloc u v x‖ₑ * ‖X.Wloc u' v ((γ v)⁻¹ * x)‖ₑ)`. Introduce `v`. Conclude with `((X.Wloc_cont u v).enorm.measurable).mul (((X.Wloc_cont u' v).comp (continuous_const.mul continuous_id)).enorm.measurable)`. Rewrite using `[← Formalism.L2.SG.RealObj.InfCut.ProductExactness.PiM.lintegral_pi_prod (fun v => Formalism.REAL.muG (X.B.I.ε v)) _ hm]`. Repeatedly rewrite using `[Formalism.L2.SG.Pf.WuDec.enorm_Wu, ← Finset.prod_mul_distrib]`.
+
+Both sides reduce to the same expression.
+-/
 theorem lint_prod {D : D7} (X : HidaSetting D) (u u' : D.what₂.Word) (γ : X.B.I.Ginf) :
     ∫⁻ x, ‖X.Wu u x‖ₑ * ‖X.Wu u' (γ⁻¹ * x)‖ₑ ∂(Formalism.L2.SG.ProjRows.muInf X.B.I) =
       ∏ v, ∫⁻ x, ‖X.Wloc u v x‖ₑ * ‖X.Wloc u' v ((γ v)⁻¹ * x)‖ₑ ∂(Formalism.REAL.muG (X.B.I.ε v)) := by
@@ -31,6 +36,9 @@ theorem lint_prod {D : D7} (X : HidaSetting D) (u u' : D.what₂.Word) (γ : X.B
   simp_rw [Formalism.L2.SG.Pf.WuDec.enorm_Wu, ← Finset.prod_mul_distrib]
   rfl
 
+/- English proof (translation)
+Introduce `D hG X u u' sc hsc c hc γ hγ`. Apply `Formalism.L2.SG.RealObj.StepIntOf.Steps.stIntOfLint D X u u' γ` to reduce the goal to its premises. Rewrite using `[lint_prod]`. Conclude with `ENNReal.prod_lt_top fun v _ => h D hG X u u' sc hsc c hc γ hγ v`.
+-/
 theorem stepIntG_of_loc (h : LocOrbG) : StepIntG := by
   intro D hG X u u' sc hsc c hc γ hγ
   apply Formalism.L2.SG.RealObj.StepIntOf.Steps.stIntOfLint D X u u' γ

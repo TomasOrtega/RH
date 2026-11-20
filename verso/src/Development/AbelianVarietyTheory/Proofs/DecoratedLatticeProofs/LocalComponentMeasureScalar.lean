@@ -32,6 +32,15 @@ open GlobalTheory.FinPl.FrameLat
 
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : SplitPt D k)
 
+/- English proof (translation)
+Take `⟨-, b1, b2, b3, b4⟩` from `hF`. Establish `hxi : valuation k (ofSplit q).xi = 1` using `GlobalTheory.MonoSplit.xi_unit q hU`. Use `GlobalTheory.MonoSplit.monoAt_of_splitW q B.d hL hL₀ (GlobalTheory.MonoSplit.splitW_of_frame q B.d F F₀ _ _ (fun i => ?_) (fun i => ?_) (fun r a => ?_) (fun l hl r => ?_) b2 b4 h h₀)` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, hs, hxi, one_pow, mul_one]`. Rewrite using `[map_mul, map_mul, map_pow, map_div₀, map_div₀, Valuation.map_neg, Valuation.map_neg, hs, hz, hxi, map_one]`.
+
+Simplify using the standard rewrite rules. Use `(b1 r a).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((_ * _ : Matrix _ _ _).map (GlobalTheory.MonoSplit.prE q) * _ : Matrix _ _ _) r a = _`. Rewrite using `[Matrix.map_mul, Matrix.mul_assoc, Matrix.mul_apply, Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun t _ => congrArg _ (hcore.1 t a).symm`.
+
+Use `(b3 l hl r).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ * GlobalTheory.MonoSplit.prE q _ = _`. Rewrite using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, mul_left_comm]`.
+
+Conclude with `congrArg _ (hcore.2 t).symm`.
+-/
 theorem monoAt_of_besFrame (hU : q.UnitAA) {σ : ℕ} (B : BesLev D σ) {n : Type} [Fintype n] [DecidableEq n] {s : k}
     (hs : valuation k s = 1) (hz : valuation k ((ofSplit q).hz B) = 1) {FA : Frame k B.A.rank n}
     {F : Frame k B.V.rank (n ⊕ Fin (2 * σ + 1))} {F₀ : Frame k B.V₀.rank (n ⊕ Unit)} (hF : (ofSplit q).IsBesFrame B s FA F)
@@ -56,6 +65,9 @@ theorem monoAt_of_besFrame (hU : q.UnitAA) {σ : ℕ} (B : BesLev D σ) {n : Typ
     rw [map_mul, mul_left_comm]
     exact congrArg _ (hcore.2 t).symm
 
+/- English proof (translation)
+Take `⟨b, m, hb, hA, hB, hC⟩` from `GlobalTheory.JacFramePair.isJacFrame_pairing D k (ofSplit q) ρ J s hh n c F₀ F hF hs hz (GlobalTheory.MonoSplit.xi_unit q hU) i`. Conclude with `GlobalTheory.SplitLine.line_mem_latV_iff D k q J.W L _ F _ b m hL h hb hA hB hC a ha`.
+-/
 theorem line_jac (hU : q.UnitAA) {ρ : ℕ} (J : JacLev D ρ) {n : Type} [Fintype n] [DecidableEq n] {c : ℕ} {s hh : k}
     (hs : valuation k s = 1) (hz : valuation k hh = 1) {F₀ : Frame k J.W₀.rank n} {F : Frame k J.W.rank (n ⊕ Fin c)}
     (hF : (ofSplit q).IsJacFrame J s hh F₀ F) {L : Lat J.W} (hL : IsSelfDualC J.W L) (h : IntIn q J.W F L) (i : Fin ρ)
@@ -64,6 +76,13 @@ theorem line_jac (hU : q.UnitAA) {ρ : ℕ} (J : JacLev D ρ) {n : Type} [Fintyp
     (GlobalTheory.MonoSplit.xi_unit q hU) i
   exact GlobalTheory.SplitLine.line_mem_latV_iff D k q J.W L _ F _ b m hL h hb hA hB hC a ha
 
+/- English proof (translation)
+Use `Fin.lastCases ?_ (fun i' => ?_) i` and prove the remaining obligations. Take `⟨m, hA, hB, hC⟩` from `GlobalTheory.BesPair.besz_pairings D k (ofSplit q) σ B s n c FA F hF hs hz`. Establish `e` using `GlobalTheory.SplitLine.line_mem_latV_iff D k q B.V L _ F _ s m hL h hs hA hB hC a ha`. Use `e using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `r`.
+
+Simplify using `[GlobalTheory.FinPl.colMul, xLast, HypDec.j0, rat, ratV, Matrix.mulVec, dotProduct, map_sum]`. Take `⟨b, m, hb, hA, hB, hC⟩` from `GlobalTheory.BesPair.bes_cols D k (ofSplit q) σ B s n c FA F hF hs hz (GlobalTheory.MonoSplit.xi_unit q hU) i'`. Establish `e` using `GlobalTheory.SplitLine.line_mem_latV_iff D k q B.V L _ F _ b m hL h hb hA hB hC a ha`. Use `e using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `r`.
+
+Simplify using `[GlobalTheory.FinPl.colMul, xLast, HypDec.jX, rat]`.
+-/
 theorem line_bes (hU : q.UnitAA) {σ : ℕ} (B : BesLev D σ) {n : Type} [Fintype n] [DecidableEq n] {c : ℕ} {s : k}
     (hs : valuation k s = 1) (hz : valuation k ((ofSplit q).hz B) = 1) {FA : Frame k B.A.rank n}
     {F : Frame k B.V.rank (n ⊕ Fin c)} (hF : (ofSplit q).IsBesFrame B s FA F) {L : Lat B.V} (hL : IsSelfDualC B.V L)
@@ -82,6 +101,19 @@ theorem line_bes (hU : q.UnitAA) {σ : ℕ} (B : BesLev D σ) {n : Type} [Fintyp
     funext r
     simp [GlobalTheory.FinPl.colMul, xLast, HypDec.jX, rat]
 
+/- English proof (translation)
+Take `⟨ψk, hk, hc⟩` from `GlobalTheory.SplitWeilChar.weil_char_conductor_one D k q ψ hψ hU`. Establish `hxi : valuation k (ofSplit q).xi = 1` using `GlobalTheory.MonoSplit.xi_unit q hU`. Establish `hc' : ∀ x : k, (∀ y : k, valuation k y ≤ valuation k x → ψk y = 1) ↔ x ∈ 𝒪[k]` using `fun x => by`. Rewrite using `[hc x, Units.val_one, map_one, Valuation.mem_integer_iff]`. Establish `half : ∀ t : AE D, (∀ o ∈ intAt D (· = q.v), psiE ψ (t * o) = 1) → q.pr t ∈ 𝒪[k]`.
+
+Introduce `t ht`. Distinguish the cases in `h0 : q.pr t = 0`. Rewrite using `[h0]`. Conclude with `zero_mem _`. Use `(hc' _).1 fun y hy => ?_` and prove the remaining obligations.
+
+Establish `hr : y / q.pr t ∈ 𝒪[k]`. Rewrite using `[Valuation.mem_integer_iff, map_div₀]`. Conclude with `div_le_one_of_le₀ hy zero_le'`. Establish `h1` using `ht _ (hU.1 _ (sec_mem_intAt q _ hr)).1`. Rewrite `h1` using `[mul_left_comm, mul_comm t, sec_mul_right, div_mul_cancel₀ _ h0]`.
+
+Conclude with `Circle.ext ((hk y).trans h1)`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `(GlobalTheory.SplitLine.mem_intAt_iff_pr q hs).2 ⟨half s h, half _ fun o ho => ?_⟩` and prove the remaining obligations. Rewrite using `[← GlobalTheory.LocBesChar.psiE_cA, RingHom.map_mul, Formalism.L2.Theta.cA_cA]`.
+
+Conclude with `h _ (GlobalTheory.JacMono.conj_intAt q ho)`. Introduce `h o ho`. Establish `hb` using `GlobalTheory.IwaDecomp.intAt_mul' h ho`. Take `⟨h1, h2⟩` from `(GlobalTheory.SplitLine.mem_intAt_iff_pr q hb.1).1 hb`. Rewrite using `[GlobalTheory.LocBesChar.psiE_supp (ofSplit q) hk ((idem_iff q _).1 hb.1), (hc' 1).2 (one_mem _) _ ?_]`.
+
+Both sides reduce to the same expression. Rewrite using `[map_div₀, hxi, div_one, map_one]`. Conclude with `(Valuation.mem_integer_iff _ _).1 (add_mem h1 h2)`.
+-/
 theorem psiE_triv_iff (hU : q.UnitAA) {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {s : AE D}
     (hs : s ∈ idAt D (· = q.v)) : (∀ o ∈ intAt D (· = q.v), psiE ψ (s * o) = 1) ↔ s ∈ intAt D (· = q.v) := by
   obtain ⟨ψk, hk, hc⟩ := GlobalTheory.SplitWeilChar.weil_char_conductor_one D k q ψ hψ hU
@@ -112,6 +144,13 @@ theorem psiE_triv_iff (hU : q.UnitAA) {ψ : AddChar (AF D.host.F) ℂ} (hψ : Is
     · rw [map_div₀, hxi, div_one, map_one]
       exact (Valuation.mem_integer_iff _ _).1 (add_mem h1 h2)
 
+/- English proof (translation)
+Introduce `i j _ s hs`. Rewrite using `[psiE_triv_iff q hU hψ hs]`. Prove the components needed by the constructor for the conclusion. Introduce `H`. Establish `hε : q.e + cA D q.e ∈ intAt D (· = q.v)` using `⟨sum_mem_idAt q, by`.
+
+Rewrite using `[RingHom.map_add]`. Conclude with `add_mem (e_mem_intAt q).2 (GlobalTheory.JacMono.conj_intAt q (e_mem_intAt q)).2⟩`. Establish `h1` using `(h i _ (Ideal.mul_mem_right _ _ hs)).1 (H _ ((h j _ hε.1).2 hε))`. Rewrite `h1` using `[mul_comm, (idem_iff q s).1 hs]`. Then use the resulting hypothesis. Introduce `H a ha`.
+
+Establish `h1 : a ∈ idAt D (· = q.v)`. Establish `h2` using `GlobalTheory.IwaPlace.mulVec_mem_idAt d.pX (latV_supp ha) j`. Rewrite `h2` using `[GlobalTheory.JacMono.mulVec_colMul, d.pX_jX, GlobalTheory.FinPl.colMul, Matrix.one_apply_eq, mul_one]`. Then use the resulting hypothesis. Conclude with `(h i _ (Ideal.mul_mem_right _ _ hs)).2 (GlobalTheory.IwaDecomp.intAt_mul' H ((h j a h1).1 ha))`.
+-/
 theorem primAt_of_lines (hU : q.UnitAA) {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S S₀ : HSp D} {ρ : ℕ}
     (d : HypDec S S₀ ρ) (L : Lat S)
     (h : ∀ (i : Fin ρ), ∀ a ∈ idAt D (· = q.v), colMul d.jX i a ∈ latV S L (· = q.v) ↔ a ∈ intAt D (· = q.v)) :
@@ -136,6 +175,17 @@ end GlobalTheory.Fam.AdaptSplit
 
 open GlobalTheory.Fam.AdaptSplit in
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Yd cX ex W u hW a y m b₀ k _ _ _ _ ι v o l bas hIs hTau hT0 hτ hNT hζ hsd hgP htP hdis hPre hOrth hbas FY sc hFr N₁ M₁ hsdN hIntN hsdM hIntM PP hP j σ h`. Take `⟨hsc, -, hhz, hbes, hjac, -⟩` from `hFr PP hP`. Establish `hs` using `(l PP hP).hs`. Establish `hU` using `(l PP hP).unit`. Rewrite using `[← (l PP hP).under]`.
+
+Establish `hj1 : j + 1 + (2 * (σ + 1)) = (l PP hP).s + 1` using `by omega`. Establish `hj2 : j + 1 + 1 + (2 * σ + 1) = (l PP hP).s + 1` using `by omega`. Establish `hJ` using `hjac j (σ + 1) h (2 * (σ + 1)) hj1`. Establish `hB` using `hbes (j + 1 + 1) σ (idx_step h) (2 * σ + 1) hj2`. Take `⟨F₀, hF₀⟩` from `GlobalTheory.LocMod.GValProof.core_of_bes _ _ _ _ _ hB`.
+
+Establish `hM` using `hIntM PP hP (j + 1 + 1) σ (idx_step h) (by omega) F₀ hF₀`. Establish `hV` using `hsdN (j + 1) (by omega)`. Establish `hV₀` using `(hIs.x (j + 1) (by omega)).sd`. Establish `hW'` using `hsdN (j + 1 + 1) (by omega)`. Establish `hLJ` using `line_jac (l PP hP).q hU _ (hsc _) (hhz _ _ _) hJ hV (hIntN PP hP (j + 1) _ hj1)`.
+
+Establish `hLB` using `line_bes (l PP hP).q hU _ (hsc _) (hhz _ _ _) hB hW' (hIntN PP hP (j + 1 + 1) _ hj2)`. Use `⟨GlobalTheory.FinPl.TamePlaces.tame D _, hV, hV₀, hW', hsdM _ _ _, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.JacMono.monoAt_of_jacFrame (l PP hP).q hU _ hV hV₀ (hsc _) (hhz _ _ _) hJ (hIntN PP hP (j + 1) _ hj1) ((l PP hP).latX (j + 1) (by omega))`. Conclude with `monoAt_of_besFrame (l PP hP).q hU _ (hsc _) (hhz _ _ _) hB hF₀ hW' (hsdM _ _ _) (hIntN PP hP (j + 1 + 1) _ hj2) hM`. Conclude with `primAt_of_lines (l PP hP).q hU hIs.std _ _ hLJ`.
+
+Introduce `i b hb`. Rewrite using `[hU.2, hLJ i b hb]`. Conclude with `(hLB i b hb).symm`.
+-/
 theorem GlobalTheory.Fam.adaptFB_of_normalFrames : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex) (u : D.what₂.Word), PkHyp W → ∀ (a : XGeo D) (y : YRat a) (m : YMeas y) (b₀ : ∀ j, GA D (Yc D j)) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type) (v : VCom (commOf (pk W) u (mkGeo m b₀))) (o : TDat (commOf (pk W) u (mkGeo m b₀)) k ι) (l : ∀ PP, PP ∈ (pk W).Pg ∨ QAll W PP → LocX a (pk W).βX PP) (bas : ∀ PP h j c, j + c = (l PP h).s + 1 → GL (XIx (Fin D.R.k) (Fin D.R.t) j ⊕ Fin c) (l PP h).k), (commOf (pk W) u (mkGeo m b₀)).Is → y.Tau (-D.host.xi0 ^ (D.R.m / 2)) → star a.ζ₀ ⬝ᵥ a.Lz.gram *ᵥ a.ζ₀ = (((D.mem u).A.T : ℕ) : D.host.E) → v.τ = y.τ → v.NT = a.LT → o.ζ₀ = a.ζ₀ → IsSelfDualC D.sp.X' a.LT → (∀ p, p ∈ v.gP ↔ ∃ PP ∈ (pk W).Pg, p = PP.under (𝓞 D.host.F)) → (∀ p, p ∈ v.tP ↔ (((D.mem u).A.T : ℕ) : 𝓞 D.host.F) ∈ p.asIdeal) → Disjoint v.gP v.tP → PreT v o → (∀ n (h : n = D.R.m) x, x ∉ v.tP → ∃ LZ : GlobalTheory.FinPl.Lat a.Lz, IsSelfDualC _ LZ ∧ GlobalTheory.FinPl.OrthAt (a.oT n h) (a.x n).L a.LT LZ x) → (∀ PP h, PP ∉ (pk W).Pg → ∀ j c hc, bas PP h j c hc = 1) → ∀ (FY : ∀ PP h, FYFam (l PP h)) (sc : ∀ PP h, ℕ → (l PP h).k), (∀ PP h, IsNormalFr (l PP h) y (FY PP h) (sc PP h)) → ∀ (N₁ : ∀ j, GlobalTheory.FinPl.Lat (Yc D j)) (M₁ : ∀ j ρ h, GlobalTheory.FinPl.Lat (y.bes j ρ h).V₀), (∀ j, j < D.R.m → IsSelfDualC (Yc D j) (N₁ j)) → (∀ PP h j c hc, IntIn (l PP h).q (Yc D j) (FY PP h j c hc) (N₁ j)) → (∀ j ρ h, IsSelfDualC (y.bes j ρ h).V₀ (M₁ j ρ h)) → (∀ PP hP j ρ h (hj : j ≤ (l PP hP).s + 1) (F₀ : Frame (l PP hP).k ((y.bes j ρ h).lev (a.x j).vol).V₀.rank (XIx (Fin D.R.k) (Fin D.R.t) j ⊕ Unit)), (ofSplit (l PP hP).q).IsCoreFrame ((y.bes j ρ h).lev (a.x j).vol) (sc PP hP j) ((l PP hP).FX j hj) F₀ → IntIn (l PP hP).q _ F₀ (M₁ j ρ h)) → ∀ PP (hP : PP ∈ (pk W).Pg ∨ QAll W PP), ∀ j σ (h : j + 2 * (σ + 1) + 2 = D.R.m), GlobalTheory.FinPl.AdaptFB (commOf (pk W) u (mkGeo m b₀)).ψ ((commOf (pk W) u (mkGeo m b₀)).J j (σ + 1) h) ((commOf (pk W) u (mkGeo m b₀)).B (j + 1 + 1) σ (idx_step h)) (N₁ (j + 1)) ((commOf (pk W) u (mkGeo m b₀)).x (j + 1)).L (N₁ (j + 1 + 1)) (M₁ (j + 1 + 1) σ (idx_step h)) (PP.under (𝓞 D.host.F)) := by
   intro D L hT Gi Gl Kc Yd cX ex W u hW a y m b₀ k _ _ _ _ ι v o l bas hIs hTau hT0 hτ hNT hζ hsd hgP htP hdis hPre hOrth hbas FY sc hFr N₁ M₁ hsdN hIntN hsdM hIntM PP hP j σ h
   obtain ⟨hsc, -, hhz, hbes, hjac, -⟩ := hFr PP hP

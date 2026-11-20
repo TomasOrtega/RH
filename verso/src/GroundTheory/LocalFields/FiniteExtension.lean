@@ -21,9 +21,17 @@ def normedField : NontriviallyNormedField K :=
         MonoidWithZeroHom.ValueGroup₀.embedding_strictMono }
   Valued.toNontriviallyNormedField K (ValueGroupWithZero K)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem normedField_topology :
     (normedField K).toUniformSpace.toTopologicalSpace = ‹TopologicalSpace K› := rfl
 
+/- English proof (translation)
+Set `` to `IsTopologicalAddGroup.rightUniformSpace K`. Use `isUniformAddGroup_of_addCommGroup (G := K)` as an intermediate fact. Set `: (Valued.v (R` to `K)).RankOne :=`. Use the proof step `{ hom' := IsRankLeOne.nonempty.some.emb (R := K).comp MonoidWithZeroHom.ValueGroup₀.embedding strictMono' := IsRankLeOne.nonempty.some.strictMono.comp MonoidWithZeroHom.ValueGroup₀.embedding_strictMono }`. Rewrite using `[(valuation K).vle_iff_le]`.
+
+Conclude with `Valued.toNormedField.norm_le_iff`.
+-/
 theorem normedField_norm_le_norm_iff (x y : K) :
     letI := normedField K
     ‖x‖ ≤ ‖y‖ ↔ x ≤ᵥ y := by
@@ -36,6 +44,9 @@ theorem normedField_norm_le_norm_iff (x y : K) :
   rw [(valuation K).vle_iff_le]
   exact Valued.toNormedField.norm_le_iff
 
+/- English proof (translation)
+Set `` to `normedField K`. Use `IsUltrametricDist.isUltrametricDist_of_forall_norm_add_le_max_norm fun x y => ?_` and prove the remaining obligations. Break down `vle_add_cases x y with h | h` into its components or cases. Conclude with `((normedField_norm_le_norm_iff K _ _).2 h).trans (le_max_left _ _)`. Conclude with `((normedField_norm_le_norm_iff K _ _).2 h).trans (le_max_right _ _)`.
+-/
 theorem normedField_isUltrametricDist :
     letI := normedField K
     IsUltrametricDist K := by
@@ -45,6 +56,9 @@ theorem normedField_isUltrametricDist :
   · exact ((normedField_norm_le_norm_iff K _ _).2 h).trans (le_max_left _ _)
   · exact ((normedField_norm_le_norm_iff K _ _).2 h).trans (le_max_right _ _)
 
+/- English proof (translation)
+Set `` to `IsTopologicalAddGroup.rightUniformSpace K`. Use `isUniformAddGroup_of_addCommGroup (G := K)` as an intermediate fact. Conclude with `(inferInstance : CompleteSpace K)`.
+-/
 theorem normedField_completeSpace :
     letI := normedField K
     CompleteSpace K := by
@@ -52,6 +66,9 @@ theorem normedField_completeSpace :
   have := isUniformAddGroup_of_addCommGroup (G := K)
   exact (inferInstance : CompleteSpace K)
 
+/- English proof (translation)
+Set `` to `normedField K`. Conclude with `.of_nontriviallyNormedField_of_weaklyLocallyCompactSpace K`.
+-/
 theorem normedField_properSpace :
     letI := normedField K
     ProperSpace K := by
@@ -72,11 +89,17 @@ def spectralNormedField : NontriviallyNormedField L :=
   haveI := normedField_completeSpace K
   spectralNorm.nontriviallyNormedField K L
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem spectralNormedField_norm (x : L) :
     letI := normedField K
     letI := spectralNormedField K L
     ‖x‖ = spectralNorm K L x := rfl
 
+/- English proof (translation)
+Set `` to `normedField K`. Use `normedField_isUltrametricDist K` as an intermediate fact. Use `normedField_completeSpace K` as an intermediate fact. Set `` to `spectralNormedField K L`. Conclude with `IsUltrametricDist.isUltrametricDist_of_isNonarchimedean_norm (isNonarchimedean_spectralNorm (K := K) (L := L))`.
+-/
 theorem spectralNormedField_isUltrametricDist :
     letI := spectralNormedField K L
     IsUltrametricDist L := by
@@ -87,6 +110,9 @@ theorem spectralNormedField_isUltrametricDist :
   exact IsUltrametricDist.isUltrametricDist_of_isNonarchimedean_norm
     (isNonarchimedean_spectralNorm (K := K) (L := L))
 
+/- English proof (translation)
+Set `` to `normedField K`. Conclude with `spectralNorm_extends a`.
+-/
 theorem spectralNormedField_norm_algebraMap (a : K) :
     letI := normedField K
     letI := spectralNormedField K L
@@ -107,16 +133,25 @@ def finiteExtensionStructure : LocalFieldStructure L :=
   { rel := ValuativeRel.ofValuation (NormedField.valuation (K := L))
     top := inferInstance }
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem finiteExtensionStructure_vle_iff (x y : L) :
     letI := normedField K
     letI := spectralNormedField K L
     letI := (finiteExtensionStructure K L).rel
     x ≤ᵥ y ↔ ‖x‖ ≤ ‖y‖ := Iff.rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem finiteExtensionStructure_top :
     (finiteExtensionStructure K L).top =
       (spectralNormedField K L).toUniformSpace.toTopologicalSpace := rfl
 
+/- English proof (translation)
+Set `` to `(finiteExtensionStructure K L).rel`. Prove the components needed by the constructor for the conclusion. Introduce `a b`. Rewrite using `[finiteExtensionStructure_vle_iff, spectralNormedField_norm_algebraMap, spectralNormedField_norm_algebraMap, normedField_norm_le_norm_iff]`.
+-/
 theorem finiteExtensionStructure_valuativeExtension :
     letI := (finiteExtensionStructure K L).rel
     ValuativeExtension K L := by
@@ -126,6 +161,13 @@ theorem finiteExtensionStructure_valuativeExtension :
   rw [finiteExtensionStructure_vle_iff, spectralNormedField_norm_algebraMap,
     spectralNormedField_norm_algebraMap, normedField_norm_le_norm_iff]
 
+/- English proof (translation)
+Set `` to `normedField K`. Use `normedField_isUltrametricDist K` as an intermediate fact. Use `normedField_completeSpace K` as an intermediate fact. Use `normedField_properSpace K` as an intermediate fact. Set `` to `spectralNormedField K L`.
+
+Use `spectralNormedField_isUltrametricDist K L` as an intermediate fact. Set `` to `(finiteExtensionStructure K L).rel`. Establish `hc : (NormedField.valuation (K` using `L)).Compatible := Valuation.Compatible.ofValuation _`. Use `{ toIsValuativeTopology := ?_, toLocallyCompactSpace := ?_, toIsNontrivial := ?_ }` and prove the remaining obligations. Conclude with `IsValuativeTopology.of_mem_nhds_zero_iff_vle (NormedField.valuation (K := L)) (fun {s} => (NormedField.toValued (K := L)).is_topological_valuation s)`.
+
+Set `: NormedSpace K L` to `spectralNorm.normedSpace K L`. Establish `: ProperSpace L` using `FiniteDimensional.proper K L`. Use `infer_instance`. Rewrite using `[isNontrivial_iff_isNontrivial (NormedField.valuation (K := L))] infer_instance`.
+-/
 theorem finiteExtensionStructure_isNonarchimedeanLocalField :
     letI := (finiteExtensionStructure K L).rel
     letI := (finiteExtensionStructure K L).top
@@ -147,6 +189,9 @@ theorem finiteExtensionStructure_isNonarchimedeanLocalField :
   · rw [isNontrivial_iff_isNontrivial (NormedField.valuation (K := L))]
     infer_instance
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(finiteExtensionStructure K L).rel, (finiteExtensionStructure K L).top, finiteExtensionStructure_isNonarchimedeanLocalField K L, finiteExtensionStructure_valuativeExtension K L⟩`.
+-/
 theorem exists_isNonarchimedeanLocalField_valuativeExtension :
     ∃ (_ : ValuativeRel L) (_ : TopologicalSpace L),
       IsNonarchimedeanLocalField L ∧ ValuativeExtension K L :=

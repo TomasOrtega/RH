@@ -18,6 +18,49 @@ namespace GlobalTheory.IntFam
 
 open GlobalTheory.ZH.AdaptedSpan
 
+/- English proof (translation)
+Introduce `R _ _ _ hCN D A G _ _ _ U N hN hF`. Take `⟨hnoeth, hnorm, -, -⟩` from `hCN`. Use `haveI := hnoeth`. Establish `hG` using `GlobalTheory.allSixLaws.1.globalFns`. Set `K` to `FractionRing R`.
+
+Take `⟨ρ, hρ, hsurj, hcan⟩` from `GlobalTheory.FamDim.exists_class_reps D.toPre.X N hN`. Use `choose μ₀ r hr hrs using fun q => hF (ρ q)`. Set `a : (Fin D.toPre.rank → Fin N) → D.toPre.X` to `fun q => ρ q + N • μ₀ q`. Establish `hdis : ∀ q q' mu, a q + N • mu = a q' → q = q'` using `fun q q' mu h => hρ q q' (μ₀ q + mu - μ₀ q') (by`. Establish `: ρ q + N • (μ₀ q + mu - μ₀ q') = a q + N • mu - N • μ₀ q'`.
+
+Simplify using `only [a, smul_sub, smul_add]`. Normalize the expressions using the abelian group laws. Rewrite using `[this, h]`. Simplify using `only [a]`. Use the proof step `abel)`.
+
+Establish `hcov : ∀ β, ∃ q mu, a q + N • mu = β` using `fun β => by`. Take `⟨q, mu, h⟩` from `hsurj β`. Use `⟨q, mu - μ₀ q, ?_⟩` and prove the remaining obligations. Rewrite using `[← h]`. Simplify using `only [a, smul_sub]`.
+
+Normalize the expressions using the abelian group laws. Establish `hclass : ∀ q (x y : D.toPre.X), a q + N • x = a q + N • y → x = y` using `fun q x y e => hcan x y (add_left_cancel e)`. Establish `hst : ∀ q, ∃ (m : ℕ) (b : Fin m → D.toPre.SecB N (a q)), StableBasis D.toPre N (a q) b` using `fun q => by`. Take `⟨m, b, -, hb⟩` from `GlobalTheory.twistBaseChange R D.toPre N hN (a q)`. Conclude with `⟨m, b, hb⟩`.
+
+Use `choose m b hb using hst`. Set `I` to `Σ q, Fin (m q)`. Use `choose Φ₀ hΦ₁ hΦ₀ using fun x : I => UUA.exists_fam_rep (D := D.toPre) (F := K) hG D.tau_bimult N (a x.1) (hclass x.1) (pullAb D.toPre K N (a x.1) (b x.1 x.2))`. Establish `hoff : ∀ (x : I) q, q ≠ x.1 → famAt D.toPre K N (a q) (Φ₀ x) = 0` using `fun x q hq => SecOps.sec_ext fun j => hΦ₀ x (a q) (fun mu h => hq (hdis _ _ _ h).symm) j`. Establish `hf : ∀ (x : I) (α : D.toPre.X), ∃ f : SecAb D.toPre N α, pullAb D.toPre K N α f = (Φ₀ x).s α ∧ (∀ h : α = a x.1, f = h ▸ b x.1 x.2) ∧ ((∀ mu, a x.1 + N • mu ≠ α) → f = 0)` using `fun x α => by`.
+
+Distinguish the cases in `h0 : α = a x.1`. Substitute `h0` using the available equality. Conclude with `⟨b x.1 x.2, (hΦ₁ x).symm, fun _ => rfl, fun h => absurd (by simp) (h 0)⟩`. Distinguish the cases in `h1 : ∃ mu, a x.1 + N • mu = α`. Take `⟨mu, rfl⟩` from `h1`.
+
+Take `⟨s, hs⟩` from `hrs x.1 (μ₀ x.1 + mu)`. Establish `e : ρ x.1 + N • (μ₀ x.1 + mu) = a x.1 + N • mu` using `by simp only [a, smul_add]; abel`. Rewrite `hs` using `[e]`. Establish `hr' : PsiCoord D.toPre (a x.1) (r x.1)` using `hr x.1`. Take `⟨u₀, c, hu₀, hrel⟩` from `GlobalTheory.T.exists_generator_multiplier_power R hnorm D.toPre N hN (a x.1) mu s (fun ξ J hJ hJc => GlobalTheory.T.multiplier_power_unit_constant R _ D N _ _ _ _ hr' hs ξ J hJ hJc)`.
+
+Take `⟨f, hf⟩` from `GlobalTheory.T.generator_correspondence_pullback R D.toPre N (a x.1) mu u₀ c hu₀ hrel (b x.1 x.2) (Φ₀ x) (hΦ₁ x)`. Conclude with `⟨f, hf, fun h => absurd h h0, fun h => absurd rfl (h mu)⟩`. Use `⟨0, ?_, fun h => absurd h h0, fun _ => rfl⟩` and prove the remaining obligations. Rewrite using `[map_zero]`. Conclude with `SecOps.sec_ext fun j => (hΦ₀ x α (fun mu h => h1 ⟨mu, h⟩) j).symm`.
+
+Use `choose f hfK hf₁ hf₀ using hf`. Establish `hmain : LinearIndependent K Φ₀`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce and unpack `c hc ⟨q, i⟩`. Establish `h1 : ∑ i, c ⟨q, i⟩ • pullAb D.toPre K N (a q) (b q i) = 0`.
+
+Establish `h2` using `congrArg (famAt D.toPre K N (a q)) hc`. Rewrite `h2` using `[map_sum, map_zero, Fintype.sum_sigma, Finset.sum_eq_single q]`. Use `Eq.trans (Finset.sum_congr rfl fun i _ => ?_) h2` and prove the remaining obligations. Rewrite using `[map_smul]`. Conclude with `congrArg (c ⟨q, i⟩ • ·) (hΦ₁ ⟨q, i⟩).symm`.
+
+Introduce `q' _ hq`. Conclude with `Finset.sum_eq_zero fun i _ => by rw [map_smul, hoff ⟨q', i⟩ q hq.symm, smul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ q) h`. Establish `h3` using `(GlobalTheory.T.existsUnique_coeffs_stable_basis R D.toPre N (a q) (m q) (b q) (hb q) 0).unique (y₁ := fun i => c ⟨q, i⟩) (y₂ := fun _ => 0) h1.symm (by simp)`.
+
+Conclude with `congrFun h3 i`. Establish `hspan : Submodule.span K (Set.range Φ₀) = ⊤`. Use `top_unique fun s _ => ?_` and prove the remaining obligations. Use `choose c hc using fun q => (GlobalTheory.T.existsUnique_coeffs_stable_basis R D.toPre N (a q) (m q) (b q) (hb q) (s.s (a q))).exists`. Use `(Submodule.mem_span_range_iff_exists_fun K).2 ⟨fun x => c x.1 x.2, fam_ext fun β j => ?_⟩` and prove the remaining obligations.
+
+Take `⟨q, mu, rfl⟩` from `hcov β`. Use `GlobalTheory.FamDim.fam_term_eq hG ?_ mu j` and prove the remaining obligations. Establish `h2 : famAt D.toPre K N (a q) (∑ x, c x.1 x.2 • Φ₀ x) = s.s (a q)`. Rewrite using `[map_sum, Fintype.sum_sigma, Finset.sum_eq_single q]`. Use `Eq.trans (Finset.sum_congr rfl fun i _ => ?_) (hc q).symm` and prove the remaining obligations.
+
+Rewrite using `[map_smul]`. Conclude with `congrArg (c q i • ·) (hΦ₁ ⟨q, i⟩)`. Introduce `q' _ hq`. Conclude with `Finset.sum_eq_zero fun i _ => by rw [map_smul, hoff ⟨q', i⟩ q hq.symm, smul_zero]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ q) h`. Conclude with `h2`. Set `e` to `Fintype.equivFin I`. Use `⟨Fintype.card I, fun i => Φ₀ (e.symm i), fun i => f (e.symm i), fun i α => ?_, ?_, ?_, fun c ⟨i₀, hi₀⟩ => ?_⟩` and prove the remaining obligations. Establish `h1 : Out.scal (DegPre.BF D.toPre K).hom (1 : R) = 1` using `by unfold Out.scal; rw [map_one, map_one]`.
+
+Rewrite using `[← h1]`. Use `(GlobalTheory.ZH.AdaptedSpan.secScal_iff_pullAb D.toPre K ((Φ₀ (e.symm i)).s α) (f (e.symm i) α) 1).2 ?_` and prove the remaining obligations. Rewrite using `[map_one]`. Conclude with `(hfK _ α).trans (one_smul K (show SecAbF D.toPre K N α from (Φ₀ (e.symm i)).s α)).symm`. Conclude with `hmain.comp _ e.symm.injective`.
+
+Rewrite using `[← hspan]`. Conclude with `congrArg _ (e.symm.surjective.range_comp Φ₀)`. Use `set x₀ := e.symm i₀ with hx₀`. Establish `hsum : (∑ i, c i • f (e.symm i) (a x₀.1) : SecAb D.toPre N (a x₀.1)) = ∑ i, c (e ⟨x₀.1, i⟩) • (show SecAb D.toPre N (a x₀.1) from b x₀.1 i)`. Rewrite using `[← Equiv.sum_comp e (fun i => c i • f (e.symm i) (a x₀.1)), Fintype.sum_sigma, Finset.sum_eq_single x₀.1]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Equiv.symm_apply_apply, hf₁ ⟨x₀.1, i⟩ _ rfl]`. Introduce `q _ hq`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Equiv.symm_apply_apply, hf₀ ⟨q, i⟩ _ (fun mu h => hq (hdis _ _ _ h)), smul_zero]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Take `⟨j, y, hy, hm⟩` from `GlobalTheory.T.stable_basis_nonvanishing_closed_point R D.toPre N (a x₀.1) (m x₀.1) (b x₀.1) (hb x₀.1) (fun i => c (e ⟨x₀.1, i⟩)) ⟨x₀.2, by`. Establish `: e ⟨x₀.1, x₀.2⟩ = i₀` using `by rw [Sigma.eta, hx₀, Equiv.apply_symm_apply]`. Rewrite using `[this]`.
+
+Conclude with `hi₀⟩`. Use `⟨a x₀.1, j, y, hy, ?_⟩` and prove the remaining obligations. Rewrite using `[hsum]`. Conclude with `hm`.
+-/
 theorem intFam : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], IsCN R →
     ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G]
       [IsCommMonObj G], IsSemiAbelian G → Unif (maximalIdeal R) D A G → ∀ N : ℕ, 1 ≤ N → FineData D.toPre N →

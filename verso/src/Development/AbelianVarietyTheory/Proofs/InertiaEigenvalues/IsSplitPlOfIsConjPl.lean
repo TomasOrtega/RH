@@ -10,6 +10,11 @@ open GlobalTheory.TwSys Formalism.BasicNotions Formalism.MainNotions Formalism.C
 
 namespace GlobalTheory.ConjugatePlaceSplitting
 
+/- English proof (translation)
+Take `⟨x, hx, hy⟩` from `hs`. Establish `hc'` using `GlobalTheory.TwistDet.isConjPl_iff.1 hc`. Establish `h1 : GlobalTheory.TwistDet.conjInt D x ∈ P'.asIdeal` using `(hc' x).1 hx`. Establish `h2 : x ∉ P'.asIdeal` using `fun h => hy (GlobalTheory.TwistDet.conjInt D x) rfl ((hc' (GlobalTheory.TwistDet.conjInt D x)).2 (by rwa [GlobalTheory.TwistDet.conjInt_conjInt]))`. Use `⟨GlobalTheory.TwistDet.conjInt D x, h1, fun y hy' => ?_⟩` and prove the remaining obligations.
+
+Establish `: y = x`. Rewrite using `[← GlobalTheory.TwistDet.conjInt_conjInt x]`. Conclude with `RingOfIntegers.ext hy'`. Rewrite using `[this]` and apply the resulting hypothesis.
+-/
 theorem isSplitPl_of_isConjPl {D : D7} {P P' : PlE D.host} (hs : IsSplitPl D.host P)
     (hc : IsConjPl D.host P P') : IsSplitPl D.host P' := by
   obtain ⟨x, hx, hy⟩ := hs

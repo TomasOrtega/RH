@@ -31,6 +31,15 @@ section
 namespace Formalism.MainNotions.N
 open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial
 open NumberField IsDedekindDomain
+/- English proof (translation)
+Establish `h2 : ∀ x (g : GE D.nd), (mapM (IsLocalRing.residue (D.nd.O i)) (rO D.nd i r x) g).charpoly = (mapM (IsLocalRing.residue (D.nd.O i)) (rhoO D.nd i ρ π) g).charpoly * ∏ c ∈ Finset.Icc 1 D.R.t, (X - C (IsLocalRing.residue (D.nd.O i) ((chiU D.nd i c g : (D.nd.O i)ˣ) : D.nd.O i)))`. Introduce `x g`. Establish `e1` using `(_root_.UpperTheory.GalS.g3' ((h32 i).2.2 r hr).2.2.1).2 x π g`. Establish `e2` using `congrArg (Polynomial.map (IsLocalRing.residue (D.nd.O i))) (charpoly_of_decomp D i r ρ π hdec g)`. Rewrite `e2` using `[Polynomial.map_mul, Polynomial.map_prod, ← Matrix.charpoly_map, ← Matrix.charpoly_map]`.
+
+Use `e1.trans (e2.trans ?_)` and prove the remaining obligations. Use `congr 1`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Use `⟨hc, h2, ?_⟩` and prove the remaining obligations.
+
+Establish `hrb : IsRhoBar D.nd i (redRep D.nd i (ρ π))`. Use `⟨isOpen_ker_redRep D i _ hcont, ?_⟩` and prove the remaining obligations. Introduce `x w hw B σ hB' hσ`. Rewrite using `[← (hr x).2.2 w hw B σ hB' hσ, ← Matrix.charpoly_map]`. Conclude with `(h2 x σ).symm`.
+
+Establish `h3` using `hB (D.nd.l i) D.R.r _ (hN9 i hHG _ hrb).1`. Conclude with `span_descent (D.naut.kFbar i) (fun g => mapM (IsLocalRing.residue (D.nd.O i)) (rhoO D.nd i ρ π) g) h3`.
+-/
 theorem galois_condition_three_of_alt_alt (D : D7) (i : D.nd.Loc)
     (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
     (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i)

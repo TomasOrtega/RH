@@ -14,10 +14,16 @@ open Matrix TensorProduct ReciprocityTheory.ChartRestriction.DS ReciprocityTheor
 
 variable {n : ℕ} {ε : Fin n → Bool}
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `sp_blk_surj ε a`.
+-/
 theorem sp_blk_surj' (ε : Fin n → Bool) (c : Bool) (a : Fin n) (h : ε a = c) : ∃ r, blk ε c r = a := by
   subst h
   exact sp_blk_surj ε a
 
+/- English proof (translation)
+Introduce `h`. Establish `e` using `norm_tmul T1.w T2.w (𝕜 := ℂ)`. Rewrite `e` using `[h, norm_zero, T1.w_norm, T2.w_norm]`. Evaluate the numerical expressions using `at e`.
+-/
 theorem sp_tens_ne (Λ' : Fin n → ℝ) (T1 : KType (fun _ : Fin (cnt ε true) => true) (fun r => Λ' (blk ε true r)))
     (T2 : KType (fun _ : Fin (cnt ε false) => true) (fun r => Λ' (blk ε false r))) :
     (T1.w ⊗ₜ[ℂ] T2.w) ≠ 0 := by
@@ -26,6 +32,17 @@ theorem sp_tens_ne (Λ' : Fin n → ℝ) (T1 : KType (fun _ : Fin (cnt ε true) 
   rw [h, norm_zero, T1.w_norm, T2.w_norm] at e
   norm_num at e
 
+/- English proof (translation)
+Use `⟨fun a => ?_, fun a b hab he => ?_⟩` and prove the remaining obligations. Consider the cases of `hc : ε a`. Take `⟨r, rfl⟩` from `sp_blk_surj' ε false a hc`. Rewrite using `[sp_units_false, TensorProduct.map_tmul, LinearMap.id_apply]`. Use `show T1.w ⊗ₜ (T2.dτ (single r r 1) T2.w) = _`.
+
+Rewrite using `[T2.w_wt r, TensorProduct.tmul_smul]`. Both sides reduce to the same expression. Take `⟨r, rfl⟩` from `sp_blk_surj' ε true a hc`. Rewrite using `[sp_units_true, TensorProduct.map_tmul, LinearMap.id_apply]`. Use `show (T1.dτ (single r r 1) T1.w) ⊗ₜ T2.w = _`.
+
+Rewrite using `[T1.w_wt r, ← TensorProduct.smul_tmul']`. Both sides reduce to the same expression. Consider the cases of `hc : ε a`. Take `⟨r, rfl⟩` from `sp_blk_surj' ε false a hc`. Take `⟨s, rfl⟩` from `sp_blk_surj' ε false b (he ▸ hc)`.
+
+Establish `hrs : r < s` using `(blk_strictMono ε false).lt_iff_lt.mp hab`. Rewrite using `[sp_units_false, TensorProduct.map_tmul, LinearMap.id_apply]`. Use `show T1.w ⊗ₜ (T2.dτ (single r s 1) T2.w) = 0`. Rewrite using `[T2.w_hw r s hrs rfl, TensorProduct.tmul_zero]`. Take `⟨r, rfl⟩` from `sp_blk_surj' ε true a hc`.
+
+Take `⟨s, rfl⟩` from `sp_blk_surj' ε true b (he ▸ hc)`. Establish `hrs : r < s` using `(blk_strictMono ε true).lt_iff_lt.mp hab`. Rewrite using `[sp_units_true, TensorProduct.map_tmul, LinearMap.id_apply]`. Use `show (T1.dτ (single r s 1) T1.w) ⊗ₜ T2.w = 0`. Rewrite using `[T1.w_hw r s hrs rfl, TensorProduct.zero_tmul]`.
+-/
 theorem sp_tens_hw (Λ' : Fin n → ℝ) (T1 : KType (fun _ : Fin (cnt ε true) => true) (fun r => Λ' (blk ε true r)))
     (T2 : KType (fun _ : Fin (cnt ε false) => true) (fun r => Λ' (blk ε false r))) :
     Formalism.REAL.KHighest ε (sp_rep T1 T2).units Λ' (T1.w ⊗ₜ[ℂ] T2.w) := by
@@ -53,6 +70,13 @@ theorem sp_tens_hw (Λ' : Fin n → ℝ) (T1 : KType (fun _ : Fin (cnt ε true) 
       show (T1.dτ (single r s 1) T1.w) ⊗ₜ T2.w = 0
       rw [T1.w_hw r s hrs rfl, TensorProduct.zero_tmul]
 
+/- English proof (translation)
+Take `⟨hwt, hr⟩` from `h`. Use `sp_ker T1 T2 y hy (fun r => μ (blk ε true r)) (fun r => μ (blk ε false r)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `r`. Establish `e` using `hwt (blk ε true r)`. Conclude with `(sp_units_true T1 T2 r r y).symm.trans e`.
+
+Introduce `r s hrs`. Establish `e` using `hr _ _ (blk_strictMono ε true hrs) (by rw [blk_mem ε true r, blk_mem ε true s])`. Conclude with `(sp_units_true T1 T2 r s y).symm.trans e`. Introduce `r`. Establish `e` using `hwt (blk ε false r)`.
+
+Conclude with `(sp_units_false T1 T2 r r y).symm.trans e`. Introduce `r s hrs`. Establish `e` using `hr _ _ (blk_strictMono ε false hrs) (by rw [blk_mem ε false r, blk_mem ε false s])`. Conclude with `(sp_units_false T1 T2 r s y).symm.trans e`.
+-/
 theorem sp_tens_uniq {Λ1 : Fin (cnt ε true) → ℝ} {Λ2 : Fin (cnt ε false) → ℝ}
     (T1 : KType (fun _ : Fin (cnt ε true) => true) Λ1) (T2 : KType (fun _ : Fin (cnt ε false) => true) Λ2)
     (μ : Fin n → ℝ) (y : (sp_rep T1 T2).V) (hy : y ≠ 0)
@@ -68,6 +92,9 @@ theorem sp_tens_uniq {Λ1 : Fin (cnt ε true) → ℝ} {Λ2 : Fin (cnt ε false)
     have e := hr _ _ (blk_strictMono ε false hrs) (by rw [blk_mem ε false r, blk_mem ε false s])
     exact (sp_units_false T1 T2 r s y).symm.trans e
 
+/- English proof (translation)
+Unfold `kChar`. Rewrite using `[sp_trace_of_rep T (sp_rep T1 T2) _ (sp_tens_ne Λ' T1 T2) (sp_tens_hw Λ' T1 T2) (fun μ y hy h => sp_tens_uniq T1 T2 μ y hy h) k, sp_rep_op]`. Rewrite using `[show ((mapL (T1.op (sp_proj ε true k)) (T2.op (sp_proj ε false k)) : _ →L[ℂ] _) : _ →ₗ[ℂ] _) = TensorProduct.map (T1.op (sp_proj ε true k) : T1.V →ₗ[ℂ] T1.V) (T2.op (sp_proj ε false k) : T2.V →ₗ[ℂ] T2.V) from toLinearMap_mapL _ _]`. Conclude with `LinearMap.trace_tensorProduct' _ _`.
+-/
 theorem sp_kChar (Λ' : Fin n → ℝ) (T : KType ε Λ')
     (T1 : KType (fun _ : Fin (cnt ε true) => true) (fun r => Λ' (blk ε true r)))
     (T2 : KType (fun _ : Fin (cnt ε false) => true) (fun r => Λ' (blk ε false r))) (k : KG ε) :
@@ -80,6 +107,9 @@ theorem sp_kChar (Λ' : Fin n → ℝ) (T : KType ε Λ')
         (T2.op (sp_proj ε false k) : T2.V →ₗ[ℂ] T2.V) from toLinearMap_mapL _ _]
   exact LinearMap.trace_tensorProduct' _ _
 
+/- English proof (translation)
+Introduce `n ε Λ hdom T k t hk`. Establish `hd : ∀ c, ∀ a b : Fin (cnt ε c), a < b → (fun _ => true) a = (fun _ => true) b → (((Λ ∘ blk ε c) b : ℤ) : ℝ) ≤ (((Λ ∘ blk ε c) a : ℤ) : ℝ)` using `fun c a b hab _ => by exact_mod_cast antitone_blk hdom c hab.le`. Take `⟨T1⟩` from `kType_exists_of_dom (fun _ : Fin (cnt ε true) => true) (fun r => (((Λ ∘ blk ε true) r : ℤ) : ℝ)) (fun a => ⟨_, rfl⟩) (hd true)`. Take `⟨T2⟩` from `kType_exists_of_dom (fun _ : Fin (cnt ε false) => true) (fun r => (((Λ ∘ blk ε false) r : ℤ) : ℝ)) (fun a => ⟨_, rfl⟩) (hd false)`. Rewrite using `[sp_kChar (fun a => (Λ a : ℝ)) T T1 T2 k, hU _ _ (antitone_blk hdom true) T1 (sp_proj ε true k) (t ∘ blk ε true) (by rw [sp_toMK_proj, hk, sp_sub_diag]), hU _ _ (antitone_blk hdom false) T2 (sp_proj ε false k) (t ∘ blk ε false) (by rw [sp_toMK_proj, hk, sp_sub_diag])]`.
+-/
 theorem kCharGT_of (hU : UCharStatement) : KCharGTStatement := by
   intro n ε Λ hdom T k t hk
   have hd : ∀ c, ∀ a b : Fin (cnt ε c), a < b → (fun _ => true) a = (fun _ => true) b →

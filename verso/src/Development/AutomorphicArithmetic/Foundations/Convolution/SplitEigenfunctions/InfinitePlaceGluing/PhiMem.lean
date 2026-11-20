@@ -14,6 +14,17 @@ namespace UpperTheory.ConvolutionTheory.RankTwoDescent
 
 private abbrev Fa : Type := FiniteAdeleRing (𝓞 ℚ) ℚ
 
+/- English proof (translation)
+Establish `hNq : (N : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Use `set w : Fa := algebraMap ℚ Fa (N : ℚ)⁻¹ with hw`. Establish `hwN : w * (N : Fa) = 1`. Rewrite using `[hw, ← map_natCast (algebraMap ℚ Fa), ← map_mul, inv_mul_cancel₀ hNq, map_one]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Use `⟨w * z, fun v => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Establish `e1 : (w * z) v = w v * z v` using `rfl`. Establish `e2 : w v * (N : H.Kv v) = 1`.
+
+Use `congrArg (pLoc ℚ v) hwN` as an intermediate fact. Rewrite `this` using `[map_mul, map_natCast, map_one]`. Then use the resulting hypothesis. Rewrite using `[e1, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[nsmul_eq_mul, ← mul_assoc, mul_comm (N : Fa), hwN, one_mul]`.
+
+Introduce and unpack `⟨u, hu, rfl⟩ v`. Establish `e1 : (N • u) v = (N : H.Kv v) * u v`. Conclude with `(map_nsmul (pLoc ℚ v) N u).trans (nsmul_eq_mul _ _)`. Rewrite using `[e1, map_mul]`. Use `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (hu v)` as an intermediate fact.
+
+Conclude with `mul_le_of_le_one_right' this`.
+-/
 private theorem dv_iff {N : ℕ} (hN : 0 < N) (z : Fa) :
     (∀ v : H.P ℚ, Valued.v (z v) ≤ Valued.v ((N : H.Kv v))) ↔
       ∃ u : Fa, (∀ v, u v ∈ v.adicCompletionIntegers ℚ) ∧ z = N • u := by
@@ -59,8 +70,16 @@ private def mE : Mx ≃L[ℝ] ℝ :=
 private def eE : (Fin 2 → Mx) ≃L[ℝ] EuclideanSpace ℝ (Fin 2) :=
   (ContinuousLinearEquiv.piCongrRight fun _ => mE).trans (EuclideanSpace.equiv (Fin 2) ℝ).symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem eE_apply (x : Fin 2 → A ℚ) (i : Fin 2) : eE (infPartPi x) i = re (x i) := rfl
 
+/- English proof (translation)
+Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simpa using Function.HasTemperateGrowth.const a`. Consider the case `add p q hp hq`. Simplify using `only [map_add]`. Conclude with `hp.add hq`.
+
+Consider the case `mul_X p k hp`. Simplify using `only [map_mul, MvPolynomial.eval_X]`. Use `hp.mul ?_` and prove the remaining obligations. Conclude with `(Complex.ofRealCLM.comp ((EuclideanSpace.proj k : EuclideanSpace ℝ (Fin 2) →L[ℝ] ℝ).comp eE.toContinuousLinearMap)).hasTemperateGrowth`.
+-/
 private theorem temp (p : MvPolynomial (Fin 2) ℂ) :
     (fun y : Fin 2 → Mx => MvPolynomial.eval (fun i => ((eE y i : ℝ) : ℂ)) p).HasTemperateGrowth := by
   induction p using MvPolynomial.induction_on with
@@ -78,6 +97,15 @@ private def phiS (p : MvPolynomial (Fin 2) ℂ) : SchwartzMap (Fin 2 → Mx) ℂ
   SchwartzMap.smulLeftCLM ℂ (fun y : Fin 2 → Mx => MvPolynomial.eval (fun i => ((eE y i : ℝ) : ℂ)) p)
     (SchwartzMap.compCLMOfContinuousLinearEquiv ℂ eE (gaussianSchwartz (EuclideanSpace ℝ (Fin 2))))
 
+/- English proof (translation)
+Establish `h0` using `dv_iff hN (x 0).2`. Establish `h1` using `dv_iff hN ((x 1 - 1).2)`. Establish `e1 : ∀ u : Fa, (x 1 - 1).2 = N • u ↔ (x 1).2 = 1 + N • u` using `fun u => by`. Express the relevant statement in the definitionally equal form `(x 1).2 - 1 = N • u ↔ _`. Rewrite using `[sub_eq_iff_eq_add']`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h i fin_cases i`. Take `⟨u, hu, e⟩` from `h0.1 fun v => (h v).1`. Conclude with `⟨u, hu, by simpa [finPartPi] using e⟩`. Take `⟨u, hu, e⟩` from `h1.1 fun v => (h v).2`.
+
+Conclude with `⟨u, hu, by simpa [finPartPi] using (e1 u).1 e⟩`. Introduce `h v`. Use `⟨h0.2 ?_ v, h1.2 ?_ v⟩` and prove the remaining obligations. Take `⟨u, hu, e⟩` from `h 0`. Conclude with `⟨u, hu, by simpa [finPartPi] using e⟩`.
+
+Take `⟨u, hu, e⟩` from `h 1`. Conclude with `⟨u, hu, (e1 u).2 (by simpa [finPartPi] using e)⟩`.
+-/
 private theorem cond_iff {N : ℕ} (hN : 0 < N) (x : Fin 2 → A ℚ) :
     (∀ v, Dv N v (x 0) ∧ Dv N v (x 1 - 1)) ↔
       ∀ i, ∃ u : Fa, (∀ v, u v ∈ v.adicCompletionIntegers ℚ) ∧
@@ -101,6 +129,9 @@ private theorem cond_iff {N : ℕ} (hN : 0 < N) (x : Fin 2 → A ℚ) :
     · obtain ⟨u, hu, e⟩ := h 1
       exact ⟨u, hu, (e1 u).2 (by simpa [finPartPi] using e)⟩
 
+/- English proof (translation)
+Rewrite using `[phiS, SchwartzMap.smulLeftCLM_apply_apply (temp p), SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, gaussianSchwartz_apply, EuclideanSpace.real_norm_sq_eq, Fin.sum_univ_two, smul_eq_mul]`. Simplify using `only [eE_apply]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 private theorem phiS_apply (p : MvPolynomial (Fin 2) ℂ) (x : Fin 2 → A ℚ) :
     phiS p (infPartPi x) = MvPolynomial.eval (fun i => (re (x i) : ℂ)) p *
       Complex.exp (-(Real.pi : ℂ) * ((re (x 0) ^ 2 + re (x 1) ^ 2 : ℝ) : ℂ)) := by
@@ -110,6 +141,13 @@ private theorem phiS_apply (p : MvPolynomial (Fin 2) ℂ) (x : Fin 2 → A ℚ) 
   push_cast
   rfl
 
+/- English proof (translation)
+Introduce `N p hN`. Establish `e : PhiN N p = schwartzBruhatTensorPi (phiS p) (GlobalTheory.CompanionTheory.ThetaUniq.cosetInd ℚ N ![0, 1])`. Use function extensionality and compare the values at `x`. Rewrite using `[PhiN, schwartzBruhatTensorPi, phiS_apply, GlobalTheory.CompanionTheory.ThetaUniq.cosetInd, Set.indicator_apply]`. Use `split_ifs with h h' h''`.
+
+Rewrite using `[Pi.one_apply, mul_one]`. Conclude with `absurd ((cond_iff hN x).1 h) h'`. Conclude with `absurd ((cond_iff hN x).2 h'') h`. Rewrite using `[mul_zero]`. Rewrite using `[e]`.
+
+Conclude with `schwartzBruhatTensorPi_mem _ ((mem_finiteSchwartzBruhatPi ℚ).2 (GlobalTheory.CompanionTheory.ThetaUniq.cosetInd_mem_SB ℚ (Fin 2) N hN _))`.
+-/
 theorem phiMem_of :
     PhiMem := by
   intro N p hN

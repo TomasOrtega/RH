@@ -12,6 +12,9 @@ noncomputable section
 
 namespace GlobalTheory.PtDeg.FrameEig
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.IntLie.spMap_comp₂, GlobalTheory.IntLie.spMap_comp₂]`. Use `congr 1`. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `r`. Apply the tactic sequence `ext <;> simp [epsMul, epsScaleR, Chart.dualMapR, mul_comm]`.
+-/
 theorem dualMapR_epsScaleR {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') (a : R) :
     spMap (Chart.dualMapR f) ≫ spMap (epsScaleR a) = spMap (epsMul (f a)) ≫ spMap (Chart.dualMapR f) := by
   rw [GlobalTheory.IntLie.spMap_comp₂, GlobalTheory.IntLie.spMap_comp₂]
@@ -20,6 +23,9 @@ theorem dualMapR_epsScaleR {R R' : Type} [CommRing R] [CommRing R'] (f : R →+*
   intro r
   ext <;> simp [epsMul, epsScaleR, Chart.dualMapR, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.IntLie.spMap_comp₂, GlobalTheory.IntLie.spMap_comp₂]`. Use `congr 1`. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `r`. Apply the tactic sequence `ext <;> simp [epsMul, epsScaleR, mul_left_comm]`.
+-/
 theorem epsScaleR_epsMul_comm {R : Type} [CommRing R] (a b : R) :
     spMap (epsScaleR a) ≫ spMap (epsMul b) = spMap (epsMul b) ≫ spMap (epsScaleR a) := by
   rw [GlobalTheory.IntLie.spMap_comp₂, GlobalTheory.IntLie.spMap_comp₂]
@@ -28,13 +34,22 @@ theorem epsScaleR_epsMul_comm {R : Type} [CommRing R] (a b : R) :
   intro r
   ext <;> simp [epsMul, epsScaleR, mul_left_comm]
 
+/- English proof (translation)
+Rewrite using `[Category.assoc, h, ← Category.assoc, epsScaleR_epsMul_comm, Category.assoc]`.
+-/
 theorem scale_eig {R : Type} [CommRing R] {X : Scheme.{0}} (a b : R) (x : Sp (DualNumber R) ⟶ X) (g : X ⟶ X)
     (h : x ≫ g = spMap (epsMul b) ≫ x) :
     (spMap (epsScaleR a) ≫ x) ≫ g = spMap (epsMul b) ≫ spMap (epsScaleR a) ≫ x := by
   rw [Category.assoc, h, ← Category.assoc, epsScaleR_epsMul_comm, Category.assoc]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem epsScaleR_eq_epsMul {R : Type} [CommRing R] (a : R) : epsScaleR a = epsMul a := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sc_left {R : Type} [CommRing R] {G : Over (Sp R)} (a : R) (v : epsR R ⟶ G) :
     (GlobalTheory.CM.IntCoord.sc a ≫ v).left = spMap (epsScaleR a) ≫ v.left := rfl
 
@@ -42,6 +57,31 @@ end GlobalTheory.PtDeg.FrameEig
 
 open GlobalTheory.PtDeg.FrameEig in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c K _ _ _ y B t₀ m1 m2 F ρ tt htt u hu j`. Take `⟨u₀, w, h₁, h₂, hc⟩` from `hu j`. Establish `h₂' : u₀ ≫ m2.cm.F = w.left ≫ F.φ` using `h₂`. Establish `h₁' : u₀ ≫ m1.cm.F = y.u ρ j` using `h₁`. Establish `hbase : u₀ ≫ t₀.G.hom = spMap (algebraMap K (DualNumber K))`.
+
+Apply `GlobalTheory.IntLie.spMap_frac_cancel (V := 𝓞 K)` to reduce the goal to its premises. Rewrite using `[Category.assoc, ← m2.cart.1.w, ← Category.assoc, h₂', Category.assoc]`. Establish `e` using `F.fib.2.1.1.w`. Use `erw [e]`. Rewrite using `[← Category.assoc, Over.w w]`.
+
+Both sides reduce to the same expression. Establish `hact0 : ∀ a : 𝓞 E, u₀ ≫ (t₀.act.act a).left = spMap (epsMul ((tt a : 𝓞 K) : K)) ≫ u₀`. Introduce `a`. Apply `m1.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, m1.act a, ← Category.assoc, h₁', y.eig ρ j a, htt a, Category.assoc, h₁']`.
+
+Rewrite using `[Category.assoc, Over.w (t₀.act.act a), hbase, Category.assoc, hbase, GlobalTheory.IntLie.spMap_comp₂, GlobalTheory.IntLie.epsMul_alg]`. Establish `hw : ∀ a : 𝓞 E, w.left ≫ F.φ ≫ (B.t.act.act a).left = spMap (epsMul ((tt a : 𝓞 K) : K)) ≫ w.left ≫ F.φ`. Introduce `a`. Rewrite using `[← reassoc_of% h₂', ← m2.act a, ← Category.assoc, hact0, Category.assoc, h₂']`. Establish `hc' : u j ∈ Submodule.span K (F.lieLat : Set (Fin F.P₀.g → K))`.
+
+Rewrite using `[(GlobalTheory.CM.LieLattice.lieLat_fg_and_span_eq_top K B.pol F).2]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨d, hd⟩` from `multiple_mem_span_of_mem_localization_span (nonZeroDivisors (𝓞 K)) K _ (u j) hc'`. Rewrite `hd` using `[Submodule.span_eq, Submonoid.smul_def]`. Take `⟨-, -, -, -, hlat, heig⟩` from `GlobalTheory.CM.integral_tangent_coordinates K B.pol F`.
+
+Take `⟨U, hUt, w₁, hUv, hw₁⟩` from `(hlat _).1 hd`. Use `F.P₀.isAb.comm` as an intermediate fact. Establish `hK` using `GlobalTheory.LieComb.lieComb_algebra K F.P₀.A _ F.v F.basis.1`. Use `set dK : K := algebraMap (𝓞 K) K (d : 𝓞 K) with hdK`. Establish `hw₁' : w₁ = GlobalTheory.CM.IntCoord.sc dK ≫ w`.
+
+Establish `h3` using `hK.2.2.1 1 ![u j] ![w] ![dK] _ (fun i => by fin_cases i; exact hc) ((GlobalTheory.CM.IntCoord.isLieComb_one_iff _ _ _).2 rfl)`. Simplify using `only [Finset.univ_unique, Fin.default_eq_zero, Fin.isValue, Matrix.cons_val_fin_one, Finset.sum_singleton] at h3`. Rewrite `hw₁` using `[← algebraMap_smul K (d : 𝓞 K) (u j)]`. Conclude with `(hK.1 _).unique hw₁ h3`. Establish `hw₁e : ∀ a : 𝓞 E, w₁.left ≫ F.φ ≫ (B.t.act.act a).left = spMap (epsMul ((tt a : 𝓞 K) : K)) ≫ w₁.left ≫ F.φ`.
+
+Introduce `a`. Rewrite using `[hw₁', sc_left, Category.assoc, Category.assoc]`. Use `scale_eig dK ((tt a : 𝓞 K) : K) (w.left ≫ F.φ) (B.t.act.act a).left (by rw [Category.assoc, hw a])` as an intermediate fact. Simplify `this` using `only [Category.assoc]`. Use `B.pol.isAb.proper` as an intermediate fact.
+
+Establish `hmem : (d : 𝓞 K) • u j ∈ F.eigLat B.t.act tt`. Rewrite using `[heig]`. Use `⟨U, ⟨hUt, w₁, hUv, hw₁⟩, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.CM.IntCoord.isLieComb_one_iff]`. Establish `hv1 : IsVecOver (algebraMap (𝓞 K) K) F.φ (U ≫ B.t.act.act a) (GlobalTheory.CM.IntCoord.sc ((tt a : 𝓞 K) : K) ≫ w₁)`.
+
+Unfold `IsVecOver at hUv ⊢`. Rewrite using `[sc_left, Over.comp_left, ← Category.assoc, ← hUv, Category.assoc, Category.assoc, hw₁e a, epsScaleR_eq_epsMul]`. Establish `hv2 : IsVecOver (algebraMap (𝓞 K) K) F.φ (GlobalTheory.CM.IntCoord.sc (tt a) ≫ U) (GlobalTheory.CM.IntCoord.sc ((tt a : 𝓞 K) : K) ≫ w₁)`. Unfold `IsVecOver at hUv ⊢`. Rewrite using `[sc_left, sc_left, Category.assoc, hUv, epsScaleR_eq_epsMul]`.
+
+Establish `e` using `dualMapR_epsScaleR (algebraMap (𝓞 K) K) (tt a)`. Conclude with `((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ U.left) e).trans (Category.assoc _ _ _))).symm`. Conclude with `GlobalTheory.CM.IntCoord.eq_of_isVecOver (IsFractionRing.injective (𝓞 K) K) hv1 hv2`. Establish `hd0 : dK ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 K) K)).2 (nonZeroDivisors.coe_ne_zero d)`. Establish `h₃` using `Submodule.smul_mem (Submodule.span K (F.eigLat B.t.act tt : Set (Fin F.P₀.g → K))) dK⁻¹ (Submodule.subset_span hmem)`.
+
+Rewrite `h₃` using `[← algebraMap_smul K (d : 𝓞 K) (u j), ← hdK, inv_smul_smul₀ hd0]`. Then use the resulting hypothesis.
+-/
 theorem GlobalTheory.PtDeg.frameCoord_mem_span_eigLat : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (K : Type) [Field K] [NumberField K] [Algebra c.F K] (y : FrPt Xo c K) (B : GlobalTheory.CM.PAT H (Sp (𝓞 K))) (t₀ : SAB H (Sp K)) (m1 : SABMap t₀ Xo.univ.t y.x) (m2 : SABMap t₀ B.t (spMap (algebraMap (𝓞 K) K))) (F : GlobalTheory.CM.GenFib B.pol) (ρ : E →+* ℂ) (tt : 𝓞 E →+* 𝓞 K), (∀ a, ((tt a : 𝓞 K) : K) = algebraMap c.F K (embK c ρ a)) → ∀ (u : Fin (Dw.mult ρ) → Fin F.P₀.g → K), GlobalTheory.PtDeg.FrameCoord y m1 m2 F ρ u → ∀ j, u j ∈ Submodule.span K (F.eigLat B.t.act tt : Set (Fin F.P₀.g → K)) := by
   intro E _ _ _ H Dw l Xo c K _ _ _ y B t₀ m1 m2 F ρ tt htt u hu j
   obtain ⟨u₀, w, h₁, h₂, hc⟩ := hu j

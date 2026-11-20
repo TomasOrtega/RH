@@ -19,6 +19,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {v : AddValuation LL (WithTop ℚ)} {n : ℕ} (W : LocWach PD LL O v n)
     (levB : ∀ T : LocLat G Qp LL O, ZMod n → LL → ↥(W.N T) →+ (ℤ → T.V ⊗[Qp] B))
 
+/- English proof (translation)
+Establish `hf0 : ∀ k < m, f k = 0` using `hf`. Establish `hf' : LB m (fun k => L (f k))`. Introduce `k hk`. Use `show L (f k) = 0`. Rewrite using `[hf0 k hk, map_zero]`.
+
+Use function extensionality and compare the values at `k`. Rewrite using `[smulS_eq_sum hf' g k ((k - m).toNat + 1) (by omega), smulS_eq_sum hf g k ((k - m).toNat + 1) (by omega), map_sum]`. Simplify using `only [map_smul]`.
+-/
 theorem smulS_map {V V' : Type} [AddCommGroup V] [Module LL V] [AddCommGroup V'] [Module LL V']
     (L : V →ₗ[LL] V') {m : ℤ} {f : ℤ → V} (hf : LB m f) (g : PowerSeries LL) :
     smulS g (fun k => L (f k)) = fun k => L (smulS g f k) := by
@@ -32,6 +37,11 @@ theorem smulS_map {V V' : Type} [AddCommGroup V] [Module LL V] [AddCommGroup V']
     map_sum]
   simp only [map_smul]
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `hsupp T i ζ x`. Use function extensionality and compare the values at `k`. Apply `Formalism.MainNotions.UnusedSlot80.LevR.ιV_inj (PD := PD) (LL := LL) (V := T.V)` to reduce the goal to its premises. Establish `h1` using `smulS_map (ιV PD (LL := LL) (V := T.V)) (f := levB T i ζ x) hm (W.lev i ζ a)`. Establish `h2 : (fun k => W.levN T i ζ x k) = fun k => ιV PD (LL` using `LL) (V := T.V) (levB T i ζ x k) :=`.
+
+Use function extensionality and compare the values at `fun k => hEq T i ζ x k`. Use `congrFun h1 k` as an intermediate fact. Rewrite using `[← hEq, W.levN_smul, ← this]`. Use `show smulS (W.lev i ζ a) (fun k => W.levN T i ζ x k) k = _`. Rewrite using `[h2]`.
+-/
 theorem levB_smul (hEq : ∀ (T : LocLat G Qp LL O) (i : ZMod n) (ζ : LL) (x : ↥(W.N T)) (k : ℤ),
       W.levN T i ζ x k = ιV PD (LL := LL) (V := T.V) (levB T i ζ x k))
     (hsupp : ∀ (T : LocLat G Qp LL O) (i : ZMod n) (ζ : LL) (x : ↥(W.N T)), ∃ m : ℤ, ∀ k < m, levB T i ζ x k = 0)
@@ -65,6 +75,11 @@ structure Comparison₂ : Prop where
 
 variable {W levB}
 
+/- English proof (translation)
+Establish `hf0 : ∀ k < (0 : ℤ), f k = 0` using `hf`. Rewrite using `[smulS_eq_sum hf g k (k.toNat + 1) (by omega)]`. Use `Finset.sum_eq_zero (fun j _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hj : j < N`. Rewrite using `[hg j hj, zero_smul]`.
+
+Rewrite using `[hf0 (k - j) (by omega), smul_zero]`.
+-/
 theorem smulS_vanish {V : Type} [AddCommGroup V] [Module LL V] {f : ℤ → V} (hf : LB 0 f)
     {g : PowerSeries LL} {N : ℕ} (hg : ∀ i < N, PowerSeries.coeff i g = 0) (k : ℤ) (hk : k < N) :
     smulS g f k = 0 := by
@@ -75,6 +90,13 @@ theorem smulS_vanish {V : Type} [AddCommGroup V] [Module LL V] {f : ℤ → V} (
   · rw [hg j hj, zero_smul]
   · rw [hf0 (k - j) (by omega), smul_zero]
 
+/- English proof (translation)
+Take `⟨E, hE0, -, hE⟩` from `W.lev_π c 1 ⟨0, by simp⟩`. Establish `hπ : PowerSeries.constantCoeff (W.lev c 1 letπ) = 0`. Use `congrArg PowerSeries.constantCoeff hE` as an intermediate fact. Rewrite `this` using `[map_add, map_one, map_mul, PowerSeries.constantCoeff_C, hE0, mul_one]`. Take the linear combination `this`.
+
+Take `⟨q₁, hq₁⟩` from `PowerSeries.X_dvd_iff.2 hπ`. Take `⟨w, hw⟩` from `(Formalism.MainNotions.UnusedSlot80.SatW.ring_clauses W hR).1`. Establish `hdvd : (PowerSeries.X : PowerSeries LL) ^ ((PD.p - 1) * r) ∣ W.lev c 1 (W.π₀ ^ r)`. Rewrite using `[hw, map_pow, map_mul, map_pow, hq₁, mul_pow]`. Conclude with `⟨W.lev c 1 (w : LetA O n) ^ r * (q₁ ^ (PD.p - 1)) ^ r, by rw [mul_pow, ← pow_mul]; ring⟩`.
+
+Conclude with `PowerSeries.X_pow_dvd_iff.1 hdvd`.
+-/
 theorem level_one_uniformizer_coeff_vanish (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) (c : ZMod n) (r : ℕ) :
     ∀ i < (PD.p - 1) * r, PowerSeries.coeff i (W.lev c 1 (W.π₀ ^ r)) = 0 := by
   obtain ⟨E, hE0, -, hE⟩ := W.lev_π c 1 ⟨0, by simp⟩
@@ -89,6 +111,13 @@ theorem level_one_uniformizer_coeff_vanish (hR : Formalism.MainNotions.UnusedSlo
     exact ⟨W.lev c 1 (w : LetA O n) ^ r * (q₁ ^ (PD.p - 1)) ^ r, by rw [mul_pow, ← pow_mul]; ring⟩
   exact PowerSeries.X_pow_dvd_iff.1 hdvd
 
+/- English proof (translation)
+Introduce `h1`. Establish `hv` using `(hH hCA T hTc c).2.1 k.toNat (by omega)`. Establish `e1 : algebraMap O LL (Formalism.MainNotions.LiftingTheory.u₁ W ^ k.toNat - 1) = 0`. Rewrite using `[map_sub, map_one, map_pow, Formalism.MainNotions.LiftingTheory.u₁, map_pow]`. Establish `: (algebraMap O LL (W.χΓ W.gam : O)) ^ (k.toNat : ℤ) = 1`.
+
+Rewrite using `[show ((k.toNat : ℕ) : ℤ) = k by omega]` and apply the resulting hypothesis. Rewrite `this` using `[zpow_natCast]`. Use `show ((algebraMap O LL ((W.χΓ W.gam : Oˣ) : O)) ^ (PD.p - 1)) ^ k.toNat - 1 = 0`. Rewrite using `[← pow_mul, mul_comm, pow_mul, this, one_pow, sub_self]`. Rewrite `hv` using `[e1, AddValuation.map_zero]`.
+
+Conclude with `WithTop.top_ne_coe hv`.
+-/
 theorem chi_pow_ne (hH : Formalism.MainNotions.LiftingTheory.coreH W) (hCA : Formalism.MainNotions.LiftingTheory.CaseA W) (T : LocLat G Qp LL O)
     (hTc : IsCrys PD T.ρ) (c : ZMod n) (k : ℤ) (hk : 0 < k) :
     (algebraMap O LL (W.χΓ W.gam : O)) ^ k ≠ 1 := by
@@ -104,6 +133,11 @@ theorem chi_pow_ne (hH : Formalism.MainNotions.LiftingTheory.coreH W) (hCA : For
   rw [e1, AddValuation.map_zero] at hv
   exact WithTop.top_ne_coe hv
 
+/- English proof (translation)
+Establish `key : ∀ m, (letE c : LetA O n) • b m = b m`. Introduce `m`. Take `⟨a, ⟨ha, hx⟩, -⟩` from `hb.2 (b m) (hb.1 m)`. Rewrite using `[hx, Finset.smul_sum]`. Use `Finset.sum_congr rfl (fun m' _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[smul_smul, (ha m').2]`. Unfold `Formalism.MainNotions.LiftingTheory.vecB`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl (fun m _ => ?_)` and prove the remaining obligations. Rewrite using `[smul_comm, key m]`.
+-/
 theorem vecB_letter (T : LocLat G Qp LL O) (c : ZMod n) {d : ℕ} (b : Fin d → W.DD T)
     (hb : Formalism.MainNotions.LiftingTheory.IsFrameΔ W T c b) (y : Fin d → O) :
     (letE c : LetA O n) • Formalism.MainNotions.LiftingTheory.vecB W T b y = Formalism.MainNotions.LiftingTheory.vecB W T b y := by
@@ -118,6 +152,31 @@ theorem vecB_letter (T : LocLat G Qp LL O) (c : ZMod n) {d : ℕ} (b : Fin d →
   refine Finset.sum_congr rfl (fun m _ => ?_)
   rw [smul_comm, key m]
 
+/- English proof (translation)
+Take `⟨y, hy, hHe⟩` from `hHh`. Establish `hl : (letE c' : LetA O n) • Hh = Hh`. Rewrite using `[hHe, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm, vecB_letter T c' b hb]`.
+
+Establish `hx : (letE c' : LetA O n) • (⟨Hh, hHN⟩ : ↥(W.N T)) = ⟨Hh, hHN⟩` using `Subtype.ext hl`. Introduce `k hk`. Break down `lt_trichotomy k 0 with hneg | rfl | hpos` into its components or cases. Rewrite using `[if_neg (by omega), ← hx]; exact Ti.hneg T hTc c' _ k hneg`. Rewrite using `[if_pos rfl, ← Ti.hcmp T hTc c' ⟨Hh, hHN⟩, hx, ← Formalism.MainNotions.UnusedSlot80.ArcF.cmpD_of_mem W T hHN]`.
+
+Establish `hM : 0 < M`. Break down `Nat.eq_zero_or_pos M with h | h` into its components or cases. Rewrite using `[h, mul_zero] at hk; exact absurd hk (by omega)`. Conclude with `h`. Establish `hH0 : Hh = ∑ m, (∑ r ∈ Finset.range M, W.π₀ ^ r * algebraMap O (LetA O n) (y r m)) • b m`.
+
+Rewrite using `[hHe]`. Use `Formalism.MainNotions.UnusedSlot80.ArcF.phi_trunc W T 0 M b y` as an intermediate fact. Simplify using `using this`. Rewrite using `[hH0, Formalism.MainNotions.UnusedSlot80.LevC.cmpD_sum W T c' _ b (fun m => (hb.1 m).1.1) (fun m => Formalism.MainNotions.UnusedSlot80.ArcF.letter_of_Nl W T c' (hb.1 m).2)]`. Establish `hcc : ∀ m, PowerSeries.constantCoeff ((∑ r ∈ Finset.range M, W.π₀ ^ r * algebraMap O (LetA O n) (y r m)) c') = y 0 m`.
+
+Introduce `m`. Rewrite using `[Finset.sum_apply, map_sum, Finset.sum_eq_single 0]`. Simplify using `[Pi.mul_apply]`. Introduce `r _ hr`. Simplify using `only [Pi.mul_apply, Pi.pow_apply, map_mul, map_pow, show W.π₀ c' = W.π₀₁ from rfl, Formalism.MainNotions.UnusedSlot80.ToolsR.π₀₁_cc hR, zero_pow hr, zero_mul]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_range.2 hM) h`. Simplify using `only [hcc, hy 0 hM, (hsol j).2]`. Rewrite using `[Finset.sum_eq_single j]`. Simplify using the standard rewrite rules.
+
+Introduce `m _ hm`. Simplify using `[Pi.single_apply, hm]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`. Rewrite using `[if_neg (by omega)]`.
+
+Take `⟨x', hx'Δ, hx'e⟩` from `(hsol j).1 M κ y hy`. Rewrite `hx'e` using `[← hHe, smul_zero, sub_zero]`. Establish `hγ : W.γD T W.gam Hh = Hh + W.π₀ ^ M • x'`. Rewrite using `[← hx'e]`. Use `show W.γ T Hh = Hh + (W.γ T Hh - Hh)`.
+
+Normalize the expressions using the abelian group laws. Establish `hx'N : x' ∈ W.N T` using `hx'Δ.1.1`. Establish `hγN : W.γD T W.gam Hh ∈ W.N T`. Rewrite using `[hγ]`. Conclude with `(W.N T).add_mem hHN ((W.N T).smul_mem _ hx'N)`.
+
+Establish `e1 : (⟨W.γD T W.gam Hh, hγN⟩ : ↥(W.N T)) = ⟨Hh, hHN⟩ + W.π₀ ^ M • (⟨x', hx'N⟩ : ↥(W.N T))` using `Subtype.ext (by simp [hγ])`. Establish `h1` using `Ti.hΓ T hTc c' ⟨Hh, hHN⟩ hγN k`. Establish `hx'l : (letE c' : LetA O n) • (⟨x', hx'N⟩ : ↥(W.N T)) = ⟨x', hx'N⟩` using `Subtype.ext (Formalism.MainNotions.UnusedSlot80.ArcF.letter_of_Nl W T c' hx'Δ.2)`. Establish `hLB : LB 0 (levB T c' 1 ⟨x', hx'N⟩)` using `fun k hk => by`. Rewrite using `[← hx'l]`.
+
+Conclude with `Ti.hneg T hTc c' _ k hk`. Establish `hvan` using `smulS_vanish hLB (level_one_uniformizer_coeff_vanish hR c' M) k hk`. Simplify using `only [e1, map_add, Pi.add_apply, levB_smul W levB Ti.hEq Ti.hsupp, hvan, add_zero] at h1`. Establish `h2 : ((algebraMap O LL (W.χΓ W.gam : O)) ^ k - 1) • levB T c' 1 ⟨Hh, hHN⟩ k = 0`. Rewrite using `[sub_smul, ← h1, one_smul, sub_self]`.
+
+Conclude with `(smul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 (chi_pow_ne hH hCA T hTc c' k hpos))`.
+-/
 theorem hor_exp [IsDomain O] (Ti : Comparison₂ W levB) (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) (hH : Formalism.MainNotions.LiftingTheory.coreH W)
     (hCA : Formalism.MainNotions.LiftingTheory.CaseA W) (T : LocLat G Qp LL O) (hTc : IsCrys PD T.ρ) (c' : ZMod n) {d : ℕ}
     (b : Fin d → W.DD T) (hb : Formalism.MainNotions.LiftingTheory.IsFrameΔ W T c' b) (sol : Fin d → ℕ → Fin d → LL)
@@ -180,20 +239,34 @@ theorem hor_exp [IsDomain O] (Ti : Comparison₂ W levB) (hR : Formalism.MainNot
       rw [sub_smul, ← h1, one_smul, sub_self]
     exact (smul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 (chi_pow_ne hH hCA T hTc c' k hpos))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `only [resc, smul_smul, mul_zpow]`.
+-/
 theorem resc_resc {V : Type} [AddCommGroup V] [Module LL V] (a b : LL) (F : ℤ → V) :
     resc a (resc b F) = resc (a * b) F := by
   funext k
   simp only [resc, smul_smul, mul_zpow]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `only [resc, one_zpow, one_smul]`.
+-/
 theorem resc_one {V : Type} [AddCommGroup V] [Module LL V] (F : ℤ → V) : resc (1 : LL) F = F := by
   funext k
   simp only [resc, one_zpow, one_smul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `only [resc, map_smul]`.
+-/
 theorem resc_map {V V' : Type} [AddCommGroup V] [Module LL V] [AddCommGroup V'] [Module LL V']
     (L : V →ₗ[LL] V') (a : LL) (F : ℤ → V) : resc a (fun k => L (F k)) = fun k => L (resc a F k) := by
   funext k
   simp only [resc, map_smul]
 
+/- English proof (translation)
+Establish `hQ : W.Q = W.q` using `by first`. Consider the case `exact Formalism.MainNotions.LiftingTheory.wmap_Q_one W hs`. Consider the case `exact Formalism.MainNotions.LiftingTheory.lifta_Q_eq W hs`. Consider the case `exact Formalism.MainNotions.N.Pv.LocalLengthBound.Q_eq_q hs`. Establish `hx : W.Q ^ m • W.φD T (z : W.DD T) ∈ W.N T` using `by rw [hQ]; exact hz`.
+
+Establish `h1 : (⟨W.q ^ m • W.φD T (z : W.DD T), hz⟩ : ↥(W.N T)) = ⟨W.Q ^ m • W.φD T (z : W.DD T), hx⟩` using `Subtype.ext (show W.q ^ m • W.φD T (z : W.DD T) = W.Q ^ m • W.φD T (z : W.DD T) by rw [hQ])`. Use function extensionality and compare the values at `k`. Establish `key` using `Ti.hφ T hTc i ζ hζ z m hx k`. Rewrite using `[h1, key, hQ]`. Both sides reduce to the same expression.
+-/
 theorem levB_Qφ (Ti : Comparison₂ W levB) (hs : W.s = 1) (T : LocLat G Qp LL O) (hTc : IsCrys PD T.ρ) (i : ZMod n)
     (ζ : LL) (hζ : ∃ j : ℕ, IsPrimitiveRoot ζ (PD.p ^ j)) (z : ↥(W.N T)) (m : ℕ)
     (hz : W.q ^ m • W.φD T (z : W.DD T) ∈ W.N T) :
@@ -213,6 +286,9 @@ theorem levB_Qφ (Ti : Comparison₂ W levB) (hs : W.s = 1) (T : LocLat G Qp LL 
   rw [h1, key, hQ]
   rfl
 
+/- English proof (translation)
+Establish `hf0 : ∀ k < m, f k = 0` using `hf`. Introduce `k hk`. Use `show L (f k) = 0`. Rewrite using `[hf0 k hk, map_zero]`.
+-/
 theorem LB_map {V V' : Type} [AddCommGroup V] [Module LL V] [AddCommGroup V'] [Module LL V']
     (L : V →ₗ[LL] V') {m : ℤ} {f : ℤ → V} (hf : LB m f) : LB m (fun k => L (f k)) := by
   have hf0 : ∀ k < m, f k = 0 := hf
@@ -222,6 +298,35 @@ theorem LB_map {V V' : Type} [AddCommGroup V] [Module LL V] [AddCommGroup V'] [M
 
 variable [IsDomain O]
 
+/- English proof (translation)
+Take `⟨m₀, hm₀⟩` from `Ti.hsupp T c' 1 ⟨y, hy.1.1⟩`. Establish `hp : (PD.p : LL) ≠ 0` using `Formalism.MainNotions.UnusedSlot80.ArcF.p_ne_zero W`. Introduce `e`. Proceed by induction on `e with`. Consider the case `zero`.
+
+Introduce `hz`. Establish `e0 : (⟨abelian₂ W A (c' + ((0 : ℕ) : ZMod n)) 0 • ((W.φD T) ^ 0) y, hz⟩ : ↥(W.N T)) = ⟨y, hy.1.1⟩` using `Subtype.ext (by simp [Formalism.MainNotions.UnusedSlot80.LevC.lam_zero])`. Establish `hc0 : c' + ((0 : ℕ) : ZMod n) = c'` using `by simp`. Rewrite using `[e0, Formalism.MainNotions.UnusedSlot80.LevC.lam_zero, map_one, pow_zero, resc_one, hc0, smulS_one (LB_map _ (fun k hk => hm₀ k hk))]`. Use function extensionality and compare the values at `k`.
+
+Simplify using the standard rewrite rules. Consider the case `succ e ih`. Introduce `hz`. Establish `hyP : ((W.φD T) ^ e) y ∈ Pp W T c' e` using `Formalism.MainNotions.UnusedSlot80.Relay2.Pp_phi W T c' e hy`. Take `⟨z', hz'N, hz'l, hz'e⟩` from `Formalism.MainNotions.UnusedSlot80.ArcC.arc_up W hs hR h5 A hA c' hc' e T hT _ hyP`.
+
+Rewrite `hz'e` using `[one_smul]`. Use `set z : W.DD T := abelian₂ W A (c' + (e : ZMod n)) e • ((W.φD T) ^ e) y with hzdef`. Establish `hzN : z ∈ W.N T` using `by rw [hz'e]; exact hz'N.1`. Establish `hzl : (letE (c' + (e : ZMod n)) : LetA O n) • z = z` using `by rw [hz'e]; exact hz'l`. Establish `ihz` using `ih hzN`.
+
+Use `set H : ℕ := A.Hs (c' + ((e + 1 : ℕ) : ZMod n)) (e + 1) 0 with hHdef`. Take `⟨w, hw, w', hww, hw'⟩` from `Formalism.MainNotions.UnusedSlot80.LevC.q_unit W hR hp0`. Establish `hp0w : ps W 0 = w' * W.q` using `by rw [hw, ← mul_assoc, mul_comm w', hww, one_mul]`. Establish `h5T` using `h5 T _ _ hT.1 (Formalism.MainNotions.UnusedSlot80.PhiPowers.jumpsLet_of_win W A hA T hT)`. Establish `hQ : W.Q = W.q` using `by simp [LocWach.Q, hs]`.
+
+Use `set i : ZMod n := c' + ((e + 1 : ℕ) : ZMod n) with hidef`. Establish `hi1 : i - 1 = c' + (e : ZMod n)` using `by rw [hidef]; push_cast; ring`. Establish `hzNl : z ∈ W.Nl T (i - 1)`. Rewrite using `[hi1]; exact ⟨z, hzN, by rw [LinearMap.smul_apply, LinearMap.id_apply]; exact hzl⟩`. Establish `hM` using `h5T.1 i z hzNl`.
+
+Rewrite `hM` using `[hQ]`. Establish `hMH : Formalism.MainNotions.UnusedSlot80.PhiPowers.Mw A.G₀ A.S A.η (A.ty i) ≤ H`. Use `Formalism.MainNotions.UnusedSlot80.ArcC.hs_ge A hA c' hc' (e + 1) (e + 1) (by omega) le_rfl` as an intermediate fact. Rewrite `this` using `[Nat.sub_self]`. Then use the resulting hypothesis. Establish `hqN : W.q ^ H • W.φD T z ∈ W.N T`.
+
+Take `⟨dd, hdd⟩` from `Nat.exists_eq_add_of_le hMH`. Rewrite using `[hdd, pow_add, mul_comm, mul_smul]`. Conclude with `(W.N T).smul_mem _ hM`. Establish `e1 : (⟨abelian₂ W A i (e + 1) • ((W.φD T) ^ (e + 1)) y, hz⟩ : ↥(W.N T)) = w' ^ H • (⟨W.q ^ H • W.φD T z, hqN⟩ : ↥(W.N T))`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `show abelian₂ W A i (e + 1) • ((W.φD T) ^ (e + 1)) y = w' ^ H • (W.q ^ H • W.φD T z)`. Rewrite using `[hidef, Formalism.MainNotions.UnusedSlot80.LevC.lam_succ, Formalism.MainNotions.UnusedSlot80.PhiPowers.pow_apply_succ, smul_smul, hzdef, φD_smulA, smul_smul, hp0w]`. Unfold `Formalism.MainNotions.UnusedSlot80.LevC.LamUp`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hB` using `levB_Qφ Ti hs T hT.1 i 1 ⟨0, by simp⟩ ⟨z, hzN⟩ H hqN`. Rewrite `hB` using `[one_pow, hi1, ihz]`. Rewrite using `[e1, levB_smul W levB Ti.hEq Ti.hsupp, hB]`. Take `⟨m₀, hm₀⟩` from `Ti.hsupp T c' 1 ⟨y, hy.1.1⟩`. Use `set F : ℤ → T.V ⊗[Qp] B := fun k => ((Formalism.WeaklyAdmissibleFiltrations.φVB PD (LL := LL) (V := T.V)) ^ e) (levB T c' 1 ⟨y, hy.1.1⟩ k) with hFdef`.
+
+Establish `hLB0 : LB m₀ F` using `LB_map _ (fun k hk => hm₀ k hk)`. Use `set φ1 : T.V ⊗[Qp] B →ₗ[LL] T.V ⊗[Qp] B := Formalism.WeaklyAdmissibleFiltrations.φVB PD (LL := LL) (V := T.V) with hφ1`. Use `set g₀ : PowerSeries LL := W.lev (c' + (e : ZMod n)) 1 (abelian₂ W A (c' + (e : ZMod n)) e) with hg₀`. Establish `s1 : (fun k => φ1 (smulS g₀ (resc ((PD.p : LL) ^ e) F) k)) = smulS g₀ (resc ((PD.p : LL) ^ e) (fun k => φ1 (F k)))`. Rewrite using `[← smulS_map φ1 (LB_resc hLB0 _) g₀, ← resc_map φ1 ((PD.p : LL) ^ e) F]`.
+
+Establish `hLB2 : LB m₀ (resc ((PD.p : LL) ^ e) (fun k => φ1 (F k)))` using `LB_resc (LB_map φ1 hLB0) _`. Establish `hLB3 : LB m₀ (resc ((PD.p : LL) ^ (e + 1)) (fun k => φ1 (F k)))` using `LB_resc (LB_map φ1 hLB0) _`. Rewrite using `[s1, ← smulS_rescale hLB2 (PD.p : LL) hp g₀, resc_resc, ← pow_succ', ← smulS_mul hLB3, ← smulS_mul hLB3]`. Establish `hLam : W.lev (c' + ((e + 1 : ℕ) : ZMod n)) 1 (w' ^ H) * (W.lev i 1 (W.q ^ H) * PowerSeries.rescale (PD.p : LL) g₀) = W.lev (c' + ((e + 1 : ℕ) : ZMod n)) 1 (abelian₂ W A (c' + ((e + 1 : ℕ) : ZMod n)) (e + 1))`. Rewrite using `[Formalism.MainNotions.UnusedSlot80.LevC.lam_succ, map_mul, map_pow, hg₀]`.
+
+Unfold `Formalism.MainNotions.UnusedSlot80.LevC.LamUp`. Rewrite using `[Ti.hlevφ _ 1 ⟨0, by simp⟩, one_pow, ← hidef, hi1, hp0w, mul_pow, map_mul, map_pow, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hLam]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `k`. Simplify using `only [resc, hFdef, hφ1]`. Rewrite using `[pow_succ' (Formalism.WeaklyAdmissibleFiltrations.φVB PD (LL := LL) (V := T.V)) e, Module.End.mul_apply]`.
+-/
 theorem levB_lam_phi (Ti : Comparison₂ W levB) (hs : W.s = 1) (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W)
     (hp0 : ((PD.p : ℕ) : O) ≠ 0)
     (h5 : ∀ (T : LocLat G Qp LL O) (M h : ZMod n → ℕ), IsCrys PD T.ρ →
@@ -311,6 +416,9 @@ theorem levB_lam_phi (Ti : Comparison₂ W levB) (hs : W.s = 1) (hR : Formalism.
     rw [pow_succ' (Formalism.WeaklyAdmissibleFiltrations.φVB PD (LL := LL) (V := T.V)) e, Module.End.mul_apply]
 
 omit [IsDomain O] in
+/- English proof (translation)
+Introduce `r hr`. Rewrite using `[smulS_eq_sum hF g r ((r - m).toNat + 1) (by omega), smulS_eq_sum hF' g r ((r - m).toNat + 1) (by omega)]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[h (r - j) (by omega)]`.
+-/
 theorem smulS_congr_lt {V : Type} [AddCommGroup V] [Module LL V] {m : ℤ} {F F' : ℤ → V} (hF : LB m F)
     (hF' : LB m F') (g : PowerSeries LL) (N : ℤ) (h : ∀ k < N, F k = F' k) :
     ∀ r < N, smulS g F r = smulS g F' r := by
@@ -319,6 +427,13 @@ theorem smulS_congr_lt {V : Type} [AddCommGroup V] [Module LL V] {m : ℤ} {F F'
   refine Finset.sum_congr rfl (fun j _ => ?_)
   rw [h (r - j) (by omega)]
 
+/- English proof (translation)
+Take `⟨y, -, rfl⟩` from `hHh`. Establish `hvec : ∀ yy : Fin d → O, Formalism.MainNotions.LiftingTheory.vecB W T b yy ∈ W.NΔ T`. Introduce `yy`. Use `⟨(W.N T).sum_mem fun m _ => (W.N T).smul_of_tower_mem _ ((hb.1 m).1.1), fun δ hδ => ?_⟩` and prove the remaining obligations. Unfold `Formalism.MainNotions.LiftingTheory.vecB`.
+
+Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun m _ => by rw [map_smul, (hb.1 m).1.2 δ hδ]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `⟨(W.N T).sum_mem fun r _ => (W.N T).smul_mem _ (hvec (y r)).1, fun δ hδ => ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun r _ => (Formalism.MainNotions.UnusedSlot80.PhiPowers.smul_mem_NΔ W T (W.AΔ.pow_mem hπ r) (hvec (y r))).2 δ hδ`. Use `⟨∑ r ∈ Finset.range M, W.π₀ ^ r • Formalism.MainNotions.LiftingTheory.vecB W T b (y r), (W.N T).sum_mem fun r _ => (W.N T).smul_mem _ (hvec (y r)).1, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, LinearMap.id_apply, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm, vecB_letter T c' b hb]`.
+-/
 theorem hor_mem (T : LocLat G Qp LL O) (c' : ZMod n) {d : ℕ} (b : Fin d → W.DD T)
     (hb : Formalism.MainNotions.LiftingTheory.IsFrameΔ W T c' b) (sol : Fin d → ℕ → Fin d → LL) (hπ : W.π₀ ∈ W.AΔ) (M κ : ℕ)
     (j : Fin d) {Hh : W.DD T} (hHh : IsHorTr W T b sol M κ j Hh) : Formalism.MainNotions.LiftingTheory.InNΔi W T c' Hh := by
@@ -340,6 +455,17 @@ theorem hor_mem (T : LocLat G Qp LL O) (c' : ZMod n) {d : ℕ} (b : Fin d → W.
     refine Finset.sum_congr rfl fun r _ => ?_
     rw [smul_comm, vecB_letter T c' b hb]
 
+/- English proof (translation)
+Establish `hp : (PD.p : LL) ≠ 0` using `Formalism.MainNotions.UnusedSlot80.ArcF.p_ne_zero W`. Establish `hyP : ((W.φD T) ^ e) y ∈ Pp W T c' e` using `Formalism.MainNotions.UnusedSlot80.Relay2.Pp_phi W T c' e hy`. Take `⟨z', hz'N, -, hz'e⟩` from `Formalism.MainNotions.UnusedSlot80.ArcC.arc_up W hs hR h5 A hA c' hc' e T hT _ hyP`. Rewrite `hz'e` using `[one_smul]`. Establish `hzN : abelian₂ W A (c' + (e : ZMod n)) e • ((W.φD T) ^ e) y ∈ W.N T` using `by rw [hz'e]; exact hz'N.1`.
+
+Establish `hB` using `levB_Qφ Ti hs T hT.1 (c' + ((e + 1 : ℕ) : ZMod n)) ζ ⟨1, by simpa using hζ⟩ ⟨_, hzN⟩ m hZ`. Establish `hi1 : c' + ((e + 1 : ℕ) : ZMod n) - 1 = c' + (e : ZMod n)` using `by push_cast; ring`. Rewrite `hB` using `[hζ.pow_eq_one, hi1, levB_lam_phi Ti hs hR hp0 h5 A hA c' hc' T hT y hy e hzN]`. Take `⟨m₀, hm₀⟩` from `Ti.hsupp T c' 1 ⟨y, hy.1.1⟩`. Use `set F : ℤ → T.V ⊗[Qp] B := fun k => ((Formalism.WeaklyAdmissibleFiltrations.φVB PD (LL := LL) (V := T.V)) ^ e) (levB T c' 1 ⟨y, hy.1.1⟩ k) with hFdef`.
+
+Establish `hLB0 : LB m₀ F` using `LB_map _ (fun k hk => hm₀ k hk)`. Use `set φ1 : T.V ⊗[Qp] B →ₗ[LL] T.V ⊗[Qp] B := Formalism.WeaklyAdmissibleFiltrations.φVB PD (LL := LL) (V := T.V) with hφ1`. Use `set g₀ : PowerSeries LL := W.lev (c' + (e : ZMod n)) 1 (abelian₂ W A (c' + (e : ZMod n)) e) with hg₀`. Establish `s1 : (fun k => φ1 (smulS g₀ (resc ((PD.p : LL) ^ e) F) k)) = smulS g₀ (resc ((PD.p : LL) ^ e) (fun k => φ1 (F k)))`. Rewrite using `[← smulS_map φ1 (LB_resc hLB0 _) g₀, ← resc_map φ1 ((PD.p : LL) ^ e) F]`.
+
+Establish `hLB2 : LB m₀ (resc ((PD.p : LL) ^ e) (fun k => φ1 (F k)))` using `LB_resc (LB_map φ1 hLB0) _`. Establish `hLB3 : LB m₀ (resc ((PD.p : LL) ^ (e + 1)) (fun k => φ1 (F k)))` using `LB_resc (LB_map φ1 hLB0) _`. Rewrite `hB` using `[s1, ← smulS_rescale hLB2 (PD.p : LL) hp g₀, resc_resc, ← pow_succ', ← smulS_mul hLB3]`. Establish `hlev : W.lev (c' + ((e + 1 : ℕ) : ZMod n)) ζ (W.q ^ m * W.φA (abelian₂ W A (c' + (e : ZMod n)) e)) = W.lev (c' + ((e + 1 : ℕ) : ZMod n)) ζ (W.q ^ m) * PowerSeries.rescale (PD.p : LL) g₀`. Rewrite using `[map_mul, Ti.hlevφ _ ζ ⟨1, by simpa using hζ⟩, hζ.pow_eq_one, hi1]`.
+
+Rewrite using `[show (⟨_, hZ⟩ : ↥(W.N T)) = ⟨W.q ^ m • W.φD T ((⟨_, hzN⟩ : ↥(W.N T)) : W.DD T), hZ⟩ from rfl, hB, hlev]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `only [resc, hFdef, hφ1]`. Rewrite using `[pow_succ' (Formalism.WeaklyAdmissibleFiltrations.φVB PD (LL := LL) (V := T.V)) e, Module.End.mul_apply]`.
+-/
 theorem levB_frame (Ti : Comparison₂ W levB) (hs : W.s = 1) (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W)
     (hp0 : ((PD.p : ℕ) : O) ≠ 0)
     (h5 : ∀ (T : LocLat G Qp LL O) (M h : ZMod n → ℕ), IsCrys PD T.ρ →
@@ -380,6 +506,9 @@ theorem levB_frame (Ti : Comparison₂ W levB) (hs : W.s = 1) (hR : Formalism.Ma
   simp only [resc, hFdef, hφ1]
   rw [pow_succ' (Formalism.WeaklyAdmissibleFiltrations.φVB PD (LL := LL) (V := T.V)) e, Module.End.mul_apply]
 
+/- English proof (translation)
+Take `⟨u, hu, -⟩` from `Formalism.MainNotions.N.Pv.LocalLengthBound.lev_q_simple W a ζ hζ`. Establish `hdvd : (PowerSeries.X : PowerSeries LL) ^ m ∣ W.lev a ζ (W.q ^ m) * g`. Rewrite using `[map_pow, hu, mul_pow]`. Conclude with `⟨u ^ m * g, by ring⟩`. Conclude with `PowerSeries.X_pow_dvd_iff.1 hdvd`.
+-/
 theorem coeff_lev_q_pow (Ti : Comparison₂ W levB) (a : ZMod n) (ζ : LL) (hζ : IsPrimitiveRoot ζ PD.p) (m : ℕ)
     (g : PowerSeries LL) : ∀ i < m, PowerSeries.coeff i (W.lev a ζ (W.q ^ m) * g) = 0 := by
   obtain ⟨u, hu, -⟩ := Formalism.MainNotions.N.Pv.LocalLengthBound.lev_q_simple W a ζ hζ
@@ -389,6 +518,11 @@ theorem coeff_lev_q_pow (Ti : Comparison₂ W levB) (a : ZMod n) (ζ : LL) (hζ 
   exact PowerSeries.X_pow_dvd_iff.1 hdvd
 
 omit [IsDomain O] in
+/- English proof (translation)
+Introduce `r hr`. Rewrite using `[smulS_eq_sum hF g r ((r - m₁).toNat + 1) (by omega), smulS_eq_sum hF' g r ((r - m₁).toNat + 1) (by omega)]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hj : j < m`. Rewrite using `[hg j hj, zero_smul, zero_smul]`.
+
+Rewrite using `[h (r - j) (by omega)]`.
+-/
 theorem smulS_congr_shift {V : Type} [AddCommGroup V] [Module LL V] {m₁ : ℤ} {F F' : ℤ → V}
     (hF : LB m₁ F) (hF' : LB m₁ F') {g : PowerSeries LL} {m : ℕ} (hg : ∀ i < m, PowerSeries.coeff i g = 0)
     (N : ℤ) (h : ∀ k < N, F k = F' k) : ∀ r < N + m, smulS g F r = smulS g F' r := by
@@ -422,6 +556,15 @@ def ExpNoNeg0 : Prop :=
     (hZ : W.q ^ m • W.φD T (abelian₂ W A (c' + (e : ZMod n)) e • ((W.φD T) ^ e) y) ∈ W.N T),
     ∀ r : ℤ, r < m → levB T (c' + ((e + 1 : ℕ) : ZMod n)) ζ ⟨_, hZ⟩ r = 0
 
+/- English proof (translation)
+Introduce `A hA c' hc' T hT d b sol hb e ζ hζ M κ j Hh hHh m hZ r hr`. Establish `hHΔ` using `hor_mem T c' b hb.1 sol hR.1 M κ j hHh`. Rewrite using `[levB_frame Ti hs hR hp0 h5 A hA c' hc' T hT e ζ hζ Hh hHΔ m hZ]`. Take `⟨m₀, hm₀⟩` from `Ti.hsupp T c' 1 ⟨Hh, hHΔ.1.1⟩`. Use `set F' : ℤ → T.V ⊗[Qp] B := fun k => if k = 0 then ((PD.p : LL) ^ κ) • ((Formalism.WeaklyAdmissibleFiltrations.φVB PD (LL := LL) (V := T.V)) ^ (e + 1)) (cmpD W T (b j)) else 0 with hF'def`.
+
+Establish `hLB4 : LB 0 F'` using `fun k hk => by rw [hF'def]; simp [show k ≠ 0 by omega]`. Establish `hLB3 : LB m₀ (resc ((PD.p : LL) ^ (e + 1)) (fun k => ((Formalism.WeaklyAdmissibleFiltrations.φVB PD (LL` using `LL) (V := T.V)) ^ (e + 1)) (levB T c' 1 ⟨Hh, hHΔ.1.1⟩ k))) := LB_resc (LB_map _ (fun k hk => hm₀ k hk)) _`. Establish `hexp` using `hor_exp Ti hR hH hCA T hT.1 c' b hb.1 sol hb.2 M κ j hHh hHΔ.1.1`. Establish `hagree : ∀ k < (((PD.p - 1) * M : ℕ) : ℤ), resc ((PD.p : LL) ^ (e + 1)) (fun k => ((Formalism.WeaklyAdmissibleFiltrations.φVB PD (LL` using `LL) (V := T.V)) ^ (e + 1)) (levB T c' 1 ⟨Hh, hHΔ.1.1⟩ k)) k = F' k := by`. Introduce `k hk`.
+
+Simplify using `only [resc, hF'def]`. Rewrite using `[hexp k hk]`. Distinguish the cases in `h0 : k = 0`. Substitute `h0` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[h0]`. Conclude with `smulS_congr_shift (LB_mono hLB3 (min_le_left m₀ 0)) (LB_mono hLB4 (min_le_right m₀ 0)) (fun i hi => by rw [map_mul]; exact coeff_lev_q_pow Ti _ ζ hζ m _ i hi) _ hagree r hr`.
+-/
 theorem expFrame0_of (Ti : Comparison₂ W levB) (hs : W.s = 1) (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W)
     (hp0 : ((PD.p : ℕ) : O) ≠ 0)
     (h5 : ∀ (T : LocLat G Qp LL O) (M h : ZMod n → ℕ), IsCrys PD T.ρ →
@@ -448,6 +591,9 @@ theorem expFrame0_of (Ti : Comparison₂ W levB) (hs : W.s = 1) (hR : Formalism.
   exact smulS_congr_shift (LB_mono hLB3 (min_le_left m₀ 0)) (LB_mono hLB4 (min_le_right m₀ 0))
     (fun i hi => by rw [map_mul]; exact coeff_lev_q_pow Ti _ ζ hζ m _ i hi) _ hagree r hr
 
+/- English proof (translation)
+Introduce `A hA c' hc' T hT e ζ hζ y hy m hZ r hr`. Rewrite using `[levB_frame Ti hs hR hp0 h5 A hA c' hc' T hT e ζ hζ y hy m hZ]`. Establish `hyl : (letE c' : LetA O n) • (⟨y, hy.1.1⟩ : ↥(W.N T)) = ⟨y, hy.1.1⟩` using `Subtype.ext (Formalism.MainNotions.UnusedSlot80.ArcF.letter_of_Nl W T c' hy.2)`. Establish `hLB : LB 0 (resc ((PD.p : LL) ^ (e + 1)) (fun k => ((Formalism.WeaklyAdmissibleFiltrations.φVB PD (LL` using `LL) (V := T.V)) ^ (e + 1)) (levB T c' 1 ⟨y, hy.1.1⟩ k))) := LB_resc (LB_map _ (fun k hk => by rw [← hyl]; exact Ti.hneg T hT.1 c' _ k hk)) _`. Conclude with `smulS_vanish hLB (fun i hi => by rw [map_mul]; exact coeff_lev_q_pow Ti _ ζ hζ m _ i hi) r hr`.
+-/
 theorem expNoNeg0_of (Ti : Comparison₂ W levB) (hs : W.s = 1) (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W)
     (hp0 : ((PD.p : ℕ) : O) ≠ 0)
     (h5 : ∀ (T : LocLat G Qp LL O) (M h : ZMod n → ℕ), IsCrys PD T.ρ →
@@ -463,6 +609,13 @@ theorem expNoNeg0_of (Ti : Comparison₂ W levB) (hs : W.s = 1) (hR : Formalism.
 
 omit [IsDomain O] in
 
+/- English proof (translation)
+Establish `hX : PowerSeries.constantCoeff (W.lev i 1 W.X) = 0`. Establish `hX1 : W.X = letπ` using `by simp [LocWach.X, hs]`. Take `⟨E, hE0, -, hE⟩` from `W.lev_π i 1 ⟨0, by simp⟩`. Use `congrArg PowerSeries.constantCoeff hE` as an intermediate fact. Rewrite `this` using `[map_add, map_one, map_mul, PowerSeries.constantCoeff_C, hE0, mul_one]`.
+
+Rewrite using `[hX1]`. Take the linear combination `this`. Establish `hcl` using `((h4 T hT).1 i 1 ⟨0, by simp⟩ hX).1 ((letE i : LetA O n) • x) k`. Apply `Formalism.MainNotions.UnusedSlot80.LevR.ιV_inj (PD := PD) (LL := LL) (V := T.V)` to reduce the goal to its premises. Rewrite using `[← hEq, map_zero]`.
+
+Conclude with `hcl.2 hk`.
+-/
 theorem hneg_of (hs : W.s = 1) {Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop} (h4 : Formalism.MainNotions.DeltaInvariantLattices.P4W W Pt)
     (hEq : ∀ (T : LocLat G Qp LL O) (i : ZMod n) (ζ : LL) (x : ↥(W.N T)) (k : ℤ),
       W.levN T i ζ x k = ιV PD (LL := LL) (V := T.V) (levB T i ζ x k))
@@ -481,6 +634,9 @@ theorem hneg_of (hs : W.s = 1) {Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Pro
   exact hcl.2 hk
 
 omit [IsDomain O] in
+/- English proof (translation)
+Use `hΓ T hT W.gam i 1 1 0 1 (by simp) ?_ (by simp) x hx k` and prove the remaining obligations. Rewrite using `[Nat.cast_one, W.gam_gen]`. Simplify using the standard rewrite rules.
+-/
 theorem hΓ_of (hΓ : ∀ T : LocLat G Qp LL O, IsCrys PD T.ρ → ∀ (g : W.Gam) (i : ZMod n) (ζ ζ' : LL) (j a : ℕ),
       IsPrimitiveRoot ζ (PD.p ^ j) → (j : WithTop ℚ) ≤ v (algebraMap O LL (W.χΓ g : O) - (a : LL)) →
       ζ' = ζ ^ a → ∀ (x : ↥(W.N T)) (hx : W.γD T g (x : W.DD T) ∈ W.N T) (k : ℤ),
@@ -498,6 +654,9 @@ namespace Formalism.MainNotions.UnusedSlot80
 
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.WachCoordinates.Br
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨((Cm l).C K 1 LL hG).tie.levN_eq, ((Cm l).C K 1 LL hG).tie.levB_supp, ((Cm l).C K 1 LL hG).tie.cmp_eq, LevE.hΓ_of ((Cm l).C K 1 LL hG).tie.levB_Γ, ((Cm l).C K 1 LL hG).tie.levB_φ, ((Cm l).C K 1 LL hG).tie.lev_φ, LevE.hneg_of ((HW l).W_s K 1 LL hG) (h4 l K 1 LL hG) ((Cm l).C K 1 …`.
+-/
 theorem levETie_of (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (h4 : Formalism.MainNotions.DeltaInvariantLattices.p4L D.loc HW D.locA F Cm) (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (hG : Good K 1 LL) :
     LevE.Comparison₂ ((HW l).W K 1 LL hG) ((Cm l).C K 1 LL hG).tie.levB :=

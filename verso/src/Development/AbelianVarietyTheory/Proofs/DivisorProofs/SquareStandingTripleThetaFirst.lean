@@ -16,6 +16,11 @@ set_option synthInstance.maxHeartbeats 200000
 
 namespace GlobalTheory.TopFlip.ChartB
 
+/- English proof (translation)
+Establish `h : Z.submatrix id (e.symm.trans finSumFinEquiv).symm * GlobalTheory.Doubling.blkMat finSumFinEquiv P Q * GlobalTheory.Doubling.blkMat finSumFinEquiv R (-S) = (Z * GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk e (P * R) (-(Q * S))).submatrix id (e.symm.trans finS …`. Establish `h1 : GlobalTheory.Doubling.blkMat finSumFinEquiv P Q * GlobalTheory.Doubling.blkMat finSumFinEquiv R (-S) = (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk e (P * R) (-(Q * S))).submatrix (e.symm.trans finSumFinEquiv).symm (e.symm.trans finSumFinEquiv).symm`. Unfold `GlobalTheory.Doubling.blkMat GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk`. Rewrite using `[submatrix_mul_equiv, fromBlocks_multiply]`. Use extensionality with `a b`.
+
+Simplify using the standard rewrite rules. Rewrite using `[Matrix.mul_assoc, h1, submatrix_mul_equiv]`. Rewrite using `[Matrix.mul_assoc, h, Matrix.mul_assoc]`. Simplify using `[Matrix.mul_apply]`.
+-/
 theorem reindex_blocks {K C : Type} [Field K] {n p q d : ℕ} (e : Fin p ⊕ Fin q ≃ Fin d) (ρ : Fin p ⊕ Fin q ≃ C)
     (x : Matrix (Fin n) (Fin n) K) (Z : Matrix (Fin n) (Fin d) K) (P R : Matrix (Fin p) (Fin p) K)
     (Q S : Matrix (Fin q) (Fin q) K) (r : Fin n) (c : C) :
@@ -38,6 +43,9 @@ theorem reindex_blocks {K C : Type} [Field K] {n p q d : ℕ} (e : Fin p ⊕ Fin
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `e0 : ((incM S.gram).map (cA D))ᵀ = S.gram.map (incA D)`. Use extensionality with `a b`. Conclude with `congrArg (incA D) (show star (S.gram b a) = S.gram a b from S.herm.eq (S.frame b) (S.frame a))`. Rewrite using `[Matrix.map_mul, Matrix.transpose_mul, e0, ← Matrix.mul_assoc, GlobalTheory.RouteCoords.inv_mul_gram, Matrix.one_mul]`. Both sides reduce to the same expression.
+-/
 theorem adj_coord (S X : HSp D) (y : Matrix (Fin S.rank) (Fin X.rank) (AE D)) :
     (S.gram⁻¹).map (incA D) * ((HMul.hMul yᵀ (incM S.gram) : Matrix (Fin X.rank) (Fin S.rank) (AE D)).map (cA D))ᵀ =
       y.map (cA D) := by
@@ -47,6 +55,17 @@ theorem adj_coord (S X : HSp D) (y : Matrix (Fin S.rank) (Fin X.rank) (AE D)) :
   rw [Matrix.map_mul, Matrix.transpose_mul, e0, ← Matrix.mul_assoc, GlobalTheory.RouteCoords.inv_mul_gram, Matrix.one_mul]
   rfl
 
+/- English proof (translation)
+Establish `h1` using `adj_coord (spW₁ G i j) (spX G i j) (u.submatrix id (e.symm.trans finSumFinEquiv).symm)`. Establish `h2 : (((spX G i j).gram.map (incA D)).map (toEAf D)).map (cpt w) = GlobalTheory.Doubling.blkMat finSumFinEquiv ((spV G i j).gram.map (algebraMap D.host.E (Kw w))) ((spV₁ G i j).gram.map (algebraMap D.host.E (Kw w)))`. Rewrite using `[GlobalTheory.Doubling.gram_hsum]`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Use `(GlobalTheory.FunObj.Good.cpt_incA w _).trans ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `obtain ⟨a | a, rfl⟩ := finSumFinEquiv.surjective a <;> obtain ⟨b | b, rfl⟩ := finSumFinEquiv.surjective b <;>`. Simplify using `[GlobalTheory.Doubling.blkMat, -finSumFinEquiv_apply_left, -finSumFinEquiv_apply_right]`. Establish `h3 : (frX B i j).val.map (cpt w) = GlobalTheory.Doubling.blkMat finSumFinEquiv (loc w (B.β i (j + 1))).val (-(loc w (B.β (i + 1) j)).val)`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cpt w (GlobalTheory.Doubling.blkMat finSumFinEquiv (B.β i (j + 1)).val (-(B.β (i + 1) j).val) a b) = _`.
+
+Apply the tactic sequence `obtain ⟨a | a, rfl⟩ := finSumFinEquiv.surjective a <;> obtain ⟨b | b, rfl⟩ := finSumFinEquiv.surjective b <;>`. Simplify using `[GlobalTheory.Doubling.blkMat, -finSumFinEquiv_apply_left, -finSumFinEquiv_apply_right]`. Establish `h4 : (frMapAdj (spW₁ G i j) (spX G i j) (B.β i j) (frX B i j) (ptB e u)).map (cpt w) = ((loc w (B.β i j))⁻¹).val * ((u.map (fun a => cpt w (toEAf D (cA D a)))).submatrix id (e.symm.trans finSumFinEquiv).symm * GlobalTheory.Doubling.blkMat finSumFinEquiv ((spV G i j).gram.map (alg …`. Rewrite using `[← h2, ← h3]`. Unfold `frMapAdj`.
+
+Use `erw [h1]`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.map_mul, Matrix.map_mul]`. Both sides reduce to the same expression. Use `Matrix.ext fun r c => ?_` and prove the remaining obligations. Unfold `linB`.
+
+Rewrite using `[h4]`. Conclude with `reindex_blocks e _ _ _ _ _ _ _ _ c`.
+-/
 theorem linB_ptB {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData L sc} (B : Frames G) (t : T)
     {i j : Fin D.R.m} (e : Num G i j) (w : Pl D.host.E)
     (u : Matrix (Fin (spW₁ G i j).rank) (Fin ((spW G i j).rank + (spW₁ G i j).rank)) (AE D)) :
@@ -86,6 +105,47 @@ theorem linB_ptB {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {
 
 open GlobalTheory.FlipMatch.ChartOpp hiding isHalf_of_mulG in
 
+/- English proof (translation)
+Introduce `D T L sc G μ₀ _ W B t i j M _ e Bs Γ X _ _ h _ _ v w hw jj hjj _ cc hcc`. Establish `hε : atPl w 1 = GlobalTheory.EmbChart.idem (Bs.τ v)` using `(GlobalTheory.IdemAtPl.eq_atPl_of_isIdemAt (hw ▸ GlobalTheory.EmbChart.isIdemAt_idem (Bs.τ v))).symm`. Establish `hsum : GlobalTheory.EmbChart.idem (Bs.τ v) + cA D (GlobalTheory.EmbChart.idem (Bs.τ v)) = algebraMap (AF D.host.F) (AE D) (GlobalTheory.LatVac.liftV v.1 1)`. Rewrite using `[GlobalTheory.EmbChart.cA_idem, GlobalTheory.EmbChart.idem, ← LinearMap.map_add, add_sub_cancel]`. Both sides reduce to the same expression.
+
+Establish `hii` using `GlobalTheory.SrcHalfOne.idem_mul_self (Bs.τ v)`. Establish `hic : GlobalTheory.EmbChart.idem (Bs.τ v) * cA D (GlobalTheory.EmbChart.idem (Bs.τ v)) = 0` using `(GlobalTheory.EmbChart.isSplitIdem_idem (Bs.τ v)).2.1`. Establish `hcc' : cA D (GlobalTheory.EmbChart.idem (Bs.τ v)) * cA D (GlobalTheory.EmbChart.idem (Bs.τ v)) = cA D (GlobalTheory.EmbChart.idem (Bs.τ v))` using `by rw [← map_mul, hii]`. Establish `hb₁ : GlobalTheory.EmbChart.idem (Bs.τ v) * algebraMap (AF D.host.F) (AE D) (GlobalTheory.LatVac.liftV v.1 1) = GlobalTheory.EmbChart.idem (Bs.τ v)` using `by rw [← hsum, mul_add, hii, hic, add_zero]`. Establish `hb₂ : cA D (GlobalTheory.EmbChart.idem (Bs.τ v)) * algebraMap (AF D.host.F) (AE D) (GlobalTheory.LatVac.liftV v.1 1) = cA D (GlobalTheory.EmbChart.idem (Bs.τ v))`.
+
+Rewrite using `[← hsum, mul_add, mul_comm (cA D _) (GlobalTheory.EmbChart.idem _), hic, zero_add, hcc']`. Rewrite using `[hε]`. Establish `hzero : cpt w (toEAf D (cA D (GlobalTheory.EmbChart.idem (Bs.τ v)))) = 0`. Rewrite using `[← hjj]`. Conclude with `(congrArg jj (GlobalTheory.SrcHalfOne.piW_cA_idem (Bs.τ v))).trans (map_zero jj)`.
+
+Establish `hE : ∀ x : D.host.E, jj (Bs.τ v x) = algebraMap D.host.E (Kw w) x` using `fun x => by`. Rewrite using `[← GlobalTheory.FunObj.Good.cpt_incA w x, ← hjj]`. Conclude with `congrArg jj (GlobalTheory.LocFrame.piW_incA (Bs.τ v) x).symm`. Establish `hcA : ∀ a, jj (piW ((Bs.τ v).comp D.sp.cm.sig) a) = cpt w (toEAf D (cA D a))` using `fun a => by`. Rewrite using `[← hjj]`.
+
+Conclude with `congrArg jj (GlobalTheory.SrcHalfOne.piW_cA (Bs.τ v) a).symm`. Take `⟨κ, hκ⟩ : ∃ κ : D.host.E →+* Kw w, κ = algebraMap D.host.E (Kw w)` from `⟨_, rfl⟩`. Take `⟨Bp, hBp⟩ : ∃ Bp : GL (Fin (spW₁ G i j).rank) (Kw w), Bp = Matrix.GeneralLinearGroup.map (jj : Fv D.host.F v.1 →+* Kw w) (Γ.V'.bas v)` from `⟨_, rfl⟩`. Take `⟨C, hC⟩ : ∃ C : GL (Fin ((spW G i j).rank + (spW₁ G i j).rank)) (Kw w), C = Matrix.GeneralLinearGroup.map (jj : Fv D.host.F v.1 →+* Kw w) (Γ.W.bas v)` from `⟨_, rfl⟩`. Establish `hG₁ : ((spW₁ G i j).gram.map κ).det ≠ 0`.
+
+Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(map_ne_zero κ).2 (GlobalTheory.RouteCoords.gram_det_ne _)`. Establish `hξ : xiAt w ≠ 0` using `(map_ne_zero _).2 GlobalTheory.ChiGrid.cmHost_imaginaryGenerator_ne_zero`. Establish `hCc : C.val * cc.val = GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk e (loc w (B.β i (j + 1))).val (-(loc w (B.β (i + 1) j)).val)`. Rewrite using `[hC]`.
+
+Conclude with `hcc`. Take `⟨g, hg⟩` from `chart_algebra e Bp C cc _ hG₁ (loc w (B.β i j)) (loc w (B.β i (j + 1))) (loc w (B.β (i + 1) j)) ((spV G i j).gram.map κ) ((spV₁ G i j).gram.map κ) (xiAt w) hξ hCc`. Use `⟨g, ?_⟩` and prove the remaining obligations. Establish `hκm : ∀ {a b : Type} (Z : Matrix a b D.host.E), (Z.map (Bs.τ v)).map jj = Z.map κ` using `fun Z => Matrix.ext fun _ _ => by rw [hκ]; exact hE _`. Establish `hX : ∀ u, (coX (Bs.τ v) (Γ.V'.bas v) (Γ.W.bas v) u).map jj = (Bp⁻¹).val * u.map (fun a => cpt w (toEAf D a)) * ((C⁻¹).val)ᵀ` using `fun u => by`.
+
+Unfold `coX`. Rewrite using `[map_mul_equiv, map_mul_equiv, Matrix.transpose_map, Matrix.map_map]`. Establish `: u.map (⇑jj ∘ ⇑(piW (Bs.τ v))) = u.map (fun a => cpt w (toEAf D a))` using `Matrix.ext fun _ _ => hjj _`. Rewrite using `[this, hBp, hC]`. Both sides reduce to the same expression.
+
+Establish `hJ1 : (Γ.V'.J.map (Bs.τ v)).map jj = -((spW₁ G i j).gram.map κ)`. Rewrite using `[hκm, h.JW₁]`. Use extensionality with `a b`. Simplify using the standard rewrite rules. Establish `hJ2 : ((Γ.W.J.map (Bs.τ v))ᵀ).map jj = xiAt w • GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk e ((spV G i j).gram.map κ) ((spV₁ G i j).gram.map κ)`.
+
+Rewrite using `[Matrix.transpose_map, hκm, h.JWW, GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.skewGram]`. Use extensionality with `a b`. Simplify using `only [Matrix.transpose_apply, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk, Matrix.reindex_apply, Matrix.submatrix_apply]`. Apply the tactic sequence `rcases e.symm a with a | a <;> rcases e.symm b with b | b <;> simp [xiAt, hκ]`. Establish `hY : ∀ u, (coY D.sp.cm.sig Γ.V' Γ.W (Bs.τ v) (Γ.V'.bas v) (Γ.W.bas v) u).map jj = -(Bp.valᵀ * (-((spW₁ G i j).gram.map κ)) * u.map (fun a => cpt w (toEAf D (cA D a))) * (xiAt w • GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk e ((spV G i j).gram.map κ) ((spV₁ G i …` using `fun u => by`.
+
+Unfold `coY`. Rewrite using `[Matrix.map_neg _ (map_neg jj), map_mul_equiv, map_mul_equiv, map_mul_equiv, map_mul_equiv, hJ1, hJ2, Matrix.map_map]`. Establish `: u.map (⇑jj ∘ ⇑(piW ((Bs.τ v).comp D.sp.cm.sig))) = u.map (fun a => cpt w (toEAf D (cA D a)))` using `Matrix.ext fun _ _ => hcA _`. Rewrite using `[this, Matrix.transpose_map, hBp, hC]`. Both sides reduce to the same expression.
+
+Establish `htr : ∀ u, chart jj (finCongr (rankW₁ G t i j w)) (colsEq t e w) g cc (coY D.sp.cm.sig Γ.V' Γ.W (Bs.τ v) (Γ.V'.bas v) (Γ.W.bas v) u) = reindex (finCongr (rankW₁ G t i j w)) (colsEq t e w) (((loc w (B.β i j))⁻¹).val * u.map (fun a => cpt w (toEAf D (cA D a))) * GlobalTheory.Indefi …` using `fun u => by`. Unfold `chart`. Rewrite using `[hY, (hg 0 _).1]`. Establish `hmu : ∀ u, (xiAt w)⁻¹ • chart jj (finCongr (rankW₁ G t i j w)) (colsEq t e w) (invT g) (invT cc) (coX (Bs.τ v) (Γ.V'.bas v) (Γ.W.bas v) u) = reindex (finCongr (rankW₁ G t i j w)) (colsEq t e w) ((loc w (B.β i j)).valᵀ * ((spW₁ G i j).gram.map κ)ᵀ * u.map (fun a => cpt w (toEAf D …` using `fun u => by`. Unfold `chart`.
+
+Rewrite using `[hX, ← (hg (u.map fun a => cpt w (toEAf D a)) 0).2]`. Both sides reduce to the same expression. Establish `hinc : ∀ x : D.host.E, cpt w (toEAf D (inclR (AF D.host.F) x)) = κ x` using `fun x => by`. Rewrite using `[hκ]`. Conclude with `GlobalTheory.FunObj.Good.cpt_incA w x`.
+
+Establish `hPl : ∀ k, colsEq t e w (e (.inl k)) ∈ Assignment.one.block _ _` using `fun k => by`. Rewrite using `[colsEq_inl]`. Conclude with `Finset.mem_filter.2 ⟨Finset.mem_univ _, rfl⟩`. Establish `hPr : ∀ k, colsEq t e w (e (.inr k)) ∉ Assignment.one.block _ _` using `fun k hk => by`. Rewrite `hk` using `[colsEq_inr]`.
+
+Conclude with `Bool.false_ne_true (Finset.mem_filter.1 hk).2`. Establish `z₁ : ∀ z : AE D, GlobalTheory.EmbChart.idem (Bs.τ v) * z = z → cpt w (toEAf D (cA D z)) = 0` using `fun z hz => by`. Rewrite using `[← hz, RingHom.map_mul, RingHom.map_mul, RingHom.map_mul, hzero, zero_mul]`. Establish `z₂ : ∀ z : AE D, cA D (GlobalTheory.EmbChart.idem (Bs.τ v)) * z = z → cpt w (toEAf D z) = 0` using `fun z hz => by`. Rewrite using `[← hz, RingHom.map_mul, RingHom.map_mul, hzero, zero_mul]`.
+
+Establish `hat : ∀ (u : Matrix (Fin (spW₁ G i j).rank) (Fin ((spW G i j).rank + (spW₁ G i j).rank)) (AE D)) (b b' : AE D), b * algebraMap (AF D.host.F) (AE D) (GlobalTheory.LatVac.liftV v.1 1) = b → b' * algebraMap (AF D.host.F) (AE D) (GlobalTheory.LatVac.liftV v.1 1) = b' → IsHalf b (u.su …` using `fun u b b' hb hb' h1 h2 c hc => by`. Establish `k1` using `GlobalTheory.BigDat.smul_eq_zero_of_isHalf v.1 hb h1 c hc`. Establish `k2` using `GlobalTheory.BigDat.smul_eq_zero_of_isHalf v.1 hb' h2 c hc`. Use `Matrix.ext fun a s => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `e.surjective s`.
+
+Break down `z with k | k` into its components or cases. Conclude with `congrFun₂ k1 a k`. Conclude with `congrFun₂ k2 a k`. Use `⟨?_, fun u => by rw [htr, linB_ptB, hκ]⟩` and prove the remaining obligations. Unfold `IsMixChart`.
+
+Simplify using `only [htr, hmu]`. Use `⟨fun u hu => ?_, fun u hu => ?_⟩` and prove the remaining obligations. Establish `h1 : IsHalf (GlobalTheory.EmbChart.idem (Bs.τ v)) (u.submatrix id fun k => e (.inl k))` using `fun a c => GlobalTheory.FlipMatch.ChartOpp.isHalf_of_mulG _ hu.1 c a`. Establish `h2` using `isHalf_cA_of_adjV₁ e hu.2`. Establish `hZ : ((u.map fun a => cpt w (toEAf D (cA D a))).submatrix id fun k => e (.inl k)) = 0` using `Matrix.ext fun a k => z₁ _ (h1 a k)`.
+
+Establish `hU : ((u.map fun a => cpt w (toEAf D a)).submatrix id fun k => e (.inr k)) = 0` using `Matrix.ext fun a k => z₂ _ (h2 a k)`. Conclude with `⟨hat u _ _ hb₁ hb₂ h1 h2, zero_inl e _ _ _ hPr _ _ _ _ hZ, zero_inr e _ _ _ hPl _ _ _ _ hU, eq_add_of_blocks e _ _ _ _ _ _ _ _ _ _ _ hZ hU (mixCoS_inl t e w B κ hinc u) (mixCoS_inr t e w B κ hinc u)⟩`. Establish `h1 : IsHalf (cA D (GlobalTheory.EmbChart.idem (Bs.τ v))) (u.submatrix id fun k => e (.inl k))` using `fun a c => GlobalTheory.FlipMatch.ChartOpp.isHalf_of_mulG _ hu.1 c a`. Establish `h2` using `isHalf_cA_of_adjV₁ e hu.2`. Rewrite `h2` using `[Formalism.L2.Theta.cA_cA]`.
+
+Establish `hZ : ((u.map fun a => cpt w (toEAf D (cA D a))).submatrix id fun k => e (.inr k)) = 0` using `Matrix.ext fun a k => z₁ _ (h2 a k)`. Establish `hU : ((u.map fun a => cpt w (toEAf D a)).submatrix id fun k => e (.inl k)) = 0` using `Matrix.ext fun a k => z₂ _ (h1 a k)`. Conclude with `⟨hat u _ _ hb₂ hb₁ h1 h2, zero_inr e _ _ _ hPl _ _ _ _ hZ, zero_inl e _ _ _ hPr _ _ _ _ hU⟩`.
+-/
 theorem exists_mixChart_linB : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData L sc} {μ₀ : T}, L.Is μ₀ → ∀ (W : G.Weil) (B : Frames G) (t : T) (i j : Fin D.R.m) (M : Vol G), SquareStanding G t →
     ∀ (e : Num G i j) (Bs : Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j) (X : Chars D.host.F D.host.E)
       (om : Rep D.sp.cm.sig Γ.V Γ.W) (om' : Rep D.sp.cm.sig Γ.V' Γ.W), IsTripleOf W M t i j e Bs Γ X →

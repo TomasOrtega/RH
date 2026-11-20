@@ -7,6 +7,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.InertLagLevi
 
+/- English proof (translation)
+Use `set I : Ideal R := (Submodule.span R {e}).annihilator`. Establish `hI : ∀ a, a ∈ I ↔ a * e = 0` using `fun a => by`. Rewrite using `[Submodule.mem_annihilator_span_singleton, smul_eq_mul]`. Establish `h1 : (Ideal.Quotient.mk I).mapMatrix M = 1`. Use extensionality with `i j`.
+
+Rewrite using `[← map_one (Ideal.Quotient.mk I).mapMatrix, RingHom.mapMatrix_apply, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.map_apply, Ideal.Quotient.eq, hI, mul_comm]`. Conclude with `h i j`. Establish `h2` using `congrArg Matrix.det h1`. Rewrite `h2` using `[← RingHom.map_det, Matrix.det_one, ← map_one (Ideal.Quotient.mk I), Ideal.Quotient.eq, hI]`. Rewrite using `[mul_comm]`.
+
+Conclude with `h2`.
+-/
 theorem det_sub_one_ann {R : Type} [CommRing R] {ι : Type} [Fintype ι] [DecidableEq ι] (e : R)
     (M : Matrix ι ι R) (h : ∀ i j, e * (M i j - (1 : Matrix ι ι R) i j) = 0) : e * (M.det - 1) = 0 := by
   set I : Ideal R := (Submodule.span R {e}).annihilator
@@ -24,6 +31,41 @@ theorem det_sub_one_ann {R : Type} [CommRing R] {ι : Type} [Fintype ι] [Decida
 end GlobalTheory.InertLagLevi
 
 open GlobalTheory.InertLagLevi in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ n J hJ v p t hsupp hpt`. Use `set P : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E) := p.1.1 with hP`. Use `set Q : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E) := (p⁻¹).1.1 with hQ`. Use `set D : Matrix (Fin n ⊕ Fin n) (Fin n) (AE F E) := diagCols (Fin n) with hD`. Use `set T := t.val with hT`.
+
+Use `set Ti := (t⁻¹).val with hTi`. Establish `hTTi : T * Ti = 1` using `by simp [T, Ti]`. Establish `hQP : Q * P = 1` using `by simp [Q, P]`. Establish `htsupp : ∀ u : AF F, evFin F v u = 0 → u • (T - 1) = 0`. Introduce `u hu`.
+
+Establish `h0 : u • (P - 1) = 0` using `hsupp u hu`. Establish `h1 : u • (P * D - D) = 0`. Rewrite using `[show P * D - D = (P - 1) * D by rw [Matrix.sub_mul, Matrix.one_mul], ← Matrix.smul_mul, h0, Matrix.zero_mul]`. Rewrite using `[show P * D = D * T from hpt, show D * T - D = Matrix.fromRows (T - 1) (T - 1) by`. Apply the tactic sequence `ext (i|i) j <;> simp [D, diagCols, Matrix.fromRows_mul]] at h1`.
+
+Use extensionality with `i j`. Use `congrFun (congrFun h1 (Sum.inl i)) j` as an intermediate fact. Simplify using `using this`. Establish `hdet : ∀ u : AF F, evFin F v u = 0 → u • (T.det - 1) = 0`. Introduce `u hu`.
+
+Establish `h` using `htsupp u hu`. Rewrite using `[Algebra.smul_def]`. Use `det_sub_one_ann _ T fun i j => ?_` and prove the remaining obligations. Use `congrFun (congrFun h i) j` as an intermediate fact. Rewrite `this` using `[Matrix.smul_apply, Matrix.sub_apply, Algebra.smul_def]`. Then use the resulting hypothesis.
+
+Use `⟨hdet, ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu`. Establish `hz` using `hdet u hu`. Set `b` to `Module.Free.chooseBasis (AF F) (AE F E)`. Rewrite using `[Algebra.norm_eq_matrix_det b, smul_eq_mul]`.
+
+Use `det_sub_one_ann _ _ fun i j => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.sub_apply, ← map_one (Algebra.leftMulMatrix b), ← map_sub, Algebra.leftMulMatrix_eq_repr_mul, ← smul_eq_mul, ← Finsupp.smul_apply, ← map_smul, ← smul_mul_assoc, hz, zero_mul, map_zero, Finsupp.zero_apply]`. Establish `hpt' : P * D = D * T` using `hpt set K : Matrix (Fin n ⊕ Fin n) (Fin n) (AE F E) := Matrix.fromRows 1 (-1) with hKdef`. Establish `hq : Qᵀ * dbl (incM F J) * Q.map (cA σ) = dbl (incM F J)` using `(p⁻¹).2`. Establish `hQD : Q * D = D * Ti`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc Q P D, hpt']`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = D * Ti := by rw [hQP, Matrix.one_mul]`. Establish `hDc : D.map (cA σ) = D`.
+
+Simplify using `only [D, diagCols, Matrix.fromRows_map, Matrix.map_one _ (map_zero (cA σ)) (map_one (cA σ))]`. Establish `hK : dbl (incM F J) * D = K * incM F J`. Simplify using `only [dbl, D, diagCols, Matrix.fromBlocks_mul_fromRows, Matrix.fromRows_mul]`. Simplify using `[K, Matrix.fromRows_mul]`. Establish `h2 : Qᵀ * (K * incM F J) * Ti.map (cA σ) = K * incM F J`.
+
+Rewrite using `[← hK]`. Combine the equalities or inequalities in the displayed calculation. Establish `hm1 : (Q * D).map (cA σ) = Q.map (cA σ) * D.map (cA σ)` using `Matrix.map_mul (f := (cA σ).toRingHom)`. Establish `hm2 : (D * Ti).map (cA σ) = D.map (cA σ) * Ti.map (cA σ)` using `Matrix.map_mul (f := (cA σ).toRingHom)`. Rewrite using `[← hm1, ← hm2, hQD]`.
+
+Use `_ = dbl (incM F J) * D := by rw [hDc, ← Matrix.mul_assoc, hq]`. Use `set X := Q.toBlocks₁₁ - Q.toBlocks₂₁ with hX`. Establish `hQK : Qᵀ * K = Matrix.fromRows Xᵀ (Q.toBlocks₁₂ - Q.toBlocks₂₂)ᵀ`. Rewrite using `[hKdef, ← Matrix.transpose_transpose (Matrix.fromRows (1 : Matrix (Fin n) (Fin n) (AE F E)) (-1)), ← Matrix.transpose_mul, Matrix.transpose_fromRows]`. Use `conv_lhs => rw [← Matrix.fromBlocks_toBlocks Q]`.
+
+Rewrite using `[Matrix.fromCols_mul_fromBlocks, Matrix.transpose_fromCols]`. Simplify using `[X, sub_eq_add_neg]`. Rewrite `h2` using `[← Matrix.mul_assoc, hQK, hKdef, Matrix.fromRows_mul, Matrix.fromRows_mul, Matrix.fromRows_mul]`. Establish `h3 : Xᵀ * incM F J * Ti.map (cA σ) = incM F J`. Use `(Matrix.fromRows_inj h2).1` as an intermediate fact.
+
+Rewrite using `[this, Matrix.one_mul]`. Establish `hdJ : (incM F J).det = inclR (AF F) J.det` using `(RingHom.map_det _ J).symm`. Establish `hJu : IsUnit (incM F J).det` using `hdJ ▸ (Ne.isUnit hJ).map _`. Establish `hdTi : (Ti.map (cA σ)).det = cA σ Ti.det` using `(AlgHom.map_det (cA σ) Ti).symm`. Establish `hx : X.det * cA σ Ti.det = 1`.
+
+Use `congrArg Matrix.det h3` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, hdTi, mul_right_comm]`. Conclude with `(hJu.mul_left_inj).1 (this.trans (one_mul _).symm)`. Establish `hTd : T.det * Ti.det = 1` using `by rw [← Matrix.det_mul, hTTi, Matrix.det_one]`. Establish `hXd : X.det = cA σ T.det`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← map_mul, mul_comm Ti.det, hTd, map_one, mul_one]`. Use `_ = (X.det * cA σ Ti.det) * cA σ T.det := by ring`. Use `_ = cA σ T.det := by rw [hx, one_mul]`. Use `⟨Matrix.nonsingInvUnit X (isUnit_iff_exists_inv.mpr ⟨_, hx⟩), rfl, ?_⟩` and prove the remaining obligations.
+
+Use `show Algebra.norm (AF F) X.det = _`. Establish `hcc : ∀ x, cA σ (cA σ x) = x`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul a b => simp [cA, GlobalTheory.AdelicU.cm_conj_conj hσ]`. Consider the case `add x y hx hy => simp [hx, hy]`. Set `cE : AE F E ≃ₐ[AF F] AE F E` to `AlgEquiv.ofAlgHom (cA σ) (cA σ) (AlgHom.ext hcc) (AlgHom.ext hcc)`. Rewrite using `[hXd]`. Conclude with `Algebra.norm_eq_of_algEquiv cE T.det`.
+-/
 theorem GlobalTheory.InertLagLevi.levi_det : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), J.det ≠ 0 →
     ∀ (v : Pl F) (p : UG (cA σ) (dbl (incM F J))) (t : GL (Fin n) (AE F E)), At (evFin F v) ((p.1.1 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)) - 1) →
     (p.1.1 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)) * diagCols (Fin n) = diagCols (Fin n) * t.val →

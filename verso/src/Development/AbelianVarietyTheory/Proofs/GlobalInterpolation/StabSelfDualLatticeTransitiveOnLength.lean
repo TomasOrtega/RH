@@ -6,6 +6,9 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SelfDualLatti
 
 namespace GlobalTheory.StabOrbit
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.Proof.SelfDualStabilizer.stabTransitive_iff.1 (stabTransitive_of_lemmas GlobalTheory.T.selfDual_lattices_unramified_place_no_hypothesis)`.
+-/
 theorem stabTransitive : GlobalTheory.IndefiniteRowSideFullHecke.SelfDualLatticeStabilizers.StabTransitive :=
   GlobalTheory.Proof.SelfDualStabilizer.stabTransitive_iff.1 (stabTransitive_of_lemmas GlobalTheory.T.selfDual_lattices_unramified_place_no_hypothesis)
 

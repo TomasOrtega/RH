@@ -11,12 +11,22 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => rfl`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 theorem cA_eq_sigR (σ : E →ₐ[F] E) (z : AE F E) : cA σ z = sigR (AF F) σ z := by
   induction z using TensorProduct.induction_on with
   | zero => simp
   | tmul a b => rfl
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
+/- English proof (translation)
+Establish `hc : ∀ M : Matrix (Fin n) (Fin n) (AE F E), M.map (cA σ) = M.map (sigR (AF F) σ)` using `fun M => by`. Use extensionality with `i j`. Conclude with `cA_eq_sigR σ _`. Establish `hJ : JR (AF F) Jᵀ = (incM F J)ᵀ` using `rfl`. Use extensionality with `g`.
+
+Express the relevant statement in the definitionally equal form `(g.1)ᵀ * incM F J * (g.1).map (cA σ) = incM F J ↔ cT (sigR (AF F) σ) g.1 * JR (AF F) Jᵀ * g.1 = JR (AF F) Jᵀ`. Rewrite using `[hc, hJ, cT]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `congrArg Matrix.transpose h` as an intermediate fact.
+
+Simplify `this` using `[Matrix.transpose_mul, Matrix.mul_assoc]`. Introduce `h`. Use `congrArg Matrix.transpose h` as an intermediate fact. Simplify `this` using `[Matrix.transpose_mul, Matrix.mul_assoc]`.
+-/
 theorem UG_eq_HR (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) :
     GlobalTheory.WeilM.UG (cA σ) (incM F J) = HR (AF F) σ Jᵀ := by
   have hc : ∀ M : Matrix (Fin n) (Fin n) (AE F E), M.map (cA σ) = M.map (sigR (AF F) σ) := fun M => by
@@ -37,8 +47,14 @@ variable (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
 
 def ofGAd : GAd σ Jᵀ ≃* UA σ J := MulEquiv.subgroupCongr (UG_eq_HR σ J).symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_ofGAd (g : GAd σ Jᵀ) : mat (ofGAd σ J g) = (matHom (AF F) σ Jᵀ g).1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem matHom_ofGAd_symm (g : UA σ J) : (matHom (AF F) σ Jᵀ ((ofGAd σ J).symm g)).1 = mat g := rfl
 
 def lineStab (x : Fin n → E) : Subgroup (UA σ J) where
@@ -59,6 +75,9 @@ def lineStab (x : Fin n → E) : Subgroup (UA σ J) where
           rw [smul_smul, Units.inv_mul, one_smul]
       _ = _ := by rw [e]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_lineStab {x : Fin n → E} {g : UA σ J} :
     g ∈ lineStab σ J x ↔ ∃ a : (AE F E)ˣ, mat g *ᵥ incV F x = (a : AE F E) • incV F x := Iff.rfl
 

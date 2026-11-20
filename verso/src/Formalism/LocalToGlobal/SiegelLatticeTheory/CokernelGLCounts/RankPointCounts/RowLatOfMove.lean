@@ -24,6 +24,15 @@ def GenXiRev : Prop :=
       (locTerm Zd p Λ (lf D F0) F' (Tu D u) (Tu D u')).T, (locTerm Zd p Λ (lf D F0) F' (Tu D u) (Tu D u')).T'⟩ →
     (locH Zd p).IsGeneric (locTerm Zd p Λ (lf D F0) F' (Tu D u) (Tu D u'))
 
+/- English proof (translation)
+Establish `hrow` using `hC.2.1.1 γ.lam γ.mem`. Establish `hg : Formalism.HermitianLatticesTheory.gmap n Λ₂ = γ.lam` using `gmap_eq_of_image himg`. Establish `hni : n⁻¹ ∈ Formalism.L2.SG.Pf.Cnt.StabilizerQuotient.G0 F0`. Use `⟨(Formalism.HermitianLatticesTheory.isom _).inv_mem hn.1, fun a => ?_⟩` and prove the remaining obligations. Use `Fin.lastCases ?_ (fun i => ?_) a` and prove the remaining obligations.
+
+Establish `h` using `hn.2.2.2.2`. Simplify using `only [FlagG.fvec, Fin.snoc_last]`. Use `show n.symm _ = _`. Rewrite using `[LinearEquiv.symm_apply_eq, h]`. Establish `h` using `hn.2.2.2.1 i`.
+
+Simplify using `only [FlagG.fvec, Fin.snoc_castSucc]`. Use `show n.symm _ = _`. Rewrite using `[LinearEquiv.symm_apply_eq, h]`. Establish `h2` using `Formalism.L2.SG.Pf.Cnt.StabilizerQuotient.rowLat_gmap ⟨n⁻¹, hni⟩ hrow`. Establish `e : Formalism.HermitianLatticesTheory.gmap (n⁻¹ : (VS D).V ≃ₗ[D.host.E] (VS D).V) γ.lam = Λ₂`.
+
+Rewrite using `[← hg, ← Formalism.L2.SG.Pf.gmap_mul_sat, inv_mul_cancel, Formalism.L2.SG.Pf.gmap_one_sat]`. Rewrite using `[← e]`. Conclude with `h2`.
+-/
 theorem rowLat_of_move (hC : CtxP u u' F0 what₂) (γ : TermDef.Term D u u' F0 what₂) {Λ₂ : Submodule (𝓞 D.host.E) (VS D).V}
     {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hn : n ∈ unipotentFrameFixers F0)
     (himg : (n : (VS D).V → (VS D).V) '' (Λ₂ : Set (VS D).V) = (γ.lam : Set (VS D).V)) : IsRowLat D F0 Λ₂ := by
@@ -47,6 +56,11 @@ theorem rowLat_of_move (hC : CtxP u u' F0 what₂) (γ : TermDef.Term D u u' F0 
 
 variable {Zd}
 
+/- English proof (translation)
+Introduce `hC γ Z F'₂ φ φ' Λ₂ hs`. Establish `hLift` using `btLift_holds Zd hC γ Z F'₂ φ φ' Λ₂ hs`. Establish `hAdm` using `btAdm Zd hC γ Z F'₂ φ φ' Λ₂ hs`. Establish `hG` using `btG_holds Zd hC γ Z F'₂ φ φ' Λ₂ hs`. Establish `hOKv` using `hOK hC γ Z F'₂ φ φ' Λ₂ hs`.
+
+Take `⟨_, _, ⟨hlat, hloc⟩, ⟨n, hn, himg⟩⟩` from `hs`. Establish `hR` using `rowLat_of_move hC γ hn himg`. Establish `hPD : PD D Λ₂ (lf D F0) u' (liftF F'₂)` using `⟨hLift, ⟨1, hAdm⟩, hOKv⟩`. Use `(Formalism.L2.SG.Pf.frameGenLoc_holds D Zd F0 Λ₂ (liftF F'₂) hR hPD (Formalism.L2.SG.Pf.m_plus_independent _ _ _ _) hG).2 fun p => ?_` and prove the remaining obligations. Conclude with `hGX Λ₂ (liftF F'₂) p hR hAdm hLift (hloc p).1`.
+-/
 theorem btGen_of (hOK : BtOK Zd u u' F0 what₂) (hGX : GenXiRev Zd u' F0) : BtGen Zd u u' F0 what₂ := by
   intro hC γ Z F'₂ φ φ' Λ₂ hs
   have hLift := btLift_holds Zd hC γ Z F'₂ φ φ' Λ₂ hs
@@ -60,6 +74,9 @@ theorem btGen_of (hOK : BtOK Zd u u' F0 what₂) (hGX : GenXiRev Zd u' F0) : BtG
     (Formalism.L2.SG.Pf.m_plus_independent _ _ _ _) hG).2 fun p => ?_
   exact hGX Λ₂ (liftF F'₂) p hR hAdm hLift (hloc p).1
 
+/- English proof (translation)
+The claim follows from `bwdTerm'_of Zd (btLift_holds Zd) (btAdm Zd) (btG_holds Zd) hOK (btGen_of hOK hGX)`.
+-/
 theorem bwdTerm'_of' (hOK : BtOK Zd u u' F0 what₂) (hGX : GenXiRev Zd u' F0) : BwdTerm' Zd u u' F0 what₂ :=
   bwdTerm'_of Zd (btLift_holds Zd) (btAdm Zd) (btG_holds Zd) hOK (btGen_of hOK hGX)
 

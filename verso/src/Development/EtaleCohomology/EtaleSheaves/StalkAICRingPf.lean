@@ -5,6 +5,23 @@ open CategoryTheory Limits AlgebraicGeometry Polynomial GlobalTheory.EtC Lateral
 
 namespace LateralTheory.E.StalkAICRingPf
 
+/- English proof (translation)
+Introduce `p hp hn`. Break down `subsingleton_or_nontrivial R with hR1 | hR1` into its components or cases. Use `⟨0, ?_⟩` and prove the remaining obligations. Establish `h01 : (0 : S) = 1`. Rewrite using `[← map_zero (algebraMap R S), ← map_one (algebraMap R S), Subsingleton.elim (0 : R) 1]`.
+
+Conclude with `@Subsingleton.elim _ (subsingleton_of_zero_eq_one h01) _ _`. Use `set n := p.natDegree with hnd`. Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples M (Finset.univ : Finset (Fin n)) (fun i => p.coeff i)`. Use `choose r hr using fun i : Fin n => hb i (Finset.mem_univ _)`. Use `set β : S := algebraMap R S b with hβ`.
+
+Establish `hu : IsUnit β` using `IsLocalization.map_units S b`. Use `set q : R[X] := X ^ n + ∑ i : Fin n, C (r i * (b : R) ^ (n - 1 - i)) * X ^ (i : ℕ) with hq`. Establish `hqm : q.Monic` using `monic_X_pow_add (degree_sum_fin_lt _)`. Establish `hqd : q.natDegree = n`. Rewrite using `[hq, natDegree_add_eq_left_of_degree_lt, natDegree_X_pow]`.
+
+Rewrite using `[degree_X_pow]`. Conclude with `degree_sum_fin_lt _`. Take `⟨c, hc⟩` from `hR q hqm (hqd ▸ hn)`. Use `⟨hu.unit⁻¹ * algebraMap R S c, ?_⟩` and prove the remaining obligations. Establish `key : β ^ n * p.eval (hu.unit⁻¹ * algebraMap R S c) = algebraMap R S (q.eval c)` using `by conv_lhs => rw [hp.as_sum]`.
+
+Rewrite using `[← hnd, ← Fin.sum_univ_eq_sum_range]`. Simplify using `only [hq, eval_add, eval_pow, eval_X, eval_finsetSum, eval_mul, eval_C, map_add, map_pow, map_sum, map_mul, mul_add, Finset.mul_sum]`. Use `congr 1`. Rewrite using `[← mul_pow, ← mul_assoc, hu.mul_val_inv, one_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hr i]`. Establish `hβn : β ^ n = β ^ 1 * β ^ (n - 1 - (i : ℕ)) * β ^ (i : ℕ)`. Rewrite using `[← pow_add, ← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `only [Algebra.smul_def, ← hβ]`. Rewrite using `[hβn, mul_pow]`. Establish `h1 : β ^ (i : ℕ) * (↑hu.unit⁻¹ : S) ^ (i : ℕ) = 1` using `by rw [← mul_pow, hu.mul_val_inv, one_pow]`. Take the linear combination `(β ^ 1 * β ^ (n - 1 - (i:ℕ)) * p.coeff i * algebraMap R S c ^ (i:ℕ)) * h1`. Rewrite `key` using `[hc, map_zero]`.
+
+Conclude with `(hu.pow n).mul_right_eq_zero.1 key`.
+-/
 theorem aic_loc {R S : Type} [CommRing R] [CommRing S] [Algebra R S] (M : Submonoid R) [IsLocalization M S]
     (hR : AIC R) : AIC S := by
   intro p hp hn
@@ -43,6 +60,9 @@ theorem aic_loc {R S : Type} [CommRing R] [CommRing S] [Algebra R S] (M : Submon
   rw [hc, map_zero] at key
   exact (hu.pow n).mul_right_eq_zero.1 key
 
+/- English proof (translation)
+Introduce `S hS x`. Take `⟨U, hU, hxU, -⟩` from `exists_isAffineOpen_mem_and_subset (x := x) (U := ⊤) trivial`. Set `_` to `TopCat.Presheaf.algebra_section_stalk S.presheaf (⟨x, hxU⟩ : U)`. Use `hU.isLocalization_stalk ⟨x, hxU⟩` as an intermediate fact. Conclude with `aic_loc (hU.primeIdealOf ⟨x, hxU⟩).asIdeal.primeCompl (hS.2 U hU ⟨x, hxU⟩)`.
+-/
 theorem StalkAICRing_of : LateralTheory.E.FibreEqvPf.StalkAICRing := by
   intro S hS x
   obtain ⟨U, hU, hxU, -⟩ := exists_isAffineOpen_mem_and_subset (x := x) (U := ⊤) trivial

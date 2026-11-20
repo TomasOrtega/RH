@@ -15,6 +15,11 @@ noncomputable section
 
 namespace GlobalTheory.RelAmpleSep
 
+/- English proof (translation)
+Establish `hr : (Ideal.Quotient.mk I) ∘ r = ((Ideal.Quotient.mk I).comp φ) ∘ c`. Use function extensionality and compare the values at `j`. Conclude with `Ideal.Quotient.eq.2 (hI j)`. Establish `e : Ideal.Quotient.mk I (MvPolynomial.eval₂Hom φ r p) = Ideal.Quotient.mk I (φ (MvPolynomial.eval c p))`. Rewrite using `[MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_comp_left, hr, MvPolynomial.eval, MvPolynomial.coe_eval₂Hom, ← RingHom.comp_apply, MvPolynomial.eval₂_comp_left]`.
+
+Both sides reduce to the same expression. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, ← Ideal.Quotient.eq_zero_iff_mem (I := I), e]`.
+-/
 theorem mem_iff_of_gen {A R : Type} [CommRing A] [CommRing R] (φ : A →+* R) {κ : Type} (r : κ → R) (c : κ → A)
     (I : Ideal R) (hI : ∀ j, r j - φ (c j) ∈ I) (p : MvPolynomial κ A) :
     MvPolynomial.eval₂Hom φ r p ∈ I ↔ φ (MvPolynomial.eval c p) ∈ I := by
@@ -26,6 +31,9 @@ theorem mem_iff_of_gen {A R : Type} [CommRing A] [CommRing R] (φ : A →+* R) {
     rfl
   rw [← Ideal.Quotient.eq_zero_iff_mem, ← Ideal.Quotient.eq_zero_iff_mem (I := I), e]
 
+/- English proof (translation)
+Use extensionality with `a`. Take `⟨p, rfl⟩` from `hs a`. Rewrite using `[mem_iff_of_gen φ r c P hP, mem_iff_of_gen φ r c Q hQ]`. Conclude with `hPQ _`.
+-/
 theorem ideal_eq_of_gen {A R : Type} [CommRing A] [CommRing R] (φ : A →+* R) {κ : Type} (r : κ → R) (c : κ → A)
     (hs : Function.Surjective (MvPolynomial.eval₂Hom φ r)) (P Q : Ideal R)
     (hP : ∀ j, r j - φ (c j) ∈ P) (hQ : ∀ j, r j - φ (c j) ∈ Q) (hPQ : ∀ x, φ x ∈ P ↔ φ x ∈ Q) : P = Q := by
@@ -34,6 +42,9 @@ theorem ideal_eq_of_gen {A R : Type} [CommRing A] [CommRing R] (φ : A →+* R) 
   rw [mem_iff_of_gen φ r c P hP, mem_iff_of_gen φ r c Q hQ]
   exact hPQ _
 
+/- English proof (translation)
+Establish `h` using `hD.fromSpec_primeIdealOf ⟨y, hy⟩`. Establish `h2 : hD.primeIdealOf ⟨y, hy⟩ ∈ hD.fromSpec ⁻¹ᵁ Y.basicOpen a ↔ y ∈ Y.basicOpen a` using `by show hD.fromSpec (hD.primeIdealOf ⟨y, hy⟩) ∈ Y.basicOpen a ↔ y ∈ Y.basicOpen a`. Rewrite using `[h]`. Rewrite using `[← h2, hD.fromSpec_preimage_basicOpen]`. Both sides reduce to the same expression.
+-/
 theorem mem_basicOpen_iff_prime {Y : Scheme.{0}} {D : Y.Opens} (hD : IsAffineOpen D) {y : Y} (hy : y ∈ D)
     (a : Γ(Y, D)) : y ∈ Y.basicOpen a ↔ a ∉ (hD.primeIdealOf ⟨y, hy⟩).asIdeal := by
   have h := hD.fromSpec_primeIdealOf ⟨y, hy⟩
@@ -45,12 +56,21 @@ theorem mem_basicOpen_iff_prime {Y : Scheme.{0}} {D : Y.Opens} (hD : IsAffineOpe
 
 variable {K : Type} [Field K]
 
+/- English proof (translation)
+The claim follows from `Over.w _`.
+-/
 theorem one_left_comp_hom (B : AbVar K) : (1 : Over.mk (𝟙 (Sp K)) ⟶ B.X).left ≫ B.X.hom = 𝟙 _ := Over.w _
 
+/- English proof (translation)
+Establish `h : ∀ p : PrimeSpectrum K, p.asIdeal = ⊥` using `fun p => Ideal.eq_bot_of_prime _`. Conclude with `PrimeSpectrum.ext ((h a).trans (h b).symm)`.
+-/
 theorem sp_pt_eq (a b : Sp K) : a = b := by
   have h : ∀ p : PrimeSpectrum K, p.asIdeal = ⊥ := fun p => Ideal.eq_bot_of_prime _
   exact PrimeSpectrum.ext ((h a).trans (h b).symm)
 
+/- English proof (translation)
+Introduce `_ _` and use `trivial`.
+-/
 theorem top_le_preimage_unit (B : AbVar K) : (⊤ : (Over.mk (𝟙 (Sp K))).left.Opens) ≤
     (1 : Over.mk (𝟙 (Sp K)) ⟶ B.X).left ⁻¹ᵁ (B.X.hom ⁻¹ᵁ ⊤) := fun _ _ => trivial
 
@@ -58,17 +78,31 @@ def unitU (B : AbVar K) : (⊤ : (Sp K).Opens).toScheme ⟶ (B.X.hom ⁻¹ᵁ �
   (1 : Over.mk (𝟙 (Sp K)) ⟶ B.X).left.resLE (B.X.hom ⁻¹ᵁ ⊤) (⊤ : (Over.mk (𝟙 (Sp K))).left.Opens)
     (top_le_preimage_unit B)
 
+/- English proof (translation)
+Rewrite using `[← cancel_mono (⊤ : (Sp K).Opens).ι, Category.assoc, morphismRestrict_ι, unitU, Scheme.Hom.resLE_comp_ι_assoc, one_left_comp_hom, Category.comp_id, Category.id_comp]`.
+-/
 theorem unitU_comp (B : AbVar K) : unitU B ≫ (B.X.hom ∣_ ⊤) = 𝟙 _ := by
   rw [← cancel_mono (⊤ : (Sp K).Opens).ι, Category.assoc, morphismRestrict_ι, unitU,
     Scheme.Hom.resLE_comp_ι_assoc, one_left_comp_hom, Category.comp_id, Category.id_comp]
 
+/- English proof (translation)
+Rewrite using `[← Scheme.Hom.comp_apply, unitU, Scheme.Hom.resLE_comp_ι, Scheme.Hom.comp_apply, AbVar.origin]`. Conclude with `congrArg _ (sp_pt_eq _ _)`.
+-/
 theorem unitU_ι (B : AbVar K) (t : (⊤ : (Sp K).Opens).toScheme) :
     (B.X.hom ⁻¹ᵁ ⊤).ι (unitU B t) = B.origin := by
   rw [← Scheme.Hom.comp_apply, unitU, Scheme.Hom.resLE_comp_ι, Scheme.Hom.comp_apply, AbVar.origin]
   exact congrArg _ (sp_pt_eq _ _)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (sp_pt_eq _ _)`.
+-/
 theorem topU_pt_eq (a b : (⊤ : (Sp K).Opens).toScheme) : a = b := Subtype.ext (sp_pt_eq _ _)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Establish `hb' : b ∈ IsLocalRing.maximalIdeal R` using `(IsLocalRing.mem_maximalIdeal _).2 hb`. Establish `h' : a - c * b ∈ IsLocalRing.maximalIdeal R` using `(IsLocalRing.mem_maximalIdeal _).2 h`. Establish `h''` using `Ideal.add_mem _ h' (Ideal.mul_mem_left _ c hb')`. Rewrite `h''` using `[sub_add_cancel]`.
+
+Conclude with `(IsLocalRing.mem_maximalIdeal _).1 h'' ha`.
+-/
 theorem isUnit_sub_mul_of_not_isUnit {R : Type*} [CommRing R] [IsLocalRing R] {a b : R} (c : R) (ha : IsUnit a)
     (hb : ¬ IsUnit b) : IsUnit (a - c * b) := by
   by_contra h
@@ -78,6 +112,9 @@ theorem isUnit_sub_mul_of_not_isUnit {R : Type*} [CommRing R] [IsLocalRing R] {a
   rw [sub_add_cancel] at h''
   exact (IsLocalRing.mem_maximalIdeal _).1 h'' ha
 
+/- English proof (translation)
+Establish `e : (DVR.SecOps.secAdd a (DVR.SecOps.secNeg (DVR.SecOps.secScale c b))).f k = a.f k - Out.resTop _ c * b.f k`. Simplify using `only [DVR.SecOps.secAdd, DVR.SecOps.secNeg, DVR.SecOps.secScale, sub_eq_add_neg]`. Rewrite using `[e, LBGerm.gs_sub _ y _ hk, gs_mul _ y _ hk, Out.resTop, gs_res _ y _ hk]`.
+-/
 theorem gs_secSubScale {Y : Scheme.{0}} {P : LB Y} (a b : P.Sec) (c : Γ(Y, ⊤)) (y : Y) (k : P.ι) (hk : y ∈ P.U k) :
     gs (𝟙 Y) y _ ((DVR.SecOps.secAdd a (DVR.SecOps.secNeg (DVR.SecOps.secScale c b))).f k) =
       gs (𝟙 Y) y _ (a.f k) - gs (𝟙 Y) y ⊤ c * gs (𝟙 Y) y _ (b.f k) := by
@@ -86,6 +123,27 @@ theorem gs_secSubScale {Y : Scheme.{0}} {P : LB Y} (a b : P.Sec) (c : Γ(Y, ⊤)
     simp only [DVR.SecOps.secAdd, DVR.SecOps.secNeg, DVR.SecOps.secScale, sub_eq_add_neg]
   rw [e, LBGerm.gs_sub _ y _ hk, gs_mul _ y _ hk, Out.resTop, gs_res _ y _ hk]
 
+/- English proof (translation)
+Establish `hTle : ⊤ ≤ u ⁻¹ᵁ Out.nonzeroLocus (s i)` using `fun t _ => by rw [hT t t₀]; exact hi`. Set `c : Fin n → Γ(T, ⊤)` to `fun j => (u.appLE (Out.nonzeroLocus (s i)) ⊤ hTle).hom (r j)`. Set `φ` to `(π.appLE ⊤ (Out.nonzeroLocus (s i)) le_top).hom`. Establish `hc : ∀ (y : Y) (x : Γ(T, ⊤)), gs (𝟙 Y) y ⊤ (π.appTop.hom x) = gs π y ⊤ x` using `fun y x => (gs_pull (𝟙 Y) π y ⊤ trivial x).trans (by rw [Category.id_comp])`. Establish `hφ : ∀ y ∈ Out.nonzeroLocus (s i), ∀ x, gs (𝟙 Y) y _ (φ x) = gs π y ⊤ x` using `fun y hy x => (gs_appLE π ⊤ _ le_top (𝟙 Y) y hy x).trans (by rw [Category.id_comp])`.
+
+Establish `hrel : ∀ j k y, y ∈ Out.nonzeroLocus (s i) → y ∈ P.U k → gs (𝟙 Y) y _ ((s j).f k) = gs (𝟙 Y) y _ (r j) * gs (𝟙 Y) y _ ((s i).f k)`. Introduce `j k y hyD hk`. Establish `hm : y ∈ Out.nonzeroLocus (s i) ⊓ P.U k` using `⟨hyD, hk⟩`. Establish `e` using `congrArg (gs (𝟙 Y) y (Out.nonzeroLocus (s i) ⊓ P.U k)) (hr j k)`. Rewrite `e` using `[gs_mul _ y _ hm, gs_res _ y _ hm, gs_res _ y _ hm, gs_res _ y _ hm]`. Then use the resulting hypothesis.
+
+Establish `hkey : ∀ y ∈ Out.nonzeroLocus (s i), ∀ j k, y ∈ P.U k → gs (𝟙 Y) y _ ((DVR.SecOps.secAdd (s j) (DVR.SecOps.secNeg (DVR.SecOps.secScale (π.appTop.hom (c j)) (s i)))).f k) = gs (𝟙 Y) y _ (r j - φ (c j)) * gs (𝟙 Y) y _ ((s i).f k)`. Introduce `y hy j k hk`. Rewrite using `[gs_secSubScale _ _ _ y k hk, hrel j k y hy hk, hc, LBGerm.gs_sub _ y _ hy, hφ y hy]`. Expand and normalize the polynomial expressions, which then agree. Establish `hiff : ∀ y ∈ Out.nonzeroLocus (s i), ∀ j, y ∈ Out.nonzeroLocus (DVR.SecOps.secAdd (s j) (DVR.SecOps.secNeg (DVR.SecOps.secScale (π.appTop.hom (c j)) (s i)))) ↔ y ∈ Y.basicOpen (r j - φ (c j))`.
+
+Introduce `y hy j`. Take `⟨k, hk⟩` from `exists_chart hP y`. Rewrite using `[GlobalTheory.mem_nonzeroLocus_iff_isUnit _ hk, hkey y hy j k hk, IsUnit.mul_iff, ← GlobalTheory.mem_nonzeroLocus_iff_isUnit (s i) hk, LBGerm.isUnit_gs_iff (𝟙 Y) y _ hy]`. Conclude with `and_iff_left hy`. Establish `h0 : ∀ j, u t₀ ∉ Y.basicOpen (r j - φ (c j))`.
+
+Introduce `j h`. Establish `hu1` using `(LBGerm.isUnit_gs_iff u t₀ _ hi _).2 h`. Establish `e1 : gs u t₀ _ (r j) = gs (𝟙 T) t₀ ⊤ (c j)` using `((gs_appLE u _ ⊤ hTle (𝟙 T) t₀ trivial (r j)).trans (by rw [Category.id_comp])).symm`. Establish `e2 : gs u t₀ _ (φ (c j)) = gs (𝟙 T) t₀ ⊤ (c j)` using `(gs_appLE π ⊤ _ le_top u t₀ hi (c j)).trans (by rw [hu])`. Rewrite `hu1` using `[LBGerm.gs_sub u t₀ _ hi, e1, e2, sub_self]`.
+
+Conclude with `not_isUnit_zero hu1`. Use `⟨fun j => DVR.SecOps.secAdd (s j) (DVR.SecOps.secNeg (DVR.SecOps.secScale (π.appTop.hom (c j)) (s i))), fun j h => h0 j ((hiff _ hi j).1 h), fun y hy => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hyD : y ∈ Out.nonzeroLocus (s i)`. Assume the negation of the conclusion as `hno push_neg at hno`. Establish `hPy : ∀ j, r j - φ (c j) ∈ (hD.primeIdealOf ⟨y, hyD⟩).asIdeal` using `fun j => by`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hno j ((hiff y hyD j).2 ((mem_basicOpen_iff_prime hD hyD _).2 h))`. Establish `hQ : ∀ j, r j - φ (c j) ∈ (hD.primeIdealOf ⟨u t₀, hi⟩).asIdeal` using `fun j => by`. Assume the negation of the conclusion as `h`. Conclude with `h0 j ((mem_basicOpen_iff_prime hD hi _).2 h)`.
+
+Establish `hb : ∀ z ∈ Out.nonzeroLocus (s i), ∀ x, z ∈ Y.basicOpen (φ x) ↔ π z ∈ T.basicOpen x` using `fun z hz x => (LBGerm.isUnit_gs_iff (𝟙 Y) z _ hz (φ x)).symm.trans (by rw [hφ z hz]; exact LBGerm.isUnit_gs_iff π z ⊤ trivial x)`. Establish `hPQ : ∀ x, φ x ∈ (hD.primeIdealOf ⟨y, hyD⟩).asIdeal ↔ φ x ∈ (hD.primeIdealOf ⟨u t₀, hi⟩).asIdeal`. Introduce `x`. Rewrite using `[← not_iff_not, ← mem_basicOpen_iff_prime hD hyD, ← mem_basicOpen_iff_prime hD hi, hb y hyD, hb _ hi, hT (π y) (π (u t₀))]`. Establish `hE` using `ideal_eq_of_gen φ r c hs _ _ hPy hQ hPQ`.
+
+Establish `e1` using `hD.fromSpec_primeIdealOf ⟨y, hyD⟩`. Establish `e2` using `hD.fromSpec_primeIdealOf ⟨u t₀, hi⟩`. Rewrite `e1` using `[PrimeSpectrum.ext hE]`. Conclude with `hy (e1.symm.trans e2)`. Establish `hy' : y ∈ (⨆ i, Out.nonzeroLocus (s i))` using `by rw [hcov]; trivial`.
+
+Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 hy'`. Take `⟨k, hk⟩` from `exists_chart hP y`. Use `⟨j, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.mem_nonzeroLocus_iff_isUnit _ hk, gs_secSubScale _ _ _ y k hk]`. Conclude with `isUnit_sub_mul_of_not_isUnit _ ((GlobalTheory.mem_nonzeroLocus_iff_isUnit (s j) hk).1 hj) fun h => hyD ((GlobalTheory.mem_nonzeroLocus_iff_isUnit (s i) hk).2 h)`.
+-/
 theorem exists_sep_of_chart {Y T : Scheme.{0}} (π : Y ⟶ T) (u : T ⟶ Y) (hu : u ≫ π = 𝟙 T) (hT : ∀ a b : T, a = b)
     {P : LB Y} (hP : P.IsLB) {n : ℕ} (s : Fin n → P.Sec) (hcov : ⨆ i, Out.nonzeroLocus (s i) = ⊤)
     (i : Fin n) (hD : IsAffineOpen (Out.nonzeroLocus (s i)))
@@ -168,6 +226,11 @@ theorem exists_sep_of_chart {Y T : Scheme.{0}} (π : Y ⟶ T) (u : T ⟶ Y) (hu 
     exact isUnit_sub_mul_of_not_isUnit _ ((GlobalTheory.mem_nonzeroLocus_iff_isUnit (s j) hk).1 hj)
       fun h => hyD ((GlobalTheory.mem_nonzeroLocus_iff_isUnit (s i) hk).2 h)
 
+/- English proof (translation)
+Introduce `K _ B L hL hA`. Take `⟨N, hN, M, s, hcov, hs⟩` from `hA ⊤ (isAffineOpen_top _)`. Take `⟨t₀⟩ : Nonempty (⊤ : (Sp K).Opens).toScheme` from `⟨⟨IsLocalRing.closedPoint K, trivial⟩⟩`. Establish `hmem : unitU B t₀ ∈ ⨆ i, Out.nonzeroLocus (s i)` using `by rw [hcov]; trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hmem`.
+
+Take `⟨hD, r, hr, hsurj⟩` from `hs i`. Take `⟨t, h1, h2⟩` from `exists_sep_of_chart (B.X.hom ∣_ ⊤) (unitU B) (unitU_comp B) topU_pt_eq (LB.isLB_linComb hL _ _) s hcov i hD r hr hsurj t₀ hi`. Establish `hinj : ∀ y, (B.X.hom ⁻¹ᵁ ⊤).ι y = B.origin → y = unitU B t₀` using `fun y hy => Subtype.ext ((Scheme.Opens.ι_apply _ _).symm.trans (hy.trans ((unitU_ι B t₀).symm.trans (Scheme.Opens.ι_apply _ _))))`. Conclude with `⟨N, hN, M + 1, t, fun j y hy => hinj y hy ▸ h1 j, fun y hy => h2 y fun h => hy (h ▸ unitU_ι B t₀)⟩`.
+-/
 theorem exists_sec_sep_origin : ∀ (K : Type) [Field K] (B : AbVar K) (L : LB B.X.left), L.IsLB →
     Out.RelAmple B.X L → ∃ N : ℕ, 1 ≤ N ∧ ∃ (M : ℕ) (t : Fin M → LB.Sec (Out.powOver B.X L ⊤ N)),
       (∀ j y, (B.X.hom ⁻¹ᵁ ⊤).ι y = B.origin → y ∉ Out.nonzeroLocus (t j)) ∧

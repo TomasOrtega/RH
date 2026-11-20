@@ -14,6 +14,9 @@ section PerFr
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Establish `he : ∀ τ' : E →+* ℂ, ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ' (v + w) = ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ' v + ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ' w` using `fun τ' => by`. Use function extensionality and compare the values at `a`. Simplify using `[ReciprocityTheory.ChartRestriction.G.FD.Data.emb, map_add]`. Unfold `perFr`. Apply the tactic sequence `split_ifs <;> simp [he, Matrix.mulVec_add, hermC, map_add, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem perFr_add {r : ℕ} (X : ReciprocityTheory.ChartRestriction.G.FD.Data E r) (x : Frame X.Ψ r) (v w : Fin r → E) (τ : E →+* ℂ)
     (i : ℕ) : perFr X x (v + w) τ i = perFr X x v τ i + perFr X x w τ i := by
   have he : ∀ τ' : E →+* ℂ, ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ' (v + w) =
@@ -22,6 +25,9 @@ theorem perFr_add {r : ℕ} (X : ReciprocityTheory.ChartRestriction.G.FD.Data E 
   unfold perFr
   split_ifs <;> simp [he, Matrix.mulVec_add, hermC, map_add, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Establish `he : ∀ τ' : E →+* ℂ, ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ' (0 : Fin r → E) = 0` using `fun τ' => by`. Use function extensionality and compare the values at `a`. Simplify using `[ReciprocityTheory.ChartRestriction.G.FD.Data.emb]`. Unfold `perFr`. Apply the tactic sequence `split_ifs <;> simp [he, hermC]`.
+-/
 theorem perFr_zero {r : ℕ} (X : ReciprocityTheory.ChartRestriction.G.FD.Data E r) (x : Frame X.Ψ r) (τ : E →+* ℂ) (i : ℕ) :
     perFr X x 0 τ i = 0 := by
   have he : ∀ τ' : E →+* ℂ, ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ' (0 : Fin r → E) = 0 := fun τ' => by

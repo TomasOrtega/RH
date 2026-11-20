@@ -16,6 +16,9 @@ def quotCone {E : Type} [Field E] (u : ι → E) (I : Ideal (MvPolynomial ι ℤ
     MvPolynomial ι ℤ ⧸ I →+* Polynomial E :=
   Ideal.Quotient.lift I (coneMap ℤ u).toRingHom (fun a ha => by rw [← hu] at ha; exact ha)
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, ← hu, coordIdeal, RingHom.mem_ker]`. Simplify `ha` using `[quotCone]`.
+-/
 theorem quotCone_injective {E : Type} [Field E] (u : ι → E) (I : Ideal (MvPolynomial ι ℤ))
     (hu : coordIdeal ℤ u = I) : Function.Injective (quotCone u I hu) := by
   rw [injective_iff_map_eq_zero]
@@ -24,10 +27,16 @@ theorem quotCone_injective {E : Type} [Field E] (u : ι → E) (I : Ideal (MvPol
   rw [Ideal.Quotient.eq_zero_iff_mem, ← hu, coordIdeal, RingHom.mem_ker]
   simpa [quotCone] using ha
 
+/- English proof (translation)
+The claim follows from `Function.Injective.isDomain _ (quotCone_injective u I hu)`.
+-/
 theorem isDomain_quot {E : Type} [Field E] (u : ι → E) (I : Ideal (MvPolynomial ι ℤ))
     (hu : coordIdeal ℤ u = I) : IsDomain (MvPolynomial ι ℤ ⧸ I) :=
   Function.Injective.isDomain _ (quotCone_injective u I hu)
 
+/- English proof (translation)
+Establish `hg : Function.Injective ((algebraMap (Polynomial E) (RatFunc E)).comp (quotCone u I hu))` using `(IsFractionRing.injective (Polynomial E) (RatFunc E)).comp (quotCone_injective u I hu)`. Use `⟨fun n m h => ?_⟩` and prove the remaining obligations. Establish `h'` using `congrArg (IsFractionRing.lift hg) h`. Simplify using `only [map_natCast] at h'`. Conclude with `Nat.cast_injective h'`.
+-/
 theorem charZero_frac {E : Type} [Field E] [CharZero E] (u : ι → E) (I : Ideal (MvPolynomial ι ℤ))
     (hu : coordIdeal ℤ u = I) [IsDomain (MvPolynomial ι ℤ ⧸ I)] :
     CharZero (FractionRing (MvPolynomial ι ℤ ⧸ I)) := by
@@ -50,6 +59,17 @@ variable [CharZero (FractionRing (MvPolynomial ι ℤ ⧸ I))]
 def ratField {κ : Type} (s : κ → ι) : IntermediateField ℚ (FractionRing (MvPolynomial ι ℤ ⧸ I)) :=
   IntermediateField.adjoin ℚ {t | ∃ k l, t = coord I (s k) / coord I (s l)}
 
+/- English proof (translation)
+Establish `hg : Function.Injective ((algebraMap (Polynomial E) (RatFunc E)).comp (quotCone u I hu))` using `(IsFractionRing.injective (Polynomial E) (RatFunc E)).comp (quotCone_injective u I hu)`. Set `f : FractionRing (MvPolynomial ι ℤ ⧸ I) →ₐ[ℚ] RatFunc E` to `(IsFractionRing.lift hg).toRatAlgHom`. Set `c : E →ₐ[ℚ] RatFunc E` to `(RatFunc.C : E →+* RatFunc E).toRatAlgHom`. Establish `hx : ∀ i, f (coord I i) = RatFunc.C (u i) * RatFunc.X`. Introduce `i`.
+
+Simplify using `[f, coord, IsFractionRing.lift_algebraMap, quotCone, coneMap, RatFunc.algebraMap_C, RatFunc.algebraMap_X]`. Establish `hr : ∀ i j, f (coord I i / coord I j) = c (u i / u j)`. Introduce `i j`. Rewrite using `[map_div₀, hx, hx, mul_div_mul_right _ _ RatFunc.X_ne_zero]`. Simplify using `[c, map_div₀]`.
+
+Establish `hmap : ∀ {κ : Type} (s : κ → ι), (ratField I s).map f = (fnField (u ∘ s)).map c`. Introduce `κ s`. Rewrite using `[ratField, fnField, IntermediateField.adjoin_map, IntermediateField.adjoin_map]`. Use `congr 1`. Use extensionality with `t`.
+
+Simplify using `only [Set.mem_image, Set.mem_ofPred_eq, Function.comp_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨k, l, rfl⟩, rfl⟩`. Conclude with `⟨_, ⟨k, l, rfl⟩, (hr _ _).symm⟩`. Introduce and unpack `⟨_, ⟨k, l, rfl⟩, rfl⟩`.
+
+Conclude with `⟨_, ⟨k, l, rfl⟩, hr _ _⟩`. Rewrite using `[← IntermediateField.relfinrank_map_map (ratField I e) (ratField I id) f, hmap, hmap, IntermediateField.relfinrank_map_map]`. Both sides reduce to the same expression.
+-/
 theorem projDeg_eq {E : Type} [Field E] [CharZero E] (u : ι → E) (hu : coordIdeal ℤ u = I) {D : ℕ}
     (e : Fin (D + 1) → ι) :
     projDeg u e = IntermediateField.relfinrank (ratField I e) (ratField I id) := by
@@ -82,6 +102,9 @@ theorem projDeg_eq {E : Type} [Field E] [CharZero E] (u : ι → E) (hu : coordI
 
 end
 
+/- English proof (translation)
+Introduce `ι E₁ E₂ _ _ _ _ u v D e h`. Establish `: IsDomain (MvPolynomial ι ℤ ⧸ coordIdeal ℤ u)` using `isDomain_quot u _ rfl`. Establish `: CharZero (FractionRing (MvPolynomial ι ℤ ⧸ coordIdeal ℤ u))` using `charZero_frac u _ rfl`. Rewrite using `[projDeg_eq (coordIdeal ℤ u) u rfl e, projDeg_eq (coordIdeal ℤ u) v h.symm e]`.
+-/
 theorem proof : RatioFieldDeg.Statement := by
   intro ι E₁ E₂ _ _ _ _ u v D e h
   have : IsDomain (MvPolynomial ι ℤ ⧸ coordIdeal ℤ u) := isDomain_quot u _ rfl

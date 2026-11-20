@@ -40,10 +40,16 @@ open GlobalTheory.BesselMove
 
 variable {k r q0 : ℕ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨(Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.sigma_facts h.2).1, fun _ ha _ hb => Formalism.FourierDecayAlt.P.TranslationBesselVanishing.sigma_mul h.2 ha hb⟩, (Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.sigma_facts h.2).2, fun v => Formalism.Fouri …`.
+-/
 theorem urep_of_isDS {R : Rep k r} {ε mu} (h : R.IsDS ε mu) : IsURepOn (GG k r) R.σ :=
   ⟨⟨(Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.sigma_facts h.2).1, fun _ ha _ hb => Formalism.FourierDecayAlt.P.TranslationBesselVanishing.sigma_mul h.2 ha hb⟩,
     (Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.sigma_facts h.2).2, fun v => Formalism.FourierDecayAlt.P.S3dx4.sigma_contOn h.2 v⟩
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.TensLen.cmp_mulVec_wedge]`. Use function extensionality and compare the values at `I`. Simplify using `only [h, wedge, Pi.smul_apply, smul_eq_mul]`. Conclude with `Matrix.det_mul_row s (Matrix.of fun a b : Fin l => f b (I.1.orderEmbOfFin I.2 a))`.
+-/
 theorem cmp_wedge_eigen {n l : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) (f : Fin l → Fin n → ℂ) (s : Fin l → ℂ)
     (h : ∀ a, g *ᵥ f a = s a • f a) : cmp l g *ᵥ wedge f = (∏ a, s a) • wedge f := by
   rw [GlobalTheory.TensLen.cmp_mulVec_wedge]
@@ -51,6 +57,11 @@ theorem cmp_wedge_eigen {n l : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) (f : Fin l 
   simp only [h, wedge, Pi.smul_apply, smul_eq_mul]
   exact Matrix.det_mul_row s (Matrix.of fun a b : Fin l => f b (I.1.orderEmbOfFin I.2 a))
 
+/- English proof (translation)
+Introduce `v hv`. Establish `hgv` using `sig_sm hR hg hv`. Rewrite using `[← hT.pr_eq I g hg (tm R om v) (fun c => Formalism.FourierDecayAlt.P.DDSmoothness.smooth_smul _ hv)]`. Establish `e : act ρ R g (tm R om v) = tm R om (S • R.σ g v)`. Use function extensionality and compare the values at `i`.
+
+Use `congrFun hS i` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] at this`. Simplify using `only [act, tm, map_smul, smul_smul, ← Finset.sum_smul, this, mul_comm]`. Rewrite using `[e, hκ _ (Formalism.FourierDecayAlt.P.DDSmoothness.smooth_smul _ hgv), hl _ _ hgv, smul_smul, mul_comm]`.
+-/
 theorem kappa_move {ι κ Wp : Type} [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ] [AddCommGroup Wp]
     [Module ℂ Wp] {ρ : MM k r → Matrix ι ι ℂ} {R : Rep k r} {RI : κ → Rep k r}
     {io : ∀ I, ι → (RI I).H → R.H} {pr : ∀ I, ι → R.H → (RI I).H} (hT : TensRaw ρ R RI io pr)
@@ -68,6 +79,13 @@ theorem kappa_move {ι κ Wp : Type} [Fintype ι] [DecidableEq ι] [Fintype κ] 
     simp only [act, tm, map_smul, smul_smul, ← Finset.sum_smul, this, mul_comm]
   rw [e, hκ _ (Formalism.FourierDecayAlt.P.DDSmoothness.smooth_smul _ hgv), hl _ _ hgv, smul_smul, mul_comm]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `∀ᵐ x ∂(ν.map (leftE ht)), _ at hae`. Express the relevant statement in the definitionally equal form `∫⁻ x, _ ∂(ν.map (leftE ht)) = _ at h`. Rewrite `h` using `[lintegral_map_equiv]`. Establish `hae' : ∀ᵐ x ∂ν, Matrix.of x ∈ GG k r` using `by filter_upwards [ae_of_ae_map (leftE ht).measurable.aemeasurable hae] with x hx`. Use `mul_mem' ht (h := t⁻¹ * Matrix.of x) hx` as an intermediate fact.
+
+Rewrite `this` using `[mic ht]`. Then use the resulting hypothesis. Establish `h2 : ENNReal.ofReal d * l2SG ν (fun g => l (R.σ t⁻¹ (R.σ g w))) = ENNReal.ofReal (‖w‖ ^ 2)`. Rewrite using `[← h, l2SG, ← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `lintegral_congr_ae (hae'.mono fun x hx => ?_)` and prove the remaining obligations. Use `show _ = ENNReal.ofReal (1 * (d * ‖l (R.σ (t⁻¹ * Matrix.of x) w)‖ ^ 2))`.
+
+Rewrite using `[one_mul, sig_mul hR (inv_mem ht) hx, ENNReal.ofReal_mul hd.le, ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]`. Both sides reduce to the same expression. Establish `h0 : ENNReal.ofReal d ≠ 0` using `(ENNReal.ofReal_pos.2 hd).ne'`. Rewrite using `[ENNReal.ofReal_div_of_pos hd, ← h2, mul_comm (ENNReal.ofReal d), ENNReal.mul_div_cancel_right h0 ENNReal.ofReal_ne_top]`.
+-/
 theorem mass_move {Wp : Type} [NormedAddCommGroup Wp] {R : Rep k r} (hR : IsURepOn (GG k r) R.σ) {t : MM k r}
     (ht : t ∈ GG k r) {ν : Measure (Mt k r)} {l : R.H → Wp} {d : ℝ} (hd : 0 < d) {w : R.H}
     (hae : ∀ᵐ x ∂(ν.map fun x => fun i j => (t⁻¹ * Matrix.of x) i j), Matrix.of x ∈ GG k r)
@@ -91,6 +109,13 @@ theorem mass_move {Wp : Type} [NormedAddCommGroup Wp] {R : Rep k r} (hR : IsURep
   have h0 : ENNReal.ofReal d ≠ 0 := (ENNReal.ofReal_pos.2 hd).ne'
   rw [ENNReal.ofReal_div_of_pos hd, ← h2, mul_comm (ENNReal.ofReal d), ENNReal.mul_div_cancel_right h0 ENNReal.ofReal_ne_top]
 
+/- English proof (translation)
+Take `⟨y, hy, hy0⟩` from `hnz`. Use `haveI : Unique (Sub (2 * r + k + 1) 0) := ⟨⟨I⟩, fun J => Subtype.ext ((Finset.card_eq_zero.1 J.2).trans (Finset.card_eq_zero.1 I.2).symm)⟩`. Establish `hw : ∀ c, wedge f c = 1` using `fun c => Matrix.det_fin_zero`. Establish `hc : ∀ c d, cmp 0 (Hpk k r) c d = 1` using `fun c d => Matrix.det_fin_zero`. Establish `h1` using `hκ _ ((hT.raw.io_sm I default).mem y hy)`.
+
+Establish `h2` using `hd y hy`. Establish `h3` using `hT.raw.pr_io I y hy`. Simplify using `only [tm, ev, hw, hc, Fintype.sum_unique, one_smul, star_one, mul_one] at h1 h2 h3`. Rewrite `h1` using `[h3, h2, smul_smul]`. Establish `h4` using `congrArg norm h1`.
+
+Apply the tactic sequence `have he : ‖(ep I : ℂ)‖ = 1 := by rcases hT.ep_sq I with h | h <;> simp [h]`. Rewrite `h4` using `[norm_smul, norm_mul, norm_mul, he, norm_star, one_mul]`. Establish `h5 : 0 < ‖lI y‖` using `norm_pos_iff.2 hy0`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem kappa_zero {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] {R : Rep k r}
     {RI : Sub (2 * r + k + 1) 0 → Rep k r} {io pr ep} (hT : TensH (cmp 0) (cmp 0 (Hpk k r)) R RI io pr ep)
     (f : Fin 0 → Fin (2 * r + k + 1) → ℂ) {l : R.H → Wp} (I : Sub (2 * r + k + 1) 0) {lI : (RI I).H → Wp} {κ₀ : ℂ}
@@ -113,6 +138,13 @@ theorem kappa_zero {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp
   have h5 : 0 < ‖lI y‖ := norm_pos_iff.2 hy0
   nlinarith
 
+/- English proof (translation)
+Establish `h1 : ∀ ν : Fin (2 * r + k + 1) → ℤ, ∃ R : Rep k r, (∀ i, p i = ν → R = X i) ∧ (n1 ν ≤ q0 → R.IsDS (PI.BesselPeriodGGP.eps48 k r) fun a => lam a + (ν a : ℝ))`. Introduce `ν`. Distinguish the cases in `h : ∃ i, p i = ν`. Take `⟨i, rfl⟩` from `h`. Conclude with `⟨X i, fun j hj => by rw [hp hj], fun _ => hX i⟩`.
+
+Distinguish the cases in `hq : n1 ν ≤ q0`. Take `⟨R, hR⟩` from `hH.2.2.2.1 k r _ _ (hlam ν hq) hP`. Conclude with `⟨R, fun i hi => absurd ⟨i, hi⟩ h, fun _ => hR⟩`. Conclude with `⟨R₀, fun i hi => absurd ⟨i, hi⟩ h, fun h' => absurd h' hq⟩`. Use `choose R h2 h3 using h1`.
+
+Conclude with `⟨R, h3, fun i => h2 _ i rfl⟩`.
+-/
 theorem exists_fam (hH : Hyps) {lam : Fin (2 * r + k + 1) → ℝ} (hlam : ∀ ν : Fin (2 * r + k + 1) → ℤ, n1 ν ≤ q0 →
       IsHCParam fun a => lam a + (ν a : ℝ))
     (hP : ∃ P, PI.UpqRep.IsCayleyU k r (PI.BesselPeriodGGP.eps48 k r) P) {ι : Type}
@@ -132,6 +164,9 @@ theorem exists_fam (hH : Hyps) {lam : Fin (2 * r + k + 1) → ℝ} (hlam : ∀ �
   choose R h2 h3 using h1
   exact ⟨R, h3, fun i => h2 _ i rfl⟩
 
+/- English proof (translation)
+Substitute `hR` using the available equality. Conclude with `GlobalTheory.T.bessel_period_positivity hH D τ w w' θ W lam A h l l' hθ hka hT hT' hW hA hg hok b1 b2 e1 e2`.
+-/
 theorem amp_eq (hH : Hyps) (D : D7) {τ w w' θ} {W : LocW D.R.k D.R.rS} [CompleteSpace W.Wp] [CompleteSpace W.Wq]
     {lam : Fin (2 * D.R.rS + D.R.k + 1) → ℝ} {A : LocS W} {h : ℝ} {R : Rep D.R.k D.R.rS} (hR : R = ⟨A.H, A.σ⟩)
     {l : R.H → W.Wp} {l' : R.H → W.Wq} (hθ : 0 < θ) (hka : 0 < D.host.ka / gg D) (hT : 0 < Tr D w)
@@ -154,6 +189,9 @@ theorem amp_eq (hH : Hyps) (D : D7) {τ w w' θ} {W : LocW D.R.k D.R.rS} [Comple
   subst hR
   exact GlobalTheory.T.bessel_period_positivity hH D τ w w' θ W lam A h l l' hθ hka hT hT' hW hA hg hok b1 b2 e1 e2
 
+/- English proof (translation)
+Substitute `hR` using the available equality. Rewrite using `[← hd v hv]`. Conclude with `(h v hv).1`.
+-/
 theorem deg_eq {D : D7} {W : LocW D.R.k D.R.rS} {A : LocS W} {R : Rep D.R.k D.R.rS} (hR : R = ⟨A.H, A.σ⟩) {c d : ℝ}
     (h : ∀ v : A.H, v ≠ 0 → A.deg = c * PI.BesselPeriodGGP.fdegH W.μG A.σ v ∧ 0 < A.deg)
     (hd : ∀ v : R.H, v ≠ 0 → PI.BesselPeriodGGP.fdegH W.μG R.σ v = d) {v : R.H} (hv : v ≠ 0) : A.deg = c * d := by
@@ -161,11 +199,17 @@ theorem deg_eq {D : D7} {W : LocW D.R.k D.R.rS} {A : LocS W} {R : Rep D.R.k D.R.
   rw [← hd v hv]
   exact (h v hv).1
 
+/- English proof (translation)
+Take `⟨P, -, h1, -⟩` from `h`. Introduce `h0`. Simplify using `[h0] at h1`.
+-/
 theorem ne_zero_of_low {R : Rep k r} {ε mu} {v : R.H} (h : PI.UpqRep.IsLowUnitH k r ε mu R.σ v) : v ≠ 0 := by
   obtain ⟨P, -, h1, -⟩ := h
   intro h0
   simp [h0] at h1
 
+/- English proof (translation)
+Rewrite using `[ENNReal.toReal_ofReal (by positivity), ENNReal.toReal_ofReal (by positivity), Real.rpow_neg (by positivity), Real.rpow_neg (by positivity), ← Real.sqrt_eq_rpow, ← Real.sqrt_eq_rpow, ← Real.sqrt_inv, ← Real.sqrt_inv, ← Real.sqrt_mul (by positivity)]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem rpow_ratio {K c d e : ℝ} (hK : 0 < K) (hc : 0 < c) (hd : 0 < d) (he : 0 < e) :
     (ENNReal.ofReal (K / (c * d))).toReal ^ (-(1 / 2 : ℝ)) =
       Real.sqrt (d / e) * (ENNReal.ofReal (K / (c * e))).toReal ^ (-(1 / 2 : ℝ)) := by
@@ -177,6 +221,33 @@ theorem rpow_ratio {K c d e : ℝ} (hK : 0 < K) (hc : 0 < c) (hd : 0 < d) (he : 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨n1, n2, w0, η, hw0, hη, hJ⟩` from `amp_eq hH D hR hθ hka hT hT' hW hA₀ hg hok b1 b2 e1 e2`. Establish `hN : 0 < Real.sqrt ((Module.finrank ℂ W.Wp : ℝ) * (Module.finrank ℂ W.Wq : ℝ))`. Take `⟨v, -, hv⟩` from `n1`. Take `⟨v', -, hv'⟩` from `n2`. Use `haveI := nontrivial_of_ne _ _ hv`.
+
+Use `haveI := nontrivial_of_ne _ _ hv'`. Establish `a1 : 0 < Module.finrank ℂ W.Wp` using `Module.finrank_pos`. Establish `a2 : 0 < Module.finrank ℂ W.Wq` using `Module.finrank_pos`. Check the signs of the components of the expression. Establish `hI : ∀ I, ∃ (wI : (RI I).H) (ηI : ℂ), PI.UpqRep.IsLowUnitH D.R.k D.R.rS (epsSH D.R) (lamI I) (RI I).σ wI ∧ (gd I → ‖ηI‖ = dI I * Real.sqrt ((Module.finrank ℂ W.Wp : ℝ) * (Module.finrank ℂ W.Wq : ℝ)) ∧ ∀ (ν : Measure (Mt D.R.k D.R.rS)) (γ : MatKR D.R.k D.R.rS), γ ∈ UH (Hpk D.R.k D …`.
+
+Introduce `I`. Distinguish the cases in `hI : gd I`. Take `⟨-, -, wI, ηI, h1, h2, h3⟩` from `amp_eq hH D (hRI I hI) hθ hka hT hT' hW (hAI I hI) (hDI I).2 hok (bI1 I) (bI2 I) (eI1 I) (eI2 I)`. Conclude with `⟨wI, ηI, h1, fun _ => ⟨by rw [h2, hdI I _ (ne_zero_of_low h1)], h3⟩⟩`. Take `⟨wI, -, h1⟩` from `GlobalTheory.exists_isLowUnitH_of_isDSHpk (hDI I).1.2`.
+
+Conclude with `⟨wI, 0, h1, fun h' => absurd h' hI⟩`. Use `choose wI ηI hwI hηI using hI`. Rewrite `hη` using `[hd _ (ne_zero_of_low hw0)]`. Take `⟨c, hc, hdeg⟩` from `GlobalTheory.DegreeTie.deg_eq_mul_fdegH hH D τ w w' θ W hcd hW`. Establish `hη0 : ∀ I, gd I → ηI I ≠ 0` using `fun I hI => by`.
+
+Rewrite using `[← norm_pos_iff, (hηI I hI).1]`. Conclude with `mul_pos (hdI0 I) hN`. Use `⟨fun I => if gd I then (Real.sqrt (d / dI I) : ℂ) * (η / d * ((ep I : ℂ) * κ₁ I * star (κ₀ I) * dI I) / ηI I) else 0, fun I hI => if_neg hI, fun I => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hI : gd I`. Apply the tactic sequence `have he : ‖(ep I : ℂ)‖ = 1 := by rcases hTH.ep_sq I with h | h <;> simp [h]`.
+
+Use `hdI0 I` as an intermediate fact. Simplify using `only [if_pos hI, norm_mul, norm_div, he, norm_star, hη, (hηI I hI).1, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hd0, abs_of_pos this, abs_of_nonneg (Real.sqrt_nonneg _)]`. Use `le_of_eq ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Simplify using `only [if_neg hI, norm_zero]`.
+
+Check the signs of the components of the expression. Introduce `μsec K hK hM hMI γ p hγ θ' hθ' νR hν`. Take `⟨g₀, μR, ν₀, ν, s, hcell, hν₀, hD, hs⟩` from `GlobalTheory.T.amplitudes_relevant_cell_monomial_rep D τ w w' θ W hW lam A₀ hA₀ hT hT' hθ hka γ p hγ θ' hθ' νR hν`. Establish `hμ : W.μN = (toBessel D τ w w' θ W lam A₀ hW hA₀ hT hT').μN` using `hW.2.2.2.2.2.2.2.2.2.2.2.1`. Rewrite `e1`, `e2`, `eI1`, `eI2` using `[hμ]`.
+
+Establish `hc0 : ((2 * D.host.ka / ((D.host.g 0 : ℝ) * (D.host.g 1 : ℝ)) : ℝ) : ℂ) ≠ 0`. Rewrite using `[Complex.ofReal_ne_zero, mul_div_assoc]`. Conclude with `(mul_pos two_pos hka).ne'`. Establish `key` using `GlobalTheory.T.block_projection_bessel hH hKF hCC D.R.k D.R.rS _ _ (cmp l) (cmp l (Hpk D.R.k D.R.rS)) l (toBessel D τ w w' θ W lam A₀ hW hA₀ hT hT') R RI io pr ep lam lamI h W.μG _ _ B B' BI BI' w0 wI κ₀ κ₁ hDS hg hDI hok hgc hc0 ENNReal.ofReal_ne_top hW.2.2.2.2.2.2.1 (GlobalTheo …`. Rewrite `key` using `[GlobalTheory.PrincipalMinorExterior.pairing_eq_leading_minor, hd _ (ne_zero_of_low hw0)]`.
+
+Establish `hDm : DminN W.z W.z' g₀ l = ((Zhat D.R.k D.R.rS W.z W.z' g₀).submatrix (Fin.castLE hl) (Fin.castLE hl)).det`. Rewrite using `[DminN, dif_pos (by omega)]; rfl`. Establish `hdc : (d : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hd0.ne'`. Rewrite using `[hD, jhUnit, hs _ _ hA₀, hJ _ _ hcell.1 hν₀, hM, deg_eq hR (hdeg _ _ hA₀) hd (ne_zero_of_low hw0)]`. Use `set M : ℂ := (((ENNReal.ofReal (K / (c * d))).toReal ^ (-(1 / 2 : ℝ)) : ℝ) : ℂ) with hMd`.
+
+Establish `e : DminN W.z W.z' g₀ l • M • s • η • amp R B B' w0 ν₀ g₀ = (M * s * η / d) • (DminN W.z W.z' g₀ l * (d : ℂ)) • amp R B B' w0 ν₀ g₀`. Simplify using `only [smul_smul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Establish `key' : (DminN W.z W.z' g₀ l * (d : ℂ)) • amp R B B' w0 ν₀ g₀ = ∑ I, ((ep I : ℂ) * κ₁ I * star (κ₀ I) * (PI.BesselPeriodGGP.fdegH W.μG (RI I).σ (wI I) : ℂ)) • amp (RI I) (BI I) (BI' I) (wI I) ν₀ g₀`.
+
+Rewrite using `[hDm]`. Conclude with `key`. Rewrite using `[e, key', Finset.smul_sum]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[hdI I _ (ne_zero_of_low (hwI I))]`.
+
+Use `beta_reduce`. Distinguish the cases in `hI : gd I`. Rewrite using `[if_pos hI, jhUnit, hs _ _ (hAI I hI), (hηI I hI).2 _ _ hcell.1 hν₀, hMI I hI, deg_eq (hRI I hI) (hdeg _ _ (hAI I hI)) (hdI I) (ne_zero_of_low (hwI I)), hMd, rpow_ratio hK hc hd0 (hdI0 I)]`. Simplify using `only [smul_smul]`. Use `congr 1`.
+
+Use `hη0 I hI` as an intermediate fact. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[if_neg hI]`. Apply the tactic sequence `rcases hz I hI with h0 | h0 <;> simp only [h0, mul_zero, zero_mul, star_zero, zero_smul, smul_zero]`.
+-/
 theorem line_of_tens (hH : Hyps) (hKF : AmpKF) (hCC : CellConv) (D : D7) {τ w w' θ} {W : LocW D.R.k D.R.rS}
     [CompleteSpace W.Wp] [CompleteSpace W.Wq] (hcd : cdScaleTie D)
     (hθ : 0 < θ) (hka : 0 < D.host.ka / gg D) (hT : 0 < Tr D w) (hT' : 0 < Tr D w') (hW : GoodW D τ w w' θ W)
@@ -308,6 +379,11 @@ section side
 variable {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp]
   {z : Fin (2 * r + k + 1) → ℂ} {π : MM k r → (Wp →L[ℂ] Wp)} {μW μN μG νq : Measure (Mt k r)} {t : MM k r}
 
+/- English proof (translation)
+Establish `hU` using `urep_of_isDS hR`. Take `⟨h1, h2⟩` from `(bessel_move hH k r Wp z π u c μW μN μG νq t ht hN hc hψ hS).2 R hU`. Use `⟨(h1 _).2 ?_, h2 l₁ hl⟩` and prove the remaining obligations. Establish `e : (fun v => l₁ (R.σ t⁻¹ (R.σ t v))) = l₁`. Use function extensionality and compare the values at `v`.
+
+Rewrite using `[← sig_mul hU (inv_mem ht) ht, inv_mul' ht, sig_one hU]`. Rewrite using `[e]`. Conclude with `hl.1`.
+-/
 theorem moved (hH : Hyps) {u : ℕ → ℝ} {c : ℂ} (ht : t ∈ GG k r) (hN : ∀ n, n ∈ Nset k r ↔ t * n * t⁻¹ ∈ Nset k r)
     (hc : ∀ h ∈ UWset k r z, t * h = h * t)
     (hψ : ∀ n ∈ Nset k r, psi k r z cStd n = psi k r z c (t * n * t⁻¹)) (hS : SideG k r z π u μW μN μG νq)
@@ -325,12 +401,18 @@ theorem moved (hH : Hyps) {u : ℕ → ℝ} {c : ℂ} (ht : t ∈ GG k r) (hN : 
   rw [e]
   exact hl.1
 
+/- English proof (translation)
+Use `GlobalTheory.TensExists.l1_add_le ν (eZ I.1)` as an intermediate fact. Rewrite `this` using `[GlobalTheory.TensExists.n1_eZ_eq_card, I.2]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem firstNorm_add_subsetIndicator_le {n l : ℕ} {ν : Fin n → ℤ} {q : ℕ} (h : n1 ν + l ≤ q) (I : Sub n l) : n1 (ν + eZ I.1) ≤ q := by
   have := GlobalTheory.TensExists.l1_add_le ν (eZ I.1)
   rw [GlobalTheory.TensExists.n1_eZ_eq_card, I.2] at this
   omega
 
 omit [FiniteDimensional ℂ Wp] in
+/- English proof (translation)
+Take `⟨w, -, hw⟩` from `GlobalTheory.exists_isLowUnitH_of_isDSHpk (hS.2.1 ν hν).2`. Rewrite using `[← (hS.2.2.2 ν hν).2.2 w (ne_zero_of_low hw), hc _ _ (hS.2.1 ν hν) w (ne_zero_of_low hw)]`.
+-/
 theorem dg_eq {lam u b bv ga h R l dg} (hS : Setup (k := k) (r := r) lam u b bv ga h q0 z π μW μN μG νq R l dg) {c : ℝ}
     (hc : ∀ mu (R : Rep k r), R.IsDS (PI.BesselPeriodGGP.eps48 k r) mu → ∀ w, w ≠ 0 →
       PI.BesselPeriodGGP.fdegH μG R.σ w = c * fdegHC mu) {ν} (hν : n1 ν ≤ q0) :
@@ -338,6 +420,23 @@ theorem dg_eq {lam u b bv ga h R l dg} (hS : Setup (k := k) (r := r) lam u b bv 
   obtain ⟨w, -, hw⟩ := GlobalTheory.exists_isLowUnitH_of_isDSHpk (hS.2.1 ν hν).2
   rw [← (hS.2.2.2 ν hν).2.2 w (ne_zero_of_low hw), hc _ _ (hS.2.1 ν hν) w (ne_zero_of_low hw)]
 
+/- English proof (translation)
+Establish `hν0 : n1 ν ≤ q0` using `by omega`. Establish `hνl : n1 ν + l ≤ q0` using `by nlinarith`. Establish `hR` using `hS.2.1 ν hν0`. Establish `hRI` using `fun J : Sub (2 * r + k + 1) l => hS'.2.1 _ (firstNorm_add_subsetIndicator_le hνl J)`. Establish `hU` using `urep_of_isDS hR`.
+
+Establish `hb` using `GlobalTheory.rep_basic_of_isDS hH.1.2.2.1 k r _ _ _ hR`. Establish `hnz' : NzOn (F ν) (l₁ ν)`. Take `⟨v, hv, hv0⟩` from `hnz`. Conclude with `⟨_, sig_sm hU (inv_mem ht) (hb.2.2.2.2.1 v (hb.2.2.2.2.2.2.1 v hv)), hv0⟩`. Take `⟨⟨κ₁, hκ⟩, hdual⟩` from `GlobalTheory.KappaDual.kappa_dual hH k r _ _ _ _ l _ _ io pr ep _ _ _ Wp z π u μW μN' μG _ _ (l₁ ν) hR hRI (GlobalTheory.WedgeFRep.isFRep_cmp k r l) hT hS.2.2.1 (GlobalTheory.T.flagWedge_fixed_and_length_eq_prod_distances k r l hl z hS.2.2.1.1).1 (hS.2.2.2 ν hν0).1 hnz' I (m₁ _) …`.
+
+Establish `hnI : κ₁ ≠ 0 → NzOn (F' (ν + eZ I.1)) (m₁ (ν + eZ I.1))`. Introduce `h0`. Take `⟨v, hv, hv0⟩` from `hnz'`. Use `⟨_, ?_, by rw [hκ v hv]; exact smul_ne_zero h0 hv0⟩` and prove the remaining obligations. Conclude with `Submodule.sum_mem (F' (ν + eZ I.1)).smSub fun c _ => (hT.raw.pr_sm I c).mem _ (Formalism.FourierDecayAlt.P.DDSmoothness.smooth_smul _ hv)`.
+
+Establish `hH1 : 0 ≤ Hsq r (Tz k r z) b ^ l`. Use `(GlobalTheory.NumFam.num_fam k r _ _ _ _ _ _ _ hS.1).1` as an intermediate fact. Establish `hb0 : 0 ≤ b` using `by linarith [this.1, this.2.1]`. Unfold `Hsq`. Check the signs of the components of the expression.
+
+Use `⟨S * κ₁, kappa_move hT.raw hU (inv_mem ht) hω (hS.2.2.2 ν hν0).1.1.2.1 I hκ, ?_, fun h0 v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, mul_pow, mul_assoc, mul_div_assoc]`. Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations. Distinguish the cases in `h0 : κ₁ = 0`. Simplify `hH1` using `[h0]`.
+
+Break down `hFF with rfl | ⟨rfl, h2, rfl⟩` into its components or cases. Take `⟨c, -, hc⟩` from `GlobalTheory.BesselDegree.schur_fdeg hH k r (PI.BesselPeriodGGP.eps48 k r) μG hS.2.2.1.2.2.2.2.2.2.1`. Establish `e : ν + eZ I.1 = ν`. Rewrite using `[Finset.card_eq_zero.1 I.2]`. Use function extensionality and compare the values at `a`.
+
+Simplify using `[eZ]`. Establish `e2 : dg' (ν + eZ I.1) = dg ν`. Rewrite using `[e, dg_eq hS (fun mu R h => (hc mu R h).1) hν0, dg_eq hS' (fun mu R h => (hc mu R h).1) hν0]`. Rewrite using `[e2, mul_div_assoc, div_self (hS.2.2.2 ν hν0).2.1.ne', mul_one, pow_zero]`. Conclude with `kappa_zero hT _ I hκ (hdual κ₁ hκ) (hnI h0)`.
+
+Take `rfl` from `eq_of_heq h2`. Conclude with `GlobalTheory.T.mass_bound_low_types_alt hH k r Wp lam u b bv ga h q0 z π μW μN' μG _ _ _ _ hS l hl ν hν io pr ep hT hnz' I κ₁ (hnI h0) hκ`. Conclude with `mass_move (urep_of_isDS (hRI I)) ht (hS'.2.2.2 _ (firstNorm_add_subsetIndicator_le hνl I)).2.1 (GlobalTheory.quotMeas_ae_mem_and_measurable hH.1.2.2.1 k r _ _ _ Wp z π u μW μN' μG _ hR hS.2.2.1).1 (((GlobalTheory.MomMass.mom_mass hH k r Wp lam u' b bv ga h q0 z π μW μN' μG _ F' m …`.
+-/
 theorem side_kappa (hH : Hyps) (ht : t ∈ GG k r) {lam u u' b bv ga h F F' l₁ m₁ dg dg'} {μN' : Measure (Mt k r)}
     (hS : Setup (k := k) (r := r) lam u b bv ga h q0 z π μW μN' μG
       (νq.map fun x => fun i j => (t⁻¹ * Matrix.of x) i j) F l₁ dg)
@@ -401,12 +500,20 @@ theorem side_kappa (hH : Hyps) (ht : t ∈ GG k r) {lam u u' b bv ga h F F' l₁
 
 end side
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem pow_le_rpow {b x α β : ℝ} {j : ℕ} (hb : 1 ≤ b) (hx : 0 ≤ x) (h : x ≤ b ^ α) (hα : 0 ≤ α) (hj : (j : ℝ) ≤ β) :
     x ^ j ≤ b ^ (α * β) := by
   calc x ^ j ≤ (b ^ α) ^ j := pow_le_pow_left₀ hx h j
     _ = b ^ (α * j) := (Real.rpow_mul_natCast (by linarith) α j).symm
     _ ≤ _ := Real.rpow_le_rpow_of_exponent_le hb (mul_le_mul_of_nonneg_left hj hα)
 
+/- English proof (translation)
+Use `ha.trans ((pow_le_pow_iff_left₀ (by positivity) (by positivity) two_ne_zero).1 ?_)` and prove the remaining obligations. Establish `h4 : e / d ≤ N` using `by rwa [div_le_iff₀ hd]`. Establish `h5 : 1 ≤ p * p' * N` using `one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le hp hp') hN`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, Real.sq_sqrt (by positivity)]; field_simp`.
+
+Use `_ ≤ (s ^ 2 * p) * (s ^ 2 * p') * N := by gcongr`. Use `_ = (s ^ 2) ^ 2 * (p * p' * N) * 1 := by ring`. Use `_ ≤ (s ^ 2) ^ 2 * (p * p' * N) * (p * p' * N) := by gcongr`. Use `_ = _ := by ring`.
+-/
 theorem coef_le {a x y d e s p p' N : ℝ} (hd : 0 < d) (he : 0 < e) (hx : 0 ≤ x) (hy : 0 ≤ y)
     (ha : a ≤ Real.sqrt (d / e) * (x * y)) (h1 : x ^ 2 * d / e ≤ s ^ 2 * p) (h2 : y ^ 2 * d / e ≤ s ^ 2 * p')
     (h3 : e ≤ N * d) (hp : 1 ≤ p) (hp' : 1 ≤ p') (hN : 1 ≤ N) : a ≤ s ^ 2 * p * p' * N := by
@@ -420,6 +527,11 @@ theorem coef_le {a x y d e s p p' N : ℝ} (hd : 0 < d) (he : 0 < e) (hx : 0 ≤
     _ ≤ (s ^ 2) ^ 2 * (p * p' * N) * (p * p' * N) := by gcongr
     _ = _ := by ring
 
+/- English proof (translation)
+Establish `hm : 0 ≤ m` using `le_trans (by positivity) hr`. Establish `h1 : 1 ≤ Hsq r T (b ^ M)` using `one_le_mul_of_one_le_of_one_le (le_max_left _ _) (one_le_pow₀ (Real.one_le_rpow hb hM))`. Use `⟨one_le_pow₀ h1, ?_⟩` and prove the remaining obligations. Establish `h2 : Hsq r T (b ^ M) ≤ b ^ ((|CT| + 20 * M) * m)`. Establish `a1 : max 1 T ≤ b ^ (|CT| * m)` using `max_le (Real.one_le_rpow hb (by positivity)) (hT.trans (Real.rpow_le_rpow_of_exponent_le hb (mul_le_mul_of_nonneg_right (le_abs_self _) hm)))`.
+
+Establish `a2 : (b ^ M) ^ (20 * (r + 1)) ≤ b ^ (M * (20 * m))` using `pow_le_rpow hb (by positivity) le_rfl hM (by push_cast; linarith)`. Combine the equalities or inequalities in the displayed calculation. Use `(pow_le_rpow hb (by linarith) h2 (by positivity) hl).trans (le_of_eq ?_)` and prove the remaining obligations. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hsq_le {b T CT M m : ℝ} {l : ℕ} (hb : 1 ≤ b) (hM : 0 ≤ M) (hr : (r : ℝ) + 1 ≤ m) (hl : (l : ℝ) ≤ m)
     (hT : T ≤ b ^ (CT * m)) :
     1 ≤ Hsq r T (b ^ M) ^ l ∧ Hsq r T (b ^ M) ^ l ≤ b ^ ((|CT| + 20 * M) * m ^ 2) := by
@@ -437,6 +549,11 @@ theorem hsq_le {b T CT M m : ℝ} {l : ℕ} (hb : 1 ≤ b) (hM : 0 ≤ M) (hr : 
   refine (pow_le_rpow hb (by linarith) h2 (by positivity) hl).trans (le_of_eq ?_)
   congr 1; ring
 
+/- English proof (translation)
+Introduce `I J h`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `a`. Establish `h` using `congrFun (add_left_cancel h) a`. Simplify using `only [eZ] at h`.
+
+Apply the tactic sequence `by_cases h1 : a ∈ I.1 <;> by_cases h2 : a ∈ J.1 <;> simp_all`.
+-/
 theorem eZ_inj {n l : ℕ} (ν : Fin n → ℤ) : Function.Injective fun I : Sub n l => ν + eZ I.1 := by
   intro I J h
   apply Subtype.ext
@@ -445,6 +562,15 @@ theorem eZ_inj {n l : ℕ} (ν : Fin n → ℤ) : Function.Injective fun I : Sub
   simp only [eZ] at h
   by_cases h1 : a ∈ I.1 <;> by_cases h2 : a ∈ J.1 <;> simp_all
 
+/- English proof (translation)
+Distinguish the cases in `hl : l = 0`. Take `⟨F, hF, h1⟩` from `exists_fam hH hlam hP (fun _ : Unit => ν) (fun _ _ _ => rfl) (fun _ => R₀) (fun _ => h0) R₀`. Take `⟨F', hF', h2⟩` from `exists_fam hH hlam hP (fun I : {I // gd I} => ν + eZ I.1.1) ((eZ_inj ν).comp Subtype.val_injective) (fun I => X I.1) (fun I => hX I.1 I.2) R₀`. Conclude with `⟨F, F', hF, hF', h1 (), fun I hI => h2 ⟨I, hI⟩, Or.inl hl⟩`. Establish `hne : ∀ I : Sub (2 * r + k + 1) l, ν ≠ ν + eZ I.1` using `fun I h => by`.
+
+Take `⟨a, ha⟩` from `Finset.card_pos.1 (by rw [I.2]; omega : 0 < I.1.card)`. Use `congrFun h a` as an intermediate fact. Simplify using `[eZ, ha] at this`. Take `⟨F, hF, h1⟩` from `exists_fam hH hlam hP (fun i : Option {I // gd I} => i.elim ν fun I => ν + eZ I.1.1) (by`. Introduce and unpack `(_ | I) (_ | J) h`.
+
+Both sides reduce to the same expression. Conclude with `absurd h (hne _)`. Conclude with `absurd h.symm (hne _)`. Conclude with `congrArg some (Subtype.ext (eZ_inj ν h)))`. Use the proof step `(fun i => i.elim R₀ fun I => X I.1) (by`.
+
+Introduce and unpack `(_ | I)`. Conclude with `h0`. Conclude with `hX I.1 I.2) R₀`. Conclude with `⟨F, F, hF, hF, h1 none, fun I hI => h1 (some ⟨I, hI⟩), Or.inr rfl⟩`.
+-/
 theorem exists_fams (hH : Hyps) {lam : Fin (2 * r + k + 1) → ℝ} (hlam : ∀ ν : Fin (2 * r + k + 1) → ℤ, n1 ν ≤ q0 →
       IsHCParam fun a => lam a + (ν a : ℝ))
     (hP : ∃ P, PI.UpqRep.IsCayleyU k r (PI.BesselPeriodGGP.eps48 k r) P) {l : ℕ} (ν : Fin (2 * r + k + 1) → ℤ)
@@ -474,6 +600,13 @@ theorem exists_fams (hH : Hyps) {lam : Fin (2 * r + k + 1) → ℝ} (hlam : ∀ 
         · exact hX I.1 I.2) R₀
     exact ⟨F, F, hF, hF, h1 none, fun I hI => h1 (some ⟨I, hI⟩), Or.inr rfl⟩
 
+/- English proof (translation)
+Establish `h1` using `Real.pi_gt_three`. Establish `h2` using `Real.pi_lt_four`. Establish `h3 : 2 < b` using `lt_trans (by linarith [Real.exp_one_gt_d9]) hb`. Establish `h4 : 1 ≤ b ^ (2 * Cg)` using `hg.trans hgb`. Rewrite using `[Complex.norm_real, Real.norm_of_nonneg (by positivity), Real.rpow_add (by linarith), Real.rpow_two]`.
+
+Use `max_le ?_ ?_` and prove the remaining obligations. Establish `: 2 * (Real.pi / v) / g / 2 = Real.pi / (v * g)` using `by field_simp`. Rewrite using `[this]`. Establish `: Real.pi / (v * g) ≤ Real.pi` using `div_le_self (by linarith) (by nlinarith)`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `: 2 / (2 * (Real.pi / v) / g) = g * v / Real.pi` using `by field_simp`. Rewrite using `[this]`. Establish `: g * v / Real.pi ≤ g * v` using `div_le_self (by positivity) (by linarith)`. Conclude with `this.trans (mul_le_mul hgb (by nlinarith) (by linarith) (by linarith))`.
+-/
 theorem scale_le {b v g Cg : ℝ} (hb : Real.exp 1 < b) (hv : 1 ≤ v) (hvb : 2 * v ≤ b) (hg : 1 ≤ g)
     (hgb : g ≤ b ^ (2 * Cg)) (hC : 8 ≤ Cg) :
     max (‖((2 * (Real.pi / v) / g : ℝ) : ℂ)‖ / 2) (2 / ‖((2 * (Real.pi / v) / g : ℝ) : ℂ)‖) ≤ b ^ (2 * Cg + 2) := by
@@ -494,6 +627,65 @@ theorem scale_le {b v g Cg : ℝ} (hb : Real.exp 1 < b) (hv : 1 ≤ v) (hvb : 2 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hH hKF hCC Cg cb Cu cT CT C0 C1`. Use `⟨2 * (2 * Cg + 2) + 2 * (|CT| + 20 * max 2 Cu) + 2 * max 2 Cu, fun Cn => ?_⟩` and prove the remaining obligations. Take `⟨m₁, hJ⟩` from `GlobalTheory.T.exists_mmv_eq_const_div_deg_of_near_parameter hH hKF hCC Cg cb Cu cT CT C0 C1 (Cn + 1)`. Use `⟨max m₁ (Cn + 1), fun D large₂ C' Cl hCl hBig hcd hZ τ w w' hTT θ hθw W hW lam' hlam A₀ hA₀ l hl => ⟨1, Or.inl rfl, fun AI hAI => ?_⟩⟩` and prove the remaining obligations. Simplify using `only [one_smul] at hAI ⊢`.
+
+Use `haveI := FiniteDimensional.complete ℂ W.Wp`. Use `haveI := FiniteDimensional.complete ℂ W.Wq`. Use `replace hJ := hJ D large₂ C' Cl hCl ⟨hBig.1, hBig.2.1, (le_max_left _ _).trans hBig.2.2⟩ hcd hZ τ w w' hTT θ hθw W hW`. Take `⟨-, -, hbe, hm, -, -, -, hmk, hv, -, hka, hvb, hg1, hgb, hCg, -, hTb, -, -⟩` from `GlobalTheory.Amp.SizesProof.sizes_of_hyp D large₂ C' Cl Cg cb Cu cT CT C0 hBig.1 hZ`. Establish `hb1 : 1 ≤ large₂.sc.b` using `by linarith [Real.exp_one_gt_d9]`.
+
+Establish `hθ : 0 < θ` using `lt_of_lt_of_le (by positivity) hθw.1`. Establish `hka0 : 0 < D.host.ka / gg D` using `by rw [hka]; have := Real.pi_pos; positivity`. Establish `hT : 0 < Tr D w` using `by unfold Tr; exact_mod_cast hTT.1.pos`. Establish `hT' : 0 < Tr D w'` using `by unfold Tr; exact_mod_cast hTT.2.1.pos`. Establish `hmR : (D.R.m : ℝ) = 2 * D.R.rS + 2` using `by exact_mod_cast hm`.
+
+Establish `hr0 : (0 : ℝ) ≤ D.R.rS` using `Nat.cast_nonneg _`. Establish `hlR : (l : ℝ) ≤ D.R.rS + 1` using `by exact_mod_cast hl`. Establish `hk1 : (1 : ℝ) ≤ D.R.k`. Use `D.R.m_add_three_le_k` as an intermediate fact. Conclude with `(by omega : 1 ≤ D.R.k)` after adjusting the coercions.
+
+Establish `hm2 : (D.R.m : ℝ) ^ 2 ≤ D.R.k * (D.R.m : ℝ) ^ 3`. Establish `: (D.R.m : ℝ) ^ 2 ≤ (D.R.m : ℝ) ^ 3` using `pow_le_pow_right₀ (by linarith) (by norm_num)`. Use polynomial arithmetic with `[pow_nonneg (show (0 : ℝ) ≤ D.R.m by linarith) 3]`. Take `⟨hNum, hgc, heps⟩` from `GlobalTheory.T.momentPieriNumerics_of_sizeHyps D large₂ C' Cl Cg cb Cu cT CT C0 hZ hCl τ w (fun n => if h : n - 1 < D.R.k then uS D w τ ⟨n - 1, h⟩ else 0) (fun i => by simp)`. Take `⟨⟨hbv, hbv', hnb, -, hok⟩, hnum⟩` from `GlobalTheory.NumFam.num_fam _ _ _ _ _ _ _ _ _ hNum`.
+
+Take `⟨ν, rfl⟩ : ∃ ν : Fin (2 * D.R.rS + D.R.k + 1) → ℤ, lam' = fun a => lamD D τ a + (ν a : ℝ)` from `by choose x hx using hA₀.1.2 choose y hy using hNum.2.1.2`. Use `⟨x - y, funext fun a => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.sub_apply, Int.cast_sub]`. Combine the linear relations using `[hx a, hy a]`. Establish `hdist : ∀ μ : Fin (2 * D.R.rS + D.R.k + 1) → ℤ, l1dist (fun a => lamD D τ a + (μ a : ℝ)) (lamD D τ) = n1 μ` using `fun μ => by`.
+
+Simplify using `[l1dist, n1]`. Rewrite `hlam` using `[hdist]`. Establish `hν : n1 ν + (D.R.rS + 1) * (D.R.rS + 2) ≤ D.R.k * D.R.m ^ 5`. Establish `h1 : Cn + 1 ≤ (D.R.m : ℝ) ^ 2` using `by nlinarith [(le_max_right _ _).trans hBig.2.2]`. Establish `h2 : (Cn + 1) * (D.R.k * (D.R.m : ℝ) ^ 3) ≤ (D.R.m : ℝ) ^ 2 * (D.R.k * (D.R.m : ℝ) ^ 3)` using `mul_le_mul_of_nonneg_right h1 (by positivity)`.
+
+Establish `h3 : ((D.R.rS : ℝ) + 1) * (D.R.rS + 2) ≤ (D.R.m : ℝ) ^ 2` using `by rw [hmR]; nlinarith`. Establish `: (n1 ν : ℝ) + ((D.R.rS : ℝ) + 1) * (D.R.rS + 2) ≤ D.R.k * (D.R.m : ℝ) ^ 5` using `by nlinarith`. Conclude with `this` after adjusting the coercions. Establish `hν0 : n1 ν ≤ D.R.k * D.R.m ^ 5` using `by omega`. Establish `hνl : n1 ν + l ≤ D.R.k * D.R.m ^ 5` using `by nlinarith`.
+
+Establish `hsh : ∀ I : Finset (Fin (2 * D.R.rS + D.R.k + 1)), (fun a => lamD D τ a + (ν a : ℝ)) + epsI I = fun a => lamD D τ a + ((ν + eZ I) a : ℝ)` using `fun I => by`. Use function extensionality and compare the values at `a`. Simplify using `only [epsI, eZ, Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> push_cast <;> ring`. Simplify using `only [hsh] at hAI ⊢`.
+
+Take `⟨F, F', hF, hF', hF0, hFI, hFF⟩` from `exists_fams hH (fun μ h => (hnum μ h).1) (by rw [heps]; obtain ⟨P, hP, -⟩ := hA₀.2.1; exact ⟨P, hP⟩) ν ⟨A₀.H, A₀.σ⟩ (by rw [heps]; exact ⟨hA₀.1, hA₀.2.1⟩) (fun I : Sub _ l => ∃ A : LocS W, GoodS D (fun a => lamD D τ a + ((ν + eZ I.1) a : ℝ)) A) (fun I => ⟨(AI I.1).H, (AI I.1).σ⟩) …`. Establish `hc0 : ((2 * D.host.ka / ((D.host.g 0 : ℝ) * (D.host.g 1 : ℝ)) : ℝ) : ℂ) ≠ 0`. Rewrite using `[Complex.ofReal_ne_zero, mul_div_assoc]`. Conclude with `(mul_pos two_pos hka0).ne'`. Take `⟨t, ht, hNt, hz, hs⟩` from `GlobalTheory.TorusScale.exists_torus_scale D.R.k D.R.rS _ hc0`.
+
+Use `choose s hs0 hs1 hs2 hs3 using hs`. Establish `hmod` using `GlobalTheory.T.torus_commutes_with_unipotent hH D large₂ C' Cl Cg cb Cu cT CT C0 hZ hCl τ w w' θ W hTT hθ hW t ht hNt (fun z h => (hz z h).2)`. Take `⟨U, U', l₁, l₂, dg, S1, S2⟩` from `hmod F hF`. Choose the witnesses or unpack the hypotheses as in `⟨V, V', m₁, m₂, dg', T1, T2, hE⟩ : ∃ V V' m₁ m₂ dg', Setup (lamD D τ) V (large₂.sc.b ^ max 2 Cu) (bOne D τ 1) ((D.R.r : ℝ) * (D.R.m : ℝ) ^ 10) ((D.R.r : ℝ) ^ 19) (D.R.k * D.R.m ^ 5) W.z W.π W.μW (W.μN.map fun x => fun i j => (t⁻¹ * Matrix.of x * t) i j) W.μG (W.νS.map fun x => fu …`. Break down `hFF with h | rfl` into its components or cases.
+
+Take `⟨V, V', m₁, m₂, dg', T1, T2⟩` from `hmod F' hF'`. Conclude with `⟨V, V', m₁, m₂, dg', T1, T2, Or.inl h⟩`. Conclude with `⟨U, U', l₁, l₂, dg, S1, S2, Or.inr ⟨rfl, HEq.rfl, HEq.rfl, rfl⟩⟩`. Establish `hNH : IsHaarOn (Nset D.R.k D.R.rS) W.μN`. Rewrite using `[hW.2.2.2.2.2.2.2.2.2.2.2.1]`.
+
+Conclude with `GlobalTheory.T.haarLie_isHaarOn_unipotentRadical _ _ _ (ENNReal.ofReal_pos.2 (by positivity)) ENNReal.ofReal_lt_top`. Establish `z1` using `hW.2.2.1`. Establish `z2` using `hW.2.2.2.1`. Establish `G1 : SideG D.R.k D.R.rS W.z W.π U W.μW W.μN W.μG W.νS` using `⟨z1, S1.2.2.1.2.1, S1.2.2.1.2.2.1, S1.2.2.1.2.2.2.1, S1.2.2.1.2.2.2.2.1, hNH, hW.2.2.2.2.2.2.1, hW.2.2.2.2.2.2.2.2.2.2.2.2.1⟩`. Establish `G2 : SideG D.R.k D.R.rS W.z' W.π' U' W.μW' W.μN W.μG W.νS'` using `⟨z2, S2.2.2.1.2.1, S2.2.2.1.2.2.1, S2.2.2.1.2.2.2.1, S2.2.2.1.2.2.2.2.1, hNH, hW.2.2.2.2.2.2.1, hW.2.2.2.2.2.2.2.2.2.2.2.2.2⟩`.
+
+Establish `hDS` using `hF ν hν0`. Establish `hDI` using `fun I : Sub _ l => hF' _ (firstNorm_add_subsetIndicator_le hνl I)`. Choose the witnesses or unpack the hypotheses as in `⟨io, pr, ep, hTH⟩ : ∃ io pr ep, TensH (cmp l) (cmp l (Hpk D.R.k D.R.rS)) (F ν) (fun I : Sub _ l => F' (ν + eZ I.1)) io pr ep := by`. Establish `hI : ∀ I : Sub _ l, (F' (ν + eZ I.1)).IsDS (PI.BesselPeriodGGP.eps48 D.R.k D.R.rS) (addSet (fun a => lamD D τ a + (ν a : ℝ)) I.1)` using `fun I => by`. Use `hDI I` as an intermediate fact.
+
+Rewrite `this` using `[← hsh]`. Then use the resulting hypothesis. Take `⟨io, pr, hT⟩` from `(hH.2.2.2.2.1 _ _ _ _ (F ν) hDS (hnum ν hν0).2.2.2).1 l _ hI`. Conclude with `GlobalTheory.TensOrth.tensH_of_raw hH _ _ _ _ _ _ l _ _ io pr _ _ _ hDS hI (GlobalTheory.TensExists.addSet_inj _) (GlobalTheory.WedgeFRep.isFRep_cmp _ _ l) hT`. Take `⟨b1, e1⟩` from `moved hH ht hNt (hz _ z1).2.1 (hz _ z1).2.2 G1 hDS (S1.2.2.2 ν hν0).1`. Take `⟨b2, e2⟩` from `moved hH ht hNt (hz _ z2).2.1 (hz _ z2).2.2 G2 hDS (S2.2.2.2 ν hν0).1`.
+
+Establish `bI1` using `fun I : Sub _ l => moved hH ht hNt (hz _ z1).2.1 (hz _ z1).2.2 G1 (hDI I) (T1.2.2.2 _ (firstNorm_add_subsetIndicator_le hνl I)).1`. Establish `bI2` using `fun I : Sub _ l => moved hH ht hNt (hz _ z2).2.1 (hz _ z2).2.2 G2 (hDI I) (T2.2.2.2 _ (firstNorm_add_subsetIndicator_le hνl I)).1`. Establish `hgap` using `fun μ h => (hnum μ h).2.2.1`. Rewrite `hDS`, `hDI`, `hgap` using `[heps]`. Take `⟨n₁, n₂, -⟩` from `amp_eq hH D hF0 hθ hka0 hT hT' hW hA₀ (hgap ν hν0) hok b1 b2 e1 e2`.
+
+Use `choose κ₀ hκ₀ hb₀ hm₀ using side_kappa hH ht S1 T1 hl (hE.imp id fun h => ⟨h.1, h.2.1, h.2.2.2⟩) hν hTH (cmp_wedge_eigen _ _ (fun a => s (Fin.castLE hl a)) fun a => hs3 _ _ z1) n₁`. Use `choose κ₁ hκ₁ hb₁ hm₁ using side_kappa hH ht S2 T2 hl (hE.imp id fun h => ⟨h.1, h.2.2.1, h.2.2.2⟩) hν hTH (cmp_wedge_eigen _ _ (fun a => s (Fin.castLE hl a)) fun a => hs3 _ _ z2) n₂`. Establish `hd0` using `(S1.2.2.2 ν hν0).2`. Establish `hdI` using `fun I : Sub _ l => (T1.2.2.2 _ (firstNorm_add_subsetIndicator_le hνl I)).2`. Take `⟨a, ha0, ha1, ha2⟩` from `line_of_tens hH hKF hCC D hcd hθ hka0 hT hT' hW hA₀ hl (AI := fun I => AI I.1) (fun I hI => hAI I.1 I.2 hI) hF0 hFI hDS (hgap ν hν0) (fun I => ⟨hDI I, hgap _ (firstNorm_add_subsetIndicator_le hνl I)⟩) hok hgc hTH b1 b2 e1 e2 (fun I => (bI1 I).1) (fun I => (bI2 I).1) (fun I => (bI …`.
+
+Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Conclude with `hI (GlobalTheory.T.bessel_map_pairing_bound hH D τ w w' θ W _ _ 0 _ _ _ hcd hW (hDI I) (bI1 I).1 (bI2 I).1 (hdI I).1 (hm₀ I hn.1) (hm₁ I hn.2)))`. Use the proof step `hd0.1 (fun I => (hdI I).1) hd0.2 (fun I => (hdI I).2)`. Establish `hsum : ∀ {E : Type} [AddCommMonoid E] (f : Finset (Fin (2 * D.R.rS + D.R.k + 1)) → E), ∑ I ∈ univ.filter (fun I => I.card = l), f I = ∑ I : Sub _ l, f I.1` using `fun f => Finset.sum_subtype _ (by simp) f`.
+
+Establish `haI : ∀ I : Sub (2 * D.R.rS + D.R.k + 1) l, (if h : I.1.card = l then a ⟨I.1, h⟩ else 0) = a I` using `fun I => dif_pos I.2`. Use `⟨fun I => if h : I.card = l then a ⟨I, h⟩ else 0, fun I hI hn => (haI ⟨I, hI⟩).trans (ha0 _ hn), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hsum]`. Simplify using `only [haI]`. Establish `hM : (0 : ℝ) ≤ max 2 Cu` using `le_trans zero_le_two (le_max_left _ _)`.
+
+Establish `hn1 : (1 : ℝ) ≤ 2 * D.R.rS + D.R.k + 1` using `by linarith`. Establish `hN : ((2 * D.R.rS + D.R.k + 1 : ℝ)) ^ l ≤ large₂.sc.b ^ (max 2 Cu * (D.R.m : ℝ) ^ 2)` using `pow_le_rpow hb1 (by linarith) hnb hM (by rw [hmR]; nlinarith)`. Establish `hS : ‖∏ a : Fin l, s (Fin.castLE hl a)‖ ≤ large₂.sc.b ^ ((2 * Cg + 2) * (D.R.m : ℝ) ^ 2)`. Establish `hQ` using `scale_le hbe hv hvb hg1 hgb hCg`. Rewrite `hQ` using `[← hka]`.
+
+Establish `h1 : ∀ a, ‖s a‖ ≤ large₂.sc.b ^ ((2 * Cg + 2) * (D.R.m : ℝ))` using `fun a => (hs1 a).trans (pow_le_rpow hb1 (le_max_of_le_left (by positivity)) hQ (by linarith) (by linarith))`. Rewrite using `[norm_prod]`. Use `(Finset.prod_le_prod (fun _ _ => norm_nonneg _) fun a _ => h1 _).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Use `(pow_le_rpow (β := D.R.m) hb1 (by positivity) le_rfl (mul_nonneg (by linarith) (by linarith)) (by linarith)).trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Take `⟨p1, p2⟩` from `hsq_le (r := D.R.rS) (l := l) hb1 hM (by linarith) (by linarith) (hTb w)`. Take `⟨q1, q2⟩` from `hsq_le (r := D.R.rS) (l := l) hb1 hM (by linarith) (by linarith) (hTb w')`. Rewrite `hb₀` using `[hW.2.2.2.2.1]`.
+
+Rewrite `hb₁` using `[hW.2.2.2.2.2.1]`. Take `⟨c, hc, hcc⟩` from `GlobalTheory.BesselDegree.schur_fdeg hH D.R.k D.R.rS (PI.BesselPeriodGGP.eps48 _ _) W.μG hW.2.2.2.2.2.2.1`. Establish `hone : ∀ I, ‖a I‖ ≤ (large₂.sc.b ^ ((2 * Cg + 2) * (D.R.m : ℝ) ^ 2)) ^ 2 * large₂.sc.b ^ ((|CT| + 20 * max 2 Cu) * (D.R.m : ℝ) ^ 2) * large₂.sc.b ^ ((|CT| + 20 * max 2 Cu) * (D.R.m : ℝ) ^ 2) * large₂.sc.b ^ (max 2 Cu * (D.R.m : ℝ) ^ 2)` using `fun I => by`. Establish `h3 : dg' (ν + eZ I.1) ≤ ((2 * D.R.rS + D.R.k + 1 : ℝ)) ^ l * dg ν`. Rewrite using `[dg_eq S1 (fun mu R h => (hcc mu R h).1) hν0, dg_eq T1 (fun mu R h => (hcc mu R h).1) (firstNorm_add_subsetIndicator_le hνl I), mul_left_comm]`.
+
+Use `(GlobalTheory.FamilyDegreeRatio.degree_ratios _ _ _ _ _ _ _ _ _ hNum ν hν0).2.1 I.1` as an intermediate fact. Rewrite `this` using `[I.2]`. Conclude with `mul_le_mul_of_nonneg_left this hc.le`. Use `(coef_le hd0.1 (hdI I).1 (norm_nonneg _) (norm_nonneg _) (ha1 I) (hb₀ I) (hb₁ I) h3 p1 q1 (one_le_pow₀ hn1)).trans ?_` and prove the remaining obligations. Use `gcongr`.
+
+Use `(Finset.sum_le_card_nsmul _ _ _ fun I _ => hone I).trans ?_` and prove the remaining obligations. Establish `hcard : ((univ : Finset (Sub (2 * D.R.rS + D.R.k + 1) l)).card : ℝ) ≤ large₂.sc.b ^ (max 2 Cu * (D.R.m : ℝ) ^ 2)`. Use `le_trans ?_ hN` and prove the remaining obligations. Rewrite using `[Finset.card_univ, Fintype.card_finset_len, Fintype.card_fin]`. Conclude with `Nat.choose_le_pow _ _` after adjusting the coercions.
+
+Rewrite using `[nsmul_eq_mul]`. Use `(mul_le_mul_of_nonneg_right hcard (by positivity)).trans (le_of_eq ?_)` and prove the remaining obligations. Establish `hb0 : 0 < large₂.sc.b` using `by linarith`. Rewrite using `[sq (large₂.sc.b ^ _), ← Real.rpow_add hb0, ← Real.rpow_add hb0, ← Real.rpow_add hb0, ← Real.rpow_add hb0, ← Real.rpow_add hb0]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `μsec hsec γ p hγ θ' hθ' νR hνR`. Take `⟨K, hK, hMM⟩` from `hJ μsec hsec`. Rewrite using `[hsum]`. Simplify using `only [haI]`.
+
+Use `ha2 μsec K hK (hMM _ ?_ _ hA₀) (fun I hI => hMM _ ?_ _ (hAI I.1 I.2 hI)) γ p hγ θ' (lt_of_lt_of_le (by positivity) hθ'.1) νR hνR` and prove the remaining obligations. Rewrite using `[hdist]`. Use polynomial arithmetic with `[sq_nonneg (D.R.m : ℝ)]`. Rewrite using `[hdist]`. Establish `h1 : (n1 (ν + eZ I.1) : ℝ) ≤ n1 ν + l` using `by exact_mod_cast firstNorm_add_subsetIndicator_le (le_refl (n1 ν + l)) I`.
+
+Establish `h2 : (l : ℝ) ≤ (D.R.m : ℝ) ^ 2` using `by rw [hmR]; nlinarith`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem minor_line : Hyps → AmpKF → CellConv → ∀ Cg cb Cu cT CT C0 C1 : ℝ, ∃ C : ℝ, ∀ Cn : ℝ, ∃ m₀ : ℝ, ∀ (D : D7) (large₂ : SizeData₂ D) (C' Cl : ℝ), 1000 ≤ Cl → Big D large₂ Cl m₀ → cdScaleTie D → HypZ D large₂ C' Cl Cg cb Cu cT CT C0 → ∀ τ w w', HypTT D w w' → ∀ θ, normWin D large₂ C1 θ → ∀ W, GoodW D τ w w' θ W → ∀ lam', l1dist lam' (lamD D τ) ≤ Cn * D.R.k * (D.R.m : ℝ) ^ 3 → ∀ A₀ : LocS W, GoodS D lam' A₀ → ∀ l : ℕ, l ≤ D.R.rS + 1 → ∃ s : ℝ, (s = 1 ∨ s = -1) ∧ ∀ AI : Finset (Fin (2 * D.R.rS + D.R.k + 1)) → LocS W, (∀ I, I.card = l → (∃ A : LocS W, GoodS D (lam' + s • epsI I) A) → GoodS D (lam' + s • epsI I) (AI I)) → ∃ a : Finset (Fin (2 * D.R.rS + D.R.k + 1)) → ℂ, (∀ I, I.card = l → (¬ ∃ A : LocS W, GoodS D (lam' + s • epsI I) A) → a I = 0) ∧ (∑ I ∈ univ.filter (fun I => I.card = l), ‖a I‖) ≤ large₂.sc.b ^ (C * (D.R.m : ℝ) ^ 2) ∧ ∀ μsec, IsSection D.R.k D.R.rS W.z W.z' μsec → ∀ γ p, RelPt D W.z W.z' γ p → ∀ θ', normWin D large₂ C1 θ' → ∀ νR, RMeas D W γ θ' νR → DminN W.z W.z' γ l • jhUnit D w w' A₀ μsec νR γ = ∑ I ∈ univ.filter (fun I => I.card = l), a I • jhUnit D w w' (AI I) μsec νR γ := by
   intro hH hKF hCC Cg cb Cu cT CT C0 C1
   refine ⟨2 * (2 * Cg + 2) + 2 * (|CT| + 20 * max 2 Cu) + 2 * max 2 Cu, fun Cn => ?_⟩

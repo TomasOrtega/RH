@@ -8,13 +8,28 @@ namespace Formalism.CohomologicalDescent.LR
 
 open Formalism.GradedWeylDivisibility Formalism.CohomologicalDescent.Symmetrization Formalism.CohomologicalDescent.BinaryFormsExample
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lrj_liftWord_cons (p : ℕ) {q : ℕ} (x : Fin q × Fin q × ℕ) (ω : List (Fin q × Fin q × ℕ)) :
     liftWord p (x :: ω) = (Fin.natAdd p x.1, Fin.natAdd p x.2.1, x.2.2) :: liftWord p ω := rfl
 
+/- English proof (translation)
+Simplify using `[transposeWord, liftWord, List.map_reverse, List.map_map, Function.comp_def]`.
+-/
 theorem lrj_transpose_lift (p : ℕ) {q : ℕ} (ω : List (Fin q × Fin q × ℕ)) :
     transposeWord (liftWord p (transposeWord ω)) = liftWord p ω := by
   simp [transposeWord, liftWord, List.map_reverse, List.map_map, Function.comp_def]
 
+/- English proof (translation)
+Set `M : Submodule ℚ (MvPolynomial (Fin (p + q) × Fin (p + q)) ℚ)` to `(W0 p q w lam2).map (dualWeyl ℚ (p + q) (p + q) (LD.blockWt p q w lam2)).subtype`. Establish `hM : ∀ (b b' : Fin q) (k : ℕ), ∀ g ∈ M, rowDiv ℚ (Fin.natAdd p b) (Fin.natAdd p b') k g ∈ M`. Introduce `b b' k`. Use `closed_of_der _ _ M ?_ k` and prove the remaining obligations. Introduce and unpack `g ⟨x, hx, rfl⟩`.
+
+Conclude with `⟨EV p q w lam2 (Sum.inr b) (Sum.inr b') x, w_zero_stable_right_block p q w lam2 b b' x hx, rfl⟩`. Establish `hgen : ∀ ω : List (Fin q × Fin q × ℕ), applyWord ℚ (liftWord p ω) (hw ℚ le_rfl (LD.blockWt p q w lam2)) ∈ M`. Introduce `ω`. Proceed by induction on `ω with`. Consider the case `nil => exact ⟨hwV p q w lam2 ha hb, hwV_mem p q w lam2 ha hb, rfl⟩`.
+
+Consider the case `cons x ω ih`. Rewrite using `[lrj_liftWord_cons, applyWord_cons]`. Conclude with `hM _ _ _ _ ih`. Establish `hle : LevZ p q w lam2 ≤ M.restrictScalars ℤ`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨ω, rfl⟩`. Conclude with `hgen ω`. Take `⟨x, hx, hxf⟩` from `hle hf`. Conclude with `⟨⟨x, hx⟩, hxf⟩`.
+-/
 theorem levZ_sub (p q w : ℕ) (lam2 : Fin q → ℕ) (ha : Antitone lam2) (hb : ∀ b, lam2 b ≤ w)
     (f : MvPolynomial (Fin (p + q) × Fin (p + q)) ℚ) (hf : f ∈ LevZ p q w lam2) :
     ∃ y : (rationalBlockModuleSetting p q w lam2).W, ((y : VQ p q w lam2) : MvPolynomial (Fin (p + q) × Fin (p + q)) ℚ) = f := by
@@ -39,6 +54,15 @@ theorem levZ_sub (p q w : ℕ) (lam2 : Fin q → ℕ) (ha : Antitone lam2) (hb :
   obtain ⟨x, hx, hxf⟩ := hle hf
   exact ⟨⟨x, hx⟩, hxf⟩
 
+/- English proof (translation)
+Set `Z : Submodule ℚ (VQ p q w lam2)` to `W0 p q w lam2 ⊓ LinearMap.ker ((res ℚ p q).toLinearMap.comp (dualWeyl ℚ (p + q) (p + q) (LD.blockWt p q w lam2)).subtype)`. Establish `hst : ∀ b b' : Fin q, ∀ u ∈ Z, EV p q w lam2 (Sum.inr b) (Sum.inr b') u ∈ Z`. Introduce and unpack `b b' u ⟨huW, huk⟩`. Establish `huk' : res ℚ p q (u : MvPolynomial (Fin (p + q) × Fin (p + q)) ℚ) = 0` using `huk`. Use `⟨w_zero_stable_right_block p q w lam2 b b' u huW, ?_⟩` and prove the remaining obligations.
+
+Use `show res ℚ p q ((EV p q w lam2 (Sum.inr b) (Sum.inr b') u : VQ p q w lam2) : MvPolynomial (Fin (p + q) × Fin (p + q)) ℚ) = 0`. Rewrite using `[EV_coe]`. Use `show res ℚ p q (der (p + q) (p + q) (Fin.natAdd p b) (Fin.natAdd p b') u) = 0`. Rewrite using `[← rowDiv_one, res_rowDiv, huk']`. Simplify using `[rowDiv]`.
+
+Assume the negation of the conclusion as `hne`. Establish `hZ : Z ≠ ⊥`. Introduce `hb0`. Establish `: z ∈ Z` using `⟨hz, h0⟩`. Rewrite `this` using `[hb0, Submodule.mem_bot]`.
+
+Conclude with `hne this`. Establish `hh` using `real_irreducible p q w lam2 ha hb Z inf_le_left hst hZ (hwV p q w lam2 ha hb) rfl`. Establish `: res ℚ p q (hw ℚ le_rfl (LD.blockWt p q w lam2)) = 0` using `hh.2`. Rewrite `this` using `[res_hw p q w lam2 ha hb]`. Conclude with `hwNe ℚ q q le_rfl lam2 this`.
+-/
 theorem resInj (p q w : ℕ) (lam2 : Fin q → ℕ) (ha : Antitone lam2) (hb : ∀ b, lam2 b ≤ w)
     (z : VQ p q w lam2) (hz : z ∈ W0 p q w lam2)
     (h0 : res ℚ p q (z : MvPolynomial (Fin (p + q) × Fin (p + q)) ℚ) = 0) : z = 0 := by
@@ -66,6 +90,13 @@ theorem resInj (p q w : ℕ) (lam2 : Fin q → ℕ) (ha : Antitone lam2) (hb : �
   rw [res_hw p q w lam2 ha hb] at this
   exact hwNe ℚ q q le_rfl lam2 this
 
+/- English proof (translation)
+Establish `hu' : (u : MvPolynomial (Fin (p + q) × Fin (p + q)) ℚ) ≠ 0` using `fun h => hu (Subtype.ext h)`. Take `⟨d, hd⟩` from `MvPolynomial.support_nonempty.mpr hu'`. Rewrite `hd` using `[MvPolynomial.mem_support_iff]`. Establish `hκ : κ = fun a => ((Finsupp.weight (rowW (p + q) (p + q)) d (idx p q a) : ℕ) : ℤ)`. Use function extensionality and compare the values at `a`.
+
+Establish `h1` using `congrArg (fun x : VQ p q w lam2 => coeff d (x : MvPolynomial _ ℚ)) (((mem_wt p q w lam2 u κ).1 hw') a)`. Simplify using `only [EV_coe, coeff_der_diag, Submodule.coe_smul, coeff_smul, smul_eq_mul] at h1`. Establish `h2` using `mul_right_cancel₀ hd h1`. Conclude with `h2.symm` after adjusting the coercions. Use `⟨Finsupp.weight (rowW (p + q) (p + q)) d, ?_, hκ⟩` and prove the remaining obligations.
+
+Rewrite `hw'` using `[hκ]`. Conclude with `(real_weight p q w lam2 u _).2 hw'`.
+-/
 theorem wt_extract (p q w : ℕ) (lam2 : Fin q → ℕ) (u : VQ p q w lam2) (hu : u ≠ 0) (κ : Fin p ⊕ Fin q → ℤ)
     (hw' : u ∈ (rationalBlockModuleSetting p q w lam2).wt κ) :
     ∃ μN : Fin (p + q) → ℕ, IsWeightedHomogeneous (rowW (p + q) (p + q))
@@ -83,6 +114,13 @@ theorem wt_extract (p q w : ℕ) (lam2 : Fin q → ℕ) (u : VQ p q w lam2) (hu 
   rw [hκ] at hw'
   exact (real_weight p q w lam2 u _).2 hw'
 
+/- English proof (translation)
+Unfold `weyl at hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨ω, rfl⟩` from `hx`. Use `⟨applyWord ℚ (liftWord p ω) (hw ℚ le_rfl (LD.blockWt p q w lam2)), Submodule.subset_span ⟨ω, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[res_applyWord, res_hw p q w lam2 ha hb, lrc_intQ_apply, ← lclosedeq_applyWord_map, lclosedeq_hw_map]`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨d1, h1, e1⟩` from `hx`. Take `⟨d2, h2, e2⟩` from `hy`.
+
+Conclude with `⟨d1 + d2, Submodule.add_mem _ h1 h2, by rw [map_add, map_add, e1, e2]⟩`. Consider the case `smul c x _ hx`. Take `⟨d1, h1, e1⟩` from `hx`. Conclude with `⟨c • d1, Submodule.smul_mem _ c h1, by rw [map_zsmul, map_zsmul, e1]⟩`.
+-/
 theorem liftWeyl (p q w : ℕ) (lam2 : Fin q → ℕ) (ha : Antitone lam2) (hb : ∀ b, lam2 b ≤ w)
     (y : MvPolynomial (Fin q × Fin q) ℤ) (hy : y ∈ weyl ℤ q q le_rfl lam2) :
     ∃ d ∈ LevZ p q w lam2, res ℚ p q d = intQ q q y := by
@@ -101,6 +139,11 @@ theorem liftWeyl (p q w : ℕ) (lam2 : Fin q → ℕ) (ha : Antitone lam2) (hb :
     obtain ⟨d1, h1, e1⟩ := hx
     exact ⟨c • d1, Submodule.smul_mem _ c h1, by rw [map_zsmul, map_zsmul, e1]⟩
 
+/- English proof (translation)
+Introduce `d hd`. Apply `hg` to reduce the goal to its premises. Introduce `h0`. Apply `hd` to reduce the goal to its premises. Establish `h1` using `congrArg (coeff d) h`.
+
+Rewrite `h1` using `[coeff_smul, h0, smul_zero, coeff_map]`. Establish `h2 : ((coeff d g' : ℤ) : ℚ) = 0` using `by simpa using h1.symm`. Conclude with `h2` after adjusting the coercions.
+-/
 theorem lrj_hom_of_smul {σ M : Type*} [AddCommMonoid M] (wt : σ → M) (g' : MvPolynomial σ ℤ) (g : MvPolynomial σ ℚ)
     (m : ℤ) (μ : M) (hg : IsWeightedHomogeneous wt g μ) (h : (m : ℚ) • g = map (Int.castRingHom ℚ) g') :
     IsWeightedHomogeneous wt g' μ := by
@@ -113,6 +156,35 @@ theorem lrj_hom_of_smul {σ M : Type*} [AddCommMonoid M] (wt : σ → M) (g' : M
   have h2 : ((coeff d g' : ℤ) : ℚ) = 0 := by simpa using h1.symm
   exact_mod_cast h2
 
+/- English proof (translation)
+Introduce `κ hκ u hu hwt`. Establish `hanti` using `LD.ld_blockWt_anti p q w lam2 ha hb`. Distinguish the cases in `hu0 : u = 0`. Rewrite using `[hu0, smul_zero]`. Conclude with `Submodule.zero_mem _`.
+
+Establish `hu0' : (u : VQ p q w lam2) ≠ 0` using `fun h => hu0 (Subtype.ext h)`. Take `⟨μN, hμN, rfl⟩` from `wt_extract p q w lam2 _ hu0' κ hwt`. Establish `huW : (u : VQ p q w lam2) ∈ W0 p q w lam2` using `u.2`. Establish `hfirst : ∀ α : Fin p, μN (Fin.castAdd q α) = w`. Introduce `α`.
+
+Establish `h1` using `((mem_orthogonal_frame_iff p q w lam2 _).1 huW).2 α α`. Establish `h2` using `((mem_wt p q w lam2 _ _).1 hwt) (Sum.inl α)`. Rewrite `h1` using `[if_pos rfl, h2]`. Establish `h3` using `smul_left_injective ℚ hu0' h1`. Conclude with `h3` after adjusting the coercions.
+
+Set `μ2 : Fin q → ℕ` to `fun b => μN (Fin.natAdd p b)`. Establish `hblock : LD.blockWt p q w μ2 = μN`. Use function extensionality and compare the values at `a`. Use `Fin.addCases (fun α => ?_) (fun b => ?_) a` and prove the remaining obligations. Rewrite using `[LD.blockWt, Fin.append_left, hfirst]`.
+
+Rewrite using `[LD.blockWt, Fin.append_right]`. Establish `hd : LD.depth2 ξ (LD.blockWt p q w lam2) (LD.blockWt p q w μ2) ≤ i'`. Rewrite using `[hblock]`. Combine the equalities or inequalities in the displayed calculation. Use `set f : MvPolynomial (Fin (p + q) × Fin (p + q)) ℚ := ((u : VQ p q w lam2) : MvPolynomial (Fin (p + q) × Fin (p + q)) ℚ) with hf`.
+
+Establish `hfN : f ∈ dualWeyl ℚ (p + q) (p + q) (LD.blockWt p q w lam2)` using `(u : VQ p q w lam2).2`. Establish `hg` using `res_mem ℚ p q w lam2 f hfN`. Establish `hω : ∀ ω : List (Fin q × Fin q × ℕ), eval (idFrame ℚ q q) (applyWord ℚ ω (res ℚ p q f)) ∈ Zl l`. Introduce `ω`. Take `⟨y, hy⟩` from `levZ_sub p q w lam2 ha hb _ (Submodule.subset_span ⟨transposeWord ω, rfl⟩)`.
+
+Establish `hyD : y ∈ DelLR l hl p q w lam2` using `le_locSpan _ _ _ ((mem_MW p q w lam2 y).2 (by`. Rewrite using `[hy]`. Conclude with `Submodule.subset_span ⟨transposeWord ω, rfl⟩))`. Establish `h1` using `hu y hyD`. Rewrite `h1` using `[mem_one_iff]`.
+
+Establish `e1 : (formB p q w lam2).restrict (rationalBlockModuleSetting p q w lam2).W u y = formB p q w lam2 (u : VQ p q w lam2) (y : VQ p q w lam2)` using `rfl`. Rewrite `h1` using `[e1, formB_apply, hy, fock_word _ _ hanti _ hfN, lrj_transpose_lift, mul_div_assoc, div_self (ne_of_gt (hw_norm_pos _)), mul_one, ← res_eval_id ℚ p q, res_applyWord]`. Conclude with `h1`. Take `⟨m, hm, g', hg', hmg⟩` from `dual_int_loc hC lower_triangular_integral l hl q lam2 _ hg hω`. Establish `hg'h : IsWeightedHomogeneous (rowW q q) g' μ2` using `lrj_hom_of_smul _ g' _ m μ2 (res_rowHom ℚ p q μN f hμN) (by rw [hmg, lrc_intQ_apply])`.
+
+Take `⟨m', hm', hy'⟩` from `heL μ2 hd g' ⟨hg', hg'h⟩`. Take `⟨d, hdL, hdres⟩` from `liftWeyl p q w lam2 ha hb _ hy'`. Take `⟨yd, hyd⟩` from `levZ_sub p q w lam2 ha hb d hdL`. Use `set c : ℤ := m' * (l : ℤ) ^ eL * m with hc`. Set `zW : (rationalBlockModuleSetting p q w lam2).W` to `(c : ℚ) • u - yd`.
+
+Establish `hz : (zW : VQ p q w lam2) = 0`. Use `resInj p q w lam2 ha hb _ zW.2 ?_` and prove the remaining obligations. Use `show res ℚ p q ((((c : ℚ) • u - yd : (rationalBlockModuleSetting p q w lam2).W) : VQ p q w lam2) : MvPolynomial _ ℚ) = 0`. Simplify using `only [Submodule.coe_sub, Submodule.coe_smul, map_sub, map_smul]`. Rewrite using `[hyd, hdres, map_zsmul, ← hmg, ← Int.cast_smul_eq_zsmul ℚ, smul_smul, sub_eq_zero, hc]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hz2 : zW = 0` using `Subtype.ext hz`. Establish `hcu : (c : ℚ) • u = yd` using `sub_eq_zero.mp hz2`.
+
+Rewrite using `[DelLR, mem_locSpan]`. Use `⟨m' * m, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Break down `(Nat.prime_iff_prime_int.mp hl).dvd_or_dvd h with h | h` into its components or cases. Conclude with `hm' h`.
+
+Conclude with `hm h`. Rewrite using `[← Int.cast_smul_eq_zsmul ℚ, lrc_smul_def, smul_smul]`. Establish `hsc : ((m' * m : ℤ) : ℚ) * (((l : Zl l) ^ eL : Zl l) : ℚ) = (c : ℚ)`. Simplify using `[hc]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hsc, hcu]`. Conclude with `(mem_MW p q w lam2 yd).2 (by rw [hyd]; exact hdL)`.
+-/
 theorem expL_real (hC : CoeffWord) (l : ℕ) (hl : l.Prime) (p q w : ℕ) (lam2 : Fin q → ℕ) (ha : Antitone lam2)
     (hb : ∀ b, lam2 b ≤ w) (ξ : Fin (p + q) → ℤ) (i' : ℤ) (eL : ℕ)
     (heL : ∀ μ2 : Fin q → ℕ, LD.depth2 ξ (LD.blockWt p q w lam2) (LD.blockWt p q w μ2) ≤ i' →

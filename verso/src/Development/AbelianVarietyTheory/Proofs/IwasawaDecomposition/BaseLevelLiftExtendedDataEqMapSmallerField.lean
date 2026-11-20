@@ -25,6 +25,11 @@ open scoped Matrix
 
 namespace GlobalTheory.Mem.R3.DefLatBC
 
+/- English proof (translation)
+Simplify using `only [MonoidHom.inv_apply, Units.val_inv_eq_inv_val, map_inv₀]`. Use `congr 1`. Unfold `P0 LevelP.ofLocal at *`. Simplify using `only`. Rewrite using `[MonoidHom.finsetProd_apply, MonoidHom.finsetProd_apply, Units.coe_prod, Units.coe_prod, map_prod]`.
+
+Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations. Conclude with `h _ _`.
+-/
 theorem unipotentBaseLevelChar_map_coefficientField {E : Type} [Field E] [NumberField E] {K K' : Type} [Field K] [Field K'] (φ : K →+* K') (Pg : Finset (Pl E)) (r : ℕ)
     (ψ : ∀ PP : Pl E, AddChar (kP PP) K) (ψ' : ∀ PP : Pl E, AddChar (kP PP) K') (h : ∀ PP c, ψ' PP c = φ (ψ PP c))
     (g : G0 Pg r) (hg : g ∈ (P0 Pg r ψ).H) (hg' : g ∈ (P0 Pg r ψ').H) :
@@ -37,6 +42,11 @@ theorem unipotentBaseLevelChar_map_coefficientField {E : Type} [Field E] [Number
   refine Finset.prod_congr rfl fun PP _ => ?_
   exact h _ _
 
+/- English proof (translation)
+Establish `h : ∃ i, P ∈ Pr.vG i`. Unfold `Formalism.L2.Col.Primes.vGs at hP`. Break down `Finset.mem_union.1 hP with h | h` into its components or cases. Conclude with `⟨0, h⟩`. Conclude with `⟨1, h⟩`.
+
+Take `⟨i, hi⟩` from `h`. Establish `hc : Nat.card (𝓞 X.E ⧸ P.asIdeal) = Pr.g i`. Rewrite using `[← hPr.vG_norm i P hi, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Use `haveI : Finite (𝓞 X.E ⧸ P.asIdeal) := Nat.finite_of_card_ne_zero (hc ▸ (hPr.g_prime i).ne_zero)`. Conclude with `Formalism.L2.Col.owedC_exists_int (hPr.g_prime i) hc x`.
+-/
 theorem exists_int_of_mem_vGs {X : Formalism.L2.Col.Fields} {Pr : Formalism.L2.Col.Primes X} (hPr : Pr.Ok) {P : HeightOneSpectrum (𝓞 X.E)}
     (hP : P ∈ Pr.vGs) (x : 𝓞 X.E ⧸ P.asIdeal) : ∃ b : ℤ, x = b := by
   classical
@@ -51,6 +61,15 @@ theorem exists_int_of_mem_vGs {X : Formalism.L2.Col.Fields} {Pr : Formalism.L2.C
   haveI : Finite (𝓞 X.E ⧸ P.asIdeal) := Nat.finite_of_card_ne_zero (hc ▸ (hPr.g_prime i).ne_zero)
   exact Formalism.L2.Col.owedC_exists_int (hPr.g_prime i) hc x
 
+/- English proof (translation)
+Consider the cases of `B with | mk P => ?_`. Consider the cases of `B' with | mk P' => ?_`. Simplify using `only at hB`. Substitute `hB` using the available equality. Take `rfl : px' = px` from `eq_of_heq hpx`.
+
+Establish `he' : e = MulEquiv.refl _` using `MulEquiv.ext fun g => eq_of_heq (he g)`. Substitute `he'` using the available equality. Use `⟨(Subgroup.map_id _).symm, fun h => ?_⟩` and prove the remaining obligations. Use `unipotentBaseLevelChar_map_coefficientField φ _ _ (psiC I) (psiC I') (fun PP c => ?_) h.1 h.2 h.2` and prove the remaining obligations. Unfold `psiC`.
+
+Use `split_ifs with hP hQ hQ`. Take `⟨b, hb⟩` from `exists_int_of_mem_vGs hPr hP (Formalism.L2.Col.redP PP P'.host.xi0 * c)`. Apply `RingHom.injective (Base.embLL _)` to reduce the goal to its premises. Conclude with `(hw' ⟨PP, hP⟩ c b hb).trans ((hφ _).trans (hw ⟨PP, hP⟩ c b hb)).symm`. Conclude with `absurd hP hQ`.
+
+Conclude with `absurd hQ hP`. Rewrite using `[AddChar.one_apply, AddChar.one_apply, map_one]`.
+-/
 theorem baseLevels_correspond_weilAdditiveChars {B B' : Base} {px : PreX B.toPre} {px' : PreX B'.toPre} (I : ColIn B px) (I' : ColIn B' px')
     (hB : B'.toPre = B.toPre) (hpx : HEq px' px) (hPr : (B.primes px).Ok) (hw : I.Ch.WeilTied B.embLL B.host.xi0)
     (hw' : I'.Ch.WeilTied B'.embLL B'.host.xi0)
@@ -78,6 +97,9 @@ theorem baseLevels_correspond_weilAdditiveChars {B B' : Base} {px : PreX B.toPre
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _`. Use `StepW.of_all fun K B' f' T' w' _ _ _ B f T w hE _ _ hpx Z hX Wt z _ _ _ _ Z' hX' _ _ _ z' _ _ j j' _ φ hφ e he => ?_` and prove the remaining obligations. Conclude with `baseLevels_correspond_weilAdditiveChars w.I w'.I hE.1 hpx w.l.pr w.ok.weil w'.ok.weil φ hφ e he`.
+-/
 theorem lev_ext : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → (StepW Pinned fun K B' f' T' w' => ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T), Enl0 B B' →
   HEq f' f → Pinned K B f T w → HEq w'.px w.px → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl)
     (z : Dat (w.st Z) w.I hX T Wt), GrpTrue Z.N f → GrpAt (w.st Z) w.I → Fine z → HoldsL z.R z.F →

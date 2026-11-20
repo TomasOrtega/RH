@@ -15,6 +15,15 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.Flat.GenAgree
 
+/- English proof (translation)
+Establish `hA : (exteriorPower.ιMulti K n).compLinearMap (Fintype.linearCombination K z) = (Matrix.detRowAlternating : (Fin n → K) [⋀^Fin n]→ₗ[K] K).smulRight (exteriorPower.ιMulti K n z)`. Use `(Pi.basisFun K (Fin n)).ext_alternating fun u hu => ?_` and prove the remaining obligations. Set `s : Equiv.Perm (Fin n)` to `Equiv.ofBijective u (Finite.injective_iff_bijective.1 hu)`. Establish `e : (fun i => Pi.basisFun K (Fin n) (u i)) = (fun i => Pi.basisFun K (Fin n) i) ∘ s` using `rfl`. Rewrite using `[e, AlternatingMap.map_perm, AlternatingMap.map_perm]`.
+
+Use `congr 1`. Establish `e1 : (Matrix.detRowAlternating : (Fin n → K) [⋀^Fin n]→ₗ[K] K) (fun i => Pi.basisFun K (Fin n) i) = 1`. Express the relevant statement in the definitionally equal form `Matrix.det (Matrix.of fun i => Pi.basisFun K (Fin n) i) = 1`. Rewrite using `[show (Matrix.of fun i => Pi.basisFun K (Fin n) i) = 1 from by`. Use extensionality with `i j`.
+
+Simplify using `[Matrix.one_apply, Pi.single_apply, eq_comm], Matrix.det_one]`. Rewrite using `[AlternatingMap.smulRight_apply, e1, one_smul, AlternatingMap.compLinearMap_apply]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+
+Conclude with `AlternatingMap.congr_fun hA M`.
+-/
 theorem iotaMulti_rows {K V : Type} [Field K] [AddCommGroup V] [Module K V] {n : ℕ}
     (M : Matrix (Fin n) (Fin n) K) (z : Fin n → V) :
     exteriorPower.ιMulti K n (fun i => ∑ j, M i j • z j) = M.det • exteriorPower.ιMulti K n z := by
@@ -39,6 +48,13 @@ theorem iotaMulti_rows {K V : Type} [Field K] [AddCommGroup V] [Module K V] {n :
 
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
 
+/- English proof (translation)
+Introduce `h0`. Take `⟨c, hc, hc0⟩` from `Matrix.exists_vecMul_eq_zero_iff.2 h0`. Establish `h1 : ∑ i, c i • ∑ j, P i j • v j = 0`. Simplify using `only [Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+
+Simplify using `only [← Finset.sum_smul]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Use `congrFun hc0 j` as an intermediate fact. Simplify using `only [Matrix.vecMul, dotProduct, Pi.zero_apply] at this`. Rewrite using `[this, zero_smul]`.
+
+Conclude with `hc (funext (Fintype.linearIndependent_iff.1 h c h1))`.
+-/
 theorem det_ne_zero_of_li {M : Type} [AddCommGroup M] [Module Ω M] {n : ℕ} {v : Fin n → M}
     (hv : LinearIndependent Ω v) {P : Matrix (Fin n) (Fin n) Ω}
     (h : LinearIndependent Ω fun i => ∑ j, P i j • v j) : P.det ≠ 0 := by
@@ -54,6 +70,11 @@ theorem det_ne_zero_of_li {M : Type} [AddCommGroup M] [Module Ω M] {n : ℕ} {v
     rw [this, zero_smul]
   exact hc (funext (Fintype.linearIndependent_iff.1 h c h1))
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨A, hA, rfl⟩`. Take `⟨c, hc, -, -, e⟩` from `GlobalTheory.CompanionTheory.Ggeo.FrameDet.det_eq_unit_mul Ω F (regAt ξ x) n u A₀ A hu h.1 hA.1 (h.2.symm.trans hA.2)`. Rewrite using `[e]`.
+
+Conclude with `Submodule.mem_span_singleton.2 ⟨⟨c, hc⟩, rfl⟩`. Conclude with `Submodule.span_mono (by rintro _ rfl; exact ⟨A₀, h, rfl⟩)`.
+-/
 theorem detLat_apply_eq {F : Type} [AddCommGroup F] [Module Ω F] {Λ : Lat ξ F} {n : ℕ} {u : Fin n → F}
     (hu : LinearIndependent Ω u) {x : Cpt ξ} {A₀ : Matrix (Fin n) (Fin n) Ω}
     (h : Λ.IsFrameAt (fun i => ∑ j, A₀ i j • u j) x) :
@@ -66,6 +87,9 @@ theorem detLat_apply_eq {F : Type} [AddCommGroup F] [Module Ω F] {Λ : Lat ξ F
     exact Submodule.mem_span_singleton.2 ⟨⟨c, hc⟩, rfl⟩
   · exact Submodule.span_mono (by rintro _ rfl; exact ⟨A₀, h, rfl⟩)
 
+/- English proof (translation)
+Apply the tactic sequence `apply le_antisymm <;> rw [Submodule.span_singleton_le_iff_mem, Submodule.mem_span_singleton]`. Conclude with `⟨⟨c, hc⟩, rfl⟩`. Conclude with `⟨⟨c⁻¹, hc'⟩, by change c⁻¹ • c • y = y; rw [inv_smul_smul₀ h0]⟩`.
+-/
 theorem span_smul_of_unit {F : Type} [AddCommGroup F] [Module Ω F] {x : Cpt ξ} {c : Ω} (hc : c ∈ regAt ξ x)
     (hc' : c⁻¹ ∈ regAt ξ x) (h0 : c ≠ 0) (y : F) :
     Submodule.span (regAt ξ x) {c • y} = Submodule.span (regAt ξ x) {y} := by
@@ -77,6 +101,43 @@ section Key
 variable [CharZero Ω] {E : Type} [Field E] [NumberField E] {V : Type} [AddCommGroup V] [Module Ω V]
   [FiniteDimensional Ω V] {L : Lat ξ V} {ρ : 𝓞 E →+* Module.End Ω V} {bar : 𝓞 E ≃+* 𝓞 E} {p q : ℕ}
 
+/- English proof (translation)
+Take `⟨huli, husp, hinv⟩` from `GlobalTheory.CompanionTheory.Ar.Flat.AdaptedSpan.adapted_span X Ω ξ E V L ρ bar p q (p + q) 𝓗 σ σ' v w u h1 h2 hv hvs hw hws had`. Take `⟨hq, -, hmap⟩` from `GlobalTheory.CompanionTheory.Ar.Flat.QuotEig.quot_eig X Ω ξ E V L ρ bar (p + q) 𝓗 σ x (fun a => (hreg a).1)`. Take `⟨-, hL', -⟩` from `GlobalTheory.CompanionTheory.Ar.Flat.QuotEig.quot_eig X Ω ξ E V L ρ bar (p + q) 𝓗 σ' x (fun a => (hreg a).2)`. Establish `hP0` using `det_ne_zero_of_li hv hP.1`. Establish `hQ0` using `det_ne_zero_of_li hw hQ.1`.
+
+Establish `hdual : ∀ φ : Module.Dual Ω V, ((0 : V), φ) ∈ 𝓗.HL x ↔ φ ∈ L.dual x` using `fun φ => by`. Rewrite using `[← congrFun 𝓗.comap_inr x]`. Both sides reduce to the same expression. Set `C : Matrix (Fin q) (Fin q) Ω` to `(Q.transpose)⁻¹`. Establish `hCQ : C * Q.transpose = 1` using `Matrix.nonsing_inv_mul _ (by rw [Matrix.det_transpose]; exact isUnit_iff_ne_zero.2 hQ0)`.
+
+Establish `hCd : C.det * Q.det = 1`. Use `congrArg Matrix.det hCQ` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, Matrix.det_transpose, Matrix.det_one]`. Then use the resulting hypothesis. Establish `hC0 : C.det ≠ 0` using `left_ne_zero_of_mul_eq_one hCd`. Set `φ : Fin q → Module.Dual Ω V` to `fun k => (u (Fin.natAdd p k)).2`.
+
+Set `ψ : Fin q → Module.Dual Ω V` to `fun j => ∑ k, C j k • φ k`. Set `b : Fin q → V` to `fun l => ∑ m, Q l m • w m`. Set `c : Fin q → V × Module.Dual Ω V` to `fun j => ∑ k, C j k • u (Fin.natAdd p k)`. Establish `hc : ∀ j, c j = ((0 : V), ψ j)` using `fun j => by`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+
+Simplify using `only [c, Prod.fst_sum, Prod.smul_fst, (had.2.2 _).1, smul_zero, Finset.sum_const_zero]`. Simplify using `only [c, ψ, φ, Prod.snd_sum, Prod.smul_snd]`. Establish `hceig : ∀ j, c j ∈ HT.eigSp 𝓗.ρH σ` using `fun j => Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (had.1 _)`. Establish `hψinv : ∀ j, ψ j ∘ₗ HT.eigProj ρ σ' = ψ j` using `fun j => hinv (ψ j) (hc j ▸ hceig j)`. Establish `hψb : ∀ j l, ψ j (b l) = if j = l then 1 else 0` using `fun j l => by`.
+
+Establish `e1 : ∀ k, φ k (b l) = Q l k` using `fun k => by`. Simplify using `only [b, map_sum, map_smul, φ, (had.2.2 k).2, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Simplify using the standard rewrite rules. Establish `e2 : ψ j (b l) = (C * Q.transpose) j l`. Simplify using `only [ψ, LinearMap.sum_apply, LinearMap.smul_apply, e1, smul_eq_mul, Matrix.mul_apply, Matrix.transpose_apply]`.
+
+Rewrite using `[e2, hCQ, Matrix.one_apply]`. Establish `hbsp : Submodule.span Ω (Set.range b) = HT.eigSp ρ σ'`. Use `Submodule.eq_of_le_of_finrank_eq ?_ ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨l, rfl⟩`.
+
+Conclude with `Submodule.sum_mem _ fun m _ => Submodule.smul_mem _ _ (hws ▸ Submodule.subset_span ⟨m, rfl⟩)`. Rewrite using `[finrank_span_eq_card hQ.1, ← hws, finrank_span_eq_card hw]`. Establish `hbL : ∀ l, b l ∈ L x` using `fun l => by`. Establish `: b l ∈ (L.inter (HT.eigSp ρ σ')) x` using `hQ.2 ▸ Submodule.subset_span ⟨l, rfl⟩`. Conclude with `this.1`.
+
+Establish `hcH : ∀ j, c j ∈ 𝓗.quot σ x` using `fun j => by`. Use `(hq _).2 ⟨?_, hceig j⟩` and prove the remaining obligations. Rewrite using `[hc j, hdual]`. Introduce `z hz`. Establish `e1 : ψ j z = ψ j (HT.eigProj ρ σ' z)` using `(LinearMap.congr_fun (hψinv j) z).symm`.
+
+Establish `e2 : HT.eigProj ρ σ' z ∈ (L.inter (HT.eigSp ρ σ')) x` using `⟨hL' z hz, HT.LatBasic.eigProj_mem ρ σ' z⟩`. Rewrite `e2` using `[hQ.2]`. Take `⟨r, hr⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 e2`. Rewrite using `[e1, ← hr, map_sum]`. Use `sum_mem fun l _ => ?_` and prove the remaining obligations.
+
+Establish `e3 : ψ j ((r l) • b l) = (r l : Ω) * ψ j (b l)`. Express the relevant statement in the definitionally equal form `ψ j ((r l : Ω) • b l) = _`. Rewrite using `[map_smul, smul_eq_mul]`. Rewrite using `[e3, hψb]`. Use `split_ifs`.
+
+Simplify using `using (r l).2`. Simplify using the standard rewrite rules. Establish `hker : ∀ y ∈ 𝓗.quot σ x, LinearMap.fst Ω V (Module.Dual Ω V) y = 0 → y ∈ Submodule.span (regAt ξ x) (Set.range c)`. Introduce and unpack `⟨y₁, θ⟩ hy hy0`. Take `rfl : y₁ = 0` from `hy0`.
+
+Take `⟨hyH, hye⟩` from `(hq _).1 hy`. Establish `hθ` using `hinv θ hye`. Establish `hθL` using `(hdual θ).1 hyH`. Establish `hreg' : ∀ j, θ (b j) ∈ regAt ξ x` using `fun j => hθL _ (hbL j)`. Establish `e : ((0 : V), θ) = ∑ j, (⟨θ (b j), hreg' j⟩ : regAt ξ x) • c j`.
+
+Establish `e0 : ∀ j, (⟨θ (b j), hreg' j⟩ : regAt ξ x) • c j = θ (b j) • c j` using `fun j => rfl`. Simplify using `only [e0, hc]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `[Prod.fst_sum]`. Simplify using `only [Prod.snd_sum, Prod.smul_snd]`.
+
+Use `LinearMap.ext fun z => ?_` and prove the remaining obligations. Establish `hz : HT.eigProj ρ σ' z ∈ Submodule.span Ω (Set.range b)` using `hbsp ▸ HT.LatBasic.eigProj_mem ρ σ' z`. Take `⟨d, hd⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 hz`. Establish `e1 : θ z = θ (HT.eigProj ρ σ' z)` using `(LinearMap.congr_fun hθ z).symm`. Establish `e2 : ∀ j, ψ j z = d j` using `fun j => by`.
+
+Establish `: ψ j z = ψ j (HT.eigProj ρ σ' z)` using `(LinearMap.congr_fun (hψinv j) z).symm`. Rewrite using `[this, ← hd, map_sum]`. Simplify using `[hψb]`. Rewrite using `[e1, ← hd, map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [LinearMap.smul_apply, map_smul, e2, smul_eq_mul]`. Conclude with `mul_comm _ _`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Take `⟨A, hAd, hAl, hAs⟩` from `GlobalTheory.CompanionTheory.Ggeo.ext_frame_of_quotient_kernel Ω (V × Module.Dual Ω V) V (regAt ξ x) (𝓗.quot σ x) (LinearMap.fst Ω V (Module.Dual Ω V)) p q u v P C huli hv (fun y hy => husp ▸ ((hq y).1 hy).2) (fun i => had.2.1 i) (fun j => (had.2.2 j).1) hP0 hC0 (hmap.trans hP.2) …`.
+
+Use `⟨A, ⟨hAl, hAs⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hAd, eq_div_iff hQ0, mul_assoc, hCd, mul_one]`.
+-/
 theorem key (𝓗 : HodgeLat L ρ bar (p + q)) {σ σ' : E →+* Ω} {v : Fin p → V} {w : Fin q → V}
     {u : Fin (p + q) → V × Module.Dual Ω V} {x : Cpt ξ}
     (h1 : ∀ a : 𝓞 E, σ' (a : E) = σ (bar a : 𝓞 E)) (h2 : ∀ a, bar (bar a) = a)
@@ -185,6 +246,21 @@ theorem key (𝓗 : HodgeLat L ρ bar (p + q)) {σ σ' : E →+* Ω} {v : Fin p 
 
 end Key
 
+/- English proof (translation)
+Introduce `X Ω _ ξ _ E _ _ V _ _ _ L ρ bar p q 𝓗 σ σ' v w u x t hξ h1 h2 hreg hv hvs hw hws had`. Use `haveI : IsLocalRing (regAt ξ x) := EigSplit.isLocalRing_regAt x`. Take `⟨huli, husp, hinv⟩` from `GlobalTheory.CompanionTheory.Ar.Flat.AdaptedSpan.adapted_span X Ω ξ E V L ρ bar p q (p + q) 𝓗 σ σ' v w u h1 h2 hv hvs hw hws had`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨ht, α, β, hα, hβ, hA, hB, e⟩`.
+
+Take `⟨P, hPl, hPs, c, hc, hc', hc0, hPd⟩` from `GlobalTheory.CompanionTheory.Ar.Flat.WedgeFrame.wedge_frame Ω V (regAt ξ x) ((L.inter (HT.eigSp ρ σ)) x) p v α hv (fun y hy => hvs ▸ hy.2) hα hA`. Take `⟨Q, hQl, hQs, d, hd, hd', hd0, hQd⟩` from `GlobalTheory.CompanionTheory.Ar.Flat.WedgeFrame.wedge_frame Ω V (regAt ξ x) ((L.inter (HT.eigSp ρ σ')) x) q w β hw (fun y hy => hws ▸ hy.2) hβ hB`. Take `⟨A, hAf, hAd⟩` from `key 𝓗 h1 h2 hreg hv hvs hw hws had (P := P) (Q := Q) ⟨hPl, hPs⟩ ⟨hQl, hQs⟩`. Use `⟨ht, ?_⟩` and prove the remaining obligations. Rewrite using `[detLat_apply_eq huli hAf]`.
+
+Establish `e1 : A.det = (c / d) • t`. Establish `: t = α / β` using `by rw [← e]; field_simp`. Rewrite using `[hAd, hPd, hQd, this, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e1, span_smul_of_unit (div_eq_mul_inv c d ▸ mul_mem hc hd') (by rw [inv_div, div_eq_mul_inv]; exact mul_mem hd hc') (div_ne_zero hc0 hd0)]`.
+
+Introduce and unpack `hfr ⟨ht, hsp⟩`. Establish `hLσ` using `(GlobalTheory.CompanionTheory.Ar.Flat.QuotEig.quot_eig X Ω ξ E V L ρ bar (p + q) 𝓗 σ x (fun a => (hreg a).1)).2.1`. Establish `hLσ'` using `(GlobalTheory.CompanionTheory.Ar.Flat.QuotEig.quot_eig X Ω ξ E V L ρ bar (p + q) 𝓗 σ' x (fun a => (hreg a).2)).2.1`. Take `⟨P, hP⟩` from `GlobalTheory.CompanionTheory.Ar.Flat.InterFrame.exists_frame_inter X Ω ξ E V L ρ bar p (p + q) 𝓗 σ v x hLσ hv hvs hfr`. Take `⟨Q, hQ⟩` from `GlobalTheory.CompanionTheory.Ar.Flat.InterFrame.exists_frame_inter X Ω ξ E V L ρ bar q (p + q) 𝓗 σ' w x hLσ' hw hws hfr`.
+
+Take `⟨A, hAf, hAd⟩` from `key 𝓗 h1 h2 hreg hv hvs hw hws had hP hQ`. Establish `hP0` using `det_ne_zero_of_li hv hP.1`. Establish `hQ0` using `det_ne_zero_of_li hw hQ.1`. Establish `hA0 : A.det ≠ 0` using `by rw [hAd]; exact div_ne_zero hP0 hQ0`. Rewrite `hsp` using `[detLat_apply_eq huli hAf]`.
+
+Take `⟨y, hy, e⟩` from `ZUnit.exists_of_span_eq (p := x) ht hsp.symm`. Establish `et : t = y * (P.det / Q.det)` using `by rw [e, hAd, smul_eq_mul]`. Establish `hy0` using `hy.1`. Use `⟨ht, P.det, y⁻¹ * Q.det, hP0, mul_ne_zero (inv_ne_zero hy0) hQ0, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Lat.wedge_eq_span_of_isFrameAt X Ω ξ V _ p _ x hP, iotaMulti_rows]`.
+
+Rewrite using `[Lat.wedge_eq_span_of_isFrameAt X Ω ξ V _ q _ x hQ, iotaMulti_rows, mul_smul, span_smul_of_unit hy.2.2 (by rw [inv_inv]; exact hy.2.1) (inv_ne_zero hy0)]`. Rewrite using `[et]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem hodge_lattice_generic_agree : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) [CharZero Ω] (E : Type) [Field E] [NumberField E] (V : Type) [AddCommGroup V] [Module Ω V] [FiniteDimensional Ω V] (L : Lat ξ V) (ρ : 𝓞 E →+* Module.End Ω V) (bar : 𝓞 E ≃+* 𝓞 E) (p q : ℕ) (𝓗 : HodgeLat L ρ bar (p + q)) (σ σ' : E →+* Ω) (v : Fin p → V) (w : Fin q → V) (u : Fin (p + q) → V × Module.Dual Ω V) (x : Cpt ξ) (t : Ω), IsCptGen ξ → (∀ a : 𝓞 E, σ' (a : E) = σ (bar a : 𝓞 E)) → (∀ a, bar (bar a) = a) → (∀ a : E, σ a ∈ regAt ξ x ∧ σ' a ∈ regAt ξ x) → LinearIndependent Ω v → Submodule.span Ω (Set.range v) = HT.eigSp ρ σ → LinearIndependent Ω w → Submodule.span Ω (Set.range w) = HT.eigSp ρ σ' → IsAdapted 𝓗.ρH σ v w u → ((t ≠ 0 ∧ IsCoeffAt (L.inter (HT.eigSp ρ σ)) (L.inter (HT.eigSp ρ σ')) p q (exteriorPower.ιMulti Ω p v) (exteriorPower.ιMulti Ω q w) x t⁻¹ → (detLat (𝓗.quot σ) u).IsGenAt x t) ∧ ((∃ (n : ℕ) (b : Fin n → V), L.IsFrameAt b x) → (detLat (𝓗.quot σ) u).IsGenAt x t → t ≠ 0 ∧ IsCoeffAt (L.inter (HT.eigSp ρ σ)) (L.inter (HT.eigSp ρ σ')) p q (exteriorPower.ιMulti Ω p v) (exteriorPower.ιMulti Ω q w) x t⁻¹)) := by
   intro X Ω _ ξ _ E _ _ V _ _ _ L ρ bar p q 𝓗 σ σ' v w u x t hξ h1 h2 hreg hv hvs hw hws had
   haveI : IsLocalRing (regAt ξ x) := EigSplit.isLocalRing_regAt x
@@ -222,6 +298,9 @@ theorem hodge_lattice_generic_agree : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω
         span_smul_of_unit hy.2.2 (by rw [inv_inv]; exact hy.2.1) (inv_ne_zero hy0)]
     · rw [et]; field_simp
 
+/- English proof (translation)
+Introduce `X Ω _ ξ _ E _ _ V _ _ _ L ρ bar p q 𝓗 σ σ' v w u x t hξ h1 h2 hreg hv hvs hw hws had`. Establish `h` using `hodge_lattice_generic_agree X Ω ξ E V L ρ bar p q 𝓗 σ σ' v w u x t hξ h1 h2 hreg hv hvs hw hws had`. Take `⟨U, hU, b, -, hb⟩` from `𝓗.vb x trivial`. Conclude with `⟨h.2 ⟨_, b, hb x trivial hU⟩, h.1⟩`.
+-/
 theorem generic_agree : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) [CharZero Ω] (E : Type) [Field E] [NumberField E] (V : Type) [AddCommGroup V] [Module Ω V] [FiniteDimensional Ω V] (L : Lat ξ V) (ρ : 𝓞 E →+* Module.End Ω V) (bar : 𝓞 E ≃+* 𝓞 E) (p q : ℕ) (𝓗 : HodgeLat L ρ bar (p + q)) (σ σ' : E →+* Ω) (v : Fin p → V) (w : Fin q → V) (u : Fin (p + q) → V × Module.Dual Ω V) (x : Cpt ξ) (t : Ω), IsCptGen ξ → (∀ a : 𝓞 E, σ' (a : E) = σ (bar a : 𝓞 E)) → (∀ a, bar (bar a) = a) → (∀ a : E, σ a ∈ regAt ξ x ∧ σ' a ∈ regAt ξ x) → LinearIndependent Ω v → Submodule.span Ω (Set.range v) = HT.eigSp ρ σ → LinearIndependent Ω w → Submodule.span Ω (Set.range w) = HT.eigSp ρ σ' → IsAdapted 𝓗.ρH σ v w u → ((detLat (𝓗.quot σ) u).IsGenAt x t ↔ t ≠ 0 ∧ IsCoeffAt (L.inter (HT.eigSp ρ σ)) (L.inter (HT.eigSp ρ σ')) p q (exteriorPower.ιMulti Ω p v) (exteriorPower.ιMulti Ω q w) x t⁻¹) := by
   intro X Ω _ ξ _ E _ _ V _ _ _ L ρ bar p q 𝓗 σ σ' v w u x t hξ h1 h2 hreg hv hvs hw hws had
   have h := hodge_lattice_generic_agree X Ω ξ E V L ρ bar p q 𝓗 σ σ' v w u x t hξ h1 h2 hreg hv hvs hw hws had

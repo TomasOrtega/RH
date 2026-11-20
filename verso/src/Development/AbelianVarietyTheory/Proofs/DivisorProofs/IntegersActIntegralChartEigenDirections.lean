@@ -14,9 +14,15 @@ namespace GlobalTheory.ChartAct
 open NumberField MvPowerSeries IsLocalRing ReciprocityTheory.PGsh ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.FGDepth GlobalTheory.CharDepth
   GlobalTheory.FactorDepth GlobalTheory.IndefiniteRowSideFullHecke.TypedPartSplitPrimes GlobalTheory.PrimePart GlobalTheory.LawLog
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem logOf_eq {k : Type} [CommRing k] [Algebra ℚ k] {d : ℕ} (G : Germ.FGLaw k d) (i : Fin d) :
     GlobalTheory.FormalLog.logOf G i = ReciprocityTheory.ChartRestriction.G.TB.LogPf.logOf G i := rfl
 
+/- English proof (translation)
+Rewrite using `[subst_oneVar _ cc_oneVar _ (A.const a), logOf_eq, GlobalTheory.TwistCheck.log_act, ← coe_substAlgHom hs_oneVar, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_eq_C_mul, map_smul]`. Both sides reduce to the same expression.
+-/
 theorem subst_act_log {k O : Type} [CommRing k] [Algebra ℚ k] [CommRing O] {d : ℕ} (G : Germ.FGLaw k d)
     (A : Germ.OAct O G) (a : O) (b : Fin d) :
     subst (fun i => subst (oneVar k d) (A.act a i)) (subst (oneVar k d) (GlobalTheory.FormalLog.logOf G b)) =
@@ -27,6 +33,19 @@ theorem subst_act_log {k O : Type} [CommRing k] [Algebra ℚ k] [CommRing O] {d 
   rw [← smul_eq_C_mul, map_smul]
   rfl
 
+/- English proof (translation)
+Use `⟨⟨fun b => ?_, fun b α => ?_, fun b => ?_⟩, fun ℓ => ?_⟩` and prove the remaining obligations. Use `constantCoeff_subst_eq_zero hs_oneVar cc_oneVar ?_` and prove the remaining obligations. Rewrite using `[constantCoeff_map, (GlobalTheory.IntChartCheck.const_zero Ch).2 a b, map_zero]`. Establish `e : actX Ch X a b = map (jX X) (subst (oneVar T.V _) (Ch.actT a b))`. Rewrite using `[actX, map_subst hs_oneVar]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `q`. Simplify using `[oneVar]`. Rewrite using `[e, coeff_map]`. Conclude with `isIntV_jX X _`.
+
+Set `_` to `io.toAlgebra`. Set `A : Germ.OAct (𝓞 E) (lawX Ch X)` to `GlobalTheory.FBMap.mapAct X.ιF Ch.ch.B.A`. Establish `hA : ∀ i, A.act a i = map (jX X) (Ch.actT a i)` using `fun i => by show map X.ιF (Ch.ch.B.A.act a i) = _`. Rewrite using `[Ch.gen.1.2.1 a i, jX, map_comp]`. Both sides reduce to the same expression.
+
+Establish `h` using `subst_act_log (lawX Ch X) A a b`. Simplify using `only [hA, coeff_map] at h`. Conclude with `h`. Take `⟨χ, hχ⟩` from `Formalism.MainNotions.ModuliIntegralCharts.H1.FrTanDir.exists_char c T io ℓ.1`. Establish `h` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.EigD.eigDir_int Xo c T io y Ch ℓ a (χ a) (hχ a)`.
+
+Establish `hz : embX io X ℓ.1 a = jX X (χ a)`. Rewrite using `[jX, RingHom.comp_apply, hχ]`. Both sides reduce to the same expression. Use function extensionality and compare the values at `i`. Establish `h2` using `congrArg (jX X) (congrFun h i)`.
+
+Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, map_sum, map_mul, Pi.smul_apply, smul_eq_mul] at h2`. Rewrite using `[hz]`. Simplify `h2` using `only [Matrix.mulVec, dotProduct, tanX, lieVec, Matrix.of_apply, Pi.smul_apply, smul_eq_mul]`.
+-/
 theorem isIntHom_actX_and_eigen (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)
     (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (p : ℕ) [Fact p.Prime] (T : CDVR)
     (io : c.F →+* T.Fr) (X : ValExt T p) (y : IntFr Xo c T io) (Ch : IntegralChartA3 Xo c T io y) (a : 𝓞 E) :

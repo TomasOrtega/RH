@@ -7,6 +7,15 @@ open scoped ContDiff ENNReal Matrix
 
 namespace GlobalTheory.UnfoldComplex
 
+/- English proof (translation)
+Establish `hmap : μ.map f = Measure.sum fun i => ν.map (g i)`. Use extensionality with `s hs`. Establish `hφ : Measurable (s.indicator (1 : ℂ → ℝ≥0∞))` using `measurable_one.indicator hs`. Establish `h1` using `H _ hφ`. Rewrite `h1` using `[lintegral_tsum (f := fun i z => s.indicator (1 : ℂ → ℝ≥0∞) (g i z)) fun i => (hφ.comp (hg i)).aemeasurable]`.
+
+Rewrite using `[Measure.sum_apply _ hs, ← lintegral_indicator_one hs, lintegral_map hφ hf, h1]`. Use `tsum_congr fun i => ?_` and prove the remaining obligations. Rewrite using `[← lintegral_indicator_one hs, lintegral_map hφ (hg i)]`. Establish `hfin : ∑' i, ∫⁻ z, ‖g i z‖ₑ ∂ν ≠ ⊤`. Establish `h1` using `H (fun w => ‖w‖ₑ) measurable_enorm`.
+
+Rewrite `h1` using `[lintegral_tsum fun i => (hg i).enorm.aemeasurable]`. Rewrite using `[← h1]`. Conclude with `hi.2.ne`. Establish `hid : Integrable (fun w : ℂ => w) (μ.map f)` using `(integrable_map_measure aestronglyMeasurable_id hf.aemeasurable).mpr hi`. Rewrite using `[integral_tsum (fun i => (hg i).aestronglyMeasurable) hfin]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite `hid`, the goal using `[hmap]`. Conclude with `integral_sum_measure hid`. Use `_ = ∑' i, ∫ z, g i z ∂ν := tsum_congr fun i => integral_map (hg i).aemeasurable aestronglyMeasurable_id`.
+-/
 theorem integral_eq_integral_tsum_of_lintegral {α ι : Type*} [MeasurableSpace α] [Countable ι]
     (μ ν : Measure α) (f : α → ℂ) (g : ι → α → ℂ) (hf : Measurable f) (hg : ∀ i, Measurable (g i))
     (H : ∀ φ : ℂ → ℝ≥0∞, Measurable φ → ∫⁻ z, φ (f z) ∂μ = ∫⁻ z, ∑' i, φ (g i z) ∂ν)
@@ -39,6 +48,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 omit [NumberField E] [IsCMField E] in
 
+/- English proof (translation)
+Use `continuous_pi fun τ => ?_` and prove the remaining obligations. Use `show Continuous fun y : Frame Ψ r => ((δ : Matrix (Fin r) (Fin r) E).map τ.1 * mat y τ : Matrix (Fin r) (Fin r) ℂ)`. Establish `hM : Continuous fun y : Frame Ψ r => mat y τ` using `continuous_apply τ`. Conclude with `continuous_const.matrix_mul hM`.
+-/
 theorem continuous_lact {r : ℕ} {Ψ : Finset (E →+* ℂ)} (δ : GL (Fin r) E) :
     Continuous (fun y : Frame Ψ r => lact δ y) := by
   refine continuous_pi fun τ => ?_
@@ -47,6 +59,11 @@ theorem continuous_lact {r : ℕ} {Ψ : Finset (E →+* ℂ)} (δ : GL (Fin r) E
   have hM : Continuous fun y : Frame Ψ r => mat y τ := continuous_apply τ
   exact continuous_const.matrix_mul hM
 
+/- English proof (translation)
+Introduce `H r X x0 ho FF hFF h hm hinv hint`. Use `FundSetPf.countable_GL (E := E) (r := r)` as an intermediate fact. Establish `hc : Measurable (cpt X x0)` using `(FundSetPf.cont_cpt X x0).measurable`. Use `integral_eq_integral_tsum_of_lintegral (muF X x0) ((muF X x0).restrict FF) (fun z => h (cpt X x0 z)) (fun (γ : X.Γ) z => h (lact γ.1 (cpt X x0 z))) (hm.comp hc) (fun γ => hm.comp ((continuous_lact γ.1).measurable.comp hc)) ?_ hint` and prove the remaining obligations. Introduce `φ hφ`.
+
+Conclude with `H r X x0 ho FF hFF (fun x => φ (h x)) (hφ.comp hm) (fun x hx b hb => by simp only [hinv x hx b hb])`.
+-/
 theorem unfold_integral :
     (∀ (r : ℕ) (X : Data E r) (x0 : Frame X.Ψ r), IsOrth X x0 → ∀ FF, IsFundSet X x0 FF → ∀ ψ : Frame X.Ψ r → ℝ≥0∞, Measurable ψ → (∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, ψ (rmul x b) = ψ x) → ∫⁻ z, ψ (cpt X x0 z) ∂muF X x0 = ∫⁻ z in FF, ∑' γ : X.Γ, ψ (lact γ.1 (cpt X x0 z)) ∂muF X x0) → (∀ (r : ℕ) (X : Data E r) (x0 : Frame X.Ψ r), IsOrth X x0 → ∀ FF, IsFundSet X x0 FF → ∀ h : Frame X.Ψ r → ℂ, Measurable h → (∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, h (rmul x b) = h x) → Integrable (fun z => h (cpt X x0 z)) (muF X x0) → ∫ z, h (cpt X x0 z) ∂muF X x0 = ∫ z in FF, ∑' γ : X.Γ, h (lact γ.1 (cpt X x0 z)) ∂muF X x0) := by
   intro H r X x0 ho FF hFF h hm hinv hint

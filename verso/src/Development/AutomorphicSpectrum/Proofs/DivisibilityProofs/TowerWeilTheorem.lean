@@ -22,6 +22,11 @@ namespace WallBound
 
 variable {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ}
 
+/- English proof (translation)
+Establish `hb : ∀ τ i, |lam τ i| ≤ 1` using `fun τ i => by`. Establish `h1 : ‖lam τ‖ ≤ ‖lam‖` using `norm_le_pi_norm lam τ`. Establish `h2 : ‖lam τ i‖ ≤ ‖lam τ‖` using `norm_le_pi_norm (lam τ) i`. Rewrite `h2` using `[Real.norm_eq_abs]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Unfold `l1`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem l1_le_card_mul_of_norm_le_one' (lam : Wt Ψ N) (h : ‖lam‖ ≤ 1) : l1 lam ≤ (Fintype.card Ψ : ℝ) * N := by
   have hb : ∀ τ i, |lam τ i| ≤ 1 := fun τ i => by
     have h1 : ‖lam τ‖ ≤ ‖lam‖ := norm_le_pi_norm lam τ
@@ -33,9 +38,15 @@ theorem l1_le_card_mul_of_norm_le_one' (lam : Wt Ψ N) (h : ‖lam‖ ≤ 1) : l
         Finset.sum_le_sum fun τ _ => Finset.sum_le_sum fun i _ => hb τ i
     _ = (Fintype.card Ψ : ℝ) * N := by simp
 
+/- English proof (translation)
+Simplify using `[toA, linA, map_pow]`.
+-/
 theorem toA_linRoot_pow (lam : Wt Ψ N) (d : ℕ) : toA (linRoot lam ^ d) = linA lam 0 ^ d := by
   simp [toA, linA, map_pow]
 
+/- English proof (translation)
+Establish `hz : Continuous fun lam : Wt Ψ N => ((lam, (0 : ℝ)) : Wt Ψ N × ℝ)` using `Continuous.prodMk continuous_id continuous_const`. Establish `h2` using `h.comp hz`. Simplify using `only [Function.comp_def] at h2`. Conclude with `h2`.
+-/
 theorem continuous_lin_zero (Φ : RPA Ψ N →ₗ[ℝ] ℝ) (d : ℕ)
     (h : Continuous fun z : Wt Ψ N × ℝ => Φ (linA z.1 z.2 ^ d)) :
     Continuous fun lam : Wt Ψ N => Φ (linA lam 0 ^ d) := by
@@ -45,6 +56,11 @@ theorem continuous_lin_zero (Φ : RPA Ψ N →ₗ[ℝ] ℝ) (d : ℕ)
   simp only [Function.comp_def] at h2
   exact h2
 
+/- English proof (translation)
+Take `⟨hcont, -, -⟩` from `GlobalTheory.T.arith_functional_lipschitz_weights Ψ N (dimFl Ψ N + 1)`. Establish `h : (fun lam : Wt Ψ N => T.PB II B lam) = fun lam => ∑ c, (T.M B c).PP II (linA lam 0 ^ (dimFl Ψ N + 1))`. Use function extensionality and compare the values at `lam`. Simplify using `only [RootTower.PB, RootTower.PPt, RootTower.PPc, toA_linRoot_pow]`. Rewrite using `[h]`.
+
+Conclude with `continuous_finset_sum _ fun c _ => continuous_lin_zero _ _ (hcont _)`.
+-/
 theorem continuous_PB (T : RootTower Ψ N) (II : IntersectionSystem) (B : ℕ) :
     Continuous fun lam : Wt Ψ N => T.PB II B lam := by
   obtain ⟨hcont, -, -⟩ := GlobalTheory.T.arith_functional_lipschitz_weights Ψ N (dimFl Ψ N + 1)
@@ -55,12 +71,20 @@ theorem continuous_PB (T : RootTower Ψ N) (II : IntersectionSystem) (B : ℕ) :
   rw [h]
   exact continuous_finset_sum _ fun c _ => continuous_lin_zero _ _ (hcont _)
 
+/- English proof (translation)
+Establish `hB : (3 : ℝ) ≤ B` using `by exact_mod_cast h`. Rewrite using `[Real.le_log_iff_exp_le (by linarith)]`. Use `Real.exp_one_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem one_le_log {B : ℕ} (h : 3 ≤ B) : 1 ≤ Real.log B := by
   have hB : (3 : ℝ) ≤ B := by exact_mod_cast h
   rw [Real.le_log_iff_exp_le (by linarith)]
   have := Real.exp_one_lt_d9
   linarith
 
+/- English proof (translation)
+Establish `hB : (0 : ℝ) < B` using `by exact_mod_cast (by omega : 0 < B)`. Establish `ha0 : 0 < a` using `by linarith`. Establish `h1 : (B : ℝ) / (a / B) ^ 2 ≤ (B : ℝ) ^ 3`. Rewrite using `[div_pow, div_div_eq_mul_div, div_le_iff₀ (by positivity)]`. Establish `: (1 : ℝ) ≤ a ^ 2` using `by nlinarith`.
+
+Use polynomial arithmetic with `[pow_pos hB 3]`. Establish `h2 : 0 < (B : ℝ) / (a / B) ^ 2` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem log_div_le {B : ℕ} (h : 3 ≤ B) (a : ℝ) (ha : 1 ≤ a) :
     Real.log (B / (a / B) ^ 2) ≤ 3 * Real.log B := by
   have hB : (0 : ℝ) < B := by exact_mod_cast (by omega : 0 < B)
@@ -73,6 +97,9 @@ theorem log_div_le {B : ℕ} (h : 3 ≤ B) (a : ℝ) (ha : 1 ≤ a) :
   calc Real.log (B / (a / B) ^ 2) ≤ Real.log ((B : ℝ) ^ 3) := Real.log_le_log h2 h1
     _ = 3 * Real.log B := by rw [Real.log_pow]; norm_num
 
+/- English proof (translation)
+The claim follows from `|q| ≤ (|c3| + 6 * cs * c8 * v + cp * |c2| * (3 + n)) * (θ * L) := by have hθ2 : θ ^ 2 ≤ θ := by nlinarith have hL0 : 0 ≤ L := by linarith have hθL : 0 ≤ θ * L := by positivity have t1 : |a| ≤ 6 * cs * c8 * v * (θ * L) := by have e1 : Ls * md ≤ (3 * L) * (v * (c8 * (2 * θ))) := mu …`.
+-/
 theorem three_terms {q a p cs c3 c2 cp c8 v n θ L Ls md dist s : ℝ} (hcs : 0 ≤ cs) (hc8 : 0 ≤ c8) (hcp : 0 ≤ cp)
     (hv : 0 ≤ v) (hn : 0 ≤ n) (hθ : 0 < θ) (hθ1 : θ ≤ 1) (hL : 1 ≤ L) (hs : s = θ ^ 2)
     (hLs : Ls ≤ 3 * L) (hLs0 : 0 ≤ Ls) (hmd0 : 0 ≤ md) (hmd : md ≤ v * (c8 * (2 * θ)))
@@ -117,6 +144,37 @@ end WallBound
 
 open WallBound in
 
+/- English proof (translation)
+Introduce `hKl hEx hDs hZ1 hZ2 II hII Ψ _ _ N T hP h1 h2 h3 h5 h6 h7 c₀ hc₀`. Establish `hc₁ : 0 < c₀ / 2` using `by positivity`. Take `⟨θ₀, hθ₀, Cs, hCs, hsq⟩` from `GlobalTheory.T.tower_gap_height_uniform_bound hZ1 hZ2 II hII Ψ N T h3 h5 h6 (c₀ / 2) hc₁`. Take `⟨s₀, hs₀, C3, hI2⟩` from `h2 ((Fintype.card Ψ : ℝ) * N)`. Take `⟨C2, hI1⟩` from `h1`.
+
+Take `⟨C8, hC8, hdeg⟩` from `GlobalTheory.T.flag_degree_le_gap Ψ N T.j T.j_pos T.j_lt`. Take `⟨-, hlin, Cp, hCp, hLip⟩` from `GlobalTheory.T.arith_functional_lipschitz_weights Ψ N (dimFl Ψ N + 1)`. Take `⟨B₁, hB₁⟩` from `GlobalTheory.T.perturbed_weight_gap_bounds Ψ N T (c₀ / 2) (min θ₀ s₀) hc₁ (lt_min hθ₀ hs₀)`. Use `⟨(∑ c, (|C3| + 6 * Cs * C8 * T.vol c + Cp * |C2| * (3 + ‖T.nu‖))) * (5 * Fintype.card Ψ), B₁, fun B hB τ₀ lam₀ hlam₀ => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.T.continuous_wall_bound_extend Ψ N T.j c₀ _ τ₀ (fun l => T.PB II B l) T.j_pos T.j_lt hc₀ (continuous_PB T II B) ?_ lam₀ hlam₀` and prove the remaining obligations.
+
+Introduce `l hlr hlw`. Take `⟨hB3, hθ, hθle, hθ1, hnl, hnl2, hgaps, hgap0, hcg, hdom, hdom2, hnef, hdist⟩` from `hB₁ B hB τ₀ l hlw`. Establish `hf : (1 : ℝ) ≤ Fintype.card Ψ`. Establish `: 0 < Fintype.card Ψ` using `Fintype.card_pos_iff.mpr ⟨τ₀⟩`. Conclude with `this` after adjusting the coercions.
+
+Establish `hBpos : (0 : ℝ) < B` using `by exact_mod_cast (by omega : 0 < B)`. Use `set θ : ℝ := 5 * (Fintype.card Ψ : ℝ) / B with hθdef`. Use `set lam : Wt Ψ N := fun τ i => l τ i + (if τ = τ₀ ∧ (i : ℕ) < T.j then 2 * θ else 0) with hlamdef`. Set `s : ℚ` to `(5 * (Fintype.card Ψ : ℚ) / B) ^ 2`. Establish `hs : (s : ℝ) = θ ^ 2` using `by simp [s, hθdef]`.
+
+Establish `hdist' : ‖T.lamS lam s - l‖ ≤ 2 * θ + ‖T.nu‖ * θ ^ 2` using `by rw [hs]; exact hdist`. Rewrite `hnl2`, `hdom2`, `hnef` using `[← hs]`. Establish `hrat : IsRatWt lam`. Introduce `τ i`. Take `⟨q, hq⟩` from `hlr τ i`.
+
+Distinguish the cases in `h : τ = τ₀ ∧ (i : ℕ) < T.j`. Conclude with `⟨q + 2 * (5 * (Fintype.card Ψ : ℚ) / B), by show l τ i + (if τ = τ₀ ∧ (i : ℕ) < T.j then 2 * θ else 0) = _`. Rewrite using `[if_pos h, hq, hθdef]`. Use `push_cast`. Use the proof step `ring⟩`.
+
+Conclude with `⟨q, by show l τ i + (if τ = τ₀ ∧ (i : ℕ) < T.j then 2 * θ else 0) = _`. Rewrite using `[if_neg h, hq, add_zero]⟩`. Establish `hs0 : (0 : ℝ) < s` using `by rw [hs]; positivity`. Establish `hsQ : (0 : ℚ) ≤ s` using `by exact_mod_cast hs0.le`. Establish `hθ2 : θ ^ 2 ≤ θ` using `by nlinarith`.
+
+Establish `hsle : (s : ℝ) ≤ s₀`. Rewrite using `[hs]`. Conclude with `hθ2.trans (hθle.trans (min_le_right _ _))`. Establish `hs1 : |(s : ℝ)| ≤ 1`. Rewrite using `[abs_of_pos hs0, hs]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hnl0 : ‖l‖ ≤ 1` using `hlw.1.trans (by norm_num)`. Establish `hL` using `one_le_log hB3`. Establish `hper : ∀ c, |T.PPc II B c (linRoot l ^ (dimFl Ψ N + 1))| ≤ (|C3| + 6 * Cs * C8 * T.vol c + Cp * |C2| * (3 + ‖T.nu‖)) * (θ * Real.log B)`. Introduce `c`.
+
+Take `⟨hm0, hm1⟩` from `GlobalTheory.T.tower_component_height_bound hKl hEx hDs II hII Ψ N T hP h7 B c lam s hrat hsQ hdom hdom2`. Establish `hsqc` using `hsq B (by omega) c lam θ s hrat hnl hθ (hθle.trans (min_le_left _ _)) hs hgaps hcg hdom2 hnef hm0`. Establish `hI2c` using `hI2 B (by omega) c lam s (l1_le_card_mul_of_norm_le_one' lam hnl) hs0 hsle hdom2`. Establish `hmono : ∀ m, |(T.M B c).PP II (monomial m 1)| ≤ |C2| * Real.log B` using `fun m => (hI1 B (by omega) c m).trans (mul_le_mul_of_nonneg_right (le_abs_self _) (by linarith))`. Establish `hLipc` using `hLip ((T.M B c).PP II) (|C2| * Real.log B) hmono (T.lamS lam s) l s 0 hnl2 hnl0 hs1 (by simp)`.
+
+Establish `hv : 0 < T.vol c` using `hP.1 c`. Establish `hmd : T.mDeg B c lam s ≤ T.vol c * (C8 * (2 * θ))`. Use `hm1.trans (mul_le_mul_of_nonneg_left ?_ hv.le)` and prove the remaining obligations. Rewrite using `[← hgap0]`. Conclude with `hdeg lam τ₀ hnl hdom`.
+
+Establish `hLs : Real.log (B / (s : ℝ)) ≤ 3 * Real.log B`. Rewrite using `[hs]`. Conclude with `log_div_le hB3 (5 * (Fintype.card Ψ : ℝ)) (by linarith)`. Establish `hLs0 : 0 ≤ Real.log (B / (s : ℝ))`. Use `Real.log_nonneg ?_` and prove the remaining obligations.
+
+Rewrite using `[le_div_iff₀ hs0, hs]`. Establish `hB1 : (1 : ℝ) ≤ B` using `by exact_mod_cast (by omega : 1 ≤ B)`. Use the polynomial consequences of the given equalities and inequalities. Establish `hq : T.PPc II B c (linRoot l ^ (dimFl Ψ N + 1)) = (T.M B c).PP II (linA l 0 ^ (dimFl Ψ N + 1))`. Simplify using `only [RootTower.PPc, toA_linRoot_pow]`.
+
+Rewrite using `[hq]`. Conclude with `three_terms hCs hC8 hCp hv.le (norm_nonneg _) hθ hθ1 hL hs hLs hLs0 hm0 hmd hsqc hI2c hLipc hdist'`. Establish `hsum : |T.PB II B l| ≤ (∑ c, (|C3| + 6 * Cs * C8 * T.vol c + Cp * |C2| * (3 + ‖T.nu‖))) * (θ * Real.log B)`. Rewrite using `[Finset.sum_mul]`. Conclude with `(Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun c _ => hper c)`.
+
+Use `hsum.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[hθdef]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem thmW_tower : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.KleimanNefFStatement →
     (∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)], ReciprocityTheory.ChartRestriction.G.AI.I1.ExistsUniqueStatement ℚ ι) →
     ReciprocityTheory.ChartRestriction.G.Geo.DivSuppArithStatement → SuccessiveMinimaLowerBound → SuccessiveMinimaUpperBound → ∀ II : IntersectionSystem,

@@ -13,12 +13,36 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 
 namespace GlobalTheory.NLink
 
+/- English proof (translation)
+Establish `h0 : 0 ≤ x ^ c` using `Real.rpow_nonneg (by linarith) _`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mul_rpow_self_le {x c C : ℝ} (hx : 1 ≤ x) (hc : c ≤ C) (hC : 0 ≤ C) :
     c * x ^ c ≤ C * x ^ C := by
   have h0 : 0 ≤ x ^ c := Real.rpow_nonneg (by linarith) _
   calc c * x ^ c ≤ C * x ^ c := mul_le_mul_of_nonneg_right hc h0
     _ ≤ C * x ^ C := mul_le_mul_of_nonneg_left (Real.rpow_le_rpow_of_exponent_le hx hc) hC
 
+/- English proof (translation)
+Introduce `eps Fm`. Take `⟨C1, y1, h1⟩` from `GlobalTheory.T.log_hostClassNumber_le_scale_pow_family Fm`. Take `⟨C2, y2, h2⟩` from `GlobalTheory.T.exists_log_card_restRows_le_pow_mul_length Fm`. Use `set C : ℝ := max 1 (max (Fm.PK.getD 7 0) (max (Fm.PK.getD 19 0) (max (9 / 2 + 10 * eps + eps / 100) (max (2 + 8 * eps + eps / 100) (max (Fm.Ct + eps / 100) (max C1 C2)))))) with hCdef`. Establish `hC1 : 1 ≤ C` using `le_max_left _ _`.
+
+Establish `hC0 : 0 ≤ C` using `by linarith`. Establish `hCLw : Fm.PK.getD 7 0 ≤ C` using `le_trans (le_max_left _ _) (le_max_right _ _)`. Establish `hCYL : Fm.PK.getD 19 0 ≤ C` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) (le_max_right _ _)`. Establish `hrest : max (9 / 2 + 10 * eps + eps / 100) (max (2 + 8 * eps + eps / 100) (max (Fm.Ct + eps / 100) (max C1 C2))) ≤ C` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) (le_max_right _ _)`. Establish `hK : 9 / 2 + 10 * eps + eps / 100 ≤ C` using `le_trans (le_max_left _ _) hrest`.
+
+Establish `hN : 2 + 8 * eps + eps / 100 ≤ C` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hrest`. Establish `hT : Fm.Ct + eps / 100 ≤ C` using `le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) (le_max_right _ _)) hrest`. Establish `hc12 : max C1 C2 ≤ C` using `le_trans (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) (le_max_right _ _)) hrest`. Establish `hCC1 : C1 ≤ C` using `le_trans (le_max_left _ _) hc12`. Establish `hCC2 : C2 ≤ C` using `le_trans (le_max_right _ _) hc12`.
+
+Use `⟨C, max y1 y2, hC1, fun x hxy hx i => ?_⟩` and prove the remaining obligations. Establish `hx1 : 1 ≤ x` using `le_of_lt (lt_trans Fm.one_lt_family_threshold hx)`. Establish `hsx : (Fm.L x i).sc.x = x` using `Fm.L_x x i hx`. Establish `heps : (Fm.L x i).sc.eps = eps` using `Fm.L_eps x i`. Establish `hPK` using `Fm.params_K x hx i`.
+
+Take `⟨sN, -, sK, -, sT, -, -, -, -, -, -, sDe2, -⟩` from `Fm.sizes x hx i`. Unfold `SizeN szTh at sN`. Unfold `SizeK szTh at sK`. Unfold `SizeT szTh at sT`. Unfold `SizeDe2 at sDe2`.
+
+Rewrite `sN`, `sK` using `[hsx, heps]`. Rewrite `sT` using `[hsx, heps, Fm.Ct_eq x i]`. Establish `hmono : ∀ a : ℝ, a ≤ C → x ^ a ≤ x ^ C` using `fun a ha => Real.rpow_le_rpow_of_exponent_le hx1 ha`. Establish `hLg : 0 ≤ (Fm.L x i).sc.L`. Unfold `Scale.L`.
+
+Conclude with `Real.rpow_nonneg (le_trans zero_le_one (le_of_lt (Fm.L x i).sc.one_lt_alt)) _`. Unfold `TwistedPlaces.ParametersPolynomiallyBounded`. Use `⟨?_, ?_, ?_, ?_, ?_, sDe2, ?_, ?_⟩` and prove the remaining obligations. Establish `e : (Fm.params x hx i).CLw = Fm.PK.getD 7 0` using `by rw [← hPK]; rfl`. Rewrite using `[e]`.
+
+Conclude with `hCLw`. Establish `e : (Fm.params x hx i).CYL = Fm.PK.getD 19 0` using `by rw [← hPK]; rfl`. Rewrite using `[e]`. Conclude with `hCYL`. Rewrite using `[hsx]`.
+
+Conclude with `le_trans sK.2 (hmono _ hK)`. Rewrite using `[hsx]`. Conclude with `le_trans sN.2 (hmono _ hN)`. Rewrite using `[hsx]`. Conclude with `le_trans sT.2 (hmono _ hT)`.
+
+Rewrite using `[hsx]`. Conclude with `le_trans (h1 x (le_trans (le_max_left _ _) hxy) hx i) (mul_rpow_self_le hx1 hCC1 hC0)`. Rewrite using `[hsx]`. Use `le_trans (h2 x (le_trans (le_max_right _ _) hxy) hx i) ?_` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (mul_rpow_self_le hx1 hCC2 hC0) hLg`.
+-/
 theorem admissible_parameters_design_family : ∀ {eps : ℝ} (Fm : FamP eps), ∃ C x0 : ℝ, 1 ≤ C ∧ ∀ x ≥ x0, ∀ (hx : Fm.x1 < x)
     (i : Fm.Ix x), TwistedPlaces.ParametersPolynomiallyBounded (Fm.L x i) C (Fm.params x hx i) := by
   intro eps Fm

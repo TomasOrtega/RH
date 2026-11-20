@@ -4,6 +4,37 @@ open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨hlc, hcs⟩` from `hf`. Establish `hC : IsCompact (tsupport f)` using `hcs`. Establish `hz : ∀ x, x ∉ tsupport f → f x = 0` using `fun x hx => image_eq_zero_of_notMem_tsupport hx`. Establish `h1 : ∀ p q, IsTest (fun v => f (p, v, q))`. Introduce `p q`.
+
+Use `⟨hlc.comp_continuous (by fun_prop), ?_⟩` and prove the remaining obligations. Establish `hcl : IsClosed ({x : P × V × Q | x.1 = p} ∩ {x | x.2.2 = q})` using `(isClosed_eq continuous_fst continuous_const).inter (isClosed_eq (continuous_snd.comp continuous_snd) continuous_const)`. Use `HasCompactSupport.intro ((hC.inter_right hcl).image (continuous_fst.comp continuous_snd)) ?_` and prove the remaining obligations. Introduce `v hv`. Apply `hz` to reduce the goal to its premises.
+
+Introduce `hmem`. Conclude with `hv ⟨(p, v, q), ⟨hmem, rfl, rfl⟩, rfl⟩`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Use `set Φ : P × Q → V → ℂ := fun a v => f (a.1, v, a.2) with hΦdef`. Use `set CV : Set V := (fun x : P × V × Q => x.2.1) '' tsupport f with hCV`.
+
+Establish `hCVc : IsCompact CV` using `hC.image (continuous_fst.comp continuous_snd)`. Establish `hoff : ∀ (a : P × Q) v, v ∉ CV → f (a.1, v, a.2) = 0`. Introduce `a v hv`. Conclude with `hz _ (fun h => hv ⟨_, h, rfl⟩)`. Establish `hΦ : IsLocallyConstant Φ`.
+
+Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `a0`. Establish `hn : IsOpen {z : (P × Q) × V | f (z.1.1, z.2, z.1.2) = f (a0.1, z.2, a0.2)}`. Establish `g1 : IsLocallyConstant (fun z : (P × Q) × V => f (z.1.1, z.2, z.1.2))` using `hlc.comp_continuous (by fun_prop)`. Establish `g2 : IsLocallyConstant (fun z : (P × Q) × V => f (a0.1, z.2, a0.2))` using `hlc.comp_continuous (by fun_prop)`.
+
+Use `isOpen_iff_mem_nhds.2 fun z hz' => ?_` and prove the remaining obligations. Use `filter_upwards [(IsLocallyConstant.iff_eventually_eq _).1 g1 z, (IsLocallyConstant.iff_eventually_eq _).1 g2 z] with y hy1 hy2`. Use `show f (y.1.1, y.2, y.1.2) = f (a0.1, y.2, a0.2)`. Rewrite using `[hy1, hy2]`. Conclude with `hz'`.
+
+Take `⟨u, w, hu, -, hau, hCVw, huw⟩` from `generalized_tube_lemma (isCompact_singleton (x := a0)) hCVc hn (by`. Introduce and unpack `⟨a, v⟩ ⟨ha, -⟩`. Rewrite `ha` using `[Set.mem_singleton_iff]`. Substitute `ha` using the available equality. Use the proof step `rfl)`.
+
+Use `filter_upwards [hu.mem_nhds (hau rfl)] with a ha`. Use function extensionality and compare the values at `v`. Distinguish the cases in `hv : v ∈ CV`. Conclude with `huw (show (a, v) ∈ u ×ˢ w from ⟨ha, hCVw hv⟩)`. Use `show f (a.1, v, a.2) = f (a0.1, v, a0.2)`.
+
+Rewrite using `[hoff a v hv, hoff a0 v hv]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x0`. Establish `e1 : ∀ᶠ x in 𝓝 x0, Φ (x.1, x.2.2) = Φ (x0.1, x0.2.2)` using `((continuous_fst.prodMk (continuous_snd.comp continuous_snd)).tendsto x0).eventually ((IsLocallyConstant.iff_eventually_eq _).1 hΦ _)`.
+
+Establish `e2 : ∀ᶠ x in 𝓝 x0, T (Φ (x0.1, x0.2.2)) x.2.1 = T (Φ (x0.1, x0.2.2)) x0.2.1` using `((continuous_fst.comp continuous_snd).tendsto x0).eventually ((IsLocallyConstant.iff_eventually_eq _).1 (hT _ (h1 _ _)).1 _)`. Use `filter_upwards [e1, e2] with x h h'`. Use `show T (Φ (x.1, x.2.2)) x.2.1 = T (Φ (x0.1, x0.2.2)) x0.2.1`. Rewrite using `[h]`. Conclude with `h'`.
+
+Use `set K : Set (P × Q) := (fun x : P × V × Q => (x.1, x.2.2)) '' tsupport f with hKdef`. Establish `hK : IsCompact K` using `hC.image (by fun_prop)`. Establish `hΦK : ∀ a, a ∉ K → Φ a = 0`. Introduce `a ha`. Use function extensionality and compare the values at `v`.
+
+Conclude with `hz _ (fun h => ha ⟨_, h, rfl⟩)`. Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 hK`. Establish `hfin : (Set.range (fun a : K => Φ a)).Finite` using `(hΦ.comp_continuous continuous_subtype_val).range_finite`. Use `set U : Set V := ⋃ h ∈ Set.range (fun a : K => Φ a), tsupport (T h) with hUdef`. Establish `hU : IsCompact U` using `hfin.isCompact_biUnion (fun h hh => by`.
+
+Take `⟨a, rfl⟩` from `hh`. Conclude with `(hT _ (h1 _ _)).2.isCompact)`. Establish `hL : IsCompact ((fun z : (P × Q) × V => (z.1.1, z.2, z.1.2)) '' (K ×ˢ U))` using `(hK.prod hU).image (by fun_prop)`. Use `HasCompactSupport.intro hL ?_` and prove the remaining obligations. Introduce `x hx`.
+
+Assume the negation of the conclusion as `hne`. Apply `hx` to reduce the goal to its premises. Establish `ha : (x.1, x.2.2) ∈ K`. Assume the negation of the conclusion as `hK'`. Apply `hne` to reduce the goal to its premises.
+
+Use `show T (Φ (x.1, x.2.2)) x.2.1 = 0`. Rewrite using `[hΦK _ hK', hT0]`. Both sides reduce to the same expression. Use `⟨((x.1, x.2.2), x.2.1), ⟨ha, ?_⟩, rfl⟩` and prove the remaining obligations. Conclude with `Set.mem_biUnion ⟨⟨(x.1, x.2.2), ha⟩, rfl⟩ (subset_tsupport _ hne)`.
+-/
 theorem slices_test {P V Q : Type} [TopologicalSpace P] [TopologicalSpace V] [TopologicalSpace Q] [T2Space P]
     [T2Space V] [T2Space Q] (T : (V → ℂ) → V → ℂ) (hT : ∀ φ, IsTest φ → IsTest (T φ)) (hT0 : T 0 = 0)
     (f : P × V × Q → ℂ) (hf : IsTest f) :
@@ -97,6 +128,9 @@ theorem slices_test {P V Q : Type} [TopologicalSpace P] [TopologicalSpace V] [To
     refine ⟨((x.1, x.2.2), x.2.1), ⟨ha, ?_⟩, rfl⟩
     exact Set.mem_biUnion ⟨⟨(x.1, x.2.2), ha⟩, rfl⟩ (subset_tsupport _ hne)
 
+/- English proof (translation)
+Introduce `T hT hT0 f hf` and use `slices_test T hT hT0 f hf`.
+-/
 theorem slices_test' : ∀ {P V Q : Type} [TopologicalSpace P] [TopologicalSpace V] [TopologicalSpace Q] [T2Space P] [T2Space V] [T2Space Q] (T : (V → ℂ) → V → ℂ), (∀ φ, IsTest φ → IsTest (T φ)) → T 0 = 0 → ∀ f : P × V × Q → ℂ, IsTest f → (∀ p q, IsTest (fun v => f (p, v, q))) ∧ IsTest (fun x : P × V × Q => T (fun v => f (x.1, v, x.2.2)) x.2.1) :=
   fun T hT hT0 f hf => slices_test T hT hT0 f hf
 

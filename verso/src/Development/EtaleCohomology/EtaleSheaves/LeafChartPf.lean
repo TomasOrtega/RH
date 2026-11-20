@@ -21,6 +21,11 @@ def LeafChartAway : Prop := ∀ {X : Scheme.{0}} (Y : Set X) (B : Type) [CommRin
     ∀ y' : Spec (CommRingCat.of (Localization.Away g)), j' y' ∈ Y ↔
       I.map (algebraMap B (Localization.Away g)) ≤ (show PrimeSpectrum (Localization.Away g) from y').asIdeal
 
+/- English proof (translation)
+Introduce `X Z S p ι _ d e _ _ x hx W hxW`. Take `⟨A, B, _, _, _, I, h1, h2, j, _, ⟨y0, rfl⟩, hjW, hj⟩` from `hA p ι d e x hx W hxW`. Establish `hI : I ≤ (show PrimeSpectrum B from y0).asIdeal` using `(hj y0).1 hx`. Take `⟨g, hg, C, _, φ, het, heq⟩` from `hR d e A B I h1 h2 (show PrimeSpectrum B from y0).asIdeal inferInstance hI`. Take `⟨j', hj', hsub, hcov, hiff⟩` from `hW (Set.range ι) B j I g hj`.
+
+Use `⟨Localization.Away g, C, inferInstance, inferInstance, j', hj', φ, het, hcov y0 hg, hsub.trans hjW, fun y' => ?_⟩` and prove the remaining obligations. Rewrite using `[hiff y', heq]`.
+-/
 theorem LeafChart_of (hR : LateralTheory.E.t_E6Cut.LeafChartRing) (hA : LeafChartAff) (hW : LeafChartAway) :
     LateralTheory.E.t_E6Cut.LeafChart := by
   intro X Z S p ι _ d e _ _ x hx W hxW

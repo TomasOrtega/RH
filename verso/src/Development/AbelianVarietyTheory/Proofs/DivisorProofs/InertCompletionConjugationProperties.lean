@@ -12,6 +12,11 @@ open scoped TensorProduct Matrix
 
 namespace GlobalTheory.InertBigCell
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB v w hw`. Establish `h` using `GlobalTheory.LFun.under_eq_of_isInertAt hw`. Establish `hc : GlobalTheory.LFun.IsConjAt σ h (GlobalTheory.InertBigCell.conjW σ hw)` using `fun y => congrArg (fun z => GlobalTheory.LFun.toCompl h (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR _ σ z)) ((GlobalTheory.LFun.InertChart.complEquiv hw h).symm_apply_apply y)`. Take `⟨ϖ, hU⟩` from `GlobalTheory.LFun.InertChart.exists_isUnramInv hB.cm hw hc`. Take `⟨hcc, -⟩` from `hU`.
+
+Use `⟨hcc, fun x hx => GlobalTheory.LFun.InertChart.conj_mem hw hc hx, ?_, fun e => GlobalTheory.LFun.InertChart.conj_algebraMap hc e⟩` and prove the remaining obligations. Establish `h2` using `GlobalTheory.LFun.complMap_mem h (GlobalTheory.InertLocField.half_mem v (hB.inert v w hw).1)`. Rewrite `h2` using `[GlobalTheory.LFun.complMap_algebraMap]`. Rewrite `h2` using `[map_inv₀, map_inv₀, map_ofNat, map_ofNat]`. Then use the resulting hypothesis.
+-/
 theorem conjW_props : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
   B.IsGood σ → ∀ {v : Pl F} {w : HeightOneSpectrum (𝓞 E)} (hw : Formalism.UG.IsInertAt F E v w),
   (∀ x, GlobalTheory.InertBigCell.conjW σ hw (GlobalTheory.InertBigCell.conjW σ hw x) = x) ∧

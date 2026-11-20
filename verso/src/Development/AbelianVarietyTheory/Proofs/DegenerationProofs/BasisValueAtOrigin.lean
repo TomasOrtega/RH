@@ -18,6 +18,9 @@ namespace GlobalTheory.OriginFrame
 
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left} {T : Over S} {Z : Scheme.{0}}
 
+/- English proof (translation)
+Establish `hy` using `hJ.mem (fun _ : Fin 1 => x.left) t`. Rewrite using `[sval_of (φ := fun _ : Fin 1 => (snd T A).left) (ε := fun _ => a) s (t ≫ (ptSecT A x).left) z J (fun _ => J (t ≫ x.left)) (fun _ => by rw [Category.assoc, ← Over.comp_left, ptSecT, lift_snd])]`. Use `Eq.trans ?_ ((congrArg (gs t z _) (H _)).trans ((gs_mul _ z _ hy _ _).trans (congrArg₂ (· * ·) (gs_res _ z _ hy _) (gs_unit _ z _ hy _))))` and prove the remaining obligations. Conclude with `((gs_res _ z _ hy _).trans (gs_pull t (ptSecT A x).left z (LB.wchart L (fun _ : Fin 1 => (snd T A).left) (fun _ => J (t ≫ x.left))) (val_le A L x _ hy) _)).symm`.
+-/
 theorem sval_valueAt {a : ℤ} {s : LB.Sec (LPow A L a T)} {x : T ⟶ A}
     {τ : LB.Gen (LB.LinComb L (Y := T.left) (K := Fin 1) (fun _ => x.left) (fun _ => a))} {v : Γ(T.left, ⊤)}
     (H : IsValueAt A L a s x τ v) (t : Z ⟶ T.left) {z : Z} {J} (hJ : Good L z J) :
@@ -31,6 +34,9 @@ theorem sval_valueAt {a : ℤ} {s : LB.Sec (LPow A L a T)} {x : T ⟶ A}
   exact ((gs_res _ z _ hy _).trans (gs_pull t (ptSecT A x).left z
     (LB.wchart L (fun _ : Fin 1 => (snd T A).left) (fun _ => J (t ≫ x.left))) (val_le A L x _ hy) _)).symm
 
+/- English proof (translation)
+Establish `hy` using `hJ.mem (fun _ : Fin 1 => T.hom ≫ eSec A) t`. Use `(map_zpow _ _ _).trans (congrArg (· ^ k) ((gm_res _ z _ hy _).trans ?_))` and prove the remaining obligations. Conclude with `gm_pull t T.hom z (LB.wchart L (fun _ : PUnit => eSec A) (fun _ => J (t ≫ T.hom ≫ eSec A))) (rigT_le A L _ hy) _`.
+-/
 theorem val_rigT (rig : LB.Gen (L.pull (eSec A))) (k : ℤ) (t : Z ⟶ T.left) {z : Z} {J} (hJ : Good L z J) :
     val (rigT A L rig T k) t z J = val rig (t ≫ T.hom) z J ^ k := by
   have hy := hJ.mem (fun _ : Fin 1 => T.hom ≫ eSec A) t
@@ -38,6 +44,13 @@ theorem val_rigT (rig : LB.Gen (L.pull (eSec A))) (k : ℤ) (t : Z ⟶ T.left) {
   exact gm_pull t T.hom z (LB.wchart L (fun _ : PUnit => eSec A) (fun _ => J (t ≫ T.hom ≫ eSec A)))
     (rigT_le A L _ hy) _
 
+/- English proof (translation)
+Substitute `hx` using the available equality. Take `⟨-, -, β, hβ, hn, hc⟩` from `H`. Establish `q₁` using `val_corr hJ hn (t ≫ T.hom)`. Establish `q₂` using `val_corr hJ hc t`. Rewrite `q₁` using `[val_pull hJ, val_mul hJ, val_inv]`.
+
+Rewrite `q₂` using `[val_mul hJ, val_pull hJ, val_rigT _ _ _ hJ]`. Establish `p₁ : val (rigPow P.A P.L rig ((m : ℤ) ^ 2)) (t ≫ T.hom) z J = val rig (t ≫ T.hom) z J ^ ((m : ℤ) ^ 2)` using `map_zpow _ _ _`. Establish `p₂ : val (powFrame P.A P.L 1 τ ((m : ℤ) ^ 2)) t z J = val τ t z J ^ ((m : ℤ) ^ 2)` using `map_zpow _ _ _`. Establish `q₃ : val β (t ≫ (1 : T ⟶ P.A).left) z J = _` using `q₁.trans (congrArg (· * _) p₁)`. Rewrite `q₂` using `[p₂, q₃, zpow_one]`.
+
+Rewrite using `[← zpow_natCast, ← zpow_natCast, Nat.cast_pow, q₂]`. Conclude with `inv_mul_cancel_right _ _`.
+-/
 theorem torsFrame_pow_origin (P : PolAV S) {T : Over S} {m : ℕ}
     {rig : LB.Gen (P.L.pull (eSec P.A))} {x : T ⟶ P.A} (hx : x = 1) {τ} (H : IsTorsFrame P rig m x τ)
     (t : Z ⟶ T.left) {z : Z} {J} (hJ : Good P.L z J) :
@@ -56,6 +69,11 @@ theorem torsFrame_pow_origin (P : PolAV S) {T : Over S} {m : ℕ}
   rw [← zpow_natCast, ← zpow_natCast, Nat.cast_pow, q₂]
   exact inv_mul_cancel_right _ _
 
+/- English proof (translation)
+Rewrite using `[valF, dif_pos (by simp)]`. Establish `h` using `congrArg (fun q => q.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom y))`. Establish `h'` using `congrArg (Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom h`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, Iso.inv_hom_id_apply] at h'`. Use `Eq.trans ?_ h'.symm` and prove the remaining obligations.
+
+Use `congr 1`.
+-/
 theorem valF_spMap_fn {R K : Type} [CommRing R] [Field K] (y : R →+* K) (a : R) :
     valF (X := (baseOver (Sp R)).left) (spMap y) ⊤ (fn a) = y a := by
   rw [valF, dif_pos (by simp)]
@@ -71,6 +89,21 @@ namespace GlobalTheory
 
 open OriginFrame ThetaScalar in
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ S ρ K _ y₀ r jP hr hU`. Use `ρ.P.isAb.comm` as an intermediate fact. Establish `h0 : ρ.pt 0 = 1` using `mul_left_cancel (a := ρ.pt 0) (by rw [← ρ.pt_add, add_zero, _root_.mul_one])`. Set `z : Sp K` to `IsLocalRing.closedPoint K`. Set `t : Sp K ⟶ (baseOver (Sp S.R)).left` to `spMap y₀`.
+
+Establish `ht : t ≫ (baseOver (Sp S.R)).hom = spMap y₀` using `Category.comp_id _`. Establish `hz : (spMap y₀ ≫ eSec ρ.P.A) z ∈ ρ.P.L.U jP` using `hU ⟨z, by rw [hr]⟩`. Take `⟨J, hJ, eJ⟩` from `exists_good ρ.P.L ρ.P.isLB z (fun _ : PUnit => spMap y₀ ≫ eSec ρ.P.A) (fun _ => jP) (fun _ _ _ => rfl) (fun _ => hz)`. Establish `hs : (t ≫ (ptSecT ρ.P.A (ρ.pt 0)).left) ≫ (snd (baseOver (Sp S.R)) ρ.P.A).left = spMap y₀ ≫ eSec ρ.P.A`. Rewrite using `[Category.assoc, ← Over.comp_left, ptSecT, lift_snd, h0, ← ht, Category.assoc]`.
+
+Both sides reduce to the same expression. Establish `er : r = t ≫ (ptSecT ρ.P.A (ρ.pt 0)).left` using `by haveI : Mono (snd (baseOver (Sp S.R)) ρ.P.A).left := inferInstanceAs (Mono (pullback.snd (𝟙 (Sp S.R)) ρ.P.A.hom))`. Rewrite using `[← cancel_mono (snd (baseOver (Sp S.R)) ρ.P.A).left, hr, hs]`. Establish `hp` using `torsFrame_pow_origin ρ.P h0 (ρ.fr_tors 0) t hJ`. Rewrite `hp` using `[ht]`.
+
+Establish `m₁ : r z ∈ LB.wchart ρ.P.L (fun _ : Fin 1 => (snd (baseOver (Sp S.R)) ρ.P.A).left) (fun _ => jP)` using `Set.mem_iInter.2 fun _ => hU ⟨z, rfl⟩`. Establish `m₂ : (spMap y₀) z ∈ LB.wchart ρ.P.L (fun _ : PUnit => eSec ρ.P.A) (fun _ => jP)` using `Set.mem_iInter.2 fun _ => hz`. Establish `m₃` using `hJ.mem (fun _ : Fin 1 => (ρ.pt 0).left) t`. Establish `a₂ : toStk z (valF (spMap y₀) _ (ρ.rig.s (fun _ => jP)).val) = (val ρ.rig (spMap y₀) z J).val` using `(toStk_valF_gs (spMap y₀) _ z m₂ _).trans ((gs_unit _ z _ m₂ _).trans (congrArg Units.val (val_of ρ.rig (spMap y₀) z J (fun _ => jP) (fun _ => eJ PUnit.unit)).symm))`. Take `⟨a, ha⟩ : ∃ a : K, toStk z a = (val (ρ.fr 0) t z J).val` from `⟨_, (toStk_valF_gs t _ z m₃ _).trans (gs_unit _ z _ m₃ _)⟩`.
+
+Generalize the expression as in `valF (spMap y₀) _ (ρ.rig.s (fun _ => jP)).val = b at a₂ ⊢`. Establish `hb : b ≠ 0` using `fun e => (val ρ.rig (spMap y₀) z J).ne_zero (by rw [← a₂, e, map_zero])`. Establish `hab : a ^ ((S.r * S.N) ^ 2) = b ^ ((S.r * S.N) ^ 2)` using `(toStk z).injective (by`. Rewrite using `[map_pow, map_pow, ha, a₂, ← Units.val_pow_eq_pow_val, ← Units.val_pow_eq_pow_val]`. Conclude with `congrArg Units.val hp)`.
+
+Use `⟨a / b, by rw [div_pow, hab, div_self (pow_ne_zero _ hb)], fun l => (toStk z).injective ?_⟩` and prove the remaining obligations. Establish `hv` using `sval_valueAt (ρ.ev_val l 0) t hJ`. Establish `p : val (powFrame ρ.P.A ρ.P.L (ρ.pt 0) (ρ.fr 0) S.N) t z J = val (ρ.fr 0) t z J ^ (S.N : ℤ)` using `map_zpow _ _ _`. Rewrite `hv` using `[← er, p, zpow_natCast]`. Use `replace hv := (sval_of (φ := fun _ : Fin 1 => (snd (baseOver (Sp S.R)) ρ.P.A).left) (ε := fun _ => (S.N : ℤ)) (ρ.s l) r z J (fun _ => jP) (fun _ => by rw [hr]; exact eJ PUnit.unit)).symm.trans hv`.
+
+Establish `a₁` using `toStk_valF_gs r _ z m₁ ((ρ.s l).f (fun _ => jP))`. Establish `a₃` using `toStk_valF_gs t ⊤ z trivial (fn (⟨S.ev 0 l, S.ev_mem 0 l⟩ : S.R))`. Rewrite `a₃` using `[valF_spMap_fn]`. Use `a₁.trans (hv.trans ?_)` and prove the remaining obligations. Rewrite using `[div_mul_cancel₀ _ hb, map_mul, map_pow, a₃, ha, Units.val_pow_eq_pow_val]`.
+-/
 theorem basis_value_at_origin : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (K : Type) [Field K] (y₀ : S.R →+* K) (r : Sp K ⟶ (baseOver (Sp S.R) ⊗ ρ.P.A).left) (jP : ρ.P.L.ι), r ≫ (snd (baseOver (Sp S.R)) ρ.P.A).left = spMap y₀ ≫ eSec ρ.P.A → Set.range (r ≫ (snd (baseOver (Sp S.R)) ρ.P.A).left) ⊆ ρ.P.L.U jP → ∃ ξ : K, ξ ^ ((S.r * S.N) ^ 2) = 1 ∧ ∀ l, valF r _ ((ρ.s l).f (fun _ => jP)) = y₀ ⟨S.ev 0 l, S.ev_mem 0 l⟩ * (ξ * valF (spMap y₀) _ (ρ.rig.s (fun _ => jP)).val) ^ S.N := by
   intro o Ω _ _ _ S ρ K _ y₀ r jP hr hU
   have := ρ.P.isAb.comm

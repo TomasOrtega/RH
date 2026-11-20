@@ -25,6 +25,11 @@ section SlopeTestRemainingChoices
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] [FiniteDimensional F E]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j`. Rewrite using `[eq_sum_crd b (Af F) (x i j), eq_sum_crd b (Af F) (y i j)]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `FiniteAdeleRing.ext (K := F) fun v => ?_` and prove the remaining obligations.
+
+Establish `e1` using `PI.VolStabS.AdmissibleCompactSupport.crd_projV b x v i j k`. Establish `e2` using `PI.VolStabS.AdmissibleCompactSupport.crd_projV b y v i j k`. Rewrite using `[← e1, ← e2, h v]`.
+-/
 theorem projV_ext {d : ℕ} (b : Module.Basis (Fin d) F E) {a M : ℕ} {x y : Fin a → Fin M → Af F ⊗[F] E}
     (h : ∀ v, projV v x = projV v y) : x = y := by
   funext i j
@@ -36,6 +41,31 @@ theorem projV_ext {d : ℕ} (b : Module.Basis (Fin d) F E) {a M : ℕ} {x y : Fi
   have e2 := PI.VolStabS.AdmissibleCompactSupport.crd_projV b y v i j k
   rw [← e1, ← e2, h v]
 
+/- English proof (translation)
+Set `b` to `Module.finBasis F E`. Establish `hKi : IsCompact (projInf '' K)` using `hK.image (continuous_projInf b)`. Take `⟨f, hf1, -, hfc, -⟩` from `exists_continuous_one_zero_of_isCompact hKi isClosed_empty (Set.disjoint_empty _)`. Set `Φinf : (Fin a → Fin M → Ainf F ⊗[F] E) → ℂ` to `fun Y => ((f Y : ℝ) : ℂ)`. Establish `hΦic : Continuous Φinf` using `Complex.continuous_ofReal.comp f.continuous`.
+
+Establish `hΦis : HasCompactSupport Φinf` using `hfc.comp_left Complex.ofReal_zero`. Establish `hKf : IsCompact (projFin '' K)` using `hK.image (continuous_projFin b)`. Set `Kv : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fin a → Fin M → Fv F v ⊗[F] E)` to `fun v => projV v '' (projFin '' K)`. Establish `hKv : ∀ v, IsCompact (Kv v)` using `fun v => hKf.image (PI.VolStabS.TopoMeas.continuous_projV b v)`. Establish `hev : ∀ᶠ v in cofinite, Kv v ⊆ latV b v`.
+
+Establish `h` using `fun (x : Fin a) (i : Fin M) (k : Fin (Module.finrank F E)) => eventually_int_of_compact (hKf.image (f := fun Y : Fin a → Fin M → Af F ⊗[F] E => crd b (Af F) (Y x i) k) ((continuous_crd b (Af F) k).comp ((continuous_apply i).comp (continuous_apply x))))`. Use `filter_upwards [eventually_all.2 fun x => eventually_all.2 fun i => eventually_all.2 fun k => h x i k] with v hv`. Introduce and unpack `_ ⟨Y, hY, rfl⟩ x i k`. Establish `e` using `crd_map b (evalV F v) (Y x i) k`. Express the relevant statement in the definitionally equal form `crd b (Fv F v) (Algebra.TensorProduct.map (evalV F v) (AlgHom.id F E) (Y x i)) k ∈ _`.
+
+Rewrite using `[e]`. Conclude with `hv x i k _ ⟨Y, hY, rfl⟩`. Use `choose C hCo hCc hKC using fun v => exists_clopen_compact b v (hKv v)`. Set `Cv : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fin a → Fin M → Fv F v ⊗[F] E)` to `fun v => if Kv v ⊆ latV b v then latV b v else C v`. Establish `hCvo : ∀ v, IsClopen (Cv v)` using `fun v => by`.
+
+Distinguish the cases in `h : Kv v ⊆ latV b v`. Rewrite using `[show Cv v = latV b v from if_pos h]`. Conclude with `isClopen_latV b v a M`. Rewrite using `[show Cv v = C v from if_neg h]`. Conclude with `hCo v`.
+
+Establish `hCvc : ∀ v, IsCompact (Cv v)` using `fun v => by`. Distinguish the cases in `h : Kv v ⊆ latV b v`. Rewrite using `[show Cv v = latV b v from if_pos h]`. Conclude with `isCompact_latV b v a M`. Rewrite using `[show Cv v = C v from if_neg h]`.
+
+Conclude with `hCc v`. Establish `hKCv : ∀ v, Kv v ⊆ Cv v` using `fun v => by`. Distinguish the cases in `h : Kv v ⊆ latV b v`. Rewrite using `[show Cv v = latV b v from if_pos h]`. Conclude with `h`.
+
+Rewrite using `[show Cv v = C v from if_neg h]`. Conclude with `hKC v`. Set `Φv : ∀ v : HeightOneSpectrum (𝓞 F), (Fin a → Fin M → Fv F v ⊗[F] E) → ℂ` to `fun v => (Cv v).indicator 1`. Set `Φf : (Fin a → Fin M → Af F ⊗[F] E) → ℂ` to `fun Y => ∏ᶠ v, Φv v (projV v Y)`. Set `Φ : (Fin a → Fin M → AF F ⊗[F] E) → ℂ` to `fun X => Φinf (projInf X) * Φf (projFin X)`.
+
+Establish `hSB : ∀ v, IsSB (Φv v)` using `fun v => ⟨(LocallyConstant.indicator (LocallyConstant.const _ (1 : ℂ)) (hCvo v)).isLocallyConstant, HasCompactSupport.intro' (hCvc v) (hCvo v).isClosed fun Y hY => Set.indicator_of_notMem hY _⟩`. Establish `hpure : IsPureFin b Φf Φv`. Use `⟨hSB, ?_, fun _ => rfl⟩` and prove the remaining obligations. Use `filter_upwards [hev] with v hv`. Simplify using `only [Φv, Cv, hv, if_true]`.
+
+Establish `hint` using `key _ b Φ Φinf Φf Φv hΦic hΦis hpure (fun _ => rfl)`. Establish `hone : ∀ X ∈ K, Φ X = 1`. Introduce `X hX`. Establish `h1 : Φinf (projInf X) = 1`. Simplify using `only [Φinf, hf1 ⟨X, hX, rfl⟩, Pi.one_apply, Complex.ofReal_one]`.
+
+Establish `h2 : Φf (projFin X) = 1`. Use `finprod_eq_one_of_forall_eq_one fun v => ?_` and prove the remaining obligations. Conclude with `Set.indicator_of_mem (hKCv v ⟨projFin X, ⟨X, hX, rfl⟩, rfl⟩) _`. Simplify using `only [Φ, h1, h2, mul_one]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `[hone X hX]`. Use `_ ≤ ∫⁻ X, ‖Φ X‖ₑ ∂ν := by`. Use `mul_meas_ge_le_lintegral₀ hint.aestronglyMeasurable.enorm 1` as an intermediate fact. Simplify using `using this`. Use `_ < ⊤ := hint.2`.
+-/
 theorem finCpt_of_int (σ : E →ₐ[F] E) {M a : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (ν : Measure (Fin a → Fin M → AF F ⊗[F] E))
     (key : ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (Φ : (Fin a → Fin M → AF F ⊗[F] E) → ℂ)
@@ -112,6 +142,55 @@ theorem finCpt_of_int (σ : E →ₐ[F] E) {M a : ℕ} (J : Matrix (Fin M) (Fin 
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J ψ a X0 hT νX hStd hdet ha hn hSWa hSWc hOm μinf νinf fibInf hμ hν hfib`. Establish `: FiniteDimensional F E` using `Module.Finite.of_restrictScalars_finite ℚ F E`. Use `set TI := hermOf (Ainf F) σ (gramE σ J X0) hT with hTI`. Establish `hA1` using `hOm.2.2 μinf hμ`. Establish `hA2` using `hA1.2 νinf hν`.
+
+Take `⟨μv, hμv⟩` from `hA2.1`. Establish `hA3` using `hA2.2 μv hμv`. Take `⟨νv, hνv⟩` from `hA3.1`. Establish `hA4` using `hA3.2 νv hνv`. Establish `hA5` using `hA4.2 fibInf hfib`.
+
+Take `⟨fibV, hfv⟩` from `hA5.1`. Establish `hQ` using `hA5.2 fibV hfv`. Establish `cF` using `PI.VolStabS.rpFib_holds F E σ hStd.1 n J hStd.2.1 hSWa hSWc a ha hn X0 hT hdet`. Take `⟨hsfI, hintI⟩` from `cF.1 μinf νinf fibInf hfib`. Establish `hFv` using `fun v => cF.2 v (μv v) (νv v) (fibV v) (hfv v)`.
+
+Establish `hSB : ∀ v (Φ : (Fin a → Fin n → Fv F v ⊗[F] E) → ℂ), IsSB Φ → Integrable Φ (fibV v (hermOf (Fv F v) σ (gramE σ J X0) hT))` using `fun v Φ h => (hFv v).2 Φ h.1.continuous h.2`. Set `b` to `Module.finBasis F E`. Establish `hmult : ∀ (Φf : (Fin a → Fin n → Af F ⊗[F] E) → ℂ) (Φv : ∀ v : HeightOneSpectrum (𝓞 F), (Fin a → Fin n → Fv F v ⊗[F] E) → ℂ), IsPureFin b Φf Φv → Multipliable (fun v => ∫ X, Φv v X ∂(fibV v (hermOf (Fv F v) σ (gramE σ J X0) hT)))` using `fun Φf Φv hp => (hQ _ b 0 0 Φf Φv continuous_const HasCompactSupport.zero hp (fun X => by simp)).2.1`. Establish `hνXfin : ∀ K, IsCompact K → νX K < ⊤` using `fun K hK => finCpt_of_int σ J νX (fun d b Φ Φinf Φf Φv h1 h2 h3 h4 => (hQ d b Φ Φinf Φf Φv h1 h2 h3 h4).1) K hK`. Break down `PI.VolStabS.RestrProdA.rpTail_holds F E σ hStd.1 n J hStd.2.1 hSWa hSWc a ha hn X0 hT hdet fibV _ b hSB hmult with ⟨v0, hv0⟩ | hconv` into its components or cases.
+
+Establish `hν0 : νX = 0`. Use `PI.VolStabS.DeterminantAdmissible.detAdm_gen νX 0 hνXfin (fun K _ => by simp) ?_` and prove the remaining obligations. Introduce and unpack `Φ ⟨d', b', Φinf, Φf, Φv, hc1, hc2, hp, hpr⟩`. Take `⟨-, -, hEq⟩` from `hQ d' b' Φ Φinf Φf Φv hc1 hc2 hp hpr`. Establish `h0 : HasProd (fun v => ∫ X, Φv v X ∂(fibV v (hermOf (Fv F v) σ (gramE σ J X0) hT))) 0` using `hasProd_zero_of_exists_eq_zero ⟨v0, hv0 _ (hp.1 v0)⟩`.
+
+Rewrite using `[hEq, h0.tprod_eq, mul_zero, integral_zero_measure]`. Use `⟨0, fun A S _ => ?_⟩` and prove the remaining obligations. Rewrite using `[hν0]`. Simplify using the standard rewrite rules. Set `W : HeightOneSpectrum (𝓞 F) → Type` to `fun v => Fin a → Fin n → Fv F v ⊗[F] E`.
+
+Set `m : ∀ v, Measure (W v)` to `fun v => fibV v (hermOf (Fv F v) σ (gramE σ J X0) hT)`. Establish `: ∀ v, SigmaFinite (m v)` using `fun v => (hFv v).1`. Use `hsfI` as an intermediate fact. Establish `hLm : ∀ v, MeasurableSet (latV (M` using `n) (n := a) b v) := fun v => (isClopen_latV b v a n).isOpen.measurableSet`. Establish `hLf : ∀ v, m v (latV b v) ≠ ⊤` using `fun v => by`.
+
+Establish `h` using `hSB v _ (isSB_latV b v a n)`. Rewrite `h` using `[integrable_indicator_iff (hLm v)]`. Conclude with `(((integrableOn_const_iff (C := (1 : ℂ))).1 h).resolve_left (by simp)).ne`. Take `⟨ρ, hρsf, hρgood, hρmarg, hρint⟩` from `PI.VolStabS.rpAbs_holds (HeightOneSpectrum (𝓞 F)) W m (fun v => latV b v) hLm hLf hconv`. Use `hρsf` as an intermediate fact.
+
+Take `⟨Γ, hΓm, hΓ⟩` from `PI.VolStabS.rpGlue_holds F E n a _ b`. Set `P : Measure ((Fin a → Fin n → Ainf F ⊗[F] E) × ∀ v, W v)` to `(fibInf TI).prod ρ`. Establish `hgood : P (Set.univ ×ˢ {x : ∀ v, W v | ¬ ∀ᶠ v in Filter.cofinite, x v ∈ latV b v}) = 0`. Rewrite using `[Measure.prod_prod, hρgood, mul_zero]`. Establish `hae' : ∀ᵐ p ∂P, ∀ᶠ v in Filter.cofinite, p.2 v ∈ latV b v`.
+
+Rewrite using `[ae_iff]`. Conclude with `measure_mono_null (fun p hp => Set.mem_prod.2 ⟨Set.mem_univ _, hp⟩) hgood`. Establish `hν0 : ∀ (d' : ℕ) (b' : Module.Basis (Fin d') F E) (Φ : (Fin a → Fin n → AF F ⊗[F] E) → ℂ) (Φinf : (Fin a → Fin n → Ainf F ⊗[F] E) → ℂ) (Φf : (Fin a → Fin n → Af F ⊗[F] E) → ℂ) (Φv : ∀ v : HeightOneSpectrum (𝓞 F), (Fin a → Fin n → Fv F v ⊗[F] E) → ℂ), Continuous Φinf → HasCompactS …`. Introduce `d' b' Φ Φinf Φf Φv hc1 hc2 hp hpr`. Establish `hΦm : Measurable Φ` using `PI.VolStabS.TopoMeas.measurable_adm Φ ⟨d', b', Φinf, Φf, Φv, hc1, hc2, hp, hpr⟩`.
+
+Establish `hf : ∀ v, Integrable (Φv v) (m v)` using `fun v => hSB v _ (hp.1 v)`. Establish `hfc : ∀ᶠ v in Filter.cofinite, Φv v = (latV b v).indicator 1` using `(hp.2.1.and (PI.VolStabS.RestrProdA.latCofin_holds F E a n d' _ b' b)).mono fun v h => h.1.trans (by rw [h.2])`. Take `⟨hIρ, hHP⟩` from `hρint Φv hf hfc`. Establish `hae : (fun p => Φ (Γ p)) =ᵐ[P] fun p => Φinf p.1 * ∏ᶠ v, Φv v (p.2 v)` using `by filter_upwards [hae'] with p hp'`. Take `⟨e1, e2⟩` from `hΓ p hp'`.
+
+Rewrite using `[hpr (Γ p), hp.2.2 (projFin (Γ p)), e1]`. Use `congr 1`. Conclude with `finprod_congr fun v => by rw [e2 v]`. Establish `hPI : Integrable (fun p : _ × (∀ v, W v) => Φinf p.1 * ∏ᶠ v, Φv v (p.2 v)) P` using `(hintI Φinf hc1 hc2).mul_prod hIρ`. Use `⟨(integrable_map_measure hΦm.aestronglyMeasurable hΓm.aemeasurable).2 (hPI.congr hae.symm), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[integral_map hΓm.aemeasurable hΦm.aestronglyMeasurable, integral_congr_ae hae, integral_prod_mul (fun y => Φinf y) (fun x : ∀ v, W v => ∏ᶠ v, Φv v (x v)), ← hHP.tprod_eq]`. Establish `hνeq : νX = P.map Γ`. Use `PI.VolStabS.DeterminantAdmissible.detAdm_gen νX (P.map Γ) hνXfin (finCpt_of_int σ J (P.map Γ) fun d b Φ Φinf Φf Φv h1 h2 h3 h4 => (hν0 d b Φ Φinf Φf Φv h1 h2 h3 h4).1) ?_` and prove the remaining obligations. Introduce and unpack `Φ ⟨d', b', Φinf, Φf, Φv, hc1, hc2, hp, hpr⟩`. Rewrite using `[(hQ d' b' Φ Φinf Φf Φv hc1 hc2 hp hpr).2.2, (hν0 d' b' Φ Φinf Φf Φv hc1 hc2 hp hpr).2]`.
+
+Set `G : (∀ v, W v) → (Fin a → Fin n → Af F ⊗[F] E)` to `fun x => projFin (Γ (0, x))`. Establish `hGm : Measurable G` using `(continuous_projFin b).measurable.comp (hΓm.comp measurable_prodMk_left)`. Establish `hΓG : ∀ p : (Fin a → Fin n → Ainf F ⊗[F] E) × (∀ v, W v), (∀ᶠ v in Filter.cofinite, p.2 v ∈ latV b v) → projInf (Γ p) = p.1 ∧ projFin (Γ p) = G p.2`. Introduce `p hp`. Use `⟨(hΓ p hp).1, projV_ext b fun v => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[(hΓ p hp).2 v]`. Conclude with `((hΓ (0, p.2) hp).2 v).symm`. Establish `hρae : ∀ᵐ y ∂ρ, ∀ᶠ v in Filter.cofinite, y v ∈ latV b v`. Rewrite using `[ae_iff]`. Conclude with `hρgood`.
+
+Use `⟨ρ.map G, fun A S hS => ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.map_apply hGm hS, hνeq]`. Use `set c := ∫⁻ z, A z ∂(fibInf (hermOf (Ainf F) σ (gramE σ J X0) hT)) with hcdef`. Use `set I : (Fin a → Fin n → AF F ⊗[F] E) → ℝ≥0∞ := fun y => A (projInf y) * S.indicator 1 (projFin y) with hIdef`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Take `⟨h, hhm, hhle, hheq⟩` from `exists_measurable_le_lintegral_eq (P.map Γ) I`. Rewrite using `[hheq, lintegral_map hhm hΓm, lintegral_prod_symm (fun z => h (Γ z)) (hhm.comp hΓm).aemeasurable]`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono_ae ?_` and prove the remaining obligations. Use `filter_upwards [hρae] with y hy`.
+
+Establish `hxy` using `fun x => hΓG (x, y) hy`. Distinguish the cases in `hyS : G y ∈ S`. Rewrite using `[Set.indicator_of_mem (show y ∈ G ⁻¹' S from hyS)]`. Use `lintegral_mono fun x => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [hIdef, (hxy x).1, (hxy x).2, Set.indicator_of_mem hyS, Pi.one_apply, mul_one]`. Rewrite using `[Set.indicator_of_notMem (show y ∉ G ⁻¹' S from hyS)]`. Use `le_of_eq (lintegral_eq_zero_iff' ?_ |>.2 ?_) |>.trans (le_refl _)` and prove the remaining obligations. Conclude with `(hhm.comp (hΓm.comp measurable_prodMk_right)).aemeasurable`. Use `Filter.Eventually.of_forall fun x => ?_` and prove the remaining obligations.
+
+Use `hhle (Γ (x, y))` as an intermediate fact. Simplify using `only [hIdef, (hxy x).1, (hxy x).2, Set.indicator_of_notMem hyS, mul_zero] at this`. Conclude with `le_antisymm this (zero_le')`. Use `_ = c * ρ (G ⁻¹' S) := lintegral_indicator_const (hGm hS) c`. Use `_ = ρ (G ⁻¹' S) * c := mul_comm _ _`.
+
+Distinguish the cases in `hc0 : c = 0`. Rewrite using `[hc0, mul_zero]`. Conclude with `zero_le'`. Take `⟨A', hA'm, hA'le, hA'eq⟩` from `exists_measurable_le_lintegral_eq (fibInf TI) A`. Establish `hIm : Measurable (fun y : Fin a → Fin n → AF F ⊗[F] E => A' (projInf y) * S.indicator 1 (projFin y))` using `(hA'm.comp (continuous_projInf b).measurable).mul ((measurable_one.indicator hS).comp (continuous_projFin b).measurable)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_indicator_one (hGm hS), ← hA'eq, mul_comm]`. Use `_ = ∫⁻ p, A' p.1 * (G ⁻¹' S).indicator 1 p.2 ∂P := (lintegral_prod_mul hA'm.aemeasurable (measurable_one.indicator (hGm hS)).aemeasurable).symm`. Use `_ = ∫⁻ p, (fun y => A' (projInf y) * S.indicator 1 (projFin y)) (Γ p) ∂P := by`. Use `lintegral_congr_ae ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hae'] with p hp`. Take `⟨e1, e2⟩` from `hΓG p hp`. Simplify using `only [e1, e2]`. Both sides reduce to the same expression. Use `_ = ∫⁻ y, A' (projInf y) * S.indicator 1 (projFin y) ∂(P.map Γ) := (lintegral_map hIm hΓm).symm`.
+
+Use `_ ≤ ∫⁻ y, I y ∂(P.map Γ) := lintegral_mono fun y => by`. Simplify using `only [hIdef]`. Use `gcongr`. Conclude with `hA'le _`.
+-/
 theorem omega_decomposition_holds : OmDecomp := by
   intro F E _ _ _ _ _ σ n J ψ a X0 hT νX hStd hdet ha hn hSWa hSWc hOm μinf νinf fibInf hμ hν hfib
   classical

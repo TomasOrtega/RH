@@ -12,6 +12,13 @@ noncomputable section
 
 namespace GlobalTheory.MomLat
 
+/- English proof (translation)
+Introduce `D X s cc δ B χ cD hX hs hcc hδ hχ a b ha hb`. Establish `hL` using `GlobalTheory.ThetaMove.LatticeFacts.latAll B hcc hδ`. Establish `hVm` using `B.vec_mem_ne hcc hδ (delta_ne_zero B) (B.stdOK hcc hδ) χ hχ`. Take `⟨hsd, hlam⟩` from `GlobalTheory.PeriodTransport.seam_lattices X D s cc δ B χ cD hs`. Establish `hq` using `qIntAll_of_latAll D cc δ B hL`.
+
+Establish `hadm : ∀ (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b)), IsSdLat N → IsSdLat N' → TaylorLogMetric.admitted D a b (s.lat N) (s.lat N')` using `fun N N' h h' => ⟨ha, hb, hsd _ _ h, hsd _ _ h'⟩`. Use `⟨⟨delta_ne_zero B, Fintype.card_pos_iff.1 hX.f_pos, by simp, fun P hP => absurd hP (Finset.notMem_empty P), aa_fg s B χ cD, fun N N' h h' => ?_⟩, fun N N' h h' k => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, h3⟩` from `(Transport.inter_transport _ _ (reidx s a b) (Formalism.L2.Ker.HV (ambOf s B χ cD).sc) (formV (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau a b) (alV (ambOf s B χ cD).d (ambOf s B χ cD).sc) (TaylorLogMetric.al D B.tor) (lam (ambOf s B χ cD) N N') (lam (ambOf s …`. Take `⟨m, hm⟩` from `hq a b _ _ (hadm N N' h h') (reidx s a b x) ((hlam a b N N' x).1 hx)`. Conclude with `alV_eq s B x hm)`.
+
+Use the proof step `(isHerm_formV _ _ _ _) (hL.1 a b _ _ (hadm N N' h h')).1 (hL.1 a b _ _ (hadm N N' h h')).2).1`. Conclude with `⟨h3 (B.eNat χ a b (s.lat N) (s.lat N')) (hVm a b _ _ (hadm N N' h h')).1.2, h1, h2⟩`. Establish `hd : ContDiff ℂ (k : WithTop ℕ∞) (B.eNat χ a b (s.lat N) (s.lat N'))` using `GlobalTheory.SCV.contDiff_of_differentiable (hVm a b _ _ (hadm N N' h h')).1.1 _`. Conclude with `hd.comp (reidx s a b).toLinearMap.toContinuousLinearMap.contDiff`.
+-/
 theorem latticeFactsAll : GlobalTheory.MomT.LatticeFactsAll := by
   intro D X s cc δ B χ cD hX hs hcc hδ hχ a b ha hb
   have hL := GlobalTheory.ThetaMove.LatticeFacts.latAll B hcc hδ

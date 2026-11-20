@@ -5,6 +5,9 @@ open NumberField NumberField.mixedEmbedding Module
 
 namespace GlobalTheory.CompanionTheory.IntCount
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.FiniteAndNcardBound.finite_and_ncard_le`.
+-/
 theorem finite_and_ncard_le :
     ∀ (E : Type) [Field E] [NumberField E], ∃ (C : ℝ) (N : ℕ), ∀ R : ℝ, 1 ≤ R →
       {r : 𝓞 E | ∀ w : InfinitePlace E, w (r : E) ≤ R}.Finite ∧

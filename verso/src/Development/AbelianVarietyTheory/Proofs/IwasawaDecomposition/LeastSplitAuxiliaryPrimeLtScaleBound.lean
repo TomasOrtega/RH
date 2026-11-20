@@ -15,6 +15,11 @@ noncomputable section
 
 namespace GlobalTheory.Mem.AtSize
 
+/- English proof (translation)
+Establish `hOk` using `hG.ok`. Take `⟨sp, hT, hY, hA', hV, hz, hB, -⟩` from `hO`. Take `⟨B, Cc, W, V, S, N, Gj⟩` from `X`. Consider the cases of `B`. Simplify using `only at hB`.
+
+Substitute `hB` using the available equality. Establish `hmem` using `hOk.small.1`. Break down `hOk.lev _ hmem with ⟨i, hi⟩ | hlt` into its components or cases. Conclude with `absurd hi (hOk.small.2.2.2.1 i)`. Conclude with `hlt`.
+-/
 theorem leastSplitAuxiliaryPrime_lt_scaleBound {K : Ctx} {X : Stages} (hO : K.Over X.B.toPre) {C5 c6 Cb : ℝ} (hG : K.Good C5 c6 Cb) :
     ((GlobalTheory.ChiGrid.q0 X.toD7 : ℕ) : ℝ) < K.s.X' := by
   have hOk := hG.ok
@@ -30,6 +35,19 @@ theorem leastSplitAuxiliaryPrime_lt_scaleBound {K : Ctx} {X : Stages} (hO : K.Ov
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use `EvP.of_ev ⟨1, one_pos, fun eps C8 he _ he52 _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun C hStd _ _ => ?_⟩⟩` and prove the remaining obligations. Take `⟨c1, hN⟩` from `szRow_numAt eps he he52 C hStd`. Use `⟨c1, fun cD hcD => ?_⟩` and prove the remaining obligations. Take `⟨c2, hN⟩` from `hN cD hcD`. Use `⟨c2, fun ch hch => ?_⟩` and prove the remaining obligations.
+
+Take `⟨x0, hN⟩` from `hN ch hch`. Use `⟨max x0 (max (44 ^ 4) ((8 : ℝ) ^ (4 / eps))), fun K h1 h2 h3 h4 hx β _ => ?_⟩` and prove the remaining obligations. Simplify using `only [max_le_iff] at hx`. Take `⟨hy0, hy44, hy8⟩` from `hx`. Establish `hsc : β.O.L.sc = K.s` using `β.sc`.
+
+Establish `hsx : β.O.L.sc.x = K.s.x` using `by rw [hsc]`. Establish `hse : β.O.L.sc.eps = eps` using `by rw [hsc, h4]`. Establish `hv : Val C cD ch β.O.L`. Rewrite using `[← h1, ← h2, ← h3]`. Conclude with `β.p.pt_val β.val`.
+
+Take `⟨⟨N⟩, -, -⟩` from `hN _ _ hse (hy0.trans hsx.ge) hv (GlobalTheory.Plug.hostArith_bpt β)`. Take `⟨C5, c6, Cb, hG⟩` from `β.good`. Establish `hq : ((GlobalTheory.ChiGrid.q0 β.D : ℕ) : ℝ) < β.O.L.sc.X'`. Rewrite using `[hsc]`. Conclude with `leastSplitAuxiliaryPrime_lt_scaleBound β.c.isOver hG`.
+
+Use `GlobalTheory.BigTop.Fun.SetAtModel.sizeRows_of N.params N.parT (N.CnW_eq.trans hStd.1.2.2.2.2.2.2.2.1) N.sizes N.win.1.1 N.win.2.1.1 N.win.2.1.2 N.win.2.2.1 N.g_le hq N.ccK_top ?_ (by rw [hsx]; exact hy44)` and prove the remaining obligations. Rewrite using `[hsx, hse]`. Establish `e2 : (8 : ℝ) = ((8 : ℝ) ^ (4 / eps)) ^ (eps / 4)`. Rewrite using `[← Real.rpow_mul (by norm_num), show 4 / eps * (eps / 4) = 1 by field_simp, Real.rpow_one]`. Rewrite using `[e2]`.
+
+Conclude with `Real.rpow_le_rpow (by positivity) hy8 (by positivity)`.
+-/
 theorem eventually_sizeRows (hL : GlobalTheory.Published.LocalLanglandsGL) (p : Prm hL) :
     EvP fun _ K => ∀ β : BPt K, β.Is (IsGoodE p.s) → GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.SizeRows β.O.L := by
   refine EvP.of_ev ⟨1, one_pos, fun eps C8 he _ he52 _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun C hStd _ _ => ?_⟩⟩

@@ -19,6 +19,17 @@ namespace GlobalTheory.PowerSumVert
 
 open Formalism.BasicNotions.DV in
 
+/- English proof (translation)
+Substitute `ehm` using the available equality. Set `ι : Type` to `Fin n ⊕ (Bool ⊕ {v // v ∈ G.vars})`. Set `a : Bool → ℕ → Bool` to `fun b => Function.update (ArIn.ind Sx) p b`. Set `w : ι → Sym D.host.E →₀ ℤ` to `Sum.elim B (Sum.elim (fun b => rootSym S.Dw (a b) (some R) (tauEmb D y.1) y.2) Subtype.val)`. Establish `ha (b : Bool) : {q | a b q = true}.Finite` using `(insert p Sx).finite_toSet.subset fun q hq => by`.
+
+Distinguish the cases in `e : q = p`. Simplify using `[e]`. Simplify `hq` using `[a, ArIn.ind, e]`. Take `⟨M, L, m, Ψ, hI, hΨ, hnum⟩` from `(GlobalTheory.ArTopTrue.arTop_true h2.p4 hH.deg HTBound.htBound D _ _ _ _ _ s x Φ c R hR).2 ι w fun i b hb => by`. Break down `i with i | b' | v` into its components or cases.
+
+Conclude with `hB i b hb`. Take `⟨e₁, e₂⟩` from `mem_support_rootSym hb`. Conclude with `⟨e₁ ▸ ha _, e₂⟩`. Conclude with `hG v.1 v.2 b hb`. Take `⟨G', hG'⟩` from `MvPolynomial.exists_rename_eq_of_vars_subset_range G (Subtype.val : {v // v ∈ G.vars} → _) Subtype.val_injective fun v hv => ⟨⟨v, hv⟩, rfl⟩`.
+
+Establish `hw : (w ∘ fun v : {v // v ∈ G.vars} => (Sum.inr (Sum.inr v) : ι)) = Subtype.val` using `rfl`. Establish `hT : rename w ((∑ i, X (Sum.inl i : ι) ^ k) * ((X (Sum.inr (Sum.inl false) : ι) - X (Sum.inr (Sum.inl true))) * rename (fun v : {v // v ∈ G.vars} => (Sum.inr (Sum.inr v) : ι)) G')) = (∑ i, X (B i) ^ k) * ((X ((arIn s Φ (metsOf x Φ)).root (Function.update (ArIn.ind Sx) p false) R …`. Simplify using `only [map_mul, map_sum, map_pow, map_sub, rename_X, rename_rename, hw, hG']`. Both sides reduce to the same expression. Rewrite using `[← hd c]`.
+
+Use `(congrArg (numL ((arIn s Φ (metsOf x Φ)).num c) ((Φ.C c).Y.dim + 1)) hT).symm.trans ?_` and prove the remaining obligations. Use `(numL_rename w _ _ Ψ _ hΨ.2 hnum _).trans (div_eq_zero_iff.2 (.inl ?_))` and prove the remaining obligations. Conclude with `powerSum_mul_vertical h2 M _ L m Ψ hI hΨ p hp (fun i : Fin n => (Sum.inl i : ι)) hfl (Sum.inr (Sum.inl false)) (Sum.inr (Sum.inl true)) (adlOf_rootSym_eq _ _ _ _ _ _ _) _ (add_nonneg (div_nonneg zero_le_one (sub_nonneg.2 (by exact_mod_cast hp.one_le))) (by unfold vDiff; positivit …`.
+-/
 theorem core (h2 : Hypotheses2) (hH : HypothesesH) {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} (s : FinalTheorems S κ)
     (x : ToroidalCompactificationData s) (Φ : s.Flag) (hm : ∀ k, Mets (Φ.C k) (cxSt D.what₂.LL)) (ehm : hm = metsOf x Φ)
     (hd : ∀ c, (Φ.C c).Y.dim = Formalism.DegreeFormula.dimFl D.what₂.Tau N) (Sx : Finset ℕ) (R : ℝ) (hR : 2 ≤ R) (p : ℕ) (hp : p.Prime)
@@ -69,6 +80,17 @@ namespace GlobalTheory.PowerSumVert
 
 open Formalism.BasicNotions.DV in
 
+/- English proof (translation)
+Introduce `v hv b hb`. Establish `ha (b' : Bool) : {q | Function.update (ArIn.ind Sx) p b' q = true}.Finite` using `(insert p Sx).finite_toSet.subset fun q hq => by`. Distinguish the cases in `e : q = p`. Simplify using `[e]`. Simplify `hq` using `[ArIn.ind, e]`.
+
+Rewrite `hv` using `[ArIn.mixEv, MvPolynomial.aeval_eq_bind₁]`. Take `⟨u, -, hu⟩` from `Finset.mem_biUnion.1 (vars_bind₁ _ _ hv)`. Break down `u with ⟨b', z⟩ | ⟨b', k⟩` into its components or cases. Simplify using `only [vars_X, Finset.mem_singleton] at hu`. Substitute `hu` using the available equality.
+
+Take `⟨e₁, e₂⟩` from `mem_support_rootSym hb`. Conclude with `⟨e₁ ▸ ha _, e₂⟩`. Simplify using `only at hu`. Break down `Finset.mem_union.1 (vars_mul _ _ hu) with h | h` into its components or cases. Simplify using `[vars_C] at h`.
+
+Take `⟨l, -, hl⟩` from `Finset.mem_biUnion.1 (vars_sum_subset _ _ h)`. Establish `hl'` using `vars_pow _ _ hl`. Rewrite `hl'` using `[vars_X, Finset.mem_singleton]`. Substitute `hl'` using the available equality. Take `⟨e₁, e₂⟩` from `mem_support_wholeSym hb`.
+
+Conclude with `⟨e₁ ▸ ha _, e₂⟩`.
+-/
 theorem mixEv_vars {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} (s : FinalTheorems S κ) (Φ : s.Flag)
     {C : CxSt D.what₂.LL} (hm : ∀ k, Mets (Φ.C k) C) (Sx : Finset ℕ) (R : ℝ) (p : ℕ) (c : s.Comp)
     (g : MvPolynomial (Vm D.what₂.Tau N) ℝ) :
@@ -97,6 +119,9 @@ theorem mixEv_vars {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} 
       obtain ⟨e₁, e₂⟩ := mem_support_wholeSym hb
       exact ⟨e₁ ▸ ha _, e₂⟩
 
+/- English proof (translation)
+Introduce `h2 hH _ _ D O hO Sx R hR p hp c n A hA hfl k hk y G hG`. Take `⟨x, P, h⟩` from `hO`. Conclude with `core h2 hH O.s x O.Φ O.met.hm h.hm_eq O.dim_eq Sx R hR p hp c n A hA hfl k hk y G hG`.
+-/
 theorem powerSum_vert_mul : Hypotheses2 → HypothesesH → RegularAlteration → ScholzeWeinsteinB → ∀ (D : D7) (O : Setup D), O.Core →
     ∀ (Sx : Finset ℕ) (R : ℝ), 2 ≤ R → ∀ p : ℕ, p.Prime → ∀ (c : O.s.Comp) (n : ℕ)
     (A : Fin n → (arIn O.s O.Φ O.met.hm).A c),

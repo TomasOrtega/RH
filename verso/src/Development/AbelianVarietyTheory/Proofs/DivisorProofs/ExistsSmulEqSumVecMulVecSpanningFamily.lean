@@ -8,6 +8,17 @@ noncomputable section
 
 namespace GlobalTheory.Poinc.SumSq
 
+/- English proof (translation)
+Establish `hp : ∀ x : ι → ℝ, x ≠ 0 → 0 < x ⬝ᵥ G *ᵥ x` using `fun x hx => by`. Simplify using `using hG.dotProduct_mulVec_pos hx`. Establish `hne : ∀ x ∈ Metric.sphere (0 : ι → ℝ) 1, x ≠ 0`. Introduce and unpack `x hx rfl`. Simplify using `at hx`.
+
+Establish `hc : ContinuousOn (fun x : ι → ℝ => (x ⬝ᵥ B *ᵥ x) / (x ⬝ᵥ G *ᵥ x)) (Metric.sphere 0 1)`. Use `ContinuousOn.div (Continuous.continuousOn ?_) (Continuous.continuousOn ?_) fun x hx => (hp x (hne x hx)).ne'` and prove the remaining obligations. Conclude with `continuous_id.dotProduct (continuous_const.matrix_mulVec continuous_id)`. Conclude with `continuous_id.dotProduct (continuous_const.matrix_mulVec continuous_id)`. Take `⟨C, hC⟩` from `((isCompact_sphere (0 : ι → ℝ) 1).image_of_continuousOn hc).bddAbove`.
+
+Take `⟨κ₀, hκ₀⟩` from `exists_nat_gt C`. Use `⟨κ₀, fun κ hκ => ?_⟩` and prove the remaining obligations. Establish `hκ' : C < κ` using `hκ₀.trans_le (by exact_mod_cast hκ)`. Use `PosDef.of_dotProduct_mulVec_pos ?_ fun x hx => ?_` and prove the remaining obligations. Use `IsHermitian.sub ?_ hB` and prove the remaining obligations.
+
+Rewrite using `[IsHermitian, conjTranspose_smul, hG.isHermitian.eq, star_trivial]`. Establish `hn : 0 < ‖x‖` using `norm_pos_iff.2 hx`. Establish `hs : ‖x‖⁻¹ • x ∈ Metric.sphere (0 : ι → ℝ) 1`. Simplify using `[norm_smul, hn.ne']`. Establish `h1` using `hC ⟨_, hs, rfl⟩`.
+
+Simplify using `only [mulVec_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul] at h1`. Rewrite `h1` using `[mul_div_mul_left _ _ (inv_pos.2 hn).ne', mul_div_mul_left _ _ (inv_pos.2 hn).ne', div_le_iff₀ (hp x hx)]`. Establish `h2` using `mul_lt_mul_of_pos_right hκ' (hp x hx)`. Rewrite using `[star_trivial, sub_mulVec, smul_mulVec, dotProduct_sub, dotProduct_smul, smul_eq_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_nat_smul_sub_posDef {ι : Type*} [Fintype ι] {G B : Matrix ι ι ℝ} (hG : G.PosDef)
     (hB : B.IsHermitian) : ∃ κ₀ : ℕ, ∀ κ : ℕ, κ₀ ≤ κ → ((κ : ℝ) • G - B).PosDef := by
   have hp : ∀ x : ι → ℝ, x ≠ 0 → 0 < x ⬝ᵥ G *ᵥ x := fun x hx => by
@@ -38,10 +49,30 @@ theorem exists_nat_smul_sub_posDef {ι : Type*} [Fintype ι] {G B : Matrix ι ι
     rw [star_trivial, sub_mulVec, smul_mulVec, dotProduct_sub, dotProduct_smul, smul_eq_mul]
     linarith
 
+/- English proof (translation)
+Use `congrFun₂ hM.isHermitian.eq i j` as an intermediate fact. Simplify using `using this`.
+-/
 theorem posDef_symm {n : Type*} {M : Matrix n n ℝ} (hM : M.PosDef) (i j : n) : M j i = M i j := by
   have := congrFun₂ hM.isHermitian.eq i j
   simpa using this
 
+/- English proof (translation)
+Establish `hs` using `posDef_symm hM`. Establish `ha : 0 < M 0 0` using `hM.diag_pos`. Use `PosDef.of_dotProduct_mulVec_pos ?_ fun y hy => ?_` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `[hs]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `set B := ∑ j, M 0 j.succ * y j with hB set x : Fin (n + 1) → ℝ := Fin.cons (-B / M 0 0) y with hx`. Establish `hx0 : x ≠ 0`. Introduce `h`. Apply `hy` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `j`. Use `congrFun h j.succ` as an intermediate fact. Simplify `this` using `[hx]`. Establish `h1` using `hM.dotProduct_mulVec_pos hx0`. Rewrite `h1`, the goal using `[star_trivial]`.
+
+Establish `e1 : x ⬝ᵥ M *ᵥ x = M 0 0 * (-B / M 0 0) ^ 2 + 2 * (-B / M 0 0) * B + ∑ i, y i * ∑ j, M i.succ j.succ * y j`. Establish `hc : ∀ i : Fin n, M i.succ 0 = M 0 i.succ` using `fun i => hs 0 i.succ`. Establish `h3 : ∑ i, y i * (M 0 i.succ * (-B / M 0 0)) = (-B / M 0 0) * B`. Rewrite using `[hB, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+
+Simplify using `only [dotProduct, mulVec, Fin.sum_univ_succ, hx, Fin.cons_zero, Fin.cons_succ, hc, mul_add, Finset.sum_add_distrib, h3]`. Rewrite using `[← hB]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : y ⬝ᵥ (Matrix.of fun i j : Fin n => M 0 0 * M i.succ j.succ - M i.succ 0 * M 0 j.succ) *ᵥ y = M 0 0 * ∑ i, y i * ∑ j, M i.succ j.succ * y j - B ^ 2`. Establish `hc : ∀ i : Fin n, M i.succ 0 = M 0 i.succ` using `fun i => hs 0 i.succ`.
+
+Simplify using `only [dotProduct, mulVec, of_apply, hc, sub_mul, Finset.sum_sub_distrib, mul_sub]`. Rewrite using `[hB, sq, Finset.mul_sum, Finset.sum_mul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Rewrite using `[e2]`.
+
+Rewrite `h1` using `[e1]`. Clear denominators, using `at h1` for the nonvanishing conditions. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem schur_posDef {n : ℕ} {M : Matrix (Fin (n + 1)) (Fin (n + 1)) ℝ} (hM : M.PosDef) :
     (Matrix.of fun i j : Fin n => M 0 0 * M i.succ j.succ - M i.succ 0 * M 0 j.succ).PosDef := by
   have hs := posDef_symm hM
@@ -87,6 +118,25 @@ theorem schur_posDef {n : ℕ} {M : Matrix (Fin (n + 1)) (Fin (n + 1)) ℝ} (hM 
     field_simp at h1
     nlinarith
 
+/- English proof (translation)
+Introduce `r`. Proceed by induction on `r with`. Consider the case `zero`. Introduce `L _`. Use `⟨Empty, inferInstance, 1, Empty.elim, le_rfl, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `i`. Conclude with `i.elim0`. Consider the case `succ n ih`. Introduce `L hL`. Establish `hs` using `posDef_symm hL`.
+
+Establish `hsz : ∀ i j, L j i = L i j` using `fun i j => by`. Use `hs i j` as an intermediate fact. Simplify using `only [Matrix.map_apply] at this`. Conclude with `this` after adjusting the coercions. Establish `ha : (0 : ℝ) < (L 0 0 : ℝ)` using `by simpa using (hL.diag_pos (i := 0))`.
+
+Establish `ha' : 0 < L 0 0` using `by exact_mod_cast ha`. Use `set S : Matrix (Fin n) (Fin n) ℤ := Matrix.of fun i j => L 0 0 * L i.succ j.succ - L i.succ 0 * L 0 j.succ with hS`. Establish `hSr : (S.map (Int.cast : ℤ → ℝ)).PosDef`. Use `schur_posDef hL` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `i j`. Simplify using `[hS]`. Take `⟨ι, _, D, y, hD, hy⟩` from `ih S hSr`. Use `⟨Fin D ⊕ ι, inferInstance, D * (L 0 0).toNat, Sum.elim (fun _ => fun j => L 0 j) (fun i => Fin.cons 0 (y i)), ?_, ?_⟩` and prove the remaining obligations. Establish `: 1 ≤ (L 0 0).toNat` using `by omega`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hy' : ∀ p q, (D : ℤ) * (L 0 0 * L p.succ q.succ - L p.succ 0 * L 0 q.succ) = ∑ i, y i p * y i q` using `fun p q => by`. Use `congrFun₂ hy p q` as an intermediate fact. Simplify `this` using `[hS, Matrix.sum_apply, vecMulVec_apply]`. Establish `hc : ((L 0 0).toNat : ℤ) = L 0 0` using `Int.toNat_of_nonneg ha'.le`.
+
+Use extensionality with `p q`. Simplify using `only [Matrix.smul_apply, Matrix.sum_apply, Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, vecMulVec_apply, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, nsmul_eq_mul]`. Use `push_cast`. Rewrite using `[hc]`. Apply the tactic sequence `refine Fin.cases ?_ (fun p => ?_) p <;> refine Fin.cases ?_ (fun q => ?_) q`.
+
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using `[hsz 0 p.succ]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Fin.cons_succ]`. Rewrite using `[← hy' p q, hsz 0 p.succ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_smul_eq_sum_vecMulVec : ∀ (r : ℕ) (L : Matrix (Fin r) (Fin r) ℤ),
     (L.map (Int.cast : ℤ → ℝ)).PosDef → ∃ (ι : Type) (_ : Fintype ι) (D : ℕ) (a : ι → Fin r → ℤ),
       1 ≤ D ∧ (D : ℤ) • L = ∑ i, vecMulVec (a i) (a i) := by
@@ -140,6 +190,25 @@ theorem exists_smul_eq_sum_vecMulVec : ∀ (r : ℕ) (L : Matrix (Fin r) (Fin r)
         rw [← hy' p q, hsz 0 p.succ]
         ring
 
+/- English proof (translation)
+Introduce `r L hL`. Take `⟨κ₀, hκ⟩` from `exists_nat_smul_sub_posDef hL (isHermitian_one (α := ℝ) (n := Fin r))`. Use `set d := max κ₀ 1 with hdd`. Establish `hd1 : 1 ≤ d` using `le_max_right _ _`. Establish `hd` using `hκ d (le_max_left _ _)`.
+
+Use `set M : Matrix (Fin r) (Fin r) ℤ := (d : ℤ) • L - 1 with hMdef`. Establish `hM : (M.map (Int.cast : ℤ → ℝ)).PosDef`. Use `hd using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Simplify using `only [hMdef, Matrix.map_apply, Matrix.sub_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]`.
+
+Apply the tactic sequence `split_ifs <;> push_cast <;> ring`. Take `⟨ι, _, D, a, hD, ha⟩` from `exists_smul_eq_sum_vecMulVec r M hM`. Set `b : (Fin r × Fin D) ⊕ ι → Fin r → ℤ` to `Sum.elim (fun p => Pi.single p.1 1) a`. Establish `hsum : ((D * d : ℕ) : ℤ) • L = ∑ k, vecMulVec (b k) (b k)`. Rewrite using `[Fintype.sum_sum_type]`.
+
+Simplify using `only [b, Sum.elim_inl, Sum.elim_inr]`. Rewrite using `[← ha]`. Use extensionality with `i j`. Simplify using `only [Fintype.sum_prod_type, Finset.sum_const, Finset.card_univ, Fintype.card_fin]`. Simplify using `only [hMdef, Matrix.add_apply, Matrix.sum_apply, Matrix.smul_apply, Matrix.sub_apply, vecMulVec_apply, smul_eq_mul, Matrix.one_apply]`.
+
+Simplify using `only [nsmul_eq_mul]`. Use `push_cast`. Establish `hδ : ∑ c : Fin r, (Pi.single c (1 : ℤ) : Fin r → ℤ) i * (Pi.single c (1 : ℤ) : Fin r → ℤ) j = if i = j then 1 else 0`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+
+Simplify using `[Pi.single_apply]`. Simplify using `[Pi.single_apply, h]`. Rewrite using `[← Finset.mul_sum, hδ]`. Apply the tactic sequence `split_ifs <;> ring`. Establish `hspan : Submodule.span ℤ (Set.range b) = ⊤`.
+
+Rewrite using `[eq_top_iff, ← (Pi.basisFun ℤ (Fin r)).span_eq]`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `⟨Sum.inl (j, ⟨0, hD⟩), by simp [b]⟩`. Set `e` to `Fintype.equivFin ((Fin r × Fin D) ⊕ ι)`.
+
+Use `⟨D * d, Fintype.card ((Fin r × Fin D) ⊕ ι), b ∘ e.symm, ?_, ?_, ?_⟩` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[e.symm.surjective.range_comp]`. Conclude with `hspan`. Rewrite using `[hsum]`.
+
+Conclude with `(e.symm.sum_comp (fun k => vecMulVec (b k) (b k))).symm`.
+-/
 theorem exists_smul_eq_sum_vecMulVec_span :
     ∀ (r : ℕ) (L : Matrix (Fin r) (Fin r) ℤ), (L.map (Int.cast : ℤ → ℝ)).PosDef →
       ∃ (D m : ℕ) (a : Fin m → Fin r → ℤ), 1 ≤ D ∧ Submodule.span ℤ (Set.range a) = ⊤ ∧

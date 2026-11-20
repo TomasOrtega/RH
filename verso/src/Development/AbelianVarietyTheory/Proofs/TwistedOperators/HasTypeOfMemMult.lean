@@ -10,6 +10,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `D V S θ M β L T hT v`. Proceed by induction on `hT using Submodule.span_induction generalizing v with`. Consider the case `mem x hx => exact fun κ hκ h => hx.lev v κ hκ h`. Consider the case `zero => intro κ _ h`. Simplify using the standard rewrite rules.
+
+Consider the case `add x y _ _ hx hy`. Introduce `κ hκ h`. Simplify using `only [MultilinearMap.add_apply, Pi.add_apply]`. Rewrite using `[hx v κ hκ h, hy v κ hκ h, mul_add]`. Consider the case `smul a x _ hx`.
+
+Introduce `κ hκ h`. Simplify using `only [MultilinearMap.smul_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hx v κ hκ h, mul_left_comm]`.
+-/
 theorem hasType_of_mem_mult : ∀ {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (θ : InfFam D) (M : DSModel V S) (β : GL (Fin V.rank) (Lev.EAf D)) (L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank), ∀ T ∈ Mult θ M (levG V β L : Set (GA D V)) (levChi V β L), ∀ v, HasType V β L (T v) := by
   intro D V S θ M β L T hT v
   induction hT using Submodule.span_induction generalizing v with

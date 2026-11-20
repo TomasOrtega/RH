@@ -17,11 +17,17 @@ namespace GlobalTheory.CompanionTheory.Ar.Num.CutClosed
 
 open GroundTheory.Heights₂.Heights.NumbersDVR GroundTheory.Heights₂.Heights.AutoClose
 
+/- English proof (translation)
+The claim follows from `BlowUpVerticalPush.proof (BlowUpVerticalFibre.proof BlowUpModel.full (BlowUpFibreDegree.proof NumbersDVR_HomLocRingLocal NumbersDVR_DivCycleHomLoc FiniteBirationalLength.full GlobalTheory.T.blow_up_fibre_semilocal) GlobalTheory.T.projection_formula_degree)`.
+-/
 theorem verticalPush : BlowUpVerticalPush.Statement.{0} :=
   BlowUpVerticalPush.proof (BlowUpVerticalFibre.proof BlowUpModel.full
     (BlowUpFibreDegree.proof NumbersDVR_HomLocRingLocal NumbersDVR_DivCycleHomLoc
       FiniteBirationalLength.full GlobalTheory.T.blow_up_fibre_semilocal) GlobalTheory.T.projection_formula_degree)
 
+/- English proof (translation)
+The claim follows from `CutByEffectiveDivisor.of_steps NumbersDVR_C3NoCommon (CommonFactorInduction.of_open ReesAlgebraDim.full BlowUpStrictTransform.proof NumbersDVR_C3BlowUpExcessDrop verticalPush (BlowUpDivisorPush.proof verticalPush) NumbersDVR_BlowUpHorizontalCorresp HorizontalComponentModel.proof)`.
+-/
 theorem main : CutByEffectiveDivisor.Statement.{0} :=
   CutByEffectiveDivisor.of_steps NumbersDVR_C3NoCommon
     (CommonFactorInduction.of_open ReesAlgebraDim.full BlowUpStrictTransform.proof

@@ -2,6 +2,15 @@ import Mathlib
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Distinguish the cases in `hz : ∀ z, A z = 0`. Conclude with `Or.inl hz`. Use `right`. Take `⟨z0, hz0⟩` from `not_forall.1 hz`. Introduce `z`.
+
+Establish `hLd : Differentiable ℂ (fun t : ℂ => z0 + t • (z - z0))` using `by fun_prop`. Establish `ha : Differentiable ℂ (fun t : ℂ => A (z0 + t • (z - z0)))` using `hA.comp hLd`. Establish `hb : Differentiable ℂ (fun t : ℂ => B (z0 + t • (z - z0)))` using `hB.comp hLd`. Establish `ha0 : ∀ᶠ t in nhds (0 : ℂ), A (z0 + t • (z - z0)) ≠ 0`. Establish `h0 : A (z0 + (0 : ℂ) • (z - z0)) ≠ 0` using `by simpa using hz0`.
+
+Conclude with `ha.continuous.continuousAt.eventually_ne h0`. Establish `hb0 : (fun t : ℂ => B (z0 + t • (z - z0))) =ᶠ[nhds (0 : ℂ)] 0` using `by filter_upwards [ha0] with t ht`. Conclude with `(mul_eq_zero.1 (hAB (z0 + t • (z - z0)))).resolve_left ht`. Establish `hbA : AnalyticOnNhd ℂ (fun t : ℂ => B (z0 + t • (z - z0))) Set.univ` using `fun t _ => hb.analyticAt t`. Establish `h1` using `hbA.eqOn_zero_of_preconnected_of_eventuallyEq_zero isPreconnected_univ (Set.mem_univ 0) hb0 (Set.mem_univ (1 : ℂ))`.
+
+Simplify using `using h1`.
+-/
 theorem entire_eq_zero_or_eq_zero_of_mul_eq_zero {g : ℕ} (A B : (Fin g → ℂ) → ℂ)
     (hA : Differentiable ℂ A) (hB : Differentiable ℂ B) (hAB : ∀ z, A z * B z = 0) :
     (∀ z, A z = 0) ∨ (∀ z, B z = 0) := by
@@ -24,6 +33,15 @@ theorem entire_eq_zero_or_eq_zero_of_mul_eq_zero {g : ℕ} (A B : (Fin g → ℂ
     (Set.mem_univ (1 : ℂ))
   simpa using h1
 
+/- English proof (translation)
+Introduce `g f h q C hf hh hq hsq`. Take `⟨c, hc⟩` from `IsAlgClosed.exists_pow_nat_eq C (by norm_num : 0 < 2)`. Establish `hF : Differentiable ℂ fun z => f z * Complex.exp (-q z)` using `hf.mul hq.neg.cexp`. Establish `key : ∀ z, (f z * Complex.exp (-q z) - c * h z) * (f z * Complex.exp (-q z) + c * h z) = 0`. Introduce `z`.
+
+Establish `e1 : Complex.exp (-q z) ^ 2 * Complex.exp (2 * q z) = 1`. Rewrite using `[← Complex.exp_nat_mul, ← Complex.exp_add]`. Use `Complex.exp_zero using 2` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Take the linear combination `Complex.exp (-q z) ^ 2 * hsq z + C * h z ^ 2 * e1 - h z ^ 2 * hc`. Establish `e2 : ∀ z, Complex.exp (-q z) * Complex.exp (q z) = 1`. Introduce `z`. Rewrite using `[← Complex.exp_add]`. Simplify using the standard rewrite rules.
+
+Break down `entire_eq_zero_or_eq_zero_of_mul_eq_zero (fun z => f z * Complex.exp (-q z) - c * h z) (fun z => f z * Complex.exp (-q z) + c * h z) (hF.sub ((differentiable_const c).mul hh)) (hF.add ((differentiable_const c).mul hh)) key with h1 | h1` into its components or cases. Use `⟨c, hc, fun z => ?_⟩` and prove the remaining obligations. Take the linear combination `Complex.exp (q z) * h1 z - f z * e2 z`. Use `⟨-c, by rw [neg_sq]; exact hc, fun z => ?_⟩` and prove the remaining obligations. Take the linear combination `Complex.exp (q z) * h1 z - f z * e2 z`.
+-/
 theorem entire_eq_mul_of_sq_eq_mul_sq :
     ∀ (g : ℕ) (f h q : (Fin g → ℂ) → ℂ) (C : ℂ), Differentiable ℂ f → Differentiable ℂ h →
       Differentiable ℂ q → (∀ z, f z ^ 2 = C * Complex.exp (2 * q z) * h z ^ 2) →

@@ -16,6 +16,9 @@ namespace GlobalTheory.EtC.KumPic
 section
 variable (q : ℕ) [NeZero q]
 
+/- English proof (translation)
+Take `⟨r, hr⟩` from `Polynomial.cyclotomic.dvd_X_pow_sub_one q ℤ`. Establish `h` using `congrArg (Polynomial.aeval ζ.1) hr`. Simplify using `only [map_sub, map_pow, Polynomial.aeval_X, map_one, map_mul, ζ.2.2, zero_mul] at h`. Conclude with `sub_eq_zero.mp h`.
+-/
 theorem prim_pow_eq_one {A : Type} [CommRing A] (ζ : Prim q A) : ζ.1 ^ q = 1 := by
   obtain ⟨r, hr⟩ := Polynomial.cyclotomic.dvd_X_pow_sub_one q ℤ
   have h := congrArg (Polynomial.aeval ζ.1) hr
@@ -25,9 +28,15 @@ theorem prim_pow_eq_one {A : Type} [CommRing A] (ζ : Prim q A) : ζ.1 ^ q = 1 :
 def primUnit {A : Type} [CommRing A] (ζ : Prim q A) : Aˣ :=
   Units.ofPowEqOne ζ.1 q (prim_pow_eq_one q ζ) (NeZero.ne q)
 
+/- English proof (translation)
+The claim follows from `Units.val_ofPowEqOne _ _ _ _`.
+-/
 theorem primUnit_val {A : Type} [CommRing A] (ζ : Prim q A) : ((primUnit q ζ : Aˣ) : A) = ζ.1 :=
   Units.val_ofPowEqOne _ _ _ _
 
+/- English proof (translation)
+Unfold `dv`. Rewrite using `[show ∀ a b : Sec ((res ℤ (twZ q)).X 0) U, Sec.res g (a - b) = Sec.res g a - Sec.res g b from fun a b => LinearMap.map_sub _ a b, PicSpec.sec_map_res, PicSpec.unitSec_res, (restrMap _ _).nat, (kumT_spec q).1 V U g v hq]`.
+-/
 theorem dv_res (φ : Gm ⟶ (res ℤ (twZ q)).X 0) {V U : Scheme.{0}} (g : V ⟶ U) (hq : IsUnit (q : Γ(U, ⊤)))
     (v : (Γ(U, ⊤))ˣ) : Sec.res g (dv q φ U v) = dv q φ V (Units.map g.appTop.hom.toMonoidHom v) := by
   unfold dv
@@ -40,6 +49,11 @@ variable (κ : twZ q ⟶ Gm)
   (φ : Gm ⟶ (res ℤ (twZ q)).X 0) (hφ : κ ≫ φ = resι ℤ (twZ q))
 include hκ hφ
 
+/- English proof (translation)
+Establish `hu` using `primUnit_val q ζ`. Establish `hw : w = primUnit q ζ * v` using `Units.ext (by rw [Units.val_mul, hu, h])`. Establish `hk` using `(kumT_spec q).2 U ζ v w h`. Establish `h1 : Sec.map φ (unitSec (primUnit q ζ)) = Sec.map (resι ℤ (twZ q)) (show Sec (twZ q) U from twGen 1 ζ)`. Rewrite using `[← hκ U ζ _ hu, PicSpec.sec_map_comp, hφ]`.
+
+Establish `h2 : (restrMap (Int.castRingHom (ZMod q)) (tw q 1)).app U 0 (resGen 1 ζ) = Sec.map (resι ℤ (twZ q)) (show Sec (twZ q) U from twGen 1 ζ)` using `restrMap_spec _ _ U _`. Unfold `dv`. Rewrite using `[hk, map_add, h2, hw, PicSpec.unitSec_mul, PicSpec.sec_map_add, h1]`. Normalize the expressions using the abelian group laws.
+-/
 theorem dv_mul_prim {U : Scheme.{0}} (ζ : Prim q Γ(U, ⊤)) (v w : (Γ(U, ⊤))ˣ) (h : (w : Γ(U, ⊤)) = ζ.1 * v) :
     dv q φ U w = dv q φ U v := by
   have hu := primUnit_val q ζ
@@ -55,6 +69,11 @@ theorem dv_mul_prim {U : Scheme.{0}} (ζ : Prim q Γ(U, ⊤)) (v w : (Γ(U, ⊤)
   rw [hk, map_add, h2, hw, PicSpec.unitSec_mul, PicSpec.sec_map_add, h1]
   abel
 
+/- English proof (translation)
+Proceed by induction on `a with`. Consider the case `zero`. Introduce `v w h`. Rewrite `h` using `[pow_zero, one_mul]`. Rewrite using `[Units.ext h]`.
+
+Consider the case `succ a ih`. Introduce `v w h`. Establish `h1 : ((primUnit q ζ ^ a * v : (Γ(U, ⊤))ˣ) : Γ(U, ⊤)) = ζ.1 ^ a * v`. Rewrite using `[Units.val_mul, Units.val_pow_eq_pow_val, primUnit_val]`. Rewrite using `[dv_mul_prim q κ hκ φ hφ ζ (primUnit q ζ ^ a * v) w (by rw [h, h1, pow_succ', mul_assoc]), ih v (primUnit q ζ ^ a * v) h1]`.
+-/
 theorem dv_mul_prim_pow {U : Scheme.{0}} (ζ : Prim q Γ(U, ⊤)) (a : ℕ) :
     ∀ v w : (Γ(U, ⊤))ˣ, (w : Γ(U, ⊤)) = ζ.1 ^ a * v → dv q φ U w = dv q φ U v := by
   induction a with
@@ -70,6 +89,17 @@ theorem dv_mul_prim_pow {U : Scheme.{0}} (ζ : Prim q Γ(U, ⊤)) (a : ℕ) :
 
 end
 
+/- English proof (translation)
+Introduce `q _ κ hκ φ hφ U hq v v' hvv`. Establish `sep` using `fun W : Scheme.{0} => (GlobalTheory.T.etaleSheafSections_ext_and_glue ℤ ((res ℤ (twZ q)).X 0) W).1`. Apply `sep U` to reduce the goal to its premises. Take `⟨S, hS, hP⟩` from `(GlobalTheory.T.etaleLocal_primitiveRoot_and_roots_of_unity q U).1 hq`. Use `⟨S, hS, fun V g hg => ?_⟩` and prove the remaining obligations.
+
+Take `⟨ζ⟩` from `hP V g hg`. Establish `hqV : IsUnit (q : Γ(V, ⊤))` using `by simpa using hq.map g.appTop.hom`. Rewrite using `[dv_res q φ g hq, dv_res q φ g hq]`. Use `set x := Units.map g.appTop.hom.toMonoidHom v`. Use `set x' := Units.map g.appTop.hom.toMonoidHom v'`.
+
+Establish `hx : x ^ q = x' ^ q` using `by simp only [x, x', ← map_pow, hvv]`. Apply `sep V` to reduce the goal to its premises. Establish `hω : ((x' * x⁻¹ : (Γ(V, ⊤))ˣ) : Γ(V, ⊤)) ^ q = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, mul_pow, ← hx, inv_pow, mul_inv_cancel, Units.val_one]`. Take `⟨S₂, hS₂, hP₂⟩` from `(GlobalTheory.T.etaleLocal_primitiveRoot_and_roots_of_unity q V).2.2.1 ζ _ hω`.
+
+Use `⟨S₂, hS₂, fun W h hh => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hP₂ W h hh`. Rewrite using `[dv_res q φ h hqV, dv_res q φ h hqV]`. Use `symm`. Apply `dv_mul_prim_pow q κ hκ φ hφ (ζ.map h.appTop.hom) a` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `h.appTop.hom (x' : Γ(V, ⊤)) = (h.appTop.hom ζ.1) ^ a * h.appTop.hom (x : Γ(V, ⊤))`. Rewrite using `[← ha, ← map_mul, Units.val_mul, mul_assoc, Units.inv_mul, mul_one]`.
+-/
 theorem dv_eq_of_pow_eq : ∀ (q : ℕ) [NeZero q] (κ : twZ q ⟶ Gm), (∀ (U : Scheme.{0}) (ζ : Prim q Γ(U, ⊤)) (u : (Γ(U, ⊤))ˣ), (u : Γ(U, ⊤)) = ζ.1 → Sec.map κ (show Sec (twZ q) U from twGen 1 ζ) = unitSec u) → ∀ (φ : Gm ⟶ (res ℤ (twZ q)).X 0), κ ≫ φ = resι ℤ (twZ q) → ∀ (U : Scheme.{0}), IsUnit (q : Γ(U, ⊤)) → ∀ v v' : (Γ(U, ⊤))ˣ, v ^ q = v' ^ q → dv q φ U v = dv q φ U v' := by
   intro q _ κ hκ φ hφ U hq v v' hvv
   have sep := fun W : Scheme.{0} => (GlobalTheory.T.etaleSheafSections_ext_and_glue ℤ ((res ℤ (twZ q)).X 0) W).1

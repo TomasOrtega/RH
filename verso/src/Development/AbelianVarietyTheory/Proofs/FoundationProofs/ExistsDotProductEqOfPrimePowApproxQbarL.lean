@@ -5,6 +5,21 @@ open scoped Matrix
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Set `T : (X →₀ K) →ₗ[K] (Fin m → K)` to `Finsupp.linearCombination K M`. Set `φ : Module.Dual K (X →₀ K)` to `Finsupp.linearCombination K z`. Establish `hker : φ ∈ (LinearMap.ker T).dualAnnihilator`. Rewrite using `[Submodule.mem_dualAnnihilator]`. Introduce `c hc`.
+
+Establish `hc' : ∑ x ∈ c.support, c x • M x = 0`. Simplify `hc` using `[T, Finsupp.linearCombination_apply, Finsupp.sum]`. Establish `hφ : φ c = ∑ x ∈ c.support, c x * z x`. Simplify using `[φ, Finsupp.linearCombination_apply, Finsupp.sum]`. Establish `hb : ∀ n : ℕ, ‖φ c‖ ≤ (∑ x ∈ c.support, ‖c x‖) * r ^ n`.
+
+Introduce `n`. Take `⟨y, hy⟩` from `h n`. Establish `h0 : ∑ x ∈ c.support, c x * (M x ⬝ᵥ y) = 0`. Use `congrArg (· ⬝ᵥ y) hc'` as an intermediate fact. Simplify `this` using `[sum_dotProduct, smul_dotProduct]`.
+
+Establish `: φ c = ∑ x ∈ c.support, c x * (z x - M x ⬝ᵥ y)`. Simplify using `only [mul_sub, Finset.sum_sub_distrib, h0, sub_zero, hφ]`. Rewrite using `[this, Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun x _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+
+Conclude with `mul_le_mul_of_nonneg_left (hy x) (norm_nonneg _)`. Establish `hlim : Filter.Tendsto (fun n : ℕ => (∑ x ∈ c.support, ‖c x‖) * r ^ n) Filter.atTop (nhds 0)`. Simplify using `using (tendsto_pow_atTop_nhds_zero_of_lt_one hr0 hr1).const_mul (∑ x ∈ c.support, ‖c x‖)`. Conclude with `norm_le_zero_iff.mp (ge_of_tendsto' hlim hb)`. Rewrite `hker` using `[← LinearMap.range_dualMap_eq_dualAnnihilator_ker]`.
+
+Take `⟨g, hg⟩` from `hker`. Use `⟨fun i => g (fun j => if i = j then 1 else 0), fun x => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (fun f : Module.Dual K (X →₀ K) => f (Finsupp.single x 1)) hg`. Simplify using `only [LinearMap.dualMap_apply, T, φ, Finsupp.linearCombination_single, one_smul, smul_eq_mul, one_mul] at h1`. Rewrite using `[← h1, LinearMap.pi_apply_eq_sum_univ g (M x)]`.
+
+Simplify using `[dotProduct]`.
+-/
 theorem exists_dotProduct_eq_of_approx_pow {K : Type*} [NormedField K] (r : ℝ) (hr0 : 0 ≤ r)
     (hr1 : r < 1) (X : Type*) (m : ℕ) (M : X → Fin m → K) (z : X → K)
     (h : ∀ n : ℕ, ∃ y : Fin m → K, ∀ x, ‖z x - M x ⬝ᵥ y‖ ≤ r ^ n) :
@@ -45,6 +60,11 @@ theorem exists_dotProduct_eq_of_approx_pow {K : Type*} [NormedField K] (r : ℝ)
   rw [← h1, LinearMap.pi_apply_eq_sum_univ g (M x)]
   simp [dotProduct]
 
+/- English proof (translation)
+Introduce `l _ X m M z h`. Establish `hl : ‖((l : ℕ) : Qbar l)‖ < 1`. Establish `e : ((l : ℕ) : Qbar l) = algebraMap ℚ_[l] (Qbar l) (l : ℚ_[l])` using `by simp`. Rewrite using `[e, norm_algebraMap']`. Conclude with `Padic.norm_p_lt_one`.
+
+Use `exists_dotProduct_eq_of_approx_pow _ (norm_nonneg _) hl X m M z fun n => ?_` and prove the remaining obligations. Simplify `h n` using `only [norm_pow]`.
+-/
 theorem exists_dotProduct_eq_of_approx_prime_pow :
     ∀ (l : ℕ) [Fact l.Prime] (X : Type) (m : ℕ) (M : X → Fin m → Qbar l) (z : X → Qbar l), (∀ n : ℕ, ∃ y : Fin m → Qbar l, ∀ x, ‖z x - M x ⬝ᵥ y‖ ≤ ‖((l : ℕ) : Qbar l) ^ n‖) → ∃ y : Fin m → Qbar l, ∀ x, z x = M x ⬝ᵥ y := by
   intro l _ X m M z h

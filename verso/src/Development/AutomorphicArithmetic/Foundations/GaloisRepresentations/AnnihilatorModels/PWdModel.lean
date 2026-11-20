@@ -7,6 +7,9 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory.GalOfCusp TensorProduct Module
 open UpperTheory.Gal.crystallineComparison
 
+/- English proof (translation)
+The claim follows from `hV.finite (wdPst P ι Bw h hj ρ).charPol g = (wdRho P ι Bw h hj ρ g).charpoly := by have := hV.finite rw [wdPst_of_isPst ι Bw h hj hV, WD.charPol_mk] obtain ⟨u, -, hu, -, hc, hρ⟩ := wdRep_spec P ι Bw h hj ρ exact (GlobalTheory.WeilDeligne.isFrobSS_of_unipotent u hu hc hρ).charpoly …`.
+-/
 private theorem charPol_wdPst {l : ℕ} [Fact l.Prime] (P : LocPrime l) (ι : Om l ≃+* ℂ) {E Ω : Type} [Field E]
     [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {A : ValuationSubring Ω}
     {w : HeightOneSpectrum (𝓞 E)} (h : IsPlaceOver A w) {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O]
@@ -20,6 +23,13 @@ private theorem charPol_wdPst {l : ℕ} [Fact l.Prime] (P : LocPrime l) (ι : Om
   obtain ⟨u, -, hu, -, hc, hρ⟩ := wdRep_spec P ι Bw h hj ρ
   exact (GlobalTheory.WeilDeligne.isFrobSS_of_unipotent u hu hc hρ).charpoly_eq g
 
+/- English proof (translation)
+Introduce `l _ P ι E Ω _ _ _ _ _ A w h O _ _ _ Bw hj a r LL r' hm hV g`. Establish `key : wdAt P ι Bw h hj r = wdPst P ι Bw h hj (Bw.repE LL r')`. Take `⟨L₁, r₁, hm₁, hV₁, e₁⟩` from `wdAt_of_isPstAt ι Bw h hj (r := r) ⟨LL, r', hm, hV⟩`. Establish `h₁ : L₁.1 ≤ (supExt L₁ LL).1` using `le_sup_left`. Establish `h₂ : LL.1 ≤ (supExt L₁ LL).1` using `le_sup_right`.
+
+Establish `e : mapRep (IntermediateField.inclusion h₁).toRingHom r₁ = mapRep (IntermediateField.inclusion h₂).toRingHom r'`. Use extensionality with `x i j`. Conclude with `congrArg (fun f : ↥(Dec (F := E) A) →* GL (Fin a) (Om l) => (f x : Matrix (Fin a) (Fin a) (Om l)) i j) (hm₁.2.trans hm.2.symm)`. Rewrite using `[e₁, GlobalTheory.Pst.BridgeParam.wdPst_enlarge P ι Bw h hj h₁ r₁ hV₁, GlobalTheory.Pst.BridgeParam.wdPst_enlarge P ι Bw h hj h₂ r' hV, e]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[key]`. Conclude with `charPol_wdPst P ι h Bw hj LL (Bw.repE LL r') hV g`. Conclude with `(GlobalTheory.Pst.LetterDim.finrank_wdSpace l P ι Bw.Kw LL _ _ hV).trans (by simp)`.
+-/
 theorem UpperTheory.Gal.crystallineComparison.wdModel_of :
     WdModel := by
   intro l _ P ι E Ω _ _ _ _ _ A w h O _ _ _ Bw hj a r LL r' hm hV g

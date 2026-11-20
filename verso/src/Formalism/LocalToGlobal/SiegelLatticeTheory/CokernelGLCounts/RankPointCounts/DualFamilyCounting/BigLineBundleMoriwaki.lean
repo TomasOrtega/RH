@@ -45,6 +45,11 @@ namespace Formalism.L2.SG.Pf.Cnt
 
 open Formalism.HermitianLattices.Ext.L3 Formalism.L2.SG.Pf.G6
 
+/- English proof (translation)
+Introduce `K F V _ _ _ _ _ _ _ _ _ _ _ hK hF h hs hnd U hcU M T hM hT 𝔭 h𝔭`. Use `⟨fun hne => ⟨?_, hn K F V hK hF h hs hnd U hcU M T hM hT 𝔭 h𝔭 hne⟩, fun g hg => fibP_gmap hM 𝔭 T hg⟩` and prove the remaining obligations. Take `⟨⟨Λ, hΛ0, hΛd, hΛU, hΛW⟩⟩` from `(Nat.card_ne_zero.mp hne).1`. Establish `oU : ∀ x ∈ U, ∀ y ∈ orthK h U, h x y = 0` using `fun x hx y hy => mem_orthK.mp hy x hx`. Establish `oW : ∀ x ∈ orthK h U, ∀ y ∈ U, h x y = 0`.
+
+Introduce `x hx y hy`. Establish `e` using `hs.eq x y`. Rewrite `e` using `[oU y hy x hx]`. Simplify using `using e`. Conclude with `discIso_of_proj h hcU hΛU hΛW (hi K F V hK hF h hs hnd U (orthK h U) hcU oU M hM 𝔭 h𝔭 Λ hΛ0 hΛd hΛU) (ho K F V hK hF h hs hnd U (orthK h U) hcU oU M hM 𝔭 h𝔭 Λ hΛ0 hΛd hΛU) (hi K F V hK hF h hs hnd (orthK h U) U hcU.symm oW T hT 𝔭 h𝔭 Λ hΛ0 hΛd hΛW) (ho K F V hK hF h hs hnd (orthK …`.
+-/
 theorem glueLoc_of (hi : ProjInto) (ho : ProjOnto) (hn : FibCount) : GlueLoc := by
   intro K F V _ _ _ _ _ _ _ _ _ _ _ hK hF h hs hnd U hcU M T hM hT 𝔭 h𝔭
   refine ⟨fun hne => ⟨?_, hn K F V hK hF h hs hnd U hcU M T hM hT 𝔭 h𝔭 hne⟩,

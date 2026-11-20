@@ -11,6 +11,9 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.BigTop GlobalTheo
 open GlobalTheory.FunObj.SqNum (nuH halfRank IsTor)
 open GlobalTheory.CMVal GlobalTheory.HeckeGal
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TwistValBound.vw_le_of_bound | exact GlobalTheory.TwistValBound.vw_le_of_bound | (intros; apply GlobalTheory.TwistValBound.vw_le_of_bound <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.twistedThetaValue_valuation_le_div_sq : ∀ {D : D7} (nch : NChoice D) (w : D.what₂.places.Pl) (N0 : D.ntw.Tw → ℕ) (lam : D.ntw.abelian₂ (nch.twI w)) (a : ℤ)
     (u : (nch.Oe w)ˣ) (z : D.what₂.LL),
     BlochKatoReduction.Gen.partC N0 (nch.twI w) (nch.Q w) (nch.k' w) (nch.psi' w ^ a) (twEps D (nch.twI w)) →

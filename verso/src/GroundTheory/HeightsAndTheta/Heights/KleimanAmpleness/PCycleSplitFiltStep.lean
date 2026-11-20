@@ -16,6 +16,11 @@ universe u w
 
 namespace CycleSplit.Filt.Step
 
+/- English proof (translation)
+Set `` to `Ideal.Quotient.field 𝔪`. Establish `hT : Module.IsTorsionBySet S T 𝔪`. Introduce `t a`. Conclude with `h a a.2 t`. Set `: Module (S ⧸ 𝔪) T` to `hT.module`.
+
+Establish `: IsScalarTower S (S ⧸ 𝔪) T` using `hT.isScalarTower`. Establish `: Module.Finite (S ⧸ 𝔪) T` using `Module.Finite.of_restrictScalars_finite S (S ⧸ 𝔪) T`. Rewrite using `[Module.length_eq_of_surjective (R := S ⧸ 𝔪) (M := T) Ideal.Quotient.mk_surjective]`. Conclude with `Module.length_ne_top`.
+-/
 theorem length_ne_top_of_smul_eq_zero {S : Type u} [CommRing S] {T : Type w} [AddCommGroup T] [Module S T]
     [Module.Finite S T] (𝔪 : Ideal S) [𝔪.IsMaximal] (h : ∀ a ∈ 𝔪, ∀ t : T, a • t = 0) :
     Module.length S T ≠ ⊤ := by
@@ -29,6 +34,69 @@ theorem length_ne_top_of_smul_eq_zero {S : Type u} [CommRing S] {T : Type w} [Ad
   rw [Module.length_eq_of_surjective (R := S ⧸ 𝔪) (M := T) Ideal.Quotient.mk_surjective]
   exact Module.length_ne_top
 
+/- English proof (translation)
+Introduce `S _ _ Ω _ _ N x 𝔪 h𝔪 K pp g e hKh hK h𝔪K hg hpph hpp Q`. Take `⟨c₀, hc₀⟩` from `hSC S Ω N x Q pp hpph`. Use `filter_upwards [eventually_ge_atTop (c₀ + e).toNat] with c hc`. Establish `hce : c₀ ≤ (c : ℤ) - e`. Use `Int.toNat_le.mp hc` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Use `set F : SubSystem S x Ω := Q.twist (twistSys S x (c : ℤ)) with hF`. Use `set F' : SubSystem S x Ω := Q.twist (twistSys S x ((c : ℤ) - e)) with hF'`. Establish `hF'eq : F' = F.twist (twistSys S x (-(e : ℤ)))`. Rewrite using `[hF', hF, SubSystem.twist_assoc, twistSys_twist_eq_add, sub_eq_add_neg]`.
+
+Establish `hsub : ∀ (J : Ideal (Poly S N)) (I : Chart x), (F.twist (idealSys x J)).sub I = idealMod J I * F.sub I` using `fun J I ↦ SubSystem.twist_sub_eq_mul_of_line _ _ I`. Establish `hF's : ∀ I, F'.sub I = twistMod S x (-(e : ℤ)) I * F.sub I` using `fun I ↦ by`. Rewrite using `[hF'eq]`. Conclude with `SubSystem.twist_sub_eq_mul_of_line _ _ I`. Establish `hF'p : ∀ I, (F'.twist (idealSys x pp)).sub I = idealMod pp I * (twistMod S x (-(e : ℤ)) I * F.sub I)` using `fun I ↦ by`.
+
+Rewrite using `[SubSystem.twist_sub_eq_mul_of_line, hF's]`. Both sides reduce to the same expression. Establish `hinv : ∀ I, ∃ Q' : Submodule (chartRing S x I) Ω, F.sub I * Q' = 1` using `fun I ↦ (Q.tensorProd (twistBundle S x (c : ℤ))).invertible I`. Establish `hgK' : ∀ I : Chart x, ∀ y ∈ F'.sub I, aeval x g * y ∈ (F.twist (idealSys x (K ⊔ Ideal.span {g}))).sub I`. Introduce `I y hy`.
+
+Take `⟨i, hi⟩` from `I.2.1`. Rewrite `hy` using `[hF's, twistMod_eq_span _ I hi]`. Take `⟨q, hq, rfl⟩` from `Submodule.mem_span_singleton_mul.mp hy`. Rewrite using `[hsub]`. Establish `hγ : aeval x g / x i ^ e ∈ idealMod (K ⊔ Ideal.span {g}) I` using `Submodule.subset_span ⟨g, X i ^ e, e, Ideal.mem_sup_right (Ideal.mem_span_singleton_self g), pow_mem (X_mem_monos hi) e, hg, isHomogeneous_X_pow i e, by simp⟩`.
+
+Establish `h1 : aeval x g * (x i ^ (-(e : ℤ)) * q) = aeval x g / x i ^ e * q`. Rewrite using `[← mul_assoc, zpow_neg, zpow_natCast, div_eq_mul_inv]`. Rewrite using `[h1]`. Conclude with `Submodule.mul_mem_mul hγ hq`. Establish `hU : ∀ I (y : Ω), y ∈ F'.sub I → aeval x g * y ∈ (F.twist (idealSys x K)).sub I → y ∈ (F'.twist (idealSys x pp)).sub I`.
+
+Introduce `I y hy hgy`. Take `⟨i, hi⟩` from `I.2.1`. Take `⟨Q', hQ'⟩` from `hinv I`. Rewrite `hy` using `[hF's]`. Rewrite `hgy` using `[hsub]`.
+
+Rewrite using `[hF'p]`. Conclude with `SectionCount.Drop.Filt.Step.mem_chart_of_mul_mem hK hpp hg I hi _ Q' hQ' hy hgy`. Establish `hC : ∀ I (y : Ω), y ∈ (F'.twist (idealSys x pp)).sub I → aeval x g * y ∈ (F.twist (idealSys x K)).sub I`. Introduce `I y hy`. Take `⟨i, hi⟩` from `I.2.1`.
+
+Rewrite `hy` using `[hF'p]`. Rewrite using `[hsub]`. Conclude with `SectionCount.Drop.Filt.Step.mul_mem_chart hpp hg I hi _ hy`. Establish `hE : ∀ s ∈ (F.twist (idealSys x (K ⊔ Ideal.span {g}))).secs, ∀ I, ∃ y ∈ F'.sub I, s - aeval x g * y ∈ (F.twist (idealSys x K)).sub I`. Introduce `s hs I`.
+
+Take `⟨i, hi⟩` from `I.2.1`. Establish `hsI` using `SectionCount.Drop.Filt.Step.mem_secs_iff'.mp hs I`. Rewrite `hsI` using `[hsub]`. Rewrite using `[hF's, hsub]`. Conclude with `SectionCount.Drop.Filt.Step.exists_chart hKh hg I hi _ hsI`.
+
+Establish `hWV : ∀ z, z ∈ (F.twist (idealSys x K)).secs → z ∈ (F.twist (idealSys x (K ⊔ Ideal.span {g}))).secs`. Introduce `z hz`. Use `SectionCount.Drop.Filt.Step.mem_secs_iff'.mpr fun I ↦ ?_` and prove the remaining obligations. Establish `h1` using `SectionCount.Drop.Filt.Step.mem_secs_iff'.mp hz I`. Rewrite `h1`, the goal using `[hsub]`.
+
+Establish `hle : idealMod K I ≤ idealMod (K ⊔ Ideal.span {g}) I`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, s, d, hf, hs, hfd, hsd, rfl⟩`. Conclude with `⟨f, s, d, Ideal.mem_sup_left hf, hs, hfd, hsd, rfl⟩`. Conclude with `(Submodule.mul_le.mpr fun m hm n hn ↦ Submodule.mul_mem_mul (hle hm) hn) h1`.
+
+Establish `hVH : ∀ z, z ∈ (F.twist (idealSys x (K ⊔ Ideal.span {g}))).secs → z ∈ F.secs` using `fun z hz ↦ SectionCount.Drop.Filt.Step.mem_secs_iff'.mpr fun I ↦ SurjectiveClosed.twist_idealSys_le F _ I (SectionCount.Drop.Filt.Step.mem_secs_iff'.mp hz I)`. Establish `hgsec : ∀ y ∈ F'.secs, aeval x g * y ∈ (F.twist (idealSys x (K ⊔ Ideal.span {g}))).secs` using `fun y hy ↦ SectionCount.Drop.Filt.Step.mem_secs_iff'.mpr fun I ↦ hgK' I y (SectionCount.Drop.Filt.Step.mem_secs_iff'.mp hy I)`. Establish `hlift : ∀ s ∈ (F.twist (idealSys x (K ⊔ Ideal.span {g}))).secs, ∃ t ∈ F'.secs, s - aeval x g * t ∈ (F.twist (idealSys x K)).secs`. Introduce `s hs`. Use `choose y hy hys using hE s hs`.
+
+Establish `hcomp : ∀ (I₁ I₂ : Chart x), I₁.1 ⊆ I₂.1 → y I₁ - y I₂ ∈ (F'.twist (idealSys x pp)).sub I₂`. Introduce `I₁ I₂ h`. Use `hU I₂ _ (sub_mem (F'.mono I₁ I₂ h _ (hy I₁)) (hy I₂)) ?_` and prove the remaining obligations. Establish `h1` using `sub_mem (hys I₂) ((F.twist (idealSys x K)).mono I₁ I₂ h _ (hys I₁))`. Use `h1 using 1` and compare the differences between its conclusion and the goal.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨t, ht, htI⟩` from `hc₀ _ hce y hy hcomp`. Use `⟨t, ht, SectionCount.Drop.Filt.Step.mem_secs_iff'.mpr fun I ↦ ?_⟩` and prove the remaining obligations. Establish `h1` using `add_mem (hys I) (hC I _ (neg_mem (htI I)))`. Use `h1 using 1` and compare the differences between its conclusion and the goal.
+
+Expand and normalize the polynomial expressions, which then agree. Use `set H := F.secs with hH`. Use `set H' := F'.secs with hH'`. Use `set A := ((F.twist (idealSys x K)).secs).comap H.subtype with hA`. Use `set B := ((F.twist (idealSys x (K ⊔ Ideal.span {g}))).secs).comap H.subtype with hB`.
+
+Use `set P := ((F'.twist (idealSys x pp)).secs).comap H'.subtype with hP`. Establish `hAB : A ≤ B` using `fun z hz ↦ Submodule.mem_comap.mpr (hWV _ (Submodule.mem_comap.mp hz))`. Set `μ0 : H' →ₗ[S] H` to `(LinearMap.mulLeft S (aeval x g)).restrict (p := H') (q := H) (fun y hy ↦ hVH _ (hgsec y hy))`. Set `μ : H' →ₗ[S] H ⧸ A` to `A.mkQ ∘ₗ μ0`. Establish `hμ : ∀ y : H', y ∈ P ↔ μ y = 0`.
+
+Introduce `y`. Rewrite using `[LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.mem_comap]`. Express the relevant statement in the definitionally equal form `(y : Ω) ∈ _ ↔ aeval x g * (y : Ω) ∈ _`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Conclude with `SectionCount.Drop.Filt.Step.mem_secs_iff'.mpr fun I ↦ hC I _ (SectionCount.Drop.Filt.Step.mem_secs_iff'.mp h I)`. Introduce `h`. Conclude with `SectionCount.Drop.Filt.Step.mem_secs_iff'.mpr fun I ↦ hU I _ (SectionCount.Drop.Filt.Step.mem_secs_iff'.mp y.2 I) (SectionCount.Drop.Filt.Step.mem_secs_iff'.mp h I)`. Set `μb : (H' ⧸ P) →ₗ[S] H ⧸ A` to `P.liftQ μ (fun y hy ↦ (hμ y).mp hy)`. Establish `hinj : Function.Injective μb`.
+
+Rewrite using `[← LinearMap.ker_eq_bot]`. Conclude with `Submodule.ker_liftQ_eq_bot _ _ _ (fun y hy ↦ (hμ y).mpr hy)`. Set `π : (H ⧸ A) →ₗ[S] H ⧸ B` to `Submodule.factor hAB`. Establish `hsurj : Function.Surjective π`. Introduce `z`.
+
+Take `⟨m, rfl⟩` from `Submodule.mkQ_surjective B z`. Conclude with `⟨A.mkQ m, rfl⟩`. Establish `hex : Function.Exact μb π`. Introduce `z`. Take `⟨m, rfl⟩` from `Submodule.mkQ_surjective A z`.
+
+Express the relevant statement in the definitionally equal form `B.mkQ m = 0 ↔ _`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap]`. Prove the components needed by the constructor for the conclusion. Introduce `hm`. Take `⟨t, ht, hst⟩` from `hlift _ hm`.
+
+Express the relevant statement in the definitionally equal form `(m : Ω) - aeval x g * t ∈ _ at hst`. Use `⟨P.mkQ ⟨t, ht⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `A.mkQ (μ0 ⟨t, ht⟩) = A.mkQ m`. Rewrite using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq, Submodule.mem_comap]`. Express the relevant statement in the definitionally equal form `aeval x g * t - (m : Ω) ∈ _`.
+
+Establish `h1` using `neg_mem hst`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨w, hw⟩`. Take `⟨y, rfl⟩` from `Submodule.mkQ_surjective P w`.
+
+Express the relevant statement in the definitionally equal form `A.mkQ (μ0 y) = A.mkQ m at hw`. Rewrite `hw` using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq, Submodule.mem_comap]`. Express the relevant statement in the definitionally equal form `aeval x g * (y : Ω) - m ∈ _ at hw`. Express the relevant statement in the definitionally equal form `(m : Ω) ∈ _`. Establish `h1` using `sub_mem (hgsec _ y.2) (hWV _ hw)`.
+
+Use `h1 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `hlen` using `Module.length_eq_add_of_exact μb π hinj hsurj hex`. Establish `hfin : Module.length S (H ⧸ A) ≠ ⊤`. Distinguish the cases in `hx : x = 0`.
+
+Establish `hE0 : IsEmpty (Chart x)` using `⟨fun I ↦ by`. Take `⟨i, hi⟩` from `I.2.1`. Conclude with `(mem_support x).mp (I.2.2 hi) (by simp [hx])⟩`. Establish `hAt : A = ⊤` using `eq_top_iff.mpr fun m _ ↦ Submodule.mem_comap.mpr (SectionCount.Drop.Filt.Step.mem_secs_iff'.mpr fun I ↦ isEmptyElim I)`. Establish `: Subsingleton (H ⧸ A)` using `Submodule.Quotient.subsingleton_iff.mpr hAt`.
+
+Rewrite using `[Module.length_eq_zero]`. Conclude with `ENat.zero_ne_top`. Establish `: Module.Finite S H` using `(hFS S Ω N x (Q.tensorProd (twistBundle S x (c : ℤ))) hx).1`. Use `h𝔪` as an intermediate fact. Use `length_ne_top_of_smul_eq_zero 𝔪 fun a ha z ↦ ?_` and prove the remaining obligations.
+
+Take `⟨m, rfl⟩` from `Submodule.mkQ_surjective A z`. Rewrite using `[← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap]`. Express the relevant statement in the definitionally equal form `a • (m : Ω) ∈ _`. Use `SectionCount.Drop.Filt.Step.mem_secs_iff'.mpr fun I ↦ ?_` and prove the remaining obligations. Rewrite using `[hsub, Algebra.smul_def]`.
+
+Use `Submodule.mul_mem_mul ?_ (SectionCount.Drop.Filt.Step.mem_secs_iff'.mp m.2 I)` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨C a, 1, 0, h𝔪K (Ideal.mem_map_of_mem _ ha), one_mem _, isHomogeneous_C _ _, isHomogeneous_one _ _, by simp⟩`. Establish `hB' : Module.length S (H ⧸ B) ≠ ⊤` using `fun h ↦ hfin (by rw [hlen, h, add_top])`. Establish `hP' : Module.length S (H' ⧸ P) ≠ ⊤` using `fun h ↦ hfin (by rw [hlen, h, top_add])`. Express the relevant statement in the definitionally equal form `((Module.length S (H ⧸ A)).toNat : ℤ) = ((Module.length S (H ⧸ B)).toNat : ℤ) + ((Module.length S (H' ⧸ P)).toNat : ℤ)`.
+
+Rewrite using `[hlen, ENat.toNat_add hP' hB']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem proof (hSC : SurjectiveClosed.Statement.{u, w}) (hFS : FiniteSections.Statement.{u, w}) :
     CycleSplit.Filt.Step.Statement.{u, w} := by
   classical

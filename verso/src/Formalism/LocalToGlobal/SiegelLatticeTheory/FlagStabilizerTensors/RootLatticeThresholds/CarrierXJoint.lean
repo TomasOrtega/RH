@@ -36,6 +36,13 @@ def JointTensorAt (S : Formalism.FourierDecayAlt.C.HidaSetting D.host.E Wp Wq)
               (Formalism.FourierDecayAlt.D.toStd S.G.r S.g 1 (Formalism.FourierDecayAlt.C.loc (S.emb (τ.symm v)) p)))
             ((eQ v).symm (x v))))
 
+/- English proof (translation)
+Unfold `JointTensorAt at h2`. Unfold `VJoint`. Introduce `p w hpw hrep hpos x`. Establish `hex : ∃ q : X.B.I.Ginf × X.B.I.Ginf, IsDFrameX X u u' sc i0 i0' (gamW X u u' w) q.1 q.2`. Establish `hii : i0' = i0` using `funext fun v => (hi v).symm`.
+
+Rewrite using `[hii]`. Take `⟨h, h', hh⟩` from `dual_frame_at_places X u u' sc i0 hsc w hrep hpos`. Conclude with `⟨(h, h'), hh⟩`. Use `Eq.trans ?_ (h2 p w hpw hrep hpos hex.choose.1 hex.choose.2 hex.choose_spec x)` and prove the remaining obligations. Unfold `unscaledOperatorAtPointRepresentative unscaledFrameConjugatedOperator`.
+
+Rewrite using `[if_pos hrep, dif_pos hex]`. Both sides reduce to the same expression.
+-/
 theorem vJoint_of_tensorAt (S : Formalism.FourierDecayAlt.C.HidaSetting D.host.E Wp Wq)
     (T : ∀ j : Fin S.f, Formalism.FourierDecayAlt.D.LevTower S.G.k S.G.r (Wp (S.pl j)) (Wq (S.pl j)))
     (f : ∀ j : Fin S.f, Formalism.FourierDecayAlt.B.Mat S.G.k S.G.r → (Wq (S.pl j) →L[ℂ] Wp (S.pl j)))
@@ -58,6 +65,11 @@ theorem vJoint_of_tensorAt (S : Formalism.FourierDecayAlt.C.HidaSetting D.host.E
   rw [if_pos hrep, dif_pos hex]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `x generalizing b with`. Consider the case `nil => rfl`. Consider the case `cons a rest ih`. Take `⟨s, t⟩` from `a`. Establish `hm : ∀ n : ℕ, ((-1 : K) ^ n) * ((-1 : K) ^ n * t) = t`.
+
+Introduce `n`. Rewrite using `[← mul_assoc, ← pow_add, ← two_mul, pow_mul, neg_one_sq, one_pow, one_mul]`. Simplify using `only [Formalism.L2.SG.DataInst.signAux, hm, ih]`.
+-/
 private theorem sign_flip_involutive {K : Type} [Ring K] (r b : ℕ) (x : Formalism.FourierDecayAlt.TB.Pt K) :
     Formalism.L2.SG.DataInst.signAux r b (Formalism.L2.SG.DataInst.signAux r b x) = x := by
   induction x generalizing b with
@@ -69,6 +81,11 @@ private theorem sign_flip_involutive {K : Type} [Ring K] (r b : ℕ) (x : Formal
       rw [← mul_assoc, ← pow_add, ← two_mul, pow_mul, neg_one_sq, one_pow, one_mul]
     simp only [Formalism.L2.SG.DataInst.signAux, hm, ih]
 
+/- English proof (translation)
+Use `⟨Formalism.L2.SG.DataInst.signPt D.R.rS (Formalism.L2.S.ptList w), ?_⟩` and prove the remaining obligations. Establish `hs : Formalism.L2.SG.DataInst.signPt D.R.rS (Formalism.L2.SG.DataInst.signPt D.R.rS (Formalism.L2.S.ptList w)) = Formalism.L2.S.ptList w` using `sign_flip_involutive _ _ _`. Unfold `ptOfL Formalism.L2.SG.DataInst.ptOfList`. Use `split_ifs with h`. Use `congr 1`.
+
+Rewrite using `[Equiv.symm_apply_eq]`. Conclude with `Subtype.ext hs`. Conclude with `(h (by rw [hs]; exact Formalism.L2.S.ptList_isPtL w)).elim`.
+-/
 private theorem exists_pt_ptOfL_of_point (w : Point D.host.E (D.R.rS + 1)) :
     ∃ p : Formalism.FourierDecayAlt.TB.Pt D.host.E, ptOfL (D := D) (D.R.rS + 1) p = some w := by
   refine ⟨Formalism.L2.SG.DataInst.signPt D.R.rS (Formalism.L2.S.ptList w), ?_⟩
@@ -81,6 +98,11 @@ private theorem exists_pt_ptOfL_of_point (w : Point D.host.E (D.R.rS + 1)) :
     exact Subtype.ext hs
   · exact (h (by rw [hs]; exact Formalism.L2.S.ptList_isPtL w)).elim
 
+/- English proof (translation)
+Unfold `JointTensorAt at hJT`. Unfold `VIndepAt`. Introduce `w hrep hpos h₁ h₁' h₂ h₂' hf₁ hf₂`. Take `⟨p, hp⟩` from `exists_pt_ptOfL_of_point (D := D) w`. Use `ContinuousLinearMap.coe_injective (LinearMap.ext_on_range (X.81 u') fun x => ?_)` and prove the remaining obligations.
+
+Establish `e1` using `hJT p w hp hrep hpos h₁ h₁' hf₁ x`. Establish `e2` using `hJT p w hp hrep hpos h₂ h₂' hf₂ x`. Conclude with `e1.trans e2.symm`.
+-/
 theorem vIndepAt_of_tensorAt (S : Formalism.FourierDecayAlt.C.HidaSetting D.host.E Wp Wq)
     (T : ∀ j : Fin S.f, Formalism.FourierDecayAlt.D.LevTower S.G.k S.G.r (Wp (S.pl j)) (Wq (S.pl j)))
     (f : ∀ j : Fin S.f, Formalism.FourierDecayAlt.B.Mat S.G.k S.G.r → (Wq (S.pl j) →L[ℂ] Wp (S.pl j)))

@@ -16,6 +16,9 @@ noncomputable section
 
 namespace GlobalTheory.OrbitSep
 
+/- English proof (translation)
+Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+-/
 theorem algebraMap_stalkCongr_of_eq {X : Scheme.{0}} [IsIntegral X] {x y : X} (h : x = y)
     (a : X.presheaf.stalk x) :
     algebraMap (X.presheaf.stalk y) X.functionField ((X.presheaf.stalkCongr (.of_eq h)).hom a) =
@@ -23,6 +26,17 @@ theorem algebraMap_stalkCongr_of_eq {X : Scheme.{0}} [IsIntegral X] {x y : X} (h
   subst h
   simp
 
+/- English proof (translation)
+Use `haveI : IsIso (ρ γ).hom := Iso.isIso_hom (ρ γ)`. Use `set φ := (ρ γ).hom with hφ`. Establish `key : (X.residueFieldCongr hx.symm).hom ≫ φ.residueFieldMap x = 𝟙 _`. Rewrite using `[← cancel_epi (X.residue x), Category.comp_id, X.residue_residueFieldCongr_assoc, Scheme.residue_residueFieldMap]`. Use extensionality with `a`.
+
+Express the relevant statement in the definitionally equal form `IsLocalRing.residue _ (φ.stalkMap x ((X.presheaf.stalkCongr (.of_eq hx.symm)).hom a)) = IsLocalRing.residue _ a`. Use `set b := (X.presheaf.stalkCongr (.of_eq hx.symm)).hom a with hb`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ _ = Ideal.Quotient.mk _ _`. Rewrite using `[Ideal.Quotient.eq]`. Distinguish the cases in `ha : a = 0`.
+
+Rewrite using `[hb, ha, map_zero, map_zero, sub_zero]`. Conclude with `zero_mem _`. Establish `hne : algebraMap (X.presheaf.stalk x) X.functionField a ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective _ _)).2 ha`. Take `⟨c, hc, e⟩` from `h (Units.mk0 _ hne) ⟨a, rfl⟩`. Establish `e2 : ((fnAct ρ γ (Units.mk0 _ hne) : X.functionFieldˣ) : X.functionField) = GlobalTheory.functionFieldMap φ (algebraMap (X.presheaf.stalk x) X.functionField a)` using `rfl`.
+
+Establish `e4 : GlobalTheory.functionFieldMap φ (algebraMap (X.presheaf.stalk x) X.functionField a) = algebraMap (X.presheaf.stalk x) X.functionField (φ.stalkMap x b)`. Rewrite using `[← algebraMap_stalkCongr_of_eq hx.symm a, ← hb]`. Conclude with `GlobalTheory.functionFieldMap_algebraMap φ x b`. Rewrite `e` using `[e2, Units.val_mk0, e4, ← map_sub]`. Rewrite using `[← IsFractionRing.injective _ _ e]` and apply the resulting hypothesis.
+
+Rewrite using `[← Scheme.Hom.SpecMap_residueFieldMap_fromSpecResidueField, ← X.residueFieldCongr_fromSpecResidueField hx.symm, ← Category.assoc, ← Spec.map_comp, key, Spec.map_id, Category.id_comp]`.
+-/
 theorem fromSpecResidueField_comp_eq_of_fixes (X : Scheme.{0}) [IsIntegral X] (Γ : Type) [Group Γ]
     (ρ : Γ →* Aut X) (γ : Γ) (x : X) (hx : (ρ γ).hom x = x)
     (h : ∀ u : X.functionFieldˣ, RegAt x u → ZeroAt x ((fnAct ρ γ u : X.functionField) - u)) :

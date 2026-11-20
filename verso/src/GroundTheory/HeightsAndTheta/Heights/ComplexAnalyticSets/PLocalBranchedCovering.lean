@@ -14,6 +14,9 @@ open MvPolynomial Topology Matrix
 
 namespace LocalBranchedCovering
 
+/- English proof (translation)
+Use `⟨(F \ {z})ᶜ, (hF.subset Set.sdiff_subset).isClosed.compl_mem_nhds (fun h => h.2 rfl), fun z' h1 h2 => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Conclude with `h1 ⟨h2, hne⟩`.
+-/
 theorem isolated_of_finite {E : Type*} [TopologicalSpace E] [T1Space E] {F : Set E} (hF : F.Finite) (z : E) :
     ∃ N ∈ 𝓝 z, ∀ z' ∈ N, z' ∈ F → z' = z := by
   refine ⟨(F \ {z})ᶜ, (hF.subset Set.sdiff_subset).isClosed.compl_mem_nhds (fun h => h.2 rfl),
@@ -21,6 +24,47 @@ theorem isolated_of_finite {E : Type*} [TopologicalSpace E] [T1Space E] {F : Set
   by_contra hne
   exact h1 ⟨h2, hne⟩
 
+/- English proof (translation)
+Take `⟨N₀, hN₀, hN₀w⟩` from `isolated_of_finite (hfin (A w)) w`. Take `⟨r, hr, hrU⟩` from `Metric.nhds_basis_closedBall.mem_iff.1 (Filter.inter_mem hU hN₀)`. Establish `hfib : ∀ z ∈ Metric.closedBall w r, z ∈ Z → A z = A w → z = w` using `fun z hz hzZ hzA => hN₀w z (hrU hz).2 ⟨hzZ, hzA⟩`. Establish `hclos : closure (Metric.ball w r) = Metric.closedBall w r` using `closure_ball w hr.ne'`. Establish `hKc : IsCompact (A '' (Z ∩ Metric.sphere w r))` using `((isCompact_sphere w r).inter_left hZ).image A.continuous`.
+
+Establish `hwK : A w ∉ A '' (Z ∩ Metric.sphere w r)`. Introduce and unpack `⟨z, ⟨hzZ, hzs⟩, hzA⟩`. Establish `hzw` using `hfib z (Metric.sphere_subset_closedBall hzs) hzZ hzA`. Rewrite `hzs` using `[hzw, Metric.mem_sphere, dist_self]`. Conclude with `hr.ne hzs`.
+
+Take `⟨ρ, hρ, hρK⟩` from `Metric.isOpen_iff.1 hKc.isClosed.isOpen_compl (A w) hwK`. Establish `hprop : ∀ z ∈ Z ∩ Metric.closedBall w r, A z ∈ Metric.ball (A w) ρ → z ∈ Metric.ball w r`. Introduce and unpack `z ⟨hzZ, hzb⟩ hzD`. Assume the negation of the conclusion as `hzW`. Establish `hzs : z ∈ Metric.sphere w r` using `le_antisymm (Metric.mem_closedBall.1 hzb) (not_lt.1 (fun h => hzW (Metric.mem_ball.2 h)))`.
+
+Conclude with `hρK hzD ⟨z, ⟨hzZ, hzs⟩, rfl⟩`. Establish `hδa : AnalyticOnNhd ℂ (fun y : Fin k → ℂ => eval y P) Set.univ` using `AnalyticOnNhd.eval_mvPolynomial P`. Establish `hdense` using `HilbertSamuel.IrreducibleBasicOpenConnected.dense_ne_zero hP`. Establish `hδV : ∀ V : Set (Fin k → ℂ), IsOpen V → V ⊆ Metric.ball (A w) ρ → V.Nonempty → ∃ t ∈ V, eval t P ≠ 0`. Introduce `V hV _ hVn`.
+
+Take `⟨t, ht⟩` from `hdense.inter_open_nonempty V hV hVn`. Conclude with `⟨t, ht.1, ht.2⟩`. Establish `hloc : ∀ y ∈ Metric.ball (A w) ρ, eval y P ≠ 0 → ∃ (O : Set (Fin k → ℂ)) (N : ℕ) (s : Fin N → (Fin k → ℂ) → σ → ℂ) (S : Finset (Fin N)), IsOpen O ∧ y ∈ O ∧ O ⊆ Metric.ball (A w) ρ ∧ (∀ j, DifferentiableOn ℂ (s j) O) ∧ ∀ y' ∈ O, (∀ j, s j y' ∈ Z ∧ A (s j y') = y') ∧ Function.Injec …`. Introduce `y hyD hy`. Take `⟨O₁, N, s, hO₁, hyO₁, hsd, hs⟩` from `hsheet y hy`.
+
+Establish `hcont : ∀ j, ContinuousAt (s j) y` using `fun j => ((hsd j).differentiableAt (hO₁.mem_nhds hyO₁)).continuousAt`. Set `S : Finset (Fin N)` to `Finset.univ.filter (fun j => s j y ∈ Metric.ball w r)`. Establish `hT : ∀ j, ∀ᶠ y' in 𝓝 y, (s j y' ∈ Metric.ball w r ↔ j ∈ S)`. Introduce `j`. Distinguish the cases in `hj : s j y ∈ Metric.ball w r`.
+
+Use `filter_upwards [hcont j (Metric.isOpen_ball.mem_nhds hj)] with y' hy'`. Simplify using `only [S, Finset.mem_filter, Finset.mem_univ, true_and]`. Conclude with `iff_of_true hy' hj`. Establish `hnc : s j y ∉ Metric.closedBall w r` using `fun h => hj (hprop _ ⟨((hs y hyO₁).1 j).1, h⟩ (by rw [((hs y hyO₁).1 j).2]; exact hyD)) filter_upwards [hcont j (Metric.isClosed_closedBall.isOpen_compl.mem_nhds hnc)] with y' hy'`. Simplify using `only [S, Finset.mem_filter, Finset.mem_univ, true_and]`.
+
+Conclude with `iff_of_false (fun h => hy' (Metric.ball_subset_closedBall h)) hj`. Establish `hev : ∀ᶠ y' in 𝓝 y, y' ∈ O₁ ∧ y' ∈ Metric.ball (A w) ρ ∧ ∀ j, (s j y' ∈ Metric.ball w r ↔ j ∈ S)` using `Filter.Eventually.and (hO₁.mem_nhds hyO₁) (Filter.Eventually.and (Metric.isOpen_ball.mem_nhds hyD) (Filter.eventually_all.2 hT))`. Take `⟨O, hOsub, hO, hyO⟩` from `mem_nhds_iff.1 hev`. Use `⟨O, N, s, S, hO, hyO, fun y' h => (hOsub h).2.1, fun j => (hsd j).mono fun y' h => (hOsub h).1, ?_⟩` and prove the remaining obligations. Introduce `y' hy'`.
+
+Take `⟨h1, -, h3⟩` from `hOsub hy'`. Take `⟨hsec, hinj, hall⟩` from `hs y' h1`. Use `⟨hsec, hinj, ?_⟩` and prove the remaining obligations. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨⟨hzZ, hzW⟩, hzA⟩`. Take `⟨j, rfl⟩` from `hall z hzZ hzA`. Conclude with `⟨j, (h3 j).1 hzW, rfl⟩`. Introduce and unpack `⟨j, hj, rfl⟩`. Conclude with `⟨⟨(hsec j).1, (h3 j).2 hj⟩, (hsec j).2⟩`.
+
+Take `⟨c, hc⟩ : ∃ c : (Fin k → ℂ) → ℕ, ∀ y, c y = {z | z ∈ Z ∩ Metric.ball w r ∧ A z = y}.ncard` from `⟨_, fun _ => rfl⟩`. Establish `hcount : ∀ {N : ℕ} (s : Fin N → (Fin k → ℂ) → σ → ℂ) (S : Finset (Fin N)) (y' : Fin k → ℂ), Function.Injective (fun j => s j y') → {z | z ∈ Z ∩ Metric.ball w r ∧ A z = y'} = (fun j => s j y') '' S → c y' = S.card`. Introduce `N s S y' hinj heq`. Rewrite using `[hc, heq, Set.ncard_image_of_injective _ hinj, Set.ncard_coe_finset]`. Establish `hccont : ContinuousOn c (Metric.ball (A w) ρ ∩ {y | eval y P ≠ 0})`.
+
+Introduce and unpack `y ⟨hyD, hy⟩`. Take `⟨O, N, s, S, hO, hyO, -, -, hOs⟩` from `hloc y hyD hy`. Establish `hev : c =ᶠ[𝓝 y] fun _ => S.card` using `by filter_upwards [hO.mem_nhds hyO] with y' hy'`. Conclude with `hcount s S y' (hOs y' hy').2.1 (hOs y' hy').2.2`. Conclude with `(continuousAt_const.congr hev.symm).continuousWithinAt`.
+
+Establish `hpre : IsPreconnected (Metric.ball (A w) ρ ∩ {y | eval y P ≠ 0})` using `ManifoldZerosComplementConnected.isPreconnected_convex_inter_ne_zero Metric.isOpen_ball (convex_ball _ _) (hδa.mono (Set.subset_univ _))`. Take `⟨y₀, hy₀⟩ : (Metric.ball (A w) ρ ∩ {y | eval y P ≠ 0}).Nonempty` from `hdense.inter_open_nonempty _ Metric.isOpen_ball ⟨A w, Metric.mem_ball_self hρ⟩`. Use `⟨Metric.ball w r, Metric.ball (A w) ρ, c y₀, fun y => eval y P, Metric.isOpen_ball, Metric.mem_ball_self hr, ?_, ?_, Metric.isOpen_ball, Metric.mem_ball_self hρ, ?_, ?_, ?_, hδV, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hclos]`. Conclude with `isCompact_closedBall w r`.
+
+Rewrite using `[hclos]`. Conclude with `fun z hz => (hrU hz).1`. Introduce and unpack `z ⟨hzZ, hzW⟩ hzA`. Conclude with `hfib z (Metric.ball_subset_closedBall hzW) hzZ hzA`. Introduce and unpack `z ⟨hzZ, hzW⟩ hzD`.
+
+Rewrite `hzW` using `[hclos]`. Conclude with `hprop z ⟨hzZ, hzW⟩ hzD`. Conclude with `hδa.differentiableOn.mono (Set.subset_univ _)`. Introduce `y hyD hy`. Take `⟨O, N, s, S, hO, hyO, -, hsd, hOs⟩` from `hloc y hyD hy`.
+
+Establish `hSc : S.card = c y₀`. Rewrite using `[← hcount s S y (hOs y hyO).2.1 (hOs y hyO).2.2]`. Conclude with `hpre.constant hccont ⟨hyD, hy⟩ hy₀`. Set `e : Fin (c y₀) ≃ S` to `(S.equivFin.trans (finCongr hSc)).symm`. Use `⟨O, fun i => s (e i : Fin N), hO, hyO, fun i => hsd _, fun y' hy' => ?_⟩` and prove the remaining obligations.
+
+Take `⟨-, hinj, heq⟩` from `hOs y' hy'`. Use `⟨fun i => ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hi : s (e i : Fin N) y' ∈ {z | z ∈ Z ∩ Metric.ball w r ∧ A z = y'}`. Rewrite using `[heq]`. Conclude with `⟨_, (e i).2, rfl⟩`.
+
+Conclude with `hi`. Introduce `i₁ i₂ h`. Conclude with `e.injective (Subtype.ext (hinj h))`. Introduce `z hz hzA`. Establish `hz' : z ∈ (fun j => s j y') '' S`.
+
+Rewrite using `[← heq]`. Conclude with `⟨hz, hzA⟩`. Take `⟨j, hj, rfl⟩` from `hz'`. Conclude with `⟨e.symm ⟨j, hj⟩, by simp⟩`. Introduce and unpack `z ⟨hzZ, -⟩ ε hε`.
+
+Take `⟨N, hN, hNz⟩` from `isolated_of_finite (hfin (A z)) z`. Conclude with `hopen z hzZ ⟨N, hN, fun z' h1 h2 h3 => hNz z' h1 ⟨h2, h3⟩⟩ _ (Metric.ball_mem_nhds z hε)`.
+-/
 theorem of_sheets {σ : Type} [Fintype σ] {k : ℕ} (Z : Set (σ → ℂ)) (hZ : IsClosed Z)
     (A : (σ → ℂ) →L[ℂ] (Fin k → ℂ)) (P : MvPolynomial (Fin k) ℂ) (hP : P ≠ 0)
     (hfin : ∀ y, {z | z ∈ Z ∧ A z = y}.Finite)
@@ -174,6 +218,39 @@ theorem of_sheets {σ : Type} [Fintype σ] {k : ℕ} (Z : Set (σ → ℂ)) (hZ 
 
 end LocalBranchedCovering
 
+/- English proof (translation)
+Introduce `σ _ I w U hI _ hU`. Set `e : σ ≃ Fin (Fintype.card σ)` to `Fintype.equivFin σ`. Set `J : Ideal (MvPolynomial (Fin (Fintype.card σ)) ℂ)` to `I.comap (rename e.symm)`. Establish `hJ : J.IsPrime` using `Ideal.comap_isPrime _ _`. Set `Φ : (σ → ℂ) → Fin (Fintype.card σ) → ℂ` to `fun z j => z (e.symm j)`.
+
+Set `Ψ : (Fin (Fintype.card σ) → ℂ) → σ → ℂ` to `fun x i => x (e i)`. Establish `hΨΦ : ∀ z, Ψ (Φ z) = z` using `fun z => funext fun i => by simp [Φ, Ψ]`. Establish `hΦΨ : ∀ x, Φ (Ψ x) = x` using `fun x => funext fun j => by simp [Φ, Ψ]`. Establish `hΨc : Continuous Ψ` using `continuous_pi fun i => continuous_apply (e i)`. Establish `hZJ : ∀ x : Fin (Fintype.card σ) → ℂ, (∀ q ∈ J, eval x q = 0) ↔ Ψ x ∈ zeroSetIn I`.
+
+Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx q hq`. Establish `h1 : rename e q ∈ J` using `by show rename e.symm (rename e q) ∈ I`. Rewrite using `[rename_rename, e.symm_comp_self, rename_id_apply]` and apply the resulting hypothesis.
+
+Establish `h2` using `hx _ h1`. Rewrite `h2` using `[eval_rename]`. Then use the resulting hypothesis. Introduce `hx q hq`. Establish `h1` using `hx _ (Ideal.mem_comap.1 hq)`. Establish `h2 : eval (Ψ x) (rename e.symm q) = eval x q`.
+
+Establish `h3 : Ψ x ∘ e.symm = x` using `funext fun j => by simp [Ψ]`. Rewrite using `[eval_rename, h3]`. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis. Take `⟨d, hd⟩` from `HilbertSamuel.IrreducibleBasicOpenConnected.exists_dim hJ`. Take `⟨A₀, hA₀⟩` from `ComplexSets.LinearNoetherNormalization.proof _ d J hd`.
+
+Set `A : (σ → ℂ) →L[ℂ] (Fin d → ℂ)` to `LinearMap.toContinuousLinearMap ((Matrix.toLin' A₀).comp (LinearEquiv.funCongrLeft ℂ ℂ e.symm).toLinearMap)`. Establish `hA : ∀ z, A z = A₀ *ᵥ Φ z` using `fun z => by`. Simplify using `[A, Matrix.toLin'_apply, LinearEquiv.funCongrLeft_apply]`. Both sides reduce to the same expression. Establish `hZc : IsClosed (zeroSetIn I)`.
+
+Establish `: zeroSetIn I = ⋂ q ∈ I, {z : σ → ℂ | eval z q = 0}`. Use extensionality with `z`. Simplify using `[zeroSetIn]`. Rewrite using `[this]`. Conclude with `isClosed_biInter fun q _ => isClosed_eq (MvPolynomial.continuous_eval q) continuous_const`.
+
+Establish `hfin : ∀ y, {z | z ∈ zeroSetIn I ∧ A z = y}.Finite`. Introduce `y`. Use `((BranchOffHypersurface.fibre_finite J A₀ hA₀ y).image Ψ).subset ?_` and prove the remaining obligations. Introduce and unpack `z ⟨hz, hzA⟩`. Use `⟨Φ z, ⟨(hZJ (Φ z)).2 (by rwa [hΨΦ]), by rw [← hA]; exact hzA⟩, hΨΦ z⟩` and prove the remaining obligations.
+
+Take `⟨P, Uk, Dk, Nk, s, hP, hUD, -, hcov, -, hfib⟩` from `hdsc _ d J A₀ hJ hd hA₀`. Establish `hsheet : ∀ y, eval y P ≠ 0 → ∃ (O : Set (Fin d → ℂ)) (N : ℕ) (t : Fin N → (Fin d → ℂ) → σ → ℂ), IsOpen O ∧ y ∈ O ∧ (∀ j, DifferentiableOn ℂ (t j) O) ∧ ∀ y' ∈ O, (∀ j, t j y' ∈ zeroSetIn I ∧ A (t j y') = y') ∧ Function.Injective (fun j => t j y') ∧ ∀ z ∈ zeroSetIn I, A z = y' → z …`. Introduce `y hy`. Establish `hyD : y ∈ ⋃ k, Dk k`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hy (hcov h)`. Take `⟨k, hk⟩` from `Set.mem_iUnion.1 hyD`. Use `⟨Uk k, Nk k, fun j y' => Ψ (s k j y'), (hUD k).1, (hUD k).2.2.1 hk, fun j => ?_, ?_⟩` and prove the remaining obligations. Conclude with `differentiableOn_pi.2 fun i => differentiableOn_pi.1 ((hUD k).2.2.2 j) (e i)`. Introduce `y' hy'`.
+
+Take `⟨hfe, hinj, -⟩` from `hfib k y' hy'`. Establish `hmem : ∀ j, s k j y' ∈ _root_.GroundTheory.Heights₂.Heights.ComplexSets.fibre J A₀ y'` using `fun j => by rw [hfe]; exact ⟨j, rfl⟩`. Use `⟨fun j => ⟨(hZJ _).1 (hmem j).1, by rw [hA, hΦΨ]; exact (hmem j).2⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `j₁ j₂ h`. Apply `hinj` to reduce the goal to its premises.
+
+Use `congrArg Φ h` as an intermediate fact. Simplify `this` using `only [hΦΨ]`. Introduce `z hz hzA`. Establish `hzf : Φ z ∈ _root_.GroundTheory.Heights₂.Heights.ComplexSets.fibre J A₀ y'` using `⟨(hZJ (Φ z)).2 (by rwa [hΨΦ]), by rw [← hA]; exact hzA⟩`. Rewrite `hzf` using `[hfe]`.
+
+Take `⟨j, hj⟩` from `hzf`. Conclude with `⟨j, by simp only [hj, hΨΦ]⟩`. Establish `hopen : ∀ z ∈ zeroSetIn I, (∃ N ∈ 𝓝 z, ∀ z' ∈ N, z' ∈ zeroSetIn I → A z' = A z → z' = z) → ∀ W' ∈ 𝓝 z, A '' (zeroSetIn I ∩ W') ∈ 𝓝 (A z)`. Introduce and unpack `z hz ⟨N, hN, hNz⟩ W' hW'`. Establish `hpre : ∀ T ∈ 𝓝 z, Ψ ⁻¹' T ∈ 𝓝 (Φ z)` using `fun T hT => hΨc.continuousAt.preimage_mem_nhds (by rw [hΨΦ]; exact hT)`.
+
+Establish `hx : Φ z ∈ zeroLocus J` using `(hZJ (Φ z)).2 (by rwa [hΨΦ])`. Establish `himg` using `hiso _ d J A₀ (Φ z) ⟨hJ, hd⟩ hx ⟨Ψ ⁻¹' N, hpre N hN, fun z' hz'N hz'J hz'A => by`. Establish `h1` using `hNz (Ψ z') hz'N ((hZJ z').1 hz'J) (by rw [hA, hA, hΦΨ]; exact hz'A)`. Rewrite using `[← hΦΨ z', h1]⟩`. Use the proof step `(Ψ ⁻¹' W') (hpre W' hW')`.
+
+Rewrite using `[hA]`. Use `Filter.mem_of_superset himg ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x', ⟨hx'J, hx'W⟩, rfl⟩`. Conclude with `⟨Ψ x', ⟨(hZJ x').1 hx'J, hx'W⟩, by rw [hA, hΦΨ]⟩`. Take `⟨W, D, m, δ, h⟩` from `LocalBranchedCovering.of_sheets (zeroSetIn I) hZc A P hP hfin hsheet hopen w U hU`.
+
+Conclude with `⟨d, A, W, D, m, δ, h⟩`.
+-/
 theorem LocalBranchedCovering.proof (hdsc : GroundTheory.Heights₂.Heights.DiscriminantSheetCover.Statement)
     (hiso : IsolatedFibreOpen.Statement) : LocalBranchedCovering.Statement := by
   intro σ _ I w U hI _ hU

@@ -19,10 +19,24 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.DDataGens
 
+/- English proof (translation)
+Use `Over.w (toUnit (TK R))` as an intermediate fact. Simplify using `using this`.
+-/
 theorem toUnit_TK_left (R : Type) [CommRing R] [IsDomain R] : (toUnit (TK R)).left = jK R := by
   have := Over.w (toUnit (TK R))
   simpa using this
 
+/- English proof (translation)
+Introduce `R _ _ D hB hU`. Use `choose t ht hc using fun y => (GlobalTheory.ArcPull.psiUnitOn_univ_iff D y).1 (hU y)`. Establish `key : ∀ a b, ∃ g : LB.Gen (LB.LinComb D.P.L (K` using `Fin 4) ![(D.c (a + b)).left, (D.c a).left, (D.c b).left, (D.c 0).left] ![-1, 1, 1, -1]), g.IsGen ∧ ∀ (z : (TK R).left) (J : ((TK R).left ⟶ D.P.A.left) → D.P.L.ι), Good D.P.L z J → val g (toUnit (TK R)).left z J = val (t (a + b)) (toUnit (TK R)).left z J * (val (t a) (toUnit (TK R …`. Introduce `a b`. Set `T` to `LB.mulGen D.P.L _ _ _ _ (LB.mulGen D.P.L _ _ _ _ (LB.mulGen D.P.L _ _ _ _ (t (a + b)) (LB.invGen D.P.L _ _ (t a))) (LB.invGen D.P.L _ _ (t b))) (t 0)`.
+
+Establish `hT : T.IsGen` using `DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.mulGen_isGen _ _ _ _ _ _ _ (ht _) (DVR.invGen_isGen _ _ _ _ (ht _))) (DVR.invGen_isGen _ _ _ _ (ht _))) (ht _)`. Take `⟨g, hg, hv⟩` from `exists_gen D.P.isLB (φ' := ![(D.c (a + b)).left, (D.c a).left, (D.c b).left, (D.c 0).left]) (ε' := ![-1, 1, 1, -1]) (by`. Introduce `U _ h`. Simplify using `[Fintype.prod_sum_type, Fin.prod_univ_four]) T hT`. Use `⟨g, hg, fun z J hJ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hv _ _ z J hJ]`. Simplify using `only [T, val_mul hJ, val_inv]`. Use `choose τ₀ hτ hv using key`. Use `⟨τ₀, fun a b => ⟨hτ a b, fun z J hJ => ?_⟩⟩` and prove the remaining obligations. Establish `hp : ∀ y, val (t y) (toUnit (TK R)).left z J = val (D.psi y) (𝟙 _) z J` using `fun y => by`.
+
+Rewrite using `[← val_corr hJ (hc y) (𝟙 _), val_pull hJ, Category.id_comp, toUnit_TK_left]`. Establish `vρ : val D.rigK (𝟙 _) z J = val D.rig (jK R) z J`. Use `(val_pull hJ _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Category.id_comp, toUnit_TK_left]`. Rewrite using `[hv a b z J hJ, hp, hp, hp, hp, GlobalTheory.PsiZero.val_psi_zero hB hJ]`.
+
+Simplify using `only [DegPre.tau, val_mul hJ, val_inv, vρ]`.
+-/
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R), D.TauBimult → (∀ y, PsiUnitOn D y Set.univ) →
     ∃ τ₀ : GlobalTheory.UChart.Gens D, ∀ a b, (τ₀ a b).IsGen ∧ ∀ (z : (TK R).left) (J : ((TK R).left ⟶ D.P.A.left) → D.P.L.ι),
       Good D.P.L z J → val (D.tau a b) (𝟙 _) z J = val (τ₀ a b) (toUnit (TK R)).left z J := by

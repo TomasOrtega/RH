@@ -12,6 +12,23 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.StalkExt
 
+/- English proof (translation)
+Take `⟨_, _⟩` from `GlobalTheory.ExtUnique.flat_and_isSeparated_of_isSemiAbelian G hG`. Take `⟨_, _⟩` from `GlobalTheory.ExtUnique.flat_and_isSeparated_of_isSemiAbelian H hH`. Take `⟨_, _⟩` from `GlobalTheory.ExtUnique.spec_fractionRing R (FractionRing R)`. Take `⟨a, ha, ha'⟩` from `grpPullback_iso (isGrpPullback_pullback G (Out.jK R ≫ t)) (((isGrpPullback_pullback ((Over.pullback j).obj G) k).comp (isGrpPullback_pullback G j)).congr hk rfl)`. Take `⟨b, hb, hb'⟩` from `grpPullback_iso (isGrpPullback_pullback H (Out.jK R ≫ t)) (((isGrpPullback_pullback ((Over.pullback j).obj H) k).comp (isGrpPullback_pullback H j)).congr hk rfl)`.
+
+Use `haveI := ha`. Use `haveI := hb`. Use `haveI := hf`. Establish `hfK : IsMonHom (a.hom ≫ (Over.pullback k).map f ≫ b.inv)` using `inferInstance`. Establish `hρ : (a.hom.left ≫ pullback.fst ((Over.pullback j).obj G).hom k) ≫ pullback.fst G.hom j = pullback.fst G.hom (Out.jK R ≫ t)` using `(Category.assoc _ _ _).trans ha'`.
+
+Establish `hb2 : b.inv.left ≫ pullback.fst H.hom (Out.jK R ≫ t) = pullback.fst ((Over.pullback j).obj H).hom k ≫ pullback.fst H.hom j`. Rewrite using `[← hb', ← Category.assoc, ← Over.comp_left, b.inv_hom_id, Over.id_left, Category.id_comp]`. Establish `hK : (a.hom ≫ (Over.pullback k).map f ≫ b.inv).left ≫ pullback.fst H.hom (Out.jK R ≫ t) = (a.hom.left ≫ pullback.fst ((Over.pullback j).obj G).hom k) ≫ f.left ≫ pullback.fst H.hom j`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, Category.assoc, hb2, ← Category.assoc (((Over.pullback k).map f).left), GlobalTheory.ExtUnique.pullback_map_left_fst, Category.assoc, Category.assoc]`. Take `⟨g, hg, hA⟩` from `GlobalTheory.DedekindExt.exists_agree_of_extend (k := Out.jK R) (t := t) rfl G H (a.hom ≫ (Over.pullback k).map f ≫ b.inv) fun f' hf' => by`.
+
+Take `⟨F, ⟨-, hF⟩, -⟩` from `GlobalTheory.T.semiAbelian_hom_extends_from_generic_fibre R ((Over.pullback t).obj G) ((Over.pullback t).obj H) (IsSemiAbelian.pullback t G hG) (IsSemiAbelian.pullback t H hH) f' hf'`. Conclude with `⟨F, hF⟩`. Establish `hw : f.left ≫ pullback.snd H.hom j = pullback.snd G.hom j` using `Over.w f`. Establish `hf₀ : (f.left ≫ pullback.fst H.hom j) ≫ H.hom = pullback.fst G.hom j ≫ G.hom`. Use `(Category.assoc _ _ _).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[pullback.condition, pullback.condition, ← hw]`. Conclude with `(Category.assoc _ _ _).symm`. Set `c : pullback G.hom (Out.jK R ≫ t) ⟶ pullback G.hom t` to `pullback.lift (pullback.fst _ _) (pullback.snd _ _ ≫ Out.jK R) (by rw [pullback.condition, Category.assoc])`. Establish `hc₁ : c ≫ pullback.fst G.hom t = pullback.fst G.hom (Out.jK R ≫ t)` using `pullback.lift_fst _ _ _`. Establish `hc₂ : c ≫ pullback.snd G.hom t = pullback.snd G.hom (Out.jK R ≫ t) ≫ Out.jK R` using `pullback.lift_snd _ _ _`.
+
+Establish `sq : IsPullback c (pullback.snd G.hom (Out.jK R ≫ t)) (pullback.snd G.hom t) (Out.jK R)`. Use `IsPullback.of_right ?_ hc₂ (IsPullback.of_hasPullback G.hom t)` and prove the remaining obligations. Rewrite using `[hc₁]`. Conclude with `IsPullback.of_hasPullback G.hom (Out.jK R ≫ t)`. Establish `: QuasiCompact c` using `MorphismProperty.of_isPullback sq.flip ‹_›`.
+
+Establish `: IsSchemeTheoreticallyDominant c` using `.of_isPullback sq.flip`. Use `⟨g, hg, GlobalTheory.DedekindExt.Agree.of_dominant G.hom H.hom hf₀ hg c fun T u u' e => ?_⟩` and prove the remaining obligations. Establish `h₁` using `hA T (u ≫ c) u (by rw [Category.assoc, hc₁])`. Establish `hu : u' = u ≫ a.hom.left ≫ pullback.fst ((Over.pullback j).obj G).hom k`. Rewrite using `[← cancel_mono (pullback.fst G.hom j), ← e, Category.assoc, Category.assoc, hc₁, ← hρ, Category.assoc]`.
+
+Rewrite using `[hu, ← Category.assoc, h₁, hK, Category.assoc, Category.assoc, Category.assoc]`.
+-/
 theorem exists_agree_of_generic {U S : Scheme.{0}} (j : U ⟶ S) [IsOpenImmersion j] (G H : Over S) [GrpObj G]
     [GrpObj H] (hG : IsSemiAbelian G) (hH : IsSemiAbelian H) (f : (Over.pullback j).obj G ⟶ (Over.pullback j).obj H)
     (hf : IsMonHom f) (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R]
@@ -65,6 +82,9 @@ theorem exists_agree_of_generic {U S : Scheme.{0}} (j : U ⟶ S) [IsOpenImmersio
     rw [← cancel_mono (pullback.fst G.hom j), ← e, Category.assoc, Category.assoc, hc₁, ← hρ, Category.assoc]
   rw [hu, ← Category.assoc, h₁, hK, Category.assoc, Category.assoc, Category.assoc]
 
+/- English proof (translation)
+Introduce `U S j _ G H _ _ hG hH f hf s i₁ i₂ i₃ k hk`. Use `haveI := i₁`. Use `haveI := i₂`. Use `haveI := i₃`. Conclude with `@exists_agree_of_generic U S j _ G H _ _ hG hH f hf (S.presheaf.stalk s) _ i₁ i₂ i₃ (S.fromSpecStalk s) _ k hk`.
+-/
 theorem exists_agree_at_stalk : ∀ {U S : Scheme.{0}} (j : U ⟶ S) [IsOpenImmersion j] (G H : Over S) [GrpObj G] [GrpObj H], IsSemiAbelian G → IsSemiAbelian H → ∀ f : (Over.pullback j).obj G ⟶ (Over.pullback j).obj H, IsMonHom f → ∀ (s : S) [IsDomain (S.presheaf.stalk s)] [IsNoetherianRing (S.presheaf.stalk s)] [IsIntegrallyClosed (S.presheaf.stalk s)] (k : Sp (FractionRing (S.presheaf.stalk s)) ⟶ U), k ≫ j = ReciprocityTheory.ChartRestriction.G.Out.jK (S.presheaf.stalk s) ≫ S.fromSpecStalk s → ∃ g : pullback G.hom (S.fromSpecStalk s) ⟶ H.left, g ≫ H.hom = pullback.fst G.hom (S.fromSpecStalk s) ≫ G.hom ∧ GlobalTheory.DedekindExt.Agree (pullback.fst G.hom j) (f.left ≫ pullback.fst H.hom j) (pullback.fst G.hom (S.fromSpecStalk s)) g := by
   intro U S j _ G H _ _ hG hH f hf s i₁ i₂ i₃ k hk
   haveI := i₁; haveI := i₂; haveI := i₃

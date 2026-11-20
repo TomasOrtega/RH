@@ -11,6 +11,9 @@ open NumberField IsDedekindDomain Neutral.B1 ReciprocityTheory.Neutral.Bridge.HC
 
 namespace GlobalTheory.GalChar
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 theorem isTorsionFree_field (E Ω : Type) [Field E] [Field Ω] [Algebra E Ω] : Module.IsTorsionFree E Ω := inferInstance
 
 attribute [local instance 10000] isTorsionFree_field
@@ -43,6 +46,9 @@ variable {R : Ranks} (H : Formalism.BasicNotions.Host R) {Ω : Type} [Field Ω] 
 def delAt {e : Fin R.m → R.Psi → ℚ} (C : GlobalTheory.Mem.Chr.HFrame H e) (l : ℕ) : HChar H.E :=
   if l = H.pde then C.del' else C.del
 
+/- English proof (translation)
+Set `φ : H.E →+* ℂ` to `Classical.choice inferInstance`. Apply `φ.injective` to reduce the goal to its premises. Establish `h` using `fun y => H.conjE_apply φ y`. Conclude with `(h _).trans ((congrArg (starRingEnd ℂ) (h x)).trans (Complex.conj_conj _))`.
+-/
 theorem conj_conj (x : H.E) : H.conj (H.conj x) = x := by
   let φ : H.E →+* ℂ := Classical.choice inferInstance
   apply φ.injective
@@ -53,13 +59,24 @@ def pair (P : PlE H) : Set (PlE H) := {v | v = P ∨ IsConjPl H P v}
 
 variable {H}
 
+/- English proof (translation)
+Introduce `x y e` and use `(h y x (by rw [e, conj_conj])).symm`.
+-/
 theorem isConjPl_symm {P P' : PlE H} (h : IsConjPl H P P') : IsConjPl H P' P := fun x y e =>
   (h y x (by rw [e, conj_conj])).symm
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.Mem.Chr.existsUnique_conjPl H.conj.toRingEquiv P).unique ((GlobalTheory.Mem.Chr.conjPl_main.2.1 R H P P').1 h) ((GlobalTheory.Mem.Chr.conjPl_main.2.1 R H P P'').1 h')`.
+-/
 theorem isConjPl_unique {P P' P'' : PlE H} (h : IsConjPl H P P') (h' : IsConjPl H P P'') : P' = P'' :=
   (GlobalTheory.Mem.Chr.existsUnique_conjPl H.conj.toRingEquiv P).unique
     ((GlobalTheory.Mem.Chr.conjPl_main.2.1 R H P P').1 h) ((GlobalTheory.Mem.Chr.conjPl_main.2.1 R H P P'').1 h')
 
+/- English proof (translation)
+Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(rfl | hv)`. Conclude with `Or.inr h`. Conclude with `Or.inl (isConjPl_unique hv (isConjPl_symm h))`.
+
+Introduce and unpack `(rfl | hv)`. Conclude with `Or.inr (isConjPl_symm h)`. Conclude with `Or.inl (isConjPl_unique hv h)`.
+-/
 theorem pair_eq {P P' : PlE H} (h : IsConjPl H P P') : pair H P' = pair H P := by
   ext v
   constructor
@@ -83,10 +100,16 @@ open Classical in
 def delOf (M : ℕ) (T : Set (PlE H)) : G H.E Ω →* Multiplicative (ZMod (l ^ M)) :=
   if h : ∃ d, IsDel H cc l M T d then h.choose else 1
 
+/- English proof (translation)
+Rewrite using `[delOf, dif_pos h]`. Conclude with `h.choose_spec`.
+-/
 theorem isDel_delOf {M : ℕ} {T : Set (PlE H)} (h : ∃ d, IsDel H cc l M T d) : IsDel H cc l M T (delOf H cc l M T) := by
   rw [delOf, dif_pos h]
   exact h.choose_spec
 
+/- English proof (translation)
+Distinguish the cases in `h : ∃ d, IsDel H cc l M T d`. Take `⟨h1, h2, h3, h4, -⟩` from `isDel_delOf H cc l h`. Conclude with `⟨h1, h2, h3, h4⟩`. Rewrite using `[delOf, dif_neg h]`. Use `⟨by simp, fun _ _ _ => by simp, fun _ _ _ _ _ _ => rfl, fun _ _ _ _ _ _ => rfl⟩` and prove the remaining obligations.
+-/
 theorem delOf_laws (M : ℕ) (T : Set (PlE H)) :
     IsOpen ((delOf H cc l M T).ker : Set (G H.E Ω)) ∧ AntiHom cc (delOf H cc l M T) ∧
     (∀ v ∈ placesOver H.E l, ∀ A : ValuationSubring Ω, IsPlaceOver A v → ∀ σ ∈ Dec (F := H.E) A,
@@ -108,14 +131,23 @@ def delU (Q : Finset (PlE H)) (M : ℕ) : G H.E Ω →* Multiplicative (DelQM H 
   map_one' := by simp only [map_one, toAdd_one]; rfl
   map_mul' g h := by simp only [map_mul, toAdd_mul]; rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem delU_apply (Q : Finset (PlE H)) (M : ℕ) (σ : G H.E Ω) (P : ↥Q) :
     Multiplicative.toAdd (delU H cc l Q M σ) P = Multiplicative.toAdd (delCoord H cc l Q M P.1 σ) := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h P hP => Multiplicative.toAdd.injective (congrFun (congrArg Multiplicative.toAdd h) ⟨P, hP⟩), fun h => Multiplicative.toAdd.injective (funext fun P => congrArg Multiplicative.toAdd (h P.1 P.2))⟩`.
+-/
 theorem delU_eq_one_iff (Q : Finset (PlE H)) (M : ℕ) (σ : G H.E Ω) :
     delU H cc l Q M σ = 1 ↔ ∀ P ∈ Q, delCoord H cc l Q M P σ = 1 :=
   ⟨fun h P hP => Multiplicative.toAdd.injective (congrFun (congrArg Multiplicative.toAdd h) ⟨P, hP⟩),
     fun h => Multiplicative.toAdd.injective (funext fun P => congrArg Multiplicative.toAdd (h P.1 P.2))⟩
 
+/- English proof (translation)
+Unfold `delCoord`. Use `split_ifs with h`. Take `⟨h1, h2, h3, h4⟩` from `delOf_laws H cc l M (pair H P)`. Conclude with `⟨h1, h2, h3, fun v hv => h4 v fun hm => hv (h hm)⟩`. Use `⟨by simp, fun _ _ _ => by simp, fun _ _ _ _ _ _ => rfl, fun _ _ _ _ _ _ => rfl⟩` and prove the remaining obligations.
+-/
 theorem delCoord_laws (Q : Finset (PlE H)) (M : ℕ) (P : PlE H) :
     IsOpen ((delCoord H cc l Q M P).ker : Set (G H.E Ω)) ∧ AntiHom cc (delCoord H cc l Q M P) ∧
     (∀ v ∈ placesOver H.E l, ∀ A : ValuationSubring Ω, IsPlaceOver A v → ∀ σ ∈ Dec (F := H.E) A,
@@ -128,6 +160,9 @@ theorem delCoord_laws (Q : Finset (PlE H)) (M : ℕ) (P : PlE H) :
     exact ⟨h1, h2, h3, fun v hv => h4 v fun hm => hv (h hm)⟩
   · refine ⟨by simp, fun _ _ _ => by simp, fun _ _ _ _ _ _ => rfl, fun _ _ _ _ _ _ => rfl⟩
 
+/- English proof (translation)
+Use `if_pos ?_` and prove the remaining obligations. Introduce and unpack `v (rfl | hv)`. Conclude with `hP`. Conclude with `hQ P hP v hv`.
+-/
 theorem delCoord_of_closed {Q : Finset (PlE H)} (hQ : ∀ P ∈ Q, ∀ P', IsConjPl H P P' → P' ∈ Q) (M : ℕ) {P : PlE H}
     (hP : P ∈ Q) : delCoord H cc l Q M P = delOf H cc l M (pair H P) := by
   refine if_pos ?_
@@ -153,6 +188,15 @@ def UniversalAnticyclotomicCharLaws : Prop :=
     Multiplicative.toAdd (delU H cc l Q M σ) ⟨P, hP⟩ = Multiplicative.toAdd (delOf H cc l M (pair H P) σ)) ∧
   ∀ (M : ℕ) (P : PlE H), (∃ d, IsDel H cc l M (pair H P) d) → IsDel H cc l M (pair H P) (delOf H cc l M (pair H P))
 
+/- English proof (translation)
+Use `⟨fun Q M v hv A hA σ hσ => ?_, fun Q M v hv A hA σ hσ => ?_, fun Q M g g' h => ?_, fun Q M => ?_, fun M Q' Q h h1 h2 σ P hP => ?_, fun Q M P hP P' hP' h => ⟨1, fun σ => ?_⟩, fun Q M hQ P hP σ => ?_, fun M P h => isDel_delOf H cc l h⟩` and prove the remaining obligations. Conclude with `(delU_eq_one_iff H cc l Q M σ).2 fun P _ => (delCoord_laws H cc l Q M P).2.2.2 v hv A hA σ hσ`. Conclude with `(delU_eq_one_iff H cc l Q M σ).2 fun P _ => (delCoord_laws H cc l Q M P).2.2.1 v hv A hA σ hσ`. Conclude with `Multiplicative.toAdd.injective (funext fun P => congrArg Multiplicative.toAdd ((delCoord_laws H cc l Q M P.1).2.1 g g' h))`. Establish `e : ((delU H cc l Q M).ker : Set (G H.E Ω)) = ⋂ P ∈ Q, ((delCoord H cc l Q M P).ker : Set (G H.E Ω))`.
+
+Use extensionality with `σ`. Simplify using `only [SetLike.mem_coe, MonoidHom.mem_ker, Set.mem_iInter, delU_eq_one_iff]`. Rewrite using `[e]`. Conclude with `isOpen_biInter_finset fun P _ => (delCoord_laws H cc l Q M P).1`. Rewrite using `[delU_apply, delU_apply, delCoord_of_closed H cc l h1 M hP, delCoord_of_closed H cc l h2 M (h hP)]`.
+
+Rewrite using `[delU_apply, delU_apply]`. Establish `e : delCoord H cc l Q M P' = delCoord H cc l Q M P`. Unfold `delCoord`. Rewrite using `[pair_eq h]`. Simplify using `only [e, Units.val_one, Int.cast_one, one_mul]`.
+
+Rewrite using `[delU_apply, delCoord_of_closed H cc l hQ M hP]`.
+-/
 theorem universal_anticyclotomic_character_laws : UniversalAnticyclotomicCharLaws H cc l := by
   refine ⟨fun Q M v hv A hA σ hσ => ?_, fun Q M v hv A hA σ hσ => ?_, fun Q M g g' h => ?_, fun Q M => ?_,
     fun M Q' Q h h1 h2 σ P hP => ?_, fun Q M P hP P' hP' h => ⟨1, fun σ => ?_⟩, fun Q M hQ P hP σ => ?_,
@@ -176,6 +220,11 @@ theorem universal_anticyclotomic_character_laws : UniversalAnticyclotomicCharLaw
 
 end Universal
 
+/- English proof (translation)
+Introduce `i M _ hM`. Take `⟨H', S, d, h1, h2, h3, h4⟩` from `h i M hM`. Use `⟨H', S, fun P => delOf D.host X.cc (X.l i) M (pair D.host P), ⟨h1, h2, h3, fun P a b c => ?_⟩, fun Q hQ P hP σ => ?_⟩` and prove the remaining obligations. Conclude with `isDel_delOf D.host X.cc (X.l i) ⟨d P, h4 P a b c⟩`. Rewrite using `[hY]`.
+
+Conclude with `(universal_anticyclotomic_character_laws D.host X.cc (X.l i)).2.2.2.2.2.2.1 Q M hQ P hP σ`.
+-/
 theorem delUTie_of_exists {D : Formalism.BasicNotions.D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N}
     (Y : NExp D.R D.host D.what₂ D.LL0 N X) (hY : ∀ i Q M, Y.delU i Q M = delU D.host X.cc (X.l i) Q M)
     (h : GlobalTheory.TwSys.K1 X) : GlobalTheory.TwSys.DelUTie Y := by

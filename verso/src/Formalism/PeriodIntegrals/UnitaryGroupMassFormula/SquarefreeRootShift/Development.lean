@@ -21,6 +21,9 @@ def ArithP : Prop :=
     ∑ k ∈ Finset.Icc 1 r, ((ppSum (g ^ k - 1) : ℝ) / k) * (g : ℝ) ^ (r - k) ≤
       (1 / (4 * ((min q d : ℕ) : ℝ)) + (1 + Real.log r) / ((g : ℝ) - 1)) * (g : ℝ) ^ r
 
+/- English proof (translation)
+Introduce `g r q d e _ hq hd hq8 hd16 he hq16 hd16' hg hr hg12 c T hT`. Conclude with `(hC g r (by omega) (by omega) c T hT).trans (hA g r q d e Fact.out hq hd hq8 hd16 he hq16 hd16' hg hr hg12)`.
+-/
 theorem claim_of (hC : CountP) (hA : ArithP) : PI.SqfRootShift.Claim := by
   intro g r q d e _ hq hd hq8 hd16 he hq16 hd16' hg hr hg12 c T hT
   exact (hC g r (by omega) (by omega) c T hT).trans

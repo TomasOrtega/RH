@@ -55,6 +55,9 @@ def avg0 (μ : @Measure Y (borel Y)) (L₁ : V →ₗ[ℂ] ℂ) (T : Y → V →
 def avgForm (μ : @Measure Y (borel Y)) (L₁ : V →ₗ[ℂ] ℂ) (T : Y → V →ₗ[ℂ] V) : V →ₗ[ℂ] ℂ :=
   (LinearMap.exists_extend (avg0 μ L₁ T)).choose
 
+/- English proof (translation)
+The claim follows from `LinearMap.congr_fun (LinearMap.exists_extend (avg0 μ L₁ T)).choose_spec ⟨v, hv⟩`.
+-/
 theorem avgForm_apply (μ : @Measure Y (borel Y)) (L₁ : V →ₗ[ℂ] ℂ) (T : Y → V →ₗ[ℂ] V) {v : V}
     (hv : Conv μ L₁ T v) :
     avgForm μ L₁ T v = (letI : MeasurableSpace Y := borel Y; ∫ y, L₁ (T y v) ∂μ) :=
@@ -72,6 +75,9 @@ def starFam {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Al
     Module.End ℂ ((κ → AF F) → ℂ) :=
   schrL ψ (dd.e (Matrix.vecMulVec u (Sum.elim y y)))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem starFam_apply {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {a b : ℕ}
     {Bf : Matrix (Fin a) (Fin b ⊕ Fin b) (AE F E) → Matrix (Fin a) (Fin b ⊕ Fin b) (AE F E) → AF F} {κ : Type} [Fintype κ]
     (dd : Darboux Bf κ) (ψ : AddChar (AF F) ℂ) (u : Fin a → AE F E) (y : Fin b → AE F E) (φ : (κ → AF F) → ℂ) :

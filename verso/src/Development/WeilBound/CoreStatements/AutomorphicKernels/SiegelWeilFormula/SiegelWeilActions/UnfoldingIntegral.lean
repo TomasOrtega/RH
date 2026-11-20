@@ -29,6 +29,9 @@ def rationalCentreEquiv (L : LD d) : Crat L ≃ L.ratV × fA F where
   left_inv _ := rfl
   right_inv _ := rfl
 
+/- English proof (translation)
+Establish `: Countable E` using `(Module.finBasis ℚ E).equivFun.injective.countable`. Use `Function.Surjective.countable (f := fun v : Fin L.n → E => (⟨GlobalTheory.ThK.incV F v, AddSubgroup.subset_closure ⟨v, rfl⟩⟩ : L.ratV)) fun u => ?_` and prove the remaining obligations. Take `⟨v, hv⟩` from `C1.ratV_inc u.2`. Conclude with `⟨v, Subtype.ext hv.symm⟩`.
+-/
 theorem countable_ratV' (L : LD d) : Countable L.ratV := by
   have : Countable E := (Module.finBasis ℚ E).equivFun.injective.countable
   refine Function.Surjective.countable (f := fun v : Fin L.n → E =>
@@ -36,6 +39,11 @@ theorem countable_ratV' (L : LD d) : Countable L.ratV := by
   obtain ⟨v, hv⟩ := C1.ratV_inc u.2
   exact ⟨v, Subtype.ext hv.symm⟩
 
+/- English proof (translation)
+Take `⟨u₀, a₀⟩` from `c₀`. Take `⟨u, b, a⟩` from `p`. Establish `e1 : L.j γ' * (sM R L b * (cM (u, a) * Y)) = (L.j γ' * (sM R L b * cM (u, a))) * Y` using `by simp only [mul_assoc]`. Establish `e2 : ∀ c', cM (u₀, a₀) * (sM R L (Λ (b, u)).1 * cM c' * L.j γ' * Y) = (cM (u₀, a₀) * (sM R L (Λ (b, u)).1 * cM c')) * (L.j γ' * Y)` using `by intro c'; simp only [mul_assoc]`. Rewrite using `[e1, hΛ, e2, hZ, mul_assoc, section_w1_siegel_invariant h hf z]`.
+
+Simplify using `only [UnfoldingIntegralSum.sh, add_assoc]`.
+-/
 theorem unfolding_rational_point_change (h : Hyp L nb uM nb' w₁ cM δ) {s₁ : ℂ} {f : d.G → ℂ} (hf : IsSec d.K d.χ s₁ f) (z : ℂ) {γ' : G2 σ L.Y}
     {Λ : ((Fin L.n → AE F E) × (Fin L.n → AE F E)) ≃ₜ+ ((Fin L.n → AE F E) × (Fin L.n → AE F E))}
     {Q : (Fin L.n → AE F E) × (Fin L.n → AE F E) → AF F}
@@ -53,6 +61,11 @@ theorem unfolding_rational_point_change (h : Hyp L nb uM nb' w₁ cM δ) {s₁ :
   rw [e1, hΛ, e2, hZ, mul_assoc, section_w1_siegel_invariant h hf z]
   simp only [UnfoldingIntegralSum.sh, add_assoc]
 
+/- English proof (translation)
+Take `⟨-, hν, hU0, hU1⟩` from `hU`. Use `haveI := hν`. Use `haveI := countable_ratV' L`. Take `⟨Λ, Q, hQ, hΛeq, hΛrat⟩` from `j_conj (R := R) h γ'`. Take `⟨Z, hZ, -, hheis⟩` from `Heisenberg₂ (R := R) h`.
+
+Establish `hg : Continuous fun c => phz d f s₁ z (w₁ * (cM c * (L.j γ' * Y)))` using `(ComplexParameterFamilyContinuity.continuous_phz d hf.cont s₁ z).comp (continuous_const.mul ((continuous_cM h).mul continuous_const))`. Rewrite using `[← UnfoldingIntegralSum.unf_lint hU0 hU1 (fd_prod hU0 hU0) h𝓐 Λ (hΛrat hγ) hQ.measurable hZ.measurable hg.measurable.enorm]`. Use `lintegral_congr fun p => ?_` and prove the remaining obligations. Rewrite using `[← (rationalCentreEquiv L).symm.tsum_eq]`. Conclude with `tsum_congr fun c => by rw [unfolding_rational_point_change h hf z hΛeq hheis]; rfl`.
+-/
 theorem unfqE (h : Hyp L nb uM nb' w₁ cM δ) {s₁ : ℂ} {f : d.G → ℂ} (hf : IsSec d.K d.χ s₁ f) (z : ℂ)
     {ν : Measure (Fin L.n → AE F E)} {𝓤 : Set (Fin L.n → AE F E)} (hU : L.UData uM ν 𝓤)
     {𝓐 : Set (AF F)} (h𝓐 : IsAddFundamentalDomain (fA F) 𝓐 (lamA F)) {γ' : G2 σ L.Y} (hγ : γ' ∈ rat2 σ L.Y) (Y : d.G) :
@@ -71,6 +84,13 @@ theorem unfqE (h : Hyp L nb uM nb' w₁ cM δ) {s₁ : ℂ} {f : d.G → ℂ} (h
   rw [← (rationalCentreEquiv L).symm.tsum_eq]
   exact tsum_congr fun c => by rw [unfolding_rational_point_change h hf z hΛeq hheis]; rfl
 
+/- English proof (translation)
+Take `⟨-, hν, hU0, hU1⟩` from `hU`. Use `haveI := hν`. Use `haveI := countable_ratV' L`. Take `⟨Λ, Q, hQ, hΛeq, hΛrat⟩` from `j_conj (R := R) h γ'`. Take `⟨Z, hZ, -, hheis⟩` from `Heisenberg₂ (R := R) h`.
+
+Establish `hg : Continuous fun c => phz d f s₁ z (w₁ * (cM c * (L.j γ' * Y)))` using `(ComplexParameterFamilyContinuity.continuous_phz d hf.cont s₁ z).comp (continuous_const.mul ((continuous_cM h).mul continuous_const))`. Rewrite using `[← UnfoldingIntegralSum.unf_int hU0 hU1 (fd_prod hU0 hU0) h𝓐 Λ (hΛrat hγ) hQ.measurable hZ.measurable hg.measurable hfin]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[← (rationalCentreEquiv L).symm.tsum_eq]`.
+
+Conclude with `tsum_congr fun c => by rw [unfolding_rational_point_change h hf z hΛeq hheis]; rfl`.
+-/
 theorem unfqC (h : Hyp L nb uM nb' w₁ cM δ) {s₁ : ℂ} {f : d.G → ℂ} (hf : IsSec d.K d.χ s₁ f) (z : ℂ)
     {ν : Measure (Fin L.n → AE F E)} {𝓤 : Set (Fin L.n → AE F E)} (hU : L.UData uM ν 𝓤)
     {𝓐 : Set (AF F)} (h𝓐 : IsAddFundamentalDomain (fA F) 𝓐 (lamA F)) {γ' : G2 σ L.Y} (hγ : γ' ∈ rat2 σ L.Y) (Y : d.G)

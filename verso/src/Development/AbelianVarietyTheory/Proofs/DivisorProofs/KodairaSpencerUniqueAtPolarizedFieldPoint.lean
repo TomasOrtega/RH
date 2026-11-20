@@ -15,6 +15,23 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.KSPtUniq
 
+/- English proof (translation)
+Introduce `E _ _ _ H X t V U n v hv hb K _ _ φ P₀ m hV hpb hiso D Θ Θ' hK hK'`. Use `haveI : IsCommMonObj P₀.A := P₀.isAb.comm`. Use `set x0 : Sp K ⟶ X := spMap φ ≫ chart U with hx0def`. Establish `hUx : ⊤ ≤ x0 ⁻¹ᵁ U.1` using `fun o _ => by show (chart U) ((spMap φ) o) ∈ (U.1 : Set X)`. Rewrite using `[← U.2.range_fromSpec]`.
+
+Conclude with `⟨_, rfl⟩`. Establish `hev : GlobalTheory.FlagMod.ev x0 U.1 hUx = φ` using `GlobalTheory.FlagMod.ev_spMap_tau U.2 φ hUx`. Establish `hx : spMap (GlobalTheory.FlagMod.ev x0 U.1 hUx) ≫ chart U = x0` using `by rw [hev]`. Establish `hv'` using `fun i => GlobalTheory.LieMet.isTan_map (GlobalTheory.FlagMod.ev x0 U.1 hUx) hx (hv i)`. Establish `hb'` using `GlobalTheory.GradedPieces.basis_map (GlobalTheory.FlagMod.ev x0 U.1 hUx) hx hv hb`.
+
+Take `⟨u, hu, hu'⟩` from `GlobalTheory.LiePull.lieBasis_of_tanBasis t x0 P₀.A m hpb _ hv' hb'`. Use `choose dd hdd using fun a => (GlobalTheory.KS.InvField.main K P₀.A (u a) (hu.1 a)).1`. Take `⟨⟨φc, hφc⟩, -⟩` from `GlobalTheory.KS.DlogPol.dlog_independent K P₀ n u dd hu hdd _ m t.PP.L t.PP.isLB hiso`. Take `⟨J, W, j, d, hcov, hWj, hf, hl, hdiff⟩` from `hK`. Take `⟨J', W', j', d', hcov', hWj', hf', hl', hdiff'⟩` from `hK'`.
+
+Establish `hP` using `GlobalTheory.KSUniq.pull_diff t V U v hv Θ W j d hWj hdiff x0 hUx P₀.A m hpb u hu' dd hdd φc hφc`. Establish `hP'` using `GlobalTheory.KSUniq.pull_diff t V U v hv Θ' W' j' d' hWj' hdiff' x0 hUx P₀.A m hpb u hu' dd hdd φc hφc`. Establish `hWU : ∀ i, W i ≤ t.G.hom ⁻¹ᵁ U.1` using `fun i p hp => by`. Establish `: p ∈ t.G.hom ⁻¹ᵁ (U.1 ⊓ V)` using `hcov ▸ (le_iSup W i) hp`. Conclude with `this.1`.
+
+Establish `hWU' : ∀ i, W' i ≤ t.G.hom ⁻¹ᵁ U.1` using `fun i p hp => by`. Establish `: p ∈ t.G.hom ⁻¹ᵁ (U.1 ⊓ V)` using `hcov' ▸ (le_iSup W' i) hp`. Conclude with `this.1`. Establish `hfib : ∀ z, t.G.hom (m z) ∈ U.1 ⊓ V` using `fun z => by`. Rewrite using `[← Scheme.Hom.comp_apply, hpb.1.w, Scheme.Hom.comp_apply]`.
+
+Conclude with `⟨hUx (Set.mem_univ _), hV (Set.mem_univ _)⟩`. Establish `hcv : ∀ z, ∃ i, m z ∈ W i` using `fun z => by`. Establish `h2 : m z ∈ ⨆ i, W i` using `by rw [hcov]; exact hfib z`. Conclude with `TopologicalSpace.Opens.mem_iSup.1 h2`. Establish `hcv' : ∀ z, ∃ i, m z ∈ W' i` using `fun z => by`.
+
+Establish `h2 : m z ∈ ⨆ i, W' i` using `by rw [hcov']; exact hfib z`. Conclude with `TopologicalSpace.Opens.mem_iSup.1 h2`. Use `GlobalTheory.KSUniq.theta_eq_fibre P₀ u hu dd hdd t.G.hom x0 m hpb.1 U.2 t.PP.L t.PP.isLB hiso _ (Matrix.of fun a b => GlobalTheory.FlagMod.ev x0 U.1 hUx (Θ a b)) (Matrix.of fun a b => GlobalTheory.FlagMod.ev x0 U.1 hUx (Θ' a b)) W W' j j' d d' hWU hWU' hWj hWj' hcv hcv' hf hf' h …` as an intermediate fact. Rewrite `this` using `[hev]`. Use extensionality with `a b`.
+
+Conclude with `congrFun (congrFun this a) b`.
+-/
 theorem isKS_unique_at_point : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Scheme.{0}) (t : SAB H X) (V : X.Opens) (U : X.affineOpens) (n : ℕ) (v : Fin n → (Sp (DualNumber Γ(X, U.1)) ⟶ t.G.left)), (∀ i, IsTanAtG t (chart U) (v i)) → (∀ w, IsTanAtG t (chart U) w → ∃! cf : Fin n → Γ(X, U.1), IsCombAtG t (chart U) v cf w) → ∀ (K : Type) [Field K] [CharZero K] (φ : Γ(X, U.1) →+* K) (P₀ : PolAV (Sp K)) (m : P₀.A.left ⟶ t.G.left), ⊤ ≤ (spMap φ ≫ chart U) ⁻¹ᵁ V → IsGrpPullback P₀.A t.G (spMap φ ≫ chart U) m → LBIso P₀.L (t.PP.L.pull m) → ∀ (D : Γ(X, U.1) → Γ(X, U.1)) (Θ Θ' : Matrix (Fin n) (Fin n) Γ(X, U.1)), IsKS t V U v D Θ → IsKS t V U v D Θ' → φ.mapMatrix Θ = φ.mapMatrix Θ' := by
   intro E _ _ _ H X t V U n v hv hb K _ _ φ P₀ m hV hpb hiso D Θ Θ' hK hK'
   haveI : IsCommMonObj P₀.A := P₀.isAb.comm

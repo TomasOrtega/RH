@@ -15,19 +15,31 @@ variable {R : Type*} [Ring R]
 
 def word (E : R) (l : List R) : R := l.foldr (fun a w => E * a * w) E
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem word_nil (E : R) : word E [] = E := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem word_cons (E a : R) (l : List R) : word E (a :: l) = E * a * word E l := rfl
 
 def stdPoly (E : R) {M : ℕ} (a : Fin M → R) : R :=
   ∑ π : Equiv.Perm (Fin M), ((Equiv.Perm.sign π : ℤ) : R) * word E (List.ofFn fun i => a (π i))
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons a l ih => simp [ih]`.
+-/
 theorem map_word {R' : Type*} [Ring R'] (f : R →+* R') (E : R) (l : List R) :
     f (word E l) = word (f E) (l.map f) := by
   induction l with
   | nil => rfl
   | cons a l ih => simp [ih]
 
+/- English proof (translation)
+Simplify using `[stdPoly, map_word, List.map_ofFn, Function.comp_def]`.
+-/
 theorem map_stdPoly {R' : Type*} [Ring R'] (f : R →+* R') (E : R) {M : ℕ} (a : Fin M → R) :
     f (stdPoly E a) = stdPoly (f E) fun i => f (a i) := by
   simp [stdPoly, map_word, List.map_ofFn, Function.comp_def]

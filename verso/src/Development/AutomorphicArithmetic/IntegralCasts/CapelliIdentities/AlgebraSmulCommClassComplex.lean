@@ -16,6 +16,9 @@ noncomputable def UpperTheory.Reformulated.B.Qe25.Mdim :
     ℕ → (r : ℕ) → Fin r → ℕ :=
     fun (k r : ℕ) (a : Fin r) ↦ (2 : ℕ) * (r - (↑a : ℕ)) + k + (1 : ℕ)
 
+/- English proof (translation)
+Introduce `k r a`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem UpperTheory.Reformulated.B.Qe25.aux5 :
     ∀ (k r : ℕ) (a : Fin r), (2 : ℕ) * r + k - (↑a : ℕ) < (2 : ℕ) * r + k + (1 : ℕ) := by
   intro k r a
@@ -26,6 +29,9 @@ noncomputable def UpperTheory.Reformulated.B.Qe25.esI :
     fun (k r : ℕ) (a : Fin r) ↦
       (⟨(2 : ℕ) * r + k - (↑a : ℕ), UpperTheory.Reformulated.B.Qe25.aux5 k r a⟩ : Fin ((2 : ℕ) * r + k + (1 : ℕ)))
 
+/- English proof (translation)
+Introduce `k r a`. Use `a.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem UpperTheory.Reformulated.B.Qe25.aux7 :
     ∀ (k r : ℕ) (a : Fin r), (↑a : ℕ) < (2 : ℕ) * r + k + (1 : ℕ) := by
   intro k r a
@@ -64,6 +70,9 @@ noncomputable def UpperTheory.Reformulated.B.Qe25.gaugeF :
     fun (k r : ℕ) (c : Fin r → ℂ) ↦
       UpperTheory.Reformulated.B.Qe25.resG k r (Fin.last r) (fun (x : UpperTheory.Reformulated.B.Qe25.Mx k r) ↦ (1 : ℂ)) c (1 : UpperTheory.Reformulated.B.Qe25.Mx k r)
 
+/- English proof (translation)
+Introduce `m E _ _ f g hf hg`. Conclude with `⟨hf.1.add hg.1, fun x hx ↦ by simp [hf.2 x hx, hg.2 x hx]⟩`.
+-/
 theorem UpperTheory.Reformulated.B.Qe25.algebra_smulCommClass_complex.{u_1} :
     ∀ (m : ℕ) (E : Type u_1) [inst : NormedAddCommGroup E] [inst_1 : NormedSpace ℂ E] {f g : (Fin m → ℂ) → E},
       f ∈
@@ -77,6 +86,9 @@ theorem UpperTheory.Reformulated.B.Qe25.algebra_smulCommClass_complex.{u_1} :
   intro m E _ _ f g hf hg
   exact ⟨hf.1.add hg.1, fun x hx ↦ by simp [hf.2 x hx, hg.2 x hx]⟩
 
+/- English proof (translation)
+Introduce `m E _ _`. Conclude with `⟨contDiffOn_const, fun _ _ ↦ rfl⟩`.
+-/
 theorem UpperTheory.Reformulated.B.Qe25.zero_contDiffOn_supported.{u_1} :
     ∀ (m : ℕ) (E : Type u_1) [inst : NormedAddCommGroup E] [inst_1 : NormedSpace ℂ E],
       ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (0 : (Fin m → ℂ) → E) (UpperTheory.Reformulated.B.Qe25.OmX m) ∧
@@ -84,6 +96,9 @@ theorem UpperTheory.Reformulated.B.Qe25.zero_contDiffOn_supported.{u_1} :
   intro m E _ _
   exact ⟨contDiffOn_const, fun _ _ ↦ rfl⟩
 
+/- English proof (translation)
+Introduce `m E _ _ a f hf`. Conclude with `⟨hf.1.const_smul a, fun x hx ↦ by simp [hf.2 x hx]⟩`.
+-/
 theorem UpperTheory.Reformulated.B.Qe25.sign_action_map_comm.{u_1} :
     ∀ (m : ℕ) (E : Type u_1) [inst : NormedAddCommGroup E] [inst_1 : NormedSpace ℂ E] (a : ℂ) {f : (Fin m → ℂ) → E},
       f ∈
@@ -103,16 +118,25 @@ noncomputable def UpperTheory.Reformulated.B.Qe25.WSm.{u_1} :
         add_mem' := @UpperTheory.Reformulated.B.Qe25.algebra_smulCommClass_complex m E inst inst_1, zero_mem' := UpperTheory.Reformulated.B.Qe25.zero_contDiffOn_supported m E,
         smul_mem' := UpperTheory.Reformulated.B.Qe25.sign_action_map_comm m E : Submodule ℂ ((Fin m → ℂ) → E) }
 
+/- English proof (translation)
+Simplify using `[UpperTheory.Reformulated.B.Qe25.gaugeF, UpperTheory.Reformulated.B.Qe25.resG]`.
+-/
 private theorem UpperTheory.Reformulated.B.Qe25.gauge_eq (k r : ℕ) (c : Fin r → ℂ) :
     UpperTheory.Reformulated.B.Qe25.gaugeF k r c =
       ((∏ a : Fin r, ‖c a‖ ^ (UpperTheory.Reformulated.B.Qe25.Mdim k r a - 1) : ℝ) : ℂ) := by
   simp [UpperTheory.Reformulated.B.Qe25.gaugeF, UpperTheory.Reformulated.B.Qe25.resG]
 
+/- English proof (translation)
+Rewrite using `[UpperTheory.Reformulated.B.Qe25.gauge_eq, Complex.ofReal_ne_zero]`. Conclude with `Finset.prod_ne_zero_iff.2 fun a _ ↦ pow_ne_zero _ (norm_ne_zero_iff.2 (hc a))`.
+-/
 private theorem UpperTheory.Reformulated.B.Qe25.gauge_ne (k r : ℕ) (c : Fin r → ℂ)
     (hc : c ∈ UpperTheory.Reformulated.B.Qe25.OmX r) : UpperTheory.Reformulated.B.Qe25.gaugeF k r c ≠ 0 := by
   rw [UpperTheory.Reformulated.B.Qe25.gauge_eq, Complex.ofReal_ne_zero]
   exact Finset.prod_ne_zero_iff.2 fun a _ ↦ pow_ne_zero _ (norm_ne_zero_iff.2 (hc a))
 
+/- English proof (translation)
+Establish `h : UpperTheory.Reformulated.B.Qe25.gaugeF k r = fun c ↦ Complex.ofRealCLM (∏ a : Fin r, ‖c a‖ ^ (UpperTheory.Reformulated.B.Qe25.Mdim k r a - 1))`. Use function extensionality and compare the values at `fun c ↦ UpperTheory.Reformulated.B.Qe25.gauge_eq k r c`. Rewrite using `[h]`. Use `Complex.ofRealCLM.contDiff.contDiffAt.comp c (contDiffAt_prod fun a _ ↦ ?_)` and prove the remaining obligations. Conclude with `(ContDiffAt.norm ℝ (contDiffAt_apply ℝ ℂ a c) (hc a)).pow _`.
+-/
 private theorem UpperTheory.Reformulated.B.Qe25.gauge_smooth (k r : ℕ) (c : Fin r → ℂ)
     (hc : c ∈ UpperTheory.Reformulated.B.Qe25.OmX r) :
     ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (UpperTheory.Reformulated.B.Qe25.gaugeF k r) c := by
@@ -123,6 +147,17 @@ private theorem UpperTheory.Reformulated.B.Qe25.gauge_smooth (k r : ℕ) (c : Fi
   refine Complex.ofRealCLM.contDiff.contDiffAt.comp c (contDiffAt_prod fun a _ ↦ ?_)
   exact (ContDiffAt.norm ℝ (contDiffAt_apply ℝ ℂ a c) (hc a)).pow _
 
+/- English proof (translation)
+Introduce `X _ _ k r Φ U c hU hUO hc hs`. Establish `hΦ : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) Φ U`. Establish `h1 : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun c' ↦ (UpperTheory.Reformulated.B.Qe25.gaugeF k r c')⁻¹) U` using `fun x hx ↦ ((UpperTheory.Reformulated.B.Qe25.gauge_smooth k r x (hUO hx)).inv (UpperTheory.Reformulated.B.Qe25.gauge_ne k r x (hUO hx))).contDiffWithinAt`. Use `(h1.smul hs).congr fun x hx ↦ ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply']`.
+
+Rewrite using `[smul_smul, inv_mul_cancel₀ (UpperTheory.Reformulated.B.Qe25.gauge_ne k r x (hUO hx)), one_smul]`. Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.1 hU c hc`. Set `b : ContDiffBump c` to `⟨ε / 4, ε / 2, by positivity, by linarith⟩`. Establish `hsupp : tsupport b ⊆ U`. Rewrite using `[b.tsupport_eq]`.
+
+Conclude with `(Metric.closedBall_subset_ball (show ε / 2 < ε by linarith)).trans hball`. Establish `heq : Φ =ᶠ[nhds c] fun x ↦ b x • Φ x` using `by filter_upwards [b.eventuallyEq_one] with x hx`. Simplify using `[hx]`. Use `⟨fun x ↦ b x • Φ x, ⟨fun x _ ↦ ?_, fun x hx ↦ ?_⟩, heq, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hxU : x ∈ U`.
+
+Conclude with `(b.contDiff.contDiffAt.smul (hΦ.contDiffAt (hU.mem_nhds hxU))).contDiffWithinAt`. Establish `h0 : (b : (Fin r → ℂ) → ℝ) =ᶠ[nhds x] 0` using `notMem_tsupport_iff_eventuallyEq.1 fun h ↦ hxU (hsupp h)`. Establish `h1 : (fun x ↦ b x • Φ x) =ᶠ[nhds x] fun _ ↦ (0 : X)` using `by filter_upwards [h0] with y hy`. Simplify using `[hy]`. Conclude with `(contDiffAt_const.congr_of_eventuallyEq h1).contDiffWithinAt`.
+
+Establish `h0 : b x = 0` using `image_eq_zero_of_notMem_tsupport fun h ↦ hx (hUO (hsupp h))`. Simplify using `[h0]`. Use `filter_upwards [heq] with x hx`. Rewrite using `[← hx]`.
+-/
 theorem UpperTheory.Reformulated.B.Qe25.loc :
     ∀ {X : Type} [inst : NormedAddCommGroup X] [inst_1 : NormedSpace ℂ X] {k r : ℕ} (Φ : (Fin r → ℂ) → X)
       (U : Set (Fin r → ℂ)) (c : Fin r → ℂ),

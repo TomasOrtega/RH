@@ -28,6 +28,15 @@ namespace GlobalTheory.SwapTwo
 
 open GlobalTheory.JacTensor GlobalTheory.EmptyFirstBlock
 
+/- English proof (translation)
+Set `K : Subrepresentation ρ` to `⟨LinearMap.ker f.toLinearMap, fun g x hx => by show f (ρ g x) = 0`. Rewrite using `[f.isIntertwining]`. Establish `hx' : f x = 0` using `hx`. Rewrite using `[hx', map_zero]⟩`. Set `R : Subrepresentation σ` to `⟨LinearMap.range f.toLinearMap, by`.
+
+Introduce and unpack `g _ ⟨x, rfl⟩`. Conclude with `⟨ρ g x, f.isIntertwining _ _ g x⟩⟩`. Use `⟨GlobalTheory.LocGL.equivOfBijective f ⟨?_, ?_⟩⟩` and prove the remaining obligations. Break down `eq_bot_or_eq_top K with h | h` into its components or cases. Use `(injective_iff_map_eq_zero f.toLinearMap).2 fun x hx => ?_` and prove the remaining obligations.
+
+Establish `: x ∈ K` using `hx`. Rewrite `this` using `[h]`. Conclude with `this`. Conclude with `absurd (show v ∈ K from h ▸ trivial) hv`. Break down `eq_bot_or_eq_top R with h | h` into its components or cases.
+
+Conclude with `absurd (show f v ∈ R from ⟨v, rfl⟩) (by rw [h]; exact hv)`. Introduce `w`. Take `⟨x, hx⟩` from `(show w ∈ R from h ▸ trivial)`. Conclude with `⟨x, hx⟩`.
+-/
 theorem nonempty_equiv_of_apply_ne_zero {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W]
     [Module ℂ W] {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (hρ : ρ.IsIrreducible)
     (hσ : σ.IsIrreducible) (f : ρ.IntertwiningMap σ) {v : V} (hv : f v ≠ 0) : Nonempty (ρ.Equiv σ) := by
@@ -52,6 +61,21 @@ theorem nonempty_equiv_of_apply_ne_zero {G V W : Type} [Group G] [AddCommGroup V
       obtain ⟨x, hx⟩ := (show w ∈ R from h ▸ trivial)
       exact ⟨x, hx⟩
 
+/- English proof (translation)
+Introduce `_ hGL k _ _ _ _ n _ _ d σ hσ hd1 hnt e e'`. Take `⟨z, c, c', hz, hcc, hX, hbad⟩` from `GlobalTheory.T.exists_central_scalar_distinct_geometricLemma_cells k d σ hσ hd1 hnt`. Take `⟨N, b, hb⟩` from `(hGL k).1 (Fin 2) (Fin 2) n (fun i => Fin (d i)) (fun j => Fin (d (Equiv.swap 0 1 j))) e e'`. Take `⟨S, hmono, h0, hN, h4⟩` from `hb _ (piTensor fun i => (σ i).π) (isSmooth_piTensor fun i => (σ i).smooth)`. Take `⟨G0, hG0⟩ : ∃ G0 : SizeMatrix (fun i : Fin 2 => Fin (d i)) (fun j : Fin 2 => Fin (d (Equiv.swap 0 1 j))), G0.1 = ![![0, d 0], ![1, 0]]` from `⟨⟨![![0, d 0], ![1, 0]], by`.
+
+Use `⟨fun i => ?_, fun j => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> simp [Fin.sum_univ_two, hd1]`. Apply the tactic sequence `fin_cases j <;> simp [Fin.sum_univ_two, hd1]⟩, rfl⟩`. Establish `hgood : (b (b.symm G0)).1 1 0 = 1` using `by rw [Equiv.apply_symm_apply, hG0]; rfl`. Take `⟨f₀, g₀, ⟨E₀⟩⟩` from `GlobalTheory.T.geometricLemmaCell_one_block_swap_equiv k d σ hd1 (b (b.symm G0)) hgood`.
+
+Establish `hbad' : ∀ t, t ≠ b.symm G0 → (b t).1 1 0 = 0`. Introduce `t ht`. Establish `r1` using `(b t).2.1 1`. Establish `c0` using `(b t).2.2 0`. Establish `r0` using `(b t).2.1 0`.
+
+Establish `c1` using `(b t).2.2 1`. Simplify using `only [Fin.sum_univ_two, Fintype.card_fin, Equiv.swap_apply_left, Equiv.swap_apply_right] at r1 c0 r0 c1`. Assume the negation of the conclusion as `hne`. Apply `ht` to reduce the goal to its premises. Rewrite using `[Equiv.eq_symm_apply]`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i j`. Rewrite using `[hG0]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp <;> omega`. Establish `hstep : ∀ t, t ≠ b.symm G0 → ∀ y, subQuot (S t.succ) (S t.castSucc) z y = c' • y`.
+
+Introduce `t ht y`. Establish `E` using `(h4 t (b t).nonempty_rows.some (b t).nonempty_cols.some).some`. Apply `E.toLinearEquiv.injective` to reduce the goal to its premises. Establish `h1 : E.toLinearEquiv (subQuot (S t.succ) (S t.castSucc) z y) = _` using `LinearMap.congr_fun (E.isIntertwining' z) y`. Establish `h2` using `hbad (b t) (hbad' t ht) (b t).nonempty_rows.some (b t).nonempty_cols.some (E.toLinearEquiv y)`.
+
+Conclude with `h1.trans (h2.trans (LinearEquiv.map_smul E.toLinearEquiv c' y).symm)`. Take `⟨φ, v, hv⟩` from `GlobalTheory.T.exists_intertwining_of_central_filtration_step (jac e' (multiProd e fun i => (σ i).π)) (piTensor fun j => (σ (Equiv.swap 0 1 j)).π) N S hmono h0 hN z hz (b.symm G0) c (fun _ => c') (fun _ _ => hcc.symm) hstep ⟨(h4 (b.symm G0) f₀ g₀).some.trans E₀⟩ hX (GlobalTheory. …`. Conclude with `⟨φ, v, hv⟩`.
+-/
 theorem exists_jac_map_ne_zero : GlobalTheory.Published.BernsteinZelevinskyFiniteness → GlobalTheory.Published.GeometricLemma →
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n : Type) [Fintype n] [DecidableEq n] (d : Fin 2 → ℕ) (σ : ∀ i, Irr k (d i)),
@@ -102,6 +126,13 @@ theorem exists_jac_map_ne_zero : GlobalTheory.Published.BernsteinZelevinskyFinit
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use `haveI : Nontrivial V := Model.nontrivial_of_isIrreducible h`. Use `{ exists_pair_ne := ⟨⊥, ⊤, fun e => ?_⟩, eq_bot_or_eq_top := fun S => ?_ }` and prove the remaining obligations. Take `⟨v, hv⟩` from `exists_ne (0 : V)`. Establish `h1 : v ∈ (⊤ : Subrepresentation ρ).toSubmodule` using `Submodule.mem_top`. Rewrite `h1` using `[← e]`.
+
+Conclude with `hv h1`. Break down `eq_bot_or_eq_top (⟨S.toSubmodule, fun g v hv => S.apply_mem_toSubmodule (φ g) hv⟩ : Subrepresentation (ρ.comp φ)) with h' | h'` into its components or cases. Use `left`. Establish `h2` using `congrArg Subrepresentation.toSubmodule h'`. Conclude with `Subrepresentation.toSubmodule_injective h2`.
+
+Use `right`. Establish `h2` using `congrArg Subrepresentation.toSubmodule h'`. Conclude with `Subrepresentation.toSubmodule_injective h2`.
+-/
 theorem isIrreducible_of_comp {G H V : Type} [Group G] [Group H] [AddCommGroup V] [Module ℂ V]
     {ρ : Representation ℂ H V} (φ : G →* H) (h : Representation.IsIrreducible (ρ.comp φ)) :
     ρ.IsIrreducible := by
@@ -120,6 +151,11 @@ theorem isIrreducible_of_comp {G H V : Type} [Group G] [Group H] [AddCommGroup V
       have h2 := congrArg Subrepresentation.toSubmodule h'
       exact Subrepresentation.toSubmodule_injective h2
 
+/- English proof (translation)
+Introduce `k _ _ _ _ r t π₁ π₂ hnt h α ⟨φ⟩`. Substitute `h` using the available equality. Use `hnt rfl α⁻¹ ?_` and prove the remaining obligations. Establish `heq : twist (twist π₁.π (detChar (Fin t) (unrChar k α))) (detChar (Fin t) (unrChar k α⁻¹)) = π₁.π`. Use extensionality with `g v`.
+
+Simplify using `only [twist_apply, detChar_apply, unrChar_apply, smul_smul, inv_zpow]`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one, one_smul]`. Establish `e` using `(GlobalTheory.LocGL.twistEquiv φ (detChar (Fin t) (unrChar k α⁻¹))).symm`. Rewrite `e` using `[heq]`. Conclude with `⟨e⟩`.
+-/
 theorem not_equiv_twist_symm : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (r t : ℕ) (π₁ : Irr k r) (π₂ : Irr k t),
     (∀ (h : r = t) (α : ℂˣ), ¬ Nonempty ((h ▸ π₁ : Irr k t).π.Equiv (twist π₂.π (detChar (Fin t) (unrChar k α))))) →
@@ -135,6 +171,13 @@ theorem not_equiv_twist_symm : ∀ (k : Type) [Field k] [ValuativeRel k] [Topolo
   rw [heq] at e
   exact ⟨e⟩
 
+/- English proof (translation)
+Establish `hd : ∑ a, d a = d 0 + d 1` using `Fin.sum_univ_two d`. Establish `hsupp : ∀ i, IsCuspSupport (σ i).π (fun _ : Fin 1 => d i) (fun _ => (σ i).π)` using `fun i => by`. Take `⟨φ⟩` from `GlobalTheory.LocGL.nonempty_equiv_multiProd_one (σ i).smooth (oneBlock (d i)) fun _ _ => rfl`. Conclude with `⟨(σ i).irr, fun _ => ⟨(hσ i).1, (σ i).irr, (hσ i).2⟩, oneBlock (d i), .of_injective φ.toIntertwiningMap φ.toLinearEquiv.injective⟩`. Establish `h2` using `hU k (d 0) (d 1) 1 1 (σ 0) (σ 1) _ _ _ _ (hsupp 0) (hsupp 1) fun _ _ h α => hnt h α`.
+
+Take `⟨E₁⟩` from `GlobalTheory.LocGL.nonempty_prod₂_equiv_multiProd hd fun i => (σ i).π`. Establish `h3` using `GlobalTheory.Parabolic.isIrreducible_of_equiv E₁ h2`. Establish `hc : Fintype.card (Fin (d 0 + d 1)) = Fintype.card n`. Rewrite using `[Fintype.card_fin, ← hd, ← Fintype.card_congr e]`. Simplify using the standard rewrite rules.
+
+Set `ψ : Fin (d 0 + d 1) ≃ n` to `Fintype.equivOfCardEq hc`. Take `⟨E₂⟩` from `GlobalTheory.T.normalisedParabolicInduction_reindex_equiv k (Fin 2) (fun i => Fin (d i)) _ _ (stdBlocks d hd) ψ _ (piTensor fun i => (σ i).π)`. Establish `h4` using `isIrreducible_of_comp _ (GlobalTheory.Parabolic.isIrreducible_of_equiv E₂ h3)`. Take `⟨E₃⟩` from `(Placing.parInd_jac_placing k (Fin 2) n (fun i => Fin (d i)) ((stdBlocks d hd).trans ψ) e _).1 (piTensor fun i => (σ i).π)`. Conclude with `GlobalTheory.Parabolic.isIrreducible_of_equiv E₃ h4`.
+-/
 theorem isIrreducible_multiProd_two (hU : GlobalTheory.Published.UnlinkedProductIrreducible) {n : Type} [Fintype n]
     [DecidableEq n] (d : Fin 2 → ℕ) (σ : ∀ i, Irr k (d i)) (hσ : ∀ i, 0 < d i ∧ IsCuspidal (σ i).π)
     (hnt : ∀ (h : d 0 = d 1) (α : ℂˣ), ¬ Nonempty ((h ▸ σ 0 : Irr k (d 1)).π.Equiv
@@ -157,6 +200,13 @@ theorem isIrreducible_multiProd_two (hU : GlobalTheory.Published.UnlinkedProduct
     (piTensor fun i => (σ i).π)
   exact GlobalTheory.Parabolic.isIrreducible_of_equiv E₃ h4
 
+/- English proof (translation)
+Introduce `hBZ hGL hU k _ _ _ _ n _ _ d σ hσ hd1 hnt e e'`. Establish `h1` using `isIrreducible_multiProd_two hU d σ hσ hnt e`. Establish `h2` using `isIrreducible_multiProd_two hU (fun i => d (Equiv.swap 0 1 i)) (fun i => σ (Equiv.swap 0 1 i)) (fun i => hσ _) (not_equiv_twist_symm k (d 0) (d 1) (σ 0) (σ 1) hnt) e'`. Take `⟨φ, x, hx⟩` from `exists_jac_map_ne_zero hBZ hGL k n d σ hσ hd1 hnt e e'`. Take `⟨f, hf⟩` from `(Model.evalOne_bijective e' (isSmooth_parInd _ _) (piTensor fun i => (σ (Equiv.swap 0 1 i)).π)).2 φ`.
+
+Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `hv : f v ≠ 0` using `fun h => hx (by`. Rewrite using `[← hf]`. Use `show (f v).1.1 1 = 0`. Rewrite using `[h]`.
+
+Use the proof step `rfl)`. Conclude with `nonempty_equiv_of_apply_ne_zero h1 h2 f hv`.
+-/
 theorem swap_two_equiv : GlobalTheory.Published.BernsteinZelevinskyFiniteness → GlobalTheory.Published.GeometricLemma → GlobalTheory.Published.UnlinkedProductIrreducible → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : Type) [Fintype n] [DecidableEq n] (d : Fin 2 → ℕ) (σ : ∀ i, Irr k (d i)), (∀ i, 0 < d i ∧ IsCuspidal (σ i).π) → d 1 = 1 → (∀ (h : d 0 = d 1) (α : ℂˣ), ¬ Nonempty ((h ▸ σ 0 : Irr k (d 1)).π.Equiv (twist (σ 1).π (detChar (Fin (d 1)) (unrChar k α))))) → ∀ (e : (Σ i, Fin (d i)) ≃ n) (e' : (Σ i, Fin (d (Equiv.swap 0 1 i))) ≃ n), Nonempty ((multiProd e fun i => (σ i).π).Equiv (multiProd e' fun i => (σ (Equiv.swap 0 1 i)).π)) := by
   intro hBZ hGL hU k _ _ _ _ n _ _ d σ hσ hd1 hnt e e'
   have h1 := isIrreducible_multiProd_two hU d σ hσ hnt e

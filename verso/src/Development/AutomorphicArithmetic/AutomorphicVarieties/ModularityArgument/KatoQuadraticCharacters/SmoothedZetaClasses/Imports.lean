@@ -8,6 +8,9 @@ open scoped Matrix MatrixGroups
 
 namespace GlobalTheory.HTLawZeta
 
+/- English proof (translation)
+The claim follows from `law_of_inputs UpperTheory.V.Z.Kato.K5.hco GlobalTheory.LambdaValuationPowers.Smooth.exists_pres_smoothed`.
+-/
 theorem _root_.UpperTheory.V.Z.Kato.K5.top : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ι : Qbar l ≃+* ℂ) (e : ℕ) (S : Finset Pl)
     (A : ValuationSubring Ω) (W : R2 Ω l) (g : Newform (2 * e + 1)), Nf e S A W → SrcUr ι e A W g →
   ∀ (ε : Ω →+* ℂ) (X : Tower Ω ε) (pr : X.Fn l → Fin 2 → Qbar l) (N : ℕ) [NeZero N] (cw : ZMod N → Qbar l) (c d : ℕ)

@@ -20,6 +20,9 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
   [_root_.GlobalTheory.BK.IsUnitBall O K] {l e a : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] [Fact l.Prime]
   [NormedAlgebra ℚ_[l] K] [NeZero e] in
 omit [IsUltrametricDist K] [_root_.GlobalTheory.BK.IsUnitBall O K] [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] in
+/- English proof (translation)
+Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le h`. Rewrite using `[pow_add, mul_comm (s ^ n), mul_assoc]`. Conclude with `mul_mem (pow_mem hs k) hf`.
+-/
 private lemma pow_mul_mem_of_pow_mul_mem_of_le {S : Subalgebra O (PowerSeries K)} {s f : PowerSeries K}
     (hs : s ∈ S) {n N : ℕ} (h : n ≤ N) (hf : s ^ n * f ∈ S) : s ^ N * f ∈ S := by
   obtain ⟨k, rfl⟩ := Nat.exists_eq_add_of_le h
@@ -31,6 +34,9 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
   [_root_.GlobalTheory.BK.IsUnitBall O K] {l e a : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] [Fact l.Prime]
   [NormedAlgebra ℚ_[l] K] [NeZero e] in
 omit [IsUltrametricDist K] [_root_.GlobalTheory.BK.IsUnitBall O K] [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] in
+/- English proof (translation)
+Consider the cases of `nonempty_fintype T`. Use `choose n hn using h`. Conclude with `⟨Finset.univ.sup n, fun t => pow_mul_mem_of_pow_mul_mem_of_le hs (Finset.le_sup (Finset.mem_univ t)) (hn t)⟩`.
+-/
 private lemma exists_uniform_pow_mul_mem {T : Type} [Finite T] {S : Subalgebra O (PowerSeries K)}
     {s : PowerSeries K} (hs : s ∈ S) (f : T → PowerSeries K) (h : ∀ t, ∃ n, s ^ n * f t ∈ S) :
     ∃ N, ∀ t, s ^ N * f t ∈ S := by
@@ -42,6 +48,9 @@ open PowerSeries in
 variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebra O K]
   [_root_.GlobalTheory.BK.IsUnitBall O K] {l e a : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] [Fact l.Prime]
   [NormedAlgebra ℚ_[l] K] [NeZero e] in
+/- English proof (translation)
+Rewrite using `[← _root_.GlobalTheory.BK.coe_EIn l e (_root_.GlobalTheory.BK.A O K)]`. Conclude with `Subtype.property _`.
+-/
 private lemma eisenstein_mem_integral :
     _root_.GlobalTheory.BK.E K l e ∈ _root_.GlobalTheory.BK.A O K := by
   rw [← _root_.GlobalTheory.BK.coe_EIn l e (_root_.GlobalTheory.BK.A O K)]
@@ -51,6 +60,9 @@ open PowerSeries in
 variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebra O K]
   [_root_.GlobalTheory.BK.IsUnitBall O K] {l e a : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] [Fact l.Prime]
   [NormedAlgebra ℚ_[l] K] [NeZero e] in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.BK.invE at hf`. Take `⟨n, hn⟩` from `_root_.GlobalTheory.BK.mem_away.1 hf`. Conclude with `⟨n, by rwa [_root_.GlobalTheory.BK.coe_EIn] at hn⟩`.
+-/
 private lemma exists_eisenstein_pow_mul_mem_integral {f : PowerSeries K}
     (hf : f ∈ _root_.GlobalTheory.BK.invE l e (_root_.GlobalTheory.BK.A O K)) :
     ∃ n, _root_.GlobalTheory.BK.E K l e ^ n * f ∈ _root_.GlobalTheory.BK.A O K := by
@@ -63,6 +75,9 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
   [_root_.GlobalTheory.BK.IsUnitBall O K] {l e a : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] [Fact l.Prime]
   [NormedAlgebra ℚ_[l] K] [NeZero e] in
 variable (P : _root_.GlobalTheory.BK.PhiMod O K l e a ι) in
+/- English proof (translation)
+Take `⟨N₁, h₁⟩` from `exists_uniform_pow_mul_mem eisenstein_mem_integral (fun t : ZMod a × ι × ι => P.mx t.1 t.2.1 t.2.2) (fun t => exists_eisenstein_pow_mul_mem_integral (P.mx_mem _ _ _))`. Take `⟨N₂, h₂⟩` from `exists_uniform_pow_mul_mem eisenstein_mem_integral (fun t : ZMod a × ι × ι => P.mxInv t.1 t.2.1 t.2.2) (fun t => exists_eisenstein_pow_mul_mem_integral (P.mxInv_mem _ _ _))`. Conclude with `⟨max N₁ N₂, fun τ i j => ⟨pow_mul_mem_of_pow_mul_mem_of_le eisenstein_mem_integral (le_max_left _ _) (h₁ (τ, i, j)), pow_mul_mem_of_pow_mul_mem_of_le eisenstein_mem_integral (le_max_right _ _) (h₂ (τ, i, j))⟩⟩`.
+-/
 private lemma exists_eisenstein_pow_mul_matrix_mem_integral [NeZero a] : ∃ N : ℕ, ∀ τ i j,
     _root_.GlobalTheory.BK.E K l e ^ N * P.mx τ i j ∈
         _root_.GlobalTheory.BK.A O K ∧
@@ -84,6 +99,9 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
   [NormedAlgebra ℚ_[l] K] [NeZero e] in
 variable (P : _root_.GlobalTheory.BK.PhiMod O K l e a ι) in
 omit [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] in
+/- English proof (translation)
+Simplify using `only [_root_.GlobalTheory.BK.PhiMod.ext, _root_.GlobalTheory.BK.mem_tot, _root_.GlobalTheory.BK.PhiMod.mem_extc_iff, _root_.GlobalTheory.BK.mem_vecs]`.
+-/
 private lemma mem_baseChangeSpan_iff {S : Subalgebra O (PowerSeries K)} {v : _root_.GlobalTheory.BK.Vec K a ι} :
     v ∈ P.ext S ↔ ∀ τ i, (P.mxInv τ).mulVec (v τ) i ∈ S := by
   simp only [_root_.GlobalTheory.BK.PhiMod.ext, _root_.GlobalTheory.BK.mem_tot,
@@ -95,6 +113,9 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
   [NormedAlgebra ℚ_[l] K] [NeZero e] in
 variable (P : _root_.GlobalTheory.BK.PhiMod O K l e a ι) in
 omit [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] in
+/- English proof (translation)
+Simplify using `only [_root_.GlobalTheory.BK.PhiMod.Mext, _root_.GlobalTheory.BK.mem_tot, _root_.GlobalTheory.BK.mem_vecs]`.
+-/
 private lemma mem_baseChangeAll_iff {S : Subalgebra O (PowerSeries K)} {v : _root_.GlobalTheory.BK.Vec K a ι} :
     v ∈ P.Mext S ↔ ∀ τ i, v τ i ∈ S := by
   simp only [_root_.GlobalTheory.BK.PhiMod.Mext, _root_.GlobalTheory.BK.mem_tot,
@@ -106,6 +127,9 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
   [NormedAlgebra ℚ_[l] K] [NeZero e] in
 variable (P : _root_.GlobalTheory.BK.PhiMod O K l e a ι) in
 omit [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] in
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_mulVec, P.mx_mul_mxInv, Matrix.one_mulVec]`.
+-/
 private lemma mx_mulVec_mxInv_mulVec_eq_self (τ : ZMod a) (w : ι → PowerSeries K) :
     (P.mx τ).mulVec ((P.mxInv τ).mulVec w) = w := by
   rw [Matrix.mulVec_mulVec, P.mx_mul_mxInv, Matrix.one_mulVec]
@@ -115,6 +139,9 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
   [_root_.GlobalTheory.BK.IsUnitBall O K] {l e a : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] [Fact l.Prime]
   [NormedAlgebra ℚ_[l] K] [NeZero e] in
 omit [IsUltrametricDist K] [_root_.GlobalTheory.BK.IsUnitBall O K] [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] in
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `sum_mem fun j _ => mul_mem (hA i j) (hw j)`.
+-/
 private lemma mulVec_mem_of_forall_mem {S : Subalgebra O (PowerSeries K)} {A : Matrix ι ι (PowerSeries K)}
     {w : ι → PowerSeries K} (hA : ∀ i j, A i j ∈ S) (hw : ∀ i, w i ∈ S) (i : ι) :
     A.mulVec w i ∈ S := by
@@ -126,6 +153,11 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
   [_root_.GlobalTheory.BK.IsUnitBall O K] {l e a : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] [Fact l.Prime]
   [NormedAlgebra ℚ_[l] K] [NeZero e] in
 variable (P : _root_.GlobalTheory.BK.PhiMod O K l e a ι) in
+/- English proof (translation)
+Rewrite `hx` using `[mem_baseChangeSpan_iff]`. Rewrite using `[mem_baseChangeAll_iff]`. Introduce `τ i`. Use `show _root_.GlobalTheory.BK.E K l e ^ N * x τ i ∈ S`. Rewrite using `[← mx_mulVec_mxInv_mulVec_eq_self P τ (x τ)]`.
+
+Establish `h : _root_.GlobalTheory.BK.E K l e ^ N * (P.mx τ).mulVec ((P.mxInv τ).mulVec (x τ)) i = (_root_.GlobalTheory.BK.E K l e ^ N • P.mx τ).mulVec ((P.mxInv τ).mulVec (x τ)) i`. Rewrite using `[Matrix.smul_mulVec]`. Both sides reduce to the same expression. Rewrite using `[h]`. Conclude with `mulVec_mem_of_forall_mem (fun i j => hS (hN τ i j)) (hx τ) i`.
+-/
 private lemma eisenstein_pow_smul_mem_baseChangeAll {S : Subalgebra O (PowerSeries K)}
     (hS : _root_.GlobalTheory.BK.A O K ≤ S) {N : ℕ}
     (hN : ∀ τ i j, _root_.GlobalTheory.BK.E K l e ^ N * P.mx τ i j ∈
@@ -151,6 +183,9 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
   [NormedAlgebra ℚ_[l] K] [NeZero e] in
 variable (P : _root_.GlobalTheory.BK.PhiMod O K l e a ι) in
 omit [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] in
+/- English proof (translation)
+The claim follows from `_root_.GlobalTheory.BK.le_away _ _`.
+-/
 private lemma integral_le_invertPrime :
     _root_.GlobalTheory.BK.A O K ≤
       _root_.GlobalTheory.BK.invL l (_root_.GlobalTheory.BK.A O K) :=
@@ -162,6 +197,9 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
   [NormedAlgebra ℚ_[l] K] [NeZero e] in
 variable (P : _root_.GlobalTheory.BK.PhiMod O K l e a ι) in
 omit [IsUltrametricDist K] [_root_.GlobalTheory.BK.IsUnitBall O K] [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] [DecidableEq ι] in
+/- English proof (translation)
+Rewrite using `[Pi.smul_apply, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul]`.
+-/
 private lemma mulVec_smul_apply_eq_mul_mulVec_apply (A : Matrix ι ι (PowerSeries K)) (f : PowerSeries K)
     (v : _root_.GlobalTheory.BK.Vec K a ι) (τ : ZMod a) (i : ι) :
     A.mulVec ((f • v) τ) i = f * A.mulVec (v τ) i := by
@@ -172,6 +210,11 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
   [_root_.GlobalTheory.BK.IsUnitBall O K] {l e a : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] [Fact l.Prime]
   [NormedAlgebra ℚ_[l] K] [NeZero e] in
 variable (P : _root_.GlobalTheory.BK.PhiMod O K l e a ι) in
+/- English proof (translation)
+Rewrite `hm` using `[mem_baseChangeAll_iff]`. Rewrite using `[mem_baseChangeSpan_iff]`. Introduce `τ i`. Rewrite using `[mulVec_smul_apply_eq_mul_mulVec_apply]`. Establish `h : _root_.GlobalTheory.BK.E K l e ^ N * (P.mxInv τ).mulVec (m τ) i = (_root_.GlobalTheory.BK.E K l e ^ N • P.mxInv τ).mulVec (m τ) i`.
+
+Rewrite using `[Matrix.smul_mulVec]`. Both sides reduce to the same expression. Rewrite using `[h]`. Conclude with `mulVec_mem_of_forall_mem (fun i j => hS (hN τ i j)) (hm τ) i`.
+-/
 private lemma eisenstein_pow_smul_mem_baseChangeSpan {S : Subalgebra O (PowerSeries K)}
     (hS : _root_.GlobalTheory.BK.A O K ≤ S) {N : ℕ}
     (hN : ∀ τ i j, _root_.GlobalTheory.BK.E K l e ^ N * P.mxInv τ i j ∈
@@ -193,6 +236,9 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
   [_root_.GlobalTheory.BK.IsUnitBall O K] {l e a : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] [Fact l.Prime]
   [NormedAlgebra ℚ_[l] K] [NeZero e] in
 variable (P : _root_.GlobalTheory.BK.PhiMod O K l e a ι) in
+/- English proof (translation)
+The claim follows from `W.smul_mem ⟨_, _root_.GlobalTheory.BK.Ezpow_mem_invL_A_iff.2 hn⟩ hw`.
+-/
 private lemma ezpow_smul_mem_submodule_of_nonneg
     (W : Submodule (_root_.GlobalTheory.BK.invL l (_root_.GlobalTheory.BK.A O K))
       (_root_.GlobalTheory.BK.Vec K a ι))
@@ -206,6 +252,9 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
   [NormedAlgebra ℚ_[l] K] [NeZero e] in
 variable (P : _root_.GlobalTheory.BK.PhiMod O K l e a ι) in
 omit [IsUltrametricDist K] [Fintype ι] [DecidableEq ι] in
+/- English proof (translation)
+Rewrite using `[smul_smul, _root_.GlobalTheory.BK.Ezpow_add]`.
+-/
 private lemma ezpow_smul_ezpow_smul_eq_ezpow_add_smul (m n : ℤ) (w : _root_.GlobalTheory.BK.Vec K a ι) :
     _root_.GlobalTheory.BK.Ezpow K l e m • _root_.GlobalTheory.BK.Ezpow K l e n • w =
       _root_.GlobalTheory.BK.Ezpow K l e (m + n) • w := by
@@ -217,6 +266,9 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
   [NormedAlgebra ℚ_[l] K] [NeZero e] in
 variable (P : _root_.GlobalTheory.BK.PhiMod O K l e a ι) in
 omit [IsUltrametricDist K] [Fintype ι] [DecidableEq ι] in
+/- English proof (translation)
+Establish `h` using `_root_.GlobalTheory.BK.Ezpow_natCast (K := K) l e 0`. Simplify using `only [Nat.cast_zero, pow_zero] at h`. Rewrite using `[h, one_smul]`.
+-/
 private lemma ezpow_zero_smul_eq_self (w : _root_.GlobalTheory.BK.Vec K a ι) : _root_.GlobalTheory.BK.Ezpow K l e 0 • w = w := by
   have h := _root_.GlobalTheory.BK.Ezpow_natCast (K := K) l e 0
   simp only [Nat.cast_zero, pow_zero] at h
@@ -227,6 +279,11 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
   [_root_.GlobalTheory.BK.IsUnitBall O K] {l e a : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] [Fact l.Prime]
   [NormedAlgebra ℚ_[l] K] [NeZero e] in
 variable (P : _root_.GlobalTheory.BK.PhiMod O K l e a ι) in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.BK.PhiMod.filL`. Apply `le_antisymm` to reduce the goal to its premises. Use `sup_le inf_le_left fun z hz => ?_` and prove the remaining obligations. Rewrite `hz` using `[_root_.GlobalTheory.BK.mem_shiftE]`. Establish `h` using `ezpow_smul_mem_submodule_of_nonneg (O := O) (e := e) _ zero_le_one hz`.
+
+Rewrite `h` using `[ezpow_smul_ezpow_smul_eq_ezpow_add_smul, show (1 : ℤ) + -1 = 0 by norm_num, ezpow_zero_smul_eq_self]`. Then use the resulting hypothesis. Introduce `x hx`. Use `Submodule.mem_sup_left (Submodule.mem_inf.2 ⟨hx, ?_⟩)` and prove the remaining obligations. Rewrite using `[_root_.GlobalTheory.BK.mem_shiftE, show -j = (-j - c) + c by ring, ← ezpow_smul_ezpow_smul_eq_ezpow_add_smul]`. Conclude with `ezpow_smul_mem_submodule_of_nonneg (O := O) _ (by omega) (hc x hx)`.
+-/
 private lemma filL_eq_ext_of_le (c : ℕ)
     (hc : ∀ x ∈ P.ext
         (_root_.GlobalTheory.BK.invL l (_root_.GlobalTheory.BK.A O K)),
@@ -251,6 +308,11 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
   [_root_.GlobalTheory.BK.IsUnitBall O K] {l e a : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] [Fact l.Prime]
   [NormedAlgebra ℚ_[l] K] [NeZero e] in
 variable (P : _root_.GlobalTheory.BK.PhiMod O K l e a ι) in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.BK.PhiMod.filL`. Use `le_antisymm (sup_le (fun x hx => ?_) le_rfl) le_sup_right` and prove the remaining obligations. Take `⟨_, hxm⟩` from `Submodule.mem_inf.1 hx`. Rewrite `hxm`, the goal using `[_root_.GlobalTheory.BK.mem_shiftE]`. Establish `h` using `ezpow_smul_mem_submodule_of_nonneg (O := O) (e := e) _ (show (0 : ℤ) ≤ j - 1 - c by omega) (hc _ hxm)`.
+
+Rewrite `h` using `[ezpow_smul_ezpow_smul_eq_ezpow_add_smul, ezpow_smul_ezpow_smul_eq_ezpow_add_smul, show j - 1 - c + c + -j = -1 by ring]`. Then use the resulting hypothesis.
+-/
 private lemma filL_eq_shiftE_of_ge (c : ℕ)
     (hc : ∀ m ∈ P.Mext
         (_root_.GlobalTheory.BK.invL l (_root_.GlobalTheory.BK.A O K)),
@@ -272,6 +334,9 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
   [NormedAlgebra ℚ_[l] K] [NeZero e] in
 variable (P : _root_.GlobalTheory.BK.PhiMod O K l e a ι) in
 omit [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] in
+/- English proof (translation)
+Simplify using `only [_root_.GlobalTheory.BK.PhiMod.M, _root_.GlobalTheory.BK.mem_tot, _root_.GlobalTheory.BK.mem_vecs]`.
+-/
 private lemma mem_allComponents_iff {v : _root_.GlobalTheory.BK.Vec K a ι} :
     v ∈ P.M ↔ ∀ τ i, v τ i ∈ _root_.GlobalTheory.BK.A O K := by
   simp only [_root_.GlobalTheory.BK.PhiMod.M, _root_.GlobalTheory.BK.mem_tot,
@@ -283,6 +348,9 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
   [NormedAlgebra ℚ_[l] K] [NeZero e] in
 variable (P : _root_.GlobalTheory.BK.PhiMod O K l e a ι) in
 omit [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] in
+/- English proof (translation)
+The claim follows from `mem_baseChangeSpan_iff P`.
+-/
 private lemma mem_frobeniusImageSpan_iff {v : _root_.GlobalTheory.BK.Vec K a ι} :
     v ∈ P.L ↔
       ∀ τ i, (P.mxInv τ).mulVec (v τ) i ∈ _root_.GlobalTheory.BK.A O K :=
@@ -292,6 +360,13 @@ open PowerSeries in
 variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebra O K]
   [_root_.GlobalTheory.BK.IsUnitBall O K] {l e a : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] [Fact l.Prime]
   [NormedAlgebra ℚ_[l] K] [NeZero e] in
+/- English proof (translation)
+Use `⟨PowerSeries.mk fun m => coeff (m + e) h - coeff (m + e) g, ?_, ?_⟩` and prove the remaining obligations. Introduce `n`. Rewrite using `[coeff_mk, sub_eq_add_neg]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hh _) ?_)` and prove the remaining obligations. Rewrite using `[norm_neg]`.
+
+Conclude with `hg _`. Use extensionality with `m`. Establish `key` using `congrArg (coeff (m + e)) hgh`. Simplify using `only [_root_.GlobalTheory.BK.E, add_mul, map_add, coeff_X_pow_mul', le_add_iff_nonneg_left, zero_le, if_true, Nat.add_sub_cancel] at key`. Rewrite `key` using `[← map_natCast (PowerSeries.C (R := K)), coeff_C_mul, coeff_C_mul]`.
+
+Rewrite using `[← map_natCast (PowerSeries.C (R := K)), coeff_C_mul, coeff_mk]`. Take the linear combination `key`.
+-/
 private lemma exists_eq_prime_mul_of_eisenstein_mul {g h : PowerSeries K}
     (hg : g ∈ _root_.GlobalTheory.BK.A O K) (hh : h ∈ _root_.GlobalTheory.BK.A O K)
     (hgh : _root_.GlobalTheory.BK.E K l e * g = (l : PowerSeries K) * h) :
@@ -314,6 +389,11 @@ open PowerSeries in
 variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebra O K]
   [_root_.GlobalTheory.BK.IsUnitBall O K] {l e a : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] [Fact l.Prime]
   [NormedAlgebra ℚ_[l] K] [NeZero e] in
+/- English proof (translation)
+Proceed by induction on `N generalizing h with`. Consider the case `zero => exact ⟨h, hh, by simpa using hgh⟩`. Consider the case `succ N ih`. Establish `hg' : _root_.GlobalTheory.BK.E K l e ^ N * g ∈ _root_.GlobalTheory.BK.A O K` using `mul_mem (pow_mem eisenstein_mem_integral N) hg`. Take `⟨h'', hh'', he⟩` from `exists_eq_prime_mul_of_eisenstein_mul hg' hh (by rw [← mul_assoc, ← pow_succ']; exact hgh)`.
+
+Conclude with `ih hh'' he`.
+-/
 private lemma exists_eq_prime_mul_of_eisenstein_pow_mul (N : ℕ) {g : PowerSeries K}
     (hg : g ∈ _root_.GlobalTheory.BK.A O K) {h : PowerSeries K}
     (hh : h ∈ _root_.GlobalTheory.BK.A O K)
@@ -333,6 +413,9 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
   [_root_.GlobalTheory.BK.IsUnitBall O K] {l e a : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] [Fact l.Prime]
   [NormedAlgebra ℚ_[l] K] [NeZero e] in
 omit [IsUltrametricDist K] [NeZero e] in
+/- English proof (translation)
+Use `haveI : CharZero K := charZero_of_injective_algebraMap (algebraMap ℚ_[l] K).injective`. Rewrite using `[← map_natCast (PowerSeries.C (R := K))]`. Conclude with `(map_ne_zero_iff _ PowerSeries.C_injective).2 (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)`.
+-/
 private lemma natCast_prime_ne_zero_powerSeries : ((l : ℕ) : PowerSeries K) ≠ 0 := by
   haveI : CharZero K := charZero_of_injective_algebraMap (algebraMap ℚ_[l] K).injective
   rw [← map_natCast (PowerSeries.C (R := K))]
@@ -342,6 +425,13 @@ open PowerSeries in
 variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebra O K]
   [_root_.GlobalTheory.BK.IsUnitBall O K] {l e a : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] [Fact l.Prime]
   [NormedAlgebra ℚ_[l] K] [NeZero e] in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.BK.invL at hf`. Take `⟨n, hn⟩` from `_root_.GlobalTheory.BK.mem_away.1 hf`. Move the coercions through the operations in `at hn`. Use `clear hf`. Proceed by induction on `n generalizing f with`.
+
+Consider the case `zero => simpa using hn`. Consider the case `succ n ih`. Establish `hlf : (l : PowerSeries K) * f ∈ _root_.GlobalTheory.BK.A O K` using `ih (by rw [mul_left_comm]; exact mul_mem (natCast_mem _ l) hN) (by rw [← mul_assoc, ← pow_succ]; exact hn)`. Take `⟨h', hh', he⟩` from `exists_eq_prime_mul_of_eisenstein_pow_mul N hlf hN (by rw [mul_left_comm])`. Rewrite using `[mul_left_cancel₀ natCast_prime_ne_zero_powerSeries he]`.
+
+Conclude with `hh'`.
+-/
 private lemma mem_integral_of_mem_invertPrime_of_eisenstein_pow_mul {f : PowerSeries K}
     (hf : f ∈ _root_.GlobalTheory.BK.invL l (_root_.GlobalTheory.BK.A O K)) (N : ℕ)
     (hN : _root_.GlobalTheory.BK.E K l e ^ N * f ∈ _root_.GlobalTheory.BK.A O K) :
@@ -365,6 +455,13 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
   [_root_.GlobalTheory.BK.IsUnitBall O K] {l e a : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] [Fact l.Prime]
   [NormedAlgebra ℚ_[l] K] [NeZero e] in
 variable (P : _root_.GlobalTheory.BK.PhiMod O K l e a ι) in
+/- English proof (translation)
+Establish `hm' : m ∈ P.Mext (_root_.GlobalTheory.BK.A O K)` using `(mem_baseChangeAll_iff P).2 ((mem_allComponents_iff P).1 hm)`. Establish `hmB : m ∈ P.Mext (_root_.GlobalTheory.BK.invL l (_root_.GlobalTheory.BK.A O K))` using `P.Mext_mono integral_le_invertPrime hm'`. Establish `h₁` using `(mem_baseChangeSpan_iff P).1 (hB m hmB)`. Rewrite `h₁` using `[_root_.GlobalTheory.BK.Ezpow_natCast]`. Establish `h₂` using `(mem_baseChangeSpan_iff P).1 (eisenstein_pow_smul_mem_baseChangeSpan P le_rfl hN hm')`.
+
+Rewrite using `[mem_frobeniusImageSpan_iff]`. Introduce `τ i`. Use `mem_integral_of_mem_invertPrime_of_eisenstein_pow_mul (e := e) (h₁ τ i) N ?_` and prove the remaining obligations. Establish `h₃` using `h₂ τ i`. Rewrite `h₃`, the goal using `[mulVec_smul_apply_eq_mul_mulVec_apply]`.
+
+Rewrite using `[mul_left_comm]`. Conclude with `mul_mem (pow_mem eisenstein_mem_integral H) h₃`.
+-/
 private lemma eisenstein_pow_smul_mem_frobeniusImageSpan (H N : ℕ)
     (hN : ∀ τ i j, _root_.GlobalTheory.BK.E K l e ^ N * P.mxInv τ i j ∈
         _root_.GlobalTheory.BK.A O K)
@@ -395,6 +492,17 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
   [_root_.GlobalTheory.BK.IsUnitBall O K] {l e a : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] [Fact l.Prime]
   [NormedAlgebra ℚ_[l] K] [NeZero e] in
 variable (P : _root_.GlobalTheory.BK.PhiMod O K l e a ι) in
+/- English proof (translation)
+Establish `top : ∀ x ∈ P.ext (_root_.GlobalTheory.BK.invL l (_root_.GlobalTheory.BK.A O K)), _root_.GlobalTheory.BK.Ezpow K l e (-((H : ℤ) + 1)) • x ∈ P.Mext (_root_.GlobalTheory.BK.invL l (_root_.GlobalTheory.BK.A O K)) → _root_.GlobalTheory.BK.Ezpow K l e (-1) • x ∈ P.ext (_root_.GlobalTh …`. Introduce `x hx hxm`. Establish `hmem : x ∈ P.filL ((H : ℤ) + 1)`. Unfold `_root_.GlobalTheory.BK.PhiMod.filL`. Conclude with `Submodule.mem_sup_left (Submodule.mem_inf.2 ⟨hx, (_root_.GlobalTheory.BK.mem_shiftE).2 hxm⟩)`.
+
+Rewrite `hmem` using `[hF]`. Conclude with `(_root_.GlobalTheory.BK.mem_shiftE).1 hmem`. Establish `key : ∀ k : ℕ, _root_.GlobalTheory.BK.Ezpow K l e ((H : ℤ) + k) • m ∈ P.ext (_root_.GlobalTheory.BK.invL l (_root_.GlobalTheory.BK.A O K)) → _root_.GlobalTheory.BK.Ezpow K l e H • m ∈ P.ext (_root_.GlobalTheory.BK.invL l (_root_.GlobalTheory.BK.A O K))`. Introduce `k`. Proceed by induction on `k with`.
+
+Consider the case `zero => intro h`. Simplify using `using h`. Consider the case `succ k ih`. Introduce `h`. Apply `ih` to reduce the goal to its premises.
+
+Establish `h₁` using `top _ h (by`. Rewrite using `[ezpow_smul_ezpow_smul_eq_ezpow_add_smul, show -((H : ℤ) + 1) + ((H : ℤ) + ((k + 1 : ℕ) : ℤ)) = (k : ℤ) by push_cast; ring]`. Conclude with `ezpow_smul_mem_submodule_of_nonneg (O := O) _ (Nat.cast_nonneg k) hm)`. Rewrite `h₁` using `[ezpow_smul_ezpow_smul_eq_ezpow_add_smul, show -1 + ((H : ℤ) + ((k + 1 : ℕ) : ℤ)) = (H : ℤ) + k by push_cast; ring]`. Then use the resulting hypothesis. Apply `key N` to reduce the goal to its premises.
+
+Rewrite using `[← ezpow_smul_ezpow_smul_eq_ezpow_add_smul]`. Conclude with `ezpow_smul_mem_submodule_of_nonneg (O := O) _ (Nat.cast_nonneg H) (hN m hm)`.
+-/
 private lemma eisenstein_zpow_smul_mem_baseChangeSpan_invertPrime (H N : ℕ)
     (hN : ∀ m ∈ P.Mext
         (_root_.GlobalTheory.BK.invL l (_root_.GlobalTheory.BK.A O K)),
@@ -445,6 +553,11 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
   [_root_.GlobalTheory.BK.IsUnitBall O K] {l e a : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] [Fact l.Prime]
   [NormedAlgebra ℚ_[l] K] [NeZero e] in
 variable (P : _root_.GlobalTheory.BK.PhiMod O K l e a ι) in
+/- English proof (translation)
+Establish `hvB : v ∈ P.ext (_root_.GlobalTheory.BK.invL l (_root_.GlobalTheory.BK.A O K))` using `P.ext_mono integral_le_invertPrime hv`. Establish `h₁` using `(mem_baseChangeAll_iff P).1 (hB v hvB)`. Rewrite `h₁` using `[_root_.GlobalTheory.BK.Ezpow_natCast]`. Establish `h₂` using `(mem_baseChangeAll_iff P).1 (eisenstein_pow_smul_mem_baseChangeAll P le_rfl hN hv)`. Rewrite using `[mem_allComponents_iff]`.
+
+Introduce `τ i`. Use `mem_integral_of_mem_invertPrime_of_eisenstein_pow_mul (e := e) (h₁ τ i) N ?_` and prove the remaining obligations. Use `show _root_.GlobalTheory.BK.E K l e ^ N * (_root_.GlobalTheory.BK.E K l e ^ η * v τ i) ∈ _`. Rewrite using `[mul_left_comm]`. Conclude with `mul_mem (pow_mem eisenstein_mem_integral η) (h₂ τ i)`.
+-/
 private lemma eisenstein_pow_smul_mem_allComponents (η N : ℕ)
     (hN : ∀ τ i j, _root_.GlobalTheory.BK.E K l e ^ N * P.mx τ i j ∈
         _root_.GlobalTheory.BK.A O K)
@@ -472,6 +585,17 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
   [_root_.GlobalTheory.BK.IsUnitBall O K] {l e a : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] [Fact l.Prime]
   [NormedAlgebra ℚ_[l] K] [NeZero e] in
 variable (P : _root_.GlobalTheory.BK.PhiMod O K l e a ι) in
+/- English proof (translation)
+Establish `step : ∀ y ∈ P.ext (_root_.GlobalTheory.BK.invL l (_root_.GlobalTheory.BK.A O K)), ∃ f ∈ P.ext (_root_.GlobalTheory.BK.invL l (_root_.GlobalTheory.BK.A O K)) ⊓ _root_.GlobalTheory.BK.shiftE l e (-(η : ℤ)) (P.Mext (_root_.GlobalTheory.BK.invL l (_root_.GlobalTheory.BK.A O K))), ∃ …`. Introduce `y hy`. Rewrite `hy` using `[← hF]`. Unfold `_root_.GlobalTheory.BK.PhiMod.filL at hy`. Take `⟨f, hf, z, hz, rfl⟩` from `Submodule.mem_sup.1 hy`.
+
+Use `⟨f, hf, _root_.GlobalTheory.BK.Ezpow K l e (-1) • z, (_root_.GlobalTheory.BK.mem_shiftE).1 hz, ?_⟩` and prove the remaining obligations. Rewrite using `[ezpow_smul_ezpow_smul_eq_ezpow_add_smul, show (1 : ℤ) + -1 = 0 by norm_num, ezpow_zero_smul_eq_self]`. Establish `iter : ∀ k : ℕ, ∀ y ∈ P.ext (_root_.GlobalTheory.BK.invL l (_root_.GlobalTheory.BK.A O K)), ∃ f ∈ P.ext (_root_.GlobalTheory.BK.invL l (_root_.GlobalTheory.BK.A O K)) ⊓ _root_.GlobalTheory.BK.shiftE l e (-(η : ℤ)) (P.Mext (_root_.GlobalTheory.BK.invL l (_root_.GlobalTheory.BK.A O …`. Introduce `k`. Proceed by induction on `k with`.
+
+Consider the case `zero`. Introduce `y hy`. Conclude with `⟨0, zero_mem _, y, hy, by rw [Nat.cast_zero, ezpow_zero_smul_eq_self, zero_add]⟩`. Consider the case `succ k ih`. Introduce `y hy`.
+
+Take `⟨f, hf, z, hz, rfl⟩` from `ih y hy`. Take `⟨f', hf', z', hz', rfl⟩` from `step z hz`. Use `⟨f + _root_.GlobalTheory.BK.Ezpow K l e k • f', add_mem hf (ezpow_smul_mem_submodule_of_nonneg (O := O) _ (Nat.cast_nonneg k) hf'), z', hz', ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, ezpow_smul_ezpow_smul_eq_ezpow_add_smul, add_assoc, Nat.cast_succ]`. Take `⟨f, hf, z, hz, rfl⟩` from `iter N x hx`.
+
+Take `⟨_, hf₂⟩` from `Submodule.mem_inf.1 hf`. Rewrite `hf₂` using `[_root_.GlobalTheory.BK.mem_shiftE, neg_neg]`. Rewrite using `[smul_add]`. Conclude with `add_mem hf₂ (ezpow_smul_mem_submodule_of_nonneg (O := O) _ (Nat.cast_nonneg η) (hN z hz))`.
+-/
 private lemma eisenstein_zpow_smul_mem_baseChangeAll_invertPrime (η N : ℕ)
     (hN : ∀ x ∈ P.ext
         (_root_.GlobalTheory.BK.invL l (_root_.GlobalTheory.BK.A O K)),
@@ -531,6 +655,17 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
   [_root_.GlobalTheory.BK.IsUnitBall O K] {l e a : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] [Fact l.Prime]
   [NormedAlgebra ℚ_[l] K] [NeZero e] in
 variable (P : _root_.GlobalTheory.BK.PhiMod O K l e a ι) in
+/- English proof (translation)
+Rewrite `hx` using `[mem_baseChangeSpan_iff]`. Take `⟨n, hn⟩` from `exists_uniform_pow_mul_mem (natCast_mem (_root_.GlobalTheory.BK.A O K) l) (fun t : ZMod a × ι => (P.mxInv t.1).mulVec (x t.1) t.2) (fun t => by`. Establish `h` using `hx t.1 t.2`. Unfold `_root_.GlobalTheory.BK.invL at h`. Take `⟨n, hn⟩` from `_root_.GlobalTheory.BK.mem_away.1 h`.
+
+Move the coercions through the operations in `at hn`. Conclude with `⟨n, hn⟩)`. Establish `hv : (l : PowerSeries K) ^ n • x ∈ P.L`. Rewrite using `[mem_frobeniusImageSpan_iff]`. Introduce `τ i`.
+
+Rewrite using `[mulVec_smul_apply_eq_mul_mulVec_apply]`. Conclude with `hn (τ, i)`. Establish `h` using `(mem_allComponents_iff P).1 (hL _ hv)`. Rewrite using `[mem_baseChangeAll_iff, _root_.GlobalTheory.BK.Ezpow_natCast]`. Introduce `τ i`.
+
+Unfold `_root_.GlobalTheory.BK.invL`. Rewrite using `[_root_.GlobalTheory.BK.mem_away]`. Use `⟨n, ?_⟩` and prove the remaining obligations. Use `push_cast`. Establish `h'` using `h τ i`.
+
+Use `show (l : PowerSeries K) ^ n * (_root_.GlobalTheory.BK.E K l e ^ η * x τ i) ∈ _`. Use `h' using 1` and compare the differences between its conclusion and the goal. Use `show _ = _root_.GlobalTheory.BK.E K l e ^ η * ((l : PowerSeries K) ^ n * x τ i)`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma eisenstein_zpow_smul_mem_baseChangeAll_of_pow_smul [NeZero a] (η : ℕ)
     (hL : ∀ v ∈ P.L,
       _root_.GlobalTheory.BK.E K l e ^ η • v ∈ P.M)
@@ -569,6 +704,17 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
   [_root_.GlobalTheory.BK.IsUnitBall O K] {l e a : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] [Fact l.Prime]
   [NormedAlgebra ℚ_[l] K] [NeZero e] in
 variable (P : _root_.GlobalTheory.BK.PhiMod O K l e a ι) in
+/- English proof (translation)
+Rewrite `hm` using `[mem_baseChangeAll_iff]`. Take `⟨n, hn⟩` from `exists_uniform_pow_mul_mem (natCast_mem (_root_.GlobalTheory.BK.A O K) l) (fun t : ZMod a × ι => m t.1 t.2) (fun t => by`. Establish `h` using `hm t.1 t.2`. Unfold `_root_.GlobalTheory.BK.invL at h`. Take `⟨n, hn⟩` from `_root_.GlobalTheory.BK.mem_away.1 h`.
+
+Move the coercions through the operations in `at hn`. Conclude with `⟨n, hn⟩)`. Establish `hv : (l : PowerSeries K) ^ n • m ∈ P.M`. Rewrite using `[mem_allComponents_iff]`. Introduce `τ i`.
+
+Conclude with `hn (τ, i)`. Establish `h` using `(mem_frobeniusImageSpan_iff P).1 (hM _ hv)`. Rewrite using `[mem_baseChangeSpan_iff, _root_.GlobalTheory.BK.Ezpow_natCast]`. Introduce `τ i`. Unfold `_root_.GlobalTheory.BK.invL`.
+
+Rewrite using `[_root_.GlobalTheory.BK.mem_away]`. Use `⟨n, ?_⟩` and prove the remaining obligations. Use `push_cast`. Establish `h'` using `h τ i`. Rewrite `h'` using `[mulVec_smul_apply_eq_mul_mulVec_apply, mulVec_smul_apply_eq_mul_mulVec_apply]`.
+
+Rewrite using `[mulVec_smul_apply_eq_mul_mulVec_apply]`. Use `h' using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma eisenstein_zpow_smul_mem_baseChangeSpan_of_pow_smul [NeZero a] (H : ℕ)
     (hM : ∀ m ∈ P.M,
       _root_.GlobalTheory.BK.E K l e ^ H • m ∈ P.L)
@@ -603,6 +749,25 @@ private lemma eisenstein_zpow_smul_mem_baseChangeSpan_of_pow_smul [NeZero a] (H 
 
 open PowerSeries in
 
+/- English proof (translation)
+Introduce `O K _ _ _ _ _ l e a ι _ _ _ _ _ _ _ P η H`. Take `⟨N, hN⟩` from `exists_eisenstein_pow_mul_matrix_mem_integral P`. Establish `hLN : ∀ x ∈ P.ext (_root_.GlobalTheory.BK.invL l (_root_.GlobalTheory.BK.A O K)), _root_.GlobalTheory.BK.Ezpow K l e N • x ∈ P.Mext (_root_.GlobalTheory.BK.invL l (_root_.GlobalTheory.BK.A O K))`. Introduce `x hx`. Rewrite using `[_root_.GlobalTheory.BK.Ezpow_natCast]`.
+
+Conclude with `eisenstein_pow_smul_mem_baseChangeAll P integral_le_invertPrime (fun τ i j => (hN τ i j).1) hx`. Establish `hMN : ∀ m ∈ P.Mext (_root_.GlobalTheory.BK.invL l (_root_.GlobalTheory.BK.A O K)), _root_.GlobalTheory.BK.Ezpow K l e N • m ∈ P.ext (_root_.GlobalTheory.BK.invL l (_root_.GlobalTheory.BK.A O K))`. Introduce `m hm`. Rewrite using `[_root_.GlobalTheory.BK.Ezpow_natCast]`. Conclude with `eisenstein_pow_smul_mem_baseChangeSpan P integral_le_invertPrime (fun τ i j => (hN τ i j).2) hm`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hJ`. Establish `hconst : ∀ i : ℤ, (i < -(η : ℤ) ∨ (H : ℤ) < i) → P.filL (i + 1) = P.filL i`. Introduce `i hi`. Assume the negation of the conclusion as `hne`.
+
+Establish `hmem` using `Set.mem_Icc.1 (hJ (show i ∈ P.jumps from hne))`. Use linear arithmetic over natural numbers and integers. Establish `hlow : ∀ k : ℕ, P.filL (-(η : ℤ) - k) = P.filL (-(η : ℤ))`. Introduce `k`. Proceed by induction on `k with`.
+
+Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[← ih, ← hconst (-(η : ℤ) - ((k + 1 : ℕ) : ℤ)) (Or.inl (by omega))]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hhigh : ∀ k : ℕ, P.filL ((H : ℤ) + 1 + k) = P.filL ((H : ℤ) + 1)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`.
+
+Rewrite using `[← ih, ← hconst ((H : ℤ) + 1 + k) (Or.inr (by omega))]`. Both sides reduce to the same expression. Establish `hLow` using `(hlow N).symm.trans (filL_eq_ext_of_le P N hLN (j := -(η : ℤ) - N) (by omega))`. Establish `hHigh` using `(hhigh N).symm.trans (filL_eq_shiftE_of_ge P N hMN (j := (H : ℤ) + 1 + N) (by omega))`. Conclude with `⟨fun m hm => eisenstein_pow_smul_mem_frobeniusImageSpan P H N (fun τ i j => (hN τ i j).2) (fun m hm => eisenstein_zpow_smul_mem_baseChangeSpan_invertPrime P H N hMN hHigh hm) hm, fun v hv => eisenstein_pow_smul_mem_allComponents P η N (fun τ i j => (hN τ i j).1) (fun x hx => eise …`.
+
+Introduce and unpack `⟨hM, hL⟩ i hi`. Establish `hi' : P.filL (i + 1) ≠ P.filL i` using `hi`. Rewrite using `[Set.mem_Icc]`. Assume the negation of the conclusion as `hout`. Apply `hi'` to reduce the goal to its premises.
+
+Break down `not_and_or.1 hout with h | h` into its components or cases. Rewrite using `[filL_eq_ext_of_le P η (fun x hx => eisenstein_zpow_smul_mem_baseChangeAll_of_pow_smul P η hL hx) (j := i + 1) (by omega), filL_eq_ext_of_le P η (fun x hx => eisenstein_zpow_smul_mem_baseChangeAll_of_pow_smul P η hL hx) (j := i) (by omega)]`. Rewrite using `[filL_eq_shiftE_of_ge P H (fun m hm => eisenstein_zpow_smul_mem_baseChangeSpan_of_pow_smul P H hM hm) (j := i + 1) (by omega), filL_eq_shiftE_of_ge P H (fun m hm => eisenstein_zpow_smul_mem_baseChangeSpan_of_pow_smul P H hM hm) (j := i) (by omega)]`.
+-/
 theorem _root_.GlobalTheory.BK.PhiMod.jumps_subset_Icc_iff : ∀ (O K : Type) [CommRing O] [NormedField K]
     [IsUltrametricDist K] [Algebra O K] [_root_.GlobalTheory.BK.IsUnitBall O K] (l e a : ℕ) (ι : Type)
     [Fintype ι] [DecidableEq ι] [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] [NeZero a]

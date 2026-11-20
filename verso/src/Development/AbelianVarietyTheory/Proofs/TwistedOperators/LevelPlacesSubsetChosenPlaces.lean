@@ -10,6 +10,19 @@ open Classical
 
 namespace GlobalTheory.LevelPlacesChosen
 
+/- English proof (translation)
+Introduce `D T L sc G μ₀ hμ P hP`. Take `⟨k, hk⟩` from `(hμ.Pg P).1 hP`. Establish `hK : P.under (𝓞 D.host.K) = L.C.P.pb k` using `hk`. Establish `hgE : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal`. Establish `h1 : ((D.host.g k : ℕ) : 𝓞 D.host.K) ∈ (P.under (𝓞 D.host.K)).asIdeal`.
+
+Rewrite using `[hK]`. Conclude with `L.C.P.pb_over k`. Establish `h2 : algebraMap (𝓞 D.host.K) (𝓞 D.host.E) ((D.host.g k : ℕ) : 𝓞 D.host.K) ∈ P.asIdeal` using `h1`. Rewrite `h2` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hgF : ((D.host.g k : ℕ) : 𝓞 D.host.F) ∈ (P.under (𝓞 D.host.F)).asIdeal` using `by show algebraMap (𝓞 D.host.F) (𝓞 D.host.E) ((D.host.g k : ℕ) : 𝓞 D.host.F) ∈ P.asIdeal`.
+
+Rewrite using `[map_natCast]`. Conclude with `hgE`. Establish `hS1 : P.under (𝓞 D.host.F) ∈ S1 D`. Rewrite using `[S1_mem_OmF]`. Use `fin_cases k`.
+
+Conclude with `Or.inl hgF`. Conclude with `Or.inr (Or.inl hgF)`. Establish `hS0 : P.under (𝓞 D.host.F) ∈ insert G.pl.v0 (S1 D)` using `Finset.mem_insert_of_mem hS1`. Establish `hwPg : G.pl.w (P.under (𝓞 D.host.F)) ∈ L.Pg` using `G.pl.w_g _ k hgF`. Establish `hover : (G.pl.w (P.under (𝓞 D.host.F))).under (𝓞 D.host.F) = P.under (𝓞 D.host.F)` using `G.pl.w_over _ hS0`.
+
+Establish `heq : G.pl.w (P.under (𝓞 D.host.F)) = P`. Break down `GlobalTheory.GoodPrimes.eq_or_conj_of_under_eq hover with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd ((GlobalTheory.GoodPrimes.isConjPl_iff).2 h) (GlobalTheory.TypePlaces.not_isConjPl L.C.P L.Pg hμ.Pg P hP _ hwPg)`. Unfold `Places.W0`.
+
+Conclude with `Finset.mem_image.2 ⟨_, hS0, heq⟩`.
+-/
 theorem levelPlaces_subset_chosenPlaces : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) {μ₀ : T},
     L.Is μ₀ → L.Pg ⊆ G.pl.W0 := by
   intro D T L sc G μ₀ hμ P hP

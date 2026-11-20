@@ -26,6 +26,11 @@ namespace GlobalTheory.SeeSaw.LevMoves
 section
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, Matrix.map_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h` using `q.sec_pr (M i j * q.sec (y j))`. Rewrite `h` using `[RingHom.map_mul, q.pr_sec, mul_left_comm, ← GlobalTheory.FrameGlob.sec_eq_mul]`.
+
+Conclude with `h.symm`.
+-/
 theorem mulVec_sec (q : SplitPt D k) {m n : ℕ} (M : Matrix (Fin m) (Fin n) (AE D)) (y : Fin n → k) :
     M *ᵥ (fun i => q.sec (y i)) = fun i => q.sec ((M.map q.pr *ᵥ y) i) := by
   funext i
@@ -35,6 +40,15 @@ theorem mulVec_sec (q : SplitPt D k) {m n : ℕ} (M : Matrix (Fin m) (Fin n) (AE
   rw [RingHom.map_mul, q.pr_sec, mul_left_comm, ← GlobalTheory.FrameGlob.sec_eq_mul] at h
   exact h.symm
 
+/- English proof (translation)
+Take `⟨B, hB, hl⟩` from `GlobalTheory.LocMod.PinEx.exists_topFrame q hq S Λ β hβ`. Establish `hs : Function.Surjective (toEAf D)`. Use `(Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).surjective.comp ?_` and prove the remaining obligations. Conclude with `Algebra.TensorProduct.map_surjective _ _ (fun α => ⟨pairA _ 0 α, rfl⟩) Function.surjective_id`. Use `choose f hf using hs`.
+
+Establish `e : (β.val.map f).map (toEAf D) = β.val` using `by ext i j; exact hf _`. Establish `h1` using `hB _ e`. Establish `h2` using `hM _ e`. Rewrite `h1` using `[GlobalTheory.MixModel.mt_one, Matrix.one_mul]`. Rewrite `h2` using `[Matrix.map_mul, h1]`.
+
+Establish `h3 : (mt S t).map q.pr *ᵥ (B.val *ᵥ fun i => ((bas⁻¹).val *ᵥ x) (σ i)) = F.β *ᵥ x`. Rewrite using `[Matrix.mulVec_mulVec]`. Use `(congrArg (· *ᵥ _) h2).trans ?_` and prove the remaining obligations. Establish `: (fun i => ((bas⁻¹).val *ᵥ x) (σ i)) = ((bas⁻¹).val *ᵥ x) ∘ σ` using `rfl`. Rewrite using `[this, Matrix.submatrix_mulVec_equiv, Function.comp_id, Function.comp_assoc, Equiv.self_comp_symm, Function.comp_id, Matrix.mulVec_mulVec, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`.
+
+Rewrite using `[← h3, ← mulVec_sec, ← ht _ fun i => GlobalTheory.FrameGlob.sec_mem_idAt q _, hl, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec, GlobalTheory.StepData.mem_latOf]`. Conclude with `⟨fun h i => h _, fun h i => by simpa using h (σ.symm i)⟩`.
+-/
 theorem isLat_moved (q : SplitPt D k) {PP : Formalism.L2.DIV.Pl D.host.E} (hq : Formalism.L2.NTheta.IsIdemAt q.e PP) (S : HSp D)
     (Λ L : Lat S) (β : GL (Fin S.rank) (Lev.EAf D)) (hβ : Formalism.L2.DIV.IsFrame β Λ) (t : GA D S)
     (ht : Moves S t Λ L (· = q.v)) {Y : Type} [Fintype Y] [DecidableEq Y] (F : GlobalTheory.LocMod.Frame k S.rank Y) (bas : GL Y k)
@@ -60,6 +74,13 @@ theorem isLat_moved (q : SplitPt D k) {PP : Formalism.L2.DIV.Pl D.host.E} (hq : 
     Matrix.one_mulVec, GlobalTheory.StepData.mem_latOf]
   exact ⟨fun h i => h _, fun h i => by simpa using h (σ.symm i)⟩
 
+/- English proof (translation)
+Establish `h1` using `GlobalTheory.StepData.mem_stabLat_iff.1 h`. Use extensionality with `y`. Use `conv_rhs => rw [← h1]`. Express the relevant statement in the definitionally equal form `(∃ x, x ∈ GlobalTheory.StepData.latOf bas ∧ g • x = y) ↔ _`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `(GlobalTheory.StepData.mulVec_mem_latOf g).2 hx`. Introduce `hy`. Use `⟨g⁻¹ • y, (GlobalTheory.StepData.mulVec_mem_latOf g).1 ?_, smul_inv_smul _ _⟩` and prove the remaining obligations. Establish `: g.val *ᵥ (g⁻¹ • y) = y` using `smul_inv_smul g y`.
+
+Rewrite using `[this]` and apply the resulting hypothesis.
+-/
 theorem smul_latOf {Y : Type} [Fintype Y] [DecidableEq Y] {bas g : GL Y k} (h : g ∈ GlobalTheory.StepData.stabLat bas) :
     g • GlobalTheory.StepData.latOf bas = GlobalTheory.StepData.latOf bas := by
   have h1 := GlobalTheory.StepData.mem_stabLat_iff.1 h

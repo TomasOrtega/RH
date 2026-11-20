@@ -18,6 +18,9 @@ variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [CompleteSpace E]
 
 def UX (X : Type) [TopologicalSpace X] : Set (X × ℂ) := Set.univ ×ˢ {τ : ℂ | τ ≠ 0}
 
+/- English proof (translation)
+The claim follows from `isOpen_univ.prod isOpen_ne_zero_complex`.
+-/
 theorem isOpen_UX : IsOpen (UX X) := isOpen_univ.prod isOpen_ne_zero_complex
 
 def Good (Φ : X → V1 E) : Prop :=
@@ -28,10 +31,16 @@ def Good (Φ : X → V1 E) : Prop :=
 def IsInt (μ : Measure X) (ℓ : X → E →L[ℂ] E) (Φ : X → V1 E) (f : V1 E) : Prop :=
   ∀ τ : ℂ, τ ≠ 0 → (f : ℂ → E) τ = ∫ v, ℓ v ((Φ v : ℂ → E) τ) ∂μ
 
+/- English proof (translation)
+The claim follows from `h.1.continuousOn.comp_continuous (continuous_id.prodMk continuous_const) fun _ => ⟨Set.mem_univ _, hτ⟩`.
+-/
 theorem good_cont_at {Φ : X → V1 E} (h : Good Φ) {τ : ℂ} (hτ : τ ≠ 0) :
     Continuous (fun v => (Φ v : ℂ → E) τ) :=
   h.1.continuousOn.comp_continuous (continuous_id.prodMk continuous_const) fun _ => ⟨Set.mem_univ _, hτ⟩
 
+/- English proof (translation)
+Establish `hd : DifferentiableAt ℝ (fun q : X × ℂ => (Φ q.1 : ℂ → E) q.2) (v, τ)` using `(h.1.differentiableOn (by simp)).differentiableAt (isOpen_UX.mem_nhds ⟨Set.mem_univ _, hτ⟩)`. Establish `hi : HasFDerivAt (fun t : ℂ => (v, t)) (ContinuousLinearMap.inr ℝ X ℂ) τ` using `hasFDerivAt_prodMk_right v τ`. Conclude with `(hd.hasFDerivAt.comp τ hi).fderiv`.
+-/
 theorem partial_fderiv {Φ : X → V1 E} (h : Good Φ) (v : X) {τ : ℂ} (hτ : τ ≠ 0) :
     fderiv ℝ (Φ v : ℂ → E) τ =
       (fderiv ℝ (fun q : X × ℂ => (Φ q.1 : ℂ → E) q.2) (v, τ)).comp (ContinuousLinearMap.inr ℝ X ℂ) := by
@@ -40,6 +49,9 @@ theorem partial_fderiv {Φ : X → V1 E} (h : Good Φ) (v : X) {τ : ℂ} (hτ :
   have hi : HasFDerivAt (fun t : ℂ => (v, t)) (ContinuousLinearMap.inr ℝ X ℂ) τ := hasFDerivAt_prodMk_right v τ
   exact (hd.hasFDerivAt.comp τ hi).fderiv
 
+/- English proof (translation)
+Establish `h1 : ContinuousOn (fun q : X × ℂ => (fderiv ℝ (fun q : X × ℂ => (Φ q.1 : ℂ → E) q.2) q).comp (ContinuousLinearMap.inr ℝ X ℂ)) (UX X)` using `(h.1.continuousOn_fderiv_of_isOpen isOpen_UX (by simp)).clm_comp continuousOn_const`. Conclude with `h1.congr fun q hq => partial_fderiv h q.1 hq.2`.
+-/
 theorem fd_contOn {Φ : X → V1 E} (h : Good Φ) :
     ContinuousOn (fun q : X × ℂ => fderiv ℝ (Φ q.1 : ℂ → E) q.2) (UX X) := by
   have h1 : ContinuousOn (fun q : X × ℂ =>
@@ -47,6 +59,9 @@ theorem fd_contOn {Φ : X → V1 E} (h : Good Φ) :
     (h.1.continuousOn_fderiv_of_isOpen isOpen_UX (by simp)).clm_comp continuousOn_const
   exact h1.congr fun q hq => partial_fderiv h q.1 hq.2
 
+/- English proof (translation)
+Establish `h1 : ContDiffOn ℝ ∞ (fun q : X × ℂ => (fderiv ℝ (fun q : X × ℂ => (Φ q.1 : ℂ → E) q.2) q) (ContinuousLinearMap.inr ℝ X ℂ w)) (UX X)` using `(h.1.fderiv_of_isOpen isOpen_UX (by simp)).clm_apply contDiffOn_const`. Use `h1.congr fun q hq => ?_` and prove the remaining obligations. Rewrite using `[partial_fderiv h q.1 hq.2]`. Both sides reduce to the same expression.
+-/
 theorem cd_partial {Φ : X → V1 E} (h : Good Φ) (w : ℂ) :
     ContDiffOn ℝ ∞ (fun q : X × ℂ => fderiv ℝ (Φ q.1 : ℂ → E) q.2 w) (UX X) := by
   have h1 : ContDiffOn ℝ ∞ (fun q : X × ℂ =>
@@ -56,6 +71,11 @@ theorem cd_partial {Φ : X → V1 E} (h : Good Φ) (w : ℂ) :
   rw [partial_fderiv h q.1 hq.2]
   rfl
 
+/- English proof (translation)
+Take `⟨L, hL, hKL, hLU⟩` from `exists_compact_between hK isOpen_ne_zero_complex hK0`. Take `⟨C, hC, hz⟩` from `h.2 L hL hLU`. Use `⟨C, hC, fun v hv τ hτ => ?_⟩` and prove the remaining obligations. Establish `hev : (Φ v : ℂ → E) =ᶠ[𝓝 τ] fun _ => (0 : E)` using `Filter.eventually_of_mem (isOpen_interior.mem_nhds (hKL hτ)) fun t ht => hz v hv t (interior_subset ht)`. Rewrite using `[hev.fderiv_eq]`.
+
+Conclude with `fderiv_const_apply _`.
+-/
 theorem fderiv_zero_of {Φ : X → V1 E} (h : Good Φ) {K : Set ℂ} (hK : IsCompact K) (hK0 : K ⊆ {τ | τ ≠ 0}) :
     ∃ C : Set X, IsCompact C ∧ ∀ v, v ∉ C → ∀ τ ∈ K, fderiv ℝ (Φ v : ℂ → E) τ = 0 := by
   obtain ⟨L, hL, hKL, hLU⟩ := exists_compact_between hK isOpen_ne_zero_complex hK0
@@ -70,6 +90,9 @@ section int
 
 variable (μ : Measure X) [IsFiniteMeasureOnCompacts μ] (ℓ : X → E →L[ℂ] E)
 
+/- English proof (translation)
+Take `⟨C, hC, hz⟩` from `h.2 {τ} isCompact_singleton (Set.singleton_subset_iff.2 hτ)`. Use `Continuous.integrable_of_hasCompactSupport (hℓ.clm_apply (good_cont_at h hτ)) ?_` and prove the remaining obligations. Use `HasCompactSupport.intro hC fun v hv => ?_` and prove the remaining obligations. Rewrite using `[hz v hv τ rfl, map_zero]`.
+-/
 theorem good_int {Φ : X → V1 E} (h : Good Φ) (hℓ : Continuous ℓ) {τ : ℂ} (hτ : τ ≠ 0) :
     Integrable (fun v => ℓ v ((Φ v : ℂ → E) τ)) μ := by
   obtain ⟨C, hC, hz⟩ := h.2 {τ} isCompact_singleton (Set.singleton_subset_iff.2 hτ)
@@ -77,6 +100,11 @@ theorem good_int {Φ : X → V1 E} (h : Good Φ) (hℓ : Continuous ℓ) {τ : �
   refine HasCompactSupport.intro hC fun v hv => ?_
   rw [hz v hv τ rfl, map_zero]
 
+/- English proof (translation)
+Take `⟨C, hC, hz⟩` from `fderiv_zero_of h isCompact_singleton (Set.singleton_subset_iff.2 hτ)`. Establish `hc : Continuous (fun v => fderiv ℝ (Φ v : ℂ → E) τ)` using `(fd_contOn h).comp_continuous (continuous_id.prodMk continuous_const) fun _ => ⟨Set.mem_univ _, hτ⟩`. Use `Continuous.integrable_of_hasCompactSupport (hℓ.clm_apply (hc.clm_apply continuous_const)) ?_` and prove the remaining obligations. Use `HasCompactSupport.intro hC fun v hv => ?_` and prove the remaining obligations. Rewrite using `[hz v hv τ rfl]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem fd_int {Φ : X → V1 E} (h : Good Φ) (hℓ : Continuous ℓ) {τ : ℂ} (hτ : τ ≠ 0) (w : ℂ) :
     Integrable (fun v => ℓ v (fderiv ℝ (Φ v : ℂ → E) τ w)) μ := by
   obtain ⟨C, hC, hz⟩ := fderiv_zero_of h isCompact_singleton (Set.singleton_subset_iff.2 hτ)
@@ -86,9 +114,25 @@ theorem fd_int {Φ : X → V1 E} (h : Good Φ) (hℓ : Continuous ℓ) {τ : ℂ
   refine HasCompactSupport.intro hC fun v hv => ?_
   rw [hz v hv τ rfl]; simp
 
+/- English proof (translation)
+The claim follows from `(ContinuousLinearMap.restrictScalarsL ℂ E E ℝ ℝ).continuous.comp hℓ`.
+-/
 theorem rs_cont (hℓ : Continuous ℓ) : Continuous (fun v => (ℓ v).restrictScalars ℝ) :=
   (ContinuousLinearMap.restrictScalarsL ℂ E E ℝ ℝ).continuous.comp hℓ
 
+/- English proof (translation)
+Establish `hn : 0 < ‖τ0‖` using `norm_pos_iff.2 hτ0`. Use `set r := ‖τ0‖ / 2 with hr`. Establish `hr0 : 0 < r` using `by rw [hr]; positivity`. Establish `hK : IsCompact (Metric.closedBall τ0 r)` using `isCompact_closedBall _ _`. Establish `hK0 : Metric.closedBall τ0 r ⊆ {τ | τ ≠ 0}`.
+
+Introduce `τ hτ`. Use `show τ ≠ 0`. Introduce and unpack `rfl`. Rewrite `hτ` using `[Metric.mem_closedBall, dist_zero_left]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hB : ∀ τ ∈ Metric.ball τ0 r, τ ≠ 0` using `fun τ hτ => hK0 (Metric.ball_subset_closedBall hτ)`. Take `⟨C, hC, hz⟩` from `fderiv_zero_of h hK hK0`. Take `⟨Mf, hMf⟩` from `(hC.prod hK).exists_bound_of_continuousOn ((fd_contOn h).mono fun q hq => ⟨Set.mem_univ _, hK0 hq.2⟩)`. Take `⟨Ml, hMl⟩` from `hC.exists_bound_of_continuousOn hℓ.continuousOn`. Establish `hc0 : Continuous (fun v => fderiv ℝ (Φ v : ℂ → E) τ0)` using `(fd_contOn h).comp_continuous (continuous_id.prodMk continuous_const) fun _ => ⟨Set.mem_univ _, hτ0⟩`.
+
+Use `hasFDerivAt_integral_of_dominated_of_fderiv_le (μ := μ) (𝕜 := ℝ) (F := fun τ v => ℓ v ((Φ v : ℂ → E) τ)) (F' := fun τ v => ((ℓ v).restrictScalars ℝ).comp (fderiv ℝ (Φ v : ℂ → E) τ)) (bound := Set.indicator C fun _ => Ml * Mf) (Metric.ball_mem_nhds τ0 hr0) ?_ (good_int μ ℓ h hℓ hτ …` and prove the remaining obligations. Use `filter_upwards [Metric.ball_mem_nhds τ0 hr0] with τ hτ`. Conclude with `(hℓ.clm_apply (good_cont_at h (hB τ hτ))).aestronglyMeasurable`. Conclude with `((rs_cont ℓ hℓ).clm_comp hc0).aestronglyMeasurable`. Use `Filter.Eventually.of_forall fun v τ hτ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hv : v ∈ C`. Rewrite using `[Set.indicator_of_mem hv]`. Establish `h1` using `hMl v hv`. Establish `h2` using `hMf (v, τ) ⟨hv, Metric.ball_subset_closedBall hτ⟩`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Set.indicator_of_notMem hv, hz v hv τ (Metric.ball_subset_closedBall hτ), ContinuousLinearMap.comp_zero, norm_zero]`. Conclude with `(continuousOn_const.integrableOn_compact hC).integrable_indicator hC.measurableSet`. Use `Filter.Eventually.of_forall fun v τ hτ => ?_` and prove the remaining obligations. Conclude with `((ℓ v).restrictScalars ℝ).hasFDerivAt.comp τ (differentiableAt_of_punctured_smooth (Φ v).2 (hB τ hτ)).hasFDerivAt`.
+-/
 theorem hasFDerivAt_int {Φ : X → V1 E} (h : Good Φ) (hℓ : Continuous ℓ) {τ0 : ℂ} (hτ0 : τ0 ≠ 0) :
     HasFDerivAt (fun τ => ∫ v, ℓ v ((Φ v : ℂ → E) τ) ∂μ)
       (∫ v, ((ℓ v).restrictScalars ℝ).comp (fderiv ℝ (Φ v : ℂ → E) τ0) ∂μ) τ0 := by
@@ -131,6 +175,11 @@ theorem hasFDerivAt_int {Φ : X → V1 E} (h : Good Φ) (hℓ : Continuous ℓ) 
   · refine Filter.Eventually.of_forall fun v τ hτ => ?_
     exact ((ℓ v).restrictScalars ℝ).hasFDerivAt.comp τ (differentiableAt_of_punctured_smooth (Φ v).2 (hB τ hτ)).hasFDerivAt
 
+/- English proof (translation)
+Establish `hev : (f : ℂ → E) =ᶠ[𝓝 τ0] fun τ => ∫ v, ℓ v ((Φ v : ℂ → E) τ) ∂μ` using `Filter.eventually_of_mem (isOpen_ne_zero_complex.mem_nhds hτ0) fun τ hτ => hf τ hτ`. Rewrite using `[hev.fderiv_eq, (hasFDerivAt_int μ ℓ h hℓ hτ0).fderiv]`. Establish `hc0 : Continuous (fun v => fderiv ℝ (Φ v : ℂ → E) τ0)` using `(fd_contOn h).comp_continuous (continuous_id.prodMk continuous_const) fun _ => ⟨Set.mem_univ _, hτ0⟩`. Take `⟨C, hC, hz⟩` from `fderiv_zero_of h isCompact_singleton (Set.singleton_subset_iff.2 hτ0)`. Establish `hI : Integrable (fun v => ((ℓ v).restrictScalars ℝ).comp (fderiv ℝ (Φ v : ℂ → E) τ0)) μ`.
+
+Use `Continuous.integrable_of_hasCompactSupport ((rs_cont ℓ hℓ).clm_comp hc0) ?_` and prove the remaining obligations. Use `HasCompactSupport.intro hC fun v hv => ?_` and prove the remaining obligations. Rewrite using `[hz v hv τ0 rfl, ContinuousLinearMap.comp_zero]`. Rewrite using `[ContinuousLinearMap.integral_apply hI]`. Both sides reduce to the same expression.
+-/
 theorem fderiv_int {Φ : X → V1 E} (h : Good Φ) (hℓ : Continuous ℓ) {f : V1 E} (hf : IsInt μ ℓ Φ f) {τ0 : ℂ}
     (hτ0 : τ0 ≠ 0) (w : ℂ) :
     fderiv ℝ (f : ℂ → E) τ0 w = ∫ v, ℓ v (fderiv ℝ (Φ v : ℂ → E) τ0 w) ∂μ := by
@@ -147,6 +196,11 @@ theorem fderiv_int {Φ : X → V1 E} (h : Good Φ) (hℓ : Continuous ℓ) {f : 
   rw [ContinuousLinearMap.integral_apply hI]
   rfl
 
+/- English proof (translation)
+Unfold `PBP.dz`. Establish `hI2 : Integrable (fun v => Complex.I • ℓ v (fderiv ℝ (Φ v : ℂ → E) τ0 Complex.I)) μ` using `(fd_int μ ℓ h hℓ hτ0 Complex.I).smul Complex.I`. Rewrite using `[fderiv_int μ ℓ h hℓ hf hτ0, fderiv_int μ ℓ h hℓ hf hτ0, ← integral_smul, ← integral_sub (fd_int μ ℓ h hℓ hτ0 1) hI2, ← integral_smul]`. Use `congr 1`. Use function extensionality and compare the values at `v`.
+
+Rewrite using `[map_smul, map_sub, map_smul]`.
+-/
 theorem dz_int {Φ : X → V1 E} (h : Good Φ) (hℓ : Continuous ℓ) {f : V1 E} (hf : IsInt μ ℓ Φ f) {τ0 : ℂ}
     (hτ0 : τ0 ≠ 0) : PBP.dz (f : ℂ → E) τ0 = ∫ v, ℓ v (PBP.dz (Φ v : ℂ → E) τ0) ∂μ := by
   unfold PBP.dz
@@ -158,6 +212,11 @@ theorem dz_int {Φ : X → V1 E} (h : Good Φ) (hℓ : Continuous ℓ) {f : V1 E
   funext v
   rw [map_smul, map_sub, map_smul]
 
+/- English proof (translation)
+Unfold `PBP.dzb`. Establish `hI2 : Integrable (fun v => Complex.I • ℓ v (fderiv ℝ (Φ v : ℂ → E) τ0 Complex.I)) μ` using `(fd_int μ ℓ h hℓ hτ0 Complex.I).smul Complex.I`. Rewrite using `[fderiv_int μ ℓ h hℓ hf hτ0, fderiv_int μ ℓ h hℓ hf hτ0, ← integral_smul, ← integral_add (fd_int μ ℓ h hℓ hτ0 1) hI2, ← integral_smul]`. Use `congr 1`. Use function extensionality and compare the values at `v`.
+
+Rewrite using `[map_smul, map_add, map_smul]`.
+-/
 theorem dzb_int {Φ : X → V1 E} (h : Good Φ) (hℓ : Continuous ℓ) {f : V1 E} (hf : IsInt μ ℓ Φ f) {τ0 : ℂ}
     (hτ0 : τ0 ≠ 0) : PBP.dzb (f : ℂ → E) τ0 = ∫ v, ℓ v (PBP.dzb (Φ v : ℂ → E) τ0) ∂μ := by
   unfold PBP.dzb

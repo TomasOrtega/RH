@@ -4,6 +4,13 @@ open scoped LaurentPolynomial
 
 namespace GlobalTheory.CompanionTheory.CovMono
 
+/- English proof (translation)
+Introduce `K₁ K₀ _ _ _ _ _ _ d _ z hz k`. Take `⟨w, hw⟩` from `hz`. Establish `key : z = d (TensorProduct.lid A K₁ w)`. Establish `h1 : TensorProduct.lid A K₀ (d.lTensor A w) = d (TensorProduct.lid A K₁ w)` using `by clear hw`. Proceed by induction on `w using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul a x => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Rewrite `h1` using `[hw]`. Simplify using `using h1`.
+
+Rewrite using `[key, ← map_smul]`. Conclude with `⟨_, rfl⟩`.
+-/
 theorem cov_self (p : ℕ) (A : Type) [CommRing A] (r : ℕ → A) : Cov p r A := by
   intro K₁ K₀ _ _ _ _ _ _ d _ z hz k
   obtain ⟨w, hw⟩ := hz
@@ -19,6 +26,11 @@ theorem cov_self (p : ℕ) (A : Type) [CommRing A] (r : ℕ → A) : Cov p r A :
   rw [key, ← map_smul]
   exact ⟨_, rfl⟩
 
+/- English proof (translation)
+Introduce `K₁ K₀ _ _ _ _ hK₁ hK₀ d hd z hz k`. Take `⟨w, hw⟩` from `hz`. Use `h K₁ K₀ hK₁ hK₀ d hd z ⟨φ.toLinearMap.rTensor K₁ w, ?_⟩ k` and prove the remaining obligations. Establish `h1 : φ.toLinearMap.rTensor K₀ (d.lTensor B w) = d.lTensor B₁ (φ.toLinearMap.rTensor K₁ w)` using `by clear hw`. Proceed by induction on `w using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul a x => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Rewrite using `[← h1, hw]`. Simplify using the standard rewrite rules.
+-/
 theorem cov_of_algHom (p : ℕ) (A : Type) [CommRing A] (r : ℕ → A)
     (B : Type) [CommRing B] [Algebra A B] (B₁ : Type) [CommRing B₁] [Algebra A B₁]
     (φ : B →ₐ[A] B₁) (h : Cov p r B₁) : Cov p r B := by
@@ -34,6 +46,9 @@ theorem cov_of_algHom (p : ℕ) (A : Type) [CommRing A] (r : ℕ → A)
   rw [← h1, hw]
   simp
 
+/- English proof (translation)
+Introduce `p _ A _ r`. Conclude with `⟨cov_self p A r, fun B _ _ B₁ _ _ φ h => cov_of_algHom p A r B B₁ φ h⟩`.
+-/
 theorem cov_mono : ∀ (p : ℕ) [Fact p.Prime] (A : Type) [CommRing A] (r : ℕ → A), Cov p r A ∧ ∀ (B : Type) [CommRing B] [Algebra A B] (B₁ : Type) [CommRing B₁] [Algebra A B₁] (φ : B →ₐ[A] B₁), Cov p r B₁ → Cov p r B := by
   intro p _ A _ r
   exact ⟨cov_self p A r, fun B _ _ B₁ _ _ φ h => cov_of_algHom p A r B B₁ φ h⟩

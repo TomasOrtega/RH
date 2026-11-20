@@ -17,6 +17,13 @@ noncomputable section
 
 namespace GlobalTheory.CMTorsion
 
+/- English proof (translation)
+Unfold `tan`. Rewrite using `[GlobalTheory.WeierstrassCurve.ptHom_mapHom, GlobalTheory.WeierstrassCurve.SpecMap_ptHom]`. Apply `GlobalTheory.WeierstrassCurve.ptHom_congr` to reduce the goal to its premises. Apply the tactic sequence `ext a <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`. Use function extensionality and compare the values at `i fin_cases i`.
+
+Use `show g c • DualNumber.eps = Chart.dualMapR g (c • DualNumber.eps)`. Apply the tactic sequence `ext <;> simp [Chart.dualMapR]`. Use `show (-1 : DualNumber ℂ) = Chart.dualMapR g (-1)`. Simplify using the standard rewrite rules. Use `show (0 : DualNumber ℂ) = Chart.dualMapR g 0`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem tan_mapHom_conj (W₀ W₁ : WeierstrassCurve ℂ) (g : ℂ →+* ℂ) (h : W₀.map g = W₁) (c : ℂ) :
     tan W₁ (g c) ≫ mapHom W₀ g h = spMap (Chart.dualMapR g) ≫ tan W₀ c := by
   unfold tan

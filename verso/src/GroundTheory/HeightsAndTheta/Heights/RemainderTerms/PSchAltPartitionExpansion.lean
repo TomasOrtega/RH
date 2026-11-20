@@ -11,6 +11,9 @@ open MvPolynomial Finset
 
 noncomputable section
 
+/- English proof (translation)
+Unfold `Comb.alt`. Rewrite using `[← Matrix.det_transpose, mul_comm]`. Conclude with `Schur.det_pow_add_staircase_eq lam`.
+-/
 theorem SchAltPartitionExpansion.alt_partition_add_stair_eq {r : ℕ} (lam : Fin r → ℕ) :
     Comb.alt (fun i : Fin r => lam i + (r - 1 - (i : ℕ))) =
       vandermondeOf (fun i : Fin r => (X i : MvPolynomial (Fin r) ℚ)) * schur (Fin r) lam := by
@@ -18,6 +21,11 @@ theorem SchAltPartitionExpansion.alt_partition_add_stair_eq {r : ℕ} (lam : Fin
   rw [← Matrix.det_transpose, mul_comm]
   exact Schur.det_pow_add_staircase_eq lam
 
+/- English proof (translation)
+Unfold `partitionsOf at hlam`. Rewrite `hlam` using `[Finset.mem_filter]`. Introduce `i j hij`. Establish `h1` using `hlam.2 i j hij.le`. Establish `hj` using `j.isLt`.
+
+Establish `hij' : (i : ℕ) < j` using `hij`. Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem SchAltPartitionExpansion.strictAnti_partition_add_stair {r n : ℕ} {lam : Fin r → ℕ} (hlam : lam ∈ partitionsOf r n) :
     StrictAnti (fun i : Fin r => lam i + (r - 1 - (i : ℕ))) := by
   unfold partitionsOf at hlam
@@ -29,6 +37,23 @@ theorem SchAltPartitionExpansion.strictAnti_partition_add_stair {r n : ℕ} {lam
   simp only
   omega
 
+/- English proof (translation)
+Introduce `r n P hP hhom`. Use `set e : (Fin r → ℕ) → (Fin r →₀ ℕ) := fun lam => Finsupp.equivFunOnFinite.symm fun i : Fin r => lam i + (r - 1 - (i : ℕ)) with he`. Establish `e_inj : Set.InjOn e (partitionsOf r n : Set (Fin r → ℕ))`. Introduce `a _ b _ hab`. Use function extensionality and compare the values at `i`.
+
+Use `congrArg (fun f : Fin r →₀ ℕ => f i) hab` as an intermediate fact. Simplify using `only [he, Finsupp.coe_equivFunOnFinite_symm] at this`. Use linear arithmetic over natural numbers and integers. Establish `hR : ∑ lam ∈ partitionsOf r n, C (coeff (e lam) P) * (vandermondeOf (fun i : Fin r => (X i : MvPolynomial (Fin r) ℚ)) * schur (Fin r) lam) = ∑ d ∈ (partitionsOf r n).image e, coeff d P • Comb.alt (⇑d)`. Rewrite using `[Finset.sum_image e_inj]`.
+
+Use `Finset.sum_congr rfl fun lam _ => ?_` and prove the remaining obligations. Rewrite using `[C_mul', ← SchAltPartitionExpansion.alt_partition_add_stair_eq]`. Simplify using `[he]`. Rewrite using `[hR]`. Use `conv_lhs => rw [Comb.IsAlt.eq_sum_alt hP]`.
+
+Use `Finset.sum_subset ?_ ?_` and prove the remaining obligations. Introduce `d hd`. Rewrite `hd` using `[Finset.mem_filter]`. Establish `hsum : ∑ i, d i = r * (r - 1) / 2 + n`. Use `hhom (mem_support_iff.mp hd.1)` as an intermediate fact.
+
+Rewrite using `[← Finsupp.degree_eq_sum, Finsupp.degree_eq_weight_one]`. Conclude with `this`. Take `⟨hge, hmem⟩` from `h1 r n (⇑d) hd.2 hsum`. Use `Finset.mem_image.mpr ⟨_, hmem, ?_⟩` and prove the remaining obligations. Use extensionality with `i`.
+
+Simplify using `only [he, Finsupp.coe_equivFunOnFinite_symm]`. Use `hge i` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce `d hd hnot`. Take `⟨lam, hlam, rfl⟩` from `Finset.mem_image.mp hd`.
+
+Establish `hz : coeff (e lam) P = 0`. Assume the negation of the conclusion as `hne`. Apply `hnot` to reduce the goal to its premises. Rewrite using `[Finset.mem_filter]`. Use `⟨mem_support_iff.mpr hne, ?_⟩` and prove the remaining obligations.
+
+Simplify `SchAltPartitionExpansion.strictAnti_partition_add_stair hlam` using `[he]`. Rewrite using `[hz, zero_smul]`.
+-/
 theorem SchAltPartitionExpansion.proof (h1 : SchStrictAntiSplit.Statement) :
     SchAltPartitionExpansion.Statement := by
   intro r n P hP hhom

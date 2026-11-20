@@ -28,6 +28,11 @@ def IsDivNorm (R : AnRead p σ d) (C : Closeds Y) (n : CxPts p σ → ℝ) : Pro
     y ∈ ptsIn p σ V.1 ∧ (Scheme.IdealSheafData.vanishingIdeal C).ideal V = Ideal.span {t} ∧
     R.SmoothOn (ptsIn p σ V.1) f ∧ ∀ z ∈ ptsIn p σ V.1, n z ^ 2 = ‖ev p σ V.1 t z‖ ^ 2 * Real.exp (-f z)
 
+/- English proof (translation)
+Establish `h1` using `Scheme.IdealSheafData.mem_support_iff_of_mem (I := Scheme.IdealSheafData.vanishingIdeal C) (U := V) (mem_ptsIn.1 hy)`. Rewrite `h1` using `[h, Scheme.zeroLocus_span, Scheme.zeroLocus_singleton]`. Establish `h2 : (Scheme.IdealSheafData.vanishingIdeal C).support = C` using `SetLike.coe_injective (Scheme.IdealSheafData.coe_support_vanishingIdeal C)`. Rewrite `h1` using `[h2]`. Rewrite using `[LiesIn, h1, ← not_ne_iff, ← mem_ptsIn_basicOpen hy, mem_ptsIn]`.
+
+Both sides reduce to the same expression.
+-/
 theorem ev_eq_zero_iff {C : Closeds Y} {V : Y.affineOpens} {t : Γ(Y, V.1)}
     (h : (Scheme.IdealSheafData.vanishingIdeal C).ideal V = Ideal.span {t}) {y : CxPts p σ} (hy : y ∈ ptsIn p σ V.1) :
     ev p σ V.1 t y = 0 ↔ LiesIn y C := by
@@ -40,6 +45,9 @@ theorem ev_eq_zero_iff {C : Closeds Y} {V : Y.affineOpens} {t : Γ(Y, V.1)}
   rw [LiesIn, h1, ← not_ne_iff, ← mem_ptsIn_basicOpen hy, mem_ptsIn]
   rfl
 
+/- English proof (translation)
+Establish `: {y : CxPts p σ | ¬ LiesIn y C} = ptsIn p σ C.compl` using `Set.ext fun y => (mem_ptsIn (y := y) (U := C.compl)).symm`. Conclude with `this ▸ isOpen_ptsIn _`.
+-/
 theorem isOpen_not_liesIn (C : Closeds Y) : IsOpen {y : CxPts p σ | ¬ LiesIn y C} := by
   have : {y : CxPts p σ | ¬ LiesIn y C} = ptsIn p σ C.compl := Set.ext fun y => (mem_ptsIn (y := y) (U := C.compl)).symm
   exact this ▸ isOpen_ptsIn _
@@ -49,16 +57,27 @@ namespace IsDivNorm
 variable {R : AnRead p σ d} {C : Closeds Y} {n : CxPts p σ → ℝ} (h : IsDivNorm R C n)
 include h
 
+/- English proof (translation)
+Take `⟨V, t, f, hy, ht, -, e⟩` from `h.2 y`. Rewrite using `[← ev_eq_zero_iff ht hy, (h.1 y).1.lt_iff_ne', ← sq_pos_iff, e y hy, mul_pos_iff_of_pos_right (Real.exp_pos _), sq_pos_iff, norm_ne_zero_iff]`.
+-/
 theorem pos_iff (y : CxPts p σ) : 0 < n y ↔ ¬ LiesIn y C := by
   obtain ⟨V, t, f, hy, ht, -, e⟩ := h.2 y
   rw [← ev_eq_zero_iff ht hy, (h.1 y).1.lt_iff_ne', ← sq_pos_iff, e y hy, mul_pos_iff_of_pos_right (Real.exp_pos _),
     sq_pos_iff, norm_ne_zero_iff]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, fun y => by obtain ⟨V, t, f, hy, ht, hf, e⟩ := h.2 y exact ⟨V, t, f, hy, ht, (AnRead.smoothOn_iff R R' (isOpen_ptsIn _)).1 hf, e⟩⟩`.
+-/
 theorem of_anRead (R' : AnRead p σ d) : IsDivNorm R' C n :=
   ⟨h.1, fun y => by
     obtain ⟨V, t, f, hy, ht, hf, e⟩ := h.2 y
     exact ⟨V, t, f, hy, ht, (AnRead.smoothOn_iff R R' (isOpen_ptsIn _)).1 hf, e⟩⟩
 
+/- English proof (translation)
+Use `choose V t f hy ht hf e using h.2`. Use `AnRead.smoothOn_of_cover (fun y => isOpen_ptsIn (V y).1) (fun y _ => ⟨y, hy y⟩) fun y => ?_` and prove the remaining obligations. Establish `h0 : ∀ z ∈ {z | ¬ LiesIn z C} ∩ ptsIn p σ (V y).1, ev p σ _ (t y) z ≠ 0` using `fun z hz h0 => hz.1 ((ev_eq_zero_iff (ht y) hz.2).1 h0)`. Establish `h1` using `(AnRead.holoOn_ev_of_subset (R := R) (t y) Set.inter_subset_right).smoothOn_log ((isOpen_not_liesIn C).inter (isOpen_ptsIn _)) h0`. Use `AnRead.SmoothOn.congr (f := fun z => Real.log (‖ev p σ _ (t y) z‖ ^ 2) - f y z) (fun i => (h1 i).sub ((hf y).mono Set.inter_subset_right i)) fun z hz => ?_` and prove the remaining obligations.
+
+Rewrite using `[e y z hz.2, Real.log_mul (pow_ne_zero _ (norm_ne_zero_iff.2 (h0 z hz))) (Real.exp_ne_zero _), Real.log_exp, sub_eq_add_neg]`.
+-/
 theorem smoothOn_log : R.SmoothOn {y | ¬ LiesIn y C} fun y => Real.log (n y ^ 2) := by
   choose V t f hy ht hf e using h.2
   refine AnRead.smoothOn_of_cover (fun y => isOpen_ptsIn (V y).1) (fun y _ => ⟨y, hy y⟩) fun y => ?_
@@ -73,6 +92,9 @@ theorem smoothOn_log : R.SmoothOn {y | ¬ LiesIn y C} fun y => Real.log (n y ^ 2
 
 end IsDivNorm
 
+/- English proof (translation)
+Establish `hp : ∀ y, 0 < 1 + ‖ev p σ ⊤ t y‖ ^ 2` using `fun y => by positivity`. Use `⟨fun y => ⟨by positivity, ?_⟩, fun y => ⟨⟨⊤, isAffineOpen_top Y⟩, t, fun z => Real.log (1 + ‖ev p σ ⊤ t z‖ ^ 2), mem_ptsIn_top, h, fun i => ?_, fun z _ => ?_⟩⟩` and prove the remaining obligations. Conclude with `(div_le_one (Real.sqrt_pos.2 (hp y))).2 (Real.le_sqrt_of_sq_le (by linarith))`. Conclude with `(contDiffOn_const.add ((GlobalTheory.ChartGlue.contDiffOn_real (GlobalTheory.ChartGlue.isOpen_over _ (isOpen_ptsIn _)) (R.holoOn_ev ⊤ t i)).norm_sq ℂ)).log fun _ _ => (hp _).ne'`. Rewrite using `[div_pow, Real.sq_sqrt (hp z).le, Real.exp_neg, Real.exp_log (hp z), div_eq_mul_inv]`.
+-/
 theorem isDivNorm_of_eqn [IsAffine Y] (R : AnRead p σ d) {C : Closeds Y} {t : Γ(Y, ⊤)}
     (h : (Scheme.IdealSheafData.vanishingIdeal C).ideal ⟨⊤, isAffineOpen_top Y⟩ = Ideal.span {t}) :
     IsDivNorm R C fun y => ‖ev p σ ⊤ t y‖ / √(1 + ‖ev p σ ⊤ t y‖ ^ 2) := by
@@ -94,12 +116,18 @@ def IsPotential (R : AnRead p σ d) (a : ChartForm p σ d) (W : Set (CxPts p σ)
 def IsKaehlerForm (R : AnRead p σ d) (a : ChartForm p σ d) : Prop :=
   (∀ y, ∃ W φ, y ∈ W ∧ IsPotential R a W φ) ∧ ∀ c : AlgChart p σ d, ∀ y ∈ c.e.source, ∀ ξ, ξ ≠ 0 → 0 < a c y ξ
 
+/- English proof (translation)
+Take `⟨W, φ, hW, ho, hs, e⟩` from `h.1 y`. Rewrite using `[e c y hy hW, e c' y hy' hW, ddcForm, ddcForm, AlgChart.levi_trans hy hy' (hs.contDiffAt_two ho hy' hW)]`.
+-/
 theorem IsKaehlerForm.trans {R : AnRead p σ d} {a : ChartForm p σ d} (h : IsKaehlerForm R a) {c c' : AlgChart p σ d}
     {y : CxPts p σ} (hy : y ∈ c.e.source) (hy' : y ∈ c'.e.source) (ξ : Fin d → ℂ) :
     a c y ξ = a c' y (c.dtrans c' y ξ) := by
   obtain ⟨W, φ, hW, ho, hs, e⟩ := h.1 y
   rw [e c y hy hW, e c' y hy' hW, ddcForm, ddcForm, AlgChart.levi_trans hy hy' (hs.contDiffAt_two ho hy' hW)]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun y => by obtain ⟨W, φ, hW, ho, hs, e⟩ := h.1 y exact ⟨W, φ, hW, ho, (AnRead.smoothOn_iff R R' ho).1 hs, e⟩, h.2⟩`.
+-/
 theorem IsKaehlerForm.of_anRead {R : AnRead p σ d} {a : ChartForm p σ d} (h : IsKaehlerForm R a) (R' : AnRead p σ d) :
     IsKaehlerForm R' a :=
   ⟨fun y => by
@@ -109,15 +137,28 @@ theorem IsKaehlerForm.of_anRead {R : AnRead p σ d} {a : ChartForm p σ d} (h : 
 def curvForm {B : ReciprocityTheory.ChartRestriction.G.Semi.LB Y} (φ : Weight p σ B) : ChartForm p σ d :=
   fun c y => ddcForm (φ.φ (pick φ.isLB y)) c y
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isOpen_ptsIn _, h i, fun _ y hy hi ξ => congrArg (· / Real.pi) (h.levi_frame hy (mem_pick φ.isLB y) hi ξ)⟩`.
+-/
 theorem isPotential_curvForm {R : AnRead p σ d} {B : ReciprocityTheory.ChartRestriction.G.Semi.LB Y} {φ : Weight p σ B} (h : φ.IsSmooth R)
     (i : B.ι) : IsPotential R (curvForm φ) (ptsIn p σ (B.U i)) (φ.φ i) :=
   ⟨isOpen_ptsIn _, h i, fun _ y hy hi ξ => congrArg (· / Real.pi) (h.levi_frame hy (mem_pick φ.isLB y) hi ξ)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun y => ⟨_, _, mem_pick φ.isLB y, isPotential_curvForm h _⟩, fun _ y hy _ hξ => div_pos (hp.chart h hy (mem_pick φ.isLB y) hξ) Real.pi_pos⟩`.
+-/
 theorem isKaehlerForm_curvForm {R : AnRead p σ d} {B : ReciprocityTheory.ChartRestriction.G.Semi.LB Y} {φ : Weight p σ B} (h : φ.IsSmooth R)
     (hp : φ.StrictPos R) : IsKaehlerForm R (curvForm φ) :=
   ⟨fun y => ⟨_, _, mem_pick φ.isLB y, isPotential_curvForm h _⟩,
     fun _ y hy _ hξ => div_pos (hp.chart h hy (mem_pick φ.isLB y) hξ) Real.pi_pos⟩
 
+/- English proof (translation)
+Establish `hg : ContDiffAt ℂ 2 (fun v : ReciprocityTheory.L2DbarEstimates.V d => v j) (c.e y)` using `(EuclideanSpace.proj j : ReciprocityTheory.L2DbarEstimates.V d →L[ℂ] ℂ).contDiff.contDiffAt`. Establish `e` using `ReciprocityTheory.L2DbarEstimates.leviV_normSq_comp hg ξ`. Establish `e1 : ∀ a, ReciprocityTheory.L2DbarEstimates.wd d a (fun v : ReciprocityTheory.L2DbarEstimates.V d => v j) (c.e y) = if j = a then 1 else 0` using `fun a => by`. Establish `: (fun v : ReciprocityTheory.L2DbarEstimates.V d => v j) = ((EuclideanSpace.proj j : ReciprocityTheory.L2DbarEstimates.V d →L[ℂ] ℂ).restrictScalars ℝ)` using `rfl`. Rewrite using `[ReciprocityTheory.L2DbarEstimates.wd, this, ContinuousLinearMap.fderiv]`.
+
+Distinguish the cases in `h : j = a`. Simplify using `[ReciprocityTheory.L2DbarEstimates.bas, h]`. Simplify using `[ReciprocityTheory.L2DbarEstimates.bas, h]`. Establish `e2 : ∑ a, ReciprocityTheory.L2DbarEstimates.wd d a (fun v : ReciprocityTheory.L2DbarEstimates.V d => v j) (c.e y) * ξ a = ξ j` using `by simp [e1]`. Rewrite `e` using `[e2]`.
+
+Use `congrArg (· / Real.pi) (Eq.trans (congrArg Complex.re (Eq.trans ?_ e)) (Complex.ofReal_re _))` and prove the remaining obligations. Use `ReciprocityTheory.L2DbarEstimates.leviV_congr (Filter.eventually_of_mem (c.e.open_target.mem_nhds (c.e.map_source hy)) fun v hv => ?_) ξ` and prove the remaining obligations. Simplify using `only [c.e.right_inv hv]`.
+-/
 theorem ddcForm_coord (c : AlgChart p σ d) (j : Fin d) {y : CxPts p σ} (hy : y ∈ c.e.source) (ξ : Fin d → ℂ) :
     ddcForm (fun z => Complex.normSq (c.e z j)) c y ξ = Complex.normSq (ξ j) / Real.pi := by
   have hg : ContDiffAt ℂ 2 (fun v : ReciprocityTheory.L2DbarEstimates.V d => v j) (c.e y) :=
@@ -137,6 +178,9 @@ theorem ddcForm_coord (c : AlgChart p σ d) (j : Fin d) {y : CxPts p σ} (hy : y
     fun v hv => ?_) ξ
   simp only [c.e.right_inv hv]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => ⟨_, φ, Set.mem_univ _, isOpen_univ, h, fun _ _ _ _ _ => rfl⟩, fun c y hy ξ hξ => by obtain ⟨c', hy', h'⟩ := hp y rw [ddcForm, AlgChart.levi_trans hy hy' (h.contDiffAt_two isOpen_univ hy' trivial)] exact h' _ (AlgChart.dtrans_ne_zero hy hy' hξ)⟩`.
+-/
 theorem isKaehlerForm_ddcForm {R : AnRead p σ d} {φ : CxPts p σ → ℝ} (h : R.SmoothOn Set.univ φ)
     (hp : ∀ y, ∃ c : AlgChart p σ d, y ∈ c.e.source ∧ ∀ ξ, ξ ≠ 0 → 0 < ddcForm φ c y ξ) : IsKaehlerForm R (ddcForm φ) :=
   ⟨fun _ => ⟨_, φ, Set.mem_univ _, isOpen_univ, h, fun _ _ _ _ _ => rfl⟩, fun c y hy ξ hξ => by
@@ -144,6 +188,11 @@ theorem isKaehlerForm_ddcForm {R : AnRead p σ d} {φ : CxPts p σ → ℝ} (h :
     rw [ddcForm, AlgChart.levi_trans hy hy' (h.contDiffAt_two isOpen_univ hy' trivial)]
     exact h' _ (AlgChart.dtrans_ne_zero hy hy' hξ)⟩
 
+/- English proof (translation)
+Use `isKaehlerForm_ddcForm (AnRead.SmoothOn.mono (S := ptsIn p σ ⊤) (fun i => (GlobalTheory.ChartGlue.contDiffOn_real (GlobalTheory.ChartGlue.isOpen_over _ (isOpen_ptsIn _)) (R.holoOn_ev ⊤ t i)).norm_sq ℂ) fun _ _ => mem_ptsIn_top) fun y => ?_` and prove the remaining obligations. Take `⟨c, hy, e⟩` from `h y`. Use `⟨c, hy, fun ξ hξ => ?_⟩` and prove the remaining obligations. Rewrite using `[ddcForm, AlgChart.levi_congr (g := fun z => Complex.normSq (c.e z 0)) c.e.open_source hy hy fun z hz => by rw [e z hz, Complex.normSq_eq_norm_sq]]`. Use `lt_of_lt_of_eq (div_pos (Complex.normSq_pos.2 fun h0 => hξ (funext fun a => ?_)) Real.pi_pos) (ddcForm_coord c 0 hy ξ).symm` and prove the remaining obligations.
+
+Rewrite using `[Subsingleton.elim a 0]` and apply the resulting hypothesis.
+-/
 example (R : AnRead p σ 1) (t : Γ(Y, ⊤))
     (h : ∀ y, ∃ c : AlgChart p σ 1, y ∈ c.e.source ∧ ∀ z ∈ c.e.source, c.e z 0 = ev p σ ⊤ t z) :
     IsKaehlerForm R (ddcForm fun z => ‖ev p σ ⊤ t z‖ ^ 2) := by
@@ -157,6 +206,9 @@ example (R : AnRead p σ 1) (t : Γ(Y, ⊤))
     (ddcForm_coord c 0 hy ξ).symm
   rwa [Subsingleton.elim a 0]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, isDivNorm_of_eqn R (t := 1) (by simp), fun y => ((isDivNorm_of_eqn R (C := ⊥) (t := 1) (by simp)).pos_iff y).2 id⟩`.
+-/
 example [IsAffine Y] (R : AnRead p σ d) : ∃ n, IsDivNorm R ⊥ n ∧ ∀ y, 0 < n y :=
   ⟨_, isDivNorm_of_eqn R (t := 1) (by simp), fun y =>
     ((isDivNorm_of_eqn R (C := ⊥) (t := 1) (by simp)).pos_iff y).2 id⟩
@@ -176,14 +228,23 @@ variable {R : Type} [CommRing R] {φ : c.F →+* R} {x : Sp R ⟶ Z.X} (f : EigF
 
 def vec (τ : E →+* ℂ) (i : Fin (Dw.mult τ)) : TanM x Z.t.G := tanOf (f.tan τ i)
 
+/- English proof (translation)
+The claim follows from `tan_ext (f.eig τ i a)`.
+-/
 theorem act_vec (τ : E →+* ℂ) (i : Fin (Dw.mult τ)) (a : 𝓞 E) :
     actR Z.t.act a (f.vec τ i) = φ (embK c τ a) • f.vec τ i := tan_ext (f.eig τ i a)
 
+/- English proof (translation)
+The claim follows from `(existsUnique_congr fun a => isComb_iff (f.vec τ) a w).1 (f.basis τ _ (isTan_tv w) fun a => congrArg (fun v => (tv v).left) (hw a))`.
+-/
 theorem existsUnique_sum (τ : E →+* ℂ) (w : TanM x Z.t.G) (hw : ∀ a, actR Z.t.act a w = φ (embK c τ a) • w) :
     ∃! a : Fin (Dw.mult τ) → R, w = ∑ i, a i • f.vec τ i :=
   (existsUnique_congr fun a => isComb_iff (f.vec τ) a w).1
     (f.basis τ _ (isTan_tv w) fun a => congrArg (fun v => (tv v).left) (hw a))
 
+/- English proof (translation)
+The claim follows from `Fintype.linearIndependent_iff.2 fun a ha => congrFun ((f.existsUnique_sum τ 0 fun a => by simp).unique ha.symm (y₂ := 0) (by simp))`.
+-/
 theorem linearIndependent_vec (τ : E →+* ℂ) : LinearIndependent R (f.vec τ) :=
   Fintype.linearIndependent_iff.2 fun a ha => congrFun
     ((f.existsUnique_sum τ 0 fun a => by simp).unique ha.symm (y₂ := 0) (by simp))
@@ -204,13 +265,22 @@ section FrPt
 variable {S : Type} [CommRing S] [Algebra c.F S] (Z) (y : FrPt Xo c S) {x : Sp S ⟶ Z.X}
   (hx : GlobalTheory.AllWt.ptF y ≫ Z.jQ ≫ genι Z = x)
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 theorem ptF_fst : GlobalTheory.AllWt.ptF y ≫ pullback.fst _ _ = y.x := pullback.lift_fst _ _ _
 
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 theorem ptF_snd : GlobalTheory.AllWt.ptF y ≫ pullback.snd _ _ = spMap (algebraMap c.F S) := pullback.lift_snd _ _ _
 
 def lieEquiv : TanM y.x Xo.univ.t.G ≃ₗ[S] TanM x Z.t.G :=
   (pushE Z.m0.toSABMap (GlobalTheory.AllWt.ptF y) (ptF_fst y)).symm.trans (pushE Z.m (GlobalTheory.AllWt.ptF y) hx)
 
+/- English proof (translation)
+Take `⟨w, rfl⟩` from `(pushE Z.m0.toSABMap (GlobalTheory.AllWt.ptF y) (ptF_fst y)).surjective v`. Rewrite using `[← pushE_act]`. Simplify using `only [lieEquiv, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply]`. Conclude with `pushE_act _ _ _ _ _`.
+-/
 theorem lieEquiv_act (a : 𝓞 E) (v : TanM y.x Xo.univ.t.G) :
     lieEquiv Z y hx (actR Xo.univ.t.act a v) = actR Z.t.act a (lieEquiv Z y hx v) := by
   obtain ⟨w, rfl⟩ := (pushE Z.m0.toSABMap (GlobalTheory.AllWt.ptF y) (ptF_fst y)).surjective v
@@ -232,6 +302,9 @@ def EigFrame.ofFrPt : EigFrame Z (algebraMap c.F S) x :=
       rw [← (lieEquiv Z y hx).injective.eq_iff, map_sum]
       simp only [map_smul]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, isTan_tv _, congrArg (fun v => (tv v).left) ((pushE Z.m0.toSABMap (GlobalTheory.AllWt.ptF y) (ptF_fst y)).apply_symm_apply (tanOf (t := Xo.univ.t) (y.tan τ i))), rfl⟩`.
+-/
 theorem EigFrame.ofFrPt_v (τ : E →+* ℂ) (i : Fin (Dw.mult τ)) : ∃ w : Sp (DualNumber S) ⟶ Z.oF.t.G.left,
     IsTanAtG Z.oF.t (GlobalTheory.AllWt.ptF y) w ∧ w ≫ Z.m0.toSABMap.φ = y.u τ i ∧
       w ≫ Z.m.φ = (EigFrame.ofFrPt Z y hx).v τ i :=
@@ -248,11 +321,17 @@ def cxPt (y : FrPt Xo c (CAt σ)) : CxPts (genStr Z) σ :=
   ⟨GlobalTheory.AllWt.ptF (S := CAt σ) y ≫ Z.jQ,
     (Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) Z.jQ_over).trans (ptF_snd y))⟩
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (congrArg (· ≫ Z.jQ) (pullback.hom_ext ((ptF_fst y).trans (h.trans (ptF_fst y').symm)) ((ptF_snd y).trans (ptF_snd y').symm)))`.
+-/
 theorem cxPt_congr {y y' : FrPt Xo c (CAt σ)} (h : y.x = y'.x) : cxPt Z y = cxPt Z y' :=
   Subtype.ext (congrArg (· ≫ Z.jQ) (pullback.hom_ext
     ((ptF_fst y).trans (h.trans (ptF_fst y').symm))
     ((ptF_snd y).trans (ptF_snd y').symm)))
 
+/- English proof (translation)
+Introduce `h` and use `h ⟨GlobalTheory.AllWt.ptF y (IsLocalRing.closedPoint ℂ), rfl⟩`.
+-/
 theorem not_liesIn_cxPt (y : FrPt Xo c (CAt σ)) : ¬ LiesIn (cxPt Z y) (genBd Z) :=
   fun h => h ⟨GlobalTheory.AllWt.ptF y (IsLocalRing.closedPoint ℂ), rfl⟩
 
@@ -303,12 +382,21 @@ namespace OddPrimesWithRootsOfUnity
 
 variable (x : OddPrimesWithRootsOfUnity Z)
 
+/- English proof (translation)
+The claim follows from `(Set.ext_iff.1 x.cpt_list.2.1 _).symm.trans Set.mem_iUnion`.
+-/
 theorem liesIn_genBd_iff (y : CxPts (genStr Z) σ) : LiesIn y (genBd Z) ↔ ∃ i, LiesIn y (x.cpt i) :=
   (Set.ext_iff.1 x.cpt_list.2.1 _).symm.trans Set.mem_iUnion
 
+/- English proof (translation)
+The claim follows from `((x.nrm_div σ i).pos_iff y).2 fun h' => h ((x.liesIn_genBd_iff y).2 ⟨i, h'⟩)`.
+-/
 theorem nrm_pos {y : CxPts (genStr Z) σ} (h : ¬ LiesIn y (genBd Z)) (i : Fin x.m) : 0 < x.nrm σ i y :=
   ((x.nrm_div σ i).pos_iff y).2 fun h' => h ((x.liesIn_genBd_iff y).2 ⟨i, h'⟩)
 
+/- English proof (translation)
+Rewrite using `[← x.cpt_list.2.1, Set.iUnion_eq_empty]`. Conclude with `⟨fun h i => (Fin.cast h i).elim0, fun h => by_contra fun h0 => (x.cpt_list.1 ⟨0, Nat.pos_of_ne_zero h0⟩).nonempty.ne_empty (h _)⟩`.
+-/
 theorem m_eq_zero_iff : x.m = 0 ↔ (genBd Z : Set (gen Z : Scheme.{0})) = ∅ := by
   rw [← x.cpt_list.2.1, Set.iUnion_eq_empty]
   exact ⟨fun h i => (Fin.cast h i).elim0, fun h => by_contra fun h0 =>
@@ -321,9 +409,15 @@ def gram (y : CxPts (genStr Z) σ) (f : EigFrame Z σ (y.1 ≫ genι Z)) (τ : E
 
 variable {y : CxPts (genStr Z) σ}
 
+/- English proof (translation)
+The claim follows from `((x.met_smooth σ).1 y).gram_posDef (f.linearIndependent_vec τ)`.
+-/
 theorem gram_posDef (f : EigFrame Z σ (y.1 ≫ genι Z)) (τ : E →+* ℂ) : (x.gram y f τ).PosDef :=
   ((x.met_smooth σ).1 y).gram_posDef (f.linearIndependent_vec τ)
 
+/- English proof (translation)
+Use extensionality with `a b`. Establish `e` using `fun i => (isComb_iff (f.vec τ) (fun a => T a i) (g.vec τ i)).1 (h i)`. Rewrite using `[gram, gramOf, of_apply, e a, e b, form_sum, Matrix.mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem gram_change (f g : EigFrame Z σ (y.1 ≫ genι Z)) (τ : E →+* ℂ)
     (T : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) ℂ)
     (h : ∀ i, IsCombAtG Z.t (y.1 ≫ genι Z) (f.v τ) (fun a => T a i) (g.v τ i)) :
@@ -333,12 +427,18 @@ theorem gram_change (f g : EigFrame Z σ (y.1 ≫ genι Z)) (τ : E →+* ℂ)
   rw [gram, gramOf, of_apply, e a, e b, form_sum, Matrix.mul_assoc]
   rfl
 
+/- English proof (translation)
+The claim follows from `((x.met_smooth σ).1 y).2.2 (Formalism.L2.PjFree.relab c σ τ) (Formalism.L2.PjFree.relab c σ τ') _ _ (fun e => h (RingHom.ext fun a => congrArg Subtype.val (σ.injective (RingHom.congr_fun e a)))) (f.act_vec τ i) (g.act_vec τ' i')`.
+-/
 theorem met_vec_eq_zero (f g : EigFrame Z σ (y.1 ≫ genι Z)) {τ τ' : E →+* ℂ} (h : τ ≠ τ') (i : Fin (Dw.mult τ))
     (i' : Fin (Dw.mult τ')) : x.met σ y (f.vec τ i) (g.vec τ' i') = 0 :=
   ((x.met_smooth σ).1 y).2.2 (Formalism.L2.PjFree.relab c σ τ) (Formalism.L2.PjFree.relab c σ τ') _ _
     (fun e => h (RingHom.ext fun a => congrArg Subtype.val (σ.injective (RingHom.congr_fun e a))))
     (f.act_vec τ i) (g.act_vec τ' i')
 
+/- English proof (translation)
+Take `⟨g, h1, h2, h3⟩` from `(x.met_smooth σ).2 V (F.vec τ b) (F.vec τ a)`. Use `⟨g, h1, h2, fun y hy f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[h3 y hy]`. Conclude with `congrArg₂ (fun v w => x.met σ y v w) (tan_ext (hf b)) (tan_ext (hf a))`.
+-/
 theorem gram_smooth (V : (gen Z).affineOpens) {φ : c.F →+* Γ(gen Z, V.1)} (F : EigFrame Z φ (LogKS.chart V ≫ genι Z))
     (τ : E →+* ℂ) (a b : Fin (Dw.mult τ)) : ∃ g : CxPts (genStr Z) σ → ℂ,
       (manifold Z σ).SmoothOn (ptsIn _ σ V.1) (fun y => (g y).re) ∧
@@ -350,6 +450,9 @@ theorem gram_smooth (V : (gen Z).affineOpens) {φ : c.F →+* Γ(gen Z, V.1)} (F
   rw [h3 y hy]
   exact congrArg₂ (fun v w => x.met σ y v w) (tan_ext (hf b)) (tan_ext (hf a))
 
+/- English proof (translation)
+The claim follows from `Matrix.ext fun a b => x.met_conj σ σ' y y' _ _ _ _ e (h b) (h a)`.
+-/
 theorem gram_conj {y' : CxPts (genStr Z) σ'} (e : y'.1 = spMap (starRingEnd ℂ) ≫ y.1)
     (f : EigFrame Z σ (y.1 ≫ genι Z)) (f' : EigFrame Z σ' (y'.1 ≫ genι Z)) (τ : E →+* ℂ)
     (h : ∀ i, f'.v τ i = spMap (dualMap (starRingEnd ℂ)) ≫ f.v τ i) :

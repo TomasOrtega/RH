@@ -10,6 +10,11 @@ namespace GlobalTheory.EulerTw.Fact
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
+/- English proof (translation)
+Establish `hi : Function.Injective fun A : Matrix (Fin n) (Fin n) (Ov E w) => A.map (Ov E w).subtype` using `Matrix.map_injective Subtype.val_injective`. Use `⟨⟨Matrix.of fun i j => ⟨_, h1 i j⟩, Matrix.of fun i j => ⟨_, h2 i j⟩, hi ?_, hi ?_⟩, Units.ext rfl⟩` and prove the remaining obligations. Simplify using `only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `g.mul_inv`. Simplify using `only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Conclude with `g.inv_mul`.
+-/
 theorem mem_KGL_of {w : Pl E} (g : GL (Fin n) (w.adicCompletion E))
     (h1 : ∀ i j, g.1 i j ∈ w.adicCompletionIntegers E) (h2 : ∀ i j, g⁻¹.1 i j ∈ w.adicCompletionIntegers E) :
     g ∈ GlobalTheory.LFun.KGL w n := by
@@ -21,6 +26,9 @@ theorem mem_KGL_of {w : Pl E} (g : GL (Fin n) (w.adicCompletion E))
   · simp only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]
     exact g.inv_mul
 
+/- English proof (translation)
+Establish `h : ∀ g : GL (Fin n) (FiniteAdeleRing (𝓞 E) E), ∀ᶠ w : Pl E in cofinite, ∀ i j, pLoc E w (g.val i j) ∈ w.adicCompletionIntegers E` using `fun g => by`. Simplify using `only [Filter.eventually_all]`. Conclude with `fun i j => (g.val i j).2`. Use `filter_upwards [h x, h x⁻¹] with w a b`. Conclude with `mem_KGL_of _ a (by rw [← map_inv]; exact b)`.
+-/
 theorem eventually_mem_KGL (x : GL (Fin n) (FiniteAdeleRing (𝓞 E) E)) :
     ∀ᶠ w : Pl E in cofinite, GeneralLinearGroup.map (pLoc E w) x ∈ GlobalTheory.LFun.KGL w n := by
   have h : ∀ g : GL (Fin n) (FiniteAdeleRing (𝓞 E) E), ∀ᶠ w : Pl E in cofinite,
@@ -30,6 +38,9 @@ theorem eventually_mem_KGL (x : GL (Fin n) (FiniteAdeleRing (𝓞 E) E)) :
   filter_upwards [h x, h x⁻¹] with w a b
   exact mem_KGL_of _ a (by rw [← map_inv]; exact b)
 
+/- English proof (translation)
+Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Establish `he : pLoc E w (idem E T) = 1` using `by show (if w ∈ T then (1 : w.adicCompletion E) else 0) = 1`. Rewrite using `[if_pos hw]`. Use `show pLoc E w ((idem E T • x.val + (1 - idem E T) • (1 : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 E) E))) i j) = pLoc E w (x.val i j)`. Simplify using `[Matrix.add_apply, Matrix.smul_apply, map_add, map_mul, map_sub, he]`.
+-/
 theorem map_prjG (T : Finset (Pl E)) (x : GL (Fin n) (FiniteAdeleRing (𝓞 E) E)) {w : Pl E} (hw : w ∈ T) :
     GeneralLinearGroup.map (pLoc E w) (prjG E n T x) = GeneralLinearGroup.map (pLoc E w) x := by
   refine Units.ext (Matrix.ext fun i j => ?_)
@@ -40,6 +51,11 @@ theorem map_prjG (T : Finset (Pl E)) (x : GL (Fin n) (FiniteAdeleRing (𝓞 E) E
     pLoc E w (x.val i j)
   simp [Matrix.add_apply, Matrix.smul_apply, map_add, map_mul, map_sub, he]
 
+/- English proof (translation)
+Establish `hm` using `GlobalTheory.QuadPlaces.main (maximalRealSubfield E) E (Algebra.IsQuadraticExtension.finrank_eq_two _ _) (IsCMField.complexConj E) (IsCMField.complexConj_ne_one E) u`. Simplify using `only [orb, Finset.coe_insert, Finset.coe_singleton, Set.mem_insert_iff, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(rfl | rfl)`. Both sides reduce to the same expression.
+
+Conclude with `hm.2.1`. Introduce `h`. Conclude with `hm.1 w h`.
+-/
 theorem mem_orb_iff {u w : Pl E} : w ∈ (orb E u : Set (Pl E)) ↔
     w.under (𝓞 (maximalRealSubfield E)) = u.under (𝓞 (maximalRealSubfield E)) := by
   have hm := GlobalTheory.QuadPlaces.main (maximalRealSubfield E) E (Algebra.IsQuadraticExtension.finrank_eq_two _ _)
@@ -52,6 +68,13 @@ theorem mem_orb_iff {u w : Pl E} : w ∈ (orb E u : Set (Pl E)) ↔
   · intro h
     exact hm.1 w h
 
+/- English proof (translation)
+Use `set f : Pl E → ℂ := fun w => if w ∈ S then φ w (GeneralLinearGroup.map (pLoc E w) x) else (GlobalTheory.LFun.KGL w n : Set (GLw n w)).indicator 1 (GeneralLinearGroup.map (pLoc E w) x) with hf`. Establish `hx : ∀ w ∈ (orb E u : Set (Pl E)), GeneralLinearGroup.map (pLoc E w) (pfU E n u x).1 = GeneralLinearGroup.map (pLoc E w) x` using `fun w hw => map_prjG (orb E u) x hw`. Establish `h1 : (∏ᶠ w ∈ S ∩ ↑(orb E u), φ w (GeneralLinearGroup.map (pLoc E w) (pfU E n u x).1)) = ∏ᶠ w ∈ ↑(orb E u) ∩ S, f w`. Rewrite using `[Set.inter_comm]`. Use `finprod_mem_congr rfl fun w hw => ?_` and prove the remaining obligations.
+
+Rewrite using `[hf]`. Simplify using `only`. Rewrite using `[if_pos hw.2, hx w hw.1]`. Establish `h2 : (∏ᶠ w ∈ Sᶜ ∩ ↑(orb E u), (GlobalTheory.LFun.KGL w n : Set (GLw n w)).indicator 1 (GeneralLinearGroup.map (pLoc E w) (pfU E n u x).1)) = ∏ᶠ w ∈ ↑(orb E u) \ S, f w`. Rewrite using `[Set.diff_eq, Set.inter_comm]`.
+
+Use `finprod_mem_congr rfl fun w hw => ?_` and prove the remaining obligations. Rewrite using `[hf]`. Simplify using `only`. Rewrite using `[if_neg hw.2, hx w hw.1]`. Rewrite using `[FU, h1, h2, finprod_mem_inter_mul_diff S (orb E u).finite_toSet, finprod_mem_coe_finset]`.
+-/
 theorem finprod_orb (S : Set (Pl E)) (φ : ∀ w : Pl E, GLw n w → ℂ) (x : GL (Fin n) (FiniteAdeleRing (𝓞 E) E))
     (u : Pl E) :
     FU E n S φ u (pfU E n u x) = ∏ w ∈ orb E u, (if w ∈ S then φ w (GeneralLinearGroup.map (pLoc E w) x) else
@@ -72,6 +95,25 @@ theorem finprod_orb (S : Set (Pl E)) (φ : ∀ w : Pl E, GLw n w → ℂ) (x : G
     rw [hf]; dsimp only; rw [if_neg hw.2, hx w hw.1]
   rw [FU, h1, h2, finprod_mem_inter_mul_diff S (orb E u).finite_toSet, finprod_mem_coe_finset]
 
+/- English proof (translation)
+Introduce `E _ _ _ n S hS K' _ φ hφ x`. Use `set f : Pl E → ℂ := fun w => if w ∈ S then φ w (GeneralLinearGroup.map (pLoc E w) x) else (GlobalTheory.LFun.KGL w n : Set (GLw n w)).indicator 1 (GeneralLinearGroup.map (pLoc E w) x) with hf`. Establish `hfin : (Function.mulSupport f).Finite`. Use `(Filter.eventually_cofinite.1 (hφ.2.and (eventually_mem_KGL (E := E) x))).subset fun w hw => ?_` and prove the remaining obligations. Introduce and unpack `⟨h1, h2⟩`.
+
+Apply `hw` to reduce the goal to its premises. Establish `hi : (GlobalTheory.LFun.KGL w n : Set (GLw n w)).indicator (1 : GLw n w → ℂ) (GeneralLinearGroup.map (pLoc E w) x) = 1` using `Set.indicator_of_mem h2 _`. Use `show f w = 1`. Rewrite using `[hf]`. Simplify using `only`.
+
+Use `split_ifs`. Rewrite using `[h1]`. Conclude with `hi`. Conclude with `hi`. Establish `hL : (∏ᶠ w ∈ S, φ w (GeneralLinearGroup.map (pLoc E w) x)) * ∏ᶠ w ∈ Sᶜ, (GlobalTheory.LFun.KGL w n : Set (GLw n w)).indicator 1 (GeneralLinearGroup.map (pLoc E w) x) = ∏ᶠ w, f w`.
+
+Establish `e1 : (∏ᶠ w ∈ S, φ w (GeneralLinearGroup.map (pLoc E w) x)) = ∏ᶠ w ∈ S, f w` using `finprod_mem_congr rfl fun w hw => by rw [hf]; dsimp only; rw [if_pos hw]`. Establish `e2 : (∏ᶠ w ∈ Sᶜ, (GlobalTheory.LFun.KGL w n : Set (GLw n w)).indicator 1 (GeneralLinearGroup.map (pLoc E w) x)) = ∏ᶠ w ∈ Sᶜ, f w` using `finprod_mem_congr rfl fun w hw => by rw [hf]; dsimp only; rw [if_neg hw]`. Rewrite using `[e1, e2, ← finprod_mem_union'' (disjoint_compl_right.mono Set.inter_subset_left Set.inter_subset_left) (hfin.subset Set.inter_subset_right) (hfin.subset Set.inter_subset_right), Set.union_compl_self, finprod_mem_univ]`. Set `r : Pl E → S` to `fun w => ⟨(hS w).exists.choose, (hS w).exists.choose_spec.1⟩`. Establish `hr : ∀ w, (r w).1.under (𝓞 (maximalRealSubfield E)) = w.under (𝓞 (maximalRealSubfield E))` using `fun w => (hS w).exists.choose_spec.2`.
+
+Establish `hru : ∀ (u : S) w, w ∈ (orb E u.1 : Set (Pl E)) ↔ r w = u` using `fun u w => by`. Rewrite using `[mem_orb_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `Subtype.ext ((hS w).unique ⟨(r w).2, hr w⟩ ⟨u.2, h.symm⟩)`.
+
+Introduce and unpack `rfl`. Conclude with `(hr w).symm`. Use `set s := hfin.toFinset with hs`. Establish `hsupp : ∀ w, w ∉ s → f w = 1` using `fun w hw => by`. Rewrite `hw` using `[hs, Set.Finite.mem_toFinset]`.
+
+Conclude with `Function.notMem_mulSupport.1 hw`. Rewrite using `[hL, finprod_eq_prod_of_mulSupport_subset f (s := s) (by rw [hs, Set.Finite.coe_toFinset])]`. Establish `hg : ∀ u : S, FU E n S φ u.1 (pfU E n u.1 x) = ∏ w ∈ s with r w = u, f w` using `fun u => by`. Rewrite using `[finprod_orb]`. Use `(Finset.prod_subset (fun w hw => ?_) fun w hw hw' => ?_).symm` and prove the remaining obligations.
+
+Rewrite using `[← Finset.mem_coe, hru]`. Conclude with `(Finset.mem_filter.1 hw).2`. Assume the negation of the conclusion as `hne`. Conclude with `hw' (Finset.mem_filter.2 ⟨by_contra fun h => hne (hsupp w h), (hru u w).1 (Finset.mem_coe.2 hw)⟩)`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ (s := s.image r) fun u hu => ?_]`.
+
+Rewrite using `[Finset.prod_congr rfl fun u _ => hg u]`. Conclude with `(Finset.prod_fiberwise_of_maps_to (fun w hw => Finset.mem_image_of_mem r hw) f).symm`. Rewrite `hu` using `[Function.mem_mulSupport, hg u]`. Take `⟨w, hw, -⟩` from `Finset.exists_ne_one_of_prod_ne_one hu`. Conclude with `Finset.mem_coe.2 (Finset.mem_image.2 ⟨w, (Finset.mem_filter.1 hw).1, (Finset.mem_filter.1 hw).2⟩)`.
+-/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (S : Set (Pl E)), IsSection S → ∀ K' : ∀ w : Pl E, Subgroup (GLw n w), IsLevelFam (thL n) (fun w : Pl E => GlobalTheory.LFun.KGL w n) K' → ∀ φ : ∀ w : Pl E, GLw n w → ℂ, IsTest (fun w : Pl E => GlobalTheory.LFun.KGL w n) K' φ → ∀ x : GL (Fin n) (FiniteAdeleRing (𝓞 E) E), (∏ᶠ w ∈ S, φ w (GeneralLinearGroup.map (pLoc E w) x)) * ∏ᶠ w ∈ Sᶜ, (GlobalTheory.LFun.KGL w n : Set (GLw n w)).indicator 1 (GeneralLinearGroup.map (pLoc E w) x) = ∏ᶠ u : S, GlobalTheory.EulerTw.FU E n S φ u.1 (GlobalTheory.EulerTw.pfU E n u.1 x) := by
   intro E _ _ _ n S hS K' _ φ hφ x
   set f : Pl E → ℂ := fun w => if w ∈ S then φ w (GeneralLinearGroup.map (pLoc E w) x) else

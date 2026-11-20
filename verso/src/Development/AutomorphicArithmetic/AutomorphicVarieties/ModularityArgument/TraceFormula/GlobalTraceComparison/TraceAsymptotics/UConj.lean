@@ -5,6 +5,11 @@ open NumberField IsDedekindDomain Matrix
 open GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions GlobalTheory.UnitaryBC Formalism.L2.Host GlobalTheory.BCT GlobalTheory.LFun
 open GlobalTheory.CompanionTheory.ConjSat
 
+/- English proof (translation)
+Introduce `E _ _ _ n σ w hw τ B ⟨_, f, f0, hf, hfx⟩ hB`. Establish `hu : locU n (UpperTheory.V.Af.Bc.cPl w) = locU n w` using `locU_eq_of_under (GlobalTheory.SplitPts.over_split hw).2.1`. Use `⟨flipIrr τ, ⟨(flipIrr τ).irred, f, f0, hf, fun x v => ?_⟩, hasSatGL_flipIrr τ hB⟩` and prove the remaining obligations. Establish `hx : (x : UA E n) ∈ locU n w` using `hu ▸ x.2`. Establish `key` using `hfx ⟨x, hx⟩ v`.
+
+Rewrite `key` using `[MonoidHom.comp_apply]`. Express the relevant statement in the definitionally equal form `f (τ.ρ (flipGL w (cLoc _ x.1)) v) = _`. Rewrite using `[← cLoc_eq_flipGL]`. Conclude with `key`.
+-/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.uConj :
     UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.UConj := by
   intro E _ _ _ n σ w hw τ B ⟨_, f, f0, hf, hfx⟩ hB

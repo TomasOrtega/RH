@@ -45,6 +45,11 @@ def Jacquet : Prop :=
 
 variable {K}
 
+/- English proof (translation)
+Introduce `n τ hτ`. Take `⟨s, b, lam, Φ, hb, hlam, hΦ, hpar⟩` from `h1 n τ hτ`. Take `⟨ψ, hψ, hψ0⟩` from `h2 (Fin n) s b lam τ Φ hΦ hpar`. Use `⟨s, b, lam, hb, hlam, ?_⟩` and prove the remaining obligations. Use `haveI := h3 (Fin n) s b lam`.
+
+Conclude with `(h4 (GL (Fin n) K) τ (hcSpace K b lam) (hcRep K b lam) hτ).mpr ⟨ψ, hψ, hψ0⟩`.
+-/
 theorem supportExists_of (h1 : Jacquet K) (h2 : Frob K) (h3 : HCFin K) (h4 : ConstSymm) : SupportExists K := by
   intro n τ hτ
   obtain ⟨s, b, lam, Φ, hb, hlam, hΦ, hpar⟩ := h1 n τ hτ

@@ -31,6 +31,9 @@ open MvPolynomial MeasureTheory ReciprocityTheory.ChartRestriction.G.Geo GlobalT
 open ReciprocityTheory.AnForm.R (conePts)
 open GlobalTheory.CompanionTheory.Ar.Pub.CxChart (absLogNorm)
 
+/- English proof (translation)
+The claim follows from `|setSheetDensity (conePts Q) Ψ (pot L) (logNormC A (map (Int.castRingHom ℂ) s)) y w| := by classical have hfin : (cxIdeal P).minimalPrimes.Finite := Ideal.finite_minimalPrimes_of_isNoetherianRing _ _ have hmeet := GroundTheory.Heights₂.Heights.HilbertSamuel.ComponentsMeetNull.pro …`.
+-/
 theorem absFibreSum_eq_sum_components_ae {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {P : Ideal (MRing ι)} {e : ℕ}
     {Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)} {L : Fin e → HermLine ι} {A : HermLine ι}
@@ -94,6 +97,9 @@ theorem absFibreSum_eq_sum_components_ae {K : Type} [Fintype K] {ι : K → Type
     have hexP : ¬ ∃ γ, IsSetSheet (mcPts P) Ψ y w γ := hex
     rw [dif_neg hexP, dif_neg hexQ]
 
+/- English proof (translation)
+The claim follows from `|setSheetDensity S Ψ φ (logNormC A s) y w| = max (setSheetDensity S Ψ φ (absLogNorm A s) y w) 0 + max (setSheetDensity S Ψ φ (fun z => -absLogNorm A s z) y w) 0 := by unfold setSheetDensity split_ifs with hγ · have hz := hS _ hγ.choose_spec.2.self_of_nhds.2.1 have ha : absLogNorm …`.
+-/
 theorem abs_setSheetDensity_eq {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {e : ℕ}
     {S : Set ((Σ k, ι k) → ℂ)} (hS : ∀ z ∈ S, ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0)
     (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) (φ : Fin e → ((Σ k, ι k) → ℂ) → ℝ)
@@ -119,6 +125,13 @@ theorem abs_setSheetDensity_eq {K : Type} [Fintype K] {ι : K → Type} [∀ k, 
       ring
   · simp
 
+/- English proof (translation)
+Establish `hS : ∀ z ∈ conePts Q, ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0` using `fun z hz => hz.1`. Establish `hfin` using `GlobalTheory.CompanionTheory.Ar.Pub.CxFib.setFibre_finite K ι Q e Ψ hQ hΨ`. Establish `hm` using `GlobalTheory.CompanionTheory.Ar.Pub.CxChart.measurable_absLogNorm A hA s`. Establish `hdeg` using `fun (c : K → ℂ) (z : (Σ k, ι k) → ℂ) (hc : ∀ k, c k ≠ 0) => GlobalTheory.CompanionTheory.Ar.Pub.CxChart.absLogNorm_blockScale A hAa hs hc z`. Establish `h1` using `GlobalTheory.CompanionTheory.Ar.Pub.CxPosMeas.cxPosDens_aemeasurable_of_finite hS hfin hL hm hdeg`.
+
+Establish `h2` using `GlobalTheory.CompanionTheory.Ar.Pub.CxPosMeas.cxPosDens_aemeasurable_of_finite hS hfin hL hm.neg (g := fun z => -absLogNorm A s z) (fun c z hc => by simp only [hdeg c z hc])`. Establish `heq : (fun y => ∑ᶠ w ∈ setFibre (conePts Q) Ψ y, |setSheetDensity (conePts Q) Ψ (pot L) (logNormC A s) y w|) = fun y => cxPosDens (conePts Q) Ψ (pot L) (absLogNorm A s) y + cxPosDens (conePts Q) Ψ (pot L) (fun z => -absLogNorm A s z) y`. Use function extensionality and compare the values at `y`. Unfold `cxPosDens`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ (hfin y), finsum_mem_eq_finite_toFinset_sum _ (hfin y), finsum_mem_eq_finite_toFinset_sum _ (hfin y), ← Finset.sum_add_distrib]`.
+
+Conclude with `Finset.sum_congr rfl fun w _ => abs_setSheetDensity_eq hS Ψ (pot L) A s y w`. Use `⟨?_, (hasFiniteIntegral_iff_ofReal (Eventually.of_forall fun y => finsum_nonneg fun w => finsum_nonneg fun _ => abs_nonneg _)).2 (GlobalTheory.T.lintegral_fibre_logNorm_finite K ι Q e Ψ L A s a hQ hΨ hL hA hAa hs hsQ)⟩` and prove the remaining obligations. Rewrite using `[heq]`. Conclude with `(h1.add h2).aestronglyMeasurable`.
+-/
 theorem integrable_absFibreSum_of_isCxVar {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {Q : Ideal (MRingOver ℂ ι)} {e : ℕ} {Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)}
     {L : Fin e → HermLine ι} {A : HermLine ι} {s : MRingOver ℂ ι} {a : K → ℕ}
@@ -150,6 +163,13 @@ theorem integrable_absFibreSum_of_isCxVar {K : Type} [Fintype K] {ι : K → Typ
   rw [heq]
   exact (h1.add h2).aestronglyMeasurable
 
+/- English proof (translation)
+Introduce `K _ ι _ P e Ψ L A s hP hΨ hL hA hs`. Establish `hae` using `absFibreSum_eq_sum_components_ae hP hΨ hL hA hs`. Take `⟨a, hAa, hsa, hsP⟩` from `hs`. Establish `hfin : (cxIdeal P).minimalPrimes.Finite` using `Ideal.finite_minimalPrimes_of_isNoetherianRing _ _`. Establish `hsa' : IsMultiHomog (map (Int.castRingHom ℂ) s : MRingOver ℂ ι) a` using `fun m hm k => hsa m (support_map_subset _ _ hm) k`.
+
+Establish `hcomp : ∀ Q ∈ (cxIdeal P).minimalPrimes, Integrable (fun y => ∑ᶠ w ∈ setFibre (conePts Q) Ψ y, |setSheetDensity (conePts Q) Ψ (pot L) (logNormC A (map (Int.castRingHom ℂ) s)) y w|)`. Introduce `Q hQ`. Take `⟨hQv, hc⟩` from `isCxVar_of_mem_minimalPrimes_cxIdeal K ι P e hP Q hQ`. Use `integrable_absFibreSum_of_isCxVar hQv (fun z hz => hΨ z (conePts_subset_mcPts_of_minimal hQ hz)) hL hA hAa hsa' fun hmem => hsP ?_` and prove the remaining obligations. Rewrite using `[← hc]`.
+
+Conclude with `hmem`. Use `(integrable_finset_sum hfin.toFinset fun Q hQ => hcomp Q (hfin.mem_toFinset.1 hQ)).congr ?_` and prove the remaining obligations. Use `filter_upwards [hae] with y hy`. Rewrite using `[hy]`. Conclude with `(finsum_mem_eq_finite_toFinset_sum _ hfin).symm`.
+-/
 theorem ptsAbsIntegrable : GroundTheory.Heights₂.Heights.Inter.PtsAbsIntegrable.Statement := by
   intro K _ ι _ P e Ψ L A s hP hΨ hL hA hs
   classical

@@ -9,9 +9,15 @@ open Formalism.FourierDecayAlt
 
 def PStdOfHeads : Prop := KB.RadHead → KB.HeadTop → KB.PStd
 
+/- English proof (translation)
+Introduce `hRH hHT` and use `pStdOfParts hRH hHT Formalism.FourierDecayAlt.P.module_form_eq_radial_form_one Formalism.FourierDecayAlt.P.exists_zeta_normalized_haar`.
+-/
 theorem pStdOfHeads : PStdOfHeads := fun hRH hHT =>
   pStdOfParts hRH hHT Formalism.FourierDecayAlt.P.module_form_eq_radial_form_one Formalism.FourierDecayAlt.P.exists_zeta_normalized_haar
 
+/- English proof (translation)
+The claim follows from `pStd_cpt_of_parts hP hRH hHT Formalism.FourierDecayAlt.P.module_form_eq_radial_form_one Formalism.FourierDecayAlt.P.exists_zeta_normalized_haar`.
+-/
 theorem pStdCpt_of_heads (hP : P5.ThmPActualCpt) (hRH : KB.RadHead) (hHT : KB.HeadTop) :
     ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par) (p : KB.Pl P Wp Wq) (F)
@@ -26,4 +32,7 @@ theorem pStdCpt_of_heads (hP : P5.ThmPActualCpt) (hRH : KB.RadHead) (hHT : KB.He
 
 end Formalism.FourierDecayAlt.P.PBO
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.PBO.pStdOfHeads`.
+-/
 theorem Formalism.FourierDecayAlt.P.standard_pairing_of_heads : Formalism.FourierDecayAlt.P.PBO.PStdOfHeads := Formalism.FourierDecayAlt.P.PBO.pStdOfHeads

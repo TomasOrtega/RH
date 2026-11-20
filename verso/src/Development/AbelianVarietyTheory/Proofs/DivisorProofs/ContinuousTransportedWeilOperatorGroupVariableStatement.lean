@@ -15,6 +15,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.WeilCont.continuous_transport_apply | exact GlobalTheory.WeilCont.continuous_transport_apply | (intros; apply GlobalTheory.WeilCont.continuous_transport_apply <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.continuous_transportedWeilOperator_groupVariable : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (χS χT : (AE D)ˣ →* Circle), IsHeckeChar D χS → IsHeckeChar D χT →
       ResEta D χS S.rank → ResEta D χT T.rank →

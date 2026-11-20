@@ -40,15 +40,28 @@ def formV (D : D7) (T : Tor D) (N N' : ℕ) : Sesq (VC D N N') :=
     (fun z w w' => by simp [Hf, mul_add, Finset.sum_add_distrib, add_div])
     (fun c z w => by simp [Hf, Finset.mul_sum, mul_left_comm, mul_div_assoc'])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem formV_apply (D : D7) (T : Tor D) {N N' : ℕ} (z w : VC D N N') :
     formV D T N N' z w = Hf D T z w := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem heis_formV (D : D7) (T : Tor D) {N N' : ℕ} (x : VC D N N') (G : VC D N N' → ℂ) :
     Heisenberg₂ (formV D T N N') x G = U D T x G := rfl
 
 open NumberField Classical in
 open Complex in
 open scoped BigOperators ComplexConjugate Real in
+/- English proof (translation)
+Use `⟨fun z w => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Simplify using `only [_root_.GlobalTheory.UnitaryTheta.formV_apply, _root_.Formalism.MainNotions.TaylorLogMetric.Hf, map_div₀, map_sum, map_mul, Complex.conj_conj, Complex.conj_ofReal]`. Use `congr 1`. Use `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => mul_comm _ _` and prove the remaining obligations. Establish `hsum : ∀ τ i j, z τ i j * conj (z τ i j) = ((Complex.normSq (z τ i j) : ℝ) : ℂ)` using `fun τ i j => Complex.mul_conj _`.
+
+Simplify using `only [_root_.GlobalTheory.UnitaryTheta.formV_apply, _root_.Formalism.MainNotions.TaylorLogMetric.Hf, hsum]`. Simplify using `only [← Complex.ofReal_sum, ← Complex.ofReal_div, Complex.ofReal_re]`. Use `div_pos ?_ h` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨τ, i, j, hz⟩ : ∃ τ i j, z τ i j ≠ 0 := by`. Assume the negation of the conclusion as `hne`.
+
+Use `push_neg at hne`. Conclude with `hz (funext fun τ => funext fun i => funext fun j => hne τ i j)`. Use `Finset.sum_pos' (fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _) ⟨τ, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Use `Finset.sum_pos' (fun _ _ => Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _) ⟨i, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Conclude with `Finset.sum_pos' (fun _ _ => Complex.normSq_nonneg _) ⟨j, Finset.mem_univ _, Complex.normSq_pos.2 hz⟩`.
+-/
 theorem _root_.GlobalTheory.UnitaryTheta.isPosHerm_formV (D : _root_.Formalism.BasicNotions.D7) (T : _root_.Formalism.MainNotions.TaylorLogMetric.Tor D)
     (N N' : ℕ) (h : 0 < _root_.Formalism.MainNotions.TaylorLogMetric.area T.abelian₂) :
     _root_.GlobalTheory.UnitaryTheta.IsPosHerm (_root_.GlobalTheory.UnitaryTheta.formV D T N N') := by

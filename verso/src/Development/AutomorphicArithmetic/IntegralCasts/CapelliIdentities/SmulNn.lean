@@ -3,6 +3,9 @@ import Mathlib
 namespace MulEquivHaarCharEqOfProjection
 open MeasureTheory
 
+/- English proof (translation)
+Rewrite using `[Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`.
+-/
 private lemma smul_nn {α : Type*} [MeasurableSpace α] (c : NNReal) (μ : Measure α) (s : Set α) :
     (c • μ) s = (c : ENNReal) * μ s := by
   rw [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]
@@ -10,6 +13,31 @@ private lemma smul_nn {α : Type*} [MeasurableSpace α] (c : NNReal) (μ : Measu
 end MulEquivHaarCharEqOfProjection
 
 open MeasureTheory MeasureTheory.Measure in
+/- English proof (translation)
+Introduce `H N _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ι hι π hπ hπι φ ψ hφψ hσ`. Set `σ : H → H` to `fun p => (ι (π p))⁻¹ * p`. Establish `hσc : Continuous σ` using `((hι.comp hπ).inv).mul continuous_id`. Establish `hsplit : ∀ p, ι (π p) * σ p = p` using `by intro p; simp [σ]`. Establish `hσmul : ∀ x p, σ (ι x * p) = σ p`.
+
+Introduce `x p`. Simplify using `[σ, hπι, mul_assoc]`. Establish `hσφ : ∀ p, σ (φ p) = σ p` using `fun p => hσ p`. Take `⟨C, hCc, hCn⟩` from `exists_compact_mem_nhds (σ 1)`. Set `μH : Measure H` to `Measure.haar`.
+
+Set `μN : Measure N` to `Measure.haar`. Set `m : Measure N` to `Measure.map π (μH.restrict (σ ⁻¹' C))`. Establish `hσC : MeasurableSet (σ ⁻¹' C)` using `(hCc.isClosed.preimage hσc).measurableSet`. Establish `hmA : ∀ A, MeasurableSet A → m A = μH (π ⁻¹' A ∩ σ ⁻¹' C)`. Introduce `A hA`.
+
+Rewrite using `[Measure.map_apply hπ.measurable hA, Measure.restrict_apply (hπ.measurable hA)]`. Establish `hinv : m.IsMulLeftInvariant`. Use `⟨fun x => ?_⟩` and prove the remaining obligations. Use extensionality with `A hA`. Rewrite using `[Measure.map_apply (measurable_const_mul x) hA, hmA _ hA, hmA _ ((measurable_const_mul x) hA)]`.
+
+Establish `: π ⁻¹' ((fun y => x * y) ⁻¹' A) ∩ σ ⁻¹' C = (fun p => ι x * p) ⁻¹' (π ⁻¹' A ∩ σ ⁻¹' C)`. Use extensionality with `p`. Simplify using `[hπι, hσmul]`. Rewrite using `[this, measure_preimage_mul]`. Establish `hfin : IsFiniteMeasureOnCompacts m`.
+
+Use `⟨fun K hK => ?_⟩` and prove the remaining obligations. Rewrite using `[hmA _ hK.isClosed.measurableSet]`. Establish `hcomp : IsCompact ((fun q : N × H => ι q.1 * q.2) '' (K ×ˢ C))` using `(hK.prod hCc).image ((hι.comp continuous_fst).mul continuous_snd)`. Use `lt_of_le_of_lt (measure_mono ?_) hcomp.measure_lt_top` and prove the remaining obligations. Introduce and unpack `p ⟨hp1, hp2⟩`.
+
+Conclude with `⟨(π p, σ p), ⟨hp1, hp2⟩, hsplit p⟩`. Establish `hc : m = haarScalarFactor m μN • μN` using `isMulLeftInvariant_eq_smul m μN`. Use `set c := haarScalarFactor m μN with hcdef`. Establish `hmuniv : 0 < m Set.univ`. Rewrite using `[hmA _ MeasurableSet.univ, Set.preimage_univ, Set.univ_inter]`.
+
+Establish `h1 : σ ⁻¹' C ∈ nhds (1 : H)` using `hσc.continuousAt.preimage_mem_nhds hCn`. Conclude with `measure_pos_of_nonempty_interior μH ⟨1, mem_interior_iff_mem_nhds.2 h1⟩`. Establish `hc0 : (c : ENNReal) ≠ 0`. Introduce `h0`. Rewrite `hmuniv` using `[hc, MulEquivHaarCharEqOfProjection.smul_nn, h0, zero_mul]`.
+
+Conclude with `lt_irrefl _ hmuniv`. Take `⟨K, hKc, hKn⟩` from `exists_compact_mem_nhds (1 : N)`. Set `A : Set N` to `ψ.symm ⁻¹' K`. Establish `hAm : MeasurableSet A` using `(hKc.isClosed.preimage ψ.symm.continuous).measurableSet`. Establish `hApre : ψ ⁻¹' A = K` using `by ext x; simp [A]`.
+
+Establish `hK0 : μN K ≠ 0` using `(measure_pos_of_nonempty_interior μN ⟨1, mem_interior_iff_mem_nhds.2 hKn⟩).ne'`. Establish `hKt : μN K ≠ ⊤` using `hKc.measure_lt_top.ne`. Establish `e1` using `mulEquivHaarChar_smul_preimage μH (X := π ⁻¹' A ∩ σ ⁻¹' C) φ`. Establish `hpre : ⇑φ ⁻¹' (π ⁻¹' A ∩ σ ⁻¹' C) = π ⁻¹' K ∩ σ ⁻¹' C`. Use extensionality with `p`.
+
+Simplify using `[A, hφψ, hσφ]`. Rewrite `e1` using `[hpre, ← hmA _ hKc.isClosed.measurableSet, ← hmA _ hAm, hc, ENNReal.smul_def, MulEquivHaarCharEqOfProjection.smul_nn, MulEquivHaarCharEqOfProjection.smul_nn]`. Establish `e2` using `mulEquivHaarChar_smul_preimage μN (X := A) ψ`. Rewrite `e2` using `[hApre]`. Simplify using `only [ENNReal.smul_def, smul_eq_mul] at e1 e2`.
+
+Establish `key : ((c : ENNReal) * μN K) * (mulEquivHaarChar φ : ENNReal) = ((c : ENNReal) * μN K) * (mulEquivHaarChar ψ : ENNReal)`. Combine the equalities or inequalities in the displayed calculation. Rewrite `key` using `[ENNReal.mul_right_inj (mul_ne_zero hc0 hK0) (ENNReal.mul_ne_top ENNReal.coe_ne_top hKt)]`. Conclude with `key` after adjusting the coercions.
+-/
 theorem UpperTheory.Reformulated.B.Yhb4.main :
     ∀ {H N : Type} [inst : Group H] [inst_1 : TopologicalSpace H] [inst_2 : IsTopologicalGroup H]
       [inst_3 : LocallyCompactSpace H] [SecondCountableTopology H] [T2Space H] [inst_6 : MeasurableSpace H]

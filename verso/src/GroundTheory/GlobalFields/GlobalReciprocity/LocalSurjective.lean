@@ -14,6 +14,11 @@ variable {k : Type*} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchi
   [CharZero k] {M : Type*} [Field M] [Algebra k M] [FiniteDimensional k M] [IsGalois k M]
   [IsMulCommutative (M ≃ₐ[k] M)]
 
+/- English proof (translation)
+Use `isAbelianGalois_of_isGalois (k := k) (M := M)` as an intermediate fact. Introduce `τ`. Take `⟨x, hx⟩` from `LocalField.surjective_localArtinMapOfField (K := k) (L := M) τ`. Use `⟨x, ?_⟩` and prove the remaining obligations. Rewrite using `[← hx]`.
+
+Conclude with `congrArg (fun f : kˣ →* (M ≃ₐ[k] M) ↦ f x) normResidueSymbol_eq_localArtinMapOfField`.
+-/
 theorem normResidueSymbol_surjective : Function.Surjective (normResidueSymbol k M) := by
   have := isAbelianGalois_of_isGalois (k := k) (M := M)
   intro τ
@@ -29,6 +34,9 @@ section Place
 variable {K : Type*} [Field K] [NumberField K] {L : Type*} [Field L] [NumberField L] [Algebra K L]
   [IsGalois K L] [IsMulCommutative (L ≃ₐ[K] L)] (v : HeightOneSpectrum (𝓞 K))
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `normResidueSymbol_surjective (decompositionMulEquiv v w.1 ⟨τ, hτ⟩)`. Use `⟨x, ?_⟩` and prove the remaining obligations. Rewrite using `[localSymbol_eq_symbolAt L v w]`. Express the relevant statement in the definitionally equal form `(((decompositionMulEquiv v w.1).symm (normResidueSymbol (v.adicCompletion K) (w.1.adicCompletion L) x)) : L ≃ₐ[K] L) = τ`. Rewrite using `[hx, MulEquiv.symm_apply_apply]`.
+-/
 theorem exists_localSymbol_eq (w : PlacesOver L v) {τ : L ≃ₐ[K] L}
     (hτ : τ ∈ MulAction.stabilizer (L ≃ₐ[K] L) w.1.asIdeal) :
     ∃ x : (v.adicCompletion K)ˣ, localSymbol L v x = τ := by
@@ -41,6 +49,9 @@ theorem exists_localSymbol_eq (w : PlacesOver L v) {τ : L ≃ₐ[K] L}
 
 omit [IsGalois K L] [IsMulCommutative (L ≃ₐ[K] L)] in
 
+/- English proof (translation)
+Rewrite using `[ideleClassNorm_mk, ideleNorm_finiteEmbedding]`. Take `⟨w, hw⟩` from `w`. Establish `h` using `(below_eq_iff w v).2 hw`. Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem mk_finiteEmbedding_normUnits (w : PlacesOver L v) (z : (w.1.adicCompletion L)ˣ) :
     IdeleClassGroup.mk K (finiteEmbedding v
         (LocalField.normUnits (v.adicCompletion K) (w.1.adicCompletion L) z)) =

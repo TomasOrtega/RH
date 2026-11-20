@@ -19,11 +19,19 @@ section Loc
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `hs` using `(UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.polFacts k).1`. Take `⟨p, hp⟩` from `valuation_surjective (uniformizer k : ValueGroupWithZero k)`. Conclude with `ord_eq_one (le_antisymm (le_uniformizer_iff.2 hs.1) (hp ▸ hs.2 p (hp ▸ uniformizer_lt_one)))`.
+-/
 private theorem ord_unif : GlobalTheory.SmGL.ord k (UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.unif k) = 1 := by
   have hs := (UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.polFacts k).1
   obtain ⟨p, hp⟩ := valuation_surjective (uniformizer k : ValueGroupWithZero k)
   exact ord_eq_one (le_antisymm (le_uniformizer_iff.2 hs.1) (hp ▸ hs.2 p (hp ▸ uniformizer_lt_one)))
 
+/- English proof (translation)
+Establish `hu : GlobalTheory.SmGL.ord k (x * UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.unif k) = 0`. Rewrite using `[ord_mul, hx, ord_unif]`. Simplify using the standard rewrite rules. Establish `h1` using `PositivityTheory.RgUd.Exp.Rpow.norm_eq_one_of_valuation_eq_one ξ hξ (ord_eq_zero_iff.1 hu)`. Rewrite `h1` using `[map_mul, Units.val_mul, norm_mul]`.
+
+Conclude with `eq_inv_of_mul_eq_one_left h1`.
+-/
 private theorem norm_neg_one (ξ : kˣ →* ℂˣ) (hξ : IsSmoothChar ξ) {x : kˣ} (hx : GlobalTheory.SmGL.ord k x = -1) :
     ‖((ξ x : ℂˣ) : ℂ)‖ = ‖((ξ (UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.unif k) : ℂˣ) : ℂ)‖⁻¹ := by
   have hu : GlobalTheory.SmGL.ord k (x * UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.unif k) = 0 := by
@@ -40,6 +48,13 @@ section WD
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
+/- English proof (translation)
+Rewrite `hα` using `[GlobalTheory.RowTie.EigTwist.eig_lpTw _ hφ s, Multiset.mem_map]`. Take `⟨y, hy, rfl⟩` from `hα`. Establish `h1 : ∀ i, (WD.lpOfChar h (c i) (hc i)).charPol φ = X - C ((c i φ : ℂˣ) : ℂ)` using `fun i => by`. Rewrite using `[WD.lpOfChar, WD.charPol_mk, WDRep.ofChars_ρ, charpoly_diagEnd]`. Simplify using the standard rewrite rules.
+
+Establish `h2` using `Polynomial.isRoot_of_mem_roots hy`. Rewrite `h2` using `[GlobalTheory.LocLanglands.CuspExt.charPol_sumList, List.map_ofFn]`. Establish `h3 : (List.ofFn ((fun y : WD h => y.charPol φ) ∘ fun i => WD.lpOfChar h (c i) (hc i))).prod = ∏ i, (X - C ((c i φ : ℂˣ) : ℂ))`. Rewrite using `[List.prod_ofFn]`. Conclude with `Finset.prod_congr rfl fun i _ => h1 i`.
+
+Rewrite `h2` using `[h3, Polynomial.IsRoot.def, Polynomial.eval_prod, Finset.prod_eq_zero_iff]`. Take `⟨i, -, hi⟩` from `h2`. Use `⟨i, ?_⟩` and prove the remaining obligations. Simplify using `only [eval_sub, eval_X, eval_C] at hi`. Rewrite using `[sub_eq_zero.1 hi]`.
+-/
 private theorem eig_sum {n : ℕ} (c : Fin n → Weil h →* ℂˣ) (hc : ∀ i, GlobalTheory.WeilDeligne.IsSmooth (c i)) (s : ℝ)
     {φ : ↥(Weil h)} (hφ : deg φ = 1) {α : ℂ}
     (hα : α ∈ ((sumList (List.ofFn fun i => WD.lpOfChar h (c i) (hc i))).lpTw s).eig φ) :
@@ -66,6 +81,21 @@ end WD
 end UpperTheory.Gal.SV.GlobalSectionsBijection
 
 open UpperTheory.Gal.SV.GlobalSectionsBijection in
+/- English proof (translation)
+Introduce `K Ω _ _ _ _ _ _ A w h rc ⟨a, ha, L⟩ n π t hw σ hσ φ hφ α hα β hβ`. Establish `hP` using `(UpperTheory.V.Z.Win.plainRec K Ω A w h rc ⟨a, ha, L⟩ n π t hw σ hσ).1`. Take `⟨ξ, hξ, hs, hu⟩` from `GlobalTheory.RoadU.plainTor_exists_chars _ _ hP`. Establish `hs' : HasSupport σ.ρ (GlobalTheory.RoadU.chars ξ hξ)` using `hs.of_equiv (IrrGL.equivOf σ.ρ σ.smooth σ.irred).symm`. Establish `hA` using `psForm L σ ξ hξ hs' hu`.
+
+Rewrite `hα`, `hβ` using `[hA]`. Take `⟨i, rfl⟩` from `eig_sum _ _ _ hφ hα`. Take `⟨j, rfl⟩` from `eig_sum _ _ _ hφ hβ`. Establish `hq : ((normV w : ℕ) : ℝ) = (Ideal.absNorm w.asIdeal : ℝ)`. Simplify using `[normV, Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+
+Establish `hq1 : (1 : ℝ) < ((normV w : ℕ) : ℝ)` using `by exact_mod_cast GlobalTheory.WeilDeligne.one_lt_normV w`. Establish `hord : GlobalTheory.SmGL.ord (w.adicCompletion K) (a φ) = -1` using `by rw [ha.ord_eq φ, hφ]`. Establish `hwin : ∀ m, ((normV w : ℕ) : ℝ) ^ (t - 1 / 2) < ‖((ξ m (UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.unif (w.adicCompletion K)) : ℂˣ) : ℂ)‖ ∧ ‖((ξ m (UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.unif (w.adicCompletion K)) : ℂˣ) : ℂ)‖ < ((normV w : ℕ) : ℝ) ^ (t + 1 / 2)` using `fun m => by`. Rewrite using `[hq]`. Conclude with `hw.2 _ ⟨σ, hσ, hs'⟩ (ξ m) ⟨hξ m, Multiset.mem_map_of_mem _ (Finset.mem_univ_val m)⟩`.
+
+Establish `hbi` using `(Real.rpow_pos_of_pos (by linarith) _).trans (hwin i).1`. Establish `hbj` using `(Real.rpow_pos_of_pos (by linarith) _).trans (hwin j).1`. Establish `hlt : ‖((ξ j (UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.unif (w.adicCompletion K)) : ℂˣ) : ℂ)‖ < ‖((ξ i (UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.unif (w.adicCompletion K)) : ℂˣ) : ℂ)‖ * ((normV w : ℕ) : ℝ)`. Establish `e : ((normV w : ℕ) : ℝ) ^ (t + 1 / 2) = ((normV w : ℕ) : ℝ) ^ (t - 1 / 2) * ((normV w : ℕ) : ℝ)`. Rewrite using `[← Real.rpow_add_one (by linarith)]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Establish `hc : 0 < ‖((normV w : ℕ) : ℂ) ^ ((((1 - (n : ℝ)) / 2 : ℝ)) : ℂ)‖`. Use `norm_pos_iff.2 ?_` and prove the remaining obligations.
+
+Rewrite using `[Ne, Complex.cpow_eq_zero_iff]`. Introduce `e`. Establish `: ((normV w : ℕ) : ℝ) = 0` using `by exact_mod_cast e.1`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [MonoidHom.comp_apply]`.
+
+Rewrite using `[norm_mul, norm_mul, norm_neg_one _ (hξ i) hord, norm_neg_one _ (hξ j) hord, ← mul_assoc]`. Use `mul_lt_mul_of_pos_right ?_ hc` and prove the remaining obligations. Rewrite using `[← div_eq_mul_inv, lt_div_iff₀ hbj, inv_mul_lt_iff₀ hbi]`. Conclude with `hlt`.
+-/
 theorem UpperTheory.Gal.SV.ratioT :
     UpperTheory.Gal.SV.RatioT := by
   intro K Ω _ _ _ _ _ _ A w h rc ⟨a, ha, L⟩ n π t hw σ hσ φ hφ α hα β hβ

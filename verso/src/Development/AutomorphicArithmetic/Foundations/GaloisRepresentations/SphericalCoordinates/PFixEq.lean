@@ -9,6 +9,27 @@ open GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMid GlobalTheory.LKGe
 open scoped Matrix TensorProduct Classical
 open UpperTheory.Gal.W2
 
+/- English proof (translation)
+Introduce `hHC hOne hLat p _ D G L gb N N' h hLev X X' c₁ c₂ hX hL hX' hL' ρ hFine v t₀ B PD RD D' t hCls P j a hCo y hSees ga hga P₁ P₂ x₁ x₂ e₁ e₂ hU₁ hU₂ hP`. Establish `hN3 : 3 ≤ N` using `hLev.1`. Establish `hNp : N.Coprime p` using `hLev.2.1`. Establish `hdvd : N ∣ N'` using `hLev.2.2.2.2.1`. Take `⟨hPl, hCA, hLoc, -⟩` from `hCo`.
+
+Take `⟨-, hS1, hS2⟩` from `hSees`. Take `⟨D'', t'', P'', e'', inc, j'', hCls'', hU'', hPinc, he'', hd, hjinc, hPl'', hCA'', hLoc''⟩` from `hHC p D G L gb N N' h hLev X X' c₂ hX hL hX' hL' ρ hFine D' t P₁ x₁ e₁ hU₁ B j a.1.1 (PD.lat a.1.2) hPl hCA hLoc`. Take `⟨e₂', hU₂', he₂'⟩` from `hOne p D G L gb N N' h hLev X X' c₁ hX hL hX' hL' ρ hFine B PD D' t hCls j a.1 hPl hCA hLoc P₂ x₂ e₂ hU₂`. Establish `hCAN : IsCoordA L (trivX B) N D' t j a.1.1`. Use `⟨hCA.1, fun b => ?_⟩` and prove the remaining obligations.
+
+Take `⟨w, hw, hweq⟩` from `hCA.2 b`. Take `⟨k, hk⟩` from `hdvd`. Use `⟨k • w, AddSubgroup.nsmul_mem _ hw k, ?_⟩` and prove the remaining obligations. Rewrite using `[hweq, hk, mul_smul]`. Establish `hmem1 : (a.1.1 * h⁻¹)⁻¹ * B.toAf y * a.1.1 ∈ L.KN N`.
+
+Establish `hS1' : h * (a.1.1⁻¹ * B.toAf y * a.1.1) ∈ L.KN N` using `hS1`. Rewrite using `[mul_inv_rev, inv_inv]`. Rewrite using `[mul_assoc h, mul_assoc h]`. Conclude with `hS1'`. Take `⟨w, hwm, hwj⟩` from `(hLat p D G L B PD N (by omega) hNp D'' t'' D' t j'' j (a.1.1 * h⁻¹, a.1.2) a.1 N N' t'' t hCls'' hCls hPl'' hPl hCA'' hCAN hLoc'' hLoc y).mp ⟨hmem1, hS2⟩`.
+
+Establish `hcancel : ∀ w' : VQ D, (actY L y) ((actY L y⁻¹) w') = w'`. Introduce `w'`. Simplify using `only [actY]`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules.
+
+Establish `hgi : ∀ u, w (ga u) = inc u`. Introduce `u`. Apply `hPl''.1` to reduce the goal to its premises. Rewrite using `[hjinc, hwj, hga, hcancel]`. Establish `hPw : ∀ x, P'' (w x) = P₂ x`.
+
+Introduce `x`. Take `⟨d, u, hd0, hdu⟩` from `hd (w x)`. Establish `hgu : ga u = d • x`. Apply `w.injective` to reduce the goal to its premises. Rewrite using `[hgi, hdu, map_nsmul]`.
+
+Establish `h2 : d • P'' (w x) = d • P₂ x`. Rewrite using `[← map_nsmul, ← map_nsmul, ← map_nsmul, ← hgu, hgi, hPinc, hP]`. Conclude with `smul_right_injective _ hd0 h2`. Establish `hPw' : ∀ x, P'' (w x) = (LinearEquiv.refl ℂ (Fin D.g → ℂ)) (P₂ x)` using `fun x => hPw x`. Establish `hpt : x₂ ≫ c₁.q = x₁ ≫ c₂.q` using `hFine.sep D' D'' t t'' P₂ P'' _ _ e₂' e'' hU₂' hU'' w (LinearEquiv.refl ℂ _) hwm hPw'`.
+
+Apply the tactic sequence `have hT := GlobalTheory.T.uniformisationAt_transport_isometry _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ w (LinearEquiv.refl ℂ _) (by omega) hU₂' hwm hPw' hU''.2.1`. Establish `key : ∀ (y₁ y₂ : Sp ℂ ⟶ (gfam X.univ hX hL).X) (hy : y₁ = y₂) (f₁ : (Fin D.g → ℂ) → (Over.mk y₁ ⟶ (gfam X.univ hX hL).A)) (f₂ : (Fin D.g → ℂ) → (Over.mk y₂ ⟶ (gfam X.univ hX hL).A)), UnifAt (gfam X.univ hX hL) (RingHom.id ℂ) ρ N D'' t'' P'' y₁ f₁ → UnifAt (gfam X.univ hX hL) (Rin …`. Introduce `y₁ y₂ hy f₁ f₂ h₁ h₂ z`. Substitute `hy` using the available equality. Rewrite using `[GlobalTheory.T.complexUniformisation_exp_unique_full_level_marking _ _ _ _ _ _ _ _ _ _ _ _ _ f₁ f₂ hN3 (GlobalTheory.UPel.HT.Datum.Cls.fullMark D N (by omega) hNp D'' t'' hCls'') h₁ h₂]`.
+
+Use `⟨hpt.symm, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[← he'' z, ← he₂' z]`. Conclude with `key _ _ hpt.symm e'' _ hU'' hT z`.
+-/
 theorem UpperTheory.Gal.W2.fixEq_of :
     UpperTheory.Gal.W2.HeckeCoord → UpperTheory.Gal.W2.OneAt → UpperTheory.Gal.W2.LatIso → UpperTheory.Gal.W2.FixEq := by
   intro hHC hOne hLat p _ D G L gb N N' h hLev X X' c₁ c₂ hX hL hX' hL' ρ hFine v t₀ B PD RD D' t hCls P j a hCo y hSees ga hga P₁ P₂ x₁ x₂ e₁ e₂ hU₁ hU₂ hP

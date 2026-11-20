@@ -4,6 +4,25 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecializa
 
 open IsLocalRing Polynomial Matrix UpperTheory.V
 
+/- English proof (translation)
+Set `ι : ℤˣ →* Kˣ` to `Units.map (Int.castRingHom K).toMonoidHom`. Establish `hι : ∀ u : ℤˣ, ((ι u : Kˣ) : K) = ((u : ℤ) : K)` using `fun u => rfl`. Establish `hneg : (-1 : K) ≠ 1`. Introduce `h`. Apply `h2` to reduce the goal to its premises.
+
+Take the linear combination `-h`. Establish `hinj : Function.Injective ι`. Rewrite using `[injective_iff_map_eq_one]`. Introduce `u hu`. Break down `Int.units_eq_one_or u with h | h` into its components or cases.
+
+Conclude with `h`. It suffices to derive a contradiction. Use `congrArg Units.val hu` as an intermediate fact. Rewrite `this` using `[hι, h]`. Apply `hneg` to reduce the goal to its premises.
+
+Simplify using `using this`. Establish `hex : ∀ g, ∃ u : ℤˣ, ι u = φ g`. Introduce `g`. Establish `h : (φ g : K) * (φ g : K) = 1`. Rewrite using `[← Units.val_mul, hsq, Units.val_one]`.
+
+Break down `mul_self_eq_one_iff.mp h with h | h` into its components or cases. Conclude with `⟨1, Units.ext (by rw [hι, h]; simp)⟩`. Conclude with `⟨-1, Units.ext (by rw [hι, h]; simp)⟩`. Use `choose η hη using hex`. Set `η' : G →* ℤˣ` to `MonoidHom.mk' η (fun a b => hinj (by rw [map_mul, hη, hη, hη, map_mul]))`.
+
+Establish `hη' : ∀ g, η' g = η g` using `fun g => rfl`. Use `⟨η', ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Apply `h1` to reduce the goal to its premises. Use `ext1 g`.
+
+Rewrite using `[← hη, ← hη', h]`. Simplify using the standard rewrite rules. Introduce `g hg`. Rewrite using `[MonoidHom.mem_ker]`. Apply `hinj` to reduce the goal to its premises.
+
+Rewrite using `[hη', hη, map_one]`. Conclude with `hS hg`. Introduce `g`. Rewrite using `[hη', ← hι, hη]`. Establish `hc : e.conj (Matrix.toLin' ((φ g : K) • r g)) = Matrix.toLin' (r g)`.
+
+Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Take `⟨w, rfl⟩` from `e.surjective v`. Rewrite using `[LinearEquiv.conj_apply_apply, e.symm_apply_apply, Matrix.toLin'_apply, Matrix.toLin'_apply, he, Matrix.smul_mulVec, map_smul]`. Rewrite using `[← Matrix.charpoly_toLin', ← hc, LinearEquiv.charpoly_conj, Matrix.charpoly_toLin']`.
+-/
 private theorem quadratic_twist_charpoly_eq {K G : Type} [Field K] [Group G] (h2 : (2 : K) ≠ 0)
     (r : G →* Matrix (Fin 4) (Fin 4) K) (S : Subgroup G) (φ : G →* Kˣ)
     (e : (Fin 4 → K) ≃ₗ[K] (Fin 4 → K)) (h1 : φ ≠ 1) (hS : S ≤ φ.ker) (hsq : ∀ g, φ g * φ g = 1)
@@ -58,6 +77,23 @@ private theorem quadratic_twist_charpoly_eq {K G : Type} [Field K] [Group G] (h2
         Matrix.toLin'_apply, he, Matrix.smul_mulVec, map_smul]
     rw [← Matrix.charpoly_toLin', ← hc, LinearEquiv.charpoly_conj, Matrix.charpoly_toLin']
 
+/- English proof (translation)
+Introduce `K G _ _ _ h2 r hirr S hcomm hidx hred`. Establish `hab : ∀ a b : G, a * b * a⁻¹ * b⁻¹ ∈ S` using `fun a b => hcomm (Subgroup.commutator_mem_commutator (Subgroup.mem_top a) (Subgroup.mem_top b))`. Use `haveI hN : S.Normal := ⟨fun n hn g => by`. Use `S.mul_mem (hab g n) hn` as an intermediate fact. Simplify using `using this⟩`.
+
+Establish `h4 : ((4 : ℕ) : K) ≠ 0`. Establish `: ((4 : ℕ) : K) = 2 * 2` using `by norm_num`. Rewrite using `[this]`. Conclude with `mul_ne_zero h2 h2`. Take `⟨m, hm⟩` from `hidx`.
+
+Establish `hiK : (S.index : K) ≠ 0`. Introduce `h`. Apply `h4` to reduce the goal to its premises. Rewrite using `[hm, Nat.cast_mul, h, zero_mul]`. Establish `hfi : S.FiniteIndex` using `⟨fun h => hiK (by rw [h, Nat.cast_zero])⟩`.
+
+Set `ρ : Representation K G (Fin 4 → K)` to `(Matrix.toLinAlgEquiv' (R := K) (n := Fin 4)).toMonoidHom.comp r`. Establish `hρ : ∀ g v, ρ g v = r g *ᵥ v` using `fun g v => Matrix.toLinAlgEquiv'_apply _ _`. Unfold `U3.MatIrr at hirr hred`. Use `push Not at hred`. Take `⟨φ, e, h1, hS, he⟩` from `UpperTheory.V.Pr.T.selfTwist ρ S hfi hiK hab (fun W hW => hirr W (fun g _ v hv => hρ g v ▸ hW g v hv)) (by`.
+
+Take `⟨W, hW, hb, ht⟩` from `hred`. Conclude with `⟨W, fun g hg v hv => (hρ g v).symm ▸ hW g hg v hv, hb, ht⟩)`. Simplify using `only [hρ] at he`. Distinguish the cases in `hsq : ∀ g, φ g * φ g = 1`. Conclude with `quadratic_twist_charpoly_eq h2 r S φ e h1 hS hsq he`.
+
+Use `quadratic_twist_charpoly_eq h2 r S (φ * φ) (e.trans e) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `h`. Apply `hsq` to reduce the goal to its premises. Introduce `g`. Conclude with `DFunLike.congr_fun h g`.
+
+Introduce `g hg`. Establish `: φ g = 1` using `hS hg`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.mul_apply, this, one_mul]`. Introduce `g`. Establish `h : φ (g ^ S.index) = 1` using `hS (S.pow_index_mem g)`.
+
+Establish `h' : φ g ^ 4 = 1` using `by rw [hm, pow_mul, ← map_pow, h, one_pow]`. Rewrite using `[MonoidHom.mul_apply, ← h']`. Simplify using `only [pow_succ, pow_zero, one_mul, mul_assoc]`. Introduce `g v`. Rewrite using `[LinearEquiv.trans_apply, LinearEquiv.trans_apply, he, he, map_smul, smul_smul, MonoidHom.mul_apply, Units.val_mul]`.
+-/
 theorem UpperTheory.V.Ws.exists_sign_twist_charpoly_of_not_irreducible_restriction :
     ∀ (K G : Type) [Field K] [IsAlgClosed K] [Group G], (2 : K) ≠ 0 → ∀ r : G →* Matrix (Fin 4) (Fin 4) K, U3.MatIrr ⊤ r →
       ∀ S : Subgroup G, commutator G ≤ S → S.index ∣ 4 → ¬ U3.MatIrr S r →

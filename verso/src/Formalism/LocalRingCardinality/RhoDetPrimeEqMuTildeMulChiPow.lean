@@ -27,9 +27,19 @@ variable {l : ℕ} [Fact l.Prime]
 
 def GoodCoef (N : ℕ) (LL : FinExt l) : Prop := ∀ x : Om l, x ^ Nat.lcm l N = 1 → x ∈ LL.1
 
+/- English proof (translation)
+Introduce `x hx` and use `hle (h x hx)`.
+-/
 theorem GoodCoef.mono {N : ℕ} {LL LL' : FinExt l} (h : GoodCoef N LL) (hle : LL.1 ≤ LL'.1) : GoodCoef N LL' :=
   fun x hx => hle (h x hx)
 
+/- English proof (translation)
+Use `⟨h1, h2, hle, fun τ x => ?_⟩` and prove the remaining obligations. Establish `e2 : ∀ y : ↥(Ks K s), τ.liftNormal (Om l) (y : Om l) = τ y` using `fun y => AlgHom.liftNormal_commutes τ (Om l) y`. Establish `key : Ks K s ≤ LL.1.comap (τ.liftNormal (Om l))`. Use `sup_le (fun y hy => ?_) (IntermediateField.adjoin_le_iff.2 fun y hy => ?_)` and prove the remaining obligations. Conclude with `hK ((τ.liftNormal (Om l)).comp K.1.val) ⟨y, hy.1⟩`.
+
+Use `h _ ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `hs`. Establish `hy' : y ^ (l ^ s) = 1` using `hy`. Rewrite using `[← map_pow, hc, pow_mul, hy', one_pow, map_one]`. Rewrite using `[← e2]`.
+
+Conclude with `key x.2`.
+-/
 theorem GoodCoef.good {N : ℕ} {K LL : FinExt l} {s : ℕ} (h : GoodCoef N LL)
     (hK : ∀ (τ : ↥K.1 →ₐ[ℚ_[l]] Om l) (x : ↥K.1), τ x ∈ LL.1) (hs : l ^ s ∣ Nat.lcm l N) (h1 : 1 ≤ s)
     (h2 : l = 2 → 2 ≤ s) (hle : K.1 ≤ Ks K s) : Good K s LL := by
@@ -45,6 +55,9 @@ theorem GoodCoef.good {N : ℕ} {K LL : FinExt l} {s : ℕ} (h : GoodCoef N LL)
   rw [← e2]
   exact key x.2
 
+/- English proof (translation)
+The claim follows from `h.good hK (by rw [pow_one]; exact Nat.dvd_lcm_left _ _) le_rfl (fun e => absurd e h2) hle`.
+-/
 theorem GoodCoef.good_one {N : ℕ} {K LL : FinExt l} (h : GoodCoef N LL)
     (hK : ∀ (τ : ↥K.1 →ₐ[ℚ_[l]] Om l) (x : ↥K.1), τ x ∈ LL.1) (h2 : l ≠ 2) (hle : K.1 ≤ Ks K 1) : Good K 1 LL :=
   h.good hK (by rw [pow_one]; exact Nat.dvd_lcm_left _ _) le_rfl (fun e => absurd e h2) hle

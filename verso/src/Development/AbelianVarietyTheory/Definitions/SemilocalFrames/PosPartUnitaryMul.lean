@@ -106,14 +106,35 @@ def decHS (h : ℝ) (q : ℕ) (t : ℝ) : ℝ := Real.exp (-(h / 8) * min (t ^ 2
 def stdRep (y : Matrix (Fin n) (Fin n) ℂ) : EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n) :=
   Matrix.toEuclideanCLM (n := Fin n) (𝕜 := ℂ) y
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem stdRep_apply (y : Matrix (Fin n) (Fin n) ℂ) (v : EuclideanSpace ℂ (Fin n)) (i : Fin n) :
     stdRep y v i = ∑ j, y i j * v j := rfl
 
+/- English proof (translation)
+Use `⟨hg, ?_⟩` and prove the remaining obligations. Simplify using `[Formalism.REAL.Jm, allPos]`.
+-/
 theorem mem_Kset_allPos {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Matrix.unitaryGroup (Fin n) ℂ) :
     g ∈ Formalism.REAL.Kset (allPos n) := by
   refine ⟨hg, ?_⟩
   simp [Formalism.REAL.Jm, allPos]
 
+/- English proof (translation)
+Rewrite using `[or_iff_not_imp_left]`. Introduce `hne`. Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff S).1 hne`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, v i ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+
+Use `push_neg at h`. Conclude with `hv0 (by ext j; simpa using h j)`. Establish `hD : Matrix.diagonal (fun a => if a = i then (-1 : ℂ) else 1) ∈ Matrix.unitaryGroup (Fin n) ℂ`. Rewrite using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `a`. Apply the tactic sequence `by_cases h : a = i <;> simp [h]`. Establish `h1` using `S.smul_mem (2 * v i)⁻¹ (S.sub_mem hv (hS _ (mem_Kset_allPos hD) v hv))`. Establish `e1 : (2 * v i)⁻¹ • (v - stdRep (Matrix.diagonal (fun a => if a = i then (-1 : ℂ) else 1)) v) = EuclideanSpace.single i (1 : ℂ)`. Use extensionality with `j`.
+
+Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `[stdRep_apply, Matrix.diagonal_apply]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `[stdRep_apply, Matrix.diagonal_apply, h]`. Rewrite `h1` using `[e1]`. Establish `h2 : ∀ j, EuclideanSpace.single j (1 : ℂ) ∈ S`. Introduce `j`. Establish `hP : (Equiv.swap i j).permMatrix ℂ ∈ Matrix.unitaryGroup (Fin n) ℂ`.
+
+Rewrite using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, Matrix.conjTranspose_permMatrix, ← Matrix.permMatrix_mul]`. Simplify using the standard rewrite rules. Use `hS _ (mem_Kset_allPos hP) _ h1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `a`.
+
+Simplify using `[stdRep_apply, Equiv.Perm.permMatrix, PEquiv.toMatrix_apply, Equiv.swap_apply_eq_iff, Pi.single_apply]`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Rewrite using `[← (EuclideanSpace.basisFun (Fin n) ℂ).sum_repr x]`. Conclude with `S.sum_mem fun j _ => S.smul_mem _ (by simpa using h2 j)`.
+-/
 theorem stdRep_irred (S : Submodule ℂ (EuclideanSpace ℂ (Fin n))) (hS : IsKStableOn (allPos n) stdRep S) :
     S = ⊥ ∨ S = ⊤ := by
   classical
@@ -156,6 +177,15 @@ theorem stdRep_irred (S : Submodule ℂ (EuclideanSpace ℂ (Fin n))) (hS : IsKS
   rw [← (EuclideanSpace.basisFun (Fin n) ℂ).sum_repr x]
   exact S.sum_mem fun j _ => S.smul_mem _ (by simpa using h2 j)
 
+/- English proof (translation)
+Use `⟨inferInstance, ⟨?_, ?_⟩, ?_, ?_, stdRep_irred, by simp, ?_, ?_⟩` and prove the remaining obligations. Conclude with `map_one (Matrix.toEuclideanCLM (n := Fin (n + 1)) (𝕜 := ℂ))`. Introduce `a _ b _`. Conclude with `map_mul (Matrix.toEuclideanCLM (n := Fin (n + 1)) (𝕜 := ℂ)) a b`. Introduce `u v`.
+
+Apply `Differentiable.differentiableOn` to reduce the goal to its premises. Simplify using `only [PiLp.inner_apply, stdRep_apply, Matrix.of_apply, RCLike.inner_apply]`. Use `fun_prop`. Introduce `y _ u v`. Establish `: stdRep yᴴ = ContinuousLinearMap.adjoint (stdRep y)` using `map_star (Matrix.toEuclideanCLM (n := Fin (n + 1)) (𝕜 := ℂ)) y`.
+
+Rewrite using `[this, ContinuousLinearMap.adjoint_inner_right]`. Introduce `θ _`. Use extensionality with `i`. Apply the tactic sequence `by_cases h : i = Fin.last n <;> simp [stdRep_apply, Matrix.diagonal_apply, Pi.single_apply, h]`. Introduce `y _ hy`.
+
+Use extensionality with `i`. Distinguish the cases in `h : i = Fin.last n`. Simplify using `[stdRep_apply, Pi.single_apply, h, (hy _ _).2 rfl]`. Simplify using `[stdRep_apply, Pi.single_apply, h, (hy i _).1 (Fin.lt_last_iff_ne_last.2 h)]`.
+-/
 theorem isTau_std (n : ℕ) :
     IsTau (allPos (n + 1)) (-Pi.single (Fin.last n) (1 : ℝ)) stdRep
       (EuclideanSpace.single (Fin.last n) (1 : ℂ)) := by
@@ -180,16 +210,34 @@ theorem isTau_std (n : ℕ) :
     · simp [stdRep_apply, Pi.single_apply, h, (hy _ _).2 rfl]
     · simp [stdRep_apply, Pi.single_apply, h, (hy i _).1 (Fin.lt_last_iff_ne_last.2 h)]
 
+/- English proof (translation)
+The claim follows from `h.1`.
+-/
 theorem IsZEigen.smooth {ε : Fin n → Bool} {χ : Fin n → ℂ} {f : Matrix (Fin n) (Fin n) ℂ → ℂ}
     (h : IsZEigen ε χ f) : Formalism.REAL.SmoothOnG ε f := h.1
 
+/- English proof (translation)
+The claim follows from `h.1`.
+-/
 theorem IsZFinite.smooth {ε : Fin n → Bool} {f : Matrix (Fin n) (Fin n) ℂ → ℂ}
     (h : IsZFinite ε f) : Formalism.REAL.SmoothOnG ε f := h.1
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, fun m => ⟨1, fun _ => gelfVal χ (m + 1), fun g hg => by simpa using h.2 m g hg⟩⟩`.
+-/
 theorem IsZEigen.isZFinite {ε : Fin n → Bool} {χ : Fin n → ℂ} {f : Matrix (Fin n) (Fin n) ℂ → ℂ}
     (h : IsZEigen ε χ f) : IsZFinite ε f :=
   ⟨h.1, fun m => ⟨1, fun _ => gelfVal χ (m + 1), fun g hg => by simpa using h.2 m g hg⟩⟩
 
+/- English proof (translation)
+Establish `h : Formalism.REAL.Amat (fun c => χ c + ((n : ℂ) - 1) / 2) *ᵥ (fun _ => (1 : ℂ)) = fun c => χ c - (Formalism.QuantumDeterminants.rhoStd n c : ℂ)`. Use function extensionality and compare the values at `a`. Establish `e : ∀ b : Fin n, (if a = b then χ a + ((n : ℂ) - 1) / 2 else if a < b then -1 else 0) = (if a = b then χ a + ((n : ℂ) - 1) / 2 else 0) - (if b ∈ Finset.Ioi a then 1 else 0)`. Introduce `b`. Distinguish the cases in `h1 : a = b`.
+
+Substitute `h1` using the available equality. Simplify using the standard rewrite rules. Apply the tactic sequence `by_cases h2 : a < b <;> simp [h1, h2]`. Establish `hc : (((Finset.Ioi a).card : ℕ) : ℂ) = (n : ℂ) - 1 - (a : ℕ)`. Use `a.isLt` as an intermediate fact.
+
+Rewrite using `[Fin.card_Ioi, Nat.cast_sub (by omega), Nat.cast_sub (by omega)]; simp`. Simplify using `only [Matrix.mulVec, dotProduct, Formalism.REAL.Amat, Matrix.of_apply, mul_one, e, Finset.sum_sub_distrib, Finset.sum_ite_eq, Finset.mem_univ, if_true, Finset.sum_ite_mem, Finset.univ_inter, Finset.sum_const, nsmul_eq_mul, hc, Formalism.QuantumDeterminants.rhoStd]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← h, Matrix.mulVec_mulVec, ← pow_succ]`.
+
+Simplify using `[gelfVal, Matrix.mulVec, dotProduct]`.
+-/
 theorem gelfVal_succ (χ : Fin n → ℂ) (k : ℕ) :
     gelfVal χ (k + 1) = ∑ a, ((Formalism.REAL.Amat (fun c => χ c + ((n : ℂ) - 1) / 2) ^ k) *ᵥ
       (fun c => χ c - (Formalism.QuantumDeterminants.rhoStd n c : ℂ))) a := by
@@ -213,10 +261,18 @@ theorem gelfVal_succ (χ : Fin n → ℂ) (k : ℕ) :
   rw [← h, Matrix.mulVec_mulVec, ← pow_succ]
   simp [gelfVal, Matrix.mulVec, dotProduct]
 
+/- English proof (translation)
+Rewrite using `[gelfVal_succ]`. Simplify using `[Matrix.mulVec, dotProduct]`.
+-/
 theorem gelfVal_rho (k : ℕ) : gelfVal (fun a => (Formalism.QuantumDeterminants.rhoStd n a : ℂ)) (k + 1) = 0 := by
   rw [gelfVal_succ]
   simp [Matrix.mulVec, dotProduct]
 
+/- English proof (translation)
+Proceed by induction on `w generalizing p with`. Consider the case `nil => funext g`. Simplify using `[Formalism.REAL.Eword, Formalism.REAL.Eab, Formalism.REAL.Ec, Formalism.REAL.Rd]`. Consider the case `cons q w ih`. Use function extensionality and compare the values at `g`.
+
+Rewrite using `[Formalism.REAL.Eword]`. Simplify using `only [ih q]`. Simplify using `[Formalism.REAL.Eab, Formalism.REAL.Ec, Formalism.REAL.Rd]`.
+-/
 theorem Eword_const (ε : Fin n → Bool) (c : ℂ) (p : Fin n × Fin n) (w : List (Fin n × Fin n)) :
     Formalism.REAL.Eword ε (p :: w) (fun _ => c) = fun _ => 0 := by
   induction w generalizing p with
@@ -231,6 +287,9 @@ section Smooth
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Use `⟨fun g _ => ⟨Set.univ, fun _ => c, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `m g _`. Simplify using `[gelf, cycWord, List.ofFn_succ, Eword_const, gelfVal_rho]`.
+-/
 theorem isZEigen_const (ε : Fin n → Bool) (c : ℂ) :
     IsZEigen ε (fun a => (Formalism.QuantumDeterminants.rhoStd n a : ℂ)) (fun _ => c) := by
   refine ⟨fun g _ => ⟨Set.univ, fun _ => c, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩, ?_⟩
@@ -239,6 +298,19 @@ theorem isZEigen_const (ε : Fin n → Bool) (c : ℂ) :
 
 end Smooth
 
+/- English proof (translation)
+Establish `hU : ∀ g, g ∈ UJset (allPos (n + 1)) ↔ g ∈ Formalism.REAL.Kset (allPos (n + 1))`. Introduce `g`. Simplify using `[UJset, Formalism.REAL.inUJ, Formalism.REAL.Kset, Formalism.REAL.Jm, allPos, Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose]`. Establish `hc : ∀ v, Continuous fun g : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ => stdRep g v`. Introduce `v`.
+
+Use `(PiLp.continuous_toLp 2 _).comp (f := fun g : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ => fun i => ∑ j, g i j * v j) ?_` and prove the remaining obligations. Use `fun_prop`. Use `⟨inferInstance, inferInstance, ⟨⟨(isTau_std n).2.1.1, fun a _ b _ => ?_⟩, ?_, fun v => (hc v).continuousOn⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `map_mul (Matrix.toEuclideanCLM (n := Fin (n + 1)) (𝕜 := ℂ)) a b`. Introduce `g hg v`.
+
+Establish `h1 : gᴴ * g = 1` using `Unitary.star_mul_self_of_mem ((hU g).1 hg).1`. Establish `h2 : stdRep gᴴ = ContinuousLinearMap.adjoint (stdRep g)` using `map_star (Matrix.toEuclideanCLM (n := Fin (n + 1)) (𝕜 := ℂ)) g`. Apply `(ContinuousLinearMap.norm_map_iff_adjoint_comp_self _).2` to reduce the goal to its premises. Rewrite using `[← h2]`. Use `map_mul (Matrix.toEuclideanCLM (n := Fin (n + 1)) (𝕜 := ℂ)) gᴴ g` as an intermediate fact.
+
+Rewrite `this` using `[h1, map_one]`. Conclude with `this.symm`. Introduce `S _ hS`. Conclude with `stdRep_irred S fun g hg => hS g ((hU g).2 hg)`. Introduce `v w`.
+
+Establish `hemb` using `Formalism.REAL.isClosedEmbeddingMatrix (n + 1) (allPos (n + 1))`. Use `haveI : CompactSpace (Formalism.REAL.UJ (allPos (n + 1))) := by`. Rewrite using `[← isCompact_univ_iff, hemb.1.isEmbedding.isCompact_iff, Set.image_univ, hemb.2]`. Use `(Formalism.REAL.maximal_compact_facts (n + 1) (allPos (n + 1))).2.1 using 1` and compare the differences between its conclusion and the goal. Conclude with `Set.ext hU`.
+
+Establish `hf : Continuous (coefOn (ε` using `allPos (n + 1)) stdRep v w) := continuous_const.inner ((hc v).comp hemb.1.continuous)`. Conclude with `hf.memLp_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`.
+-/
 theorem isSqIntIrr_std (n : ℕ) : IsSqIntIrr (allPos (n + 1)) stdRep := by
   have hU : ∀ g, g ∈ UJset (allPos (n + 1)) ↔ g ∈ Formalism.REAL.Kset (allPos (n + 1)) := by
     intro g
@@ -275,6 +347,11 @@ theorem isSqIntIrr_std (n : ℕ) : IsSqIntIrr (allPos (n + 1)) stdRep := by
 
 open scoped MatrixOrder in
 
+/- English proof (translation)
+Apply `Classical.epsilon_spec (p := fun p : Matrix (Fin n) (Fin n) ℂ => p.PosDef ∧ p * p = gᴴ * g)` to reduce the goal to its premises. Establish `h0 : (0 : Matrix (Fin n) (Fin n) ℂ) ≤ gᴴ * g` using `(Matrix.posSemidef_conjTranspose_mul_self g).nonneg`. Establish `hs : CFC.sqrt (gᴴ * g) * CFC.sqrt (gᴴ * g) = gᴴ * g` using `CFC.sqrt_mul_sqrt_self _ h0`. Use `⟨CFC.sqrt (gᴴ * g), ?_, hs⟩` and prove the remaining obligations. Rewrite using `[(Matrix.nonneg_iff_posSemidef.1 (CFC.sqrt_nonneg (gᴴ * g))).posDef_iff_isUnit]`.
+
+Establish `hu : IsUnit (gᴴ * g)` using `(by simpa [Matrix.star_eq_conjTranspose] using hg.star : IsUnit gᴴ).mul hg`. Rewrite `hu` using `[← hs]`. Conclude with `isUnit_of_mul_isUnit_left hu`.
+-/
 theorem posPart_posDef_sq {g : Matrix (Fin n) (Fin n) ℂ} (hg : IsUnit g) :
     (posPart g).PosDef ∧ posPart g * posPart g = gᴴ * g := by
   apply Classical.epsilon_spec (p := fun p : Matrix (Fin n) (Fin n) ℂ => p.PosDef ∧ p * p = gᴴ * g)
@@ -288,18 +365,27 @@ theorem posPart_posDef_sq {g : Matrix (Fin n) (Fin n) ℂ} (hg : IsUnit g) :
 
 open scoped MatrixOrder in
 
+/- English proof (translation)
+Take `⟨h1, h2⟩ : (posPart g).PosDef ∧ posPart g * posPart g = gᴴ * g` from `Classical.epsilon_spec (p := fun p : Matrix (Fin n) (Fin n) ℂ => p.PosDef ∧ p * p = gᴴ * g) ⟨p, hp, h⟩`. Rewrite using `[← CFC.sqrt_unique h2 h1.posSemidef.nonneg, ← CFC.sqrt_unique h hp.posSemidef.nonneg]`.
+-/
 theorem posPart_eq_of_sq {g p : Matrix (Fin n) (Fin n) ℂ} (hp : p.PosDef) (h : p * p = gᴴ * g) :
     posPart g = p := by
   obtain ⟨h1, h2⟩ : (posPart g).PosDef ∧ posPart g * posPart g = gᴴ * g :=
     Classical.epsilon_spec (p := fun p : Matrix (Fin n) (Fin n) ℂ => p.PosDef ∧ p * p = gᴴ * g) ⟨p, hp, h⟩
   rw [← CFC.sqrt_unique h2 h1.posSemidef.nonneg, ← CFC.sqrt_unique h hp.posSemidef.nonneg]
 
+/- English proof (translation)
+Apply `posPart_eq_of_sq hp` to reduce the goal to its premises. Establish `h : kᴴ * k = 1` using `Unitary.star_mul_self_of_mem hk`. Rewrite using `[Matrix.conjTranspose_mul, hp.1.eq, Matrix.mul_assoc, ← Matrix.mul_assoc kᴴ, h, Matrix.one_mul]`.
+-/
 theorem posPart_unitary_mul {k p : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Matrix.unitaryGroup (Fin n) ℂ)
     (hp : p.PosDef) : posPart (k * p) = p := by
   apply posPart_eq_of_sq hp
   have h : kᴴ * k = 1 := Unitary.star_mul_self_of_mem hk
   rw [Matrix.conjTranspose_mul, hp.1.eq, Matrix.mul_assoc, ← Matrix.mul_assoc kᴴ, h, Matrix.one_mul]
 
+/- English proof (translation)
+Unfold `Psi`. Rewrite using `[posPart_unitary_mul hk hp, Matrix.mul_nonsing_inv_cancel_right _ _ ((Matrix.isUnit_iff_isUnit_det p).1 hp.isUnit)]`.
+-/
 theorem Psi_unitary_mul (ε : Fin n → Bool) (lam : Fin n → ℝ) {W : Type} [NormedAddCommGroup W]
     [InnerProductSpace ℂ W] (τ : Matrix (Fin n) (Fin n) ℂ → (W →L[ℂ] W)) (w : W)
     {k p : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Matrix.unitaryGroup (Fin n) ℂ) (hp : p.PosDef) :
@@ -308,12 +394,18 @@ theorem Psi_unitary_mul (ε : Fin n → Bool) (lam : Fin n → ℝ) {W : Type} [
   rw [posPart_unitary_mul hk hp,
     Matrix.mul_nonsing_inv_cancel_right _ _ ((Matrix.isUnit_iff_isUnit_det p).1 hp.isUnit)]
 
+/- English proof (translation)
+Unfold `Phi leadMinor`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.submatrix_one _ (Fin.castLE_injective _)]`. Simplify using the standard rewrite rules.
+-/
 theorem Phi_at_one (lam : Fin n → ℝ) : Phi lam 1 = 1 := by
   unfold Phi leadMinor
   refine Finset.prod_eq_one fun i _ => ?_
   rw [Matrix.submatrix_one _ (Fin.castLE_injective _)]
   simp
 
+/- English proof (translation)
+Simplify using `[Phi, Fin.prod_univ_two, leadMinor, sInt]`.
+-/
 example (lam : Fin 2 → ℝ) (z : Matrix (Fin 2) (Fin 2) ℂ) :
     Phi lam z = z 0 0 ^ (-(muInt lam 0 - muInt lam 1)) * z.det ^ (-(muInt lam 1)) := by
   simp [Phi, Fin.prod_univ_two, leadMinor, sInt]

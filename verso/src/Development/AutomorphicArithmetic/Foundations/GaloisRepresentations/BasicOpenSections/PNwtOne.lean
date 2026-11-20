@@ -8,6 +8,13 @@ open CategoryTheory Limits AlgebraicGeometry UpperTheory.Gal.TranscendenceTraces
 
 namespace UpperTheory.Gal.Mod
 
+/- English proof (translation)
+Establish `hu : IsUnit ((p : ℕ) : Γ(gp Ω, ⊤))`. Establish `h1 : IsUnit ((p : ℕ) : Ω)` using `isUnit_iff_ne_zero.mpr hp`. Establish `h2` using `h1.map (Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom`. Simplify using `using h2`. Establish `h3 : (gp Ω).basicOpen (x.appTop (p : Γ(Y, ⊤))) = ⊤`.
+
+Rewrite using `[map_natCast]`. Conclude with `Scheme.basicOpen_of_isUnit _ hu`. Establish `h4 : IsLocalRing.closedPoint Ω ∈ x ⁻¹ᵁ Y.basicOpen (p : Γ(Y, ⊤))`. Rewrite using `[Scheme.preimage_basicOpen_top, h3]`. Discharge the goal by the elementary cases of `trivial`.
+
+Conclude with `h4`.
+-/
 private theorem mem_basicOpen_of_ne {p : ℕ} {Y : Scheme.{0}} (Ω : Type) [Field Ω]
     (x : gp Ω ⟶ Y) (hp : (p : Ω) ≠ 0) : pt x ∈ Y.basicOpen (p : Γ(Y, ⊤)) := by
   have hu : IsUnit ((p : ℕ) : Γ(gp Ω, ⊤)) := by
@@ -22,6 +29,19 @@ private theorem mem_basicOpen_of_ne {p : ℕ} {Y : Scheme.{0}} (Ω : Type) [Fiel
     trivial
   exact h4
 
+/- English proof (translation)
+Introduce `p Y T hL _`. Take `⟨_, _, _, _, _, _, _, hMB, _, _, hWN, _, hNF, _, _⟩` from `all_holds.1`. Use `haveI := T.fin`. Establish `hN : IsNwt T.p (nwt T.p)` using `hWN T.p hL`. Use `⟨hN.1, ?_⟩` and prove the remaining obligations.
+
+Introduce `Ω _ _ z hp`. Use `haveI := T.et`. Establish `hD : Dense {s | GenPt ((Y.basicOpen (p : Γ(Y, ⊤))).ι s)}`. Establish `hs : {s | GenPt ((Y.basicOpen (p : Γ(Y, ⊤))).ι s)} = {s | GenPt s}`. Use extensionality with `s`.
+
+Conclude with `genBasic_of.2.1 (Y.basicOpen (p : Γ(Y, ⊤))).ι s`. Rewrite using `[hs]`. Conclude with `genBasic_of.1 _`. Establish `hc` using `hNF (T.p ⁻¹ᵁ Y.basicOpen (p : Γ(Y, ⊤))).ι (T.p ∣_ Y.basicOpen (p : Γ(Y, ⊤))) T.p (Y.basicOpen (p : Γ(Y, ⊤))).ι (isPullback_morphismRestrict T.p _).flip hN hD`. Rewrite `hc` using `[hMB.2.2 (T.p ∣_ Y.basicOpen (p : Γ(Y, ⊤)))]`.
+
+Establish `hmem : pt (z ≫ T.p) ∈ Y.basicOpen (p : Γ(Y, ⊤))` using `mem_basicOpen_of_ne Ω (z ≫ T.p) hp`. Establish `hr : Set.range z ⊆ Set.range (T.p ⁻¹ᵁ Y.basicOpen (p : Γ(Y, ⊤))).ι`. Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨q, rfl⟩`. Establish `hq : q = IsLocalRing.closedPoint Ω` using `Subsingleton.elim _ _`.
+
+Substitute `hq` using the available equality. Conclude with `hmem`. Establish `hz` using `IsOpenImmersion.lift_fac (T.p ⁻¹ᵁ Y.basicOpen (p : Γ(Y, ⊤))).ι z hr`. Establish `h5` using `congrArg (fun w : Wt _ => w Ω (IsOpenImmersion.lift _ z hr)) hc`. Simplify using `only [Wt.comap, hz] at h5`.
+
+Rewrite using `[h5]`. Both sides reduce to the same expression.
+-/
 theorem nwtOne : NwtOne := by
   intro p Y T hL _
   obtain ⟨_, _, _, _, _, _, _, hMB, _, _, hWN, _, hNF, _, _⟩ := all_holds.1

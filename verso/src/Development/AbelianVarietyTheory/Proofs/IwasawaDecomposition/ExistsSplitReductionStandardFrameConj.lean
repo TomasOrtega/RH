@@ -13,6 +13,31 @@ noncomputable section
 
 namespace GlobalTheory.FrameRedSplit
 
+/- English proof (translation)
+Take `⟨γ, hγ⟩ : ∃ γ : Matrix (Fin m) (Fin m) R, γ = (β⁻¹).1 * B` from `⟨_, rfl⟩`. Take `⟨γ', hγ'⟩ : ∃ γ' : Matrix (Fin m) (Fin m) R, γ' = B' * β.1` from `⟨_, rfl⟩`. Establish `g1 : γ * γ' = 1`. Rewrite using `[hγ, hγ', Matrix.mul_assoc, ← Matrix.mul_assoc B, hBB, Matrix.one_mul, Units.inv_mul]`. Establish `g2 : γ' * γ = 1` using `mul_eq_one_comm.mp g1`.
+
+Establish `hZ' : ∀ κ (hκ : κ ∈ U), (Z κ hκ).1.map S.subtype = γ * Km κ * γ'`. Introduce `κ hκ`. Establish `e : γ * Km κ * γ' = (β⁻¹).1 * (B * Km κ * B') * β.1`. Rewrite using `[hγ, hγ']`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[e, ← hZ κ hκ]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Units.inv_mul, Matrix.mul_one, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`. Set `c : GL (Fin m) K` to `⟨γ.map pr, γ'.map pr, by rw [← Matrix.map_mul, g1, Matrix.map_one _ (map_zero _) (map_one _)], by rw [← Matrix.map_mul, g2, Matrix.map_one _ (map_zero _) (map_one _)]⟩`. Establish `hc : ∀ κ (hκ : κ ∈ U), (c.1 * (Km κ).map pr * (c⁻¹).1) = ((Z κ hκ).1.map S.subtype).map pr`.
+
+Introduce `κ hκ`. Rewrite using `[hZ' κ hκ, Matrix.map_mul, Matrix.map_mul]`. Both sides reduce to the same expression. Establish `hent : ∀ u : GL (Fin m) O, ∀ a b, (c * Matrix.GeneralLinearGroup.map O.subtype u * c⁻¹).1 a b ∈ O`. Introduce `u a b`.
+
+Take `⟨κ, hκ, hK⟩` from `hsurj u`. Establish `e : (c * Matrix.GeneralLinearGroup.map O.subtype u * c⁻¹).1 = c.1 * (Km κ).map pr * (c⁻¹).1`. Rewrite using `[hK]`. Both sides reduce to the same expression. Rewrite using `[e, hc κ hκ, Matrix.map_apply, Matrix.map_apply]`.
+
+Conclude with `(hres _).1`. Establish `hnorm : ∀ u ∈ Formalism.UG.GLint (Fin m) O.toSubring, c * u * c⁻¹ ∈ Formalism.UG.GLint (Fin m) O.toSubring`. Introduce and unpack `_ ⟨u, rfl⟩`. Use `GlobalTheory.HeckeStdFacts.mem_GLint_iff.2 ⟨fun a b => hent u a b, fun a b => ?_⟩` and prove the remaining obligations. Establish `e : (c * Formalism.UG.bc O.toSubring.subtype u * c⁻¹)⁻¹ = c * Matrix.GeneralLinearGroup.map O.subtype u⁻¹ * c⁻¹`.
+
+Rewrite using `[map_inv]`. Use `group`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `hent u⁻¹ a b`.
+
+Take `⟨h, ⟨h₀, rfl⟩, hconj⟩` from `GlobalTheory.HeckeStdFacts.exists_int_of_normalizes O.valuation O.toSubring (fun x => (O.valuation_le_one_iff x).symm) c hnorm`. It suffices to establish `H : ∀ h₁ : GL (Fin m) O, (∀ x, c * x * c⁻¹ = Matrix.GeneralLinearGroup.map O.subtype h₁ * x * (Matrix.GeneralLinearGroup.map O.subtype h₁)⁻¹) → ∃ b : GL (Fin m) k, ∀ κ (hκ : κ ∈ U) (y : GL (Fin m) O), (Km κ).map pr = y.1.map O.subtype → (Z κ hκ).1.map res = (b * Matrix.GeneralLin …`. Introduce `h₁ hconj'`. Use `⟨Matrix.GeneralLinearGroup.map φ h₁, fun κ hκ y hy => ?_⟩` and prove the remaining obligations. Use extensionality with `a b`.
+
+Take `⟨hm, hr⟩` from `hres ((Z κ hκ).1 a b)`. Establish `e1 : pr ((Z κ hκ).1 a b : R) = (c * Matrix.GeneralLinearGroup.map O.subtype y * c⁻¹).1 a b`. Use `congrFun (congrFun (hc κ hκ) a) b` as an intermediate fact. Rewrite `this` using `[hy]`. Conclude with `this.symm`.
+
+Establish `e2 : (c * Matrix.GeneralLinearGroup.map O.subtype y * c⁻¹) = Matrix.GeneralLinearGroup.map O.subtype (h₁ * y * h₁⁻¹)`. Rewrite using `[hconj']`. Simplify using `only [map_mul, map_inv]`. Establish `e3 : (⟨_, hm⟩ : O) = (h₁ * y * h₁⁻¹).1 a b`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `show pr _ = _`. Rewrite using `[e1, e2]`. Both sides reduce to the same expression. Establish `e4 : Matrix.GeneralLinearGroup.map φ h₁ * Matrix.GeneralLinearGroup.map φ y * (Matrix.GeneralLinearGroup.map φ h₁)⁻¹ = Matrix.GeneralLinearGroup.map φ (h₁ * y * h₁⁻¹)`. Simplify using `only [map_mul, map_inv]`.
+
+Rewrite using `[Matrix.map_apply, hr, e3, e4]`. Both sides reduce to the same expression.
+-/
 theorem conj_red_core {R K k ι : Type} [CommRing R] [Field K] [CommRing k] {m : ℕ} (S : Subring R) (O : ValuationSubring K)
     (pr : R →+* K) (φ : O →+* k) (res : S →+* k) (hres : ∀ z : S, ∃ h : pr z ∈ O, res z = φ ⟨_, h⟩)
     (β : GL (Fin m) R) (B B' : Matrix (Fin m) (Fin m) R) (hBB : B * B' = 1)
@@ -84,6 +109,9 @@ theorem conj_red_core {R K k ι : Type} [CommRing R] [Field K] [CommRing k] {m :
   rw [Matrix.map_apply, hr, e3, e4]
   rfl
 
+/- English proof (translation)
+Establish `hmem : s.proj (y : EAf D) ∈ s.v.adicCompletionIntegers (maximalRealSubfield D.host.E)` using `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 (GlobalTheory.RowGood.proj_le_one s y.2)`. Use `⟨hmem, ?_⟩` and prove the remaining obligations. Take `⟨a, ha, hφ⟩` from `GlobalTheory.MtRed.exists_approx s ⟨_, hmem⟩`. Rewrite using `[hφ]`. Conclude with `GlobalTheory.RowGood.res_eq (rfl : maximalRealSubfield D.host.E = _) s (y : EAf D) y (GlobalTheory.RowGood.tr_rfl _).symm a ha`.
+-/
 theorem resS_eq_phiR (D : D7) (s : ReciprocityTheory.Aut.SplitPlace D.host.E) (y : Formalism.L2.Herm.intAf D.host.F D.host.E) :
     ∃ h : s.proj (y : EAf D) ∈ s.v.adicCompletionIntegers (maximalRealSubfield D.host.E),
       resS D.host.F s.w y = GlobalTheory.MtRed.phiR s ⟨_, h⟩ := by
@@ -96,6 +124,23 @@ theorem resS_eq_phiR (D : D7) (s : ReciprocityTheory.Aut.SplitPlace D.host.E) (y
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `D V n hn hF P β Λ hP hβ s`. Substitute `hn` using the available equality. Take `⟨⟨β₀, β₀', h01, h10, hmat⟩, hK⟩` from `hP`. Establish `hSt : ∀ κ ∈ ReciprocityTheory.Aut.Umax D.host.E V.rank, finE V (P.ψ κ) ∈ St β` using `fun κ hκ => (GlobalTheory.FinZeta.LevelOff.finE_mem_St_iff hβ (P.into κ)).2 ((hK κ).1 hκ)`. Establish `hfin : ∀ κ : Formalism.AUTREP.GAf D.host.E V.rank, (finE V (P.ψ κ)).1 = β₀.map (GlobalTheory.LevSplit.swp D.host.F D.host.E) * (κ.1.1.map (GlobalTheory.RowGood.tr hF)) * β₀'.map (GlobalTheory.LevSplit.swp D.host.F D.host.E)`.
+
+Introduce `κ`. Establish `e` using `congrArg (fun M => Matrix.map M (GlobalTheory.LevSplit.swp D.host.F D.host.E)) (hmat κ)`. Use `e.trans ?_` and prove the remaining obligations. Simplify using `only [Matrix.map_mul]`. Both sides reduce to the same expression.
+
+Establish `hBB : β₀.map (GlobalTheory.LevSplit.swp D.host.F D.host.E) * β₀'.map (GlobalTheory.LevSplit.swp D.host.F D.host.E) = 1`. Rewrite using `[← Matrix.map_mul, h01, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hZ : ∀ (κ : Formalism.AUTREP.GAf D.host.E V.rank) (hκ : κ ∈ {κ | κ ∈ ReciprocityTheory.Aut.Umax D.host.E V.rank}), β.1 * (pullFr β ⟨_, hSt κ hκ⟩).1.map (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype * (β⁻¹).1 = β₀.map (GlobalTheory.LevSplit.swp D.host.F D.host.E) * (κ.1.1.ma …`. Introduce `κ hκ`. Conclude with `(congrArg (fun g : GL (Fin V.rank) (EAf D) => g.1) (frGL_pullFr β ⟨_, hSt κ hκ⟩)).trans (hfin κ)`.
+
+Establish `hpr : ∀ κ : Formalism.AUTREP.GAf D.host.E V.rank, (κ.1.1.map (GlobalTheory.RowGood.tr hF)).map s.proj = (s.loc V.rank κ).1`. Introduce `κ`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply]`. Rewrite using `[GlobalTheory.RowGood.tr_rfl]`.
+
+Both sides reduce to the same expression. Establish `hsurj : ∀ u : GL (Fin V.rank) (s.v.adicCompletionIntegers (maximalRealSubfield D.host.E)), ∃ κ : Formalism.AUTREP.GAf D.host.E V.rank, ∃ _ : κ ∈ {κ | κ ∈ ReciprocityTheory.Aut.Umax D.host.E V.rank}, (κ.1.1.map (GlobalTheory.RowGood.tr hF)).map s.proj = u.1.map (s.v.adicCompletion …`. Introduce `u`. Take `⟨x, hx, hloc⟩` from `GlobalTheory.SplitSec.exists_trivOutside_loc D.host.E V.rank s (Matrix.GeneralLinearGroup.map (s.v.adicCompletionIntegers (maximalRealSubfield D.host.E)).subtype u)`. Use `⟨x, (GlobalTheory.HeckeStdFacts.loc_mem_GLint_iff s hx).1 ⟨u, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hloc]`. Both sides reduce to the same expression. Rewrite using `[hpr, hloc]`. Both sides reduce to the same expression. Take `⟨b, hb⟩` from `conj_red_core (R := EAf D) (K := s.v.adicCompletion (maximalRealSubfield D.host.E)) (k := kP s.w) (ι := Formalism.AUTREP.GAf D.host.E V.rank) (m := V.rank) (S := Formalism.L2.Herm.intAf D.host.F D.host.E) (O := s.v.adicCompletionIntegers (maximalRealSubfield D.host.E)) (pr := s.p …`.
+
+Use `⟨GlobalTheory.MtRed.phiR s, b, ⟨GlobalTheory.MtRed.phiR_surj s, GlobalTheory.MtRed.phiR_eq_zero s⟩, fun κ hκ y hy a c => ?_⟩` and prove the remaining obligations. Establish `hy' : (κ.1.1.map (GlobalTheory.RowGood.tr hF)).map s.proj = y.1.map (s.v.adicCompletionIntegers (maximalRealSubfield D.host.E)).subtype`. Rewrite using `[hpr]`. Conclude with `Matrix.ext fun i j => (hy i j).symm`. Establish `e` using `congrFun (congrFun (hb κ hκ y hy') a) c`.
+
+Establish `hr : redFn β s.w (finE V (P.ψ κ)) = Formalism.UG.bc (resS D.host.F s.w) (pullFr β ⟨_, hSt κ hκ⟩)`. Establish `h1` using `redFn_frGL β s.w (pullFr β ⟨_, hSt κ hκ⟩)`. Rewrite `h1` using `[frGL_pullFr]`. Then use the resulting hypothesis. Rewrite using `[← e, hr]`. Both sides reduce to the same expression.
+-/
 theorem frameRed_exists : ∀ (D : D7) (V : HSp D) (n : ℕ) (hn : V.rank = n) (hF : D.host.F = maximalRealSubfield D.host.E) (P : principalLevelFrame.RowPsi V n) (β : GL (Fin V.rank) (EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)), R3.StdFrame hF P → IsBaseFrame V β Λ 1 → ∀ s : ReciprocityTheory.Aut.SplitPlace D.host.E, ∃ (φ : Os s →+* kP s.w) (b : GL (Fin n) (kP s.w)), IsResidue s φ ∧ FrameRed hn P β s φ b := by
   intro D V n hn hF P β Λ hP hβ s
   subst hn

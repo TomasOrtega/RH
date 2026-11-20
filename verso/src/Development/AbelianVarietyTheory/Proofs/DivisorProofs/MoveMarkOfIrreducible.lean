@@ -25,12 +25,20 @@ section Field
 
 variable {F M : Type} [Field F] [Field M] [Algebra F M]
 
+/- English proof (translation)
+Use `letI : Algebra F ℂ := τ.toAlgebra`. Establish `h : Polynomial.aeval z (minpoly F pb.gen) = 0` using `hz`. Conclude with `⟨(pb.lift z h : M →ₐ[F] ℂ), fun x => (pb.lift z h).commutes x, pb.lift_gen z h⟩`.
+-/
 theorem exists_emb (pb : PowerBasis F M) (τ : F →+* ℂ) (z : ℂ) (hz : (minpoly F pb.gen).eval₂ τ z = 0) :
     ∃ e : M →+* ℂ, (∀ x, e (algebraMap F M x) = τ x) ∧ e pb.gen = z := by
   letI : Algebra F ℂ := τ.toAlgebra
   have h : Polynomial.aeval z (minpoly F pb.gen) = 0 := hz
   exact ⟨(pb.lift z h : M →ₐ[F] ℂ), fun x => (pb.lift z h).commutes x, pb.lift_gen z h⟩
 
+/- English proof (translation)
+Establish `hy : y ∈ Algebra.adjoin F {pb.gen}` using `by rw [pb.adjoin_gen_eq_top]; trivial`. Proceed by induction on `hy using Algebra.adjoin_induction with`. Consider the case `mem x hx => rw [Set.mem_singleton_iff.1 hx]`. Conclude with `h0`. Consider the case `algebraMap r => exact h1 r`.
+
+Consider the case `add x y _ _ hx hy => exact h2 x y hx hy`. Consider the case `mul x y _ _ hx hy => exact h3 x y hx hy`.
+-/
 theorem gen_ind (pb : PowerBasis F M) (q : M → Prop) (h0 : q pb.gen) (h1 : ∀ x, q (algebraMap F M x))
     (h2 : ∀ x y, q x → q y → q (x + y)) (h3 : ∀ x y, q x → q y → q (x * y)) (y : M) : q y := by
   have hy : y ∈ Algebra.adjoin F {pb.gen} := by rw [pb.adjoin_gen_eq_top]; trivial
@@ -40,17 +48,28 @@ theorem gen_ind (pb : PowerBasis F M) (q : M → Prop) (h0 : q pb.gen) (h1 : ∀
   | add x y _ _ hx hy => exact h2 x y hx hy
   | mul x y _ _ hx hy => exact h3 x y hx hy
 
+/- English proof (translation)
+The claim follows from `RingHom.ext (gen_ind pb (fun y => e y = e' y) h0 h1 (fun x y hx hy => by simp only [map_add, hx, hy]) (fun x y hx hy => by simp only [map_mul, hx, hy]))`.
+-/
 theorem emb_ext (pb : PowerBasis F M) (e e' : M →+* ℂ) (h1 : ∀ x, e (algebraMap F M x) = e' (algebraMap F M x))
     (h0 : e pb.gen = e' pb.gen) : e = e' :=
   RingHom.ext (gen_ind pb (fun y => e y = e' y) h0 h1 (fun x y hx hy => by simp only [map_add, hx, hy])
     (fun x y hx hy => by simp only [map_mul, hx, hy]))
 
+/- English proof (translation)
+Rewrite using `[← Polynomial.hom_eval₂, ← Polynomial.aeval_def, minpoly.aeval, map_zero]`.
+-/
 theorem emb_root (pb : PowerBasis F M) (e : M →+* ℂ) :
     (minpoly F pb.gen).eval₂ (e.comp (algebraMap F M)) (e pb.gen) = 0 := by
   rw [← Polynomial.hom_eval₂, ← Polynomial.aeval_def, minpoly.aeval, map_zero]
 
 variable [NumberField F] [IsCMField F]
 
+/- English proof (translation)
+Introduce `he`. Apply `IsCMField.complexConj_ne_one F` to reduce the goal to its premises. Use extensionality with `x`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[IsCMField.complexEmbedding_complexConj, ← h' x]`.
+
+Use `DFunLike.congr_fun he (algebraMap F M x)` as an intermediate fact. Rewrite `this` using `[ComplexEmbedding.conjugate_coe_eq]`. Rewrite using `[← this, h]`. Both sides reduce to the same expression.
+-/
 theorem ne_conj (τ : F →+* ℂ) (e e' : M →+* ℂ) (h : ∀ x, e (algebraMap F M x) = τ x)
     (h' : ∀ x, e' (algebraMap F M x) = τ x) : e ≠ ComplexEmbedding.conjugate e' := by
   intro he
@@ -64,6 +83,11 @@ theorem ne_conj (τ : F →+* ℂ) (e e' : M →+* ℂ) (h : ∀ x, e (algebraMa
   rfl
 
 omit [NumberField F] [IsCMField F] in
+/- English proof (translation)
+Rewrite using `[← w.mk_embedding, ← v.mk_embedding]`. Break down `he with he | he` into its components or cases. Use `congr 1`. Use extensionality with `x`. Rewrite using `[← h, ← h', he]`.
+
+Rewrite using `[← InfinitePlace.mk_conjugate_eq v.embedding]`. Use `congr 1`. Use extensionality with `x`. Rewrite using `[← h, he, ComplexEmbedding.conjugate_coe_eq, ComplexEmbedding.conjugate_coe_eq, h']`.
+-/
 theorem place_eq (v w : InfinitePlace F) (e e' : M →+* ℂ) (h : ∀ x, e (algebraMap F M x) = w.embedding x)
     (h' : ∀ x, e' (algebraMap F M x) = v.embedding x) (he : e = e' ∨ e = ComplexEmbedding.conjugate e') : w = v := by
   rw [← w.mk_embedding, ← v.mk_embedding]
@@ -80,14 +104,27 @@ end Field
 
 variable {p : ℕ} [Fact p.Prime] {G : HTGroup p}
 
+/- English proof (translation)
+Simplify using `only [sh, map_mul, MulOpposite.unop_mul]`.
+-/
 theorem sh_mul (x y : G.C) : sh G (x * y) = sh G y * sh G x := by
   simp only [sh, map_mul, MulOpposite.unop_mul]
 
+/- English proof (translation)
+Simplify using `only [sh, map_add, MulOpposite.unop_add]`.
+-/
 theorem sh_add (x y : G.C) : sh G (x + y) = sh G x + sh G y := by
   simp only [sh, map_add, MulOpposite.unop_add]
 
 variable {M : Type} [Field M] [NumberField M] [Algebra G.F M]
 
+/- English proof (translation)
+Use `gen_ind pb (fun y => (P.β : G.C) * sh G (j y) = j (σ y) * P.β) ?_ ?_ ?_ ?_ y` and prove the remaining obligations. Establish `h1 : (P.γ : G.C) * j (σ pb.gen) = algebraMap ℚ G.C P.c`. Rewrite using `[← hj, ← map_mul, mul_comm, hπ, IsScalarTower.algebraMap_apply ℚ G.F G.C, ← j.commutes]`. Use `congr 1`. Simplify using the standard rewrite rules.
+
+Use `show (P.β : G.C) * sh G (j pb.gen) = j (σ pb.gen) * P.β`. Apply `P.γ.isUnit.mul_left_cancel` to reduce the goal to its premises. Rewrite using `[hj, ← mul_assoc, P.sim, ← mul_assoc, h1]`. Introduce `x show (P.β : G.C) * sh G (j (algebraMap G.F M x)) = j (σ (algebraMap G.F M x)) * P.β`. Rewrite using `[hσ, j.commutes, j.commutes, sh, G.star_F, Algebra.commutes]`.
+
+Introduce `x y hx hy show (P.β : G.C) * sh G (j (x + y)) = j (σ (x + y)) * P.β`. Rewrite using `[map_add, sh_add, mul_add, hx, hy, map_add, map_add, add_mul]`. Introduce `x y hx hy show (P.β : G.C) * sh G (j (x * y)) = j (σ (x * y)) * P.β`. Rewrite using `[map_mul, sh_mul, ← mul_assoc, hy, mul_assoc, hx, ← mul_assoc, ← map_mul, ← map_mul, mul_comm y x]`.
+-/
 theorem conj_law (P : Pair G) (pb : PowerBasis G.F M) (j : M →ₐ[G.F] G.C) (hj : j pb.gen = P.γ) (σ : M →+* M)
     (hσ : ∀ x : G.F, σ (algebraMap G.F M x) = algebraMap G.F M (IsCMField.complexConj G.F x))
     (hπ : σ pb.gen * pb.gen = ((P.c : ℚ) : M)) (y : M) : (P.β : G.C) * sh G (j y) = j (σ y) * P.β := by
@@ -110,6 +147,11 @@ theorem conj_law (P : Pair G) (pb : PowerBasis G.F M) (j : M →ₐ[G.F] G.C) (h
     rw [map_mul, sh_mul, ← mul_assoc, hy, mul_assoc, hx, ← mul_assoc, ← map_mul, ← map_mul, mul_comm y x]
 
 omit [NumberField M] in
+/- English proof (translation)
+Use `gen_ind pb (fun m => y * j m = j m * y) ?_ ?_ ?_ ?_ m` and prove the remaining obligations. Use `show y * j pb.gen = j pb.gen * y`. Rewrite using `[hj, hy]`. Introduce `x show y * j (algebraMap G.F M x) = j (algebraMap G.F M x) * y`. Rewrite using `[j.commutes, Algebra.commutes]`.
+
+Introduce `a b ha hb show y * j (a + b) = j (a + b) * y`. Rewrite using `[map_add, mul_add, add_mul, ha, hb]`. Introduce `a b ha hb show y * j (a * b) = j (a * b) * y`. Rewrite using `[map_mul, ← mul_assoc, ha, mul_assoc, hb, mul_assoc]`.
+-/
 theorem comm_law (γ : G.C) (pb : PowerBasis G.F M) (j : M →ₐ[G.F] G.C) (hj : j pb.gen = γ) (y : G.C)
     (hy : y * γ = γ * y) (m : M) : y * j m = j m * y := by
   refine gen_ind pb (fun m => y * j m = j m * y) ?_ ?_ ?_ ?_ m
@@ -125,6 +167,9 @@ theorem comm_law (γ : G.C) (pb : PowerBasis G.F M) (j : M →ₐ[G.F] G.C) (hj 
     show y * j (a * b) = j (a * b) * y
     rw [map_mul, ← mul_assoc, ha, mul_assoc, hb, mul_assoc]
 
+/- English proof (translation)
+Unfold `Triv at hx ⊢`. Establish `h1 : (starT G.star R U).unop * (starT G.star R ((U⁻¹ : (R ⊗[ℚ] G.C)ˣ) : R ⊗[ℚ] G.C)).unop = 1`. Rewrite using `[← MulOpposite.unop_mul, ← map_mul, Units.inv_mul, map_one, MulOpposite.unop_one]`. Rewrite using `[← hx, ← hU, Units.val_mul, map_mul, MulOpposite.unop_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem triv_mul_inv (R : Type) [CommRing R] [Algebra ℚ R] (β β' : G.C) (x U : (R ⊗[ℚ] G.C)ˣ) (t : Rˣ)
     (hU : (U : R ⊗[ℚ] G.C) * inC G R β * (starT G.star R U).unop = inC G R β') (hx : Triv G R β x t) :
     Triv G R β' (x * U⁻¹) t := by
@@ -139,6 +184,17 @@ theorem triv_mul_inv (R : Type) [CommRing R] [Algebra ℚ R] (β β' : G.C) (x U
 
 omit [NumberField M] in
 
+/- English proof (translation)
+Take `⟨Z, lam, hinj, hroot, hZ⟩` from `GlobalTheory.T.exists_eigenbasis_psi_infinitePlace_distinct_roots p G P w`. Establish `hr : ∀ i, P.pol.eval₂ w.embedding (lam i) = 0` using `fun i => (hroot _).2 ⟨i, rfl⟩`. Use `choose e he he' using fun i => exists_emb pb w.embedding (lam i) (hpol ▸ hr i)`. Take `⟨h1, h2, h3⟩` from `GlobalTheory.T.similitudePair_hermitianForm_invertible_similitude p G P w`. Take `⟨d, hd, hD⟩` from `GlobalTheory.T.exists_diagonal_congr_of_similitude_distinct_eigenvalues _ (G.psi w P.γ) ((P.c : ℚ) : ℝ) Z lam h1 h2 (by exact_mod_cast P.c.ne_zero) (by rw [h3]; simp) hinj (fun i => GlobalTheory.T.marked_similitude_pair_minpoly_roots_normSq_eq p G P μ ha hm _ _ (hr i)) hZ`.
+
+Establish `hl : (fun i => e i pb.gen) = lam` using `funext he'`. Use `⟨Z, d, e, he, hl ▸ hinj, fun z hz => ?_, fun y => ?_, hd, hD⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `(hroot z).1 hz`. Conclude with `⟨i, (he' i).trans hi⟩`. Use `gen_ind pb (fun y => G.psi w (j y) * (Z : Matrix (Fin G.n) (Fin G.n) ℂ) = (Z : Matrix (Fin G.n) (Fin G.n) ℂ) * Matrix.diagonal (fun i => e i y)) ?_ ?_ ?_ ?_ y` and prove the remaining obligations.
+
+Use `show G.psi w (j pb.gen) * _ = _`. Rewrite using `[hj, hl, hZ]`. Introduce `x show G.psi w (j (algebraMap G.F M x)) * _ = _`. Simplify using `only [he]`. Rewrite using `[j.commutes, G.psi_F]`.
+
+Conclude with `(Matrix.scalar_commute _ (fun _ => Commute.all _ _) _).eq`. Introduce `a b h h' show G.psi w (j (a + b)) * _ = _`. Simplify using `only [map_add]`. Rewrite using `[Matrix.add_mul, h, h', ← Matrix.mul_add, Matrix.diagonal_add]`. Introduce `a b h h' show G.psi w (j (a * b)) * _ = _`.
+
+Simplify using `only [map_mul]`. Rewrite using `[Matrix.mul_assoc, h', ← Matrix.mul_assoc, h, Matrix.mul_assoc, Matrix.diagonal_mul_diagonal]`.
+-/
 theorem exists_basis (ha : G.a = 1) (P : Pair G) (μ : ℂ) (hm : P.Mark μ) (pb : PowerBasis G.F M)
     (hpol : P.pol = minpoly G.F pb.gen) (j : M →ₐ[G.F] G.C) (hj : j pb.gen = P.γ) (w : InfinitePlace G.F) :
     ∃ (Z : GL (Fin G.n) ℂ) (d : Fin G.n → ℝ) (e : Fin G.n → (M →+* ℂ)),

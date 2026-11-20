@@ -11,6 +11,9 @@ universe u
 
 noncomputable section
 
+/- English proof (translation)
+Take `⟨k, n, X', q, π, U, hq, hqπ, hU, hπ⟩` from `exists_chow_multiProj (A := A) X`. Use `⟨ProjSpace.multiProjDim k n, X', q ≫ ProjSpace.multiProjEmb A k n, π, U, inferInstance, ?_, hU, hπ⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ProjSpace.multiProjEmb_toSpecBase, hqπ]`.
+-/
 theorem exists_chow' {A : Type u} [CommRing A] [IsNoetherianRing A] (X : Scheme.{u})
     [X.Over (Spec (.of A))] [IsProper (X ↘ Spec (.of A))] [IrreducibleSpace X] :
     ∃ (N : ℕ) (X' : Scheme.{u}) (i : X' ⟶ projectiveSpace A N) (π : X' ⟶ X) (U : X.Opens),
@@ -21,6 +24,9 @@ theorem exists_chow' {A : Type u} [CommRing A] [IsNoetherianRing A] (X : Scheme.
     inferInstance, ?_, hU, hπ⟩
   rw [Category.assoc, ProjSpace.multiProjEmb_toSpecBase, hqπ]
 
+/- English proof (translation)
+Take `⟨N, X', i, π, U, hi, hiπ, hU, hπ⟩` from `exists_chow' (A := A) X`. Conclude with `⟨N, X', i, π, U, hi, hiπ, ⟨_, hU⟩, hπ⟩`.
+-/
 theorem exists_chow {A : Type u} [CommRing A] [IsNoetherianRing A] (X : Scheme.{u})
     [X.Over (Spec (.of A))] [IsProper (X ↘ Spec (.of A))] [IrreducibleSpace X] :
     ∃ (N : ℕ) (X' : Scheme.{u}) (i : X' ⟶ projectiveSpace A N) (π : X' ⟶ X) (U : X.Opens),

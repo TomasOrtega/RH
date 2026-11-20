@@ -4,10 +4,16 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.MemSpan
 
 open IsLocalRing MvPowerSeries UpperTheory.V.Alg
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.MemSpanVariable.mem_span_X f hf`.
+-/
 private theorem mem_span_X {O σ : Type} [CommRing O] [Fintype σ] (f : MvPowerSeries σ O)
     (hf : constantCoeff f = 0) : f ∈ Ideal.span (Set.range (MvPowerSeries.X : σ → MvPowerSeries σ O)) :=
   _root_.UpperTheory.Reformulated.B.MemSpanVariable.mem_span_X f hf
 
+/- English proof (translation)
+Establish `h1 : D 1 = 0`. Establish `h : D (1 * 1) = x 1 • D 1 + x 1 • D 1` using `hD 1 1`. Rewrite `h` using `[mul_one, map_one x, one_smul]`. Simplify using `using h`. Rewrite using `[Algebra.algebraMap_eq_smul_one, map_smul, h1, smul_zero]`.
+-/
 private theorem der_algebraMap {O A Q : Type} [CommRing O] [CommRing A] [Algebra O A] [AddCommGroup Q]
     [Module O Q] (x : A →ₐ[O] O) (D : A →ₗ[O] Q) (hD : D ∈ PtDer x Q) (c : O) : D (algebraMap O A c) = 0 := by
   have h1 : D 1 = 0 := by
@@ -16,6 +22,9 @@ private theorem der_algebraMap {O A Q : Type} [CommRing O] [CommRing A] [Algebra
     simpa using h
   rw [Algebra.algebraMap_eq_smul_one, map_smul, h1, smul_zero]
 
+/- English proof (translation)
+Rewrite `hf` using `[pow_two]`. Use `Submodule.mul_induction_on hf (fun a ha b hb => ?_) (fun a b ha hb => by rw [map_add, ha, hb, add_zero])` and prove the remaining obligations. Establish `h : D (a * b) = x a • D b + x b • D a` using `hD a b`. Rewrite using `[h, (RingHom.mem_ker).1 ha, (RingHom.mem_ker).1 hb, zero_smul, zero_smul, add_zero]`.
+-/
 private theorem der_sq {O A Q : Type} [CommRing O] [CommRing A] [Algebra O A] [AddCommGroup Q]
     [Module O Q] (x : A →ₐ[O] O) (D : A →ₗ[O] Q) (hD : D ∈ PtDer x Q) (f : A) (hf : f ∈ RingHom.ker x ^ 2) :
     D f = 0 := by
@@ -24,6 +33,31 @@ private theorem der_sq {O A Q : Type} [CommRing O] [CommRing A] [Algebra O A] [A
   have h : D (a * b) = x a • D b + x b • D a := hD a b
   rw [h, (RingHom.mem_ker).1 ha, (RingHom.mem_ker).1 hb, zero_smul, zero_smul, add_zero]
 
+/- English proof (translation)
+Introduce `O R _ _ _ X _ _ _ _ W h Q _ _`. Take `⟨hk, hy⟩` from `UpperTheory.V.Alg.ker_pow O R X W h 2`. Use `choose y hy using hy`. Use `⟨fun D hD => ?_, fun D hD hz => ?_⟩` and prove the remaining obligations. Establish `key : ∀ (x : R) (a : W.A), x - a ∈ RingHom.ker (W.origin h) ^ 2 → D (y x) = D a` using `fun x a ha => by`.
+
+Rewrite using `[← sub_eq_zero, ← map_sub]`. Use `der_sq _ D hD _ ?_` and prove the remaining obligations. Rewrite using `[← hk, Ideal.mem_comap]`. Use `sub_mem ha (hy x)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Simplify using the standard rewrite rules. Establish `horig : ∀ x : R, W.origin h x = W.originA h (y x)` using `fun x => by`. Establish `h1 : x - y x ∈ RingHom.ker (W.origin h)` using `Ideal.pow_le_self two_ne_zero (hy x)`. Rewrite `h1` using `[RingHom.mem_ker, map_sub, sub_eq_zero]`. Conclude with `h1`.
+
+Set `D' : R →ₗ[O] Q` to `{ toFun := fun x => D (y x) map_add' := fun a b => by`. Rewrite using `[← map_add]`. Use `key _ _ ?_` and prove the remaining obligations. Use `add_mem (hy a) (hy b)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use the proof step `map_smul' := fun c a => by`. Rewrite using `[RingHom.id_apply, ← map_smul]`. Use `key _ _ ?_` and prove the remaining obligations.
+
+Use `Submodule.smul_of_tower_mem _ c (hy a)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[smul_sub]`. Use `rfl }`. Use `⟨D', ⟨fun a b => ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : D (y a * y b) = W.originA h (y a) • D (y b) + W.originA h (y b) • D (y a)` using `hD _ _ show D (y (a * b)) = W.origin h a • D (y b) + W.origin h b • D (y a)`. Rewrite using `[horig a, horig b, ← h1]`. Use `key _ _ ?_` and prove the remaining obligations. Use `add_mem (Ideal.mul_mem_right b _ (hy a)) (Ideal.mul_mem_left _ (y a : R) (hy b))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use extensionality with `a`. Conclude with `key _ a (by simp)`. Introduce and unpack `E ⟨hE, rfl⟩`.
+
+Use extensionality with `x`. Use `der_sq _ E hE _ (hy x)` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Conclude with `this`. Use extensionality with `x`.
+
+Take `⟨f, rfl⟩` from `W.surj x`. Establish `hspan : ∀ g ∈ Ideal.span (Set.range (MvPowerSeries.X : W.σ → MvPowerSeries W.σ O)), D (W.π g) = 0` using `fun g hg => by`. Take `⟨c, rfl⟩` from `Ideal.mem_span_range_iff_exists_fun.1 hg`. Rewrite using `[map_sum, map_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations.
+
+Establish `h1 : D (W.π (c i) * W.z i) = W.origin h (W.π (c i)) • D (W.z i) + W.origin h (W.z i) • D (W.π (c i))` using `hD _ _`. Establish `h2 : W.origin h (W.z i) = 0`. Rewrite using `[WPres.z, W.origin_π]`. Simplify using the standard rewrite rules. Rewrite using `[map_mul]`.
+
+Rewrite `h1` using `[hz i, h2, smul_zero, zero_smul, add_zero]`. Conclude with `h1`. Establish `h1` using `hspan (f - algebraMap O _ (constantCoeff f)) (mem_span_X _ (by simp [MvPowerSeries.algebraMap_apply]))`. Rewrite `h1` using `[map_sub, AlgHom.commutes, map_sub, der_algebraMap _ D hD, sub_zero]`. Conclude with `h1`.
+-/
 theorem UpperTheory.V.Alg.der_extend :
     ∀ (O R : Type) [CommRing O] [CommRing R] [Algebra O R] (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] [DecidableEq X] (W : WPres O X R) (h : W.HasOrigin) (Q : Type) [AddCommGroup Q] [Module O Q],
       (∀ D ∈ PtDer (W.originA h) Q, ∃! D' : R →ₗ[O] Q, D' ∈ PtDer (W.origin h) Q ∧ D' ∘ₗ W.A.val.toLinearMap = D) ∧

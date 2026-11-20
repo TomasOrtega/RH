@@ -30,6 +30,9 @@ variable {μ ν μS ν' μS' : Measure G} [SFinite ν] [SFinite μS] [SFinite ν
   {σ : G → (HH →L[ℂ] HH)} {d : ℝ} {w : HH} {S S' : Set G} {τ : G → (V →L[ℂ] V)}
   {τ' : G → (V' →L[ℂ] V')} {W : G → V} {W' : G → V'}
 
+/- English proof (translation)
+Establish `hi` using `integrable_kG hσ hW hW' hinv hinv' h0 h0' hm hm' γ hB`. Rewrite `hi` using `[prod_map_φinv hm hm']`. Conclude with `hi.comp_measurable (Measurable.prodMap (measurable_φinv (G := G)) (measurable_φinv (G := G)))`.
+-/
 theorem integrable_liftedRankOneKernel (hσ : IsUnitRep σ) (hW : IsWAbs μ σ d w S τ ν W) (hW' : IsWAbs μ σ d w S' τ' ν' W')
     (hinv : ∀ a ∈ S, a⁻¹ ∈ S) (hinv' : ∀ a ∈ S', a⁻¹ ∈ S') (h0 : μS Sᶜ = 0) (h0' : μS' S'ᶜ = 0)
     (hm : μ = (ν.prod μS).map φinv) (hm' : μ = (ν'.prod μS').map φinv) (γ : G)
@@ -39,6 +42,11 @@ theorem integrable_liftedRankOneKernel (hσ : IsUnitRep σ) (hW : IsWAbs μ σ d
   rw [prod_map_φinv hm hm'] at hi
   exact hi.comp_measurable (Measurable.prodMap (measurable_φinv (G := G)) (measurable_φinv (G := G)))
 
+/- English proof (translation)
+Establish `hi` using `integrable_kG hσ hW hW' hinv hinv' h0 h0' hm hm' γ hB`. Establish `hF : Measurable (Prod.map (φinv : G × G → G) (φinv : G × G → G))` using `Measurable.prodMap (measurable_φinv (G := G)) (measurable_φinv (G := G))`. Establish `hi'` using `hi`. Rewrite `hi'` using `[prod_map_φinv hm hm']`. Rewrite using `[← integral_kG hσ hW W' γ hi, prod_map_φinv hm hm', integral_map hF.aemeasurable hi'.aestronglyMeasurable]`.
+
+Both sides reduce to the same expression.
+-/
 theorem integral_liftedRankOneKernel [μ.IsMulLeftInvariant] [SFinite μ] (hσ : IsUnitRep σ) (hW : IsWAbs μ σ d w S τ ν W)
     (hW' : IsWAbs μ σ d w S' τ' ν' W') (hinv : ∀ a ∈ S, a⁻¹ ∈ S) (hinv' : ∀ a ∈ S', a⁻¹ ∈ S')
     (h0 : μS Sᶜ = 0) (h0' : μS' S'ᶜ = 0)
@@ -54,6 +62,9 @@ theorem integral_liftedRankOneKernel [μ.IsMulLeftInvariant] [SFinite μ] (hσ :
     integral_map hF.aemeasurable hi'.aestronglyMeasurable]
   rfl
 
+/- English proof (translation)
+Establish `e1 : ν.prod (μS.restrict A) = (ν.prod μS).restrict (Set.univ ×ˢ A)`. Rewrite using `[← Measure.prod_restrict, Measure.restrict_univ]`. Establish `e2 : ν'.prod (μS'.restrict A') = (ν'.prod μS').restrict (Set.univ ×ˢ A')`. Rewrite using `[← Measure.prod_restrict, Measure.restrict_univ]`. Rewrite using `[e1, e2, Measure.prod_restrict]`.
+-/
 theorem prod_restrict_four (A A' : Set G) :
     (ν.prod (μS.restrict A)).prod (ν'.prod (μS'.restrict A')) =
       ((ν.prod μS).prod (ν'.prod μS')).restrict ((Set.univ ×ˢ A) ×ˢ (Set.univ ×ˢ A')) := by
@@ -71,6 +82,21 @@ variable {μ ν μS ν' μS' : Measure G} [SFinite ν] [SFinite μS] [SFinite ν
   {σ : G → (HH →L[ℂ] HH)} {d : ℝ} {w : HH} {S S' : Set G} {τ : G → (V →L[ℂ] V)}
   {τ' : G → (V' →L[ℂ] V')} {W : G → V} {W' : G → V'}
 
+/- English proof (translation)
+Use `set P := (ν.prod μS).prod (ν'.prod μS') with hP`. Establish `hK4` using `integrable_liftedRankOneKernel hσ hW hW' hinv hinv' h0 h0' hm hm' γ hB`. Take `⟨c, hc0, hc⟩ : ∃ c : ℝ, 0 ≤ c ∧ ∀ X : V' →L[ℂ] V, Real.sqrt (hsA X) ≤ c * ‖X‖` from `⟨‖hsC (V := V) (V' := V')‖, norm_nonneg _, fun X => by`. Rewrite using `[← norm_hsC]`. Conclude with `ContinuousLinearMap.le_opNorm _ _⟩`.
+
+Set `Rn : ℕ → Set ((G × G) × (G × G))` to `fun n => (Set.univ ×ˢ C n) ×ˢ (Set.univ ×ˢ C' n)`. Establish `hRm : ∀ n, MeasurableSet (Rn n)` using `fun n => (MeasurableSet.univ.prod (hCm n)).prod (MeasurableSet.univ.prod (hC'm n))`. Establish `hanti : Antitone fun n => (Rn n)ᶜ` using `fun n m hnm => Set.compl_subset_compl.mpr (Set.prod_mono (Set.prod_mono subset_rfl (hCmono hnm)) (Set.prod_mono subset_rfl (hC'mono hnm)))`. Establish `hnull : P (⋂ n, (Rn n)ᶜ) = 0`. Establish `hae` using `ae_mem_four (ν := ν) (μS := μS) (ν' := ν') (μS' := μS') h0 h0'`.
+
+Rewrite `hae` using `[ae_iff]`. Use `measure_mono_null (fun p hp => ?_) hae` and prove the remaining obligations. Simplify using `only [Set.mem_iInter, Set.mem_compl_iff] at hp`. Introduce and unpack `⟨h1, h2⟩`. Take `⟨n1, hn1⟩` from `Set.mem_iUnion.mp (hCS h1)`.
+
+Take `⟨n2, hn2⟩` from `Set.mem_iUnion.mp (hC'S h2)`. Conclude with `hp (max n1 n2) ⟨⟨trivial, hCmono (le_max_left _ _) hn1⟩, ⟨trivial, hC'mono (le_max_right _ _) hn2⟩⟩`. Establish `hT` using `tendsto_setIntegral_of_antitone (μ := P) (f := fun q => ‖K4 σ d w W W' γ q‖) (fun n => (hRm n).compl) hanti ⟨0, hK4.norm.integrableOn⟩`. Rewrite `hT` using `[setIntegral_measure_zero _ hnull]`. Establish `hT'` using `hT.const_mul c`.
+
+Rewrite `hT'` using `[mul_zero]`. Take `⟨n₀, hn₀⟩` from `(hT'.eventually (gt_mem_nhds hε)).exists`. Use `⟨n₀, fun A A' hA hAS hAf hA' hAS' hAf' hCA hC'A => ?_⟩` and prove the remaining obligations. Establish `hR : MeasurableSet (((Set.univ : Set G) ×ˢ A) ×ˢ ((Set.univ : Set G) ×ˢ A'))` using `(MeasurableSet.univ.prod hA).prod (MeasurableSet.univ.prod hA')`. Establish `hX : Xop μS ν μS' ν' σ d w W W' A A' γ = ∫ q in (Set.univ ×ˢ A) ×ˢ (Set.univ ×ˢ A'), K4 σ d w W W' γ q ∂P`.
+
+Rewrite using `[Xop_eq_integral hσ hW hW' hinv hinv' hA hAS hAf hA' hAS' hAf' γ (by rw [prod_restrict_four]; exact hK4.restrict), prod_restrict_four]`. Both sides reduce to the same expression. Establish `hdiff : ∫ x, rk1A (W x) (W' (γ⁻¹ * x)) ∂μ - Xop μS ν μS' ν' σ d w W W' A A' γ = ∫ q in ((Set.univ ×ˢ A) ×ˢ (Set.univ ×ˢ A'))ᶜ, K4 σ d w W W' γ q ∂P`. Rewrite using `[← integral_liftedRankOneKernel hσ hW hW' hinv hinv' h0 h0' hm hm' γ hB, hX, setIntegral_compl hR hK4]`. Establish `hsub : ((Set.univ ×ˢ A) ×ˢ (Set.univ ×ˢ A'))ᶜ ⊆ (Rn n₀)ᶜ` using `Set.compl_subset_compl.mpr (Set.prod_mono (Set.prod_mono subset_rfl hCA) (Set.prod_mono subset_rfl hC'A))`.
+
+Rewrite using `[hdiff]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem approx_OO [μ.IsMulLeftInvariant] [SFinite μ] (hσ : IsUnitRep σ) (hW : IsWAbs μ σ d w S τ ν W)
     (hW' : IsWAbs μ σ d w S' τ' ν' W') (hinv : ∀ a ∈ S, a⁻¹ ∈ S) (hinv' : ∀ a ∈ S', a⁻¹ ∈ S')
     (h0 : μS Sᶜ = 0) (h0' : μS' S'ᶜ = 0)

@@ -24,16 +24,25 @@ variable {k k' : Type} [CommRing k] [CommRing k'] {Y Y' : Scheme.{0}} {p : Y ⟶
 
 namespace CxPts
 
+/- English proof (translation)
+The claim follows from `continuous_induced_rng.2 (((Points.continuous_comp f).comp continuous_subtype_val).congr fun z => (hm z).symm)`.
+-/
 theorem continuous_of_comp (hm : ∀ z, (m z).1 = z.1 ≫ f) : Continuous m :=
   continuous_induced_rng.2
     (((Points.continuous_comp f).comp continuous_subtype_val).congr fun z => (hm z).symm)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `_ ↔ ⊤ ≤ (m z).1 ⁻¹ᵁ U`. Rewrite using `[hm]`. Both sides reduce to the same expression.
+-/
 theorem mem_ptsIn_preimage (hm : ∀ z, (m z).1 = z.1 ≫ f) {U : Y.Opens} {z : CxPts p' σ'} :
     z ∈ ptsIn p' σ' (f ⁻¹ᵁ U) ↔ m z ∈ ptsIn p σ U := by
   change _ ↔ ⊤ ≤ (m z).1 ⁻¹ᵁ U
   rw [hm]
   rfl
 
+/- English proof (translation)
+Rewrite using `[ev, ev, hm]`. Conclude with `valR_comp _ _ _ _`.
+-/
 theorem ev_of_comp (hm : ∀ z, (m z).1 = z.1 ≫ f) (U : Y.Opens) (g : Γ(Y, U)) (z : CxPts p' σ') :
     ev p σ U g (m z) = ev p' σ' (f ⁻¹ᵁ U) (f.app U g) z := by
   rw [ev, ev, hm]
@@ -41,6 +50,9 @@ theorem ev_of_comp (hm : ∀ z, (m z).1 = z.1 ≫ f) (U : Y.Opens) (g : Γ(Y, U)
 
 end CxPts
 
+/- English proof (translation)
+The claim follows from `differentiableOn_euclidean.2 fun a => ((c'.holo _ (f.app _ (c.x a))).mono fun _ hv => ⟨hv.1, (mem_ptsIn_preimage hm).2 (c.source_subset hv.2)⟩).congr fun _ hv => (c.apply_eq _ hv.2 a).trans (ev_of_comp hm _ _ _)`.
+-/
 theorem AlgChart.holo_map (hm : ∀ z, (m z).1 = z.1 ≫ f) (c' : AlgChart p' σ' D')
     (c : AlgChart p σ D) : DifferentiableOn ℂ (c.e ∘ m ∘ c'.e.symm)
       (c'.e.target ∩ c'.e.symm ⁻¹' (m ⁻¹' c.e.source)) :=
@@ -52,6 +64,9 @@ namespace AnRead
 
 variable {R : AnRead p σ D} {S : Set (CxPts p σ)}
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `R.cover (m (c.e.symm v))`. Conclude with `⟨i, hi, eventually_of_mem ((isOpen_over c.e ((R.chart i).e.open_source.preimage (continuous_of_comp hm))).mem_nhds ⟨hv, hi⟩) fun w hw => (congrArg g ((R.chart i).e.left_inv hw.2)).symm⟩`.
+-/
 theorem exists_eventuallyEq_comp (hm : ∀ z, (m z).1 = z.1 ≫ f) (c : AlgChart p' σ' D') {v : V D'}
     (hv : v ∈ c.e.target) {E : Type*} (g : CxPts p σ → E) :
     ∃ i, m (c.e.symm v) ∈ (R.chart i).e.source ∧
@@ -61,6 +76,9 @@ theorem exists_eventuallyEq_comp (hm : ∀ z, (m z).1 = z.1 ≫ f) (c : AlgChart
     (continuous_of_comp hm))).mem_nhds ⟨hv, hi⟩)
     fun w hw => (congrArg g ((R.chart i).e.left_inv hw.2)).symm⟩
 
+/- English proof (translation)
+Introduce `j v hv` and use `by obtain ⟨i, hi, e⟩ := exists_eventuallyEq_comp (R := R) hm (R'.chart j) hv.1 g have ho := isOpen_over (R'.chart j).e ((R.chart i).e.open_source.preimage (continuous_of_comp hm)) exact ((((h i).differentiableAt ((isOpen_over _ hS).mem_nhds (mem_over _ hi hv.2))).comp v (((R'.cha …`.
+-/
 theorem HoloOn.comp_map {g : CxPts p σ → ℂ} (h : R.HoloOn S g) (hS : IsOpen S)
     (hm : ∀ z, (m z).1 = z.1 ≫ f) (R' : AnRead p' σ' D') : R'.HoloOn (m ⁻¹' S) (g ∘ m) :=
   fun j v hv => by
@@ -70,6 +88,9 @@ theorem HoloOn.comp_map {g : CxPts p σ → ℂ} (h : R.HoloOn S g) (hS : IsOpen
     (((R'.chart j).holo_map hm (R.chart i)).differentiableAt
       (ho.mem_nhds ⟨hv.1, hi⟩))).congr_of_eventuallyEq e).differentiableWithinAt
 
+/- English proof (translation)
+Introduce `j v hv` and use `by obtain ⟨i, hi, e⟩ := exists_eventuallyEq_comp (R := R) hm (R'.chart j) hv.1 g have ho := isOpen_over (R'.chart j).e ((R.chart i).e.open_source.preimage (continuous_of_comp hm)) have ht : ContDiffOn ℝ ∞ ((R.chart i).e ∘ m ∘ (R'.chart j).e.symm) _ := (contDiffOn_piLp 2).2 fun a …`.
+-/
 theorem SmoothOn.comp_map {g : CxPts p σ → ℝ} (h : R.SmoothOn S g) (hS : IsOpen S)
     (hm : ∀ z, (m z).1 = z.1 ≫ f) (R' : AnRead p' σ' D') : R'.SmoothOn (m ⁻¹' S) (g ∘ m) :=
   fun j v hv => by
@@ -87,6 +108,9 @@ namespace Weight
 
 variable {R : AnRead p σ D} {B : LB Y} {φ : Weight p σ B}
 
+/- English proof (translation)
+Introduce `j c` and use `ContDiffOn.sum (f := fun a v => (ε a : ℝ) * φ.φ (j a) (m a ((R'.chart c).e.symm v))) fun a _ => contDiffOn_const.mul ((((h (j a)).comp_map (isOpen_ptsIn _) (hm a) R').mono fun z hz => mem_of_mem_linComb (hm · z) hz a) c)`.
+-/
 theorem IsSmooth.linComb (h : φ.IsSmooth R) {κ : Type} [Fintype κ] (f : κ → (Y' ⟶ Y)) (ε : κ → ℤ)
     (m : κ → CxPts p' σ' → CxPts p σ) (hm : ∀ a z, (m a z).1 = z.1 ≫ f a) (R' : AnRead p' σ' D') :
     (φ.linComb f ε m hm).IsSmooth R' := fun j c =>
@@ -94,6 +118,9 @@ theorem IsSmooth.linComb (h : φ.IsSmooth R) {κ : Type} [Fintype κ] (f : κ �
     contDiffOn_const.mul ((((h (j a)).comp_map (isOpen_ptsIn _) (hm a) R').mono
       fun z hz => mem_of_mem_linComb (hm · z) hz a) c)
 
+/- English proof (translation)
+The claim follows from `h.linComb _ _ _ _ R'`.
+-/
 theorem IsSmooth.pull (h : φ.IsSmooth R) {q : Y' ⟶ Sp k} (f : Y' ⟶ Y) (hf : f ≫ p = q)
     (R' : AnRead q σ D') : (φ.pull f hf).IsSmooth R' :=
   h.linComb _ _ _ _ R'
@@ -106,12 +133,18 @@ section Conj
 
 variable {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {σ σ' : k →+* ℂ} {A B : LB Y}
 
+/- English proof (translation)
+Rewrite using `[ev, h]`. Conclude with `valR_conjHomeomorph y.1 U hy g`.
+-/
 theorem CxPts.ev_conj {y : CxPts p σ} {y' : CxPts p σ'} (h : y'.1 = spMap (starRingEnd ℂ) ≫ y.1)
     {U : Y.Opens} (hy : y ∈ ptsIn p σ U) (g : Γ(Y, U)) :
     ev p σ' U g y' = starRingEnd ℂ (ev p σ U g y) := by
   rw [ev, h]
   exact valR_conjHomeomorph y.1 U hy g
 
+/- English proof (translation)
+Establish `key (x : α → ℂ) : ((∑ a, ‖x a‖ ^ 2 : ℝ) : ℂ) = x ⬝ᵥ star x`. Simplify using `only [dotProduct, Pi.star_apply, RCLike.star_def, Complex.mul_conj', Complex.ofReal_sum, Complex.ofReal_pow]`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[key, key, Matrix.star_vecMul, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, ← Matrix.star_eq_conjTranspose, Matrix.mem_unitaryGroup_iff.1 hU, Matrix.vecMul_one]`.
+-/
 theorem sum_normSq_vecMul_unitary {α : Type*} [Fintype α] [DecidableEq α] {U : Matrix α α ℂ}
     (hU : U ∈ Matrix.unitaryGroup α ℂ) (w : α → ℂ) :
     ∑ a, ‖Matrix.vecMul w U a‖ ^ 2 = ∑ a, ‖w a‖ ^ 2 := by
@@ -124,6 +157,9 @@ theorem sum_normSq_vecMul_unitary {α : Type*} [Fintype α] [DecidableEq α] {U 
 
 namespace Weight
 
+/- English proof (translation)
+Introduce `i y y' h hy` and use `by rw [fsBasis_φ, fsBasis_φ] congr 1 have hv (j : α) : valR y'.1 (B.U i) ((b j).f i) = starRingEnd ℂ (valR y.1 (B.U i) ((b j).f i)) := CxPts.ev_conj h hy _ have := sum_normSq_vecMul_unitary hU fun a => starRingEnd ℂ (∑ j, M j a * valR y.1 (B.U i) ((b j).f i)) simp only [RCLike.no …`.
+-/
 theorem isConj_fsBasis_of_unitary {α : Type*} [Fintype α] [DecidableEq α] (hB : B.IsLB)
     (b : α → B.Sec) (hb : ⨆ j, nonzeroLocus (b j) = ⊤) {M M' U : Matrix α α ℂ}
     (hM : M.det ≠ 0) (hM' : M'.det ≠ 0) (hU : U ∈ Matrix.unitaryGroup α ℂ)
@@ -142,6 +178,9 @@ theorem isConj_fsBasis_of_unitary {α : Type*} [Fintype α] [DecidableEq α] (hB
     Finset.sum_mul]
   exact Finset.sum_comm.trans (Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring)
 
+/- English proof (translation)
+The claim follows from `isConj_fsBasis_of_unitary hB b hb hM hM' (one_mem _) (e.trans (Matrix.mul_one _).symm)`.
+-/
 theorem isConj_fsBasis {α : Type*} [Fintype α] [DecidableEq α] (hB : B.IsLB)
     (b : α → B.Sec) (hb : ⨆ j, nonzeroLocus (b j) = ⊤) {M M' : Matrix α α ℂ}
     (hM : M.det ≠ 0) (hM' : M'.det ≠ 0) (e : M' = M.map (starRingEnd ℂ)) :
@@ -150,13 +189,22 @@ theorem isConj_fsBasis {α : Type*} [Fintype α] [DecidableEq α] (hB : B.IsLB)
 
 variable {φ : Weight p σ B} {φ' : Weight p σ' B}
 
+/- English proof (translation)
+Introduce `c y y' e hy` and use `congrArg₂ (· + ·) (h' c.1 y y' e (mem_ptsIn_inf.1 hy).1) (h c.2 y y' e (mem_ptsIn_inf.1 hy).2)`.
+-/
 theorem IsConj.tens {ψ : Weight p σ A} {ψ' : Weight p σ' A} (h' : ψ.IsConj ψ') (h : φ.IsConj φ') :
     (ψ.tens φ).IsConj (ψ'.tens φ') := fun c y y' e hy =>
   congrArg₂ (· + ·) (h' c.1 y y' e (mem_ptsIn_inf.1 hy).1) (h c.2 y y' e (mem_ptsIn_inf.1 hy).2)
 
+/- English proof (translation)
+Introduce `i y y' e hy` and use `congrArg Neg.neg (h i y y' e hy)`.
+-/
 theorem IsConj.dual (h : φ.IsConj φ') : φ.dual.IsConj φ'.dual := fun i y y' e hy =>
   congrArg Neg.neg (h i y y' e hy)
 
+/- English proof (translation)
+Introduce `j z z' e hz` and use `Finset.sum_congr rfl fun a _ => congrArg (_ * ·) (h (j a) _ _ (by rw [hm, hm', e, Category.assoc]) (mem_of_mem_linComb (hm · z) hz a))`.
+-/
 theorem IsConj.linComb (h : φ.IsConj φ') {k' : Type} [CommRing k'] {Y' : Scheme.{0}}
     {q : Y' ⟶ Sp k'} {τ τ' : k' →+* ℂ} {κ : Type} [Fintype κ] (f : κ → (Y' ⟶ Y)) (ε : κ → ℤ)
     (m : κ → CxPts q τ → CxPts p σ) (hm : ∀ a z, (m a z).1 = z.1 ≫ f a)
@@ -165,9 +213,15 @@ theorem IsConj.linComb (h : φ.IsConj φ') {k' : Type} [CommRing k'] {Y' : Schem
   Finset.sum_congr rfl fun a _ => congrArg (_ * ·) (h (j a) _ _
     (by rw [hm, hm', e, Category.assoc]) (mem_of_mem_linComb (hm · z) hz a))
 
+/- English proof (translation)
+The claim follows from `h.linComb _ _ _ _ _ _`.
+-/
 theorem IsConj.zpow (h : φ.IsConj φ') (n : ℤ) : (φ.zpow n).IsConj (φ'.zpow n) :=
   h.linComb _ _ _ _ _ _
 
+/- English proof (translation)
+The claim follows from `h.linComb _ _ _ _ _ _`.
+-/
 theorem IsConj.pull (h : φ.IsConj φ') {Y' : Scheme.{0}} {q : Y' ⟶ Sp k} (f : Y' ⟶ Y)
     (hf : f ≫ p = q) : (φ.pull f hf).IsConj (φ'.pull f hf) :=
   h.linComb _ _ _ _ _ _

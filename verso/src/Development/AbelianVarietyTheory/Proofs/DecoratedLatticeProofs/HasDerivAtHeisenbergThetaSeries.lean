@@ -21,6 +21,13 @@ noncomputable section
 
 namespace GlobalTheory.Core.Rk.OntoDer
 
+/- English proof (translation)
+Establish `h1 : HasDerivAt (fun t : ℝ => φ (u + a t)) (φ₁ (u + a s)) s`. Establish `h` using `hφ (u + a s)`. Rewrite `h` using `[← sub_self s]`. Establish `h'` using `HasDerivAt.comp_sub_const s s h`. Use `h'.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations.
+
+Use `show φ (u + a t) = φ (u + a s + a (t - s))`. Rewrite using `[map_sub, add_assoc, add_sub_cancel]`. Establish `h0 : HasDerivAt (fun t : ℝ => (t : ℂ)) 1 s` using `Complex.ofRealCLM.hasDerivAt`. Establish `h2` using `(((h0.mul (h0.mul_const κ)).add (h0.mul_const (p u))).add (h0.mul_const (p u))).cexp`. Establish `h3` using `h2.mul h1`.
+
+Simplify using `only [hκ]`. Use `h3.congr_deriv ?_` and prove the remaining obligations. Simplify using `only [AddMonoidHom.add_apply, map_add, hκ, Pi.add_apply, Pi.mul_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hasDerivAt_term {G : Type} [AddCommGroup G] (a : ℝ →+ G) (p : G →+ ℂ) (κ : ℂ) (hκ : ∀ t : ℝ, p (a t) = t * κ)
     (φ φ₁ : G → ℂ) (hφ : ∀ x, HasDerivAt (fun t : ℝ => φ (x + a t)) (φ₁ x) 0) (u : G) (s : ℝ) :
     HasDerivAt (fun t : ℝ => Complex.exp (t * p (a t) + t * p u + t * p u) * φ (u + a t))
@@ -42,10 +49,16 @@ theorem hasDerivAt_term {G : Type} [AddCommGroup G] (a : ℝ →+ G) (p : G →+
 
 variable {D : D7}
 
+/- English proof (translation)
+Unfold `symplOH`. Rewrite using `[← add_mul, ← map_add, add_halves, map_one, one_mul]`.
+-/
 theorem two_halves (S T : HSp D) (x y : WO S T) : symplO S T x y = symplOH S T x y + symplOH S T x y := by
   unfold symplOH
   rw [← add_mul, ← map_add, add_halves, map_one, one_mul]
 
+/- English proof (translation)
+Simplify using `only [two_halves, map_add, GlobalTheory.WeilVacMove.symplOH_add_left, GlobalTheory.WeilVacMove.symplOH_add_right, HypDec.symplOH_extX_extX, HypDec.symplOH_extY_extY, GlobalTheory.WeilVacMove.symplOH_skew S T (d.extX T a) (d.extY T y)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem phase_identity {S S₀ T : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (x y a b ξ : Mx D T.rank ρ) :
     symplOH S T (d.extX T x + d.extY T y) (d.extX T a + d.extY T b) +
         (-(symplOH S T (d.extX T (x + a)) (d.extY T (y + b)))) + symplO S T (d.extX T (x + a + ξ)) (d.extY T (y + b)) =
@@ -57,6 +70,11 @@ theorem phase_identity {S S₀ T : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (x y
     GlobalTheory.WeilVacMove.symplOH_skew S T (d.extX T a) (d.extY T y)]
   ring
 
+/- English proof (translation)
+Establish `h0 : HMul.hMul (dblDec A).j0 (dblDec A).p0 = (0 : Mx D (dblSp A).rank (dblSp A).rank)`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Finset.sum_eq_zero fun k _ => Fin.elim0 k`. Establish `h` using `(dblDec A).sum_eq_one`.
+
+Rewrite `h` using `[h0, add_zero]`. Rewrite using `[HypDec.extX_apply, HypDec.extY_apply, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_add, h, Matrix.mul_one]`.
+-/
 theorem eq_ext (A B : HSp D) (w : WO (dblSp A) B) :
     w = (dblDec A).extX B (HMul.hMul w (dblDec A).jX) + (dblDec A).extY B (HMul.hMul w (dblDec A).jY) := by
   have h0 : HMul.hMul (dblDec A).j0 (dblDec A).p0 = (0 : Mx D (dblSp A).rank (dblSp A).rank) := by
@@ -72,13 +90,24 @@ def mulLine {m n k : ℕ} (M : ℝ →+ Mx D m n) (j : Mx D n k) : ℝ →+ Mx D
   map_zero' := by rw [map_zero, Matrix.zero_mul]
   map_add' s t := by rw [map_add, Matrix.add_mul]
 
+/- English proof (translation)
+The claim follows from `hM.matrix_mul continuous_const`.
+-/
 theorem continuous_mulLine {m n k : ℕ} {M : ℝ →+ Mx D m n} (hM : Continuous M) (j : Mx D n k) :
     Continuous (mulLine M j) := hM.matrix_mul continuous_const
 
+/- English proof (translation)
+Rewrite using `[Matrix.map_mul, hu, Matrix.zero_mul]`.
+-/
 theorem map_mul_zero {m n k : ℕ} {R : Type} [CommRing R] (q : AE D →+* R) {u : Mx D m n} (hu : u.map q = 0)
     (j : Mx D n k) : (HMul.hMul u j : Mx D m k).map q = 0 := by
   rw [Matrix.map_mul, hu, Matrix.zero_mul]
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `GlobalTheory.T.exists_summable_bound_schwartz_majorant_rational_translates D θ hθ m n`. Take `⟨-, K, hK, hC⟩` from `GlobalTheory.T.schwartzBruhatAdelicMatrix_continuous_le_majorant D θ hθ m n φ hφ`. Take `⟨C, hC⟩` from `hC N`. Take `⟨b, hb, hb'⟩` from `hN K Q hK hQ`. Use `⟨fun ξ => |C| * b ξ, hb.mul_left _, fun x hx ξ => (hC _).trans ?_⟩` and prove the remaining obligations.
+
+Conclude with `mul_le_mul (le_abs_self C) (hb' x hx ξ) (GlobalTheory.Unf.maj_nonneg _ _ _ _) (abs_nonneg C)`.
+-/
 theorem exists_summable_bound {θ : InfFam D} (hθ : IsInfFam θ) {m n : ℕ} {φ : Mx D m n → ℂ}
     (hφ : GlobalTheory.IndefiniteRowSideFullHecke.SchwartzBruhatMixedFamilies.IsSchwartzBruhat φ) {Q : Set (Mx D m n)} (hQ : IsCompact Q) :
     ∃ b : Matrix (Fin m) (Fin n) D.host.E → ℝ, Summable b ∧ ∀ x ∈ Q, ∀ ξ, ‖φ (x + rat ξ)‖ ≤ b ξ := by
@@ -91,6 +120,29 @@ theorem exists_summable_bound {θ : InfFam D} (hθ : IsInfFam θ) {m n : ℕ} {�
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `D ψ hψ A B φ hφ f hf M hM hM0`. Take `⟨θ, hθ⟩` from `hψ.2.1`. Take `⟨lam, hl, hlam⟩` from `GlobalTheory.WeilVacMove.exists_log hψ`. Establish `hn : ∀ z, ‖ψ z‖ = 1` using `hψ.1.2.1`. Use `haveI : IsTopologicalAddGroup (AE D) := IsTopologicalRing.to_topologicalAddGroup`.
+
+Set `d` to `dblDec A`. Set `a : ℝ →+ Mx D B.rank A.rank` to `mulLine M d.jX`. Set `b : ℝ →+ Mx D B.rank A.rank` to `mulLine M d.jY`. Set `L : ℝ →+ WO (dblSp A) B` to `mulLine b d.pY`. Establish `ha : Continuous a` using `continuous_mulLine hM _`.
+
+Establish `hL : Continuous L` using `continuous_mulLine (continuous_mulLine hM _) _`. Establish `ha0 : ∀ t, (a t).map (finPart D) = 0` using `fun t => map_mul_zero _ (hM0 t) _`. Establish `hL0 : ∀ t, (L t).map (finPart D) = 0` using `fun t => map_mul_zero _ (map_mul_zero _ (hM0 t) _) _`. Set `p : Mx D B.rank A.rank →+ ℂ` to `(GlobalTheory.WeilVacMove.phase lam (dblSp A) B (L 1)).comp (d.extX B)`. Establish `hX : Continuous (d.extX B)` using `continuous_id.matrix_mul continuous_const`.
+
+Establish `hp : Continuous p` using `hl.comp (GlobalTheory.WeilVacMove.continuous_symplOH (dblSp A) B hX continuous_const)`. Establish `hp0 : ∀ u : Mx D B.rank A.rank, u.map (infPart D) = 0 → p u = 0` using `fun u hu => by show lam (symplOH (dblSp A) B (d.extX B u) (L 1)) = 0`. Rewrite using `[(GlobalTheory.WeilVacMove.symplOH_fin_real (dblSp A) B (d.extX B u) (L 1) (map_mul_zero _ hu _) (hL0 1)).1, map_zero]`. Establish `hψp : ∀ (u : Mx D B.rank A.rank) (t : ℝ), ψ (symplOH (dblSp A) B (d.extX B u) (d.extY B (b t))) = Complex.exp (t * p u)` using `fun u t => GlobalTheory.WeilVacMove.psi_sympl_line hl hlam hL hL0 (d.extX B u) t`. Establish `hκ : ∀ t : ℝ, p (a t) = t * p (a 1)` using `fun t => GlobalTheory.WeilVacMove.additive_real (p.comp a) (hp.comp ha) t`.
+
+Take `⟨hd, hm, hadd⟩` from `GlobalTheory.T.isSchwartzBruhatAdelicMatrix_closed_deriv_linear_add D _ _ φ hφ`. Take `⟨φ₁, hφ₁, hder⟩` from `hd a ha ha0`. Establish `hℓ` using `hm (p + p) (hp.add hp) fun u hu => by rw [AddMonoidHom.add_apply, hp0 u hu, add_zero]`. Establish `hφ'` using `(GlobalTheory.T.isSchwartzBruhatAdelicMatrix_closed_deriv_linear_add D _ _ _ hℓ).2.2 φ₁ hφ₁`. Use `⟨_, hφ', fun f' hf' w => ?_⟩` and prove the remaining obligations.
+
+Use `set φ' : Mx D B.rank A.rank → ℂ := (fun x => (p + p) x * φ x) + φ₁ with hφ'def`. Set `x : Mx D B.rank A.rank` to `HMul.hMul w d.jX`. Set `y : Mx D B.rank A.rank` to `HMul.hMul w d.jY`. Set `c : Matrix (Fin B.rank) (Fin A.rank) D.host.E → ℂ` to `fun ξ => ψ (symplO (dblSp A) B (d.extX B (x + rat ξ)) (d.extY B y))`. Set `e : Matrix (Fin B.rank) (Fin A.rank) D.host.E → ℝ → ℂ` to `fun ξ t => Complex.exp (t * p (a t) + t * p (x + rat ξ) + t * p (x + rat ξ))`.
+
+Establish `he : ∀ ξ t, e ξ t = ψ (symplOH (dblSp A) B (d.extX B (a t)) (d.extY B (b t)) + symplOH (dblSp A) B (d.extX B (x + rat ξ)) (d.extY B (b t)) + symplOH (dblSp A) B (d.extX B (x + rat ξ)) (d.extY B (b t)))` using `fun ξ t => by`. Rewrite using `[AddChar.map_add_eq_mul, AddChar.map_add_eq_mul, hψp, hψp, ← Complex.exp_add, ← Complex.exp_add]`. Establish `he0 : ∀ ξ, e ξ 0 = 1` using `fun ξ => by simp [e]`. Establish `hform : ∀ t, heisO ψ (dblSp A) B (M t) f w = ψ (-(symplOH (dblSp A) B (d.extX B x) (d.extY B y))) * ∑' ξ, c ξ * (e ξ t * φ (x + rat ξ + a t))`. Introduce `t`.
+
+Establish `e1 : HMul.hMul (w + M t) (dblDec A).jX = x + a t` using `Matrix.add_mul _ _ _`. Establish `e2 : HMul.hMul (w + M t) (dblDec A).jY = y + b t` using `Matrix.add_mul _ _ _`. Establish `e3 : symplOH (dblSp A) B w (M t) = symplOH (dblSp A) B (d.extX B x + d.extY B y) (d.extX B (a t) + d.extY B (b t))` using `congrArg₂ (symplOH (dblSp A) B) (eq_ext A B w) (eq_ext A B (M t))`. Rewrite using `[heisO, hf, e1, e2, e3, ← mul_assoc, ← tsum_mul_left, ← tsum_mul_left]`. Use `tsum_congr fun ξ => ?_` and prove the remaining obligations.
+
+Rewrite using `[he, add_right_comm x (rat ξ) (a t), ← mul_assoc, ← mul_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul, phase_identity]`. Establish `hQ : IsCompact ((fun t : ℝ => x + a t) '' Set.Icc (-1) 1)` using `isCompact_Icc.image (continuous_const.add ha)`. Take `⟨u, hu, hu'⟩` from `exists_summable_bound hθ hφ' hQ`. Take `⟨v, hv, hv'⟩` from `exists_summable_bound hθ hφ (isCompact_singleton (x := x))`. Establish `key` using `hasDerivAt_tsum_of_isPreconnected (t := Set.Ioo (-1 : ℝ) 1) (y₀ := (0 : ℝ)) (y := (0 : ℝ)) (g := fun ξ t => c ξ * (e ξ t * φ (x + rat ξ + a t))) (g' := fun ξ t => c ξ * (e ξ t * φ' (x + rat ξ + a t))) hu isOpen_Ioo isPreconnected_Ioo (fun ξ t _ => (hasDerivAt_term a p _ hκ φ φ₁ h …`.
+
+Rewrite using `[norm_mul, norm_mul, he, hn, hn, one_mul, one_mul, add_right_comm]`. Conclude with `hu' _ ⟨t, Set.Ioo_subset_Icc_self ht, rfl⟩ ξ)`. Use the proof step `(by norm_num)`. Use the proof step `(Summable.of_norm_bounded hv fun ξ => by`. Rewrite using `[norm_mul, norm_mul, he, hn, hn, one_mul, one_mul, map_zero, add_zero]`.
+
+Conclude with `hv' x rfl ξ)`. Use the proof step `(by norm_num)`. Simplify using `only [he0, map_zero, add_zero, one_mul] at key`. Rewrite using `[hf', funext hform]`. Conclude with `key.const_mul _`.
+-/
 theorem hasDerivAt_heisO_thetaSeries : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (A B : HSp D) (φ : Mx D B.rank A.rank → ℂ), GlobalTheory.IndefiniteRowSideFullHecke.SchwartzBruhatMixedFamilies.IsSchwartzBruhat φ → ∀ f : WO (dblSp A) B → ℂ, (∀ w : WO (dblSp A) B, f w = ψ (-(symplOH (dblSp A) B ((dblDec A).extX B (HMul.hMul w (dblDec A).jX)) ((dblDec A).extY B (HMul.hMul w (dblDec A).jY)))) * ∑' ξ : Matrix (Fin B.rank) (Fin A.rank) D.host.E, ψ (symplO (dblSp A) B ((dblDec A).extX B (HMul.hMul w (dblDec A).jX + rat ξ)) ((dblDec A).extY B (HMul.hMul w (dblDec A).jY))) * φ (HMul.hMul w (dblDec A).jX + rat ξ)) → ∀ M : ℝ →+ WO (dblSp A) B, Continuous M → (∀ t, (M t).map (finPart D) = 0) → ∃ φ' : Mx D B.rank A.rank → ℂ, GlobalTheory.IndefiniteRowSideFullHecke.SchwartzBruhatMixedFamilies.IsSchwartzBruhat φ' ∧ ∀ f' : WO (dblSp A) B → ℂ, (∀ w : WO (dblSp A) B, f' w = ψ (-(symplOH (dblSp A) B ((dblDec A).extX B (HMul.hMul w (dblDec A).jX)) ((dblDec A).extY B (HMul.hMul w (dblDec A).jY)))) * ∑' ξ : Matrix (Fin B.rank) (Fin A.rank) D.host.E, ψ (symplO (dblSp A) B ((dblDec A).extX B (HMul.hMul w (dblDec A).jX + rat ξ)) ((dblDec A).extY B (HMul.hMul w (dblDec A).jY))) * φ' (HMul.hMul w (dblDec A).jX + rat ξ)) → ∀ w, HasDerivAt (fun t : ℝ => heisO ψ (dblSp A) B (M t) f w) (f' w) 0 := by
   intro D ψ hψ A B φ hφ f hf M hM hM0
   obtain ⟨θ, hθ⟩ := hψ.2.1

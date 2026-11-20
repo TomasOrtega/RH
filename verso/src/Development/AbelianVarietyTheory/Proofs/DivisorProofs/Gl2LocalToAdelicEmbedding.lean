@@ -28,8 +28,17 @@ variable (R) in
 def wy : GL (Fin 2) R :=
   ⟨!![0, 1; 1, 0], !![0, 1; 1, 0], by simp [Matrix.one_fin_two], by simp [Matrix.one_fin_two]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem dg_val (a b : Rˣ) : (dg a b).1 = !![(a : R), 0; 0, (b : R)] := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem up_val (b : R) : (up b).1 = !![1, b; 0, 1] := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem wy_val : (wy R).1 = !![0, 1; 1, 0] := rfl
 
 end Matrices

@@ -4,6 +4,9 @@ import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicC
 
 namespace PositivityTheory.Rg.Sw.LVs
 
+/- English proof (translation)
+The claim follows from `cayley_of equivar reindex kappaFin`.
+-/
 theorem cayley : Cayley := cayley_of equivar reindex kappaFin
 
 end PositivityTheory.Rg.Sw.LVs

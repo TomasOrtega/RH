@@ -7,6 +7,9 @@ namespace LateralTheory.E.LeafCover2Pf
 
 variable (R : Type) [CommRing R]
 
+/- English proof (translation)
+Establish `k` using `congrArg (fun w => toSheafify Scheme.etaleTopology ((freeP R).obj Q) ≫ w.hom) h`. Conclude with `(toSheafify_naturality_assoc Scheme.etaleTopology ((freeP R).map φ) u.hom).trans (k.trans (toSheafify_naturality_assoc Scheme.etaleTopology ((freeP R).map φ) v.hom).symm)`.
+-/
 theorem pre_eq {P Q : PSh} (G : Shv R) (φ : Q ⟶ P) (u v : (free R).obj P ⟶ G)
     (h : (free R).map φ ≫ u = (free R).map φ ≫ v) :
     (freeP R).map φ ≫ (toSheafify Scheme.etaleTopology ((freeP R).obj P) ≫ u.hom) =
@@ -15,6 +18,9 @@ theorem pre_eq {P Q : PSh} (G : Shv R) (φ : Q ⟶ P) (u v : (free R).obj P ⟶ 
   exact (toSheafify_naturality_assoc Scheme.etaleTopology ((freeP R).map φ) u.hom).trans
     (k.trans (toSheafify_naturality_assoc Scheme.etaleTopology ((freeP R).map φ) v.hom).symm)
 
+/- English proof (translation)
+Apply the tactic sequence `have e : ((freeP R).map φ).app (op Y) (ModuleCat.freeMk (ULift.up y)) = ModuleCat.freeMk (ULift.up (φ.app _ y)) := by first | rfl | exact ModuleCat.free_map_apply (R := ULift R) _ _`. Establish `h3` using `congrArg (fun w => w (ModuleCat.freeMk (ULift.up y))) (congrArg (fun t => ConcreteCategory.hom t) (NatTrans.congr_app h (op Y)))`. Simplify using `only [NatTrans.comp_app] at h3`. Use `erw [ConcreteCategory.comp_apply, ConcreteCategory.comp_apply, e] at h3`. Conclude with `h3`.
+-/
 theorem gen_eq {P Q : PSh} (G : Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} R)) (φ : Q ⟶ P) (a b : (freeP R).obj P ⟶ G)
     (h : (freeP R).map φ ≫ a = (freeP R).map φ ≫ b) (Y : Scheme.{0}) (y : Q.obj (op Y)) :
     a.app (op Y) (ModuleCat.freeMk (ULift.up (φ.app _ y))) = b.app (op Y) (ModuleCat.freeMk (ULift.up (φ.app _ y))) := by
@@ -27,6 +33,15 @@ theorem gen_eq {P Q : PSh} (G : Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} R)
   erw [ConcreteCategory.comp_apply, ConcreteCategory.comp_apply, e] at h3
   exact h3
 
+/- English proof (translation)
+Establish `key : ∀ (c : (freeP R).obj P ⟶ G.obj) (Y : Scheme.{0}) (k : Y ⟶ X), G.obj.map k.op (c.app (op X) (ModuleCat.freeMk (ULift.up x))) = c.app (op Y) (ModuleCat.freeMk (ULift.up (P.map k.op x)))`. Introduce `c Y k`. Establish `n1` using `ConcreteCategory.congr_hom (c.naturality k.op) (ModuleCat.freeMk (ULift.up x))`. Use `erw [ConcreteCategory.comp_apply, ConcreteCategory.comp_apply] at n1`. Rewrite using `[← n1]`.
+
+Use `congr 1`. Apply the tactic sequence `first | rfl | exact ModuleCat.free_map_apply (R := ULift R) _ _`. Establish `hE` using `Presheaf.IsSheaf.hom_ext G.2 ⟨S, hS⟩ (ModuleCat.ofHom (LinearMap.toSpanSingleton (ULift R) _ (a.app (op X) (ModuleCat.freeMk (ULift.up x))))) (ModuleCat.ofHom (LinearMap.toSpanSingleton (ULift R) _ (b.app (op X) (ModuleCat.freeMk (ULift.up x))))) (by`. Introduce `I`. Use `ext1`.
+
+Apply `LinearMap.ext_ring` to reduce the goal to its premises. Simplify using `only [ModuleCat.hom_comp, ModuleCat.hom_ofHom, LinearMap.coe_comp, Function.comp_apply, LinearMap.toSpanSingleton_apply, one_smul]`. Use `erw [key a, key b]`. Conclude with `h _ _ I.hf)`. Use `ConcreteCategory.congr_hom hE (1 : ULift R)` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 theorem loc_eq {P : PSh} (G : Shv R) (a b : (freeP R).obj P ⟶ G.obj) (X : Scheme.{0}) (x : P.obj (op X))
     (S : Sieve X) (hS : S ∈ Scheme.etaleTopology X)
     (h : ∀ (Y : Scheme.{0}) (k : Y ⟶ X), S.arrows k →
@@ -53,6 +68,17 @@ theorem loc_eq {P : PSh} (G : Shv R) (a b : (freeP R).obj P ⟶ G.obj) (X : Sche
   have := ConcreteCategory.congr_hom hE (1 : ULift R)
   simpa using this
 
+/- English proof (translation)
+Introduce `R _ U V E f g hf hg hc`. Use `⟨hf, hg, fun n => ⟨fun {G} u v huv => ?_⟩⟩` and prove the remaining obligations. Proceed by induction on `n using Opposite.rec with | op n => ?_`. Take `⟨m, rfl⟩ : ∃ m, n = SimplexCategory.mk m` from `⟨n.len, rfl⟩`. Establish `h1 : (free R).map (f.app _) ≫ u = (free R).map (f.app _) ≫ v`.
+
+Simplify using `using congrArg (biprod.inl ≫ ·) huv`. Establish `h2 : (free R).map (g.app _) ≫ u = (free R).map (g.app _) ≫ v`. Simplify using `using congrArg (biprod.inr ≫ ·) huv`. Establish `p1` using `pre_eq R G _ u v h1`. Establish `p2` using `pre_eq R G _ u v h2`.
+
+Apply `Sheaf.hom_ext` to reduce the goal to its premises. Use `sheafify_hom_ext (P := (freeP R).obj (E.obj (op (SimplexCategory.mk m)))) _ _ _ G.2 ?_` and prove the remaining obligations. Apply `NatTrans.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `Y`. Proceed by induction on `Y using Opposite.rec with | op X => ?_`.
+
+Apply `ModuleCat.free_hom_ext` to reduce the goal to its premises. Introduce and unpack `⟨x⟩`. Take `⟨S, hS, hk⟩` from `hc m X x`. Use `loc_eq R G _ _ X x S hS ?_` and prove the remaining obligations. Introduce `Y k hk'`.
+
+Break down `hk Y k hk' with ⟨y, hy⟩ | ⟨y, hy⟩` into its components or cases. Rewrite using `[← hy]`. Conclude with `gen_eq R _ _ _ _ p1 Y y`. Rewrite using `[← hy]`. Conclude with `gen_eq R _ _ _ _ p2 Y y`.
+-/
 theorem LeafCover2_of : LateralTheory.E.D2.LeafCover2 := by
   intro R _ U V E f g hf hg hc
   refine ⟨hf, hg, fun n => ⟨fun {G} u v huv => ?_⟩⟩

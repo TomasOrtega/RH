@@ -24,6 +24,9 @@ variable {l : ℕ} [Fact l.Prime] {v : HeightOneSpectrum (𝓞 F)} {A : Valuatio
 
 include φ
 
+/- English proof (translation)
+The claim follows from `(KStar.TotallyRealRoots.princ_le_levelGroup N _).1.trans (levelLeIne F Ω N K φ l v A hv hA)`.
+-/
 theorem princ_le_ineImage (hv : v ∈ Above F l) (hA : IsPlaceOver A v) :
     KStar.TotallyRealRoots.princ l (N.factorization l) ≤ ineImage F l A :=
   (KStar.TotallyRealRoots.princ_le_levelGroup N _).1.trans (levelLeIne F Ω N K φ l v A hv hA)

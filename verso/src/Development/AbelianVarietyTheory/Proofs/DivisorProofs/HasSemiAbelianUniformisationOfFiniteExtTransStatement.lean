@@ -9,5 +9,8 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Mum.hasFin_of_finExt | exact GlobalTheory.Mum.hasFin_of_finExt | (intros; apply GlobalTheory.Mum.hasFin_of_finExt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.hasSemiAbelianUniformisation_of_finiteExt_trans : ∀ (R R' : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [CommRing R'] [IsDomain R'] [IsLocalRing R'] (ρ : R →+* R'), FinExt ρ → ∀ (D : DegData R (maximalIdeal R)) (D' : DegData R' (maximalIdeal R')), Nonempty (IsPullDeg ρ D.toPre D'.toPre) → HasFin D' → HasFin D := by
   first | exact @GlobalTheory.Mum.hasFin_of_finExt | exact GlobalTheory.Mum.hasFin_of_finExt | (intros; apply GlobalTheory.Mum.hasFin_of_finExt <;> assumption)

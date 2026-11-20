@@ -34,10 +34,16 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.ArakelovGeometry
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
 
+/- English proof (translation)
+The claim follows from `(DFunLike.congr_fun (comp_aeval y ψ.toIntAlgHom) g).symm`.
+-/
 theorem aeval_comp_hom (ψ : Ω →+* ℂ) (y : (Σ k, ι k) → Ω) (g : MRing ι) :
     aeval (fun p => ψ (y p)) g = ψ (aeval y g) :=
   (DFunLike.congr_fun (comp_aeval y ψ.toIntAlgHom) g).symm
 
+/- English proof (translation)
+Take `⟨dg, dh, g, hh, -, -, -, e1, e2, e3⟩` from `h`. Rewrite `e2`, `e3` using `[aeval_comp_hom]`. Rewrite `e3` using `[aeval_comp_hom, e1, map_mul]`. Conclude with `(mul_right_cancel₀ e2 e3).symm`.
+-/
 theorem eq_of_hasVal {y : (Σ k, ι k) → Ω} {a : K → ℤ} {s : Ω} {ψ : Ω →+* ℂ} {w : ℂ}
     (h : Small.HasVal y a s (fun p => ψ (y p)) w) : w = ψ s := by
   obtain ⟨dg, dh, g, hh, -, -, -, e1, e2, e3⟩ := h
@@ -45,6 +51,11 @@ theorem eq_of_hasVal {y : (Σ k, ι k) → Ω} {a : K → ℤ} {s : Ω} {ψ : Ω
   rw [aeval_comp_hom, e1, map_mul] at e3
   exact (mul_right_cancel₀ e2 e3).symm
 
+/- English proof (translation)
+Take `⟨⟨d, hd⟩, hu⟩` from `h`. Rewrite using `[aeval_comp_hom]`. Introduce `h0`. Use `hu ?_` and prove the remaining obligations. Use `show mConeMap y u = 0`.
+
+Rewrite using `[GlobalTheory.CompanionTheory.Ar.Plug.Test.cone_form y hd, (map_eq_zero ψ).1 h0, map_zero, mul_zero]`.
+-/
 theorem aeval_ne_zero (y : (Σ k, ι k) → Ω) {u : MRing ι} (h : Small.IsFormOff (mCoordIdeal y) u) (ψ : Ω →+* ℂ) :
     aeval (fun p => ψ (y p)) u ≠ 0 := by
   obtain ⟨⟨d, hd⟩, hu⟩ := h
@@ -54,6 +65,11 @@ theorem aeval_ne_zero (y : (Σ k, ι k) → Ω) {u : MRing ι} (h : Small.IsForm
   show mConeMap y u = 0
   rw [GlobalTheory.CompanionTheory.Ar.Plug.Test.cone_form y hd, (map_eq_zero ψ).1 h0, map_zero, mul_zero]
 
+/- English proof (translation)
+Use `⟨fun k => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hr k`. Use `⟨i, fun h0 => hi ?_⟩` and prove the remaining obligations. Establish `: y ⟨k, i⟩ = 0` using `(map_eq_zero ψ).1 h0`. Simplify using `[mCoordIdeal, RingHom.mem_ker, mConeMap, this]`.
+
+Rewrite using `[eval_map]`. Conclude with `(aeval_comp_hom ψ y f).trans (by rw [GlobalTheory.CompanionTheory.Ar.Plug.Test.aeval_of_mem y hf, map_zero])`.
+-/
 theorem mem_mcPts (y : (Σ k, ι k) → Ω) (hr : IsRelevant (mCoordIdeal y)) (ψ : Ω →+* ℂ) :
     (fun p => ψ (y p)) ∈ mcPts (mCoordIdeal y) := by
   refine ⟨fun k => ?_, fun f hf => ?_⟩
@@ -64,6 +80,19 @@ theorem mem_mcPts (y : (Σ k, ι k) → Ω) (hr : IsRelevant (mCoordIdeal y)) (�
   · rw [eval_map]
     exact (aeval_comp_hom ψ y f).trans (by rw [GlobalTheory.CompanionTheory.Ar.Plug.Test.aeval_of_mem y hf, map_zero])
 
+/- English proof (translation)
+Establish `hy : ∀ k, ∃ i, y ⟨k, i⟩ ≠ 0` using `fun k => by`. Take `⟨i, hi⟩` from `hr k`. Use `⟨i, fun h0 => hi ?_⟩` and prove the remaining obligations. Simplify using `[mCoordIdeal, RingHom.mem_ker, mConeMap, h0]`. Use `choose ci hci using hy`.
+
+Establish `hm : ∀ e : K → ℕ, aeval y (xpow ci e) ≠ 0` using `fun e => by`. Simplify using `only [xpow, map_prod, map_pow, aeval_X]`. Conclude with `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hci k)`. Use `set ep : K → ℕ := fun k => (a k).toNat with hep`. Use `set em : K → ℕ := fun k => (-a k).toNat with hem`.
+
+Take `⟨d, g, h, hg, hh, h0, h1⟩` from `hb (s * aeval y (xpow ci em) / aeval y (xpow ci ep))`. Establish `hG` using `isMultiHomog_mul hg (isMultiHomog_xpow ci ep)`. Establish `hH` using `isMultiHomog_mul hh (isMultiHomog_xpow ci em)`. Establish `hHy : aeval y (h * xpow ci em) ≠ 0`. Rewrite using `[map_mul]`.
+
+Conclude with `mul_ne_zero h0 (hm em)`. Establish `e1 : aeval y (g * xpow ci ep) = s * aeval y (h * xpow ci em)`. Rewrite using `[map_mul, map_mul, h1]`. Use `hm ep` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+
+Use `⟨d + ep, d + em, g * xpow ci ep, h * xpow ci em, hG, hH, fun k => ?_, e1, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, hep, hem]`. Use `push_cast`. Establish `h2` using `Int.toNat_sub_toNat_neg (a k)`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[aeval_comp_hom]`. Conclude with `(map_ne_zero ψ).2 hHy`. Rewrite using `[aeval_comp_hom, aeval_comp_hom, e1, map_mul]`.
+-/
 theorem hasVal_hom (y : (Σ k, ι k) → Ω) (hb : Birational y) (hr : IsRelevant (mCoordIdeal y)) (a : K → ℤ) (s : Ω)
     (ψ : Ω →+* ℂ) : Small.HasVal y a s (fun p => ψ (y p)) (ψ s) := by
   classical
@@ -104,9 +133,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ}
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Rewrite using `[Prod.smul_snd, nsmul_eq_mul]`. Conclude with `hG.mul_left n`.
+-/
 theorem even_nsmul' {G : WTZ E} (hG : Even G.2) (n : ℕ) : Even (n • G).2 := by
   rw [Prod.smul_snd, nsmul_eq_mul]; exact hG.mul_left n
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[succ_nsmul', add_assoc, pow_succ', mul_assoc, GlobalTheory.AllWt.homN_mul V x hG ((even_nsmul' hG n).add hG') _ _ z hz, ih]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem homN_pow_mul' {σ : c.F →+* ℂ} (V : Unf Xo c σ r) (x : ℝ) {G G' : WTZ E} (hG : Even G.2) (hG' : Even G'.2)
     (θ f : Rul Xo c) {z : Σ k, Frame (V.X k).Ψ r} (hz : z.2 ∈ (V.X z.1).dom) (n : ℕ) :
     GlobalTheory.AllWt.homN V x (n • G + G') (θ ^ n * f) z = GlobalTheory.AllWt.homN V x G θ z ^ n * GlobalTheory.AllWt.homN V x G' f z := by
@@ -117,6 +152,11 @@ theorem homN_pow_mul' {σ : c.F →+* ℂ} (V : Unf Xo c σ r) (x : ℝ) {G G' :
       GlobalTheory.AllWt.homN_mul V x hG ((even_nsmul' hG n).add hG') _ _ z hz, ih]
     ring
 
+/- English proof (translation)
+Establish `hsec` using `hV.2.2.2.2.1 a n hd g hg k`. Establish `hm : GlobalTheory.AllWt.modelWt V G k = laU V a n k`. Rewrite using `[← GlobalTheory.AllWt.modelWt_congr V hσ hV hG, GlobalTheory.AllWt.modelWt_wtZ]`. Establish `hl : lact γ x₁ ∈ (V.X k).dom` using `ReciprocityTheory.ChartRestriction.G.AR.Up.OntoS.dom_lact _ hγ hx₁`. Use `show _ * (V.X k).pnorm _ _ _ = _ * (V.X k).pnorm _ _ _`.
+
+Rewrite using `[hm, GlobalTheory.Up.DivMetricPf.pnorm_rmul ReciprocityTheory.ChartRestriction.G.AR.Inst.normFactor_rightBorel_holds hsec hl hb, GlobalTheory.Up.DivMetricPf.pnorm_lact ReciprocityTheory.ChartRestriction.G.AR.Inst.normFactor_leftAction_holds hsec hγ hx₁]`.
+-/
 theorem homN_nat_eq {σ : c.F →+* ℂ} (V : Unf Xo c σ r) (hσ : GoodEmb c σ) (hV : IsUnf V) (x : ℝ)
     {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} (hd : Dom a n) {g : Rul Xo c} (hg : g ∈ sec Xo c a n) {G : WTZ E}
     (hG : exZ Dw (wtZ a n) = exZ Dw G) {k : V.Comp} {x₁ : Frame (V.X k).Ψ r} (hx₁ : x₁ ∈ (V.X k).dom)
@@ -130,6 +170,35 @@ theorem homN_nat_eq {σ : c.F →+* ℂ} (V : Unf Xo c σ r) (hσ : GoodEmb c σ
   rw [hm, GlobalTheory.Up.DivMetricPf.pnorm_rmul ReciprocityTheory.ChartRestriction.G.AR.Inst.normFactor_rightBorel_holds hsec hl hb,
     GlobalTheory.Up.DivMetricPf.pnorm_lact ReciprocityTheory.ChartRestriction.G.AR.Inst.normFactor_leftAction_holds hsec hγ hx₁]
 
+/- English proof (translation)
+Establish `hnone : GlobalTheory.AllWt.exOf Dw u 0 none = 0` using `by show (GlobalTheory.AllWt.wtOf Dw u 0).2 = 0`. Rewrite using `[GlobalTheory.AllWt.wtOf_snd, mul_zero]`. Distinguish the cases in `hanti : ∀ τ (i j : Fin (Dw.mult τ)), i ≤ j → GlobalTheory.AllWt.exOf Dw u 0 (some ⟨τ, j⟩) ≤ GlobalTheory.AllWt.exOf Dw u 0 (some ⟨τ, i⟩)`. Take `⟨γ, hγ, b, hb', e⟩` from `(hU.2.2.2.1 k k x₁ x₂).1 ⟨t, hb⟩`. Establish `e' : x₂.1 = rmul (lact γ x₁.1) b` using `eq_of_heq (Sigma.mk.inj_iff.1 e).2`.
+
+Establish `hx₂ : rmul (lact γ x₁.1) b ∈ (U.X k).dom` using `e' ▸ x₂.2`. Take `⟨n, hn, g, hg, hg0⟩` from `GlobalTheory.TrueCx.FlatConst.exists_sec_four hpq (U.un k x₁)`. Use `set e₀ := GlobalTheory.AllWt.exOf Dw u 0 with he₀`. Use `set M : ℕ := ∑ i : Ix Dw, (e₀ i).natAbs with hMdef`. Establish `hM : ∀ i, -(4 * ((M + 1 : ℕ) : ℤ)) ≤ e₀ i` using `fun i => by`.
+
+Establish `h1 : (e₀ i).natAbs ≤ M` using `Finset.single_le_sum (f := fun i => (e₀ i).natAbs) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)`. Establish `h2 : -((e₀ i).natAbs : ℤ) ≤ e₀ i`. Use `Int.natAbs_abs (e₀ i)` as an intermediate fact. Rewrite using `[← Int.abs_eq_natAbs]`. Conclude with `neg_abs_le _`.
+
+Establish `h3 : ((e₀ i).natAbs : ℤ) ≤ M` using `by exact_mod_cast h1`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Set `a : (E →+* ℂ) × ℕ → ℕ` to `fun p => if h : p.2 < Dw.mult p.1 then (4 * ((M + 1 : ℕ) : ℤ) + e₀ (some ⟨p.1, ⟨p.2, h⟩⟩)).toNat else 0`. Establish `hdom : Dom a ((M + 1) * n)`.
+
+Use `⟨fun τ i j hij => ?_, hn.mul_left _⟩` and prove the remaining obligations. Use `show a (τ, j) ≤ a (τ, i)`. Simplify using `only [a]`. Distinguish the cases in `hj : j < Dw.mult τ`. Establish `hi : i < Dw.mult τ` using `lt_of_le_of_lt hij hj`.
+
+Rewrite using `[dif_pos hj, dif_pos hi]`. Conclude with `Int.toNat_le_toNat (by linarith [hanti τ ⟨i, hi⟩ ⟨j, hj⟩ hij])`. Rewrite using `[dif_neg hj]`. Conclude with `Nat.zero_le _`. Establish `hgp` using `GlobalTheory.ReadCont.pow_succ_mem_secZ (Xo := Xo) (c := c) (by rw [GlobalTheory.AllWt.secZ_nat]; exact hg) M`.
+
+Establish `hex : (fun i => (ex Dw a ((M + 1) * n) i : ℤ)) = (M + 1) • (fun i => (ex Dw (fun _ => 4) n i : ℤ)) + e₀`. Use function extensionality and compare the values at `i`. Break down `i with _ | ⟨τ, i⟩` into its components or cases. Simplify using `[ex, hnone]`. Establish `hi` using `i.2`.
+
+Rewrite using `[Pi.add_apply, Pi.smul_apply]`. Simplify using `only [ex, a, dif_pos hi, nsmul_eq_mul]`. Rewrite using `[Int.toNat_of_nonneg (by linarith [hM (some ⟨τ, i⟩)])]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hgf : g ^ (M + 1) * f ∈ sec Xo c a ((M + 1) * n)`. Rewrite using `[← GlobalTheory.AllWt.secZ_nat, hex]`. Conclude with `GlobalTheory.AllWt.mul_mem_secZ hgp hf`. Use `set Gg : WTZ E := wtZ (fun _ => 4) n with hGg`. Establish `hEg : Even Gg.2` using `by simpa [hGg, wtZ] using hn`.
+
+Establish `hEG` using `GlobalTheory.AllWt.even_wtOf (Dw := Dw) u 0`. Establish `hexG : exZ Dw (wtZ a ((M + 1) * n)) = exZ Dw ((M + 1) • Gg + GlobalTheory.AllWt.wtOf Dw u 0)`. Rewrite using `[GlobalTheory.AllWt.exZ_wtZ, hex]`. Use function extensionality and compare the values at `i`. Rewrite using `[Formalism.L2.Pj.exZ_add, Pi.add_apply]`.
+
+Use `congr 1`. Apply the tactic sequence `rcases i with _ | ⟨τ, i⟩ <;> simp [Formalism.L2.Pj.exZ, hGg, wtZ, ex]`. Establish `h1` using `homN_nat_eq (x := x) U hσ hU hdom hgf hexG x₁.2 hγ hb'`. Establish `h2` using `homN_nat_eq (x := x) U hσ hU (a := fun _ => 4) (n := n) ⟨fun _ _ _ _ => le_rfl, hn⟩ hg (G := Gg) rfl x₁.2 hγ hb'`. Rewrite `h1` using `[homN_pow_mul' U x hEg hEG g f (z := ⟨k, rmul (lact γ x₁.1) b⟩) hx₂, homN_pow_mul' U x hEg hEG g f (z := ⟨k, x₁.1⟩) x₁.2, h2]`.
+
+Establish `hA : 0 < GlobalTheory.AllWt.homN U x Gg g ⟨k, x₁.1⟩`. Establish `hr : rdU U g k x₁.1 ≠ 0`. Establish `: rdU U g k x₁.1 = toC (evR Xo c g (U.un k x₁))` using `dif_pos x₁.2`. Rewrite using `[this]` and apply the resulting hypothesis. Use `show 0 < _ * (‖rdU U g k x₁.1‖ * _)`.
+
+Conclude with `mul_pos (GlobalTheory.AllWt.lieFacZ_pos _ _) (mul_pos (norm_pos_iff.2 hr) (ReciprocityTheory.ChartRestriction.G.FD.BoundedSectionAlgebra.nfac_pos _ x₁.2 _))`. Rewrite using `[e']`. Conclude with `mul_left_cancel₀ (pow_pos hA _).ne' h1`. Use `push_neg at hanti`. Take `⟨τ, i, j, hij, hlt⟩` from `hanti`.
+
+Establish `hij' : i < j` using `lt_of_le_of_ne hij (by rintro rfl; exact lt_irrefl _ hlt)`. Establish `h0` using `GlobalTheory.T.integerExponentSection_eq_zero_of_increasing_flag E H Dw l Xo c _ τ i j hij' hlt f hf`. Substitute `h0` using the available equality. Simplify using `[GlobalTheory.AllWt.homN, GlobalTheory.AllWt.ptN, Data.pnorm]`.
+-/
 theorem homN_eq_of_frBor {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (hσ : GoodEmb c σ) (hU : IsUnf U) (hpq : 1 ≤ Dw.p + Dw.q)
     (x : ℝ) (u : GlobalTheory.AllWt.Weight Dw) {f : Rul Xo c}
     (hf : f ∈ GlobalTheory.AllWt.secZ Xo c (GlobalTheory.AllWt.exOf Dw u 0)) (k : U.Comp) (x₁ x₂ : (U.X k).dom)
@@ -208,6 +277,13 @@ theorem homN_eq_of_frBor {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (hσ : GoodEmb
     subst h0
     simp [GlobalTheory.AllWt.homN, GlobalTheory.AllWt.ptN, Data.pnorm]
 
+/- English proof (translation)
+Establish `hnone : GlobalTheory.AllWt.exOf Dw u 0 none = 0` using `by show (GlobalTheory.AllWt.wtOf Dw u 0).2 = 0`. Rewrite using `[GlobalTheory.AllWt.wtOf_snd, mul_zero]`. Establish `hc : ContinuousOn (rdU U f k) (U.X k).dom`. Distinguish the cases in `hanti : ∀ τ (i j : Fin (Dw.mult τ)), i ≤ j → GlobalTheory.AllWt.exOf Dw u 0 (some ⟨τ, j⟩) ≤ GlobalTheory.AllWt.exOf Dw u 0 (some ⟨τ, i⟩)`. Conclude with `(GlobalTheory.ReadCont.differentiableOn_rdU_of_antitone hU hpq hnone hanti hf k).continuousOn`.
+
+Use `push_neg at hanti`. Take `⟨τ, i, j, hij, hlt⟩` from `hanti`. Establish `hij' : i < j` using `lt_of_le_of_ne hij (by rintro rfl; exact lt_irrefl _ hlt)`. Rewrite using `[GlobalTheory.T.integerExponentSection_eq_zero_of_increasing_flag E H Dw l Xo c _ τ i j hij' hlt f hf, map_zero]`. Conclude with `continuousOn_const`.
+
+Establish `h2 : ContinuousOn (fun y => GlobalTheory.AllWt.lieFacZ Dw x (GlobalTheory.AllWt.wtOf Dw u 0) * (‖rdU U f k y‖ * (U.X k).nfac (GlobalTheory.AllWt.modelWt U (GlobalTheory.AllWt.wtOf Dw u 0) k) y)) (U.X k).dom` using `continuousOn_const.mul (hc.norm.mul (ReciprocityTheory.ChartRestriction.G.AR.Up.ExtFPf.nfac_contOn _ _))`. Conclude with `h2`.
+-/
 theorem continuousOn_homN {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (hU : IsUnf U) (hpq : 1 ≤ Dw.p + Dw.q)
     (x : ℝ) (u : GlobalTheory.AllWt.Weight Dw) {f : Rul Xo c}
     (hf : f ∈ GlobalTheory.AllWt.secZ Xo c (GlobalTheory.AllWt.exOf Dw u 0)) (k : U.Comp) :
@@ -240,6 +316,9 @@ def nA (Dw : Datum H) (a : WZ E) : Option (RootIx Dw) → ℤ
   | some ρ => -(if (ρ.2 : ℕ) < Dw.p then a (ρ.1.1, ρ.2) else -a (conjEmb ρ.1.1, Dw.p + Dw.q - 1 - ρ.2))
   | none => 0
 
+/- English proof (translation)
+Break down `j with _ | ρ` into its components or cases. Simplify using `[nA, Top.RootModel.coef]`. Apply the tactic sequence `simp only [nA, Top.RootModel.coef, towerWt] split_ifs <;> simp`.
+-/
 theorem nA_coef (RM : Top.RootModel (CMType H) (Dw.p + Dw.q)) (a : WZ E) (j : Option (RootIx Dw)) :
     (nA Dw a j : ℝ) = RM.coef (towerWt Dw a) 0 j := by
   rcases j with _ | ρ
@@ -247,6 +326,9 @@ theorem nA_coef (RM : Top.RootModel (CMType H) (Dw.p + Dw.q)) (a : WZ E) (j : Op
   · simp only [nA, Top.RootModel.coef, towerWt]
     split_ifs <;> simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ j`. Simplify using `only [GlobalTheory.AllWt.modelWt, laZ, GlobalTheory.AllWt.wtOf_snd]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem modelWt_eq_laZ {σ : c.F →+* ℂ} (V : Unf Xo c σ r) (u : GlobalTheory.AllWt.Weight Dw) (k : V.Comp) :
     GlobalTheory.AllWt.modelWt V (GlobalTheory.AllWt.wtOf Dw u 0) k = laZ V (GlobalTheory.AllWt.wtOf Dw u 0).1 k := by
   funext τ j
@@ -259,6 +341,23 @@ variable {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {h : GenFrEx Xo c} {e : Com
   {Sys : PB.AnSys (Top.dimFl (CMType H) (Dw.p + Dw.q)) (Option (RootIx Dw))} {Fx : FixedData Y Sys}
   {Or : RootOrigin Y SS RM Fx}
 
+/- English proof (translation)
+Take `⟨uu, huu, hread⟩` from `GlobalTheory.T.component_norm_constant_models hG E H Dw l Xo c r U h e hL x hx O β Y SS RM Sys Fx Or Fr Z Rd`. Use `⟨uu, huu, fun {σ} hσ k hk ψ hψ => ?_⟩` and prove the remaining obligations. Establish `hz` using `mem_mcPts RM.y RM.arith.2.1.2.2 ψ`. Establish `hv : ∀ t, Small.HasVal RM.y 0 (Or.𝔐.cst t) (fun p => ψ (RM.y p)) (σ t)` using `fun t => by`. Rewrite using `[← hψ]`.
+
+Conclude with `hasVal_hom RM.y RM.birational RM.arith.2.1.2.2 0 _ ψ`. Establish `h0` using `hread σ _ hz hv (aeval_ne_zero RM.y huu ψ)`. Rewrite `h0` using `[show goodOf c σ = σ from if_pos hσ]`. Take `⟨k', hk', y', hy', hall⟩` from `h0`. Take `rfl : k' = k` from `GlobalTheory.CompanionTheory.Ar.Plug.ArchimedeanSections.over_unique hL hσ hk' hk`.
+
+Establish `hpos : ∀ n' : Option (RootIx Dw) → ℤ, 0 < ∏ ρ, (Or.sing ρ).h (fun p => ψ (RM.y p)) ^ n' (some ρ)` using `fun n' => Finset.prod_pos fun ρ _ => zpow_pos ((Or.sing ρ).pos _ hz.1) _`. Establish `hnf : ∀ la, ((U σ).X k').pnorm la (fun _ => 1) y' = ((U σ).X k').nfac la y'` using `fun la => by show ‖(1 : ℂ)‖ * _ = _`. Rewrite using `[norm_one, one_mul]`. Both sides reduce to the same expression. Use `⟨y', hy', fun a => ?_, ?_⟩` and prove the remaining obligations.
+
+Take `⟨θ, hθ, hθf⟩` from `hall a (nA Dw a) (nA_coef RM a)`. Establish `hθ0 : θ ≠ 0`. Rewrite using `[← norm_pos_iff, hθ, hnf]`. Conclude with `mul_pos (mul_pos (hpos _) (Real.exp_pos _)) (ReciprocityTheory.ChartRestriction.G.FD.BoundedSectionAlgebra.nfac_pos _ hy' _)`. Establish `hT : ((∏ i, Rd.t i ^ Rec.exZ Dw a i : (RM.Ω)ˣ) : RM.Ω) * ∏ ρ, Or.e ρ ^ (-nA Dw a (some ρ)) ≠ 0` using `mul_ne_zero (Units.ne_zero _) (Finset.prod_ne_zero_iff.2 fun ρ _ => zpow_ne_zero _ (Or.lines ρ).1)`.
+
+Use `⟨ψ (((∏ i, Rd.t i ^ Rec.exZ Dw a i : (RM.Ω)ˣ) : RM.Ω) * ∏ ρ, Or.e ρ ^ (-nA Dw a (some ρ))) / θ, div_ne_zero ((map_ne_zero ψ).2 hT) hθ0, fun g hg => ?_⟩` and prove the remaining obligations. Establish `e1` using `eq_of_hasVal ((hθf g hg).1 hσ)`. Rewrite `e1` using `[Rd.rd_eq a g hg]`. Rewrite using `[div_mul_eq_mul_div, eq_div_iff hθ0, mul_comm (rdU (U σ) g k' y'), e1, map_mul, map_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨h1, -, -, h4, -⟩` from `GlobalTheory.T.tower_weight_of_zero E H Dw l Xo c RM u`. Take `⟨θ, hθ, hθf⟩` from `hall (GlobalTheory.AllWt.wtOf Dw u 0).1 (nOf u) (fun j => by rw [h1]; exact h4 j)`. Establish `hf' : f ∈ Rec.secZ Xo c (GlobalTheory.AllWt.wtOf Dw u 0).1` using `GlobalTheory.CompanionTheory.Ar.Plug.Test.secZ_eq u ▸ hf`. Establish `e1` using `eq_of_hasVal ((hθf f hf').1 hσ)`. Rewrite `e1` using `[← GlobalTheory.CompanionTheory.Ar.Plug.Test.gauge_mul Rd u hf, map_mul]`.
+
+Establish `e2` using `congrArg norm e1`. Rewrite `e2` using `[norm_mul, norm_mul, hθ, hnf]`. Rewrite using `[← e2]`. Use `show _ * (GlobalTheory.AllWt.lieFacZ Dw x (GlobalTheory.AllWt.wtOf Dw u 0) * (‖rdU (U σ) f k' y'‖ * ((U σ).X k').nfac (GlobalTheory.AllWt.modelWt (U σ) (GlobalTheory.AllWt.wtOf Dw u 0) k') y')) = _`. Rewrite using `[modelWt_eq_laZ]`.
+
+Use `show _ = _ * Rec.lieFacZ Dw x (GlobalTheory.AllWt.wtOf Dw u 0).1 * _ * _`. Establish `: GlobalTheory.AllWt.lieFacZ Dw x (GlobalTheory.AllWt.wtOf Dw u 0) = Rec.lieFacZ Dw x (GlobalTheory.AllWt.wtOf Dw u 0).1` using `rfl`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_frame_of_hom [DecidableEq (CMType H)] (hG : Top.Given) (hL : CompLaws U h e) (x : ℝ)
     (hx : ∀ σ, GoodEmb c σ → ∀ k (τ : E →+* ℂ), ‖τ ((U σ).X k).ξ0‖ = x)
     (Fr : Small.GenFrame Or) (Z : Comp Xo c) (Rd : Reading Fr h Z) (u : GlobalTheory.AllWt.Weight Dw) {f : Rul Xo c}
@@ -326,6 +425,31 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Sys : PB.AnSys (Top.dimFl (CMType H) (Dw.p + Dw.q)) (Option (RootIx Dw))} {Fx : FixedData Y Sys}
   {Or : RootOrigin Y SS RM Fx}
 
+/- English proof (translation)
+Take `⟨uu, huu, hfr⟩` from `exists_frame_of_hom hG hL x hx Fr Z Rd u hf`. Take `⟨w, hw, hle⟩` from `hH`. Use `letI := Rd.φ.toAlgebra`. Set `φc : Om Z →+* ℂ` to `φ.toRingHom`. Use `letI : Algebra (Om Z) ℂ := φc.toAlgebra`.
+
+Use `haveI : CharZero (Om Z) := (RingHom.charZero_iff φc.injective).2 inferInstance`. Establish `hdpos` using `GlobalTheory.CompanionTheory.Ar.Plug.Test.deg_pos Or`. Use `haveI : Module.Finite (Om Z) RM.Ω := Module.finite_of_finrank_pos (by`. Use `Rd.deg` as an intermediate fact. Use the proof step `omega)`.
+
+Use `set N := GlobalTheory.AllWt.homN (U σ) x (GlobalTheory.AllWt.wtOf Dw u 0) f ⟨k, x₀.1⟩ with hN`. Use `set A := ‖φc (evC h Z f)‖ with hA`. Establish `hN0 : 0 ≤ N` using `GlobalTheory.AllWt.homN_nonneg _ _ _ _ _`. Establish `hmain : ∀ ψ : RM.Ω →ₐ[Om Z] ℂ, N * ‖ψ (s / gauge Rd u)‖ ≤ R * A ∧ (A = 0 → N = 0)`. Introduce `ψ`.
+
+Set `ψr : RM.Ω →+* ℂ` to `ψ.toRingHom`. Establish `hcomp : ∀ a, ψr (Rd.φ a) = φc a` using `fun a => ψ.commutes a`. Establish `hcst : ∀ t, ψr (Or.𝔐.cst t) = σ t` using `fun t => by`. Rewrite using `[← Rd.φ_cst t, hcomp]`. Conclude with `φ.commutes t`.
+
+Take `⟨y', hy', hpr, heq⟩` from `hfr hσ k hk ψr hcst`. Take `⟨t, ht⟩` from `hsep ⟨y', hy'⟩ fun a => by`. Take `⟨w', hw', hg⟩` from `hpr a`. Conclude with `⟨w', hw', fun g hg' => (hg g hg').trans (by rw [hcomp]; rfl)⟩`. Establish `hNy` using `homN_eq_of_frBor (U σ) hσ (hL.unf σ hσ) hpq x u hf k x₀ ⟨y', hy'⟩ t ht`.
+
+Rewrite `heq` using `[hNy, hcomp, ← hN, ← hA]`. Establish `hz` using `mem_mcPts RM.y RM.arith.2.1.2.2 ψr`. Establish `hHp : 0 < ∏ ρ, (Or.sing ρ).h (fun p => ψr (RM.y p)) ^ nOf u (some ρ)` using `Finset.prod_pos fun ρ _ => zpow_pos ((Or.sing ρ).pos _ hz.1) _`. Establish `hs` using `hle _ hz (aeval_ne_zero RM.y hw ψr) (ψr s) (hasVal_hom RM.y RM.birational RM.arith.2.1.2.2 _ s ψr)`. Establish `hg0 : ψr (gauge Rd u) ≠ 0` using `(map_ne_zero ψr).2 (GlobalTheory.CompanionTheory.Ar.Plug.Test.gauge_ne_zero Rd u)`.
+
+Establish `hgp : 0 < ‖ψr (gauge Rd u)‖` using `norm_pos_iff.2 hg0`. Generalize the expression as in `(∏ ρ, (Or.sing ρ).h (fun p => ψr (RM.y p)) ^ nOf u (some ρ)) = Hp at *`. Use `⟨?_, fun hA0 => ?_⟩` and prove the remaining obligations. Establish `e1 : ‖ψ (s / gauge Rd u)‖ = ‖ψr s‖ / ‖ψr (gauge Rd u)‖`. Rewrite using `[← norm_div, ← map_div₀]`.
+
+Both sides reduce to the same expression. Rewrite using `[e1, mul_div_assoc', div_le_iff₀ hgp]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `heq` using `[hA0, mul_zero]`. Conclude with `(mul_eq_zero.1 heq).resolve_left hHp.ne'`.
+
+Establish `htr : φc (evC h Z f) = ∑ ψ : RM.Ω →ₐ[Om Z] ℂ, ψ (s / gauge Rd u)`. Rewrite using `[hev]`. Conclude with `trace_eq_sum_embeddings ℂ`. Establish `hcard : Fintype.card (RM.Ω →ₐ[Om Z] ℂ) = Or.Fl.deg` using `(AlgHom.card (Om Z) RM.Ω ℂ).trans Rd.deg`. Establish `hsum : N * A ≤ Or.Fl.deg * R * A`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_left ?_ hN0` and prove the remaining obligations. Rewrite using `[hA, htr]`. Conclude with `norm_sum_le _ _`. Use `_ = ∑ ψ : RM.Ω →ₐ[Om Z] ℂ, N * ‖ψ (s / gauge Rd u)‖ := Finset.mul_sum _ _ _`.
+
+Use `_ ≤ ∑ _ψ : RM.Ω →ₐ[Om Z] ℂ, R * A := Finset.sum_le_sum fun ψ _ => (hmain ψ).1`. Use `_ = Or.Fl.deg * R * A := by`. Rewrite using `[Finset.sum_const, Finset.card_univ, hcard, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Break down `(norm_nonneg (φc (evC h Z f))).eq_or_lt with h0 | h0` into its components or cases.
+
+Establish `hne : Nonempty (RM.Ω →ₐ[Om Z] ℂ)` using `Fintype.card_pos_iff.1 (hcard ▸ hdpos)`. Take `⟨ψ⟩` from `hne`. Rewrite using `[(hmain ψ).2 h0.symm]`. Check the signs of the components of the expression. Conclude with `le_of_mul_le_mul_right hsum h0`.
+-/
 theorem bound_at_frame [DecidableEq (CMType H)] (hG : Top.Given) (hL : CompLaws U h e) (x : ℝ)
     (hx : ∀ σ, GoodEmb c σ → ∀ k (τ : E →+* ℂ), ‖τ ((U σ).X k).ξ0‖ = x) (hpq : 1 ≤ Dw.p + Dw.q)
     (Fr : Small.GenFrame Or) (Z : Comp Xo c) (Rd : Reading Fr h Z) (u : GlobalTheory.AllWt.Weight Dw) (s : RM.Ω) (R : ℝ)
@@ -406,6 +530,19 @@ namespace GlobalTheory.CompanionTheory.Ar.Plug
 
 open GlobalTheory.CompanionTheory.Ar.Plug.Arch in
 
+/- English proof (translation)
+Introduce `hG E _ _ _ H Dw l Xo c r U h e hL x hx Y _ T o B b Fr Z Rd u s R hR hH f hf hev σ hσ z hz`. Take `⟨k, y₀⟩` from `z`. Establish `hy₀ : y₀ ∈ ((U σ).X k).dom` using `hz.1`. Establish `hk : Over (U σ) (e Z) k` using `((GlobalTheory.T.all_weight_sections_compat E H Dw l Xo c r U h e hL 0 Z).2.2.2.2 σ hσ k y₀ hy₀).1 hz`. Establish `hU` using `hL.unf σ hσ`.
+
+Establish `hpq : 1 ≤ Dw.p + Dw.q`. Establish `h1` using `T.j_pos`. Establish `h2` using `o.toTowerOrigin.j_eq`. Use linear arithmetic over natural numbers and integers. Take `⟨Z', S, hS, hg⟩` from `GlobalTheory.GenericFrames.exists_comp_generic_off_meagre E H Dw l Xo c σ r (U σ) hσ hU h k`.
+
+Establish `hd : Dense (⋂ n, (S n)ᶜ)` using `dense_iInter_of_isOpen (fun n => (hS n).1.isOpen_compl) fun n => interior_eq_empty_iff_dense_compl.1 (hS n).2`. Establish `ho : IsOpen ((U σ).X k).dom` using `FourierCoefficientDomain.isOpen_dom _`. Establish `hbd : ∀ y ∈ ((U σ).X k).dom ∩ ⋂ n, (S n)ᶜ, GlobalTheory.AllWt.homN (U σ) x (GlobalTheory.AllWt.wtOf Dw u 0) f ⟨k, y⟩ ≤ (o.toTowerOrigin.Or B b).Fl.deg * R`. Introduce and unpack `y ⟨hy, hyS⟩`. Take `⟨φ, y₁, t, hm, hb⟩` from `hg ⟨y, hy⟩ fun n hn => Set.mem_iInter.1 hyS n hn`.
+
+Choose the witnesses or unpack the hypotheses as in `rfl : Z' = Z := by`. Assume the negation of the conclusion as `hne`. Take `⟨w, hw0, hw⟩` from `GlobalTheory.CompanionTheory.Ar.Plug.ArchimedeanSections.rdU_eq_of_reads' (U σ) h k Z' ⟨y, hy⟩ φ y₁ t hm hb 0 0`. Establish `h1` using `hw (e Z) (hL.e_sec Z)`. Rewrite `h1` using `[hk y hy, (hL.e_val Z).2 Z' hne, map_zero, mul_one]`.
+
+Conclude with `hw0 h1`. Take `⟨a, N, g, hgs, hgb⟩` from `GlobalTheory.T.good_origin_component_sections hG E H Dw l Xo c r U h e hL Y T o Z'`. Conclude with `bound_at_frame hG hL x hx hpq Fr Z' Rd u s R hR hH hf hev hσ hk ⟨y, hy⟩ φ fun y' hy' => by`. Take `⟨w, hw, hwg⟩` from `hy' a`. Conclude with `GlobalTheory.T.good_embedding_component_sections E H Dw l Xo c r U h e hL σ hσ Z' k hk a N g hgs hgb φ ⟨y, hy⟩ y' y₁ t hm hb w hw fun j => hwg _ (hgs j)`.
+
+Establish `hcl : y₀ ∈ closure (((U σ).X k).dom ∩ ⋂ n, (S n)ᶜ)` using `hd.open_subset_closure_inter ho hy₀`. Establish `hct : ContinuousAt (fun y => GlobalTheory.AllWt.homN (U σ) x (GlobalTheory.AllWt.wtOf Dw u 0) f ⟨k, y⟩) y₀` using `(continuousOn_homN (U σ) hU hpq x u hf k).continuousAt (ho.mem_nhds hy₀)`. Use `haveI := mem_closure_iff_nhdsWithin_neBot.1 hcl`. Conclude with `le_of_tendsto (hct.tendsto.mono_left nhdsWithin_le_nhds) (eventually_nhdsWithin_of_forall hbd)`.
+-/
 theorem vs_arch : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (h : GenFrEx Xo c) (e : Comp Xo c → Rul Xo c), CompLaws U h e → ∀ x : ℝ, (∀ σ, GoodEmb c σ → ∀ k (τ : E →+* ℂ), ‖τ ((U σ).X k).ξ0‖ = x) → ∀ (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) [DecidableEq (CMType H)] (T : Top.RootTower (CMType H) (Dw.p + Dw.q)) (o : Top.GoodOrigin Y T) (B : ℕ) (b : T.Comp) (Fr : Small.GenFrame (o.toTowerOrigin.Or B b)) (Z : Comp Xo c) (Rd : Reading Fr h Z) (u : GlobalTheory.AllWt.Weight Dw) (s : (T.M B b).Ω) (R : ℝ), 0 ≤ R → HodgeLe (o.toTowerOrigin.Or B b) u s R → ∀ f ∈ GlobalTheory.AllWt.secZ Xo c (GlobalTheory.AllWt.exOf Dw u 0), evC h Z f = trOf Rd u s → ∀ σ, GoodEmb c σ → ∀ z ∈ GlobalTheory.AllWt.framesOn (U σ) Z, GlobalTheory.AllWt.homN (U σ) x (GlobalTheory.AllWt.wtOf Dw u 0) f z ≤ (o.toTowerOrigin.Or B b).Fl.deg * R := by
   intro hG E _ _ _ H Dw l Xo c r U h e hL x hx Y _ T o B b Fr Z Rd u s R hR hH f hf hev σ hσ z hz
   obtain ⟨k, y₀⟩ := z

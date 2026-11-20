@@ -15,6 +15,9 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK.Dbl GlobalTheory.Cont PositivityTheory.Rg.Sw
 open GlobalTheory.Doubling (absE)
 namespace PositivityTheory.SiegelWeilFormula.Kdil
+/- English proof (translation)
+The claim follows from `_root_.PositivityTheory.SiegelWeilFormula.Kdil.locFamG_of'_k hT hA _root_.PositivityTheory.SiegelWeilFormula.KFock.goodAwayEx_k hFP hLI`.
+-/
 theorem locFamG_done_k (hT : _root_.PositivityTheory.SiegelWeilFormula.TAll_k) (hA : _root_.PositivityTheory.SiegelWeilFormula.SiegelWeilDatumProperties) (hFP : FPSw) (hLI : _root_.PositivityTheory.SiegelWeilFormula.LocInst_k) : _root_.PositivityTheory.SiegelWeilFormula.Kdil.LocFamG_k :=
   _root_.PositivityTheory.SiegelWeilFormula.Kdil.locFamG_of'_k hT hA _root_.PositivityTheory.SiegelWeilFormula.KFock.goodAwayEx_k hFP hLI
 end PositivityTheory.SiegelWeilFormula.Kdil

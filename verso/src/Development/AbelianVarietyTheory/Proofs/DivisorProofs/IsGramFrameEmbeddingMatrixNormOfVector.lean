@@ -8,6 +8,11 @@ open scoped Matrix
 
 namespace GlobalTheory.DefPt
 
+/- English proof (translation)
+Introduce `K _ _ ι _ _ Y hY`. Establish `h : IsGram (Pi.basisFun K ι) (fun v => (Y v.embedding)⁻¹) (matNorm Y)`. Introduce `v`. Establish `hu : IsUnit (Y v.embedding).det` using `(hY _).isUnit`. Use `⟨Matrix.isUnit_nonsing_inv_det _ hu, fun x => ?_⟩` and prove the remaining obligations.
+
+Establish `hv : Formalism.HermitianLatticesTheory.vecAt (Pi.basisFun K ι) v x = fun j => v.embedding (x j)`. Use function extensionality and compare the values at `j`. Simplify using `[Formalism.HermitianLatticesTheory.vecAt]`. Simplify using `only [Formalism.HermitianLatticesTheory.normAt, Formalism.HermitianLatticesTheory.cnorm, Formalism.HermitianLatticesTheory.fcoord, matNorm, Matrix.nonsing_inv_nonsing_inv _ hu, hv]`. Conclude with `⟨h, h.hasGram⟩`.
+-/
 theorem isGram_matNorm : ∀ (K : Type) [Field K] [NumberField K] (ι : Type) [Fintype ι] [DecidableEq ι] (Y : (K →+* ℂ) → Matrix ι ι ℂ), (∀ σ, (Y σ).det ≠ 0) → IsGram (Pi.basisFun K ι) (fun v => (Y v.embedding)⁻¹) (matNorm Y) ∧ HasGram (matNorm Y) := by
   intro K _ _ ι _ _ Y hY
   have h : IsGram (Pi.basisFun K ι) (fun v => (Y v.embedding)⁻¹) (matNorm Y) := by

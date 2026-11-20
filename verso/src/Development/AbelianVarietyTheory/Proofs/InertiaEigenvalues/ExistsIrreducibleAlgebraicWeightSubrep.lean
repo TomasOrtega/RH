@@ -22,6 +22,9 @@ set_option maxHeartbeats 800000
 
 namespace GlobalTheory.AlgSubrep
 
+/- English proof (translation)
+Rewrite using `[LinearMap.toMatrix_comp e b e, LinearMap.toMatrix_comp e b b, Matrix.mul_assoc]`.
+-/
 theorem toMatrix_sandwich {V U : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup U] [Module ℂ U]
     {ι κ : Type} [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ]
     (b : Module.Basis ι ℂ V) (e : Module.Basis κ ℂ U) (π : V →ₗ[ℂ] U) (s : U →ₗ[ℂ] V)
@@ -30,6 +33,9 @@ theorem toMatrix_sandwich {V U : Type} [AddCommGroup V] [Module ℂ V] [AddCommG
       LinearMap.toMatrix b e π * LinearMap.toMatrix b b f * LinearMap.toMatrix e b s := by
   rw [LinearMap.toMatrix_comp e b e, LinearMap.toMatrix_comp e b b, Matrix.mul_assoc]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j`. Simplify using `only [Matrix.mul_apply, Finset.sum_mul]`. Substitute `hM` using the available equality. Simplify using `only [MvPolynomial.eval_sum, MvPolynomial.eval_mul, MvPolynomial.eval_C]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem eval_sandwich {ι κ σ : Type} [Fintype ι] [Fintype κ] (A : Matrix κ ι ℂ) (B : Matrix ι κ ℂ)
     (P : ι → ι → MvPolynomial σ ℂ) (x : σ → ℂ) (M : Matrix ι ι ℂ)
     (hM : M = fun k l => MvPolynomial.eval x (P k l)) :
@@ -45,6 +51,15 @@ end GlobalTheory.AlgSubrep
 
 namespace GlobalTheory.AlgSubrep
 
+/- English proof (translation)
+Take `⟨hfin, ι, _, _, b, P, hP⟩` from `hρ`. Use `haveI := hfin`. Take `⟨C, hC⟩` from `Submodule.exists_isCompl S.toSubmodule`. Set `π : V →ₗ[ℂ] S.toSubmodule` to `Submodule.linearProjOfIsCompl S.toSubmodule C hC`. Set `e` to `Module.Free.chooseBasis ℂ S.toSubmodule`.
+
+Use `⟨inferInstance, Module.Free.ChooseBasisIndex ℂ S.toSubmodule, inferInstance, inferInstance, e, fun i j => ∑ k, ∑ l, MvPolynomial.C (LinearMap.toMatrix b e π i k) * P k l * MvPolynomial.C (LinearMap.toMatrix e b S.toSubmodule.subtype l j), ?_⟩` and prove the remaining obligations. Introduce `γ γ₀ hγ`. Establish `hres : S.toRepresentation γ = π ∘ₗ ρ γ ∘ₗ S.toSubmodule.subtype`. Use extensionality with `x : 1`. Establish `hm : ρ γ x ∈ S.toSubmodule` using `S.apply_mem_toSubmodule γ x.2`.
+
+Establish `h1` using `Submodule.linearProjOfIsCompl_apply_left hC ⟨ρ γ x, hm⟩`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, Submodule.subtype_apply]`. Rewrite using `[show π (ρ γ ↑x) = _ from h1]`. Apply `Subtype.ext` to reduce the goal to its premises. Both sides reduce to the same expression.
+
+Establish `h4` using `hP γ γ₀ hγ`. Establish `h5` using `toMatrix_sandwich b e π S.toSubmodule.subtype (ρ γ)`. Conclude with `(congrArg (LinearMap.toMatrix e e) hres).trans (h5.trans (eval_sandwich (LinearMap.toMatrix b e π) (LinearMap.toMatrix e b S.toSubmodule.subtype) P _ _ h4))`.
+-/
 theorem isAlgWeight_subrep (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ)
     {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (ReciprocityTheory.Aut.GQ L n) V)
     (hρ : Formalism.AUTREP.IsAlgWeight L n ρ) (S : Subrepresentation ρ) :
@@ -75,6 +90,9 @@ end GlobalTheory.AlgSubrep
 
 namespace GlobalTheory.AlgSubrep
 
+/- English proof (translation)
+Introduce `L _ _ _ n V _ _ _ ρ hρ`. Use `haveI := hρ.1`. Take `⟨S, hS⟩` from `GlobalTheory.PiIsotypic.exists_irreducible_subrep ρ`. Conclude with `⟨⟨S.toSubmodule, S.toRepresentation, isAlgWeight_subrep L n ρ hρ S, hS⟩, S.toSubmodule.subtype, S.toSubmodule.injective_subtype, fun γ x => rfl⟩`.
+-/
 theorem exists_irreducible_algWt : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] [Nontrivial V] (ρ : Representation ℂ (ReciprocityTheory.Aut.GQ L n) V), Formalism.AUTREP.IsAlgWeight L n ρ → ∃ (a : NG.AlgWt L n) (j : a.W →ₗ[ℂ] V), Function.Injective j ∧ ∀ γ x, j (a.ρ γ x) = ρ γ (j x) := by
   intro L _ _ _ n V _ _ _ ρ hρ
   haveI := hρ.1

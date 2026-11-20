@@ -6,6 +6,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.SeamTwist
 
+/- English proof (translation)
+Use `LinearMap.ext fun w => funext fun l => s.iE.injective ?_` and prove the remaining obligations. Rewrite using `[seamHom_apply]`. Use `show s.iE r * x (fun k => s.iE (w k)) l = s.iE (r * seamHom s x w l)`. Rewrite using `[map_mul, seamHom_apply]`.
+-/
 theorem seamHom_smul {D : D7} {X : Fields} (s : Seam D X) {a b : ℕ} (r : X.E) (x : HomE D.host.E a b) :
     seamHom s (s.iE r • x) = r • seamHom s x := by
   refine LinearMap.ext fun w => funext fun l => s.iE.injective ?_
@@ -13,10 +16,18 @@ theorem seamHom_smul {D : D7} {X : Fields} (s : Seam D X) {a b : ℕ} (r : X.E) 
   show s.iE r * x (fun k => s.iE (w k)) l = s.iE (r * seamHom s x w l)
   rw [map_mul, seamHom_apply]
 
+/- English proof (translation)
+The claim follows from `seamHom_smul s (r : X.E) x`.
+-/
 theorem seamHom_smul_int {D : D7} {X : Fields} (s : Seam D X) {a b : ℕ} (r : 𝓞 X.E) (x : HomE D.host.E a b) :
     seamHom s (RingOfIntegers.mapRingEquiv s.iE r • x) = r • seamHom s x :=
   seamHom_smul s (r : X.E) x
 
+/- English proof (translation)
+Use `show (∃ r ∈ P.asIdeal.primeCompl, r • seamHom s x ∈ M) ↔ ∃ r ∈ (seamP s P).asIdeal.primeCompl, r • x ∈ M'`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, hr, hm⟩`. Use `⟨RingOfIntegers.mapRingEquiv s.iE r, fun hh => hr ((mem_seamP s P r).1 hh), (h _).1 ?_⟩` and prove the remaining obligations. Rewrite using `[seamHom_smul_int]` and apply the resulting hypothesis.
+
+Introduce and unpack `⟨r, hr, hm⟩`. Take `⟨r, rfl⟩` from `(RingOfIntegers.mapRingEquiv s.iE).surjective r`. Use `⟨r, fun hh => hr ((mem_seamP s P r).2 hh), ?_⟩` and prove the remaining obligations. Rewrite using `[← seamHom_smul_int]`. Conclude with `(h _).2 hm`.
+-/
 theorem seamHom_mem_locP {D : D7} {X : Fields} (s : Seam D X) {a b : ℕ} (M : Submodule (𝓞 X.E) (HomE X.E a b))
     (M' : Submodule (𝓞 D.host.E) (HomE D.host.E a b)) (h : ∀ x, seamHom s x ∈ M ↔ x ∈ M') (P : HeightOneSpectrum (𝓞 X.E))
     (x : HomE D.host.E a b) :
@@ -32,6 +43,13 @@ theorem seamHom_mem_locP {D : D7} {X : Fields} (s : Seam D X) {a b : ℕ} (M : S
     rw [← seamHom_smul_int]
     exact (h _).2 hm
 
+/- English proof (translation)
+Introduce `D X s a b M M' h cl e e' he x`. Establish `key : ∀ P : HeightOneSpectrum (𝓞 X.E), ((cl : X.E) ^ e P)⁻¹ • seamHom s x ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal M ↔ ((cl : D.host.E) ^ e' (seamP s P))⁻¹ • x ∈ Formalism.HermitianLatticesTheory.localization₂ (seamP s P).asIdeal M'`. Introduce `P`. Rewrite using `[← seamHom_smul, seamHom_mem_locP s M M' h, he, map_inv₀, map_zpow₀, map_natCast]`. Unfold `twist₂`.
+
+Rewrite using `[Submodule.mem_iInf, Submodule.mem_iInf]`. Prove the components needed by the constructor for the conclusion. Introduce `hx Q`. Take `⟨P, rfl⟩ : ∃ P, seamP s P = Q` from `(HeightOneSpectrum.equivOfRingEquiv (RingOfIntegers.mapRingEquiv s.iE)).surjective Q`. Conclude with `(key P).1 (hx P)`.
+
+Introduce `hx P`. Conclude with `(key P).2 (hx (seamP s P))`.
+-/
 theorem seamHom_mem_twO : ∀ {D : D7} {X : Fields} (s : Seam D X) {a b : ℕ} (M : Submodule (𝓞 X.E) (HomE X.E a b)) (M' : Submodule (𝓞 D.host.E) (HomE D.host.E a b)), (∀ x, seamHom s x ∈ M ↔ x ∈ M') → ∀ (cl : ℕ) (e : HeightOneSpectrum (𝓞 X.E) → ℤ) (e' : HeightOneSpectrum (𝓞 D.host.E) → ℤ), (∀ P, e' (seamP s P) = e P) → ∀ x, seamHom s x ∈ twist₂ M cl e ↔ x ∈ twist₂ M' cl e' := by
   intro D X s a b M M' h cl e e' he x
   have key : ∀ P : HeightOneSpectrum (𝓞 X.E),

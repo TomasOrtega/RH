@@ -25,6 +25,11 @@ namespace GlobalTheory.GenericPol
 
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `h ⟨(default : PrimeSpectrum K), rfl⟩`. Take `⟨p, -, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := x) (g := j) _ z hz.symm`. Set `u` to `(pullback x j).fromSpecResidueField p`. Use `⟨(pullback x j).residueField p, inferInstance, (Spec.preimage (u ≫ pullback.fst x j)).hom, u ≫ pullback.snd x j, ?_⟩` and prove the remaining obligations. Establish `e : specOf (Spec.preimage (u ≫ pullback.fst x j)).hom = u ≫ pullback.fst x j` using `Spec.map_preimage _`.
+
+Rewrite using `[e]`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (u ≫ ·) pullback.condition).trans (Category.assoc _ _ _).symm)`.
+-/
 theorem exists_lift {K : Type} [Field K] {X Z : Scheme.{0}} (x : Spec (CommRingCat.of K) ⟶ X) (j : Z ⟶ X)
     (h : Set.range x ⊆ Set.range j) :
     ∃ (K' : Type) (_ : Field K') (i : K →+* K') (z : Spec (CommRingCat.of K') ⟶ Z), specOf i ≫ x = z ≫ j := by
@@ -40,6 +45,13 @@ theorem exists_lift {K : Type} [Field K] {X Z : Scheme.{0}} (x : Spec (CommRingC
 
 variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Take `⟨K', _, i, z, e⟩` from `exists_lift x j h`. Take `⟨PP', cub, sym, adj, prim, m₁, -⟩` from `sabPull CubePf.cubePull (specOf i) t`. Generalize the expression as in `(⟨(Over.pullback (specOf i)).obj t.G, IsSemiAbelian.pullback _ t.G t.semi, Geo.Tor.OAct.pullback _ t.G t.act, PP', cub, sym, adj, prim⟩ : SAB H _) = t' at m₁`. Take `⟨n, -⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ m m₁`. Take `⟨m', -⟩` from `sabCancel pullCubCancel E H _ _ _ T T' t' j z mj (e ▸ n)`.
+
+Take `⟨w, g, -⟩` from `m'.lin`. Take `⟨w₁, g₁, -⟩` from `m₁.lin`. Take `⟨U, hU, hc, -⟩` from `exists_isAffineOpen_mem_and_subset (X := Z) (U := ⊤) (x := z (IsLocalRing.closedPoint K')) trivial`. Establish `hy : ∀ y, z y ∈ U` using `fun y => (congrArg (fun V => y ∈ V) (Scheme.preimage_eq_top_of_closedPoint_mem z hc)).mpr trivial`. Use `t.semi.smooth` as an intermediate fact.
+
+Use `t.semi.separated` as an intermediate fact. Use `t.semi.quasiCompact` as an intermediate fact. Conclude with `GlobalTheory.AmpleDescent.proper_relAmple_kTriv_of_fieldExtension K K' i t.G t'.G m₁.φ m₁.cart t.PP.L t'.PP.L t.PP.isLB t'.PP.isLB ⟨w₁, g₁⟩ (MorphismProperty.of_isPullback (P := @IsProper) m'.cart.1 hp) (relAmple_pull m'.cart.1 T'.PP.isLB t'.PP.isLB ((isGen_iff w).1 g) U hU hy hA …`.
+-/
 theorem proper_ample_kTriv {X Z : Scheme.{0}} {T : SAB H X} {T' : SAB H Z} {j : Z ⟶ X} (mj : SABMap T' T j)
     (hp : IsProper T'.G.hom) (hA : RelAmple T'.G T'.PP.L) (hK : KTriv T'.G T'.PP.L) {K : Type} [Field K]
     {x : Spec (CommRingCat.of K) ⟶ X} {t : SAB H (Spec (CommRingCat.of K))} (m : SABMap t T x)
@@ -79,6 +91,9 @@ def toPolAV {S : Scheme.{0}} (t : SAB H S) (g : ℕ) (hg : SmoothOfRelativeDimen
   ample := hA
   ktriv := hK
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `GlobalTheory.NormRos.exists_gen_rosati t.PP.isLB _ _ (t.adj a)`. Conclude with `fun _ => ⟨⊤, trivial, LB.pullGen _ _ _ u _, DVR.pullGen_isGen _ _ _ _ hu _⟩`.
+-/
 theorem rosatiAdj {S : Scheme.{0}} (t : SAB H S) (a : NumberField.RingOfIntegers E) :
     RosatiAdj t.G t.PP.L (t.act.act a) (t.act.act (H.bar a)) := by
   obtain ⟨u, hu⟩ := GlobalTheory.NormRos.exists_gen_rosati t.PP.isLB _ _ (t.adj a)
@@ -88,6 +103,15 @@ end GlobalTheory.GenericPol
 
 open GlobalTheory.GenericPol ReciprocityTheory.ChartRestriction.G.Geo.Tor in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dm l Xo c O _ β Y R _ _ χ t m h g hg`. Set `` to `H.starRing`. Take `⟨PP', cub, sym, adj, prim, m₁, hm₁⟩` from `sabPull CubePf.cubePull (jK R) t`. Set `t' : SAB H (Spec (CommRingCat.of (FractionRing R)))` to `⟨(Over.pullback (jK R)).obj t.G, IsSemiAbelian.pullback _ t.G t.semi, Geo.Tor.OAct.pullback _ t.G t.act, PP', cub, sym, adj, prim⟩`. Set `m₀ : SABMap t' t (jK R)` to `m₁`.
+
+Establish `hm₀ : m₀.cm.F = pullback.fst t.G.hom (jK R)` using `hm₁`. Take `⟨n, -⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ m m₀`. Take `⟨hp, hA, hK⟩` from `proper_ample_kTriv Y.m Y.oF.proper Y.oF.ample Y.oF.ktriv n h`. Establish `hg' : SmoothOfRelativeDimension g t'.G.hom` using `by show SmoothOfRelativeDimension g (pullback.snd t.G.hom (jK R))`. Conclude with `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback (IsPullback.of_hasPullback _ _) hg`.
+
+Take `⟨w, hw, -⟩` from `m₀.lin`. Establish `hL : LBIso t'.PP.L (t.PP.L.pull (pullback.fst t.G.hom (jK R)))` using `hm₀ ▸ ⟨w, hw⟩`. Use `⟨toPolAV t' g hg' hp hA hK, Iso.refl _, ⟨t'.act.toRingAct, rosatiAdj t'⟩, rfl, ?_, ?_, fun a => ?_⟩` and prove the remaining obligations. Conclude with `inferInstanceAs (IsMonHom (𝟙 t'.G))`. Conclude with `LBIso.chartPull (Geo.Tor.chartPullPull t'.PP.L (𝟙 _) (𝟙 _) rfl) (Geo.Tor.chartPullId _) hL`.
+
+Conclude with `(Category.comp_id _).trans (Category.id_comp _).symm`.
+-/
 theorem GlobalTheory.exists_polAV_genericFibre : ∀ (E : Type) [Field E] [NumberField E] [NumberField.IsCMField E] (H : Geo.Tor.Host E) (Dm : Geo.Tor.Datum H) (l : Geo.Tor.Level H) (Xo : Geo.Tor.Moduli Dm l) (c : Geo.Tor.Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Geo.Tor.Model Xo c β) (R : Type) [CommRing R] [IsDomain R] (χ : Geo.Tor.Sp R ⟶ Y.X) (t : Geo.Tor.SAB H (Geo.Tor.Sp R)) (_ : Geo.Tor.SABMap t Y.t χ), Set.range (jK R ≫ χ) ⊆ Set.range Y.j → ∀ g : ℕ, SmoothOfRelativeDimension g t.G.hom → ∃ (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (eA : (Over.pullback (jK R)).obj t.G ≅ A.A) (oA : letI := H.starRing; A.OAct (NumberField.RingOfIntegers E)), A.g = g ∧ IsMonHom eA.hom ∧ Geo.Tor.LBIso (A.L.pull eA.hom.left) (t.PP.L.pull (pullback.fst t.G.hom (jK R))) ∧ (letI := H.starRing; ∀ a, (Over.pullback (jK R)).map (t.act.act a) ≫ eA.hom = eA.hom ≫ oA.act a) := by
   intro E _ _ _ H Dm l Xo c O _ β Y R _ _ χ t m h g hg
   let := H.starRing

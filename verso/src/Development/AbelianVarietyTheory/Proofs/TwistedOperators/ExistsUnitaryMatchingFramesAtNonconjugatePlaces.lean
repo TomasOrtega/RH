@@ -24,6 +24,9 @@ section General
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
+/- English proof (translation)
+Use `show MulAut.conj (β * intGL F E n y) (intGL F E n z) = MulAut.conj β (intGL F E n (y * z * y⁻¹))`. Rewrite using `[MulAut.conj_apply, MulAut.conj_apply, map_mul, map_mul, map_inv]`. Use `group`.
+-/
 private theorem frGL_mul_intGL (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))
     (y z : GL (Fin n) (Formalism.L2.Herm.intAf F E)) :
     frGL (β * intGL F E n y) z = frGL β (y * z * y⁻¹) := by
@@ -31,6 +34,13 @@ private theorem frGL_mul_intGL (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F
   rw [MulAut.conj_apply, MulAut.conj_apply, map_mul, map_mul, map_inv]
   group
 
+/- English proof (translation)
+Use extensionality with `x`. Use `show x ∈ (frGL (β * intGL F E n y)).range ↔ x ∈ (frGL β).range`. Simplify using `only [MonoidHom.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`.
+
+Conclude with `⟨y * z * y⁻¹, (frGL_mul_intGL β y z).symm⟩`. Introduce and unpack `⟨z, rfl⟩`. Use `⟨y⁻¹ * z * y, ?_⟩` and prove the remaining obligations. Rewrite using `[frGL_mul_intGL]`. Use `congr 1`.
+
+Use `group`.
+-/
 theorem St_mul_intGL (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (y : GL (Fin n) (Formalism.L2.Herm.intAf F E)) :
     St (β * intGL F E n y) = St β := by
   ext x
@@ -45,6 +55,13 @@ theorem St_mul_intGL (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (y : GL
     congr 1
     group
 
+/- English proof (translation)
+Distinguish the cases in `hx : x ∈ St β`. Take `⟨z, rfl⟩` from `MonoidHom.mem_range.1 hx`. Establish `h1 : frGL β z = frGL (β * intGL F E n y) (y⁻¹ * z * y)`. Rewrite using `[frGL_mul_intGL]`. Use `congr 1`.
+
+Use `group`. Use `conv_lhs => rw [h1]`. Rewrite using `[redFn_frGL, redFn_frGL]`. Rewrite using `[map_mul, map_mul, map_inv]`. Establish `hx' : x ∉ St (β * intGL F E n y)` using `by rwa [St_mul_intGL]`.
+
+Simplify using `only [redFn, ext1, dif_neg hx, dif_neg hx', mul_one, inv_mul_cancel]`.
+-/
 theorem redFn_mul_intGL (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (y : GL (Fin n) (Formalism.L2.Herm.intAf F E))
     (PP : Pl E) (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) :
     redFn (β * intGL F E n y) PP x =
@@ -61,11 +78,31 @@ theorem redFn_mul_intGL (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (y :
   · have hx' : x ∉ St (β * intGL F E n y) := by rwa [St_mul_intGL]
     simp only [redFn, ext1, dif_neg hx, dif_neg hx', mul_one, inv_mul_cancel]
 
+/- English proof (translation)
+Simplify using `only [frGL, MonoidHom.coe_comp, Function.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`. Use `group`.
+-/
 theorem frGL_mul (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (y : GL (Fin n) (Formalism.L2.Herm.intAf F E)) :
     frGL β y * β = β * intGL F E n y := by
   simp only [frGL, MonoidHom.coe_comp, Function.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply]
   group
 
+/- English proof (translation)
+Establish `key : ∀ {γ δ : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)}, IsFrame γ Λ → IsFrame δ Λ → ∀ i j, ((γ⁻¹ * δ : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) i j ∈ Formalism.L2.Herm.intAf F E`. Introduce `γ δ hγ hδ i j`. Use `set v : Fin n → E ⊗[F] Formalism.L2.Herm.Af F := (δ : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)).mulVec (Pi.single j 1) with hv`. Establish `hvL : v ∈ Formalism.L2.Herm.hatL (F` using `F) Λ := by`. Rewrite using `[hδ v]`.
+
+Introduce `k`. Rewrite using `[hv, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Break down `eq_or_ne k j with hk | hk` into its components or cases. Substitute `hk` using the available equality. Simplify using `only [Pi.single_eq_same]`.
+
+Conclude with `Subring.one_mem _`. Simplify using `only [Pi.single_eq_of_ne hk]`. Conclude with `Subring.zero_mem _`. Establish `hi` using `(hγ v).1 hvL i`. Rewrite `hi` using `[hv, Matrix.mulVec_mulVec, Matrix.mulVec_single_one, ← Units.val_mul]`.
+
+Simplify `hi` using `[Matrix.transpose_apply]`. Set `M : Matrix (Fin n) (Fin n) (Formalism.L2.Herm.intAf F E)` to `fun i j => ⟨_, key h₁ h₂ i j⟩`. Set `N : Matrix (Fin n) (Fin n) (Formalism.L2.Herm.intAf F E)` to `fun i j => ⟨_, key h₂ h₁ i j⟩`. Establish `hM : M.map (Formalism.L2.Herm.intAf F E).subtype = ((β₁⁻¹ * β₂ : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))`. Use extensionality with `i j`.
+
+Both sides reduce to the same expression. Establish `hN : N.map (Formalism.L2.Herm.intAf F E).subtype = ((β₂⁻¹ * β₁ : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))`. Use extensionality with `i j`. Both sides reduce to the same expression. Establish `hinj : Function.Injective (fun A : Matrix (Fin n) (Fin n) (Formalism.L2.Herm.intAf F E) => A.map (Formalism.L2.Herm.intAf F E).subtype)` using `Matrix.map_injective Subtype.val_injective`.
+
+Establish `hone : (1 : Matrix (Fin n) (Fin n) (Formalism.L2.Herm.intAf F E)).map (Formalism.L2.Herm.intAf F E).subtype = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hMN : M * N = 1` using `hinj (by`. Simplify using `only [Matrix.map_mul, hM, hN, hone, ← Units.val_mul]`. Rewrite using `[show β₁⁻¹ * β₂ * (β₂⁻¹ * β₁) = 1 by group, Units.val_one])`. Establish `hNM : N * M = 1` using `hinj (by`.
+
+Simplify using `only [Matrix.map_mul, hM, hN, hone, ← Units.val_mul]`. Rewrite using `[show β₂⁻¹ * β₁ * (β₁⁻¹ * β₂) = 1 by group, Units.val_one])`. Use `⟨⟨M, N, hMN, hNM⟩, ?_⟩` and prove the remaining obligations. Establish `hm : intGL F E n ⟨M, N, hMN, hNM⟩ = β₁⁻¹ * β₂` using `by ext1`. Rewrite using `[← hM]`.
+
+Conclude with `Formalism.UG.P.bc_coe _ _`. Rewrite using `[hm]`. Use `group`.
+-/
 theorem exists_intGL_of_isFrame {β₁ β₂ : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} {Λ : Submodule (𝓞 E) (Fin n → E)}
     (h₁ : IsFrame β₁ Λ) (h₂ : IsFrame β₂ Λ) : ∃ m : GL (Fin n) (Formalism.L2.Herm.intAf F E), β₂ = β₁ * intGL F E n m := by
   classical
@@ -122,6 +159,21 @@ end General
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D V Pg hPg β₁ β₂ h₁ h₂`. Take `⟨m, hm⟩` from `exists_intGL_of_isFrame h₁ h₂`. Take `⟨β₀, ⟨c, h₀⟩, -⟩` from `GlobalTheory.StdFrames.exists_frame_std V`. Establish `hB : IsBaseFrame V β₁ (Formalism.L2.Herm.crdLat V V.L0) (1 ^ c)` using `⟨h₁, h₀.2⟩`. Establish `hloc : ∀ PP, ∃ κ : GA D V, κ ∈ GfC V ∧ finE V κ ∈ St β₁ ∧ (PP ∈ Pg → redFn β₁ PP (finE V κ) = Formalism.UG.bc (resS D.host.F PP) m) ∧ ∀ P', P' ≠ PP → (PP ∈ Pg → ¬ IsConjPl (D` using `D) PP P') → redFn β₁ P' (finE V κ) = 1 := by`.
+
+Introduce `PP`. Distinguish the cases in `hPP : PP ∈ Pg`. Take `⟨e, he⟩` from `GlobalTheory.ParahoricLift.exists_isIdemAt (hPg PP hPP PP hPP)`. Take `⟨κ, -, k1, k2, k3, k4⟩` from `GlobalTheory.ParahoricLift.exists_local_lift hB he (Formalism.UG.bc (resS D.host.F PP) m)`. Conclude with `⟨κ, k1, k2, fun _ => k3, fun P' hP' hc => k4 P' hP' (hc hPP)⟩`.
+
+Use `⟨1, Subgroup.one_mem _, ?_, fun h => absurd h hPP, fun P' _ _ => ?_⟩` and prove the remaining obligations. Rewrite using `[map_one]`. Conclude with `Subgroup.one_mem _`. Rewrite using `[map_one]`. Conclude with `blockDiagonalExtendByOnePrimeField_one (St β₁) (redAt β₁ P')`.
+
+Use `choose κ hκG hκS hκR hκO using hloc`. Establish `hprod` using `GlobalTheory.ParahoricLift.redFn_list_prod V β₁ (Pg.toList.map κ) (by`. Introduce `g hg`. Take `⟨b, -, rfl⟩` from `List.mem_map.1 hg`. Conclude with `hκS b)`.
+
+Establish `hred : ∀ PP ∈ Pg, redFn β₁ PP (finE V (Pg.toList.map κ).prod) = Formalism.UG.bc (resS D.host.F PP) m`. Introduce `PP hPP`. Establish `hs` using `GlobalTheory.ParahoricLift.prod_map_single (Finset.nodup_toList Pg) (Finset.mem_toList.2 hPP) (fun b => redFn β₁ PP (finE V (κ b))) (fun b hb => hκO b PP (Ne.symm hb) (fun hbP => hPg b hbP PP hPP))`. Rewrite using `[hprod.2 PP, List.map_map]`. Conclude with `hs.trans (hκR PP hPP)`.
+
+Take `⟨z, hz⟩` from `MonoidHom.mem_range.1 hprod.1`. Use `⟨(Pg.toList.map κ).prod, (GfC V).list_prod_mem (by` and prove the remaining obligations. Introduce `g hg`. Take `⟨b, -, rfl⟩` from `List.mem_map.1 hg`. Conclude with `hκG b), GlobalTheory.StabLatInv.isFrame_mul_of_mem_St β₁ _ _ h₁ hprod.1, ?_⟩`.
+
+Introduce `PP hPP x`. Establish `hz' : Formalism.UG.bc (resS D.host.F PP) z = Formalism.UG.bc (resS D.host.F PP) m`. Rewrite using `[← redFn_frGL β₁ PP z, hz]`. Conclude with `hred PP hPP`. Rewrite using `[← hz, frGL_mul, hm, redFn_mul_intGL, redFn_mul_intGL, hz']`.
+-/
 theorem frames_match : ∀ {D : D7} (V : HSp D) (Pg : Finset (Pl D.host.E)), (∀ PP ∈ Pg, ∀ PP' ∈ Pg, ¬ IsConjPl (D := D) PP PP') → ∀ β₁ β₂ : GL (Fin V.rank) (EAf D), IsFrame β₁ (Formalism.L2.Herm.crdLat V V.L0) → IsFrame β₂ (Formalism.L2.Herm.crdLat V V.L0) → ∃ u ∈ GfC V, IsFrame (finE V u * β₁) (Formalism.L2.Herm.crdLat V V.L0) ∧ ∀ PP ∈ Pg, ∀ x, redFn (finE V u * β₁) PP x = redFn β₂ PP x := by
   classical
   intro D V Pg hPg β₁ β₂ h₁ h₂

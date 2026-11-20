@@ -16,6 +16,9 @@ open GlobalTheory.SeeSaw GlobalTheory.Unf
 
 namespace GlobalTheory.AdForm.TwDat
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `N_even R j`. Establish `e : (s : ℚ) = ((z - b : ℤ) : ℚ)` using `by rw [h, hb]; push_cast; ring`. Establish `e' : s = z - b` using `by exact_mod_cast e`. Rewrite using `[e', hb]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem int_eq_sub_half (R : Ranks) (j : ℕ) (s z : ℤ) (h : (s : ℚ) = z - (R.N j : ℚ) / 2) : s = z - (R.N j : ℤ) / 2 := by
   obtain ⟨b, hb⟩ := N_even R j
   have e : (s : ℚ) = ((z - b : ℤ) : ℚ) := by rw [h, hb]; push_cast; ring
@@ -25,6 +28,19 @@ theorem int_eq_sub_half (R : Ranks) (j : ℕ) (s z : ℤ) (h : (s : ℚ) = z - (
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `B X I hI _ l Z u a Ch A hA i hi`. Establish `htw` using `(GlobalTheory.Mem.ReadTwist.isTwist_of_reads B.R B.host _ B.embLL I.S (I.tup a) (I.xi a) (hI.xi_reads a)).1`. Take `⟨n, hn, hord⟩` from `htw.1`. Use `choose e he using fun τ => (B.hc τ).e_int ⟨i, hi⟩`. Establish `hinf` using `Formalism.L2.Host.HChar.HasInfQ.mul_triv (I.C.isMu0 ⟨i, hi⟩).inf (Formalism.L2.Host.HChar.inf_eq_one_of_order hn hord)`.
+
+Establish `hexp` using `(GlobalTheory.HeckeInfExp.hasInfExp_iff_hasInfQ (I.rec7 l Z) _ _ _ (hA.chr ⟨i, hi⟩)).2 hinf`. Use `⟨fun τ => -e τ, fun τ => ?_, fun τ => ?_⟩` and prove the remaining obligations. Establish `e1 : ((-e τ : ℤ) : ℚ) = -(B.hc τ).e ⟨i, hi⟩` using `by rw [Int.cast_neg, ← he τ]`. Conclude with `e1 ▸ hexp τ`. Establish `hw : (B.hcW u τ).e ⟨i, hi⟩ = e τ`.
+
+Establish `h : (B.hcW u τ).e = (B.hc τ).e` using `(I.rec7 l Z).hcW_e u τ`. Rewrite using `[h, he τ]`. Establish `h1 : (I.chain l u a).sSharp i τ = e τ - (B.R.N (i + 1) : ℤ) / 2`. Apply `int_eq_sub_half` to reduce the goal to its premises. Rewrite using `[(I.chain l u a).sSharp_eq i hi τ, ← hw]`.
+
+Both sides reduce to the same expression. Establish `h2 : (I.chain l u a).sDiv i τ = e τ - (B.R.N i : ℤ) / 2`. Apply `int_eq_sub_half` to reduce the goal to its premises. Rewrite using `[(I.chain l u a).sDiv_eq i hi τ, ← hw]`. Both sides reduce to the same expression.
+
+Establish `r1 : ((I.rec7 l Z).sp.X (i + 1)).rank = B.R.N (i + 1)` using `rankN (I.rec7 l Z) (i + 1) hi`. Establish `r0 : ((I.rec7 l Z).sp.X i).rank = B.R.N i` using `rankN (I.rec7 l Z) i (Nat.le_of_succ_le hi)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[r1, h1, neg_neg]`. Rewrite using `[r0, h2]`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨k, -, hk, -⟩` from `GlobalTheory.KerWtStep.trueWt_step (I.rec7 l Z) u _ _ _ (I.fm l u a) i hi`. Conclude with `(Int.natCast_nonneg (k τ)).trans_eq (hk τ).symm`.
+-/
 theorem chr_exp_shifts : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (u : B.Word) (a : I.ι) (Ch : ℕ → Type) (A : TwDat I l Z u a Ch), A.Is → ∀ (i : ℕ) (hi : i + 1 ≤ B.R.m), ∃ e : (I.rec7 l Z).what₂.Tau → ℤ, (∀ τ, HasInfExp (I.rec7 l Z) (A.chr (i + 1)) τ (e τ)) ∧ ∀ τ, (I.chain l u a).sSharp i τ = -e τ - ((I.rec7 l Z).sp.X (i + 1)).rank / 2 ∧ -(I.chain l u a).sDiv i τ = e τ + ((I.rec7 l Z).sp.X i).rank / 2 ∧ 0 ≤ shiftOf (Formalism.L2.Forms.lamT (D := (I.rec7 l Z)) u i) τ + (I.chain l u a).sSharp i τ := by
   intro B X I hI _ l Z u a Ch A hA i hi
   have htw := (GlobalTheory.Mem.ReadTwist.isTwist_of_reads B.R B.host _ B.embLL I.S (I.tup a) (I.xi a) (hI.xi_reads a)).1

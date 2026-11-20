@@ -7,6 +7,13 @@ namespace GlobalTheory.SatInd
 
 section HeckeTransport
 
+/- English proof (translation)
+Establish `hh' : Formalism.UG.IsBiInv K' h' ∧ Formalism.UG.FinDosetSupp K' h'` using `hh`. Take `⟨hbi, S', hS'⟩` from `hh'`. Use `show Formalism.UG.IsBiInv K (fun y => h' (φ y)) ∧ Formalism.UG.FinDosetSupp K (fun y => h' (φ y))`. Use `⟨fun a b y => ?_, S'.image ψ, fun y hy => ?_⟩` and prove the remaining obligations. Use `show h' (φ ((a : G) * y * b)) = h' (φ y)`.
+
+Rewrite using `[map_mul, map_mul]`. Conclude with `hbi ⟨φ a, hφK a a.2⟩ ⟨φ b, hφK b b.2⟩ (φ y)`. Take `⟨s, hs, a, b, e⟩` from `hS' (φ y) hy`. Use `⟨ψ s, Finset.mem_image_of_mem _ hs, ⟨ψ a, hψK a a.2⟩, ⟨ψ b, hψK b b.2⟩, ?_⟩` and prove the remaining obligations. Use `show y = ψ a * ψ s * ψ b`.
+
+Rewrite using `[← map_mul, ← map_mul, ← e, hψφ]`.
+-/
 theorem hecke_comp_of_inverse {G G' : Type} [Group G] [Group G'] (φ : G →* G') (ψ : G' →* G)
     (hψφ : ∀ y, ψ (φ y) = y) {K : Subgroup G} {K' : Subgroup G'} (hφK : ∀ a ∈ K, φ a ∈ K')
     (hψK : ∀ a ∈ K', ψ a ∈ K) (h' : G' → ℂ) (hh : h' ∈ Formalism.UG.Hecke ℂ K') :
@@ -30,6 +37,13 @@ section KUTransport
 
 variable {K : Type} [Field K] [Valued K (WithZero (Multiplicative ℤ))]
 
+/- English proof (translation)
+Simplify using `only [KU, Subgroup.mem_subgroupOf, intPts, Subgroup.mem_inf, MonoidHom.mem_range] at ha ⊢`. Take `⟨-, b, hb⟩` from `ha`. Use `⟨(guMap g hg n a).2, ?_⟩` and prove the remaining obligations. Set `gi : intL K →+* intL K` to `((g : K →+* K).comp (intL K).subtype).codRestrict (intL K) (fun x => hint x x.2)`. Use `⟨bc (n := Fin n) gi b, ?_⟩` and prove the remaining obligations.
+
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Establish `hij` using `congrArg (fun u : GL (Fin n) K => (u : Matrix (Fin n) (Fin n) K) i j) hb`. Simplify using `only [bc, Units.coe_map, MonoidHom.coe_coe, RingHom.mapMatrix_apply, Matrix.map_apply] at hij ⊢`. Rewrite using `[guMap_val, Matrix.map_apply, ← hij]`.
+
+Both sides reduce to the same expression.
+-/
 theorem guMap_mem_KU (g : K ≃+* K) {σ σ' : K →+* K} (hg : ∀ x, g (σ x) = σ' (g x))
     (hint : ∀ x, x ∈ intL K → g x ∈ intL K) (n : ℕ) (a : GU σ n) (ha : a ∈ KU σ n) :
     guMap g hg n a ∈ KU σ' n := by
@@ -46,6 +60,9 @@ theorem guMap_mem_KU (g : K ≃+* K) {σ σ' : K →+* K} (hg : ∀ x, g (σ x) 
   rw [guMap_val, Matrix.map_apply, ← hij]
   rfl
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Rewrite using `[guMap_val, guMap_val]`. Simplify using the standard rewrite rules.
+-/
 theorem guMap_symm_guMap (g : K ≃+* K) {σ σ' : K →+* K} (hg : ∀ x, g (σ x) = σ' (g x))
     (hg' : ∀ x, g.symm (σ' x) = σ (g.symm x)) (n : ℕ) (y : GU σ n) :
     guMap g.symm hg' n (guMap g hg n y) = y := by
@@ -55,6 +72,11 @@ theorem guMap_symm_guMap (g : K ≃+* K) {σ σ' : K →+* K} (hg : ∀ x, g (σ
   rw [guMap_val, guMap_val]
   simp
 
+/- English proof (translation)
+Introduce `K _ _ g σ σ' hg hint n h' hh`. Establish `hg' : ∀ x, g.symm (σ' x) = σ (g.symm x)`. Introduce `x`. Apply `g.injective` to reduce the goal to its premises. Rewrite using `[RingEquiv.apply_symm_apply, hg, RingEquiv.apply_symm_apply]`.
+
+Establish `hint' : ∀ x, x ∈ intL K → g.symm x ∈ intL K`. Introduce `x hx`. Rewrite using `[hint (g.symm x), RingEquiv.apply_symm_apply]`. Conclude with `hx`. Conclude with `hecke_comp_of_inverse (guMap g hg n) (guMap g.symm hg' n) (guMap_symm_guMap g hg hg' n) (fun a ha => guMap_mem_KU g hg (fun x => (hint x).1) n a ha) (fun a ha => guMap_mem_KU g.symm hg' hint' n a ha) h' hh`.
+-/
 theorem guMap_hecke_comap : ∀ {K : Type} [Field K] [Valued K (WithZero (Multiplicative ℤ))] (g : K ≃+* K) {σ σ' : K →+* K} (hg : ∀ x, g (σ x) = σ' (g x)), (∀ x, x ∈ intL K ↔ g x ∈ intL K) → ∀ (n : ℕ) (h' : GU σ' n → ℂ), h' ∈ Hecke ℂ (KU σ' n) → (fun y => h' (guMap g hg n y)) ∈ Hecke ℂ (KU σ n) := by
   intro K _ _ g σ σ' hg hint n h' hh
   have hg' : ∀ x, g.symm (σ' x) = σ (g.symm x) := by

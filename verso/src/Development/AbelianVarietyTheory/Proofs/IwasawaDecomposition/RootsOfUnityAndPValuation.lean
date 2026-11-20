@@ -14,6 +14,11 @@ open IsDedekindDomain UniqueFactorizationMonoid
 
 namespace GlobalTheory.HTConst
 
+/- English proof (translation)
+Break down `W.mem_or_inv_mem z with h1 | h1` into its components or cases. Conclude with `h1`. Take `⟨k, rfl⟩ : ∃ k, N = k + 1` from `⟨N - 1, by omega⟩`. Establish `e : z = (z⁻¹) ^ k`. Rewrite using `[inv_pow]`.
+
+Conclude with `eq_inv_of_mul_eq_one_left (by rw [← pow_succ']; exact h)`. Rewrite using `[e]`. Conclude with `pow_mem h1 _`.
+-/
 theorem mem_of_pow_eq_one {K : Type} [Field K] (W : ValuationSubring K) {z : K} {N : ℕ} (hN : 0 < N) (h : z ^ N = 1) :
     z ∈ W := by
   rcases W.mem_or_inv_mem z with h1 | h1
@@ -25,10 +30,24 @@ theorem mem_of_pow_eq_one {K : Type} [Field K] (W : ValuationSubring K) {z : K} 
     rw [e]
     exact pow_mem h1 _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, w.intValuation_if_neg hx⟩`.
+-/
 theorem exists_intValuation_eq {R : Type} [CommRing R] [IsDedekindDomain R] (w : HeightOneSpectrum R) {x : R}
     (hx : x ≠ 0) : ∃ n : ℕ, w.intValuation x = WithZero.exp (-(n : ℤ)) :=
   ⟨_, w.intValuation_if_neg hx⟩
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `exists_intValuation_eq w hx`. Establish `hx1 : x ∈ w.asIdeal ^ n` using `(w.intValuation_le_pow_iff_mem x n).1 hn.le`. Establish `hy1 : y ∈ w.asIdeal ^ n` using `(w.intValuation_le_pow_iff_mem y n).1 (h ▸ hn.le)`. Establish `hx2 : x ∉ w.asIdeal ^ (n + 1)` using `fun hc => by`. Use `(w.intValuation_le_pow_iff_mem x (n + 1)).2 hc` as an intermediate fact.
+
+Rewrite `this` using `[hn, WithZero.exp_le_exp]`. Move the coercions through the operations in `at this`. Use linear arithmetic over natural numbers and integers. Take `⟨A, hA⟩` from `Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 hx1)`. Establish `hAw : ¬ A ≤ w.asIdeal` using `fun hc => hx2 <| by`.
+
+Establish `h1 : x ∈ w.asIdeal ^ n * A` using `hA ▸ Ideal.mem_span_singleton_self x`. Rewrite using `[pow_succ]`. Conclude with `Ideal.mul_mono_right hc h1`. Take `⟨u, huA, huw⟩` from `SetLike.not_le_iff_exists.1 hAw`. Establish `h2 : u * y ∈ Ideal.span {x}`.
+
+Rewrite using `[hA, mul_comm u]`. Conclude with `Ideal.mul_mem_mul hy1 huA`. Take `⟨v, hv⟩` from `Ideal.mem_span_singleton'.1 h2`. Use `⟨u, v, huw, fun hc => ?_, hv.symm ▸ rfl⟩` and prove the remaining obligations. Establish `hu1 : w.intValuation u = 1` using `HeightOneSpectrum.intValuation_eq_one_iff.2 huw`.
+
+Establish `h3 : w.intValuation v * w.intValuation x = w.intValuation x`. Rewrite using `[← map_mul, hv, map_mul, hu1, _root_.one_mul, h]`. Establish `hv1 : w.intValuation v = 1` using `mul_right_cancel₀ (w.intValuation_ne_zero x hx) (by rw [h3, _root_.one_mul])`. Conclude with `(HeightOneSpectrum.intValuation_eq_one_iff.1 hv1) hc`.
+-/
 theorem exists_mul_eq_mul {R : Type} [CommRing R] [IsDedekindDomain R] (w : HeightOneSpectrum R) {x y : R}
     (hx : x ≠ 0) (h : w.intValuation x = w.intValuation y) :
     ∃ u v, u ∉ w.asIdeal ∧ v ∉ w.asIdeal ∧ u * y = v * x := by
@@ -57,6 +76,11 @@ theorem exists_mul_eq_mul {R : Type} [CommRing R] [IsDedekindDomain R] (w : Heig
   have hv1 : w.intValuation v = 1 := mul_right_cancel₀ (w.intValuation_ne_zero x hx) (by rw [h3, _root_.one_mul])
   exact (HeightOneSpectrum.intValuation_eq_one_iff.1 hv1) hc
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `h.exists_right_inv`. Establish `h1 : ‖(t : C)‖ ≤ 1` using `t.2`. Establish `h2 : ‖(s : C)‖ ≤ 1` using `s.2`. Establish `h3 : ‖(t : C)‖ * ‖(s : C)‖ = 1`. Rewrite using `[← norm_mul, ← Subring.coe_mul, hs]`.
+
+Simplify using the standard rewrite rules. Use polynomial arithmetic with `[norm_nonneg (t : C), norm_nonneg (s : C)]`.
+-/
 theorem norm_of_isUnit {C : Type} [NormedField C] [IsUltrametricDist C] {t : ↥(intO C)} (h : IsUnit t) :
     ‖(t : C)‖ = 1 := by
   obtain ⟨s, hs⟩ := h.exists_right_inv
@@ -69,6 +93,11 @@ theorem norm_of_isUnit {C : Type} [NormedField C] [IsUltrametricDist C] {t : ↥
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {l : Level H}
 
+/- English proof (translation)
+Take `⟨d, hd⟩` from `hN`. Establish `hN0 : 0 < N` using `Nat.pos_of_ne_zero (by`. Introduce and unpack `rfl`. Conclude with `l.A_pos.ne' (by simpa using hd))`. Establish `hprim : IsPrimitiveRoot (zeta l.A ^ d) N` using `(Complex.isPrimitiveRoot_exp l.A l.A_pos.ne').pow l.A_pos (by rw [hd, mul_comm])`.
+
+Establish `hF : zeta l.A ∈ c.F` using `c.le (IntermediateField.subset_adjoin _ _ (by simp))`. Establish `hW : zeta l.A ^ d ∈ W` using `mem_of_pow_eq_one W hN0 hprim.pow_eq_one`. Use `⟨⟨⟨_, pow_mem hF d⟩, hW⟩, ?_⟩` and prove the remaining obligations. Conclude with `IsPrimitiveRoot.of_map_of_injective (f := (c.F.val.toRingHom).comp (c.V W).subtype) hprim (c.F.val.toRingHom.injective.comp Subtype.val_injective)`.
+-/
 theorem exists_primitiveRoot (c : Coeff l) (W : ValuationSubring ℂ) {N : ℕ} (hN : N ∣ l.A) :
     ∃ ζ : ↥(c.V W), IsPrimitiveRoot ζ N := by
   obtain ⟨d, hd⟩ := hN
@@ -83,6 +112,9 @@ theorem exists_primitiveRoot (c : Coeff l) (W : ValuationSubring ℂ) {N : ℕ} 
   exact IsPrimitiveRoot.of_map_of_injective (f := (c.F.val.toRingHom).comp (c.V W).subtype) hprim
     (c.F.val.toRingHom.injective.comp Subtype.val_injective)
 
+/- English proof (translation)
+Establish `h1 : IsIntegral ℤ (τ (x : E))` using `x.2.map τ.toIntAlgHom`. Establish `h2 : IsIntegral W (τ (x : E))` using `h1.tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h2`. Rewrite using `[← hy]`. Conclude with `y.2`.
+-/
 theorem embed_mem (W : ValuationSubring ℂ) (τ : E →+* ℂ) (x : 𝓞 E) : τ (x : E) ∈ W := by
   have h1 : IsIntegral ℤ (τ (x : E)) := x.2.map τ.toIntAlgHom
   have h2 : IsIntegral W (τ (x : E)) := h1.tower_top
@@ -90,6 +122,13 @@ theorem embed_mem (W : ValuationSubring ℂ) (τ : E →+* ℂ) (x : 𝓞 E) : �
   rw [← hy]
   exact y.2
 
+/- English proof (translation)
+Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Take `⟨y, hy⟩` from `hu.exists_right_inv`. Establish `h1 : (p : ℂ) * (((y : c.F) : ℂ)) = 1`. Use `congrArg (fun t : ↥(c.V W) => (((t : c.F)) : ℂ)) hy` as an intermediate fact.
+
+Simplify using `using this`. Establish `h2 : ((y : c.F) : ℂ) = (p : ℂ)⁻¹` using `eq_inv_of_mul_eq_one_right h1`. Rewrite `hW` using `[ValuationSubring.mem_nonunits_iff_or]`. Break down `hW with h | h` into its components or cases. Conclude with `hp.ne_zero (by exact_mod_cast h)`.
+
+Conclude with `h (h2 ▸ y.2)`.
+-/
 theorem natCast_mem_maximalIdeal (c : Coeff l) {W : ValuationSubring ℂ} {p : ℕ} (hp : p.Prime)
     (hW : (p : ℂ) ∈ W.nonunits) : (p : ↥(c.V W)) ∈ IsLocalRing.maximalIdeal ↥(c.V W) := by
   rw [IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]
@@ -104,6 +143,31 @@ theorem natCast_mem_maximalIdeal (c : Coeff l) {W : ValuationSubring ℂ} {p : �
   · exact hp.ne_zero (by exact_mod_cast h)
   · exact h (h2 ▸ y.2)
 
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Set `j : 𝓞 E →+* ↥(c.V W)` to `(embK c τ).codRestrict (c.V W) fun x => embed_mem W τ x`. Establish `hpm` using `natCast_mem_maximalIdeal c hp hW`. Establish `hp0 : (p : 𝓞 E) ≠ 0` using `Nat.cast_ne_zero.mpr hp.ne_zero`. Establish `hpc : (p : 𝓞 E) ∈ Ideal.comap j (IsLocalRing.maximalIdeal ↥(c.V W))`.
+
+Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `hpm`. Set `w : HeightOneSpectrum (𝓞 E)` to `⟨Ideal.comap j (IsLocalRing.maximalIdeal ↥(c.V W)), Ideal.comap_isPrime _ _, fun h => hp0 (by rw [h] at hpc; simpa using hpc)⟩`. Establish `hpw : (p : 𝓞 E) ∈ w.asIdeal` using `hpc`. Establish `hunit : ∀ u, u ∉ w.asIdeal → IsUnit (j u)` using `fun u hu => by`.
+
+Assume the negation of the conclusion as `hc`. Conclude with `hu ((IsLocalRing.mem_maximalIdeal _).2 hc)`. Establish `hm` using `multiplicity_different_eq E hp w hpw`. Use `set m := multiplicity w.asIdeal (differentIdeal ℤ (𝓞 E)) with hmdef`. Use `set e := Formalism.BasicNotions.eWL E w with hedef`.
+
+Establish `hval : w.intValuation (p : 𝓞 E) = WithZero.exp (-(e : ℤ))`. Take `⟨n, hn⟩` from `exists_intValuation_eq w hp0`. Use `haveI := Fact.mk hp`. Use `haveI := ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.liesOver_span E p hp w.isPrime hpw`. Establish `hmap : Ideal.map (algebraMap ℤ (𝓞 E)) (Ideal.span {(p : ℤ)}) = Ideal.span {(p : 𝓞 E)}`.
+
+Rewrite using `[Ideal.map_span, Set.image_singleton, map_natCast]`. Establish `he : e = (normalizedFactors (Ideal.span {(p : 𝓞 E)})).count w.asIdeal`. Rewrite using `[hedef, Formalism.BasicNotions.eWL, Ideal.IsDedekindDomain.ramificationIdx_eq_normalizedFactors_count (Ideal.span {(p : ℤ)}) w.asIdeal (by rw [hmap]; exact ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.span_nat_ne_bot p), hmap]`. Establish `h1 : (p : 𝓞 E) ∈ w.asIdeal ^ n` using `(w.intValuation_le_pow_iff_mem _ n).1 hn.le`. Establish `h2 : (p : 𝓞 E) ∉ w.asIdeal ^ (n + 1)` using `fun hc => by`.
+
+Use `(w.intValuation_le_pow_iff_mem _ (n + 1)).2 hc` as an intermediate fact. Rewrite `this` using `[hn, WithZero.exp_le_exp]`. Move the coercions through the operations in `at this`. Use linear arithmetic over natural numbers and integers. Establish `h3` using `Ideal.count_normalizedFactors_eq (p := w.asIdeal) (x := Ideal.span {(p : 𝓞 E)}) (n := n) ((Ideal.span_singleton_le_iff_mem _).2 h1) (fun hc => h2 ((Ideal.span_singleton_le_iff_mem _).1 hc))`.
+
+Rewrite using `[hn, he, h3]`. Establish `he0 : e ≠ 0` using `fun h0 => by`. Use `(w.intValuation_lt_one_iff_mem _).2 hpw` as an intermediate fact. Rewrite `this` using `[hval, h0]`. Simplify using `at this`.
+
+Take `⟨π, hπ⟩` from `w.intValuation_exists_uniformizer`. Establish `hπ0 : π ≠ 0` using `fun h0 => by`. Rewrite `hπ` using `[h0, map_zero]`. Conclude with `WithZero.exp_ne_zero hπ.symm`. Establish `hsame : w.intValuation (π ^ e) = w.intValuation (p : 𝓞 E)`.
+
+Rewrite using `[map_pow, hπ, hval, ← WithZero.exp_nsmul]`. Simplify using the standard rewrite rules. Take `⟨u, v, hu, hv, huv⟩` from `exists_mul_eq_mul w (pow_ne_zero e hπ0) hsame`. Establish `huvj : j u * (p : ↥(c.V W)) = j v * (j π) ^ e`. Use `congrArg j huv` as an intermediate fact.
+
+Simplify using `using this`. Establish `hdvd : (j π) ^ e ∣ (p : ↥(c.V W))` using `((hunit u hu).dvd_mul_left).1 ⟨j v, by rw [huvj, mul_comm]⟩`. Use `⟨(j π) ^ m, ⟨m, Ideal.mem_span_singleton.2 ?_⟩, fun C φ => ?_⟩` and prove the remaining obligations. Use `dvd_trans ?_ (pow_dvd_pow_of_dvd hdvd m)` and prove the remaining obligations. Rewrite using `[← pow_mul]`.
+
+Conclude with `pow_dvd_pow _ (Nat.le_mul_of_pos_left m (Nat.pos_of_ne_zero he0))`. Establish `hn : ‖((φ (j π) : ↥(intO ↥C.S)) : ↥C.S)‖ ^ e = (p : ℝ)⁻¹`. Establish `h1` using `congrArg (fun t => ‖((φ t : ↥(intO ↥C.S)) : ↥C.S)‖) huvj`. Simplify using `only [map_mul, map_pow, map_natCast, Subring.coe_mul, Subring.coe_pow, Subring.coe_natCast, norm_mul, norm_pow] at h1`. Rewrite `h1` using `[norm_of_isUnit ((hunit u hu).map φ), norm_of_isUnit ((hunit v hv).map φ), _root_.one_mul, _root_.one_mul, C.norm_p, eq_comm]`. Then use the resulting hypothesis.
+
+Establish `hlog : (e : ℝ) * Real.log ‖((φ (j π) : ↥(intO ↥C.S)) : ↥C.S)‖ = -Real.log p`. Rewrite using `[← Real.log_pow, hn, Real.log_inv]`. Rewrite using `[map_pow, Subring.coe_pow, norm_pow, Real.log_pow, hm]`. Take the linear combination `(vDiff E p) * hlog`.
+-/
 theorem exists_diffGen [IsGalois ℚ E] (c : Coeff l) {W : ValuationSubring ℂ} {p : ℕ} (hp : p.Prime)
     (hW : (p : ℂ) ∈ W.nonunits) :
     ∃ a : ↥(c.V W), (p : ↥(c.V W)) ∈ (Ideal.span {a}).radical ∧ ∀ (C : SCF p) (φ : ↥(c.V W) →+* ↥(intO ↥C.S)),
@@ -175,6 +239,9 @@ theorem exists_diffGen [IsGalois ℚ E] (c : Coeff l) {W : ValuationSubring ℂ}
     rw [map_pow, Subring.coe_pow, norm_pow, Real.log_pow, hm]
     linear_combination (vDiff E p) * hlog
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ c _ _ hp hW` and use `⟨fun _ hN => exists_primitiveRoot c _ hN, fun _ => exists_diffGen c hp hW⟩`.
+-/
 theorem const_main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (l : Level H) (c : Coeff l) (p : ℕ) (W : ValuationSubring ℂ), p.Prime → (p : ℂ) ∈ W.nonunits → (∀ N : ℕ, N ∣ l.A → ∃ ζ : ↥(c.V W), IsPrimitiveRoot ζ N) ∧ (IsGalois ℚ E → ∃ a : ↥(c.V W), (p : ↥(c.V W)) ∈ (Ideal.span {a}).radical ∧ ∀ (C : SCF p) (φ : ↥(c.V W) →+* ↥(intO ↥C.S)), Real.log ‖((φ a : ↥(intO ↥C.S)) : ↥C.S)‖ = -(vDiff E p * Real.log p)) :=
   fun _ _ _ _ _ _ c _ _ hp hW => ⟨fun _ hN => exists_primitiveRoot c _ hN, fun _ => exists_diffGen c hp hW⟩
 

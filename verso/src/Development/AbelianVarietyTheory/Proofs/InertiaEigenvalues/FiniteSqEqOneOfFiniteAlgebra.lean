@@ -2,6 +2,17 @@ import Mathlib
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `haveI : IsArtinianRing A := IsArtinianRing.of_finite k A`. Use `haveI : Finite (TopologicalSpace.Clopens (PrimeSpectrum A)) := Finite.of_injective (fun s : TopologicalSpace.Clopens (PrimeSpectrum A) => (s : Set (PrimeSpectrum A))) SetLike.coe_injective`. Use `haveI : Finite {e : A // IsIdempotentElem e} := Finite.of_equiv _ (PrimeSpectrum.isIdempotentElemEquivClopens (R := A)).symm.toEquiv`. Use `set c : A := algebraMap k A (2⁻¹ : k) with hc`. Establish `hc2 : c * 2 = 1`.
+
+Rewrite using `[hc, (map_ofNat (algebraMap k A) 2).symm, ← map_mul, inv_mul_cancel₀ (two_ne_zero : (2 : k) ≠ 0), map_one]`. Establish `hmap : ∀ x : A, x ^ 2 = 1 → IsIdempotentElem (c * (1 + x))`. Introduce `x hx`. Unfold `IsIdempotentElem`. Establish `: (c * (1 + x)) * (c * (1 + x)) = c * (c * 2) * (1 + x)`.
+
+Take the linear combination `(c * c) * hx`. Rewrite using `[this, hc2, mul_one]`. Establish `hinj : Set.InjOn (fun x : A => c * (1 + x)) {x : A | x ^ 2 = 1}`. Introduce `x _ y _ hxy`. Establish `h : (2 : A) * (c * (1 + x)) = 2 * (c * (1 + y))` using `by simp only at hxy; rw [hxy]`.
+
+Establish `e : ∀ z : A, (2 : A) * (c * (1 + z)) = 1 + z` using `fun z => by`. Rewrite using `[← mul_assoc, mul_comm (2 : A) c, hc2, one_mul]`. Rewrite `h` using `[e, e]`. Conclude with `add_left_cancel h`. Establish `hfin : Set.Finite {e : A | IsIdempotentElem e}` using `Set.finite_coe_iff.mp (‹Finite {e : A // IsIdempotentElem e}› :)`.
+
+Conclude with `Set.Finite.of_finite_image (hfin.subset (by`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hmap x hx)) hinj`.
+-/
 theorem finite_sq_eq_one_of_finite_algebra (k : Type) [Field k] [CharZero k] (A : Type) [CommRing A]
     [Algebra k A] [Module.Finite k A] : Set.Finite {x : A | x ^ 2 = 1} := by
   haveI : IsArtinianRing A := IsArtinianRing.of_finite k A

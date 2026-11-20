@@ -4,6 +4,13 @@ import Mathlib
     (l : ℕ) → [Fact (Nat.Prime l)] → Type :=
     fun (l : ℕ) [Fact (Nat.Prime l)] ↦ PadicAlgCl l
 
+/- English proof (translation)
+Introduce `l inst ι n M R hR h`. Establish `hR0 : (0 : ℝ) ≤ R` using `le_trans zero_le_one hR`. Rewrite using `[Matrix.det_apply', map_sum]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (pow_nonneg hR0 n) ?_` and prove the remaining obligations. Introduce `σ _`.
+
+Rewrite using `[map_mul, map_prod, norm_mul, norm_prod, map_intCast]`. Establish `h1 : ‖(((Equiv.Perm.sign σ : ℤˣ) : ℤ) : UpperTheory.Reformulated.B.Qh59.Qbar l)‖ ≤ 1`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with hs | hs <;> simp [hs]`. Establish `h2 : ∏ i : Fin n, ‖ι.symm (M (σ i) i)‖ ≤ R ^ n`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UpperTheory.Reformulated.B.Qh59.norm_det_le :
     ∀ {l : ℕ} [inst : Fact (Nat.Prime l)] (ι : UpperTheory.Reformulated.B.Qh59.Qbar l ≃+* ℂ) {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ)
       (R : ℝ),

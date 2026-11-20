@@ -14,9 +14,17 @@ variable {F E : Type*} [Field F] [Field E] [Algebra F E] [Algebra.IsQuadraticExt
 instance finiteDimensional_of_isQuadraticExtension : FiniteDimensional F E :=
   Module.finite_of_finrank_eq_succ (Algebra.IsQuadraticExtension.finrank_eq_two F E)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjHom_apply (x : E) : conjHom F E x = conj F E x :=
   rfl
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, Algebra.trace F E x ≠ 0 := by`. Assume the negation of the conclusion as `H`. Use `push Not at H`. Conclude with `Algebra.trace_ne_zero F E (LinearMap.ext H)`. Use `⟨(Algebra.trace F E x)⁻¹ • x, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_smul, smul_eq_mul, inv_mul_cancel₀ hx]`.
+-/
 theorem exists_trace_eq_one [Algebra.IsSeparable F E] : ∃ c : E, Algebra.trace F E c = 1 := by
   obtain ⟨x, hx⟩ : ∃ x, Algebra.trace F E x ≠ 0 := by
     by_contra H
@@ -25,6 +33,11 @@ theorem exists_trace_eq_one [Algebra.IsSeparable F E] : ∃ c : E, Algebra.trace
   refine ⟨(Algebra.trace F E x)⁻¹ • x, ?_⟩
   rw [map_smul, smul_eq_mul, inv_mul_cancel₀ hx]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `H`. Use `push Not at H`. Establish `hbij : Function.Bijective (Algebra.linearMap F E)` using `⟨(algebraMap F E).injective, fun y => H y⟩`. Establish `h1` using `(LinearEquiv.ofBijective _ hbij).finrank_eq`. Rewrite `h1` using `[Module.finrank_self, Algebra.IsQuadraticExtension.finrank_eq_two]`.
+
+Conclude with `absurd h1 (by norm_num)`.
+-/
 theorem exists_not_mem_range : ∃ ζ : E, ζ ∉ Set.range (algebraMap F E) := by
   by_contra H
   push Not at H
@@ -34,6 +47,17 @@ theorem exists_not_mem_range : ∃ ζ : E, ζ ∉ Set.range (algebraMap F E) := 
   rw [Module.finrank_self, Algebra.IsQuadraticExtension.finrank_eq_two] at h1
   exact absurd h1 (by norm_num)
 
+/- English proof (translation)
+Use `⟨fun hx => ?_, fun ⟨c, hc⟩ => hc ▸ conj_algebraMap c⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Rewrite `hx` using `[conj_apply]`. Establish `h2 : algebraMap F E (Algebra.trace F E x) = 2 * x` using `by linear_combination hx`. Distinguish the cases in `h2E : (2 : E) = 0`.
+
+Establish `htx : Algebra.trace F E x = 0`. Apply `(algebraMap F E).injective` to reduce the goal to its premises. Rewrite using `[h2, h2E, zero_mul, map_zero]`. Establish `ht1 : Algebra.trace F E 1 = 0`. Use `trace_algebraMap_quadratic (F := F) (E := E) 1` as an intermediate fact.
+
+Rewrite `this` using `[map_one, mul_one]`. Rewrite using `[this]`. Apply `(algebraMap F E).injective` to reduce the goal to its premises. Rewrite using `[map_ofNat, h2E, map_zero]`. Apply `Algebra.trace_ne_zero F E` to reduce the goal to its premises.
+
+Use `(basisOneOf hne).ext fun i => ?_` and prove the remaining obligations. Use `fin_cases i`. Simplify using `[basisOneOf_zero, ht1]`. Simplify using `[basisOneOf_one, htx]`. Apply `hne` to reduce the goal to its premises.
+
+Use `⟨2⁻¹ * Algebra.trace F E x, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, h2, map_inv₀, map_ofNat, ← mul_assoc, inv_mul_cancel₀ h2E, one_mul]`.
+-/
 theorem conj_eq_self_iff [Algebra.IsSeparable F E] {x : E} :
     conj F E x = x ↔ x ∈ Set.range (algebraMap F E) := by
   refine ⟨fun hx => ?_, fun ⟨c, hc⟩ => hc ▸ conj_algebraMap c⟩
@@ -59,6 +83,13 @@ theorem conj_eq_self_iff [Algebra.IsSeparable F E] {x : E} :
     refine ⟨2⁻¹ * Algebra.trace F E x, ?_⟩
     rw [map_mul, h2, map_inv₀, map_ofNat, ← mul_assoc, inv_mul_cancel₀ h2E, one_mul]
 
+/- English proof (translation)
+Take `⟨ζ, hζ⟩` from `exists_not_mem_range (F := F) (E := E)`. Establish `hζ0 : ζ ≠ 0` using `fun h => hζ ⟨0, by rw [h, map_zero]⟩`. Establish `hc : conj F E ζ ≠ ζ` using `fun h => hζ (conj_eq_self_iff.1 h)`. Establish `hc0 : conj F E ζ ≠ 0`. Introduce `h`.
+
+Apply `hζ0` to reduce the goal to its premises. Rewrite using `[← conj_conj (F := F) ζ, h, map_zero]`. Use `⟨conj F E ζ * ζ⁻¹, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_inv₀, conj_conj]`. Clear the denominators using the available nonvanishing facts.
+
+Introduce `h`. Apply `hc` to reduce the goal to its premises. Clear denominators, using `at h` for the nonvanishing conditions. Conclude with `h`.
+-/
 theorem exists_mul_conj_eq_one_ne_one [Algebra.IsSeparable F E] :
     ∃ l : E, l * conj F E l = 1 ∧ l ≠ 1 := by
   obtain ⟨ζ, hζ⟩ := exists_not_mem_range (F := F) (E := E)
@@ -87,24 +118,41 @@ namespace HermitianForm
 def Isometric (h : HermitianForm F E V) (h' : HermitianForm F E V') : Prop :=
   ∃ e : V ≃ₗ[E] V', ∀ x y, h'.toSesq (e x) (e y) = h.toSesq x y
 
+/- English proof (translation)
+The claim follows from `h.isSymm.eq x y`.
+-/
 theorem conj_toSesq (h : HermitianForm F E V) (x y : V) :
     conj F E (h.toSesq x y) = h.toSesq y x :=
   h.isSymm.eq x y
 
+/- English proof (translation)
+Rewrite using `[LinearMap.map_smulₛₗ₂, smul_eq_mul, conjHom_apply]`.
+-/
 theorem toSesq_smul_left (h : HermitianForm F E V) (c : E) (x y : V) :
     h.toSesq (c • x) y = conj F E c * h.toSesq x y := by
   rw [LinearMap.map_smulₛₗ₂, smul_eq_mul, conjHom_apply]
 
+/- English proof (translation)
+Rewrite using `[map_smul, smul_eq_mul]`.
+-/
 theorem toSesq_smul_right (h : HermitianForm F E V) (c : E) (x y : V) :
     h.toSesq x (c • y) = c * h.toSesq x y := by
   rw [map_smul, smul_eq_mul]
 
+/- English proof (translation)
+Apply `h.nonsingular.1` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `LinearMap.ext hx`.
+-/
 theorem eq_zero_of_forall (h : HermitianForm F E V) {x : V} (hx : ∀ y, h.toSesq x y = 0) :
     x = 0 := by
   apply h.nonsingular.1
   rw [map_zero]
   exact LinearMap.ext hx
 
+/- English proof (translation)
+Rewrite using `[← h.conj_toSesq x y]`. Prove the components needed by the constructor for the conclusion. Introduce `hxy`. Rewrite using `[hxy, map_zero]`. Introduce `hxy`.
+
+Rewrite using `[← conj_conj (F := F) (h.toSesq x y), hxy, map_zero]`.
+-/
 theorem toSesq_eq_zero_comm (h : HermitianForm F E V) {x y : V} :
     h.toSesq x y = 0 ↔ h.toSesq y x = 0 := by
   rw [← h.conj_toSesq x y]
@@ -113,24 +161,39 @@ theorem toSesq_eq_zero_comm (h : HermitianForm F E V) {x y : V} :
   · intro hxy
     rw [← conj_conj (F := F) (h.toSesq x y), hxy, map_zero]
 
+/- English proof (translation)
+The claim follows from `h.conj_toSesq x x`.
+-/
 theorem conj_toSesq_self (h : HermitianForm F E V) (x : V) :
     conj F E (h.toSesq x x) = h.toSesq x x :=
   h.conj_toSesq x x
 
+/- English proof (translation)
+The claim follows from `conj_eq_self_iff.1 (h.conj_toSesq_self x)`.
+-/
 theorem toSesq_self_mem_range [Algebra.IsSeparable F E] (h : HermitianForm F E V) (x : V) :
     h.toSesq x x ∈ Set.range (algebraMap F E) :=
   conj_eq_self_iff.1 (h.conj_toSesq_self x)
 
 namespace Isometric
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨LinearEquiv.refl E V, fun _ _ => rfl⟩`.
+-/
 theorem refl (h : HermitianForm F E V) : Isometric h h := ⟨LinearEquiv.refl E V, fun _ _ => rfl⟩
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `H`. Use `⟨e.symm, fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[← he, e.apply_symm_apply, e.apply_symm_apply]`.
+-/
 theorem symm {h : HermitianForm F E V} {h' : HermitianForm F E V'} (H : Isometric h h') :
     Isometric h' h := by
   obtain ⟨e, he⟩ := H
   refine ⟨e.symm, fun x y => ?_⟩
   rw [← he, e.apply_symm_apply, e.apply_symm_apply]
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `H`. Take `⟨e', he'⟩` from `H'`. Conclude with `⟨e.trans e', fun x y => by show h''.toSesq (e' (e x)) (e' (e y)) = _`. Rewrite using `[he', he]⟩`.
+-/
 theorem trans {h : HermitianForm F E V} {h' : HermitianForm F E V'}
     {h'' : HermitianForm F E V''} (H : Isometric h h') (H' : Isometric h' h'') :
     Isometric h h'' := by
@@ -140,6 +203,9 @@ theorem trans {h : HermitianForm F E V} {h' : HermitianForm F E V'}
     show h''.toSesq (e' (e x)) (e' (e y)) = _
     rw [he', he]⟩
 
+/- English proof (translation)
+Take `⟨e, -⟩` from `H`. Conclude with `e.finrank_eq`.
+-/
 theorem finrank_eq {h : HermitianForm F E V} {h' : HermitianForm F E V'} (H : Isometric h h') :
     finrank E V = finrank E V' := by
   obtain ⟨e, -⟩ := H
@@ -177,9 +243,15 @@ def prod (h : HermitianForm F E V) (h' : HermitianForm F E V') : HermitianForm F
         LinearMap.inr_apply, ← map_add, Prod.mk_add_mk, add_zero, zero_add]
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem prod_apply (h : HermitianForm F E V) (h' : HermitianForm F E V') (p q : V × V') :
     (h.prod h').toSesq p q = h.toSesq p.1 q.1 + h'.toSesq p.2 q.2 := rfl
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `H`. Take `⟨e', he'⟩` from `H'`. Conclude with `⟨e.prodCongr e', fun p q => by show h₂.toSesq (e p.1) (e q.1) + h₄.toSesq (e' p.2) (e' q.2) = _`. Rewrite using `[he, he']`. Use the proof step `rfl⟩`.
+-/
 theorem Isometric.prod {h₁ : HermitianForm F E V} {h₂ : HermitianForm F E V'}
     {V₃ V₄ : Type*} [AddCommGroup V₃] [Module E V₃] [AddCommGroup V₄] [Module E V₄]
     {h₃ : HermitianForm F E V₃} {h₄ : HermitianForm F E V₄}
@@ -191,12 +263,18 @@ theorem Isometric.prod {h₁ : HermitianForm F E V} {h₂ : HermitianForm F E V'
     rw [he, he']
     rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨LinearEquiv.prodComm E V V', fun p q => by show h'.toSesq p.2 q.2 + h.toSesq p.1 q.1 = h.toSesq p.1 q.1 + h'.toSesq p.2 q.2 rw [add_comm]⟩`.
+-/
 theorem isometric_prod_comm (h : HermitianForm F E V) (h' : HermitianForm F E V') :
     Isometric (h.prod h') (h'.prod h) :=
   ⟨LinearEquiv.prodComm E V V', fun p q => by
     show h'.toSesq p.2 q.2 + h.toSesq p.1 q.1 = h.toSesq p.1 q.1 + h'.toSesq p.2 q.2
     rw [add_comm]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨LinearEquiv.prodAssoc E V V' V'', fun p q => by show h.toSesq p.1.1 q.1.1 + (h'.toSesq p.1.2 q.1.2 + h''.toSesq p.2 q.2) = (h.toSesq p.1.1 q.1.1 + h'.toSesq p.1.2 q.1.2) + h''.toSesq p.2 q.2 rw [add_assoc]⟩`.
+-/
 theorem isometric_prod_assoc (h : HermitianForm F E V) (h' : HermitianForm F E V')
     (h'' : HermitianForm F E V'') :
     Isometric ((h.prod h').prod h'') (h.prod (h'.prod h'')) :=
@@ -232,12 +310,18 @@ def ofUnit (a : Fˣ) : HermitianForm F E E where
       field_simp
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofUnit_apply (a : Fˣ) (x y : E) :
     (ofUnit (E := E) a).toSesq x y = conj F E x * algebraMap F E a * y := rfl
 
 def IsOrthoCompl (h : HermitianForm F E V) (W W' : Submodule E V) : Prop :=
   IsCompl W W' ∧ ∀ x ∈ W, ∀ y ∈ W', h.toSesq x y = 0
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hW.1.symm, fun x hx y hy => h.toSesq_eq_zero_comm.1 (hW.2 y hy x hx)⟩`.
+-/
 theorem IsOrthoCompl.symm {h : HermitianForm F E V} {W W' : Submodule E V}
     (hW : h.IsOrthoCompl W W') : h.IsOrthoCompl W' W :=
   ⟨hW.1.symm, fun x hx y hy => h.toSesq_eq_zero_comm.1 (hW.2 y hy x hx)⟩
@@ -268,10 +352,16 @@ def restrict (h : HermitianForm F E V) (W W' : Submodule E V) (hW : h.IsOrthoCom
       exact h1
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem restrict_apply (h : HermitianForm F E V) (W W' : Submodule E V)
     (hW : h.IsOrthoCompl W W') (x y : W) :
     (h.restrict W W' hW).toSesq x y = h.toSesq x y := rfl
 
+/- English proof (translation)
+Use `⟨Submodule.prodEquivOfIsCompl W W' hW.1, fun p q => ?_⟩` and prove the remaining obligations. Simplify using `only [Submodule.coe_prodEquivOfIsCompl', prod_apply, restrict_apply, map_add, LinearMap.add_apply]`. Rewrite using `[hW.2 _ p.1.2 _ q.2.2, h.toSesq_eq_zero_comm.1 (hW.2 _ q.1.2 _ p.2.2)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isometric_prod_restrict (h : HermitianForm F E V) (W W' : Submodule E V)
     (hW : h.IsOrthoCompl W W') :
     Isometric ((h.restrict W W' hW).prod (h.restrict W' W hW.symm)) h := by
@@ -281,6 +371,17 @@ theorem isometric_prod_restrict (h : HermitianForm F E V) (W W' : Submodule E V)
   rw [hW.2 _ p.1.2 _ q.2.2, h.toSesq_eq_zero_comm.1 (hW.2 _ q.1.2 _ p.2.2)]
   ring
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[isCompl_iff, disjoint_iff, codisjoint_iff]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[eq_bot_iff]`. Introduce and unpack `x ⟨hx1, hx2⟩`.
+
+Take `⟨t, rfl⟩` from `Submodule.mem_span_singleton.1 hx1`. Establish `: t * h.toSesq v v = 0`. Simplify `hx2` using `[LinearMap.mem_ker, h.toSesq_smul_right]`. Break down `mul_eq_zero.1 this with ht | ht` into its components or cases. Simplify using `[ht]`.
+
+Conclude with `absurd ht hv`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Rewrite using `[Submodule.mem_sup]`. Use `⟨(h.toSesq v x * (h.toSesq v v)⁻¹) • v, Submodule.mem_span_singleton.2 ⟨_, rfl⟩, x - (h.toSesq v x * (h.toSesq v v)⁻¹) • v, ?_, by abel⟩` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.mem_ker, map_sub, h.toSesq_smul_right]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Introduce `x hx y hy`. Take `⟨t, rfl⟩` from `Submodule.mem_span_singleton.1 hx`.
+
+Rewrite `hy` using `[LinearMap.mem_ker]`. Rewrite using `[h.toSesq_smul_left, hy, mul_zero]`.
+-/
 theorem isOrthoCompl_span_singleton (h : HermitianForm F E V) {v : V}
     (hv : h.toSesq v v ≠ 0) :
     h.IsOrthoCompl (Submodule.span E {v}) (LinearMap.ker (h.toSesq v)) := by
@@ -312,6 +413,15 @@ section Separable
 
 variable [Algebra.IsSeparable F E]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `H`. Use `push Not at H`. Take `⟨x, hx⟩` from `exists_ne (0 : V)`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y, h.toSesq x y ≠ 0 := by`. Assume the negation of the conclusion as `H'`.
+
+Use `push Not at H'`. Conclude with `hx (h.eq_zero_of_forall H')`. Take `⟨c, hc⟩` from `exists_trace_eq_one (F := F) (E := E)`. Use `set t := c * (h.toSesq x y)⁻¹ with ht_def`. Establish `ht : t * h.toSesq x y = c` using `by rw [ht_def]; field_simp`.
+
+Establish `key : h.toSesq (x + t • y) (x + t • y) = t * h.toSesq x y + conj F E (t * h.toSesq x y)`. Rewrite using `[map_mul, h.conj_toSesq]`. Simplify using `only [map_add, LinearMap.add_apply, h.toSesq_smul_left, h.toSesq_smul_right, H]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `key` using `[H, ht, add_conj, hc, map_one]`.
+
+Conclude with `one_ne_zero key.symm`.
+-/
 theorem exists_apply_self_ne_zero (h : HermitianForm F E V) [Nontrivial V] :
     ∃ x, h.toSesq x x ≠ 0 := by
   by_contra H

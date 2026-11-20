@@ -18,6 +18,9 @@ section Calc
 
 variable {X X' Y : Scheme.{0}}
 
+/- English proof (translation)
+Introduce `y hy` and use `mem_pull.2 ((congrArg (fun q => q y ∈ L.U (j 0)) e).mpr (LB.wchart_le L _ j 0 hy))`.
+-/
 theorem chart_le_preimage (L : LB X) {F : X' ⟶ X} {φ : Y ⟶ X} (h : Y ⟶ X') (e : h ≫ F = φ) (j : Fin 1 → L.ι) :
     LB.wchart L (fun _ : Fin 1 => φ) j ≤ h ⁻¹ᵁ (L.pull F).U (fun _ => j 0) := fun y hy =>
   mem_pull.2 ((congrArg (fun q => q y ∈ L.U (j 0)) e).mpr (LB.wchart_le L _ j 0 hy))
@@ -38,6 +41,15 @@ def secPullOne (L : LB X) {F : X' ⟶ X} {φ : Y ⟶ X} (h : Y ⟶ X') (e : h �
           (L.g (j 0) (j' 0))) eφ).symm.trans (gm_pull_g L F (𝟙 Y ≫ h) y _ _ h₁ h₂).symm))))
         ((gs_res _ y _ hy _).trans (gs_appLE h _ _ _ (𝟙 _) y hy.2 _)))))))
 
+/- English proof (translation)
+Establish `glue : ∀ J : PUnit → L.ι, ∃ a : Γ(X', (L.pull F).U J), ∀ (Z : Scheme.{0}) (r : Z ⟶ X') (z : Z) (k : L'.ι), r z ∈ (L.pull F).U J → r z ∈ L'.U k → gs r z _ a = (gw w r z (J PUnit.unit) k).val * gs r z _ (σ.f k)`. Introduce `J`. Take `⟨u, hu⟩ : ∃ u : ∀ k, Γ(X', (L.pull F).U J ⊓ L'.U k), ∀ (Z : Scheme.{0}) (r : Z ⟶ X') (z : Z) k, r z ∈ (L.pull F).U J ⊓ L'.U k → gs r z _ (u k) = (gw w r z (J PUnit.unit) k).val * gs r z _ (σ.f k)` from `⟨fun k => (show Γ(X', (L.pull F).U J ⊓ L'.U k) from (w.s (J, k)).val) * resG X' inf_le_right (σ.f k), fun Z r z k hz => (gs_mul r z _ hz _ _).trans (congrArg₂ (· * ·) (gs_unit r z _ hz _) (gs_res r z _ hz _))⟩`. Take `⟨a, ha, -⟩` from `X'.sheaf.existsUnique_gluing' (fun k => (L.pull F).U J ⊓ L'.U k) ((L.pull F).U J) (fun k => homOfLE inf_le_left) (fun y hy => by`. Take `⟨k, hk⟩` from `exists_chart hL' y`.
+
+Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨k, hy, hk⟩) u`. Use the proof step `(fun k k' => fn_ext (V := ((L.pull F).U J ⊓ L'.U k) ⊓ ((L.pull F).U J ⊓ L'.U k')) fun y hy => by`. Use `(gs_res (𝟙 X') y inf_le_left hy _).trans (Eq.trans ?_ (gs_res (𝟙 X') y inf_le_right hy _).symm)` and prove the remaining obligations. Establish `hj : F y ∈ L.U (J PUnit.unit)` using `mem_pull.1 hy.1.1`. Rewrite using `[hu _ _ y k hy.1, hu _ _ y k' hy.2, gs_compat σ (𝟙 X') y hy.1.2 hy.2.2, hw _ (𝟙 X') y (J PUnit.unit) (J PUnit.unit) k k' hj hj hy.1.2 hy.2.2, gm_self hL (𝟙 X' ≫ F) y hj, _root_.one_mul, Units.val_mul, _root_.mul_assoc, mul_left_comm (gw w (𝟙 X') y (J PUnit.unit) k').val, Units.in …`.
+
+Use `⟨a, fun Z r z k h₁ h₂ => ?_⟩` and prove the remaining obligations. Establish `hz : r z ∈ (L.pull F).U J ⊓ L'.U k` using `⟨h₁, h₂⟩`. Conclude with `(gs_res r z inf_le_left hz a).symm.trans ((congrArg (gs r z _) (ha k)).trans (hu Z r z k hz))`. Use `choose a ha using glue`. Use `⟨⟨a, fun (J J' : PUnit → L.ι) => fn_ext fun y hy => ?_⟩, fun Z r z J k => ha J Z r z k⟩` and prove the remaining obligations.
+
+Take `⟨k, hk⟩` from `exists_chart hL' y`. Establish `hj : F y ∈ L.U (J PUnit.unit)` using `mem_pull.1 hy.1`. Establish `hj' : F y ∈ L.U (J' PUnit.unit)` using `mem_pull.1 hy.2`. Rewrite using `[gs_res _ y _ hy, gs_mul _ y _ hy, gs_res _ y _ hy, gs_unit _ y _ hy, gm_pull_g L F (𝟙 X') y J J' hy.1 hy.2, ha J _ (𝟙 X') y k hy.1 hk, ha J' _ (𝟙 X') y k hy.2 hk, hw _ (𝟙 X') y (J PUnit.unit) (J' PUnit.unit) k k hj hj' hk hk, gm_self hL' (𝟙 X') y hk, inv_one, _root_.mul_one, Uni …`.
+-/
 theorem exists_sec_along_iso {L : LB X} {L' : LB X'} {F : X' ⟶ X} {w : LB.Iso L' (L.pull F)} (hw : PGen w) (hL : L.IsLB)
     (hL' : L'.IsLB) (σ : LB.Sec L') : ∃ s : LB.Sec (L.pull F), ∀ (Z : Scheme.{0}) (r : Z ⟶ X') (z : Z)
       (J : PUnit → L.ι) (k : L'.ι), r z ∈ (L.pull F).U J → r z ∈ L'.U k →
@@ -73,6 +85,9 @@ theorem exists_sec_along_iso {L : LB X} {L' : LB X'} {F : X' ⟶ X} {w : LB.Iso 
     hw _ (𝟙 X') y (J PUnit.unit) (J' PUnit.unit) k k hj hj' hk hk, gm_self hL' (𝟙 X') y hk, inv_one, _root_.mul_one,
     Units.val_mul, _root_.mul_assoc]
 
+/- English proof (translation)
+Unfold `gs`. Rewrite using `[dif_pos h]`. Establish `e : y ∈ f ⁻¹ᵁ X.basicOpen a ↔ y ∈ Y.basicOpen (f.app U a)`. Rewrite using `[Scheme.preimage_basicOpen]`. Conclude with `(Y.mem_basicOpen (f.app U a) y h).symm.trans e.symm`.
+-/
 theorem isUnit_gs_iff (f : Y ⟶ X) (y : Y) (U : X.Opens) (h : f y ∈ U) (a : Γ(X, U)) :
     IsUnit (gs f y U a) ↔ f y ∈ X.basicOpen a := by
   unfold gs
@@ -85,6 +100,21 @@ end Calc
 
 set_option maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo S _ x t' m1 σ' hnz`. Take `⟨w1, g1, r1, -⟩` from `m1.lin`. Establish `hw1` using `(isGen_iff w1).1 g1`. Establish `hL` using `Xo.univ.t.PP.isLB`. Establish `hL'` using `t'.PP.isLB`.
+
+Take `⟨s1, hs1⟩` from `exists_sec_along_iso hw1 hL hL' σ'`. Set `A` to `Xo.univ.t.G`. Establish `cond : (snd (Over.mk x) A).left ≫ A.hom = (fst (Over.mk x) A).left ≫ x` using `(Over.w (snd (Over.mk x) A)).trans (Over.w (fst (Over.mk x) A)).symm`. Set `h : Gx x ⟶ t'.G.left` to `m1.cart.1.lift _ _ cond`. Establish `hφ : h ≫ m1.φ = (snd (Over.mk x) A).left` using `m1.cart.1.lift_fst _ _ cond`.
+
+Establish `hh : h ≫ t'.G.hom = (fst (Over.mk x) A).left` using `m1.cart.1.lift_snd _ _ cond`. Set `a0 : Over.mk (t'.G.hom ≫ x) ⟶ Over.mk x` to `Over.homMk t'.G.hom rfl`. Set `b0 : Over.mk (t'.G.hom ≫ x) ⟶ A` to `Over.homMk m1.φ m1.cart.1.w`. Set `g0 : t'.G.left ⟶ Gx x` to `(lift a0 b0).left`. Establish `g0f : g0 ≫ (fst (Over.mk x) A).left = t'.G.hom` using `congrArg (fun q => q.left) (lift_fst a0 b0)`.
+
+Establish `g0s : g0 ≫ (snd (Over.mk x) A).left = m1.φ` using `congrArg (fun q => q.left) (lift_snd a0 b0)`. Establish `hg0 : g0 ≫ h = 𝟙 _` using `m1.cart.1.hom_ext (by rw [Category.assoc, hφ, g0s, Category.id_comp]) (by rw [Category.assoc, hh, g0f, Category.id_comp])`. Set `s : LB.Sec (PPx x)` to `secPullOne Xo.univ.t.PP.L h hφ s1`. Use `⟨s, fun p => ?_⟩` and prove the remaining obligations. Take `⟨q, hq, hqn⟩` from `hnz p`.
+
+Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 hqn`. Establish `hkU : q ∈ t'.PP.L.U k` using `t'.G.left.basicOpen_le _ hk`. Take `⟨j, hj⟩` from `exists_chart hL (m1.φ q)`. Establish `mg : g0 q ∈ (PPx x).U (fun _ => j)` using `Set.mem_iInter.2 fun _ => (congrArg (fun r => r q ∈ Xo.univ.t.PP.L.U j) g0s).mpr hj`. Use `⟨g0 q, fun _ => j, (congrArg (fun r => r q) g0f).trans hq, ?_⟩` and prove the remaining obligations.
+
+Use `(isUnit_gs_iff g0 q _ mg _).1 ?_` and prove the remaining obligations. Establish `e : gs g0 q _ (s.f (fun _ => j)) = (gw w1 (𝟙 _) q j k).val * gs (𝟙 _) q _ (σ'.f k)`. Use `(gs_appLE h _ _ (chart_le_preimage _ h hφ _) g0 q mg _).trans ?_` and prove the remaining obligations. Rewrite using `[hg0]`. Conclude with `hs1 _ (𝟙 _) q (fun _ => j) k (mem_pull.2 hj) hkU`.
+
+Rewrite using `[e]`. Conclude with `(Units.isUnit _).mul ((isUnit_gs_iff (𝟙 _) q _ hkU _).2 hk)`.
+-/
 theorem exists_sec_nonzero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (S : Type) [CommRing S] (x : Sp S ⟶ Xo.X) (t' : SAB H (Sp S)) (m : SABMap t' Xo.univ.t x) (th : t'.PP.L.Sec), (∀ y : Sp S, ∃ q : t'.G.left, t'.G.hom q = y ∧ q ∈ Out.nonzeroLocus th) → ∃ s : LB.Sec (PPx x), SecNZ x s := by
   intro E _ _ _ H Dw l Xo S _ x t' m1 σ' hnz
   obtain ⟨w1, g1, r1, -⟩ := m1.lin

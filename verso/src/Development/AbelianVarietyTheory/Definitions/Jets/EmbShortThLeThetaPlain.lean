@@ -82,12 +82,27 @@ section Span
 variable {F : Type} [Field F] {K : Type} [Field K] [NumberField K] [Algebra F K] {C : Type} [AddCommGroup C] [Module F C]
   {n : ℕ} (z : (Fin n → K) ≃ₗ[K] K ⊗[F] C)
 
+/- English proof (translation)
+The claim follows from `Submodule.span_mono (Set.image_mono h)`.
+-/
 theorem spanK_mono {s t : Set C} (h : s ⊆ t) : spanK z s ≤ spanK z t :=
   Submodule.span_mono (Set.image_mono h)
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨f, hf, rfl⟩`.
+-/
 theorem mem_spanK {s : Set C} {f : C} (hf : f ∈ s) : z.symm (1 ⊗ₜ[F] f) ∈ spanK z s :=
   Submodule.subset_span ⟨f, hf, rfl⟩
 
+/- English proof (translation)
+Take `⟨t, rfl⟩` from `hN`. Establish `key : spanK z (Submodule.span (𝓞 F) (t : Set C) : Set C) = spanK z (t : Set C)`. Use `le_antisymm (Submodule.span_le.2 ?_) (spanK_mono z Submodule.subset_span)` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Express the relevant statement in the definitionally equal form `z.symm (1 ⊗ₜ[F] f) ∈ spanK z (t : Set C)`.
+
+Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx => exact mem_spanK z hx`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [TensorProduct.tmul_add, map_add]`. Conclude with `add_mem hx hy`.
+
+Consider the case `smul r x _ hx`. Establish `e : (1 : K) ⊗ₜ[F] (r • x) = (algebraMap F K (r : F)) • ((1 : K) ⊗ₜ[F] x)`. Establish `h1 : r • x = (r : F) • x` using `(algebraMap_smul F r x).symm`. Rewrite using `[h1, TensorProduct.tmul_smul, algebraMap_smul K]`. Rewrite using `[e, map_smul]`.
+
+Conclude with `(spanK z (t : Set C)).smul_mem (algebraMap (𝓞 F) (𝓞 K) r) hx`. Rewrite using `[key]`. Conclude with `Submodule.fg_span (t.finite_toSet.image _)`.
+-/
 theorem spanK_fg_of_fg [Module (𝓞 F) C] [IsScalarTower (𝓞 F) F C] {N : Submodule (𝓞 F) C} (hN : N.FG) :
     (spanK z (N : Set C)).FG := by
   obtain ⟨t, rfl⟩ := hN
@@ -108,8 +123,14 @@ theorem spanK_fg_of_fg [Module (𝓞 F) C] [IsScalarTower (𝓞 F) F C] {N : Sub
   rw [key]
   exact Submodule.fg_span (t.finite_toSet.image _)
 
+/- English proof (translation)
+Simplify using `[spanK]`.
+-/
 example : spanK z (∅ : Set C) = ⊥ := by simp [spanK]
 
+/- English proof (translation)
+Simplify using `[spanK]`.
+-/
 example : spanK z ({0} : Set C) = ⊥ := by simp [spanK]
 
 end Span
@@ -118,6 +139,13 @@ section Short
 
 variable {B : WeightFamilies.Prov D} {P6 : ModuliIntegralCharts.Prov D} {j : ℕ}
 
+/- English proof (translation)
+Establish `hn : ∀ i, EX.piG i * piBarO EX i = (D.host.g i : 𝓞 D.host.E)` using `fun i => Subtype.ext (EX.piG_norm i)`. Establish `hn' : ∀ i, iE D hinj B (EX.piG i) * iE D hinj B (piBarO EX i) ≠ 0` using `fun i => by`. Rewrite using `[← map_mul, hn, map_natCast]`. Conclude with `(D.host.g_prime i).ne_zero` after adjusting the coercions. Establish `hnn : ∀ w : WeightFamilies.Wt D j, nnW B hinj EX w ≠ 0` using `fun w => Finset.prod_ne_zero_iff.2 fun i _ => mul_ne_zero (pow_ne_zero _ (left_ne_zero_of_mul (hn' i))) (pow_ne_zero _ (right_ne_zero_of_mul (hn' i)))`.
+
+Establish `hQ : D.host.QS ≠ 0` using `D.host.QS_pos.ne'`. Establish `hq : D.host.q ≠ 0` using `(D.host.hyp.1 : D.host.q.Prime).ne_zero`. Establish `hd : D.host.d ≠ 0` using `(D.host.hyp.2.1 : D.host.d.Prime).ne_zero`. Use `mul_ne_zero (mul_ne_zero (mul_ne_zero (Nat.cast_ne_zero.2 ?_) (pow_ne_zero _ (hnn wL))) (hnn wF)) (Nat.cast_ne_zero.2 ?_)` and prove the remaining obligations. Conclude with `pow_ne_zero _ hp.ne'`.
+
+Unfold `pPow`. Check the signs of the components of the expression.
+-/
 theorem runScalar_kappa_ne_zero (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D) {p : ℕ} (hp : 0 < p)
     (ka wL wF : WeightFamilies.Wt D j) (T : ℕ) : (scalOfP B hinj EX p ka wL wF T).sK ≠ 0 := by
   have hn : ∀ i, EX.piG i * piBarO EX i = (D.host.g i : 𝓞 D.host.E) := fun i => Subtype.ext (EX.piG_norm i)
@@ -135,6 +163,11 @@ theorem runScalar_kappa_ne_zero (hinj : Function.Injective D.what₂.OtoLL) (EX 
   · unfold pPow
     positivity
 
+/- English proof (translation)
+Use `set t : 𝓞 B.KO := ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 B.KO) ^ (D.R.f * D.R.r * w.n) with ht`. Establish `ht0 : t ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 (mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero))`. Establish `hinj : ∀ a : 𝓞 B.KO, a ≠ 0 → Function.Injective (a • (LinearMap.id : B.Cusp j w →ₗ[𝓞 B.KO] B.Cusp j w))`. Introduce `a ha x y hxy`. Establish `ha' : (a : B.KO) ≠ 0` using `fun h => ha (RingOfIntegers.coe_eq_zero_iff.1 h)`.
+
+Establish `e : (a : B.KO) • x = (a : B.KO) • y` using `(algebraMap_smul B.KO a x).trans ((show a • x = a • y from hxy).trans (algebraMap_smul B.KO a y).symm)`. Conclude with `smul_right_injective _ ha' e`. Establish `h1 : (X.Thc s w).FG` using `hM.of_le hle`. Conclude with `Submodule.fg_of_fg_map_injective _ (hinj t ht0) (Submodule.fg_of_fg_map_injective _ (hinj s hs) h1)`.
+-/
 theorem shortTh_fg_of_Thc_le (X : WeightAlgebra.PJ D B P6 j) (w : WeightFamilies.Wt D j) {s : 𝓞 B.KO} (hs : s ≠ 0)
     (hle : X.Thc s w ≤ B.Mlat j w) (hM : (B.Mlat j w).FG) : (X.shortTh w).FG := by
   set t : 𝓞 B.KO := ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 B.KO) ^ (D.R.f * D.R.r * w.n) with ht
@@ -150,11 +183,17 @@ theorem shortTh_fg_of_Thc_le (X : WeightAlgebra.PJ D B P6 j) (w : WeightFamilies
   have h1 : (X.Thc s w).FG := hM.of_le hle
   exact Submodule.fg_of_fg_map_injective _ (hinj t ht0) (Submodule.fg_of_fg_map_injective _ (hinj s hs) h1)
 
+/- English proof (translation)
+The claim follows from `shortTh_fg_of_Thc_le X ka (runScalar_kappa_ne_zero hinj EX hp ka wL wF T) h2.2.2.2 hM.fg`.
+-/
 theorem shortTh_fg (X : WeightAlgebra.PJ D B P6 j) (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D) {p : ℕ} (hp : 0 < p)
     (ka wL wF : WeightFamilies.Wt D j) (T : ℕ) (hM : Submodule.IsLattice B.KO (B.Mlat j ka))
     (h2 : WeightAlgebra.H2 X (scalOfP B hinj EX p ka wL wF T) ka wL wF) : (X.shortTh ka).FG :=
   shortTh_fg_of_Thc_le X ka (runScalar_kappa_ne_zero hinj EX hp ka wL wF T) h2.2.2.2 hM.fg
 
+/- English proof (translation)
+Take `⟨G, hG, e⟩` from `Submodule.mem_map.1 (h hF)`. Conclude with `X.inc_inj ka e ▸ hG`.
+-/
 theorem ProductsShort.mem {X : WeightAlgebra.PJ D B P6 j} {ka wL wF : WeightFamilies.Wt D j} {T : ℕ} (h : ProductsShort X ka wL wF T)
     {F : B.Cusp j ka} (hF : X.inc ka F ∈ thetaPlain X ka wL wF T) : F ∈ X.shortTh ka := by
   obtain ⟨G, hG, e⟩ := Submodule.mem_map.1 (h hF)
@@ -163,6 +202,9 @@ theorem ProductsShort.mem {X : WeightAlgebra.PJ D B P6 j} {ka wL wF : WeightFami
 variable {K : Type} [Field K] [NumberField K] [StarRing K] [Algebra B.KO K]
   {Bs : DefBase K} {Df : DefSide Bs} {S : IndefData Df} {P : Type} [Group P] [Finite P] {oc : OnConst}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.Ms_eq, h.rho_eq, h.Th_eq, h.σ_eq, h.ThK_eq ▸ spanK_fg_of_fg z hfg, h.ThK_eq ▸ spanK_mono z fun _ hF => hpr.mem hF⟩`.
+-/
 theorem FormTieK.toFormTie {X : WeightAlgebra.PJ D B P6 j} {hinj : Function.Injective D.what₂.OtoLL} {EX : ErrX D} {p : ℕ}
     {ka wL wF : WeightFamilies.Wt D j} {T : ℕ} {O : OnObj S P oc} {v : HeightOneSpectrum (𝓞 K)} {i : Bs.J}
     {z : (Fin (O.nZ i) → K) ≃ₗ[K] K ⊗[B.KO] B.Cusp j ka} {act : P → B.Cusp j ka → B.Cusp j ka}
@@ -171,6 +213,9 @@ theorem FormTieK.toFormTie {X : WeightAlgebra.PJ D B P6 j} {hinj : Function.Inje
   ⟨h.Ms_eq, h.rho_eq, h.Th_eq, h.σ_eq, h.ThK_eq ▸ spanK_fg_of_fg z hfg,
     h.ThK_eq ▸ spanK_mono z fun _ hF => hpr.mem hF⟩
 
+/- English proof (translation)
+Establish `e : ∀ G : B.Cusp j ka, (a ⊗ₜ[B.KO] G : K ⊗[B.KO] B.Cusp j ka) = a • (1 ⊗ₜ[B.KO] G)` using `fun G => by`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[e, e, map_smul, map_smul, map_smul, h.rho_eq]`.
+-/
 theorem FormTieK.rho_tmul {X : WeightAlgebra.PJ D B P6 j} {hinj : Function.Injective D.what₂.OtoLL} {EX : ErrX D} {p : ℕ}
     {ka wL wF : WeightFamilies.Wt D j} {T : ℕ} {O : OnObj S P oc} {v : HeightOneSpectrum (𝓞 K)} {i : Bs.J}
     {z : (Fin (O.nZ i) → K) ≃ₗ[K] K ⊗[B.KO] B.Cusp j ka} {act : P → B.Cusp j ka → B.Cusp j ka}
@@ -193,6 +238,9 @@ def repCoord {F : Type} [Field F] {K : Type} [Field K] [Algebra F K] {C : Type} 
     refine LinearMap.ext fun x => ?_
     simp [Module.End.mul_eq_comp, LinearMap.baseChange_comp]
 
+/- English proof (translation)
+Set `z : ∀ i, (Fin (Module.finrank B.KO (B.Cusp (jj i) (ka i))) → K) ≃ₗ[K] K ⊗[B.KO] B.Cusp (jj i) (ka i)` to `fun i => ((Module.finBasis B.KO (B.Cusp (jj i) (ka i))).baseChange K).equivFun.symm`. Set `O' : OnObj S P oc` to `{ O with nZ := fun i => Module.finrank B.KO (B.Cusp (jj i) (ka i)) ρ := fun i => repCoord (z i) (ρ i) V₀ := fun _ => ⊥ e := fun _ => 0 Ms := fun i => spanK (z i) (B.Mlat (jj i) (ka i) : Set _) φ := fun _ => 0 Th1 := fun _ _ => ⊥ Th := fun v i => spanK (z i) {F | (X v i).inc (ka i …`. Use `⟨O', z, fun _ => rfl, rfl, rfl, fun v i => ⟨rfl, fun g F => ?_, rfl, rfl, rfl⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(z i).symm ((ρ i g).baseChange K (z i ((z i).symm _))) = _`. Rewrite using `[LinearEquiv.apply_symm_apply, LinearMap.baseChange_tmul]`.
+-/
 theorem exists_formTieK {B : WeightFamilies.Prov D} {P6 : ModuliIntegralCharts.Prov D} (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D)
     {K : Type} [Field K] [NumberField K] [StarRing K] [Algebra B.KO K]
     {Bs : DefBase K} {Df : DefSide Bs} {S : IndefData Df} {P : Type} [Group P] [Finite P] {oc : OnConst}
@@ -225,6 +273,9 @@ theorem exists_formTieK {B : WeightFamilies.Prov D} {P6 : ModuliIntegralCharts.P
   change (z i).symm ((ρ i g).baseChange K (z i ((z i).symm _))) = _
   rw [LinearEquiv.apply_symm_apply, LinearMap.baseChange_tmul]
 
+/- English proof (translation)
+Take `⟨φ, e⟩` from `h n`. Take `⟨φ', e'⟩` from `h n'`. Rewrite using `[e, e']`. Conclude with `⟨φ', rfl⟩`.
+-/
 theorem OneCover.eq_withCoeff {T : Top D} {j : ℕ} (h : OneCover T j) (n n' : ℕ) :
     ∃ φ, T.dδ j n' = withCoeff (T.dδ j n) φ := by
   obtain ⟨φ, e⟩ := h n

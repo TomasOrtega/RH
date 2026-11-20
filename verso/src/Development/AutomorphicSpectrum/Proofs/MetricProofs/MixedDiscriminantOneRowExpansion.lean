@@ -15,6 +15,15 @@ open GlobalTheory.CompanionTheory.Ar.PB.FibN ReciprocityTheory.ChartRestriction.
 
 namespace GlobalTheory.CompanionTheory.Ar.PB.FibN
 
+/- English proof (translation)
+Introduce `d`. Proceed by induction on `d with`. Consider the case `zero => intro f`. Simplify using the standard rewrite rules. Consider the case `succ d ih`.
+
+Introduce `f`. Rewrite using `[Fin.prod_univ_succ, Derivation.leibniz, ih (fun i => f i.succ), Fin.sum_univ_succ (fun r => pderiv k (f r) * ∏ s, f (r.succAbove s))]`. Simplify using `only [smul_eq_mul, Finset.mul_sum]`. Rewrite using `[add_comm]`. Use `congr 1`.
+
+Simplify using `only [Fin.succAbove_zero]`. Expand and normalize the polynomial expressions, which then agree. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_succ (fun s => f (r.succ.succAbove s))]`. Simplify using `only [Fin.succ_succAbove_zero, Fin.succ_succAbove_succ]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pderiv_fin_prod {σ : Type*} (k : σ) : ∀ (d : ℕ) (f : Fin (d + 1) → MvPolynomial σ ℝ),
     pderiv k (∏ r, f r) = ∑ r, pderiv k (f r) * ∏ s, f (r.succAbove s) := by
   intro d
@@ -34,9 +43,17 @@ theorem pderiv_fin_prod {σ : Type*} (k : σ) : ∀ (d : ℕ) (f : Fin (d + 1) �
       simp only [Fin.succ_succAbove_zero, Fin.succ_succAbove_succ]
       ring
 
+/- English proof (translation)
+Simplify using `[rowW, pderiv_X, Pi.single_apply]`.
+-/
 theorem pderiv_row_weight (c v : ℝ) : pderiv (some 0 : Option (Fin 2)) (rowW ![c, 0] v) = C c := by
   simp [rowW, pderiv_X, Pi.single_apply]
 
+/- English proof (translation)
+Establish `h : lin4 (fun i => c * n i) = C c * lin4 n`. Simplify using `only [lin4, lin3, map_sum, map_mul, rename_C, rename_X, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`.
+
+Simplify using `[rowW, evalW, aeval_def, algebraMap_eq]`.
+-/
 theorem eval_row_weight (n : Fin 3 → ℝ) (c v : ℝ) :
     evalW n n (rowW ![c, 0] v) = lin4 (fun i => c * n i) + C v * X none := by
   have h : lin4 (fun i => c * n i) = C c * lin4 n := by
@@ -46,6 +63,13 @@ theorem eval_row_weight (n : Fin 3 → ℝ) (c v : ℝ) :
   rw [h]
   simp [rowW, evalW, aeval_def, algebraMap_eq]
 
+/- English proof (translation)
+Introduce `d T H L hL c v n e`. Establish `h1` using `((GlobalTheory.T.mixed_discriminant_cofactor_expansion d).1 (fun r => (c r : ℂ) * e) (fun r => (∑ i, ((c r * n i : ℝ) : ℂ) • T i) + ((v r : ℝ) : ℂ) • H))`. Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[pderiv_fin_prod, map_sum, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations.
+
+Establish `h3` using `hL (fun s i => c (r.succAbove s) * n i) (fun s => v (r.succAbove s))`. Rewrite using `[h3, pderiv_row_weight, map_mul (evalW n n), map_prod (evalW n n)]`. Simplify using `only [eval_row_weight]`. Establish `h4 : evalW n n (C (c r)) = C (c r)` using `by simp [evalW, aeval_def, algebraMap_eq]`. Rewrite using `[h4, C_mul', map_smul, Complex.real_smul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem extract_one : ∀ (d : ℕ) (T : Fin 3 → Matrix (Fin d) (Fin d) ℂ) (H : Matrix (Fin d) (Fin d) ℂ)
     (L : MvPolynomial (Option (Fin 3)) ℝ →ₗ[ℝ] ℂ),
     (∀ (c : Fin d → Fin 3 → ℝ) (v : Fin d → ℝ),

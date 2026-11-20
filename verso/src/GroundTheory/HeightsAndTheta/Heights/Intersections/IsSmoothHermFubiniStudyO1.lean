@@ -161,10 +161,21 @@ def fsO1 (n : ℕ) : HermLine (GlobalTheory n) := HermLine.sqMetric fun _ => 1
 
 def triv (n : ℕ) : HermLine (GlobalTheory n) := HermLine.sqMetric fun _ => 0
 
+/- English proof (translation)
+Introduce `_ _ _` and use `0`.
+-/
 example : Family (GlobalTheory 2) := fun _ _ _ => 0
 
+/- English proof (translation)
+The claim follows from `isSmoothHerm_sqMetric _`.
+-/
 theorem isSmoothHerm_fubiniStudyO1 (n : ℕ) : IsSmoothHerm (fsO1 n) := isSmoothHerm_sqMetric _
 
+/- English proof (translation)
+Use `⟨⟨()⟩, ⟨Ideal.isPrime_bot, ⟨∅, by simp, by simp⟩, fun _ => ⟨0, ?_⟩⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.mem_bot]`. Conclude with `X_ne_zero _`. Conclude with `Ideal.comap_bot_of_injective _ (C_injective _ _)`. Rewrite using `[ringKrullDim_eq_of_ringEquiv (RingEquiv.quotientBot _), MvPolynomial.ringKrullDim_of_isNoetherianRing, IsPrincipalIdealRing.ringKrullDim_eq_one ℤ Int.not_isField]`.
+
+Simplify using `[Nat.card_eq_fintype_card]`. Conclude with `add_comm _ _`.
+-/
 theorem isArithVar_bot (n : ℕ) : IsArithVar (⊥ : Ideal (MRing (GlobalTheory (n + 1)))) (n + 1) := by
   refine ⟨⟨()⟩, ⟨Ideal.isPrime_bot, ⟨∅, by simp, by simp⟩, fun _ => ⟨0, ?_⟩⟩, ?_, ?_⟩
   · rw [Ideal.mem_bot]
@@ -176,6 +187,11 @@ theorem isArithVar_bot (n : ℕ) : IsArithVar (⊥ : Ideal (MRing (GlobalTheory 
     simp [Nat.card_eq_fintype_card]
     exact add_comm _ _
 
+/- English proof (translation)
+Introduce `m hm k`. Rewrite `hm` using `[support_X]`. Simplify using `only [Finset.mem_singleton] at hm`. Substitute `hm` using the available equality. Consider the cases of `k`.
+
+Simplify using `[Finsupp.single_apply]`.
+-/
 theorem isMultiHomog_Xb (n : ℕ) (i : Fin n) : IsMultiHomog (Xb n i) fun _ => 1 := by
   intro m hm k
   rw [support_X] at hm
@@ -184,6 +200,11 @@ theorem isMultiHomog_Xb (n : ℕ) (i : Fin n) : IsMultiHomog (Xb n i) fun _ => 1
   cases k
   simp [Finsupp.single_apply]
 
+/- English proof (translation)
+Introduce `m hm k`. Rewrite `hm` using `[mem_support_iff, coeff_C]`. Use `split_ifs at hm with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Conclude with `absurd rfl hm`.
+-/
 theorem isMultiHomog_C (c : ℤ) {n : ℕ} : IsMultiHomog (C c : MRing (GlobalTheory n)) 0 := by
   intro m hm k
   rw [mem_support_iff, coeff_C] at hm
@@ -192,10 +213,16 @@ theorem isMultiHomog_C (c : ℤ) {n : ℕ} : IsMultiHomog (C c : MRing (GlobalTh
     simp
   · exact absurd rfl hm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => 1, isMultiHomog_Xb _ _, fun _ => by simp [fsO1, HermLine.sqMetric], by rw [Ideal.mem_bot]; exact X_ne_zero _⟩`.
+-/
 theorem isSec_Xb (n : ℕ) (i : Fin (n + 1)) : IsSec (⊥ : Ideal (MRing (GlobalTheory (n + 1)))) (fsO1 (n + 1)) (Xb (n + 1) i) :=
   ⟨fun _ => 1, isMultiHomog_Xb _ _, fun _ => by simp [fsO1, HermLine.sqMetric],
     by rw [Ideal.mem_bot]; exact X_ne_zero _⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isArithVar_bot 0, isSmoothHerm_fubiniStudyO1 1, isSec_Xb 0 0⟩`.
+-/
 theorem specInt_hypotheses_hold : IsArithVar (⊥ : Ideal (MRing (GlobalTheory 1))) 1 ∧ IsSmoothHerm (fsO1 1) ∧
     IsSec (⊥ : Ideal (MRing (GlobalTheory 1))) (fsO1 1) (Xb 1 0) :=
   ⟨isArithVar_bot 0, isSmoothHerm_fubiniStudyO1 1, isSec_Xb 0 0⟩

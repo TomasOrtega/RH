@@ -19,6 +19,11 @@ open Formalism.L2.Col Formalism.L2.Ker Formalism.UG GlobalTheory.Mem.Chr GlobalT
 
 variable {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B X)
 
+/- English proof (translation)
+Establish `hg` using `dia_of_pt hPr u hy`. Establish `hx` using `dia_of_pt hPr u h2`. Establish `e1 : κ.1 = 1` using `ufGL_inj B.sp.cm (B.R.N 0) (h1.trans (map_one _).symm)`. Conclude with `red_of_act B.sp.cm (B.R.N 0) (Formalism.L2.Col.diaT (Pr := B.primes X) u) hg.1 hx.1 κ.2.1.1 (by`. Rewrite using `[hg.2, hx.2]`.
+
+Use `show ((κ.1, κ.2.1.1) : Formalism.L2.Col.UF B.fields.E (B.R.N 0) × Formalism.L2.Col.GLG B.fields.E (B.R.N 0) (B.primes X).vGs) • _ = _`. Rewrite using `[e1]`. Use the proof step `rfl)`.
+-/
 theorem stepZeroReduction_of_moved_representative (hPr : (B.primes X).Ok) (u : B.Word) (a : I.ι) (c : (I.stp u a 0).Cl) (y : TC.GA B (B.R.N 0))
     (hy : TC.PtOf (y * TC.kStd X u (B.R.N 0)) (extTo I.SQ ((I.stp u a 0).rep c).1.1)) (x : TC.GA B (B.R.N 0))
     (κ : (I.stp u a 0).G c.1) (h1 : (I.stp u a 0).gam c.1 κ = 1)
@@ -34,6 +39,17 @@ theorem stepZeroReduction_of_moved_representative (hPr : (B.primes X).Ok) (u : B
     rw [e1]
     rfl)
 
+/- English proof (translation)
+Establish `hL` using `hI.idx_ok a`. Establish `hy'` using `StepZero.ysAt_zero I.sel (I.tup a) (I.cst a) (R := B.R)`. Establish `hΛ` using `StepZero.levGAt_zero (I.Tp a) hL`. Establish `hΘ` using `StepZero.levQAt_zero (I.Tp a) hL`. Establish `hg` using `dia_of_pt hPr u hy`.
+
+Establish `hx` using `dia_of_pt hPr u h`. Prove the components needed by the constructor for the conclusion. Introduce `hxU`. Establish `h1` using `act_of_mem B.sp.cm (B.R.N 0) _ (Formalism.L2.Col.diaT (Pr := B.primes X) u) hg.1 ⟨x, hxU⟩`. Rewrite `h1` using `[hg.2, hx.2]`.
+
+Take `⟨p, hp⟩` from `exists_ptAt (R := B.R) I.sel (I.tup a) (I.cst a) q`. Take `⟨g, h2, h3⟩` from `StepZero.exists_lift ((I.Tp a).pref u 0) hy' hΛ hΘ c.1 ((I.stp u a 0).rep c) p (1, (Formalism.L2.Col.levRed B.sp.cm (B.R.N 0) _ _ _ ⟨x, hxU⟩)⁻¹) (by rw [hp]; exact h1.symm)`. Use `⟨g, ?_, ?_, Chart0.cos0 I _ _⟩` and prove the remaining obligations. Use `show Formalism.L2.Col.ufGL B.fields.E (B.R.N 0) g.1 = 1`. Rewrite using `[show g.1 = 1 from congrArg Prod.fst h2, map_one]`.
+
+Conclude with `(congrArg (fun p : PtAt B.R I.sel (I.tup a) (I.cst a) u 0 => p.1.1) h3).trans hp`. Introduce and unpack `⟨κ, h1, h2, -⟩`. Take `⟨hJ, hr⟩` from `stepZeroReduction_of_moved_representative I hPr u a c y hy x κ h1 (h2 ▸ h)`. Use `(Formalism.L2.Col.mem_levU _ _ _ _ _).2 ⟨hJ, ?_⟩` and prove the remaining obligations. Establish `key : ∀ (Λ' : Formalism.L2.Col.LevFam B.fields.E B.fields.K (B.R.N 0) (B.primes X).vGs), Λ' = Formalism.L2.Col.colLev I.Ch 0 → ∀ g : Λ'.grp, g.1 ∈ (Formalism.L2.Col.colLev I.Ch 0).grp`.
+
+Introduce and unpack `_ rfl g`. Conclude with `g.2`. Establish `hm : κ.2.1.1 ∈ (Formalism.L2.Col.colLev I.Ch 0).grp` using `key _ (hΛ c.1) κ.2.1`. Rewrite using `[hr]`. Conclude with `inv_mem hm`.
+-/
 theorem stepZeroColumnLevel_eq_orbitStabilizer (hI : I.Ok) (hPr : (B.primes X).Ok) (u : B.Word) (a : I.ι) (c : (I.stp u a 0).Cl) (y : TC.GA B (B.R.N 0))
     (hy : TC.PtOf (y * TC.kStd X u (B.R.N 0)) (extTo I.SQ ((I.stp u a 0).rep c).1.1)) (x : TC.GA B (B.R.N 0))
     (q : Formalism.L2.Col.ChPt (Pr := B.primes X) (R := B.R) I.sel (I.tup a) u 0) (h : TC.PtOf (y * x * TC.kStd X u (B.R.N 0)) q) :
@@ -78,6 +94,21 @@ variable {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B X)
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Establish `hPr` using `l.pr`. Take `⟨k, hR⟩` from `(hC u).ends 0 (Nat.zero_le _) (Or.inl rfl)`. Establish `hyE` using `(hC u).yE 0 (Nat.zero_le _) (Or.inl rfl)`. Take `⟨c, -⟩` from `hR.onto ()`. Use `haveI : NeZero (B.R.N 0) := ⟨(B.R.N_pos 0).ne'⟩`.
+
+Establish `hQ : QE I.sel (I.tup I.mu0 : Chr B.fields.F B.fields.E B.fields.K) = ∅` using `ColIn.twistPrimes_reference_tuple_eq_empty I`. Take `⟨p0, hp0, -⟩` from `hR.k_std ()`. Establish `hk : k () ∈ UAd B.sp.cm (B.R.N 0)` using `hp0.uni`. Establish `h1 : TC.PtOf (I.yStd u 0 c * k ()) ((I.stp u I.mu0 0).rep c).1.1`. Use `hR.pt c` as an intermediate fact.
+
+Rewrite `this` using `[hyE c]`. Conclude with `GlobalTheory.Mem.SRe.StdUnique.pt_of_deco hQ (extTo_deco _ _).symm this`. Establish `h2 : TC.PtOf (I.yStd u 0 c * TC.kStd X u (B.R.N 0)) ((I.stp u I.mu0 0).rep c).1.1` using `GlobalTheory.Mem.SRe.StdUnique.pt_of_deco hQ (extTo_deco _ _).symm (yStd_spec I hI u 0 c)`. Establish `key : x ∈ UAd B.sp.cm (B.R.N 0) → (x ∈ (C.forms u).to0.cls0.lev.U ↔ x ∈ levU (F` using `B.host.F) B.sp.cm (B.R.N 0) ((B.primes X).vT u) (B.primes X).vGs (colLev I.Ch 0).grp) := by`. Introduce `hx`.
+
+Establish `hg : I.yStd u 0 c * x * k () ∈ UAd B.sp.cm (B.R.N 0)`. Establish `e : I.yStd u 0 c * x * k () = (I.yStd u 0 c * k ()) * ((k ())⁻¹ * x * k ())` using `by group`. Rewrite using `[e]`. Conclude with `mul_mem h1.uni (mul_mem (mul_mem (inv_mem hk) hx) hk)`. Take `⟨q, hq⟩` from `GlobalTheory.Mem.Col2.ChiFinTop.exists_isPtOf_of_mem (ST := (B.primes X).vT u) (SG := (B.primes X).vGs) (Q := QE I.sel (I.tup I.mu0 : Chr B.fields.F B.fields.E B.fields.K)) B.sp.cm hQ hg`.
+
+Establish `hq' : TC.PtOf (I.yStd u 0 c * x * TC.kStd X u (B.R.N 0)) q`. Establish `e : I.yStd u 0 c * x * TC.kStd X u (B.R.N 0) = I.yStd u 0 c * x * k () * ((I.yStd u 0 c * k ())⁻¹ * (I.yStd u 0 c * TC.kStd X u (B.R.N 0)))` using `by group`. Rewrite using `[e]`. Conclude with `GlobalTheory.Mem.Col2.PtStab.isPtOf_mul_stab _ _ _ _ _ _ _ _ _ _ _ _ h1 h2 hq`. Establish `a1` using `hR.lev c x q (by rw [hyE c]; exact hq)`.
+
+Conclude with `a1.trans (Chart0.lev0 I hI hPr u I.mu0 c x q hq').symm`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `(key (GlobalTheory.Mem.SRe.StdUnique.lev_le I l hI hP Z u 0 _ _ hx)).1 hx`. Introduce `hx`.
+
+Conclude with `(key (levU_le_UAd _ _ _ _ _ hx)).2 hx`.
+-/
 theorem right_lev (hI : I.Ok) (hP : TC.Pins B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) (C : Formalism.L2.Forms.ColsTiedSym (I.rec7 l Z))
     (hC : I.StdC l Z C) (u : B.Word) (x : TC.GA B (B.R.N 0)) :
     x ∈ (C.forms u).to0.cls0.lev.U ↔
@@ -120,6 +151,17 @@ theorem right_lev (hI : I.Ok) (hP : TC.Pins B X) (l : I.Laws) (Z : TC.Later B (I
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Establish `hPr` using `l.pr`. Establish `hR` using `hA.reads 0 (Nat.zero_le _)`. Take `⟨c, rfl⟩` from `hA.chOf_onto 0 (Nat.zero_le _) β`. Establish `hy : TC.PtOf ((show TC.GA B (B.R.N 0) from ((A.K 0 (Nat.zero_le _) (A.chOf 0 c)).y ⟨c, rfl⟩).1) * TC.kStd X u (B.R.N 0)) (extTo I.SQ ((I.stp u a 0).rep c).1.1)`. Use `hR.pt c` as an intermediate fact.
+
+Rewrite `this` using `[hβ]`. Conclude with `this`. Establish `rat : ∀ (x : TC.GA B (B.R.N 0)) (q : Formalism.L2.Col.ChPt (Pr` using `B.primes X) (R := B.R) I.sel (I.tup a) u 0), TC.PtOf ((show TC.GA B (B.R.N 0) from ((A.K 0 (Nat.zero_le _) (A.chOf 0 c)).y ⟨c, rfl⟩).1) * x * TC.kStd X u (B.R.N 0)) q → (x ∈ (A.K 0 (Nat.zero_le _) (A.chOf 0 c)).lev.U ↔ x ∈ levU (F := B.host.F) B.sp.cm (B.R.N 0) ((B.primes X).vT u …`. Establish `hg1 : gramN (I.rec7 l Z) 0 (Nat.zero_le _) = 1` using `((GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I hI hP l Z).2.2.2 0 (Nat.zero_le _)).1`. Establish `eU : UPts (sigD (I.rec7 l Z)) (gramN (I.rec7 l Z) 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 (I.rec7 l Z).host.F) (I.rec7 l Z).host.F) = UAd B.sp.cm (B.R.N 0)` using `by rw [hg1]; rfl`.
+
+Establish `hUl : ∀ x, x ∈ (A.K 0 (Nat.zero_le _) (A.chOf 0 c)).lev.U → x ∈ UAd B.sp.cm (B.R.N 0)` using `fun x hx => eU ▸ (((A.K 0 (Nat.zero_le _) (A.chOf 0 c)).lev.U_eq x).1 hx).1`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨h, h1, h2, q, hq⟩` from `GlobalTheory.T.stepZero_approximation_twistPrimes I hI hP l Z u a Ch A hA (A.chOf 0 c) hβ ⟨c, rfl⟩ x (hUl x hx)`. Establish `e` using `(rat _ q hq).1 (mul_mem hx h1)`.
+
+Establish `e2` using `mul_mem e (inv_mem h2)`. Rewrite `e2` using `[mul_inv_cancel_right]`. Then use the resulting hypothesis. Introduce `hx`. Take `⟨h, h1, h2, q, hq⟩` from `GlobalTheory.T.stepZero_approximation_twistPrimes I hI hP l Z u a Ch A hA (A.chOf 0 c) hβ ⟨c, rfl⟩ x (levU_le_UAd _ _ _ _ _ hx)`. Establish `e` using `(rat _ q hq).2 (mul_mem hx h2)`.
+
+Establish `e2` using `mul_mem e (inv_mem h1)`. Rewrite using `[show x = x * h * h⁻¹ from (mul_inv_cancel_right x h).symm]`. Conclude with `e2`.
+-/
 theorem left_lev (hI : I.Ok) (hP : TC.Pins B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) (Ch : ℕ → Type)
     (A : GlobalTheory.AdForm.TwDat I l Z u a Ch) (hA : A.Is) (β : Ch 0) (hβ : A.kb 0 β = TC.kStd X u (B.R.N 0)) (x : TC.GA B (B.R.N 0)) :
     x ∈ (A.K 0 (Nat.zero_le _) β).lev.U ↔
@@ -156,6 +198,9 @@ theorem left_lev (hI : I.Ok) (hP : TC.Pins B X) (l : I.Laws) (Z : TC.Later B (I.
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `B X I hI hP l Z C hC u a Ch A hA β hβ x`. Conclude with `(left_lev I hI hP l Z u a Ch A hA β hβ x).trans (right_lev I hI hP l Z C hC u x).symm`.
+-/
 theorem lev_zero_std : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (C : Formalism.L2.Forms.ColsTiedSym (I.rec7 l Z)), I.StdC l Z C → ∀ (u : B.Word) (a : I.ι) (Ch : ℕ → Type) (A : GlobalTheory.AdForm.TwDat I l Z u a Ch), A.Is → ∀ (β : Ch 0), A.kb 0 β = TC.kStd X u (B.R.N 0) → ∀ x, x ∈ (A.K 0 (Nat.zero_le _) β).lev.U ↔ x ∈ (C.forms u).to0.cls0.lev.U := by
   intro B X I hI hP l Z C hC u a Ch A hA β hβ x
   exact (left_lev I hI hP l Z u a Ch A hA β hβ x).trans (right_lev I hI hP l Z C hC u x).symm

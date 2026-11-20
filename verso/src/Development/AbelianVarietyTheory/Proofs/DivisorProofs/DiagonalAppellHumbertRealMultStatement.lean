@@ -8,6 +8,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates (defCoord polyd
 open scoped nonZeroDivisors
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TorusRiem.riemannForm_eq_two_trace | exact GlobalTheory.TorusRiem.riemannForm_eq_two_trace | (intros; apply GlobalTheory.TorusRiem.riemannForm_eq_two_trace <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.diagonal_appell_humbert_real_mult : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔠 : FracId F)
     (X : Obj F 𝔠 (Sp ℂ)) (c : 𝔠.elt), IsTotPos (c : F) →
     ∀ (u : HolUnif X.A (X.diag c) (Module.finrank ℚ F)) (e : Fin (Module.finrank ℚ F) ≃ (F →+* ℝ)),

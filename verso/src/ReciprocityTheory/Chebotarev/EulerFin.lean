@@ -4,6 +4,9 @@ open NumberField Filter Topology
 
 namespace ReciprocityTheory.Cheb
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero, pow_zero, hf1]`. Consider the case `succ k ih => rw [pow_succ, hmul, ih, pow_succ]`.
+-/
 theorem euler_fin_pow {E : Type} [Field E] [NumberField E] (f : Ideal (𝓞 E) → ℂ) (hf1 : f 1 = 1)
     (hmul : ∀ a b : Ideal (𝓞 E), f (a * b) = f a * f b) (a : Ideal (𝓞 E)) (k : ℕ) :
     f (a ^ k) = f a ^ k := by
@@ -11,6 +14,27 @@ theorem euler_fin_pow {E : Type} [Field E] [NumberField E] (f : Ideal (𝓞 E) �
   | zero => rw [pow_zero, pow_zero, hf1]
   | succ k ih => rw [pow_succ, hmul, ih, pow_succ]
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.prod_empty]`. Establish `hT : (⊤ : Ideal (𝓞 E)) ≠ ⊥` using `top_ne_bot`. Establish `key : Set.indicator {a : NZIdeal E | Smooth ∅ a.1} (fun a => f a.1) = fun a => if a = ⟨⊤, hT⟩ then (1:ℂ) else 0`.
+
+Use function extensionality and compare the values at `a`. Distinguish the cases in `h : a = ⟨⊤, hT⟩`. Substitute `h` using the available equality. Establish `hs : Smooth (∅ : Finset (Prm E)) (⊤ : Ideal (𝓞 E))` using `(smooth_empty_iff hT).2 rfl`. Rewrite using `[Set.indicator_of_mem (show (⟨⊤, hT⟩ : NZIdeal E) ∈ {a : NZIdeal E | Smooth ∅ a.1} from hs), if_pos rfl]`.
+
+Use `show f ⊤ = 1`. Rewrite using `[← Ideal.one_eq_top, hf1]`. Establish `hs : ¬ Smooth (∅ : Finset (Prm E)) a.1`. Introduce `hs`. Conclude with `h (Subtype.ext ((smooth_empty_iff a.2).1 hs))`.
+
+Rewrite using `[Set.indicator_of_notMem (show a ∉ {a : NZIdeal E | Smooth ∅ a.1} from hs), if_neg h]`. Rewrite using `[key]`. Conclude with `hasSum_ite_eq _ _`. Consider the case `insert q S hq ih`. Rewrite using `[Finset.prod_insert hq]`.
+
+Rewrite `ih`, the goal using `[← hasSum_subtype_iff_indicator]`. Establish `hgeo : HasSum (fun k : ℕ => f q.asIdeal ^ k) (1 - f q.asIdeal)⁻¹` using `hasSum_geometric_of_norm_lt_one (hlt q)`. Establish `hs1 : Summable (fun k : ℕ => ‖f q.asIdeal ^ k‖)`. Simplify `summable_geometric_of_lt_one (norm_nonneg _) (hlt q)` using `[norm_pow]`. Establish `hs2 : Summable (fun b : {a : NZIdeal E | Smooth S a.1} => ‖f b.1.1‖)` using `hsum.subtype _`.
+
+Establish `hprod : HasSum (fun p : ℕ × {a : NZIdeal E | Smooth S a.1} => f q.asIdeal ^ p.1 * f p.2.1.1) ((1 - f q.asIdeal)⁻¹ * ∏ x ∈ S, (1 - f x.asIdeal)⁻¹)`. Establish `ih' : HasSum (fun b : {a : NZIdeal E | Smooth S a.1} => f b.1.1) (∏ x ∈ S, (1 - f x.asIdeal)⁻¹)` using `ih`. Establish `h3 : Summable (fun p : ℕ × {a : NZIdeal E | Smooth S a.1} => f q.asIdeal ^ p.1 * f p.2.1.1)` using `summable_mul_of_summable_norm (f := fun k : ℕ => f q.asIdeal ^ k) (g := fun b : {a : NZIdeal E | Smooth S a.1} => f b.1.1) hs1 hs2`. Conclude with `HasSum.mul (f := fun k : ℕ => f q.asIdeal ^ k) (g := fun b : {a : NZIdeal E | Smooth S a.1} => f b.1.1) hgeo ih' h3`. Establish `hne : ∀ (k : ℕ) (b : {a : NZIdeal E | Smooth S a.1}), q.asIdeal ^ k * b.1.1 ≠ ⊥`.
+
+Introduce `k b`. Conclude with `mul_ne_zero (pow_ne_zero _ q.ne_bot) b.1.2`. Set `e : ℕ × {a : NZIdeal E | Smooth S a.1} → {a : NZIdeal E | Smooth (insert q S) a.1}` to `fun p => ⟨⟨q.asIdeal ^ p.1 * p.2.1.1, hne p.1 p.2⟩, smooth_insert_mul q p.1 p.2.2⟩`. Establish `hbij : Function.Bijective e`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨k, b⟩ ⟨k', b'⟩ h`. Establish `h' : q.asIdeal ^ k * b.1.1 = q.asIdeal ^ k' * b'.1.1` using `congrArg (fun x : {a : NZIdeal E | Smooth (insert q S) a.1} => x.1.1) h`. Take `⟨h1, h2⟩` from `smooth_mul_inj hq b.2 b'.2 h'`. Substitute `h1` using the available equality. Establish `hb : b = b'` using `Subtype.ext (Subtype.ext h2)`.
+
+Rewrite using `[hb]`. Introduce and unpack `⟨⟨a, ha⟩, hs⟩`. Take `⟨k, b, hb, hbs, rfl⟩` from `smooth_insert_decomp q ha hs`. Conclude with `⟨(k, ⟨⟨b, hb⟩, hbs⟩), rfl⟩`. Use `(Equiv.ofBijective e hbij).hasSum_iff.mp ?_` and prove the remaining obligations.
+
+Use `hprod using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `p`. Simplify using `only [Function.comp_apply, Equiv.ofBijective_apply, e]`. Rewrite using `[hmul, euler_fin_pow f hf1 hmul]`.
+-/
 theorem euler_finite {E : Type} [Field E] [NumberField E] (f : Ideal (𝓞 E) → ℂ) (hf1 : f 1 = 1)
     (hmul : ∀ a b : Ideal (𝓞 E), f (a * b) = f a * f b)
     (hsum : Summable (fun a : NZIdeal E => ‖f a.1‖)) (hlt : ∀ q : Prm E, ‖f q.asIdeal‖ < 1)

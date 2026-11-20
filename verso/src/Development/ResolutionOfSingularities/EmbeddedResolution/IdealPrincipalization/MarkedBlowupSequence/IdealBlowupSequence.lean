@@ -31,16 +31,25 @@ variable {k : Type u} [Field k] {X : Scheme.{u}} {p : X ⟶ Spec (CommRingCat.of
 
 def structureMorphism (s : SmoothCenterBlowup p I E) : s.obj ⟶ Spec (CommRingCat.of k) := s.map ≫ p
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem structureMorphism_eq (s : SmoothCenterBlowup p I E) : s.structureMorphism = s.map ≫ p := rfl
 
 def exceptionalIdeal (s : SmoothCenterBlowup p I E) : s.obj.IdealSheafData :=
   Blowup.exceptionalIdeal s.map s.center
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem exceptionalIdeal_eq (s : SmoothCenterBlowup p I E) : s.exceptionalIdeal = s.center.comap s.map := rfl
 
 def boundary (s : SmoothCenterBlowup p I E) : List s.obj.IdealSheafData :=
   E.map (Blowup.strictTransform s.map s.center) ++ [s.exceptionalIdeal]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem boundary_eq (s : SmoothCenterBlowup p I E) :
     s.boundary = E.map (Blowup.strictTransform s.map s.center) ++ [s.exceptionalIdeal] := rfl
 
@@ -77,13 +86,22 @@ def structureMorphism (s : IdealBlowupSequence p I E) (i : ℕ) :
     s.toSequenceOfBlowups.schemeAt i ⟶ Spec (CommRingCat.of k) :=
   s.toSequenceOfBlowups.projectionToBase i ≫ p
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem structureMorphism_def (s : IdealBlowupSequence p I E) (i : ℕ) :
     s.structureMorphism i = s.toSequenceOfBlowups.projectionToBase i ≫ p := rfl
 
+/- English proof (translation)
+The claim follows from `s.center_smooth i h`.
+-/
 theorem smooth_center_subschemeι (s : IdealBlowupSequence p I E) (i : ℕ) (h : i < s.toSequenceOfBlowups.length) :
     AlgebraicGeometry.Smooth ((s.toSequenceOfBlowups.center i).subschemeι ≫ s.structureMorphism i) :=
   s.center_smooth i h
 
+/- English proof (translation)
+The claim follows from `s.center_snc i h`.
+-/
 theorem hasStrictNormalCrossingsWith_center (s : IdealBlowupSequence p I E) (i : ℕ) (h : i < s.toSequenceOfBlowups.length) :
     HasStrictNormalCrossingsWith (s.structureMorphism i) (s.toSequenceOfBlowups.center i) (s.boundary i) :=
   s.center_snc i h
@@ -91,9 +109,15 @@ theorem hasStrictNormalCrossingsWith_center (s : IdealBlowupSequence p I E) (i :
 def exceptionalIdeal (s : IdealBlowupSequence p I E) (i : ℕ) : (s.toSequenceOfBlowups.schemeAt (i + 1)).IdealSheafData :=
   Blowup.exceptionalIdeal (s.toSequenceOfBlowups.transitionMapSucc i) (s.toSequenceOfBlowups.center i)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem exceptionalIdeal_eq (s : IdealBlowupSequence p I E) (i : ℕ) :
     s.exceptionalIdeal i = (s.toSequenceOfBlowups.center i).comap (s.toSequenceOfBlowups.transitionMapSucc i) := rfl
 
+/- English proof (translation)
+The claim follows from `s.boundary_succ i h`.
+-/
 theorem boundary_succ_eq_map_strictTransform_append (s : IdealBlowupSequence p I E) (i : ℕ) (h : i < s.toSequenceOfBlowups.length) :
     s.boundary (i + 1) =
       (s.boundary i).map
@@ -105,6 +129,9 @@ def lastIdeal (s : IdealBlowupSequence p I E) :
     (s.toSequenceOfBlowups.schemeAt s.toSequenceOfBlowups.length).IdealSheafData :=
   s.ideal s.toSequenceOfBlowups.length
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lastIdeal_eq (s : IdealBlowupSequence p I E) :
     s.lastIdeal = s.ideal s.toSequenceOfBlowups.length := rfl
 
@@ -112,6 +139,9 @@ def lastBoundary (s : IdealBlowupSequence p I E) :
     List (s.toSequenceOfBlowups.schemeAt s.toSequenceOfBlowups.length).IdealSheafData :=
   s.boundary s.toSequenceOfBlowups.length
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lastBoundary_eq (s : IdealBlowupSequence p I E) :
     s.lastBoundary = s.boundary s.toSequenceOfBlowups.length := rfl
 

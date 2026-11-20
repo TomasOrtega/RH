@@ -9,6 +9,23 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.TopForm
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `X n z hX`. Use `set S : Set X := closure ({z} : Set X) with hS`. Establish `hle : topologicalKrullDim S ≤ n` using `hX ▸ topologicalKrullDim_subspace_le X S`. Establish `hzS : z ∈ S` using `subset_closure rfl`. Use `haveI : Nonempty S := ⟨⟨z, hzS⟩⟩`.
+
+Establish `h0 : (0 : WithBot ℕ∞) ≤ topologicalKrullDim S` using `Order.krullDim_nonneg_iff.mpr ⟨⟨closure {(⟨z, hzS⟩ : S)}, isIrreducible_singleton.closure, isClosed_closure⟩⟩`. Choose the witnesses or unpack the hypotheses as in `⟨e, he⟩ : ∃ e : ℕ, topologicalKrullDim S = e := by`. Generalize the expression as in `topologicalKrullDim S = d at hle h0 ⊢`. Proceed by induction on `d using WithBot.recBotCoe with`. Consider the case `bot => exact absurd h0 (by simp)`.
+
+Consider the case `coe d`. Proceed by induction on `d using ENat.recTopCoe with`. Consider the case `top`. Establish `h' : ((⊤ : ℕ∞) : WithBot ℕ∞) ≤ ((n : ℕ∞) : WithBot ℕ∞)` using `hle`. Conclude with `absurd (WithBot.coe_le_coe.mp h') (by simp)`.
+
+Consider the case `coe m => exact ⟨m, rfl⟩`. Use `⟨e, ?_, he, ?_⟩` and prove the remaining obligations. Rewrite `hle` using `[he]`. Conclude with `hle` after adjusting the coercions. Introduce `x hzx hxz`.
+
+Establish `hxS : x ∈ S` using `specializes_iff_mem_closure.mp hzx`. Set `x' : S` to `⟨x, hxS⟩`. Set `z' : S` to `⟨z, hzS⟩`. Establish `hsp : z' ⤳ x'` using `(Topology.IsInducing.subtypeVal.specializes_iff).mp hzx`. Establish `hns : ¬ x' ⤳ z'` using `fun h => hxz (congrArg Subtype.val (h.antisymm hsp).eq)`.
+
+Set `A : IrreducibleCloseds S` to `⟨closure {x'}, isIrreducible_singleton.closure, isClosed_closure⟩`. Set `B : IrreducibleCloseds S` to `⟨closure {z'}, isIrreducible_singleton.closure, isClosed_closure⟩`. Establish `hAB : A < B`. Use `lt_of_le_of_ne ?_ ?_` and prove the remaining obligations. Use `show closure {x'} ⊆ closure {z'}`.
+
+Conclude with `specializes_iff_closure_subset.mp hsp`. Introduce `h`. Apply `hns` to reduce the goal to its premises. Establish `: closure ({x'} : Set S) = closure {z'}` using `congrArg (fun C : IrreducibleCloseds S => (C : Set S)) h`. Conclude with `specializes_iff_closure_subset.mpr this.symm.subset`.
+
+Establish `h1 : (1 : WithBot ℕ∞) ≤ topologicalKrullDim S` using `Order.one_le_krullDim_iff.mpr ⟨A, B, hAB⟩`. Rewrite `h1` using `[he]`. Conclude with `h1` after adjusting the coercions.
+-/
 theorem closure_point_topologicalKrullDim : ∀ (X : Scheme.{0}) (n : ℕ) (z : X), topologicalKrullDim X = n → ∃ e : ℕ, e ≤ n ∧ topologicalKrullDim (closure ({z} : Set X)) = e ∧ ∀ x, z ⤳ x → x ≠ z → 1 ≤ e := by
   intro X n z hX
   set S : Set X := closure ({z} : Set X) with hS

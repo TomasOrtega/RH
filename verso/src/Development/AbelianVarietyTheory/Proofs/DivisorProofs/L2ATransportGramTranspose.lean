@@ -20,6 +20,9 @@ noncomputable section
 
 namespace GlobalTheory.WeilL2Transport
 
+/- English proof (translation)
+Introduce `D ψ hψ S T χS χT hS hT rS rT JA JB ξ hA hB κ _ co hrat ω hω om hom`. Use `GlobalTheory.WeilL2Isometry.l2A_eq_of_isUnitaryOn D.host.F κ om ?_ (GlobalTheory.T.transportedWeilDatum_isUnitary_adelicSchwartz D ψ hψ S T χS χT hS hT rS rT JA JB ξ hA hB κ co hrat ω hω om hom)` and prove the remaining obligations. Introduce and unpack `⟨a, b⟩ Φ hΦ`. Take `⟨g, h, hh, hg⟩` from `GlobalTheory.T.unitaryPair_partner_inverse_transpose D S T JA JB ξ hA hB a b`. Conclude with `(hom a b g h hh hg Φ hΦ).1`.
+-/
 theorem l2A_transport : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (χS χT : (AE D)ˣ →* Circle), IsHeckeChar D χS → IsHeckeChar D χT →
       ResEta D χS S.rank → ResEta D χT T.rank →

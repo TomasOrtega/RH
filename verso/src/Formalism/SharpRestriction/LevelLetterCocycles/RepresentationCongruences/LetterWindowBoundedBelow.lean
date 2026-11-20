@@ -21,6 +21,13 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {LL O : Type} [Field LL] [Algebra Qp LL] [TopologicalSpace LL] [CommRing O] [Algebra O LL]
     {v : AddValuation LL (WithTop ℚ)} {n : ℕ} (W : LocWach PD LL O v n)
 
+/- English proof (translation)
+Consider the cases of `ty with`. Consider the case `thin => exact ⟨-(G₁ : ℤ), fun x hx => hx.1⟩`. Consider the case `up b`. Use `⟨-(η₁ : ℤ), fun x hx => ?_⟩` and prove the remaining obligations. Break down `hx with hx | hx` into its components or cases.
+
+Use `hx.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `hx.1`. Consider the case `down b`. Use `⟨-(b : ℤ) - S₁ - η₁, fun x hx => ?_⟩` and prove the remaining obligations.
+
+Break down `hx with hx | hx` into its components or cases. Use `hx.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `hx.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem letter_window_bounded_below (ty : Formalism.MainNotions.LocalTheoryWindows.LT) (G₁ S₁ η₁ : ℕ) :
     ∃ U : ℤ, ∀ x ∈ ty.win G₁ S₁ η₁, U ≤ x := by
   cases ty with
@@ -36,6 +43,17 @@ theorem letter_window_bounded_below (ty : Formalism.MainNotions.LocalTheoryWindo
     · have := hx.1; omega
     · have := hx.1; omega
 
+/- English proof (translation)
+Introduce `hCA h5 A hA c hc e hje hel T hT d b sol hhor g hg hyp`. Establish `hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W` using `(Formalism.MainNotions.LiftingTheory.uniformizer_ring_and_module_clauses W hP9 hCA W.one (Formalism.MainNotions.LiftingTheory.gen_one_crys W)).1`. Establish `: NeZero n` using `⟨by`. Rewrite using `[W.n_eq]`. Use `PD.finK₀` as an intermediate fact.
+
+Conclude with `Module.finrank_pos.ne'⟩`. Establish `hS` using `Formalism.MainNotions.UnusedSlot80.KF.psStable_of W hR`. Establish `hC` using `Formalism.MainNotions.UnusedSlot80.KF.psCoprime_of W hR`. Take `⟨t, htΔ, hγπ⟩` from `Formalism.MainNotions.LiftingTheory.gamma_uniformizer_eq_mul_unit' W hR`. Establish `hP : ∃ u ∈ W.AΔ, W.γA W.gam W.π₀ = W.π₀ * u` using `⟨_, W.AΔ.add_mem (W.AΔ.algebraMap_mem _) (W.AΔ.mul_mem hR.1 htΔ), hγπ⟩`.
+
+Take `⟨h, hγ, hhFr, hlev⟩` from `hyp`. Use `gamma_lift_along_arc W hinj hArc hR hS hP hCA h5 A hA c hc e hje hel T hT d b sol hhor g hg ⟨h, ⟨hhFr, ?_⟩, hγ⟩` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos e with h0 | hpos` into its components or cases. Substitute `h0` using the available equality. Use `⟨0, d, h, fun i => Pi.single i 1, fun _ _ => 0, fun i => ⟨?_, fun s hs => absurd hs (Nat.not_lt_zero s)⟩, fun k => ?_⟩` and prove the remaining obligations.
+
+Use `hhFr i` as an intermediate fact. Simplify `this` using `[InId, abelian₂]`. Rewrite using `[Finset.sum_eq_single k (fun i _ hik => by simp [hik.symm]) (by simp)]`. Simplify using `[lE]`. Use `section_in_ideal_of_levels W hR hC T _ e hpos b h hlev fun t' ht' => ?_` and prove the remaining obligations.
+
+Take `⟨U, hU⟩` from `letter_window_bounded_below (A.ty ((c - ((A.len c : ℕ) : ZMod n) + (e : ZMod n)) - (t' : ZMod n))) A.G₀ A.S A.η`. Conclude with `⟨U, fun u hu c₀ => (hFL hCA h5 A hA c hc e hje hel T hT d b sol hhor c₀ t' ht').1 u fun x hx => hu.trans (hU x hx)⟩`.
+-/
 theorem arc_gamma_lift [IsDomain O] [FiniteDimensional Qp LL]
     (hinj : Function.Injective (algebraMap O LL)) (hArc : ArcCore W) (hP9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W)
     (hFL : Formalism.MainNotions.N.FrobeniusPowerSeries.ArcFilLowCore W) : Formalism.MainNotions.N.FrobeniusPowerSeries.ArcGamLiftCore W := by
@@ -74,6 +92,9 @@ section Record
 
 variable (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
 
+/- English proof (translation)
+Introduce `hCA h5`. Establish `hpl : ((D.loc l).PD K).p = l` using `(D.loc l).PD_p K`. Establish `h5' : 5 ≤ l` using `hpl ▸ h5`. Establish `hFD : FiniteDimensional ℚ_[l] ↥LL.1` using `LL.2`. Conclude with `arc_gamma_lift _ Subtype.val_injective (hU.a12 l K LL hG hK h5').1 (hU.p9 l K 1 LL hG) hFL hCA h5`.
+-/
 theorem arc_gamma_lift_at {CR CA CB CK : ℝ} (hU : AdmBoundsB D HW F Cm CR CA CB CK)
     (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (hG : Good K 1 LL) (hK : CaseA K LL)
     (hFL : Formalism.MainNotions.N.FrobeniusPowerSeries.ArcFilLowCore ((HW l).W K 1 LL hG)) :

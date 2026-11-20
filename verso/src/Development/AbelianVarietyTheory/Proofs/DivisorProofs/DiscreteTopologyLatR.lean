@@ -25,6 +25,9 @@ def glTens (k : ℕ) : GL (Fin k) (AF F ⊗[F] E) ≃ₜ* GlobalTheory.CuspRep.G
   continuous_toFun := Continuous.units_map _ (continuous_id.matrix_map (GlobalTheory.TateConv.continuous_tens F E))
   continuous_invFun := Continuous.units_map _ (continuous_id.matrix_map (GlobalTheory.TateConv.continuous_tens_symm F E))
 
+/- English proof (translation)
+Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `GlobalTheory.TateConv.tens F E ((1 : AF F) ⊗ₜ[F] (γ i j)) = algebraMap E _ (γ i j)`. Rewrite using `[GlobalTheory.TateConv.tens, adeleTensorAlgEquivLeft_tmul, map_one, mul_one]`.
+-/
 theorem glTens_bc (k : ℕ) (γ : GL (Fin k) E) :
     glTens F E k (bc (inclR (F := F) (AF F)) γ) = GlobalTheory.CuspRep.ratGL E k γ := by
   ext i j
@@ -40,19 +43,36 @@ def latR (k : ℕ) : Subgroup (GL (Fin k) (AF F ⊗[F] E)) :=
 
 variable {F E}
 
+/- English proof (translation)
+The claim follows from `(glTens F E k).apply_symm_apply _`.
+-/
 theorem glTens_cR (k : ℕ) (t : ℝ) : glTens F E k (cR F E k t) = GlobalTheory.UnitaryBC.splitCentre E k t :=
   (glTens F E k).apply_symm_apply _
 
+/- English proof (translation)
+The claim follows from `(glTens F E k).symm.continuous.comp GlobalTheory.OneRep.SplitTwist.continuous_splitCentre`.
+-/
 theorem continuous_cR (k : ℕ) : Continuous (cR F E k) :=
   (glTens F E k).symm.continuous.comp GlobalTheory.OneRep.SplitTwist.continuous_splitCentre
 
+/- English proof (translation)
+Rewrite using `[cR, cR, cR, splitCentre_add, map_mul]`.
+-/
 theorem cR_add (k : ℕ) (x y : ℝ) : cR F E k (x + y) = cR F E k x * cR F E k y := by
   rw [cR, cR, cR, splitCentre_add, map_mul]
 
+/- English proof (translation)
+Apply `(glTens F E k).injective` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, glTens_cR, splitCentre_comm]`.
+-/
 theorem cR_comm (k : ℕ) (t : ℝ) (g : GL (Fin k) (AF F ⊗[F] E)) : cR F E k t * g = g * cR F E k t := by
   apply (glTens F E k).injective
   rw [map_mul, map_mul, glTens_cR, splitCentre_comm]
 
+/- English proof (translation)
+Use `sup_le ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨γ, rfl⟩ show glTens F E k (bc (inclR (F := F) (AF F)) γ) ∈ GlobalTheory.UnitaryBC.latticeGL E k`. Rewrite using `[glTens_bc]`. Conclude with `ratGL_mem_latticeGL γ`. Rewrite using `[Subgroup.zpowers_le] show glTens F E k (cR F E k 1) ∈ GlobalTheory.UnitaryBC.latticeGL E k`.
+
+Rewrite using `[glTens_cR]`. Simplify using `using zpow_mem_latticeGL (E := E) (a := k) 1`.
+-/
 theorem latR_le (k : ℕ) : latR F E k ≤ (GlobalTheory.UnitaryBC.latticeGL E k).comap (glTens F E k).toMulEquiv.toMonoidHom := by
   refine sup_le ?_ ?_
   · rintro _ ⟨γ, rfl⟩

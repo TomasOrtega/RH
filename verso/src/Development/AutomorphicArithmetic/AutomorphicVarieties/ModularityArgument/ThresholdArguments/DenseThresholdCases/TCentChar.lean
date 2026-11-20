@@ -13,9 +13,15 @@ namespace UpperTheory.V.Sd.Wc.CentralCharacter
 section Gen
 variable {K V : Type} [Group K] [AddCommGroup V] [Module ℂ V]
 private def orb (κ : Representation ℂ K V) (x : V) : (K →₀ ℂ) →ₗ[ℂ] V := Finsupp.linearCombination ℂ fun k => κ k x
+/- English proof (translation)
+Simplify using `only [orb, Finsupp.linearCombination_apply, Finsupp.sum, map_sum, map_smul, hT]`.
+-/
 private theorem orb_comm (κ : Representation ℂ K V) (T : Module.End ℂ V) (hT : ∀ k x, T (κ k x) = κ k (T x)) (x : V)
     (c : K →₀ ℂ) : orb κ (T x) c = T (orb κ x c) := by
   simp only [orb, Finsupp.linearCombination_apply, Finsupp.sum, map_sum, map_smul, hT]
+/- English proof (translation)
+Proceed by induction on `c using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add c c' h h' => rw [Finsupp.mapDomain_add, map_add, map_add, map_add, h, h']`. Consider the case `single a b => simp [orb]`.
+-/
 private theorem orb_act (κ : Representation ℂ K V) (x : V) (k : K) (c : K →₀ ℂ) :
     orb κ x (c.mapDomain (k * ·)) = κ k (orb κ x c) := by
   induction c using Finsupp.induction_linear with
@@ -32,6 +38,17 @@ private def annPart (κ : Representation ℂ K V) (φ : V) : Submodule ℂ V whe
   smul_mem' := fun a x hx c hc => by
     have := orb_comm κ (a • (1 : Module.End ℂ V)) (fun k x => by simp) x c
     simpa [hx c hc] using this
+/- English proof (translation)
+Establish `hO : ∀ k, ∀ y ∈ LinearMap.range (orb κ φ), κ k y ∈ LinearMap.range (orb κ φ)`. Introduce and unpack `k _ ⟨c, rfl⟩`. Conclude with `⟨_, orb_act κ φ k c⟩`. Use `haveI : FiniteDimensional ℂ (LinearMap.range (orb κ φ)) := by`. Rewrite using `[orb, Finsupp.range_linearCombination]`.
+
+Conclude with `hφ`. Set `b` to `Module.finBasis ℂ (LinearMap.range (orb κ φ))`. Take `⟨s, hs⟩` from `(orb κ φ).rangeRestrict.exists_rightInverse_of_surjective (LinearMap.range_rangeRestrict _)`. Use `⟨_, (LinearMap.toMatrixAlgEquiv b).toMonoidHom.comp (sub κ _ hO), fun x hx => ?_⟩` and prove the remaining obligations. Establish `key : ∀ c, orb κ x (s ((orb κ φ).rangeRestrict c)) = orb κ x c` using `fun c => by`.
+
+Rewrite using `[← sub_eq_zero, ← map_sub]`. Use `hx _ ?_` and prove the remaining obligations. Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `congrArg Subtype.val (LinearMap.congr_fun hs ((orb κ φ).rangeRestrict c))`. Use `⟨orb κ x ∘ₗ s ∘ₗ b.equivFun.symm.toLinearMap, fun k v => ?_, ⟨b.equivFun ((orb κ φ).rangeRestrict (Finsupp.single 1 1)), ?_⟩, fun v => ⟨_, rfl⟩⟩` and prove the remaining obligations.
+
+Take `⟨y, rfl⟩` from `b.equivFun.surjective v`. Take `⟨c, rfl⟩` from `(orb κ φ).surjective_rangeRestrict y`. Establish `h1 : (LinearMap.toMatrixAlgEquiv b).toMonoidHom.comp (sub κ _ hO) k *ᵥ b.equivFun ((orb κ φ).rangeRestrict c) = b.equivFun ((orb κ φ).rangeRestrict (c.mapDomain (k * ·)))`. Establish `h2 : (orb κ φ).rangeRestrict (c.mapDomain (k * ·)) = sub κ _ hO k ((orb κ φ).rangeRestrict c)` using `Subtype.ext (orb_act κ φ k c)`. Rewrite using `[h2]`.
+
+Conclude with `LinearMap.toMatrix_mulVec_repr b b _ _`. Rewrite using `[h1]`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply, key, orb_act]`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply, key]`. Simplify using `[orb]`.
+-/
 private theorem exists_type (κ : Representation ℂ K V) (φ : V)
     (hφ : FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k => κ k φ))) :
     ∃ (d : ℕ) (ξ : K →* Matrix (Fin d) (Fin d) ℂ), ∀ x ∈ annPart κ φ, ∃ f : (Fin d → ℂ) →ₗ[ℂ] V,
@@ -67,13 +84,22 @@ end Gen
 section Scal
 variable {R S : Type} [CommRing R] [CommRing S]
 private abbrev sc (y : Rˣ) : GL (Fin 2) R := GeneralLinearGroup.scalar (Fin 2) y
+/- English proof (translation)
+Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin 2) (Fin 2) S) i j - s ((1 : Matrix (Fin 2) (Fin 2) R) i j) + s (sc y i j) = _`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [corner, GeneralLinearGroup.scalar]`.
+-/
 private theorem corner_scalar (s : R →ₙ+* S) (y : Rˣ) : cornerGL 2 s (sc y) = sc (Units.map (corner s) y) := by
   ext i j
   change (1 : Matrix (Fin 2) (Fin 2) S) i j - s ((1 : Matrix (Fin 2) (Fin 2) R) i j) + s (sc y i j) = _
   fin_cases i <;> fin_cases j <;> simp [corner, GeneralLinearGroup.scalar]
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [GeneralLinearGroup.scalar, Matrix.mul_apply, Fin.sum_univ_succ, mul_comm]`.
+-/
 private theorem sc_comm (y : Rˣ) (g : GL (Fin 2) R) : g * sc y = sc y * g := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [GeneralLinearGroup.scalar, Matrix.mul_apply, Fin.sum_univ_succ, mul_comm]
+/- English proof (translation)
+Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(continuous_pi fun _ => Units.continuous_val : Continuous fun (y : Rˣ) (_ : Fin 2) => (y : R)).matrix_diagonal`. Conclude with `(continuous_pi fun _ => Units.continuous_coe_inv : Continuous fun (y : Rˣ) (_ : Fin 2) => ((y⁻¹ : Rˣ) : R)).matrix_diagonal`.
+-/
 private theorem continuous_sc [TopologicalSpace R] : Continuous (sc : Rˣ → GL (Fin 2) R) := by
   refine Units.continuous_iff.2 ⟨?_, ?_⟩
   · exact (continuous_pi fun _ => Units.continuous_val : Continuous fun (y : Rˣ) (_ : Fin 2) => (y : R)).matrix_diagonal
@@ -83,12 +109,38 @@ end Scal
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 private def cptPart (π : CuspSub F 2) : Representation ℂ (Kinf F 2) π.V :=
   sub (cptRep F 2) π.V fun k => π.stable (.cpt k)
+/- English proof (translation)
+Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(rt F 2 (finGL F 2 g) * rt F 2 (infGL F 2 (Unitary.toUnits k))) y.1 = (rt F 2 (infGL F 2 (Unitary.toUnits k)) * rt F 2 (finGL F 2 g)) y.1`. Rewrite using `[← map_mul, ← map_mul, infGL_comm]`.
+-/
 private theorem cpt_fin (π : CuspSub F 2) (k : Kinf F 2) (g : GL (Fin 2) (Af F)) (y : π.V) :
     π.finPart g (cptPart π k y) = cptPart π k (π.finPart g y) := by
   refine Subtype.ext ?_
   change (rt F 2 (finGL F 2 g) * rt F 2 (infGL F 2 (Unitary.toUnits k))) y.1 =
     (rt F 2 (infGL F 2 (Unitary.toUnits k)) * rt F 2 (finGL F 2 g)) y.1
   rw [← map_mul, ← map_mul, infGL_comm]
+/- English proof (translation)
+Take `⟨φ₀, hφ, h0⟩` from `(Submodule.ne_bot_iff _).1 π.ne_bot`. Use `set φ : π.V := ⟨φ₀, hφ⟩`. Establish `h0' : φ ≠ 0` using `fun e => h0 (congrArg Subtype.val e)`. Set `T : Module.End ℂ π.V` to `z.restrict hz`. Establish `hT : ∀ o x, T (π.op o x) = π.op o (T x)` using `fun o x => Subtype.ext (LinearMap.congr_fun (hc o).eq x.1)`.
+
+Set `L : Subgroup (GL (Fin 2) (Af F))` to `{ carrier := {k | π.finPart k φ = φ} one_mem' := by simp mul_mem' := fun {a b} ha hb => by`. Express the relevant statement in the definitionally equal form `π.finPart (a * b) φ = φ`. Rewrite using `[map_mul, Module.End.mul_apply, hb, ha]`. Use the proof step `inv_mem' := fun {a} ha => by`. Express the relevant statement in the definitionally equal form `π.finPart a⁻¹ φ = φ`.
+
+Use `conv_lhs => rw [← ha, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] }`. Set `X : Submodule ℂ π.V` to `⨅ k ∈ L, LinearMap.eqLocus (π.finPart k) LinearMap.id`. Establish `mem_fix : ∀ {x}, x ∈ X ↔ ∀ k ∈ L, π.finPart k x = x` using `fun {x} => by`. Simplify using `[X, Submodule.mem_iInf]`. Establish `hL : IsOpen (L : Set (GL (Fin 2) (Af F)))`.
+
+Use `(π.cusp φ₀ hφ).1.level using 1` and compare the differences between its conclusion and the goal. Use extensionality with `k`. Conclude with `Subtype.ext_iff`. Establish `hfd : FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k => cptPart π k φ))`. Use `(π.cusp φ₀ hφ).1.kfin` as an intermediate fact.
+
+Use `FiniteDimensional.of_injective ((π.V.subtype ∘ₗ Submodule.subtype _).codRestrict (Submodule.span ℂ (Set.range fun k => cptRep F 2 k φ₀)) fun v => ?_) fun v v' e => Subtype.ext (Subtype.ext (by have e' := congrArg Subtype.val e; exact e'))` and prove the remaining obligations. Use `Submodule.mem_comap.1 ((Submodule.span_le (p := Submodule.comap π.V.subtype _)).2 ?_ v.2)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Take `⟨d, ξ, hξ⟩` from `exists_type (cptPart π) φ hfd`.
+
+Set `U : Submodule ℂ π.V` to `annPart (cptPart π) φ ⊓ X`. Take `⟨W, hW, hWf⟩` from `h F 2 π L hL d ξ`. Establish `hfin : FiniteDimensional ℂ U`. Use `Submodule.finiteDimensional_of_le (S₂ := W) fun x hx => ?_` and prove the remaining obligations. Take `⟨f, hf, hx1, hf2⟩` from `hξ x hx.1`.
+
+Use `hWf f hf (fun k hk v => ?_) hx1` and prove the remaining obligations. Take `⟨c, hc⟩` from `hf2 v`. Rewrite using `[hc, ← orb_comm _ _ (fun k' x => cpt_fin π k' k x), mem_fix.1 hx.2 k hk]`. Establish `hst : ∀ x ∈ U, T x ∈ U` using `fun x hx => ⟨fun c hc => by`. Rewrite using `[orb_comm _ T (fun k x => hT (.cpt k) x), show orb (cptPart π) x c = 0 from hx.1 c hc, map_zero],`.
+
+Use the proof step `mem_fix.2 fun k hk => (hT (.fin k) x).symm.trans (congrArg T (mem_fix.1 hx.2 k hk))⟩`. Establish `hφU : φ ∈ U` using `⟨fun _ hc => hc, mem_fix.2 fun k hk => hk⟩`. Establish `: Nontrivial U` using `⟨⟨φ, hφU⟩, 0, fun e => h0' (congrArg Subtype.val e)⟩`. Take `⟨c, hc'⟩` from `Module.End.exists_eigenvalue (T.restrict hst)`. Take `⟨v, hv⟩` from `hc'.exists_hasEigenvector`.
+
+Establish `hv1 : z v.1.1 = c • v.1.1` using `congrArg (fun x : U => x.1.1) hv.apply_eq_smul`. Use `⟨c, fun ψ hψ => ?_⟩` and prove the remaining obligations. Break down `π.irred (π.V ⊓ z.eigenspace c) inf_le_left (fun o x hx => ⟨π.stable o x hx.1, by` into its components or cases. Establish `h1 : z x = c • x` using `Module.End.mem_eigenspace_iff.1 hx.2`. Use `Module.End.mem_eigenspace_iff.2 ?_` and prove the remaining obligations.
+
+Rewrite using `[← map_smul, ← h1]`. Conclude with `LinearMap.congr_fun (hc o).eq x⟩) with h | h`. Establish `: v.1.1 ∈ π.V ⊓ z.eigenspace c` using `⟨v.1.2, Module.End.mem_eigenspace_iff.2 hv1⟩`. Rewrite `this` using `[h]`. Conclude with `absurd (Subtype.ext (Subtype.ext ((Submodule.mem_bot ℂ).1 this))) hv.2`.
+
+Rewrite `hψ` using `[← h]`. Conclude with `Module.End.mem_eigenspace_iff.1 hψ.2`.
+-/
 private theorem schur (h : UpperTheory.V.Published.AdmissibleReal) (π : CuspSub F 2) (z : Module.End ℂ (Sm F 2))
     (hz : ∀ φ ∈ π.V, z φ ∈ π.V) (hc : ∀ o, Commute z (TR.act o)) : ∃ c : ℂ, ∀ φ ∈ π.V, z φ = c • φ := by
   obtain ⟨φ₀, hφ, h0⟩ := (Submodule.ne_bot_iff _).1 π.ne_bot
@@ -148,16 +200,33 @@ private theorem schur (h : UpperTheory.V.Published.AdmissibleReal) (π : CuspSub
     exact absurd (Subtype.ext (Subtype.ext ((Submodule.mem_bot ℂ).1 this))) hv.2
   · rw [← h] at hψ
     exact Module.End.mem_eigenspace_iff.1 hψ.2
+/- English proof (translation)
+The claim follows from `corner_scalar _ u`.
+-/
 private theorem inf_sc (u : (Rinf F)ˣ) : infGL F 2 (sc u) = sc (infId F u) := corner_scalar _ u
 omit [IsTotallyReal F] in
+/- English proof (translation)
+The claim follows from `corner_scalar _ u`.
+-/
 private theorem fin_sc (u : (Af F)ˣ) : finGL F 2 (sc u) = sc (finId F u) := corner_scalar _ u
+/- English proof (translation)
+The claim follows from `(Commute.symm (sc_comm z g)).map (rt F 2)`.
+-/
 private theorem commute_rt (z : Ideles F) (g : GA F 2) : Commute (rt F 2 (sc z)) (rt F 2 g) :=
   (Commute.symm (sc_comm z g)).map (rt F 2)
+/- English proof (translation)
+Establish `h` using `Cen.rt_lie y (Matrix.scalar (Fin 2) z)`. Rewrite `h` using `[← (Matrix.scalar_commute z (fun _ => mul_comm _ _) y.val).eq, Units.mul_inv_cancel_right]`. Conclude with `h.symm`.
+-/
 private theorem lie_sc_rt (z : Rinf F) (y : GL (Fin 2) (Rinf F)) :
     Commute (lie F 2 (toL (Matrix.scalar (Fin 2) z))) (rt F 2 (infGL F 2 y)) := by
   have h := Cen.rt_lie y (Matrix.scalar (Fin 2) z)
   rw [← (Matrix.scalar_commute z (fun _ => mul_comm _ _) y.val).eq, Units.mul_inv_cancel_right] at h
   exact h.symm
+/- English proof (translation)
+Consider the cases of `o with`. Consider the case `fin k => exact lie_rt_fin _ k`. Consider the case `cpt k => exact lie_sc_rt z _`. Consider the case `lie X`. Establish `h` using `lie_comm (toL (Matrix.scalar (Fin 2) z)) X`.
+
+Establish `e : Matrix.of (toL (Matrix.scalar (Fin 2) z)) * Matrix.of X = Matrix.of X * Matrix.of (toL (Matrix.scalar (Fin 2) z))` using `(Matrix.scalar_commute z (fun _ => mul_comm _ _) (Matrix.of X)).eq`. Rewrite `h` using `[e, sub_self, sub_eq_zero]`. Conclude with `h`.
+-/
 private theorem lie_sc_act (z : Rinf F) (o : Op F 2) : Commute (lie F 2 (toL (Matrix.scalar (Fin 2) z))) (TR.act o) := by
   cases o with
   | fin k => exact lie_rt_fin _ k
@@ -169,11 +238,19 @@ private theorem lie_sc_act (z : Rinf F) (o : Op F 2) : Commute (lie F 2 (toL (Ma
     rw [e, sub_self, sub_eq_zero] at h
     exact h
 private def Scal (π : CuspSub F 2) (z : Ideles F) : Prop := ∃ c : ℂ, ∀ φ ∈ π.V, rt F 2 (sc z) φ = c • φ
+/- English proof (translation)
+Take `⟨c, hc⟩` from `h`. Take `⟨c', hc'⟩` from `h'`. Use `⟨c' * c, fun φ hφ => ?_⟩` and prove the remaining obligations. Rewrite using `[sc, map_mul, map_mul, Module.End.mul_apply, hc' φ hφ, map_smul, hc φ hφ, smul_smul]`.
+-/
 private theorem Scal.mul {π : CuspSub F 2} {z z' : Ideles F} (h : Scal π z) (h' : Scal π z') : Scal π (z * z') := by
   obtain ⟨c, hc⟩ := h
   obtain ⟨c', hc'⟩ := h'
   refine ⟨c' * c, fun φ hφ => ?_⟩
   rw [sc, map_mul, map_mul, Module.End.mul_apply, hc' φ hφ, map_smul, hc φ hφ, smul_smul]
+/- English proof (translation)
+Use `schur h π _ (fun φ hφ => ?_) fun o => ?_` and prove the remaining obligations. Rewrite using `[← fin_sc]`. Conclude with `π.stable (.fin _) φ hφ`. Consider the cases of `o with`. Consider the case `fin k => exact commute_rt _ _`.
+
+Consider the case `cpt k => exact commute_rt _ _`. Consider the case `lie X => rw [← fin_sc]`. Conclude with `(lie_rt_fin X _).symm`.
+-/
 private theorem scal_fin (h : UpperTheory.V.Published.AdmissibleReal) (π : CuspSub F 2) (u : (Af F)ˣ) : Scal π (finId F u) := by
   refine schur h π _ (fun φ hφ => ?_) fun o => ?_
   · rw [← fin_sc]; exact π.stable (.fin _) φ hφ
@@ -181,6 +258,15 @@ private theorem scal_fin (h : UpperTheory.V.Published.AdmissibleReal) (π : Cusp
     | fin k => exact commute_rt _ _
     | cpt k => exact commute_rt _ _
     | lie X => rw [← fin_sc]; exact (lie_rt_fin X _).symm
+/- English proof (translation)
+Establish `hs' : (s : Rinf F) * s = 1` using `congrArg Units.val hs`. Establish `hk : (sc s).val ∈ Matrix.unitaryGroup (Fin 2) (Rinf F)`. Rewrite using `[Matrix.mem_unitaryGroup_iff]`. Use extensionality with `i j : 1`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [GeneralLinearGroup.scalar, Matrix.mul_apply, Fin.sum_univ_succ, hs']`.
+
+Establish `e : Unitary.toUnits (⟨_, hk⟩ : Kinf F 2) = sc s` using `Units.ext rfl`. Use `schur h π _ (fun φ hφ => ?_) fun o => ?_` and prove the remaining obligations. Rewrite using `[← inf_sc, ← e]`. Conclude with `π.stable (.cpt _) φ hφ`. Consider the cases of `o with`.
+
+Consider the case `fin k => exact commute_rt _ _`. Consider the case `cpt k => exact commute_rt _ _`. Consider the case `lie X`. Rewrite using `[← inf_sc]`. Establish `h` using `Cen.rt_lie (sc s) (Matrix.of X)`.
+
+Establish `e2 : (sc s).val * Matrix.of X = Matrix.of X * (sc s).val` using `(Matrix.scalar_commute (s : Rinf F) (fun _ => mul_comm _ _) (Matrix.of X)).eq`. Rewrite `h` using `[e2, Units.mul_inv_cancel_right]`. Conclude with `h`.
+-/
 private theorem scal_sign (h : UpperTheory.V.Published.AdmissibleReal) (π : CuspSub F 2) (s : (Rinf F)ˣ) (hs : s * s = 1) :
     Scal π (infId F s) := by
   have hs' : (s : Rinf F) * s = 1 := congrArg Units.val hs
@@ -201,6 +287,19 @@ private theorem scal_sign (h : UpperTheory.V.Published.AdmissibleReal) (π : Cus
         (Matrix.scalar_commute (s : Rinf F) (fun _ => mul_comm _ _) (Matrix.of X)).eq
       rw [e2, Units.mul_inv_cancel_right] at h
       exact h
+/- English proof (translation)
+Take `⟨c, hc⟩` from `schur h π _ (π.stable (.lie (toL (Matrix.scalar (Fin 2) z)))) (lie_sc_act z)`. Use `⟨Complex.exp c, fun φ hφ => Subtype.ext (funext fun g => ?_)⟩` and prove the remaining obligations. Set `f : ℝ → ℂ` to `fun t => φ.1 (g * infGL F 2 (sc (expU (t • z))))`. Establish `hf : ∀ t, HasDerivAt f (c * f t) t` using `fun t => by`. Establish `h1` using `hasDerivAt_curve φ (g * infGL F 2 (sc (expU (t • z)))) (fun t => sc (expU (t • z))) (toL (Matrix.scalar (Fin 2) z)) (by simp [expU_zero]) (by`.
+
+Use `hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun j => hasDerivAt_pi.2 fun v => ?_` and prove the remaining obligations. Distinguish the cases in `e : i = j`. Substitute `e` using the available equality. Use `((hasDerivAt_id (0 : ℝ)).mul_const (z v)).exp` as an intermediate fact. Simplify using `using this`.
+
+Simplify `hasDerivAt_const (0 : ℝ) (0 : ℝ))` using `[Matrix.diagonal_apply, e]`. Establish `h2 : lieD (toL (Matrix.scalar (Fin 2) z)) φ.1 (g * infGL F 2 (sc (expU (t • z)))) = c * f t` using `congrArg (fun ψ : Sm F 2 => ψ.1 (g * infGL F 2 (sc (expU (t • z))))) (hc φ hφ)`. Rewrite `h1` using `[h2]`. Establish `h3 : (fun s : ℝ => φ.1 (g * infGL F 2 (sc (expU (t • z))) * infGL F 2 (sc (expU (s • z))))) = fun s => f (t + s)`. Use function extensionality and compare the values at `s`.
+
+Simplify using `only [f, add_smul, expU_add, map_mul, mul_assoc]`. Rewrite `h1` using `[h3]`. Establish `h4` using `HasDerivAt.comp_sub_const (f := fun s => f (t + s)) t t (by rw [sub_self]; exact h1)`. Simplify using `using h4`. Establish `hd : ∀ t : ℝ, HasDerivAt (fun t : ℝ => Complex.exp (-c * t) * f t) 0 t` using `fun t => by`.
+
+Use `(((hasDerivAt_id t).ofReal_comp.const_mul (-c)).cexp).mul (hf t)` as an intermediate fact. Establish `e : Complex.exp (-c * t) * (-c * ((1 : ℝ) : ℂ)) * f t + Complex.exp (-c * t) * (c * f t) = 0` using `by push_cast; ring`. Conclude with `e ▸ this`. Use `is_const_of_deriv_eq_zero (fun t => (hd t).differentiableAt) (fun t => (hd t).deriv) 1 0` as an intermediate fact. Simplify using `only [f, one_smul, zero_smul, expU_zero, map_one, mul_one, Complex.ofReal_one, Complex.ofReal_zero, mul_zero, Complex.exp_zero, one_mul, inf_sc] at this`.
+
+Express the relevant statement in the definitionally equal form `φ.1 (g * sc (infId F (expU z))) = Complex.exp c * φ.1 g`. Rewrite using `[← this, ← mul_assoc, ← Complex.exp_add]`. Simplify using the standard rewrite rules.
+-/
 private theorem scal_exp (h : UpperTheory.V.Published.AdmissibleReal) (π : CuspSub F 2) (z : Rinf F) :
     Scal π (infId F (expU z)) := by
   obtain ⟨c, hc⟩ := schur h π _ (π.stable (.lie (toL (Matrix.scalar (Fin 2) z)))) (lie_sc_act z)
@@ -236,6 +335,11 @@ private theorem scal_exp (h : UpperTheory.V.Published.AdmissibleReal) (π : Cusp
   change φ.1 (g * sc (infId F (expU z))) = Complex.exp c * φ.1 g
   rw [← this, ← mul_assoc, ← Complex.exp_add]
   simp
+/- English proof (translation)
+Establish `h : ∀ x, pInf F (sInf F x) = x` using `fun x => (infEq F).symm_apply_apply x`. Establish `h' : ∀ x, pInf F (sFin F x) = 0` using `fun x => map_zero (infEq F).symm`. Use `Units.ext (ad_ext ?_ ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = pInf F ((1 - sInf F 1 + sInf F (pInf F z)) * (1 - sFin F 1 + sFin F (pFin F z)))`. Simplify using `[h, h']`.
+
+Express the relevant statement in the definitionally equal form `_ = ((1 : Af F) - 0 + 0) * (1 - 1 + pFin F z)`. Simplify using the standard rewrite rules.
+-/
 private theorem decomp (z : Ideles F) :
     z = infId F (Units.map (pInf F).toMonoidHom z) * finId F (Units.map (pFin F).toMonoidHom z) := by
   have h : ∀ x, pInf F (sInf F x) = x := fun x => (infEq F).symm_apply_apply x
@@ -245,16 +349,43 @@ private theorem decomp (z : Ideles F) :
     simp [h, h']
   · change _ = ((1 : Af F) - 0 + 0) * (1 - 1 + pFin F z)
     simp
+/- English proof (translation)
+Rewrite using `[decomp z]`. Use `Scal.mul ?_ (scal_fin h π _)` and prove the remaining obligations. Take `⟨s, hs, e⟩` from `exists_sign_mul_expU (Units.map (pInf F).toMonoidHom z)`. Rewrite using `[e, map_mul]`. Conclude with `(scal_sign h π s hs).mul (scal_exp h π _)`.
+-/
 private theorem scal_all (h : UpperTheory.V.Published.AdmissibleReal) (π : CuspSub F 2) (z : Ideles F) : Scal π z := by
   rw [decomp z]
   refine Scal.mul ?_ (scal_fin h π _)
   obtain ⟨s, hs, e⟩ := exists_sign_mul_expU (Units.map (pInf F).toMonoidHom z)
   rw [e, map_mul]
   exact (scal_sign h π s hs).mul (scal_exp h π _)
+/- English proof (translation)
+The claim follows from `continuous_pi fun w => (InfinitePlace.Completion.isometryEquivRealOfIsReal (IsTotallyReal.isReal w)).continuous.comp ((continuous_apply w).comp continuous_fst)`.
+-/
 private theorem continuous_pInf : Continuous (pInf F) :=
   continuous_pi fun w =>
     (InfinitePlace.Completion.isometryEquivRealOfIsReal (IsTotallyReal.isReal w)).continuous.comp
       ((continuous_apply w).comp continuous_fst)
+/- English proof (translation)
+Use `choose c hc using scal_all h π`. Take `⟨φ, hφ, h0⟩` from `(Submodule.ne_bot_iff _).1 π.ne_bot`. Establish `hi` using `smul_left_injective ℂ h0`. Set `c' : Ideles F →* ℂ` to `{ toFun := c map_one' := hi (by`. Express the relevant statement in the definitionally equal form `c 1 • φ = (1 : ℂ) • φ`.
+
+Rewrite using `[← hc 1 φ hφ, sc, map_one, map_one, one_smul]`. Use the proof step `rfl)`. Use the proof step `map_mul' := fun z z' => hi (by`. Express the relevant statement in the definitionally equal form `c (z * z') • φ = (c z * c z') • φ`. Rewrite using `[← hc _ φ hφ, sc, map_mul, map_mul, Module.End.mul_apply, hc z' φ hφ, map_smul, hc z φ hφ, smul_smul, mul_comm]) }`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨g, hg⟩ : ∃ g, φ.1 g ≠ 0 := by`. Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Conclude with `h0 (Subtype.ext (funext hn))`. Establish `h1 : Continuous fun u : (Rinf F)ˣ => c' (infId F u)`.
+
+Establish `e : (fun u : (Rinf F)ˣ => c' (infId F u)) = fun u => chart φ.1 g (toL (sc u).val) / φ.1 g`. Use function extensionality and compare the values at `u`. Rewrite using `[chart_val, inf_sc, eq_div_iff hg]`. Conclude with `(congrArg (fun ψ : Sm F 2 => ψ.1 g) (hc _ φ hφ)).symm`. Rewrite using `[e]`.
+
+Establish `h3 : Continuous fun u : (Rinf F)ˣ => toL (sc u).val` using `(Units.continuous_val (M := Matrix (Fin 2) (Fin 2) (Rinf F))).comp continuous_sc`. Conclude with `((φ.2 g).continuousOn.comp_continuous h3 fun u => val_mem_invSet _).div_const _`. Establish `h2 : Continuous fun u : (Af F)ˣ => c' (finId F u)`. Use `continuous_of_continuousAt_one (c'.comp (finId F)) ?_` and prove the remaining obligations. Establish `ho` using `(π.cusp φ hφ).1.level.preimage (continuous_sc (R := Af F))`.
+
+Use `(continuousAt_const (y := (1 : ℂ))).congr ?_` and prove the remaining obligations. Use `filter_upwards [ho.mem_nhds (show finRep F 2 (sc 1) φ = φ by rw [sc, map_one, map_one]; rfl)] with u hu`. Use `hi ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(1 : ℂ) • φ = c (finId F u) • φ`. Rewrite using `[← hc _ φ hφ, ← fin_sc, one_smul]`.
+
+Conclude with `hu.symm`. Establish `h3 : Continuous c'`. Establish `e : (c' : Ideles F → ℂ) = fun z => c' (infId F (Units.map (pInf F).toMonoidHom z)) * c' (finId F (Units.map (pFin F).toMonoidHom z))`. Use function extensionality and compare the values at `z`. Rewrite using `[← map_mul, ← decomp]`.
+
+Rewrite using `[e]`. Conclude with `(h1.comp (Continuous.units_map _ continuous_pInf)).mul (h2.comp (Continuous.units_map _ continuous_snd))`. Use `⟨⟨c'.toHomUnits, Units.continuous_iff.2 ⟨h3, h3.comp continuous_inv⟩, fun k => Units.ext (hi ?_)⟩, hc⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `c (diagUnits F k) • φ = (1 : ℂ) • φ`. Rewrite using `[← hc _ φ hφ, one_smul]`.
+
+Use `Subtype.ext (funext fun x => ?_)` and prove the remaining obligations. Establish `e : sc (diagUnits F k) = ratGL F 2 (sc k)`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [GeneralLinearGroup.scalar, ratGL, diagUnits]`. Rewrite using `[rt_apply, sc_comm, e]`.
+
+Conclude with `(π.cusp φ hφ).1.left _ _`.
+-/
 private theorem main (h : UpperTheory.V.Published.AdmissibleReal) (π : CuspSub F 2) : ∃ ω : HChar F,
     ∀ (z : Ideles F), ∀ φ ∈ π.V, rt F 2 (sc z) φ = ((ω.1 z : ℂˣ) : ℂ) • φ := by
   choose c hc using scal_all h π
@@ -308,6 +439,11 @@ private theorem main (h : UpperTheory.V.Published.AdmissibleReal) (π : CuspSub 
   exact (π.cusp φ hφ).1.left _ _
 end UpperTheory.V.Sd.Wc.CentralCharacter
 open UpperTheory.V.Sd.Wc.CentralCharacter in
+/- English proof (translation)
+Introduce `P F _ _ _ π`. Take `⟨ω, hω⟩` from `main P.admR π`. Use `⟨ω, fun z φ hφ g => ?_, fun z x => Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[← sc_comm]`. Conclude with `congrArg (fun ψ : Sm F 2 => ψ.1 g) (hω z φ hφ)`.
+
+Use `hω (finId F z) x.1 x.2` as an intermediate fact. Rewrite `this` using `[← fin_sc]`. Conclude with `this`.
+-/
 theorem UpperTheory.V.Sd.Wc.centChar_alt :
     _root_.UpperTheory.V.Af.Hypotheses' → UpperTheory.V.Sd.Wc.CentChar := by
   intro P F _ _ _ π

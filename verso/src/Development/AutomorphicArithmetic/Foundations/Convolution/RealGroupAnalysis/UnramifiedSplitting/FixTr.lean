@@ -7,6 +7,13 @@ open UpperTheory.V.Af.Smo (Eig EigAt)
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.H
 open scoped Classical
 
+/- English proof (translation)
+Introduce `K _ _ v f d hd`. Establish `hl` using `(lcLaws K v).2.2.2.2.2.2 d`. Use `set x := Matrix.GeneralLinearGroup.map (cp v) d with hx`. Establish `hd' : x ∈ GlobalTheory.LFun.KGL v 2` using `hd`. Use `⟨fun hf g k hk => ?_, fun B hB g => ?_⟩` and prove the remaining obligations.
+
+Use `show f (g * lc v k * d) = f (g * d)`. Rewrite using `[mul_assoc, hl, ← mul_assoc, hf _ _ (mul_mem (mul_mem (inv_mem hd') hk) hd')]`. Establish `h` using `hB (g * d * lc v x⁻¹)`. Use `h using 2 with y` and compare the differences between its conclusion and the goal. Establish `h1` using `h.inv y x hd'`.
+
+Use `show f (g * lc v y * d) = f (g * d * lc v x⁻¹ * lc v y)`. Express the relevant statement in the definitionally equal form `f (g * d * lc v x⁻¹ * lc v (y * x)) = f (g * d * lc v x⁻¹ * lc v y) at h1`. Rewrite using `[← h1, mul_assoc g, hl, mul_assoc x⁻¹, map_mul]`. Simplify using `only [mul_assoc]`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.H.fixTr :
     ∀ (K : Type) [Field K] [NumberField K] (v : P K) (f : GL (Fin 2) (A K) → ℂ) (d : GL (Fin 2) (A K)), KAt v d →
       (Fix v f → Fix v fun g => f (g * d)) ∧ ∀ B, EigAt v B f → EigAt v B fun g => f (g * d) := by

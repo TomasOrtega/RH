@@ -17,14 +17,25 @@ variable {G : Type} [Group G] {LL : Type} [Field LL] {O : Type} [CommRing O] [Al
   {V : Type} [AddCommGroup V] [Module LL V] [Module O V] [IsScalarTower O LL V]
   {ρ : Representation LL G V}
 
+/- English proof (translation)
+The claim follows from `(Submodule.Quotient.mk_surjective I q).choose.2`.
+-/
 theorem liftQ_mem (L : Lattice (O := O) ρ) (I : Submodule O ↥L.T) (q : ↥L.T ⧸ I) :
     Formalism.MainNotions.LocalSituation.liftQ L I q ∈ L.T :=
   (Submodule.Quotient.mk_surjective I q).choose.2
 
+/- English proof (translation)
+The claim follows from `(Submodule.Quotient.mk_surjective I q).choose_spec`.
+-/
 theorem mk_liftQ (L : Lattice (O := O) ρ) (I : Submodule O ↥L.T) (q : ↥L.T ⧸ I) :
     (Submodule.Quotient.mk (⟨Formalism.MainNotions.LocalSituation.liftQ L I q, liftQ_mem L I q⟩ : ↥L.T) : ↥L.T ⧸ I) = q :=
   (Submodule.Quotient.mk_surjective I q).choose_spec
 
+/- English proof (translation)
+Establish `h : (⟨Formalism.MainNotions.LocalSituation.liftQ L _ q, liftQ_mem L _ q⟩ : ↥L.T) - x ∈ (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥L.T)` using `(Submodule.Quotient.eq _).1 ((mk_liftQ L _ q).trans hq.symm)`. Generalize the expression as in `hy : (⟨Formalism.MainNotions.LocalSituation.liftQ L _ q, liftQ_mem L _ q⟩ : ↥L.T) - x = y at h`. Rewrite `h` using `[Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Take `⟨t, -, ht⟩` from `h`. Substitute `ht` using the available equality.
+
+Use `⟨t, t.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow, algebraMap_smul, ← Submodule.coe_smul, ← hy]`. Both sides reduce to the same expression.
+-/
 theorem liftQ_sub (L : Lattice (O := O) ρ) (ϖ : O) (r : ℕ) (x : ↥L.T)
     (q : ↥L.T ⧸ (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥L.T)) (hq : Submodule.Quotient.mk x = q) :
     ∃ t ∈ L.T, Formalism.MainNotions.LocalSituation.liftQ L _ q - (x : V) = (algebraMap O LL ϖ) ^ r • t := by
@@ -39,6 +50,9 @@ theorem liftQ_sub (L : Lattice (O := O) ρ) (ϖ : O) (r : ℕ) (x : ↥L.T)
   rw [← map_pow, algebraMap_smul, ← Submodule.coe_smul, ← hy]
   rfl
 
+/- English proof (translation)
+Break down `eq_or_ne (algebraMap O LL ϖ) 0 with h | h` into its components or cases. Break down `Nat.eq_zero_or_pos r with hr | hr` into its components or cases. Conclude with `⟨1, by subst hr; simp⟩`. Conclude with `⟨0, by rw [h, zero_pow hr.ne', mul_zero, map_zero]⟩`. Conclude with `⟨1, by rw [← mul_pow, inv_mul_cancel₀ h, one_pow, map_one]⟩`.
+-/
 theorem inv_pow_mul_pow_mem (ϖ : O) (r : ℕ) :
     ∃ e : O, (algebraMap O LL ϖ)⁻¹ ^ r * (algebraMap O LL ϖ) ^ r = algebraMap O LL e := by
   rcases eq_or_ne (algebraMap O LL ϖ) 0 with h | h
@@ -63,6 +77,19 @@ def swapF (L : Lattice (O := O) ρ) (P : V →ₗ[LL] V' →ₗ[LL] LL) (ϖ : O)
     (s : G → ↥L.T ⧸ (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥L.T)) (d : G → V') (g : G) : LL :=
   (algebraMap O LL ϖ)⁻¹ ^ r * P (Formalism.MainNotions.LocalSituation.liftQ L _ (s g)) (d g)
 
+/- English proof (translation)
+Establish `huT : ∀ g, Formalism.MainNotions.LocalSituation.liftQ L _ (s g) ∈ L.T` using `fun g => liftQ_mem L _ (s g)`. Establish `hmk : ∀ g, (Submodule.Quotient.mk (⟨Formalism.MainNotions.LocalSituation.liftQ L _ (s g), huT g⟩ : ↥L.T) : ↥L.T ⧸ (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥L.T)) = s g` using `fun g => mk_liftQ L _ (s g)`. Establish `hq3 : (Submodule.Quotient.mk (⟨Formalism.MainNotions.LocalSituation.liftQ L _ (s g), huT g⟩ + actT L g ⟨Formalism.MainNotions.LocalSituation.liftQ L _ (s h), huT h⟩ : ↥L.T) : ↥L.T ⧸ (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥L.T)) = s (g * h)`. Rewrite using `[hs g h]`. Conclude with `(Submodule.Quotient.mk_add _).trans (congrArg₂ (· + ·) (hmk g) (congrArg (actQ L _ hI g) (hmk h)))`.
+
+Take `⟨t3, ht3, hu3⟩` from `liftQ_sub L ϖ r _ _ hq3`. Take `⟨t1, ht1, hd1⟩` from `liftQ_sub L' ϖ r _ _ (hq h)`. Establish `hio : GlobalTheory.BKFinLevel.ioL L ϖ r (s h) = Submodule.Quotient.mk ((algebraMap O LL ϖ)⁻¹ ^ r • Formalism.MainNotions.LocalSituation.liftQ L _ (s h))` using `(congrArg (GlobalTheory.BKFinLevel.ioL L ϖ r) (mk_liftQ L _ (s h))).symm.trans (GlobalTheory.BKFinLevel.ioL_mk L ϖ r _)`. Establish `hl : (Submodule.Quotient.mk (liftD L (GlobalTheory.BKFinLevel.ioL L ϖ r (s h))) : V ⧸ L.T) = GlobalTheory.BKFinLevel.ioL L ϖ r (s h)` using `(Submodule.Quotient.mk_surjective L.T _).choose_spec`. Establish `ht2` using `(Submodule.Quotient.eq _).1 (hl.trans hio)`.
+
+Use `show ∃ e : O, (algebraMap O LL ϖ)⁻¹ ^ r * P (Formalism.MainNotions.LocalSituation.liftQ L _ (s g)) (ρ' g (Formalism.MainNotions.LocalSituation.liftQ L' _ (q h))) + P.flip (d g) (ρ g (liftD L (GlobalTheory.BKFinLevel.ioL L ϖ r (s h)))) + (χ g * ((algebraMap O LL ϖ)⁻¹ ^ r * P (Form …`. Generalize the expression as in `liftD L (GlobalTheory.BKFinLevel.ioL L ϖ r (s h)) = w at ht2 ⊢`. Take `⟨t2, ht2', rfl⟩ : ∃ t2 ∈ L.T, w = (algebraMap O LL ϖ)⁻¹ ^ r • Formalism.MainNotions.LocalSituation.liftQ L _ (s h) + t2` from `⟨_, ht2, by abel⟩`. Establish `E1 : Formalism.MainNotions.LocalSituation.liftQ L' _ (q h) = d h + (algebraMap O LL ϖ) ^ r • t1` using `sub_eq_iff_eq_add'.1 hd1`. Establish `E3 : Formalism.MainNotions.LocalSituation.liftQ L _ (s (g * h)) = Formalism.MainNotions.LocalSituation.liftQ L _ (s g) + ρ g (Formalism.MainNotions.LocalSituation.liftQ L _ (s h)) + (algebraMap O LL ϖ) ^ r • t3` using `sub_eq_iff_eq_add'.1 hu3`.
+
+Take `⟨e0, he0⟩` from `inv_pow_mul_pow_mem (LL := LL) ϖ r`. Take `⟨e1, he1⟩` from `hint _ (huT g) _ (L'.stable g _ ht1)`. Take `⟨e2, he2⟩` from `hint _ (L.stable g _ ht2') _ (hdT g)`. Take `⟨e3, he3⟩` from `hint t3 ht3 (d g + ρ' g (d h)) (by rw [← hdmul]; exact hdT _)`. Use `⟨e0 * e1 + e2 - e0 * e3, ?_⟩` and prove the remaining obligations.
+
+Establish `E5 : χ g * ((algebraMap O LL ϖ)⁻¹ ^ r * P (Formalism.MainNotions.LocalSituation.liftQ L _ (s h)) (d h)) = (algebraMap O LL ϖ)⁻¹ ^ r * P (ρ g (Formalism.MainNotions.LocalSituation.liftQ L _ (s h))) (ρ' g (d h))`. Rewrite using `[hχ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[E1, E3, hdmul, E5]`. Simplify using `only [map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul, LinearMap.flip_apply] at he3 ⊢`.
+
+Rewrite using `[map_sub, map_add, map_mul, map_mul, ← he0, ← he1, ← he2, ← he3]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem swap_cong (L : Lattice (O := O) ρ) (L' : Lattice (O := O) ρ') (P : V →ₗ[LL] V' →ₗ[LL] LL)
     (hint : ∀ x ∈ L.T, ∀ y ∈ L'.T, ∃ e : O, P x y = algebraMap O LL e)
     (χ : G → LL) (hχ : ∀ g x y, P (ρ g x) (ρ' g y) = χ g * P x y) (ϖ : O) (r : ℕ)
@@ -143,6 +170,15 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {LL : Type} [Field LL] [Algebra Qp LL] [TopologicalSpace LL] [IsTopologicalRing LL]
     {O : Type} [CommRing O] [Algebra O LL]
 
+/- English proof (translation)
+Establish `hdT : ∀ g, (d : G → A'.V) g ∈ LA'.T` using `fun g => d.2.2 g (Set.mem_univ g)`. Establish `hint : ∀ x ∈ LA.T, ∀ y ∈ LA'.T, ∃ e : O, m x y = algebraMap O LL e` using `fun x hx y hy => (hm.2 y).1 hy x hx`. Establish `key` using `swap_cong LA LA' m hint (fun g => ((cycLL PD LL g : LLˣ) : LL)) hm.1.1 ϖ r hI s hs.2 (d : G → A'.V) hdT d.2.1.2 (redT LA' _ d) (fun _ => rfl)`. Set `Fq : G → LL ⧸ L1.T` to `fun g => Submodule.Quotient.mk (swapF LA m ϖ r s (d : G → A'.V) g)`. Establish `hFq : Fq ∈ ReciprocityTheory.Def.C1 G (⊤ : Submodule O (LL ⧸ L1.T))`.
+
+Use `⟨?_, fun _ => Submodule.mem_top⟩` and prove the remaining obligations. Establish `hT : IsOpen (L1.T : Set LL)` using `by rw [hL1]; exact hopen`. Establish `hu : Continuous fun g => Formalism.MainNotions.LocalSituation.liftQ LA _ (s g)` using `(hs.1.comp (Formalism.MainNotions.LocalSituation.liftQ LA _)).continuous`. Establish `hc : Continuous (swapF LA m ϖ r s (d : G → A'.V))` using `continuous_const.mul ((IsModuleTopology.continuous_bilinear_of_finite_left m).comp (hu.prodMk d.2.1.1))`. Conclude with `Formalism.MainNotions.BlochKatoDuality.Br.locConst_mk L1.T hT _ hc`.
+
+Establish `hD : ReciprocityTheory.Def.d1 (repD L1) Fq ∈ ReciprocityTheory.Def.B2 (repD L1) ⊤` using `⟨Fq, hFq, rfl⟩`. Establish `heq : (fun x => (Submodule.Quotient.mk (GlobalTheory.BKFinLevel.cupQ LA LA' m ϖ r s (redT LA' _ d) x) : LL ⧸ L1.T)) = -((fun x => (Submodule.Quotient.mk (cupLD LA m.flip (d : G → A'.V) (fun g => GlobalTheory.BKFinLevel.ioL LA ϖ r (s g)) x) : LL ⧸ L1.T)) + ReciprocityTheory.Def.d1 …`. Use function extensionality and compare the values at `x`. Take `⟨g, h⟩` from `x`. Take `⟨e, he⟩` from `key g h`.
+
+Use `show (Submodule.Quotient.mk (GlobalTheory.BKFinLevel.cupQ LA LA' m ϖ r s (redT LA' _ d) (g, h)) : LL ⧸ L1.T) = -(Submodule.Quotient.mk (cupLD LA m.flip (d : G → A'.V) (fun g => GlobalTheory.BKFinLevel.ioL LA ϖ r (s g)) (g, h)) + (Submodule.Quotient.mk (((cycLL PD LL g : LLˣ) : LL …`. Rewrite using `[eq_neg_iff_add_eq_zero, ← Submodule.Quotient.mk_sub, ← Submodule.Quotient.mk_add, ← Submodule.Quotient.mk_add, ← Submodule.Quotient.mk_add, ← add_assoc, he, Submodule.Quotient.mk_eq_zero, hL1]`. Conclude with `⟨e, rfl⟩`. Unfold `CobO`. Rewrite using `[heq, neg_mem_iff, Submodule.add_mem_iff_left _ hD]`.
+-/
 theorem cobO_swap (hopen : IsOpen (Set.range (algebraMap O LL)))
     (L1 : Lattice (O := O) (charRep (cycLL PD LL)))
     (hL1 : L1.T = LinearMap.range (Algebra.linearMap O LL)) {A A' : GRep G Qp LL O}
@@ -193,6 +229,9 @@ theorem cobO_swap (hopen : IsOpen (Set.range (algebraMap O LL)))
 
 end Cob
 
+/- English proof (translation)
+Introduce `l _ P K LL _ _ _ O _ _ hO L1 hL1 A A' LA LA' m hm ϖ r hI s hs d`. Take `⟨-, -, -, htr, hopen⟩` from `hO`. Use `haveI := htr`. Conclude with `cobO_swap (P.PD K) hopen L1 hL1 LA LA' m hm ϖ r hI s hs d`.
+-/
 theorem cobO_cupQ_iff : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ L1 : Lattice (O := O) (charRep (cycLL (P.PD K) LL)), L1.T = LinearMap.range (Algebra.linearMap O LL) → ∀ (A A' : GRep ↥(GK K) ℚ_[l] LL O) (LA : Lattice (O := O) A.ρ) (LA' : Lattice (O := O) A'.ρ) (m : A.V →ₗ[LL] A'.V →ₗ[LL] LL), IsDualLat1 (P.PD K) LA LA' m → ∀ (ϖ : O) (r : ℕ) (hI : StableSub LA (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥LA.T)), ∀ s ∈ quotientCocycles LA _ hI, ∀ d : ↥(latticeCocycles LA'), CobO (P.PD K) L1 (GlobalTheory.BKFinLevel.cupQ LA LA' m ϖ r s (redT LA' _ d)) ↔ CobO (P.PD K) L1 (cupLD LA m.flip (d : ↥(GK K) → A'.V) (fun g => GlobalTheory.BKFinLevel.ioL LA ϖ r (s g))) := by
   intro l _ P K LL _ _ _ O _ _ hO L1 hL1 A A' LA LA' m hm ϖ r hI s hs d
   obtain ⟨-, -, -, htr, hopen⟩ := hO

@@ -4,6 +4,39 @@ open Finset
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `set q := Real.exp (-a) with hq`. Establish `hq0 : 0 ≤ q` using `(Real.exp_pos _).le`. Establish `hq1 : q < 1` using `by linarith`. Establish `hgeom : ∀ M : ℕ, ∑ k ∈ Finset.range M, q ^ k ≤ 2`. Introduce `M`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[inv_le_comm₀ (by linarith) (by norm_num)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hprod : ∀ F : Finset (ι → ℕ), ∑ n ∈ F, ∏ v, q ^ (n v) ≤ 2 ^ Fintype.card ι`. Introduce `F`.
+
+Use `set M := F.sup (fun n => ∑ v, n v) + 1 with hM`. Establish `hsub : F ⊆ Fintype.piFinset (fun _ : ι => Finset.range M)`. Introduce `n hn`. Rewrite using `[Fintype.mem_piFinset]`. Introduce `v`.
+
+Rewrite using `[Finset.mem_range]`. Establish `h1 : n v ≤ ∑ w, n w` using `Finset.single_le_sum (fun w _ => Nat.zero_le (n w)) (Finset.mem_univ v)`. Establish `h2 : ∑ w, n w ≤ F.sup (fun n => ∑ v, n v)` using `Finset.le_sup (f := fun n => ∑ v, n v) hn`. Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hB : 0 ≤ c * A * (2 * Real.exp a) ^ Fintype.card ι` using `by positivity`. Establish `hfin : ∀ s : Finset Γ, ∑ γ ∈ s, t γ ≤ c * A * (2 * Real.exp a) ^ Fintype.card ι`. Introduce `s`. Use `set φ : Γ → ι → ℕ := fun γ v => ⌊D γ v⌋₊ with hφ`. Use `set s' := s.filter (fun γ => t γ ≠ 0) with hs'`.
+
+Rewrite using `[← Finset.sum_filter_ne_zero]`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to (t := s'.image φ) (g := φ) (fun γ hγ => Finset.mem_image_of_mem φ hγ)]`. Establish `hfib : ∀ n : ι → ℕ, ∑ γ ∈ s'.filter (fun γ => φ γ = n), t γ ≤ c * A * Real.exp (a * Fintype.card ι) * ∏ v, q ^ (n v)`. Introduce `n`. Use `set Fn := s'.filter (fun γ => φ γ = n) with hFn`.
+
+Use `set e : ℝ := c * ∏ v, Real.exp (-(2 * a * (n v : ℝ))) with he_def`. Establish `he : 0 ≤ e` using `by positivity`. Establish `h1 : ∑ γ ∈ Fn, t γ ≤ Fn.card * e`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises.
+
+Introduce `γ hγ`. Establish `hn : φ γ = n` using `(Finset.mem_filter.1 hγ).2`. Establish `hfl : ∀ v, ⌊D γ v⌋₊ = n v` using `fun v => congrFun hn v`. Establish `h` using `(ht γ).2`. Simplify using `only [hfl] at h`.
+
+Conclude with `h`. Use `_ = Fn.card * e := by rw [Finset.sum_const, nsmul_eq_mul]`. Use `set r : ι → ℝ := fun v => (n v : ℝ) + 1 with hr_def`. Establish `hr : ∀ v, 0 ≤ r v` using `fun v => by positivity`. Take `⟨hSf, hSc⟩` from `hN r hr`.
+
+Establish `hsub : (↑Fn : Set Γ) ⊆ {γ | t γ ≠ 0 ∧ ∀ v, D γ v ≤ r v}`. Introduce `γ hγ`. Establish `hm` using `Finset.mem_filter.1 (Finset.mem_coe.1 hγ)`. Establish `hm'` using `Finset.mem_filter.1 hm.1`. Use `⟨hm'.2, fun v => ?_⟩` and prove the remaining obligations.
+
+Establish `hfl : ⌊D γ v⌋₊ = n v` using `congrFun hm.2 v`. Establish `hl` using `Nat.lt_floor_add_one (D γ v)`. Rewrite `hl` using `[hfl]`. Conclude with `hl.le`. Establish `hcard : (Fn.card : ℝ) ≤ A * Real.exp (a * ∑ v, r v)`.
+
+Establish `hc'` using `Set.ncard_le_ncard hsub hSf`. Rewrite `hc'` using `[Set.ncard_coe_finset]`. Conclude with `le_trans (by exact_mod_cast hc') hSc`. Establish `hS2 : ∑ v, 2 * a * (n v : ℝ) = 2 * a * ∑ v, (n v : ℝ)` using `by rw [Finset.mul_sum]`. Establish `hS3 : ∑ v, (n v : ℝ) * -a = (∑ v, (n v : ℝ)) * -a` using `by rw [Finset.sum_mul]`.
+
+Establish `hS1 : ∑ v, r v = ∑ v, (n v : ℝ) + Fintype.card ι`. Simplify using `only [hr_def, Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[he_def, hq]`. Repeatedly rewrite using `[← Real.exp_nat_mul]`.
+
+Rewrite using `[← Real.exp_sum, ← Real.exp_sum, Finset.sum_neg_distrib, hS2, hS3, hS1]`. Rewrite using `[show A * Real.exp (a * (∑ v, (n v : ℝ) + Fintype.card ι)) * (c * Real.exp (-(2 * a * ∑ v, (n v : ℝ)))) = c * A * (Real.exp (a * (∑ v, (n v : ℝ) + Fintype.card ι)) * Real.exp (-(2 * a * ∑ v, (n v : ℝ)))) by ring, show c * A * Real.exp (a * Fintype.card ι) * Real.exp ((∑ v, (n v : …`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.mul_sum]`. Use `_ ≤ c * A * Real.exp (a * Fintype.card ι) * 2 ^ Fintype.card ι := mul_le_mul_of_nonneg_left (hprod _) (by positivity)`. Use `_ = c * A * (2 * Real.exp a) ^ Fintype.card ι := by`. Rewrite using `[mul_pow, ← Real.exp_nat_mul, mul_comm (Fintype.card ι : ℝ) a]`. Expand and normalize the polynomial expressions, which then agree.
+
+Conclude with `⟨summable_of_sum_le (fun γ => (ht γ).1) hfin, tsum_le_of_sum_le' hB hfin⟩`.
+-/
 theorem summable_and_tsum_le_of_box_count (ι Γ : Type) [Fintype ι] (D : Γ → ι → ℝ) (t : Γ → ℝ)
     (a A c : ℝ) (hA : 0 ≤ A) (hc : 0 ≤ c) (ha : Real.exp (-a) ≤ 1 / 2) (_hD : ∀ γ v, 0 ≤ D γ v)
     (ht : ∀ γ, 0 ≤ t γ ∧ t γ ≤ c * ∏ v, Real.exp (-(2 * a * (⌊D γ v⌋₊ : ℝ))))

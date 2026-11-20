@@ -10,6 +10,17 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 namespace GlobalTheory.PolModelIso
 
+/- English proof (translation)
+Introduce `hM E _ _ _ H D l Xo c O O' _ _ β β' Z Z' BD BD' φ m b b' hβ hβ' hft hft' htw hb hb' hp hp'`. Establish `hjs : ∀ {P : Type} [CommRing P] {γ : P →+* c.F} (Y : Model Xo c γ), Y.j ≫ Y.s = pullback.snd _ _ ≫ spMap γ`. Introduce `P _ γ Y`. Rewrite using `[Model.j, Category.assoc, pullback.condition, ← Category.assoc, Y.jQ_over]`. Establish `hsp : ∀ {P P' : Type} [CommRing P] [CommRing P'] (γ : P →+* c.F) (γ' : P' →+* c.F) (a : P →+* P'), γ'.comp a = γ → spMap γ' ≫ spMap a = spMap γ`.
+
+Introduce `P P' _ _ γ γ' a h`. Rewrite using `[← h, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Take `⟨n, -⟩` from `GlobalTheory.exists_sabMap_of_base_eq Z'.m0.toSABMap (Category.id_comp (pullback.fst _ _)).symm`. Take `⟨ν, -⟩` from `GlobalTheory.ObjMaps.exists_sab_cancel Z.m0.toSABMap n`. Take `⟨n₂, -⟩` from `GlobalTheory.exists_sabMap_of_base_eq Z.m0.toSABMap (Category.id_comp (pullback.fst _ _)).symm`.
+
+Take `⟨ν₂, -⟩` from `GlobalTheory.ObjMaps.exists_sab_cancel Z'.m0.toSABMap n₂`. Establish `hrs : 𝟙 _ ≫ Z.j ≫ Z.s = Z'.j ≫ Z'.s ≫ spMap b`. Rewrite using `[Category.id_comp, hjs, ← Category.assoc, hjs, Category.assoc, hsp β β' b hb]`. Establish `hrs₂ : 𝟙 _ ≫ Z'.j ≫ Z'.s = Z.j ≫ Z.s ≫ spMap b'`. Rewrite using `[Category.id_comp, hjs, ← Category.assoc, hjs, Category.assoc, hsp β' β b' hb']`.
+
+Take `⟨π, hπ, -, -, hj, -, hBD⟩` from `hM E H D l l Xo Xo c c O O' β β' Z Z' BD BD' φ m b (RingEquiv.refl _) (𝟙 _) ((TwMap.reflEquiv _ _ _).symm ν) hβ hβ' hft' htw rfl hp hp' hrs`. Take `⟨π', -, -, -, hj', -, -⟩` from `hM E H D l l Xo Xo c c O' O β' β Z' Z BD' BD φ m b' (RingEquiv.refl _) (𝟙 _) ((TwMap.reflEquiv _ _ _).symm ν₂) hβ' hβ hft htw rfl hp' hp hrs₂`. Rewrite `hj`, `hj'` using `[Category.id_comp]`. Establish `h₁ : π ≫ π' = 𝟙 _` using `GlobalTheory.ModelRelCompare.hom_ext_j Z' hβ' (by rw [← Category.assoc, hj, hj', Category.comp_id])`. Establish `h₂ : π' ≫ π = 𝟙 _` using `GlobalTheory.ModelRelCompare.hom_ext_j Z hβ (by rw [← Category.assoc, hj', hj, Category.comp_id])`.
+
+Conclude with `⟨⟨π, π', h₁, h₂⟩, hπ, hj, hBD⟩`.
+-/
 theorem exists_iso_of_isPol : PolMapSt → ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
     {Xo : Moduli D l} {c : Coeff l} {O O' : Type} [CommRing O] [CommRing O'] {β : O →+* c.F} {β' : O' →+* c.F}
     (Z : Model Xo c β) (Z' : Model Xo c β') (BD : EffCartierData Z.X) (BD' : EffCartierData Z'.X) (φ : InvFun (𝓞 E))

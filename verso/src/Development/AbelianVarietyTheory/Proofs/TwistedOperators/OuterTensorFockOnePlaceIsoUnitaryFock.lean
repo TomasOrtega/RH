@@ -7,10 +7,18 @@ open scoped TensorProduct DirectSum Kronecker Matrix
 
 namespace GlobalTheory.OneFunctional.FockTensor
 
+/- English proof (translation)
+Simplify using `only [linSub, MonoidHom.coe_mk, OneHom.coe_mk, AlgHom.toLinearMap_apply, map_prod]`.
+-/
 theorem linSub_prod {ι σ : Type} [Fintype ι] [DecidableEq ι] [Fintype σ] [DecidableEq σ] (M : ι → Matrix σ σ ℂ)
     (f : ι → MvPolynomial (ι × σ) ℂ) : linSub M (∏ τ, f τ) = ∏ τ, linSub M (f τ) := by
   simp only [linSub, MonoidHom.coe_mk, OneHom.coe_mk, AlgHom.toLinearMap_apply, map_prod]
 
+/- English proof (translation)
+Unfold `Formalism.GradedWeylDivisibility.sub`. Simplify using `only [linSub, MonoidHom.coe_mk, OneHom.coe_mk, AlgHom.toLinearMap_apply, aeval_rename]`. Rewrite using `[← AlgHom.comp_apply, MvPolynomial.comp_aeval]`. Use `congr 1`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[Function.comp_apply, map_sum, Matrix.transpose_apply]`.
+-/
 theorem linSub_rename {ι σ : Type} [Fintype ι] [DecidableEq ι] [Fintype σ] [DecidableEq σ] (M : ι → Matrix σ σ ℂ)
     (τ : ι) (f : MvPolynomial σ ℂ) :
     linSub M (rename (Prod.mk τ) f) = rename (Prod.mk τ) (Formalism.GradedWeylDivisibility.sub (M τ)ᵀ f) := by
@@ -22,16 +30,29 @@ theorem linSub_rename {ι σ : Type} [Fintype ι] [DecidableEq ι] [Fintype σ] 
   funext i
   simp [Function.comp_apply, map_sum, Matrix.transpose_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fockOne_apply (a b : ℕ) (α β : ℤ) (h : U a) (g : U b) (f : MvPolynomial (Fin b × Fin a) ℂ) :
     fockOne a b α β (h, g) f =
       ((detU a h ^ α * detU b g ^ β : ℂˣ) : ℂ) • Formalism.GradedWeylDivisibility.sub (g.1 ⊗ₖ (star h.1)ᵀ)ᵀ f := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fock_apply {ι : Type} [Fintype ι] [DecidableEq ι] (a b : ℕ) (α β : ι → ℤ) (h : UG ι a) (g : UG ι b)
     (f : Pol ι a b) :
     fock a b α β (h, g) f =
       (((∏ τ, detU a (h τ) ^ α τ) * ∏ τ, detU b (g τ) ^ β τ : ℂˣ) : ℂ) •
         linSub (fun τ => (g τ).1 ⊗ₖ (star (h τ).1)ᵀ) f := rfl
 
+/- English proof (translation)
+Introduce `ι _ _ a b α β`. Take `⟨e, he⟩` from `GlobalTheory.PolyTensor.exists_piTensor_equiv ι (Fin b × Fin a)`. Use `⟨e, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨h, g⟩ x`. Establish `key : e.toLinearMap ∘ₗ outer₂ (fun τ => fockOne a b (α τ) (β τ)) (h, g) = fock a b α β (h, g) ∘ₗ e.toLinearMap`.
+
+Apply `PiTensorProduct.ext` to reduce the goal to its premises. Apply `MultilinearMap.ext` to reduce the goal to its premises. Introduce `f`. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe, outer₂_apply, PiTensorProduct.map_tprod, he, fockOne_apply, fock_apply, linSub_prod, linSub_rename]`. Simplify using `only [map_smul]`.
+
+Simplify using `only [Algebra.smul_def, Finset.prod_mul_distrib, ← map_prod, Units.coe_prod, Units.val_mul]`. Conclude with `LinearMap.congr_fun key x`.
+-/
 theorem outer₂_fockOne_iso : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (a b : ℕ) (α β : ι → ℤ),
     Iso (outer₂ fun τ => fockOne a b (α τ) (β τ)) (fock a b α β) := by
   intro ι _ _ a b α β

@@ -21,6 +21,9 @@ section Hom
 
 variable {ℓ : ℕ} (hℓ : ℓ.Prime) (hS : ∀ w : HeightOneSpectrum (𝓞 K.1), ((ℓ : ℕ) : 𝓞 K.1) ∈ w.asIdeal → w ∈ S)
 
+/- English proof (translation)
+Establish `h1 : (((k : ZMod n).val : ℕ) : ℤ) = k % n` using `ZMod.val_intCast k`. Rewrite using `[← natCast_zsmul, h1]`. Use `conv_rhs => rw [← Int.emod_add_mul_ediv k n]`. Rewrite using `[add_smul, mul_comm, mul_smul, natCast_zsmul, hc, smul_zero, add_zero]`.
+-/
 theorem val_intCast_nsmul_eq_zsmul {A : Type*} [AddCommGroup A] {n : ℕ} [NeZero n] {c : A} (hc : n • c = 0)
     (k : ℤ) : ((k : ZMod n).val) • c = k • c := by
   have h1 : (((k : ZMod n).val : ℕ) : ℤ) = k % n := ZMod.val_intCast k
@@ -28,6 +31,11 @@ theorem val_intCast_nsmul_eq_zsmul {A : Type*} [AddCommGroup A] {n : ℕ} [NeZer
   conv_rhs => rw [← Int.emod_add_mul_ediv k n]
   rw [add_smul, mul_comm, mul_smul, natCast_zsmul, hc, smul_zero, add_zero]
 
+/- English proof (translation)
+Establish `h2 : QZ.mk ((m : ℚ) * (1 / (N : ℚ))) = 0`. Establish `e` using `map_nsmul QZ.mkHom m (1 / (N : ℚ))`. Rewrite `e` using `[nsmul_eq_mul]`. Conclude with `e.trans h`. Take `⟨n, hn⟩` from `(QZ.mk_eq_zero_iff _).1 h2`.
+
+Establish `hNq : (N : ℚ) ≠ 0` using `by exact_mod_cast hN`. Establish `e1 : (n : ℚ) * (N : ℚ) = m` using `by rw [hn]; field_simp`. Establish `e2 : n * (N : ℤ) = m` using `by exact_mod_cast e1`. Conclude with `Int.natCast_dvd_natCast.1 ⟨n, by rw [← e2, mul_comm]⟩`.
+-/
 theorem dvd_of_nsmul_mk_one_div_eq_zero {N m : ℕ} (hN : N ≠ 0) (h : m • QZ.mk (1 / (N : ℚ)) = 0) : N ∣ m := by
   have h2 : QZ.mk ((m : ℚ) * (1 / (N : ℚ))) = 0 := by
     have e := map_nsmul QZ.mkHom m (1 / (N : ℚ))
@@ -39,6 +47,11 @@ theorem dvd_of_nsmul_mk_one_div_eq_zero {N m : ℕ} (hN : N ≠ 0) (h : m • QZ
   have e2 : n * (N : ℤ) = m := by exact_mod_cast e1
   exact Int.natCast_dvd_natCast.1 ⟨n, by rw [← e2, mul_comm]⟩
 
+/- English proof (translation)
+Establish `hN : ℓ ^ b ≠ 0` using `pow_ne_zero b hℓ.ne_zero`. Take `⟨t, ht⟩` from `(placeInv_bijective_inr (K := K) w).2 (QZ.mk (1 / ((ℓ ^ b : ℕ) : ℚ)))`. Use `⟨t, ?_, fun m hm => ?_⟩` and prove the remaining obligations. Apply `(placeInv_bijective_inr (K := K) w).1` to reduce the goal to its premises. Rewrite using `[AddMonoidHom.map_nsmul, ht, AddMonoidHom.map_zero]`.
+
+Conclude with `QZ.nsmul_mk_one_div (ℓ ^ b)`. Use `dvd_of_nsmul_mk_one_div_eq_zero hN ?_` and prove the remaining obligations. Rewrite using `[← ht, ← AddMonoidHom.map_nsmul, hm, AddMonoidHom.map_zero]`.
+-/
 theorem exists_localGaloisCohomology_order {ℓ : ℕ} (hℓ : ℓ.Prime) (w : HeightOneSpectrum (𝓞 K.1)) (b : ℕ) :
     ∃ t : localGaloisCohomology K 2 (.inr w), ℓ ^ b • t = 0 ∧ ∀ m : ℕ, m • t = 0 → ℓ ^ b ∣ m := by
   have hN : ℓ ^ b ≠ 0 := pow_ne_zero b hℓ.ne_zero
@@ -53,6 +66,17 @@ theorem exists_localGaloisCohomology_order {ℓ : ℕ} (hℓ : ℓ.Prime) (w : H
 set_option maxHeartbeats 8000000 in
 include hℓ hS in
 
+/- English proof (translation)
+Take `⟨t, htk, htm⟩` from `exists_localGaloisCohomology_order K hℓ v.1 b`. Take `⟨x, hxk, hxt, -⟩` from `exists_gsLocalRes_eq_single K S ℓ hℓ hS ιs v.1 v.2 t b htk`. Take `⟨x', hx'⟩ : ∃ x', cohomologyULiftIntAddEquiv (galUnits K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) 2 x' = x` from `⟨_, AddEquiv.apply_symm_apply _ x⟩`. Establish `hloc : gsLoc K S ιs v.1 x' = t`. Express the relevant statement in the definitionally equal form `(gsLocalRes S (ιs.fin v.1) 2).hom ((cohomologyULiftIntAddEquiv (galUnits K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) 2) x') = t`.
+
+Rewrite using `[hx']`. Conclude with `hxt`. Use `⟨gvChar Gal(AlgebraicClosure (v.1.adicCompletion K.1)/v.1.adicCompletion K.1) (gsVal K S ιs v.1 v.2 x'), ?_, fun m hm => ?_, fun h hh => gvChar_decompHomS_eq_zero S (ιs.fin v.1) x' (ordEmbMor S (ιs.fin v.1) v.2) h hh⟩` and prove the remaining obligations. Establish `hx'k : ℓ ^ b • x' = 0`. Use `(cohomologyULiftIntAddEquiv (galUnits K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) 2).injective ?_` and prove the remaining obligations.
+
+Use `((cohomologyULiftIntAddEquiv (galUnits K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) 2).toAddMonoidHom.map_nsmul _ _).trans ?_` and prove the remaining obligations. Use `(congrArg (ℓ ^ b • ·) hx').trans ?_` and prove the remaining obligations. Conclude with `hxk.trans (AddEquiv.map_zero _).symm`. Use `((gvChar Gal(AlgebraicClosure (v.1.adicCompletion K.1)/v.1.adicCompletion K.1)).toAddMonoidHom.map_nsmul _ _).symm.trans ?_` and prove the remaining obligations. Use `(congrArg (gvChar Gal(AlgebraicClosure (v.1.adicCompletion K.1)/v.1.adicCompletion K.1)) ((AddMonoidHom.map_nsmul _ _ _).symm.trans ((congrArg (gsVal K S ιs v.1 v.2) hx'k).trans (AddMonoidHom.map_zero _)))).trans ?_` and prove the remaining obligations.
+
+Conclude with `AddEquiv.map_zero _`. Apply `htm m` to reduce the goal to its premises. Establish `h1 : gsVal K S ιs v.1 v.2 (m • x') = 0`. Use `(gvChar Gal(AlgebraicClosure (v.1.adicCompletion K.1)/v.1.adicCompletion K.1)).injective ?_` and prove the remaining obligations. Use `(congrArg (gvChar Gal(AlgebraicClosure (v.1.adicCompletion K.1)/v.1.adicCompletion K.1)) (AddMonoidHom.map_nsmul _ _ _)).trans ?_` and prove the remaining obligations.
+
+Use `((gvChar Gal(AlgebraicClosure (v.1.adicCompletion K.1)/v.1.adicCompletion K.1)).toAddMonoidHom.map_nsmul _ _).trans ?_` and prove the remaining obligations. Conclude with `hm.trans (AddEquiv.map_zero _).symm`. Establish `h2` using `(gsLoc_eq_zero_iff K S ιs v.1 v.2 (m • x')).2 h1`. Conclude with `((congrArg (m • ·) hloc).symm.trans (AddMonoidHom.map_nsmul (gsLoc K S ιs v.1) m x').symm).trans h2`.
+-/
 theorem exists_char_order_gsDecomp (b : ℕ) :
     ∃ χ : Additive Gal(AlgebraicClosure (v.1.adicCompletion K.1)/v.1.adicCompletion K.1) →ₜ+ QZ,
       ℓ ^ b • χ = 0 ∧ (∀ m : ℕ, m • χ = 0 → ℓ ^ b ∣ m) ∧
@@ -89,6 +113,15 @@ theorem exists_char_order_gsDecomp (b : ℕ) :
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Establish `hN : ℓ ^ b ≠ 0` using `pow_ne_zero b hℓ.ne_zero`. Establish `: NeZero (ℓ ^ b)` using `⟨hN⟩`. Take `⟨c, hcdef⟩ : ∃ c, χ (Additive.ofMul σ) = c` from `⟨_, rfl⟩`. Establish `hc : ℓ ^ b • c = 0`. Rewrite using `[← hcdef, ← ContinuousAddMonoidHom.nsmul_apply, hχk]`.
+
+Both sides reduce to the same expression. Rewrite using `[hcdef]`. Establish `hE` using `eq_univ_of_unramifiedDegree v.1 σ hσ {g | χ (Additive.ofMul g) = (ProfiniteInteger.proj ⟨ℓ ^ b, pow_pos hℓ.pos b⟩ (Multiplicative.toAdd (unramifiedDegree (v.1.adicCompletion K.1) (AlgebraicClosure (v.1.adicCompletion K.1)) g)) : ZMod (ℓ ^ b)).val • c} (isClosed_eq (χ.continuous.c …`. Rewrite using `[ofMul_zpow, map_zsmul, hcdef, map_zpow, hσ, ← ofAdd_zsmul, toAdd_ofAdd, zsmul_one, map_intCast]`. Conclude with `(val_intCast_nsmul_eq_zsmul (n := ℓ ^ b) hc k).symm)`.
+
+Use the proof step `(fun g hg h hh => by show χ (Additive.ofMul (g * h)) = _`. Rewrite using `[ofMul_mul, map_add, hB h (gsDecomp_eq_one_of_unramifiedDegree_eq_one K S ιs v h hh), add_zero, map_mul, hh, mul_one]`. Conclude with `hg)`. Establish `hg : g ∈ {g | χ (Additive.ofMul g) = (ProfiniteInteger.proj ⟨ℓ ^ b, pow_pos hℓ.pos b⟩ (Multiplicative.toAdd (unramifiedDegree (v.1.adicCompletion K.1) (AlgebraicClosure (v.1.adicCompletion K.1)) g)) : ZMod (ℓ ^ b)).val • c}`. Rewrite using `[hE]`.
+
+Conclude with `Set.mem_univ _`. Conclude with `hg`.
+-/
 theorem char_eq_proj_nsmul_of_gsDecomp {ℓ : ℕ} (hℓ : ℓ.Prime) (b : ℕ)
     (χ : Additive Gal(AlgebraicClosure (v.1.adicCompletion K.1)/v.1.adicCompletion K.1) →ₜ+ QZ)
     (hχk : ℓ ^ b • χ = 0) (hB : ∀ h, gsDecomp K S ιs v h = 1 → χ (Additive.ofMul h) = 0)
@@ -133,6 +166,15 @@ theorem char_eq_proj_nsmul_of_gsDecomp {ℓ : ℕ} (hℓ : ℓ.Prime) (b : ℕ)
 set_option maxHeartbeats 4000000 in
 include hℓ hS in
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `exists_unramifiedDegree_eq_one (K := K) (v := v.1)`. Take `⟨χ, hχk, hA, hB⟩` from `exists_char_order_gsDecomp K S ιs v hℓ hS b`. Establish `hC` using `char_eq_proj_nsmul_of_gsDecomp K S ιs v hℓ b χ hχk hB σ hσ`. Take `⟨z, hz⟩ : ∃ z : ZMod (ℓ ^ b), ProfiniteInteger.proj ⟨ℓ ^ b, pow_pos hℓ.pos b⟩ (Multiplicative.toAdd (unramifiedDegree (v.1.adicCompletion K.1) (AlgebraicClosure (v.1.adicCompletion K.1)) g)) = z` from `⟨_, rfl⟩`. Establish `hzc : z.val • χ (Additive.ofMul σ) = 0`.
+
+Establish `e` using `hC g`. Rewrite `e` using `[hz]`. Conclude with `e.symm.trans (hB g hg)`. Establish `hzχ : z.val • χ = 0`. Use `DFunLike.ext _ _ fun y => ?_` and prove the remaining obligations.
+
+Rewrite using `[ContinuousAddMonoidHom.nsmul_apply, ← ofMul_toMul y, hC, smul_comm, hzc, smul_zero]`. Both sides reduce to the same expression. Establish `hdvd` using `hA z.val hzχ`. Establish `: NeZero (ℓ ^ b)` using `⟨pow_ne_zero b hℓ.ne_zero⟩`. Establish `hlt : z.val < ℓ ^ b` using `ZMod.val_lt z`.
+
+Establish `h0 : z.val = 0` using `Nat.eq_zero_of_dvd_of_lt hdvd hlt`. Rewrite using `[hz]`. Conclude with `(ZMod.val_eq_zero z).1 h0`.
+-/
 theorem proj_unramifiedDegree_eq_zero_of_gsDecomp_eq_one (b : ℕ)
     (g : Gal(AlgebraicClosure (v.1.adicCompletion K.1)/v.1.adicCompletion K.1))
     (hg : gsDecomp K S ιs v g = 1) :
@@ -162,6 +204,17 @@ theorem proj_unramifiedDegree_eq_zero_of_gsDecomp_eq_one (b : ℕ)
 set_option maxHeartbeats 4000000 in
 include hℓ hS in
 
+/- English proof (translation)
+Use `set deg := unramifiedDegree (v.1.adicCompletion K.1) (AlgebraicClosure (v.1.adicCompletion K.1))`. Set `ψ : Gal(AlgebraicClosure (v.1.adicCompletion K.1)/v.1.adicCompletion K.1) →* Multiplicative (ZMod (ℓ ^ b))` to `(AddMonoidHom.toMultiplicative (ProfiniteInteger.proj ⟨ℓ ^ b, pow_pos hℓ.pos b⟩).toAddMonoidHom).comp deg`. Establish `hψ : ∀ g, ψ g = Multiplicative.ofAdd (ProfiniteInteger.proj ⟨ℓ ^ b, pow_pos hℓ.pos b⟩ (Multiplicative.toAdd (deg g)) : ZMod (ℓ ^ b))` using `fun _ => rfl`. Establish `hker : (gsDecomp K S ιs v).ker ≤ ψ.ker` using `fun g hg => by`. Rewrite `hg`, the goal using `[MonoidHom.mem_ker]`.
+
+Rewrite using `[hψ, proj_unramifiedDegree_eq_zero_of_gsDecomp_eq_one K S ιs v hℓ hS b g hg, ofAdd_zero]`. Both sides reduce to the same expression. Set `φ : (gsDecomp K S ιs v).range →* Multiplicative (ZMod (ℓ ^ b))` to `(QuotientGroup.lift _ ψ hker).comp (QuotientGroup.quotientKerEquivRange (gsDecomp K S ιs v)).symm.toMonoidHom`. Establish `hφ : ∀ g, φ ((gsDecomp K S ιs v).rangeRestrict g) = ψ g` using `fun g => by`. Establish `e : (QuotientGroup.quotientKerEquivRange (gsDecomp K S ιs v)).symm ((gsDecomp K S ιs v).rangeRestrict g) = (g : _ ⧸ (gsDecomp K S ιs v).ker)`.
+
+Rewrite using `[MulEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `QuotientGroup.lift _ ψ hker ((QuotientGroup.quotientKerEquivRange (gsDecomp K S ιs v)).symm ((gsDecomp K S ιs v).rangeRestrict g)) = ψ g`. Rewrite using `[e, QuotientGroup.lift_mk]`. Use `⟨φ, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← (isQuotientMap_rangeRestrict_gsDecomp K S ιs v).isOpen_preimage]`. Establish `e : (gsDecomp K S ιs v).rangeRestrict ⁻¹' (φ.ker : Set (gsDecomp K S ιs v).range) = (fun g => (ProfiniteInteger.proj ⟨ℓ ^ b, pow_pos hℓ.pos b⟩ (Multiplicative.toAdd (deg g)) : ZMod (ℓ ^ b))) ⁻¹' {0}`. Use extensionality with `g`. Simplify using `only [Set.mem_preimage, SetLike.mem_coe, MonoidHom.mem_ker, hφ, hψ, Set.mem_singleton_iff]`. Conclude with `Iff.rfl`.
+
+Rewrite using `[e]`. Conclude with `(isOpen_discrete _).preimage ((ProfiniteInteger.continuous_proj _).comp (continuous_toAdd.comp continuous_unramifiedDegree))`. Rewrite using `[hφ, hψ, hσ, toAdd_ofAdd, map_one]`. Both sides reduce to the same expression.
+-/
 theorem exists_hom_zmod_pow_rangeRestrict_gsDecomp
     (σ : Gal(AlgebraicClosure (v.1.adicCompletion K.1)/v.1.adicCompletion K.1))
     (hσ : unramifiedDegree (v.1.adicCompletion K.1) (AlgebraicClosure (v.1.adicCompletion K.1)) σ =
@@ -206,6 +259,9 @@ theorem exists_hom_zmod_pow_rangeRestrict_gsDecomp
 set_option maxHeartbeats 4000000 in
 include hℓ hS in
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `exists_unramifiedDegree_eq_one (K := K) (v := v.1)`. Conclude with `⟨(gsDecomp K S ιs v).rangeRestrict σ, ⟨isTopologicalGenerator_rangeRestrict_gsDecomp K S ιs v σ hσ, fun b => exists_hom_zmod_pow_rangeRestrict_gsDecomp K S ιs v hℓ hS σ hσ b⟩⟩`.
+-/
 theorem exists_isPrimePowGenerator_gsDecomp :
     ∃ σ : (gsDecomp K S ιs v).range, IsPrimePowGenerator ℓ σ := by
   obtain ⟨σ, hσ⟩ := exists_unramifiedDegree_eq_one (K := K) (v := v.1)
@@ -224,6 +280,9 @@ instance totallyDisconnectedSpace_range_gsDecomp : TotallyDisconnectedSpace (gsD
 set_option maxHeartbeats 4000000 in
 include hℓ hS in
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `exists_isPrimePowGenerator_gsDecomp K S ιs v hℓ hS`. Conclude with `hσ.eq_zero_of_pow_nsmul hℓ _ isAddTorsion_QZ hp x hx`.
+-/
 theorem eq_zero_of_pow_nsmul_cohomology_range_gsDecomp {p : ℕ} (hp : 2 ≤ p)
     (x : cohomology (Rep.res (gsDecomp K S ιs v).range.subtype
       (trivRep (galUnramifiedOutside K.1 ℚ̄ S) QZ)) p) (k : ℕ) (hx : ℓ ^ k • x = 0) : x = 0 := by

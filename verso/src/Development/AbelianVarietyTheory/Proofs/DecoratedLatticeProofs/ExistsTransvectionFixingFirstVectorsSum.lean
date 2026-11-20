@@ -18,6 +18,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.TransvectionAction
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h : (fun i => cA D ((M *ᵥ c) i)) = M.map (cA D) *ᵥ fun k => cA D (c k)`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec (cA D) M c i`. Rewrite using `[form, h, ← Matrix.mulVec_mulVec]`. Use `conv_rhs => rw [Matrix.dotProduct_mulVec, adj, Matrix.vecMul_transpose]`.
+-/
 theorem form_mulVec (S : HSp D) {n : ℕ} (y : VA S) (M : Mx D S.rank n) (c : Fin n → AE D) :
     form S y (M *ᵥ c) = (fun k => cA D (c k)) ⬝ᵥ ((adj M ⬝ gA S) *ᵥ y) := by
   have h : (fun i => cA D ((M *ᵥ c) i)) = M.map (cA D) *ᵥ fun k => cA D (c k) := by
@@ -25,17 +28,31 @@ theorem form_mulVec (S : HSp D) {n : ℕ} (y : VA S) (M : Mx D S.rank n) (c : Fi
   rw [form, h, ← Matrix.mulVec_mulVec]
   conv_rhs => rw [Matrix.dotProduct_mulVec, adj, Matrix.vecMul_transpose]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_single_one]`. Both sides reduce to the same expression.
+-/
 theorem mul_apply_col {m n k : ℕ} (g : Mx D m n) (M : Mx D n k) (r : Fin m) (c : Fin k) :
     (g ⬝ M) r c = (g *ᵥ (M *ᵥ Pi.single c 1)) r := by
   rw [Matrix.mulVec_mulVec, Matrix.mulVec_single_one]; rfl
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_single_one]`. Both sides reduce to the same expression.
+-/
 theorem col_apply {m n : ℕ} (M : Mx D m n) (c : Fin n) (r : Fin m) : (M *ᵥ Pi.single c 1) r = M r c := by
   rw [Matrix.mulVec_single_one]; rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `r`. Rewrite using `[col_apply, col_apply]`. Both sides reduce to the same expression.
+-/
 theorem submatrix_col {m n : ℕ} (M : Mx D m n) (i : Fin n) (c : Fin 1) :
     (M.submatrix id fun _ : Fin 1 => i) *ᵥ Pi.single c 1 = M *ᵥ Pi.single i 1 := by
   funext r; rw [col_apply, col_apply]; rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Rewrite using `[col_apply]`. Distinguish the cases in `hk : k = J`. Substitute `hk` using the available equality. Simplify using `[Matrix.vecMulVec_apply]`.
+
+Simplify using `[Matrix.vecMulVec_apply, Pi.single_eq_of_ne hk, Pi.single_eq_of_ne' hk]`.
+-/
 theorem smul_vecMulVec_single {ρ : ℕ} (s : AE D) (x : Fin ρ → AE D) (J k : Fin ρ) :
     (s • vecMulVec x (Pi.single J 1)) *ᵥ Pi.single k 1 = (s * (Pi.single k 1 : Fin ρ → AE D) J) • x := by
   funext l
@@ -44,6 +61,13 @@ theorem smul_vecMulVec_single {ρ : ℕ} (s : AE D) (x : Fin ρ → AE D) (J k :
   · subst hk; simp [Matrix.vecMulVec_apply]
   · simp [Matrix.vecMulVec_apply, Pi.single_eq_of_ne hk, Pi.single_eq_of_ne' hk]
 
+/- English proof (translation)
+Establish `hTe : ∀ i k : Fin ρ, (if k.1 = i.1 + 1 then (s • vecMulVec x (Pi.single J 1)) i k else 0) = if i = j then (if k = J then s * x j else 0) else 0`. Introduce `i k`. Distinguish the cases in `hk : k = J`. Substitute `hk` using the available equality. Distinguish the cases in `hi : i = j`.
+
+Substitute `hi` using the available equality. Simplify using `[hJ, Matrix.vecMulVec_apply, mul_comm]`. Establish `: ¬ (k.1 = i.1 + 1)` using `fun h => hi (Fin.ext (by omega))`. Simplify using `[hi, this]`. Simplify using `[hk, Matrix.vecMulVec_apply]`.
+
+Rewrite using `[GlobalTheory.MixPer.upSum]`. Simplify using `only [hTe]`. Simplify using the standard rewrite rules.
+-/
 theorem upSum_smul_vecMulVec {ρ : ℕ} (s : AE D) (x : Fin ρ → AE D) (j J : Fin ρ) (hJ : J.1 = j.1 + 1) :
     GlobalTheory.MixPer.upSum (s • vecMulVec x (Pi.single J 1)) = s * x j := by
   have hTe : ∀ i k : Fin ρ, (if k.1 = i.1 + 1 then (s • vecMulVec x (Pi.single J 1)) i k else 0) =
@@ -65,6 +89,11 @@ section Mid
 
 variable {V V₀ : HSp D} {ρ : ℕ} (d : HypDec V V₀ ρ)
 
+/- English proof (translation)
+Establish `h : (fun k => cA D ((Pi.single J (cA D s) : Fin ρ → AE D) k)) = (Pi.single J s : Fin ρ → AE D)`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = J`. Substitute `hk` using the available equality. Simplify using `[cA_cA]`.
+
+Simplify using `[Pi.single_apply, hk]`. Rewrite using `[form_mulVec, h, ← d.pX_eq, single_dotProduct]`.
+-/
 theorem form_jY_single (y : VA V) (J : Fin ρ) (s : AE D) :
     form V y (d.jY *ᵥ Pi.single J (cA D s)) = s * (d.pX *ᵥ y) J := by
   have h : (fun k => cA D ((Pi.single J (cA D s) : Fin ρ → AE D) k)) = (Pi.single J s : Fin ρ → AE D) := by
@@ -74,33 +103,59 @@ theorem form_jY_single (y : VA V) (J : Fin ρ) (s : AE D) :
     · simp [Pi.single_apply, hk]
   rw [form_mulVec, h, ← d.pX_eq, single_dotProduct]
 
+/- English proof (translation)
+Rewrite using `[form_mulVec, ← d.pY_eq]`.
+-/
 theorem form_jX (y : VA V) (b : Fin ρ → AE D) :
     form V y (d.jX *ᵥ b) = (fun k => cA D (b k)) ⬝ᵥ (d.pY *ᵥ y) := by
   rw [form_mulVec, ← d.pY_eq]
 
+/- English proof (translation)
+Use `hu y` as an intermediate fact. Rewrite `this` using `[act, transv, hv, hw]`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+-/
 theorem transv_fix {w v : VA V} {u : GA D V} (hu : IsTransv V w v u) {y : VA V} (hv : form V y v = 0)
     (hw : form V y w = 0) : mt V u *ᵥ y = y := by
   have := hu y
   rw [act, transv, hv, hw] at this
   rw [this]; simp
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_mulVec, d.pX_jX, Matrix.one_mulVec]`.
+-/
 theorem pX_jX_single (k : Fin ρ) : d.pX *ᵥ (d.jX *ᵥ Pi.single k 1) = Pi.single k 1 := by
   rw [Matrix.mulVec_mulVec, d.pX_jX, Matrix.one_mulVec]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_mulVec, d.pY_jX, Matrix.zero_mulVec]`.
+-/
 theorem pY_jX_vec (x : Fin ρ → AE D) : d.pY *ᵥ (d.jX *ᵥ x) = 0 := by
   rw [Matrix.mulVec_mulVec, d.pY_jX, Matrix.zero_mulVec]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_mulVec, d.pX_j0, Matrix.zero_mulVec]`.
+-/
 theorem isotropicProjection_anisotropic_vec_eq_zero (x : Fin V₀.rank → AE D) : d.pX *ᵥ (d.j0 *ᵥ x) = 0 := by
   rw [Matrix.mulVec_mulVec, d.pX_j0, Matrix.zero_mulVec]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_mulVec, d.pY_j0, Matrix.zero_mulVec]`.
+-/
 theorem dualProjection_anisotropic_vec_eq_zero (x : Fin V₀.rank → AE D) : d.pY *ᵥ (d.j0 *ᵥ x) = 0 := by
   rw [Matrix.mulVec_mulVec, d.pY_j0, Matrix.zero_mulVec]
 
+/- English proof (translation)
+The claim follows from `hu y`.
+-/
 theorem transv_apply {w v : VA V} {u : GA D V} (hu : IsTransv V w v u) (y : VA V) :
     mt V u *ᵥ y = transv V w v y := hu y
 
 variable {w v : VA V} {u : GA D V} {J : Fin ρ} {s : AE D} {c : Fin ρ → AE D}
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.MixPer.mem_fixer]`. Use extensionality with `r k`. Rewrite using `[mul_apply_col, submatrix_col, transv_fix hu, col_apply]`. Both sides reduce to the same expression. Rewrite using `[fv, pX_jX_single d, Pi.single_eq_of_ne' hiJ, mul_zero]`.
+
+Rewrite using `[fw, pY_jX_vec d, dotProduct_zero]`.
+-/
 theorem mem_fixer_of_ne (hu : IsTransv V w v u) (fv : ∀ y : VA V, form V y v = s * (d.pX *ᵥ y) J)
     (fw : ∀ y : VA V, form V y w = c ⬝ᵥ (d.pY *ᵥ y)) {i : Fin ρ} (hiJ : i ≠ J) :
     u ∈ GlobalTheory.MixPer.fixer V (d.jX.submatrix id fun _ : Fin 1 => i) := by
@@ -111,6 +166,9 @@ theorem mem_fixer_of_ne (hu : IsTransv V w v u) (fv : ∀ y : VA V, form V y v =
   · rw [fv, pX_jX_single d, Pi.single_eq_of_ne' hiJ, mul_zero]
   · rw [fw, pY_jX_vec d, dotProduct_zero]
 
+/- English proof (translation)
+Use extensionality with `r k`. Rewrite using `[mul_apply_col, transv_apply hu, transv, fv, fw, pX_jX_single d, pY_jX_vec d]`. Simplify using `only [dotProduct_zero, mul_zero, zero_smul, sub_zero]`. Rewrite using `[Matrix.add_apply, mul_apply_col, smul_vecMulVec_single, Matrix.mulVec_smul, ← hw]`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, col_apply]`.
+-/
 theorem transv_jX (hu : IsTransv V w v u) (fv : ∀ y : VA V, form V y v = s * (d.pX *ᵥ y) J)
     (fw : ∀ y : VA V, form V y w = c ⬝ᵥ (d.pY *ᵥ y)) {x : Fin ρ → AE D} (hw : w = d.jX *ᵥ x) :
     mt V u ⬝ d.jX = d.jX + d.jX ⬝ (s • vecMulVec x (Pi.single J 1)) := by
@@ -120,6 +178,9 @@ theorem transv_jX (hu : IsTransv V w v u) (fv : ∀ y : VA V, form V y v = s * (
   rw [Matrix.add_apply, mul_apply_col, smul_vecMulVec_single, Matrix.mulVec_smul, ← hw]
   simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, col_apply]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_zero, add_zero]`. Use extensionality with `r k`. Rewrite using `[mul_apply_col, transv_fix hu, col_apply]`. Rewrite using `[fv, isotropicProjection_anisotropic_vec_eq_zero d, Pi.zero_apply, mul_zero]`. Rewrite using `[fw, dualProjection_anisotropic_vec_eq_zero d, dotProduct_zero]`.
+-/
 theorem unitaryTransvection_on_anisotropic_part (hu : IsTransv V w v u) (fv : ∀ y : VA V, form V y v = s * (d.pX *ᵥ y) J)
     (fw : ∀ y : VA V, form V y w = c ⬝ᵥ (d.pY *ᵥ y)) : mt V u ⬝ d.j0 = d.j0 + d.jX ⬝ (0 : Mx D ρ V₀.rank) := by
   rw [Matrix.mul_zero, add_zero]
@@ -134,6 +195,17 @@ end GlobalTheory.TransvMid
 
 open GlobalTheory.IndefiniteRowSideFullHecke.TransvectionAction in
 
+/- English proof (translation)
+Introduce `D V V₀ ρ d z j a haj hai hj s`. Use `set J : Fin ρ := ⟨j.1 + 1, hj⟩ with hJ`. Establish `hjJ : j < J` using `by rw [Fin.lt_def]; simp [hJ]`. Establish `haJ : ratVec a J = 0` using `by simp [ratVec, hai J hjJ]`. Establish `hw : vecX d (ratVec a) = d.jX *ᵥ ratVec a` using `rfl`.
+
+Use `⟨d.jY *ᵥ Pi.single J (cA D s), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.TransvMid.form_jY_single, hw, Matrix.mulVec_mulVec, d.pX_jX, Matrix.one_mulVec, haJ, mul_zero]`. Introduce `i k hki`. Rewrite using `[GlobalTheory.TransvMid.form_jY_single, vecX, Matrix.mulVec_mulVec, d.pX_jX, Matrix.one_mulVec]`. Distinguish the cases in `hk : k = J`.
+
+Substitute `hk` using the available equality. Establish `: ratVec a i = 0` using `by simp [ratVec, hai i (lt_of_lt_of_le hjJ hki)]`. Rewrite using `[this, mul_zero]`. Rewrite using `[Pi.single_eq_of_ne' hk, mul_zero, zero_mul]`. Introduce `u hu`.
+
+Establish `fv : ∀ y : VA V, form V y (d.jY *ᵥ Pi.single J (cA D s)) = s * (d.pX *ᵥ y) J` using `fun y => GlobalTheory.TransvMid.form_jY_single d y J s`. Establish `fw : ∀ y : VA V, form V y (vecX d (ratVec a)) = (fun k => cA D (ratVec a k)) ⬝ᵥ (d.pY *ᵥ y)` using `fun y => GlobalTheory.TransvMid.form_jX d y _`. Generalize the expression as in `d.jY *ᵥ Pi.single J (cA D s) = v at hu fv`. Generalize the expression as in `hwv : vecX d (ratVec a) = w at hu fw`. Rewrite `hwv` using `[vecX]`.
+
+Use `⟨fun i => GlobalTheory.TransvMid.mem_fixer_of_ne d hu fv fw (ne_of_lt (lt_of_le_of_lt i.2 hjJ)), ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.MixPer.simpleSum_eq d z (GlobalTheory.TransvMid.transv_jX d hu fv fw hwv.symm) (GlobalTheory.TransvMid.unitaryTransvection_on_anisotropic_part d hu fv fw), GlobalTheory.MixPer.superSum_const]`. Simplify using `only [Matrix.zero_mulVec, dotProduct_zero, add_zero, one_mul]`. Rewrite using `[GlobalTheory.TransvMid.upSum_smul_vecMulVec s _ j J rfl]`. Simplify using `[ratVec, haj]`.
+-/
 theorem GlobalTheory.TransvMid.exists_mid : ∀ (D : D7) (V V₀ : HSp D) (ρ : ℕ) (d : HypDec V V₀ ρ) (z : Fin V₀.rank → D.host.E) (j : Fin ρ) (a : Fin ρ → D.host.E), a j = 1 → (∀ i, j < i → a i = 0) → j.1 + 1 < ρ → ∀ s : AE D, ∃ v : GlobalTheory.IndefiniteRowSideFullHecke.TransvectionAction.VA V, GlobalTheory.IndefiniteRowSideFullHecke.TransvectionAction.form V (GlobalTheory.IndefiniteRowSideFullHecke.TransvectionAction.vecX d (GlobalTheory.IndefiniteRowSideFullHecke.TransvectionAction.ratVec a)) v = 0 ∧ (∀ i k : Fin ρ, k ≤ i → GlobalTheory.IndefiniteRowSideFullHecke.TransvectionAction.form V (GlobalTheory.IndefiniteRowSideFullHecke.TransvectionAction.vecX d (Pi.single k 1)) v * GlobalTheory.IndefiniteRowSideFullHecke.TransvectionAction.ratVec a i = 0) ∧ ∀ u : GA D V, GlobalTheory.IndefiniteRowSideFullHecke.TransvectionAction.IsTransv V (GlobalTheory.IndefiniteRowSideFullHecke.TransvectionAction.vecX d (GlobalTheory.IndefiniteRowSideFullHecke.TransvectionAction.ratVec a)) v u → (∀ i : {i : Fin ρ // i ≤ j}, u ∈ fixer V (d.jX.submatrix id fun _ : Fin 1 => i.1)) ∧ simpleSum d z u = s := by
   intro D V V₀ ρ d z j a haj hai hj s
   set J : Fin ρ := ⟨j.1 + 1, hj⟩ with hJ

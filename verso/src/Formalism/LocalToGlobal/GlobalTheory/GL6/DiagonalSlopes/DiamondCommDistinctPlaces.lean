@@ -14,6 +14,11 @@ section Gen
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `key : ∀ w : HeightOneSpectrum (𝓞 F), prV (E` using `E) w (g.1 i j - h.1 i j) = 0 := by`. Introduce `w`. Use `congrArg (fun x : GL (Fin n) (E ⊗[F] w.adicCompletion F) => x.1 i j) (H w)` as an intermediate fact. Rewrite using `[map_sub]`.
+
+Conclude with `sub_eq_zero.2 this`. Conclude with `sub_eq_zero.1 (Formalism.UG.P.afsplit_inj _ key)`.
+-/
 theorem adelic_GL_ext_local (g h : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))
     (H : ∀ w : HeightOneSpectrum (𝓞 F), bc (prV (E := E) w) g = bc (prV (E := E) w) h) : g = h := by
   ext i j
@@ -23,6 +28,11 @@ theorem adelic_GL_ext_local (g h : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F)
     rw [map_sub]; exact sub_eq_zero.2 this
   exact sub_eq_zero.1 (Formalism.UG.P.afsplit_inj _ key)
 
+/- English proof (translation)
+Apply `adelic_GL_ext_local` to reduce the goal to its premises. Introduce `w`. Rewrite using `[map_mul, map_mul]`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality.
+
+Rewrite using `[h2 w hvv, mul_one, one_mul]`. Rewrite using `[h1 w hw, mul_one, one_mul]`.
+-/
 theorem adelic_comm_disjoint_support (δ δ' : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (v v' : HeightOneSpectrum (𝓞 F))
     (hvv : v ≠ v') (h1 : ∀ w, w ≠ v → bc (prV (E := E) w) δ = 1) (h2 : ∀ w, w ≠ v' → bc (prV (E := E) w) δ' = 1) :
     δ * δ' = δ' * δ := by
@@ -39,6 +49,17 @@ variable {D : D7} {u : D.what₂.Word}
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨g, hg, hgφ⟩` from `((Tf.val i hi h0).Fi φ).1 hφ`. Establish `hval : ∀ c, φ c = fun z => g ((Tf.cls i hi h0).y c) ((Tf.val i hi h0).eY z)`. Introduce `c`. Use function extensionality and compare the values at `z`. Use `congrFun (congrFun hgφ c) ((Tf.val i hi h0).eY z)` as an intermediate fact.
+
+Simplify using `only [Equiv.symm_apply_apply] at this`. Conclude with `this.symm`. Establish `hgA : g ∈ AdFun (Tf.cls i hi h0).lev (embT D)` using `(Submodule.mem_inf.1 hg).1`. Establish `hdia : ∀ v0 a0 (ψ : Formalism.MainNotions.product_first_zeroth_parts.Fn D u i) c, Formalism.MainNotions.product_first_zeroth_parts.dia D u i v0 a0 ψ c = (D.fm u).dilT i v0 a0 c (ψ ((D.fm u).dil i v0 a0 c))` using `fun _ _ _ _ => rfl`. Take `⟨ka, hka, δa, hδa⟩` from `hE i hi h0 v' a`.
+
+Take `⟨kb, hkb, δb, hδb⟩` from `hE i hi h0 v b`. Establish `hne : (Tf.atT.eV v).1 ≠ (Tf.atT.eV v').1` using `fun h => hvv (Tf.atT.eV.injective (Subtype.ext h))`. Establish `hcomm : δa * δb = δb * δa` using `Subtype.ext (adelic_comm_disjoint_support δb.1 δa.1 _ _ hne hδb.1 hδa.1).symm`. Establish `hga` using `adelic_function_right_translate_diamond (Tf.cls i hi h0).lev (embT D) _ _ (level_places_not_bad Tf.atT v') hδa hgA`. Establish `hgb` using `adelic_function_right_translate_diamond (Tf.cls i hi h0).lev (embT D) _ _ (level_places_not_bad Tf.atT v) hδb hgA`.
+
+Use function extensionality and compare the values at `c`. Establish `e1 : Formalism.MainNotions.product_first_zeroth_parts.dia D u i v b φ ((D.fm u).dil i v' a c) = fun z => g ((Tf.cls i hi h0).y ((D.fm u).dil i v' a c) * δb) ((Tf.val i hi h0).eY z)`. Rewrite using `[hdia, hval, (Tf.val i hi h0).dilT v b kb hkb _ δb hδb g hgA]`. Establish `e2 : Formalism.MainNotions.product_first_zeroth_parts.dia D u i v' a φ ((D.fm u).dil i v b c) = fun z => g ((Tf.cls i hi h0).y ((D.fm u).dil i v b c) * δa) ((Tf.val i hi h0).eY z)`. Rewrite using `[hdia, hval, (Tf.val i hi h0).dilT v' a ka hka _ δa hδa g hgA]`.
+
+Rewrite using `[hdia v' a, e1, (Tf.val i hi h0).dilT v' a ka hka c δa hδa _ hgb, hdia v b, e2, (Tf.val i hi h0).dilT v b kb hkb c δb hδb _ hga]`. Use function extensionality and compare the values at `z`. Simplify using `only [mul_assoc, hcomm]`.
+-/
 theorem diamond_comm_distinct_places (Tf : Forms0 D u) (hE : DiamondElementsExist Tf) (i : ℕ) (hi : i ≤ D.R.m) (h0 : i = 0) (v v' : (D.mem u).A.vT)
     (hvv : v ≠ v') (a : ((D.mem u).A.Fv v')ˣ) (b : ((D.mem u).A.Fv v)ˣ) (φ : Formalism.MainNotions.product_first_zeroth_parts.Fn D u i)
     (hφ : φ ∈ (D.fm u).Fi i) :

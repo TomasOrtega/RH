@@ -4,6 +4,11 @@ open GlobalTheory.PolFan GlobalTheory.LocM
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hd : ∀ i, (N : ℤ) ∣ x i - y i` using `fun i => (ZMod.intCast_eq_intCast_iff_dvd_sub _ _ _).1 (h i).symm`. Use `choose w hw using hd`. Establish `hxy : x - y = (N : ℤ) • w` using `by ext i; simp [hw i]`. Establish `he : e x - e y = (N : ℤ) • e w` using `by rw [← map_sub, hxy, map_smul]`. Introduce `i`.
+
+Rewrite using `[ZMod.intCast_eq_intCast_iff_dvd_sub]`. Use `congrFun he i` as an intermediate fact. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul] at this`. Conclude with `⟨-(e w i), by linarith⟩`.
+-/
 theorem transport_cong {N r : ℕ} (e : (Fin r → ℤ) →ₗ[ℤ] (Fin r → ℤ)) (x y : Fin r → ℤ)
     (h : ∀ i, ((x i : ℤ) : ZMod N) = y i) : ∀ i, ((e x i : ℤ) : ZMod N) = e y i := by
   have hd : ∀ i, (N : ℤ) ∣ x i - y i := fun i => (ZMod.intCast_eq_intCast_iff_dvd_sub _ _ _).1 (h i).symm
@@ -16,6 +21,17 @@ theorem transport_cong {N r : ℕ} (e : (Fin r → ℤ) →ₗ[ℤ] (Fin r → �
   simp only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul] at this
   exact ⟨-(e w i), by linarith⟩
 
+/- English proof (translation)
+Introduce `O _ X Y _ _ _ _ n N _ ebX ebY f μ hμ`. Set `A : (Fin n → ℤ) →ₗ[ℤ] (Fin n → ℤ)` to `ebY.toLinearMap ∘ₗ f.toLinearMap.toAddMonoidHom.toIntLinearMap ∘ₗ ebX.symm.toLinearMap`. Set `B : (Fin n → ℤ) →ₗ[ℤ] (Fin n → ℤ)` to `ebX.toLinearMap ∘ₗ f.symm.toLinearMap.toAddMonoidHom.toIntLinearMap ∘ₗ ebY.symm.toLinearMap`. Establish `hA : ∀ x, A x = ebY (f (ebX.symm x))` using `fun x => rfl`. Establish `hB : ∀ x, B x = ebX (f.symm (ebY.symm x))` using `fun x => rfl`.
+
+Establish `hBA : ∀ x, B (A x) = x` using `fun x => by simp [hA, hB]`. Establish `hAB : ∀ x, A (B x) = x` using `fun x => by simp [hA, hB]`. Establish `key : ∀ (F G : (Fin n → ℤ) →ₗ[ℤ] (Fin n → ℤ)), (∀ x, G (F x) = x) → ∀ c i, ((G (ebY (μ (fun i => ((F (ebY (μ c)) i : ℤ) : ZMod N)))) i : ℤ) : ZMod N) = c i`. Introduce `F G hGF c i`. Rewrite using `[transport_cong G _ (F (ebY (μ c))) (fun j => hμ _ j) i, hGF, hμ]`.
+
+Set `σ : Equiv.Perm (Fin n → ZMod N)` to `{ toFun := fun c i => ((A (ebY (μ c)) i : ℤ) : ZMod N) invFun := fun c i => ((B (ebY (μ c)) i : ℤ) : ZMod N) left_inv := fun c => by funext i; exact key A B hBA c i right_inv := fun c => by funext i; exact key B A hAB c i }`. Use `⟨σ, fun c i => ?_, ?_⟩` and prove the remaining obligations. Use `key A B hBA c i` as an intermediate fact. Rewrite `this` using `[hB, LinearEquiv.symm_apply_apply]`. Conclude with `this`.
+
+Introduce `b hmin c α hα`. Simplify using `only [pull_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply]`. Apply `hmin (σ c) (f α)` to reduce the goal to its premises. Introduce `i`. Establish `h1 : ebY (f α) = A (ebX α)` using `by rw [hA, LinearEquiv.symm_apply_apply]`.
+
+Rewrite using `[h1]`. Conclude with `transport_cong A (ebX α) (ebY (μ c)) (fun j => (hα j).trans (hμ c j).symm) i`.
+-/
 theorem transport_minimisers : ∀ (O : Type) [CommRing O] (X Y : Type) [AddCommGroup X] [Module O X] [AddCommGroup Y] [Module O Y] (n N : ℕ) [NeZero N] (ebX : X ≃ₗ[ℤ] (Fin n → ℤ)) (ebY : Y ≃ₗ[ℤ] (Fin n → ℤ)) (f : X ≃ₗ[O] Y) (μ : (Fin n → ZMod N) → Y), (∀ cl i, ((ebY (μ cl) i : ℤ) : ZMod N) = cl i) → ∃ σ : Equiv.Perm (Fin n → ZMod N), (∀ cl i, ((ebX (f.symm (μ (σ cl))) i : ℤ) : ZMod N) = cl i) ∧ ∀ b : LinearMap.BilinForm ℤ Y, (∀ cl (α : Y), (∀ i, ((ebY α i : ℤ) : ZMod N) = cl i) → b (μ cl) (μ cl) ≤ b α α) → ∀ cl (α : X), (∀ i, ((ebX α i : ℤ) : ZMod N) = cl i) → pull f.toLinearMap b (f.symm (μ (σ cl))) (f.symm (μ (σ cl))) ≤ pull f.toLinearMap b α α := by
   intro O _ X Y _ _ _ _ n N _ ebX ebY f μ hμ
   let A : (Fin n → ℤ) →ₗ[ℤ] (Fin n → ℤ) :=

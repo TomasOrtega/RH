@@ -9,6 +9,25 @@ open scoped InnerProductSpace
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `M _ _ n ε E μ kk j bv x hM hS hj hL s hs hx`. Take `⟨hb, hω, hζ⟩` from `GlobalTheory.shape_position n kk j ε μ bv hS hj`. Establish `hO` using `GlobalTheory.T.splitCasimir_offDiagonal_norm_sq_le_of_level M n ε E μ kk j bv x hM hS hj hL`. Use `set ζ : ℝ := -μ s + (1 - (n : ℝ)) / 2 with hζdef`. Establish `hζs : ζ ≤ bv / 32` using `((hζ s).1 hs).2`.
+
+Establish `hnode : ∀ c : Fin n, kk ≤ c.val + 1 → (15 * bv / 16) ^ 2 * ‖x c‖ ^ 2 ≤ ‖∑ a ∈ univ.erase c, E c a (x a)‖ ^ 2`. Introduce `c hc`. Establish `h1` using `(GlobalTheory.wtNear_diag_bounds M n ε E (lowK ε μ) (j : ℝ) (x c) hM.2.1 (hL c).2).2.1 c (ζ : ℂ) (15 * bv / 16) (by positivity) (by`. Introduce `ω hw`. Establish `h2` using `((hω ω hw c).2 hc).1`.
+
+Rewrite using `[← Complex.ofReal_add, Complex.norm_real, Real.norm_eq_abs]`. Use `neg_abs_le (ζ + ω c)` as an intermediate fact. Use the proof step `linarith)`. Establish `h3` using `congrFun hx c`. Simplify using `only [splitCas, Pi.smul_apply] at h3`.
+
+Rewrite `h3` using `[← Finset.add_sum_erase univ (fun a => E c a (x a)) (mem_univ c)]`. Establish `h4 : (ζ : ℂ) • x c + E c c (x c) = -∑ a ∈ univ.erase c, E c a (x a)`. Rewrite using `[← h3]`. Normalize the expressions using the abelian group laws. Rewrite `h1` using `[h4, norm_neg]`.
+
+Conclude with `h1`. Establish `hterm : ∀ c : Fin n, (15 * bv / 16) ^ 2 * ‖x c‖ ^ 2 - 2 * ‖∑ a ∈ univ.erase c, E c a (x a)‖ ^ 2 ≤ (15 * bv / 16) ^ 2 * ((if ε c then 1 else -1) * ⟪x c, x c⟫_ℂ : ℂ).re`. Introduce `c`. Establish `hin : (⟪x c, x c⟫_ℂ : ℂ).re = ‖x c‖ ^ 2`. Simplify using `using inner_self_eq_norm_sq (𝕜 := ℂ) (x c)`.
+
+Distinguish the cases in `he : ε c = true`. Rewrite using `[if_pos he, one_mul, hin]`. Use `sq_nonneg ‖∑ a ∈ univ.erase c, E c a (x a)‖` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc : kk ≤ c.val + 1`.
+
+Assume the negation of the conclusion as `h`. Conclude with `he (hS.2.2.2.1 c (not_le.mp h)).1`. Rewrite using `[if_neg he, neg_one_mul, Complex.neg_re, hin]`. Use `hnode c hc` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hsum` using `Finset.sum_le_sum (fun c (_ : c ∈ (univ : Finset (Fin n))) => hterm c)`. Rewrite `hsum` using `[Finset.sum_sub_distrib, ← Finset.mul_sum, ← Finset.mul_sum, ← Finset.mul_sum, ← Complex.re_sum]`. Establish `hS0 : 0 ≤ ∑ c, ‖x c‖ ^ 2` using `Finset.sum_nonneg fun c _ => sq_nonneg _`. Establish `hpos : 0 < (15 * bv / 16) ^ 2` using `by positivity`. Establish `hkey : 0 ≤ (15 * bv / 16) ^ 2 * (hhJ ε x x).re`.
+
+Unfold `hhJ`. Establish `: 0 ≤ bv ^ 2 * ∑ c, ‖x c‖ ^ 2` using `mul_nonneg (sq_nonneg _) hS0`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `(mul_nonneg_iff_of_pos_left hpos).mp hkey`.
+-/
 theorem hhJ_nonneg_of_cloud_eigen : ∀ (M : Type) [NormedAddCommGroup M] [InnerProductSpace ℂ M] (n : ℕ) (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ M) (μ : Fin n → ℝ) (kk j : ℕ) (bv : ℝ) (x : Fin n → M), IsMod ε E μ → Shape ε kk μ bv → j ≤ 4 * n ^ 2 + 2 → (∀ c, Lev ε E μ j (x c)) → ∀ s : Fin n, s.val + 1 < kk → splitCas E x = ((-μ s + (1 - (n : ℝ)) / 2 : ℝ) : ℂ) • x → 0 ≤ (hhJ ε x x).re := by
   intro M _ _ n ε E μ kk j bv x hM hS hj hL s hs hx
   obtain ⟨hb, hω, hζ⟩ := GlobalTheory.shape_position n kk j ε μ bv hS hj

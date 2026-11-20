@@ -33,6 +33,13 @@ open Formalism.MainNotions.GL3Theta
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Establish `hp : l.Prime` using `Fact.out`. Establish `hB` using `((Formalism.L2.Th1.D.kurIntegers l).1 x).2 ⟨hx, h1⟩`. Establish `hS : Formalism.L2.Th1.D.muPrime l = {ζ : ℂ_[l] | ∃ n : ℕ, 0 < n ∧ Nat.Coprime n l ∧ ζ ^ n = 1}`. Use extensionality with `ζ`. Simplify using `only [Formalism.L2.Th1.D.muPrime, Set.mem_ofPred_eq]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, h0, hn, h⟩`. Conclude with `⟨n, h0, Nat.coprime_comm.mp ((Nat.Prime.coprime_iff_not_dvd hp).mpr hn), h⟩`. Introduce and unpack `⟨n, h0, hn, h⟩`. Conclude with `⟨n, h0, (Nat.Prime.coprime_iff_not_dvd hp).mp (Nat.coprime_comm.mp hn), h⟩`.
+
+Unfold `Formalism.L2.Th1.D.ringB Formalism.L2.Th1.D.ringA at hB`. Rewrite `hB` using `[hS]`. Conclude with `hB`.
+-/
 theorem mem_Wp_of_kur {x : ℂ_[l]} (hx : x ∈ Formalism.L2.Th1.CM.MaximalUnramifiedExtension l) (h1 : ‖x‖ ≤ 1) : x ∈ Wp l := by
   have hp : l.Prime := Fact.out
   have hB := ((Formalism.L2.Th1.D.kurIntegers l).1 x).2 ⟨hx, h1⟩
@@ -48,6 +55,11 @@ theorem mem_Wp_of_kur {x : ℂ_[l]} (hx : x ∈ Formalism.L2.Th1.CM.MaximalUnram
   rw [hS] at hB
   exact hB
 
+/- English proof (translation)
+Use `closure_mono (s := ((Subring.closure {ζ : ℂ_[l] | ∃ n : ℕ, 0 < n ∧ Nat.Coprime n l ∧ ζ ^ n = 1} : Subring ℂ_[l]) : Set ℂ_[l])) ?_ hx` and prove the remaining obligations. Introduce `y hy`. Establish `hle : Subring.closure {ζ : ℂ_[l] | ∃ n : ℕ, 0 < n ∧ Nat.Coprime n l ∧ ζ ^ n = 1} ≤ (Subfield.closure {ζ : ℂ_[l] | ∃ n : ℕ, 0 < n ∧ ¬ l ∣ n ∧ ζ ^ n = 1}).toSubring`. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `ζ ⟨n, h0, hn, h⟩`.
+
+Conclude with `Subfield.subset_closure ⟨n, h0, (Nat.Prime.coprime_iff_not_dvd Fact.out).mp (Nat.coprime_comm.mp hn), h⟩`. Conclude with `hle hy`.
+-/
 theorem Wp_subset_Kur {x : ℂ_[l]} (hx : x ∈ Wp l) : x ∈ Formalism.L2.Th1.CM.MaximalUnramifiedExtension l := by
   refine closure_mono (s := ((Subring.closure {ζ : ℂ_[l] | ∃ n : ℕ, 0 < n ∧ Nat.Coprime n l ∧ ζ ^ n = 1} : Subring ℂ_[l]) : Set ℂ_[l])) ?_ hx
   intro y hy
@@ -58,6 +70,9 @@ theorem Wp_subset_Kur {x : ℂ_[l]} (hx : x ∈ Wp l) : x ∈ Formalism.L2.Th1.C
     exact Subfield.subset_closure ⟨n, h0, (Nat.Prime.coprime_iff_not_dvd Fact.out).mp (Nat.coprime_comm.mp hn), h⟩
   exact hle hy
 
+/- English proof (translation)
+Use `closure_mono (s := ((Subring.closure {ζ : ℂ_[l] | ∃ n : ℕ, 0 < n ∧ Nat.Coprime n l ∧ ζ ^ n = 1} : Subring ℂ_[l]) : Set ℂ_[l])) ?_ hx` and prove the remaining obligations. Introduce `y hy`. Establish `hle : Subring.closure {ζ : ℂ_[l] | ∃ n : ℕ, 0 < n ∧ Nat.Coprime n l ∧ ζ ^ n = 1} ≤ (Algebra.adjoin ℚ_[l] (product_zeroth_first_parts.rootsPrimeTo l)).toSubring` using `Subring.closure_le.2 fun ζ hζ => Algebra.subset_adjoin hζ`. Conclude with `hle hy`.
+-/
 theorem Wp_subset_Wfrac {x : ℂ_[l]} (hx : x ∈ Wp l) : x ∈ product_zeroth_first_parts.Wfrac l := by
   refine closure_mono (s := ((Subring.closure {ζ : ℂ_[l] | ∃ n : ℕ, 0 < n ∧ Nat.Coprime n l ∧ ζ ^ n = 1} : Subring ℂ_[l]) : Set ℂ_[l])) ?_ hx
   intro y hy
@@ -66,6 +81,11 @@ theorem Wp_subset_Wfrac {x : ℂ_[l]} (hx : x ∈ Wp l) : x ∈ product_zeroth_f
     Subring.closure_le.2 fun ζ hζ => Algebra.subset_adjoin hζ
   exact hle hy
 
+/- English proof (translation)
+Distinguish the cases in `hr : x = 0`. Conclude with `⟨0, by simp [hr]⟩`. Take `⟨k, hk⟩` from `exists_pow_lt_of_lt_one (inv_pos.2 (norm_pos_iff.2 hr)) ha`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow]`.
+
+Establish `h0 : 0 < ‖x‖` using `norm_pos_iff.2 hr`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_pow_norm_le {K : Type*} [NormedField K] {a : K} (ha : ‖a‖ < 1) (x : K) : ∃ k : ℕ, ‖a ^ k * x‖ ≤ 1 := by
   by_cases hr : x = 0
   · exact ⟨0, by simp [hr]⟩
@@ -76,6 +96,11 @@ theorem exists_pow_norm_le {K : Type*} [NormedField K] {a : K} (ha : ‖a‖ < 1
   calc ‖a‖ ^ k * ‖x‖ ≤ ‖x‖⁻¹ * ‖x‖ := by gcongr
     _ = 1 := inv_mul_cancel₀ h0.ne'
 
+/- English proof (translation)
+Establish `hl : ‖(l : ℚ_[l])‖ < 1` using `Padic.norm_p_lt_one`. Establish `hl0 : (l : ℚ_[l]) ≠ 0` using `by exact_mod_cast (Fact.out : l.Prime).ne_zero`. Take `⟨k, hk⟩` from `exists_pow_norm_le hl r`. Establish `h1` using `Wp_subset_Kur (GlobalTheory.BiextInhab.algebraMap_mem_Wp hk)`. Establish `h2 : algebraMap ℚ_[l] ℂ_[l] r = (((l : ℂ_[l]) ^ k)⁻¹) * algebraMap ℚ_[l] ℂ_[l] ((l : ℚ_[l]) ^ k * r)`.
+
+Establish `hc : (l : ℂ_[l]) ≠ 0` using `by exact_mod_cast (Fact.out : l.Prime).ne_zero`. Rewrite using `[map_mul, map_pow, map_natCast]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[h2]`. Conclude with `mul_mem (inv_mem (pow_mem (natCast_mem _ l) k)) h1`.
+-/
 theorem algebraMap_mem_Kur (r : ℚ_[l]) : algebraMap ℚ_[l] ℂ_[l] r ∈ Formalism.L2.Th1.CM.MaximalUnramifiedExtension l := by
   have hl : ‖(l : ℚ_[l])‖ < 1 := Padic.norm_p_lt_one
   have hl0 : (l : ℚ_[l]) ≠ 0 := by exact_mod_cast (Fact.out : l.Prime).ne_zero
@@ -93,6 +118,11 @@ def kurAlg (l : ℕ) [Fact l.Prime] : Subalgebra ℚ_[l] ℂ_[l] :=
   { (Formalism.L2.Th1.CM.MaximalUnramifiedExtension l).toSubring with
     algebraMap_mem' := algebraMap_mem_Kur }
 
+/- English proof (translation)
+Establish `h1 : Algebra.adjoin ℚ_[l] (product_zeroth_first_parts.rootsPrimeTo l) ≤ kurAlg l` using `Algebra.adjoin_le fun ζ hζ => Wp_subset_Kur (Subring.le_topologicalClosure _ (Subring.subset_closure hζ))`. Establish `hx' : x ∈ closure (Algebra.adjoin ℚ_[l] (product_zeroth_first_parts.rootsPrimeTo l) : Set ℂ_[l])`. Rewrite using `[← Subalgebra.topologicalClosure_coe]`. Conclude with `hx`. Establish `hc : IsClosed (Formalism.L2.Th1.CM.MaximalUnramifiedExtension l : Set ℂ_[l])` using `Subfield.isClosed_topologicalClosure _`.
+
+Conclude with `closure_minimal (fun y hy => h1 hy) hc hx'`.
+-/
 theorem Wfrac_subset_Kur {x : ℂ_[l]} (hx : x ∈ product_zeroth_first_parts.Wfrac l) : x ∈ Formalism.L2.Th1.CM.MaximalUnramifiedExtension l := by
   have h1 : Algebra.adjoin ℚ_[l] (product_zeroth_first_parts.rootsPrimeTo l) ≤ kurAlg l :=
     Algebra.adjoin_le fun ζ hζ => Wp_subset_Kur (Subring.le_topologicalClosure _ (Subring.subset_closure hζ))
@@ -101,6 +131,9 @@ theorem Wfrac_subset_Kur {x : ℂ_[l]} (hx : x ∈ product_zeroth_first_parts.Wf
   have hc : IsClosed (Formalism.L2.Th1.CM.MaximalUnramifiedExtension l : Set ℂ_[l]) := Subfield.isClosed_topologicalClosure _
   exact closure_minimal (fun y hy => h1 hy) hc hx'
 
+/- English proof (translation)
+Establish `h : ‖(l : ℂ_[l])‖ = ‖(l : ℚ_[l])‖`. Rewrite using `[← map_natCast (algebraMap ℚ_[l] ℂ_[l]) l]`. Conclude with `norm_algebraMap' ℂ_[l] _`. Rewrite using `[h]`. Conclude with `Padic.norm_p_lt_one`.
+-/
 theorem norm_l_lt : ‖(l : ℂ_[l])‖ < 1 := by
   have h : ‖(l : ℂ_[l])‖ = ‖(l : ℚ_[l])‖ := by
     rw [← map_natCast (algebraMap ℚ_[l] ℂ_[l]) l]
@@ -108,6 +141,9 @@ theorem norm_l_lt : ‖(l : ℂ_[l])‖ < 1 := by
   rw [h]
   exact Padic.norm_p_lt_one
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `mem_Wp_of_kur (Wfrac_subset_Kur h1) h2`. Introduce `h`. Conclude with `⟨Wp_subset_Wfrac h, GlobalTheory.UnitModel.norm_le_one_of_mem_Wp h⟩`.
+-/
 theorem mem_Wint_iff {x : ℂ_[l]} : x ∈ product_zeroth_first_parts.Wint l ↔ x ∈ Wp l := by
   constructor
   · rintro ⟨h1, h2⟩
@@ -115,6 +151,13 @@ theorem mem_Wint_iff {x : ℂ_[l]} : x ∈ product_zeroth_first_parts.Wint l ↔
   · intro h
     exact ⟨Wp_subset_Wfrac h, GlobalTheory.UnitModel.norm_le_one_of_mem_Wp h⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨k, hk⟩` from `exists_pow_norm_le (norm_l_lt) x`. Conclude with `⟨k, mem_Wp_of_kur (mul_mem (pow_mem (natCast_mem _ l) k) (Wfrac_subset_Kur h)) hk⟩`. Introduce and unpack `⟨k, hk⟩`.
+
+Establish `hc : (l : ℂ_[l]) ≠ 0` using `by exact_mod_cast (Fact.out : l.Prime).ne_zero`. Establish `h1` using `Wp_subset_Wfrac hk`. Establish `h2 : x = algebraMap ℚ_[l] ℂ_[l] (((l : ℚ_[l]) ^ k)⁻¹) * ((l : ℂ_[l]) ^ k * x)`. Rewrite using `[map_inv₀, map_pow, map_natCast]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[h2]`. Conclude with `mul_mem (Subalgebra.algebraMap_mem _ _) h1`.
+-/
 theorem mem_Wfrac_iff {x : ℂ_[l]} : x ∈ product_zeroth_first_parts.Wfrac l ↔ InWf x := by
   constructor
   · intro h
@@ -158,6 +201,11 @@ section Reps
 
 variable (D : D7) (p : ℕ)
 
+/- English proof (translation)
+Establish `hn : 1 ≤ nP D p` using `Nat.one_le_iff_ne_zero.2 (NeZero.ne _)`. Establish `h : e + e * (nP D p - 1) = e * nP D p`. Take `⟨m, hm⟩` from `Nat.exists_eq_add_of_le hn`. Rewrite using `[hm]`. Simplify using the standard rewrite rules.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[posPl_add, h, ← posPl_mod, Nat.mul_mod_left, posPl_zero]`.
+-/
 theorem posPl_back (z : Bool × HH D) (e : ℕ) : posPl D p (posPl D p z e) (e * (nP D p - 1)) = z := by
   have hn : 1 ≤ nP D p := Nat.one_le_iff_ne_zero.2 (NeZero.ne _)
   have h : e + e * (nP D p - 1) = e * nP D p := by

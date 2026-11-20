@@ -11,6 +11,13 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `S A G _ _ _ _ inc pr hA hG _ _ h`. Establish `hApr : IsProper A.hom` using `hA.proper`. Establish `hsep : IsSeparated G.hom` using `hG.separated`. Establish `hpr : IsSeparated pr.left`. Establish `e : pr.left ≫ G.hom = A.hom` using `Over.w pr`.
+
+Establish `: IsSeparated (pr.left ≫ G.hom)` using `by rw [e]; infer_instance`. Conclude with `IsSeparated.of_comp pr.left G.hom`. Establish `hid : inc.left ≫ pr.left = 𝟙 G.left` using `by rw [← Over.comp_left, h, Over.id_left]`. Establish `hci : IsClosedImmersion inc.left`. Establish `: IsClosedImmersion (inc.left ≫ pr.left)` using `by rw [hid]; infer_instance`.
+
+Conclude with `IsClosedImmersion.of_comp inc.left pr.left`. Use `⟨hG.comm, hG.smooth, ?_, hG.geomConnected⟩` and prove the remaining obligations. Establish `e : inc.left ≫ A.hom = G.hom` using `Over.w inc`. Rewrite using `[← e]`. Use `infer_instance`.
+-/
 theorem isAbelianScheme_of_retract_of_isSemiAbelian : ∀ (S : Scheme.{0}) (A G : Over S) [GrpObj A] [IsCommMonObj A] [GrpObj G] [IsCommMonObj G] (inc : G ⟶ A) (pr : A ⟶ G), IsAbelianScheme A → IsSemiAbelian G → IsMonHom inc → IsMonHom pr → inc ≫ pr = 𝟙 G → IsAbelianScheme G := by
   intro S A G _ _ _ _ inc pr hA hG _ _ h
   have hApr : IsProper A.hom := hA.proper

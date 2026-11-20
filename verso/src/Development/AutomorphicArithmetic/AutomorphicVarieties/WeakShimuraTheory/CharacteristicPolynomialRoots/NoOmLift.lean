@@ -3,6 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC Formalism.MainNotions.N ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp
 
+/- English proof (translation)
+Establish `h3 : Φ.χ 3 g = Φ.χ 1 g * Φ.χ 2 g * (Φ.χ 0 g)⁻¹`. Rewrite using `[← h, mul_comm (Φ.χ 0 g), mul_inv_cancel_right]`. Establish `e : Φ.rt (wt i j) g = (Φ.χ 0 g * (Φ.χ 1 g)⁻¹) ^ (wt i j).1 * (Φ.χ 0 g * (Φ.χ 2 g)⁻¹) ^ (wt i j).2` using `rfl`. Rewrite using `[e]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Establish `h4` using `congrArg Additive.ofMul h3`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp only [wt, lamW, muW, ofMul_mul, ofMul_inv, ofMul_zpow] at h4 ⊢ <;> simp [h4] <;> abel`.
+-/
 private theorem UpperTheory.V.Ws.Pu.noOm_rt {O Γ : Type} [CommRing O] [Group Γ] (Φ : Fr O Γ) (g : Γ)
     (h : Φ.χ 0 g * Φ.χ 3 g = Φ.χ 1 g * Φ.χ 2 g) (i j : Fin 4) : Φ.rt (wt i j) g * Φ.χ j g = Φ.χ i g := by
   have h3 : Φ.χ 3 g = Φ.χ 1 g * Φ.χ 2 g * (Φ.χ 0 g)⁻¹ := by
@@ -14,6 +19,9 @@ private theorem UpperTheory.V.Ws.Pu.noOm_rt {O Γ : Type} [CommRing O] [Group Γ
   fin_cases i <;> fin_cases j <;>
     simp only [wt, lamW, muW, ofMul_mul, ofMul_inv, ofMul_zpow] at h4 ⊢ <;> simp [h4] <;> abel
 
+/- English proof (translation)
+Establish `h1 : resQ T.F g ∈ T.L.fixingSubgroup`. Rewrite using `[T.hL, IntermediateField.fixingSubgroup_sup]`. Conclude with `⟨(IntermediateField.mem_fixingSubgroup_iff _ _).2 fun x hx => g.commutes ⟨x, hx⟩, hg⟩`. Establish `h2` using `(IntermediateField.mem_fixingSubgroup_iff _ _).1 h1`. Conclude with `⟨AlgEquiv.ofRingEquiv (f := g.toRingEquiv) fun x => h2 x.1 x.2, rfl⟩`.
+-/
 private theorem UpperTheory.V.Ws.Pu.noOm_lift {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l}
     {D : Raw Ω c} (T : Tower D) (g : G T.F Ω) (hg : g ∈ T.GalL) : ∃ g' : G T.L Ω, resQ T.L g' = resQ T.F g := by
   have h1 : resQ T.F g ∈ T.L.fixingSubgroup := by
@@ -22,6 +30,15 @@ private theorem UpperTheory.V.Ws.Pu.noOm_lift {Ω : Type} [Field Ω] [CharZero �
   have h2 := (IntermediateField.mem_fixingSubgroup_iff _ _).1 h1
   exact ⟨AlgEquiv.ofRingEquiv (f := g.toRingEquiv) fun x => h2 x.1 x.2, rfl⟩
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ c D T c' h K hD hT i j hne`. Use `haveI : IsLocalHom (inc h) := (UpperTheory.V.Ws.P1.coefRes c).2.2.1 c' h`. Take `⟨g, hg, hw⟩` from `hT.g2 (wt i j)`. Take `⟨g', hg'⟩` from `UpperTheory.V.Ws.Pu.noOm_lift T g hg`. Apply `hw` to reduce the goal to its premises.
+
+Establish `hχ : ∀ g, chi D T.pr 0 g * chi D T.pr 3 g = chi D T.pr 1 g * chi D T.pr 2 g`. Introduce `g`. Apply the tactic sequence `cases T.pr <;> simp [chi, lab, Raw.ps, Raw.th, mul_comm]`. Establish `key : (T.fr ∅).rt (wt i j) g * chi D T.pr j (resQ T.F g) = chi D T.pr i (resQ T.F g)` using `UpperTheory.V.Ws.Pu.noOm_rt (T.fr ∅) g (hχ _) i j`. Establish `e0 : (K.r.chib i (K.V.pr g') : ResidueField c'.O) = (K.r.chib j (K.V.pr g') : ResidueField c'.O) * residue c'.O (chiO T.L Ω l c'.O g' : c'.O)` using `congrArg (fun χ : G T.L Ω →* (ResidueField c'.O)ˣ => (χ g' : ResidueField c'.O)) hne`.
+
+Establish `e1 : (chiO T.L Ω l c'.O g' : c'.O) = inc h (chiO ℚ Ω l c.O (resQ T.L g') : c.O)` using `rfl`. Rewrite `e0` using `[K.chib, K.chib, e1, hg', ← key, Units.val_mul]`. Simplify using `only [map_mul] at e0`. Establish `u1 : residue c'.O (K.κ g' : c'.O) ≠ 0` using `((K.κ g').isUnit.map _).ne_zero`. Establish `u2 : residue c'.O (inc h (chi D T.pr j (resQ T.F g) : c.O)) ≠ 0` using `(((chi D T.pr j (resQ T.F g)).isUnit.map _).map _).ne_zero`.
+
+Rewrite `e0` using `[mul_assoc, mul_right_inj' u1, mul_comm, mul_right_inj' u2]`. Rewrite using `[hD.om_bar]`. Apply `(ResidueField.map (inc h)).injective` to reduce the goal to its premises. Rewrite using `[ResidueField.map_residue, ResidueField.map_residue]`. Conclude with `e0`.
+-/
 theorem UpperTheory.V.Ws.Pu.noOm :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {D : Raw Ω c} {T : Tower D} {c' : Coef l} {h : c.O ≤ c'.O} (K : Link T c' h), D.Good → T.Ok → ∀ i j,
       (K.r.chib i).comp K.V.pr ≠ (K.r.chib j).comp K.V.pr * W.pushCh (residue c'.O) (chiO T.L Ω l c'.O) := by

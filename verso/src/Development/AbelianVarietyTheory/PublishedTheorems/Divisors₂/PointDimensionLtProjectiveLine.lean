@@ -42,10 +42,20 @@ namespace AnDim
 
 variable {d : ℕ} {X : Type} [TopologicalSpace X]
 
+/- English proof (translation)
+The claim follows from `le_iSup₂ (f := fun (n : ℕ) (_ : (regularLocus A T n).Nonempty) => (n : WithBot ℕ∞)) n h`.
+-/
 theorem le_analyticDim {A : FinHolAtlas d X} {T : Set X} {n : ℕ}
     (h : (regularLocus A T n).Nonempty) : (n : WithBot ℕ∞) ≤ analyticDim A T :=
   le_iSup₂ (f := fun (n : ℕ) (_ : (regularLocus A T n).Nonempty) => (n : WithBot ℕ∞)) n h
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun ⟨n, hk, hn⟩ => le_trans (by exact_mod_cast hk) (le_analyticDim hn)⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hlt : ∀ n, (regularLocus A T n).Nonempty → n < k` using `fun n hn => lt_of_not_ge fun hk => hn.ne_empty (hcon n hk)`. Consider the cases of `k with`.
+
+Consider the case `zero`. Establish `: analyticDim A T ≤ ⊥` using `iSup₂_le fun n hn => absurd (hlt n hn) (Nat.not_lt_zero n)`. Conclude with `absurd (h.trans this) (by simp)`. Consider the case `succ k`. Establish `: analyticDim A T ≤ (k : WithBot ℕ∞)` using `iSup₂_le fun n hn => by exact_mod_cast Nat.lt_succ_iff.1 (hlt n hn)`.
+
+Establish `h2 : k + 1 ≤ k` using `by exact_mod_cast h.trans this`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem le_analyticDim_iff {A : FinHolAtlas d X} {T : Set X} {k : ℕ} :
     (k : WithBot ℕ∞) ≤ analyticDim A T ↔ ∃ n, k ≤ n ∧ (regularLocus A T n).Nonempty := by
   refine ⟨fun h => ?_, fun ⟨n, hk, hn⟩ => le_trans (by exact_mod_cast hk) (le_analyticDim hn)⟩
@@ -63,19 +73,34 @@ theorem le_analyticDim_iff {A : FinHolAtlas d X} {T : Set X} {k : ℕ} :
     have h2 : k + 1 ≤ k := by exact_mod_cast h.trans this
     omega
 
+/- English proof (translation)
+The claim follows from `iSup₂_le fun n ⟨_, _, _, hψ, _⟩ => by exact_mod_cast hψ.1`.
+-/
 theorem analyticDim_le (A : FinHolAtlas d X) (T : Set X) : analyticDim A T ≤ (d : WithBot ℕ∞) :=
   iSup₂_le fun n ⟨_, _, _, hψ, _⟩ => by exact_mod_cast hψ.1
 
+/- English proof (translation)
+The claim follows from `le_bot_iff.1 (iSup₂_le fun _ ⟨_, hx⟩ => absurd hx.1 (Set.notMem_empty _))`.
+-/
 theorem analyticDim_empty (A : FinHolAtlas d X) : analyticDim A ∅ = ⊥ :=
   le_bot_iff.1 (iSup₂_le fun _ ⟨_, hx⟩ => absurd hx.1 (Set.notMem_empty _))
 
+/- English proof (translation)
+The claim follows from `le_antisymm (analyticDim_le A _) (le_analyticDim (by rw [regularLocus_univ]; exact Set.univ_nonempty))`.
+-/
 theorem analyticDim_univ [Nonempty X] (A : FinHolAtlas d X) : analyticDim A Set.univ = d :=
   le_antisymm (analyticDim_le A _)
     (le_analyticDim (by rw [regularLocus_univ]; exact Set.univ_nonempty))
 
+/- English proof (translation)
+The claim follows from `Set.diff_eq_empty.2 fun x _ => Set.mem_iUnion.2 ⟨d, by rw [regularLocus_univ]; trivial⟩`.
+-/
 theorem singularLocus_univ (A : FinHolAtlas d X) : singularLocus A Set.univ = ∅ :=
   Set.diff_eq_empty.2 fun x _ => Set.mem_iUnion.2 ⟨d, by rw [regularLocus_univ]; trivial⟩
 
+/- English proof (translation)
+Rewrite `hH` using `[← h.fderiv_eq, fderiv_comp z hG hF]`. Conclude with `Function.Injective.of_comp (f := fderiv ℂ G (F z)) hH`.
+-/
 theorem injective_fderiv_of_comp {a b c : ℕ} {F : (Fin a → ℂ) → Fin b → ℂ}
     {G : (Fin b → ℂ) → Fin c → ℂ} {H : (Fin a → ℂ) → Fin c → ℂ} {z : Fin a → ℂ}
     (hF : DifferentiableAt ℂ F z) (hG : DifferentiableAt ℂ G (F z)) (h : G ∘ F =ᶠ[𝓝 z] H)
@@ -86,15 +111,30 @@ theorem injective_fderiv_of_comp {a b c : ℕ} {F : (Fin a → ℂ) → Fin b �
 def padL (k d : ℕ) : (Fin k → ℂ) →L[ℂ] (Fin d → ℂ) :=
   ContinuousLinearMap.pi fun i => if h : (i : ℕ) < k then ContinuousLinearMap.proj ⟨i, h⟩ else 0
 
+/- English proof (translation)
+Simplify using `[padL, not_lt.2 h]`.
+-/
 theorem padL_apply_of_le {k d : ℕ} (z : Fin k → ℂ) {i : Fin d} (h : k ≤ (i : ℕ)) :
     padL k d z i = 0 := by
   simp [padL, not_lt.2 h]
 
+/- English proof (translation)
+Introduce `z w hzw`. Use function extensionality and compare the values at `i`. Simplify `congrFun hzw (Fin.castLE h i)` using `[padL]`.
+-/
 theorem padL_injective {k d : ℕ} (h : k ≤ d) : Function.Injective (padL k d) := by
   intro z w hzw
   funext i
   simpa [padL] using congrFun hzw (Fin.castLE h i)
 
+/- English proof (translation)
+Take `⟨x, hxT, ψ, ⟨hnd, hψ, hT⟩, hx⟩` from `h`. Take `⟨j, hj⟩` from `A.cover x`. Establish `hp : ∀ i : Fin d, n ≤ (i : ℕ) → ψ x i = 0` using `(hT.le ⟨hxT, hx⟩).2`. Use `set a : (Fin k → ℂ) → Fin d → ℂ := fun z => ψ x + padL k d z with ha`. Establish `han : ∀ z, AnalyticAt ℂ a z` using `fun z => analyticAt_const.add ((padL k d).analyticAt z)`.
+
+Establish `hac : Continuous a` using `continuous_const.add (padL k d).continuous`. Establish `hV : IsOpen (ψ.target ∩ ψ.symm ⁻¹' (A.chart j).source)` using `ψ.symm.isOpen_inter_preimage (A.chart j).open_source`. Establish `hF : ∀ z ∈ a ⁻¹' (ψ.target ∩ ψ.symm ⁻¹' (A.chart j).source), AnalyticAt ℂ (A.chart j ∘ ψ.symm ∘ a) z` using `fun z hz => ((hψ j).2 (a z) hz).comp (han z)`. Use `⟨a ⁻¹' (ψ.target ∩ ψ.symm ⁻¹' (A.chart j).source), ψ.symm ∘ a, j, hV.preimage hac, ⟨0, ?_⟩, fun z hz => ⟨?_, hz.2⟩, hF, fun z hz => ?_⟩` and prove the remaining obligations. Simplify using `[ha, ψ.map_source hx, ψ.left_inv hx, hj]`.
+
+Use `(hT.ge ⟨ψ.map_target hz.1, fun i hi => ?_⟩).1` and prove the remaining obligations. Rewrite using `[ψ.right_inv hz.1]`. Simplify using `[ha, hp i hi, padL_apply_of_le z (hk.trans hi)]`. Use `injective_fderiv_of_comp (G := ψ ∘ (A.chart j).symm) (H := a) (hF z hz).differentiableAt ((hψ j).1 _ ⟨(A.chart j).map_source hz.2, ?_⟩).differentiableAt ?_ ?_` and prove the remaining obligations. Simplify `ψ.map_target hz.1` using `[(A.chart j).left_inv hz.2]`.
+
+Use `filter_upwards [(hV.preimage hac).mem_nhds hz] with w hw`. Simplify using `[(A.chart j).left_inv hw.2, ψ.right_inv hw.1]`. Establish `: fderiv ℂ a z = padL k d` using `((padL k d).hasFDerivAt.const_add (ψ x)).fderiv`. Rewrite using `[this]`. Conclude with `padL_injective (hk.trans hnd)`.
+-/
 theorem hasHoloImm_of_regularLocus {A : FinHolAtlas d X} {T : Set X} {n k : ℕ} (hk : k ≤ n)
     (h : (regularLocus A T n).Nonempty) : HasHoloImm A T k := by
   obtain ⟨x, hxT, ψ, ⟨hnd, hψ, hT⟩, hx⟩ := h
@@ -123,6 +163,21 @@ theorem hasHoloImm_of_regularLocus {A : FinHolAtlas d X} {T : Set X} {n k : ℕ}
       rw [this]
       exact padL_injective (hk.trans hnd)
 
+/- English proof (translation)
+Take `⟨-, ψ, ⟨hnd, hψ, hT⟩, hx⟩` from `hreg`. Establish `hj` using `(hmaps hz).2`. Establish `hV : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' ψ.source)` using `(A.chart j).symm.isOpen_inter_preimage ψ.open_source`. Establish `hzV : (A.chart j ∘ g) z ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' ψ.source` using `⟨(A.chart j).map_source hj, by simpa [(A.chart j).left_inv hj] using hx⟩`. Establish `hev : ∀ᶠ w in 𝓝 z, w ∈ U ∧ g w ∈ ψ.source` using `by filter_upwards [hU.mem_nhds hz, (han z hz).continuousAt.preimage_mem_nhds (hV.mem_nhds hzV)] with w hw hw'`.
+
+Conclude with `⟨hw, by simpa [(A.chart j).left_inv (hmaps hw).2] using hw'.2⟩`. Establish `hH : AnalyticAt ℂ (ψ ∘ g) z`. Use `(((hψ j).1 _ hzV).comp (han z hz)).congr ?_` and prove the remaining obligations. Use `filter_upwards [hev] with w hw`. Simplify using `[(A.chart j).left_inv (hmaps hw.1).2]`.
+
+Establish `hHinj : Function.Injective (fderiv ℂ (ψ ∘ g) z)`. Use `injective_fderiv_of_comp (G := A.chart j ∘ ψ.symm) hH.differentiableAt ((hψ j).2 _ ⟨ψ.map_source hx, by simpa [ψ.left_inv hx] using hj⟩).differentiableAt ?_ hinj` and prove the remaining obligations. Use `filter_upwards [hev] with w hw`. Simplify using `[ψ.left_inv hw.2]`. Establish `hzero : ∀ (v : Fin k → ℂ) (i : Fin d), n ≤ (i : ℕ) → fderiv ℂ (ψ ∘ g) z v i = 0`.
+
+Introduce `v i hi`. Establish `h1 : (fun w => (ψ ∘ g) w i) =ᶠ[𝓝 z] fun _ => 0` using `by filter_upwards [hev] with w hw`. Conclude with `(hT.le ⟨(hmaps hw.1).1, hw.2⟩).2 i hi`. Establish `h2` using `h1.fderiv_eq (𝕜 := ℂ)`. Rewrite using `[fderiv_pi (differentiableAt_pi.1 hH.differentiableAt)]`.
+
+Simplify using `only [ContinuousLinearMap.pi_apply]`. Rewrite using `[h2]`. Simplify using the standard rewrite rules. Set `M : (Fin k → ℂ) →ₗ[ℂ] (Fin n → ℂ)` to `(LinearMap.funLeft ℂ ℂ (Fin.castLE hnd)).comp (fderiv ℂ (ψ ∘ g) z).toLinearMap`. Establish `hM : Function.Injective M`.
+
+Introduce `v w hvw`. Use `hHinj (funext fun i => ?_)` and prove the remaining obligations. Distinguish the cases in `hi : (i : ℕ) < n`. Conclude with `congrFun hvw ⟨i, hi⟩`. Rewrite using `[hzero v i (not_lt.1 hi), hzero w i (not_lt.1 hi)]`.
+
+Simplify using `using LinearMap.finrank_le_finrank_of_injective hM`.
+-/
 theorem le_of_mem_regularLocus {A : FinHolAtlas d X} {T : Set X} {n k : ℕ}
     {U : Set (Fin k → ℂ)} {g : (Fin k → ℂ) → X} {j : Fin A.n} (hU : IsOpen U)
     (hmaps : Set.MapsTo g U (T ∩ (A.chart j).source)) (han : AnalyticOnNhd ℂ (A.chart j ∘ g) U)
@@ -167,6 +222,15 @@ theorem le_of_mem_regularLocus {A : FinHolAtlas d X} {T : Set X} {n k : ℕ}
     · rw [hzero v i (not_lt.1 hi), hzero w i (not_lt.1 hi)]
   simpa using LinearMap.finrank_le_finrank_of_injective hM
 
+/- English proof (translation)
+Use `⟨fun hk => ?_, fun hk => ?_⟩` and prove the remaining obligations. Proceed by induction on `hm : analyticDim A T using WellFoundedLT.induction generalizing T with`. Consider the case `ind m ih`. Substitute `hm` using the available equality. Take `⟨U, g, j, hU, hne, hmaps, han, hinj⟩` from `hk`.
+
+Distinguish the cases in `hreg : ∃ z ∈ U, ∃ n, g z ∈ regularLocus A T n`. Take `⟨z, hz, n, hn⟩` from `hreg`. Conclude with `le_analyticDim_iff.2 ⟨n, le_of_mem_regularLocus hU hmaps han hz (hinj z hz) hn, _, hn⟩`. Use `push_neg at hreg`. Take `⟨hs, hlt⟩` from `(h d X A).1 T hT`.
+
+Take `⟨z, hz⟩` from `hne`. Establish `hlt'` using `hlt ⟨g z, (hmaps hz).1⟩`. Use `(ih _ hlt' hs ⟨U, g, j, hU, ⟨z, hz⟩, fun w hw => ⟨⟨(hmaps hw).1, ?_⟩, (hmaps hw).2⟩, han, hinj⟩ rfl).trans hlt'.le` and prove the remaining obligations. Simplify using `using hreg w hw`. Take `⟨n, hkn, hn⟩` from `le_analyticDim_iff.1 hk`.
+
+Conclude with `hasHoloImm_of_regularLocus hkn hn`.
+-/
 theorem hasHoloImm_iff (h : Published.AnalyticSetDimension) [CompactSpace X] [T2Space X]
     {A : FinHolAtlas d X} {T : Set X} (hT : A.IsAnalyticSubset T) {k : ℕ} :
     HasHoloImm A T k ↔ (k : WithBot ℕ∞) ≤ analyticDim A T := by
@@ -189,6 +253,13 @@ theorem hasHoloImm_iff (h : Published.AnalyticSetDimension) [CompactSpace X] [T2
   · obtain ⟨n, hkn, hn⟩ := le_analyticDim_iff.1 hk
     exact hasHoloImm_of_regularLocus hkn hn
 
+/- English proof (translation)
+Take `⟨-, h2, h3, h4⟩` from `h d X A`. Use `⟨fun Z n hZ hn hc => ?_, fun C S k hC hS hCS hk => ?_, h4⟩` and prove the remaining obligations. Establish `h5` using `(hasHoloImm_iff h hZ.1).1 hc`. Rewrite `h5` using `[h2 Z n hZ hn]`. Establish `: n + 1 ≤ n` using `by exact_mod_cast h5`.
+
+Use linear arithmetic over natural numbers and integers. Establish `h5` using `((hasHoloImm_iff h (isAnalyticSubset_inter hC.1 hS)).1 hk).trans_lt (h3 C S hC hS hCS)`. Choose the witnesses or unpack the hypotheses as in `⟨n, hn, hlt⟩ : ∃ n : ℕ, (regularLocus A C n).Nonempty ∧ (k : WithBot ℕ∞) < n := by`. Take `⟨n, hn⟩` from `lt_iSup_iff.1 h5`. Take `⟨hn', hn⟩` from `lt_iSup_iff.1 hn`.
+
+Conclude with `⟨n, hn', hn⟩`. Conclude with `hasHoloImm_of_regularLocus (by exact_mod_cast hlt) hn`.
+-/
 theorem immersedPieces (h : Published.AnalyticSetDimension) (d : ℕ) (X : Type) [TopologicalSpace X]
     [CompactSpace X] [T2Space X] (A : FinHolAtlas d X) :
     (∀ (Z : Set X) (n : ℕ), IsIrreducibleAnalytic A Z → (regularLocus A Z n).Nonempty →
@@ -210,6 +281,13 @@ theorem immersedPieces (h : Published.AnalyticSetDimension) (d : ℕ) (X : Type)
       exact ⟨n, hn', hn⟩
     exact hasHoloImm_of_regularLocus (by exact_mod_cast hlt) hn
 
+/- English proof (translation)
+Use `iSup₂_le fun n hn => ?_` and prove the remaining obligations. Take `⟨U, g, j, hU, ⟨z, hz⟩, hmaps, -, hinj⟩` from `hasHoloImm_of_regularLocus le_rfl hn`. Establish `h1 : (A.chart j ∘ g) =ᶠ[𝓝 z] fun _ => A.chart j x` using `by filter_upwards [hU.mem_nhds hz] with w hw`. Rewrite using `[Function.comp_apply, (hmaps hw).1]`. Establish `h2` using `hinj z hz`.
+
+Rewrite `h2` using `[h1.fderiv_eq, fderiv_fun_const]`. Consider the cases of `n with`. Consider the case `zero => simp`. Consider the case `succ n`. Use `congrFun (h2 (a₁ := 0) (a₂ := 1) rfl) 0` as an intermediate fact.
+
+Simplify using `at this`.
+-/
 theorem analyticDim_singleton_le (A : FinHolAtlas d X) (x : X) : analyticDim A {x} ≤ 0 := by
   refine iSup₂_le fun n hn => ?_
   obtain ⟨U, g, j, hU, ⟨z, hz⟩, hmaps, -, hinj⟩ := hasHoloImm_of_regularLocus le_rfl hn
@@ -224,11 +302,17 @@ theorem analyticDim_singleton_le (A : FinHolAtlas d X) (x : X) : analyticDim A {
     have := congrFun (h2 (a₁ := 0) (a₂ := 1) rfl) 0
     simp at this
 
+/- English proof (translation)
+Rewrite using `[Set.univ_inter, analyticDim_univ]`. Conclude with `(analyticDim_singleton_le p1 x).trans_lt (by exact_mod_cast Nat.zero_lt_one)`.
+-/
 theorem point_dimension_lt_projective_line (x : OnePoint ℂ) :
     analyticDim p1 (Set.univ ∩ {x}) < analyticDim p1 Set.univ := by
   rw [Set.univ_inter, analyticDim_univ]
   exact (analyticDim_singleton_le p1 x).trans_lt (by exact_mod_cast Nat.zero_lt_one)
 
+/- English proof (translation)
+Use `⟨AnLogRes.isIrreducibleAnalytic_univ p1, by simpa using analyticDim_univ p1, ?_⟩` and prove the remaining obligations. Rewrite using `[singularLocus_univ, analyticDim_empty, analyticDim_univ]`. Conclude with `WithBot.bot_lt_coe _`.
+-/
 theorem projective_line_dimension : IsIrreducibleAnalytic p1 Set.univ ∧ analyticDim p1 Set.univ = 1 ∧
     analyticDim p1 (singularLocus p1 Set.univ) < analyticDim p1 Set.univ := by
   refine ⟨AnLogRes.isIrreducibleAnalytic_univ p1, by simpa using analyticDim_univ p1, ?_⟩

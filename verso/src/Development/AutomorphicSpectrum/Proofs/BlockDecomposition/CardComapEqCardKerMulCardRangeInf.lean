@@ -2,6 +2,11 @@ import Mathlib
 
 namespace GlobalTheory.CompanionTheory.Counting
 
+/- English proof (translation)
+Introduce `R A X _ _ _ _ _ _ f U`. Establish `hker : LinearMap.ker (f.domRestrict (U.comap f)) ≃ LinearMap.ker f` using `{ toFun := fun x => ⟨x.1.1, LinearMap.mem_ker.mpr (LinearMap.mem_ker.mp x.2)⟩ invFun := fun y => ⟨⟨y.1, by`. Rewrite using `[Submodule.mem_comap, LinearMap.mem_ker.mp y.2]`. Conclude with `U.zero_mem⟩, LinearMap.mem_ker.mpr (LinearMap.mem_ker.mp y.2)⟩`. Use `left_inv := fun x => rfl`.
+
+Use `right_inv := fun y => rfl }`. Establish `hrange : LinearMap.range (f.domRestrict (U.comap f)) = LinearMap.range f ⊓ U`. Rewrite using `[LinearMap.range_domRestrict, Submodule.map_comap_eq]`. Rewrite using `[Submodule.card_eq_card_quotient_mul_card (LinearMap.ker (f.domRestrict (U.comap f))), Nat.card_congr hker, Nat.card_congr (f.domRestrict (U.comap f)).quotKerEquivRange.toEquiv, hrange]`.
+-/
 theorem card_comap_eq_card_ker_mul_card_range_inf :
     ∀ (R A X : Type) [Ring R] [AddCommGroup A] [Module R A] [Finite A] [AddCommGroup X]
       [Module R X] (f : A →ₗ[R] X) (U : Submodule R X),

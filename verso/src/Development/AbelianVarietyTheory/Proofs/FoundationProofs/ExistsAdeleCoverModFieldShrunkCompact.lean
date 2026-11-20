@@ -8,6 +8,13 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 
 namespace GlobalTheory.Eis.ConvCover
 
+/- English proof (translation)
+Establish `hi` using `InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hw`. Use `set e := InfinitePlace.Completion.extensionEmbeddingOfIsReal hw with he`. Establish `hn : ∀ s, ‖e s‖ = ‖s‖` using `fun s => hi.norm_map_of_map_zero (map_zero e) s`. Rewrite `ht` using `[← hn, Real.norm_eq_abs, abs_le]`. Use `⟨⌊e t⌋, Finset.mem_Icc.2 ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Int.le_floor]`. Use `push_cast`. Conclude with `ht.1`. Establish `: (⌊e t⌋ : ℝ) ≤ ((N : ℤ) : ℝ)` using `by push_cast; exact (Int.floor_le _).trans ht.2`. Conclude with `this` after adjusting the coercions.
+
+Rewrite using `[← hn, map_sub, map_intCast, Real.norm_eq_abs, abs_le]`. Establish `h1` using `Int.floor_le (e t)`. Establish `h2` using `Int.lt_floor_add_one (e t)`. Apply the tactic sequence `constructor <;> linarith`.
+-/
 theorem exists_int_near {F : Type} [Field F] {w : InfinitePlace F} (hw : w.IsReal)
     (N : ℕ) (t : w.Completion) (ht : ‖t‖ ≤ N) :
     ∃ n ∈ Finset.Icc (-(N : ℤ)) N, ‖t - (n : w.Completion)‖ ≤ 1 := by
@@ -25,12 +32,34 @@ theorem exists_int_near {F : Type} [Field F] {w : InfinitePlace F} (hw : w.IsRea
     have h2 := Int.lt_floor_add_one (e t)
     constructor <;> linarith
 
+/- English proof (translation)
+Establish `hi` using `InfinitePlace.Completion.isometry_extensionEmbedding w`. Rewrite using `[← hi.norm_map_of_map_zero (map_zero _), map_pow, map_ofNat, norm_pow]`. Simplify using the standard rewrite rules.
+-/
 theorem norm_two_pow_le {F : Type} [Field F] (w : InfinitePlace F) (m : ℕ) :
     ‖(2 : w.Completion) ^ m‖ ≤ 2 ^ m := by
   have hi := InfinitePlace.Completion.isometry_extensionEmbedding w
   rw [← hi.norm_map_of_map_zero (map_zero _), map_pow, map_ofNat, norm_pow]
   simp
 
+/- English proof (translation)
+Introduce `F _ _ _`. Take `⟨K, hK, hKx⟩` from `GlobalTheory.AdeleCocompact.exists_compact_adele F`. Use `GlobalTheory.AdeleCocompact.properSpace_completion F` as an intermediate fact. Establish `hb : ∃ R : ℕ, ∀ k ∈ K, ∀ w : InfinitePlace F, ‖k.1 w‖ ≤ R`. Establish `hc : Continuous fun k : AdeleRing (𝓞 F) F => ∑ w : InfinitePlace F, ‖k.1 w‖` using `continuous_finsetSum _ fun w _ => ((continuous_apply w).comp continuous_fst).norm`.
+
+Take `⟨B, hB⟩` from `(hK.image hc).bddAbove`. Use `⟨⌈B⌉₊, fun k hk w => ?_⟩` and prove the remaining obligations. Use `le_trans ?_ ((hB ⟨k, hk, rfl⟩).trans (Nat.le_ceil B))` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun w : InfinitePlace F => ‖k.1 w‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ w)`. Take `⟨R, hR⟩` from `hb`.
+
+Set `h : InfiniteAdeleRing F` to `algebraMap F (InfiniteAdeleRing F) 2⁻¹`. Establish `h2 : h * 2 = 1`. Rewrite using `[← map_ofNat (algebraMap F (InfiniteAdeleRing F)) 2, ← map_mul, inv_mul_cancel₀ two_ne_zero, map_one]`. Set `ι : (InfinitePlace F → ℤ) → InfiniteAdeleRing F` to `fun n w => (n w : w.Completion)`. Use `⟨((Set.pi Set.univ fun w : InfinitePlace F => Metric.closedBall (0 : w.Completion) 1 : Set (InfiniteAdeleRing F)) ×ˢ (Prod.snd '' K) : Set (InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F)), (2 * R + 1 : ℝ) ^ Fintype.card (InfinitePlace F), (isCompact_univ_pi fun v => isCompact_clo …` and prove the remaining obligations.
+
+Use `⟨(Fintype.piFinset fun _ : InfinitePlace F => Finset.Icc (-((2 ^ m * R : ℕ) : ℤ)) ((2 ^ m * R : ℕ) : ℤ)).image fun n => ((h ^ m * ι n, 0) : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F), ?_, fun a => ?_⟩` and prove the remaining obligations. Use `le_trans (Nat.cast_le.2 Finset.card_image_le) ?_` and prove the remaining obligations. Rewrite using `[Fintype.card_piFinset, Finset.prod_const, Finset.card_univ, ← pow_mul, mul_comm _ m, pow_mul, ← mul_pow, Nat.cast_pow]`. Use `pow_le_pow_left₀ (Nat.cast_nonneg _) ?_ _` and prove the remaining obligations. Establish `hc : (Finset.Icc (-((2 ^ m * R : ℕ) : ℤ)) ((2 ^ m * R : ℕ) : ℤ)).card = 2 * (2 ^ m * R) + 1`.
+
+Rewrite using `[Int.card_Icc]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hc]`. Use `push_cast`. Establish `: (1 : ℝ) ≤ 2 ^ m` using `one_le_pow₀ one_le_two`.
+
+Use the polynomial consequences of the given equalities and inequalities. Take `⟨x, hx⟩` from `hKx a set k := a - algebraMap F (AdeleRing (𝓞 F) F) x with hk`. Establish `hn : ∀ w : InfinitePlace F, ∃ n ∈ Finset.Icc (-((2 ^ m * R : ℕ) : ℤ)) ((2 ^ m * R : ℕ) : ℤ), ‖(2 : w.Completion) ^ m * k.1 w - (n : w.Completion)‖ ≤ 1` using `fun w => by`. Use `exists_int_near (IsTotallyReal.isReal w) _ _ ((norm_mul_le _ _).trans ?_)` and prove the remaining obligations. Use `push_cast`.
+
+Conclude with `mul_le_mul (norm_two_pow_le w m) (hR k hx w) (norm_nonneg _) (by positivity)`. Use `choose n hn1 hn2 using hn`. Use `⟨x, _, Finset.mem_image_of_mem _ (Fintype.mem_piFinset.2 hn1), ((2 ^ m * k.1 - ι n, k.2) : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F), ⟨fun w _ => ?_, ⟨k, hx, rfl⟩⟩, ?_⟩` and prove the remaining obligations. Conclude with `mem_closedBall_zero_iff.2 (hn2 w)`. Establish `ha : a = algebraMap F (AdeleRing (𝓞 F) F) x + k` using `by rw [hk]; ring`.
+
+Use `ha.trans (Eq.trans (congrArg (algebraMap F (AF F) x + ·) ?_) (add_assoc (G := AF F) _ _ _).symm)` and prove the remaining obligations. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `k.1 = h ^ m * ι n + h ^ m * (2 ^ m * k.1 - ι n)`. Rewrite using `[← mul_add, add_sub_cancel, ← mul_assoc, ← mul_pow, h2, one_pow, one_mul]`. Express the relevant statement in the definitionally equal form `k.2 = 0 + 1 ^ m * k.2`.
+
+Rewrite using `[one_pow, one_mul, zero_add]`.
+-/
 theorem exists_cover : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F], ∃ (Ω : Set (AF F)) (C : ℝ), IsCompact Ω ∧ ∀ m : ℕ, ∃ Y : Finset (AF F), (Y.card : ℝ) ≤ C * ((2 : ℝ) ^ Fintype.card (InfinitePlace F)) ^ m ∧ ∀ a : AF F, ∃ x : F, ∃ y ∈ Y, ∃ ω ∈ Ω, a = algebraMap F (AF F) x + y + (halfInf F).1 ^ m * ω := by
   intro F _ _ _
   classical

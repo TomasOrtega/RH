@@ -9,6 +9,11 @@ noncomputable def UpperTheory.Reformulated.B.IntegralPolynomialThird.IntegralMv.
     fun {σ : Type u_1} {p : ℕ} [Fact (Nat.Prime p)] (F : MvPowerSeries σ ℂ_[p]) ↦
       ∀ (n : σ →₀ ℕ), UpperTheory.Reformulated.B.IntegralPolynomialThird.IsIntP ((MvPowerSeries.coeff n : MvPowerSeries σ ℂ_[p] → ℂ_[p]) F)
 
+/- English proof (translation)
+Introduce `p _ σ c hc n`. Rewrite using `[MvPowerSeries.coeff_C]`. Use `split_ifs`. Conclude with `hc`. Use `show ‖(0 : ℂ_[p])‖ ≤ (1 : ℝ)`.
+
+Rewrite using `[norm_zero]`. Conclude with `zero_le_one`.
+-/
 theorem UpperTheory.Reformulated.B.IntegralPolynomialThird.intMv_C.{u_1} :
     ∀ {p : ℕ} [inst : Fact (Nat.Prime p)] {σ : Type u_1} {c : ℂ_[p]},
       UpperTheory.Reformulated.B.IntegralPolynomialThird.IsIntP c → UpperTheory.Reformulated.B.IntegralPolynomialThird.IntegralMv ((MvPowerSeries.C : ℂ_[p] → MvPowerSeries σ ℂ_[p]) c) := by

@@ -22,6 +22,9 @@ namespace GlobalTheory.StdUnn.KComm
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hu' : u * uᴴ = 1` using `mul_eq_one_comm.1 hu`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem comm_of_unitary_isom {m : ℕ} {u J : Matrix (Fin m) (Fin m) ℂ} (hu : uᴴ * u = 1) (hJ : uᴴ * J * u = J) :
     u * J = J * u := by
   have hu' : u * uᴴ = 1 := mul_eq_one_comm.1 hu
@@ -29,6 +32,13 @@ theorem comm_of_unitary_isom {m : ℕ} {u J : Matrix (Fin m) (Fin m) ℂ} (hu : 
     _ = (u * uᴴ) * J * u := by simp only [Matrix.mul_assoc]
     _ = J * u := by rw [hu', Matrix.one_mul]
 
+/- English proof (translation)
+Establish `e1 : compAt θ τ (mat k) = Formalism.MainNotions.StandardLattice.infMat D.sp.cm.sig (Jst D n) (θ τ) k` using `rfl`. Establish `e2 : θ τ = AdelicU.infProj (embOverOf D τ)` using `AdelicU.eq_infProj hθ (embOverOf D τ) rfl`. Establish `hk' : k ∈ AdelicU.levelAll D.sp.cm.sig (Jst D n) (stdLattice D.host.E (n + n)) 1` using `hk`. Establish `hw` using `(AdelicU.mem_levelAll.1 hk').2 (placeOf D τ)`. Establish `hunit` using `(GlobalTheory.Doubling.mem_stabArch_iff_unitary (isCMExt_host D) (embOverOf D τ) (Jst D n) 1 k).1 hw`.
+
+Rewrite `hunit` using `[inv_one, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_one _ (map_zero _) (map_one _)]`. Simplify using `only [Matrix.one_mul, Matrix.mul_one] at hunit`. Rewrite `hunit` using `[← e2, ← e1]`. Establish `hiso` using `(AdelicU.archEquiv (Jst D n) (isCMExt_host D) (embOverOf D τ) (AdelicU.projArch D.sp.cm.sig (Jst D n) (placeOf D τ) k)).2`. Establish `hiso' : (compAt θ τ (mat k))ᴴ * (Jst D n).map (embOverOf D τ).1 * compAt θ τ (mat k) = (Jst D n).map (embOverOf D τ).1`.
+
+Rewrite using `[e1, e2, AdelicU.infMat_infProj (Jst D n) (isCMExt_host D)]`. Conclude with `hiso`. Rewrite `hiso'` using `[Jst, GlobalTheory.CartanPt.blkJ_map]`. Conclude with `comm_of_unitary_isom hunit hiso'`.
+-/
 theorem compAt_K_comm (θ : InfFam D) (hθ : IsInfFam θ) (n : ℕ) (k : G D n) (hk : k ∈ K D n) (τ : D.what₂.Tau) :
     compAt θ τ (mat k) * blk4 0 1 (-1) 0 = blk4 0 1 (-1) 0 * compAt θ τ (mat k) := by
   have e1 : compAt θ τ (mat k) = Formalism.MainNotions.StandardLattice.infMat D.sp.cm.sig (Jst D n) (θ τ) k := rfl
@@ -53,6 +63,19 @@ end GlobalTheory.StdUnn.KComm
 
 namespace GlobalTheory.StdUnn.KComm
 
+/- English proof (translation)
+Introduce `D A μ hμ κ hκ θ hθ`. Take `⟨k₀, -, hk₀⟩` from `GlobalTheory.CartanPt.exists_mem_K_compAt_eq_stdInv D θ hθ A.rank μ hμ`. Establish `hch : ∀ g τ, (Tm A μ).map (tauE D τ) * compAt θ τ (mat (κ g)) = compAt θ τ (Formalism.L2.Theta.mt (dblSp A) g) * (Tm A μ).map (tauE D τ)`. Introduce `g τ`. Establish `h2` using `congrArg (compAt θ τ) (hκ g)`.
+
+Establish `hr : compAt θ τ (rat (Tm A μ)) = (Tm A μ).map (tauE D τ)` using `GlobalTheory.AdForm.RatMove.compAt_rat hθ τ _`. Rewrite `h2` using `[GlobalTheory.AdForm.RatMove.compAt_mul, GlobalTheory.AdForm.RatMove.compAt_mul, hr]`. Conclude with `h2`. Use `⟨fun τ => compAt θ τ (Formalism.L2.Theta.mt (dblSp A) (κ.symm k₀)), fun τ => ?_, fun k hk τ => ?_⟩` and prove the remaining obligations. Establish `h` using `hch (κ.symm k₀) τ`.
+
+Rewrite `h` using `[κ.apply_symm_apply, hk₀]`. Conclude with `h.symm`. Simplify using `only set T := (Tm A μ).map (tauE D τ) with hTdef`. Establish `hT : IsUnit T.det`. Establish `h` using `(GlobalTheory.StdUnn.Tm_gram_inv D A μ hμ).2.1.map (tauE D τ)`.
+
+Rewrite `h` using `[RingHom.map_det]`. Then use the resulting hypothesis. Use `set X := compAt θ τ (Formalism.L2.Theta.mt (dblSp A) k)`. Use `set S := compAt θ τ (Formalism.L2.Theta.mt (dblSp A) (κ.symm k₀))`. Use `set U := compAt θ τ (mat (κ k))`. Establish `hX : T * U = X * T` using `hch k τ`.
+
+Establish `hS : T * stdInv A.rank μ τ = S * T`. Establish `h` using `hch (κ.symm k₀) τ`. Rewrite `h` using `[κ.apply_symm_apply, hk₀]`. Conclude with `h`. Establish `hU : U * stdInv A.rank μ τ = stdInv A.rank μ τ * U`.
+
+Rewrite using `[stdInv, Matrix.mul_smul, Matrix.smul_mul, compAt_K_comm θ hθ A.rank (κ k) hk τ]`. Establish `key : X * S * T = S * X * T`. Combine the equalities or inequalities in the displayed calculation. Establish `h2` using `congrArg (· * T⁻¹) key`. Simplify `h2` using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hT, Matrix.mul_one]`.
+-/
 theorem exists_stdInv_comm_K : ∀ (D : D7) (A : HSp D) (μ : D.host.E), IsSkew μ → ∀ κ : GA D (dblSp A) ≃* G D A.rank, IsChart A μ κ → ∀ θ : InfFam D, IsInfFam θ → ∃ s' : RealMat (dblSp A), IsStdInv A μ s' ∧ ∀ k : GA D (dblSp A), κ k ∈ K D A.rank → ∀ τ, compAt θ τ (Formalism.L2.Theta.mt (dblSp A) k) * s' τ = s' τ * compAt θ τ (Formalism.L2.Theta.mt (dblSp A) k) := by
   intro D A μ hμ κ hκ θ hθ
   obtain ⟨k₀, -, hk₀⟩ := GlobalTheory.CartanPt.exists_mem_K_compAt_eq_stdInv D θ hθ A.rank μ hμ

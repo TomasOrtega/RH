@@ -4,6 +4,9 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutGCoreGTCLRadT
 
 namespace Formalism.FourierDecayAlt.P.CutMP.Gauge.GC
 
+/- English proof (translation)
+The claim follows from `gTCLocal_of_cut radial_torus_local_holds local_nabla_holds local_frame_holds`.
+-/
 theorem gauge_locality_holds : GTCLocal := gTCLocal_of_cut radial_torus_local_holds local_nabla_holds local_frame_holds
 
 end Formalism.FourierDecayAlt.P.CutMP.Gauge.GC

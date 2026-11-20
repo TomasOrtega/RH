@@ -2,6 +2,11 @@ import Mathlib
 
 namespace GlobalTheory.NoetherianLocalHausdorff
 
+/- English proof (translation)
+Introduce `B _ _ _`. Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Establish `h : x ∈ ⨅ n : ℕ, (IsLocalRing.maximalIdeal B) ^ n`. Rewrite using `[Ideal.mem_iInf]`. Introduce `n`.
+
+Use `hx n` as an intermediate fact. Rewrite `this` using `[SModEq.zero, smul_eq_mul, Ideal.mul_top]`. Conclude with `this`. Rewrite `h` using `[Ideal.iInf_pow_eq_bot_of_isLocalRing _ (IsLocalRing.maximalIdeal.isMaximal B).ne_top]`. Conclude with `(Submodule.mem_bot B).1 h`.
+-/
 theorem noeth_local_hausdorff : ∀ (B : Type) [inst : CommRing B] [inst_1 : IsLocalRing B] [IsNoetherianRing B],
     IsHausdorff (IsLocalRing.maximalIdeal B) B := by
   intro B _ _ _

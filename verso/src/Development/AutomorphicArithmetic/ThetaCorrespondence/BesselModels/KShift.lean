@@ -21,11 +21,17 @@ section Alg
 
 variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {E : Fin n → Fin n → Module.End ℂ V}
 
+/- English proof (translation)
+Introduce `a b hab y z`. Use `hU a b y z` as an intermediate fact. Simplify `this` using `[Formalism.REAL.sgn, hab]`.
+-/
 theorem kUnit_of (hU : IsUnitary ε E) : KUnit ε E := by
   intro a b hab y z
   have := hU a b y z
   simpa [Formalism.REAL.sgn, hab] using this
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun T : Module.End ℂ V => T u) (hE i j a b)`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at h`. Apply the tactic sequence `split_ifs at h ⊢ <;> simp_all [sub_eq_iff_eq_add, add_comm]`.
+-/
 theorem comm_apply (hE : GlRel E) (i j a b : Fin n) (u : V) :
     E i j (E a b u) = E a b (E i j u) +
       ((if j = a then E i b u else 0) - (if b = i then E a j u else 0)) := by
@@ -45,10 +51,16 @@ def annSub (E : Fin n → Fin n → Module.End ℂ V) (x : V) : Submodule ℂ V 
     exact ⟨by rw [inner_smul_right, h1, mul_zero], fun a b => by
       rw [map_smul, inner_smul_right, h2, mul_zero]⟩
 
+/- English proof (translation)
+Rewrite using `[← hU d c he.symm, hx.2 d c hdc he.symm, inner_zero_left]`.
+-/
 theorem inner_lower_eq_zero (hU : KUnit ε E) {μ : Fin n → ℝ} {x : V} (hx : KHighest ε E μ x)
     {c d : Fin n} (hdc : d < c) (he : ε c = ε d) (y : V) : ⟪x, E c d y⟫_ℂ = 0 := by
   rw [← hU d c he.symm, hx.2 d c hdc he.symm, inner_zero_left]
 
+/- English proof (translation)
+Use `⟨hs.2 c d, fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[comm_apply hE a b c d s, inner_add_right, inner_lower_eq_zero hU hx hdc he, inner_sub_right]`. Apply the tactic sequence `split_ifs <;> simp [hs.2]`.
+-/
 theorem ann_lower (hE : GlRel E) (hU : KUnit ε E) {μ : Fin n → ℝ} {x : V} (hx : KHighest ε E μ x)
     {c d : Fin n} (hdc : d < c) (he : ε c = ε d) {s : V} (hs : s ∈ annSub E x) :
     E c d s ∈ annSub E x := by
@@ -56,6 +68,11 @@ theorem ann_lower (hE : GlRel E) (hU : KUnit ε E) {μ : Fin n → ℝ} {x : V} 
   rw [comm_apply hE a b c d s, inner_add_right, inner_lower_eq_zero hU hx hdc he, inner_sub_right]
   split_ifs <;> simp [hs.2]
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨l, hl, rfl⟩`. Proceed by induction on `l with`. Consider the case `nil => simpa using hv`. Consider the case `cons p l ih`.
+
+Rewrite using `[word_cons, Module.End.mul_apply]`. Conclude with `ann_lower hE hU hx (hl p (by simp)).1 (hl p (by simp)).2 (ih fun q hq => hl q (List.mem_cons_of_mem _ hq))`.
+-/
 theorem lowSpan_le_ann (hE : GlRel E) (hU : KUnit ε E) {μ : Fin n → ℝ} {x v : V}
     (hx : KHighest ε E μ x) (hv : v ∈ annSub E x) : kLowSpan ε E v ≤ annSub E x := by
   refine Submodule.span_le.2 ?_
@@ -70,16 +87,32 @@ theorem lowSpan_le_ann (hE : GlRel E) (hU : KUnit ε E) {μ : Fin n → ℝ} {x 
 def nbr (E : Fin n → Fin n → Module.End ℂ V) (A : Submodule ℂ V) : Submodule ℂ V :=
   A ⊔ ⨆ p : Fin n × Fin n, A.map (E p.1 p.2)
 
+/- English proof (translation)
+The claim follows from `Submodule.mem_sup_left hs`.
+-/
 theorem mem_nbr_of_mem {A : Submodule ℂ V} {s : V} (hs : s ∈ A) : s ∈ nbr E A :=
   Submodule.mem_sup_left hs
 
+/- English proof (translation)
+The claim follows from `Submodule.mem_sup_right (Submodule.mem_iSup_of_mem (a, b) ⟨s, hs, rfl⟩)`.
+-/
 theorem apply_mem_nbr {A : Submodule ℂ V} {s : V} (hs : s ∈ A) (a b : Fin n) : E a b s ∈ nbr E A :=
   Submodule.mem_sup_right (Submodule.mem_iSup_of_mem (a, b) ⟨s, hs, rfl⟩)
 
+/- English proof (translation)
+Unfold `nbr`. Use `infer_instance`.
+-/
 theorem nbr_finite (A : Submodule ℂ V) [FiniteDimensional ℂ A] : FiniteDimensional ℂ (nbr E A) := by
   unfold nbr
   infer_instance
 
+/- English proof (translation)
+Introduce `c d he v hv`. Establish `hle : nbr E A ≤ (nbr E A).comap (E c d)`. Use `sup_le (fun s hs => mem_nbr_of_mem (hA c d he s hs)) (iSup_le fun p => ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨s, hs, rfl⟩`. Use `show E c d (E p.1 p.2 s) ∈ nbr E A`.
+
+Rewrite using `[comm_apply hE c d p.1 p.2 s]`. Use `Submodule.add_mem _ (apply_mem_nbr (hA c d he s hs) _ _) (Submodule.sub_mem _ ?_ ?_)` and prove the remaining obligations. Use `split_ifs`. Conclude with `apply_mem_nbr hs _ _`. Conclude with `Submodule.zero_mem _`.
+
+Use `split_ifs`. Conclude with `apply_mem_nbr hs _ _`. Conclude with `Submodule.zero_mem _`. Conclude with `hle hv`.
+-/
 theorem nbr_stab (hE : GlRel E) {A : Submodule ℂ V} (hA : KStab ε E A) : KStab ε E (nbr E A) := by
   intro c d he v hv
   have hle : nbr E A ≤ (nbr E A).comap (E c d) := by
@@ -96,6 +129,13 @@ theorem nbr_stab (hE : GlRel E) {A : Submodule ℂ V} (hA : KStab ε E A) : KSta
       · exact Submodule.zero_mem _
   exact hle hv
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Take `⟨h1, h2⟩` from `hcon`. Establish `hv' : v ∈ annSub E x` using `⟨GlobalTheory.CompanionTheory.KLowSpan.inner_eq_zero_of_weight hU hx.1 hv h1, fun a b => GlobalTheory.CompanionTheory.KLowSpan.inner_eq_zero_of_weight hU hx.1 (GlobalTheory.CompanionTheory.DSHighestOfKType.isWeight_apply hE hv a b) (h2 a b)⟩`. Establish `hann` using `lowSpan_le_ann hE hU hx hv'`.
+
+Establish `hle : nbr E (kLowSpan ε E v) ≤ (ℂ ∙ x)ᗮ`. Use `sup_le (fun s hs => ?_) (iSup_le fun p => ?_)` and prove the remaining obligations. Conclude with `(Submodule.mem_orthogonal_singleton_iff_inner_right).2 (hann hs).1`. Introduce and unpack `_ ⟨s, hs, rfl⟩`. Conclude with `(Submodule.mem_orthogonal_singleton_iff_inner_right).2 ((hann hs).2 p.1 p.2)`.
+
+Conclude with `hx0 (inner_self_eq_zero.1 ((Submodule.mem_orthogonal_singleton_iff_inner_right).1 (hle hxT)))`.
+-/
 theorem weight_shift (hE : GlRel E) (hU : KUnit ε E) {μ μ' : Fin n → ℝ} {v x : V}
     (hv : IsWeight E μ v) (hx : KHighest ε E μ' x) (hx0 : x ≠ 0)
     (hxT : x ∈ nbr E (kLowSpan ε E v)) : μ' = μ ∨ ∃ a b, μ' = μ + root a b := by
@@ -114,6 +154,15 @@ theorem weight_shift (hE : GlRel E) (hU : KUnit ε E) {μ μ' : Fin n → ℝ} {
       exact (Submodule.mem_orthogonal_singleton_iff_inner_right).2 ((hann hs).2 p.1 p.2)
   exact hx0 (inner_self_eq_zero.1 ((Submodule.mem_orthogonal_singleton_iff_inner_right).1 (hle hxT)))
 
+/- English proof (translation)
+Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using `[Formalism.REAL.nsq, Formalism.REAL.dot, root]`. Establish `h : ∀ c, root a b c * root a b c = (if c = a then (1 : ℝ) else 0) + (if c = b then 1 else 0)`. Introduce `c`.
+
+Simplify using `only [root, Pi.sub_apply, Pi.single_apply]`. Apply the tactic sequence `by_cases h1 : c = a <;> by_cases h2 : c = b`. Conclude with `absurd (h1.symm.trans h2) hab`. Simplify using `[h1, h2]`. Simplify using `[← h1, h2]`.
+
+Substitute `h2` using the available equality. Simplify using `[h1]`. Simplify using `[h1, h2]`. Establish `: Formalism.REAL.nsq (root a b) = 2`. Unfold `Formalism.REAL.nsq Formalism.REAL.dot`.
+
+Simplify using `only [h, Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Evaluate the numerical expressions. Conclude with `this.le`.
+-/
 theorem nsq_root_le (a b : Fin n) : Formalism.REAL.nsq (root a b) ≤ 2 := by
   by_cases hab : a = b
   · subst hab
@@ -132,16 +181,37 @@ theorem nsq_root_le (a b : Fin n) : Formalism.REAL.nsq (root a b) ≤ 2 := by
       norm_num
     exact this.le
 
+/- English proof (translation)
+Rewrite using `[comm_apply hE a a b b u]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`.
+-/
 theorem diag_comm (hE : GlRel E) (a b : Fin n) (u : V) : E a a (E b b u) = E b b (E a a u) := by
   rw [comm_apply hE a a b b u]
   by_cases h : a = b
   · subst h; simp
   · simp [h, Ne.symm h]
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.WeightsCompactStabilizer.exists_weight hE hU hQ hQ0`.
+-/
 theorem exists_weight (hE : GlRel E) (hU : KUnit ε E) {Q : Submodule ℂ V} [FiniteDimensional ℂ Q]
     (hQ : KStab ε E Q) (hQ0 : Q ≠ ⊥) : ∃ ν : Fin n → ℝ, ∃ x ∈ Q, x ≠ 0 ∧ IsWeight E ν x :=
   _root_.UpperTheory.Reformulated.B.WeightsCompactStabilizer.exists_weight hE hU hQ hQ0
 
+/- English proof (translation)
+Set `ht : (Fin n → ℝ) → ℝ` to `fun ν => ∑ c : Fin n, ((c : ℕ) : ℝ) * ν c`. Set `h : Module.End ℂ V` to `∑ c : Fin n, (((c : ℕ) : ℝ) : ℂ) • E c c`. Establish `hhQ : ∀ w ∈ Q, h w ∈ Q`. Introduce `w hw`. Simplify using `only [h, LinearMap.sum_apply, LinearMap.smul_apply]`.
+
+Conclude with `Q.sum_mem fun c _ => Q.smul_mem _ (hQ c c rfl w hw)`. Establish `hh : ∀ (ν : Fin n → ℝ) (x : V), IsWeight E ν x → h x = ((ht ν : ℝ) : ℂ) • x`. Introduce `ν x hx`. Simplify using `only [h, ht, LinearMap.sum_apply, LinearMap.smul_apply, hx _, smul_smul]`. Use `push_cast`.
+
+Simplify using `only [Finset.sum_smul]`. Set `S : Set ℝ` to `{t | ∃ ν : Fin n → ℝ, ht ν = t ∧ ∃ x ∈ Q, x ≠ 0 ∧ IsWeight E ν x}`. Establish `hS : S.Finite`. Establish `hfin` using `Module.End.finite_hasEigenvalue (h.restrict hhQ)`. Use `(hfin.preimage (f := fun t : ℝ => (t : ℂ)) Complex.ofReal_injective.injOn).subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `t ⟨ν, rfl, x, hxQ, hx0, hx⟩`. Use `Module.End.hasEigenvalue_of_hasEigenvector (x := ⟨x, hxQ⟩) ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Module.End.mem_eigenspace_iff]`. Conclude with `Subtype.ext (hh ν x hx)`. Conclude with `fun h0 => hx0 (congrArg Subtype.val h0)`.
+
+Take `⟨ν₀, x₀, hx₀Q, hx₀, hx₀w⟩` from `exists_weight hE hU hQ hQ0`. Establish `hSne : S.Nonempty` using `⟨_, ν₀, rfl, x₀, hx₀Q, hx₀, hx₀w⟩`. Take `⟨t, ⟨ν, rfl, x, hxQ, hx0, hx⟩, hmin⟩` from `Set.exists_min_image S id hS hSne`. Use `⟨ν, x, hxQ, hx0, hx, fun a b hab he => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+
+Establish `hmem : ht (ν + root a b) ∈ S` using `⟨_, rfl, E a b x, hQ a b he x hxQ, hne, GlobalTheory.CompanionTheory.DSHighestOfKType.isWeight_apply hE hx a b⟩`. Establish `h1 : ht (ν + root a b) = ht ν + (((a : ℕ) : ℝ) - ((b : ℕ) : ℝ))`. Simplify using `only [ht, Pi.add_apply, mul_add, Finset.sum_add_distrib]`. Rewrite using `[GlobalTheory.CompanionTheory.DSHighestOfKType.height_root]`. Establish `h2` using `hmin _ hmem`.
+
+Establish `h3 : ((a : ℕ) : ℝ) < ((b : ℕ) : ℝ)` using `by exact_mod_cast hab`. Simplify using `only [id] at h2`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_highest (hE : GlRel E) (hU : KUnit ε E) {Q : Submodule ℂ V} [FiniteDimensional ℂ Q]
     (hQ : KStab ε E Q) (hQ0 : Q ≠ ⊥) : ∃ μ : Fin n → ℝ, ∃ x ∈ Q, x ≠ 0 ∧ KHighest ε E μ x := by
   classical
@@ -180,6 +250,17 @@ theorem exists_highest (hE : GlRel E) (hU : KUnit ε E) {Q : Submodule ℂ V} [F
   simp only [id] at h2
   linarith
 
+/- English proof (translation)
+Establish `hPfin : FiniteDimensional ℂ (T ⊓ M : Submodule ℂ V)` using `Submodule.finiteDimensional_of_le inf_le_left`. Establish `hP : KStab ε E (T ⊓ M)` using `fun a b he x hx => ⟨hT a b he x hx.1, hM a b he x hx.2⟩`. Establish `hPo` using `GlobalTheory.CompanionTheory.KLowSpan.kstab_orthogonal hU hP`. Establish `hQfin : FiniteDimensional ℂ (T ⊓ (T ⊓ M)ᗮ : Submodule ℂ V)` using `Submodule.finiteDimensional_of_le inf_le_left`. Establish `hQ : KStab ε E (T ⊓ (T ⊓ M)ᗮ)` using `fun a b he x hx => ⟨hT a b he x hx.1, hPo a b he x hx.2⟩`.
+
+Establish `hbot : (T ⊓ (T ⊓ M)ᗮ : Submodule ℂ V) = ⊥`. Assume the negation of the conclusion as `hne`. Take `⟨μ, x, hxQ, hx0, hx⟩` from `exists_highest hE hU hQ hne`. Establish `hxM` using `h _ inf_le_left hQfin hQ μ x hxQ hx0 hx`. Conclude with `hx0 (inner_self_eq_zero.1 ((Submodule.mem_orthogonal _ _).1 hxQ.2 x ⟨hxQ.1, hxM⟩))`.
+
+Introduce `t ht`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.exists_add_mem_mem_orthogonal (K := T ⊓ M) t`. Establish `hzT : z ∈ T`. Establish `: z = t - y` using `by rw [hyz]; abel`. Rewrite using `[this]`.
+
+Conclude with `T.sub_mem ht hy.1`. Establish `hz0 : z = 0`. Establish `: z ∈ (T ⊓ (T ⊓ M)ᗮ : Submodule ℂ V)` using `⟨hzT, hz⟩`. Rewrite `this` using `[hbot]`. Simplify using `using this`.
+
+Rewrite using `[hyz, hz0, add_zero]`. Conclude with `hy.2`.
+-/
 theorem le_of_highest (hE : GlRel E) (hU : KUnit ε E) {T M : Submodule ℂ V} [FiniteDimensional ℂ T]
     (hT : KStab ε E T) (hM : KStab ε E M)
     (h : ∀ Q : Submodule ℂ V, Q ≤ T → FiniteDimensional ℂ Q → KStab ε E Q →
@@ -220,6 +301,17 @@ variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {Sm : Submodule ℂ H}
   {E : Fin n → Fin n → Module.End ℂ Sm}
 
+/- English proof (translation)
+Establish `hinj : Function.Injective Sm.subtype` using `Sm.injective_subtype`. Establish `hrel : KRel ε E` using `fun a b c d _ _ => hM.gl a b c d`. Establish `hun : KUnit ε E` using `kUnit_of hM.unit`. Take `⟨L, hLU, hxL, hLst, hirr, hdom, -⟩` from `hLowSpan n ε Sm E μ x Q hrel hun hx0 hhw hQf hQ hxQ`. Establish `hLfd : FiniteDimensional ℂ L` using `Submodule.finiteDimensional_of_le hLU`.
+
+Use `⟨L, hxL, inferInstance, (hStabLink n ε H σ Sm E hσ hM L hLfd).1 hLst, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `S' hle hS'`. Establish `hle' : S'.comap Sm.subtype ≤ L`. Introduce `y hy`. Take `⟨z, hz, hzy⟩` from `hle hy`.
+
+Rewrite using `[← hinj hzy]` and apply the resulting hypothesis. Establish `hmap : (S'.comap Sm.subtype).map Sm.subtype = S'`. Apply `Submodule.map_comap_eq_of_le` to reduce the goal to its premises. Conclude with `hle.trans LinearMap.map_le_range`. Establish `hst' : KStab ε E (S'.comap Sm.subtype)`.
+
+Use `(hStabLink n ε H σ Sm E hσ hM _ (Submodule.finiteDimensional_of_le hle')).2 ?_` and prove the remaining obligations. Rewrite using `[hmap]` and apply the resulting hypothesis. Break down `hirr _ hle' hst' with h | h` into its components or cases. Use `left`. Rewrite using `[← hmap, h, Submodule.map_bot]`.
+
+Use `right`. Rewrite using `[← hmap, h]`. Conclude with `⟨x, ⟨x, hxL, rfl⟩, fun h => hx0 (Subtype.ext h), (hWtLink n ε H σ Sm E hσ hM μ x).1 hhw.1⟩`. Introduce and unpack `ν _ ⟨v, hv, rfl⟩ hv0 hwt`. Conclude with `hdom ν v hv (fun h => hv0 (by rw [h]; rfl)) ((hWtLink n ε H σ Sm E hσ hM ν v).2 hwt)`.
+-/
 theorem kType_of_highest (hσ : IsURepOn (UJset ε) σ) (hM : IsSmMod ε σ Sm E) {μ : Fin n → ℝ}
     {x : Sm} (hx0 : x ≠ 0) (hhw : KHighest ε E μ x) {Q : Submodule ℂ Sm}
     (hQf : FiniteDimensional ℂ Q) (hQ : KStab ε E Q) (hxQ : x ∈ Q) :
@@ -249,6 +341,9 @@ theorem kType_of_highest (hσ : IsURepOn (UJset ε) σ) (hM : IsSmMod ε σ Sm E
   · rintro ν _ ⟨v, hv, rfl⟩ hv0 hwt
     exact hdom ν v hv (fun h => hv0 (by rw [h]; rfl)) ((hWtLink n ε H σ Sm E hσ hM ν v).2 hwt)
 
+/- English proof (translation)
+Establish `hfinU : FiniteDimensional ℂ (S'.comap Sm.subtype)` using `(Submodule.comapSubtypeEquivOfLe hle).symm.finiteDimensional`. Use `(hStabLink n ε H σ Sm E hσ hM _ hfinU).2 ?_` and prove the remaining obligations. Rewrite using `[Submodule.map_comap_subtype, inf_eq_right.2 hle]`. Conclude with `hst`.
+-/
 theorem comap_kStab (hσ : IsURepOn (UJset ε) σ) (hM : IsSmMod ε σ Sm E) {S' : Submodule ℂ H}
     (hf : FiniteDimensional ℂ S') (hst : IsKStableOn ε σ S') (hle : S' ≤ Sm) :
     KStab ε E (S'.comap Sm.subtype) := by
@@ -263,6 +358,29 @@ end Rep
 open CompanionTheory.D.DSIC (hHWofType hStabLink hSmMod) in
 open PI.UpqRep (IsKTypeOf) in
 
+/- English proof (translation)
+Introduce `n ε lam H _ _ σ _ hds μ S hS a ha X hX`. Take `⟨hc, -, hσ, hirr, -⟩` from `hds`. Use `haveI := hc`. Take `⟨Sm, E, hM⟩` from `hSmMod n ε H σ hσ`. Establish `hgl` using `hM.gl`.
+
+Establish `hun` using `kUnit_of hM.unit`. Establish `hsm : ∀ (ν : Fin n → ℝ) (S' : Submodule ℂ H), IsKTypeOf ε σ ν S' → S' ≤ Sm` using `fun ν S' h v hv => (hM.mem v).2 (CompanionTheory.D.gk.admitted.kFin_mem_smoothVecs n ε H σ hσ hirr v ⟨S', h.1, hv, h.2.1⟩)`. Establish `hSle` using `hsm μ S hS`. Take `⟨v, hv0, hvS, hvh⟩` from `hHWofType n ε H σ Sm E hσ hM μ S hS hSle`. Establish `hAst : KStab ε E (kLowSpan ε E v)` using `GlobalTheory.CompanionTheory.KLowSpan.kstab_kLowSpan (fun a b c d _ _ => hgl a b c d) hvh`.
+
+Establish `hUst` using `comap_kStab hσ hM hS.1 hS.2.1 hSle`. Establish `hAU : kLowSpan ε E v ≤ S.comap Sm.subtype` using `GlobalTheory.CompanionTheory.KLowSpan.kLowSpan_le hUst hvS`. Establish `hUfin : FiniteDimensional ℂ (S.comap Sm.subtype)` using `haveI := hS.1 (Submodule.comapSubtypeEquivOfLe hSle).symm.finiteDimensional`. Use `haveI hAfin : FiniteDimensional ℂ (kLowSpan ε E v) := Submodule.finiteDimensional_of_le hAU`. Establish `hAmap : (kLowSpan ε E v).map Sm.subtype = S`.
+
+Establish `hle : (kLowSpan ε E v).map Sm.subtype ≤ S` using `Submodule.map_le_iff_le_comap.2 hAU`. Break down `hS.2.2.1 _ hle ((hStabLink n ε H σ Sm E hσ hM _ hAfin).1 hAst) with h | h` into its components or cases. It suffices to derive a contradiction. Establish `hmem : (v : H) ∈ (kLowSpan ε E v).map Sm.subtype` using `⟨v, GlobalTheory.CompanionTheory.KLowSpan.kself_mem, rfl⟩`. Rewrite `hmem` using `[h]`.
+
+Conclude with `hv0 (Subtype.ext (by simpa using hmem))`. Conclude with `h`. Set `M : Submodule ℂ Sm` to `sSup {L | ∃ (S' : Submodule ℂ H) (μ' : Fin n → ℝ), IsKTypeOf ε σ μ' S' ∧ Formalism.REAL.nsq (μ' - μ) ≤ 2 ∧ L = S'.comap Sm.subtype}`. Establish `hMst : KStab ε E M`. Introduce `c d he y hy`.
+
+Establish `hle : M ≤ M.comap (E c d)`. Use `sSup_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨S', μ', h1, h2, rfl⟩ z hz`. Conclude with `(le_sSup ⟨S', μ', h1, h2, rfl⟩ : S'.comap Sm.subtype ≤ M) (comap_kStab hσ hM h1.1 h1.2.1 (hsm _ _ h1) c d he z hz)`. Conclude with `hle hy`.
+
+Use `haveI : FiniteDimensional ℂ (nbr E (kLowSpan ε E v)) := nbr_finite _`. Establish `hTM : nbr E (kLowSpan ε E v) ≤ M`. Use `le_of_highest hgl hun (nbr_stab hgl hAst) hMst ?_` and prove the remaining obligations. Introduce `Q hQT hQf hQ ν x hxQ hx0 hx`. Take `⟨L, hxL, hL⟩` from `kType_of_highest hσ hM hx0 hx hQf hQ hxQ`.
+
+Establish `hnsq : Formalism.REAL.nsq (ν - μ) ≤ 2`. Break down `weight_shift hgl hun hvh.1 hx hx0 (hQT hxQ) with rfl | ⟨a, b, rfl⟩` into its components or cases. Simplify using `[Formalism.REAL.nsq, Formalism.REAL.dot]`. Simplify using `using nsq_root_le a b`. Conclude with `(le_sSup ⟨_, ν, hL, hnsq, rfl⟩ : (L.map Sm.subtype).comap Sm.subtype ≤ M) ⟨x, hxL, rfl⟩`.
+
+Establish `haA : (⟨a, hSle ha⟩ : Sm) ∈ kLowSpan ε E v`. Establish `hmem : a ∈ (kLowSpan ε E v).map Sm.subtype` using `by rw [hAmap]; exact ha`. Take `⟨y, hy, rfl⟩` from `hmem`. Conclude with `hy`. Use `⟨_, hM.real X hX ⟨a, hSle ha⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `hMH : M.map Sm.subtype ≤ sSup {S' : Submodule ℂ H | ∃ μ', Formalism.MainNotions.S.IsKTypeOf ε σ μ' S' ∧ Formalism.REAL.nsq (μ' - μ) ≤ 2}`. Use `Submodule.map_le_iff_le_comap.2 (sSup_le ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨S', μ', h1, h2, rfl⟩ z hz`. Establish `hmemS : S' ∈ {S' : Submodule ℂ H | ∃ μ', Formalism.MainNotions.S.IsKTypeOf ε σ μ' S' ∧ Formalism.REAL.nsq (μ' - μ) ≤ 2}` using `⟨μ', h1, h2⟩`. Conclude with `le_sSup hmemS hz`.
+
+Conclude with `Submodule.sum_mem _ fun i _ => Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (hMH ⟨_, hTM (apply_mem_nbr haA i j), rfl⟩)`.
+-/
 theorem kTypeShift : Formalism.L2.S.S7.CasimirNormBounds.KTypeShift := by
   intro n ε lam H _ _ σ _ hds μ S hS a ha X hX
   obtain ⟨hc, -, hσ, hirr, -⟩ := hds

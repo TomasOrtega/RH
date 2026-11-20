@@ -65,6 +65,9 @@ def IsTwist (ξ : (AdE F E)ˣ →* Circle) (N : ℕ) : Prop :=
   ∀ x : (AdE F E)ˣ, (x : AdE F E) ∈ intAdE F E → ((x⁻¹ : (AdE F E)ˣ) : AdE F E) ∈ intAdE F E →
     (∃ y ∈ intAdE F E, (x : AdE F E) - 1 = N • y) → ξ x = 1
 
+/- English proof (translation)
+Use `⟨?_, ?_, ⟨1, one_pos, fun _ => by simp⟩, fun _ _ => rfl, fun _ _ _ => rfl, fun _ _ _ _ => rfl⟩` and prove the remaining obligations. Simplify using `[IsUnitaryA]`. Simplify using `[IsDetRootA]`.
+-/
 example {r : ℕ} (Gm : Matrix (Fin r) (Fin r) E) (N : ℕ) :
     IsUnitaryA Gm (1 : Matrix (Fin r) (Fin r) (AdE F E)) ∧ IsDetRootA (1 : Matrix (Fin r) (Fin r) (AdE F E)) 1 ∧
       IsTwist (1 : (AdE F E)ˣ →* Circle) N := by
@@ -97,6 +100,9 @@ def AtClass (l : Level H) (Gm : Matrix (Fin r) (Fin r) E) (ι : Dw.La →ₗ[�
   ∃ γ : Matrix (Fin r) (Fin r) E, IsUnitaryQ Gm γ ∧
     LatAt ι φ (γ.map (diagE F) * h) ∧ MarkAt l ι φ t (γ.map (diagE F) * h)
 
+/- English proof (translation)
+Introduce `a _` and use `⟨0, zero_mem _, by simp⟩`.
+-/
 example (l : Level H) (ι : Dw.La →ₗ[𝓞 E] (Fin r → E)) :
     MarkAt l ι ι LinearMap.id (1 : Matrix (Fin r) (Fin r) (AdE F E)) :=
   fun a _ => ⟨0, zero_mem _, by simp⟩

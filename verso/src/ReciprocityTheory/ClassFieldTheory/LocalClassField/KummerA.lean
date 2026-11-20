@@ -56,10 +56,20 @@ end Scalars
 
 variable (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (n : ℕ) [NeZero n]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem kbarRep_apply (σ : GK p K) (x : (PadicAlgCl p)ˣ) :
     kbarRep p K σ (Additive.ofMul x : KbarMult p) =
       (Additive.ofMul (Units.map (σ : PadicAlgCl p →* PadicAlgCl p) x) : KbarMult p) := rfl
 
+/- English proof (translation)
+Use `show Continuous fun q : GK p K × KbarMult p => kbarRep p K q.1 q.2`. Rewrite using `[continuous_prod_of_discrete_right]`. Introduce `x`. Use `IsLocallyConstant.continuous ((IsLocallyConstant.iff_exists_open _).2 fun σ₀ => ?_)` and prove the remaining obligations. Establish `hx` using `stabilizer_isOpen_of_isIntegral (K := K) (L := PadicAlgCl p) ((Additive.toMul x : (PadicAlgCl p)ˣ) : PadicAlgCl p)`.
+
+Use `⟨_, hx.preimage (continuous_const_mul σ₀⁻¹), ?_, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `σ hσ`. Establish `h1 : (σ₀⁻¹ * σ) ((Additive.toMul x : (PadicAlgCl p)ˣ) : PadicAlgCl p) = (Additive.toMul x : (PadicAlgCl p)ˣ)` using `hσ`. Establish `h2 : σ ((Additive.toMul x : (PadicAlgCl p)ˣ) : PadicAlgCl p) = σ₀ (Additive.toMul x : (PadicAlgCl p)ˣ)`.
+
+Use `congrArg σ₀ h1` as an intermediate fact. Simplify `this` using `[AlgEquiv.mul_apply]`. Conclude with `Units.ext h2`.
+-/
 theorem contAction_kbarRep : ReciprocityTheory.Gal.ContAction (kbarRep p K) := by
   show Continuous fun q : GK p K × KbarMult p => kbarRep p K q.1 q.2
   rw [continuous_prod_of_discrete_right]
@@ -90,6 +100,9 @@ def muRep : Representation ℤ (GK p K) (ZMod n) where
     show charRep (cycK p K n) (g * h) x = charRep (cycK p K n) g (charRep (cycK p K n) h x)
     rw [map_mul]; rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem muRep_apply (g : GK p K) (x : ZMod n) : muRep p K n g x = ((cycK p K n g : (ZMod n)ˣ) : ZMod n) * x := rfl
 
 variable {p n}
@@ -102,9 +115,17 @@ def muMap (ζ : (PadicAlgCl p)ˣ) (hζ : ζ ^ n = 1) : ZMod n →ₗ[ℤ] KbarMu
         show ζ ^ (a + b).val = ζ ^ a.val * ζ ^ b.val
         rw [ZMod.val_add, ← pow_eq_pow_mod _ hζ, pow_add] }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem muMap_apply (ζ : (PadicAlgCl p)ˣ) (hζ : ζ ^ n = 1) (k : ZMod n) :
     muMap ζ hζ k = (Additive.ofMul (ζ ^ k.val) : KbarMult p) := rfl
 
+/- English proof (translation)
+Rewrite using `[muMap_apply, muMap_apply, kbarRep_apply, muRep_apply]`. Use `congrArg Additive.ofMul (Units.ext ?_)` and prove the remaining obligations. Establish `h1 : ((ζ ^ k.val : (PadicAlgCl p)ˣ) : PadicAlgCl p) ^ n = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, ← pow_mul, mul_comm, pow_mul, hζ, one_pow, Units.val_one]`. Establish `h2` using `cycN_spec (K := K) g _ h1`.
+
+Use `show _ = g ((ζ ^ k.val : (PadicAlgCl p)ˣ) : PadicAlgCl p)`. Rewrite using `[h2, ← Units.val_pow_eq_pow_val, ZMod.val_mul, ← pow_eq_pow_mod _ hζ, ← pow_mul, mul_comm]`.
+-/
 theorem muMap_equiv (ζ : (PadicAlgCl p)ˣ) (hζ : ζ ^ n = 1) (g : GK p K) (k : ZMod n) :
     muMap ζ hζ (muRep p K n g k) = kbarRep p K g (muMap ζ hζ k) := by
   rw [muMap_apply, muMap_apply, kbarRep_apply, muRep_apply]
@@ -115,6 +136,9 @@ theorem muMap_equiv (ζ : (PadicAlgCl p)ˣ) (hζ : ζ ^ n = 1) (g : GK p K) (k :
   show _ = g ((ζ ^ k.val : (PadicAlgCl p)ˣ) : PadicAlgCl p)
   rw [h2, ← Units.val_pow_eq_pow_val, ZMod.val_mul, ← pow_eq_pow_mod _ hζ, ← pow_mul, mul_comm]
 
+/- English proof (translation)
+Introduce `a b hab`. Conclude with `ZMod.val_injective n (hζ.pow_inj (ZMod.val_lt a) (ZMod.val_lt b) hab)`.
+-/
 theorem muMap_injective {ζ : (PadicAlgCl p)ˣ} (hζ : IsPrimitiveRoot ζ n) : Function.Injective (muMap ζ hζ.pow_eq_one) := by
   intro a b hab
   exact ZMod.val_injective n (hζ.pow_inj (ZMod.val_lt a) (ZMod.val_lt b) hab)
@@ -123,11 +147,19 @@ variable (p n) in
 
 def powMap : KbarMult p →ₗ[ℤ] KbarMult p := (n : ℤ) • LinearMap.id
 
+/- English proof (translation)
+Use `show (n : ℤ) • (Additive.ofMul x : Additive (PadicAlgCl p)ˣ) = _`. Rewrite using `[natCast_zsmul]`. Both sides reduce to the same expression.
+-/
 theorem powMap_apply (x : (PadicAlgCl p)ˣ) :
     powMap p n (Additive.ofMul x : KbarMult p) = (Additive.ofMul (x ^ n) : KbarMult p) := by
   show (n : ℤ) • (Additive.ofMul x : Additive (PadicAlgCl p)ˣ) = _
   rw [natCast_zsmul]; rfl
 
+/- English proof (translation)
+Introduce `y`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq ((Additive.toMul y : (PadicAlgCl p)ˣ) : PadicAlgCl p) (NeZero.pos n)`. Establish `hz0 : z ≠ 0`. Introduce and unpack `rfl`. Rewrite `hz` using `[zero_pow (NeZero.ne n)]`.
+
+Conclude with `(Additive.toMul y : (PadicAlgCl p)ˣ).ne_zero hz.symm`. Use `⟨(Additive.ofMul (Units.mk0 z hz0) : KbarMult p), ?_⟩` and prove the remaining obligations. Rewrite using `[powMap_apply]`. Conclude with `congrArg Additive.ofMul (Units.ext (by rw [Units.val_pow_eq_pow_val]; exact hz))`.
+-/
 theorem powMap_surjective : Function.Surjective (powMap p n) := by
   intro y
   obtain ⟨z, hz⟩ := IsAlgClosed.exists_pow_nat_eq ((Additive.toMul y : (PadicAlgCl p)ˣ) : PadicAlgCl p) (NeZero.pos n)
@@ -139,6 +171,15 @@ theorem powMap_surjective : Function.Surjective (powMap p n) := by
   rw [powMap_apply]
   exact congrArg Additive.ofMul (Units.ext (by rw [Units.val_pow_eq_pow_val]; exact hz))
 
+/- English proof (translation)
+Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `h1 : (Additive.toMul y : (PadicAlgCl p)ˣ) ^ n = 1`. Use `powMap_apply (p := p) (n := n) (Additive.toMul y)` as an intermediate fact.
+
+Conclude with `(this.symm.trans hy : _)`. Establish `h2 : ((Additive.toMul y : (PadicAlgCl p)ˣ) : PadicAlgCl p) ^ n = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, h1, Units.val_one]`. Take `⟨i, hi, hi'⟩` from `(IsPrimitiveRoot.coe_units_iff.2 hζ).eq_pow_of_pow_eq_one h2`. Establish `hi'' : ζ ^ i = (Additive.toMul y : (PadicAlgCl p)ˣ)` using `Units.ext (by rw [Units.val_pow_eq_pow_val]; exact hi')`.
+
+Use `⟨(i : ZMod n), ?_⟩` and prove the remaining obligations. Rewrite using `[muMap_apply, ZMod.val_natCast, Nat.mod_eq_of_lt hi, hi'']`. Both sides reduce to the same expression. Introduce and unpack `⟨k, rfl⟩`. Rewrite using `[muMap_apply, powMap_apply, ← pow_mul, mul_comm, pow_mul, hζ.pow_eq_one, one_pow]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exact_muMap_powMap {ζ : (PadicAlgCl p)ˣ} (hζ : IsPrimitiveRoot ζ n) :
     Function.Exact (muMap ζ hζ.pow_eq_one) (powMap p n) := by
   intro y

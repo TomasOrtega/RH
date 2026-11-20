@@ -25,6 +25,13 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {v : HeightOneSpectrum (𝓞 F)} {w : HeightOneSpectrum (𝓞 E)} {σ : E →ₐ[F] E} {h : w.under (𝓞 F) = v}
   {c : w.adicCompletion E →+* w.adicCompletion E} {m : ℕ}
 
+/- English proof (translation)
+Establish `h1 : cT c (bc (toCompl h) g).1 = (cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR _ σ) g.1).map (toCompl h)` using `Matrix.ext fun i j => hc _`. Establish `h2 : g ∈ HR (Fv F v) σ J ↔ bc (toCompl h) g ∈ UJ c (J.map (algebraMap E _))`. Express the relevant statement in the definitionally equal form `_ ↔ cT c (bc (toCompl h) g).1 * _ * g.1.map (toCompl h) = _`. Rewrite using `[h1, ← JR_map h, ← Matrix.map_mul, ← Matrix.map_mul]`. Conclude with `(Matrix.map_injective (toCompl_bijective hw h).1).eq_iff.symm`.
+
+Establish `h3 : ∀ x : GL (Fin m) (w.adicCompletion E), cT c (a⁻¹ * x * a).1 * T * (a⁻¹ * x * a).1 = cT c a.1 * (cT c x.1 * J.map (algebraMap E _) * x.1) * a.1` using `fun x => by`. Rewrite using `[← ha, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← cT_mul, Matrix.mul_assoc, ← Units.val_mul, ← mul_assoc, mul_inv_cancel_left, Units.val_mul, cT_mul]`. Simplify using `only [Matrix.mul_assoc]`. Establish `h4 : IsUnit (cT c a.1)` using `IsUnit.of_mul_eq_one (cT c (a⁻¹).1) (by rw [← cT_mul, Units.inv_mul, cT_one])`. Rewrite using `[h2]`.
+
+Express the relevant statement in the definitionally equal form `_ ↔ _ * _ * _ = _`. Rewrite using `[h3, ← ha, a.isUnit.mul_left_inj, h4.mul_right_inj]`. Both sides reduce to the same expression.
+-/
 theorem bc_mem_iff_gram (hw : IsInertAt F E v w) (hc : GlobalTheory.LFun.IsConjAt σ h c) {J : Matrix (Fin m) (Fin m) E}
     {T : Matrix (Fin m) (Fin m) (w.adicCompletion E)} {a : GL (Fin m) (w.adicCompletion E)}
     (ha : cT c a.1 * J.map (algebraMap E _) * a.1 = T) (g : GL (Fin m) (Fv F v ⊗[F] E)) :
@@ -66,14 +73,23 @@ section Conj
 variable {A B n ι : Type} [CommRing A] [CommRing B] [Fintype n] [Fintype ι] [DecidableEq n] [DecidableEq ι]
   (e : n ⊕ n ≃ ι)
 
+/- English proof (translation)
+The claim follows from `mem_stabGL_diagSub.2 ((keepsDiag_blkMat e).2 rfl)`.
+-/
 theorem blkGL_mem_diag (a : GL n A) : blkGL e (a, a) ∈ stabGL (diagSub A e) :=
   mem_stabGL_diagSub.2 ((keepsDiag_blkMat e).2 rfl)
 
+/- English proof (translation)
+Rewrite using `[Subgroup.mul_mem_cancel_right _ (blkGL_mem_diag e a), Subgroup.mul_mem_cancel_left _ (inv_mem (blkGL_mem_diag e a))]`.
+-/
 theorem conj_mem_diag (a : GL n A) (x : GL ι A) :
     (blkGL e (a, a))⁻¹ * x * blkGL e (a, a) ∈ stabGL (diagSub A e) ↔ x ∈ stabGL (diagSub A e) := by
   rw [Subgroup.mul_mem_cancel_right _ (blkGL_mem_diag e a),
     Subgroup.mul_mem_cancel_left _ (inv_mem (blkGL_mem_diag e a))]
 
+/- English proof (translation)
+Rewrite using `[mem_stabGL_diagSub, mem_stabGL_diagSub]`. Use `⟨fun hx => (keepsDiag_iff e).2 fun i j => hf ?_, fun hx => hx.map e f⟩` and prove the remaining obligations. Rewrite using `[map_add, map_add]`. Conclude with `(keepsDiag_iff e).1 hx i j`.
+-/
 theorem bc_mem_diag {f : A →+* B} (hf : Function.Injective f) (x : GL ι A) :
     bc f x ∈ stabGL (diagSub B e) ↔ x ∈ stabGL (diagSub A e) := by
   rw [mem_stabGL_diagSub, mem_stabGL_diagSub]
@@ -81,6 +97,9 @@ theorem bc_mem_diag {f : A →+* B} (hf : Function.Injective f) (x : GL ι A) :
   rw [map_add, map_add]
   exact (keepsDiag_iff e).1 hx i j
 
+/- English proof (translation)
+Set `D : stabGL (diagSub A e) →* Aˣ` to `Matrix.GeneralLinearGroup.det.comp (leviGL e)`. Set `b : stabGL (diagSub A e)` to `⟨_, blkGL_mem_diag e a⟩`. Establish `h1 : D (b⁻¹ * ⟨x, hx⟩ * b) = D ⟨x, hx⟩`. Rewrite using `[map_mul, map_mul, map_inv, inv_mul_cancel_comm]`. Conclude with `congrArg Units.val h1`.
+-/
 theorem det_leviMat_conj (a : GL n A) {x : GL ι A} (hx : x ∈ stabGL (diagSub A e)) :
     (leviMat e ((blkGL e (a, a))⁻¹ * x * blkGL e (a, a)).1).det = (leviMat e x.1).det := by
   let D : stabGL (diagSub A e) →* Aˣ := Matrix.GeneralLinearGroup.det.comp (leviGL e)
@@ -91,6 +110,17 @@ theorem det_leviMat_conj (a : GL n A) {x : GL ι A} (hx : x ∈ stabGL (diagSub 
 
 end Conj
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ _ n J _ Q hQ L _ v w h hw c e he`. Take `⟨hc, ⟨a, ha', ha, hea⟩, -⟩` from `he`. Establish `hA' : IsFrameAt w (sumLat finSumFinEquiv L L) (blkGL finSumFinEquiv (a, a))` using `GlobalTheory.T.isLatticeFrameAtPlace_directSum_blockDiagonal E w n L a ha'`. Establish `hT : cT c (blkGL finSumFinEquiv (a, a)).1 * Q.map (algebraMap E _) * (blkGL finSumFinEquiv (a, a)).1 = dblGram finSumFinEquiv (antiJ (w.adicCompletion E) n)`. Rewrite using `[hQ, dblGram, blkMat_map _ _ (map_zero _), val_blkGL, cT_blkMat, blkMat_mul, blkMat_mul, ha, Matrix.map_neg _ (map_neg _), Matrix.mul_neg, Matrix.neg_mul, ha]`.
+
+Both sides reduce to the same expression. Establish `hinj` using `(toCompl_bijective hw h).1`. Use `⟨chartGram hw hc hT, fun g => ?_, fun y => Subtype.ext ?_, fun g => ?_, fun p hp => Units.ext ?_⟩` and prove the remaining obligations. Use `Iff.trans ?_ (((isFrameAt_mul hA' (one_mem _)).2 (locMat σ Q h g)).trans ⟨fun hg => ⟨(chartGram hw hc hT g).2, hg⟩, fun hg => hg.2⟩)` and prove the remaining obligations. Rewrite using `[mem_stabLoc]`.
+
+Use `⟨fun hg z => ?_, fun hg y => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `exists_comp h z`. Rewrite using `[← mem_latLoc_iff hw, hg, mem_latLoc_iff hw h, comp_mulVec]`. Both sides reduce to the same expression. Rewrite using `[mem_latLoc_iff hw h, hg, mem_latLoc_iff hw h, comp_mulVec]`.
+
+Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(blkGL finSumFinEquiv (a, a))⁻¹ * bc (toCompl h) (blkGL finSumFinEquiv (GlobalTheory.AdelicU.matHom _ σ J y, GlobalTheory.AdelicU.matHom _ σ J 1)) * blkGL finSumFinEquiv (a, a) = blkGL finSumFinEquiv ((e y : GL (Fin n) (w.adicCompletion E)), 1)`. Rewrite using `[bc_blkGL, ← map_inv, ← map_mul, ← map_mul, hea, map_one, map_one, Prod.inv_mk, Prod.mk_mul_mk, Prod.mk_mul_mk, mul_one, inv_mul_cancel]`. Both sides reduce to the same expression. Conclude with `((conj_mem_diag finSumFinEquiv a _).trans (bc_mem_diag finSumFinEquiv hinj _)).symm`.
+
+Use `(det_leviMat_conj finSumFinEquiv a ((bc_mem_diag finSumFinEquiv hinj _).2 p.2)).trans ?_` and prove the remaining obligations. Conclude with `(congrArg Matrix.det (leviMat_map finSumFinEquiv (toCompl h) _)).trans (RingHom.map_det _ _).symm`.
+-/
 theorem exists_dblChart : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (Q : Matrix (Fin (n + n)) (Fin (n + n)) E) (hQ : Q = dblGram finSumFinEquiv J) (L : Submodule (𝓞 E) (Fin n → E)) [Submodule.IsLattice E L], ∀ (v : HeightOneSpectrum (𝓞 F)) (w : HeightOneSpectrum (𝓞 E)) (h : w.under (𝓞 F) = v), IsInertAt F E v w → ∀ (c : w.adicCompletion E →+* w.adicCompletion E) (e : GLoc σ J v ≃* GU c n), IsInertChart σ J L h c e → ∃ f : GLoc σ Q v ≃* GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables.GD c n, (∀ g, g ∈ KFin σ Q L v ↔ f g ∈ GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables.KD c n) ∧ (∀ y, f (ioH _ σ hQ (y, 1)) = GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables.io1 c n (e y)) ∧ (∀ g, g ∈ siegelH (Fv F v) σ Q ↔ f g ∈ GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables.PD c n) ∧ ∀ (p : siegelH (Fv F v) σ Q) (hp : f p ∈ GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables.PD c n), GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables.aD c n ⟨f p, hp⟩ = Units.map (toCompl h).toMonoidHom (aH _ σ Q p) := by
   intro F E _ _ _ _ _ σ _ n J _ Q hQ L _ v w h hw c e he
   obtain ⟨hc, ⟨a, ha', ha, hea⟩, -⟩ := he

@@ -14,6 +14,13 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Use `set h : B.Mat k r := Matrix.of p.1.1`. Use `set n : B.Mat k r := Matrix.of p.1.2`. Use `set h' : B.Mat k r := Matrix.of p.2.1`. Use `set n' : B.Mat k r := Matrix.of p.2.2`. Establish `e1 : (Matrix.of (Formalism.FourierDecayAlt.P.BigCellInversePair.invP p).1.1 : B.Mat k r) = h⁻¹` using `rfl`.
+
+Establish `e2 : (Matrix.of (Formalism.FourierDecayAlt.P.BigCellInversePair.invP p).1.2 : B.Mat k r) = h⁻¹ * n⁻¹ * h` using `rfl`. Establish `e3 : (Matrix.of (Formalism.FourierDecayAlt.P.BigCellInversePair.invP p).2.1 : B.Mat k r) = h'⁻¹` using `rfl`. Establish `e4 : (Matrix.of (Formalism.FourierDecayAlt.P.BigCellInversePair.invP p).2.2 : B.Mat k r) = h'⁻¹ * n'⁻¹ * h'` using `rfl`. Unfold `B.sgs`. Rewrite using `[e1, e2, e3, e4]`.
+
+Use `show h⁻¹ * n⁻¹ * (h⁻¹⁻¹ * (h⁻¹ * n⁻¹ * h)⁻¹ * x * (h'⁻¹ * n'⁻¹ * h') * h'⁻¹) * n' * h' = x`. Rewrite using `[Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ hp1, Matrix.nonsing_inv_nonsing_inv _ hp2]`. Simplify using `only [Matrix.mul_assoc]`. Simplify using `only [Matrix.mul_nonsing_inv_cancel_left _ _ hp1, Matrix.nonsing_inv_mul_cancel_left _ _ hp1, Matrix.nonsing_inv_mul_cancel_left _ _ hp2, Matrix.mul_nonsing_inv_cancel_left _ _ hp3, Matrix.nonsing_inv_mul_cancel_left _ _ hp4, Matrix.nonsing_inv_mul _ hp3, Matrix.mul_one]`.
+-/
 theorem sgs_of_invP (p : B.SS k r) (hp1 : IsUnit (Matrix.of p.1.1 : B.Mat k r).det)
     (hp2 : IsUnit (Matrix.of p.1.2 : B.Mat k r).det) (hp3 : IsUnit (Matrix.of p.2.1 : B.Mat k r).det)
     (hp4 : IsUnit (Matrix.of p.2.2 : B.Mat k r).det) (x : B.Mat k r) :
@@ -39,6 +46,15 @@ theorem sgs_of_invP (p : B.SS k r) (hp1 : IsUnit (Matrix.of p.1.1 : B.Mat k r).d
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Establish `hi` using `Formalism.FourierDecayAlt.P.BigCellInversePair.uw_inv hh`. Establish `hi'` using `Formalism.FourierDecayAlt.P.BigCellInversePair.uw_inv hh'`. Establish `hii'` using `Formalism.FourierDecayAlt.P.BigCellInversePair.uw_inv hi'`. Establish `e1 : (D.π h).comp (D.π h⁻¹) = 1`. Rewrite using `[← D.π_rep.2 h hh h⁻¹ hi, (Formalism.FourierDecayAlt.P.FiniteSumLocalExpansion.gv_inv hh.1).1, D.π_rep.1]`.
+
+Establish `e2 : (D.π' h'⁻¹⁻¹).comp (D.π' h'⁻¹) = 1`. Rewrite using `[← D.π'_rep.2 _ hii' _ hi', (Formalism.FourierDecayAlt.P.FiniteSumLocalExpansion.gv_inv hi'.1).2, D.π'_rep.1]`. Establish `e1v : ∀ w, D.π h (D.π h⁻¹ w) = w` using `fun w => by`. Use `congrArg (fun T : Wp →L[ℂ] Wp => T w) e1` as an intermediate fact. Simplify using `using this`.
+
+Establish `e2v : ∀ w, D.π' h'⁻¹⁻¹ (D.π' h'⁻¹ w) = w` using `fun w => by`. Use `congrArg (fun T : Wq →L[ℂ] Wq => T w) e2` as an intermediate fact. Simplify using `using this`. Use `set Z : Wq →L[ℂ] Wp := (D.π h⁻¹).comp (C.comp (D.π' h'⁻¹⁻¹))`. Establish `hC : C = (D.π h).comp (Z.comp (D.π' h'⁻¹))`.
+
+Use extensionality with `v`. Simplify using `only [Z, ContinuousLinearMap.comp_apply, e2v, e1v]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem hs_uni (D : B.RealPlaceData k r Wp Wq) {h h' : B.Mat k r} (hh : h ∈ UWset k r D.z) (hh' : h' ∈ UWset k r D.z')
     (A C : Wq →L[ℂ] Wp) :
     B.hsInner ((D.π h).comp (A.comp (D.π' h'⁻¹))) C =
@@ -67,6 +83,9 @@ theorem hs_uni (D : B.RealPlaceData k r Wp Wq) {h h' : B.Mat k r} (hh : h ∈ UW
     _ = B.hsInner A Z := Formalism.FourierDecayAlt.P.PBI.hsInner_comp_right _ (D.π'_unitary _ hi') _ _
 
 omit [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] in
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Establish `e : B.sgs q (Matrix.of x) = (Matrix.of q.1.2 * Matrix.of q.1.1 : B.Mat k r)⁻¹ * (Matrix.of x * (Matrix.of q.2.2 * Matrix.of q.2.1 : B.Mat k r))`. Rewrite using `[Formalism.FourierDecayAlt.P.B5.sgs_eq, Matrix.mul_assoc]`. Conclude with `e`.
+-/
 theorem sgsM_eq_comp (q : B.SS k r) : Formalism.FourierDecayAlt.P.B7.sgsM q =
     lmulM (k := k) (r := r) (Matrix.of q.1.2 * Matrix.of q.1.1 : B.Mat k r)⁻¹ ∘
       B.rmulF (Matrix.of q.2.2 * Matrix.of q.2.1 : B.Mat k r) := by
@@ -77,15 +96,24 @@ theorem sgsM_eq_comp (q : B.SS k r) : Formalism.FourierDecayAlt.P.B7.sgsM q =
   exact e
 
 omit [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] in
+/- English proof (translation)
+Establish `: Continuous (B.rmulF C)` using `(continuous_id.matrix_mul continuous_const : Continuous fun x : B.Mat k r => x * C)`. Conclude with `this.measurable`.
+-/
 theorem measurable_rmulF (C : B.Mat k r) : Measurable (B.rmulF C) := by
   have : Continuous (B.rmulF C) := (continuous_id.matrix_mul continuous_const : Continuous fun x : B.Mat k r => x * C)
   exact this.measurable
 
 omit [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] in
+/- English proof (translation)
+Rewrite using `[sgsM_eq_comp]`. Conclude with `(Formalism.QuantumDeterminants.BesselUnitaryEquiv.continuous_lmulM _).measurable.comp (measurable_rmulF _)`.
+-/
 theorem measurable_section_inverse (q : B.SS k r) : Measurable (Formalism.FourierDecayAlt.P.B7.sgsM q) := by
   rw [sgsM_eq_comp]
   exact (Formalism.QuantumDeterminants.BesselUnitaryEquiv.continuous_lmulM _).measurable.comp (measurable_rmulF _)
 
+/- English proof (translation)
+Establish `hA` using `Formalism.FourierDecayAlt.P.NFRadRedLocSec.uh_inv_mem (Formalism.FourierDecayAlt.P.B5.inSS_left D hq)`. Establish `hC` using `Formalism.FourierDecayAlt.P.B5.inSS_right D hq`. Establish `hmr` using `measurable_rmulF (k := k) (r := r) (Matrix.of q.2.2 * Matrix.of q.2.1 : B.Mat k r)`. Rewrite using `[sgsM_eq_comp, ← Measure.map_map (Formalism.QuantumDeterminants.BesselUnitaryEquiv.continuous_lmulM _).measurable hmr, D.haarG.right _ hC, D.haarG.left _ hA]`.
+-/
 theorem map_sgs (D : B.RealPlaceData k r Wp Wq) {q : B.SS k r} (hq : D.inSS q) :
     D.μG.map (Formalism.FourierDecayAlt.P.B7.sgsM q) = D.μG := by
   have hA := Formalism.FourierDecayAlt.P.NFRadRedLocSec.uh_inv_mem (Formalism.FourierDecayAlt.P.B5.inSS_left D hq)
@@ -102,6 +130,9 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Use `sgs_of_invP p hp1 hp2 hp3 hp4 (Matrix.of x)` as an intermediate fact. Conclude with `this`.
+-/
 theorem sgsM_left (p : B.SS k r) (hp1 : IsUnit (Matrix.of p.1.1 : B.Mat k r).det)
     (hp2 : IsUnit (Matrix.of p.1.2 : B.Mat k r).det) (hp3 : IsUnit (Matrix.of p.2.1 : B.Mat k r).det)
     (hp4 : IsUnit (Matrix.of p.2.2 : B.Mat k r).det) (x : Mt k r) :
@@ -109,6 +140,9 @@ theorem sgsM_left (p : B.SS k r) (hp1 : IsUnit (Matrix.of p.1.1 : B.Mat k r).det
   have := sgs_of_invP p hp1 hp2 hp3 hp4 (Matrix.of x)
   exact this
 
+/- English proof (translation)
+Use `Formalism.FourierDecayAlt.P.BigCellInversePair.sgs_invP p hp1 hp2 hp3 hp4 (Matrix.of x)` as an intermediate fact. Conclude with `this`.
+-/
 theorem sgsM_right (p : B.SS k r) (hp1 : IsUnit (Matrix.of p.1.1 : B.Mat k r).det)
     (hp2 : IsUnit (Matrix.of p.1.2 : B.Mat k r).det) (hp3 : IsUnit (Matrix.of p.2.1 : B.Mat k r).det)
     (hp4 : IsUnit (Matrix.of p.2.2 : B.Mat k r).det) (x : Mt k r) :
@@ -126,6 +160,9 @@ noncomputable def sgsE (p : B.SS k r) (hp1 : IsUnit (Matrix.of p.1.1 : B.Mat k r
   measurable_toFun := measurable_section_inverse _
   measurable_invFun := measurable_section_inverse _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sgsE_coe (p : B.SS k r) (hp1 hp2 hp3 hp4) :
     ⇑(sgsE (k := k) (r := r) p hp1 hp2 hp3 hp4) = Formalism.FourierDecayAlt.P.B7.sgsM (Formalism.FourierDecayAlt.P.BigCellInversePair.invP p) := rfl
 
@@ -137,6 +174,13 @@ open Formalism.FourierDecayAlt.P.CutMP.JA.FFS.AC
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Introduce `k r Wp Wq _ _ _ _ _ _ D p hp`. Use `⟨Formalism.FourierDecayAlt.P.BigCellInversePair.invP p, Formalism.FourierDecayAlt.P.BigCellInversePair.invP_inSS D hp, fun X Y => ?_⟩` and prove the remaining obligations. Establish `hq` using `Formalism.FourierDecayAlt.P.BigCellInversePair.invP_inSS D hp`. Establish `u1` using `WeylGroupFacts.isUnit_of_uh hp.1.1`. Establish `u2` using `WeylGroupFacts.isUnit_of_uh hp.2.1.1`.
+
+Establish `u3` using `WeylGroupFacts.isUnit_of_uh hp.2.2.1.1`. Establish `u4` using `WeylGroupFacts.isUnit_of_uh hp.2.2.2.1`. Establish `hmp : MeasurePreserving (sgsE p u1 u2 u3 u4) D.μG D.μG` using `⟨(sgsE p u1 u2 u3 u4).measurable, by rw [sgsE_coe]; exact map_sgs D hq⟩`. Rewrite using `[← hmp.integral_comp' (fun y : Mt k r => B.hsInner (B.rho D p X (Matrix.of y)) (Y (Matrix.of y)))]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
+
+Use `show B.hsInner (B.rho D p X (B.sgs (Formalism.FourierDecayAlt.P.BigCellInversePair.invP p) (Matrix.of x))) (Y (B.sgs (Formalism.FourierDecayAlt.P.BigCellInversePair.invP p) (Matrix.of x))) = B.hsInner (X (Matrix.of x)) (B.rho D (Formalism.FourierDecayAlt.P.BigCellInversePair.invP …`. Unfold `B.rho`. Rewrite using `[sgs_of_invP p u1 u2 u3 u4]`. Conclude with `hs_uni D hp.1 hp.2.2.1 _ _`.
+-/
 theorem unitary_rho_holds : RhoUni := by
   intro k r Wp Wq _ _ _ _ _ _ D p hp
   refine ⟨Formalism.FourierDecayAlt.P.BigCellInversePair.invP p, Formalism.FourierDecayAlt.P.BigCellInversePair.invP_inSS D hp, fun X Y => ?_⟩

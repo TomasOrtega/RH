@@ -7,6 +7,9 @@ namespace Formalism.DworkPowerSeriesWeights
 
 open MvPolynomial Formalism.IncomingBounds
 
+/- English proof (translation)
+Simplify using `only [Matrix.det_apply', Matrix.of_apply, Finset.prod_univ_sum, Fintype.piFinset_univ, Finset.mul_sum, Finset.prod_mul_distrib]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun A _ => Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma det_sum_mul_expand {S : Type*} [CommRing S] {p n : ℕ} (u : Fin p → Fin n → S)
     (y : Fin n → Fin p → S) :
     (Matrix.of fun (r r' : Fin p) => ∑ a, u r a * y a r').det =
@@ -18,6 +21,11 @@ lemma det_sum_mul_expand {S : Type*} [CommRing S] {p n : ℕ} (u : Fin p → Fin
   refine Finset.sum_congr rfl fun A _ => Finset.sum_congr rfl fun σ _ => ?_
   ring
 
+/- English proof (translation)
+Simplify using `only [minorProd, det_sum_mul_expand]`. Rewrite using `[Finset.prod_univ_sum]`. Use `Finset.sum_congr rfl fun A _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib, map_prod]`. Use `congr 1`.
+
+Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_det]`. Use `congr 1`.
+-/
 lemma minorProd_expand {R : Type} [CommRing R] {ι : Type} {N0 N1 Cn : ℕ}
     (x : Fin N0 → Fin N0 → R) (Y : Fin N0 → Fin N1 → MvPolynomial ι R) (p : Fin Cn → ℕ)
     (hp : ∀ c, p c ≤ N0) (I : ∀ c, Fin (p c) → Fin N1) :
@@ -35,6 +43,11 @@ lemma minorProd_expand {R : Type} [CommRing R] {ι : Type} {N0 N1 Cn : ℕ}
   rw [RingHom.map_det]
   congr 1
 
+/- English proof (translation)
+Use `revert hf`. Use `Finset.induction_on s (fun _ => ⟨0, ?_⟩) ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_empty, ← MvPolynomial.C_1, MvPolynomial.C_apply]`. Introduce `a s ha ih hf`. Take `⟨e1, h1⟩` from `hf a (Finset.mem_insert_self a s)`.
+
+Take `⟨e2, h2⟩` from `ih (fun i hi => hf i (Finset.mem_insert_of_mem hi))`. Conclude with `⟨e1 + e2, by rw [Finset.prod_insert ha, h1, h2, MvPolynomial.monomial_mul, mul_one]⟩`.
+-/
 lemma exists_monomial_prod {R ι α : Type} [CommSemiring R] (s : Finset α)
     (f : α → MvPolynomial ι R) (hf : ∀ i ∈ s, ∃ e, f i = monomial e 1) :
     ∃ e, ∏ i ∈ s, f i = monomial e 1 := by
@@ -47,6 +60,11 @@ lemma exists_monomial_prod {R ι α : Type} [CommSemiring R] (s : Finset α)
   obtain ⟨e2, h2⟩ := ih (fun i hi => hf i (Finset.mem_insert_of_mem hi))
   exact ⟨e1 + e2, by rw [Finset.prod_insert ha, h1, h2, MvPolynomial.monomial_mul, mul_one]⟩
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.coeff_sum]`. Use `Submodule.sum_mem _ fun A hA => ?_` and prove the remaining obligations. Take `⟨e, Q, hQ, hfA⟩` from `hf A hA`. Rewrite using `[hfA, MvPolynomial.coeff_monomial]`. Use `split_ifs`.
+
+Conclude with `hQ`. Conclude with `Submodule.zero_mem _`.
+-/
 private lemma coeff_sum_mem_lemma {K : Type} [Field K] {σ ι α : Type}
     (M : Submodule K (MvPolynomial σ K)) (S : Finset α) (f : α → MvPolynomial ι (MvPolynomial σ K))
     (hf : ∀ A ∈ S, ∃ e Q, Q ∈ M ∧ f A = MvPolynomial.monomial e Q) (κ : ι →₀ ℕ) :
@@ -60,6 +78,9 @@ private lemma coeff_sum_mem_lemma {K : Type} [Field K] {σ ι α : Type}
   · exact hQ
   · exact Submodule.zero_mem _
 
+/- English proof (translation)
+Unfold `jetPairPoly`. Use `Submodule.sum_mem _ fun κ _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm (MvPolynomial.coeff κ P), ← MvPolynomial.smul_eq_C_mul]`. Conclude with `Submodule.smul_mem _ _ (hP κ)`.
+-/
 private lemma jetPairPoly_mem_lemma_2 {K : Type} [Field K] {σ ι : Type}
     (M : Submodule K (MvPolynomial σ K)) (P : MvPolynomial ι (MvPolynomial σ K))
     (Th : MvPowerSeries ι K) (hP : ∀ κ, MvPolynomial.coeff κ P ∈ M) :
@@ -69,6 +90,9 @@ private lemma jetPairPoly_mem_lemma_2 {K : Type} [Field K] {σ ι : Type}
   rw [mul_comm (MvPolynomial.coeff κ P), ← MvPolynomial.smul_eq_C_mul]
   exact Submodule.smul_mem _ _ (hP κ)
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `exists_monomial_prod s f hf`. Conclude with `⟨e, Q, hQ, by rw [he, mul_comm, MvPolynomial.C_mul_monomial, mul_one]⟩`.
+-/
 private lemma prod_mul_C_lemma_3 {K : Type} [Field K] {σ ι α : Type}
     (M : Submodule K (MvPolynomial σ K)) (s : Finset α) (f : α → MvPolynomial ι (MvPolynomial σ K))
     (Q : MvPolynomial σ K) (hf : ∀ a ∈ s, ∃ e, f a = MvPolynomial.monomial e 1) (hQ : Q ∈ M) :
@@ -76,6 +100,13 @@ private lemma prod_mul_C_lemma_3 {K : Type} [Field K] {σ ι α : Type}
   obtain ⟨e, he⟩ := exists_monomial_prod s f hf
   exact ⟨e, Q, hQ, by rw [he, mul_comm, MvPolynomial.C_mul_monomial, mul_one]⟩
 
+/- English proof (translation)
+Unfold `CBMem`. Introduce `K _ d N0 N1 _ colN p hp I Th`. Unfold `frameJet nablaK`. Use `jetPairPoly_mem_lemma_2 _ _ _ fun κ => ?_` and prove the remaining obligations. Simplify using `only [minorProd_expand]`.
+
+Rewrite using `[Finset.prod_univ_sum]`. Use `coeff_sum_mem_lemma _ _ _ (fun A _ => ?_) κ` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib, ← map_prod]`. Use `prod_mul_C_lemma_3 _ _ _ _ (fun s _ => ?_) ?_` and prove the remaining obligations. Conclude with `exists_monomial_prod _ _ fun c _ => exists_monomial_prod _ _ fun r' _ => ⟨_, rfl⟩`.
+
+Use `Submodule.subset_span ?_` and prove the remaining obligations. Simplify using `only [xMinors, Set.mem_setOf_eq]`. Conclude with `⟨A, rfl⟩`.
+-/
 theorem coefficient_bound_membership : CBMem := by
   unfold CBMem
   intro K _ d N0 N1 _ colN p hp I Th
@@ -91,6 +122,13 @@ theorem coefficient_bound_membership : CBMem := by
     simp only [xMinors, Set.mem_setOf_eq]
     exact ⟨A, rfl⟩
 
+/- English proof (translation)
+Unfold `ThmAWeyl`. Unfold `ThmAGauss at hG`. Introduce `l _ d N0 N1 _ h3 h2 hE K0 hU ζ hζ be hB g hg0 hgs U hUi ε hε TT colN p hp hp1 I nu1 nu2 size h1 h2' h3' a ha hsa hlog hSB c hc`. Establish `hbd` using `hG l d N0 N1 h3 h2 hE K0 hU ζ hζ be hB g hg0 hgs U hUi ε hε TT colN p hp hp1 I nu1 nu2 size h1 h2' h3' a ha hsa hlog`. Establish `hCB` using `coefficient_bound_membership`.
+
+Unfold `CBMem at hCB`. Establish `hmem` using `hCB _ d N0 N1 colN p hp I (thetaZ g U ε be)`. Unfold `SBSat at hSB`. Use `hSB _ (Submodule.smul_mem _ c⁻¹ hmem) fun n => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul, norm_mul, norm_inv]`.
+
+Establish `hx` using `le_trans (hbd n) hc`. Break down `(norm_nonneg c).eq_or_lt with h0 | hpos` into its components or cases. Rewrite using `[← h0, inv_zero, zero_mul]`. Conclude with `zero_le_one`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem thmAWeyl_of (hG : ThmAGauss) : ThmAWeyl := by
   unfold ThmAWeyl
   unfold ThmAGauss at hG

@@ -49,10 +49,19 @@ def LeafExcP : Prop := Hyp → ∀ (q : ℕ) [NeZero q] (d : ℕ) (R : Type) [Co
   Φ.right = (prod.lift (Pj.pt (vec1 MvPolynomial.X)) (spMap MvPolynomial.C) :
     sp (MvPolynomial (Fin d) R) ⟶ PR (d + 1) 0 R) → Exc q Φ
 
+/- English proof (translation)
+The claim follows from `pushout.inl_desc _ _ _`.
+-/
 theorem inl_map {P' P : Arrow Spc} (φ : P' ⟶ P) : dbl.inl P' ≫ dbl.map φ = φ.right ≫ dbl.inl P := pushout.inl_desc _ _ _
 
+/- English proof (translation)
+The claim follows from `pushout.inl_desc _ _ _`.
+-/
 theorem inl_fold (P : Arrow Spc) : dbl.inl P ≫ dbl.fold P = 𝟙 _ := pushout.inl_desc _ _ _
 
+/- English proof (translation)
+Use `pushout.hom_ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `dbl.inl _ ≫ _ = dbl.inl _ ≫ _`. Rewrite using `[inl_map, ← Category.assoc, inl_map, Category.assoc, inl_map, Arrow.comp_right, Category.assoc]`. Express the relevant statement in the definitionally equal form `dbl.inr _ ≫ _ = dbl.inr _ ≫ _`. Rewrite using `[dbl.inr_map, ← Category.assoc, dbl.inr_map, Category.assoc, dbl.inr_map, Arrow.comp_right, Category.assoc]`.
+-/
 theorem map_comp {P'' P' P : Arrow Spc} (ψ : P'' ⟶ P') (φ : P' ⟶ P) : dbl.map (ψ ≫ φ) = dbl.map ψ ≫ dbl.map φ := by
   refine pushout.hom_ext ?_ ?_
   · change dbl.inl _ ≫ _ = dbl.inl _ ≫ _
@@ -60,6 +69,9 @@ theorem map_comp {P'' P' P : Arrow Spc} (ψ : P'' ⟶ P') (φ : P' ⟶ P) : dbl.
   · change dbl.inr _ ≫ _ = dbl.inr _ ≫ _
     rw [dbl.inr_map, ← Category.assoc, dbl.inr_map, Category.assoc, dbl.inr_map, Arrow.comp_right, Category.assoc]
 
+/- English proof (translation)
+Use `pushout.hom_ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `dbl.inl _ ≫ _ = dbl.inl _ ≫ _`. Rewrite using `[← Category.assoc, inl_map, Category.assoc, inl_fold, ← Category.assoc, inl_fold, Category.comp_id, Category.id_comp]`. Express the relevant statement in the definitionally equal form `dbl.inr _ ≫ _ = dbl.inr _ ≫ _`. Rewrite using `[← Category.assoc, dbl.inr_map, Category.assoc, dbl.inr_fold, ← Category.assoc, dbl.inr_fold, Category.comp_id, Category.id_comp]`.
+-/
 theorem map_fold {P' P : Arrow Spc} (φ : P' ⟶ P) : dbl.map φ ≫ dbl.fold P = dbl.fold P' ≫ φ.right := by
   refine pushout.hom_ext ?_ ?_
   · change dbl.inl _ ≫ _ = dbl.inl _ ≫ _
@@ -68,12 +80,18 @@ theorem map_fold {P' P : Arrow Spc} (φ : P' ⟶ P) : dbl.map φ ≫ dbl.fold P 
     rw [← Category.assoc, dbl.inr_map, Category.assoc, dbl.inr_fold, ← Category.assoc, dbl.inr_fold, Category.comp_id,
       Category.id_comp]
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by change pull _ (dbl.map ψ) _ n (pull _ (dbl.map φ) _ n x.1) = pull _ (dbl.map (ψ ≫ φ)) _ n x.1 rw [map_comp, pull_comp])`.
+-/
 theorem hs_comp (q : ℕ) {P'' P' P : Arrow Spc} (ψ : P'' ⟶ P') (φ : P' ⟶ P) (n i : ℤ) (x : Hs q P n i) :
     Hs.pull q ψ n i (Hs.pull q φ n i x) = Hs.pull q (ψ ≫ φ) n i x :=
   Subtype.ext (by
     change pull _ (dbl.map ψ) _ n (pull _ (dbl.map φ) _ n x.1) = pull _ (dbl.map (ψ ≫ φ)) _ n x.1
     rw [map_comp, pull_comp])
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by have e : cup q (pull _ (dbl.fold P') _ n (pull _ φ.right _ n a)) (pull _ (dbl.map φ) _ m b.1) = pull _ (dbl.map φ) _ _ (cup q (pull _ (dbl.fold P) _ n a) b.1) := by rw [(h q).1, ← pull_comp, ← pull_comp, map_fold] change pull _ (dbl.map φ) _ _ (_ - _) = cup q (pul …`.
+-/
 theorem hs_act (h : DivisorNaturality) (q : ℕ) [NeZero q] {P' P : Arrow Spc} (φ : P' ⟶ P) {n m i j : ℤ} (a : Ht q P.right n i)
     (b : Hs q P m j) : Hs.pull q φ _ _ (Hs.act q a b) = Hs.act q (pull _ φ.right _ _ a) (Hs.pull q φ _ _ b) :=
   Subtype.ext (by
@@ -85,10 +103,36 @@ theorem hs_act (h : DivisorNaturality) (q : ℕ) [NeZero q] {P' P : Arrow Spc} (
         (cup q (pull _ (dbl.fold P') _ n (pull _ φ.right _ n a)) (pull _ (dbl.map φ) _ m b.1)))
     rw [e, map_sub, ← pull_comp _ (dbl.inr P'), dbl.inr_map, pull_comp, ← pull_comp _ (dbl.fold P'), ← map_fold, pull_comp])
 
+/- English proof (translation)
+Use `Arrow.hom_ext _ _ ?_ e` and prove the remaining obligations. Rewrite using `[← cancel_mono P.hom, Arrow.w, Arrow.w, e]`.
+-/
 theorem hom_ext {P' P : Arrow Spc} (h : Mono P.hom) {φ ψ : P' ⟶ P} (e : φ.right = ψ.right) : φ = ψ := by
   refine Arrow.hom_ext _ _ ?_ e
   rw [← cancel_mono P.hom, Arrow.w, Arrow.w, e]
 
+/- English proof (translation)
+Introduce `H d`. Establish `h6 : DivisorNaturality` using `H.2.2.2.2.1`. Establish `h11 : A11` using `H.2.2.2.2.2.2.2.1`. Take `⟨hm, -, hpt, hΦ⟩` from `hG`. Use `choose Φ hΦ using hΦ d`.
+
+Set `τ : ∀ (q : ℕ) (A : Type) [CommRing A], Hs q (pr d A) (2 * d) d` to `fun q A _ => pick (IsTau q d A)`. Establish `hτ : ∀ (q : ℕ) [NeZero q] (A : Type) [CommRing A], IsUnit (q : A) → IsTau q d A (τ q A)` using `fun q _ A _ hq => pick_spec (hT H q d A hq).1.exists`. Establish `huq : ∀ (q : ℕ) [NeZero q] (A : Type) [CommRing A], IsUnit (q : A) → ∀ t, IsTau q d A t → t = τ q A` using `fun q _ A _ hq t ht => (hT H q d A hq).1.unique ht (hτ q A hq)`. Establish `hb : ∀ (q : ℕ) [NeZero q] (A B : Type) [CommRing A] [CommRing B] (φ : A →+* B), IsUnit (q : A) → Hs.pull q (prMap d φ) _ _ (τ q A) = τ q B` using `fun q _ A B _ _ φ hq => huq q B (by simpa using hq.map φ) _ ((hN h6 h11 q d A hq _ (hτ q A hq)).1 B φ _ ((prod.map_fst_assoc (𝟙 (Pj (d + 1) 0)) (spMap φ) (Pj.line (d + 1) 0)).trans (congrArg (fun f => prod.fst ≫ f) (Category.id_comp _))) (prod.map_snd _ _))`. Use `⟨fun q A _ I x hx => Hs.pull q (Φ A I x hx) _ _ (τ q A), fun q _ => ⟨?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations.
+
+Introduce `A B _ _ φ I J x hx hy h hq`. Establish `e : opnMap (Spec.map (CommRingCat.ofHom φ)) (off B J) (off A I) h ≫ Φ A I x hx = Φ B J _ hy ≫ prMap d φ`. Use `hom_ext (hm d A) ?_` and prove the remaining obligations. Rewrite using `[Arrow.comp_right, Arrow.comp_right, hΦ, hΦ]`. Express the relevant statement in the definitionally equal form `spMap φ ≫ chart x = chart (φ ∘ x) ≫ prod.map (𝟙 _) (spMap φ)`.
+
+Rewrite using `[chart, chart, prod.comp_lift, prod.lift_map, hpt, Category.comp_id, Category.comp_id, Category.id_comp]`. Use `beta_reduce`. Rewrite using `[hs_comp, e, ← hs_comp, hb q A B φ hq]`. Introduce `A _ I x M hx hy hq hM`. Take `⟨g, g1, g2, g3⟩` from `hA d A M hM`.
+
+Establish `e : Φ A I _ hy = Φ A I x hx ≫ g`. Use `hom_ext (hm d A) ?_` and prove the remaining obligations. Rewrite using `[Arrow.comp_right, hΦ, hΦ]`. Conclude with `(g3 x).symm`. Establish `e2 : Hs.pull q g _ _ (τ q A) = τ q A` using `huq q A hq _ ((hN h6 h11 q d A hq _ (hτ q A hq)).1 A (RingHom.id A) g g1 (by`.
+
+Establish `: spMap (RingHom.id A) = 𝟙 _`. Express the relevant statement in the definitionally equal form `sch.map (Spec.map (𝟙 _)) = _`. Rewrite using `[Spec.map_id, CategoryTheory.Functor.map_id]`. Rewrite using `[this, Category.comp_id]`. Conclude with `g2))`.
+
+Use `beta_reduce`. Rewrite using `[e, ← hs_comp, e2]`. Introduce `R _ I hx hq n i`. Establish `er : (Φ _ I MvPolynomial.X hx ≫ prMap d (MvPolynomial.C : R →+* MvPolynomial (Fin d) R)).right = (prod.lift (Pj.pt (vec1 MvPolynomial.X)) (spMap MvPolynomial.C) : sp (MvPolynomial (Fin d) R) ⟶ PR (d + 1) 0 R)`. Rewrite using `[Arrow.comp_right, hΦ]`.
+
+Express the relevant statement in the definitionally equal form `chart _ ≫ prod.map (𝟙 _) (spMap _) = _`. Rewrite using `[chart, prod.lift_map, Category.comp_id, Category.id_comp]`. Establish `hb2` using `(hE H q d R I hx hq _ er _ _).comp ((hT H q d R hq).2 _ (hτ q R hq) n i)`. Use `hb2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `a`.
+
+Use `Eq.symm ((hs_act h6 q _ _ _).trans (congrArg₂ (Hs.act q) ?_ ?_))` and prove the remaining obligations. Use `(congrArg (fun f => pull _ f _ n (pull _ (prod.snd : PR (d + 1) 0 R ⟶ sp R) _ n a)) er).trans ?_` and prove the remaining obligations. Conclude with `(pull_comp _ _ _ _ _ _).symm.trans (congrArg (fun f => pull _ f _ n a) (prod.lift_snd _ _))`. Conclude with `(hs_comp q _ _ _ _ _).symm.trans (congrArg _ (hb q R _ _ hq))`. Introduce `r hr A _ I x hx hq`.
+
+Establish `: NeZero r` using `⟨fun h => NeZero.ne q (by simpa [h] using hr)⟩`. Establish `hr' : IsUnit (r : A)` using `isUnit_of_dvd_unit (Nat.cast_dvd_cast hr) hq`. Establish `hmem : red q r _ _ _ (τ q A).1 ∈ Hs r (pr d A) (2 * d) d`. Express the relevant statement in the definitionally equal form `pull _ (dbl.inr _) _ _ _ = 0`. Establish `h0 : pull _ (dbl.inr (pr d A)) (tw q d) (2 * d) (τ q A).1 = 0` using `(τ q A).2`.
+
+Rewrite using `[pull_red, h0, map_zero]`. Establish `e` using `huq r A hr' _ ((hN h6 h11 q d A hq _ (hτ q A hq)).2 r hr ⟨_, hmem⟩ rfl)`. Express the relevant statement in the definitionally equal form `pull _ (dbl.map _) _ _ (τ r A).1 = red q r _ _ _ (pull _ (dbl.map _) _ _ (τ q A).1)`. Rewrite using `[← e]`. Conclude with `pull_red _ _ _ _ _ _`.
+-/
 theorem goal_of (hG : LeafGeo) (hA : LeafAct) (hT : LeafTau) (hN : LeafTauNat) (hE : LeafExcP) : LeafThom := by
   intro H d
   have h6 : DivisorNaturality := H.2.2.2.2.1

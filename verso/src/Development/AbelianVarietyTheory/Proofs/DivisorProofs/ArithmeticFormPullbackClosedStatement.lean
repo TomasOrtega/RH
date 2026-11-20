@@ -12,5 +12,8 @@ open GlobalTheory.CxForm (IsRegVar hermMat eval₂ bas relCot dRel IsRelAcyclic)
 open GlobalTheory GlobalTheory.TorsionForm
 open scoped ContDiff Real CategoryTheory.Obj ComplexOrder
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PullArForm.pullFld_isArForm | exact GlobalTheory.PullArForm.pullFld_isArForm | (intros; apply GlobalTheory.PullArForm.pullFld_isArForm <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.arithmetic_form_pullback_closed : ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) (p : X ⟶ Sp k) (q : Y ⟶ Sp k) (D D' : ℕ) (h : IsRegVar p D) (h' : IsRegVar q D') (f : Y ⟶ X) (hf : f ≫ p = q) (j : ℕ) (κ : h.Fld), h.IsArForm j κ → h'.IsArForm j (h.pullFld h' f hf κ) ∧ ∀ σ, ((h.atlas σ).del (κ σ) = 0 → (h'.atlas σ).del (h.pullFld h' f hf κ σ) = 0) ∧ ((h.atlas σ).dbar (κ σ) = 0 → (h'.atlas σ).dbar (h.pullFld h' f hf κ σ) = 0) := by
   first | exact @GlobalTheory.PullArForm.pullFld_isArForm | exact GlobalTheory.PullArForm.pullFld_isArForm | (intros; apply GlobalTheory.PullArForm.pullFld_isArForm <;> assumption)

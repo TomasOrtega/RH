@@ -19,6 +19,9 @@ variable {S T : ShortComplex (Rep.{u} k G)} [IsDiscreteRep S.X₁] [IsDiscreteRe
 omit [TopologicalSpace G] [IsTopologicalGroup G] [IsDiscreteRep S.X₁] [IsDiscreteRep S.X₂] [IsDiscreteRep S.X₃] [IsDiscreteRep T.X₁]
   [IsDiscreteRep T.X₂] [IsDiscreteRep T.X₃] [IsDiscreteRep C] in
 
+/- English proof (translation)
+Establish `e` using `congrArg (fun φ : S.X₁ ⊗ T.X₂ ⟶ C => φ.hom (cupCochain h a b σ)) h₁₂`. Simplify using `only [Rep.hom_comp, Representation.IntertwiningMap.comp_apply] at e`. Rewrite `e` using `[tensorHom_cupCochain, tensorHom_cupCochain]`. Conclude with `e`.
+-/
 theorem cupCochain_pairing_left (h₁₂ : (S.f ⊗ₘ 𝟙 T.X₂) ≫ μ₂ = (𝟙 S.X₁ ⊗ₘ T.g) ≫ μ₁)
     {p q n : ℕ} (h : p + q = n) (a : (Fin p → G) → S.X₁) (b : (Fin q → G) → T.X₂)
     (σ : Fin n → G) :
@@ -32,6 +35,9 @@ theorem cupCochain_pairing_left (h₁₂ : (S.f ⊗ₘ 𝟙 T.X₂) ≫ μ₂ = 
 omit [TopologicalSpace G] [IsTopologicalGroup G] [IsDiscreteRep S.X₁] [IsDiscreteRep S.X₂] [IsDiscreteRep S.X₃] [IsDiscreteRep T.X₁]
   [IsDiscreteRep T.X₂] [IsDiscreteRep T.X₃] [IsDiscreteRep C] in
 
+/- English proof (translation)
+Establish `e` using `congrArg (fun φ : S.X₂ ⊗ T.X₁ ⟶ C => φ.hom (cupCochain h a b σ)) h₂₃`. Simplify using `only [Rep.hom_comp, Representation.IntertwiningMap.comp_apply] at e`. Rewrite `e` using `[tensorHom_cupCochain, tensorHom_cupCochain]`. Conclude with `e`.
+-/
 theorem cupCochain_pairing_right (h₂₃ : (𝟙 S.X₂ ⊗ₘ T.f) ≫ μ₂ = (S.g ⊗ₘ 𝟙 T.X₁) ≫ μ₃)
     {p q n : ℕ} (h : p + q = n) (a : (Fin p → G) → S.X₂) (b : (Fin q → G) → T.X₁)
     (σ : Fin n → G) :
@@ -42,6 +48,19 @@ theorem cupCochain_pairing_right (h₂₃ : (𝟙 S.X₂ ⊗ₘ T.f) ≫ μ₂ =
   rw [tensorHom_cupCochain, tensorHom_cupCochain] at e
   exact e
 
+/- English proof (translation)
+Substitute `hp hq` using the available equality. Take `rfl : n = p + q + 1` from `by omega`. Take `⟨x₃, rfl⟩` from `cohomologyπ_surjective S.X₃ p x`. Take `⟨y₃, rfl⟩` from `cohomologyπ_surjective T.X₃ q y`. Use `hS.epi_g` as an intermediate fact.
+
+Use `hT.epi_g` as an intermediate fact. Take `⟨x₂, hx₂⟩` from `(ModuleCat.epi_iff_surjective ((cochainsMap S.g).f p)).1 inferInstance (cocycleι S.X₃ p x₃)`. Take `⟨x₁, hx₁⟩` from `exists_cocycle_map_f_eq_d hS (p + 1) x₃ x₂ hx₂`. Take `⟨y₂, hy₂⟩` from `(ModuleCat.epi_iff_surjective ((cochainsMap T.g).f q)).1 inferInstance (cocycleι T.X₃ q y₃)`. Take `⟨y₁, hy₁⟩` from `exists_cocycle_map_f_eq_d hT (q + 1) y₃ y₂ hy₂`.
+
+Establish `hx₂' : (fun σ => S.g.hom (cochainOf S.X₂ x₂ σ)) = cochainOf S.X₃ (cocycleι S.X₃ p x₃)` using `congrArg (cochainOf S.X₃) hx₂`. Establish `hx₁' : (fun σ => S.f.hom (cochainOf S.X₁ (cocycleι S.X₁ (p + 1) x₁) σ)) = (inhomogeneousCochains.d S.X₂ p).hom (cochainOf S.X₂ x₂)` using `(congrArg (cochainOf S.X₂) hx₁).trans (cochainOf_d x₂)`. Establish `hy₂' : (fun σ => T.g.hom (cochainOf T.X₂ y₂ σ)) = cochainOf T.X₃ (cocycleι T.X₃ q y₃)` using `congrArg (cochainOf T.X₃) hy₂`. Establish `hy₁' : (fun σ => T.f.hom (cochainOf T.X₁ (cocycleι T.X₁ (q + 1) y₁) σ)) = (inhomogeneousCochains.d T.X₂ q).hom (cochainOf T.X₂ y₂)` using `(congrArg (cochainOf T.X₂) hy₁).trans (cochainOf_d y₂)`. Rewrite using `[δ_cohomologyπ_of_lift hS rfl x₃ x₂ hx₂ x₁ hx₁, δ_cohomologyπ_of_lift hT rfl y₃ y₂ hy₂ y₁ hy₁, cupPairing_cohomologyπ, cupPairing_cohomologyπ, ← map_smul, ← map_add]`.
+
+Establish `key : HomologicalComplex.cyclesMap (cochainsMap μ₁) (p + q + 1) (cupCocycles h₁ x₁ y₃) + (-1 : k) ^ p • HomologicalComplex.cyclesMap (cochainsMap μ₃) (p + q + 1) (cupCocycles h₃ x₃ y₁) = (cochainsComplex C).toCycles (p + q) (p + q + 1) ((cochainsMap μ₂).f (p + q) (cupLocallyConst …`. Apply `cocycleι_injective` to reduce the goal to its premises. Apply `cochainOf_injective` to reduce the goal to its premises. Establish `hcomm` using `ConcreteCategory.congr_hom ((cochainsMap μ₂).comm (p + q) (p + q + 1)) (cupLocallyConstant rfl x₂ y₂)`. Rewrite `hcomm` using `[ConcreteCategory.comp_apply, ConcreteCategory.comp_apply]`.
+
+Rewrite using `[map_add, map_smul, cochainOf_add, cochainOf_smul, cochainOf_cocycleι_cyclesMap, cochainOf_cocycleι_cyclesMap, cocycleι_cupCocycles, cocycleι_cupCocycles, cochainOf_cocycleι_toCycles, ← cochainOf_d, hcomm, cochainOf_cochainsMap_f, cochainOf_d]`. Simplify using `only [cochainOf_cupLocallyConstant]`. Rewrite using `[d_cupCochain, ← hx₁', ← hy₁']`. Use function extensionality and compare the values at `σ`. Rewrite using `[Pi.add_apply, Pi.smul_apply, Pi.add_apply, Pi.smul_apply, map_add, map_smul, cupCochain_pairing_left μ₁ μ₂ h₁₂, cupCochain_pairing_right μ₂ μ₃ h₂₃, hx₂', hy₂']`.
+
+Rewrite using `[key, cohomologyπ_toCycles]`.
+-/
 theorem cupPairing_δ_add_cupPairing_δ (h₁₂ : (S.f ⊗ₘ 𝟙 T.X₂) ≫ μ₂ = (𝟙 S.X₁ ⊗ₘ T.g) ≫ μ₁)
     (h₂₃ : (𝟙 S.X₂ ⊗ₘ T.f) ≫ μ₂ = (S.g ⊗ₘ 𝟙 T.X₁) ≫ μ₃) (hS : S.ShortExact) (hT : T.ShortExact)
     {p p' q q' n : ℕ} (hp : p + 1 = p') (hq : q + 1 = q') (h₁ : p' + q = n) (h₃ : p + q' = n)
@@ -92,6 +111,9 @@ theorem cupPairing_δ_add_cupPairing_δ (h₁₂ : (S.f ⊗ₘ 𝟙 T.X₂) ≫ 
       cupCochain_pairing_left μ₁ μ₂ h₁₂, cupCochain_pairing_right μ₂ μ₃ h₂₃, hx₂', hy₂']
   rw [key, cohomologyπ_toCycles]
 
+/- English proof (translation)
+Rewrite using `[eq_neg_of_add_eq_zero_left (cupPairing_δ_add_cupPairing_δ μ₁ μ₂ μ₃ h₁₂ h₂₃ hS hT hp hq h₁ h₃ x y), pow_succ, mul_neg_one, neg_smul]`.
+-/
 theorem cupPairing_δ_eq (h₁₂ : (S.f ⊗ₘ 𝟙 T.X₂) ≫ μ₂ = (𝟙 S.X₁ ⊗ₘ T.g) ≫ μ₁)
     (h₂₃ : (𝟙 S.X₂ ⊗ₘ T.f) ≫ μ₂ = (S.g ⊗ₘ 𝟙 T.X₁) ≫ μ₃) (hS : S.ShortExact) (hT : T.ShortExact)
     {p p' q q' n : ℕ} (hp : p + 1 = p') (hq : q + 1 = q') (h₁ : p' + q = n) (h₃ : p + q' = n)

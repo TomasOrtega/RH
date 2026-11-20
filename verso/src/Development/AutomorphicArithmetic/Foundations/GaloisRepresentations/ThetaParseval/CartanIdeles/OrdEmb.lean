@@ -4,6 +4,11 @@ import GroundTheory.IdeleRoots.TorusPowers.HeckeIdem
 open scoped nonZeroDivisors Matrix NumberField.AdeleRing
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GroundTheory.Global GroundTheory.Global.IdeleGroup UpperTheory.Gal.TP.Skew GroundTheory.Global.AdeleBaseChange GroundTheory.Global.SemiLocal
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ hu a w`. Establish `he : w.asIdeal.ramificationIdx (𝓞 F) = 1` using `Ideal.ramificationIdx_eq_one w.asIdeal (𝓞 F)`. Establish `hc : ((ideleEmbedding F E a : IdeleGroup E) : 𝔸[E]).2 w = completionMap (below F w) w ((a : 𝔸[F]).2 (below F w))`. Rewrite using `[coe_ideleEmbedding]`. Conclude with `GroundTheory.BlockD.ThmBHecke.adeleMap_snd_apply _ w`.
+
+Unfold `ord`. Rewrite using `[hc, valued_completionMap, he, pow_one]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.Gal.TP.Skew.ordEmb :
     UpperTheory.Gal.TP.Skew.OrdEmb := by
   intro F E _ _ _ _ _ hu a w

@@ -12,6 +12,11 @@ namespace GlobalTheory.Cyc
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.UltrametricPowerBound.main`. Consider the case `exact _root_.GlobalTheory.UltrametricPowerBound.main`. Consider the case `(apply _root_.GlobalTheory.UltrametricPowerBound.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.UltrametricPowerBound.main <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.UltrametricPowerBound.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.UltrametricPowerBound.main ..)`.
+-/
 theorem norm_pow_sub_lin_le (w : ℚ_[l]) (hw : ‖w‖ ≤ 1) (k : ℕ) :
     ‖w ^ k - 1 - k * (w - 1)‖ ≤ ‖w - 1‖ ^ 2 := by
   first
@@ -22,6 +27,9 @@ theorem norm_pow_sub_lin_le (w : ℚ_[l]) (hw : ‖w‖ ≤ 1) (k : ℕ) :
   | (intros; apply @_root_.GlobalTheory.UltrametricPowerBound.main <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.UltrametricPowerBound.main ..)
 
+/- English proof (translation)
+Set `y : ℤ_[l]` to `⟨x, hx⟩`. Use `⟨y.appr 1, ?_⟩` and prove the remaining obligations. Establish `h` using `(PadicInt.norm_le_pow_iff_mem_span_pow _ 1).2 (y.appr_spec 1)`. Rewrite `h` using `[PadicInt.norm_def, PadicInt.coe_sub, PadicInt.coe_natCast]`. Simplify using `using h`.
+-/
 theorem exists_nat_norm_sub_le (x : ℚ_[l]) (hx : ‖x‖ ≤ 1) :
     ∃ k : ℕ, ‖x - k‖ ≤ (l : ℝ) ^ (-1 : ℤ) := by
   let y : ℤ_[l] := ⟨x, hx⟩
@@ -30,6 +38,11 @@ theorem exists_nat_norm_sub_le (x : ℚ_[l]) (hx : ‖x‖ ≤ 1) :
   rw [PadicInt.norm_def, PadicInt.coe_sub, PadicInt.coe_natCast] at h
   simpa using h
 
+/- English proof (translation)
+Establish `hl : l.Prime` using `Fact.out`. Establish `h` using `GlobalTheory.T.padic_norm_zpow_sub_one_padicValInt l j hj u hu ((l ^ b : ℕ) : ℤ) (by exact_mod_cast pow_ne_zero _ hl.ne_zero)`. Rewrite `h` using `[zpow_natCast, padicValInt.of_nat, padicValNat.prime_pow]`. Rewrite using `[h]`. Use `push_cast`.
+
+Both sides reduce to the same expression.
+-/
 theorem norm_pow_pow_sub_one (j : ℕ) (hj : Lev l j) (u : ℚ_[l])
     (hu : ‖u - 1‖ = (l : ℝ) ^ (-(j : ℤ))) (b : ℕ) :
     ‖u ^ (l ^ b) - 1‖ = (l : ℝ) ^ (-((j + b : ℕ) : ℤ)) := by
@@ -38,6 +51,23 @@ theorem norm_pow_pow_sub_one (j : ℕ) (hj : Lev l j) (u : ℚ_[l])
   rw [zpow_natCast, padicValInt.of_nat, padicValNat.prime_pow] at h
   rw [h]; push_cast; rfl
 
+/- English proof (translation)
+Establish `hl : l.Prime` using `Fact.out`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast hl.one_lt`. Establish `hl0 : (0 : ℝ) < l` using `by linarith`. Proceed by induction on `m with`. Consider the case `zero => exact ⟨0, by simpa using hs⟩`.
+
+Consider the case `succ m ih`. Take `⟨a, ha⟩` from `ih`. Use `set w := u ^ (l ^ m) with hw`. Establish `hw1 : ‖w‖ = 1` using `by rw [hw, norm_pow, hu1, one_pow]`. Establish `hd : ‖w - 1‖ = (l : ℝ) ^ (-((j + m : ℕ) : ℤ))` using `norm_pow_pow_sub_one j hj u hu m`.
+
+Establish `hdpos : 0 < ‖w - 1‖` using `by rw [hd]; positivity`. Establish `hd0 : w - 1 ≠ 0` using `norm_pos_iff.1 hdpos`. Use `set t := u ^ a with ht`. Establish `ht1 : ‖t‖ = 1` using `by rw [ht, norm_pow, hu1, one_pow]`. Establish `ht0 : t ≠ 0` using `norm_pos_iff.1 (by rw [ht1]; exact one_pos)`.
+
+Take `⟨k, hk⟩` from `exists_nat_norm_sub_le ((s - t) / (t * (w - 1))) (by`. Rewrite using `[norm_div, norm_mul, ht1, one_mul, div_le_one hdpos, hd]`. Conclude with `ha)`. Use `⟨a + l ^ m * k, ?_⟩` and prove the remaining obligations. Establish `h : s - u ^ (a + l ^ m * k) = t * (w - 1) * ((s - t) / (t * (w - 1)) - k) + -(t * (w ^ k - 1 - k * (w - 1)))`.
+
+Rewrite using `[pow_add, pow_mul, ← hw, ← ht]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations.
+
+Rewrite using `[norm_mul, norm_mul, ht1, one_mul, hd]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← zpow_add₀ hl0.ne']`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[norm_neg, norm_mul, ht1, one_mul]`. Use `(norm_pow_sub_lin_le w hw1.le k).trans ?_` and prove the remaining obligations. Rewrite using `[hd, ← zpow_natCast, ← zpow_mul]`. Apply `zpow_le_zpow_right₀ hl1.le` to reduce the goal to its premises.
+
+Use `hj.1` as an intermediate fact. Use `push_cast`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_norm_sub_pow_le (j : ℕ) (hj : Lev l j) (u s : ℚ_[l]) (hu1 : ‖u‖ = 1)
     (hu : ‖u - 1‖ = (l : ℝ) ^ (-(j : ℤ))) (hs : ‖s - 1‖ ≤ (l : ℝ) ^ (-(j : ℤ))) (m : ℕ) :
     ∃ a : ℕ, ‖s - u ^ a‖ ≤ (l : ℝ) ^ (-((j + m : ℕ) : ℤ)) := by
@@ -77,9 +107,39 @@ theorem exists_norm_sub_pow_le (j : ℕ) (hj : Lev l j) (u s : ℚ_[l]) (hu1 : �
       have := hj.1
       push_cast; omega
 
+/- English proof (translation)
+Introduce `_ hg x` and use `hg ⟨x.1, (le_sup_left : K0 K ≤ Ks K j) x.2⟩`.
+-/
 theorem cyclotomicTowerLevelGaloisSubgroup_le_fixingSubgroup_base (K : FinExt l) (j : ℕ) : Gj K j ≤ (K0 K).fixingSubgroup :=
   fun _ hg x => hg ⟨x.1, (le_sup_left : K0 K ≤ Ks K j) x.2⟩
 
+/- English proof (translation)
+Introduce `l _ act χ _ hχ K j hj`. Establish `hl : l.Prime` using `Fact.out`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast hl.one_lt`. Establish `hl0 : (0 : ℝ) < l` using `by linarith`. Take `⟨hn, hcont, hG⟩` from `GlobalTheory.T.cyclotomicCharacterPadic_basic_properties l χ hχ`.
+
+Use `⟨?_, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hp : ‖(l : ℚ_[l]) ^ j‖ = (l : ℝ) ^ (-(j : ℤ))`. Rewrite using `[norm_pow, Padic.norm_p]`. Simplify using the standard rewrite rules. Establish `hlt : ‖(l : ℚ_[l]) ^ j‖ < 1`.
+
+Rewrite using `[hp]`. Apply `zpow_lt_one_of_neg₀ hl1` to reduce the goal to its premises. Use `hj.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hu : ‖(1 : ℚ_[l]) + (l : ℚ_[l]) ^ j‖ = 1`.
+
+Rewrite using `[IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [norm_one]; exact hlt.ne'), norm_one, max_eq_left hlt.le]`. Take `⟨g, hg0, hg⟩` from `(GlobalTheory.T.finrank_cyclotomicExt_and_cyclotomicChar_surjective l K).2 χ hχ _ hu`. Establish `: ‖(χ g : ℚ_[l]) - 1‖ = (l : ℝ) ^ (-(j : ℤ))` using `by rw [hg, add_sub_cancel_left, hp]`. Conclude with `⟨g, ((hG K g hg0).1 j).2 this.le, this⟩`. Establish `hg0` using `cyclotomicTowerLevelGaloisSubgroup_le_fixingSubgroup_base K j hg.1`.
+
+Establish `hcos : ∀ σ ∈ Gj K j, ∀ n : ℕ, ∃ a : ℕ, σ * (g ^ a)⁻¹ ∈ Gj K n`. Introduce `σ hσ n`. Establish `hσ0` using `cyclotomicTowerLevelGaloisSubgroup_le_fixingSubgroup_base K j hσ`. Take `⟨a, ha⟩` from `exists_norm_sub_pow_le j hj _ _ (hn g) hg.2 (((hG K σ hσ0).1 j).1 hσ) n`. Use `⟨a, ((hG K _ (mul_mem hσ0 (inv_mem (pow_mem hg0 a)))).1 n).2 ?_⟩` and prove the remaining obligations.
+
+Establish `h0 : (χ g : ℚ_[l]) ≠ 0` using `Units.ne_zero _`. Establish `h : ((χ (σ * (g ^ a)⁻¹) : ℚ_[l]ˣ) : ℚ_[l]) - 1 = ((χ σ : ℚ_[l]) - (χ g : ℚ_[l]) ^ a) / (χ g : ℚ_[l]) ^ a`. Simplify using `only [map_mul, map_inv, map_pow, Units.val_mul, Units.val_inv_eq_inv_val, Units.val_pow_eq_pow_val]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[h, norm_div, norm_pow, hn, one_pow, div_one]`.
+
+Use `ha.trans (zpow_le_zpow_right₀ hl1.le ?_)` and prove the remaining obligations. Use `push_cast`. Use linear arithmetic over natural numbers and integers. Use `⟨fun b => ?_, hcos, fun σ hσ => ?_⟩` and prove the remaining obligations. Establish `: ‖(χ (g ^ (l ^ b)) : ℚ_[l]) - 1‖ = (l : ℝ) ^ (-((j + b : ℕ) : ℤ))`.
+
+Rewrite using `[map_pow, Units.val_pow_eq_pow_val]`. Conclude with `norm_pow_pow_sub_one j hj _ hg.2 b`. Conclude with `⟨((hG K _ (pow_mem hg0 _)).1 _).2 this.le, this⟩`. Rewrite using `[mem_closure_iff]`. Introduce `U hU hσU`.
+
+Establish `hW : IsOpen (⋃ h ∈ Hinf K, {x : GQ l | h * x⁻¹ * σ ∈ U})` using `isOpen_biUnion fun h _ => hU.preimage (by fun_prop)`. Establish `hcl : ∀ n : ℕ, IsClosed (Gj K n : Set (GQ l))` using `fun n => InfiniteGalois.fixingSubgroup_isClosed _`. Establish `hanti : Antitone fun n : ℕ => (Gj K n : Set (GQ l))`. Introduce `m n hmn x hx`. Establish `hx0` using `cyclotomicTowerLevelGaloisSubgroup_le_fixingSubgroup_base K n hx`.
+
+Use `((hG K x hx0).1 m).2 ((((hG K x hx0).1 n).1 hx).trans (zpow_le_zpow_right₀ hl1.le (by omega)))` and prove the remaining obligations. Establish `hint : ∀ x ∈ ⋂ n : ℕ, (Gj K n : Set (GQ l)), (⋃ h ∈ Hinf K, {x : GQ l | h * x⁻¹ * σ ∈ U}) ∈ nhds x`. Introduce `x hx`. Rewrite `hx` using `[Set.mem_iInter]`. Establish `hx0` using `cyclotomicTowerLevelGaloisSubgroup_le_fixingSubgroup_base K 0 (hx 0)`.
+
+Establish `hxH : x ∈ Hinf K`. Use `(hG K x hx0).2.2 (Units.ext ?_)` and prove the remaining obligations. Rewrite using `[Units.val_one, ← sub_eq_zero, ← norm_le_zero_iff]`. Assume the negation of the conclusion as `hne`. Take `⟨n, hn'⟩` from `exists_pow_lt_of_lt_one (not_le.1 hne) (inv_lt_one_of_one_lt₀ hl1)`.
+
+Use `((hG K x hx0).1 n).1 (hx n)` as an intermediate fact. Rewrite `this` using `[zpow_neg, zpow_natCast, ← inv_pow]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `hW.mem_nhds (Set.mem_biUnion hxH (by simpa using hσU))`. Take `⟨n, hn'⟩` from `exists_subset_nhds_of_compactSpace hanti.directed_ge hcl hint`.
+
+Take `⟨a, ha⟩` from `hcos σ hσ n`. Take `⟨h, hh, hU'⟩` from `Set.mem_iUnion₂.1 (hn' ha)`. Use `⟨h * g ^ a, ?_, h, hh, a, rfl⟩` and prove the remaining obligations. Simplify `hU'` using `[mul_assoc]`.
+-/
 theorem gen_dense : ∀ (l : ℕ) [Fact l.Prime] (act : GQ l →* (PadicComplex l ≃+* PadicComplex l)) (χ : GQ l →* ℚ_[l]ˣ), IsActC act → IsCyc χ → ∀ (K : FinExt l), ∀ j : ℕ, Lev l j → (∃ g, IsGen χ K j g) ∧ ∀ g, IsGen χ K j g → ((∀ b : ℕ, IsGen χ K (j + b) (g ^ (l ^ b))) ∧ (∀ σ ∈ Gj K j, ∀ n : ℕ, ∃ a : ℕ, σ * (g ^ a)⁻¹ ∈ Gj K n) ∧ (Gj K j : Set (GQ l)) ⊆ closure {x | ∃ h ∈ Hinf K, ∃ a : ℕ, x = h * g ^ a}) := by
   intro l _ act χ _ hχ K j hj
   have hl : l.Prime := Fact.out

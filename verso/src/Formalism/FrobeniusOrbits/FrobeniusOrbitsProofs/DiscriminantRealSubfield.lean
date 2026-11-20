@@ -9,6 +9,9 @@ namespace Formalism.FrobeniusOrbits
 
 namespace Discr
 
+/- English proof (translation)
+Establish `h1 : ‖z‖ = 1` using `Complex.norm_eq_one_of_pow_eq_one hz hm`. Establish `h2 : z * starRingEnd ℂ z = 1`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, h1]`. Evaluate the numerical expressions. Conclude with `eq_inv_of_mul_eq_one_right h2`.
+-/
 lemma conj_root {z : ℂ} {m : ℕ} (hm : m ≠ 0) (hz : z ^ m = 1) : starRingEnd ℂ z = z⁻¹ := by
   have h1 : ‖z‖ = 1 := Complex.norm_eq_one_of_pow_eq_one hz hm
   have h2 : z * starRingEnd ℂ z = 1 := by
@@ -16,12 +19,20 @@ lemma conj_root {z : ℂ} {m : ℕ} (hm : m ≠ 0) (hz : z ^ m = 1) : starRingEn
     norm_num
   exact eq_inv_of_mul_eq_one_right h2
 
+/- English proof (translation)
+Establish `hw : (ψ ζ) ^ m = 1` using `by rw [← map_pow, hζ.pow_eq_one, map_one]`. Establish `hc` using `conj_root hm hw`. Simplify using `only [map_add, map_inv₀, hc, inv_inv, add_comm]`.
+-/
 lemma real_theta {K : Type*} [Field K] {m : ℕ} (hm : m ≠ 0) {ζ : K} (hζ : IsPrimitiveRoot ζ m)
     (ψ : K →+* ℂ) : starRingEnd ℂ (ψ (ζ + ζ⁻¹)) = ψ (ζ + ζ⁻¹) := by
   have hw : (ψ ζ) ^ m = 1 := by rw [← map_pow, hζ.pow_eq_one, map_one]
   have hc := conj_root hm hw
   simp only [map_add, map_inv₀, hc, inv_inv, add_comm]
 
+/- English proof (translation)
+Introduce `h`. Establish `hp : IsPrimitiveRoot (ψ ζ) m` using `hζ.map_of_injective ψ.injective`. Establish `hc` using `conj_root hm hp.pow_eq_one`. Establish `h0 : ψ ζ ≠ 0` using `hp.ne_zero hm`. Establish `h1 : ψ ζ = (ψ ζ)⁻¹` using `h.symm.trans hc`.
+
+Establish `hsq : (ψ ζ) ^ 2 = 1`. Rewrite using `[sq]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `h2 (hp.dvd_of_pow_eq_one 2 hsq)`.
+-/
 lemma not_real_zeta {K : Type*} [Field K] {m : ℕ} (hm : m ≠ 0) (h2 : ¬ m ∣ 2) {ζ : K}
     (hζ : IsPrimitiveRoot ζ m) (ψ : K →+* ℂ) : starRingEnd ℂ (ψ ζ) ≠ ψ ζ := by
   intro h
@@ -35,6 +46,11 @@ lemma not_real_zeta {K : Type*} [Field K] {m : ℕ} (hm : m ≠ 0) (h2 : ¬ m �
       _ = 1 := mul_inv_cancel₀ h0
   exact h2 (hp.dvd_of_pow_eq_one 2 hsq)
 
+/- English proof (translation)
+Introduce `x hx`. Establish `hS : Set.range (algebraMap ℚ K) ∪ {t} ⊆ (((starRingEnd ℂ).comp φ).eqLocusField φ : Subfield K)`. Introduce and unpack `y (⟨q, rfl⟩ | rfl)`. Conclude with `RingHom.congr_fun (RingHom.ext_rat ((starRingEnd ℂ).comp (φ.comp (algebraMap ℚ K))) (φ.comp (algebraMap ℚ K))) q`. Conclude with `ht`.
+
+Conclude with `(Subfield.closure_le.mpr hS) hx`.
+-/
 lemma real_on_adjoin {K : Type*} [Field K] [Algebra ℚ K] (t : K) (φ : K →+* ℂ)
     (ht : starRingEnd ℂ (φ t) = φ t) : ∀ x ∈ ℚ⟮t⟯, starRingEnd ℂ (φ x) = φ x := by
   intro x hx
@@ -46,6 +62,11 @@ lemma real_on_adjoin {K : Type*} [Field K] [Algebra ℚ K] (t : K) (φ : K →+*
     · exact ht
   exact (Subfield.closure_le.mpr hS) hx
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `Nat.le_of_dvd (by norm_num) h`. Establish `h2 : 4 ≤ 2 ^ (e + 2)`. Use `Nat.one_le_two_pow (n := e)` as an intermediate fact. Rewrite using `[pow_succ, pow_succ]`.
+
+Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+-/
 lemma two_pow_not_dvd (e : ℕ) : ¬ (2 ^ (e + 2)) ∣ 2 := by
   intro h
   have h1 := Nat.le_of_dvd (by norm_num) h
@@ -59,6 +80,11 @@ section Cyc
 
 variable {K : Type*} [Field K] [NumberField K] {e : ℕ} {z : K}
 
+/- English proof (translation)
+Introduce `h`. Establish `hm : 2 ^ (e + 2) ≠ 0` using `by positivity`. Set `φ : K →+* ℂ` to `((IsAlgClosed.lift : K →ₐ[ℚ] ℂ) : K →+* ℂ)`. Establish `h1` using `real_theta hm hz φ`. Establish `h2` using `real_on_adjoin (z + z⁻¹) φ h1 z h`.
+
+Conclude with `not_real_zeta hm (two_pow_not_dvd e) hz φ h2`.
+-/
 lemma zeta_not_mem (hz : IsPrimitiveRoot z (2 ^ (e + 2))) : z ∉ ℚ⟮z + z⁻¹⟯ := by
   intro h
   have hm : 2 ^ (e + 2) ≠ 0 := by positivity
@@ -69,11 +95,26 @@ lemma zeta_not_mem (hz : IsPrimitiveRoot z (2 ^ (e + 2))) : z ∉ ℚ⟮z + z⁻
 
 def th (z : K) : ℚ⟮z + z⁻¹⟯ := AdjoinSimple.gen ℚ (z + z⁻¹)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma th_coe (z : K) : ((th z : ℚ⟮z + z⁻¹⟯) : K) = z + z⁻¹ := rfl
 
+/- English proof (translation)
+The claim follows from `(Algebra.IsIntegral.isIntegral (R := ℚ) z).tower_top`.
+-/
 lemma isIntegral_over_adjoin_add_inv_of_isPrimitiveRoot (hz : IsPrimitiveRoot z (2 ^ (e + 2))) : IsIntegral ℚ⟮z + z⁻¹⟯ z :=
   (Algebra.IsIntegral.isIntegral (R := ℚ) z).tower_top
 
+/- English proof (translation)
+Establish `hm : 2 ^ (e + 2) ≠ 0` using `by positivity`. Establish `hz0 : z ≠ 0` using `hz.ne_zero hm`. Establish `hq : (X ^ 2 - C (th z) * X + 1 : ℚ⟮z + z⁻¹⟯[X]).Monic` using `by monicity!`. Establish `hev : aeval z (X ^ 2 - C (th z) * X + 1 : ℚ⟮z + z⁻¹⟯[X]) = 0`. Simplify using `only [map_add, map_sub, map_mul, aeval_X, aeval_C, map_pow, map_one]`.
+
+Rewrite using `[IntermediateField.algebraMap_apply, th_coe, add_mul, inv_mul_cancel₀ hz0]`. Expand and normalize the polynomial expressions, which then agree. Establish `hdeg : (X ^ 2 - C (th z) * X + 1 : ℚ⟮z + z⁻¹⟯[X]).natDegree = 2` using `by compute_degree!`. Establish `hint` using `isIntegral_over_adjoin_add_inv_of_isPrimitiveRoot hz`. Establish `hmin2 : 2 ≤ (minpoly ℚ⟮z + z⁻¹⟯ z).natDegree`.
+
+Establish `h0` using `minpoly.natDegree_pos hint`. Establish `h1 : (minpoly ℚ⟮z + z⁻¹⟯ z).natDegree ≠ 1`. Rewrite using `[Ne, minpoly.natDegree_eq_one_iff]`. Introduce and unpack `⟨y, hy⟩`. Establish `h3` using `y.2`.
+
+Rewrite `h3` using `[show (y : K) = z from hy]`. Conclude with `zeta_not_mem hz h3`. Use linear arithmetic over natural numbers and integers. Conclude with `(Polynomial.eq_of_monic_of_dvd_of_natDegree_le (minpoly.monic hint) hq (minpoly.dvd _ _ hev) (by rw [hdeg]; exact hmin2)).symm`.
+-/
 lemma minpoly_eq (hz : IsPrimitiveRoot z (2 ^ (e + 2))) :
     minpoly ℚ⟮z + z⁻¹⟯ z = X ^ 2 - C (th z) * X + 1 := by
   have hm : 2 ^ (e + 2) ≠ 0 := by positivity
@@ -99,6 +140,11 @@ lemma minpoly_eq (hz : IsPrimitiveRoot z (2 ^ (e + 2))) :
 
 variable [IsCyclotomicExtension {2 ^ (e + 2)} ℚ K]
 
+/- English proof (translation)
+Establish `hne : NeZero (2 ^ (e + 2))` using `⟨by positivity⟩`. Establish `h` using `IsCyclotomicExtension.adjoin_primitive_root_eq_top (A := ℚ) hz`. Rewrite `h`, the goal using `[eq_top_iff]`. Introduce `x _`. Establish `hx : x ∈ Algebra.adjoin ℚ {z}` using `h Algebra.mem_top`.
+
+Establish `hle : Algebra.adjoin ℚ {z} ≤ (Algebra.adjoin ℚ⟮z + z⁻¹⟯ {z}).restrictScalars ℚ` using `Algebra.adjoin_le Algebra.subset_adjoin`. Conclude with `hle hx`.
+-/
 lemma adjoin_top (hz : IsPrimitiveRoot z (2 ^ (e + 2))) :
     Algebra.adjoin ℚ⟮z + z⁻¹⟯ {z} = ⊤ := by
   have hne : NeZero (2 ^ (e + 2)) := ⟨by positivity⟩
@@ -110,6 +156,11 @@ lemma adjoin_top (hz : IsPrimitiveRoot z (2 ^ (e + 2))) :
     Algebra.adjoin_le Algebra.subset_adjoin
   exact hle hx
 
+/- English proof (translation)
+Establish `hint` using `isIntegral_over_adjoin_add_inv_of_isPrimitiveRoot hz`. Establish `htop : IntermediateField.adjoin ℚ⟮z + z⁻¹⟯ {z} = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Conclude with `IntermediateField.algebra_adjoin_le_adjoin _ _ (by rw [adjoin_top hz]; exact Algebra.mem_top)`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma finrank_two (hz : IsPrimitiveRoot z (2 ^ (e + 2))) :
     Module.finrank ℚ⟮z + z⁻¹⟯ K = 2 := by
   have hint := isIntegral_over_adjoin_add_inv_of_isPrimitiveRoot hz
@@ -125,6 +176,31 @@ lemma finrank_two (hz : IsPrimitiveRoot z (2 ^ (e + 2))) :
     _ = (minpoly ℚ⟮z + z⁻¹⟯ z).natDegree := IntermediateField.adjoin.finrank hint
     _ = 2 := by rw [minpoly_eq hz]; compute_degree!
 
+/- English proof (translation)
+Establish `hm : 2 ^ (e + 2) ≠ 0` using `by positivity`. Establish `hne : NeZero (2 ^ (e + 2))` using `⟨hm⟩`. Establish `hz0 : z ≠ 0` using `hz.ne_zero hm`. Establish `hxz : algebraMap (𝓞 K) K hz.toInteger = z` using `rfl`. Establish `hadjZ` using `IsCyclotomicExtension.Rat.adjoin_singleton_eq_top hz`.
+
+Establish `hadj : Algebra.adjoin (𝓞 ℚ⟮z + z⁻¹⟯) {hz.toInteger} = ⊤`. Rewrite `hadjZ`, the goal using `[eq_top_iff]`. Introduce `y _`. Establish `hle : Algebra.adjoin ℤ {hz.toInteger} ≤ (Algebra.adjoin (𝓞 ℚ⟮z + z⁻¹⟯) {hz.toInteger}).restrictScalars ℤ` using `Algebra.adjoin_le Algebra.subset_adjoin`. Conclude with `hle (hadjZ Algebra.mem_top)`.
+
+Establish `hcond` using `conductor_mul_differentIdeal (𝓞 ℚ⟮z + z⁻¹⟯) ℚ⟮z + z⁻¹⟯ K hz.toInteger (by rw [hxz]; exact adjoin_top hz)`. Rewrite `hcond` using `[conductor_eq_top_of_adjoin_eq_top hadj, Ideal.top_mul]`. Rewrite using `[hcond, Ideal.absNorm_span_singleton]`. Establish `hint : IsIntegral (𝓞 ℚ⟮z + z⁻¹⟯) z` using `(hz.isIntegral (Nat.pos_of_ne_zero hm)).tower_top`. Establish `hmin : minpoly ℚ⟮z + z⁻¹⟯ z = Polynomial.map (algebraMap (𝓞 ℚ⟮z + z⁻¹⟯) ℚ⟮z + z⁻¹⟯) (minpoly (𝓞 ℚ⟮z + z⁻¹⟯) hz.toInteger)`.
+
+Rewrite using `[← minpoly.algebraMap_eq (IsFractionRing.injective (𝓞 K) K) hz.toInteger, hxz]`. Conclude with `minpoly.isIntegrallyClosed_eq_field_fractions' ℚ⟮z + z⁻¹⟯ hint`. Establish `hw : algebraMap (𝓞 K) K (Polynomial.aeval hz.toInteger (Polynomial.derivative (minpoly (𝓞 ℚ⟮z + z⁻¹⟯) hz.toInteger))) = z - z⁻¹`. Rewrite using `[← Polynomial.aeval_algebraMap_apply, hxz, ← Polynomial.aeval_map_algebraMap ℚ⟮z + z⁻¹⟯, ← Polynomial.derivative_map, ← hmin, minpoly_eq hz]`. Apply the tactic sequence `(try simp [th_coe]) <;> ring`.
+
+Generalize the expression as in `Polynomial.aeval hz.toInteger (Polynomial.derivative (minpoly (𝓞 ℚ⟮z + z⁻¹⟯) hz.toInteger)) = w at hw ⊢`. Establish `hN1 : Algebra.norm ℚ (z - 1) = 2` using `hz.norm_sub_one_two (by omega) (Polynomial.cyclotomic.irreducible_rat (Nat.pos_of_ne_zero hm))`. Establish `hhalf : z ^ (2 ^ (e + 1)) = -1`. Establish `hsq : z ^ (2 ^ (e + 1)) * z ^ (2 ^ (e + 1)) = 1`. Rewrite using `[← pow_add, ← two_mul, ← pow_succ']`.
+
+Conclude with `hz.pow_eq_one`. Break down `mul_self_eq_one_iff.mp hsq with h | h` into its components or cases. Conclude with `absurd h (hz.pow_ne_one_of_pos_of_lt (by positivity) (Nat.pow_lt_pow_right (by norm_num) (by omega)))`. Conclude with `h`. Establish `hcop : Nat.Coprime (2 ^ (e + 1) + 1) (2 ^ (e + 2))` using `Nat.Coprime.pow_right _ (Odd.coprime_two_right ⟨2 ^ e, by ring⟩)`.
+
+Establish `hneg : IsPrimitiveRoot (-z) (2 ^ (e + 2))`. Establish `h` using `hz.pow_of_coprime _ hcop`. Rewrite `h` using `[pow_succ, hhalf, neg_one_mul]`. Then use the resulting hypothesis. Establish `hN2 : Algebra.norm ℚ (-z - 1) = 2` using `hneg.norm_sub_one_two (by omega) (Polynomial.cyclotomic.irreducible_rat (Nat.pos_of_ne_zero hm))`. Establish `hNm1 : |Algebra.norm ℚ (-1 : K)| = 1`.
+
+Rewrite using `[show (-1 : K) = algebraMap ℚ K (-1) by simp, Algebra.norm_algebraMap]`. Simplify using the standard rewrite rules. Establish `hNz : |Algebra.norm ℚ z| = 1`. Establish `h1 : (Algebra.norm ℚ z) ^ (2 ^ (e + 2)) = 1`. Rewrite using `[← map_pow, hz.pow_eq_one, map_one]`.
+
+Establish `h2 : |Algebra.norm ℚ z| ^ (2 ^ (e + 2)) = 1` using `by rw [← abs_pow, h1, abs_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (abs_nonneg _) hm).mp h2`. Establish `hprod : z * (z - z⁻¹) = (z - 1) * ((-1) * (-z - 1))`. Rewrite using `[mul_sub, mul_inv_cancel₀ hz0]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hnorm : |Algebra.norm ℚ (z - z⁻¹)| = 4`. Establish `h` using `congrArg (fun t => |Algebra.norm ℚ t|) hprod`. Simplify using `only [map_mul, abs_mul, hNz, hN1, hN2, hNm1, one_mul] at h`. Evaluate the numerical expressions using `at h`. Conclude with `h`.
+
+Establish `hcast : ((Algebra.norm ℤ w : ℤ) : ℚ) = Algebra.norm ℚ (z - z⁻¹)`. Rewrite using `[← hw]`. Conclude with `Algebra.coe_norm_int w`. Establish `habs : |((Algebra.norm ℤ w : ℤ) : ℚ)| = 4` using `by rw [hcast]; exact hnorm`. Establish `habsZ : |Algebra.norm ℤ w| = 4` using `by exact_mod_cast habs`.
+
+Rewrite `habsZ` using `[Int.abs_eq_natAbs]`. Conclude with `habsZ` after adjusting the coercions.
+-/
 lemma absNorm_different (hz : IsPrimitiveRoot z (2 ^ (e + 2))) :
     Ideal.absNorm (differentIdeal (𝓞 ℚ⟮z + z⁻¹⟯) (𝓞 K)) = 4 := by
   have hm : 2 ^ (e + 2) ≠ 0 := by positivity
@@ -196,6 +272,13 @@ lemma absNorm_different (hz : IsPrimitiveRoot z (2 ^ (e + 2))) :
   rw [Int.abs_eq_natAbs] at habsZ
   exact_mod_cast habsZ
 
+/- English proof (translation)
+Establish `hm : 2 ^ (e + 2) ≠ 0` using `by positivity`. Use `⟨fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[NumberField.InfinitePlace.isReal_iff, NumberField.ComplexEmbedding.isReal_iff]`. Use `RingHom.ext fun y => ?_` and prove the remaining obligations. Rewrite using `[NumberField.ComplexEmbedding.conjugate_coe_eq]`.
+
+Use `letI : Algebra ℚ⟮z + z⁻¹⟯ ℂ := v.embedding.toAlgebra`. Set `Φ : K →ₐ[ℚ⟮z + z⁻¹⟯] ℂ` to `IsAlgClosed.lift`. Establish `h1` using `real_on_adjoin (z + z⁻¹) (Φ : K →+* ℂ) (real_theta hm hz (Φ : K →+* ℂ)) (y : K) y.2`. Establish `h2 : (Φ : K →+* ℂ) (y : K) = v.embedding y` using `Φ.commutes y`. Rewrite `h1` using `[h2]`.
+
+Conclude with `h1`.
+-/
 lemma totallyReal_F (hz : IsPrimitiveRoot z (2 ^ (e + 2))) : IsTotallyReal ℚ⟮z + z⁻¹⟯ := by
   have hm : 2 ^ (e + 2) ≠ 0 := by positivity
   refine ⟨fun v => ?_⟩
@@ -209,6 +292,19 @@ lemma totallyReal_F (hz : IsPrimitiveRoot z (2 ^ (e + 2))) : IsTotallyReal ℚ�
   rw [h2] at h1
   exact h1
 
+/- English proof (translation)
+Establish `hK` using `IsCyclotomicExtension.Rat.discr_prime_pow 2 (e + 2) K`. Establish `hexp : 2 ^ (e + 2 - 1) * ((2 - 1) * (e + 2) - 1) = 2 ^ (e + 1) * (e + 1)`. Rewrite using `[show e + 2 - 1 = e + 1 by omega, show (2 - 1) * (e + 2) - 1 = e + 1 by omega]`. Establish `hKabs : (discr K).natAbs = 2 ^ (2 ^ (e + 1) * (e + 1))`. Rewrite using `[hK, hexp]`.
+
+Simplify using `[Int.natAbs_mul, Int.natAbs_pow]`. Establish `hF` using `NumberField.absNorm_differentIdeal ℚ⟮z + z⁻¹⟯ (𝓞 ℚ⟮z + z⁻¹⟯)`. Establish `hKd` using `NumberField.absNorm_differentIdeal K (𝓞 K)`. Establish `htower` using `differentIdeal_eq_differentIdeal_mul_differentIdeal ℤ (𝓞 ℚ⟮z + z⁻¹⟯) (𝓞 K)`. Establish `hn : Module.finrank (𝓞 ℚ⟮z + z⁻¹⟯) (𝓞 K) = 2` using `(IsFractionRing.finrank_eq (𝓞 ℚ⟮z + z⁻¹⟯) ℚ⟮z + z⁻¹⟯ (𝓞 K) K).symm.trans (finrank_two hz)`.
+
+Establish `hmap : Ideal.absNorm (Ideal.map (algebraMap (𝓞 ℚ⟮z + z⁻¹⟯) (𝓞 K)) (differentIdeal ℤ (𝓞 ℚ⟮z + z⁻¹⟯))) = (discr ℚ⟮z + z⁻¹⟯).natAbs ^ 2`. Rewrite using `[← Ideal.absNorm_relNorm (𝓞 ℚ⟮z + z⁻¹⟯) (𝓞 K), Ideal.relNorm_algebraMap, hn, map_pow, hF]`. Establish `heq : (discr K).natAbs = 4 * (discr ℚ⟮z + z⁻¹⟯).natAbs ^ 2`. Rewrite using `[← hKd, htower, map_mul, absNorm_different hz, hmap]`. Establish `hN : 1 ≤ 2 ^ e * (e + 1)` using `Nat.one_le_iff_ne_zero.mpr (by positivity)`.
+
+Establish `h4 : 4 * (discr ℚ⟮z + z⁻¹⟯).natAbs ^ 2 = 4 * (2 ^ (2 ^ e * (e + 1) - 1)) ^ 2`. Rewrite using `[← heq, hKabs, ← pow_mul, show (4 : ℕ) = 2 ^ 2 from rfl, ← pow_add]`. Use `congr 1`. Establish `hx : 2 ^ (e + 1) * (e + 1) = 2 * (2 ^ e * (e + 1))` using `by ring`. Rewrite using `[hx]`.
+
+Generalize the expression as in `2 ^ e * (e + 1) = N at hN ⊢`. Use linear arithmetic over natural numbers and integers. Establish `hd : (discr ℚ⟮z + z⁻¹⟯).natAbs = 2 ^ (2 ^ e * (e + 1) - 1)` using `Nat.pow_left_injective (by norm_num : (2 : ℕ) ≠ 0) (Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 4) h4)`. Establish `htr` using `totallyReal_F hz`. Establish `hsign` using `NumberField.sign_discr ℚ⟮z + z⁻¹⟯`.
+
+Rewrite `hsign` using `[NumberField.IsTotallyReal.nrComplexPlaces_eq_zero, pow_zero, Int.sign_eq_one_iff_pos]`. Rewrite using `[← Int.natAbs_of_nonneg hsign.le, hd]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 lemma discr_F (hz : IsPrimitiveRoot z (2 ^ (e + 2))) :
     discr ℚ⟮z + z⁻¹⟯ = 2 ^ (2 ^ e * (e + 1) - 1) := by
   have hK := IsCyclotomicExtension.Rat.discr_prime_pow 2 (e + 2) K
@@ -253,6 +349,9 @@ namespace Discr
 
 variable {L : Type} [Field L] [NumberField L]
 
+/- English proof (translation)
+Unfold `F1`. Conclude with `IntermediateField.adjoin_simple_le_iff.mpr (add_mem (IntermediateField.mem_adjoin_simple_self ℚ ζ) (inv_mem (IntermediateField.mem_adjoin_simple_self ℚ ζ)))`.
+-/
 lemma real_subfield_le_adjoin (ζ : L) : F1 ζ ≤ ℚ⟮ζ⟯ := by
   unfold F1
   exact IntermediateField.adjoin_simple_le_iff.mpr
@@ -263,6 +362,17 @@ abbrev Fz (ζ : L) : IntermediateField ℚ ℚ⟮ζ⟯ :=
   @IntermediateField.adjoin ℚ _ ℚ⟮ζ⟯ _ DivisionRing.toRatAlgebra
     {(AdjoinSimple.gen ℚ ζ) + (AdjoinSimple.gen ℚ ζ)⁻¹}
 
+/- English proof (translation)
+Establish `key : ∀ (f : ℚ →+* ℚ⟮ζ⟯) (q : ℚ), (IntermediateField.val ℚ⟮ζ⟯ : ℚ⟮ζ⟯ →+* L) (f q) = algebraMap ℚ L q` using `fun f q => RingHom.congr_fun (RingHom.ext_rat ((IntermediateField.val ℚ⟮ζ⟯ : ℚ⟮ζ⟯ →+* L).comp f) (algebraMap ℚ L)) q`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `(Subfield.closure_le (t := (F1 ζ).toSubfield.comap (IntermediateField.val ℚ⟮ζ⟯ : ℚ⟮ζ⟯ →+* L))).mpr ?_ hx` and prove the remaining obligations. Introduce and unpack `y (⟨q, rfl⟩ | rfl)`.
+
+Rewrite using `[SetLike.mem_coe, Subfield.mem_comap, key]`. Conclude with `(F1 ζ).algebraMap_mem q`. Use `show (ζ + ζ⁻¹ : L) ∈ F1 ζ`. Unfold `F1`. Conclude with `IntermediateField.mem_adjoin_simple_self ℚ _`.
+
+Introduce `hx`. Establish `hS : (F1 ζ).toSubfield ≤ (Fz ζ).toSubfield.map (IntermediateField.val ℚ⟮ζ⟯ : ℚ⟮ζ⟯ →+* L)`. Unfold `F1`. Use `Subfield.closure_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `y (⟨q, rfl⟩ | rfl)`.
+
+Conclude with `⟨_, (Fz ζ).algebraMap_mem q, key _ q⟩`. Conclude with `⟨AdjoinSimple.gen ℚ ζ + (AdjoinSimple.gen ℚ ζ)⁻¹, Subfield.subset_closure (Or.inr rfl), rfl⟩`. Take `⟨y, hy, hyx⟩` from `hS hx`. Establish `hxy : y = x` using `Subtype.ext hyx`. Substitute `hxy` using the available equality.
+
+Conclude with `hy`.
+-/
 lemma mem_F_iff (ζ : L) (x : ℚ⟮ζ⟯) :
     x ∈ Fz ζ ↔ (x : L) ∈ F1 ζ := by
   have key : ∀ (f : ℚ →+* ℚ⟮ζ⟯) (q : ℚ),
@@ -304,6 +414,11 @@ def equivF (ζ : L) : Fz ζ ≃+* F1 ζ where
 end Discr
 
 open Discr in
+/- English proof (translation)
+Introduce `e L _ _ ζ hζ`. Establish `hne : NeZero (2 ^ (e + 2))` using `⟨by positivity⟩`. Establish `hcyc : IsCyclotomicExtension {2 ^ (e + 2)} ℚ ℚ⟮ζ⟯` using `hζ.intermediateField_adjoin_isCyclotomicExtension ℚ`. Establish `hz : IsPrimitiveRoot (AdjoinSimple.gen ℚ ζ) (2 ^ (e + 2))` using `IsPrimitiveRoot.coe_submonoidClass_iff.mp hζ`. Rewrite using `[← NumberField.discr_eq_discr_of_ringEquiv _ (equivF ζ)]`.
+
+Conclude with `discr_F hz`.
+-/
 theorem discriminant_real_subfield : DiscrMaximalRealCyclotomic := by
   intro e L _ _ ζ hζ
   have hne : NeZero (2 ^ (e + 2)) := ⟨by positivity⟩

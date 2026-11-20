@@ -4,6 +4,9 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ArchimedeanCoefficientN
 
 namespace PI.BICNZ
 
+/- English proof (translation)
+The claim follows from `betaInfCoefNZ_of (betaFactor_of (phiAt_of hS) left_profile_contDiff_two right_profile_contDiff_two) hL hR`.
+-/
 theorem betaInfCoefNZ_of_limits (hS : Formalism.FourierDecayAlt.ThreeDimData.SchurH) (hL : LeftLimit) (hR : RightLimit) :
     Formalism.MainNotions.S.Pv.BetaCut.BetaInfCoefNZ :=
   betaInfCoefNZ_of (betaFactor_of (phiAt_of hS) left_profile_contDiff_two right_profile_contDiff_two) hL hR

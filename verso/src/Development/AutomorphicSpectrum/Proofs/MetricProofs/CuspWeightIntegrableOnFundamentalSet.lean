@@ -18,6 +18,41 @@ namespace GlobalTheory.CompanionTheory.Ar.Cusp.BallMean
 
 open GroundTheory.Heights₂.Heights.LowerBound
 
+/- English proof (translation)
+Use `set w : X → ℝ≥0∞ := fun t => ENNReal.ofReal (d t) with hw`. Establish `hwm : Measurable w` using `hd.ennreal_ofReal`. Establish `hwlt : ∀ᵐ x ∂(m.restrict S), w x < ⊤` using `ae_of_all _ fun _ => ENNReal.ofReal_lt_top`. Use `set V : ℝ≥0∞ := ∫⁻ t in S, w t ∂m with hV`. Use `set ρ : Measure X := (m.restrict S).withDensity w with hρ`.
+
+Establish `hρuniv : ρ Set.univ = V`. Rewrite using `[hρ, withDensity_apply _ MeasurableSet.univ, Measure.restrict_univ]`. Use `set ν : Measure X := V⁻¹ • ρ with hν`. Establish `hprob : IsProbabilityMeasure ν` using `⟨by simp [hν, hρuniv, ENNReal.inv_mul_cancel h0 hT]⟩`. Establish `hinv0 : V⁻¹ ≠ 0` using `ENNReal.inv_ne_zero.2 hT`.
+
+Establish `hinvT : V⁻¹ ≠ ⊤` using `ENNReal.inv_ne_top.2 h0`. Establish `hdnn : ∀ x, 0 ≤ d x` using `fun x => (hdpos x).le`. Establish `hwr : ∀ x, (w x).toReal = d x` using `fun x => ENNReal.toReal_ofReal (hdnn x)`. Establish `hdint : Integrable d (m.restrict S)`. Use `⟨hd.aestronglyMeasurable, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hasFiniteIntegral_iff_ofReal (ae_of_all _ hdnn)]`. Conclude with `lt_top_iff_ne_top.2 hT`. Establish `hdval : ∫ t in S, d t ∂m = V.toReal`. Rewrite using `[integral_eq_lintegral_of_nonneg_ae (ae_of_all _ hdnn) hd.aestronglyMeasurable]`. Establish `hVpos : 0 < V.toReal` using `ENNReal.toReal_pos h0 hT`.
+
+Use `set r : ℝ := vr ^ (-(1 / 2 : ℝ)) with hr`. Use `set L : X → ℝ := fun z => max 0 (Real.log (r / lam z)) with hL`. Establish `hLm : Measurable L` using `measurable_const.max (Real.measurable_log.comp (lam_meas.const_div r))`. Establish `hLnn : ∀ z, 0 ≤ L z` using `fun z => le_max_left _ _`. Establish `hLof : ∀ z, ENNReal.ofReal (L z) = ENNReal.ofReal (Real.log (r / lam z))` using `fun z => by`.
+
+Break down `le_total 0 (Real.log (r / lam z)) with h | h` into its components or cases. Simplify using `only [hL, max_eq_right h]`. Simplify using `only [hL, max_eq_left h, ENNReal.ofReal_of_nonpos h, ENNReal.ofReal_zero]`. Establish `hlin : ∀ g : X → ℝ≥0∞, Measurable g → ∫⁻ x, g x ∂ν = V⁻¹ * ∫⁻ x in S, w x * g x ∂m` using `fun g hg => by`. Rewrite using `[hν, lintegral_smul_measure, hρ, lintegral_withDensity_eq_lintegral_mul _ hwm hg]`.
+
+Both sides reduce to the same expression. Establish `hLle : ∫⁻ x, ENNReal.ofReal (L x) ∂ν ≤ 3`. Rewrite using `[hlin _ hLm.ennreal_ofReal]`. Establish `e : ∫⁻ x in S, w x * ENNReal.ofReal (L x) ∂m ≤ 3 * V`. Use `le_of_eq_of_le (lintegral_congr fun x => ?_) mean` and prove the remaining obligations.
+
+Rewrite using `[hLof, mul_comm]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_left_comm, ENNReal.inv_mul_cancel h0 hT, mul_one]`. Establish `hLint : Integrable L ν`. Use `⟨hLm.aestronglyMeasurable, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hasFiniteIntegral_iff_ofReal (ae_of_all _ hLnn)]`. Conclude with `lt_of_le_of_lt hLle (by simp)`. Establish `hLmean : ∫ z, L z ∂ν ≤ 3`. Rewrite using `[integral_eq_lintegral_of_nonneg_ae (ae_of_all _ hLnn) hLm.aestronglyMeasurable]`. Conclude with `ENNReal.toReal_le_of_le_ofReal (by norm_num) (by simpa using hLle)`.
+
+Establish `H : MeanCuspWeight.Hyp ν U lam f j' vr rd` using `{ isProbability := hprob U_meas := U_meas lam_meas := lam_meas lam_pos := lam_pos U_nonneg := U_nonneg U_le := U_le one_le_f := hf one_le_j' := hj one_le_vr := hvr one_le_rd := hrd logPlus_integrable := hLint logPlus_mean := hLmean }`. Establish `hbound` using `MeanCuspWeight.full X ν U lam f j' vr rd H`. Establish `hvr0 : 0 < vr` using `lt_of_lt_of_le one_pos hvr`. Establish `hr0 : 0 < r` using `Real.rpow_pos_of_pos hvr0 _`. Establish `hlogvr : 0 ≤ Real.log vr` using `Real.log_nonneg hvr`.
+
+Establish `hlogr : Real.log r = -(1 / 2) * Real.log vr` using `Real.log_rpow hvr0 _`. Establish `key : ∀ z, max 0 (Real.log (1 / lam z)) ≤ L z + 1 / 2 * Real.log vr`. Introduce `z`. Establish `hl` using `lam_pos z`. Establish `e : Real.log (1 / lam z) = Real.log (r / lam z) + 1 / 2 * Real.log vr`.
+
+Rewrite using `[Real.log_div one_ne_zero hl.ne', Real.log_div hr0.ne' hl.ne', hlogr, Real.log_one]`. Expand and normalize the polynomial expressions, which then agree. Use `max_le (by have := hLnn z; positivity) ?_` and prove the remaining obligations. Rewrite using `[e]`. Establish `: Real.log (r / lam z) ≤ L z` using `le_max_right _ _`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hfj : (0 : ℝ) ≤ (f : ℝ) * j'` using `by positivity`. Establish `hUint : Integrable U ν`. Establish `hg : Integrable (fun z => (f : ℝ) * j' * (2 * (L z + 1 / 2 * Real.log vr) + Real.log (2 * f * j' * rd))) ν` using `(((hLint.add (integrable_const _)).const_mul 2).add (integrable_const _)).const_mul _`. Use `hg.mono' U_meas.aestronglyMeasurable (ae_of_all _ fun z => ?_)` and prove the remaining obligations.
+
+Rewrite using `[Real.norm_of_nonneg (U_nonneg z)]`. Use `(U_le z).trans (mul_le_mul_of_nonneg_left ?_ hfj)` and prove the remaining obligations. Combine the linear relations using `[key z]`. Establish `hUρ : Integrable U ρ` using `(integrable_smul_measure hinv0 hinvT).1 hUint`. Establish `hUd : Integrable (fun t => U t * d t) (m.restrict S)`.
+
+Use `(integrable_withDensity_iff_integrable_smul' hwm hwlt).1 hUρ` as an intermediate fact. Use `this.congr (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Simplify using `only [smul_eq_mul, hwr, mul_comm]`. Establish `hval : ∫ z, U z ∂ν = (V.toReal)⁻¹ * ∫ t in S, U t * d t ∂m`. Rewrite using `[hν, integral_smul_measure, hρ, integral_withDensity_eq_integral_toReal_smul hwm hwlt, ENNReal.toReal_inv, smul_eq_mul]`.
+
+Use `congr 1`. Use `integral_congr_ae (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Simplify using `only [smul_eq_mul, hwr, mul_comm]`. Use `⟨hdint, by rw [hdval]; exact hVpos, hUd, ?_⟩` and prove the remaining obligations. Rewrite `hbound` using `[hval, inv_mul_le_iff₀ hVpos]`.
+
+Rewrite using `[hdval]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem weighted_mean {X : Type} [MeasurableSpace X] (m : Measure X) (S : Set X) (d U lam : X → ℝ) (f j' : ℕ) (vr rd : ℝ)
     (hd : Measurable d) (hdpos : ∀ x, 0 < d x)
     (h0 : ∫⁻ t in S, ENNReal.ofReal (d t) ∂m ≠ 0) (hT : ∫⁻ t in S, ENNReal.ofReal (d t) ∂m ≠ ⊤)
@@ -142,6 +177,13 @@ section Card
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Establish `hk : RingHom.ker s = ⊥`. Use `Ideal.eq_bot_of_comap_eq_bot (R := ℤ) ?_` and prove the remaining obligations. Rewrite using `[eq_bot_iff]`. Introduce `m hm`.
+
+Establish `h1 : s (algebraMap ℤ (𝓞 E) m) = 0` using `hm`. Establish `h2 : ((m : ℤ) : ℂ) = 0` using `by simpa using h1`. Simplify using `using (Int.cast_eq_zero.1 h2)`. Introduce `a ha`. Establish `: a ∈ RingHom.ker s` using `ha`.
+
+Rewrite `this` using `[hk]`. Simplify using `using this`.
+-/
 theorem hom_injective (s : 𝓞 E →+* ℂ) : Function.Injective s := by
   rw [injective_iff_map_eq_zero]
   have hk : RingHom.ker s = ⊥ := by
@@ -156,6 +198,19 @@ theorem hom_injective (s : 𝓞 E →+* ℂ) : Function.Injective s := by
   rw [hk] at this
   simpa using this
 
+/- English proof (translation)
+Set `e : (E →+* ℂ) ≃ (𝓞 E →+* ℂ)` to `{ toFun := fun φ => φ.comp (algebraMap (𝓞 E) E) invFun := fun s => IsFractionRing.lift (hom_injective s) left_inv := fun φ => by`. Apply `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E))` to reduce the goal to its premises. Use extensionality with `x`. Simplify using the standard rewrite rules. Use `right_inv := fun s => by`.
+
+Use extensionality with `x`. Simplify using `}`. Use `haveI : Fintype (𝓞 E →+* ℂ) := Fintype.ofEquiv _ e`. Establish `hc : Fintype.card (𝓞 E →+* ℂ) = Module.finrank ℚ E`. Rewrite using `[← Fintype.card_congr e]`.
+
+Conclude with `NumberField.Embeddings.card E ℂ`. Set `P : (𝓞 E →+* ℂ) → Prop` to `fun s => ∃ τ, σ τ = s`. Set `c : (𝓞 E →+* ℂ) → (𝓞 E →+* ℂ)` to `fun s => (starRingEnd ℂ).comp s`. Establish `hcc : ∀ s, c (c s) = s` using `fun s => by`. Use extensionality with `x`.
+
+Simplify using `[c]`. Establish `hP : ∀ s, P s ↔ ¬ P (c s)` using `hσ.2`. Establish `e1 : {s // P s} ≃ Ψ` using `(Equiv.ofInjective σ hσ.1).symm`. Establish `e2 : {s // ¬ P s} ≃ {s // P s}` using `{ toFun := fun s => ⟨c s.1, by`. Assume the negation of the conclusion as `hn`.
+
+Conclude with `s.2 ((hP s.1).2 hn)⟩`. Use `invFun := fun s => ⟨c s.1, (hP s.1).1 s.2⟩`. Use `left_inv := fun s => Subtype.ext (hcc s.1)`. Use `right_inv := fun s => Subtype.ext (hcc s.1) }`. Use `Fintype.card_congr (Equiv.sumCompl P)` as an intermediate fact.
+
+Rewrite `this` using `[Fintype.card_sum, Fintype.card_congr e2, Fintype.card_congr e1, hc]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_eq_two_mul {Ψ : Type} [Fintype Ψ] {σ : Ψ → (𝓞 E →+* ℂ)} (hσ : IsCMFam σ) :
     Module.finrank ℚ E = 2 * Fintype.card Ψ := by
   classical
@@ -191,6 +246,9 @@ theorem finrank_eq_two_mul {Ψ : Type} [Fintype Ψ] {σ : Ψ → (𝓞 E →+* �
   rw [Fintype.card_sum, Fintype.card_congr e2, Fintype.card_congr e1, hc] at this
   omega
 
+/- English proof (translation)
+Unfold `hostRd`. Use `Real.one_le_rpow ?_ (by positivity)` and prove the remaining obligations. Establish `h : (1 : ℤ) ≤ |discr E|` using `Int.one_le_abs (discr_ne_zero E)`. Rewrite using `[← Int.cast_abs]`. Conclude with `h` after adjusting the coercions.
+-/
 theorem one_le_rd : 1 ≤ hostRd E := by
   unfold hostRd
   refine Real.one_le_rpow ?_ (by positivity)
@@ -204,6 +262,11 @@ section Dens
 
 variable {Ψ : Type} [Fintype Ψ] {j j' n : ℕ}
 
+/- English proof (translation)
+Establish `hZ : ∀ τ, Continuous fun t : Fin n → ℂ => ballMat q t τ` using `fun τ => continuous_matrix fun a b => continuous_apply _`. Establish `hdet : ∀ τ, Measurable fun t : Fin n → ℂ => Real.log (1 - (ballMat q t τ)ᴴ * ballMat q t τ).det.re` using `fun τ => Real.measurable_log.comp (Complex.continuous_re.comp (continuous_const.sub ((hZ τ).matrix_conjTranspose.matrix_mul (hZ τ))).matrix_det).measurable`. Establish `hpot : Measurable (ballPot q)`. Unfold `ballPot`. Conclude with `(Finset.measurable_sum _ fun τ _ => hdet τ).neg`.
+
+Unfold `ballDens`. Conclude with `Real.measurable_exp.comp (hpot.const_mul _)`.
+-/
 theorem measurable_ballDens (q : Ψ × Fin j × Fin j' ≃ Fin n) : Measurable (ballDens q) := by
   have hZ : ∀ τ, Continuous fun t : Fin n → ℂ => ballMat q t τ := fun τ =>
     continuous_matrix fun a b => continuous_apply _
@@ -217,6 +280,9 @@ theorem measurable_ballDens (q : Ψ × Fin j × Fin j' ≃ Fin n) : Measurable (
   unfold ballDens
   exact Real.measurable_exp.comp (hpot.const_mul _)
 
+/- English proof (translation)
+The claim follows from `Real.exp_pos _`.
+-/
 theorem ballDens_pos (q : Ψ × Fin j × Fin j' ≃ Fin n) (t : Fin n → ℂ) : 0 < ballDens q t := Real.exp_pos _
 
 end Dens
@@ -227,6 +293,41 @@ namespace GlobalTheory.CompanionTheory.Ar.Cusp
 
 open BallMean
 
+/- English proof (translation)
+Introduce `E _ _ _ Ψ _ j j' n g Λ _ _ H F Γ FF hA hFS hj' hN`. Take `⟨Δ⟩` from `GlobalTheory.T.exists_group_dictionary E Ψ j j' n g Λ H F`. Establish `hcard` using `finrank_eq_two_mul F.cm`. Establish `hrd : 1 ≤ hostRd E` using `one_le_rd`. Establish `hf : 1 ≤ Fintype.card Ψ`.
+
+Establish `: 0 < Module.finrank ℚ E` using `Module.finrank_pos`. Use linear arithmetic over natural numbers and integers. Establish `hfR : (1 : ℝ) ≤ Fintype.card Ψ` using `by exact_mod_cast hf`. Establish `hjR : (1 : ℝ) ≤ j'` using `by exact_mod_cast hj'`. Use `set vr : ℝ := 2 * Fintype.card Ψ * hostRd E with hvrdef`.
+
+Establish `hvr : 1 ≤ vr` using `by nlinarith`. Establish `hvr0 : 0 < vr` using `by linarith`. Take `⟨a, ha1, ha2⟩` from `GlobalTheory.T.cm_field_small_integral_basis E`. Establish `ha2' : ∀ i (s : E →+* ℂ), ‖s (a i)‖ ≤ vr` using `fun i s => by`. Use `ha2 i s` as an intermediate fact.
+
+Rewrite `this` using `[hcard]`. Rewrite using `[hvrdef]`. Simplify using `using this`. Set `μ : Measure (archUnitary Δ.h (Pi.basisFun E (Fin (j + j'))))` to `Measure.haar`. Take `⟨FD, hFD, h0, hT, hmean⟩` from `GlobalTheory.T.first_minimum_integral_bound E Ψ j j' n g Λ F Δ μ vr hj' hN hvr0 ⟨a, ha1, ha2'⟩`.
+
+Take `⟨C, hC0, hCT, hC⟩` from `GlobalTheory.T.fundamental_set_to_fundamental_domain E Ψ j j' n g Λ F Δ μ Γ FF FD hA hFS hFD`. Take `⟨hcont, hUm, hopen, hinv⟩` from `GlobalTheory.T.first_minimum_continuous_cusp_weight_measurable E Ψ j j' n g Λ F hj'`. Establish `hu1 : ∀ t ∈ ballDom F.q, _` using `fun t ht => GlobalTheory.T.first_minimum_and_cusp_weight_bounds E g Λ Ψ (F.R t) F.σ j' F.cm (fun τ => (F.sig t ht τ).1) hj'`. Take `⟨hFFm, hFFsub, -, -⟩` from `hFS`. Use `set B := ballDom F.q with hB`.
+
+Establish `hBm : MeasurableSet B` using `hopen.measurableSet`. Use `set lam : (Fin n → ℂ) → ℝ := B.piecewise (fun t => (F.R t).lam1) 1 with hlam`. Use `set U : (Fin n → ℂ) → ℝ := B.indicator fun t => (F.R t).cuspW F.σ with hU`. Establish `hlamB : ∀ t ∈ B, lam t = (F.R t).lam1` using `fun t ht => Set.piecewise_eq_of_mem _ _ _ ht`. Establish `hUB : ∀ t ∈ B, U t = (F.R t).cuspW F.σ` using `fun t ht => Set.indicator_of_mem ht _`.
+
+Establish `hlamm : Measurable lam` using `hcont.measurable_piecewise continuousOn_const hBm`. Establish `hlampos : ∀ z, 0 < lam z` using `fun z => by`. Distinguish the cases in `hz : z ∈ B`. Rewrite using `[hlamB z hz]`. Conclude with `(hu1 z hz).1`.
+
+Establish `h1 : lam z = 1` using `Set.piecewise_eq_of_notMem _ _ _ hz`. Rewrite using `[h1]`. Conclude with `one_pos`. Establish `hUnn : ∀ z, 0 ≤ U z` using `fun z => by`. Distinguish the cases in `hz : z ∈ B`.
+
+Rewrite using `[hUB z hz]`. Conclude with `(hu1 z hz).2.2.2.1`. Simplify using `[hU, Set.indicator_of_notMem hz]`. Establish `hUle : ∀ z, U z ≤ Fintype.card Ψ * j' * (2 * max 0 (Real.log (1 / lam z)) + Real.log (2 * Fintype.card Ψ * j' * hostRd E))` using `fun z => by`. Distinguish the cases in `hz : z ∈ B`.
+
+Rewrite using `[hUB z hz, hlamB z hz]`. Conclude with `(hu1 z hz).2.2.2.2`. Establish `h1 : U z = 0` using `by simp [hU, Set.indicator_of_notMem hz]`. Rewrite using `[h1]`. Establish `hl : 0 ≤ Real.log (2 * Fintype.card Ψ * j' * hostRd E)`.
+
+Use `Real.log_nonneg ?_` and prove the remaining obligations. Establish `: (1 : ℝ) ≤ (Fintype.card Ψ : ℝ) * j'` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities. Establish `hm : (0 : ℝ) ≤ max 0 (Real.log (1 / lam z))` using `le_max_left _ _`. Check the signs of the components of the expression.
+
+Establish `hvol : ∫⁻ t in FF, ENNReal.ofReal (ballDens F.q t) = C * μ FD`. Use `hC (fun _ => 1) measurable_const (fun _ _ _ _ _ => rfl)` as an intermediate fact. Simplify using `using this`. Establish `hV0 : ∫⁻ t in FF, ENNReal.ofReal (ballDens F.q t) ≠ 0`. Rewrite using `[hvol]`.
+
+Conclude with `mul_ne_zero hC0 h0`. Establish `hVT : ∫⁻ t in FF, ENNReal.ofReal (ballDens F.q t) ≠ ⊤`. Rewrite using `[hvol]`. Conclude with `ENNReal.mul_ne_top hCT hT`. Use `set r : ℝ := vr ^ (-(1 / 2 : ℝ)) with hr`.
+
+Use `set Φ : (Fin n → ℂ) → ℝ≥0∞ := B.indicator fun t => ENNReal.ofReal (Real.log (r / lam t)) with hΦ`. Establish `hΦm : Measurable Φ` using `((Real.measurable_log.comp (hlamm.const_div r)).ennreal_ofReal).indicator hBm`. Establish `hΦB : ∀ t ∈ B, Φ t = ENNReal.ofReal (Real.log (r / lam t))` using `fun t ht => Set.indicator_of_mem ht _`. Establish `hΦinv : ∀ t ∈ B, ∀ t' ∈ B, F.Eqv (autGrp F.form) t t' → Φ t = Φ t'` using `fun t ht t' ht' he => by`. Rewrite using `[hΦB t ht, hΦB t' ht', hlamB t ht, hlamB t' ht', (hinv t ht t' ht' he).1]`.
+
+Establish `hπ : ∀ a, Δ.π a ∈ B` using `fun a => by`. Rewrite using `[hB, ← Δ.π_range]`. Conclude with `Set.mem_range_self a`. Establish `hmean' : ∫⁻ t in FF, ENNReal.ofReal (Real.log (r / lam t)) * ENNReal.ofReal (ballDens F.q t) ≤ 3 * ∫⁻ t in FF, ENNReal.ofReal (ballDens F.q t)`. Establish `e1 : ∫⁻ t in FF, ENNReal.ofReal (Real.log (r / lam t)) * ENNReal.ofReal (ballDens F.q t) = ∫⁻ t in FF, Φ t * ENNReal.ofReal (ballDens F.q t)` using `setLIntegral_congr_fun hFFm fun t ht => by rw [hΦB t (hFFsub ht)]`.
+
+Establish `e2 : ∫⁻ a in FD, Φ (Δ.π a) ∂μ = ∫⁻ a in FD, ENNReal.ofReal (Real.log (vr ^ (-(1 / 2 : ℝ)) / (F.R (Δ.π a)).lam1)) ∂μ` using `lintegral_congr fun a => by rw [hΦB _ (hπ a), hlamB _ (hπ a)]`. Rewrite using `[e1, hC Φ hΦm hΦinv, hvol, e2]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨i1, i2, i3, i4⟩` from `weighted_mean volume FF (ballDens F.q) U lam (Fintype.card Ψ) j' vr (hostRd E) (measurable_ballDens F.q) (ballDens_pos F.q) hV0 hVT hUm hlamm hlampos hUnn hUle hf hj' hvr hrd hmean'`. Establish `hUeq : ∀ t ∈ FF, U t * ballDens F.q t = (F.R t).cuspW F.σ * ballDens F.q t` using `fun t ht => by`.
+
+Rewrite using `[hUB t (hFFsub ht)]`. Use `⟨i1, i2, i3.congr_fun hUeq hFFm, ?_⟩` and prove the remaining obligations. Rewrite using `[← setIntegral_congr_fun hFFm hUeq]`. Conclude with `i4`.
+-/
 theorem fund_set_mean_cuspW : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Type) [Fintype Ψ] (j j' n g : ℕ) (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (H : Host E) (F : UnivFam E Ψ j j' n g Λ) (Γ : Subgroup (Λ ≃ₗ[𝓞 E] Λ)) (FF : Set (Fin n → ℂ)), F.IsArith Γ → F.IsFundSet Γ FF → 1 ≤ j' → 3 * j' + 1 ≤ j + j' → IntegrableOn (ballDens F.q) FF ∧ 0 < ∫ t in FF, ballDens F.q t ∧ IntegrableOn (fun t => (F.R t).cuspW F.σ * ballDens F.q t) FF ∧ ∫ t in FF, (F.R t).cuspW F.σ * ballDens F.q t ≤ Fintype.card Ψ * j' * (6 + Real.log (2 * Fintype.card Ψ * hostRd E) + Real.log (2 * Fintype.card Ψ * j' * hostRd E)) * ∫ t in FF, ballDens F.q t := by
   classical
   intro E _ _ _ Ψ _ j j' n g Λ _ _ H F Γ FF hA hFS hj' hN

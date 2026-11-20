@@ -6,6 +6,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Trans
 
 namespace UpperTheory.Gal.TranscendenceTraces
 
+/- English proof (translation)
+The claim follows from `fL_of_parts phiQis_of extRes_of famHom_of`.
+-/
 theorem fL_of : PhiEx → FL := fL_of_parts phiQis_of extRes_of famHom_of
 
 end UpperTheory.Gal.TranscendenceTraces

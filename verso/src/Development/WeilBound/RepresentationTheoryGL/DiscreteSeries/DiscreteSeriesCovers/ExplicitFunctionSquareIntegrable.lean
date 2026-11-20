@@ -12,6 +12,9 @@ variable {n : ℕ}
 
 def phi (x : Matrix (Fin n) (Fin n) ℂ) : ℝ := ∏ i : Fin n, ((lead ((i : ℕ) + 1) (xᴴ * x)).re ^ 2)⁻¹
 
+/- English proof (translation)
+Unfold `phi lead`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Rewrite using `[dif_pos (Nat.succ_le_of_lt i.2)]`. Simplify using `[Matrix.submatrix_one _ (Fin.castLE_injective _)]`.
+-/
 theorem phi_one : phi (1 : Matrix (Fin n) (Fin n) ℂ) = 1 := by
   unfold phi lead
   refine Finset.prod_eq_one fun i _ => ?_

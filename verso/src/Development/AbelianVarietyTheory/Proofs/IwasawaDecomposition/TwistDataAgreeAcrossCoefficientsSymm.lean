@@ -8,19 +8,31 @@ noncomputable section
 
 namespace GlobalTheory.HeightCounting.Up.SymmetryOfAgreementRelations
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.R.symm, h.host.symm, h.loc.symm, h.Om.symm, h.instOm.symm, h.algOm.symm, h.plOm.symm, h.PlG.symm⟩`.
+-/
 theorem sameGalois_symm {D D' : D7} {N : NData D.R D.host D.what₂} {N' : NData D'.R D'.host D'.what₂} (h : SameGalois N N') :
     SameGalois N' N := ⟨h.R.symm, h.host.symm, h.loc.symm, h.Om.symm, h.instOm.symm, h.algOm.symm, h.plOm.symm, h.PlG.symm⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.cc.symm, h.Tw.symm, h.l.symm, h.O0.symm, h.crO0.symm, h.algO0.symm, h.topO0.symm, h.O.symm, h.crO.symm, h.algO.symm, h.Ok.symm, h.crOk.symm, h.algOk.symm, h.zk.symm, h.pD.symm, h.chi1.symm, h.Sig.symm, h.finSig.symm, h.jS.symm, h.side.symm, h.rhoS.symm, h.S0.symm, h.hEig.symm, …`.
+-/
 theorem twistDataAgreeAcrossCoefficients_symm {D D' : D7} {N : NData D.R D.host D.what₂} {N' : NData D'.R D'.host D'.what₂}
     {X : NTw D.R D.host D.what₂ D.LL0 N} {X' : NTw D'.R D'.host D'.what₂ D'.LL0 N'} (h : TwistDataAgreeAcrossCoefficients X X') : TwistDataAgreeAcrossCoefficients X' X :=
   ⟨h.cc.symm, h.Tw.symm, h.l.symm, h.O0.symm, h.crO0.symm, h.algO0.symm, h.topO0.symm, h.O.symm, h.crO.symm, h.algO.symm, h.Ok.symm, h.crOk.symm, h.algOk.symm, h.zk.symm, h.pD.symm, h.chi1.symm, h.Sig.symm, h.finSig.symm, h.jS.symm, h.side.symm, h.rhoS.symm, h.S0.symm, h.hEig.symm, h.abelian₂.symm, h.sideL.symm, h.RCG.symm, h.grpRCG.symm, h.finRCG.symm, h.art.symm, h.th.symm⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.Fm.symm, h.acgFm.symm, h.modFmK.symm, h.modFmO.symm, h.actG.symm, h.U.symm, h.psiU.symm, h.eAlg.symm, h.Dat.symm, h.th.symm, h.lev.symm, h.thPsi.symm, h.MtV.symm, h.acgMt.symm, h.modMtK.symm, h.modMtO.symm, h.MtLat.symm, h.thP.symm, h.hkF.symm⟩`.
+-/
 theorem sameForms_symm {D D' : D7} {N : NData D.R D.host D.what₂} {N' : NData D'.R D'.host D'.what₂}
     {X : NTw D.R D.host D.what₂ D.LL0 N} {X' : NTw D'.R D'.host D'.what₂ D'.LL0 N'}
     {Y : NExp D.R D.host D.what₂ D.LL0 N X} {Y' : NExp D'.R D'.host D'.what₂ D'.LL0 N' X'} (h : SameForms Y Y') :
     SameForms Y' Y :=
   ⟨h.Fm.symm, h.acgFm.symm, h.modFmK.symm, h.modFmO.symm, h.actG.symm, h.U.symm, h.psiU.symm, h.eAlg.symm, h.Dat.symm, h.th.symm, h.lev.symm, h.thPsi.symm, h.MtV.symm, h.acgMt.symm, h.modMtK.symm, h.modMtO.symm, h.MtLat.symm, h.thP.symm, h.hkF.symm⟩
 
+/- English proof (translation)
+Substitute `hα` using the available equality. Substitute `hβ` using the available equality. Take `rfl` from `eq_of_heq hf`. Take `rfl` from `eq_of_heq hx`. Both sides reduce to the same expression.
+-/
 theorem heq_app {α α' β β' : Type} (hα : α = α') (hβ : β = β') {f : α → β} {f' : α' → β'} (hf : HEq f f') {x : α} {x' : α'}
     (hx : HEq x x') : HEq (f x) (f' x') := by
   subst hα; subst hβ
@@ -28,6 +40,11 @@ theorem heq_app {α α' β β' : Type} (hα : α = α') (hβ : β = β') {f : α
   obtain rfl := eq_of_heq hx
   rfl
 
+/- English proof (translation)
+Take `⟨a1, a2, a3, nOm, ninstOm, nalgOm, nplOm, nPlG⟩` from `h1`. Consider the cases of `D`. Consider the cases of `D'`. Simplify using `only at a1 a2 a3`. Substitute `a1` using the available equality.
+
+Substitute `a2` using the available equality. Conclude with `⟨B', HEq.rfl, fun Q Q' hQ h => by obtain rfl := eq_of_heq hQ; exact h⟩`.
+-/
 theorem move_set {D D' : D7} {N : NData D.R D.host D.what₂} {N' : NData D'.R D'.host D'.what₂} (h1 : SameGalois N N')
     (B' : Finset (PlE D'.host)) : ∃ B : Finset (PlE D.host), HEq B B' ∧
       ∀ (Q : Finset (PlE D.host)) (Q' : Finset (PlE D'.host)), HEq Q Q' → Disjoint Q B → Disjoint Q' B' := by
@@ -40,6 +57,29 @@ theorem move_set {D D' : D7} {N : NData D.R D.host D.what₂} {N' : NData D'.R D
 set_option maxHeartbeats 4000000 in
 set_option maxRecDepth 100000 in
 
+/- English proof (translation)
+Take `⟨a1, a2, a3, nOm, ninstOm, nalgOm, nplOm, nPlG⟩` from `h1`. Take `⟨xcc, xTw, xl, fixedFieldTransport_baseIntegerRing_heq, fixedFieldTransport_baseIntegerCommRing_heq, fixedFieldTransport_baseIntegerAlgebra_heq, fixedFieldTransport_baseIntegerTopology_heq, xO, xcrO, xalgO, xOk, xcrOk, xalgOk, xzk, xpD, xchi1, xSig, xfinSig, xjS, xside, xrhoS, fi …` from `h2`. Consider the cases of `D`. Consider the cases of `D'`. Simplify using `only at a1 a2 a3`.
+
+Substitute `a1` using the available equality. Substitute `a2` using the available equality. Substitute `a3` using the available equality. Consider the cases of `N`. Consider the cases of `N'`.
+
+Simplify using `only at nOm ninstOm nalgOm nplOm nPlG`. Substitute `nOm` using the available equality. Substitute `ninstOm` using the available equality. Substitute `nalgOm` using the available equality. Substitute `nplOm` using the available equality.
+
+Substitute `nPlG` using the available equality. Consider the cases of `X`. Consider the cases of `X'`. Simplify using `only at xcc xTw xl fixedFieldTransport_baseIntegerRing_heq fixedFieldTransport_baseIntegerCommRing_heq fixedFieldTransport_baseIntegerAlgebra_heq fixedFieldTransport_baseIntegerTopology_heq xO xcrO xalgO xOk xcrOk xalgOk xzk xpD xchi1 xSig xfinSig xjS xside xrhoS fixedFieldTransp …`. Substitute `xcc` using the available equality.
+
+Substitute `xTw` using the available equality. Substitute `xl` using the available equality. Substitute `fixedFieldTransport_baseIntegerRing_heq` using the available equality. Substitute `fixedFieldTransport_baseIntegerCommRing_heq` using the available equality. Substitute `fixedFieldTransport_baseIntegerAlgebra_heq` using the available equality.
+
+Substitute `fixedFieldTransport_baseIntegerTopology_heq` using the available equality. Substitute `xO` using the available equality. Substitute `xcrO` using the available equality. Substitute `xalgO` using the available equality. Substitute `xOk` using the available equality.
+
+Substitute `xcrOk` using the available equality. Substitute `xalgOk` using the available equality. Substitute `xzk` using the available equality. Substitute `xpD` using the available equality. Substitute `xchi1` using the available equality.
+
+Substitute `xSig` using the available equality. Substitute `xfinSig` using the available equality. Substitute `xjS` using the available equality. Substitute `xside` using the available equality. Substitute `xrhoS` using the available equality.
+
+Substitute `fixedFieldTransport_initialPlaceSet_heq` using the available equality. Substitute `xhEig` using the available equality. Substitute `xLam` using the available equality. Substitute `xsideL` using the available equality. Substitute `xRCG` using the available equality.
+
+Substitute `xgrpRCG` using the available equality. Substitute `xfinRCG` using the available equality. Substitute `xart` using the available equality. Substitute `xth` using the available equality. Substitute `hi` using the available equality.
+
+Conclude with `⟨Q, ψ, HEq.rfl, fun _ => HEq.rfl⟩`.
+-/
 theorem move_pack {D D' : D7} {N : NData D.R D.host D.what₂} {N' : NData D'.R D'.host D'.what₂}
     {X : NTw D.R D.host D.what₂ D.LL0 N} {X' : NTw D'.R D'.host D'.what₂ D'.LL0 N'} (h1 : SameGalois N N') (h2 : TwistDataAgreeAcrossCoefficients X X')
     {i : X.Tw} {i' : X'.Tw} (hi : HEq i i') {Q : Finset (PlE D.host)} {k : ℕ} (ψ : X.RCG i Q →* (X.Ok i k)ˣ) :
@@ -61,6 +101,37 @@ theorem move_pack {D D' : D7} {N : NData D.R D.host D.what₂} {N' : NData D'.R 
 set_option maxHeartbeats 4000000 in
 set_option maxRecDepth 100000 in
 
+/- English proof (translation)
+Take `⟨a1, a2, a3, nOm, ninstOm, nalgOm, nplOm, nPlG⟩` from `h1`. Take `⟨xcc, xTw, xl, fixedFieldTransport_baseIntegerRing_heq, fixedFieldTransport_baseIntegerCommRing_heq, fixedFieldTransport_baseIntegerAlgebra_heq, fixedFieldTransport_baseIntegerTopology_heq, xO, xcrO, xalgO, xOk, xcrOk, xalgOk, xzk, xpD, xchi1, xSig, xfinSig, xjS, xside, xrhoS, fi …` from `h2`. Take `⟨yFm, yacgFm, ymodFmK, ymodFmO, yactG, yU, ypsiU, yeAlg, yDat, yth, ylev, ythPsi, yMtV, yacgMt, ymodMtK, ymodMtO, yMtLat, ythP, yhkF⟩` from `h3`. Consider the cases of `D`. Consider the cases of `D'`.
+
+Simplify using `only at a1 a2 a3`. Substitute `a1` using the available equality. Substitute `a2` using the available equality. Substitute `a3` using the available equality. Consider the cases of `N`.
+
+Consider the cases of `N'`. Simplify using `only at nOm ninstOm nalgOm nplOm nPlG`. Substitute `nOm` using the available equality. Substitute `ninstOm` using the available equality. Substitute `nalgOm` using the available equality.
+
+Substitute `nplOm` using the available equality. Substitute `nPlG` using the available equality. Consider the cases of `X`. Consider the cases of `X'`. Simplify using `only at xcc xTw xl fixedFieldTransport_baseIntegerRing_heq fixedFieldTransport_baseIntegerCommRing_heq fixedFieldTransport_baseIntegerAlgebra_heq fixedFieldTransport_baseIntegerTopology_heq xO xcrO xalgO xOk xcrOk xalgOk xzk xpD xchi1 xSig xfinSig xjS xside xrhoS fixedFieldTransp …`.
+
+Substitute `xcc` using the available equality. Substitute `xTw` using the available equality. Substitute `xl` using the available equality. Substitute `fixedFieldTransport_baseIntegerRing_heq` using the available equality. Substitute `fixedFieldTransport_baseIntegerCommRing_heq` using the available equality.
+
+Substitute `fixedFieldTransport_baseIntegerAlgebra_heq` using the available equality. Substitute `fixedFieldTransport_baseIntegerTopology_heq` using the available equality. Substitute `xO` using the available equality. Substitute `xcrO` using the available equality. Substitute `xalgO` using the available equality.
+
+Substitute `xOk` using the available equality. Substitute `xcrOk` using the available equality. Substitute `xalgOk` using the available equality. Substitute `xzk` using the available equality. Substitute `xpD` using the available equality.
+
+Substitute `xchi1` using the available equality. Substitute `xSig` using the available equality. Substitute `xfinSig` using the available equality. Substitute `xjS` using the available equality. Substitute `xside` using the available equality.
+
+Substitute `xrhoS` using the available equality. Substitute `fixedFieldTransport_initialPlaceSet_heq` using the available equality. Substitute `xhEig` using the available equality. Substitute `xLam` using the available equality. Substitute `xsideL` using the available equality.
+
+Substitute `xRCG` using the available equality. Substitute `xgrpRCG` using the available equality. Substitute `xfinRCG` using the available equality. Substitute `xart` using the available equality. Substitute `xth` using the available equality.
+
+Consider the cases of `Y`. Consider the cases of `Y'`. Simplify using `only at yFm yacgFm ymodFmK ymodFmO yactG yU ypsiU yeAlg yDat yth ylev ythPsi yMtV yacgMt ymodMtK ymodMtO yMtLat ythP yhkF`. Substitute `yFm` using the available equality. Substitute `yacgFm` using the available equality.
+
+Substitute `ymodFmK` using the available equality. Substitute `ymodFmO` using the available equality. Substitute `yactG` using the available equality. Substitute `yU` using the available equality. Substitute `ypsiU` using the available equality.
+
+Substitute `yeAlg` using the available equality. Substitute `yDat` using the available equality. Substitute `yth` using the available equality. Substitute `ylev` using the available equality. Substitute `ythPsi` using the available equality.
+
+Substitute `yMtV` using the available equality. Substitute `yacgMt` using the available equality. Substitute `ymodMtK` using the available equality. Substitute `ymodMtO` using the available equality. Substitute `yMtLat` using the available equality.
+
+Substitute `ythP` using the available equality. Substitute `yhkF` using the available equality. Conclude with `⟨x0, hP, HEq.rfl, id, ⟨N0, HEq.rfl⟩, S, HEq.rfl⟩`.
+-/
 theorem move_xd {D D' : D7} {N : NData D.R D.host D.what₂} {N' : NData D'.R D'.host D'.what₂}
     {X : NTw D.R D.host D.what₂ D.LL0 N} {X' : NTw D'.R D'.host D'.what₂ D'.LL0 N'}
     {Y : NExp D.R D.host D.what₂ D.LL0 N X} {Y' : NExp D'.R D'.host D'.what₂ D'.LL0 N' X'}
@@ -94,6 +165,17 @@ end GlobalTheory.HeightCounting.Up.SymmetryOfAgreementRelations
 
 namespace GlobalTheory.HeightCounting.Up.SymmetryOfAgreementRelations
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => choose f hf using fun i => h i ∅`. Conclude with `⟨f, fun i => (hf i).1, by simp⟩`. Consider the case `insert a T ha ih`. Take `⟨f, hf, hf'⟩` from `ih`.
+
+Take `⟨z, hz, hz'⟩` from `h a (T.biUnion fun i => c i (f i))`. Establish `key : ∀ i ∈ T, Disjoint (c a (Function.update f a z a)) (c i (Function.update f a z i))` using `fun i hi => by`. Rewrite using `[Function.update_self, Function.update_of_ne (by rintro rfl; exact ha hi)]`. Conclude with `Finset.disjoint_of_subset_right (Finset.subset_biUnion_of_mem (fun i => c i (f i)) hi) hz'`. Use `⟨Function.update f a z, fun i => ?_, fun i hi i' hi' hne => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hi : i = a`. Substitute `hi` using the available equality. Rewrite using `[Function.update_self]` and apply the resulting hypothesis. Rewrite using `[Function.update_of_ne hi]`. Conclude with `hf i`.
+
+Apply the tactic sequence `rcases Finset.mem_insert.1 hi with h1 | h1 <;> rcases Finset.mem_insert.1 hi' with h2 | h2`. Conclude with `absurd (h1.trans h2.symm) hne`. Substitute `h1` using the available equality. Conclude with `key i' h2`. Substitute `h2` using the available equality.
+
+Conclude with `(key i h1).symm`. Rewrite using `[Function.update_of_ne (by rintro rfl; exact ha h1), Function.update_of_ne (by rintro rfl; exact ha h2)]`. Conclude with `hf' i h1 i' h2 hne`.
+-/
 theorem exists_disjoint_choice {α ι : Type} [DecidableEq α] {Z : ι → Type} (c : ∀ i, Z i → Finset α) (P : ∀ i, Z i → Prop)
     (h : ∀ i (B : Finset α), ∃ z, P i z ∧ Disjoint (c i z) B) (T : Finset ι) :
     ∃ f : ∀ i, Z i, (∀ i, P i (f i)) ∧ ∀ i ∈ T, ∀ i' ∈ T, i ≠ i' → Disjoint (c i (f i)) (c i' (f i')) := by
@@ -119,6 +201,9 @@ theorem exists_disjoint_choice {α ι : Type} [DecidableEq α] {Z : ι → Type}
       · rw [Function.update_of_ne (by rintro rfl; exact ha h1), Function.update_of_ne (by rintro rfl; exact ha h2)]
         exact hf' i h1 i' h2 hne
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem epsilon_congr {β : Type} {p q : β → Prop} (h1 h2 : Nonempty β) (h : p = q) :
     @Classical.epsilon _ h1 p = @Classical.epsilon _ h2 q := by
   subst h; rfl
@@ -130,6 +215,31 @@ namespace GlobalTheory.HeightCounting.Up
 open GlobalTheory.HeightCounting.Up.SymmetryOfAgreementRelations in
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `D₁ D₀ C₁ C₀ xd hK hPl htw hT hc hfin hG hW hE hX A`. Establish `g1` using `sameGalois_symm hK.gal`. Establish `g2` using `twistDataAgreeAcrossCoefficients_symm hK.set`. Establish `g3` using `sameForms_symm hK.forms`. Take `⟨N0, S, hp, hs⟩` from `hE`.
+
+Take `⟨x1, hx1P, hxd, hxall, ⟨N1, hN⟩, S1, hS⟩` from `move_xd g1 g2 g3 D₀.R.m xd.xd0 xd.thetaBase_invariant_action N0 S`. Set `xd₁ : ThData D₁` to `⟨x1, hx1P⟩`. Establish `hm : D₁.R.m = D₀.R.m` using `by rw [hK.gal.R]`. Establish `hall : XdAll xd₁` using `fun i j b h1 h2 => hxall hX i j b h1 (hm ▸ h2)`. Establish `hTw : D₀.ntw.Tw = D₁.ntw.Tw` using `eq_of_heq g2.Tw`.
+
+Take `⟨-, -, -, -, hb⟩` from `same_basic g1 g2 g3`. Establish `key : ∀ r, TwistedAt D₁ r → TwIn.Ok (⟨twEOf xd₁, N1, S1⟩ : TwIn D₁) (C₁.twI r) ∧ ∀ B : Finset (PlE D₁.host), ∃ (Q : Finset (PlE D₁.host)) (k : ℕ) (ψ : D₁.ntw.RCG (C₁.twI r) Q →* (D₁.ntw.Ok (C₁.twI r) k)ˣ), ∀ a : ℤ, Nat.Coprime a.natAbs (D₁.ntw.l (C₁.twI r)) → IntegralHeckeForms.G …`. Introduce `r hr`. Establish `hr₀ : TwistedAt D₀ (cast hPl r)` using `htw r (cast hPl r) (cast_heq hPl r).symm hr`. Establish `hii : HEq (C₀.twI (cast hPl r)) (C₁.twI r)` using `heq_app hPl.symm hTw hK.twI.symm (cast_heq hPl r)`.
+
+Take `⟨hl, hSS, -⟩` from `hb _ _ hii`. Take `⟨hSet, hOk⟩` from `hs _ hr₀`. Use `⟨?_, fun B => ?_⟩` and prove the remaining obligations. Establish `h9` using `fun j (hj : j ∈ Finset.Icc 1 D₁.R.m) b => fullRk_basisOf_transfer g1 g2 g3 (E := twEOf xd) (E' := twEOf xd₁) hxd hii j b ((hSS S S1 hS).2 j b) ⟨hOk.1 j (hm ▸ hj) b, hOk.2 j (hm ▸ hj) b⟩`. Conclude with `⟨fun j hj b => (h9 j hj b).1, fun j hj b => (h9 j hj b).2⟩`.
+
+Take `⟨B₀, hB, -⟩` from `move_set g1 B`. Take `⟨Q₀, k, ψ₀, hG0⟩` from `hp _ (hW _ hr₀) hSet _ (twEps_pos _ _) hOk.1 (S (C₀.twI (cast hPl r))) hOk.2 B₀`. Take `⟨Q₁, ψ₁, hQ, hψ⟩` from `move_pack g1 g2 hii ψ₀`. Use `⟨Q₁, k, ψ₁, fun a ha => ?_⟩` and prove the remaining obligations. Establish `he : twEps D₁ (C₁.twI r) = twEps D₀ (C₀.twI (cast hPl r))` using `by rw [twEps, twEps, hl]`.
+
+Establish `ha' : IsCoprime a (D₀.ntw.l (C₀.twI (cast hPl r)) : ℤ)` using `Int.isCoprime_iff_gcd_eq_one.2 (by rw [hl]; simpa [Int.gcd] using ha)`. Rewrite using `[he]`. Conclude with `goodTw_transfer g1 g2 g3 (B := BlochKatoReduction.bk0 D₀) (B' := BlochKatoReduction.bk0 D₁) hK.br.symm rfl rfl hxd hN hii _ (hSS S S1 hS).1 hB hQ k (hψ a) (hG0 a ha')`. Set `rep : D₁.what₂.places.Pl → D₁.what₂.places.Pl` to `fun v => @Classical.epsilon _ ⟨v⟩ fun r => TwistedAt D₁ r ∧ OverOnePair D₁ v r`. Establish `hrep : ∀ v, TwistedAt D₁ v → TwistedAt D₁ (rep v) ∧ OverOnePair D₁ v (rep v)` using `fun v hv => Classical.epsilon_spec (p := fun r => TwistedAt D₁ r ∧ OverOnePair D₁ v r) ⟨v, hv, overOnePair_refl v⟩`.
+
+Establish `hrep_eq : ∀ v v', OverOnePair D₁ v v' → rep v' = rep v` using `fun v v' h => epsilon_congr _ _ (funext fun r => propext ⟨fun ⟨h1, h2⟩ => ⟨h1, h.trans hG h2⟩, fun ⟨h1, h2⟩ => ⟨h1, (h.symm hG).trans hG h2⟩⟩)`. Set `s : D₁.what₂.places.Pl → D₁.ntw.Tw` to `fun v => if TwistedAt D₁ v then C₁.twI (rep v) else C₁.twI v`. Establish `hs_tw : ∀ v, TwistedAt D₁ v → s v = C₁.twI (rep v)` using `fun v hv => if_pos hv`. Establish `hs_un : ∀ v, ¬ TwistedAt D₁ v → s v = C₁.twI v` using `fun v hv => if_neg hv`. Set `P : ∀ i : D₁.ntw.Tw, (Σ (Q : Finset (PlE D₁.host)) (k : ℕ), D₁.ntw.RCG i Q →* (D₁.ntw.Ok i k)ˣ) → Prop` to `fun i z => ∀ r, TwistedAt D₁ r → C₁.twI r = i → ∀ a : ℤ, Nat.Coprime a.natAbs (D₁.ntw.l i) → IntegralHeckeForms.GoodTw D₁.nexp (BlochKatoReduction.bk0 D₁) (twEOf xd₁) N1 i (twEps D₁ i) (S1 i) (A i) z.1 z.2.1 (z.2.2 ^ a)`.
+
+Establish `hch : ∀ i (B : Finset (PlE D₁.host)), ∃ z, P i z ∧ Disjoint z.1 B`. Introduce `i B`. Distinguish the cases in `hex : ∃ r, TwistedAt D₁ r ∧ C₁.twI r = i`. Take `⟨r, hr, rfl⟩` from `hex`. Take `⟨Q, k, ψ, hq⟩` from `(key r hr).2 (A (C₁.twI r) ∪ B)`.
+
+Use `⟨⟨Q, k, ψ⟩, fun r' _ _ a ha => (goodTw_union (hq a ha)).1, ?_⟩` and prove the remaining obligations. Establish `h1` using `(goodTw_union (hq 1 (by simp))).2`. Conclude with `h1`. Conclude with `⟨⟨∅, 0, 1⟩, fun r hr he => absurd ⟨r, hr, he⟩ hex, Finset.disjoint_empty_left _⟩`. Take `⟨f, hf, hf'⟩` from `exists_disjoint_choice (Z := fun i => Σ (Q : Finset (PlE D₁.host)) (k : ℕ), D₁.ntw.RCG i Q →* (D₁.ntw.Ok i k)ˣ) (fun _ z => z.1) P hch (hfin.toFinset.image s)`.
+
+Establish `goodAt : ∀ i, (∃ r, TwistedAt D₁ r ∧ C₁.twI r = i) → TwIn.Ok (⟨twEOf xd₁, N1, S1⟩ : TwIn D₁) i ∧ ∀ a : ℤ, Nat.Coprime a.natAbs (D₁.ntw.l i) → IntegralHeckeForms.GoodTw D₁.nexp (BlochKatoReduction.bk0 D₁) (twEOf xd₁) N1 i (twEps D₁ i) (S1 i) (A i) (f i).1 (f i).2.1 ((f i).2.2 ^ a)`. Introduce and unpack `i ⟨r, hr, rfl⟩`. Conclude with `⟨(key r hr).1, hf _ r hr rfl⟩`. Establish `hmem : ∀ v, TwistedAt D₁ v → s v ∈ hfin.toFinset.image s` using `fun v hv => Finset.mem_image_of_mem s (hfin.mem_toFinset.2 hv)`. Use `⟨⟨s, fun v => ?_, fun v => ?_, fun v v' hv hv' ho => ?_, xd₁, hall, N1, S1, fun i => (f i).1, fun i => (f i).2.1, fun i => (f i).2.2, fun v hv => goodAt (s v) ⟨rep v, (hrep v hv).1, (hs_tw v hv).symm⟩, fun v v' hv hv' hne => hf' _ (hmem v hv) _ (hmem v' hv') hne⟩⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hv : TwistedAt D₁ v`. Rewrite using `[hs_tw v hv]`. Conclude with `ReadsAt.of_pair hG (readsAt_of_tie hT (rep v)) ((hrep v hv).2.symm hG)`. Conclude with `⟨C₁.sd v, by rw [hs_un v hv]; exact readsAt_of_tie hT v⟩`. Distinguish the cases in `hv : TwistedAt D₁ v`.
+
+Rewrite using `[hs_tw v hv, hs_tw _ ((twistedAt_conj D₁ v).2 hv), hrep_eq v _ (overOnePair_conj v)]`. Rewrite using `[hs_un v hv, hs_un _ (fun h => hv ((twistedAt_conj D₁ v).1 h)), hc v]`. Rewrite using `[hs_tw v hv, hs_tw v' hv', hrep_eq v v' (Or.inl ho)]`.
+-/
 theorem nonempty_seed_of_kept : ∀ (D₁ D₀ : D7) (C₁ : NChoice D₁) (C₀ : NChoice D₀) (xd : ThData D₀), Kept C₁ C₀ → D₁.what₂.places.Pl = D₀.what₂.places.Pl → (∀ v v₀, HEq v v₀ → TwistedAt D₁ v → TwistedAt D₀ v₀) → NChTie D₁ C₁ → (∀ v, C₁.twI (D₁.what₂.places.conj v) = C₁.twI v) → {v | TwistedAt D₁ v}.Finite → IsGalois ℚ ↥D₁.LL0 → (∀ v, TwistedAt D₀ v → D₀.ntw.NonzeroIndexPlace (C₀.twI v)) → ExportAt D₀ C₀ xd → XdAll xd → ∀ A, Nonempty (Seed D₁ A) := by
   intro D₁ D₀ C₁ C₀ xd hK hPl htw hT hc hfin hG hW hE hX A
   classical

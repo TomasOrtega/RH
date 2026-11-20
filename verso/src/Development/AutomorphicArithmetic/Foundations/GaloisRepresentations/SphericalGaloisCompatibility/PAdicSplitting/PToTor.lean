@@ -16,6 +16,19 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.Gal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open UpperTheory.Gal.ToralGalois.R2 GlobalTheory.UnitaryBC UpperTheory.Gal.TypesAndIwahori GlobalTheory.Cong UpperTheory.Gal.NearKilling
 
+/- English proof (translation)
+Establish `hq : normV w = g` using `DiscreteGroups.sglob.DzType.normV_eq_of_padic w g i hi`. Use `⟨hq, GlobalTheory.DenseInvFrob.isSplitAt_of_inertiaDeg_eq_one w ?_ ?_⟩` and prove the remaining obligations. Establish `hp : (Ideal.absNorm w.asIdeal).Prime`. Establish `: Ideal.absNorm w.asIdeal = g` using `hq`. Rewrite using `[this]`.
+
+Conclude with `Fact.out`. Conclude with `((GlobalTheory.absNorm_prime_iff_inertiaDeg_eq_one_and_finite_ramified E).1 w).1 hp`. Establish `hmem : ((g : ℕ) : 𝓞 E) ∈ w.asIdeal`. Apply `DiscreteGroups.sglob.DzType.mem_of_val_lt_one w` to reduce the goal to its premises. Use `DiscreteGroups.sglob.DzType.val_lt_one_of_norm_lt_one w g i hi (g : ℚ_[g]) Padic.norm_p_lt_one` as an intermediate fact.
+
+Rewrite `this` using `[map_natCast]`. Rewrite using `[DiscreteGroups.sglob.DzType.alg_natCast]`. Conclude with `this`. Establish `hsq` using `DiscreteGroups.sglob.DzType.g_not_mem_sq w g i hi`. Establish `hl : g.Prime` using `Fact.out`.
+
+Establish `hp : Prime (g : ℤ)` using `Nat.prime_iff_prime_int.mp hl`. Establish `hmax : (Ideal.span {(g : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible hp.irreducible`. Establish `hmap : Ideal.map (algebraMap ℤ (𝓞 E)) (Ideal.span {(g : ℤ)}) = Ideal.span {((g : ℕ) : 𝓞 E)}`. Rewrite using `[Ideal.map_span]`. Simplify using the standard rewrite rules.
+
+Establish `hle : Ideal.map (algebraMap ℤ (𝓞 E)) (Ideal.span {(g : ℤ)}) ≤ w.asIdeal`. Rewrite using `[hmap, Ideal.span_le]`. Simplify using `using hmem`. Use `w.isPrime` as an intermediate fact. Establish `: w.asIdeal.LiesOver (Ideal.span {(g : ℤ)})` using `⟨hmax.eq_of_le (Ideal.comap_ne_top _ w.isPrime.ne_top) (Ideal.map_le_iff_le_comap.mp hle)⟩`.
+
+Establish `hb : Ideal.span {(g : ℤ)} ≠ ⊥` using `by simpa using hl.ne_zero`. Rewrite using `[← Ideal.ramificationIdx'_eq_ramificationIdx (Ideal.span {(g : ℤ)}) w.asIdeal hb]`. Assume the negation of the conclusion as `hne`. Rewrite `hne` using `[← ne_eq, Ideal.ramificationIdx'_ne_one_iff hle, hmap, Ideal.span_le]`. Conclude with `hsq (by simpa using hne)`.
+-/
 private theorem split_of_padic {E : Type} [Field E] [NumberField E] [IsCMField E] (w : HeightOneSpectrum (𝓞 E))
     (g : ℕ) [Fact g.Prime] (i : ℚ_[g] ≃+* w.adicCompletion E) (hi : Continuous i) : normV w = g ∧ IsSplitAt w := by
   have hq : normV w = g := DiscreteGroups.sglob.DzType.normV_eq_of_padic w g i hi
@@ -49,6 +62,9 @@ private theorem split_of_padic {E : Type} [Field E] [NumberField E] [IsCMField E
     rw [← ne_eq, Ideal.ramificationIdx'_ne_one_iff hle, hmap, Ideal.span_le] at hne
     exact hsq (by simpa using hne)
 
+/- English proof (translation)
+Establish `h1 : 0 < y.1` using `(hs.isCusp hy).1`. Establish `h2` using `hs.sum_fst`. Establish `h3 : y.1 ≤ (s.map Sigma.fst).sum` using `Multiset.single_le_sum (by simp) _ (Multiset.mem_map_of_mem _ hy)`. Rewrite `h3` using `[h2, Fintype.card_fin]`. Conclude with `Nat.dvd_factorial h1 h3`.
+-/
 private theorem dvd_of_support {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (GL (Fin N) k) V) (s : Multiset (IrrGL k))
     (hs : HasSupport ρ s) (y : IrrGL k) (hy : y ∈ s) : y.1 ∣ N.factorial := by
@@ -58,6 +74,21 @@ private theorem dvd_of_support {k : Type} [Field k] [ValuativeRel k] [Topologica
   rw [h2, Fintype.card_fin] at h3
   exact Nat.dvd_factorial h1 h3
 
+/- English proof (translation)
+Introduce `hSupp hUnr hLift hIne hInf hChars hRec E Ω _ _ _ _ _ _ l _ ι n hn π χ hs r hr w σ hσ hQ hM A h rc hrc`. Take `⟨p, hp, i, hi⟩` from `hQ`. Use `haveI := hp`. Take `⟨hq, hsp⟩` from `split_of_padic w p i hi`. Establish `hf : 0 < n.factorial` using `Nat.factorial_pos n`.
+
+Establish `hSfin : {u : HeightOneSpectrum (𝓞 E) | ¬ ∃ B, (CG.mk π).HasSat u B}.Finite`. Establish `h` using `Filter.eventually_cofinite.1 (GlobalTheory.CuspRep.UnrSat.eventually_hasSatGL_locRep GlobalTheory.automorphicFormsFiniteGL E n π)`. Simplify `h` using `only [CG.hasSat_mk]`. Take `⟨Xf, hXT, hXw, -⟩` from `hUnr E Ω w hsp _ hf _ hSfin`. Take `⟨P, χ', hPL, hPs, hPr⟩` from `hLift E Ω l n hn π χ hs _ (fun u hu => not_not.1 hu) Xf hXT`.
+
+Take `⟨w', h', -⟩` from `GlobalTheory.AboveL.exists_isPlaceOver_of_tower E Xf.K Ω A w h`. Use `haveI : w'.asIdeal.LiesOver w.asIdeal := ⟨(GlobalTheory.AboveL.comap_eq_of_placeOver h h').symm⟩`. Establish `hXfix` using `(hXw A h).1`. Establish `hnorm` using `(hXw A h).2 w' h'`. Take `⟨σ', hσ', -⟩` from `LocEx.exists_isLocComp GlobalTheory.automorphicFormsFiniteGL Xf.K n P w'`.
+
+Take `⟨art, hart⟩` from `GlobalTheory.localArtinExists_holds E Ω A w h`. Take `⟨art', hart'⟩` from `GlobalTheory.localArtinExists_holds Xf.K Ω A w' h'`. Take `⟨g, hg1, -⟩` from `hIne E Xf.K Ω A w w' h h' hXfix art art' hart hart'`. Take `⟨ξ, hξ, hT, hU⟩` from `hSupp E Ω n hn π { K := Xf.K, π := P } hPL A w w' h h' p i hi hXfix σ σ' hσ hσ' hM.1 n.factorial (by rw [hnorm, hq]) (fun s hs y hy => dvd_of_support _ s hs y hy)`. Take `⟨-, hTS, hTP⟩` from `id hT`.
+
+Take `⟨rc', hrc'⟩` from `hRec Xf.K Ω A w' h'`. Establish `hCh` using `hChars Xf.K Ω A w' h' n σ' ξ hξ hTS`. Establish `hB : ∀ s : ↥(Ine (F` using `E) A), (rc (IrrGL.of σ.ρ σ.smooth σ.irred)).inePol (s : G E Ω) = ∏ j, (X - C ((ξ j (art' (ineIncl h' (g s))) : ℂˣ) : ℂ)) := fun s => by`. Use `hTP rc hrc art' hart' (g s)` as an intermediate fact. Rewrite `this` using `[show AlgEquiv.restrictScalars E ((g s : ↥(Ine (F := Xf.K) A)) : G Xf.K Ω) = (s : G E Ω) from hg1 s]`. Then use the resulting hypothesis.
+
+Use `⟨Xf, P, χ', w', h', σ', rc', hPs, hPr ι r hr, hInf E Ω n hn π { K := Xf.K, π := P } hPL, hσ', hCh.1 (hU hM), hrc', fun t => ⟨g t, fun z => ?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `(DFunLike.congr_fun (hg1 t) z).symm`. Rewrite using `[hCh.2 rc' hrc' art' hart' (g t)]`. Take `⟨a₀, ha₀, L⟩` from `hrc`. Establish `e1 : (rc (algNorm σ)).charPol (ineIncl h t) = (rc (algNorm σ)).inePol (t : G E Ω)` using `(WD.inePol_of_mem_Ine _ t.2).symm`.
+
+Establish `e2 : algNorm σ = (IrrGL.of σ.ρ σ.smooth σ.irred).nu (((1 - ((n : ℕ) : ℝ)) / 2 : ℝ) : ℂ)` using `rfl`. Rewrite using `[e1, e2, L.nu, GlobalTheory.RoadU.DepthZeroRec.inePol_lpTw_of_mem_Ine _ _ t.2, hB t]`.
+-/
 theorem UpperTheory.Gal.ToralGalois.R2.toTor :
     UpperTheory.Gal.InertialTypesAlt.SuppBC → UpperTheory.Gal.NearKilling.UnrField → UpperTheory.Gal.NearKilling.AllLift → UpperTheory.Gal.NearKilling.IneNorm → InfLifts → RecChars → UpperTheory.Zero.LLC.RecTExists → ToTor := by
   intro hSupp hUnr hLift hIne hInf hChars hRec E Ω _ _ _ _ _ _ l _ ι n hn π χ hs r hr w σ hσ hQ hM A h rc hrc

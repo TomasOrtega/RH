@@ -6,6 +6,23 @@ open Finset Formalism.HermitianLattices.ZeroFreeRegionGL2 Formalism.HermitianLat
 
 namespace QH
 
+/- English proof (translation)
+Take `⟨C, hC, H⟩` from `pair_share`. Use `⟨C, hC, fun ε τ K N₀ hε hε' hτ hK hN => ?_⟩` and prove the remaining obligations. Take `⟨Y₁, H1⟩` from `H ε τ K (1 / 2) N₀ hε hε' hτ hK (by norm_num) hN`. Establish `hev : ∀ᶠ Y : ℝ in Filter.atTop, (2 * N₀ : ℝ) ≤ Y ^ (ε / 5)` using `(tendsto_rpow_atTop (by positivity : 0 < ε / 5)).eventually_ge_atTop _`. Take `⟨Y₂, H2⟩` from `Filter.eventually_atTop.1 hev`.
+
+Use `⟨max (max Y₁ Y₂) (Real.exp 2), fun Y hY X z' hX hz1 hz2 => ?_⟩` and prove the remaining obligations. Establish `hY1 : Y₁ ≤ Y` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hY`. Establish `hY2 : Y₂ ≤ Y` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hY`. Establish `hY3 : Real.exp 2 ≤ Y` using `le_trans (le_max_right _ _) hY`. Establish `hY0 : 0 < Y` using `lt_of_lt_of_le (Real.exp_pos 2) hY3`.
+
+Establish `hlog : 2 ≤ Real.log Y` using `(Real.le_log_iff_exp_le hY0).2 hY3`. Establish `hz : 0 < Y ^ (ε / 5)` using `Real.rpow_pos_of_pos hY0 _`. Establish `hl2 : 2 ≤ Real.log Y ^ 2` using `by nlinarith`. Establish `hzz : 2 * Y ^ (ε / 5) ≤ z'` using `by nlinarith`. Take `⟨G₁, hG₁, hp1, hc1, H3⟩` from `H1 Y hY1 X z' hX hz1 hz2`.
+
+Establish `hne1 : G₁.Nonempty`. Rewrite using `[← Finset.card_pos]`. Establish `h0 : (0 : ℝ) < (primePairSetFirst (Y ^ (ε / 5))).card` using `by exact_mod_cast hp1`. Establish `h1 : (0 : ℝ) < G₁.card` using `by linarith`. Conclude with `h1` after adjusting the coercions.
+
+Take `⟨q, hq⟩` from `hne1`. Take `⟨hgq, G₂, hG₂, hp2, hc2, H4⟩` from `H3 q hq`. Establish `hne2 : G₂.Nonempty`. Rewrite using `[← Finset.card_pos]`. Establish `h0 : (0 : ℝ) < (primeSetTwoBounds (Y ^ (ε / 5)) z' q).card` using `by exact_mod_cast hp2`.
+
+Establish `h1 : (0 : ℝ) < G₂.card` using `by linarith`. Conclude with `h1` after adjusting the coercions. Take `⟨d, hd⟩` from `hne2`. Establish `hR` using `rows_of_mem _ z' q d hz hzz (hG₁ hq) (hG₂ hd)`. Use `⟨q, d, hR, ?_, hgq, H4 d hd⟩` and prove the remaining obligations.
+
+Establish `hq0 : (0 : ℝ) < q` using `by exact_mod_cast hR.q_prime.pos`. Establish `h1` using `hR.q_gt`. Establish `h2` using `Real.log_le_sub_one_of_pos hq0`. Establish `h3` using `H2 Y hY2`. Establish `h4 : (N₀ : ℝ) < q` using `by linarith`.
+
+Conclude with `h4` after adjusting the coercions.
+-/
 theorem pair_exists :
     ∃ C : ℝ, 0 < C ∧ ∀ (ε τ K : ℝ) (N₀ : ℕ), 0 < ε → ε < 1 / 52 → 0 < τ → 1 ≤ K → 0 < N₀ → ∃ Y₀ : ℝ, ∀ Y ≥ Y₀,
       ∀ X z' : ℝ, X ≤ Y ^ K → Y ^ (ε / 5) * Real.log Y ^ 2 ≤ z' → z' ≤ K ^ 2 * (Y ^ (ε / 5) * Real.log Y ^ 2) →

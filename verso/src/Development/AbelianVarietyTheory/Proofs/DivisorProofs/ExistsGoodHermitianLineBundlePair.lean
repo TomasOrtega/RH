@@ -24,6 +24,13 @@ noncomputable section
 
 namespace GlobalTheory.VolBr
 
+/- English proof (translation)
+Use `hX.finite_emb` as an intermediate fact. Establish `hb : ∀ σ : k →+* ℂ, ∃ K : ℝ, ∀ y, (M.φ σ).nsq (CxPts.secVal p σ u) y ≤ K` using `fun σ => by`. Use `hX.compactSpace σ` as an intermediate fact. Take `⟨K, hK⟩` from `(isCompact_range ((M.cInf σ).continuous_nsq u)).bddAbove`. Conclude with `⟨K, fun y => hK ⟨y, rfl⟩⟩`.
+
+Use `choose K hK using hb`. Use `Fintype.ofFinite (k →+* ℂ)` as an intermediate fact. Use `⟨∑ τ, |K τ| + 1, ?_, fun σ y => (hK σ y).trans ?_⟩` and prove the remaining obligations. Combine the linear relations using `[Finset.sum_nonneg fun τ (_ : τ ∈ Finset.univ) => abs_nonneg (K τ)]`. Use `Finset.single_le_sum (fun τ (_ : τ ∈ Finset.univ) => abs_nonneg (K τ)) (Finset.mem_univ σ)` as an intermediate fact.
+
+Combine the linear relations using `[le_abs_self (K σ)]`.
+-/
 theorem exists_bound_nsq {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {D : ℕ} (hX : IsArithVar p D)
     (M : HermLB p) (u : M.B.Sec) :
     ∃ C : ℝ, 1 ≤ C ∧ ∀ (σ : k →+* ℂ) (y : CxPts p σ), (M.φ σ).nsq (CxPts.secVal p σ u) y ≤ C := by
@@ -44,6 +51,11 @@ variable {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k
 def Pair.shiftA (P : Pair p) (c : ℝ) : Pair p :=
   ⟨P.L, P.A.shift (fun _ => c) (fun _ => rfl), P.r, P.r', P.hr, P.hr'⟩
 
+/- English proof (translation)
+Simplify using `only [Pair.shiftA, Pair.nu, Pair.loc, HermLB.shift, Weight.addFn]`. Establish `key : ∀ (n u v w : ℝ), n * Real.exp (-(u + v * (w + 2 * c)) / 2) = n * Real.exp (-(u + v * w) / 2) * Real.exp (-(v * c))`. Introduce `n u v w`. Rewrite using `[mul_assoc, ← Real.exp_add]`. Use `congr 2`.
+
+Expand and normalize the polynomial expressions, which then agree. Conclude with `key _ _ _ _`.
+-/
 theorem Pair.nu_shiftA (P : Pair p) (c : ℝ) (a b : ℤ) (σ : k →+* ℂ) (y : CxPts p σ) (f : X.functionField) :
     (P.shiftA c).nu a b σ y f = P.nu a b σ y f * Real.exp (-(b * c)) := by
   simp only [Pair.shiftA, Pair.nu, Pair.loc, HermLB.shift, Weight.addFn]
@@ -55,10 +67,16 @@ theorem Pair.nu_shiftA (P : Pair p) (c : ℝ) (a b : ℤ) (σ : k →+* ℂ) (y 
     ring
   exact key _ _ _ _
 
+/- English proof (translation)
+Unfold `Pair.nu`. Check the signs of the components of the expression.
+-/
 theorem Pair.nu_nonneg (P : Pair p) (a b : ℤ) (σ : k →+* ℂ) (y : CxPts p σ) (f : X.functionField) :
     0 ≤ P.nu a b σ y f := by
   unfold Pair.nu; positivity
 
+/- English proof (translation)
+Introduce and unpack `⟨a, ha, h⟩`. Conclude with `(ha.map (algebraMap _ X.functionField)).ne_zero h`.
+-/
 theorem not_unitAt_zero (x : X) : ¬ UnitAt x (0 : X.functionField) := by
   rintro ⟨a, ha, h⟩
   exact (ha.map (algebraMap _ X.functionField)).ne_zero h
@@ -67,6 +85,37 @@ end GlobalTheory.VolBr
 
 namespace GlobalTheory.VolBr
 
+/- English proof (translation)
+Introduce `hC k _ X _ p D hX L`. Take `⟨A₀, hAmp, hNef, s₀, hs₀, hs₀ne⟩` from `GlobalTheory.T.exists_ample_nef_hermitian_smallSection hC k X p D hX`. Take `⟨P, rfl, rfl⟩` from `exists_pair L A₀`. Establish `hrep` using `GlobalTheory.T.represents_base_bundles_and_trivial k X p P`. Take `⟨e, -, he_rng, he_nu, he_loc⟩` from `GlobalTheory.T.representedBundle_sections_rationalFunctions_dict k X p P 0 1 P.A hrep.2.1`.
+
+Establish `hsH : e s₀ ∈ P.H 0 1` using `by show e s₀ ∈ (P.H 0 1 : Set X.functionField)`. Rewrite using `[← he_rng]`. Conclude with `⟨s₀, rfl⟩`. Establish `hη : genericPoint X ∈ ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus s₀` using `(GlobalTheory.sec_ne_zero_iff s₀).1 hs₀ne`. Take `⟨i₀, hi₀⟩` from `ReciprocityTheory.ChartRestriction.G.Geo.Tor.exists_chart P.L.isLB (genericPoint X)`.
+
+Take `⟨j₀, hj₀⟩` from `ReciprocityTheory.ChartRestriction.G.Geo.Tor.exists_chart P.A.isLB (genericPoint X)`. Establish `hsne : e s₀ ≠ 0`. Introduce `h0`. Establish `hu` using `(he_loc s₀ _ i₀ j₀ hi₀ hj₀).1 hη`. Rewrite `hu` using `[h0]`.
+
+Conclude with `not_unitAt_zero _ (by simpa [Pair.loc] using hu)`. Establish `hs_le : ∀ σ y, P.nu 0 1 σ y (e s₀) ≤ 1` using `fun σ y => by`. Establish `h1` using `he_nu s₀ σ y`. Establish `h2` using `hs₀ σ y`. Establish `h3` using `P.nu_nonneg 0 1 σ y (e s₀)`.
+
+Use the polynomial consequences of the given equalities and inequalities. Take `⟨S, hSfin, hS⟩` from `GlobalTheory.T.exists_finite_set_controlling_regularity_of_quotient k X p D hX P (e s₀) hsH hsne`. Take `⟨b, hb, u, hu⟩` from `GlobalTheory.T.exists_section_ampleTwist_nonvanishing_finiteSet k X p D hX P.L.dual P.A hAmp (insert (genericPoint X) S) (hSfin.insert _)`. Establish `hR1 : P.Rep (-1) 0 P.L.dual` using `by simpa using GlobalTheory.T.represents_hermitianLineBundle_dual k X p P 1 0 P.L hrep.1`. Establish `hR2 : P.Rep 0 b (P.A.pow b)` using `by simpa using GlobalTheory.T.represents_hermitianLineBundle_pow k X p P 0 1 P.A b hrep.2.1`.
+
+Establish `hR : P.Rep (-1) b (P.L.dual.tens (P.A.pow b))`. Simplify using `using GlobalTheory.T.hermPairWithSections_represents_tensor k X p P (-1) 0 0 b _ _ hR1 hR2`. Take `⟨e', -, he'_rng, he'_nu, he'_loc⟩` from `GlobalTheory.T.representedBundle_sections_rationalFunctions_dict k X p P (-1) b _ hR`. Establish `htH : e' u ∈ P.H (-1) b` using `by show e' u ∈ (P.H (-1) b : Set X.functionField)`. Rewrite using `[← he'_rng]`.
+
+Conclude with `⟨u, rfl⟩`. Establish `htne : e' u ≠ 0`. Introduce `h0`. Establish `hv` using `(he'_loc u _ i₀ j₀ hi₀ hj₀).1 (hu (Set.mem_insert _ _))`. Rewrite `hv` using `[h0]`.
+
+Conclude with `not_unitAt_zero _ (by simpa [Pair.loc] using hv)`. Take `⟨C, hC1, hCb⟩` from `exists_bound_nsq hX _ u`. Establish `ht_le : ∀ σ y, P.nu (-1) b σ y (e' u) ≤ C` using `fun σ y => by`. Establish `h1` using `he'_nu u σ y`. Establish `h2` using `hCb σ y`.
+
+Establish `h3` using `P.nu_nonneg (-1) b σ y (e' u)`. Use the polynomial consequences of the given equalities and inequalities. Use `set c := Real.log C with hc`. Establish `hc0 : 0 ≤ c` using `Real.log_nonneg hC1`. Establish `hCpos : 0 < C` using `by linarith`.
+
+Establish `hexpc : Real.exp (-c) = C⁻¹` using `by rw [Real.exp_neg, hc, Real.exp_log hCpos]`. Establish `hb1 : (1 : ℝ) ≤ b` using `by exact_mod_cast hb`. Establish `hexpb : Real.exp (-((b : ℤ) * c)) ≤ C⁻¹`. Rewrite using `[← hexpc]`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises.
+
+Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities. Use `⟨P.shiftA c, b, e s₀, e' u, rfl, ?_⟩` and prove the remaining obligations. Establish `hsub : ∀ (z x : X) (U : X.Opens), z ⤳ x → x ∈ U → z ∈ U` using `fun z x U h hx => h.mem_open U.isOpen hx`. Conclude with `{ ample := hAmp nef := GlobalTheory.T.hermitianLineBundle_isNef_shift_of_nonneg k X p D hX P.A c hc0 hNef pos := hb s_mem := ⟨hsH, fun σ y => by`.
+
+Rewrite using `[Pair.nu_shiftA]`. Use `hs_le σ y` as an intermediate fact. Establish `h4 : Real.exp (-(((1 : ℤ) : ℝ) * c)) ≤ 1`. Apply `Real.exp_le_one_iff.2` to reduce the goal to its premises. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h5` using `P.nu_nonneg 0 1 σ y (e s₀)`. Use polynomial arithmetic with `[Real.exp_pos (-(((1 : ℤ) : ℝ) * c))]⟩`. Use `s_ne := hsne`. Use `t_mem := ⟨htH, fun σ y => by`.
+
+Rewrite using `[Pair.nu_shiftA]`. Use `ht_le σ y` as an intermediate fact. Establish `h5` using `P.nu_nonneg (-1) b σ y (e' u)`. Combine the equalities or inequalities in the displayed calculation. Use `t_ne := htne`.
+
+Use `reg := fun x i j hi hj g hg h1 => hS x i j hi hj (P.loc (-1) b (e' u) i j) g (htH x i j hi hj) (fun z hz hzx => (he'_loc u z i j (hsub z x _ hzx hi) (hsub z x _ hzx hj)).1 (hu (Set.mem_insert_of_mem _ hz))) hg h1 }`.
+-/
 theorem exists_good_pair : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k)
     (D : ℕ), IsArithVar p D → ∀ L : HermLB p, ∃ (P : Pair p) (b : ℕ) (s t : X.functionField), P.L = L ∧ P.Good D b s t := by
   intro hC k _ X _ p D hX L

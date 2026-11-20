@@ -14,6 +14,17 @@ open scoped ValuativeRel ENNReal
 
 namespace GlobalTheory.CompanionTheory.LFGInt2
 
+/- English proof (translation)
+Introduce `F _ _ _ _ x a b κ hκ`. Establish `hκ1 : modulus ((Matrix.GeneralLinearGroup.det κ : Fˣ) : F) = 1`. Take `⟨h1, h2⟩` from `(GLnLocal.mem_integralGL_iff F 2).1 hκ`. Establish `key : ∀ g : GL (Fin 2) F, (∀ i j, g i j ∈ 𝒪[F]) → modulus ((Matrix.GeneralLinearGroup.det g : Fˣ) : F) ≤ 1`. Introduce `g hg`.
+
+Rewrite using `[modulus_le_one_iff, Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_two]`. Conclude with `sub_mem (mul_mem (hg 0 0) (hg 1 1)) (mul_mem (hg 0 1) (hg 1 0))`. Establish `a'` using `key κ h1`. Establish `b'` using `key κ⁻¹ h2`. Rewrite `b'` using `[map_inv, Units.val_inv_eq_inv_val, modulus_inv]`.
+
+Establish `hpos` using `modulus_pos (Matrix.GeneralLinearGroup.det κ : Fˣ).ne_zero`. Conclude with `le_antisymm a' ((inv_le_one₀ hpos).1 b')`. Establish `hd1 : Matrix.GeneralLinearGroup.det (Ad3.uni2 x) = 1`. Use `ext`. Simplify using `[Matrix.GeneralLinearGroup.val_det_apply, Ad3.uni2, Matrix.det_fin_two]`.
+
+Establish `hd2 : Matrix.GeneralLinearGroup.det (Ad3.dg2 a b) = a * b`. Use `ext`. Simplify using `[Matrix.GeneralLinearGroup.val_det_apply, Ad3.dg2, Matrix.det_fin_two]`. Rewrite using `[map_inv, map_mul, map_mul, hd1, hd2, one_mul, Units.val_inv_eq_inv_val, modulus_inv, Units.val_mul, modulus_mul, hκ1, mul_one, Units.val_mul, modulus_mul]`. Use `push_cast`.
+
+Both sides reduce to the same expression.
+-/
 theorem modulus_det_iwasawa_inv : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (x : F) (a b : Fˣ) (κ : GL (Fin 2) F), κ ∈ GLnLocal.integralGL F 2 → (modulus ((Matrix.GeneralLinearGroup.det (Ad3.uni2 x * Ad3.dg2 a b * κ)⁻¹ : Fˣ) : F) : ℝ) = ((modulus (a : F) : ℝ) * (modulus (b : F) : ℝ))⁻¹ := by
   intro F _ _ _ _ x a b κ hκ
   have hκ1 : modulus ((Matrix.GeneralLinearGroup.det κ : Fˣ) : F) = 1 := by
@@ -41,6 +52,59 @@ theorem modulus_det_iwasawa_inv : ∀ (F : Type) [Field F] [ValuativeRel F] [Top
 
 open Ad3 Ad3.LFS in
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ ψ hψ ν hν V' H W' hW' R`. Take `⟨C, B, hCB⟩` from `H.bound W' hW' (1 / 4) (by norm_num)`. Use `set q : ℝ := (residueCard F : ℝ) with hqdef`. Establish `hq : 1 < q` using `by rw [hqdef]; exact_mod_cast (one_lt_residueCard (K := F))`. Establish `hq0 : 0 < q` using `by linarith`.
+
+Take `⟨L₀, hL₀⟩` from `pow_unbounded_of_one_lt R hq`. Use `set L : ℤ := (L₀ : ℤ) with hLdef`. Establish `hRL : R ≤ q ^ L` using `by rw [hLdef, zpow_natCast]; exact hL₀.le`. Use `haveI hμ : (hG ψ).IsHaarMeasure := by unfold hG; infer_instance`. Use `haveI hinv : (hG ψ).IsInvInvariant := ⟨Measures.inv_eq_self_GL F 2 (hG ψ)⟩`.
+
+Use `set Kμ : ℝ≥0∞ := hG ψ (GLnLocal.integralGL F 2 : Set (GL (Fin 2) F)) with hKμ`. Establish `hKfin : Kμ ≠ ∞` using `(GLnLocal.isCompact_integralGL F 2).measure_lt_top.ne`. Use `set C₁ : ℝ := max C 0 with hC₁`. Establish `hC₁0 : 0 ≤ C₁` using `le_max_right _ _`. Establish `hbound : ∀ (a : Fˣ), ∀ κ ∈ GLnLocal.integralGL F 2, ‖W' (dg2 a 1 * κ)‖ ≤ C₁ * (modulus (a : F) : ℝ) ^ (1 / 4 : ℝ)`.
+
+Introduce `a κ hκ`. Establish `h` using `(hCB a κ hκ).1`. Rewrite `h` using `[show (1 / 2 - 1 / 4 : ℝ) = 1 / 4 by norm_num]`. Conclude with `h.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (by positivity))`. Establish `hpsi : ∀ x g, W' (uni2 x * g) = (ψ x : ℂ) * W' g` using `H.psi W' hW'`.
+
+Establish `hcen : ∀ (a : Fˣ) g, W' (dg2 a a * g) = W' g`. Introduce `a g`. Rewrite using `[H.cen W' hW']`. Simplify using the standard rewrite rules. Take `⟨U, hU⟩` from `H.smooth W' hW'`.
+
+Establish `hWc : Continuous W'`. Use `IsLocallyConstant.continuous ?_` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `g`. Use `⟨{x | g⁻¹ * x ∈ U}, U.isOpen.preimage (continuous_const.mul continuous_id), by simp [U.one_mem], fun x hx => ?_⟩` and prove the remaining obligations.
+
+Use `hU g _ hx` as an intermediate fact. Simplify using `using this`. Establish `hval : Continuous fun k : GL (Fin 2) F => (k : Matrix (Fin 2) (Fin 2) F)` using `Units.continuous_val`. Establish `hmod : Continuous fun x : F => (modulus x : ℝ)` using `NNReal.continuous_coe.comp continuous_modulus`. Establish `hdet : Continuous fun k : GL (Fin 2) F => (modulus ((GeneralLinearGroup.det k : Fˣ) : F) : ℝ)`.
+
+Establish `: Continuous fun k : GL (Fin 2) F => ((GeneralLinearGroup.det k : Fˣ) : F)`. Simplify using `using hval.matrix_det`. Conclude with `hmod.comp this`. Establish `homc : ∀ t : Fˣ, IsClosed (om R t : Set (GL (Fin 2) F))`. Introduce `t`.
+
+Establish `e : (om R t : Set (GL (Fin 2) F)) = (⋂ i, ⋂ j, {k : GL (Fin 2) F | (modulus ((k : Matrix (Fin 2) (Fin 2) F) i j) : ℝ) ≤ R}) ∩ ⋂ j, {k : GL (Fin 2) F | (modulus ((t : F) * ((k⁻¹ : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) 1 j) : ℝ) ≤ R}`. Use extensionality with `k`. Simplify using `[om]`. Rewrite using `[e]`. Use `IsClosed.inter (isClosed_iInter fun i => isClosed_iInter fun j => isClosed_le (hmod.comp (hval.matrix_elem i j)) continuous_const) (isClosed_iInter fun j => isClosed_le (hmod.comp (continuous_const.mul ((hval.comp continuous_inv).matrix_elem 1 j))) continuous_const)` and prove the remaining obligations.
+
+Use `set r : ℝ := q ^ (-(1 / 4) : ℝ) with hr`. Establish `hr1 : r < 1` using `Real.rpow_lt_one_of_one_lt_of_neg hq (by norm_num)`. Use `set D : ℝ := 1 - r with hD`. Establish `hD0 : 0 < D` using `by rw [hD]; linarith`. Establish `hqL : 0 < q ^ L` using `zpow_pos hq0 L`.
+
+Use `⟨C₁ * q ^ L * ((q ^ L) ^ (1 / 4 : ℝ) / D) ^ 2 * Kμ.toReal, fun t₁ t₂ => ?_⟩` and prove the remaining obligations. Use `set τ : ℝ := (modulus (t₂ : F) : ℝ) with hτdef`. Establish `hτ : 0 < τ` using `by exact_mod_cast modulus_pos t₂.ne_zero`. Use `set σ : ℝ := (modulus (t₁ : F) : ℝ) with hσdef`. Establish `hσ : 0 < σ` using `by exact_mod_cast modulus_pos t₁.ne_zero`.
+
+Use `set f : GL (Fin 2) F → ℝ := (om R t₂).indicator fun k => ‖W' (dg2 t₁ t₂ * k⁻¹)‖ * (modulus ((GeneralLinearGroup.det k : Fˣ) : F) : ℝ) ^ (1 / 2 : ℝ) with hf`. Establish `hf0 : ∀ k, 0 ≤ f k` using `fun k => Set.indicator_nonneg (fun _ _ => by positivity) k`. Establish `hfm : Measurable f`. Use `Measurable.indicator (Continuous.measurable ?_) (homc t₂).measurableSet` and prove the remaining obligations. Conclude with `(hWc.comp (continuous_const.mul continuous_inv)).norm.mul (hdet.rpow_const fun _ => Or.inr (by norm_num))`.
+
+Use `set A : ℝ := C₁ * (σ / τ) ^ (1 / 4 : ℝ) with hA`. Establish `hA0 : 0 ≤ A` using `by positivity`. Use `set T₁r : ℝ := (q ^ L) ^ (1 / 4 : ℝ) / D with hT₁r`. Use `set T₂r : ℝ := (q ^ L / τ) ^ (1 / 4 : ℝ) / D with hT₂r`. Establish `hT₁ : (∑' m : ℤ, (if m ≤ L then ENNReal.ofReal (q ^ ((m : ℝ) / 4)) else 0)) ≤ ENNReal.ofReal T₁r`.
+
+Establish `h` using `GlobalTheory.T.geometric_sum_below_threshold q (1 / 4) (q ^ L) hq (by norm_num) hqL`. Use `le_of_eq_of_le (tsum_congr fun m => ?_) h` and prove the remaining obligations. Simplify using `only [zpow_le_zpow_iff_right₀ hq]`. Rewrite using `[show (m : ℝ) / 4 = 1 / 4 * (m : ℝ) by ring]`. Establish `hT₂ : (∑' n : ℤ, (if τ * q ^ (-n) ≤ q ^ L then ENNReal.ofReal (q ^ (-(n : ℝ) / 4)) else 0)) ≤ ENNReal.ofReal T₂r`.
+
+Establish `h` using `GlobalTheory.T.geometric_sum_below_threshold q (1 / 4) (q ^ L / τ) hq (by norm_num) (div_pos hqL hτ)`. Rewrite using `[← (Equiv.neg ℤ).tsum_eq]`. Use `le_of_eq_of_le (tsum_congr fun m => ?_) h` and prove the remaining obligations. Simplify using `only [Equiv.neg_apply, neg_neg, Int.cast_neg]`. Establish `e : τ * q ^ m ≤ q ^ L ↔ q ^ m ≤ q ^ L / τ` using `by rw [le_div_iff₀ hτ, mul_comm]`.
+
+Simplify using `only [e]`. Rewrite using `[show (m : ℝ) / 4 = 1 / 4 * (m : ℝ) by ring]`. Use `set S : ℤ → ℤ → Set (GL (Fin 2) F) := fun m n => {g : GL (Fin 2) F | ∃ x : F, (modulus x : ℝ) ≤ q ^ (L - m) ∧ ∃ κ ∈ GLnLocal.integralGL F 2, g = uni2 x * dg2 (unifUnit F ^ m) (unifUnit F ^ n) * κ} with hS`. Use `set Φ : GL (Fin 2) F → ℝ≥0∞ := fun g => ENNReal.ofReal (f g⁻¹) with hΦ`. Establish `hcov : ∀ y, Φ y ≠ 0 → ∃ m n : ℤ, m ≤ L ∧ n ≤ L ∧ τ * q ^ (-n) ≤ q ^ L ∧ y ∈ S m n ∧ Φ y ≤ ENNReal.ofReal (A * q ^ (((n : ℝ) - m) / 4) * q ^ (((m : ℝ) + n) / 2))`.
+
+Introduce `g hg`. Establish `hom : g⁻¹ ∈ om R t₂`. Assume the negation of the conclusion as `h`. Conclude with `hg (by simp [hΦ, hf, h])`. Take `⟨x, m, n, κ, hκ, rfl⟩` from `GlobalTheory.T.iwasawa_decomposition_gl_two_holds F g`.
+
+Take `⟨h1, h2, h3, h4⟩` from `GlobalTheory.T.iwasawa_coordinates_bounded_region F x m n L κ R t₂ hκ hRL hom`. Use `⟨m, n, h1, h2, h4, ⟨x, h3, κ, hκ, rfl⟩, ENNReal.ofReal_le_ofReal ?_⟩` and prove the remaining obligations. Rewrite using `[hf, Set.indicator_of_mem hom, inv_inv]`. Establish `hw` using `GlobalTheory.T.whittaker_iwasawa_growth_bound F ψ W' C₁ hpsi hcen hbound t₁ t₂ (unifUnit F ^ m) (unifUnit F ^ n) x κ hκ`. Establish `hu : ∀ k : ℤ, (modulus (((unifUnit F ^ k : Fˣ)) : F) : ℝ) = q ^ (-(k : ℝ))`.
+
+Introduce `k`. Rewrite using `[modulus_of_ne_zero (Units.ne_zero _), ord_unifUnit_zpow, NNReal.coe_zpow, NNReal.coe_natCast, ← Real.rpow_intCast]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hM : (modulus ((t₁ * unifUnit F ^ m * (t₂ * unifUnit F ^ n)⁻¹ : Fˣ) : F) : ℝ) = (σ / τ) * q ^ ((n : ℝ) - m)`.
+
+Rewrite using `[Units.val_mul, Units.val_mul, Units.val_inv_eq_inv_val, Units.val_mul, modulus_mul, modulus_mul, modulus_inv, modulus_mul]`. Simplify using `only [NNReal.coe_mul, NNReal.coe_inv]`. Rewrite using `[hu, hu, ← hσdef, ← hτdef, sub_eq_add_neg, Real.rpow_add hq0, Real.rpow_neg hq0.le (m : ℝ), Real.rpow_neg hq0.le (n : ℝ)]`. Use `(Real.rpow_pos_of_pos hq0 (m : ℝ)).ne'` as an intermediate fact. Use `(Real.rpow_pos_of_pos hq0 (n : ℝ)).ne'` as an intermediate fact.
+
+Clear the denominators using the available nonvanishing facts. Establish `hdetg` using `modulus_det_iwasawa_inv F x (unifUnit F ^ m) (unifUnit F ^ n) κ hκ`. Rewrite `hw` using `[hM]`. Rewrite using `[hdetg, hu, hu, mul_inv, ← Real.rpow_neg hq0.le, ← Real.rpow_neg hq0.le, neg_neg, neg_neg, ← Real.rpow_add hq0, ← Real.rpow_mul hq0.le]`. Rewrite `hw` using `[Real.mul_rpow (by positivity) (by positivity), ← Real.rpow_mul hq0.le]`.
+
+Establish `e1 : ((n : ℝ) - m) * (1 / 4) = ((n : ℝ) - m) / 4` using `by ring`. Establish `e2 : ((m : ℝ) + n) * (1 / 2) = ((m : ℝ) + n) / 2` using `by ring`. Rewrite `hw` using `[e1]`. Rewrite using `[e2, hA, mul_assoc C₁]`. Conclude with `mul_le_mul_of_nonneg_right hw (by positivity)`.
+
+Establish `hmain` using `GlobalTheory.T.iwasawa_sum_measure_estimate (hG ψ) q A τ L Kμ _ _ S Φ hq hA0 hτ (fun m n => (GlobalTheory.T.iwasawa_region_measure_bound F (hG ψ) m n L).1.measurableSet) (fun m n hn => (GlobalTheory.T.iwasawa_region_measure_bound F (hG ψ) m n L).2 hn) hT₁ hT₂ hcov`. Establish `hinvl : ∫⁻ k, ENNReal.ofReal (f k) ∂hG ψ = ∫⁻ g, Φ g ∂hG ψ` using `((Measure.measurePreserving_inv (hG ψ)).lintegral_comp hfm.ennreal_ofReal).symm`. Use `set Rr : ℝ := C₁ * q ^ L * ((q ^ L) ^ (1 / 4 : ℝ) / D) ^ 2 * Kμ.toReal * σ ^ (1 / 4 : ℝ) * τ ^ (-(1 / 2) : ℝ) with hRr`. Establish `hRr0 : 0 ≤ Rr` using `by positivity`. Establish `hfin : ∫⁻ k, ENNReal.ofReal (f k) ∂hG ψ ≤ ENNReal.ofReal Rr`.
+
+Rewrite using `[hinvl]`. Use `hmain.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_toReal hKfin, ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul (by positivity)]`. Use `congr 1`. Establish `hw0 : 0 < τ ^ (1 / 4 : ℝ)` using `Real.rpow_pos_of_pos hτ _`.
+
+Establish `hw2 : τ ^ (-(1 / 2) : ℝ) = ((τ ^ (1 / 4 : ℝ)) ^ 2)⁻¹`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hτ.le, ← Real.rpow_neg hτ.le]`. Evaluate the numerical expressions. Rewrite using `[hRr, hA, hT₁r, hT₂r, hw2, Real.div_rpow hσ.le hτ.le, Real.div_rpow hqL.le hτ.le]`. Clear the denominators using the available nonvanishing facts.
+
+Use `⟨⟨hfm.aestronglyMeasurable, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_ofReal (Filter.Eventually.of_forall hf0)]`. Conclude with `hfin.trans_lt ENNReal.ofReal_lt_top`. Rewrite using `[integral_eq_lintegral_of_nonneg_ae (Filter.Eventually.of_forall hf0) hfm.aestronglyMeasurable]`. Conclude with `ENNReal.toReal_le_of_le_ofReal hRr0 hfin`.
+-/
 theorem gInt2 : Ad3.LFS.GInt2 := by
   intro F _ _ _ _ _ _ ψ hψ ν hν V' H W' hW' R
   classical

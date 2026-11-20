@@ -12,6 +12,19 @@ open GlobalTheory.KeyCl
 
 namespace GlobalTheory.KeyValUnit
 
+/- English proof (translation)
+Introduce `κ hF hU S V K _ _ _ _ _ _ _ _ _ g y x hx`. Use `RingHom.ker_isPrime g` as an intermediate fact. Set `S₀` to `S ⧸ RingHom.ker g`. Set `K₀` to `FractionRing S₀`. Set `g₀ : S₀ →+* V` to `RingHom.kerLift g`.
+
+Set `f₀ : S₀ →+* K` to `(algebraMap V K).comp g₀`. Establish `hf₀ : Function.Injective f₀` using `(IsFractionRing.injective V K).comp (RingHom.kerLift_injective g)`. Set `j : K₀ →+* K` to `IsFractionRing.lift hf₀`. Establish `hj : j.comp (algebraMap S₀ K₀) = (algebraMap V K).comp g₀` using `RingHom.ext fun a => IsFractionRing.lift_algebraMap hf₀ a`. Establish `: CharZero K₀` using `j.charZero`.
+
+Take `⟨y₀, hy₀⟩` from `GlobalTheory.KeyPow.exists_keyPB_ring y (Ideal.Quotient.mk (RingHom.ker g))`. Take `⟨x₀, hx₀⟩` from `GlobalTheory.KeyPow.exists_keyPB_ring y₀ (algebraMap S₀ K₀)`. Establish `e : j.comp ((algebraMap S₀ K₀).comp (Ideal.Quotient.mk (RingHom.ker g))) = (algebraMap V K).comp g`. Rewrite using `[← RingHom.comp_assoc, hj]`. Conclude with `RingHom.ext fun a => congrArg (algebraMap V K) (RingHom.kerLift_mk g a)`.
+
+Establish `hxj : KeyPB x x₀ j` using `GlobalTheory.KeyCancel.keyPB_cancel _ _ _ y x₀ x _ _ (GlobalTheory.keyPB_trans _ _ _ y y₀ x₀ _ _ hy₀ hx₀) (e.symm ▸ hx)`. Establish `hval` using `hF K₀ K j x₀ x hxj`. Take `⟨h₁, h₂⟩` from `GlobalTheory.KeyGenInt.isIntegral_value κ hU S₀ K₀ y₀ x₀ hx₀`. Establish `h₁' : IsIntegral V (κ K x : K)` using `hval ▸ h₁.map_of_comp_eq g₀ j hj.symm`. Establish `h₂' : IsIntegral V ((κ K x : K)⁻¹)`.
+
+Rewrite using `[hval, ← map_inv₀]`. Conclude with `h₂.map_of_comp_eq g₀ j hj.symm`. Take `⟨a, ha⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h₁'`. Take `⟨b, hb⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h₂'`. Establish `hab : a * b = 1` using `IsFractionRing.injective V K (by`.
+
+Rewrite using `[map_mul, ha, hb, map_one, mul_inv_cancel₀ (κ K x).ne_zero])`. Conclude with `⟨Units.mkOfMulEqOne a b hab, ha.symm⟩`.
+-/
 theorem valUnit : ∀ κ : Rule, Funct κ → UnitSp κ → ValUnit κ := by
   intro κ hF hU S V K _ _ _ _ _ _ _ _ _ g y x hx
   have := RingHom.ker_isPrime g

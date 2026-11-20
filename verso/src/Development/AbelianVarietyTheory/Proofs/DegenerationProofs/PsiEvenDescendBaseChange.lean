@@ -23,6 +23,9 @@ namespace GlobalTheory.PsiRing
 variable {R V : Type} [CommRing R] [IsDomain R] [CommRing V] [IsDomain V] {φ : R →+* V} {D : DegPre R}
   {D' : DegPre V} {β : D'.P.A.left ⟶ D.P.A.left} {v : LB.Iso D'.P.L (D.P.L.pull β)}
 
+/- English proof (translation)
+Establish `e` using `congrArg (fun q => q.left) (map_inv (pushHom gp D'.P.A) (𝟙 _))`. Rewrite `e` using `[Hom.inv_def, Hom.inv_def, Category.id_comp]`. Use `e.trans ?_` and prove the remaining obligations. Use `show ((𝟙 D'.P.A : D'.P.A ⟶ D'.P.A).left ≫ β) ≫ _ = _`. Rewrite using `[Over.id_left, Category.id_comp]`.
+-/
 theorem inv_comp_of_isGrpPullback (gp : IsGrpPullback D'.P.A D.P.A (spMap φ) β) :
     (ι[D'.P.A]).left ≫ β = β ≫ (ι[D.P.A]).left := by
   have e := congrArg (fun q => q.left) (map_inv (pushHom gp D'.P.A) (𝟙 _))
@@ -31,6 +34,17 @@ theorem inv_comp_of_isGrpPullback (gp : IsGrpPullback D'.P.A D.P.A (spMap φ) β
   show ((𝟙 D'.P.A : D'.P.A ⟶ D'.P.A).left ≫ β) ≫ _ = _
   rw [Over.id_left, Category.id_comp]
 
+/- English proof (translation)
+Establish `he : eSec D'.P.A ≫ β = spMap φ ≫ eSec D.P.A` using `(cubeMapOf gp).e_comm`. Take `⟨t, ht, hv⟩` from `exists_up ((isGen_iff v).1 hv₀) D.P.isLB D'.P.isLB D'.sym D'.sym_gen`. Establish `hv' : ∀ (Z : Scheme.{0}) (r : Z ⟶ D'.P.A.left) (z : Z) J J', Good D.P.L z J → Good D'.P.L z J' → val t r z J = gw v (r ≫ (ι[D'.P.A]).left) z (J ((r ≫ (ι[D'.P.A]).left) ≫ β)) (J' (r ≫ (ι[D'.P.A]).left)) * (gw v r z (J (r ≫ β)) (J' r))⁻¹ * val D'.sym r z J'` using `fun Z r z J J' hJ hJ' => by`. Use `(hv Z r z _ _ (hJ.mem _ r) (hJ'.mem _ r)).trans (congrArg₂ (· * ·) ?_ rfl)` and prove the remaining obligations. Rewrite using `[pw, Fin.prod_univ_two]`.
+
+Use `show gw v (r ≫ (ι[D'.P.A]).left) z (J (r ≫ (ι[D'.P.A]).left ≫ β)) (J' (r ≫ (ι[D'.P.A]).left)) ^ (1 : ℤ) * gw v (r ≫ 𝟙 _) z (J (r ≫ 𝟙 _ ≫ β)) (J' (r ≫ 𝟙 _)) ^ (-1 : ℤ) = _`. Rewrite using `[Category.comp_id, Category.id_comp, Category.assoc r, zpow_one, zpow_neg_one]`. Establish `oi : eSec D'.P.A ≫ (ι[D'.P.A]).left = eSec D'.P.A`. Establish `: η[D'.P.A] ≫ ι[D'.P.A] = η[D'.P.A]` using `by simp`. Conclude with `congrArg (fun q => q.left) this`.
+
+Establish `key` using `gen_unique' D.P.isLB (φ := fun k => β ≫ (![(ι[D.P.A]).left, 𝟙 D.P.A.left] : Fin 2 → _) k) (ε := ![1, -1]) (fun V _ k => by`. Rewrite using `[Fin.prod_univ_two, Fin.prod_univ_two]`. Use `show k ((ι[D'.P.A]).left ≫ β) ^ (1 : ℤ) * k (𝟙 _ ≫ β) ^ (-1 : ℤ) = k (β ≫ (ι[D.P.A]).left) ^ (1 : ℤ) * k (β ≫ 𝟙 _) ^ (-1 : ℤ)`. Rewrite using `[inv_comp_of_isGrpPullback gp, Category.id_comp, Category.comp_id])`. Use the proof step `D'.P.A.hom (eSec D'.P.A) (Over.w η[D'.P.A]) (hG _ _ D'.P.isAb).2`.
+
+Use the proof step `(DVR.pullGen_isGen _ _ _ _ D.sym_gen β) ht (fun y I hI => by choose I' hI' using fun χ : (𝟙_ (Over (Spec (CommRingCat.of V)))).left ⟶ D'.P.A.left => exists_chart D'.P.isLB (χ y)`. Establish `a` using `val_corr hI' D'.sym_rig (𝟙 _)`. Rewrite `a` using `[val_pull hI', val_one, Category.id_comp]`. Establish `b` using `val_corr hI D.sym_rig (spMap φ)`. Rewrite `b` using `[val_pull hI, val_one, ← he]`.
+
+Use `((val_pull hI _ _ _).trans b).trans (Eq.symm ((hv' _ _ y I I' hI hI').trans ?_))` and prove the remaining obligations. Rewrite using `[a, oi, mul_inv_cancel, _root_.one_mul]) Z r z J hJ`. Conclude with `(val_pull hJ _ _ _).symm.trans (key.trans (hv' _ _ z J J' hJ hJ'))`.
+-/
 theorem val_sym_comp (hG : GlobalFnsSt) (gp : IsGrpPullback D'.P.A D.P.A (spMap φ) β) (hv₀ : v.IsGen)
     {Z : Scheme.{0}} (r : Z ⟶ D'.P.A.left) (z : Z) {J J'} (hJ : Good D.P.L z J) (hJ' : Good D'.P.L z J') :
     val D.sym (r ≫ β) z J =
@@ -69,6 +83,19 @@ theorem val_sym_comp (hG : GlobalFnsSt) (gp : IsGrpPullback D'.P.A D.P.A (spMap 
       rw [a, oi, mul_inv_cancel, _root_.one_mul]) Z r z J hJ
   exact (val_pull hJ _ _ _).symm.trans (key.trans (hv' _ _ z J J' hJ hJ'))
 
+/- English proof (translation)
+Introduce `hG R V _ _ _ _ φ D D' β v xe gp hv hc gam hgam hψ h χ`. Take `⟨x, rfl⟩` from `xe.surjective χ`. Establish `sep : D.P.A.left.IsSeparated`. Use `D.P.isAb.proper` as an intermediate fact. Use `⟨?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← terminal.comp_from D.P.A.hom]`. Use `infer_instance`. Take `⟨z⟩ : Nonempty (TK V).left` from `inferInstanceAs (Nonempty (PrimeSpectrum (FractionRing V)))`. Establish `red : IsReduced (TK R).left` using `inferInstanceAs (IsReduced (Spec (CommRingCat.of (FractionRing R))))`. Establish `sub : Subsingleton (TK R).left` using `inferInstanceAs (Subsingleton (PrimeSpectrum (FractionRing R)))`.
+
+Establish `cx : ∀ a, D'.xK a ≫ β = gam ≫ D.xK (xe a)` using `fun a => by show (jK V ≫ (D'.c a).left) ≫ β = gam ≫ jK R ≫ (D.c (xe a)).left`. Rewrite using `[Category.assoc, hc, ← Category.assoc, ← hgam, Category.assoc]`. Establish `cn : D'.xK (-x) = D'.xK x ≫ (ι[D'.P.A]).left` using `by show (toUnit _ ≫ D'.c (-x)).left = _`. Rewrite using `[PsiEvenPull.c_neg, ← Category.assoc, Over.comp_left]`. Use `TauPull.corr_of_dense D.P.isLB gam z (fun U ⟨y, hy⟩ => Subsingleton.elim y (gam z) ▸ hy) fun J hJ => ?_` and prove the remaining obligations.
+
+Use `choose J' hJ₀ using fun χ : (TK V).left ⟶ D'.P.A.left => exists_chart D'.P.isLB (χ z)`. Establish `hJ' : Good D'.P.L z J'` using `hJ₀`. Establish `vψ : ∀ a, val (D.psi (xe a)) gam z J = (gw v (D'.xK a) z (J (D'.xK a ≫ β)) (J' (D'.xK a)))⁻¹ * val (D'.psi a) (𝟙 _) z J'` using `fun a => by`. Use `CubTransport.val_pmaps (fun _ => cx a) (hψ a) (𝟙 _) hJ hJ'` as an intermediate fact. Rewrite `this` using `[Fintype.prod_unique, Category.id_comp, Category.id_comp, zpow_neg_one]`. Then use the resulting hypothesis.
+
+Establish `e` using `val_corr hJ' (h x) (𝟙 _)`. Rewrite `e` using `[val_mul hJ', val_pull hJ', Category.id_comp]`. Rewrite using `[val_mul hJ, val_pull hJ, ← map_neg, vψ, vψ, ← cx, val_sym_comp hG gp hv _ z hJ hJ', ← cn]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `e'` using `congrArg Additive.ofMul e`.
+
+Simplify using `only [ofMul_mul, ofMul_inv] at e' ⊢`. Take the linear combination `(norm := abel) e'`.
+-/
 theorem psiEven_descend : GlobalFnsSt → ∀ (R V : Type) [CommRing R] [IsDomain R] [CommRing V] [IsDomain V] (φ : R →+* V) (D : DegPre R) (D' : DegPre V) (β : D'.P.A.left ⟶ D.P.A.left) (v : LB.Iso D'.P.L (D.P.L.pull β)) (xe : D'.X ≃+ D.X), IsGrpPullback D'.P.A D.P.A (spMap φ) β → v.IsGen → (∀ x, (D'.c x).left ≫ β = spMap φ ≫ (D.c (xe x)).left) → ∀ gam : (TK V).left ⟶ (TK R).left, gam ≫ jK R = jK V ≫ spMap φ → PsiCmp D D' β v xe gam → D'.PsiEven → D.PsiEven := by
   intro hG R V _ _ _ _ φ D D' β v xe gp hv hc gam hgam hψ h χ
   obtain ⟨x, rfl⟩ := xe.surjective χ

@@ -16,6 +16,9 @@ section
 
 variable {E : Type} [Field E] [NumberField E] (w : Plc E)
 
+/- English proof (translation)
+Rewrite using `[HeightOneSpectrum.algebraMap_adicCompletionIntegers_apply]`. Rewrite using `[← HeightOneSpectrum.valuation_of_algebraMap (K := E) w r]`. Conclude with `HeightOneSpectrum.adicCompletion.valued_coe _ _ _`.
+-/
 private theorem valued_algebraMap_adicCompletionIntegers_eq_intValuation (r : 𝓞 E) :
     Valued.v ((algebraMap (𝓞 E) (w.adicCompletionIntegers E) r : w.adicCompletionIntegers E) :
       w.adicCompletion E) = w.intValuation r := by
@@ -23,6 +26,23 @@ private theorem valued_algebraMap_adicCompletionIntegers_eq_intValuation (r : �
   rw [← HeightOneSpectrum.valuation_of_algebraMap (K := E) w r]
   exact HeightOneSpectrum.adicCompletion.valued_coe _ _ _
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Express the relevant statement in the definitionally equal form `z ∈ Submodule.span _ _ at hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem a ha`.
+
+Take `⟨x, hx, rfl⟩` from `ha`. Conclude with `⟨x, hx, (valued_algebraMap_adicCompletionIntegers_eq_intValuation w x).le⟩`. Consider the case `zero => exact ⟨0, 𝔟.zero_mem, by simp⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨x1, h1, e1⟩` from `ha`.
+
+Take `⟨x2, h2, e2⟩` from `hb`. Establish `hab : Valued.v (((a + b : w.adicCompletionIntegers E)) : w.adicCompletion E) ≤ max (Valued.v (a : w.adicCompletion E)) (Valued.v (b : w.adicCompletion E))` using `Valuation.map_add Valued.v (a : w.adicCompletion E) (b : w.adicCompletion E)`. Break down `le_total (w.intValuation x1) (w.intValuation x2) with h | h` into its components or cases. Conclude with `⟨x2, h2, hab.trans (max_le (e1.trans h) e2)⟩`. Conclude with `⟨x1, h1, hab.trans (max_le e1 (e2.trans h))⟩`.
+
+Consider the case `smul c a _ ha`. Take `⟨x, hx, e⟩` from `ha`. Use `⟨x, hx, ?_⟩` and prove the remaining obligations. Establish `hc : Valued.v (c : w.adicCompletion E) ≤ 1` using `c.2`. Establish `hm : Valued.v (((c • a : w.adicCompletionIntegers E)) : w.adicCompletion E) = Valued.v (c : w.adicCompletion E) * Valued.v (a : w.adicCompletion E)` using `Valuation.map_mul Valued.v (c : w.adicCompletion E) (a : w.adicCompletion E)`.
+
+Rewrite using `[hm]`. Conclude with `(mul_le_of_le_one_left' hc).trans e`. Introduce and unpack `⟨x, hx, hle⟩`. Establish `hy : y ∈ w.adicCompletionIntegers E` using `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 (hle.trans (w.intValuation_le_one x))`. Distinguish the cases in `h0 : w.intValuation x = 0`.
+
+Rewrite `hle` using `[h0, le_zero_iff, Valuation.zero_iff]`. Conclude with `⟨0, Ideal.zero_mem _, by simp [hle]⟩`. Use `set a : w.adicCompletionIntegers E := algebraMap (𝓞 E) (w.adicCompletionIntegers E) x with ha_def`. Establish `ha : Valued.v (a : w.adicCompletion E) = w.intValuation x` using `valued_algebraMap_adicCompletionIntegers_eq_intValuation w x`. Establish `ha0 : (a : w.adicCompletion E) ≠ 0`.
+
+Introduce `h`. Apply `h0` to reduce the goal to its premises. Rewrite using `[← ha, h, map_zero]`. Establish `hq : y / (a : w.adicCompletion E) ∈ w.adicCompletionIntegers E`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_div₀, ha]`.
+
+Conclude with `div_le_one_of_le₀ hle zero_le'`. Use `⟨⟨_, hq⟩ * a, Ideal.mul_mem_left _ _ (Ideal.mem_map_of_mem _ hx), ?_⟩` and prove the remaining obligations. Simplify using `only [MulMemClass.coe_mul]`. Conclude with `div_mul_cancel₀ y ha0`.
+-/
 theorem inId_iff_le (𝔟 : Ideal (𝓞 E)) (y : w.adicCompletion E) : InId w 𝔟 y ↔ ∃ x ∈ 𝔟, Valued.v y ≤ w.intValuation x := by
   constructor
   · rintro ⟨z, hz, rfl⟩

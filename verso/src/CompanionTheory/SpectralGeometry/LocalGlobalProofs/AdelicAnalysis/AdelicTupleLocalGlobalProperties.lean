@@ -11,6 +11,9 @@ section Coord
 
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e`. Simplify using `[Algebra.TensorProduct.basis_repr_tmul, Algebra.smul_def]`. Consider the case `add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]`.
+-/
 theorem repr_map {R R' : Type} [CommRing R] [CommRing R'] [Algebra F R] [Algebra F R']
     (φ : R →ₐ[F] R') {d : ℕ} (b : Module.Basis (Fin d) F E) (y : R ⊗[F] E) (k : Fin d) :
     (Algebra.TensorProduct.basis R' b).repr (Algebra.TensorProduct.map φ (AlgHom.id F E) y) k =
@@ -32,10 +35,18 @@ def coH {d : ℕ} (b : Module.Basis (Fin d) F E) : (R ⊗[F] E) ≃ₜ (Fin d �
     continuous_invFun :=
       IsModuleTopology.continuous_of_linearMap (Algebra.TensorProduct.basis R b).equivFun.symm.toLinearMap }
 
+/- English proof (translation)
+The claim follows from `(continuous_apply k).comp (coH R b).continuous`.
+-/
 theorem continuous_repr {d : ℕ} (b : Module.Basis (Fin d) F E) (k : Fin d) :
     Continuous fun y : R ⊗[F] E => (Algebra.TensorProduct.basis R b).repr y k :=
   (continuous_apply k).comp (coH R b).continuous
 
+/- English proof (translation)
+Rewrite using `[← (coH R' b).comp_continuous_iff]`. Use `continuous_pi fun k => ?_` and prove the remaining obligations. Establish `: (fun y : R ⊗[F] E => ((coH R' b) ∘ fun y : R ⊗[F] E => Algebra.TensorProduct.map φ (AlgHom.id F E) y) y k) = fun y => φ ((Algebra.TensorProduct.basis R b).repr y k)`. Use function extensionality and compare the values at `y`. Conclude with `repr_map φ b y k`.
+
+Rewrite using `[this]`. Conclude with `hφ.comp (continuous_repr R b k)`.
+-/
 theorem continuous_map {R' : Type} [CommRing R'] [Algebra F R'] [TopologicalSpace R']
     [IsTopologicalRing R'] (φ : R →ₐ[F] R') (hφ : Continuous φ) {d : ℕ}
     (b : Module.Basis (Fin d) F E) :
@@ -58,18 +69,30 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 
 def pV (v : HeightOneSpectrum (𝓞 F)) : AF F →ₐ[F] Fv F v := (evalV F v).comp (sndA F)
 
+/- English proof (translation)
+The claim follows from `(RestrictedProduct.continuous_eval v).comp continuous_snd`.
+-/
 theorem continuous_pV (v : HeightOneSpectrum (𝓞 F)) : Continuous (pV (F := F) v) :=
   (RestrictedProduct.continuous_eval v).comp continuous_snd
 
+/- English proof (translation)
+The claim follows from `continuous_fst`.
+-/
 theorem continuous_fstA : Continuous (fstA F) := continuous_fst
 
 variable {d M n : ℕ} (b : Module.Basis (Fin d) F E)
 
+/- English proof (translation)
+The claim follows from `repr_map (fstA F) b (X a i) k`.
+-/
 theorem crd_inf (X : Fin n → Fin M → AF F ⊗[F] E) (a : Fin n) (i : Fin M) (k : Fin d) :
     (Algebra.TensorProduct.basis (Ainf F) b).repr (projInf X a i) k =
       fstA F ((Algebra.TensorProduct.basis (AF F) b).repr (X a i) k) :=
   repr_map (fstA F) b (X a i) k
 
+/- English proof (translation)
+Establish `h1` using `repr_map (evalV F v) b (projFin X a i) k`. Establish `h2` using `repr_map (sndA F) b (X a i) k`. Use `h1.trans ?_` and prove the remaining obligations. Conclude with `congrArg (evalV F v) h2`.
+-/
 theorem crd_v (v : HeightOneSpectrum (𝓞 F)) (X : Fin n → Fin M → AF F ⊗[F] E)
     (a : Fin n) (i : Fin M) (k : Fin d) :
     (Algebra.TensorProduct.basis (Fv F v) b).repr (projV v (projFin X) a i) k =
@@ -81,6 +104,11 @@ theorem crd_v (v : HeightOneSpectrum (𝓞 F)) (X : Fin n → Fin M → AF F ⊗
 
 include b in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a i`. Use `(Algebra.TensorProduct.basis (AF F) b).ext_elem fun k => ?_` and prove the remaining obligations. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `crd_inf b X a i k` as an intermediate fact. Rewrite `this` using `[hinf, crd_inf b Y a i k]`.
+
+Conclude with `this.symm`. Use `Subtype.ext (funext fun v => ?_)` and prove the remaining obligations. Use `crd_v b v X a i k` as an intermediate fact. Rewrite `this` using `[hv v, crd_v b v Y a i k]`. Conclude with `this.symm`.
+-/
 theorem tuple_ext (X Y : Fin n → Fin M → AF F ⊗[F] E) (hinf : projInf X = projInf Y)
     (hv : ∀ v, projV v (projFin X) = projV v (projFin Y)) : X = Y := by
   funext a i
@@ -94,6 +122,11 @@ theorem tuple_ext (X Y : Fin n → Fin M → AF F ⊗[F] E) (hinf : projInf X = 
     rw [hv v, crd_v b v Y a i k] at this
     exact this.symm
 
+/- English proof (translation)
+Establish `h : ∀ (a : Fin n) (i : Fin M) (k : Fin d), ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, (Algebra.TensorProduct.basis (Fv F v) b).repr (projV v (projFin X) a i) k ∈ v.adicCompletionIntegers F`. Introduce `a i k`. Establish `h0 : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, pV v ((Algebra.TensorProduct.basis (AF F) b).repr (X a i) k) ∈ v.adicCompletionIntegers F` using `((Algebra.TensorProduct.basis (AF F) b).repr (X a i) k).2.2`. Conclude with `h0.mono fun v hv => by rwa [crd_v]`. Establish `h'` using `Filter.eventually_all.2 fun a => Filter.eventually_all.2 fun i => Filter.eventually_all.2 (h a i)`.
+
+Conclude with `h'`.
+-/
 theorem eventually_lat (X : Fin n → Fin M → AF F ⊗[F] E) :
     ∀ᶠ v in Filter.cofinite, projV v (projFin X) ∈ latV b v := by
   have h : ∀ (a : Fin n) (i : Fin M) (k : Fin d), ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite,
@@ -109,6 +142,13 @@ theorem eventually_lat (X : Fin n → Fin M → AF F ⊗[F] E) :
     Filter.eventually_all.2 (h a i)
   exact h'
 
+/- English proof (translation)
+Set `cf : Fin n → Fin M → Fin d → Af F` to `fun a i k => ⟨fun v => (Algebra.TensorProduct.basis (Fv F v) b).repr (Xv v a i) k, h.mono fun v hv => hv a i k⟩`. Set `c : Fin n → Fin M → Fin d → AF F` to `fun a i k => pairA F ((Algebra.TensorProduct.basis (Ainf F) b).repr (Xinf a i) k) (cf a i k)`. Set `X : Fin n → Fin M → AF F ⊗[F] E` to `fun a i => (coH (AF F) b).symm (c a i)`. Establish `hX : ∀ a i k, (Algebra.TensorProduct.basis (AF F) b).repr (X a i) k = c a i k` using `fun a i k => congrFun ((coH (AF F) b).apply_symm_apply (c a i)) k`. Use `⟨X, ?_, fun v => ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `a i`. Use `(Algebra.TensorProduct.basis (Ainf F) b).ext_elem fun k => ?_` and prove the remaining obligations. Rewrite using `[crd_inf, hX]`. Both sides reduce to the same expression. Use function extensionality and compare the values at `a i`.
+
+Use `(Algebra.TensorProduct.basis (Fv F v) b).ext_elem fun k => ?_` and prove the remaining obligations. Rewrite using `[crd_v, hX]`. Both sides reduce to the same expression.
+-/
 theorem exists_glue (Xinf : Fin n → Fin M → Ainf F ⊗[F] E)
     (Xv : ∀ v : HeightOneSpectrum (𝓞 F), Fin n → Fin M → Fv F v ⊗[F] E)
     (h : ∀ᶠ v in Filter.cofinite, Xv v ∈ latV b v) :
@@ -130,6 +170,21 @@ theorem exists_glue (Xinf : Fin n → Fin M → Ainf F ⊗[F] E)
     rw [crd_v, hX]
     rfl
 
+/- English proof (translation)
+Set `S : Set (HeightOneSpectrum (𝓞 F))` to `{v | D v ⊆ (v.adicCompletionIntegers F : Set (Fv F v))}`. Establish `hS : Filter.cofinite ≤ Filter.principal S` using `Filter.le_principal_iff.2 hf`. Set `R` to `fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F`. Set `A` to `fun v : HeightOneSpectrum (𝓞 F) => (v.adicCompletionIntegers F : Set (v.adicCompletion F))`. Set `K : Set (Πʳ v, [R v, A v]_[Filter.principal S])` to `{x | ∀ v, x v ∈ D v}`.
+
+Establish `hK : IsCompact K`. Rewrite using `[RestrictedProduct.isEmbedding_coe_of_principal.isCompact_iff]`. Establish `e : ((↑) : Πʳ v, [R v, A v]_[Filter.principal S] → ∀ v, R v) '' K = Set.pi Set.univ D`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨x, hx, rfl⟩ v _`. Conclude with `hx v`. Introduce `hg`. Use `⟨⟨g, ?_⟩, fun v => hg v (Set.mem_univ v), rfl⟩` and prove the remaining obligations. Rewrite using `[Filter.eventually_principal]`.
+
+Introduce `v hv`. Conclude with `hv (hg v (Set.mem_univ v))`. Rewrite using `[e]`. Conclude with `isCompact_univ_pi hc`. Establish `e : {x : Af F | ∀ v, x v ∈ D v} = RestrictedProduct.inclusion R A hS '' K`.
+
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `⟨⟨x, ?_⟩, hx, rfl⟩` and prove the remaining obligations. Rewrite using `[Filter.eventually_principal]`.
+
+Introduce `v hv`. Conclude with `hv (hx v)`. Introduce and unpack `⟨y, hy, rfl⟩ v`. Conclude with `hy v`. Rewrite using `[e]`.
+
+Conclude with `hK.image (RestrictedProduct.continuous_inclusion hS)`.
+-/
 theorem isCompact_box {D : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)}
     (hc : ∀ v, IsCompact (D v))
     (hf : ∀ᶠ v in Filter.cofinite, D v ⊆ (v.adicCompletionIntegers F : Set (Fv F v))) :
@@ -167,6 +222,23 @@ theorem isCompact_box {D : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)}
   rw [e]
   exact hK.image (RestrictedProduct.continuous_inclusion hS)
 
+/- English proof (translation)
+Use `haveI : T2Space (Ainf F) := inferInstanceAs (T2Space ((w : InfinitePlace F) → w.Completion))`. Use `haveI : T2Space (Ainf F ⊗[F] E) := (coH (Ainf F) b).isEmbedding.t2Space`. Use `haveI : ∀ v : HeightOneSpectrum (𝓞 F), T2Space (Fv F v ⊗[F] E) := fun v => (coH (Fv F v) b).isEmbedding.t2Space`. Set `DI : Fin n → Fin M → Fin d → Set (Ainf F)` to `fun a i k => (fun Y : Fin n → Fin M → Ainf F ⊗[F] E => (Algebra.TensorProduct.basis (Ainf F) b).repr (Y a i) k) '' Cinf`. Establish `hDI : ∀ a i k, IsCompact (DI a i k)` using `fun a i k => hinf.image ((continuous_repr (Ainf F) b k).comp ((continuous_apply i).comp (continuous_apply a)))`.
+
+Set `DV : Fin n → Fin M → Fin d → ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)` to `fun a i k v => (fun Y : Fin n → Fin M → Fv F v ⊗[F] E => (Algebra.TensorProduct.basis (Fv F v) b).repr (Y a i) k) '' Cv v`. Establish `hDV : ∀ a i k v, IsCompact (DV a i k v)` using `fun a i k v => (hv v).image ((continuous_repr (Fv F v) b k).comp ((continuous_apply i).comp (continuous_apply a)))`. Establish `hB : ∀ a i k, IsCompact {x : Af F | ∀ v, x v ∈ DV a i k v}` using `fun a i k => isCompact_box (hDV a i k) (hlat.mono fun v hsub => by`. Introduce and unpack `_ ⟨Y, hY, rfl⟩`. Conclude with `hsub hY a i k)`.
+
+Set `Q : Fin n → Fin M → Fin d → Set (AF F)` to `fun a i k => (DI a i k) ×ˢ {x : Af F | ∀ v, x v ∈ DV a i k v}`. Establish `hQ : ∀ a i k, IsCompact (Q a i k)` using `fun a i k => (hDI a i k).prod (hB a i k)`. Set `L : Set (Fin n → Fin M → Fin d → AF F)` to `Set.pi Set.univ fun a => Set.pi Set.univ fun i => Set.pi Set.univ fun k => Q a i k`. Establish `hL : IsCompact L` using `isCompact_univ_pi fun a => isCompact_univ_pi fun i => isCompact_univ_pi fun k => hQ a i k`. Set `g : (Fin n → Fin M → Fin d → AF F) → Fin n → Fin M → AF F ⊗[F] E` to `fun c a i => (coH (AF F) b).symm (c a i)`.
+
+Establish `hg : Continuous g` using `continuous_pi fun a => continuous_pi fun i => (coH (AF F) b).symm.continuous.comp ((continuous_apply i).comp (continuous_apply a))`. Establish `hcl : IsClosed {X : Fin n → Fin M → AF F ⊗[F] E | projInf X ∈ Cinf ∧ ∀ v, projV v (projFin X) ∈ Cv v}`. Establish `c1 : Continuous (projInf : (Fin n → Fin M → AF F ⊗[F] E) → _)` using `continuous_pi fun a => continuous_pi fun i => (continuous_map (AF F) (fstA F) continuous_fstA b).comp ((continuous_apply i).comp (continuous_apply a))`. Establish `c2 : ∀ v : HeightOneSpectrum (𝓞 F), Continuous (fun X : Fin n → Fin M → AF F ⊗[F] E => projV v (projFin X))` using `fun v => by`. Establish `e : (fun X : Fin n → Fin M → AF F ⊗[F] E => projV v (projFin X)) = fun X a i => Algebra.TensorProduct.map (pV v) (AlgHom.id F E) (X a i)`.
+
+Use function extensionality and compare the values at `X a i`. Use `(Algebra.TensorProduct.basis (Fv F v) b).ext_elem fun k => ?_` and prove the remaining obligations. Rewrite using `[crd_v]`. Conclude with `(repr_map (pV v) b (X a i) k).symm`. Rewrite using `[e]`.
+
+Conclude with `continuous_pi fun a => continuous_pi fun i => (continuous_map (AF F) (pV v) (continuous_pV v) b).comp ((continuous_apply i).comp (continuous_apply a))`. Establish `e : {X : Fin n → Fin M → AF F ⊗[F] E | projInf X ∈ Cinf ∧ ∀ v, projV v (projFin X) ∈ Cv v} = projInf ⁻¹' Cinf ∩ ⋂ v, (fun X => projV v (projFin X)) ⁻¹' Cv v`. Use extensionality with `X`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
+
+Conclude with `(hinf.isClosed.preimage c1).inter (isClosed_iInter fun v => (hv v).isClosed.preimage (c2 v))`. Use `(hL.image hg).of_isClosed_subset hcl ?_` and prove the remaining obligations. Introduce and unpack `X ⟨h1, h2⟩`. Use `⟨fun a i k => (Algebra.TensorProduct.basis (AF F) b).repr (X a i) k, ?_, ?_⟩` and prove the remaining obligations. Introduce `a _ i _ k _`.
+
+Use `⟨⟨projInf X, h1, crd_inf b X a i k⟩, fun v => ⟨_, h2 v, crd_v b v X a i k⟩⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a i`. Conclude with `(coH (AF F) b).symm_apply_apply (X a i)`.
+-/
 theorem isCompact_glue (Cinf : Set (Fin n → Fin M → Ainf F ⊗[F] E))
     (Cv : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fin n → Fin M → Fv F v ⊗[F] E))
     (hinf : IsCompact Cinf) (hv : ∀ v, IsCompact (Cv v))
@@ -242,6 +314,9 @@ theorem isCompact_glue (Cinf : Set (Fin n → Fin M → Ainf F ⊗[F] E))
 
 end Adelic
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ _ d b n M`. Conclude with `⟨tuple_ext b, eventually_lat b, exists_glue b, isCompact_glue b⟩`.
+-/
 theorem glue_main : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (n M : ℕ), (∀ X Y : Fin n → Fin M → AF F ⊗[F] E, projInf X = projInf Y → (∀ v, projV v (projFin X) = projV v (projFin Y)) → X = Y) ∧ (∀ X : Fin n → Fin M → AF F ⊗[F] E, ∀ᶠ v in Filter.cofinite, projV v (projFin X) ∈ latV b v) ∧ (∀ (Xinf : Fin n → Fin M → Ainf F ⊗[F] E) (Xv : ∀ v : HeightOneSpectrum (𝓞 F), Fin n → Fin M → Fv F v ⊗[F] E), (∀ᶠ v in Filter.cofinite, Xv v ∈ latV b v) → ∃ X : Fin n → Fin M → AF F ⊗[F] E, projInf X = Xinf ∧ ∀ v, projV v (projFin X) = Xv v) ∧ ∀ (Cinf : Set (Fin n → Fin M → Ainf F ⊗[F] E)) (Cv : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fin n → Fin M → Fv F v ⊗[F] E)), IsCompact Cinf → (∀ v, IsCompact (Cv v)) → (∀ᶠ v in Filter.cofinite, Cv v ⊆ latV b v) → IsCompact {X : Fin n → Fin M → AF F ⊗[F] E | projInf X ∈ Cinf ∧ ∀ v, projV v (projFin X) ∈ Cv v} := by
   intro F E _ _ _ _ _ σ _ d b n M
   exact ⟨tuple_ext b, eventually_lat b, exists_glue b, isCompact_glue b⟩

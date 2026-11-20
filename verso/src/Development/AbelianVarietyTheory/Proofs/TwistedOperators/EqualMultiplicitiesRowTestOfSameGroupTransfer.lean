@@ -13,6 +13,11 @@ noncomputable section
 
 namespace GlobalTheory.Twist
 
+/- English proof (translation)
+Introduce `B C a b px I hX Tw Wt s z`. Establish `e` using `twice_eq b (iK := z.alg) z.R`. Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Establish `h2` using `multEq_tr (a := b) a (iK := alg b z.alg) h`. Rewrite using `[e]`.
+
+Conclude with `(by with_unfolding_all exact (h2 :))`. Establish `h2` using `rowTest_tr (a := b) a (iK := alg b z.alg) h`. Rewrite using `[e]`. Conclude with `(by with_unfolding_all exact (h2 :))`.
+-/
 theorem multEq_rowTest_of_copy : ∀ (B : Base) (C : Cols B) (a b : Late B C) (px : PreX B.toPre) (I : ColIn B px) (hX : B.fields.Ok) (Tw : TwDat B) (Wt : Set B.places.Pl) (s : SameGrp a b) (z : Dat a.st I hX Tw Wt), (GlobalTheory.CuspMult.MultEq (DatCopy.copy b s z).R.toRealDat → GlobalTheory.CuspMult.MultEq z.R.toRealDat) ∧ (Formalism.IndefR.Rat.RowTest ((DatCopy.copy b s z).R.toCx3 (DatCopy.copy b s z).F) → Formalism.IndefR.Rat.RowTest (z.R.toCx3 z.F)) := by
   intro B C a b px I hX Tw Wt s z
   have e := twice_eq b (iK := z.alg) z.R

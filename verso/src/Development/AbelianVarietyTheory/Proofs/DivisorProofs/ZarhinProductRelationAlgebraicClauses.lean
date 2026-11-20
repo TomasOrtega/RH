@@ -12,18 +12,29 @@ section Obj
 
 variable {S : Scheme.{0}} (A B : Over S) [GrpObj A] [GrpObj B] [IsCommMonObj A] [IsCommMonObj B]
 
+/- English proof (translation)
+Simplify using `only [mkZ, pa]`. Rewrite using `[lift_fst_assoc]`. Conclude with `(Out.powIsLimit A 4).fac (Fan.mk T u) ⟨i⟩`.
+-/
 theorem mkZ_pa {T : Over S} (u : Fin 4 → (T ⟶ A)) (v : Fin 4 → (T ⟶ B)) (i : Fin 4) :
     mkZ A B u v ≫ pa A B i = u i := by
   simp only [mkZ, pa]
   rw [lift_fst_assoc]
   exact (Out.powIsLimit A 4).fac (Fan.mk T u) ⟨i⟩
 
+/- English proof (translation)
+Simplify using `only [mkZ, pb]`. Rewrite using `[lift_snd_assoc]`. Conclude with `(Out.powIsLimit B 4).fac (Fan.mk T v) ⟨j⟩`.
+-/
 theorem mkZ_pb {T : Over S} (u : Fin 4 → (T ⟶ A)) (v : Fin 4 → (T ⟶ B)) (j : Fin 4) :
     mkZ A B u v ≫ pb A B j = v j := by
   simp only [mkZ, pb]
   rw [lift_snd_assoc]
   exact (Out.powIsLimit B 4).fac (Fan.mk T v) ⟨j⟩
 
+/- English proof (translation)
+Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Apply `(Out.powIsLimit A 4).hom_ext` to reduce the goal to its premises. Introduce and unpack `⟨i⟩`. Simplify `ha i` using `[pa]`. Apply `(Out.powIsLimit B 4).hom_ext` to reduce the goal to its premises.
+
+Introduce and unpack `⟨j⟩`. Simplify `hb j` using `[pb]`.
+-/
 theorem zob_ext {T : Over S} {f g : T ⟶ Zob A B} (ha : ∀ i, f ≫ pa A B i = g ≫ pa A B i)
     (hb : ∀ j, f ≫ pb A B j = g ≫ pb A B j) : f = g := by
   apply CartesianMonoidalCategory.hom_ext
@@ -42,6 +53,9 @@ instance isMonHom_pb (j : Fin 4) : IsMonHom (pb A B j) := by
   unfold pb
   infer_instance
 
+/- English proof (translation)
+The claim follows from `zob_ext A B (fun i => by haveI := ha i rw [Category.assoc, IsMonHom.one_hom (f := f ≫ pa A B i), IsMonHom.one_hom (f := pa A B i)]) (fun j => by haveI := hb j rw [Category.assoc, IsMonHom.one_hom (f := f ≫ pb A B j), IsMonHom.one_hom (f := pb A B j)]) mul_hom := zob_ext A B (fun …`.
+-/
 theorem isMonHom_of_coords {X : Over S} [MonObj X] (f : X ⟶ Zob A B)
     (ha : ∀ i, IsMonHom (f ≫ pa A B i)) (hb : ∀ j, IsMonHom (f ≫ pb A B j)) : IsMonHom f where
   one_hom := zob_ext A B (fun i => by
@@ -59,6 +73,11 @@ theorem isMonHom_of_coords {X : Over S} [MonObj X] (f : X ⟶ Zob A B)
       rw [Category.assoc, IsMonHom.mul_hom (f := f ≫ pb A B j), Category.assoc,
         IsMonHom.mul_hom (f := pb A B j), ← Category.assoc, tensorHom_comp_tensorHom])
 
+/- English proof (translation)
+Apply `isMonHom_of_coords` to reduce the goal to its premises. Introduce `i`. Rewrite using `[incZ, mkZ_pa]`. Use `split_ifs`. Use `infer_instance`.
+
+Conclude with `inferInstanceAs (IsMonHom (toUnit A ≫ η[A]))`. Introduce `j`. Rewrite using `[incZ, mkZ_pb]`. Conclude with `inferInstanceAs (IsMonHom (toUnit A ≫ η[B]))`.
+-/
 theorem isMonHom_incZ : IsMonHom (incZ A B) := by
   apply isMonHom_of_coords
   · intro i
@@ -70,14 +89,25 @@ theorem isMonHom_incZ : IsMonHom (incZ A B) := by
     rw [incZ, mkZ_pb]
     exact inferInstanceAs (IsMonHom (toUnit A ≫ η[B]))
 
+/- English proof (translation)
+Unfold `prZ pa`. Use `infer_instance`.
+-/
 theorem isMonHom_prZ : IsMonHom (prZ A B) := by
   unfold prZ pa
   infer_instance
 
+/- English proof (translation)
+Rewrite using `[incZ, prZ, mkZ_pa]`. Simplify using the standard rewrite rules.
+-/
 theorem incZ_prZ : incZ A B ≫ prZ A B = 𝟙 A := by
   rw [incZ, prZ, mkZ_pa]
   simp
 
+/- English proof (translation)
+Apply `zob_ext` to reduce the goal to its premises. Introduce `i`. Rewrite using `[Category.assoc, incZ, mkZ_pa, actZ, mkZ_pa]`. Apply the tactic sequence `fin_cases i <;> simp [prZ, idem, Matrix.single_apply, Fin.prod_univ_four, MonObj.comp_one]`. Introduce `j`.
+
+Rewrite using `[Category.assoc, incZ, mkZ_pb, actZ, mkZ_pb]`. Apply the tactic sequence `fin_cases j <;> simp [prZ, idem, Matrix.single_apply, Fin.prod_univ_four, MonObj.comp_one]`.
+-/
 theorem prZ_incZ (d : ℕ) (la : A ⟶ B) (mu : B ⟶ A) : prZ A B ≫ incZ A B = actZ A B d la mu (idem d) := by
   apply zob_ext
   · intro i
@@ -106,6 +136,15 @@ def precompHom {X Y M : Over S} [GrpObj M] [IsCommMonObj M] (x : X ⟶ Y) : (Y �
   map_one' := MonObj.comp_one x
   map_mul' g₁ g₂ := MonObj.comp_mul x g₁ g₂
 
+/- English proof (translation)
+Apply `zob_ext` to reduce the goal to its premises. Introduce `i`. Rewrite using `[Category.assoc, actZ, mkZ_pa, MonObj.one_comp (pa A B i)]`. Express the relevant statement in the definitionally equal form `precompHom (1 : 𝟙_ (Over S) ⟶ Zob A B) _ = 1`. Rewrite using `[map_prod]`.
+
+Use `Finset.prod_eq_one fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_zpow, map_zpow]`. Express the relevant statement in the definitionally equal form `(1 ≫ pa A B j) ^ _ * (1 ≫ pb A B j ≫ mu) ^ _ = 1`. Rewrite using `[MonObj.one_comp, ← Category.assoc, MonObj.one_comp, MonObj.one_comp]`. Simplify using the standard rewrite rules.
+
+Introduce `j`. Rewrite using `[Category.assoc, actZ, mkZ_pb, MonObj.one_comp (pb A B j)]`. Express the relevant statement in the definitionally equal form `precompHom (1 : 𝟙_ (Over S) ⟶ Zob A B) _ = 1`. Rewrite using `[map_prod]`. Use `Finset.prod_eq_one fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, map_zpow, map_zpow]`. Express the relevant statement in the definitionally equal form `(1 ≫ pa A B k ≫ la) ^ _ * (1 ≫ pb A B k) ^ _ = 1`. Rewrite using `[MonObj.one_comp (pa A B k ≫ la), MonObj.one_comp (pb A B k)]`. Simplify using the standard rewrite rules.
+-/
 theorem one_comp_actZ (d : ℕ) (la : A ⟶ B) (mu : B ⟶ A) [IsMonHom la] [IsMonHom mu] (N : ord d) :
     (1 : 𝟙_ (Over S) ⟶ Zob A B) ≫ actZ A B d la mu N = 1 := by
   apply zob_ext
@@ -128,6 +167,9 @@ theorem one_comp_actZ (d : ℕ) (la : A ⟶ B) (mu : B ⟶ A) [IsMonHom la] [IsM
     rw [MonObj.one_comp (pa A B k ≫ la), MonObj.one_comp (pb A B k)]
     simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem oMat_zero (d : ℕ) : oMat d 0 = idem d := rfl
 
 end Lev
@@ -138,6 +180,13 @@ namespace GlobalTheory.ZarhinFam
 
 open GlobalTheory.ZarhinFam.RelAlg
 
+/- English proof (translation)
+Introduce `h M d S t c B _ _ Q la mu hZ _ _ _ _ _ _ _ κ hκ`. Use `haveI : IsMonHom la := hZ.2.2.2.1`. Use `haveI : IsMonHom mu := hZ.2.2.2.2.1`. Use `haveI := isMonHom_incZ c.A B`. Establish `hpi` using `prZ_incZ c.A B d la mu`.
+
+Use `⟨isMonHom_incZ c.A B, isMonHom_prZ c.A B, incZ_prZ c.A B, hpi, fun a => ?_⟩` and prove the remaining obligations. Establish `hlev0 : c.lev 0 = 1`. Establish `h0` using `c.lev_add 0 0`. Rewrite `h0` using `[add_zero]`. Conclude with `left_eq_mul.mp h0`.
+
+Rewrite using `[levZ, List.prod_ofFn, Fintype.prod_eq_single 0 (fun k hk => by`. Rewrite using `[hκ.2.2 k hk a, hlev0, ← Category.assoc, MonObj.one_comp, one_comp_actZ])]`. Rewrite using `[hκ.2.1 a, oMat_zero, ← hpi, ← Category.assoc (incZ c.A B), incZ_prZ, Category.id_comp]`.
+-/
 theorem zRel_alg : ∀ (h M d : ℕ) (S : Scheme.{0}) (t : S ⟶ Sp (cycAway M)) (c : SiegPre h M (zetaAway M) t) (B : Over S) [GrpObj B] [IsCommMonObj B] (Q : LB (c.A ⊗ B).left) (la : c.A ⟶ B) (mu : B ⟶ c.A) (hZ : GlobalTheory.ZarhinFam.ZData c d B Q la mu), 1 ≤ h → 3 ≤ M → Odd M → 0 < d → M.Coprime d → IsUnit ((d : ℕ) : Γ(S, ⊤)) → SiegKerBy c d → ∀ (κ : Fin 8 → (Fin (8 * h) ⊕ Fin (8 * h) → ℤ) →+ (Fin h ⊕ Fin h → ℤ)), GlobalTheory.ZarhinFam.KappaOK h M d κ → IsMonHom (GlobalTheory.ZarhinFam.incZ c.A B) ∧ IsMonHom (GlobalTheory.ZarhinFam.prZ c.A B) ∧ GlobalTheory.ZarhinFam.incZ c.A B ≫ GlobalTheory.ZarhinFam.prZ c.A B = 𝟙 c.A ∧ GlobalTheory.ZarhinFam.prZ c.A B ≫ GlobalTheory.ZarhinFam.incZ c.A B = (GlobalTheory.ZarhinFam.actZ c.A B d la mu) (GlobalTheory.ZarhinFam.idem d) ∧ ∀ a, c.lev a ≫ GlobalTheory.ZarhinFam.incZ c.A B = (GlobalTheory.ZarhinFam.levZ c.lev (GlobalTheory.ZarhinFam.incZ c.A B) (GlobalTheory.ZarhinFam.actZ c.A B d la mu) (GlobalTheory.ZarhinFam.oMat d) κ) (GlobalTheory.ZarhinFam.jlMap h a) := by
   intro h M d S t c B _ _ Q la mu hZ _ _ _ _ _ _ _ κ hκ
   haveI : IsMonHom la := hZ.2.2.2.1

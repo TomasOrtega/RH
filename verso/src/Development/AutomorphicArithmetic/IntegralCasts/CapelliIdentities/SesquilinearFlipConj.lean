@@ -1,5 +1,8 @@
 import Mathlib
 
+/- English proof (translation)
+Use `infer_instance`.
+-/
 theorem UpperTheory.Reformulated.B.SesquilinearFlipConj.aux1 :
     SMulCommClass ℂ ℂ ℂ := by
   infer_instance
@@ -23,6 +26,9 @@ private noncomputable def flipConj {V : Type} [AddCommGroup V] [Module ℂ V]
     (by intro v w₁ w₂; simp [map_add])
     (by intro c v w; simp [map_smulₛₗ, smul_eq_mul])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem flipConj_apply {V : Type} [AddCommGroup V] [Module ℂ V]
     (B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ) (v w : V) :
     flipConj B v w = starRingEnd ℂ (B w v) := rfl
@@ -30,6 +36,19 @@ private theorem flipConj_apply {V : Type} [AddCommGroup V] [Module ℂ V]
 end UpperTheory.Reformulated.B.SesquilinearFlipConj.Helpers
 
 open UpperTheory.Reformulated.B.SesquilinearFlipConj.Helpers in
+/- English proof (translation)
+Introduce `G V _ _ _ ρ hS`. Take `⟨B, hB0, hBinv⟩` from `hS`. Distinguish the cases in `hH : B + flipConj B = 0`. Establish `hrel : ∀ v w, B v w + starRingEnd ℂ (B w v) = 0`. Introduce `v w`.
+
+Use `congrArg (fun F : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ => F v w) hH` as an intermediate fact. Simplify `this` using `[flipConj_apply]`. Use `⟨Complex.I • B, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Apply `hB0` to reduce the goal to its premises.
+
+Establish `: (-Complex.I) • (Complex.I • B) = B`. Rewrite using `[smul_smul]`. Simplify using the standard rewrite rules. Rewrite using `[← this, h, smul_zero]`. Introduce `v w`.
+
+Establish `h1` using `hrel v w`. Establish `h2 : starRingEnd ℂ (B v w) = - B w v`. Use `congrArg (starRingEnd ℂ) h1` as an intermediate fact. Simplify using `at this`. Take the linear combination `this`.
+
+Simplify using `only [LinearMap.smul_apply, smul_eq_mul, map_mul, Complex.conj_I, h2]`. Expand and normalize the polynomial expressions, which then agree. Introduce `g v w`. Simplify using `only [LinearMap.smul_apply, smul_eq_mul, hBinv]`. Use `⟨B + flipConj B, hH, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `v w`. Simplify using `only [LinearMap.add_apply, flipConj_apply, map_add, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree. Introduce `g v w`. Simplify using `only [LinearMap.add_apply, flipConj_apply, hBinv]`.
+-/
 theorem UpperTheory.Reformulated.B.SesquilinearFlipConj.main :
     ∀ {G V : Type} [inst : Group G] [inst_1 : AddCommGroup V] [inst_2 : _root_.Module ℂ V] {ρ : Representation ℂ G V},
       UpperTheory.Reformulated.B.SesquilinearFlipConj.HasSesq ρ →

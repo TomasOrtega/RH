@@ -8,6 +8,13 @@ namespace UpperTheory.One.M
 
 open GlobalTheory GlobalTheory.SerSys GlobalTheory.LocGL GlobalTheory.SmGL GlobalTheory.SplitWeil
 
+/- English proof (translation)
+Take `⟨hn, ν₁, ν₂, Λ, h₁, h₂, h0, H⟩` from `h`. Use `⟨hn, ν₁, ν₂ * μ⁻¹, (TensorProduct.congr (LinearEquiv.refl ℂ W) e).toLinearMap ∘ₗ Λ, h₁, fun u => ?_, fun h => h0 (LinearMap.ext fun v => ?_), fun p x y hp hx hy v => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.mul_apply, MonoidHom.inv_apply, h₂ u, hμ u, inv_one, mul_one]`. Conclude with `(TensorProduct.congr (LinearEquiv.refl ℂ W) e).map_eq_zero_iff.1 (LinearMap.congr_fun h v)`. Establish `key : ∀ z, TensorProduct.map (σ x) (ρ' y) (TensorProduct.congr (LinearEquiv.refl ℂ W) e z) = ((μ (Matrix.GeneralLinearGroup.det y) : ℂˣ) : ℂ) • TensorProduct.congr (LinearEquiv.refl ℂ W) e (TensorProduct.map (σ x) (ρ y) z)` using `fun z => by`.
+
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul s t => simp [he, TensorProduct.tmul_smul]`. Consider the case `add s t hs ht => simp only [map_add, hs, ht, smul_add]`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`.
+
+Rewrite using `[H p x y hp hx hy v, key, map_smul, smul_smul]`. Use `congr 1`. Simplify using `[mul_assoc]`.
+-/
 theorem mapsToProd_tw {g : ℕ} [Fact g.Prime] {n a b : ℕ} {V W W' W'' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W]
     [Module ℂ W] [AddCommGroup W'] [Module ℂ W'] [AddCommGroup W''] [Module ℂ W'']
     {π : Representation ℂ (GL (Fin n) ℚ_[g]) V} {σ : Representation ℂ (GL (Fin a) ℚ_[g]) W}
@@ -32,6 +39,15 @@ theorem mapsToProd_tw {g : ℕ} [Fact g.Prime] {n a b : ℕ} {V W W' W'' : Type}
     congr 1
     simp [mul_assoc]
 
+/- English proof (translation)
+Proceed by induction on `h with`. Consider the case `nil π h0 hi`. Introduce `y hy`. Consider the cases of `hy`. Conclude with `.nil π h0 hi`.
+
+Consider the case `cons π σ ρ S hπ hρ _ hM ih`. Introduce `y hy`. Consider the cases of `hy with`. Consider the case `cons h1 h2`. Take `⟨hs, hi, μ, hμ, rfl⟩` from `h1`.
+
+Set `φ` to `(GlobalTheory.TypeRec.TwistInert.twistEquiv (IrrGL.equivOf ρ.2.ρ hs hi) (detChar (Fin ρ.1) μ)).trans (IrrGL.twEquiv (IrrGL.of ρ.2.ρ hs hi) μ (isSmoothChar_of_isUnram hμ))`. Use `.cons π σ _ _ hπ (Ysupp.IrreducibleSupport.isIrrRep_of_isIrreducible (IrrRep.irr _)) (ih _ h2) (mapsToProd_tw μ (fun u => hμ _ ?_) φ.toLinearEquiv (fun y v => ?_) hM)` and prove the remaining obligations. Establish `hn : ‖((u : ℤ_[g]) : ℚ_[g])‖ = 1` using `PadicInt.norm_units u`. Establish `a1` using `GlobalTheory.SplitWeil.padic_valuation_lt_iff g ((u : ℤ_[g]) : ℚ_[g]) 1`. Establish `a2` using `GlobalTheory.SplitWeil.padic_valuation_lt_iff g 1 ((u : ℤ_[g]) : ℚ_[g])`.
+
+Rewrite `a1`, `a2` using `[hn, map_one, norm_one]`. Conclude with `le_antisymm (not_lt.1 fun h => lt_irrefl _ (a2.1 h)) (not_lt.1 fun h => lt_irrefl _ (a1.1 h))`. Rewrite using `[← map_smul]`. Conclude with `(LinearMap.congr_fun (φ.isIntertwining' y) v).symm`.
+-/
 theorem inInd_reps {g : ℕ} [Fact g.Prime] {π : Supp.GLRep g} {L : List (Supp.GLRep g)} (h : Supp.InInd π L) :
     ∀ y : List (IrrGL ℚ_[g]), List.Forall₂ (fun (ρ : Supp.GLRep g) (x : IrrGL ℚ_[g]) =>
       ∃ (hs : GlobalTheory.PRep.IsSmooth ρ.2.ρ) (hi : ρ.2.ρ.IsIrreducible), (IrrGL.of ρ.2.ρ hs hi).Inert x) L y →

@@ -15,6 +15,13 @@ section General
 variable {G H V W Y : Type} [Group G] [Group H] [AddCommGroup V] [Module ℂ V] [AddCommGroup W]
   [Module ℂ W] [AddCommGroup Y] [Module ℂ Y]
 
+/- English proof (translation)
+Use `haveI hV : Nontrivial V := by`. Assume the negation of the conclusion as `hV`. Rewrite `hV` using `[not_nontrivial_iff_subsingleton]`. Conclude with `(bot_ne_top (α := Subrepresentation ρ)) (Subrepresentation.toSubmodule_injective (Subsingleton.elim _ _))`. Use `{ toNontrivial := ⟨⟨⊥, ⊤, fun e => ?_⟩⟩, eq_bot_or_eq_top := fun S => ?_ }` and prove the remaining obligations.
+
+Conclude with `bot_ne_top (α := Submodule ℂ V) (congrArg Subrepresentation.toSubmodule e)`. Set `S' : Subrepresentation ρ` to `⟨S.toSubmodule, fun g v hv => by`. Take `⟨x, rfl⟩` from `hφ g`. Conclude with `S.apply_mem_toSubmodule x hv⟩`. Break down `h.eq_bot_or_eq_top S' with e | e` into its components or cases.
+
+Conclude with `Or.inl (Subrepresentation.toSubmodule_injective (congrArg (Subrepresentation.toSubmodule (ρ := ρ)) e :))`. Conclude with `Or.inr (Subrepresentation.toSubmodule_injective (congrArg (Subrepresentation.toSubmodule (ρ := ρ)) e :))`.
+-/
 theorem isIrreducible_comp {ρ : Representation ℂ G V} (h : ρ.IsIrreducible) (φ : H →* G)
     (hφ : Function.Surjective φ) : Representation.IsIrreducible (ρ.comp φ) := by
   haveI hV : Nontrivial V := by
@@ -39,6 +46,9 @@ section Matrices
 
 variable {k : Type} [Field k]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use `show ((invTranspose n k g)⁻¹ : GL (Fin n) k).valᵀ = g.val`. Rewrite using `[← map_inv]`. Use `show ((g⁻¹)⁻¹ : GL (Fin n) k).valᵀᵀ = g.val`. Rewrite using `[inv_inv, transpose_transpose]`.
+-/
 theorem invTranspose_invTranspose (n : ℕ) (g : GL (Fin n) k) :
     invTranspose n k (invTranspose n k g) = g := by
   apply Units.ext

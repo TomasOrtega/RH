@@ -24,6 +24,19 @@ open Finset GlobalTheory.FunObj.SqNum
 
 namespace GlobalTheory.RowClaim
 
+/- English proof (translation)
+Establish `hF : ∀ z : ℂ, z ∈ Set.range D.what₂.embLL ↔ z ∈ D.what₂.embLL.fieldRange` using `fun z => Iff.rfl`. Take `⟨A₀, A₀', WW₀, X₀, -, hX₀, -⟩` from `hTX i j`. Take `⟨A, A', WW, X, hX, hS⟩` from `hN.bottom i j ⟨A₀, A₀', WW₀, X₀, hX₀⟩`. Take `⟨lam, hlam⟩` from `hBF i j A A' WW X hX`. Establish `hI` using `hX.is`.
+
+Establish `hi' : ∀ t P g, MeasureTheory.IntegrableOn (X.ker' W.ψ W.θ t P g) X.fd' X.m'` using `fun t P g => (GlobalTheory.T.thetaIntegral_definiteSource_converges_continuous_invariant D W.ψ false A' WW _ _ (X.ω' t) X.m' X.fd' _ (hI.weil' t) (GlobalTheory.ConstRatio.posDef_of_std hX.std') hI.meas'.1 hI.meas'.2 (GlobalTheory.Chain.InnerSteps.theta_pureTensorO hI.isVac.1 hI.i …`. Establish `hr` using `hS.rationalSums (fun t P g => hlam.2.choose_spec.choose_spec.choose_spec.choose_spec.2.2.1 t P g) hi'`. Establish `hrat` using `GlobalTheory.ConstRatio.ratIn_of_definite hI (GlobalTheory.ConstRatio.posDef_of_std hX.std) (GlobalTheory.ConstRatio.posDef_of_std hX.std') (GlobalTheory.ConstRatio.posDef_of_std hX.stdW) hlam hr μ₀`. Use `haveI : Nonempty T := ⟨μ₀⟩`. Establish `hcst : X.IsConst W.ψ W.θ lam` using `hlam.isConst`.
+
+Take `⟨Λ, hΛ, hΛne⟩` from `hLN i j t`. Take `⟨Λ₀, hΛ₀, hΛ₀ne⟩` from `hLN i j μ₀`. Take `⟨u, hu, ζ, -, heq⟩` from `hTW i j t (c i j t) (c i j μ₀) A A' WW X lam Λ Λ₀ (hC i j t).1 (hK i j t) (hC i j μ₀).1 (hK i j μ₀) hX hcst hΛ hΛ₀`. Rewrite using `[hF]`. Take `⟨hn1, -, -, hn4, -, -, -, hn8, hn9⟩` from `GlobalTheory.SqTop.Model.tower_numbers (D := D) i j`.
+
+Establish `hne : ∀ L : ℂ → ℂ, (∀ s : ℤ, 1 - (GlobalTheory.SqTop.e0 D i j : ℤ) ≤ s → s ≤ halfRank D i j → L s ≠ 0) → ∀ n : ℕ, 1 ≤ n → n ≤ halfRank D i j → L (n : ℂ) ≠ 0` using `fun L h n h1 h2 => by`. Use `h n (by omega) (by exact_mod_cast h2)` as an intermediate fact. Simplify using `using this`. Establish `hs : ∀ n : ℕ, 1 ≤ n → n ≤ halfRank D i j → Λ (n : ℂ) / Λ₀ (n : ℂ) ∈ D.what₂.embLL.fieldRange ∧ Λ (n : ℂ) / Λ₀ (n : ℂ) ≠ 0` using `fun n h1 h2 => ⟨(hF _).1 (hN.ratios i j t Λ Λ₀ hΛ hΛ₀ n h1 (by omega) (hne Λ₀ hΛ₀ne n h1 h2)), div_ne_zero (hne Λ hΛne n h1 h2) (hne Λ₀ hΛ₀ne n h1 h2)⟩`. Establish `hP1 : ∀ k ∈ range (GlobalTheory.SqTop.qq D j), Λ ((GlobalTheory.SqTop.eTop D i j + k + 1 : ℕ) : ℂ) / Λ₀ ((GlobalTheory.SqTop.eTop D i j + k + 1 : ℕ) : ℂ) ∈ D.what₂.embLL.fieldRange ∧ Λ ((GlobalTheory.SqTop.eTop D i j + k + 1 : ℕ) : ℂ) / Λ₀ ((GlobalTheory.SqTop.eTop D i j + k + 1 …` using `fun k hk => hs _ (by omega) (by have := mem_range.1 hk; omega)`.
+
+Establish `hP2 : ∀ k ∈ range (GlobalTheory.SqTop.pp D j), Λ ((GlobalTheory.SqTop.eTop D i j + GlobalTheory.SqTop.qq D j - k : ℕ) : ℂ) / Λ₀ ((GlobalTheory.SqTop.eTop D i j + GlobalTheory.SqTop.qq D j - k : ℕ) : ℂ) ∈ D.what₂.embLL.fieldRange` using `fun k hk => (hs _ (by have := mem_range.1 hk; omega) (by omega)).1`. Establish `hU : (∏ k, u k) ∈ D.what₂.embLL.fieldRange` using `prod_mem fun k _ => by`. Take `⟨b, g, g', -, -, h⟩` from `hu k`. Rewrite using `[h, mul_one]`. Conclude with `RingHom.mem_fieldRange.2 ⟨_, rfl⟩`.
+
+Establish `hl : lam t / lam μ₀ ∈ D.what₂.embLL.fieldRange`. Take `⟨-, y, hy⟩` from `hrat t`. Conclude with `RingHom.mem_fieldRange.2 ⟨_, hy⟩`. Rewrite using `[eq_div_of_mul_eq (prod_ne_zero_iff.2 fun k hk => (hP1 k hk).2) heq]`. Conclude with `div_mem (mul_mem (mul_mem (mul_mem (RingHom.mem_fieldRange.2 ⟨ζ, rfl⟩) hU) hl) (prod_mem hP2)) (prod_mem fun k hk => (hP1 k hk).1)`.
+-/
 theorem sqRatio_mem_grid {D : D7} {T : Type} {Lc : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} (G : GridData Lc sc) (μ₀ : T)
     (W : G.Weil) (S : GridChoice W Set.univ) (ρ : RealMatch W) (c : Fin D.R.m → Fin D.R.m → T → ℂ)
     (hN : NumbersIn D.what₂.embLL S μ₀)
@@ -95,6 +108,15 @@ theorem sqRatio_mem_grid {D : D7} {T : Type} {Lc : LevCh D T} {sc : GlobalTheory
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `hP hTA hLM hC hLN hTX hTW`. Establish `hBF` using `GlobalTheory.T.bottom_triangle_constant_ratio hP hTA hLM hLN`. Take `⟨c1, h1⟩` from `hC`. Take `⟨c5, h5⟩` from `GlobalTheory.SqTop.Model.gBig_and (GlobalTheory.SqTop.Model.gBig_and hLN hTX) (GlobalTheory.SqTop.Model.gBig_and hTW hBF)`. Use `⟨max c1 c5, fun ε CF hCF => ?_⟩` and prove the remaining obligations.
+
+Take `⟨x1, g1⟩` from `h1 ε CF (le_of_max_le_left hCF)`. Take `⟨C0, x5, g5⟩` from `h5 ε CF (le_of_max_le_right hCF)`. Use `⟨max x1 x5, fun D large₂ he hx Γ _ _ Pl0 T A Ks _ _ _ R F hs ch hi hsc => ?_⟩` and prove the remaining obligations. Establish `hc` using `g1 D large₂ he (le_of_max_le_left hx) Γ Pl0 T A Ks R F hs ch hi hsc`. Establish `hrec : GlobalTheory.SqTop.Rec large₂` using `(GlobalTheory.SqTop.Model.rec_iff large₂).2 ⟨hs.size, hs.host⟩`.
+
+Establish `hL : R.toLevCh.Is A.μ0` using `hs.core.lev`. Introduce `hfield`. Take `⟨sc, G, W, M, ρ, ξ, cv, rm, S, rp, n, e, c⟩` from `ch`. Express the relevant statement in the definitionally equal form `sc = _ at hsc`. Substitute `hsc` using the available equality.
+
+Take `⟨⟨hLN', hTX'⟩, hTW', hBF'⟩` from `g5 C0 le_rfl D large₂ he (le_of_max_le_right hx) hrec T R.toLevCh A.μ0 hL G`. Establish `hstd : IsStdChar D W.ψ (-1)` using `(hi.weil.ψ : W.ψ = _) ▸ hs.std`. Conclude with `fun i j t => sqRatio_mem_grid G A.μ0 W S.toGridChoice rm c hfield hc hi.const (fun i j => (hLN' i j).1) (hTX' W hstd) (hTW' W S.toGridChoice rm hstd hfield) (hBF' W hstd) i j t`.
+-/
 theorem ratioK_holds : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → ConstK →
     GlobalTheory.SqTop.LNe → GlobalTheory.SqTop.TriEx → GlobalTheory.SqTop.Tower → RatioK := by
   intro hP hTA hLM hC hLN hTX hTW

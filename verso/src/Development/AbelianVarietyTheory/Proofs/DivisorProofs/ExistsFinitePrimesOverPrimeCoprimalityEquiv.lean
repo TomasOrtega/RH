@@ -8,6 +8,11 @@ open scoped nonZeroDivisors
 
 namespace GlobalTheory.PrimesOverL
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.PrimesAboveExistence.exists_primes_above`. Consider the case `exact _root_.GlobalTheory.PrimesAboveExistence.exists_primes_above`. Consider the case `(apply _root_.GlobalTheory.PrimesAboveExistence.exists_primes_above <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.PrimesAboveExistence.exists_primes_above <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.PrimesAboveExistence.exists_primes_above <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.PrimesAboveExistence.exists_primes_above ..)`.
+-/
 theorem primes_over_l : ∀ {F : Type} [Field F] [NumberField F] (l : ℕ), l.Prime →
     ∃ P : Finset (Ideal (𝓞 F)), (∀ 𝔭 ∈ P, 𝔭.IsMaximal ∧ 𝔭 ≠ ⊥ ∧ l ∣ Ideal.absNorm 𝔭) ∧
       ∀ I : Ideal (𝓞 F), CoprimeTo F (∏ 𝔭 ∈ P, 𝔭) I ↔ CoprimeTo F (Ideal.span {(l : 𝓞 F)}) I := by

@@ -11,6 +11,13 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.C
 
 namespace GlobalTheory.FactorDepth
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c`. Use `letI := H.starRing`. Introduce `p _ T io y Ch X`. Establish `hc : ∀ (Ch' : IntegralChartA3 Xo c T io y) (X' : ValExt T p) (f : Lt1 Dw) (k : ℕ), nuFacC Ch' X' f k = nuFacC Ch X f k` using `fun Ch' X' f k => (GlobalTheory.T.detFactorDepthInChart_chart_independent E H Dw l Xo c p T io y Ch' Ch X' f k).trans (GlobalTheory.T.detFactorDepthInChart_independent_closedField E H Dw l Xo c p T io y Ch X' X f k)`. Establish `h1 : ∀ (f : Lt1 Dw) (k : ℕ), nuFac p y f k = nuFacC Ch X f k` using `fun f k => le_antisymm (nuFac_le Ch X f k) (le_nuFac fun Ch' X' => (hc Ch' X' f k).ge)`.
+
+Use `⟨h1, fun cx => ?_⟩` and prove the remaining obligations. Establish `h2 : ∀ (Ch' : IntegralChartA3 Xo c T io y) (X' : ValExt T p), nuProdC Ch' X' cx = nuP p y cx`. Introduce `Ch' X'`. Rewrite using `[GlobalTheory.T.detProductDepthInChart_eq_sum_factorDepths E H Dw l Xo c p T io y Ch' X' cx, nuP]`. Conclude with `Finset.sum_congr rfl fun f _ => (hc Ch' X' f (cx f)).trans (h1 f (cx f)).symm`.
+
+Conclude with `le_antisymm (iInf_le_of_le Ch (iInf_le_of_le X (h2 Ch X).le)) (le_iInf₂ fun Ch' X' => (h2 Ch' X').ge)`.
+-/
 theorem nuFac_eq_nuFacC_and_nuProd_eq_nuP :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H)
       (Xo : Moduli Dw l) (c : Coeff l), letI := H.starRing;

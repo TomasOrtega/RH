@@ -60,6 +60,9 @@ def HgX (R : Type) [CommRing R] (j : ℕ) (b : BX X) : GenR R (NJ X j) :=
 def szT (j : ℕ) (b : BX X) (k : Fin (cX X j b)) : ℕ :=
   if IsOddPos b.2 then NJ X (j + 1) - colH (muX X j (NJ X (j + 1)) b) k.val else colH (muX X j (NJ X (j + 1)) b) k.val
 
+/- English proof (translation)
+Unfold `szT`. Use `split_ifs`. Conclude with `Nat.sub_le _ _`. Conclude with `colH_le _ _`.
+-/
 theorem szT_le (j : ℕ) (b : BX X) (k : Fin (cX X j b)) : szT X j b k ≤ NJ X (j + 1) := by
   unfold szT
   split_ifs

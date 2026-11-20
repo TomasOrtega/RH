@@ -25,6 +25,13 @@ def Fb (c : C) : (gatC P hp C).Fn := fun (c' : C) (L : P.Tup) => if c' = c then 
 variable (v0 : Fin P.nV)
 
 include v0 in
+/- English proof (translation)
+Introduce `c' _`. Use `(Formalism.MainNotions.G.Inhab.mem_funMod (levB P hp) P.HtupW (Fb P hp C c c')).mpr ⟨fun L hL => ?_, fun L hL => ?_, fun γ L => ?_⟩` and prove the remaining obligations. Unfold `Fb`. Use `split_ifs`. Conclude with `valE_mem P hp L hL`.
+
+Conclude with `Submodule.zero_mem _`. Unfold `Fb`. Use `split_ifs`. Unfold `valE`. Rewrite using `[dif_neg hL]`.
+
+Both sides reduce to the same expression. Unfold `Fb`. Use `split_ifs`. Conclude with `valE_smul P hp v0 γ L`. Rewrite using `[map_zero, smul_zero]`.
+-/
 theorem Fb_mem (c : C) : Fb P hp C c ∈ (gatC P hp C).M := by
   classical
   intro c' _
@@ -42,6 +49,19 @@ theorem Fb_mem (c : C) : Fb P hp C c ∈ (gatC P hp C).M := by
 
 include v0 in
 
+/- English proof (translation)
+Establish `hF'` using `(Formalism.MainNotions.G.Inhab.mem_funMod (levB P hp) P.HtupW (F c)).mp (hF c (Set.mem_univ c))`. Use `set e : P.Xsp := F c (standardTuple P) with he`. Establish `hmem : e ∈ P.HtupW (standardTuple P)` using `hF'.1 _ (standardTuple_isLattice P)`. Use `choose cc hcz hc using fun v a => natAct_tor P v a`. Use `choose u hu hnat using fun v a => tor_mem P hp v a`.
+
+Establish `hc0 : ∀ v a, cc v a ≠ 0` using `fun v a => by`. Take `⟨z, hz⟩` from `hcz v a`. Rewrite using `[hz]`. Conclude with `zpow_ne_zero _ two_ne_zero`. Establish `hwt : IsWeightedHomogeneous (om P) e (LamTot P)`.
+
+Use `isWH_of_eigen P e (EV P) (EV_ne P) (EV_isWH P) (fun v a => (cc v a)⁻¹ * algebraMap O Kf (((u v a)⁻¹ : Oˣ) : O)) (fun v a => ?_) (fun v a => ?_)` and prove the remaining obligations. Establish `h1` using `hF'.2.2 ⟨(torM P v a, u v a), hu v a⟩ (standardTuple P)`. Rewrite `h1` using `[tor_stab P hp v a _ (hu v a)]`. Establish `h2 : P.natAct (torM P v a) e = algebraMap O Kf (((u v a)⁻¹ : Oˣ) : O) • e`. Establish `h3 : e = ((u v a : O)) • P.natAct (torM P v a) e` using `h1`.
+
+Use `conv_rhs => rw [h3]`. Rewrite using `[← algebraMap_smul Kf ((u v a : Oˣ) : O) (P.natAct (torM P v a) e), smul_smul, ← map_mul, Units.inv_mul, map_one, one_smul]`. Rewrite `h2` using `[hc, LinearMap.smul_apply, AlgHom.toLinearMap_apply]`. Rewrite using `[mul_smul, ← h2, smul_smul, inv_mul_cancel₀ (hc0 v a), one_smul]`. Establish `h2` using `hnat v a`.
+
+Rewrite `h2` using `[hc, LinearMap.smul_apply, AlgHom.toLinearMap_apply]`. Rewrite using `[mul_smul, ← h2, smul_smul, inv_mul_cancel₀ (hc0 v a), one_smul]`. Establish `hlat : ∀ v (s : Fin (P.n' v)), IsLattice O (extO O (P.ι v) (P.σ v) s.val (standardTuple P v))` using `fun v s => by show IsLattice O (extO O (P.ι v) (P.σ v) s.val (L0 P v))`. Rewrite using `[extension_standardLattice]; exact ⟨1, by simp, rfl⟩`. Take `⟨a, ha⟩` from `mem_line P e (htupW_le P (standardTuple P) hlat hmem) hwt`.
+
+Establish `hint` using `eval_int P _ (htupW_int P _ hmem)`. Rewrite `hint` using `[ha, smul_eval, eval_EV, mul_one]`. Take `⟨o, ho⟩` from `hint`. Conclude with `⟨o, by rw [ha, ho]⟩`.
+-/
 theorem value_standardTuple_integral (F : (gatC P hp C).Fn) (hF : F ∈ (gatC P hp C).M) (c : C) :
     ∃ o : O, F c (standardTuple P) = algebraMap O Kf o • EV P := by
   have hF' := (Formalism.MainNotions.G.Inhab.mem_funMod (levB P hp) P.HtupW (F c)).mp (hF c (Set.mem_univ c))
@@ -76,6 +96,17 @@ theorem value_standardTuple_integral (F : (gatC P hp C).Fn) (hF : F ∈ (gatC P 
   exact ⟨o, by rw [ha, ho]⟩
 
 include v0 in
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨c, rfl⟩`. Conclude with `Fb_mem P hp C v0 c`. Introduce `F hF choose o ho using value_standardTuple_integral P hp C v0 F hF`.
+
+Establish `hFeq : F = ∑ c, o c • Fb P hp C c`. Use function extensionality and compare the values at `c' L`. Rewrite using `[Finset.sum_apply, Finset.sum_apply, Finset.sum_eq_single c']`. Establish `hF'` using `(Formalism.MainNotions.G.Inhab.mem_funMod (levB P hp) P.HtupW (F c')).mp (hF c' (Set.mem_univ c')) show F c' L = o c' • (if c' = c' then valE P hp L else 0)`. Rewrite using `[if_pos rfl]`.
+
+Unfold `valE`. Use `split_ifs with hL`. Establish `h1` using `hF'.2.2 (gOf P hp L hL) (standardTuple P)`. Rewrite `h1` using `[gOf_spec]`. Rewrite using `[h1, ho, LinearMap.map_smul_of_tower, smul_comm, ← algebraMap_smul Kf (o c')]`.
+
+Rewrite using `[hF'.2.1 L hL, smul_zero]`. Introduce `c _ hc show o c • (if c' = c then valE P hp L else 0) = 0`. Rewrite using `[if_neg (Ne.symm hc), smul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ c') h`.
+
+Rewrite using `[hFeq]`. Conclude with `Submodule.sum_mem _ fun c _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨c, rfl⟩)`.
+-/
 theorem M_eq : Submodule.span (gatC P hp C).O (Set.range (Fb P hp C)) = (gatC P hp C).M := by
   classical
   apply le_antisymm
@@ -104,6 +135,13 @@ theorem M_eq : Submodule.span (gatC P hp C).O (Set.range (Fb P hp C)) = (gatC P 
     exact Submodule.sum_mem _ fun c _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨c, rfl⟩)
 
 include v0 in
+/- English proof (translation)
+Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `a ha c`. Establish `h1` using `congrFun (congrFun ha c) (standardTuple P)`. Rewrite `h1` using `[Finset.sum_apply, Finset.sum_apply, Finset.sum_eq_single c]`. Express the relevant statement in the definitionally equal form `a c • (if c = c then valE P hp (standardTuple P) else 0) = 0 at h1`.
+
+Rewrite `h1` using `[if_pos rfl, value_standardTuple P hp v0]`. Conclude with `(smul_eq_zero.mp h1).resolve_right (EV_ne P)`. Introduce `c' _ hc' show a c' • (if c = c' then valE P hp (standardTuple P) else 0) = 0`. Rewrite using `[if_neg (Ne.symm hc'), smul_zero]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ c) h`.
+-/
 theorem Fb_li : LinearIndependent Kf (Fb P hp C) := by
   classical
   rw [Fintype.linearIndependent_iff]
@@ -119,6 +157,9 @@ theorem Fb_li : LinearIndependent Kf (Fb P hp C) := by
   · intro h; exact absurd (Finset.mem_univ c) h
 
 include v0 in
+/- English proof (translation)
+Unfold `GAtP.d`. Rewrite using `[← M_eq P hp C v0]`. Use `haveI := (P.setting v0).frac_O`. Establish `: FaithfulSMul (gatC P hp C).O (gatC P hp C).Kf` using `(faithfulSMul_iff_algebraMap_injective _ _).mpr (IsFractionRing.injective O Kf)`. Conclude with `finrank_span_eq_card ((Fb_li P hp C v0).restrict_scalars' (gatC P hp C).O)`.
+-/
 theorem gatC_d : (gatC P hp C).d = Fintype.card C := by
   unfold GAtP.d
   rw [← M_eq P hp C v0]

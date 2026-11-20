@@ -13,6 +13,11 @@ open PositivityTheory.RgBcC PositivityTheory.RgBcC.Fc
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Establish `hf : f = ⇑p` using `funext fun y => (h y).symm`. Substitute `hf` using the available equality. Establish `hc : Continuous (⇑p) ∧ Tendsto (⇑p) (cocompact ℝ) (𝓝 0)` using `⟨p.continuous, p.zero_at_infty'⟩`. Unfold `toC0`. Rewrite using `[dif_pos hc]`.
+
+Use extensionality with `y`. Both sides reduce to the same expression.
+-/
 theorem toC0_eq_of_coe (p : C₀(ℝ, ℂ)) (f : ℝ → ℂ) (h : ∀ y, p y = f y) : toC0 f = p := by
   have hf : f = ⇑p := funext fun y => (h y).symm
   subst hf
@@ -22,6 +27,13 @@ theorem toC0_eq_of_coe (p : C₀(ℝ, ℂ)) (f : ℝ → ℂ) (h : ∀ y, p y = 
   ext y
   rfl
 
+/- English proof (translation)
+Establish `hpos : ∀ y : ℝ, (1 + y ^ 2) ≠ 0` using `fun y => by positivity`. Establish `hcont : Continuous (fun y : ℝ => (((1 + y ^ 2)⁻¹ : ℝ) : ℂ))`. Use `Complex.continuous_ofReal.comp ?_` and prove the remaining obligations. Conclude with `(by fun_prop : Continuous fun y : ℝ => 1 + y ^ 2).inv₀ hpos`. Establish `hat : Tendsto (fun y : ℝ => 1 + y ^ 2) (cocompact ℝ) atTop`.
+
+Establish `h1 : Tendsto (fun y : ℝ => ‖y‖ ^ 2) (cocompact ℝ) atTop` using `(tendsto_pow_atTop (by norm_num : (2 : ℕ) ≠ 0)).comp tendsto_norm_cocompact_atTop`. Establish `h2 : Tendsto (fun y : ℝ => 1 + ‖y‖ ^ 2) (cocompact ℝ) atTop` using `tendsto_atTop_add_const_left _ 1 h1`. Simplify using `using h2`. Establish `htend : Tendsto (fun y : ℝ => (((1 + y ^ 2)⁻¹ : ℝ) : ℂ)) (cocompact ℝ) (𝓝 0)`. Establish `h3 : Tendsto (fun y : ℝ => (1 + y ^ 2)⁻¹) (cocompact ℝ) (𝓝 0)` using `tendsto_inv_atTop_zero.comp hat`.
+
+Establish `h4 : Tendsto (fun y : ℝ => (((1 + y ^ 2)⁻¹ : ℝ) : ℂ)) (cocompact ℝ) (𝓝 ((0 : ℝ) : ℂ))` using `(Complex.continuous_ofReal.tendsto 0).comp h3`. Rewrite `h4` using `[Complex.ofReal_zero]`. Then use the resulting hypothesis. Conclude with `⟨⟨⟨_, hcont⟩, htend⟩, fun y => rfl⟩`.
+-/
 theorem exists_resolvent_C0 : ∃ r : C₀(ℝ, ℂ), ∀ y, r y = (((1 + y ^ 2)⁻¹ : ℝ) : ℂ) := by
   have hpos : ∀ y : ℝ, (1 + y ^ 2) ≠ 0 := fun y => by positivity
   have hcont : Continuous (fun y : ℝ => (((1 + y ^ 2)⁻¹ : ℝ) : ℂ)) := by
@@ -41,6 +53,17 @@ theorem exists_resolvent_C0 : ∃ r : C₀(ℝ, ℂ), ∀ y, r y = (((1 + y ^ 2)
     rwa [Complex.ofReal_zero] at h4
   exact ⟨⟨⟨_, hcont⟩, htend⟩, fun y => rfl⟩
 
+/- English proof (translation)
+Introduce `n _ _ μ _ E _ Ω T F c hS g T₀ hb N _`. Take `⟨-, -, -, -, -, -, -, -, -, hPW, -⟩` from `hS`. Establish `h0` using `(hPW c g T₀ hb).1 0`. Simplify using `only [pow_zero, one_mul] at h0`. Take `⟨r, hr⟩` from `exists_resolvent_C0`.
+
+Establish `hT : F.Φ r = T` using `F.res r hr`. Set `q : C₀(ℝ, ℂ)` to `⟨⟨hg c g, h0.1⟩, h0.2⟩`. Establish `hq : ∀ y, q y = hg c g y` using `fun y => rfl`. Establish `key : ∀ M : ℕ, ∃ p : C₀(ℝ, ℂ), (∀ y, p y = ((((1 + y ^ 2) ^ M)⁻¹ : ℝ) : ℂ) * hg c g y) ∧ F.Φ p = F.Φ q * T ^ M`. Introduce `M`.
+
+Proceed by induction on `M with`. Consider the case `zero => exact ⟨q, fun y => by simp [hq], by simp⟩`. Consider the case `succ M ih`. Take `⟨p, hp, hΦ⟩` from `ih`. Use `⟨p * r, fun y => ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `: (p * r) y = p y * r y` using `rfl`. Rewrite using `[this, hp, hr, pow_succ (1 + y ^ 2) M, mul_inv]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[F.map_mul, hΦ, hT, pow_succ, mul_assoc]`.
+
+Take `⟨p, hp, hΦ⟩` from `key N`. Rewrite using `[toC0_eq_of_coe p _ hp, toC0_eq_of_coe q _ hq, hΦ]`.
+-/
 theorem phiRes_holds : PhiRes := by
   intro n _ _ μ _ E _ Ω T F c hS g T₀ hb N _
   obtain ⟨-, -, -, -, -, -, -, -, -, hPW, -⟩ := hS

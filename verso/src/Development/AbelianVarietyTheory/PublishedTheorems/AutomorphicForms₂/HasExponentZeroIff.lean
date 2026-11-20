@@ -35,6 +35,11 @@ def IsTateEps (ψ : AddChar k Circle) (χ : kˣ →* ℂˣ) (e : ℂ) : Prop :=
   ∃ (c : kˣ) (a : ℕ) (R : Finset kˣ), HasConductor ψ c ∧ HasExponent χ a ∧ IsShellReps c a R ∧
     e = (resCard k : ℂ) ^ (-(a : ℂ) / 2) * ∑ r ∈ R, (((χ r)⁻¹ : ℂˣ) : ℂ) * (ψ (r : k) : ℂ)
 
+/- English proof (translation)
+Break down `lt_trichotomy a b with h | h | h` into its components or cases. Take `⟨x, hx, hx'⟩` from `hb.2 a h`. Conclude with `absurd (ha.1 x hx) hx'`. Conclude with `h`. Take `⟨x, hx, hx'⟩` from `ha.2 b h`.
+
+Conclude with `absurd (hb.1 x hx) hx'`.
+-/
 theorem HasExponent.unique {χ : kˣ →* ℂˣ} {a b : ℕ} (ha : HasExponent χ a) (hb : HasExponent χ b) : a = b := by
   rcases lt_trichotomy a b with h | h | h
   · obtain ⟨x, hx, hx'⟩ := hb.2 a h
@@ -43,11 +48,21 @@ theorem HasExponent.unique {χ : kˣ →* ℂˣ} {a b : ℕ} (ha : HasExponent �
   · obtain ⟨x, hx, hx'⟩ := ha.2 b h
     exact absurd (hb.1 x hx) hx'
 
+/- English proof (translation)
+Use `⟨fun h x hx => h.1 x ⟨hx, ?_⟩, fun h => ⟨fun x hx => h x hx.1, fun b hb => absurd hb (Nat.not_lt_zero b)⟩⟩` and prove the remaining obligations. Rewrite using `[pow_zero]`. Conclude with `(Valuation.map_sub _ _ _).trans (by simp [hx])`.
+-/
 theorem hasExponent_zero_iff {χ : kˣ →* ℂˣ} : HasExponent χ 0 ↔ IsUnram χ := by
   refine ⟨fun h x hx => h.1 x ⟨hx, ?_⟩, fun h => ⟨fun x hx => h x hx.1, fun b hb => absurd hb (Nat.not_lt_zero b)⟩⟩
   rw [pow_zero]
   exact (Valuation.map_sub _ _ _).trans (by simp [hx])
 
+/- English proof (translation)
+Use `⟨c, 0, {c}, hψ, hasExponent_zero_iff.2 hχ, ⟨by simp, fun y hy => ⟨c, ⟨by simp, ?_⟩, fun r hr => ?_⟩⟩, ?_⟩` and prove the remaining obligations. Establish `h1 : ord k (y * c⁻¹) = 0`. Establish `h2` using `ord_mul k (y * c⁻¹) c`. Rewrite `h2` using `[inv_mul_cancel_right]`. Simplify using `only [Nat.cast_zero, sub_zero] at hy`.
+
+Use linear arithmetic over natural numbers and integers. Establish `h3` using `ord_eq_zero_iff.1 h1`. Establish `h4 : valuation k (y : k) = valuation k (c : k)`. Establish `: (y : k) = ((y * c⁻¹ : kˣ) : k) * c` using `by simp`. Rewrite using `[this, map_mul, h3, one_mul]`.
+
+Conclude with `(Valuation.map_sub _ _ _).trans (by simp [h4])`. Simplify using `using hr.1`. Establish `: ψ (c : k) = 1` using `(hψ c).2 le_rfl c le_rfl`. Simplify using `[this]`.
+-/
 theorem isTateEps_of_isUnram {ψ : AddChar k Circle} {c : kˣ} (hψ : HasConductor ψ c) {χ : kˣ →* ℂˣ}
     (hχ : IsUnram χ) : IsTateEps ψ χ ((χ c)⁻¹ : ℂˣ) := by
   refine ⟨c, 0, {c}, hψ, hasExponent_zero_iff.2 hχ, ⟨by simp, fun y hy => ⟨c, ⟨by simp, ?_⟩, fun r hr => ?_⟩⟩, ?_⟩
@@ -69,6 +84,9 @@ end Tate
 
 section Pairs
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i.rev (fun b _ hb => by simp [hb]) (by simp)]`. Simplify using `[Matrix.one_apply, eq_comm]`.
+-/
 theorem antidiag_mul_self (n : ℕ) (R : Type) [CommRing R] :
     (Matrix.of fun i j : Fin n => if j = i.rev then (1 : R) else 0) *
       (Matrix.of fun i j : Fin n => if j = i.rev then (1 : R) else 0) = 1 := by
@@ -105,9 +123,21 @@ def HasPairEps (ψ : AddChar k Circle) (π : Representation ℂ (GL (Fin (m + 1)
         I (fun g => l (π (tilde (corner g)) v) * l' (τ (tilde g) v')) =
           (ω (-1) : ℂ) ^ m * e * I (fun g => l (π (corner g) v) * l' (τ g v'))
 
+/- English proof (translation)
+Introduce `f _ _` and use `congrArg f (Units.ext (Subsingleton.elim _ _))`.
+-/
 theorem isInvIntegral_zero : IsInvIntegral (LinearMap.proj (1 : GL (Fin 0) k) : (GL (Fin 0) k → ℂ) →ₗ[ℂ] ℂ) :=
   fun f _ _ => congrArg f (Units.ext (Subsingleton.elim _ _))
 
+/- English proof (translation)
+Establish `h0 : ∀ g : GL (Fin 0) k, g = 1` using `fun g => Units.ext (Subsingleton.elim _ _)`. Establish `h1 : corner (1 : GL (Fin 0) k) = 1` using `map_one (emb₂ k (stdSum (rfl : 0 + 1 = 0 + 1)))`. Establish `h2 : tilde (1 : GL (Fin (0 + 1)) k) = 1`. Rewrite using `[tilde, map_one, mul_one]`. Use extensionality with `i j`.
+
+Use `fin_cases i`. Use `fin_cases j`. Simplify using `[longElt]`. Establish `key : ∀ (l l' : Module.Dual ℂ ℂ) (v v' : ℂ), (fun g : GL (Fin 0) k => l (detRep (Fin (0 + 1)) χ (tilde (corner g)) v) * l' (detRep (Fin 0) 1 (tilde g) v')) = fun g => l (detRep (Fin (0 + 1)) χ (corner g) v) * l' (detRep (Fin 0) 1 g v')` using `fun l l' v v' => by`. Use function extensionality and compare the values at `g`.
+
+Rewrite using `[h0 (tilde g), h0 g, h1, h2]`. Prove the components needed by the constructor for the conclusion. Introduce `H`. Use `H 1 (fun z v => by simp [detRep]) LinearMap.id LinearMap.id (fun u hu v => by simp [detRep, superDiag, det_eq_one_of_mem_unipRad k hu]) (fun u hu v => by simp [detRep, superDiag]) _ isInvIntegral_zero 1 1` as an intermediate fact. Rewrite `this` using `[key]`.
+
+Simplify `this.symm` using `[h1]`. Introduce and unpack `rfl ω _ l l' _ _ I _ v v'`. Rewrite using `[key]`. Simplify using the standard rewrite rules.
+-/
 theorem hasPairEps_zero_iff (ψ : AddChar k Circle) (χ : kˣ →* ℂˣ) (e : ℂ) :
     HasPairEps ψ (detRep (Fin (0 + 1)) χ) (detRep (Fin 0) 1) e ↔ e = 1 := by
   have h0 : ∀ g : GL (Fin 0) k, g = 1 := fun g => Units.ext (Subsingleton.elim _ _)
@@ -151,6 +181,9 @@ structure IsLocalArtin {E : Type} [Field E] [NumberField E] [Algebra E Ω] [IsAl
   glob : ∀ art : Ideles E →* Gab E Ω, IsGlobalArtin art →
     ∀ σ : Weil h, art (localIdele E w (a σ)) = toAb E Ω σ
 
+/- English proof (translation)
+The claim follows from `IsOpen.preimage ha.cont hχ`.
+-/
 theorem IsLocalArtin.smooth {E : Type} [Field E] [NumberField E] [Algebra E Ω] [IsAlgClosure E Ω]
     {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w} {a : Weil h →* (w.adicCompletion E)ˣ}
     (ha : IsLocalArtin h a) {χ : (w.adicCompletion E)ˣ →* ℂˣ} (hχ : IsSmoothChar χ) :
@@ -176,8 +209,14 @@ def Induces {h' : IsPlaceOver A v'} {h : IsPlaceOver A v} (x : WD h') (y : WD h)
 
 omit [IsAlgClosure K Ω] in
 
+/- English proof (translation)
+Introduce `σ` and use `⟨1, fun x => by simp⟩`.
+-/
 theorem isLocalExt_self (h : IsPlaceOver A v) : IsLocalExt K h := fun σ => ⟨1, fun x => by simp⟩
 
+/- English proof (translation)
+Take `⟨n, a, rfl⟩` from `x.exists_rep`. Use `⟨n, n, a, a, LinearMap.id, rfl, rfl, by simp, fun σ' σ hσ u => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[show σ = σ' from Subtype.ext (AlgEquiv.ext hσ)]`. Both sides reduce to the same expression. Conclude with `eq_top_iff.2 fun u _ => Submodule.subset_span ⟨(1, u), by simp⟩`.
+-/
 theorem induces_self {h : IsPlaceOver A v} (x : WD h) : Induces x x := by
   obtain ⟨n, a, rfl⟩ := x.exists_rep
   refine ⟨n, n, a, a, LinearMap.id, rfl, rfl, by simp, fun σ' σ hσ u => ?_, ?_⟩

@@ -12,6 +12,13 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.AlphaPair
 
+/- English proof (translation)
+Substitute `hu` using the available equality. Establish `hw : m.cm.F ≫ t.G.hom = t'.G.hom ≫ f` using `m.cart.1.w`. Establish `mul : ∀ (T : Over S') (x y : T ⟶ t'.G), Out.toBase hw (x * y) = Out.toBase hw x * Out.toBase hw y` using `fun T x y => Over.OverMorphism.ext (m.cart.2 T x y (Out.toBase hw x) (Out.toBase hw y) rfl rfl).symm`. Set `β : (Over.mk a ⟶ t'.G) →* (Over.mk (a ≫ f) ⟶ t.G)` to `GlobalTheory.UU.toBaseHom mul (Over.mk a)`. Establish `hβ : Function.Bijective β`.
+
+Use `⟨fun x y e => Over.OverMorphism.ext (m.cart.1.hom_ext (congrArg (fun q => q.left) e) (by rw [Over.w, Over.w])), fun x => ?_⟩` and prove the remaining obligations. Conclude with `⟨Over.homMk (m.cart.1.lift x.left a (Over.w x)) (m.cart.1.lift_snd _ _ _), Over.OverMorphism.ext (m.cart.1.lift_fst _ _ _)⟩`. Set `e` to `(MulEquiv.ofBijective β hβ).symm`. Establish `he : ∀ x, β (e x) = x` using `fun x => (MulEquiv.ofBijective β hβ).apply_symm_apply x`. Use `⟨e, fun x => congrArg (fun q => q.left) (he x), fun x y h => ?_⟩` and prove the remaining obligations.
+
+Take `⟨ζ, hζ, -⟩` from `GlobalTheory.UU.existsUnique_cubWeil t'.cub (N := n) (x := e x) (y := e y) (by rw [← map_pow, h.1, map_one]) (by rw [← map_pow, h.2.1, map_one])`. Establish `h' : CubWeil t.cub n (β (e x)) (β (e y)) ζ` using `GlobalTheory.UU.cubWeil_of_isPullCubical S S' f t.G t'.G m.cm hw mul _ _ t.cub t'.cub m.lin n _ _ _ ζ hζ`. Rewrite `h'` using `[he, he]`. Take `rfl : ζ = 1` from `h'.unique h`. Conclude with `hζ`.
+-/
 theorem exists_pullEquiv {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {S S' : Scheme.{0}}
     {f : S' ⟶ S} {t : SAB H S} {t' : SAB H S'} (m : SABMap t' t f) (n : ℕ) {Y : Scheme.{0}} (a : Y ⟶ S')
     (u : Y ⟶ S) (hu : a ≫ f = u) :
@@ -38,6 +45,15 @@ theorem exists_pullEquiv {E : Type} [Field E] [NumberField E] [IsCMField E] {H :
   obtain rfl : ζ = 1 := h'.unique h
   exact hζ
 
+/- English proof (translation)
+Introduce `E _ _ _ H S S' f t t' m Ω _ s s' hs n`. Establish `key : ∀ (A : Type) [CommRing A] [Algebra Ω A], ∃ e : (overAt s A ⟶ t.G) ≃* (overAt s' A ⟶ t'.G), (∀ x, (e x).left ≫ m.cm.F = x.left) ∧ ∀ x y, CubWeil t.cub n x y 1 → CubWeil t'.cub n (e x) (e y) 1` using `fun A _ _ => exists_pullEquiv m n _ _ (by rw [Category.assoc, hs])`. Use `choose e he hc using key`. Establish `nat : ∀ (A A' : Type) [CommRing A] [Algebra Ω A] [CommRing A'] [Algebra Ω A'] (g : A →ₐ[Ω] A') (x : overAt s A ⟶ t.G), e A' (homAt s g ≫ x) = homAt s' g ≫ e A x`. Introduce `A A' _ _ _ _ g x`.
+
+Use `Over.OverMorphism.ext (m.cart.1.hom_ext ?_ (by rw [Over.w, Over.w]))` and prove the remaining obligations. Rewrite using `[he, Over.comp_left, Over.comp_left, Category.assoc, he]`. Both sides reduce to the same expression. Use `⟨fun A _ _ => (e A).toMonoidHom, fun A _ _ => 1, ⟨nat, ?_, ?_, ?_, ?_⟩, fun A _ _ => hc A⟩` and prove the remaining obligations. Introduce `A A' _ _ _ _ g χ`.
+
+Conclude with `(MonObj.comp_one _).symm`. Introduce `A _ _ χ χ' _`. Conclude with `MonoidHom.ext fun x => by rw [Subsingleton.elim x 1, map_one, map_one]`. Introduce `A _ _ x`. Conclude with `(e A).map_eq_one_iff.trans ⟨fun h => ⟨1, h.symm⟩, fun ⟨_, h⟩ => h.symm⟩`.
+
+Introduce `A _ _ π _ y hy`. Use `⟨(e A).symm y, (e Ω).map_eq_one_iff.1 ?_, (e A).apply_symm_apply y⟩` and prove the remaining obligations. Rewrite using `[nat, (e A).apply_symm_apply, hy]`.
+-/
 theorem exists_isTorExt_pull : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (S S' : Scheme.{0}) (f : S' ⟶ S) (t : SAB H S) (t' : SAB H S') (_ : SABMap t' t f) (Ω : Type) [Field Ω] (s : Sp Ω ⟶ S) (s' : Sp Ω ⟶ S'), s' ≫ f = s → ∀ n : ℕ, ∃ (τ : PtHom s s' t.G t'.G) (io : TorHom s t.G PUnit), IsTorExt s s' t.G t'.G PUnit τ io ∧ Transfer n t.cub t'.cub τ := by
   intro E _ _ _ H S S' f t t' m Ω _ s s' hs n
   have key : ∀ (A : Type) [CommRing A] [Algebra Ω A], ∃ e : (overAt s A ⟶ t.G) ≃* (overAt s' A ⟶ t'.G),

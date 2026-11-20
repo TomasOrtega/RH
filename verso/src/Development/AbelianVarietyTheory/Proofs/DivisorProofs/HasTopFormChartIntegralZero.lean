@@ -9,6 +9,11 @@ open scoped ContDiff Matrix
 
 namespace GlobalTheory.GoodTop
 
+/- English proof (translation)
+Establish `h : ∀ i, chartMeas (e i) (fun _ => 0) = 0`. Introduce `i`. Unfold `chartMeas`. Establish `: ((fun _ : Y => (0 : ENNReal)) ∘ (e i).symm) = 0` using `rfl`. Rewrite using `[this, withDensity_zero, Measure.map_zero]`.
+
+Unfold `glueMeas`. Simplify using `only [h]`. Conclude with `le_antisymm (iSup_le fun _ => le_rfl) (Measure.zero_le _)`.
+-/
 theorem glueMeas_zero_dens {n : ℕ} {Y κ : Type} [TopologicalSpace Y] [MeasurableSpace Y]
     (e : κ → OpenPartialHomeomorph Y (V n)) : glueMeas e (fun _ _ => 0) = 0 := by
   have h : ∀ i, chartMeas (e i) (fun _ => 0) = 0 := by
@@ -20,6 +25,9 @@ theorem glueMeas_zero_dens {n : ℕ} {Y κ : Type} [TopologicalSpace Y] [Measura
   simp only [h]
   exact le_antisymm (iSup_le fun _ => le_rfl) (Measure.zero_le _)
 
+/- English proof (translation)
+Unfold `HasInt`. Simplify using `only [mul_zero, ENNReal.ofReal_zero, glueMeas_zero_dens]`. Simplify using the standard rewrite rules.
+-/
 theorem hasInt_zero {n : ℕ} {Y κ : Type} [TopologicalSpace Y] [MeasurableSpace Y]
     (e : κ → OpenPartialHomeomorph Y (V n)) (S : Set Y) : HasInt e (fun _ _ => 0) S 0 := by
   unfold HasInt

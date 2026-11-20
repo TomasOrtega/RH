@@ -18,20 +18,34 @@ variable {d : SD σ} (L : LD d)
 
 namespace Bq
 
+/- English proof (translation)
+Simplify using `[QE, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply, ite_mul, Finset.sum_ite_eq]`.
+-/
 private theorem QE_mul_apply_inl {n : ℕ} (ε : ℤˣ) (R : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) E)
     (a : Fin n) (q : Fin n ⊕ Fin n) : ((QE n ε : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) E) * R) (Sum.inl a) q = R (Sum.inr a) q := by
   simp [QE, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply, ite_mul, Finset.sum_ite_eq]
 
+/- English proof (translation)
+Simplify using `[QE, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply, Matrix.smul_apply, smul_ite, smul_eq_mul, ite_mul, Finset.sum_ite_eq, mul_comm, mul_left_comm]`.
+-/
 private theorem QE_mul_apply_inr {n : ℕ} (ε : ℤˣ) (R : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) E)
     (a : Fin n) (q : Fin n ⊕ Fin n) : ((QE n ε : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) E) * R) (Sum.inr a) q = ((ε : ℤ) : E) * R (Sum.inl a) q := by
   simp [QE, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply, Matrix.smul_apply, smul_ite,
     smul_eq_mul, ite_mul, Finset.sum_ite_eq, mul_comm, mul_left_comm]
 
+/- English proof (translation)
+Apply the tactic sequence `rcases p with i | i <;> rcases q with k | k <;>`. Simplify using `[QE, emS, Matrix.one_apply, L.inj.eq_iff]`.
+-/
 private theorem QE_emS_emS (ε : ℤˣ) (p q : Fin L.n ⊕ Fin L.n) :
     QE d.n ε (emS L p) (emS L q) = (QE L.n ε p q : E) := by
   rcases p with i | i <;> rcases q with k | k <;>
     simp [QE, emS, Matrix.one_apply, L.inj.eq_iff]
 
+/- English proof (translation)
+Rewrite using `[← Finset.add_sum_erase _ _ (Finset.mem_univ L.i₀)]`. Use `congr 1`. Establish `hs : Finset.univ.erase L.i₀ = Finset.univ.image L.em`. Use extensionality with `x`. Simplify using `only [Finset.mem_erase, Finset.mem_univ, and_true, Finset.mem_image, true_and]`.
+
+Rewrite using `[L.rng x]`. Conclude with `Set.mem_range`. Rewrite using `[hs, Finset.sum_image fun x _ y _ h => L.inj h]`.
+-/
 private theorem sum_sum_ne_eps_eq_plusIdx_minusIdx_add (f : Fin d.n → E) : ∑ a, f a = f L.i₀ + ∑ a', f (L.em a') := by
   rw [← Finset.add_sum_erase _ _ (Finset.mem_univ L.i₀)]
   congr 1
@@ -42,6 +56,13 @@ private theorem sum_sum_ne_eps_eq_plusIdx_minusIdx_add (f : Fin d.n → E) : ∑
     exact Set.mem_range
   rw [hs, Finset.sum_image fun x _ y _ h => L.inj h]
 
+/- English proof (translation)
+Establish `hne : ∀ x : Fin L.n ⊕ Fin L.n, emS L x ≠ Sum.inr L.i₀`. Introduce and unpack `(k | k) h`. Simplify using `[emS] at h`. Simplify using `only [emS, Sum.map_inr, Sum.inr.injEq] at h`. Conclude with `(L.rng (L.em k)).2 ⟨k, rfl⟩ h`.
+
+Use extensionality with `p q`. Establish `key` using `congrFun (congrFun hM (emS L p)) (emS L q)`. Rewrite `key` using `[QE_emS_emS]`. Rewrite `key`, the goal using `[Matrix.mul_assoc, Matrix.mul_apply, Fintype.sum_sum_type]`. Simplify using `only [Matrix.transpose_apply, QE_mul_apply_inl, QE_mul_apply_inr, Matrix.map_apply, Matrix.submatrix_apply] at key ⊢`.
+
+Rewrite `key` using `[sum_sum_ne_eps_eq_plusIdx_minusIdx_add L, sum_sum_ne_eps_eq_plusIdx_minusIdx_add L, hy _ (hne q), hy _ (hne p), map_zero]`. Simplify using `only [emS, Sum.map_inl, Sum.map_inr] at key ⊢`. Take the linear combination `key`.
+-/
 theorem blockH_form {ε : ℤˣ} {M : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) E}
     (hM : Mᵀ * QE d.n ε * M.map σ = QE d.n ε)
     (hx : ∀ r, M r (Sum.inl L.i₀) = (1 : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) E) r (Sum.inl L.i₀))

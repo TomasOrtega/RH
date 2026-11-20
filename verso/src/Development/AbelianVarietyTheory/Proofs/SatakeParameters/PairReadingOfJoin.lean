@@ -13,6 +13,13 @@ noncomputable section
 
 namespace GlobalTheory.PairReadPf
 
+/- English proof (translation)
+Establish `hstar : ∀ x : D.host.E, D.host.conj x = IsCMField.complexConj D.host.E x` using `fun _ => D.host.φ₀.injective (by`. Rewrite using `[NumberField.IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply])`. Take `⟨x0, hx0, hx0'⟩` from `hw`. Establish `hc0 : IsCMField.ringOfIntegersComplexConj D.host.E x0 ∉ w.asIdeal` using `hx0' _ (by rw [hstar, IsCMField.coe_ringOfIntegersComplexConj])`. Take `⟨s, hs⟩` from `GlobalTheory.SplitConjPlace.exists_splitPlace w x0 hx0 hc0`.
+
+Establish `hsw : s.w.asIdeal.comap (algebraMap (𝓞 (maximalRealSubfield D.host.E)) (𝓞 D.host.E)) = w.asIdeal.comap (algebraMap (𝓞 (maximalRealSubfield D.host.E)) (𝓞 D.host.E))`. Rewrite using `[s.w_under, hs]`. Both sides reduce to the same expression. Break down `GlobalTheory.SplitConjPlace.eq_or_eq_conjPlE w s.w hsw with h | h` into its components or cases. Conclude with `⟨s, h⟩`.
+
+Use `⟨GlobalTheory.SplitConjPlace.conjSP s, HeightOneSpectrum.ext (Ideal.ext fun x => ?_)⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.SplitConjPlace.mem_conj_w, h, GlobalTheory.SplitConjPlace.mem_conjPlE, GlobalTheory.SplitConjPlace.cO_cO]`.
+-/
 theorem exists_splitPlace_w (D : D7) (w : PlE D.host) (hw : IsSplitPl D.host w) :
     ∃ s : SplitPlace D.host.E, s.w = w := by
   have hstar : ∀ x : D.host.E, D.host.conj x = IsCMField.complexConj D.host.E x := fun _ =>
@@ -30,6 +37,9 @@ theorem exists_splitPlace_w (D : D7) (w : PlE D.host) (hw : IsSplitPl D.host w) 
   · refine ⟨GlobalTheory.SplitConjPlace.conjSP s, HeightOneSpectrum.ext (Ideal.ext fun x => ?_)⟩
     rw [GlobalTheory.SplitConjPlace.mem_conj_w, h, GlobalTheory.SplitConjPlace.mem_conjPlE, GlobalTheory.SplitConjPlace.cO_cO]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `H`. Use `push_neg at H`. Conclude with `h (Submodule.iSup_induction p (motive := fun z => ℓ z = 0) hx (fun i y hy => H i y hy) (map_zero ℓ) (fun a b ha hb => by rw [map_add, ha, hb, add_zero]))`.
+-/
 theorem exists_ne_of_mem_iSup {M : Type} [AddCommGroup M] [Module ℂ M] {ι : Sort*} (p : ι → Submodule ℂ M)
     (ℓ : M →+ ℂ) {x : M} (hx : x ∈ ⨆ i, p i) (h : ℓ x ≠ 0) : ∃ i, ∃ y ∈ p i, ℓ y ≠ 0 := by
   by_contra H
@@ -37,6 +47,11 @@ theorem exists_ne_of_mem_iSup {M : Type} [AddCommGroup M] [Module ℂ M] {ι : S
   exact h (Submodule.iSup_induction p (motive := fun z => ℓ z = 0) hx (fun i y hy => H i y hy) (map_zero ℓ)
     (fun a b ha hb => by rw [map_add, ha, hb, add_zero]))
 
+/- English proof (translation)
+Assume the negation of the conclusion as `H`. Use `push_neg at H`. Take `⟨_, hk⟩` from `Submodule.iSup_induction p (motive := fun z => ∃ hz : z ∈ A, ℓ ⟨z, hz⟩ = 0) hx (fun i y hy => ⟨hpA i hy, H i ⟨y, hpA i hy⟩ hy⟩) ⟨A.zero_mem, by exact map_zero ℓ⟩ (fun a b ⟨ha, ea⟩ ⟨hb, eb⟩ => ⟨A.add_mem ha hb, by`. Establish `e : (⟨a + b, A.add_mem ha hb⟩ : A) = ⟨a, ha⟩ + ⟨b, hb⟩` using `rfl`. Rewrite using `[e, map_add, ea, eb, add_zero]⟩)`.
+
+Conclude with `h hk`.
+-/
 theorem exists_ne_of_mem_iSup_sub {M : Type} [AddCommGroup M] [Module ℂ M] {ι : Sort*} (A : Submodule ℂ M)
     (p : ι → Submodule ℂ M) (hpA : ∀ i, p i ≤ A) (ℓ : A →+ ℂ) (x : A) (hx : (x : M) ∈ ⨆ i, p i)
     (h : ℓ x ≠ 0) : ∃ i, ∃ y : A, (y : M) ∈ p i ∧ ℓ y ≠ 0 := by
@@ -60,6 +75,41 @@ end GlobalTheory.PairReadPf
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.ThetaGL GlobalTheory.PairReadPf in
 attribute [local instance] GlobalTheory.NPin.ThetaMod.acg GlobalTheory.NPin.ThetaMod.mod in
 
+/- English proof (translation)
+Introduce `hBZ hL D P J S hT hRU i w hw σ Q hPairs`. Take `⟨s, rfl⟩` from `exists_splitPlace_w D w hw`. Take `⟨j, hj⟩ : ∃ j : Fin D.R.m, j.1 + 1 = D.nd.j i` from `⟨⟨D.nd.j i - 1, by have := D.nd.j_range i; omega⟩, by have := D.nd.j_range i; simp only; omega⟩`. Take `⟨f, hf, F, hF, hne⟩` from `hPairs`. Establish `hFmem : (P.M.loc i).real F ∈ NG.AFall D.host.E D.R.nV (P.M.loc i).wt.ρ`.
+
+Establish `: (P.M.loc i).real F ∈ LinearMap.range (P.M.loc i).real` using `LinearMap.mem_range_self _ _`. Rewrite `this` using `[(P.M.loc i).real_range]`. Conclude with `this.1`. Set `X` to `J.rowM i`. Set `Θ` to `J.th i j hj`.
+
+Set `Fp : ↥(NG.AFall D.host.E D.R.nV (P.M.loc i).wt.ρ)` to `⟨_, hFmem⟩`. Set `yp : ↥X.C` to `⟨X.φ f, X.φ_mem f⟩`. Establish `h0 : Θ.Λ Θ.φ₀ Fp yp ≠ 0`. Rewrite using `[← Θ.read F f Fp rfl]`. Introduce `h`.
+
+Apply `hne` to reduce the goal to its premises. Use `show inner ℂ F (LinearMap.adjoint (D.what₂.thetaP (D.nd.mu i) (D.nd.j i)) f) = 0`. Rewrite using `[LinearMap.adjoint_inner_right, ← inner_conj_symm, h, map_zero]`. Establish `hμc` using `hT.mu i s.w hw j hj`. Establish `hηc` using `hT.eta i s.w hw`.
+
+Establish `hloc` using `Θ.loc s _ _ hμc hηc`. Set `ℓ0 : Θ.Ω →+ ℂ` to `AddMonoidHom.mk' (fun φ => Θ.Λ φ Fp yp) (by intro a b; simp)`. Take `⟨ι, φ1, hφ1, hℓ1⟩` from `exists_ne_of_mem_iSup _ ℓ0 hloc h0`. Take `⟨hLin, φ2, ⟨Φ0, rfl⟩, hℓ2⟩` from `exists_ne_of_mem_iSup _ ℓ0 hφ1 hℓ1`. Take `⟨c, hc, hci, hιeq⟩` from `hLin`.
+
+Establish `hFiso : (Fp : GAf D.host.E D.R.nV → (P.M.loc i).wt.W) ∈ NG.isoTyp (P.M.loc i).wt.ρ (P.H.av.S i Q)`. Use `hF` as an intermediate fact. Rewrite `this` using `[P.H.av.typeV]`. Conclude with `this`. Establish `hspan` using `GlobalTheory.T.isotypicPart_spanned_by_splitPlace_localComponent D.host.E D.R.nV (P.M.loc i).wt (P.H.av.S i Q) (P.H.av.irr i Q) s _ (hT.rep i s hw Q) c hc hci`.
+
+Set `ℓF : ↥(NG.AFall D.host.E D.R.nV (P.M.loc i).wt.ρ) →+ ℂ` to `AddMonoidHom.mk' (fun F' => Θ.Λ (ι Φ0) F' yp) (by intro a b; simp)`. Take `⟨T1, F1, hF1, hℓF1⟩` from `exists_ne_of_mem_iSup_sub _ _ (fun T => iSup_le fun hT1 => by rintro _ ⟨v, rfl⟩; exact hT1.1 v) ℓF Fp (hspan hFiso) hℓ2`. Take `⟨hT1, F2, ⟨a0, ha0⟩, hℓF2⟩` from `exists_ne_of_mem_iSup_sub _ _ (fun hT1 => by rintro _ ⟨v, rfl⟩; exact hT1.1 v) ℓF F1 hF1 hℓF1`. Establish `hσne : D.what₂.isot (D.nd.j i) σ ≠ ⊥`. Introduce `hb`.
+
+Rewrite `hf` using `[hb, Submodule.mem_bot]`. Substitute `hf` using the available equality. Conclude with `hne (by simp)`. Establish `hyI : (yp : X.A) ∈ Formalism.IndefR.principalLevelFrame.isotIn (D` using `D) X.ρ X.C (P.rep σ) := (X.isot σ f).1 hf`. Unfold `Formalism.IndefR.principalLevelFrame.isotIn at hyI`.
+
+Set `ℓy : ↥X.C →+ ℂ` to `(Θ.Λ (ι Φ0) F2).toAddMonoidHom`. Take `⟨Φe, y1, hy1, hℓy1⟩` from `exists_ne_of_mem_iSup_sub X.C _ (fun Φe => iSup_le fun h => h.2) ℓy yp hyI hℓF2`. Take `⟨hΦe, y2, ⟨f2, hf2⟩, hℓy2⟩` from `exists_ne_of_mem_iSup_sub X.C _ (fun h => h.2) ℓy y1 hy1 hℓy1`. Establish `hΦC : ∀ g : ↥(P.rep σ).S, Φe g ∈ X.C` using `fun g => hΦe.2 (LinearMap.mem_range_self _ _)`. Establish `hspan2` using `GlobalTheory.T.finiteType_spanned_by_splitPlace_localComponent D.host.E D.R.r (P.rep σ) s _ (hT.row i s hw σ hσne) c hc hci`.
+
+Set `ℓ2 : ↥(P.rep σ).S →+ ℂ` to `AddMonoidHom.mk' (fun g => Θ.Λ (ι Φ0) F2 ⟨Φe g, hΦC g⟩) (by`. Introduce `a b`. Establish `e : (⟨Φe (a + b), hΦC (a + b)⟩ : ↥X.C) = ⟨Φe a, hΦC a⟩ + ⟨Φe b, hΦC b⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+
+Use `show Θ.Λ (ι Φ0) F2 ⟨Φe (a + b), hΦC (a + b)⟩ = Θ.Λ (ι Φ0) F2 ⟨Φe a, hΦC a⟩ + Θ.Λ (ι Φ0) F2 ⟨Φe b, hΦC b⟩`. Rewrite using `[e, map_add])`. Establish `hℓ2f2 : ℓ2 f2 ≠ 0`. Establish `e : (⟨Φe f2, hΦC f2⟩ : ↥X.C) = y2` using `Subtype.ext hf2`. Use `show Θ.Λ (ι Φ0) F2 ⟨Φe f2, hΦC f2⟩ ≠ 0`.
+
+Rewrite using `[e]`. Conclude with `hℓy2`. Take `⟨T2, g1, hg1, hℓg1⟩` from `exists_ne_of_mem_iSup_sub _ _ (fun T => iSup_le fun hT2 => by rintro _ ⟨v, rfl⟩; exact hT2.1 v) ℓ2 f2 (hspan2 f2.2) hℓ2f2`. Take `⟨hT2, g2, ⟨c0, hc0⟩, hℓg2⟩` from `exists_ne_of_mem_iSup_sub _ _ (fun hT2 => by rintro _ ⟨v, rfl⟩; exact hT2.1 v) ℓ2 g1 hg1 hℓg1`. Set `T' : ((S i s.w hw).rep Q).V →ₗ[ℂ] ↥(NG.AFall D.host.E D.R.nV (P.M.loc i).wt.ρ)` to `T1.codRestrict _ hT1.1`.
+
+Set `T'' : ((S i s.w hw).row σ).V →ₗ[ℂ] ↥X.C` to `(Φe ∘ₗ T2.codRestrict _ hT2.1).codRestrict X.C (fun v => hΦC _)`. Establish `hT'eq : ∀ x : GAf D.host.E D.R.nV, TrivOutside {s.v} x → ∀ a, ((T' (((S i s.w hw).rep Q).π (Matrix.GeneralLinearGroup.map c.toRingHom (s.loc D.R.nV x)) a) : ↥(NG.AFall D.host.E D.R.nV (P.M.loc i).wt.ρ)) : GAf D.host.E D.R.nV → (P.M.loc i).wt.W) = NG.rt D.host.E D.R.nV x (T' a : G …` using `fun x hx a => hT1.2 x hx a`. Establish `hT''eq : ∀ x : GAf D.host.E D.R.r, TrivOutside {s.v} x → ∀ a, ((T'' (((S i s.w hw).row σ).π (Matrix.GeneralLinearGroup.map c.toRingHom (s.loc D.R.r x)) a) : ↥X.C) : X.A) = X.ρ x (T'' a)`. Introduce `x hx a`. Establish `e : (⟨T2 (((S i s.w hw).row σ).π (Matrix.GeneralLinearGroup.map c.toRingHom (s.loc D.R.r x)) a), hT2.1 _⟩ : ↥(P.rep σ).S) = ⟨NG.rt D.host.E D.R.r x (T2 a), (P.rep σ).stable x _ (hT2.1 a)⟩` using `Subtype.ext (hT2.2 x hx a)`.
+
+Use `show Φe ⟨_, _⟩ = X.ρ x (Φe ⟨T2 a, hT2.1 a⟩)`. Rewrite using `[e]`. Conclude with `hΦe.1 x ⟨T2 a, hT2.1 a⟩`. Set `b` to `((Θ.Λ ∘ₗ ι).compl₂ T').compr₂ (precompₛ T'')`. Establish `hb0 : b Φ0 a0 c0 ≠ 0`.
+
+Establish `e1 : T' a0 = F2` using `Subtype.ext ha0`. Establish `e2 : T'' c0 = ⟨Φe g2, hΦC g2⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show Φe ⟨T2 c0, hT2.1 c0⟩ = Φe g2`. Use `congr 1`.
+
+Conclude with `Subtype.ext hc0`. Use `show Θ.Λ (ι Φ0) (T' a0) (T'' c0) ≠ 0`. Rewrite using `[e1, e2]`. Conclude with `hℓg2`. Use `GlobalTheory.T.thetaPairing_of_invariant_trilinear_form _ D.R.r (D.R.r + D.R.t) _ _ (S i s.w hw).mu ((S i s.w hw).row σ).π (twist ((S i s.w hw).rep Q).π (detChar (Fin (D.R.r + D.R.t)) (S i s.w hw).eta)) ((hBZ _).1 (Fin D.R.r) _ _ ((S i s.w hw).row σ).smooth ((S i s.w hw).row σ).i …` and prove the remaining obligations.
+
+Introduce `g h Φ Φ' hΦ a c'`. Conclude with `GlobalTheory.T.thetaTrilinearForm_localGroup_invariant D P.M i P.rep X _ _ Θ s (S i s.w hw).mu (S i s.w hw).eta ι c hιeq _ _ ((S i s.w hw).rep Q).π ((S i s.w hw).row σ).π T' hT'eq T'' hT''eq g h Φ Φ' hΦ a c'`.
+-/
 theorem GlobalTheory.NPin.pairRead_of_join : GlobalTheory.Published.BernsteinZelevinskyFiniteness → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D), Join P → ∀ S : Reading P.T, IsTrue P S → RowUnit S → PairRead S := by
   intro hBZ hL D P J S hT hRU i w hw σ Q hPairs
   obtain ⟨s, rfl⟩ := exists_splitPlace_w D w hw

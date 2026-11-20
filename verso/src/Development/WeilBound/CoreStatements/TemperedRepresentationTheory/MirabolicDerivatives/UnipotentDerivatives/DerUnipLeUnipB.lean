@@ -30,8 +30,16 @@ def colFix (N n : ℕ) : Subgroup (GL (Fin N) k) where
 
 def derUnip (N n : ℕ) : Subgroup (GL (Fin N) k) := unipB k (Fin N) ⊓ colFix k N n
 
+/- English proof (translation)
+The claim follows from `inf_le_left`.
+-/
 theorem derUnip_le_unipB (N n : ℕ) : derUnip k N n ≤ unipB k (Fin N) := inf_le_left
 
+/- English proof (translation)
+Introduce `g hg`. Take `⟨h1, h2⟩` from `(mem_unipB k).1 hg`. Rewrite using `[mem_Mir_iff]`. Use extensionality with `j`. Distinguish the cases in `hj : j = Fin.last m`.
+
+Substitute `hj` using the available equality. Simplify using `[h2, eLast]`. Rewrite using `[h1 (Fin.last m) j (Fin.lt_last_iff_ne_last.2 hj)]`. Simplify using `[eLast, Pi.single_apply, hj]`.
+-/
 theorem unipB_le_Mir (m : ℕ) : unipB k (Fin (m + 1)) ≤ Mir k m := by
   intro g hg
   obtain ⟨h1, h2⟩ := (mem_unipB k).1 hg
@@ -43,6 +51,9 @@ theorem unipB_le_Mir (m : ℕ) : unipB k (Fin (m + 1)) ≤ Mir k m := by
   · rw [h1 (Fin.last m) j (Fin.lt_last_iff_ne_last.2 hj)]
     simp [eLast, Pi.single_apply, hj]
 
+/- English proof (translation)
+The claim follows from `(derUnip_le_unipB k (m + 1) n).trans (unipB_le_Mir k m)`.
+-/
 theorem derUnip_le_Mir (m n : ℕ) : derUnip k (m + 1) n ≤ Mir k m :=
   (derUnip_le_unipB k (m + 1) n).trans (unipB_le_Mir k m)
 

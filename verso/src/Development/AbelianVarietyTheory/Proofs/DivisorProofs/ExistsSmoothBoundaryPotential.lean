@@ -14,6 +14,9 @@ open scoped ENNReal Classical
 
 namespace GlobalTheory.FlatDetLine
 
+/- English proof (translation)
+Introduce `hX h1 h2 h3 D O hC hf A T H hr B hB τ c`. Take `⟨g, hg, hgZ⟩` from `GlobalTheory.DetHodgeExt.exists_smooth_ext h1 h2 D O hC hf A T H hr τ c`. Use `⟨g, hg, hgZ, fun u f hf' => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.MixedDiscriminantZeroSlot.num_add_ar _ _ _ _ f hf' (GlobalTheory.T.determinant_line_chern_form_flat h1 h2 D O hC hf A T H hr B τ c g hg hgZ), GlobalTheory.T.determinant_line_arithmetic_intersection_number hX h1 h2 h3 D O hC hf A T H hr B hB τ c g hg hgZ u, GlobalThe …`.
+-/
 theorem numbers_eq_height_mul_degree : GlobalTheory.CovTop.HypothesesXH → Hypotheses2 → HypothesesH → GlobalTheory.Published.ScholzeWeinsteinB →
     OnObj fun D O _ T _ _ => ∀ B : ℝ, 2 ≤ B → ∀ (τ : D.what₂.Tau) c,
     ∃ g : (T.M c).Fun, (T.M c).Smooth g ∧

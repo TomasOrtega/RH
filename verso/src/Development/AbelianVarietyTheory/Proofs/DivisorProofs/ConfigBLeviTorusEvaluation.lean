@@ -18,10 +18,16 @@ noncomputable section
 
 namespace GlobalTheory.ThK.EvLawB
 
+/- English proof (translation)
+The claim follows from `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem incM_one_eq {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ) :
     incM F (1 : Matrix (Fin n) (Fin n) E) = 1 :=
   Matrix.map_one _ (map_zero _) (map_one _)
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.vecMulVec_apply, Matrix.mulVec, dotProduct, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun x _ => by ring`.
+-/
 theorem mul_vecMulVec_eq {R : Type} [CommRing R] {k l p : ℕ} (A : Matrix (Fin k) (Fin l) R) (y : Fin l → R) (w : Fin p → R) :
     A * Matrix.vecMulVec y w = Matrix.vecMulVec (A *ᵥ y) w := by
   ext i j
@@ -32,6 +38,33 @@ end GlobalTheory.ThK.EvLawB
 
 open GlobalTheory.ThK.EvLawB in
 
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ B a b G G₁ H H' cfg e' hev X om om' om₁ om₁' T T₁ t h₁ m hL u hu Ψ hΨ`. Establish `P'` using `GlobalTheory.ThK.Inhab.pairV' T`. Establish `P₁'` using `GlobalTheory.ThK.Inhab.pairV' T₁`. Take `⟨Mb, hMb⟩` from `GlobalTheory.T.exists_good_schrodinger_model F E σ B T.base b (a + (b + 2)) G₁.V' G.W _ _ _ _ T₁.geo.hV' T.geo.hW`. Take `⟨omb, hwb⟩` from `GlobalTheory.WeilExGen.exists_isWeil hP F E σ B T.base b (a + (b + 2)) G₁.V' G.W _ _ _ _ T₁.geo.hV' T.geo.hW Mb hMb X.α (X.α / X.β) P'.hX P'.hW T₁.chars.resα P'.resW`.
+
+Establish `Pb : IsPair B Mb X.α (X.α / X.β) omb G₁.q (b - G₁.q) _ _` using `⟨T.base, T₁.geo.hV', T.geo.hW, hMb, P'.hX, P'.hW, T₁.chars.resα, P'.resW, hwb⟩`. Take `⟨⟨e₁, he₁⟩, law₁⟩` from `GlobalTheory.T.adapted_plane_first_variable hP F E σ B (b + 2) (a + (b + 2)) G.V' G.W G.M' X.α (X.α / X.β) om' _ _ _ _ P' b G₁.V' H 0 (b + 1) Mb omb _ _ cfg.hH Pb`. Take `⟨e₂, he₂⟩` from `((GlobalTheory.T.theta_evaluation_zero_cone hP).1 F E σ B b (a + (b + 2)) G₁.V' G.W Mb X.α (X.α / X.β) omb _ _ _ _ Pb (a + b) G₁.V' G₁.W H' a (a + b + 1) G₁.M' rfl cfg.hH' T₁.geo.hM').1`. Establish `mapsC : ∀ Φ ∈ schA F (Fin (b + 2) × Fin (a + (b + 2))), (e₂ ∘ₗ e₁) Φ ∈ schA F (Fin b × Fin (a + b))` using `fun Φ hΦ => he₂.maps _ (he₁.maps Φ hΦ)`. Establish `heisC : ∀ z, ∀ Φ ∈ schA F (Fin (b + 2) × Fin (a + (b + 2))), (e₂ ∘ₗ e₁) (G.M'.co.rho B.ψ (incM F H.ι * z * (incM F H'.ι)ᵀ) Φ) = G₁.M'.co.rho B.ψ z ((e₂ ∘ₗ e₁) Φ)`.
+
+Introduce `z Φ hΦ`. Establish `h1` using `he₁.Heisenberg₂ (z * (incM F H'.ι)ᵀ) Φ hΦ`. Establish `h2` using `he₂.Heisenberg₂ z (e₁ Φ) (he₁.maps Φ hΦ)`. Rewrite `h1` using `[incM_one_eq, Matrix.transpose_one, Matrix.mul_one, ← Matrix.mul_assoc]`. Rewrite `h2` using `[incM_one_eq, Matrix.one_mul]`.
+
+Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[h1, h2]`. Establish `invC : ∀ u ∈ isoB H H', ∀ Φ ∈ schA F (Fin (b + 2) × Fin (a + (b + 2))), (e₂ ∘ₗ e₁) (G.M'.co.rho B.ψ u Φ) = (e₂ ∘ₗ e₁) Φ`. Introduce `u hu Φ hΦ`. Simplify using `only [LinearMap.comp_apply]`.
+
+Break down `hu with hu | ⟨y, rfl⟩` into its components or cases. Rewrite using `[he₁.inv u hu Φ hΦ]`. Establish `h1` using `he₁.Heisenberg₂ (Matrix.vecMulVec y (incV F H'.x)) Φ hΦ`. Rewrite `h1` using `[incM_one_eq, Matrix.transpose_one, Matrix.mul_one, mul_vecMulVec_eq]`. Rewrite using `[h1, he₂.inv _ ⟨y, rfl⟩ _ (he₁.maps Φ hΦ)]`.
+
+Establish `locC : ∃ (ei : SInf F (Fin (b + 2) × Fin (a + (b + 2))) →L[ℂ] SInf F (Fin b × Fin (a + b))) (ev : ∀ v : Pl F, ((Fin (b + 2) × Fin (a + (b + 2)) → Fv F v) → ℂ) →ₗ[ℂ] (Fin b × Fin (a + b) → Fv F v) → ℂ), (∀ v, ev v (G.M'.vac v) = G₁.M'.vac v ∧ (SB _).map (ev v) = SB _) ∧ ∀ f φ, (∀ …`. Take `⟨ei₁, ev₁, -, hv₁, hp₁⟩` from `he₁.loc`. Take `⟨ei₂, ev₂, -, hv₂, hp₂⟩` from `he₂.loc`. Use `⟨ei₂.comp ei₁, fun v => ev₂ v ∘ₗ ev₁ v, fun v => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply]`.
+
+Rewrite using `[(hv₁ v).1, (hv₂ v).1]`. Rewrite using `[Submodule.map_comp, (hv₁ v).2, (hv₂ v).2]`. Introduce `f φ hφ hcof`. Establish `hφ₁ : ∀ v, ev₁ v (φ v) ∈ SB _` using `fun v => (hv₁ v).2 ▸ Submodule.mem_map_of_mem (hφ v)`. Establish `hcof₁ : ∀ᶠ v in cofinite, ev₁ v (φ v) = Mb.vac v` using `hcof.mono fun v hv => by rw [hv, (hv₁ v).1]`.
+
+Simplify using `only [LinearMap.comp_apply, ContinuousLinearMap.comp_apply]`. Rewrite using `[hp₁ f φ hφ hcof, hp₂ _ _ hφ₁ hcof₁]`. Take `⟨c, hc⟩` from `GlobalTheory.T.config_b_triple_evaluation_compatible hP F E σ B a b G G₁ H H' cfg X om om' om₁ om₁' T T₁ e' hev (e₂ ∘ₗ e₁) mapsC heisC invC locC`. Take `⟨Φ₀, hΦ₀, hne⟩` from `GlobalTheory.T.weil_pair_plane_descent hP F E σ B (b + 2) (a + (b + 2)) b (a + b) G.V' G.W G₁.V' G₁.W G.M' X.α (X.α / X.β) om' _ _ _ _ P' H H' 0 (b + 1) a (a + b + 1) Mb omb _ _ G₁.M' cfg.hH cfg.hH' Pb T₁.geo.hM' e₁ e₂ he₁ he₂`. Establish `hc0 : c ≠ 0`.
+
+Introduce and unpack `rfl`. Apply `hne` to reduce the goal to its premises. Use `hc Φ₀ hΦ₀` as an intermediate fact. Rewrite `this` using `[zero_smul, LinearMap.comp_apply]`. Conclude with `this`.
+
+Establish `hpres : om' (1, u * m) Ψ ∈ schA F (Fin (b + 2) × Fin (a + (b + 2)))` using `(T.weil'.isUSplitting).pres _ _ hΨ`. Establish `hLX : IsLevi (W₁` using `G₁.V') H 1 (1 : UA σ G₁.V'.J) (1 : UA σ G.V'.J) := by`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `show (1 : Matrix _ _ _) *ᵥ _ = _`. Simplify using the standard rewrite rules.
+
+Use `show (1 : Matrix _ _ _) *ᵥ _ = _`. Simplify using the standard rewrite rules. Use `show (1 : Matrix _ _ _) * _ = _ * (1 : Matrix _ _ _)`. Simplify using the standard rewrite rules. Establish `key : e₂ (e₁ (om' (1, u * m) Ψ)) = ((X.α t : ℂ) * (((absE F E t : ℝ) ^ ((b : ℝ) / 2) : ℝ) : ℂ)) • om₁' (1, h₁) (e₂ (e₁ Ψ))`.
+
+Establish `h1` using `law₁ e₁ he₁ (u * m) 1 1 1 hLX 1 (Subgroup.one_mem _) Ψ hΨ`. Establish `h2` using `GlobalTheory.T.adapted_plane_second_variable hP F E σ B b (a + (b + 2)) G₁.V' G.W Mb X.α (X.α / X.β) omb _ _ _ _ Pb (a + b) G₁.W H' a (a + b + 1) G₁.M' om₁' _ _ cfg.hH' P₁' e₂ he₂ 1 t h₁ m hL u hu (e₁ Ψ) (he₁.maps Ψ hΨ)`. Simplify using `only [one_mul, map_one, Circle.coe_one, NNReal.coe_one, Real.one_rpow, Complex.ofReal_one, one_smul] at h1`. Rewrite using `[h1, h2]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← hc _ hpres, ← hc _ hΨ]`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[key]`. Use `_ = _ := by rw [map_smul, smul_comm _ c, smul_smul, inv_mul_cancel₀ hc0, one_smul]`.
+-/
 theorem GlobalTheory.ThK.evLaw_isoB : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b)
     (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →

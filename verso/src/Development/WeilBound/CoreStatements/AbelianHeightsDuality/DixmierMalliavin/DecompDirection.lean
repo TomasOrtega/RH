@@ -9,6 +9,25 @@ open NormedSpace Set MeasureTheory Metric
 variable {𝔸 : Type*} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸] [FiniteDimensional ℝ 𝔸]
   {G : Subgroup 𝔸ˣ} {𝔤 : Submodule ℝ 𝔸} (h : IsExpLieAlgebra G 𝔤)
 
+/- English proof (translation)
+Take `⟨M, hM, hser⟩` from `h.exists_bound_dirDeriv hf hfc X`. Take `⟨c, g, k, hg, hk, hgs, hks, hc, hid⟩` from `exists_dixmierMalliavin_line M hε`. Take `⟨hf₁, -⟩` from `hser c hc`. Use `⟨_, hf₁, closure_minimal (fun x hx => by_contra fun hx' => hx (by` and prove the remaining obligations. Simplify using `[h.dirDeriv_eq_zero_of_notMem X _ hx'])) (isClosed_tsupport f), g, k, hg, hk, hgs, hks, fun x => ?_⟩`.
+
+Use `set F : ℝ → ℂ := fun t => f (h.expG (t • X) * x) with hFdef`. Establish `hF : ContDiff ℝ ∞ F` using `h.contDiff_comp_expG_smul_mul hf X x`. Establish `hD : ∀ p t, iteratedDeriv p F t = h.dirDeriv X p f (h.expG (t • X) * x)` using `fun p t => h.iteratedDeriv_comp_expG_mul X p f x t`. Establish `key` using `hid F hF (fun p t _ => by rw [hD]; exact hM p _)`. Establish `hF0 : F 0 = f x`.
+
+Simplify using `only [hFdef, zero_smul]`. Rewrite using `[h.expG_zero, one_mul]`. Rewrite `key` using `[hF0]`. Rewrite using `[key]`. Use `congr 1`.
+
+Establish `hgc : HasCompactSupport g` using `isCompact_Icc.of_isClosed_subset (isClosed_tsupport g) hgs`. Establish `hcont : ∀ p, Continuous (fun t => iteratedDeriv p F t)` using `fun p => hF.continuous_iteratedDeriv p (by exact_mod_cast le_top)`. Set `T : ℕ → ℝ → ℂ` to `fun p t => (c p : ℂ) * (iteratedDeriv p F t * g t)`. Establish `hTi : ∀ p, Integrable (T p)` using `fun p => (((hcont p).mul hg.continuous).integrable_of_hasCompactSupport hgc.mul_left).const_mul _`. Establish `hTb : ∀ p t, ‖T p t‖ ≤ |c p| * M p * ‖g t‖`.
+
+Introduce `p t`. Simplify using `only [T, norm_mul, Complex.norm_real, Real.norm_eq_abs]`. Rewrite using `[mul_assoc (|c p|)]`. Use `mul_le_mul_of_nonneg_left ?_ (abs_nonneg (c p))` and prove the remaining obligations. Establish `: ‖iteratedDeriv p F t‖ ≤ M p` using `by rw [hD]; exact hM p _`.
+
+Conclude with `mul_le_mul_of_nonneg_right this (norm_nonneg _)`. Establish `hgi : Integrable (fun t => ‖g t‖)` using `(hg.continuous.integrable_of_hasCompactSupport hgc).norm`. Establish `hsum : Summable fun p => ∫ t, ‖T p t‖`. Use `Summable.of_nonneg_of_le (fun p => integral_nonneg fun t => norm_nonneg _) (fun p => ?_) (hc.mul_right (∫ t, ‖g t‖))` and prove the remaining obligations. Rewrite using `[← integral_const_mul]`.
+
+Conclude with `integral_mono (hTi p).norm (hgi.const_mul _) (fun t => hTb p t)`. Establish `e1 : ∀ p, (c p : ℂ) * ∫ t, iteratedDeriv p F t * g t = ∫ t, T p t` using `fun p => (integral_const_mul _ _).symm`. Repeatedly rewrite using `[e1]`. Rewrite using `[integral_tsum_of_summable_integral_norm hTi hsum]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `t`. Simplify using `only [T, hD]`. Rewrite using `[← tsum_mul_left]`. Use `congr 1`. Use function extensionality and compare the values at `p`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[mul_comm]`.
+-/
 theorem decomp_direction {f : G → ℂ}
     (hf : letI := h.chartedSpace; ContMDiff 𝓘(ℝ, 𝔤) 𝓘(ℝ, ℂ) ∞ f)
     (hfc : HasCompactSupport f) (X : 𝔤) {ε : ℝ} (hε : 0 < ε) :
@@ -65,6 +84,9 @@ theorem decomp_direction {f : G → ℂ}
     ring
   · congr 1; funext t; rw [mul_comm]
 
+/- English proof (translation)
+The claim follows from `| 0, X, f, hf, hfc => by refine ⟨1, fun _ => f, fun _ _ => 1, fun _ => ⟨hf, subset_rfl⟩, fun _ => ⟨contDiff_const, ?_⟩, fun x => ?_⟩ · intro t _ rw [Subsingleton.elim t 0]; exact Metric.mem_closedBall_self hε.le · have hv : (volume : Measure (Fin 0 → ℝ)).real univ = 1 := by simp …`.
+-/
 theorem decomp_iter {ε : ℝ} (hε : 0 < ε) : ∀ {d : ℕ} (X : Fin d → 𝔤) (f : G → ℂ),
     (letI := h.chartedSpace; ContMDiff 𝓘(ℝ, 𝔤) 𝓘(ℝ, ℂ) ∞ f) → HasCompactSupport f →
     ∃ (m : ℕ) (F : Fin m → G → ℂ) (K : Fin m → (Fin d → ℝ) → ℂ),
@@ -109,6 +131,33 @@ theorem decomp_iter {ε : ℝ} (hε : 0 < ε) : ∀ {d : ℕ} (X : Fin d → �
       · exact (h.sum_integral_cons_kernel X hε.le hk.continuous hks (fun i => (hK₂ i).1.continuous)
           (fun i => (hK₂ i).2) (fun i => (hF₂ i).1.continuous) hd₂ x).symm
 
+/- English proof (translation)
+Take `⟨r, ρ, c, W, hr, hρ, hρpos, hW, hPW, hcP, hc, hint⟩` from `h.exists_haar_density_prodExp μ b`. Use `set P := h.prodExp (⇑b) with hPdef`. Establish `hPc : Continuous P` using `h.continuous_prodExp _`. Use `⟨r / 2, by positivity, fun δ hδ K hK hKs => ?_⟩` and prove the remaining obligations. Establish `hεr : closedBall (0 : Fin d → ℝ) δ ⊆ ball 0 r` using `closedBall_subset_ball (by linarith)`.
+
+Use `set C := P '' closedBall (0 : Fin d → ℝ) δ with hCdef`. Establish `hCc : IsCompact C` using `(isCompact_closedBall _ _).image hPc`. Set `κ : G → ℂ` to `W.indicator fun y => K (c y) * (((ρ (c y))⁻¹ : ℝ) : ℂ)`. Establish `hκC : ∀ y, y ∉ C → κ y = 0`. Introduce `y hy`.
+
+Distinguish the cases in `hyW : y ∈ W`. Establish `hz : c y ∉ closedBall (0 : Fin d → ℝ) δ` using `fun hz => hy ⟨c y, hz, hcP y hyW⟩`. Establish `: K (c y) = 0` using `image_eq_zero_of_notMem_tsupport fun h' => hz (hKs h')`. Simplify using `[κ, indicator_of_mem hyW, this]`. Simplify using `[κ, indicator_of_notMem hyW]`.
+
+Establish `hκsupp : tsupport κ ⊆ C` using `closure_minimal (fun y hy => by_contra fun h' => hy (hκC y h')) hCc.isClosed`. Establish `hκW : ∀ z ∈ ball (0 : Fin d → ℝ) r, κ (P z) * (ρ z : ℂ) = K z`. Introduce `z hz`. Take `⟨hzW, hcz⟩` from `hPW z hz`. Establish `hρz : (ρ z : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (hρpos z hz).ne'`.
+
+Simplify using `only [κ, indicator_of_mem hzW, hcz, Complex.ofReal_inv]`. Clear the denominators using the available nonvanishing facts. Establish `hsmooth : (letI` using `h.chartedSpace; ContMDiff 𝓘(ℝ, 𝔤) 𝓘(ℝ, ℂ) ∞ κ) := by`. Introduce `g`. Rewrite using `[h.contMDiffAt_iff_expG]`.
+
+Establish `hcont : Continuous (fun Y : 𝔤 => g * h.expG Y)` using `continuous_const.mul h.continuous_expG`. Establish `hg0 : g * h.expG 0 = g` using `by rw [h.expG_zero, mul_one]`. Distinguish the cases in `hg : g ∈ C`. Take `⟨z₀, hz₀, rfl⟩` from `hg`. Establish `hz₀r : z₀ ∈ ball (0 : Fin d → ℝ) r` using `hεr hz₀`.
+
+Take `⟨hgW, hcg⟩` from `hPW z₀ hz₀r`. Establish `hev : (fun Y : 𝔤 => κ (P z₀ * h.expG Y)) =ᶠ[𝓝 0] fun Y => K (c (P z₀ * h.expG Y)) * (((ρ (c (P z₀ * h.expG Y)))⁻¹ : ℝ) : ℂ)`. Establish `: ∀ᶠ Y in 𝓝 (0 : 𝔤), P z₀ * h.expG Y ∈ W`. Use `hcont.continuousAt (x := 0)` as an intermediate fact. Rewrite `this` using `[ContinuousAt, hg0]`.
+
+Conclude with `this (hW.mem_nhds hgW)`. Use `filter_upwards [this] with Y hY`. Simplify using `[κ, indicator_of_mem hY]`. Use `ContDiffAt.congr_of_eventuallyEq ?_ hev` and prove the remaining obligations. Establish `hc0` using `hc (P z₀) hgW`.
+
+Establish `hρ0 : ρ (c (P z₀ * h.expG 0)) ≠ 0`. Rewrite using `[hg0, hcg]`. Conclude with `(hρpos z₀ hz₀r).ne'`. Conclude with `(hK.contDiffAt.comp _ hc0).mul ((Complex.ofRealCLM.contDiff.contDiffAt).comp _ ((hρ.contDiffAt.comp _ hc0).inv hρ0))`. Establish `hev : (fun Y : 𝔤 => κ (g * h.expG Y)) =ᶠ[𝓝 0] fun _ => 0`.
+
+Establish `: ∀ᶠ Y in 𝓝 (0 : 𝔤), g * h.expG Y ∈ Cᶜ`. Use `hcont.continuousAt (x := 0)` as an intermediate fact. Rewrite `this` using `[ContinuousAt, hg0]`. Conclude with `this (hCc.isClosed.isOpen_compl.mem_nhds hg)`. Use `filter_upwards [this] with Y hY`.
+
+Conclude with `hκC _ hY`. Conclude with `contDiffAt_const.congr_of_eventuallyEq hev`. Establish `hκc : Continuous κ`. Set `` to `h.chartedSpace`. Conclude with `hsmooth.continuous`.
+
+Use `⟨κ, hsmooth, HasCompactSupport.intro hCc hκC, hκsupp, fun φ hφ => ?_⟩` and prove the remaining obligations. Establish `hψ₀s : tsupport (fun y => κ y * φ y) ⊆ P '' ball 0 r` using `(tsupport_mul_subset_left).trans (hκsupp.trans (image_mono hεr))`. Rewrite using `[hint (fun y => κ y * φ y) (hκc.mul hφ) ((HasCompactSupport.intro hCc hκC).mul_right) hψ₀s]`. Rewrite using `[← setIntegral_eq_integral_of_forall_compl_eq_zero (f := fun t => K t * φ (P t)) (s := ball (0 : Fin d → ℝ) r) fun z hz => by`. Establish `: K z = 0` using `image_eq_zero_of_notMem_tsupport fun h' => hz (hεr (hKs h'))`.
+
+Simplify using `[this]]`. Use `setIntegral_congr_fun measurableSet_ball fun z hz => ?_` and prove the remaining obligations. Rewrite using `[mul_right_comm, hκW z hz]`.
+-/
 theorem smooth_density [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsHaarMeasure] {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) :
     ∃ ε > 0, ∀ δ ≤ ε, ∀ K : (Fin d → ℝ) → ℂ, ContDiff ℝ ∞ K → tsupport K ⊆ closedBall 0 δ →
       ∃ κ : G → ℂ, (letI := h.chartedSpace; ContMDiff 𝓘(ℝ, 𝔤) 𝓘(ℝ, ℂ) ∞ κ) ∧
@@ -186,6 +235,19 @@ theorem smooth_density [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.I
   rw [mul_right_comm, hκW z hz]
 
 include h in
+/- English proof (translation)
+Set `` to `h.chartedSpace`. Set `b` to `Module.finBasis ℝ 𝔤`. Take `⟨ε₀, hε₀, hdens⟩` from `smooth_density h μ b`. Establish `hP0 : h.prodExp (⇑b) 0 = 1` using `Subtype.ext (Units.ext (by rw [h.val_prodExp, prodExpVal_zero]; rfl))`. Take `⟨ε₁, hε₁, hball⟩` from `Metric.nhds_basis_closedBall.mem_iff.1 ((h.continuous_prodExp (⇑b)).continuousAt.preimage_mem_nhds (t := V) (x := 0) (by rwa [hP0]))`.
+
+Take `⟨ε, hε, he₀, he₁⟩ : ∃ ε : ℝ, 0 < ε ∧ ε ≤ ε₀ ∧ ε ≤ ε₁` from `⟨min ε₀ ε₁, lt_min hε₀ hε₁, min_le_left _ _, min_le_right _ _⟩`. Take `⟨m, F, K, hF, hK, hd⟩` from `decomp_iter h hε (⇑b) f hf hfc`. Establish `hK' : ∀ i, ContDiff ℝ ∞ (fun t => K i (-t)) ∧ tsupport (fun t => K i (-t)) ⊆ Metric.closedBall 0 ε`. Introduce `i`. Use `⟨(hK i).1.comp contDiff_neg, ?_⟩` and prove the remaining obligations.
+
+Introduce `t ht`. Establish `: -t ∈ tsupport (K i)`. Use `tsupport_comp_subset_preimage (K i) (f := fun t : Fin _ → ℝ => -t) continuous_neg ht` as an intermediate fact. Simplify using `using this`. Use `(hK i).2 this` as an intermediate fact.
+
+Simplify `this` using `[mem_closedBall_zero_iff, norm_neg]`. Use `choose κ hκs hκc hκV hκ using fun i => hdens ε he₀ (fun t => K i (-t)) (hK' i).1 (hK' i).2`. Use `⟨m, κ, F, fun i => ⟨hκs i, hκc i, (hF i).1, (hκV i).trans (image_subset_iff.2 ((Metric.closedBall_subset_closedBall he₁).trans hball)), (hF i).2⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Rewrite using `[hd x, Finset.sum_apply]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[groupConv, hκ i (fun y => F i (y⁻¹ * x)) ((hF i).1.continuous.comp (continuous_inv.mul continuous_const))]`. Establish `e : ∀ t : Fin (Module.finrank ℝ 𝔤) → ℝ, K i (-t) * F i ((h.prodExp (⇑b) t)⁻¹ * x) = (fun s => K i s * F i (h.revProdExp (⇑b) s * x)) (-t)`. Introduce `t`. Use `h.revProdExp_inv (⇑b) (-t)` as an intermediate fact.
+
+Rewrite `this` using `[neg_neg]`. Simplify using `only [← this, inv_inv]`. Repeatedly rewrite using `[e]`. Conclude with `(integral_neg_eq_self (fun s => K i s * F i (h.revProdExp (⇑b) s * x)) volume).symm`.
+-/
 theorem factor [MeasurableSpace G] [BorelSpace G]
     (μ : Measure G) [μ.IsHaarMeasure] {V : Set G} (hV : V ∈ 𝓝 1) (f : G → ℂ)
     (hf : letI := h.chartedSpace; ContMDiff 𝓘(ℝ, 𝔤) 𝓘(ℝ, ℂ) ∞ f) (hfc : HasCompactSupport f) :

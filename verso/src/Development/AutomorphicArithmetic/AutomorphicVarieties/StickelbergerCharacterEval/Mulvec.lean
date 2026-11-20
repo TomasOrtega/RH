@@ -2,12 +2,22 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.StickelbergerChara
 
 open Finset UpperTheory.V.Bern UpperTheory.V.B4 UpperTheory.V.B5
 
+/- English proof (translation)
+Rewrite using `[MonoidAlgebra.mul_apply_right, Finsupp.sum_fintype]`. Introduce `h`. Simplify using the standard rewrite rules.
+-/
 private theorem coeff_mul_sum {A : Type} [CommRing A] {Γ : Type} [CommGroup Γ] [Fintype Γ]
     (z w : MonoidAlgebra A Γ) (g : Γ) : (z * w).coeff g = ∑ h, z.coeff (g * h⁻¹) * w.coeff h := by
   rw [MonoidAlgebra.mul_apply_right, Finsupp.sum_fintype]
   intro h
   simp
 
+/- English proof (translation)
+Introduce `A _ Γ _ _ c ε hc hc1 hε z w`. Use `haveI := Fintype.ofFinite Γ`. Establish `hci : c⁻¹ = c` using `inv_eq_of_mul_eq_one_right hc`. Establish `hεA : (ε : A) * ε = 1` using `by exact_mod_cast congrArg (Int.cast : ℤ → A) hε`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [coord, Matrix.mulVec, dotProduct, mat, Matrix.of_apply, coeff_mul_sum]`. Rewrite using `[sum_rep hc hc1, sum_rep hc hc1, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `e1 : rep i * (c * rep j)⁻¹ = c * (rep i * (rep j)⁻¹)`. Rewrite using `[mul_inv, hci, mul_left_comm]`.
+
+Establish `e2 : c * rep i * (c * rep j)⁻¹ = rep i * (rep j)⁻¹`. Rewrite using `[mul_inv, hci, mul_mul_mul_comm, hc, one_mul]`. Establish `e3 : c * rep i * (rep j)⁻¹ = c * (rep i * (rep j)⁻¹)` using `mul_assoc _ _ _`. Rewrite using `[e2, e1, e3]`. Take the linear combination `(-(z.coeff (c * (rep i * (rep j)⁻¹)) * w.coeff (c * rep j))) * hεA`.
+-/
 theorem UpperTheory.V.B5.coords_mul_eq_quotientMatrix_mulVec :
     ∀ {A : Type} [CommRing A] {Γ : Type} [CommGroup Γ] [Finite Γ] (c : Γ) (ε : ℤ), c * c = 1 → c ≠ 1 → ε * ε = 1 → ∀ z w : MonoidAlgebra A Γ, coord c ε (z * w) = (mat c ε z).mulVec (coord c ε w) := by
   intro A _ Γ _ _ c ε hc hc1 hε z w

@@ -5,6 +5,31 @@ open IsLocalRing
 
 namespace GlobalTheory.QFNN
 
+/- English proof (translation)
+Set `K` to `FractionRing A`. Set `F` to `FractionRing P`. Set `B` to `integralClosure P A`. Establish `hιinj : Function.Injective (algebraMap A K)` using `IsFractionRing.injective A K`. Establish `hPK : Function.Injective (algebraMap P K)`.
+
+Rewrite using `[IsScalarTower.algebraMap_eq P A K]`. Conclude with `hιinj.comp hinj`. Use `haveI : FaithfulSMul P K := (faithfulSMul_iff_algebraMap_injective P K).mpr hPK`. Use `letI : Algebra F K := FractionRing.liftAlgebra P K`. Use `haveI : IsScalarTower P F K := FractionRing.isScalarTower_liftAlgebra P K`.
+
+Establish `halgA : ∀ a : A, IsAlgebraic P (algebraMap A K a)`. Introduce `a`. Take `⟨b, t, hb, ht, hu, hab⟩` from `hloc a`. Establish `ht0 : algebraMap A K t ≠ 0`. Simplify using `using (map_ne_zero_iff _ hιinj).mpr hu.ne_zero`.
+
+Establish `: algebraMap A K a = algebraMap A K b * (algebraMap A K t)⁻¹`. Rewrite using `[← hab, map_mul, mul_assoc, mul_inv_cancel₀ ht0, mul_one]`. Rewrite using `[this]`. Conclude with `(hb.algebraMap (B := K)).isAlgebraic.mul (ht.algebraMap (B := K)).isAlgebraic.inv`. Use `haveI hPKalg : Algebra.IsAlgebraic P K := by`.
+
+Use `⟨fun x => ?_⟩` and prove the remaining obligations. Take `⟨a, s, _, rfl⟩` from `IsFractionRing.div_surjective (A := A) x`. Rewrite using `[div_eq_mul_inv]`. Conclude with `(halgA a).mul (halgA s).inv`. Use `haveI : Algebra.IsAlgebraic F K := (IsFractionRing.comap_isAlgebraic_iff (A := P) (K := F)).mp hPKalg`.
+
+Use `haveI : Algebra.EssFiniteType A K := .of_isLocalization K (nonZeroDivisors A)`. Use `haveI : Algebra.EssFiniteType P K := .comp P A K`. Use `haveI : Algebra.EssFiniteType F K := .of_comp P F K`. Use `haveI : FiniteDimensional F K := Algebra.finite_of_essFiniteType_of_isAlgebraic`. Use `haveI : CharZero F := charZero_of_injective_algebraMap (IsFractionRing.injective P F)`.
+
+Use `haveI hic : IsIntegralClosure B P K := { algebraMap_injective := hιinj.comp Subtype.val_injective isIntegral_iff := by`. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨a, rfl⟩` from `IsIntegrallyClosed.isIntegral_iff.mp (hx.tower_top (A := A))`.
+
+Establish `ha : IsIntegral P a` using `(isIntegral_algebraMap_iff hιinj).mp hx`. Conclude with `⟨⟨a, ha⟩, rfl⟩`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `(y.2.algebraMap (B := K)) }`. Use `haveI hfrac : IsFractionRing B K := IsIntegralClosure.isFractionRing_of_finite_extension P F K B`.
+
+Use `⟨IsIntegralClosure.finite P F K B, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `(isIntegrallyClosed_iff K).mpr ?_` and prove the remaining obligations. Introduce `x hx`. Establish `hxP : IsIntegral P x` using `isIntegral_trans x hx`. Conclude with `(IsIntegralClosure.isIntegral_iff (A := B)).mp hxP`.
+
+Introduce `x y h`. Conclude with `hinj (congrArg Subtype.val h)`. Establish `hne : ∀ b : B, b ∈ ((maximalIdeal A).comap (algebraMap B A)).primeCompl → IsUnit (algebraMap B A b)`. Introduce `b hb`. Assume the negation of the conclusion as `hu`.
+
+Conclude with `hb ((mem_maximalIdeal _).mpr hu)`. Use `⟨fun y => hne y.1 y.2, fun a => ?_, fun {x y} h => ⟨1, ?_⟩⟩` and prove the remaining obligations. Take `⟨b, t, hb, ht, hu, hab⟩` from `hloc a`. Use `⟨(⟨b, hb⟩, ⟨⟨t, ht⟩, ?_⟩), hab⟩` and prove the remaining obligations. Introduce `hmem`.
+
+Conclude with `(mem_maximalIdeal _).mp hmem hu`. Establish `: x = y` using `Subtype.val_injective h`. Rewrite using `[this]`.
+-/
 theorem integralClosure_of_fractions (P A : Type) [CommRing P] [IsDomain P] [IsNoetherianRing P]
     [IsIntegrallyClosed P] [CharZero P] [CommRing A] [IsDomain A] [IsLocalRing A]
     [IsIntegrallyClosed A] [Algebra P A] [Algebra.EssFiniteType P A]
@@ -79,6 +104,25 @@ theorem integralClosure_of_fractions (P A : Type) [CommRing P] [IsDomain P] [IsN
 
 end GlobalTheory.QFNN
 
+/- English proof (translation)
+Introduce `A _ _ _ _ _ hess`. Take `⟨S₀, M, hft, hlocM⟩` from `(Algebra.essFiniteType_iff_exists_subalgebra ℤ A).mp hess`. Set `𝔮 : Ideal S₀` to `(maximalIdeal A).comap (algebraMap S₀ A)`. Use `haveI h𝔮 : 𝔮.IsPrime := Ideal.comap_isPrime _ _`. Establish `hunit : ∀ s : S₀, s ∉ 𝔮 → IsUnit (algebraMap S₀ A s)`.
+
+Introduce `s hs`. Assume the negation of the conclusion as `hu`. Conclude with `hs ((mem_maximalIdeal _).mpr hu)`. Establish `hM : M ≤ 𝔮.primeCompl`. Introduce `m hm hmem`.
+
+Conclude with `(mem_maximalIdeal _).mp hmem (IsLocalization.map_units A ⟨m, hm⟩)`. Use `haveI hat : IsLocalization 𝔮.primeCompl A := IsLocalization.of_le M _ hM (fun s hs => hunit s hs)`. Use `haveI : CharZero S₀ := (algebraMap S₀ A).charZero`. Take `⟨r, y, hy, hqf⟩` from `GlobalTheory.T.exists_quasi_finite_polynomial_map S₀ 𝔮`. Set `P` to `MvPolynomial (Fin r) ℤ`.
+
+Use `letI algPS : Algebra P S₀ := (MvPolynomial.aeval y : P →ₐ[ℤ] S₀).toRingHom.toAlgebra`. Use `letI algPA : Algebra P A := ((algebraMap S₀ A).comp (algebraMap P S₀)).toAlgebra`. Use `haveI : IsScalarTower P S₀ A := .of_algebraMap_eq' rfl`. Use `haveI : IsScalarTower ℤ P S₀ := .of_algebraMap_eq' (RingHom.ext_int _ _)`. Use `haveI : IsScalarTower ℤ P A := .of_algebraMap_eq' (RingHom.ext_int _ _)`.
+
+Use `haveI : Algebra.FiniteType P S₀ := .of_restrictScalars_finiteType ℤ P S₀`. Use `haveI : Algebra.EssFiniteType P A := .of_comp ℤ P A`. Establish `hinj : Function.Injective (algebraMap P A)` using `(Subtype.val_injective : Function.Injective (algebraMap S₀ A)).comp ((algebraicIndependent_iff_injective_aeval).mp hy)`. Establish `hzmp : Algebra.ZariskisMainProperty P 𝔮` using `Algebra.ZariskisMainProperty.of_finiteType 𝔮`. Take `⟨ρ, hρq, hρ, H⟩` from `Algebra.zariskisMainProperty_iff.mp hzmp`.
+
+Establish `hloc : ∀ a : A, ∃ b t : A, IsIntegral P b ∧ IsIntegral P t ∧ IsUnit t ∧ a * t = b`. Introduce `a`. Take `⟨⟨x, s⟩, hxs⟩` from `IsLocalization.surj 𝔮.primeCompl a`. Take `⟨m₁, h₁⟩` from `H x`. Take `⟨m₂, h₂⟩` from `H s`.
+
+Establish `hb : IsIntegral P (ρ ^ (m₁ + m₂) * x)`. Establish `: ρ ^ (m₁ + m₂) * x = ρ ^ m₂ * (ρ ^ m₁ * x)` using `by ring`. Rewrite using `[this]`. Conclude with `(hρ.pow _).mul h₁`. Establish `ht : IsIntegral P (ρ ^ (m₁ + m₂) * (s : S₀))`.
+
+Establish `: ρ ^ (m₁ + m₂) * (s : S₀) = ρ ^ m₁ * (ρ ^ m₂ * (s : S₀))` using `by ring`. Rewrite using `[this]`. Conclude with `(hρ.pow _).mul h₂`. Use `⟨_, _, hb.algebraMap (B := A), ht.algebraMap (B := A), hunit _ ?_, ?_⟩` and prove the remaining obligations. Conclude with `h𝔮.mul_notMem (fun h => hρq (h𝔮.mem_of_pow_mem _ h)) s.2`.
+
+Simplify using `only [map_mul, map_pow]`. Rewrite using `[← hxs]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨h1, h2, h3, h4⟩` from `GlobalTheory.QFNN.integralClosure_of_fractions P A hinj hloc`. Conclude with `⟨r, integralClosure P A, inferInstance, inferInstance, h2, inferInstance, h1, inferInstance, _, Ideal.comap_isPrime _ _, h3, h4⟩`.
+-/
 theorem GlobalTheory.normal_local_is_localisation_of_finite_over_polynomial :
     ∀ (A : Type) [CommRing A] [IsDomain A] [IsLocalRing A] [IsIntegrallyClosed A] [CharZero A]
       [Algebra.EssFiniteType ℤ A], ∃ (r : ℕ) (B : Type) (_ : CommRing B) (_ : IsDomain B)

@@ -5,6 +5,11 @@ open GlobalTheory.SchwartzFstOp
 
 namespace GlobalTheory.SchwartzFstOp
 
+/- English proof (translation)
+Establish `e : (⇑(sliceCLM x' f) : V → ℂ) = (fun q => f (q + ((0 : V), x'))) ∘ (ContinuousLinearMap.inl ℝ V V')`. Use function extensionality and compare the values at `y`. Simplify using the standard rewrite rules. Establish `hc : ContDiff ℝ n (fun q : V × V' => f (q + ((0 : V), x')))` using `((f.smooth ⊤).comp (contDiff_id.add contDiff_const)).of_le (by exact_mod_cast le_top)`. Rewrite using `[e, ContinuousLinearMap.iteratedFDeriv_comp_right _ hc _ le_rfl, iteratedFDeriv_comp_add_right]`.
+
+Use `(ContinuousMultilinearMap.norm_compContinuousLinearMap_le _ _).trans ?_` and prove the remaining obligations. Establish `h1 : ∏ _i : Fin n, ‖ContinuousLinearMap.inl ℝ V V'‖ ≤ 1` using `Finset.prod_le_one (fun _ _ => norm_nonneg _) (fun _ _ => ContinuousLinearMap.norm_inl_le_one ℝ V V')`. Establish `h2 : (ContinuousLinearMap.inl ℝ V V') x + ((0 : V), x') = (x, x')` using `by simp`. Rewrite using `[h2]`. Conclude with `(mul_le_mul_of_nonneg_left h1 (norm_nonneg _)).trans (le_of_eq (mul_one _))`.
+-/
 theorem norm_iteratedFDeriv_sliceCLM_le {V V' : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [NormedAddCommGroup V'] [NormedSpace ℝ V'] (f : 𝓢(V × V', ℂ)) (x' : V') (n : ℕ) (x : V) :
     ‖iteratedFDeriv ℝ n (sliceCLM x' f) x‖ ≤ ‖iteratedFDeriv ℝ n f (x, x')‖ := by
@@ -21,6 +26,13 @@ theorem norm_iteratedFDeriv_sliceCLM_le {V V' : Type} [NormedAddCommGroup V] [No
   rw [h2]
   exact (mul_le_mul_of_nonneg_left h1 (norm_nonneg _)).trans (le_of_eq (mul_one _))
 
+/- English proof (translation)
+Use `set M := SchwartzMap.seminorm ℂ (j + k) n f`. Establish `hM : 0 ≤ M` using `apply_nonneg _ _`. Establish `hpt : ∀ x : V, ‖x'‖ ^ k * (‖x‖ ^ j * ‖iteratedFDeriv ℝ n (sliceCLM x' f) x‖) ≤ M`. Introduce `x`. Establish `hw : ‖x'‖ ^ k * ‖x‖ ^ j ≤ ‖(x, x')‖ ^ (j + k)`.
+
+Rewrite using `[pow_add, mul_comm]`. Conclude with `mul_le_mul (pow_le_pow_left₀ (norm_nonneg _) (norm_fst_le (x, x')) _) (pow_le_pow_left₀ (norm_nonneg _) (norm_snd_le (x, x')) _) (by positivity) (by positivity)`. Combine the equalities or inequalities in the displayed calculation. Break down `eq_or_lt_of_le (pow_nonneg (norm_nonneg x') k : (0 : ℝ) ≤ ‖x'‖ ^ k) with h0 | hpos` into its components or cases. Rewrite using `[← h0, zero_mul]`.
+
+Conclude with `hM`. Rewrite using `[mul_comm, ← le_div_iff₀ hpos]`. Use `SchwartzMap.seminorm_le_bound ℂ j n _ (div_nonneg hM hpos.le) (fun x => ?_)` and prove the remaining obligations. Rewrite using `[le_div_iff₀ hpos, mul_comm]`. Conclude with `hpt x`.
+-/
 theorem norm_pow_mul_seminorm_sliceCLM_le {V V' : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [NormedAddCommGroup V'] [NormedSpace ℝ V'] (f : 𝓢(V × V', ℂ)) (x' : V') (j k n : ℕ) :
     ‖x'‖ ^ k * SchwartzMap.seminorm ℂ j n (sliceCLM x' f) ≤ SchwartzMap.seminorm ℂ (j + k) n f := by

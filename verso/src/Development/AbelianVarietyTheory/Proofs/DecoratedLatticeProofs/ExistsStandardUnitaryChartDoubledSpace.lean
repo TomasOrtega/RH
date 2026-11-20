@@ -16,15 +16,30 @@ open Formalism.UG
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Simplify using `only [cT, Matrix.map_mul, Matrix.transpose_mul]`.
+-/
 theorem cT_mul_gen (σ : R →+* R) {m p q : Type} [Fintype p] (M : Matrix m p R) (N : Matrix p q R) :
     cT σ (M * N) = cT σ N * cT σ M := by
   simp only [cT, Matrix.map_mul, Matrix.transpose_mul]
 
+/- English proof (translation)
+Simplify using `[cT]`.
+-/
 theorem cT_one_gen (σ : R →+* R) {n : Type} [Fintype n] [DecidableEq n] : cT σ (1 : Matrix n n R) = 1 := by
   simp [cT]
 
 variable {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Establish `hg' : cT σ (g : Matrix n n R) * Q * g = Q` using `hg`. Use `show cT σ (((T⁻¹ * g * T : GL n R)) : Matrix n n R) * J * ((T⁻¹ * g * T : GL n R) : Matrix n n R) = J`. Establish `h1 : ((T⁻¹ : GL n R) : Matrix n n R) * T = 1` using `by rw [← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `h2 : (T : Matrix n n R) * ((T⁻¹ : GL n R) : Matrix n n R) = 1` using `by rw [← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `h3 : cT σ ((T⁻¹ : GL n R) : Matrix n n R) * cT σ (T : Matrix n n R) = 1`.
+
+Rewrite using `[← cT_mul_gen, h2, cT_one_gen]`. Establish `hJ : J = ((c⁻¹ : Rˣ) : R) • (cT σ (T : Matrix n n R) * Q * T)`. Rewrite using `[hT, smul_smul, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_smul]`. Rewrite using `[hJ]`. Simplify using `only [Units.val_mul, cT_mul_gen, Matrix.mul_smul, Matrix.smul_mul]`.
+
+Use `congr 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = cT σ (T : Matrix n n R) * (cT σ (g : Matrix n n R) * Q * g) * T := by`. Rewrite using `[h3, h2]`.
+
+Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = cT σ (T : Matrix n n R) * Q * T := by rw [hg']`.
+-/
 theorem conj_mem (σ : R →+* R) (Q J : Matrix n n R) (T : GL n R) (c : Rˣ)
     (hT : cT σ (T : Matrix n n R) * Q * T = (c : R) • J) (g : GL n R) (hg : g ∈ UJ σ Q) :
     T⁻¹ * g * T ∈ UJ σ J := by
@@ -47,6 +62,11 @@ theorem conj_mem (σ : R →+* R) (Q J : Matrix n n R) (T : GL n R) (c : Rˣ)
           rw [h3, h2]; simp only [Matrix.mul_one, Matrix.mul_assoc]
     _ = cT σ (T : Matrix n n R) * Q * T := by rw [hg']
 
+/- English proof (translation)
+Establish `h2 : (T : Matrix n n R) * ((T⁻¹ : GL n R) : Matrix n n R) = 1` using `by rw [← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `h3 : cT σ ((T⁻¹ : GL n R) : Matrix n n R) * cT σ (T : Matrix n n R) = 1`. Rewrite using `[← cT_mul_gen, h2, cT_one_gen]`. Establish `hJ : J = ((c⁻¹ : Rˣ) : R) • (cT σ (T : Matrix n n R) * Q * T)`. Rewrite using `[hT, smul_smul, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_smul]`.
+
+Rewrite using `[hJ, Matrix.mul_smul, Matrix.smul_mul]`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem conj_back (σ : R →+* R) (Q J : Matrix n n R) (T : GL n R) (c : Rˣ)
     (hT : cT σ (T : Matrix n n R) * Q * T = (c : R) • J) :
     cT σ ((T⁻¹ : GL n R) : Matrix n n R) * J * ((T⁻¹ : GL n R) : Matrix n n R) = ((c⁻¹ : Rˣ) : R) • Q := by
@@ -76,6 +96,11 @@ end GlobalTheory.StdUnn.ChartExist
 
 open GlobalTheory.StdUnn.ChartExist in
 
+/- English proof (translation)
+Establish `e1 : Formalism.UG.cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF D.host.F) D.sp.cm.sig) T.val = ((Tm A μ)ᴴ).map (incA D)`. Rewrite using `[hTv]`. Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite using `[e1, hTv, hc]`.
+
+Express the relevant statement in the definitionally equal form `((Tm A μ)ᴴ).map (incA D) * ((dblSp A).gram).map (incA D) * (Tm A μ).map (incA D) = (incA D μ) • (Jst D A.rank).map (incA D)`. Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, hgram]`. Use extensionality with `i j`. Simplify using `[Matrix.map_apply, map_mul]`.
+-/
 theorem GlobalTheory.StdUnn.ChartExist.gram_adelic (D : D7) (A : HSp D) (μ : D.host.E)
     (hgram : (Tm A μ)ᴴ * (dblSp A).gram * Tm A μ = μ • Jst D A.rank)
     (T : GL (Fin (A.rank + A.rank)) (AE D)) (hTv : T.val = rat (Tm A μ)) (c : (AE D)ˣ) (hc : (c : AE D) = incA D μ) :
@@ -92,6 +117,15 @@ theorem GlobalTheory.StdUnn.ChartExist.gram_adelic (D : D7) (A : HSp D) (μ : D.
 
 open GlobalTheory.StdUnn.ChartExist in
 
+/- English proof (translation)
+Introduce `D A μ hμ`. Take `⟨hgram, hdet, -⟩` from `GlobalTheory.StdUnn.Tm_gram_inv D A μ hμ`. Establish `hdetR : IsUnit (rat (Tm A μ) : Mx D (A.rank + A.rank) (A.rank + A.rank)).det`. Establish `: (rat (Tm A μ) : Mx D (A.rank + A.rank) (A.rank + A.rank)).det = incA D (Tm A μ).det`. Rewrite using `[RingHom.map_det]`.
+
+Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `hdet.map (incA D)`. Set `T : GL (Fin (A.rank + A.rank)) (AE D)` to `Matrix.nonsingInvUnit _ hdetR`. Establish `hTv : T.val = rat (Tm A μ)` using `rfl`.
+
+Establish `hμu : IsUnit (incA D μ)` using `(Ne.isUnit hμ.1).map (incA D)`. Use `⟨conjEquiv (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF D.host.F) D.sp.cm.sig) _ _ T hμu.unit (gram_adelic D A μ hgram T hTv hμu.unit hμu.unit_spec), ?_⟩` and prove the remaining obligations. Introduce `g`. Use `show (rat (Tm A μ) : Mx D (A.rank + A.rank) (A.rank + A.rank)) * (T⁻¹ * g.1 * T).val = g.1.val * rat (Tm A μ)`. Rewrite using `[← hTv]`.
+
+Simplify using `only [Units.val_mul, ← Matrix.mul_assoc]`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]`.
+-/
 theorem GlobalTheory.StdUnn.chart_exists : ∀ (D : D7) (A : HSp D) (μ : D.host.E), IsSkew μ → ∃ κ : GA D (dblSp A) ≃* G D A.rank, IsChart A μ κ := by
   intro D A μ hμ
   obtain ⟨hgram, hdet, -⟩ := GlobalTheory.StdUnn.Tm_gram_inv D A μ hμ

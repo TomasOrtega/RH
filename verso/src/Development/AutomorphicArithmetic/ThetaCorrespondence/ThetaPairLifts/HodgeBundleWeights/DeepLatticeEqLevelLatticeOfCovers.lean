@@ -30,6 +30,9 @@ open CategoryTheory AlgebraicGeometry NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Theta
 open GlobalTheory GlobalTheory.CompHS GlobalTheory.CovTop GlobalTheory.BigTop GlobalTheory.HSApp GlobalTheory.DegVal GlobalTheory.DegCmp
 open GlobalTheory.LevDesc (TypeFrame grpHR latN)
+/- English proof (translation)
+Introduce `_ _ _`. Use `GlobalTheory.CovTop.CovSz.covers_of_lifts (GlobalTheory.CovTop.Sizes.hostN 0) ?_` and prove the remaining obligations. Introduce `eps Fm x hx ι p i C _ hN _ Y hY`. Take `⟨fr, ψ, h1, h2, h3⟩` from `latDeep_eq_latN p i Y hY.1`. Conclude with `⟨fr, ψ, h1, h2, h3, log_card_le p i Y hY hN _⟩`.
+-/
 theorem deep_lattice_eq_level_lattice_of_covers : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → Gram → DeepGood → Covers fun Fm x _ ι p i Y _ _ => ∃ (fr : TypeFrame (dat p i) Y.d.l₂) (ψ : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.LevelCuspCharacters.Sq (Fm.D x ι).host, AddChar (ZMod ((Fm.D x ι).host.g v.1)) Y.d.c₂.F), (∀ v, ψ v ≠ 1) ∧ GlobalTheory.LevDesc.IsTypeLevel Y.d.l₂ ∧ latDeep p i Y = latN fr Y.U (Gk p i) ψ ∧ Real.log (Nat.card (grpHR fr)) ≤ 45 * zBase (Fm.L x ι) ^ 2 := by
   intro _ _ _
   refine GlobalTheory.CovTop.CovSz.covers_of_lifts (GlobalTheory.CovTop.Sizes.hostN 0) ?_
@@ -52,6 +55,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.CovTop.TypeLattice.deep_lattice_eq_level_lattice_of_covers | exact _root_.GlobalTheory.CovTop.TypeLattice.deep_lattice_eq_level_lattice_of_covers | (intros; apply _root_.GlobalTheory.CovTop.TypeLattice.deep_lattice_eq_level_lattice_of_covers <;> …`.
+-/
 theorem _root_.GlobalTheory.T.type_lattice_deep_level_eq : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → Gram → DeepGood → Covers fun Fm x _ ι p i Y _ _ => ∃ (fr : TypeFrame (dat p i) Y.d.l₂) (ψ : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.LevelCuspCharacters.Sq (Fm.D x ι).host, AddChar (ZMod ((Fm.D x ι).host.g v.1)) Y.d.c₂.F), (∀ v, ψ v ≠ 1) ∧ GlobalTheory.LevDesc.IsTypeLevel Y.d.l₂ ∧ latDeep p i Y = latN fr Y.U (Gk p i) ψ ∧ Real.log (Nat.card (grpHR fr)) ≤ 45 * zBase (Fm.L x ι) ^ 2 := by
   first | exact @_root_.GlobalTheory.CovTop.TypeLattice.deep_lattice_eq_level_lattice_of_covers | exact _root_.GlobalTheory.CovTop.TypeLattice.deep_lattice_eq_level_lattice_of_covers | (intros; apply _root_.GlobalTheory.CovTop.TypeLattice.deep_lattice_eq_level_lattice_of_covers <;> assumption)
 end

@@ -4,6 +4,17 @@ open scoped Matrix
 
 namespace GlobalTheory.Ord2
 
+/- English proof (translation)
+Introduce `l _ Ω _ _ _ W c c' y n w ψ a hle ha hT`. Take `⟨Y, P, u, b, hY, hYO, hP, hu, hb, hco, hsum, hfr, htame⟩` from `hT`. Use `⟨fun s x => a • Y s x, P, u, a • b, ?_, ?_, hle hP, hu, ?_, ?_, ?_, hfr, ?_⟩` and prove the remaining obligations. Conclude with `hY.const_smul a`. Introduce `s x i`.
+
+Simplify using `using c'.O.mul_mem ha (hle (hYO s x i))`. Introduce `i`. Simplify using `using c'.O.mul_mem ha (hle (hb i))`. Introduce `s t x`. Simplify using `only [hco s t x, smul_add, Matrix.mulVec_smul]`.
+
+Introduce `s`. Rewrite `*` using `[finsum_eq_sum_of_fintype]`. Rewrite using `[← Finset.smul_sum, ← finsum_eq_sum_of_fintype, hsum s]`. Simplify using `only [smul_add, smul_sub, Matrix.mulVec_smul, smul_comm a P]`. Introduce `q hq hl`.
+
+Take `⟨B, hB, t, htO, ht⟩` from `htame q hq hl`. Use `⟨B, hB, fun x => a • t x, ?_, ?_⟩` and prove the remaining obligations. Introduce `x i`. Simplify using `using c'.O.mul_mem ha (hle (htO x i))`. Introduce `s hs x`.
+
+Simplify using `only [ht s hs x, smul_sub, Matrix.mulVec_smul]`.
+-/
 theorem tame_scale : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (W : R2 Ω l) (c c' : Coef l) (y : G ℚ Ω → Fin 2 → Qbar l) (n : ℕ) (w : Pl) (ψ : G ℚ Ω →* Multiplicative (ZMod (l ^ n))) (a : Qbar l), c.O ≤ c'.O → a ∈ c'.O → Tame c W y n w ψ → Tame c' W (fun s => a • y s) n w ψ := by
   intro l _ Ω _ _ _ W c c' y n w ψ a hle ha hT
   obtain ⟨Y, P, u, b, hY, hYO, hP, hu, hb, hco, hsum, hfr, htame⟩ := hT

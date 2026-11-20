@@ -13,20 +13,32 @@ section general
 variable {m n : Type*} [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n]
 
 omit [DecidableEq m] in
+/- English proof (translation)
+The claim follows from `M.l2_opNorm_mulVec x`.
+-/
 lemma norm_toEuclideanLin_le (M : Matrix m n ℂ) (x : EuclideanSpace ℂ n) :
     ‖toEuclideanLin M x‖ ≤ ‖M‖ * ‖x‖ :=
   M.l2_opNorm_mulVec x
 
+/- English proof (translation)
+Rewrite using `[EuclideanSpace.inner_eq_star_dotProduct, dotProduct_comm]`. Both sides reduce to the same expression.
+-/
 lemma dotProduct_mulVec_eq_inner (M : Matrix n n ℂ) (v : n → ℂ) :
     star v ⬝ᵥ M *ᵥ v = ⟪(toLp 2 v : EuclideanSpace ℂ n), toEuclideanLin M (toLp 2 v)⟫_ℂ := by
   rw [EuclideanSpace.inner_eq_star_dotProduct, dotProduct_comm]
   rfl
 
+/- English proof (translation)
+Rewrite using `[toLpLin_mul (q := 2), LinearMap.comp_apply, Matrix.toEuclideanLin_conjTranspose_eq_adjoint, LinearMap.adjoint_inner_right]`.
+-/
 lemma inner_conjTranspose_mul (M N : Matrix m n ℂ) (x y : EuclideanSpace ℂ n) :
     ⟪x, toEuclideanLin (Mᴴ * N) y⟫_ℂ = ⟪toEuclideanLin M x, toEuclideanLin N y⟫_ℂ := by
   rw [toLpLin_mul (q := 2), LinearMap.comp_apply, Matrix.toEuclideanLin_conjTranspose_eq_adjoint,
     LinearMap.adjoint_inner_right]
 
+/- English proof (translation)
+Rewrite using `[map_sub, LinearMap.sub_apply, inner_sub_right, inner_conjTranspose_mul, toLpLin_one, LinearMap.id_apply, inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K]`. Simplify using the standard rewrite rules.
+-/
 lemma inner_one_sub (M : Matrix m n ℂ) (x : EuclideanSpace ℂ n) :
     ⟪x, toEuclideanLin (1 - Mᴴ * M) x⟫_ℂ = ((‖x‖ ^ 2 - ‖toEuclideanLin M x‖ ^ 2 : ℝ) : ℂ) := by
   rw [map_sub, LinearMap.sub_apply, inner_sub_right, inner_conjTranspose_mul, toLpLin_one,
@@ -34,9 +46,17 @@ lemma inner_one_sub (M : Matrix m n ℂ) (x : EuclideanSpace ℂ n) :
   simp
 
 omit [DecidableEq n] in
+/- English proof (translation)
+The claim follows from `isHermitian_one.sub (isHermitian_conjTranspose_mul_self M)`.
+-/
 lemma isHermitian_one_sub [DecidableEq n] (M : Matrix m n ℂ) : (1 - Mᴴ * M).IsHermitian :=
   isHermitian_one.sub (isHermitian_conjTranspose_mul_self M)
 
+/- English proof (translation)
+Use `PosDef.of_dotProduct_mulVec_pos (isHermitian_one_sub Z) fun v hv => ?_` and prove the remaining obligations. Rewrite using `[dotProduct_mulVec_eq_inner, inner_one_sub]`. Establish `hx : 0 < ‖(toLp 2 v : EuclideanSpace ℂ n)‖`. Rewrite using `[norm_pos_iff]; intro h; exact hv (by simpa using h)`. Establish `h1` using `norm_toEuclideanLin_le Z (toLp 2 v)`.
+
+Establish `h2 : ‖toEuclideanLin Z (toLp 2 v)‖ < ‖(toLp 2 v : EuclideanSpace ℂ n)‖` using `by nlinarith`. Establish `h3` using `norm_nonneg (toEuclideanLin Z (toLp 2 v))`. Conclude with `(by nlinarith : (0 : ℝ) < ‖(toLp 2 v : EuclideanSpace ℂ n)‖ ^ 2 - ‖toEuclideanLin Z (toLp 2 v)‖ ^ 2)` after adjusting the coercions.
+-/
 lemma posDef_one_sub_conjTranspose_mul {Z : Matrix m n ℂ} (hZ : ‖Z‖ < 1) :
     (1 - Zᴴ * Z).PosDef := by
   refine PosDef.of_dotProduct_mulVec_pos (isHermitian_one_sub Z) fun v hv => ?_
@@ -49,6 +69,15 @@ lemma posDef_one_sub_conjTranspose_mul {Z : Matrix m n ℂ} (hZ : ‖Z‖ < 1) :
   exact_mod_cast (by nlinarith : (0 : ℝ) < ‖(toLp 2 v : EuclideanSpace ℂ n)‖ ^ 2 -
     ‖toEuclideanLin Z (toLp 2 v)‖ ^ 2)
 
+/- English proof (translation)
+Break down `isEmpty_or_nonempty n with hn | hn` into its components or cases. Establish `: Z = 0` using `by ext i j; exact hn.elim j`. Simplify using `[this]`. Take `⟨x, hx, hmax⟩` from `(isCompact_sphere (0 : EuclideanSpace ℂ n) 1).exists_isMaxOn (NormedSpace.sphere_nonempty.2 zero_le_one) (f := fun x => ‖toEuclideanLin Z x‖) ((toEuclideanLin Z).continuous_of_finiteDimensional.norm.continuousOn)`. Establish `hx1 : ‖x‖ = 1` using `by simpa using hx`.
+
+Establish `hx0 : ofLp x ≠ 0`. Introduce `h`. Establish `: x = 0` using `by simpa using h`. Simplify using `[this] at hx1`. Establish `h1` using `hP.dotProduct_mulVec_pos hx0`.
+
+Rewrite `h1` using `[dotProduct_mulVec_eq_inner, inner_one_sub, toLp_ofLp, hx1]`. Establish `h2 : (0 : ℝ) < 1 ^ 2 - ‖toEuclideanLin Z x‖ ^ 2` using `by exact_mod_cast h1`. Establish `h3` using `norm_nonneg (toEuclideanLin Z x)`. Establish `h4 : ‖toEuclideanLin Z x‖ < 1` using `by nlinarith`. Use `lt_of_le_of_lt ?_ h4` and prove the remaining obligations.
+
+Rewrite using `[l2_opNorm_def]`. Use `ContinuousLinearMap.opNorm_le_of_unit_norm h3 fun y hy => ?_` and prove the remaining obligations. Conclude with `hmax (by simpa using hy)`.
+-/
 theorem norm_lt_one_of_posDef {Z : Matrix m n ℂ} (hP : (1 - Zᴴ * Z).PosDef) : ‖Z‖ < 1 := by
   rcases isEmpty_or_nonempty n with hn | hn
   · have : Z = 0 := by ext i j; exact hn.elim j
@@ -72,11 +101,19 @@ theorem norm_lt_one_of_posDef {Z : Matrix m n ℂ} (hP : (1 - Zᴴ * Z).PosDef) 
   refine ContinuousLinearMap.opNorm_le_of_unit_norm h3 fun y hy => ?_
   exact hmax (by simpa using hy)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨norm_lt_one_of_posDef, posDef_one_sub_conjTranspose_mul⟩`.
+-/
 theorem posDef_iff_norm_lt_one (Z : Matrix m n ℂ) : (1 - Zᴴ * Z).PosDef ↔ ‖Z‖ < 1 :=
   ⟨norm_lt_one_of_posDef, posDef_one_sub_conjTranspose_mul⟩
 
 omit [DecidableEq m] in
 
+/- English proof (translation)
+Rewrite using `[l2_opNorm_def]`. Use `ContinuousLinearMap.opNorm_le_bound _ (Real.sqrt_nonneg _) fun x => ?_` and prove the remaining obligations. Use `(sq_le_sq₀ (by positivity) (by positivity)).mp ?_` and prove the remaining obligations. Rewrite using `[mul_pow, Real.sq_sqrt (by positivity), EuclideanSpace.norm_sq_eq, EuclideanSpace.norm_sq_eq, Finset.sum_mul]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations.
+
+Establish `h1 : ‖∑ j, Z i j * x j‖ ≤ ∑ j, ‖Z i j‖ * ‖x j‖` using `(norm_sum_le _ _).trans (le_of_eq (by simp))`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem l2_opNorm_le_hilbertSchmidt (Z : Matrix m n ℂ) :
     ‖Z‖ ≤ Real.sqrt (∑ i, ∑ j, ‖Z i j‖ ^ 2) := by
   rw [l2_opNorm_def]

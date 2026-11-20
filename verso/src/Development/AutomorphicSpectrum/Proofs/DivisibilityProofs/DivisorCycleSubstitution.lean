@@ -9,6 +9,11 @@ open MvPolynomial GroundTheory.Heights₂.Heights.NumbersDVR GlobalTheory.Compan
 
 namespace GlobalTheory.CompanionTheory.Ar.Num
 
+/- English proof (translation)
+Use `haveI : IsNoetherianRing (MRing ι O) := by`. Unfold `MRing`. Use `infer_instance`. Use `(Ideal.finite_minimalPrimes_of_isNoetherianRing (MRing ι O) (P ⊔ Ideal.span {f})).subset ?_` and prove the remaining obligations. Introduce `W hW`.
+
+Assume the negation of the conclusion as `hn`. Apply `hW` to reduce the goal to its premises. Unfold `divCycle`. Rewrite using `[dif_neg]`. Conclude with `fun h => hn h.1`.
+-/
 theorem divCycle_support_finite {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     (P : Ideal (MRing ι O)) (f : MRing ι O) : (Function.support (divCycle P f)).Finite := by
@@ -23,6 +28,9 @@ theorem divCycle_support_finite {O : Type} [CommRing O] [IsDomain O] [IsDiscrete
   rw [dif_neg]
   exact fun h => hn h.1
 
+/- English proof (translation)
+Establish `e : ratDiv P f g = divCycle P f - divCycle P g` using `rfl`. Unfold `cycList`. Rewrite using `[e]`. Conclude with `(cycEval_sub_cycle _ _ _ (divCycle_support_finite P f) (divCycle_support_finite P g)).symm`.
+-/
 theorem cycList_ratDiv {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
     (P : Ideal (MRing ι O)) (f g : MRing ι O) (l : List (K → ℤ)) :
@@ -32,6 +40,9 @@ theorem cycList_ratDiv {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuation
   rw [e]
   exact (cycEval_sub_cycle _ _ _ (divCycle_support_finite P f) (divCycle_support_finite P g)).symm
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.homogeneous_class_substitution (K → ℤ) d (fun l => (cycList Z l : ℝ)) (fun l l' h => by rw [GlobalTheory.T.cycle_list_perm_invariant.2 O K ι Z l l' h]) (fun b b' l h => by rw [hadd b b' l h]; push_cast; rfl) σ σ' cls M H m hH Q hQ`.
+-/
 theorem cycNum_subst_of_add {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
     (Z : Ideal (MRing ι O) → ℤ) (d : ℕ)
@@ -46,6 +57,11 @@ theorem cycNum_subst_of_add {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValu
     (fun b b' l h => by rw [hadd b b' l h]; push_cast; rfl)
     σ σ' cls M H m hH Q hQ
 
+/- English proof (translation)
+Introduce `O _ _ _ ϖ hϖ K _ _ ι _ P d hP a a' f g hf hg hfP hgP σ σ' _ cls M H m hH Q hQ`. Establish `af` using `GlobalTheory.T.divisor_cycle_list_additive O ϖ hϖ K ι P d hP a f hf hfP`. Establish `ag` using `GlobalTheory.T.divisor_cycle_list_additive O ϖ hϖ K ι P d hP a' g hg hgP`. Use `⟨cycNum_subst_of_add _ d (fun b b' l h => ?_) cls M H m hH Q hQ, cycNum_subst_of_add _ d (af · · · ·) cls M H m hH Q hQ⟩` and prove the remaining obligations. Rewrite using `[cycList_ratDiv, cycList_ratDiv, cycList_ratDiv, af b b' l h, ag b b' l h]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cycNum_linear_subst : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (ϖ : O), Irreducible ϖ → ∀ (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (P : Ideal (MRing ι O)) (d : ℕ), IsModelOver P d → ∀ (a a' : K → ℕ) (f g : MRing ι O), IsMultiHomog f a → IsMultiHomog g a' → f ∉ P → g ∉ P → ∀ (σ σ' : Type) [Fintype σ] (cls : σ → K → ℤ) (M : σ' → σ → ℤ) (H : MvPolynomial σ' ℝ) (m : ℕ), H.IsHomogeneous m → ∀ Q : List (K → ℤ), m + Q.length = d → cycNum (ratDiv P f g) (fun t => ∑ i, M t i • cls i) H Q = cycNum (ratDiv P f g) cls (aeval (fun t => ∑ i, (C (M t i : ℝ) * X i : MvPolynomial σ ℝ)) H) Q ∧ cycNum (divCycle P f) (fun t => ∑ i, M t i • cls i) H Q = cycNum (divCycle P f) cls (aeval (fun t => ∑ i, (C (M t i : ℝ) * X i : MvPolynomial σ ℝ)) H) Q := by
   intro O _ _ _ ϖ hϖ K _ _ ι _ P d hP a a' f g hf hg hfP hgP σ σ' _ cls M H m hH Q hQ
   have af := GlobalTheory.T.divisor_cycle_list_additive O ϖ hϖ K ι P d hP a f hf hfP

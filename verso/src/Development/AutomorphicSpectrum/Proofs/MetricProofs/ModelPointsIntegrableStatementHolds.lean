@@ -16,6 +16,9 @@ section Transfer
 
 variable {e : ℕ} {X : Type} [TopologicalSpace X]
 
+/- English proof (translation)
+Introduce `u hu u' hu' h`. Establish `h1 : χ.symm u = χ.symm u'` using `φ.injOn hu.2 hu'.2 h`. Establish `h2` using `congrArg χ h1`. Rewrite `h2` using `[χ.right_inv hu.1, χ.right_inv hu'.1]`. Then use the resulting hypothesis.
+-/
 theorem modelChart_injOn (χ φ : OpenPartialHomeomorph X (Fin e → ℂ)) :
     Set.InjOn (φ ∘ χ.symm) (χ.target ∩ χ.symm ⁻¹' φ.source) := by
   intro u hu u' hu' h
@@ -23,6 +26,13 @@ theorem modelChart_injOn (χ φ : OpenPartialHomeomorph X (Fin e → ℂ)) :
   have h2 := congrArg χ h1
   rwa [χ.right_inv hu.1, χ.right_inv hu'.1] at h2
 
+/- English proof (translation)
+Establish `hd : DifferentiableOn ℝ (φ ∘ χ.symm) (χ.target ∩ χ.symm ⁻¹' φ.source ∩ χ.symm ⁻¹' E)` using `(hσ.differentiableOn.restrictScalars ℝ).mono Set.inter_subset_left`. Establish `h0 : volume (χ.target ∩ χ.symm ⁻¹' φ.source ∩ χ.symm ⁻¹' E) = 0` using `measure_mono_null (t := χ.target ∩ χ.symm ⁻¹' E) (fun u hu => ⟨hu.1.1, hu.2⟩) hE`. Establish `himg` using `addHaar_image_eq_zero_of_differentiableOn_of_addHaar_eq_zero volume hd h0`. Use `measure_mono_null ?_ himg` and prove the remaining obligations. Introduce and unpack `y ⟨hy, hyE, hyχ⟩`.
+
+Use `⟨χ (φ.symm y), ⟨⟨χ.map_source hyχ, ?_⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show χ.symm (χ (φ.symm y)) ∈ φ.source`. Rewrite using `[χ.left_inv hyχ]`. Conclude with `φ.map_target hy`. Use `show χ.symm (χ (φ.symm y)) ∈ E`.
+
+Rewrite using `[χ.left_inv hyχ]`. Conclude with `hyE`. Simplify using `[χ.left_inv hyχ, φ.right_inv hy]`.
+-/
 theorem modelChart_null (χ φ : OpenPartialHomeomorph X (Fin e → ℂ))
     (hσ : AnalyticOnNhd ℂ (φ ∘ χ.symm) (χ.target ∩ χ.symm ⁻¹' φ.source)) (E : Set X)
     (hE : volume (χ.target ∩ χ.symm ⁻¹' E) = 0) :
@@ -42,6 +52,19 @@ theorem modelChart_null (χ φ : OpenPartialHomeomorph X (Fin e → ℂ))
     rw [χ.left_inv hyχ]; exact hyE
   · simp [χ.left_inv hyχ, φ.right_inv hy]
 
+/- English proof (translation)
+Establish `hSo : IsOpen (χ.target ∩ χ.symm ⁻¹' φ.source)` using `χ.isOpen_inter_preimage_symm φ.open_source`. Establish `hρc : ContinuousOn (χ ∘ φ.symm) Q` using `χ.continuousOn.comp (φ.continuousOn_symm.mono fun y hy => (hQs hy).1) fun y hy => (hQs hy).2`. Establish `hQ' : IsCompact ((χ ∘ φ.symm) '' Q)` using `hQ.image_of_continuousOn hρc`. Establish `hQS : (χ ∘ φ.symm) '' Q ⊆ χ.target ∩ χ.symm ⁻¹' φ.source`. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+
+Use `⟨χ.map_source (hQs hy).2, ?_⟩` and prove the remaining obligations. Use `show χ.symm (χ (φ.symm y)) ∈ φ.source`. Rewrite using `[χ.left_inv (hQs hy).2]`. Conclude with `φ.map_target (hQs hy).1`. Establish `himg : (φ ∘ χ.symm) '' ((χ ∘ φ.symm) '' Q) = Q`.
+
+Rewrite using `[Set.image_image]`. Use `Set.ext fun y => ⟨?_, fun hy => ⟨y, hy, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨y', hy', rfl⟩`. Simplify `hy'` using `[χ.left_inv (hQs hy').2, φ.right_inv (hQs hy').1]`. Simplify using `[χ.left_inv (hQs hy).2, φ.right_inv (hQs hy).1]`.
+
+Establish `hσR : AnalyticOnNhd ℝ (φ ∘ χ.symm) (χ.target ∩ χ.symm ⁻¹' φ.source)` using `hσ.restrictScalars`. Establish `hder : ∀ u ∈ (χ ∘ φ.symm) '' Q, HasFDerivWithinAt (φ ∘ χ.symm) (fderiv ℝ (φ ∘ χ.symm) u) ((χ ∘ φ.symm) '' Q) u` using `fun u hu => ((hσR u (hQS hu)).differentiableAt.hasFDerivAt).hasFDerivWithinAt`. Establish `hinj : Set.InjOn (φ ∘ χ.symm) ((χ ∘ φ.symm) '' Q)` using `(modelChart_injOn χ φ).mono hQS`. Establish `hcont : ContinuousOn (fun u => |(fderiv ℝ (φ ∘ χ.symm) u).det|) ((χ ∘ φ.symm) '' Q)`. Establish `h1 : ContinuousOn (fderiv ℝ (φ ∘ χ.symm)) (χ.target ∩ χ.symm ⁻¹' φ.source)` using `(hσR.fderiv).continuousOn`.
+
+Conclude with `(ContinuousLinearMap.continuous_det.comp_continuousOn (h1.mono hQS)).abs`. Establish `hint` using `(hv _ (fun u hu => (hQS hu).1) hQ').continuousOn_mul hcont hQ'`. Rewrite using `[← himg]`. Use `(integrableOn_image_iff_integrableOn_abs_det_fderiv_smul volume hQ'.measurableSet hder hinj _).2 ?_` and prove the remaining obligations. Use `hint.congr_fun (fun u hu => ?_) hQ'.measurableSet` and prove the remaining obligations.
+
+Establish `hu` using `hQS hu`. Simplify using `only [smul_eq_mul, Function.comp_apply, φ.left_inv hu.2]`.
+-/
 theorem modelChart_integrableOn (χ φ : OpenPartialHomeomorph X (Fin e → ℂ))
     (hσ : AnalyticOnNhd ℂ (φ ∘ χ.symm) (χ.target ∩ χ.symm ⁻¹' φ.source)) (v : X → ℝ)
     (hv : ∀ Q ⊆ χ.target, IsCompact Q → IntegrableOn (fun y => v (χ.symm y)) Q)
@@ -81,6 +104,9 @@ theorem modelChart_integrableOn (χ φ : OpenPartialHomeomorph X (Fin e → ℂ)
   have hu := hQS hu
   simp only [smul_eq_mul, Function.comp_apply, φ.left_inv hu.2]
 
+/- English proof (translation)
+Introduce `y hy`. Take `⟨k, hk⟩` from `hcov (φ.symm y)`. Establish `hWo : IsOpen (φ.target ∩ φ.symm ⁻¹' (χ k).source)` using `φ.isOpen_inter_preimage_symm (χ k).open_source`. Take `⟨Q, hQn, hQs, hQc⟩` from `local_compact_nhds (hWo.mem_nhds ⟨hy, hk⟩)`. Conclude with `⟨Q, mem_nhdsWithin_of_mem_nhds hQn, modelChart_integrableOn (χ k) φ (hσ k) v (hv k) hQc hQs⟩`.
+-/
 theorem modelChart_integrableOn_cover {n : ℕ} (χ : Fin n → OpenPartialHomeomorph X (Fin e → ℂ))
     (φ : OpenPartialHomeomorph X (Fin e → ℂ))
     (hσ : ∀ k, AnalyticOnNhd ℂ (φ ∘ (χ k).symm) ((χ k).target ∩ (χ k).symm ⁻¹' φ.source))
@@ -94,6 +120,9 @@ theorem modelChart_integrableOn_cover {n : ℕ} (χ : Fin n → OpenPartialHomeo
   obtain ⟨Q, hQn, hQs, hQc⟩ := local_compact_nhds (hWo.mem_nhds ⟨hy, hk⟩)
   exact ⟨Q, mem_nhdsWithin_of_mem_nhds hQn, modelChart_integrableOn (χ k) φ (hσ k) v (hv k) hQc hQs⟩
 
+/- English proof (translation)
+Use `measure_mono_null (t := ⋃ k, φ.target ∩ φ.symm ⁻¹' (E ∩ (χ k).source)) ?_ (measure_iUnion_null fun k => modelChart_null (χ k) φ (hσ k) E (hE k))` and prove the remaining obligations. Introduce and unpack `y ⟨hy, hyE⟩`. Take `⟨k, hk⟩` from `hcov (φ.symm y)`. Conclude with `Set.mem_iUnion.2 ⟨k, hy, hyE, hk⟩`.
+-/
 theorem modelChart_null_cover {n : ℕ} (χ : Fin n → OpenPartialHomeomorph X (Fin e → ℂ))
     (φ : OpenPartialHomeomorph X (Fin e → ℂ))
     (hσ : ∀ k, AnalyticOnNhd ℂ (φ ∘ (χ k).symm) ((χ k).target ∩ (χ k).symm ⁻¹' φ.source))
@@ -108,6 +137,15 @@ theorem modelChart_null_cover {n : ℕ} (χ : Fin n → OpenPartialHomeomorph X 
 
 end Transfer
 
+/- English proof (translation)
+Introduce `K _ ι _ P e M n ψ L c N E v g hV hL hN hψ hcov hE hv hg Ψ hΨ`. Take `⟨Φ₀, hΦ₀, hloc⟩` from `GlobalTheory.T.local_holomorphic_section_of_potential K ι P e M L hL`. Establish `hΦ : IsPotential M.atlas (Φ₀.rsmul c)` using `isPotentialRsmul M.atlas c Φ₀ hΦ₀`. Establish `hli : ∀ j, LocallyIntegrableOn (fun y => v ((M.atlas.chart j).symm y)) (M.atlas.chart j).target` using `fun j => modelChart_integrableOn_cover ψ (M.atlas.chart j) (fun k => (hψ k j).2) hcov v hv`. Establish `hint : ∀ j, ∀ Q ⊆ (M.atlas.chart j).target, IsCompact Q → IntegrableOn (fun y => v ((M.atlas.chart j).symm y)) Q` using `fun j Q hQ hQc => (hli j).integrableOn_compact_subset hQ hQc`.
+
+Establish `hnull : ∀ j, volume ((M.atlas.chart j).target ∩ (M.atlas.chart j).symm ⁻¹' ((Set.univ : Set M.Xc)ᶜ ∪ E)) = 0` using `fun j => by`. Simplify using `using modelChart_null_cover ψ (M.atlas.chart j) (fun k => (hψ k j).2) hcov E hE`. Establish `hMI : MIntegrable M.atlas (fun _ : Fin e => Φ₀.rsmul c) v` using `fun j Q hQ hQc => (hint j Q hQ hQc).mul_continuousOn ((locDensCont M.atlas _ (fun _ => hΦ) j).mono hQ) hQc`. Use `((GlobalTheory.T.mixed_integral_model_formula K ι P e M Ψ Set.univ E N (fun _ => c) (fun _ => L) (fun _ => Φ₀.rsmul c) g v hV hΨ isOpen_univ hnull hN ?_ ?_ ?_ ?_).2.2 hMI).1` and prove the remaining obligations. Conclude with `fun _ x j => (hΦ.1 x j).mono fun y hy => ⟨hy.1, hy.2.1⟩`.
+
+Introduce `_ x y₀ hy₀`. Take `⟨U, hUo, hyU, hUs, s, hs, hsh, G, hG, hGe⟩` from `hloc x y₀ hy₀`. Use `⟨U, hUo, hyU, hUs, s, hs, hsh, fun z => (c : ℂ) * G z, holoOn_mul M.atlas hG c, fun y' hy' => ?_⟩` and prove the remaining obligations. Establish `h1 : Φ₀.φ x y' - Real.log (L.h (s y')) = (G y').re` using `hGe y' hy'`. Use `show c * Φ₀.φ x y' - c * Real.log (L.h (s y')) = ((c : ℂ) * G y').re`.
+
+Rewrite using `[Complex.re_ofReal_mul, ← h1]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `fun z hz hzN _ hzE => hg z hz hzN hzE`. Conclude with `fun j => (hli j).aestronglyMeasurable`.
+-/
 theorem modelPtsIntegrable : ModelPtsIntegrable.Statement := by
   intro K _ ι _ P e M n ψ L c N E v g hV hL hN hψ hcov hE hv hg Ψ hΨ
   obtain ⟨Φ₀, hΦ₀, hloc⟩ := GlobalTheory.T.local_holomorphic_section_of_potential K ι P e M L hL

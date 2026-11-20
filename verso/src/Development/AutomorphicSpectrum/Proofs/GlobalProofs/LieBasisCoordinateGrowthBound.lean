@@ -12,20 +12,32 @@ namespace GlobalTheory.CompanionTheory.Hypotheses₂.HCA.WordExpand
 variable {n : ℕ} {G : Set (Matrix (Fin n) (Fin n) ℂ)} {H : Type} [NormedAddCommGroup H]
   [InnerProductSpace ℂ H] {π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
+/- English proof (translation)
+Take `⟨F, hF, hF'⟩` from `hu`. Take `⟨K, hK, hK'⟩` from `hv`. Conclude with `⟨fun z => F z + K z, hF.add hK, fun z hz => by rw [map_add, hF' z hz, hK' z hz]⟩`.
+-/
 theorem isSmoothVec_add {u v : H} (hu : IsSmoothVec G π u) (hv : IsSmoothVec G π v) :
     IsSmoothVec G π (u + v) := by
   obtain ⟨F, hF, hF'⟩ := hu
   obtain ⟨K, hK, hK'⟩ := hv
   exact ⟨fun z => F z + K z, hF.add hK, fun z hz => by rw [map_add, hF' z hz, hK' z hz]⟩
 
+/- English proof (translation)
+Take `⟨F, hF, hF'⟩` from `hv`. Conclude with `⟨fun z => c • F z, hF.const_smul c, fun z hz => by rw [map_smul, hF' z hz]⟩`.
+-/
 theorem isSmoothVec_smul (c : ℂ) {v : H} (hv : IsSmoothVec G π v) :
     IsSmoothVec G π (c • v) := by
   obtain ⟨F, hF, hF'⟩ := hv
   exact ⟨fun z => c • F z, hF.const_smul c, fun z hz => by rw [map_smul, hF' z hz]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => 0, contDiff_const, fun z _ => map_zero _⟩`.
+-/
 theorem isSmoothVec_zero : IsSmoothVec G π (0 : H) :=
   ⟨fun _ => 0, contDiff_const, fun z _ => map_zero _⟩
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using isSmoothVec_zero`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `isSmoothVec_add (isSmoothVec_smul _ (hf a)) ih`.
+-/
 theorem isSmoothVec_sum {ι : Type} (s : Finset ι) (c : ι → ℂ) (f : ι → H)
     (hf : ∀ i, IsSmoothVec G π (f i)) : IsSmoothVec G π (∑ i ∈ s, c i • f i) := by
   classical
@@ -37,6 +49,9 @@ theorem isSmoothVec_sum {ι : Type} (s : Finset ι) (c : ι → ℂ) (f : ι →
 
 variable {d : ℕ} {b : Fin d → Matrix (Fin n) (Fin n) ℂ}
 
+/- English proof (translation)
+Proceed by induction on `p with`. Consider the case `nil => exact hw`. Consider the case `cons i p ih => exact (hasDerivAt_dRep_and_isSmoothVec hG hrep ih (hb i)).2`.
+-/
 theorem word_smooth (hG : IsLinRed G) (hrep : Formalism.QuantumDeterminants.IsCRepOn G π)
     (hb : ∀ i, b i ∈ HCSS.lieOf G) (p : List (Fin d)) {w : H} (hw : IsSmoothVec G π w) :
     IsSmoothVec G π (p.foldr (fun i w => dRep π (b i) w) w) := by
@@ -44,6 +59,9 @@ theorem word_smooth (hG : IsLinRed G) (hrep : Formalism.QuantumDeterminants.IsCR
   | nil => exact hw
   | cons i p ih => exact (hasDerivAt_dRep_and_isSmoothVec hG hrep ih (hb i)).2
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact hv`. Consider the case `cons X l ih`. Conclude with `(hasDerivAt_dRep_and_isSmoothVec hG hrep (ih fun Y hY => hl Y (List.mem_cons_of_mem _ hY)) (hl X List.mem_cons_self)).2`.
+-/
 theorem list_smooth (hG : IsLinRed G) (hrep : Formalism.QuantumDeterminants.IsCRepOn G π)
     (l : List (Matrix (Fin n) (Fin n) ℂ)) (hl : ∀ X ∈ l, X ∈ HCSS.lieOf G) {v : H}
     (hv : IsSmoothVec G π v) : IsSmoothVec G π (l.foldr (dRep π) v) := by
@@ -53,6 +71,11 @@ theorem list_smooth (hG : IsLinRed G) (hrep : Formalism.QuantumDeterminants.IsCR
     exact (hasDerivAt_dRep_and_isSmoothVec hG hrep
       (ih fun Y hY => hl Y (List.mem_cons_of_mem _ hY)) (hl X List.mem_cons_self)).2
 
+/- English proof (translation)
+Proceed by induction on `p with`. Consider the case `nil => rfl`. Consider the case `cons i p ih`. Simplify using `only [List.foldr_cons]`. Rewrite using `[ih]`.
+
+Conclude with `(SmoothLin.dRep_linear hG hrep (word_smooth hG hrep hb p hu) (word_smooth hG hrep hb p hv) (hb i) (hb i)).2.1`.
+-/
 theorem word_add (hG : IsLinRed G) (hrep : Formalism.QuantumDeterminants.IsCRepOn G π)
     (hb : ∀ i, b i ∈ HCSS.lieOf G) (p : List (Fin d)) {u v : H} (hu : IsSmoothVec G π u)
     (hv : IsSmoothVec G π v) :
@@ -66,6 +89,11 @@ theorem word_add (hG : IsLinRed G) (hrep : Formalism.QuantumDeterminants.IsCRepO
     exact (SmoothLin.dRep_linear hG hrep (word_smooth hG hrep hb p hu)
       (word_smooth hG hrep hb p hv) (hb i) (hb i)).2.1
 
+/- English proof (translation)
+Proceed by induction on `p with`. Consider the case `nil => rfl`. Consider the case `cons i p ih`. Simplify using `only [List.foldr_cons]`. Rewrite using `[ih]`.
+
+Conclude with `(SmoothLin.dRep_linear hG hrep (word_smooth hG hrep hb p hv) (word_smooth hG hrep hb p hv) (hb i) (hb i)).2.2 c`.
+-/
 theorem word_smul (hG : IsLinRed G) (hrep : Formalism.QuantumDeterminants.IsCRepOn G π)
     (hb : ∀ i, b i ∈ HCSS.lieOf G) (p : List (Fin d)) (c : ℂ) {v : H}
     (hv : IsSmoothVec G π v) :
@@ -79,6 +107,11 @@ theorem word_smul (hG : IsLinRed G) (hrep : Formalism.QuantumDeterminants.IsCRep
     exact (SmoothLin.dRep_linear hG hrep (word_smooth hG hrep hb p hv)
       (word_smooth hG hrep hb p hv) (hb i) (hb i)).2.2 c
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Establish `h` using `word_smul hG hrep hb p (0 : ℂ) (isSmoothVec_zero (G := G) (π := π) (H := H))`. Simplify using `using h`. Consider the case `insert a s ha ih`.
+
+Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, word_add hG hrep hb p (isSmoothVec_smul _ (hf a)) (isSmoothVec_sum s c f hf), word_smul hG hrep hb p _ (hf a), ih]`.
+-/
 theorem word_sum (hG : IsLinRed G) (hrep : Formalism.QuantumDeterminants.IsCRepOn G π)
     (hb : ∀ i, b i ∈ HCSS.lieOf G) (p : List (Fin d)) {ι : Type} (s : Finset ι) (c : ι → ℂ)
     (f : ι → H) (hf : ∀ i, IsSmoothVec G π (f i)) :
@@ -94,9 +127,15 @@ theorem word_sum (hG : IsLinRed G) (hrep : Formalism.QuantumDeterminants.IsCRepO
       word_add hG hrep hb p (isSmoothVec_smul _ (hf a)) (isSmoothVec_sum s c f hf),
       word_smul hG hrep hb p _ (hf a), ih]
 
+/- English proof (translation)
+The claim follows from `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _`.
+-/
 theorem mnorm_nonneg (X : Matrix (Fin n) (Fin n) ℂ) : 0 ≤ mnorm X :=
   Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons X l ih`. Simplify using `only [List.map_cons, List.prod_cons]`. Conclude with `mul_nonneg (mnorm_nonneg X) ih`.
+-/
 theorem prod_mnorm_nonneg (l : List (Matrix (Fin n) (Fin n) ℂ)) : 0 ≤ (l.map mnorm).prod := by
   induction l with
   | nil => simp
@@ -104,6 +143,21 @@ theorem prod_mnorm_nonneg (l : List (Matrix (Fin n) (Fin n) ℂ)) : 0 ≤ (l.map
     simp only [List.map_cons, List.prod_cons]
     exact mul_nonneg (mnorm_nonneg X) ih
 
+/- English proof (translation)
+Proceed by induction on `l generalizing p with`. Consider the case `nil => simpa using hbound p`. Consider the case `cons X l ih`. Establish `hl' : ∀ Y ∈ l, Y ∈ HCSS.lieOf G` using `fun Y hY => hl Y (List.mem_cons_of_mem _ hY)`. Establish `hX : X ∈ HCSS.lieOf G` using `hl X List.mem_cons_self`.
+
+Establish `hw : IsSmoothVec G π (l.foldr (dRep π) v)` using `list_smooth hG hrep l hl' hv`. Take `⟨r, hr⟩` from `hsp X hX`. Establish `e1 : dRep π X (l.foldr (dRep π) v) = ∑ i, (r i : ℂ) • dRep π (b i) (l.foldr (dRep π) v)`. Rewrite using `[hr]`. Conclude with `hexp r _ hw`.
+
+Establish `hsm : ∀ i, IsSmoothVec G π (dRep π (b i) (l.foldr (dRep π) v))` using `fun i => (hasDerivAt_dRep_and_isSmoothVec hG hrep hw (hb i)).2`. Establish `e2 : p.foldr (fun i w => dRep π (b i) w) (dRep π X (l.foldr (dRep π) v)) = ∑ i, (r i : ℂ) • (p ++ [i]).foldr (fun i w => dRep π (b i) w) (l.foldr (dRep π) v)`. Rewrite using `[e1, word_sum hG hrep hb p _ _ _ hsm]`. Simplify using `[List.foldr_append]`. Establish `hih : ∀ i, ‖(p ++ [i]).foldr (fun i w => dRep π (b i) w) (l.foldr (dRep π) v)‖ ≤ C ^ (p.length + (l.length + 1) + 1) * (p.length + (l.length + 1)).factorial * D ^ l.length * (l.map mnorm).prod`.
+
+Introduce `i`. Establish `h` using `ih hl' (p ++ [i])`. Rewrite `h` using `[List.length_append, List.length_singleton, show p.length + 1 + l.length = p.length + (l.length + 1) by omega]`. Conclude with `h`. Establish `hK : 0 ≤ C ^ (p.length + (l.length + 1) + 1) * (p.length + (l.length + 1)).factorial * D ^ l.length * (l.map mnorm).prod` using `mul_nonneg (mul_nonneg (mul_nonneg (pow_nonneg hC.le _) (Nat.cast_nonneg _)) (pow_nonneg hD0 _)) (prod_mnorm_nonneg l)`.
+
+Establish `hsum : ∑ i, |r i| ≤ D * mnorm X`. Rewrite using `[hr]`. Conclude with `hD r`. Use `show ‖p.foldr (fun i w => dRep π (b i) w) (dRep π X (l.foldr (dRep π) v))‖ ≤ _`. Rewrite using `[e2]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `norm_sum_le_of_le _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_smul, Complex.norm_real, Real.norm_eq_abs]`. Conclude with `mul_le_mul_of_nonneg_left (hih i) (abs_nonneg _)`. Use `_ = (∑ i, |r i|) * (C ^ (p.length + (l.length + 1) + 1) * (p.length + (l.length + 1)).factorial * D ^ l.length * (l.map mnorm).prod) := (Finset.sum_mul _ _ _).symm`.
+
+Use `_ ≤ (D * mnorm X) * (C ^ (p.length + (l.length + 1) + 1) * (p.length + (l.length + 1)).factorial * D ^ l.length * (l.map mnorm).prod) := mul_le_mul_of_nonneg_right hsum hK`. Use `_ = _ := by`. Simplify using `only [List.length_cons, List.map_cons, List.prod_cons]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mixed_bound (hG : IsLinRed G) (hrep : Formalism.QuantumDeterminants.IsCRepOn G π)
     (hb : ∀ i, b i ∈ HCSS.lieOf G)
     (hsp : ∀ X ∈ HCSS.lieOf G, ∃ r : Fin d → ℝ, X = ∑ i, r i • b i)
@@ -167,6 +221,13 @@ theorem mixed_bound (hG : IsLinRed G) (hrep : Formalism.QuantumDeterminants.IsCR
           simp only [List.length_cons, List.map_cons, List.prod_cons]
           ring
 
+/- English proof (translation)
+Establish `hD1 : (1 : ℝ) ≤ D + 1` using `by linarith`. Use `⟨C * (D + 1), by positivity, fun l hl => ?_⟩` and prove the remaining obligations. Establish `h` using `mixed_bound hG hrep hb hsp D hD0 hD hexp hv C hC hbound l hl []`. Simplify using `only [List.foldr_nil, List.length_nil, Nat.zero_add] at h`. Use `h.trans ?_` and prove the remaining obligations.
+
+Establish `hP` using `prod_mnorm_nonneg l`. Establish `hpow : D ^ l.length ≤ (D + 1) ^ (l.length + 1)` using `(pow_le_pow_left₀ hD0 (by linarith) _).trans (pow_le_pow_right₀ hD1 (Nat.le_succ _))`. Establish `hCk : 0 ≤ C ^ (l.length + 1)` using `pow_nonneg hC.le _`. Establish `hf : (0 : ℝ) ≤ l.length.factorial` using `Nat.cast_nonneg _`. Rewrite using `[mul_pow]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem wordBound_of_basis {n : ℕ} {G : Set (Matrix (Fin n) (Fin n) ℂ)} {H : Type}
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] {π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
     (hG : IsLinRed G) (hrep : Formalism.QuantumDeterminants.IsCRepOn G π) {d : ℕ}

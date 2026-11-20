@@ -29,6 +29,9 @@ section Sheaf
 
 variable {X : Scheme.{0}} {F' F Q : X.Modules} {r : ℕ}
 
+/- English proof (translation)
+Establish `k : ψ.app V u = ∑ j, (hs'.basis h).repr u j • hs.basis h j` using `by conv_lhs => rw [← (hs'.basis h).sum_repr u]`. Rewrite using `[← appLinear_apply, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, appLinear_apply, IsFrame.basis_apply, IsFrame.basis_apply, app_resM, e]`. Rewrite using `[k, Module.Basis.repr_sum_self]`.
+-/
 theorem repr_app (ψ : F' ⟶ F) {U V : X.Opens} {s' : Fin r → Γ(F', U)} {s : Fin r → Γ(F, U)} (hs' : IsFrame s')
     (hs : IsFrame s) (e : ∀ i, ψ.app U (s' i) = s i) (h : V ≤ U) (u : Γ(F', V)) (i : Fin r) :
     (hs.basis h).repr (ψ.app V u) i = (hs'.basis h).repr u i := by
@@ -42,10 +45,18 @@ theorem repr_app (ψ : F' ⟶ F) {U V : X.Opens} {s' : Fin r → Γ(F', U)} {s :
 def evAt {R : Type} [CommRing R] (w : Sp R ⟶ X) {V : X.Opens} (hV : ⊤ ≤ w ⁻¹ᵁ V) : Γ(X, V) →+* R :=
   (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom.comp (w.appLE V ⊤ hV).hom
 
+/- English proof (translation)
+The claim follows from `(Scheme.ΓSpecIso (CommRingCat.of R)).hom_inv_id_apply _`.
+-/
 theorem inv_evAt {R : Type} [CommRing R] (w : Sp R ⟶ X) {V : X.Opens} (hV : ⊤ ≤ w ⁻¹ᵁ V) (a : Γ(X, V)) :
     (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (evAt w hV a) = (w.appLE V ⊤ hV).hom a :=
   (Scheme.ΓSpecIso (CommRingCat.of R)).hom_inv_id_apply _
 
+/- English proof (translation)
+Establish `h' : ⊤ ≤ (spMap (intO C).subtype ≫ w) ⁻¹ᵁ U` using `fun q _ => hw (Set.mem_univ (spMap (intO C).subtype q))`. Rewrite using `[valF, dif_pos h']`. Establish `e : (spMap (intO C).subtype ≫ w).appLE U ⊤ h' = w.appLE U ⊤ hw ≫ (spMap (intO C).subtype).appTop`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Conclude with `(Scheme.Hom.appLE_comp_appLE (spMap (intO C).subtype) w U ⊤ ⊤ hw le_rfl).symm`.
+
+Establish `n` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (intO C).subtype)`. Establish `n'` using `congrArg (fun q => q.hom ((w.appLE U ⊤ hw).hom a)) n`. Rewrite using `[e]`. Conclude with `n'.symm`.
+-/
 theorem coe_evAt (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C]
     (w : Sp ↥(intO C) ⟶ X) {U : X.Opens} (hw : ⊤ ≤ w ⁻¹ᵁ U) (a : Γ(X, U)) :
     (evAt w hw a : C) = valF (spMap (intO C).subtype ≫ w) U a := by
@@ -64,10 +75,16 @@ variable {R : Type} [CommRing R] (w : Sp R ⟶ X) (ψ : F' ⟶ F) {V V' : X.Open
 
 def mat (k l : Fin r) : Γ(X, V') := (he.basis hle).repr (ψ.app V' (e' l)) k
 
+/- English proof (translation)
+Use `conv_lhs => rw [← (he.basis hle).sum_repr (ψ.app V' (e' l))]`. Simplify using `only [mat, IsFrame.basis_apply]`.
+-/
 theorem app_eq_sum (l : Fin r) : ψ.app V' (e' l) = ∑ k, mat ψ hle he e' k l • resM F hle (e k) := by
   conv_lhs => rw [← (he.basis hle).sum_repr (ψ.app V' (e' l))]
   simp only [mat, IsFrame.basis_apply]
 
+/- English proof (translation)
+Rewrite using `[pullback_map_app_pullbackSections, app_eq_sum ψ hle he, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[pullbackSections_smul, inv_evAt]`. Use `congr 1`. Conclude with `pullbackSections_res w F hV' hle (e k)`.
+-/
 theorem pull_app (hV : ⊤ ≤ w ⁻¹ᵁ V) (hV' : ⊤ ≤ w ⁻¹ᵁ V') (l : Fin r) :
     ((Scheme.Modules.pullback w).map ψ).app ⊤ (pullbackSections w F' hV' (e' l)) =
       ∑ k, (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (evAt w hV' (mat ψ hle he e' k l)) •
@@ -78,15 +95,30 @@ theorem pull_app (hV : ⊤ ≤ w ⁻¹ᵁ V) (hV' : ⊤ ≤ w ⁻¹ᵁ V') (l : 
   congr 1
   exact pullbackSections_res w F hV' hle (e k)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `((Scheme.Modules.pullback w).map ρ).app ⊤ _ = 0`. Rewrite using `[← pull_app w ψ hle he e' hV hV' l, app_app, ← Functor.map_comp, h0, Functor.map_zero]`. Both sides reduce to the same expression.
+-/
 theorem col_mem {ρ : F ⟶ Q} (h0 : ψ ≫ ρ = 0) (hV : ⊤ ≤ w ⁻¹ᵁ V) (hV' : ⊤ ≤ w ⁻¹ᵁ V') (l : Fin r) :
     (fun k => evAt w hV' (mat ψ hle he e' k l)) ∈ kerAt w ρ hV e := by
   change ((Scheme.Modules.pullback w).map ρ).app ⊤ _ = 0
   rw [← pull_app w ψ hle he e' hV hV' l, app_app, ← Functor.map_comp, h0, Functor.map_zero]
   rfl
 
+/- English proof (translation)
+The claim follows from `PullHT.isFrame_pullS w hU ht`.
+-/
 theorem isFrame_pull {G : X.Modules} [G.IsQuasicoherent] {U : X.Opens} (hU : ⊤ ≤ w ⁻¹ᵁ U) {t : Fin r → Γ(G, U)}
     (ht : IsFrame t) : IsFrame fun i => pullbackSections w G hU (t i) := PullHT.isFrame_pullS w hU ht
 
+/- English proof (translation)
+Use `haveI : Q.IsQuasicoherent := by`. Establish `i : cokernel ψ ≅ Q` using `(cokernelIsCokernel ψ).coconePointUniqueUpToIso hex.gIsCokernel`. Conclude with `isQuasicoherent_of_iso i`. Establish `hx` using `hex.map_of_epi_of_preservesCokernel (Scheme.Modules.pullback w) (inferInstanceAs (Epi ρ)) inferInstance`. Establish `hs` using `@exact_app_of_exact _ ⊤ _ hx (inferInstanceAs ((Scheme.Modules.pullback w).obj F').IsQuasicoherent) (inferInstanceAs ((Scheme.Modules.pullback w).obj F).IsQuasicoherent) (inferInstanceAs ((Scheme.Modules.pullback w).obj Q).IsQuasicoherent) (isAffineOpen_top _)`.
+
+Take `⟨n, hn⟩` from `(hs _).1 hc`. Take `⟨a, rfl⟩` from `(isFrame_pull w hV' he' ⊤ le_rfl).2 n`. Set `G` to `Scheme.ΓSpecIso (CommRingCat.of R)`. Use `⟨fun l => G.hom.hom (a l), fun k => ?_⟩` and prove the remaining obligations. Establish `key : (fun k => G.inv.hom (c k)) = fun k => ∑ l, a l * G.inv.hom (evAt w hV' (mat ψ hle he e' k l))`.
+
+Apply `(isFrame_pull w hV he ⊤ le_rfl).1` to reduce the goal to its premises. Simplify using `only [Fintype.linearCombination_apply, GlobalTheory.Twist.resM_self] at hn ⊢`. Use `Eq.trans hn.symm ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `appLinear ((Scheme.Modules.pullback w).map ψ) ⊤ _ = _`. Simplify using `only [map_sum, map_smul, appLinear_apply, pull_app w ψ hle he e' hV hV', Finset.smul_sum, Finset.sum_smul, mul_smul]`.
+
+Conclude with `Finset.sum_comm`. Establish `k2` using `congrArg G.hom.hom (congrFun key k)`. Simplify using `only [map_sum, map_mul] at k2`. Establish `t (y : R) : G.hom.hom (G.inv.hom y) = y` using `G.inv_hom_id_apply y`. Simplify `k2` using `only [t]`.
+-/
 theorem exists_of_mem [F.IsQuasicoherent] [F'.IsQuasicoherent] {ρ : F ⟶ Q} (h0 : ψ ≫ ρ = 0) [Epi ρ]
     (hex : (ShortComplex.mk ψ ρ h0).Exact) (he' : IsFrame e') (hV : ⊤ ≤ w ⁻¹ᵁ V) (hV' : ⊤ ≤ w ⁻¹ᵁ V')
     {c : Fin r → R} (hc : c ∈ kerAt w ρ hV e) :
@@ -121,6 +153,13 @@ section Norm
 
 variable {X : Scheme.{0}} {F' F Q : X.Modules} {r : ℕ}
 
+/- English proof (translation)
+Distinguish the cases in `hU : ⊤ ≤ x ⁻¹ᵁ (V' ⊓ U)`. Establish `h₁ : V' ⊓ U ≤ V ⊓ U` using `inf_le_inf_right _ hle`. Rewrite using `[valF_eq_valHom x _ hU]`. Simplify using `only [← valHom_resG x (inf_le_left : V' ⊓ U ≤ V') hU, ← valHom_resG x h₁ hU, ← map_mul, ← map_sum]`. Use `congr 1`.
+
+Simplify using `only [coef]`. Rewrite using `[← repr_app ψ hs' hs es, app_resM, app_eq_sum ψ hle he]`. Simplify using `only [map_sum, resM_smul, map_smul, Finsupp.finsetSum_apply, Finsupp.smul_apply, smul_eq_mul, ← IsFrame.repr_resM, resM_resM]`. Establish `hU' : ¬ ⊤ ≤ x ⁻¹ᵁ (V ⊓ U)` using `fun h => hU fun q hq => ⟨hx hq, (h hq).2⟩`. Rewrite using `[valF, dif_neg hU]`.
+
+Conclude with `(Finset.sum_eq_zero fun m _ => by rw [valF.eq_1 x (V ⊓ U), dif_neg hU', mul_zero]).symm`.
+-/
 theorem valF_coef {k : Type} [Field k] (x : Sp k ⟶ X) (ψ : F' ⟶ F) {V V' U : X.Opens} (hle : V' ≤ V)
     {e : Fin r → Γ(F, V)} (he : IsFrame e) {e' : Fin r → Γ(F', V')} (he' : IsFrame e')
     {s' : Fin r → Γ(F', U)} {s : Fin r → Γ(F, U)} (hs' : IsFrame s') (hs : IsFrame s) (es : ∀ i, ψ.app U (s' i) = s i)
@@ -139,6 +178,17 @@ theorem valF_coef {k : Type} [Field k] (x : Sp k ⟶ X) (ψ : F' ⟶ F) {V V' U 
     rw [valF, dif_neg hU]
     exact (Finset.sum_eq_zero fun m _ => by rw [valF.eq_1 x (V ⊓ U), dif_neg hU', mul_zero]).symm
 
+/- English proof (translation)
+Establish `hx : ⊤ ≤ (spMap (intO C).subtype ≫ w) ⁻¹ᵁ V'` using `fun q _ => hV' (Set.mem_univ (spMap (intO C).subtype q))`. Establish `key : ∀ l, ∑ i, cf i * valF (spMap (intO C).subtype ≫ w) _ (coef true he' hs' l i) = ∑ m, (evAt w hV' (mat ψ hle he e' m l) : C) * ∑ i, cf i * valF (spMap (intO C).subtype ≫ w) _ (coef true he hs m i)` using `fun l => by`. Simplify using `only [valF_coef _ ψ hle he he' hs' hs es hx, coe_evAt, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+
+Use `⟨fun H l => ?_, fun H c hc => ?_⟩` and prove the remaining obligations. Rewrite using `[key]`. Conclude with `H _ (col_mem w ψ hle he e' h0 hV hV' l)`. Take `⟨d, hd⟩` from `exists_of_mem w ψ hle he e' h0 hex he' hV hV' hc`. Establish `: ∑ l, (c l : C) * ∑ i, cf i * valF (spMap (intO C).subtype ≫ w) _ (coef true he hs l i) = ∑ l, (d l : C) * ∑ i, cf i * valF (spMap (intO C).subtype ≫ w) _ (coef true he' hs' l i)`.
+
+Establish `hc' : ∀ k, (c k : C) = ∑ l, (d l : C) * (evAt w hV' (mat ψ hle he e' k l) : C)` using `fun k => by`. Use `congrArg (intO C).subtype (hd k)` as an intermediate fact. Rewrite `this` using `[map_sum]`. Simplify using `only [map_mul] at this`. Conclude with `this`.
+
+Simplify using `only [key, hc', Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => mul_assoc _ _ _`.
+
+Rewrite using `[this]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun l _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (d l).2 (norm_nonneg _) (H l)`.
+-/
 theorem norm_iff [F.IsQuasicoherent] [F'.IsQuasicoherent] (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C]
     (w : Sp ↥(intO C) ⟶ X) (ψ : F' ⟶ F) {ρ : F ⟶ Q} (h0 : ψ ≫ ρ = 0) [Epi ρ]
     (hex : (ShortComplex.mk ψ ρ h0).Exact) {V V' U : X.Opens} (hle : V' ≤ V)
@@ -176,6 +226,9 @@ theorem norm_iff [F.IsQuasicoherent] [F'.IsQuasicoherent] (C : Type) [Nontrivial
     rw [norm_mul]
     exact mul_le_one₀ (d l).2 (norm_nonneg _) (H l)
 
+/- English proof (translation)
+Simplify using `only [coef]`. Rewrite using `[← repr_app ψ hs' hs es, app_resM, ee]`.
+-/
 theorem coef_app (ψ : F' ⟶ F) {V U : X.Opens} {e' : Fin r → Γ(F', V)} {e : Fin r → Γ(F, V)} (he' : IsFrame e')
     (he : IsFrame e) {s' : Fin r → Γ(F', U)} {s : Fin r → Γ(F, U)} (hs' : IsFrame s') (hs : IsFrame s)
     (ee : ∀ i, ψ.app V (e' i) = e i) (es : ∀ i, ψ.app U (s' i) = s i) (l i : Fin r) :
@@ -183,6 +236,9 @@ theorem coef_app (ψ : F' ⟶ F) {V U : X.Opens} {e' : Fin r → Γ(F', V)} {e :
   simp only [coef]
   rw [← repr_app ψ hs' hs es, app_resM, ee]
 
+/- English proof (translation)
+The claim follows from `hs.map_of_linearEquiv (fun V hV => (LinearEquiv.ofBijective (appLinear ψ V) (hb V hV)).symm) fun V hV i => by rw [LinearEquiv.symm_apply_eq] exact ((app_resM ψ hV (s' i)).trans (congrArg _ (es i))).symm`.
+-/
 theorem isFrame_of_app (ψ : F' ⟶ F) {U : X.Opens} {s' : Fin r → Γ(F', U)} {s : Fin r → Γ(F, U)} (hs : IsFrame s)
     (hb : ∀ V ≤ U, Function.Bijective (ψ.app V)) (es : ∀ i, ψ.app U (s' i) = s i) : IsFrame s' :=
   hs.map_of_linearEquiv (fun V hV => (LinearEquiv.ofBijective (appLinear ψ V) (hb V hV)).symm) fun V hV i => by
@@ -191,6 +247,11 @@ theorem isFrame_of_app (ψ : F' ⟶ F) {U : X.Opens} {s' : Fin r → Γ(F', U)} 
 
 end Norm
 
+/- English proof (translation)
+Set `j` to `B.gen.ι`. Establish `hR : IsIso ((Scheme.Modules.restrictFunctor j).map ψ)`. Set `e` to `Scheme.Modules.restrictFunctorIsoPullback j`. Establish `h : (Scheme.Modules.restrictFunctor j).map ψ = e.hom.app _ ≫ B.genRes.map ψ ≫ e.inv.app _`. Rewrite using `[← e.hom.naturality_assoc, Iso.hom_inv_id_app, Category.comp_id]`.
+
+Rewrite using `[h]`. Use `infer_instance`. Take `⟨U, rfl⟩ : ∃ U : B.gen.toScheme.Opens, V = j ''ᵁ U` from `⟨j ⁻¹ᵁ V, by`. Rewrite using `[Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι, inf_eq_right.2 hV]⟩`. Conclude with `ConcreteCategory.bijective_of_isIso (((Scheme.Modules.restrictFunctor j).map ψ).app U)`.
+-/
 theorem bijective_app {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {B : Vert.Model O}
     {F' F : B.X.Modules} (ψ : F' ⟶ F) [IsIso (B.genRes.map ψ)] {V : B.X.Opens} (hV : V ≤ B.gen) :
     Function.Bijective (ψ.app V) := by
@@ -204,6 +265,21 @@ theorem bijective_app {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationR
     rw [Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι, inf_eq_right.2 hV]⟩
   exact ConcreteCategory.bijective_of_isIso (((Scheme.Modules.restrictFunctor j).map ψ).app U)
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw Xo p _ W Y i₀ Z O _ _ _ _ _ B h r x oo Q ρ hρ s hs hr _ hex hR`. Establish `hgen : ∀ a, h ⁻¹ᵁ (Z.U a).1 ≤ B.gen` using `fun a => by`. Rewrite using `[B.gen_eq_basicOpen (GlobalTheory.Vert.natCast_ne_zero O p) (GlobalTheory.Vert.natCast_mem_maximalIdeal O p)]`. Use `le_basicOpen_of_isUnit le_top ?_` and prove the remaining obligations. Establish `hp : IsUnit (p : Z.i.c.F)` using `(Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero).isUnit`.
+
+Use `(hp.map (Z.alg a)).map (h.app (Z.U a).1).hom` as an intermediate fact. Simplify using `only [map_natCast] at this ⊢`. Conclude with `this`. Use `haveI := oo.iso`. Establish `hb : ∀ a (V : B.X.Opens), V ≤ h ⁻¹ᵁ (Z.U a).1 → Function.Bijective (oo.ψ.hom.app V)` using `fun a V hV => bijective_app oo.ψ.hom (hV.trans (hgen a))`.
+
+Use `choose s' es using fun a i => (hb a _ le_rfl).2 (s a i)`. Establish `vb' : IsVB oo.E'.V r` using `hr ▸ oo.vb'`. Use `haveI := vb'.isQuasicoherent`. Use `haveI := hs.2.1.isQuasicoherent`. Establish `fr : ∀ a, IsFrame (s' a)` using `fun a => isFrame_of_app oo.ψ.hom (hs.2.2.1.frame a) (hb a) (es a)`.
+
+Use `⟨hr, s', ⟨fr, ?_, ?_⟩, ?_, fun a i c => ?_⟩` and prove the remaining obligations. Introduce `k _ w a a' φ φ' h1 h2 j`. Establish `e : ∀ i, coef true (fr a) (fr a') i j = coef true (hs.2.2.1.frame a) (hs.2.2.1.frame a') i j` using `fun i => coef_app oo.ψ.hom _ _ _ _ (es a) (es a') i j`. Simplify using `only [e]`. Conclude with `hs.2.2.1.glue k w a a' φ φ' h1 h2 j`.
+
+Introduce `y w hw a φ hφ V₁ e₁ he₁ hV₁ cf v hv`. Take `⟨V, e, he, hV, hK⟩` from `hR y w hw a φ hφ`. Establish `hle : V ⊓ V₁ ≤ V` using `inf_le_left`. Establish `hV' : ⊤ ≤ w ⁻¹ᵁ (V ⊓ V₁)` using `fun q hq => ⟨hV hq, hV₁ hq⟩`. Rewrite using `[hK cf v hv, norm_iff _ w oo.ψ.hom hρ hex hle he (he₁.res inf_le_right) (fr a) (hs.2.2.1.frame a) (es a) hV hV' cf]`.
+
+Conclude with `FrameNorm.norm_le_one_iff true _ he₁ (fr a) _ w hV' hV₁ cf`. Simplify using `only [es]`. Conclude with `hs.2.2.1`. Apply `(hb a _ le_rfl).1` to reduce the goal to its premises. Establish `hc : (oo.E'.ρ c : oo.E'.V ⟶ oo.E'.V) ≫ oo.ψ.hom = oo.ψ.hom ≫ (oo.E.ρ c : oo.E.V ⟶ oo.E.V)` using `oo.ψ.comm c`.
+
+Rewrite using `[app_app, hc, ← app_app, es, hs.2.2.2, ← appLinear_apply, map_smul, appLinear_apply, es]`.
+-/
 theorem isEqLatPres_of_ptR : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} [Fact p.Prime] {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p} (Z : GlobalTheory.LocM.Mdl Y i₀) {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] [CharP (ResidueField O) p] {B : GlobalTheory.Vert.Model O} (h : B.X ⟶ Z.X) {r : ℕ} (x : Fin r → Letter Dw) (oo : EPres B (𝓞 E)) (Q : B.X.Modules) (ρ : oo.E.V ⟶ Q) (hρ : oo.ψ.hom ≫ ρ = 0) (s : ∀ a : Fin Z.m, Fin r → Γ(oo.E.V, h ⁻¹ᵁ (Z.U a).1)) (hs : IsEqLat Z h x true oo.E s), oo.r = r → Epi ρ → (ShortComplex.mk oo.ψ.hom ρ hρ).Exact → PtR Z h x hs.2.2.1.frame ρ → IsEqLatPres Z h x true oo := by
   intro E _ _ _ H Dw Xo p _ W Y i₀ Z O _ _ _ _ _ B h r x oo Q ρ hρ s hs hr _ hex hR
   have hgen : ∀ a, h ⁻¹ᵁ (Z.U a).1 ≤ B.gen := fun a => by

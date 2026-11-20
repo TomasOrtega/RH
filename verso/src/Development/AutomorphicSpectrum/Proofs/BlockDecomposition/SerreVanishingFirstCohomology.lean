@@ -8,6 +8,11 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry GroundTheory.Arith.S
 
 namespace GlobalTheory.CompanionTheory.GE.Step
 
+/- English proof (translation)
+Introduce `A _ _ X _ _ H hH F hF`. Use `letI : Algebra A ↑(X.presheaf.obj (Opposite.op ⊤)) := ((X ↘ Spec (.of A)).appTop.hom.comp (Scheme.ΓSpecIso (.of A)).inv.hom).toAlgebra`. Take `⟨hq, hfin⟩` from `hF`. Use `haveI : GlobalTheory.QCoh.IsFiniteQC F := GlobalTheory.QCoh.IsFiniteQC.mk hq hfin`. Use `haveI : IsProper ((X ↘ Spec (.of A)) : X ⟶ ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp A) := ‹IsProper (X ↘ Spec (.of A))›`.
+
+Establish `hev` using `GlobalTheory.IsAmpleLB.eventually_subsingleton_coh_twistZ (R := A) (f := ((X ↘ Spec (.of A)) : X ⟶ ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp A)) (fun _ => rfl) F hH`. Take `⟨n₂, hn⟩` from `Filter.eventually_atTop.1 hev`. Conclude with `⟨n₂, fun n hn' => hn n hn' 1 Nat.one_pos⟩`.
+-/
 theorem serre_vanishing_coh_one : ∀ (A : Type) [CommRing A] [IsNoetherianRing A] {X : Scheme.{0}} [X.Over (Spec (.of A))] [IsProper (X ↘ Spec (.of A))] (H : ReciprocityTheory.ChartRestriction.G.Semi.LB X), GlobalTheory.IsAmpleLB H → ∀ {F : X.Modules}, IsCoherent F → ∃ n₂ : ℤ, ∀ n, n₂ ≤ n → Subsingleton (GlobalTheory.coh (GlobalTheory.twistZ F H n) 1) := by
   intro A _ _ X _ _ H hH F hF
   letI : Algebra A ↑(X.presheaf.obj (Opposite.op ⊤)) :=

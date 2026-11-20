@@ -13,9 +13,15 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 variable {d : SD σ}
 
+/- English proof (translation)
+The claim follows from `d.ok.dbl.weil.2.1.toIsSplitting`.
+-/
 theorem splitting (d : SD σ) : IsSplitting (adeleClass F) d.B.ψ d.dd (actB (cA σ)) d.om :=
   d.ok.dbl.weil.2.1.toIsSplitting
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(splitting d).pres k, (splitting d).adm k, fun w w' => by simp only [actB, map_add, Matrix.add_mul], fun c w => by simp only [actB, map_smul, Matrix.smul_mul], fun w φ hφ => by have := (splitting d).impl k (d.dd.e.symm w) φ hφ rwa [Darboux.rho, LinearEquiv.apply_symm_apply] at t …`.
+-/
 theorem imp (d : SD σ) (k : d.G) :
     Box.Imp d.B.ψ (d.om k) fun w => d.dd.e (actB (cA σ) k (d.dd.e.symm w)) :=
   ⟨(splitting d).pres k, (splitting d).adm k, fun w w' => by simp only [actB, map_add, Matrix.add_mul],
@@ -23,11 +29,23 @@ theorem imp (d : SD σ) (k : d.G) :
       have := (splitting d).impl k (d.dd.e.symm w) φ hφ
       rwa [Darboux.rho, LinearEquiv.apply_symm_apply] at this⟩
 
+/- English proof (translation)
+Use `(imp d k).inter d.ok.good.std (Box.at_e d.dd.e hu) hΦ` as an intermediate fact. Rewrite `this` using `[LinearEquiv.symm_apply_apply]`. Then use the resulting hypothesis.
+-/
 theorem om_D (k : d.G) {u : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)} (hu : At (evI F) u) {Φ : d.Fn}
     (hΦ : Φ ∈ d.sch) : d.om k (Box.D (d.dd.e u) Φ) = Box.D (d.dd.e (actB (cA σ) k u)) (d.om k Φ) := by
   have := (imp d k).inter d.ok.good.std (Box.at_e d.dd.e hu) hΦ
   rwa [LinearEquiv.symm_apply_apply] at this
 
+/- English proof (translation)
+Take `⟨N, _, h0, h1, h2⟩` from `h`. Take `⟨N', _, h4⟩` from `Box.exists_D_fin N h0`. Use `⟨Submodule.span ℂ {z | ∃ v, At (evI F) v ∧ ∃ x ∈ N, z = Box.D (d.dd.e v) x}, Submodule.finiteDimensional_of_le (S₂ := N') (Submodule.span_le.2 ?_), Submodule.span_le.2 ?_, Submodule.subset_span ⟨u, hu, Φ, h1, rfl⟩, fun k hk z hz => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨v, -, x, hx, rfl⟩`. Conclude with `h4 _ _ x hx`.
+
+Introduce and unpack `_ ⟨v, -, x, hx, rfl⟩`. Conclude with `Box.DP_mem (h0 hx) _ _`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨v, hv, x, hx, rfl⟩` from `hz`.
+
+Conclude with `Submodule.subset_span ⟨_, Box.at_actB k hv, _, h2 k hk x hx, om_D k hv (h0 hx)⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add _ _ _ _ i j => rw [map_add]`. Conclude with `add_mem i j`.
+
+Consider the case `smul c _ _ i => rw [map_smul]`. Conclude with `Submodule.smul_mem _ _ i`.
+-/
 theorem D_kfS {u : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)} (hu : At (evI F) u) {Φ : d.Fn} (h : Φ ∈ kfS d) :
     Box.D (d.dd.e u) Φ ∈ kfS d := by
   obtain ⟨N, _, h0, h1, h2⟩ := h
@@ -47,6 +65,25 @@ theorem D_kfS {u : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)} (hu : At (ev
     | add _ _ _ _ i j => rw [map_add]; exact add_mem i j
     | smul c _ _ i => rw [map_smul]; exact Submodule.smul_mem _ _ i
 
+/- English proof (translation)
+Establish `hB` using `d.ok.good`. Establish `hs` using `splitting d`. Take `⟨Λ, l1, l2, s, s1, s2⟩` from `finLevel F E σ d.B d.m d.n d.A d.Y hB d.κ d.dd d.K (isCompact_K d) Φ hΦ`. Establish `radd : ∀ u (x y : d.Fn), d.dd.rho d.B.ψ u (x + y) = d.dd.rho d.B.ψ u x + d.dd.rho d.B.ψ u y` using `fun u x y =>`. Use function extensionality and compare the values at `fun _ => mul_add _ _ _`.
+
+Establish `rsmul : ∀ u (c : ℂ) (x : d.Fn), d.dd.rho d.B.ψ u (c • x) = c • d.dd.rho d.B.ψ u x` using `fun u c x =>`. Use function extensionality and compare the values at `fun _ => mul_left_comm _ _ _`. Set `N : Submodule ℂ d.Fn` to `{ carrier := {Ψ | Ψ ∈ d.sch ∧ (∀ u ∈ Λ, d.dd.rho d.B.ψ u Ψ = Ψ) ∧ ∀ u u', At (evI F) u → At (evI F) u' → Box.Rel d.B.emb ε θ θ' u u' → Box.D (d.dd.e u') Ψ = Complex.I • Box.D (d.dd.e u) Ψ} zero_mem' := ⟨zero_mem _, fun u _ => funext fun _ => mul_zero _, fun _ _ _ _ _ => by`. Simplify using `only [Box.D, Box.DP_zero, smul_zero]⟩`. Use the proof step `add_mem' := fun h h' => ⟨add_mem h.1 h'.1, fun u hu => by rw [radd, h.2.1 u hu, h'.2.1 u hu], fun u u' a b c => by`.
+
+Establish `e1` using `h.2.2 u u' a b c`. Establish `e2` using `h'.2.2 u u' a b c`. Simplify using `only [Box.D] at e1 e2 ⊢`. Rewrite using `[Box.DP_add h.1 h'.1, Box.DP_add h.1 h'.1, e1, e2, smul_add]⟩`. Use the proof step `smul_mem' := fun t _ h => ⟨Submodule.smul_mem _ _ h.1, fun u hu => by rw [rsmul, h.2.1 u hu], fun u u' a b c => by`.
+
+Establish `e1` using `h.2.2 u u' a b c`. Simplify using `only [Box.D] at e1 ⊢`. Rewrite using `[Box.DP_smul h.1, Box.DP_smul h.1, e1, smul_comm]⟩ }`. Use `⟨N, ?_, fun _ h => h.1, ⟨hΦ, l2, hv⟩, fun k hk Ψ h => ⟨hs.pres k _ h.1, fun u hu => ?_, fun u u' a b c => ?_⟩⟩` and prove the remaining obligations. Use `FiniteDimensional.of_injective ((LinearMap.pi fun y : s => LinearMap.proj y.1) ∘ₗ N.subtype) ((injective_iff_map_eq_zero _).2 fun Ψ h0 => Subtype.ext (funext fun z => ?_))` and prove the remaining obligations.
+
+Establish `sp : ∀ x (y : d.κ → AF F), (∀ i, evI F (y i) = 0) → Dense.pt x 0 + y = Dense.pt x (Box.fn y)` using `fun x y hy => by`. Rewrite using `[← Box.pt_self (Dense.pt x 0 + y), Box.nf_add, Box.nf_pt, show Box.nf y = 0 from funext hy, add_zero]`. Conclude with `congrArg (Dense.pt x) (funext fun i => zero_add _)`. Establish `z0 : ∀ i, evI F (Dense.pt 0 (Box.fn z) i) = 0` using `fun i => congrFun (Dense.evI_pt 0 (Box.fn z)) i`. Use `s2 Ψ.1 Ψ.2.2.1 (Dense.pt (Box.nf z) 0) (Box.at_pt _) (fun y hy => ?_) _ z0` as an intermediate fact.
+
+Rewrite `this` using `[sp _ _ z0, show Box.fn (Dense.pt 0 (Box.fn z)) = Box.fn z from rfl, Box.pt_self]`. Then use the resulting hypothesis. Take `⟨f, e⟩` from `Box.slice Ψ.2.1 (Box.fn y)`. Establish `g : Box.Gs d.dd.e d.B.emb ε θ θ' f` using `fun u u' a b c => SchwartzMap.ext fun x => by`. Use `congrFun (Ψ.2.2.2 u u' a b c) (Dense.pt x (Box.fn y))` as an intermediate fact. Rewrite `this` using `[Pi.smul_apply, Box.D, Box.D, Box.DP_pt e, Box.DP_pt e]`. Then use the resulting hypothesis.
+
+Rewrite using `[sp _ _ (s1 y hy), e]`. Distinguish the cases in `hf : f = 0`. Rewrite using `[hf]`. Both sides reduce to the same expression. Take `⟨_, hg⟩` from `g.gau hB.cm hf`.
+
+Use `(hg.ne 0 ?_).elim` and prove the remaining obligations. Rewrite using `[← e, ← show Box.nf y = 0 from funext (s1 y hy), Box.pt_self]`. Conclude with `congrFun h0 ⟨y, hy⟩`. Rewrite using `[← Box.actB_inv k u, ← hs.impl k _ _ h.1, h.2.1 _ ((l1 u hu).2.2 _ (inv_mem hk))]`. Rewrite using `[← Box.actB_inv k u, ← Box.actB_inv k u', ← om_D k (Box.at_actB _ a) h.1, ← om_D k (Box.at_actB _ b) h.1, ← map_smul]`.
+
+Use `congrArg (d.om k) (h.2.2 _ _ (Box.at_actB _ a) (Box.at_actB _ b) fun w => ?_)` and prove the remaining obligations. Establish `cm` using `(hc k⁻¹ (inv_mem hk) w).eq`. Simplify using `only [actB, Matrix.map_mul, Matrix.transpose_map, c w, Matrix.smul_mul, Matrix.mul_assoc, ← Matrix.transpose_mul]`. Conclude with `congrArg (fun x => _ • (_ * (_ * xᵀ))) cm`.
+-/
 theorem vac_kfS (θ : InfinitePlace F → Matrix (Fin d.m) (Fin d.m) ℂ)
     (θ' : InfinitePlace F → Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) ℂ)
     (hc : ∀ k ∈ d.K, ∀ w, Commute ((mat2 k).map (piInf (d.B.emb w))) (θ' w)) (ε : InfinitePlace F → ℤˣ) {Φ : d.Fn}

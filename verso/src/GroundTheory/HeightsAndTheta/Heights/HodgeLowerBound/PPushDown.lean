@@ -7,6 +7,11 @@ namespace GroundTheory.Heights₂.Heights.LowerBoundFree
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4
 
+/- English proof (translation)
+Introduce `II hII Ψ _ _ K _ ι _ Ω _ _ E _ _ D Pl H B`. Establish `hPF` using `Inter.PushforwardProjLineFlag.proof hAI3 hStep`. Establish `hY` using `hArith II Ψ K ι Ω E D Pl H B`. Establish `hX : IsArithVar (imageZ Pl.xV (Pl.flagPrime B)) (D.n + 1)`. Rewrite using `[Pl.imageZ_forget_flagPrime]`.
+
+Conclude with `D.arith`. Use `⟨fun G J L L' N hJ hL hL' hN => ?_, fun d r L L' N hdr hd hL hL' hN => ?_⟩` and prove the remaining obligations. Establish `h` using `hPF II hII.1 K ι (K ⊕ (Ψ × Fin (D.N - 1))) Pl.ιY Sum.inl Pl.xV (Pl.flagPrime B) (D.n + 1) D.flagDim0 G J L L' N Pl.isBlockMap_xV hY hX hJ hL hL' hN`. Rewrite `h` using `[Pl.imageZ_forget_flagPrime]`. Then use the resulting hypothesis. Conclude with `hII.2.2.2 K ι (K ⊕ (Ψ × Fin (D.N - 1))) Pl.ιY Sum.inl Pl.xV (Pl.flagPrime B) (D.n + 1) d r L L' N Pl.isBlockMap_xV (by rw [hdr]; exact hY) hX hd hL hL' hN`.
+-/
 theorem PushDown.proof (hAI3 : Inter.PushforwardArithIntersection.Statement) (hStep : Inter.PFStep.Statement)
     (hArith : HodgeFlagArith.Statement) : PushDown.Statement := by
   intro II hII Ψ _ _ K _ ι _ Ω _ _ E _ _ D Pl H B

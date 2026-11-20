@@ -16,11 +16,20 @@ section OEvOpen
 
 variable (v : HeightOneSpectrum (𝓞 F))
 
+/- English proof (translation)
+The claim follows from `Submodule.zero_mem _`.
+-/
 theorem oev_zero : (0 : Fv F v ⊗[F] E) ∈ OEv (E := E) v := Submodule.zero_mem _
 
+/- English proof (translation)
+The claim follows from `Submodule.add_mem _ hx hy`.
+-/
 theorem oev_add {x y : Fv F v ⊗[F] E} (hx : x ∈ OEv (E := E) v) (hy : y ∈ OEv (E := E) v) :
     x + y ∈ OEv (E := E) v := Submodule.add_mem _ hx hy
 
+/- English proof (translation)
+The claim follows from `Submodule.neg_mem _ hx`.
+-/
 theorem oev_neg {x : Fv F v ⊗[F] E} (hx : x ∈ OEv (E := E) v) : -x ∈ OEv (E := E) v :=
   Submodule.neg_mem _ hx
 
@@ -30,6 +39,11 @@ def Osub : AddSubgroup (Fv F v ⊗[F] E) where
   zero_mem' := oev_zero v
   neg_mem' := oev_neg v
 
+/- English proof (translation)
+Set `b0` to `Module.finBasis F E`. Take `⟨y, hy0, hy⟩` from `exists_integral_multiples ℤ ℚ (L := E) (Finset.univ.image b0)`. Establish `hu : ∀ i : Fin (Module.finrank F E), IsUnit ((y : F))` using `fun _ => isUnit_iff_ne_zero.2 (by exact_mod_cast hy0)`. Use `⟨b0.isUnitSMul hu, fun i => ?_⟩` and prove the remaining obligations. Establish `h` using `hy (b0 i) (Finset.mem_image_of_mem _ (Finset.mem_univ i))`.
+
+Rewrite using `[Module.Basis.isUnitSMul_apply]`. Establish `e : ((y : F)) • b0 i = y • b0 i`. Rewrite using `[← Int.cast_smul_eq_zsmul F y (b0 i)]`. Rewrite using `[e]`. Conclude with `h`.
+-/
 theorem exists_intBasis : ∃ b : Module.Basis (Fin (Module.finrank F E)) F E,
     ∀ i, IsIntegral ℤ (b i) := by
   classical
@@ -47,20 +61,34 @@ theorem exists_intBasis : ∃ b : Module.Basis (Fin (Module.finrank F E)) F E,
 
 def ib : Module.Basis (Fin (Module.finrank F E)) F E := (exists_intBasis (F := F) (E := E)).choose
 
+/- English proof (translation)
+The claim follows from `(exists_intBasis (F := F) (E := E)).choose_spec i`.
+-/
 theorem ib_int (i : Fin (Module.finrank F E)) : IsIntegral ℤ (ib (F := F) (E := E) i) :=
   (exists_intBasis (F := F) (E := E)).choose_spec i
 
 def bas : Module.Basis (Fin (Module.finrank F E)) (Fv F v) (Fv F v ⊗[F] E) :=
   Algebra.TensorProduct.basis (Fv F v) (ib (F := F) (E := E))
 
+/- English proof (translation)
+Simplify using `[bas, Algebra.TensorProduct.basis_apply, inclR]`.
+-/
 theorem bas_apply (i : Fin (Module.finrank F E)) :
     bas (E := E) v i = inclR (F := F) (Fv F v) (ib (F := F) (E := E) i) := by
   simp [bas, Algebra.TensorProduct.basis_apply, inclR]
 
+/- English proof (translation)
+Rewrite using `[bas_apply]`. Conclude with `LocMassOrdKv.inclR_mem v ⟨_, ib_int i⟩`.
+-/
 theorem bas_mem (i : Fin (Module.finrank F E)) : bas (E := E) v i ∈ OEv (E := E) v := by
   rw [bas_apply]
   exact LocMassOrdKv.inclR_mem v ⟨_, ib_int i⟩
 
+/- English proof (translation)
+Use `set e := (bas (E := E) v).equivFun`. Establish `hc : Continuous e` using `IsModuleTopology.continuous_of_linearMap e.toLinearMap`. Establish `ho : IsOpen (e ⁻¹' (Set.univ.pi fun _ => (v.adicCompletionIntegers F : Set (Fv F v))))` using `(isOpen_set_pi Set.finite_univ fun _ _ => Valued.isOpen_valuationSubring _).preimage hc`. Use `Filter.mem_of_superset (ho.mem_nhds (by simp [zero_mem])) ?_` and prove the remaining obligations. Introduce `x hx`.
+
+Rewrite using `[← (bas (E := E) v).sum_equivFun x]`. Conclude with `Submodule.sum_mem _ fun i _ => LocMassOrdKv.oev_smul v (hx i trivial) (bas_mem v i)`.
+-/
 theorem oev_mem_nhds : OEv (E := E) v ∈ 𝓝 (0 : Fv F v ⊗[F] E) := by
   set e := (bas (E := E) v).equivFun
   have hc : Continuous e := IsModuleTopology.continuous_of_linearMap e.toLinearMap
@@ -71,6 +99,9 @@ theorem oev_mem_nhds : OEv (E := E) v ∈ 𝓝 (0 : Fv F v ⊗[F] E) := by
   rw [← (bas (E := E) v).sum_equivFun x]
   exact Submodule.sum_mem _ fun i _ => LocMassOrdKv.oev_smul v (hx i trivial) (bas_mem v i)
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.isOpen_of_mem_nhds (Osub (E := E) v) (oev_mem_nhds v)`.
+-/
 theorem isOpen_oev : IsOpen (OEv (E := E) v) :=
   AddSubgroup.isOpen_of_mem_nhds (Osub (E := E) v) (oev_mem_nhds v)
 
@@ -80,6 +111,13 @@ section NotDiscrete
 
 variable (v : HeightOneSpectrum (𝓞 F))
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `h0 : ({0} : Set (Fv F v)) ∈ 𝓝 (0 : Fv F v)` using `Filter.mem_of_superset hU fun t ht => h t ht`. Establish `hop : IsOpen ({0} : Set (Fv F v))`. Use `isOpen_iff_mem_nhds.mpr fun x hx => ?_` and prove the remaining obligations.
+
+Rewrite using `[Set.mem_singleton_iff.mp hx]`. Conclude with `h0`. Establish `: DiscreteTopology (Fv F v)` using `discreteTopology_of_isOpen_singleton_zero hop`. Establish `hfin : (v.adicCompletionIntegers F : Set (Fv F v)).Finite` using `(PI.AdicCompletionValuation.isCompact_adicCompletionIntegers F v).finite_of_discrete`. Establish `: CharZero (Fv F v)` using `charZero_of_injective_algebraMap (algebraMap F (Fv F v)).injective`.
+
+Establish `hinf : (v.adicCompletionIntegers F : Set (Fv F v)).Infinite` using `Set.infinite_of_injective_forall_mem (f := fun k : ℕ => (k : Fv F v)) Nat.cast_injective fun k => natCast_mem _ k`. Conclude with `hinf hfin`.
+-/
 theorem exists_ne_zero_mem_nhds {U : Set (Fv F v)} (hU : U ∈ 𝓝 (0 : Fv F v)) :
     ∃ t ∈ U, t ≠ 0 := by
   by_contra h
@@ -98,6 +136,11 @@ theorem exists_ne_zero_mem_nhds {U : Set (Fv F v)} (hU : U ∈ 𝓝 (0 : Fv F v)
       fun k => natCast_mem _ k
   exact hinf hfin
 
+/- English proof (translation)
+Establish `hi : ∀ i, (fun t : Fv F v => t • e i) ⁻¹' L ∈ 𝓝 (0 : Fv F v)`. Introduce `i`. Use `(continuous_id.smul continuous_const).continuousAt.preimage_mem_nhds ?_` and prove the remaining obligations. Simplify using `using hL`. Establish `hU : (⋂ i, (fun t : Fv F v => t • e i) ⁻¹' L) ∈ 𝓝 (0 : Fv F v)` using `Filter.iInter_mem.mpr hi`.
+
+Take `⟨t, ht, ht0⟩` from `exists_ne_zero_mem_nhds v hU`. Conclude with `⟨t, ht0, fun i => Set.mem_iInter.mp ht i⟩`.
+-/
 theorem exists_scale {ι : Type} [Finite ι] {W : Type} [AddCommGroup W] [Module (Fv F v) W]
     [TopologicalSpace W] [ContinuousSMul (Fv F v) W] {L : Set W} (hL : L ∈ 𝓝 (0 : W))
     (e : ι → W) : ∃ t : Fv F v, t ≠ 0 ∧ ∀ i, t • e i ∈ L := by
@@ -115,23 +158,44 @@ section Lat
 
 variable (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v : HeightOneSpectrum (𝓞 F))
 
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def, map_mul, Algebra.smul_def]`. Use `congr 1`. Simplify using `[sigR, Algebra.TensorProduct.algebraMap_apply]`.
+-/
 theorem sigR_smul (c : Fv F v) (w : Fv F v ⊗[F] E) :
     sigR (Fv F v) σ (c • w) = c • sigR (Fv F v) σ w := by
   rw [Algebra.smul_def, map_mul, Algebra.smul_def]
   congr 1
   simp [sigR, Algebra.TensorProduct.algebraMap_apply]
 
+/- English proof (translation)
+Simplify using `[hR, Formalism.UG.hform]`.
+-/
 theorem hR_zero_left (y : Fin n → Fv F v ⊗[F] E) : hR (Fv F v) σ J 0 y = 0 := by
   simp [hR, Formalism.UG.hform]
 
+/- English proof (translation)
+Simplify using `only [hR, Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem hR_add_left (x x' y : Fin n → Fv F v ⊗[F] E) :
     hR (Fv F v) σ J (x + x') y = hR (Fv F v) σ J x y + hR (Fv F v) σ J x' y := by
   simp only [hR, Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [hR, Formalism.UG.hform, Pi.smul_apply, sigR_smul, smul_mul_assoc, Finset.smul_sum]`.
+-/
 theorem hR_smul_left (c : Fv F v) (x y : Fin n → Fv F v ⊗[F] E) :
     hR (Fv F v) σ J (c • x) y = c • hR (Fv F v) σ J x y := by
   simp only [hR, Formalism.UG.hform, Pi.smul_apply, sigR_smul, smul_mul_assoc, Finset.smul_sum]
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite `hx` using `[← hg]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, rfl⟩` from `hx`.
+
+Conclude with `hy a`. Consider the case `zero`. Rewrite using `[hR_zero_left]`. Conclude with `oev_zero v`. Consider the case `add x x' _ _ h1 h2`.
+
+Rewrite using `[hR_add_left]`. Conclude with `oev_add v h1 h2`. Consider the case `smul c x _ h`. Establish `e : c • x = (c : Fv F v) • x` using `rfl`. Rewrite using `[e, hR_smul_left]`.
+
+Conclude with `LocMassOrdKv.oev_smul v c.2 h`.
+-/
 theorem hR_mem_of_gens (Λ : Set (Fin n → E)) {m : ℕ} (g : Fin m → Fin n → Fv F v ⊗[F] E)
     (hg : Submodule.span (v.adicCompletionIntegers F) (Set.range g) = latLoc (E := E) v Λ)
     (y : Fin n → Fv F v ⊗[F] E) (hy : ∀ a, hR (Fv F v) σ J (g a) y ∈ OEv (E := E) v) :
@@ -153,12 +217,22 @@ theorem hR_mem_of_gens (Λ : Set (Fin n → E)) {m : ℕ} (g : Fin m → Fin n �
     rw [e, hR_smul_left]
     exact LocMassOrdKv.oev_smul v c.2 h
 
+/- English proof (translation)
+Rewrite using `[← hg]`. Conclude with `Submodule.subset_span ⟨a, rfl⟩`.
+-/
 theorem gens_mem (Λ : Set (Fin n → E)) {m : ℕ} (g : Fin m → Fin n → Fv F v ⊗[F] E)
     (hg : Submodule.span (v.adicCompletionIntegers F) (Set.range g) = latLoc (E := E) v Λ)
     (a : Fin m) : g a ∈ latLoc (E := E) v Λ := by
   rw [← hg]
   exact Submodule.subset_span ⟨a, rfl⟩
 
+/- English proof (translation)
+Take `⟨m, g, hg⟩` from `Submodule.fg_iff_exists_fin_generating_family.mp hFG`. Establish `e : (latLoc (E` using `E) v Λ : Set (Fin n → Fv F v ⊗[F] E)) = ⋂ a, (fun y => hR (Fv F v) σ J (g a) y) ⁻¹' OEv (E := E) v := by`. Use extensionality with `y`. Simplify using `only [Set.mem_iInter, Set.mem_preimage, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hy a`. Conclude with `(hSD y).mp hy (g a) (gens_mem v Λ g hg a)`. Introduce `hy`. Conclude with `(hSD y).mpr (hR_mem_of_gens σ J v Λ g hg y hy)`. Rewrite using `[e]`.
+
+Conclude with `isOpen_iInter_of_finite fun a => (isOpen_oev v).preimage (LocMassOrdKv.continuous_hR_right σ J v (g a))`.
+-/
 theorem isOpen_latLoc (Λ : Set (Fin n → E)) (hSD : IsSDLoc σ J v Λ)
     (hFG : (latLoc (E := E) v Λ).FG) :
     IsOpen (latLoc (E := E) v Λ : Set (Fin n → Fv F v ⊗[F] E)) := by
@@ -176,6 +250,13 @@ theorem isOpen_latLoc (Λ : Set (Fin n → E)) (hSD : IsSDLoc σ J v Λ)
   exact isOpen_iInter_of_finite fun a =>
     (isOpen_oev v).preimage (LocMassOrdKv.continuous_hR_right σ J v (g a))
 
+/- English proof (translation)
+Take `⟨m, g, hg⟩` from `Submodule.fg_iff_exists_fin_generating_family.mp hFG`. Establish `hK : IsCompact (Set.univ.pi fun _ : Fin m => (v.adicCompletionIntegers F : Set (Fv F v)))` using `isCompact_univ_pi fun _ => PI.AdicCompletionValuation.isCompact_adicCompletionIntegers F v`. Establish `hcont : Continuous fun c : Fin m → Fv F v => ∑ k, c k • g k` using `continuous_finsetSum _ fun k _ => (continuous_apply k).smul continuous_const`. Establish `e : (latLoc (E` using `E) v Λ : Set (Fin n → Fv F v ⊗[F] E)) = (fun c : Fin m → Fv F v => ∑ k, c k • g k) '' (Set.univ.pi fun _ : Fin m => (v.adicCompletionIntegers F : Set (Fv F v))) := by`. Use extensionality with `x`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite `h` using `[SetLike.mem_coe, ← hg]`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 h`. Conclude with `⟨fun k => (c k : Fv F v), fun k _ => (c k).2, hc⟩`.
+
+Introduce and unpack `⟨c, hc, rfl⟩`. Rewrite using `[SetLike.mem_coe, ← hg]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ (⟨c k, hc k trivial⟩ : v.adicCompletionIntegers F) (Submodule.subset_span ⟨k, rfl⟩)`. Rewrite using `[e]`. Conclude with `hK.image hcont`.
+-/
 theorem isCompact_latLoc (Λ : Set (Fin n → E)) (hFG : (latLoc (E := E) v Λ).FG) :
     IsCompact (latLoc (E := E) v Λ : Set (Fin n → Fv F v ⊗[F] E)) := by
   obtain ⟨m, g, hg⟩ := Submodule.fg_iff_exists_fin_generating_family.mp hFG

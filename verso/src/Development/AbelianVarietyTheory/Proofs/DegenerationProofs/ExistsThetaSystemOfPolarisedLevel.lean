@@ -28,6 +28,13 @@ open GlobalTheory.ThetaReal
 noncomputable section
 namespace GlobalTheory.ThetaReal
 
+/- English proof (translation)
+Use `haveI : NeZero (r * N) := ⟨by omega⟩`. Establish `hN : 0 < N` using `Nat.pos_of_mul_pos_left h`. Establish `key : ∀ i, r ∣ (a i).val` using `fun i => by`. Establish `e : ((N * (a i).val : ℕ) : ZMod (r * N)) = 0`. Rewrite using `[Nat.cast_mul, ZMod.natCast_zmod_val, ← nsmul_eq_mul]`.
+
+Conclude with `congrFun ha i`. Rewrite `e` using `[ZMod.natCast_eq_zero_iff, mul_comm N]`. Conclude with `Nat.dvd_of_mul_dvd_mul_right hN e`. Use `choose c hc using key`. Use `⟨fun i => (c i : ZMod (r * N)), funext fun i => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Pi.smul_apply, nsmul_eq_mul, ← Nat.cast_mul, ← hc, ZMod.natCast_zmod_val]`.
+-/
 theorem exists_nsmul_eq {κ : Type} {r N : ℕ} (h : 1 ≤ r * N) (a : κ → ZMod (r * N)) (ha : N • a = 0) :
     ∃ c : κ → ZMod (r * N), a = r • c := by
   haveI : NeZero (r * N) := ⟨by omega⟩
@@ -42,23 +49,38 @@ theorem exists_nsmul_eq {κ : Type} {r N : ℕ} (h : 1 ≤ r * N) (a : κ → ZM
   refine ⟨fun i => (c i : ZMod (r * N)), funext fun i => ?_⟩
   rw [Pi.smul_apply, nsmul_eq_mul, ← Nat.cast_mul, ← hc, ZMod.natCast_zmod_val]
 
+/- English proof (translation)
+The claim follows from `(Scheme.ΓSpecIso (CommRingCat.of R)).hom_inv_id_apply v`.
+-/
 theorem fn_hom {R : Type} [CommRing R] (v : Γ((baseOver (Sp R)).left, ⊤)) :
     fn ((Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom v) = v :=
   (Scheme.ΓSpecIso (CommRingCat.of R)).hom_inv_id_apply v
 
+/- English proof (translation)
+The claim follows from `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of R)).inv).1`.
+-/
 theorem fn_injective {R : Type} [CommRing R] :
     Function.Injective (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom :=
   (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of R)).inv).1
 
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω]
 
+/- English proof (translation)
+Use `ArithBase.ded (o := o) (Ω := Ω)` as an intermediate fact. Conclude with `isNoetherianRing_of_fg h`.
+-/
 theorem isNoetherian_of_fg [ArithBase o Ω] {R : Subalgebra o Ω} (h : R.FG) : IsNoetherianRing R := by
   have := ArithBase.ded (o := o) (Ω := Ω)
   exact isNoetherianRing_of_fg h
 
+/- English proof (translation)
+Introduce `_ _ h` and use `ArithBase.inj (o := o) (Ω := Ω) (congrArg Subtype.val h)`.
+-/
 theorem algebraMap_injective [ArithBase o Ω] (R : Subalgebra o Ω) : Function.Injective (algebraMap o R) :=
   fun _ _ h => ArithBase.inj (o := o) (Ω := Ω) (congrArg Subtype.val h)
 
+/- English proof (translation)
+Rewrite using `[← IsPrimitiveRoot.coe_units_iff]`. Conclude with `IsPrimitiveRoot.map_iff_of_injective (f := (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom.comp (algebraMap o R)) (fn_injective.comp (algebraMap_injective R))`.
+-/
 theorem prim_iff [ArithBase o Ω] (R : Subalgebra o Ω) (ze : oˣ) (q : ℕ) :
     IsPrimitiveRoot (unitOn (Units.map (algebraMap o R).toMonoidHom ze)) q ↔ IsPrimitiveRoot (ze : o) q := by
   rw [← IsPrimitiveRoot.coe_units_iff]
@@ -66,6 +88,43 @@ theorem prim_iff [ArithBase o Ω] (R : Subalgebra o Ω) (ze : oˣ) (q : ℕ) :
     (f := (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom.comp (algebraMap o R))
     (fn_injective.comp (algebraMap_injective R))
 
+/- English proof (translation)
+Use `haveI := isNoetherian_of_fg fg`. Use `haveI : IsAffine (baseOver (Sp R)).left := inferInstanceAs (IsAffine (Sp R))`. Establish `hn2 : 2 ≤ n` using `hp.two_le`. Establish `hn1 : 1 ≤ n` using `by omega`. Establish `hm1 : 1 ≤ n ^ k` using `Nat.one_le_pow _ _ hn1`.
+
+Establish `hr1 : 1 ≤ n ^ j` using `Nat.one_le_pow _ _ hn1`. Establish `hN2 : 2 ≤ (n ^ k) ^ 2`. Establish `: n ^ 1 ≤ n ^ k` using `Nat.pow_le_pow_right hn1 (by omega)`. Use the polynomial consequences of the given equalities and inequalities. Establish `hM : n ^ j * (n ^ k) ^ 2 = n ^ (j + 2 * k)` using `by ring`.
+
+Establish `hM1 : 1 ≤ n ^ j * (n ^ k) ^ 2` using `hM ▸ Nat.one_le_pow _ _ hn1`. Establish `hMo : Odd (n ^ j * (n ^ k) ^ 2)` using `hM ▸ ho.pow`. Set `f : o →+* Γ((baseOver (Sp R)).left, ⊤)` to `(Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom.comp (algebraMap o R)`. Establish `hf : Function.Injective f` using `fn_injective.comp (algebraMap_injective R)`. Use `haveI : Nontrivial Γ((baseOver (Sp R)).left, ⊤) := (fn_injective (R := R)).nontrivial`.
+
+Establish `un : ∀ q e : ℕ, q = n ^ e → IsUnit (q : Γ(Sp R, ⊤))` using `fun q e hq => by`. Use `(hu.pow e).map f` as an intermediate fact. Rewrite `this` using `[map_pow, map_natCast]`. Rewrite using `[hq, Nat.cast_pow]`. Conclude with `this`.
+
+Establish `prim : IsPrimitiveRoot (ze : o) ((n ^ j * (n ^ k) ^ 2) ^ 2)` using `(prim_iff R ze _).1 lev.prim`. Take `⟨pt, hadd, hbij, hweil, hdiv, hnorm⟩` from `GlobalTheory.T.exists_torsionPoints_of_squareLevel_alt hL _ P _ _ hM1 (un _ _ hM) lev`. Take `⟨h0, hsm⟩` from `pt_nsmul pt hadd`. Take `⟨rig, hrig⟩` from `P.rigid`. Establish `hfr : ∀ a, ∃ τ, IsTorsFrame P rig (n ^ j * (n ^ k) ^ 2) (pt a) τ` using `fun a => by`.
+
+Take `⟨y, hy, e⟩` from `hdiv a`. Take `⟨θ, hθ⟩` from `GlobalTheory.T.exists_symLift_of_pow_eq_one hL _ P _ hMo.pow (un _ ((j + 2 * k) * 2) (by rw [hM, pow_mul])) _ y hy`. Conclude with `GlobalTheory.T.exists_isTorsFrame_of_symLift' hL _ P rig hrig _ hMo _ y _ hy e θ hθ`. Use `choose fr hfr using hfr`. Establish `tors : ∀ a, pt (n ^ j • a) ^ ((n ^ k) ^ 2) = 1` using `fun a => by`.
+
+Rewrite using `[← hsm, smul_smul, mul_comm ((n ^ k) ^ 2) (n ^ j), nsmul_self, h0]`. Use `choose U hU using fun a => GlobalTheory.T.exists_symLift_of_pow_eq_one hL _ P _ ho.pow.pow (un _ (k * 2) (pow_mul _ _ _).symm) _ _ (tors a)`. Take `⟨α, hα, hαn⟩` from `GlobalTheory.T.exists_normalised_mulPull_iso_origin hL _ P rig hrig (n ^ k) _ rfl (baseOver (Sp R))`. Take `⟨s₀, hs₀⟩` from `VVRank.exists_isTwistPull P.A (ψ := mulT P.A (baseOver (Sp R)) (n ^ k)) (hm := lift_snd _ _) (b := 1) P.isLB hα th`. Take `⟨u, u₁, u₂, u₃, u₄, u₅⟩` from `exists_operators hL P rfl ho.pow (un _ _ hM) _ pt hadd hweil U hU hα hs₀`.
+
+Establish `hspan` using `GlobalTheory.T.span_translates_multiplicationPullback_theta hL _ P (n ^ k) _ rfl hm1 (un _ _ rfl) th hth _ b hb α hα s₀ hs₀ _ U (fun a => SecM.toSec P.A (u a (SecM.ofSec P.A s₀))) (fun K _ _ x z hz => by`. Take `⟨a, ha, uniq⟩` from `hbij K x z (by rw [mul_comm, pow_mul, hz, one_pow])`. Take `⟨a₀, -, uniq₀⟩` from `hbij K x 1 (one_pow _)`. Establish `e : (n ^ k) ^ 2 • a = 0` using `(uniq₀ _ (by beta_reduce; rw [hsm, MonObj.comp_pow, ha, hz])).trans (uniq₀ _ (by beta_reduce; rw [h0, MonObj.comp_one])).symm`. Take `⟨c, rfl⟩` from `exists_nsmul_eq hM1 a e`.
+
+Conclude with `⟨c, by rw [(hU c).pt_eq, ha]⟩) (fun a => (u₁ _ _ _).2 rfl)`. Take `⟨bb, -⟩` from `hb.exists_basis`. Take `⟨J, _, ρ, s, i₀, hcard, hi₀, ρ₁, ρ₂, ρ₃, ρ₄, ρ₅⟩` from `GlobalTheory.T.exists_monomial_matrices_projectiveRep o _ _ f hf P.g (n ^ k) (n ^ j) _ rfl hm1 hr1 ze _ (Nat.one_le_pow _ _ hM1) prim.pow_eq_one bb u (SecM.ofSec P.A s₀) u₂ (fun a b => (u₃ a b).imp fun e he v => (he v).trans (congrArg (· • _) (map_pow f _ _).symm)) u₄ u₅ hspan`. Use `choose v hv using fun a => ThetaPtExist.exists_isValueAt P.isLB th (pt a) (fr a) (hfr a).2.1`. Use `choose w hw using fun a i => (hL.evVal _ P ((n ^ k) ^ 2) (pt a) (fr a) (hfr a).2.1 (SecM.toSec P.A (s i))).exists`.
+
+Set `ev : Γ((baseOver (Sp R)).left, ⊤) → R` to `(Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom`. Establish `good : ∀ a, ∃ y, n • y = 0 ∧ a + y ∈ {a | (ev (v a) : Ω) ≠ 0}` using `fun a => by`. Set `K` to `AlgebraicClosure Ω`. Set `x : Sp K ⟶ Sp R` to `spMap ((algebraMap Ω K).comp R.val.toRingHom)`. Use `ArithBase.char (o := o) (Ω := Ω)` as an intermediate fact.
+
+Take `⟨y, hy, H⟩` from `GlobalTheory.T.exists_good_torsion_translate_geometricPoint hL _ P K x n hn2 (Nat.cast_ne_zero.2 (by omega)) th hth ((Over.homMk x (by simp) : Over.mk x ⟶ baseOver (Sp R)) ≫ pt a)`. Take `⟨c, hc, -⟩` from `hbij K x y (by rw [hM, show j + 2 * k = (j + 2 * k - 1) + 1 by omega, pow_succ', pow_mul, hy, one_pow])`. Take `⟨a₀, -, uniq₀⟩` from `hbij K x 1 (one_pow _)`. Use `⟨c, (uniq₀ _ (by beta_reduce; rw [hsm, MonObj.comp_pow, hc, hy])).trans (uniq₀ _ (by beta_reduce; rw [h0, MonObj.comp_one])).symm, fun e => ?_⟩` and prove the remaining obligations. Use `H (pt (a + c)) (fr _) (v _) (by rw [hadd, MonObj.comp_mul, hc]) (hfr _).2.1 (hv _) ?_` and prove the remaining obligations.
+
+Establish `e' : ev (v (a + c)) = 0` using `Subtype.ext e`. Conclude with `(fn_hom _).symm.trans ((congrArg fn e').trans (map_zero _))`. Take `⟨c₁, hc₁⟩` from `hth.exists_basis`. Set `S : ThetaSys o Ω` to `{ g := P.g, N := (n ^ k) ^ 2, r := n ^ j, N_ge := hN2, r_pos := hr1, ζ := ze, prim := prim unit := by rw [hM, Nat.cast_pow]; exact hu.pow _ J := J, ne := ⟨i₀⟩, ρ := ρ, ρ_one := ρ₁, ρ_mul := ρ₂, ρ_add := ρ₃ th := fun a => ev (v a), ev := fun a i => ev (w a i), R := R, fg := fg, fr …`. Take `⟨y, -, hy⟩` from `good 0`.
+
+Conclude with `⟨_, hy⟩ }`. Set `ρ' : S.Real` to `{ P := P, g_eq := rfl, hypS := hS, n := n, n_prime := hp, n_odd := ho, k := k, two_le := hk, N_eq := rfl r_eq := ⟨j, hj, rfl⟩, card := hcard, pt := pt, pt_add := hadd, pt_bij := hbij weil := fun a b c hc => by`. Establish `e : unitOn c = unitOn (Units.map (algebraMap o R).toMonoidHom ze) ^ (n ^ j * (n ^ k) ^ 2 * (eStd P.g _ a b).val)` using `Units.ext ((congrArg fn hc).trans ((map_pow f _ _).trans (Units.val_pow_eq_pow_val (unitOn (Units.map (algebraMap o R).toMonoidHom ze)) _).symm))`. Rewrite using `[e]`. Conclude with `hweil a b`.
+
+Use `rig := rig, rig_gen := hrig, th₁ := th`. Use `th₁_basis := fun σ => by`. Use `existsUnique_of_basis c₁ σ` as an intermediate fact. Simplify using `only [hc₁] at this`. Conclude with `this`.
+
+Use `fr := fr, fr_tors := hfr`. Use `th_val := fun a => (fn_hom (v a)).symm ▸ hv a`. Use `s := fun i => SecM.toSec P.A (s i)`. Use `s_basis := existsUnique_of_basis s`. Use `ev_val := fun i a => (congrArg (IsValueAt _ _ _ _ _ _) (fn_hom (w a i))).mpr (hw a i)`.
+
+Use `i₀ := i₀, α := α, α_gen := hα, α_norm := hαn`. Use `s_zero := by`. Establish `e : SecM.toSec P.A (s i₀) = s₀` using `by rw [hi₀]; rfl`. Conclude with `e ▸ hs₀`. Use `U := U, U_sym := hU`.
+
+Use `U_act := fun a i σ H => (sum_iff σ s _).2 (((u₁ _ _ _).1 H).symm.trans (ρ₄ a i))`. Use `orbit := ρ₅ }`. Use `⟨S, ρ', h, φ, rfl, rfl, rfl, hg, hφ, hiso, fun i i₁ i₂ e₁ e₂ => ?_⟩` and prove the remaining obligations. Take `⟨q₁, q₂⟩` from `hnorm i ⟨i₁, by have := i₁.2; omega⟩ ⟨i₂, by have := i₂.2; omega⟩ e₁ (e₂.trans (congrArg (_ + ·) hg.symm))`. Establish `key : ∀ (i : Fin (2 * P₀.g)) (i' : Fin (2 * P.g)) (q : ℕ), (i : ℕ) = i' → (lev.pt i' ^ q).left ≫ φ = spMap (Subalgebra.inclusion h).toRingHom ≫ (x₀ i ^ q).left` using `fun i i' q e => (ThetaPtMove.over_pow hφ (T := baseOver (Sp R)) (T₀ := baseOver (Sp R₀)) _ ((Category.comp_id _).trans (Category.id_comp _).symm) (hx₀ i i' e).symm q).symm`.
+
+Conclude with `⟨(congrArg (fun z => z.left ≫ φ) q₁).trans (key _ _ _ rfl), (congrArg (fun z => z.left ≫ φ) q₂).trans (key _ _ _ rfl)⟩`.
+-/
 theorem exists_real_of_univBasis (hL : Laws) [ArithBase o Ω] (R : Subalgebra o Ω) (fg : R.FG)
     (frac : ∀ x : Ω, ∃ a ∈ R, ∃ b ∈ R, x = a / b) (P : PolAV (Sp R)) (n k j : ℕ) (ze : oˣ) (hp : n.Prime)
     (ho : Odd n) (hk : 2 ≤ k) (hj : 1 ≤ j) (hu : IsUnit (n : o)) (hS : HypS P.A P.L)
@@ -201,6 +260,17 @@ end GlobalTheory.ThetaReal
 
 open GlobalTheory.ThetaReal in
 
+/- English proof (translation)
+Introduce `hL hL₂ o Ω _ _ _ _ R fg frac P n k j ze hp ho hk hj hu hS lev`. Use `haveI := isNoetherian_of_fg fg`. Set `p : Sp R` to `(⊥ : PrimeSpectrum R)`. Take `⟨V₁, m₁, b₁, hb₁⟩` from `exists_univBasis hL₂.secBaseChangeAny P 1 le_rfl p`. Take `⟨V₂, m₂, b₂, hb₂⟩` from `exists_univBasis hL₂.secBaseChangeAny P ((n ^ k) ^ 2) (Nat.one_le_pow _ _ (Nat.one_le_pow _ _ hp.pos)) p`.
+
+Take `⟨R', h, fg', τ, hτ⟩` from `GlobalTheory.T.exists_fg_subalgebra_spec_factor_through_open o Ω R fg (V₁ ⊓ V₂) ⟨p, m₁, m₂⟩`. Use `haveI := isNoetherian_of_fg fg'`. Take `⟨P', φ, hg, hφ, hiso⟩` from `exists_isPolFibre hL.polBaseChange (Subalgebra.inclusion h).toRingHom P`. Establish `hiso'` using `LBIso.symm hiso`. Establish `w : ∀ (V : (Sp R).Opens) (hV : V₁ ⊓ V₂ ≤ V), (τ ≫ (Sp R).homOfLE hV) ≫ (overRes (T` using `baseOver (Sp R)) V).hom = spMap (Subalgebra.inclusion h).toRingHom := fun V hV => by`.
+
+Express the relevant statement in the definitionally equal form `(τ ≫ (Sp R).homOfLE hV) ≫ V.ι ≫ 𝟙 _ = _`. Rewrite using `[Category.comp_id, Category.assoc, Scheme.homOfLE_ι, hτ]`. Take `⟨c₁, hc₁⟩` from `GlobalTheory.T.universalBasis_move_baseChange _ _ _ P P' φ hφ hiso' _ _ _ _ (w V₁ inf_le_left) b₁ hb₁`. Take `⟨c₂, hc₂⟩` from `GlobalTheory.T.universalBasis_move_baseChange _ _ _ P P' φ hφ hiso' _ _ _ _ (w V₂ inf_le_right) b₂ hb₂`. Take `⟨lev', hlev⟩` from `GlobalTheory.T.exists_symplecticLevel_baseChange_polarisedAbelian hL _ _ _ P P' φ hφ hiso' hg _ _ (unitOn (Units.map (algebraMap o R').toMonoidHom ze)) (congrArg (fun q => q.hom (algebraMap o R ze)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (Subalgebra.inclusion h).toRin …`.
+
+Use `haveI hU : Unique (Fin (1 ^ P.g)) := by rw [one_pow]; infer_instance`. Set `e` to `finCongr (congrArg (((n ^ k) ^ 2) ^ ·) hg)`. Use `exists_real_of_univBasis hL R' fg' (fun x => ?_) P' n k j ze hp ho hk hj hu (SymBaseChange.hypS_baseChange _ _ _ _ _ φ _ _ P.isLB P'.isLB hφ hiso' hS) lev' (SecM.toSec P'.A (c₁ hU.default)) hc₁.unique (fun i => c₂ (e i)) (fun T _ u => ?_) h P φ hg hφ hiso' lev.pt hlev` and prove the remaining obligations. Take `⟨a, ha, b, hb, e⟩` from `frac x`. Conclude with `⟨a, h ha, b, h hb, e⟩`.
+
+Take `⟨c, hc⟩` from `hc₂ T u`. Conclude with `⟨c.reindex e.symm, fun i => by rw [Module.Basis.reindex_apply, hc, Equiv.symm_symm]⟩`.
+-/
 theorem GlobalTheory.ThetaReal.exists_thetaSys_real : Laws → Laws2 → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (R : Subalgebra o Ω), R.FG → (∀ x : Ω, ∃ a ∈ R, ∃ b ∈ R, x = a / b) → ∀ (P : PolAV (Sp R)) (n k j : ℕ) (ze : oˣ), n.Prime → Odd n → 2 ≤ k → 1 ≤ j → IsUnit (n : o) → HypS P.A P.L → ∀ lev : Out.Level P ((n ^ j * (n ^ k) ^ 2) ^ 2) (unitOn (Units.map (algebraMap o R).toMonoidHom ze)), ∃ (S : ThetaSys o Ω) (ρ : S.Real) (h : R ≤ S.R) (φ : ρ.P.A.left ⟶ P.A.left), S.ζ = ze ∧ S.N = (n ^ k) ^ 2 ∧ S.r = n ^ j ∧ S.g = P.g ∧ IsGrpPullback ρ.P.A P.A (spMap (Subalgebra.inclusion h).toRingHom) φ ∧ LBIso ρ.P.L (P.L.pull φ) ∧ ∀ (i : Fin S.g) (i₁ i₂ : Fin (2 * P.g)), (i₁ : ℕ) = i → (i₂ : ℕ) = i + P.g → (ρ.pt (Pi.single (.inl i) 1)).left ≫ φ = spMap (Subalgebra.inclusion h).toRingHom ≫ (lev.pt i₁ ^ (S.r * S.N)).left ∧ (ρ.pt (Pi.single (.inr i) 1)).left ≫ φ = spMap (Subalgebra.inclusion h).toRingHom ≫ (lev.pt i₂ ^ (S.r * S.N)).left := by
   intro hL hL₂ o Ω _ _ _ _ R fg frac P n k j ze hp ho hk hj hu hS lev
   haveI := isNoetherian_of_fg fg

@@ -21,10 +21,27 @@ def DiscreteSeriesUpqExists : Prop :=
       ∀ (μ : Fin N → ℝ) (S : Submodule ℂ H), IsKTypeOf ε σ μ S →
         nsq (lam + rhoN ε - rhoC ε + (2 : ℝ) • rhoC ε) ≤ nsq (μ + (2 : ℝ) • rhoC ε)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem discreteSeriesUpqExists_iff : DiscreteSeriesUpqExists ↔ GlobalTheory.Mem.Vol.DiscreteSeriesExist := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem discreteSeriesUpqExists_iff_dsExists : DiscreteSeriesUpqExists ↔ GlobalTheory.Dec.DSExists := Iff.rfl
 
+/- English proof (translation)
+Establish `key : ∀ a : Fin N, rhoC ε a + rhoN ε a = (((univ.filter fun b => a < b).card : ℝ) - ((univ.filter fun b => b < a).card : ℝ)) / 2`. Introduce `a`. Establish `h1` using `Finset.card_filter_add_card_filter_not (s := univ.filter fun b : Fin N => a < b) (fun b => ε b = ε a)`. Establish `h2` using `Finset.card_filter_add_card_filter_not (s := univ.filter fun b : Fin N => b < a) (fun b => ε b = ε a)`. Rewrite `h1`, `h2` using `[Finset.filter_filter, Finset.filter_filter]`.
+
+Establish `h1'` using `congrArg (Nat.cast : ℕ → ℝ) h1`. Establish `h2'` using `congrArg (Nat.cast : ℕ → ℝ) h2`. Move the coercions through the operations in `at h1' h2'`. Simplify using `only [rhoC, rhoN, ne_eq]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Introduce `a b hab`. Simplify using `only [Pi.add_apply, key]`. Establish `h1 : (univ.filter fun c : Fin N => b < c).card ≤ (univ.filter fun c : Fin N => a < c).card` using `Finset.card_le_card fun c hc => by`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at *`. Conclude with `lt_of_le_of_lt hab hc`.
+
+Establish `h2 : (univ.filter fun c : Fin N => c < a).card ≤ (univ.filter fun c : Fin N => c < b).card` using `Finset.card_le_card fun c hc => by`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at *`. Conclude with `lt_of_lt_of_le hc hab`. Establish `h1' : ((univ.filter fun c : Fin N => b < c).card : ℝ) ≤ (univ.filter fun c : Fin N => a < c).card`. Conclude with `h1` after adjusting the coercions.
+
+Establish `h2' : ((univ.filter fun c : Fin N => c < a).card : ℝ) ≤ (univ.filter fun c : Fin N => c < b).card`. Conclude with `h2` after adjusting the coercions. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem rho_antitone {N : ℕ} (ε : Fin N → Bool) : Antitone (rhoC ε + rhoN ε) := by
   have key : ∀ a : Fin N, rhoC ε a + rhoN ε a =
       (((univ.filter fun b => a < b).card : ℝ) - ((univ.filter fun b => b < a).card : ℝ)) / 2 := by
@@ -53,6 +70,21 @@ theorem rho_antitone {N : ℕ} (ε : Fin N → Bool) : Antitone (rhoC ε + rhoN 
     exact_mod_cast h2
   linarith
 
+/- English proof (translation)
+Use `set x : Fin N → ℝ := lam + rhoN ε - rhoC ε + (2 : ℝ) • rhoC ε with hx`. Use `set Q : Fin N → ℝ := ∑ a, ∑ b, (c a b : ℝ) • root a b with hQ`. Establish `hxa : Antitone x`. Establish `: x = lam + (rhoC ε + rhoN ε)`. Use function extensionality and compare the values at `a`.
+
+Simplify using `only [hx, Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `hl.add (rho_antitone ε)`. Establish `hroot : ∀ a b, ∑ i, x i * root a b i = x a - x b`.
+
+Introduce `a b`. Simplify using `[root, mul_sub, Finset.sum_sub_distrib, Pi.single_apply]`. Establish `hdot : 0 ≤ ∑ i, x i * Q i`. Establish `: ∑ i, x i * Q i = ∑ a, ∑ b, (c a b : ℝ) * (x a - x b)`. Simplify using `only [hQ, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, ← hroot]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun i _ => by ring` and prove the remaining obligations. Rewrite using `[this]`.
+
+Use `Finset.sum_nonneg fun a _ => Finset.sum_nonneg fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : c a b = 0`. Simplify using `[h]`. Conclude with `mul_nonneg (Nat.cast_nonneg _) (sub_nonneg.2 (hxa (hc a b h).le))`. Establish `hm : μ + (2 : ℝ) • rhoC ε = x + Q` using `by rw [hμ, hx]; abel`.
+
+Rewrite using `[hm]`. Establish `: nsq (x + Q) = nsq x + 2 * ∑ i, x i * Q i + ∑ i, Q i * Q i`. Simplify using `only [nsq, dot, Pi.add_apply, Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Establish `h2 : 0 ≤ ∑ i, Q i * Q i` using `Finset.sum_nonneg fun i _ => mul_self_nonneg _`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem norm_lowest_le_of_cone {N : ℕ} (ε : Fin N → Bool) (lam μ : Fin N → ℝ) (hl : Antitone lam)
     (c : Fin N → Fin N → ℕ) (hc : ∀ a b, c a b ≠ 0 → a < b)
     (hμ : μ = lam + rhoN ε - rhoC ε + ∑ a, ∑ b, (c a b : ℝ) • root a b) :

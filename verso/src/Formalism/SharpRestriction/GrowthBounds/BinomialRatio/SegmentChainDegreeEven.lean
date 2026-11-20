@@ -11,6 +11,19 @@ variable {s r : ℕ}
 def jE (S : SegData s) (jl : Fin S.t → ℕ) (i : ℕ) : ℕ :=
   if h : S.sigma ≤ i ∧ i < s then jl ⟨i - S.sigma, by unfold SegData.t; omega⟩ else 0
 
+/- English proof (translation)
+Establish `key : ∀ l : Fin S.t, (a = 2 * (S.sigma + l.val) ∨ a = 2 * (S.sigma + l.val) + 1) ↔ a / 2 = S.sigma + l.val`. Introduce `l`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use linear arithmetic over natural numbers and integers.
+
+Introduce `h`. Use linear arithmetic over natural numbers and integers. Simplify using `only [key]`. Unfold `jE`. Use `split_ifs with h`.
+
+Take `⟨h1, h2⟩` from `h`. Rewrite using `[Finset.sum_eq_single (⟨a / 2 - S.sigma, by unfold SegData.t; omega⟩ : Fin S.t)]`. Rewrite using `[if_pos (show a / 2 = S.sigma + (a / 2 - S.sigma) by omega)]`. Introduce `l _ hl`. Rewrite using `[if_neg]`.
+
+Introduce `h'`. Apply `hl` to reduce the goal to its premises. Apply `Fin.ext` to reduce the goal to its premises. Use `show l.val = a / 2 - S.sigma`. Use linear arithmetic over natural numbers and integers.
+
+Introduce `h'`. Conclude with `absurd (Finset.mem_univ _) h'`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `l _`. Rewrite using `[if_neg]`.
+
+Introduce `h'`. Establish `hl` using `l.2`. Unfold `SegData.t at hl`. Conclude with `h ⟨by omega, by omega⟩`.
+-/
 theorem tieSum (S : SegData s) (jl : Fin S.t → ℕ) (a : ℕ) :
     (∑ l : Fin S.t, if a = 2 * (S.sigma + l.val) ∨ a = 2 * (S.sigma + l.val) + 1 then jl l else 0) =
       jE S jl (a / 2) := by
@@ -45,6 +58,11 @@ theorem tieSum (S : SegData s) (jl : Fin S.t → ℕ) (a : ℕ) :
     unfold SegData.t at hl
     exact h ⟨by omega, by omega⟩
 
+/- English proof (translation)
+Establish `e1` using `tieSum S jl a.val`. Establish `e2 : (if a = (⟨2 * s, by omega⟩ : Fin (2 * s + 1)) then jp else 0) = (if a.val = 2 * s then jp else 0)`. Distinguish the cases in `h : a.val = 2 * s`. Rewrite using `[if_pos (Fin.ext h), if_pos h]`. Rewrite using `[if_neg (fun h' => h (congrArg Fin.val h')), if_neg h]`.
+
+Use `show (segChain p S aTop b).deg a - (∑ l : Fin S.t, if a.val = 2 * (S.sigma + l.val) ∨ a.val = 2 * (S.sigma + l.val) + 1 then jl l else 0) - (if a = (⟨2 * s, by omega⟩ : Fin (2 * s + 1)) then jp else 0) = _`. Rewrite using `[e1, e2]`.
+-/
 theorem lev_deg (p : ℕ) (S : SegData s) (aTop : Fin s → ℕ) (aPlus : ℕ) (m : ℝ) (b : SegBlock s r)
     (jl : Fin S.t → ℕ) (jp : ℕ) (a : Fin (2 * s + 1)) :
     ((blockData p S aTop aPlus m b).lettersAt jl jp).deg a =
@@ -59,6 +77,11 @@ theorem lev_deg (p : ℕ) (S : SegData s) (aTop : Fin s → ℕ) (aPlus : ℕ) (
       (if a = (⟨2 * s, by omega⟩ : Fin (2 * s + 1)) then jp else 0) = _
   rw [e1, e2]
 
+/- English proof (translation)
+Establish `h1 : (x : ℕ) ≠ 2 * s` using `by have := i.2; omega`. Establish `h2 : (x : ℕ) % 2 = 0` using `by omega`. Establish `h3 : topOf x h1 = i` using `Fin.ext (by show (x : ℕ) / 2 = i.val; omega)`. Unfold `segChain`. Simplify using `only`.
+
+Rewrite using `[dif_neg h1, if_pos h2, h3]`.
+-/
 theorem segment_chain_degree_even (p : ℕ) (S : SegData s) (aTop : Fin s → ℕ) (b : SegBlock s r) (x : Fin (2 * s + 1)) (i : Fin s)
     (hx : x.val = 2 * i.val) : (segChain p S aTop b).deg x = if i.val < S.sigma then b.w i else b.o i := by
   have h1 : (x : ℕ) ≠ 2 * s := by have := i.2; omega
@@ -68,6 +91,11 @@ theorem segment_chain_degree_even (p : ℕ) (S : SegData s) (aTop : Fin s → �
   dsimp only
   rw [dif_neg h1, if_pos h2, h3]
 
+/- English proof (translation)
+Establish `h1 : (x : ℕ) ≠ 2 * s` using `by have := i.2; omega`. Establish `h2 : ¬ ((x : ℕ) % 2 = 0)` using `by omega`. Establish `h3 : topOf x h1 = i` using `Fin.ext (by show (x : ℕ) / 2 = i.val; omega)`. Unfold `segChain`. Simplify using `only`.
+
+Rewrite using `[dif_neg h1, if_neg h2, h3]`.
+-/
 theorem chain_deg_E (p : ℕ) (S : SegData s) (aTop : Fin s → ℕ) (b : SegBlock s r) (x : Fin (2 * s + 1)) (i : Fin s)
     (hx : x.val = 2 * i.val + 1) : (segChain p S aTop b).deg x =
       if i.val < S.sigma then coarseC p S aTop b i - b.sg i else coarseC p S aTop b i := by
@@ -78,24 +106,44 @@ theorem chain_deg_E (p : ℕ) (S : SegData s) (aTop : Fin s → ℕ) (b : SegBlo
   dsimp only
   rw [dif_neg h1, if_neg h2, h3]
 
+/- English proof (translation)
+Unfold `segChain`. Simplify using `only`. Rewrite using `[dif_pos hx]`.
+-/
 theorem chain_deg_U (p : ℕ) (S : SegData s) (aTop : Fin s → ℕ) (b : SegBlock s r) (x : Fin (2 * s + 1))
     (hx : x.val = 2 * s) : (segChain p S aTop b).deg x = b.oPlus := by
   unfold segChain
   dsimp only
   rw [dif_pos hx]
 
+/- English proof (translation)
+Unfold `jE`. Use `split_ifs with h1`. Conclude with `absurd h1.1 (by omega)`. Both sides reduce to the same expression.
+-/
 theorem jE_S (S : SegData s) (jl : Fin S.t → ℕ) {i : ℕ} (h : i < S.sigma) : jE S jl i = 0 := by
   unfold jE
   split_ifs with h1
   · exact absurd h1.1 (by omega)
   · rfl
 
+/- English proof (translation)
+Unfold `jE`. Use `split_ifs with h1`. Conclude with `absurd h1.2 (lt_irrefl _)`. Both sides reduce to the same expression.
+-/
 theorem jE_top (S : SegData s) (jl : Fin S.t → ℕ) : jE S jl s = 0 := by
   unfold jE
   split_ifs with h1
   · exact absurd h1.2 (lt_irrefl _)
   · rfl
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `h`. Use `⟨fun i hi => ?_, ?_⟩` and prove the remaining obligations. Establish `hit : i.val - S.sigma < S.t` using `by unfold SegData.t; have := i.2; omega`. Establish `hl` using `h1 ⟨i.val - S.sigma, hit⟩`. Establish `eA : jE S jl i.val = jl ⟨i.val - S.sigma, hit⟩`.
+
+Unfold `jE`. Rewrite using `[dif_pos ⟨hi, i.2⟩]`. Establish `k1 : (blockData p S aTop aPlus m b).LL.deg ((blockData p S aTop aPlus m b).letterAt ((blockData p S aTop aPlus m b).T.pos ⟨i.val - S.sigma, hit⟩)) = b.o i`. Establish `e : (blockData p S aTop aPlus m b).letterAt ((blockData p S aTop aPlus m b).T.pos ⟨i.val - S.sigma, hit⟩) = ⟨2 * i.val, by omega⟩`. Apply `Fin.ext` to reduce the goal to its premises.
+
+Use `show min (2 * (S.sigma + (i.val - S.sigma))) (2 * s + 1 - 1) = 2 * i.val`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e]`. Conclude with `(segment_chain_degree_even p S aTop b ⟨2 * i.val, by omega⟩ i rfl).trans (if_neg (by omega))`. Establish `k2 : (blockData p S aTop aPlus m b).LL.deg ((blockData p S aTop aPlus m b).letterAt ((blockData p S aTop aPlus m b).T.pos ⟨i.val - S.sigma, hit⟩ + 1)) = coarseC p S aTop b i`.
+
+Establish `e : (blockData p S aTop aPlus m b).letterAt ((blockData p S aTop aPlus m b).T.pos ⟨i.val - S.sigma, hit⟩ + 1) = ⟨2 * i.val + 1, by omega⟩`. Apply `Fin.ext` to reduce the goal to its premises. Use `show min (2 * (S.sigma + (i.val - S.sigma)) + 1) (2 * s + 1 - 1) = 2 * i.val + 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e]`.
+
+Conclude with `(chain_deg_E p S aTop b ⟨2 * i.val + 1, by omega⟩ i rfl).trans (if_neg (by omega))`. Rewrite using `[eA]`. Conclude with `⟨hl.1.trans (le_of_eq k1), hl.2.trans (le_of_eq k2)⟩`. Conclude with `h2.trans ((min_le_left _ _).trans (le_of_eq (chain_deg_U p S aTop b ⟨2 * s, by omega⟩ rfl)))`.
+-/
 theorem level_bounds (p : ℕ) (S : SegData s) (aTop : Fin s → ℕ) (aPlus : ℕ) (m : ℝ) (b : SegBlock s r)
     (jl : Fin S.t → ℕ) (jp : ℕ) (h : (blockData p S aTop aPlus m b).LevelOK jl jp) :
     (∀ i : Fin s, S.sigma ≤ i.val → jE S jl i.val ≤ b.o i ∧ jE S jl i.val ≤ coarseC p S aTop b i) ∧ jp ≤ b.oPlus := by
@@ -128,9 +176,19 @@ theorem level_bounds (p : ℕ) (S : SegData s) (aTop : Fin s → ℕ) (aPlus : �
     exact ⟨hl.1.trans (le_of_eq k1), hl.2.trans (le_of_eq k2)⟩
   · exact h2.trans ((min_le_left _ _).trans (le_of_eq (chain_deg_U p S aTop b ⟨2 * s, by omega⟩ rfl)))
 
+/- English proof (translation)
+Simplify using `[cap]`.
+-/
 theorem cap_zero (p : ℕ) (S : SegData s) (b : SegBlock s r) : cap p S b 0 = S.A0 p := by
   simp [cap]
 
+/- English proof (translation)
+Unfold `cap`. Establish `key : ∀ k : Fin s, (if (k : ℕ) < i.val + 1 then ((coarseA p S b k : ℤ) - (oEff S b k : ℤ)) else 0) = (if (k : ℕ) < i.val then ((coarseA p S b k : ℤ) - (oEff S b k : ℤ)) else 0) + (if k = i then ((coarseA p S b k : ℤ) - (oEff S b k : ℤ)) else 0)`. Introduce `k`. Distinguish the cases in `h1 : (k : ℕ) < i.val`. Establish `h2 : k ≠ i` using `fun h => by rw [h] at h1; exact lt_irrefl _ h1`.
+
+Rewrite using `[if_pos (show (k : ℕ) < i.val + 1 by omega), if_pos h1, if_neg h2, add_zero]`. Distinguish the cases in `h2 : k = i`. Substitute `h2` using the available equality. Rewrite using `[if_pos (show (k : ℕ) < k.val + 1 by omega), if_neg h1, if_pos rfl, zero_add]`. Establish `h3 : ¬ (k : ℕ) < i.val + 1` using `fun h => h2 (Fin.ext (by omega))`.
+
+Rewrite using `[if_neg h3, if_neg h1, if_neg h2, add_zero]`. Simplify using `only [key, Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cap_succ (p : ℕ) (S : SegData s) (b : SegBlock s r) (i : Fin s) :
     cap p S b (i.val + 1) = cap p S b i.val + ((coarseA p S b i : ℤ) - (oEff S b i : ℤ)) := by
   unfold cap
@@ -149,6 +207,11 @@ theorem cap_succ (p : ℕ) (S : SegData s) (b : SegBlock s r) (i : Fin s) :
   simp only [key, Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]
   ring
 
+/- English proof (translation)
+Rewrite using `[lev_deg, segment_chain_degree_even p S aTop b ⟨2 * i.val, by omega⟩ i rfl]`. Establish `h1 : (⟨2 * i.val, by omega⟩ : Fin (2 * s + 1)).val / 2 = i.val` using `by show 2 * i.val / 2 = i.val`. Use linear arithmetic over natural numbers and integers. Establish `h2 : ¬ ((⟨2 * i.val, by omega⟩ : Fin (2 * s + 1)).val = 2 * s)` using `by show ¬ (2 * i.val = 2 * s)`. Use `i.2` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[h1, if_neg h2, Nat.sub_zero]`.
+-/
 theorem levW (p : ℕ) (S : SegData s) (aTop : Fin s → ℕ) (aPlus : ℕ) (m : ℝ) (b : SegBlock s r)
     (jl : Fin S.t → ℕ) (jp : ℕ) (i : Fin s) :
     ((blockData p S aTop aPlus m b).lettersAt jl jp).deg ⟨2 * i.val, by omega⟩ =
@@ -163,6 +226,11 @@ theorem levW (p : ℕ) (S : SegData s) (aTop : Fin s → ℕ) (aPlus : ℕ) (m :
     omega
   rw [h1, if_neg h2, Nat.sub_zero]
 
+/- English proof (translation)
+Rewrite using `[lev_deg, chain_deg_E p S aTop b ⟨2 * i.val + 1, by omega⟩ i rfl]`. Establish `h1 : (⟨2 * i.val + 1, by omega⟩ : Fin (2 * s + 1)).val / 2 = i.val` using `by show (2 * i.val + 1) / 2 = i.val`. Use linear arithmetic over natural numbers and integers. Establish `h2 : ¬ ((⟨2 * i.val + 1, by omega⟩ : Fin (2 * s + 1)).val = 2 * s)` using `by show ¬ (2 * i.val + 1 = 2 * s)`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[h1, if_neg h2, Nat.sub_zero]`.
+-/
 theorem levE (p : ℕ) (S : SegData s) (aTop : Fin s → ℕ) (aPlus : ℕ) (m : ℝ) (b : SegBlock s r)
     (jl : Fin S.t → ℕ) (jp : ℕ) (i : Fin s) :
     ((blockData p S aTop aPlus m b).lettersAt jl jp).deg ⟨2 * i.val + 1, by omega⟩ =
@@ -176,6 +244,9 @@ theorem levE (p : ℕ) (S : SegData s) (aTop : Fin s → ℕ) (aPlus : ℕ) (m :
     omega
   rw [h1, if_neg h2, Nat.sub_zero]
 
+/- English proof (translation)
+Rewrite using `[lev_deg, chain_deg_U p S aTop b ⟨2 * s, by omega⟩ rfl]`. Establish `h1 : (⟨2 * s, by omega⟩ : Fin (2 * s + 1)).val / 2 = s` using `by show 2 * s / 2 = s`. Use linear arithmetic over natural numbers and integers. Establish `h2 : (⟨2 * s, by omega⟩ : Fin (2 * s + 1)).val = 2 * s` using `rfl`. Rewrite using `[h1, if_pos h2, jE_top, Nat.sub_zero]`.
+-/
 theorem levU (p : ℕ) (S : SegData s) (aTop : Fin s → ℕ) (aPlus : ℕ) (m : ℝ) (b : SegBlock s r)
     (jl : Fin S.t → ℕ) (jp : ℕ) :
     ((blockData p S aTop aPlus m b).lettersAt jl jp).deg ⟨2 * s, by omega⟩ = b.oPlus - jp := by
@@ -186,6 +257,11 @@ theorem levU (p : ℕ) (S : SegData s) (aTop : Fin s → ℕ) (aPlus : ℕ) (m :
   have h2 : (⟨2 * s, by omega⟩ : Fin (2 * s + 1)).val = 2 * s := rfl
   rw [h1, if_pos h2, jE_top, Nat.sub_zero]
 
+/- English proof (translation)
+Establish `hl` using `l.2`. Unfold `SegData.t at hl`. Unfold `jE`. Rewrite using `[dif_pos ⟨by omega, by omega⟩]`. Use `congr 1`.
+
+Apply `Fin.ext` to reduce the goal to its premises. Use `show S.sigma + l.val - S.sigma = l.val`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem jE_at (S : SegData s) (jl : Fin S.t → ℕ) (l : Fin S.t) : jE S jl (S.sigma + l.val) = jl l := by
   have hl := l.2
   unfold SegData.t at hl
@@ -196,6 +272,9 @@ theorem jE_at (S : SegData s) (jl : Fin S.t → ℕ) (l : Fin S.t) : jE S jl (S.
   show S.sigma + l.val - S.sigma = l.val
   omega
 
+/- English proof (translation)
+Consider the cases of `b`. Consider the cases of `b'`. Simplify using `only at h1 h2 h3 h4 h5 h6`. Substitute `h1 h2 h3 h4 h5 h6` using the available equality. Both sides reduce to the same expression.
+-/
 theorem segBlock_ext (b b' : SegBlock s r) (h1 : b.rz = b'.rz) (h2 : b.ry = b'.ry) (h3 : b.o = b'.o) (h4 : b.w = b'.w)
     (h5 : b.sg = b'.sg) (h6 : b.oPlus = b'.oPlus) : b = b' := by
   cases b
@@ -204,6 +283,13 @@ theorem segBlock_ext (b b' : SegBlock s r) (h1 : b.rz = b'.rz) (h2 : b.ry = b'.r
   subst h1 h2 h3 h4 h5 h6
   rfl
 
+/- English proof (translation)
+Establish `e` using `h.2 a`. Establish `e'` using `h'.2 a`. Rewrite `e` using `[hv]`. Distinguish the cases in `hva : L'.vec a = true`. Rewrite `e`, `e'` using `[if_pos hva]`.
+
+Establish `q` using `e.2.2`. Establish `q'` using `e'.2.2`. Use linear arithmetic over natural numbers and integers. Rewrite `e`, `e'` using `[if_neg hva]`. Establish `q` using `e.2.2`.
+
+Establish `q'` using `e'.2.2`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem chainLetters_deg_eq_of_vec_eq_of_isChain {N r : ℕ} (L L' : ChainLetters N) (ka : Fin (N + 1) → Fin r → ℤ)
     (hv : L.vec = L'.vec) (h : IsChain L ka) (h' : IsChain L' ka) (a : Fin N) : L.deg a = L'.deg a := by
   have e := h.2 a
@@ -219,6 +305,29 @@ private theorem chainLetters_deg_eq_of_vec_eq_of_isChain {N r : ℕ} (L L' : Cha
     have q' := e'.2.2
     omega
 
+/- English proof (translation)
+Introduce `C0 CE1 CE2 X _ j m rz ry z z' hz hz' hka hjp`. Take `⟨b, ⟨jl, jp⟩, ka⟩` from `z`. Take `⟨b', ⟨jl', jp'⟩, ka'⟩` from `z'`. Simplify using `only at hka hjp`. Substitute `hka hjp` using the available equality.
+
+Take `⟨⟨hK, hrz, hry⟩, hL, hch, -⟩` from `hz`. Take `⟨⟨hK', hrz', hry'⟩, hL', hch', -⟩` from `hz'`. Simplify using `only at hK hrz hry hL hch hK' hrz' hry' hL' hch'`. Establish `hdeg : ∀ a, ((BD C0 CE1 CE2 X j m b).lettersAt jl jp).deg a = ((BD C0 CE1 CE2 X j m b').lettersAt jl' jp).deg a`. Introduce `a`.
+
+Establish `h1` using `hch.2 a`. Establish `h2` using `hch'.2 a`. Distinguish the cases in `hv : ((BD C0 CE1 CE2 X j m b).lettersAt jl jp).vec a = true`. Establish `hv' : ((BD C0 CE1 CE2 X j m b').lettersAt jl' jp).vec a = true` using `hv`. Rewrite `h1` using `[if_pos hv]`.
+
+Rewrite `h2` using `[if_pos hv']`. Conclude with `h1.2.2.symm.trans h2.2.2` after adjusting the coercions. Establish `hv' : ¬ ((BD C0 CE1 CE2 X j m b').lettersAt jl' jp).vec a = true` using `hv`. Rewrite `h1` using `[if_neg hv]`. Rewrite `h2` using `[if_neg hv']`.
+
+Conclude with `h1.2.2.symm.trans h2.2.2` after adjusting the coercions. Establish `hC : ∀ i, coarseC X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) b i = coarseC X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) b' i` using `fun i => by`. Unfold `coarseC`. Rewrite using `[hry, hry']`. Establish `hB` using `level_bounds _ _ _ _ _ _ _ _ hL`.
+
+Establish `hB'` using `level_bounds _ _ _ _ _ _ _ _ hL'`. Establish `key : ∀ i : Fin (segS X.TT j), b.o i = b'.o i ∧ b.w i = b'.w i ∧ b.sg i = b'.sg i ∧ jE (X.seg C0 CE1 CE2 j) jl i.val = jE (X.seg C0 CE1 CE2 j) jl' i.val`. Introduce `i`. Establish `dW` using `hdeg ⟨2 * i.val, by omega⟩`. Establish `dE` using `hdeg ⟨2 * i.val + 1, by omega⟩`.
+
+Rewrite `dW` using `[levW, levW]`. Rewrite `dE` using `[levE, levE]`. Establish `hCi` using `hC i`. Break down `Nat.lt_or_ge i.val (X.seg C0 CE1 CE2 j).sigma with h | h` into its components or cases. Take `⟨ho, -, hsg, -, -⟩` from `hK.2.2.1 i h`.
+
+Take `⟨ho', -, hsg', -, -⟩` from `hK'.2.2.1 i h`. Rewrite `dW`, `dE` using `[if_pos h, if_pos h, jE_S _ _ h, jE_S _ _ h]`. Rewrite using `[jE_S _ _ h, jE_S _ _ h]`. Use `⟨by omega, by omega, by omega, rfl⟩` and prove the remaining obligations. Take `⟨-, -, hw, hsg⟩` from `hK.2.1 i h`.
+
+Take `⟨-, -, hw', hsg'⟩` from `hK'.2.1 i h`. Establish `b1` using `hB.1 i h`. Establish `b2` using `hB'.1 i h`. Rewrite `dW`, `dE` using `[if_neg (by omega), if_neg (by omega)]`. Use `⟨by omega, by omega, by omega, by omega⟩` and prove the remaining obligations.
+
+Establish `hU` using `hdeg ⟨2 * segS X.TT j, by omega⟩`. Rewrite `hU` using `[levU, levU]`. Establish `hbb : b = b'` using `segBlock_ext b b' (hrz.trans hrz'.symm) (hry.trans hry'.symm) (funext fun i => (key i).1) (funext fun i => (key i).2.1) (funext fun i => (key i).2.2.1) (by have := hB.2; have := hB'.2; omega)`. Establish `hjl : jl = jl'`. Use function extensionality and compare the values at `l`.
+
+Establish `hl : l.val < segS X.TT j - (X.seg C0 CE1 CE2 j).sigma` using `l.2`. Use `(key ⟨(X.seg C0 CE1 CE2 j).sigma + l.val, by omega⟩).2.2.2` as an intermediate fact. Rewrite `this` using `[jE_at, jE_at]`. Conclude with `this`. Rewrite using `[hbb, hjl]`.
+-/
 theorem srcInjAt : SrcInjAt := by
   intro C0 CE1 CE2 X _ j m rz ry z z' hz hz' hka hjp
   obtain ⟨b, ⟨jl, jp⟩, ka⟩ := z
@@ -290,6 +399,29 @@ def FirstRowsAt (C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ) : Prop :=
           z.2.2 ⟨2 * i.val + 1, by omega⟩ c ≤ cap X.p (X.seg C0 CE1 CE2 j) z.1 (i.val + 1)) ∧
         ∀ c : Fin X.m, c.val = 0 → z.2.2 (Fin.last _) c ≤ cap X.p (X.seg C0 CE1 CE2 j) z.1 (segS X.TT j)
 
+/- English proof (translation)
+Unfold `LevFactsAt`. Introduce `X _ hD hI hc j m hm rz ry hdig z hz`. Establish `hrows` using `hR X hD hI hc j m hm rz ry hdig z hz`. Take `⟨b, ⟨jl, jp⟩, ka⟩` from `z`. Take `⟨⟨hK, hrz, hry⟩, hlev, hch, -⟩` from `hz`.
+
+Simplify using `only at hrows hK hrz hry hlev hch ⊢`. Establish `hA : ∀ i, coarseA X.p (X.seg C0 CE1 CE2 j) (digitBlock rz ry) i = coarseA X.p (X.seg C0 CE1 CE2 j) b i`. Introduce `i`. Rewrite using `[← hrz]`. Both sides reduce to the same expression.
+
+Establish `hC : ∀ i, coarseC X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (digitBlock rz ry) i = coarseC X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) b i`. Introduce `i`. Rewrite using `[← hry]`. Both sides reduce to the same expression. Establish `hL` using `level_bounds X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (segAPlus X.TT X.aT j) m b jl jp hlev`.
+
+Use `⟨cap_zero X.p (X.seg C0 CE1 CE2 j) b, ?_, fun a => rfl, fun i => ?_, fun i => ?_, fun i => ?_, fun i c hc0 => (hrows.1 i c hc0).1, fun i c hc0 => (hrows.1 i c hc0).2, hrows.2⟩` and prove the remaining obligations. Rewrite using `[← cap_zero X.p (X.seg C0 CE1 CE2 j) b]`. Take `⟨hk0, hst⟩` from `hch`. Establish `e` using `hst ⟨0, by omega⟩`. Rewrite `e` using `[if_pos (show ((BD C0 CE1 CE2 X j m b).lettersAt jl jp).vec ⟨0, by omega⟩ = true from rfl)]`.
+
+Establish `c0 : (0 : Fin X.m).val = 0` using `by simp`. Establish `e1` using `e.1 0`. Establish `e0 : Fin.castSucc (⟨0, by omega⟩ : Fin (2 * segS X.TT j + 1)) = 0` using `Fin.ext (by simp)`. Rewrite `e1` using `[e0, hk0]`. Simplify using `only [Pi.zero_apply] at e1`.
+
+Establish `e2 : ka (Fin.succ ⟨0, by omega⟩) 0 ≤ cap X.p (X.seg C0 CE1 CE2 j) b 0`. Break down `Nat.eq_zero_or_pos (segS X.TT j) with hs | hs` into its components or cases. Establish `h3` using `hrows.2 0 c0`. Establish `e3 : Fin.last (2 * segS X.TT j + 1) = Fin.succ ⟨0, by omega⟩` using `Fin.ext (by show 2 * segS X.TT j + 1 = 1; omega)`. Rewrite `h3` using `[e3, congrArg (cap X.p (X.seg C0 CE1 CE2 j) b) hs]`.
+
+Conclude with `h3`. Conclude with `(hrows.1 ⟨0, hs⟩ 0 c0).1`. Conclude with `le_trans e1 e2`. Rewrite using `[hA i, levW]`. Establish `key : (if i.val < (X.seg C0 CE1 CE2 j).sigma then b.w i else b.o i) ≤ coarseA X.p (X.seg C0 CE1 CE2 j) b i` using `by split_ifs with hi`.
+
+Conclude with `(hK.2.2.1 i hi).2.1`. Conclude with `(hK.2.1 i (by omega)).1`. Use `Nat.sub_le (if i.val < (X.seg C0 CE1 CE2 j).sigma then b.w i else b.o i) (jE (X.seg C0 CE1 CE2 j) jl i.val)` as an intermediate fact. Conclude with `this.trans key` after adjusting the coercions. Rewrite using `[hA i, cap_succ, levW]`.
+
+Establish `key : (if i.val < (X.seg C0 CE1 CE2 j).sigma then b.w i else b.o i) - jE (X.seg C0 CE1 CE2 j) jl i.val ≤ oEff (X.seg C0 CE1 CE2 j) b i`. Unfold `oEff`. Apply the tactic sequence `split_ifs <;> omega`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hA i, hC i, cap_succ, levW, levE]`.
+
+Unfold `oEff`. Distinguish the cases in `hi : i.val < (X.seg C0 CE1 CE2 j).sigma`. Establish `h1` using `(hK.2.2.1 i hi).2.2.1`. Establish `h2` using `jE_S (X.seg C0 CE1 CE2 j) jl hi`. Simplify using `only [hi, ↓reduceIte]`.
+
+Use linear arithmetic over natural numbers and integers. Take `⟨h1, h1'⟩` from `hL.1 i (by omega)`. Simplify using `only [hi, ↓reduceIte]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem levFactsAt_of {C0 CYb Cde Ck CD Cb CE1 CE2 Cc H : ℝ}
     (hstd : ∀ X : Loc, D1num X → HIext C0 CYb Cde Ck CD Cb X → CBound Cc X → Std C0 Cde CE1 CE2 H X)
     (hR : FirstRowsAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc) : LevFactsAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc := by
@@ -357,6 +489,13 @@ theorem levFactsAt_of {C0 CYb Cde Ck CD Cb CE1 CE2 Cc H : ℝ}
 
 def RestFirstRows : Prop := TransportedAlt fun C0 CYb Cde Ck CD Cb CE1 CE2 _ Cc => FirstRowsAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc
 
+/- English proof (translation)
+Unfold `RestFirstRows TransportedAlt at hR`. Unfold `RestMatchUp TransportedAlt`. Introduce `Cc hCc`. Take `⟨U0, hU0, hR0⟩` from `hR Cc hCc`. Use `⟨max U0 1, lt_max_of_lt_right one_pos, fun C0 hC0 => ?_⟩` and prove the remaining obligations.
+
+Take `⟨U1, hU1, hR1⟩` from `hR0 C0 (le_trans (le_max_left _ _) hC0)`. Use `⟨max U1 1, lt_max_of_lt_right one_pos, fun CE1 CE2 Cm h1 h2 h3 => ?_⟩` and prove the remaining obligations. Take `⟨U2, hU2, hR2⟩` from `hR1 CE1 CE2 Cm (le_trans (le_max_left _ _) h1) (le_trans (le_max_left _ _) h2) (le_trans (le_max_left _ _) h3)`. Use `⟨max U2 (T2 CE1 CE2 Cc 1), lt_max_of_lt_left hU2, fun CYb Cde Ck CD Cb t1 t2 t3 t4 t5 => ?_⟩` and prove the remaining obligations. Establish `hrows` using `hR2 CYb Cde Ck CD Cb (le_trans (le_max_left _ _) t1) (le_trans (le_max_left _ _) t2) (le_trans (le_max_left _ _) t3) (le_trans (le_max_left _ _) t4) (le_trans (le_max_left _ _) t5)`.
+
+Conclude with `matchUp_of (levFactsAt_of (H := 1) (fun X hD hI hc => std_of hCc (le_trans (le_max_right _ _) hC0) (le_trans (le_max_right _ _) h1) (le_trans (le_max_right _ _) h2) le_rfl (le_trans (le_max_right _ _) t1) (le_trans (le_max_right _ _) t2) (le_trans (le_max_right _ _) t3) (le_trans …`.
+-/
 theorem restMatchUp_of (hR : RestFirstRows) : RestMatchUp := by
   unfold RestFirstRows TransportedAlt at hR
   unfold RestMatchUp TransportedAlt
@@ -375,6 +514,9 @@ theorem restMatchUp_of (hR : RestFirstRows) : RestMatchUp := by
     (le_trans (le_max_right _ _) t1) (le_trans (le_max_right _ _) t2) (le_trans (le_max_right _ _) t3)
     (le_trans (le_max_right _ _) t4) (le_trans (le_max_right _ _) t5) hD hI hc) hrows) srcInjAt
 
+/- English proof (translation)
+The claim follows from `restCountUp_of hCD hNB (restMatchUp_of hR)`.
+-/
 theorem restCountUp_of_rows (hCD : ChainDimAt) (hNB : NumBranchAt) (hR : RestFirstRows) : RestCountUp := restCountUp_of hCD hNB (restMatchUp_of hR)
 
 end Formalism.MainNotions.ColumnSystems.Pf

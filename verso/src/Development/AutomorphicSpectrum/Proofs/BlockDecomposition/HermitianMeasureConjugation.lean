@@ -47,6 +47,13 @@ def dbl [IsTopologicalAddGroup M] (S : AddSubgroup M) (P : M →+ M) (hPc : Cont
     (continuous_subtype_val.comp continuous_fst).add (L.continuous.comp (continuous_subtype_val.comp continuous_snd))
   continuous_invFun := (hPc.subtype_mk _).prodMk ((hPc.comp L.symm.continuous).subtype_mk _)
 
+/- English proof (translation)
+Use `haveI : SecondCountableTopology S := Topology.IsInducing.subtypeVal.secondCountableTopology`. Use `haveI : T2Space S := Topology.IsEmbedding.subtypeVal.t2Space`. Use `set Ψ := dbl S P hPc hPm hPs L h1 h2 h3 with hΨ`. Use `set T := restr S U hU hU' with hT`. Establish `e : ((Ψ.symm.trans (GlobalTheory.ModuLR.prodCE T T)).trans Ψ) = U`.
+
+Use extensionality with `x`. Take `⟨p, rfl⟩` from `Ψ.surjective x`. Express the relevant statement in the definitionally equal form `Ψ (GlobalTheory.ModuLR.prodCE T T (Ψ.symm (Ψ p))) = U (Ψ p)`. Establish `hl : Ψ.symm (Ψ p) = p` using `Ψ.left_inv p`. Rewrite using `[hl]`.
+
+Express the relevant statement in the definitionally equal form `U p.1.1 + L (U p.2.1) = U (p.1.1 + L p.2.1)`. Rewrite using `[map_add, hUL]`. Rewrite using `[sq, ← GlobalTheory.T.addEquivAddHaarChar_prodCongr, ← GlobalTheory.ModuLR.addEquivAddHaarChar_transport Ψ (GlobalTheory.ModuLR.prodCE T T), e]`.
+-/
 theorem char_sq [IsTopologicalAddGroup M] [LocallyCompactSpace M] [SecondCountableTopology M] [T2Space M]
     [MeasurableSpace M] [BorelSpace M] (S : AddSubgroup M) [LocallyCompactSpace S] (P : M →+ M)
     (hPc : Continuous P) (hPm : ∀ x, P x ∈ S) (hPs : ∀ s ∈ S, P s = s) (L : M ≃ₜ+ M)
@@ -69,6 +76,13 @@ theorem char_sq [IsTopologicalAddGroup M] [LocallyCompactSpace M] [SecondCountab
 
 end Abstract
 
+/- English proof (translation)
+Take `⟨-, hc, -, hs⟩` from `h`. Take `⟨v⟩ : Nonempty (NumberField.InfinitePlace E)` from `inferInstance`. Establish `hv : v.IsComplex` using `hc.isComplex v`. Establish `hsq : ∀ x, σ (σ x) = x` using `fun x => v.embedding.injective (by rw [hs, hs]; simp)`. Establish `hx : ∃ x, σ x ≠ x`.
+
+Assume the negation of the conclusion as `hn`. Use `push_neg at hn`. Apply `NumberField.InfinitePlace.not_isReal_iff_isComplex.2 hv` to reduce the goal to its premises. Rewrite using `[NumberField.InfinitePlace.isReal_iff, NumberField.ComplexEmbedding.isReal_iff]`. Use extensionality with `x`.
+
+Use `hs v.embedding x` as an intermediate fact. Rewrite `this` using `[hn]`. Simplify `this.symm` using `[NumberField.ComplexEmbedding.conjugate_coe_eq]`. Take `⟨x, hx⟩` from `hx`. Conclude with `⟨x - σ x, sub_ne_zero.2 (Ne.symm hx), by rw [map_sub, hsq]; abel⟩`.
+-/
 theorem exists_anti {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (h : IsCMExt F E σ) : ∃ δ : E, δ ≠ 0 ∧ σ δ = -δ := by
   obtain ⟨-, hc, -, hs⟩ := h
@@ -91,14 +105,23 @@ open GlobalTheory.CompanionTheory.IwaAd GlobalTheory.CompanionTheory.HermVol
 
 variable {D : D7} {n : ℕ}
 
+/- English proof (translation)
+Simplify using `[cA, sigR, incA, inclR]`.
+-/
 theorem cA_incA (D : D7) (x : D.host.E) : cA D (incA D x) = incA D (D.sp.cm.sig x) := by
   simp [cA, sigR, incA, inclR]
 
+/- English proof (translation)
+Establish `h : adj s = s` using `hs`. Rewrite using `[hermPart, adj_smul, h, hc, neg_smul, add_neg_cancel, smul_zero]`.
+-/
 theorem hermPart_anti {c : AE D} (hc : cA D c = -c) {s : Mx D n n} (hs : s ∈ hermA D n) :
     hermPart D n (c • s) = 0 := by
   have h : adj s = s := hs
   rw [hermPart, adj_smul, h, hc, neg_smul, add_neg_cancel, smul_zero]
 
+/- English proof (translation)
+Establish `h : d * half D * e = half D` using `by rw [mul_comm d, mul_assoc, hde, mul_one]`. Rewrite using `[hermPart, hermPart, adj_smul, he, neg_smul, ← sub_eq_add_neg, ← smul_sub, smul_smul, smul_smul, h, smul_add, smul_sub]`. Conclude with `(add_add_sub_cancel _ _ _).trans (half_smul_add x)`.
+-/
 theorem hermPart_split {d e : AE D} (he : cA D e = -e) (hde : d * e = 1) (x : Mx D n n) :
     hermPart D n x + d • hermPart D n (e • x) = x := by
   have h : d * half D * e = half D := by rw [mul_comm d, mul_assoc, hde, mul_one]
@@ -124,12 +147,18 @@ def mulCE (d e : AE D) (hde : d * e = 1) : Mx D n n ≃ₜ+ Mx D n n where
 def hermPartHom (D : D7) (n : ℕ) : Mx D n n →+ Mx D n n := AddMonoidHom.mk' (hermPart D n) hermPart_add
 
 set_option maxHeartbeats 400000 in
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(adj a.1 : Mx D n n).det = cA D a.1.det`. Rewrite using `[adj, Matrix.det_transpose, RingHom.map_det]`. Both sides reduce to the same expression.
+-/
 theorem val_det_ad_inv (a : GL (Fin n) (AE D)) :
     ((Matrix.GeneralLinearGroup.det ((ad a)⁻¹ : GL (Fin n) (AE D)) : (AE D)ˣ) : AE D) = cA D (Matrix.GeneralLinearGroup.det a : (AE D)ˣ) := by
   change (adj a.1 : Mx D n n).det = cA D a.1.det
   rw [adj, Matrix.det_transpose, RingHom.map_det]
   rfl
 
+/- English proof (translation)
+Establish `h : (Matrix.GeneralLinearGroup.det ((ad a)⁻¹ : GL (Fin n) (AE D)) : (AE D)ˣ) = conjUnit D.sp.cm.sig (Matrix.GeneralLinearGroup.det a : (AE D)ˣ)` using `Units.ext (val_det_ad_inv a)`. Rewrite using `[h]`. Conclude with `GlobalTheory.DiagThetaRule.absA_conj D _`.
+-/
 theorem absA_det_ad_inv (a : GL (Fin n) (AE D)) :
     absA D (Matrix.GeneralLinearGroup.det ((ad a)⁻¹ : GL (Fin n) (AE D)) : (AE D)ˣ) =
       absA D (Matrix.GeneralLinearGroup.det a : (AE D)ˣ) := by
@@ -138,6 +167,9 @@ theorem absA_det_ad_inv (a : GL (Fin n) (AE D)) :
   rw [h]
   exact GlobalTheory.DiagThetaRule.absA_conj D _
 
+/- English proof (translation)
+Take `⟨δ, hδ, hσ⟩` from `exists_anti _ (isCMExt_host D)`. Use `⟨incA D δ, incA D δ⁻¹, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul, mul_inv_cancel₀ hδ, map_one]`. Rewrite using `[cA_incA, hσ, map_neg]`. Rewrite using `[cA_incA, map_inv₀, hσ, inv_neg, map_neg]`.
+-/
 theorem exists_anti_units (D : D7) : ∃ d e : AE D, d * e = 1 ∧ cA D d = -d ∧ cA D e = -e := by
   obtain ⟨δ, hδ, hσ⟩ := exists_anti _ (isCMExt_host D)
   refine ⟨incA D δ, incA D δ⁻¹, ?_, ?_, ?_⟩
@@ -145,13 +177,22 @@ theorem exists_anti_units (D : D7) : ∃ d e : AE D, d * e = 1 ∧ cA D d = -d �
   · rw [cA_incA, hσ, map_neg]
   · rw [cA_incA, map_inv₀, hσ, inv_neg, map_neg]
 
+/- English proof (translation)
+Introduce `s hs` and use `(cg a ⟨s, hs⟩).2`.
+-/
 theorem lr_herm (a : GL (Fin n) (AE D)) : ∀ s ∈ hermA D n, GlobalTheory.ModuLR.lrCE a (ad a)⁻¹ s ∈ hermA D n :=
   fun s hs => (cg a ⟨s, hs⟩).2
 
+/- English proof (translation)
+Introduce `s hs` and use `(cg a⁻¹ ⟨s, hs⟩).2`.
+-/
 theorem lr_herm_symm (a : GL (Fin n) (AE D)) :
     ∀ s ∈ hermA D n, (GlobalTheory.ModuLR.lrCE a (ad a)⁻¹).symm s ∈ hermA D n :=
   fun s hs => (cg a⁻¹ ⟨s, hs⟩).2
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `a.1 * (d • x) * ((ad a)⁻¹ : GL (Fin n) (AE D)).1 = d • (a.1 * x * ((ad a)⁻¹ : GL (Fin n) (AE D)).1)`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem lr_smul (a : GL (Fin n) (AE D)) (d e : AE D) (hde : d * e = 1) (x : Mx D n n) :
     GlobalTheory.ModuLR.lrCE a (ad a)⁻¹ (mulCE d e hde x) = mulCE d e hde (GlobalTheory.ModuLR.lrCE a (ad a)⁻¹ x) := by
   change a.1 * (d • x) * ((ad a)⁻¹ : GL (Fin n) (AE D)).1 = d • (a.1 * x * ((ad a)⁻¹ : GL (Fin n) (AE D)).1)
@@ -159,6 +200,15 @@ theorem lr_smul (a : GL (Fin n) (AE D)) (d e : AE D) (hde : d * e = 1) (x : Mx D
 
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `D n lam hlam a f`. Take `⟨i1, i2, i3, i4, -, -⟩` from `lattice_Mx D n n`. Use `haveI : IsTopologicalAddGroup (Mx D n n) := i1`. Use `haveI : LocallyCompactSpace (Mx D n n) := i2`. Use `haveI : SecondCountableTopology (Mx D n n) := i3`.
+
+Use `haveI : T2Space (Mx D n n) := i4`. Use `haveI : BorelSpace (Mx D n n) := ⟨rfl⟩`. Use `haveI : SecondCountableTopology (hermA D n) := Topology.IsInducing.subtypeVal.secondCountableTopology`. Use `haveI : T2Space (hermA D n) := Topology.IsEmbedding.subtypeVal.t2Space`. Use `haveI : LocallyCompactSpace (hermA D n) := (isClosed_hermA (D := D) (r := n)).isClosedEmbedding_subtypeVal.locallyCompactSpace`.
+
+Take `⟨d, e, hde, hd, he⟩` from `exists_anti_units D`. Establish `hsq` using `char_sq (hermA D n) (hermPartHom D n) continuous_hermPart hermPart_mem (fun s hs => hermPart_of_mem hs) (mulCE d e hde) (fun s hs => hermPart_anti hd hs) (fun s hs => hermPart_anti he hs) (fun x => hermPart_split he hde x) (GlobalTheory.ModuLR.lrCE a (ad a)⁻¹) (lr_smul a d e hde) …`. Establish `hlr : addEquivAddHaarChar (GlobalTheory.ModuLR.lrCE a (ad a)⁻¹) = absA D (Matrix.GeneralLinearGroup.det a : (AE D)ˣ) ^ n * absA D (Matrix.GeneralLinearGroup.det a : (AE D)ˣ) ^ n`. Establish `h` using `GlobalTheory.ResidueEisenstein.ModMat.addEquivAddHaarChar_lrCE _ _ D.sp.cm.sig (isCMExt_host D) n n a (ad a)⁻¹`. Rewrite using `[h]`.
+
+Conclude with `congrArg (fun t => absA D (Matrix.GeneralLinearGroup.det a : (AE D)ˣ) ^ n * t ^ n) (absA_det_ad_inv a)`. Establish `hT : addEquivAddHaarChar (restr (hermA D n) _ (lr_herm a) (lr_herm_symm a)) = absA D (Matrix.GeneralLinearGroup.det a : (AE D)ˣ) ^ n` using `(pow_left_inj₀ zero_le zero_le two_ne_zero).1 ((hsq.trans hlr).trans (sq _).symm)`. Establish `h : ∫ c, f (cg a c) ∂lam = _` using `integral_comp_char lam (restr (hermA D n) _ (lr_herm a) (lr_herm_symm a)) f`. Rewrite using `[h, hT, npow_neg_nat (absA_pos _) n]`.
+-/
 theorem integral_cg : ∀ (D : D7) (n : ℕ) (lam : Measure (hermA D n)), lam.IsAddHaarMeasure → ∀ (a : GL (Fin n) (AE D)) (f : hermA D n → ℂ), ∫ c, f (GlobalTheory.CompanionTheory.IwaAd.cg a c) ∂lam = npow (absA D (Matrix.GeneralLinearGroup.det a)) (-(n : ℂ)) * ∫ c, f c ∂lam := by
   intro D n lam hlam a f
   obtain ⟨i1, i2, i3, i4, -, -⟩ := lattice_Mx D n n

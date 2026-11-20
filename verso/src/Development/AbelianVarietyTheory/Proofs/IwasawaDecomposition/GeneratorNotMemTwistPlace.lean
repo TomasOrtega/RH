@@ -13,6 +13,11 @@ open GlobalTheory.TwistChoice (Reading ReadsAt)
 
 namespace GlobalTheory.Mem.PdNotType
 
+/- English proof (translation)
+Introduce `D i P k hP`. Introduce `hg`. Establish `hPs : P ∈ (D.ntw.pD i : Set (HeightOneSpectrum (𝓞 D.host.E)))` using `hP`. Rewrite `hPs` using `[D.ntw.pD_eq i]`. Establish `hPg : P ∈ placesOver D.host.E (D.host.g k)`.
+
+Simplify `hg` using `[placesOver]`. Use `split_ifs at hPs`. Conclude with `GlobalTheory.InertialTypes.not_mem_placesOver_of_ne D.host.pde'_prime (D.host.g_prime k) (D.host.pde_ne_g k).2 hPs hPg`. Conclude with `GlobalTheory.InertialTypes.not_mem_placesOver_of_ne D.host.pde_prime (D.host.g_prime k) (D.host.pde_ne_g k).1 hPs hPg`.
+-/
 theorem pD_not_type : ∀ (D : D7) (i : D.ntw.Tw) (P : PlE D.host) (k : Fin 2), P ∈ D.ntw.pD i →
     ((D.host.g k : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal := by
   intro D i P k hP

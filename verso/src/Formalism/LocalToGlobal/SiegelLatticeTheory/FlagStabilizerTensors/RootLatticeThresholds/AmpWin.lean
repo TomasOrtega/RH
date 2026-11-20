@@ -34,6 +34,13 @@ section Lemmas
 
 variable {D : D7} {X : HidaSetting D} {θ : ℝ} {C : Choice X θ} (hB : WuBessel C)
 
+/- English proof (translation)
+Establish `hl : 0 < (l2SG (C.nuS u τ) (phiOf hB u τ)).toReal` using `ENNReal.toReal_pos h0 ht.ne`. Establish `hd : 0 < Module.finrank ℂ (X.Vloc u (vOf X τ))`. Break down `Nat.eq_zero_or_pos (Module.finrank ℂ (X.Vloc u (vOf X τ))) with h | h` into its components or cases. It suffices to derive a contradiction. Establish `: Subsingleton (X.Vloc u (vOf X τ))` using `Module.finrank_zero_iff.1 h`.
+
+Apply `h0` to reduce the goal to its premises. Unfold `l2SG`. Simplify using `[Subsingleton.elim (phiOf hB u τ _) 0]`. Conclude with `h`. Unfold `cOf`.
+
+Conclude with `div_pos hl (by exact_mod_cast hd)`.
+-/
 theorem cOf_pos {u : D.what₂.Word} {τ : D.what₂.Tau} (h0 : l2SG (C.nuS u τ) (phiOf hB u τ) ≠ 0)
     (ht : l2SG (C.nuS u τ) (phiOf hB u τ) < ⊤) : 0 < cOf hB u τ := by
   have hl : 0 < (l2SG (C.nuS u τ) (phiOf hB u τ)).toReal := ENNReal.toReal_pos h0 ht.ne
@@ -48,6 +55,15 @@ theorem cOf_pos {u : D.what₂.Word} {τ : D.what₂.Tau} (h0 : l2SG (C.nuS u τ
   unfold cOf
   exact div_pos hl (by exact_mod_cast hd)
 
+/- English proof (translation)
+Unfold `kap Formalism.L2.SG.Pf.LocNorm.aT sclOf`. Establish `hb : cOf hB u' τ = (l2SG (C.nuS u' τ) (phiOf hB u' τ)).toReal / ((Module.finrank ℂ (X.Vloc u' (vOf X τ)) : ℕ) : ℝ)` using `rfl`. Establish `hd0 : (0 : ℝ) ≤ ((Module.finrank ℂ (X.Vloc u' (vOf X τ)) : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Rewrite `hc'`, the goal using `[hb]`. Generalize the expression as in `cOf hB u τ = a at hc ⊢`.
+
+Generalize the expression as in `(l2SG (C.nuS u' τ) (phiOf hB u' τ)).toReal = L at hc' ⊢`. Generalize the expression as in `((Module.finrank ℂ (X.Vloc u' (vOf X τ)) : ℕ) : ℝ) = d at hd0 hc' ⊢`. Establish `hd : 0 < d` using `lt_of_le_of_ne hd0 (fun h => by rw [← h, div_zero] at hc'; exact lt_irrefl _ hc')`. Establish `hL : 0 < L`. Establish `h1` using `mul_pos hc' hd`.
+
+Rewrite `h1` using `[div_mul_cancel₀ _ hd.ne']`. Then use the resulting hypothesis. Establish `hx : 0 ≤ a * d / L` using `div_nonneg (mul_nonneg hc.le hd.le) hL.le`. Use `first`. Consider the case `(rw [Complex.normSq_mul, Complex.normSq_ofReal, map_inv₀, Complex.normSq_ofReal, Real.mul_self_sqrt hx]; field_simp; ring)`. Consider the case `(simp only [Complex.normSq_mul, map_inv₀, Complex.normSq_ofReal, Real.mul_self_sqrt hx]; field_simp; ring)`.
+
+Consider the case `(rw [Complex.normSq_mul, Complex.normSq_ofReal, map_inv₀, Complex.normSq_ofReal, Real.mul_self_sqrt hx]; field_simp)`.
+-/
 theorem kap_eq {u u' : D.what₂.Word} {τ : D.what₂.Tau} (hc : 0 < cOf hB u τ) (hc' : 0 < cOf hB u' τ) :
     kap u u' C hB τ = 1 / (cOf hB u τ * cOf hB u' τ) := by
   unfold kap Formalism.L2.SG.Pf.LocNorm.aT sclOf
@@ -67,6 +83,9 @@ theorem kap_eq {u u' : D.what₂.Word} {τ : D.what₂.Tau} (hc : 0 < cOf hB u �
     | (simp only [Complex.normSq_mul, map_inv₀, Complex.normSq_ofReal, Real.mul_self_sqrt hx]; field_simp; ring)
     | (rw [Complex.normSq_mul, Complex.normSq_ofReal, map_inv₀, Complex.normSq_ofReal, Real.mul_self_sqrt hx]; field_simp)
 
+/- English proof (translation)
+Rewrite using `[Formalism.L2.SG.Pf.finrank_Vpi, Nat.cast_prod]`. Conclude with `(Fintype.prod_equiv X.pl.symm _ _ fun τ => rfl).symm`.
+-/
 theorem finrank_tau (u : D.what₂.Word) :
     (Module.finrank ℂ (X.Vpi u) : ℝ) = ∏ τ, (Module.finrank ℂ (X.Vloc u (vOf X τ)) : ℝ) := by
   rw [Formalism.L2.SG.Pf.finrank_Vpi, Nat.cast_prod]
@@ -79,6 +98,11 @@ section Main
 variable {D : D7} {X : HidaSetting D} (Y : Formalism.L2.SG.Full.Full X) (u u' : D.what₂.Word) {θ : ℝ} (C : Choice X θ)
   (hB : WuBessel C)
 
+/- English proof (translation)
+Unfold `c0X`. Unfold `MassU at hM`. Rewrite using `[mul_assoc X.volK2, hM, finrank_tau u]`. Establish `hP : ∏ τ, cOf hB u τ = (∏ τ, (l2SG (C.nuS u τ) (phiOf hB u τ)).toReal) / ∏ τ, ((Module.finrank ℂ (X.Vloc u (vOf X τ)) : ℕ) : ℝ)`. Rewrite using `[← Finset.prod_div_distrib]`.
+
+Both sides reduce to the same expression. Rewrite using `[hP]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem poincareConstant_of_mass (hM : MassU Y u C hB) :
     c0X X u (Y.FN u) = X.volK2 * Formalism.L2.SG.LoopTerm.covN (Y := Y) C u * ∏ τ, cOf hB u τ := by
   unfold c0X
@@ -90,6 +114,13 @@ theorem poincareConstant_of_mass (hM : MassU Y u C hB) :
   rw [hP]
   ring
 
+/- English proof (translation)
+Unfold `AmpWinP`. Establish `hc : ∀ τ, 0 < cOf hB u τ` using `fun τ => cOf_pos hB (hl τ).1 (hl τ).2`. Establish `hc' : ∀ τ, 0 < cOf hB u' τ` using `fun τ => cOf_pos hB (hl' τ).1 (hl' τ).2`. Establish `hk : ∀ τ, kap u u' C hB τ = 1 / (cOf hB u τ * cOf hB u' τ)` using `fun τ => kap_eq hB (hc τ) (hc' τ)`. Establish `hP : (∏ τ, kap u u' C hB τ) * (∏ τ, cOf hB u τ) * (∏ τ, cOf hB u' τ) = 1`.
+
+Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `τ _`. Establish `h1` using `(hc τ).ne'`. Establish `h2` using `(hc' τ).ne'`.
+
+Rewrite using `[hk τ]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[poincareConstant_of_mass _ _ _ _ hM, poincareConstant_of_mass _ _ _ _ hM']`. Take the linear combination `(X.volK2 ^ 2 * (Formalism.L2.SG.LoopTerm.covN (Y := Y) C u * Formalism.L2.SG.LoopTerm.covN (Y := Y) C u')) * hP`.
+-/
 theorem ampWin_of (hM : MassU Y u C hB) (hM' : MassU Y u' C hB)
     (hl : ∀ τ, l2SG (C.nuS u τ) (phiOf hB u τ) ≠ 0 ∧ l2SG (C.nuS u τ) (phiOf hB u τ) < ⊤)
     (hl' : ∀ τ, l2SG (C.nuS u' τ) (phiOf hB u' τ) ≠ 0 ∧ l2SG (C.nuS u' τ) (phiOf hB u' τ) < ⊤) :
@@ -109,6 +140,11 @@ theorem ampWin_of (hM : MassU Y u C hB) (hM' : MassU Y u' C hB)
   rw [poincareConstant_of_mass _ _ _ _ hM, poincareConstant_of_mass _ _ _ _ hM']
   linear_combination (X.volK2 ^ 2 * (Formalism.L2.SG.LoopTerm.covN (Y := Y) C u * Formalism.L2.SG.LoopTerm.covN (Y := Y) C u')) * hP
 
+/- English proof (translation)
+Unfold `c0X`. Use `first`. Consider the case `positivity`. Consider the case `(have := X.levelVolume_pos; positivity)`. Consider the case `(have := X.volK2_nonneg; positivity)`.
+
+Consider the case `(unfold HidaSetting.volK2; positivity)`. Consider the case `(unfold Formalism.L2.SG.HidaSetting.HidaSetting.volK2; done)`.
+-/
 theorem poincareConstant_nonneg (w : D.what₂.Word) : 0 ≤ c0X X w (Y.FN w) := by
   unfold c0X
   first
@@ -118,6 +154,19 @@ theorem poincareConstant_nonneg (w : D.what₂.Word) : 0 ≤ c0X X w (Y.FN w) :=
     | (unfold HidaSetting.volK2; positivity)
     | (unfold Formalism.L2.SG.HidaSetting.HidaSetting.volK2; done)
 
+/- English proof (translation)
+Establish `ha` using `poincareConstant_nonneg Y u`. Establish `hb` using `poincareConstant_nonneg Y u'`. Unfold `Formalism.L2.SG.Pf.LocNorm.K0 Formalism.L2.SG.Pf.OOCore3.sclV TermOp.scl`. Unfold `AmpWinP at hA`. Establish `hkap : ∀ τ, kap u u' C hB τ = Complex.normSq (Formalism.L2.SG.Pf.LocNorm.aT u u' C hB τ)` using `fun τ => rfl`.
+
+Simplify using `only [hkap] at hA`. Generalize the expression as in `(∏ τ, Complex.normSq (Formalism.L2.SG.Pf.LocNorm.aT u u' C hB τ)) = P at hA ⊢`. Generalize the expression as in `c0X X u (Y.FN u) = a at ha hA ⊢`. Generalize the expression as in `c0X X u' (Y.FN u') = b at hb hA ⊢`. Generalize the expression as in `Formalism.L2.SG.LoopTerm.covN (Y := Y) C u = m at hA ⊢`.
+
+Generalize the expression as in `Formalism.L2.SG.LoopTerm.covN (Y := Y) C u' = m' at hA ⊢`. Generalize the expression as in `X.volK2 = V at hA hV ⊢`. Use `clear hkap`. Rewrite using `[Complex.normSq_ofReal]`. Break down `(mul_nonneg ha hb).eq_or_lt with h0 | h0` into its components or cases.
+
+Rewrite using `[← h0, Real.sqrt_zero, inv_zero, zero_mul, mul_zero, div_zero]`. Establish `h1 : V ^ 2 * (m * m') = 0` using `by rw [← hA, mul_assoc, ← h0, mul_zero]`. Conclude with `((mul_eq_zero.mp h1).resolve_left (pow_pos hV 2).ne').symm`. Establish `hs : (√(a * b)) ^ 2 = a * b` using `Real.sq_sqrt h0.le`. Establish `hs0 : √(a * b) ≠ 0` using `(Real.sqrt_pos.mpr h0).ne'`.
+
+Establish `hden : (√(a * b))⁻¹ * V * ((√(a * b))⁻¹ * V) = V ^ 2 / (a * b)` using `by first`. Consider the case `rw [inv_mul_eq_div, div_mul_div_comm, ← sq, ← sq, hs]`. Consider the case `(field_simp; rw [hs]; ring)`. Consider the case `(field_simp; rw [Real.mul_self_sqrt h0.le]; ring)`. Rewrite using `[hden, div_div_eq_mul_div, div_eq_iff (pow_pos hV 2).ne']`.
+
+Combine the linear relations using `[hA]`.
+-/
 theorem K0_eq_covN_of_ampWin (hA : AmpWinP Y u u' C hB) (hV : 0 < X.volK2) :
     Formalism.L2.SG.Pf.LocNorm.K0 Y u u' C hB =
       Formalism.L2.SG.LoopTerm.covN (Y := Y) C u * Formalism.L2.SG.LoopTerm.covN (Y := Y) C u' := by
@@ -149,12 +198,18 @@ theorem K0_eq_covN_of_ampWin (hA : AmpWinP Y u u' C hB) (hV : 0 < X.volK2) :
     rw [hden, div_div_eq_mul_div, div_eq_iff (pow_pos hV 2).ne']
     linarith [hA]
 
+/- English proof (translation)
+Rewrite using `[K0_eq_covN_of_ampWin Y u u' C hB hA hV]`. Conclude with `hc`.
+-/
 theorem minWeight_pos (hA : AmpWinP Y u u' C hB) (hV : 0 < X.volK2)
     (hc : 0 < Formalism.L2.SG.LoopTerm.covN (Y := Y) C u * Formalism.L2.SG.LoopTerm.covN (Y := Y) C u') :
     0 < Formalism.L2.SG.Pf.LocNorm.K0 Y u u' C hB := by
   rw [K0_eq_covN_of_ampWin Y u u' C hB hA hV]
   exact hc
 
+/- English proof (translation)
+Rewrite using `[K0_eq_covN_of_ampWin Y u u' C hB hA hV]`. Use `first`. Consider the case `exact hW`. Consider the case `(unfold Formalism.L2.SG.LoopTerm.CovWinN at hW; exact hW)`. Consider the case `(unfold Formalism.L2.SG.LoopTerm.CovWinN at hW; done)`.
+-/
 theorem K0_mem_covWin_of_ampWin (hA : AmpWinP Y u u' C hB) (hV : 0 < X.volK2) {large₂} {C1 : ℝ}
     (hW : Formalism.L2.SG.LoopTerm.CovWinN (Y := Y) C large₂ C1 u u') :
     Formalism.L2.SG.Pf.OOCore3.WinK large₂ C1 (Formalism.L2.SG.Pf.LocNorm.K0 Y u u' C hB) := by

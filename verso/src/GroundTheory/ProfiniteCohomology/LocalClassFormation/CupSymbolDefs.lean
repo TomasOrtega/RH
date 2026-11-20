@@ -48,16 +48,25 @@ variable (K Ω : Type) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarc
 noncomputable def brauerInvZ : cohomology (galUnitsZ K Ω) 2 →+ QZ :=
   (brauerInv K Ω).comp (cohomologyULiftIntAddEquiv (galUnits.{0} K Ω) 2).symm.toAddMonoidHom
 
+/- English proof (translation)
+The claim follows from `congrArg (brauerInv K Ω) ((cohomologyULiftIntAddEquiv (galUnits.{0} K Ω) 2).symm_apply_apply x)`.
+-/
 theorem brauerInvZ_cohomologyULiftIntAddEquiv (x : galoisBrauerGroup K Ω) :
     brauerInvZ K Ω (cohomologyULiftIntAddEquiv (galUnits.{0} K Ω) 2 x) = brauerInv K Ω x :=
   congrArg (brauerInv K Ω) ((cohomologyULiftIntAddEquiv (galUnits.{0} K Ω) 2).symm_apply_apply x)
 
+/- English proof (translation)
+The claim follows from `(brauerInv_bijective K Ω).comp (cohomologyULiftIntAddEquiv (galUnits.{0} K Ω) 2).symm.bijective`.
+-/
 theorem brauerInvZ_bijective : Function.Bijective (brauerInvZ K Ω) :=
   (brauerInv_bijective K Ω).comp (cohomologyULiftIntAddEquiv (galUnits.{0} K Ω) 2).symm.bijective
 
 noncomputable def localClassFormationZ : ClassFormation (galUnitsZ K Ω) :=
   ClassFormation.toInt (galUnits.{0} K Ω) (localClassFormation K Ω)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem localClassFormationZ_inv (U : OpenSubgroup Gal(Ω/K)) (x : H2Open (galUnitsZ K Ω) U) :
     (localClassFormationZ K Ω).inv U x = localInv K Ω U
       ((cohomologyULiftIntAddEquiv (Rep.res (U : Subgroup Gal(Ω/K)).subtype (galUnits.{0} K Ω)) 2).symm x) :=

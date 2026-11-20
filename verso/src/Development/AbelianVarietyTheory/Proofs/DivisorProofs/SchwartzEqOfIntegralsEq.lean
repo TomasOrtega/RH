@@ -12,6 +12,25 @@ open GlobalTheory.Doubling (absE)
 
 namespace GlobalTheory.SchAPairing
 
+/- English proof (translation)
+Introduce `F _ _ κ _ f hf g hg h`. Use `letI mA : MeasurableSpace (κ → AF F) := borel _`. Use `haveI : BorelSpace (κ → AF F) := ⟨rfl⟩`. Use `haveI : LocallyCompactSpace (AF F) := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele F`. Use `haveI : T2Space (AF F) := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`.
+
+Use `set μ : Measure (κ → AF F) := Measure.addHaar with hμ`. Use `haveI hH : μ.IsAddHaarMeasure := by rw [hμ]; infer_instance`. Establish `hd : f - g ∈ schA F κ` using `Submodule.sub_mem _ hf hg`. Establish `hL : ∀ Φ ∈ schA F κ, MemLp Φ 2 μ` using `fun Φ hΦ => GlobalTheory.WeilM.schA_memLp_two F κ μ hH Φ hΦ`. Establish `hconj : ∀ Φ ∈ schA F κ, MemLp (fun x => starRingEnd ℂ (Φ x)) 2 μ` using `fun Φ hΦ => by`.
+
+Use `hL Φ hΦ` as an intermediate fact. Conclude with `this.star`. Establish `hint : ∀ Φ ∈ schA F κ, ∀ Ψ ∈ schA F κ, Integrable (fun x => Φ x * starRingEnd ℂ (Ψ x)) μ`. Introduce `Φ hΦ Ψ hΨ`. Establish `h1 : MemLp Φ 2 μ` using `hL Φ hΦ`.
+
+Establish `h2 : MemLp (fun x => starRingEnd ℂ (Ψ x)) 2 μ` using `hconj Ψ hΨ`. Use `haveI : ENNReal.HolderTriple 2 2 1 := ⟨by norm_num [ENNReal.inv_two_add_inv_two]⟩`. Conclude with `MemLp.integrable_mul (p := 2) (q := 2) h1 h2`. Establish `h0 : ∫ x, (f - g) x * starRingEnd ℂ ((f - g) x) ∂μ = 0`. Establish `e` using `h μ hH (f - g) hd`.
+
+Establish `e2 : ∫ x, (f - g) x * starRingEnd ℂ ((f - g) x) ∂μ = ∫ x, f x * starRingEnd ℂ ((f - g) x) ∂μ - ∫ x, g x * starRingEnd ℂ ((f - g) x) ∂μ`. Rewrite using `[← integral_sub (hint f hf _ hd) (hint g hg _ hd)]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.sub_apply, sub_mul]`.
+
+Rewrite using `[e2, e, sub_self]`. Establish `hcont : Continuous (f - g)` using `(GlobalTheory.ThetaTransformMeas.continuous_of_mem_schA F hf).sub (GlobalTheory.ThetaTransformMeas.continuous_of_mem_schA F hg)`. Use `set d := f - g with hdd`. Establish `hre : Integrable (fun x => Complex.normSq (d x)) μ`. Use `(hint d hd d hd).re` as an intermediate fact.
+
+Use `this.congr (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `[Complex.mul_conj]`. Establish `hR : ∫ x, Complex.normSq (d x) ∂μ = 0`. Establish `h3 : ∫ x, d x * starRingEnd ℂ (d x) ∂μ = ((∫ x, Complex.normSq (d x) ∂μ : ℝ) : ℂ)`. Rewrite using `[← integral_complex_ofReal]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `x`. Conclude with `Complex.mul_conj (d x)`. Conclude with `h3.symm.trans h0` after adjusting the coercions. Establish `hae : d =ᵐ[μ] 0`.
+
+Use `(integral_eq_zero_iff_of_nonneg (fun x => Complex.normSq_nonneg (d x)) hre).1 hR` as an intermediate fact. Use `filter_upwards [this] with x hx`. Simplify using `using hx`. Establish `hz : d = 0` using `(Continuous.ae_eq_iff_eq μ hcont continuous_const).1 hae`. Conclude with `sub_eq_zero.1 hz`.
+-/
 theorem eq_of_pairing : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ], ∀ f ∈ schA F κ, ∀ g ∈ schA F κ,
     (∀ μ : @Measure (κ → AF F) (borel _), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ → ∀ ψ ∈ schA F κ,
       ∫ x, f x * starRingEnd ℂ (ψ x) ∂μ = ∫ x, g x * starRingEnd ℂ (ψ x) ∂μ) → f = g := by

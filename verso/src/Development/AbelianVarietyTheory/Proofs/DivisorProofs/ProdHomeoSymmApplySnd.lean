@@ -10,15 +10,24 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] {N N' 
 def prodMap (hle : N' ≤ N) (hs : ∀ v, s v ∈ N) (z : N' × V) : N :=
   ⟨z.1 * s z.2, N.mul_mem (hle z.1.2) (hs z.2)⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_prodMap (hle : N' ≤ N) (hs : ∀ v, s v ∈ N) (z : N' × V) :
     (prodMap hle hs z : G) = z.1 * s z.2 := rfl
 
+/- English proof (translation)
+Establish `h1 : π 1 = 0` using `by simpa using hπmul 1 1`. Use `hπmul a a⁻¹` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, h1]`. Conclude with `(neg_eq_of_add_eq_zero_right this.symm).symm`.
+-/
 theorem map_inv_of_mul (hπmul : ∀ a b : N, π (a * b) = π a + π b) (a : N) : π a⁻¹ = -π a := by
   have h1 : π 1 = 0 := by simpa using hπmul 1 1
   have := hπmul a a⁻¹
   rw [mul_inv_cancel, h1] at this
   exact (neg_eq_of_add_eq_zero_right this.symm).symm
 
+/- English proof (translation)
+Establish `h` using `(hker (n * (⟨s (π n), hs _⟩ : N)⁻¹)).1 (by`. Rewrite using `[hπmul, map_inv_of_mul hπmul, hπs ⟨s (π n), hs _⟩ _ rfl, add_neg_cancel])`. Simplify using `using h`.
+-/
 theorem mul_inv_mem (hs : ∀ v, s v ∈ N) (hπmul : ∀ a b : N, π (a * b) = π a + π b)
     (hπs : ∀ (a : N) (v : V), (a : G) = s v → π a = v) (hker : ∀ a : N, π a = 0 ↔ (a : G) ∈ N') (n : N) :
     (n : G) * (s (π n))⁻¹ ∈ N' := by
@@ -47,16 +56,25 @@ def prodHomeo (hle : N' ≤ N) (hs : ∀ v, s v ∈ N) (hsc : Continuous s) (hπ
     refine Continuous.prodMk (Continuous.subtype_mk ?_ _) hπc
     fun_prop
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem prodHomeo_apply (hle : N' ≤ N) (hs : ∀ v, s v ∈ N) (hsc : Continuous s) (hπc : Continuous π)
     (hπmul : ∀ a b : N, π (a * b) = π a + π b) (hπs : ∀ (a : N) (v : V), (a : G) = s v → π a = v)
     (hker : ∀ a : N, π a = 0 ↔ (a : G) ∈ N') (z : N' × V) :
     (prodHomeo hle hs hsc hπc hπmul hπs hker z : G) = z.1 * s z.2 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem prodHomeo_symm_apply_fst (hle : N' ≤ N) (hs : ∀ v, s v ∈ N) (hsc : Continuous s)
     (hπc : Continuous π) (hπmul : ∀ a b : N, π (a * b) = π a + π b)
     (hπs : ∀ (a : N) (v : V), (a : G) = s v → π a = v) (hker : ∀ a : N, π a = 0 ↔ (a : G) ∈ N') (n : N) :
     (((prodHomeo hle hs hsc hπc hπmul hπs hker).symm n).1 : G) = n * (s (π n))⁻¹ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem prodHomeo_symm_apply_snd (hle : N' ≤ N) (hs : ∀ v, s v ∈ N) (hsc : Continuous s)
     (hπc : Continuous π) (hπmul : ∀ a b : N, π (a * b) = π a + π b)
     (hπs : ∀ (a : N) (v : V), (a : G) = s v → π a = v) (hker : ∀ a : N, π a = 0 ↔ (a : G) ∈ N') (n : N) :

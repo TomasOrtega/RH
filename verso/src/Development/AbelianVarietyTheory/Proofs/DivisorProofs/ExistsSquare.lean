@@ -18,6 +18,11 @@ namespace GlobalTheory.PtExt.Descent
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Use `letI : Algebra D D' := (ψ : D →+* D').toAlgebra`. Use `haveI : Module.FaithfullyFlat D D' := hψ`. Use `haveI : IsScalarTower R D D' := IsScalarTower.of_algebraMap_eq fun r ↦ (ψ.commutes r).symm`. Use `(Algebra.IsEffective.of_faithfullyFlat D D' s).1 ?_` and prove the remaining obligations. Establish `h` using `hs (D' ⊗[D] D') ((Algebra.TensorProduct.includeLeft : D' →ₐ[D] D' ⊗[D] D').restrictScalars R) ((Algebra.TensorProduct.includeRight : D' →ₐ[D] D' ⊗[D] D').restrictScalars R) (by`.
+
+Use extensionality with `d`. Conclude with `((Algebra.TensorProduct.includeLeft : D' →ₐ[D] D' ⊗[D] D').commutes d).trans ((Algebra.TensorProduct.includeRight : D' →ₐ[D] D' ⊗[D] D').commutes d).symm)`. Simplify `h` using `[sub_eq_zero]`.
+-/
 theorem descend {D D' : Type} [CommRing D] [Algebra R D] [CommRing D'] [Algebra R D'] (ψ : D →ₐ[R] D')
     (hψ : (ψ : D →+* D').FaithfullyFlat) (s : D')
     (hs : ∀ (E : Type) [CommRing E] [Algebra R E] (α β : D' →ₐ[R] E), α.comp ψ = β.comp ψ → α s = β s) :
@@ -33,6 +38,11 @@ theorem descend {D D' : Type} [CommRing D] [Algebra R D] [CommRing D'] [Algebra 
         ((Algebra.TensorProduct.includeRight : D' →ₐ[D] D' ⊗[D] D').commutes d).symm)
   simpa [sub_eq_zero] using h
 
+/- English proof (translation)
+Use `letI : Algebra D D' := (ψ : D →+* D').toAlgebra`. Use `haveI : Module.FaithfullyFlat D D' := hψ`. Use `haveI : IsScalarTower R D D' := IsScalarTower.of_algebraMap_eq fun r ↦ (ψ.commutes r).symm`. Use `letI : Algebra D D₂ := (ψ₂ : D →+* D₂).toAlgebra`. Use `haveI : IsScalarTower R D D₂ := IsScalarTower.of_algebraMap_eq fun r ↦ (ψ₂.commutes r).symm`.
+
+Use `⟨D₂ ⊗[D] D', inferInstance, inferInstance, (Algebra.TensorProduct.includeRight : D' →ₐ[D] D₂ ⊗[D] D').restrictScalars R, (Algebra.TensorProduct.includeLeft : D₂ →ₐ[D] D₂ ⊗[D] D').restrictScalars R, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `d`. Conclude with `((Algebra.TensorProduct.includeRight : D' →ₐ[D] D₂ ⊗[D] D').commutes d).trans ((Algebra.TensorProduct.includeLeft : D₂ →ₐ[D] D₂ ⊗[D] D').commutes d).symm`. Conclude with `FaithfulSMul.algebraMap_injective D₂ (D₂ ⊗[D] D')`.
+-/
 theorem exists_square {D D' D₂ : Type} [CommRing D] [Algebra R D] [CommRing D'] [Algebra R D'] [CommRing D₂]
     [Algebra R D₂] (ψ : D →ₐ[R] D') (hψ : (ψ : D →+* D').FaithfullyFlat) (ψ₂ : D →ₐ[R] D₂) :
     ∃ (E : Type) (_ : CommRing E) (_ : Algebra R E) (α : D' →ₐ[R] E) (β : D₂ →ₐ[R] E),
@@ -56,6 +66,11 @@ def sig (p : ℕ) (f : Fn1 A) (g : Fn2 A) {D D' : Type} [CommRing D] [Algebra R 
     (ψ : D →ₐ[R] D') (x : Pt A D) (z : Pt A D') : D' :=
   chi p g D' z + f R D' (Algebra.ofId R D') 1 - f D D' ψ x
 
+/- English proof (translation)
+Establish `h1` using `GlobalTheory.T.sumTwoPointFunction_multiples_natural_charP p R hp A f g hfg D' D'' θ z`. Establish `h2` using `hf D D' D'' ψ θ x (sm_whole _)`. Establish `h3` using `hf R D' D'' (Algebra.ofId R D') θ 1 (sm_whole _)`. Establish `e : θ.comp (Algebra.ofId R D') = Algebra.ofId R D''` using `Subsingleton.elim _ _`. Rewrite `h3` using `[e, MonObj.comp_one]`.
+
+Rewrite `h1` using `[hz]`. Simplify using `only [sig, map_add, map_sub]`. Take the linear combination `-h1 + h2 - h3`.
+-/
 theorem sig_nat {p : ℕ} (hp : (p : R) = 0) {f : Fn1 A} {g : Fn2 A} (hf : IsCoc (whole A) f) (hfg : IsAdd f g)
     {D D' D'' : Type} [CommRing D] [Algebra R D] [CommRing D'] [Algebra R D'] [CommRing D''] [Algebra R D'']
     (ψ : D →ₐ[R] D') (θ : D' →ₐ[R] D'') (x : Pt A D) (z : Pt A D') (hz : z ^ p = spOver ψ ≫ x) :
@@ -69,6 +84,11 @@ theorem sig_nat {p : ℕ} (hp : (p : R) = 0) {f : Fn1 A} {g : Fn2 A} (hf : IsCoc
   simp only [sig, map_add, map_sub]
   linear_combination -h1 + h2 - h3
 
+/- English proof (translation)
+Take `⟨t, rfl⟩ : ∃ t, z = z' * t` from `⟨z'⁻¹ * z, by simp⟩`. Establish `ht : t ^ p = 1` using `by rwa [mul_pow, mul_eq_left] at h`. Establish `h1` using `GlobalTheory.T.symmetric_two_cocycle_sum_pow_mul (Pt A D) D (g D) (hg D).1 (hg D).2 p z' t`. Establish `h2` using `(hg D).2 (z' ^ p) 1 1`. Establish `h3` using `h0 D t ht`.
+
+Establish `h4 : (p : D) = 0` using `by rw [← map_natCast (algebraMap R D), hp, map_zero]`. Rewrite `h1` using `[ht, nsmul_eq_mul, h4]`. Simplify using `only [_root_.mul_one] at h2`. Simplify using `only [chi] at h3 ⊢`. Take the linear combination `h1 - h2 + h3`.
+-/
 theorem chi_indep [IsCommMonObj A] {p : ℕ} (hp : (p : R) = 0) {g : Fn2 A} (hg : IsSymCoc g)
     (h0 : ∀ (D : Type) [CommRing D] [Algebra R D] (x : Pt A D), x ^ p = 1 → chi p g D x = 0)
     {D : Type} [CommRing D] [Algebra R D] (z z' : Pt A D) (h : z ^ p = z' ^ p) : chi p g D z = chi p g D z' := by
@@ -83,11 +103,25 @@ theorem chi_indep [IsCommMonObj A] {p : ℕ} (hp : (p : R) = 0) {g : Fn2 A} (hg 
   simp only [chi] at h3 ⊢
   linear_combination h1 - h2 + h3
 
+/- English proof (translation)
+Rewrite using `[← MonObj.comp_pow, hz, ← Category.assoc, spOver_comp]`.
+-/
 theorem pow_comp {p : ℕ} {D D' D'' : Type} [CommRing D] [Algebra R D] [CommRing D'] [Algebra R D'] [CommRing D'']
     [Algebra R D''] (ψ : D →ₐ[R] D') (θ : D' →ₐ[R] D'') (x : Pt A D) (z : Pt A D') (hz : z ^ p = spOver ψ ≫ x) :
     (spOver θ ≫ z) ^ p = spOver (θ.comp ψ) ≫ x := by
   rw [← MonObj.comp_pow, hz, ← Category.assoc, spOver_comp]
 
+/- English proof (translation)
+Establish `key : ∀ (D : Type) [CommRing D] [Algebra R D] (x : Pt A D), ∃ k : D, ∀ (D₂ : Type) [CommRing D₂] [Algebra R D₂] (ψ₂ : D →ₐ[R] D₂) (z₂ : Pt A D₂), z₂ ^ p = spOver ψ₂ ≫ x → ψ₂ k = sig p f g ψ₂ x z₂`. Introduce `D _ _ x`. Take `⟨D', _, _, ψ, z, hψ, hz⟩` from `hr D x`. Establish `cmp : ∀ (D₂ : Type) [CommRing D₂] [Algebra R D₂] (ψ₂ : D →ₐ[R] D₂) (z₂ : Pt A D₂), z₂ ^ p = spOver ψ₂ ≫ x → ∀ (E : Type) [CommRing E] [Algebra R E] (α : D' →ₐ[R] E) (β : D₂ →ₐ[R] E), α.comp ψ = β.comp ψ₂ → α (sig p f g ψ x z) = β (sig p f g ψ₂ x z₂)`. Introduce `D₂ _ _ ψ₂ z₂ hz₂ E _ _ α β e`.
+
+Rewrite using `[sig_nat hp hf hfg ψ α x z hz, sig_nat hp hf hfg ψ₂ β x z₂ hz₂, sig, sig, e, chi_indep hp hg h0 (spOver α ≫ z) (spOver β ≫ z₂) (by rw [pow_comp ψ α x z hz, pow_comp ψ₂ β x z₂ hz₂, e])]`. Take `⟨k, hk⟩` from `descend ψ hψ (sig p f g ψ x z) (fun E _ _ α β e ↦ cmp D' ψ z hz E α β e)`. Use `⟨k, fun D₂ _ _ ψ₂ z₂ hz₂ ↦ ?_⟩` and prove the remaining obligations. Take `⟨E, _, _, α, β, e, hβ⟩` from `exists_square ψ hψ ψ₂`. Apply `hβ` to reduce the goal to its premises.
+
+Rewrite using `[← cmp D₂ ψ₂ z₂ hz₂ E α β e, ← hk]`. Conclude with `(DFunLike.congr_fun e k).symm`. Use `choose k hk using key`. Use `⟨k, fun D _ _ D₁ _ _ φ x _ ↦ ?_⟩` and prove the remaining obligations. Take `⟨D', _, _, ψ, z, hψ, hz⟩` from `hr D₁ (spOver φ ≫ x)`.
+
+Establish `hi : Function.Injective ψ` using `hψ.injective`. Apply `hi` to reduce the goal to its premises. Establish `h1` using `hk D₁ (spOver φ ≫ x) D' ψ z hz`. Establish `h2` using `hk D x D' (ψ.comp φ) z (by rw [hz, ← Category.assoc, spOver_comp])`. Establish `h3` using `hf D D₁ D' φ ψ x (sm_whole _)`.
+
+Simplify using `only [sig, AlgHom.comp_apply] at h1 h2`. Rewrite using `[map_sub]`. Take the linear combination `h2 - h1 - h3`.
+-/
 theorem exists_isCob (p : ℕ) (R : Type) [CommRing R] (hp : (p : R) = 0) (A : Over (Sp R)) [GrpObj A]
     [IsCommMonObj A] (f : Fn1 A) (g : Fn2 A) (hf : IsCoc (whole A) f) (hfg : IsAdd f g) (hg : IsSymCoc g)
     (h0 : ∀ (D : Type) [CommRing D] [Algebra R D] (x : Pt A D), x ^ p = 1 → chi p g D x = 0)

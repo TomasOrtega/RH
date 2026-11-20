@@ -8,6 +8,11 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 
 open Topology
 
+/- English proof (translation)
+Take `⟨y₁, hy₁D, hy₁⟩` from `hne`. Introduce `x hx`. Rewrite using `[mem_closure_iff_nhds]`. Introduce `V hV`. Assume the negation of the conclusion as `hempty`.
+
+Establish `hzero : δ =ᶠ[𝓝 (A x)] 0` using `by filter_upwards [hopen x hx V hV] with y hy`. Take `⟨x', ⟨hx'Y, hx'V⟩, rfl⟩` from `hy`. Assume the negation of the conclusion as `h0`. Conclude with `hempty ⟨x', hx'V, hx'Y, h0⟩`. Conclude with `hy₁ (hδ.eqOn_zero_of_preconnected_of_eventuallyEq_zero hDc (hmaps hx) hzero hy₁D)`.
+-/
 theorem subset_closure_nonvanishing_of_open {σ : Type} [Fintype σ] {Y : Set (σ → ℂ)} {d : ℕ}
     {A : (σ → ℂ) →L[ℂ] (Fin d → ℂ)} {D : Set (Fin d → ℂ)} {δ : (Fin d → ℂ) → ℂ}
     (hDc : IsPreconnected D) (hmaps : Set.MapsTo A Y D)
@@ -26,6 +31,11 @@ theorem subset_closure_nonvanishing_of_open {σ : Type} [Fintype σ] {Y : Set (�
     exact hempty ⟨x', hx'V, hx'Y, h0⟩
   exact hy₁ (hδ.eqOn_zero_of_preconnected_of_eventuallyEq_zero hDc (hmaps hx) hzero hy₁D)
 
+/- English proof (translation)
+Introduce `σ _ X B k f d A D hB hf hXB hD hDc hDne hmaps hprop hopen`. Take `⟨δ, hδ, hne, hsec⟩` from `hbranch σ X B k f d A D hB hf hXB hD hDc hDne hmaps hprop hopen`. Take `⟨N, hN⟩` from `hcount σ (X ∩ B) d A D δ hD hDc hmaps hprop hδ (fun x hx hx0 => by`. Take `⟨O, V, g, hO, hV, hxV, hg, hAg, hXV⟩` from `hsec x hx hx0`. Conclude with `⟨O, V, g, hO, hV, hxV, hg.continuousOn, hAg, hXV⟩)`.
+
+Conclude with `⟨δ, N, hδ, hne, hN, hsec, subset_closure_nonvanishing_of_open hDc hmaps hopen hδ hne⟩`.
+-/
 theorem ProperOpenProjectionCover.proof (hbranch : ProperOpenProjectionBranchLocus.Statement)
     (hcount : UnbranchedProperCountConstant.Statement) : ProperOpenProjectionCover.Statement := by
   intro σ _ X B k f d A D hB hf hXB hD hDc hDne hmaps hprop hopen

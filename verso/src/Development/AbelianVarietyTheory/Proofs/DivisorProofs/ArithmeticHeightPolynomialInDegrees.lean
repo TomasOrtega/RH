@@ -21,6 +21,9 @@ noncomputable def iterD {ι : Type} : (m : ℕ) → (Fin m → ι) → (MvPolyno
   | 0, _ => LinearMap.id
   | m + 1, a => (MvPolynomial.pderiv (a 0)).toLinearMap ∘ₗ iterD m (Fin.tail a)
 
+/- English proof (translation)
+Rewrite using `[lin, map_sum, Finset.sum_eq_single j]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[MvPolynomial.pderiv_X, Pi.single_apply, hb, hb.symm]`. Simplify using the standard rewrite rules.
+-/
 theorem pderiv_lin {ι : Type} [Fintype ι] (x : ι → ℝ) (j : ι) :
     MvPolynomial.pderiv j (lin x) = MvPolynomial.C (x j) := by
   rw [lin, map_sum, Finset.sum_eq_single j]
@@ -29,6 +32,9 @@ theorem pderiv_lin {ι : Type} [Fintype ι] (x : ι → ℝ) (j : ι) :
     simp [MvPolynomial.pderiv_X, Pi.single_apply, hb, hb.symm]
   · simp
 
+/- English proof (translation)
+The claim follows from `| 0, a => by simp [iterD] | m + 1, a => by rw [iterD, LinearMap.comp_apply, iterD_lin_pow x N m, Derivation.coeFn_coe, MvPolynomial.pderiv_C_mul, MvPolynomial.pderiv_pow, pderiv_lin, Nat.descFactorial_succ, Fin.prod_univ_succ, Nat.sub_sub] simp only [Fin.tail, Nat.cast_mul, map_m …`.
+-/
 theorem iterD_lin_pow {ι : Type} [Fintype ι] (x : ι → ℝ) (N : ℕ) : ∀ (m : ℕ) (a : Fin m → ι),
     iterD m a (lin x ^ N) = MvPolynomial.C ((N.descFactorial m : ℝ) * ∏ j, x (a j)) * lin x ^ (N - m)
   | 0, a => by simp [iterD]
@@ -38,6 +44,11 @@ theorem iterD_lin_pow {ι : Type} [Fintype ι] (x : ι → ℝ) (N : ℕ) : ∀ 
     simp only [Fin.tail, Nat.cast_mul, map_mul, map_natCast]
     ring
 
+/- English proof (translation)
+Use `⟨∑ a : Fin e → ι, (I a / (e.factorial : ℝ)) • (MvPolynomial.lcoeff ℝ 0 ∘ₗ iterD e a), fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `he : (e.factorial : ℝ) ≠ 0` using `by exact_mod_cast e.factorial_ne_zero`. Rewrite using `[LinearMap.smul_apply, LinearMap.comp_apply, iterD_lin_pow, Nat.sub_self, pow_zero, mul_one, MvPolynomial.lcoeff_apply, MvPolynomial.coeff_zero_C, Nat.descFactorial_self, smul_eq_mul]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_functional {ι : Type} [Fintype ι] (e : ℕ) (I : (Fin e → ι) → ℝ) :
     ∃ T : MvPolynomial ι ℝ →ₗ[ℝ] ℝ, ∀ x : ι → ℝ, T (lin x ^ e) = ∑ a : Fin e → ι, (∏ j, x (a j)) * I a := by
   refine ⟨∑ a : Fin e → ι, (I a / (e.factorial : ℝ)) • (MvPolynomial.lcoeff ℝ 0 ∘ₗ iterD e a), fun x => ?_⟩
@@ -48,6 +59,11 @@ theorem exists_functional {ι : Type} [Fintype ι] (e : ℕ) (I : (Fin e → ι)
     MvPolynomial.lcoeff_apply, MvPolynomial.coeff_zero_C, Nat.descFactorial_self, smul_eq_mul]
   field_simp
 
+/- English proof (translation)
+Establish `HD` using `diffVanish_chiPic_of_isProjOver (algebraMap_eq_strHom κ Z) (structureModule Z) hp (d := D) (by rw [QCoh.suppDim_structureModule, hd])`. Establish `hL : ∀ j, ((N j).B.pull i).IsLB` using `fun j => LB.isLB_pull (N j).isLB i`. Establish `e` using `HD.interNum_of_cls_eq_sum (L := fun j => (N j).B.pull i) hL (Q := fun _ => (comb N n).B.pull i) (fun _ => LB.isLB_pull (comb N n).isLB i) (fun _ => n) fun _ => by`. Rewrite using `[CechPic.cls_pull (comb N n).isLB, GenFibreSecs.cls_comb, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_zsmul, CechPic.cls_pull (N j).isLB]`. Rewrite using `[topSelf_def, e]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem topSelf_comb_pull {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {D : ℕ} {κ : Type} [Field κ]
     {Z : Scheme.{0}} [Algebra κ Γ(Z, ⊤)] (hp : IsProjOver (strHom κ Z)) (hd : topologicalKrullDim Z = D) (i : Z ⟶ X)
     {ι : Type} [Fintype ι] (N : ι → HermLB p) (n : ι → ℤ) :
@@ -65,6 +81,11 @@ theorem topSelf_comb_pull {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp
   push_cast
   rfl
 
+/- English proof (translation)
+Introduce `k _ Y p D hY Z i _ _ ℓ _ _ e he ι _ L`. Establish `hp` using `GlobalTheory.VertProj.isProjOver_strHom_zmod k Y p D hY Z i ℓ`. Take `⟨T, hT⟩` from `exists_functional e fun a : Fin e → ι => (interNum (ZMod ℓ) (structureModule Z) (fun j => (L (a j)).B.pull i) : ℝ) * Real.log ℓ`. Use `⟨T, fun n g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[hg.vertical Z i (ZMod ℓ) e he, Nat.card_zmod, topSelf_comb_pull hp he i L n, hT, Finset.sum_mul]`.
+
+Conclude with `Finset.sum_congr rfl fun a _ => mul_assoc _ _ _`.
+-/
 theorem exists_vertical_functional : ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) (p : Y ⟶ Sp k) (D : ℕ), IsArithVar p D →
     ∀ (Z : Scheme.{0}) (i : Z ⟶ Y) [IsClosedImmersion i] [IsIntegral Z] (ℓ : ℕ) [Fact ℓ.Prime]
     [Algebra (ZMod ℓ) Γ(Z, ⊤)] (e : ℕ), topologicalKrullDim Z = e → ∀ (ι : Type) [Fintype ι] (L : ι → HermLB p),

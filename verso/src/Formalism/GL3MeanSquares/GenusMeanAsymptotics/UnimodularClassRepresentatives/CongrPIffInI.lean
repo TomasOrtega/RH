@@ -17,26 +17,49 @@ local notation "κ" => algebraMap (𝓞 K) K
 
 variable {𝔭 : Ideal (𝓞 F)} {A : Submodule (𝓞 K) V}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem κι (t : 𝓞 F) : κ (ι t) = algebraMap F K (t : F) := rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem congrP_iff_inI {k : ℕ} {a b : K} : CongrP 𝔭 k a b ↔ InI 𝔭 k (a - b) := Iff.rfl
 
+/- English proof (translation)
+Use `integralBasisSpans.congrP_int h𝔭 k z 0` as an intermediate fact. Rewrite `this` using `[congrP_iff_inI, map_zero, sub_zero, Ideal.Quotient.eq, sub_zero]`. Conclude with `this`.
+-/
 theorem inI_int (h𝔭 : 𝔭.IsMaximal) {k : ℕ} {z : 𝓞 K} : InI 𝔭 k (κ z) ↔ z ∈ extP K 𝔭 ^ k := by
   have := integralBasisSpans.congrP_int h𝔭 k z 0
   rw [congrP_iff_inI, map_zero, sub_zero, Ideal.Quotient.eq, sub_zero] at this
   exact this
 
+/- English proof (translation)
+Rewrite using `[inI_int h𝔭, mem_pow_iff]`.
+-/
 theorem inI_ι (h𝔭 : 𝔭.IsMaximal) {k : ℕ} {n : 𝓞 F} : InI 𝔭 k (κ (ι n)) ↔ n ∈ 𝔭 ^ k := by
   rw [inI_int h𝔭, mem_pow_iff]
 
+/- English proof (translation)
+Take `⟨u, hu, z, hz, e⟩` from `h`. Conclude with `⟨u * t, fun h => (hp.mem_or_mem h).elim hu ht, z, hz, by rw [e, map_mul, map_mul, mul_assoc]⟩`.
+-/
 theorem InI.of_mul (hp : 𝔭.IsPrime) {k : ℕ} {t : 𝓞 F} (ht : t ∉ 𝔭) {a : K}
     (h : InI 𝔭 k (κ (ι t) * a)) : InI 𝔭 k a := by
   obtain ⟨u, hu, z, hz, e⟩ := h
   exact ⟨u * t, fun h => (hp.mem_or_mem h).elim hu ht, z, hz, by rw [e, map_mul, map_mul, mul_assoc]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, fun h => hp.ne_top ((Ideal.eq_top_iff_one 𝔭).2 h), 0, zero_mem _, by simp⟩`.
+-/
 theorem InI.zero (hp : 𝔭.IsPrime) (k : ℕ) : InI (K := K) 𝔭 k 0 :=
   ⟨1, fun h => hp.ne_top ((Ideal.eq_top_iff_one 𝔭).2 h), 0, zero_mem _, by simp⟩
 
+/- English proof (translation)
+Take `⟨t, ht, z, -, e⟩` from `h0`. Take `⟨δ, hδ⟩` from `(conjO_eq_iff_mem_range hF z).1 (by`. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Use `show star (κ z) = κ z`. Rewrite using `[e, star_mul', hD, star_ι hF])`.
+
+Conclude with `⟨t, δ, ht, by rw [hδ, e]⟩`.
+-/
 theorem exists_frac (hF : IsFixF K F) {D : K} (hD : star D = D) (h0 : InI 𝔭 0 D) :
     ∃ t δ : 𝓞 F, t ∉ 𝔭 ∧ κ (ι δ) = κ (ι t) * D := by
   obtain ⟨t, ht, z, -, e⟩ := h0
@@ -46,6 +69,15 @@ theorem exists_frac (hF : IsFixF K F) {D : K} (hD : star D = D) (h0 : InI 𝔭 0
     rw [e, star_mul', hD, star_ι hF])
   exact ⟨t, δ, ht, by rw [hδ, e]⟩
 
+/- English proof (translation)
+Take `⟨t, δ, ht, e⟩` from `exists_frac hF hD h0`. Establish `hδv : δ ∉ 𝔭 ^ (v + 1)` using `fun h => hv (InI.of_mul h𝔭.isPrime ht (by rw [← e]; exact (inI_ι h𝔭).2 h))`. Establish `hδ0 : δ ≠ 0` using `fun h => hδv (h ▸ zero_mem _)`. Establish `h1` using `InI.div h𝔭 hδ0 hδv ha`. Establish `h2` using `InI.mul h𝔭.isPrime (InI.int h𝔭.isPrime (ι t)) h1`.
+
+Rewrite `h2` using `[zero_add]`. Establish `ht0` using `κι_ne_zero (K := K) (ne_zero_of_notMem ht)`. Establish `hδ0'` using `κι_ne_zero (K := K) hδ0`. Establish `hD0 : D ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `e` using `[mul_zero]`. Conclude with `hδ0' e`. Establish `: D⁻¹ * a = κ (ι t) * ((κ (ι δ))⁻¹ * a)`. Rewrite using `[e]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[this]`. Conclude with `h2`.
+-/
 theorem InI.divK (h𝔭 : 𝔭.IsMaximal) (hF : IsFixF K F) {D : K} (hD : star D = D) (h0 : InI 𝔭 0 D)
     {v : ℕ} (hv : ¬ InI 𝔭 (v + 1) D) {k : ℕ} {a : K} (ha : InI 𝔭 (v + k) a) :
     InI 𝔭 k (D⁻¹ * a) := by
@@ -68,6 +100,21 @@ theorem InI.divK (h𝔭 : 𝔭.IsMaximal) (hF : IsFixF K F) {D : K} (hD : star D
   rw [this]
   exact h2
 
+/- English proof (translation)
+Establish `hp` using `h𝔭.isPrime`. Take `⟨θ, hθ⟩` from `exists_theta hK hF h𝔭`. Use `set δ := θ - conjO K θ with hδ`. Establish `h1 : InI 𝔭 k (κ δ * z)`. Establish `e : κ δ * z = (κ θ * z + star (κ θ * z)) - κ (conjO K θ) * (κ 1 * z + star (κ 1 * z))`.
+
+Establish `: κ (conjO K θ) = star (κ θ)` using `rfl`. Rewrite using `[hδ, map_sub, this, map_one, one_mul, star_mul']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Establish `h2` using `InI.mul hp (InI.int hp (conjO K θ)) (h 1)`.
+
+Rewrite `h2` using `[zero_add]`. Conclude with `(h θ).sub hp h2`. Take `⟨ν, hν⟩` from `(conjO_eq_iff_mem_range hF (δ * conjO K δ)).1 (by`. Rewrite using `[map_mul, conjO_conjO, mul_comm])`. Establish `hνp : ν ∉ 𝔭`.
+
+Introduce `hm`. Establish `h3 : δ * conjO K δ ∈ extP K 𝔭 ^ 1` using `by rw [← hν]; exact ι_mem_pow (by simpa using hm)`. Establish `h4 : conjO K δ ∈ extP K 𝔭 ^ 1` using `mem_of_unit_mul_mem hθ h3`. Establish `h5 : δ ∈ extP K 𝔭 ^ 1`. Use `conjO_mem_pow hF 𝔭 1 _ h4` as an intermediate fact.
+
+Rewrite `this` using `[conjO_conjO]`. Then use the resulting hypothesis. Establish `h6 : (1 : 𝓞 K) ∈ extP K 𝔭 ^ 1` using `mem_of_unit_mul_mem hθ (by rwa [mul_one])`. Establish `h7` using `(mem_pow_iff (K := K) 𝔭 1 1).1 (by rwa [map_one])`. Rewrite `h7` using `[pow_one]`. Conclude with `h𝔭.ne_top ((Ideal.eq_top_iff_one _).2 h7)`.
+
+Apply `InI.of_mul hp hνp` to reduce the goal to its premises. Establish `h8` using `InI.mul hp (InI.int hp (conjO K δ)) h1`. Rewrite `h8` using `[zero_add]`. Establish `: κ (ι ν) * z = κ (conjO K δ) * (κ δ * z)` using `by rw [hν, map_mul]; ring`. Rewrite using `[this]`.
+
+Conclude with `h8`.
+-/
 theorem inI_of_trace (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (h𝔭 : 𝔭.IsMaximal) {k : ℕ} {z : K}
     (h : ∀ c : 𝓞 K, InI 𝔭 k (κ c * z + star (κ c * z))) : InI 𝔭 k z := by
   have hp := h𝔭.isPrime

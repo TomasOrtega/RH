@@ -11,33 +11,57 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
+/- English proof (translation)
+Simplify using `[Formalism.L2.Theta.mt, map_mul, Units.val_mul]`.
+-/
 theorem mt_mul' (V : HSp D) (a b : GA D V) : Formalism.L2.Theta.mt V (a * b) = Formalism.L2.Theta.mt V a * Formalism.L2.Theta.mt V b := by
   simp [Formalism.L2.Theta.mt, map_mul, Units.val_mul]
 
+/- English proof (translation)
+Simplify using `[Formalism.L2.Theta.mt, map_one, Units.val_one]`.
+-/
 theorem mt_one' (V : HSp D) : Formalism.L2.Theta.mt V (1 : GA D V) = 1 := by
   simp [Formalism.L2.Theta.mt, map_one, Units.val_one]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem actO_eq {S T : HSp D} (g : GA D S) (h : GA D T) (x : WO S T) :
     actO S T g h x = HMul.hMul (HMul.hMul (Formalism.L2.Theta.mt T h) x) (Formalism.L2.Theta.mt S g⁻¹) := rfl
 
+/- English proof (translation)
+Rewrite using `[actO_eq, actO_eq, actO_eq, _root_.mul_inv_rev, mt_mul', mt_mul']`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem actO_actO {S T : HSp D} (g g' : GA D S) (h h' : GA D T) (x : WO S T) :
     actO S T g h (actO S T g' h' x) = actO S T (g * g') (h * h') x := by
   rw [actO_eq, actO_eq, actO_eq, _root_.mul_inv_rev, mt_mul', mt_mul']
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[actO_eq, inv_one, mt_one', mt_one', Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem actO_one {S T : HSp D} (x : WO S T) : actO S T 1 1 x = x := by
   rw [actO_eq, inv_one, mt_one', mt_one', Matrix.one_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Rewrite using `[actO_eq, actO_eq, actO_eq, Matrix.mul_add, Matrix.add_mul]`.
+-/
 theorem actO_add {S T : HSp D} (g : GA D S) (h : GA D T) (x y : WO S T) :
     actO S T g h (x + y) = actO S T g h x + actO S T g h y := by
   rw [actO_eq, actO_eq, actO_eq, Matrix.mul_add, Matrix.add_mul]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => rw [zero_nsmul, zero_nsmul, actO_eq, Matrix.mul_zero, Matrix.zero_mul]`. Consider the case `succ k ih => rw [succ_nsmul, actO_add, ih, succ_nsmul]`.
+-/
 theorem actO_nsmul {S T : HSp D} (g : GA D S) (h : GA D T) (k : ℕ) (x : WO S T) :
     actO S T g h (k • x) = k • actO S T g h x := by
   induction k with
   | zero => rw [zero_nsmul, zero_nsmul, actO_eq, Matrix.mul_zero, Matrix.zero_mul]
   | succ k ih => rw [succ_nsmul, actO_add, ih, succ_nsmul]
 
+/- English proof (translation)
+Introduce `i j`. Simplify using `only [Matrix.mul_apply, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [← hx k l]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isHalf_mul_mul {e : AE D} {a b c : ℕ} (M : Matrix (Fin a) (Fin b) (AE D)) (x : Matrix (Fin b) (Fin c) (AE D))
     (N : Matrix (Fin c) (Fin c) (AE D)) (hx : IsHalf e x) : IsHalf e (M * x * N) := by
   intro i j
@@ -46,6 +70,11 @@ theorem isHalf_mul_mul {e : AE D} {a b c : ℕ} (M : Matrix (Fin a) (Fin b) (AE 
   conv_rhs => rw [← hx k l]
   ring
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `: actO S T g⁻¹ h⁻¹ (actO S T g h x) = x`. Rewrite using `[actO_actO, inv_mul_cancel, inv_mul_cancel, actO_one]`. Rewrite using `[← this]`.
+
+Conclude with `isHalf_mul_mul _ _ _ hx`. Introduce `hx`. Conclude with `isHalf_mul_mul _ _ _ hx`.
+-/
 theorem isHalf_actO {S T : HSp D} {e : AE D} (g : GA D S) (h : GA D T) (x : WO S T) :
     IsHalf e (actO S T g h x) ↔ IsHalf e x := by
   constructor
@@ -60,6 +89,9 @@ theorem isHalf_actO {S T : HSp D} {e : AE D} (g : GA D S) (h : GA D T) (x : WO S
 def actPull {S T : HSp D} (p : GA D S × GA D T) (Φ : WO S T → ℂ) : WO S T → ℂ :=
   fun t => Φ (actO S T p.1⁻¹ p.2⁻¹ t)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `t`. Simplify using `only [actPull, actO_actO, Prod.fst_mul, Prod.snd_mul, _root_.mul_inv_rev]`.
+-/
 theorem actPull_mul {S T : HSp D} (p q : GA D S × GA D T) (Φ : WO S T → ℂ) :
     actPull p (actPull q Φ) = actPull (p * q) Φ := by
   funext t
@@ -70,6 +102,11 @@ def ActsLin {S T : HSp D} (om : GA D S × GA D T →* Module.End ℂ (WO S T →
     Prop :=
   ∀ Φ, IsSBHalf e Λ Φ → om p (Tm Φ) = c • Tm (actPull p Φ)
 
+/- English proof (translation)
+Introduce `Φ _`. Establish `: actPull (1 : GA D S × GA D T) Φ = Φ`. Use function extensionality and compare the values at `t`. Simplify using `[actPull, actO_one]`. Rewrite using `[this, map_one, one_smul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem actsLin_one {S T : HSp D} {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
     {Tm : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ)} {e : AE D} {Λ : AddSubgroup (WO S T)} : ActsLin om Tm e Λ 1 1 := by
   intro Φ _
@@ -78,6 +115,13 @@ theorem actsLin_one {S T : HSp D} {om : GA D S × GA D T →* Module.End ℂ (WO
   rw [this, map_one, one_smul]
   rfl
 
+/- English proof (translation)
+Take `⟨hsupp, k, hk, hinv, hcpt⟩` from `hΦ`. Use `⟨fun t ht => (isHalf_actO _ _ t).1 (hsupp _ ht), k, hk, fun u hu hue t => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Simplify using `only [actPull]`. Rewrite using `[actO_add, actO_nsmul]`. Conclude with `hinv _ ((hΛ u hue).2 hu) ((isHalf_actO _ _ u).2 hue) _`.
+
+Establish `hth : IsHalf e t` using `(isHalf_actO _ _ t).1 (hsupp _ ht)`. Establish `h1` using `hcpt _ ht`. Rewrite `h1` using `[← actO_nsmul]`. Establish `hkt : IsHalf e (k • t)` using `fun i j => by`. Simplify using `only [Matrix.smul_apply, nsmul_eq_mul]`.
+
+Rewrite using `[mul_left_comm, hth i j]`. Conclude with `(hΛ _ hkt).1 h1`.
+-/
 theorem sbHalf_actPull {S T : HSp D} {e : AE D} {Λ : AddSubgroup (WO S T)} (p : GA D S × GA D T)
     (hΛ : ∀ t, IsHalf e t → (actO S T p.1⁻¹ p.2⁻¹ t ∈ Λ ↔ t ∈ Λ)) {Φ : WO S T → ℂ} (hΦ : IsSBHalf e Λ Φ) :
     IsSBHalf e Λ (actPull p Φ) := by
@@ -94,6 +138,9 @@ theorem sbHalf_actPull {S T : HSp D} {e : AE D} {Λ : AddSubgroup (WO S T)} (p :
       rw [mul_left_comm, hth i j]
     exact (hΛ _ hkt).1 h1
 
+/- English proof (translation)
+Introduce `Φ hΦ`. Rewrite using `[map_mul, Module.End.mul_apply, hq Φ hΦ, LinearMap.map_smul, hp _ (hsb Φ hΦ), actPull_mul, smul_smul, mul_comm d c]`.
+-/
 theorem actsLin_mul {S T : HSp D} {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
     {Tm : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ)} {e : AE D} {Λ : AddSubgroup (WO S T)} {p q : GA D S × GA D T} {c d : ℂ}
     (hp : ActsLin om Tm e Λ p c) (hq : ActsLin om Tm e Λ q d)
@@ -101,6 +148,11 @@ theorem actsLin_mul {S T : HSp D} {om : GA D S × GA D T →* Module.End ℂ (WO
   intro Φ hΦ
   rw [map_mul, Module.End.mul_apply, hq Φ hΦ, LinearMap.map_smul, hp _ (hsb Φ hΦ), actPull_mul, smul_smul, mul_comm d c]
 
+/- English proof (translation)
+Take `⟨r, _, hact, hr1⟩` from `hSL ψ S T χS χT om hW ΛS ΛT hsS hsT P e he f₀ hf₀ hfix Tm hTm e₁ hs h1 g h hg hh x y hx hy`. Establish `hr : r = 1` using `hr1 hlat hn`. Introduce `Φ hΦ`. Rewrite using `[hact Φ hΦ, hr]`. Simplify using `only [Complex.ofReal_one, one_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem actsLin_of_splitLin (hSL : SplitLin D) {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle}
     {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (hW : IsWeilDatumO ψ S T χS χT om)
     {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)}
@@ -122,6 +174,11 @@ theorem actsLin_of_splitLin (hSL : SplitLin D) {ψ : AddChar (AF D.host.F) ℂ} 
   simp only [Complex.ofReal_one, one_mul]
   rfl
 
+/- English proof (translation)
+Rewrite using `[LinearMap.comp_apply, hTm.trans Φ hΦ x hx, LinearMap.comp_apply]`. Use `hW.om_heis p.1 p.2 x (Tm Φ) (hth Φ hΦ)` as an intermediate fact. Rewrite `this` using `[hfx x (Or.inl hx)]`. Conclude with `this`. Use `modul Φ hΦ y hy := by`.
+
+Rewrite using `[LinearMap.comp_apply, hTm.modul Φ hΦ y hy, LinearMap.comp_apply]`. Use `hW.om_heis p.1 p.2 y (Tm Φ) (hth Φ hΦ)` as an intermediate fact. Rewrite `this` using `[hfx y (Or.inr hy)]`. Conclude with `this`. Use `vac := by rw [LinearMap.comp_apply, hTm.vac, h0]`.
+-/
 theorem isPlaceModel_comp {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle}
     {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (hW : IsWeilDatumO ψ S T χS χT om) {e : AE D}
     {Λ : AddSubgroup (WO S T)} {c : ℂ} {f₀ : WO S T → ℂ} {Tm : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ)}
@@ -141,6 +198,9 @@ theorem isPlaceModel_comp {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χ
     exact this
   vac := by rw [LinearMap.comp_apply, hTm.vac, h0]
 
+/- English proof (translation)
+Take `⟨⟨Tm, hTm⟩, hall⟩` from `hθ`. Establish `hf : f = Tm Φ` using `hall Tm hTm`. Establish `h2 : f = ((om p).comp Tm) Φ` using `hall _ (isPlaceModel_comp hW hTm (hth Tm hTm) p hfx h0)`. Rewrite `h2` using `[LinearMap.comp_apply, ← hf]`. Conclude with `h2.symm`.
+-/
 theorem om_fix_of_thetaAt {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle}
     {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (hW : IsWeilDatumO ψ S T χS χT om) {e : AE D}
     {Λ : AddSubgroup (WO S T)} {c : ℂ} {f₀ Φ f : WO S T → ℂ}

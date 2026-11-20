@@ -9,6 +9,17 @@ noncomputable section
 
 namespace GlobalTheory.FrameCompletion
 
+/- English proof (translation)
+Establish `a2 : Pᴴ * (J * P) = 0` using `by rw [← Matrix.mul_assoc]; exact h2`. Establish `a4 : Pᴴ * (J * (J * P)) = 1` using `by rw [← Matrix.mul_assoc J, hJJ, Matrix.one_mul, h1]`. Establish `a6 : Pᴴ * (J * C) = 0` using `by rw [← Matrix.mul_assoc]; exact h4`. Establish `hCP : Cᴴ * P = 0`. Use `congrArg conjTranspose h3` as an intermediate fact.
+
+Simplify `this` using `[conjTranspose_mul]`. Establish `hCJP : Cᴴ * (J * P) = 0`. Use `congrArg conjTranspose h4` as an intermediate fact. Simplify `this` using `[conjTranspose_mul, hJ, Matrix.mul_assoc]`. Establish `a7 : J₀ * (Cᴴ * (J * P)) = 0` using `by rw [hCJP, Matrix.mul_zero]`.
+
+Establish `a8 : J₀ * (Cᴴ * (J * (J * P))) = 0`. Rewrite using `[← Matrix.mul_assoc J J, hJJ, Matrix.one_mul, hCP, Matrix.mul_zero]`. Establish `a9 : J₀ * (Cᴴ * (J * C)) = 1` using `by rw [← Matrix.mul_assoc Cᴴ, h5, hJ₀]`. Establish `hLM : fromRows (fromRows Pᴴ (Pᴴ * J)) (J₀ * Cᴴ * J) * fromCols (fromCols P (J * P)) C = 1`. Rewrite using `[fromRows_mul_fromCols, fromRows_mul_fromCols, fromRows_mul, mul_fromCols]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[h1, a2, a4, h3, a6, a7, a8, a9, fromRows_zero, fromCols_zero, fromBlocks_one, fromBlocks_one]`. Establish `hcard : Fintype.card ((κ ⊕ κ) ⊕ Fin n₀) = Fintype.card (Fin n)`. Simplify using `only [Fintype.card_sum, Fintype.card_fin, hn]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hML` using `(mul_eq_one_comm_of_card_eq ((κ ⊕ κ) ⊕ Fin n₀) (Fin n) ℂ hcard).mp hLM`. Rewrite using `[← hML]`. Simplify using `only [fromCols_mul_fromRows, Matrix.mul_assoc]`.
+-/
 theorem resolution {n n₀ : ℕ} {κ : Type} [Fintype κ] [DecidableEq κ] (hn : n = n₀ + 2 * Fintype.card κ)
     (J : Matrix (Fin n) (Fin n) ℂ) (J₀ : Matrix (Fin n₀) (Fin n₀) ℂ) (hJ : Jᴴ = J) (hJJ : J * J = 1)
     (hJ₀ : J₀ * J₀ = 1) (P : Matrix (Fin n) κ ℂ) (C : Matrix (Fin n) (Fin n₀) ℂ)
@@ -39,6 +50,11 @@ theorem resolution {n n₀ : ℕ} {κ : Type} [Fintype κ] [DecidableEq κ] (hn 
   rw [← hML]
   simp only [fromCols_mul_fromRows, Matrix.mul_assoc]
 
+/- English proof (translation)
+Use `open ComplexOrder MatrixOrder in`. Establish `h0 : (0 : Matrix (Fin m) (Fin m) ℂ) ≤ Cᴴ * C` using `(posSemidef_conjTranspose_mul_self C).nonneg`. Use `open ComplexOrder MatrixOrder in`. Use `⟨CFC.sqrt (Cᴴ * C), ?_⟩` and prove the remaining obligations. Use `open ComplexOrder MatrixOrder in`.
+
+Rewrite using `[← star_eq_conjTranspose, (IsSelfAdjoint.of_nonneg (CFC.sqrt_nonneg (Cᴴ * C))).star_eq]`. Use `open ComplexOrder MatrixOrder in`. Conclude with `CFC.sqrt_mul_sqrt_self (Cᴴ * C) h0`.
+-/
 theorem exists_square {n m : ℕ} (C : Matrix (Fin n) (Fin m) ℂ) :
     ∃ D : Matrix (Fin m) (Fin m) ℂ, Dᴴ * D = Cᴴ * C := by
   open ComplexOrder MatrixOrder in
@@ -50,6 +66,63 @@ theorem exists_square {n m : ℕ} (C : Matrix (Fin n) (Fin m) ℂ) :
   open ComplexOrder MatrixOrder in
   exact CFC.sqrt_mul_sqrt_self (Cᴴ * C) h0
 
+/- English proof (translation)
+Introduce `n n₀ a j ε ε₀ B A₀ hn h1 h2 h3 h4 h5`. Establish `hJJ : Jm ε * Jm ε = 1` using `Jm_mul_self ε`. Establish `hJh : (Jm ε)ᴴ = Jm ε` using `Jm_conjTranspose ε`. Establish `hJ₀J₀ : Jm ε₀ * Jm ε₀ = 1` using `Jm_mul_self ε₀`. Establish `hJ₀h : (Jm ε₀)ᴴ = Jm ε₀` using `Jm_conjTranspose ε₀`.
+
+Establish `hJJX : ∀ {m : Type} [Fintype m] (X : Matrix (Fin n) m ℂ), Jm ε * (Jm ε * X) = X`. Introduce `m _ X`. Rewrite using `[← Matrix.mul_assoc, hJJ, Matrix.one_mul]`. Take `⟨P, hP⟩ : ∃ P : Matrix (Fin n) (Σ i, Fin (j i)) ℂ, P = Matrix.of fun r x => B x.1 r x.2` from `⟨_, rfl⟩`. Establish `hPe : ∀ {m : Type} [Fintype m] (X : Matrix (Fin n) m ℂ) (x : Σ i, Fin (j i)) (d : m), (Pᴴ * X) x d = ((B x.1)ᴴ * X) x.2 d`.
+
+Introduce `m _ X x d`. Simplify using `[hP, Matrix.mul_apply, Matrix.conjTranspose_apply]`. Establish `hPc : ∀ {m : Type} [Fintype m] (X : Matrix m (Fin n) ℂ) (c : m) (x : Σ i, Fin (j i)), (X * P) c x = (X * B x.1) c x.2`. Introduce `m _ X c x`. Simplify using `[hP, Matrix.mul_apply]`.
+
+Establish `hPPX : ∀ {m : Type} [Fintype m] (X : Matrix (Fin n) m ℂ), P * (Pᴴ * X) = ∑ i, B i * ((B i)ᴴ * X)`. Introduce `m _ X`. Use extensionality with `r d`. Simplify using `only [Matrix.mul_apply, Matrix.sum_apply, Fintype.sum_sigma, hP, Matrix.of_apply, Matrix.conjTranspose_apply]`. Establish `hPP : Pᴴ * P = 1`.
+
+Use extensionality with `⟨i, c⟩ ⟨k, d⟩`. Rewrite using `[hPc, hPe]`. Distinguish the cases in `hik : i = k`. Substitute `hik` using the available equality. Simplify using `[h1, Matrix.one_apply]`.
+
+Simplify using `[h2 i k hik, hik]`. Establish `hPJP : Pᴴ * Jm ε * P = 0`. Use extensionality with `⟨i, c⟩ ⟨k, d⟩`. Rewrite using `[hPc, Matrix.mul_assoc, hPe, ← Matrix.mul_assoc]`. Simplify using `[h3 i k]`.
+
+Establish `hPJA : Pᴴ * (Jm ε * A₀) = 0`. Use extensionality with `⟨i, c⟩ d`. Rewrite using `[hPe, ← Matrix.mul_assoc]`. Simplify using `[h4 i]`. Take `⟨C, hC⟩ : ∃ C : Matrix (Fin n) (Fin n₀) ℂ, C = A₀ - P * (Pᴴ * A₀)` from `⟨_, rfl⟩`.
+
+Establish `hPC : Pᴴ * C = 0`. Rewrite using `[hC, Matrix.mul_sub, ← Matrix.mul_assoc Pᴴ P, hPP, Matrix.one_mul, sub_self]`. Establish `hJC0 : Jm ε * C = Jm ε * A₀ - Jm ε * P * (Pᴴ * A₀)`. Rewrite using `[hC, Matrix.mul_sub, Matrix.mul_assoc]`. Establish `hPJC : Pᴴ * (Jm ε * C) = 0`.
+
+Establish `hPJP' : Pᴴ * (Jm ε * P) = 0` using `by rw [← Matrix.mul_assoc]; exact hPJP`. Rewrite using `[hJC0, Matrix.mul_sub, hPJA, ← Matrix.mul_assoc Pᴴ, hPJP', Matrix.zero_mul, sub_zero]`. Establish `hCJP : Cᴴ * (Jm ε * P) = 0`. Use `congrArg conjTranspose hPJC` as an intermediate fact. Simplify `this` using `[conjTranspose_mul, hJh, Matrix.mul_assoc]`.
+
+Establish `hAJP : A₀ᴴ * (Jm ε * P) = 0`. Use `congrArg conjTranspose hPJA` as an intermediate fact. Simplify `this` using `[conjTranspose_mul, hJh, Matrix.mul_assoc]`. Establish `hCJC : Cᴴ * (Jm ε * C) = Jm ε₀`. Rewrite using `[hJC0, Matrix.mul_sub, ← Matrix.mul_assoc Cᴴ (Jm ε * P), hCJP, Matrix.zero_mul, sub_zero, hC, conjTranspose_sub, Matrix.sub_mul, conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, Matrix.mul_assoc, Matrix.mul_assoc, hPJA, Matrix.mul_zero, Matrix.mul_zero, sub_zero …`.
+
+Establish `hcard : n = n₀ + 2 * Fintype.card (Σ i, Fin (j i))`. Simplify using `[Fintype.card_sigma, hn]`. Establish `hres` using `resolution hcard (Jm ε) (Jm ε₀) hJh hJJ hJ₀J₀ P C hPP hPJP hPC (by rw [Matrix.mul_assoc]; exact hPJC) (by rw [Matrix.mul_assoc]; exact hCJC)`. Establish `hJC : Jm ε * C = C * (Jm ε₀ * (Cᴴ * C))`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hres, Matrix.one_mul]`. Use `_ = P * (Pᴴ * (Jm ε * C)) + Jm ε * (P * (Pᴴ * (Jm ε * (Jm ε * C)))) + C * (Jm ε₀ * (Cᴴ * (Jm ε * (Jm ε * C)))) := by`. Simplify using `only [Matrix.add_mul, Matrix.mul_assoc]`. Use `_ = C * (Jm ε₀ * (Cᴴ * C)) := by`. Rewrite using `[hPJC, hJJX, hPC]`.
+
+Simplify using the standard rewrite rules. Establish `hCJ : Cᴴ * Jm ε = Cᴴ * (C * (Jm ε₀ * Cᴴ))`. Use `congrArg conjTranspose hJC` as an intermediate fact. Simplify `this` using `[conjTranspose_mul, hJh, hJ₀h, Matrix.mul_assoc]`. Establish `hHJH : (Cᴴ * C) * Jm ε₀ * (Cᴴ * C) = Jm ε₀`.
+
+Combine the equalities or inequalities in the displayed calculation. Take `⟨D, hD⟩` from `exists_square C`. Establish `hdetJ₀ : (Jm ε₀).det ≠ 0`. Introduce `h0`. Use `congrArg Matrix.det hJ₀J₀` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.det_mul, h0, zero_mul, Matrix.det_one]`. Conclude with `zero_ne_one this`. Establish `hdet : D.det ≠ 0`. Introduce `h0`. Establish `hH : (Cᴴ * C).det = 0` using `by rw [← hD, Matrix.det_mul, h0, mul_zero]`.
+
+Use `congrArg Matrix.det hHJH` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, Matrix.det_mul, hH, zero_mul, zero_mul]`. Conclude with `hdetJ₀ this.symm`. Take `⟨s, hsh, hss⟩` from `GlobalTheory.T.exists_hermitian_sqrt_in_signedUnitaryGroup n₀ ε₀ D hdet (by rw [hD]; exact hHJH)`. Rewrite `hss` using `[hD]`.
+
+Take `⟨S, hS⟩ : ∃ S, S = uMat s` from `⟨_, rfl⟩`. Take `⟨S', hS'⟩ : ∃ S' : Matrix (Fin n₀) (Fin n₀) ℂ, S' = (((s : (Matrix (Fin n₀) (Fin n₀) ℂ)ˣ)⁻¹ : (Matrix (Fin n₀) (Fin n₀) ℂ)ˣ) : Matrix (Fin n₀) (Fin n₀) ℂ)` from `⟨_, rfl⟩`. Establish `hSS' : S * S' = 1` using `by rw [hS, hS']; exact Units.mul_inv _`. Establish `hS'S : S' * S = 1` using `by rw [hS, hS']; exact Units.inv_mul _`. Rewrite `hsh`, `hss` using `[← hS]`.
+
+Establish `hsJ : Sᴴ * Jm ε₀ * S = Jm ε₀` using `by rw [hS]; exact s.2`. Rewrite `hsJ` using `[hsh]`. Establish `hSS'h : S * S'ᴴ = 1`. Use `congrArg conjTranspose hS'S` as an intermediate fact. Simplify `this` using `[conjTranspose_mul, hsh]`.
+
+Establish `hS'h : S'ᴴ = S'`. Combine the equalities or inequalities in the displayed calculation. Establish `hJ₀S : Jm ε₀ * S = S' * Jm ε₀`. Combine the equalities or inequalities in the displayed calculation. Establish `hBC : ∀ i, (B i)ᴴ * C = 0`.
+
+Introduce `i`. Use extensionality with `c d`. Use `congrFun (congrFun hPC ⟨i, c⟩) d` as an intermediate fact. Rewrite `this` using `[hPe]`. Simplify using `using this`.
+
+Use `⟨C * S', s, fun k => (B k)ᴴ * A₀, ?_, ?_⟩` and prove the remaining obligations. Use `⟨h1, h2, h3, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Rewrite using `[← Matrix.mul_assoc, hBC i, Matrix.zero_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = 1 := by`. Rewrite using `[hS'h, ← hss, Matrix.mul_assoc, hSS', Matrix.mul_one, hS'S]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc, hJC]`.
+
+Use `_ = C * (Jm ε₀ * S) * (S * S') := by`. Rewrite using `[← hss]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = C * S' * Jm ε₀ := by`. Rewrite using `[hSS', Matrix.mul_one, hJ₀S, Matrix.mul_assoc]`.
+
+Establish `hsum : ∑ i, B i * (B i)ᴴ = P * Pᴴ`. Use `hPPX (1 : Matrix (Fin n) (Fin n) ℂ)` as an intermediate fact. Simplify using `using this.symm`. Establish `hsumJ : ∑ i, Jm ε * B i * (B i)ᴴ * Jm ε = Jm ε * (P * Pᴴ) * Jm ε`. Rewrite using `[← hsum, Finset.mul_sum, Finset.sum_mul]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Establish `hlast : C * S' * (C * S')ᴴ = C * Jm ε₀ * Cᴴ * Jm ε`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, hS'h, Matrix.mul_assoc]`. Use `_ = C * (Jm ε₀ * (S * (S * Jm ε₀))) * Cᴴ := by`.
+
+Use `congr 2`. Use `symm`. Rewrite using `[← Matrix.mul_assoc (Jm ε₀) S, hJ₀S, Matrix.mul_assoc S', ← Matrix.mul_assoc (Jm ε₀) S, hJ₀S, Matrix.mul_assoc S', hJ₀J₀, Matrix.mul_one]`. Use `_ = C * Jm ε₀ * Cᴴ * Jm ε := by`. Rewrite using `[Matrix.mul_assoc (C * Jm ε₀), hCJ, ← Matrix.mul_assoc Cᴴ C, ← hss]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[hsum, hsumJ, hlast]`. Conclude with `hres`. Establish `hsum : ∑ k, B k * ((B k)ᴴ * A₀) = P * (Pᴴ * A₀)` using `(hPPX A₀).symm`. Simplify using `only [hsum, Matrix.mul_assoc]`.
+
+Rewrite using `[← hS, hS'S, Matrix.mul_one, hC, sub_add_cancel]`.
+-/
 theorem exists_isFrame : ∀ (n n₀ a : ℕ) (j : Fin a → ℕ) (ε : Fin n → Bool) (ε₀ : Fin n₀ → Bool) (B : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ) (A₀ : Matrix (Fin n) (Fin n₀) ℂ), n = n₀ + 2 * ∑ i, j i → (∀ i, (B i)ᴴ * B i = 1) → (∀ i k, i ≠ k → (B i)ᴴ * B k = 0) → (∀ i k, (B i)ᴴ * Formalism.REAL.Jm ε * B k = 0) → (∀ i, (B i)ᴴ * Formalism.REAL.Jm ε * A₀ = 0) → A₀ᴴ * Formalism.REAL.Jm ε * A₀ = Formalism.REAL.Jm ε₀ → ∃ (B₀ : Matrix (Fin n) (Fin n₀) ℂ) (s : Formalism.REAL.UJ ε₀) (d : ∀ k, Matrix (Fin (j k)) (Fin n₀) ℂ), IsFrame ε ε₀ B B₀ ∧ A₀ = B₀ * uMat s + ∑ k, B k * d k := by
   intro n n₀ a j ε ε₀ B A₀ hn h1 h2 h3 h4 h5
   classical

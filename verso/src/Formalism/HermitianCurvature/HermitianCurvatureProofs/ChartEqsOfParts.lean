@@ -65,6 +65,11 @@ def ChartSysW : Prop :=
           (∀ X ∈ JfS.lieOf (UWset k r z') ∪ JfS.lieOf (Nset k r),
             (Matrix.trace (Ξ * (κ x * X * (κ x)⁻¹))).re = 0)
 
+/- English proof (translation)
+Introduce `k r z z' d O U κ Φ u hk hz hz' hT hT' hO hU hκ hΦ hκO hΦU hOm hG`. Take `⟨ι, hι, P, m, hm, hP, huc, hPu, hsym⟩` from `hA k r z z' d O U κ Φ u hk hz hz' hT hT' ⟨hO, hU, hκ, hΦ, hκO, hΦU⟩ hOm hG`. Establish `hS : ∀ j, ∃ S : SOp d, S.ord = m j ∧ (∀ i w, ContDiffOn ℝ ∞ (S.a i w) O) ∧ (∀ v : (Fin d → ℝ) → ℂ, ContDiffOn ℝ ((m j : ℕ) : WithTop ℕ∞) v O → ∀ x ∈ O, S.app v x = WOp.app (P j) v x) ∧ ∀ x ∈ O, ∀ ξ : Fin d → ℝ, S.symb x ξ = WOp.symb (P j) (m j) x ξ` using `fun j => hB d (m j) (P j) O hO (hP j)`. Use `choose S hSo hSc hSa hSs using hS`. Use `⟨ι, hι, S, fun j => hSc j, fun j => by rw [hSo j]; exact hm j, huc, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `j x hx`. Rewrite using `[hSa j _ (huc.of_le (by exact_mod_cast hm j)) x hx]`. Conclude with `hPu j x hx`. Introduce `x hx ξ hξ hall`. Conclude with `hsym x hx ξ hξ (fun j => by rw [← hSs j x hx ξ]; exact hall j)`.
+-/
 theorem chartEqs_of (hA : ChartSysW) (hB : VOpToSOp) : ChartEqs := by
   intro k r z z' d O U κ Φ u hk hz hz' hT hT' hO hU hκ hΦ hκO hΦU hOm hG
   obtain ⟨ι, hι, P, m, hm, hP, huc, hPu, hsym⟩ :=
@@ -154,6 +159,9 @@ def FrameEx : Prop :=
 def ChartSysWOfParts : Prop :=
   ChartCov → RwChart → LieNFin → CapWords → CapRWords → CapLWords → CmpZero → FrameEx → ChartSysW
 
+/- English proof (translation)
+The claim follows from `chartEqs_of (hJ h1 h2 h3 h4 h5 h6 h7 h8) hB`.
+-/
 theorem chartEqs_of_parts (hJ : ChartSysWOfParts) (h1 : ChartCov) (h2 : RwChart) (h3 : LieNFin) (h4 : CapWords)
     (h5 : CapRWords) (h6 : CapLWords) (h7 : CmpZero) (h8 : FrameEx) (hB : VOpToSOp) : ChartEqs :=
   chartEqs_of (hJ h1 h2 h3 h4 h5 h6 h7 h8) hB
@@ -179,6 +187,9 @@ def SOpLin : Prop :=
 
 def VOpToSOpOfSteps : Prop := SOpField → SOpLift → SOpLin → VOpToSOp
 
+/- English proof (translation)
+The claim follows from `chartEqs_of_parts hJ h1 h2 h3 h4 h5 h6 h7 h8 (hS s1 s2 s3)`.
+-/
 theorem chartEqs_of_all (hJ : ChartSysWOfParts) (h1 : ChartCov) (h2 : RwChart) (h3 : LieNFin) (h4 : CapWords)
     (h5 : CapRWords) (h6 : CapLWords) (h7 : CmpZero) (h8 : FrameEx) (hS : VOpToSOpOfSteps) (s1 : SOpField)
     (s2 : SOpLift) (s3 : SOpLin) : ChartEqs :=

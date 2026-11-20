@@ -17,6 +17,11 @@ namespace GlobalTheory.SeeSaw.LastStepsX
 
 variable {D : D7}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Simplify using `only [liftS, Lift.liftInt, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem liftS_smul {S T : HSp D} (om : Om S T) (ν : Measure (GA D T)) (𝓕 : Set (GA D T)) (a : ℂ)
     (G : GA D T → ℂ) (f : WO S T → ℂ) : liftS om ν 𝓕 (a • G) f = a • liftS om ν 𝓕 G f := by
   funext g
@@ -24,11 +29,17 @@ theorem liftS_smul {S T : HSp D} (om : Om S T) (ν : Measure (GA D T)) (𝓕 : S
   rw [← integral_const_mul]
   congr 1; funext x; ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [trc, rTrans, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun g _ => by ring`.
+-/
 theorem trc_smul {V : HSp D} (e : GA D V →₀ ℂ) (a : ℂ) (f : GA D V → ℂ) : trc e (a • f) = a • trc e f := by
   funext x
   simp only [trc, rTrans, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun g _ => by ring
 
+/- English proof (translation)
+Simplify using `only [Tup.perF, trc_smul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Establish `e` using `GlobalTheory.HandHom.per_smul (c.B j ρ h) c.ψ 1 a (φ α) (trc (t.e j α) f)`. Rewrite `e` using `[one_smul, one_mul]`. Conclude with `e`.
+-/
 theorem perF_smul {c : Comm D} (t : Tup c) (j ρ : ℕ) (h : j + 2 * ρ + 2 = D.R.m) (φ : t.Ch j → GA D (c.X j) → ℂ)
     (a : ℂ) (f : GA D (c.V j) → ℂ) : t.perF j ρ h φ (a • f) = a * t.perF j ρ h φ f := by
   simp only [Tup.perF, trc_smul, Finset.mul_sum]
@@ -37,6 +48,11 @@ theorem perF_smul {c : Comm D} (t : Tup c) (j ρ : ℕ) (h : j + 2 * ρ + 2 = D.
   rw [one_smul, one_mul] at e
   exact e
 
+/- English proof (translation)
+Use `⟨fun γ hγ g => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [trc, rTrans, Finset.sum_apply, Pi.smul_apply]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, hf.1 γ hγ]`. Establish `e : trc e f = fun x => ∑ g ∈ e.support, e g * f (x * g)`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [trc, rTrans, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[e]`. Conclude with `continuous_finset_sum _ fun g _ => continuous_const.mul (hf.2.comp (continuous_mul_right g))`.
+-/
 theorem contAut_trc {V : HSp D} (e : GA D V →₀ ℂ) {f : GA D V → ℂ} (hf : IsContAut V f) : IsContAut V (trc e f) := by
   refine ⟨fun γ hγ g => ?_, ?_⟩
   · simp only [trc, rTrans, Finset.sum_apply, Pi.smul_apply]
@@ -48,6 +64,9 @@ theorem contAut_trc {V : HSp D} (e : GA D V →₀ ℂ) {f : GA D V → ℂ} (hf
     rw [e]
     exact continuous_finset_sum _ fun g _ => continuous_const.mul (hf.2.comp (continuous_mul_right g))
 
+/- English proof (translation)
+Use `⟨hf.2.comp (o.continuous_emb.comp (continuous_id.prodMk continuous_const)), fun γ hγ g => ?_⟩` and prove the remaining obligations. Establish `e : o.emb (γ * g, 1) = o.emb (γ, 1) * o.emb (g, 1)`. Rewrite using `[← map_mul, Prod.mk_mul_mk, mul_one]`. Rewrite using `[e, hf.1 _ (o.emb_mem_GQ hγ (one_mem _))]`.
+-/
 theorem contAut_emb {S A B : HSp D} (o : OrthDec S A B) {f : GA D S → ℂ} (hf : IsContAut S f) :
     Continuous (fun h : GA D A => f (o.emb (h, 1))) ∧ ∀ γ ∈ GQ A, ∀ g, f (o.emb (γ * g, 1)) = f (o.emb (g, 1)) := by
   refine ⟨hf.2.comp (o.continuous_emb.comp (continuous_id.prodMk continuous_const)), fun γ hγ g => ?_⟩
@@ -55,11 +74,17 @@ theorem contAut_emb {S A B : HSp D} (o : OrthDec S A B) {f : GA D S → ℂ} (hf
     rw [← map_mul, Prod.mk_mul_mk, mul_one]
   rw [e, hf.1 _ (o.emb_mem_GQ hγ (one_mem _))]
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.CocompactParam.continuous_integral_param D V hV vol Unit (fun g _ => f g) (hc.comp continuous_fst) (fun γ hγ g _ => hi γ hγ g)).1 ()`.
+-/
 theorem integrableOn_contAut {V : HSp D} (hV : CoCpt V) (vol : Vol V) {f : GA D V → ℂ} (hc : Continuous f)
     (hi : ∀ γ ∈ GQ V, ∀ g, f (γ * g) = f g) : IntegrableOn f vol.𝓕 vol.μ :=
   (GlobalTheory.CocompactParam.continuous_integral_param D V hV vol Unit (fun g _ => f g) (hc.comp continuous_fst)
     (fun γ hγ g _ => hi γ hγ g)).1 ()
 
+/- English proof (translation)
+Rewrite using `[ht.ioT j h F P₂ v, liftS_smul, ht.io j (by omega) (t.ioT j h F) P₁ (c.ItT j h P₂ v), smul_smul, mul_comm]`.
+-/
 theorem io_ioT {c : Comm D} (t : Tup c) (ht : t.Is) (j : ℕ) (h : j + 2 * 0 + 2 = D.R.m) (F : t.CT)
     (P₁ : PolF D (c.V (j + 1)).rank (c.V j).rank) (P₂ : PolF D c.T.rank (c.V (j + 1)).rank) (v : SmT c.MT) :
     (t.cI j * t.cI (j + 1)) • ((t.io j (t.ioT j h F)).1 (c.It j P₁ (c.ItT j h P₂ v))) =
@@ -67,6 +92,13 @@ theorem io_ioT {c : Comm D} (t : Tup c) (ht : t.Is) (j : ℕ) (h : j + 2 * 0 + 2
         (liftS (t.omT j h) c.volT.μ c.volT.𝓕 (F.1 v) (t.ptT j h P₂)) (t.pt j P₁) := by
   rw [ht.ioT j h F P₂ v, liftS_smul, ht.io j (by omega) (t.ioT j h F) P₁ (c.ItT j h P₂ v), smul_smul, mul_comm]
 
+/- English proof (translation)
+Establish `e1 : ∀ β, ∫ h' in c.volT.𝓕, trc (t.eT n h β) f h' * (k • ∑ y' ∈ S, a y' • φ y' β) ((c.oT n h).emb (h', 1)) ∂c.volT.μ = ∑ y' ∈ S, k * a y' * ∫ h' in c.volT.𝓕, trc (t.eT n h β) f h' * φ y' β ((c.oT n h).emb (h', 1)) ∂c.volT.μ`. Introduce `β`. Establish `e2 : (fun h' => trc (t.eT n h β) f h' * (k • ∑ y' ∈ S, a y' • φ y' β) ((c.oT n h).emb (h', 1))) = fun h' => ∑ y' ∈ S, (k * a y') * (trc (t.eT n h β) f h' * φ y' β ((c.oT n h).emb (h', 1)))`. Use function extensionality and compare the values at `h'`. Simplify using `only [Pi.smul_apply, Finset.sum_apply, smul_eq_mul, Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun y' _ => by ring`. Rewrite using `[e2, integral_finset_sum _ (fun y' _ => (hi y' β).const_mul _)]`. Repeatedly rewrite using `[integral_const_mul]`. Simplify using `only [Tup.perT, e1, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+
+Conclude with `Finset.sum_congr rfl fun y' _ => Finset.sum_congr rfl fun β _ => by ring`.
+-/
 theorem perT_comb {c : Comm D} (t : Tup c) (n : ℕ) (h : n = D.R.m) {Y : Type} (S : Finset Y) (k : ℂ) (a : Y → ℂ)
     (φ : Y → t.Ch n → GA D (c.X n) → ℂ) (f : GA D c.T → ℂ)
     (hi : ∀ y' β, IntegrableOn (fun h' => trc (t.eT n h β) f h' * φ y' β ((c.oT n h).emb (h', 1))) c.volT.𝓕 c.volT.μ) :
@@ -90,6 +122,21 @@ end GlobalTheory.SeeSaw.LastStepsX
 set_option maxHeartbeats 4000000 in
 open GlobalTheory.SeeSaw.LastStepsX in
 
+/- English proof (translation)
+Introduce `hHC D c 𝒯 t hRV hc ht hVL hTX hPX hRD`. Introduce `j h I _ s α ψ F hψ hF y v`. Take `⟨χ, hχ⟩` from `hRD j (by omega)`. Take `⟨χ₂, hχ₂⟩` from `hRD (j + 1 + 1) (by omega)`. Use `GlobalTheory.T.period_linear_relation_density_of_unfolding_steps hHC D c 𝒯 t hc j 0 h I s (fun i => α i * ((t (s i)).cI j * (t (s i)).cI (j + 1))) (fun i β => (t (s i)).rd j β (ψ i) y) (fun i => (t (s i)).io j ((t (s i)).ioT j h (F i))) ht (fun i β => (hχ (s i) (ψ i) (hψ i) β y). …` and prove the remaining obligations.
+
+Introduce `P₁ P₂ w`. Take `⟨C, hCr, hC⟩` from `hVL j h P₁ P₂`. Take `⟨a, ha⟩` from `hTX j (by omega) C hCr y`. Use `choose b hb using fun y' => hPX (j + 1 + 1) h y' w`. Establish `hterm : ∀ i, α i * ((t (s i)).cI j * (t (s i)).cI (j + 1)) * (t (s i)).perF j 0 h (fun β => (t (s i)).rd j β (ψ i) y) (((t (s i)).io j ((t (s i)).ioT j h (F i))).1 (c.It j P₁ (c.ItT j h P₂ w))) = ∑ y' ∈ a.support, a y' * b y' * (α i * ((t (s i)).cV j * (t (s i)).cK j * (t (s i)). …`.
+
+Introduce `i`. Establish `hSψ : (t (s i)).S j (ψ i) ∈ (t (s i)).Ram j` using `(ht (s i)).stabS j (by omega) _ (hψ i)`. Establish `hψ₁` using `(ht (s i)).stabK j (by omega) _ hSψ`. Establish `hψ₂` using `(ht (s i)).stabK (j + 1) (by omega) _ hψ₁`. Rewrite using `[mul_assoc, ← perF_smul, io_ioT (t (s i)) (ht (s i)) j h (F i) P₁ P₂ w, hC (s i) (ψ i) (hψ i) y (F i) w]`.
+
+Establish `e2 : (t (s i)).two j (fun β => (t (s i)).rd j β ((t (s i)).S j (ψ i)) y) C = fun β => ((t (s i)).cK j * (t (s i)).cK (j + 1)) • ∑ y' ∈ a.support, a y' • (t (s i)).rd (j + 1 + 1) β ((t (s i)).K (j + 1) ((t (s i)).K j ((t (s i)).S j (ψ i)))) y'`. Use function extensionality and compare the values at `fun β => ha (s i) _ hSψ β`. Establish `hE : RapidDec c.T ((F i).1 w)`. Take `⟨J, χ', hle⟩` from `(ht (s i)).CT`. Conclude with `hRV c.θ hc.inf c.T c.parT c.MT J χ' _ (hle (F i).2) w`.
+
+Establish `e3` using `perT_comb (t (s i)) (j + 1 + 1) h a.support ((t (s i)).cK j * (t (s i)).cK (j + 1)) a (fun y' β => (t (s i)).rd (j + 1 + 1) β ((t (s i)).K (j + 1) ((t (s i)).K j ((t (s i)).S j (ψ i)))) y') ((F i).1 w) (fun y' β => by`. Establish `ht'` using `contAut_trc ((t (s i)).eT (j + 1 + 1) h β) ⟨hE.1, hE.2.1⟩`. Take `⟨hcont, hinv⟩` from `contAut_emb (c.oT (j + 1 + 1) h) (hχ₂ (s i) _ hψ₂ β y').1`. Conclude with `integrableOn_contAut hc.cpt c.volT (ht'.2.mul hcont) (fun γ hγ g => by rw [ht'.1 γ hγ g, hinv γ hγ g]))`. Use `beta_reduce at e3`.
+
+Establish `hb' : ∀ y', (t (s i)).perT (j + 1 + 1) h (fun β => (t (s i)).rd (j + 1 + 1) β ((t (s i)).K (j + 1) ((t (s i)).K j ((t (s i)).S j (ψ i)))) y') ((F i).1 w) = (t (s i)).cP * b y' * (t (s i)).tail (j + 1 + 1) h ((t (s i)).K (j + 1) ((t (s i)).K j ((t (s i)).S j (ψ i)))) (F i)` using `fun y' => hb y' (s i) _ hψ₂ (F i)`. Rewrite using `[e2, e3]`. Simplify using `only [hb', Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun y' _ => by ring`. Rewrite using `[Finset.sum_congr rfl fun i _ => hterm i, Finset.sum_comm]`.
+
+Use `Finset.sum_eq_zero fun y' _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum, hF, mul_zero]`.
+-/
 theorem GlobalTheory.SeeSaw.lastX_of_laws : GlobalTheory.Published.HarishChandraModules → ∀ (D : D7) (c : Comm D) (𝒯 : Type) (t : 𝒯 → Tup c), RapidVal D → c.Is → (∀ s, (t s).Is) → ValLastX t → TwoX t → PerX t → RdX t → LastX t := by
   intro hHC D c 𝒯 t hRV hc ht hVL hTX hPX hRD
   intro j h I _ s α ψ F hψ hF y v

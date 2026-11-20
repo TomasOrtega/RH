@@ -18,11 +18,17 @@ def specIdealSheaf (I : Ideal R) : (Spec (CommRingCat.of R)).IdealSheafData :=
   Scheme.IdealSheafData.ofIdealTop
     (Ideal.map (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom I)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem specIdealSheaf_eq_ofIdealTop (I : Ideal R) :
     specIdealSheaf I =
       Scheme.IdealSheafData.ofIdealTop
         (Ideal.map (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom I) := rfl
 
+/- English proof (translation)
+The claim follows from `Scheme.IdealSheafData.ofIdealTop_ideal_top _`.
+-/
 theorem specIdealSheaf_ideal_top (I : Ideal R) :
     (specIdealSheaf I).ideal ⟨⊤, isAffineOpen_top (Spec (CommRingCat.of R))⟩ =
       Ideal.map (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom I :=
@@ -35,6 +41,9 @@ def chartSectionsIso (I : Ideal R) (a : ↥I) :
       (CommRingCat.of (HomogeneousLocalization.Away (reesGrading I) (reesGenerator I a)))).symm ≪≫
     ((affineBlowupChart I a).appIso ⊤).symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem chartSectionsIso_hom (I : Ideal R) (a : ↥I) :
     (chartSectionsIso I a).hom =
       (Scheme.ΓSpecIso
@@ -42,6 +51,9 @@ theorem chartSectionsIso_hom (I : Ideal R) (a : ↥I) :
             (HomogeneousLocalization.Away (reesGrading I) (reesGenerator I a)))).inv ≫
         ((affineBlowupChart I a).appIso ⊤).inv := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem chartSectionsIso_hom_apply (I : Ideal R) (a : ↥I)
     (x : HomogeneousLocalization.Away (reesGrading I) (reesGenerator I a)) :
     (chartSectionsIso I a).hom.hom x =
@@ -50,6 +62,9 @@ theorem chartSectionsIso_hom_apply (I : Ideal R) (a : ↥I)
             (CommRingCat.of
               (HomogeneousLocalization.Away (reesGrading I) (reesGenerator I a)))).inv.hom x) := rfl
 
+/- English proof (translation)
+Substitute `hU` using the available equality. Take `rfl : φ = ψ` from `eq_of_heq hφ`. Rewrite using `[show (homOfLE h : (⊤ : Z.Opens) ⟶ ⊤) = 𝟙 (⊤ : Z.Opens) from rfl]`. Simplify using the standard rewrite rules.
+-/
 private theorem comp_presheaf_map_eq_of_heq {Z : Scheme.{u}} {A : CommRingCat.{u}} (U : Z.Opens) (hU : U = ⊤)
     (φ : A ⟶ Γ(Z, U)) (h : (⊤ : Z.Opens) ≤ U) (ψ : A ⟶ Γ(Z, (⊤ : Z.Opens)))
     (hφ : HEq φ ψ) : φ ≫ Z.presheaf.map (homOfLE h).op = ψ := by
@@ -58,10 +73,16 @@ private theorem comp_presheaf_map_eq_of_heq {Z : Scheme.{u}} {A : CommRingCat.{u
   rw [show (homOfLE h : (⊤ : Z.Opens) ⟶ ⊤) = 𝟙 (⊤ : Z.Opens) from rfl]
   simp
 
+/- English proof (translation)
+The claim follows from `comp_presheaf_map_eq_of_heq (f ⁻¹ᵁ (⊤ : S.Opens)) (le_antisymm le_top h) (f.app ⊤) h f.appTop HEq.rfl`.
+-/
 private theorem appTop_eq_appLE_top_top {Z S : Scheme.{u}} (f : Z ⟶ S)
     (h : (⊤ : Z.Opens) ≤ f ⁻¹ᵁ (⊤ : S.Opens)) : f.appLE ⊤ ⊤ h = f.appTop :=
   comp_presheaf_map_eq_of_heq (f ⁻¹ᵁ (⊤ : S.Opens)) (le_antisymm le_top h) (f.app ⊤) h f.appTop HEq.rfl
 
+/- English proof (translation)
+Rewrite using `[Scheme.Hom.appIso_hom', Scheme.Hom.appLE_comp_appLE]`. Conclude with `appTop_eq_appLE_top_top (g ≫ p) _`.
+-/
 private theorem appLE_image_top_comp_appIso_hom {Z X S : Scheme.{u}} (g : Z ⟶ X)
     [IsOpenImmersion g] (p : X ⟶ S)
     (e : (g ''ᵁ (⊤ : Z.Opens)) ≤ p ⁻¹ᵁ (⊤ : S.Opens)) :
@@ -69,6 +90,9 @@ private theorem appLE_image_top_comp_appIso_hom {Z X S : Scheme.{u}} (g : Z ⟶ 
   rw [Scheme.Hom.appIso_hom', Scheme.Hom.appLE_comp_appLE]
   exact appTop_eq_appLE_top_top (g ≫ p) _
 
+/- English proof (translation)
+Rewrite using `[chartSectionsIso_hom, ← Category.assoc, Iso.comp_inv_eq, Category.assoc, appLE_image_top_comp_appIso_hom, affineBlowupChart_comp_toSpec, algebraMap_chart_eq_chartRingHom]`. Conclude with `Scheme.ΓSpecIso_inv_naturality _`.
+-/
 theorem chartRingHom_comp_chartSectionsIso_hom (I : Ideal R) (a : ↥I) :
     CommRingCat.ofHom (chartRingHom I a) ≫ (chartSectionsIso I a).hom =
       (Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫
@@ -78,6 +102,11 @@ theorem chartRingHom_comp_chartSectionsIso_hom (I : Ideal R) (a : ↥I) :
     appLE_image_top_comp_appIso_hom, affineBlowupChart_comp_toSpec, algebraMap_chart_eq_chartRingHom]
   exact Scheme.ΓSpecIso_inv_naturality _
 
+/- English proof (translation)
+Establish `hcomp` using `congrArg CommRingCat.Hom.hom (chartRingHom_comp_chartSectionsIso_hom I a)`. Rewrite `hcomp` using `[CommRingCat.hom_comp, CommRingCat.hom_comp, CommRingCat.hom_ofHom]`. Establish `key : Ideal.map ((AffineBlowup.toSpec I).appLE ⊤ (affineBlowupChart I a ''ᵁ ⊤) (le_top.trans_eq (Scheme.Hom.preimage_top (AffineBlowup.toSpec I)).symm)).hom (Ideal.map (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom I) = Ideal.span {(chartSectionsIso I a).hom.hom (chartRingHom I a ( …`. Rewrite using `[Ideal.map_map, ← hcomp, ← Ideal.map_map, map_chartRingHom_eq_span_singleton, Ideal.map_span, Set.image_singleton]`. Rewrite using `[Scheme.IdealSheafData.comap_ideal_eq_map_appLE (specIdealSheaf I) (AffineBlowup.toSpec I) ⟨⊤, isAffineOpen_top (Spec (CommRingCat.of R))⟩ ⟨_, hW⟩ (le_top.trans_eq (Scheme.Hom.preimage_top (AffineBlowup.toSpec I)).symm)]`.
+
+Rewrite using `[specIdealSheaf_ideal_top]`. Conclude with `key`.
+-/
 theorem ideal_comap_toSpec_chart_eq_span (I : Ideal R) (a : ↥I)
     (hW : IsAffineOpen (affineBlowupChart I a ''ᵁ ⊤)) :
     ((specIdealSheaf I).comap (AffineBlowup.toSpec I)).ideal ⟨_, hW⟩ =
@@ -96,6 +125,11 @@ theorem ideal_comap_toSpec_chart_eq_span (I : Ideal R) (a : ↥I)
   rw [specIdealSheaf_ideal_top]
   exact key
 
+/- English proof (translation)
+Introduce `x`. Take `⟨a, hx⟩ : ∃ a : ↥I, x ∈ Set.range (affineBlowupChart I a).base` from `⟨(affineBlowupAffineOpenCover I).idx x, (affineBlowupAffineOpenCover I).covers x⟩`. Establish `hW` using `(isAffineOpen_top (Spec (CommRingCat.of (HomogeneousLocalization.Away (reesGrading I) (reesGenerator I a))))).image_of_isOpenImmersion (affineBlowupChart I a)`. Use `⟨⟨_, hW⟩, (chartSectionsIso I a).hom.hom (chartRingHom I a (a : R)), ?_, ?_, ideal_comap_toSpec_chart_eq_span I a hW⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `hx`.
+
+Conclude with `⟨y, trivial, hy⟩`. Conclude with `map_mem_nonZeroDivisors_of_iso (chartSectionsIso I a) (chartRingHom_mem_nonZeroDivisors I a)`.
+-/
 theorem isLocallyGeneratedByNonZeroDivisor_comap_toSpec (I : Ideal R) :
     IsLocallyGeneratedByNonZeroDivisor ((specIdealSheaf I).comap (AffineBlowup.toSpec I)) := by
   intro x

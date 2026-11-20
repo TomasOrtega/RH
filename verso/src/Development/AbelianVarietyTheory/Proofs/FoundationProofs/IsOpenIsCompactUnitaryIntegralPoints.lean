@@ -9,11 +9,17 @@ section General
 variable {L : Type} [Field L] [TopologicalSpace L] [IsTopologicalRing L] {n : Type} [Fintype n] [DecidableEq n]
 
 omit [TopologicalSpace L] [IsTopologicalRing L] in
+/- English proof (translation)
+The claim follows from `Set.ext fun g => ⟨fun h => ⟨P.cartan_entries_of_mem O g h, P.cartan_entries_of_mem O _ (inv_mem h)⟩, fun h => P.cartan_mem_of_entries O g h.1 h.2⟩`.
+-/
 theorem coe_GLint (O : Subring L) : (GLint n O : Set (GL n L)) =
     {g : GL n L | ∀ i j, (g : Matrix n n L) i j ∈ O} ∩ {g : GL n L | ∀ i j, ((g⁻¹ : GL n L) : Matrix n n L) i j ∈ O} :=
   Set.ext fun g => ⟨fun h => ⟨P.cartan_entries_of_mem O g h, P.cartan_entries_of_mem O _ (inv_mem h)⟩,
     fun h => P.cartan_mem_of_entries O g h.1 h.2⟩
 
+/- English proof (translation)
+Rewrite using `[coe_GLint]`. Simplify using `only [Set.ofPred_forall]`. Use `IsOpen.inter ?_ ?_` and prove the remaining obligations. Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => hO.preimage (Units.continuous_val.matrix_elem i j)`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => hO.preimage (Units.continuous_coe_inv.matrix_elem i j)`.
+-/
 theorem isOpen_GLint (O : Subring L) (hO : IsOpen (O : Set L)) : IsOpen (GLint n O : Set (GL n L)) := by
   rw [coe_GLint]
   simp only [Set.ofPred_forall]
@@ -23,6 +29,13 @@ theorem isOpen_GLint (O : Subring L) (hO : IsOpen (O : Set L)) : IsOpen (GLint n
   · exact isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j =>
       hO.preimage (Units.continuous_coe_inv.matrix_elem i j)
 
+/- English proof (translation)
+Establish `hM : IsCompact {A : Matrix n n L | ∀ i j, A i j ∈ O}`. Use `isCompact_univ_pi fun _ : n => isCompact_univ_pi fun _ : n => hO` as an intermediate fact. Establish `e : {A : Matrix n n L | ∀ i j, A i j ∈ O} = Set.univ.pi fun _ : n => Set.univ.pi fun _ : n => (O : Set L)` using `Set.ext fun A => ⟨fun h i _ j _ => h i j, fun h i j => h i trivial j trivial⟩`. Conclude with `e ▸ this`. Use `(Units.isClosedEmbedding_embedProduct (α := Matrix n n L)).isCompact_preimage (hM.prod (hM.image MulOpposite.continuous_op))` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[coe_GLint]`. Use extensionality with `g`. Conclude with `⟨fun h => ⟨h.1, _, h.2, rfl⟩, fun ⟨h1, A, hA, e⟩ => ⟨h1, fun i j => by`. Establish `: A = ((g⁻¹ : GL n L) : Matrix n n L)` using `MulOpposite.op_injective e`.
+
+Conclude with `this ▸ hA i j⟩⟩`.
+-/
 theorem isCompact_GLint [T2Space L] (O : Subring L) (hO : IsCompact (O : Set L)) :
     IsCompact (GLint n O : Set (GL n L)) := by
   have hM : IsCompact {A : Matrix n n L | ∀ i j, A i j ∈ O} := by
@@ -44,6 +57,9 @@ end General
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
+/- English proof (translation)
+Take `⟨-, -, -, hϖ, -, hq, hcard⟩` from `h`. Use `haveI : (Valued.v : Valuation L (WithZero (Multiplicative ℤ))).IsNontrivial := ⟨ϖ, by rw [hϖ]; exact WithZero.coe_ne_zero, by rw [hϖ, ← WithZero.coe_one, ne_eq, WithZero.coe_inj]; decide⟩`. Use `letI : (Valued.v : Valuation L (WithZero (Multiplicative ℤ))).RankOne := Valuation.IsRankOneDiscrete.rankOne _ (e := 2) (by norm_num)`. Establish `hp` using `(Valued.integer.compactSpace_iff_completeSpace_and_isDiscreteValuationRing_and_finite_residueField (K := L)).2 ⟨(Valued.isClosed_integer L).completeSpace_coe, (Valued.v : Valuation L _).valuationSubring_isDiscreteValuationRing, Nat.finite_of_card_ne_zero (ne_of_eq_of_ne hcard (po …`. Conclude with `isCompact_iff_compactSpace.2 hp`.
+-/
 theorem isCompact_intL [CompleteSpace L] {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv ϖ σ q) :
     IsCompact (intL L : Set L) := by
   obtain ⟨-, -, -, hϖ, -, hq, hcard⟩ := h
@@ -57,11 +73,17 @@ theorem isCompact_intL [CompleteSpace L] {ϖ : L} {σ : L →+* L} {q : ℕ} (h 
       Nat.finite_of_card_ne_zero (ne_of_eq_of_ne hcard (pow_ne_zero _ (by omega)))⟩
   exact isCompact_iff_compactSpace.2 hp
 
+/- English proof (translation)
+Use extensionality with `g`. Conclude with `⟨fun h => h.2, fun h => ⟨g.2, h⟩⟩`.
+-/
 theorem coe_KU (σ : L →+* L) (n : ℕ) :
     (KU σ n : Set (GU σ n)) = Subtype.val ⁻¹' (GLint (Fin n) (intL L) : Set (GL (Fin n) L)) := by
   ext g
   exact ⟨fun h => h.2, fun h => ⟨g.2, h⟩⟩
 
+/- English proof (translation)
+Introduce `L _ _ _ ϖ σ q n h`. Rewrite using `[coe_KU]`. Use `⟨(isOpen_GLint _ (Valued.isOpen_integer L)).preimage continuous_subtype_val, ?_⟩` and prove the remaining obligations. Establish `hc : IsClosed (GU σ n : Set (GL (Fin n) L))` using `isClosed_eq (((Units.continuous_val.matrix_map (GlobalTheory.LGrp.continuous_of_unramInv h)).matrix_transpose.matrix_mul continuous_const).matrix_mul Units.continuous_val) continuous_const`. Conclude with `hc.isClosedEmbedding_subtypeVal.isCompact_preimage (isCompact_GLint _ (isCompact_intL h))`.
+-/
 theorem isOpen_isCompact_KU : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L]
     (ϖ : L) (σ : L →+* L) (q n : ℕ), IsUnramInv ϖ σ q →
       IsOpen (KU σ n : Set (GU σ n)) ∧ IsCompact (KU σ n : Set (GU σ n)) := by

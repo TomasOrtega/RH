@@ -14,14 +14,23 @@ namespace GlobalTheory.LatMoveStd
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `show (matHom V (g * g')).1 = (matHom V g).1 * (matHom V g').1`. Rewrite using `[map_mul, Units.val_mul]`.
+-/
 theorem mt_mul'' (V : HSp D) (g g' : GA D V) : mt V (g * g') = mt V g * mt V g' := by
   show (matHom V (g * g')).1 = (matHom V g).1 * (matHom V g').1
   rw [map_mul, Units.val_mul]
 
+/- English proof (translation)
+Use `show (matHom V 1).1 = 1`. Rewrite using `[map_one, Units.val_one]`.
+-/
 theorem mt_one'' (V : HSp D) : mt V 1 = 1 := by
   show (matHom V 1).1 = 1
   rw [map_one, Units.val_one]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Consider the case `tmul a e => show (a ⊗ₜ[D.host.F] D.sp.cm.sig (D.sp.cm.sig e)) = _`. Rewrite using `[show D.sp.cm.sig (D.sp.cm.sig e) = e from star_star e]`.
+-/
 theorem cA_cA'' (x : AE D) : cA D (cA D x) = x := by
   induction x using TensorProduct.induction_on with
   | zero => simp only [map_zero]
@@ -30,6 +39,9 @@ theorem cA_cA'' (x : AE D) : cA D (cA D x) = x := by
     show (a ⊗ₜ[D.host.F] D.sp.cm.sig (D.sp.cm.sig e)) = _
     rw [show D.sp.cm.sig (D.sp.cm.sig e) = e from star_star e]
 
+/- English proof (translation)
+Establish `h : ((mt V g).map (cA D))ᵀ * V.gram.map (incA D) * mt V g = V.gram.map (incA D)` using `(g : HR (AF D.host.F) D.sp.cm.sig V.gram).2`. Rewrite `h` using `[hg, Matrix.map_one (incA D) (map_zero _) (map_one _), Matrix.mul_one]`. Conclude with `h`.
+-/
 theorem unitary (V : HSp D) (hg : V.gram = 1) (g : GA D V) :
     ((mt V g).map (cA D))ᵀ * mt V g = 1 := by
   have h : ((mt V g).map (cA D))ᵀ * V.gram.map (incA D) * mt V g = V.gram.map (incA D) :=
@@ -37,6 +49,9 @@ theorem unitary (V : HSp D) (hg : V.gram = 1) (g : GA D V) :
   rw [hg, Matrix.map_one (incA D) (map_zero _) (map_one _), Matrix.mul_one] at h
   exact h
 
+/- English proof (translation)
+Establish `h1` using `unitary V hg g`. Establish `h2 : mt V g * mt V g⁻¹ = 1` using `by rw [← mt_mul'', mul_inv_cancel, mt_one'']`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mt_inv_eq (V : HSp D) (hg : V.gram = 1) (g : GA D V) : mt V g⁻¹ = ((mt V g).map (cA D))ᵀ := by
   have h1 := unitary V hg g
   have h2 : mt V g * mt V g⁻¹ = 1 := by rw [← mt_mul'', mul_inv_cancel, mt_one'']
@@ -45,6 +60,11 @@ theorem mt_inv_eq (V : HSp D) (hg : V.gram = 1) (g : GA D V) : mt V g⁻¹ = ((m
 
 set_option synthInstance.maxHeartbeats 200000 in
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.SplitDec.int_iff]`. Use `(hM x).1 hx i` as an intermediate fact. Establish `e : toEAf D ((mt V g⁻¹ *ᵥ fun k => incA D (x k)) i) = (finM V rfl g⁻¹ *ᵥ fun j => eToEAf D (x j)) i`. Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `this`.
+-/
 theorem int_of_moves (V : HSp D) (g : GA D V) (N : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E))
     (hM : Moves V rfl g N) (x : Fin V.rank → D.host.E) (hx : x ∈ N) (i : Fin V.rank) :
     finPart D ((mt V g⁻¹ *ᵥ fun k => incA D (x k)) i) ∈ intAE D := by
@@ -58,6 +78,9 @@ theorem int_of_moves (V : HSp D) (g : GA D V) (N : Submodule (𝓞 D.host.E) (Fi
     rfl
   rw [e]; exact this
 
+/- English proof (translation)
+Simplify using `[incA, inclR, Algebra.TensorProduct.tmul_mul_tmul]`.
+-/
 theorem gen_eq (α : Af D.host.F) (c x y : D.host.E) :
     pairA D.host.F 0 α ⊗ₜ[D.host.F] (c * x * y) = (pairA D.host.F 0 α ⊗ₜ[D.host.F] c) * incA D x * incA D y := by
   simp [incA, inclR, Algebra.TensorProduct.tmul_mul_tmul]
@@ -70,6 +93,11 @@ variable {D : D7}
 
 set_option synthInstance.maxHeartbeats 200000 in
 
+/- English proof (translation)
+Rewrite using `[← GlobalTheory.FinPl.FrameLat.cA_int_iff]`. Establish `e : cA D (∑ l, cA D (incA D (s l)) * mt V g l j) = (mt V g⁻¹ *ᵥ fun k => incA D (s k)) j`. Rewrite using `[mt_inv_eq V hg g, map_sum]`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.transpose_apply, Matrix.map_apply]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, cA_cA'', mul_comm]`. Rewrite using `[e]`. Conclude with `int_of_moves V g N hM s hs j`.
+-/
 theorem int_conj (V : HSp D) (hg : V.gram = 1) (g : GA D V) (N : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E))
     (hM : Moves V rfl g N) (s : Fin V.rank → D.host.E) (hs : s ∈ N) (j : Fin V.rank) :
     finPart D (∑ l, cA D (incA D (s l)) * mt V g l j) ∈ intAE D := by
@@ -81,6 +109,17 @@ theorem int_conj (V : HSp D) (hg : V.gram = 1) (g : GA D V) (N : Submodule (𝓞
     rw [map_mul, cA_cA'', mul_comm]
   rw [e]; exact int_of_moves V g N hM s hs j
 
+/- English proof (translation)
+Establish `hint : ∀ {n : ℕ} (k : Fin n), Pi.single k (1 : D.host.E) ∈ intVec D n`. Introduce `n k l`. Distinguish the cases in `h : l = k`. Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same]`.
+
+Conclude with `isIntegral_one`. Rewrite using `[Pi.single_eq_of_ne h]`. Conclude with `isIntegral_zero`. Use `AddSubgroup.subset_closure ⟨α, hα, fun _ h => absurd trivial h, c, hc, Pi.single j0 1, hint j0, Pi.single i0 1, hint i0, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+
+Rewrite using `[Matrix.of_apply, hgS]`. Establish `hsum : ∑ k, star ((Pi.single j0 (1 : D.host.E) : Fin S.rank → D.host.E) k) * (1 : Matrix (Fin S.rank) (Fin S.rank) D.host.E) k j = star ((Pi.single j0 (1 : D.host.E) : Fin S.rank → D.host.E) j)`. Rewrite using `[Finset.sum_eq_single j (fun k _ hk => by rw [Matrix.one_apply_ne hk, mul_zero]) (fun h => absurd (Finset.mem_univ j) h), Matrix.one_apply_eq, mul_one]`. Rewrite using `[hsum]`. Distinguish the cases in `hi : i = i0`.
+
+Substitute `hi` using the available equality. Distinguish the cases in `hj : j = j0`. Substitute `hj` using the available equality. Rewrite using `[Matrix.single_apply_same, Pi.single_eq_same, Pi.single_eq_same, star_one, mul_one, mul_one]`. Rewrite using `[Matrix.single_apply_of_col_ne _ _ (Ne.symm hj), Pi.single_eq_of_ne hj, star_zero, mul_zero, TensorProduct.tmul_zero]`.
+
+Rewrite using `[Matrix.single_apply_of_row_ne (Ne.symm hi), Pi.single_eq_of_ne hi, mul_zero, zero_mul, TensorProduct.tmul_zero]`.
+-/
 theorem single_mem (S T : HSp D) (hgS : S.gram = 1) (α : Af D.host.F) (hα : α ∈ intAf D.host.F) (c : D.host.E)
     (hc : c ∈ D.host.AA) (i0 : Fin T.rank) (j0 : Fin S.rank) :
     (Matrix.single i0 j0 (pairA D.host.F 0 α ⊗ₜ[D.host.F] c) : WO S T) ∈
@@ -116,6 +155,9 @@ namespace GlobalTheory.LatMoveStd
 
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_eq_single l (fun k _ hk => by rw [Matrix.one_apply_ne hk, mul_zero]) (fun h => absurd (Finset.mem_univ l) h), Matrix.one_apply_eq, mul_one]`.
+-/
 theorem row_one {n : ℕ} (s : Fin n → D.host.E) (l : Fin n) :
     ∑ m, star (s m) * (1 : Matrix (Fin n) (Fin n) D.host.E) m l = star (s l) := by
   rw [Finset.sum_eq_single l (fun k _ hk => by rw [Matrix.one_apply_ne hk, mul_zero])
@@ -123,6 +165,13 @@ theorem row_one {n : ℕ} (s : Fin n → D.host.E) (l : Fin n) :
 
 set_option synthInstance.maxHeartbeats 200000 in
 
+/- English proof (translation)
+Establish `e1 : actO S T g⁻¹ h⁻¹ (Matrix.of fun i j => pairA D.host.F 0 α ⊗ₜ[D.host.F] (c * t i * ∑ k, star (s k) * S.gram k j)) = Matrix.of fun i j => ((mt T h⁻¹ *ᵥ fun k => incA D (t k)) i * ∑ l, cA D (incA D (s l)) * mt S g l j) * (pairA D.host.F 0 α ⊗ₜ[D.host.F] c)`. Use extensionality with `i j`. Simplify using `only [actO, inv_inv, Matrix.mul_apply, Matrix.of_apply, hgS, row_one, gen_eq, ← GlobalTheory.FinPl.FrameLat.cA_incA, Matrix.mulVec, dotProduct, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e1, Matrix.matrix_eq_sum_single ((Matrix.of fun i j => ((mt T h⁻¹ *ᵥ fun k => incA D (t k)) i * ∑ l, cA D (incA D (s l)) * mt S g l j) * (pairA D.host.F 0 α ⊗ₜ[D.host.F] c)) : Matrix (Fin T.rank) (Fin S.rank) (AE D))]`. Use `sum_mem fun i0 _ => sum_mem fun j0 _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.of_apply, ← smul_eq_mul, ← Matrix.smul_single]`. Use `GlobalTheory.LatticeStable.smul_mem_latO D S T _ _ _ _ ?_ _ (single_mem S T hgS α hα c hc i0 j0)` and prove the remaining obligations. Rewrite using `[map_mul]`.
+
+Conclude with `GlobalTheory.FinPl.FrameLat.mul_mem_intAE (int_of_moves T h N' hN' t ht i0) (int_conj S hgS g N hN s hs j0)`.
+-/
 theorem gen_mem (S T : HSp D) (hgS : S.gram = 1) (hgT : T.gram = 1) (g : GA D S) (h : GA D T)
     (N : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (N' : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E))
     (hN : Moves S rfl g N) (hN' : Moves T rfl h N') (α : Af D.host.F) (hα : α ∈ intAf D.host.F) (c : D.host.E)
@@ -151,6 +200,13 @@ end GlobalTheory.LatMoveStd
 
 namespace GlobalTheory.LatMoveStd
 
+/- English proof (translation)
+Introduce `D S T a b hS hT hgS hgT g _ h _ N N' hN hN' u' hu'`. Substitute `hS` using the available equality. Substitute `hT` using the available equality. Use `⟨actO S T g⁻¹ h⁻¹ u', ?_, ?_⟩` and prove the remaining obligations. Set `Ψ : WO S T →+ WO S T` to `{ toFun := actO S T g⁻¹ h⁻¹ map_zero' := by simp only [actO, Matrix.mul_zero, Matrix.zero_mul] map_add' := fun x y => by simp only [actO, Matrix.mul_add, Matrix.add_mul] }`.
+
+Establish `key : latO S T (latFr S rfl N) (latFr T rfl N') (fun _ => True) ≤ (latO S T (intVec D _) (intVec D _) (fun _ => True)).comap Ψ`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨α, hα, -, c, hc, s, hs, t, ht, rfl⟩`. Conclude with `gen_mem S T hgS hgT g h N N' hN hN' α hα c hc s hs t ht`. Conclude with `key hu'`.
+
+Simplify using `only [actO]`. Rewrite using `[inv_inv, Matrix.mul_assoc (mt T h), Matrix.mul_assoc (mt T h⁻¹ * u'), ← mt_mul'', mul_inv_cancel, mt_one'', Matrix.mul_one, ← Matrix.mul_assoc, ← mt_mul'', mul_inv_cancel, mt_one'', Matrix.one_mul]`.
+-/
 theorem latO_moved_onto : ∀ (D : D7) (S T : HSp D) (a b : ℕ) (hS : S.rank = a) (hT : T.rank = b), S.gram = 1 → T.gram = 1 → ∀ g ∈ GfC S, ∀ h ∈ GfC T, ∀ (N : Submodule (𝓞 D.host.E) (Fin a → D.host.E)) (N' : Submodule (𝓞 D.host.E) (Fin b → D.host.E)), Moves S hS g N → Moves T hT h N' → ∀ u' ∈ latO S T (latFr S hS N) (latFr T hT N') (fun _ => True), ∃ u ∈ latO S T (intVec D _) (intVec D _) (fun _ => True), actO S T g h u = u' := by
   intro D S T a b hS hT hgS hgT g _ h _ N N' hN hN' u' hu'
   subst hS; subst hT

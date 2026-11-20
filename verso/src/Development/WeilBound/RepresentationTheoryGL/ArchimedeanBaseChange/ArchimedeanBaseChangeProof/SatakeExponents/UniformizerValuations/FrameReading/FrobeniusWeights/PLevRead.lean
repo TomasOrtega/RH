@@ -15,6 +15,23 @@ namespace PositivityTheory.Rg.BcB.F.FG
 
 attribute [local instance] borelG borelF borelA GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `hLI E _ _ _ n S d a ha hS hd hPS`. Use `⟨⟨fun w => ⟨(Rd.LevOC.locLev_oc d hd a ha w).1, (Rd.LevOC.locLev_oc d hd a ha w).2.2⟩, ?_⟩, ⟨fun w => ⟨(Rd.LevOC.locLev₂_oc d hd a ha w).1, (Rd.LevOC.locLev₂_oc d hd a ha w).2.2⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Use `filter_upwards [Rd.levCof d a] with w hw using hw.1`. Use `filter_upwards [Rd.levCof d a] with w hw using hw.2`. Introduce `W₁ W₂ G hT`.
+
+Take `⟨⟨h1o, -⟩, ⟨h2o, -⟩, hset, -⟩` from `hLI E n S d a ha hS hd hPS`. Establish `hTU : ∀ u ∈ (lev₁ S d a).prod (lev₂ S d a), ∀ x, G (x * finH u) = G x` using `fun u hu x => hT.1 u.1 (Subgroup.mem_prod.1 hu).1 u.2 (Subgroup.mem_prod.1 hu).2 x`. Take `⟨e, -, hcp, hcp', he₁, he₂⟩` from `GlobalTheory.T.position_embeddings_exist (E := E) a (n - a) hS`. Establish `hlev : ∀ (i : Slot S) m, m ∈ Rd.LevOC.C d a i → e i m ∈ (lev₁ S d a).prod (lev₂ S d a)`. Introduce `i m hm`.
+
+Establish `h : e i m ∈ Rd.LevOC.gSet S d a`. Rewrite using `[Rd.LevOC.gSet_eq]`. Introduce `j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Rewrite using `[hcp]`. Conclude with `hm`. Rewrite using `[hcp' i j m hij]`. Break down `j with w | w` into its components or cases. Conclude with `(d.lev a w.1).one_mem`.
+
+Conclude with `(d.lev₂ a w.1).one_mem`. Establish `h' : e i m ∈ (((lev₁ S d a).prod (lev₂ S d a) : Subgroup (Hf E a (n - a))) : Set (Hf E a (n - a)))`. Rewrite using `[hset]`. Conclude with `h`. Conclude with `h'`.
+
+Use `⟨⟨_, by rw [Subgroup.coe_prod]; exact h1o.prod h2o, hTU⟩, fun w hw => ⟨?_, fun hs => ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨m, hm⟩`. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul]`. Use function extensionality and compare the values at `x`. Establish `h` using `hTU _ (hlev (.inl ⟨w, hw⟩) m hm) x`.
+
+Rewrite `h` using `[he₁]`. Conclude with `h`. Introduce and unpack `⟨m, hm⟩`. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul]`. Use function extensionality and compare the values at `x`.
+
+Establish `h` using `hTU _ (hlev (.inr ⟨w, hw, hs⟩) m hm) x`. Rewrite `h` using `[he₂]`. Conclude with `h`.
+-/
 theorem levReadOf_holds : LevReadOf := by
   intro hLI E _ _ _ n S d a ha hS hd hPS
   refine ⟨⟨fun w => ⟨(Rd.LevOC.locLev_oc d hd a ha w).1, (Rd.LevOC.locLev_oc d hd a ha w).2.2⟩, ?_⟩,

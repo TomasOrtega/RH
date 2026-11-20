@@ -14,6 +14,13 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.FieldTraitExt
 
+/- English proof (translation)
+Take `⟨⟨hnoeth, -, hic, hcomp⟩, hchar⟩` from `hR`. Use `letI : Algebra (FractionRing R) K' := io.toAlgebra`. Use `letI : Algebra R K' := (io.comp (algebraMap R (FractionRing R))).toAlgebra`. Use `haveI : IsScalarTower R (FractionRing R) K' := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : FiniteDimensional (FractionRing R) K' := hio`.
+
+Use `haveI : CharZero (FractionRing R) := IsFractionRing.charZero_of_isFractionRing R`. Set `R₂` to `integralClosure R K'`. Use `haveI hfin : Module.Finite R R₂ := IsIntegralClosure.finite R (FractionRing R) K' R₂`. Use `haveI : IsLocalRing R₂ := ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.isLocalRing_finite_domain (R := R) R₂`. Use `haveI : IsFractionRing R₂ K' := IsIntegralClosure.isFractionRing_of_finite_extension R (FractionRing R) K' R₂`.
+
+Establish `hRK : Function.Injective (algebraMap R K')` using `io.injective.comp (IsFractionRing.injective R _)`. Establish `hinj : Function.Injective (algebraMap R R₂)` using `fun x y h => hRK (congrArg Subtype.val h)`. Use `haveI : IsNoetherianRing R₂ := IsNoetherianRing.of_finite R R₂`. Use `⟨R₂, inferInstance, inferInstance, inferInstance, algebraMap R R₂, (IsLocalization.algEquiv (nonZeroDivisors R₂) K' (FractionRing R₂)).toRingEquiv, algebraMap R₂ K', ⟨⟨inferInstance, inferInstance, integralClosure.isIntegrallyClosedOfFiniteExtension (FractionRing R), GlobalTheory …` and prove the remaining obligations. Conclude with `(IsLocalization.algEquiv (nonZeroDivisors R₂) K' (FractionRing R₂)).commutes y`.
+-/
 theorem exists_normalization (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (hR : Base R)
     (K' : Type) [Field K'] (io : FractionRing R →+* K') (hio : io.Finite) :
     ∃ (R₂ : Type) (_ : CommRing R₂) (_ : IsDomain R₂) (_ : IsLocalRing R₂) (ρ : R →+* R₂) (i : K' ≃+* FractionRing R₂)
@@ -39,6 +46,11 @@ theorem exists_normalization (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R
     Subtype.val_injective, fun r => rfl, fun y => ?_⟩
   exact (IsLocalization.algEquiv (nonZeroDivisors R₂) K' (FractionRing R₂)).commutes y
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.FiniteCompletionLocalHom.exists_extension`. Consider the case `exact _root_.GlobalTheory.FiniteCompletionLocalHom.exists_extension`. Consider the case `(apply _root_.GlobalTheory.FiniteCompletionLocalHom.exists_extension <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.FiniteCompletionLocalHom.exists_extension <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.FiniteCompletionLocalHom.exists_extension <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.FiniteCompletionLocalHom.exists_extension ..)`.
+-/
 theorem exists_trait (R R₂ W : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [CommRing R₂] [IsDomain R₂]
     [IsLocalRing R₂] [CommRing W] [IsDomain W] [IsLocalRing W] (hW : GlobalTheory.LN.CDvr W) (φ : R →+* W)
     (hφ : IsLocalHom φ) (ρ : R →+* R₂) (hρ : ρ.Finite) (Ω : Type) [Field Ω] (j : FractionRing W →+* Ω)
@@ -59,6 +71,11 @@ end GlobalTheory.FieldTraitExt
 
 namespace GlobalTheory.FieldTraitExt
 
+/- English proof (translation)
+Introduce `R W _ _ _ _ _ _ hR hW φ _ hφ K' Ω _ _ io j l hio hc`. Take `⟨R₂, _, _, _, ρ, i, e, hfe, he, heρ, hie⟩` from `exists_normalization R hR K' io hio`. Take `⟨W₂, _, _, _, σ, φ₂, j₂, hW₂, hσ, hσl, hφ₂i, hφ₂l, hcomm, hj₁, hj₂⟩` from `exists_trait R R₂ W hW φ hφ ρ hfe.2.2 Ω j (l.comp e) (l.injective.comp he) (fun r => by rw [RingHom.comp_apply, heρ, hc])`. Use `⟨R₂, _, _, _, ρ, i, W₂, _, _, _, σ, φ₂, j₂, hfe, hW₂, hσ, hσl, hφ₂i, hφ₂l, hcomm, fun r => ?_, hj₁, fun r => ?_⟩` and prove the remaining obligations. Rewrite using `[← heρ, hie]`.
+
+Rewrite using `[hj₂, RingHom.comp_apply]`. Use `congr 1`. Rewrite using `[RingEquiv.eq_symm_apply, hie]`.
+-/
 theorem exists_finite_extension_of_trait : ∀ (R W : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [CommRing W] [IsDomain W] [IsLocalRing W], Base R → GlobalTheory.LN.CDvr W → ∀ φ : R →+* W, Function.Injective φ → IsLocalHom φ → ∀ (K' Ω : Type) [Field K'] [Field Ω] (io : FractionRing R →+* K') (j : FractionRing W →+* Ω) (l : K' →+* Ω), io.Finite → (∀ r, l (io (algebraMap R _ r)) = j (algebraMap W _ (φ r))) → ∃ (R₂ : Type) (_ : CommRing R₂) (_ : IsDomain R₂) (_ : IsLocalRing R₂) (ρ : R →+* R₂) (i : K' ≃+* FractionRing R₂) (W₂ : Type) (_ : CommRing W₂) (_ : IsDomain W₂) (_ : IsLocalRing W₂) (σ : W →+* W₂) (φ₂ : R₂ →+* W₂) (j₂ : FractionRing W₂ →+* Ω), FinExt ρ ∧ GlobalTheory.LN.CDvr W₂ ∧ FinExt σ ∧ IsLocalHom σ ∧ Function.Injective φ₂ ∧ IsLocalHom φ₂ ∧ φ₂.comp ρ = σ.comp φ ∧ (∀ r, i (io (algebraMap R _ r)) = algebraMap R₂ _ (ρ r)) ∧ (∀ w, j₂ (algebraMap W₂ _ (σ w)) = j (algebraMap W _ w)) ∧ ∀ r, j₂ (algebraMap W₂ _ (φ₂ r)) = l (i.symm (algebraMap R₂ _ r)) := by
   intro R W _ _ _ _ _ _ hR hW φ _ hφ K' Ω _ _ io j l hio hc
   obtain ⟨R₂, _, _, _, ρ, i, e, hfe, he, heρ, hie⟩ := exists_normalization R hR K' io hio

@@ -13,6 +13,11 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Use `choose m hm using hlam.2`. Use `⟨fun a => m a + (n : ℤ) - 1 - ((a : ℕ) : ℤ), ?_⟩` and prove the remaining obligations. Unfold `IsMu`. Introduce `a`. Establish `h` using `hm a`.
+
+Simplify using `only [rho]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_mu {lam : Fin n → ℝ} (hlam : IsHCParam lam) : ∃ μ : Fin n → ℤ, IsMu lam μ := by
   choose m hm using hlam.2
   refine ⟨fun a => m a + (n : ℤ) - 1 - ((a : ℕ) : ℤ), ?_⟩

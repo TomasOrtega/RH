@@ -12,6 +12,27 @@ noncomputable section
 
 variable {X : Scheme.{u}}
 
+/- English proof (translation)
+Take `⟨hq₁, hq₂⟩` from `(ModulesTensor.W_toPresheaf_iff q).1 hq`. Establish `hφapp : ∀ (V : X.Opens) (a : Γ(A, V)), φ.app V a = q.app (op V) (p.app (op V) a)` using `fun V a => congrArg (fun g => g.app (op V) a) hφ |>.trans rfl`. Establish `nat : ∀ {V V' : X.Opens} (i : V' ≤ V) (σ : Γ(A, V)), φ.app V' (A.presheaf.map (homOfLE i).op σ) = B.presheaf.map (homOfLE i).op (φ.app V σ)` using `fun i σ => NatTrans.naturality_apply φ.mapPresheaf (homOfLE i).op σ`. Establish `inj : ∀ V ≤ W, Function.Injective (φ.app V)`. Introduce `V hV`.
+
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Rewrite `ha` using `[hφapp]`. Establish `hS` using `hq₁ (op V) _ ha`. Rewrite `hS` using `[Opens.mem_grothendieckTopology]`.
+
+Apply `sheaf_eq_of_locally ⟨A.presheaf, A.isSheaf⟩ (V := V)` to reduce the goal to its premises. Introduce `x hx`. Take `⟨V', i, hi, hxV'⟩` from `hS x hx`. Use `⟨V', i.le, hxV', ?_⟩` and prove the remaining obligations. Establish `h0 : p.app (op V') (A.presheaf.map (homOfLE i.le).op a) = 0`.
+
+Use `PresheafOfModules.naturality_apply p (homOfLE i.le).op a` as an intermediate fact. Conclude with `this.trans hi`. Apply `(hp V' (i.le.trans hV)).1` to reduce the goal to its premises. Conclude with `h0.trans (map_zero _).symm |>.trans (congrArg _ (map_zero _).symm)`. Introduce `V hV`.
+
+Use `⟨inj V hV, fun b => ?_⟩` and prove the remaining obligations. Establish `hS` using `hq₂ (op V) b`. Rewrite `hS` using `[Opens.mem_grothendieckTopology]`. Use `choose V' i hi hxV' using hS`. Use `choose w hw using hi`.
+
+Use `choose a₀ ha using fun x (hx : x ∈ V) => (hp (V' x hx) ((i x hx).le.trans hV)).2 (w x hx)`. Set `a : ∀ x (hx : x ∈ V), Γ(A, V' x hx)` to `fun x hx => a₀ x hx`. Establish `key : ∀ x hx, φ.app (V' x hx) (a x hx) = B.presheaf.map (homOfLE (i x hx).le).op b` using `fun x hx => (hφapp _ (a x hx)).trans ((congrArg _ (ha x hx)).trans (hw x hx))`. Take `⟨g, hg⟩` from `sheaf_exists_glue ⟨A.presheaf, A.isSheaf⟩ (V := V) (ι := {x : X // x ∈ V}) (fun c => V' c.1 c.2) (fun c => (i c.1 c.2).le) (fun x hx => ⟨⟨x, hx⟩, hxV' x hx⟩) (fun c => a c.1 c.2) (by`. Introduce `c d`.
+
+Apply `inj _ (inf_le_left.trans ((i c.1 c.2).le.trans hV))` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `φ.app _ (A.presheaf.map _ (a c.1 c.2)) = φ.app _ (A.presheaf.map _ (a d.1 d.2))`. Rewrite using `[nat, nat, key, key]`. Express the relevant statement in the definitionally equal form `((B.presheaf.map _ ≫ B.presheaf.map _) b) = ((B.presheaf.map _ ≫ B.presheaf.map _) b)`. Rewrite using `[← B.presheaf.map_comp, ← B.presheaf.map_comp]`.
+
+Use the proof step `rfl)`. Use `⟨g, ?_⟩` and prove the remaining obligations. Apply `sheaf_eq_of_locally ⟨B.presheaf, B.isSheaf⟩ (V := V)` to reduce the goal to its premises. Introduce `x hx`. Use `⟨V' x hx, (i x hx).le, hxV' x hx, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `B.presheaf.map _ (φ.app V g) = _`. Rewrite using `[← nat]`. Use `hg ⟨x, hx⟩` as an intermediate fact. Simplify using `only at this`. Rewrite using `[this]`.
+
+Conclude with `key x hx`.
+-/
 lemma bijective_app_of_factor {A B : X.Modules} (φ : A ⟶ B) {P : PMod X}
     (p : (preMod X).obj A ⟶ P) (q : P ⟶ (preMod X).obj B)
     (hq : ModulesTensor.W (Opens.grothendieckTopology X) X.sheaf.obj q)
@@ -74,6 +95,11 @@ lemma bijective_app_of_factor {A B : X.Modules} (φ : A ⟶ B) {P : PMod X}
 def homOfPreMod {M S : X.Modules} (g : (preMod X).obj M ⟶ (preMod X).obj S) : M ⟶ S :=
   inv ((sheafifyModAdj X).counit.app M) ≫ ((sheafifyModAdj X).homEquiv _ _).symm g
 
+/- English proof (translation)
+Establish `h1 : (preMod X).map (inv ((sheafifyModAdj X).counit.app M)) = (sheafifyModAdj X).unit.app ((preMod X).obj M)`. Rewrite using `[Functor.map_inv]`. Conclude with `(IsIso.eq_inv_of_inv_hom_id ((sheafifyModAdj X).right_triangle_components M)).symm`. Rewrite using `[homOfPreMod, Functor.map_comp, h1, Adjunction.homEquiv_counit, Functor.map_comp, ← Category.assoc]`. Use `erw [← (sheafifyModAdj X).unit.naturality g]`.
+
+Rewrite using `[Category.assoc]`. Use `erw [(sheafifyModAdj X).right_triangle_components S]`. Conclude with `Category.comp_id g`.
+-/
 lemma preMod_map_homOfPreMod {M S : X.Modules} (g : (preMod X).obj M ⟶ (preMod X).obj S) :
     (preMod X).map (homOfPreMod g) = g := by
   have h1 : (preMod X).map (inv ((sheafifyModAdj X).counit.app M)) =
@@ -110,10 +136,20 @@ def tensorSection : (preMod X).obj M ⟶ (preMod X).obj M ⊗ (preMod X).obj L :
 def mulSection : M ⟶ M ⊗ L :=
   homOfPreMod (tensorSection M L s ≫ tensorToSheaf M L)
 
+/- English proof (translation)
+The claim follows from `preMod_map_homOfPreMod _`.
+-/
 lemma preMod_map_mulSection :
     (preMod X).map (mulSection M L s) = tensorSection M L s ≫ tensorToSheaf M L :=
   preMod_map_homOfPreMod _
 
+/- English proof (translation)
+Use `bijective_app_of_factor _ (tensorSection M L s) (tensorToSheaf M L) (W_tensorToSheaf M L) (preMod_map_mulSection M L s) ?_` and prove the remaining obligations. Introduce `V hV`. Establish `e0 : resM ((preMod X).obj L) hV (resM ((preMod X).obj L) le_top s) = resM ((preMod X).obj L) (le_top : V ≤ ⊤) s` using `resM_resM _ le_top hV s`. Set `e : ringOn X V ≃ₗ[ringOn X V] ((preMod X).obj L).obj (op V)` to `LinearEquiv.ofBijective (LinearMap.toSpanSingleton (ringOn X V) _ (resM ((preMod X).obj L) hV (resM ((preMod X).obj L) le_top s))) (hs V hV)`. Set `E` to `(TensorProduct.rid (ringOn X V) (((preMod X).obj M).obj (op V))).symm ≪≫ₗ e.lTensor (((preMod X).obj M).obj (op V))`.
+
+Establish `hE : ∀ m, E m = (tensorSection M L s).app (op V) m`. Introduce `m`. Express the relevant statement in the definitionally equal form `m ⊗ₜ e 1 = m ⊗ₜ resM ((preMod X).obj L) (le_top : V ≤ ⊤) s`. Use `congr 1`. Conclude with `(one_smul (ringOn X V) _).trans e0`.
+
+Establish `: ⇑((tensorSection M L s).app (op V)) = E` using `funext fun m => (hE m).symm`. Rewrite using `[this]`. Conclude with `E.bijective`.
+-/
 theorem bijective_mulSection_app {W : X.Opens}
     (hs : IsBasisOn ((preMod X).obj L) W (resM ((preMod X).obj L) le_top s)) :
     ∀ V ≤ W, Function.Bijective ((mulSection M L s).app V) := by

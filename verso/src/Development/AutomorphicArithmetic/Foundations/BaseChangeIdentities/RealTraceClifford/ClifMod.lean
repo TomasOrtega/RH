@@ -97,6 +97,9 @@ structure UF {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] (F : Fi
   gl : GlRel F
   unit : ∀ a b (x y : V), ⟪F a b x, y⟫_ℂ = ⟪x, F b a y⟫_ℂ
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `a b c d`. Simplify using the standard rewrite rules. Introduce `a b x y`. Simplify using the standard rewrite rules.
+-/
 theorem uf_zero {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] : UF (fun _ _ : Fin n => (0 : Module.End ℂ V)) := by
   refine ⟨?_, ?_⟩
   · intro a b c d
@@ -104,6 +107,9 @@ theorem uf_zero {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] : UF
   · intro a b x y
     simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hwSp_eq {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] (E1 E2 : Fin n → Fin n → Module.End ℂ V) (μ : Wt n) :
     hwSp E1 E2 μ = hw (kF E1 E2) μ := rfl
 

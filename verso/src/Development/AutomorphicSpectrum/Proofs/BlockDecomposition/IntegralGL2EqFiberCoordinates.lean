@@ -22,6 +22,13 @@ def cellD (p : (Fin 2 → F) × F × F) : ℝ≥0 := ((modulus p.2.2 : ℝ) ^ (-
 def cellNu (ψ : AddChar F Circle) : Measure ((Fin 2 → F) × F × F) :=
   ((cM ψ).restrict (cellU F)).withDensity fun p => (cellD p : ℝ≥0∞)
 
+/- English proof (translation)
+Establish `hU : MeasurableSet (cellU F)` using `isOpen_cellU.measurableSet`. Use `measurable_of_restrict_of_restrict_compl hU ?_ ?_` and prove the remaining obligations. Establish `he : (cellU F).domRestrict (cellPsi : _ → GL (Fin 2) F) = cellG`. Use function extensionality and compare the values at `p`. Conclude with `dif_pos p.2`.
+
+Rewrite using `[he]`. Conclude with `continuous_cellG.measurable`. Establish `he : ((cellU F)ᶜ).domRestrict (cellPsi : _ → GL (Fin 2) F) = fun _ => 1`. Use function extensionality and compare the values at `p`. Conclude with `dif_neg p.2`.
+
+Rewrite using `[he]`. Conclude with `measurable_const`.
+-/
 theorem measurable_cellPsi : Measurable (cellPsi : (Fin 2 → F) × F × F → GL (Fin 2) F) := by
   have hU : MeasurableSet (cellU F) := isOpen_cellU.measurableSet
   refine measurable_of_restrict_of_restrict_compl hU ?_ ?_
@@ -36,6 +43,11 @@ theorem measurable_cellPsi : Measurable (cellPsi : (Fin 2 → F) × F × F → G
     rw [he]
     exact measurable_const
 
+/- English proof (translation)
+Establish `hm : Measurable fun p : (Fin 2 → F) × F × F => (modulus p.2.2 : ℝ)` using `(NNReal.continuous_coe.comp (continuous_modulus.comp continuous_snd.snd)).measurable`. Establish `he : (cellD : (Fin 2 → F) × F × F → ℝ≥0) = fun p => (((modulus p.2.2 : ℝ) ^ 2)⁻¹).toNNReal`. Use function extensionality and compare the values at `p`. Simplify using `only [cellD, _root_.zpow_neg]`. Use `norm_cast`.
+
+Rewrite using `[he]`. Conclude with `(hm.pow_const 2).inv.real_toNNReal`.
+-/
 theorem measurable_cellD : Measurable (cellD : (Fin 2 → F) × F × F → ℝ≥0) := by
   have hm : Measurable fun p : (Fin 2 → F) × F × F => (modulus p.2.2 : ℝ) :=
     (NNReal.continuous_coe.comp (continuous_modulus.comp continuous_snd.snd)).measurable
@@ -47,6 +59,15 @@ theorem measurable_cellD : Measurable (cellD : (Fin 2 → F) × F × F → ℝ�
   rw [he]
   exact (hm.pow_const 2).inv.real_toNNReal
 
+/- English proof (translation)
+Establish `hU : MeasurableSet (cellU F)` using `isOpen_cellU.measurableSet`. Establish `hG : Measurable ((cellU F).indicator (fun p => f (cellPsi p) * (cellD p : ℝ≥0∞)))` using `((hf.comp measurable_cellPsi).mul measurable_cellD.coe_nnreal_ennreal).indicator hU`. Use `(hm F ψ hψ f hf).trans ?_` and prove the remaining obligations. Rewrite using `[cM, lintegral_prod _ hG.aemeasurable]`. Use `lintegral_congr fun r => ?_` and prove the remaining obligations.
+
+Establish `h2 : Measurable fun q : F × F => (cellU F).indicator (fun p => f (cellPsi p) * (cellD p : ℝ≥0∞)) (r, q)` using `hG.comp measurable_prodMk_left`. Rewrite using `[lintegral_prod _ h2.aemeasurable]`. Use `lintegral_congr fun x => lintegral_congr fun y => ?_` and prove the remaining obligations. Distinguish the cases in `h : y = 0 ∨ r 1 = 0`. Establish `hn : (r, x, y) ∉ cellU F` using `fun hc => h.elim hc.1 hc.2`.
+
+Rewrite using `[dif_pos h]`. Conclude with `(Set.indicator_of_notMem hn _).symm`. Establish `hn : (r, x, y) ∈ cellU F` using `⟨fun e => h (Or.inl e), fun e => h (Or.inr e)⟩`. Rewrite using `[dif_neg h]`. Use `Eq.trans ?_ (Set.indicator_of_mem hn _).symm` and prove the remaining obligations.
+
+Simplify using `only [cellPsi, dif_pos hn]`. Both sides reduce to the same expression.
+-/
 theorem lintegral_cell (hm : GJm1) {ψ : AddChar F Circle} (hψ : IsStd ψ)
     (f : GL (Fin 2) F → ℝ≥0∞) (hf : Measurable f) :
     ∫⁻ g, f g ∂LFS.hG ψ =
@@ -72,6 +93,11 @@ theorem lintegral_cell (hm : GJm1) {ψ : AddChar F Circle} (hψ : IsStd ψ)
     simp only [cellPsi, dif_pos hn]
     rfl
 
+/- English proof (translation)
+Establish `hU : MeasurableSet (cellU F)` using `isOpen_cellU.measurableSet`. Use `Measure.ext_of_lintegral _ fun f hf => ?_` and prove the remaining obligations. Establish `h3` using `lintegral_withDensity_eq_lintegral_mul ((cM ψ).restrict (cellU F)) (measurable_cellD (F := F)).coe_nnreal_ennreal (hf.comp measurable_cellPsi)`. Rewrite using `[lintegral_map hf measurable_cellPsi, lintegral_cell hm hψ f hf, cellNu, lintegral_indicator hU]`. Use `Eq.trans ?_ h3.symm` and prove the remaining obligations.
+
+Use `lintegral_congr fun p => ?_` and prove the remaining obligations. Simplify using `only [Pi.mul_apply, Function.comp_apply]`. Conclude with `mul_comm _ _`.
+-/
 theorem hG_eq_map (hm : GJm1) {ψ : AddChar F Circle} (hψ : IsStd ψ) :
     LFS.hG ψ = Measure.map cellPsi (cellNu ψ) := by
   have hU : MeasurableSet (cellU F) := isOpen_cellU.measurableSet
@@ -85,6 +111,11 @@ theorem hG_eq_map (hm : GJm1) {ψ : AddChar F Circle} (hψ : IsStd ψ) :
   simp only [Pi.mul_apply, Function.comp_apply]
   exact mul_comm _ _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Distinguish the cases in `h : p.2.2 = 0 ∨ p.1 1 = 0`. Establish `hn : p ∉ cellU F` using `fun hc => h.elim hc.1 hc.2`. Rewrite using `[Set.indicator_of_notMem hn, Ff, dif_pos h]`. Establish `hn : p ∈ cellU F` using `⟨fun e => h (Or.inl e), fun e => h (Or.inr e)⟩`.
+
+Rewrite using `[Set.indicator_of_mem hn, Ff, dif_neg h, Function.comp_apply, cellPsi, dif_pos hn, Complex.real_smul, mul_comm, cellD, Real.coe_toNNReal _ (by positivity)]`. Both sides reduce to the same expression.
+-/
 theorem Ff_eq (f : GL (Fin 2) F → ℂ) :
     Ff f = (cellU F).indicator fun p => (cellD p : ℝ) • (f ∘ cellPsi) p := by
   funext p

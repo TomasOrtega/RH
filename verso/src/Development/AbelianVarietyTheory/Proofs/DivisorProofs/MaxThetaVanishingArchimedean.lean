@@ -18,26 +18,52 @@ def infOne : AF F := ((1 : InfiniteAdeleRing F), (0 : FiniteAdeleRing (𝓞 F) F
 
 def finOne : AF F := ((0 : InfiniteAdeleRing F), (1 : FiniteAdeleRing (𝓞 F) F))
 
+/- English proof (translation)
+Use `show ((1 + 0 : InfiniteAdeleRing F), (0 + 1 : FiniteAdeleRing (𝓞 F) F)) = ((1, 1) : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F)`. Simplify using the standard rewrite rules.
+-/
 theorem infOne_add_finOne : (infOne : AF F) + finOne = 1 := by
   show ((1 + 0 : InfiniteAdeleRing F), (0 + 1 : FiniteAdeleRing (𝓞 F) F)) = ((1, 1) : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F)
   simp
 
+/- English proof (translation)
+Use `show ((1 * 0 : InfiniteAdeleRing F), (0 * 1 : FiniteAdeleRing (𝓞 F) F)) = ((0, 0) : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F)`. Simplify using the standard rewrite rules.
+-/
 theorem infOne_mul_finOne : (infOne : AF F) * finOne = 0 := by
   show ((1 * 0 : InfiniteAdeleRing F), (0 * 1 : FiniteAdeleRing (𝓞 F) F)) = ((0, 0) : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F)
   simp
 
+/- English proof (translation)
+Use `show ((0 * 1 : InfiniteAdeleRing F), (1 * 0 : FiniteAdeleRing (𝓞 F) F)) = ((0, 0) : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F)`. Simplify using the standard rewrite rules.
+-/
 theorem finOne_mul_infOne : (finOne : AF F) * infOne = 0 := by
   show ((0 * 1 : InfiniteAdeleRing F), (1 * 0 : FiniteAdeleRing (𝓞 F) F)) = ((0, 0) : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F)
   simp
 
+/- English proof (translation)
+Use `show evalV F v (0 : FiniteAdeleRing (𝓞 F) F) = 0`. Conclude with `map_zero _`.
+-/
 theorem evFin_one_zero (v : Pl F) : evFin F v (infOne : AF F) = 0 := by
   show evalV F v (0 : FiniteAdeleRing (𝓞 F) F) = 0
   exact map_zero _
 
+/- English proof (translation)
+Use `show InfiniteAdeleRing.ringEquiv_mixedSpace F 0 = 0`. Conclude with `map_zero _`.
+-/
 theorem evI_zero_one : evI F (finOne : AF F) = 0 := by
   show InfiniteAdeleRing.ringEquiv_mixedSpace F 0 = 0
   exact map_zero _
 
+/- English proof (translation)
+Use `set A := mat k - 1`. Use `set C := mat h - 1`. Establish `hA : A = (infOne : AF F) • A`. Establish `h0 : (finOne : AF F) • A = 0` using `hk _ evI_zero_one`. Establish `e : (infOne : AF F) + finOne = 1` using `infOne_add_finOne`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hC : C = (finOne : AF F) • C`. Establish `h0 : (infOne : AF F) • C = 0` using `hh _ (evFin_one_zero v)`. Establish `e : (infOne : AF F) + finOne = 1` using `infOne_add_finOne`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `e0 : (infOne : AF F) * finOne = 0` using `infOne_mul_finOne`. Establish `e0' : (finOne : AF F) * infOne = 0` using `finOne_mul_infOne`. Establish `hAC : A * C = 0`. Rewrite using `[hA, hC, Matrix.smul_mul, Matrix.mul_smul, smul_smul, e0, zero_smul]`. Establish `hCA : C * A = 0`.
+
+Rewrite using `[hA, hC, Matrix.smul_mul, Matrix.mul_smul, smul_smul, e0', zero_smul]`. Establish `hk' : mat k = 1 + A` using `by simp [A]`. Establish `hh' : mat h = 1 + C` using `by simp [C]`. Establish `hm : mat k * mat h = mat h * mat k`. Rewrite using `[hk', hh']`.
+
+Simplify using `only [add_mul, mul_add, one_mul, mul_one, hAC, hCA]`. Normalize the expressions using the abelian group laws. Conclude with `Subtype.ext (Units.ext hm)`.
+-/
 theorem commute_of_evI_evFin {d : ℕ} {W : Spc F E d} (v : Pl F) {k h : UA σ W.J}
     (hk : k ∈ UAt σ W (evI F)) (hh : h ∈ UAt σ W (evFin F v)) : k * h = h * k := by
   set A := mat k - 1
@@ -66,6 +92,17 @@ theorem commute_of_evI_evFin {d : ℕ} {W : Spc F E d} (v : Pl F) {k h : UA σ W
     abel
   exact Subtype.ext (Units.ext hm)
 
+/- English proof (translation)
+Establish `mfg : ∀ P : Submodule ℂ V, (P.map g).map f = P` using `fun P => by`. Rewrite using `[← Submodule.map_comp, ← Module.End.mul_eq_comp, hfg, Module.End.one_eq_id, Submodule.map_id]`. Establish `mgf : ∀ P : Submodule ℂ V, (P.map f).map g = P` using `fun P => by`. Rewrite using `[← Submodule.map_comp, ← Module.End.mul_eq_comp, hgf, Module.End.one_eq_id, Submodule.map_id]`. Establish `stab : ∀ (h : Module.End ℂ V), (∀ t ∈ T, t * h = h * t) → ∀ P, OpStable T P → OpStable T (P.map h)`.
+
+Introduce and unpack `h hh P hP t ht _ ⟨x, hx, rfl⟩`. Use `⟨t x, hP t ht x hx, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `h (t x) = t (h x)`. Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, hh t ht]`. Take `⟨hlt, hst, hmax⟩` from `hS`.
+
+Establish `hNS : N ≤ S.map f`. Combine the equalities or inequalities in the displayed calculation. Use `⟨lt_of_le_of_ne hNS fun h => hlt.ne ?_, stab f hfT S hst, fun S' hNS' hS'S hS' => ?_⟩` and prove the remaining obligations. Apply `le_antisymm hlt.le` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h1 : N ≤ S'.map g`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : S'.map g ≤ S`. Combine the equalities or inequalities in the displayed calculation. Break down `hmax _ h1 h2 (stab g hgT S' hS') with h | h` into its components or cases.
+
+Use `left`. Apply `le_antisymm _ hNS'` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Use `right`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem isSimpleOver_map {V : Type} [AddCommGroup V] [Module ℂ V] {T : Set (Module.End ℂ V)} {N S : Submodule ℂ V}
     (f g : Module.End ℂ V) (hfg : f * g = 1) (hgf : g * f = 1) (hfN : N.map f ≤ N) (hgN : N.map g ≤ N)
     (hfT : ∀ t ∈ T, t * f = f * t) (hgT : ∀ t ∈ T, t * g = g * t) (hS : IsSimpleOver T N S) :
@@ -104,6 +141,17 @@ theorem isSimpleOver_map {V : Type} [AddCommGroup V] [Module ℂ V] {T : Set (Mo
       calc S' = (S'.map g).map f := (mfg S').symm
         _ = S.map f := by rw [h]
 
+/- English proof (translation)
+Introduce `hK F E _ _ _ _ _ σ B a a' G X om om' h N hN _ v k hk Φ hΦ`. Establish `hk'` using `GlobalTheory.ThetaFacCompl.inv_mem_KInf B.emb hk`. Use `set D := GlobalTheory.ThK.PolData B G.M`. Use `set T := opsAt om v`. Use `set f := om (1, k)`.
+
+Use `set g := om (1, k⁻¹)`. Establish `hfg : f * g = 1`. Rewrite using `[← map_mul, Prod.mk_mul_mk, mul_one, mul_inv_cancel, ← Prod.one_eq_mk, map_one]`. Establish `hgf : g * f = 1`. Rewrite using `[← map_mul, Prod.mk_mul_mk, mul_one, inv_mul_cancel, ← Prod.one_eq_mk, map_one]`.
+
+Establish `comm : ∀ k₀ ∈ KInf σ G.W B.emb, ∀ t ∈ T, t * om (1, k₀) = om (1, k₀) * t`. Introduce and unpack `k₀ hk₀ _ ⟨h₀, hh₀, rfl⟩`. Rewrite using `[← map_mul, ← map_mul, Prod.mk_mul_mk, Prod.mk_mul_mk, mul_one, commute_of_evI_evFin v hk₀.1 hh₀]`. Establish `hfN : N.map f ≤ N` using `Submodule.map_le_iff_le_comap.2 fun x hx => hN.stab.cpt k hk x hx`. Establish `hgN : N.map g ≤ N` using `Submodule.map_le_iff_le_comap.2 fun x hx => hN.stab.cpt k⁻¹ hk' x hx`.
+
+Establish `hfD : ∀ x ∈ D, f x ∈ D` using `fun x hx => GlobalTheory.PolCompact.polData_stable_kInf hK.base h.base h.geo.hV h.geo.hW h.geo.hM h.weil hk hx`. Establish `hle : socleOver T N D ≤ (socleOver T N D).comap f`. Use `sup_le (fun x hx => le_socleOver T N D (hfN ⟨x, hx, rfl⟩)) (sSup_le ?_)` and prove the remaining obligations. Introduce and unpack `S ⟨hSD, hS⟩`. Use `Submodule.map_le_iff_le_comap.1 (le_socleOver_of_simple T ?_ ?_)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hfD x (hSD hx)`. Conclude with `isSimpleOver_map f g hfg hgf hfN hgN (comm k hk) (comm k⁻¹ hk') hS`. Conclude with `hle hΦ`.
+-/
 theorem socleOver_stable_kInf : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple B G X om om' → ∀ N, GlobalTheory.ThetaFac.IsMaxTh B om (GlobalTheory.ThK.PolData B G.M) N → (∀ Ψ ∈ GlobalTheory.ThK.PolData B G.M, G.M.I om Ψ = 0 → Ψ ∈ N) → ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, ∀ k ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.KInf σ G.W B.emb, ∀ Φ ∈ GlobalTheory.ThKLocSS.socleOver (GlobalTheory.ThKLocSS.opsAt om v) N (GlobalTheory.ThK.PolData B G.M), om (1, k) Φ ∈ GlobalTheory.ThKLocSS.socleOver (GlobalTheory.ThKLocSS.opsAt om v) N (GlobalTheory.ThK.PolData B G.M) := by
   intro hK F E _ _ _ _ _ σ B a a' G X om om' h N hN _ v k hk Φ hΦ
   have hk' := GlobalTheory.ThetaFacCompl.inv_mem_KInf B.emb hk

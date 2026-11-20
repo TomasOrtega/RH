@@ -18,6 +18,19 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R _ G _ hsm p _ n w hw T _ _ g hg G' _ ψ h v hv`. Use `haveI : Smooth G.hom := hsm`. Set `φp : Localization.AtPrime p →+* T` to `IsLocalization.lift (M := p.primeCompl) (g := g) (fun x => not_not.1 fun h0 => x.2 (hg ▸ (show x.1 ∈ (IsLocalRing.maximalIdeal T).comap g from h0)))`. Establish `hφ : φp.comp (algebraMap R (Localization.AtPrime p)) = g` using `IsLocalization.lift_comp _`. Establish `hsp : spMap g = spMap φp ≫ Chart.fB R (Localization.AtPrime p)` using `by show Spec.map (CommRingCat.ofHom g) = Spec.map (CommRingCat.ofHom φp) ≫ Spec.map (CommRingCat.ofHom (algebraMap R (Localization.AtPrime p)))`.
+
+Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, hφ]`. Establish `h' : IsGrpPullback G' G (spMap φp ≫ Chart.fB R (Localization.AtPrime p)) ψ` using `hsp ▸ h`. Establish `hG` using `Chart.isGrpPullback_factor (Chart.fB R (Localization.AtPrime p)) (spMap φp) h'`. Establish `: Smooth (Chart.Gp (G` using `G) p).hom := show Smooth (pullback.snd G.hom _) from inferInstance`. Establish `hb : IsLieBasis (G` using `Chart.Gp (G := G) p) (fun i => Chart.resP p (w i)) := by`.
+
+Use `hw (Chart.Gp (G := G) p) (pullback.fst G.hom (Chart.fB R (Localization.AtPrime p))) (isGrpPullback_pullback G (Chart.fB R (Localization.AtPrime p))) _ fun i => ?_` and prove the remaining obligations. Establish `e` using `congrArg (fun q => Over.Hom.left q) (Chart.pushR_resP (G := G) p (w i))`. Simplify using `only [Chart.pushR_left, Over.comp_left] at e`. Conclude with `e`. Use `Chart.isLieBasis_baseChange φp hG hb fun j => ?_` and prove the remaining obligations.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullback.lift_fst, hv j, Category.assoc]`. Establish `e` using `congrArg (fun q => Over.Hom.left q) (Chart.pushR_resP (G := G) p (w j))`. Simplify using `only [Chart.pushR_left, Over.comp_left] at e`. Rewrite using `[e, ← Category.assoc]`.
+
+Use `congr 1`. Use `show Spec.map (CommRingCat.ofHom (Chart.dualMapR g)) = Spec.map (CommRingCat.ofHom (Chart.dualMapR φp)) ≫ Spec.map (CommRingCat.ofHom (Chart.dualMapR (algebraMap R (Localization.AtPrime p))))`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, ← Chart.dualMapR_comp, hφ]`. Rewrite using `[Category.assoc, pullback.lift_snd, ← Category.assoc, Over.w (v j), Category.assoc]`. Rewrite using `[show (Chart.resP p (w j)).left ≫ pullback.snd G.hom (Chart.fB R (Localization.AtPrime p)) = (Chart.sp (R₀ := Localization.AtPrime p) (DualNumber (Localization.AtPrime p))).hom from Over.w (Chart.resP p (w j))]`.
+
+Use `show Spec.map (CommRingCat.ofHom (algebraMap T (DualNumber T))) ≫ Spec.map (CommRingCat.ofHom φp) = Spec.map (CommRingCat.ofHom (Chart.dualMapR φp)) ≫ Spec.map (CommRingCat.ofHom (algebraMap (Localization.AtPrime p) (DualNumber (Localization.AtPrime p))))`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Apply the tactic sequence `refine RingHom.ext fun r => TrivSqZeroExt.ext ?_ ?_ <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl']`.
+-/
 theorem isLieBasis_of_local_restrict : ∀ {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G], Smooth G.hom →
     ∀ (p : Ideal R) [p.IsPrime] {n : ℕ} (w : Fin n → (epsR R ⟶ G)),
     (∀ (G' : Over (Sp (Localization.AtPrime p))) [GrpObj G'] (ψ : G'.left ⟶ G.left),

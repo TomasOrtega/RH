@@ -4,6 +4,21 @@ open Formalism.REAL
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `V _ _ _ n E Et Om hE hadj hEt hOm`. Establish `hv : ∀ a b c d v, E a b (E c d v) = E c d (E a b v) + ((if b = c then E a d v else 0) - if d = a then E c b v else 0)`. Introduce `a b c d v`. Establish `h` using `LinearMap.congr_fun (hE a b c d) v`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at h`.
+
+Rewrite using `[← sub_eq_iff_eq_add', h]`. Apply the tactic sequence `split_ifs <;> simp`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b c d`. Use `LinearMap.ext fun y => PiLp.ext fun k => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `have h1 : ((if b = c then Et a d else 0) - if d = a then Et c b else 0 : Module.End ℂ (PiLp 2 (fun _ : Fin (n + 1) => V))) y k = (if b = c then Et a d y k else 0) - if d = a then Et c b y k else 0 := by split_ifs <;> simp`. Rewrite using `[h1]`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, PiLp.sub_apply, hEt, map_add]`. Rewrite using `[hv a b c d]`. Apply the tactic sequence `split_ifs <;> (try simp only [map_zero]) <;> abel`.
+
+Introduce `a b x y`. Simplify using `only [PiLp.inner_apply, hEt, inner_add_left, inner_add_right, Finset.sum_add_distrib, hadj]`. Use `congr 1`. Establish `h1 : ∀ c, inner ℂ (if c = a then x b else 0) (y c) = if c = a then inner ℂ (x b) (y c) else 0`. Apply the tactic sequence `intro c; split_ifs <;> simp`.
+
+Establish `h2 : ∀ c, inner ℂ (x c) (if c = b then y a else 0) = if c = b then inner ℂ (x c) (y a) else 0`. Apply the tactic sequence `intro c; split_ifs <;> simp`. Simplify using `[h1, h2]`. Introduce `x y`. Simplify using `only [PiLp.inner_apply, hOm, sum_inner, inner_sum, hadj]`.
+
+Conclude with `Finset.sum_comm`. Introduce `a b`. Use `LinearMap.ext fun y => PiLp.ext fun k => ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply, hEt, hOm, map_add, map_sum, Finset.sum_add_distrib]`. Establish `h1 : ∀ c, E c k (E a b (y c)) = _` using `fun c => hv c k a b (y c)`.
+
+Simplify using `only [h1, Finset.sum_add_distrib, Finset.sum_sub_distrib, apply_ite (E _ k), map_zero]`. Distinguish the cases in `h : k = a`. Simplify using `[h, add_assoc]`. Simplify using `[h]`.
+-/
 theorem tensorStd_rel_adjoint_splitCasimir : ∀ (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] (n : ℕ) (E : Fin (n + 1) → Fin (n + 1) → Module.End ℂ V) (Et : Fin (n + 1) → Fin (n + 1) → Module.End ℂ (PiLp 2 (fun _ : Fin (n + 1) => V))) (Om : Module.End ℂ (PiLp 2 (fun _ : Fin (n + 1) => V))), GlRel E → (∀ a b x y, inner ℂ (E a b x) y = inner ℂ x (E b a y)) → (∀ a b y c, Et a b y c = E a b (y c) + if c = a then y b else 0) → (∀ y b, Om y b = ∑ c, E c b (y c)) → GlRel Et ∧ (∀ a b x y, inner ℂ (Et a b x) y = inner ℂ x (Et b a y)) ∧ Om.IsSymmetric ∧ ∀ a b, Om * Et a b = Et a b * Om := by
   intro V _ _ _ n E Et Om hE hadj hEt hOm
   have hv : ∀ a b c d v, E a b (E c d v) = E c d (E a b v) +

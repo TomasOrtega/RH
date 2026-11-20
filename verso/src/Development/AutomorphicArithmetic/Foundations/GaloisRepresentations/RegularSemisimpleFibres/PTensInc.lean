@@ -11,6 +11,15 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace UpperTheory.Gal.InertialTypesAlt
 
+/- English proof (translation)
+Introduce `k _ _ _ _ s d V _ _ σ`. Use `⟨PiTensorProduct.map fun a => (fixed (σ a) (KOne k (Fin (d a)))).subtype, ?_, ?_⟩` and prove the remaining obligations. Introduce `u w h`. Establish `hl : ∀ a, ∃ g : V a →ₗ[ℂ] fixed (σ a) (KOne k (Fin (d a))), g ∘ₗ (fixed (σ a) (KOne k (Fin (d a)))).subtype = LinearMap.id` using `fun a => LinearMap.exists_leftInverse_of_injective _ (Submodule.ker_subtype _)`. Use `choose g hg using hl`.
+
+Establish `e : PiTensorProduct.map g ∘ₗ (PiTensorProduct.map fun a => (fixed (σ a) (KOne k (Fin (d a)))).subtype) = LinearMap.id`. Rewrite using `[← PiTensorProduct.map_comp]`. Simplify using `only [hg]`. Conclude with `PiTensorProduct.map_id`. Establish `h1` using `LinearMap.congr_fun e u`.
+
+Establish `h2` using `LinearMap.congr_fun e w`. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at h1 h2`. Rewrite using `[← h1, ← h2, h]`. Introduce `x z`. Establish `key : ∀ a, (fixed (σ a) (KOne k (Fin (d a)))).subtype ∘ₗ levelZero (σ a) (redLevi k (fun a => Fin (d a)) x a) = σ a ((x : (a : Fin s) → GL (Fin (d a)) k) a) ∘ₗ (fixed (σ a) (KOne k (Fin (d a)))).subtype` using `fun a => LinearMap.ext fun v => levelZero_apply (σ a) ⟨_, x.2 a (Set.mem_univ a)⟩ v`.
+
+Express the relevant statement in the definitionally equal form `(PiTensorProduct.map (fun a => (fixed (σ a) (KOne k (Fin (d a)))).subtype) ∘ₗ PiTensorProduct.map (fun a => levelZero (σ a) (redLevi k (fun a => Fin (d a)) x a))) z = (PiTensorProduct.map (fun a => σ a ((x : (a : Fin s) → GL (Fin (d a)) k) a)) ∘ₗ PiTensorProduct.map (fun a => (fi …`. Rewrite using `[← PiTensorProduct.map_comp, ← PiTensorProduct.map_comp]`. Simplify using `only [key]`.
+-/
 theorem tensInc : TensInc := by
   intro k _ _ _ _ s d V _ _ σ
   refine ⟨PiTensorProduct.map fun a => (fixed (σ a) (KOne k (Fin (d a)))).subtype, ?_, ?_⟩

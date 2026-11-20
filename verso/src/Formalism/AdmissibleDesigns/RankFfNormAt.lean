@@ -23,6 +23,13 @@ variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hn` using `KDim.col_over i dc l`. Set `F : TrV (eK (D.nbr i _ hn)) (KFin.Vr i Dd) ≃ₗ[Br.LL D.nbr i _ hn] (Fin D.R.r → Br.LL D.nbr i _ hn)` to `{ toFun := fun v a => eK (D.nbr i _ hn) ((show KFin.Vr i Dd from v) (K.H0.e0 (D := D) a)) invFun := fun w => (show KFin.Vr i Dd from fun j => (eK (D.nbr i _ hn)).symm (w ((K.H0.e0 (D := D)).symm j))) map_add' := fun u v => funext fun a => map_add (eK (D.nbr i _ hn)) _ _ map_smul' …`. Rewrite using `[map_mul, RingEquiv.apply_symm_apply]`. Use `left_inv := fun v => funext fun j => by show (eK (D.nbr i _ hn)).symm (eK (D.nbr i _ hn) ((show KFin.Vr i Dd from v) (K.H0.e0 (D := D) ((K.H0.e0 (D := D)).symm j)))) = (show KFin.Vr i Dd from v) j`. Rewrite using `[RingEquiv.symm_apply_apply, Equiv.apply_symm_apply]`.
+
+Use `right_inv := fun w => funext fun a => by show eK (D.nbr i _ hn) ((eK (D.nbr i _ hn)).symm (w ((K.H0.e0 (D := D)).symm (K.H0.e0 (D := D) a)))) = w a`. Rewrite using `[RingEquiv.apply_symm_apply, Equiv.symm_apply_apply] }`. Use `⟨F, fun g v => funext fun a => ?_⟩` and prove the remaining obligations. Establish `h1 : F (repL (eK (D.nbr i _ hn)) (KFin.ρV i dc Dd l) (Br.iota D.nbr i _ hn) g v) a = eK (D.nbr i _ hn) (∑ j, Dd.ρk 0 (uElt Dd.r Dd.χ ((Br.iota D.nbr i _ hn g : KHf.Γn i dc (K.colIdx i dc l)) : GE D.nd)) (K.H0.e0 (D` using `D) a) j • (show KFin.Vr i Dd from v) j) := rfl`. Establish `h2 : KDim.repW i dc ρ π (K.colIdx i dc l) hn g (F v) a = ∑ b, algebraMap (Br.OLL D.nbr i _ hn) (Br.LL D.nbr i _ hn) ((D.nbr i _ hn).eO (WpO D.nd i ρ π ((Br.iota D.nbr i _ hn g : KHf.Γn i dc (K.colIdx i dc l)) : GE D.nd) a b)) * F v b` using `rfl`.
+
+Rewrite using `[h1, h2, map_sum, ← Equiv.sum_comp (K.H0.e0 (D := D))]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Apply the tactic sequence `rw [Algebra.smul_def, map_mul, KHf.eK_apply, Br.toLLK_alg, K.H0.unipotent_block_zero_entry hD hN _ a b]`. Both sides reduce to the same expression.
+-/
 theorem isoV_of (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (g0 : GE D.nd)
     (eB e₁ s : D.nd.X i → MatN D.nd i)
     (hD : Formalism.RepresentationBoundsCohomology.ringDataObjects.RingDef (D.nd.O i) (D.nd.T i) (RepresentationBoundsCohomology.repX D.nd r) π (chiU D.nd i 1) (epsU D.nd i) g0 eB e₁ s Dd)
@@ -55,6 +62,9 @@ theorem isoV_of (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (g0
   rw [Algebra.smul_def, map_mul, KHf.eK_apply, Br.toLLK_alg, K.H0.unipotent_block_zero_entry hD hN _ a b]
   rfl
 
+/- English proof (translation)
+Apply `rankFf_iso (hD := hD) (hc := hc)` to reduce the goal to its premises. Conclude with `isoV_of i dc Dd ρ π r g0 eB e₁ s hD hN l`.
+-/
 theorem rankFf_normAt (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (g0 : GE D.nd)
     (eB e₁ s : D.nd.X i → MatN D.nd i)
     (hD : Formalism.RepresentationBoundsCohomology.ringDataObjects.RingDef (D.nd.O i) (D.nd.T i) (RepresentationBoundsCohomology.repX D.nd r) π (chiU D.nd i 1) (epsU D.nd i) g0 eB e₁ s Dd)

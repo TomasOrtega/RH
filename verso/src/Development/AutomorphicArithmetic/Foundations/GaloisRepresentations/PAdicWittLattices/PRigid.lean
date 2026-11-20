@@ -8,11 +8,17 @@ open GlobalTheory.ZM GlobalTheory.SiegLev GlobalTheory.SiegelTor GlobalTheory.Ce
 open scoped TensorProduct CategoryTheory.Obj
 universe u
 
+/- English proof (translation)
+Rewrite using `[← Over.comp_left, lift_fst]`. Both sides reduce to the same expression.
+-/
 private theorem diag_fst {S : Scheme.{0}} (A : Over S) :
     (lift (𝟙 A) (𝟙 A)).left ≫ (fst A A).left = 𝟙 A.left := by
   rw [← Over.comp_left, lift_fst]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← Over.comp_left, lift_snd]`. Both sides reduce to the same expression.
+-/
 private theorem diag_snd {S : Scheme.{0}} (A : Over S) :
     (lift (𝟙 A) (𝟙 A)).left ≫ (snd A A).left = 𝟙 A.left := by
   rw [← Over.comp_left, lift_snd]
@@ -23,6 +29,11 @@ section
 variable {G : GDatum} {R : Type} [CommRing R] [Algebra ℚ R] {gb : GBase G R} {N : ℕ} {S S' : Scheme.{0}}
   {s : S ⟶ Sp R} {s' : S' ⟶ Sp R} {o : GObj gb N s} {o' : GObj gb N s'} {f : S' ⟶ S}
 
+/- English proof (translation)
+Establish `hw : u ≫ (X ⊗ Y).hom = v ≫ (X ⊗ Y).hom`. Rewrite using `[← Over.w (fst X Y), ← Category.assoc, h₁, Category.assoc]`. Set `U : Over.mk (u ≫ (X ⊗ Y).hom) ⟶ X ⊗ Y` to `Over.homMk u`. Set `V : Over.mk (u ≫ (X ⊗ Y).hom) ⟶ X ⊗ Y` to `Over.homMk v hw.symm`. Establish `hUV : U = V`.
+
+Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Conclude with `Over.OverMorphism.ext (by simpa [U, V] using h₁)`. Conclude with `Over.OverMorphism.ext (by simpa [U, V] using h₂)`. Conclude with `congrArg CommaMorphism.left hUV`.
+-/
 private theorem tensor_left_hom_ext_of_fst_snd {S : Scheme.{0}} {X Y : Over S} {W : Scheme.{0}} {u v : W ⟶ (X ⊗ Y).left}
     (h₁ : u ≫ (fst X Y).left = v ≫ (fst X Y).left) (h₂ : u ≫ (snd X Y).left = v ≫ (snd X Y).left) : u = v := by
   have hw : u ≫ (X ⊗ Y).hom = v ≫ (X ⊗ Y).hom := by
@@ -35,6 +46,11 @@ private theorem tensor_left_hom_ext_of_fst_snd {S : Scheme.{0}} {X Y : Over S} {
     · exact Over.OverMorphism.ext (by simpa [U, V] using h₂)
   exact congrArg CommaMorphism.left hUV
 
+/- English proof (translation)
+Apply `tensor_left_hom_ext_of_fst_snd` to reduce the goal to its premises. Establish `key : (lift (𝟙 o'.A) (𝟙 o'.A)).left ≫ (fst o'.A o'.A).left ≫ m.φ = m.φ`. Rewrite using `[← Category.assoc, diag_fst, Category.id_comp]`. Rewrite using `[Category.assoc, m.sq.1, key, Category.assoc, diag_fst, Category.comp_id]`. Establish `key : (lift (𝟙 o'.A) (𝟙 o'.A)).left ≫ (snd o'.A o'.A).left ≫ m.φ = m.φ`.
+
+Rewrite using `[← Category.assoc, diag_snd, Category.id_comp]`. Rewrite using `[Category.assoc, m.sq.2, key, Category.assoc, diag_snd, Category.comp_id]`.
+-/
 private theorem map_diag (m : GObjMap o' o f) :
     (lift (𝟙 o'.A) (𝟙 o'.A)).left ≫ m.φ₂ = m.φ ≫ (lift (𝟙 o.A) (𝟙 o.A)).left := by
   apply tensor_left_hom_ext_of_fst_snd
@@ -45,6 +61,9 @@ private theorem map_diag (m : GObjMap o' o f) :
       rw [← Category.assoc, diag_snd, Category.id_comp]
     rw [Category.assoc, m.sq.2, key, Category.assoc, diag_snd, Category.comp_id]
 
+/- English proof (translation)
+Rewrite using `[cls_pull o.isLB, cls_pull o'.isLB, ← pull_comp, ← map_diag m, pull_comp, ← cls_pull o.isLB _ (pull_isLB o.isLB m.φ₂), (cls_eq_iff (pull_isLB o.isLB m.φ₂) o'.isLB).2 (LBIso.symm m.pol)]`.
+-/
 private theorem pull_diag_cls (m : GObjMap o' o f) :
     pull m.φ (cls (o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left) (pull_isLB o.isLB _)) =
       cls (o'.P.pull (lift (𝟙 o'.A) (𝟙 o'.A)).left) (pull_isLB o'.isLB _) := by
@@ -52,6 +71,21 @@ private theorem pull_diag_cls (m : GObjMap o' o f) :
     ← cls_pull o.isLB _ (pull_isLB o.isLB m.φ₂),
     (cls_eq_iff (pull_isLB o.isLB m.φ₂) o'.isLB).2 (LBIso.symm m.pol)]
 
+/- English proof (translation)
+Establish `hA' : IsAbelianScheme ((Over.pullback j).obj o'.A)` using `by haveI := o'.ab.comm haveI := o'.ab.smooth haveI := o'.ab.proper haveI := o'.ab.geomConnected`. Prove the components needed by the constructor for the conclusion. Use `infer_instance`. Use `dsimp`. Use `infer_instance`.
+
+Use `dsimp`. Use `infer_instance`. Use `dsimp`. Use `infer_instance`. Establish `c` using `(isGrpPullback_pullback o'.A j).comp m.cart`.
+
+Establish `c'` using `(isGrpPullback_pullback o'.A j).comp m'.cart`. Use `GlobalTheory.SiegRigid.eq_of_field (pull_isLB o.isLB _) o.ample hA' c c' ?_ hN ?_ ?_` and prove the remaining obligations. Rewrite using `[pull_comp, pull_comp, pull_diag_cls m, pull_diag_cls m']`. Introduce `h0`. Set `ψ : ℚ →+* K` to `(Spec.preimage (R := CommRingCat.of R) (S := CommRingCat.of K) (j ≫ s')).hom.comp (algebraMap ℚ R)`.
+
+Establish `e0 : ψ (N : ℚ) = ψ 0` using `by rw [map_natCast, map_zero]; exact h0`. Establish `e1 : (N : ℚ) = 0` using `ψ.injective e0`. Normalize the coercions in `at e1`. Use linear arithmetic over natural numbers and integers. Introduce `Ω _ _ t x hx`.
+
+Set `β : R →+* Ω` to `(Spec.preimage (R := CommRingCat.of R) (S := CommRingCat.of Ω) ((t ≫ j) ≫ s')).hom`. Establish `hβ : (t ≫ j) ≫ s' = spMap β`. Simplify using `only [spMap, β, CommRingCat.ofHom_hom, Spec.map_preimage]`. Take `⟨I, hI⟩` from `o'.geom Ω (t ≫ j) β hβ`. Set `x₁` to `pushHom (isGrpPullback_pullback o'.A j) (Over.mk t) x`.
+
+Establish `hx₁ : x₁ ^ N = 1`. Simplify using `only [x₁]`. Rewrite using `[← map_pow, hx, map_one]`. Take `⟨y, hy⟩` from `(I.onto N (by omega) x₁).1 hx₁`. Establish `hl : x.left ≫ pullback.fst o'.A.hom j = x₁.left` using `rfl`.
+
+Establish `key : ∀ mm : GObjMap o' o f, x.left ≫ pullback.fst o'.A.hom j ≫ mm.φ = (toUnit (Over.mk (t ≫ j))).left ≫ f ≫ (o.eta y).left`. Introduce `mm`. Rewrite using `[← Category.assoc, hl, ← hy, ← hI y, Over.comp_left, Category.assoc, mm.eta y]`. Rewrite using `[key m, key m']`.
+-/
 private theorem eq_at_point (hN : 3 ≤ N) (m m' : GObjMap o' o f) {K : Type} [Field K] [IsAlgClosed K] (j : Sp K ⟶ S') :
     pullback.fst o'.A.hom j ≫ m.φ = pullback.fst o'.A.hom j ≫ m'.φ := by
   have hA' : IsAbelianScheme ((Over.pullback j).obj o'.A) := by
@@ -94,6 +128,13 @@ private theorem eq_at_point (hN : 3 ≤ N) (m m' : GObjMap o' o f) {K : Type} [F
 
 end
 
+/- English proof (translation)
+Introduce `p _ D R _ _ gb S S' s s' f hf N o o' m m'`. Establish `hN : 3 ≤ (N : ℕ)` using `N.2.1`. Take `⟨σ, hσmon, hσ⟩` from `GlobalTheory.SiegRigid.exists_aut m.cart m'.cart`. Establish `hid : σ.hom = 𝟙 o'.A`. Use `GlobalTheory.eq_id_of_forall_geometric_fibre GlobalTheory.laws_without_cohomology.1 o'.A o'.ab σ.hom (IsMonHom.one_hom σ.hom) ?_` and prove the remaining obligations.
+
+Introduce `t`. Set `K` to `AlgebraicClosure (S'.residueField t)`. Set `j : Sp K ⟶ S'` to `Spec.map (CommRingCat.ofHom (algebraMap (S'.residueField t) K)) ≫ S'.fromSpecResidueField t`. Use `⟨Sp K, pullback o'.A.hom j, j, pullback.fst o'.A.hom j, pullback.snd o'.A.hom j, IsLocalRing.closedPoint K, ?_, IsPullback.of_hasPullback _ _, ?_⟩` and prove the remaining obligations. Conclude with `Scheme.fromSpecResidueField_apply t _`.
+
+Apply `m'.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hσ, eq_at_point hN m m' j]`. Rewrite using `[Category.assoc, Over.w]`. Rewrite using `[← hσ, hid, Over.id_left, Category.id_comp]`.
+-/
 theorem UpperTheory.Gal.G3.pRigid :
     Rigid := by
   intro p _ D R _ _ gb S S' s s' f hf N o o' m m'

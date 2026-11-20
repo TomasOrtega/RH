@@ -10,6 +10,11 @@ noncomputable section
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `hp' : (1 : ℝ) ≤ p` using `by exact_mod_cast hp`. Establish `h1 : (q : ℝ) ^ q ≤ (p : ℝ) ^ q` using `pow_le_pow_left₀ (Nat.cast_nonneg _) (by exact_mod_cast (by omega : q ≤ p)) _`. Establish `h2 : (p : ℝ) ^ i * (p : ℝ) ^ q ≤ (p : ℝ) ^ p`. Rewrite using `[← pow_add]; exact pow_le_pow_right₀ hp' (by omega)`. Establish `h3 : L ^ q ≤ L ^ (p - 1)` using `pow_le_pow_right₀ hL (by omega)`.
+
+Establish `hpi : 0 ≤ (p : ℝ) ^ i` using `by positivity`. Establish `hqq : 0 ≤ (q : ℝ) ^ q` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem powMul_bound_le {B L : ℝ} (hB : 0 ≤ B) (hL : 1 ≤ L) {p q i : ℕ} (hp : 1 ≤ p)
     (hq : q + 1 ≤ p) (hqi : q + i ≤ p) :
     (p : ℝ) ^ i * (B * L ^ q * (q : ℝ) ^ q) ≤ B * L ^ (p - 1) * (p : ℝ) ^ p := by
@@ -25,6 +30,17 @@ theorem powMul_bound_le {B L : ℝ} (hB : 0 ≤ B) (hL : 1 ≤ L) {p q i : ℕ} 
     _ ≤ B * L ^ (p - 1) * ((p : ℝ) ^ i * (p : ℝ) ^ q) := by gcongr
     _ ≤ B * L ^ (p - 1) * (p : ℝ) ^ p := by gcongr
 
+/- English proof (translation)
+Establish `hL0 : 0 < L` using `by linarith`. Establish `hp' : (1 : ℝ) ≤ p` using `by exact_mod_cast hp`. Establish `hc : (k.choose i : ℝ) * i.factorial ≤ (p : ℝ) ^ i`. Establish `: k.choose i * i.factorial ≤ p ^ i`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Nat.descFactorial_eq_factorial_mul_choose]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ k ^ i := Nat.descFactorial_le_pow _ _`. Use `_ ≤ p ^ i := Nat.pow_le_pow_left hk _`. Conclude with `this` after adjusting the coercions.
+
+Establish `hiq : i ≤ p` using `by omega`. Establish `h1 : (q : ℝ) ^ q ≤ (p : ℝ) ^ q` using `pow_le_pow_left₀ (Nat.cast_nonneg _) (by exact_mod_cast (by omega : q ≤ p)) _`. Establish `h2 : (p : ℝ) ^ i * (p : ℝ) ^ q ≤ (p : ℝ) ^ p`. Rewrite using `[← pow_add]; exact pow_le_pow_right₀ hp' (by omega)`. Establish `h3 : L ^ q ≤ L ^ (p - i)` using `pow_le_pow_right₀ hL (by omega)`.
+
+Establish `hLp : L ^ p = L ^ (p - i) * L ^ i` using `by rw [← pow_add, Nat.sub_add_cancel hiq]`. Establish `hLi : 0 < L ^ i` using `by positivity`. Rewrite using `[div_pow, hLp]`. Establish `hqq : 0 ≤ (q : ℝ) ^ q` using `by positivity`. Establish `hMi : 0 ≤ Ma ^ i` using `by positivity`.
+
+Establish `hfac : 0 ≤ (i.factorial : ℝ)` using `by positivity`. Establish `hch : 0 ≤ (k.choose i : ℝ)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts.
+-/
 theorem coefTerm_le {B L Ma : ℝ} (hB : 0 ≤ B) (hL : 1 ≤ L) (hMa : 0 ≤ Ma) {p k i q : ℕ}
     (hp : 1 ≤ p) (hk : k ≤ p) (hqi : q + i ≤ p) :
     (k.choose i : ℝ) * (Ma ^ i * i.factorial) * (B * L ^ q * (q : ℝ) ^ q) ≤
@@ -58,6 +74,13 @@ theorem coefTerm_le {B L Ma : ℝ} (hB : 0 ≤ B) (hL : 1 ≤ L) (hMa : 0 ≤ Ma
     _ = B * (L ^ (p - i) * L ^ i) * (p : ℝ) ^ p * (Ma ^ i / L ^ i) := by
         field_simp
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_filter, Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk, Finset.sum_range_succ']`. Simplify using `only [lt_self_iff_false, if_false, add_zero, Nat.succ_pos, if_true]`. Establish `h1r : 0 < 1 - r` using `by linarith`. Establish `hg : ∑ i ∈ range k, r ^ i ≤ 1 / (1 - r)`. Rewrite using `[le_div_iff₀ h1r, geom_sum_mul_neg]`.
+
+Combine the linear relations using `[pow_nonneg hr0 k]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun i _ ↦ by ring`. Use `_ ≤ r * (1 / (1 - r)) := by gcongr`. Use `_ ≤ 2 * r := by`.
+
+Rewrite using `[mul_one_div, div_le_iff₀ h1r]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem sum_filter_antidiagonal_pow_le {r : ℝ} (hr0 : 0 ≤ r) (hr : r ≤ 1 / 2) (k : ℕ) :
     ∑ ij ∈ (antidiagonal k).filter (fun ij ↦ 0 < ij.1), r ^ ij.1 ≤ 2 * r := by
   rw [Finset.sum_filter, Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk, Finset.sum_range_succ']
@@ -72,19 +95,37 @@ theorem sum_filter_antidiagonal_pow_le {r : ℝ} (hr0 : 0 ≤ r) (hr : r ≤ 1 /
     _ ≤ 2 * r := by
         rw [mul_one_div, div_le_iff₀ h1r]; nlinarith
 
+/- English proof (translation)
+The claim follows from `(Complex.ofRealCLM.contDiff.comp hχ).pow s`.
+-/
 theorem contDiff_weight {χ : EuclideanSpace ℝ (Fin n) → ℝ} (hχ : ContDiff ℝ ∞ χ) (s : ℕ) :
     ContDiff ℝ ∞ (fun y ↦ ((χ y : ℂ)) ^ s) :=
   (Complex.ofRealCLM.contDiff.comp hχ).pow s
 
+/- English proof (translation)
+Rewrite using `[norm_pow, Complex.norm_real, Real.norm_of_nonneg (h01 x).1]`.
+-/
 theorem norm_cutoff_pow {χ : EuclideanSpace ℝ (Fin n) → ℝ} (h01 : ∀ x, 0 ≤ χ x ∧ χ x ≤ 1) (s : ℕ)
     (x : EuclideanSpace ℝ (Fin n)) : ‖((χ x : ℂ)) ^ s‖ = χ x ^ s := by
   rw [norm_pow, Complex.norm_real, Real.norm_of_nonneg (h01 x).1]
 
+/- English proof (translation)
+Rewrite using `[sqrt_sum_sq_const_mul, abs_of_nonneg hc, ← hsD_add_sq hu, Real.sqrt_sq (hsD_nonneg _ _ _)]`.
+-/
 theorem sqrt_sum_const_mul_hsD_pdT {u : EuclideanSpace ℝ (Fin n) → ℂ} (hu : ContDiff ℝ ∞ u) {c : ℝ}
     (hc : 0 ≤ c) (j k : ℕ) (x : EuclideanSpace ℝ (Fin n)) :
     Real.sqrt (∑ I : Fin k → Fin n, (c * hsD j (pdT I u) x) ^ 2) = c * hsD (j + k) u x := by
   rw [sqrt_sum_sq_const_mul, abs_of_nonneg hc, ← hsD_add_sq hu, Real.sqrt_sq (hsD_nonneg _ _ _)]
 
+/- English proof (translation)
+Establish `hw` using `contDiff_weight hχ s`. Establish `hχ0` using `(h01 x).1`. Use `set c : ℕ × ℕ → ℝ := fun ij ↦ (j.choose ij.1 : ℝ) * (K * (s : ℝ) ^ ij.1) * χ x ^ (s - ij.1) with hc`. Establish `hc0 : ∀ ij, 0 ≤ c ij` using `fun ij ↦ by simp only [hc]; positivity`. Establish `hI : ∀ I : Fin k → Fin n, hsD j (fun y ↦ ((χ y : ℂ)) ^ s * pdT I u y) x ≤ ∑ ij ∈ antidiagonal j, c ij * hsD ij.2 (pdT I u) x`.
+
+Introduce `I`. Use `(hsD_mul_le j hw (contDiff_pdT hu I) x).trans (Finset.sum_le_sum fun ij hij ↦ ?_)` and prove the remaining obligations. Establish `h1 : ij.1 + ij.2 = j` using `mem_antidiagonal.1 hij`. Establish `hb` using `hK s ij.1 x (by omega) (by omega)`. Use `hsD_nonneg ij.2 (pdT I u) x` as an intermediate fact.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun ij hij ↦ ?_` and prove the remaining obligations. Establish `h1 : ij.1 + ij.2 = j` using `mem_antidiagonal.1 hij`. Establish `hpow : χ x ^ (s - ij.1) ≤ χ x ^ (ij.2 + k)` using `pow_le_pow_of_le_one hχ0 (h01 x).2 (by omega)`.
+
+Use `hsD_nonneg (ij.2 + k) u x` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hc]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := by gcongr`.
+-/
 theorem sqrt_sum_hsD_weight_le {u : EuclideanSpace ℝ (Fin n) → ℂ} (hu : ContDiff ℝ ∞ u)
     {χ : EuclideanSpace ℝ (Fin n) → ℝ} (hχ : ContDiff ℝ ∞ χ) (h01 : ∀ x, 0 ≤ χ x ∧ χ x ≤ 1)
     {K : ℝ} (hK0 : 0 ≤ K) {L₀ : ℕ}
@@ -130,6 +171,21 @@ theorem sqrt_sum_hsD_weight_le {u : EuclideanSpace ℝ (Fin n) → ℂ} (hu : Co
               simp only [hc]; ring
           _ ≤ _ := by gcongr
 
+/- English proof (translation)
+Establish `hw` using `contDiff_weight hχ s`. Establish `hχ0` using `(h01 x).1`. Use `set c : ℕ × ℕ → ℝ := fun ij ↦ (m.choose ij.1 : ℝ) * (K * (s : ℝ) ^ ij.1) * χ x ^ (s - ij.1) with hc`. Establish `hc0 : ∀ ij, 0 ≤ c ij` using `fun ij ↦ by simp only [hc]; positivity`. Use `set F := (antidiagonal m).filter (fun ij ↦ 0 < ij.1) with hF`.
+
+Establish `hI : ∀ I : Fin k → Fin n, χ x ^ s * hsD m (pdT I u) x ≤ hsD m (fun y ↦ ((χ y : ℂ)) ^ s * pdT I u y) x + ∑ ij ∈ F, c ij * hsD ij.2 (pdT I u) x`. Introduce `I`. Establish `h` using `norm_mul_hsD_le hw (contDiff_pdT hu I) (k := m) (x := x)`. Rewrite `h` using `[norm_cutoff_pow h01]`. Use `h.trans (add_le_add le_rfl (Finset.sum_le_sum fun ij hij ↦ ?_))` and prove the remaining obligations.
+
+Establish `h1 : ij.1 + ij.2 = m` using `mem_antidiagonal.1 (Finset.mem_filter.1 hij).1`. Establish `hb` using `hK s ij.1 x (by omega) (by omega)`. Use `hsD_nonneg ij.2 (pdT I u) x` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Establish `hL : χ x ^ s * hsD (m + k) u x = Real.sqrt (∑ I : Fin k → Fin n, (χ x ^ s * hsD m (pdT I u) x) ^ 2)`.
+
+Rewrite using `[sqrt_sum_const_mul_hsD_pdT hu (by positivity)]`. Rewrite using `[hL]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `sqrt_sum_sq_sum_le _ _`. Use `_ = Real.sqrt (∑ I : Fin k → Fin n, hsD m (fun y ↦ ((χ y : ℂ)) ^ s * pdT I u y) x ^ 2) + ∑ ij ∈ F, c ij * hsD (ij.2 + k) u x := by`.
+
+Use `congr 1`. Conclude with `Finset.sum_congr rfl fun ij _ ↦ sqrt_sum_const_mul_hsD_pdT hu (hc0 ij) _ _ x`. Use `_ ≤ _ := by`. Use `add_le_add le_rfl (Finset.sum_le_sum fun ij hij ↦ ?_)` and prove the remaining obligations. Establish `h1 : ij.1 + ij.2 = m` using `mem_antidiagonal.1 (Finset.mem_filter.1 hij).1`.
+
+Establish `hpow : χ x ^ (s - ij.1) ≤ χ x ^ (ij.2 + k)` using `pow_le_pow_of_le_one hχ0 (h01 x).2 (by omega)`. Use `hsD_nonneg (ij.2 + k) u x` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hc]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ ≤ _ := by gcongr`.
+-/
 theorem weight_hsD_add_le {u : EuclideanSpace ℝ (Fin n) → ℂ} (hu : ContDiff ℝ ∞ u)
     {χ : EuclideanSpace ℝ (Fin n) → ℝ} (hχ : ContDiff ℝ ∞ χ) (h01 : ∀ x, 0 ≤ χ x ∧ χ x ≤ 1)
     {K : ℝ} (hK0 : 0 ≤ K) {L₀ : ℕ}
@@ -190,6 +246,13 @@ theorem weight_hsD_add_le {u : EuclideanSpace ℝ (Fin n) → ℂ} (hu : ContDif
               simp only [hc]; ring
           _ ≤ _ := by gcongr
 
+/- English proof (translation)
+Establish `h0 : pdT I (diffOp A a u) x = 0`. Establish `hev : diffOp A a u =ᶠ[nhds x] fun _ ↦ (0 : ℂ)` using `by filter_upwards [hU.mem_nhds hx] with y hy using hPu y hy`. Rewrite using `[pdT, dT_congr_of_eventuallyEq hev]`. Simplify using `[dT]`. Establish `hsum : pdT I (diffOp A a u) x = ∑ α ∈ A, pdT I (fun y ↦ a α y * pderiv α u y) x`.
+
+Establish `e : diffOp A a u = fun y ↦ ∑ α ∈ A, a α y * pderiv α u y` using `rfl`. Rewrite using `[e, pdT, dT_sum A _ (fun α hα ↦ (ha α hα).mul (contDiff_pderiv hu α))]`. Both sides reduce to the same expression. Establish `hD : diffOp A a (pdT I u) x = ∑ α ∈ A, a α x * pdT I (pderiv α u) x`. Simplify using `only [diffOp]`.
+
+Use `Finset.sum_congr rfl fun α _ ↦ ?_` and prove the remaining obligations. Rewrite using `[pdT_pderiv_comm hu I α]`. Rewrite using `[hD, Finset.sum_sub_distrib, ← hsum, h0, sub_zero]`.
+-/
 theorem diffOp_pdT_eq {A : Finset (Fin n → ℕ)} {a : (Fin n → ℕ) → EuclideanSpace ℝ (Fin n) → ℂ}
     (ha : ∀ α ∈ A, ContDiff ℝ ∞ (a α)) {u : EuclideanSpace ℝ (Fin n) → ℂ} (hu : ContDiff ℝ ∞ u)
     {U : Set (EuclideanSpace ℝ (Fin n))} (hU : IsOpen U) (hPu : ∀ x ∈ U, diffOp A a u x = 0)
@@ -211,6 +274,15 @@ theorem diffOp_pdT_eq {A : Finset (Fin n → ℕ)} {a : (Fin n → ℕ) → Eucl
     rw [pdT_pderiv_comm hu I α]
   rw [hD, Finset.sum_sub_distrib, ← hsum, h0, sub_zero]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Use `sqrt_sum_sq_mono fun I ↦ ⟨norm_nonneg _, ?_⟩` and prove the remaining obligations. Rewrite using `[diffOp_pdT_eq ha hu hU hPu I hx]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun α _ ↦ ?_)` and prove the remaining obligations. Rewrite using `[norm_sub_rev]`.
+
+Use `_ ≤ ∑ α ∈ A, Real.sqrt (∑ I : Fin k → Fin n, ‖pdT I (fun y ↦ a α y * pderiv α u y) x - a α x * pdT I (pderiv α u) x‖ ^ 2) := sqrt_sum_sq_sum_le _ _`. Use `_ ≤ ∑ α ∈ A, ∑ ij ∈ (antidiagonal k).filter (fun ij ↦ 0 < ij.1), (k.choose ij.1 : ℝ) * hsD ij.1 (a α) x * hsD ij.2 (pderiv α u) x := by`. Use `Finset.sum_le_sum fun α hα ↦ ?_` and prove the remaining obligations. Conclude with `sqrt_sum_pdT_mul_sub_le (ha α hα) (contDiff_pderiv hu α) k x`. Use `_ ≤ _ := by`.
+
+Use `Finset.sum_le_sum fun α hα ↦ Finset.sum_le_sum fun ij _ ↦ ?_` and prove the remaining obligations. Establish `h1` using `hcoef α hα x hx ij.1`. Establish `h2` using `hsD_pderiv_le hu α ij.2 x`. Use `hsD_nonneg ij.2 (pderiv α u) x` as an intermediate fact. Use `hsD_nonneg ij.1 (a α) x` as an intermediate fact.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sqrt_sum_diffOp_pdT_le {A : Finset (Fin n → ℕ)}
     {a : (Fin n → ℕ) → EuclideanSpace ℝ (Fin n) → ℂ} (ha : ∀ α ∈ A, ContDiff ℝ ∞ (a α))
     {u : EuclideanSpace ℝ (Fin n) → ℂ} (hu : ContDiff ℝ ∞ u)
@@ -245,6 +317,33 @@ theorem sqrt_sum_diffOp_pdT_le {A : Finset (Fin n → ℕ)}
             ≤ (k.choose ij.1 : ℝ) * (Ca * Ma ^ ij.1 * ij.1.factorial) *
                 hsD (mabs α + ij.2) u x := by gcongr
 
+/- English proof (translation)
+Establish `hw` using `contDiff_weight hχ s`. Establish `hχ0` using `(h01 x).1`. Establish `hdec : ∀ I : Fin k → Fin n, diffOp A a (fun y ↦ ((χ y : ℂ)) ^ s * pdT I u y) x = ((χ x : ℂ)) ^ s * diffOp A a (pdT I u) x + ∑ α ∈ A, a α x * (pderiv α (fun y ↦ ((χ y : ℂ)) ^ s * pdT I u y) x - ((χ x : ℂ)) ^ s * pderiv α (pdT I u) x)`. Introduce `I`. Simplify using `only [diffOp]`.
+
+Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun α _ ↦ by ring`. Use `set c : ℕ → ℕ × ℕ → ℝ := fun q ij ↦ (q.choose ij.1 : ℝ) * (K * (s : ℝ) ^ ij.1) * χ x ^ (s - ij.1) with hc`. Establish `hc0 : ∀ q ij, 0 ≤ c q ij` using `fun q ij ↦ by simp only [hc]; positivity`. Use `set F : ℕ → Finset (ℕ × ℕ) := fun q ↦ (antidiagonal q).filter (fun ij ↦ 0 < ij.1) with hF`.
+
+Establish `hcomm : ∀ (I : Fin k → Fin n), ∀ α ∈ A, ‖pderiv α (fun y ↦ ((χ y : ℂ)) ^ s * pdT I u y) x - ((χ x : ℂ)) ^ s * pderiv α (pdT I u) x‖ ≤ ∑ ij ∈ F (mabs α), c (mabs α) ij * hsD ij.2 (pdT I u) x`. Introduce `I α hα`. Use `(norm_pderiv_mul_sub_le hw (contDiff_pdT hu I) α x).trans (Finset.sum_le_sum fun ij hij ↦ ?_)` and prove the remaining obligations. Establish `h1 : ij.1 + ij.2 = mabs α` using `mem_antidiagonal.1 (Finset.mem_filter.1 hij).1`. Establish `hαm` using `hA α hα`.
+
+Establish `hb` using `hK s ij.1 x (by omega) (by omega)`. Use `hsD_nonneg ij.2 (pdT I u) x` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Establish `hI : ∀ I : Fin k → Fin n, ‖diffOp A a (fun y ↦ ((χ y : ℂ)) ^ s * pdT I u y) x‖ ≤ χ x ^ s * ‖diffOp A a (pdT I u) x‖ + ∑ α ∈ A, A₀ * ∑ ij ∈ F (mabs α), c (mabs α) ij * hsD ij.2 (pdT I u) x`. Introduce `I`.
+
+Rewrite using `[hdec I]`. Use `(norm_add_le _ _).trans (add_le_add ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_cutoff_pow h01]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun α hα ↦ ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+
+Conclude with `mul_le_mul (hA₀ α hα x) (hcomm I α hα) (norm_nonneg _) hA₀0`. Establish `hsplit : Real.sqrt (∑ I : Fin k → Fin n, ‖diffOp A a (fun y ↦ ((χ y : ℂ)) ^ s * pdT I u y) x‖ ^ 2) ≤ χ x ^ s * Real.sqrt (∑ I : Fin k → Fin n, ‖diffOp A a (pdT I u) x‖ ^ 2) + ∑ α ∈ A, A₀ * ∑ ij ∈ F (mabs α), c (mabs α) ij * hsD (ij.2 + k) u x`. Combine the equalities or inequalities in the displayed calculation. Use `add_le_add (le_of_eq ?_) ?_` and prove the remaining obligations. Rewrite using `[sqrt_sum_sq_const_mul, abs_of_nonneg (by positivity)]`.
+
+Use `(sqrt_sum_sq_sum_le _ _).trans (Finset.sum_le_sum fun α _ ↦ ?_)` and prove the remaining obligations. Rewrite using `[sqrt_sum_sq_const_mul, abs_of_nonneg hA₀0]`. Use `gcongr`. Use `(sqrt_sum_sq_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun ij _ ↦ sqrt_sum_const_mul_hsD_pdT hu (hc0 _ ij) _ _ x`.
+
+Use `hsplit.trans (add_le_add ?_ ?_)` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ U`. Establish `h` using `sqrt_sum_diffOp_pdT_le ha hu hU hPu hCa hMa hcoef k hx`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun α _ ↦ ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun ij _ ↦ by ring`. Use `_ ≤ _ := by`. Use `Finset.sum_le_sum fun α hα ↦ Finset.sum_le_sum fun ij hij ↦ ?_` and prove the remaining obligations.
+
+Establish `h1 : ij.1 + ij.2 = k` using `mem_antidiagonal.1 (Finset.mem_filter.1 hij).1`. Establish `hαm` using `hA α hα`. Establish `hpow : χ x ^ s ≤ χ x ^ (mabs α + ij.2)` using `pow_le_pow_of_le_one hχ0 (h01 x).2 (by omega)`. Use `hsD_nonneg (mabs α + ij.2) u x` as an intermediate fact. Use `gcongr`.
+
+Establish `h0 : χ x = 0` using `hχU x hx`. Rewrite using `[h0, zero_pow (by omega), zero_mul]`. Use `Finset.sum_nonneg fun α _ ↦ Finset.sum_nonneg fun ij _ ↦ ?_` and prove the remaining obligations. Use `hsD_nonneg (mabs α + ij.2) u x` as an intermediate fact. Check the signs of the components of the expression.
+
+Use `Finset.sum_le_sum fun α hα ↦ mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun ij hij ↦ ?_) hA₀0` and prove the remaining obligations. Establish `h1 : ij.1 + ij.2 = mabs α` using `mem_antidiagonal.1 (Finset.mem_filter.1 hij).1`. Establish `hαm` using `hA α hα`. Establish `hpow : χ x ^ (s - ij.1) ≤ χ x ^ (ij.2 + k)` using `pow_le_pow_of_le_one hχ0 (h01 x).2 (by omega)`. Use `hsD_nonneg (ij.2 + k) u x` as an intermediate fact.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sqrt_sum_diffOp_weight_le {A : Finset (Fin n → ℕ)}
     {a : (Fin n → ℕ) → EuclideanSpace ℝ (Fin n) → ℂ} (ha : ∀ α ∈ A, ContDiff ℝ ∞ (a α))
     {A₀ : ℝ} (hA₀0 : 0 ≤ A₀) (hA₀ : ∀ α ∈ A, ∀ x, ‖a α x‖ ≤ A₀) {m : ℕ}
@@ -368,11 +467,17 @@ theorem sqrt_sum_diffOp_weight_le {A : Finset (Fin n → ℕ)}
             (χ x ^ (s - ij.1) * hsD (ij.2 + k) u x) := by simp only [hc]; ring
       _ ≤ _ := by gcongr
 
+/- English proof (translation)
+Rewrite using `[hsD_congr_of_eventuallyEq h]`. Simplify using `[hsD, pdT, dT, iteratedFDeriv_fun_zero]`.
+-/
 theorem hsD_eq_zero_of_eventuallyEq_zero {f : EuclideanSpace ℝ (Fin n) → ℂ}
     {x : EuclideanSpace ℝ (Fin n)} (h : f =ᶠ[nhds x] fun _ ↦ 0) (k : ℕ) : hsD k f x = 0 := by
   rw [hsD_congr_of_eventuallyEq h]
   simp [hsD, pdT, dT, iteratedFDeriv_fun_zero]
 
+/- English proof (translation)
+Use `filter_upwards [(isClosed_tsupport f).isOpen_compl.mem_nhds hx] with y hy`. Rewrite using `[dT_congr_of_eventuallyEq (notMem_tsupport_iff_eventuallyEq.1 hy)]`. Simplify using `[dT]`.
+-/
 theorem dT_eventuallyEq_zero_of_not_mem_tsupport {f : EuclideanSpace ℝ (Fin n) → ℂ}
     {x : EuclideanSpace ℝ (Fin n)} (hx : x ∉ tsupport f) {k : ℕ}
     (v : Fin k → EuclideanSpace ℝ (Fin n)) : dT v f =ᶠ[nhds x] fun _ ↦ 0 := by
@@ -383,10 +488,16 @@ theorem dT_eventuallyEq_zero_of_not_mem_tsupport {f : EuclideanSpace ℝ (Fin n)
 def wN (χ : EuclideanSpace ℝ (Fin n) → ℝ) (u : EuclideanSpace ℝ (Fin n) → ℂ) (q : ℕ) : ℝ :=
   l2n (fun x ↦ χ x ^ q * hsD q u x)
 
+/- English proof (translation)
+The claim follows from `l2Norm_nonneg_alt _`.
+-/
 theorem wN_nonneg (χ : EuclideanSpace ℝ (Fin n) → ℝ) (u : EuclideanSpace ℝ (Fin n) → ℂ) (q : ℕ) :
     0 ≤ wN χ u q :=
   l2Norm_nonneg_alt _
 
+/- English proof (translation)
+Use `(l2Norm_finset_sum_le T (fun t x ↦ c t * G t x) fun t ht ↦ (hG t ht).const_mul _).trans (Finset.sum_le_sum fun t ht ↦ ?_)` and prove the remaining obligations. Rewrite using `[l2Norm_const_mul, abs_of_nonneg (hc t ht)]`.
+-/
 theorem l2Norm_sum_const_mul_le {ι : Type*} (T : Finset ι) (c : ι → ℝ) (hc : ∀ t ∈ T, 0 ≤ c t)
     (G : ι → EuclideanSpace ℝ (Fin n) → ℝ) (hG : ∀ t ∈ T, MemLp (G t) 2 volume) :
     l2n (fun x ↦ ∑ t ∈ T, c t * G t x) ≤ ∑ t ∈ T, c t * l2n (G t) := by
@@ -394,11 +505,45 @@ theorem l2Norm_sum_const_mul_le {ι : Type*} (T : Finset ι) (c : ι → ℝ) (h
     (Finset.sum_le_sum fun t ht ↦ ?_)
   rw [l2Norm_const_mul, abs_of_nonneg (hc t ht)]
 
+/- English proof (translation)
+The claim follows from `memLp_finsetSum T fun t ht ↦ (hG t ht).const_mul _`.
+-/
 theorem memLp_sum_mul {ι : Type*} (T : Finset ι) (c : ι → ℝ)
     (G : ι → EuclideanSpace ℝ (Fin n) → ℝ) (hG : ∀ t ∈ T, MemLp (G t) 2 volume) :
     MemLp (fun x ↦ ∑ t ∈ T, c t * G t x) 2 volume :=
   memLp_finsetSum T fun t ht ↦ (hG t ht).const_mul _
 
+/- English proof (translation)
+Use `set s := m + k with hs`. Establish `hs1 : 1 ≤ s` using `by omega`. Establish `hχU' : ∀ x, x ∉ U → χ x = 0` using `fun x hx ↦ image_eq_zero_of_notMem_tsupport fun h ↦ hx (hχU h)`. Use `set v : (Fin k → Fin n) → EuclideanSpace ℝ (Fin n) → ℂ := fun I y ↦ ((χ y : ℂ)) ^ s * pdT I u y with hv`. Establish `hvC : ∀ I, ContDiff ℝ ∞ (v I)` using `fun I ↦ (contDiff_weight hχ s).mul (contDiff_pdT hu I)`.
+
+Establish `hvz : ∀ I x, x ∉ tsupport u → v I =ᶠ[nhds x] fun _ ↦ 0`. Introduce `I x hx`. Use `filter_upwards [dT_eventuallyEq_zero_of_not_mem_tsupport hx (fun l ↦ ev (I l))] with y hy`. Simplify using `only [hv, pdT]`. Rewrite using `[hy, mul_zero]`.
+
+Establish `hvcs : ∀ I, HasCompactSupport (v I)` using `fun I ↦ HasCompactSupport.intro hu_c fun x hx ↦ (hvz I x hx).self_of_nhds`. Establish `hvU : ∀ I, tsupport (v I) ⊆ U`. Introduce `I`. Use `(tsupport_mul_subset_left).trans ((closure_mono ?_).trans hχU)` and prove the remaining obligations. Introduce `y hy h`.
+
+Apply `hy` to reduce the goal to its premises. Simplify using `only [h, Complex.ofReal_zero, zero_pow (by omega : s ≠ 0)]`. Establish `mem : ∀ {f : EuclideanSpace ℝ (Fin n) → ℝ}, Continuous f → (∀ x, x ∉ tsupport u → f x = 0) → MemLp f 2 volume` using `fun hc hz ↦ memLp_two_of_continuous_hasCompactSupport hc (HasCompactSupport.intro hu_c hz)`. Establish `hzu : ∀ x, x ∉ tsupport u → u =ᶠ[nhds x] fun _ ↦ 0` using `fun x hx ↦ notMem_tsupport_iff_eventuallyEq.1 hx`. Establish `memg : ∀ q, MemLp (fun x ↦ χ x ^ q * hsD q u x) 2 volume` using `fun q ↦ mem ((hχ.continuous.pow q).mul (continuous_hsD hu q)) fun x hx ↦ by`.
+
+Rewrite using `[hsD_eq_zero_of_eventuallyEq_zero (hzu x hx), mul_zero]`. Establish `memhv : ∀ j I, MemLp (hsD j (v I)) 2 volume` using `fun j I ↦ mem (continuous_hsD (hvC I) j) fun x hx ↦ hsD_eq_zero_of_eventuallyEq_zero (hvz I x hx) j`. Establish `hPvz : ∀ I x, x ∉ tsupport u → diffOp A a (v I) x = 0`. Introduce `I x hx`. Simplify using `only [diffOp]`.
+
+Use `Finset.sum_eq_zero fun α _ ↦ ?_` and prove the remaining obligations. Rewrite using `[pderiv_eq_dT, dT_congr_of_eventuallyEq (hvz I x hx)]`. Simplify using `[dT]`. Establish `hPvC : ∀ I, Continuous (fun x ↦ diffOp A a (v I) x)`. Introduce `I`.
+
+Simplify using `only [diffOp]`. Conclude with `continuous_finsetSum _ fun α hα ↦ (ha α hα).continuous.mul (contDiff_pderiv (hvC I) α).continuous`. Establish `memPv : ∀ I, MemLp (fun x ↦ ‖diffOp A a (v I) x‖) 2 volume` using `fun I ↦ mem (hPvC I).norm fun x hx ↦ by rw [hPvz I x hx, norm_zero]`. Establish `contV : ∀ j, Continuous (fun x ↦ Real.sqrt (∑ I : Fin k → Fin n, hsD j (v I) x ^ 2))` using `fun j ↦ (continuous_finsetSum _ fun I _ ↦ (continuous_hsD (hvC I) j).pow 2).sqrt`. Establish `contVP : Continuous (fun x ↦ Real.sqrt (∑ I : Fin k → Fin n, ‖diffOp A a (v I) x‖ ^ 2))` using `(continuous_finsetSum _ fun I _ ↦ (hPvC I).norm.pow 2).sqrt`.
+
+Establish `hV1mem : MemLp (fun x ↦ Real.sqrt (∑ I : Fin k → Fin n, hsD m (v I) x ^ 2)) 2 volume` using `mem (contV m) fun x hx ↦ by`. Simplify using `[hsD_eq_zero_of_eventuallyEq_zero (hvz _ x hx)]`. Use `set R3 : EuclideanSpace ℝ (Fin n) → ℝ := fun x ↦ ∑ ij ∈ (antidiagonal m).filter (fun ij ↦ 0 < ij.1), (m.choose ij.1 : ℝ) * (K * (s : ℝ) ^ ij.1) * (χ x ^ (ij.2 + k) * hsD (ij.2 + k) u x) with hR3`. Establish `memR3 : MemLp R3 2 volume` using `memLp_sum_mul _ _ _ fun ij _ ↦ memg _`. Establish `h3 : wN χ u (m + k) ≤ l2n (fun x ↦ Real.sqrt (∑ I : Fin k → Fin n, hsD m (v I) x ^ 2)) + l2n R3`.
+
+Use `(l2Norm_le_of_abs_le (hV1mem.add memR3) (memg (m + k)).aestronglyMeasurable fun x ↦ ?_).trans (l2Norm_add_le_alt hV1mem memR3)` and prove the remaining obligations. Rewrite using `[abs_of_nonneg (by have := hsD_nonneg (m + k) u x; have := (h01 x).1; positivity)]`. Conclude with `weight_hsD_add_le hu hχ h01 hK0 hK (k := k) (s := s) (m := m) le_rfl le_rfl x`. Establish `hR3le : l2n R3 ≤ ∑ ij ∈ (antidiagonal m).filter (fun ij ↦ 0 < ij.1), (m.choose ij.1 : ℝ) * (K * (s : ℝ) ^ ij.1) * wN χ u (ij.2 + k)` using `l2Norm_sum_const_mul_le _ _ (fun _ _ ↦ by positivity) _ fun ij _ ↦ memg _`. Establish `hsum_eq : ∀ j, l2n (fun x ↦ Real.sqrt (∑ I : Fin k → Fin n, hsD j (v I) x ^ 2)) = Real.sqrt (∑ I : Fin k → Fin n, l2n (hsD j (v I)) ^ 2)` using `fun j ↦ l2Norm_sqrt_sum_sq_eq _ fun I ↦ memhv j I`.
+
+Establish `hP_eq : l2n (fun x ↦ Real.sqrt (∑ I : Fin k → Fin n, ‖diffOp A a (v I) x‖ ^ 2)) = Real.sqrt (∑ I : Fin k → Fin n, l2n (fun x ↦ ‖diffOp A a (v I) x‖) ^ 2)` using `l2Norm_sqrt_sum_sq_eq (fun I x ↦ ‖diffOp A a (v I) x‖) memPv`. Establish `h4 : l2n (fun x ↦ Real.sqrt (∑ I : Fin k → Fin n, hsD m (v I) x ^ 2)) ≤ C₀ * (l2n (fun x ↦ Real.sqrt (∑ I : Fin k → Fin n, ‖diffOp A a (v I) x‖ ^ 2)) + ∑ j ∈ range m, l2n (fun x ↦ Real.sqrt (∑ I : Fin k → Fin n, hsD j (v I) x ^ 2)))`. Rewrite using `[hsum_eq m, hP_eq]`. Simplify using `only [hsum_eq]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[sqrt_sum_sq_const_mul, abs_of_nonneg hC₀]`. Use `_ ≤ C₀ * (Real.sqrt (∑ I : Fin k → Fin n, l2n (fun x ↦ ‖diffOp A a (v I) x‖) ^ 2) + ∑ j ∈ range m, Real.sqrt (∑ I : Fin k → Fin n, l2n (hsD j (v I)) ^ 2)) := mul_le_mul_of_nonneg_left ((sqrt_sum_sq_add_le (fun I ↦ l2n (fun x ↦ ‖diffOp A a (v I) x‖)) (fun I ↦ ∑ j ∈ range m, l2n (h …`. Establish `h1 : ∀ j ∈ range m, l2n (fun x ↦ Real.sqrt (∑ I : Fin k → Fin n, hsD j (v I) x ^ 2)) ≤ ∑ ij ∈ antidiagonal j, (j.choose ij.1 : ℝ) * (K * (s : ℝ) ^ ij.1) * wN χ u (ij.2 + k)`. Introduce `j hj`. Establish `hjm : j < m` using `Finset.mem_range.1 hj`.
+
+Establish `memR : MemLp (fun x ↦ ∑ ij ∈ antidiagonal j, (j.choose ij.1 : ℝ) * (K * (s : ℝ) ^ ij.1) * (χ x ^ (ij.2 + k) * hsD (ij.2 + k) u x)) 2 volume` using `memLp_sum_mul _ _ _ fun ij _ ↦ memg _`. Use `(l2Norm_le_of_abs_le memR (contV j).aestronglyMeasurable fun x ↦ ?_).trans (l2Norm_sum_const_mul_le _ _ (fun _ _ ↦ by positivity) _ fun ij _ ↦ memg _)` and prove the remaining obligations. Rewrite using `[abs_of_nonneg (Real.sqrt_nonneg _)]`. Conclude with `sqrt_sum_hsD_weight_le hu hχ h01 hK0 hK (L₀ := m) hjm.le (by omega) x`. Establish `h2 : l2n (fun x ↦ Real.sqrt (∑ I : Fin k → Fin n, ‖diffOp A a (v I) x‖ ^ 2)) ≤ (∑ α ∈ A, ∑ ij ∈ (antidiagonal k).filter (fun ij ↦ 0 < ij.1), (k.choose ij.1 : ℝ) * (Ca * Ma ^ ij.1 * ij.1.factorial) * wN χ u (mabs α + ij.2)) + (∑ α ∈ A, A₀ * ∑ ij ∈ (antidiagonal (mabs α)).filter (f …`.
+
+Establish `memG1 : MemLp (fun x ↦ ∑ α ∈ A, ∑ ij ∈ (antidiagonal k).filter (fun ij ↦ 0 < ij.1), (k.choose ij.1 : ℝ) * (Ca * Ma ^ ij.1 * ij.1.factorial) * (χ x ^ (mabs α + ij.2) * hsD (mabs α + ij.2) u x)) 2 volume` using `memLp_finsetSum A fun α _ ↦ memLp_sum_mul _ _ _ fun ij _ ↦ memg _`. Establish `memG2 : MemLp (fun x ↦ ∑ α ∈ A, A₀ * ∑ ij ∈ (antidiagonal (mabs α)).filter (fun ij ↦ 0 < ij.1), ((mabs α).choose ij.1 : ℝ) * (K * (s : ℝ) ^ ij.1) * (χ x ^ (ij.2 + k) * hsD (ij.2 + k) u x)) 2 volume` using `memLp_finsetSum A fun α _ ↦ (memLp_sum_mul _ _ _ fun ij _ ↦ memg _).const_mul A₀`. Use `(l2Norm_le_of_abs_le (memG1.add memG2) contVP.aestronglyMeasurable fun x ↦ ?_).trans ((l2Norm_add_le_alt memG1 memG2).trans (add_le_add ?_ ?_))` and prove the remaining obligations. Rewrite using `[abs_of_nonneg (Real.sqrt_nonneg _)]`. Conclude with `sqrt_sum_diffOp_weight_le ha hA₀0 hA₀ hA hu hU hPu hχ h01 hχU' hCa hMa hcoef hK0 hK le_rfl (by omega) hs1 x`.
+
+Use `(l2Norm_finset_sum_le A _ fun α _ ↦ memLp_sum_mul _ _ _ fun ij _ ↦ memg _).trans (Finset.sum_le_sum fun α _ ↦ ?_)` and prove the remaining obligations. Conclude with `l2Norm_sum_const_mul_le _ _ (fun _ _ ↦ by positivity) _ fun ij _ ↦ memg _`. Use `(l2Norm_finset_sum_le A _ fun α _ ↦ (memLp_sum_mul _ _ _ fun ij _ ↦ memg _).const_mul A₀).trans (Finset.sum_le_sum fun α _ ↦ ?_)` and prove the remaining obligations. Rewrite using `[l2Norm_const_mul, abs_of_nonneg hA₀0]`. Conclude with `mul_le_mul_of_nonneg_left (l2Norm_sum_const_mul_le _ _ (fun _ _ ↦ by positivity) _ fun ij _ ↦ memg _) hA₀0`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem wN_step {m : ℕ} (hm : 1 ≤ m) {A : Finset (Fin n → ℕ)}
     {a : (Fin n → ℕ) → EuclideanSpace ℝ (Fin n) → ℂ} (ha : ∀ α ∈ A, ContDiff ℝ ∞ (a α))
     {A₀ : ℝ} (hA₀0 : 0 ≤ A₀) (hA₀ : ∀ α ∈ A, ∀ x, ‖a α x‖ ≤ A₀) (hA : ∀ α ∈ A, mabs α ≤ m)
@@ -564,11 +709,21 @@ theorem wN_step {m : ℕ} (hm : 1 ≤ m) {A : Finset (Fin n → ℕ)}
     _ ≤ _ := add_le_add (mul_le_mul_of_nonneg_left
           (add_le_add h2 (Finset.sum_le_sum h1)) hC₀) le_rfl
 
+/- English proof (translation)
+Rewrite using `[Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]`. Conclude with `Nat.sum_range_choose j` after adjusting the coercions.
+-/
 theorem sum_antidiagonal_choose_eq (j : ℕ) :
     ∑ ij ∈ antidiagonal j, (j.choose ij.1 : ℝ) = 2 ^ j := by
   rw [Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]
   exact_mod_cast Nat.sum_range_choose j
 
+/- English proof (translation)
+Establish `hT : 0 ≤ B * L ^ (P - 1) * (P : ℝ) ^ P`. Establish `: (0 : ℝ) ≤ L` using `by linarith`. Check the signs of the components of the expression. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun ij hij ↦ ?_` and prove the remaining obligations.
+
+Take `⟨h1, h2⟩` from `hidx ij hij`. Establish `hb` using `powMul_bound_le hB0 hL1 (p := P) (q := ij.2 + k) (i := ij.1) hP1 h1 h2`. Establish `hPi : 0 ≤ (P : ℝ) ^ ij.1` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Use `_ = (∑ ij ∈ S, (j.choose ij.1 : ℝ)) * K * (B * L ^ (P - 1) * (P : ℝ) ^ P) := by`.
+
+Rewrite using `[Finset.sum_mul, Finset.sum_mul]`. Use `_ ≤ 2 ^ j * K * (B * L ^ (P - 1) * (P : ℝ) ^ P) := by gcongr`. Rewrite using `[← sum_antidiagonal_choose_eq j]`. Conclude with `Finset.sum_le_sum_of_subset_of_nonneg hS fun _ _ _ ↦ by positivity`.
+-/
 theorem sum_choose_weight_le {j P k : ℕ} {S : Finset (ℕ × ℕ)} (hS : S ⊆ antidiagonal j)
     {K B L : ℝ} (hK0 : 0 ≤ K) (hB0 : 0 ≤ B) (hL1 : 1 ≤ L) (hP1 : 1 ≤ P) (w : ℕ → ℝ)
     (hw : ∀ ij ∈ S, w (ij.2 + k) ≤ B * L ^ (ij.2 + k) * ((ij.2 + k : ℕ) : ℝ) ^ (ij.2 + k))
@@ -598,6 +753,15 @@ theorem sum_choose_weight_le {j P k : ℕ} {S : Finset (ℕ × ℕ)} (hS : S ⊆
         rw [← sum_antidiagonal_choose_eq j]
         exact Finset.sum_le_sum_of_subset_of_nonneg hS fun _ _ _ ↦ by positivity
 
+/- English proof (translation)
+Establish `hL0 : 0 < L` using `by linarith`. Establish `hr0 : 0 ≤ Ma / L` using `div_nonneg hMa hL0.le`. Establish `hr : Ma / L ≤ 1 / 2` using `by rw [div_le_iff₀ hL0]; linarith`. Establish `hT : 0 ≤ B * L ^ P * (P : ℝ) ^ P` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `Finset.sum_le_sum fun ij hij ↦ ?_` and prove the remaining obligations. Establish `h1 : ij.1 + ij.2 = k` using `mem_antidiagonal.1 (Finset.mem_filter.1 hij).1`. Establish `hb` using `coefTerm_le hB0 hL1 hMa (p := P) (k := k) (i := ij.1) (q := d + ij.2) hP1 (by omega) (by omega)`. Combine the equalities or inequalities in the displayed calculation. Use `_ = Ca * (B * L ^ P * (P : ℝ) ^ P) * ∑ ij ∈ (antidiagonal k).filter (fun ij ↦ 0 < ij.1), (Ma / L) ^ ij.1 := by`.
+
+Rewrite using `[Finset.mul_sum]`. Use `_ ≤ Ca * (B * L ^ P * (P : ℝ) ^ P) * (2 * (Ma / L)) := by gcongr; exact sum_filter_antidiagonal_pow_le hr0 hr k`. Use `_ = 2 * Ca * Ma * (B * L ^ (P - 1) * (P : ℝ) ^ P) := by`. Establish `hLP : L ^ P = L ^ (P - 1) * L` using `by rw [← pow_succ, Nat.sub_add_cancel hP1]`. Rewrite using `[hLP]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem sum_coef_weight_le {k P d : ℕ} (hP1 : 1 ≤ P) (hdk : d + k ≤ P) {Ca Ma B L : ℝ}
     (hCa : 0 ≤ Ca) (hMa : 0 ≤ Ma) (hB0 : 0 ≤ B) (hL1 : 1 ≤ L) (hML : 2 * Ma ≤ L) (w : ℕ → ℝ)
     (hw : ∀ ij ∈ (antidiagonal k).filter (fun ij ↦ 0 < ij.1),
@@ -635,6 +799,35 @@ theorem sum_coef_weight_le {k P d : ℕ} (hP1 : 1 ≤ P) (hdk : d + k ≤ P) {Ca
         rw [hLP]
         field_simp
 
+/- English proof (translation)
+Use `set B : ℝ := ∑ q ∈ range m, wN χ u q with hB`. Establish `hB0 : 0 ≤ B` using `Finset.sum_nonneg fun q _ ↦ wN_nonneg _ _ _`. Use `set Q : ℝ := C₀ * ((A.card : ℝ) * (2 * Ca * Ma) + (A.card : ℝ) * (A₀ * (2 ^ m * K)) + (m : ℝ) * (2 ^ m * K)) + 2 ^ m * K with hQ`. Use `set L : ℝ := max (max 1 (2 * Ma)) Q with hL`. Establish `hL1 : 1 ≤ L` using `le_max_of_le_left (le_max_left _ _)`.
+
+Establish `hML : 2 * Ma ≤ L` using `le_max_of_le_left (le_max_right _ _)`. Establish `hQL : Q ≤ L` using `le_max_right _ _`. Use `⟨B, L, hB0, hL1, fun p ↦ ?_⟩` and prove the remaining obligations. Proceed by induction on `p using Nat.strong_induction_on with`. Consider the case `_ p ih`.
+
+Break down `lt_or_ge p m with hpm | hpm` into its components or cases. Establish `h1 : wN χ u p ≤ B` using `Finset.single_le_sum (fun q _ ↦ wN_nonneg χ u q) (Finset.mem_range.2 hpm)`. Establish `h2 : 1 ≤ L ^ p * (p : ℝ) ^ p`. Use `one_le_mul_of_one_le_of_one_le (one_le_pow₀ hL1) ?_` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos p with rfl | hp` into its components or cases.
+
+Simplify using the standard rewrite rules. Conclude with `one_le_pow₀ (by exact_mod_cast hp)`. Combine the equalities or inequalities in the displayed calculation. Take `⟨k, rfl⟩ : ∃ k, p = m + k` from `⟨p - m, by omega⟩ set P := m + k with hP`. Establish `hP1 : 1 ≤ P` using `by omega`.
+
+Use `set T := B * L ^ (P - 1) * (P : ℝ) ^ P with hT`. Establish `hT0 : 0 ≤ T`. Establish `: (0 : ℝ) ≤ L` using `by linarith`. Check the signs of the components of the expression. Establish `ih' : ∀ q, q < P → wN χ u q ≤ B * L ^ q * (q : ℝ) ^ q` using `fun q hq ↦ ih q hq`.
+
+Establish `hstep` using `wN_step hm ha hA₀0 hA₀ hA hu hu_c hU hPu hχ h01 hχU hCa hMa hcoef hC₀ hE hK0 hK k`. Establish `hS1 : (∑ α ∈ A, ∑ ij ∈ (antidiagonal k).filter (fun ij ↦ 0 < ij.1), (k.choose ij.1 : ℝ) * (Ca * Ma ^ ij.1 * ij.1.factorial) * wN χ u (mabs α + ij.2)) ≤ (A.card : ℝ) * (2 * Ca * Ma * T)`. Rewrite using `[← nsmul_eq_mul]`. Use `Finset.sum_le_card_nsmul _ _ _ fun α hα ↦ ?_` and prove the remaining obligations. Use `sum_coef_weight_le hP1 (by have := hA α hα; omega) hCa hMa hB0 hL1 hML _ fun ij hij ↦ ih' _ ?_` and prove the remaining obligations.
+
+Establish `h1 : ij.1 + ij.2 = k` using `mem_antidiagonal.1 (Finset.mem_filter.1 hij).1`. Establish `h2` using `(Finset.mem_filter.1 hij).2`. Use `hA α hα` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hS2 : (∑ α ∈ A, A₀ * ∑ ij ∈ (antidiagonal (mabs α)).filter (fun ij ↦ 0 < ij.1), ((mabs α).choose ij.1 : ℝ) * (K * ((m + k : ℕ) : ℝ) ^ ij.1) * wN χ u (ij.2 + k)) ≤ (A.card : ℝ) * (A₀ * (2 ^ m * K * T))`.
+
+Rewrite using `[← nsmul_eq_mul]`. Use `Finset.sum_le_card_nsmul _ _ _ fun α hα ↦ ?_` and prove the remaining obligations. Establish `hαm` using `hA α hα`. Use `mul_le_mul_of_nonneg_left ?_ hA₀0` and prove the remaining obligations. Use `(sum_choose_weight_le (Finset.filter_subset _ _) hK0 hB0 hL1 hP1 _ (fun ij hij ↦ ih' _ ?_) fun ij hij ↦ ?_).trans ?_` and prove the remaining obligations.
+
+Establish `h1 : ij.1 + ij.2 = mabs α` using `mem_antidiagonal.1 (Finset.mem_filter.1 hij).1`. Establish `h2` using `(Finset.mem_filter.1 hij).2`. Use linear arithmetic over natural numbers and integers. Establish `h1 : ij.1 + ij.2 = mabs α` using `mem_antidiagonal.1 (Finset.mem_filter.1 hij).1`. Establish `h2` using `(Finset.mem_filter.1 hij).2`.
+
+Apply the tactic sequence `constructor <;> omega`. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (pow_le_pow_right₀ (by norm_num) hαm) hK0) hT0`. Establish `hS3 : (∑ j ∈ range m, ∑ ij ∈ antidiagonal j, (j.choose ij.1 : ℝ) * (K * ((m + k : ℕ) : ℝ) ^ ij.1) * wN χ u (ij.2 + k)) ≤ (m : ℝ) * (2 ^ m * K * T)`. Use `Finset.sum_le_card_nsmul (range m) (fun j ↦ ∑ ij ∈ antidiagonal j, (j.choose ij.1 : ℝ) * (K * ((m + k : ℕ) : ℝ) ^ ij.1) * wN χ u (ij.2 + k)) (2 ^ m * K * T) fun j hj ↦ by` as an intermediate fact. Establish `hjm` using `Finset.mem_range.1 hj`.
+
+Use `(sum_choose_weight_le (subset_refl _) hK0 hB0 hL1 hP1 _ (fun ij hij ↦ ih' _ ?_) fun ij hij ↦ ?_).trans ?_` and prove the remaining obligations. Establish `h1 : ij.1 + ij.2 = j` using `mem_antidiagonal.1 hij`. Use linear arithmetic over natural numbers and integers. Establish `h1 : ij.1 + ij.2 = j` using `mem_antidiagonal.1 hij`. Apply the tactic sequence `constructor <;> omega`.
+
+Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (pow_le_pow_right₀ (by norm_num) hjm.le) hK0) hT0`. Simplify `this` using `[nsmul_eq_mul]`. Establish `hS4 : (∑ ij ∈ (antidiagonal m).filter (fun ij ↦ 0 < ij.1), (m.choose ij.1 : ℝ) * (K * ((m + k : ℕ) : ℝ) ^ ij.1) * wN χ u (ij.2 + k)) ≤ 2 ^ m * K * T`. Use `sum_choose_weight_le (Finset.filter_subset _ _) hK0 hB0 hL1 hP1 _ (fun ij hij ↦ ih' _ ?_) fun ij hij ↦ ?_` and prove the remaining obligations. Establish `h1 : ij.1 + ij.2 = m` using `mem_antidiagonal.1 (Finset.mem_filter.1 hij).1`.
+
+Establish `h2` using `(Finset.mem_filter.1 hij).2`. Use linear arithmetic over natural numbers and integers. Establish `h1 : ij.1 + ij.2 = m` using `mem_antidiagonal.1 (Finset.mem_filter.1 hij).1`. Establish `h2` using `(Finset.mem_filter.1 hij).2`. Apply the tactic sequence `constructor <;> omega`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hLP : L ^ P = L * L ^ (P - 1)` using `by rw [← pow_succ', Nat.sub_add_cancel hP1]`. Rewrite using `[hLP, hT]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem weighted_derivative_bound {m : ℕ} (hm : 1 ≤ m) {A : Finset (Fin n → ℕ)}
     {a : (Fin n → ℕ) → EuclideanSpace ℝ (Fin n) → ℂ} (ha : ∀ α ∈ A, ContDiff ℝ ∞ (a α))
     {A₀ : ℝ} (hA₀0 : 0 ≤ A₀) (hA₀ : ∀ α ∈ A, ∀ x, ‖a α x‖ ≤ A₀) (hA : ∀ α ∈ A, mabs α ≤ m)

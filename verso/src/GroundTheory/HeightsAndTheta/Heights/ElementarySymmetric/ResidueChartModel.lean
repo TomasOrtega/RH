@@ -45,6 +45,11 @@ def siegelPtZero : SiegelPt 0 where
   isSymm := Matrix.ext fun i _ => i.elim0
   im_posDef := ⟨Matrix.ext fun i _ => i.elim0, fun _v hv => (hv (Finsupp.ext fun i => i.elim0)).elim⟩
 
+/- English proof (translation)
+Establish `hf : f = fun _ => f 0` using `funext fun z => congrArg f (Subsingleton.elim z 0)`. Use `⟨?_, fun v z => ?_, fun u z => ?_⟩` and prove the remaining obligations. Rewrite using `[hf]`. Conclude with `differentiable_const _`. Rewrite using `[Subsingleton.elim (z + intVec v) z]`.
+
+Simplify using `[perFactor, dotProduct]`. Rewrite using `[Subsingleton.elim (z + siegelPtZero.τ *ᵥ intVec u) z]`. Simplify using `[autFactor, dotProduct]`.
+-/
 theorem mem_thetaSec_siegelPtZero (n : ℕ) (f : (Fin 0 → ℂ) → ℂ) :
     f ∈ thetaSec siegelPtZero (HalfChar.zero 0) n := by
   have hf : f = fun _ => f 0 := funext fun z => congrArg f (Subsingleton.elim z 0)
@@ -68,11 +73,21 @@ def pointForm : RigSymForm ℂ where
   rig := 1
   rig_mem := fun n f _ => ⟨(1 : ℂ) ^ n * f 0, by simp⟩
 
+/- English proof (translation)
+The claim follows from `funext fun i => (show Fin 0 from i).elim0`.
+-/
 theorem pointForm_fn_eq (z w : Fin pointForm.g → ℂ) : z = w :=
   funext fun i => (show Fin 0 from i).elim0
 
 def pointX : Fin (0 + 1) → pointForm.Fn := fun _ _ => 1
 
+/- English proof (translation)
+Use `⟨fun i => mem_thetaSec_siegelPtZero 3 _, ?_, ?_⟩` and prove the remaining obligations. Establish `: Unique (Fin (0 + 1))` using `inferInstanceAs (Unique (Fin 1))`. Rewrite using `[linearIndependent_unique_iff]`. Introduce `h`. Use `congrFun h 0` as an intermediate fact.
+
+Simplify using `[pointX] at this`. Use `le_antisymm (Submodule.span_le.2 ?_) fun f _ => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `mem_thetaSec_siegelPtZero 3 _`. Establish `hf : f = f 0 • pointX 0` using `funext fun z => by`.
+
+Simplify using `[pointX, pointForm_fn_eq z 0]`. Rewrite using `[hf]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, rfl⟩)`.
+-/
 theorem pointX_isBasisOf : pointForm.IsBasisOf 3 pointX := by
   refine ⟨fun i => mem_thetaSec_siegelPtZero 3 _, ?_, ?_⟩
   · have : Unique (Fin (0 + 1)) := inferInstanceAs (Unique (Fin 1))
@@ -87,6 +102,11 @@ theorem pointX_isBasisOf : pointForm.IsBasisOf 3 pointX := by
       rw [hf]
       exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, rfl⟩)
 
+/- English proof (translation)
+Establish `hw` using `(mem_weightedHomogeneousSubmodule _ _ _ _).1 hm`. Use extensionality with `d`. Rewrite using `[coeff_zero]`. Assume the negation of the conclusion as `hd`. Establish `e` using `hw hd`.
+
+Establish `hnn : 0 ≤ Finsupp.weight (fun _ : Fin (N + 1) => (1 : ℤ)) d`. Rewrite using `[Finsupp.weight_apply, Finsupp.sum]`. Conclude with `Finset.sum_nonneg fun i _ => nsmul_nonneg zero_le_one _`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem polyPiece_eq_zero_of_neg {N : ℕ} {c : ℤ} (hc : c < 0) {m : Poly ℂ N}
     (hm : m ∈ polyPiece ℂ N c) : m = 0 := by
   have hw := (mem_weightedHomogeneousSubmodule _ _ _ _).1 hm
@@ -99,6 +119,13 @@ theorem polyPiece_eq_zero_of_neg {N : ℕ} {c : ℤ} (hc : c < 0) {m : Poly ℂ 
     exact Finset.sum_nonneg fun i _ => nsmul_nonneg zero_le_one _
   omega
 
+/- English proof (translation)
+Establish `hw` using `(mem_weightedHomogeneousSubmodule _ _ _ _).1 hm`. Establish `key : ∀ d d' : Fin (0 + 1) →₀ ℕ, coeff d m ≠ 0 → coeff d' m ≠ 0 → d = d'`. Introduce `d d' hd hd'`. Establish `e1` using `hw hd`. Establish `e2` using `hw hd'`.
+
+Rewrite `e1` using `[← e2]`. Use extensionality with `i`. Use `fin_cases i`. Simplify `e1` using `[Finsupp.weight_apply, Finsupp.sum_fintype]`. Use extensionality with `d`.
+
+Rewrite using `[coeff_zero]`. Assume the negation of the conclusion as `hd`. Apply `hd` to reduce the goal to its premises. Rewrite `h0` using `[MvPolynomial.eval_eq, Finset.sum_eq_single d (fun d' hd' hne => absurd (key d d' hd (mem_support_iff.1 hd')).symm hne) (fun h => absurd (mem_support_iff.2 hd) h)]`. Simplify using `using h0`.
+-/
 theorem polyPiece_zero_eq_zero_of_eval {c : ℤ} {m : Poly ℂ 0} (hm : m ∈ polyPiece ℂ 0 c)
     (h0 : MvPolynomial.eval (fun _ => (1 : ℂ)) m = 0) : m = 0 := by
   have hw := (mem_weightedHomogeneousSubmodule _ _ _ _).1 hm
@@ -122,6 +149,9 @@ theorem polyPiece_zero_eq_zero_of_eval {c : ℤ} {m : Poly ℂ 0} (hm : m ∈ po
 def pointι : Poly ℂ 0 →ₗ[ℂ] pointForm.Fn :=
   LinearMap.pi fun z => (aeval fun j => pointX j z).toLinearMap
 
+/- English proof (translation)
+Simplify using `[pointι, pointX]`.
+-/
 theorem pointι_apply (p : Poly ℂ 0) (z : Fin pointForm.g → ℂ) :
     pointι p z = MvPolynomial.eval (fun _ => (1 : ℂ)) p := by
   simp [pointι, pointX]
@@ -153,6 +183,9 @@ def pointChartModel : ResidueChartModel pointForm 3 0 pointX where
     · rw [pointι_apply, pointForm_fn_eq z 0]
       simp
 
+/- English proof (translation)
+Use `⟨inferInstanceAs (Nontrivial (Poly ℂ 0)), fun h => ?_⟩` and prove the remaining obligations. Use `congrFun h 0` as an intermediate fact. Express the relevant statement in the definitionally equal form `pointι 1 0 = 0 at this`. Rewrite `this` using `[pointι_apply]`. Simplify using `at this`.
+-/
 theorem pointChartModel_nontrivial :
     Nontrivial pointChartModel.M ∧ pointChartModel.ι (1 : Poly ℂ 0) ≠ 0 := by
   refine ⟨inferInstanceAs (Nontrivial (Poly ℂ 0)), fun h => ?_⟩

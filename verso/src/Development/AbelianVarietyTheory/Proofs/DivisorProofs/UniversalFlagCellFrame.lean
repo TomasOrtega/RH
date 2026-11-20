@@ -31,15 +31,24 @@ namespace GlobalTheory.FlagZ.TautCell
 
 variable {ι : Type} [Fintype ι] {N : ℕ}
 
+/- English proof (translation)
+The claim follows from `Univ.isFrame_cellCol ι N w τ`.
+-/
 theorem isFrame_colU (w : ι → Equiv.Perm (Fin N)) (τ : ι) : VB.IsFrame (colU w τ) :=
   Univ.isFrame_cellCol ι N w τ
 
+/- English proof (translation)
+The claim follows from `(Univ.stalkStep_eq_colSpan ι N τ l y _ (Univ.flagPt_germ_cellGL_eq_fromSpecStalk ι N w y hy)).trans (Univ.colSpan_germ_cellGL ι N w τ l y hy)`.
+-/
 theorem stalkStep_eq_span (w : ι → Equiv.Perm (Fin N)) (τ : ι) (l : ℕ) (y : Fl ι N) (hy : y ∈ cellU w) :
     Univ.stalkStep ι N τ l y = Submodule.span _ {v | ∃ j : Fin N, (j : ℕ) < l ∧
       v = (freeModule (Fl ι N) (Fin N)).presheaf.germ (cellU w) y hy (colU w τ j)} :=
   (Univ.stalkStep_eq_colSpan ι N τ l y _ (Univ.flagPt_germ_cellGL_eq_fromSpecStalk ι N w y hy)).trans
     (Univ.colSpan_germ_cellGL ι N w τ l y hy)
 
+/- English proof (translation)
+Introduce `y hy` and use `by rw [stalkStep_eq_span w τ l y hy] exact Submodule.subset_span ⟨j, hj, rfl⟩`.
+-/
 theorem colU_mem_sub (w : ι → Equiv.Perm (Fin N)) (τ : ι) (l : ℕ) (j : Fin N) (hj : (j : ℕ) < l) :
     colU w τ j ∈ (Univ.sub ι N τ l).sec (cellU w) := fun y hy => by
   rw [stalkStep_eq_span w τ l y hy]
@@ -51,6 +60,15 @@ namespace GlobalTheory.FlagZ.TautCell
 
 variable {ι : Type} [Fintype ι] {N : ℕ}
 
+/- English proof (translation)
+Use `TopCat.Presheaf.section_ext (Fl ι N).sheaf V _ _ fun y hyV => ?_` and prove the remaining obligations. Establish `hy : y ∈ cellU w` using `h hyV`. Set `B` to `(isFrame_colU w τ).stalkBasis y hy`. Establish `hmem` using `hc y hyV`. Rewrite `hmem` using `[stalkStep_eq_span w τ l y hy]`.
+
+Establish `hsum : (freeModule (Fl ι N) (Fin N)).presheaf.germ V y hyV (Fintype.linearCombination Γ(Fl ι N, V) (fun k => resM _ h (colU w τ k)) c) = ∑ i, (Fl ι N).presheaf.germ V y hyV (c i) • B i`. Simplify using `only [Fintype.linearCombination_apply, map_sum, GlobalTheory.QCoh.germ_smul, GlobalTheory.Twist.germ_resM, B, VB.IsFrame.stalkBasis_apply]`. Rewrite `hmem` using `[hsum]`. Establish `hle : Submodule.span ((Fl ι N).presheaf.stalk y) {v | ∃ j : Fin N, (j : ℕ) < l ∧ v = (freeModule (Fl ι N) (Fin N)).presheaf.germ (cellU w) y hy (colU w τ j)} ≤ LinearMap.ker (B.coord k)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `v ⟨j, hj, rfl⟩`. Establish `hjk : j ≠ k` using `fun e => by subst e; omega`. Express the relevant statement in the definitionally equal form `B.coord k _ = 0`. Establish `hB : B j = (freeModule (Fl ι N) (Fin N)).presheaf.germ (cellU w) y hy (colU w τ j)` using `VB.IsFrame.stalkBasis_apply _ _ _ _`. Rewrite using `[← hB, Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply, if_neg hjk]`.
+
+Establish `h0` using `hle hmem`. Rewrite `h0` using `[LinearMap.mem_ker, ← Module.Basis.equivFun_symm_apply, Module.Basis.coord_apply, ← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`. Express the relevant statement in the definitionally equal form `(Fl ι N).presheaf.germ V y hyV (c k) = (Fl ι N).presheaf.germ V y hyV 0`. Rewrite using `[h0, map_zero]`.
+-/
 theorem coord_eq_zero_of_mem (w : ι → Equiv.Perm (Fin N)) (τ : ι) (l : ℕ) {V : (Fl ι N).Opens} (h : V ≤ cellU w)
     (c : Fin N → Γ(Fl ι N, V))
     (hc : Fintype.linearCombination Γ(Fl ι N, V) (fun k => resM _ h (colU w τ k)) c ∈ (Univ.sub ι N τ l).sec V)
@@ -88,6 +106,21 @@ namespace GlobalTheory.FlagZ.TautCell
 
 variable {ι : Type} [Fintype ι] {N : ℕ}
 
+/- English proof (translation)
+Set `e : Fin l → Γ(Univ.F ι N τ l, cellU w)` to `fun j => (Univ.sub ι N τ l).mkSec (colU w τ (Fin.castLE l.is_le j)) (colU_mem_sub w τ l _ j.2)`. Use `⟨e, fun V h => ?_, fun j => rfl⟩` and prove the remaining obligations. Set `ext : (Fin l → Γ(Fl ι N, V)) → Fin N → Γ(Fl ι N, V)` to `fun a => Function.extend (Fin.castLE l.is_le) a 0`. Establish `hinj : Function.Injective (Fin.castLE l.is_le)` using `Fin.castLE_injective _`. Establish `hcomb (a : Fin l → Γ(Fl ι N, V)) : (Univ.sub ι N τ l).incl.app V (Fintype.linearCombination Γ(Fl ι N, V) (fun j => resM (Univ.sub ι N τ l).toMod h (e j)) a) = Fintype.linearCombination Γ(Fl ι N, V) (fun k => resM _ h (colU w τ k)) (ext a)`.
+
+Rewrite using `[Fintype.linearCombination_apply, Fintype.linearCombination_apply, map_sum]`. Use `Fintype.sum_of_injective _ hinj _ _ (fun k hk => ?_) fun j => ?_` and prove the remaining obligations. Rewrite using `[show ext a k = 0 from Function.extend_apply' _ _ _ (fun ⟨j, hj⟩ => hk ⟨j, hj⟩), zero_smul]`. Rewrite using `[Scheme.Modules.Hom.app_smul, show ext a (Fin.castLE l.is_le j) = a j from hinj.extend_apply _ _ _]`. Both sides reduce to the same expression.
+
+Establish `hF` using `isFrame_colU w τ V h`. Use `⟨fun a b hab => ?_, fun s => ?_⟩` and prove the remaining obligations. Establish `hab'` using `hF.1 ((hcomb a).symm.trans ((congrArg _ hab).trans (hcomb b)))`. Use function extensionality and compare the values at `j`. Use `congrFun hab' (Fin.castLE l.is_le j)` as an intermediate fact.
+
+Simplify `this` using `only [ext, hinj.extend_apply]`. Take `⟨c, hc⟩` from `hF.2 ((Univ.sub ι N τ l).incl.app V s)`. Establish `hz` using `coord_eq_zero_of_mem w τ l h c (hc ▸ (Univ.sub ι N τ l).incl_app_mem s)`. Use `⟨fun j => c (Fin.castLE l.is_le j), (Univ.sub ι N τ l).incl_app_injective V ?_⟩` and prove the remaining obligations. Use `Eq.trans (hcomb (fun j => c (Fin.castLE l.is_le j))) ?_` and prove the remaining obligations.
+
+Rewrite using `[← hc]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : ∃ j, Fin.castLE l.is_le j = k`. Take `⟨j, rfl⟩` from `hk`.
+
+Conclude with `hinj.extend_apply _ _ _`. Express the relevant statement in the definitionally equal form `Function.extend (Fin.castLE l.is_le) (fun j => c (Fin.castLE l.is_le j)) 0 k = c k`. Rewrite using `[Function.extend_apply' _ _ _ hk]`. Use `(hz k ?_).symm` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`.
+
+Conclude with `hk ⟨⟨k, by omega⟩, rfl⟩`.
+-/
 theorem exists_frame_cell (w : ι → Equiv.Perm (Fin N)) (τ : ι) (l : Fin (N + 1)) :
     ∃ e : Fin l → Γ(Univ.F ι N τ l, cellU w), VB.IsFrame e ∧
       ∀ j, (Univ.sub ι N τ l).incl.app (cellU w) (e j) = colU w τ (Fin.castLE l.is_le j) := by
@@ -127,6 +160,9 @@ theorem exists_frame_cell (w : ι → Equiv.Perm (Fin N)) (τ : ι) (l : Fin (N 
       by_contra hlt
       exact hk ⟨⟨k, by omega⟩, rfl⟩
 
+/- English proof (translation)
+Introduce `_ _ _ w τ l` and use `exists_frame_cell w τ l`.
+-/
 theorem exists_isFrame_step_cell : ∀ (ι : Type) [Fintype ι] (N : ℕ) (w : ι → Equiv.Perm (Fin N)) (τ : ι)
     (l : Fin (N + 1)), ∃ e : Fin l → Γ(GlobalTheory.FlagZ.Univ.F ι N τ l, GlobalTheory.FlagZ.TautCell.cellU w), GlobalTheory.VB.IsFrame e ∧
       ∀ j, (GlobalTheory.FlagZ.Univ.sub ι N τ l).incl.app (GlobalTheory.FlagZ.TautCell.cellU w) (e j) =

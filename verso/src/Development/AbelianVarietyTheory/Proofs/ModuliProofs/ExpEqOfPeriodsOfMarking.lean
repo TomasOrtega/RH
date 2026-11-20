@@ -17,20 +17,34 @@ section Lift
 
 variable {V : Type*} [AddCommGroup V] {Q : Type*} [Group Q] {e : V → Q}
 
+/- English proof (translation)
+Establish `h` using `he 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `left_eq_mul.1 h`.
+-/
 theorem hom_zero (he : ∀ z w, e (z + w) = e z * e w) : e 0 = 1 := by
   have h := he 0 0
   rw [add_zero] at h
   exact left_eq_mul.1 h
 
+/- English proof (translation)
+Rewrite using `[eq_mul_inv_iff_mul_eq, ← he, sub_add_cancel]`.
+-/
 theorem hom_sub (he : ∀ z w, e (z + w) = e z * e w) (z w : V) : e (z - w) = e z * (e w)⁻¹ := by
   rw [eq_mul_inv_iff_mul_eq, ← he, sub_add_cancel]
 
+/- English proof (translation)
+Rewrite using `[← hk, hom_sub he, mul_inv_eq_one]`.
+-/
 theorem hom_eq_iff (he : ∀ z w, e (z + w) = e z * e w) {Λ : Set V} (hk : ∀ z, e z = 1 ↔ z ∈ Λ) (z w : V) :
     e z = e w ↔ z - w ∈ Λ := by
   rw [← hk, hom_sub he, mul_inv_eq_one]
 
 end Lift
 
+/- English proof (translation)
+Use `isClosed_of_closure_subset fun p hp => ?_` and prove the remaining obligations. Establish `ht : Tendsto (fun q => p - q) (𝓝 p) (𝓝 0)`. Simplify using `using (continuous_sub_left p).tendsto p`. Take `⟨q, hq, hqΓ⟩` from `mem_closure_iff_nhds.1 hp _ (ht.eventually h)`. Establish `h1 : p - q ∈ Γ.topologicalClosure` using `Γ.topologicalClosure.sub_mem hp (Γ.le_topologicalClosure hqΓ)`.
+
+Simplify using `using Γ.add_mem (hq h1) hqΓ`.
+-/
 theorem isClosed_of_closed_near_zero {G : Type*} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G]
     (Γ : AddSubgroup G) (h : ∀ᶠ p in 𝓝 (0 : G), p ∈ closure (Γ : Set G) → p ∈ Γ) : IsClosed (Γ : Set G) := by
   refine isClosed_of_closure_subset fun p hp => ?_
@@ -40,6 +54,19 @@ theorem isClosed_of_closed_near_zero {G : Type*} [AddCommGroup G] [TopologicalSp
   have h1 : p - q ∈ Γ.topologicalClosure := Γ.topologicalClosure.sub_mem hp (Γ.le_topologicalClosure hqΓ)
   simpa using Γ.add_mem (hq h1) hqΓ
 
+/- English proof (translation)
+Establish `hiff : ∀ z w, e z = e w ↔ Λ.mkQ z = Λ.mkQ w` using `fun z w => (hom_eq_iff he (Λ := Λ) hk z w).trans (Submodule.Quotient.eq Λ).symm`. Use `choose s hs using fun z => hs (e' z)`. Set `Γ : AddSubgroup (V × V)` to `{ carrier := {p | e' p.1 = e p.2} zero_mem' := (hom_zero he').trans (hom_zero he).symm add_mem' := fun {a b} (ha : _ = _) (hb : _ = _) => by show e' (a.1 + b.1) = e (a.2 + b.2)`. Rewrite using `[he, he', ha, hb]`. Use the proof step `neg_mem' := fun {a} (ha : _ = _) => by show e' (-a.1) = e (-a.2)`.
+
+Rewrite using `[← zero_sub, ← zero_sub a.2, hom_sub he, hom_sub he', ha, hom_zero he, hom_zero he'] }`. Establish `hΓ : IsClosed (Γ : Set (V × V))` using `isClosed_of_closed_near_zero Γ hc`. Set `Φ : V →+ V ⧸ Λ` to `AddMonoidHom.mk' (fun z => Λ.mkQ (s z)) fun a b => by`. Rewrite using `[← map_add, ← hiff, he, hs, hs, hs, he']`. Establish `: CompactSpace (V ⧸ Λ)` using `⟨by`.
+
+Rewrite using `[← Λ.mkQ_surjective.range_eq]`. Conclude with `IsZLattice.isCompact_range_of_periodic Λ _ Λ.isOpenQuotientMap_mkQ.continuous fun z w hw => by`. Rewrite using `[map_add, Submodule.mkQ_apply Λ w, (Submodule.Quotient.mk_eq_zero Λ).2 hw, add_zero]⟩`. Establish `hG : IsClosed {p : V × (V ⧸ Λ) | Φ p.1 = p.2}`. Rewrite using `[← (IsOpenQuotientMap.id.prodMap Λ.isOpenQuotientMap_mkQ).isQuotientMap.isClosed_preimage]`.
+
+Use `hΓ using 1` and compare the differences between its conclusion and the goal. Use extensionality with `p`. Use `show Λ.mkQ (s p.1) = Λ.mkQ p.2 ↔ e' p.1 = e p.2`. Rewrite using `[← hiff, hs]`. Establish `hΦ : Continuous Φ` using `continuous_iff_isClosed.2 fun C hC => by`.
+
+Use `isClosedMap_fst_of_compactSpace _ (hG.inter (hC.preimage continuous_snd)) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `z`. Conclude with `⟨fun hz => ⟨(z, Φ z), ⟨rfl, hz⟩, rfl⟩, by`. Introduce and unpack `⟨p, ⟨h1, h2⟩, rfl⟩`. Use `show Φ p.1 ∈ C`.
+
+Rewrite using `[h1]`. Conclude with `h2⟩`. Take `⟨h, hh, -⟩` from `existsUnique_realLinear_lift (ex := Φ) (isDiscrete_ker_mkQ Λ) (Λ.isOpenMap_mkQ.nhds_le 0) hΦ.continuousAt`. Conclude with `⟨h, fun z => ((hiff _ _).2 (hh z)).trans (hs z)⟩`.
+-/
 theorem exists_realLinear_lift {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (Λ : Submodule ℤ V) [DiscreteTopology Λ] [IsZLattice ℝ Λ] {Q : Type*} [Group Q] {e e' : V → Q}
     (he : ∀ z w, e (z + w) = e z * e w) (he' : ∀ z w, e' (z + w) = e' z * e' w) (hs : Function.Surjective e)
@@ -83,6 +110,13 @@ theorem exists_realLinear_lift {V : Type*} [NormedAddCommGroup V] [NormedSpace �
     hΦ.continuousAt
   exact ⟨h, fun z => ((hiff _ _).2 (hh z)).trans (hs z)⟩
 
+/- English proof (translation)
+Use `FiniteDimensional.proper_real V` as an intermediate fact. Take `⟨m, hm, hle⟩` from `(isCompact_sphere (0 : V) 1).exists_forall_le' hq.continuousOn (a := 0) fun z hz => hp z (by rintro rfl; simp at hz)`. Use `(Metric.isBounded_closedBall (x := (0 : V)) (r := max 1 (c / m))).subset fun z (hz : q z ≤ c) => ?_` and prove the remaining obligations. Rewrite using `[mem_closedBall_zero_iff]`. Assume the negation of the conclusion as `hlt`.
+
+Rewrite `hlt` using `[not_le, max_lt_iff, div_lt_iff₀ hm]`. Establish `h0 : ‖z‖ ≠ 0` using `by linarith [hlt.1]`. Establish `h1` using `hle (‖z‖⁻¹ • z) (by simp [norm_smul, h0])`. Establish `h3 : q z = ‖z‖ ^ 2 * q (‖z‖⁻¹ • z)` using `by rw [← h2, smul_inv_smul₀ h0]`. Establish `h4 : ‖z‖ ^ 2 * m ≤ c` using `(mul_le_mul_of_nonneg_left h1 (sq_nonneg _)).trans (h3 ▸ hz)`.
+
+Use polynomial arithmetic with `[mul_pos hm (sub_pos.2 hlt.1)]`.
+-/
 theorem isBounded_sublevel {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     {q : V → ℝ} (hq : Continuous q) (h2 : ∀ (r : ℝ) z, q (r • z) = r ^ 2 * q z) (hp : ∀ z, z ≠ 0 → 0 < q z)
     (c : ℝ) : Bornology.IsBounded {z | q z ≤ c} := by
@@ -99,6 +133,13 @@ theorem isBounded_sublevel {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V
   have h4 : ‖z‖ ^ 2 * m ≤ c := (mul_le_mul_of_nonneg_left h1 (sq_nonneg _)).trans (h3 ▸ hz)
   nlinarith [mul_pos hm (sub_pos.2 hlt.1)]
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis ℤ Y`. Establish `hpow : ∀ (n : ℕ) y, q ((σ ^ n) y) = q y`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro y`.
+
+Both sides reduce to the same expression. Consider the case `succ n ih => intro y`. Rewrite using `[pow_succ', Module.End.mul_apply, hσ, ih]`. Establish `hS : (Set.univ.pi fun i => {y | q y ≤ q (b i)}).Finite` using `Set.Finite.pi fun i => hq _`. Take `⟨m, -, n, -, hmn, hf⟩` from `Set.infinite_univ.exists_lt_map_eq_of_mapsTo (f := fun (n : ℕ) i => (σ ^ n) (b i)) (t := Set.univ.pi fun i => {y | q y ≤ q (b i)}) (fun n _ i _ => (hpow n (b i)).le) hS`.
+
+Establish `h1 : σ ^ m = σ ^ n` using `b.ext fun i => congrFun hf i`. Use `end_eq_one_of_pow_eq_one_of_congr Y σ (n - m) M (Nat.sub_pos_of_lt hmn) (LinearMap.ext fun y => ?_) hM h` and prove the remaining obligations. Apply `Module.End.iterate_injective hi m` to reduce the goal to its premises. Rewrite using `[← Module.End.mul_apply, ← pow_add, Nat.add_sub_cancel' hmn.le, ← h1]`. Both sides reduce to the same expression.
+-/
 theorem end_eq_one_of_invariant (Y : Type*) [AddCommGroup Y] [Module.Free ℤ Y] [Module.Finite ℤ Y]
     (σ : Module.End ℤ Y) (hi : Function.Injective σ) (q : Y → ℝ) (hq : ∀ c, {y | q y ≤ c}.Finite)
     (hσ : ∀ y, q (σ y) = q y) (M : ℕ) (hM : 3 ≤ M) (h : ∀ y, ∃ z, σ y = y + M • z) : σ = 1 := by
@@ -127,6 +168,11 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj TensorProduct
 
+/- English proof (translation)
+Establish `e : x.appLE U ⊤ h = x'.appLE U ⊤ h'`. Rewrite using `[← cancel_mono (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom]`. Use extensionality with `f`. Use `hv f` as an intermediate fact. Rewrite `this` using `[valAt'_eq_valAt x h, valAt'_eq_valAt x' h']`. Then use the resulting hypothesis.
+
+Establish `hV` using `isAffineOpen_top (Sp ℂ)`. Establish `: IsIso hV.fromSpec` using `by rw [IsAffineOpen.fromSpec_top]; infer_instance`. Rewrite using `[← cancel_epi hV.fromSpec, ← hU.SpecMap_appLE_fromSpec x hV h, ← hU.SpecMap_appLE_fromSpec x' hV h', e]`.
+-/
 theorem point_ext {X : Scheme.{0}} {x x' : Sp ℂ ⟶ X} {U : X.Opens} (hU : IsAffineOpen U) (h : ⊤ ≤ x ⁻¹ᵁ U)
     (h' : ⊤ ≤ x' ⁻¹ᵁ U) (hv : ∀ f, valAt' x U f = valAt' x' U f) : x = x' := by
   have e : x.appLE U ⊤ h = x'.appLE U ⊤ h' := by
@@ -138,6 +184,13 @@ theorem point_ext {X : Scheme.{0}} {x x' : Sp ℂ ⟶ X} {U : X.Opens} (hU : IsA
   have : IsIso hV.fromSpec := by rw [IsAffineOpen.fromSpec_top]; infer_instance
   rw [← cancel_epi hV.fromSpec, ← hU.SpecMap_appLE_fromSpec x hV h, ← hU.SpecMap_appLE_fromSpec x' hV h', e]
 
+/- English proof (translation)
+Take `⟨_, ⟨U, hU, rfl⟩, hx, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (e 0 (default : PrimeSpectrum ℂ))) isOpen_univ`. Establish `hx0 : ⊤ ≤ e 0 ⁻¹ᵁ U` using `(top_le_preimage_iff_mem _ _).2 hx`. Establish `h1 : ∀ᶠ p : V × V in 𝓝 0, p.1 ∈ {b ∈ Set.univ | ⊤ ≤ e' b ⁻¹ᵁ U}` using `(continuous_fst.tendsto (0 : V × V)).eventually ((he' U 0).1.mem_nhds ⟨trivial, by show ⊤ ≤ e' 0 ⁻¹ᵁ U`. Rewrite using `[h0]`. Conclude with `hx0⟩)`.
+
+Establish `h2 : ∀ᶠ p : V × V in 𝓝 0, p.2 ∈ {b ∈ Set.univ | ⊤ ≤ e b ⁻¹ᵁ U}` using `(continuous_snd.tendsto (0 : V × V)).eventually ((he U 0).1.mem_nhds ⟨trivial, hx0⟩)`. Use `filter_upwards [h1, h2] with p hp1 hp2 hp`. Use `point_ext hU hp1.2 hp2.2 fun f => ?_` and prove the remaining obligations. Establish `c1` using `((he' U f).2.differentiableAt ((he' U f).1.mem_nhds hp1)).continuousAt`. Establish `c2` using `((he U f).2.differentiableAt ((he U f).1.mem_nhds hp2)).continuousAt`.
+
+Use `tendsto_nhds_unique_of_frequently_eq (l := 𝓝 p) (c1.tendsto.comp (continuous_fst.tendsto p)) (c2.tendsto.comp (continuous_snd.tendsto p)) ((mem_closure_iff_frequently.1 hp).mono fun r (hr : _ = _) => ?_)` and prove the remaining obligations. Use `show valAt' (e' r.1) U f = valAt' (e r.2) U f`. Rewrite using `[hr]`.
+-/
 theorem eventually_eq_of_mem_closure {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {X : Scheme.{0}}
     {e e' : V → (Sp ℂ ⟶ X)} (he : IsHolTo Set.univ e) (he' : IsHolTo Set.univ e') (h0 : e' 0 = e 0) :
     ∀ᶠ p : V × V in 𝓝 0, p ∈ closure {p : V × V | e' p.1 = e p.2} → e' p.1 = e p.2 := by
@@ -159,6 +212,13 @@ theorem eventually_eq_of_mem_closure {V : Type} [NormedAddCommGroup V] [NormedSp
   show valAt' (e' r.1) U f = valAt' (e r.2) U f
   rw [hr]
 
+/- English proof (translation)
+Use `sub_eq_zero.1 (hu _ ⟨hv.1, fun U hU f => (hv.2 U hU f).trans ?_⟩)` and prove the remaining obligations. Establish `hx : ⊤ ≤ e 0 ⁻¹ᵁ U`. Rewrite using `[← hv.1, Scheme.Hom.comp_preimage]`. Conclude with `fun p _ => hU trivial`. Establish `h0 : e' 0 = e 0` using `by rw [← hh, map_zero]`.
+
+Establish `d1` using `((he U f).2.differentiableAt ((he U f).1.mem_nhds ⟨trivial, hx⟩)).hasFDerivAt`. Establish `d2` using `((he' U f).2.differentiableAt ((he' U f).1.mem_nhds ⟨trivial, h0 ▸ hx⟩)).hasFDerivAt`. Establish `d3` using `HasFDerivAt.comp 0 (f := h) (by rw [map_zero]; exact d1.restrictScalars ℝ) h.hasFDerivAt`. Establish `d4` using `(d2.restrictScalars ℝ).unique (by`. Use `d3 using 1` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `z`. Use `show _ = valAt' (e (h z)) U f`. Rewrite using `[hh])`. Establish `d5 : ∀ w, fderiv ℂ (fun b => valAt' (e' b) U f) 0 w = fderiv ℂ (fun b => valAt' (e b) U f) 0 (h w)` using `fun w => DFunLike.congr_fun d4 w`. Rewrite using `[map_zero, map_sub, ← d5, map_smul, map_smul, d5, sub_self]`.
+-/
 theorem map_I_smul {g : ℕ} {X : Scheme.{0}} {e e' : (Fin g → ℂ) → (Sp ℂ ⟶ X)} (he : IsHolTo Set.univ e)
     (he' : IsHolTo Set.univ e') {v : Sp (DualNumber ℂ) ⟶ X} (hv : IsDerivAt0 e 0 v)
     (hu : ∀ w, IsDerivAt0 e w v → w = 0) (h : (Fin g → ℂ) →L[ℝ] (Fin g → ℂ)) (hh : ∀ z, e (h z) = e' z)
@@ -182,6 +242,25 @@ theorem map_I_smul {g : ℕ} {X : Scheme.{0}} {e e' : (Fin g → ℂ) → (Sp �
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Take `⟨-, hinj, hd, hspan, Hm, -, hpos, hIm⟩` from `hP`. Set `σ : Module.End ℤ D.La` to `(AddMonoidHom.mk' φ fun a b => hinj (by simp only [hφ, map_add])).toIntLinearMap`. Establish `hσ : ∀ a, σ a = φ a` using `fun _ => rfl`. Use `D.fin` as an intermediate fact. Establish `: Module.Finite ℤ D.La` using `Module.Finite.trans (𝓞 E) D.La`.
+
+Establish `: Module.IsTorsionFree ℤ D.La` using `Function.Injective.moduleIsTorsionFree P hinj fun r m => map_zsmul P r m`. Establish `: Module.Free ℤ D.La` using `Module.free_of_finite_type_torsion_free'`. Set `B : (Fin g → ℂ) →ₗ[ℝ] (Fin g → ℂ) →ₗ[ℝ] ℝ` to `LinearMap.mk₂ ℝ (fun u v => (hermForm Hm u v).im) (fun a b c => by simp [hermForm]) (fun r a b => by simp [hermForm]) (fun a b c => by simp [hermForm, Matrix.mulVec_add]) (fun r a b => by simp [hermForm, Matrix.mulVec_smul])`. Establish `hB : B.compl₁₂ h.toLinearMap h.toLinearMap = B`. Use `LinearMap.ext_on_range hspan fun a => LinearMap.ext_on_range hspan fun b => ?_` and prove the remaining obligations.
+
+Use `show (hermForm Hm (h (P a)) (h (P b))).im = (hermForm Hm (P a) (P b)).im`. Rewrite using `[← hφ, ← hφ, hIm, hIm, hEF]`. Establish `hq : ∀ u, (hermForm Hm u u).re = B (Complex.I • u) u` using `fun u => by show _ = (hermForm Hm (Complex.I • u) u).im`. Simplify using `[hermForm]`. Establish `hbd` using `isBounded_sublevel (q := fun u => (hermForm Hm u u).re) (by unfold hermForm; fun_prop) (fun r u => by`.
+
+Simplify using `only [hq]`. Rewrite using `[smul_comm, map_smul, map_smul, LinearMap.smul_apply, smul_smul, sq, smul_eq_mul]) hpos`. Establish `key : σ = 1`. Use `end_eq_one_of_invariant D.La σ ((injective_iff_map_eq_zero σ).2 fun a ha => D.unimod.1 ?_) (fun a => (hermForm Hm (P a) (P a)).re) (fun c => ?_) (fun a => ?_) l.M l.three_le fun a => ?_` and prove the remaining obligations. Use extensionality with `b`.
+
+Rewrite using `[← hEF, ← hσ, ha, map_zero]`. Both sides reduce to the same expression. Use `Set.Finite.of_finite_image (f := P) ((Metric.finite_isBounded_inter_isClosed (s := P.range) DiscreteTopology.isDiscrete (hbd c) AddSubgroup.isClosed_of_discrete).subset ?_) hinj.injOn` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Conclude with `⟨ha, a, rfl⟩`.
+
+Simplify using `only [hq, hσ, hφ, ← hI]`. Conclude with `LinearMap.congr_fun₂ hB _ _`. Take `⟨i, hi, j, hj, hij⟩` from `Submodule.mem_sup.mp ((Ideal.eq_top_iff_one _).mp l.coprime)`. Take `⟨z₁, hz₁⟩` from `hM (j • a) (Submodule.smul_mem_smul hj trivial)`. Take `⟨z₂, hz₂⟩` from `ObjRigid.exists_eq_nsmul D l.M (i • (φ a - a)) fun b => by`.
+
+Take `⟨w, hw⟩` from `hM (H.bar i • b) (Submodule.smul_mem_smul (Ideal.mem_map_of_mem _ hi) trivial)`. Establish `h1` using `hEF a (H.bar i • b)`. Rewrite `h1` using `[hw, map_add, map_nsmul, nsmul_eq_mul]`. Rewrite using `[D.adj, map_sub, LinearMap.sub_apply]`. Conclude with `⟨-D.EF (φ a) w, by linarith⟩`.
+
+Use `⟨z₂ + z₁, ?_⟩` and prove the remaining obligations. Rewrite `hz₁` using `[hO]`. Rewrite using `[hσ, smul_add, ← hz₂, ← sub_eq_iff_eq_add'.2 hz₁, ← smul_sub, ← add_smul, hij, one_smul, add_sub_cancel]`. Establish `: h.toLinearMap = LinearMap.id` using `LinearMap.ext_on_range hspan fun a => by show h (P a) = P a`. Rewrite using `[← hφ, ← hσ, key]`.
+
+Both sides reduce to the same expression. Conclude with `LinearMap.congr_fun this z`.
+-/
 theorem eq_self_of_isometry (D : Datum H) (l : Level H) {g : ℕ} {ty : Fin g → (E →+* ℂ)}
     {P : D.La →+ (Fin g → ℂ)} (hP : IsPeriod D ty P) (h : (Fin g → ℂ) →L[ℝ] (Fin g → ℂ))
     (hI : ∀ z, h (Complex.I • z) = Complex.I • h z) (φ : D.La → D.La) (hφ : ∀ a, P (φ a) = h (P a))
@@ -248,6 +327,31 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct
 open ExpUnique
 
+/- English proof (translation)
+Introduce and unpack `E _ _ _ H D l Xo σ g ty - - - D' t P y e e' ⟨-, -, f, ν, -, hf, -, -, rfl⟩ ⟨-, hP, ⟨add, onto, hol, dv, du⟩, ker, lin, weil, eta, -⟩ ⟨-, -, ⟨add', -, hol', -, -⟩, ker', lin', weil', eta', -⟩`. Establish `hM : 0 < l.M` using `lt_of_lt_of_le (by norm_num) l.three_le`. Establish `hd : DiscreteTopology P.range` using `hP.2.2.1`. Establish `: DiscreteTopology P.range.toIntSubmodule` using `hd`. Establish `: IsZLattice ℝ P.range.toIntSubmodule` using `⟨hP.2.2.2.1⟩`.
+
+Take `⟨h, hh⟩` from `exists_realLinear_lift P.range.toIntSubmodule add add' onto ker <| by filter_upwards [eventually_eq_of_mem_closure hol hol' (by rw [hom_zero add, hom_zero add'])] with p hp hc`. Use `Over.OverMorphism.ext (hp (closure_mono (fun r hr => ?_) hc))` and prove the remaining obligations. Conclude with `congrArg (·.left) (show e' r.1 = e r.2 from hr)`. Take `⟨v, hv, -⟩` from `dv 0`. Establish `hI` using `map_I_smul hol hol' hv (fun w hw => (du v hv.1).unique hw hv) h fun z => congrArg (·.left) (hh z)`.
+
+Establish `hn : ∀ (k : ℕ) z, h ((k : ℂ)⁻¹ • z) = (k : ℂ)⁻¹ • h z` using `fun k z => by`. Establish `: ∀ u : Fin g → ℂ, (k : ℂ)⁻¹ • u = (k : ℝ)⁻¹ • u` using `fun u => by`. Rewrite using `[← Complex.coe_smul, Complex.ofReal_inv, Complex.ofReal_natCast]`. Rewrite using `[this, this, map_smul]`. Use `choose φ hφ using fun a => (ker (h (P a))).1 ((hh _).trans ((ker' _).2 ⟨a, rfl⟩))`.
+
+Establish `he' : ∀ (k : ℕ) a, e' ((k : ℂ)⁻¹ • P a) = e ((k : ℂ)⁻¹ • P (φ a))` using `fun k a => by rw [← hh, hn, hφ]`. Apply the tactic sequence `have key := eq_self_of_isometry D' l hP h hI φ hφ (fun a b => ?_) (fun c a => hP.2.1 ?_) fun b hb => ?_`. Conclude with `funext fun z => by rw [← hh, key]`. Rewrite using `[← sub_eq_zero]`. Use `Int.eq_zero_of_dvd_of_natAbs_lt_natAbs (d := ((D'.EF (φ a) (φ b) - D'.EF a b).natAbs + 1 : ℕ)) ?_ (by rw [Int.natAbs_natCast]; exact Nat.lt_succ_self _)` and prove the remaining obligations.
+
+Generalize the expression as in `hk : (D'.EF (φ a) (φ b) - D'.EF a b).natAbs + 1 = k`. Establish `hk0 : 0 < k` using `hk ▸ Nat.succ_pos _`. Establish `w1` using `weil k (φ a) (φ b) (Units.mk0 _ (Complex.exp_ne_zero _)) hk0 rfl`. Establish `w2` using `weil' k a b (Units.mk0 _ (Complex.exp_ne_zero _)) hk0 rfl`. Rewrite `w2` using `[he', he']`.
+
+Establish `w3` using `congrArg Units.val (weilIs_unique_fieldPoint _ _ _ Xo.univ.t.PP.isLB ℂ y _ _ _ _ _ w1 w2)`. Take `⟨n, hn⟩` from `Complex.exp_eq_exp_iff_exists_int.1 w3`. Use `⟨-n, Int.cast_injective (α := ℂ) ?_⟩` and prove the remaining obligations. Establish `hk1 : (k : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hk0.ne'`. Establish `h2` using `Complex.two_pi_I_ne_zero`.
+
+Generalize the expression as in `2 * (Real.pi : ℂ) * Complex.I = c at hn h2`. Clear denominators, using `at hn` for the nonvanishing conditions. Use `push_cast`. Take the linear combination `-hn`. Set `m : (Fin g → ℂ) →ₗ[ℝ] (Fin g → ℂ)` to `LinearMap.pi fun k => (LinearMap.mulLeft ℝ (ty k (c : E))).comp (LinearMap.proj k)`.
+
+Establish `hm : ∀ z, m z = fun k => ty k (c : E) * z k` using `fun _ => rfl`. Establish `hc : h.toLinearMap ∘ₗ m = m ∘ₗ h.toLinearMap` using `realLinear_eq_of_sub_mem_discrete (Γ := P.range) DiscreteTopology.isDiscrete fun z => (hom_eq_iff add (Λ := P.range) ker _ _).1 (by show e (h (m z)) = e (m (h z))`. Rewrite using `[hh, hm, hm, lin, lin', hh])`. Establish `hPm : ∀ x, P (c • x) = m (P x)` using `fun x => funext (hP.1 c x)`. Rewrite using `[hφ, hPm, hPm, hφ]`.
+
+Conclude with `LinearMap.congr_fun hc _`. Establish `hM1 : (l.M : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hM.ne'`. Establish `hadd : ∀ a b, φ (a + b) = φ a + φ b` using `fun a b => hP.2.1 (by simp only [hφ, map_add])`. Establish `hns : ∀ (n : ℕ) a, φ (n • a) = n • φ a` using `fun n a => hP.2.1 (by simp only [hφ, map_nsmul])`. Use `Submodule.smul_induction_on hb (fun j hj x _ => ?_) ?_` and prove the remaining obligations.
+
+Take `⟨a, w, rfl⟩` from `(hf l.M' (Nat.lcm_pos hM l.A_pos)).2 x`. Take `⟨r, hr⟩ : l.M ∣ l.M'` from `Nat.dvd_lcm_left _ _`. Establish `ha` using `Submodule.smul_mem_smul hj (Submodule.mem_top (x := a))`. Take `⟨z, hz⟩` from `(hom_eq_iff add (Λ := P.range) ker _ _).1 ((he' _ _).symm.trans ((eta' _ ha).symm.trans (eta _ ha)))`. Establish `h1 : φ (f l.M' (j • a)) = f l.M' (j • a) + l.M • z` using `hP.2.1 (by`.
+
+Rewrite using `[map_add, map_nsmul, hz, ← Nat.cast_smul_eq_nsmul ℂ, ← smul_sub, smul_inv_smul₀ hM1, add_sub_cancel])`. Establish `h2 : j • l.M' • w = l.M • r • j • w` using `by rw [hr, mul_smul, smul_comm j, smul_comm j]`. Use `⟨z + φ (r • j • w) - r • j • w, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, ← map_smul, h2, hadd, h1, hns, smul_sub, smul_add]`. Normalize the expressions using the abelian group laws.
+
+Introduce and unpack `x x' ⟨z, hz⟩ ⟨z', hz'⟩`. Conclude with `⟨z + z', by rw [hadd, hz, hz', smul_add, add_add_add_comm]⟩`.
+-/
 theorem exp_eq_of_periods_of_marking : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (σ : KA l →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)), 1 ≤ D.p + D.q → σ (baseKA l).ρ = H.rt0 → IsTypeFn H D.p D.q ty → ∀ (D' : Datum H) (t : D.La →ₗ[𝓞 E] D'.La) (P : D'.La →+ (Fin g → ℂ)) (y : Sp ℂ ⟶ Xo.X) (e e' : (Fin g → ℂ) → (Over.mk y ⟶ Xo.univ.t.G)), (D'.p = D.p ∧ D'.q = D.q ∧ ∃ (f : ℕ → D.La →ₗ[𝓞 E] D'.La) (ν : ℕ → ℤ), (∀ n m : ℕ, 0 < n → 0 < m → ∀ a, ∃ e, f (n * m) a = f n a + n • e) ∧ (∀ n : ℕ, 0 < n → (∀ a, (∃ e, f n a = n • e) ↔ ∃ e, a = n • e) ∧ ∀ a', ∃ a e, a' = f n a + n • e) ∧ (∀ n : ℕ, 0 < n → ∀ a a', (n : ℤ) ∣ D'.EF (f n a) (f n a') - ν n * D.EF a a') ∧ σ (baseKA l).ζ = Complex.exp (-(2 * Real.pi * Complex.I) * (ν l.A : ℂ) / l.A) ∧ t = f l.M') → (y ≫ Xo.s = spMap σ ∧ IsPeriod D' ty P ∧ ((∀ z w, e (z + w) = e z * e w) ∧ Function.Surjective e ∧ IsHolTo Set.univ (fun z => (e z).left) ∧ (∀ w, ∃! v : epsPt y ⟶ Xo.univ.t.G, IsDerivAt0 (fun z => (e z).left) w v.left) ∧ (∀ v : epsPt y ⟶ Xo.univ.t.G, spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v.left = (e 0).left → ∃! w, IsDerivAt0 (fun z => (e z).left) w v.left)) ∧ (∀ z, e z = 1 ↔ z ∈ (P).range) ∧ (∀ (a : 𝓞 E) z, e (fun k => ty k (a : E) * z k) = e z ≫ Xo.univ.t.act.act a) ∧ (∀ (k : ℕ) (a a₂ : D'.La) (c : ℂˣ), 0 < k → (c : ℂ) = Complex.exp (-(2 * Real.pi * Complex.I) * (D'.EF a a₂ : ℂ) / k) → Out.WeilIs Xo.univ.t.G Xo.univ.t.PP.L k (e ((k : ℂ)⁻¹ • P a)) (e ((k : ℂ)⁻¹ • P a₂)) (unitOn c)) ∧ (∀ a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) D.La), toUnit _ ≫ Xo.univ.eta a = e ((l.M : ℂ)⁻¹ • P (t a))) ∧ ∀ a, toUnit _ ≫ Xo.univ.etaA a = e ((l.A : ℂ)⁻¹ • P (t a))) → (y ≫ Xo.s = spMap σ ∧ IsPeriod D' ty P ∧ ((∀ z w, e' (z + w) = e' z * e' w) ∧ Function.Surjective e' ∧ IsHolTo Set.univ (fun z => (e' z).left) ∧ (∀ w, ∃! v : epsPt y ⟶ Xo.univ.t.G, IsDerivAt0 (fun z => (e' z).left) w v.left) ∧ (∀ v : epsPt y ⟶ Xo.univ.t.G, spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v.left = (e' 0).left → ∃! w, IsDerivAt0 (fun z => (e' z).left) w v.left)) ∧ (∀ z, e' z = 1 ↔ z ∈ (P).range) ∧ (∀ (a : 𝓞 E) z, e' (fun k => ty k (a : E) * z k) = e' z ≫ Xo.univ.t.act.act a) ∧ (∀ (k : ℕ) (a a₂ : D'.La) (c : ℂˣ), 0 < k → (c : ℂ) = Complex.exp (-(2 * Real.pi * Complex.I) * (D'.EF a a₂ : ℂ) / k) → Out.WeilIs Xo.univ.t.G Xo.univ.t.PP.L k (e' ((k : ℂ)⁻¹ • P a)) (e' ((k : ℂ)⁻¹ • P a₂)) (unitOn c)) ∧ (∀ a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) D.La), toUnit _ ≫ Xo.univ.eta a = e' ((l.M : ℂ)⁻¹ • P (t a))) ∧ ∀ a, toUnit _ ≫ Xo.univ.etaA a = e' ((l.A : ℂ)⁻¹ • P (t a))) → e = e' := by
   rintro E _ _ _ H D l Xo σ g ty - - - D' t P y e e' ⟨-, -, f, ν, -, hf, -, -, rfl⟩
     ⟨-, hP, ⟨add, onto, hol, dv, du⟩, ker, lin, weil, eta, -⟩ ⟨-, -, ⟨add', -, hol', -, -⟩, ker', lin', weil', eta', -⟩

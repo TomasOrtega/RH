@@ -15,6 +15,9 @@ section Pi
 
 variable {ι : Type u} (K : ι → CochainComplex (ModuleCat.{u} k) ℕ)
 
+/- English proof (translation)
+Distinguish the cases in `h : i + 1 = j`. Substitute `h` using the available equality. Conclude with `piComplex_d_hom_apply K i x v`. Rewrite using `[(piComplex K).shape i j h, (K v).shape i j h]`. Both sides reduce to the same expression.
+-/
 theorem piComplex_d_hom_apply' (i j : ℕ) (x : (piComplex K).X i) (v : ι) :
     ((piComplex K).d i j).hom x v = ((K v).d i j).hom (x v) := by
   by_cases h : i + 1 = j
@@ -27,11 +30,17 @@ noncomputable def piProj (v : ι) : piComplex K ⟶ K v :=
   CochainComplex.ofHom (fun _ => ModuleCat.ofHom (LinearMap.proj v)) fun n =>
     ModuleCat.hom_ext (LinearMap.ext fun x => (piComplex_d_hom_apply K n x v).symm)
 
+/- English proof (translation)
+The claim follows from `rfl @[reassoc (attr := simp)]`.
+-/
 theorem piProj_f_hom_apply (v : ι) (n : ℕ) (x : (piComplex K).X n) :
     ((piProj K v).f n).hom x = x v :=
   rfl
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+The claim follows from `HomologicalComplex.hom_ext _ _ fun _ => ModuleCat.hom_ext (LinearMap.ext fun _ => rfl)`.
+-/
 theorem piLift_piProj {M : CochainComplex (ModuleCat.{u} k) ℕ} (g : ∀ v, M ⟶ K v) (v : ι) :
     piLift g ≫ piProj K v = g v :=
   HomologicalComplex.hom_ext _ _ fun _ => ModuleCat.hom_ext (LinearMap.ext fun _ => rfl)
@@ -40,10 +49,26 @@ noncomputable def piHomologyToPi (n : ℕ) :
     (piComplex K).homology n ⟶ ModuleCat.of k (∀ v, (K v).homology n) :=
   ModuleCat.ofHom (LinearMap.pi fun v => (HomologicalComplex.homologyMap (piProj K v) n).hom)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem piHomologyToPi_hom_apply (n : ℕ) (h : (piComplex K).homology n) (v : ι) :
     (piHomologyToPi K n).hom h v = (HomologicalComplex.homologyMap (piProj K v) n).hom h :=
   rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `h hh`. Take `⟨c, rfl⟩` from `(ModuleCat.epi_iff_surjective ((piComplex K).homologyπ n)).1 inferInstance h`. Establish `hv : ∀ v, ∃ y : (K v).X ((ComplexShape.up ℕ).prev n), ((K v).d _ n).hom y = ((K v).iCycles n).hom ((HomologicalComplex.cyclesMap (piProj K v) n).hom c)`.
+
+Introduce `v`. Use `(homologyπ_eq_zero_iff _ _).1 ?_` and prove the remaining obligations. Rewrite using `[← homologyMap_homologyπ_apply]`. Conclude with `congrFun hh v`. Use `choose y hy using hv`.
+
+Use `(homologyπ_eq_zero_iff _ c).2 ⟨show (piComplex K).X _ from y, funext fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[piComplex_d_hom_apply', hy v, iCycles_cyclesMap_apply]`. Both sides reduce to the same expression. Introduce `h`. Establish `hv : ∀ v, ∃ c : (K v).cycles n, ((K v).homologyπ n).hom c = h v` using `fun v => (ModuleCat.epi_iff_surjective ((K v).homologyπ n)).1 inferInstance (h v)`.
+
+Use `choose c hc using hv`. Take `⟨c', hc'⟩` from `exists_iCycles_eq (K := piComplex K) (show (piComplex K).X n from fun v => ((K v).iCycles n).hom (c v)) (by`. Rewrite using `[CochainComplex.next]`. Use function extensionality and compare the values at `v`. Rewrite using `[piComplex_d_hom_apply]`.
+
+Conclude with `iCycles_d_apply _ n (n + 1) (c v))`. Use `⟨((piComplex K).homologyπ n).hom c', funext fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[piHomologyToPi_hom_apply, homologyMap_homologyπ_apply, ← hc v]`. Use `congr 1`. Apply `(ModuleCat.mono_iff_injective ((K v).iCycles n)).1 inferInstance` to reduce the goal to its premises.
+
+Rewrite using `[iCycles_cyclesMap_apply, hc']`. Both sides reduce to the same expression.
+-/
 theorem piHomologyToPi_bijective (n : ℕ) : Function.Bijective (piHomologyToPi K n).hom := by
   constructor
   · rw [injective_iff_map_eq_zero]
@@ -81,10 +106,16 @@ noncomputable def piHomologyIso (n : ℕ) :
     (piComplex K).homology n ≅ ModuleCat.of k (∀ v, (K v).homology n) :=
   (LinearEquiv.ofBijective (piHomologyToPi K n).hom (piHomologyToPi_bijective K n)).toModuleIso
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem piHomologyIso_hom_apply (n : ℕ) (h : (piComplex K).homology n) (v : ι) :
     (piHomologyIso K n).hom.hom h v = (HomologicalComplex.homologyMap (piProj K v) n).hom h :=
   rfl
 
+/- English proof (translation)
+Use `ModuleCat.hom_ext (LinearMap.ext fun h => funext fun v => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(HomologicalComplex.homologyMap (piProj K v) n).hom ((HomologicalComplex.homologyMap (piLift g) n).hom h) = _`. Rewrite using `[hom_apply_hom_apply_of_comp_eq (HomologicalComplex.homologyMap_comp _ _ n).symm h, piLift_piProj]`. Both sides reduce to the same expression.
+-/
 theorem homologyMap_piLift_piHomologyIso_hom {M : CochainComplex (ModuleCat.{u} k) ℕ}
     (g : ∀ v, M ⟶ K v) (n : ℕ) :
     HomologicalComplex.homologyMap (piLift g) n ≫ (piHomologyIso K n).hom =

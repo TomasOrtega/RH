@@ -10,10 +10,16 @@ open Topology Filter Polynomial
 
 noncomputable section
 
+/- English proof (translation)
+Rewrite using `[mul_pow, ← pow_mul, ← mul_assoc, ← pow_add, ← mul_add, Nat.sub_add_cancel hj]`.
+-/
 theorem pow_clear (e s : ℂ) (M n j : ℕ) (hj : j ≤ n) :
     e ^ (M * (n - j)) * (e ^ M * s) ^ j = e ^ (M * n) * s ^ j := by
   rw [mul_pow, ← pow_mul, ← mul_assoc, ← pow_add, ← mul_add, Nat.sub_add_cancel hj]
 
+/- English proof (translation)
+Rewrite using `[mul_add, Finset.mul_sum, mul_pow, ← pow_mul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, pow_clear _ _ _ _ _ j.2.le]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem centred_clear {n : ℕ} (b : Fin n → ℂ) (M : ℕ) (e x : ℂ) :
     (e ^ M * x) ^ n + ∑ j, b j * e ^ (M * (n - j)) * (e ^ M * x) ^ (j : ℕ) =
       e ^ (M * n) * (x ^ n + ∑ j, b j * x ^ (j : ℕ)) := by
@@ -23,16 +29,87 @@ theorem centred_clear {n : ℕ} (b : Fin n → ℂ) (M : ℕ) (e x : ℂ) :
   rw [mul_assoc, pow_clear _ _ _ _ _ j.2.le]
   ring
 
+/- English proof (translation)
+Rewrite using `[Finset.mul_sum, ← Finset.prod_pow_eq_pow_sum, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun i _ => by rw [mul_pow, pow_mul]`.
+-/
 theorem prod_pow_clear {ι : Type*} (s : Finset ι) (e : ℂ) (M : ℕ) (x : ι → ℂ) (α : ι → ℕ) :
     ∏ i ∈ s, (e ^ M * x i) ^ α i = e ^ (M * ∑ i ∈ s, α i) * ∏ i ∈ s, x i ^ α i := by
   rw [Finset.mul_sum, ← Finset.prod_pow_eq_pow_sum, ← Finset.prod_mul_distrib]
   exact Finset.prod_congr rfl fun i _ => by rw [mul_pow, pow_mul]
 
+/- English proof (translation)
+Use `LinearMap.pi_apply_eq_sum_univ (lam : (σ → ℂ) →ₗ[ℂ] ℂ) x` as an intermediate fact. Simplify `this` using `[smul_eq_mul]`.
+-/
 theorem clm_apply_eq_sum {σ : Type} [Fintype σ] [DecidableEq σ] (lam : (σ → ℂ) →L[ℂ] ℂ) (x : σ → ℂ) :
     lam x = ∑ m, x m * lam (fun j => if m = j then 1 else 0) := by
   have := LinearMap.pi_apply_eq_sum_univ (lam : (σ → ℂ) →ₗ[ℂ] ℂ) x
   simpa [smul_eq_mul] using this
 
+/- English proof (translation)
+Introduce `σ _ w k p d A ℓ N c δ hp hP W hW`. Break down `Nat.eq_zero_or_pos N with hN | hN` into its components or cases. Substitute `hN` using the available equality. Conclude with `Eventually.of_forall fun y _ => ⟨Fin.elim0, fun j => j.elim0, fun a => a.elim0⟩`. Take `⟨hc, hδ, -, -, h3, h4, h5⟩` from `id hP`.
+
+Establish `hcoord : ∀ m : σ, AnalyticAt ℂ (fun z : σ → ℂ => z m) w` using `fun m => (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : σ => ℂ) m).analyticAt w`. Establish `hδA : AnalyticAt ℂ (fun z => δ (A z)) w` using `hδ.comp (A.analyticAt w)`. Use `choose Mm a ha hga using fun m => h4 (fun z => z m) (hcoord m)`. Use `choose n b hb hgb hb0 using fun m => h5 (fun z => z m) (hcoord m)`. Use `set M : ℕ := ∑ m, Mm m with hMdef`.
+
+Establish `hMm : ∀ m, Mm m ≤ M` using `fun m => Finset.single_le_sum (fun i _ => Nat.zero_le (Mm i)) (Finset.mem_univ m)`. Set `δ' : analyticSubring (A w)` to `⟨δ, hδ⟩`. Set `qp : σ → (analyticSubring (A w))[X]` to `fun m => C (δ' ^ (M - Mm m)) * ∑ j : Fin N, C (⟨a m j, ha m j⟩ : analyticSubring (A w)) * X ^ (j : ℕ)`. Establish `hqp : ∀ m y t, pev y t (qp m) = δ y ^ (M - Mm m) * ∑ j : Fin N, a m j y * t ^ (j : ℕ)`. Introduce `m y t`.
+
+Simplify using `[qp, δ', map_sum]`. Establish `hQan : ∀ m, AnalyticAt ℂ (fun z => pev (A z) (ℓ z) (qp m)) w` using `fun m => analyticAt_pev_comp w A ℓ (qp m)`. Establish `hDan : ∀ m, AnalyticAt ℂ (fun z => δ (A z) ^ M * z m) w` using `fun m => (hδA.pow M).mul (hcoord m)`. Establish `hQD : ∀ m, IsGermCombination w p (fun z => pev (A z) (ℓ z) (qp m) - δ (A z) ^ M * z m)`. Introduce `m`.
+
+Use `(IsGermCombination.mul_left (hδA.pow (M - Mm m)) (hga m)).neg.congr (Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Establish `e : δ (A z) ^ M = δ (A z) ^ (M - Mm m) * δ (A z) ^ Mm m`. Rewrite using `[← pow_add, Nat.sub_add_cancel (hMm m)]`. Simplify using `only [Pi.pow_apply]`. Rewrite using `[hqp, e]`.
+
+Expand and normalize the polynomial expressions, which then agree. Set `H1 : σ → (analyticSubring (A w))[X]` to `fun m => qp m ^ n m + ∑ j : Fin (n m), C ((⟨b m j, hb m j⟩ : analyticSubring (A w)) * δ' ^ (M * (n m - j))) * qp m ^ (j : ℕ)`. Establish `hpevH1 : ∀ m y t, pev y t (H1 m) = pev y t (qp m) ^ n m + ∑ j : Fin (n m), b m j y * δ y ^ (M * (n m - j)) * pev y t (qp m) ^ (j : ℕ)`. Introduce `m y t`. Simplify using `[H1, δ', map_sum]`.
+
+Establish `hE1 : ∀ m, ∀ᶠ y in 𝓝 (A w), ∀ t : ℂ, t ^ N + ∑ j, c j y * t ^ (j : ℕ) = 0 → pev y t (H1 m) = 0`. Introduce `m`. Use `pev_eq_zero_of_presentation hP (H1 m) ?_` and prove the remaining obligations. Establish `e1` using `IsGermCombination.mul_left (hδA.pow (M * n m)) (hgb m)`. Establish `e2` using `IsGermCombination.pow_sub_pow (hQan m) (hDan m) (hQD m) (n m)`.
+
+Establish `e3 : IsGermCombination w p (fun z => ∑ j : Fin (n m), b m j (A z) * δ (A z) ^ (M * (n m - j)) * (pev (A z) (ℓ z) (qp m) ^ (j : ℕ) - (δ (A z) ^ M * z m) ^ (j : ℕ)))` using `IsGermCombination.sum _ fun j _ => IsGermCombination.mul_left (((hb m j).comp (A.analyticAt w)).mul (hδA.pow _)) (IsGermCombination.pow_sub_pow (hQan m) (hDan m) (hQD m) j)`. Use `((e1.add e2).add e3).congr (Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Establish `hc` using `centred_clear (fun j => b m j (A z)) M (δ (A z)) (z m)`. Simplify using `only [Pi.pow_apply]`. Rewrite using `[hpevH1, ← hc]`.
+
+Simplify using `only [mul_sub, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree. Set `ev : σ → σ → ℂ` to `fun m j => if m = j then 1 else 0`. Set `Hlin : ((σ → ℂ) →L[ℂ] ℂ) → (analyticSubring (A w))[X] → (analyticSubring (A w))[X]` to `fun lam L => ∑ m, C (⟨fun _ => lam (ev m), analyticAt_const⟩ : analyticSubring (A w)) * qp m - C (δ' ^ M) * L`. Establish `hpevHlin : ∀ lam L y t, pev y t (Hlin lam L) = ∑ m, lam (ev m) * pev y t (qp m) - δ y ^ M * pev y t L`.
+
+Introduce `lam L y t`. Simplify using `[Hlin, δ', map_sum]`. Establish `hElin : ∀ (lam : (σ → ℂ) →L[ℂ] ℂ) (L : (analyticSubring (A w))[X]), (∀ z, pev (A z) (ℓ z) L = lam z) → ∀ᶠ y in 𝓝 (A w), ∀ t : ℂ, t ^ N + ∑ j, c j y * t ^ (j : ℕ) = 0 → pev y t (Hlin lam L) = 0`. Introduce `lam L hL`. Use `pev_eq_zero_of_presentation hP _ ?_` and prove the remaining obligations.
+
+Establish `e : IsGermCombination w p (fun z => ∑ m, lam (ev m) * (pev (A z) (ℓ z) (qp m) - δ (A z) ^ M * z m))` using `IsGermCombination.sum _ fun m _ => IsGermCombination.mul_left analyticAt_const (hQD m)`. Use `e.congr (Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Rewrite using `[hpevHlin, hL, clm_apply_eq_sum lam z, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun m _ => by ring`. Set `coordP : Fin d → (analyticSubring (A w))[X]` to `fun r => C (⟨fun y => y r, (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin d => ℂ) r).analyticAt _⟩ : analyticSubring (A w))`.
+
+Establish `hE2 : ∀ r : Fin d, ∀ᶠ y in 𝓝 (A w), ∀ t : ℂ, t ^ N + ∑ j, c j y * t ^ (j : ℕ) = 0 → pev y t (Hlin ((ContinuousLinearMap.proj (R` using `ℂ) (φ := fun _ : Fin d => ℂ) r).comp A) (coordP r)) = 0 := fun r => hElin _ _ fun z => by simp [coordP]`. Establish `hE3 : ∀ᶠ y in 𝓝 (A w), ∀ t : ℂ, t ^ N + ∑ j, c j y * t ^ (j : ℕ) = 0 → pev y t (Hlin ℓ X) = 0` using `hElin ℓ X fun z => by simp`. Use `choose v r hv hr hev using fun i => hdiv σ d (A w) w n b (fun q => p i q.2) hb hb0 ((hp i).comp analyticAt_snd)`. Use `set Ntot : ℕ := ∑ m, n m with hNtot`. Establish `hα : ∀ α : (m : σ) → Fin (n m), ∑ m, (α m : ℕ) ≤ Ntot` using `fun α => Finset.sum_le_sum fun m _ => (α m).2.le`.
+
+Set `H4 : Fin k → (analyticSubring (A w))[X]` to `fun i => ∑ α : (m : σ) → Fin (n m), C ((⟨r i α, hr i α⟩ : analyticSubring (A w)) * δ' ^ (M * (Ntot - ∑ m, (α m : ℕ)))) * ∏ m, qp m ^ (α m : ℕ)`. Establish `hpevH4 : ∀ i y t, pev y t (H4 i) = ∑ α : (m : σ) → Fin (n m), r i α y * δ y ^ (M * (Ntot - ∑ m, (α m : ℕ))) * ∏ m, pev y t (qp m) ^ (α m : ℕ)`. Introduce `i y t`. Simplify using `[H4, δ', map_sum, map_prod]`. Establish `hrem : ∀ i (y : Fin d → ℂ) (e : ℂ) (x : σ → ℂ), ∑ α : (m : σ) → Fin (n m), r i α y * e ^ (M * (Ntot - ∑ m, (α m : ℕ))) * ∏ m, (e ^ M * x m) ^ (α m : ℕ) = e ^ (M * Ntot) * ∑ α : (m : σ) → Fin (n m), r i α y * ∏ m, x m ^ (α m : ℕ)`.
+
+Introduce `i y e x`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[prod_pow_clear, mul_assoc, ← mul_assoc (e ^ _), ← pow_add, ← mul_add, Nat.sub_add_cancel (hα α)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hdiag : Tendsto (fun z : σ → ℂ => (A z, z)) (𝓝 w) (𝓝 (A w, w))` using `(A.continuous.prodMk continuous_id).tendsto w`. Establish `hdiagA : AnalyticAt ℂ (fun z : σ → ℂ => (A z, z)) w` using `(A.analyticAt w).prod analyticAt_id`. Establish `hE4 : ∀ i, ∀ᶠ y in 𝓝 (A w), ∀ t : ℂ, t ^ N + ∑ j, c j y * t ^ (j : ℕ) = 0 → pev y t (H4 i) = 0`. Introduce `i`. Use `pev_eq_zero_of_presentation hP (H4 i) ?_` and prove the remaining obligations.
+
+Establish `hR : IsGermCombination w p (fun z => ∑ α : (m : σ) → Fin (n m), r i α (A z) * ∏ m, z m ^ (α m : ℕ))`. Establish `hG : IsGermCombination w p (fun z => ∑ m, v i m (A z, z) * (z m ^ n m + ∑ j, b m j (A z) * z m ^ (j : ℕ)))` using `IsGermCombination.sum _ fun m _ => IsGermCombination.mul_left (AnalyticAt.comp (g := v i m) (f := fun z : σ → ℂ => (A z, z)) (hv i m) hdiagA) (hgb m)`. Use `((IsGermCombination.generator i).sub hG).congr ?_` and prove the remaining obligations. Use `filter_upwards [hdiag.eventually (hev i)] with z hz`. Rewrite using `[hz]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e1` using `IsGermCombination.mul_left (hδA.pow (M * Ntot)) hR`. Establish `e2 : IsGermCombination w p (fun z => ∑ α : (m : σ) → Fin (n m), r i α (A z) * δ (A z) ^ (M * (Ntot - ∑ m, (α m : ℕ))) * (∏ m, pev (A z) (ℓ z) (qp m) ^ (α m : ℕ) - ∏ m, (δ (A z) ^ M * z m) ^ (α m : ℕ)))` using `IsGermCombination.sum _ fun α _ => IsGermCombination.mul_left (((hr i α).comp (A.analyticAt w)).mul (hδA.pow _)) (IsGermCombination.prod_sub_prod _ (fun m => (hQan m).pow _) (fun m => (hDan m).pow _) fun m => IsGermCombination.pow_sub_pow (hQan m) (hDan m) (hQD m) _)`. Use `(e1.add e2).congr (Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only [Pi.pow_apply]`.
+
+Rewrite using `[hpevH4, ← hrem i (A z) (δ (A z)) z]`. Simplify using `only [mul_sub, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree. Use `choose U hU V hV hUV using fun i => mem_nhds_prod_iff.1 (hev i)`. Establish `hW' : W ∩ ⋂ i, V i ∈ 𝓝 w` using `inter_mem hW (iInter_mem.2 hV)`.
+
+Take `⟨ε, hε, hball⟩` from `Metric.mem_nhds_iff.1 hW'`. Establish `hroots : ∀ m, ∀ᶠ y in 𝓝 (A w), ∀ x : ℂ, x ^ n m + ∑ j, b m j y * x ^ (j : ℕ) = 0 → ‖x - w m‖ < ε` using `fun m => roots_near_of_centred (b m) (A w) (w m) (fun j => (hb m j).continuousAt) (hb0 m) hε`. Use `filter_upwards [h3, eventually_all.2 hroots, eventually_all.2 hE1, eventually_all.2 hE2, hE3, eventually_all.2 hE4, eventually_all.2 hU] with y h3y hry hE1y hE2y hE3y hE4y hUy hδy`. Use `set Fy := monicOfCoeffs fun j => c j y with hFy`. Establish `hsep` using `h3y hδy`.
+
+Establish `hFy0 : Fy ≠ 0` using `hsep.ne_zero`. Establish `hdeg : Fy.natDegree = N`. Rewrite using `[hFy, monicOfCoeffs, natDegree_add_eq_left_of_degree_lt, natDegree_X_pow]`. Rewrite using `[degree_X_pow]`. Conclude with `degree_sum_fin_lt _`.
+
+Establish `hcard : Fy.roots.toFinset.card = N`. Rewrite using `[Multiset.toFinset_card_of_nodup (nodup_roots hsep), IsAlgClosed.card_roots_eq_natDegree, hdeg]`. Set `eq` to `Fy.roots.toFinset.equivFin.trans (finCongr hcard)`. Set `t : Fin N → ℂ` to `fun j => (eq.symm j : ℂ)`. Establish `ht_inj : Function.Injective t` using `Subtype.val_injective.comp eq.symm.injective`.
+
+Establish `ht_root : ∀ j, t j ^ N + ∑ i, c i y * t j ^ (i : ℕ) = 0`. Introduce `j`. Establish `hm : t j ∈ Fy.roots` using `Multiset.mem_toFinset.1 (eq.symm j).2`. Use `(mem_roots hFy0).1 hm` as an intermediate fact. Simplify `this` using `[hFy, monicOfCoeffs, eval_finsetSum]`.
+
+Set `x : Fin N → σ → ℂ` to `fun j m => pev y (t j) (qp m) / δ y ^ M`. Establish `hδM : δ y ^ M ≠ 0` using `pow_ne_zero _ hδy`. Establish `hQx : ∀ j m, pev y (t j) (qp m) = δ y ^ M * x j m` using `fun j m => by`. Simplify using `only [x]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hG : ∀ j m, x j m ^ n m + ∑ i, b m i y * x j m ^ (i : ℕ) = 0`. Introduce `j m`. Establish `h` using `hE1y m (t j) (ht_root j)`. Rewrite `h` using `[hpevH1]`. Simplify using `only [hQx] at h`.
+
+Rewrite `h` using `[centred_clear (fun i => b m i y) M (δ y) (x j m)]`. Conclude with `(mul_eq_zero.1 h).resolve_left (pow_ne_zero _ hδy)`. Establish `hlinx : ∀ (lam : (σ → ℂ) →L[ℂ] ℂ) L j, pev y (t j) (Hlin lam L) = 0 → lam (x j) = pev y (t j) L`. Introduce `lam L j h`. Rewrite `h` using `[hpevHlin]`.
+
+Simplify using `only [hQx] at h`. Rewrite using `[clm_apply_eq_sum lam (x j)]`. Establish `h' : δ y ^ M * (∑ m, x j m * lam (ev m) - pev y (t j) L) = 0`. Rewrite using `[← h, mul_sub, Finset.mul_sum]`. Use `congr 1`.
+
+Conclude with `Finset.sum_congr rfl fun m _ => by ring`. Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 h').resolve_left hδM)`. Establish `hAx : ∀ j, A (x j) = y`. Introduce `j`. Use function extensionality and compare the values at `r`.
+
+Use `hlinx _ _ j (hE2y r (t j) (ht_root j))` as an intermediate fact. Simplify `this` using `[coordP]`. Establish `hℓx : ∀ j, ℓ (x j) = t j` using `fun j => by`. Simplify using `using hlinx ℓ X j (hE3y (t j) (ht_root j))`. Establish `hxW : ∀ j, x j ∈ W ∩ ⋂ i, V i`.
+
+Introduce `j`. Apply `hball` to reduce the goal to its premises. Rewrite using `[Metric.mem_ball, dist_eq_norm, pi_norm_lt_iff hε]`. Conclude with `fun m => hry m _ (hG j m)`. Establish `hpx : ∀ j i, p i (x j) = 0`.
+
+Introduce `j i`. Establish `hmem` using `hUV i (Set.mk_mem_prod (hUy i) (Set.mem_iInter.1 (hxW j).2 i))`. Simplify using `only [Set.mem_ofPred_eq] at hmem`. Rewrite using `[hmem]`. Establish `h` using `hE4y i (t j) (ht_root j)`.
+
+Rewrite `h` using `[hpevH4]`. Simplify using `only [hQx] at h`. Rewrite `h` using `[hrem i y (δ y) (x j)]`. Rewrite using `[(mul_eq_zero.1 h).resolve_left (pow_ne_zero _ hδy), add_zero]`. Conclude with `Finset.sum_eq_zero fun m _ => by rw [hG j m, mul_zero]`.
+
+Use `⟨x, fun j => ⟨(hxW j).1, fun i => hpx j i, hAx j⟩, fun j₁ j₂ h => ht_inj ?_⟩` and prove the remaining obligations. Simplify `h` using `[hℓx]`.
+-/
 theorem PrimitivePresentationCover.proof (hdiv : SeparateWeierstrassDivision.Statement) :
     PrimitivePresentationCover.Statement := by
   intro σ _ w k p d A ℓ N c δ hp hP W hW

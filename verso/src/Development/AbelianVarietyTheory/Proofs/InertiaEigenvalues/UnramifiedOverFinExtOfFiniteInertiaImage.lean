@@ -4,6 +4,29 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.PMon
 
+/- English proof (translation)
+Introduce `l _ n _ _ K r ρ hρ hfin`. Set `F : ↥(GK K) → (n → n → Om l)` to `fun g i j => (((ρ g : Matrix n n ↥(MaximalUnramifiedExtension l)) i j : ↥(MaximalUnramifiedExtension l)) : Om l)`. Establish `hF : Continuous F` using `continuous_pi fun i => continuous_pi fun j => hρ.cont i j`. Set `cm : GL n ↥(MaximalUnramifiedExtension l) → (n → n → Om l)` to `fun M i j => (((M : Matrix n n ↥(MaximalUnramifiedExtension l)) i j : ↥(MaximalUnramifiedExtension l)) : Om l)`. Establish `hcm : Function.Injective cm`.
+
+Introduce `M M' h`. Use extensionality with `i j`. Conclude with `congrFun (congrFun h i) j`. Establish `hone : ∀ i j, (((1 : Matrix n n ↥(MaximalUnramifiedExtension l)) i j : ↥(MaximalUnramifiedExtension l)) : Om l) = (1 : Matrix n n (Om l)) i j`. Introduce `i j`.
+
+Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`. Set `T : Set (n → n → Om l)` to `cm '' (ρ '' (IK K : Set ↥(GK K)) \ {1})`. Establish `hT : T.Finite` using `(hfin.sdiff).image cm`. Set `V : Set (n → n → Om l)` to `{x | ∀ i j, ‖x i j - (1 : Matrix n n (Om l)) i j‖ < 1} ∩ Tᶜ`. Establish `hV : IsOpen V`.
+
+Use `IsOpen.inter ?_ hT.isClosed.isOpen_compl` and prove the remaining obligations. Establish `: {x : n → n → Om l | ∀ i j, ‖x i j - (1 : Matrix n n (Om l)) i j‖ < 1} = ⋂ i, ⋂ j, {x : n → n → Om l | ‖x i j - (1 : Matrix n n (Om l)) i j‖ < 1}`. Use `ext`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+
+Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => isOpen_lt (by fun_prop) continuous_const`. Establish `h1V : F 1 ∈ V`. Use `⟨fun i j => ?_, ?_⟩` and prove the remaining obligations. Use `show ‖(((ρ 1 : Matrix n n ↥(MaximalUnramifiedExtension l)) i j : ↥(MaximalUnramifiedExtension l)) : Om l) - (1 : Matrix n n (Om l)) i j‖ < 1`. Rewrite using `[map_one, Units.val_one, hone, sub_self, norm_zero]`.
+
+Conclude with `one_pos`. Introduce and unpack `⟨M, hM, hMF⟩`. Establish `hM1 : M = ρ 1` using `hcm hMF`. Conclude with `hM.2 (by rw [hM1, map_one]; rfl)`. Establish `hU : IsOpen (F ⁻¹' V)` using `hV.preimage hF`.
+
+Take `⟨U', hU', hUe'⟩` from `isOpen_induced_iff.1 hU`. Establish `h1' : (1 : GQ l) ∈ U'`. Establish `: (1 : ↥(GK K)) ∈ Subtype.val ⁻¹' U'`. Rewrite using `[hUe']`. Conclude with `h1V`.
+
+Conclude with `this`. Take `⟨E, hE, hEU⟩` from `(krullTopology_mem_nhds_one_iff ℚ_[l] (Om l) U').1 (hU'.mem_nhds h1')`. Use `⟨supExt K ⟨E, hE⟩, le_sup_left, ?_⟩` and prove the remaining obligations. Establish `key : ∀ g : ↥(GK (supExt K ⟨E, hE⟩)), F ⟨g, GK_le (K` using `K) (K' := supExt K ⟨E, hE⟩) le_sup_left g.2⟩ ∈ V := by`. Introduce `g`.
+
+Establish `: (⟨g, GK_le (K` using `K) (K' := supExt K ⟨E, hE⟩) le_sup_left g.2⟩ : ↥(GK K)) ∈ Subtype.val ⁻¹' U' := hEU (GK_le (K := ⟨E, hE⟩) (K' := supExt K ⟨E, hE⟩) le_sup_right g.2)`. Rewrite `this` using `[hUe']`. Conclude with `this`. Use `⟨fun g hg => ?_, fun g i j => (key g).1 i j⟩` and prove the remaining obligations. Establish `hin : (⟨g, GK_le (K` using `K) (K' := supExt K ⟨E, hE⟩) le_sup_left g.2⟩ : ↥(GK K)) ∈ IK K := by`.
+
+Establish `hmap : (IK (supExt K ⟨E, hE⟩)).map (Subgroup.inclusion (GK_le (K` using `K) (K' := supExt K ⟨E, hE⟩) le_sup_left)) ≤ IK K := by`. Unfold `IK`. Rewrite using `[MonoidHom.map_closure]`. Apply `Subgroup.closure_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨σ, hσ, rfl⟩`.
+
+Introduce `x hx`. Conclude with `hσ x hx`. Conclude with `hmap ⟨g, hg, rfl⟩`. Assume the negation of the conclusion as `hne`. Conclude with `(key g).2 ⟨_, ⟨⟨_, hin, rfl⟩, hne⟩, rfl⟩`.
+-/
 theorem unr_of_finite_inertia : ∀ (l : ℕ) [Fact l.Prime] (n : Type) [Fintype n] [DecidableEq n] (K : FinExt l) (r : ℕ)
     (ρ : ↥(GK K) →* GL n ↥(MaximalUnramifiedExtension l)), IsRat r ρ → (ρ '' (IK K : Set ↥(GK K))).Finite →
     ∃ (K' : FinExt l) (hK : K.1 ≤ K'.1), (∀ g ∈ IK K', ρ ⟨g, GK_le hK g.2⟩ = 1) ∧

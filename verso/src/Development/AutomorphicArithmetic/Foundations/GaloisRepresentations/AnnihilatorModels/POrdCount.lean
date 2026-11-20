@@ -4,6 +4,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Annih
 open CategoryTheory AlgebraicGeometry TensorProduct
 open UpperTheory.Gal.crystallineComparison
 
+/- English proof (translation)
+Introduce `hD hT q n P F I _ v hR`. Take `⟨A, hA, h0, hs⟩` from `hD q n P F I v hR`. Establish `key` using `hT q n P F (fun j => Multiset.map (v j) Finset.univ.val) A hA h0 hs`. Simplify using `only [Multiset.map_map] at key`. Conclude with `key`.
+-/
 theorem UpperTheory.Gal.crystallineComparison.ordCount_of :
     OrdDecomp → Telescope → OrdCount := by
   intro hD hT q n P F I _ v hR

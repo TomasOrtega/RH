@@ -25,12 +25,23 @@ noncomputable def traceForm : LinearMap.BilinForm ℝ L :=
 
 variable {L}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem traceForm_apply (X Y : L) :
     traceForm L X Y = RCLike.re (trace ((X : Matrix ι ι 𝕜) * (Y : Matrix ι ι 𝕜))) := rfl
 
+/- English proof (translation)
+Rewrite using `[traceForm_apply, traceForm_apply, trace_mul_comm]`.
+-/
 theorem traceForm_symm (X Y : L) : traceForm L X Y = traceForm L Y X := by
   rw [traceForm_apply, traceForm_apply, trace_mul_comm]
 
+/- English proof (translation)
+Rewrite using `[traceForm_apply, traceForm_apply, LieSubalgebra.coe_bracket, LieSubalgebra.coe_bracket, Ring.lie_def, Ring.lie_def]`. Use `set x := (X : Matrix ι ι 𝕜)`. Use `set y := (Y : Matrix ι ι 𝕜)`. Use `set z := (Z : Matrix ι ι 𝕜)`. Establish `e : trace (y * (z * x)) = trace (x * y * z)`.
+
+Rewrite using `[← Matrix.mul_assoc, trace_mul_comm, Matrix.mul_assoc]`. Rewrite using `[Matrix.sub_mul, Matrix.mul_sub, trace_sub, trace_sub, e, Matrix.mul_assoc y x z, map_sub, map_sub]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem traceForm_lie (X Y Z : L) : traceForm L ⁅X, Y⁆ Z = -traceForm L Y ⁅X, Z⁆ := by
   rw [traceForm_apply, traceForm_apply, LieSubalgebra.coe_bracket, LieSubalgebra.coe_bracket,
     Ring.lie_def, Ring.lie_def]
@@ -49,6 +60,13 @@ section Positivity
 
 variable {𝕜 : Type*} [RCLike 𝕜] {ι : Type*} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Establish `e : RCLike.re (trace (Aᴴ * A)) = ∑ i, ∑ j, ‖A j i‖ ^ 2`. Simplify using `only [trace, diag_apply, mul_apply, conjTranspose_apply, map_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[RCLike.star_def, RCLike.conj_mul, ← RCLike.ofReal_pow, RCLike.ofReal_re]`. Rewrite using `[e]`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨j, i, hji⟩ : ∃ j i, A j i ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `hA (Matrix.ext hc)`. Use `lt_of_lt_of_le (pow_pos (norm_pos_iff.2 hji) 2) ?_` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem re_trace_conjTranspose_mul_self_pos {A : Matrix ι ι 𝕜} (hA : A ≠ 0) :
     0 < RCLike.re (trace (Aᴴ * A)) := by
   have e : RCLike.re (trace (Aᴴ * A)) = ∑ i, ∑ j, ‖A j i‖ ^ 2 := by
@@ -103,12 +121,29 @@ def hermPart : Submodule ℝ L where
 
 variable {L}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_skewPart {X : L} : X ∈ skewPart L ↔ (X : Matrix ι ι 𝕜)ᴴ = -(X : Matrix ι ι 𝕜) :=
   Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_hermPart {X : L} : X ∈ hermPart L ↔ (X : Matrix ι ι 𝕜)ᴴ = (X : Matrix ι ι 𝕜) :=
   Iff.rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[Submodule.disjoint_def]`. Introduce `X hk hp`. Rewrite `hk` using `[mem_skewPart]`. Rewrite `hp` using `[mem_hermPart]`.
+
+Establish `h2 : (X : Matrix ι ι 𝕜) = -(X : Matrix ι ι 𝕜)` using `hp.symm.trans hk`. Establish `h3 : (2 : ℝ) • (X : Matrix ι ι 𝕜) = 0`. Rewrite using `[two_smul]`. Use `nth_rewrite 2 [h2]`. Conclude with `add_neg_cancel _`.
+
+Conclude with `Subtype.ext ((smul_eq_zero.1 h3).resolve_left two_ne_zero)`. Rewrite using `[codisjoint_iff, eq_top_iff]`. Introduce `X _`. Use `set Xs : L := ⟨(X : Matrix ι ι 𝕜)ᴴ, hstar _ X.2⟩`. Use `Submodule.mem_sup.2 ⟨(1 / 2 : ℝ) • (X - Xs), ?_, (1 / 2 : ℝ) • (X + Xs), ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mem_skewPart]`. Express the relevant statement in the definitionally equal form `((1 / 2 : ℝ) • ((X : Matrix ι ι 𝕜) - (X : Matrix ι ι 𝕜)ᴴ))ᴴ = -((1 / 2 : ℝ) • ((X : Matrix ι ι 𝕜) - (X : Matrix ι ι 𝕜)ᴴ))`. Rewrite using `[conjTranspose_smul, star_trivial, conjTranspose_sub, conjTranspose_conjTranspose, ← smul_neg, neg_sub]`. Rewrite using `[mem_hermPart]`. Express the relevant statement in the definitionally equal form `((1 / 2 : ℝ) • ((X : Matrix ι ι 𝕜) + (X : Matrix ι ι 𝕜)ᴴ))ᴴ = ((1 / 2 : ℝ) • ((X : Matrix ι ι 𝕜) + (X : Matrix ι ι 𝕜)ᴴ))`.
+
+Rewrite using `[conjTranspose_smul, star_trivial, conjTranspose_add, conjTranspose_conjTranspose, add_comm]`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(1 / 2 : ℝ) • ((X : Matrix ι ι 𝕜) - (X : Matrix ι ι 𝕜)ᴴ) + (1 / 2 : ℝ) • ((X : Matrix ι ι 𝕜) + (X : Matrix ι ι 𝕜)ᴴ) = X`. Use `module`.
+-/
 theorem isCompl_skewPart_hermPart (hstar : ∀ X ∈ L, Xᴴ ∈ L) :
     IsCompl (skewPart L) (hermPart L) := by
   constructor
@@ -141,6 +176,11 @@ theorem isCompl_skewPart_hermPart (hstar : ∀ X ∈ L, Xᴴ ∈ L) :
         (1 / 2 : ℝ) • ((X : Matrix ι ι 𝕜) + (X : Matrix ι ι 𝕜)ᴴ) = X
       module
 
+/- English proof (translation)
+Rewrite `hX` using `[mem_skewPart]`. Establish `hX0 : (X : Matrix ι ι 𝕜) ≠ 0` using `fun e => h0 (Subtype.ext e)`. Establish `e : (X : Matrix ι ι 𝕜) * X = -((X : Matrix ι ι 𝕜)ᴴ * X)`. Rewrite using `[hX, Matrix.neg_mul, neg_neg]`. Rewrite using `[traceForm_apply, e, trace_neg, map_neg, neg_lt_zero]`.
+
+Conclude with `re_trace_conjTranspose_mul_self_pos hX0`.
+-/
 theorem traceForm_neg_of_mem_skewPart {X : L} (hX : X ∈ skewPart L) (h0 : X ≠ 0) :
     traceForm L X X < 0 := by
   rw [mem_skewPart] at hX
@@ -150,6 +190,9 @@ theorem traceForm_neg_of_mem_skewPart {X : L} (hX : X ∈ skewPart L) (h0 : X �
   rw [traceForm_apply, e, trace_neg, map_neg, neg_lt_zero]
   exact re_trace_conjTranspose_mul_self_pos hX0
 
+/- English proof (translation)
+Rewrite `hX` using `[mem_hermPart]`. Establish `hX0 : (X : Matrix ι ι 𝕜) ≠ 0` using `fun e => h0 (Subtype.ext e)`. Rewrite using `[traceForm_apply]`. Use `nth_rewrite 1 [← hX]`. Conclude with `re_trace_conjTranspose_mul_self_pos hX0`.
+-/
 theorem traceForm_pos_of_mem_hermPart {X : L} (hX : X ∈ hermPart L) (h0 : X ≠ 0) :
     0 < traceForm L X X := by
   rw [mem_hermPart] at hX
@@ -158,6 +201,11 @@ theorem traceForm_pos_of_mem_hermPart {X : L} (hX : X ∈ hermPart L) (h0 : X �
   nth_rewrite 1 [← hX]
   exact re_trace_conjTranspose_mul_self_pos hX0
 
+/- English proof (translation)
+Rewrite `hX` using `[mem_skewPart]`. Rewrite `hY` using `[mem_hermPart]`. Rewrite using `[traceForm_apply]`. Use `set z := trace ((X : Matrix ι ι 𝕜) * (Y : Matrix ι ι 𝕜))`. Establish `hz : star z = -z`.
+
+Rewrite using `[← trace_conjTranspose, conjTranspose_mul, hX, hY, Matrix.mul_neg, trace_neg, trace_mul_comm]`. Establish `h1 : RCLike.re (star z) = RCLike.re z`. Rewrite using `[RCLike.star_def, RCLike.conj_re]`. Rewrite `h1` using `[hz, map_neg]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem traceForm_eq_zero_of_skew_herm {X Y : L} (hX : X ∈ skewPart L) (hY : Y ∈ hermPart L) :
     traceForm L X Y = 0 := by
   rw [mem_skewPart] at hX
@@ -171,6 +219,15 @@ theorem traceForm_eq_zero_of_skew_herm {X Y : L} (hX : X ∈ skewPart L) (hY : Y
   rw [hz, map_neg] at h1
   linarith
 
+/- English proof (translation)
+Establish `: Invertible (2 : ℝ)` using `invertibleOfNonzero two_ne_zero`. Take `⟨v, hv⟩` from `LinearMap.BilinForm.exists_orthogonal_basis (B := B) ⟨fun x y => by rw [RingHom.id_apply]; exact hB x y⟩`. Establish `hpos' : ∀ i, 0 < s * B (v i) (v i)` using `fun i => hpos _ (v.ne_zero i)`. Use `set w : Fin (Module.finrank ℝ V) → ℝ := fun i => (Real.sqrt (s * B (v i) (v i)))⁻¹`. Establish `hw : ∀ i, IsUnit (w i)` using `fun i => (inv_ne_zero (Real.sqrt_pos.2 (hpos' i)).ne').isUnit`.
+
+Use `⟨v.isUnitSMul hw, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.isUnitSMul_apply, Module.Basis.isUnitSMul_apply, map_smul, map_smul, LinearMap.smul_apply, smul_eq_mul, smul_eq_mul]`. Use `split_ifs with hij`. Substitute `hij` using the available equality. Establish `hsq : Real.sqrt (s * B (v i) (v i)) ^ 2 = s * B (v i) (v i)` using `Real.sq_sqrt (hpos' i).le`.
+
+Establish `hst : s * B (v i) (v i) ≠ 0` using `(hpos' i).ne'`. Establish `ht : B (v i) (v i) ≠ 0` using `right_ne_zero_of_mul hst`. Simplify using `only [w]`. Rewrite using `[← mul_assoc, ← sq, inv_pow, hsq, mul_inv, mul_assoc, inv_mul_cancel₀ ht, mul_one]`. Conclude with `inv_eq_of_mul_eq_one_right hs`.
+
+Rewrite using `[hv hij, mul_zero, mul_zero]`.
+-/
 theorem exists_signed_basis {V : Type*} [AddCommGroup V] [Module ℝ V] [FiniteDimensional ℝ V]
     (B : LinearMap.BilinForm ℝ V) (hB : ∀ x y, B x y = B y x) {s : ℝ} (hs : s * s = 1)
     (hpos : ∀ v : V, v ≠ 0 → 0 < s * B v v) :
@@ -196,6 +253,29 @@ theorem exists_signed_basis {V : Type*} [AddCommGroup V] [Module ℝ V] [FiniteD
     exact inv_eq_of_mul_eq_one_right hs
   · rw [hv hij, mul_zero, mul_zero]
 
+/- English proof (translation)
+Establish `: FiniteDimensional ℝ L` using `Module.Finite.of_injective ((L.incl : L →ₗ⁅ℝ⁆ Matrix ι ι 𝕜) : L →ₗ[ℝ] Matrix ι ι 𝕜) Subtype.val_injective`. Establish `hc` using `isCompl_skewPart_hermPart hstar`. Take `⟨bk, hbk⟩` from `exists_signed_basis ((traceForm L).restrict (skewPart L)) (fun x y => traceForm_symm (x : L) y) (s := -1) (by norm_num) (fun v hv => by`. Establish `h0 : (v : L) ≠ 0` using `fun e => hv (Subtype.ext e)`. Use `traceForm_neg_of_mem_skewPart v.2 h0` as an intermediate fact.
+
+Express the relevant statement in the definitionally equal form `0 < _ * traceForm L (v : L) (v : L)`. Use the proof step `linarith)`. Take `⟨bp, hbp⟩` from `exists_signed_basis ((traceForm L).restrict (hermPart L)) (fun x y => traceForm_symm (x : L) y) (s := 1) (by norm_num) (fun v hv => by`. Establish `h0 : (v : L) ≠ 0` using `fun e => hv (Subtype.ext e)`. Use `traceForm_pos_of_mem_hermPart v.2 h0` as an intermediate fact.
+
+Express the relevant statement in the definitionally equal form `0 < _ * traceForm L (v : L) (v : L)`. Use the proof step `linarith)`. Use `set e := Submodule.prodEquivOfIsCompl (skewPart L) (hermPart L) hc`. Use `set b0 := (bk.prod bp).map e`. Use `set f : Fin (Module.finrank ℝ (skewPart L)) ⊕ Fin (Module.finrank ℝ (hermPart L)) → L := Sum.elim (fun i => (bk i : L)) (fun j => (bp j : L))`.
+
+Establish `hb0 : ∀ x, b0 x = f x`. Introduce and unpack `(i | j)`. Simplify using `[b0, e, f, Submodule.coe_prodEquivOfIsCompl']`. Simplify using `[b0, e, f, Submodule.coe_prodEquivOfIsCompl']`. Use `set ε0 : Fin (Module.finrank ℝ (skewPart L)) ⊕ Fin (Module.finrank ℝ (hermPart L)) → ℝ := Sum.elim (fun _ => -1) (fun _ => 1)`.
+
+Establish `horth : ∀ x y, traceForm L (b0 x) (b0 y) = if x = y then ε0 x else 0`. Introduce `x y`. Rewrite using `[hb0, hb0]`. Apply the tactic sequence `rcases x with i | i <;> rcases y with j | j`. Use `hbk i j` as an intermediate fact.
+
+Express the relevant statement in the definitionally equal form `traceForm L _ _ = _ at this`. Simplify using `only [f, ε0, Sum.elim_inl, Sum.inl.injEq]`. Conclude with `this`. Simplify using `only [f, ε0, Sum.elim_inl, Sum.elim_inr, reduceCtorEq, if_false]`. Conclude with `traceForm_eq_zero_of_skew_herm (bk i).2 (bp j).2`.
+
+Simplify using `only [f, ε0, Sum.elim_inl, Sum.elim_inr, reduceCtorEq, if_false]`. Rewrite using `[traceForm_symm]`. Conclude with `traceForm_eq_zero_of_skew_herm (bk j).2 (bp i).2`. Use `hbp i j` as an intermediate fact. Express the relevant statement in the definitionally equal form `traceForm L _ _ = _ at this`.
+
+Simplify using `only [f, ε0, Sum.elim_inr, Sum.inr.injEq]`. Conclude with `this`. Use `set σ := finSumFinEquiv (m := Module.finrank ℝ (skewPart L)) (n := Module.finrank ℝ (hermPart L))`. Use `⟨_, b0.reindex σ, ε0 ∘ σ.symm, fun i => ?_, fun i j => ?_, fun i hi => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rcases hx : σ.symm i with k | k <;> simp [ε0, hx]`.
+
+Rewrite using `[Module.Basis.reindex_apply, Module.Basis.reindex_apply, horth]`. Simplify using `only [Function.comp_apply, σ.symm.injective.eq_iff]`. Rewrite using `[Module.Basis.reindex_apply, hb0]`. Simplify using `only [Function.comp_apply] at hi`. Break down `hx : σ.symm i with k | k` into its components or cases.
+
+Rewrite `hi` using `[hx]`. Simplify using `only [f, Sum.elim_inl]`. Conclude with `(bk k).2`. Rewrite `hi` using `[hx]`. Simplify using `[ε0] at hi`.
+
+Evaluate the numerical expressions using `at hi`.
+-/
 theorem exists_cartanBasis (hstar : ∀ X ∈ L, Xᴴ ∈ L) :
     ∃ (d : ℕ) (b : Module.Basis (Fin d) ℝ L) (ε : Fin d → ℝ), (∀ i, ε i = 1 ∨ ε i = -1) ∧
       (∀ i j, traceForm L (b i) (b j) = if i = j then ε i else 0) ∧
@@ -281,10 +361,16 @@ def maxCompact (G : Subgroup (Matrix ι ι 𝕜)ˣ) : Subgroup G where
     rw [Units.inv_eq_of_mul_eq_one_right hmul]
     exact Unitary.star_mem ha
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_maxCompact {G : Subgroup (Matrix ι ι 𝕜)ˣ} {g : G} :
     g ∈ maxCompact G ↔ ((g : (Matrix ι ι 𝕜)ˣ) : Matrix ι ι 𝕜) ∈ Matrix.unitaryGroup ι 𝕜 :=
   Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose, ← Matrix.exp_conjTranspose, hX, ← Matrix.exp_add_of_commute _ _ (Commute.neg_left (Commute.refl X)), neg_add_cancel, NormedSpace.exp_zero]`.
+-/
 theorem exp_mem_unitaryGroup {X : Matrix ι ι 𝕜} (hX : Xᴴ = -X) :
     NormedSpace.exp X ∈ Matrix.unitaryGroup ι 𝕜 := by
   rw [Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose, ← Matrix.exp_conjTranspose, hX,
@@ -298,6 +384,9 @@ section Groups
 open NormedSpace
 open scoped Matrix.Norms.L2Operator
 
+/- English proof (translation)
+The claim follows from `Subgroup.mem_top _ exists_nhds := ⟨(expPartialHomeomorph ℝ 𝔸).source, (expPartialHomeomorph ℝ 𝔸).open_source, zero_mem_expPartialHomeomorph_source ℝ 𝔸, subset_rfl, fun _ _ _ => Submodule.mem_top⟩`.
+-/
 theorem isExpLieAlgebra_top {𝔸 : Type*} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸]
     [FiniteDimensional ℝ 𝔸] : IsExpLieAlgebra (⊤ : Subgroup 𝔸ˣ) (⊤ : Submodule ℝ 𝔸) where
   expUnit_mem _ _ := Subgroup.mem_top _
@@ -306,6 +395,9 @@ theorem isExpLieAlgebra_top {𝔸 : Type*} [NormedRing 𝔸] [NormedAlgebra ℝ 
 
 variable {ι : Type*} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Rewrite using `[mem_maxCompact, IsExpLieAlgebra.coe_expG]`. Apply `exp_mem_unitaryGroup` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(t • (X : Matrix ι ι ℝ))ᴴ = -(t • (X : Matrix ι ι ℝ))`. Rewrite using `[conjTranspose_smul, star_trivial, hX, smul_neg]`.
+-/
 theorem IsExpLieAlgebra.expG_smul_mem_maxCompact_real {G : Subgroup (Matrix ι ι ℝ)ˣ}
     {𝔤 : Submodule ℝ (Matrix ι ι ℝ)} (h : IsExpLieAlgebra G 𝔤) {X : 𝔤}
     (hX : (X : Matrix ι ι ℝ)ᴴ = -(X : Matrix ι ι ℝ)) (t : ℝ) :
@@ -315,6 +407,9 @@ theorem IsExpLieAlgebra.expG_smul_mem_maxCompact_real {G : Subgroup (Matrix ι �
   change (t • (X : Matrix ι ι ℝ))ᴴ = -(t • (X : Matrix ι ι ℝ))
   rw [conjTranspose_smul, star_trivial, hX, smul_neg]
 
+/- English proof (translation)
+Rewrite using `[mem_maxCompact, IsExpLieAlgebra.coe_expG]`. Apply `exp_mem_unitaryGroup` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(t • (X : Matrix ι ι ℂ))ᴴ = -(t • (X : Matrix ι ι ℂ))`. Rewrite using `[conjTranspose_smul, star_trivial, hX, smul_neg]`.
+-/
 theorem IsExpLieAlgebra.expG_smul_mem_maxCompact_complex {G : Subgroup (Matrix ι ι ℂ)ˣ}
     {𝔤 : Submodule ℝ (Matrix ι ι ℂ)} (h : IsExpLieAlgebra G 𝔤) {X : 𝔤}
     (hX : (X : Matrix ι ι ℂ)ᴴ = -(X : Matrix ι ι ℂ)) (t : ℝ) :
@@ -324,6 +419,9 @@ theorem IsExpLieAlgebra.expG_smul_mem_maxCompact_complex {G : Subgroup (Matrix �
   change (t • (X : Matrix ι ι ℂ))ᴴ = -(t • (X : Matrix ι ι ℂ))
   rw [conjTranspose_smul, star_trivial, hX, smul_neg]
 
+/- English proof (translation)
+Take `⟨d, b, ε, hε, horth, hskew⟩` from `exists_cartanBasis (L := h.lieSubalgebra) hstar`. Conclude with `⟨d, b, ε, hε, horth, fun i hi t => h.expG_smul_mem_maxCompact_real (hskew i hi) t⟩`.
+-/
 theorem IsExpLieAlgebra.exists_cartanData_real {G : Subgroup (Matrix ι ι ℝ)ˣ}
     {𝔤 : Submodule ℝ (Matrix ι ι ℝ)} (h : IsExpLieAlgebra G 𝔤) (hstar : ∀ X ∈ 𝔤, Xᴴ ∈ 𝔤) :
     ∃ (d : ℕ) (b : Module.Basis (Fin d) ℝ h.lieSubalgebra) (ε : Fin d → ℝ),
@@ -333,6 +431,9 @@ theorem IsExpLieAlgebra.exists_cartanData_real {G : Subgroup (Matrix ι ι ℝ)�
   obtain ⟨d, b, ε, hε, horth, hskew⟩ := exists_cartanBasis (L := h.lieSubalgebra) hstar
   exact ⟨d, b, ε, hε, horth, fun i hi t => h.expG_smul_mem_maxCompact_real (hskew i hi) t⟩
 
+/- English proof (translation)
+Take `⟨d, b, ε, hε, horth, hskew⟩` from `exists_cartanBasis (L := h.lieSubalgebra) hstar`. Conclude with `⟨d, b, ε, hε, horth, fun i hi t => h.expG_smul_mem_maxCompact_complex (hskew i hi) t⟩`.
+-/
 theorem IsExpLieAlgebra.exists_cartanData_complex {G : Subgroup (Matrix ι ι ℂ)ˣ}
     {𝔤 : Submodule ℝ (Matrix ι ι ℂ)} (h : IsExpLieAlgebra G 𝔤) (hstar : ∀ X ∈ 𝔤, Xᴴ ∈ 𝔤) :
     ∃ (d : ℕ) (b : Module.Basis (Fin d) ℝ h.lieSubalgebra) (ε : Fin d → ℝ),
@@ -342,6 +443,9 @@ theorem IsExpLieAlgebra.exists_cartanData_complex {G : Subgroup (Matrix ι ι �
   obtain ⟨d, b, ε, hε, horth, hskew⟩ := exists_cartanBasis (L := h.lieSubalgebra) hstar
   exact ⟨d, b, ε, hε, horth, fun i hi t => h.expG_smul_mem_maxCompact_complex (hskew i hi) t⟩
 
+/- English proof (translation)
+Rewrite `hX`, the goal using `[mem_indefiniteUnitaryLieAlgebra_iff]`. Establish `e : indefJ p q * (indefJ p q * X * indefJ p q) * indefJ p q = X`. Simplify using `only [← Matrix.mul_assoc, indefJ_mul_self, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, indefJ_mul_self, Matrix.mul_one]`. Rewrite using `[conjTranspose_conjTranspose, hX, Matrix.mul_neg, Matrix.neg_mul, neg_neg, e]`.
+-/
 theorem conjTranspose_mem_indefiniteUnitaryLieAlgebra {p q : ℕ}
     {X : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ} (hX : X ∈ indefiniteUnitaryLieAlgebra p q) :
     Xᴴ ∈ indefiniteUnitaryLieAlgebra p q := by
@@ -351,6 +455,17 @@ theorem conjTranspose_mem_indefiniteUnitaryLieAlgebra {p q : ℕ}
     rw [Matrix.mul_assoc, indefJ_mul_self, Matrix.mul_one]
   rw [conjTranspose_conjTranspose, hX, Matrix.mul_neg, Matrix.neg_mul, neg_neg, e]
 
+/- English proof (translation)
+Rewrite using `[mem_maxCompact]`. Use `⟨fun hu => ⟨hu, ?_⟩, fun h => h.1⟩` and prove the remaining obligations. Use `set u := ((g : GL (Fin p ⊕ Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)`. Establish `hG : uᴴ * indefJ p q * u = indefJ p q` using `g.2`. Establish `h1 : u * uᴴ = 1`.
+
+Rewrite using `[← Matrix.star_eq_conjTranspose]`. Conclude with `Matrix.mem_unitaryGroup_iff.1 hu`. Establish `hcomm : indefJ p q * u = u * indefJ p q`. Combine the equalities or inequalities in the displayed calculation. Establish `hent : ∀ i j, indefJ p q i i * u i j = u i j * indefJ p q j j`.
+
+Introduce `i j`. Use `congrFun (congrFun hcomm i) j` as an intermediate fact. Simplify `this` using `[indefJ, diagonal_mul, mul_diagonal]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+
+Use `hent (Sum.inl i) (Sum.inr j)` as an intermediate fact. Simplify using `only [indefJ, diagonal_apply_eq, Sum.elim_inl, Sum.elim_inr, one_mul, mul_neg, mul_one] at this`. Simplify using `only [toBlocks₁₂, of_apply, Matrix.zero_apply]`. Take the linear combination `(1 / 2 : ℂ) * this`. Use extensionality with `i j`.
+
+Use `hent (Sum.inr i) (Sum.inl j)` as an intermediate fact. Simplify using `only [indefJ, diagonal_apply_eq, Sum.elim_inl, Sum.elim_inr, one_mul, neg_mul, mul_one] at this`. Simplify using `only [toBlocks₂₁, of_apply, Matrix.zero_apply]`. Take the linear combination `(-1 / 2 : ℂ) * this`.
+-/
 theorem mem_maxCompact_indefiniteUnitary {p q : ℕ} {g : indefiniteUnitaryGroup p q} :
     g ∈ maxCompact (indefiniteUnitaryGroup p q) ↔
       ((g : GL (Fin p ⊕ Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) ∈

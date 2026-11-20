@@ -5,6 +5,9 @@ open Matrix
 
 namespace GlobalTheory.ZarhinFam
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert b s hb ih => rw [Finset.sum_insert hb, Finset.prod_insert hb, _root_.zpow_add, ih]`.
+-/
 theorem zpow_finset_sum' {G ι : Type} [CommGroup G] (a : G) (s : Finset ι) (e : ι → ℤ) :
     a ^ (∑ k ∈ s, e k) = ∏ k ∈ s, a ^ e k := by
   classical
@@ -12,6 +15,11 @@ theorem zpow_finset_sum' {G ι : Type} [CommGroup G] (a : G) (s : Finset ι) (e 
   | empty => simp
   | insert b s hb ih => rw [Finset.sum_insert hb, Finset.prod_insert hb, _root_.zpow_add, ih]
 
+/- English proof (translation)
+Repeatedly rewrite using `[← Finset.prod_zpow, ← _root_.zpow_mul]`. Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, zpow_finset_sum']`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_comm]`.
+-/
 theorem prod_prod_zpow_mul {G : Type} [CommGroup G] (P Q : Matrix (Fin 4) (Fin 4) ℤ) (w : Fin 4 → G)
     (a : Fin 4) : ∏ k, (∏ i, w i ^ Q k i) ^ P a k = ∏ i, w i ^ (P * Q) a i := by
   simp_rw [← Finset.prod_zpow, ← _root_.zpow_mul]
@@ -21,10 +29,28 @@ theorem prod_prod_zpow_mul {G : Type} [CommGroup G] (P Q : Matrix (Fin 4) (Fin 4
   refine Finset.prod_congr rfl fun k _ => ?_
   rw [mul_comm]
 
+/- English proof (translation)
+Simplify using `[Matrix.smul_apply, Matrix.one_apply]`.
+-/
 theorem prod_zpow_smul_one {G : Type} [CommGroup G] (c : ℤ) (w : Fin 4 → G) (a : Fin 4) :
     ∏ i, w i ^ (c • (1 : Matrix (Fin 4) (Fin 4) ℤ)) a i = w a ^ c := by
   simp [Matrix.smul_apply, Matrix.one_apply]
 
+/- English proof (translation)
+Introduce `d GA GB _ _ f g hd hgf u v hA hB hC`. Establish `hxx : quat d * (quat d)ᵀ = (((d - 1 : ℕ) : ℤ)) • (1 : Matrix (Fin 4) (Fin 4) ℤ)` using `quat_mul_transpose d`. Establish `hxtx : (quat d)ᵀ * quat d = (((d - 1 : ℕ) : ℤ)) • (1 : Matrix (Fin 4) (Fin 4) ℤ)` using `quat_transpose_mul d`. Establish `hd1 : d = (d - 1) + 1` using `by omega`. Establish `hv : ∀ k, v k = 1`.
+
+Introduce `k`. Establish `E : ∏ i, (f (u i) * ∏ j, v j ^ quat d j i) ^ quat d k i = 1`. Simplify using `[hA]`. Rewrite `E` using `[Finset.prod_congr rfl fun i _ => mul_zpow (f (u i)) (∏ j, v j ^ quat d j i) (quat d k i), Finset.prod_mul_distrib]`. Establish `E2 : ∏ i, (∏ j, v j ^ (quat d)ᵀ i j) ^ quat d k i = v k ^ (((d - 1 : ℕ) : ℤ))`.
+
+Rewrite using `[prod_prod_zpow_mul, hxx, prod_zpow_smul_one]`. Simplify using `only [Matrix.transpose_apply] at E2`. Establish `hF : f (∏ i, u i ^ quat d k i) = ∏ i, f (u i) ^ quat d k i`. Simplify using `[map_prod, map_zpow]`. Rewrite `E` using `[E2, ← hF, zpow_natCast]`.
+
+Establish `hBk` using `hB k`. Rewrite `hBk` using `[show v k ^ d = v k ^ (d - 1) * v k by rw [← pow_succ, ← hd1], ← mul_assoc, E, one_mul]`. Conclude with `hBk`. Use `⟨?_, hv⟩` and prove the remaining obligations. Establish `hxu` using `hC hv`.
+
+Introduce `l`. Establish `E : ∏ k, (∏ i, u i ^ quat d k i) ^ (quat d)ᵀ l k = 1`. Simplify using `[hxu]`. Rewrite `E` using `[prod_prod_zpow_mul, hxtx, prod_zpow_smul_one, zpow_natCast]`. Establish `hfu : f (u l) = 1`.
+
+Establish `h` using `hA l`. Simplify `h` using `[hv]`. Establish `hdu : u l ^ d = 1`. Rewrite using `[← hgf, hfu, map_one]`. Rewrite `hdu` using `[show u l ^ d = u l ^ (d - 1) * u l by rw [← pow_succ, ← hd1], E, one_mul]`.
+
+Conclude with `hdu`.
+-/
 theorem zarhin_kernel_trivial : ∀ (d : ℕ) (GA GB : Type) [CommGroup GA] [CommGroup GB] (f : GA →* GB) (g : GB →* GA), 0 < d → (∀ a, g (f a) = a ^ d) → ∀ (u : Fin 4 → GA) (v : Fin 4 → GB), (∀ i, f (u i) * ∏ j, v j ^ GlobalTheory.ZarhinFam.quat d j i = 1) → (∀ j, f (∏ i, u i ^ GlobalTheory.ZarhinFam.quat d j i) * v j ^ d = 1) → ((∀ j, v j = 1) → ∀ j, ∏ i, u i ^ GlobalTheory.ZarhinFam.quat d j i = 1) → (∀ i, u i = 1) ∧ ∀ j, v j = 1 := by
   intro d GA GB _ _ f g hd hgf u v hA hB hC
   have hxx : quat d * (quat d)ᵀ = (((d - 1 : ℕ) : ℤ)) • (1 : Matrix (Fin 4) (Fin 4) ℤ) :=

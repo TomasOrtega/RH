@@ -10,6 +10,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.UnitForm
 
+/- English proof (translation)
+Use `Forms.projective_of_int O X` as an intermediate fact. Use `Forms.finite_balTensor (O := O) (X := X)` as an intermediate fact. Use `Forms.free_balTensor (X := X) hw` as an intermediate fact. Set `e` to `Module.Free.chooseBasis ℤ ((TensorProduct ℤ X X) ⧸ Forms.balTensorRel O X)`. Establish `hm` using `Forms.balTensorMk_mem_balForms O X`.
+
+Set `β : _ → PolFan.balForms (star : O → O) X` to `fun j => ⟨(Forms.balTensorMk O).compr₂ (e.coord j), fun y x => congrArg (e.coord j) (hm.1 y x), fun a y x => congrArg (e.coord j) (hm.2 a y x)⟩`. Use `⟨fun k => ∑ j, ε.repr (β j) k • Forms.balTensorLift τ (e j), fun a b => ?_⟩` and prove the remaining obligations. Establish `h1 (j) : e.repr (Forms.balTensorMk O a b) j = ∑ k, ε.repr (β j) k * (ε k : LinearMap.BilinForm ℤ X) a b`. Establish `h` using `congrArg (fun g : PolFan.balForms (star : O → O) X => (g : LinearMap.BilinForm ℤ X) a b) (ε.sum_repr (β j))`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul] at h`.
+
+Conclude with `h.symm`. Rewrite using `[← Forms.balTensorLift_mk, ← e.sum_repr (Forms.balTensorMk O a b), map_sum]`. Simplify using `only [map_zsmul]`. Simplify using `only [h1, Finset.sum_smul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+
+Simplify using `only [_root_.mul_comm]`.
+-/
 theorem exists_coords {O : Type} [CommRing O] [StarRing O] [IsDedekindDomain O]
     [Module.Finite ℤ O] [Module.Free ℤ O] {w : O} (hw : w + star w = 1)
     {X : Type} [AddCommGroup X] [Module O X] [Module.Finite ℤ X] [Module.Free ℤ X]
@@ -39,6 +48,15 @@ theorem exists_coords {O : Type} [CommRing O] [StarRing O] [IsDedekindDomain O]
   rw [Finset.sum_comm]
   simp only [_root_.mul_comm]
 
+/- English proof (translation)
+Establish `hn0 : n ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hn`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq (residue V u) (Nat.pos_of_ne_zero hn0)`. Take `⟨a, rfl⟩` from `residue_surjective z`.
+
+Establish `ha : IsUnit a`. Rewrite using `[← residue_ne_zero_iff_isUnit]`. Introduce `h`. Rewrite `hz` using `[h, zero_pow hn0]`. Conclude with `(residue_ne_zero_iff_isUnit _).2 u.isUnit hz.symm`.
+
+Take `⟨y, hy, -⟩` from `HenselianRing.is_henselian (R := V) (I := maximalIdeal V) (Polynomial.X ^ n - Polynomial.C (u : V)) (Polynomial.monic_X_pow_sub_C _ hn0) a (by`. Rewrite using `[← residue_eq_zero_iff]`. Simplify using `[hz])`. Use the proof step `(by`. Use `IsUnit.map _ ?_` and prove the remaining obligations.
+
+Simplify `⟨hn, ha.pow _⟩)` using `[Polynomial.derivative_X_pow]`. Establish `hy' : y ^ n = u`. Simplify `hy` using `[sub_eq_zero]`. Establish `hyu : IsUnit y` using `(isUnit_pow_iff hn0).1 (hy' ▸ u.isUnit)`. Conclude with `⟨hyu.unit, Units.ext (by simpa using hy')⟩`.
+-/
 theorem exists_root {V : Type} [CommRing V] [IsLocalRing V] [IsAdicComplete (maximalIdeal V) V]
     [IsAlgClosed (ResidueField V)] {n : ℕ} (hn : IsUnit (n : V)) (u : Vˣ) :
     ∃ v : Vˣ, v ^ n = u := by
@@ -65,6 +83,11 @@ theorem exists_root {V : Type} [CommRing V] [IsLocalRing V] [IsAdicComplete (max
   have hyu : IsUnit y := (isUnit_pow_iff hn0).1 (hy' ▸ u.isUnit)
   exact ⟨hyu.unit, Units.ext (by simpa using hy')⟩
 
+/- English proof (translation)
+Establish `hr (a b b') : q a (b + b') = q a b * q a b'` using `by rw [hs, ha, hs b, hs b']`. Establish `h1 : q a (w • b) * q b (w • a) = q a b`. Rewrite using `[hs b, hb, ← hr, ← add_smul, hw, one_smul]`. Establish `h2 : q a b = q (a + b) (w • (a + b)) / (q a (w • a) * q b (w • b))`. Rewrite using `[smul_add, ha, hr, hr, ← h1, eq_div_iff_mul_eq']`.
+
+Simplify using `only [mul_comm, mul_left_comm, mul_assoc]`. Rewrite using `[h2]`. Conclude with `U.div_mem (hd _) (U.mul_mem (hd _) (hd _))`.
+-/
 theorem mem_of_diag {O : Type} [CommRing O] (bar : O → O) {w : O} (hw : w + bar w = 1)
     {X : Type} [AddCommGroup X] [Module O X] {G : Type} [CommGroup G] (U : Subgroup G)
     (q : X → X → G) (hs : ∀ a b, q a b = q b a) (ha : ∀ a a' b, q (a + a') b = q a b * q a' b)
@@ -79,6 +102,23 @@ theorem mem_of_diag {O : Type} [CommRing O] (bar : O → O) {w : O} (hw : w + ba
   rw [h2]
   exact U.div_mem (hd _) (U.mul_mem (hd _) (hd _))
 
+/- English proof (translation)
+Introduce `E _ _ _ H X _ _ _ _ V _ _ _ hV hk n hn m N ε t ht q hs ha hb hd`. Use `letI : StarRing (𝓞 E) := { star := H.bar star_involutive := fun a => by`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((H.bar (H.bar a) : 𝓞 E) : E) = a`. Rewrite using `[H.bar_eq, H.bar_eq, IsCMField.complexConj_apply_apply]`.
+
+Use `star_mul := fun a b => by rw [map_mul, _root_.mul_comm]`. Use `star_add := fun a b => map_add H.bar a b }`. Establish `hw : H.w0 + H.bar H.w0 = 1` using `PullbackSections.CVA.cmHostUnit_add_conj_eq_one H`. Establish `hinj : Function.Injective (algebraMap V (FractionRing V))` using `IsFractionRing.injective _ _`. Set `φ : Vˣ →* (FractionRing V)ˣ` to `Units.map (algebraMap V (FractionRing V) : V →* FractionRing V)`.
+
+Establish `hφ : Function.Injective φ` using `Units.map_injective hinj`. Set `τ : Fin m → (FractionRing V)ˣ` to `fun i => Units.mk0 (algebraMap V (FractionRing V) (t i)) (fun h => ht i (hinj (by rw [h, map_zero])))`. Set `M : X → X → (FractionRing V)ˣ` to `fun a b => ∏ i, τ i ^ ((n : ℤ) * (ε (.inl i) : LinearMap.BilinForm ℤ X) a b)`. Establish `Ms (a b) : M a b = M b a` using `Finset.prod_congr rfl fun i _ => by rw [(ε (.inl i)).2.1 a b]`. Establish `Ma (a a' b) : M (a + a') b = M a b * M a' b`.
+
+Simplify using `only [M, map_add, LinearMap.add_apply, mul_add, zpow_add, Finset.prod_mul_distrib]`. Establish `Mb (x : 𝓞 E) (a b) : M (x • a) b = M a (H.bar x • b)` using `Finset.prod_congr rfl fun i _ => by rw [(ε (.inl i)).2.2 x a b]`. Establish `hmem` using `mem_of_diag H.bar hw φ.range (fun a b => q a b / M a b) (fun a b => by rw [hs, Ms]) (fun a a' b => by rw [ha, Ma, mul_div_mul_comm]) (fun x a b => by rw [hb, Mb]) (fun y => by`. Take `⟨u, hu⟩` from `hd y`. Use `⟨u, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[eq_div_iff_mul_eq']`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hu]`. Simplify using `[M, τ, φ])`. Use `choose u hu using hmem`.
+
+Establish `us (a b) : u a b = u b a` using `hφ (by rw [hu, hu, hs, Ms])`. Establish `ua (a a' b) : u (a + a') b = u a b * u a' b` using `hφ (by rw [map_mul, hu, hu, hu, ha, Ma, mul_div_mul_comm])`. Establish `ub (x : 𝓞 E) (a b) : u (x • a) b = u a (H.bar x • b)` using `hφ (by rw [hu, hu, hb, Mb])`. Establish `ur (a b b') : u a (b + b') = u a b * u a b'` using `by rw [us, ua, us b, us b']`. Take `⟨c, hc⟩` from `exists_coords (O := 𝓞 E) hw ε ⟨Forms.bilOfMul u ua ur, us, ub⟩`.
+
+Use `choose v hv using fun k => exists_root hn (c k).toMul`. Use `⟨Sum.elim (fun i => t i * v (.inl i)) (fun j => v (.inr j)), fun i => ⟨(v (.inl i))⁻¹, by simp⟩, fun j => Units.isUnit _, fun a b => ?_⟩` and prove the remaining obligations. Establish `h1 : u a b = ∏ k, v k ^ ((n : ℤ) * (ε k : LinearMap.BilinForm ℤ X) a b)`. Establish `h` using `congrArg Additive.toMul (hc a b)`. Simplify using `only [toMul_sum, toMul_zsmul, ← hv] at h`.
+
+Simplify using `only [zpow_mul, zpow_natCast]`. Conclude with `h`. Establish `h2 : q a b = M a b * φ (u a b)` using `by rw [hu, mul_div_cancel]`. Rewrite using `[h2, h1]`. Simplify using `[M, τ, φ, Fintype.prod_sum_type, mul_zpow, Finset.prod_mul_distrib, _root_.mul_assoc]`.
+-/
 theorem exists_unit_coords : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Free ℤ X] [Module.Finite ℤ X] (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], IsAdicComplete (maximalIdeal V) V → IsAlgClosed (ResidueField V) → ∀ n : ℕ, IsUnit (n : V) → ∀ (m N : ℕ) (ε : Module.Basis (Fin m ⊕ Fin N) ℤ (balForms H.bar X)) (t : Fin m → V), (∀ i, t i ≠ 0) → ∀ q : X → X → (FractionRing V)ˣ, (∀ a b, q a b = q b a) → (∀ a a' b, q (a + a') b = q a b * q a' b) → (∀ (x : 𝓞 E) a b, q (x • a) b = q a (H.bar x • b)) → (∀ y, ∃ u : Vˣ, (q y (H.w0 • y) : FractionRing V) = algebraMap V _ u * ∏ i, algebraMap V (FractionRing V) (t i) ^ ((n : ℤ) * (ε (.inl i) : LinearMap.BilinForm ℤ X) y (H.w0 • y))) → ∃ s : Fin m ⊕ Fin N → V, (∀ i, Associated (s (.inl i)) (t i)) ∧ (∀ j, IsUnit (s (.inr j))) ∧ ∀ a b, (q a b : FractionRing V) = ∏ k, algebraMap V (FractionRing V) (s k) ^ ((n : ℤ) * (ε k : LinearMap.BilinForm ℤ X) a b) := by
   intro E _ _ _ H X _ _ _ _ V _ _ _ hV hk n hn m N ε t ht q hs ha hb hd
   letI : StarRing (𝓞 E) :=

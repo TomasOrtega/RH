@@ -4,12 +4,32 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CompactGroupRe
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Published.Kato
 
+/- English proof (translation)
+Use `haveI : Finite (Set.range f) := (Set.finite_range _).to_subtype`. Conclude with `IntermediateField.finiteDimensional_adjoin fun z _ => (Algebra.IsAlgebraic.isAlgebraic z).isIntegral`.
+-/
 private theorem fd_adjoin_range (l : ℕ) [Fact l.Prime] {ι : Type} [Finite ι] (f : ι → PadicAlgCl l) :
     FiniteDimensional ℚ_[l] (IntermediateField.adjoin ℚ_[l] (Set.range f)) := by
   haveI : Finite (Set.range f) := (Set.finite_range _).to_subtype
   exact IntermediateField.finiteDimensional_adjoin fun z _ =>
       (Algebra.IsAlgebraic.isAlgebraic z).isIntegral
 
+/- English proof (translation)
+Take `⟨ι, _, K, hK, hcov⟩` from `GlobalTheory.CompactRepField.exists_countable_family l`. Set `H : ι → Subgroup Γ` to `fun i => { carrier := {g | ∀ j, c g j ∈ K₀ ⊔ K i} one_mem' := by`. Introduce `j`. Rewrite using `[hc1]`. Conclude with `zero_mem _`.
+
+Use the proof step `mul_mem' := fun {g h} hg hh j => by`. Rewrite using `[hcoc]`. Conclude with `add_mem (hg j) (hθ _ le_sup_left g _ hh j)`. Use the proof step `inv_mem' := fun {g} hg j => by`. Establish `h1` using `hcoc g⁻¹ g`.
+
+Rewrite `h1` using `[inv_mul_cancel, hc1]`. Rewrite using `[eq_neg_of_add_eq_zero_left h1.symm]`. Conclude with `neg_mem (hθ _ le_sup_left _ _ hg j) }`. Establish `hcl : ∀ i, IsClosed (H i : Set Γ)` using `fun i => by haveI := hK i haveI : FiniteDimensional ℚ_[l] (K₀ ⊔ K i).toSubalgebra.toSubmodule := (inferInstance : FiniteDimensional ℚ_[l] (K₀ ⊔ K i : IntermediateField ℚ_[l] (PadicAlgCl l)))`. Establish `: (H i : Set Γ) = ⋂ j, (fun g => c g j) ⁻¹' ((K₀ ⊔ K i).toSubalgebra.toSubmodule : Set (PadicAlgCl l))`.
+
+Use extensionality with `g`. Rewrite using `[Set.mem_iInter]`. Conclude with `Iff.rfl`. Rewrite using `[this]`. Conclude with `isClosed_iInter fun j => (Submodule.closed_of_finiteDimensional (K₀ ⊔ K i).toSubalgebra.toSubmodule).preimage ((continuous_apply j).comp hc)`.
+
+Establish `hun : ⋃ i, (H i : Set Γ) = Set.univ`. Use `Set.eq_univ_of_forall fun g => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `hcov (Set.range (c g)) (Set.finite_range _)`. Conclude with `Set.mem_iUnion.2 ⟨i, fun j => (le_sup_right : K i ≤ K₀ ⊔ K i) (hi ⟨j, rfl⟩)⟩`. Take `⟨i, x, hx⟩` from `nonempty_interior_of_iUnion_of_closed hcl hun`.
+
+Establish `hop : IsOpen (H i : Set Γ)` using `Subgroup.isOpen_of_mem_nhds _ (mem_interior_iff_mem_nhds.1 hx)`. Use `haveI : Finite (Γ ⧸ H i) := Subgroup.quotient_finite_of_isOpen _ hop`. Use `haveI := fd_adjoin_range l (fun q : (Γ ⧸ H i) × Fin n => c q.1.out q.2)`. Use `haveI := hK i`. Use `⟨IntermediateField.adjoin ℚ_[l] (Set.range fun q : (Γ ⧸ H i) × Fin n => c q.1.out q.2) ⊔ (K₀ ⊔ K i), inferInstance, le_sup_left.trans le_sup_right, fun g j => ?_⟩` and prove the remaining obligations.
+
+Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul (H i) g`. Establish `hg : g = (g : Γ ⧸ H i).out * (h : Γ)⁻¹`. Rewrite using `[hh, mul_inv_cancel_right]`. Rewrite using `[hg, hcoc]`. Use `add_mem ?_ (hθ _ (le_sup_left.trans le_sup_right) _ _ (fun k => ?_) j)` and prove the remaining obligations.
+
+Conclude with `(le_sup_left : IntermediateField.adjoin ℚ_[l] (Set.range fun q : (Γ ⧸ H i) × Fin n => c q.1.out q.2) ≤ _) (IntermediateField.subset_adjoin _ _ ⟨((g : Γ ⧸ H i), j), rfl⟩)`. Conclude with `(le_sup_right : K₀ ⊔ K i ≤ _) ((H i).inv_mem h.2 k)`.
+-/
 private theorem coc_finext (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ]
     [CompactSpace Γ] [T2Space Γ] (K₀ : IntermediateField ℚ_[l] (PadicAlgCl l)) [FiniteDimensional ℚ_[l] K₀] (n : ℕ)
     (θ : Γ → (Fin n → PadicAlgCl l) → (Fin n → PadicAlgCl l)) (c : Γ → Fin n → PadicAlgCl l)
@@ -64,6 +84,11 @@ private theorem coc_finext (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] [Topo
       (IntermediateField.subset_adjoin _ _ ⟨((g : Γ ⧸ H i), j), rfl⟩)
   · exact (le_sup_right : K₀ ⊔ K i ≤ _) ((H i).inv_mem h.2 k)
 
+/- English proof (translation)
+Introduce `l _ Γ _ _ _ _ _ E _ n r c hc`. Take `⟨hcc, hcoc⟩` from `(mem_Z1_iff_cocycle _ _).1 hc`. Establish `hc1 : c 1 = 0`. Use `hcoc 1 1` as an intermediate fact. Rewrite `this` using `[one_mul, map_one, Module.End.one_apply]`.
+
+Conclude with `left_eq_add.1 this`. Use `coc_finext l Γ E n (fun g v => Loc.colRep (toBar r) g v) c ?_ hc1 hcc hcoc` and prove the remaining obligations. Introduce `L hL g v hv j`. Use `show (∑ k, ((r g : Matrix (Fin n) (Fin n) ↥E) j k : Qbar l) * v k) ∈ L`. Conclude with `sum_mem fun k _ => mul_mem (hL (SetLike.coe_mem _)) (hv k)`.
+-/
 theorem UpperTheory.V.X.Kato.finExt :
     ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] [T2Space Γ] (E : IntermediateField ℚ_[l] (Qbar l)) [FiniteDimensional ℚ_[l] ↥E] (n : ℕ) (r : Γ →* GL (Fin n) ↥E) (c : Γ → Fin n → Qbar l), c ∈ Z1 (Loc.colRep (toBar r)) → ∃ E' : IntermediateField ℚ_[l] (Qbar l), FiniteDimensional ℚ_[l] ↥E' ∧ E ≤ E' ∧ ∀ g i, c g i ∈ E' := by
   intro l _ Γ _ _ _ _ _ E _ n r c hc

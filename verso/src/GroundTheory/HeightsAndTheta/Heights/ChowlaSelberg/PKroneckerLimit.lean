@@ -15,6 +15,11 @@ open scoped Real UpperHalfPlane ModularForm
 
 noncomputable section
 
+/- English proof (translation)
+Break down `le_total 1 X with h | h` into its components or cases. Use `Real.rpow_le_rpow_of_exponent_le h (show -s ≤ -1 by linarith)` as an intermediate fact. Use `Real.rpow_nonneg hX.le (-2 : ℝ)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `Real.rpow_le_rpow_of_exponent_ge hX h (show (-2 : ℝ) ≤ -s by linarith)` as an intermediate fact.
+
+Use `Real.rpow_nonneg hX.le (-1 : ℝ)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem kroneckerLimit_rpow_neg_le {X s : ℝ} (hX : 0 < X) (h1 : 1 ≤ s) (h2 : s ≤ 2) :
     X ^ (-s) ≤ X ^ (-1 : ℝ) + X ^ (-2 : ℝ) := by
   rcases le_total 1 X with h | h
@@ -25,6 +30,11 @@ theorem kroneckerLimit_rpow_neg_le {X s : ℝ} (hX : 0 < X) (h1 : 1 ≤ s) (h2 :
     have := Real.rpow_nonneg hX.le (-1 : ℝ)
     linarith
 
+/- English proof (translation)
+Establish `hX : ∀ n : ℤ, 0 < ((n : ℝ) + u) ^ 2 + a ^ 2` using `fun n ↦ by positivity`. Use `tendsto_tsum_of_dominated_convergence (bound := fun n : ℤ ↦ (((n : ℝ) + u) ^ 2 + a ^ 2) ^ (-1 : ℝ) + (((n : ℝ) + u) ^ 2 + a ^ 2) ^ (-2 : ℝ)) ((hT a u 1 ha (by norm_num)).1.add (hT a u 2 ha (by norm_num)).1) (fun n ↦ ?_) ?_` and prove the remaining obligations. Establish `: ContinuousAt (fun s : ℝ ↦ (((n : ℝ) + u) ^ 2 + a ^ 2) ^ (-s)) 1` using `continuousAt_const.rpow continuousAt_neg (Or.inl (hX n).ne')`. Conclude with `this.tendsto.mono_left nhdsWithin_le_nhds`. Use `filter_upwards [Ioo_mem_nhdsGT (show (1 : ℝ) < 2 by norm_num)] with s hs n`.
+
+Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (Real.rpow_nonneg (hX n).le _)]`. Conclude with `kroneckerLimit_rpow_neg_le (hX n) hs.1.le hs.2.le`.
+-/
 theorem kroneckerLimit_tendsto_shiftedSum (hT : ShiftedSumIntegral.Statement) {a : ℝ} (ha : 0 < a)
     (u : ℝ) :
     Tendsto (fun s : ℝ ↦ ∑' n : ℤ, (((n : ℝ) + u) ^ 2 + a ^ 2) ^ (-s)) (𝓝[>] 1)
@@ -41,6 +51,15 @@ theorem kroneckerLimit_tendsto_shiftedSum (hT : ShiftedSumIntegral.Statement) {a
     rw [Real.norm_eq_abs, abs_of_nonneg (Real.rpow_nonneg (hX n).le _)]
     exact kroneckerLimit_rpow_neg_le (hX n) hs.1.le hs.2.le
 
+/- English proof (translation)
+Establish `hpos : ∀ n : ℕ, (0 : ℝ) < n + 1` using `fun n ↦ by positivity`. Establish `hsum : Summable (fun n : ℕ ↦ 1 / ((n + 1 : ℝ) ^ (2 : ℝ)))`. Use `(summable_nat_add_iff 1).mpr (Real.summable_one_div_nat_rpow.mpr (show (1 : ℝ) < 2 by norm_num))` as an intermediate fact. Simplify `this` using `[Nat.cast_add, Nat.cast_one]`. Establish `hval : ∑' n : ℕ, 1 / ((n + 1 : ℝ) ^ (2 * 1 : ℝ)) = π ^ 2 / 6`.
+
+Establish `h` using `(hasSum_nat_add_iff' 1).mpr hasSum_zeta_two`. Simplify using `only [Finset.range_one, Finset.sum_singleton, Nat.cast_zero, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, div_zero, sub_zero] at h`. Rewrite using `[← h.tsum_eq]`. Use `tsum_congr fun n ↦ ?_` and prove the remaining obligations. Rewrite using `[mul_one, Real.rpow_two]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hval]`. Use `tendsto_tsum_of_dominated_convergence (bound := fun n : ℕ ↦ 1 / ((n + 1 : ℝ) ^ (2 : ℝ))) hsum (fun n ↦ ?_) ?_` and prove the remaining obligations. Establish `: ContinuousAt (fun s : ℝ ↦ 1 / ((n + 1 : ℝ) ^ (2 * s))) 1` using `continuousAt_const.div (continuousAt_const.rpow (continuousAt_const.mul continuousAt_id) (Or.inl (hpos n).ne')) (Real.rpow_pos_of_pos (hpos n) _).ne'`.
+
+Conclude with `this.tendsto.mono_left nhdsWithin_le_nhds`. Use `filter_upwards [self_mem_nhdsWithin] with s (hs : 1 < s) n`. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (by have := Real.rpow_pos_of_pos (hpos n) (2 * s); positivity)]`. Conclude with `one_div_le_one_div_of_le (Real.rpow_pos_of_pos (hpos n) _) (Real.rpow_le_rpow_of_exponent_le (by linarith [(n.cast_nonneg : (0 : ℝ) ≤ n)]) (by linarith))`.
+-/
 theorem kroneckerLimit_tendsto_zeta_two :
     Tendsto (fun s : ℝ ↦ ∑' n : ℕ, 1 / ((n + 1 : ℝ) ^ (2 * s))) (𝓝[>] 1) (𝓝 (π ^ 2 / 6)) := by
   have hpos : ∀ n : ℕ, (0 : ℝ) < n + 1 := fun n ↦ by positivity
@@ -71,6 +90,13 @@ theorem kroneckerLimit_tendsto_zeta_two :
       (Real.rpow_le_rpow_of_exponent_le (by linarith [(n.cast_nonneg : (0 : ℝ) ≤ n)])
         (by linarith))
 
+/- English proof (translation)
+Establish `hG12 : ContinuousAt Real.Gamma (1 - 1 / 2)` using `(Real.differentiableAt_Gamma fun m h ↦ by`. Use `(m.cast_nonneg : (0 : ℝ) ≤ m)` as an intermediate fact. Use the proof step `linarith).continuousAt`. Establish `hG1 : ContinuousAt Real.Gamma 1` using `(Real.differentiableAt_Gamma fun m h ↦ by`. Use `(m.cast_nonneg : (0 : ℝ) ≤ m)` as an intermediate fact.
+
+Use the proof step `linarith).continuousAt`. Establish `hnum : ContinuousAt (fun s : ℝ ↦ √π * Real.Gamma (s - 1 / 2)) 1` using `continuousAt_const.mul (hG12.comp_of_eq (continuousAt_id.sub continuousAt_const) rfl)`. Establish `hcont : ContinuousAt (fun s : ℝ ↦ √π * Real.Gamma (s - 1 / 2) / Real.Gamma s) 1` using `hnum.div hG1 (by rw [Real.Gamma_one]; norm_num)`. Establish `hval : √π * Real.Gamma (1 - 1 / 2) / Real.Gamma 1 = π`. Rewrite using `[Real.Gamma_one, show (1 : ℝ) - 1 / 2 = 1 / 2 by norm_num, Real.Gamma_one_half_eq, div_one, Real.mul_self_sqrt Real.pi_pos.le]`.
+
+Establish `h` using `hcont.tendsto.mono_left (nhdsWithin_le_nhds (s := Ioi (1 : ℝ)))`. Use `beta_reduce at h`. Rewrite `h` using `[hval]`. Then use the resulting hypothesis.
+-/
 theorem kroneckerLimit_tendsto_gammaRatio :
     Tendsto (fun s : ℝ ↦ √π * Real.Gamma (s - 1 / 2) / Real.Gamma s) (𝓝[>] 1) (𝓝 π) := by
   have hG12 : ContinuousAt Real.Gamma (1 - 1 / 2) :=
@@ -90,6 +116,11 @@ theorem kroneckerLimit_tendsto_gammaRatio :
   beta_reduce at h
   rwa [hval] at h
 
+/- English proof (translation)
+Establish `hm : (0 : ℝ) < m + 1` using `by positivity`. Establish `hA : 0 < ((m : ℝ) + 1) * y` using `by positivity`. Establish `hb` using `(hT _ ((m + 1) * x) s hA (by linarith)).2`. Rewrite `hb` using `[hI _ s hA (by linarith)]`. Rewrite using `[norm_mul, Real.norm_eq_abs, Real.norm_eq_abs, abs_of_pos (Real.rpow_pos_of_pos hy s)]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.mul_rpow hm.le hy.le, show -s = s + -2 * s by ring, Real.rpow_add hy]; ring`. Use `_ ≤ ((m : ℝ) + 1) ^ (-2 : ℝ) * (y ^ (-1 : ℝ) + y ^ (-2 : ℝ)) := mul_le_mul (Real.rpow_le_rpow_of_exponent_le (by linarith [(m.cast_nonneg : (0 : ℝ) ≤ m)]) (by linarith)) (kroneckerLimit_rpow_neg_le hy h1.le h2.le) (Real.rpow_nonneg hy.le _) (Real.rpow_nonneg hm.le _)`. Use `_ = _ := by ring`.
+-/
 theorem kroneckerLimit_term_bound (hI : PowerIntegral.Statement) (hT : ShiftedSumIntegral.Statement)
     {y : ℝ} (hy : 0 < y) (x : ℝ) (m : ℕ) {s : ℝ} (h1 : 1 < s) (h2 : s < 2) :
     ‖y ^ s * ((∑' n : ℤ, (((n : ℝ) + (m + 1) * x) ^ 2 + ((m + 1) * y) ^ 2) ^ (-s)) -
@@ -112,6 +143,9 @@ theorem kroneckerLimit_term_bound (hI : PowerIntegral.Statement) (hT : ShiftedSu
           (Real.rpow_nonneg hm.le _)
     _ = _ := by ring
 
+/- English proof (translation)
+Establish `hm : (0 : ℝ) < m + 1` using `by positivity`. Rewrite using `[Real.mul_rpow hm.le hy.le, show (1 - 2 * s) = -(2 * s - 1) by ring, Real.rpow_neg hm.le, show (1 - s) = s + -(2 * s - 1) by ring, Real.rpow_add hy]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem kroneckerLimit_main_term {y : ℝ} (hy : 0 < y) (c s : ℝ) (m : ℕ) :
     y ^ s * (c * (((m : ℝ) + 1) * y) ^ (1 - 2 * s)) =
       c * y ^ (1 - s) * (1 / (((m : ℝ) + 1) ^ (2 * s - 1))) := by
@@ -120,6 +154,33 @@ theorem kroneckerLimit_main_term {y : ℝ} (hy : 0 < y) (c s : ℝ) (m : ℕ) :
     show (1 - s) = s + -(2 * s - 1) by ring, Real.rpow_add hy]
   ring
 
+/- English proof (translation)
+Introduce `τ`. Establish `hy : 0 < τ.im` using `τ.im_pos`. Establish `hA : ∀ m : ℕ, 0 < ((m : ℝ) + 1) * τ.im` using `fun m ↦ by positivity`. Establish `hsum2 : Summable (fun m : ℕ ↦ (τ.im ^ (-1 : ℝ) + τ.im ^ (-2 : ℝ)) * ((m : ℝ) + 1) ^ (-2 : ℝ))`. Use `(summable_nat_add_iff 1).mpr (Real.summable_nat_rpow.mpr (show (-2 : ℝ) < -1 by norm_num))` as an intermediate fact.
+
+Conclude with `(by simpa [Nat.cast_add, Nat.cast_one] using this : Summable (fun m : ℕ ↦ ((m : ℝ) + 1) ^ (-2 : ℝ))).mul_left _`. Establish `hys : Tendsto (fun s : ℝ ↦ τ.im ^ s) (𝓝[>] 1) (𝓝 τ.im)`. Use `((Real.continuousAt_const_rpow (b := 1) hy.ne').tendsto).mono_left (nhdsWithin_le_nhds (s := Ioi (1 : ℝ)))` as an intermediate fact. Simplify using `using this`. Establish `hD : Tendsto (fun s : ℝ ↦ ∑' m : ℕ, τ.im ^ s * ((∑' n : ℤ, (((n : ℝ) + (m + 1) * τ.re) ^ 2 + ((m + 1) * τ.im) ^ 2) ^ (-s)) - √π * Real.Gamma (s - 1 / 2) / Real.Gamma s * ((m + 1) * τ.im) ^ (1 - 2 * s))) (𝓝[>] 1) (𝓝 (∑' m : ℕ, τ.im * ((∑' n : ℤ, (((n : ℝ) + (m + 1) * τ.re) ^ 2 + ( …`.
+
+Use `tendsto_tsum_of_dominated_convergence hsum2 (fun m ↦ ?_) ?_` and prove the remaining obligations. Establish `h2 : Tendsto (fun s : ℝ ↦ (((m : ℝ) + 1) * τ.im) ^ (1 - 2 * s)) (𝓝[>] 1) (𝓝 ((((m : ℝ) + 1) * τ.im) ^ (-1 : ℝ)))`. Establish `: ContinuousAt (fun s : ℝ ↦ (((m : ℝ) + 1) * τ.im) ^ (1 - 2 * s)) 1` using `continuousAt_const.rpow (continuousAt_const.sub (continuousAt_const.mul continuousAt_id)) (Or.inl (hA m).ne')`. Establish `h` using `this.tendsto.mono_left (nhdsWithin_le_nhds (s := Ioi (1 : ℝ)))`. Use `beta_reduce at h`.
+
+Rewrite `h` using `[show (1 : ℝ) - 2 * 1 = -1 by norm_num]`. Then use the resulting hypothesis. Conclude with `hys.mul ((kroneckerLimit_tendsto_shiftedSum hT (hA m) _).sub (kroneckerLimit_tendsto_gammaRatio.mul h2))`. Use `filter_upwards [Ioo_mem_nhdsGT (show (1 : ℝ) < 2 by norm_num)] with s hs m`. Conclude with `kroneckerLimit_term_bound hI hT hy τ.re m hs.1 hs.2`. Establish `hEq : ∀ s : ℝ, 1 < s → s < 2 → kroneckerSum τ s - π / (s - 1) = 2 * τ.im ^ s * (∑' n : ℕ, 1 / ((n + 1 : ℝ) ^ (2 * s))) + 2 * (∑' m : ℕ, τ.im ^ s * ((∑' n : ℤ, (((n : ℝ) + (m + 1) * τ.re) ^ 2 + ((m + 1) * τ.im) ^ 2) ^ (-s)) - √π * Real.Gamma (s - 1 / 2) / Real.Gamma s * ((m + 1) * …`.
+
+Introduce `s h1 h2`. Use `set c := √π * Real.Gamma (s - 1 / 2) / Real.Gamma s with hc`. Establish `hDs : Summable (fun m : ℕ ↦ τ.im ^ s * ((∑' n : ℤ, (((n : ℝ) + (m + 1) * τ.re) ^ 2 + ((m + 1) * τ.im) ^ 2) ^ (-s)) - c * ((m + 1) * τ.im) ^ (1 - 2 * s)))` using `Summable.of_norm_bounded hsum2 (fun m ↦ kroneckerLimit_term_bound hI hT hy τ.re m h1 h2)`. Establish `hM : ∑' m : ℕ, τ.im ^ s * (c * ((m + 1) * τ.im) ^ (1 - 2 * s)) = c * τ.im ^ (1 - s) * ∑' m : ℕ, 1 / ((m + 1 : ℝ) ^ (2 * s - 1))`. Repeatedly rewrite using `[kroneckerLimit_main_term hy]`.
+
+Conclude with `tsum_mul_left`. Establish `hMs : Summable (fun m : ℕ ↦ τ.im ^ s * (c * ((m + 1) * τ.im) ^ (1 - 2 * s)))`. Repeatedly rewrite using `[kroneckerLimit_main_term hy]`. Use `Summable.mul_left _ ?_` and prove the remaining obligations. Use `(summable_nat_add_iff 1).mpr (Real.summable_one_div_nat_rpow.mpr (show 1 < 2 * s - 1 by linarith))` as an intermediate fact.
+
+Simplify `this` using `[Nat.cast_add, Nat.cast_one]`. Establish `hsplit : ∑' m : ℕ, τ.im ^ s * (∑' n : ℤ, (((n : ℝ) + (m + 1) * τ.re) ^ 2 + ((m + 1) * τ.im) ^ 2) ^ (-s)) = (∑' m : ℕ, τ.im ^ s * ((∑' n : ℤ, (((n : ℝ) + (m + 1) * τ.re) ^ 2 + ((m + 1) * τ.im) ^ 2) ^ (-s)) - c * ((m + 1) * τ.im) ^ (1 - 2 * s))) + ∑' m : ℕ, τ.im ^ s * (c * ((m + 1) …`. Rewrite using `[← hDs.tsum_add hMs]`. Conclude with `tsum_congr fun m ↦ by ring`. Rewrite using `[hS τ s h1, hsplit, hM]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hD' : ∑' m : ℕ, τ.im * ((∑' n : ℤ, (((n : ℝ) + (m + 1) * τ.re) ^ 2 + ((m + 1) * τ.im) ^ 2) ^ (-1 : ℝ)) - π * ((m + 1) * τ.im) ^ (-1 : ℝ)) = 2 * π * (-(π * τ.im / 12) - Real.log ‖η (τ : ℂ)‖)`. Rewrite using `[← (hE τ).tsum_eq, ← tsum_mul_left]`. Use `tsum_congr fun m ↦ ?_` and prove the remaining obligations. Rewrite using `[hC _ _ (hA m)]`.
+
+Establish `hq : Complex.exp (2 * π * Complex.I * ((((m + 1) * τ.re : ℝ) : ℂ) + (((m + 1) * τ.im : ℝ) : ℂ) * Complex.I)) = Complex.exp (2 * π * Complex.I * (τ : ℂ)) ^ (m + 1)`. Rewrite using `[← Complex.exp_nat_mul]`. Use `congr 1`. Use `conv_rhs => rw [← Complex.re_add_im (τ : ℂ)]`. Use `push_cast`.
+
+Simplify using `only [UpperHalfPlane.coe_re, UpperHalfPlane.coe_im]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hq]`. Repeatedly rewrite using `[← pow_mul]`. Rewrite using `[Real.rpow_neg_one]`.
+
+Establish `: (m : ℝ) + 1 ≠ 0` using `by positivity`. Use `hy.ne'` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hη : η (τ : ℂ) ≠ 0` using `ModularForm.eta_ne_zero τ.2`.
+
+Establish `hval : 2 * τ.im * (π ^ 2 / 6) + 2 * (∑' m : ℕ, τ.im * ((∑' n : ℤ, (((n : ℝ) + (m + 1) * τ.re) ^ 2 + ((m + 1) * τ.im) ^ 2) ^ (-1 : ℝ)) - π * ((m + 1) * τ.im) ^ (-1 : ℝ))) + (2 * π * (Real.eulerMascheroniConstant - Real.log 2) - π * Real.log τ.im) = 2 * π * (Real.eulerMascheroniCon …`. Rewrite using `[hD', Real.log_mul (Real.sqrt_pos.mpr hy).ne' (pow_pos (norm_pos_iff.mpr hη) 2).ne', Real.log_sqrt hy.le, Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hval]`.
+
+Use `Tendsto.congr' ?_ (((((tendsto_const_nhds (x := (2 : ℝ))).mul hys).mul kroneckerLimit_tendsto_zeta_two).add (tendsto_const_nhds.mul hD)).add (hG τ.im hy))` and prove the remaining obligations. Use `filter_upwards [Ioo_mem_nhdsGT (show (1 : ℝ) < 2 by norm_num)] with s hs`. Conclude with `(hEq s hs.1 hs.2).symm`.
+-/
 theorem KroneckerLimit.proof (hS : KroneckerSplit.Statement) (hI : PowerIntegral.Statement)
     (hT : ShiftedSumIntegral.Statement) (hC : CotangentSum.Statement) (hE : LogEta.Statement)
     (hG : GammaZetaLimit.Statement) : KroneckerLimit.Statement := by

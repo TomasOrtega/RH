@@ -14,6 +14,9 @@ namespace GlobalTheory.UPel.HT.Hecke.PullInj
 
 variable {X Y Z : Scheme.{0}}
 
+/- English proof (translation)
+Establish `hm : r z ∈ L.U k ⊓ L.U l` using `⟨hk, hl⟩`. Conclude with `(gm_res r z inf_le_left hm _).symm.trans ((congrArg (gm r z _) (hw k l)).trans ((map_mul _ _ _).trans (congrArg _ (gm_res r z inf_le_right hm _))))`.
+-/
 theorem gen_germ {L : LB X} {w : LB.Gen L} (hw : w.IsGen) (r : Z ⟶ X) (z : Z) {k l : L.ι}
     (hk : r z ∈ L.U k) (hl : r z ∈ L.U l) :
     gm r z _ (w.s k) = gm r z (L.U k ⊓ L.U l) (L.g k l) * gm r z _ (w.s l) := by
@@ -21,6 +24,9 @@ theorem gen_germ {L : LB X} {w : LB.Gen L} (hw : w.IsGen) (r : Z ⟶ X) (z : Z) 
   exact (gm_res r z inf_le_left hm _).symm.trans ((congrArg (gm r z _) (hw k l)).trans
     ((map_mul _ _ _).trans (congrArg _ (gm_res r z inf_le_right hm _))))
 
+/- English proof (translation)
+Establish `hp : r z ∈ (Q.pull F).U j ⊓ (Q.pull F).U j'` using `⟨mem_pull.2 hj, mem_pull.2 hj'⟩`. Use `show gm r z _ (∏ _k : PUnit, (res _ (pullU F _ (Q.g _ _))) ^ (1 : ℤ)) = _`. Rewrite using `[Fintype.prod_unique, zpow_one]`. Conclude with `(gm_res r z _ hp _).trans (gm_pull r F z (Q.U (j PUnit.unit) ⊓ Q.U (j' PUnit.unit)) ⟨hj, hj'⟩ _)`.
+-/
 theorem gm_pull_g (Q : LB Y) (F : X ⟶ Y) (r : Z ⟶ X) (z : Z) {j j' : PUnit → Q.ι}
     (hj : F (r z) ∈ Q.U (j PUnit.unit)) (hj' : F (r z) ∈ Q.U (j' PUnit.unit)) :
     gm r z ((Q.pull F).U j ⊓ (Q.pull F).U j') ((Q.pull F).g j j') =
@@ -30,6 +36,9 @@ theorem gm_pull_g (Q : LB Y) (F : X ⟶ Y) (r : Z ⟶ X) (z : Z) {j j' : PUnit �
   rw [Fintype.prod_unique, zpow_one]
   exact (gm_res r z _ hp _).trans (gm_pull r F z (Q.U (j PUnit.unit) ⊓ Q.U (j' PUnit.unit)) ⟨hj, hj'⟩ _)
 
+/- English proof (translation)
+Establish `hm : r z ∈ (LB.div M L).U p ⊓ (LB.div M L).U q` using `⟨hp, hq⟩`. Use `show gm r z _ (res _ (M.g _ _) * (res _ (L.g _ _))⁻¹) = _`. Conclude with `(map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res r z _ hm _) ((map_inv _ _).trans (congrArg _ (gm_res r z _ hm _))))`.
+-/
 theorem germ_div_g (M L : LB X) (r : Z ⟶ X) (z : Z) {p q : M.ι × L.ι}
     (hp : r z ∈ (LB.div M L).U p) (hq : r z ∈ (LB.div M L).U q) :
     gm r z _ ((LB.div M L).g p q) =
@@ -38,10 +47,18 @@ theorem germ_div_g (M L : LB X) (r : Z ⟶ X) (z : Z) {p q : M.ι × L.ι}
   show gm r z _ (res _ (M.g _ _) * (res _ (L.g _ _))⁻¹) = _
   exact (map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res r z _ hm _) ((map_inv _ _).trans (congrArg _ (gm_res r z _ hm _))))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨mem_pull.1 h.1, mem_pull.1 h.2⟩, fun h => ⟨mem_pull.2 h.1, mem_pull.2 h.2⟩⟩`.
+-/
 theorem mem_divPull {Q₁ Q₂ : LB Y} {F : X ⟶ Y} {x : X} {k : (PUnit → Q₂.ι) × (PUnit → Q₁.ι)} :
     x ∈ (LB.div (Q₂.pull F) (Q₁.pull F)).U k ↔ F x ∈ Q₂.U (k.1 PUnit.unit) ∧ F x ∈ Q₁.U (k.2 PUnit.unit) :=
   ⟨fun h => ⟨mem_pull.1 h.1, mem_pull.1 h.2⟩, fun h => ⟨mem_pull.2 h.1, mem_pull.2 h.2⟩⟩
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `(GlobalTheory.globalFns_holds S A hA).2 g.val`. Establish `h1 : ∀ r₀ : Z ⟶ A.left, gs r₀ z ⊤ g.val = gs (r₀ ≫ A.hom) z ⊤ c` using `fun r₀ => by`. Rewrite using `[← hc]`. Conclude with `gs_pull r₀ A.hom z ⊤ trivial c`. Apply `Units.ext` to reduce the goal to its premises.
+
+Rewrite using `[← gs_unit r z ⊤ trivial, ← gs_unit r' z ⊤ trivial, h1, h1, e]`.
+-/
 theorem gm_top_eq {S : Scheme.{0}} (A : Over S) [GrpObj A] (hA : IsAbelianScheme A) (g : Γ(A.left, ⊤)ˣ)
     (r r' : Z ⟶ A.left) (e : r ≫ A.hom = r' ≫ A.hom) (z : Z) : gm r z ⊤ g = gm r' z ⊤ g := by
   obtain ⟨c, hc⟩ := (GlobalTheory.globalFns_holds S A hA).2 g.val
@@ -56,6 +73,9 @@ namespace GlobalTheory.UPel.HT.Hecke.PullInj
 
 variable {S : Scheme.{0}}
 
+/- English proof (translation)
+Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify using `[transl, MonObj.mul_comp, MonObj.comp_mul]`. Simplify using `[transl, MonObj.mul_comp, MonObj.comp_mul]`.
+-/
 theorem transl_axis₁ (A : Over S) [GrpObj A] [IsCommMonObj A] (h : 𝟙_ (Over S) ⟶ A) :
     lift (1 : A ⟶ A) (𝟙 A) ≫ transl (lift (1 : 𝟙_ (Over S) ⟶ A) h : 𝟙_ (Over S) ⟶ G2 A) =
       transl h ≫ lift (1 : A ⟶ A) (𝟙 A) := by
@@ -63,6 +83,9 @@ theorem transl_axis₁ (A : Over S) [GrpObj A] [IsCommMonObj A] (h : 𝟙_ (Over
   · simp [transl, MonObj.mul_comp, MonObj.comp_mul]
   · simp [transl, MonObj.mul_comp, MonObj.comp_mul]
 
+/- English proof (translation)
+Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify using `[transl, MonObj.mul_comp, MonObj.comp_mul]`. Simplify using `[transl, MonObj.mul_comp, MonObj.comp_mul]`.
+-/
 theorem transl_axis₂ (A : Over S) [GrpObj A] [IsCommMonObj A] (h : 𝟙_ (Over S) ⟶ A) :
     lift (𝟙 A) (1 : A ⟶ A) ≫ transl (lift h (1 : 𝟙_ (Over S) ⟶ A) : 𝟙_ (Over S) ⟶ G2 A) =
       transl h ≫ lift (𝟙 A) (1 : A ⟶ A) := by
@@ -70,12 +93,18 @@ theorem transl_axis₂ (A : Over S) [GrpObj A] [IsCommMonObj A] (h : 𝟙_ (Over
   · simp [transl, MonObj.mul_comp, MonObj.comp_mul]
   · simp [transl, MonObj.mul_comp, MonObj.comp_mul]
 
+/- English proof (translation)
+Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 theorem grpScheme_monHom_square_lift_one_left {A A' : Over S} [GrpObj A] [IsCommMonObj A] [GrpObj A'] [IsCommMonObj A'] (ψ : A ⟶ A')
     [IsMonHom ψ] : lift (1 : A ⟶ A) (𝟙 A) ≫ lift (fst A A ≫ ψ) (snd A A ≫ ψ) = ψ ≫ lift (1 : A' ⟶ A') (𝟙 A') := by
   apply CartesianMonoidalCategory.hom_ext
   · simp
   · simp
 
+/- English proof (translation)
+Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 theorem grpScheme_monHom_square_lift_one_right {A A' : Over S} [GrpObj A] [IsCommMonObj A] [GrpObj A'] [IsCommMonObj A'] (ψ : A ⟶ A')
     [IsMonHom ψ] : lift (𝟙 A) (1 : A ⟶ A) ≫ lift (fst A A ≫ ψ) (snd A A ≫ ψ) = ψ ≫ lift (𝟙 A') (1 : A' ⟶ A') := by
   apply CartesianMonoidalCategory.hom_ext

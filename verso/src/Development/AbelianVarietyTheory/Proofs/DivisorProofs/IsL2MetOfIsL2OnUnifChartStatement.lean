@@ -14,5 +14,8 @@ open GlobalTheory GlobalTheory.TorsionForm
 open scoped ContDiff Real CategoryTheory.Obj ComplexOrder
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TorsionForm.isL2Met_of_isL2On | exact GlobalTheory.TorsionForm.isL2Met_of_isL2On | (intros; apply GlobalTheory.TorsionForm.isL2Met_of_isL2On <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isL2Metric_of_isUnifChart_of_isL2OnDiagonal : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k) (σ : k →+* ℂ) (A : Over S) (g D : ℕ) (L : HermLB (A.hom ≫ p)) (M : HermLB p) (ψ : toMod M.B ≅ (Scheme.Modules.pushforward A.hom).obj (toMod L.B)) (c : AlgChart p σ D) (τ : V D → Matrix (Fin g) (Fin g) ℂ) (ex : Pt (V D) g → CxPts (A.hom ≫ p) σ), IsUnifChart c τ ex → IsL2OnDiagonal L M ψ c τ ex → IsL2Metric L (.ofLB M) ψ c τ ex := by
   first | exact @GlobalTheory.TorsionForm.isL2Met_of_isL2On | exact GlobalTheory.TorsionForm.isL2Met_of_isL2On | (intros; apply GlobalTheory.TorsionForm.isL2Met_of_isL2On <;> assumption)

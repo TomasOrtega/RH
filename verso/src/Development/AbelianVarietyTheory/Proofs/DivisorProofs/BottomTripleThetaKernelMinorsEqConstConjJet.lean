@@ -29,6 +29,11 @@ noncomputable section
 
 namespace GlobalTheory.BotFormula.ConjJet
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Use `show deriv (fun t : ℝ => heisO ψ S T (lineAt θ τ z t) (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj id f) x) 0 = starRingEnd ℂ (deriv (fun t : ℝ => heisO ψ (GlobalTheory.Grid.neg S) T (lineAt θ τ z t) f x) 0)`. Establish `e : (fun t : ℝ => heisO ψ S T (lineAt θ τ z t) (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj id f) x) = fun t => star (heisO ψ (GlobalTheory.Grid.neg S) T (lineAt θ τ z t) f x)`. Use function extensionality and compare the values at `t`. Rewrite using `[GlobalTheory.CjNeg.heis_negS' hψ]`.
+
+Both sides reduce to the same expression. Rewrite using `[e, deriv.star]`. Both sides reduce to the same expression.
+-/
 theorem dRho_conj {D : D7} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (S T : HSp D) (θ : InfFam D)
     (τ : D.what₂.Tau) (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) (f : WO S T → ℂ) :
     dRho (heisO ψ S T) θ τ z (fun w => starRingEnd ℂ (f w)) =
@@ -44,6 +49,13 @@ theorem dRho_conj {D : D7} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D �
   rw [e, deriv.star]
   rfl
 
+/- English proof (translation)
+Introduce `z`. Establish `h0 : annih (heisO ψ (GlobalTheory.Grid.neg S) T) θ τ (cplxO (-1) 1) z f = 0` using `hv z`. Establish `hJ : cplxO (-1 : Matrix (Fin S.rank) (Fin S.rank) ℂ) (1 : Matrix (Fin T.rank) (Fin T.rank) ℂ) z = -cplxO 1 1 z`. Simplify using `[cplxO]`. Unfold `annih at h0 ⊢`.
+
+Rewrite `h0` using `[hJ, GlobalTheory.FockAdjoint.dRho_neg' hψ hθ hf]`. Rewrite using `[dRho_conj hψ, dRho_conj hψ]`. Use function extensionality and compare the values at `x`. Establish `h2` using `congrFun h0 x`. Simplify using `only [Pi.add_apply, Pi.smul_apply, Pi.neg_apply, smul_eq_mul, Pi.zero_apply] at h2 ⊢`.
+
+Establish `e` using `congrArg (starRingEnd ℂ) h2`. Simplify using `only [map_add, map_mul, map_neg, Complex.conj_I, map_zero] at e`. Take the linear combination `e`.
+-/
 theorem isFockVacAt_conj {D : D7} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {θ : InfFam D} (hθ : IsInfFam θ)
     (S T : HSp D) (f : WO S T → ℂ) (hf : IsThetaFunO ψ (GlobalTheory.Grid.neg S) T f) (τ : D.what₂.Tau)
     (hv : IsFockVacAt (heisO ψ (GlobalTheory.Grid.neg S) T) θ τ (cplxO (-1) 1) f) :
@@ -62,6 +74,9 @@ theorem isFockVacAt_conj {D : D7} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdC
   simp only [map_add, map_mul, map_neg, Complex.conj_I, map_zero] at e
   linear_combination e
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.NormSum.minorPol, map_prod, RingHom.map_det]`. Use `Finset.prod_congr rfl fun τ _ => Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 1`. Use extensionality with `i i' : 2`. Simplify using the standard rewrite rules.
+-/
 theorem map_conj_minorPol {D : D7} {a d : ℕ} {n : D.what₂.Tau → ℕ} (U : Tup D a d n) :
     MvPolynomial.map (starRingEnd ℂ) (GlobalTheory.NormSum.minorPol D U) = GlobalTheory.NormSum.minorPol D U := by
   simp only [GlobalTheory.NormSum.minorPol, map_prod, RingHom.map_det]
@@ -70,6 +85,21 @@ theorem map_conj_minorPol {D : D7} {a d : ℕ} {n : D.what₂.Tau → ℕ} (U : 
   ext i i' : 2
   simp
 
+/- English proof (translation)
+Introduce `D T Lc sc G W hψ i j A A' WW X hX r rc hr hrc n₀`. Establish `hI` using `hX.is`. Establish `hθ : IsInfFam W.θ` using `hI.isVac.2.inf`. Take `⟨c₁, hc₁, H⟩` from `GlobalTheory.NormDictEx.Jets.fock_minorPol_zero W.ψ W.θ A WW rfl rfl n₀ r rc hψ hθ hX.std.1 hX.stdW.1 hr hrc`. Use `⟨starRingEnd ℂ c₁, (map_ne_zero _).2 hc₁, ?_⟩` and prove the remaining obligations.
+
+Introduce `a d n ea ed hn s g y hg hy Tu`. Substitute `ea ed hn` using the available equality. Establish `hom` using `hI.weil s`. Establish `e1 : (fun τ => -X.rA.s τ) = fun _ => (-1 : Matrix (Fin A.rank) (Fin A.rank) ℂ)`. Use function extensionality and compare the values at `fun τ => by rw [(hX.std.2.2 τ).1]`.
+
+Establish `e2 : X.rW.s = fun _ => (1 : Matrix (Fin WW.rank) (Fin WW.rank) ℂ)` using `funext fun τ => (hX.stdW.2.2 τ).1`. Establish `e3 : X.rA.B = fun _ => (1 : Matrix (Fin A.rank) (Fin A.rank) ℂ)` using `funext fun τ => (hX.std.2.2 τ).2`. Establish `e4 : X.rW.B = fun _ => (1 : Matrix (Fin WW.rank) (Fin WW.rank) ℂ)` using `funext fun τ => (hX.stdW.2.2 τ).2`. Establish `hf : IsThetaFunO W.ψ (GlobalTheory.Grid.neg A) WW (X.f s)` using `(GlobalTheory.ConstRatio.theta_f hI s).1`. Establish `ho` using `GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum (hI.idem s)`.
+
+Establish `hv : ∀ τ, IsFockVacAt (heisO W.ψ (GlobalTheory.Grid.neg A) WW) W.θ τ (cplxO (-X.rA.s τ) (X.rW.s τ)) (X.f s)` using `fun τ => GlobalTheory.DatumFock.isFockVacAt_of_isThetaAt hψ.1.1 hθ ho.infPart_eq ho.conj.infPart_eq (hI.fst s) hI.isVac.2.theta hf (hI.isVac.2.fock τ)`. Establish `hy' : (GlobalTheory.Grid.ofSgn true A).symm y ∈ GfC (GlobalTheory.Grid.neg A)` using `hy`. Establish `hmove` using `GlobalTheory.FockRealMove.om_fin_fockVac D W.ψ W.θ (GlobalTheory.Grid.neg A) WW _ _ ((X.ω s).toSgn true) hom hθ (fun τ => -X.rA.s τ) X.rW.s (X.f s) hf hv _ hy' g hg`. Establish `hcomm` using `GlobalTheory.OrientedHeis.om_fin_pureTensorO W.ψ (GlobalTheory.Grid.neg A) WW _ _ ((X.ω s).toSgn true) hom W.θ hθ _ hy' g hg (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B (X.f s) (GlobalTheory.BotFormula.minorF rfl rfl Tu) hf`. Use `set F : WO A WW → ℂ := X.ω s (y, g) (X.f s) with hF`.
+
+Establish `hF1 : IsThetaFunO W.ψ (GlobalTheory.Grid.neg A) WW F` using `hmove.1`. Establish `hF2 : ∀ τ, IsFockVacAt (heisO W.ψ (GlobalTheory.Grid.neg A) WW) W.θ τ (cplxO (-1) 1) F` using `fun τ => by`. Establish `h` using `hmove.2 τ`. Rewrite `h` using `[(hX.std.2.2 τ).1, (hX.stdW.2.2 τ).1]`. Conclude with `h`.
+
+Establish `hJ` using `H (fun w => starRingEnd ℂ (F w)) (GlobalTheory.CjNeg.theta_negS' hψ (show IsThetaFunO W.ψ (GlobalTheory.ChiGrid.negSp A) WW F from hF1)) (fun τ => isFockVacAt_conj hψ hθ A WW F hF1 τ (hF2 τ)) Tu`. Establish `hP : MvPolynomial.map (starRingEnd ℂ) (GlobalTheory.BotFormula.minorF (rfl : A.rank = A.rank) (rfl : WW.rank = WW.rank) Tu) = GlobalTheory.BotFormula.minorF rfl rfl Tu`. Unfold `GlobalTheory.BotFormula.minorF`. Rewrite using `[MvPolynomial.map_rename, map_conj_minorPol]`. Establish `hc` using `GlobalTheory.FockNegSubst.pureTensorO_negSp_map_conj W.ψ W.θ A WW hψ hθ (fun _ => 1) (fun _ => 1) F (GlobalTheory.BotFormula.minorF rfl rfl Tu)`.
+
+Rewrite `hc` using `[hP]`. Establish `hk : X.ker W.ψ W.θ s (GlobalTheory.BotFormula.minorF rfl rfl Tu) g y = pureTensorO W.ψ W.θ (GlobalTheory.Grid.neg A) WW (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B F (GlobalTheory.BotFormula.minorF rfl rfl Tu) 0` using `congrFun hcomm 0`. Rewrite using `[hk, e1, e2, e3, e4, ← map_mul, ← hJ]`. Conclude with `congrFun hc 0`.
+-/
 theorem ker_minorF_eq_conj_jet : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} (G : GridData Lc sc) (W : G.Weil),
     IsStdChar D W.ψ (-1) → ∀ (i j : Fin D.R.m) (A A' WW : HSp D) (X : Tri T A A' WW), IsBottomTri W i j X →
     ∀ (r : ℂ) (rc : ℝ), r ≠ 0 → (∀ τ, rc * ‖r‖ ^ 2 = 2 * ‖tauE D τ D.host.xi0‖) → ∀ n₀ : D.what₂.Tau → ℕ,

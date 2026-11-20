@@ -17,6 +17,17 @@ namespace GlobalTheory.HalfGeo.DlogFrame
 
 open GlobalTheory.LineNorm.Chart GlobalTheory.LieMet
 
+/- English proof (translation)
+Introduce `vO cf hv hcf m`. Establish `hid : spMap (RingHom.id ↥(intO ℂ_[p])) = 𝟙 _` using `Spec.map_id _`. Establish `hid' : spMap (dualMap (RingHom.id ↥(intO ℂ_[p]))) = 𝟙 _`. Establish `: dualMap (RingHom.id ↥(intO ℂ_[p])) = RingHom.id _`. Use `RingHom.ext fun z => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `ext <;> simp [dualMap]`. Rewrite using `[this]`. Conclude with `Spec.map_id _`. Establish `h0` using `he.2 _ (RingHom.id _) vO (by rwa [hid, Category.id_comp])`. Simplify using `only [hid, hid', Category.id_comp] at h0`.
+
+Take `⟨a', ha', -⟩` from `h0`. Establish `heC` using `GlobalTheory.LineNorm.WedgeMax.isTanBasis_map t (intO ℂ_[p]).subtype he`. Establish `h1` using `GlobalTheory.LatDRFree.comb_map t (intO ℂ_[p]).subtype ha'`. Establish `h2` using `comb_comb heC.1 ha hcf`. Establish `h3` using `(he.2 _ (intO ℂ_[p]).subtype _ (comb_tan heC.1 h1)).unique h1 h2`.
+
+Use `⟨∑ i, h m i * a' i, ?_, hd m a' vO ha'⟩` and prove the remaining obligations. Establish `h4 : ∀ i, (a' i : ℂ_[p]) = ∑ l, cf l * a l i` using `fun i => by`. Simplify `congrFun h3 i` using `[Finset.sum_apply]`. Express the relevant statement in the definitionally equal form `(intO ℂ_[p]).subtype _ = _`. Rewrite using `[map_sum]`.
+
+Simplify using `only [map_mul, Subring.coe_subtype, h4, Matrix.of_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring` and prove the remaining obligations.
+-/
 theorem dlogVals_of_basis {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {X : Scheme.{0}} (t : SAB H X) {p : ℕ} [Fact p.Prime] (xO : Sp ↥(intO ℂ_[p]) ⟶ X) {n N g k : ℕ}
     (χ : Fin N → TorsChar t xO (p ^ n)) (e : Fin k → (Sp (DualNumber ↥(intO ℂ_[p])) ⟶ t.G.left))
@@ -49,6 +60,23 @@ theorem dlogVals_of_basis {E : Type} [Field E] [NumberField E] [IsCMField E] {H 
   rw [Finset.sum_comm]
   refine Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Introduce `E _ _ _ H X t F _ _ Y V ρ' ρ hρ g f T v hp n ε y z yt hz hyt ψ₀ hψ₀`. Take `⟨y, hy⟩` from `y`. Simplify using `only at hz hψ₀ ⊢`. Substitute `hz` using the available equality. Substitute `hψ₀` using the available equality.
+
+Establish `h1` using `ioOf_le_one_iff (resP v) (residueCharacteristic_mem v) ε`. Generalize the expression as in `ioOf (resP v) ε = io at h1 ⊢`. Set `ioO : ε.O →+* intO ℂ_[resP v]` to `(io.comp ε.O.subtype).codRestrict _ fun b => (h1 b).2 b.2`. Establish `hio : (intO ℂ_[resP v]).subtype.comp ioO = io.comp ε.O.subtype` using `rfl`. Take `⟨ψ, hψ⟩ : ∃ ψ : V.G.presheaf.stalk (below z) →+* ℂ_[resP v], ψ = io.comp (Scheme.stalkClosedPointTo z).hom` from `⟨_, rfl⟩`.
+
+Take `⟨φ, hφ⟩ : ∃ φ : Y.X.presheaf.stalk (V.π (below z)) →+* ℂ_[resP v], φ = io.comp (Scheme.stalkClosedPointTo (z ≫ V.π)).hom` from `⟨_, rfl⟩`. Establish `hφψ : ψ.comp (V.π.stalkMap (below z)).hom = φ`. Rewrite using `[hφ, hψ, Scheme.stalkClosedPointTo_comp]`. Both sides reduce to the same expression. Establish `hx : spMap φ ≫ GlobalTheory.ShFam.stalkPt Y (V.π (below z)) ≫ ρ = spMap (intO ℂ_[resP v]).subtype ≫ (spMap ioO ≫ yt) ≫ ρ'`.
+
+Establish `e1 : spMap (Scheme.stalkClosedPointTo z).hom ≫ V.G.fromSpecStalk (below z) = z` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk z`. Establish `e2 : spMap (V.π.stalkMap (below z)).hom ≫ GlobalTheory.ShFam.stalkPt Y (V.π (below z)) = V.G.fromSpecStalk (below z) ≫ V.π` using `Scheme.SpecMap_stalkMap_fromSpecStalk V.π`. Rewrite using `[← hφψ, ← spMap_comp', Category.assoc, ← Category.assoc _ _ ρ, e2, Category.assoc, ← hρ, hψ, ← spMap_comp', Category.assoc, ← Category.assoc _ (V.G.fromSpecStalk _), e1, Category.assoc, ← Category.assoc (spMap (intO ℂ_[resP v]).subtype), spMap_comp', hio, ← spMap_comp', Category. …`. Establish `hy0 : spMap (intO ℂ_[resP v]).subtype ≫ spMap ioO ≫ yt = spMap io ≫ z ≫ V.j`. Rewrite using `[← Category.assoc, spMap_comp', hio, ← spMap_comp', Category.assoc, hyt]`.
+
+Use `⟨spMap ioO ≫ yt, hy0, by subst hφ; exact hx.symm, ?_⟩` and prove the remaining obligations. Introduce `χ U hU k e h M he hM hin hd`. Establish `hmem : V.j (below z) ∈ U`. Establish `: (spMap ε.O.subtype ≫ yt) (IsLocalRing.closedPoint _) ∈ U` using `hin (Set.mem_univ _)`. Rewrite `this` using `[hyt]`. Then use the resulting hypothesis.
+
+Take `⟨α, a, hα, ha, hMα⟩` from `hM _ hmem`. Take `⟨β, hβ, hβα, hb⟩` from `GlobalTheory.HtGen.FlagPoint.chart V.j ρ' ε.O io ioO hio z yt hyt hU hin e α hα a _ ha ψ hψ`. Simplify using `only [dual_comp _ ψ, hφψ] at hb`. Establish `hB` using `GlobalTheory.LineNorm.WedgeMax.isTanBasis_map t β he`. Rewrite `hB` using `[← Category.assoc, hβ]`.
+
+Establish `hval : ∀ r, io (TrueGeo.valAt z (algebraMap (V.G.presheaf.stalk (below z)) V.G.functionField r)) = ψ r` using `fun r => by rw [hψ, Base.valAt_stalk]; rfl`. Establish `hm : (valMat V M (T (V.π (below z))) z).map io = Matrix.of fun r l => ∑ i, ((β (h r i) : intO ℂ_[resP v]) : ℂ_[resP v]) * ψ (a l i)`. Use extensionality with `r l`. Simplify using `only [Matrix.map_apply, valMat, Matrix.of_apply]`. Rewrite using `[hMα, hval, map_sum]`.
+
+Simplify using `only [map_mul, hβα]`. Establish `key` using `dlogVals_of_basis t _ χ _ hB _ (hd β hβ) _ _ hb`. Rewrite `key` using `[← hm]`. Substitute `hφ` using the available equality. Conclude with `key`.
+-/
 theorem dlogVals_valMat : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (t : SAB H X)
     (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Cover Y) (ρ' : V.X ⟶ X) (ρ : Y.X ⟶ X), V.j ≫ ρ' = V.π ≫ ρ →
     ∀ (g : ℕ) (f : ∀ y : Y.X, Fin g → (Sp (DualNumber (Y.X.presheaf.stalk y)) ⟶ t.G.left))

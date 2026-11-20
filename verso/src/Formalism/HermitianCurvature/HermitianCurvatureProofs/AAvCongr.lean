@@ -6,6 +6,13 @@ namespace Formalism.FourierDecayAlt.P.SignAntidiagonal
 
 open Formalism.FourierDecayAlt.C3 Formalism.REAL Formalism.QuantumDeterminants
 
+/- English proof (translation)
+Establish `key : ∀ y ∈ Ideal.span (rgen k r z' E), ∀ a : A, La (a * y) = 0`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨p, q, hpq, rfl⟩` from `hy`.
+
+Introduce `a`. Rewrite using `[mul_sub, map_sub, hR a p q hpq, ← Algebra.commutes, ← Algebra.smul_def, map_smul, sub_self]`. Consider the case `zero => intro a`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy => intro a`.
+
+Rewrite using `[mul_add, map_add, hx, hy, add_zero]`. Consider the case `smul b x _ hx => intro a`. Rewrite using `[smul_eq_mul, ← mul_assoc]`. Conclude with `hx (a * b)`. Simplify using `using key x hx 1`.
+-/
 theorem la_ideal {A M : Type} [Ring A] [Algebra ℂ A] [AddCommGroup M] [Module ℂ M] {k r : ℕ}
     {z' : Fin (2 * r + k + 1) → ℂ} {E : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → A} {La : A →ₗ[ℂ] M}
     (hR : RightRuleFn k r z' E La) {x : A} (hx : x ∈ Ideal.span (rgen k r z' E)) : La x = 0 := by
@@ -21,12 +28,22 @@ theorem la_ideal {A M : Type} [Ring A] [Algebra ℂ A] [AddCommGroup M] [Module 
     | smul b x _ hx => intro a; rw [smul_eq_mul, ← mul_assoc]; exact hx (a * b)
   simpa using key x hx 1
 
+/- English proof (translation)
+Use `la_ideal hR hx` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis.
+-/
 theorem la_congr {A M : Type} [Ring A] [Algebra ℂ A] [AddCommGroup M] [Module ℂ M] {k r : ℕ}
     {z' : Fin (2 * r + k + 1) → ℂ} {E : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → A} {La : A →ₗ[ℂ] M}
     (hR : RightRuleFn k r z' E La) {x y : A} (hx : x - y ∈ Ideal.span (rgen k r z' E)) : La x = La y := by
   have := la_ideal hR hx
   rwa [map_sub, sub_eq_zero] at this
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_eq_single e]`. Rewrite using `[if_pos he]`. Introduce `c _ hc split_ifs with hP`. Distinguish the cases in `hS : ∀ l, c l ∈ S`. Conclude with `absurd (huniq c hP hS) hc`.
+
+Use `push Not at hS`. Take `⟨l, hl⟩` from `hS`. Rewrite using `[Matrix.det_eq_zero_of_column_eq_zero l (fun a => by simp [hX a _ hl]), zero_smul]`. Both sides reduce to the same expression. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ e) h`.
+-/
 theorem sum_single {M : Type*} [AddCommGroup M] [Module ℂ M] {m N : ℕ} (P : (Fin m → Fin N) → Prop)
     [DecidablePred P] (X : Fin m → Fin N → ℂ) (S : Set (Fin N)) (hX : ∀ a p, p ∉ S → X a p = 0)
     (e : Fin m → Fin N) (he : P e) (huniq : ∀ c, P c → (∀ l, c l ∈ S) → c = e) (F : (Fin m → Fin N) → M) :
@@ -44,6 +61,11 @@ theorem sum_single {M : Type*} [AddCommGroup M] [Module ℂ M] {m N : ℕ} (P : 
     · rfl
   · intro h; exact absurd (Finset.mem_univ e) h
 
+/- English proof (translation)
+Establish `hcard : (Finset.image e Finset.univ).card = m`. Rewrite using `[Finset.card_image_of_injective _ he.injective]`. Simplify using the standard rewrite rules. Establish `hS' : ∀ l, c l ∈ Finset.image e Finset.univ`. Introduce `l`.
+
+Take `⟨x, hx⟩` from `hS l`. Rewrite using `[← hx]`. Conclude with `Finset.mem_image_of_mem e (Finset.mem_univ x)`. Rewrite using `[Finset.orderEmbOfFin_unique hcard hS' hc]`. Conclude with `(Finset.orderEmbOfFin_unique hcard (fun l => Finset.mem_image_of_mem e (Finset.mem_univ l)) he).symm`.
+-/
 theorem uniq_mono {α : Type} [LinearOrder α] {m : ℕ} (e c : Fin m → α) (he : StrictMono e) (hc : StrictMono c)
     (hS : ∀ l, c l ∈ Set.range e) : c = e := by
   have hcard : (Finset.image e Finset.univ).card = m := by
@@ -53,6 +75,9 @@ theorem uniq_mono {α : Type} [LinearOrder α] {m : ℕ} (e c : Fin m → α) (h
   rw [Finset.orderEmbOfFin_unique hcard hS' hc]
   exact (Finset.orderEmbOfFin_unique hcard (fun l => Finset.mem_image_of_mem e (Finset.mem_univ l)) he).symm
 
+/- English proof (translation)
+Establish `h` using `uniq_mono (fun l => key (e l)) (fun l => key (c l)) he hc (by`. Introduce `l; obtain ⟨x, hx⟩ := hS l; exact ⟨x, by simp only [hx]⟩)`. Use function extensionality and compare the values at `l`. Conclude with `hkey (congrFun h l)`.
+-/
 theorem uniq_key {N m : ℕ} (key : Fin N → ℕ) (hkey : Function.Injective key) (e c : Fin m → Fin N)
     (he : StrictMono (fun l => key (e l))) (hc : StrictMono (fun l => key (c l)))
     (hS : ∀ l, c l ∈ Set.range e) : c = e := by
@@ -60,17 +85,29 @@ theorem uniq_key {N m : ℕ} (key : Fin N → ℕ) (hkey : Function.Injective ke
     intro l; obtain ⟨x, hx⟩ := hS l; exact ⟨x, by simp only [hx]⟩)
   funext l; exact hkey (congrFun h l)
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem AAx_congr {A : Type} [Ring A] [Algebra ℂ A] (k r : ℕ) (E : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → A)
     (xi : Fin r → Fin (2 * r + k + 1) → ℂ) {m1 m2 : ℕ} (h : m1 = m2) (h1 : m1 ≤ r) (h2 : m2 ≤ r) (u : ℂ) :
     AAx k r E xi m1 h1 u = AAx k r E xi m2 h2 u := by subst h; rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem AAv_congr {A : Type} [Ring A] [Algebra ℂ A] (k r : ℕ) (E : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → A)
     (y : Fin r → Fin (2 * r + k + 1) → ℂ) {m1 m2 : ℕ} (h : m1 = m2) (h1 : m1 ≤ r) (h2 : m2 ≤ r) (ell : ℂ) :
     AAv k r E y m1 h1 ell = AAv k r E y m2 h2 ell := by subst h; rfl
 
+/- English proof (translation)
+Unfold `sgnW`. Rewrite using `[← pow_add, ← two_mul, pow_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem sgnW_sq (m : ℕ) : sgnW m * sgnW m = 1 := by
   unfold sgnW; rw [← pow_add, ← two_mul, pow_mul]; simp
 
+/- English proof (translation)
+Establish `hσ0 : σ ≠ 0` using `by intro h0; rw [h0, zero_mul] at hσ; exact zero_ne_one hσ`. Establish `hε0 : ε ≠ 0` using `by intro h0; rw [h0, zero_mul] at hε; exact zero_ne_one hε`. Establish `hεi : ε⁻¹ = ε` using `inv_eq_of_mul_eq_one_right hε`. Rewrite using `[mul_inv, mul_inv, mul_inv, hεi, inv_mul_cancel₀ hdh, pow_succ]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem scal_E (dh t σ ε : ℂ) (s' : ℕ) (hdh : dh ≠ 0) (ht : t ≠ 0) (hσ : σ * σ = 1) (hε : ε * ε = 1) :
     (dh * t ^ (s' + 1) * (ε * σ))⁻¹ * (dh * t ^ s' * σ) = ε * t⁻¹ * (dh⁻¹ * dh) := by
   have hσ0 : σ ≠ 0 := by intro h0; rw [h0, zero_mul] at hσ; exact zero_ne_one hσ
@@ -79,6 +116,13 @@ theorem scal_E (dh t σ ε : ℂ) (s' : ℕ) (hdh : dh ≠ 0) (ht : t ≠ 0) (h�
   rw [mul_inv, mul_inv, mul_inv, hεi, inv_mul_cancel₀ hdh, pow_succ]
   field_simp
 
+/- English proof (translation)
+Unfold `AAx`. Rewrite using `[sum_single (fun c => StrictMono c) (fun a p => xi (Fin.castLE hi0 a) p) (Set.range (xR k r i0 hi0)) ?_ (xR k r i0 hi0) ?_ ?_]`. Use `congr 2`. Use extensionality with `a l`. Simplify using `only [Matrix.of_apply]`.
+
+Conclude with `hh a l`. Introduce `a p hp`. Apply `hz _ _ (by simp)` to reduce the goal to its premises. Assume the negation of the conclusion as `hlt; push Not at hlt; apply hp; exact ⟨⟨p.val, hlt⟩, by ext; simp [xR, eI]⟩`. Introduce `a b hab`.
+
+Simplify using `only [xR, eI]`. Conclude with `hab`. Introduce `c hc hS`. Conclude with `uniq_mono _ _ (fun a b hab => by simp only [xR, eI]; exact hab) hc hS`.
+-/
 theorem AAx_head {A : Type} [Ring A] [Algebra ℂ A] (k r : ℕ) (E : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → A)
     (xi : Fin r → Fin (2 * r + k + 1) → ℂ) (i0 : ℕ) (hi0 : i0 ≤ r) (h : Matrix (Fin i0) (Fin i0) ℂ) (u : ℂ)
     (hz : ∀ (a : Fin r) (p : Fin (2 * r + k + 1)), a.val < i0 → i0 ≤ p.val → xi a p = 0)

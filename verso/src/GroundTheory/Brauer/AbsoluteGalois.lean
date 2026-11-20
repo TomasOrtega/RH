@@ -21,6 +21,9 @@ section Bridge
 
 variable {K L : Type u} [Field K] [Field L] [Algebra K L]
 
+/- English proof (translation)
+Rewrite using `[mem_cocycles₂_iff]`. Introduce `g h j`. Conclude with `congrArg Additive.ofMul ((mem_mulCocycles₂_iff _).1 c.2 g h j)`.
+-/
 theorem ofMul_mem_cocycles₂_galUnits (c : mulCocycles₂ (L ≃ₐ[K] L) Lˣ) :
     (fun p => Additive.ofMul ((c : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) → Lˣ) p)) ∈
       cocycles₂ (galUnits.{u} K L) := by
@@ -32,6 +35,9 @@ def galUnitsCocycle (c : mulCocycles₂ (L ≃ₐ[K] L) Lˣ) : cocycles₂ (galU
   ⟨_, ofMul_mem_cocycles₂_galUnits c⟩
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem galUnitsCocycle_apply (c : mulCocycles₂ (L ≃ₐ[K] L) Lˣ) (p : (L ≃ₐ[K] L) × (L ≃ₐ[K] L)) :
     galUnitsCocycle c p = Additive.ofMul ((c : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) → Lˣ) p) :=
   rfl
@@ -48,6 +54,11 @@ def toGalUnitsH2 : mulCocycles₂ (L ≃ₐ[K] L) Lˣ →* Multiplicative (H2 (g
     rw [← map_add]
     rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Multiplicative.ofAdd _ = Multiplicative.ofAdd 0 ↔ _`. Rewrite using `[Multiplicative.ofAdd.injective.eq_iff, H2π_eq_zero_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx⟩`. Use `⟨fun g => Additive.toMul (x g), fun g h => ?_⟩` and prove the remaining obligations.
+
+Conclude with `congrArg Additive.toMul (congrFun hx (g, h))`. Introduce and unpack `⟨x, hx⟩`. Conclude with `⟨fun g => Additive.ofMul (x g), funext fun p => congrArg Additive.ofMul (hx p.1 p.2)⟩`.
+-/
 theorem toGalUnitsH2_eq_one_iff (c : mulCocycles₂ (L ≃ₐ[K] L) Lˣ) :
     toGalUnitsH2 c = 1 ↔ IsMulCoboundary₂ (c : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) → Lˣ) := by
   change Multiplicative.ofAdd _ = Multiplicative.ofAdd 0 ↔ _
@@ -78,6 +89,9 @@ def galUnitsEquivH2 : H2mul (L ≃ₐ[K] L) Lˣ ≃* Multiplicative (H2 (galUnit
       exact congrArg Additive.toMul ((mem_cocycles₂_iff (y : _ → Additive Lˣ)).1 y.2 g h j))
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem galUnitsEquivH2_mk (c : mulCocycles₂ (L ≃ₐ[K] L) Lˣ) :
     galUnitsEquivH2 (mk _ _ c) = Multiplicative.ofAdd (H2π (galUnits.{u} K L) (galUnitsCocycle c)) :=
   rfl
@@ -102,11 +116,17 @@ def galUnitsInclusion :
     exact AlgEquiv.restrictNormal_commutes σ E ((Additive.toMul (α := Eˣ) x : Eˣ) : E)⟩
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem galUnitsInclusion_hom_apply (x : Additive Eˣ) :
     ((Additive.toMul (α := Fˣ) ((galUnitsInclusion K E F).hom x) : Fˣ) : F) =
       algebraMap E F ((Additive.toMul (α := Eˣ) x : Eˣ) : E) :=
   rfl
 
+/- English proof (translation)
+Proceed by induction on `x using H2mul.induction_on with`. Consider the case `h c`. Rewrite using `[H2mul.inflation_mk, H2mul.galUnitsEquivH2_mk, H2mul.galUnitsEquivH2_mk, toAdd_ofAdd, H2π_comp_map_apply]`. Use `congr 2`.
+-/
 theorem galUnitsEquivH2_inflation (x : H2mul (E ≃ₐ[K] E) Eˣ) :
     H2mul.galUnitsEquivH2 (H2mul.inflation K E F x) = Multiplicative.ofAdd
       (groupCohomology.map (AlgEquiv.restrictNormalHom E) (galUnitsInclusion K E F) 2
@@ -123,6 +143,9 @@ section Absolute
 
 variable {K Ks : Type u} [Field K] [Field Ks] [Algebra K Ks]
 
+/- English proof (translation)
+The claim follows from `(IsScalarTower.algebraMap_apply E F Ks y).symm`.
+-/
 theorem coe_algebraMap_intermediateField {E F : IntermediateField K Ks} [Algebra E F]
     [IsScalarTower E F Ks] (y : E) : ((algebraMap E F y : F) : Ks) = (y : Ks) :=
   (IsScalarTower.algebraMap_apply E F Ks y).symm
@@ -135,6 +158,13 @@ def unitsInflationH2 (E : IntermediateField K Ks) [FiniteDimensional K E] [Norma
     H2 (galUnits.{u} K E) ⟶ cohomology (galUnits.{u} K Ks) 2 :=
   HomologicalComplex.homologyMap (unitsInflationCochains E) 2
 
+/- English proof (translation)
+Unfold `unitsInflationH2`. Use `(HomologicalComplex.homologyMap_comp _ _ 2).symm.trans ?_` and prove the remaining obligations. Use `congr 1`. Use extensionality with `n : 1`. Rewrite using `[← cancel_mono ((cochainsComplexι (galUnits.{u} K Ks)).f n), HomologicalComplex.comp_f, Category.assoc]`.
+
+Establish `hE` using `congrArg (fun φ => HomologicalComplex.Hom.f φ n) (unitsInflationCochains_comp_cochainsComplexι (L := Ks) E)`. Establish `hF` using `congrArg (fun φ => HomologicalComplex.Hom.f φ n) (unitsInflationCochains_comp_cochainsComplexι (L := Ks) F)`. Simplify using `only [HomologicalComplex.comp_f] at hE hF`. Rewrite using `[hE, hF, ← HomologicalComplex.comp_f, ← groupCohomology.cochainsMap_comp]`. Use `congr 1`.
+
+Use `cochainsMap_congr ?_ ?_` and prove the remaining obligations. Conclude with `(IsScalarTower.AlgEquiv.restrictNormalHom_comp K E F Ks).symm`. Use `LinearMap.ext fun x => Additive.toMul.injective (Units.ext ?_)` and prove the remaining obligations. Conclude with `coe_algebraMap_intermediateField ((Additive.toMul (α := Eˣ) x : Eˣ) : E)`.
+-/
 theorem map_comp_unitsInflationH2 (E F : IntermediateField K Ks) [FiniteDimensional K E]
     [Normal K E] [FiniteDimensional K F] [Normal K F] [Algebra E F] [IsScalarTower K E F]
     [IsScalarTower E F Ks] :
@@ -158,6 +188,15 @@ theorem map_comp_unitsInflationH2 (E F : IntermediateField K Ks) [FiniteDimensio
   · refine LinearMap.ext fun x => Additive.toMul.injective (Units.ext ?_)
     exact coe_algebraMap_intermediateField ((Additive.toMul (α := Eˣ) x : Eˣ) : E)
 
+/- English proof (translation)
+Rewrite using `[groupCohomologyQuotientGalUnitsIso, mapIso_hom]`. Unfold `unitsInflationH2 inflation`. Use `Eq.trans ?_ (HomologicalComplex.homologyMap_comp _ _ 2)` and prove the remaining obligations. Use `congr 1`. Use extensionality with `n : 1`.
+
+Rewrite using `[← cancel_mono ((cochainsComplexι (galUnits.{u} K Ks)).f n), HomologicalComplex.comp_f, Category.assoc]`. Establish `hU` using `congrArg (fun φ => HomologicalComplex.Hom.f φ n) (inflationCochains_comp_cochainsComplexι (galUnits.{u} K Ks) U)`. Establish `hE` using `congrArg (fun φ => HomologicalComplex.Hom.f φ n) (unitsInflationCochains_comp_cochainsComplexι (L := Ks) (IntermediateField.fixedField (U : Subgroup (Ks ≃ₐ[K] Ks))))`. Simplify using `only [HomologicalComplex.comp_f] at hU hE`. Rewrite using `[hU, hE, ← HomologicalComplex.comp_f, ← groupCohomology.cochainsMap_comp]`.
+
+Use `congr 1`. Use `cochainsMap_congr ?_ ?_` and prove the remaining obligations. Use `MonoidHom.ext fun σ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(σ : _ ⧸ _) = (quotientEquivGal U).symm (AlgEquiv.restrictNormalHom _ σ)`. Rewrite using `[eq_comm, MulEquiv.symm_apply_eq]`.
+
+Use `AlgEquiv.ext fun x => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[quotientEquivGal_mk_apply, AlgEquiv.restrictNormalHom_apply]`. Conclude with `LinearMap.ext fun x => Additive.toMul.injective (Units.ext rfl)`.
+-/
 theorem inflation_eq_iso_comp_unitsInflationH2 (U : OpenNormalSubgroup (Ks ≃ₐ[K] Ks)) :
     inflation (galUnits.{u} K Ks) U 2 = (groupCohomologyQuotientGalUnitsIso U 2).hom ≫
       unitsInflationH2 K (IntermediateField.fixedField (U : Subgroup (Ks ≃ₐ[K] Ks))) := by
@@ -184,6 +223,13 @@ theorem inflation_eq_iso_comp_unitsInflationH2 (U : OpenNormalSubgroup (Ks ≃�
     rw [quotientEquivGal_mk_apply, AlgEquiv.restrictNormalHom_apply]
   · exact LinearMap.ext fun x => Additive.toMul.injective (Units.ext rfl)
 
+/- English proof (translation)
+Rewrite using `[groupCohomologyQuotientGalUnitsIso, groupCohomologyQuotientGalUnitsIso, mapIso_hom, mapIso_hom, transition, ← groupCohomology.map_comp, ← groupCohomology.map_comp]`. Use `groupCohomology.map_congr ?_ ?_ 2` and prove the remaining obligations. Use `MonoidHom.ext fun τ => ?_` and prove the remaining obligations. Take `⟨q, rfl⟩` from `(quotientEquivGal V).surjective τ`. Proceed by induction on `q using QuotientGroup.induction_on with`.
+
+Consider the case `H σ`. Express the relevant statement in the definitionally equal form `quotientMapOfLE h ((quotientEquivGal V).symm (quotientEquivGal V σ)) = (quotientEquivGal U).symm (AlgEquiv.restrictNormalHom _ (quotientEquivGal V σ))`. Rewrite using `[MulEquiv.symm_apply_apply, quotientMapOfLE_mk, eq_comm, MulEquiv.symm_apply_eq]`. Use `AlgEquiv.ext fun x => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[quotientEquivGal_mk_apply, ← coe_algebraMap_intermediateField (F := IntermediateField.fixedField (V : Subgroup (Ks ≃ₐ[K] Ks))), CrossedProduct.algebraMap_restrictNormalHom, quotientEquivGal_mk_apply, coe_algebraMap_intermediateField]`.
+
+Use `LinearMap.ext fun x => Additive.toMul.injective (Units.ext ?_)` and prove the remaining obligations. Conclude with `Subtype.ext (coe_algebraMap_intermediateField (F := IntermediateField.fixedField (V : Subgroup (Ks ≃ₐ[K] Ks))) (⟨_, mem_fixedField_of_mem_invariants_galUnits _ x.2⟩ : IntermediateField.fixedField (U : Subgroup (Ks ≃ₐ[K] Ks)))).symm`.
+-/
 theorem transition_comp_iso_hom {U V : OpenNormalSubgroup (Ks ≃ₐ[K] Ks)} (h : V ≤ U)
     [Algebra (IntermediateField.fixedField (U : Subgroup (Ks ≃ₐ[K] Ks)))
       (IntermediateField.fixedField (V : Subgroup (Ks ≃ₐ[K] Ks)))]
@@ -234,12 +280,18 @@ def inflationToAbsolute (E : IntermediateField K Ks) [FiniteDimensional K E] [Is
   (AddMonoidHom.toMultiplicative (unitsInflationH2 K E).hom.toAddMonoidHom).comp
     (H2mul.galUnitsEquivH2 : H2mul (E ≃ₐ[K] E) Eˣ ≃* _).toMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem inflationToAbsolute_apply (E : IntermediateField K Ks) [FiniteDimensional K E]
     [IsGalois K E] (x : H2mul (E ≃ₐ[K] E) Eˣ) :
     inflationToAbsolute K E x = Multiplicative.ofAdd
       ((unitsInflationH2 K E).hom (Multiplicative.toAdd (H2mul.galUnitsEquivH2 x))) :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[inflationToAbsolute_apply, inflationToAbsolute_apply, galUnitsEquivH2_inflation, toAdd_ofAdd]`. Use `congr 1`. Conclude with `congrArg (fun φ => φ.hom (Multiplicative.toAdd (H2mul.galUnitsEquivH2 x))) (map_comp_unitsInflationH2 E F)`.
+-/
 theorem inflationToAbsolute_inflation (E F : IntermediateField K Ks) [FiniteDimensional K E]
     [IsGalois K E] [FiniteDimensional K F] [IsGalois K F] [Algebra E F] [IsScalarTower K E F]
     [IsScalarTower E F Ks] (x : H2mul (E ≃ₐ[K] E) Eˣ) :
@@ -249,6 +301,11 @@ theorem inflationToAbsolute_inflation (E F : IntermediateField K Ks) [FiniteDime
   exact congrArg (fun φ => φ.hom (Multiplicative.toAdd (H2mul.galUnitsEquivH2 x)))
     (map_comp_unitsInflationH2 E F)
 
+/- English proof (translation)
+Take `⟨U, z, hz⟩` from `exists_inflation_eq (galUnits.{u} K Ks) 2 (Multiplicative.toAdd x)`. Use `⟨IntermediateField.fixedField (U : Subgroup (Ks ≃ₐ[K] Ks)), inferInstance, inferInstance, H2mul.galUnitsEquivH2.symm (Multiplicative.ofAdd ((groupCohomologyQuotientGalUnitsIso U 2).hom z)), ?_⟩` and prove the remaining obligations. Rewrite using `[inflationToAbsolute_apply, MulEquiv.apply_symm_apply, toAdd_ofAdd]`. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Rewrite using `[toAdd_ofAdd, ← hz, inflation_eq_iso_comp_unitsInflationH2]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_inflationToAbsolute_eq (x : Multiplicative (cohomology (galUnits.{u} K Ks) 2)) :
     ∃ (E : IntermediateField K Ks) (_ : FiniteDimensional K E) (_ : IsGalois K E)
       (y : H2mul (E ≃ₐ[K] E) Eˣ), inflationToAbsolute K E y = x := by
@@ -261,6 +318,21 @@ theorem exists_inflationToAbsolute_eq (x : Multiplicative (cohomology (galUnits.
   rw [toAdd_ofAdd, ← hz, inflation_eq_iso_comp_unitsInflationH2]
   rfl
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_one]`. Introduce `y hy`. Set `U : OpenNormalSubgroup (Ks ≃ₐ[K] Ks)` to `fixingOpenNormalSubgroup ({ toIntermediateField := E } : FiniteGaloisIntermediateField K Ks)`. Set `E'` to `IntermediateField.fixedField (U : Subgroup (Ks ≃ₐ[K] Ks))`. Establish `hEE' : E ≤ E'` using `fun x hx => (IntermediateField.mem_fixedField_iff _ _).2 fun σ hσ => (IntermediateField.mem_fixingSubgroup_iff _ _).1 hσ x hx`.
+
+Set `_ : Algebra E E'` to `(IntermediateField.inclusion hEE').toAlgebra`. Establish `: IsScalarTower K E E'` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `: IsScalarTower E E' Ks` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Rewrite `hy` using `[← inflationToAbsolute_inflation E E']`. Use `set y' := H2mul.inflation K E E' y with hy'`.
+
+Use `set z := Multiplicative.toAdd (H2mul.galUnitsEquivH2 y') with hz`. Take `⟨V, hVU, hV⟩` from `exists_transition_eq_zero (galUnits.{u} K Ks) 2 U ((groupCohomologyQuotientGalUnitsIso U 2).inv z) (by`. Rewrite using `[inflation_eq_iso_comp_unitsInflationH2]`. Express the relevant statement in the definitionally equal form `(unitsInflationH2 K E').hom ((groupCohomologyQuotientGalUnitsIso U 2).hom.hom ((groupCohomologyQuotientGalUnitsIso U 2).inv.hom z)) = 0`. Rewrite using `[Iso.inv_hom_id_apply]`.
+
+Conclude with `congrArg Multiplicative.toAdd hy)`. Set `E''` to `IntermediateField.fixedField (V : Subgroup (Ks ≃ₐ[K] Ks))`. Establish `hE'E'' : E' ≤ E''` using `fun x hx => (IntermediateField.mem_fixedField_iff _ _).2 fun σ hσ => (IntermediateField.mem_fixedField_iff _ _).1 hx σ (hVU hσ)`. Set `_ : Algebra E' E''` to `(IntermediateField.inclusion hE'E'').toAlgebra`. Establish `: IsScalarTower K E' E''` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+
+Establish `: IsScalarTower E' E'' Ks` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `h2` using `congrArg (groupCohomologyQuotientGalUnitsIso V 2).hom.hom hV`. Rewrite `h2` using `[map_zero]`. Express the relevant statement in the definitionally equal form `(transition (galUnits.{u} K Ks) hVU 2 ≫ (groupCohomologyQuotientGalUnitsIso V 2).hom).hom ((groupCohomologyQuotientGalUnitsIso U 2).inv.hom z) = 0 at h2`. Rewrite `h2` using `[transition_comp_iso_hom hVU]`.
+
+Express the relevant statement in the definitionally equal form `(groupCohomology.map (AlgEquiv.restrictNormalHom _) (galUnitsInclusion K E' E'') 2).hom ((groupCohomologyQuotientGalUnitsIso U 2).hom.hom ((groupCohomologyQuotientGalUnitsIso U 2).inv.hom z)) = 0 at h2`. Rewrite `h2` using `[Iso.inv_hom_id_apply, hz]`. Establish `h3 : H2mul.galUnitsEquivH2 (H2mul.inflation K E' E'' y') = 1`. Rewrite using `[galUnitsEquivH2_inflation, h2]`. Both sides reduce to the same expression.
+
+Rewrite `h3` using `[MulEquivClass.map_eq_one_iff]`. Establish `h4 : y' = 1` using `H2mul.inflation_injective (K := K) (L := E') (L' := E'') (by rw [h3, map_one])`. Conclude with `H2mul.inflation_injective (K := K) (L := E) (L' := E') (by rw [← hy', h4, map_one])`.
+-/
 theorem inflationToAbsolute_injective (E : IntermediateField K Ks) [FiniteDimensional K E]
     [IsGalois K E] : Function.Injective (inflationToAbsolute K E) := by
   rw [injective_iff_map_eq_one]
@@ -306,6 +378,11 @@ theorem inflationToAbsolute_injective (E : IntermediateField K Ks) [FiniteDimens
   have h4 : y' = 1 := H2mul.inflation_injective (K := K) (L := E') (L' := E'') (by rw [h3, map_one])
   exact H2mul.inflation_injective (K := K) (L := E) (L' := E') (by rw [← hy', h4, map_one])
 
+/- English proof (translation)
+Set `_ : Algebra E F` to `(IntermediateField.inclusion hEF).toAlgebra`. Establish `: IsScalarTower K E F` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `: IsScalarTower E F Ks` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Rewrite using `[← inflationToAbsolute_inflation E F]`. Use `congr 1`.
+
+Apply `(H2mul.relBrauerEquiv K F).injective` to reduce the goal to its premises. Rewrite using `[MulEquiv.apply_symm_apply]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[H2mul.coe_relBrauerEquiv, H2mul.toBrauer_inflation, ← H2mul.coe_relBrauerEquiv, MulEquiv.apply_symm_apply]`.
+-/
 theorem inflationToAbsolute_symm_relBrauerEquiv_of_le {E F : IntermediateField K Ks}
     [FiniteDimensional K E] [IsGalois K E] [FiniteDimensional K F] [IsGalois K F] (hEF : E ≤ F)
     (b : BrauerGroup.{u, u} K) (hb : b ∈ BrauerGroup.relBrauer K E)
@@ -323,6 +400,11 @@ theorem inflationToAbsolute_symm_relBrauerEquiv_of_le {E F : IntermediateField K
   rw [H2mul.coe_relBrauerEquiv, H2mul.toBrauer_inflation, ← H2mul.coe_relBrauerEquiv,
     MulEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Establish `hE : E ≤ E ⊔ F` using `le_sup_left`. Establish `hF : F ≤ E ⊔ F` using `le_sup_right`. Establish `hbEF : b ∈ BrauerGroup.relBrauer K ↥(E ⊔ F)`. Set `_ : Algebra E ↥(E ⊔ F)` to `(IntermediateField.inclusion hE).toAlgebra`. Establish `: IsScalarTower K E ↥(E ⊔ F)` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+
+Conclude with `BrauerGroup.relBrauer_le_relBrauer K E _ hb`. Rewrite using `[inflationToAbsolute_symm_relBrauerEquiv_of_le hE b hb hbEF, inflationToAbsolute_symm_relBrauerEquiv_of_le hF b hb' hbEF]`.
+-/
 theorem inflationToAbsolute_symm_relBrauerEquiv_eq {E F : IntermediateField K Ks}
     [FiniteDimensional K E] [IsGalois K E] [FiniteDimensional K F] [IsGalois K F]
     (b : BrauerGroup.{u, u} K) (hb : b ∈ BrauerGroup.relBrauer K E)
@@ -346,6 +428,11 @@ section SepClosure
 
 variable {K Ks : Type u} [Field K] [Field Ks] [Algebra K Ks] [IsSepClosure K Ks]
 
+/- English proof (translation)
+Take `⟨L, _, _, _, _, hb⟩` from `BrauerGroup.exists_mem_relBrauer b`. Establish `: IsSepClosed Ks` using `IsSepClosure.sep_closed K`. Set `σ : L →ₐ[K] Ks` to `IsSepClosed.lift`. Set `e : L ≃ₐ[K] σ.fieldRange` to `AlgEquiv.ofInjectiveField σ`. Set `_ : Algebra L σ.fieldRange` to `e.toAlgHom.toRingHom.toAlgebra`.
+
+Establish `: IsScalarTower K L σ.fieldRange` using `IsScalarTower.of_algebraMap_eq fun k => (e.commutes k).symm`. Establish `: FiniteDimensional K σ.fieldRange` using `e.toLinearEquiv.finiteDimensional`. Establish `: IsGalois K σ.fieldRange` using `IsGalois.of_algEquiv e`. Conclude with `⟨{ toIntermediateField := σ.fieldRange }, BrauerGroup.relBrauer_le_relBrauer K L _ hb⟩`.
+-/
 theorem BrauerGroup.exists_finiteGalois_mem_relBrauer (b : BrauerGroup.{u, u} K) :
     ∃ E : FiniteGaloisIntermediateField K Ks, b ∈ BrauerGroup.relBrauer K E := by
   obtain ⟨L, _, _, _, _, hb⟩ := BrauerGroup.exists_mem_relBrauer b
@@ -367,6 +454,9 @@ def brauerToH2Fun (b : BrauerGroup.{u, u} K) : Multiplicative (cohomology (galUn
     ((H2mul.relBrauerEquiv K _).symm
       ⟨b, (BrauerGroup.exists_finiteGalois_mem_relBrauer (Ks := Ks) b).choose_spec⟩)
 
+/- English proof (translation)
+The claim follows from `inflationToAbsolute_symm_relBrauerEquiv_eq b _ hb`.
+-/
 theorem brauerToH2Fun_eq (b : BrauerGroup.{u, u} K) (E : IntermediateField K Ks)
     [FiniteDimensional K E] [IsGalois K E] (hb : b ∈ BrauerGroup.relBrauer K E) :
     brauerToH2Fun K Ks b = inflationToAbsolute K E ((H2mul.relBrauerEquiv K E).symm ⟨b, hb⟩) :=
@@ -399,11 +489,17 @@ def brauerToH2 : BrauerGroup.{u, u} K →* Multiplicative (cohomology (galUnits.
       brauerToH2Fun_eq (b * b') F.toIntermediateField (mul_mem hbF hb'F), ← map_mul, ← map_mul]
     rfl
 
+/- English proof (translation)
+The claim follows from `brauerToH2Fun_eq b E hb`.
+-/
 theorem brauerToH2_eq (b : BrauerGroup.{u, u} K) (E : IntermediateField K Ks)
     [FiniteDimensional K E] [IsGalois K E] (hb : b ∈ BrauerGroup.relBrauer K E) :
     brauerToH2 K Ks b = inflationToAbsolute K E ((H2mul.relBrauerEquiv K E).symm ⟨b, hb⟩) :=
   brauerToH2Fun_eq b E hb
 
+/- English proof (translation)
+Rewrite using `[brauerToH2_eq _ E (H2mul.relBrauerEquiv K E x).2]`. Use `congr 1`. Conclude with `(H2mul.relBrauerEquiv K E).symm_apply_apply x`.
+-/
 theorem brauerToH2_relBrauerEquiv (E : IntermediateField K Ks) [FiniteDimensional K E]
     [IsGalois K E] (x : H2mul (E ≃ₐ[K] E) Eˣ) :
     brauerToH2 K Ks (H2mul.relBrauerEquiv K E x) = inflationToAbsolute K E x := by
@@ -411,6 +507,11 @@ theorem brauerToH2_relBrauerEquiv (E : IntermediateField K Ks) [FiniteDimensiona
   congr 1
   exact (H2mul.relBrauerEquiv K E).symm_apply_apply x
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_one]`. Introduce `b hb1`. Take `⟨E, hb⟩` from `BrauerGroup.exists_finiteGalois_mem_relBrauer (Ks := Ks) b`. Rewrite `hb1` using `[brauerToH2_eq b E.toIntermediateField hb]`. Establish `h` using `(injective_iff_map_eq_one _).1 (inflationToAbsolute_injective E.toIntermediateField) _ hb1`.
+
+Rewrite `h` using `[MulEquiv.symm_apply_eq, map_one]`. Conclude with `congrArg Subtype.val h`.
+-/
 theorem brauerToH2_injective : Function.Injective (brauerToH2 K Ks) := by
   rw [injective_iff_map_eq_one]
   intro b hb1
@@ -420,6 +521,9 @@ theorem brauerToH2_injective : Function.Injective (brauerToH2 K Ks) := by
   rw [MulEquiv.symm_apply_eq, map_one] at h
   exact congrArg Subtype.val h
 
+/- English proof (translation)
+Introduce `x`. Take `⟨E, _, _, y, rfl⟩` from `exists_inflationToAbsolute_eq (K := K) x`. Conclude with `⟨_, brauerToH2_relBrauerEquiv E y⟩`.
+-/
 theorem brauerToH2_surjective : Function.Surjective (brauerToH2 K Ks) := by
   intro x
   obtain ⟨E, _, _, y, rfl⟩ := exists_inflationToAbsolute_eq (K := K) x

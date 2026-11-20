@@ -11,6 +11,13 @@ open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Fam.UnrWeil
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn'`. Take `⟨y, c, hc, hyc⟩` from `PP'.isMaximal.exists_inv hn'`. Take `⟨c', hc', e⟩` from `h c hc`. Apply `PP.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`.
+
+Establish `key : (1 : 𝓞 D.host.E) = RingOfIntegers.mapRingHom (starRingEnd D.host.E) y * ((n : ℕ) : 𝓞 D.host.E) + c'`. Establish `h1` using `congrArg (fun z : 𝓞 D.host.E => star (algebraMap (𝓞 D.host.E) D.host.E z)) hyc`. Simplify using `only [map_add, map_mul, map_natCast, map_one, star_add, star_mul', star_natCast, star_one] at h1`. Establish `hy : algebraMap (𝓞 D.host.E) D.host.E (RingOfIntegers.mapRingHom (starRingEnd D.host.E) y) = star (algebraMap (𝓞 D.host.E) D.host.E y)` using `rfl`. Establish `hc2 : algebraMap (𝓞 D.host.E) D.host.E c' = star (algebraMap (𝓞 D.host.E) D.host.E c)` using `e`.
+
+Apply `FaithfulSMul.algebraMap_injective (𝓞 D.host.E) D.host.E` to reduce the goal to its premises. Simplify using `only [map_add, map_mul, map_natCast, map_one, hy, hc2]`. Rewrite using `[← h1]`. Rewrite using `[key]`. Conclude with `PP.asIdeal.add_mem (PP.asIdeal.mul_mem_left _ hn) hc'`.
+-/
 theorem natCast_mem_of_isConjPl {D : D7} (n : ℕ) {PP PP' : Formalism.L2.DIV.Pl D.host.E} (h : Lev.IsConjPl PP' PP)
     (hn : ((n : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal) : ((n : ℕ) : 𝓞 D.host.E) ∈ PP'.asIdeal := by
   by_contra hn'
@@ -30,6 +37,9 @@ theorem natCast_mem_of_isConjPl {D : D7} (n : ℕ) {PP PP' : Formalism.L2.DIV.Pl
   rw [key]
   exact PP.asIdeal.add_mem (PP.asIdeal.mul_mem_left _ hn) hc'
 
+/- English proof (translation)
+Take `⟨a, b, hab⟩ : IsCoprime ((p : ℕ) : 𝓞 D.host.E) ((q : ℕ) : 𝓞 D.host.E)` from `Nat.Coprime.cast ((Nat.coprime_primes hp hq).2 hne)`. Conclude with `PP.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hab ▸ PP.asIdeal.add_mem (PP.asIdeal.mul_mem_left a h1) (PP.asIdeal.mul_mem_left b h2)))`.
+-/
 theorem not_both_mem {D : D7} {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hne : p ≠ q) (PP : Formalism.L2.DIV.Pl D.host.E)
     (h1 : ((p : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal) (h2 : ((q : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal) : False := by
   obtain ⟨a, b, hab⟩ : IsCoprime ((p : ℕ) : 𝓞 D.host.E) ((q : ℕ) : 𝓞 D.host.E) :=
@@ -41,6 +51,17 @@ end GlobalTheory.Fam.UnrWeil
 
 open GlobalTheory.Fam.UnrWeil in
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Yd cX ex W u hW f v k _ _ _ _ ι o _ hC _ hV hS t j hj`. Use `⟨(pk W).toLevCh.mu t (j + 1), hC.kom t j hj, fun i => ?_⟩` and prove the remaining obligations. Establish `lev : (pk W).toLevCh.Is W.P.A3.A.μ0` using `hW.bot.hyp.2.2.2.1.lev`. Establish `hp : (o.p i).v ∈ v.tP` using `(hS.pre.tP _).2 ⟨i, rfl⟩`. Establish `hTF : (((D.mem u).A.T : ℕ) : 𝓞 D.host.F) ∈ (o.p i).v.asIdeal` using `(hV.tP _).1 hp`.
+
+Establish `hTw : ∀ w : HeightOneSpectrum (𝓞 D.host.E), w.under (𝓞 D.host.F) = (o.p i).v → (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) ∈ w.asIdeal`. Introduce `w hw`. Rewrite `hTF` using `[← hw]`. Use `Ideal.mem_comap.1 hTF` as an intermediate fact. Simplify using `using this`.
+
+Use `show GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.CharUnramAt D (Formalism.IndefR.Lift.tup (pk W).toLevCh.mu0 ((pk W).toLevCh.xi t) (j + 1)) (o.p i).v`. Use `GlobalTheory.SeeSaw.WeilLines.charUnram_mul ?_ ?_` and prove the remaining obligations. Use `GlobalTheory.SeeSaw.LevelTest.charUnramAt_of fun w hw => ?_` and prove the remaining obligations. Use `(GlobalTheory.LFun.unrAt_iff_of_chrEq (lev.mu0 ⟨j, hj⟩) w).2 ?_` and prove the remaining obligations. Use `((pk W).toLevCh.C.isMu0 ⟨j, hj⟩).unr w fun kk hk => ?_` and prove the remaining obligations.
+
+Conclude with `not_both_mem (D.mem u).A.T_prime (D.host.g_prime kk) (D.T_ne_g u kk) w (hTw w hw) hk`. Use `GlobalTheory.SeeSaw.LevelTest.charUnramAt_of fun w hw => ?_` and prove the remaining obligations. Use `(GlobalTheory.LFun.unrAt_iff_of_chrEq (lev.xi t) w).2 ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hr`. Break down `(lev.Q_ram t w).1 hr with hq | ⟨PP', hq, hc⟩` into its components or cases.
+
+Conclude with `(lev.Q_off t w hq).2 u (hTw w hw)`. Conclude with `(lev.Q_off t PP' hq).2 u (natCast_mem_of_isConjPl _ hc (hTw w hw))`.
+-/
 theorem GlobalTheory.Fam.kom_weil_unram : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex) (u : D.what₂.Word), PkHyp W → ∀ (f : FamCh W u) (v : VCom f.c) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type) (o : TDat f.c k ι), f.RowOK → f.ColOK → v.Is → VTie f v → ShapeOff v o → ∀ t j, j < D.R.m → ∃ μ, IsWeilDatumO f.c.ψ _ _ μ μ ((f.t t).kom j) ∧ ∀ i, GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.CharUnramAt D μ (o.p i).v := by
   intro D L hT Gi Gl Kc Yd cX ex W u hW f v k _ _ _ _ ι o _ hC _ hV hS t j hj
   refine ⟨(pk W).toLevCh.mu t (j + 1), hC.kom t j hj, fun i => ?_⟩

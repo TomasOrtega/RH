@@ -18,6 +18,23 @@ namespace GlobalTheory.RiemInt
 
 open GlobalTheory.RosatiAH GlobalTheory.AppellHumbertTrivial
 
+/- English proof (translation)
+Establish `hper : ∀ (l : u.Λ) z, u.ex (z + l) = u.ex z` using `fun l z => by`. Rewrite using `[u.ex_add, (u.ker l).2 l.2, _root_.mul_one]`. Take `⟨i, hi⟩` from `PullHermitian.exists_chart (u.ex 0).left hL`. Establish `hil : ⊤ ≤ (u.ex (0 + l)).left ⁻¹ᵁ L.U i` using `by rwa [hper]`. Establish `him : ⊤ ≤ (u.ex (0 + m)).left ⁻¹ᵁ L.U i` using `by rwa [hper]`.
+
+Establish `hlm : ⊤ ≤ (u.ex (0 + l + m)).left ⁻¹ᵁ L.U i` using `by rwa [hper]`. Establish `h1` using `h.2.2 l i 0 hi`. Establish `h2` using `h.2.2 m i _ hil`. Establish `h3` using `h.2.2 m i 0 hi`. Establish `h4` using `h.2.2 l i _ him`.
+
+Establish `hne` using `u.fr_ne i _ hlm`. Establish `hs : hermForm Hm m l = star (hermForm Hm l m)`. Unfold `hermForm`. Rewrite using `[← Matrix.star_dotProduct_star, Matrix.star_mulVec, star_star, h.1.eq, Matrix.dotProduct_mulVec]`. Establish `hχl : χ l ≠ 0` using `norm_ne_zero_iff.1 (by rw [h.2.1]; exact one_ne_zero)`.
+
+Establish `hχm : χ m ≠ 0` using `norm_ne_zero_iff.1 (by rw [h.2.1]; exact one_ne_zero)`. Rewrite `h1` using `[h2]`. Rewrite `h3` using `[h4, h1]`. Simplify using `only [zero_add, zero_dotProduct, mul_zero] at h3 hne`. Rewrite `h3` using `[add_comm (m : Fin g → ℂ) l]`.
+
+Unfold `hermForm at hs ⊢`. Rewrite `h3` using `[hs]`. Generalize the expression as in `(l : Fin g → ℂ) ⬝ᵥ Hm.mulVec (star (l : Fin g → ℂ)) = a at h3`. Generalize the expression as in `(m : Fin g → ℂ) ⬝ᵥ Hm.mulVec (star (m : Fin g → ℂ)) = b at h3`. Generalize the expression as in `(l : Fin g → ℂ) ⬝ᵥ Hm.mulVec (star (m : Fin g → ℂ)) = c at h3 ⊢`.
+
+Simplify using `only [Complex.exp_add] at h3`. Establish `he : Complex.exp (Real.pi * c) = Complex.exp (Real.pi * star c)`. Use `mul_right_cancel₀ (mul_ne_zero (mul_ne_zero (mul_ne_zero (mul_ne_zero hχl hχm) (Complex.exp_ne_zero (Real.pi / 2 * a))) (Complex.exp_ne_zero (Real.pi / 2 * b))) hne) ?_` and prove the remaining obligations. Take the linear combination `h3`. Take `⟨n, hn⟩` from `Complex.exp_eq_exp_iff_exists_int.1 he`.
+
+Use `⟨n, ?_⟩` and prove the remaining obligations. Use `congrArg Complex.im hn` as an intermediate fact. Simplify using `at this`. Establish `hp` using `Real.pi_pos`. Use `mul_left_cancel₀ (a := 2 * Real.pi) (by positivity) ?_` and prove the remaining obligations.
+
+Take the linear combination `this`.
+-/
 theorem im_hermForm_int {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (hL : L.IsLB) (u : HolUnif A L g)
     {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ} (h : IsFactorAH u Hm χ) (l m : u.Λ) :
     ∃ n : ℤ, (hermForm Hm l m).im = n := by
@@ -61,6 +78,17 @@ theorem im_hermForm_int {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ}
 
 variable {g : ℕ}
 
+/- English proof (translation)
+Establish `hA : ∀ x x', hermForm Hc (Fin.append x 0) (Fin.append x' 0) = 0`. Introduce `x x'`. Establish `e1` using `hM2 x 0 x' 0`. Establish `e2` using `hS2 x 0 x' 0`. Establish `e3` using `hM2 0 x 0 x'`.
+
+Establish `e4` using `hSc x 0 x' 0`. Simplify using `only [smul_zero] at e1`. Establish `e5 : Fin.append (0 : Fin g → ℂ) ((2 : ℂ) • x) = (2 : ℂ) • Fin.append 0 x`. Rewrite using `[← append_smul, smul_zero]`. Establish `e6 : Fin.append (0 : Fin g → ℂ) ((2 : ℂ) • x') = (2 : ℂ) • Fin.append 0 x'`.
+
+Rewrite using `[← append_smul, smul_zero]`. Rewrite `e3` using `[e5, e6, hermForm_smul_left, hermForm_smul_right]`. Establish `hs : (star (2 : ℂ)) = 2` using `by simp`. Rewrite `e3` using `[hs]`. Take the linear combination `(-1/3 : ℂ) * (-e1 + e2 + e3 - 4 * e4)`.
+
+Establish `hA2 : ∀ y y', hermForm Hc (Fin.append 0 y) (Fin.append 0 y') = 0`. Introduce `y y'`. Rewrite using `[← hSc y 0 y' 0]`. Conclude with `hA y y'`. Rewrite using `[herm_append, hA, hA2, ← hSc z 0 0 w]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem diag_eq_two_mul (Hc H2 : Matrix (Fin (g + g)) (Fin (g + g)) ℂ)
     (hSc : ∀ x y x' y', hermForm Hc (Fin.append x y) (Fin.append x' y') = hermForm Hc (Fin.append y x) (Fin.append y' x'))
     (hS2 : ∀ x y x' y', hermForm H2 (Fin.append x y) (Fin.append x' y') = hermForm H2 (Fin.append y x) (Fin.append y' x'))
@@ -93,6 +121,43 @@ end GlobalTheory.RiemInt
 
 open GlobalTheory.RosatiAH GlobalTheory.RiemInt in
 
+/- English proof (translation)
+Introduce `F _ _ _ 𝔠 X c hc u e hu h χ hAH c' l l'`. Take `⟨U0, hU0⟩` from `GlobalTheory.exists_holUnif_tensor_self X.A X.ab (X.diag c) _ u`. Establish `hAb2` using `AbelianSchemeGerms.isAbelianScheme_tensor X.A X.A X.ab X.ab`. Establish `frame : ∀ c' : 𝔠.elt, ∃ (U : HolUnif (X.A ⊗ X.A) (X.P c') (Module.finrank ℚ F + Module.finrank ℚ F)) (H : Matrix (Fin (Module.finrank ℚ F + Module.finrank ℚ F)) (Fin (Module.finrank ℚ F + Module.finrank ℚ F)) ℂ) (χ : U.Λ → ℂ), (∀ x y, U.ex (Fin.append x y) = lift (u.ex x) (u.ex y …` using `fun c' => by`. Take `⟨U, H, χ', hex, hF⟩` from `GlobalTheory.exists_isFactorAH_frame_of_unif (X.A ⊗ X.A) hAb2 _ _ U0 (X.P c') (X.isLB c')`.
+
+Conclude with `⟨U, H, χ', fun x y => by rw [hex]; exact hU0 x y, hF⟩`. Use `choose U H χ' hex hF using frame`. Establish `hswap : ∀ d v, (U d).ex (fswap _ v) = (U d).ex v ≫ lift (snd X.A X.A) (fst X.A X.A)`. Introduce `d v`. Rewrite using `[eq_append v, fswap_append, hex, hex]`.
+
+Simplify using the standard rewrite rules. Establish `hmul : ∀ d d' (b : 𝓞 F) v, (U d').ex (fmul (dmul fun j => (e j (b : F) : ℂ)) v) = (U d).ex v ≫ lift (fst X.A X.A) (snd X.A X.A ≫ X.rm.act b)`. Introduce `d d' b v`. Rewrite using `[eq_append v, fmul_append, hex, hex, dmul_apply, hu]`. Simplify using the standard rewrite rules.
+
+Establish `hdiag : ∀ z, (U c).ex (fdiag _ z) = u.ex z ≫ lift (𝟙 X.A) (𝟙 X.A)`. Introduce `z`. Rewrite using `[fdiag_apply, hex]`. Simplify using the standard rewrite rules. Establish `hdLB : (X.diag c).IsLB` using `LB.isLB_pull (X.isLB c) _`.
+
+Establish `hD` using `hermForm_eq_of_lbIso_pull X.A (X.A ⊗ X.A) (X.diag c) (X.P c) hdLB (X.isLB c) _ _ u (U c) _ χ (H c) (χ' c) (isFactorAH_of_isAH hAH) (hF c) (lift (𝟙 X.A) (𝟙 X.A)) (fdiag _) hdiag (by unfold Obj.diag; exact GlobalTheory.lbIso_refl hdLB)`. Establish `hS : ∀ d x y x' y', hermForm (H d) (Fin.append x y) (Fin.append x' y') = hermForm (H d) (Fin.append y x) (Fin.append y' x')`. Introduce `d x y x' y'`. Use `hermForm_eq_of_lbIso_pull (X.A ⊗ X.A) (X.A ⊗ X.A) (X.P d) (X.P d) (X.isLB d) (X.isLB d) _ _ (U d) (U d) (H d) (χ' d) (H d) (χ' d) (hF d) (hF d) (lift (snd X.A X.A) (fst X.A X.A)) (fswap _) (hswap d) (X.symm d) (Fin.append x y) (Fin.append x' y')` as an intermediate fact. Rewrite `this` using `[fswap_append, fswap_append]`. Then use the resulting hypothesis.
+
+Establish `hM : ∀ (b : 𝓞 F) d x y x' y', hermForm (H (b • d)) (Fin.append x y) (Fin.append x' y') = hermForm (H d) (Fin.append x (dmul (fun j => (e j (b : F) : ℂ)) y)) (Fin.append x' (dmul (fun j => (e j (b : F) : ℂ)) y'))`. Introduce `b d x y x' y'`. Use `hermForm_eq_of_lbIso_pull (X.A ⊗ X.A) (X.A ⊗ X.A) (X.P (b • d)) (X.P d) (X.isLB _) (X.isLB d) _ _ (U (b • d)) (U d) (H _) (χ' _) (H d) (χ' d) (hF _) (hF d) (lift (fst X.A X.A) (snd X.A X.A ≫ X.rm.act b)) (fmul (dmul fun j => (e j (b : F) : ℂ))) (hmul _ d b) (X.smul b d) (Fin.appe …` as an intermediate fact. Rewrite `this` using `[fmul_append, fmul_append]`. Then use the resulting hypothesis. Establish `h2F : (((2 : 𝓞 F)) : F) = 2` using `by norm_cast`.
+
+Establish `h2 : (dmul fun j => (e j (((2 : 𝓞 F) : F)) : ℂ)) = (2 : ℂ) • LinearMap.id`. Use `LinearMap.ext fun z => funext fun k => ?_` and prove the remaining obligations. Simplify using `only [dmul_apply, h2F, map_ofNat, LinearMap.smul_apply, LinearMap.id_apply, Pi.smul_apply, smul_eq_mul, Complex.ofReal_ofNat]`. Establish `hB : ∀ z w, 2 * hermForm (H c) (Fin.append z 0) (Fin.append 0 w) = ∑ j, (h j : ℂ) * (z j * starRingEnd ℂ (w j))`. Introduce `z w`.
+
+Rewrite using `[← diag_eq_two_mul (H c) (H ((2 : 𝓞 F) • c)) (hS c) (hS _) (fun x y x' y' => by rw [hM 2 c, h2]; rfl), ← fdiag_apply, ← fdiag_apply, ← hD]`. Simplify using `only [hermForm, dotProduct, Matrix.mulVec_diagonal, Pi.star_apply, RCLike.star_def]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Establish `hl : Fin.append (l : Fin (Module.finrank ℚ F) → ℂ) 0 ∈ (U c').Λ`. Rewrite using `[← (U c').ker, hex, (u.ker _).2 l.2, (u.ker _).2 u.Λ.zero_mem]`.
+
+Use `CartesianMonoidalCategory.hom_ext _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[lift_fst, MonObj.one_comp]`. Rewrite using `[lift_snd, MonObj.one_comp]`. Establish `hl' : Fin.append 0 (l' : Fin (Module.finrank ℚ F) → ℂ) ∈ (U c').Λ`. Rewrite using `[← (U c').ker, hex, (u.ker _).2 l'.2, (u.ker _).2 u.Λ.zero_mem]`.
+
+Use `CartesianMonoidalCategory.hom_ext _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[lift_fst, MonObj.one_comp]`. Rewrite using `[lift_snd, MonObj.one_comp]`. Take `⟨n, hn⟩` from `im_hermForm_int (A := X.A ⊗ X.A) (X.isLB c') (U c') (hF c') ⟨_, hl⟩ ⟨_, hl'⟩`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hn]`. Use `congr 1`. Establish `hc0 : (c : F) ≠ 0`. Introduce `h0`. Use `hc (e ⟨0, Module.finrank_pos⟩)` as an intermediate fact.
+
+Rewrite `this` using `[h0, map_zero]`. Conclude with `lt_irrefl _ this`. Take `⟨b, d, hd, hbd⟩` from `IsFractionRing.div_surjective (A := 𝓞 F) ((c' : F) / (c : F))`. Establish `hd0 : (d : F) ≠ 0`. Use `nonZeroDivisors.ne_zero hd` as an intermediate fact.
+
+Conclude with `this` after adjusting the coercions. Express the relevant statement in the definitionally equal form `(b : F) / (d : F) = _ at hbd`. Establish `hcc : d • c' = b • c`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite `hbd` using `[div_eq_div_iff hd0 hc0]`.
+
+Simplify using `only [Submodule.coe_smul, Algebra.smul_def]`. Express the relevant statement in the definitionally equal form `(d : F) * c' = (b : F) * c`. Rewrite using `[hbd, mul_comm]`. Establish `hde : ∀ j, (e j (d : F) : ℂ) ≠ 0` using `fun j => by`. Conclude with `(map_ne_zero (e j)).2 hd0` after adjusting the coercions.
+
+Use `set w : Fin (Module.finrank ℚ F) → ℂ := fun j => (e j (d : F) : ℂ)⁻¹ * (l' : Fin (Module.finrank ℚ F) → ℂ) j with hw`. Establish `e1` using `hM d c' l 0 0 w`. Establish `e2` using `hM b c l 0 0 w`. Establish `e3 : dmul (fun j => (e j (d : F) : ℂ)) w = l'`. Use function extensionality and compare the values at `j`.
+
+Simplify using `only [dmul_apply, hw]`. Rewrite using `[← _root_.mul_assoc, mul_inv_cancel₀ (hde j), _root_.one_mul]`. Rewrite `e1` using `[hcc, e2, map_zero, map_zero, e3]`. Express the relevant statement in the definitionally equal form `_ = hermForm (H c') (Fin.append (l : Fin (Module.finrank ℚ F) → ℂ) 0) (Fin.append 0 (l' : Fin (Module.finrank ℚ F) → ℂ))`. Rewrite using `[← e1]`.
+
+Use `mul_left_cancel₀ (two_ne_zero (α := ℂ)) ?_` and prove the remaining obligations. Rewrite using `[hB, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `e4 : (c' : F) / (2 * (c : F)) = (b : F) / (d : F) / 2`. Rewrite using `[hbd]`.
+
+Clear the denominators using the available nonvanishing facts. Use `hde j` as an intermediate fact. Simplify using `only [e4, dmul_apply, hw, map_div₀, map_mul, map_inv₀, map_ofNat, Complex.conj_ofReal, Complex.ofReal_div, Complex.ofReal_ofNat]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem GlobalTheory.RiemInt.riemannForm_int : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔠 : FracId F)
     (X : Obj F 𝔠 (Sp ℂ)) (c : 𝔠.elt), IsTotPos (c : F) →
     ∀ (u : HolUnif X.A (X.diag c) (Module.finrank ℚ F)) (e : Fin (Module.finrank ℚ F) ≃ (F →+* ℝ)),

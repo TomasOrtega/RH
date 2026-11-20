@@ -16,6 +16,17 @@ section Symmetric
 variable (μ : Measure K) [μ.IsAddHaarMeasure] {ψ : AddChar K Circle} (hψ : Continuous ψ)
 include hψ
 
+/- English proof (translation)
+Establish `hψc : Continuous fun x => (ψ x : ℂ)` using `continuous_subtype_val.comp hψ`. Establish `hfi` using `integrable_of_mem_schwartzBruhat μ hf`. Establish `hgi` using `integrable_of_mem_schwartzBruhat μ hg`. Set `G : K → K → ℂ` to `fun x z => f x * (g z * (ψ (z * (x * y)) : ℂ))`. Establish `hG : Integrable (Function.uncurry G) (μ.prod μ)`.
+
+Establish `hdom : Integrable (fun p : K × K => ‖f p.1‖ * ‖g p.2‖) (μ.prod μ)` using `hfi.norm.mul_prod hgi.norm`. Use `hdom.mono' (Continuous.aestronglyMeasurable ?_) (Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Conclude with `(hf.1.continuous.comp continuous_fst).mul ((hg.1.continuous.comp continuous_snd).mul (hψc.comp (continuous_snd.mul (continuous_fst.mul continuous_const))))`. Simplify using `[G, Function.uncurry, Circle.norm_coe]`. Establish `e1 : ∫ x, f x * localFourier μ ψ g (x * y) ∂μ = ∫ x, ∫ z, G x z ∂μ ∂μ`.
+
+Use `integral_congr_ae (Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [localFourier, G]`. Rewrite using `[integral_const_mul]`. Establish `e2 : ∫ x, g x * localFourier μ ψ f (x * y) ∂μ = ∫ z, ∫ x, G x z ∂μ ∂μ`. Use `integral_congr_ae (Eventually.of_forall fun z => ?_)` and prove the remaining obligations.
+
+Simplify using `only [localFourier, G]`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[show x * (z * y) = z * (x * y) by ring]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2, integral_integral_swap hG]`.
+-/
 theorem integral_mul_localFourier_comm {f g : K → ℂ} (hf : f ∈ schwartzBruhat K)
     (hg : g ∈ schwartzBruhat K) (y : K) :
     ∫ x, f x * localFourier μ ψ g (x * y) ∂μ = ∫ x, g x * localFourier μ ψ f (x * y) ∂μ := by
@@ -48,6 +59,13 @@ end Symmetric
 
 section Multiplicative
 
+/- English proof (translation)
+Establish `hq : (1 : ℝ≥0) < (residueCard K : ℝ≥0)` using `one_lt_residueCard_nnreal`. Establish `ht : Tendsto (fun n : ℕ => (((residueCard K : ℝ≥0) ^ (-(n : ℤ)) : ℝ≥0) : ℝ≥0∞)) atTop (𝓝 0)`. Rewrite using `[← ENNReal.coe_zero, ENNReal.tendsto_coe]`. Establish `e : (fun n : ℕ => (residueCard K : ℝ≥0) ^ (-(n : ℤ))) = fun n : ℕ => ((residueCard K : ℝ≥0)⁻¹) ^ n`. Use function extensionality and compare the values at `n`.
+
+Rewrite using `[zpow_neg, zpow_natCast, inv_pow]`. Rewrite using `[e]`. Conclude with `NNReal.tendsto_pow_atTop_nhds_zero_of_lt_one (inv_lt_one_of_one_lt₀ hq)`. Use `le_antisymm (ge_of_tendsto' ht fun n => ?_) (by simp)` and prove the remaining obligations. Rewrite using `[← haarIntegers_valBall]`.
+
+Conclude with `measure_mono (Set.singleton_subset_iff.mpr (zero_mem _))`.
+-/
 theorem haarIntegers_singleton_zero : haarIntegers K {0} = 0 := by
   have hq : (1 : ℝ≥0) < (residueCard K : ℝ≥0) := one_lt_residueCard_nnreal
   have ht : Tendsto (fun n : ℕ => (((residueCard K : ℝ≥0) ^ (-(n : ℤ)) : ℝ≥0) : ℝ≥0∞)) atTop
@@ -63,6 +81,11 @@ theorem haarIntegers_singleton_zero : haarIntegers K {0} = 0 := by
   rw [← haarIntegers_valBall]
   exact measure_mono (Set.singleton_subset_iff.mpr (zero_mem _))
 
+/- English proof (translation)
+Rewrite using `[integral_multHaar (fun x => h x * ((modulus x : ℝ) : ℂ)), Complex.real_smul]`. Use `congr 1`. Establish `hae : ∀ᵐ x ∂haarIntegers K, x ∈ ({0}ᶜ : Set K)`. Rewrite using `[ae_iff]`. Simplify using `using haarIntegers_singleton_zero (K := K)`.
+
+Use `conv_rhs => rw [← Measure.restrict_eq_self_of_ae_mem hae]`. Use `setIntegral_congr_fun (measurableSet_singleton 0).compl fun x hx => ?_` and prove the remaining obligations. Establish `hm : ((modulus x : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (modulus_pos hx).ne'`. Rewrite using `[Complex.real_smul, Complex.ofReal_inv, mul_comm, mul_assoc, mul_inv_cancel₀ hm, mul_one]`.
+-/
 theorem integral_multHaar_mul_modulus (h : K → ℂ) :
     ∫ u, h u * ((modulus (u : K) : ℝ) : ℂ) ∂multHaar K =
       (multHaarConst K).toReal * ∫ x, h x ∂haarIntegers K := by
@@ -79,6 +102,13 @@ theorem integral_multHaar_mul_modulus (h : K → ℂ) :
 variable (μ : Measure K) [μ.IsAddHaarMeasure] {ψ : AddChar K Circle} (hψ : Continuous ψ)
 include hψ
 
+/- English proof (translation)
+Rewrite using `[integral_multHaar_mul_modulus (fun x => f x * localFourier μ ψ g (x * y)), integral_multHaar_mul_modulus (fun x => g x * localFourier μ ψ f (x * y))]`. Use `congr 1`. Establish `hμ` using `eq_smul_haarIntegers μ`. Establish `key` using `integral_mul_localFourier_comm μ hψ hf hg y`. Establish `hc : (μ (𝒪[K] : Set K)).toReal ≠ 0`.
+
+Use `ENNReal.toReal_ne_zero.mpr ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← coe_valBall_zero]`. Conclude with `((isOpen_valBall 0).measure_pos μ ⟨0, zero_mem _⟩).ne'`. Rewrite using `[← coe_valBall_zero]`. Conclude with `(isCompact_valBall 0).measure_lt_top.ne`.
+
+Establish `hJ : ∀ F : K → ℂ, ∫ x, F x ∂μ = ((μ (𝒪[K] : Set K)).toReal : ℂ) * ∫ x, F x ∂haarIntegers K` using `fun F => by conv_lhs => rw [hμ]`. Rewrite using `[integral_smul_measure, Complex.real_smul]`. Rewrite `key` using `[hJ, hJ]`. Conclude with `mul_left_cancel₀ (Complex.ofReal_ne_zero.mpr hc) key`.
+-/
 theorem integral_multHaar_mul_localFourier_comm {f g : K → ℂ} (hf : f ∈ schwartzBruhat K)
     (hg : g ∈ schwartzBruhat K) (y : K) :
     ∫ u, f u * localFourier μ ψ g ((u : K) * y) * ((modulus (u : K) : ℝ) : ℂ) ∂multHaar K =
@@ -109,6 +139,19 @@ variable (μ : Measure K) [μ.IsAddHaarMeasure] {ψ : AddChar K Circle} (hψ : C
   (hψ1 : ψ ≠ 1) {χ : Kˣ →* ℂˣ} (hχ : Continuous χ)
 include hψ hψ1 hχ
 
+/- English proof (translation)
+Use `set F₁ : Kˣ → ℂ := fun u => f u * ((χ u : ℂˣ) : ℂ) * ((modulus (u : K) : ℝ) : ℂ) ^ s`. Use `set G₁ : Kˣ → ℂ := fun u => localFourier μ ψ g u * (((χ⁻¹) u : ℂˣ) : ℂ) * ((modulus (u : K) : ℝ) : ℂ) ^ (1 - s)`. Establish `hF₁ : Integrable F₁ (multHaar K)` using `integrable_localZeta hf hχ hs1`. Establish `hG₁ : Integrable G₁ (multHaar K)` using `integrable_localZeta (localFourier_mem_schwartzBruhat μ hψ hψ1 hg) (continuous_quasiChar_inv hχ) (by rw [quasiCharExponent_inv, Complex.sub_re, Complex.one_re]; linarith)`. Establish `hP : Integrable (fun p : Kˣ × Kˣ => F₁ p.1 * G₁ p.2) ((multHaar K).prod (multHaar K))` using `hF₁.mul_prod hG₁`.
+
+Establish `hH : Integrable (Function.uncurry fun x y : Kˣ => F₁ x * G₁ (x * y)) ((multHaar K).prod (multHaar K))` using `(measurePreserving_prod_mul (multHaar K) (multHaar K)).integrable_comp_of_integrable hP`. Establish `hpt : ∀ x y : Kˣ, F₁ x * G₁ (x * y) = ((χ y : ℂˣ) : ℂ)⁻¹ * ((modulus (y : K) : ℝ) : ℂ) ^ (1 - s) * (f x * localFourier μ ψ g ((x : K) * (y : K)) * ((modulus (x : K) : ℝ) : ℂ))`. Introduce `x y`. Establish `hx0 : ((modulus (x : K) : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (modulus_pos x.ne_zero).ne'`. Establish `e1 : (((χ⁻¹) (x * y) : ℂˣ) : ℂ) = ((χ x : ℂˣ) : ℂ)⁻¹ * ((χ y : ℂˣ) : ℂ)⁻¹`.
+
+Rewrite using `[MonoidHom.inv_apply, map_mul, mul_inv, Units.val_mul, Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val]`. Establish `e2 : ((modulus ((x * y : Kˣ) : K) : ℝ) : ℂ) ^ (1 - s) = ((modulus (x : K) : ℝ) : ℂ) ^ (1 - s) * ((modulus (y : K) : ℝ) : ℂ) ^ (1 - s)`. Rewrite using `[Units.val_mul, modulus_mul, NNReal.coe_mul, Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg (NNReal.coe_nonneg _) (NNReal.coe_nonneg _)]`. Establish `e3 : ((modulus (x : K) : ℝ) : ℂ) ^ s * ((modulus (x : K) : ℝ) : ℂ) ^ (1 - s) = ((modulus (x : K) : ℝ) : ℂ)`. Rewrite using `[← Complex.cpow_add _ _ hx0, add_sub_cancel, Complex.cpow_one]`.
+
+Establish `hχx : ((χ x : ℂˣ) : ℂ) * ((χ x : ℂˣ) : ℂ)⁻¹ = 1` using `mul_inv_cancel₀ (χ x).ne_zero`. Simplify using `only [F₁, G₁]`. Rewrite using `[e1, e2, Units.val_mul]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+
+Use `integral_congr_ae (Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[integral_const_mul, integral_mul_left_eq_self G₁ x]`. Use `_ = ∫ y, ∫ x, F₁ x * G₁ (x * y) ∂multHaar K ∂multHaar K := integral_integral_swap hH`. Use `_ = _ := by`.
+
+Use `integral_congr_ae (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [hpt]`. Rewrite using `[integral_const_mul]`.
+-/
 theorem localZeta_mul_localZeta_fourier_eq {f g : K → ℂ} (hf : f ∈ schwartzBruhat K)
     (hg : g ∈ schwartzBruhat K) {s : ℂ} (hs1 : -quasiCharExponent χ < s.re)
     (hs2 : s.re < 1 - quasiCharExponent χ) :
@@ -167,6 +210,9 @@ theorem localZeta_mul_localZeta_fourier_eq {f g : K → ℂ} (hf : f ∈ schwart
         simp only [hpt]
         rw [integral_const_mul]
 
+/- English proof (translation)
+Rewrite using `[localZeta_mul_localZeta_fourier_eq μ hψ hψ1 hχ hf hg hs1 hs2, localZeta_mul_localZeta_fourier_eq μ hψ hψ1 hχ hg hf hs1 hs2]`. Use `integral_congr_ae (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[integral_multHaar_mul_localFourier_comm μ hψ hf hg]`.
+-/
 theorem localZeta_mul_localZeta_fourier_comm {f g : K → ℂ} (hf : f ∈ schwartzBruhat K)
     (hg : g ∈ schwartzBruhat K) {s : ℂ} (hs1 : -quasiCharExponent χ < s.re)
     (hs2 : s.re < 1 - quasiCharExponent χ) :

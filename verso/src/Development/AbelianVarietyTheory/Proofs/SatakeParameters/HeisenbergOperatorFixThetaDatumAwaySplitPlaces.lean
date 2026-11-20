@@ -18,6 +18,9 @@ namespace GlobalTheory.Hk3
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h0 : cA D a • u = 0` using `Matrix.ext fun i j => by show cA D a * u i j = 0`. Conclude with `hu i j`. Rewrite using `[← (GlobalTheory.SplitScalar.isHalf_iff _ _).1 hx, GlobalTheory.SplitScalar.symplO_smul, h0, GlobalTheory.SplitScalar.symplO_zero_right]`.
+-/
 theorem symplO_half_off (S T : HSp D) {a : AE D} {x u : WO S T} (hx : IsHalf a x) (hu : ∀ i j, cA D a * u i j = 0) :
     symplO S T x u = 0 := by
   have h0 : cA D a • u = 0 := Matrix.ext fun i j => by
@@ -25,12 +28,24 @@ theorem symplO_half_off (S T : HSp D) {a : AE D} {x u : WO S T} (hx : IsHalf a x
     exact hu i j
   rw [← (GlobalTheory.SplitScalar.isHalf_iff _ _).1 hx, GlobalTheory.SplitScalar.symplO_smul, h0, GlobalTheory.SplitScalar.symplO_zero_right]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.SplitScalar.heisO_comm, GlobalTheory.SplitScalar.symplO_skew, symplO_half_off S T hx hu, neg_zero, AddChar.map_zero_eq_one, one_smul]`.
+-/
 theorem heisO_comm_off (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) {a : AE D} {x u : WO S T} (hx : IsHalf a x)
     (hu : ∀ i j, cA D a * u i j = 0) (g : WO S T → ℂ) :
     heisO ψ S T u (heisO ψ S T x g) = heisO ψ S T x (heisO ψ S T u g) := by
   rw [GlobalTheory.SplitScalar.heisO_comm, GlobalTheory.SplitScalar.symplO_skew, symplO_half_off S T hx hu, neg_zero,
     AddChar.map_zero_eq_one, one_smul]
 
+/- English proof (translation)
+Introduce `D ψ S T e Λ c f₀ Φ f h u hu hf₀`. Take `⟨⟨Tm, hTm⟩, hall⟩` from `h`. Establish `hm : IsPlaceModel ψ (symplO S T) (heisO ψ S T) e Λ c f₀ ((GlobalTheory.SplitScalar.heisL ψ S T u).comp Tm)` using `{ trans := fun Φ' hΦ' x hx => by`. Simplify using `only [LinearMap.comp_apply, GlobalTheory.SplitScalar.heisL_apply]`. Rewrite using `[hTm.trans Φ' hΦ' x hx, heisO_comm_off ψ S T hx (fun i j => (hu i j).2)]`.
+
+Use `modul := fun Φ' hΦ' y hy => by`. Simplify using `only [LinearMap.comp_apply, GlobalTheory.SplitScalar.heisL_apply]`. Rewrite using `[hTm.modul Φ' hΦ' y hy, heisO_comm_off ψ S T hy (fun i j => by rw [GlobalTheory.DualPairCheck.cA_cA]; exact (hu i j).1)]`. Use `vac := by`. Simplify using `only [LinearMap.comp_apply, GlobalTheory.SplitScalar.heisL_apply]`.
+
+Rewrite using `[hTm.vac, hf₀] }`. Establish `h1` using `hall _ hm`. Establish `h2` using `hall _ hTm`. Simplify using `only [LinearMap.comp_apply, GlobalTheory.SplitScalar.heisL_apply] at h1`. Rewrite `h1`, the goal using `[h2]`.
+
+Conclude with `h1.symm`.
+-/
 theorem heisO_fix_thetaAt_off : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (e : AE D) (Λ : AddSubgroup (WO S T))
     (c : ℂ) (f₀ Φ f : WO S T → ℂ), IsThetaAt ψ (symplO S T) (heisO ψ S T) e Λ c f₀ Φ f → ∀ u : WO S T,
     (∀ i j, e * u i j = 0 ∧ cA D e * u i j = 0) → heisO ψ S T u f₀ = f₀ → heisO ψ S T u f = f := by

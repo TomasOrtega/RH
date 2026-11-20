@@ -13,6 +13,11 @@ noncomputable section
 namespace GlobalTheory.ZH.PerpTorus
 open GlobalTheory.ZH.TorusPerp GlobalTheory.TorusExt
 
+/- English proof (translation)
+Use `choose σ hσ using fun α : X => hs (QuotientAddGroup.mk α)`. Establish `ind : ∀ b b' : S.Gam, yy b = yy b' → eStd S.g _ a b = eStd S.g _ a b'`. Introduce `b b' e`. Establish `h0 : eStd S.g _ a (b - b') = 0` using `ha _ (by rw [AddMonoidHom.mem_ker, map_sub, e, sub_self])`. Rewrite using `[← sub_add_cancel b b', eStd_add_right, h0, zero_add]`.
+
+Use `⟨AddMonoidHom.mk' (fun α => eStd S.g _ a (σ α)) fun α β => ?_, fun b α e => ind _ _ ((hσ α).trans e.symm)⟩` and prove the remaining obligations. Rewrite using `[← eStd_add_right]`. Conclude with `ind _ _ (by rw [map_add, hσ, hσ, hσ, QuotientAddGroup.mk_add])`.
+-/
 theorem exists_form {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (S : ThetaSys o Ω) {X : Type} [AddCommGroup X]
     (yy : S.Gam →+ X ⧸ (nsmulAddMonoidHom (S.r * S.N) : X →+ X).range) (hs : Function.Surjective yy)
     (a : S.Gam) (ha : a ∈ S.perp yy.ker) :
@@ -28,6 +33,33 @@ theorem exists_form {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (S : Th
 
 attribute [local instance] gtGroup in
 
+/- English proof (translation)
+Introduce `hL hT o Ω _ _ _ hA S ρ p _ y₀ u l g a ha`. Establish `hG` using `hL.1.globalFns`. Establish `hN` using `S.N_ge`. Establish `hr` using `S.r_pos`. Establish `hn : NeZero (S.r * S.N)` using `⟨Nat.mul_ne_zero (by omega) (by omega)⟩`.
+
+Establish `: IsDomain o` using `hA.inj.isDomain _`. Establish `: CharZero u.V` using `RingHom.charZero ((algebraMap (FractionRing u.V) (PadicAlgCl p)).comp (algebraMap u.V (FractionRing u.V)))`. Establish `hadm : AdmBase u.V (maximalIdeal u.V)` using `⟨inferInstance, inferInstance, inferInstance, u.complete⟩`. Establish `hB` using `u.D.tau_bimult`. Take `⟨f, f₁, f₂, -, -, f₅⟩` from `hT u.V u.complete u.A u.G u.D u.U (PadicAlgCl p) (S.r * S.N) hn.pos`.
+
+Establish `hζ : IsPrimitiveRoot (S.ζ ^ (S.r * S.N)) (S.r * S.N)` using `S.prim.pow (pow_pos hn.pos 2) (pow_two _)`. Set `ω : (PadicAlgCl p)ˣ` to `Units.map (y₀.comp (algebraMap o S.R)).toMonoidHom (hζ.isUnit hn.ne).unit`. Establish `hωv : (ω : PadicAlgCl p) = y₀ (algebraMap o S.R (S.ζ ^ (S.r * S.N)))` using `rfl`. Establish `hω : IsPrimitiveRoot ω (S.r * S.N)`. Establish `: NeZero ((S.r * S.N : ℕ) : PadicAlgCl p)` using `⟨Nat.cast_ne_zero.2 hn.ne⟩`.
+
+Rewrite using `[← IsPrimitiveRoot.coe_units_iff, ← Polynomial.isRoot_cyclotomic_iff, ← Polynomial.map_cyclotomic _ (y₀.comp (algebraMap o S.R))]`. Conclude with `(hζ.isRoot_cyclotomic hn.pos).map`. Set `pt : Multiplicative S.Gam →* (TFK (R` to `u.V) (PadicAlgCl p) ⟶ u.A.A) := MonoidHom.mk' (fun a => g.pt a.toAdd) fun _ _ => g.pt_add _ _`. Establish `pt_nsmul : ∀ (n : ℕ) b, g.pt (n • b) = g.pt b ^ n` using `fun n b => map_pow pt (Multiplicative.ofAdd b) n`. Establish `onto : ∀ b, ∃ q, f q = g.pt b` using `fun b => f₂ _ (by`.
+
+Rewrite using `[← pt_nsmul, ← Nat.cast_smul_eq_nsmul (ZMod (S.r * S.N)), ZMod.natCast_self, zero_smul]`. Conclude with `map_one pt)`. Take `⟨m, hm⟩` from `exists_form S l.yy l.yy_onto a ha`. Set `τ : Multiplicative u.D.toPre.X →* (PadicAlgCl p)ˣ` to `(AddChar.zmodChar (S.r * S.N) hω.pow_eq_one).toMonoidHom.comp m.toMultiplicative`. Establish `hτ : ∀ α, τ (Multiplicative.ofAdd α) = ω ^ (m α).val` using `fun _ => rfl`.
+
+Establish `hτ1 : τ ^ (S.r * S.N) = 1` using `MonoidHom.ext fun α => by show (ω ^ (m α.toAdd).val) ^ (S.r * S.N) = 1`. Rewrite using `[pow_right_comm, hω.pow_eq_one, one_pow]`. Take `⟨q, hq, hqτ⟩` from `exists_qkPt_tor (F := PadicAlgCl p) hB τ hτ1`. Take `⟨q₁, hq₁, hq₁τ⟩` from `exists_qkPt_tor (F := PadicAlgCl p) (k := S.N) hB (τ ^ S.r) (by rw [← pow_mul, hτ1])`. Establish `hq1 : f q ^ (S.r * S.N) = 1`.
+
+Take `⟨w, hw⟩` from `u.U.ext`. Conclude with `((f₁ _ _).2 rfl w hw).1`. Take `⟨a', ha', -⟩` from `g.pt_bij (f q) hq1`. Establish `haa : a' = a`. Rewrite using `[← sub_eq_zero]`.
+
+Use `eq_zero_of_eStd _ _ _ fun b => ?_` and prove the remaining obligations. Take `⟨q', hq'⟩` from `onto b`. Establish `w₁` using `(f₅ q q' _).1 (weilQkIs_tor hG q q' hq hqτ)`. Rewrite `w₁` using `[← ha', hq']`. Establish `w₂` using `g.weil a' b (ω ^ (eStd S.g _ a' b).val) (by`.
+
+Rewrite using `[Units.val_pow_eq_pow_val, hωv, ← map_pow, ← map_pow, ← pow_mul])`. Establish `e₁` using `unitOn_injective (GlobalTheory.CommutatorPairing.weilIs_unique hG u.A.isAb u.A.isLB w₂ w₁)`. Rewrite `e₁` using `[hτ]`. Establish `e₂` using `ZMod.val_injective _ (hω.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) e₁)`. Rewrite `e₂` using `[hm b _ (l.yy_eq b q' _ ((f₁ _ _).2 hq'.symm) (g.pt_over b))]`.
+
+Establish `e₃` using `eStd_add_left S.g _ (a' - a) a b`. Rewrite `e₃` using `[sub_add_cancel, e₂]`. Conclude with `left_eq_add.1 (e₃.trans (add_comm _ _))`. Substitute `haa` using the available equality. Use `⟨q₁, τ ^ S.r, hq₁, hq₁τ, ?_, fun χ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[pt_nsmul]`. Use `(GlobalTheory.T.uniformisation_torsion_maps_compatible_in_level hL u.V _ hadm u.D u.A u.G u.semi u.U (PadicAlgCl p) S.N S.r (S.r * S.N) (by omega) hr (mul_comm _ _) q₁ q _).2 (hq₁.trans hq.symm) ((isNsmul_iff_eq _ _ _).2 ?_) ((f₁ _ _).2 ha')` and prove the remaining obligations. Rewrite using `[(isTorusPtF_iff_eq _ _).1 ((isTor_iff _ _).1 hq₁τ), (isTorusPtF_iff_eq _ _).1 ((isTor_iff _ _).1 hqτ), ofMul_pow, map_nsmul]`. Take `⟨b, hb⟩` from `l.yy_onto (QuotientAddGroup.mk χ)`. Establish `z : S.ζN ^ S.N = 1`.
+
+Rewrite using `[ThetaSys.ζN, ← pow_mul, ← S.prim.pow_eq_one]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `z' : S.ζN = (S.ζ ^ (S.r * S.N)) ^ S.r`. Rewrite using `[ThetaSys.ζN, ← pow_mul]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[l.wt_eq b χ hb, ZMod.castHom_apply, ZMod.cast_eq_val, ZMod.val_natCast, ← pow_eq_pow_mod _ z, MonoidHom.pow_apply, hτ, hm b χ hb, z', pow_right_comm, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, hωv, ← map_pow, ← map_pow, ← map_pow, ← map_pow]`.
+-/
 theorem exists_torus_point : LL → UTorsSt → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (l : u.Lab) (g : u.Geom) (a : S.Gam) (ha : a ∈ S.perp l.yy.ker), ∃ (q : QkPt u.D.toPre (PadicAlgCl p) S.N) (τ : Multiplicative u.D.toPre.X →* (PadicAlgCl p)ˣ), q.y = 0 ∧ IsTor τ q.g ∧ QkToAkU u.U.toUnifPre (PadicAlgCl p) S.N q (g.pt (S.r • a)) ∧ ∀ χ, (τ (Multiplicative.ofAdd χ) : PadicAlgCl p) = y₀ (algebraMap o S.R (S.ζN ^ (l.wt χ ⟨a, ha⟩).val)) := by
   intro hL hT o Ω _ _ _ hA S ρ p _ y₀ u l g a ha
   have hG := hL.1.globalFns

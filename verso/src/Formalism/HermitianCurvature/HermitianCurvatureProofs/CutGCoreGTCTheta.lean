@@ -10,6 +10,9 @@ def rhoSum (P : M.Par) (ρ : M.Ty P) : ℝ := ∑ i ∈ Finset.Icc 1 (P.k - 1), 
 
 def uSum (P : M.Par) : ℝ := ∑ i ∈ Finset.Icc 1 P.k, (P.u i + P.u' i)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem aC_eq (P : M.Par) (ρ : M.Ty P) : M.aC P ρ = uSum P / 2 - rhoSum P ρ := rfl
 
 def ThetaNF (P : M.Par) {𝒜 : Type} [Ring 𝒜] [StarRing 𝒜] [Algebra ℂ 𝒜] (d : Q.NFData P 𝒜) : 𝒜 :=

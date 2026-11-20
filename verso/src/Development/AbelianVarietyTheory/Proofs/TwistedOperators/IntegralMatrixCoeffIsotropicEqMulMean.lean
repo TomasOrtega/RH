@@ -15,16 +15,27 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.IsoMean
 
+/- English proof (translation)
+Unfold `symplOH`. Rewrite using `[← add_mul, ← map_add, add_halves, map_one, one_mul]`.
+-/
 private lemma symplO_eq_symplOH_add_symplOH {D : D7} (V W : HSp D) (x y : WO V W) :
     symplO V W x y = symplOH V W x y + symplOH V W x y := by
   unfold symplOH
   rw [← add_mul, ← map_add, add_halves, map_one, one_mul]
 
+/- English proof (translation)
+Unfold `symplOH`. Rewrite using `[GlobalTheory.OrientedHeis.symplO_skew, mul_neg]`.
+-/
 private lemma symplOH_swap' {D : D7} (V W : HSp D) (x y : WO V W) :
     symplOH V W y x = -symplOH V W x y := by
   unfold symplOH
   rw [GlobalTheory.OrientedHeis.symplO_skew, mul_neg]
 
+/- English proof (translation)
+Establish `hq` using `hG.quasi γ₁ (u + ξ)`. Establish `h0 : symplOH V W (ratW W V γ₁) ξ = 0`. Unfold `symplOH`. Rewrite using `[h, mul_zero]`. Simplify using `only [heisO]`.
+
+Rewrite using `[show u + (ratW W V γ₁ + ξ) = ratW W V γ₁ + (u + ξ) by abel, hq, symplO_eq_symplOH_add_symplOH, GlobalTheory.OrientedHeis.symplOH_add_right, GlobalTheory.OrientedHeis.symplOH_add_right, h0, symplOH_swap' V W u (ratW W V γ₁), add_zero, neg_neg, ← mul_assoc, ← mul_assoc, ← AddChar. …`. Use `congr 2`. Normalize the expressions using the abelian group laws.
+-/
 theorem heisO_rat_add {D : D7} (V W : HSp D) (ψ : AddChar (AF D.host.F) ℂ) (G : WO V W → ℂ)
     (hG : IsThetaFunO ψ V W G) (γ₁ : Matrix (Fin W.rank) (Fin V.rank) D.host.E) (ξ u : WO V W)
     (h : symplO V W (ratW W V γ₁) ξ = 0) :
@@ -41,34 +52,55 @@ theorem heisO_rat_add {D : D7} (V W : HSp D) (ψ : AddChar (AF D.host.F) ℂ) (G
   congr 2
   abel
 
+/- English proof (translation)
+Rewrite using `[symplO_eq_symplOH_add_symplOH V W (x + x') y, symplO_eq_symplOH_add_symplOH V W x y, symplO_eq_symplOH_add_symplOH V W x' y, GlobalTheory.OrientedHeis.symplOH_add_left]`. Normalize the expressions using the abelian group laws.
+-/
 private lemma symplO_add_left_twisted_operators {D : D7} (V W : HSp D) (x x' y : WO V W) :
     symplO V W (x + x') y = symplO V W x y + symplO V W x' y := by
   rw [symplO_eq_symplOH_add_symplOH V W (x + x') y, symplO_eq_symplOH_add_symplOH V W x y, symplO_eq_symplOH_add_symplOH V W x' y,
     GlobalTheory.OrientedHeis.symplOH_add_left]
   abel
 
+/- English proof (translation)
+Rewrite using `[symplO_eq_symplOH_add_symplOH V W x (y + y'), symplO_eq_symplOH_add_symplOH V W x y, symplO_eq_symplOH_add_symplOH V W x y', GlobalTheory.OrientedHeis.symplOH_add_right]`. Normalize the expressions using the abelian group laws.
+-/
 private lemma symplO_add_right_twisted_operators {D : D7} (V W : HSp D) (x y y' : WO V W) :
     symplO V W x (y + y') = symplO V W x y + symplO V W x y' := by
   rw [symplO_eq_symplOH_add_symplOH V W x (y + y'), symplO_eq_symplOH_add_symplOH V W x y, symplO_eq_symplOH_add_symplOH V W x y',
     GlobalTheory.OrientedHeis.symplOH_add_right]
   abel
 
+/- English proof (translation)
+Rewrite using `[symplO_eq_symplOH_add_symplOH, GlobalTheory.MixModel.symplOH_zero_left, add_zero]`.
+-/
 private lemma symplO_zero_left_twisted_operators {D : D7} (V W : HSp D) (y : WO V W) : symplO V W 0 y = 0 := by
   rw [symplO_eq_symplOH_add_symplOH, GlobalTheory.MixModel.symplOH_zero_left, add_zero]
 
+/- English proof (translation)
+Rewrite using `[symplO_eq_symplOH_add_symplOH, GlobalTheory.MixModel.symplOH_zero_right, add_zero]`.
+-/
 private lemma symplO_zero_right_twisted_operators {D : D7} (V W : HSp D) (x : WO V W) : symplO V W x 0 = 0 := by
   rw [symplO_eq_symplOH_add_symplOH, GlobalTheory.MixModel.symplOH_zero_right, add_zero]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.MixModel.continuous_sandwich (GlobalTheory.MixModel.rat P) (GlobalTheory.MixModel.rat Q)`.
+-/
 private lemma continuous_emb_twisted_operators {D : D7} (V W : HSp D) {a b : ℕ} (P : Matrix (Fin W.rank) (Fin a) D.host.E)
     (Q : Matrix (Fin b) (Fin V.rank) D.host.E) : Continuous (emb V W P Q) :=
   GlobalTheory.MixModel.continuous_sandwich (GlobalTheory.MixModel.rat P) (GlobalTheory.MixModel.rat Q)
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.MixModel.ratW_eq, GlobalTheory.MixModel.rat_mul, GlobalTheory.MixModel.rat_mul]`. Both sides reduce to the same expression.
+-/
 private lemma emb_rat_eq_ratW_mul {D : D7} (V W : HSp D) {a b : ℕ} (P : Matrix (Fin W.rank) (Fin a) D.host.E)
     (Q : Matrix (Fin b) (Fin V.rank) D.host.E) (r : Matrix (Fin a) (Fin b) D.host.E) :
     emb V W P Q (GlobalTheory.MixModel.rat r) = ratW W V (P * r * Q) := by
   rw [GlobalTheory.MixModel.ratW_eq, GlobalTheory.MixModel.rat_mul, GlobalTheory.MixModel.rat_mul]
   rfl
 
+/- English proof (translation)
+Simplify using `only [symplO_eq_symplOH_add_symplOH]`. Conclude with `(GlobalTheory.OrientedHeis.continuous_symplOH hx hy).add (GlobalTheory.OrientedHeis.continuous_symplOH hx hy)`.
+-/
 private lemma continuous_symplO_comp {D : D7} (V W : HSp D) {X : Type} [TopologicalSpace X] {x y : X → WO V W}
     (hx : Continuous x) (hy : Continuous y) : Continuous fun t => symplO V W (x t) (y t) := by
   simp only [symplO_eq_symplOH_add_symplOH]
@@ -76,6 +108,53 @@ private lemma continuous_symplO_comp {D : D7} (V W : HSp D) {X : Type} [Topologi
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `D V W a b P Q hP hQ hiso k B hZX hperp hdir hrat ψ hψ μ 𝓨 hμ η 𝓩 hη h𝓩 ν 𝓕 hν h𝓕 hint`. Take `⟨hTA, hLC, hSC, hT2, hDisc, K, hK, hKc⟩` from `GlobalTheory.MixModel.lattice_Mx D a b`. Take `⟨hμH, hμF, hμ1⟩ : μ.IsAddHaarMeasure ∧ IsAddFundamentalDomain (↥(GlobalTheory.MixModel.ratMx D a b)) 𝓨 μ ∧ μ 𝓨 = 1` from `id hμ`. Use `hTA` as an intermediate fact. Use `hLC` as an intermediate fact.
+
+Use `hSC` as an intermediate fact. Use `hT2` as an intermediate fact. Use `hDisc` as an intermediate fact. Take `⟨P', Q', hc1, hc2, hc3, hc4⟩` from `GlobalTheory.T.exists_rational_dual_complement_sandwich D V W a b P Q hP hQ ψ hψ`. Establish `hψc : IsCharAF D.host.F ψ` using `hψ.1`.
+
+Establish `hcX` using `continuous_emb_twisted_operators V W P Q`. Establish `hcX'` using `continuous_emb_twisted_operators V W P' Q'`. Establish `hratX : ∀ (P₁ : Matrix (Fin W.rank) (Fin a) D.host.E) (Q₁ : Matrix (Fin b) (Fin V.rank) D.host.E), ∀ r ∈ GlobalTheory.MixModel.ratMx D a b, emb V W P₁ Q₁ r ∈ ratL W V`. Introduce `P₁ Q₁ r hr`. Take `⟨r₀, rfl⟩` from `GlobalTheory.MixModel.mem_ratMx.1 hr`.
+
+Rewrite using `[emb_rat_eq_ratW_mul]`. Conclude with `⟨P₁ * r₀ * Q₁, rfl⟩`. Establish `hratZ : ∀ z ∈ GlobalTheory.MixModel.ratMx D 1 k, cplx V W B z ∈ ratL W V`. Introduce `z hz`. Take `⟨z₀, rfl⟩` from `GlobalTheory.MixModel.mem_ratMx.1 hz`.
+
+Rewrite using `[show GlobalTheory.MixModel.rat z₀ = z₀.map (incA D) from rfl, cplx_rat]`. Conclude with `⟨_, rfl⟩`. Establish `hspan : ∀ x : WO V W, ∃ s z y, x = emb V W P' Q' s + cplx V W B z + emb V W P Q y`. Introduce `x`. Take `⟨s, hs⟩` from `hc1 x`.
+
+Take `⟨z, y, hzy⟩` from `hperp _ hs`. Use `⟨s, z, y, ?_⟩` and prove the remaining obligations. Rewrite using `[add_assoc, ← hzy]`. Normalize the expressions using the abelian group laws. Establish `hdir3 : ∀ s z y, emb V W P' Q' s + cplx V W B z + emb V W P Q y = 0 → s = 0 ∧ z = 0 ∧ y = 0`.
+
+Introduce `s z y h0`. Establish `hs : ∀ y', symplO V W (emb V W P' Q' s) (emb V W P Q y') = 0`. Introduce `y'`. Establish `h1` using `congrArg (fun w => symplO V W w (emb V W P Q y')) h0`. Simplify using `only [symplO_add_left_twisted_operators, hZX, hiso, add_zero, symplO_zero_left_twisted_operators] at h1`.
+
+Conclude with `h1`. Take `rfl` from `hc2 s hs`. Rewrite `h0` using `[emb_zero, zero_add]`. Conclude with `⟨rfl, hdir z y h0⟩`. Establish `hriff : ∀ s z y, emb V W P' Q' s + cplx V W B z + emb V W P Q y ∈ ratL W V ↔ s ∈ GlobalTheory.MixModel.ratMx D a b ∧ z ∈ GlobalTheory.MixModel.ratMx D 1 k ∧ y ∈ GlobalTheory.MixModel.ratMx D a b`.
+
+Introduce `s z y`. Prove the components needed by the constructor for the conclusion. Introduce `hw`. Establish `hs : s ∈ GlobalTheory.MixModel.ratMx D a b`. Use `(hc3 s).1 fun γ hγ => ?_` and prove the remaining obligations.
+
+Establish `h1` using `((GlobalTheory.RatAnnih.ratL_annihilator D ψ hψ V W _).2 hw) _ (hratX P Q γ hγ)`. Simplify `h1` using `only [symplO_add_left_twisted_operators, hZX, hiso, add_zero]`. Use `⟨hs, hrat z y ?_⟩` and prove the remaining obligations. Establish `h2` using `(ratL W V).sub_mem hw (hratX P' Q' s hs)`. Rewrite `h2` using `[add_assoc, add_sub_cancel_left]`. Then use the resulting hypothesis.
+
+Introduce and unpack `⟨hs, hz, hy⟩`. Conclude with `(ratL W V).add_mem ((ratL W V).add_mem (hratX P' Q' s hs) (hratZ z hz)) (hratX P Q y hy)`. Take `⟨κ, hκ0, hκ⟩` from `GlobalTheory.T.integral_fundamentalDomain_eq_iterated_decomp D V W a b k (emb V W P' Q') (emb V W P Q) (cplx V W B) hcX' (continuous_cplx V W B) hcX (emb_add V W P' Q') (cplx_add V W B) (emb_add V W P Q) hspan hdir3 hriff μ 𝓨 hμ η 𝓩 hη h𝓩 ν 𝓕 hν h𝓕`. Use `⟨(κ : ℂ), by exact_mod_cast hκ0.ne', ?_⟩` and prove the remaining obligations. Introduce `G G' hG hG'`.
+
+Take `⟨hTc, hTper, hTfub⟩` from `GlobalTheory.T.thetaMatrixCoeff_smear_continuous_periodic_fubini D V W a b P Q ψ hψ μ 𝓨 hμ ν 𝓕 hν h𝓕 G G' hG hG'`. Take `⟨hΦc, hΦper⟩` from `GlobalTheory.T.iteratedIntegral_decomp_continuous_periodic D V W a b k (emb V W P' Q') (emb V W P Q) (cplx V W B) hcX' (continuous_cplx V W B) hcX (emb_add V W P' Q') (hratX P' Q') μ 𝓨 hμ η 𝓩 hη h𝓩 _ hTc hTper`. Use `beta_reduce at hΦc hΦper`. Establish `: BorelSpace (Mx D a b)` using `⟨rfl⟩`. Establish `: MeasurableAdd (Mx D a b)` using `⟨fun c => (continuous_const_add c).measurable, fun c => (continuous_add_const c).measurable⟩`.
+
+Establish `: MeasurableConstVAdd ↥(GlobalTheory.MixModel.ratMx D a b) (Mx D a b)` using `⟨fun g => (continuous_const_add (g : Mx D a b)).measurable⟩`. Establish `: Countable ↥(GlobalTheory.MixModel.ratMx D a b)` using `TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Establish `hsr : (Measure.sum fun γ : ↥(GlobalTheory.MixModel.ratMx D a b) => μ.restrict ((fun x => γ +ᵥ x) '' 𝓨)) = μ` using `hμF.sum_restrict`. Establish `hHS : HasSum (fun γ : ↥(GlobalTheory.MixModel.ratMx D a b) => ∫ ξ in 𝓨, (∫ u in 𝓕, heisO ψ V W (emb V W P Q (γ +ᵥ ξ)) G u * star (G' u) ∂ν) ∂μ) (∫ y, (∫ u in 𝓕, heisO ψ V W (emb V W P Q y) G u * star (G' u) ∂ν) ∂μ)`. Establish `h1` using `MeasureTheory.hasSum_integral_measure (f := fun y => ∫ u in 𝓕, heisO ψ V W (emb V W P Q y) G u * star (G' u) ∂ν) (μ := fun γ : ↥(GlobalTheory.MixModel.ratMx D a b) => μ.restrict ((fun x => γ +ᵥ x) '' 𝓨)) (by rw [hsr]; exact hint G G' hG hG')`.
+
+Rewrite `h1` using `[hsr]`. Establish `e : ∀ γ : ↥(GlobalTheory.MixModel.ratMx D a b), ∫ y in (fun x => γ +ᵥ x) '' 𝓨, (∫ u in 𝓕, heisO ψ V W (emb V W P Q y) G u * star (G' u) ∂ν) ∂μ = ∫ ξ in 𝓨, (∫ u in 𝓕, heisO ψ V W (emb V W P Q (γ +ᵥ ξ)) G u * star (G' u) ∂ν) ∂μ` using `fun γ => (MeasureTheory.measurePreserving_add_left μ (γ : Mx D a b)).setIntegral_image_emb (measurableEmbedding_const_vadd (γ : Mx D a b)) _ 𝓨`. Simplify using `only [e] at h1`. Conclude with `h1`. Establish `hterm : ∀ γ : ↥(GlobalTheory.MixModel.ratMx D a b), ∫ ξ in 𝓨, (∫ u in 𝓕, heisO ψ V W (emb V W P Q (γ +ᵥ ξ)) G u * star (G' u) ∂ν) ∂μ = (κ : ℂ) * ∫ s in 𝓨, ψ (symplO V W (emb V W P' Q' s) (emb V W P Q γ)) * (∫ z in 𝓩, (∫ y in 𝓨, (∫ ξ in 𝓨, heisO ψ V W (emb V W P Q ξ) G (emb V W P' …`.
+
+Introduce `γ`. Take `⟨γ₀, hγ₀⟩` from `GlobalTheory.MixModel.mem_ratMx.1 γ.2`. Establish `hγr : emb V W P Q γ = ratW W V (P * γ₀ * Q)` using `by rw [← hγ₀, emb_rat_eq_ratW_mul]`. Establish `e1 : ∀ ξ u, heisO ψ V W (emb V W P Q (γ +ᵥ ξ)) G u * star (G' u) = ψ (symplO V W u (emb V W P Q γ)) * (heisO ψ V W (emb V W P Q ξ) G u * star (G' u))`. Introduce `ξ u`.
+
+Rewrite using `[show (γ +ᵥ ξ : Mx D a b) = (γ : Mx D a b) + ξ from rfl, emb_add, hγr, heisO_rat_add V W ψ G hG (P * γ₀ * Q) _ u (by rw [← hγr]; exact hiso _ _), mul_assoc]`. Establish `hφc : Continuous fun u => ψ (symplO V W u (emb V W P Q γ))` using `hψc.1.comp (continuous_symplO_comp V W continuous_id continuous_const)`. Repeatedly rewrite using `[e1]`. Rewrite using `[hTfub _ hφc (fun u => (hψc.2.1 _).le)]`. Establish `h3` using `hκ (fun u => ψ (symplO V W u (emb V W P Q γ)) * ∫ ξ in 𝓨, heisO ψ V W (emb V W P Q ξ) G u * star (G' u) ∂μ) (hφc.mul hTc) (by`.
+
+Introduce `δ hδ u`. Rewrite using `[symplO_add_left_twisted_operators, AddChar.map_add_eq_mul, (GlobalTheory.RatAnnih.ratL_annihilator D ψ hψ V W δ).2 hδ _ (hratX P Q γ γ.2), one_mul, hTper δ hδ u])`. Use `beta_reduce at h3`. Rewrite using `[h3]`. Use `congr 1`.
+
+Use `congrArg (fun F : Mx D a b → ℂ => ∫ s in 𝓨, F s ∂μ) (funext fun s => ?_)` and prove the remaining obligations. Simplify using `only [symplO_add_left_twisted_operators, hZX, hiso, add_zero]`. Repeatedly rewrite using `[MeasureTheory.integral_const_mul]`. Establish `hκne : (κ : ℂ) ≠ 0` using `by exact_mod_cast hκ0.ne'`. Establish `hsum` using `(summable_mul_left_iff hκne).1 (by simpa only [hterm] using hHS.summable)`.
+
+Establish `hF` using `GlobalTheory.T.fourierInversion_zero_compactQuotient_summable (Mx D a b) (GlobalTheory.MixModel.ratMx D a b) K hK hKc (↥(GlobalTheory.MixModel.ratMx D a b)) (fun γ s => ψ (symplO V W (emb V W P' Q' s) (emb V W P Q γ))) (fun γ => hψc.1.comp (continuous_symplO_comp V W hcX' continu …`. Use `beta_reduce at hF`. Rewrite using `[← hHS.tsum_eq, tsum_congr hterm, tsum_mul_left, hF]`. Use `congr 1`. Use `congrArg (fun F : Mx D 1 k → ℂ => ∫ z in 𝓩, F z ∂η) (funext fun z => ?_)` and prove the remaining obligations.
+
+Simplify using `only [emb_zero, zero_add]`. Establish `e2 : ∀ y ξ, heisO ψ V W (emb V W P Q ξ) G (cplx V W B z + emb V W P Q y) = G (emb V W P Q ξ + (emb V W P Q y + cplx V W B z))`. Introduce `y ξ`. Establish `h0 : symplOH V W (cplx V W B z + emb V W P Q y) (emb V W P Q ξ) = 0`. Unfold `symplOH`.
+
+Rewrite using `[symplO_add_left_twisted_operators, hZX, hiso, add_zero, mul_zero]`. Simplify using `only [heisO, h0, AddChar.map_zero_eq_one, one_mul]`. Use `congr 1`. Normalize the expressions using the abelian group laws. Establish `e3 : ∀ y, ∫ ξ in 𝓨, G (emb V W P Q ξ + (emb V W P Q y + cplx V W B z)) ∂μ = meanX V W P Q μ 𝓨 G (cplx V W B z)` using `fun y => meanX_translate D V W a b P Q hiso ψ hψ μ 𝓨 hμ G hG (cplx V W B z) (hZX z) y`.
+
+Repeatedly rewrite using `[e2, MeasureTheory.integral_mul_const, e3, MeasureTheory.integral_const_mul]`. Use `congr 1`. Establish `e4 : ∀ f : Mx D a b → ℂ, ∫ y in 𝓨, star (f y) ∂μ = star (∫ y in 𝓨, f y ∂μ)` using `fun f => integral_conj`. Rewrite using `[e4]`. Use `congrArg star (congrArg (fun F : Mx D a b → ℂ => ∫ y in 𝓨, F y ∂μ) (funext fun y => ?_))` and prove the remaining obligations.
+
+Rewrite using `[add_comm]`.
+-/
 theorem integral_coef_eq_mul_meanX : ∀ (D : D7) (V W : HSp D) (a b : ℕ) (P : Matrix (Fin W.rank) (Fin a) D.host.E) (Q : Matrix (Fin b) (Fin V.rank) D.host.E), P.rank = a → Q.rank = b → (∀ y y' : Mx D a b, symplO V W (GlobalTheory.IsoMean.emb V W P Q y) (GlobalTheory.IsoMean.emb V W P Q y') = 0) → ∀ (k : ℕ) (B : Fin k → Matrix (Fin W.rank) (Fin V.rank) D.host.E), (∀ (z : Mx D 1 k) (y : Mx D a b), symplO V W (GlobalTheory.IsoMean.cplx V W B z) (GlobalTheory.IsoMean.emb V W P Q y) = 0) → (∀ x : WO V W, (∀ y : Mx D a b, symplO V W x (GlobalTheory.IsoMean.emb V W P Q y) = 0) → ∃ (z : Mx D 1 k) (y : Mx D a b), x = GlobalTheory.IsoMean.cplx V W B z + GlobalTheory.IsoMean.emb V W P Q y) → (∀ (z : Mx D 1 k) (y : Mx D a b), GlobalTheory.IsoMean.cplx V W B z + GlobalTheory.IsoMean.emb V W P Q y = 0 → z = 0 ∧ y = 0) → (∀ (z : Mx D 1 k) (y : Mx D a b), GlobalTheory.IsoMean.cplx V W B z + GlobalTheory.IsoMean.emb V W P Q y ∈ ratL W V → z ∈ GlobalTheory.MixModel.ratMx D 1 k ∧ y ∈ GlobalTheory.MixModel.ratMx D a b) → ∀ (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (μ : Measure (Mx D a b)) (𝓨 : Set (Mx D a b)), IsCovolOne (GlobalTheory.MixModel.ratMx D a b) μ 𝓨 → ∀ (η : Measure (Mx D 1 k)) (𝓩 : Set (Mx D 1 k)), η.IsAddHaarMeasure → IsAddFundamentalDomain (GlobalTheory.MixModel.ratMx D 1 k) 𝓩 η → ∀ (ν : Measure (WO V W)) (𝓕 : Set (WO V W)), ν.IsAddHaarMeasure → IsAddFundamentalDomain (ratL W V) 𝓕 ν → (∀ G G' : WO V W → ℂ, IsThetaFunO ψ V W G → IsThetaFunO ψ V W G' → Integrable (fun y => ∫ u in 𝓕, heisO ψ V W (GlobalTheory.IsoMean.emb V W P Q y) G u * star (G' u) ∂ν) μ) → ∃ κ : ℂ, κ ≠ 0 ∧ ∀ G G' : WO V W → ℂ, IsThetaFunO ψ V W G → IsThetaFunO ψ V W G' → ∫ y, (∫ u in 𝓕, heisO ψ V W (GlobalTheory.IsoMean.emb V W P Q y) G u * star (G' u) ∂ν) ∂μ = κ * ∫ z in 𝓩, GlobalTheory.IsoMean.meanX V W P Q μ 𝓨 G (GlobalTheory.IsoMean.cplx V W B z) * star (GlobalTheory.IsoMean.meanX V W P Q μ 𝓨 G' (GlobalTheory.IsoMean.cplx V W B z)) ∂η := by
   intro D V W a b P Q hP hQ hiso k B hZX hperp hdir hrat ψ hψ μ 𝓨 hμ η 𝓩 hη h𝓩 ν 𝓕 hν h𝓕 hint
   obtain ⟨hTA, hLC, hSC, hT2, hDisc, K, hK, hKc⟩ := GlobalTheory.MixModel.lattice_Mx D a b

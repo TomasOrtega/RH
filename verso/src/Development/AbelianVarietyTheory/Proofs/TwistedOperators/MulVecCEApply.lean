@@ -20,6 +20,9 @@ def mulVecCE (M : Matrix κ κ S) (hM : IsUnit M.det) : (κ → S) ≃ₜ+ (κ �
   continuous_toFun := continuous_const.matrix_mulVec continuous_id
   continuous_invFun := continuous_const.matrix_mulVec continuous_id
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mulVecCE_apply (M : Matrix κ κ S) (hM : IsUnit M.det) (x : κ → S) : mulVecCE M hM x = M *ᵥ x := rfl
 
 end Gen
@@ -30,6 +33,9 @@ def prodCE {G₁ G₂ : Type} [AddCommGroup G₁] [TopologicalSpace G₁] [AddCo
     continuous_toFun := e₁.continuous.prodMap e₂.continuous
     continuous_invFun := e₁.symm.continuous.prodMap e₂.symm.continuous }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem prodCE_apply {G₁ G₂ : Type} [AddCommGroup G₁] [TopologicalSpace G₁] [AddCommGroup G₂]
     [TopologicalSpace G₂] (e₁ : G₁ ≃ₜ+ G₁) (e₂ : G₂ ≃ₜ+ G₂) (x : G₁ × G₂) : prodCE e₁ e₂ x = (e₁ x.1, e₂ x.2) := rfl
 
@@ -47,6 +53,9 @@ def lrCE {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] {m n
   continuous_toFun := (continuous_const.matrix_mul continuous_id).matrix_mul continuous_const
   continuous_invFun := (continuous_const.matrix_mul continuous_id).matrix_mul continuous_const
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lrCE_apply {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] {m n : ℕ} (g : GL (Fin m) R)
     (a : GL (Fin n) R) (u : Matrix (Fin m) (Fin n) R) :
     lrCE g a u = (g : Matrix (Fin m) (Fin m) R) * u * (a : Matrix (Fin n) (Fin n) R) := rfl
@@ -85,6 +94,9 @@ def jS : SPart F S × OPart F S →+* Af F where
     split_ifs <;> rfl)
 
 open Classical in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem evalV_jS (p : SPart F S × OPart F S) (v : HeightOneSpectrum (𝓞 F)) :
     Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (jS F S p) = if h : v ∈ S then p.1 ⟨v, h⟩ else (p.2 ⟨v, h⟩ : Fv F v) := rfl
 

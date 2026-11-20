@@ -12,6 +12,9 @@ open QuadraticAlgebra UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc
 
 variable {O K : Type} [CommRing O] [Field K] [Algebra O K] {τ : K}
 
+/- English proof (translation)
+Use `⟨fun h => ?_, PS.fix_ml a⟩` and prove the remaining obligations. Establish `h1 : IsFixP O τ (t * PS.nU a) (PS.ml a⁻¹ (PS.ml a S))`. Use `PS.fix_ml _ ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one, mul_one]` and apply the resulting hypothesis. Rewrite `h1` using `[← PS.ml_mul, inv_mul_cancel, PS.ml_one]`. Then use the resulting hypothesis.
+-/
 theorem fix_ml_iff {S : Set (Etau K τ)} {t : K} (a : (Etau K τ)ˣ) :
     IsFixP O τ t (PS.ml a S) ↔ IsFixP O τ (t * PS.nU a) S := by
   refine ⟨fun h => ?_, PS.fix_ml a⟩
@@ -20,8 +23,16 @@ theorem fix_ml_iff {S : Set (Etau K τ)} {t : K} (a : (Etau K τ)ˣ) :
     rwa [mul_assoc, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one, mul_one]
   rwa [← PS.ml_mul, inv_mul_cancel, PS.ml_one] at h1
 
+/- English proof (translation)
+Introduce `_ hu` and use `PS.mem_C_of_int hu.1 hu.2`.
+-/
 theorem Gu_le_C : Gu O τ ≤ Cint O τ := fun _ hu => PS.mem_C_of_int hu.1 hu.2
 
+/- English proof (translation)
+Establish `hs' : algebraMap O K ((v⁻¹ : Oˣ) : O) = ((s⁻¹ : Kˣ) : K)`. Rewrite using `[Units.val_inv_eq_inv_val s, ← h]`. Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Express the relevant statement in the definitionally equal form `IsIntegral O ((PS.sc τ s : (Etau K τ)ˣ) : Etau K τ) ∧ IsIntegral O (((PS.sc τ s)⁻¹ : (Etau K τ)ˣ) : Etau K τ)`.
+
+Prove the components needed by the constructor for the conclusion. Rewrite using `[PS.sc_val, ← h, ← algebraMap_etau]`. Conclude with `isIntegral_algebraMap`. Rewrite using `[← map_inv, PS.sc_val, ← hs', ← algebraMap_etau]`. Conclude with `isIntegral_algebraMap`.
+-/
 theorem sc_Gu {v : Oˣ} {s : Kˣ} (h : algebraMap O K v = s) : PS.sc τ s ∈ Gu O τ := by
   have hs' : algebraMap O K ((v⁻¹ : Oˣ) : O) = ((s⁻¹ : Kˣ) : K) := by
     rw [Units.val_inv_eq_inv_val s, ← h]
@@ -35,11 +46,21 @@ theorem sc_Gu {v : Oˣ} {s : Kˣ} (h : algebraMap O K v = s) : PS.sc τ s ∈ Gu
   · rw [← map_inv, PS.sc_val, ← hs', ← algebraMap_etau]
     exact isIntegral_algebraMap
 
+/- English proof (translation)
+Use `show IsIntegral O (algebraMap O K (π ^ m) • x)`. Rewrite using `[Algebra.smul_def, ← algebraMap_etau]`. Conclude with `isIntegral_algebraMap.mul hx`.
+-/
 theorem yy_int {π : O} {m : ℕ} {x : Etau K τ} (hx : IsIntegral O x) : IsIntegral O (yy π m x) := by
   show IsIntegral O (algebraMap O K (π ^ m) • x)
   rw [Algebra.smul_def, ← algebraMap_etau]
   exact isIntegral_algebraMap.mul hx
 
+/- English proof (translation)
+Use `⟨Submodule.subset_span (by simp), fun w hw => ?_⟩` and prove the remaining obligations. Establish `hle : Submodule.span O ({1, y} : Set (Etau K τ)) ≤ Subalgebra.toSubmodule (integralClosure O (Etau K τ))`. Rewrite using `[Submodule.span_le]`. Introduce `z hz`. Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff] at hz`.
+
+Simplify using `only [SetLike.mem_coe, Subalgebra.mem_toSubmodule, mem_integralClosure_iff]`. Break down `hz with rfl | rfl` into its components or cases. Conclude with `isIntegral_one`. Conclude with `hy`. Establish `hw'` using `hle hw`.
+
+Simplify using `only [Subalgebra.mem_toSubmodule, mem_integralClosure_iff] at hw'`. Simplify using `using hw'`.
+-/
 theorem gen_ord {y : Etau K τ} (hy : IsIntegral O y) : PS.Gen O τ (Ord O y) 1 := by
   refine ⟨Submodule.subset_span (by simp), fun w hw => ?_⟩
   have hle : Submodule.span O ({1, y} : Set (Etau K τ)) ≤
@@ -57,6 +78,11 @@ theorem gen_ord {y : Etau K τ} (hy : IsIntegral O y) : PS.Gen O τ (Ord O y) 1 
 
 variable [IsDomain O] [IsDiscreteValuationRing O] {Δ : K}
 
+/- English proof (translation)
+Use `haveI := L.frac`. Establish `key : ∀ w : (Etau K τ)ˣ, IsIntegral O (w : Etau K τ) → ∃ b : O, algebraMap O K b = (PS.nU w : K)` using `fun w hw => int_down (τ := τ) L _ (by`. Rewrite using `[PS.nU_val, algebraMap_norm_eq_mul_star]`. Conclude with `hw.mul (PS.star_int hw))`. Take `⟨b, hb⟩` from `key u hu.1`.
+
+Take `⟨b', hb'⟩` from `key u⁻¹ hu.2`. Establish `h1 : b * b' = 1`. Apply `IsFractionRing.injective O K` to reduce the goal to its premises. Rewrite using `[map_mul, hb, hb', ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one, map_one]`. Conclude with `⟨Units.mkOfMulEqOne _ _ h1, hb⟩`.
+-/
 theorem nU_Gu (L : IsLoc O Δ) {u : (Etau K τ)ˣ} (hu : u ∈ Gu O τ) : ∃ v : Oˣ, algebraMap O K v = (PS.nU u : K) := by
   haveI := L.frac
   have key : ∀ w : (Etau K τ)ˣ, IsIntegral O (w : Etau K τ) → ∃ b : O, algebraMap O K b = (PS.nU w : K) := fun w hw =>
@@ -69,6 +95,13 @@ theorem nU_Gu (L : IsLoc O Δ) {u : (Etau K τ)ˣ} (hu : u ∈ Gu O τ) : ∃ v 
     rw [map_mul, hb, hb', ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one, map_one]
   exact ⟨Units.mkOfMulEqOne _ _ h1, hb⟩
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `nU_Gu L hu`. Establish `hvi : algebraMap O K v * algebraMap O K (v⁻¹ : Oˣ) = 1` using `by rw [← map_mul, Units.mul_inv, map_one]`. Establish `e1 : ((PS.nU (PS.sc τ r * u) : Kˣ) : K) = (r : K) ^ 2 * algebraMap O K v`. Rewrite using `[map_mul, PS.nU_sc, Units.val_mul, hv, Units.val_pow_eq_pow_val]`. Rewrite using `[fix_ml_iff, UpperTheory.isFixP_order_pow_iff_le_and_assoc_pow O K Δ τ L hτ π n e h x C, e1]`.
+
+Use `and_congr_right fun _ => ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨w, hw⟩`. Use `⟨w * v⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, map_mul]`. Take the linear combination `(algebraMap O K (v⁻¹ : Oˣ)) * hw - (t * (r : K) ^ 2 * algebraMap O K (π ^ m)) * hvi`.
+
+Introduce and unpack `⟨w, hw⟩`. Use `⟨w * v, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, map_mul]`. Take the linear combination `(algebraMap O K v) * hw`.
+-/
 theorem fix_lv (L : IsLoc O Δ) (hτ : τ ^ 2 - 4 ≠ 0) {π : O} {n : ℕ} {e : Oˣ} {h : O} {x : Etau K τ}
     (C : Cond π n e h x) (t : K) (r : Kˣ) {u : (Etau K τ)ˣ} (hu : u ∈ Gu O τ) (m : ℕ) :
     IsFixP O τ t (PS.ml (PS.sc τ r * u) (Ord O (yy π m x))) ↔
@@ -88,6 +121,9 @@ theorem fix_lv (L : IsLoc O Δ) (hτ : τ ^ 2 - 4 ≠ 0) {π : O} {n : ℕ} {e :
     rw [Units.val_mul, map_mul]
     linear_combination (algebraMap O K v) * hw
 
+/- English proof (translation)
+Establish `hg` using `PS.gen_ml (gen_ord (yy_int (π := π) (m := m) C.gen.int)) (PS.sc τ r * u)`. Rewrite `hg` using `[mul_one]`. Use `⟨(fix_lv L hτ C t r hu m).2 ⟨hm, hw⟩, PS.sc τ r * u, mul_mem (PS.sc_mem r) (Gu_le_C hu), ?_⟩` and prove the remaining obligations. Rewrite using `[one_mul]` and apply the resulting hypothesis.
+-/
 private theorem ml_sc_mul_mem_gs_of_val_eq (L : IsLoc O Δ) (hτ : τ ^ 2 - 4 ≠ 0) {π : O} {n : ℕ} {e : Oˣ} {h : O}
     {x : Etau K τ} (C : Cond π n e h x) (t : Kˣ) (r : Kˣ) {u : (Etau K τ)ˣ} (hu : u ∈ Gu O τ) (m : ℕ)
     (hm : m ≤ n) (hw : ∃ w : Oˣ, (t : K) * (r : K) ^ 2 * algebraMap O K (π ^ m) =
@@ -99,6 +135,13 @@ private theorem ml_sc_mul_mem_gs_of_val_eq (L : IsLoc O Δ) (hτ : τ ^ 2 - 4 �
     mul_mem (PS.sc_mem r) (Gu_le_C hu), ?_⟩
   rwa [one_mul]
 
+/- English proof (translation)
+Use `haveI := L.frac`. Establish `hP : algebraMap O K π ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective O K)).mpr hπ`. Establish `hPn : algebraMap O K π ^ n ≠ 0` using `pow_ne_zero _ hP`. Simplify using `only [pow_add, map_mul, map_pow]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨u, s, hs, he⟩`. Use `⟨Units.mk0 (algebraMap O K π ^ n / s) (div_ne_zero hPn hs), u, ?_⟩` and prove the remaining obligations. Simplify using `only [Units.val_mk0]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `he`.
+
+Introduce and unpack `⟨r, w, hrw⟩`. Use `⟨w, algebraMap O K π ^ n / r, div_ne_zero hPn r.ne_zero, ?_⟩` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Take the linear combination `hrw`.
+-/
 private theorem evenVal_mul_pi_pow_iff_exists_sq_unit (L : IsLoc O Δ) {π : O} (hπ : π ≠ 0) (t : K) (n m : ℕ) :
     EvenVal O (t * algebraMap O K (π ^ (n + m))) ↔
       ∃ r : Kˣ, ∃ w : Oˣ, t * (r : K) ^ 2 * algebraMap O K (π ^ m) =
@@ -119,12 +162,22 @@ private theorem evenVal_mul_pi_pow_iff_exists_sq_unit (L : IsLoc O Δ) {π : O} 
     field_simp
     linear_combination hrw
 
+/- English proof (translation)
+Apply `order_level_injective_of_smul_eq O K Δ τ L hτ π n e h x C (w'⁻¹ * w) m m'` to reduce the goal to its premises. Rewrite using `[PS.ml_mul, hh, ← PS.ml_mul, inv_mul_cancel, PS.ml_one]`.
+-/
 private theorem eq_of_ml_ord_yy_eq (L : IsLoc O Δ) (hτ : τ ^ 2 - 4 ≠ 0) {π : O} {n : ℕ} {e : Oˣ} {h : O}
     {x : Etau K τ} (C : Cond π n e h x) {w w' : (Etau K τ)ˣ} {m m' : ℕ}
     (hh : PS.ml w (Ord O (yy π m x)) = PS.ml w' (Ord O (yy π m' x))) : m = m' := by
   apply order_level_injective_of_smul_eq O K Δ τ L hτ π n e h x C (w'⁻¹ * w) m m'
   rw [PS.ml_mul, hh, ← PS.ml_mul, inv_mul_cancel, PS.ml_one]
 
+/- English proof (translation)
+Use `haveI := L.frac`. Establish `hPn : algebraMap O K (π ^ n) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective O K)).mpr (pow_ne_zero _ hπ)`. Establish `e1 : algebraMap O K w' * (r : K) ^ 2 = algebraMap O K w * (r' : K) ^ 2`. Apply `mul_right_cancel₀ hPn` to reduce the goal to its premises. Take the linear combination `(-(r : K) ^ 2) * hw' + (r' : K) ^ 2 * hrw`.
+
+Establish `hinv : algebraMap O K (w' : O) * algebraMap O K ((w'⁻¹ : Oˣ) : O) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Apply `PS.unit_of_sq L (ε := w * w'⁻¹)` to reduce the goal to its premises. Rewrite using `[Units.val_mul, map_mul, Units.val_div_eq_div_val]`. Establish `hr` using `r.ne_zero`.
+
+Clear the denominators using the available nonvanishing facts. Take the linear combination `(-(r : K) ^ 2) * hinv + algebraMap O K ((w'⁻¹ : Oˣ) : O) * e1`.
+-/
 private theorem exists_unit_eq_div_of_same_scaling (L : IsLoc O Δ) {π : O} (hπ : π ≠ 0) (t r r' : Kˣ) (n m : ℕ) (w w' : Oˣ)
     (hrw : (t : K) * (r : K) ^ 2 * algebraMap O K (π ^ m) = algebraMap O K w * algebraMap O K (π ^ n))
     (hw' : (t : K) * (r' : K) ^ 2 * algebraMap O K (π ^ m) = algebraMap O K w' * algebraMap O K (π ^ n)) :
@@ -144,6 +197,31 @@ private theorem exists_unit_eq_div_of_same_scaling (L : IsLoc O Δ) {π : O} (h�
   linear_combination (-(r : K) ^ 2) * hinv + algebraMap O K ((w'⁻¹ : Oˣ) : O) * e1
 
 open Classical in
+/- English proof (translation)
+Establish `hπ : π ≠ 0` using `C.irr.ne_zero`. Establish `hfin` using `PS.gs_fin L hτ t 1`. Establish `hlev : ∀ S ∈ PS.Gs O τ (t : K) 1, ∃ m, ∃ r : Kˣ, ∃ u ∈ Gu O τ, m ≤ n ∧ (∃ w : Oˣ, (t : K) * (r : K) ^ 2 * algebraMap O K (π ^ m) = algebraMap O K w * algebraMap O K (π ^ n)) ∧ S = PS.ml (PS.sc τ r * u) (Ord O (yy π m x))`. Introduce `S hG`. Take `⟨m, r, u, hu, hS⟩` from `exists_unit_smul_order_of_mem_gs O K Δ τ L hτ π n e h x C t S hG`.
+
+Establish `hG' : IsFixP O τ t S ∧ _` using `hG`. Establish `hfx` using `(fix_lv L hτ C t r hu m).1 (by rw [← hS]; exact hG'.1)`. Conclude with `⟨m, r, u, hu, hfx.1, hfx.2, hS⟩`. Establish `hpiece : ∀ m ≤ n, {S | S ∈ PS.Gs O τ (t : K) 1 ∧ ∃ w : (Etau K τ)ˣ, S = PS.ml w (Ord O (yy π m x))}.ncard = if EvenVal O ((t : K) * algebraMap O K (π ^ (n + m))) then (Hu O (yy π m x)).relIndex (Gu O τ) else 0`. Introduce `m hm`.
+
+Distinguish the cases in `hev : EvenVal O ((t : K) * algebraMap O K (π ^ (n + m)))`. Rewrite using `[if_pos hev]`. Take `⟨r, w, hrw⟩` from `(evenVal_mul_pi_pow_iff_exists_sq_unit L hπ (t : K) n m).1 hev`. Rewrite using `[← ncard_unit_translates_order_eq_relIndex O K τ (PS.sc τ r) (yy π m x)]`. Use `congr 1`.
+
+Use extensionality with `S`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hG, w0, hw0⟩`. Take `⟨m', r', u', hu', hm', ⟨w', hw'⟩, hS⟩` from `hlev S hG`. Establish `hmm : m = m'` using `eq_of_ml_ord_yy_eq L hτ C (hw0.symm.trans hS)`.
+
+Substitute `hmm` using the available equality. Take `⟨v, hv⟩` from `exists_unit_eq_div_of_same_scaling L hπ t r r' n m w w' hrw hw'`. Use `⟨PS.sc τ (r' / r) * u', mul_mem (sc_Gu hv) hu', ?_⟩` and prove the remaining obligations. Rewrite using `[hS, ← mul_assoc, ← map_mul, mul_div_cancel]`. Introduce and unpack `⟨u, hu, hS⟩`.
+
+Conclude with `⟨hS ▸ ml_sc_mul_mem_gs_of_val_eq L hτ C t r hu m hm ⟨w, hrw⟩, _, hS⟩`. Rewrite using `[if_neg hev]`. Rewrite using `[Set.ncard_eq_zero (Set.Finite.subset hfin (fun S hS => hS.1))]`. Use extensionality with `S`. Simplify using `only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]`.
+
+Introduce and unpack `⟨hG, w0, hw0⟩`. Take `⟨m', r', u', hu', hm', ⟨w', hw'⟩, hS⟩` from `hlev S hG`. Establish `hmm : m = m'` using `eq_of_ml_ord_yy_eq L hτ C (hw0.symm.trans hS)`. Substitute `hmm` using the available equality. Conclude with `hev ((evenVal_mul_pi_pow_iff_exists_sq_unit L hπ (t : K) n m).2 ⟨r', w', hw'⟩)`.
+
+Establish `hsplit : hfin.toFinset = (Finset.range (n + 1)).biUnion (fun m => hfin.toFinset.filter (fun S => ∃ w : (Etau K τ)ˣ, S = PS.ml w (Ord O (yy π m x))))`. Use extensionality with `S`. Simplify using `only [Finset.mem_biUnion, Finset.mem_range, Finset.mem_filter, Set.Finite.mem_toFinset]`. Prove the components needed by the constructor for the conclusion. Introduce `hG`.
+
+Take `⟨m, r, u, hu, hm, -, hS⟩` from `hlev S hG`. Conclude with `⟨m, Nat.lt_succ_of_le hm, hG, _, hS⟩`. Introduce and unpack `⟨m, -, hG, -⟩`. Conclude with `hG`. Rewrite using `[Set.ncard_eq_toFinset_card _ hfin, hsplit, Finset.card_biUnion]`.
+
+Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `m hm`. Rewrite using `[← hpiece m (Nat.lt_succ_iff.mp (Finset.mem_range.mp hm)), ← Set.ncard_coe_finset]`. Use `congr 1`. Use extensionality with `S`.
+
+Simplify using the standard rewrite rules. Introduce `a _ b _ hab`. Simplify using `only [Function.onFun]`. Rewrite using `[Finset.disjoint_left]`. Introduce `S hSa hSb`.
+
+Simplify using `only [Finset.mem_filter] at hSa hSb`. Take `⟨-, wa, ha⟩` from `hSa`. Take `⟨-, wb, hb⟩` from `hSb`. Conclude with `hab (eq_of_ml_ord_yy_eq L hτ C (ha.symm.trans hb))`.
+-/
 theorem gs_count (L : IsLoc O Δ) (hτ : τ ^ 2 - 4 ≠ 0) {π : O} {n : ℕ} {e : Oˣ} {h : O} {x : Etau K τ}
     (C : Cond π n e h x) (t : Kˣ) :
     (PS.Gs O τ t 1).ncard = ∑ m ∈ Finset.range (n + 1),

@@ -20,22 +20,34 @@ section Generic
 
 variable {X Y Y' Z : Scheme.{0}} {L : LB X} {K K' : Type} [Fintype K] [Fintype K']
 
+/- English proof (translation)
+Rewrite using `[cst, map_mul]`. Conclude with `gs_mul q z ⊤ trivial _ _`.
+-/
 theorem cst_mul_eq {R : Type} [CommRing R] (q : Z ⟶ Spec (CommRingCat.of R)) (z : Z) (a b : R) :
     cst q z (a * b) = cst q z a * cst q z b := by
   rw [cst, map_mul]
   exact gs_mul q z ⊤ trivial _ _
 
+/- English proof (translation)
+Use `(gs_pull q _ z ⊤ trivial _).symm.trans (congrArg (gs q z ⊤) ?_)` and prove the remaining obligations. Conclude with `(congrArg (fun t => t.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom φ))).symm`.
+-/
 theorem cst_comp_eq {R F : Type} [CommRing R] [CommRing F] (q : Z ⟶ Spec (CommRingCat.of F)) (φ : R →+* F) (z : Z)
     (a : R) : cst (q ≫ Spec.map (CommRingCat.ofHom φ)) z a = cst q z (φ a) := by
   refine (gs_pull q _ z ⊤ trivial _).symm.trans (congrArg (gs q z ⊤) ?_)
   exact (congrArg (fun t => t.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom φ))).symm
 
+/- English proof (translation)
+The claim follows from `(gs_mul q z _ (hJ.mem _ q) _ _).trans (congrArg (· * _) ((gs_res q z le_top (hJ.mem _ q) _).trans (ExpInt.gs_scal p q z c)))`.
+-/
 theorem sval_scale_const {R : Type} [CommRing R] {φ : K → (Y ⟶ X)} {ε : K → ℤ} (p : Y ⟶ Spec (CommRingCat.of R))
     (c : R) (t : LB.Sec (LB.LinComb L φ ε)) (q : Z ⟶ Y) (z : Z) {J} (hJ : Good L z J) :
     sval (SecOps.secScale (scal p c) t) q z J = cst (q ≫ p) z c * sval t q z J :=
   (gs_mul q z _ (hJ.mem _ q) _ _).trans (congrArg (· * _)
     ((gs_res q z le_top (hJ.mem _ q) _).trans (ExpInt.gs_scal p q z c)))
 
+/- English proof (translation)
+Use `(FieldBaseChange.secLin_iff_val hL _ _ _ _).2 fun y J hJ => ?_` and prove the remaining obligations. Rewrite using `[(FieldBaseChange.secLin_iff_val hL _ _ _ _).1 H y J hJ]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[sval_scale_const _ _ _ _ _ hJ, ExpInt.gs_scal, ExpInt.gs_scal, Category.assoc, hp, ← Category.assoc, cst_comp_eq, ← _root_.mul_assoc, ← cst_mul_eq, div_mul_cancel₀ _ (ha i)]`.
+-/
 theorem secLin_rescale (hL : L.IsLB) {R F : Type} [CommRing R] [Field F] (ρ : R →+* F)
     {φ₁ : K' → (Y' ⟶ X)} {ε₁ : K' → ℤ} {s₁ : LB.Sec (LB.LinComb L φ₁ ε₁)} {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     {n : ℕ} {s : Fin n → LB.Sec (LB.LinComb L φ ε)} {h : Y' ⟶ Y} (p : Y ⟶ Spec (CommRingCat.of R))
@@ -55,6 +67,11 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D D' : DegData R I}
   {A A' : PolAV (Spec (CommRingCat.of (FractionRing R)))} {G G' : Over (Spec (CommRingCat.of R))}
   [GrpObj G] [IsCommMonObj G] [GrpObj G'] [IsCommMonObj G']
 
+/- English proof (translation)
+Establish `s : ∀ {Y : Scheme.{0}} (p : Y ⟶ Spec (CommRingCat.of R)) (W : Y.Opens) (a b : Γ(Y, W)), resTop W (scal p 1) * a + resTop W (scal p (-1)) * b = a - b` using `fun p W a b => by`. Simplify using `only [scal, map_neg, map_one, resTop]`. Expand and normalize the polynomial expressions, which then agree. Establish `h` using `(comb_eq_zero_iff_expansion_comb_eq_zero R I hR D A G U k 2 ![1, -1] (fun _ => σ) ![f, g] (fun i => by fin_cases i; exacts [hf, hg])).1 fun j => by`. Rewrite using `[Fin.sum_univ_two]`.
+
+Conclude with `(s _ _ _ _).trans (sub_self _)`. Use function extensionality and compare the values at `α`. Use `SecOps.sec_ext fun j => sub_eq_zero.1 ((s D.toPre.P.A.hom _ _ _).symm.trans ?_)` and prove the remaining obligations. Use `h α j` as an intermediate fact. Rewrite `this` using `[Fin.sum_univ_two]`. Then use the resulting hypothesis.
+-/
 theorem expansion_eq (hR : AdmBase R I) (U : UnifPre I D A G) {k : ℕ} {σ : H0 U.LG.L k}
     {f g : ∀ α, D.toPre.SecB k α} (hf : ∀ e, U.ExpandsAt e k σ f) (hg : ∀ e, U.ExpandsAt e k σ g) : f = g := by
   have s : ∀ {Y : Scheme.{0}} (p : Y ⟶ Spec (CommRingCat.of R)) (W : Y.Opens) (a b : Γ(Y, W)),
@@ -69,6 +86,11 @@ theorem expansion_eq (hR : AdmBase R I) (U : UnifPre I D A G) {k : ℕ} {σ : H0
   have := h α j
   rwa [Fin.sum_univ_two] at this
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `exists_restrict U.toUnifPre k τ`. Take `⟨F, ⟨r, hr, σ, f₀, h₁, h₂, h₃⟩, -⟩` from `(U.expand k hk).1 s`. Take `⟨F', hF⟩` from `exists_pull hD _ hG k F`. Take `⟨s', ⟨r', hr', σ', f', h₁', h₂', h₃'⟩, -⟩` from `(U'.expand k hk).2 F'`. Establish `e₁ : SecOps.secScale (scal G.hom r') σ = SecOps.secScale (scal G.hom (r' * r)) τ` using `SecOps.sec_ext (scale_of_restrict _ hs h₁ r')`.
+
+Establish `e₂` using `expansion_eq hR U.toUnifPre (fun e => e₁ ▸ expandsAt_scale _ (h₃ e) r') (fun e => expandsAt_scale _ (hE e) (r' * r))`. Establish `hp` using `fun x => congrFun e₂ (hD.xe x) ▸ integral_rel hD _ hF h₂ h₂' x`. Conclude with `⟨r' * r, _, _, mul_ne_zero hr' hr, fun e => expandsAt_scale _ (h₃' e) r, hj.agreeAll (fun e => expandsAt_scale _ (hE e) _) (fun e => expandsAt_scale _ (h₃' e) _) hp, hp⟩`.
+-/
 theorem LevelIso.exists_expansion (hG : GlobalFnsSt) (hR : AdmBase R I) {U : Unif I D A G} {U' : Unif I D' A' G'}
     {hD : IsPullDeg (RingHom.id R) D.toPre D'.toPre} {j : ∀ e : ℕ, thickObj R I e G' ≅ thickObj R I e G}
     (hj : LevelIso U.toUnifPre U'.toUnifPre hD j) {k : ℕ} (hk : 1 ≤ k) (τ : H0 U.LG.L k)
@@ -95,6 +117,23 @@ namespace GlobalTheory
 
 open ReciprocityTheory.ChartRestriction.G.DVR GlobalTheory.RigidSections GlobalTheory.FamFieldPull GlobalTheory.ExpGTrans GlobalTheory.GenericIso in
 
+/- English proof (translation)
+Introduce `hGl R _ _ I hR D D' A A' G G' _ _ _ _ _ _ U U' hD j hj Φ w hw F _ _ k hk σ σ' s s' hσ hs ⟨n, c, τ, f, hE, hG, hB⟩`. Use `choose a τ' f' ha hE' hA hf using fun i => hj.exists_expansion hGl hR hk (τ i) (f i) (hE i)`. Set `ρ : R →+* F` to `(algebraMap (FractionRing R) F).comp (algebraMap R (FractionRing R))`. Establish `hρ : ∀ i, ρ (a i) ≠ 0` using `fun i => (map_ne_zero_iff ρ ((algebraMap (FractionRing R) F).injective.comp (IsFractionRing.injective R (FractionRing R)))).2 (ha i)`. Establish `hT : jFK (R` using `R) F ≫ jK R = Spec.map (CommRingCat.ofHom ρ) := (spMap_comp _ _).symm`.
+
+Establish `pG : UnifPre.gFK (G` using `G) F ≫ G.hom = (fst (TFK (R := R) F) ((Over.pullback (jK R)).obj G)).left ≫ Spec.map (CommRingCat.ofHom ρ) := by`. Establish `e₁` using `Over.w (snd (TFK (R := R) F) ((Over.pullback (jK R)).obj G))`. Establish `e₂` using `Over.w (fst (TFK (R := R) F) ((Over.pullback (jK R)).obj G))`. Rewrite using `[← hT, Category.assoc, pullback.condition]`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ jK R) (e₁.trans e₂.symm)).trans (Category.assoc _ _ _))`.
+
+Establish `pB : (DegPre.prB D.toPre F).left ≫ D.toPre.P.A.hom = (fst (TF (R` using `R) F) D.toPre.P.A).left ≫ Spec.map (CommRingCat.ofHom ρ) := by`. Rewrite using `[Over.w, ← hT]`. Conclude with `(Over.w (fst (TF (R := R) F) D.toPre.P.A)).symm`. Use `⟨n, fun i => c i / ρ (a i), τ', f', hE', ?_, fun x => ?_⟩` and prove the remaining obligations. Use `(FieldBaseChange.secLin_iff_val U'.LG.isLB _ _ _ _).2 fun y J' hJ' => ?_` and prove the remaining obligations.
+
+Take `⟨J, hJ⟩` from `BoxFamily.exists_good_at (Z := (UnifPre.GF (G := G') F).left) U.LG.isLB y`. Establish `a₁ : (𝟙 _ ≫ (snd (TFK (R` using `R) F) ((Over.pullback (jK R)).obj G')).left) ≫ Φ.hom.left ≫ pullback.fst G.hom (jK R) = (𝟙 _ ≫ (TFK (R := R) F ◁ Φ.hom).left) ≫ UnifPre.gFK (G := G) F := by`. Establish `e` using `congrArg (fun q => q.left) (whiskerLeft_snd (TFK (R := R) F) Φ.hom)`. Simplify using `only [Over.comp_left] at e`. Rewrite using `[Category.id_comp, Category.id_comp, ← Category.assoc, ← e, Category.assoc]`.
+
+Establish `a₂ : (𝟙 _ ≫ (snd (TFK (R` using `R) F) ((Over.pullback (jK R)).obj G')).left) ≫ pullback.fst G'.hom (jK R) = 𝟙 _ ≫ UnifPre.gFK (G := G') F := Category.assoc _ _ _`. Establish `a₃ : (𝟙 _ ≫ (TFK (R` using `R) F ◁ Φ.hom).left) ≫ (fst (TFK (R := R) F) ((Over.pullback (jK R)).obj G)).left = 𝟙 _ ≫ (fst (TFK (R := R) F) ((Over.pullback (jK R)).obj G')).left := (Category.assoc _ _ _).trans (congrArg (𝟙 _ ≫ ·) (congrArg (fun q => q.left) (whiskerLeft_fst (TFK (R := R) F) Φ.hom)))`. Establish `e₁` using `hσ _ (𝟙 _) y _ _ (hJ ((𝟙 _ ≫ (TFK (R := R) F ◁ Φ.hom).left) ≫ UnifPre.gFK (G := G) F)) (hJ' (𝟙 _ ≫ UnifPre.gFK (G := G') F))`. Establish `e₃` using `secLin_val (secLin_rescale U.LG.isLB ρ G.hom pG a hρ hG) (𝟙 _ ≫ (TFK (R := R) F ◁ Φ.hom).left) y hJ`. Use `(Units.mul_right_inj _).1 (e₁.symm.trans (e₃.trans ?_))` and prove the remaining obligations.
+
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `e₂` using `hw.2 k hk _ _ (hA i) _ (𝟙 _ ≫ (snd (TFK (R := R) F) ((Over.pullback (jK R)).obj G')).left) y (J ((𝟙 _ ≫ (TFK (R := R) F ◁ Φ.hom).left) ≫ UnifPre.gFK (G := G) F)) (J' (𝟙 _ ≫ UnifPre.gFK (G := G') F)) (by rw [a₁]; exact hJ _) (by rw [a₂]; exact hJ' _)`. Rewrite `e₂` using `[a₁, a₂]`. Rewrite using `[ExpInt.gs_scal, ExpInt.gs_scal, a₃, mul_left_comm]`.
+
+Use `congrArg (_ * ·) ?_` and prove the remaining obligations. Use `(sval_of _ _ y J _ fun _ => ?_).trans (e₂.trans (congrArg (_ * ·) (sval_of _ _ y J' _ fun _ => ?_).symm))` and prove the remaining obligations. Rewrite using `[Category.comp_id]`. Rewrite using `[Category.comp_id]`. Use `secLin_transport D.toPre.P.isLB D'.toPre.P.isLB hD.w _ _ _ _ _ _ _ (prF hD F) _ (famφ_eq D.toPre F (hD.xe x)) (famφ_eq D'.toPre F x) (famφB_pull hD x) (prF_snd hD F) _ _ (fun i y => ?_) _ _ _ _ (hs x) (fun i => hf i x) (secLin_rescale D.toPre.P.isLB ρ D.toPre.P.A.hom pB a hρ (hB …` and prove the remaining obligations.
+
+Rewrite using `[ExpInt.gs_scal, ExpInt.gs_scal, Category.assoc, prF_fst]`.
+-/
 theorem expandsG_of_genericRel : GlobalFnsSt → ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R), AdmBase R I → ∀ (D D' : DegData R I) (A A' : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G G' : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G → IsSemiAbelian G' → ∀ (U : Unif I D A G) (U' : Unif I D' A' G') (hD : IsPullDeg (RingHom.id R) D.toPre D'.toPre) (j : ∀ e : ℕ, thickObj R I e G' ≅ thickObj R I e G), GlobalTheory.GenericIso.LevelIso U.toUnifPre U'.toUnifPre hD j → ∀ (Φ : (Over.pullback (jK R)).obj G' ≅ (Over.pullback (jK R)).obj G) (w : LB.Iso (U'.LG.L.pull (pullback.fst G'.hom (jK R))) (U.LG.L.pull (Φ.hom.left ≫ pullback.fst G.hom (jK R)))), GlobalTheory.GenericIso.GenericRel U.toUnifPre U'.toUnifPre hD j Φ w → ∀ (F : Type) [Field F] [Algebra (FractionRing R) F] (k : ℕ), 1 ≤ k → ∀ (σ : U.SecGF F k) (σ' : U'.SecGF F k) (s : Fam D.toPre F k) (s' : Fam D'.toPre F k), (∀ (Z : Scheme.{0}) (r : Z ⟶ (UnifPre.GF (G := G') F).left) (z : Z) (jL : U.LG.L.ι) (jL' : U'.LG.L.ι), (r ≫ (TFK (R := R) F ◁ Φ.hom).left ≫ UnifPre.gFK (G := G) F) z ∈ U.LG.L.U jL → (r ≫ UnifPre.gFK (G := G') F) z ∈ U'.LG.L.U jL' → gs (r ≫ (TFK (R := R) F ◁ Φ.hom).left) z (LB.wchart U.LG.L (fun _ : Fin 1 => UnifPre.gFK (G := G) F) (fun _ => jL)) (σ.f (fun _ => jL)) = (Geo.Tor.gw w (r ≫ (snd (TFK (R := R) F) ((Over.pullback (jK R)).obj G')).left) z jL (fun _ => jL') ^ k).val * gs r z (LB.wchart U'.LG.L (fun _ : Fin 1 => UnifPre.gFK (G := G') F) (fun _ => jL')) (σ'.f (fun _ => jL'))) → GlobalTheory.RigidSections.FamRel hD F s'.s s.s → U.ExpandsG F k σ s → U'.ExpandsG F k σ' s' := by
   intro hGl R _ _ I hR D D' A A' G G' _ _ _ _ _ _ U U' hD j hj Φ w hw F _ _ k hk σ σ' s s' hσ hs
     ⟨n, c, τ, f, hE, hG, hB⟩

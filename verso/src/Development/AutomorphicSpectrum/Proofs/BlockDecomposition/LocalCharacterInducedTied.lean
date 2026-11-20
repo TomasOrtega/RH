@@ -14,6 +14,17 @@ namespace GlobalTheory.CompanionTheory.HLCMul
 
 open Formalism.MainNotions.N Module
 
+/- English proof (translation)
+Establish `hm : ∀ τ a, multV (P.PD K) ν₃ τ a = if a = J₁ τ + J₂ τ then 1 else 0`. Introduce `τ a`. Use `GlobalTheory.TwistJump.multV_twist_char l P AI T K LL (Fin 1 → ↥LL.1) ν₁ ν₃ ν₂ χ₂ h₂ (fun g x => by rw [h₃, h₁, smul_smul, mul_comm]) d₂ τ (J₂ τ) (m₂ τ) (a - J₂ τ)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Rewrite using `[this, m₁]`.
+
+Simplify using `only [sub_eq_iff_eq_add]`. Use `⟨?_, hm⟩` and prove the remaining obligations. Use `haveI := K.2`. Use `haveI := (GlobalTheory.Per.TiedDdR.ddR_finrank_le l P AI T K LL _ ν₃).1`. Establish `hc : Fintype.card (↥K.1 →ₐ[ℚ_[l]] ↥LL.1) = finrank ℚ_[l] ↥K.1`.
+
+Rewrite using `[← hcard, Nat.card_eq_fintype_card]`. Establish `hone : ∀ τ, finrank ↥LL.1 ↥(DdRE (P.PD K) ν₃ τ) = 1`. Introduce `τ`. Take `⟨hf, hle, -⟩` from `(GlobalTheory.Per.Components.components_finrank l P AI T K LL _ ν₃).1 τ`. Establish `hm1` using `hm τ (J₁ τ + J₂ τ)`.
+
+Rewrite `hm1` using `[if_pos rfl, multV]`. Establish `hfil : finrank ↥LL.1 ↥(FildR (P.PD K) ν₃ τ (J₁ τ + J₂ τ)) ≤ finrank ↥LL.1 ↥(DdRE (P.PD K) ν₃ τ)` using `Submodule.finrank_mono (inf_le_left : FildR (P.PD K) ν₃ τ _ ≤ DdRE (P.PD K) ν₃ τ)`. Simplify using `only [finrank_fin_fun, finrank_self, Module.finrank_pi, Fintype.card_fin] at hle`. Use linear arithmetic over natural numbers and integers. Take `⟨e1, -⟩` from `GlobalTheory.DeRhamSplit.finrank_DdR (P.PD K) ν₃ hc 0`.
+
+Rewrite using `[IsDR, e1, Finset.sum_congr rfl fun τ _ => hone τ]`. Simplify using `[hc]`.
+-/
 theorem char_mul {l : ℕ} [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI)
     (K LL : FinExt l) (hcard : Nat.card (↥K.1 →ₐ[ℚ_[l]] ↥LL.1) = finrank ℚ_[l] ↥K.1)
     (ν₁ ν₂ ν₃ : Representation ↥LL.1 ↥(GK K) (Fin 1 → ↥LL.1)) (χ₁ χ₂ : ↥(GK K) → ↥LL.1)
@@ -49,6 +60,9 @@ theorem char_mul {l : ℕ} [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T
   rw [IsDR, e1, Finset.sum_congr rfl fun τ _ => hone τ]
   simp [hc]
 
+/- English proof (translation)
+Use extensionality with `i`. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Simplify using `[LocBridge.repE, PositivityTheory.HodgeLocalCharacter.HLC.toGL1, Matrix.mulVec, dotProduct]`.
+-/
 theorem repE_apply {l : ℕ} [Fact l.Prime] {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω]
     {Gw : Subgroup (Ω ≃ₐ[E] Ω)} {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O]
     (Bw : LocBridge l E Ω Gw O) (LL' : FinExt l) (ψ : ↥Gw →* (↥LL'.1)ˣ) (g : ↥(GK Bw.Kw))
@@ -58,6 +72,11 @@ theorem repE_apply {l : ℕ} [Fact l.Prime] {E Ω : Type} [Field E] [Field Ω] [
   obtain rfl : i = 0 := Subsingleton.elim _ _
   simp [LocBridge.repE, PositivityTheory.HodgeLocalCharacter.HLC.toGL1, Matrix.mulVec, dotProduct]
 
+/- English proof (translation)
+Introduce and unpack `E Ω _ _ _ _ _ l _ P AI ⟨T⟩ w A _ O _ _ _ Bw _ LL' hLL ψ₁ ψ₂ J₁ J₂ ⟨-, m₁⟩ ⟨d₂, m₂⟩`. Establish `hcard` using `GlobalTheory.DeRhamSplit.card_emb Bw.Kw LL' fun τ x => hLL (Bw.LL_split τ x)`. Take `⟨a, b⟩` from `char_mul P AI T Bw.Kw LL' hcard (Bw.repE LL' ((PositivityTheory.HodgeLocalCharacter.HLC.toGL1 ↥LL'.1).comp ψ₁)) (Bw.repE LL' ((PositivityTheory.HodgeLocalCharacter.HLC.toGL1 ↥LL'.1).comp ψ₂)) (Bw.repE LL' ((PositivityTheory.HodgeLocalCharacter.HLC.toGL1 ↥LL'.1).comp (ψ₁ * ψ₂))) ( …`. Use `⟨?_, fun τ c => ?_⟩` and prove the remaining obligations. Unfold `IsDR at a`.
+
+Simplify `a` using `[LocBridge.IsdRE]`. Simplify `b τ c` using `[LocBridge.multE]`.
+-/
 theorem isdRJ_mul : ∀ {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {l : ℕ} [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), Nonempty (LocTied l P AI) →
     ∀ (w : HeightOneSpectrum (𝓞 E)) (A : ValuationSubring Ω), IsPlaceOver A w →
     ∀ (O : Type) [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l E Ω (Dec (F := E) A) O),

@@ -14,6 +14,11 @@ def RankHyp (D : D7) : Prop :=
 def CountTie (D : D7) : Prop :=
   (∀ u, ((D.mem u).A.duStar : ℝ) = StandardLattice.duStarU D u) ∧ D.what₂.Dstar = StandardLattice.DstarD D
 
+/- English proof (translation)
+Take `⟨hT1, hT2⟩` from `hT`. Establish `hpos : 0 < (D.mem u).A.Dstar / ((D.mem u).A.duStar : ℝ)` using `div_pos (D.mem u).A.Dstar_pos (by exact_mod_cast (D.mem u).A.duStar_pos)`. Unfold `StandardLattice.logXuD StandardLattice.logXu`. Rewrite using `[← hT1 u, ← hT2, ← D.Dstar_eq u]`. Unfold `Formalism.BasicNotions.ColumnsAtT.Xu`.
+
+Rewrite using `[Real.rpow_def_of_pos hpos, mul_comm]`.
+-/
 theorem exp_logXuD (D : D7) (hT : CountTie D) (u : D.what₂.Word) :
     Real.exp (StandardLattice.logXuD D u) = (D.mem u).A.Xu := by
   obtain ⟨hT1, hT2⟩ := hT
@@ -24,6 +29,41 @@ theorem exp_logXuD (D : D7) (hT : CountTie D) (u : D.what₂.Word) :
   unfold Formalism.BasicNotions.ColumnsAtT.Xu
   rw [Real.rpow_def_of_pos hpos, mul_comm]
 
+/- English proof (translation)
+Take `⟨hT1, hT2⟩` from `hT`. Take `⟨hG, hSp, hU⟩` from `hR`. Establish `hL : 0 < L.sc.L`. Take `⟨hv, hlv, -⟩` from `hB`. Establish `hv1 : 1 < D.host.v` using `lt_of_lt_of_le (by linarith [Real.pi_gt_three]) hv`.
+
+Combine the linear relations using `[Real.log_pos hv1]`. Establish `hk : 5 ≤ D.R.k`. Use `D.R.two_le_m` as an intermediate fact. Use `D.R.m_add_three_le_k` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Establish `hCC : C ≤ max C (Real.exp C)` using `le_max_left _ _`. Establish `hCe : Real.exp C ≤ max C (Real.exp C)` using `le_max_right _ _`. Establish `hCpos : 0 < max C (Real.exp C)` using `lt_of_lt_of_le (Real.exp_pos C) hCe`. Establish `hXu : ∀ u, Real.log (D.mem u).A.Xu = StandardLattice.logXuD D u`. Introduce `u`.
+
+Rewrite using `[← exp_logXuD D ⟨hT1, hT2⟩ u, Real.log_exp]`. Unfold `LocalQuadraticParts.HerrExtensionClause`. Use `⟨fun u => ?_, fun u u' => ?_, ?_⟩` and prove the remaining obligations. Establish `hΓ : 1 ≤ (D.mem u).A.GamP` using `le_of_lt (D.mem u).A.one_lt_gammaP`. Establish `hGpos : 0 < (D.mem u).A.GamP` using `by linarith`.
+
+Establish `hwin` using `D.T_win u`. Establish `hlo : Real.exp (StandardLattice.logXuD D u) * (D.mem u).A.GamP ^ (-(2 : ℝ) / (D.R.f * D.R.k)) ≤ ((D.mem u).A.T : ℝ)`. Rewrite using `[exp_logXuD D ⟨hT1, hT2⟩ u]`. Conclude with `hwin.1`. Establish `hhi : ((D.mem u).A.T : ℝ) ≤ Real.exp (StandardLattice.logXuD D u) * (D.mem u).A.GamP ^ (-(2 : ℝ) / (D.R.f * D.R.k)) * (1 + 1 / ((D.R.f : ℝ) * D.R.k))`.
+
+Rewrite using `[exp_logXuD D ⟨hT1, hT2⟩ u, mul_comm _ (1 + _)]`. Conclude with `hwin.2`. Take `⟨h1, h2, h3⟩` from `h5c Δ _ hB _ hΓ u hlo hhi`. Establish `hrank : ((D.duS u : ℕ) : ℝ) = StandardLattice.duStarU D u * (((D.mem u).A.T : ℝ) ^ D.R.k - 1) ^ D.R.f` using `h4 hG hSp u (hU u).1 (hU u).2`. Establish `hTge : (2 : ℝ) ≤ (D.mem u).A.T` using `by exact_mod_cast (D.mem u).A.T_prime.two_le`.
+
+Establish `hTk : 0 < ((D.mem u).A.T : ℝ) ^ D.R.k - 1`. Establish `: 1 < ((D.mem u).A.T : ℝ) ^ D.R.k` using `one_lt_pow₀ (by linarith) (by omega)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hdu : 0 < StandardLattice.duStarU D u`. Rewrite using `[← hT1 u]`.
+
+Conclude with `(D.mem u).A.duStar_pos` after adjusting the coercions. Establish `hDs : (D.mem u).A.Dstar = StandardLattice.DstarD D` using `by rw [D.Dstar_eq u, hT2]`. Establish `hDpos : 0 < StandardLattice.DstarD D`. Rewrite using `[← hDs]`. Conclude with `(D.mem u).A.Dstar_pos`.
+
+Establish `hQ : (D.duS u : ℝ) * (D.mem u).A.GamP ^ 2 / (D.mem u).A.Dstar = StandardLattice.duStarU D u * (((D.mem u).A.T : ℝ) ^ D.R.k - 1) ^ D.R.f / (StandardLattice.DstarD D * (D.mem u).A.GamP ^ (-(2 : ℝ)))`. Rewrite using `[hrank, hDs, Real.rpow_neg hGpos.le, Real.rpow_two]`. Clear the denominators using the available nonvanishing facts. Establish `hQpos : 0 < StandardLattice.duStarU D u * (((D.mem u).A.T : ℝ) ^ D.R.k - 1) ^ D.R.f / (StandardLattice.DstarD D * (D.mem u).A.GamP ^ (-(2 : ℝ)))` using `div_pos (mul_pos hdu (pow_pos hTk _)) (mul_pos hDpos (Real.rpow_pos_of_pos hGpos _))`. Rewrite `h1` using `[abs_le]`.
+
+Establish `hQlo : Real.exp (-C) ≤ StandardLattice.duStarU D u * (((D.mem u).A.T : ℝ) ^ D.R.k - 1) ^ D.R.f / (StandardLattice.DstarD D * (D.mem u).A.GamP ^ (-(2 : ℝ)))`. Rewrite using `[← Real.exp_log hQpos]`. Conclude with `Real.exp_le_exp.mpr h1.1`. Establish `hQhi : StandardLattice.duStarU D u * (((D.mem u).A.T : ℝ) ^ D.R.k - 1) ^ D.R.f / (StandardLattice.DstarD D * (D.mem u).A.GamP ^ (-(2 : ℝ))) ≤ Real.exp C`. Rewrite using `[← Real.exp_log hQpos]`.
+
+Conclude with `Real.exp_le_exp.mpr h1.2`. Establish `hS : (∑ j ∈ SizeData₂.lifts D, (1 / (D.R.f : ℝ)) * ∑ ρ : D.what₂.Tau, Real.log (wSz D j ρ * D.host.v / Real.pi)) = ∑ j ∈ Finset.range D.R.m, (1 / (D.R.f : ℝ)) * ∑ ρ : D.what₂.Tau, Real.log (wSz D (j + 1) ρ * D.host.v / Real.pi)`. Establish `himg : SizeData₂.lifts D = (Finset.range D.R.m).image (· + 1)`. Use extensionality with `j`. Simplify using `only [SizeData₂.lifts, Finset.mem_Icc, Finset.mem_image, Finset.mem_range]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hj1, hj2⟩`. Conclude with `⟨j - 1, by omega, by omega⟩`. Introduce and unpack `⟨a, ha, rfl⟩`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[himg, Finset.sum_image (fun a _ b _ h => by simpa using h)]`. Establish `hg : (∑ g ∈ L.gTypes, Real.log (g : ℝ)) ≤ ∑ i : Fin 2, Real.log (D.host.g i : ℝ)`. Rewrite using `[Fin.sum_univ_two]`. Unfold `SizeData₂.gTypes`. Distinguish the cases in `h : D.host.g 0 = D.host.g 1`.
+
+Rewrite using `[h]`. Simplify using `only [Finset.mem_singleton, Finset.insert_eq_of_mem, Finset.sum_singleton]`. Combine the linear relations using `[Real.log_natCast_nonneg (D.host.g 1)]`. Rewrite using `[Finset.sum_pair h]`. Establish `hX : 0 ≤ L.sc.L + (D.R.m : ℝ) ^ 2 * L.sc.L / D.R.k` using `by positivity`.
+
+Establish `hm : (0 : ℝ) ≤ D.R.m` using `Nat.cast_nonneg _`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hQ]`. Conclude with `le_trans hQhi hCe`.
+
+Combine the equalities or inequalities in the displayed calculation. Unfold `StandardLattice.lowB at h3`. Rewrite using `[hS]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hCC hX, mul_le_mul_of_nonneg_left hg hm]`. Rewrite using `[hXu, hXu]`.
+
+Conclude with `le_trans ((h5v Δ _ hB).2 u u') (mul_le_mul_of_nonneg_right hCC (Real.log_natCast_nonneg _))`. Establish `hW : Fintype.card D.what₂.Word ≤ 2 ^ (D.R.k - 3)` using `hWs`. Conclude with `le_trans hW (Nat.pow_le_pow_right (by norm_num) (by omega))`.
+-/
 theorem rank_count_bound_of_data (D : D7) (L : SizeData₂ D) (Lv : LevelData D) (C0 C : ℝ) (Δ : ℝ)
     (h4 : StandardLattice.Conclusion4f D Lv) (h5c : StandardLattice.TorusPairsWithVariant D L.sc C0 C) (h5v : StandardLattice.VandermondeVariationBound D L.sc C0 C)
     (hB : StandardLattice.DataB D L.sc C0 Δ (fun j ρ => wSz D (j + 1) ρ))
@@ -131,6 +171,13 @@ theorem rank_count_bound_of_data (D : D7) (L : SizeData₂ D) (Lv : LevelData D)
   · have hW : Fintype.card D.what₂.Word ≤ 2 ^ (D.R.k - 3) := hWs
     exact le_trans hW (Nat.pow_le_pow_right (by norm_num) (by omega))
 
+/- English proof (translation)
+Take `⟨C, x5, hP⟩` from `h5 C0`. Take `⟨x0, hE⟩` from `hE`. Unfold `LocalQuadraticParts.CountFamily`. Use `⟨max C (Real.exp C), max (max x0 x5) (Fm.x1 + 1), fun x hx i => ?_⟩` and prove the remaining obligations. Establish `hx0 : x0 ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hx`.
+
+Establish `hx5 : x5 ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hx`. Establish `hx1 : Fm.x1 < x`. Use `le_trans (le_max_right _ _) hx` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨hWs, hR, Δ, hB⟩` from `hE x hx0 i`.
+
+Take `⟨-, h5c, h5v⟩` from `hP x hx5 hx1 i`. Conclude with `rank_count_bound_of_data (Fm.D x i) (Fm.L x i) (Fm.ex x hx1 i).lev C0 C Δ (h4 x hx1 i) h5c h5v hB hR ⟨(Fm.ex x hx1 i).duStar_def, (Fm.ex x hx1 i).Dstar_def⟩ hWs`.
+-/
 theorem family_rank_count_bound {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (C0 : ℝ)
     (h4 : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), StandardLattice.Conclusion4f (Fm.D x i) (Fm.ex x hx i).lev)
     (h5 : StandardLattice.PartFiveFamilyBounds Fm)

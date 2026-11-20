@@ -53,6 +53,9 @@ open Classical in
 def ratM (x : I.GA) : GL (Fin I.n) I.E :=
   if h : x ∈ I.GFset then h.choose else 1
 
+/- English proof (translation)
+Unfold `ratM`. Rewrite using `[dif_pos h]`. Conclude with `⟨h.choose_spec.1, h.choose_spec.2.2⟩`.
+-/
 theorem ratM_spec {x : I.GA} (h : x ∈ I.GFset) :
     ratM I x ∈ Formalism.UG.UJ (starRingEnd I.E) I.J ∧
       I.fmat x.2 = (ratM I x : Matrix (Fin I.n) (Fin I.n) I.E).map (Formalism.UG.inclE (F := I.F) (Af I.F)) := by
@@ -60,6 +63,9 @@ theorem ratM_spec {x : I.GA} (h : x ∈ I.GFset) :
   rw [dif_pos h]
   exact ⟨h.choose_spec.1, h.choose_spec.2.2⟩
 
+/- English proof (translation)
+Take `⟨M, hM⟩` from `Ideal.exists_maximal (𝓞 F)`. Set `v : IsDedekindDomain.HeightOneSpectrum (𝓞 F)` to `⟨M, hM.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hM (NumberField.RingOfIntegers.not_isField F)⟩`. Use `⟨⟨0, 1, fun h => ?_⟩⟩` and prove the remaining obligations. Establish `h' : (0 : Af F) v = (1 : Af F) v` using `by rw [h]`. Conclude with `zero_ne_one (α := v.adicCompletion F) h'`.
+-/
 theorem af_nontrivial (F : Type) [Field F] [NumberField F] : Nontrivial (Af F) := by
   obtain ⟨M, hM⟩ := Ideal.exists_maximal (𝓞 F)
   let v : IsDedekindDomain.HeightOneSpectrum (𝓞 F) :=
@@ -68,6 +74,11 @@ theorem af_nontrivial (F : Type) [Field F] [NumberField F] : Nontrivial (Af F) :
   have h' : (0 : Af F) v = (1 : Af F) v := by rw [h]
   exact zero_ne_one (α := v.adicCompletion F) h'
 
+/- English proof (translation)
+Establish `h1` using `(ratM_spec I h).2`. Use `af_nontrivial I.F` as an intermediate fact. Rewrite `h1` using `[hg]`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`.
+
+Conclude with `Formalism.UG.P.inclE_injective I.F I.E (Af I.F) (congrFun (congrFun h1 i) j).symm`.
+-/
 theorem ratM_eq {x : I.GA} (h : x ∈ I.GFset) (g : GL (Fin I.n) I.E)
     (hg : I.fmat x.2 = (g : Matrix (Fin I.n) (Fin I.n) I.E).map (Formalism.UG.inclE (F := I.F) (Af I.F))) : ratM I x = g := by
   have h1 := (ratM_spec I h).2
@@ -77,11 +88,17 @@ theorem ratM_eq {x : I.GA} (h : x ∈ I.GFset) (g : GL (Fin I.n) I.E)
   ext i j
   exact Formalism.UG.P.inclE_injective I.F I.E (Af I.F) (congrFun (congrFun h1 i) j).symm
 
+/- English proof (translation)
+Use `ratM_eq I (rrg_mul_mem I hx hy) _ ?_` and prove the remaining obligations. Establish `e : I.fmat (x * y).2 = I.fmat x.2 * I.fmat y.2` using `rfl`. Rewrite using `[e, (ratM_spec I hx).2, (ratM_spec I hy).2, Units.val_mul, Matrix.map_mul]`.
+-/
 theorem ratM_mul {x y : I.GA} (hx : x ∈ I.GFset) (hy : y ∈ I.GFset) : ratM I (x * y) = ratM I x * ratM I y := by
   refine ratM_eq I (rrg_mul_mem I hx hy) _ ?_
   have e : I.fmat (x * y).2 = I.fmat x.2 * I.fmat y.2 := rfl
   rw [e, (ratM_spec I hx).2, (ratM_spec I hy).2, Units.val_mul, Matrix.map_mul]
 
+/- English proof (translation)
+Use `ratM_eq I (one_mem_rational_points I) _ ?_` and prove the remaining obligations. Simplify using `[AutInst.fmat]`.
+-/
 theorem ratM_one : ratM I 1 = 1 := by
   refine ratM_eq I (one_mem_rational_points I) _ ?_
   simp [AutInst.fmat]

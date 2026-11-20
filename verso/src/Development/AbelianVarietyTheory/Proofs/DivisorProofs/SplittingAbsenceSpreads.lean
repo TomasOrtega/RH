@@ -17,8 +17,14 @@ noncomputable instance instFintypeMon (σ : Type) [Finite σ] (D : ℕ) : Fintyp
 
 abbrev Var (σ : Type) (D : ℕ) := (Bool × Mon σ D) ⊕ (Bool × σ) ⊕ Bool
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sum_eq_degree {σ : Type} (s : σ →₀ ℕ) : (s.sum fun _ e => e) = s.degree := rfl
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.eval_map, MvPolynomial.eval, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_comp_left, RingHom.comp_id]`.
+-/
 theorem hom_eval {R S τ : Type} [CommSemiring R] [CommSemiring S] (h : R →+* S) (x : τ → R)
     (W : MvPolynomial τ R) : h (eval x W) = MvPolynomial.eval (h ∘ x) (MvPolynomial.map h W) := by
   rw [MvPolynomial.eval_map, MvPolynomial.eval, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_comp_left, RingHom.comp_id]
@@ -37,15 +43,30 @@ noncomputable def eqs (f g : MvPolynomial σ A) :
 
 variable {A D}
 
+/- English proof (translation)
+Simplify using `[gen, map_sum, map_monomial]`.
+-/
 theorem map_gen {k : Type} [CommRing k] (ψ : A →+* k) (z : Var σ D → k) (b : Bool) :
     MvPolynomial.map (eval₂Hom ψ z) (gen A D b) = ∑ m : Mon σ D, monomial m.1 (z (Sum.inl (b, m))) := by
   simp [gen, map_sum, map_monomial]
 
+/- English proof (translation)
+Use `(totalDegree_finsetSum _ _).trans (Finset.sup_le fun m _ => ?_)` and prove the remaining obligations. Conclude with `(totalDegree_monomial_le _ _).trans m.2`.
+-/
 theorem totalDegree_sum_le {k : Type} [CommRing k] (c : Mon σ D → k) :
     (∑ m : Mon σ D, monomial m.1 (c m)).totalDegree ≤ D := by
   refine (totalDegree_finsetSum _ _).trans (Finset.sup_le fun m _ => ?_)
   exact (totalDegree_monomial_le _ _).trans m.2
 
+/- English proof (translation)
+Use extensionality with `n`. Simplify using `only [coeff_sum, coeff_monomial]`. Distinguish the cases in `hn : n.degree ≤ D`. Rewrite using `[Finset.sum_eq_single ⟨n, hn⟩]`. Simplify using the standard rewrite rules.
+
+Introduce `m _ hm`. Rewrite using `[if_neg]`. Introduce `h`. Conclude with `hm (Subtype.ext h)`. Simplify using the standard rewrite rules.
+
+Rewrite using `[Finset.sum_eq_zero]`. Assume the negation of the conclusion as `h`. Conclude with `hn ((sum_eq_degree n ▸ le_totalDegree (mem_support_iff.mpr (Ne.symm h))).trans hp)`. Introduce `m _`. Rewrite using `[if_neg]`.
+
+Introduce and unpack `rfl`. Conclude with `hn m.2`.
+-/
 theorem sum_coeff {k : Type} [CommRing k] (p : MvPolynomial σ k) (hp : p.totalDegree ≤ D) :
     ∑ m : Mon σ D, monomial m.1 (coeff m.1 p) = p := by
   classical
@@ -74,6 +95,9 @@ variable {σ : Type} [Finite σ] {A : Type} [CommRing A] {D : ℕ}
 noncomputable def spec {k : Type} [CommRing k] (z : Var σ D → k) (b : Bool) : MvPolynomial σ k :=
   ∑ m : Mon σ D, monomial m.1 (z (Sum.inl (b, m)))
 
+/- English proof (translation)
+Rewrite using `[← coe_eval₂Hom]`. Simplify using `only [eqs]`. Rewrite using `[← MvPolynomial.coeff_map, map_sub, map_mul, map_gen, map_gen, MvPolynomial.map_map, eval₂Hom_comp_C]`. Both sides reduce to the same expression.
+-/
 theorem eval_eqs_coeff {k : Type} [CommRing k] (ψ : A →+* k) (z : Var σ D → k)
     (f g : MvPolynomial σ A) (n : σ →₀ ℕ) :
     eval₂ ψ z (eqs A D f g (Sum.inl n)) = coeff n (spec z true * spec z false - MvPolynomial.map ψ f) := by
@@ -83,6 +107,11 @@ theorem eval_eqs_coeff {k : Type} [CommRing k] (ψ : A →+* k) (z : Var σ D �
     eval₂Hom_comp_C]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← coe_eval₂Hom]`. Simplify using `only [eqs]`. Rewrite using `[hom_eval, map_gen]`. Use `congr 2`. Use function extensionality and compare the values at `i`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem eval_eqs_point {k : Type} [CommRing k] (ψ : A →+* k) (z : Var σ D → k)
     (f g : MvPolynomial σ A) (b : Bool) :
     eval₂ ψ z (eqs A D f g (Sum.inr (Sum.inl b))) =
@@ -94,6 +123,9 @@ theorem eval_eqs_point {k : Type} [CommRing k] (ψ : A →+* k) (z : Var σ D �
   funext i
   simp
 
+/- English proof (translation)
+Simplify using `only [eqs, eval₂_sub, eval₂_mul, eval₂_X, eval₂_one]`. Rewrite using `[← coe_eval₂Hom, hom_eval, MvPolynomial.map_map, eval₂Hom_comp_C]`. Use `congr 4`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+-/
 theorem eval_eqs_inv {k : Type} [CommRing k] (ψ : A →+* k) (z : Var σ D → k)
     (f g : MvPolynomial σ A) (b : Bool) :
     eval₂ ψ z (eqs A D f g (Sum.inr (Sum.inr b))) =
@@ -116,6 +148,21 @@ def Bad (f g : MvPolynomial σ A) (D : ℕ) (k : Type) [Field k] (ψ : A →+* k
       MvPolynomial.eval P (MvPolynomial.map ψ g) ≠ 0 ∧ MvPolynomial.eval Q v = 0 ∧
       MvPolynomial.eval Q (MvPolynomial.map ψ g) ≠ 0
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩`. Establish `hinv : ∀ b, MvPolynomial.eval (fun i => z (Sum.inr (Sum.inl (b, i)))) (MvPolynomial.map ψ g) ≠ 0`. Introduce `b h0`. Use `hz (Sum.inr (Sum.inr b))` as an intermediate fact.
+
+Rewrite `this` using `[eval_eqs_inv, h0]`. Simplify using `at this`. Use `⟨spec z true, spec z false, totalDegree_sum_le _, totalDegree_sum_le _, ?_, fun i => z (Sum.inr (Sum.inl (true, i))), fun i => z (Sum.inr (Sum.inl (false, i))), ?_, hinv true, ?_, hinv false⟩` and prove the remaining obligations. Use extensionality with `n`. Use `hz (Sum.inl n)` as an intermediate fact.
+
+Rewrite `this` using `[eval_eqs_coeff, coeff_sub, sub_eq_zero]`. Conclude with `this`. Use `hz (Sum.inr (Sum.inl true))` as an intermediate fact. Rewrite `this` using `[eval_eqs_point]`. Then use the resulting hypothesis. Use `hz (Sum.inr (Sum.inl false))` as an intermediate fact.
+
+Rewrite `this` using `[eval_eqs_point]`. Then use the resulting hypothesis. Introduce and unpack `⟨u, v, hu, hv, huv, P, Q, hPu, hPg, hQv, hQg⟩`. Set `z : Var σ D → k` to `Sum.elim (fun p => coeff p.2.1 (if p.1 then u else v)) (Sum.elim (fun p => if p.1 then P p.2 else Q p.2) (fun b => (MvPolynomial.eval (if b then P else Q) (MvPolynomial.map ψ g))⁻¹))`. Establish `hs : ∀ b, spec z b = if b then u else v`. Introduce `b`.
+
+Consider the cases of `b`. Conclude with `sum_coeff v hv`. Conclude with `sum_coeff u hu`. Use `⟨z, ?_⟩` and prove the remaining obligations. Introduce and unpack `(n | b | b)`.
+
+Rewrite using `[eval_eqs_coeff, hs, hs]`. Simplify using `[huv]`. Rewrite using `[eval_eqs_point, hs]`. Apply the tactic sequence `cases b <;> simpa [z]`. Rewrite using `[eval_eqs_inv]`.
+
+Consider the cases of `b`. Simplify using `only [z, Sum.elim_inr, Bool.false_eq_true, if_false]`. Conclude with `sub_eq_zero.mpr (inv_mul_cancel₀ hQg)`. Simplify using `only [z, Sum.elim_inr, if_true]`. Conclude with `sub_eq_zero.mpr (inv_mul_cancel₀ hPg)`.
+-/
 theorem bad_iff (f g : MvPolynomial σ A) (D : ℕ) (k : Type) [Field k] (ψ : A →+* k) :
     (∃ z : Var σ D → k, ∀ j, eval₂ ψ z (eqs A D f g j) = 0) ↔ Bad f g D k ψ := by
   constructor
@@ -159,6 +206,11 @@ theorem bad_iff (f g : MvPolynomial σ A) (D : ℕ) (k : Type) [Field k] (ψ : A
 
 end GlobalTheory.SplitSpread
 
+/- English proof (translation)
+Introduce `A _ σ _ f g D Ω _ _ φ hbad`. Establish `h0 : ¬ ∃ z : GlobalTheory.SplitSpread.Var σ D → Ω, ∀ j, MvPolynomial.eval₂ φ z (GlobalTheory.SplitSpread.eqs A D f g j) = 0`. Rewrite using `[GlobalTheory.SplitSpread.bad_iff]`. Conclude with `hbad`. Take `⟨a, I, ha, hI, hk⟩` from `GlobalTheory.T.no_common_zero_spreads_constructible_nbhd A _ _ (GlobalTheory.SplitSpread.eqs A D f g) Ω φ h0`.
+
+Use `⟨a, I, ha, hI, fun k _ ψ hψa hψI hb => hk k ψ hψa hψI ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.SplitSpread.bad_iff f g D k ψ).mpr hb`.
+-/
 theorem GlobalTheory.splitting_absence_spreads : ∀ (A : Type) [CommRing A] (σ : Type) [Finite σ] (f g : MvPolynomial σ A) (D : ℕ) (Ω : Type) [Field Ω] [IsAlgClosed Ω] (φ : A →+* Ω), ¬ (∃ u v : MvPolynomial σ Ω, u.totalDegree ≤ D ∧ v.totalDegree ≤ D ∧ u * v = MvPolynomial.map φ f ∧ ∃ P Q : σ → Ω, MvPolynomial.eval P u = 0 ∧ MvPolynomial.eval P (MvPolynomial.map φ g) ≠ 0 ∧ MvPolynomial.eval Q v = 0 ∧ MvPolynomial.eval Q (MvPolynomial.map φ g) ≠ 0) → ∃ (a : A) (I : Finset A), φ a ≠ 0 ∧ (∀ c ∈ I, φ c = 0) ∧ ∀ (k : Type) [Field k] (ψ : A →+* k), ψ a ≠ 0 → (∀ c ∈ I, ψ c = 0) → ¬ (∃ u v : MvPolynomial σ k, u.totalDegree ≤ D ∧ v.totalDegree ≤ D ∧ u * v = MvPolynomial.map ψ f ∧ ∃ P Q : σ → k, MvPolynomial.eval P u = 0 ∧ MvPolynomial.eval P (MvPolynomial.map ψ g) ≠ 0 ∧ MvPolynomial.eval Q v = 0 ∧ MvPolynomial.eval Q (MvPolynomial.map ψ g) ≠ 0) := by
   intro A _ σ _ f g D Ω _ _ φ hbad
   have h0 : ¬ ∃ z : GlobalTheory.SplitSpread.Var σ D → Ω, ∀ j,

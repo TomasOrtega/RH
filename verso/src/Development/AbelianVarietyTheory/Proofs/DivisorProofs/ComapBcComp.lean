@@ -20,6 +20,9 @@ abbrev bc {T T' : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of A)) (a : T' ⟶ T)
     pullback (str A B) (a ≫ g) ⟶ pullback (str A B) g :=
   pullback.map _ _ _ _ (𝟙 _) a (𝟙 _) (by simp) (by simp)
 
+/- English proof (translation)
+Establish `h : bc A B g a ≫ pullback.fst (str A B) g = pullback.fst _ _` using `(pullback.lift_fst _ _ _).trans (Category.comp_id _)`. Use `IsPullback.of_right ?_ (pullback.lift_snd _ _ _) (IsPullback.of_hasPullback _ _)` and prove the remaining obligations. Rewrite using `[h]`. Conclude with `IsPullback.of_hasPullback (str A B) (a ≫ g)`.
+-/
 theorem isPullback_bc {T T' : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of A)) (a : T' ⟶ T) :
     IsPullback (bc A B g a) (pullback.snd _ (a ≫ g)) (pullback.snd _ g) a :=
   by
@@ -29,6 +32,13 @@ theorem isPullback_bc {T T' : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of A)) (a
     rw [h]
     exact IsPullback.of_hasPullback (str A B) (a ≫ g)
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `hI`. Establish `H : IsPullback (pullback.snd (bc A B g a) I.subschemeι) (pullback.fst (bc A B g a) I.subschemeι ≫ pullback.snd _ (a ≫ g)) (I.subschemeι ≫ pullback.snd _ g) a` using `(IsPullback.of_hasPullback (bc A B g a) I.subschemeι).flip.paste_vert (isPullback_bc A B g a)`. Establish `e : (I.comap (bc A B g a)).subschemeι ≫ pullback.snd _ (a ≫ g) = (I.comapIso (bc A B g a)).hom ≫ (pullback.fst (bc A B g a) I.subschemeι ≫ pullback.snd _ (a ≫ g))`. Rewrite using `[← Category.assoc, Scheme.IdealSheafData.comapIso_hom_fst]`. Establish `f1 : IsFinite (pullback.fst (bc A B g a) I.subschemeι ≫ pullback.snd _ (a ≫ g))` using `MorphismProperty.of_isPullback (P := @IsFinite) H h1`.
+
+Establish `f2 : Flat (pullback.fst (bc A B g a) I.subschemeι ≫ pullback.snd _ (a ≫ g))` using `MorphismProperty.of_isPullback (P := @Flat) H h2`. Use `⟨?_, ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Use `infer_instance`. Rewrite using `[e]`.
+
+Use `infer_instance`. Rewrite using `[e, Scheme.Hom.finrank_comp_left_of_isIso, Scheme.Hom.finrank_of_isPullback _ _ _ _ H y, h3]`.
+-/
 theorem good_comap (r : ℕ) {T T' : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of A)) (a : T' ⟶ T)
     (I : (pullback (str A B) g).IdealSheafData) (hI : Good A B r g I) :
     Good A B r (a ≫ g) (I.comap (bc A B g a)) := by
@@ -50,6 +60,11 @@ theorem good_comap (r : ℕ) {T T' : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of
   · rw [e]; infer_instance
   · rw [e, Scheme.Hom.finrank_comp_left_of_isIso, Scheme.Hom.finrank_of_isPullback _ _ _ _ H y, h3]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Establish `: pullback.map (str A B) g₀ (str A B) g₀ (𝟙 _) (𝟙 _) (𝟙 _) (by simp) (by simp) = 𝟙 _`. Apply the tactic sequence `ext <;> simp`. Rewrite `hI` using `[this, Scheme.IdealSheafData.comap_id]`. Substitute `hI` using the available equality.
+
+Both sides reduce to the same expression.
+-/
 theorem sigma_eq (r : ℕ) {T : Scheme.{0}} {g₀ g : T ⟶ Spec (CommRingCat.of A)} (h : g₀ = g)
     {I₀ : (pullback (str A B) g₀).IdealSheafData} {I : (pullback (str A B) g).IdealSheafData}
     (hI : I₀ = I.comap (pullback.map _ _ _ _ (𝟙 _) (𝟙 _) (𝟙 _) (by simp) (by simp [h])))
@@ -63,6 +78,9 @@ theorem sigma_eq (r : ℕ) {T : Scheme.{0}} {g₀ g : T ⟶ Spec (CommRingCat.of
   subst hI
   rfl
 
+/- English proof (translation)
+Rewrite using `[← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp]`. Use `congr 1`. Apply the tactic sequence `apply pullback.hom_ext <;>`. Simplify using `only [bc, pullback.map, Category.assoc, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc, Category.comp_id]`.
+-/
 theorem comap_bc_comp {T T' T'' : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of A)) (a : T' ⟶ T)
     (b : T'' ⟶ T') (I : (pullback (str A B) g).IdealSheafData) :
     I.comap (bc A B g (b ≫ a)) = ((I.comap (bc A B g a)).comap (bc A B (a ≫ g) b)).comap
@@ -86,6 +104,9 @@ def functor (r : ℕ) : Scheme.{0}ᵒᵖ ⥤ Type where
     ext x : 3
     exact sigma_eq A B r (Category.assoc _ _ _) (comap_bc_comp A B x.1 a.unop b.unop x.2.1) _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem functor_map (r : ℕ) {T T' : Scheme.{0}} (a : T' ⟶ T) (y : (functor A B r).obj (op T)) :
     (functor A B r).map a.op y =
       ⟨a ≫ y.1, ⟨y.2.1.comap (bc A B y.1 a), good_comap A B r y.1 a y.2.1 y.2.2⟩⟩ := rfl

@@ -27,6 +27,9 @@ def FormAdj : Prop :=
 
 def AdjIntAsm : Prop := RhoUni → FormAdj → AdjInt
 
+/- English proof (translation)
+The claim follows from `hA hU hF`.
+-/
 theorem adjInt_of_parts (hA : AdjIntAsm) (hU : RhoUni) (hF : FormAdj) : AdjInt := hA hU hF
 
 end

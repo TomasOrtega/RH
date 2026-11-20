@@ -7,6 +7,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 namespace GlobalTheory.CompanionTheory.Ar.HodgeCpt
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O _ β Y S Ω _ K _ J y 𝔐 s`. Use `letI := 𝔐.acg`. Use `letI := 𝔐.mod`. Take `⟨U, hU, b, hspan, hfr⟩` from `𝔐.vb s ⟨genPt 𝔐.ξ, specializes_refl _⟩ (Set.mem_univ _)`. Conclude with `(Fl.Test.lieMult_iff_exists_frame _ _ _ _).2 ⟨_, (Fl.Test.isEigFrame_iff 𝔐.M 𝔐.t.act 𝔐.ρ 𝔐.act (𝔐.emb s) b).2 ⟨(hfr _ (Set.mem_univ _) hU).1, hspan⟩⟩`.
+-/
 theorem lieMult_label_generic : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H)
     (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β)
     (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) (y : (Σ k, J k) → Ω)

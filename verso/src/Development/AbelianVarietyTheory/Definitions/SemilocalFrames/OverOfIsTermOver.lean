@@ -14,10 +14,20 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 section Mat
 
+/- English proof (translation)
+Use `⟨1, ⟨fun a b h => Matrix.one_apply_ne (ne_of_gt h), fun a => Matrix.one_apply_eq a⟩, fun b => ?_⟩` and prove the remaining obligations. Simplify using `[Matrix.one_apply]`.
+-/
 theorem tri_refl {K W : Type} [Semiring K] [AddCommMonoid W] [Module K W] {n : ℕ} (f : Fin n → W) : Tri K f f := by
   refine ⟨1, ⟨fun a b h => Matrix.one_apply_ne (ne_of_gt h), fun a => Matrix.one_apply_eq a⟩, fun b => ?_⟩
   simp [Matrix.one_apply]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨A, ⟨h1, h2⟩, h⟩`. Use `⟨?_, A 0 1, ?_⟩` and prove the remaining obligations. Rewrite using `[h 0]; simp [Fin.sum_univ_two, h2, h1 1 0 (by decide)]`. Rewrite using `[h 1]`.
+
+Simplify using `[Fin.sum_univ_two, h2]`. Introduce and unpack `⟨h0, c, h1⟩`. Use `⟨!![1, c; 0, 1], ⟨fun a b h => ?_, fun a => ?_⟩, fun b => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp_all`. Apply the tactic sequence `fin_cases a <;> simp`.
+
+Apply the tactic sequence `fin_cases b <;> simp [Fin.sum_univ_two, h0, h1]`.
+-/
 theorem tri_two_iff {K W : Type} [Semiring K] [AddCommMonoid W] [Module K W] (f g : Fin 2 → W) :
     Tri K f g ↔ g 0 = f 0 ∧ ∃ c : K, g 1 = c • f 0 + f 1 := by
   constructor
@@ -41,18 +51,35 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
   {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] {r : ℕ}
 
+/- English proof (translation)
+Unfold `img`. Rewrite using `[← Submodule.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem img_mul' (g h : V ≃ₗ[E] V) (Λ : Submodule M.L.O V) : img (g * h) Λ = img g (img h Λ) := by
   unfold img; rw [← Submodule.map_comp]; rfl
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[img]`.
+-/
 theorem img_one' (Λ : Submodule M.L.O V) : img (1 : V ≃ₗ[E] V) Λ = Λ := by
   ext x; simp [img]
 
+/- English proof (translation)
+Consider the cases of `t`. Simplify using `[move, img_one']`.
+-/
 theorem move_one (t : Term V M r) : move 1 t = t := by
   cases t; simp [move, img_one']
 
+/- English proof (translation)
+Simplify using `[move, img_mul']`.
+-/
 theorem move_mul (g h : V ≃ₗ[E] V) (t : Term V M r) : move (g * h) t = move g (move h t) := by
   simp [move, img_mul']
 
+/- English proof (translation)
+Use `⟨1, fun _ _ => rfl, d, ⟨1, one_mem _, ?_, ?_, ?_⟩, by rwa [move_one]⟩` and prove the remaining obligations. Introduce `x y hy`. Rewrite using `[show y = x from Subtype.ext hy]`. Introduce `x y hy`. Rewrite using `[show y = x from Subtype.ext hy]`.
+
+Introduce `x' y' x y hy' hy`. Rewrite using `[show y = x from Subtype.ext hy, show y' = x' from Subtype.ext hy']`.
+-/
 theorem over_of_isTermOver {H : HermSp M V} (P : FPair H r) (d : Datum P) (t : Term V M r)
     (h : IsTermOver P d t) : Over P d t := by
   refine ⟨1, fun _ _ => rfl, d, ⟨1, one_mem _, ?_, ?_, ?_⟩, by rwa [move_one]⟩
@@ -60,6 +87,11 @@ theorem over_of_isTermOver {H : HermSp M V} (P : FPair H r) (d : Datum P) (t : T
   · intro x y hy; rw [show y = x from Subtype.ext hy]
   · intro x' y' x y hy' hy; rw [show y = x from Subtype.ext hy, show y' = x' from Subtype.ext hy']
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hh, d', hd, ht⟩`. Conclude with `⟨h * g, fun x y => (hh _ _).trans (hg x y), d', hd, by rwa [move_mul]⟩`. Introduce and unpack `⟨h, hh, d', hd, ht⟩`. Use `⟨h * g⁻¹, fun x y => (hh _ _).trans ?_, d', hd, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hg]`. Simplify using the standard rewrite rules. Rewrite using `[← move_mul, mul_assoc, inv_mul_cancel, mul_one]` and apply the resulting hypothesis.
+-/
 theorem over_move_iff {H : HermSp M V} (P : FPair H r) (d : Datum P) (t : Term V M r) (g : V ≃ₗ[E] V)
     (hg : IsUnitary H g) : Over P d (move g t) ↔ Over P d t := by
   constructor
@@ -70,11 +102,17 @@ theorem over_move_iff {H : HermSp M V} (P : FPair H r) (d : Datum P) (t : Term V
     · rw [← hg]; simp
     · rwa [← move_mul, mul_assoc, inv_mul_cancel, mul_one]
 
+/- English proof (translation)
+Take `⟨g, -, d', -, h1, h2, -⟩` from `h`. Conclude with `⟨h1, h2⟩`.
+-/
 theorem norms_of_over {H : HermSp M V} {P : FPair H r} {d : Datum P} {t : Term V M r} (h : Over P d t) :
     t.T = P.A.T ∧ t.T' = P.B.T := by
   obtain ⟨g, -, d', -, h1, h2, -⟩ := h
   exact ⟨h1, h2⟩
 
+/- English proof (translation)
+Establish `e : img n Λ = Λ ↔ (n : V → V) '' (Λ : Set V) = Λ`. Rewrite using `[← SetLike.coe_set_eq]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `⟨fun ⟨a, b, c, d⟩ => ⟨⟨a, c, d⟩, b⟩, fun ⟨⟨a, c, d⟩, b⟩ => ⟨a, b, c, d⟩⟩`.
+-/
 theorem mem_NGrp_iff (H : HermSp M V) (Λ : Submodule M.L.O V) (f : Fin (r + 1) → V) (n : V ≃ₗ[E] V) :
     n ∈ H.NGrp Λ f ↔ n ∈ NU H f ∧ img n Λ = Λ := by
   have e : img n Λ = Λ ↔ (n : V → V) '' (Λ : Set V) = Λ := by
@@ -82,6 +120,17 @@ theorem mem_NGrp_iff (H : HermSp M V) (Λ : Submodule M.L.O V) (f : Fin (r + 1) 
   rw [e]
   exact ⟨fun ⟨a, b, c, d⟩ => ⟨⟨a, c, d⟩, b⟩, fun ⟨⟨a, c, d⟩, b⟩ => ⟨a, b, c, d⟩⟩
 
+/- English proof (translation)
+Use extensionality with `n`. Use `and_congr_right fun _ => and_congr_left fun _ => ⟨fun h j _ v hv => ?_, fun h a => ?_⟩` and prove the remaining obligations. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨a, ha, rfl⟩` from `hv`.
+
+Use `Submodule.span_mono ?_ (h a)` and prove the remaining obligations. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Use `⟨b, ?_, rfl⟩` and prove the remaining obligations. Simplify using `only [Set.mem_ofPred_eq] at ha hb ⊢`. Establish `: b.val < a.val` using `hb`.
+
+Use linear arithmetic over natural numbers and integers. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Use `add_mem hx hy` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[map_add]`. Normalize the expressions using the abelian group laws. Consider the case `smul c x _ hx`. Use `Submodule.smul_mem _ c hx` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[map_smul, smul_sub]`. Use `h (a.val + 1) a.2 (Fr.e a) (Submodule.subset_span ⟨a, by simp, rfl⟩)` as an intermediate fact. Rewrite `this` using `[Nat.add_sub_cancel]`. Conclude with `this`.
+-/
 theorem NU_eq_NSet {H : HermSp M V} (Fr : FrameD H r) : NU H Fr.f = Fr.NSet := by
   ext n
   refine and_congr_right fun _ => and_congr_left fun _ => ⟨fun h j _ v hv => ?_, fun h a => ?_⟩
@@ -105,6 +154,13 @@ theorem NU_eq_NSet {H : HermSp M V} (Fr : FrameD H r) : NU H Fr.f = Fr.NSet := b
     rw [Nat.add_sub_cancel] at this
     exact this
 
+/- English proof (translation)
+Establish `hX : H.X (r` using `0) f = ⊥ := by simp [HermSp.X]`. Use extensionality with `n`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, -, h⟩`. Use extensionality with `v`.
+
+Use `h v (by intro x hx; rw [hX, Submodule.mem_bot] at hx; subst hx` as an intermediate fact. Rewrite using `[H.h_herm, H.h_zero_left, map_zero])`. Rewrite `this` using `[hX, Submodule.mem_bot, sub_eq_zero]`. Conclude with `this`. Introduce and unpack `rfl`.
+
+Conclude with `⟨fun _ _ => rfl, fun a => a.elim0, fun v _ => by simp⟩`.
+-/
 theorem NU_zero (H : HermSp M V) (f : Fin 1 → V) : NU (r := 0) H f = {1} := by
   have hX : H.X (r := 0) f = ⊥ := by simp [HermSp.X]
   ext n
@@ -118,6 +174,25 @@ theorem NU_zero (H : HermSp M V) (f : Fin 1 → V) : NU (r := 0) H f = {1} := by
   · rintro rfl
     exact ⟨fun _ _ => rfl, fun a => a.elim0, fun v _ => by simp⟩
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨c, hc0, hc⟩ : ∃ c : E, c ≠ 0 ∧ M.L.cj c = -c := by`. Establish `: ∃ x : E, M.L.cj x ≠ x`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `hs : Function.Surjective (Algebra.linearMap F E)` using `fun x => (M.L.cj_fix x).1 (h x)`.
+
+Establish `h1` using `LinearMap.finrank_range_le (Algebra.linearMap F E)`. Rewrite `h1` using `[LinearMap.range_eq_top.2 hs, finrank_top, M.L.rank, Module.finrank_self]`. Use linear arithmetic over natural numbers and integers. Take `⟨x, hx⟩` from `this`. Conclude with `⟨M.L.cj x - x, sub_ne_zero.2 hx, by rw [map_sub, M.L.cj_cj]; ring⟩`.
+
+Use `set e := Fr.f (Fin.castSucc 0) with he`. Establish `hiso : ∀ a : Fin (r + 1), H.h (Fr.f a.castSucc) e = 0` using `fun a => Fr.h_iso _ _ (Or.inl (Fin.castSucc_lt_last a).ne)`. Establish `hee : H.h e e = 0` using `hiso 0`. Set `T : E → V →ₗ[E] V` to `fun c => { toFun := fun v => v + (c * H.h v e) • e map_add' := fun x y => by rw [H.h_add_left, mul_add, add_smul]; abel map_smul' := fun a x => by`. Rewrite using `[H.h_smul_left, RingHom.id_apply, smul_add, smul_smul]`.
+
+Use `congr 2`. Use `ring }`. Establish `hT : ∀ c v, T c v = v + (c * H.h v e) • e` using `fun _ _ => rfl`. Establish `hTT : ∀ c, (T c).comp (T (-c)) = LinearMap.id` using `fun c => by`. Use extensionality with `v`.
+
+Simplify using `only [LinearMap.comp_apply, hT, H.h_add_left, H.h_smul_left, hee, LinearMap.id_apply, mul_zero, add_zero, neg_mul, neg_smul]`. Rewrite using `[← neg_smul, H.h_smul_left, hee]`. Simplify using the standard rewrite rules. Establish `hTT' : (T (-c)).comp (T c) = LinearMap.id` using `by simpa using hTT (-c)`. Set `n : V ≃ₗ[E] V` to `LinearEquiv.ofLinear (T c) (T (-c)) (hTT c) hTT'`.
+
+Establish `hn : ∀ v, n v = v + (c * H.h v e) • e` using `fun _ => rfl`. Use `⟨n, ⟨fun x y => ?_, fun a => ?_, fun v hv => ?_⟩, fun h => hc0 ?_⟩` and prove the remaining obligations. Establish `r1 : ∀ z, H.h z (n y) = H.h z y - c * H.h e y * H.h z e` using `fun z => by`. Rewrite using `[H.h_herm (n y) z, hn, H.h_add_left, H.h_smul_left, map_add, map_mul, map_mul, hc, ← H.h_herm, ← H.h_herm, ← H.h_herm]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[r1, hn, H.h_add_left, H.h_add_left, H.h_smul_left, H.h_smul_left, hee]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hn, hiso]`. Simplify using the standard rewrite rules. Rewrite using `[hn, hv e (Submodule.subset_span ⟨0, rfl⟩)]`.
+
+Simplify using the standard rewrite rules. Establish `h1 : H.h e (Fr.es 0) = 1` using `(Fr.h_es 0 0).trans (if_pos rfl)`. Establish `h2 : H.h (Fr.es 0) e = 1` using `by rw [H.h_herm, h1, map_one]`. Establish `h3` using `hn (Fr.es 0)`. Rewrite `h3` using `[h, h2, mul_one]`.
+
+Establish `h4 : c • e = 0` using `by simpa using h3`. Establish `h5` using `H.h_smul_left c e (Fr.es 0)`. Rewrite `h5` using `[h4, H.h_zero_left, h1, mul_one]`. Conclude with `h5.symm`.
+-/
 theorem NU_nontrivial {H : HermSp M V} (Fr : FrameD H (r + 1)) : ∃ n ∈ NU H Fr.f, n ≠ 1 := by
   obtain ⟨c, hc0, hc⟩ : ∃ c : E, c ≠ 0 ∧ M.L.cj c = -c := by
     have : ∃ x : E, M.L.cj x ≠ x := by
@@ -165,6 +240,11 @@ theorem NU_nontrivial {H : HermSp M V} (Fr : FrameD H (r + 1)) : ∃ n ∈ NU H 
     rw [h4, H.h_zero_left, h1, mul_one] at h5
     exact h5.symm
 
+/- English proof (translation)
+Establish `hθ : theta M = 1` using `by unfold theta; rw [h]`. Establish `e : H.smulLat (algebraMap F E (theta M)) Λ = Λ`. Simplify using `[HermSp.smulLat, hθ]`. Unfold `Cong`. Rewrite using `[e]`.
+
+Conclude with `⟨fun ⟨a, ha, b, hb, c, hc, _, _, hx⟩ => hx ▸ add_mem (add_mem ha hb) hc, fun hx => ⟨x, hx, 0, zero_mem _, 0, zero_mem _, zero_mem _, zero_mem _, by simp⟩⟩`.
+-/
 theorem cong_none (H : HermSp M V) (h : M.split = none) (Λ : Submodule M.L.O V) (f f' : Fin (r + 1) → V) (x : V) :
     Cong H Λ f f' x ↔ x ∈ Λ := by
   have hθ : theta M = 1 := by unfold theta; rw [h]
@@ -175,6 +255,9 @@ theorem cong_none (H : HermSp M V) (h : M.split = none) (Λ : Submodule M.L.O V)
   exact ⟨fun ⟨a, ha, b, hb, c, hc, _, _, hx⟩ => hx ▸ add_mem (add_mem ha hb) hc,
     fun hx => ⟨x, hx, 0, zero_mem _, 0, zero_mem _, zero_mem _, zero_mem _, by simp⟩⟩
 
+/- English proof (translation)
+Establish `hX : ∀ f : Fin 1 → V, H.X (r` using `0) f = ⊥ := fun f => by simp [HermSp.X]`. Unfold `Cong`. Simplify using `only [hX, Submodule.mem_bot]`. Conclude with `⟨fun ⟨a, ha, b, _, c, _, hb, hc, hx⟩ => by simpa [hx, hb, hc] using ha, fun hx => ⟨x, hx, 0, zero_mem _, 0, zero_mem _, rfl, rfl, by simp⟩⟩`.
+-/
 theorem cong_zero (H : HermSp M V) (Λ : Submodule M.L.O V) (f f' : Fin 1 → V) (x : V) :
     Cong (r := 0) H Λ f f' x ↔ x ∈ H.smulLat (algebraMap F E (theta M)) Λ := by
   have hX : ∀ f : Fin 1 → V, H.X (r := 0) f = ⊥ := fun f => by simp [HermSp.X]
@@ -183,6 +266,17 @@ theorem cong_zero (H : HermSp M V) (Λ : Submodule M.L.O V) (f f' : Fin 1 → V)
   exact ⟨fun ⟨a, ha, b, _, c, _, hb, hc, hx⟩ => by simpa [hx, hb, hc] using ha,
     fun hx => ⟨x, hx, 0, zero_mem _, 0, zero_mem _, rfl, rfl, by simp⟩⟩
 
+/- English proof (translation)
+Use `haveI := hM.char0`. Use `haveI : Nontrivial E := by`. Use `M.L.rank` as an intermediate fact. Conclude with `Module.nontrivial_of_finrank_pos (R := F) (by omega)`. Use `⟨relG M m, (over_move_iff _ _ _ _ fun x y => ?_).2 (over_of_isTermOver _ _ _ (isTermOver M m)), ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `[NonGenericLocalCheck.stdH]`. Introduce and unpack `d ⟨-, -, ⟨n, hn, hf, -⟩, -⟩`. Establish `hN : (pair M m).A.N = ⊥`. Unfold `FrameD.N`. Rewrite using `[← NU_eq_NSet, NU_zero]`.
+
+Simplify using the standard rewrite rules. Rewrite `hn` using `[hN, Subgroup.mem_bot]`. Substitute `hn` using the available equality. Establish `h0` using `congrFun (congrFun hf 0) 0`. Simplify using `[move, term, pair, GlobalTheory.NonGenericLocalCheck.frame, vec_zero] at h0`.
+
+Establish `h2 : algebraMap F E 2 = 0`. Rewrite using `[map_ofNat]`. Take the linear combination `-h0`. Conclude with `((two_ne_zero' F).isUnit.map (algebraMap F E)).ne_zero h2`. Introduce `d h`.
+
+Use `(norms_of_over h).1` as an intermediate fact. Simplify using `[pair, GlobalTheory.NonGenericLocalCheck.frame] at this`.
+-/
 theorem inhabited (M : Model F E) (hM : M.OK) (m : ℕ) :
     (pair M m).RelG (theta M) ∧ Over (pair M m) (datum M m) (move (LinearEquiv.neg E) (term M m)) ∧
       (∀ d, ¬ IsTermOver (pair M m) d (move (LinearEquiv.neg E) (term M m))) ∧
@@ -216,11 +310,20 @@ open Formalism.L2.SG.HidaSetting Formalism.L2.SG.TermOp Formalism.L2.SG.Full For
 
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `_` and use `rfl`.
+-/
 theorem chg_frameAct {n : ℕ} (f : Fin n → (VS D).V) (ξ : Matrix (Fin n) (Fin n) (𝓞 D.host.E)) :
     Chg f (ξ.map (fun a => (a : D.host.E))) (frameAct f ξ) := fun _ => rfl
 
+/- English proof (translation)
+Introduce `_` and use `rfl`.
+-/
 theorem ext_one (p : PlF D) : Ext p (1 : (VS D).V ≃ₗ[D.host.E] (VS D).V) 1 := fun _ => rfl
 
+/- English proof (translation)
+Apply `LinearEquiv.toLinearMap_injective` to reduce the goal to its premises. Use `LinearMap.ext_on_range (span_baseChange_eq_top p) fun x => ?_` and prove the remaining obligations. Conclude with `(h x).trans (h' x).symm`.
+-/
 theorem ext_unique (p : PlF D) (γ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (g g' : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p)
     (h : Ext p γ g) (h' : Ext p γ g') : g = g' := by
   apply LinearEquiv.toLinearMap_injective
@@ -229,15 +332,27 @@ theorem ext_unique (p : PlF D) (γ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (g g' :
 
 variable {X : HidaSetting D} {Y : Full X} {u u' : D.what₂.Word}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem moveT_eq {p : PlF D} {Mp : Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} (g : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p)
     (t : Loc.Term (Vp D p) Mp D.R.rS) : moveT g t = move g t := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem locF_eq (p : PlF D) {T : D.host.E} (F : LFlag (VS D) D.R.rS T) :
     locF Y p F = scaled (zOf Y) p (frame F) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem locT_eq (t : TauC Y u u') (p : PlF D) :
     locT Y u u' t p = locU (zOf Y) p t.toTerm.lam (lf D (X.Fu u)) (Quot.out t.toTerm.cls).1 (Tu D u) (Tu D u') := rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem overOrb_iff {Cl Nu : Type} (Fm : LocFam (zOf Y) Cl Nu) (t : TauC Y u u') (p : PlF D)
     (d : LocNG.Datum (Fm.FP p)) : OverOrb Fm t p d ↔ Over (Fm.FP p) d (locT Y u u' t p) := Iff.rfl
 

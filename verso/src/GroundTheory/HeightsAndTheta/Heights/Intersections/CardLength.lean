@@ -9,12 +9,28 @@ universe u v
 
 variable {R : Type u} [CommRing R] [IsLocalRing R]
 
+/- English proof (translation)
+Take `⟨I, hI, ⟨e⟩⟩` from `isSimpleModule_iff_quot_maximal.mp ‹IsSimpleModule R N›`. Rewrite `e` using `[IsLocalRing.eq_maximalIdeal hI]`. Conclude with `Nat.card_congr e.toEquiv`.
+-/
 theorem card_eq_card_residueField_of_isSimpleModule (N : Type v) [AddCommGroup N] [Module R N]
     [IsSimpleModule R N] : Nat.card N = Nat.card (ResidueField R) := by
   obtain ⟨I, hI, ⟨e⟩⟩ := isSimpleModule_iff_quot_maximal.mp ‹IsSimpleModule R N›
   rw [IsLocalRing.eq_maximalIdeal hI] at e
   exact Nat.card_congr e.toEquiv
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `M _ _ h`. Establish `: Subsingleton M` using `Module.length_eq_zero_iff.mp (by exact_mod_cast h)`. Rewrite using `[pow_zero]`.
+
+Conclude with `Nat.card_eq_one_iff_unique.mpr ⟨this, ⟨0⟩⟩`. Consider the case `succ n ih`. Introduce `M _ _ h`. Establish `hfin : IsFiniteLength R M` using `Module.length_ne_top_iff.mp (by rw [h]; exact ENat.natCast_ne_top _)`. Take `⟨_, _⟩` from `isFiniteLength_iff_isNoetherian_isArtinian.mp hfin`.
+
+Establish `hnt : Nontrivial M` using `Module.length_pos_iff.mp (by rw [h]; exact_mod_cast Nat.succ_pos n)`. Take `⟨N, hN, -⟩` from `(eq_bot_or_exists_atom_le (⊤ : Submodule R M)).resolve_left top_ne_bot`. Establish `hs : IsSimpleModule R N` using `(isSimpleModule_iff_isAtom).mpr hN`. Establish `hlen` using `Module.length_eq_add_of_exact N.subtype N.mkQ N.injective_subtype N.mkQ_surjective (LinearMap.exact_subtype_mkQ N)`. Rewrite `hlen` using `[h, Module.length_eq_one]`.
+
+Establish `hq : Module.length R (M ⧸ N) = n`. Establish `hne : Module.length R (M ⧸ N) ≠ ⊤`. Introduce `ht`. Rewrite `hlen` using `[ht]`. Conclude with `ENat.natCast_ne_top _ (hlen.trans (add_top _))`.
+
+Take `⟨m, hm⟩` from `ENat.ne_top_iff_exists.mp hne`. Rewrite `hlen`, the goal using `[← hm]`. Establish `: n + 1 = 1 + m` using `by exact_mod_cast hlen`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[Submodule.card_eq_card_quotient_mul_card N, card_eq_card_residueField_of_isSimpleModule (R := R) N, ih (M ⧸ N) hq, pow_succ, mul_comm]`.
+-/
 theorem card_eq_pow_of_length_eq (n : ℕ) : ∀ (M : Type v) [AddCommGroup M] [Module R M],
     Module.length R M = n → Nat.card M = Nat.card (ResidueField R) ^ n := by
   induction n with
@@ -46,6 +62,9 @@ theorem card_eq_pow_of_length_eq (n : ℕ) : ∀ (M : Type v) [AddCommGroup M] [
     rw [Submodule.card_eq_card_quotient_mul_card N, card_eq_card_residueField_of_isSimpleModule (R := R) N, ih (M ⧸ N) hq,
       pow_succ, mul_comm]
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `ENat.ne_top_iff_exists.mp h`. Rewrite using `[← hn, ENat.toNat_natCast]`. Conclude with `card_eq_pow_of_length_eq n M hn.symm`.
+-/
 theorem card_eq_card_residueField_pow_length (M : Type v) [AddCommGroup M] [Module R M]
     (h : Module.length R M ≠ ⊤) :
     Nat.card M = Nat.card (ResidueField R) ^ (Module.length R M).toNat := by

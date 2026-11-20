@@ -24,6 +24,9 @@ def stepMap (ψ : AddChar k Circle) (d : Fin 2 → ℕ) (J : Representation ℂ 
     refine (Submodule.Quotient.mk_eq_zero _).2 ?_
     exact ⟨t, ht, rfl⟩
 
+/- English proof (translation)
+Introduce `y`. Take `⟨⟨_, t, ht, rfl⟩, rfl⟩` from `Submodule.mkQ_surjective _ y`. Conclude with `⟨Submodule.Quotient.mk ⟨t, ht⟩, rfl⟩`.
+-/
 theorem stepMap_surjective (ψ : AddChar k Circle) (d : Fin 2 → ℕ)
     (J : Representation ℂ (Levi k fun a => Fin (d a)) Y) (T T' : Subrepresentation J) :
     Function.Surjective (stepMap ψ d J T T') := by
@@ -31,6 +34,11 @@ theorem stepMap_surjective (ψ : AddChar k Circle) (d : Fin 2 → ℕ)
   obtain ⟨⟨_, t, ht, rfl⟩, rfl⟩ := Submodule.mkQ_surjective _ y
   exact ⟨Submodule.Quotient.mk ⟨t, ht⟩, rfl⟩
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨u, v, rfl⟩`. Take `⟨t, rfl⟩` from `Submodule.mkQ_surjective _ v`. Set `s : T.toSubmodule` to `T.toRepresentation (secondEmb d (u : GL (Fin (d 1)) k)) t - ((whitChar ψ (d 1) u : ℂˣ) : ℂ) • t`. Establish `h0 : toImg ψ d J T s = 0`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 (Submodule.subset_span ⟨u, (t : Y), rfl⟩)`. Use `show stepMap ψ d J T T' (Submodule.Quotient.mk s) = 0`. Use `show Submodule.mkQ _ (toImg ψ d J T s) = 0`. Rewrite using `[h0, map_zero]`.
+-/
 theorem whitKer_subQuot_le (ψ : AddChar k Circle) (d : Fin 2 → ℕ)
     (J : Representation ℂ (Levi k fun a => Fin (d a)) Y) (T T' : Subrepresentation J) :
     whitKer ψ d (subQuot T T') ≤ LinearMap.ker (stepMap ψ d J T T') := by
@@ -52,6 +60,9 @@ def coverMap (ψ : AddChar k Circle) (d : Fin 2 → ℕ) (J : Representation ℂ
     ext v
     rfl
 
+/- English proof (translation)
+Introduce `y`. Take `⟨x, rfl⟩` from `stepMap_surjective ψ d J T T' y`. Conclude with `⟨Submodule.Quotient.mk x, rfl⟩`.
+-/
 theorem coverMap_surjective (ψ : AddChar k Circle) (d : Fin 2 → ℕ)
     (J : Representation ℂ (Levi k fun a => Fin (d a)) Y) (T T' : Subrepresentation J) :
     Function.Surjective (coverMap ψ d J T T') := by
@@ -59,6 +70,11 @@ theorem coverMap_surjective (ψ : AddChar k Circle) (d : Fin 2 → ℕ)
   obtain ⟨x, rfl⟩ := stepMap_surjective ψ d J T T' y
   exact ⟨Submodule.Quotient.mk x, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff]`. Establish `h1 : (⊤ : Submodule ℂ C) = (⊤ : Submodule ℂ B).map p.toLinearMap`. Rewrite using `[Submodule.map_top]`. Conclude with `(LinearMap.range_eq_top.2 hp).symm`. Rewrite using `[h1, ← h, Submodule.map_iSup]`.
+
+Use `iSup_le fun f => ?_` and prove the remaining obligations. Use `le_trans ?_ (le_iSup _ (p.comp f))` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨v, rfl⟩, rfl⟩`. Conclude with `⟨v, rfl⟩`.
+-/
 theorem iSup_range_of_surjective {G A B C : Type} [Group G] [AddCommGroup A] [Module ℂ A] [AddCommGroup B]
     [Module ℂ B] [AddCommGroup C] [Module ℂ C] {α : Representation ℂ G A} {β : Representation ℂ G B}
     {γ : Representation ℂ G C} (p : β.IntertwiningMap γ) (hp : Function.Surjective p)
@@ -74,6 +90,11 @@ theorem iSup_range_of_surjective {G A B C : Type} [Group G] [AddCommGroup A] [Mo
   rintro _ ⟨_, ⟨v, rfl⟩, rfl⟩
   exact ⟨v, rfl⟩
 
+/- English proof (translation)
+Introduce `k _ _ _ _ ψ d Y _ _ J T T' X _ _ ρ _ E`. Establish `hE : Function.Surjective (whitMap ψ d E.symm.toIntertwiningMap)`. Introduce `y`. Take `⟨x, rfl⟩` from `Submodule.mkQ_surjective _ y`. Conclude with `⟨Submodule.Quotient.mk (E x), by show Submodule.Quotient.mk (E.symm (E x)) = _`.
+
+Rewrite using `[E.symm_apply_apply]`. Use the proof step `rfl⟩`. Conclude with `iSup_range_of_surjective ((coverMap ψ d J T T').comp (whitMap ψ d E.symm.toIntertwiningMap)) ((coverMap_surjective ψ d J T T').comp hE) (GlobalTheory.T.whittaker_two_block_intertwiners_span k ψ d X ρ)`.
+-/
 theorem main : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle) (d : Fin 2 → ℕ) (Y : Type) [AddCommGroup Y] [Module ℂ Y]
     (J : Representation ℂ (Levi k fun a => Fin (d a)) Y) (T T' : Subrepresentation J) (X : Fin 2 → Type)
     [∀ a, AddCommGroup (X a)] [∀ a, Module ℂ (X a)] (ρ : ∀ a, Representation ℂ (GL (Fin (d a)) k) (X a)),

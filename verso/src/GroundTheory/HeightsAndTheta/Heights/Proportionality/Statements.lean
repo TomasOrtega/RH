@@ -19,6 +19,9 @@ def RegMaxHessian.Statement : Prop :=
       |fderiv ℝ (fderiv ℝ (ReciprocityTheory.AnForm.A.regMax (ι := ι) η)) t (Pi.single i 1)
           (Pi.single j 1)| ≤ C / η
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨inferInstance⟩, inferInstance, ⟨inferInstance⟩⟩`.
+-/
 example : Nonempty (Fintype (Fin 2)) ∧ Nonempty (Fin 2) ∧ Nonempty (DecidableEq (Fin 2)) :=
   ⟨⟨inferInstance⟩, inferInstance, ⟨inferInstance⟩⟩
 
@@ -35,6 +38,9 @@ def CurvatureMinus.Statement : Prop :=
       ((((1 - ‖z 0‖ ^ 2) ^ 2)⁻¹ : ℝ) : ℂ) ∧
     0 < ((1 - ‖z 0‖ ^ 2) ^ 2)⁻¹
 
+/- English proof (translation)
+Evaluate the numerical expressions.
+-/
 example : ‖(fun _ : Fin 1 => (1 / 2 : ℂ)) 0‖ < 1 := by
   norm_num
 
@@ -45,6 +51,13 @@ def TopPowerDiagonal.Statement : Prop :=
 abbrev sqZeroPair : Fin 2 → DualNumber (DualNumber ℚ) :=
   ![TrivSqZeroExt.inl DualNumber.eps, DualNumber.eps]
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `j fin_cases j`. Simplify using `[sqZeroPair, pow_two, ← TrivSqZeroExt.inl_mul]`. Simplify using `[sqZeroPair, pow_two]`. Rewrite using `[Fin.prod_univ_two]`.
+
+Introduce `h`. Establish `h1` using `congrArg TrivSqZeroExt.snd h`. Establish `h2 : (sqZeroPair 0 * sqZeroPair 1).snd = DualNumber.eps`. Simplify using `only [sqZeroPair, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one, TrivSqZeroExt.snd_mul, TrivSqZeroExt.fst_inl, TrivSqZeroExt.snd_inl, DualNumber.fst_eps, DualNumber.snd_eps, smul_zero, add_zero, smul_eq_mul, mul_one]`. Rewrite `h1` using `[h2, TrivSqZeroExt.snd_zero]`.
+
+Conclude with `absurd (congrArg TrivSqZeroExt.snd h1) (by rw [DualNumber.snd_eps, TrivSqZeroExt.snd_zero]; exact one_ne_zero)`.
+-/
 example : (∀ j, sqZeroPair j ^ 2 = 0) ∧ ∏ j, sqZeroPair j ≠ 0 := by
   refine ⟨?_, ?_⟩
   · intro j
@@ -77,6 +90,9 @@ def TopPowerPairsVandermonde.Statement : Prop :=
       ((N.choose 2).factorial : R) * RestTerms.vandermondeOf lam * ∏ p ∈ pairsLT N, e p ∧
     RestTerms.vandermondeOf lam = (-1) ^ N.choose 2 * (Matrix.vandermonde lam).det
 
+/- English proof (translation)
+Introduce `_ _` and use `by simp [pow_two]`.
+-/
 example : ∀ p ∈ pairsLT 2, (fun _ : Fin 2 × Fin 2 => (DualNumber.eps : DualNumber ℚ)) p ^ 2 = 0 :=
   fun _ _ => by simp [pow_two]
 
@@ -88,6 +104,9 @@ def PolarisationPowers.Statement : Prop :=
     (∀ lam : Fin n → ℝ, A (sum₂ lam ^ D) = B (sum₂ lam ^ D)) →
     ∀ p ∈ homogeneousSubmodule (Fin n) ℝ D, A p = B p
 
+/- English proof (translation)
+Introduce `_` and use `rfl`.
+-/
 example : ∀ lam : Fin 2 → ℝ,
     (aeval (fun _ : Fin 2 => (1 : ℝ))).toLinearMap (sum₂ lam ^ 3) =
       (aeval (fun _ : Fin 2 => (1 : ℝ))).toLinearMap (sum₂ lam ^ 3) :=
@@ -103,6 +122,9 @@ def UniformIntegrabilityCore.Statement : Prop :=
     ∀ (a : ℕ) (η : ℝ), 0 < η → ∃ ε₀ t₁ : ℝ, 0 < ε₀ ∧ 0 < t₁ ∧
       ∀ ε t, 0 < ε → ε ≤ ε₀ → 0 < t → t ≤ t₁ → J a ε t ≤ η
 
+/- English proof (translation)
+Establish `h : Tendsto (id : ℝ → ℝ) (𝓝[>] 0) (𝓝 0)` using `tendsto_nhdsWithin_of_tendsto_nhds tendsto_id`. Use `⟨fun ε t _ _ => by simp, h, fun _ => le_rfl, h, ?_⟩` and prove the remaining obligations. Introduce `a ε t₀ t _ _ ht`. Simplify using `only [id, Nat.cast_add, Nat.cast_one]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 example : UniformIntegrabilityCore.Hyp (fun a ε t => ε + a * t) id (fun _ => 0) id := by
   have h : Tendsto (id : ℝ → ℝ) (𝓝[>] 0) (𝓝 0) := tendsto_nhdsWithin_of_tendsto_nhds tendsto_id
   refine ⟨fun ε t _ _ => by simp, h, fun _ => le_rfl, h, ?_⟩
@@ -123,6 +145,11 @@ def CoefficientwiseLimit.Statement : Prop :=
       (∀ m, Tendsto (fun t => coeff m (F t)) (𝓝[>] 0) (𝓝 (coeff m P))) ∧
       ∀ lam : Fin n → ℝ, Tendsto (fun t => eval lam (F t)) (𝓝[>] 0) (𝓝 (eval lam P))
 
+/- English proof (translation)
+Use `⟨fun t _ _ => ?_, tendsto_nhdsWithin_of_tendsto_nhds tendsto_id, one_pos, ?_⟩` and prove the remaining obligations. Conclude with `(totalDegree_mul _ _).trans (by simp [totalDegree_C, totalDegree_X])`. Introduce `t t' lam ht' htt' _ hlam`. Establish `h0 : |lam 0| ≤ 1`. Use `norm_le_pi_norm lam 0` as an intermediate fact.
+
+Rewrite `this` using `[Real.norm_eq_abs]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [eval_mul, eval_C, eval_X, id]`. Rewrite using `[← sub_mul, abs_mul, abs_of_nonneg (by linarith)]`. Use polynomial arithmetic with `[abs_nonneg (lam 0)]`.
+-/
 example : CoefficientwiseLimit.Hyp 1 1 (fun t => C t * X 0) id 1 := by
   refine ⟨fun t _ _ => ?_, tendsto_nhdsWithin_of_tendsto_nhds tendsto_id, one_pos, ?_⟩
   · exact (totalDegree_mul _ _).trans (by simp [totalDegree_C, totalDegree_X])
@@ -150,6 +177,9 @@ def AmplePerturbation.Statement : Prop :=
       (D : ℝ) * I (Function.update (fun _ => L + ε • H) ⟨0, hyp.1⟩ (ε • ((2 : ℝ) • H + b))) <
         I (fun _ => L + ε • H)
 
+/- English proof (translation)
+Use `⟨by norm_num, fun σ v => ?_, by simp⟩` and prove the remaining obligations. Simplify using `only [MultilinearMap.mkPiAlgebra_apply, Function.comp_apply]`. Conclude with `Equiv.prod_comp σ v`.
+-/
 example : AmplePerturbation.Hyp 2 (MultilinearMap.mkPiAlgebra ℝ (Fin 2) ℝ) (1 : ℝ) := by
   refine ⟨by norm_num, fun σ v => ?_, by simp⟩
   simp only [MultilinearMap.mkPiAlgebra_apply, Function.comp_apply]
@@ -186,6 +216,9 @@ def ReflectionWeights.Statement : Prop :=
     invariantPart N y lam i = ∑ l ∈ (Finset.Icc 1 N).erase i, invariantCoord N lam i l • y l ∧
     invariantPart N y (swapAdjacent i lam) i = invariantPart N y lam i
 
+/- English proof (translation)
+Evaluate the numerical expressions.
+-/
 example : (fun l : ℕ => (l : ℝ)) 0 = 0 ∧ 2 ≤ 2 ∧ 1 ≤ 1 ∧ 1 < 2 := by
   norm_num
 

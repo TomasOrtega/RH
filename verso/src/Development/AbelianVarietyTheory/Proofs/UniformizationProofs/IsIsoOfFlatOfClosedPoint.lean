@@ -21,6 +21,9 @@ noncomputable section
 namespace GlobalTheory.PrimitiveOverValuationRing
 open GlobalTheory.CechPic
 
+/- English proof (translation)
+Establish `e` using `IsOpenImmersion.lift_fac W.ι r (by`. Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `hr z)`. Rewrite using `[← e, pull_comp, h, map_zero]`.
+-/
 theorem pull_eq_zero_of_mem {Y Z : Scheme.{0}} (W : Y.Opens) (r : Z ⟶ Y) (hr : ∀ z, r z ∈ W) {c : CechPic.Pic Y}
     (h : CechPic.pull W.ι c = 0) : CechPic.pull r c = 0 := by
   have e := IsOpenImmersion.lift_fac W.ι r (by
@@ -29,6 +32,9 @@ theorem pull_eq_zero_of_mem {Y Z : Scheme.{0}} (W : Y.Opens) (r : Z ⟶ Y) (hr :
     exact hr z)
   rw [← e, pull_comp, h, map_zero]
 
+/- English proof (translation)
+Use `(cls_linComb hL _ _ h).trans ?_` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_two, sub_eq_add_neg]`. Conclude with `congrArg₂ (· + ·) (one_zsmul _) (neg_one_zsmul _)`.
+-/
 theorem cls_pair {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) (a b : Y ⟶ X)
     (h : (LB.LinComb L (K := Fin 2) ![a, b] ![1, -1]).IsLB) :
     cls _ h = CechPic.pull a (cls L hL) - CechPic.pull b (cls L hL) := by
@@ -40,6 +46,11 @@ section Points
 
 variable {S : Scheme.{0}} {B : Over S} [GrpObj B] {L O : LB B.left}
 
+/- English proof (translation)
+Establish `h₁ : (translDiff B L x).IsLB` using `LB.isLB_linComb hL _ _`. Establish `h₂` using `pull_isLB hO (snd T B).left`. Establish `hM` using `LB.isLB_div h₁ h₂`. Use `(cls_eq_zero_iff (pull_isLB hM r)).symm.trans ?_` and prove the remaining obligations. Rewrite using `[cls_pull hM, cls_div h₁ h₂, cls_pull hO]`.
+
+Conclude with `Iff.of_eq (congrArg (fun q => CechPic.pull r (q - _) = 0) (cls_pair hL _ _ h₁))`.
+-/
 theorem triv_iff (hL : L.IsLB) (hO : O.IsLB) {T : Over S} (x : T ⟶ B) {Z : Scheme.{0}} (r : Z ⟶ (T ⊗ B).left) :
     Triv ((LB.div (translDiff B L x) (O.pull (snd T B).left)).pull r) ↔
       CechPic.pull r (CechPic.pull ((fst T B ≫ x) * snd T B).left (cls L hL) - CechPic.pull (snd T B).left (cls L hL) -
@@ -51,6 +62,15 @@ theorem triv_iff (hL : L.IsLB) (hO : O.IsLB) {T : Over S} (x : T ⟶ B) {Z : Sch
   rw [cls_pull hM, cls_div h₁ h₂, cls_pull hO]
   exact Iff.of_eq (congrArg (fun q => CechPic.pull r (q - _) = 0) (cls_pair hL _ _ h₁))
 
+/- English proof (translation)
+Introduce `p`. Take `⟨U, hU, h₁⟩` from `hx p`. Take `⟨U', hU', h₂⟩` from `hy p`. Use `⟨U ⊓ U', ⟨hU, hU'⟩, ?_⟩` and prove the remaining obligations. Establish `hD : (translDiff B L (x * y⁻¹)).IsLB` using `LB.isLB_linComb hL _ _`.
+
+Set `τ : T ⊗ B ⟶ T ⊗ B` to `lift (fst T B) ((fst T B ≫ y⁻¹) * snd T B)`. Establish `k₁ : τ ≫ fst T B = fst T B` using `lift_fst _ _`. Establish `k₂ : ∀ z : T ⟶ B, τ ≫ ((fst T B ≫ z) * snd T B) = (fst T B ≫ (z * y⁻¹)) * snd T B` using `fun z => by`. Rewrite using `[MonObj.comp_mul, lift_snd, ← Category.assoc, k₁, MonObj.comp_mul, _root_.mul_assoc]`. Establish `m : ∀ z, (fst T B).left ((((fst T B).left ⁻¹ᵁ (U ⊓ U')).ι ≫ τ.left) z) ∈ U ⊓ U'` using `fun z => by`.
+
+Establish `e` using `congrArg (fun q : T ⊗ B ⟶ T => q.left z.1) k₁`. Conclude with `(congrArg (· ∈ U ⊓ U') e).mpr z.2`. Establish `a₁` using `pull_eq_zero_of_mem _ _ (fun z => (m z).1) ((triv_iff hL hO x _).1 h₁)`. Establish `a₂` using `pull_eq_zero_of_mem _ _ (fun z => (m z).2) ((triv_iff hL hO y _).1 h₂)`. Establish `a` using `congrArg₂ (· - ·) a₁ a₂`.
+
+Simplify using `only [← map_sub, sub_sub_sub_cancel_right, sub_zero] at a`. Rewrite `a` using `[pull_comp, map_sub, ← pull_comp, ← pull_comp, ← Over.comp_left, ← Over.comp_left, k₂, k₂, mul_inv_cancel, MonObj.comp_one, _root_.one_mul]`. Use `(cls_eq_zero_iff (pull_isLB hD _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_pull hD]`. Conclude with `(congrArg _ (cls_pair hL _ _ hD)).trans a`.
+-/
 theorem inK_mul_inv (hL : L.IsLB) (hO : O.IsLB) {T : Over S} (x y : T ⟶ B)
     (hx : ∀ p : T.left, ∃ U : T.left.Opens, p ∈ U ∧
       Triv ((LB.div (translDiff B L x) (O.pull (snd T B).left)).pull ((fst T B).left ⁻¹ᵁ U).ι))
@@ -81,6 +101,25 @@ theorem inK_mul_inv (hL : L.IsLB) (hO : O.IsLB) {T : Over S} (x y : T ⟶ B)
 
 end Points
 
+/- English proof (translation)
+Take `⟨P', g, hg, -, hm, ht⟩` from `hL.polBaseChange S _ f P`. Establish `hc : CechPic.pull g (cls P.L P.isLB) = cls P'.L P'.isLB` using `(cls_eq_iff (pull_isLB P.isLB g) P'.isLB).2 ht`. Establish `hO'` using `pull_isLB hO g`. Establish `one : ∀ T : Over (Spec (CommRingCat.of K)), toBase hg.w (1 : T ⟶ P'.A) = 1` using `fun T => by`. Use `hm T 1 1` as an intermediate fact.
+
+Rewrite `this` using `[_root_.mul_one]`. Conclude with `left_eq_mul.1 this`. Establish `lamO : lam (cls O hO) (fst P.A P.A) (snd P.A P.A) = 0` using `(cls_cube_two hO _ _ (LB.isLB_linComb hO _ _)).symm.trans ((cls_eq_zero_iff _).2 hu)`. Establish `lamO' : lam (cls _ hO') (fst P'.A P'.A) (snd P'.A P'.A) = 0`. Establish `e` using `congrArg (CechPic.pull (lift (toBase hg.w (fst P'.A P'.A)) (toBase hg.w (snd P'.A P'.A))).left) lamO`.
+
+Rewrite `e` using `[pull_lam, lift_fst, lift_snd, map_zero, lam, ← hm, ← one]`. Rewrite using `[cls_pull hO, lam, ← pull_comp, ← pull_comp, ← pull_comp, ← pull_comp]`. Conclude with `e`. Take `⟨x', hx'⟩` from `GlobalTheory.T.exists_point_primitiveBundle_eq_translate_ppav hL K P' (O.pull g) hO' ((cls_eq_zero_iff (LB.isLB_linComb hO' _ _)).1 ((cls_cube_two hO' _ _ (LB.isLB_linComb hO' _ _)).trans lamO'))`. Establish `e` using `((cls_eq_iff hO' (LB.isLB_linComb P'.isLB _ _)).2 hx').trans (cls_pair P'.isLB _ _ _)`.
+
+Set `T : Over S` to `Over.mk f`. Establish `wx : x'.left ≫ P'.A.hom = 𝟙 _` using `Over.w x'`. Set `x : T ⟶ P.A` to `Over.homMk (x'.left ≫ g) (by show (x'.left ≫ g) ≫ P.A.hom = f`. Rewrite using `[Category.assoc, hg.w, ← Category.assoc, wx]`. Conclude with `Category.id_comp _)`.
+
+Establish `w : (snd T P.A).left ≫ P.A.hom = (fst T P.A).left ≫ f` using `(Over.w (snd T P.A)).trans (Over.w (fst T P.A)).symm`. Set `T' : Over (Spec (CommRingCat.of K))` to `Over.mk (Y := (T ⊗ P.A).left) (fst T P.A).left`. Set `h : T' ⟶ P'.A` to `Over.homMk (hg.lift (snd T P.A).left (fst T P.A).left w) (hg.lift_snd _ _ _)`. Establish `hh : h.left ≫ g = (snd T P.A).left` using `hg.lift_fst _ _ _`. Set `u : Over.mk (T'.hom ≫ f) ⟶ T ⊗ P.A` to `Over.homMk (𝟙 _) ((Category.id_comp _).trans (Over.w (fst T P.A)).symm)`.
+
+Establish `b₁ : u ≫ snd T P.A = toBase hg.w h` using `Over.OverMorphism.ext ((Category.id_comp _).trans hh.symm)`. Establish `b₂ : u ≫ fst T P.A ≫ x = toBase hg.w (toUnit T' ≫ x')`. Use `Over.OverMorphism.ext ((Category.id_comp _).trans ?_)` and prove the remaining obligations. Establish `: (toUnit T').left = (fst T P.A).left` using `(Category.comp_id _).symm.trans (Over.w (toUnit T'))`. Use `show (fst T P.A).left ≫ x'.left ≫ g = ((toUnit T').left ≫ x'.left) ≫ g`.
+
+Rewrite using `[this]`. Conclude with `(Category.assoc _ _ _).symm`. Establish `b : h.left ≫ ((toUnit P'.A ≫ x') * 𝟙 P'.A).left ≫ g = ((fst T P.A ≫ x) * snd T P.A).left`. Establish `b₃ : toBase hg.w (h ≫ ((toUnit P'.A ≫ x') * 𝟙 P'.A)) = u ≫ ((fst T P.A ≫ x) * snd T P.A)`. Rewrite using `[MonObj.comp_mul, MonObj.comp_mul, b₁, b₂, ← hm, Category.comp_id, ← Category.assoc, comp_toUnit]`.
+
+Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg CommaMorphism.left b₃).trans (Category.id_comp _))`. Establish `e'` using `congrArg (CechPic.pull h.left) e`. Rewrite `e'` using `[cls_pull hO, ← hc, pull_id, map_sub, ← pull_comp, ← pull_comp, ← pull_comp, ← pull_comp, Category.assoc, b, hh]`. Establish `h₁ : (translDiff P.A P.L x).IsLB` using `LB.isLB_linComb P.isLB _ _`. Establish `h₂` using `pull_isLB hO (snd T P.A).left`.
+
+Use `⟨x, (cls_eq_zero_iff (LB.isLB_div h₁ h₂)).1 ?_⟩` and prove the remaining obligations. Rewrite using `[cls_div h₁ h₂, sub_eq_zero]`. Conclude with `(cls_pair P.isLB _ _ h₁).trans e'.symm`.
+-/
 theorem exists_geometric_point (hL : Laws) {S : Scheme.{0}} (P : PolAV S) {O : LB P.A.left} (hO : O.IsLB)
     (hu : ∃ u : LB.Gen (abelian₂ P.A O), u.IsGen) (K : Type) [Field K] [IsAlgClosed K] (f : Spec (CommRingCat.of K) ⟶ S) :
     ∃ x : Over.mk f ⟶ P.A, Triv (LB.div (translDiff P.A P.L x) (O.pull (snd (Over.mk f) P.A).left)) := by
@@ -131,6 +170,11 @@ theorem exists_geometric_point (hL : Laws) {S : Scheme.{0}} (P : PolAV S) {O : L
   rw [cls_div h₁ h₂, sub_eq_zero]
   exact (cls_pair P.isLB _ _ h₁).trans e'.symm
 
+/- English proof (translation)
+Establish `: Surjective q` using `⟨fun s => by`. Take `⟨y, -, hy⟩` from `Flat.generalizingMap q (a := h) (b := s) (by`. Rewrite using `[hh]`. Conclude with `IsLocalRing.specializes_closedPoint s)`. Conclude with `⟨y, hy⟩⟩`.
+
+Conclude with `isIso_of_isClosedImmersion_of_surjective q`.
+-/
 theorem isIso_of_flat_of_closedPoint {V : Type} [CommRing V] [IsLocalRing V] [_root_.IsReduced V] {X : Scheme.{0}}
     (q : X ⟶ Spec (CommRingCat.of V)) [IsClosedImmersion q] [Flat q] (h : X) (hh : q h = IsLocalRing.closedPoint V) :
     IsIso q := by
@@ -140,6 +184,21 @@ theorem isIso_of_flat_of_closedPoint {V : Type} [CommRing V] [IsLocalRing V] [_r
     exact ⟨y, hy⟩⟩
   exact isIso_of_isClosedImmersion_of_surjective q
 
+/- English proof (translation)
+Introduce `hL V _ _ _ P O hO hu`. Establish `proj : IsProjBy P.A.hom`. Take `⟨d, -, n, s, hs⟩` from `(GlobalTheory.Unif.relAmple_iff_veryAmpleBy V P.A P.L P.isLB).1 P.ample`. Conclude with `⟨_, isLB_pw P.isLB _, n, s, hs⟩`. Take `⟨H, j, hj, hH⟩` from `GlobalTheory.T.exists_closed_subscheme_translation_kernel hL.globalFns V P.A P.isAb proj P.L O P.isLB hO`.
+
+Establish `fin : IsFinite H.hom` using `GlobalTheory.AmpleStabFinite.isFinite_of_relAmple hL.globalFns V P.A P.isAb P.L O P.isLB hO P.ample H j hj hH`. Take `⟨r, hr⟩` from `P.rigid`. Take `⟨c⟩` from `(hL.cube _ P ⟨P.L, r, P.isLB, hr⟩ rfl).1`. Establish `flat : Flat H.hom` using `GlobalTheory.T.flat_kernelPolarisation_cosets_over_DVR hL.globalFns V P.A P.isAb proj ⟨P.L, r, P.isLB, hr⟩ c O hO hu H j hj hH fin`. Establish `mono : Mono H.hom` using `⟨fun {Z} a b e => by`.
+
+Set `a' : Over.mk (b ≫ H.hom) ⟶ H` to `Over.homMk a e`. Set `b' : Over.mk (b ≫ H.hom) ⟶ H` to `Over.homMk b rfl`. Use `(inK_mul_inv P.isLB hO (a' ≫ j) (b' ≫ j) ((hH _ _).2 ⟨_, rfl⟩) ((hH _ _).2 ⟨_, rfl⟩)).eq_one P.ktriv` as an intermediate fact. Rewrite `this` using `[mul_inv_eq_one]`. Conclude with `(cancel_mono j.left).1 (congrArg CommaMorphism.left this)⟩`.
+
+Establish `: IsClosedImmersion H.hom` using `(IsClosedImmersion.iff_isFinite_and_mono _).2 ⟨fin, mono⟩`. Set `K : Type` to `AlgebraicClosure (IsLocalRing.ResidueField V)`. Set `φ : V →+* K` to `(algebraMap (IsLocalRing.ResidueField V) K).comp (IsLocalRing.residue V)`. Establish `: IsLocalHom φ` using `RingHom.isLocalHom_comp _ _`. Take `⟨x₀, hx₀⟩` from `exists_geometric_point hL P hO hu K (Spec.map (CommRingCat.ofHom φ))`.
+
+Take `⟨y, -⟩` from `(hH _ x₀).1 fun p => ⟨⊤, trivial, by`. Establish `hM` using `LB.isLB_div (show (translDiff P.A P.L x₀).IsLB from LB.isLB_linComb P.isLB _ _) (pull_isLB hO (snd _ P.A).left)`. Use `(cls_eq_zero_iff (pull_isLB hM _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_pull hM, (cls_eq_zero_iff hM).2 hx₀, map_zero]⟩`. Establish `: IsIso H.hom` using `isIso_of_flat_of_closedPoint H.hom (y.left (IsLocalRing.closedPoint K)) ((congrArg (fun q => q (IsLocalRing.closedPoint K)) (Over.w y)).trans (IsLocalRing.comap_closedPoint φ))`.
+
+Set `σ : 𝟙_ (Over (Spec (CommRingCat.of V))) ⟶ H` to `Over.homMk (inv H.hom) (IsIso.inv_hom_id _)`. Take `⟨U, hU, ht⟩` from `(hH _ (σ ≫ j)).2 ⟨σ, rfl⟩ (IsLocalRing.closedPoint V)`. Take `rfl : U = ⊤` from `(IsLocalRing.closedPoint_mem_iff U).1 hU`. Establish `e` using `pull_eq_zero_of_mem ((fst _ P.A).left ⁻¹ᵁ ⊤) (lift (toUnit P.A) (𝟙 P.A)).left (fun _ => trivial) ((triv_iff P.isLB hO (σ ≫ j) _).1 ht)`. Rewrite `e` using `[map_sub, map_sub, ← pull_comp, ← pull_comp, ← pull_comp, ← Over.comp_left, ← Over.comp_left, MonObj.comp_mul, lift_snd, lift_fst_assoc, sub_eq_zero, Over.id_left, pull_id (cls O hO)]`.
+
+Conclude with `⟨σ ≫ j, (cls_eq_iff hO (LB.isLB_linComb P.isLB _ _)).1 (e.symm.trans (cls_pair P.isLB _ _ _).symm)⟩`.
+-/
 theorem exists_section_translate : Laws → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (P : PolAV (Spec (CommRingCat.of V))) (O : LB P.A.left), O.IsLB → (∃ u : LB.Gen (abelian₂ P.A O), u.IsGen) → ∃ x : 𝟙_ _ ⟶ P.A, LBIso O (LB.LinComb P.L (K := Fin 2) ![((toUnit P.A ≫ x) * 𝟙 P.A).left, 𝟙 P.A.left] ![1, -1]) := by
   intro hL V _ _ _ P O hO hu
   have proj : IsProjBy P.A.hom := by

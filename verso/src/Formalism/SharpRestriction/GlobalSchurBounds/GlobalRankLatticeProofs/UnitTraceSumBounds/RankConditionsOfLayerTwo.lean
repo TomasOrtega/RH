@@ -26,12 +26,20 @@ def trFr {G : ι → Matrix (Fin n) (Fin n) ℂ} (g : ι → Matrix (Fin n) (Fin
   (⟨fun τ => g τ * y.1 τ, fun τ => by rw [det_mul]; exact (hg τ).mul (y.2 τ)⟩ :
     {y : ι → Matrix (Fin n) (Fin n) ℂ // ∀ τ, IsUnit (y τ).det})
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem trFr_val {G : ι → Matrix (Fin n) (Fin n) ℂ} (g : ι → Matrix (Fin n) (Fin n) ℂ) (hg : ∀ τ, IsUnit (g τ).det)
     (y : Frames G) (τ : ι) : (trFr g hg y).1 τ = g τ * y.1 τ := rfl
 
 def frOne (G : ι → Matrix (Fin n) (Fin n) ℂ) : Frames G :=
   (⟨fun _ => 1, fun _ => by simp⟩ : {y : ι → Matrix (Fin n) (Fin n) ℂ // ∀ τ, IsUnit (y τ).det})
 
+/- English proof (translation)
+Use `le_antisymm ((Formalism.L2.Col.CSpan_le_span (RingHom.id ℂ) lam).trans ?_) fun F hF => ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨P, hP, rfl⟩`. Use `show MvPolynomial.map (RingHom.id ℂ) P ∈ _`. Rewrite using `[MvPolynomial.map_id]`.
+
+Conclude with `hP`. Establish `h` using `Formalism.L2.Col.map_mem_CSpan (RingHom.id ℂ) lam F hF`. Rewrite `h` using `[MvPolynomial.map_id]`. Then use the resulting hypothesis.
+-/
 theorem cspan_eq (lam : ι → DomWeight n) : CSpan lam = Formalism.L2.DIV.VV ℂ lam := by
   refine le_antisymm ((Formalism.L2.Col.CSpan_le_span (RingHom.id ℂ) lam).trans ?_) fun F hF => ?_
   · rw [Submodule.span_le]
@@ -42,6 +50,9 @@ theorem cspan_eq (lam : ι → DomWeight n) : CSpan lam = Formalism.L2.DIV.VV �
   · have h := Formalism.L2.Col.map_mem_CSpan (RingHom.id ℂ) lam F hF
     rwa [MvPolynomial.map_id] at h
 
+/- English proof (translation)
+Unfold `ValC`. Rewrite using `[cspan_eq]`.
+-/
 theorem valC_eq (G : ι → Matrix (Fin n) (Fin n) ℂ) (lam : ι → DomWeight n) :
     ValC G lam = (Formalism.L2.DIV.VV ℂ lam).map (fnOf G (shiftOf lam) 1) := by
   unfold ValC
@@ -56,11 +67,19 @@ instance valC_fd (G : ι → Matrix (Fin n) (Fin n) ℂ) (lam : ι → DomWeight
   haveI : FiniteDimensional ℂ (Formalism.L2.DIV.VV ℂ lam) := Module.Finite.of_basis (Formalism.L2.DIV.bVV ℂ lam)
   Module.Finite.equiv (valCEquiv G lam)
 
+/- English proof (translation)
+Rewrite using `[← (valCEquiv G lam).finrank_eq, Module.finrank_eq_nat_card_basis (Formalism.L2.DIV.bVV ℂ lam)]`. Conclude with `Nat.card_pi`.
+-/
 theorem finrank_valC (G : ι → Matrix (Fin n) (Fin n) ℂ) (lam : ι → DomWeight n) :
     Module.finrank ℂ (ValC G lam) = ∏ τ, Nat.card (Formalism.GradedWeylDivisibility.ssIdx n n (lam τ).natW) := by
   rw [← (valCEquiv G lam).finrank_eq, Module.finrank_eq_nat_card_basis (Formalism.L2.DIV.bVV ℂ lam)]
   exact Nat.card_pi
 
+/- English proof (translation)
+Rewrite `hv`, the goal using `[valC_eq]`. Take `⟨P, hP, rfl⟩` from `hv`. Use `⟨(∏ τ, (g τ).det ^ shiftOf lam τ) • Formalism.GradedWeylDivisibility.blockAct ℂ g P, Submodule.smul_mem _ _ (Formalism.L2.DIV.ps_blockAct_mem_VV lam g hP), ?_⟩` and prove the remaining obligations. Rewrite using `[← Formalism.L2.Col.fnOf_mul]`. Use function extensionality and compare the values at `z`.
+
+Simplify using `only [fnOf, LinearMap.coe_mk, AddHom.coe_mk, trFr_val, Pi.one_apply, Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem valC_tr (G : ι → Matrix (Fin n) (Fin n) ℂ) (lam : ι → DomWeight n) (g : ι → Matrix (Fin n) (Fin n) ℂ)
     (hg : ∀ τ, IsUnit (g τ).det) {v : Frames G → ℂ} (hv : v ∈ ValC G lam) :
     (fun z => v (trFr g hg z)) ∈ ValC G lam := by
@@ -81,6 +100,9 @@ def piConstEquiv {M : Type} [AddCommGroup M] [Module ℂ M] (c : Type) (V : Subm
   left_inv _ := rfl
   right_inv _ := rfl
 
+/- English proof (translation)
+Rewrite using `[(piConstEquiv c V).finrank_eq, Module.finrank_pi_fintype]`. Simplify using the standard rewrite rules.
+-/
 theorem finrank_pi_const {M : Type} [AddCommGroup M] [Module ℂ M] (c : Type) [Fintype c] (V : Submodule ℂ M)
     [FiniteDimensional ℂ V] :
     Module.finrank ℂ (Submodule.pi Set.univ fun _ : c => V) = Fintype.card c * Module.finrank ℂ V := by
@@ -95,17 +117,60 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))}
   {ι : Type} [Fintype ι]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Use `show (a * b).map (emb τ) = a.map (emb τ) * b.map (emb τ)`. Conclude with `Matrix.map_mul`.
+-/
 theorem atInf_mul (emb : ι → E →+* ℂ) (a b : Matrix (Fin n) (Fin n) E) :
     atInf emb (a * b) = atInf emb a * atInf emb b := by
   funext τ
   show (a * b).map (emb τ) = a.map (emb τ) * b.map (emb τ)
   exact Matrix.map_mul
 
+/- English proof (translation)
+Establish `h` using `(Matrix.isUnits_det_units γ).map (emb τ)`. Rewrite `h` using `[RingHom.map_det]`. Conclude with `h`.
+-/
 theorem isUnit_atInf (emb : ι → E →+* ℂ) (γ : GL (Fin n) E) (τ : ι) : IsUnit (atInf emb γ.1 τ).det := by
   have h := (Matrix.isUnits_det_units γ).map (emb τ)
   rw [RingHom.map_det] at h
   exact h
 
+/- English proof (translation)
+Establish `hU : ∀ κ : S.U, (κ : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) ∈ UPts σ J (FiniteAdeleRing (𝓞 F) F)` using `fun κ => ((S.U_eq _).1 κ.2).1`. Establish `dec : ∀ x : UPts σ J (FiniteAdeleRing (𝓞 F) F), ∃ (c0 : c) (γ : UJ (σ : E →+* E) J) (κ : S.U), x.1 = bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) γ.1 * (y c0).1 * κ.1 := by`. Introduce `x`. Take `⟨c0, hc0⟩` from `hy.2 (Quotient.mk'' x)`. Take `⟨h, hh, k, hk, e⟩` from `(DoubleCoset.eq _ _ (y c0) x).1 hc0`.
+
+Establish `hh' : (h : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) ∈ (UJ (σ : E →+* E) J).map (bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F))) := Subgroup.mem_subgroupOf.1 hh`. Establish `hk' : (k : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) ∈ S.U` using `Subgroup.mem_subgroupOf.1 hk`. Take `⟨γ, hγ, hγe⟩` from `Subgroup.mem_map.1 hh'`. Use `⟨c0, ⟨γ, hγ⟩, ⟨_, hk'⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[e, Subgroup.coe_mul, Subgroup.coe_mul, ← hγe]`.
+
+Establish `uniq : ∀ (c1 c2 : c) (γ1 γ2 : UJ (σ : E →+* E) J) (κ1 κ2 : S.U), bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) γ1.1 * (y c1).1 * κ1.1 = bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ2.1 * (y c2).1 * κ2.1 → c1 = c2 ∧ γ1 = γ2 ∧ κ1 = κ2 := by`. Introduce `c1 c2 γ1 γ2 κ1 κ2 e`. Establish `hr : bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) (γ2⁻¹ * γ1).1 = (y c2).1 * (κ2 * κ1⁻¹).1 * ((y c1).1)⁻¹ := by`. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_inv, Subgroup.coe_mul, Subgroup.coe_inv]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hc : c1 = c2`. Set `r : UPts σ J (FiniteAdeleRing (𝓞 F) F)` to `y c2 * ⟨(κ2 * κ1⁻¹).1, hU _⟩ * (y c1)⁻¹`. Set `kk : UPts σ J (FiniteAdeleRing (𝓞 F) F)` to `⟨(κ1 * κ2⁻¹).1, hU _⟩`. Establish `hrR : r ∈ (ratPts σ J (FiniteAdeleRing (𝓞 F) F)).subgroupOf (UPts σ J (FiniteAdeleRing (𝓞 F) F))`. Rewrite using `[Subgroup.mem_subgroupOf]`.
+
+Use `Subgroup.mem_map.2 ⟨(γ2⁻¹ * γ1).1, (γ2⁻¹ * γ1).2, ?_⟩` and prove the remaining obligations. Rewrite using `[hr]`. Both sides reduce to the same expression. Establish `hkK : kk ∈ S.U.subgroupOf (UPts σ J (FiniteAdeleRing (𝓞 F) F))`. Rewrite using `[Subgroup.mem_subgroupOf]`.
+
+Conclude with `(κ1 * κ2⁻¹).2`. Use `hy.1 (show (Quotient.mk'' (y c1) : Cls S) = Quotient.mk'' (y c2) from (DoubleCoset.eq _ _ (y c1) (y c2)).2 ⟨r, hrR, kk, hkK, ?_⟩)` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [r, kk, Subgroup.coe_mul, Subgroup.coe_inv]`. Use `group`.
+
+Substitute `hc` using the available equality. Establish `hγ : γ2⁻¹ * γ1 = 1`. Use `hs c1 _ ?_` and prove the remaining obligations. Rewrite using `[hr]`. Use `Subgroup.mem_map.2 ⟨(κ2 * κ1⁻¹).1, (κ2 * κ1⁻¹).2, ?_⟩` and prove the remaining obligations.
+
+Simplify using `[MulAut.conj_apply]`. Establish `hγ' : γ1 = γ2` using `(inv_mul_eq_one.1 hγ).symm`. Substitute `hγ'` using the available equality. Use `⟨rfl, rfl, Subtype.ext (mul_left_cancel e)⟩` and prove the remaining obligations. Use `choose cc gam kap hdec using dec`.
+
+Use extensionality with `φ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, rfl⟩`. Use `Submodule.mem_pi.2 fun c0 _ => ?_` and prove the remaining obligations. Conclude with `(Submodule.mem_pi.1 (Submodule.mem_inf.1 hg).2) (y c0) (Set.mem_univ _)`.
+
+Introduce `hφ`. Establish `hφ' : ∀ c0, φ c0 ∈ ValC (gramC J emb) lam` using `fun c0 => (Submodule.mem_pi.1 hφ) c0 (Set.mem_univ _)`. Set `gf : UPts σ J (FiniteAdeleRing (𝓞 F) F) → Frames (gramC J emb) → ℂ` to `fun x z => ((S.chi (kap x) : ℂˣ) : ℂ) * φ (cc x) (trFr (atInf emb (((gam x).1)⁻¹ : GL (Fin n) E).1) (isUnit_atInf emb _) z)`. Establish `hAd : gf ∈ AdFun S emb`. Introduce `γ hγ x x' κ hx z z' hz`.
+
+Establish `e : bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) ((⟨γ, hγ⟩ : UJ (σ : E →+* E) J) * gam x).1 * (y (cc x)).1 * (kap x * κ).1 = bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) (gam x').1 * (y (cc x')).1 * (kap x').1 := by`. Rewrite using `[← hdec x', hx, hdec x]`. Simplify using `only [Subgroup.coe_mul, map_mul, mul_assoc]`. Take `⟨e1, e2, e3⟩` from `uniq _ _ _ _ _ _ e`. Establish `hfr : trFr (atInf emb (((gam x').1)⁻¹ : GL (Fin n) E).1) (isUnit_atInf emb _) z = trFr (atInf emb (((gam x).1)⁻¹ : GL (Fin n) E).1) (isUnit_atInf emb _) z'`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `τ`. Rewrite using `[trFr_val, trFr_val, hz τ, ← Matrix.mul_assoc, ← e2]`. Use `congr 1`. Establish `h1 : ((((⟨γ, hγ⟩ : UJ (σ : E →+* E) J) * gam x).1)⁻¹ : GL (Fin n) E).1 * γ.1 = (((gam x).1)⁻¹ : GL (Fin n) E).1`.
+
+Rewrite using `[← Units.val_mul]`. Use `congr 1`. Rewrite using `[Subgroup.coe_mul]`. Use `group`. Establish `h2` using `congrFun (atInf_mul emb ((((⟨γ, hγ⟩ : UJ (σ : E →+* E) J) * gam x).1)⁻¹ : GL (Fin n) E).1 γ.1) τ`.
+
+Rewrite `h2` using `[h1]`. Rewrite using `[h2]`. Both sides reduce to the same expression. Use `show ((S.chi (kap x') : ℂˣ) : ℂ) * φ (cc x') _ = ((S.chi κ : ℂˣ) : ℂ) * (((S.chi (kap x) : ℂˣ) : ℂ) * φ (cc x) _)`. Rewrite using `[hfr, ← e1, ← e3, map_mul, Units.val_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hpi : ∀ x, gf x ∈ ValC (gramC J emb) lam`. Introduce `x`. Establish `: gf x = ((S.chi (kap x) : ℂˣ) : ℂ) • (fun z => φ (cc x) (trFr (atInf emb (((gam x).1)⁻¹ : GL (Fin n) E).1) (isUnit_atInf emb _) z))` using `rfl`. Rewrite using `[this]`.
+
+Conclude with `Submodule.smul_mem _ _ (valC_tr _ lam _ _ (hφ' (cc x)))`. Use `show φ ∈ (AdFun S emb ⊓ Submodule.pi Set.univ (fun _ => ValC (gramC J emb) lam)).map (res emb y)`. Use `Submodule.mem_map.2 ⟨gf, Submodule.mem_inf.2 ⟨hAd, Submodule.mem_pi.2 fun x _ => hpi x⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `c0 z`. Establish `e : bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) (gam (y c0)).1 * (y (cc (y c0))).1 * (kap (y c0)).1 = bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) (1 : UJ (σ : E →+* E) J).1 * (y c0).1 * (1 : S.U).1 := by`.
+
+Rewrite using `[← hdec (y c0)]`. Simplify using the standard rewrite rules. Take `⟨e1, e2, e3⟩` from `uniq _ _ _ _ _ _ e`. Use `show ((S.chi (kap (y c0)) : ℂˣ) : ℂ) * φ (cc (y c0)) _ = φ c0 z`. Establish `hfr : trFr (atInf emb (((gam (y c0)).1)⁻¹ : GL (Fin n) E).1) (isUnit_atInf emb _) z = z`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `τ`. Rewrite using `[trFr_val, e2]`. Simplify using `[atInf]`. Rewrite using `[hfr, e1, e3, map_one, Units.val_one, one_mul]`.
+-/
 theorem fiC_eq_pi (S : StepLevel F E σ J T f bad) (emb : ι → E →+* ℂ) (lam : ι → DomWeight n) {c : Type}
     (y : c → UPts σ J (FiniteAdeleRing (𝓞 F) F))
     (hy : Function.Bijective (fun c => (Quotient.mk'' (y c) : Cls S)))
@@ -227,6 +292,13 @@ end Adelic
 
 section Rec
 
+/- English proof (translation)
+Set `T` to `(C.forms u).to0`. Set `e : ((D.mem u).C.cls 0 → (D.mem u).C.Y 0 → ℂ) ≃ₗ[ℂ] ((D.mem u).C.cls 0 → Fr D 0 (Nat.zero_le _) → ℂ)` to `{ toFun := fun φ c z => φ c (T.val0.eY.symm z) invFun := fun ψ c w => ψ c (T.val0.eY w) map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl left_inv := fun φ => by funext c w; simp right_inv := fun ψ => by funext c z; simp }`. Establish `hmap : (D.mem u).A.Mu0.map (e : _ →ₗ[ℂ] _) = FiC T.cls0.lev (embT D) ((D.fm u).lam 0) T.cls0.y`. Use extensionality with `ψ`. Rewrite using `[Submodule.mem_map_equiv, Mu0_iff T.val0]`.
+
+Establish `h1 : (fun c z => (e.symm ψ) c (T.val0.eY.symm z)) = ψ`. Use function extensionality and compare the values at `fun c => funext fun z => by show ψ c (T.val0.eY (T.val0.eY.symm z)) = ψ c z`. Rewrite using `[Equiv.apply_symm_apply]`. Rewrite using `[h1]`. Establish `hs : ∀ c (γ : UJ (sigD D : D.host.E →+* D.host.E) (gramN D 0 (Nat.zero_le _))), bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γ.1 ∈ T.cls0.lev.U.map (MulAut.conj (T.cls0.y c).1).toMonoidHom → γ = 1 := by`.
+
+Introduce `c γ hγ`. Take `⟨s, hs⟩` from `(T.cls0.stabI_range c γ).2 hγ`. Use `hst c` as an intermediate fact. Rewrite using `[← hs, Subsingleton.elim s 1, map_one]`. Rewrite using `[← LinearEquiv.finrank_map_eq e, hmap, fiC_eq_pi _ _ _ _ T.cls0.y_bij hs, finrank_pi_const, finrank_valC]`.
+-/
 theorem finrank_lowest_forms_space {D : D7} (C : ColsTiedSym D) (u : D.what₂.Word) (hst : (D.mem u).C.StabZero) :
     Module.finrank ℂ (D.mem u).A.Mu0 = Fintype.card ((D.mem u).C.cls 0) *
       ∏ τ, Nat.card (Formalism.GradedWeylDivisibility.ssIdx (D.R.N 0) (D.R.N 0) ((D.fm u).lam 0 τ).natW) := by
@@ -255,6 +327,15 @@ theorem finrank_lowest_forms_space {D : D7} (C : ColsTiedSym D) (u : D.what₂.W
     rw [← hs, Subsingleton.elim s 1, map_one]
   rw [← LinearEquiv.finrank_map_eq e, hmap, fiC_eq_pi _ _ _ _ T.cls0.y_bij hs, finrank_pi_const, finrank_valC]
 
+/- English proof (translation)
+Establish `hw : (Nat.card (Formalism.GradedWeylDivisibility.ssIdx (D.R.N 0) (D.R.N 0) ((D.fm u).lam 0 τ).natW) : ℝ) = Formalism.LogVandermondeBounds.StandardLattice.dimVN (Formalism.L2.Col.wSeq ((D.fm u).lam 0 τ)) (D.R.N 0)` using `Formalism.L2.Col.weylDim_holds _`. Rewrite using `[hw, StandardLattice.column_param_eq_fun, StandardLattice.dim_weyl_fin_eq_nat]`. Establish `key : ∀ (x : ℕ → ℝ) (N : ℕ), N = D.R.k → (∀ i, i < D.R.k → x i = StandardLattice.uN D u τ i - ((D.R.k : ℝ) - 1) / 2) → Formalism.LogVandermondeBounds.StandardLattice.dimVN x N = Formalism.LogVandermondeBounds.StandardLattice.dimVN (StandardLattice.uN D u τ) D.R.k`. Introduce `x N hN hx`. Substitute `hN` using the available equality.
+
+Unfold `Formalism.LogVandermondeBounds.StandardLattice.dimVN`. Rewrite using `[Formalism.L2.Col.vandN_congr (y := StandardLattice.uN D u τ) fun i j hi hj => by rw [hx i hi, hx j hj]; ring]`. Use `key _ _ (Formalism.L2.Col.rankN_zero D.R) fun i hi => ?_` and prove the remaining obligations. Establish `hi0 : i < D.R.N 0` using `by rw [Formalism.L2.Col.rankN_zero]; exact hi`. Establish `h` using `(D.fm u).lam_eq 0 (Nat.zero_le _) τ ⟨i, hi0⟩`.
+
+Rewrite `h` using `[dif_pos hi]`. Unfold `hcToWeightQ rhoVec at h`. Establish `h' : ((((D.fm u).lam 0 τ).w ⟨i, hi0⟩ : ℤ) : ℝ) = (((D.hcW u τ).u ⟨i, hi⟩ : ℚ) : ℝ) - (((D.R.k : ℝ) - 1) / 2 - (i : ℝ))`. Establish `h2` using `congrArg (fun q : ℚ => (q : ℝ)) h`. Move the coercions through the operations in `at h2`.
+
+Conclude with `h2`. Unfold `Formalism.L2.Col.wSeq StandardLattice.uN`. Rewrite using `[dif_pos hi0, dif_pos hi, h']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem card_ssIdx_eq {D : D7} (u : D.what₂.Word) (τ : D.what₂.Tau) :
     (Nat.card (Formalism.GradedWeylDivisibility.ssIdx (D.R.N 0) (D.R.N 0) ((D.fm u).lam 0 τ).natW) : ℝ) = StandardLattice.dimV (StandardLattice.uColR D u τ) := by
   have hw : (Nat.card (Formalism.GradedWeylDivisibility.ssIdx (D.R.N 0) (D.R.N 0) ((D.fm u).lam 0 τ).natW) : ℝ) =
@@ -281,6 +362,9 @@ theorem card_ssIdx_eq {D : D7} (u : D.what₂.Word) (τ : D.what₂.Tau) :
   rw [dif_pos hi0, dif_pos hi, h']
   ring
 
+/- English proof (translation)
+Introduce `hst`. Use `show ((Module.finrank ℂ (D.mem u).A.Mu0 : ℕ) : ℝ) = _`. Rewrite using `[finrank_lowest_forms_space C u hst, Nat.cast_mul, Nat.cast_prod, Nat.card_eq_fintype_card]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun τ _ => card_ssIdx_eq u τ`.
+-/
 theorem mu0Tie_of_sym {D : D7} (C : ColsTiedSym D) (u : D.what₂.Word) : StandardLattice.Mu0Tie D u := by
   intro hst
   show ((Module.finrank ℂ (D.mem u).A.Mu0 : ℕ) : ℝ) = _
@@ -292,10 +376,16 @@ end Rec
 
 section Fam
 
+/- English proof (translation)
+Take `⟨x0, h⟩` from `h`. Conclude with `rank_conditions_of_lowest_space Fm ⟨x0, fun x hx i u => mu0Tie_of_sym (h x hx i).2.choose u⟩`.
+-/
 theorem rank_conditions_of_layer_two {eps : ℝ} (Fm : FamP eps) (h : RealPlaceSecondLayerConditions Fm) : RankTiesF Fm := by
   obtain ⟨x0, h⟩ := h
   exact rank_conditions_of_lowest_space Fm ⟨x0, fun x hx i u => mu0Tie_of_sym (h x hx i).2.choose u⟩
 
+/- English proof (translation)
+Take `⟨x0, h⟩` from `h`. Conclude with `rankTiesF_of_col Fm ⟨x0, fun x hx h0 i => ⟨StandardLattice.HarishChandraReduction.content_bound_clause _ _, StandardLattice.HarishChandraReduction.levels_pro_g_on_columns _ _, weyl_dimension_formula_holds _, h x hx h0 i⟩⟩`.
+-/
 theorem rankTiesF_of_col' {eps : ℝ} (Fm : FamP eps)
     (h : ∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, ∀ u : (Fm.D x i).what₂.Word,
       ∃ X : StandardLattice.ColRep (Fm.D x i) (Fm.ex x hx i).lev u, StandardLattice.BaseWeightColumnCondition (Fm.D x i) (Fm.ex x hx i).lev u X) :

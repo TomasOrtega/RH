@@ -49,11 +49,17 @@ section Ring
 
 variable {k : Type} [Field k] [NumberField k] {σ : k →+* ℂ} {la : HeightOneSpectrum (𝓞 k)} {O : Subring ℂ} {l : ℕ}
 
+/- English proof (translation)
+Establish `h1 : la.valuation k ((m : k) * x) ≤ 1` using `la.valuation_le_one (K := k) (⟨_, hx⟩ : 𝓞 k)`. Rewrite `h1` using `[map_mul, GlobalTheory.ScalarUnit.val_natCast la hl hm, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem val_le_of_integral (hl : ((l : ℕ) : 𝓞 k) ∈ la.asIdeal) {m : ℕ} (hm : Nat.Coprime m l) {x : k}
     (hx : IsIntegral ℤ ((m : k) * x)) : la.valuation k x ≤ 1 := by
   have h1 : la.valuation k ((m : k) * x) ≤ 1 := la.valuation_le_one (K := k) (⟨_, hx⟩ : 𝓞 k)
   rwa [map_mul, GlobalTheory.ScalarUnit.val_natCast la hl hm, one_mul] at h1
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `hz`. Use `hO x (val_le_of_integral hl hm ?_)` and prove the remaining obligations. Rewrite using `[← isIntegral_algHom_iff σ.toIntAlgHom σ.injective]`. Simplify using `using hi`.
+-/
 theorem mem_of_integral (hl : ((l : ℕ) : 𝓞 k) ∈ la.asIdeal) (hO : ValRing σ la O) {m : ℕ} (hm : Nat.Coprime m l) {z : ℂ}
     (hz : ∃ x, σ x = z) (hi : IsIntegral ℤ ((m : ℂ) * z)) : z ∈ O := by
   obtain ⟨x, rfl⟩ := hz
@@ -61,6 +67,9 @@ theorem mem_of_integral (hl : ((l : ℕ) : 𝓞 k) ∈ la.asIdeal) (hO : ValRing
   rw [← isIntegral_algHom_iff σ.toIntAlgHom σ.injective]
   simpa using hi
 
+/- English proof (translation)
+Use `hO (m : k)⁻¹ (by rw [map_inv₀, GlobalTheory.ScalarUnit.val_natCast la hl hm, inv_one])` as an intermediate fact. Simplify using `using this`.
+-/
 theorem inv_mem_of_coprime (hl : ((l : ℕ) : 𝓞 k) ∈ la.asIdeal) (hO : ValRing σ la O) {m : ℕ} (hm : Nat.Coprime m l) :
     (m : ℂ)⁻¹ ∈ O := by
   have := hO (m : k)⁻¹ (by rw [map_inv₀, GlobalTheory.ScalarUnit.val_natCast la hl hm, inv_one])
@@ -68,6 +77,11 @@ theorem inv_mem_of_coprime (hl : ((l : ℕ) : 𝓞 k) ∈ la.asIdeal) (hO : ValR
 
 end Ring
 
+/- English proof (translation)
+Establish `h0 : IsPrimitiveRoot (zeta M) M` using `Complex.isPrimitiveRoot_exp M hM`. Establish `h1 : IsPrimitiveRoot (⟨zeta M, h⟩ : k) M` using `IsPrimitiveRoot.of_map_of_injective (f := k.val.toRingHom) h0 Subtype.val_injective`. Establish `h2` using `h1.map_of_injective σ.injective`. Use `haveI : NeZero M := ⟨hM⟩`. Take `⟨j, -, hj⟩` from `h2.eq_pow_of_pow_eq_one h0.pow_eq_one`.
+
+Conclude with `⟨⟨zeta M, h⟩ ^ j, by rw [map_pow, hj]⟩`.
+-/
 theorem zeta_mem_range {k : IntermediateField ℚ ℂ} {M : ℕ} (hM : M ≠ 0) (h : zeta M ∈ k) (σ : k →+* ℂ) :
     ∃ x, σ x = zeta M := by
   have h0 : IsPrimitiveRoot (zeta M) M := Complex.isPrimitiveRoot_exp M hM
@@ -78,6 +92,9 @@ theorem zeta_mem_range {k : IntermediateField ℚ ℂ} {M : ℕ} (hM : M ≠ 0) 
   obtain ⟨j, -, hj⟩ := h2.eq_pow_of_pow_eq_one h0.pow_eq_one
   exact ⟨⟨zeta M, h⟩ ^ j, by rw [map_pow, hj]⟩
 
+/- English proof (translation)
+Take `⟨j, rfl⟩` from `hd`. Introduce `T io e ho y hy`. Use `mul_mem (intCast_mem (algebraMap T.V T.Fr).range j) (h T io e ho y hy)` as an intermediate fact. Rewrite using `[map_one, one_mul, evI_smul, Int.cast_mul, map_mul, map_intCast io j, mul_comm (io _), mul_assoc]`. Conclude with `this`.
+-/
 theorem bddAll_scale {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo.Tor.Host E} {Dw : Datum H}
     {l : Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l} {la : HeightOneSpectrum (𝓞 c.F)} {κ n : ℤ} {f : Rul Xo c}
     (h : GlobalTheory.GoodPts.BddAll Xo c la (κ : c.F) f) (hd : κ ∣ n) : GlobalTheory.GoodPts.BddAll Xo c la 1 ((n : c.F) • f) := by
@@ -87,6 +104,25 @@ theorem bddAll_scale {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo
   rw [map_one, one_mul, evI_smul, Int.cast_mul, map_mul, map_intCast io j, mul_comm (io _), mul_assoc]
   exact this
 
+/- English proof (translation)
+Establish `one : ∀ z : ℂ, ∃ c : ℕ, IsAlgebraic ℤ z → ∃ m : ℕ, Nat.Coprime m l ∧ IsIntegral ℤ ((m : ℂ) * ((l : ℂ) ^ c * z))`. Introduce `z`. Distinguish the cases in `hz : IsAlgebraic ℤ z`. Take `⟨y, hy0, hy⟩` from `hz.exists_integral_multiple`. Take `⟨c, m, hm, e⟩` from `Nat.exists_eq_pow_mul_and_not_dvd (Int.natAbs_ne_zero.2 hy0) l hl.ne_one`.
+
+Use `⟨c, fun _ => ⟨m, ((Nat.Prime.coprime_iff_not_dvd hl).2 hm).symm, ?_⟩⟩` and prove the remaining obligations. Establish `e2 : (m : ℂ) * ((l : ℂ) ^ c * z) = ((y.natAbs : ℕ) : ℂ) * z` using `by rw [e]; push_cast; ring`. Rewrite using `[e2]`. Rewrite `hy` using `[zsmul_eq_mul]`. Establish `e3 : ((y.natAbs : ℕ) : ℂ) = ((y.sign : ℤ) : ℂ) * (y : ℂ)`.
+
+Rewrite using `[← Int.cast_mul, Int.sign_mul_self_eq_natAbs, Int.cast_natCast]`. Rewrite using `[e3, mul_assoc]`. Conclude with `(isIntegral_algebraMap (R := ℤ) (A := ℂ) (x := y.sign)).mul hy`. Conclude with `⟨0, fun h => absurd h hz⟩`. Use `choose cz hcz using one`.
+
+Take `⟨S, rfl⟩` from `hL`. Use `⟨S.sup fun v => (J v).support.sup fun mo => cz ((J v).coeff mo), fun k _ _ σ la O hla hO hσ v hv => ?_⟩` and prove the remaining obligations. Generalize the expression as in `hc : (S.sup fun v => (J v).support.sup fun mo => cz ((J v).coeff mo)) = c`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv`.
+
+Introduce `mo`. Distinguish the cases in `hmo : mo ∈ (J v).support`. Establish `hle : cz ((J v).coeff mo) ≤ c` using `hc ▸ (Finset.le_sup (f := fun mo => cz ((J v).coeff mo)) hmo).trans (Finset.le_sup (f := fun v => (J v).support.sup fun mo => cz ((J v).coeff mo)) hv)`. Take `⟨x, hx⟩` from `hσ v (Submodule.subset_span hv) mo`. Establish `halg : IsAlgebraic ℤ ((J v).coeff mo)`.
+
+Rewrite using `[← hx]`. Conclude with `((IsFractionRing.isAlgebraic_iff ℤ ℚ k).2 (Algebra.IsAlgebraic.isAlgebraic x)).algHom σ.toIntAlgHom`. Take `⟨m, hm, hi⟩` from `hcz _ halg`. Establish `h1` using `mem_of_integral hla hO hm ⟨(l : k) ^ cz ((J v).coeff mo) * x, by rw [map_mul, map_pow, map_natCast, hx]⟩ hi`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le' hle`.
+
+Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul, pow_add, mul_assoc]`. Conclude with `mul_mem (pow_mem (natCast_mem O l) _) h1`. Rewrite using `[MvPolynomial.coeff_smul, MvPolynomial.notMem_support_iff.1 hmo, smul_zero]`. Conclude with `zero_mem _`. Consider the case `zero => intro mo`.
+
+Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy => intro mo`. Rewrite using `[map_add, smul_add, MvPolynomial.coeff_add]`. Conclude with `add_mem (hx mo) (hy mo)`. Consider the case `smul n x _ hx`.
+
+Introduce `mo`. Rewrite using `[map_zsmul, smul_comm, MvPolynomial.coeff_smul]`. Conclude with `zsmul_mem (hx mo) n`.
+-/
 theorem exists_denom {X ι : Type} [AddCommGroup X] [Module ℂ X] (J : X →ₗ[ℂ] MvPolynomial ι ℂ) (Lat : Submodule ℤ X)
     (hL : Lat.FG) (l : ℕ) (hl : l.Prime) : ∃ c : ℕ, ∀ (k : Type) [Field k] [NumberField k] (σ : k →+* ℂ)
       (la : HeightOneSpectrum (𝓞 k)) (O : Subring ℂ), ((l : ℕ) : 𝓞 k) ∈ la.asIdeal → ValRing σ la O →
@@ -134,6 +170,35 @@ theorem exists_denom {X ι : Type} [AddCommGroup X] [Module ℂ X] (J : X →ₗ
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Take `⟨K, hK⟩` from `GlobalTheory.T.vacuum_pair_uniform_level_bound D ψ θ V W χV χW om ΛV ΛW sW f₀ hP`. Take `⟨Z, cf, hZ, hflip⟩` from `GlobalTheory.T.exists_centralFlip_thetaTranslate_halfLevel D ψ θ V W χV χW om ΛV ΛW sW f₀ hP hodd χ M₀ l hχ hl hM₀`. Use `choose cm hcm using fun z : Z => GlobalTheory.T.exists_levelSeries_translate_boundedDenominator D ψ θ V W χV χW om ΛV ΛW sW f₀ hP l hl (s * z) (mul_mem hs (hZ z z.2))`. Take `⟨ca, hca⟩` from `GlobalTheory.T.real_rational_point_acts_harmonic_substitution D ψ θ V W χV χW om ΛV ΛW sW f₀ hP H Dw BW lt wa hpq hΨ hB hlt l (Finset.univ.sup cm)`.
+
+Take `⟨c₃, hc₃⟩` from `GlobalTheory.ConstBound.const_dvd _ H Dw V.rank (degA Dw wa) M₀ l hl hM₀`. Take `⟨v, M₁, hM₁, eM⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hM₀ l hl.ne_one`. Use `⟨v * K + cf + ca + c₃, fun l₂ pd Xo c₂ σ U dict ι x₀ mu cc hM hc1 hc2 hbadN hA hgood hrel hσ hD hF hcc hval la O hla hO e P Φ φ he hPM hΦ hΦO hth Q hQ hQO => ?_⟩` and prove the remaining obligations. Establish `hM0 : l₂.M ≠ 0` using `by have := l₂.three_le; omega`. Establish `hconj : ConjIn D σ` using `fun τ a => ⟨embF c₂ τ a, RingHom.congr_fun (hrel τ) a⟩`.
+
+Establish `hz : zeta l₂.M ∈ O`. Establish `h1` using `c₂.zeta_mem`. Rewrite `h1` using `[Geo.Tor.Level.M', hA, Nat.lcm_one_right]`. Use `mem_of_integral hla hO (Nat.coprime_one_left l) (zeta_mem_range hM0 h1 σ) ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_one, one_mul]`.
+
+Conclude with `(Complex.isPrimitiveRoot_exp _ hM0).isIntegral (Nat.pos_of_ne_zero hM0)`. Establish `hn : Nat.Coprime (M₁ * pd) l` using `Nat.Coprime.mul_left ((Nat.Prime.coprime_iff_not_dvd hl).2 hM₁).symm hc2`. Establish `hn0 : ((M₁ * pd : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 fun h => hl.one_lt.ne' (by simpa [h] using hn)`. Establish `h4 : ((l : ℂ) ^ (v * K)) • φ ∈ trSp ψ V W ΛV ΛW f₀ e l₂.M O`. Establish `h1` using `Submodule.smul_mem _ (⟨_, pow_mem (inv_mem_of_coprime hla hO hn) K⟩ : O) (hK l₂.M e P O Φ φ hM0 hbadN he hPM hz hΦ hΦO hth)`.
+
+Use `h1 using 1` and compare the differences between its conclusion and the goal. Express the relevant statement in the definitionally equal form `_ = (((M₁ * pd : ℕ) : ℂ)⁻¹ ^ K) • ((l₂.M : ℂ) ^ K • φ)`. Rewrite using `[smul_smul, hM, eM, mul_assoc, Nat.cast_mul (l ^ v), mul_pow, inv_pow, mul_left_comm, inv_mul_cancel₀ (pow_ne_zero _ hn0), mul_one, Nat.cast_pow, pow_mul]`. Take `⟨e₂, he₂⟩` from `GlobalTheory.SingleDatum.exists_isHalfIdem D H l₂`. Take `⟨z₂, hz₂, z₁, hz₁, hone, hfl⟩` from `hflip H l₂ pd hM hc1 hc2 hbadN c₂.F σ la O hla hO hconj hval hz e e₂ P he hPM he₂`.
+
+Take `⟨f', hf', hser₁⟩` from `hfl _ h4`. Establish `hbad0 : 2 * l * l₂.M ≠ 0` using `Nat.mul_ne_zero (Nat.mul_ne_zero two_ne_zero hl.ne_zero) hM0`. Establish `b1 : l ∣ 2 * l * l₂.M` using `(dvd_mul_left l 2).mul_right _`. Establish `b2 : l₂.M ∣ 2 * l * l₂.M` using `dvd_mul_left _ _`. Take `⟨γ, h, a, γ', hγ, hrat, ha, hγa, hh, ⟨m, hm, hden⟩, hser₂⟩` from `hcm ⟨z₂, hz₂⟩ z₁ hz₁ hone l₂.M _ hM0 hbad0 b1`.
+
+Establish `hent : ∀ (τ : D.host.E →+* ℂ) (x : D.host.E), IsIntegral ℤ (((m * l ^ cm ⟨z₂, hz₂⟩ : ℕ) : D.host.E) * x) → (l : ℂ) ^ Finset.univ.sup cm * τ x ∈ O` using `fun τ x hx => by`. Take `⟨d, hd⟩` from `Nat.exists_eq_add_of_le' (Finset.le_sup (f := cm) (Finset.mem_univ ⟨z₂, hz₂⟩))`. Rewrite using `[hd, pow_add, mul_assoc]`. Use `mul_mem (pow_mem (natCast_mem O l) _) (mem_of_integral hla hO hm ?_ ?_)` and prove the remaining obligations. Take `⟨y, hy⟩` from `hconj τ x`.
+
+Conclude with `⟨(l : c₂.F) ^ cm ⟨z₂, hz₂⟩ * y, by rw [map_mul, map_pow, map_natCast, hy]⟩`. Use `hx.map τ.toIntAlgHom` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Take `⟨Q', hQ', hQ'O, harch⟩` from `hca γ a γ' O hγ hrat ha hγa (fun τ x y => ⟨hent τ _ (hden x y).1, hent τ _ (hden x y).2⟩) Q hQ hQO`. Take `⟨u, hu, rfl⟩` from `GlobalTheory.T.exists_levelPointsTranslateMean_of_integral_combination D ψ θ V W χV χW om ΛV ΛW sW f₀ hP H Dw ι hD.2.1 l₂ e₂ he₂ hbadN O f' hf'`.
+
+Take `⟨Λ, n, hΛ, hun, hT, hnl, hN⟩` from `GlobalTheory.SingleDatum.exists_conjLat_levOK D V hP.1.std (hP.2.2.1.symm.trans hP.2.2.2.2.2.2.1) (2 * l * l₂.M) l₂.M l l₂.odd ((dvd_mul_right 2 l).mul_right _) b2 b1 h hh`. Take `⟨hhf, e', Ps, he', hPs, hsupp⟩` from `hh`. Take `⟨y, hy⟩` from `GlobalTheory.PtId.exists_isDetAt he' V h`. Establish `hep` using `GlobalTheory.T.splitSupportedClassScalar_mem_valuationRing D ψ θ V W χV χW om ΛV ΛW sW f₀ hP hodd χ M₀ l _ hχ hl ((hM ▸ dvd_mul_right _ _ : M₀ ∣ l₂.M).trans b2) b1 c₂.F σ la O hla hO hval h Λ e' Ps y hbad0 he' hPs hhf hsupp hy hΛ`. Take `⟨m', β, f, hf, hsum⟩` from `GlobalTheory.T.exists_forms_theta_short_series_identity D ψ θ V W χV χW om ΛV ΛW sW f₀ hP H Dw l₂ Xo c₂ _ σ hrel hσ U hA hodd rfl dict ι x₀ BW mu cc hD hF hcc e₂ he₂ _ _ h Λ e' Ps y b2 he' hPs hhf hsupp hy hΛ hun hT hN lt wa hlt hDom hLast la l hl hla hgood O hO u hu Q' hQ' hQ'O`.
+
+Take `⟨u', hu', hdvd⟩` from `hc₃ l₂ pd n Λ hM ((Nat.Prime.coprime_iff_not_dvd hl).1 hc2.symm) hnl hN`. Establish `hu0 : (u' : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 fun h => hl.one_lt.ne' (by simpa [h] using hu')`. Use `⟨m', fun k => (-1) ^ degA Dw wa * clsScal χW y Λ W.rank * β k * (u' : ℂ)⁻¹, fun k => (((l ^ c₃ * u' : ℕ) : ℤ) : c₂.F) • f k, fun k => ⟨?_, Submodule.smul_mem _ _ (hf k).2.1, ?_, ?_⟩, fun g => ?_⟩` and prove the remaining obligations. Conclude with `mul_mem (mul_mem (mul_mem (pow_mem (neg_mem (one_mem _)) _) hep) (hf k).1) (inv_mem_of_coprime hla hO hu')`. Rewrite using `[map_smulₛₗ]`.
+
+Conclude with `Submodule.smul_mem _ _ (hf k).2.2.1`. Conclude with `bddAll_scale (by have := (hf k).2.2.2; push_cast at this ⊢; exact this) hdvd`. Establish `e1` using `hser₁ BW (MvPolynomial.rename lt Q) s g`. Establish `e2` using `hser₂ e₂ O _ hf' BW (MvPolynomial.rename lt Q) g`. Establish `e3` using `harch l₂.M e₂ O hM0 _ hf'`.
+
+Establish `e4` using `hsum g`. Rewrite `e4` using `[← e3]`. Rewrite `e1` using `[GlobalTheory.FiniteFock.pureTensorO_smul]`. Use `replace e2 := e1.trans e2`. Simplify using `only [thetaKO, map_smul, Pi.smul_apply, smul_eq_mul] at e2 e4 ⊢`.
+
+Establish `e5 : ∀ k, (-1) ^ degA Dw wa * clsScal χW y Λ W.rank * β k * (u' : ℂ)⁻¹ * ((lieFac Dw (xiR D) wa : ℂ) * (cc (dict g).1 * mu g * rdU U ((((l ^ c₃ * u' : ℕ) : ℤ) : c₂.F) • f k) (dict g).1 (dict g).2)) = (l : ℂ) ^ c₃ * ((-1) ^ degA Dw wa * clsScal χW y Λ W.rank) * (β k * ((lieFac Dw …` using `fun k => by`. Rewrite using `[map_smulₛₗ, map_intCast]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[Finset.sum_congr rfl fun k _ => e5 k, ← Finset.mul_sum, mul_assoc, ← e4, ← e2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem series_bound {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {V W : HSp D} {χV χW : (AE D)ˣ →* Circle}
     {om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)} {ΛV : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)}
     {ΛW : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E)} {sW : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ}
@@ -238,6 +303,11 @@ theorem series_bound {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {
     rw [Finset.sum_congr rfl fun k _ => e5 k, ← Finset.mul_sum, mul_assoc, ← e4, ← e2]
     ring
 
+/- English proof (translation)
+Establish `h1 : Ideal.span {((l : ℕ) : 𝓞 k)} ≠ ⊤` using `fun h => by`. Establish `h2` using `Ideal.absNorm_span_natCast (S := 𝓞 k) l`. Rewrite `h2` using `[h, Ideal.absNorm_top]`. Conclude with `hl.one_lt.ne' ((pow_eq_one_iff_of_nonneg (Nat.zero_le _) Module.finrank_pos.ne').1 h2.symm)`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ h1`.
+
+Establish `h3 : ((l : ℕ) : 𝓞 k) ∈ m` using `hle (Ideal.mem_span_singleton_self _)`. Conclude with `⟨⟨m, hm.isPrime, fun h => by rw [h, Ideal.mem_bot] at h3; exact Nat.cast_ne_zero.2 hl.ne_zero h3⟩, h3⟩`.
+-/
 theorem exists_place_over (k : Type) [Field k] [NumberField k] {l : ℕ} (hl : l.Prime) :
     ∃ la : HeightOneSpectrum (𝓞 k), ((l : ℕ) : 𝓞 k) ∈ la.asIdeal := by
   have h1 : Ideal.span {((l : ℕ) : 𝓞 k)} ≠ ⊤ := fun h => by
@@ -248,6 +318,9 @@ theorem exists_place_over (k : Type) [Field k] [NumberField k] {l : ℕ} (hl : l
   have h3 : ((l : ℕ) : 𝓞 k) ∈ m := hle (Ideal.mem_span_singleton_self _)
   exact ⟨⟨m, hm.isPrime, fun h => by rw [h, Ideal.mem_bot] at h3; exact Nat.cast_ne_zero.2 hl.ne_zero h3⟩, h3⟩
 
+/- English proof (translation)
+Establish `h1 : l₁.M ≠ 0` using `by have := l₁.three_le; omega`. Establish `h2 : pd ≠ 0` using `by rintro rfl; have := l₂.three_le; omega`. Unfold `Geo.Tor.Level.GoodAt at h ⊢`. Rewrite using `[hM, Nat.factorization_mul h1 h2, Finsupp.add_apply, Nat.factorization_eq_zero_of_not_dvd ((Nat.Prime.coprime_iff_not_dvd hp).1 hc.symm), add_zero]`. Conclude with `h.trans (Nat.div_le_div_right (Nat.le_mul_of_pos_right _ (Nat.pos_of_ne_zero h2)))`.
+-/
 theorem goodAt_of_dvd {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo.Tor.Host E} {l₁ l₂ : Geo.Tor.Level H}
     {pd p : ℕ} (hp : p.Prime) (hM : l₂.M = l₁.M * pd) (hc : Nat.Coprime pd p) (h : l₁.GoodAt p) : l₂.GoodAt p := by
   have h1 : l₁.M ≠ 0 := by have := l₁.three_le; omega
@@ -257,20 +330,64 @@ theorem goodAt_of_dvd {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Ge
     Nat.factorization_eq_zero_of_not_dvd ((Nat.Prime.coprime_iff_not_dvd hp).1 hc.symm), add_zero]
   exact h.trans (Nat.div_le_div_right (Nat.le_mul_of_pos_right _ (Nat.pos_of_ne_zero h2)))
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem castDict_symm {D : D7} {Y : Type} {V W : HSp D} (h : V = W) (F : GA D W → Y) : castDict h (castDict h.symm F) = F := by
   subst h; rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem castDict_twist {D : D7} {V W : HSp D} (h : V = W) (xi : (GlobalTheory.FinalJoin.AfE D)ˣ →* ℂˣ) (F : GA D V → ℂ) (g : GA D W) :
     castDict h (fun g => ((xi (Matrix.GeneralLinearGroup.det (finHom V g)) : ℂˣ) : ℂ) * F g) g =
       ((xi (Matrix.GeneralLinearGroup.det (finHom W g)) : ℂˣ) : ℂ) * castDict h F g := by
   subst h; rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `funext e`.
+-/
 theorem eq_of_castDict {D : D7} {Y : Type} {V W : HSp D} (h : V = W) {F F' : GA D V → Y}
     (e : ∀ g, castDict h F g = castDict h F' g) : F = F' := by
   subst h; exact funext e
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ hL hLev hG hFam hMod hTh hTie i hstd hV hFP u hu c0 hc0`. Establish `hj : Formalism.L2.Pj.InR D ((i : ℕ) + 1)` using `inR i`. Establish `h5 : GlobalTheory.Core5 R F` using `⟨hLev, hG, hFam, hMod, hTh⟩`. Take `⟨hPr, q1, q2, q3, q4, q5, q6⟩` from `GlobalTheory.AdTh.RecPair.isPair_record_ofFive D G Pl0 T0 A _ R F h5 i A.μ0 hstd`. Take `⟨-, -, f3, -, f5⟩` from `GlobalTheory.AdTh.PhaseMapFree.vec_fock_of_clauses D G Pl0 T0 A _ R hMod hTh i A.μ0 hstd`.
+
+Establish `hvac` using `(hTh.vP i A.μ0).1`. Establish `hP : VacPair R.ψ R.θ (Vc D i) (Wc D i) _ _ (R.ωP i A.μ0) (R.ΛV i) (R.ΛW i) (cart (R.MW i (sg0 D A))) (R.vacP i)` using `⟨hPr, q1, q2, q3, q4, q5, q6, f3, hvac⟩`. Take `⟨-, -, -, -, hrpq, -, -, -, -, -, hDom, hn, hLast⟩` from `GlobalTheory.AdTh.models_at_record_ofFive D G Pl0 T0 A T R F κ v₀ h5 hTie i T.σ₀ rfl (T.dict _ T.σ₀ 1).1`. Take `⟨-, -, hΨ, -, -⟩` from `GlobalTheory.WeightExponents.weight_exponents D T.Q hL.pins _ hj (κ i)`. Establish `hodd : Odd D.R.r`.
+
+Use `D.R.m_add_three_le_k` as an intermediate fact. Take `⟨a, ha⟩` from `D.R.k_even`. Take `⟨b, hb⟩` from `D.R.m_even`. Conclude with `⟨a + b - 1, by simp only [Ranks.r]; omega⟩`. Establish `hpq` using `(rank_Wc i).trans hrpq`.
+
+Establish `hB : ∀ τ, IsONBasis (gramAt D (Wc D i) τ) (cart (R.MW i (sg0 D A)) τ) (onb (R.MW i (sg0 D A)) τ) (T.Q.Dw ((i : ℕ) + 1)).p` using `fun τ => by`. Rewrite using `[(hL.pins.2.2.2 _ hj).1, ← show (Wc D i).sig (tauE D τ) = D.R.sigW ((i : ℕ) + 1) from D.sp.W_sigval _ hj.1 hj.2 _]`. Conclude with `f5 τ`. Establish `hlt` using `GlobalTheory.FockLetters.isLetters_letterEquiv (n := (Vc D i).rank) (T.Q.Dw ((i : ℕ) + 1)) hΨ hpq`. Generalize the expression as in `GlobalTheory.FockLetters.letterEquiv (n := (Vc D i).rank) (T.Q.Dw ((i : ℕ) + 1)) hΨ hpq = lt at hlt`.
+
+Establish `hχ` using `GlobalTheory.T.referenceTuple_secondSplittingCharacter D G Pl0 T0 A T R F κ v₀ hL hLev hG hFam hMod hTh hTie i hstd`. Establish `hMg : T.Q.l.M = D.host.g 0 * D.host.g 1` using `hL.pins.2.1.1`. Rewrite `hχ` using `[← hMg]`. Establish `hM₀ : T.Q.l.M ≠ 0` using `by have := T.Q.l.three_le; omega`. Establish `hMb : Nat.Coprime T.Q.l.M (GlobalTheory.Tow.badN D)`.
+
+Establish `: ∀ k, Nat.Coprime (D.host.g k) (GlobalTheory.Tow.badN D)` using `fun k => ((D.host.level_coprimeS _ (D.host.g_level k)).mul_right (ReciprocityTheory.ChartRestriction.G.PullbackSections.g_coprime_ram D k _ (by simp))).mul_right (D.host.ccK_coprime _ (by simp [D.host.g_level k])).symm`. Rewrite using `[hMg]`. Conclude with `(this 0).mul_left (this 1)`. Take `⟨ph, hph, hbase⟩` from `GlobalTheory.T.coreConstants_eq_vacuumIdentity_up_to_phase D G Pl0 T0 A T R F κ v₀ hL hLev hG hFam hMod hTh hTie i hstd hV hFP`. Take `⟨ka, hka, J, hJH, hJk, hJ⟩` from `GlobalTheory.T.harmonicMap_extremalVector_eq_phase_smul_letters D G Pl0 T0 A T R F κ v₀ hL hLev hG hFam hMod hTh hTie i hstd u hu c0 hc0 lt hlt`.
+
+Establish `hph0 : ph ≠ 0` using `fun h => by simp [h] at hph`. Establish `hka0 : ka ≠ 0` using `fun h => by simp [h] at hka`. Use `⟨(ka * ph)⁻¹, by rw [norm_inv, norm_mul, hka, hph]; norm_num, fun l hl s hs Lat hLat => ?_⟩` and prove the remaining obligations. Take `⟨c₁, hc₁⟩` from `exists_denom J Lat hLat l hl`. Take `⟨c₂, hc₂⟩` from `series_bound hP (rank_Wc i) hodd hχ hM₀ hpq hΨ hB hlt hDom hLast hl hs`.
+
+Use `⟨c₂ + c₁, fun C hC hpin hbig S hS xi hxi Φ f hf hΦ v hv => ?_⟩` and prove the remaining obligations. Take `⟨hU, -, hcl, hcb⟩` from `hC`. Take `⟨hval, hcoef, hray⟩` from `hbig`. Take `⟨P, e, he, hPM, hfn, hth⟩` from `hf`. Take `⟨hD, hF, hrel, hσ⟩` from `GlobalTheory.T.uniformisedCover_isDictionary_frameCompatible D G Pl0 T0 A T R F κ v₀ hL hLev hG hFam hMod hTh hTie i hstd hV C hU`.
+
+Establish `hcc` using `GlobalTheory.T.vacuumIdentityConstants_cover_of_dominantPins D G Pl0 T0 A T R F κ v₀ hL hLev hG hFam hMod hTh hTie i hstd hV ph hph hbase C hU hpin`. Establish `hM₂ : C.d.l₂.M = T.Q.l.M * C.d.pd` using `hU.1.2.1`. Establish `hgood : C.d.l₂.GoodAt l` using `goodAt_of_dvd hl hM₂ hcl (Formalism.L2.Pj.goodAt_of_two_primes hMg (D.host.g_prime 0) (D.host.g_prime 1) D.host.g_ne l hl)`. Establish `hθf : IsThetaFunO R.ψ (Vc D i) (Wc D i) f` using `GlobalTheory.VecTheta.isThetaFunO_of_thetaAt hPr.weil.std hPr.inf hth hvac.2.theta`. Establish `hfld : ∀ x ∈ T.Q.c.F, x ∈ C.σ₂.fieldRange` using `fun x hx => ⟨C.inc ⟨x, hx⟩, RingHom.congr_fun hU.2.2.1 ⟨x, hx⟩⟩`.
+
+Establish `hJσ : ∀ w ∈ Lat, ∀ mo, ∃ x, C.σ₂ x = (J w).coeff mo` using `fun w hw mo => hJk C.σ₂.fieldRange hfld w (fun m => hcoef w hw m) mo`. Set `Fn : GA D (T.V ((i : ℕ) + 1) T.σ₀) → ℂ` to `castDict hV.symm fun g => (l : ℂ) ^ (c₂ + c₁) * ((ka * ph)⁻¹ * GlobalTheory.IndefiniteRowSideFullHecke.TwistSeries.series R i u s f (c0 v) g)`. Establish `key : ∀ (la : HeightOneSpectrum (𝓞 C.d.c₂.F)) (O : Subring ℂ), ((l : ℕ) : 𝓞 C.d.c₂.F) ∈ la.asIdeal → ValRing C.σ₂ la O → (∀ x, Φ x ∈ O) → Fn ∈ Submodule.span O (C.intForms (wtA (κ i)) (κ i).n {la})`. Introduce `la O hla hO hΦO`. Take `⟨m, β, fs, hfs, hsum⟩` from `hc₂ C.d.l₂ C.d.pd C.d.Xo₂ C.d.c₂ C.σ₂ C.U₂ _ _ _ _ _ hM₂ hU.1.2.2.1 hcl (hM₂ ▸ hMb.mul_left hcb) hU.2.1 hgood hrel hσ hD hF hcc hval la O hla hO e P Φ f he hPM hfn hΦO hth ((l : ℂ) ^ c₁ • J v) (GlobalTheory.PtId.mem_HHa_of_span _ _ _ _ _ _ (Submodule.smul_mem _ _ (Submodule.subse …`.
+
+Establish `e1 : Fn = ∑ k, β k • C.rd (wtA (κ i)) (fs k)`. Use `eq_of_castDict hV fun g => ?_` and prove the remaining obligations. Rewrite using `[castDict_symm]`. Establish `e2` using `hsum g`. Establish `e3 : castDict hV (∑ k, β k • C.rd (wtA (κ i)) (fs k)) g = ∑ k, β k * ((lieFac (T.Q.Dw ((i : ℕ) + 1)) (xiR D) (wtA (κ i)) : ℂ) * (C.cc₂ (castDict hV C.dict₂ g).1 * castDict hV (T.mu ((i : ℕ) + 1) T.σ₀) g * rdU C.U₂ (fs k) (castDict hV C.dict₂ g).1 (castDict hV C.dict₂ g).2))`.
+
+Unfold `castDict`. Rewrite using `[Finset.sum_apply]`. Both sides reduce to the same expression. Rewrite using `[e3, GlobalTheory.IndefiniteRowSideFullHecke.TwistSeries.series, hJ f hθf v]`. Simplify using `only [thetaKO, map_smul, Pi.smul_apply, smul_eq_mul] at e2 ⊢`.
+
+Establish `e4 : ∑ k, β k * ((lieFac (T.Q.Dw ((i : ℕ) + 1)) (xiR D) (wtA (κ i)) : ℂ) * (ph * C.cc₂ (castDict hV C.dict₂ g).1 * castDict hV (T.mu ((i : ℕ) + 1) T.σ₀) g * rdU C.U₂ (fs k) (castDict hV C.dict₂ g).1 (castDict hV C.dict₂ g).2)) = ph * ∑ k, β k * ((lieFac (T.Q.Dw ((i : ℕ) + 1)) (xi …`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Rewrite `e2` using `[e4]`. Use `mul_left_cancel₀ hph0 ?_` and prove the remaining obligations.
+
+Rewrite using `[← e2]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Use `sum_mem fun k _ => Submodule.smul_mem _ (⟨β k, (hfs k).1⟩ : O) (Submodule.subset_span ⟨fs k, ⟨?_, ?_⟩, rfl⟩)` and prove the remaining obligations.
+
+Rewrite using `[hn]`. Conclude with `⟨(hfs k).2.1, (hfs k).2.2.1⟩`. Introduce and unpack `_ rfl`. Conclude with `(GlobalTheory.T.integral_values_algebraic_points_iff_value_nonneg _ _ _ _ _ _ _ _).1 (hfs k).2.2.2`. Establish `hint : Fn ∈ C.intForms (wtA (κ i)) (κ i).n S`.
+
+Use `GlobalTheory.T.mem_integralForms_of_rational_and_local_spans D T hL _ hj T.σ₀ T.toCore.good_σ₀ C hU (hpin _ (dom_wtA (κ i))).1 _ _ (dom_wtA (κ i)) S Fn ?_ fun la hla => ?_` and prove the remaining obligations. Take `⟨la, hla⟩` from `exists_place_over C.d.c₂.F hl`. Conclude with `Submodule.span_mono (C.intForms_subset _ _ _) (key la _ hla (valRing_range _ _) fun x => let ⟨a, ha, _⟩ := hΦ x; ⟨a, ha⟩)`. Conclude with `key la _ (hS la hla) (valRing_locRing _ _) fun x => let ⟨a, ha, hb⟩ := hΦ x`. Use the proof step `⟨a, hb la hla, ha⟩`.
+
+Use `⟨_, GlobalTheory.T.twistDeterminant_mul_integralForms_rayClassCover D T hL _ hj C hU hray xi hxi _ _ S Fn hint, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[castDict_twist, castDict_symm]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem serIntAt_record : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : Formalism.L2.DIV.FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), LawsJ T → R.toLevCh.Is A.μ0 → R.IsGrp F → R.IsFam → R.IsModels → R.IsThP → TieIn T R κ v₀ → ∀ (i : Fin D.R.m), VStd D i → ∀ hV : T.V ((i : ℕ) + 1) T.σ₀ = Wc D i, GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.FramePin T R i T.σ₀ hV → ∀ (u : ∀ ρ, lowT (R.MW i (sg0 D A)) ρ), (∀ ρ, (u ρ : (R.MW i (sg0 D A)).sm ρ) = v₀ i (sg0 D A) ρ) → ∀ c0 : VsV D i ℂ →ₗ[ℂ] (R.cV i).W, GlobalTheory.IndefiniteRowSideFullHecke.TwistSeries.IsCoefMap R i c0 → GlobalTheory.IndefiniteRowSideFullHecke.TwistSeries.SerIntAt T R i (κ i) hV u c0 := by
   intro D G _ _ Pl0 T0 A T _ R F κ v₀ hL hLev hG hFam hMod hTh hTie i hstd hV hFP u hu c0 hc0
   have hj : Formalism.L2.Pj.InR D ((i : ℕ) + 1) := inR i

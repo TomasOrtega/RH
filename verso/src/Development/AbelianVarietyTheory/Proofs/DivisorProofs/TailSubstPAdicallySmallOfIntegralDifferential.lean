@@ -6,6 +6,25 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffFinsuppProdCon
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowDvdEvalTruncOfHighOrderStatement
 open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory.PDivGroup GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta GlobalTheory.PDivLat
 
+/- English proof (translation)
+Introduce `p hp B O Q _ _ _ _ θ hF σ _ _ z hz τ _ _ u f hu hD m`. Establish `hpr : p.Prime` using `hp.out`. Take `⟨L, hL⟩` from `GlobalTheory.T.pow_dvd_eval_trunc_of_high_order p B σ z hz`. Take `⟨M0, hM0⟩` from `GlobalTheory.T.add_mul_le_of_pow_le_of_large p L m hpr.two_le`. Use `⟨M0, fun M hM n => ?_⟩` and prove the remaining obligations.
+
+Use `set g : MvPowerSeries τ Q := f - (trunc' Q (Finsupp.equivFunOnFinite.symm fun _ => M) f : MvPowerSeries τ Q) with hg`. Establish `hfin` using `Finsupp.finite_of_degree_le (σ := τ) n.degree`. Rewrite using `[GlobalTheory.T.mvPowerSeries_eval_trunc_subst_eq_sum B Q σ τ z u hu g n hfin.toFinset (fun α hα => by simpa using hα)]`. Establish `key : ∀ α : τ →₀ ℕ, ∃ b : B, coeff α g * algebraMap B Q (MvPolynomial.eval z (trunc' B n (α.prod fun j e => u j ^ e))) = algebraMap B Q (p ^ m * b)`. Introduce `α`.
+
+Distinguish the cases in `hα : α ≤ Finsupp.equivFunOnFinite.symm fun _ => M`. Use `⟨0, ?_⟩` and prove the remaining obligations. Establish `: coeff α g = 0`. Simplify using `[hg, coeff_trunc', hα]`. Simplify using `[this]`.
+
+Establish `hcg : coeff α g = coeff α f`. Simplify using `[hg, coeff_trunc', hα]`. Rewrite using `[hcg]`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, M < α i := by`. Assume the negation of the conclusion as `h`.
+
+Use `push_neg at h`. Conclude with `hα (fun i => by simpa using h i)`. Take `⟨b, -, hb⟩` from `hD α i`. Take `⟨v, n', hn', hdec⟩` from `Nat.exists_eq_pow_mul_and_not_dvd (n := α i) (by omega) p hpr.one_lt.ne'`. Establish `hcop : Nat.Coprime n' p` using `((Nat.Prime.coprime_iff_not_dvd hpr).2 hn').symm`.
+
+Take `⟨w, hw⟩` from `(hF.unit_coprime n' hcop).exists_right_inv`. Establish `hn'pos : 0 < n'` using `Nat.pos_of_ne_zero (by rintro rfl; simp at hdec; omega)`. Establish `hpv : p ^ v ≤ α.degree`. Establish `: p ^ v ≤ α i` using `by rw [hdec]; exact Nat.le_mul_of_pos_right _ hn'pos`. Conclude with `this.trans (Finsupp.le_degree i α)`.
+
+Establish `hdeg : (v + m) * L ≤ α.degree` using `hM0 α.degree v (by have := Finsupp.le_degree i α; omega) hpv`. Take `⟨c, hc⟩` from `hL (v + m) (α.prod fun j e => u j ^ e) (fun β hβ => GlobalTheory.T.coeff_finsuppProd_constFree_eq_zero_of_degree_lt B σ τ u hu α β (by rw [mul_comm] at hβ; omega)) n`. Use `⟨b * w * c, ?_⟩` and prove the remaining obligations. Rewrite using `[hc]`. Rewrite `hb` using `[hdec]`.
+
+Establish `hw'` using `congrArg (algebraMap B Q) hw`. Simplify using `only [map_mul, map_pow, map_natCast, map_one, Nat.cast_mul, Nat.cast_pow] at hb hw' ⊢`. Take the linear combination `((p : Q) ^ m * algebraMap B Q w * algebraMap B Q c) * hb - (coeff α f * (p : Q) ^ (v + m) * algebraMap B Q c) * hw'`. Use `choose bb hbb using key`. Use `⟨∑ α ∈ hfin.toFinset, bb α, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Finset.mul_sum, map_sum]`. Conclude with `Finset.sum_congr rfl fun α _ => hbb α`.
+-/
 theorem GlobalTheory.tail_subst_small : ∀ (p : ℕ) [Fact p.Prime] (B O Q : Type) [CommRing B] [CommRing Q] [CommRing O] [Algebra B Q] (θ : B →+* O), IsFrame p Q θ → ∀ (σ : Type) [Fintype σ] [DecidableEq σ] (z : σ → B), (∀ i, ∃ N : ℕ, (p : B) ∣ z i ^ N) → ∀ (τ : Type) [Fintype τ] [DecidableEq τ] (u : τ → MvPowerSeries σ B) (f : MvPowerSeries τ Q), (∀ j, constantCoeff (u j) = 0) → DIn (⊤ : Ideal B) f → ∀ m : ℕ, ∃ M0 : ℕ, ∀ M ≥ M0, ∀ n : σ →₀ ℕ, ∃ b : B, MvPolynomial.eval (fun i => algebraMap B Q (z i)) (trunc' Q n (subst (up Q u) (f - (trunc' Q (Finsupp.equivFunOnFinite.symm fun _ => M) f : MvPowerSeries τ Q)))) = algebraMap B Q (p ^ m * b) := by
   intro p hp B O Q _ _ _ _ θ hF σ _ _ z hz τ _ _ u f hu hD m
   have hpr : p.Prime := hp.out

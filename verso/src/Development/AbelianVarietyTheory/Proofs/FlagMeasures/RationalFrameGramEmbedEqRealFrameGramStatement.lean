@@ -16,5 +16,8 @@ open Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Lat 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.zhatRat_embed | exact GlobalTheory.zhatRat_embed | (intros; apply GlobalTheory.zhatRat_embed <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.rationalFrameGram_embed_eq_realFrameGram : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (W : WittDat X) (u u' : D.what₂.Word) (s : TT Y u u') (τ : D.what₂.Tau), (ZhatL (lf D (FlagOfWord W u)) (Formalism.L2.SG.Saturated.mapL (W.δ u) (W.isom u) s.frame)).map (embS D τ) = Formalism.L2.SG.RealObj.ZX X u u' 1 s.pt.1 (X.pl.symm τ) := by
   first | exact @GlobalTheory.zhatRat_embed | exact GlobalTheory.zhatRat_embed | (intros; apply GlobalTheory.zhatRat_embed <;> assumption)

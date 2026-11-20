@@ -15,6 +15,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds (IsClassZe
 open TensorProduct
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.DetSpan.wedge_eq_smul_gen_val_le | exact GlobalTheory.DetSpan.wedge_eq_smul_gen_val_le | (intros; apply GlobalTheory.DetSpan.wedge_eq_smul_gen_val_le <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_generator_top_exterior_power : ∀ (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] (L : Type) [AddCommGroup L] [Module R L]
     [Module.Free R L] [Module.Finite R L] (n : ℕ), Module.finrank R L = n →
     ∀ (e : Fin n → (L →ₗ[R] R)) (D : R), D ≠ 0 → (∀ ω : L →ₗ[R] R, D • ω ∈ Submodule.span R (Set.range e)) →

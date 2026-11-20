@@ -7,5 +7,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.HTLat GlobalTheory.Published.AbVarRed GlobalTheory.CechPic GlobalTheory.AV GlobalTheory.AV.AbVar
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.AV.GalPow.exists_frob_pow_on_finset | exact GlobalTheory.AV.GalPow.exists_frob_pow_on_finset | (intros; apply GlobalTheory.AV.GalPow.exists_frob_pow_on_finset; all_goals assumption)`.
+-/
 theorem _root_.GlobalTheory.T.finite_points_fixed_frobenius_power : ∀ (K : Type) [Field K] [Fintype K] (σ : Gal K) (X : Over (Sp K)) (s : Finset (ptOver K (AlgebraicClosure K) ⟶ X)), LocallyOfFiniteType X.hom → ∃ m : ℕ, ∀ x ∈ s, specAut σ ≫ x = specAut (FiniteField.frobeniusAlgEquivOfAlgebraic K (AlgebraicClosure K) ^ m) ≫ x := by
   first | exact @GlobalTheory.AV.GalPow.exists_frob_pow_on_finset | exact GlobalTheory.AV.GalPow.exists_frob_pow_on_finset | (intros; apply GlobalTheory.AV.GalPow.exists_frob_pow_on_finset; all_goals assumption)

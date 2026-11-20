@@ -16,6 +16,17 @@ namespace PositivityTheory.Rg.Rsw.L.LMajor
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hG' : ∀ i, IsLocallyConstant (G i) ∧ HasCompactSupport (G i)` using `hG`. Establish `hrow : ∀ i : Fin a, Continuous fun z : Fin a → Fin b → X => (fun (_ : Fin 1) j => z i j)` using `fun i => continuous_pi fun _ => continuous_pi fun j => (continuous_apply j).comp (continuous_apply i)`. Use `show IsLocallyConstant (fun z : Fin a → Fin b → X => ∏ i, G i (fun _ j => z i j)) ∧ HasCompactSupport (fun z : Fin a → Fin b → X => ∏ i, G i (fun _ j => z i j))`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hfun : (fun z : Fin a → Fin b → X => ∏ i, G i (fun _ j => z i j)) = ∏ i, (fun z : Fin a → Fin b → X => G i (fun _ j => z i j))`.
+
+Use function extensionality and compare the values at `z`. Rewrite using `[Finset.prod_apply]`. Rewrite using `[hfun]`. Conclude with `Finset.prod_induction _ IsLocallyConstant (fun f g hf hg => hf.comp₂ hg (· * ·)) (IsLocallyConstant.const 1) (fun i _ => (hG' i).1.comp_continuous (hrow i))`. Set `S : Set (Fin a → Fin b → X)` to `⋂ i, (fun z : Fin a → Fin b → X => (fun (_ : Fin 1) j => z i j)) ⁻¹' tsupport (G i)`.
+
+Set `gm : (Fin a → Fin 1 → Fin b → X) → (Fin a → Fin b → X)` to `fun w i j => w i 0 j`. Establish `hgm : Continuous gm` using `continuous_pi fun i => continuous_pi fun j => (continuous_apply j).comp ((continuous_apply 0).comp (continuous_apply i))`. Establish `hK : IsCompact (gm '' Set.univ.pi fun i => tsupport (G i))` using `(isCompact_univ_pi fun i => (hG' i).2).image hgm`. Establish `hSc : IsClosed S` using `isClosed_iInter fun i => (isClosed_tsupport (G i)).preimage (hrow i)`. Establish `hsub : tsupport (fun z : Fin a → Fin b → X => ∏ i, G i (fun _ j => z i j)) ⊆ S`.
+
+Use `closure_minimal ?_ hSc` and prove the remaining obligations. Introduce `z hz`. Establish `hz' : ∏ i, G i (fun _ j => z i j) ≠ 0` using `hz`. Rewrite `hz'` using `[Finset.prod_ne_zero_iff]`. Conclude with `Set.mem_iInter.2 fun i => subset_tsupport _ (hz' i (Finset.mem_univ i))`.
+
+Establish `hSK : S ⊆ gm '' Set.univ.pi fun i => tsupport (G i)`. Introduce `z hz`. Use `⟨fun i _ j => z i j, fun i _ => Set.mem_iInter.1 hz i, rfl⟩` and prove the remaining obligations. Conclude with `hK.of_isClosed_subset (isClosed_tsupport _) (hsub.trans hSK)`.
+-/
 theorem prodSB {X : Type} [TopologicalSpace X] {a b : ℕ} (G : Fin a → (Fin 1 → Fin b → X) → ℂ)
     (hG : ∀ i, G i ∈ GlobalTheory.WeilM.SB (Fin 1 → Fin b → X)) :
     (fun z : Fin a → Fin b → X => ∏ i, G i (fun _ j => z i j)) ∈ GlobalTheory.WeilM.SB (Fin a → Fin b → X) := by
@@ -51,6 +62,17 @@ theorem prodSB {X : Type} [TopologicalSpace X] {a b : ℕ} (G : Fin a → (Fin 1
       refine ⟨fun i _ j => z i j, fun i _ => Set.mem_iInter.1 hz i, rfl⟩
     exact hK.of_isClosed_subset (isClosed_tsupport _) (hsub.trans hSK)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `h ∈ Submodule.span ℂ _ at hh`. Proceed by induction on `hh using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, g, hg, rfl⟩` from `hx`. Use `⟨f (fun _ _ _ => 0) • g, Submodule.smul_mem _ _ hg, fun y => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : (fun τ i j => Formalism.IndefR.Datum.compAt θ τ (s • y) i j) = fun _ _ _ => (0 : ℂ)`. Use function extensionality and compare the values at `τ i j`. Establish `hc : Formalism.IndefR.Datum.compAt θ τ (s • y) i j = θ τ (Formalism.L2.Theta.infPart D (s * y i j))` using `rfl`. Rewrite using `[hc, map_mul, hs, zero_mul, map_zero]`. Establish `h2 : (fun i j => Formalism.L2.Theta.finPart D ((s • y) i j)) = fun i j => Formalism.L2.Theta.finPart D (y i j)`.
+
+Use function extensionality and compare the values at `i j`. Establish `hc : Formalism.L2.Theta.finPart D ((s • y) i j) = Formalism.L2.Theta.finPart D (s * y i j)` using `rfl`. Rewrite using `[hc, map_mul, hs', one_mul]`. Use `show f (fun τ i j => Formalism.IndefR.Datum.compAt θ τ (s • y) i j) * g (fun i j => Formalism.L2.Theta.finPart D ((s • y) i j)) = _`. Rewrite using `[h1, h2, Pi.smul_apply, smul_eq_mul]`.
+
+Consider the case `zero => exact ⟨0, Submodule.zero_mem _, fun y => rfl⟩`. Consider the case `add x z _ _ hx hz`. Take `⟨G1, hG1, e1⟩` from `hx`. Take `⟨G2, hG2, e2⟩` from `hz`. Conclude with `⟨G1 + G2, Submodule.add_mem _ hG1 hG2, fun y => by rw [Pi.add_apply, Pi.add_apply, e1, e2]⟩`.
+
+Consider the case `smul c x _ hx`. Take `⟨G1, hG1, e1⟩` from `hx`. Conclude with `⟨c • G1, Submodule.smul_mem _ _ hG1, fun y => by rw [Pi.smul_apply, Pi.smul_apply, e1]⟩`.
+-/
 theorem rowSB (θ : InfFam D) {m n : ℕ} (s : AE D) (hs : infPart D s = 0) (hs' : finPart D s = 1)
     (h : Mx D m n → ℂ) (hh : h ∈ schwartzA θ m n) :
     ∃ G ∈ GlobalTheory.WeilM.SB (Fin m → Fin n → Af D.host.F ⊗[D.host.F] D.host.E),

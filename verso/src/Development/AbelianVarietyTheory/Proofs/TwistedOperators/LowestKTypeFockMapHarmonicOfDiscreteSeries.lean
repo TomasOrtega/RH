@@ -39,10 +39,18 @@ section Poly
 
 variable {σ : Type*}
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.smul_eq_C_mul]`. Simplify using `using (MvPolynomial.isHomogeneous_C σ c).mul h`.
+-/
 theorem hom_smul {P : MvPolynomial σ ℂ} {e : ℕ} (h : P.IsHomogeneous e) (c : ℂ) : (c • P).IsHomogeneous e := by
   rw [MvPolynomial.smul_eq_C_mul]
   simpa using (MvPolynomial.isHomogeneous_C σ c).mul h
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_apply]`. Use `MvPolynomial.IsHomogeneous.sum _ _ _ fun s _ => ?_` and prove the remaining obligations. Establish `hp : (∏ a, M (s a) a).IsHomogeneous (∑ _a : Fin k, 1)` using `MvPolynomial.IsHomogeneous.prod _ _ _ fun a _ => h _ _`. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, mul_one] at hp`. Establish `hc : (((Equiv.Perm.sign s : ℤ) : MvPolynomial σ ℂ)).IsHomogeneous 0`.
+
+Rewrite using `[← map_intCast (MvPolynomial.C (σ := σ) (R := ℂ))]`. Conclude with `MvPolynomial.isHomogeneous_C _ _`. Rewrite using `[Units.smul_def, zsmul_eq_mul]`. Simplify using `using hc.mul hp`.
+-/
 theorem det_hom {k : ℕ} (M : Matrix (Fin k) (Fin k) (MvPolynomial σ ℂ)) (h : ∀ a b, (M a b).IsHomogeneous 1) :
     M.det.IsHomogeneous k := by
   rw [Matrix.det_apply]
@@ -56,6 +64,9 @@ theorem det_hom {k : ℕ} (M : Matrix (Fin k) (Fin k) (MvPolynomial σ ℂ)) (h 
   rw [Units.smul_def, zsmul_eq_mul]
   simpa using hc.mul hp
 
+/- English proof (translation)
+Unfold `varF`. Use `split_ifs`. Conclude with `MvPolynomial.isHomogeneous_X _ _`. Conclude with `MvPolynomial.isHomogeneous_zero _ _ _`.
+-/
 theorem varF_hom {D : D7} {m n : ℕ} (τ : D.what₂.Tau) (i c : ℕ) :
     (varF (D := D) (m := m) (n := n) τ i c).IsHomogeneous 1 := by
   unfold varF
@@ -63,6 +74,9 @@ theorem varF_hom {D : D7} {m n : ℕ} (τ : D.what₂.Tau) (i c : ℕ) :
   · exact MvPolynomial.isHomogeneous_X _ _
   · exact MvPolynomial.isHomogeneous_zero _ _ _
 
+/- English proof (translation)
+Unfold `delta deltaAt minorPlus minorMinus`. Conclude with `⟨_, MvPolynomial.IsHomogeneous.prod _ _ _ fun τ _ => (MvPolynomial.IsHomogeneous.prod _ _ _ fun i _ => (det_hom _ fun a b => varF_hom _ _ _).pow _).mul (MvPolynomial.IsHomogeneous.prod _ _ _ fun i _ => (det_hom _ fun a b => varF_hom _ _ _).pow _)⟩`.
+-/
 theorem delta_hom {D : D7} {m n : ℕ} (p q : D.what₂.Tau → ℕ) (ap am : D.what₂.Tau → ℕ → ℕ) :
     ∃ d, (delta p q ap am : MvPolynomial (FVar D m n) ℂ).IsHomogeneous d := by
   unfold delta deltaAt minorPlus minorMinus
@@ -70,6 +84,9 @@ theorem delta_hom {D : D7} {m n : ℕ} (p q : D.what₂.Tau → ℕ) (ap am : D.
     (MvPolynomial.IsHomogeneous.prod _ _ _ fun i _ => (det_hom _ fun a b => varF_hom _ _ _).pow _).mul
     (MvPolynomial.IsHomogeneous.prod _ _ _ fun i _ => (det_hom _ fun a b => varF_hom _ _ _).pow _)⟩
 
+/- English proof (translation)
+Unfold `GlobalTheory.JointHarm.fact GlobalTheory.JointHarm.fsub`. Rewrite using `[LinearMap.smul_apply]`. Use `hom_smul ?_ _` and prove the remaining obligations. Use `hQ.aeval (fun v : FVar D m n => ∑ a : Fin m, ∑ b : Fin n, MvPolynomial.C (if ε v.1 v.2.1 = true then k v.1 a v.2.1 * (u v.1)⁻¹ v.2.2 b else (k v.1)⁻¹ v.2.1 a * u v.1 b v.2.2) * MvPolynomial.X (v.1, a, b)) (fun v => MvPolynomial.IsHomogeneous.sum _ _ _ fun a _ => MvPolynomial.IsHo …` as an intermediate fact. Simplify using `using this`.
+-/
 theorem fact_hom {D : D7} {m n : ℕ} (ε : D.what₂.Tau → Fin m → Bool) (x₁ x₂ x₃ : D.what₂.Tau → ℤ)
     (k : D.what₂.Tau → Matrix (Fin m) (Fin m) ℂ) (u : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ) (e : ℕ) (Q : PolF D m n)
     (hQ : Q.IsHomogeneous e) : (GlobalTheory.JointHarm.fact ε x₁ x₂ x₃ k u Q).IsHomogeneous e := by
@@ -83,6 +100,21 @@ theorem fact_hom {D : D7} {m n : ℕ} (ε : D.what₂.Tau → Fin m → Bool) (x
       MvPolynomial.isHomogeneous_C_mul_X _ _)
   simpa using this
 
+/- English proof (translation)
+Unfold `GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.fockT`. Rewrite using `[LinearMap.sum_apply]`. Use `MvPolynomial.IsHomogeneous.sum _ _ _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.sum_apply]`. Use `MvPolynomial.IsHomogeneous.sum _ _ _ fun l _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.smul_apply]`. Distinguish the cases in `h : ε' i = ε' l`. Rewrite using `[hY i l h, zero_smul]`. Conclude with `MvPolynomial.isHomogeneous_zero _ _ _`. Use `hom_smul ?_ _` and prove the remaining obligations.
+
+Establish `hil : i ≠ l` using `fun e => h (e ▸ rfl)`. Rewrite using `[LinearMap.sum_apply]`. Consider the cases of `hi : ε' i with`. Consider the case `false`. Establish `hl : ε' l = true`.
+
+Consider the cases of `hl' : ε' l`. Conclude with `absurd (hi.trans hl'.symm) h`. Both sides reduce to the same expression. Establish `e : ∀ j, ((GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.raiO τ ε ε' i j * GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.lowO τ ε ε' l j + if i = l then (1 / 2 : ℂ) • 1 else 0 : Module.End ℂ (PolF D b a)) P) = -(MvPolynomial.pderiv (τ, i, j) …`. Introduce `j`.
+
+Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.raiO, GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.lowO, GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.sgn, hε j, hi, hl, hil]`. Simplify using `only [e, Finset.sum_neg_distrib, hL i l hi hl, neg_zero]`. Conclude with `MvPolynomial.isHomogeneous_zero _ _ _`. Consider the case `true`. Establish `hl : ε' l = false`.
+
+Consider the cases of `hl' : ε' l`. Both sides reduce to the same expression. Conclude with `absurd (hi.trans hl'.symm) h`. Use `MvPolynomial.IsHomogeneous.sum _ _ _ fun j _ => ?_` and prove the remaining obligations. Establish `e : ((GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.raiO τ ε ε' i j * GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.lowO τ ε ε' l j + if i = l then (1 / 2 : ℂ) • 1 else 0 : Module.End ℂ (PolF D b a)) P) = MvPolynomial.X (τ, i, j) * (MvPolynom …`.
+
+Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.raiO, GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.lowO, GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.sgn, hε j, hi, hl, hil]`. Rewrite using `[e]`. Use `(MvPolynomial.isHomogeneous_X ℂ (τ, i, j)).mul ((MvPolynomial.isHomogeneous_X ℂ (τ, l, j)).mul hP)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fockT_hom {D : D7} {a b : ℕ} (τ : D.what₂.Tau) (ε : Fin a → Bool) (hε : ∀ j, ε j = true)
     (ε' : Fin b → Bool) (Y : Matrix (Fin b) (Fin b) ℂ) (hY : ∀ i l, ε' i = ε' l → Y i l = 0) (P : PolF D b a) (d : ℕ)
     (hP : P.IsHomogeneous d)
@@ -136,28 +168,47 @@ section Mat
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[Formalism.REAL.Jm, Matrix.diagonal_apply, Matrix.one_apply]`.
+-/
 theorem jm_true : Formalism.REAL.Jm (fun _ : Fin n => true) = 1 := by
   ext a b
   simp [Formalism.REAL.Jm, Matrix.diagonal_apply, Matrix.one_apply]
 
+/- English proof (translation)
+Establish `hd : IsUnit B.det` using `(Matrix.isUnit_iff_isUnit_det _).1 hu`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem gram_eq {G B : Matrix (Fin n) (Fin n) ℂ} (hu : IsUnit B) (hB : Bᴴ * G * B = 1) : B⁻¹ᴴ * B⁻¹ = G := by
   have hd : IsUnit B.det := (Matrix.isUnit_iff_isUnit_det _).1 hu
   calc B⁻¹ᴴ * B⁻¹ = B⁻¹ᴴ * (Bᴴ * G * B) * B⁻¹ := by rw [hB, Matrix.mul_one]
     _ = (B * B⁻¹)ᴴ * G * (B * B⁻¹) := by simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
     _ = G := by rw [Matrix.mul_nonsing_inv _ hd]; simp
 
+/- English proof (translation)
+Take `⟨ε, h1, h2⟩` from `h`. Establish `h3 : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1` using `Formalism.REAL.Jm_mul_self ε`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem adapted_one {G B : Matrix (Fin n) (Fin n) ℂ} (h : IsAdapted G 1 B) : Bᴴ * G * B = 1 := by
   obtain ⟨ε, h1, h2⟩ := h
   have h3 : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := Formalism.REAL.Jm_mul_self ε
   calc Bᴴ * G * B = Bᴴ * G * (B * Formalism.REAL.Jm ε) := by rw [← h2, Matrix.one_mul]
     _ = 1 := by rw [← Matrix.mul_assoc, h1, h3]
 
+/- English proof (translation)
+Establish `e : s * X * s = -X` using `by rw [h, Matrix.neg_mul, Matrix.mul_assoc, hs, Matrix.mul_one]`. Establish `h2` using `congrArg Matrix.trace e`. Rewrite `h2` using `[Matrix.trace_mul_cycle, hs, Matrix.one_mul, Matrix.trace_neg]`. Take the linear combination `h2 / 2`.
+-/
 theorem trace_zero {s X : Matrix (Fin n) (Fin n) ℂ} (hs : s * s = 1) (h : s * X = -(X * s)) : X.trace = 0 := by
   have e : s * X * s = -X := by rw [h, Matrix.neg_mul, Matrix.mul_assoc, hs, Matrix.mul_one]
   have h2 := congrArg Matrix.trace e
   rw [Matrix.trace_mul_cycle, hs, Matrix.one_mul, Matrix.trace_neg] at h2
   linear_combination h2 / 2
 
+/- English proof (translation)
+Establish `hd : IsUnit fr.det` using `(Matrix.isUnit_iff_isUnit_det _).1 hfr`. Establish `hJ : Formalism.REAL.Jm ε * (fr * X * fr⁻¹) = -((fr * X * fr⁻¹) * Formalism.REAL.Jm ε)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hd]`. Use `_ = -(fr * (X * (fr⁻¹ * Formalism.REAL.Jm ε * fr)) * fr⁻¹) := by`.
+
+Rewrite using `[h, Matrix.mul_neg, Matrix.neg_mul]`. Use `_ = -((fr * X * fr⁻¹) * Formalism.REAL.Jm ε) := by`. Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hd, Matrix.mul_one]`. Generalize the expression as in `fr * X * fr⁻¹ = Y at hJ ⊢`. Establish `e` using `congrFun (congrFun hJ i) l`.
+
+Rewrite `e` using `[Formalism.REAL.Jm, Matrix.diagonal_mul, Matrix.neg_apply, Matrix.mul_diagonal, hil]`. Apply the tactic sequence `cases hl : ε l <;> simp only [hl, Bool.false_eq_true, ↓reduceIte] at e`. Take the linear combination `(-1 / 2 : ℂ) * e`. Take the linear combination `(1 / 2 : ℂ) * e`.
+-/
 theorem offdiag {ε : Fin n → Bool} {fr X : Matrix (Fin n) (Fin n) ℂ} (hfr : IsUnit fr)
     (h : (fr⁻¹ * Formalism.REAL.Jm ε * fr) * X = -(X * (fr⁻¹ * Formalism.REAL.Jm ε * fr))) (i l : Fin n) (hil : ε i = ε l) :
     (fr * X * fr⁻¹) i l = 0 := by
@@ -176,6 +227,9 @@ theorem offdiag {ε : Fin n → Bool} {fr X : Matrix (Fin n) (Fin n) ℂ} (hfr :
   · linear_combination (-1 / 2 : ℂ) * e
   · linear_combination (1 / 2 : ℂ) * e
 
+/- English proof (translation)
+Establish `hba : b * a = 1` using `mul_eq_one_comm.1 hab`. Establish `hbs : b * s = s * b`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem anti_conj {a b s X : Matrix (Fin n) (Fin n) ℂ} (hab : a * b = 1) (has : a * s = s * a)
     (hX : s * X = -(X * s)) : s * (b * X * a) = -((b * X * a) * s) := by
   have hba : b * a = 1 := mul_eq_one_comm.1 hab
@@ -202,12 +256,18 @@ def frOne {D : D7} {V : HSp D} (BV : D.what₂.Tau → Matrix (Fin V.rank) (Fin 
   fr_unit τ := (Matrix.isUnit_nonsing_inv_iff).2 (hu τ)
   fr_gram τ := by rw [jm_true, Matrix.mul_one]; exact gram_eq (hu τ) (hB τ)
 
+/- English proof (translation)
+Establish `hd : IsUnit (BV τ).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (hu τ)`. Use `show ((BV τ)⁻¹)⁻¹ * Formalism.REAL.Jm (fun _ => true) * (BV τ)⁻¹ = 1`. Rewrite using `[jm_true, Matrix.mul_one, Matrix.nonsing_inv_nonsing_inv _ hd, Matrix.mul_nonsing_inv _ hd]`.
+-/
 theorem frOne_cart {D : D7} {V : HSp D} (BV : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) (hu : ∀ τ, IsUnit (BV τ))
     (hB : ∀ τ, (BV τ)ᴴ * gramAt D V τ * BV τ = 1) (τ : D.what₂.Tau) : (frOne BV hu hB).cart τ = 1 := by
   have hd : IsUnit (BV τ).det := (Matrix.isUnit_iff_isUnit_det _).1 (hu τ)
   show ((BV τ)⁻¹)⁻¹ * Formalism.REAL.Jm (fun _ => true) * (BV τ)⁻¹ = 1
   rw [jm_true, Matrix.mul_one, Matrix.nonsing_inv_nonsing_inv _ hd, Matrix.mul_nonsing_inv _ hd]
 
+/- English proof (translation)
+Establish `hd : IsUnit (BV τ).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (hu τ)`. Use `show ((BV τ)⁻¹)⁻¹ = BV τ`. Rewrite using `[Matrix.nonsing_inv_nonsing_inv _ hd]`.
+-/
 theorem frOne_onb {D : D7} {V : HSp D} (BV : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) (hu : ∀ τ, IsUnit (BV τ))
     (hB : ∀ τ, (BV τ)ᴴ * gramAt D V τ * BV τ = 1) (τ : D.what₂.Tau) : (frOne BV hu hB).onb τ = BV τ := by
   have hd : IsUnit (BV τ).det := (Matrix.isUnit_iff_isUnit_det _).1 (hu τ)
@@ -220,9 +280,15 @@ variable {D : D7} {V W : HSp D} {S' : D.what₂.Tau → SPar} (M' : DSModel W S'
   {θ : InfFam D} {χS χT : (AE D)ˣ →* Circle} {ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)}
   {pt : PolF D W.rank V.rank →ₗ[ℂ] (WO V W → ℂ)}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem actTgt_eq (τ : D.what₂.Tau) (h : Matrix (Fin W.rank) (Fin W.rank) ℂ) (F : WO V W → ℂ) :
     actTgt θ ω τ h F = ω (1, atTau θ W τ h) F := rfl
 
+/- English proof (translation)
+Introduce `z` and use `by have e : (fun t : ℝ => actTgt θ ω τ (NormedSpace.exp (t • X)) (pt 0) z) = fun _ => 0 := by funext t rw [actTgt_eq, map_zero, map_zero] rfl rw [e, map_zero] exact hasDerivAt_const _ _`.
+-/
 theorem polDer_zero (τ : D.what₂.Tau) (X : Matrix (Fin W.rank) (Fin W.rank) ℂ) :
     PolDer (actTgt θ ω τ) pt X 0 0 := fun z => by
   have e : (fun t : ℝ => actTgt θ ω τ (NormedSpace.exp (t • X)) (pt 0) z) = fun _ => 0 := by
@@ -232,6 +298,9 @@ theorem polDer_zero (τ : D.what₂.Tau) (X : Matrix (Fin W.rank) (Fin W.rank) �
   rw [e, map_zero]
   exact hasDerivAt_const _ _
 
+/- English proof (translation)
+Introduce `z` and use `by have e : (fun t : ℝ => actTgt θ ω τ (NormedSpace.exp (t • X)) (pt (P + Q)) z) = fun t => actTgt θ ω τ (NormedSpace.exp (t • X)) (pt P) z + actTgt θ ω τ (NormedSpace.exp (t • X)) (pt Q) z := by funext t rw [actTgt_eq, actTgt_eq, actTgt_eq, map_add, map_add] rfl rw [e, map_add] …`.
+-/
 theorem polDer_add {τ : D.what₂.Tau} {X : Matrix (Fin W.rank) (Fin W.rank) ℂ} {P P₁ Q Q₁ : PolF D W.rank V.rank}
     (hP : PolDer (actTgt θ ω τ) pt X P P₁) (hQ : PolDer (actTgt θ ω τ) pt X Q Q₁) :
     PolDer (actTgt θ ω τ) pt X (P + Q) (P₁ + Q₁) := fun z => by
@@ -243,6 +312,9 @@ theorem polDer_add {τ : D.what₂.Tau} {X : Matrix (Fin W.rank) (Fin W.rank) �
   rw [e, map_add]
   exact (hP z).add (hQ z)
 
+/- English proof (translation)
+Introduce `z` and use `by have e : (fun t : ℝ => actTgt θ ω τ (NormedSpace.exp (t • X)) (pt (c • P)) z) = fun t => c * actTgt θ ω τ (NormedSpace.exp (t • X)) (pt P) z := by funext t rw [actTgt_eq, actTgt_eq, map_smul, map_smul] rfl rw [e, map_smul] exact (hP z).const_mul c`.
+-/
 theorem polDer_smul {τ : D.what₂.Tau} {X : Matrix (Fin W.rank) (Fin W.rank) ℂ} {P P₁ : PolF D W.rank V.rank}
     (hP : PolDer (actTgt θ ω τ) pt X P P₁) (c : ℂ) : PolDer (actTgt θ ω τ) pt X (c • P) (c • P₁) := fun z => by
   have e : (fun t : ℝ => actTgt θ ω τ (NormedSpace.exp (t • X)) (pt (c • P)) z) = fun t =>
@@ -273,6 +345,13 @@ def harmSub (d : ℕ) : Submodule ℂ (PolF D W.rank V.rank) where
     obtain ⟨P₁, h1, h1'⟩ := (hP τ).2 X hX hc
     exact ⟨c • P₁, polDer_smul h1 c, hom_smul h1' c⟩
 
+/- English proof (translation)
+Take `⟨P', hd', hh'⟩` from `hP.2 X' hX' hc'`. Take `⟨Gn, hGn⟩` from `GlobalTheory.DefLift.Gen.exists_generator D ψ V W χS χT ω hω θ hθ τ X' hX'`. Establish `key : Gn (pt P) = pt P'`. Use function extensionality and compare the values at `z`. Establish `h1` using `(hGn _ (hpt P)).2.2.2 1 z`.
+
+Simplify using `only [one_mul, map_one, Module.End.one_apply] at h1`. Conclude with `h1.unique (hd' z)`. Use `⟨S P', fun z => ?_, hS _ _ hh'⟩` and prove the remaining obligations. Establish `h2` using `(hGn _ (hpt P)).2.2.2 g z`. Rewrite `h2` using `[key, hg]`.
+
+Use `h2.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Use `show ω (1, atTau θ W τ (NormedSpace.exp (t • X))) (pt (S P)) z = ω (g * (1, oneP θ W τ X' t)) (pt P) z`. Rewrite using `[← hg, ← Module.End.mul_apply, ← map_mul]`. Conclude with `congrArg (fun x => ω x (pt P) z) (hcomm t)`.
+-/
 theorem move (hθ : IsInfFam θ) (hω : IsWeilDatumO ψ V W χS χT ω) (hpt : ∀ P, IsThetaFunO ψ V W (pt P))
     {τ : D.what₂.Tau} {d : ℕ} (g : GA D V × GA D W) (S : PolF D W.rank V.rank → PolF D W.rank V.rank)
     (hS : ∀ e Q, Q.IsHomogeneous e → (S Q).IsHomogeneous e) (hg : ∀ Q, ω g (pt Q) = pt (S Q))
@@ -297,6 +376,9 @@ theorem move (hθ : IsInfFam θ) (hω : IsWeilDatumO ψ V W χS χT ω) (hpt : �
 
 end Deriv
 
+/- English proof (translation)
+Substitute `hP` using the available equality. Take `⟨x₁, x₂, x₃, hx⟩` from `GlobalTheory.JointHarm.weights_of_minors D i _ rfl M h`. Conclude with `⟨x₁, x₂, x₃, fun τ => ⟨(hx τ).1, (hx τ).2.1, (hx τ).2.2.1⟩⟩`.
+-/
 theorem wts {D : D7} (i : Fin D.R.m) {P : D.what₂.Tau → SPar} (hP : P = parAt (Wc D i) D.what₂.embLL)
     (M : DSModel (Wc D i) P) (h : ∀ τ a, M.ε τ a = decide ((a : ℕ) < ((Wc D i).sig (tauE D τ)).1)) :
     ∃ x₁ x₂ x₃ : D.what₂.Tau → ℤ, ∀ τ, (x₁ τ : ℚ) = -(D.hc τ).e i + ((Vc D i).rank : ℚ) / 2 ∧
@@ -306,9 +388,67 @@ theorem wts {D : D7} (i : Fin D.R.m) {P : D.what₂.Tau → SPar} (hP : P = parA
   obtain ⟨x₁, x₂, x₃, hx⟩ := GlobalTheory.JointHarm.weights_of_minors D i _ rfl M h
   exact ⟨x₁, x₂, x₃, fun τ => ⟨(hx τ).1, (hx τ).2.1, (hx τ).2.2.1⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨one_mem _, by simp⟩`.
+-/
 theorem one_mem_K {n : ℕ} (ε : Fin n → Bool) : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ Formalism.REAL.Kset ε :=
   ⟨one_mem _, by simp⟩
 
+/- English proof (translation)
+Introduce and unpack `i M M' ψ θ χS χT ω hθ hω hχ c hc hpr BV f hf io hio`. Establish `hrk : (Wc D i).rank = D.R.r` using `D.sp.W_rank _ (Nat.le_add_left _ _) i.2`. Establish `hpq : ∀ τ, ((Wc D i).sig (tauE D τ)).1 + ((Wc D i).sig (tauE D τ)).2 = (Wc D i).rank` using `fun τ => GlobalTheory.IndefiniteRowSideFullHecke.HolomorphicLowestType.pW_add_qW i τ`. Establish `hord : ∀ τ a, M'.ε τ a = decide ((a : ℕ) < ((Wc D i).sig (tauE D τ)).1)` using `fun τ a => (GlobalTheory.HolDict.isEnum_holPar_kapW (D.hc τ) hrk (hpq τ) (M'.enum τ) a).2`. Take `⟨hLS, hLI⟩` from `GlobalTheory.HolLowOnce.lowSm_and_lowIrr D _ _ M' fun τ => GlobalTheory.LowSmooth.shape_at M' τ (D.hc τ) hrk (hpq τ) rfl`.
+
+Establish `hBS : ∀ τ, (BV τ)ᴴ * gramAt D (Vc D i) τ * BV τ = 1` using `fun τ => adapted_one (hf τ).onS`. Establish `hBu : ∀ τ, IsUnit (BV τ)` using `fun τ => IsUnit.of_mul_eq_one_right _ (hBS τ)`. Take `⟨τ₀⟩ : Nonempty D.what₂.Tau` from `⟨D.eTau.symm ⟨1, by simp [Formalism.FrobeniusOrbits.Psi]⟩⟩`. Establish `hth : IsThetaFunO ψ (Vc D i) (Wc D i) f` using `(hf τ₀).theta`. Use `set pt := pureTensorO ψ θ (Vc D i) (Wc D i) (fun _ => 1) (cart M') BV (onb M') f with hpt_def`.
+
+Establish `hptθ : ∀ P, IsThetaFunO ψ (Vc D i) (Wc D i) (pt P)` using `fun P => GlobalTheory.Chain.InnerSteps.theta_pureTensorO hω.std hθ _ _ _ _ hth P`. Establish `hinj : Function.Injective pt`. Use `GlobalTheory.FockIndep.pureTensorO_injective D ψ θ _ _ _ M' BV f hω.std hθ (fun τ => ⟨by simp, by simp, ?_⟩) (fun τ => ⟨fun _ => 1, fun a => Or.inl ⟨rfl, a.2⟩, by rw [hBS τ]; simp, by simp⟩) hth (hf τ₀).ne (fun τ => (hf τ).vac)` and prove the remaining obligations. Rewrite using `[Matrix.mul_one, ← gram_eq (hBu τ) (hBS τ)]`. Conclude with `Matrix.PosDef.conjTranspose_mul_self _ (Matrix.mulVec_injective_of_isUnit ((Matrix.isUnit_nonsing_inv_iff).2 (hBu τ)))`.
+
+Take `⟨x₁, x₂, x₃, hx⟩` from `wts i (funext fun τ => (GlobalTheory.ThetaFiresProbe.parAt_fixed _ τ).symm) M' hord`. Establish `hact` using `GlobalTheory.T.weil_maximalCompact_fock_substitution_character D ψ θ (Vc D i) (Wc D i) _ _ ω _ M' BV hω hθ (D.sp.V_sig _) (D.sp.W_sig _) hBS _ _ hpq hord _ _ (fun τ => (hχ τ).1) (fun τ => (hχ τ).2) x₁ x₂ x₃ (fun τ => (hx τ).1) (fun τ => (hx τ).2.1) (fun τ => (hx τ).2.2) f hth (fu …`. Establish `hfr : ∀ τ, M'.fr τ * (M'.fr τ)⁻¹ = 1` using `fun τ => Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 (M'.fr_unit τ))`. Establish `hc1 : ∀ (V : HSp D) τ, compAt θ τ (Formalism.L2.Theta.mt V 1) = 1` using `fun V τ => by`. Rewrite using `[GlobalTheory.WeilDeriv.compAt_mt_eq_infMat]`.
+
+Conclude with `infMat_one V _`. Take `⟨hSg, hKg, v₀, w₀, hv₀, hw₀, e₀⟩` from `hio`. Take `⟨d, hd⟩ : ∃ d, (RealDat.Delta (D` from `D) i).IsHomogeneous d := delta_hom _ _ _ _`. Set `N` to `harmSub M' θ ω pt d`. Set `A` to `frOne BV hBu hBS`.
+
+Set `B` to `GlobalTheory.ChainFr.Fr.ofModel M'`. Establish `hAc : A.cart = fun _ => 1` using `funext (frOne_cart BV hBu hBS)`. Establish `hAo : A.onb = BV` using `funext (frOne_onb BV hBu hBS)`. Establish `hptF : GlobalTheory.ChainFr.ptF ψ θ A B f = pt`. Unfold `GlobalTheory.ChainFr.ptF`.
+
+Rewrite using `[hAc, hAo]`. Both sides reduce to the same expression. Establish `hbase : RealDat.Delta (D` using `D) i ∈ N := by`. Introduce `τ`. Use `⟨hd, fun X hX hcX => ?_⟩` and prove the remaining obligations.
+
+Establish `hLF` using `GlobalTheory.T.lieAction_fockOperators_scalars_trace D (Vc D i) (Wc D i) A B θ ψ χS χT ω f τ (-(D.hc τ).e i) (-(D.hc τ).e i - 1 / 2) hθ hω (hχ τ).1 (hχ τ).2 ⟨hth, fun ρ => by rw [congrFun hAc ρ]; exact (hf ρ).vac⟩`. Establish `hss : cart M' τ * cart M' τ = 1` using `by show (M'.fr τ)⁻¹ * Formalism.REAL.Jm (M'.ε τ) * M'.fr τ * ((M'.fr τ)⁻¹ * Formalism.REAL.Jm (M'.ε τ) * M'.fr τ) = 1`. Establish `h2 : (M'.fr τ)⁻¹ * M'.fr τ = 1` using `mul_eq_one_comm.1 (hfr τ)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = 1 := by rw [hfr, Matrix.mul_one, Formalism.REAL.Jm_mul_self, Matrix.mul_one, h2]`. Establish `htr : X.trace = 0` using `trace_zero hss hcX`. Use `⟨GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.fockT τ (A.ε τ) (B.ε τ) (B.fr τ * X * (B.fr τ)⁻¹) (RealDat.Delta (D := D) i) + (((-(D.hc τ).e i : ℚ) : ℂ) * X.trace) • RealDat.Delta (D := D) i, fun z => ?_, ?_⟩` and prove the remaining obligations. Use `hLF.2 X hX (RealDat.Delta (D := D) i) z` as an intermediate fact. Rewrite `this` using `[hptF]`.
+
+Conclude with `this`. Rewrite using `[htr, mul_zero, zero_smul, add_zero]`. Use `fockT_hom τ _ (fun _ => rfl) _ _ (fun a b hab => offdiag (M'.fr_unit τ) hcX a b hab) _ d hd ?_` and prove the remaining obligations. Introduce `a b ha hb`. Establish `ha' : ((Wc D i).sig (tauE D τ)).1 ≤ (a : ℕ)` using `not_lt.1 (decide_eq_false_iff_not.1 ((hord τ a).symm.trans ha))`.
+
+Establish `hb' : (b : ℕ) < ((Wc D i).sig (tauE D τ)).1` using `decide_eq_true_iff.1 ((hord τ b).symm.trans hb)`. Conclude with `GlobalTheory.MinorHarmonic.laplacian_delta D _ _ (fun τ => ((Wc D i).sig (tauE D τ)).1) (fun τ => ((Wc D i).sig (tauE D τ)).2) _ _ (fun τ => (hpq τ).le.trans (hrk.le.trans (r_le_V i))) τ a b ha' hb'`. Establish `hρ : ∀ u ∈ GinfC (Vc D i), ∀ x w, io x w ∈ N → io x (c.ρ u w) ∈ N`. Introduce `u hu x w hm`. Take `⟨-, b⟩` from `hact u hu 1 (one_mem _) fun τ => by`.
+
+Rewrite using `[hc1, Matrix.mul_one, hfr]`. Conclude with `one_mem_K _`. Establish `e : io x (c.ρ u w) = GlobalTheory.JointHarm.fact M'.ε x₁ x₂ x₃ (fun τ => M'.fr τ * compAt θ τ (Formalism.L2.Theta.mt (Wc D i) 1) * (M'.fr τ)⁻¹) (fun τ => (BV τ)⁻¹ * compAt θ τ (Formalism.L2.Theta.mt (Vc D i) u) * BV τ) (io x w)` using `hinj (by rw [← hSg u hu x w, b])`. Rewrite using `[e]`. Introduce `τ`.
+
+Use `⟨fact_hom _ _ _ _ _ _ _ _ (hm τ).1, fun X hX hcX => move M' hθ hω hptθ (u, 1) _ (fact_hom _ _ _ _ _ _) b hX hcX (fun t => ?_) (hm τ)⟩` and prove the remaining obligations. Simplify using `only [Prod.mk_mul_mk, one_mul, mul_one]`. Establish `step1 : ∀ w, io (PiTensorProduct.tprod ℂ v₀) w ∈ N`. Take `⟨-, -, -, -, -, -, -, hd', -⟩` from `GlobalTheory.RealLift.exists_real_lift D θ (Vc D i) hθ`. Establish `hst : ∀ g, (N.comap (io (PiTensorProduct.tprod ℂ v₀))).map (c.ρ g) ≤ N.comap (io (PiTensorProduct.tprod ℂ v₀))`.
+
+Introduce and unpack `g _ ⟨x, hx, rfl⟩`. Take `⟨a, ha, u, hu, rfl⟩` from `hd' g`. Use `show io (PiTensorProduct.tprod ℂ v₀) (c.ρ (a * u) x) ∈ N`. Rewrite using `[map_mul, hc.1 a ha, one_mul]`. Conclude with `hρ u hu _ x hx`.
+
+Introduce `w`. Use `(((hc.2.2.2.2 _ hst).resolve_left fun h0 => ?_).ge Submodule.mem_top : w ∈ N.comap (io (PiTensorProduct.tprod ℂ v₀)))` and prove the remaining obligations. Establish `hm : w₀ ∈ N.comap (io (PiTensorProduct.tprod ℂ v₀))` using `by show io (PiTensorProduct.tprod ℂ v₀) w₀ ∈ N`. Rewrite using `[e₀]`. Conclude with `hbase`.
+
+Rewrite `hm` using `[h0, Submodule.mem_bot]`. Rewrite `hw₀` using `[hm, norm_zero]`. Conclude with `zero_ne_one hw₀`. Establish `hall : ∀ w (v : ∀ ρ, lowT M' ρ), io (PiTensorProduct.tprod ℂ v) w ∈ N`. Introduce `w`.
+
+Set `Bf : MultilinearMap ℂ (fun τ => lowT M' τ) (PolF D (Wc D i).rank (Vc D i).rank)` to `(io.flip w).compMultilinearMap (PiTensorProduct.tprod ℂ)`. Establish `hK' : ∀ τ, ∀ k ∈ Formalism.REAL.Kset (M'.ε τ), ∀ (v : ∀ ρ, lowT M' ρ) (u : lowT M' τ), ((u : M'.sm τ) : M'.H τ) = M'.σ τ k ((v τ : M'.sm τ) : M'.H τ) → Bf v ∈ N → Bf (Function.update v τ u) ∈ N`. Introduce `τ k hk v u hu hm`. Establish `hU` using `GlobalTheory.DefLift.LowerKill.frame_mem_UH M' τ hk`. Establish `hs` using `atTau_spec hθ (Wc D i) τ hU`.
+
+Use `set h := atTau θ (Wc D i) τ ((M'.fr τ)⁻¹ * k * M'.fr τ) with hh_def`. Establish `hh : IsRealPt θ h` using `isRealPt_atTau hθ τ hU`. Establish `hcomp : ∀ ρ, M'.fr ρ * compAt θ ρ (Formalism.L2.Theta.mt (Wc D i) h) * (M'.fr ρ)⁻¹ ∈ Formalism.REAL.Kset (M'.ε ρ)` using `fun ρ => by`. Rewrite using `[GlobalTheory.WeilDeriv.compAt_mt_eq_infMat]`. Distinguish the cases in `hρ : ρ = τ`.
+
+Substitute `hρ` using the available equality. Rewrite using `[hs.2.1]`. Establish `: M'.fr ρ * ((M'.fr ρ)⁻¹ * k * M'.fr ρ) * (M'.fr ρ)⁻¹ = k`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this]`.
+
+Conclude with `hk`. Rewrite using `[hs.2.2 ρ hρ, Matrix.mul_one, hfr]`. Conclude with `one_mem_K _`. Take `⟨-, b⟩` from `hact 1 (one_mem _) h hs.1 hcomp`. Establish `e : io (PiTensorProduct.tprod ℂ (Function.update v τ u)) w = GlobalTheory.JointHarm.fact M'.ε x₁ x₂ x₃ (fun ρ => M'.fr ρ * compAt θ ρ (Formalism.L2.Theta.mt (Wc D i) h) * (M'.fr ρ)⁻¹) (fun ρ => (BV ρ)⁻¹ * compAt θ ρ (Formalism.L2.Theta.mt (Vc D i) 1) * BV ρ) (io (PiTensorProduct. …` using `hinj (by rw [← hKg τ k hk v u hu w, b])`.
+
+Use `show io (PiTensorProduct.tprod ℂ (Function.update v τ u)) w ∈ N`. Rewrite using `[e]`. Establish `hm' : io (PiTensorProduct.tprod ℂ v) w ∈ N` using `hm`. Introduce `ρ`. Use `⟨fact_hom _ _ _ _ _ _ _ _ (hm' ρ).1, fun X hX hcX => move M' hθ hω hptθ (1, h) _ (fact_hom _ _ _ _ _ _) b (adAt_mem hh hX) ?_ (fun t => ?_) (hm' ρ)⟩` and prove the remaining obligations.
+
+Establish `hcomm : infMat D.sp.cm.sig (Wc D i).gram (θ ρ) h * cart M' ρ = cart M' ρ * infMat D.sp.cm.sig (Wc D i).gram (θ ρ) h`. Distinguish the cases in `hρ : ρ = τ`. Substitute `hρ` using the available equality. Rewrite using `[hs.2.1]`. Use `show (M'.fr ρ)⁻¹ * k * M'.fr ρ * ((M'.fr ρ)⁻¹ * Formalism.REAL.Jm (M'.ε ρ) * M'.fr ρ) = (M'.fr ρ)⁻¹ * Formalism.REAL.Jm (M'.ε ρ) * M'.fr ρ * ((M'.fr ρ)⁻¹ * k * M'.fr ρ)`.
+
+Establish `h2 : M'.fr ρ * (M'.fr ρ)⁻¹ = 1` using `hfr ρ`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (M'.fr ρ)⁻¹ * (Formalism.REAL.Jm (M'.ε ρ) * (M'.fr ρ * (M'.fr ρ)⁻¹) * k) * M'.fr ρ := by`. Rewrite using `[h2, Matrix.mul_one, Matrix.mul_one, hk.2]`.
+
+Use `_ = _ := by simp only [Matrix.mul_assoc]`. Rewrite using `[hs.2.2 ρ hρ, Matrix.one_mul, Matrix.mul_one]`. Conclude with `anti_conj (infMat_mul_inv θ (Wc D i) ρ h) hcomm hcX`. Simplify using `only [Prod.mk_mul_mk, one_mul, mul_one]`. Rewrite using `[oneP_mul hθ hh hX t]`.
+
+Introduce `v`. Conclude with `GlobalTheory.DefLift.mem_of_translates hLS hLI Bf N v₀ (fun ρ h0 => by`. Use `hv₀ ρ` as an intermediate fact. Rewrite `this` using `[h0]`. Simplify using `at this) (step1 w) hK' v`.
+
+Establish `hmem : ∀ x w, io x w ∈ N`. Introduce `x w`. Proceed by induction on `x using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r v`. Rewrite using `[map_smul, LinearMap.smul_apply]`.
+
+Conclude with `N.smul_mem r (hall w v)`. Consider the case `add x y hx hy`. Rewrite using `[map_add, LinearMap.add_apply]`. Conclude with `N.add_mem hx hy`. Conclude with `⟨d, fun x w τ => hmem x w τ⟩`.
+-/
 theorem ioHarm_holds (D : D7) : IoHarm D := by
   classical
   rintro i M M' ψ θ χS χT ω hθ hω hχ c hc hpr BV f hf io hio
@@ -483,6 +623,9 @@ theorem ioHarm_holds (D : D7) : IoHarm D := by
       exact N.add_mem hx hy
   exact ⟨d, fun x w τ => hmem x w τ⟩
 
+/- English proof (translation)
+Introduce `_ _` and use `ioHarm_holds`.
+-/
 theorem ioHarm : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → ∀ D : D7, IoHarm D :=
   fun _ _ => ioHarm_holds
 

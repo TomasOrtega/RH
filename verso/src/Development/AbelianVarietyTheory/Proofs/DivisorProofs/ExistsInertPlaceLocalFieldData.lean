@@ -11,6 +11,11 @@ open Formalism.UG GlobalTheory.LFun.InertChart GlobalTheory.InertCoord
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Establish `h1 : c ⊗ₜ[F] x = c • ((1 : R) ⊗ₜ[F] x)` using `by rw [TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[h1, LinearMap.map_smul, smul_eq_mul]`. Use `congr 1`. Rewrite using `[Algebra.trace_apply, Algebra.trace_apply, ← LinearMap.trace_baseChange]`. Use `congr 1`.
+
+Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [LinearMap.baseChange_tmul, Algebra.TensorProduct.tmul_mul_tmul]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+-/
 theorem trace_tmul (R : Type) [CommRing R] [Algebra F R] [Module.Free F E] [Module.Finite F E] (c : R) (x : E) :
     Algebra.trace R (R ⊗[F] E) (c ⊗ₜ[F] x) = c * algebraMap F R (Algebra.trace F E x) := by
   have h1 : c ⊗ₜ[F] x = c • ((1 : R) ⊗ₜ[F] x) := by rw [TensorProduct.smul_tmul', smul_eq_mul, mul_one]
@@ -24,6 +29,11 @@ theorem trace_tmul (R : Type) [CommRing R] [Algebra F R] [Module.Free F E] [Modu
   | tmul a e => simp [LinearMap.baseChange_tmul, Algebra.TensorProduct.tmul_mul_tmul]
   | add a b ha hb => simp only [map_add, ha, hb]
 
+/- English proof (translation)
+Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x`. Rewrite using `[show Supp.singleTens E v (a ⊗ₜ[F] x) = GlobalTheory.EmbChart.atPlace v a ⊗ₜ[F] x from GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.tensNU_tmul _ _ a x, trace_tmul, trace_tmul, mul_comm a, ← Algebra.smul_def, LinearMap.map_smul, Algebra.smul_def, mul_comm]`.
+
+Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+-/
 theorem trace_singleTens (v : HeightOneSpectrum (𝓞 F)) (y : Fv F v ⊗[F] E) :
     Algebra.trace (AF F) (AF F ⊗[F] E) (Supp.singleTens E v y) =
       GlobalTheory.EmbChart.atPlace v (Algebra.trace (Fv F v) (Fv F v ⊗[F] E) y) := by
@@ -36,6 +46,11 @@ theorem trace_singleTens (v : HeightOneSpectrum (𝓞 F)) (y : Fv F v ⊗[F] E) 
       LinearMap.map_smul, Algebra.smul_def, mul_comm]
   | add a b ha hb => simp only [map_add, ha, hb]
 
+/- English proof (translation)
+Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `intLoc_induction (p := fun y => Algebra.trace (Fv F v) (Fv F v ⊗[F] E) y ∈ v.adicCompletionIntegers F) (fun a ha x => ?_) (by simp) (fun y z hy hz => by rw [map_add]; exact add_mem hy hz) (fun y hy => by rw [map_neg]; exact neg_mem hy) hy` and prove the remaining obligations. Rewrite using `[trace_tmul]`. Use `mul_mem ha ?_` and prove the remaining obligations. Establish `hint : IsIntegral ℤ (Algebra.trace F E (x : E))` using `Algebra.isIntegral_trace (RingOfIntegers.isIntegral_coe x)`.
+
+Use `HeightOneSpectrum.coe_mem_adicCompletionIntegers (K := F) v (⟨_, hint⟩ : 𝓞 F)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `first | rfl | simp | (exact (IsScalarTower.algebraMap_apply (𝓞 F) F (Fv F v) (⟨_, hint⟩ : 𝓞 F)))`.
+-/
 theorem trace_mem {v : HeightOneSpectrum (𝓞 F)} {y : Fv F v ⊗[F] E} (hy : y ∈ intLoc F E v) :
     Algebra.trace (Fv F v) (Fv F v ⊗[F] E) y ∈ v.adicCompletionIntegers F := by
   haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
@@ -49,6 +64,15 @@ theorem trace_mem {v : HeightOneSpectrum (𝓞 F)} {y : Fv F v ⊗[F] E} (hy : y
   convert this using 1
   first | rfl | simp | (exact (IsScalarTower.algebraMap_apply (𝓞 F) F (Fv F v) (⟨_, hint⟩ : 𝓞 F)))
 
+/- English proof (translation)
+Establish `hc : Nat.card (𝓞 F ⧸ v.asIdeal) = Ideal.absNorm v.asIdeal`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `h0 : Ideal.absNorm v.asIdeal ≠ 0` using `by rw [Ne, Ideal.absNorm_eq_zero_iff]; exact v.ne_bot`. Use `haveI := v.isMaximal`. Use `letI := Ideal.Quotient.field v.asIdeal`.
+
+Use `haveI : Finite (𝓞 F ⧸ v.asIdeal) := Nat.finite_of_card_ne_zero (hc ▸ h0)`. Use `letI := Fintype.ofFinite (𝓞 F ⧸ v.asIdeal)`. Assume the negation of the conclusion as `hodd`. Establish `h1 : ringChar (𝓞 F ⧸ v.asIdeal) = 2`. Rewrite using `[FiniteField.even_card_iff_char_two, ← Nat.card_eq_fintype_card, hc]`.
+
+Conclude with `Nat.even_iff.1 (Nat.not_odd_iff_even.1 hodd)`. Establish `h3 : ((2 : ℕ) : 𝓞 F ⧸ v.asIdeal) = 0` using `(ringChar.spec _ 2).2 (by rw [h1])`. Apply `h2` to reduce the goal to its premises. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Rewrite using `[map_ofNat]`.
+
+Simplify using `using h3`.
+-/
 theorem odd_absNorm {v : HeightOneSpectrum (𝓞 F)} (h2 : (2 : 𝓞 F) ∉ v.asIdeal) : Odd (Ideal.absNorm v.asIdeal) := by
   have hc : Nat.card (𝓞 F ⧸ v.asIdeal) = Ideal.absNorm v.asIdeal := by
     rw [Ideal.absNorm_apply, Submodule.cardQuot_apply]
@@ -77,6 +101,27 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {v : HeightOneSpectrum (𝓞 F)} {w : HeightOneSpectrum (𝓞 E)} {σ : E →ₐ[F] E}
   {h : w.under (𝓞 F) = v} {c : w.adicCompletion E →+* w.adicCompletion E}
 
+/- English proof (translation)
+Establish `hval : ∀ a : E, Valued.v (algebraMap E (w.adicCompletion E) a) = w.valuation E a` using `fun a => HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w _`. Take `⟨s, hs, hs2⟩` from `SetLike.not_le_iff_exists.1 (mt Ideal.map_le_iff_le_comap.2 (not_map_le_sq hw))`. Establish `hs1 : algebraMap (𝓞 F) (𝓞 E) s ∈ w.asIdeal` using `hw ▸ Ideal.mem_map_of_mem _ hs`. Use `⟨(s : F), ?_⟩` and prove the remaining obligations. Establish `hϖ : complMap h (algebraMap F (Fv F v) (s : F)) = algebraMap E (w.adicCompletion E) (algebraMap (𝓞 F) (𝓞 E) s : E)`.
+
+Rewrite using `[complMap_algebraMap]`. Both sides reduce to the same expression. Rewrite using `[hϖ]`. Use `set ϖ : w.adicCompletion E := algebraMap E _ (algebraMap (𝓞 F) (𝓞 E) s : E) with hϖ'`. Establish `h1 : c ϖ = ϖ` using `(conj_algebraMap hc _).trans (congrArg _ (σ.commutes (s : F)))`.
+
+Establish `h2 : Valued.v ϖ = WithZero.exp (-1 : ℤ)`. Rewrite using `[hϖ', hval, HeightOneSpectrum.valuation_of_algebraMap]`. Establish `a` using `(w.intValuation_le_pow_iff_mem _ 1).2 (by rwa [pow_one])`. Establish `b` using `not_le.1 (mt (w.intValuation_le_pow_iff_mem _ 2).1 hs2)`. Establish `h0 : w.intValuation (algebraMap (𝓞 F) (𝓞 E) s) ≠ 0` using `b.ne_bot`.
+
+Rewrite `a`, `b`, the goal using `[← WithZero.exp_log h0]`. Rewrite `a` using `[WithZero.exp_le_exp]`. Rewrite `b` using `[WithZero.exp_lt_exp]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h3 : ∀ u, Valued.v u = 1 → Valued.v (c u) = 1` using `fun u hu => by`. Establish `a : Valued.v (c u) ≤ 1` using `conj_mem hw hc hu.le`. Establish `b : Valued.v (c u⁻¹) ≤ 1` using `conj_mem hw hc (show Valued.v u⁻¹ ≤ 1 by rw [map_inv₀, hu, inv_one])`. Establish `h0 : u ≠ 0` using `fun h0 => by simp [h0] at hu`. Rewrite `b` using `[map_inv₀, map_inv₀, inv_le_one₀ (by simpa [pos_iff_ne_zero] using h0)]`.
+
+Conclude with `le_antisymm a b`. Use `⟨fun x => ?_, fun x => ?_, h1, h2, ?_, one_lt_absNorm v, ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `toCompl_surjective h x`. Rewrite using `[hc, hc]`. Use `congr 1`.
+
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => exact congrArg (a ⊗ₜ[F] ·) (conj_conj hσ x)`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Distinguish the cases in `h0 : x = 0`.
+
+Simplify using `[h0]`. Establish `h0' : Valued.v x ≠ 0` using `by simpa using h0`. Establish `a : Valued.v (x * ϖ ^ WithZero.log (Valued.v x)) = 1`. Rewrite using `[map_mul, map_zpow₀, h2, ← WithZero.exp_zsmul, ← WithZero.exp_log h0', ← WithZero.exp_add]`. Simplify using the standard rewrite rules.
+
+Establish `b` using `h3 _ a`. Rewrite `b` using `[map_mul, map_zpow₀, h1, ← a, map_mul, map_mul]`. Conclude with `mul_right_cancel₀ (by rw [map_zpow₀, h2]; exact zpow_ne_zero _ WithZero.exp_ne_zero) b`. Take `⟨x, hx⟩` from `exists_conj_sub_unit hσ hw`. Conclude with `⟨algebraMap E _ (x : E), GlobalTheory.AdeleBaseChange.algebraMap_int_mem x w, by`.
+
+Rewrite using `[conj_algebraMap hc, ← map_sub, hval, hx]⟩`. Conclude with `(P.tjcosets_card_residue w).trans (absNorm_eq hσ.2.2.1 hw)`.
+-/
 theorem exists_unif (hσ : IsCMExt F E σ) (hw : IsInertAt F E v w) (hc : IsConjAt σ h c) :
     ∃ s : F, IsUnramInv (complMap h (algebraMap F (Fv F v) s)) c (qV F v) := by
   have hval : ∀ a : E, Valued.v (algebraMap E (w.adicCompletion E) a) = w.valuation E a := fun a =>
@@ -131,6 +176,39 @@ theorem exists_unif (hσ : IsCMExt F E σ) (hw : IsInertAt F E v w) (hc : IsConj
 end GlobalTheory.InertPsi
 
 open GlobalTheory.InertPsi in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB v w hw h`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Take `⟨c, hc, -⟩` from `InertChart.existsUnique_isConjAt σ hw h`. Take `⟨s, hU⟩` from `exists_unif hB.cm hw hc`. Take `⟨h2, -, hψ⟩` from `hB.inert v w hw`.
+
+Use `set k := evFin F v (⅟(2 : AF F)) with hk'`. Establish `hk2 : k * 2 = 1`. Rewrite using `[hk', ← map_ofNat (evFin F v) 2, ← map_mul, invOf_mul_self, map_one]`. Establish `hv2 : Valued.v (2 : Fv F v) = 1`. Rewrite using `[← map_ofNat (algebraMap F (Fv F v)) 2]`.
+
+Use `(HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v (2 : F)).trans ?_` and prove the remaining obligations. Rewrite using `[← map_ofNat (algebraMap (𝓞 F) F) 2, HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `HeightOneSpectrum.intValuation_eq_one_iff.2 h2`. Establish `hk : k ∈ v.adicCompletionIntegers F`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`.
+
+Use `congrArg Valued.v hk2` as an intermediate fact. Rewrite `this` using `[map_mul, hv2, mul_one, map_one]`. Conclude with `this.le`. Establish `hO : ∀ y ∈ v.adicCompletionIntegers F, psiLoc B.ψ v y = 1` using `fun y hy => by`. Simplify using `using (hψ 1).2 (one_mem _) y hy`.
+
+Set `ψL : AddChar (w.adicCompletion E) ℂ` to `{ toFun := fun z => B.ψ (⅟(2 : AF F) * Algebra.trace (AF F) (AE F E) (-1 * ptAt hw h z)) map_zero_eq_one' := by simp map_add_eq_mul' := fun a b => by`. Simplify using `only [map_add, mul_add, AddChar.map_add_eq_mul] }`. Establish `hval : ∀ z, ψL z = psiLoc B.ψ v (Algebra.trace (Fv F v) (Fv F v ⊗[F] E) ((InertChart.complEquiv hw h).symm (-z)) * k)` using `fun z => by show B.ψ _ = _`. Rewrite using `[neg_one_mul, ← map_neg (ptAt hw h), ptAt_apply, trace_singleTens, mul_comm, GlobalTheory.EmbChart.atPlace_mul_right]`. Both sides reduce to the same expression.
+
+Establish `hcm : ∀ a : Fv F v, (InertChart.complEquiv hw h).symm (complMap h a) = a ⊗ₜ[F] (1 : E)` using `fun a => (InertChart.complEquiv hw h).symm_apply_eq.2 (by show complMap h a = toCompl h (a ⊗ₜ[F] (1 : E))`. Rewrite using `[toCompl_tmul, map_one, mul_one])`. Establish `htr1 : algebraMap F (Fv F v) (Algebra.trace F E 1) = 2`. Rewrite using `[show (1 : E) = algebraMap F E 1 from (map_one _).symm, Algebra.trace_algebraMap, hB.cm.2.2.1]`. Apply the tactic sequence `first | simp [map_ofNat] | (simp; exact map_ofNat _ 2) | (rw [nsmul_eq_mul, mul_one, Nat.cast_ofNat, map_ofNat])`.
+
+Establish `hvalc : ∀ a, ψL (complMap h a) = psiLoc B.ψ v (-a)` using `fun a => by`. Rewrite using `[hval, ← map_neg, hcm, trace_tmul, htr1, mul_assoc, mul_comm 2 k, hk2, mul_one]`. Use `⟨complMap h (algebraMap F (Fv F v) s), c, Formalism.UG.qV F v, ψL, hc, hU, odd_absNorm h2, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz _`. Rewrite using `[hval]`.
+
+Use `hO _ (mul_mem (trace_mem ((InertChart.mem_intLoc_iff hw h _).2 ?_)) hk)` and prove the remaining obligations. Rewrite using `[show toCompl h ((InertChart.complEquiv hw h).symm (-z)) = -z from (InertChart.complEquiv hw h).apply_symm_apply (-z)]`. Conclude with `neg_mem ((HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 hz)`. Establish `hs : (algebraMap F (Fv F v) s)⁻¹ ∉ v.adicCompletionIntegers F` using `fun hm => by`. Establish `h4` using `complMap_mem h hm`.
+
+Establish `h5 : Valued.v (complMap h (algebraMap F (Fv F v) s))⁻¹ ≤ 1`. Rewrite using `[← map_inv₀]`. Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 h4`. Rewrite `h5` using `[map_inv₀, hU.2.2.2.1]`. Conclude with `absurd h5 (by decide)`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨y, hy, hne⟩ : ∃ y ∈ v.adicCompletionIntegers F, psiLoc B.ψ v ((algebraMap F (Fv F v) s)⁻¹ * y) ≠ 1 := by`. Use `mt (hψ _).1 hs` as an intermediate fact. Use `push_neg at this`. Conclude with `this`. Establish `ht : ∀ a, toCompl h (a ⊗ₜ[F] (1 : E)) = complMap h a` using `fun a => by`.
+
+Rewrite using `[toCompl_tmul, map_one, mul_one]`. Use `⟨complMap h (-y), (HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (complMap_mem h (neg_mem hy)), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← ht, hc]`. Use `congr 1`. Use `show (-y) ⊗ₜ[F] σ 1 = _`.
+
+Rewrite using `[map_one]`. Rewrite using `[← map_inv₀, ← map_mul, hvalc]`. Use `hne using 2` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Introduce `z show B.ψ _ = B.ψ _`.
+
+Establish `hcc : ∀ x, cA σ (cA σ x) = x` using `fun x => by`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => exact congrArg (a ⊗ₜ[F] ·) (InertChart.conj_conj hB.cm x)`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+
+Set `cE : AE F E ≃ₐ[AF F] AE F E` to `AlgEquiv.ofAlgHom (cA σ) (cA σ) (AlgHom.ext hcc) (AlgHom.ext hcc)`. Establish `hT : ∀ x, Algebra.trace (AF F) (AE F E) (cA σ x) = Algebra.trace (AF F) (AE F E) x` using `fun x => Algebra.trace_eq_of_algEquiv cE x`. Use `haveI : NeZero (2 : w.adicCompletion E) := ⟨fun h0 => two_ne_zero ((map_eq_zero_iff _ (algebraMap E (w.adicCompletion E)).injective).1 ((map_ofNat _ 2).trans h0))⟩`. Use `set y := (z + c z) / 2`. Establish `hy : y + y = z + c z` using `add_halves _`.
+
+Establish `key : Algebra.trace (AF F) (AE F E) (ptAt hw h y) = Algebra.trace (AF F) (AE F E) (ptAt hw h z)`. Establish `e1 : Algebra.trace (AF F) (AE F E) (ptAt hw h y) + Algebra.trace (AF F) (AE F E) (ptAt hw h y) = Algebra.trace (AF F) (AE F E) (ptAt hw h z) + Algebra.trace (AF F) (AE F E) (ptAt hw h z)`. Rewrite using `[← map_add, ← map_add (ptAt hw h), hy, map_add, map_add, ← cA_ptAt hw h σ hc, hT]`. Establish `e2 : ∀ t : AF F, t = ⅟(2 : AF F) * (t + t)` using `fun t => by`. Rewrite using `[← two_mul, ← mul_assoc, invOf_mul_self, one_mul]`.
+
+Rewrite using `[e2 (Algebra.trace _ _ (ptAt hw h y)), e1, ← e2]`. Rewrite using `[neg_one_mul, neg_one_mul, map_neg, map_neg, key]`.
+-/
 theorem GlobalTheory.InertPsi.exists_field_data : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (v : Pl F) (w : HeightOneSpectrum (𝓞 E)) (hw : Formalism.UG.IsInertAt F E v w) (h : w.under (𝓞 F) = v),
     ∃ (ϖ : w.adicCompletion E) (σL : w.adicCompletion E →+* w.adicCompletion E) (q : ℕ) (ψL : AddChar (w.adicCompletion E) ℂ),

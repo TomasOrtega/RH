@@ -18,6 +18,21 @@ open GlobalTheory.Core.Rk.IP
 open GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero (resL resR)
 open GlobalTheory.OrientedHeis
 
+/- English proof (translation)
+Establish `w0 : ∀ l : List Q, l.foldr b 0 = 0` using `fun l => by`. Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons q l ih => rw [List.foldr_cons, ih, hb0]`. Establish `wT : ∀ (l : List Q) f, TV f → TV (l.foldr b f)` using `fun l f hf => by`.
+
+Proceed by induction on `l with`. Consider the case `nil => exact hf`. Consider the case `cons q l ih => exact hb _ _ ih`. Establish `wadd : ∀ (l : List Q) f g, TV f → TV g → l.foldr b (f + g) = l.foldr b f + l.foldr b g` using `fun l f g hf hg => by`. Proceed by induction on `l with`.
+
+Consider the case `nil => rfl`. Consider the case `cons q l ih => rw [List.foldr_cons, ih, hadd _ _ _ (wT l f hf) (wT l g hg)]`. Both sides reduce to the same expression. Establish `step : ∀ (M : ℕ) (f : U) (p : P), (∀ l : List P, l.length = M + 1 → l.foldr a f = 0) → ∀ l : List P, l.length = M → l.foldr a (a p f) = 0` using `fun M f p h l hl => by`. Use `h (l ++ [p]) (by simp [hl])` as an intermediate fact.
+
+Rewrite `this` using `[List.foldr_append]`. Then use the resulting hypothesis. Proceed by induction on `N with`. Consider the case `zero`. Introduce `N₁ N₂ f g hN _ _ k₁ _ l _`. Establish `: f = 0` using `k₁ [] (by simp; omega)`.
+
+Rewrite using `[this, h1, w0]`. Consider the case `succ N ih`. Introduce `N₁ N₂ f g hN hf hg k₁ k₂ l hl`. Break down `N₁ with _ | M₁` into its components or cases. Establish `: f = 0` using `k₁ [] rfl`.
+
+Rewrite using `[this, h1, w0]`. Break down `N₂ with _ | M₂` into its components or cases. Establish `: g = 0` using `k₂ [] rfl`. Rewrite using `[this, h2, w0]`. Take `rfl | ⟨l', q, rfl⟩` from `l.eq_nil_or_concat'`.
+
+Simplify using `at hl`. Establish `hl' : l'.length = N` using `by simpa using hl`. Rewrite using `[List.foldr_append, List.foldr_cons, List.foldr_nil, hL q f g hf hg, wadd _ _ _ (hδ _ _ (ha _ _ hf) hg) (hδ _ _ hf (ha _ _ hg)), ih M₁ (M₂ + 1) _ _ (by omega) (ha _ _ hf) hg (step _ _ _ k₁) k₂ l' hl', ih (M₁ + 1) M₂ _ _ (by omega) hf (ha _ _ hg) k₁ (step _ _ _ k₂) l' hl', add_zer …`.
+-/
 theorem killed_of_leibniz {P Q U V : Type} [Zero U] [AddCommGroup V] (a : P → U → U) (b : Q → V → V) (TU : U → Prop)
     (TV : V → Prop) (δ : U → U → V) (c₁ c₂ : Q → P) (ha : ∀ p f, TU f → TU (a p f)) (hb : ∀ q f, TV f → TV (b q f))
     (hadd : ∀ q f g, TV f → TV g → b q (f + g) = b q f + b q g) (hb0 : ∀ q, b q 0 = 0)
@@ -65,6 +80,13 @@ theorem killed_of_leibniz {P Q U V : Type} [Zero U] [AddCommGroup V] (a : P → 
 
 variable {D : D7} {θ : InfFam D} {ψ : AddChar (AF D.host.F) ℂ}
 
+/- English proof (translation)
+Establish `hL` using `isLineAt_lineAt hθ τ z`. Use `GlobalTheory.RealLineAt.lineAt_unique D θ hθ _ _ τ _ _ _ (isLineAt_lineAt hθ τ _) ⟨?_, fun t => ?_, fun t τ' => ?_⟩` and prove the remaining obligations. Establish `e : ⇑(-lineAt θ τ z) = fun t => lineAt θ τ z (-t)`. Use function extensionality and compare the values at `t`. Rewrite using `[AddMonoidHom.neg_apply, map_neg]`.
+
+Rewrite using `[e]`. Conclude with `hL.1.comp continuous_neg`. Rewrite using `[AddMonoidHom.neg_apply, ← map_neg]`. Conclude with `hL.2.1 _`. Rewrite using `[AddMonoidHom.neg_apply, ← map_neg, hL.2.2]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem lineAt_neg (hθ : IsInfFam θ) {m n : ℕ} (τ : D.what₂.Tau) (z : Matrix (Fin m) (Fin n) ℂ) :
     lineAt θ τ (-z) = -lineAt θ τ z := by
   have hL := isLineAt_lineAt hθ τ z
@@ -78,6 +100,11 @@ theorem lineAt_neg (hθ : IsInfFam θ) {m n : ℕ} (τ : D.what₂.Tau) (z : Mat
   · rw [AddMonoidHom.neg_apply, ← map_neg, hL.2.2]
     simp
 
+/- English proof (translation)
+Establish `hL` using `isLineAt_lineAt hθ τ z`. Set `L : ℝ →+ Mx D m k` to `{ toFun := fun t => (lineAt θ τ z t).submatrix id c map_zero' := by rw [map_zero]; rfl map_add' := fun s t => by rw [map_add]; rfl }`. Establish `hL' : IsLineAt θ τ (z.submatrix id c) L`. Use `⟨continuous_matrix fun i j => hL.1.matrix_elem i (c j), fun t => ?_, fun t τ' => ?_⟩` and prove the remaining obligations. Conclude with `congrArg (fun x => Matrix.submatrix x id c) (hL.2.1 t)`.
+
+Apply the tactic sequence `refine (congrArg (fun x => Matrix.submatrix x id c) (hL.2.2 t τ')).trans ?_ split_ifs <;> rfl`. Rewrite using `[GlobalTheory.RealLineAt.lineAt_unique D θ hθ _ _ τ _ _ _ (isLineAt_lineAt hθ τ _) hL']`. Both sides reduce to the same expression.
+-/
 theorem lineAt_col (hθ : IsInfFam θ) {m n k : ℕ} (c : Fin k → Fin n) (τ : D.what₂.Tau) (z : Matrix (Fin m) (Fin n) ℂ)
     (t : ℝ) : lineAt θ τ (z.submatrix id c) t = (lineAt θ τ z t).submatrix id c := by
   have hL := isLineAt_lineAt hθ τ z
@@ -97,11 +124,19 @@ section One
 
 variable {S T : HSp D}
 
+/- English proof (translation)
+The claim follows from `(hasDerivAt_heisO hθ hψ (isRealDir_lineAt hθ τ z) hf w 0).differentiableAt.hasDerivAt`.
+-/
 theorem hasDerivAt_dRho (hθ : IsInfFam θ) (hψ : IsStdChar D ψ (-1)) (τ : D.what₂.Tau)
     (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (w : WO S T) :
     HasDerivAt (fun t : ℝ => heisO ψ S T (lineAt θ τ z t) f w) (dRho (heisO ψ S T) θ τ z f w) 0 :=
   (hasDerivAt_heisO hθ hψ (isRealDir_lineAt hθ τ z) hf w 0).differentiableAt.hasDerivAt
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Use `(hasDerivAt_dRho hθ hψ τ z hf w).add (hasDerivAt_dRho hθ hψ τ z hg w)` as an intermediate fact. Use `Eq.trans ?_ this.deriv` and prove the remaining obligations. Unfold `Formalism.IndefR.Datum.dRho`. Use `congr 1`.
+
+Use function extensionality and compare the values at `t`. Simplify using `only [heisO, Pi.add_apply, mul_add]`.
+-/
 theorem dRho_add (hθ : IsInfFam θ) (hψ : IsStdChar D ψ (-1)) (τ : D.what₂.Tau)
     (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) {f g : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (hg : IsThetaFunO ψ S T g) :
     dRho (heisO ψ S T) θ τ z (f + g) = dRho (heisO ψ S T) θ τ z f + dRho (heisO ψ S T) θ τ z g := by
@@ -113,6 +148,11 @@ theorem dRho_add (hθ : IsInfFam θ) (hψ : IsStdChar D ψ (-1)) (τ : D.what₂
   funext t
   simp only [heisO, Pi.add_apply, mul_add]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Use `deriv_comp_neg (fun t : ℝ => heisO ψ S T (lineAt θ τ z t) f w) 0` as an intermediate fact. Rewrite `this` using `[neg_zero]`. Use `Eq.trans ?_ this` and prove the remaining obligations. Unfold `Formalism.IndefR.Datum.dRho`.
+
+Simplify using `only [lineAt_neg hθ, AddMonoidHom.neg_apply, map_neg]`.
+-/
 theorem dRho_neg (hθ : IsInfFam θ) (τ : D.what₂.Tau) (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) (f : WO S T → ℂ) :
     dRho (heisO ψ S T) θ τ (-z) f = -dRho (heisO ψ S T) θ τ z f := by
   funext w
@@ -126,6 +166,11 @@ end One
 
 variable {A B : HSp D}
 
+/- English proof (translation)
+Establish `hu : IsUnit A.gram.det` using `(isHermND_gram A).2.isUnit`. Establish `hi : (dblSp A).gram⁻¹ = blkMat finSumFinEquiv A.gram⁻¹ (-A.gram⁻¹)` using `Matrix.inv_eq_right_inv (by`. Rewrite using `[gram_hdbl, dblGram, blkMat_mul, neg_mul_neg, Matrix.mul_nonsing_inv _ hu, blkMat_one])`. Establish `h : hO (dblSp A) B x y = hO A B (resL A B x) (resL A B y) - hO A B (-resR A B x) (-resR A B y)`. Simplify using `only [hO, hi, ← finSumFinEquiv.sum_comp, Fintype.sum_sum_type, resL, resR, Matrix.of_apply, blkMat, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, Matri …`.
+
+Simplify using `only [symplOH, symplO, h, mul_sub, map_sub]`.
+-/
 theorem symplOH_dbl (x y : WO (dblSp A) B) : symplOH (dblSp A) B x y =
     symplOH A B (resL A B x) (resL A B y) - symplOH A B (-resR A B x) (-resR A B y) := by
   have hu : IsUnit A.gram.det := (isHermND_gram A).2.isUnit
@@ -139,6 +184,11 @@ theorem symplOH_dbl (x y : WO (dblSp A) B) : symplOH (dblSp A) B x y =
       Finset.sum_neg_distrib, sub_eq_add_neg]
   simp only [symplOH, symplO, h, mul_sub, map_sub]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Establish `e₁ : resL A B (x + u) = resL A B x + resL A B u` using `rfl`. Establish `e₂ : -resR A B (x + u) = -resR A B x + -resR A B u`. Rewrite using `[← neg_add]`. Both sides reduce to the same expression.
+
+Establish `e₃ : ∀ a, ψ (-a) = conj (ψ a)` using `fun a => by`. Rewrite using `[AddChar.map_neg_eq_inv, Complex.inv_eq_conj (hψ.1.2.1 a)]`. Simplify using `only [heisO, GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.delta, symplOH_dbl, e₁, e₂, sub_eq_add_neg, AddChar.map_add_eq_mul, e₃, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem heisO_delta (hψ : IsStdChar D ψ (-1)) (u : WO (dblSp A) B) (f₁ f₂ : WO A B → ℂ) :
     heisO ψ (dblSp A) B u (delta A B f₁ f₂) =
       delta A B (heisO ψ A B (resL A B u) f₁) (heisO ψ A B (-resR A B u) f₂) := by
@@ -155,6 +205,11 @@ abbrev colL (A : HSp D) : Fin A.rank → Fin (dblSp A).rank := fun j => finSumFi
 
 abbrev colR (A : HSp D) : Fin A.rank → Fin (dblSp A).rank := fun j => finSumFinEquiv (Sum.inr j)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Establish `d` using `(hasDerivAt_dRho hθ hψ τ (z.submatrix id (colL A)) h₁ (resL A B x)).mul (hasDerivAt_dRho hθ hψ τ (-z.submatrix id (colR A)) h₂ (-resR A B x)).star`. Simplify using `only [map_zero, heisO_zero] at d`. Use `Eq.trans ?_ d.deriv` and prove the remaining obligations. Unfold `Formalism.IndefR.Datum.dRho`.
+
+Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[heisO_delta hψ]`. Simplify using `only [Pi.mul_apply, lineAt_neg hθ, AddMonoidHom.neg_apply, lineAt_col hθ]`. Both sides reduce to the same expression.
+-/
 theorem dRho_delta (hθ : IsInfFam θ) (hψ : IsStdChar D ψ (-1)) (τ : D.what₂.Tau)
     (z : Matrix (Fin B.rank) (Fin (dblSp A).rank) ℂ) {f₁ f₂ : WO A B → ℂ} (h₁ : IsThetaFunO ψ A B f₁)
     (h₂ : IsThetaFunO ψ A B f₂) :
@@ -173,6 +228,11 @@ theorem dRho_delta (hθ : IsInfFam θ) (hψ : IsStdChar D ψ (-1)) (τ : D.what�
   simp only [Pi.mul_apply, lineAt_neg hθ, AddMonoidHom.neg_apply, lineAt_col hθ]
   rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [cplxO, Matrix.submatrix_apply, Matrix.smul_apply, id]`. Use `congr 1`. Rewrite using `[Matrix.mul_apply, Matrix.mul_apply]`. Use `erw [← finSumFinEquiv.sum_comp]`.
+
+Simplify using `[Fintype.sum_sum_type, Matrix.mul_apply, -finSumFinEquiv_apply_left, -finSumFinEquiv_apply_right]`.
+-/
 theorem cplxO_colL (s : Matrix (Fin A.rank) (Fin A.rank) ℂ) (s' : Matrix (Fin B.rank) (Fin B.rank) ℂ)
     (z : Matrix (Fin B.rank) (Fin (dblSp A).rank) ℂ) :
     (cplxO (n := (dblSp A).rank) ((Matrix.fromBlocks s 0 0 (-s)).submatrix finSumFinEquiv.symm finSumFinEquiv.symm) s' z).submatrix
@@ -184,6 +244,11 @@ theorem cplxO_colL (s : Matrix (Fin A.rank) (Fin A.rank) ℂ) (s' : Matrix (Fin 
   erw [← finSumFinEquiv.sum_comp]
   simp [Fintype.sum_sum_type, Matrix.mul_apply, -finSumFinEquiv_apply_left, -finSumFinEquiv_apply_right]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [cplxO, Matrix.submatrix_apply, Matrix.smul_apply, id]`. Use `congr 1`. Rewrite using `[Matrix.mul_apply, Matrix.mul_apply]`. Use `erw [← finSumFinEquiv.sum_comp]`.
+
+Simplify using `[Fintype.sum_sum_type, Matrix.mul_apply, -finSumFinEquiv_apply_left, -finSumFinEquiv_apply_right]`.
+-/
 theorem cplxO_colR (s : Matrix (Fin A.rank) (Fin A.rank) ℂ) (s' : Matrix (Fin B.rank) (Fin B.rank) ℂ)
     (z : Matrix (Fin B.rank) (Fin (dblSp A).rank) ℂ) :
     (cplxO (n := (dblSp A).rank) ((Matrix.fromBlocks s 0 0 (-s)).submatrix finSumFinEquiv.symm finSumFinEquiv.symm) s' z).submatrix
@@ -195,6 +260,9 @@ theorem cplxO_colR (s : Matrix (Fin A.rank) (Fin A.rank) ℂ) (s' : Matrix (Fin 
   erw [← finSumFinEquiv.sum_comp]
   simp [Fintype.sum_sum_type, Matrix.mul_apply, -finSumFinEquiv_apply_left, -finSumFinEquiv_apply_right]
 
+/- English proof (translation)
+Unfold `annih`. Rewrite using `[dRho_delta hθ hψ τ _ h₁ h₂, dRho_delta hθ hψ τ _ h₁ h₂, cplxO_colL, cplxO_colR, dRho_neg hθ τ (cplxO _ _ _)]`. Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.delta, Pi.add_apply, Pi.smul_apply, Pi.neg_apply, smul_eq_mul, map_add, map_mul, map_neg, Complex.conj_I]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem annih_delta (hθ : IsInfFam θ) (hψ : IsStdChar D ψ (-1)) (τ : D.what₂.Tau)
     (s : Matrix (Fin A.rank) (Fin A.rank) ℂ) (s' : Matrix (Fin B.rank) (Fin B.rank) ℂ)
     (z : Matrix (Fin B.rank) (Fin (dblSp A).rank) ℂ) {f₁ f₂ : WO A B → ℂ} (h₁ : IsThetaFunO ψ A B f₁)
@@ -209,6 +277,13 @@ theorem annih_delta (hθ : IsInfFam θ) (hψ : IsStdChar D ψ (-1)) (τ : D.what
   simp only [GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.delta, Pi.add_apply, Pi.smul_apply, Pi.neg_apply, smul_eq_mul, map_add, map_mul, map_neg, Complex.conj_I]
   ring
 
+/- English proof (translation)
+Introduce `D ψ θ A B sA sB hψ hθ Φ₁ Φ₂ ⟨t₁, N₁, k₁⟩ ⟨t₂, N₂, k₂⟩`. Establish `hT : ∀ (S : HSp D) τ J z f, IsThetaFunO ψ S B f → IsThetaFunO ψ S B (annih (heisO ψ S B) θ τ J z f)` using `fun S τ J z f hf => theta_add (theta_dRho hθ hψ τ z hf) (theta_smul _ (theta_dRho hθ hψ τ _ hf))`. Use `⟨GlobalTheory.T.isThetaFunction_doublingSeesaw_of_standard_char D ψ A B hψ _ _ t₁ t₂, N₁ + N₂, ?_⟩` and prove the remaining obligations. Use `killed_of_leibniz (P := D.what₂.Tau × Matrix (Fin B.rank) (Fin A.rank) ℂ) (Q := D.what₂.Tau × Matrix (Fin B.rank) (Fin (dblSp A).rank) ℂ) (fun p f => annih (heisO ψ A B) θ p.1 (cplxO (sA p.1) (sB p.1)) p.2 f) (fun p f => annih (heisO ψ (dblSp A) B) θ p.1 (cplxO (n := (dblSp A).ra …` and prove the remaining obligations. Simplify using `only [annih]`.
+
+Rewrite using `[dRho_add hθ hψ _ _ hf hg, dRho_add hθ hψ _ _ hf hg, smul_add]`. Normalize the expressions using the abelian group laws. Use function extensionality and compare the values at `x`. Simplify using `[annih, Formalism.IndefR.Datum.dRho, heisO]`. Use function extensionality and compare the values at `x`.
+
+Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.delta]`. Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.delta]`.
+-/
 theorem isFockVec_delta : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (A B : HSp D) (sA : RealMat A) (sB : RealMat B), IsStdChar D ψ (-1) → IsInfFam θ → ∀ Φ₁ Φ₂, IsFockVec ψ θ A B sA sB Φ₁ → IsFockVec ψ θ A B sA sB Φ₂ → IsFockVec ψ θ (dblSp A) B (fun τ => (Matrix.fromBlocks (sA τ) 0 0 (-sA τ)).submatrix finSumFinEquiv.symm finSumFinEquiv.symm) sB (delta A B Φ₁ Φ₂) := by
   intro D ψ θ A B sA sB hψ hθ Φ₁ Φ₂ ⟨t₁, N₁, k₁⟩ ⟨t₂, N₂, k₂⟩
   have hT : ∀ (S : HSp D) τ J z f, IsThetaFunO ψ S B f → IsThetaFunO ψ S B (annih (heisO ψ S B) θ τ J z f) :=

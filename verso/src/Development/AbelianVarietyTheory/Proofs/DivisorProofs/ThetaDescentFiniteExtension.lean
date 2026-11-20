@@ -12,6 +12,11 @@ open MonoidalCategory CartesianMonoidalCategory MonObj
 open scoped CategoryTheory.Obj
 open GlobalTheory.CechPic GlobalTheory.RigSymSubring
 
+/- English proof (translation)
+Establish `e₁ : GlobalTheory.sqMap h.w ≫ (fst G G).left = (fst G' G').left ≫ φ` using `pullback.lift_fst _ _ _`. Establish `e₂ : GlobalTheory.sqMap h.w ≫ (snd G G).left = (snd G' G').left ≫ φ` using `pullback.lift_snd _ _ _`. Establish `a' : IsPullback (fst G' G').left (snd G' G').left G'.hom G'.hom` using `IsPullback.of_hasPullback _ _`. Establish `a : IsPullback (fst G G).left (snd G G).left G.hom G.hom` using `IsPullback.of_hasPullback _ _`. Establish `b` using `a'.paste_horiz h`.
+
+Rewrite `b` using `[← e₁, ← h.w]`. Establish `c` using `(IsPullback.of_right b e₂ a).paste_vert h`. Rewrite `c` using `[Over.w, Over.w]`. Conclude with `c`.
+-/
 private theorem isPullback_sq {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (h : IsPullback φ G'.hom G.hom f) :
     IsPullback (GlobalTheory.sqMap h.w) (G' ⊗ G').hom (G ⊗ G).hom f := by
@@ -25,6 +30,9 @@ private theorem isPullback_sq {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} {f
   rw [Over.w, Over.w] at c
   exact c
 
+/- English proof (translation)
+Substitute `e` using the available equality. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [GlobalTheory.sqMap, pullback.map, Category.assoc, pullback.lift_fst, pullback.lift_fst_assoc]`. Simplify using `only [GlobalTheory.sqMap, pullback.map, Category.assoc, pullback.lift_snd, pullback.lift_snd_assoc]`.
+-/
 private theorem sq_comp {S S' S'' : Scheme.{0}} {A : Over S} {A' : Over S'} {A'' : Over S''}
     {f : S' ⟶ S} {g : S'' ⟶ S'} {k : S'' ⟶ S} {φ : A'.left ⟶ A.left} {φ' : A''.left ⟶ A'.left}
     {χ : A''.left ⟶ A.left} (w : φ ≫ A.hom = A'.hom ≫ f) (w' : φ' ≫ A'.hom = A''.hom ≫ g)
@@ -35,6 +43,15 @@ private theorem sq_comp {S S' S'' : Scheme.{0}} {A : Over S} {A' : Over S'} {A''
   · simp only [GlobalTheory.sqMap, pullback.map, Category.assoc, pullback.lift_fst, pullback.lift_fst_assoc]
   · simp only [GlobalTheory.sqMap, pullback.map, Category.assoc, pullback.lift_snd, pullback.lift_snd_assoc]
 
+/- English proof (translation)
+Take `⟨H, hρ⟩` from `h`. Use `P₀.isAb.proper` as an intermediate fact. Establish `: IsProper (P₀.A ⊗ P₀.A).hom` using `inferInstanceAs (IsProper (pullback.fst P₀.A.hom P₀.A.hom ≫ P₀.A.hom))`. Establish `e₂ : pull ρ (pull (GrpObj.inv : P₀.A ⟶ P₀.A).left (cls M hM)) = pull ρ (cls M hM)`. Establish `h₂` using `cls_of_sym hL hs`.
+
+Rewrite `h₂` using `[e, ← pull_comp, PolBaseChange.inv_comm H, pull_comp]`. Then use the resulting hypothesis. Establish `e₁ : pull (GlobalTheory.sqMap H.1.w) P₀.c = pull (GlobalTheory.sqMap H.1.w) (lam (cls M hM) (fst P₀.A P₀.A) (snd P₀.A P₀.A))`. Rewrite using `[← hρ, hc, e, PPAS.pull_sqMap_lam H]`. Take `⟨F₁, h₁⟩` from `pic_descends Ω R₀ _ _ (PΩ.A ⊗ PΩ.A).hom (P₀.A ⊗ P₀.A).hom _ _ _ (isPullback_sq H.1) e₁`. Take `⟨F₂, h₂⟩` from `pic_descends Ω R₀ _ _ PΩ.A.hom P₀.A.hom ρ _ _ H.1 e₂`.
+
+Use `⟨F₁ ∪ F₂, fun R₁ h hF => ?_⟩` and prove the remaining obligations. Rewrite `hF` using `[Finset.coe_union, Set.union_subset_iff]`. Take `⟨Q, π, -, H₁, hQ⟩` from `PPAS.exists_pull _ _ P₀ (spMap (Subring.inclusion h))`. Establish `a` using `h₁ R₁ h hF.1 _ _ _ (isPullback_sq H₁.1)`. Establish `b` using `h₂ R₁ h hF.2 _ Q.A.hom π H₁.1`.
+
+Use `⟨Q, π, ⟨H₁, hQ⟩, M.pull π, pull_isLB hM π, sym_of_cls (pull_isLB hM π) ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[cls_pull hM, ← pull_comp, PolBaseChange.inv_comm H₁, pull_comp, b]`. Rewrite using `[hQ, a, PPAS.pull_sqMap_lam H₁, cls_pull hM]`.
+-/
 private theorem exists_finset (Ω : Type) [Field Ω] (R₀ : Subring Ω) (P₀ : PPAS (Sp R₀)) (PΩ : PPAS (Sp Ω))
     (ρ : PΩ.A.left ⟶ P₀.A.left) (h : PΩ.IsPull P₀ (spMap R₀.subtype) ρ) (L : LB PΩ.A.left) (hL : L.IsLB)
     (hs : Out.Sym PΩ.A L) (hc : PΩ.c = lam (cls L hL) (fst PΩ.A PΩ.A) (snd PΩ.A PΩ.A))
@@ -68,6 +85,25 @@ private theorem exists_finset (Ω : Type) [Field Ω] (R₀ : Subring Ω) (P₀ :
 end GlobalTheory.ThetaDescent
 
 open GlobalTheory.ThetaDescent GlobalTheory.CechPic in
+/- English proof (translation)
+Introduce and unpack `K _ P Ω _ _ _ PΩ ψ ⟨H, hψ⟩ ⟨L, hL, hs, hc⟩`. Use `P.isAb.proper` as an intermediate fact. Take `⟨R, M, ρ, ⟨t, ht⟩, hM, hρ₁, hρ₂, hI⟩` from `GlobalTheory.LBDescent.exists_fg_lb (k := K) (C := Ω) P.A.hom PΩ.A.hom ψ H.1 L hL`. Set `R₀ : Subring Ω` to `R.toSubring`. Set `i₀ : K →+* R₀` to `(algebraMap K Ω).codRestrict R₀ fun x => R.algebraMap_mem x`.
+
+Set `j₀ : R →+* R₀` to `R.val.toRingHom.codRestrict R₀ fun x => x.2`. Take `⟨P₀, φ₀, -, H₀, hc₀⟩` from `PPAS.exists_pull _ _ P (spMap i₀)`. Establish `es : spMap (algebraMap K Ω) = spMap R₀.subtype ≫ spMap i₀` using `spMap_comp i₀ R₀.subtype`. Set `ρ₀ : PΩ.A.left ⟶ P₀.A.left` to `H₀.1.lift ψ (PΩ.A.hom ≫ spMap R₀.subtype) (by rw [Category.assoc, ← es]; exact H.1.w)`. Establish `a₁ : ρ₀ ≫ φ₀ = ψ` using `H₀.1.lift_fst _ _ _`.
+
+Establish `a₂ : ρ₀ ≫ P₀.A.hom = PΩ.A.hom ≫ spMap R₀.subtype` using `H₀.1.lift_snd _ _ _`. Establish `HΩ : IsGrpPullback PΩ.A P₀.A (spMap R₀.subtype) ρ₀` using `IsGrpPullback.cancel H₀ (H.congr es a₁.symm) a₂`. Establish `hΩ : PΩ.IsPull P₀ (spMap R₀.subtype) ρ₀` using `⟨HΩ, by rw [hψ, hc₀, ← pull_comp, sq_comp H₀.1.w HΩ.1.w H.1.w a₁]⟩`. Set `r : P₀.A.left ⟶ Limits.pullback P.A.hom (spMap (algebraMap K R))` to `Limits.pullback.lift φ₀ (P₀.A.hom ≫ spMap j₀) (by`. Rewrite using `[H₀.1.w, Category.assoc, spMap_comp_ring]`.
+
+Use the proof step `rfl)`. Establish `hr : ρ₀ ≫ r = ρ`. Apply `Limits.pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Limits.pullback.lift_fst, a₁, hρ₁]`. Rewrite using `[Category.assoc, Limits.pullback.lift_snd, ← Category.assoc, a₂, hρ₂, Category.assoc, spMap_comp_ring]`.
+
+Both sides reduce to the same expression. Establish `e : cls L hL = pull ρ₀ (cls (M.pull r) (pull_isLB hM r))`. Rewrite using `[cls_pull hM, ← pull_comp, hr, ← cls_pull hM ρ (pull_isLB hM ρ)]`. Conclude with `(cls_eq_iff _ _).2 hI`. Take `⟨s, hs'⟩` from `exists_finset Ω R₀ P₀ PΩ ρ₀ hΩ L hL hs hc _ _ e`.
+
+Set `F : IntermediateField K Ω` to `IntermediateField.adjoin K ((t ∪ s : Finset Ω) : Set Ω)`. Establish `hF : FiniteDimensional K F` using `IntermediateField.finiteDimensional_adjoin fun x _ => (Algebra.IsAlgebraic.isAlgebraic x).isIntegral`. Establish `hsub : ((t ∪ s : Finset Ω) : Set Ω) ⊆ F` using `IntermediateField.subset_adjoin _ _`. Rewrite `hsub` using `[Finset.coe_union, Set.union_subset_iff]`. Establish `hle : R₀ ≤ F.toSubalgebra.toSubring`.
+
+Establish `: R ≤ F.toSubalgebra`. Rewrite using `[← ht]`. Conclude with `Algebra.adjoin_le hsub.1`. Conclude with `this`. Take `⟨Q, π, ⟨H₁, hQ⟩, hθ⟩` from `hs' F.toSubalgebra.toSubring hle hsub.2`.
+
+Set `j : F.toSubalgebra.toSubring →+* F` to `F.toSubalgebra.toSubring.subtype.codRestrict F fun x => x.2`. Establish `hp : Q.IsPull P (spMap (Subring.inclusion hle) ≫ spMap i₀) (π ≫ φ₀)` using `⟨H₁.comp H₀, by rw [hQ, hc₀, ← pull_comp, sq_comp H₀.1.w H₁.1.w (H₁.comp H₀).1.w rfl]⟩`. Establish `fin` using `PPAS.isPull_hasTheta_pull _ _ _ P _ (spMap j) ⟨Q, _, hp, hθ⟩`. Establish `ef : spMap j ≫ spMap (Subring.inclusion hle) ≫ spMap i₀ = Spec.map (CommRingCat.ofHom (algebraMap K F))`. Rewrite using `[spMap_comp_ring, spMap_comp_ring]`.
+
+Both sides reduce to the same expression. Rewrite `fin` using `[ef]`. Conclude with `⟨F, inferInstance, inferInstance, hF, fin⟩`.
+-/
 theorem _root_.GlobalTheory.T.theta_descent_finite_extension : ∀ (K : Type) [Field K] (P : PPAS (Sp K)) (Ω : Type) [Field Ω] [Algebra K Ω] [Algebra.IsAlgebraic K Ω] (PΩ : PPAS (Sp Ω)) (ψ : PΩ.A.left ⟶ P.A.left), PΩ.IsPull P (Spec.map (CommRingCat.ofHom (algebraMap K Ω))) ψ → PΩ.HasTheta → ∃ (F : Type) (_ : Field F) (_ : Algebra K F), FiniteDimensional K F ∧ ∃ (Q : PPAS (Sp F)) (ψ' : Q.A.left ⟶ P.A.left), Q.IsPull P (Spec.map (CommRingCat.ofHom (algebraMap K F))) ψ' ∧ Q.HasTheta := by
   classical
   rintro K _ P Ω _ _ _ PΩ ψ ⟨H, hψ⟩ ⟨L, hL, hs, hc⟩

@@ -10,6 +10,9 @@ section Abs
 
 variable {I G : Type} [Group G] {Gv : I → Type} [∀ v, Group (Gv v)] {K : ∀ v, Subgroup (Gv v)}
 
+/- English proof (translation)
+Use `(S.finite_toSet.union (Filter.eventually_cofinite.1 (P.ae y))).subset fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Simplify using `only [Set.mem_union, Finset.mem_coe, Set.mem_setOf_eq, not_or, not_not] at h`. Conclude with `hv (h1 v h.1 _ h.2)`.
+-/
 private theorem supp_fin (P : RPG G Gv K) (f : ∀ v, Gv v → ℂ) (S : Finset I) (h1 : ∀ v ∉ S, ∀ k ∈ K v, f v k = 1) (y : G) :
     (Function.mulSupport fun v => f v (P.p v y)).Finite := by
   refine (S.finite_toSet.union (Filter.eventually_cofinite.1 (P.ae y))).subset fun v hv => ?_
@@ -17,6 +20,9 @@ private theorem supp_fin (P : RPG G Gv K) (f : ∀ v, Gv v → ℂ) (S : Finset 
   simp only [Set.mem_union, Finset.mem_coe, Set.mem_setOf_eq, not_or, not_not] at h
   exact hv (h1 v h.1 _ h.2)
 
+/- English proof (translation)
+Rewrite using `[← finprod_inv_distrib, ← finprod_mul_distrib _ (supp_fin P f S h1 y)]`. Conclude with `finprod_congr h`. Conclude with `hc.subset fun v hv h => hv (by simp [h])`.
+-/
 private theorem prod_law (P : RPG G Gv K) (f : ∀ v, Gv v → ℂ) (S : Finset I) (h1 : ∀ v ∉ S, ∀ k ∈ K v, f v k = 1) (x y : G)
     (c : I → ℂ) (hc : (Function.mulSupport c).Finite) (h : ∀ v, f v (P.p v x) = (c v)⁻¹ * f v (P.p v y)) :
     ∏ᶠ v, f v (P.p v x) = (∏ᶠ v, c v)⁻¹ * ∏ᶠ v, f v (P.p v y) := by
@@ -24,6 +30,13 @@ private theorem prod_law (P : RPG G Gv K) (f : ∀ v, Gv v → ℂ) (S : Finset 
   · exact finprod_congr h
   · exact hc.subset fun v hv h => hv (by simp [h])
 
+/- English proof (translation)
+Establish `hne : ∀ y : G, ∏ᶠ v, f v (P.p v y) ≠ 0 → ∀ v, f v (P.p v y) ≠ 0` using `fun y hy v h => hy (finprod_eq_zero _ v h (supp_fin P f S h1 y))`. Use `Set.Finite.of_finite_image (f := fun (x : G ⧸ H) (v : S) => (P.p v x.out : Gv v ⧸ U v)) ?_ ?_` and prove the remaining obligations. Use `(Set.Finite.pi' fun v : S => h3 v v.2).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩ v`. Take `⟨u, hu⟩` from `QuotientGroup.mk_out_eq_mul (U v) (P.p v x.out)`.
+
+Express the relevant statement in the definitionally equal form `f v (Quotient.out _) ≠ 0`. Rewrite using `[hu]`. Conclude with `hR v u u.2 _ (hne _ hx v)`. Introduce `x hx x' hx' h`. Rewrite using `[← QuotientGroup.out_eq' x, ← QuotientGroup.out_eq' x', QuotientGroup.eq]`.
+
+Use `hH.ge (Subgroup.mem_iInf.2 fun v => ?_)` and prove the remaining obligations. Rewrite using `[Subgroup.mem_comap, map_mul, map_inv]`. Distinguish the cases in `hv : v ∈ S`. Conclude with `QuotientGroup.eq.1 (congrFun h ⟨v, hv⟩)`. Conclude with `mul_mem (inv_mem (h2 v hv _ (hne _ hx v))) (h2 v hv _ (hne _ hx' v))`.
+-/
 private theorem quot_fin (P : RPG G Gv K) (f : ∀ v, Gv v → ℂ) (S : Finset I) (h1 : ∀ v ∉ S, ∀ k ∈ K v, f v k = 1)
     (U : ∀ v, Subgroup (Gv v)) (hR : ∀ v, ∀ u ∈ U v, ∀ y, f v y ≠ 0 → f v (y * u) ≠ 0) (h2 : ∀ v ∉ S, ∀ g, f v g ≠ 0 → g ∈ U v)
     (h3 : ∀ v ∈ S, {x : Gv v ⧸ U v | f v x.out ≠ 0}.Finite) (H : Subgroup G) (hH : H = P.box U) :
@@ -51,6 +64,9 @@ section Local
 
 variable {K : Type} [Field K] {Δ : K}
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `mt s * mt y = mt y * mt s`. Rewrite using `[h]`. Conclude with `(Matrix.scalar_commute _ (fun r => Commute.all _ r) _).eq`.
+-/
 private theorem scal_comm {z : Kˣ} {s : DX Δ} (h : IsScal z s) (y : DX Δ) : s * y = y * s := by
   apply Subtype.ext
   apply Units.ext
@@ -58,13 +74,24 @@ private theorem scal_comm {z : Kˣ} {s : DX Δ} (h : IsScal z s) (y : DX Δ) : s
   rw [h]
   exact (Matrix.scalar_commute _ (fun r => Commute.all _ r) _).eq
 
+/- English proof (translation)
+Simplify using `[IsScal, mt]`.
+-/
 private theorem scal_one : IsScal (1 : Kˣ) (1 : DX Δ) := by
   simp [IsScal, mt]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `mt s * mt s' = _`. Rewrite using `[h, h', ← map_mul, ← map_mul, Units.val_mul]`.
+-/
 private theorem scal_mul {z z' : Kˣ} {s s' : DX Δ} (h : IsScal z s) (h' : IsScal z' s') : IsScal (z * z') (s * s') := by
   change mt s * mt s' = _
   rw [h, h', ← map_mul, ← map_mul, Units.val_mul]
 
+/- English proof (translation)
+Rewrite using `[ZD, Subgroup.mem_subgroupOf]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[IsScal, mt, ← hz]`.
+
+Both sides reduce to the same expression. Introduce and unpack `⟨z, hz⟩`. Conclude with `⟨z, Units.ext hz.symm⟩`.
+-/
 private theorem mem_ZD {s : DX Δ} : s ∈ ZD Δ ↔ ∃ z, IsScal z s := by
   rw [ZD, Subgroup.mem_subgroupOf]
   constructor
@@ -75,6 +102,11 @@ private theorem mem_ZD {s : DX Δ} : s ∈ ZD Δ ↔ ∃ z, IsScal z s := by
   · rintro ⟨z, hz⟩
     exact ⟨z, Units.ext hz.symm⟩
 
+/- English proof (translation)
+Establish `: (ZD Δ).Normal` using `⟨fun s hs g => by`. Take `⟨z, hz⟩` from `mem_ZD.1 hs`. Rewrite using `[← scal_comm hz g, mul_inv_cancel_right]`. Conclude with `hs⟩`. Take `⟨s, hs, k, hk, rfl⟩` from `Subgroup.mem_sup_of_normal_left.1 hu`.
+
+Take `⟨z, hz⟩` from `mem_ZD.1 hs`. Conclude with `⟨z, s, hz, by simpa using hk⟩`.
+-/
 private theorem sup_dec {J : Subgroup (DX Δ)} {u : DX Δ} (hu : u ∈ ZD Δ ⊔ J) : ∃ z s, IsScal z s ∧ s⁻¹ * u ∈ J := by
   have : (ZD Δ).Normal := ⟨fun s hs g => by
     obtain ⟨z, hz⟩ := mem_ZD.1 hs
@@ -86,6 +118,11 @@ private theorem sup_dec {J : Subgroup (DX Δ)} {u : DX Δ} (hu : u ∈ ZD Δ ⊔
 private def Law (J : Subgroup (DX Δ)) (χ : Kˣ →* ℂˣ) (f : DX Δ → ℂ) : Prop :=
   ∀ z s u, IsScal z s → s⁻¹ * u ∈ J → ∀ y, f (u * y) = (χ z : ℂ)⁻¹ * f y ∧ f (y * u) = (χ z : ℂ)⁻¹ * f y
 
+/- English proof (translation)
+Introduce `z s u hs hu y`. Take `⟨k, rfl⟩ : ∃ k, u = s * k` from `⟨s⁻¹ * u, by simp⟩`. Rewrite `hu` using `[inv_mul_cancel_left]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[mul_assoc, h2 z s hs, (h1 k hu y).1, Units.val_inv_eq_inv_val]`.
+
+Rewrite using `[← mul_assoc, ← scal_comm hs, mul_assoc, h2 z s hs, (h1 k hu y).2, Units.val_inv_eq_inv_val]`.
+-/
 private theorem law_of {J : Subgroup (DX Δ)} {χ : Kˣ →* ℂˣ} {f : DX Δ → ℂ} (h1 : ∀ u ∈ J, ∀ y, f (u * y) = f y ∧ f (y * u) = f y)
     (h2 : ∀ z s, IsScal z s → ∀ y, f (s * y) = ((χ z)⁻¹ : ℂˣ) * f y) : Law J χ f := by
   intro z s u hs hu y
@@ -95,6 +132,15 @@ private theorem law_of {J : Subgroup (DX Δ)} {χ : Kˣ →* ℂˣ} {f : DX Δ �
   · rw [mul_assoc, h2 z s hs, (h1 k hu y).1, Units.val_inv_eq_inv_val]
   · rw [← mul_assoc, ← scal_comm hs, mul_assoc, h2 z s hs, (h1 k hu y).2, Units.val_inv_eq_inv_val]
 
+/- English proof (translation)
+Establish `key : ∀ y, y ∈ ZD Δ ⊔ J → ∃ z s k, IsScal z s ∧ k ∈ J ∧ y = s * k` using `fun y hy => by`. Take `⟨z, s, hs, hk⟩` from `sup_dec hy`. Conclude with `⟨z, s, _, hs, hk, by simp⟩`. Use `law_of (fun u hu y => ?_) fun z s hs y => ?_` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ ZD Δ ⊔ J`.
+
+Take `⟨z, s, k, hs, hk, rfl⟩` from `key y hy`. Rewrite using `[← mul_assoc, ← scal_comm hs u, mul_assoc, mul_assoc, h2 z s _ hs (mul_mem hu hk), h2 z s _ hs (mul_mem hk hu), h2 z s _ hs hk]`. Conclude with `⟨rfl, rfl⟩`. Establish `hu' : u ∈ ZD Δ ⊔ J` using `Subgroup.mem_sup_right hu`. Rewrite using `[h1 y hy, h1 _ (fun h => hy ((mul_mem_cancel_left hu').1 h)), h1 _ (fun h => hy ((mul_mem_cancel_right hu').1 h))]`.
+
+Conclude with `⟨rfl, rfl⟩`. Distinguish the cases in `hy : y ∈ ZD Δ ⊔ J`. Take `⟨z', s', k, hs', hk, rfl⟩` from `key y hy`. Rewrite using `[← mul_assoc, h2 _ _ _ (scal_mul hs hs') hk, h2 _ _ _ hs' hk, map_mul, mul_inv, Units.val_mul]`. Establish `hu' : s ∈ ZD Δ ⊔ J` using `Subgroup.mem_sup_left (mem_ZD.2 ⟨z, hs⟩)`.
+
+Rewrite using `[h1 y hy, h1 _ (fun h => hy ((mul_mem_cancel_left hu').1 h)), mul_zero]`.
+-/
 private theorem law_fzd {J : Subgroup (DX Δ)} {χ : Kˣ →* ℂˣ} {f : DX Δ → ℂ} (h1 : ∀ g, g ∉ ZD Δ ⊔ J → f g = 0)
     (h2 : ∀ z s k, IsScal z s → k ∈ J → f (s * k) = ((χ z)⁻¹ : ℂˣ)) : Law J χ f := by
   have key : ∀ y, y ∈ ZD Δ ⊔ J → ∃ z s k, IsScal z s ∧ k ∈ J ∧ y = s * k := fun y hy => by
@@ -114,6 +160,9 @@ private theorem law_fzd {J : Subgroup (DX Δ)} {χ : Kˣ →* ℂˣ} {f : DX Δ 
     · have hu' : s ∈ ZD Δ ⊔ J := Subgroup.mem_sup_left (mem_ZD.2 ⟨z, hs⟩)
       rw [h1 y hy, h1 _ (fun h => hy ((mul_mem_cancel_left hu').1 h)), mul_zero]
 
+/- English proof (translation)
+Introduce `u hu y hy`. Take `⟨z, s, hs, hk⟩` from `sup_dec hu`. Rewrite using `[(h z s u hs hk y).2]`. Conclude with `mul_ne_zero (inv_ne_zero (Units.ne_zero _)) hy`.
+-/
 private theorem law_ne {J : Subgroup (DX Δ)} {χ : Kˣ →* ℂˣ} {f : DX Δ → ℂ} (h : Law J χ f) :
     ∀ u ∈ ZD Δ ⊔ J, ∀ y, f y ≠ 0 → f (y * u) ≠ 0 := by
   intro u hu y hy
@@ -121,6 +170,9 @@ private theorem law_ne {J : Subgroup (DX Δ)} {χ : Kˣ →* ℂˣ} {f : DX Δ �
   rw [(h z s u hs hk y).2]
   exact mul_ne_zero (inv_ne_zero (Units.ne_zero _)) hy
 
+/- English proof (translation)
+Distinguish the cases in `h : u ∈ J`. Conclude with `⟨1, 1, ⟨scal_one, by simpa using h⟩, fun _ => rfl⟩`. Take `⟨z, s, hs⟩` from `sup_dec hu`. Conclude with `⟨z, s, hs, fun h' => (h h').elim⟩`.
+-/
 private theorem sup_dec' {J : Subgroup (DX Δ)} {u : DX Δ} (hu : u ∈ ZD Δ ⊔ J) :
     ∃ z s, (IsScal z s ∧ s⁻¹ * u ∈ J) ∧ (u ∈ J → z = 1) := by
   by_cases h : u ∈ J
@@ -130,6 +182,25 @@ private theorem sup_dec' {J : Subgroup (DX Δ)} {u : DX Δ} (hu : u ∈ ZD Δ �
 
 end Local
 
+/- English proof (translation)
+Introduce `F _ _ Δ D hD V _ _ ch B hB t ht`. Establish `hoffJ : ∀ v ∉ D.Sg, D.J2v v = KD _ (Ov v)` using `fun v hv => if_neg hv`. Establish `hofff : ∀ v ∉ D.Sg, D.fKv t v = fZD (Ov v) (D.χ v)` using `fun v hv => funext fun _ => if_neg hv`. Establish `honJ : ∀ v ∈ D.Sg, D.J2v v = (D.S v).J2` using `fun v hv => if_pos hv`. Establish `honf : ∀ v ∈ D.Sg, D.fKv t v = (D.S v).fK (t v)` using `fun v hv => funext fun _ => if_pos hv`.
+
+Establish `hz` using `fun v (hv : v ∉ D.Sg) => Loc.fzdLaw (Ov v) (Kv v) (cv v Δ) (hD.off v hv) (D.χ v) (hD.chi v).1`. Establish `hlaw : ∀ v, Law (D.J2v v) (D.χ v) (D.fKv t v)` using `fun v => by`. Distinguish the cases in `hv : v ∈ D.Sg`. Rewrite using `[honJ v hv, honf v hv]`. Conclude with `law_of ((hD.sig v hv).K_inv _ (ht v hv)).1 ((hD.sig v hv).K_inv _ (ht v hv)).2`.
+
+Rewrite using `[hoffJ v hv, hofff v hv]`. Conclude with `law_fzd (hz v hv).1 (hz v hv).2`. Establish `h1 : ∀ v ∉ D.Sg, ∀ k ∈ KD (cv v Δ) (Ov v), D.fKv t v k = 1` using `fun v hv k hk => by`. Use `(hz v hv).2 1 1 k scal_one hk` as an intermediate fact. Rewrite `this` using `[one_mul, map_one, inv_one, Units.val_one]`.
+
+Rewrite using `[hofff v hv, this]`. Set `P` to `rpg (fun v : Pl F => DX (cv v Δ)) fun v => KD (cv v Δ) (Ov v)`. Establish `hu : ∀ u : B.U, ∃ c : Pl F → ℂ, (Function.mulSupport c).Finite ∧ (B.ω u : ℂ) = ∏ᶠ v, c v ∧ ∀ v y, D.fKv t v (P.p v u.1 * y) = (c v)⁻¹ * D.fKv t v y ∧ D.fKv t v (y * P.p v u.1) = (c v)⁻¹ * D.fKv t v y`. Introduce `u`. Establish `hm : u.1 ∈ D.UZ` using `hB.U ▸ u.2`.
+
+Establish `hm' : ∀ v, P.p v u.1 ∈ ZD _ ⊔ D.J2v v` using `fun v => Subgroup.mem_iInf.1 hm v`. Use `choose z s hs h1' using fun v => sup_dec' (hm' v)`. Use `⟨fun v => D.χ v (z v), ?_, hB.ω u z s hs, fun v y => hlaw v _ _ _ (hs v).1 (hs v).2 y⟩` and prove the remaining obligations. Use `(D.Sg.finite_toSet.union (Filter.eventually_cofinite.1 (P.ae u.1))).subset fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+
+Simplify using `only [Set.mem_union, Finset.mem_coe, Set.mem_setOf_eq, not_or, not_not] at h`. Use `hv ?_` and prove the remaining obligations. Use `h1' v (hoffJ v h.1 ▸ h.2)` as an intermediate fact. Simplify using `only [this, map_one, Units.val_one]`. Use `⟨fun u y => ?_, fun u y => ?_, ?_⟩` and prove the remaining obligations.
+
+Take `⟨c, hc, e, h⟩` from `hu u`. Rewrite using `[Units.val_inv_eq_inv_val, e]`. Conclude with `prod_law P (D.fKv t) D.Sg h1 (u.1 * y) y c hc fun v => by rw [map_mul]; exact (h v _).1`. Take `⟨c, hc, e, h⟩` from `hu u`. Rewrite using `[Units.val_inv_eq_inv_val, e]`.
+
+Conclude with `prod_law P (D.fKv t) D.Sg h1 (y * u.1) y c hc fun v => by rw [map_mul]; exact (h v _).2`. Use `quot_fin P (D.fKv t) D.Sg h1 (fun v => ZD _ ⊔ D.J2v v) (fun v => law_ne (hlaw v)) (fun v hv g hg => ?_) (fun v hv => ?_) B.U hB.U` and prove the remaining obligations. Rewrite `hg` using `[hofff v hv]`. Rewrite using `[hoffJ v hv]`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hg ((hz v hv).1 g h)`. Use `(hD.sig v hv).K_fin _ (ht v hv)` as an intermediate fact. Rewrite `this` using `[← honJ v hv, ← honf v hv]`. Conclude with `this`.
+-/
 theorem finK_test : ∀ (F : Type) [Field F] [NumberField F] (Δ : F) (D : Dat Δ), D.Ok → ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (ch : F → ℂ)
     (B : Base (DX Δ) (DA Δ) V), D.IsBK ch B → ∀ t, D.Cone t → (Base.Tw.one B).IsTest (D.FK t) := by
   intro F _ _ Δ D hD V _ _ ch B hB t ht

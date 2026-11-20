@@ -4,5 +4,8 @@ import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.Zelevin
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IrreducibleAdmissibleGL
 open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.JHMult Zc Zc.Cos
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.ThetaInv.thetaW_thetaW | exact GlobalTheory.CompanionTheory.ThetaInv.thetaW_thetaW | (intros; apply GlobalTheory.CompanionTheory.ThetaInv.thetaW_thetaW <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.transpose_inverse_involution_apply : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (N : ℕ) (g : GL (Fin N) k), thetaW k N (thetaW k N g) = g := by
   first | exact @GlobalTheory.CompanionTheory.ThetaInv.thetaW_thetaW | exact GlobalTheory.CompanionTheory.ThetaInv.thetaW_thetaW | (intros; apply GlobalTheory.CompanionTheory.ThetaInv.thetaW_thetaW <;> assumption)

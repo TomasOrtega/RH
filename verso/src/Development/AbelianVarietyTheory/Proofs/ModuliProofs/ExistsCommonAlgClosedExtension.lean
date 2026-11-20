@@ -4,6 +4,13 @@ namespace GlobalTheory.CommonAlgClosedExtension
 
 open scoped TensorProduct
 
+/- English proof (translation)
+Use `letI : Algebra K₀ K := i.toAlgebra`. Use `letI : Algebra K₀ K' := i'.toAlgebra`. Use `haveI : Nontrivial (K ⊗[K₀] K') := inferInstance`. Take `⟨m, hm⟩` from `Ideal.exists_maximal (K ⊗[K₀] K')`. Use `letI : Field ((K ⊗[K₀] K') ⧸ m) := Ideal.Quotient.field m`.
+
+Set `φ : (K ⊗[K₀] K') →+* AlgebraicClosure ((K ⊗[K₀] K') ⧸ m)` to `(algebraMap ((K ⊗[K₀] K') ⧸ m) _).comp (Ideal.Quotient.mk m)`. Use `⟨AlgebraicClosure ((K ⊗[K₀] K') ⧸ m), inferInstance, inferInstance, φ.comp (Algebra.TensorProduct.includeLeft (R := K₀) (S := K₀) (A := K) (B := K')).toRingHom, φ.comp (Algebra.TensorProduct.includeRight (R := K₀) (A := K) (B := K')).toRingHom, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Establish `h1` using `(Algebra.TensorProduct.includeLeft (R := K₀) (S := K₀) (A := K) (B := K')).commutes x`. Establish `h2` using `(Algebra.TensorProduct.includeRight (R := K₀) (A := K) (B := K')).commutes x`.
+
+Conclude with `congrArg φ (h1.trans h2.symm)`.
+-/
 theorem exists_common_algClosed_extension (K₀ K K' : Type) [Field K₀] [Field K] [Field K']
     (i : K₀ →+* K) (i' : K₀ →+* K') :
     ∃ (Ω : Type) (_ : Field Ω) (_ : IsAlgClosed Ω) (j : K →+* Ω) (j' : K' →+* Ω),

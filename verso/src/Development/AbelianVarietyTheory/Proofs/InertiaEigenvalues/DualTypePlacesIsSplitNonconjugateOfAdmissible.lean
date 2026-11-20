@@ -32,15 +32,34 @@ open GlobalTheory.StepLaw (ResAt UnrOff)
 variable {D : D7} {S T : HSp D}
 
 open Classical in
+/- English proof (translation)
+Take `⟨P, h1, h2, hP⟩` from `h.1.split`. Conclude with `hP.mono (Finset.union_subset h1 h2)`.
+-/
 theorem dualTypePlaces_isSplitNonconjugate_of_admissible {B : Base S T} {Q : Finset (Pl D.host.E)} (h : B.admitted Q) : SplitSet (allP B Q) := by
   obtain ⟨P, h1, h2, hP⟩ := h.1.split
   exact hP.mono (Finset.union_subset h1 h2)
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.dualType_residueChars_unramified_tuple B hB ν hν hQ`.
+-/
 theorem char_laws (B : Base S T) (hB : B.Good) (ν : Twist D Circle) (hν : ν.Good) (hQ : B.admitted ν.Q) :
     (∀ PP ∈ allP B ν.Q, ResAt (B.mu * ν.chi) PP (resP B ν PP) ∧ ResAt (B.mu * ν.chi * B.eta⁻¹) PP (resP B ν PP)) ∧
       UnrOff (B.mu * ν.chi) (allP B ν.Q) ∧ UnrOff (B.mu * ν.chi * B.eta⁻¹) (allP B ν.Q) :=
   GlobalTheory.T.dualType_residueChars_unramified_tuple B hB ν hν hQ
 
+/- English proof (translation)
+Use `open GlobalTheory.ThetaMove GlobalTheory.SplitHecke in`. Take `⟨⟨Tm, hTm⟩, hall⟩` from `hΘ`. Set `Tm' : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ)` to `c⁻¹ • (om (g, h) ∘ₗ Tm ∘ₗ LinearMap.funLeft ℂ ℂ (actO S T g h))`. Establish `hT' : ∀ Ψ, Tm' Ψ = c⁻¹ • om (g, h) (Tm fun t => Ψ (actO S T g h t))` using `fun Ψ => rfl`. Establish `hP : IsPlaceModel ψ (symplO S T) (heisO ψ S T) e Λ 1 f₀ Tm'`.
+
+Use `⟨fun Ψ hΨ x hx => ?_, fun Ψ hΨ y hy => ?_, ?_⟩` and prove the remaining obligations. Establish `hΨ'` using `isSBHalf_comp g h hΛ hΨ`. Establish `h1` using `hTm.trans _ hΨ' _ (isHalf_actO g⁻¹ h⁻¹ hx)`. Simplify using `only [act_add, act_act_inv] at h1`. Rewrite using `[hT', hT', h1, hom.om_heis _ _ _ _ (hth Tm hTm _ hΨ'), act_act_inv, heisO_smul']`.
+
+Establish `hΨ'` using `isSBHalf_comp g h hΛ hΨ`. Establish `h1` using `hTm.modul _ hΨ' _ (isHalf_actO g⁻¹ h⁻¹ hy)`. Establish `h2 : ∀ t, symplO S T t (actO S T g⁻¹ h⁻¹ y) = symplO S T (actO S T g h t) y` using `fun t => by`. Rewrite using `[← symplO_actO S T g h, act_act_inv]`. Simplify using `only [h2] at h1`.
+
+Rewrite using `[hT', hT', h1, hom.om_heis _ _ _ _ (hth Tm hTm _ hΨ'), act_act_inv, heisO_smul']`. Establish `h1` using `hTm.vac`. Rewrite `h1`, the goal using `[one_smul]`. Establish `h2 : (fun t => halfInd e Λ (actO S T g h t)) = halfInd e Λ` using `funext (halfInd_act g h hΛ)`. Rewrite using `[hT', h2, h1, hf₀, smul_smul, inv_mul_cancel₀ hc, one_smul]`.
+
+Establish `e2 : f = Tm' Φ` using `hall Tm' hP`. Establish `e1 : f' = Tm Φ'` using `hΘ'.2 Tm hTm`. Establish `e3 : Φ' = c' • fun t => Φ (actO S T g h t)` using `funext hΦ`. Rewrite `e2` using `[hT']`. Establish `e4 : om (g, h) (Tm fun t => Φ (actO S T g h t)) = c • f`.
+
+Rewrite using `[e2, smul_smul, mul_inv_cancel₀ hc, one_smul]`. Rewrite using `[e1, e3, map_smul, map_smul, e4, smul_smul, mul_comm]`.
+-/
 theorem om_theta_move {ψ : AddChar (AF D.host.F) ℂ} {χS χT : (AE D)ˣ →* Circle} {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
     (hom : IsWeilDatumO ψ S T χS χT om) {e : AE D} {Λ : AddSubgroup (WO S T)} {f₀ Φ Φ' f f' : WO S T → ℂ}
     (hth : ∀ Tm : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ), IsPlaceModel ψ (symplO S T) (heisO ψ S T) e Λ 1 f₀ Tm →
@@ -78,6 +97,9 @@ theorem om_theta_move {ψ : AddChar (AF D.host.F) ℂ} {χS χT : (AE D)ˣ →* 
     rw [e2, smul_smul, mul_inv_cancel₀ hc, one_smul]
   rw [e1, e3, map_smul, map_smul, e4, smul_smul, mul_comm]
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `char_laws B hB ν hν hQ`. Establish `hF` using `hB.frame`. Conclude with `GlobalTheory.StepVecLaw.om_vac hω hS hB.sigOK (fun τ => GlobalTheory.GalLift.Vec.isCartanInv_one (hF.onbS τ)) hF.cartT hF.sdS hF.sdT hF.frS hF.frT hF.vac (dualTypePlaces_isSplitNonconjugate_of_admissible hQ).isIdemSum (fun PP hP => (h1 PP hP).1) (fun PP hP => (h1 PP hP).2) h2 h3 …`.
+-/
 theorem om_vac_base {B : Base S T} (hB : B.Good) (hS : S.SigOK) {ν : Twist D Circle} (hν : ν.Good) (hQ : B.admitted ν.Q)
     {ω : PairRep S T} (hω : B.IsWeil ν.chi ω) {g : GA D S} {h : GA D T} (hg : g ∈ GfC S) (hh : h ∈ GfC T)
     (sg : Lev.finE S g ∈ St B.F.βS) (sh : Lev.finE T h ∈ St B.F.βT) :
@@ -89,6 +111,9 @@ theorem om_vac_base {B : Base S T} (hB : B.Good) (hS : S.SigOK) {ν : Twist D Ci
 
 open Classical in
 
+/- English proof (translation)
+Establish `hF` using `hB.frame`. Establish `hsq : (halfIdem B.G.Pg (B.de.Q ∪ ν.Q)) * (halfIdem B.G.Pg (B.de.Q ∪ ν.Q)) = halfIdem B.G.Pg (B.de.Q ∪ ν.Q)` using `hQ.1.isOrthSum.1.idem`. Use `om_theta_move hω (fun Tm hT Ψ hΨ => GlobalTheory.T.schrodingerIntertwiner_schwartzBruhat_isTheta D _ hF.vac.1 S T _ _ hF.sdS hF.sdT _ hsq hQ.1.isOrthSum.1.infPart_eq _ hF.vac.2.theta Tm hT Ψ hΨ) (Base.isThetaAt_vecAt hB hQ φ) (Base.isThetaAt_vecAt hB hQ φ') (GlobalTheory.T.mem_ho …` and prove the remaining obligations.
+-/
 theorem om_vec_move {B : Base S T} (hB : B.Good) (hS : S.SigOK) {ν : Twist D Circle} (hν : ν.Good) (hQ : B.admitted ν.Q)
     {ω : PairRep S T} (hω : B.IsWeil ν.chi ω) {g : GA D S} {h : GA D T} (hg : g ∈ GfC S) (hh : h ∈ GfC T)
     (sg : Lev.finE S g ∈ St B.F.βS) (sh : Lev.finE T h ∈ St B.F.βT)
@@ -105,6 +130,11 @@ theorem om_vec_move {B : Base S T} (hB : B.Good) (hS : S.SigOK) {ν : Twist D Ci
 
 section Datum
 
+/- English proof (translation)
+Establish `sg' : Lev.finE S g⁻¹ ∈ St F.βS` using `by rw [map_inv]; exact inv_mem sg`. Establish `sh' : Lev.finE T h⁻¹ ∈ St F.βT` using `by rw [map_inv]; exact inv_mem sh`. Use `GlobalTheory.FrameRed.frMapO_actO_int_red D S T F.βS F.βT g⁻¹ h⁻¹ sg' sh' x` as an intermediate fact. Rewrite `this` using `[inv_inv, inv_inv]`. Use `⟨this.1, fun hx PP => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[this.2 hx PP, map_inv, map_inv, redFn_inv sh PP, redFn_inv sg PP, inv_inv]`.
+-/
 theorem frMapO_act (F : Frame S T) {g : GA D S} {h : GA D T} (sg : Lev.finE S g ∈ St F.βS) (sh : Lev.finE T h ∈ St F.βT) (x : WO S T) :
     (IsIntM (frMapO S T F.βS F.βT (actO S T g h x)) ↔ IsIntM (frMapO S T F.βS F.βT x)) ∧
       (IsIntM (frMapO S T F.βS F.βT x) → ∀ PP : Pl D.host.E, redM PP (frMapO S T F.βS F.βT (actO S T g h x)) =
@@ -116,6 +146,9 @@ theorem frMapO_act (F : Frame S T) {g : GA D S} {h : GA D T} (sg : Lev.finE S g 
   refine ⟨this.1, fun hx PP => ?_⟩
   rw [this.2 hx PP, map_inv, map_inv, redFn_inv sh PP, redFn_inv sg PP, inv_inv]
 
+/- English proof (translation)
+Establish `sg' : Lev.finE S g⁻¹ ∈ St F.βS` using `by rw [map_inv]; exact inv_mem sg`. Establish `sh' : Lev.finE T h⁻¹ ∈ St F.βT` using `by rw [map_inv]; exact inv_mem sh`. Use `⟨⟨fun hx => ?_, fun hx => (GlobalTheory.AdjDatumMove.red_actO S T _ _ sg sh hx).1⟩, fun hx PP => (GlobalTheory.AdjDatumMove.red_actO S T _ _ sg sh hx).2 PP⟩` and prove the remaining obligations. Use `(GlobalTheory.AdjDatumMove.red_actO S T _ _ sg' sh' hx).1` as an intermediate fact. Rewrite `this` using `[GlobalTheory.SplitHecke.actO_inv_actO]`. Then use the resulting hypothesis.
+-/
 theorem frMapAdj_act (F : Frame S T) {g : GA D S} {h : GA D T} (sg : Lev.finE S g ∈ St F.βS) (sh : Lev.finE T h ∈ St F.βT) (x : WO S T) :
     (IsIntM (frMapAdj S T F.βS F.βT (actO S T g h x)) ↔ IsIntM (frMapAdj S T F.βS F.βT x)) ∧
       (IsIntM (frMapAdj S T F.βS F.βT x) → ∀ PP : Pl D.host.E, redM PP (frMapAdj S T F.βS F.βT (actO S T g h x)) =
@@ -129,6 +162,13 @@ theorem frMapAdj_act (F : Frame S T) {g : GA D S} {h : GA D T} (sg : Lev.finE S 
 
 open Classical in
 
+/- English proof (translation)
+Establish `hO` using `frMapO_act F sg sh x`. Establish `hJ` using `frMapAdj_act F sg sh x`. Establish `hH : IsHalf (halfIdem G.Pg Q') (actO S T g h x) ↔ IsHalf (halfIdem G.Pg Q') x` using `⟨GlobalTheory.ThetaMove.isHalf_of_act g h, GlobalTheory.AdjDatumMove.isHalf_actO' g h⟩`. Unfold `Frame.datumFn`. Simplify using `only [hH, hO.1, hJ.1]`.
+
+Distinguish the cases in `c1 : IsHalf (halfIdem G.Pg Q') x ∧ IsIntM (frMapAdj S T F.βS F.βT x)`. Distinguish the cases in `c2 : IsHalf (halfIdem G.Pg Q') x ∧ IsIntM (frMapO S T F.βS F.βT x)`. Rewrite using `[if_pos c1, if_pos c2, if_pos c1, if_pos c2, funext (hJ.2 c1.2), funext (hO.2 c2.2), hA, hB]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg c2, if_neg c2]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg c1, if_neg c1]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem datumFn_act (F : Frame S T) (G : TypeDat D T.rank) (Q' : Finset (Pl D.host.E)) {g : GA D S} {h : GA D T}
     (sg : Lev.finE S g ∈ St F.βS) (sh : Lev.finE T h ∈ St F.βT) {ω ω' : Reds D T.rank S.rank → ℂ} {a b : ℂ}
     (hA : ∀ y : Reds D S.rank T.rank, omegaG G.levT G.muC (fun PP => (redFn F.βS PP (Lev.finE S g)).val * y PP *
@@ -151,12 +191,20 @@ theorem datumFn_act (F : Frame S T) (G : TypeDat D T.rank) (Q' : Finset (Pl D.ho
 
 variable {n r : ℕ}
 
+/- English proof (translation)
+Use `mem_blockTri.2 fun i j h => ?_` and prove the remaining obligations. Simplify using `[blkOf] at h`.
+-/
 theorem blockTri_blkOf_one_top {κ : Type} [CommRing κ] (g : GL (Fin r) κ) : g ∈ blockTri (blkOf r 1) := by
   refine mem_blockTri.2 fun i j h => ?_
   simp [blkOf] at h
 
 open Classical in
 
+/- English proof (translation)
+Establish `hr : ∀ g' : G0 G.Pg r, (fun PP => upperLeftBlock (le_refl r) (g' PP)) = g'` using `fun g' => funext fun PP => GlobalTheory.AdjDatumMove.restrictedBlock_self_apply _`. Establish `hex : (∀ PP ∈ G.levT.Pg, LowZero r (y PP)) ∧ ∃ g' : ∀ PP : ↥G.levT.Pg, GL (Fin r) (kP PP.1), (∀ PP : ↥G.levT.Pg, ((g' PP : GL (Fin r) _) : Matrix (Fin r) (Fin r) _) = topL r (y PP.1)) ∧ (∀ PP : ↥G.levT.Pg, g' PP ∈ blockTri (blkOf G.levT.r G.levT.t)) ∧ (fun PP => upperLeftBlock G. …` using `⟨h0, g, hg, fun PP => blockTri_blkOf_one_top _, by show (fun PP : ↥G.Pg => upperLeftBlock (le_refl r) (g PP)) ∈ G.P.H; rw [hr]; exact hH⟩`. Unfold `omegaG`. Rewrite using `[dif_pos hex]`. Establish `e : hex.2.choose = g` using `funext fun PP => Units.ext ((hex.2.choose_spec.1 PP).trans (hg PP).symm)`.
+
+Establish `e2 : (⟨fun PP => upperLeftBlock G.levT.hr (hex.2.choose PP), hex.2.choose_spec.2.2⟩ : G.levT.P.H) = ⟨g, hH⟩` using `Subtype.ext ((hr _).trans e)`. Rewrite using `[e2, e]`. Simplify using `[TypeDat.levT]`. Both sides reduce to the same expression.
+-/
 theorem omegaG_levT_of (G : TypeDat D r) {y : ∀ PP : Pl D.host.E, Matrix (Fin n) (Fin r) (kP PP)}
     (h0 : ∀ PP ∈ G.Pg, LowZero r (y PP)) (g : G0 G.Pg r) (hg : ∀ PP : ↥G.Pg, (g PP).val = topL r (y PP.1)) (hH : g ∈ G.P.H) :
     omegaG G.levT G.muC y = ((G.P.chi ⟨g, hH⟩ : ℂˣ) : ℂ) *
@@ -176,6 +224,9 @@ theorem omegaG_levT_of (G : TypeDat D r) {y : ∀ PP : Pl D.host.E, Matrix (Fin 
   rfl
 
 open Classical in
+/- English proof (translation)
+Unfold `omegaG`. Use `dif_neg fun h' => h ⟨h'.1, ?_⟩` and prove the remaining obligations. Take `⟨g, h1, -, h3⟩` from `h'.2`. Use `⟨g, h1, ?_⟩` and prove the remaining obligations. Rewrite `h3` using `[show (fun PP => upperLeftBlock G.levT.hr (g PP)) = g from funext fun PP => GlobalTheory.AdjDatumMove.restrictedBlock_self_apply _]`. Then use the resulting hypothesis.
+-/
 theorem omegaG_levT_zero (G : TypeDat D r) {y : ∀ PP : Pl D.host.E, Matrix (Fin n) (Fin r) (kP PP)}
     (h : ¬ ((∀ PP ∈ G.Pg, LowZero r (y PP)) ∧ ∃ g : G0 G.Pg r, (∀ PP : ↥G.Pg, (g PP).val = topL r (y PP.1)) ∧ g ∈ G.P.H)) :
     omegaG G.levT G.muC y = 0 := by
@@ -187,6 +238,19 @@ theorem omegaG_levT_zero (G : TypeDat D r) {y : ∀ PP : Pl D.host.E, Matrix (Fi
 
 open Classical in
 
+/- English proof (translation)
+Establish `eK : ∀ PP (u : Matrix (Fin n) (Fin r) (kP PP)), (K PP).val * u = (K PP).val * u * ((1 : GL (Fin r) (kP PP))).val` using `fun PP u => by`. Rewrite using `[Units.val_one, Matrix.mul_one]`. Establish `low : ∀ PP ∈ G.Pg, ∀ u : Matrix (Fin n) (Fin r) (kP PP), LowZero r ((K PP).val * u) ↔ LowZero r u` using `fun PP hP u => by`. Rewrite using `[eK]`. Conclude with `GlobalTheory.AdjDatumMove.lowZero_mul_iff (hK PP hP) 1 u`.
+
+Establish `top : ∀ PP : ↥G.Pg, LowZero r (y PP.1) → topL r ((K PP.1).val * y PP.1) = (a PP).val * topL r (y PP.1)` using `fun PP hu => by`. Use `GlobalTheory.AdjDatumMove.topL_mul hr (hK PP.1 PP.2) 1 hu` as an intermediate fact. Rewrite `this` using `[Matrix.mul_one, Matrix.mul_one]`. Rewrite using `[this, ha]`. Distinguish the cases in `hy : (∀ PP ∈ G.Pg, LowZero r (y PP)) ∧ ∃ g : G0 G.Pg r, (∀ PP : ↥G.Pg, (g PP).val = topL r (y PP.1)) ∧ g ∈ G.P.H`.
+
+Take `⟨h0, g, hg, hgH⟩` from `hy`. Rewrite using `[omegaG_levT_of G h0 g hg hgH, omegaG_levT_of G (fun PP hP => (low PP hP _).2 (h0 PP hP)) (a * g) (fun PP => by rw [top PP (h0 PP.1 PP.2), ← hg PP]; rfl) (mul_mem hH hgH)]`. Establish `e : (⟨a * g, mul_mem hH hgH⟩ : G.P.H) = ⟨a, hH⟩ * ⟨g, hgH⟩` using `rfl`. Rewrite using `[e, map_mul, Units.val_mul]`. Establish `e2 : ∀ PP : ↥G.Pg, (((G.muC PP.1 (GeneralLinearGroup.det ((a * g) PP)) : ℂˣ)) : ℂ)⁻¹ = (((G.muC PP.1 (GeneralLinearGroup.det (a PP)) : ℂˣ)) : ℂ)⁻¹ * (((G.muC PP.1 (GeneralLinearGroup.det (g PP)) : ℂˣ)) : ℂ)⁻¹` using `fun PP => by`.
+
+Rewrite using `[Pi.mul_apply, map_mul, map_mul, Units.val_mul, mul_inv]`. Rewrite using `[Finset.prod_congr rfl fun PP _ => e2 PP, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[omegaG_levT_zero G hy, mul_zero]`. Use `omegaG_levT_zero G fun h => hy ?_` and prove the remaining obligations.
+
+Take `⟨h0, g, hg, hgH⟩` from `h`. Establish `h0' : ∀ PP ∈ G.Pg, LowZero r (y PP)` using `fun PP hP => (low PP hP _).1 (h0 PP hP)`. Use `⟨h0', a⁻¹ * g, fun PP => ?_, mul_mem (inv_mem hH) hgH⟩` and prove the remaining obligations. Use `(hg PP).trans (top PP (h0' PP.1 PP.2))` as an intermediate fact. Use `show ((a PP)⁻¹ * g PP).val = _`.
+
+Rewrite using `[Units.val_mul, this, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`.
+-/
 theorem omegaG_levT_mul (G : TypeDat D r) (hr : r ≤ n) (K : ∀ PP : Pl D.host.E, GL (Fin n) (kP PP))
     (hK : ∀ PP ∈ G.Pg, K PP ∈ blockTri (blk2 r)) (a : G0 G.Pg r) (ha : ∀ PP : ↥G.Pg, a PP = upperLeftBlock hr (K PP.1)) (hH : a ∈ G.P.H)
     (y : ∀ PP : Pl D.host.E, Matrix (Fin n) (Fin r) (kP PP)) :
@@ -227,6 +291,15 @@ section Source
 
 variable {k R : Type} [CommRing k] [CommRing R] {n r : ℕ}
 
+/- English proof (translation)
+Establish `hK' : K⁻¹ ∈ blockTri (blk2 r)` using `inv_mem hK`. Establish `htop : topL r (y * (K⁻¹).val) = topL r y * (upperLeftBlock hr K⁻¹).val`. Rewrite using `[upper_block_val_submatrix hr hK']`. Use extensionality with `i j`. Establish `hi : i.val < r ∧ j.val < n` using `⟨i.2, lt_of_lt_of_le j.2 hr⟩`.
+
+Establish `hi' : ∀ l : Fin r, i.val < r ∧ l.val < n` using `fun l => ⟨i.2, lt_of_lt_of_le l.2 hr⟩`. Simplify using `only [topL, dif_pos hi, Matrix.mul_apply, dif_pos (hi' _), Matrix.submatrix_apply]`. Use `(Fintype.sum_of_injective (Fin.castLE hr) (Fin.castLE_injective hr) _ _ (fun l hl => ?_) (fun l => ?_)).symm` and prove the remaining obligations. Establish `hl' : ¬ l.val < r` using `fun h => hl ⟨⟨l.val, h⟩, by ext; rfl⟩`. Rewrite using `[mem_blockTri.1 hK' l ⟨j.val, hi.2⟩ (by simp [blk2, hl', j.2]), mul_zero]`.
+
+Both sides reduce to the same expression. Establish `hinv : upperLeftBlock hr K⁻¹ = (upperLeftBlock hr K)⁻¹` using `extendOne_inv _ hK`. Distinguish the cases in `h : IsUnit (topL r y).det`. Take `⟨u, hu⟩` from `h`. Rewrite using `[flat_of_isUnit ν hu.symm, flat_of_isUnit ν (u := u * GeneralLinearGroup.det (upperLeftBlock hr K)⁻¹) (by rw [htop, det_mul, ← hu, hinv]; rfl), map_mul, Units.val_mul, mul_comm, map_inv, map_inv]`.
+
+Rewrite using `[flat_of_not_isUnit ν h, flat_of_not_isUnit, mul_zero]`. Rewrite using `[htop, det_mul]`. Conclude with `fun h' => h (isUnit_of_mul_isUnit_left h')`.
+-/
 theorem flat_mul_inv (hr : r ≤ n) (ν : kˣ →* Rˣ) {K : GL (Fin n) k} (hK : K ∈ blockTri (blk2 r)) (y : Matrix (Fin r) (Fin n) k) :
     flat ν (y * (K⁻¹).val) = ((ν (GeneralLinearGroup.det (upperLeftBlock hr K)))⁻¹ : Rˣ) * flat ν y := by
   have hK' : K⁻¹ ∈ blockTri (blk2 r) := inv_mem hK
@@ -255,9 +328,15 @@ section T0
 
 variable {B : Base S T}
 
+/- English proof (translation)
+Rewrite using `[map_one, redFn_one]`.
+-/
 theorem finE_one (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (PP : Pl D.host.E) : redFn β PP (Lev.finE V 1) = 1 := by
   rw [map_one, redFn_one]
 
+/- English proof (translation)
+Rewrite using `[map_one]`. Conclude with `one_mem _`.
+-/
 theorem one_mem_St (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) : Lev.finE V 1 ∈ St β := by
   rw [map_one]; exact one_mem _
 
@@ -272,6 +351,15 @@ def srcC (B : Base S T) (ψ : Twist D Circle) (k : GA D S)
     ((∏ PP ∈ B.de.Q, (B.de.resC PP (blkA B k PP))⁻¹) * ∏ PP ∈ ψ.Q, (ψ.resC PP (blkA B k PP))⁻¹)
 
 open Classical in
+/- English proof (translation)
+Establish `hp` using `Formalism.L2.DIV.lev_le_parLev hk`. Establish `tri : ∀ PP ∈ B.de.Q ∪ ψ.Q, redFn B.F.βS PP (Lev.finE S k) ∈ blockTri (blk2 T.rank)` using `fun PP hP => parLev_q hp hP`. Establish `triG : ∀ PP ∈ B.G.Pg, redFn B.F.βS PP (Lev.finE S k) ∈ blockTri (blk2 T.rank)` using `fun PP hP => blockTri_blkOf_le _ _ (parLev_g hp hP)`. Establish `e` using `datumFn_act B.F B.G (B.de.Q ∪ ψ.Q) (parLev_St hp) (one_mem_St T B.F.βT) (ω := B.locFn ψ.Q fun PP => flat (ψ.resC PP.1)) (ω' := B.locFn ψ.Q fun PP => flat (ψ.resC PP.1)) (a := ((B.G.P.chi ⟨rTup B.F.βS (B.levS ψ) (Lev.finE S k), hk.2⟩ : ℂˣ) : ℂ) * ∏ PP : ↥B.G.Pg, (((B.G.muC PP.1 (G …`. Simplify using `only [finE_one, inv_one, Units.val_one, Matrix.mul_one]`.
+
+Conclude with `omegaG_levT_mul B.G B.hr _ triG _ (fun PP => rfl) hk.2 y)`. Use the proof step `(fun y => by`. Simplify using `only [finE_one, Units.val_one, Matrix.one_mul]`. Establish `h1 : ∀ PP : Pl D.host.E, PP ∈ B.de.Q → flat (B.de.resC PP) (y PP * ((redFn B.F.βS PP (Lev.finE S k))⁻¹).val) = (((B.de.resC PP (blkA B k PP))⁻¹ : ℂˣ) : ℂ) * flat (B.de.resC PP) (y PP)` using `fun PP hP => flat_mul_inv B.hr _ (tri PP (Finset.mem_union_left _ hP)) (y PP)`. Establish `h2 : ∀ PP : ↥ψ.Q, flat (ψ.resC PP.1) (y PP.1 * ((redFn B.F.βS PP.1 (Lev.finE S k))⁻¹).val) = (((ψ.resC PP.1 (blkA B k PP.1))⁻¹ : ℂˣ) : ℂ) * flat (ψ.resC PP.1) (y PP.1)` using `fun PP => flat_mul_inv B.hr _ (tri PP.1 (Finset.mem_union_right _ PP.2)) (y PP.1)`.
+
+Unfold `Base.locFn`. Rewrite using `[Finset.prod_congr rfl h1, Finset.prod_congr rfl (fun PP _ => h2 PP), Finset.prod_mul_distrib, Finset.prod_mul_distrib, Finset.prod_coe_sort ψ.Q (fun PP => (((ψ.resC PP (blkA B k PP))⁻¹ : ℂˣ) : ℂ))]`. Simplify using `only [Units.val_mul, Units.coe_prod]`. Use the proof step `ring) x`. Rewrite using `[e]`.
+
+Use `congr 1`. Unfold `srcC`. Simplify using `only [Units.val_mul, Units.coe_prod]`. Rewrite using `[← Finset.prod_coe_sort B.G.Pg (fun PP => (((B.G.muC PP (blkA B k PP))⁻¹ : ℂˣ) : ℂ))]`. Both sides reduce to the same expression.
+-/
 theorem datumFunction_sourceLevel_scalar (B : Base S T) (ψ : Twist D Circle) {k : GA D S}
     (hk : Lev.finE S k ∈ Formalism.L2.DIV.lev D.sp.cm S.gram B.F.βS (B.levS ψ)) (x : WO S T) :
     B.F.datumFn B.G (B.de.Q ∪ ψ.Q) (B.locFn ψ.Q fun PP => flat (ψ.resC PP.1)) (actO S T k 1 x) =
@@ -315,30 +403,45 @@ section Scal
 variable {B : Base S T}
 
 open Classical in
+/- English proof (translation)
+Unfold `allP`. Rewrite using `[Finset.prod_union hQ.1.disj, Finset.prod_union hQ.2]`.
+-/
 theorem prod_allP {Q : Finset (Pl D.host.E)} (hQ : B.admitted Q) (f : Pl D.host.E → ℂˣ) :
     ∏ PP ∈ allP B Q, f PP = (∏ PP ∈ B.G.Pg, f PP) * ((∏ PP ∈ B.de.Q, f PP) * ∏ PP ∈ Q, f PP) := by
   unfold allP
   rw [Finset.prod_union hQ.1.disj, Finset.prod_union hQ.2]
 
 open Classical in
+/- English proof (translation)
+Establish `h1 : PP ∉ B.de.Q` using `fun h => Finset.disjoint_left.1 hQ.1.disj hP (Finset.mem_union_left _ h)`. Establish `h2 : PP ∉ ν.Q` using `fun h => Finset.disjoint_left.1 hQ.1.disj hP (Finset.mem_union_right _ h)`. Simplify using `[resP, Twist.locC, hP, h1, h2]`.
+-/
 theorem resP_g {ν : Twist D Circle} (hQ : B.admitted ν.Q) {PP : Pl D.host.E} (hP : PP ∈ B.G.Pg) : resP B ν PP = B.G.muC PP := by
   have h1 : PP ∉ B.de.Q := fun h => Finset.disjoint_left.1 hQ.1.disj hP (Finset.mem_union_left _ h)
   have h2 : PP ∉ ν.Q := fun h => Finset.disjoint_left.1 hQ.1.disj hP (Finset.mem_union_right _ h)
   simp [resP, Twist.locC, hP, h1, h2]
 
 open Classical in
+/- English proof (translation)
+Establish `h1 : PP ∉ B.G.Pg` using `fun h => Finset.disjoint_left.1 hQ.1.disj h (Finset.mem_union_left _ hP)`. Establish `h2 : PP ∉ ν.Q` using `fun h => Finset.disjoint_left.1 hQ.2 hP h`. Simplify using `[resP, Twist.locC, hP, h1, h2]`.
+-/
 theorem resP_d {ν : Twist D Circle} (hQ : B.admitted ν.Q) {PP : Pl D.host.E} (hP : PP ∈ B.de.Q) : resP B ν PP = B.de.resC PP := by
   have h1 : PP ∉ B.G.Pg := fun h => Finset.disjoint_left.1 hQ.1.disj h (Finset.mem_union_left _ hP)
   have h2 : PP ∉ ν.Q := fun h => Finset.disjoint_left.1 hQ.2 hP h
   simp [resP, Twist.locC, hP, h1, h2]
 
 open Classical in
+/- English proof (translation)
+Establish `h1 : PP ∉ B.G.Pg` using `fun h => Finset.disjoint_left.1 hQ.1.disj h (Finset.mem_union_right _ hP)`. Establish `h2 : PP ∉ B.de.Q` using `fun h => Finset.disjoint_left.1 hQ.2 h hP`. Simplify using `[resP, Twist.locC, hP, h1, h2]`.
+-/
 theorem resP_q {ν : Twist D Circle} (hQ : B.admitted ν.Q) {PP : Pl D.host.E} (hP : PP ∈ ν.Q) : resP B ν PP = ν.resC PP := by
   have h1 : PP ∉ B.G.Pg := fun h => Finset.disjoint_left.1 hQ.1.disj h (Finset.mem_union_right _ hP)
   have h2 : PP ∉ B.de.Q := fun h => Finset.disjoint_left.1 hQ.2 h hP
   simp [resP, Twist.locC, hP, h1, h2]
 
 open Classical in
+/- English proof (translation)
+Establish `h1 : PP ∉ B.G.Pg` using `fun h => Finset.disjoint_left.1 hQ.1.disj h hP`. Simplify using `[resP, h1]`.
+-/
 theorem resP_dq {ν : Twist D Circle} (hQ : B.admitted ν.Q) {PP : Pl D.host.E} (hP : PP ∈ B.de.Q ∪ ν.Q) :
     resP B ν PP = B.de.locC PP * ν.locC PP := by
   have h1 : PP ∉ B.G.Pg := fun h => Finset.disjoint_left.1 hQ.1.disj h hP
@@ -346,6 +449,11 @@ theorem resP_dq {ν : Twist D Circle} (hQ : B.admitted ν.Q) {PP : Pl D.host.E} 
 
 open Classical in
 
+/- English proof (translation)
+Establish `hp` using `Formalism.L2.DIV.lev_le_parLev hk`. Establish `eS : S.rank = T.rank + (S.rank - T.rank)` using `by have := B.hr; omega`. Unfold `levFn`. Rewrite using `[extendOne_of_mem _ hk.2, prod_allP hQ, ← Finset.prod_union hQ.2, mul_assoc]`. Use `congr 1`.
+
+Use `congr 1`. Use `Finset.prod_congr rfl fun PP hP => ?_` and prove the remaining obligations. Rewrite using `[show (B.levS ψ).s = 1 from rfl, Finset.prod_range_one, resP_g hQ hP]`. Conclude with `congrArg _ ((GlobalTheory.T.det_twoDiagBlocks_properties _ _ _ _ B.hr _).2.1 eS (parLev_g hp hP))`. Conclude with `Finset.prod_congr rfl fun PP hP => by rw [resP_dq hQ hP]; rfl`.
+-/
 theorem levFn_eq {ψ : Twist D Circle} (hQ : B.admitted ψ.Q) {k : GA D S}
     (hk : Lev.finE S k ∈ Formalism.L2.DIV.lev D.sp.cm S.gram B.F.βS (B.levS ψ)) :
     levFn B.F.βS (B.levS ψ) (Lev.finE S k) = B.G.P.chi ⟨rTup B.F.βS (B.levS ψ) (Lev.finE S k), hk.2⟩ *
@@ -361,10 +469,22 @@ theorem levFn_eq {ψ : Twist D Circle} (hQ : B.admitted ψ.Q) {k : GA D S}
     exact congrArg _ ((GlobalTheory.T.det_twoDiagBlocks_properties _ _ _ _ B.hr _).2.1 eS (parLev_g hp hP))
   · exact Finset.prod_congr rfl fun PP hP => by rw [resP_dq hQ hP]; rfl
 
+/- English proof (translation)
+Rewrite using `[_root_.mul_inv_rev, inv_inv, _root_.mul_inv_rev, mul_comm X⁻¹, mul_assoc, inv_mul_cancel_left]`.
+-/
 theorem alg3 {G : Type} [CommGroup G] (X Y C : G) : X⁻¹ * Y⁻¹ * (C * X⁻¹)⁻¹ = (C * Y)⁻¹ := by
   rw [_root_.mul_inv_rev, inv_inv, _root_.mul_inv_rev, mul_comm X⁻¹, mul_assoc, inv_mul_cancel_left]
 
 open Classical in
+/- English proof (translation)
+Establish `hp` using `Formalism.L2.DIV.lev_le_parLev hk`. Establish `tri : ∀ PP ∈ allP B ψ.Q, redFn B.F.βS PP (Lev.finE S k) ∈ blockTri (blk2 T.rank)` using `fun PP hP => by`. Break down `Finset.mem_union.1 hP with h | h` into its components or cases. Conclude with `blockTri_blkOf_le _ _ (parLev_g hp h)`. Conclude with `parLev_q hp h`.
+
+Establish `hv : vacC B ψ k 1 = ∏ PP ∈ allP B ψ.Q, (resP B ψ PP (blkA B k PP))⁻¹ * (resP B ψ PP (dBlk (blk2 T.rank) 1 (redFn B.F.βS PP (Lev.finE S k))))⁻¹`. Unfold `vacC`. Use `Finset.prod_congr rfl fun PP hP => ?_` and prove the remaining obligations. Rewrite using `[finE_one, map_one, map_one, mul_one, (GlobalTheory.T.det_twoDiagBlocks_properties _ _ _ 0 B.hr _).1 (tri PP hP), map_mul, mul_inv]`. Both sides reduce to the same expression.
+
+Establish `hs : srcC B ψ k hk = B.G.P.chi ⟨rTup B.F.βS (B.levS ψ) (Lev.finE S k), hk.2⟩ * ∏ PP ∈ allP B ψ.Q, (resP B ψ PP (blkA B k PP))⁻¹`. Unfold `srcC`. Rewrite using `[prod_allP hQ, mul_assoc]`. Use `congr 2`. Conclude with `Finset.prod_congr rfl fun PP hP => by rw [resP_g hQ hP]`.
+
+Use `congr 1`. Conclude with `Finset.prod_congr rfl fun PP hP => by rw [resP_d hQ hP]`. Conclude with `Finset.prod_congr rfl fun PP hP => by rw [resP_q hQ hP]`. Rewrite using `[hv, hs, levFn_eq hQ hk, Finset.prod_mul_distrib, Finset.prod_inv_distrib, Finset.prod_inv_distrib]`. Conclude with `alg3 _ _ _`.
+-/
 theorem dualTypeVacuumScalar_div_levelScalar {ψ : Twist D Circle} (hQ : B.admitted ψ.Q) {k : GA D S}
     (hk : Lev.finE S k ∈ Formalism.L2.DIV.lev D.sp.cm S.gram B.F.βS (B.levS ψ)) :
     vacC B ψ k 1 * (srcC B ψ k hk)⁻¹ = (levFn B.F.βS (B.levS ψ) (Lev.finE S k))⁻¹ := by
@@ -397,6 +517,11 @@ section Main
 
 variable {B : Base S T}
 
+/- English proof (translation)
+Establish `hk' : Lev.finE S k ∈ Formalism.L2.DIV.lev D.sp.cm S.gram B.F.βS (B.levS ψ)` using `((B.finPt_mem_levJ ψ hk).1 hJ).2`. Establish `e` using `om_vec_move hB hS hψ hQ hω hk (one_mem _) (parLev_St (Formalism.L2.DIV.lev_le_parLev hk')) (one_mem_St T _) (φ := fun PP => flat (ψ.resC PP.1)) (φ' := fun PP => flat (ψ.resC PP.1)) (c' := (((srcC B ψ k hk')⁻¹ : ℂˣ) : ℂ)) (fun x => by rw [datumFunction_sourceLevel_scalar B ψ hk' x …`. Rewrite using `[Base.vecFlat, e, B.levLam_finPt ψ hJ]`. Use `congr 1`. Rewrite using `[← Units.val_mul, dualTypeVacuumScalar_div_levelScalar hQ hk', Units.val_inv_eq_inv_val]`.
+
+Both sides reduce to the same expression.
+-/
 theorem dual_type (hB : B.Good) (hS : S.SigOK) {ψ : Twist D Circle} (hψ : ψ.Good) (hQ : B.admitted ψ.Q) {ω : PairRep S T}
     (hω : B.IsWeil ψ.chi ω) {k : GA D S} (hk : k ∈ GfC S) (hJ : finPt S k ∈ B.levJ ψ) :
     ω (k, 1) (B.vecFlat ψ) = ((B.levLam ψ ⟨_, hJ⟩ : ℂˣ) : ℂ)⁻¹ • B.vecFlat ψ := by
@@ -409,6 +534,9 @@ theorem dual_type (hB : B.Good) (hS : S.SigOK) {ψ : Twist D Circle} (hψ : ψ.G
   rw [← Units.val_mul, dualTypeVacuumScalar_div_levelScalar hQ hk', Units.val_inv_eq_inv_val]
   rfl
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.FiniteFock.om_pureTensorO_of_finite _ _ S T _ _ ω hB.frame.vac.2.inf hω _ _ _ _ _ (fun P' => Base.isThetaFunO_fock_vecAt hB hQ _ P') k hk 1 (one_mem _) _ (dual_type hB hS hψ hQ hω hk hJ) P`.
+-/
 theorem dual_type_fock (hB : B.Good) (hS : S.SigOK) {ψ : Twist D Circle} (hψ : ψ.Good) (hQ : B.admitted ψ.Q) {ω : PairRep S T}
     (hω : B.IsWeil ψ.chi ω) {k : GA D S} (hk : k ∈ GfC S) (hJ : finPt S k ∈ B.levJ ψ) (P : PolF D T.rank S.rank) :
     ω (k, 1) (B.F.fock (B.vecFlat ψ) P) = ((B.levLam ψ ⟨_, hJ⟩ : ℂˣ) : ℂ)⁻¹ • B.F.fock (B.vecFlat ψ) P :=
@@ -423,6 +551,19 @@ variable {B : Base S T}
 
 open Classical in
 
+/- English proof (translation)
+Establish `hν : (Twist.triv Circle Q : Twist D Circle).Good` using `Twist.triv_good ((dualTypePlaces_isSplitNonconjugate_of_admissible hQ).mono (fun PP hP => Finset.mem_union_right _ (Finset.mem_union_right _ hP)))`. Use `set bδ : ℂˣ := ∏ PP ∈ B.de.Q, B.de.resC PP (GeneralLinearGroup.det (redFn B.F.βT PP (Lev.finE T κ))) with hbδ`. Establish `hD : ∀ x, B.F.datumFn B.G (B.de.Q ∪ Q) (B.locFn Q φ') x = (((bδ * ∏ PP, s PP)⁻¹ : ℂˣ) : ℂ) * B.F.datumFn B.G (B.de.Q ∪ Q) (B.locFn Q φ) (actO S T 1 κ x)` using `fun x => by`. Rewrite using `[datumFn_act B.F B.G (B.de.Q ∪ Q) (one_mem_St S _) sκ (a := 1) (b := ((bδ * ∏ PP, s PP : ℂˣ) : ℂ)) (ω' := B.locFn Q φ') (fun y => by`. Rewrite using `[one_mul]`.
+
+Use `GlobalTheory.PlaceDatum.omegaG_congr _ _ _ _ fun PP hP => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = y PP`. Simplify using `[hpg PP hP, redFn_one])`. Use the proof step `(fun y => by`. Simplify using `only [finE_one, inv_one, Units.val_one, Matrix.mul_one]`.
+
+Unfold `Base.locFn`. Rewrite using `[Finset.prod_congr rfl fun PP _ => flat_mul B.hr _ _ (y PP), Finset.prod_congr rfl fun PP _ => hφ PP (y PP.1), Finset.prod_mul_distrib, Finset.prod_mul_distrib, hbδ]`. Simplify using `only [Units.val_mul, Units.coe_prod]`. Use the proof step `ring) x, one_mul, ← mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_mul]`. Use `(om_vec_move hB hS hν hQ hω (one_mem _) hκ (one_mem_St S _) sκ hD).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[← Units.val_mul]`. Use `congr 2`. Establish `hv : vacC B (Twist.triv Circle Q) 1 κ = bδ`. Unfold `vacC`. Simplify using `only [map_one, redFn_one, inv_one, one_mul]`.
+
+Rewrite using `[show allP B (Twist.triv Circle Q : Twist D Circle).Q = allP B Q from rfl, prod_allP hQ, hbδ]`. Establish `h1 : ∏ PP ∈ B.G.Pg, resP B (Twist.triv Circle Q) PP (GeneralLinearGroup.det (redFn B.F.βT PP (Lev.finE T κ))) = 1` using `Finset.prod_eq_one fun PP hP => by rw [hpg PP hP, map_one, map_one]`. Establish `h3 : ∏ PP ∈ Q, resP B (Twist.triv Circle Q) PP (GeneralLinearGroup.det (redFn B.F.βT PP (Lev.finE T κ))) = 1` using `Finset.prod_eq_one fun PP hP => by`. Rewrite using `[resP_q (ν := Twist.triv Circle Q) hQ hP]`. Simplify using `[Twist.resC, Twist.triv]`.
+
+Rewrite using `[h1, h3, one_mul, mul_one]`. Conclude with `Finset.prod_congr rfl fun PP hP => by rw [resP_d (ν := Twist.triv Circle Q) hQ hP]`. Rewrite using `[hv, mul_inv, ← mul_assoc, mul_inv_cancel, one_mul]`.
+-/
 theorem om_tgt_of_red (hB : B.Good) (hS : S.SigOK) {Q : Finset (Pl D.host.E)} (hQ : B.admitted Q) {ω : PairRep S T} (hω : B.IsWeil 1 ω)
     {κ : GA D T} (hκ : κ ∈ GfC T) (sκ : Lev.finE T κ ∈ St B.F.βT) (hpg : ∀ PP ∈ B.G.Pg, redFn B.F.βT PP (Lev.finE T κ) = 1)
     {φ φ' : ∀ PP : ↥Q, Matrix (Fin T.rank) (Fin S.rank) (kP PP.1) → ℂ} (s : ↥Q → ℂˣ)
@@ -478,6 +619,13 @@ variable {B : Base S T}
 
 open Classical in
 
+/- English proof (translation)
+Use `set d : ∀ PP : Pl D.host.E, (kP PP)ˣ := fun PP => GeneralLinearGroup.det (redFn B.F.βT PP (Lev.finE T κ)) with hd`. Establish `hv : ω (1, κ) (B.vecFlat ψ) = (((∏ PP : ↥ψ.Q, ψ.resC PP.1 (d PP.1))⁻¹ : ℂˣ) : ℂ) • B.vecFlat ψ` using `om_tgt_of_red hB hS hQ hω hκ sκ hpg (fun PP => ψ.resC PP.1 (d PP.1)) fun PP y => flat_mul B.hr _ _ y`. Establish `hf : ω (1, κ) (B.F.fock (B.vecFlat ψ) P) = (((∏ PP : ↥ψ.Q, ψ.resC PP.1 (d PP.1))⁻¹ : ℂˣ) : ℂ) • B.F.fock (B.vecFlat ψ) P` using `GlobalTheory.FiniteFock.om_pureTensorO_of_finite _ _ S T _ _ ω hB.frame.vac.2.inf hω _ _ _ _ _ (fun P' => Base.isThetaFunO_fock_vecAt hB hQ _ P') 1 (one_mem _) κ hκ _ hv P`. Establish `hdet : detChar T ψ.chi κ = ∏ PP ∈ ψ.Q, ψ.res PP (d PP)` using `GlobalTheory.T.unitaryDetCharacter_eq_prod_residue_goodBaseFrame B hB ψ hψ hκ sκ`. Establish `e1 : ((detChar T ψ.chi κ : Circle) : ℂ) * (((∏ PP : ↥ψ.Q, ψ.resC PP.1 (d PP.1))⁻¹ : ℂˣ) : ℂ) = 1`.
+
+Rewrite using `[hdet, Finset.prod_coe_sort ψ.Q (fun PP => ψ.resC PP (d PP))]`. Establish `: ((∏ PP ∈ ψ.Q, ψ.res PP (d PP) : Circle) : ℂ) = ((∏ PP ∈ ψ.Q, ψ.resC PP (d PP) : ℂˣ) : ℂ)`. Simplify using `only [Twist.resC, MonoidHom.comp_apply, Units.coe_prod]`. Conclude with `map_prod Circle.coeHom _ _`. Rewrite using `[this, Units.mul_inv]`.
+
+Establish `e2 : ((h, g * κ) : GA D S × GA D T) = (h, g) * (1, κ)` using `by simp`. Simplify using `only [Base.gen, LinearMap.comp_apply, twistBy_apply, series_apply]`. Rewrite using `[e2, map_mul, Module.End.mul_apply, hf, LinearMap.map_smul, Pi.smul_apply, smul_eq_mul, detChar_mul hψ.real, Circle.coe_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, ← mul_assoc ((detChar T ψ.chi κ : Circle) : ℂ), e1, one_mul]`.
+-/
 theorem gen_mul_right_of_red (hB : B.Good) (hS : S.SigOK) {ψ : Twist D Circle} (hψ : ψ.Good) (hQ : B.admitted ψ.Q) {ω : PairRep S T}
     (hω : B.IsWeil 1 ω) {κ : GA D T} (hκ : κ ∈ GfC T) (sκ : Lev.finE T κ ∈ St B.F.βT)
     (hpg : ∀ PP ∈ B.G.Pg, redFn B.F.βT PP (Lev.finE T κ) = 1) (h : GA D S) (P : PolF D T.rank S.rank) (g : GA D T) :
@@ -517,6 +665,11 @@ variable {B : Base S T} {C : Type} [AddCommGroup C] [Fintype C]
 
 open Classical in
 
+/- English proof (translation)
+Establish `ht` using `GlobalTheory.T.tameTwistFamily_specialization_good D C (Multiplicative (↥Q → C)) u Q (MonoidHom.id _) hu`. Establish `e` using `GlobalTheory.T.unitaryDetCharacter_eq_prod_residue_goodBaseFrame B hB (u.spec Q (MonoidHom.id _)) ht hκ sκ`. Establish `e1 : (u.spec Q (MonoidHom.id _)).chi = u.delQ Q` using `MonoidHom.id_comp _`. Rewrite `e` using `[e1]`. Rewrite using `[e, toAdd_prod, show (u.spec Q (MonoidHom.id _)).Q = Q from rfl, ← Finset.sum_coe_sort Q]`.
+
+Use `Eq.trans (Finset.sum_congr rfl fun PP _ => ?_) (Finset.univ_sum_single _)` and prove the remaining obligations. Use `show Multiplicative.toAdd ((u.spec Q (MonoidHom.id _)).res PP.1 _) = _`. Rewrite using `[show (u.spec Q (MonoidHom.id _)).res PP.1 = (MonoidHom.id _).comp ((AddMonoidHom.toMultiplicative (AddMonoidHom.single (fun _ : ↥Q => C) ⟨PP.1, PP.2⟩)).comp (u.kap PP.1)) from dif_pos PP.2]`. Both sides reduce to the same expression.
+-/
 theorem delQ_det_of_red (hB : B.Good) {u : UnivTwist D C} {Q : Finset (Pl D.host.E)} (hu : u.Good Q) {κ : GA D T} (hκ : κ ∈ GfC T)
     (sκ : Lev.finE T κ ∈ St B.F.βT) :
     Multiplicative.toAdd (detChar T (u.delQ Q) κ) =
@@ -534,6 +687,15 @@ theorem delQ_det_of_red (hB : B.Good) {u : UnivTwist D C} {Q : Finset (Pl D.host
 
 open Classical in
 
+/- English proof (translation)
+Use `set dκ : ↥Q → C := fun PP => Multiplicative.toAdd (u.kap PP.1 (GeneralLinearGroup.det (redFn B.F.βT PP.1 (Lev.finE T κ)))) with hdκ`. Establish `hmul : Multiplicative.toAdd (detChar T (u.delQ Q) (g * κ)) = Multiplicative.toAdd (detChar T (u.delQ Q) g) + dκ`. Rewrite using `[detChar_mul hu.delQ_real, toAdd_mul, delQ_det_of_red hB hu hκ sκ]`. Use `set b := a - Multiplicative.toAdd (detChar T (u.delQ Q) g) - dκ with hb`. Establish `hvec : ω (1, κ) (B.vecFam Q Φ b) = B.vecFam Q Φ (b + dκ)`.
+
+Use `om_tgt_of_red hB hS hQ hω hκ sκ hpg (φ := fun PP y => ((Φ PP.1 ((b + dκ) PP) y : ℚ) : ℂ)) (φ' := fun PP y => ((Φ PP.1 (b PP) y : ℚ) : ℂ)) (fun _ => 1) (fun PP y => by` as an intermediate fact. Establish `e` using `(hΦ PP.1 PP.2).equiv (redFn B.F.βT PP.1 (Lev.finE T κ)) (b PP) ((redFn B.F.βT PP.1 (Lev.finE T κ)).val * y)`. Rewrite `e` using `[← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`. Simplify using `only [Pi.add_apply, Units.val_one, one_mul, hdκ]`. Rewrite using `[← e])`.
+
+Rewrite `this` using `[Finset.prod_const_one, inv_one, Units.val_one, one_smul]`. Conclude with `this`. Establish `hf : ω (1, κ) (B.F.fock (B.vecFam Q Φ b) P) = B.F.fock (B.vecFam Q Φ (b + dκ)) P`. Establish `hth : IsThetaFunO B.F.ψ S T (B.vecFam Q Φ b)`. Conclude with `GlobalTheory.GalLift.Vec.theta_of_thetaAt hB.frame.vac.1 hB.frame.vac.2.inf (Base.isThetaAt_vecAt hB hQ (fun PP y => ((Φ PP.1 (b PP) y : ℚ) : ℂ))) hB.frame.vac.2.theta`.
+
+Rewrite using `[Frame.fock, (GlobalTheory.OrientedHeis.om_pureTensorO D _ _ S T _ _ ω hω hB.frame.vac.2.inf (fun _ => 1) (fun _ => 1) (fun τ => (B.F.BS τ).val) (fun τ => (B.F.BS τ).val) B.F.sT B.F.sT B.F.BT B.F.BT 1 κ (fun τ => by simp [GlobalTheory.FiniteFock.compAt_mt_of_finite _ τ (one_mem _ …`. Both sides reduce to the same expression. Establish `e2 : ((h, g * κ) : GA D S × GA D T) = (h, g) * (1, κ)` using `by simp`. Rewrite using `[Base.xiCoef_apply, Base.xiCoef_apply, series_apply, series_apply, hmul, show a - (Multiplicative.toAdd (detChar T (u.delQ Q) g) + dκ) = b by rw [hb]; abel, e2, map_mul, Module.End.mul_apply, hf, show b + dκ = a - Multiplicative.toAdd (detChar T (u.delQ Q) g) by rw [hb]; abel]`.
+-/
 theorem xiCoef_mul_right_of_red (hB : B.Good) (hS : S.SigOK) {u : UnivTwist D C} {Q : Finset (Pl D.host.E)} (hu : u.Good Q)
     (hQ : B.admitted Q) {Φ : ∀ PP : Pl D.host.E, C → Matrix (Fin T.rank) (Fin S.rank) (kP PP) → ℚ} (hΦ : Base.IsAdmFam u Q Φ)
     {ω : PairRep S T} (hω : B.IsWeil 1 ω) {κ : GA D T} (hκ : κ ∈ GfC T) (sκ : Lev.finE T κ ∈ St B.F.βT)
@@ -578,6 +740,9 @@ variable {B : Base S T}
 
 open Classical in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ hω _ hk hJ => ⟨dual_type hB hS hψ hQ hω hk hJ, dual_type_fock hB hS hψ hQ hω hk hJ⟩, fun _ hω _ hκ sκ hpg h P g => gen_mul_right_of_red hB hS hψ hQ hω hκ sκ hpg h P g, fun _ _ _ _ _ hu hQ' _ hΦ _ hω _ hκ sκ hpg h P a g => xiCoef_mul_right_of_red hB hS hu hQ' hΦ hω hκ sκ hp …`.
+-/
 theorem thetaSeriesData_have_dualType (hB : B.Good) (hS : S.SigOK) {ψ : Twist D Circle} (hψ : ψ.Good) (hQ : B.admitted ψ.Q) :
     (∀ ω : PairRep S T, B.IsWeil ψ.chi ω → ∀ k ∈ GfC S, ∀ hJ : finPt S k ∈ B.levJ ψ,
       ω (k, 1) (B.vecFlat ψ) = ((B.levLam ψ ⟨_, hJ⟩ : ℂˣ) : ℂ)⁻¹ • B.vecFlat ψ ∧
@@ -595,6 +760,11 @@ theorem thetaSeriesData_have_dualType (hB : B.Good) (hS : S.SigOK) {ψ : Twist D
     fun _ hω _ hκ sκ hpg h P g => gen_mul_right_of_red hB hS hψ hQ hω hκ sκ hpg h P g,
     fun _ _ _ _ _ hu hQ' _ hΦ _ hω _ hκ sκ hpg h P a g => xiCoef_mul_right_of_red hB hS hu hQ' hΦ hω hκ sκ hpg h P a g⟩
 
+/- English proof (translation)
+Set `S : HSp D` to `Examples₂.posSpace Examples₂.star_isIntegral (2 * k + 2)`. Set `T : HSp D` to `Examples₂.posSpace Examples₂.star_isIntegral (2 * k + 1)`. Establish `hr : T.rank ≤ S.rank` using `Nat.le_succ _`. Take `⟨F, hF⟩` from `exists_frame_good S T (Examples₂.posSpace_sigOK _ _) (fun _ => rfl) (Examples₂.posSpace_sigOK _ _) hr`. Take `⟨η, hη⟩` from `GlobalTheory.WeilParts.exists_isEtaTilde_unramified D`.
+
+Set `B : Base S T` to `⟨hr, F, TypeDat.empty D _, Twist.triv Circle ∅, Weight.first D _ (fun _ => 2 * k + 1) (fun _ => 0) fun _ => k, 1, η⟩`. Establish `hB : B.Good` using `{ even := ⟨k + 1, by change 2 * k + 2 = _; ring⟩ odd := ⟨k, rfl⟩ frame := hF de := Twist.triv_good splitSet_empty places := placesOK_empty wt := Weight.first_good _ (fun _ => Nat.succ_pos _) fun _ => Nat.le_succ _ sig := fun _ => rfl sigOK := Examples₂.posSpace_sigOK _ _ eta := h …`. Conclude with `⟨S, T, B, hB, Examples₂.posSpace_sigOK _ _, Base.admissible_empty_of_good hB, Twist.triv_good splitSet_empty⟩`.
+-/
 example (D : D7) (k : ℕ) : ∃ (S T : HSp D) (B : Base S T), B.Good ∧ S.SigOK ∧ B.admitted (Twist.triv Circle (∅ : Finset (Pl D.host.E))).Q ∧
     (Twist.triv Circle (∅ : Finset (Pl D.host.E)) : Twist D Circle).Good := by
   let S : HSp D := Examples₂.posSpace Examples₂.star_isIntegral (2 * k + 2)

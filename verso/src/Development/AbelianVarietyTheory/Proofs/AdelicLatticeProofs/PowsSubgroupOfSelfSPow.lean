@@ -8,6 +8,11 @@ open scoped WithZero TensorProduct
 
 namespace GlobalTheory.CNorm
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[Subgroup.mem_subgroupOf]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, h⟩`. Conclude with `⟨⟨y, hy⟩, Subgroup.mem_top _, Subtype.ext h⟩`.
+
+Introduce and unpack `⟨y, -, h⟩`. Conclude with `⟨y.1, y.2, congrArg Subtype.val h⟩`.
+-/
 theorem pows_subgroupOf_self_sPow (p : ℕ) {G : Type} [CommGroup G] (U : Subgroup G) :
     (pows p U).subgroupOf U = pows p (⊤ : Subgroup U) := by
   ext x
@@ -18,6 +23,15 @@ theorem pows_subgroupOf_self_sPow (p : ℕ) {G : Type} [CommGroup G] (U : Subgro
   · rintro ⟨y, -, h⟩
     exact ⟨y.1, y.2, congrArg Subtype.val h⟩
 
+/- English proof (translation)
+Use `haveI : NeZero p := ⟨hp.ne_zero⟩`. Establish `hmem : ∀ x : Fˣ, x ^ p = 1 → x ∈ sUnits F S`. Introduce `x hx`. Rewrite using `[mem_sUnits]`. Introduce `v _`.
+
+Establish `h1 : (v.valuation F (x : F)) ^ p = 1`. Rewrite using `[← map_pow, ← Units.val_pow_eq_pow_val, hx]`. Simplify using the standard rewrite rules. Use `first`. Consider the case `exact (pow_eq_one_iff hp.ne_zero).mp h1`.
+
+Consider the case `exact (pow_eq_one_iff_left hp.ne_zero).mp h1`. Consider the case `exact (pow_eq_one_iff_of_nonneg zero_le' hp.ne_zero).mp h1`. Establish `e : {x : Fˣ // x ∈ sUnits F S ∧ x ^ p = 1} ≃ rootsOfUnity p F` using `Equiv.subtypeEquivRight (fun x => by`. Rewrite using `[mem_rootsOfUnity]`. Conclude with `⟨fun h => h.2, fun h => ⟨hmem x h, h⟩⟩)`.
+
+Rewrite using `[pTor, Nat.card_congr e]`. Use `first`. Consider the case `exact hζ.card_rootsOfUnity`. Consider the case `(rw [Nat.card_eq_fintype_card]; exact hζ.card_rootsOfUnity)`.
+-/
 theorem pTor_sUnits (p : ℕ) (F : Type) [Field F] [NumberField F] (ζ : F)
     (S : Finset (HeightOneSpectrum (𝓞 F))) (hp : p.Prime) (hζ : IsPrimitiveRoot ζ p) :
     pTor p (sUnits F S) = p := by
@@ -43,6 +57,21 @@ theorem pTor_sUnits (p : ℕ) (F : Type) [Field F] [NumberField F] (ζ : F)
 open NumberField IsDedekindDomain Polynomial in
 open scoped WithZero TensorProduct in
 
+/- English proof (translation)
+Introduce `p F _ _ ζ S hp hζ`. Use `haveI : NeZero p := ⟨hp.ne_zero⟩`. Use `haveI : Group.FG (_root_.GlobalTheory.QNorm.sUnits F S) := _root_.GlobalTheory.QNorm.sUnits_fg F S`. Take `⟨-, h2⟩` from `_root_.GlobalTheory.CNorm.pIdx_top_of_fg p (_root_.GlobalTheory.QNorm.sUnits F S) hp.pos`. Establish `hroots : ∀ x : Fˣ, x ^ p = 1 → x ∈ _root_.GlobalTheory.QNorm.sUnits F S`.
+
+Introduce `x hx`. Rewrite using `[_root_.GlobalTheory.QNorm.mem_sUnits]`. Introduce `v _`. Establish `h` using `congrArg (fun y : Fˣ => HeightOneSpectrum.valuation F v (y : F)) hx`. Simplify using `only [Units.val_pow_eq_pow_val, map_pow, Units.val_one, map_one] at h`.
+
+Conclude with `(pow_eq_one_iff_of_nonneg zero_le' hp.ne_zero).mp h`. Establish `htor : _root_.GlobalTheory.CNorm.pTor p (_root_.GlobalTheory.QNorm.sUnits F S) = p`. Unfold `_root_.GlobalTheory.CNorm.pTor`. Use `(Nat.card_congr ?_).trans hζ.card_rootsOfUnity` and prove the remaining obligations. Conclude with `{ toFun := fun x => ⟨x.1, (mem_rootsOfUnity p x.1).mpr x.2.2⟩ invFun := fun y => ⟨y.1, hroots y.1 ((mem_rootsOfUnity p y.1).mp y.2), (mem_rootsOfUnity p y.1).mp y.2⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }`.
+
+Establish `htorTop : _root_.GlobalTheory.CNorm.pTor p (⊤ : Subgroup (_root_.GlobalTheory.QNorm.sUnits F S)) = _root_.GlobalTheory.CNorm.pTor p (_root_.GlobalTheory.QNorm.sUnits F S)`. Unfold `_root_.GlobalTheory.CNorm.pTor`. Conclude with `Nat.card_congr { toFun := fun x => ⟨x.1.1, x.1.2, by rw [← Subgroup.coe_pow, x.2.2, OneMemClass.coe_one]⟩ invFun := fun y => ⟨⟨y.1, y.2.1⟩, Subgroup.mem_top _, Subtype.ext y.2.2⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }`. Establish `hidxTop : _root_.GlobalTheory.CNorm.pIdx p (⊤ : Subgroup (_root_.GlobalTheory.QNorm.sUnits F S)) = _root_.GlobalTheory.CNorm.pIdx p (_root_.GlobalTheory.QNorm.sUnits F S)`. Unfold `_root_.GlobalTheory.CNorm.pIdx _root_.GlobalTheory.CNorm.pows`.
+
+Rewrite using `[Subgroup.relIndex_top_right]`. Unfold `Subgroup.relIndex`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [Subgroup.mem_map, Subgroup.mem_top, true_and, powMonoidHom_apply, Subgroup.mem_subgroupOf]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Conclude with `⟨y, y.2, by rw [← hy]; rfl⟩`. Introduce and unpack `⟨y, hyH, hy⟩`. Conclude with `⟨⟨y, hyH⟩, Subtype.ext hy⟩`.
+
+Use `⟨htor, ?_⟩` and prove the remaining obligations. Rewrite using `[← hidxTop, h2, htorTop, htor, ← _root_.GlobalTheory.QNorm.sUnits_rank F S, pow_succ]`.
+-/
 theorem _root_.GlobalTheory.CNorm.pTor_pIdx_sUnits : ∀ (p : ℕ) (F : Type) [Field F] [NumberField F]
     (ζ : F) (S : Finset (HeightOneSpectrum (𝓞 F))), p.Prime → IsPrimitiveRoot ζ p →
     _root_.GlobalTheory.CNorm.pTor p (_root_.GlobalTheory.QNorm.sUnits F S) = p ∧

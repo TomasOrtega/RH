@@ -12,14 +12,28 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL Matrix Valuative
 def eqBlocks (j t : ℕ) : (Σ _ : Fin j, Fin t) ≃ Fin (j * t) :=
   (Equiv.sigmaEquivProd (Fin j) (Fin t)).trans finProdFinEquiv
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem val_eqBlocks {j t : ℕ} (a : Fin j) (s : Fin t) : (eqBlocks j t ⟨a, s⟩ : ℕ) = s + t * a := rfl
 
+/- English proof (translation)
+Rewrite using `[val_eqBlocks, Nat.add_mul_div_left _ _ s.pos, Nat.div_eq_of_lt s.2, zero_add]`.
+-/
 theorem eqBlocks_div {j t : ℕ} (a : Fin j) (s : Fin t) : (eqBlocks j t ⟨a, s⟩ : ℕ) / t = a := by
   rw [val_eqBlocks, Nat.add_mul_div_left _ _ s.pos, Nat.div_eq_of_lt s.2, zero_add]
 
+/- English proof (translation)
+Rewrite using `[val_eqBlocks, Nat.add_mul_mod_self_left, Nat.mod_eq_of_lt s.2]`.
+-/
 theorem eqBlocks_mod {j t : ℕ} (a : Fin j) (s : Fin t) : (eqBlocks j t ⟨a, s⟩ : ℕ) % t = s := by
   rw [val_eqBlocks, Nat.add_mul_mod_self_left, Nat.mod_eq_of_lt s.2]
 
+/- English proof (translation)
+Establish `h1 : (Finset.univ.filter fun b => a < b) = Finset.Ioi a` using `by ext; simp`. Establish `h2 : (Finset.univ.filter fun b => b < a) = Finset.Iio a` using `by ext; simp`. Rewrite using `[modExp, h1, h2, Finset.sum_const, Finset.sum_const, Fin.card_Ioi, Fin.card_Iio, Fintype.card_fin, nsmul_eq_mul, nsmul_eq_mul]`. Use `a.2` as an intermediate fact. Rewrite using `[show ((j - 1 - a : ℕ) : ℤ) = j - 1 - (a : ℕ) by omega]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem modExp_eqBlocks {j t : ℕ} (a : Fin j) :
     modExp (fun _ : Fin j => Fin t) a = (j * t : ℤ) - t - 2 * (a : ℕ) * t := by
   have h1 : (Finset.univ.filter fun b => a < b) = Finset.Ioi a := by ext; simp
@@ -30,6 +44,11 @@ theorem modExp_eqBlocks {j t : ℕ} (a : Fin j) :
   rw [show ((j - 1 - a : ℕ) : ℤ) = j - 1 - (a : ℕ) by omega]
   ring
 
+/- English proof (translation)
+Use `mem_parab_iff.2 fun a a' s s' h => hb _ _ ?_` and prove the remaining obligations. Rewrite using `[Fin.lt_def, val_eqBlocks, val_eqBlocks]`. Establish `h1 : t * (a' + 1) ≤ t * a` using `Nat.mul_le_mul_left _ h`. Use `s'.2` as an intermediate fact. Rewrite `h1` using `[mul_add, mul_one]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem mem_parab_eqBlocks {R : Type} [CommRing R] {j t : ℕ} {b : GL (Fin (j * t)) R}
     (hb : ∀ x y, y < x → b.val x y = 0) : b ∈ parab R (eqBlocks j t) := by
   refine mem_parab_iff.2 fun a a' s s' h => hb _ _ ?_
@@ -39,6 +58,11 @@ theorem mem_parab_eqBlocks {R : Type} [CommRing R] {j t : ℕ} {b : GL (Fin (j *
   rw [mul_add, mul_one] at h1
   omega
 
+/- English proof (translation)
+Use `ext`. Rewrite using `[GeneralLinearGroup.val_det_apply, det_of_upperTriangular, Units.coe_prod]`. Conclude with `Finset.prod_congr rfl fun s _ => (hu _).symm`. Introduce `s s' h`. Use `hb _ _ ?_` and prove the remaining obligations.
+
+Rewrite using `[Fin.lt_def, val_eqBlocks, val_eqBlocks]`. Conclude with `Nat.add_lt_add_right h _`.
+-/
 theorem det_block {R : Type} [CommRing R] {j t : ℕ} {b : GL (Fin (j * t)) R}
     (hb : ∀ x y, y < x → b.val x y = 0) (u : Fin (j * t) → Rˣ) (hu : ∀ x, (u x : R) = b.val x x) (a : Fin j) :
     GeneralLinearGroup.det (leviProj R (eqBlocks j t) ⟨b, mem_parab_eqBlocks hb⟩ a) =
@@ -51,6 +75,13 @@ theorem det_block {R : Type} [CommRing R] {j t : ℕ} {b : GL (Fin (j * t)) R}
     rw [Fin.lt_def, val_eqBlocks, val_eqBlocks]
     exact Nat.add_lt_add_right h _
 
+/- English proof (translation)
+Take `⟨V, _, _, ρ, h1, h2, v, h3, h4, φ, κ, h5, h6⟩` from `exists_rep_blocks k (eqBlocks j t) (fun a => ν a) (fun a => hu a) (fun a => hν a) H`. Use `⟨V, inferInstance, inferInstance, ρ, h1, h2, v, h3, h4, φ, κ, fun b u hb hbu g => ?_, h6⟩` and prove the remaining obligations. Rewrite using `[h5 ⟨b, mem_parab_eqBlocks hb⟩ g, ← val_deltaHalf, deltaHalf_apply, Units.coe_prod, ← Finset.prod_mul_distrib, ← (eqBlocks j t).prod_comp, Fintype.prod_sigma]`. Use `congr 1`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[det_block hb u hbu, map_prod, map_prod, Units.coe_prod, Units.coe_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[eqBlocks_div, mul_comm, ← val_absPow_ofReal, modExp_eqBlocks]`. Use `congr 3`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_rep_eqBlocks (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (j t : ℕ) [MeasurableSpace (GL (Fin (j * t)) k)]
     [BorelSpace (GL (Fin (j * t)) k)] (ν : ℕ → kˣ →* ℂˣ) (hu : ∀ a x, ‖(ν a x : ℂ)‖ = 1) (hν : ∀ a, IsUnram (ν a))

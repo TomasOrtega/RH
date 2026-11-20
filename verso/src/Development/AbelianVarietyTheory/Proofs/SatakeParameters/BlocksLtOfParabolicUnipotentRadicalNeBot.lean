@@ -10,6 +10,17 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil
 
 namespace GlobalTheory.UnipRadProper
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n s d e h a`. Assume the negation of the conclusion as `hle`. Use `push_neg at hle`. Apply `h` to reduce the goal to its premises. Establish `hcard : ∑ b, d b = n` using `by simpa using (Fintype.card_congr e)`.
+
+Establish `hzero : ∀ b, b ≠ a → d b = 0`. Introduce `b hb`. Establish `h2 : d a + d b ≤ ∑ c, d c` using `Finset.add_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ a) (Finset.mem_univ b) (Ne.symm hb)`. Use linear arithmetic over natural numbers and integers. Establish `hblk : ∀ (b : Fin s) (j : Fin (d b)), b = a`.
+
+Introduce `b j`. Assume the negation of the conclusion as `hb`. Conclude with `(hzero b hb ▸ j).elim0`. Rewrite using `[eq_bot_iff]`. Introduce `g hg`.
+
+Rewrite using `[Subgroup.mem_bot]`. Use extensionality with `i j`. Take `⟨⟨b, i⟩, rfl⟩` from `e.surjective i`. Take `⟨⟨c, j⟩, rfl⟩` from `e.surjective j`. Take `rfl` from `hblk b i`.
+
+Take `rfl` from `hblk c j`. Rewrite using `[(mem_unipRad.1 hg).2]`. Simplify using `[Matrix.one_apply]`.
+-/
 theorem blocks_lt_of_unipRad_ne_bot : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n s : ℕ) (d : Fin s → ℕ) (e : (Σ a, Fin (d a)) ≃ Fin n), unipRad k e ≠ ⊥ → ∀ a, d a < n := by
   intro k _ _ _ _ n s d e h a
   by_contra hle

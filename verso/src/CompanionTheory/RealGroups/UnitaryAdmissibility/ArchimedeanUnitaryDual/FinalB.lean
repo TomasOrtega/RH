@@ -38,20 +38,35 @@ import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.Isometr
 
 namespace CompanionTheory.Rg.Fl.B
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.frame_of_anisotropic_plane_splitting (GlobalTheory.T.anisotropic_of_hensel_and_sandwich GlobalTheory.T.HenselStatement GlobalTheory.T.SandwichStatement) (GlobalTheory.T.plane_of_hensel_and_pairing GlobalTheory.T.HenselStatement (GlobalTheory.T.pairing_of_sandwich_s …`.
+-/
 theorem stFrame : CompanionTheory.Rg.FlB.StFrame :=
   GlobalTheory.T.frame_of_anisotropic_plane_splitting (GlobalTheory.T.anisotropic_of_hensel_and_sandwich GlobalTheory.T.HenselStatement GlobalTheory.T.SandwichStatement) (GlobalTheory.T.plane_of_hensel_and_pairing GlobalTheory.T.HenselStatement (GlobalTheory.T.pairing_of_sandwich_statement GlobalTheory.T.SandwichStatement))
     (GlobalTheory.T.splitting_of_sandwich_and_pairing GlobalTheory.T.SandwichStatement (GlobalTheory.T.pairing_of_sandwich_statement GlobalTheory.T.SandwichStatement))
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.isometric_lattice_congruence_subgroups GlobalTheory.T.DeltaStatement (GlobalTheory.T.existence_of_sandwich_statement GlobalTheory.T.SandwichStatement) stFrame GlobalTheory.T.TorusStatement (GlobalTheory.T.decomposition_of_frame_witt_torus stFrame GlobalTheory.T.Wit …`.
+-/
 theorem stCartanU : StCartanU :=
   GlobalTheory.T.isometric_lattice_congruence_subgroups GlobalTheory.T.DeltaStatement (GlobalTheory.T.existence_of_sandwich_statement GlobalTheory.T.SandwichStatement) stFrame GlobalTheory.T.TorusStatement (GlobalTheory.T.decomposition_of_frame_witt_torus stFrame GlobalTheory.T.WittStatement GlobalTheory.T.TorusStatement)
     GlobalTheory.T.IwahoriStatement GlobalTheory.T.lattice_congruence_subgroups_open_compact
 
+/- English proof (translation)
+The claim follows from `locPI_of (GlobalTheory.T.simple_of_commutative_statement GlobalTheory.T.StatementCommutative) GlobalTheory.T.StatementStar GlobalTheory.T.HeckeAlgebraTheorem GlobalTheory.T.ModularityStatement GlobalTheory.T.TransferStatementBis GlobalTheory.T.PairingStatement stCartanU GlobalThe …`.
+-/
 theorem locPI : LocPI :=
   locPI_of (GlobalTheory.T.simple_of_commutative_statement GlobalTheory.T.StatementCommutative) GlobalTheory.T.StatementStar GlobalTheory.T.HeckeAlgebraTheorem GlobalTheory.T.ModularityStatement GlobalTheory.T.TransferStatementBis GlobalTheory.T.PairingStatement stCartanU GlobalTheory.T.CartanDecompositionGL
     GlobalTheory.T.MovingStatement GlobalTheory.T.DictionaryStatement GlobalTheory.T.DefinitenessStatement CompanionTheory.Rg.FlSep.stSepDefB GlobalTheory.T.SeparatedMovingStatement
 
+/- English proof (translation)
+The claim follows from `admissible_of locPI GlobalTheory.T.ProjectionStatement`.
+-/
 theorem unitaryIrreducibleAdmissible : GlobalTheory.Published.UnitaryIrreducibleAdmissible := admissible_of locPI GlobalTheory.T.ProjectionStatement
 
+/- English proof (translation)
+The claim follows from `flath_of locPI GlobalTheory.T.ProjectionStatement GlobalTheory.T.FixedVectorStatement GlobalTheory.T.FactorizationStatement GlobalTheory.T.ArchimedeanPrincipalSeries GlobalTheory.T.IsomorphismStatement GlobalTheory.T.OperatorStatement GlobalTheory.T.stTensor'`.
+-/
 theorem flathTensorProduct : GlobalTheory.Published.FlathTensorProduct :=
   flath_of locPI GlobalTheory.T.ProjectionStatement GlobalTheory.T.FixedVectorStatement GlobalTheory.T.FactorizationStatement GlobalTheory.T.ArchimedeanPrincipalSeries GlobalTheory.T.IsomorphismStatement GlobalTheory.T.OperatorStatement GlobalTheory.T.stTensor'
 

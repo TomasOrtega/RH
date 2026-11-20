@@ -10,6 +10,11 @@ open MeasureTheory NumberField GroundTheory.Automorphic GroundTheory.Automorphic
 open GroundTheory.Automorphic.CuspidalProjection PositivityTheory.Rg.Tf.Core UpperTheory.ConvolutionTheory.K
 open scoped InnerProductSpace
 
+/- English proof (translation)
+Introduce `K _ _ n μ _ σ`. Take `⟨e, he, he', hg, m, hm, hit⟩` from `galEquiv K n σ`. Establish `hp` using `presOfOrder μ e m hm hit`. Establish `hp' : MeasurePreserving e.symm μ μ` using `hp.symm e.toHomeomorph.toMeasurableEquiv`. Establish `hg' : ∀ g, e.symm g ∈ Gam K n ↔ g ∈ Gam K n` using `fun g => by rw [← hg, e.apply_symm_apply]`.
+
+Take `⟨U, hU, hU'⟩` from `twOpEx K n μ e hg hp`. Use `⟨⟨e, hg, hp, ⟨1, 1, fun g => ?_⟩, U, hU, ?_⟩, he⟩` and prove the remaining obligations. Rewrite using `[he, adHeight]`. Simplify using the standard rewrite rules. Conclude with `commProj (cuspidalL2 μ) U (fun v hv => galCusp K n μ σ.symm e.symm he' hg' hp' v _ hv (hU v)) (fun v hv => galCusp K n μ σ e he hg hp v _ hv (hU' v))`.
+-/
 theorem UpperTheory.ConvolutionTheory.K.galTwistEx :
     GalTwistEx := by
   intro K _ _ n μ _ σ

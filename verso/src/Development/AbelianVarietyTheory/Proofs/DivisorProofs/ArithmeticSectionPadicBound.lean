@@ -28,6 +28,15 @@ section Free
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Use `isProper_toroidalModel_structureMap Z` as an intermediate fact. Set `φ : 𝓞 c.F →+* K` to `(Spec.preimage (x ≫ Z.s)).hom`. Establish `hφ : ∀ a, φ a ∈ (algebraMap V K).range` using `fun a => by`. Establish `h1 : IsIntegral V (φ a)` using `(RingOfIntegers.isIntegral a).map_of_comp_eq (Int.castRingHom _) φ (RingHom.ext_int _ _)`. Conclude with `(IsIntegrallyClosed.isIntegral_iff (R := V) (K := K)).1 h1`.
+
+Set `eV : V ≃+* (algebraMap V K).range` to `RingEquiv.ofBijective (algebraMap V K).rangeRestrict ⟨fun a b h => IsFractionRing.injective V K (congrArg Subtype.val h), (algebraMap V K).rangeRestrict_surjective⟩`. Set `φV : 𝓞 c.F →+* V` to `eV.symm.toRingHom.comp (φ.codRestrict _ hφ)`. Establish `hc : (algebraMap V K).comp φV = φ` using `RingHom.ext fun a => congrArg Subtype.val (eV.apply_symm_apply (φ.codRestrict _ hφ a))`. Establish `hv : ValuativeCriterion.Existence Z.s`. Establish `h` using `(UniversallyClosed.eq_valuativeCriterion ▸ (inferInstance : UniversallyClosed Z.s) : (ValuativeCriterion.Existence ⊓ @QuasiCompact : MorphismProperty Scheme) Z.s)`.
+
+Conclude with `h.1`. Set `S : ValuativeCommSq Z.s` to `{ R := V, K := K, i₁ := x, i₂ := spMap φV commSq := ⟨by`. Rewrite using `[← Spec.map_preimage (x ≫ Z.s)]`. Conclude with `((OpenReg.spMap_comp (algebraMap V K) φV).trans (congrArg spMap hc)).symm⟩ }`. Take `⟨⟨xO, h1, -⟩⟩` from `(hv S).exists_lift`.
+
+Conclude with `⟨xO, h1⟩`.
+-/
 theorem exists_ext (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c (algebraMap (𝓞 c.F) c.F)) (V K : Type) [CommRing V] [IsDomain V]
     [IsDiscreteValuationRing V] [Field K] [Algebra V K] [IsFractionRing V K] (x : Sp K ⟶ Z.X) :
     ∃ xV : Sp V ⟶ Z.X, spMap (algebraMap V K) ≫ xV = x := by
@@ -54,6 +63,9 @@ theorem exists_ext (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c 
   obtain ⟨⟨xO, h1, -⟩⟩ := (hv S).exists_lift
   exact ⟨xO, h1⟩
 
+/- English proof (translation)
+Use `Limits.pullback.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, ptF_fst, ptF_fst, h.1]`. Rewrite using `[Category.assoc, ptF_snd, ptF_snd, OpenReg.spMap_comp]`. Conclude with `congrArg spMap φ.comp_algebraMap.symm`.
+-/
 theorem ptF_of_frMap {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T] {φ : S →ₐ[c.F] T}
     {y : FrPt Xo c S} {z : FrPt Xo c T} (h : FrMap φ y z) : AllWt.ptF z = spMap φ.toRingHom ≫ AllWt.ptF y := by
   refine Limits.pullback.hom_ext ?_ ?_
@@ -61,6 +73,15 @@ theorem ptF_of_frMap {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Alg
   · rw [Category.assoc, ptF_snd, ptF_snd, OpenReg.spMap_comp]
     exact congrArg spMap φ.comp_algebraMap.symm
 
+/- English proof (translation)
+Use `letI := io.toAlgebra`. Use `letI := (jm.comp io).toAlgebra`. Introduce `yC hmap u hu τ i`. Establish `hpt : AllWt.ptF yC = spMap jm ≫ AllWt.ptF y.1` using `(ptF_of_frMap hmap :)`. Take `⟨xV, hxV⟩` from `exists_ext Z T.V T.Fr (AllWt.ptF y.1 ≫ Z.jQ ≫ genι Z)`.
+
+Take `⟨v, hv, hw, hsat⟩` from `GlobalTheory.T.integral_point_complex_tangent_vector _ _ _ _ _ _ _ _ Z T io y xV hxV τ`. Establish `hx : (AllWt.ptF yC ≫ Z.jQ) ≫ genι Z = spMap (jm.comp (algebraMap T.V T.Fr)) ≫ xV`. Rewrite using `[← OpenReg.spMap_comp, Category.assoc, Category.assoc, hxV, hpt, Category.assoc]`. Establish `hvec : u τ = fun a => spMap (dualMap (jm.comp (algebraMap T.V T.Fr))) ≫ v a` using `funext fun a => by`. Take `⟨w, w1, w2, w3⟩` from `hw a`.
+
+Take `⟨w', w1', w2', w3'⟩` from `hu τ a`. Establish `: w' = spMap (dualMap jm) ≫ w`. Apply `Z.m0.toSABMap.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[w2', Category.assoc, w2]`. Conclude with `hmap.2.1 τ a`.
+
+Rewrite using `[w1', Category.assoc, w1, hpt, ← Category.assoc, ← Category.assoc, OpenReg.spMap_comp, OpenReg.spMap_comp, GlobalTheory.Frames.FramedBaseChange.dualMap_comp_alg]`. Rewrite using `[← GlobalTheory.GradedPieces.dual_comp, ← w3, ← Category.assoc, ← this]`. Conclude with `w3'.symm`. Rewrite using `[hvec, hx]`. Conclude with `GlobalTheory.T.tangent_vectors_integral_combination _ _ _ Z.t T.V T.Fr xV _ v hv hsat C _ hψ (Guard.existsUnique_ext Z _) i`.
+-/
 theorem grNorm_eq_one (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c (algebraMap (𝓞 c.F) c.F)) (T : CDVR) (io : c.F →+* T.Fr)
     (y : IntFr Xo c T io) {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C] (jm : T.Fr →+* C)
     (hψ : ∀ z : T.V, ‖jm (algebraMap T.V T.Fr z)‖ ≤ 1) :
@@ -97,6 +118,17 @@ end Free
 
 variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {s : FinalTheorems S κ}
 
+/- English proof (translation)
+Establish `hsm : Smooth (genStr s.T.Z)` using `haveI := s.T.smooth`. Use the proof step `SmoothOfRelativeDimension.smooth S.Dw.dim _`. Establish `uniq : ∀ (a : s.Comp) {Z Z' : Comp s.Xo κ.c}, Over Φ a Z → Over Φ a Z' → Z = Z'` using `fun a Z Z' h h' => by`. Assume the negation of the conclusion as `hne`. Set `u : Sp (Φ.C a).Y.Fn` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (Φ.C a).Y.Fn)`.
+
+Conclude with `Set.disjoint_left.1 (CompSplitPfD.cspD_comp_disj _ _ _ _ hne) (h u) (h' u)`. Set `t : Sp K` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum K)`. Establish `ht : (Φ.C i).π (q t) = s.T.Z.jQ (AllWt.ptF y t)`. Rewrite using `[← Scheme.Hom.comp_apply, h, Scheme.Hom.comp_apply]`. Establish `hW` using `GlobalTheory.ShFam.PtComp.preimage_connectedComponent_mem s.T.Z hsm ((Φ.C i).π (q t))`.
+
+Establish `eZ : (⟨_, hW⟩ : Comp s.Xo κ.c) = Z`. Assume the negation of the conclusion as `hne`. Use `Set.disjoint_left.1 (CompSplitPfD.cspD_comp_disj _ _ _ _ hne) ?_ (hy t)` and prove the remaining obligations. Use `show s.T.Z.jQ _ ∈ connectedComponent _`. Rewrite using `[ht]`.
+
+Conclude with `mem_connectedComponent`. Establish `hO' : Over Φ i Z`. Introduce `u`. Rewrite using `[← eZ]`. Use `show s.T.Z.jQ _ ∈ connectedComponent _`.
+
+Rewrite using `[← Scheme.Hom.comp_apply _ s.T.Z.jQ, (Φ.C i).y0_x, Scheme.Hom.comp_apply]`. Conclude with `(isPreconnected_range (Φ.C i).π.continuous).subset_connectedComponent ⟨_, rfl⟩ ⟨_, rfl⟩`. Take `⟨r, hr⟩` from `GlobalTheory.CovHt.Link.exists_equiv_over D A N j S κ s Φ`. Use `r.injective ?_` and prove the remaining obligations. Rewrite using `[uniq i (hr i) hO', uniq k (hr k) hk]`.
+-/
 theorem comp_eq (Φ : s.Flag) (k : s.Comp) (Z : Comp s.Xo κ.c) (hk : Over Φ k Z) {K : Type} [Field K] [Algebra κ.c.F K]
     (y : FrPt s.Xo κ.c K) (hy : AllWt.LiesOn Z y) (i : s.Comp) (q : Sp K ⟶ (Φ.C i).Y.X)
     (h : q ≫ (Φ.C i).π = AllWt.ptF y ≫ s.T.Z.jQ) : i = k := by
@@ -125,6 +157,11 @@ theorem comp_eq (Φ : s.Flag) (k : s.Comp) (Z : Comp s.Xo κ.c) (hk : Over Φ k 
   refine r.injective ?_
   rw [uniq i (hr i) hO', uniq k (hr k) hk]
 
+/- English proof (translation)
+Distinguish the cases in `hz : algebraMap T.V T.Fr z = 0`. Simplify using `[hz, vV]`. Establish `h1 : valV T.V (algebraMap T.V T.Fr z) ≤ 1` using `HeightOneSpectrum.valuation_le_one _ z`. Use `(WithZero.log_le_log (valV_ne_zero hz) one_ne_zero).2 h1` as an intermediate fact. Rewrite `this` using `[WithZero.log_one]`.
+
+Simplify using `only [vV]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem vV_nonneg (T : CDVR) (z : T.V) : 0 ≤ vV T.V (algebraMap T.V T.Fr z) := by
   by_cases hz : algebraMap T.V T.Fr z = 0
   · simp [hz, vV]
@@ -138,6 +175,19 @@ end GlobalTheory.CovHt.Link.IntPtNorm
 
 open GlobalTheory.CovHt.Link.IntPtNorm in
 
+/- English proof (translation)
+Introduce `_ _ D A N j S κ s Φ k Z hOv la g hg _ pl p hpp _ T io e _ y _ hly jm hjm`. Use `letI := io.toAlgebra`. Use `letI := (jm.comp io).toAlgebra`. Set `jm' : T.Fr →ₐ[κ.c.F] ℂ_[p]` to `⟨jm, fun _ => rfl⟩`. Take `⟨yC, hmap⟩` from `GlobalTheory.FlagTan.exists_frMap jm' y.1`.
+
+Establish `hev : evR s.Xo κ.c g yC = jm (evI y g)` using `GlobalTheory.FlagTan.evR_frMap hg.1 hmap`. Establish `hpt : AllWt.ptF yC = spMap jm ≫ AllWt.ptF y.1` using `(ptF_of_frMap hmap :)`. Establish `hlies : AllWt.LiesOn Z yC` using `fun u => by`. Rewrite using `[hpt, Scheme.Hom.comp_apply]`. Conclude with `hly _`.
+
+Establish `hstr : (AllWt.ptF yC ≫ s.T.Z.jQ) ≫ genStr s.T.Z = spMap (algebraMap κ.c.F ℂ_[p])` using `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) s.T.Z.jQ_over).trans (ptF_snd yC))`. Take `⟨gf, hmatch⟩ : ∃ gf : EigFrame s.T.Z (algebraMap κ.c.F ℂ_[p]) ((AllWt.ptF yC ≫ s.T.Z.jQ) ≫ genι s.T.Z), ∀ τ i, ∃ w : Sp (DualNumber ℂ_[p]) ⟶ s.T.Z.oF.t.G.left, w ≫ s.T.Z.oF.t.G.hom = spMap (algebraMap ℂ_[p] (DualNumber ℂ_[p])) ≫ AllWt.ptF yC ∧ w ≫ s.T.Z.m0.toSABMap.φ = yC.u τ i ∧ …` from `⟨EigFrame.ofFrPt s.T.Z yC (Category.assoc _ _ _).symm, fun τ i => (EigFrame.ofFrPt_v s.T.Z yC (Category.assoc _ _ _).symm τ i).imp fun w h => ⟨h.1.1, h.2⟩⟩`. Establish `hgr : ∀ τ i, grNorm s.T.Z.t ((AllWt.ptF yC ≫ s.T.Z.jQ) ≫ genι s.T.Z) (latDR s.T.Z.t ((AllWt.ptF yC ≫ s.T.Z.jQ) ≫ genι s.T.Z)) (gf.v τ) i = 1`. Use `grNorm_eq_one s.T.Z T io y jm (fun z => ?_) yC hmap gf.v hmatch` and prove the remaining obligations. Distinguish the cases in `hz : algebraMap T.V T.Fr z = 0`.
+
+Simplify using `[hz]`. Rewrite using `[hjm _ hz]`. Use `Real.rpow_le_one_of_one_le_of_nonpos (by exact_mod_cast hpp.out.one_le) (neg_nonpos.2 (div_nonneg ?_ ?_))` and prove the remaining obligations. Conclude with `vV_nonneg T z` after adjusting the coercions. Use `vV_nonneg T (p : T.V)` as an intermediate fact.
+
+Rewrite `this`, the goal using `[map_natCast]`. Conclude with `this` after adjusting the coercions. Use `haveI := PadicComplex.isAlgClosed p`. Take `⟨⟨i, q⟩, ⟨hq, hcar⟩, -⟩` from `Φ.lifts ℂ_[p] (algebraMap κ.c.F ℂ_[p]) (AllWt.ptF yC ≫ s.T.Z.jQ) hstr gf`. Take `rfl` from `comp_eq Φ k Z hOv yC hlies i q hq`.
+
+Establish `hco` using `GlobalTheory.T.flag_compactification_section_weight _ _ _ _ _ _ _ _ s.T.Z _ _ (Φ.C i) (exOf S.Dw la 0) g rfl hg ℂ_[p] yC _ gf hmatch q hq hcar`. Rewrite `hco` using `[← expo_drSym]`. Conclude with `⟨q, (GlobalTheory.T.eigenframe_coordinate_graded_norm D A N j S κ s Φ i la ℂ_[p] p q _ _ _ gf _ hgr hco).trans (congrArg _ hev)⟩`.
+-/
 theorem GlobalTheory.CovHt.Link.exists_pt_drAt_eq : Hypotheses2 → HypothesesH → ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (Φ : s.Flag) (k : s.Comp) (Z : Comp s.Xo κ.c), Over Φ k Z → ∀ (la : AllWt.Weight S.Dw) (g : Rul s.Xo κ.c), g ∈ secZ s.Xo κ.c (exOf S.Dw la 0) → (Φ.C k).val g ∈ (Φ.C k).Y.H0 ((Φ.C k).Lw la) → ∀ (pl : HeightOneSpectrum (𝓞 κ.c.F)) (p : ℕ) [Fact p.Prime], (p : 𝓞 κ.c.F) ∈ pl.asIdeal → ∀ (T : CDVR) (io : κ.c.F →+* T.Fr) (e : ℕ), OverLa pl T.V io e → ∀ y : IntFr s.Xo κ.c T io, T.FinRes → (letI := io.toAlgebra; AllWt.LiesOn Z y.1) → ∀ jm : T.Fr →+* ℂ_[p], (∀ z : T.Fr, z ≠ 0 → ‖jm z‖ = (p : ℝ) ^ (-((vV T.V z : ℝ) / (vV T.V (io (p : κ.c.F)) : ℝ)))) → ∃ x : Sp ℂ_[p] ⟶ (Φ.C k).Y.X, drAt Φ k la p x ((Φ.C k).val g) = ‖jm (evI y g)‖ := by
   intro _ _ D A N j S κ s Φ k Z hOv la g hg _ pl p hpp _ T io e _ y _ hly jm hjm
   letI := io.toAlgebra

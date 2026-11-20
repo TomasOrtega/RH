@@ -8,6 +8,35 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
 
 end
 
+/- English proof (translation)
+Establish `hI : ∀ u : (Fin n → UnitAddCircle) → ℂ, Continuous u → Integrable u` using `fun u hu => hu.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace u)`. Establish `h1 : ∀ g ∈ T, (mr : ℂ) * N * f g = c * ∫ θ, S θ * φ θ g⁻¹ * D θ`. Introduce `g hg`. Establish `e : (fun θ => S θ * φ θ g⁻¹ * D θ) = fun θ => ∑ g' ∈ T, (mr : ℂ) * f g' * (φ θ (g⁻¹ * g') * D θ)`. Use function extensionality and compare the values at `θ`.
+
+Rewrite using `[← hA θ g⁻¹, Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun g' _ => by ring`. Establish `hsum` using `integral_finset_sum T fun g' _ => hI (fun θ => (mr : ℂ) * f g' * (φ θ (g⁻¹ * g') * D θ)) (continuous_const.mul ((hφc _).mul hDc))`. Rewrite using `[e, hsum]`. Repeatedly rewrite using `[integral_const_mul]`.
+
+Rewrite using `[Finset.mul_sum]`. Establish `hs : ∀ g' ∈ T, c * ((mr : ℂ) * f g' * ∫ θ, φ θ (g⁻¹ * g') * D θ) = if g = g' then (mr : ℂ) * N * f g else 0`. Introduce `g' hg'`. Rewrite using `[show c * ((mr : ℂ) * f g' * ∫ θ, φ θ (g⁻¹ * g') * D θ) = (mr : ℂ) * f g' * (c * ∫ θ, φ θ (g⁻¹ * g') * D θ) by ring]`. Distinguish the cases in `hgg : g = g'`.
+
+Substitute `hgg` using the available equality. Rewrite using `[inv_mul_cancel, hintK 1 K.one_mem, if_pos rfl]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hint0 _ fun hk => hgg (hT1 g hg g' hg' hk), if_neg hgg]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[Finset.sum_congr rfl hs, Finset.sum_ite_eq, if_pos hg]`. Establish `h2 : (mr : ℂ) ^ 2 * N * ∑ g ∈ T, ((‖f g‖ ^ 2 : ℝ) : ℂ) = c * ∫ θ, ((‖S θ‖ ^ 2 : ℝ) : ℂ) * D θ`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations.
+
+Use `Complex.conj_mul' (f g)` as an intermediate fact. Use `push_cast`. Rewrite using `[show (mr : ℂ) * (starRingEnd ℂ (f g) * ((mr : ℂ) * N * f g)) = (mr : ℂ) ^ 2 * N * (starRingEnd ℂ (f g) * f g) by ring, this]`. Use `_ = (mr : ℂ) * ∑ g ∈ T, starRingEnd ℂ (f g) * (c * ∫ θ, S θ * φ θ g⁻¹ * D θ) := by`. Use `congr 1`.
+
+Conclude with `Finset.sum_congr rfl fun g hg => by rw [h1 g hg]`. Use `_ = c * ∫ θ, (mr : ℂ) * ∑ g ∈ T, starRingEnd ℂ (f g) * (S θ * φ θ g⁻¹ * D θ) := by`. Establish `hsum` using `integral_finset_sum T fun g _ => hI (fun θ => starRingEnd ℂ (f g) * (S θ * φ θ g⁻¹ * D θ)) (continuous_const.mul ((hSc.mul (hφc _)).mul hDc))`. Rewrite using `[integral_const_mul, hsum]`. Repeatedly rewrite using `[integral_const_mul]`.
+
+Rewrite using `[Finset.mul_sum, Finset.mul_sum, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun g _ => by ring`. Use `_ = c * ∫ θ, ((‖S θ‖ ^ 2 : ℝ) : ℂ) * D θ := by`. Use `congr 1`. Apply `integral_congr_ae` to reduce the goal to its premises.
+
+Use `filter_upwards [hconj] with θ hθ`. Establish `hA1` using `hA θ 1`. Simplify using `only [one_mul, hone, mul_one] at hA1`. Combine the equalities or inequalities in the displayed calculation. Repeatedly rewrite using `[hθ]`.
+
+Rewrite using `[map_mul, map_sum, Complex.conj_ofReal]`. Repeatedly rewrite using `[map_mul]`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun g _ => by ring`. Use `_ = ((‖S θ‖ ^ 2 : ℝ) : ℂ) * D θ := by`.
+
+Rewrite using `[hA1, mul_comm (S θ) (D θ), mul_assoc, Complex.mul_conj']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : mr ^ 2 * N * ∑ g ∈ T, ‖f g‖ ^ 2 ≤ ‖c‖ * ((∫ θ, ‖S θ‖ ^ 2) * B)`. Establish `hl : mr ^ 2 * N * ∑ g ∈ T, ‖f g‖ ^ 2 = ‖(mr : ℂ) ^ 2 * N * ∑ g ∈ T, ((‖f g‖ ^ 2 : ℝ) : ℂ)‖`.
+
+Rewrite using `[← Complex.ofReal_natCast, ← Complex.ofReal_pow, ← Complex.ofReal_sum, ← Complex.ofReal_mul, ← Complex.ofReal_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (by positivity)]`. Rewrite using `[hl, h2, norm_mul]`. Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations. Use `(norm_integral_le_integral_norm _).trans ?_` and prove the remaining obligations. Rewrite using `[← integral_mul_const]`.
+
+Use `integral_mono_of_nonneg (Filter.Eventually.of_forall fun θ => norm_nonneg _) (((hSc.norm.pow 2).mul continuous_const).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)) (Filter.Eventually.of_forall fun θ => ?_)` and prove the remaining obligations. Use `show ‖((‖S θ‖ ^ 2 : ℝ) : ℂ) * D θ‖ ≤ ‖S θ‖ ^ 2 * B`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (by positivity)]`. Conclude with `mul_le_mul_of_nonneg_left (hB θ) (by positivity)`. Establish `hpos : 0 < mr ^ 2 * (N : ℝ)` using `by positivity`.
+
+Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ hpos]`. Use polynomial arithmetic with `[h3]`.
+-/
 private theorem sum_norm_sq_le_integral_of_plancherel {G : Type} [Group G] {n : ℕ} (K : Subgroup G)
     (φ : (Fin n → UnitAddCircle) → G → ℂ) (D S : (Fin n → UnitAddCircle) → ℂ) (f : G → ℂ)
     (T : Finset G) (mr B : ℝ) (N : ℕ) (c : ℂ) (hm : 0 < mr) (hN : 0 < N)
@@ -107,6 +136,19 @@ private theorem sum_norm_sq_le_integral_of_plancherel {G : Type} [Group G] {n : 
   rw [div_mul_eq_mul_div, le_div_iff₀ hpos]
   nlinarith [h3]
 
+/- English proof (translation)
+Introduce `hInt hConj hEig hInj hDens F _ _ _ _ n _ _ μ _`. Establish `hq : 1 < qF F`. Unfold `qF`. Conclude with `Finite.one_lt_card`. Establish `ht0 : (0 : ℝ) ≤ ((qF F : ℝ))⁻¹` using `by positivity`.
+
+Establish `ht1 : ((qF F : ℝ))⁻¹ < 1` using `inv_lt_one_of_one_lt₀ (by exact_mod_cast hq)`. Take `⟨_, hDc, hev, hunit⟩` from `hDens n _ ht0 ht1`. Establish `htc : Complex.ofReal ((qF F : ℝ))⁻¹ = ((qF F : ℂ))⁻¹` using `by push_cast; rfl`. Rewrite `hDc` using `[htc]`. Take `⟨B, hB⟩` from `IsCompact.exists_bound_of_continuousOn isCompact_univ hDc.continuousOn`.
+
+Establish `hm : 0 < μ.real (GLnLocal.integralGL F n)`. Apply `ENNReal.toReal_pos` to reduce the goal to its premises. Conclude with `((GLnLocal.isOpen_integralGL F n).measure_pos μ ⟨1, (GLnLocal.integralGL F n).one_mem⟩).ne'`. Conclude with `((GLnLocal.isCompact_integralGL F n).measure_lt_top).ne`. Establish `hI` using `hInt F n μ`.
+
+Establish `hC` using `hConj F n μ`. Use `⟨‖vPoly n ((qF F : ℂ))⁻¹‖ * B / (μ.real (GLnLocal.integralGL F n) ^ 2 * n.factorial), ?_⟩` and prove the remaining obligations. Introduce `h T hT`. Use `sum_norm_sq_le_integral_of_plancherel (GLnLocal.integralGL F n) (fun θ y => zonalSpherical μ (pt θ) y) (fun θ => dens ((qF F : ℂ))⁻¹ (pt θ)) (fun θ => evalAt (pt θ) (satakeTransform μ h)) _ T (μ.real (GLnLocal.integralGL F n)) B n.factorial (vPoly n ((qF F : ℂ))⁻¹) hm n.factorial …` and prove the remaining obligations. Rewrite using `[← hT.2 (fun x => zonalSpherical μ (pt θ) (y * x)) fun g k hk => by`.
+
+Rewrite using `[← mul_assoc]`. Conclude with `zonalSpherical_mul_right _ _ hk]`. Conclude with `hEig F n μ (pt θ) h y`. Use `filter_upwards [hInj n] with θ hθ`. Introduce `y`.
+
+Conclude with `hC (pt θ) hθ (hunit θ) y`.
+-/
 theorem UpperTheory.Gal.Gen.planch_pf :
     UpperTheory.Gal.Gen.GammaInt → UpperTheory.Gal.Gen.GammaConj → UpperTheory.Gal.Gen.GammaEig → UpperTheory.Gal.Gen.InjAE → UpperTheory.Gal.Gen.DensCont → UpperTheory.Gal.Gen.Planch := by
   intro hInt hConj hEig hInj hDens F _ _ _ _ n _ _ μ _

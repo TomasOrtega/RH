@@ -10,5 +10,8 @@ open GlobalTheory.Twist (resM)
 open scoped CategoryTheory.Obj RatFunc
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Nef.ratRigid_of_isProper_of_charZero | exact GlobalTheory.Nef.ratRigid_of_isProper_of_charZero | (intros; apply GlobalTheory.Nef.ratRigid_of_isProper_of_charZero <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.rationalSquaringPathsRigid_of_proper_charZero : ∀ (Ω : Type) [Field Ω] [CharZero Ω] (H : Over (Sp Ω)) [GrpObj H], IsProper H.hom → RatRigid H (𝟙 (Sp Ω)) := by
   first | exact @GlobalTheory.Nef.ratRigid_of_isProper_of_charZero | exact GlobalTheory.Nef.ratRigid_of_isProper_of_charZero | (intros; apply GlobalTheory.Nef.ratRigid_of_isProper_of_charZero <;> assumption)

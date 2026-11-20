@@ -8,6 +8,13 @@ open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 
 namespace GlobalTheory.LatSumZ
 
+/- English proof (translation)
+Establish `hL' : (L : ℂ) ≠ 0` using `by exact_mod_cast hL.ne'`. Use `set S := ∑ r ∈ Finset.range L, F (x + (r : ℤ) • v)`. Use `set T := ∑ r' ∈ Finset.range L, ∑ r ∈ Finset.range L, F (x + (r' : ℤ) • v + (r : ℤ) • v)`. Establish `e : ∑ r' ∈ Finset.range L, ∑ r ∈ Finset.range L, (F x - F (x + (r : ℤ) • v) - F (x + (r' : ℤ) • v) + F (x + (r' : ℤ) • v + (r : ℤ) • v)) = (L : ℂ) * L * F x - L * S - L * S + T`. Simplify using `only [Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul, S, T]`.
+
+Rewrite using `[← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : ∑ r' ∈ Finset.range L, (F (x + (r' : ℤ) • v) - (L : ℂ)⁻¹ * ∑ r ∈ Finset.range L, F (x + (r' : ℤ) • v + (r : ℤ) • v)) = S - (L : ℂ)⁻¹ * T`. Rewrite using `[Finset.sum_sub_distrib, ← Finset.mul_sum]`. Rewrite using `[e]`.
+
+Simplify using `only [dif]`. Rewrite using `[e2]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem difdif (L : ℕ) (hL : 0 < L) (v : ℤ × ℤ) (F : ℤ × ℤ → ℂ) (x : ℤ × ℤ) :
     dif L v (dif L v F) x = ((L : ℂ) ^ 2)⁻¹ * ∑ r' ∈ Finset.range L, ∑ r ∈ Finset.range L,
       (F x - F (x + (r : ℤ) • v) - F (x + (r' : ℤ) • v) + F (x + (r' : ℤ) • v + (r : ℤ) • v)) := by
@@ -28,21 +35,49 @@ theorem difdif (L : ℕ) (hL : 0 < L) (v : ℤ × ℤ) (F : ℤ × ℤ → ℂ) 
   field_simp
   ring
 
+/- English proof (translation)
+Simplify using `[trm]`.
+-/
 theorem trm_zero (j : ℕ) (y : ℂ) : trm j 0 y = (y ^ j)⁻¹ := by
   simp [trm]
 
+/- English proof (translation)
+Simplify using `only [Prod.fst_add, Prod.snd_add, Prod.smul_fst, Prod.smul_snd, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lin_shift (τ : ℍ) (x v : ℤ × ℤ) (r : ℕ) :
     (((x + (r : ℤ) • v).1 : ℤ) : ℂ) * (τ : ℂ) + (((x + (r : ℤ) • v).2 : ℤ) : ℂ)
       = ((x.1 : ℂ) * τ + x.2) + (r : ℂ) * ((v.1 : ℂ) * τ + v.2) := by
   simp only [Prod.fst_add, Prod.snd_add, Prod.smul_fst, Prod.smul_snd, smul_eq_mul]
   push_cast; ring
 
+/- English proof (translation)
+Simplify using `only [Prod.fst_add, Prod.snd_add, Prod.smul_fst, Prod.smul_snd, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lin_shift2 (τ : ℍ) (x v : ℤ × ℤ) (r' r : ℕ) :
     (((x + (r' : ℤ) • v + (r : ℤ) • v).1 : ℤ) : ℂ) * (τ : ℂ) + (((x + (r' : ℤ) • v + (r : ℤ) • v).2 : ℤ) : ℂ)
       = ((x.1 : ℂ) * τ + x.2) + (r' : ℂ) * ((v.1 : ℂ) * τ + v.2) + (r : ℂ) * ((v.1 : ℂ) * τ + v.2) := by
   simp only [Prod.fst_add, Prod.snd_add, Prod.smul_fst, Prod.smul_snd, smul_eq_mul]
   push_cast; ring
 
+/- English proof (translation)
+Use `set z : ℂ := (x.1 : ℂ) * τ + x.2 with hz`. Use `set w : ℂ := (v.1 : ℂ) * τ + v.2 with hw`. Use `set B : ℝ := max C 0 * (L * ‖w‖) ^ 2 / ‖z‖ ^ 3 with hB`. Establish `hz0 : z ≠ 0`. Introduce `h`.
+
+Rewrite `h1` using `[h, norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hzpos : 0 < ‖z‖` using `norm_pos_iff.mpr hz0`. Establish `hLpos : (0 : ℝ) < L` using `by exact_mod_cast hL`. Establish `hterm : ∀ r' ∈ Finset.range L, ∀ r ∈ Finset.range L, ‖trm j 0 z - trm j 0 (z + (r : ℂ) * w) - trm j 0 (z + (r' : ℂ) * w) + trm j 0 (z + (r' : ℂ) * w + (r : ℂ) * w)‖ ≤ B`.
+
+Introduce `r' hr' r hr`. Establish `hr'L : (r' : ℝ) ≤ L` using `by exact_mod_cast (Finset.mem_range.mp hr').le`. Establish `hrL : (r : ℝ) ≤ L` using `by exact_mod_cast (Finset.mem_range.mp hr).le`. Establish `na : ‖(r' : ℂ) * w‖ ≤ L * ‖w‖`. Rewrite using `[norm_mul, Complex.norm_natCast]`.
+
+Conclude with `mul_le_mul_of_nonneg_right hr'L (norm_nonneg _)`. Establish `nb : ‖(r : ℂ) * w‖ ≤ L * ‖w‖`. Rewrite using `[norm_mul, Complex.norm_natCast]`. Conclude with `mul_le_mul_of_nonneg_right hrL (norm_nonneg _)`. Establish `key` using `hC z ((r' : ℂ) * w) ((r : ℂ) * w) hz0 (by linarith) (by linarith)`.
+
+Simplify using `only [trm_zero]`. Establish `eq : (z ^ j)⁻¹ - ((z + (r : ℂ) * w) ^ j)⁻¹ - ((z + (r' : ℂ) * w) ^ j)⁻¹ + ((z + (r' : ℂ) * w + (r : ℂ) * w) ^ j)⁻¹ = (z ^ j)⁻¹ - ((z + (r' : ℂ) * w) ^ j)⁻¹ - ((z + (r : ℂ) * w) ^ j)⁻¹ + ((z + (r' : ℂ) * w + (r : ℂ) * w) ^ j)⁻¹` using `by ring`. Rewrite using `[eq]`. Use `key.trans ?_` and prove the remaining obligations. Establish `hpow : ‖z‖ ^ 3 ≤ ‖z‖ ^ (j + 2)` using `pow_le_pow_right₀ h1 (by omega)`.
+
+Establish `hp3 : 0 < ‖z‖ ^ 3` using `by positivity`. Establish `hM : 0 ≤ max C 0` using `le_max_right _ _`. Combine the equalities or inequalities in the displayed calculation. Apply `div_le_div_of_nonneg_left (by positivity) hp3 hpow` to reduce the goal to its premises. Use `_ = B := by rw [hB]; ring`.
+
+Rewrite using `[difdif L hL v _ x]`. Simplify using `only [lin_shift τ, lin_shift2 τ]`. Rewrite using `[← hz, ← hw]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul, norm_inv, norm_pow, Complex.norm_natCast]`.
+
+Use `gcongr`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun r' hr' => ?_)` and prove the remaining obligations. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun r hr => hterm r' hr' r hr)` and prove the remaining obligations. Use `_ = B := by`. Simplify using `only [Finset.sum_const, Finset.card_range, nsmul_eq_mul]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem difdif_bound (j L : ℕ) (v : ℤ × ℤ) (τ : ℍ) (hj : 1 ≤ j) (hL : 0 < L) (C : ℝ)
     (hC : ∀ z a b : ℂ, z ≠ 0 → 4 * ‖a‖ ≤ ‖z‖ → 4 * ‖b‖ ≤ ‖z‖ →
       ‖(z ^ j)⁻¹ - ((z + a) ^ j)⁻¹ - ((z + b) ^ j)⁻¹ + ((z + a + b) ^ j)⁻¹‖ ≤ C * ‖a‖ * ‖b‖ / ‖z‖ ^ (j + 2))
@@ -100,6 +135,27 @@ theorem difdif_bound (j L : ℕ) (v : ℤ × ℤ) (τ : ℍ) (hj : 1 ≤ j) (hL 
         simp only [Finset.sum_const, Finset.card_range, nsmul_eq_mul]
         field_simp
 
+/- English proof (translation)
+Introduce `j L v τ hj hL`. Take `⟨C, hC⟩` from `GlobalTheory.T.second_difference_inv_pow_bound j`. Use `set w : ℂ := (v.1 : ℂ) * τ + v.2 with hw`. Use `set R : ℝ := max (4 * (L * ‖w‖)) 1 with hR`. Establish `hrτ : 0 < EisensteinSeries.r τ` using `EisensteinSeries.r_pos τ`.
+
+Use `set M : ℝ := R / EisensteinSeries.r τ + 1 with hM`. Use `set K : ℝ := max C 0 * (L * ‖w‖) ^ 2 with hK`. Establish `hK0 : 0 ≤ K` using `by positivity`. Rewrite using `[← (finTwoArrowEquiv ℤ).summable_iff]`. Establish `hs : Summable fun y : Fin 2 → ℤ => K * (EisensteinSeries.r τ ^ 3)⁻¹ * ‖y‖ ^ (-(3 : ℝ))` using `(EisensteinSeries.summable_one_div_norm_rpow (by norm_num : (2 : ℝ) < 3)).mul_left _`.
+
+Use `Summable.of_norm_bounded_eventually hs ?_` and prove the remaining obligations. Establish `hev : ∀ᶠ y : Fin 2 → ℤ in cofinite, M ≤ ‖y‖`. Rewrite using `[← cocompact_eq_cofinite]`. Conclude with `tendsto_norm_cocompact_atTop.eventually_ge_atTop M`. Use `filter_upwards [hev] with y hy`.
+
+Establish `hR1 : 1 ≤ R` using `le_max_right _ _`. Establish `hMpos : 0 < M` using `by positivity`. Establish `hy0 : y ≠ 0`. Introduce `h`. Rewrite `hy` using `[h, norm_zero]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlow` using `EisensteinSeries.r_mul_max_le τ hy0`. Establish `hRle : R ≤ EisensteinSeries.r τ * ‖y‖`. Establish `: EisensteinSeries.r τ * M ≤ EisensteinSeries.r τ * ‖y‖` using `mul_le_mul_of_nonneg_left hy hrτ.le`. Establish `h2 : EisensteinSeries.r τ * M = R + EisensteinSeries.r τ`.
+
+Rewrite using `[hM]`. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hxe : (((finTwoArrowEquiv ℤ y).1 : ℤ) : ℂ) * (τ : ℂ) + (((finTwoArrowEquiv ℤ y).2 : ℤ) : ℂ) = (y 0 : ℂ) * τ + y 1` using `by simp`. Establish `hzR : R ≤ ‖((finTwoArrowEquiv ℤ y).1 : ℂ) * τ + ((finTwoArrowEquiv ℤ y).2 : ℂ)‖`.
+
+Rewrite using `[hxe]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : 1 ≤ ‖((finTwoArrowEquiv ℤ y).1 : ℂ) * τ + ((finTwoArrowEquiv ℤ y).2 : ℂ)‖` using `le_trans (le_max_right _ _) hzR`. Establish `h4 : 4 * (L * ‖w‖) ≤ ‖((finTwoArrowEquiv ℤ y).1 : ℂ) * τ + ((finTwoArrowEquiv ℤ y).2 : ℂ)‖` using `le_trans (le_max_left _ _) hzR`. Establish `hb` using `difdif_bound j L v τ hj hL C hC (finTwoArrowEquiv ℤ y) h1 h4`.
+
+Rewrite using `[Function.comp_apply, norm_norm]`. Use `hb.trans ?_` and prove the remaining obligations. Rewrite `h1`, the goal using `[hxe]`. Establish `hypos : 0 < ‖y‖` using `norm_pos_iff.mpr hy0`. Establish `hprod : 0 < EisensteinSeries.r τ * ‖y‖` using `mul_pos hrτ hypos`.
+
+Establish `hrp : ‖y‖ ^ (-(3 : ℝ)) = (‖y‖ ^ 3)⁻¹`. Rewrite using `[Real.rpow_neg (norm_nonneg _), show (3 : ℝ) = ((3 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`. Rewrite using `[hrp, ← hw]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hK]`.
+
+Apply `div_le_div_of_nonneg_left (by positivity) (by positivity)` to reduce the goal to its premises. Conclude with `pow_le_pow_left₀ hprod.le hlow 3`. Use `_ = K * (EisensteinSeries.r τ ^ 3)⁻¹ * (‖y‖ ^ 3)⁻¹ := by`. Rewrite using `[mul_pow]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem latsum_summable : ∀ (j L : ℕ) (v : ℤ × ℤ) (τ : ℍ), 1 ≤ j → 0 < L →
     Summable fun x => ‖dif L v (dif L v (fun y : ℤ × ℤ => trm j 0 ((y.1 : ℂ) * τ + y.2))) x‖ := by
   intro j L v τ hj hL

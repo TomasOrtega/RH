@@ -25,14 +25,25 @@ def toL2Map (c : H →ₗ[ℂ] (X → ℂ)) (hL : ∀ v, MemLp (c v) 2 μ) : H �
       (hL u).coeFn_toLp] with x h1 h2 h3
     rw [h1, RingHom.id_apply, h2, Pi.smul_apply, h3, map_smul, Pi.smul_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toL2Map_apply (c : H →ₗ[ℂ] (X → ℂ)) (hL : ∀ v, MemLp (c v) 2 μ) (v : H) :
     toL2Map c hL v = (hL v).toLp (c v) := rfl
 
+/- English proof (translation)
+Rewrite using `[toL2Map_apply]`. Conclude with `(hL v).coeFn_toLp`.
+-/
 theorem toL2Map_apply_ae_eq (c : H →ₗ[ℂ] (X → ℂ)) (hL : ∀ v, MemLp (c v) 2 μ) (v : H) :
     (toL2Map c hL v : X → ℂ) =ᵐ[μ] c v := by
   rw [toL2Map_apply]
   exact (hL v).coeFn_toLp
 
+/- English proof (translation)
+Use `LinearMap.continuous_of_seq_closed_graph (g := toL2Map c hL) ?_` and prove the remaining obligations. Introduce `u v y hu hy`. Take `⟨ns, hns, hae⟩` from `(tendstoInMeasure_of_tendsto_Lp hy).exists_seq_tendsto_ae`. Establish `hall : ∀ᵐ x ∂μ, ∀ n, (toL2Map c hL (u n) : X → ℂ) x = c (u n) x` using `ae_all_iff.2 fun n => toL2Map_apply_ae_eq c hL (u n)`. Apply `Lp.ext` to reduce the goal to its premises.
+
+Use `filter_upwards [hae, hall, toL2Map_apply_ae_eq c hL v] with x hx hxa hxv`. Rewrite using `[hxv]`. Establish `h2 : Tendsto (fun i => c (u (ns i)) x) atTop (𝓝 (c v x))` using `((hcont x).tendsto v).comp (hu.comp hns.tendsto_atTop)`. Use `tendsto_nhds_unique hx (h2.congr fun i => ?_)` and prove the remaining obligations. Conclude with `(hxa (ns i)).symm`.
+-/
 theorem continuous_toL2Map [CompleteSpace H] (c : H →ₗ[ℂ] (X → ℂ))
     (hcont : ∀ x, Continuous fun v => c v x) (hL : ∀ v, MemLp (c v) 2 μ) :
     Continuous (toL2Map c hL) := by
@@ -51,6 +62,9 @@ theorem continuous_toL2Map [CompleteSpace H] (c : H →ₗ[ℂ] (X → ℂ))
 
 end
 
+/- English proof (translation)
+Introduce `X H _ μ _ _ _ c hcont hL`. Conclude with `⟨⟨toL2Map c hL, continuous_toL2Map c hcont hL⟩, toL2Map_apply_ae_eq c hL⟩`.
+-/
 theorem stBdd : StBdd := by
   intro X H _ μ _ _ _ c hcont hL
   exact ⟨⟨toL2Map c hL, continuous_toL2Map c hcont hL⟩, toL2Map_apply_ae_eq c hL⟩

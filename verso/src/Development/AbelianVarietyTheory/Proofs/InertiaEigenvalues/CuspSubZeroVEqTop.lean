@@ -8,6 +8,15 @@ open NumberField IsDedekindDomain MeasureTheory Formalism.L2.Host GlobalTheory.A
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hsub : Subsingleton (GA E 0)` using `inferInstance`. Take `⟨φ, hφ, hφ0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot π.ne_bot`. Establish `h1 : (φ : GA E 0 → ℂ) 1 ≠ 0`. Introduce `h`. Apply `hφ0` to reduce the goal to its premises.
+
+Use extensionality with `g`. Rewrite using `[Subsingleton.elim g 1]`. Simplify using `using h`. Rewrite using `[eq_top_iff]`. Introduce `ψ _`.
+
+Establish `e : ψ = ((ψ : GA E 0 → ℂ) 1 / (φ : GA E 0 → ℂ) 1) • φ`. Use extensionality with `g`. Rewrite using `[Subsingleton.elim g 1]`. Simplify using `[div_mul_cancel₀ _ h1]`. Rewrite using `[e]`.
+
+Conclude with `π.V.smul_mem _ hφ`.
+-/
 theorem cuspSub_zero_V_eq_top {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (π : CuspSub E 0) :
     π.V = ⊤ := by
   have hsub : Subsingleton (GA E 0) := inferInstance
@@ -27,6 +36,9 @@ theorem cuspSub_zero_V_eq_top {E : Type} [Field E] [NumberField E] [IsTotallyCom
   rw [e]
   exact π.V.smul_mem _ hφ
 
+/- English proof (translation)
+Introduce `E _ _ _ π π'`. Rewrite using `[cuspSub_zero_V_eq_top π, cuspSub_zero_V_eq_top π']`.
+-/
 theorem cuspSub_zero_V_eq : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (π π' : CuspSub E 0), π.V = π'.V := by
   intro E _ _ _ π π'
   rw [cuspSub_zero_V_eq_top π, cuspSub_zero_V_eq_top π']

@@ -12,6 +12,11 @@ noncomputable section
 
 namespace MainStatements.WeightKernel.Dec.DSumSm
 
+/- English proof (translation)
+Take `⟨K, hK, hKn⟩` from `exists_compact_mem_nhds x₀`. Establish `hfin` using `GlobalTheory.AutomorphicL2KernelContinuous.finite_contributing (Γ := Γ) hf (isCompact_singleton (x := z⁻¹)) (hK.image hφ)`. Use `⟨hfin.toFinset, Filter.mem_of_superset hKn fun x hx ν hν => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Apply `hν` to reduce the goal to its premises.
+
+Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `⟨z⁻¹, rfl, φ x, ⟨x, hx, rfl⟩, by simpa using h⟩`.
+-/
 lemma loc_fin {G X : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G]
     {Γ : Subgroup G} [DiscreteTopology Γ] {f : G → ℂ} (hf : HasCompactSupport f) (z : G)
     [TopologicalSpace X] [WeaklyLocallyCompactSpace X] {φ : X → G} (hφ : Continuous φ) (x₀ : X) :
@@ -25,6 +30,9 @@ lemma loc_fin {G X : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   rw [Set.Finite.mem_toFinset]
   exact ⟨z⁻¹, rfl, φ x, ⟨x, hx, rfl⟩, by simpa using h⟩
 
+/- English proof (translation)
+The claim follows from `| 0, γ, _ => by simpa using continuous_const | k + 1, γ, h => by simp only [List.ofFn_succ, List.prod_cons] exact ((h 0).comp (continuous_apply 0)).mul ((cont_prod k (fun i => γ i.succ) (fun i => h i.succ)).comp (continuous_pi fun i => continuous_apply i.succ))`.
+-/
 lemma cont_prod {G : Type} [Monoid G] [TopologicalSpace G] [ContinuousMul G] :
     ∀ (k : ℕ) (γ : Fin k → ℝ → G), (∀ i, Continuous (γ i)) →
       Continuous fun t : Fin k → ℝ => (List.ofFn fun i => γ i (t i)).prod
@@ -40,6 +48,23 @@ end MainStatements.WeightKernel.Dec.DSumSm
 namespace MainStatements.WeightKernel.Dec
 
 open DSumSm in
+/- English proof (translation)
+Introduce `hSm F E _ _ _ _ _ σ h n J hJ Γ hΓ f hf z`. Establish `: DiscreteTopology Γ` using `DiscreteTopology.of_subset (t := (Γ : Set (GAd σ J))) (s := (ratPts σ J : Set (GAd σ J))) (inferInstance : DiscreteTopology (ratPts σ J)) hΓ`. Establish `hs : GlobalTheory.UAut.IsSm σ J f` using `hSm F E σ h n J hJ f hf`. Establish `hcs : HasCompactSupport f` using `(continuous_of_mem_ccAd hf).2`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `k γ hγ g`. Rewrite using `[contDiff_iff_contDiffAt]`. Introduce `t₀`. Establish `hφ : Continuous fun t : Fin k → ℝ => g * (List.ofFn fun i => γ i (t i)).prod` using `continuous_const.mul (cont_prod k γ fun i => GlobalTheory.RealLineCont.continuous_of_isRealLine F E σ h n J (γ i) (hγ i))`. Take `⟨S, hS⟩` from `loc_fin (Γ := Γ) hcs z hφ t₀`.
+
+Establish `hsum : ContDiffAt ℝ ∞ (fun t : Fin k → ℝ => ∑ ν ∈ S, f (z * ν * (g * (List.ofFn fun i => γ i (t i)).prod))) t₀`. Use `ContDiff.contDiffAt (ContDiff.sum fun ν _ => ?_)` and prove the remaining obligations. Use `hs k γ hγ (z * ν * g)` as an intermediate fact. Simplify `this` using `only [mul_assoc]`. Use `hsum.congr_of_eventuallyEq (hS.mono fun t ht => ?_)` and prove the remaining obligations.
+
+Conclude with `tsum_eq_sum (s := S) (fun ν hν => ht ν hν)`. Introduce `b hb`. Use function extensionality and compare the values at `g`. Establish `hbc` using `GlobalTheory.RealLineCont.continuous_of_isRealLine F E σ h n J b hb`. Take `⟨S, hS⟩` from `loc_fin (Γ := Γ) (φ := fun t : ℝ => g * b t) hcs z (continuous_const.mul hbc) 0`.
+
+Establish `hline : ∀ x : GAd σ J, ContDiff ℝ ∞ fun t : ℝ => f (x * b t)`. Introduce `x`. Use `(hs 1 (fun _ => b) (fun _ => hb) x).comp (contDiff_pi.2 fun _ => contDiff_id : ContDiff ℝ ∞ fun t : ℝ => fun _ : Fin 1 => t)` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Simplify using `[List.ofFn_succ]`.
+
+Establish `e1 : (fun t => nsum Γ f z (g * b t)) =ᶠ[𝓝 0] fun t => ∑ ν ∈ S, f (z * ν * (g * b t))` using `hS.mono fun t ht => tsum_eq_sum (s := S) (fun ν hν => ht ν hν)`. Establish `e2 : ∀ ν ∉ S, lineDer b f (z * ν * g) = 0`. Introduce `ν hν`. Use `show deriv (fun t => f (z * ν * g * b t)) 0 = 0`. Establish `: (fun t => f (z * ν * g * b t)) =ᶠ[𝓝 0] fun _ => (0 : ℂ)` using `hS.mono fun t ht => by simpa only [mul_assoc] using ht ν hν`.
+
+Rewrite using `[this.deriv_eq, deriv_const]`. Use `show deriv (fun t => nsum Γ f z (g * b t)) 0 = ∑' ν : Γ, lineDer b f (z * ν * g)`. Rewrite using `[e1.deriv_eq, tsum_eq_sum (s := S) e2, deriv_fun_sum]`. Use `Finset.sum_congr rfl fun ν _ => ?_ show _ = deriv (fun t => f (z * ν * g * b t)) 0` and prove the remaining obligations. Simplify using `only [mul_assoc]`.
+
+Introduce `ν _`. Use `((hline (z * ν * g)).differentiable (by simp)) 0` as an intermediate fact. Simplify `this` using `only [mul_assoc]`.
+-/
 theorem sumSm : SmOf → SumSm := by
   intro hSm F E _ _ _ _ _ σ h n J hJ Γ hΓ f hf z
   have : DiscreteTopology Γ :=

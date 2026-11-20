@@ -16,12 +16,30 @@ open scoped Matrix ComplexOrder
 
 namespace GlobalTheory.ExtremalNorm
 
+/- English proof (translation)
+Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Finset.sum_apply, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `[Formalism.GradedWeylDivisibility.colW, Pi.single_apply]`.
+-/
 theorem weight_colW_apply {r n : ℕ} (mo : Fin r × Fin n →₀ ℕ) (t : Fin n) :
     Finsupp.weight (Formalism.GradedWeylDivisibility.colW r n) mo t = ∑ a, mo (a, t) := by
   rw [Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Finset.sum_apply, Fintype.sum_prod_type]
   refine Finset.sum_congr rfl fun a _ => ?_
   simp [Formalism.GradedWeylDivisibility.colW, Pi.single_apply]
 
+/- English proof (translation)
+Introduce `n lam R hR`. Establish `hanti` using `Formalism.L2.DIV.natW_antitone lam`. Use `set f : MvPolynomial (Fin n × Fin n) ℤ := extremal ℤ n lam with hf`. Establish `hmem : IsWeightedHomogeneous (Formalism.GradedWeylDivisibility.colW n n) f lam.natW` using `(Formalism.GradedWeylDivisibility.hwMem ℤ n n le_rfl _ hanti).1`. Establish `hne : f ≠ 0` using `Formalism.GradedWeylDivisibility.hwNe ℤ n n le_rfl _`.
+
+Establish `hl1 : ∑ mo ∈ f.support, (coeff mo f).natAbs ≤ (n.factorial) ^ R` using `GlobalTheory.IntMvPolynomialCoeffAbsSum.highestWeightVector_coeff_natAbs_sum_le_factorial_pow n lam.natW R hanti hR`. Use `⟨∑ mo ∈ f.support, (coeff mo f).natAbs ^ 2 * mfact mo, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `Finset.sum_pos (fun mo hmo => ?_) (support_nonempty.mpr hne)` and prove the remaining obligations. Establish `h1 : 0 < (coeff mo f).natAbs` using `Int.natAbs_pos.mpr (mem_support_iff.mp hmo)`. Establish `h2 : 0 < mfact mo` using `Finset.prod_pos fun k _ => Nat.factorial_pos _`.
+
+Check the signs of the components of the expression. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun mo hmo => ?_` and prove the remaining obligations. Establish `h1 : (coeff mo f).natAbs ≤ n.factorial ^ R` using `(Finset.single_le_sum (f := fun mo => (coeff mo f).natAbs) (fun _ _ => Nat.zero_le _) hmo).trans hl1`. Establish `h2 : mfact mo ≤ R.factorial ^ n`.
+
+Use `GlobalTheory.TestLat.mfact_le_factorial_pow n lam.natW R hR mo fun t => ?_` and prove the remaining obligations. Rewrite using `[← weight_colW_apply, hmem (mem_support_iff.mp hmo)]`. Rewrite using `[pow_two, mul_assoc]`. Conclude with `Nat.mul_le_mul_left _ (Nat.mul_le_mul h1 h2)`. Use `_ ≤ n.factorial ^ R * (n.factorial ^ R * R.factorial ^ n) := by`.
+
+Rewrite using `[← Finset.sum_mul]`. Conclude with `Nat.mul_le_mul_right _ hl1`. Use `_ = _ := by rw [two_mul, pow_add, mul_assoc]`. Introduce `K _ _ _`. Establish `hinj : Function.Injective (Int.castRingHom K)` using `Int.cast_injective`.
+
+Rewrite using `[← Formalism.L2.DIV.map_extremal (Int.castRingHom K) n lam, ← hf]`. Unfold `fockS`. Rewrite using `[support_map_of_injective _ hinj, Nat.cast_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Establish `h : (((coeff m f).natAbs ^ 2 : ℕ) : K) = ((coeff m f : ℤ) : K) * ((coeff m f : ℤ) : K)`.
+
+Rewrite using `[← Int.cast_natCast, Nat.cast_pow, Int.natAbs_sq, pow_two, Int.cast_mul]`. Rewrite using `[Nat.cast_mul, h]`. Simplify using `only [coeff_map, eq_intCast, star_intCast]`.
+-/
 theorem fockS_extremal_eq_nat : ∀ (n : ℕ) (lam : DomWeight n) (R : ℕ), (∀ i, lam.natW i ≤ R) → ∃ s : ℕ, 0 < s ∧ s ≤ (n.factorial) ^ (2 * R) * (R.factorial) ^ n ∧ ∀ (K : Type) [Field K] [StarRing K] [CharZero K], fockS (extremal K n lam) (extremal K n lam) = (s : K) := by
   intro n lam R hR
   have hanti := Formalism.L2.DIV.natW_antitone lam

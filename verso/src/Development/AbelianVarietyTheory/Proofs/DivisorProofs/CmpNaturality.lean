@@ -22,15 +22,26 @@ def cmp (g' : T ⟶ Y) (π : Y ⟶ B) {g : T ⟶ B} (w : g' ≫ π = g) :
     Scheme.Modules.pullback π ⋙ Scheme.Modules.pullback g' ≅ Scheme.Modules.pullback g :=
   Scheme.Modules.pullbackComp g' π ≪≫ Scheme.Modules.pullbackCongr w
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cmp_hom_app (g' : T ⟶ Y) (π : Y ⟶ B) {g : T ⟶ B} (w : g' ≫ π = g) (E : B.Modules) :
     (cmp g' π w).hom.app E =
       (Scheme.Modules.pullbackComp g' π).hom.app E ≫ (Scheme.Modules.pullbackCongr w).hom.app E := rfl
 
+/- English proof (translation)
+The claim follows from `(cmp g' π w).hom.naturality u`.
+-/
 @[reassoc] theorem cmp_naturality (g' : T ⟶ Y) (π : Y ⟶ B) {g : T ⟶ B} (w : g' ≫ π = g) {E F : B.Modules} (u : E ⟶ F) :
     (Scheme.Modules.pullback g').map ((Scheme.Modules.pullback π).map u) ≫ (cmp g' π w).hom.app F =
       (cmp g' π w).hom.app E ≫ (Scheme.Modules.pullback g).map u :=
   (cmp g' π w).hom.naturality u
 
+/- English proof (translation)
+Substitute `w w₂ w₁` using the available equality. Use `NatTrans.congr_app (Scheme.Modules.pseudofunctor_associativity h g' π) E` as an intermediate fact. Simplify using `[cmp, Scheme.Modules.pullbackCongr] at this ⊢`. Rewrite using `[← cancel_epi ((Scheme.Modules.pullbackComp h (g' ≫ π)).inv.app E ≫ (Scheme.Modules.pullback h).map ((Scheme.Modules.pullbackComp g' π).inv.app E))]`. Simplify using `only [Category.assoc, reassoc_of% this, eqToHom_trans, eqToHom_refl]`.
+
+Simplify using `[← Functor.map_comp_assoc]`.
+-/
 @[reassoc] theorem cmp_assoc (h : S ⟶ T) (g' : T ⟶ Y) (π : Y ⟶ B) {g : T ⟶ B} (w : g' ≫ π = g) {k : S ⟶ B}
     (w₂ : h ≫ g = k) {h' : S ⟶ Y} (w₁ : h ≫ g' = h') (w₃ : h' ≫ π = k) (E : B.Modules) :
     (Scheme.Modules.pullback h).map ((cmp g' π w).hom.app E) ≫ (cmp h g w₂).hom.app E =
@@ -48,6 +59,9 @@ def IsLineQuot (π : Y ⟶ B) (E : B.Modules) {Q : Y.Modules} (p : (Scheme.Modul
     IsVB Q' 1 → Epi p' → ∃! g' : T ⟶ Y, ∃ (w : g' ≫ π = g) (e : (Scheme.Modules.pullback g').obj Q ⟶ Q'),
       (Scheme.Modules.pullback g').map p ≫ e = (cmp g' π w).hom.app E ≫ p'
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hE.pullback _, inferInstance, fun _ g _ p' _ _ => ⟨g, ⟨Category.comp_id g, (cmp g (𝟙 B) (Category.comp_id g)).hom.app E ≫ p', by simp⟩, fun _ ⟨w, _⟩ => (Category.comp_id _).symm.trans w⟩⟩`.
+-/
 theorem isLineQuot_id {E : B.Modules} (hE : IsVB E 1) : IsLineQuot (𝟙 B) E (𝟙 _) :=
   ⟨hE.pullback _, inferInstance, fun _ g _ p' _ _ =>
     ⟨g, ⟨Category.comp_id g, (cmp g (𝟙 B) (Category.comp_id g)).hom.app E ≫ p', by simp⟩,

@@ -17,17 +17,29 @@ section Ring
 
 variable {B Q : Type} [CommRing B] [CommRing Q] [Algebra B Q] {σ : Type}
 
+/- English proof (translation)
+Introduce `_` and use `⟨0, trivial, by simp⟩`.
+-/
 theorem in_zero : In (⊤ : Ideal B) (0 : MvPowerSeries σ Q) :=
   fun _ => ⟨0, trivial, by simp⟩
 
+/- English proof (translation)
+Simplify using `using KLift.in_sub in_zero hf`.
+-/
 theorem in_neg {f : MvPowerSeries σ Q} (hf : In (⊤ : Ideal B) f) : In (⊤ : Ideal B) (-f) := by
   simpa using KLift.in_sub in_zero hf
 
+/- English proof (translation)
+Introduce `α` and use `by obtain ⟨b, -, hb⟩ := hf α exact ⟨r * b, trivial, by rw [coeff_smul, hb, map_mul]⟩`.
+-/
 theorem in_smul (r : B) {f : MvPowerSeries σ Q} (hf : In (⊤ : Ideal B) f) :
     In (⊤ : Ideal B) (algebraMap B Q r • f) := fun α => by
   obtain ⟨b, -, hb⟩ := hf α
   exact ⟨r * b, trivial, by rw [coeff_smul, hb, map_mul]⟩
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (in_zero : In (⊤ : Ideal B) (0 : MvPowerSeries σ Q))`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha]`. Conclude with `KLift.in_add (hf a) ih`.
+-/
 theorem in_sum {ι : Type} (s : Finset ι) (f : ι → MvPowerSeries σ Q)
     (hf : ∀ i, In (⊤ : Ideal B) (f i)) : In (⊤ : Ideal B) (∑ i ∈ s, f i) := by
   classical
@@ -37,21 +49,35 @@ theorem in_sum {ι : Type} (s : Finset ι) (f : ι → MvPowerSeries σ Q)
 
 variable {ι κ : Type} [Fintype ι] [Fintype κ]
 
+/- English proof (translation)
+Simplify using `only [comb, ← Finset.sum_sub_distrib, Pi.sub_apply, map_sub, sub_smul]`.
+-/
 theorem comb_sub (x y : ι → B) (e : ι → MvPowerSeries σ Q) :
     comb x e - comb y e = comb (x - y) e := by
   simp only [comb, ← Finset.sum_sub_distrib, Pi.sub_apply, map_sub, sub_smul]
 
+/- English proof (translation)
+Rewrite using `[comb, Finset.sum_eq_single l (fun j _ hj => by simp [Pi.single_apply, hj]) (fun h => absurd (Finset.mem_univ l) h)]`. Simplify using the standard rewrite rules.
+-/
 theorem comb_single [DecidableEq ι] (l : ι) (e : ι → MvPowerSeries σ Q) :
     comb (Pi.single l (1 : B)) e = e l := by
   rw [comb, Finset.sum_eq_single l (fun j _ hj => by simp [Pi.single_apply, hj])
     (fun h => absurd (Finset.mem_univ l) h)]
   simp
 
+/- English proof (translation)
+Simplify using `only [comb, Finset.smul_sum, smul_smul, ← map_mul, map_sum, Finset.sum_smul]`. Conclude with `Finset.sum_comm`.
+-/
 theorem comb_comb (M : κ → B) (N : κ → ι → B) (e : ι → MvPowerSeries σ Q) :
     ∑ m, algebraMap B Q (M m) • comb (N m) e = comb (fun l => ∑ m, M m * N m l) e := by
   simp only [comb, Finset.smul_sum, smul_smul, ← map_mul, map_sum, Finset.sum_smul]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Use `(he.2 (e l) (he.1 l)).unique ?_ ?_` and prove the remaining obligations. Establish `hs : e l - comb (fun l' => ∑ m, M l m * N m l') e = (e l - comb (M l) f) + ∑ m, algebraMap B Q (M l m) • (f m - comb (N m) e)`. Simplify using `only [smul_sub, Finset.sum_sub_distrib, comb_comb]`. Simplify using `only [comb]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[hs]`. Conclude with `KLift.in_add (hM l) (in_sum _ _ fun m => in_smul _ (hN m))`. Rewrite using `[comb_single, sub_self]`. Conclude with `in_zero`.
+-/
 theorem mul_eq_single [DecidableEq ι] {d : ℕ} {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) B}
     {e : ι → MvPowerSeries (Fin d) Q} {f : κ → MvPowerSeries (Fin d) Q} (he : IsBasis μ e)
     (M : ι → κ → B) (N : κ → ι → B) (hM : ∀ l, In (⊤ : Ideal B) (e l - comb (M l) f))
@@ -75,16 +101,25 @@ variable {B O Q C : Type} [CommRing B] [CommRing O] [CommRing Q] [CommRing C] [A
   (hΘ : ∀ b, Θ (algebraMap B Q b) = algebraMap O C (θ b))
 
 include hΘ in
+/- English proof (translation)
+Introduce `α` and use `by obtain ⟨b, -, hb⟩ := hf α exact ⟨θ b, trivial, by rw [coeff_map, hb, hΘ]⟩`.
+-/
 theorem in_map {f : MvPowerSeries σ Q} (hf : In (⊤ : Ideal B) f) :
     In (⊤ : Ideal O) (map Θ f) := fun α => by
   obtain ⟨b, -, hb⟩ := hf α
   exact ⟨θ b, trivial, by rw [coeff_map, hb, hΘ]⟩
 
+/- English proof (translation)
+Use extensionality with `α`. Simplify using `[coeff_map, coeff_smul]`.
+-/
 theorem map_smul_series (c : Q) (f : MvPowerSeries σ Q) : map Θ (c • f) = Θ c • map Θ f := by
   ext α
   simp [coeff_map, coeff_smul]
 
 include hΘ in
+/- English proof (translation)
+Simplify using `only [comb, map_sum, map_smul_series, hΘ]`.
+-/
 theorem map_comb {ι : Type} [Fintype ι] (b : ι → B) (e : ι → MvPowerSeries σ Q) :
     map Θ (comb b e) = comb (fun i => θ (b i)) (fun i => map Θ (e i)) := by
   simp only [comb, map_sum, map_smul_series, hΘ]
@@ -95,6 +130,39 @@ end GlobalTheory.ReduceBasis
 
 namespace GlobalTheory.ReduceBasis
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ _ _ _ hv ε hε F G d c μ' hL hμ k e he Θ hΘ`. Establish `hC : IsFrame p C (RingHom.id O)` using `GlobalTheory.FrameIntegers.isFrame_integers p C v O hv`. Establish `hcμ : (fun i => map F.θ (μ' i)) = c.μ` using `funext hμ`. Establish `hμQ : ∀ i, constantCoeff (up F.Q μ' i) = 0` using `KLift.const_map _ μ' hL.const`. Establish `hμC : ∀ i, constantCoeff (up C c.μ i) = 0` using `KLift.const_map _ _ c.isLaw.const`.
+
+Establish `hΘμ : (fun i => map Θ (up F.Q μ' i)) = up C c.μ`. Establish `hc : Θ.comp (algebraMap F.B F.Q) = (algebraMap O C).comp F.θ` using `RingHom.ext hΘ`. Use function extensionality and compare the values at `i`. Unfold `up`. Rewrite using `[← hμ i, ← RingHom.comp_apply (map Θ), ← map_comp, ← RingHom.comp_apply (map (algebraMap O C)), ← map_comp, hc]`.
+
+Establish `hQL : ∀ f, QL μ' ⊤ f → QL c.μ ⊤ (map Θ f)`. Introduce and unpack `f ⟨h0, h1, h2⟩`. Use `⟨?_, fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_map, coeff_zero_eq_constantCoeff_apply, h0, map_zero]`. Take `⟨b, -, hb⟩` from `h1 i`.
+
+Use `⟨F.θ b, trivial, ?_⟩` and prove the remaining obligations. Simplify using `only [lin, coeff_map] at hb ⊢`. Rewrite using `[hb, hΘ]`. Rewrite using `[← hΘμ, ← KLift.map_formalGroupLawCoboundaryOne_eq Θ _ hμQ]`. Conclude with `in_map hΘ h2`.
+
+Establish `hlift : ∀ g, QL c.μ ⊤ g → ∃ f, QL μ' ⊤ f ∧ map Θ f = g`. Introduce `g hg`. Use `choose o _ ho using hg.2.1`. Use `choose w hw using fun i => F.frame.surj (o i)`. Take `⟨f, hf, hfg, -⟩` from `KLift.lift_quasiLog p F.B O F.Q F.θ F.frame d μ' hL C hC Θ hΘ g w (by rw [hcμ]; exact hg) (fun i => by rw [ho, hw])`.
+
+Conclude with `⟨f, hf, hfg⟩`. Establish `key : ∀ x : Fin d ⊕ Fin k → O, In (⊤ : Ideal O) (comb x fun l => map Θ (e l)) → x = 0`. Introduce `x hx`. Take `⟨k0, e0, -, he0, -⟩` from `GlobalTheory.T.exists_adapted_quasiLog_basis_pDivGroup_lieDual p C v O hv G d c C hC`. Use `choose f hf hfe using fun m => hlift (e0 m) (he0.1 m)`.
+
+Establish `hfB : IsBasis μ' f` using `GlobalTheory.basis_lift p F.B O F.Q F.θ F.frame d μ' hL C hC Θ hΘ _ f hf (by rw [hcμ]; simpa only [hfe] using he0) (GlobalTheory.BChain.reflTransGen_isStep p C v O hv ε hε F)`. Use `choose M hM _ using fun l => hfB.2 (e l) (he.1 l)`. Use `choose N hN _ using fun m => he.2 (f m) (hf m)`. Establish `hMN` using `mul_eq_single he M N hM hN`. Use `set y : Fin d ⊕ Fin k0 → O := fun m => ∑ l, x l * F.θ (M l m) with hydef`.
+
+Establish `hy : In (⊤ : Ideal O) (comb y e0)`. Establish `hs : comb y e0 = comb x (fun l => map Θ (e l)) - ∑ l, algebraMap O C (x l) • map Θ (e l - comb (M l) f)`. Simplify using `only [map_sub, map_comb hΘ, hfe, smul_sub, Finset.sum_sub_distrib, comb_comb, hydef]`. Simplify using `only [comb]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[hs]`. Conclude with `KLift.in_sub hx (in_sum _ _ fun l => in_smul _ (in_map hΘ (hM l)))`. Establish `h0 : QL c.μ ⊤ (0 : MvPowerSeries (Fin d) C)`. Use `⟨by simp, fun i => ⟨0, trivial, by simp [lin]⟩, ?_⟩` and prove the remaining obligations. Establish `: cob1 (up C c.μ) (0 : MvPowerSeries (Fin d) C) = 0`.
+
+Simplify using `using formalCoboundary_smul hμC (0 : C) (0 : MvPowerSeries (Fin d) C)`. Rewrite using `[this]`. Conclude with `in_zero`. Establish `hy0 : y = 0`. Use `(he0.2 0 h0).unique ?_ ?_` and prove the remaining obligations.
+
+Simplify using `using in_neg hy`. Establish `: comb (0 : Fin d ⊕ Fin k0 → O) e0 = 0` using `by simp [comb]`. Rewrite using `[this, sub_zero]`. Conclude with `in_zero`. Use function extensionality and compare the values at `l'`.
+
+Establish `e1 : ∀ l, F.θ (∑ m, M l m * N m l') = if l' = l then 1 else 0` using `fun l => by`. Establish `h1` using `congrFun (hMN l) l'`. Rewrite using `[h1, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `s1 : x l' = ∑ l, x l * F.θ (∑ m, M l m * N m l')`.
+
+Simplify using `only [e1, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Establish `s2 : ∑ l, x l * F.θ (∑ m, M l m * N m l') = ∑ m, y m * F.θ (N m l')`. Simplify using `only [hydef, map_sum, map_mul, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun l _ => by ring`.
+
+Rewrite using `[s1, s2, hy0]`. Simplify using the standard rewrite rules. Use `⟨fun l => hQL _ (he.1 l), fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨f, hf, hfg⟩` from `hlift g hg`. Take `⟨b, hb, -⟩` from `he.2 f hf`.
+
+Establish `hx0 : In (⊤ : Ideal O) (g - comb (fun l => F.θ (b l)) fun l => map Θ (e l))`. Use `in_map hΘ hb` as an intermediate fact. Rewrite `this` using `[map_sub, hfg, map_comb hΘ]`. Then use the resulting hypothesis. Use `⟨fun l => F.θ (b l), hx0, fun y hy => ?_⟩` and prove the remaining obligations. Establish `h` using `key ((fun l => F.θ (b l)) - y) (by`.
+
+Rewrite using `[← comb_sub]`. Use `KLift.in_sub hy hx0 using 1` and compare the differences between its conclusion and the goal. Use the proof step `abel)`. Conclude with `(sub_eq_zero.1 h).symm`.
+-/
 theorem isBasis_map : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), ∀ F : BFrame ε, ∀ (G : PDivGroup p O) (d : ℕ) (c : QLog.Chart G d) (μ' : Fin d → MvPowerSeries (Fin d ⊕ Fin d) F.B), IsLift F.θ μ' → (∀ i, map F.θ (μ' i) = c.μ i) → ∀ (k : ℕ) (e : Fin d ⊕ Fin k → MvPowerSeries (Fin d) F.Q), IsBasis μ' e → ∀ Θ : F.Q →+* C, (∀ b, Θ (algebraMap F.B F.Q b) = algebraMap O C (F.θ b)) → IsBasis c.μ (fun l => map Θ (e l)) := by
   intro p _ C _ _ _ v O _ _ _ _ _ hv ε hε F G d c μ' hL hμ k e he Θ hΘ
   classical

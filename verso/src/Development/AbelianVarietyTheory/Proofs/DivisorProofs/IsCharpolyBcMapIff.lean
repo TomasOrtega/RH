@@ -21,6 +21,11 @@ def bcAdd (A : AbVar K) : End A →+ End (baseChange L A) where
     simpa using h
   map_add' := (bcMap_functorial K L A A A).1
 
+/- English proof (translation)
+Establish `h1 : bcMap L (𝟙 A) = 𝟙 _` using `(bcMap_functorial K L A A A).2.2.1`. Establish `e : ∀ g : End A, bcMap L g = bcAdd L A g` using `fun _ => rfl`. Rewrite using `[e, map_sub, ← zsmul_one, map_zsmul, ← e, ← e]`. Use `congr 1`. Rewrite using `[← zsmul_one]`.
+
+Use `congr 1`.
+-/
 theorem bcMap_intCast_sub (A : AbVar K) (n : ℤ) (f : End A) :
     bcMap L ((n : End A) - f) = @HSub.hSub (End (baseChange L A)) (End (baseChange L A)) (End (baseChange L A)) _
       (n : End (baseChange L A)) (bcMap L f) := by
@@ -31,6 +36,9 @@ theorem bcMap_intCast_sub (A : AbVar K) (n : ℤ) (f : End A) :
   rw [← zsmul_one]
   congr 1
 
+/- English proof (translation)
+Unfold `IsCharpoly`. Establish `hd : (baseChange L A).dim = A.dim` using `rfl`. Use `and_congr Iff.rfl (and_congr (by rw [hd]) (forall_congr' fun n => ?_))` and prove the remaining obligations. Rewrite using `[← bcMap_intCast_sub, (isIsogeny_bcMap_iff_and_deg_bcMap K L A A _).2]`.
+-/
 theorem isCharpoly_bcMap_iff (A : AbVar K) (f : End A) (P : Polynomial ℤ) :
     IsCharpoly (A := baseChange L A) (bcMap L f) P ↔ IsCharpoly f P := by
   unfold IsCharpoly
@@ -38,10 +46,18 @@ theorem isCharpoly_bcMap_iff (A : AbVar K) (f : End A) (P : Polynomial ℤ) :
   refine and_congr Iff.rfl (and_congr (by rw [hd]) (forall_congr' fun n => ?_))
   rw [← bcMap_intCast_sub, (isIsogeny_bcMap_iff_and_deg_bcMap K L A A _).2]
 
+/- English proof (translation)
+The claim follows from `Polynomial.funext fun n => by rw [hP.2.2 n, hQ.2.2 n]`.
+-/
 theorem isCharpoly_unique {A : AbVar K} (f : End A) {P Q : Polynomial ℤ}
     (hP : IsCharpoly f P) (hQ : IsCharpoly f Q) : P = Q :=
   Polynomial.funext fun n => by rw [hP.2.2 n, hQ.2.2 n]
 
+/- English proof (translation)
+Introduce `K _ L _ _ A f`. Unfold `charpoly`. Distinguish the cases in `h : ∃ P, IsCharpoly f P`. Establish `h' : ∃ P, IsCharpoly (A` using `baseChange L A) (bcMap L f) P :=`. Set `⟨P, hP⟩` to `h`.
+
+Use the proof step `⟨P, (isCharpoly_bcMap_iff L A f P).2 hP⟩`. Rewrite using `[dif_pos h, dif_pos h']`. Conclude with `isCharpoly_unique f ((isCharpoly_bcMap_iff L A f _).1 h'.choose_spec) h.choose_spec`. Establish `h' : ¬ ∃ P, IsCharpoly (A` using `baseChange L A) (bcMap L f) P := fun ⟨P, hP⟩ => h ⟨P, (isCharpoly_bcMap_iff L A f P).1 hP⟩`. Rewrite using `[dif_neg h, dif_neg h']`.
+-/
 theorem charpoly_bcMap : ∀ (K : Type) [Field K] (L : Type) [Field L] [Algebra K L] (A : AbVar K) (f : End A),
     charpoly (A := baseChange L A) (bcMap L (A := A) (B := A) f) = charpoly f := by
   intro K _ L _ _ A f

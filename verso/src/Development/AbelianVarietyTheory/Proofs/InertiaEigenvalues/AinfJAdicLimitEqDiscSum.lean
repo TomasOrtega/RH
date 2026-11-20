@@ -7,6 +7,21 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 open scoped Formalism.Per NNReal
 open Matrix
 
+/- English proof (translation)
+Introduce `l hl K bk ι tb w z t hsum hJ`. Establish `hρ : 0 < bk.ρ₀ ∧ bk.ρ₀ < 1`. Establish `hl1 : (1 : ℝ≥0) < (l : ℝ≥0)` using `by exact_mod_cast hl.out.one_lt`. Establish `he : (0 : ℝ) < 1 / (bk.Ep.natDegree : ℝ)` using `one_div_pos.2 (Nat.cast_pos.2 bk.deg_pos)`. Conclude with `⟨NNReal.rpow_pos (zero_lt_one.trans hl1), NNReal.rpow_lt_one_of_one_lt_of_neg hl1 (neg_neg_of_pos he)⟩`.
+
+Establish `hinj : Function.Injective (toDisc l (bk.ev X) bk.ρ₀)` using `(GlobalTheory.T.toDisc_injective_and_nonZeroDivisors_of_topBasis l K bk (Ainf l) bk.ev ι tb).1`. Establish `hiA : bk.iA = toDisc l (bk.ev X) bk.ρ₀` using `rfl`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[← hiA]`. Establish `key : ∀ ε : ℝ, 0 < ε → ‖bk.iA z - bk.iA t‖ ≤ 2 * ε`.
+
+Introduce `ε hε`. Take `⟨n, hn⟩` from `GlobalTheory.BSP.norm_toDisc_J_pow_small l K bk (Ainf l) bk.ev bk.ρ₀ hρ.1 hρ.2 ε hε`. Take `⟨F, hF⟩` from `hJ n`. Establish `hev : ∀ᶠ G in Filter.atTop, ‖∑ i ∈ G, bk.iA (w i) - bk.iA t‖ < ε`. Use `(hsum : Filter.Tendsto _ _ _)` as an intermediate fact.
+
+Establish `h2` using `Metric.tendsto_nhds.1 this ε hε`. Use `filter_upwards [h2] with G hG`. Simplify `hG` using `[dist_eq_norm]`. Take `⟨G₀, hG₀⟩` from `Filter.eventually_atTop.1 hev`. Use `set G := F ∪ G₀`.
+
+Establish `h1 : ‖bk.iA (z - ∑ i ∈ G, w i)‖ ≤ ε` using `hn _ (hF G Finset.subset_union_left)`. Establish `h2 : ‖∑ i ∈ G, bk.iA (w i) - bk.iA t‖ < ε` using `hG₀ G Finset.subset_union_right`. Establish `hsplit : bk.iA z - bk.iA t = bk.iA (z - ∑ i ∈ G, w i) + (∑ i ∈ G, bk.iA (w i) - bk.iA t)`. Rewrite using `[map_sub, map_sum]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[hsplit]`. Combine the equalities or inequalities in the displayed calculation. Establish `h0 : ‖bk.iA z - bk.iA t‖ = 0`. Use `le_antisymm ?_ (norm_nonneg _)` and prove the remaining obligations. Use `le_of_forall_pos_le_add fun ε hε => ?_` and prove the remaining obligations.
+
+Use `key (ε / 2) (by positivity)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `sub_eq_zero.1 (norm_eq_zero.1 h0)`.
+-/
 theorem GlobalTheory.BSP.eq_of_hasSum_toDisc_of_J_adic : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (ι : Type),
     TopBasis bk.ev bk.J ι → ∀ (w : ι → Ainf l) (z t : Ainf l), HasSum (fun i => bk.iA (w i)) (bk.iA t) →
     (∀ n : ℕ, ∃ F : Finset ι, ∀ G : Finset ι, F ⊆ G → z - ∑ i ∈ G, w i ∈ (bk.J ^ n).map bk.ev) → z = t := by

@@ -31,6 +31,9 @@ def fsEval {U : Type} [CommGroup U] (h : (T₀.left ⟶ D₁.P.A.left ⨿ D₂.P
   (FreeAbelianGroup.lift (fun q : T₀ ⟶ D₁.P.A => Additive.ofMul (h (q.left ≫ coprod.inl))) s.1 +
     FreeAbelianGroup.lift (fun q : T₀ ⟶ D₂.P.A => Additive.ofMul (h (q.left ≫ coprod.inr))) s.2).toMul
 
+/- English proof (translation)
+Simplify using `only [fsEval, Prod.fst_add, Prod.snd_add, map_add]`. Rewrite using `[add_add_add_comm]`. Both sides reduce to the same expression.
+-/
 theorem fsEval_add {U : Type} [CommGroup U] (h : (T₀.left ⟶ D₁.P.A.left ⨿ D₂.P.A.left) → U)
     (s s' : FreeAbelianGroup (T₀ ⟶ D₁.P.A) × FreeAbelianGroup (T₀ ⟶ D₂.P.A)) :
     fsEval h (s + s') = fsEval h s * fsEval h s' := by
@@ -44,11 +47,17 @@ def JRep (s : FreeAbelianGroup (T₀ ⟶ D₁.P.A) × FreeAbelianGroup (T₀ ⟶
     (∀ (U : Type) [CommGroup U] (h : (T₀.left ⟶ D₁.P.A.left ⨿ D₂.P.A.left) → U), ∏ k, h (φ k) ^ ε k = fsEval h s) ∧
     ∀ T (ρ : T ⟶ T₀) z J, Good (JN D₁ D₂) z J → val t ρ.left z J = v T ρ z J
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨PEmpty, inferInstance, PEmpty.elim, PEmpty.elim, LB.oneGen (JN D₁ D₂), fun i j => (map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)).symm, fun U _ h => by simp [fsEval], fun _ _ _ _ _ => val_one _⟩`.
+-/
 theorem JRep.one : JRep (D₁ := D₁) (D₂ := D₂) (T₀ := T₀) 0 fun _ _ _ _ => 1 :=
   ⟨PEmpty, inferInstance, PEmpty.elim, PEmpty.elim, LB.oneGen (JN D₁ D₂),
     fun i j => (map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)).symm,
     fun U _ h => by simp [fsEval], fun _ _ _ _ _ => val_one _⟩
 
+/- English proof (translation)
+Take `⟨K, _, φ, ε, t, ht, f, e⟩` from `h`. Take `⟨K', _, φ', ε', t', ht', f', e'⟩` from `h'`. Use `⟨K ⊕ K', inferInstance, _, _, LB.mulGen (JN D₁ D₂) _ _ _ _ t t', mulGen_isGen _ _ _ _ _ _ _ ht ht', fun U _ h => ?_, fun T ρ z J hJ => (val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (e T ρ z J hJ) (e' T ρ z J hJ))⟩` and prove the remaining obligations. Rewrite using `[fsEval_add]`. Conclude with `prod_sum₂ (K := K) (K' := K') (U := U) _ (f U h) (f' U h)`.
+-/
 theorem JRep.mul {s s'} {v v' : JVals D₁ D₂ T₀} (h : JRep s v) (h' : JRep s' v') :
     JRep (s + s') fun T ρ z J => v T ρ z J * v' T ρ z J := by
   obtain ⟨K, _, φ, ε, t, ht, f, e⟩ := h
@@ -58,6 +67,9 @@ theorem JRep.mul {s s'} {v v' : JVals D₁ D₂ T₀} (h : JRep s v) (h' : JRep 
   rw [fsEval_add]
   exact prod_sum₂ (K := K) (K' := K') (U := U) _ (f U h) (f' U h)
 
+/- English proof (translation)
+Take `⟨K, _, φ, ε, t, ht, f, c⟩` from `h`. Take `⟨K', _, φ', ε', t', ht', f', c'⟩` from `h'`. Substitute `hF` using the available equality. Conclude with `(c T ρ z J hJ).symm.trans ((gen_unique' (jn_isLB D₁ D₂) (fun U _ h => (f' U h).trans (f U h).symm) T₀.hom e.left (Over.w e) hs ht ht' (fun y I hI => (c _ e y I hI).trans ((h₀ y I hI).trans (c' _ e y I hI).symm)) _ ρ.left z J hJ).trans (c' T ρ z J hJ))`.
+-/
 theorem JRep.unique {s s'} {v v' : JVals D₁ D₂ T₀} (h : JRep s v) (h' : JRep s' v')
     (hs : Function.Surjective T₀.hom.appTop.hom) (e : 𝟙_ _ ⟶ T₀) (hF : s = s')
     (h₀ : ∀ y J, Good (JN D₁ D₂) y J → v _ e y J = v' _ e y J) {T} (ρ : T ⟶ T₀) {z J}
@@ -69,6 +81,9 @@ theorem JRep.unique {s s'} {v v' : JVals D₁ D₂ T₀} (h : JRep s v) (h' : JR
     (Over.w e) hs ht ht' (fun y I hI => (c _ e y I hI).trans ((h₀ y I hI).trans (c' _ e y I hI).symm))
     _ ρ.left z J hJ).trans (c' T ρ z J hJ))
 
+/- English proof (translation)
+Use `⟨thK, inferInstance, _, _, (isPart_inl D₁.P.L D₂.P.L).gen (LB.pullGen D₁.P.L (thφ D₁.P.A (x3 D₁.P.A)) thε D₁.cub.t (lift x (lift x' y)).left), (isPart_inl D₁.P.L D₂.P.L).gen_isGen (pullGen_isGen _ _ _ _ D₁.cub.isGen _), fun U _ h => ?_, fun T ρ z J hJ => ((isPart_inl D₁.P.L D₂.P. …` and prove the remaining obligations. Use `(prod_cub x x' y (fun q => h (q ≫ coprod.inl))).trans ?_` and prove the remaining obligations. Simplify using `only [fsEval, map_add, map_sub, map_zero, lift_apply_of, add_zero, toMul_add, toMul_sub, toMul_ofMul, div_eq_mul_inv]`.
+-/
 theorem JRep.cub₁ (x x' y : T₀ ⟶ D₁.P.A) :
     JRep (D₂ := D₂) (of (x * x' * y) - of (x * x') - of (x * y) - of (x' * y) + of x + of x' + of y - of 1, 0)
       fun _ ρ z J => th D₁ z (rl J) (ρ ≫ x) (ρ ≫ x') (ρ ≫ y) := by
@@ -81,6 +96,9 @@ theorem JRep.cub₁ (x x' y : T₀ ⟶ D₁.P.A) :
   simp only [fsEval, map_add, map_sub, map_zero, lift_apply_of, add_zero, toMul_add, toMul_sub, toMul_ofMul,
     div_eq_mul_inv]
 
+/- English proof (translation)
+Use `⟨thK, inferInstance, _, _, (isPart_inr D₁.P.L D₂.P.L).gen (LB.pullGen D₂.P.L (thφ D₂.P.A (x3 D₂.P.A)) thε D₂.cub.t (lift x (lift x' y)).left), (isPart_inr D₁.P.L D₂.P.L).gen_isGen (pullGen_isGen _ _ _ _ D₂.cub.isGen _), fun U _ h => ?_, fun T ρ z J hJ => ((isPart_inr D₁.P.L D₂.P. …` and prove the remaining obligations. Use `(prod_cub x x' y (fun q => h (q ≫ coprod.inr))).trans ?_` and prove the remaining obligations. Simplify using `only [fsEval, map_add, map_sub, map_zero, lift_apply_of, zero_add, toMul_add, toMul_sub, toMul_ofMul, div_eq_mul_inv]`.
+-/
 theorem JRep.cub₂ (x x' y : T₀ ⟶ D₂.P.A) :
     JRep (D₁ := D₁) (0, of (x * x' * y) - of (x * x') - of (x * y) - of (x' * y) + of x + of x' + of y - of 1)
       fun _ ρ z J => th D₂ z (rr J) (ρ ≫ x) (ρ ≫ x') (ρ ≫ y) := by
@@ -93,6 +111,11 @@ theorem JRep.cub₂ (x x' y : T₀ ⟶ D₂.P.A) :
   simp only [fsEval, map_add, map_sub, map_zero, lift_apply_of, zero_add, toMul_add, toMul_sub, toMul_ofMul,
     div_eq_mul_inv]
 
+/- English proof (translation)
+Use `⟨Fin 4 ⊕ Fin 4, inferInstance, _, _, LB.pullGen (JN D₁ D₂) _ _ u x.left, pullGen_isGen _ _ _ _ hu _, fun U _ h => ?_, fun T ρ z J hJ => val_pull hJ _ _ _⟩` and prove the remaining obligations. Establish `a₁ : ∀ k, x.left ≫ D₁.Oφ (𝟙 _) p k ≫ (coprod.inl : D₁.P.A.left ⟶ D₁.P.A.left ⨿ D₂.P.A.left) = D₁.Oφ x p k ≫ coprod.inl` using `fun k => by`. Rewrite using `[← Category.assoc, WeightPf.Oφ_comp, Category.comp_id]`. Establish `a₂ : ∀ k, x.left ≫ D₂.Oφ b χ k ≫ (coprod.inr : D₂.P.A.left ⟶ D₁.P.A.left ⨿ D₂.P.A.left) = D₂.Oφ (x ≫ b) χ k ≫ coprod.inr` using `fun k => by`. Rewrite using `[← Category.assoc, WeightPf.Oφ_comp]`.
+
+Use `(prod_sum₂ (K := Fin 4) (K' := Fin 4) (U := U) _ ((Finset.prod_congr rfl fun k _ => congrArg (fun q => h q ^ Oε k) (a₁ k)).trans (OLinEnd.prod_Oφ D₁ x p (fun q => h (q ≫ coprod.inl)))) ((Finset.prod_congr rfl fun k _ => congrArg (fun q => h q ^ Oinvε k) (a₂ k)).trans (OLinEnd.pro …` and prove the remaining obligations. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [fsEval, map_add, map_sub, map_neg, lift_apply_of, ofMul_mul, ofMul_inv, ofMul_toMul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem JRep.cmp {b : D₁.P.A ⟶ D₂.P.A} {p : D₁.X} {χ : D₂.X} {u : LB.Gen (CmpLB D₁ D₂ b p χ)} (hu : u.IsGen)
     (x : T₀ ⟶ D₁.P.A) :
     JRep (of (cP D₁ T₀ p * x) - of (cP D₁ T₀ p) - of x + of 1,
@@ -130,10 +153,18 @@ open FreeAbelianGroup
 variable {b : D₁.P.A ⟶ D₂.P.A} {p p' p'' : D₁.X} {χ χ' χ'' : D₂.X} {T : Over (Sp R)} {z : T.left}
   {J : (T.left ⟶ D₁.P.A.left ⨿ D₂.P.A.left) → (JN D₁ D₂).ι}
 
+/- English proof (translation)
+The claim follows from `hu.2 T.left T.hom z J hJ`.
+-/
 theorem jcmp_one {u : LB.Gen (CmpLB D₁ D₂ b p χ)} (hu : Nrm u) (hJ : Good (JN D₁ D₂) z J) :
     val u (1 : T ⟶ D₁.P.A).left z J = 1 :=
   hu.2 T.left T.hom z J hJ
 
+/- English proof (translation)
+Establish `h` using `(JRep.cmp hu.1 (𝟙 _)).unique JRep.one (hG _ _ D₁.P.isAb).2 1 (by`. Substitute `hp hχ` using the available equality. Rewrite using `[cPoint_zero, cPoint_zero, _root_.one_mul, _root_.one_mul, Category.id_comp]`. Apply the tactic sequence `ext1 <;> simp only [Prod.fst_zero, Prod.snd_zero] <;> abel)`. Use the proof step `(fun y I hI => by rw [Category.comp_id, jcmp_one hu hI]) x hJ`.
+
+Rewrite `h` using `[Category.comp_id]`. Then use the resulting hypothesis.
+-/
 theorem jcmp_zero (hG : GlobalFnsSt) {u : LB.Gen (CmpLB D₁ D₂ b p χ)} (hu : Nrm u) (hp : p = 0) (hχ : χ = 0)
     (hJ : Good (JN D₁ D₂) z J) (x : T ⟶ D₁.P.A) : val u x.left z J = 1 := by
   have h := (JRep.cmp hu.1 (𝟙 _)).unique JRep.one (hG _ _ D₁.P.isAb).2 1 (by
@@ -143,12 +174,20 @@ theorem jcmp_zero (hG : GlobalFnsSt) {u : LB.Gen (CmpLB D₁ D₂ b p χ)} (hu :
     (fun y I hI => by rw [Category.comp_id, jcmp_one hu hI]) x hJ
   rwa [Category.comp_id] at h
 
+/- English proof (translation)
+Establish `h` using `(JRep.cmp hu.1 (𝟙 _)).unique (JRep.cmp hu'.1 (𝟙 _)) (hG _ _ D₁.P.isAb).2 1 rfl (fun y I hI => by rw [Category.comp_id, jcmp_one hu hI, jcmp_one hu' hI]) x hJ`. Rewrite `h` using `[Category.comp_id]`. Then use the resulting hypothesis.
+-/
 theorem jcmp_congr (hG : GlobalFnsSt) {u u' : LB.Gen (CmpLB D₁ D₂ b p χ)} (hu : Nrm u) (hu' : Nrm u')
     (hJ : Good (JN D₁ D₂) z J) (x : T ⟶ D₁.P.A) : val u x.left z J = val u' x.left z J := by
   have h := (JRep.cmp hu.1 (𝟙 _)).unique (JRep.cmp hu'.1 (𝟙 _)) (hG _ _ D₁.P.isAb).2 1 rfl
     (fun y I hI => by rw [Category.comp_id, jcmp_one hu hI, jcmp_one hu' hI]) x hJ
   rwa [Category.comp_id] at h
 
+/- English proof (translation)
+Establish `h` using `((JRep.cmp hu''.1 (𝟙 _)).mul (JRep.cub₂ (cP D₂ _ χ) (cP D₂ _ χ') b)).unique ((JRep.cub₁ (cP D₁ _ p) (cP D₁ _ p') (𝟙 _)).mul ((JRep.cmp hu.1 (𝟙 _)).mul (JRep.cmp hu'.1 (𝟙 _)))) (hG _ _ D₁.P.isAb).2 1 (by`. Substitute `hp` using the available equality. Simplify using `only [cPoint_add, Category.id_comp]`. Apply the tactic sequence `ext1 <;> simp only [Prod.fst_add, Prod.snd_add, add_zero, zero_add] <;> abel)`. Use the proof step `(fun y I hI => by`.
+
+Establish `C₁ : IsCub (th D₁ (T` using `𝟙_ _) y (rl I)) := isCub_cubV D₁.cub ((isPart_inl D₁.P.L D₂.P.L).good hI)`. Establish `C₂ : IsCub (th D₂ (T` using `𝟙_ _) y (rr I)) := isCub_cubV D₂.cub ((isPart_inr D₁.P.L D₂.P.L).good hI)`. Rewrite using `[Category.comp_id, jcmp_one hu hI, jcmp_one hu' hI, jcmp_one hu'' hI, MonObj.one_comp b, C₁.face₃, C₂.face₃]`. Use the proof step `simp) x hJ`. Simplify `h` using `only [Category.comp_id, comp_cP]`.
+-/
 theorem jcmp_add_char (hG : GlobalFnsSt) [IsMonHom b] {u : LB.Gen (CmpLB D₁ D₂ b p χ)} (hu : Nrm u)
     {u' : LB.Gen (CmpLB D₁ D₂ b p' χ')} (hu' : Nrm u') {u'' : LB.Gen (CmpLB D₁ D₂ b p'' (χ + χ'))} (hu'' : Nrm u'')
     (hp : p'' = p + p') (hJ : Good (JN D₁ D₂) z J) (x : T ⟶ D₁.P.A) :
@@ -167,6 +206,13 @@ theorem jcmp_add_char (hG : GlobalFnsSt) [IsMonHom b] {u : LB.Gen (CmpLB D₁ D�
       simp) x hJ
   simpa only [Category.comp_id, comp_cP] using h
 
+/- English proof (translation)
+Establish `sj : Function.Surjective (D₁.P.A ⊗ D₁.P.A).hom.appTop.hom`. Rewrite using `[← Over.w (snd D₁.P.A D₁.P.A)]`. Conclude with `surj_comp (surj_snd hG D₁.P.isAb _) (hG _ _ D₁.P.isAb).2`. Establish `h` using `((JRep.cmp hu.1 (fst _ _ * snd _ _)).mul (JRep.cub₂ (cP D₂ _ χ) (fst _ _ ≫ b) (snd _ _ ≫ b))).unique ((JRep.cub₁ (cP D₁ _ p) (fst _ _) (snd _ _)).mul ((JRep.cmp hu.1 (fst _ _)).mul (JRep.cmp hu.1 (snd _ _)))) sj (lift 1 1) (by`. Rewrite using `[MonObj.mul_comp, _root_.mul_assoc (cP D₁ _ p), _root_.mul_assoc (cP D₂ _ χ)]`.
+
+Apply the tactic sequence `ext1 <;> simp only [Prod.fst_add, Prod.snd_add, add_zero, zero_add] <;> abel)`. Use the proof step `(fun w I hI => by`. Establish `C₁ : IsCub (th D₁ (T` using `𝟙_ _) w (rl I)) := isCub_cubV D₁.cub ((isPart_inl D₁.P.L D₂.P.L).good hI)`. Establish `C₂ : IsCub (th D₂ (T` using `𝟙_ _) w (rr I)) := isCub_cubV D₂.cub ((isPart_inr D₁.P.L D₂.P.L).good hI)`. Rewrite using `[MonObj.comp_mul, lift_fst_assoc, lift_fst, lift_snd, lift_snd_assoc, _root_.mul_one, jcmp_one hu hI, MonObj.one_comp, C₁.face₂, C₂.face₂]`.
+
+Use the proof step `simp) (lift x y) hJ`. Simplify `h` using `only [MonObj.comp_mul, lift_fst, lift_snd, lift_fst_assoc, lift_snd_assoc, comp_cP]`.
+-/
 theorem jcmp_add_pt (hG : GlobalFnsSt) [IsMonHom b] {u : LB.Gen (CmpLB D₁ D₂ b p χ)} (hu : Nrm u)
     (hJ : Good (JN D₁ D₂) z J) (x y : T ⟶ D₁.P.A) :
     val u (x * y).left z J * th D₂ z (rr J) (cP D₂ T χ) (x ≫ b) (y ≫ b) =
@@ -201,17 +247,38 @@ open GlobalTheory.TorusExt
 
 variable {b : D₁.P.A ⟶ D₂.P.A} {hh : D₂.X →+ D₁.X} {F : Type} [Field F] [Algebra (FractionRing R) F]
 
+/- English proof (translation)
+Use `choose J₁ hJ₁ using fun ψ : Z ⟶ D₁.P.A.left => exists_chart D₁.P.isLB (ψ z)`. Take `⟨J, hJ, -, e⟩` from `exists_good_join D₁.P.isLB D₂.P.isLB (J₁ := J₁) hJ₁ hJ₂`. Conclude with `⟨J, hJ, e⟩`.
+-/
 theorem exists_good_rr {Z : Scheme.{0}} {z : Z} {J₂ : (Z ⟶ D₂.P.A.left) → D₂.P.L.ι} (hJ₂ : Good D₂.P.L z J₂) :
     ∃ J, Good (JN D₁ D₂) z J ∧ rr J = J₂ := by
   choose J₁ hJ₁ using fun ψ : Z ⟶ D₁.P.A.left => exists_chart D₁.P.isLB (ψ z)
   obtain ⟨J, hJ, -, e⟩ := exists_good_join D₁.P.isLB D₂.P.isLB (J₁ := J₁) hJ₁ hJ₂
   exact ⟨J, hJ, e⟩
 
+/- English proof (translation)
+The claim follows from `hA.2 χ (u χ) (hu χ) y J hJ`.
+-/
 theorem jact_val {u : ∀ χ, LB.Gen (CmpLB D₁ D₂ b (hh χ) χ)} (hu : ∀ χ, Nrm (u χ)) {g : GtPtF D₁ F}
     {g' : GtPtF D₂ F} (hA : Act D₁ D₂ b hh g g') (χ : D₂.X) {y J} (hJ : Good (JN D₁ D₂) y J) :
     charVal g' χ y (rr J) = charVal g (hh χ) y (rl J) * val (u χ) g.b.left y J :=
   hA.2 χ (u χ) (hu χ) y J hJ
 
+/- English proof (translation)
+Set `w` to `fun χ => LB.mulGen (JN D₁ D₂) _ _ _ _ ((isPart_inl D₁.P.L D₂.P.L).gen (g.s (hh χ))) (LB.pullGen (JN D₁ D₂) _ _ (u χ) g.b.left)`. Establish `hw : ∀ χ, (w χ).IsGen` using `fun χ => mulGen_isGen _ _ _ _ _ _ _ ((isPart_inl D₁.P.L D₂.P.L).gen_isGen (g.isGen _)) (pullGen_isGen _ _ _ _ (hu χ).1 _)`. Establish `vw : ∀ χ y J, Good (JN D₁ D₂) y J → val (w χ) (𝟙 (TF (R` using `R) F).left) y J = charVal g (hh χ) y (rl J) * val (u χ) g.b.left y J := fun χ y J hJ => (val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((isPart_inl D₁.P.L D₂.P.L).val_gen _ _ y hJ) ((val_pull hJ _ _ _).trans (by rw [Category.id_comp])))`. Establish `a₁ : ∀ χ k, g.b.left ≫ D₁.Oφ (𝟙 _) (hh χ) k ≫ (coprod.inl : D₁.P.A.left ⟶ D₁.P.A.left ⨿ D₂.P.A.left) = D₁.Oφ g.b (hh χ) k ≫ coprod.inl` using `fun χ k => by`. Rewrite using `[← Category.assoc, WeightPf.Oφ_comp, Category.comp_id]`.
+
+Establish `a₂ : ∀ χ k, g.b.left ≫ D₂.Oφ b χ k ≫ (coprod.inr : D₂.P.A.left ⟶ D₁.P.A.left ⨿ D₂.P.A.left) = D₂.Oφ (g.b ≫ b) χ k ≫ coprod.inr` using `fun χ k => by`. Rewrite using `[← Category.assoc, WeightPf.Oφ_comp]`. Establish `fe : ∀ χ, FormEq (Sum.elim (fun k => D₁.gtφ F g.b (hh χ) k ≫ (coprod.inl : D₁.P.A.left ⟶ D₁.P.A.left ⨿ D₂.P.A.left)) (fun k => g.b.left ≫ Sum.elim (fun k => D₁.Oφ (𝟙 D₁.P.A) (hh χ) k ≫ (coprod.inl : D₁.P.A.left ⟶ D₁.P.A.left ⨿ D₂.P.A.left)) (fun k => D₂.Oφ b χ k ≫ (coprod.inr : D …` using `fun χ U _ h => by`. Use `(prod_sum₂ (K := Fin 4) (K' := Fin 4 ⊕ Fin 4) (U := U) _ (prod_gt g.b (hh χ) (fun q => h (q ≫ coprod.inl))) (prod_sum₂ (K := Fin 4) (K' := Fin 4) (U := U) _ ((Finset.prod_congr rfl fun k _ => congrArg (fun q => h q ^ Oε k) (a₁ χ k)).trans (OLinEnd.prod_Oφ D₁ g.b (hh χ) (fun q => …` and prove the remaining obligations. Use `Eq.trans ?_ (prod_gt (g.b ≫ b) χ (fun q => h (q ≫ coprod.inr))).symm` and prove the remaining obligations.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws. Use `choose t ht vt using fun χ => exists_gen (jn_isLB D₁ D₂) (fe χ) (w χ) (hw χ)`. Use `choose t' ht' vt' using fun χ => (isPart_inr D₁.P.L D₂.P.L).exists_gen D₂.P.isLB (snd_surjective D₁.P.isLB) (t χ) (ht χ)`.
+
+Establish `VV : ∀ χ y J, Good (JN D₁ D₂) y J → val (t' χ) (𝟙 (TF (R` using `R) F).left) y (rr J) = charVal g (hh χ) y (rl J) * val (u χ) g.b.left y J := fun χ y J hJ => (vt' χ _ _ y J hJ).trans ((vt χ _ _ y J hJ).trans (vw χ y J hJ))`. Take `⟨g', hb, hv⟩` from `exists_gt (D := D₂) (g.b ≫ b) t' ht' (fun _ _ _ _ => rfl) (fun y J₂ hJ₂ => by`. Take `⟨J, hJ, rfl⟩` from `exists_good_rr (D₁ := D₁) hJ₂`. Use `(VV 0 y J hJ).trans ?_` and prove the remaining obligations. Rewrite using `[jcmp_zero hG (hu 0) (map_zero hh) rfl hJ g.b, _root_.mul_one]`.
+
+Conclude with `(congrArg (fun c => charVal g c y (rl J)) (map_zero hh)).trans (charVal_zero g ((isPart_inl D₁.P.L D₂.P.L).good hJ)))`. Use the proof step `(fun χ χ' y J₂ hJ₂ => by`. Take `⟨J, hJ, rfl⟩` from `exists_good_rr (D₁ := D₁) hJ₂`. Establish `e₁` using `congrArg Additive.ofMul (jcmp_add_char hG (hu χ) (hu χ') (hu (χ + χ')) (map_add _ _ _) hJ g.b)`. Establish `e₂` using `charVal_add g ((isPart_inl D₁.P.L D₂.P.L).good hJ) (hh χ) (hh χ')`.
+
+Rewrite `e₂` using `[← map_add]`. Establish `e₃` using `congrArg Additive.ofMul e₂`. Rewrite using `[VV _ y J hJ, VV _ y J hJ, VV _ y J hJ]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul] at e₁ e₃ ⊢`.
+
+Take the linear combination `(norm := abel) e₁ + e₃)`. Conclude with `⟨g', hb, fun χ u₁ hu₁ z J hJ => (hv χ z (rr J) ((isPart_inr D₁.P.L D₂.P.L).good hJ)).trans ((VV χ z J hJ).trans (congrArg (charVal g (hh χ) z (rl J) * ·) (jcmp_congr hG (hu χ) hu₁ hJ g.b)))⟩`.
+-/
 theorem jexists_act (hG : GlobalFnsSt) [IsMonHom b] (u : ∀ χ, LB.Gen (CmpLB D₁ D₂ b (hh χ) χ))
     (hu : ∀ χ, Nrm (u χ)) (g : GtPtF D₁ F) : ∃ g' : GtPtF D₂ F, Act D₁ D₂ b hh g g' := by
   let w := fun χ => LB.mulGen (JN D₁ D₂) _ _ _ _ ((isPart_inl D₁.P.L D₂.P.L).gen (g.s (hh χ)))
@@ -270,12 +337,22 @@ theorem jexists_act (hG : GlobalFnsSt) [IsMonHom b] (u : ∀ χ, LB.Gen (CmpLB D
   exact ⟨g', hb, fun χ u₁ hu₁ z J hJ => (hv χ z (rr J) ((isPart_inr D₁.P.L D₂.P.L).good hJ)).trans
     ((VV χ z J hJ).trans (congrArg (charVal g (hh χ) z (rl J) * ·) (jcmp_congr hG (hu χ) hu₁ hJ g.b)))⟩
 
+/- English proof (translation)
+The claim follows from `gt_ext_val (h₁.1.trans h₂.1.symm) fun χ y J₂ hJ₂ => by obtain ⟨J, hJ, rfl⟩ := exists_good_rr (D₁ := D₁) hJ₂ exact (jact_val hu h₁ χ hJ).trans (jact_val hu h₂ χ hJ).symm`.
+-/
 theorem jact_unique {u : ∀ χ, LB.Gen (CmpLB D₁ D₂ b (hh χ) χ)} (hu : ∀ χ, Nrm (u χ)) {g : GtPtF D₁ F}
     {g' g'' : GtPtF D₂ F} (h₁ : Act D₁ D₂ b hh g g') (h₂ : Act D₁ D₂ b hh g g'') : g' = g'' :=
   gt_ext_val (h₁.1.trans h₂.1.symm) fun χ y J₂ hJ₂ => by
     obtain ⟨J, hJ, rfl⟩ := exists_good_rr (D₁ := D₁) hJ₂
     exact (jact_val hu h₁ χ hJ).trans (jact_val hu h₂ χ hJ).symm
 
+/- English proof (translation)
+Take `⟨bb, v⟩` from `(isAdd_iff_val _ _ _).1 hA`. Use `(isAdd_iff_val _ _ _).2 ⟨by rw [h₁.1, h₂.1, h₃.1, bb, MonObj.mul_comp], fun χ y J₂ hJ₂ => ?_⟩` and prove the remaining obligations. Take `⟨J, hJ, rfl⟩` from `exists_good_rr (D₁ := D₁) hJ₂`. Establish `e₁` using `jcmp_add_pt hG (hu χ) hJ g₁.b g₂.b`. Rewrite `e₁` using `[← bb, ← h₁.1, ← h₂.1]`.
+
+Establish `e₂` using `congrArg Additive.ofMul e₁`. Establish `e₃` using `congrArg Additive.ofMul (v (hh χ) y (rl J) ((isPart_inl D₁.P.L D₂.P.L).good hJ))`. Rewrite using `[jact_val hu h₁ χ hJ, jact_val hu h₂ χ hJ, jact_val hu h₃ χ hJ]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul] at e₂ e₃ ⊢`.
+
+Take the linear combination `(norm := abel) e₂ + e₃`.
+-/
 theorem jact_isAdd (hG : GlobalFnsSt) [IsMonHom b] {u : ∀ χ, LB.Gen (CmpLB D₁ D₂ b (hh χ) χ)}
     (hu : ∀ χ, Nrm (u χ)) {g₁ g₂ g₃ : GtPtF D₁ F} {g₁' g₂' g₃' : GtPtF D₂ F} (hA : g₁.IsAdd g₂ g₃)
     (h₁ : Act D₁ D₂ b hh g₁ g₁') (h₂ : Act D₁ D₂ b hh g₂ g₂') (h₃ : Act D₁ D₂ b hh g₃ g₃') : g₁'.IsAdd g₂' g₃' := by
@@ -291,6 +368,11 @@ theorem jact_isAdd (hG : GlobalFnsSt) [IsMonHom b] {u : ∀ χ, LB.Gen (CmpLB D�
   simp only [ofMul_mul] at e₂ e₃ ⊢
   linear_combination (norm := abel) e₂ + e₃
 
+/- English proof (translation)
+Use `⟨by rw [hA.1, ht.1, MonObj.one_comp], fun χ y J₂ hJ₂ => ?_⟩` and prove the remaining obligations. Take `⟨J, hJ, rfl⟩` from `exists_good_rr (D₁ := D₁) hJ₂`. Establish `e : val (u χ) g.b.left y J = 1` using `(congrArg (fun c : TF (R := R) F ⟶ D₁.P.A => val (u χ) c.left y J) ht.1).trans (jcmp_one (hu χ) hJ)`. Establish `e'` using `jact_val hu hA χ hJ`. Rewrite `e'` using `[e, _root_.mul_one]`.
+
+Conclude with `(congrArg Units.val e').trans (ht.2 (hh χ) y (rl J) ((isPart_inl D₁.P.L D₂.P.L).good hJ))`.
+-/
 theorem jact_isTor [IsMonHom b] {u : ∀ χ, LB.Gen (CmpLB D₁ D₂ b (hh χ) χ)} (hu : ∀ χ, Nrm (u χ))
     {t : Multiplicative D₁.X →* Fˣ} {g : GtPtF D₁ F} {g' : GtPtF D₂ F} (ht : IsTor t g) (hA : Act D₁ D₂ b hh g g') :
     IsTor (t.comp (AddMonoidHom.toMultiplicative hh)) g' := by
@@ -308,6 +390,11 @@ end GlobalTheory.Mum.Two
 
 namespace GlobalTheory.Mum.Two
 
+/- English proof (translation)
+Introduce `R _ _ D₁ D₂ b h hb hu F _ _`. Establish `hG` using `GlobalTheory.firstFiveLaws.1.globalFns`. Use `choose u hu using hu`. Use `⟨fun g => ?_, fun _ _ _ _ _ _ => jact_isAdd hG hu, fun _ _ _ => jact_isTor hu⟩` and prove the remaining obligations. Take `⟨g', hg⟩` from `jexists_act hG u hu g`.
+
+Conclude with `⟨g', hg, fun _ h' => jact_unique hu h' hg⟩`.
+-/
 theorem act_two_hom : ∀ (R : Type) [CommRing R] [IsDomain R] (D₁ D₂ : DegPre R) (b : D₁.P.A ⟶ D₂.P.A) (h : D₂.X →+ D₁.X), IsMonHom b → (∀ χ, ∃ u : LB.Gen (CmpLB D₁ D₂ b (h χ) χ), Nrm u) → ∀ (F : Type) [Field F] [Algebra (FractionRing R) F], (∀ g : GtPtF D₁ F, ∃! g' : GtPtF D₂ F, Act D₁ D₂ b h g g') ∧ (∀ (g₁ g₂ g₃ : GtPtF D₁ F) (g₁' g₂' g₃' : GtPtF D₂ F), g₁.IsAdd g₂ g₃ → Act D₁ D₂ b h g₁ g₁' → Act D₁ D₂ b h g₂ g₂' → Act D₁ D₂ b h g₃ g₃' → g₁'.IsAdd g₂' g₃') ∧ ∀ (t : Multiplicative D₁.X →* Fˣ) (g : GtPtF D₁ F) (g' : GtPtF D₂ F), IsTor t g → Act D₁ D₂ b h g g' → IsTor (t.comp (AddMonoidHom.toMultiplicative h)) g' := by
   intro R _ _ D₁ D₂ b h hb hu F _ _
   have hG := GlobalTheory.firstFiveLaws.1.globalFns

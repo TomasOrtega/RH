@@ -29,6 +29,23 @@ open GlobalTheory.SeeSaw GlobalTheory.Unf
 
 namespace GlobalTheory.KxPoint
 
+/- English proof (translation)
+Introduce `B X I hI hP u a i hi C chOf Lb U chi y st k hR β hq hk`. Establish `hPr : (B.primes X).Ok` using `(base_fields_primes_ok B X).2.1`. Establish `hd` using `ChEx.q_disj I hI a`. Take `⟨c₀, hc₀⟩` from `hR.onto β`. Take `⟨q, hqk⟩` from `hq`.
+
+Take `⟨p, hpk, hpN⟩` from `hR.k_std β`. Establish `hqN : q.deco.1.N = Formalism.L2.Col.stdLat B.fields.E (B.R.N i)`. Rewrite using `[← hpN]`. Conclude with `GlobalTheory.BaseCosetPt.lat_eq_of_carries q.deco.2.lat p.deco.2.lat hqk.lat hpk.lat`. Take `⟨r', hr'1, hr'2, hr'3⟩` from `ChExM.exists_pt_inv hd ((I.stp u a i).rep c₀) q`.
+
+Establish `hcos : cosetIn r' = cosetIn ((I.stp u a i).rep c₀)` using `(ChExM.cosetIn_iff hd (MemChart.hqG hPr) _ _).2 ⟨hr'2, hr'3⟩`. Use `⟨c₀.1, r', ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hr'1]`. Use `⟨hqk.uni, hqk.lat, hqk.f, hqk.be, fun P i' j => ?_⟩` and prove the remaining obligations. Rewrite using `[extTo_fr]`.
+
+Distinguish the cases in `hPQ : P.1 ∈ I.Q a`. Rewrite using `[ptFr_of_mem q (hd P.1 hPQ) hPQ]`. Conclude with `hqk.fr ⟨P.1, hPQ⟩ i' j`. Establish `hPG : P.1 ∉ (B.primes X).vGs`. Take `⟨b, -, hb⟩` from `Finset.mem_biUnion.1 P.2`.
+
+Conclude with `ChEx.q_disj I hI b P.1 hb`. Establish `hfr : ptFr q P.1 = 1`. Unfold `ptFr`. Rewrite using `[dif_neg hPG, dif_neg hPQ, hqN]`. Unfold `GlobalTheory.Mem.Col2.latFr`.
+
+Conclude with `if_pos rfl`. Establish `hkP` using `congrFun (congrFun (hk P.1 P.2 hPQ) i') j`. Rewrite using `[hfr]`. Simplify using `only [Matrix.map_apply] at hkP`. Rewrite using `[hkP]`.
+
+Simplify using `[Matrix.one_apply, Pi.single_apply, eq_comm]`. Rewrite using `[hr'1]`. Conclude with `hqN`. Introduce `c hc`. Take `⟨h1, h2⟩` from `(hR.key c c₀).1 (hc.trans hc₀.symm)`.
+
+Conclude with `⟨h1, h2.trans hcos.symm⟩`.
+-/
 theorem pointOf_base : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (u : B.Word) (a : I.ι) (i : ℕ), i ≤ B.R.m → ∀ {C : Type} (chOf : (I.stp u a i).Cl → C) (Lb : C → Submodule (𝓞 B.host.E) (Fin (B.R.N i) → B.host.E)) (U : C → Subgroup (TC.GA B (B.R.N i))) (chi : ∀ β, U β →* ℂˣ) (y : (I.stp u a i).Cl → TC.GA B (B.R.N i)) (st : ∀ c, (I.stp u a i).Stab c → GL (Fin (B.R.N i)) B.host.E) (k : C → TC.GA B (B.R.N i)), I.Reads u a i chOf Lb U chi y st k → ∀ β, (∃ q : Formalism.L2.Col.ChPt (Pr := B.primes X) (R := B.R) I.sel (I.tup a) u i, TC.PtOf (k β) q) → (∀ P ∈ I.SQ, P ∉ I.Q a → (k β).1.map (adAt B.host.F P) = 1) → ∃ (b0 : Idx I.sel (I.tup a) (I.idx a) i) (p0 : PtAt B.R I.sel (I.tup a) (I.cst a) u i), TC.PtOf (k β) (extTo I.SQ p0.1.1) ∧ p0.1.1.deco.1.N = Formalism.L2.Col.stdLat B.fields.E (B.R.N i) ∧ ∀ c, chOf c = β → c.1 = b0 ∧ cosetIn ((I.stp u a i).rep c) = cosetIn p0 := by
   intro B X I hI hP u a i hi C chOf Lb U chi y st k hR β hq hk
   have hPr : (B.primes X).Ok := (base_fields_primes_ok B X).2.1

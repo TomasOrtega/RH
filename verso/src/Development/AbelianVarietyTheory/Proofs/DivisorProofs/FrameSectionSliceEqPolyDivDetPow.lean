@@ -5,6 +5,11 @@ open NumberField ReciprocityTheory.ChartRestriction.G.FD
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `: (fun y : Fin r → Fin r → ℂ => (Matrix.of y).det) = fun y => ∑ σ : Equiv.Perm (Fin r), (Equiv.Perm.sign σ : ℂ) * ∏ i, y (σ i) i`. Use function extensionality and compare the values at `y`. Rewrite using `[Matrix.det_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def, zsmul_eq_mul]`.
+
+Simplify using `[Matrix.of_apply]`. Rewrite using `[this]`. Use `fun_prop`.
+-/
 theorem differentiable_det_of {r : ℕ} :
     Differentiable ℂ (fun y : Fin r → Fin r → ℂ => (Matrix.of y).det) := by
   have : (fun y : Fin r → Fin r → ℂ => (Matrix.of y).det) =
@@ -17,6 +22,9 @@ theorem differentiable_det_of {r : ℕ} :
   rw [this]
   fun_prop
 
+/- English proof (translation)
+Introduce `y`. Conclude with `(hasFDerivAt_update x y).differentiableAt`.
+-/
 theorem differentiable_update_frame {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {r : ℕ}
     (x : Ψ → Fin r → Fin r → ℂ) (τ : Ψ) :
     Differentiable ℂ (fun y : Fin r → Fin r → ℂ => Function.update x τ y) := by
@@ -27,6 +35,41 @@ end GlobalTheory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `E _ _ _ r X _ hdom la N hN P hP x hx τ`. Establish `hupd : ∀ y : Fin r → Fin r → ℂ, Function.update x τ y ∈ X.dom ↔ (Matrix.of y).det ≠ 0`. Introduce `y`. Rewrite using `[hdom]`. Establish `hx'` using `(hdom x).1 hx`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `h τ` as an intermediate fact. Simplify `this` using `[mat]`. Introduce `h σ`.
+
+Distinguish the cases in `hσ : σ = τ`. Substitute `hσ` using the available equality. Simplify `h` using `[mat]`. Simplify `hx' σ` using `[mat, Function.update_of_ne hσ]`. Set `a : Fin r → ℕ` to `fun i => (la τ i + N).toNat`.
+
+Set `h : Matrix (Fin r) (Fin r) ℂ → ℂ` to `fun y => P (Function.update x τ (fun i j => y i j)) * y.det ^ N`. Establish `hholo : ReciprocityTheory.MultiplicativeHeights.IsHoloGL h`. Unfold `ReciprocityTheory.MultiplicativeHeights.IsHoloGL`. Establish `h1 : DifferentiableOn ℂ (fun y : Fin r → Fin r → ℂ => P (Function.update x τ y)) {y | (Matrix.of y).det ≠ 0}` using `hP.1.comp (differentiable_update_frame x τ).differentiableOn (fun y hy => (hupd y).2 hy)`. Establish `h2 : DifferentiableOn ℂ (fun y : Fin r → Fin r → ℂ => (Matrix.of y).det ^ N) {y | (Matrix.of y).det ≠ 0}` using `(differentiable_det_of.pow N).differentiableOn`.
+
+Conclude with `h1.mul h2`. Establish `htri : ReciprocityTheory.MultiplicativeHeights.IsTriEquivariant a h`. Introduce `y b hy hb hbt`. Set `b' : Frame X.Ψ r` to `fun σ => if σ = τ then b else (1 : Matrix (Fin r) (Fin r) ℂ)`. Establish `hbτ : b' τ = b` using `by exact if_pos rfl`.
+
+Establish `hbσ : ∀ σ, σ ≠ τ → b' σ = (1 : Matrix (Fin r) (Fin r) ℂ)` using `fun σ hσ => by exact if_neg hσ`. Establish `hb'B : b' ∈ Bor X.Ψ r`. Introduce `σ`. Distinguish the cases in `hσ : σ = τ`. Substitute `hσ` using the available equality.
+
+Use `⟨?_, fun c d hcd => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Matrix.of (b' σ)).det ≠ 0`. Rewrite using `[hbτ]`. Conclude with `hb`. Rewrite using `[hbτ]`.
+
+Conclude with `hbt hcd`. Use `⟨?_, fun c d hcd => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Matrix.of (b' σ)).det ≠ 0`. Rewrite using `[hbσ σ hσ]`. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin r) (Fin r) ℂ).det ≠ 0`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hbσ σ hσ, Matrix.one_apply, if_neg (ne_of_lt hcd).symm]`. Establish `hrm : rmul (Function.update x τ (fun i j => y i j)) b' = Function.update x τ (fun i j => (y * b) i j)`. Use function extensionality and compare the values at `σ`. Distinguish the cases in `hσ : σ = τ`.
+
+Substitute `hσ` using the available equality. Express the relevant statement in the definitionally equal form `(Matrix.of (Function.update x σ (fun i j => y i j) σ) * Matrix.of (b' σ) : Matrix (Fin r) (Fin r) ℂ) = Function.update x σ (fun i j => (y * b) i j) σ`. Rewrite using `[hbτ, Function.update_self, Function.update_self]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(Matrix.of (Function.update x τ (fun i j => y i j) σ) * Matrix.of (b' σ) : Matrix (Fin r) (Fin r) ℂ) = Function.update x τ (fun i j => (y * b) i j) σ`.
+
+Rewrite using `[hbσ σ hσ, Function.update_of_ne hσ, Function.update_of_ne hσ]`. Conclude with `Matrix.mul_one _`. Establish `hbc : bchar la b' = ∏ i, b i i ^ la τ i`. Unfold `bchar`. Rewrite using `[Finset.prod_eq_single τ]`.
+
+Rewrite using `[hbτ]`. Introduce `σ _ hσ`. Rewrite using `[hbσ σ hσ]`. Conclude with `Finset.prod_eq_one fun i _ => by simp`. Introduce `h'`.
+
+Conclude with `absurd (Finset.mem_univ τ) h'`. Establish `hmem : Function.update x τ (fun i j => y i j) ∈ X.dom` using `(hupd _).2 hy`. Establish `hP2` using `hP.2.1 _ hmem b' hb'B`. Rewrite `hP2` using `[hrm, hbc]`. Establish `hdb : b.det = ∏ i, b i i` using `Matrix.det_of_upperTriangular hbt`.
+
+Establish `hbii : ∀ i, b i i ≠ 0`. Introduce `i`. Rewrite `hb` using `[hdb]`. Conclude with `Finset.prod_ne_zero_iff.mp hb i (Finset.mem_univ i)`. Establish `hchar : (∏ i, b i i ^ la τ i) * b.det ^ N = ReciprocityTheory.MultiplicativeHeights.triChar a b`.
+
+Rewrite using `[hdb, ← Finset.prod_pow, ← Finset.prod_mul_distrib]`. Unfold `ReciprocityTheory.MultiplicativeHeights.triChar`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `e : ((la τ i + N).toNat : ℤ) = la τ i + N` using `Int.toNat_of_nonneg (hN τ i)`. Rewrite using `[← zpow_natCast (b i i) N, ← zpow_add₀ (hbii i), ← zpow_natCast, e]`.
+
+Use `show P (Function.update x τ (fun i j => (y * b) i j)) * (y * b).det ^ N = ReciprocityTheory.MultiplicativeHeights.triChar a b * (P (Function.update x τ (fun i j => y i j)) * y.det ^ N)`. Rewrite using `[hP2, Matrix.det_mul, mul_pow, ← hchar]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨F, hF, hFe⟩` from `ReciprocityTheory.MultiplicativeHeights.Closed.bwPoly r a h hholo htri`. Use `⟨F, hF, fun y hy => ?_⟩` and prove the remaining obligations.
+
+Establish `e` using `hFe (Matrix.of y) hy`. Establish `e' : P (Function.update x τ y) * (Matrix.of y).det ^ N = MvPolynomial.eval (fun ij => y ij.1 ij.2) F` using `e`. Rewrite using `[← e', inv_pow, mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ hy), mul_one]`.
+-/
 theorem section_slice_eq_poly_div_det_pow :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) [DecidableEq X.Ψ],
       (∀ x : Frame X.Ψ r, x ∈ X.dom ↔ ∀ τ, (mat x τ).det ≠ 0) →

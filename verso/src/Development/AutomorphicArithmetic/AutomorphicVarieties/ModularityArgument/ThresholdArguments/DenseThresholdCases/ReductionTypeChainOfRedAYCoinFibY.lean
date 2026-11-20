@@ -11,6 +11,11 @@ set_option synthInstance.maxHeartbeats 200000
 section
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Cu
 namespace UpperTheory.V.Cu.RankFourReductionTypeChain
+/- English proof (translation)
+Use `h1.trans_lt ?_` and prove the remaining obligations. Proceed by induction on `y using WithBot.recBotCoe with`. Consider the case `bot => simp`. Consider the case `coe y`. Proceed by induction on `y using ENat.recTopCoe with`.
+
+Consider the case `top => exact absurd h2 (by norm_cast)`. Consider the case `coe y`. Establish `h3 : y + b ≤ c` using `by exact_mod_cast h2`. Conclude with `(by omega : y + a < N)` after adjusting the coercions.
+-/
 private theorem ch_num {x y : WithBot ℕ∞} {a b c N : ℕ} (h1 : x ≤ y + (a : ℕ)) (h2 : y + (b : ℕ) ≤ (c : ℕ))
     (h : c + a < N + b) : x < N := by
   refine h1.trans_lt ?_
@@ -22,10 +27,18 @@ private theorem ch_num {x y : WithBot ℕ∞} {a b c N : ℕ} (h1 : x ≤ y + (a
     | coe y =>
       have h3 : y + b ≤ c := by exact_mod_cast h2
       exact_mod_cast (by omega : y + a < N)
+/- English proof (translation)
+Introduce `g i j hij hw` and use `by simpa [mapRep_apply] using hq _ (h (Ideal.subset_span ⟨g, i, j, hij, hw, rfl⟩))`.
+-/
 private theorem supp_of {Γ A R K : Type} [Group Γ] [CommRing A] [CommRing R] [CommRing K] (r : Γ →* M4 A) (f : A →+* R)
     (φ : R →+* K) (q : Ideal R) (hq : ∀ z ∈ q, φ z = 0) {S : Finset (ℤ × ℤ)} (h : redIdeal S (mapRep f r) ≤ q) :
     Supp S (mapRep (φ.comp f) r) := fun g i j hij hw => by
   simpa [mapRep_apply] using hq _ (h (Ideal.subset_span ⟨g, i, j, hij, hw, rfl⟩))
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Use `hS (Ideal.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨g, i, j, hij, hwS, rfl⟩`. Distinguish the cases in `hy : wt i j ∈ yY`. Use `(hq _).1 ?_` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `h0`. Conclude with `hn ⟨g, i, j, hw _ hy hwS, by simpa [mapRep_apply] using h0⟩`. Conclude with `hY (Ideal.subset_span ⟨g, i, j, hij, hy, rfl⟩)`.
+-/
 private theorem ent_of {Γ A R K : Type} [Group Γ] [CommRing A] [CommRing R] [Field K] (r : Γ →* M4 A) (f : A →+* R)
     (φ : R →+* K) (q : Ideal R) (hq : ∀ z, φ z = 0 ↔ z ∈ q) (hY : redIdeal yY (mapRep f r) ≤ q)
     {S : Finset (ℤ × ℤ)} (hS : ¬ redIdeal S (mapRep f r) ≤ q) {w : ℤ × ℤ} (hw : ∀ u ∈ yY, u ∉ S → u = w) :
@@ -39,42 +52,101 @@ private theorem ent_of {Γ A R K : Type} [Group Γ] [CommRing A] [CommRing R] [F
     by_contra h0
     exact hn ⟨g, i, j, hw _ hy hwS, by simpa [mapRep_apply] using h0⟩
   · exact hY (Ideal.subset_span ⟨g, i, j, hij, hy, rfl⟩)
+/- English proof (translation)
+Use `first`. Consider the case `decide`. Consider the case `(intro u hu hS`. Simplify using `only [yY, Finset.mem_insert, Finset.mem_singleton] at hu`. Apply the tactic sequence `rcases hu with rfl | rfl | rfl | rfl <;> first | rfl | (exfalso; exact hS (by simp)))`.
+-/
 private theorem w1 : ∀ u ∈ yY, u ∉ ({wBe, -wBe, -wAl, -wTh, -wPs} : Finset (ℤ × ℤ)) → u = wTh := by
   first
   | decide
   | (intro u hu hS
      simp only [yY, Finset.mem_insert, Finset.mem_singleton] at hu
      rcases hu with rfl | rfl | rfl | rfl <;> first | rfl | (exfalso; exact hS (by simp)))
+/- English proof (translation)
+Use `first`. Consider the case `decide`. Consider the case `(intro u hu hS`. Simplify using `only [yY, Finset.mem_insert, Finset.mem_singleton] at hu`. Apply the tactic sequence `rcases hu with rfl | rfl | rfl | rfl <;> first | rfl | (exfalso; exact hS (by simp)))`.
+-/
 private theorem w2 : ∀ u ∈ yY, u ∉ ({wBe, -wBe, wAl, wTh, wPs} : Finset (ℤ × ℤ)) → u = -wTh := by
   first
   | decide
   | (intro u hu hS
      simp only [yY, Finset.mem_insert, Finset.mem_singleton] at hu
      rcases hu with rfl | rfl | rfl | rfl <;> first | rfl | (exfalso; exact hS (by simp)))
+/- English proof (translation)
+Use `first`. Consider the case `decide`. Consider the case `(intro u hu hS`. Simplify using `only [yY, Finset.mem_insert, Finset.mem_singleton] at hu`. Apply the tactic sequence `rcases hu with rfl | rfl | rfl | rfl <;> first | rfl | (exfalso; exact hS (by simp)))`.
+-/
 private theorem w3 : ∀ u ∈ yY, u ∉ ({wTh, -wTh, wPs, wBe, -wAl} : Finset (ℤ × ℤ)) → u = -wBe := by
   first
   | decide
   | (intro u hu hS
      simp only [yY, Finset.mem_insert, Finset.mem_singleton] at hu
      rcases hu with rfl | rfl | rfl | rfl <;> first | rfl | (exfalso; exact hS (by simp)))
+/- English proof (translation)
+Use `first`. Consider the case `decide`. Consider the case `(intro u hu hS`. Simplify using `only [yY, Finset.mem_insert, Finset.mem_singleton] at hu`. Apply the tactic sequence `rcases hu with rfl | rfl | rfl | rfl <;> first | rfl | (exfalso; exact hS (by simp)))`.
+-/
 private theorem w4 : ∀ u ∈ yY, u ∉ ({wTh, -wTh, -wPs, -wBe, wAl} : Finset (ℤ × ℤ)) → u = wBe := by
   first
   | decide
   | (intro u hu hS
      simp only [yY, Finset.mem_insert, Finset.mem_singleton] at hu
      rcases hu with rfl | rfl | rfl | rfl <;> first | rfl | (exfalso; exact hS (by simp)))
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨List.Mem.head _, by first | decide | (intro h; have := congrArg (fun s => -wAl ∈ s) h; simp [yY, wAl, wBe, wTh, wPs] at this)⟩`.
+-/
 private theorem t1 : ({wBe, -wBe, -wAl, -wTh, -wPs} : Finset (ℤ × ℤ)) ∈ redTypes ∧
     ({wBe, -wBe, -wAl, -wTh, -wPs} : Finset (ℤ × ℤ)) ≠ yY :=
   ⟨List.Mem.head _, by first | decide | (intro h; have := congrArg (fun s => -wAl ∈ s) h; simp [yY, wAl, wBe, wTh, wPs] at this)⟩
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨List.Mem.tail _ (List.Mem.head _), by first | decide | (intro h; have := congrArg (fun s => wAl ∈ s) h; simp [yY, wAl, wBe, wTh, wPs] at this)⟩`.
+-/
 private theorem t2 : ({wBe, -wBe, wAl, wTh, wPs} : Finset (ℤ × ℤ)) ∈ redTypes ∧
     ({wBe, -wBe, wAl, wTh, wPs} : Finset (ℤ × ℤ)) ≠ yY :=
   ⟨List.Mem.tail _ (List.Mem.head _), by first | decide | (intro h; have := congrArg (fun s => wAl ∈ s) h; simp [yY, wAl, wBe, wTh, wPs] at this)⟩
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨List.Mem.tail _ (List.Mem.tail _ (List.Mem.head _)), by first | decide | (intro h; have := congrArg (fun s => wPs ∈ s) h; simp [yY, wAl, wBe, wTh, wPs] at this)⟩`.
+-/
 private theorem t3 : ({wTh, -wTh, wPs, wBe, -wAl} : Finset (ℤ × ℤ)) ∈ redTypes ∧
     ({wTh, -wTh, wPs, wBe, -wAl} : Finset (ℤ × ℤ)) ≠ yY :=
   ⟨List.Mem.tail _ (List.Mem.tail _ (List.Mem.head _)), by first | decide | (intro h; have := congrArg (fun s => wPs ∈ s) h; simp [yY, wAl, wBe, wTh, wPs] at this)⟩
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨List.Mem.tail _ (List.Mem.tail _ (List.Mem.tail _ (List.Mem.head _))), by first | decide | (intro h; have := congrArg (fun s => -wPs ∈ s) h; simp [yY, wAl, wBe, wTh, wPs] at this)⟩`.
+-/
 private theorem t4 : ({wTh, -wTh, -wPs, -wBe, wAl} : Finset (ℤ × ℤ)) ∈ redTypes ∧
     ({wTh, -wTh, -wPs, -wBe, wAl} : Finset (ℤ × ℤ)) ≠ yY :=
   ⟨List.Mem.tail _ (List.Mem.tail _ (List.Mem.tail _ (List.Mem.head _))), by first | decide | (intro h; have := congrArg (fun s => -wPs ∈ s) h; simp [yY, wAl, wBe, wTh, wPs] at this)⟩
+/- English proof (translation)
+Use `haveI := hS.char`. Set `φ : X.B →+* R` to `(f : X.A →+* R).comp (algebraMap X.B X.A)`. Establish `hφ : ∀ t : Λ, φ (algebraMap Λ X.B t) = algebraMap Λ R t` using `fun t => by show f (algebraMap X.B X.A _) = _`. Rewrite using `[← IsScalarTower.algebraMap_apply, AlgHom.commutes]`. Take `⟨ϖ, hϖ⟩` from `(IsPrincipalIdealRing.principal (maximalIdeal Λ)).1`.
+
+Establish `hm : ∀ q : Ideal R, algebraMap Λ R ϖ ∈ q → ∀ t ∈ maximalIdeal Λ, algebraMap Λ R t ∈ q` using `fun q hq t ht => by`. Rewrite `ht` using `[hϖ]`. Take `⟨u, rfl⟩` from `Ideal.mem_span_singleton'.1 ht`. Rewrite using `[map_mul]`. Conclude with `q.mul_mem_left _ hq`.
+
+Establish `hϖm : algebraMap Λ R ϖ ∈ maximalIdeal R` using `map_nonunit _ _ (show ϖ ∈ maximalIdeal Λ by rw [hϖ]; exact Ideal.mem_span_singleton_self ϖ)`. Set `A : {S // S ∈ redTypes ∧ S ≠ yY} → Ideal R` to `fun S => redIdeal S.1 (X.P.map (f : X.A →+* R)).r`. Set `B : {t : Φ.ι × Fin 4 × Fin 4 // t.2.1 ≠ t.2.2} → Ideal R` to `fun t => J.map φ ⊔ Ideal.span {algebraMap Λ R ϖ} ⊔ Ideal.span ((fun s => φ (X.ψ t.1.1 t.1.2.1 s - X.ψ t.1.1 t.1.2.2 s)) '' U t.1.1)`. Use `haveI : Finite {S // S ∈ redTypes ∧ S ≠ yY} := Set.Finite.to_subtype ((List.finite_toSet redTypes).subset fun S h => h.1)`. Establish `hb : ∀ t, ∀ q : Ideal R, q.IsPrime → B t ≤ q → (∀ S, ¬ A S ≤ q) → ringKrullDim (R ⧸ q) < N`.
+
+Introduce `t q hq hle hr`. Use `haveI := hq`. Establish `hq0 : ∀ z, ((algebraMap (R ⧸ q) (FractionRing (R ⧸ q))).comp (Ideal.Quotient.mk q)) z = 0 ↔ z ∈ q` using `fun z => by`. Rewrite using `[RingHom.comp_apply, map_eq_zero_iff _ (IsFractionRing.injective (R ⧸ q) (FractionRing (R ⧸ q))), Ideal.Quotient.eq_zero_iff_mem]`. Establish `hfib : ringKrullDim (R ⧸ q) ≤ ringKrullDim (X.B ⧸ q.comap ((f : X.A →+* R).comp (algebraMap X.B X.A))) + (2 + 4 * Nat.card Φ.ι : ℕ)`.
+
+Distinguish the cases in `hYq : redIdeal yY (X.P.map (f : X.A →+* R)).r ≤ q`. Conclude with `hFY Φ l a hS X c hc R f hdef q _ rfl (supp_of X.P.r _ _ q (fun z hz => (hq0 z).2 hz) hYq) (ent_of X.P.r _ _ q hq0 hYq (hr ⟨_, t4⟩) w4) (ent_of X.P.r _ _ q hq0 hYq (hr ⟨_, t3⟩) w3) (ent_of X.P.r _ _ q hq0 hYq (hr ⟨_, t1⟩) w1) (ent_of X.P.r _ _ q hq0 hYq (hr ⟨_, t2⟩) w2)`. Conclude with `fib Φ l a hS X c hc R f hdef q (Ch.irr hS.ok hc hdef.1 ((algebraMap (R ⧸ q) (FractionRing (R ⧸ q))).comp (Ideal.Quotient.mk q)) q (fun z hz => (hq0 z).1 hz) fun S hS' => by`. Distinguish the cases in `hSY : S = yY`. Substitute `hSY` using the available equality.
+
+Conclude with `hYq`. Conclude with `hr ⟨S, hS', hSY⟩)`. Conclude with `ch_num hfib (hnn t.1.1 _ _ t.2 (q.comap φ) (Ideal.comap_isPrime _ _) (Ideal.map_le_iff_le_comap.1 (le_sup_left.trans (le_sup_left.trans hle))) (Ideal.map_le_iff_le_comap.2 fun u hu => by show φ (algebraMap Λ X.B u) ∈ q`. Rewrite using `[hφ]`. Conclude with `hm q (hle (Ideal.mem_sup_left (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)))) u hu)`.
+
+Use `fun s hs => hle (Ideal.mem_sup_right (Ideal.subset_span ⟨s, hs, rfl⟩))) hN2`. Take `⟨p, hp, hIp, hdim, hϖp, hA, hBp⟩` from `Ch.nice _ hϖm N (by omega) A B (fun S => (hRA Φ l a hS d C hB c hc hIA hE R _ hdef S.1 S.2.1 S.2.2).trans_lt (by exact_mod_cast hN1)) hb _ hPQ.2.2`. Establish `hJp : ∀ b ∈ J, φ b ∈ p` using `fun b hb => hIp (Ideal.mem_sup_left (hP hb))`. Establish `hYp : ¬ redIdeal yY (X.P.map (f : X.A →+* R)).r ≤ p`. Introduce `hle`.
+
+Use `haveI := hp`. Take `⟨v⟩` from `hne`. Establish `hq0 : ∀ z ∈ p, ((algebraMap (R ⧸ p) (FractionRing (R ⧸ p))).comp (Ideal.Quotient.mk p)) z = 0` using `fun z hz => by`. Rewrite using `[RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem.2 hz, map_zero]`. Establish `hpair` using `hdef.1.pair.map ((algebraMap (R ⧸ p) (FractionRing (R ⧸ p))).comp (Ideal.Quotient.mk p))`.
+
+Rewrite `hpair` using `[PD.map_map]`. Establish `hsupp` using `supp_of X.P.r (f : X.A →+* R) _ p hq0 hle`. Establish `h1 : res Λ R ((f : X.A →+* R) (X.P.n v 1 0)) = c.n v 1 0`. Rewrite using `[← hdef.1.red]`. Both sides reduce to the same expression.
+
+Establish `hu : IsUnit ((f : X.A →+* R) (X.P.n v 1 0))`. Assume the negation of the conclusion as `hu`. Establish `h4` using `(res_eq_zero_iff Λ R _).2 ((mem_maximalIdeal _).2 hu)`. Rewrite `h4` using `[h1]`. Conclude with `hIA.2 v h4`.
+
+Establish `hn : (X.P.map (((algebraMap (R ⧸ p) (FractionRing (R ⧸ p))).comp (Ideal.Quotient.mk p)).comp (f : X.A →+* R))).n v 1 0 ≠ 0`. Use `(hu.map ((algebraMap (R ⧸ p) (FractionRing (R ⧸ p))).comp (Ideal.Quotient.mk p))).ne_zero` as an intermediate fact. Simplify `this` using `only [PD.map_n, Matrix.map_apply, RingHom.comp_apply]`. Establish `hBle : ∀ (i i' : Fin 4) (hi : i ≠ i'), (∀ s ∈ Φ.Gv v, (X.P.map (((algebraMap (R ⧸ p) (FractionRing (R ⧸ p))).comp (Ideal.Quotient.mk p)).comp (f : X.A →+* R))).ψ v i s = (X.P.map (((algebraMap (R ⧸ p) (FractionRing (R ⧸ p))).comp (Ideal.Quotient.mk p)).comp (f : X.A →+* R))).ψ v …` using `fun i i' hi hh => by`. Use `sup_le (sup_le (Ideal.map_le_iff_le_comap.2 hJp) ((Ideal.span_singleton_le_iff_mem _).2 hϖp)) (Ideal.span_le.2 ?_)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨s, hs, rfl⟩`. Establish `e` using `hh s (hU v s hs)`. Simplify using `only [PD.map_ψ, RingHom.comp_apply] at e`. Establish `e2 : ∀ k, φ (X.ψ v k s) = (f : X.A →+* R) (X.P.ψ v k s)` using `fun k => by show (f : X.A →+* R) (algebraMap X.B X.A (X.ψ v k s)) = _`. Rewrite using `[X.ψ_map v k s (hU v s hs)]`.
+
+Use `show φ (X.ψ v i s - X.ψ v i' s) ∈ p`. Rewrite using `[map_sub, e2, e2, ← Ideal.Quotient.eq_zero_iff_mem, ← map_eq_zero_iff _ (IsFractionRing.injective (R ⧸ p) (FractionRing (R ⧸ p))), map_sub, map_sub, e, sub_self]`. Break down `hYC Φ _ _ hpair hsupp v hn with h01 | h13` into its components or cases. Conclude with `hBp ⟨(v, 0, 1), (by decide : (0 : Fin 4) ≠ 1)⟩ (hBle 0 1 (by decide) h01)`. Conclude with `hBp ⟨(v, 1, 3), (by decide : (1 : Fin 4) ≠ 3)⟩ (hBle 1 3 (by decide) h13)`.
+
+Establish `hirr : ∀ S ∈ redTypes, ¬ redIdeal S (X.P.map (f : X.A →+* R)).r ≤ p` using `fun S hS' => by`. Distinguish the cases in `hSY : S = yY`. Substitute `hSY` using the available equality. Conclude with `hYp`. Conclude with `hA ⟨S, hS', hSY⟩`.
+
+Take `⟨K, _, _, _, j, hj, hj0⟩` from `Ch.curve l Λ R p hp hdim (hm p hϖp)`. Use `haveI : Q.IsPrime := hPQ.2.1.1.1`. Use `hp1 K (j.comp f) (fun b hb => hj0 _ ?_) (fun b hb => (hj _).2 (hJp b hb)) (fun v i i' hi => ?_) (Ch.irr hS.ok hc hdef.1 ((algebraMap (PowerSeries K) (FractionRing (PowerSeries K))).comp (j : R →+* PowerSeries K)) p (fun x hx => (hj x).1 ((map_eq_zero_iff _ (IsFractionRing.injecti …` and prove the remaining obligations. Use `show (f.comp (IsScalarTower.toAlgHom Λ X.B X.A)) b ∈ maximalIdeal R`. Rewrite using `[← res_eq_zero_iff Λ, res_map, res_eq_zero_iff]`.
+
+Conclude with `hb`. Assume the negation of the conclusion as `hn push Not at hn`. Use `hBp ⟨(v, i, i'), hi⟩ (sup_le (sup_le (Ideal.map_le_iff_le_comap.2 hJp) ((Ideal.span_singleton_le_iff_mem _).2 hϖp)) (Ideal.span_le.2 ?_))` and prove the remaining obligations. Introduce and unpack `_ ⟨s, hs, rfl⟩`. Use `(hj _).1 ?_` and prove the remaining obligations.
+
+Use `show (j.comp f) (algebraMap X.B X.A (X.ψ v i s - X.ψ v i' s)) = 0`. Rewrite using `[map_sub, map_sub, X.ψ_map v i s (hU v s hs), X.ψ_map v i' s (hU v s hs), hn s hs, sub_self]`.
+-/
 private theorem ch_core4 (hRA : RedA) (hYC : YCoin) (hFY : FibY) {O Γ : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ]
     [IsTopologicalGroup Γ] [CompactSpace Γ] [TotallyDisconnectedSpace Γ] {Φ : Fr O Γ} {l : ℕ} [Fact l.Prime] {Λ : Type}
     [CommRing Λ] [IsDomain Λ] [IsDiscreteValuationRing Λ] [IsAdicComplete (maximalIdeal Λ) Λ] [Finite (ResidueField Λ)]
@@ -210,6 +282,29 @@ private theorem ch_core4 (hRA : RedA) (hYC : YCoin) (hFY : FibY) {O Γ : Type} [
     show (j.comp f) (algebraMap X.B X.A (X.ψ v i s - X.ψ v i' s)) = 0
     rw [map_sub, map_sub, X.ψ_map v i s (hU v s hs), X.ψ_map v i' s (hU v s hs), hn s hs, sub_self]
 end UpperTheory.V.Cu.RankFourReductionTypeChain
+/- English proof (translation)
+Introduce `hRA hYC hFY`. Unfold `_root_.UpperTheory.V.Cu.ChainRankFour`. Introduce `hC Ω _ _ _ l _ c D T hF hD ι c' h X J hPM C hB hd x hx hg hsome`. Unfold `Good4 at hg`. Break down `hg with hg | hg` into its components or cases.
+
+Conclude with `_root_.UpperTheory.V.Ws.residual_charpoly_rank_four hC D T hF hD ι c' h X J hPM C hB hd x hx hg hsome`. Take `⟨q₀, hq₀, hq₀x, hq₀J⟩` from `hsome`. Introduce `q hq hqx`. Establish `hIA : InA (X.P.map (x : X.A →+* ResidueField c'.O))`. Break down `hg with ⟨h1, -⟩ | ⟨h1, -⟩` into its components or cases.
+
+Conclude with `h1`. Conclude with `h1`. Establish `hE : Ent (X.P.map (x : X.A →+* ResidueField c'.O)).r (-wPs) ∨ (Ent (X.P.map (x : X.A →+* ResidueField c'.O)).r (-wBe) ∧ Ent (X.P.map (x : X.A →+* ResidueField c'.O)).r (-wTh))`. Break down `hg with ⟨-, h2⟩ | ⟨-, h2, h3⟩` into its components or cases. Conclude with `Or.inl h2`.
+
+Conclude with `Or.inr ⟨h2, h3⟩`. Use `haveI : Finite (ResidueField c'.O) := (UpperTheory.V.abelian₂.dvr_finite l c'.O).2.1`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : IsAlgClosure T.F Ω := ⟨inferInstance, inferInstance⟩`. Use `haveI : IsGalois T.F Ω := {}`.
+
+Use `haveI : CompactSpace (G T.F Ω) := inferInstanceAs (CompactSpace (Ω ≃ₐ[T.F] Ω))`. Use `haveI : TotallyDisconnectedSpace (G T.F Ω) := inferInstanceAs (TotallyDisconnectedSpace (Ω ≃ₐ[T.F] Ω))`. Establish `hS` using `(std hC D T hF ∅ c' h).1 (Finset.notMem_empty 0)`. Take `⟨R, _, _, _, f, hdef, hfl, hres⟩` from `cmplEx (T.fr ∅) l (inc h) hS X x hx`. Take `⟨a, b, π, e, hπ, hk, hab⟩` from `x1 hC D T hF hD c' h _ hx R _ hdef`.
+
+Take `⟨dv, hdv⟩` from `chDv D T`. Establish `hg' : Nat.card T.ι ≤ C` using `hB.card`. Establish `hdv' : 30 * (C + 1) ≤ dv`. Assume the negation of the conclusion as `hn`. Establish `h1 : dv * Nat.card T.ι ≤ 30 * (C + 1) * C` using `Nat.mul_le_mul (by omega) hg'`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hd' : 30 * (C + 1) ≤ T.d` using `le_trans (Nat.le_mul_of_pos_right _ (by omega)) hd`. Establish `hne : Nonempty T.ι`. Establish `hpos : 0 < Nat.card T.ι` using `Nat.pos_of_ne_zero fun h0 => by`. Rewrite `hdv` using `[h0, mul_zero]`.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `(Nat.card_pos_iff.1 hpos).1`. Take `⟨N, hN⟩ : ∃ N, N + 2 * Nat.card T.ι = 2 * T.d + 1` from `⟨2 * T.d + 1 - 2 * Nat.card T.ι, by omega⟩`. Establish `hker : RingHom.ker x = (maximalIdeal R).comap (f : X.A →+* R)`. Use extensionality with `z`.
+
+Rewrite using `[RingHom.mem_ker, ← hres]`. Conclude with `res_eq_zero_iff c'.O R (f z)`. Take `⟨P, hP, rfl⟩` from `Ch.flat_min _ hfl hq₀ (hker ▸ hq₀x)`. Take `⟨Q, hQ, rfl⟩` from `Ch.flat_min _ hfl hq (hker ▸ hqx)`. Rewrite `hq₀J`, the goal using `[Ideal.map_le_iff_le_comap, Ideal.comap_comap]`.
+
+Establish `hch` using `Ch.chain c'.O (D := N + 1) π e hπ hk (by omega) hP hQ`. Use `clear hq hqx hQ`. Proceed by induction on `hch with`. Consider the case `refl => exact hq₀J`. Consider the case `tail _ hPQ ih`.
+
+Conclude with `RankFourReductionTypeChain.ch_core4 hRA hYC hFY hS hne X J T.U1 (fun v s hs => Ine_le_Dec _ hs.1) (dv := dv) hB (by omega) (by show _ + (2 + 4 * Nat.card T.ι) < _; omega) (fun v i j hij q h1 h2 h3 h4 => _root_.UpperTheory.V.Ws.off_diagonal_nilpotent_rank_four hC D T hF hD ι c' h …`.
+-/
 theorem UpperTheory.V.Cu.chain_rank_four_of_red_a_y_coin_fib_y : RedA → YCoin → FibY → _root_.UpperTheory.V.Cu.ChainRankFour := by
   intro hRA hYC hFY
   unfold _root_.UpperTheory.V.Cu.ChainRankFour

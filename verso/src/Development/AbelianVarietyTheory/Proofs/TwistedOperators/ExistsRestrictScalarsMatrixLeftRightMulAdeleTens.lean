@@ -12,6 +12,19 @@ namespace GlobalTheory.ModuLR
 
 section Conj
 
+/- English proof (translation)
+Use `set ν : Measure A := Measure.addHaar`. Use `set μ : Measure B := ν.map e`. Use `haveI : μ.IsAddHaarMeasure := e.isAddHaarMeasure_map ν`. Use `haveI : μ.Regular := Measure.Regular.map e.toHomeomorph`. Use `set ψ : B ≃ₜ+ B := (e.symm.trans φ).trans e`.
+
+Establish `he : Measurable e` using `e.continuous.measurable`. Establish `hφ : Measurable φ` using `φ.continuous.measurable`. Establish `hψ : Measurable ψ` using `ψ.continuous.measurable`. Establish `h1` using `addEquivAddHaarChar_smul_map ν φ`. Establish `h2` using `addEquivAddHaarChar_smul_map μ ψ`.
+
+Establish `hm : μ.map ψ = (ν.map φ).map e`. Rewrite using `[Measure.map_map hψ he, Measure.map_map he hφ]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `[ψ]`.
+
+Establish `h3 : addEquivAddHaarChar φ • μ.map ψ = μ` using `by rw [hm, ← Measure.map_smul, h1]`. Use `haveI : (μ.map ψ).IsAddHaarMeasure := ψ.isAddHaarMeasure_map μ`. Take `⟨K, hK, hKn⟩` from `exists_compact_mem_nhds (0 : B)`. Establish `hpos : (μ.map ψ) K ≠ 0` using `(Measure.measure_pos_of_mem_nhds (μ := μ.map ψ) hKn).ne'`. Establish `htop : (μ.map ψ) K ≠ ⊤` using `(hK.measure_lt_top).ne`.
+
+Establish `h4 : (addEquivAddHaarChar ψ : ℝ≥0∞) * (μ.map ψ) K = (addEquivAddHaarChar φ : ℝ≥0∞) * (μ.map ψ) K`. Establish `a2` using `congrArg (fun m : Measure B => m K) h2`. Establish `a3` using `congrArg (fun m : Measure B => m K) h3`. Simplify using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul] at a2 a3`. Rewrite using `[a2, a3]`.
+
+Conclude with `(ENNReal.mul_left_inj hpos htop).1 h4` after adjusting the coercions.
+-/
 theorem addEquivAddHaarChar_transport {A B : Type} [AddCommGroup A] [TopologicalSpace A] [IsTopologicalAddGroup A]
     [LocallyCompactSpace A] [MeasurableSpace A] [BorelSpace A] [AddCommGroup B] [TopologicalSpace B]
     [IsTopologicalAddGroup B] [LocallyCompactSpace B] [MeasurableSpace B] [BorelSpace B]
@@ -56,6 +69,11 @@ def lrLin (g : Matrix (Fin m) (Fin m) S) (a : Matrix (Fin n) (Fin n) S) :
   map_add' u v := by rw [Matrix.mul_add, Matrix.add_mul]
   map_smul' c u := by simp [Matrix.mul_smul, Matrix.smul_mul]
 
+/- English proof (translation)
+Set `e : Matrix (Fin m) (Fin n) S ≃ₗ[S] (Fin m × Fin n → S)` to `(LinearEquiv.curry S S (Fin m) (Fin n)).symm`. Establish `key : (e : Matrix (Fin m) (Fin n) S →ₗ[S] (Fin m × Fin n → S)) ∘ₗ lrLin g a ∘ₗ (e.symm : (Fin m × Fin n → S) →ₗ[S] Matrix (Fin m) (Fin n) S) = Matrix.toLin' (g ⊗ₖ aᵀ)`. Use `LinearMap.ext fun x => funext fun p => ?_` and prove the remaining obligations. Take `⟨i, j⟩` from `p`. Express the relevant statement in the definitionally equal form `(g * Matrix.of (Function.curry x) * a) i j = _`.
+
+Simplify using `only [Matrix.toLin'_apply, Matrix.mulVec, dotProduct, Fintype.sum_prod_type, Matrix.kroneckerMap_apply, Matrix.transpose_apply, Matrix.mul_apply, Finset.sum_mul, Function.curry_apply, Matrix.of_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring` and prove the remaining obligations. Rewrite using `[← LinearMap.det_conj (lrLin g a) e, key, LinearMap.det_toLin', Matrix.det_kronecker, Matrix.det_transpose]`. Simplify using the standard rewrite rules.
+-/
 theorem det_lrLin (g : Matrix (Fin m) (Fin m) S) (a : Matrix (Fin n) (Fin n) S) :
     LinearMap.det (lrLin g a) = g.det ^ n * a.det ^ m := by
   let e : Matrix (Fin m) (Fin n) S ≃ₗ[S] (Fin m × Fin n → S) := (LinearEquiv.curry S S (Fin m) (Fin n)).symm
@@ -100,6 +118,9 @@ def matCoord (m n : ℕ) :
   map_add' u v := by funext p; simp
   map_smul' c u := by funext p; simp
 
+/- English proof (translation)
+Use `haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩`. Establish `hb : Continuous (tensBasis F E).equivFun` using `IsModuleTopology.continuous_of_linearMap (tensBasis F E).equivFun.toLinearMap`. Conclude with `continuous_pi fun p => (continuous_apply p.2.2).comp (hb.comp ((continuous_apply p.2.1).comp (continuous_apply p.1)))`.
+-/
 theorem continuous_matCoord (m n : ℕ) : Continuous (matCoord F E m n) := by
   haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩
   have hb : Continuous (tensBasis F E).equivFun :=
@@ -107,6 +128,9 @@ theorem continuous_matCoord (m n : ℕ) : Continuous (matCoord F E m n) := by
   exact continuous_pi fun p => (continuous_apply p.2.2).comp
     (hb.comp ((continuous_apply p.2.1).comp (continuous_apply p.1)))
 
+/- English proof (translation)
+Use `haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩`. Establish `hb : Continuous (tensBasis F E).equivFun.symm` using `IsModuleTopology.continuous_of_linearMap (tensBasis F E).equivFun.symm.toLinearMap`. Conclude with `continuous_pi fun i => continuous_pi fun j => hb.comp (continuous_pi fun k => continuous_apply (i, j, k))`.
+-/
 theorem continuous_matCoord_symm (m n : ℕ) : Continuous (matCoord F E m n).symm := by
   haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩
   have hb : Continuous (tensBasis F E).equivFun.symm :=
@@ -126,6 +150,15 @@ end GlobalTheory.ModuLR
 
 namespace GlobalTheory.ModuLR
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ m n _ _ _ _ g a`. Use `haveI : IsScalarTower (AF F) (AF F ⊗[F] E) (Matrix (Fin m) (Fin n) (AF F ⊗[F] E)) := inferInstance`. Use `haveI : Module.Free (AF F) (AF F ⊗[F] E) := Module.Free.of_basis (tensBasis F E)`. Use `haveI : Module.Finite (AF F) (AF F ⊗[F] E) := Module.Finite.of_basis (tensBasis F E)`. Use `set Φ := matCoord F E m n`.
+
+Use `set f : Matrix (Fin m) (Fin n) (AF F ⊗[F] E) →ₗ[AF F ⊗[F] E] Matrix (Fin m) (Fin n) (AF F ⊗[F] E) := lrLin (g : Matrix (Fin m) (Fin m) (AF F ⊗[F] E)) (a : Matrix (Fin n) (Fin n) (AF F ⊗[F] E))`. Use `set Λ := LinearMap.toMatrix' (Φ.toLinearMap ∘ₗ f.restrictScalars (AF F) ∘ₗ Φ.symm.toLinearMap)`. Establish `hdet : Λ.det = Algebra.norm (AF F) ((Matrix.GeneralLinearGroup.det g ^ n * Matrix.GeneralLinearGroup.det a ^ m : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E)`. Rewrite using `[LinearMap.det_toMatrix', LinearMap.det_conj, LinearMap.det_restrictScalars, det_lrLin]`. Simplify using `[Matrix.GeneralLinearGroup.val_det_apply]`.
+
+Establish `hΛ : IsUnit Λ.det` using `hdet ▸ (Units.isUnit _).map (Algebra.norm (AF F))`. Use `⟨_, inferInstance, inferInstance, Λ, hΛ, hdet, ?_⟩` and prove the remaining obligations. Establish `hc : mulVecCE Λ hΛ = ((matCoordCE F E m n).symm.trans (lrCE g a)).trans (matCoordCE F E m n)`. Use extensionality with `x`. Rewrite using `[mulVecCE_apply, LinearMap.toMatrix'_mulVec]`.
+
+Both sides reduce to the same expression. Rewrite using `[hc, addEquivAddHaarChar_transport]`.
+-/
 theorem exists_matrix_restrictScalars_lrCE : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (m n : ℕ) [LocallyCompactSpace (Matrix (Fin m) (Fin n) (AF F ⊗[F] E))] [SecondCountableTopology (Matrix (Fin m) (Fin n) (AF F ⊗[F] E))] [MeasurableSpace (Matrix (Fin m) (Fin n) (AF F ⊗[F] E))] [BorelSpace (Matrix (Fin m) (Fin n) (AF F ⊗[F] E))] (g : GL (Fin m) (AF F ⊗[F] E)) (a : GL (Fin n) (AF F ⊗[F] E)), ∃ (κ : Type) (_ : Fintype κ) (_ : DecidableEq κ) (Λ : Matrix κ κ (AF F)) (hΛ : IsUnit Λ.det), Λ.det = Algebra.norm (AF F) ((Matrix.GeneralLinearGroup.det g ^ n * Matrix.GeneralLinearGroup.det a ^ m : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) ∧ addEquivAddHaarChar (lrCE g a) = addEquivAddHaarChar (mulVecCE Λ hΛ) := by
   intro F E _ _ _ _ _ m n _ _ _ _ g a
   haveI : IsScalarTower (AF F) (AF F ⊗[F] E) (Matrix (Fin m) (Fin n) (AF F ⊗[F] E)) := inferInstance

@@ -9,6 +9,11 @@ open scoped BigOperators
 
 namespace GlobalTheory.TransInv
 
+/- English proof (translation)
+Introduce `h0`. Rewrite `h` using `[LinearIndependent.pair_iff]`. Simplify using `only [Complex.mul_im, Complex.conj_re, Complex.conj_im] at h0`. Establish `h1` using `h w₂.im (-w₁.im) (by`. Apply the tactic sequence `apply Complex.ext <;> simp <;> linarith)`.
+
+Establish `h2` using `h w₂.re (-w₁.re) (by`. Apply the tactic sequence `apply Complex.ext <;> simp <;> linarith)`. Establish `h3` using `h 1 0 (by`. Apply the tactic sequence `apply Complex.ext <;> simp <;> linarith [h1.2, h2.2])`. Conclude with `one_ne_zero h3.1`.
+-/
 theorem im_conj_mul_ne_zero {w₁ w₂ : ℂ} (h : LinearIndependent ℝ ![w₁, w₂]) :
     ((starRingEnd ℂ) w₁ * w₂).im ≠ 0 := by
   intro h0
@@ -22,6 +27,9 @@ theorem im_conj_mul_ne_zero {w₁ w₂ : ℂ} (h : LinearIndependent ℝ ![w₁,
     apply Complex.ext <;> simp <;> linarith [h1.2, h2.2])
   exact one_ne_zero h3.1
 
+/- English proof (translation)
+Take `⟨a, b, rfl⟩` from `AddSubgroup.mem_closure_pair.1 hu`. Take `⟨c, d, rfl⟩` from `AddSubgroup.mem_closure_pair.1 hv`. Use `⟨a * d - b * c, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem im_conj_mul_mem {w₁ w₂ u v : ℂ} (hu : u ∈ AddSubgroup.closure ({w₁, w₂} : Set ℂ))
     (hv : v ∈ AddSubgroup.closure ({w₁, w₂} : Set ℂ)) :
     ∃ k : ℤ, ((starRingEnd ℂ) u * v).im = k * ((starRingEnd ℂ) w₁ * w₂).im := by
@@ -31,6 +39,13 @@ theorem im_conj_mul_mem {w₁ w₂ u v : ℂ} (hu : u ∈ AddSubgroup.closure ({
   simp
   ring
 
+/- English proof (translation)
+Establish `h0` using `im_conj_mul_ne_zero h`. Unfold `area`. Apply `IsLeast.csInf_eq` to reduce the goal to its premises. Use `⟨⟨abs_pos.2 h0, w₁, AddSubgroup.subset_closure (by simp), w₂, AddSubgroup.subset_closure (by simp), rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `a ⟨ha, u, hu, v, hv, rfl⟩`.
+
+Take `⟨k, hk⟩` from `im_conj_mul_mem hu hv`. Rewrite `ha`, the goal using `[hk]`. Establish `hk0 : k ≠ 0`. Introduce and unpack `rfl`. Simplify using `at ha`.
+
+Establish `h1 : (1 : ℝ) ≤ |(k : ℝ)|` using `by exact_mod_cast Int.one_le_abs hk0`. Rewrite using `[abs_mul]`. Use polynomial arithmetic with `[abs_nonneg ((starRingEnd ℂ) w₁ * w₂).im]`.
+-/
 theorem area_closure_pair {w₁ w₂ : ℂ} (h : LinearIndependent ℝ ![w₁, w₂]) :
     area (AddSubgroup.closure ({w₁, w₂} : Set ℂ)) = |((starRingEnd ℂ) w₁ * w₂).im| := by
   have h0 := im_conj_mul_ne_zero h
@@ -48,6 +63,11 @@ theorem area_closure_pair {w₁ w₂ : ℂ} (h : LinearIndependent ℝ ![w₁, w
   rw [abs_mul]
   nlinarith [abs_nonneg ((starRingEnd ℂ) w₁ * w₂).im]
 
+/- English proof (translation)
+Take `⟨w₁, w₂, h, rfl⟩` from `hΛ`. Rewrite using `[area_closure_pair h]`. Use `⟨abs_pos.2 (im_conj_mul_ne_zero h), fun u hu v hv => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `im_conj_mul_mem hu hv`. Break down `abs_cases ((starRingEnd ℂ) w₁ * w₂).im with h1 | h1` into its components or cases.
+
+Conclude with `⟨k, by rw [hk, h1.1]⟩`. Conclude with `⟨-k, by rw [hk, h1.1]; push_cast; ring⟩`.
+-/
 theorem im_conj_mul_eq_int_mul_area {Λ : AddSubgroup ℂ}
     (hΛ : ∃ w₁ w₂ : ℂ, LinearIndependent ℝ ![w₁, w₂] ∧ Λ = AddSubgroup.closure {w₁, w₂}) :
     0 < area Λ ∧ ∀ u ∈ Λ, ∀ v ∈ Λ, ∃ k : ℤ, ((starRingEnd ℂ) u * v).im = k * area Λ := by
@@ -59,6 +79,13 @@ theorem im_conj_mul_eq_int_mul_area {Λ : AddSubgroup ℂ}
   · exact ⟨k, by rw [hk, h1.1]⟩
   · exact ⟨-k, by rw [hk, h1.1]; push_cast; ring⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Establish `h` using `hη (z + x)`. Establish `hA' : (area Λ : ℂ) ≠ 0` using `by exact_mod_cast hA`. Establish `hs` using `Complex.sub_conj ((starRingEnd ℂ) η * x)`. Rewrite `hs` using `[hk, map_mul, Complex.conj_conj]`.
+
+Move the coercions through the operations in `at hs`. Unfold `U1 at h ⊢`. Rewrite using `[← h, mul_assoc (G (z + x + η)), ← Complex.exp_add, ← add_assoc]`. Use `congr 1`. Rewrite using `[Complex.exp_eq_exp_iff_exists_int]`.
+
+Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hs`.
+-/
 theorem translate_add_of_fixed {Λ : AddSubgroup ℂ} (hA : area Λ ≠ 0) (G : ℂ → ℂ) (x η : ℂ) (k : ℤ)
     (hη : ∀ z, U1 Λ η G z = G z) (hk : ((starRingEnd ℂ) η * x).im = 2 * k * area Λ) :
     U1 Λ (x + η) G = U1 Λ x G := by
@@ -77,6 +104,15 @@ theorem translate_add_of_fixed {Λ : AddSubgroup ℂ} (hA : area Λ ≠ 0) (G : 
   field_simp
   linear_combination hs
 
+/- English proof (translation)
+Take `⟨hA, hint⟩` from `im_conj_mul_eq_int_mul_area hΛ`. Take `⟨k, hk⟩` from `hint ω hω _ hx`. Establish `hm : (m : ℂ) * ω ∈ Λ` using `by simpa using Λ.nsmul_mem hω m`. Establish `h2 : 2 * (m : ℂ) * ω ∈ Λ`. Use `Λ.add_mem hm hm` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : 2 * (m : ℂ) * ω / 2 ∈ Λ`. Use `hm using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+
+Use `translate_add_of_fixed hA.ne' _ x _ (2 * k) (fun z => ?_) ?_` and prove the remaining obligations. Rewrite using `[(GlobalTheory.OddTheta.sgStar_laws Λ hΛ).1.2.2.2 _ h2 z, if_pos h3, one_mul]`. Establish `e : (starRingEnd ℂ) (2 * (m : ℂ) * ω) * x = ((4 : ℝ) : ℂ) * ((starRingEnd ℂ) ω * ((m : ℂ) * (x / 2)))`. Simplify using `only [map_mul, map_ofNat, map_natCast]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Complex.im_ofReal_mul, hk]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem translate_sigma_star_period {Λ : AddSubgroup ℂ}
     (hΛ : ∃ w₁ w₂ : ℂ, LinearIndependent ℝ ![w₁, w₂] ∧ Λ = AddSubgroup.closure {w₁, w₂})
     (x ω : ℂ) (m : ℕ) (hx : (m : ℂ) * (x / 2) ∈ Λ) (hω : ω ∈ Λ) :
@@ -102,6 +138,9 @@ theorem translate_sigma_star_period {Λ : AddSubgroup ℂ}
     push_cast
     ring
 
+/- English proof (translation)
+Introduce `D cc δ hc x ω m _ hx hω` and use `translate_sigma_star_period (GlobalTheory.CurveLattice.lattice_of_curve D (GlobalTheory.InducedType.induced_type D).1 cc δ hc).1 x ω m hx hω`.
+-/
 theorem transInv_all : ∀ D : D7, transInv D := fun D cc δ hc x ω m _ hx hω =>
   translate_sigma_star_period (GlobalTheory.CurveLattice.lattice_of_curve D (GlobalTheory.InducedType.induced_type D).1 cc δ hc).1 x ω m hx hω
 

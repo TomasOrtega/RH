@@ -6,6 +6,9 @@ open Formalism.FourierDecayAlt.G MeasureTheory
 
 instance sigmaFinite_mu (β : ℂ) : SigmaFinite (mu β) := by unfold mu; infer_instance
 
+/- English proof (translation)
+Unfold `muPi`. Use `Measure.pi_eq fun s hs => ?_` and prove the remaining obligations. Simplify using `only [mu, Measure.smul_apply, volume_pi_pi, ENNReal.smul_def, smul_eq_mul, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, ENNReal.coe_pow]`.
+-/
 theorem muPi_eq (β : ℂ) (ι : Type) [Fintype ι] :
     muPi β ι = (Real.toNNReal (‖β‖ / (2 * Real.pi))) ^ Fintype.card ι • (volume : Measure (ι → ℂ)) := by
   unfold muPi
@@ -16,6 +19,11 @@ theorem muPi_eq (β : ℂ) (ι : Type) [Fintype ι] :
 instance (β : ℂ) (ι : Type) [Fintype ι] : IsFiniteMeasureOnCompacts (muPi β ι) := by
   rw [muPi_eq]; infer_instance
 
+/- English proof (translation)
+Rewrite using `[contDiff_iff_contDiffAt]`. Introduce `x`. Distinguish the cases in `hx : x ∈ Ω`. Conclude with `(hφ.contDiffAt (hΩ.mem_nhds hx)).smul ha.contDiffAt`. Establish `hx' : x ∉ tsupport a` using `fun h => hx (hsupp h)`.
+
+Establish `h0 : (fun y => φ y • a y) =ᶠ[nhds x] fun _ => (0 : V)`. Use `notMem_tsupport_iff_eventuallyEq.mp hx'` as an intermediate fact. Use `filter_upwards [this] with y hy`. Simplify using `[hy]`. Conclude with `contDiffAt_const.congr_of_eventuallyEq h0`.
+-/
 theorem contDiff_smul_of_tsupport {E V : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup V] [NormedSpace ℂ V] {φ : E → ℂ} {a : E → V} {Ω : Set E} {n : WithTop ℕ∞}
     (hΩ : IsOpen Ω) (hφ : ContDiffOn ℝ n φ Ω) (ha : ContDiff ℝ n a) (hsupp : tsupport a ⊆ Ω) :
@@ -31,6 +39,11 @@ theorem contDiff_smul_of_tsupport {E V : Type*} [NormedAddCommGroup E] [NormedSp
       simp [hy]
     exact contDiffAt_const.congr_of_eventuallyEq h0
 
+/- English proof (translation)
+Apply `closure_mono` to reduce the goal to its premises. Introduce `x hx`. Simplify using `only [Function.mem_support] at hx ⊢`. Introduce `h`. Apply `hx` to reduce the goal to its premises.
+
+Simplify using `[h]`.
+-/
 theorem tsupport_smul_subset' {E V : Type*} [TopologicalSpace E]
     [NormedAddCommGroup V] [NormedSpace ℂ V] (φ : E → ℂ) (a : E → V) :
     tsupport (fun x => φ x • a x) ⊆ tsupport a := by
@@ -43,6 +56,9 @@ section
 
 variable {d : ℕ} {F : Type*} [NormedAddCommGroup F] [NormedSpace ℂ F]
 
+/- English proof (translation)
+Establish `h1 : HasFDerivAt g (fderiv ℂ g (x + ζ • v)) (x + ζ • v)` using `(hg.differentiableAt (hΩ.mem_nhds h)).hasFDerivAt`. Establish `h2 : HasDerivAt (fun ζ : ℂ => x + ζ • v) v ζ`. Simplify using `using ((hasDerivAt_id ζ).smul_const v).const_add x`. Conclude with `h1.comp_hasDerivAt ζ h2`.
+-/
 theorem hol_hasDerivAt_line {Ω : Set (Fin d → ℂ)} {g : (Fin d → ℂ) → F} (hΩ : IsOpen Ω)
     (hg : DifferentiableOn ℂ g Ω) (x v : Fin d → ℂ) (ζ : ℂ) (h : x + ζ • v ∈ Ω) :
     HasDerivAt (fun ζ : ℂ => g (x + ζ • v)) (fderiv ℂ g (x + ζ • v) v) ζ := by
@@ -52,6 +68,11 @@ theorem hol_hasDerivAt_line {Ω : Set (Fin d → ℂ)} {g : (Fin d → ℂ) → 
     simpa using ((hasDerivAt_id ζ).smul_const v).const_add x
   exact h1.comp_hasDerivAt ζ h2
 
+/- English proof (translation)
+Use extensionality with `v`. Establish `hv : v = ∑ k, v k • (Pi.single k (1 : ℂ) : Fin d → ℂ)` using `by conv_lhs => rw [← Finset.univ_sum_single v]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use extensionality with `i`. Distinguish the cases in `hik : i = k`.
+
+Substitute `hik` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne hik]`. Use `conv_lhs => rw [hv]`. Simplify using `[map_sum]`.
+-/
 theorem hol_clm_decomp (L : (Fin d → ℂ) →L[ℂ] F) :
     L = ∑ k, (ContinuousLinearMap.proj k : (Fin d → ℂ) →L[ℂ] ℂ).smulRight (L (Pi.single k 1)) := by
   ext v
@@ -65,6 +86,13 @@ theorem hol_clm_decomp (L : (Fin d → ℂ) →L[ℂ] F) :
   conv_lhs => rw [hv]
   simp [map_sum]
 
+/- English proof (translation)
+Take `⟨R, hR, hsub⟩` from `Metric.nhds_basis_closedBall.mem_iff.mp (hΩ.mem_nhds hx₀)`. Use `⟨R, R / (2 * (‖v‖ + 1)), hR, by positivity, hsub, ?_⟩` and prove the remaining obligations. Introduce `x hx ζ hζ`. Rewrite `hx` using `[Metric.mem_ball, dist_eq_norm]`. Rewrite `hζ` using `[Metric.mem_closedBall, dist_eq_norm, sub_zero]`.
+
+Rewrite using `[Metric.mem_closedBall, dist_eq_norm]`. Establish `h1 : ‖ζ • v‖ ≤ R / 2`. Rewrite using `[norm_smul]`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul hζ (by linarith) (norm_nonneg _) (by positivity)` to reduce the goal to its premises.
+
+Use `_ = R / 2 := by field_simp`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem hol_radius {Ω : Set (Fin d → ℂ)} (hΩ : IsOpen Ω) {x₀ : Fin d → ℂ} (hx₀ : x₀ ∈ Ω) (v : Fin d → ℂ) :
     ∃ R r : ℝ, 0 < R ∧ 0 < r ∧ Metric.closedBall x₀ R ⊆ Ω ∧
       ∀ x ∈ Metric.ball x₀ (R / 2), ∀ ζ ∈ Metric.closedBall (0 : ℂ) r, x + ζ • v ∈ Metric.closedBall x₀ R := by
@@ -83,6 +111,21 @@ theorem hol_radius {Ω : Set (Fin d → ℂ)} (hΩ : IsOpen Ω) {x₀ : Fin d �
     _ ≤ ‖x - x₀‖ + ‖ζ • v‖ := norm_add_le _ _
     _ ≤ R := by linarith
 
+/- English proof (translation)
+Introduce `x₀ hx₀`. Apply `ContinuousAt.continuousWithinAt` to reduce the goal to its premises. Take `⟨R, r, hR, hr, hsub, hmem⟩` from `hol_radius hΩ hx₀ v`. Establish `hK : IsCompact (Metric.closedBall x₀ R)` using `isCompact_closedBall x₀ R`. Establish `huc` using `hK.uniformContinuousOn_of_continuous (hg.continuousOn.mono hsub)`.
+
+Rewrite `huc` using `[Metric.uniformContinuousOn_iff]`. Rewrite using `[Metric.continuousAt_iff]`. Introduce `ε hε`. Take `⟨δ, hδ, hδ'⟩` from `huc (ε * r / 2) (by positivity)`. Use `⟨min δ (R / 2), lt_min hδ (by positivity), ?_⟩` and prove the remaining obligations.
+
+Introduce `x hx`. Establish `hx1 : dist x x₀ < δ` using `lt_of_lt_of_le hx (min_le_left _ _)`. Establish `hx2 : x ∈ Metric.ball x₀ (R / 2)` using `lt_of_lt_of_le hx (min_le_right _ _)`. Establish `hx0 : x₀ ∈ Metric.ball x₀ (R / 2)` using `Metric.mem_ball_self (by positivity)`. Establish `hd : ∀ ζ ∈ Metric.closedBall (0 : ℂ) r, HasDerivAt (fun ζ : ℂ => g (x + ζ • v) - g (x₀ + ζ • v)) (fderiv ℂ g (x + ζ • v) v - fderiv ℂ g (x₀ + ζ • v) v) ζ` using `fun ζ hζ => (hol_hasDerivAt_line hΩ hg x v ζ (hsub (hmem x hx2 ζ hζ))).sub (hol_hasDerivAt_line hΩ hg x₀ v ζ (hsub (hmem x₀ hx0 ζ hζ)))`.
+
+Establish `hdc : DiffContOnCl ℂ (fun ζ : ℂ => g (x + ζ • v) - g (x₀ + ζ • v)) (Metric.ball 0 r)`. Apply `DifferentiableOn.diffContOnCl` to reduce the goal to its premises. Introduce `ζ hζ`. Conclude with `(hd ζ (Metric.closure_ball_subset_closedBall hζ)).differentiableAt.differentiableWithinAt`. Establish `hb : ∀ ζ ∈ Metric.sphere (0 : ℂ) r, ‖g (x + ζ • v) - g (x₀ + ζ • v)‖ ≤ ε * r / 2`.
+
+Introduce `ζ hζ`. Establish `hζ'` using `Metric.sphere_subset_closedBall hζ`. Rewrite using `[← dist_eq_norm]`. Apply `le_of_lt` to reduce the goal to its premises. Apply `hδ' _ (hmem x hx2 ζ hζ') _ (hmem x₀ hx0 ζ hζ')` to reduce the goal to its premises.
+
+Simplify using `using hx1`. Establish `h1` using `Complex.norm_deriv_le_of_forall_mem_sphere_norm_le hr hdc hb`. Establish `h2` using `(hd 0 (Metric.mem_closedBall_self hr.le)).deriv`. Rewrite `h1` using `[h2]`. Simplify using `only [zero_smul, add_zero] at h1`.
+
+Rewrite using `[dist_eq_norm]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem hol_continuousOn_fderiv_apply {Ω : Set (Fin d → ℂ)} {g : (Fin d → ℂ) → F} (hΩ : IsOpen Ω)
     (hg : DifferentiableOn ℂ g Ω) (v : Fin d → ℂ) : ContinuousOn (fun x => fderiv ℂ g x v) Ω := by
   intro x₀ hx₀
@@ -124,6 +167,11 @@ theorem hol_continuousOn_fderiv_apply {Ω : Set (Fin d → ℂ)} {g : (Fin d →
     _ = ε / 2 := by field_simp
     _ < ε := by linarith
 
+/- English proof (translation)
+Establish `h : fderiv ℂ g = fun x => ∑ k, (ContinuousLinearMap.proj k : (Fin d → ℂ) →L[ℂ] ℂ).smulRight (fderiv ℂ g x (Pi.single k 1))`. Use function extensionality and compare the values at `x`. Conclude with `hol_clm_decomp _`. Rewrite using `[h]`. Use `continuousOn_finsetSum _ fun k _ => ?_` and prove the remaining obligations.
+
+Establish `hc : Continuous fun w : F => (ContinuousLinearMap.proj k : (Fin d → ℂ) →L[ℂ] ℂ).smulRight w` using `(ContinuousLinearMap.smulRightL ℂ (Fin d → ℂ) F (ContinuousLinearMap.proj k)).continuous`. Conclude with `hc.comp_continuousOn (hol_continuousOn_fderiv_apply hΩ hg _)`.
+-/
 theorem hol_continuousOn_fderiv {Ω : Set (Fin d → ℂ)} {g : (Fin d → ℂ) → F} (hΩ : IsOpen Ω)
     (hg : DifferentiableOn ℂ g Ω) : ContinuousOn (fderiv ℂ g) Ω := by
   have h : fderiv ℂ g = fun x => ∑ k, (ContinuousLinearMap.proj k : (Fin d → ℂ) →L[ℂ] ℂ).smulRight
@@ -135,6 +183,25 @@ theorem hol_continuousOn_fderiv {Ω : Set (Fin d → ℂ)} {g : (Fin d → ℂ) 
     (ContinuousLinearMap.smulRightL ℂ (Fin d → ℂ) F (ContinuousLinearMap.proj k)).continuous
   exact hc.comp_continuousOn (hol_continuousOn_fderiv_apply hΩ hg _)
 
+/- English proof (translation)
+Introduce `x₀ hx₀`. Apply `DifferentiableAt.differentiableWithinAt` to reduce the goal to its premises. Take `⟨R, r, hR, hr, hsub, hmem⟩` from `hol_radius hΩ hx₀ v`. Establish `hK : IsCompact (Metric.closedBall x₀ R)` using `isCompact_closedBall x₀ R`. Establish `hcf` using `hol_continuousOn_fderiv hΩ hg`.
+
+Take `⟨M, hM⟩` from `hK.exists_bound_of_continuousOn (hcf.mono hsub)`. Establish `hs : Metric.ball x₀ (R / 2) ∈ nhds x₀` using `Metric.ball_mem_nhds x₀ (by positivity)`. Establish `hx0 : x₀ ∈ Metric.ball x₀ (R / 2)` using `Metric.mem_ball_self (by positivity)`. Establish `hcm : ∀ θ : ℝ, circleMap 0 r θ ∈ Metric.closedBall (0 : ℂ) r` using `fun θ => Metric.sphere_subset_closedBall (circleMap_mem_sphere 0 hr.le θ)`. Set `c : ℝ → ℂ` to `fun θ => deriv (circleMap 0 r) θ * ((circleMap 0 r θ - 0) ^ 2)⁻¹`.
+
+Establish `hc : Continuous c`. Establish `h1 : Continuous fun θ : ℝ => deriv (circleMap 0 r) θ`. Simplify using `only [deriv_circleMap]`. Conclude with `(continuous_circleMap 0 r).mul continuous_const`. Use `h1.mul (Continuous.inv₀ (((continuous_circleMap 0 r).sub continuous_const).pow 2) ?_)` and prove the remaining obligations.
+
+Introduce `θ`. Use `circleMap_ne_center (c := (0 : ℂ)) (θ := θ) hr.ne'` as an intermediate fact. Simplify using `using this`. Establish `hp : ∀ x : Fin d → ℂ, Continuous fun θ : ℝ => x + circleMap 0 r θ • v` using `fun x => continuous_const.add ((continuous_circleMap 0 r).smul continuous_const)`. Establish `hFc : ∀ x ∈ Metric.ball x₀ (R / 2), Continuous fun θ : ℝ => c θ • g (x + circleMap 0 r θ • v)` using `fun x hx => hc.smul (hg.continuousOn.comp_continuous (hp x) fun θ => hsub (hmem x hx _ (hcm θ)))`.
+
+Establish `hF'c : Continuous fun θ : ℝ => c θ • fderiv ℂ g (x₀ + circleMap 0 r θ • v)` using `hc.smul (hcf.comp_continuous (hp x₀) fun θ => hsub (hmem x₀ hx0 _ (hcm θ)))`. Establish `key : HasFDerivAt (fun x => ∫ θ in (0 : ℝ)..2 * Real.pi, c θ • g (x + circleMap 0 r θ • v)) (∫ θ in (0 : ℝ)..2 * Real.pi, c θ • fderiv ℂ g (x₀ + circleMap 0 r θ • v)) x₀`. Use `intervalIntegral.hasFDerivAt_integral_of_dominated_of_fderiv_le (𝕜 := ℂ) (F := fun x θ => c θ • g (x + circleMap 0 r θ • v)) (F' := fun x θ => c θ • fderiv ℂ g (x + circleMap 0 r θ • v)) (bound := fun θ => ‖c θ‖ * M) hs ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Use `filter_upwards [hs] with x hx`. Conclude with `(hFc x hx).aestronglyMeasurable`.
+
+Conclude with `(hFc x₀ hx0).intervalIntegrable _ _`. Conclude with `hF'c.aestronglyMeasurable`. Use `Filter.Eventually.of_forall fun θ _ x hx => ?_` and prove the remaining obligations. Rewrite using `[norm_smul]`. Conclude with `mul_le_mul_of_nonneg_left (hM _ (hmem x hx _ (hcm θ))) (norm_nonneg _)`.
+
+Conclude with `(hc.norm.mul continuous_const).intervalIntegrable _ _`. Use `Filter.Eventually.of_forall fun θ _ x hx => ?_` and prove the remaining obligations. Establish `h1 : HasFDerivAt g (fderiv ℂ g (x + circleMap 0 r θ • v)) (x + circleMap 0 r θ • v)` using `(hg.differentiableAt (hΩ.mem_nhds (hsub (hmem x hx _ (hcm θ))))).hasFDerivAt`. Conclude with `((hasFDerivAt_comp_add_right (circleMap 0 r θ • v)).mpr h1).const_smul (c θ)`. Establish `heq : (fun x => fderiv ℂ g x v) =ᶠ[nhds x₀] fun x => (2 * (Real.pi : ℂ) * Complex.I)⁻¹ • ∫ θ in (0 : ℝ)..2 * Real.pi, c θ • g (x + circleMap 0 r θ • v)` using `by filter_upwards [hs] with x hx`.
+
+Establish `hU : IsOpen {ζ : ℂ | x + ζ • v ∈ Ω}` using `hΩ.preimage (continuous_const.add (continuous_id.smul continuous_const))`. Establish `hdU : DifferentiableOn ℂ (fun ζ : ℂ => g (x + ζ • v)) {ζ : ℂ | x + ζ • v ∈ Ω}` using `fun ζ hζ => (hol_hasDerivAt_line hΩ hg x v ζ hζ).differentiableAt.differentiableWithinAt`. Establish `h1` using `Complex.two_pi_I_inv_smul_circleIntegral_sub_sq_inv_smul_of_differentiable hU (c := 0) (w₀ := 0) (R := r) (fun ζ hζ => hsub (hmem x hx ζ hζ)) hdU (Metric.mem_ball_self hr)`. Establish `h2` using `(hol_hasDerivAt_line hΩ hg x v 0 (by`. Simplify using `using hsub (hmem x hx 0 (Metric.mem_closedBall_self hr.le)))).deriv`.
+
+Simplify using `only [zero_smul, add_zero] at h2`. Rewrite using `[← h2, ← h1]`. Simplify using `only [circleIntegral, c, smul_smul]`. Conclude with `(key.const_smul _).differentiableAt.congr_of_eventuallyEq heq`.
+-/
 theorem hol_differentiableOn_fderiv_apply [CompleteSpace F] {Ω : Set (Fin d → ℂ)} {g : (Fin d → ℂ) → F}
     (hΩ : IsOpen Ω) (hg : DifferentiableOn ℂ g Ω) (v : Fin d → ℂ) :
     DifferentiableOn ℂ (fun x => fderiv ℂ g x v) Ω := by
@@ -198,6 +265,11 @@ theorem hol_differentiableOn_fderiv_apply [CompleteSpace F] {Ω : Set (Fin d →
     simp only [circleIntegral, c, smul_smul]
   exact (key.const_smul _).differentiableAt.congr_of_eventuallyEq heq
 
+/- English proof (translation)
+Establish `h : fderiv ℂ g = fun x => ∑ k, (ContinuousLinearMap.proj k : (Fin d → ℂ) →L[ℂ] ℂ).smulRight (fderiv ℂ g x (Pi.single k 1))`. Use function extensionality and compare the values at `x`. Conclude with `hol_clm_decomp _`. Rewrite using `[h]`. Use `DifferentiableOn.fun_sum fun k _ => ?_` and prove the remaining obligations.
+
+Conclude with `(ContinuousLinearMap.smulRightL ℂ (Fin d → ℂ) F (ContinuousLinearMap.proj k)).differentiable.comp_differentiableOn (hol_differentiableOn_fderiv_apply hΩ hg _)`.
+-/
 theorem hol_differentiableOn_fderiv [CompleteSpace F] {Ω : Set (Fin d → ℂ)} {g : (Fin d → ℂ) → F}
     (hΩ : IsOpen Ω) (hg : DifferentiableOn ℂ g Ω) : DifferentiableOn ℂ (fderiv ℂ g) Ω := by
   have h : fderiv ℂ g = fun x => ∑ k, (ContinuousLinearMap.proj k : (Fin d → ℂ) →L[ℂ] ℂ).smulRight
@@ -211,6 +283,11 @@ theorem hol_differentiableOn_fderiv [CompleteSpace F] {Ω : Set (Fin d → ℂ)}
 
 end
 
+/- English proof (translation)
+Proceed by induction on `n generalizing F with`. Consider the case `zero`. Establish `h0 : ContDiffOn ℂ 0 g Ω` using `contDiffOn_zero.2 hg.continuousOn`. Simplify using `using h0`. Consider the case `succ n ih`.
+
+Establish `h : ((n + 1 : ℕ) : WithTop ℕ∞) = (n : WithTop ℕ∞) + 1` using `by push_cast; rfl`. Rewrite using `[h, contDiffOn_succ_iff_fderiv_of_isOpen hΩ]`. Use `⟨hg, fun h => ?_, ih (hol_differentiableOn_fderiv hΩ hg)⟩` and prove the remaining obligations. Conclude with `absurd h (by simp)`.
+-/
 theorem holo_contDiffOn {d : ℕ} {F : Type*} [NormedAddCommGroup F] [NormedSpace ℂ F] [CompleteSpace F]
     {Ω : Set (Fin d → ℂ)} {g : (Fin d → ℂ) → F} (hΩ : IsOpen Ω) (hg : DifferentiableOn ℂ g Ω) (n : ℕ) :
     ContDiffOn ℂ n g Ω := by
@@ -224,6 +301,9 @@ theorem holo_contDiffOn {d : ℕ} {F : Type*} [NormedAddCommGroup F] [NormedSpac
     refine ⟨hg, fun h => ?_, ih (hol_differentiableOn_fderiv hΩ hg)⟩
     exact absurd h (by simp)
 
+/- English proof (translation)
+Establish `h1 : Continuous (fun x => φ x • a x)` using `contDiff_zero.mp (contDiff_smul_of_tsupport hΩ (contDiffOn_zero.mpr hφ) (contDiff_zero.mpr ha) hsupp)`. Conclude with `h1.integrable_of_hasCompactSupport (hc.smul_left (f := φ))`.
+-/
 theorem wir_integrable {d : ℕ} {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V]
     {φ : (Fin d → ℂ) → ℂ} {a : (Fin d → ℂ) → V} {Ω : Set (Fin d → ℂ)} (hΩ : IsOpen Ω) (hφ : ContinuousOn φ Ω)
     (ha : Continuous a) (hc : HasCompactSupport a) (hsupp : tsupport a ⊆ Ω) :
@@ -232,6 +312,15 @@ theorem wir_integrable {d : ℕ} {V : Type*} [NormedAddCommGroup V] [NormedSpace
     contDiff_zero.mp (contDiff_smul_of_tsupport hΩ (contDiffOn_zero.mpr hφ) (contDiff_zero.mpr ha) hsupp)
   exact h1.integrable_of_hasCompactSupport (hc.smul_left (f := φ))
 
+/- English proof (translation)
+Establish `h0 : HasFDerivAt g ((fderiv ℂ g x).restrictScalars ℝ) x` using `hg.hasFDerivAt.restrictScalars ℝ`. Establish `h1` using `h0.const_mul (β / t)`. Establish `h2` using `Complex.reCLM.hasFDerivAt.comp x h1`. Establish `h3` using `Complex.ofRealCLM.hasFDerivAt.comp x h2`. Establish `h4` using `(h3.const_mul Complex.I).cexp`.
+
+Establish `h5` using `h4.hasLineDerivAt v`. Establish `e : (fun y => psi β (g y / t)) = fun y => Complex.exp (Complex.I * (Complex.ofRealCLM ∘ Complex.reCLM ∘ fun y => β / t * g y) y)`. Use function extensionality and compare the values at `y`. Simplify using `only [psi, Function.comp, Complex.ofRealCLM_apply, Complex.reCLM_apply]`. Use `congr 4`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `ev : psi β (g x / t) * (Complex.I * (((β / t * fderiv ℂ g x v).re : ℝ) : ℂ)) = (Complex.exp (Complex.I * (Complex.ofRealCLM ∘ Complex.reCLM ∘ fun y => β / t * g y) x) • Complex.I • Complex.ofRealCLM ∘SL Complex.reCLM ∘SL ((β / t) • ContinuousLinearMap.restrictScalars ℝ (fderiv ℂ …`. Use `congrFun e x` as an intermediate fact. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[e, ev]`. Conclude with `h5`.
+-/
 theorem wir_hasLineDerivAt {d : ℕ} (β t : ℂ) {g : (Fin d → ℂ) → ℂ} {x : Fin d → ℂ}
     (hg : DifferentiableAt ℂ g x) (v : Fin d → ℂ) :
     HasLineDerivAt ℝ (fun y => psi β (g y / t))
@@ -258,6 +347,15 @@ theorem wir_hasLineDerivAt {d : ℕ} (β t : ℂ) {g : (Fin d → ℂ) → ℂ} 
   rw [e, ev]
   exact h5
 
+/- English proof (translation)
+Establish `hgc : ContinuousOn g Ω` using `hg.continuousOn`. Establish `hψ : ContinuousOn (fun x => psi β (g x / t)) Ω`. Unfold `psi`. Use `fun_prop`. Establish `hg1 : ContDiffOn ℂ 1 g Ω` using `by exact_mod_cast holo_contDiffOn hΩ hg 1`.
+
+Establish `hdg : ContinuousOn (fun x => fderiv ℂ g x v) Ω`. Use `hg1.continuousOn_fderiv_of_isOpen hΩ le_rfl` as an intermediate fact. Conclude with `this.clm_apply continuousOn_const`. Establish `hψ' : ContinuousOn (fun x => psi β (g x / t) * (Complex.I * (((β / t * fderiv ℂ g x v).re : ℝ) : ℂ))) Ω`. Use `hψ.mul (continuousOn_const.mul ?_)` and prove the remaining obligations.
+
+Conclude with `Complex.continuous_ofReal.comp_continuousOn (Complex.continuous_re.comp_continuousOn (continuousOn_const.mul hdg))`. Establish `hdb : Continuous (fun x => fderiv ℝ b x v)` using `(hb.continuous_fderiv one_ne_zero).clm_apply continuous_const`. Establish `hdbc : HasCompactSupport (fun x => fderiv ℝ b x v)` using `hc.fderiv_apply (𝕜 := ℝ) v`. Establish `hdbs : tsupport (fun x => fderiv ℝ b x v) ⊆ Ω` using `(tsupport_fderiv_apply_subset ℝ v).trans hsupp`. Establish `i1` using `wir_integrable hΩ hψ hdb hdbc hdbs`.
+
+Establish `i2` using `wir_integrable hΩ hψ' hb.continuous hc hsupp`. Establish `i3` using `wir_integrable hΩ hψ hb.continuous hc hsupp`. Use `⟨i1, i2, ?_⟩` and prove the remaining obligations. Establish `key` using `integral_bilinear_hasLineDerivAt_right_eq_neg_left_of_integrable (μ := (volume : Measure (Fin d → ℂ))) (B := ContinuousLinearMap.lsmul ℝ ℂ) (f := fun x => psi β (g x / t)) (f' := fun x => psi β (g x / t) * (Complex.I * (((β / t * fderiv ℂ g x v).re : ℝ) : ℂ))) (g := b) (g' := fun …`. Conclude with `key`.
+-/
 theorem wir_dir {d : ℕ} (β t : ℂ) {Ω : Set (Fin d → ℂ)} {g : (Fin d → ℂ) → ℂ} (hΩ : IsOpen Ω)
     (hg : DifferentiableOn ℂ g Ω) {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V] [CompleteSpace V]
     {b : (Fin d → ℂ) → V} (hb : ContDiff ℝ 1 b) (hc : HasCompactSupport b) (hsupp : tsupport b ⊆ Ω)
@@ -298,6 +396,9 @@ theorem wir_dir {d : ℕ} (β t : ℂ) {Ω : Set (Fin d → ℂ)} {g : (Fin d �
     (fun x _ => ((hb.differentiable one_ne_zero) x).hasFDerivAt.hasLineDerivAt v)
   exact key
 
+/- English proof (translation)
+Establish `h₁' : Integrable (fun x => c₁ • F₁ x) μ` using `h₁.smul c₁`. Establish `h₂' : Integrable (fun x => c₂ • F₂ x) μ` using `h₂.smul c₂`. Rewrite using `[integral_sub h₁' h₂', integral_smul, integral_smul]`.
+-/
 theorem wir_lin {α V : Type*} [MeasurableSpace α] {μ : Measure α} [NormedAddCommGroup V] [NormedSpace ℂ V]
     (F₁ F₂ : α → V) (c₁ c₂ : ℂ) (h₁ : Integrable F₁ μ) (h₂ : Integrable F₂ μ) :
     ∫ x, (c₁ • F₁ x - c₂ • F₂ x) ∂μ = c₁ • ∫ x, F₁ x ∂μ - c₂ • ∫ x, F₂ x ∂μ := by
@@ -305,6 +406,21 @@ theorem wir_lin {α V : Type*} [MeasurableSpace α] {μ : Measure α} [NormedAdd
   have h₂' : Integrable (fun x => c₂ • F₂ x) μ := h₂.smul c₂
   rw [integral_sub h₁' h₂', integral_smul, integral_smul]
 
+/- English proof (translation)
+Introduce `d β t Ω g ht hΩ hg V _ _ _ b k hb hc hsupp`. Take `⟨a1, a2, a3⟩` from `wir_dir β t hΩ hg hb hc hsupp (Pi.single k 1)`. Take `⟨c1, c2, c3⟩` from `wir_dir β t hΩ hg hb hc hsupp (Pi.single k Complex.I)`. Rewrite using `[muPi_eq, integral_smul_nnreal_measure, integral_smul_nnreal_measure, ← smul_neg]`. Use `congr 1`.
+
+Establish `e1 : ∀ x, psi β (g x / t) • wirt k b x = (1 / 2 : ℂ) • (psi β (g x / t) • fderiv ℝ b x (Pi.single k 1)) - (Complex.I / 2) • (psi β (g x / t) • fderiv ℝ b x (Pi.single k Complex.I))`. Introduce `x`. Simplify using `only [wirt, smul_sub, smul_smul]`. Apply the tactic sequence `congr 2 <;> ring`. Establish `hI : (Pi.single k Complex.I : Fin d → ℂ) = Complex.I • Pi.single k 1`.
+
+Rewrite using `[← Pi.single_smul]`. Simplify using the standard rewrite rules. Establish `e2 : ∀ x, (Complex.I * β * fderiv ℂ g x (Pi.single k 1) / (2 * t) * psi β (g x / t)) • b x = (1 / 2 : ℂ) • ((psi β (g x / t) * (Complex.I * (((β / t * fderiv ℂ g x (Pi.single k 1)).re : ℝ) : ℂ))) • b x) - (Complex.I / 2) • ((psi β (g x / t) * (Complex.I * (((β / t * fderiv ℂ g x …`. Introduce `x`. Rewrite using `[smul_smul, smul_smul, ← sub_smul]`.
+
+Use `congr 1`. Rewrite using `[hI, map_smul, smul_eq_mul]`. Use `set w : ℂ := β / t * fderiv ℂ g x (Pi.single k 1) with hw`. Establish `h1 : β / t * (Complex.I * fderiv ℂ g x (Pi.single k 1)) = Complex.I * w` using `by rw [hw]; ring`. Establish `h2 : Complex.I * β * fderiv ℂ g x (Pi.single k 1) / (2 * t) = Complex.I * w / 2`.
+
+Rewrite using `[hw]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[h1, h2]`. Establish `h3 : (Complex.I * w).re = -w.im` using `by simp`. Rewrite using `[h3]`.
+
+Use `conv_lhs => rw [← Complex.re_add_im w]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[e1, e2]`. Rewrite using `[wir_lin _ _ _ _ a1 c1, wir_lin _ _ _ _ a2 c2, a3, c3]`.
+
+Simplify using `only [smul_neg]`. Normalize the expressions using the abelian group laws.
+-/
 theorem wirtingerIBP : WirtingerIBP := by
   intro d β t Ω g ht hΩ hg V _ _ _ b k hb hc hsupp
   obtain ⟨a1, a2, a3⟩ := wir_dir β t hΩ hg hb hc hsupp (Pi.single k 1)
@@ -351,12 +467,26 @@ section Gen
 
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
 
+/- English proof (translation)
+Establish `h` using `bf 0 (Nat.zero_le n)`. Rewrite `h` using `[pow_zero, mul_one]`. Conclude with `(norm_nonneg _).trans h`.
+-/
 theorem gen_Bd_nonneg {W : Type*} [NormedAddCommGroup W] [NormedSpace ℝ W] {f : E → W} {s : Set E} {x : E} {n : ℕ}
     {A P : ℝ} (bf : Bd f s x n A P) : 0 ≤ A := by
   have h := bf 0 (Nat.zero_le n)
   rw [pow_zero, mul_one] at h
   exact (norm_nonneg _).trans h
 
+/- English proof (translation)
+Introduce `j hj`. Establish `hA : 0 ≤ A` using `gen_Bd_nonneg bf`. Establish `hB : 0 ≤ B` using `gen_Bd_nonneg bh`. Establish `h1` using `norm_iteratedFDerivWithin_smul_le hf hh hs.uniqueDiffOn hx (n := j) (by exact_mod_cast hj)`. Use `h1.trans ?_` and prove the remaining obligations.
+
+Establish `h2 : ∀ i ∈ Finset.range (j + 1), (j.choose i : ℝ) * ‖iteratedFDerivWithin ℝ i f s x‖ * ‖iteratedFDerivWithin ℝ (j - i) h s x‖ ≤ (j.choose i : ℝ) * (A * B * P ^ j)`. Introduce `i hi`. Establish `hij : i ≤ j` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)`. Establish `e1` using `bf i (hij.trans hj)`. Establish `e2` using `bh (j - i) ((Nat.sub_le j i).trans hj)`.
+
+Establish `e3 : P ^ j = P ^ i * P ^ (j - i)` using `by rw [← pow_add, Nat.add_sub_cancel' hij]`. Establish `e4 : ‖iteratedFDerivWithin ℝ i f s x‖ * ‖iteratedFDerivWithin ℝ (j - i) h s x‖ ≤ (A * P ^ i) * (B * P ^ (j - i))` using `mul_le_mul e1 e2 (norm_nonneg _) (mul_nonneg hA (pow_nonneg hP _))`. Combine the equalities or inequalities in the displayed calculation. Use `(Finset.sum_le_sum h2).trans ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul]`.
+
+Establish `h3 : (∑ i ∈ Finset.range (j + 1), (j.choose i : ℝ)) = 2 ^ j`. Conclude with `Nat.sum_range_choose j` after adjusting the coercions. Rewrite using `[h3]`. Establish `h4 : (2 : ℝ) ^ j ≤ 2 ^ n` using `pow_le_pow_right₀ (by norm_num) hj`. Establish `h5 : 0 ≤ A * B * P ^ j` using `mul_nonneg (mul_nonneg hA hB) (pow_nonneg hP _)`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem Bd.smul {𝕜' V : Type*} [NormedField 𝕜'] [NormedAlgebra ℝ 𝕜'] [NormedAddCommGroup V] [NormedSpace ℝ V]
     [NormedSpace 𝕜' V] [IsScalarTower ℝ 𝕜' V] {f : E → 𝕜'} {h : E → V} {s : Set E} {x : E} {n : ℕ} {A B P : ℝ}
     (hs : IsOpen s) (hx : x ∈ s) (hP : 0 ≤ P) (hf : ContDiffOn ℝ n f s) (hh : ContDiffOn ℝ n h s)
@@ -392,6 +522,11 @@ theorem Bd.smul {𝕜' V : Type*} [NormedField 𝕜'] [NormedAlgebra ℝ 𝕜'] 
   calc (2 : ℝ) ^ j * (A * B * P ^ j) ≤ 2 ^ n * (A * B * P ^ j) := mul_le_mul_of_nonneg_right h4 h5
     _ = 2 ^ n * A * B * P ^ j := by ring
 
+/- English proof (translation)
+Introduce `j hj`. Establish `e0 : (fun y => ∑ i ∈ u, f i y) = ∑ i ∈ u, f i`. Use function extensionality and compare the values at `y`. Rewrite using `[Finset.sum_apply]`. Rewrite using `[e0, iteratedFDerivWithin_sum_apply hs.uniqueDiffOn hx (fun i hi => ((hf i hi).of_le (by exact_mod_cast hj)).contDiffWithinAt hx), Finset.sum_mul]`.
+
+Conclude with `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i hi => bf i hi j hj)`.
+-/
 theorem Bd.sum {W ι : Type*} [NormedAddCommGroup W] [NormedSpace ℝ W] (u : Finset ι) {f : ι → E → W} {A : ι → ℝ}
     {s : Set E} {x : E} {n : ℕ} {P : ℝ}
     (hs : IsOpen s) (hx : x ∈ s) (hf : ∀ i ∈ u, ContDiffOn ℝ n (f i) s) (bf : ∀ i ∈ u, Bd (f i) s x n (A i) P) :
@@ -403,6 +538,11 @@ theorem Bd.sum {W ι : Type*} [NormedAddCommGroup W] [NormedSpace ℝ W] (u : Fi
     (fun i hi => ((hf i hi).of_le (by exact_mod_cast hj)).contDiffWithinAt hx), Finset.sum_mul]
   exact (norm_sum_le _ _).trans (Finset.sum_le_sum fun i hi => bf i hi j hj)
 
+/- English proof (translation)
+Introduce `j hj`. Establish `h1` using `L.norm_iteratedFDerivWithin_comp_left (hf.contDiffWithinAt hx) hs.uniqueDiffOn hx (n := j) (by exact_mod_cast hj)`. Establish `h2 : ‖iteratedFDerivWithin ℝ j (fun y => L (f y)) s x‖ ≤ ‖L‖ * ‖iteratedFDerivWithin ℝ j f s x‖` using `h1`. Use `h2.trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`.
+
+Conclude with `mul_le_mul hL (bf j hj) (norm_nonneg _) ((norm_nonneg _).trans hL)`.
+-/
 theorem Bd.clm {W W' : Type*} [NormedAddCommGroup W] [NormedSpace ℝ W] [NormedAddCommGroup W'] [NormedSpace ℝ W']
     (L : W →L[ℝ] W') {f : E → W} {s : Set E} {x : E} {n : ℕ} {A P c : ℝ}
     (hs : IsOpen s) (hx : x ∈ s) (_hP : 0 ≤ P) (hf : ContDiffOn ℝ n f s) (hL : ‖L‖ ≤ c) (bf : Bd f s x n A P) :
@@ -415,12 +555,32 @@ theorem Bd.clm {W W' : Type*} [NormedAddCommGroup W] [NormedSpace ℝ W] [Normed
   rw [mul_assoc]
   exact mul_le_mul hL (bf j hj) (norm_nonneg _) ((norm_nonneg _).trans hL)
 
+/- English proof (translation)
+Rewrite using `[iteratedFDerivWithin_of_isOpen i isOpen_compl_singleton (by simp : (1 : ℝ) ∈ ({0}ᶜ : Set ℝ)), norm_iteratedFDeriv_eq_norm_iteratedDeriv, iteratedDeriv_eq_iterate, iter_deriv_inv]`. Simplify using the standard rewrite rules.
+-/
 theorem gen_norm_iter_inv_one (i : ℕ) :
     ‖iteratedFDerivWithin ℝ i (Inv.inv : ℝ → ℝ) {0}ᶜ 1‖ = (i.factorial : ℝ) := by
   rw [iteratedFDerivWithin_of_isOpen i isOpen_compl_singleton (by simp : (1 : ℝ) ∈ ({0}ᶜ : Set ℝ)),
     norm_iteratedFDeriv_eq_norm_iteratedDeriv, iteratedDeriv_eq_iterate, iter_deriv_inv]
   simp
 
+/- English proof (translation)
+Introduce `j hj`. Establish `hjn : (j : WithTop ℕ∞) ≤ n` using `by exact_mod_cast hj`. Establish `hκ0 : 0 ≤ κ` using `zero_le_one.trans hκ`. Use `set N0 : ℝ := f x with hN0`. Establish `hft : ContDiffOn ℝ n (N0⁻¹ • f) s` using `hf.const_smul N0⁻¹`.
+
+Establish `hmaps : Set.MapsTo (N0⁻¹ • f) s ({0}ᶜ : Set ℝ)`. Introduce `y hy`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Set.mem_compl_iff, Set.mem_singleton_iff]`. Conclude with `mul_ne_zero (inv_ne_zero h0.ne') (hne y hy)`. Establish `hone : (N0⁻¹ • f) x = 1`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Conclude with `inv_mul_cancel₀ h0.ne'`. Establish `hC : ∀ i, i ≤ j → ‖iteratedFDerivWithin ℝ i (Inv.inv : ℝ → ℝ) {0}ᶜ ((N0⁻¹ • f) x)‖ ≤ (j.factorial : ℝ)`. Introduce `i hi`. Rewrite using `[hone, gen_norm_iter_inv_one]`.
+
+Conclude with `Nat.factorial_le hi` after adjusting the coercions. Establish `hD : ∀ i, 1 ≤ i → i ≤ j → ‖iteratedFDerivWithin ℝ i (N0⁻¹ • f) s x‖ ≤ (κ * P) ^ i`. Introduce `i hi1 hi`. Rewrite using `[iteratedFDerivWithin_const_smul_apply ((hf.of_le (by exact_mod_cast hi.trans hj)).contDiffWithinAt hx) hs.uniqueDiffOn hx, norm_smul, Real.norm_eq_abs, abs_of_pos (inv_pos.mpr h0)]`. Establish `e1` using `bf i (hi.trans hj)`.
+
+Establish `e2 : N0⁻¹ * ‖iteratedFDerivWithin ℝ i f s x‖ ≤ N0⁻¹ * (κ * N0 * P ^ i)` using `mul_le_mul_of_nonneg_left e1 (inv_pos.mpr h0).le`. Establish `e3 : N0⁻¹ * (κ * N0 * P ^ i) = κ * P ^ i` using `by field_simp`. Establish `e4 : κ ≤ κ ^ i` using `le_self_pow₀ hκ (by omega)`. Rewrite using `[mul_pow]`. Conclude with `(e2.trans e3.le).trans (mul_le_mul_of_nonneg_right e4 (pow_nonneg hP _))`.
+
+Establish `hcomp` using `norm_iteratedFDerivWithin_comp_le (contDiffOn_inv ℝ (n := n)) hft hjn isOpen_compl_singleton.uniqueDiffOn hs.uniqueDiffOn hmaps hx hC hD`. Establish `hcd : ContDiffOn ℝ n ((Inv.inv : ℝ → ℝ) ∘ (N0⁻¹ • f)) s` using `(contDiffOn_inv ℝ (n := n)).comp hft hmaps`. Establish `e0 : (fun y => (f y)⁻¹) = N0⁻¹ • ((Inv.inv : ℝ → ℝ) ∘ (N0⁻¹ • f))`. Use function extensionality and compare the values at `y`. Simplify using `only [Pi.smul_apply, Function.comp_apply, smul_eq_mul, mul_inv, inv_inv]`.
+
+Rewrite using `[← mul_assoc, inv_mul_cancel₀ h0.ne', one_mul]`. Rewrite using `[e0, iteratedFDerivWithin_const_smul_apply ((hcd.of_le hjn).contDiffWithinAt hx) hs.uniqueDiffOn hx, norm_smul, Real.norm_eq_abs, abs_of_pos (inv_pos.mpr h0)]`. Establish `f1 : (j.factorial : ℝ) ≤ n.factorial` using `by exact_mod_cast Nat.factorial_le hj`. Establish `f2 : κ ^ j ≤ κ ^ n` using `pow_le_pow_right₀ hκ hj`. Establish `f3 : (j.factorial : ℝ) * j.factorial * (κ * P) ^ j ≤ (n.factorial : ℝ) ^ 2 * κ ^ n * P ^ j`.
+
+Rewrite using `[mul_pow, sq, ← mul_assoc]`. Establish `g1 : (j.factorial : ℝ) * j.factorial ≤ (n.factorial : ℝ) * n.factorial` using `mul_le_mul f1 f1 (Nat.cast_nonneg _) (Nat.cast_nonneg _)`. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul g1 f2 (pow_nonneg hκ0 _) (mul_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _))) (pow_nonneg hP _)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem Bd.inv {f : E → ℝ} {s : Set E} {x : E} {n : ℕ} {κ P : ℝ}
     (hs : IsOpen s) (hx : x ∈ s) (hP : 0 ≤ P) (hf : ContDiffOn ℝ n f s) (hne : ∀ y ∈ s, f y ≠ 0)
     (h0 : 0 < f x) (hκ : 1 ≤ κ) (bf : Bd f s x n (κ * f x) P) :
@@ -478,6 +638,9 @@ theorem Bd.inv {f : E → ℝ} {s : Set E} {x : E} {n : ℕ} {κ P : ℝ}
 
 end Gen
 
+/- English proof (translation)
+Establish `h1` using `(hf.ftaylorSeriesWithin hs.uniqueDiffOn).restrictScalars ℝ`. Establish `h2` using `h1.eq_iteratedFDerivWithin_of_uniqueDiffOn (m := j) (by exact_mod_cast hj) hs.uniqueDiffOn hx`. Rewrite using `[← h2]`. Conclude with `ContinuousMultilinearMap.norm_restrictScalars _`.
+-/
 theorem norm_iteratedFDerivWithin_real_eq {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [NormedAddCommGroup F] [NormedSpace ℂ F] {f : E → F} {s : Set E} (hs : IsOpen s) {n : ℕ}
     (hf : ContDiffOn ℂ n f s) {x : E} (hx : x ∈ s) {j : ℕ} (hj : j ≤ n) :
@@ -490,14 +653,25 @@ theorem norm_iteratedFDerivWithin_real_eq {E F : Type*} [NormedAddCommGroup E] [
 noncomputable def bk {d : ℕ} (g : (Fin d → ℂ) → ℂ) (k : Fin d) (x : Fin d → ℂ) : ℂ :=
   (∑ l, Complex.normSq (fderiv ℂ g x (Pi.single l 1)))⁻¹ • (starRingEnd ℂ) (fderiv ℂ g x (Pi.single k 1))
 
+/- English proof (translation)
+Introduce `j hj` and use `(b j hj).trans (mul_le_mul_of_nonneg_right hA (pow_nonneg hP j))`.
+-/
 theorem bkb_Bd_mono {E W : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup W] [NormedSpace ℝ W]
     {f : E → W} {s : Set E} {x : E} {n : ℕ} {A A' P : ℝ} (hP : 0 ≤ P) (hA : A ≤ A') (b : Bd f s x n A P) :
     Bd f s x n A' P := fun j hj =>
   (b j hj).trans (mul_le_mul_of_nonneg_right hA (pow_nonneg hP j))
 
+/- English proof (translation)
+Rewrite using `[Pi.norm_single]`. Simplify using the standard rewrite rules.
+-/
 theorem bkb_norm_single {d : ℕ} (k : Fin d) : ‖(Pi.single k (1 : ℂ) : Fin d → ℂ)‖ = 1 := by
   rw [Pi.norm_single]; simp
 
+/- English proof (translation)
+Use `L.opNorm_le_bound (Finset.sum_nonneg fun _ _ => norm_nonneg _) fun v => ?_` and prove the remaining obligations. Establish `hv : v = ∑ l, v l • (Pi.single l (1 : ℂ) : Fin d → ℂ)` using `by conv_lhs => rw [← Finset.univ_sum_single v]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← Pi.single_smul]`. Simplify using the standard rewrite rules.
+
+Use `conv_lhs => rw [hv]`. Rewrite using `[map_sum, Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun l _ => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, norm_smul, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_left (norm_le_pi_norm v l) (norm_nonneg _)`.
+-/
 theorem bkb_norm_le_sum {d : ℕ} (L : (Fin d → ℂ) →L[ℂ] ℂ) : ‖L‖ ≤ ∑ l, ‖L (Pi.single l 1)‖ := by
   refine L.opNorm_le_bound (Finset.sum_nonneg fun _ _ => norm_nonneg _) fun v => ?_
   have hv : v = ∑ l, v l • (Pi.single l (1 : ℂ) : Fin d → ℂ) := by
@@ -510,6 +684,9 @@ theorem bkb_norm_le_sum {d : ℕ} (L : (Fin d → ℂ) →L[ℂ] ℂ) : ‖L‖ 
   rw [map_smul, norm_smul, mul_comm]
   exact mul_le_mul_of_nonneg_left (norm_le_pi_norm v l) (norm_nonneg _)
 
+/- English proof (translation)
+Establish `h1` using `bkb_norm_le_sum L`. Establish `h2 : (∑ l, ‖L (Pi.single l 1)‖) ^ 2 ≤ ((Finset.univ : Finset (Fin d)).card : ℝ) * ∑ l, ‖L (Pi.single l 1)‖ ^ 2` using `sq_sum_le_card_mul_sum_sq`. Simplify using `only [Finset.card_univ, Fintype.card_fin] at h2`. Simplify using `only [Complex.normSq_eq_norm_sq]`. Conclude with `(pow_le_pow_left₀ (norm_nonneg _) h1 2).trans h2`.
+-/
 theorem bkb_sq_le {d : ℕ} (L : (Fin d → ℂ) →L[ℂ] ℂ) :
     ‖L‖ ^ 2 ≤ d * ∑ l, Complex.normSq (L (Pi.single l 1)) := by
   have h1 := bkb_norm_le_sum L
@@ -519,6 +696,11 @@ theorem bkb_sq_le {d : ℕ} (L : (Fin d → ℂ) →L[ℂ] ℂ) :
   simp only [Complex.normSq_eq_norm_sq]
   exact (pow_le_pow_left₀ (norm_nonneg _) h1 2).trans h2
 
+/- English proof (translation)
+Establish `h` using `bkb_sq_le L`. Establish `h1 : 0 < ‖L‖ ^ 2` using `by positivity`. Assume the negation of the conclusion as `hc`. Establish `h2 : ∑ l, Complex.normSq (L (Pi.single l 1)) ≤ 0` using `not_lt.mp hc`. Establish `: (d : ℝ) * ∑ l, Complex.normSq (L (Pi.single l 1)) ≤ 0` using `mul_nonpos_of_nonneg_of_nonpos (Nat.cast_nonneg d) h2`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem bkb_N_pos {d : ℕ} {L : (Fin d → ℂ) →L[ℂ] ℂ} (hL : L ≠ 0) :
     0 < ∑ l, Complex.normSq (L (Pi.single l 1)) := by
   have h := bkb_sq_le L
@@ -529,6 +711,11 @@ theorem bkb_N_pos {d : ℕ} {L : (Fin d → ℂ) →L[ℂ] ℂ} (hL : L ≠ 0) :
     mul_nonpos_of_nonneg_of_nonpos (Nat.cast_nonneg d) h2
   linarith
 
+/- English proof (translation)
+Establish `hN` using `bkb_N_pos hne`. Unfold `bk`. Establish `: ∀ k, fderiv ℂ g x (Pi.single k 1) * ((∑ l, Complex.normSq (fderiv ℂ g x (Pi.single l 1)))⁻¹ • (starRingEnd ℂ) (fderiv ℂ g x (Pi.single k 1))) = ((∑ l, Complex.normSq (fderiv ℂ g x (Pi.single l 1)))⁻¹ : ℝ) * ((Complex.normSq (fderiv ℂ g x (Pi.single k 1)) : ℝ) : ℂ)`. Introduce `k`. Rewrite using `[Complex.real_smul, Complex.normSq_eq_conj_mul_self]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [this]`. Rewrite using `[← Finset.mul_sum, ← Complex.ofReal_sum, ← Complex.ofReal_mul, inv_mul_cancel₀ hN.ne']`. Simplify using the standard rewrite rules.
+-/
 theorem bk_sum {d : ℕ} {g : (Fin d → ℂ) → ℂ} {x : Fin d → ℂ} (hne : fderiv ℂ g x ≠ 0) :
     ∑ k, fderiv ℂ g x (Pi.single k 1) * bk g k x = 1 := by
   have hN := bkb_N_pos hne
@@ -543,6 +730,9 @@ theorem bk_sum {d : ℕ} {g : (Fin d → ℂ) → ℂ} {x : Fin d → ℂ} (hne 
   rw [← Finset.mul_sum, ← Complex.ofReal_sum, ← Complex.ofReal_mul, inv_mul_cancel₀ hN.ne']
   simp
 
+/- English proof (translation)
+Establish `h` using `holo_contDiffOn hΩ hg (n + 1)`. Establish `h' : ContDiffOn ℂ ((n : WithTop ℕ∞) + 1) g Ω` using `by exact_mod_cast h`. Establish `h2` using `((contDiffOn_succ_iff_fderiv_of_isOpen hΩ).mp h').2.2`. Conclude with `h2.clm_apply contDiffOn_const`.
+-/
 theorem bkb_u_contDiffOn {d : ℕ} {Ω : Set (Fin d → ℂ)} {g : (Fin d → ℂ) → ℂ} (hΩ : IsOpen Ω)
     (hg : DifferentiableOn ℂ g Ω) (k : Fin d) (n : ℕ) :
     ContDiffOn ℂ n (fun x => fderiv ℂ g x (Pi.single k 1)) Ω := by
@@ -551,14 +741,23 @@ theorem bkb_u_contDiffOn {d : ℕ} {Ω : Set (Fin d → ℂ)} {g : (Fin d → �
   have h2 := ((contDiffOn_succ_iff_fderiv_of_isOpen hΩ).mp h').2.2
   exact h2.clm_apply contDiffOn_const
 
+/- English proof (translation)
+The claim follows from `(Complex.conjCLE : ℂ →L[ℝ] ℂ).contDiff.comp_contDiffOn ((bkb_u_contDiffOn hΩ hg k n).restrict_scalars ℝ)`.
+-/
 theorem bkb_cu_contDiffOn {d : ℕ} {Ω : Set (Fin d → ℂ)} {g : (Fin d → ℂ) → ℂ} (hΩ : IsOpen Ω)
     (hg : DifferentiableOn ℂ g Ω) (k : Fin d) (n : ℕ) :
     ContDiffOn ℝ n (fun x => (starRingEnd ℂ) (fderiv ℂ g x (Pi.single k 1))) Ω :=
   (Complex.conjCLE : ℂ →L[ℝ] ℂ).contDiff.comp_contDiffOn ((bkb_u_contDiffOn hΩ hg k n).restrict_scalars ℝ)
 
+/- English proof (translation)
+Rewrite using `[smul_eq_mul, ← Complex.normSq_eq_conj_mul_self]`. Simplify using the standard rewrite rules.
+-/
 theorem bkb_nsq_eq (z : ℂ) : Complex.normSq z = Complex.reCLM ((starRingEnd ℂ) z • z) := by
   rw [smul_eq_mul, ← Complex.normSq_eq_conj_mul_self]; simp
 
+/- English proof (translation)
+Simplify using `only [bkb_nsq_eq]`. Conclude with `Complex.reCLM.contDiff.comp_contDiffOn ((bkb_cu_contDiffOn hΩ hg k n).smul ((bkb_u_contDiffOn hΩ hg k n).restrict_scalars ℝ))`.
+-/
 theorem bkb_nsq_contDiffOn {d : ℕ} {Ω : Set (Fin d → ℂ)} {g : (Fin d → ℂ) → ℂ} (hΩ : IsOpen Ω)
     (hg : DifferentiableOn ℂ g Ω) (k : Fin d) (n : ℕ) :
     ContDiffOn ℝ n (fun x => Complex.normSq (fderiv ℂ g x (Pi.single k 1))) Ω := by
@@ -566,17 +765,32 @@ theorem bkb_nsq_contDiffOn {d : ℕ} {Ω : Set (Fin d → ℂ)} {g : (Fin d → 
   exact Complex.reCLM.contDiff.comp_contDiffOn
     ((bkb_cu_contDiffOn hΩ hg k n).smul ((bkb_u_contDiffOn hΩ hg k n).restrict_scalars ℝ))
 
+/- English proof (translation)
+The claim follows from `ContDiffOn.sum fun l _ => bkb_nsq_contDiffOn hΩ hg l n`.
+-/
 theorem bkb_N_contDiffOn {d : ℕ} {Ω : Set (Fin d → ℂ)} {g : (Fin d → ℂ) → ℂ} (hΩ : IsOpen Ω)
     (hg : DifferentiableOn ℂ g Ω) (n : ℕ) :
     ContDiffOn ℝ n (fun x => ∑ l, Complex.normSq (fderiv ℂ g x (Pi.single l 1))) Ω :=
   ContDiffOn.sum fun l _ => bkb_nsq_contDiffOn hΩ hg l n
 
+/- English proof (translation)
+Unfold `bk`. Conclude with `((bkb_N_contDiffOn hΩ hg n).inv fun x hx => (bkb_N_pos (hne x hx)).ne').smul (bkb_cu_contDiffOn hΩ hg k n)`.
+-/
 theorem bk_contDiffOn {d : ℕ} {Ω : Set (Fin d → ℂ)} {g : (Fin d → ℂ) → ℂ} (hΩ : IsOpen Ω)
     (hg : DifferentiableOn ℂ g Ω) (hne : ∀ x ∈ Ω, fderiv ℂ g x ≠ 0) (k : Fin d) (n : ℕ) :
     ContDiffOn ℝ n (bk g k) Ω := by
   unfold bk
   exact ((bkb_N_contDiffOn hΩ hg n).inv fun x hx => (bkb_N_pos (hne x hx)).ne').smul (bkb_cu_contDiffOn hΩ hg k n)
 
+/- English proof (translation)
+Introduce `j hj`. Rewrite using `[norm_iteratedFDerivWithin_real_eq hΩ (bkb_u_contDiffOn hΩ hg k q) hx hj, iteratedFDerivWithin_of_isOpen j hΩ hx]`. Establish `h` using `holo_contDiffOn hΩ hg (q + 1)`. Establish `h' : ContDiffOn ℂ ((q : WithTop ℕ∞) + 1) g Ω` using `by exact_mod_cast h`. Establish `h2` using `((contDiffOn_succ_iff_fderiv_of_isOpen hΩ).mp h').2.2`.
+
+Establish `h3` using `(ContinuousLinearMap.apply ℂ ℂ (Pi.single k (1 : ℂ) : Fin d → ℂ)).norm_iteratedFDeriv_comp_left (h2.contDiffAt (hΩ.mem_nhds hx)) (n := j) (by exact_mod_cast hj)`. Establish `h4 : ‖ContinuousLinearMap.apply ℂ ℂ (Pi.single k (1 : ℂ) : Fin d → ℂ)‖ ≤ 1`. Use `ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun T => ?_` and prove the remaining obligations. Use `T.le_opNorm (Pi.single k (1 : ℂ) : Fin d → ℂ)` as an intermediate fact. Rewrite `this` using `[bkb_norm_single, mul_one]`.
+
+Simplify using `using this`. Establish `h5 : ‖iteratedFDeriv ℂ (j + 1) g x‖ ≤ ‖fderiv ℂ g x‖ * P ^ j`. Break down `Nat.eq_zero_or_pos j with rfl | hj0` into its components or cases. Simplify using `[norm_iteratedFDeriv_one]`. Conclude with `hb j hj0 hj`.
+
+Rewrite `h3` using `[norm_iteratedFDeriv_fderiv]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem bkb_u_bd {d q : ℕ} {Ω : Set (Fin d → ℂ)} {g : (Fin d → ℂ) → ℂ} {P : ℝ} (hΩ : IsOpen Ω)
     (hg : DifferentiableOn ℂ g Ω) {x : Fin d → ℂ} (hx : x ∈ Ω)
     (hb : ∀ j : ℕ, 1 ≤ j → j ≤ q → ‖iteratedFDeriv ℂ (j + 1) g x‖ ≤ ‖fderiv ℂ g x‖ * P ^ j) (k : Fin d) :
@@ -603,6 +817,21 @@ theorem bkb_u_bd {d q : ℕ} {Ω : Set (Fin d → ℂ)} {g : (Fin d → ℂ) →
     _ ≤ 1 * ‖iteratedFDeriv ℂ (j + 1) g x‖ := mul_le_mul_of_nonneg_right h4 (norm_nonneg _)
     _ ≤ _ := by rw [one_mul]; exact h5
 
+/- English proof (translation)
+Use `⟨2 ^ q * ((q.factorial : ℝ) ^ 2 * ((d : ℝ) ^ 2 * 2 ^ q) ^ q) * d, by positivity, ?_⟩` and prove the remaining obligations. Introduce `Ω g P hΩ hg hP hne x hx hb k`. Use `set G := ‖fderiv ℂ g x‖ with hG`. Establish `hGpos : 0 < G` using `norm_pos_iff.mpr (hne x hx)`. Establish `hd : 1 ≤ (d : ℝ)` using `by exact_mod_cast (Nat.succ_le_of_lt (Fin.pos k))`.
+
+Establish `bu` using `fun l => bkb_u_bd hΩ hg hx hb l`. Establish `bcu : ∀ l, Bd (fun x => (starRingEnd ℂ) (fderiv ℂ g x (Pi.single l 1))) Ω x q (1 * G) P` using `fun l => Bd.clm (Complex.conjCLE : ℂ →L[ℝ] ℂ) hΩ hx hP.le ((bkb_u_contDiffOn hΩ hg l q).restrict_scalars ℝ) Complex.conjCLE_norm.le (bu l)`. Establish `bn : ∀ l, Bd (fun x => Complex.normSq (fderiv ℂ g x (Pi.single l 1))) Ω x q (1 * (2 ^ q * (1 * G) * G)) P` using `fun l => by`. Simplify using `only [bkb_nsq_eq]`. Conclude with `Bd.clm Complex.reCLM hΩ hx hP.le ((bkb_cu_contDiffOn hΩ hg l q).smul ((bkb_u_contDiffOn hΩ hg l q).restrict_scalars ℝ)) Complex.reCLM_norm.le (Bd.smul hΩ hx hP.le (bkb_cu_contDiffOn hΩ hg l q) ((bkb_u_contDiffOn hΩ hg l q).restrict_scalars ℝ) (bcu l) (bu l))`.
+
+Establish `bN` using `Bd.sum (Finset.univ : Finset (Fin d)) hΩ hx (fun l _ => bkb_nsq_contDiffOn hΩ hg l q) (fun l _ => bn l)`. Use `set N0 := ∑ l, Complex.normSq (fderiv ℂ g x (Pi.single l 1)) with hN0`. Establish `hN0pos : 0 < N0` using `bkb_N_pos (hne x hx)`. Establish `hsq : G ^ 2 ≤ d * N0` using `bkb_sq_le _`. Establish `bN' : Bd (fun x => ∑ l, Complex.normSq (fderiv ℂ g x (Pi.single l 1))) Ω x q (((d : ℝ) ^ 2 * 2 ^ q) * N0) P`.
+
+Use `bkb_Bd_mono hP.le ?_ bN` and prove the remaining obligations. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, one_mul]`. Establish `: (d : ℝ) * (2 ^ q * G * G) = d * 2 ^ q * G ^ 2` using `by ring`. Rewrite using `[this]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hκ : (1 : ℝ) ≤ (d : ℝ) ^ 2 * 2 ^ q`. Establish `h1 : (1 : ℝ) ≤ (d : ℝ) ^ 2` using `one_le_pow₀ hd`. Establish `h2 : (1 : ℝ) ≤ 2 ^ q` using `one_le_pow₀ (by norm_num)`. Use the polynomial consequences of the given equalities and inequalities. Establish `bI` using `Bd.inv hΩ hx hP.le (bkb_N_contDiffOn hΩ hg q) (fun y hy => (bkb_N_pos (hne y hy)).ne') hN0pos hκ bN'`.
+
+Establish `bb` using `Bd.smul hΩ hx hP.le ((bkb_N_contDiffOn hΩ hg q).inv fun y hy => (bkb_N_pos (hne y hy)).ne') (bkb_cu_contDiffOn hΩ hg k q) bI (bcu k)`. Use `bkb_Bd_mono hP.le ?_ bb` and prove the remaining obligations. Rewrite using `[one_mul, le_div_iff₀ hGpos]`. Use `set K := (q.factorial : ℝ) ^ 2 * ((d : ℝ) ^ 2 * 2 ^ q) ^ q with hK`. Establish `hKnn : 0 ≤ K` using `by positivity`.
+
+Establish `: 2 ^ q * (K / N0) * G * G = 2 ^ q * K * (G ^ 2 / N0)` using `by ring`. Rewrite using `[this]`. Establish `h3 : G ^ 2 / N0 ≤ d` using `by rw [div_le_iff₀ hN0pos]; exact hsq`. Conclude with `mul_le_mul_of_nonneg_left h3 (by positivity)`.
+-/
 theorem bk_bound (d q : ℕ) : ∃ B : ℝ, 0 ≤ B ∧ ∀ (Ω : Set (Fin d → ℂ)) (g : (Fin d → ℂ) → ℂ) (P : ℝ), IsOpen Ω →
     DifferentiableOn ℂ g Ω → 0 < P → (∀ x ∈ Ω, fderiv ℂ g x ≠ 0) → ∀ x ∈ Ω,
     (∀ j : ℕ, 1 ≤ j → j ≤ q → ‖iteratedFDeriv ℂ (j + 1) g x‖ ≤ ‖fderiv ℂ g x‖ * P ^ j) →
@@ -658,6 +887,9 @@ section Main
 
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {d : ℕ}
 
+/- English proof (translation)
+Unfold `psi`. Rewrite using `[mul_comm, Complex.norm_exp_ofReal_mul_I]`.
+-/
 theorem norm_psi (β w : ℂ) : ‖psi β w‖ = 1 := by
   unfold psi
   rw [mul_comm, Complex.norm_exp_ofReal_mul_I]
@@ -667,10 +899,22 @@ noncomputable def wirtL (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] {d
   (1 / 2 : ℂ) • (ContinuousLinearMap.apply ℝ V (Pi.single k (1 : ℂ) : Fin d → ℂ) -
     Complex.I • ContinuousLinearMap.apply ℝ V (Pi.single k Complex.I : Fin d → ℂ))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[wirt, wirtL]`.
+-/
 theorem wirt_eq (k : Fin d) (b : (Fin d → ℂ) → V) : wirt k b = (wirtL V k) ∘ (fderiv ℝ b) := by
   funext x
   simp [wirt, wirtL]
 
+/- English proof (translation)
+Use `ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun T => ?_` and prove the remaining obligations. Establish `h1 : ‖T (Pi.single k (1 : ℂ))‖ ≤ ‖T‖`. Use `(T.le_opNorm _).trans ?_` and prove the remaining obligations. Rewrite using `[Pi.norm_single]`. Simplify using the standard rewrite rules.
+
+Establish `h2 : ‖T (Pi.single k Complex.I)‖ ≤ ‖T‖`. Use `(T.le_opNorm _).trans ?_` and prove the remaining obligations. Rewrite using `[Pi.norm_single]`. Simplify using the standard rewrite rules. Establish `: wirtL V k T = (1 / 2 : ℂ) • (T (Pi.single k 1) - Complex.I • T (Pi.single k Complex.I))`.
+
+Simplify using `[wirtL]`. Rewrite using `[this, norm_smul]`. Establish `h3 : ‖T (Pi.single k 1) - Complex.I • T (Pi.single k Complex.I)‖ ≤ ‖T‖ + ‖T‖`. Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_smul, Complex.norm_I, one_mul]`.
+
+Conclude with `add_le_add h1 h2`. Establish `h4 : ‖(1 / 2 : ℂ)‖ = 1 / 2` using `by simp`. Rewrite using `[h4]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem norm_wirtL_le (k : Fin d) : ‖wirtL V k‖ ≤ 1 := by
   refine ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun T => ?_
   have h1 : ‖T (Pi.single k (1 : ℂ))‖ ≤ ‖T‖ := by
@@ -689,11 +933,19 @@ theorem norm_wirtL_le (k : Fin d) : ‖wirtL V k‖ ≤ 1 := by
   have h4 : ‖(1 / 2 : ℂ)‖ = 1 / 2 := by simp
   rw [h4]; linarith
 
+/- English proof (translation)
+Rewrite using `[wirt_eq]`. Conclude with `(wirtL V k).contDiff.comp (hf.fderiv_right (by norm_cast))`.
+-/
 theorem wirt_contDiff {n : ℕ} (k : Fin d) {f : (Fin d → ℂ) → V} (hf : ContDiff ℝ (n + 1 : ℕ) f) :
     ContDiff ℝ n (wirt k f) := by
   rw [wirt_eq]
   exact (wirtL V k).contDiff.comp (hf.fderiv_right (by norm_cast))
 
+/- English proof (translation)
+Use `subset_trans ?_ (tsupport_fderiv_subset ℝ (f := f))` and prove the remaining obligations. Apply `closure_mono` to reduce the goal to its premises. Introduce `x hx`. Simplify using `only [Function.mem_support] at hx ⊢`. Introduce `h`.
+
+Apply `hx` to reduce the goal to its premises. Rewrite using `[wirt_eq]`. Simplify using `[h]`.
+-/
 theorem wirt_tsupport (k : Fin d) (f : (Fin d → ℂ) → V) : tsupport (wirt k f) ⊆ tsupport f := by
   refine subset_trans ?_ (tsupport_fderiv_subset ℝ (f := f))
   apply closure_mono
@@ -701,6 +953,9 @@ theorem wirt_tsupport (k : Fin d) (f : (Fin d → ℂ) → V) : tsupport (wirt k
   simp only [Function.mem_support] at hx ⊢
   intro h; apply hx; rw [wirt_eq]; simp [h]
 
+/- English proof (translation)
+Rewrite using `[wirt_eq]`. Establish `h1 : ContDiff ℝ n (fderiv ℝ f)` using `hf.fderiv_right (by norm_cast)`. Use `((wirtL V k).norm_iteratedFDeriv_comp_left (N := n) h1.contDiffAt (by exact_mod_cast hj)).trans ?_` and prove the remaining obligations. Rewrite using `[norm_iteratedFDeriv_fderiv]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem wirt_bound {n : ℕ} (k : Fin d) {f : (Fin d → ℂ) → V} (hf : ContDiff ℝ (n + 1 : ℕ) f) {j : ℕ} (hj : j ≤ n)
     (x : Fin d → ℂ) : ‖iteratedFDeriv ℝ j (wirt k f) x‖ ≤ ‖iteratedFDeriv ℝ (j + 1) f x‖ := by
   rw [wirt_eq]
@@ -710,6 +965,11 @@ theorem wirt_bound {n : ℕ} (k : Fin d) {f : (Fin d → ℂ) → V} (hf : ContD
   calc _ ≤ 1 * ‖iteratedFDeriv ℝ (j + 1) f x‖ := by gcongr; exact norm_wirtL_le k
     _ = _ := one_mul _
 
+/- English proof (translation)
+Establish `h1 : ∫ x : Fin d → ℂ, psi β (g x / t) • a x ∂(muPi β (Fin d)) = ∫ x in tsupport a, psi β (g x / t) • a x ∂(muPi β (Fin d))`. Use `symm`. Apply `setIntegral_eq_integral_of_forall_compl_eq_zero` to reduce the goal to its premises. Introduce `x hx`. Rewrite using `[image_eq_zero_of_notMem_tsupport hx, smul_zero]`.
+
+Rewrite using `[h1]`. Use `norm_setIntegral_le_of_norm_le_const (IsCompact.measure_lt_top hc) ?_` and prove the remaining obligations. Introduce `x _`. Rewrite using `[norm_smul, norm_psi, one_mul]`. Conclude with `hb x`.
+-/
 theorem base_bound (β t : ℂ) (g : (Fin d → ℂ) → ℂ) {S : ℝ} {a : (Fin d → ℂ) → V} (hc : HasCompactSupport a)
     (hb : ∀ x, ‖a x‖ ≤ S) :
     ‖∫ x : Fin d → ℂ, psi β (g x / t) • a x ∂(muPi β (Fin d))‖ ≤ S * (muPi β (Fin d) (tsupport a)).toReal := by
@@ -731,6 +991,19 @@ section Main2
 
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [CompleteSpace V] {d : ℕ}
 
+/- English proof (translation)
+Establish `hS : 0 ≤ S`. Use `hb 0 (Nat.zero_le _) 0` as an intermediate fact. Simplify using `only [pow_zero, mul_one] at this`. Conclude with `(norm_nonneg _).trans this`. Establish `hne : ∀ x ∈ Ω, fderiv ℂ g x ≠ 0` using `fun x hx h => by`.
+
+Use `hlow x hx` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `j hj x`. Distinguish the cases in `hx : x ∈ Ω`.
+
+Establish `b1 : Bd (bk g k) Ω x n (B / ‖fderiv ℂ g x‖) P` using `fun i hi => hbk x hx k i (hi.trans hn)`. Establish `b2 : Bd a Ω x n S P` using `fun i hi => by`. Rewrite using `[iteratedFDerivWithin_of_isOpen i hΩ hx]`. Conclude with `hb i hi x`. Establish `b3` using `Bd.smul hΩ hx hP.le (bk_contDiffOn hΩ hg hne k n) ha.contDiffOn b1 b2 j hj`.
+
+Rewrite `b3` using `[iteratedFDerivWithin_of_isOpen j hΩ hx]`. Use `b3.trans ?_` and prove the remaining obligations. Establish `hG : 0 < ‖fderiv ℂ g x‖` using `lt_of_lt_of_le hη (hlow x hx)`. Establish `h1 : B / ‖fderiv ℂ g x‖ ≤ B / η` using `div_le_div_of_nonneg_left hB hη (hlow x hx)`. Establish `h2 : (2 : ℝ) ^ n ≤ 2 ^ q` using `pow_le_pow_right₀ (by norm_num) hn`.
+
+Establish `h3 : 2 ^ q * B * S / η = 2 ^ q * (B / η) * S` using `by ring`. Rewrite using `[h3]`. Establish `h4 : 0 ≤ B / ‖fderiv ℂ g x‖` using `div_nonneg hB hG.le`. Use `gcongr`. Establish `hx' : x ∉ tsupport (fun y => bk g k y • a y)` using `fun h => hx (hsupp (tsupport_smul_subset' _ _ h))`.
+
+Establish `hx'' : x ∉ tsupport (iteratedFDeriv ℝ j (fun y => bk g k y • a y))` using `fun h => hx' (tsupport_iteratedFDeriv_subset (𝕜 := ℝ) j h)`. Rewrite using `[image_eq_zero_of_notMem_tsupport hx'', norm_zero]`. Check the signs of the components of the expression.
+-/
 theorem fk_bound {q n : ℕ} (hn : n ≤ q) {Ω : Set (Fin d → ℂ)} {g : (Fin d → ℂ) → ℂ} {η P B S : ℝ} (hΩ : IsOpen Ω)
     (hg : DifferentiableOn ℂ g Ω) (hη : 0 < η) (hP : 0 < P) (hlow : ∀ x ∈ Ω, η ≤ ‖fderiv ℂ g x‖) (hB : 0 ≤ B)
     (hbk : ∀ x ∈ Ω, ∀ k, Bd (bk g k) Ω x q (B / ‖fderiv ℂ g x‖) P)
@@ -767,6 +1040,23 @@ theorem fk_bound {q n : ℕ} (hn : n ≤ q) {Ω : Set (Fin d → ℂ)} {g : (Fin
     rw [image_eq_zero_of_notMem_tsupport hx'', norm_zero]
     positivity
 
+/- English proof (translation)
+Establish `hf : ∀ k, ContDiff ℝ 1 (fun y => bk g k y • a y)` using `fun k => contDiff_smul_of_tsupport hΩ (by exact_mod_cast bk_contDiffOn hΩ hg hne k 1) ha hsupp`. Establish `hfs : ∀ k, tsupport (fun y => bk g k y • a y) ⊆ tsupport a` using `fun k => tsupport_smul_subset' _ _`. Establish `hfc : ∀ k, HasCompactSupport (fun y => bk g k y • a y)` using `fun k => hc.of_isClosed_subset (isClosed_tsupport _) (hfs k)`. Establish `hW : ∀ k, ∫ x : Fin d → ℂ, psi β (g x / t) • wirt k (fun y => bk g k y • a y) x ∂(muPi β (Fin d)) = -∫ x : Fin d → ℂ, (Complex.I * β * fderiv ℂ g x (Pi.single k 1) / (2 * t) * psi β (g x / t)) • (bk g k x • a x) ∂(muPi β (Fin d))` using `fun k => wirtingerIBP d β t Ω g ht hΩ hg V _ k (hf k) (hfc k) ((hfs k).trans hsupp)`. Establish `hcont : ∀ k, ContinuousOn (fun x => Complex.I * β * fderiv ℂ g x (Pi.single k 1) / (2 * t) * psi β (g x / t)) Ω`.
+
+Introduce `k`. Establish `h1 : ContinuousOn (fderiv ℂ g) Ω` using `((holo_contDiffOn hΩ hg 1).continuousOn_fderiv_of_isOpen hΩ (by norm_num))`. Establish `h2 : ContinuousOn (fun x => fderiv ℂ g x (Pi.single k 1)) Ω` using `h1.clm_apply continuousOn_const`. Establish `h3 : ContinuousOn (fun x => psi β (g x / t)) Ω`. Unfold `psi`.
+
+Use `Complex.continuous_exp.comp_continuousOn ?_` and prove the remaining obligations. Use `continuousOn_const.mul ?_` and prove the remaining obligations. Use `Complex.continuous_ofReal.comp_continuousOn ?_` and prove the remaining obligations. Use `Complex.continuous_re.comp_continuousOn ?_` and prove the remaining obligations. Conclude with `continuousOn_const.mul (hg.continuousOn.div_const _)`.
+
+Conclude with `(((continuousOn_const.mul h2).div_const _).mul h3)`. Establish `hint : ∀ k, Integrable (fun x => (Complex.I * β * fderiv ℂ g x (Pi.single k 1) / (2 * t) * psi β (g x / t)) • (bk g k x • a x)) (muPi β (Fin d))`. Introduce `k`. Establish `h1 : ContDiff ℝ 0 (fun x => (Complex.I * β * fderiv ℂ g x (Pi.single k 1) / (2 * t) * psi β (g x / t)) • (bk g k x • a x))` using `contDiff_smul_of_tsupport hΩ (contDiffOn_zero.mpr (hcont k)) ((hf k).of_le (by norm_num)) ((hfs k).trans hsupp)`. Use `(contDiff_zero.mp h1).integrable_of_hasCompactSupport ?_` and prove the remaining obligations.
+
+Conclude with `(hfc k).of_isClosed_subset (isClosed_tsupport _) (tsupport_smul_subset' _ _)`. Establish `hpt : ∀ x, psi β (g x / t) • a x = ∑ k : Fin d, (2 * t / (Complex.I * β)) • ((Complex.I * β * fderiv ℂ g x (Pi.single k 1) / (2 * t) * psi β (g x / t)) • (bk g k x • a x))`. Introduce `x`. Distinguish the cases in `hx : x ∈ Ω`. Establish `h1` using `bk_sum (hne x hx)`.
+
+Establish `h2 : ∀ k : Fin d, (2 * t / (Complex.I * β)) • ((Complex.I * β * fderiv ℂ g x (Pi.single k 1) / (2 * t) * psi β (g x / t)) • (bk g k x • a x)) = (fderiv ℂ g x (Pi.single k 1) * bk g k x) • (psi β (g x / t) • a x)`. Introduce `k`. Simplify using `only [smul_smul]`. Use `congr 1`. Establish `: Complex.I ≠ 0` using `Complex.I_ne_zero`.
+
+Clear the denominators using the available nonvanishing facts. Simplify using `only [h2]`. Rewrite using `[← Finset.sum_smul, h1, one_smul]`. Establish `: a x = 0` using `image_eq_zero_of_notMem_tsupport fun h => hx (hsupp h)`. Simplify using `[this]`.
+
+Simplify using `only [hpt]`. Establish `hint' : ∀ k ∈ (Finset.univ : Finset (Fin d)), Integrable (fun x => (2 * t / (Complex.I * β)) • ((Complex.I * β * fderiv ℂ g x (Pi.single k 1) / (2 * t) * psi β (g x / t)) • (bk g k x • a x))) (muPi β (Fin d))` using `fun k _ => (hint k).smul _`. Rewrite using `[integral_finsetSum _ hint']`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[integral_smul, hW k, neg_smul, smul_neg, neg_neg]`.
+-/
 theorem ibp_identity {β t : ℂ} (hβ : β ≠ 0) (ht : t ≠ 0) {Ω : Set (Fin d → ℂ)} {g : (Fin d → ℂ) → ℂ} (hΩ : IsOpen Ω)
     (hg : DifferentiableOn ℂ g Ω) (hne : ∀ x ∈ Ω, fderiv ℂ g x ≠ 0)
     {a : (Fin d → ℂ) → V} (ha : ContDiff ℝ 1 a) (hc : HasCompactSupport a) (hsupp : tsupport a ⊆ Ω) :
@@ -830,6 +1120,25 @@ theorem ibp_identity {β t : ℂ} (hβ : β ≠ 0) (ht : t ≠ 0) {Ω : Set (Fin
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [integral_smul, hW k, neg_smul, smul_neg, neg_neg]
 
+/- English proof (translation)
+Establish `hne : ∀ x ∈ Ω, fderiv ℂ g x ≠ 0` using `fun x hx h => by`. Use `hlow x hx` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `n`.
+
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `_ S a _ hc _ hb`. Simplify using `only [pow_zero, one_mul, mul_one]`. Use `base_bound β t g hc fun x => ?_` and prove the remaining obligations.
+
+Use `hb 0 le_rfl x` as an intermediate fact. Simplify using `using this`. Consider the case `succ n ih`. Introduce `hn S a ha hc hsupp hb`. Establish `hS : 0 ≤ S`.
+
+Use `hb 0 (Nat.zero_le _) 0` as an intermediate fact. Simplify using `only [pow_zero, mul_one] at this`. Conclude with `(norm_nonneg _).trans this`. Establish `hf : ∀ k, ContDiff ℝ (n + 1 : ℕ) (fun y => bk g k y • a y)` using `fun k => contDiff_smul_of_tsupport hΩ (bk_contDiffOn hΩ hg hne k (n + 1)) ha hsupp`. Establish `hfs : ∀ k, tsupport (fun y => bk g k y • a y) ⊆ tsupport a` using `fun k => tsupport_smul_subset' _ _`.
+
+Establish `hws : ∀ k, tsupport (wirt k (fun y => bk g k y • a y)) ⊆ tsupport a` using `fun k => (wirt_tsupport k _).trans (hfs k)`. Establish `hfb` using `fun k => fk_bound hn hΩ hg hη hP hlow hB hbk ha hsupp hb k`. Establish `hβ' : 0 < ‖β‖` using `norm_pos_iff.mpr hβ`. Establish `hk : ∀ k : Fin d, ‖∫ x : Fin d → ℂ, psi β (g x / t) • wirt k (fun y => bk g k y • a y) x ∂(muPi β (Fin d))‖ ≤ (2 / ‖β‖ * d * (2 ^ q * B)) ^ n * (2 ^ q * B * S / η * P) * (‖t‖ * P / η) ^ n * (muPi β (Fin d) (tsupport a)).toReal`. Introduce `k`.
+
+Establish `h1` using `ih (Nat.le_of_succ_le hn) (2 ^ q * B * S / η * P) (wirt k (fun y => bk g k y • a y)) (wirt_contDiff k (hf k)) (hc.of_isClosed_subset (isClosed_tsupport _) (hws k)) ((hws k).trans hsupp) (fun j hj x => by`. Use `(wirt_bound k (hf k) hj x).trans ?_` and prove the remaining obligations. Use `(hfb k (j + 1) (Nat.succ_le_succ hj) x).trans (le_of_eq ?_)` and prove the remaining obligations. Use the proof step `ring)`. Use `h1.trans ?_` and prove the remaining obligations.
+
+Establish `h2 : (muPi β (Fin d) (tsupport (wirt k (fun y => bk g k y • a y)))).toReal ≤ (muPi β (Fin d) (tsupport a)).toReal` using `ENNReal.toReal_mono (IsCompact.measure_lt_top hc).ne (measure_mono (hws k))`. Use `gcongr`. Rewrite using `[ibp_identity hβ ht hΩ hg hne (ha.of_le (by norm_cast; omega)) hc hsupp]`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Establish `hc' : ‖-(2 * t / (Complex.I * β))‖ = 2 * ‖t‖ / ‖β‖`.
+
+Rewrite using `[norm_neg, norm_div, norm_mul, norm_mul, Complex.norm_I, one_mul]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun k _ => ?_` and prove the remaining obligations. Rewrite using `[norm_smul, hc']`.
+
+Use `gcongr`. Conclude with `hk k`. Use `_ = _ := by`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem main_induction {q : ℕ} {β t : ℂ} (hβ : β ≠ 0) (ht : t ≠ 0) {Ω : Set (Fin d → ℂ)} {g : (Fin d → ℂ) → ℂ}
     {η P B : ℝ} (hΩ : IsOpen Ω)
     (hg : DifferentiableOn ℂ g Ω) (hη : 0 < η) (hP : 0 < P) (hlow : ∀ x ∈ Ω, η ≤ ‖fderiv ℂ g x‖) (hB : 0 ≤ B)
@@ -896,6 +1205,11 @@ theorem main_induction {q : ℕ} {β t : ℂ} (hβ : β ≠ 0) (ht : t ≠ 0) {�
 
 end Main2
 
+/- English proof (translation)
+Introduce `d q β hβ`. Take `⟨B, hB, hBk⟩` from `bk_bound d q`. Use `⟨(2 / ‖β‖ * d * (2 ^ q * B)) ^ q, ?_⟩` and prove the remaining obligations. Introduce `Ω g η P S hΩ hg hη hP hlow hder V _ _ _ a ha hc hsupp hb t ht`. Establish `hne : ∀ x ∈ Ω, fderiv ℂ g x ≠ 0` using `fun x hx h => by`.
+
+Use `hlow x hx` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `main_induction hβ ht hΩ hg hη hP hlow hB (fun x hx k => hBk Ω g P hΩ hg hP hne x hx (hder x hx) k) q le_rfl S a ha hc hsupp hb`.
+-/
 theorem nonStatPhase : NonStatPhase := by
   intro d q β hβ
   obtain ⟨B, hB, hBk⟩ := bk_bound d q
@@ -912,8 +1226,14 @@ end Formalism.FourierDecayAlt.P.WirtingerIntegrationByParts
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+The claim follows from `WirtingerIntegrationByParts.wirtingerIBP`.
+-/
 theorem wirtinger_integration_by_parts : Formalism.FourierDecayAlt.G.WirtingerIBP := WirtingerIntegrationByParts.wirtingerIBP
 
+/- English proof (translation)
+The claim follows from `WirtingerIntegrationByParts.nonStatPhase`.
+-/
 theorem nonstationary_phase : Formalism.FourierDecayAlt.G.NonStatPhase := WirtingerIntegrationByParts.nonStatPhase
 
 end Formalism.FourierDecayAlt.P

@@ -14,6 +14,11 @@ set_option linter.unusedSectionVars false
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
 
+/- English proof (translation)
+Establish `h : (MvPolynomial.map (Int.castRingHom ℤ) : MRingOver ℤ ι →+* MRingOver ℤ ι) = RingHom.id _`. Use `RingHom.ext fun f => ?_` and prove the remaining obligations. Rewrite using `[show Int.castRingHom ℤ = RingHom.id ℤ from RingHom.ext_int _ _, map_id]`. Both sides reduce to the same expression. Use `show Ideal.map _ _ = _`.
+
+Rewrite using `[h, Ideal.map_id]`.
+-/
 theorem idealOver_int (y : (Σ k, ι k) → Ω) : GenOnFibres.idealOver y ℤ = mCoordIdeal y := by
   have h : (MvPolynomial.map (Int.castRingHom ℤ) : MRingOver ℤ ι →+* MRingOver ℤ ι) = RingHom.id _ := by
     refine RingHom.ext fun f => ?_
@@ -28,16 +33,27 @@ def redRing (y : (Σ k, ι k) → Ω) (p : ℕ) :
     rw [idealOver_int]
     exact Ideal.le_comap_map)
 
+/- English proof (translation)
+The claim follows from `Ideal.quotientMap_mk`.
+-/
 theorem redRing_mk (y : (Σ k, ι k) → Ω) (p : ℕ) (f : MRingOver ℤ ι) :
     redRing y p (Ideal.Quotient.mk _ f) = Ideal.Quotient.mk _ (MvPolynomial.map (Int.castRingHom (ZMod p)) f) :=
   Ideal.quotientMap_mk
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[GenOnFibres.smul_mk, redRing_mk, redRing_mk, GenOnFibres.smul_mk, map_mul]`.
+-/
 theorem redRing_smul (y : (Σ k, ι k) → Ω) (p : ℕ) (r : MRingOver ℤ ι)
     (x : MRingOver ℤ ι ⧸ GenOnFibres.idealOver y ℤ) :
     redRing y p (r • x) = MvPolynomial.map (Int.castRingHom (ZMod p)) r • redRing y p x := by
   obtain ⟨x, rfl⟩ := Ideal.Quotient.mk_surjective x
   rw [GenOnFibres.smul_mk, redRing_mk, redRing_mk, GenOnFibres.smul_mk, map_mul]
 
+/- English proof (translation)
+Unfold `KH.cellMon at ht ⊢`. Proceed by induction on `ht using Submonoid.closure_induction with`. Consider the case `mem f hf`. Take `⟨k, i, hi, rfl⟩` from `hf`. Rewrite using `[map_X]`.
+
+Conclude with `Submonoid.subset_closure ⟨k, i, hi, rfl⟩`. Consider the case `one => rw [map_one]`. Conclude with `one_mem _`. Consider the case `mul f g _ _ hf hg => rw [map_mul]`. Conclude with `mul_mem hf hg`.
+-/
 theorem map_mem_cellMon (p : ℕ) {I : ∀ k, Finset (ι k)} {t : MRingOver ℤ ι} (ht : t ∈ KH.cellMon ℤ I) :
     MvPolynomial.map (Int.castRingHom (ZMod p)) t ∈ KH.cellMon (ZMod p) I := by
   unfold KH.cellMon at ht ⊢
@@ -59,6 +75,9 @@ def redLocFun (y : (Σ k, ι k) → Ω) (p : ℕ) (I : ∀ k, Finset (ι k))
     simp only [Submonoid.smul_def, redRing_smul] at h ⊢
     exact h)
 
+/- English proof (translation)
+Unfold `redLocFun`. Conclude with `LocalizedModule.liftOn_mk _ _ _`.
+-/
 theorem redLocFun_mk (y : (Σ k, ι k) → Ω) (p : ℕ) (I : ∀ k, Finset (ι k))
     (m : MRingOver ℤ ι ⧸ GenOnFibres.idealOver y ℤ) (t : KH.cellMon ℤ I) :
     redLocFun y p I (LocalizedModule.mk m t) =
@@ -80,6 +99,9 @@ def redLoc (y : (Σ k, ι k) → Ω) (p : ℕ) (I : ∀ k, Finset (ι k)) :
       congr 1
       exact Subtype.ext (map_mul _ _ _)
 
+/- English proof (translation)
+The claim follows from `redLocFun_mk y p I m t`.
+-/
 theorem redLoc_mk (y : (Σ k, ι k) → Ω) (p : ℕ) (I : ∀ k, Finset (ι k))
     (m : MRingOver ℤ ι ⧸ GenOnFibres.idealOver y ℤ) (t : KH.cellMon ℤ I) :
     redLoc y p I (LocalizedModule.mk m t) = LocalizedModule.mk (redRing y p m) ⟨_, map_mem_cellMon p t.2⟩ :=
@@ -92,6 +114,9 @@ def redCoch (y : (Σ k, ι k) → Ω) (p n : ℕ) :
     map_zero' := funext fun I => map_zero (redLoc y p I.1)
     map_add' := fun w w' => funext fun I => map_add (redLoc y p I.1) (w I) (w' I) }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem redCoch_apply (y : (Σ k, ι k) → Ω) (p n : ℕ)
     (w : KH.CechC ℤ ι (MRingOver ℤ ι ⧸ GenOnFibres.idealOver y ℤ) n) (I : KH.Cell K ι n) :
     redCoch y p n w I = redLoc y p I.1 (w I) :=
@@ -118,6 +143,9 @@ def ReductionComplex.Statement : Prop :=
     (∀ (n : ℕ) (w : KH.CechC ℤ ι (MRingOver ℤ ι ⧸ GenOnFibres.idealOver y ℤ) n),
       FibreReduction.redCoch y p n ((p : ℤ) • w) = 0)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨FibreSectionLift.hyps_inhabited.1, FibreSectionLift.hyps_inhabited.2.1⟩`.
+-/
 theorem ReductionComplex.hyps_inhabited :
     IsArithVar (mCoordIdeal (ι := PtIdx) unitPoint) (0 + 1) ∧ Nat.Prime 2 :=
   ⟨FibreSectionLift.hyps_inhabited.1, FibreSectionLift.hyps_inhabited.2.1⟩

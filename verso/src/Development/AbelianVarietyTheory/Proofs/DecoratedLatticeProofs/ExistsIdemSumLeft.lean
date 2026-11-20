@@ -32,9 +32,23 @@ open GlobalTheory.LocMod GlobalTheory.SymBridge GlobalTheory.SplitWeil GlobalThe
 section Gen
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.closure_mono fun _ ⟨α, h1, h2, h3⟩ => ⟨α, h1, fun v hv => h2 v fun hp => hv (h v hp), h3⟩`.
+-/
 theorem latO_le (S T : HSp D) (LS LT) {p q : GlobalTheory.FinPl.Pl D → Prop} (h : ∀ v, p v → q v) : latO S T LS LT p ≤ latO S T LS LT q :=
   AddSubgroup.closure_mono fun _ ⟨α, h1, h2, h3⟩ => ⟨α, h1, fun v hv => h2 v fun hp => hv (h v hp), h3⟩
 
+/- English proof (translation)
+Take `⟨ε, ⟨β, rfl, h1, h0⟩, hsum⟩` from `q.above`. Establish `hβ : β ∈ intAf D.host.F` using `fun u => by`. Distinguish the cases in `hu : u = q.v`. Substitute `hu` using the available equality. Rewrite using `[h1]`.
+
+Conclude with `one_mem _`. Rewrite using `[h0 u hu]`. Conclude with `zero_mem _`. Establish `main : (latO S T LS LT fun _ => True) ≤ (latO S T LS LT (· = q.v)).comap (DistribSMul.toAddMonoidHom (WO S T) (algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 β)))`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨α, hα, -, a, ha, s, hs, t, ht, rfl⟩`. Use `AddSubgroup.subset_closure ⟨β * α, fun v => by rw [map_mul]; exact mul_mem (hβ v) (hα v), fun v hv => ?_, a, ha, s, hs, t, ht, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, h0 v hv, zero_mul]`. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(pairA D.host.F 0 β ⊗ₜ[D.host.F] (1 : D.host.E)) * (pairA D.host.F 0 α ⊗ₜ[D.host.F] _) = _`.
+
+Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, Matrix.of_apply]`. Use `congr 1`. Conclude with `Prod.ext (mul_zero _) rfl`. Establish `h` using `main hu`. Rewrite `h` using `[AddSubgroup.mem_comap]`.
+
+Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `_ = algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 β) * u i j`. Rewrite using `[← hsum, ← hh i j, ← mul_assoc, add_mul, q.split.1, mul_comm (cA D q.e), q.split.2.1, add_zero]`.
+-/
 theorem mem_latO_at (q : GlobalTheory.FinPl.SplitPt D k) {S T : HSp D} {LS LT} {u : WO S T} (hu : u ∈ latO S T LS LT fun _ => True)
     (hh : IsHalf q.e u) : u ∈ latO S T LS LT (· = q.v) := by
   obtain ⟨ε, ⟨β, rfl, h1, h0⟩, hsum⟩ := q.above
@@ -61,6 +75,11 @@ theorem mem_latO_at (q : GlobalTheory.FinPl.SplitPt D k) {S T : HSp D} {LS LT} {
   change _ = algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 β) * u i j
   rw [← hsum, ← hh i j, ← mul_assoc, add_mul, q.split.1, mul_comm (cA D q.e), q.split.2.1, add_zero]
 
+/- English proof (translation)
+Rewrite using `[stdHom, ← eS, ← eT]`. Use `⟨fun hx => latO_le S T _ _ (fun _ _ => trivial) (GlobalTheory.UpMem.up_mem_latO D k q hq Y Y' S T FS FT LS LT hS hT hFS hFT x hx), fun hx => ?_⟩` and prove the remaining obligations. Establish `hh` using `Witness.up_half (ofSplit q) FS FT x`. Take `⟨x', hx', e⟩` from `GlobalTheory.HalfIntUp.exists_int_up D k q hq Y Y' S T FS FT LS LT hS hT hFS hFT _ (mem_latO_at q hx hh) hh`. Use `congrArg ((ofSplit q).down FS FT) e` as an intermediate fact.
+
+Rewrite `this` using `[Witness.down_up, Witness.down_up]`. Rewrite using `[this]` and apply the resulting hypothesis.
+-/
 theorem int_iff_up_mem (q : GlobalTheory.FinPl.SplitPt D k) (hq : q.UnitAA) {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y']
     {S T : HSp D} (FS : Frame k S.rank Y') (FT : Frame k T.rank Y) {LS : GlobalTheory.FinPl.Lat S} {LT : GlobalTheory.FinPl.Lat T}
     (hS : IsSelfDualC S LS) (hT : IsSelfDualC T LT) (eS : (LS : Set (Fin S.rank → D.host.E)) = intVec D S.rank)
@@ -77,6 +96,13 @@ theorem int_iff_up_mem (q : GlobalTheory.FinPl.SplitPt D k) (hq : q.UnitAA) {Y Y
   rw [Witness.down_up, Witness.down_up] at this
   rwa [this]
 
+/- English proof (translation)
+Use `(hFT fun r => FT.γ r s).2 ?_ r` and prove the remaining obligations. Establish `hs : (Pi.single s 1 : Fin T.rank → D.host.E) ∈ LT`. Rewrite using `[← SetLike.mem_coe, eT]`. Introduce `i`. Rewrite using `[Pi.single_apply]`.
+
+Use `split_ifs`. Conclude with `isIntegral_one`. Conclude with `isIntegral_zero`. Use `GlobalTheory.UpMem.e_mul_mem_latV q T LT hs using 2 with i` and compare the differences between its conclusion and the goal. Establish `: (FT.β *ᵥ fun r => FT.γ r s) i = (FT.β * FT.γ) i s` using `rfl`.
+
+Rewrite using `[this, FT.βγ, ← q.sec_pr, Matrix.one_apply, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem gamma_int (q : GlobalTheory.FinPl.SplitPt D k) {Y : Type} [Fintype Y] [DecidableEq Y] {T : HSp D} (FT : Frame k T.rank Y)
     {LT : GlobalTheory.FinPl.Lat T} (eT : (LT : Set (Fin T.rank → D.host.E)) = intVec D T.rank)
     (hFT : ∀ y : Y → k, (∀ i, y i ∈ 𝒪[k]) ↔ (fun i => q.sec ((FT.β *ᵥ y) i)) ∈ GlobalTheory.FinPl.latV T LT (· = q.v)) (r s) :
@@ -94,6 +120,9 @@ theorem gamma_int (q : GlobalTheory.FinPl.SplitPt D k) {Y : Type} [Fintype Y] [D
   rw [this, FT.βγ, ← q.sec_pr, Matrix.one_apply, Pi.single_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+The claim follows from `((Submodule.Quotient.eq _).2 (show y - x ∈ box n (1 : kˣ) from fun c => h c)).symm`.
+-/
 theorem mk_eq_mk_of_int {n : Type} {x y : n → k} (h : ∀ c, y c - x c ∈ 𝒪[k]) :
     (Submodule.Quotient.mk x : _ ⧸ box n (1 : kˣ)) = Submodule.Quotient.mk y :=
   ((Submodule.Quotient.eq _).2 (show y - x ∈ box n (1 : kˣ) from fun c => h c)).symm
@@ -103,6 +132,11 @@ end Gen
 section Mat
 variable {E k : Type} [Field E] [NumberField E] [StarRing E] [Field k]
 
+/- English proof (translation)
+Substitute `hS hT` using the available equality. Use extensionality with `r c`. Establish `key : ∀ x : Fin nT → E, ∑ y : Y, f' (Pi.single (e y) 1) r * x (e y) = f' x r` using `fun x => by`. Rewrite using `[e.sum_comp fun j => f' (Pi.single j 1) r * x j]`. Use `conv_rhs => rw [pi_eq_sum_univ' x, map_sum, Finset.sum_apply]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => by rw [map_smul, Pi.smul_apply, smul_eq_mul, mul_comm]`. Simplify using `only [Matrix.mul_apply, hβ, hM, toLoc, Matrix.map_apply, ← map_mul, ← map_sum, finCongr_refl, Equiv.refl_apply]`. Rewrite using `[key]`. Simplify using `[Formalism.L2.Col.inFr, Matrix.mulVec, dotProduct]`.
+-/
 theorem mul_toLoc (ι : E →+* k) {Y Y' : Type} [Fintype Y] [Fintype Y'] {a b nS nT : ℕ} (hS : nS = a) (hT : nT = b)
     (f : (Fin a → E) ≃ₗ[E] (Fin a → E)) (f' : (Fin b → E) ≃ₗ[E] (Fin b → E)) (e' : Y' ≃ Fin a) (e : Y ≃ Fin b)
     (β : Matrix (Fin nS) Y' k) (M : Matrix (Fin nT) Y k) (hβ : ∀ r c, β r c = ι (f (Pi.single (e' c) 1) (finCongr hS r)))
@@ -120,6 +154,13 @@ theorem mul_toLoc (ι : E →+* k) {Y Y' : Type} [Fintype Y] [Fintype Y'] {a b n
 
 end Mat
 
+/- English proof (translation)
+Use `revert al`. Consider the cases of `j with`. Consider the case `zero => exact fun _ => rfl`. Consider the case `succ i`. Rewrite using `[Formalism.L2.Col.twSt]`.
+
+Distinguish the cases in `h1 : i + 1 ≤ m2`. Rewrite using `[if_pos h1]`. Conclude with `fun _ => dif_neg fun h => (@Finset.mem_sdiff _ (_) _ _ _).1 h |>.2 hP`. Rewrite using `[if_neg h1]`. Distinguish the cases in `h2 : i + 1 = m2 + 1`.
+
+Rewrite using `[if_pos h2]`. Conclude with `fun _ => rfl`. Rewrite using `[if_neg h2]`. Conclude with `fun al => al.elim`.
+-/
 theorem twSt_h {X : Formalism.L2.Col.Fields} {Pr : Formalism.L2.Col.Primes X} {R : Ranks} (Ch : Formalism.L2.Col.Chars X Pr R.m) (sel) {S₀ : Set ℕ}
     (mu : Formalism.L2.DIV.Tup X.F X.E X.K S₀) (cst : Formalism.L2.Col.LocCst X (Formalism.L2.Col.rowSG Pr sel mu)) (m2 j : ℕ)
     (al : (Formalism.L2.Col.twSt Ch sel mu cst m2 j).β) (P : Formalism.L2.Col.rowSG Pr sel mu) (hP : P.1 ∈ Pr.vGs) :

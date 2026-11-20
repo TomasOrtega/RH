@@ -13,6 +13,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Establish `h : ((Tw.fm u μ).lam j τ).w = ((D.fm u).lam j τ).w`. Use function extensionality and compare the values at `i`. Establish `h1` using `(Tw.fm u μ).lam_eq j hj τ i`. Establish `h2` using `(D.fm u).lam_eq j hj τ i`.
+
+Conclude with `h1.trans h2.symm` after adjusting the coercions. Consider the cases of `h1 : (Tw.fm u μ).lam j τ`. Consider the cases of `h2 : (D.fm u).lam j τ`. Simplify using `only [h1, h2] at h`. Substitute `h` using the available equality.
+
+Both sides reduce to the same expression.
+-/
 theorem lam_tw (Tw : TwForms D) (u : D.what₂.Word) (μ : D.what₂.Tup) (j : ℕ) (hj : j ≤ D.R.m) :
     (Tw.fm u μ).lam j = (D.fm u).lam j := by
   funext τ
@@ -58,6 +65,11 @@ def twY (T : Formalism.L2.Herm.TwChTied D inQ) (F : ∀ u, FormsTied D u) (u : D
     (D.chTw u μ).Y i ≃ Fr D i hi :=
   (T.eY u μ i hi).symm.trans ((F u).val i hi).eY
 
+/- English proof (translation)
+Take `⟨C, h1, h2, h3⟩` from `((F u).val i hi).de`. Use `⟨C, h1, h2, fun τ z => ?_⟩` and prove the remaining obligations. Use `T.de_eq u μ i hi ((T.eY u μ i hi).symm z) τ` as an intermediate fact. Rewrite `this` using `[Equiv.apply_symm_apply]`. Rewrite using `[this, h3]`.
+
+Both sides reduce to the same expression.
+-/
 theorem twY_de (T : Formalism.L2.Herm.TwChTied D inQ) (F : ∀ u, FormsTied D u) (u : D.what₂.Word) (μ : D.what₂.Tup) (i : ℕ) (hi : i ≤ D.R.m) :
     ∃ C : GL (Fin (D.R.N i)) D.host.E,
       cT (sigD D : D.host.E →+* D.host.E) C.1 * C.1 = gramN D i hi ∧
@@ -109,6 +121,9 @@ structure TwFormsTied (D : D7) (Tw : TwForms D) {inQ : D.what₂.Tup → HeightO
 
   twisted_e0_at_mu0_eq_eMu0 : ∀ u x, Tw.e0 u D.what₂.mu0 x = Tw.eMu0 u 0 (Nat.zero_le _) x
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.Herm.heq_apply (D.memberColumns_twistedChain_base u) j _ _ (Tw.eMu0_emb u j hj x) c y`.
+-/
 theorem eMu0_emb_apply (Tw : TwForms D) (u : D.what₂.Word) (j : ℕ) (hj : j ≤ D.R.m) (x : ((D.fm u).lat j).V)
     (c : (D.mem u).C.cls j) (y : (D.mem u).C.Y j) :
     (Tw.fm u D.what₂.mu0).emb j (Tw.eMu0 u j hj x) (Formalism.L2.Herm.clsCast D u j c) (Formalism.L2.Herm.yCast D u j y) = (D.fm u).emb j x c y :=

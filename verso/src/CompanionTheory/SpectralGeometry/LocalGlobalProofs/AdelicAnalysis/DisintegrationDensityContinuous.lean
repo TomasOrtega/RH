@@ -11,6 +11,9 @@ section Top
 
 variable {V : Type} [TopologicalSpace V]
 
+/- English proof (translation)
+Take `⟨f, hf1, hfc, hfs, hf01⟩` from `exists_continuousMap_one_of_isCompact_subset_isOpen hK hO hKO`. Conclude with `⟨f, f.continuous, hfc, hfs, fun v => (hf01 v).1, fun v => (hf01 v).2, fun v hv => hf1 hv⟩`.
+-/
 theorem exists_bump [LocallyCompactSpace V] [T2Space V] {K O : Set V} (hK : IsCompact K)
     (hO : IsOpen O) (hKO : K ⊆ O) :
     ∃ φ : V → ℝ, Continuous φ ∧ HasCompactSupport φ ∧ tsupport φ ⊆ O ∧ (∀ v, 0 ≤ φ v) ∧
@@ -18,6 +21,15 @@ theorem exists_bump [LocallyCompactSpace V] [T2Space V] {K O : Set V} (hK : IsCo
   obtain ⟨f, hf1, hfc, hfs, hf01⟩ := exists_continuousMap_one_of_isCompact_subset_isOpen hK hO hKO
   exact ⟨f, f.continuous, hfc, hfs, fun v => (hf01 v).1, fun v => (hf01 v).2, fun v hv => hf1 hv⟩
 
+/- English proof (translation)
+Use `haveI : LocallyCompactSpace U := hU.locallyCompactSpace`. Set `E` to `CompactExhaustion.choice U`. Establish `hint : ⋃ n, interior (E n) = Set.univ`. Apply `Set.eq_univ_of_forall` to reduce the goal to its premises. Introduce `x`.
+
+Establish `hx : x ∈ ⋃ n, E n`. Rewrite using `[E.iUnion_eq]`. Conclude with `Set.mem_univ x`. Take `⟨n, hn⟩` from `Set.mem_iUnion.mp hx`. Conclude with `Set.mem_iUnion.mpr ⟨n + 1, E.subset_interior_succ n hn⟩`.
+
+Use `⟨fun n => (↑) '' E n, fun n => (↑) '' interior (E n), fun n => (E.isCompact n).image continuous_subtype_val, fun n => hU.isOpenMap_subtype_val _ isOpen_interior, fun n => Set.image_mono interior_subset, fun n => by` and prove the remaining obligations. Introduce and unpack `_ ⟨x, -, rfl⟩`. Conclude with `x.2,`. Use `fun m n hmn => Set.image_mono (E.subset hmn),`. Use `fun m n hmn => Set.image_mono (interior_mono (E.subset hmn)), ?_, ?_⟩`.
+
+Rewrite using `[← Set.image_iUnion, E.iUnion_eq, Set.image_univ, Subtype.range_coe]`. Rewrite using `[← Set.image_iUnion, hint, Set.image_univ, Subtype.range_coe]`.
+-/
 theorem exists_exhaustion [LocallyCompactSpace V] [SecondCountableTopology V] [T2Space V]
     {U : Set V} (hU : IsOpen U) :
     ∃ K W : ℕ → Set V, (∀ n, IsCompact (K n)) ∧ (∀ n, IsOpen (W n)) ∧ (∀ n, W n ⊆ K n) ∧
@@ -49,6 +61,11 @@ section Meas
 
 variable {V X : Type} [TopologicalSpace V] [MeasurableSpace V] [BorelSpace V]
 
+/- English proof (translation)
+Establish `hKm : MeasurableSet K` using `hK.isClosed.measurableSet`. Rewrite using `[← lintegral_indicator_one hKm]`. Use `lintegral_mono fun v => ?_` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ K`. Simplify using `[Set.indicator_apply, hv, h1 v hv]`.
+
+Simplify using `[Set.indicator_apply, hv]`.
+-/
 theorem le_lintegral_bump [T2Space V] (m : Measure V) {K : Set V} (hK : IsCompact K) {φ : V → ℝ}
     (h0 : ∀ v, 0 ≤ φ v) (h1 : ∀ v ∈ K, φ v = 1) : m K ≤ ∫⁻ v, ENNReal.ofReal (φ v) ∂m := by
   have hKm : MeasurableSet K := hK.isClosed.measurableSet
@@ -58,6 +75,11 @@ theorem le_lintegral_bump [T2Space V] (m : Measure V) {K : Set V} (hK : IsCompac
   · simp [Set.indicator_apply, hv, h1 v hv]
   · simp [Set.indicator_apply, hv]
 
+/- English proof (translation)
+Rewrite using `[← lintegral_indicator_one hO.measurableSet]`. Use `lintegral_mono fun v => ?_` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ O`. Simplify `h1 v` using `[Set.indicator_apply, hv]`. Establish `hz : φ v = 0`.
+
+Assume the negation of the conclusion as `hne`. Conclude with `hv (hs (subset_tsupport φ hne))`. Simplify using `[Set.indicator_apply, hv, hz]`.
+-/
 theorem lintegral_bump_le (m : Measure V) {O : Set V} (hO : IsOpen O) {φ : V → ℝ}
     (h1 : ∀ v, φ v ≤ 1) (hs : tsupport φ ⊆ O) : ∫⁻ v, ENNReal.ofReal (φ v) ∂m ≤ m O := by
   rw [← lintegral_indicator_one hO.measurableSet]
@@ -76,6 +98,11 @@ def BumpFamily (U : Set V) (B : Set X) (fib : X → Measure V) : Prop :=
   ∀ φ : V → ℝ, Continuous φ → HasCompactSupport φ → tsupport φ ⊆ U →
     (∀ b ∈ B, Integrable φ (fib b)) ∧ ContinuousOn (fun b => ∫ v, φ v ∂(fib b)) B
 
+/- English proof (translation)
+Take `⟨h0B, hφ⟩` from `h`. Take `⟨hint, hcont⟩` from `hφ φ hc hcs hs`. Establish `heq : (fun b => ∫⁻ v, ENNReal.ofReal (φ v) ∂(fib b)) = B.piecewise (fun b => ENNReal.ofReal (∫ v, φ v ∂(fib b))) (fun _ => 0)`. Use function extensionality and compare the values at `b`. Distinguish the cases in `hb : b ∈ B`.
+
+Simplify using `only [Set.piecewise_eq_of_mem, hb]`. Rewrite using `[ofReal_integral_eq_lintegral_ofReal (hint b hb) (ae_of_all _ h0)]`. Simplify using `[Set.piecewise, hb, h0B b hb]`. Rewrite using `[heq]`. Conclude with `(ENNReal.continuous_ofReal.comp_continuousOn hcont).measurable_piecewise continuousOn_const hB.measurableSet`.
+-/
 theorem BumpFamily.measurable_lintegral {U : Set V} {B : Set X} {fib : X → Measure V}
     (h : BumpFamily U B fib) (hB : IsOpen B) {φ : V → ℝ} (hc : Continuous φ)
     (hcs : HasCompactSupport φ) (hs : tsupport φ ⊆ U) (h0 : ∀ v, 0 ≤ φ v) :
@@ -94,6 +121,11 @@ theorem BumpFamily.measurable_lintegral {U : Set V} {B : Set X} {fib : X → Mea
   exact (ENNReal.continuous_ofReal.comp_continuousOn hcont).measurable_piecewise continuousOn_const
     hB.measurableSet
 
+/- English proof (translation)
+Take `⟨K, W, hKc, -, -, hKO, hKmono, -, hKU, -⟩` from `exists_exhaustion hO`. Establish `hφ : ∀ n, ∃ φ : V → ℝ, Continuous φ ∧ HasCompactSupport φ ∧ tsupport φ ⊆ O ∧ (∀ v, 0 ≤ φ v) ∧ (∀ v, φ v ≤ 1) ∧ ∀ v ∈ K n, φ v = 1` using `fun n => exists_bump (hKc n) hO (hKO n)`. Use `choose φ hφc hφcs hφs hφ0 hφ1 hφK using hφ`. Establish `hmeas : ∀ n, Measurable fun b => ∫⁻ v, ENNReal.ofReal (φ n v) ∂(fib b)` using `fun n => h.measurable_lintegral hB (hφc n) (hφcs n) ((hφs n).trans hOU) (hφ0 n)`. Use `measurable_of_tendsto_metrizable hmeas (tendsto_pi_nhds.mpr fun b => ?_)` and prove the remaining obligations.
+
+Establish `hlow : Filter.Tendsto (fun n => fib b (K n)) Filter.atTop (𝓝 (fib b O))`. Establish `h2` using `tendsto_measure_iUnion_atTop (μ := fib b) hKmono`. Rewrite `h2` using `[hKU]`. Conclude with `h2`. Conclude with `tendsto_of_tendsto_of_tendsto_of_le_of_le hlow tendsto_const_nhds (fun n => le_lintegral_bump (fib b) (hKc n) (hφ0 n) (hφK n)) (fun n => lintegral_bump_le (fib b) hO (hφ1 n) (hφs n))`.
+-/
 theorem BumpFamily.measurable_open [LocallyCompactSpace V] [SecondCountableTopology V] [T2Space V]
     {U : Set V} {B : Set X} {fib : X → Measure V}
     (h : BumpFamily U B fib) (hB : IsOpen B) {O : Set V} (hO : IsOpen O) (hOU : O ⊆ U) :
@@ -113,6 +145,11 @@ theorem BumpFamily.measurable_open [LocallyCompactSpace V] [SecondCountableTopol
     (fun n => le_lintegral_bump (fib b) (hKc n) (hφ0 n) (hφK n))
     (fun n => lintegral_bump_le (fib b) hO (hφ1 n) (hφs n))
 
+/- English proof (translation)
+Distinguish the cases in `hb : b ∈ B`. Take `⟨φ, hc, hcs, hs, h0, -, hK1⟩` from `exists_bump hK hU hKU`. Establish `hint` using `(h.2 φ hc hcs hs).1 b hb`. Conclude with `lt_of_le_of_lt (le_lintegral_bump (fib b) hK h0 hK1) hint.lintegral_lt_top`. Rewrite using `[h.1 b hb]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem BumpFamily.lt_top [LocallyCompactSpace V] [T2Space V]
     {U : Set V} {B : Set X} {fib : X → Measure V}
     (h : BumpFamily U B fib) (hU : IsOpen U) {K : Set V} (hK : IsCompact K) (hKU : K ⊆ U) (b : X) :
@@ -124,6 +161,17 @@ theorem BumpFamily.lt_top [LocallyCompactSpace V] [T2Space V]
   · rw [h.1 b hb]
     simp
 
+/- English proof (translation)
+Take `⟨K, W, hKc, hWo, hWK, hKU, -, hWmono, -, hWU⟩` from `exists_exhaustion hU`. Establish `hWn : ∀ n, Measurable fun b => fib b (A ∩ W n)`. Introduce `n`. Use `haveI : ∀ b, IsFiniteMeasure ((fib b).restrict (W n)) := fun b => isFiniteMeasure_restrict.mpr (ne_of_lt (lt_of_le_of_lt (measure_mono (hWK n)) (h.lt_top hU (hKc n) (hKU n) b)))`. Establish `hmeas : Measurable fun b => (fib b).restrict (W n)`.
+
+Use `Measurable.measure_of_isPiSystem (S := {s : Set V | IsOpen s}) BorelSpace.measurable_eq isPiSystem_isOpen ?_ ?_` and prove the remaining obligations. Introduce `s hs`. Establish `hso : IsOpen s` using `hs`. Simplify using `only [Measure.restrict_apply hso.measurableSet]`. Conclude with `h.measurable_open hB (hso.inter (hWo n)) (Set.inter_subset_right.trans ((hWK n).trans (hKU n)))`.
+
+Simplify using `only [Measure.restrict_apply MeasurableSet.univ, Set.univ_inter]`. Conclude with `h.measurable_open hB (hWo n) ((hWK n).trans (hKU n))`. Establish `h2` using `(Measure.measurable_coe hA).comp hmeas`. Simplify `h2` using `[Function.comp_def, Measure.restrict_apply hA]`. Establish `hlim : ∀ b, Filter.Tendsto (fun n => fib b (A ∩ W n)) Filter.atTop (𝓝 (fib b A))`.
+
+Introduce `b`. Establish `hmono : Monotone fun n => A ∩ W n` using `fun m n hmn => Set.inter_subset_inter_right _ (hWmono hmn)`. Establish `h2` using `tendsto_measure_iUnion_atTop (μ := fib b) hmono`. Rewrite `h2` using `[← Set.inter_iUnion, hWU, measure_inter_conull (hc b)]`. Conclude with `h2`.
+
+Conclude with `measurable_of_tendsto_metrizable hWn (tendsto_pi_nhds.mpr hlim)`.
+-/
 theorem BumpFamily.measurable_apply [LocallyCompactSpace V] [SecondCountableTopology V] [T2Space V]
     {U : Set V} {B : Set X} {fib : X → Measure V}
     (h : BumpFamily U B fib) (hB : IsOpen B) (hU : IsOpen U) (hc : ∀ b, fib b Uᶜ = 0)
@@ -156,6 +204,29 @@ theorem BumpFamily.measurable_apply [LocallyCompactSpace V] [SecondCountableTopo
 
 end Meas
 
+/- English proof (translation)
+Introduce `V X Y _ _ _ _ _ _ _ _ _ _ _ _ μ ν _ _ _ f g ι hι hg hfv B hB fib hF`. Take `⟨hfib0, -, hbump⟩` from `hF`. Establish `hU : IsOpen (g ⁻¹' B)` using `hB.preimage hg`. Establish `hmemι : ∀ b w, w ∈ f ⁻¹' {ι b} → g w = b`. Introduce `b w hw`.
+
+Apply `hι` to reduce the goal to its premises. Rewrite using `[← hfv w]`. Conclude with `hw`. Establish `hfibB : ∀ b, b ∉ B → fib b = 0`. Introduce `b hb`.
+
+Establish `hempty : f ⁻¹' {ι b} ∩ g ⁻¹' B = ∅`. Use `Set.subset_empty_iff.mp fun w hw => (hb ?_).elim` and prove the remaining obligations. Rewrite using `[← hmemι b w hw.1]`. Conclude with `hw.2`. Establish `h0` using `hfib0 b`.
+
+Rewrite `h0` using `[hempty, Set.compl_empty]`. Conclude with `Measure.measure_univ_eq_zero.mp h0`. Establish `hBF : BumpFamily (g ⁻¹' B) B fib` using `⟨hfibB, hbump⟩`. Use `⟨?_, hfibB, ?_, ?_⟩` and prove the remaining obligations. Introduce `b`.
+
+Use `⟨fun v => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hb : b ∈ B`. Distinguish the cases in `hgv : g v = b`. Establish `hvU : v ∈ g ⁻¹' B`. Rewrite using `[Set.mem_preimage, hgv]`.
+
+Conclude with `hb`. Take `⟨K, hKn, hKU, hKc⟩` from `local_compact_nhds (hU.mem_nhds hvU)`. Conclude with `⟨K, hKn, hBF.lt_top hU hKc hKU b⟩`. Use `⟨g ⁻¹' {b}ᶜ, (isClosed_singleton.preimage hg).isOpen_compl.mem_nhds hgv, ?_⟩` and prove the remaining obligations. Establish `h0 : fib b (g ⁻¹' {b}ᶜ) = 0`.
+
+Conclude with `measure_mono_null (show g ⁻¹' {b}ᶜ ⊆ (f ⁻¹' {ι b} ∩ g ⁻¹' B)ᶜ from fun w hw hw' => hw (hmemι b w hw'.1)) (hfib0 b)`. Rewrite using `[h0]`. Conclude with `ENNReal.zero_lt_top`. Use `⟨Set.univ, Filter.univ_mem, ?_⟩` and prove the remaining obligations. Rewrite using `[hfibB b hb]`.
+
+Simplify using the standard rewrite rules. Introduce `A hA`. Conclude with `hBF.measurable_apply hB hU (fun b => measure_mono_null (show (g ⁻¹' B)ᶜ ⊆ (f ⁻¹' {ι b} ∩ g ⁻¹' B)ᶜ from fun w hw hw' => hw hw'.2) (hfib0 b)) hA`. Introduce `C D hC hD hDB`. Establish `hC' : IsCompact (C ∩ g ⁻¹' D)` using `hC.inter_right (hD.isClosed.preimage hg)`.
+
+Establish `hC'U : C ∩ g ⁻¹' D ⊆ g ⁻¹' B` using `fun w hw => hDB hw.2`. Take `⟨φ, hc, hcs, hs, h0, -, h1⟩` from `exists_bump hC' hU hC'U`. Take `⟨hint, hcont⟩` from `hbump φ hc hcs hs`. Take `⟨M, hM⟩` from `hD.exists_bound_of_continuousOn (hcont.mono hDB)`. Use `⟨Real.toNNReal M, fun b hb => ?_⟩` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Use `measure_mono (show C ∩ (f ⁻¹' {ι b} ∩ g ⁻¹' B) ⊆ C ∩ g ⁻¹' D from fun w hw => ⟨hw.1, ?_⟩)` and prove the remaining obligations. Use `show g w ∈ D`. Rewrite using `[hmemι b w hw.2.1]`. Conclude with `hb`.
+
+Use `_ ≤ ∫⁻ v, ENNReal.ofReal (φ v) ∂(fib b) := le_lintegral_bump (fib b) hC' h0 h1`. Use `_ = ENNReal.ofReal (∫ v, φ v ∂(fib b)) := (ofReal_integral_eq_lintegral_ofReal (hint b (hDB hb)) (ae_of_all _ h0)).symm`. Use `_ ≤ ENNReal.ofReal M := ENNReal.ofReal_le_ofReal ((Real.le_norm_self _).trans (hM b hb))`. Use `_ = (Real.toNNReal M : ℝ≥0∞) := rfl`.
+-/
 theorem fibre_family_basic : ∀ (V X Y : Type) [TopologicalSpace V] [LocallyCompactSpace V]
     [SecondCountableTopology V] [T2Space V] [MeasurableSpace V] [BorelSpace V]
     [TopologicalSpace X] [LocallyCompactSpace X] [SecondCountableTopology X] [T2Space X]

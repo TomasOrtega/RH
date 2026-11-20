@@ -9,6 +9,25 @@ open Classical
 
 namespace GlobalTheory.FlagPush.OnSection
 
+/- English proof (translation)
+Take `⟨ev, hev, hq⟩` from `GlobalTheory.T.exists_eval_regular_functions_at_fieldPoint F Y W.Z k w`. Establish `hp : W.p₂ (w (IsLocalRing.closedPoint k)) = W.p₁ (w (IsLocalRing.closedPoint k))` using `(Scheme.Hom.comp_apply _ _ _).symm.trans ((congrArg (fun q : Sp k ⟶ Y.X => q (IsLocalRing.closedPoint k)) hw.symm).trans (Scheme.Hom.comp_apply _ _ _))`. Take `⟨A₀, hA₀⟩` from `E.nonempty (f (W.p₁ (w (IsLocalRing.closedPoint k))))`. Establish `hM` using `hf.sub _ A hA A₀ hA₀`. Establish `hd : ∀ σ, (A₀.map φ σ).det ≠ 0` using `fun σ => by`.
+
+Use `Mat.det_map A₀ (φ : X.Fn →+* Y.Fn) σ` as an intermediate fact. Conclude with `this.trans_ne ((map_ne_zero _).2 (Fr.det_ne hA₀ σ))`. Generalize the expression as in `hB : A₀.map φ = B at hM hd`. Establish `hB12 : B.map W.α₁ = B.map W.α₂`. Substitute `hB` using the available equality.
+
+Use function extensionality and compare the values at `σ`. Use extensionality with `i j`. Conclude with `hα _`. Establish `h1 : ∀ u ∈ ((ratOf Y).O (W.p₁ (w (IsLocalRing.closedPoint k)))).toSubring, ∃ h, ev ⟨W.α₁ u, h⟩ = (ratOf Y).val (w ≫ W.p₁) u` using `fun u hu => hq W.p₁ u (mem_O_ratOf.1 hu)`. Establish `h2 : ∀ u ∈ ((ratOf Y).O (W.p₁ (w (IsLocalRing.closedPoint k)))).toSubring, ∃ h, ev ⟨W.α₂ u, h⟩ = (ratOf Y).val (w ≫ W.p₁) u` using `fun u hu => by`.
+
+Take `⟨h, e⟩` from `hq W.p₂ u (by rw [hp]; exact mem_O_ratOf.1 hu)`. Conclude with `⟨h, e.trans (congrArg (fun q => (ratOf Y).val q u) hw.symm)⟩`. Establish `hN₁` using `hM.map W.α₁ fun u hu => (h1 u hu).choose`. Establish `hN₂` using `hM.map W.α₂ fun u hu => (h2 u hu).choose`. Establish `hd₂ : ∀ σ, (B.map W.α₂ σ).det ≠ 0` using `fun σ => (Mat.det_map B W.α₂ σ).trans_ne ((map_ne_zero _).2 (hd σ))`.
+
+Establish `hg : A.map W.α₁ * (A.map W.α₂)⁻¹ = (A * B⁻¹).map W.α₁ * ((A * B⁻¹).map W.α₂)⁻¹`. Rewrite using `[Mat.map_mul, Mat.map_mul, Mat.map_inv, Mat.map_inv, hB12, Mat.mul_inv_rev, Mat.inv_inv hd₂, mul_assoc, ← mul_assoc _ (B.map W.α₂), Mat.inv_mul hd₂, one_mul]`. Rewrite using `[hg]`. Establish `hG` using `hN₁.mul hN₂.inv`. Set `v : W.Z.functionField → k` to `fun u => if h : u ∈ (algebraMap (W.Z.presheaf.stalk (w (IsLocalRing.closedPoint k))) W.Z.functionField).range then ev ⟨u, h⟩ else 0`.
+
+Establish `hv : ∀ x : (algebraMap (W.Z.presheaf.stalk (w (IsLocalRing.closedPoint k))) W.Z.functionField).range, v (x : W.Z.functionField) = ev x` using `fun x => dif_pos x.2`. Establish `e1` using `Par.map_mul_of hG hN₂ v ev hv`. Rewrite `e1` using `[mul_assoc, Mat.inv_mul hN₂.det_ne, mul_one]`. Establish `e2 : ((A * B⁻¹).map W.α₁).map v = ((A * B⁻¹).map W.α₂).map v`. Use function extensionality and compare the values at `σ`.
+
+Use extensionality with `i j`. Take `⟨p, hp⟩` from `h1 _ ((hM σ).1 i j)`. Take `⟨q, hq⟩` from `h2 _ ((hM σ).1 i j)`. Conclude with `((hv ⟨_, p⟩).trans hp).trans ((hv ⟨_, q⟩).trans hq).symm`. Establish `hV` using `(Par.map_of hN₂ v ev hv).det_ne`.
+
+Establish `e3 : ((A * B⁻¹).map W.α₁ * ((A * B⁻¹).map W.α₂)⁻¹).map v = 1`. Use `congrArg (· * (((A * B⁻¹).map W.α₂).map v)⁻¹) (e1.symm.trans e2)` as an intermediate fact. Simplify `this` using `only [mul_assoc, Mat.mul_inv hV, mul_one]`. Introduce `hu`. Use `(hev ⟨_, (hG τ).1 a b⟩).2 hu ((hv ⟨_, (hG τ).1 a b⟩).symm.trans ?_)` and prove the remaining obligations.
+
+Conclude with `(congrFun (congrFun (congrFun e3 τ) a) b).trans (Matrix.one_apply_ne hab)`.
+-/
 theorem not_unitAt_of_eq {F : Type} [Field F] {X Y : Var F} {ι : Type} {m : ι → ℕ} {E : Fr (ratOf X) m 0}
     {E' : Fr (ratOf Y) m m} {φ : X.Fn →ₐ[F] Y.Fn} {f : Y.X ⟶ X.X} (hf : Refines E E' φ f) (W : Dbl Y)
     (hα : ∀ u : X.Fn, W.α₁ (φ u) = W.α₂ (φ u)) (τ : ι) (a b : Fin (m τ)) (hab : a ≠ b) {k : Type} [Field k]
@@ -66,6 +85,11 @@ theorem not_unitAt_of_eq {F : Type} [Field F] {X Y : Var F} {ι : Type} {m : ι 
 
 end GlobalTheory.FlagPush.OnSection
 
+/- English proof (translation)
+Introduce `F _ X Y ι _ m E E' φ f hf W hα τ a b hab y A hA`. Set `w₀ : Sp (Y.X.residueField y) ⟶ Y.X` to `Y.X.fromSpecResidueField y`. Establish `h0 : w₀ (IsLocalRing.closedPoint _) = y` using `Scheme.fromSpecResidueField_apply _ _`. Establish `h1 : (w₀ ≫ W.δ) (IsLocalRing.closedPoint _) = W.δ y` using `(Scheme.Hom.comp_apply _ _ _).trans (congrArg _ h0)`. Establish `h2 : W.p₁ (W.δ y) = y` using `by rw [← Scheme.Hom.comp_apply, W.δ₁]; rfl`.
+
+Use `OnSection.not_unitAt_of_eq hf W hα τ a b hab (w₀ ≫ W.δ) (by rw [Category.assoc, Category.assoc, W.δ₁, W.δ₂]) A (by rw [h1, h2]; exact hA)` as an intermediate fact. Rewrite `this` using `[h1]`. Then use the resulting hypothesis.
+-/
 theorem GlobalTheory.FlagPush.not_unitAt_section : ∀ (F : Type) [Field F] (X Y : Var F) (ι : Type) [Fintype ι] (m : ι → ℕ) (E : Fr (ratOf X) m 0) (E' : Fr (ratOf Y) m m) (φ : X.Fn →ₐ[F] Y.Fn) (f : Y.X ⟶ X.X), Refines E E' φ f → ∀ W : Dbl Y, (∀ u : X.Fn, W.α₁ (φ u) = W.α₂ (φ u)) → ∀ (τ : ι) (a b : Fin (m τ)), a ≠ b → ∀ y : Y.X, ∀ A ∈ E'.S y, ¬ UnitAt (W.δ y) ((A.map W.α₁ * (A.map W.α₂)⁻¹) τ a b) := by
   intro F _ X Y ι _ m E E' φ f hf W hα τ a b hab y A hA
   let w₀ : Sp (Y.X.residueField y) ⟶ Y.X := Y.X.fromSpecResidueField y

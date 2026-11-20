@@ -14,6 +14,11 @@ namespace GlobalTheory.NonDomVanish
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Take `⟨B, uB, uB', tB, q, q', hq, hq', hB, hU⟩` from `univFrame_borelPairs GlobalTheory.lawsFieldsSeparately.2.1 E H Dw l Xo c p A j y₀ π X s u hj hu`. Take `⟨b, e1, e2, e3⟩` from `hU S a a' y y' t ha ha' h`. Establish `k : FrMap b uB y` using `GlobalTheory.FlagTan.frMap_of_comp hq ha fun x => DFunLike.congr_fun e1 x`. Establish `k' : FrMap b uB' y'` using `GlobalTheory.FlagTan.frMap_of_comp hq' ha' fun x => DFunLike.congr_fun e2 x`. Establish `ht : t = fun i => Units.map (b : B.R →* S) (tB i)` using `funext fun i => Units.ext (e3 i).symm`.
+
+Rewrite using `[GlobalTheory.FlagTan.evR_eq hf.1 k, GlobalTheory.FlagTan.evR_eq hf.1 k', hf.2 B tB uB uB' hB, map_mul, ht]`. Use `congr 1`. Simplify using `only [← map_zpow, ← map_prod]`. Both sides reduce to the same expression.
+-/
 theorem evR_frBor_univ {p A : TRing c.F} {j : Sp p.R ⟶ Xo.XF c} {y₀ : FrPt Xo c p.R} {π : p.R →ₐ[c.F] A.R}
     {X : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) A.R} {s : (A.R)ˣ} {u : FrPt Xo c A.R}
     (hj : OpenChart j y₀) (hu : UnivFrame y₀ π X s u) {S : Type} [CommRing S] [Algebra c.F S]
@@ -45,6 +50,11 @@ def weylTwoBlockMatrix (a b : n) (y : S) : Matrix n n S := 1 + single a a (y - 1
 
 def weylTwoBlockMatrixInv (a b : n) (y : S) : Matrix n n S := 1 - single a a 1 - single a b 1 + single b a 1 + single b b (y - 1)
 
+/- English proof (translation)
+Establish `h1 : ∀ (c d : S) (i l : n), single i a c * single b l d = 0` using `fun c d i l => single_mul_single_of_ne c i a b hab d`. Establish `h2 : ∀ (c d : S) (i l : n), single i b c * single a l d = 0` using `fun c d i l => single_mul_single_of_ne c i b a hab.symm d`. Simplify using `only [lowerTriangularTwoBlockMatrix, weylTwoBlockMatrix, trv, add_mul, mul_add, sub_mul, mul_sub, one_mul, mul_one, single_mul_single_same, h1, h2, zero_add, add_zero]`. Use extensionality with `r c`. Simplify using `only [Matrix.add_apply, Matrix.sub_apply, Matrix.single_apply, Matrix.one_apply]`.
+
+Apply the tactic sequence `by_cases hr : a = r <;> by_cases hc : a = c <;> by_cases hr' : b = r <;> by_cases hc' : b = c <;>`. Apply the tactic sequence `simp_all <;> first | linear_combination hsy | linear_combination -hsy | ring`.
+-/
 theorem lowerTriangularTwoBlock_mul_weylTwoBlock_eq_transvection (a b : n) (hab : a ≠ b) (s y : S) (hsy : s * y = 1) :
     lowerTriangularTwoBlockMatrix a b s y * weylTwoBlockMatrix a b y = trv a b s := by
   have h1 : ∀ (c d : S) (i l : n), single i a c * single b l d = 0 := fun c d i l =>
@@ -58,6 +68,11 @@ theorem lowerTriangularTwoBlock_mul_weylTwoBlock_eq_transvection (a b : n) (hab 
   by_cases hr : a = r <;> by_cases hc : a = c <;> by_cases hr' : b = r <;> by_cases hc' : b = c <;>
     simp_all <;> first | linear_combination hsy | linear_combination -hsy | ring
 
+/- English proof (translation)
+Establish `h1 : ∀ (c d : S) (i l : n), single i a c * single b l d = 0` using `fun c d i l => single_mul_single_of_ne c i a b hab d`. Establish `h2 : ∀ (c d : S) (i l : n), single i b c * single a l d = 0` using `fun c d i l => single_mul_single_of_ne c i b a hab.symm d`. Simplify using `only [weylTwoBlockMatrixInv, weylTwoBlockMatrix, add_mul, mul_add, sub_mul, mul_sub, one_mul, mul_one, single_mul_single_same, h1, h2, zero_add, add_zero]`. Use extensionality with `r c`. Simplify using `only [Matrix.add_apply, Matrix.sub_apply, Matrix.single_apply, Matrix.one_apply, Matrix.zero_apply]`.
+
+Apply the tactic sequence `by_cases hr : a = r <;> by_cases hc : a = c <;> by_cases hr' : b = r <;> by_cases hc' : b = c <;>`. Apply the tactic sequence `simp_all <;> ring`.
+-/
 theorem weylTwoBlockMatrix_mul_weylTwoBlockMatrixInv (a b : n) (hab : a ≠ b) (y : S) : weylTwoBlockMatrix a b y * weylTwoBlockMatrixInv a b y = 1 := by
   have h1 : ∀ (c d : S) (i l : n), single i a c * single b l d = 0 := fun c d i l =>
     single_mul_single_of_ne c i a b hab d
@@ -70,24 +85,44 @@ theorem weylTwoBlockMatrix_mul_weylTwoBlockMatrixInv (a b : n) (hab : a ≠ b) (
   by_cases hr : a = r <;> by_cases hc : a = c <;> by_cases hr' : b = r <;> by_cases hc' : b = c <;>
     simp_all <;> ring
 
+/- English proof (translation)
+Establish `: trv a b x = transvection a b x` using `rfl`. Rewrite using `[this, det_transvection_of_ne a b hab]`. Conclude with `isUnit_one`.
+-/
 theorem isUnit_det_trv (a b : n) (hab : a ≠ b) (x : S) : IsUnit (trv a b x).det := by
   have : trv a b x = transvection a b x := rfl
   rw [this, det_transvection_of_ne a b hab]
   exact isUnit_one
 
+/- English proof (translation)
+The claim follows from `Matrix.isUnit_det_of_right_inverse (weylTwoBlockMatrix_mul_weylTwoBlockMatrixInv a b hab y)`.
+-/
 theorem isUnit_det_weylTwoBlockMatrix (a b : n) (hab : a ≠ b) (y : S) : IsUnit (weylTwoBlockMatrix a b y).det :=
   Matrix.isUnit_det_of_right_inverse (weylTwoBlockMatrix_mul_weylTwoBlockMatrixInv a b hab y)
 
 variable {S' : Type} [CommRing S'] (g : S →+* S')
 
+/- English proof (translation)
+Use extensionality with `r c`. Simplify using `[trv, Matrix.single_apply, Matrix.one_apply, apply_ite g]`.
+-/
 theorem trv_map (a b : n) (x : S) : (trv a b x).map g = trv a b (g x) := by
   ext r c; simp [trv, Matrix.single_apply, Matrix.one_apply, apply_ite g]
 
+/- English proof (translation)
+Use extensionality with `r c`. Simplify using `[weylTwoBlockMatrix, Matrix.single_apply, Matrix.one_apply, apply_ite g]`.
+-/
 theorem weylTwoBlockMatrix_map_ringHom (a b : n) (y : S) : (weylTwoBlockMatrix a b y).map g = weylTwoBlockMatrix a b (g y) := by
   ext r c; simp [weylTwoBlockMatrix, Matrix.single_apply, Matrix.one_apply, apply_ite g]
 
+/- English proof (translation)
+Simplify using `[trv]`.
+-/
 theorem trv_zero (a b : n) : trv a b (0 : S) = 1 := by simp [trv]
 
+/- English proof (translation)
+Simplify using `only [lowerTriangularTwoBlockMatrix, Matrix.add_apply, Matrix.single_apply, Matrix.one_apply]`. Distinguish the cases in `hia : i = a`. Substitute `hia` using the available equality. Simplify using `[hab, Ne.symm hab]`. Distinguish the cases in `hib : i = b`.
+
+Substitute `hib` using the available equality. Simplify using `[hia, hab, Ne.symm hab]`. Simplify using `[hia, hib, Ne.symm hia, Ne.symm hib]`.
+-/
 theorem lowerTriangularTwoBlockMatrix_diag_apply {n : Type} [Fintype n] [DecidableEq n] {S : Type} [CommRing S] (a b : n) (hab : a ≠ b)
     (s y : S) (i : n) : lowerTriangularTwoBlockMatrix a b s y i i = if i = a then s else if i = b then y else 1 := by
   simp only [lowerTriangularTwoBlockMatrix, Matrix.add_apply, Matrix.single_apply, Matrix.one_apply]
@@ -97,6 +132,9 @@ theorem lowerTriangularTwoBlockMatrix_diag_apply {n : Type} [Fintype n] [Decidab
     · subst hib; simp [hia, hab, Ne.symm hab]
     · simp [hia, hib, Ne.symm hia, Ne.symm hib]
 
+/- English proof (translation)
+Simplify using `only [lowerTriangularTwoBlockMatrix, Matrix.add_apply, Matrix.single_apply, Matrix.one_apply]`. Apply the tactic sequence `by_cases h1 : a = i <;> by_cases h2 : a = j <;> by_cases h3 : b = i <;> by_cases h4 : b = j <;> simp_all`.
+-/
 theorem lowerTriangularTwoBlockMatrix_apply_of_ne {n : Type} [Fintype n] [DecidableEq n] {S : Type} [CommRing S] (a b : n)
     (s y : S) (i j : n) (hij : i ≠ j) (h : ¬ (i = b ∧ j = a)) : lowerTriangularTwoBlockMatrix a b s y i j = 0 := by
   simp only [lowerTriangularTwoBlockMatrix, Matrix.add_apply, Matrix.single_apply, Matrix.one_apply]
@@ -111,18 +149,30 @@ variable {J : Type} [DecidableEq J] {m : J → ℕ} {S : Type} [CommRing S]
 def famU (τ₀ : J) (M : Matrix (Fin (m τ₀)) (Fin (m τ₀)) S) : ∀ τ, Matrix (Fin (m τ)) (Fin (m τ)) S :=
   Function.update (fun _ => 1) τ₀ M
 
+/- English proof (translation)
+Simplify using `[famU]`.
+-/
 theorem famU_self (τ₀ : J) (M : Matrix (Fin (m τ₀)) (Fin (m τ₀)) S) : famU τ₀ M τ₀ = M := by
   simp [famU]
 
+/- English proof (translation)
+Simplify using `[famU, Function.update_of_ne h]`.
+-/
 theorem famU_of_ne {τ₀ τ : J} (M : Matrix (Fin (m τ₀)) (Fin (m τ₀)) S) (h : τ ≠ τ₀) : famU τ₀ M τ = 1 := by
   simp [famU, Function.update_of_ne h]
 
+/- English proof (translation)
+Distinguish the cases in `h : τ = τ₀`. Substitute `h` using the available equality. Simplify using `[famU_self]`. Simplify using `[famU_of_ne _ h, Matrix.map_one]`.
+-/
 theorem famU_map {S' : Type} [CommRing S'] (g : S →+* S') (τ₀ : J) (M : Matrix (Fin (m τ₀)) (Fin (m τ₀)) S) (τ : J) :
     (famU τ₀ M τ).map g = famU τ₀ (M.map g) τ := by
   by_cases h : τ = τ₀
   · subst h; simp [famU_self]
   · simp [famU_of_ne _ h, Matrix.map_one]
 
+/- English proof (translation)
+Distinguish the cases in `h : τ = τ₀`. Substitute `h` using the available equality. Simplify `hM` using `[famU_self]`. Simplify using `[famU_of_ne _ h]`.
+-/
 theorem isUnit_det_famU (τ₀ : J) (M : Matrix (Fin (m τ₀)) (Fin (m τ₀)) S) (hM : IsUnit M.det) (τ : J) :
     IsUnit (famU τ₀ M τ).det := by
   by_cases h : τ = τ₀
@@ -131,22 +181,36 @@ theorem isUnit_det_famU (τ₀ : J) (M : Matrix (Fin (m τ₀)) (Fin (m τ₀)) 
 
 end Fam
 
+/- English proof (translation)
+The claim follows from `Matrix.map_mul (f := φ.toRingHom)`.
+-/
 theorem map_mul_alg {R S S' : Type} [CommRing R] [CommRing S] [CommRing S'] [Algebra R S] [Algebra R S']
     {k : Type} [Fintype k] [DecidableEq k] (φ : S →ₐ[R] S') (M N : Matrix k k S) :
     (M * N).map φ = M.map φ * N.map φ := Matrix.map_mul (f := φ.toRingHom)
 
+/- English proof (translation)
+Distinguish the cases in `h : τ = τ₀`. Substitute `h` using the available equality. Simplify using `[famU_self]`. Simplify using `[famU_of_ne _ h]`.
+-/
 theorem famU_one {J : Type} [DecidableEq J] {m : J → ℕ} {S : Type} [CommRing S] (τ₀ τ : J) :
     famU (m := m) τ₀ (1 : Matrix (Fin (m τ₀)) (Fin (m τ₀)) S) τ = 1 := by
   by_cases h : τ = τ₀
   · subst h; simp [famU_self]
   · simp [famU_of_ne _ h]
 
+/- English proof (translation)
+Distinguish the cases in `h : τ = τ₀`. Substitute `h` using the available equality. Simplify using `[famU_self]`. Simplify using `[famU_of_ne _ h]`.
+-/
 theorem famU_mul {J : Type} [DecidableEq J] {m : J → ℕ} {S : Type} [CommRing S] (τ₀ τ : J)
     (M N : Matrix (Fin (m τ₀)) (Fin (m τ₀)) S) : famU τ₀ M τ * famU τ₀ N τ = famU τ₀ (M * N) τ := by
   by_cases h : τ = τ₀
   · subst h; simp [famU_self]
   · simp [famU_of_ne _ h]
 
+/- English proof (translation)
+Establish `key : ∀ ψ : Polynomial R, LaurentPolynomial.trunc (LaurentPolynomial.T m * LaurentPolynomial.invert (Polynomial.toLaurent ψ)) = 0`. Introduce `ψ`. Proceed by induction on `ψ using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [map_add, map_add, mul_add, map_add, hp, hq, add_zero]`. Consider the case `monomial k a`.
+
+Rewrite using `[← Polynomial.C_mul_X_pow_eq_monomial, Polynomial.toLaurent_C_mul_X_pow, map_mul (LaurentPolynomial.invert (R := R)), LaurentPolynomial.invert_C, LaurentPolynomial.invert_T, mul_left_comm, ← LaurentPolynomial.T_add, LaurentPolynomial.trunc_C_mul_T, if_neg (by omega)]`. Rewrite using `[← Polynomial.trunc_toLaurent φ, h, key]`.
+-/
 theorem poly_eq_zero_of_toLaurent_eq {R : Type} [CommRing R] (φ ψ : Polynomial R) (m : ℤ) (hm : m < 0)
     (h : Polynomial.toLaurent φ = LaurentPolynomial.T m * LaurentPolynomial.invert (Polynomial.toLaurent ψ)) :
     φ = 0 := by
@@ -161,6 +225,13 @@ theorem poly_eq_zero_of_toLaurent_eq {R : Type} [CommRing R] (φ ψ : Polynomial
         mul_left_comm, ← LaurentPolynomial.T_add, LaurentPolynomial.trunc_C_mul_T, if_neg (by omega)]
   rw [← Polynomial.trunc_toLaurent φ, h, key]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p y`. Establish `hred : IsReduced p.R` using `(Ideal.isRadical_iff_quotient_reduced _).1 p.rad`. Use `show g p y = 0`. Use `IsNilpotent.eq_zero ?_` and prove the remaining obligations. Rewrite using `[nilpotent_iff_mem_prime]`.
+
+Introduce `P hP`. Set `φ : p.R →ₐ[c.F] P.ResidueField` to `IsScalarTower.toAlgHom c.F p.R P.ResidueField`. Take `⟨w, hw⟩` from `GlobalTheory.FlagTan.exists_frMap φ y`. Establish `h4` using `hfield _ w`. Rewrite `h4` using `[GlobalTheory.FlagTan.evR_eq hg.1 hw]`.
+
+Conclude with `Ideal.algebraMap_residueField_eq_zero.1 h4`.
+-/
 theorem eq_zero_of_field {e : Ix Dw → ℤ} {g : Rul Xo c} (hg : g ∈ secZ Xo c e)
     (hfield : ∀ (L : Type) [Field L] [Algebra c.F L] (w : FrPt Xo c L), evR Xo c g w = 0) : g = 0 := by
   funext p y
@@ -177,6 +248,63 @@ theorem eq_zero_of_field {e : Ix Dw → ℤ} {g : Rul Xo c} (hg : g ∈ secZ Xo 
 
 open Classical in
 
+/- English proof (translation)
+Establish `hne : a ≠ b` using `by intro h; rw [h] at hab; omega`. Apply `eq_zero_of_field hf` to reduce the goal to its premises. Introduce `L _ _ w`. Take `⟨p, A, j, y₀, π, X, s, u, α, -, hj, hu, hα, -⟩` from `GlobalTheory.FlagTan.exists_chart w w rfl`. Take `⟨⟨hX, huniv⟩, u₀, hu₀, hchg⟩` from `hu`.
+
+Establish `calc4` using `GlobalTheory.Frames.frChg_calculus E H Dw l Xo c`. Set `ι : L →ₐ[c.F] Polynomial L` to `IsScalarTower.toAlgHom c.F L (Polynomial L)`. Set `M1 : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) (Polynomial L)` to `fun τ => (X τ).map (ι.comp α)`. Establish `hM1 : ∀ τ, IsUnit (M1 τ).det` using `fun τ => by`. Use `(hX τ).map (ι.comp α).toRingHom` as an intermediate fact.
+
+Rewrite `this` using `[RingHom.map_det]`. Then use the resulting hypothesis. Set `s1 : (Polynomial L)ˣ` to `Units.map ((ι.comp α) : A.R →* Polynomial L) s`. Take `⟨α1, hα1, -⟩` from `huniv (Polynomial L) (ι.comp (α.comp π)) (fun τ => famU τ₀ (trv a b Polynomial.X) τ * M1 τ) s1 (fun τ => by rw [Matrix.det_mul]; exact (isUnit_det_famU _ _ (isUnit_det_trv a b hne _) τ).mul (hM1 τ))`. Take `⟨α2, hα2, -⟩` from `huniv (Polynomial L) (ι.comp (α.comp π)) (fun τ => famU τ₀ (weylTwoBlockMatrix a b Polynomial.X) τ * M1 τ) s1 (fun τ => by rw [Matrix.det_mul]; exact (isUnit_det_famU _ _ (isUnit_det_weylTwoBlockMatrix a b hne _) τ).mul (hM1 τ))`. Set `ev0 : Polynomial L →ₐ[c.F] L` to `(Polynomial.aeval (0 : L)).restrictScalars c.F`.
+
+Establish `hev0ι : ∀ q, ev0 (ι q) = q` using `fun q => by simp [ev0, ι]`. Establish `hev0X : ev0 Polynomial.X = 0` using `by simp [ev0]`. Establish `hev : ev0.comp α1 = α`. Take `⟨k, -, huq⟩` from `huniv L (α.comp π) (fun τ => (X τ).map α) (Units.map (α : A.R →* L) s) (fun τ => by have := (hX τ).map α.toRingHom; rwa [RingHom.map_det] at this)`. Establish `e1` using `huq α ⟨rfl, fun τ => rfl, rfl⟩`.
+
+Establish `e2` using `huq (ev0.comp α1) ⟨?_, ?_, ?_⟩`. Conclude with `e2.trans e1.symm`. Use extensionality with `x`. Use `congrArg (fun g => g x) hα1.1` as an intermediate fact. Simplify using `only [AlgHom.comp_apply] at this ⊢`.
+
+Rewrite using `[this, hev0ι]`. Introduce `τ`. Rewrite using `[show (ev0.comp α1 : A.R → L) = ev0 ∘ α1 from rfl, ← Matrix.map_map, hα1.2.1 τ, map_mul_alg, show (X τ).map α = ((X τ).map (ι.comp α)).map ev0 by rw [Matrix.map_map]; congr 1; funext x; simp [hev0ι]]`. Rewrite using `[show (famU τ₀ (trv a b Polynomial.X) τ).map ev0 = 1 by`. Rewrite using `[show (ev0 : Polynomial L → L) = (ev0.toRingHom : Polynomial L → L) from rfl, famU_map, trv_map]`.
+
+Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, hev0X, trv_zero, famU_one]]`. Rewrite using `[one_mul]`. Use `show ev0 (α1 s) = α s`. Rewrite using `[hα1.2.2]`. Conclude with `hev0ι _`.
+
+Set `tl : Polynomial L →ₐ[c.F] LaurentPolynomial L` to `(Polynomial.toLaurentAlg (R := L)).restrictScalars c.F`. Set `inv : LaurentPolynomial L →ₐ[c.F] LaurentPolynomial L` to `((LaurentPolynomial.invert (R := L)).toAlgHom).restrictScalars c.F`. Establish `htl : ∀ q, tl q = Polynomial.toLaurent q` using `fun q => rfl`. Establish `hinv : ∀ q, inv q = LaurentPolynomial.invert q` using `fun q => rfl`. Establish `hinvι : ∀ q, inv (tl (ι q)) = tl (ι q)` using `fun q => by`.
+
+Simplify using `[htl, hinv, ι, Polynomial.toLaurent_C, LaurentPolynomial.invert_C]`. Set `β1` to `tl.comp α1`. Set `β2` to `inv.comp (tl.comp α2)`. Establish `hβπ : ∀ x, β2 (π x) = β1 (π x)` using `fun x => by`. Establish `e1` using `congrArg (fun g => g x) hα1.1`.
+
+Establish `e2` using `congrArg (fun g => g x) hα2.1`. Simplify using `only [AlgHom.comp_apply] at e1 e2`. Simplify using `only [β1, β2, AlgHom.comp_apply, e1, e2, hinvι]`. Establish `hβs : β2 s = β1 s`. Simplify using `only [β1, β2, AlgHom.comp_apply, hα1.2.2, hα2.2.2]`.
+
+Conclude with `hinvι _`. Take `⟨z1, hz1⟩` from `GlobalTheory.FlagTan.exists_frMap β1 u`. Take `⟨z2, hz2⟩` from `GlobalTheory.FlagTan.exists_frMap β2 u`. Take `⟨w0, hw0⟩` from `GlobalTheory.FlagTan.exists_frMap (β1.comp π) y₀`. Establish `hw1 : FrMap β1 u₀ w0` using `GlobalTheory.FlagTan.frMap_of_comp hu₀ hw0 (fun _ => rfl)`.
+
+Establish `hw2 : FrMap β2 u₀ w0` using `GlobalTheory.FlagTan.frMap_of_comp hu₀ hw0 (fun x => hβπ x)`. Establish `c1` using `((calc4 A.R).2.2.1 _ β1 X s u₀ u w0 z1 hchg hw1).1 hz1`. Establish `c2` using `((calc4 A.R).2.2.1 _ β2 X s u₀ u w0 z2 hchg hw2).1 hz2`. Set `Tu : (LaurentPolynomial L)ˣ` to `⟨LaurentPolynomial.T 1, LaurentPolynomial.T (-1), by rw [← LaurentPolynomial.T_add]; simp, by rw [← LaurentPolynomial.T_add]; simp⟩`. Set `Bf : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) (LaurentPolynomial L)` to `fun τ => famU τ₀ (lowerTriangularTwoBlockMatrix a b (LaurentPolynomial.T 1) (LaurentPolynomial.T (-1))) τ`.
+
+Establish `hN : ∀ τ, (((X τ).map (ι.comp α)).map tl).map inv = ((X τ).map (ι.comp α)).map tl` using `fun τ => by`. Simplify using `only [Matrix.map_map]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Conclude with `hinvι _`.
+
+Establish `hmat : ∀ τ, Bf τ * (X τ).map β2 = (X τ).map β1` using `fun τ => by`. Establish `e1 : (X τ).map β1 = ((X τ).map α1).map tl` using `by rw [Matrix.map_map]; rfl`. Establish `e2 : (X τ).map β2 = (((X τ).map α2).map tl).map inv` using `by rw [Matrix.map_map, Matrix.map_map]; rfl`. Rewrite using `[e1, e2, hα1.2.1 τ, hα2.2.1 τ, map_mul_alg, map_mul_alg, map_mul_alg, hN]`. Rewrite using `[show ((famU τ₀ (weylTwoBlockMatrix a b Polynomial.X) τ).map tl).map inv = famU τ₀ (weylTwoBlockMatrix a b (LaurentPolynomial.T (-1))) τ by`.
+
+Rewrite using `[show (tl : Polynomial L → LaurentPolynomial L) = (tl.toRingHom : Polynomial L → LaurentPolynomial L) from rfl, show (inv : LaurentPolynomial L → LaurentPolynomial L) = (inv.toRingHom : LaurentPolynomial L → LaurentPolynomial L) from rfl, famU_map, famU_map, weylTwoBlockMatrix_ma …`. Simplify using `[htl, hinv, Polynomial.toLaurent_X, LaurentPolynomial.invert_T]]`. Rewrite using `[show (famU τ₀ (trv a b Polynomial.X) τ).map tl = famU τ₀ (trv a b (LaurentPolynomial.T 1)) τ by`. Rewrite using `[show (tl : Polynomial L → LaurentPolynomial L) = (tl.toRingHom : Polynomial L → LaurentPolynomial L) from rfl, famU_map, trv_map]`. Simplify using `[htl, Polynomial.toLaurent_X]]`.
+
+Rewrite using `[← mul_assoc, famU_mul, lowerTriangularTwoBlock_mul_weylTwoBlock_eq_transvection a b hne _ _ (by rw [← LaurentPolynomial.T_add]; simp)]`. Establish `c3 : FrChg Bf 1 z2 z1`. Use `((calc4 (LaurentPolynomial L)).1 _ Bf _ 1 w0 z2 z1 c2).2 ?_` and prove the remaining obligations. Rewrite using `[one_mul, hβs]`. Use `c1 using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `τ`. Conclude with `hmat τ`. Set `t : Ix Dw → (LaurentPolynomial L)ˣ` to `fun k => Option.elim k 1 (fun q => if q = ⟨τ₀, a⟩ then Tu else if q = ⟨τ₀, b⟩ then Tu⁻¹ else 1)`. Establish `hba : ¬ (b < a)` using `by intro h; have := Fin.lt_def.1 h; omega`. Establish `hdiag : ∀ (τ : E →+* ℂ) (i : Fin (Dw.mult τ)), Bf τ i i = (t (some ⟨τ, i⟩) : LaurentPolynomial L)`.
+
+Introduce `τ i`. Distinguish the cases in `hτ : τ = τ₀`. Substitute `hτ` using the available equality. Simplify using `only [Bf, famU_self, t, Option.elim, lowerTriangularTwoBlockMatrix_diag_apply a b hne]`. Distinguish the cases in `hia : i = a`.
+
+Substitute `hia` using the available equality. Simplify using `[Tu]`. Distinguish the cases in `hib : i = b`. Substitute `hib` using the available equality. Simplify using `[hne, Ne.symm hne, Tu]`.
+
+Simplify using `[hia, hib]`. Simplify using `[Bf, famU_of_ne _ hτ, t, hτ]`. Establish `hlow : ∀ (τ : E →+* ℂ) (i j : Fin (Dw.mult τ)), i < j → Bf τ i j = 0`. Introduce `τ i j hij`. Distinguish the cases in `hτ : τ = τ₀`.
+
+Substitute `hτ` using the available equality. Simplify using `only [Bf, famU_self]`. Use `lowerTriangularTwoBlockMatrix_apply_of_ne a b (LaurentPolynomial.T 1 : LaurentPolynomial L) (LaurentPolynomial.T (-1)) i j (ne_of_lt hij) ?_` and prove the remaining obligations. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `hba hij`.
+
+Simplify using `[Bf, famU_of_ne _ hτ, Matrix.one_apply, ne_of_lt hij]`. Establish `hbor : FrBor t z2 z1` using `((calc4 (LaurentPolynomial L)).2.2.2 t z2 z1).2 ⟨Bf, hdiag, hlow, by simpa [t] using c3⟩`. Establish `hw` using `evR_frBor_univ hj ⟨⟨hX, huniv⟩, u₀, hu₀, hchg⟩ hf hz2 hz1 hbor`. Rewrite `hw` using `[GlobalTheory.FlagTan.evR_eq hf.1 hz1, GlobalTheory.FlagTan.evR_eq hf.1 hz2]`. Establish `hTu : ∀ n : ℤ, ((Tu ^ n : (LaurentPolynomial L)ˣ) : LaurentPolynomial L) = LaurentPolynomial.T n`.
+
+Introduce `n`. Proceed by induction on `n using Int.induction_on with`. Consider the case `zero => simp [LaurentPolynomial.T_zero]`. Consider the case `succ k ih => rw [zpow_add_one, Units.val_mul, ih, LaurentPolynomial.T_add]`. Consider the case `pred k ih => rw [zpow_sub_one, Units.val_mul, ih, sub_eq_add_neg, LaurentPolynomial.T_add]`.
+
+Both sides reduce to the same expression. Establish `hsa : (some ⟨τ₀, a⟩ : Ix Dw) ≠ some ⟨τ₀, b⟩`. Introduce `h`. Simplify using `only [Option.some.injEq, Sigma.mk.injEq, heq_eq_eq, true_and] at h`. Conclude with `hne h`.
+
+Establish `hprod : ((∏ i, t i ^ e i : (LaurentPolynomial L)ˣ) : LaurentPolynomial L) = LaurentPolynomial.T (e (some ⟨τ₀, a⟩) - e (some ⟨τ₀, b⟩))`. Rewrite using `[Finset.prod_eq_mul (some ⟨τ₀, a⟩) (some ⟨τ₀, b⟩) hsa ?_ (by simp) (by simp)]`. Establish `hb' : (⟨τ₀, b⟩ : Σ τ : E →+* ℂ, Fin (Dw.mult τ)) ≠ ⟨τ₀, a⟩`. Introduce `h`. Simplify using `only [Sigma.mk.injEq, heq_eq_eq, true_and] at h`.
+
+Conclude with `hne h.symm`. Simplify using `only [t, Option.elim, if_true, hb', if_false, inv_zpow', Units.val_mul, hTu]`. Rewrite using `[← LaurentPolynomial.T_add]`. Put the polynomial expressions in normal form. Introduce `k _ hk`.
+
+Break down `k with _ | q` into its components or cases. Simplify using `[t]`. Establish `h1 : q ≠ ⟨τ₀, a⟩` using `fun h => hk.1 (by rw [h])`. Establish `h2 : q ≠ ⟨τ₀, b⟩` using `fun h => hk.2 (by rw [h])`. Simplify using `[t, h1, h2]`.
+
+Rewrite `hw` using `[hprod]`. Establish `h0 : α1 (f A u) = 0` using `poly_eq_zero_of_toLaurent_eq (α1 (f A u)) (α2 (f A u)) _ (by omega) hw`. Rewrite using `[GlobalTheory.FlagTan.evR_eq hf.1 hα, ← hev, AlgHom.comp_apply, h0, map_zero]`.
+-/
 theorem eq_zero_of_lt {e : Ix Dw → ℤ} {f : Rul Xo c} (hf : f ∈ secZ Xo c e) (τ₀ : E →+* ℂ)
     (a b : Fin (Dw.mult τ₀)) (hab : (b : ℕ) = a + 1) (hlt : e (some ⟨τ₀, a⟩) < e (some ⟨τ₀, b⟩)) : f = 0 := by
   have hne : a ≠ b := by intro h; rw [h] at hab; omega

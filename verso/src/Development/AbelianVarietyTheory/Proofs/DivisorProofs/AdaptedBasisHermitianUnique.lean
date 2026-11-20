@@ -21,6 +21,13 @@ noncomputable section
 
 namespace GlobalTheory.VacResX
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W r s r' s' hB hX hW n₁ X₁ H j₀ j₁ M₁ r₁ s₁ hX₁ hH hM₁ j co hj ha hb hc v φ hφ`. Take `⟨-, hφ0, θ, hθ, hφe⟩` from `(GlobalTheory.T.vacuum_vector_iff_lattice_eigen _ B.ψ v φ).1 hφ`. Establish `hf0 : (fun y => φ (Function.extend j y 0)) ≠ 0`. Take `⟨x, hx⟩` from `Function.ne_iff.1 hφ0`. Use `GlobalTheory.T.lattice_coordinate_injection_adapted F E σ B n d n₁ X W X₁ H j₀ j₁ M₁ hH j co hj ha hb hc v (GlobalTheory.T.lattice_element_decomposition_along_plane F E σ B n d n₁ X W X₁ H j₀ j₁ hH v) (fun w hw => GlobalTheory.T.lattice_invariant_vector_local_support F E σ B n d …` as an intermediate fact.
+
+Conclude with `fun h => this (congrFun h (x ∘ j))`. Establish `hfe` using `GlobalTheory.T.lattice_coordinate_injection_darboux F E σ B n d n₁ X W X₁ H j₀ j₁ M₁ hH j co hj ha v φ θ hφe`. Take `⟨-, hv0, θ₁, hθ₁, hve⟩` from `(GlobalTheory.T.vacuum_vector_iff_lattice_eigen M₁ B.ψ v (M₁.vac v)).1 (hM₁.vac v)`. Take `⟨oc, ooc⟩` from `GlobalTheory.T.local_lattice_image_open σ B X₁ W r₁ s₁ r' s' hX₁ hW M₁.co v`. Take `⟨c, hc'⟩` from `GlobalTheory.T.compact_open_lattice_image v (GlobalTheory.LatVac.psiAt B.ψ v) (GlobalTheory.VacAny.continuous_psiV hB.std.1 v) (GlobalTheory.PsiNontriv.psiAt_ne_one B.ψ hB.std v) (GlobalTheory.LatVac.locCo M₁.co v) (latAtV X₁ W v) oc ooc (fun w hw => GlobalTheory.T.lattice_invari …`.
+
+Use `⟨c, ?_, hc'⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hf0 (by rw [hc', zero_smul])`.
+-/
 theorem vac_restrict_eq_smul : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (r s r' s' : ℕ), B.IsGood σ → X.IsHerm σ B r s → W.IsSkew σ B r' s' →
     ∀ (n₁ : ℕ) (X₁ : Spc F E n₁) (H : Plane E n n₁) (j₀ j₁ : ℕ) (M₁ : Model σ X₁ W) (r₁ s₁ : ℕ), X₁.IsHerm σ B r₁ s₁ →

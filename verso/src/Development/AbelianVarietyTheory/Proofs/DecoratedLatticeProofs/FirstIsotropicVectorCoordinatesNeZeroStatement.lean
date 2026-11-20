@@ -18,5 +18,8 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.MiS
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.MiTop GlobalTheory.SeeSaw GlobalTheory.Fam ValuativeRel IsLocalRing GlobalTheory.FinPl
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.coord_first_isotropic_ne_zero | exact GlobalTheory.coord_first_isotropic_ne_zero | (intros; apply GlobalTheory.coord_first_isotropic_ne_zero <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.firstIsotropicVector_coordinates_ne_zero : ∀ {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (hr : 1 ≤ D.R.rS), (fun i : Fin (D.sp.Y 0).rank => X.ιE (X.eR ⟨0, hr⟩ (Fin.cast (GlobalTheory.Core.Mi.rank_eq X h) i))) ≠ 0 := by
   first | exact @GlobalTheory.coord_first_isotropic_ne_zero | exact GlobalTheory.coord_first_isotropic_ne_zero | (intros; apply GlobalTheory.coord_first_isotropic_ne_zero <;> assumption)

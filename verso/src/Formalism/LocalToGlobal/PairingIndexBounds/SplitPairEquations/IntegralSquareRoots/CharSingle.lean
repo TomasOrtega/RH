@@ -10,6 +10,15 @@ open Formalism.L2.Th1.H Formalism.L2.PairingIndexBounds.Eq
 
 variable {ι : Type} [Fintype ι] {V V₁ : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V₁] [Module ℂ V₁]
 
+/- English proof (translation)
+Set `f : V₁ →+ V` to `AddMonoidHom.mk' (fun x => e.symm (Pi.single i₀ x)) (fun x y => by`. Rewrite using `[Pi.single_add, map_add])`. Establish `hcomap : ∀ (N : AddSubgroup V) (N₁ : AddSubgroup V₁), (∀ x, x ∈ N ↔ ∀ i, e x i ∈ N₁) → N₁ = N.comap f`. Introduce `N N₁ hN`. Use extensionality with `x`.
+
+Rewrite using `[AddSubgroup.mem_comap, hN]`. Use `show x ∈ N₁ ↔ ∀ i, e (e.symm (Pi.single i₀ x)) i ∈ N₁`. Simplify using `only [LinearEquiv.apply_symm_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `hx i`.
+
+Distinguish the cases in `hi : i = i₀`. Substitute `hi` using the available equality. Simplify using `using hx`. Rewrite using `[Pi.single_eq_of_ne hi]`. Conclude with `N₁.zero_mem`.
+
+Introduce `h`. Simplify using `using h i₀`. Unfold `relIdx at *`. Rewrite using `[hcomap M M₁ hM, hcomap P P₁ hP]`. Conclude with `AddSubgroup.relIndex_comap_ne_zero f h`.
+-/
 theorem idx_coord (e : V ≃ₗ[ℂ] (ι → V₁)) (i₀ : ι) {M P : AddSubgroup V} {M₁ P₁ : AddSubgroup V₁}
     (hM : ∀ x, x ∈ M ↔ ∀ i, e x i ∈ M₁) (hP : ∀ x, x ∈ P ↔ ∀ i, e x i ∈ P₁) (h : relIdx M P ≠ 0) :
     relIdx M₁ P₁ ≠ 0 := by
@@ -38,6 +47,13 @@ theorem idx_coord (e : V ≃ₗ[ℂ] (ι → V₁)) (i₀ : ι) {M P : AddSubgro
 variable {e : V ≃ₗ[ℂ] (ι → V₁)} {H : Sesq V} {H₁ : Sesq V₁} {α : V → ℂ} {α₁ : V₁ → ℂ}
   {Λ : AddSubgroup V} {Λ₁ : AddSubgroup V₁} {δ Ae : V ≃ₗ[ℂ] V} {δ₁ Ae₁ : V₁ ≃ₗ[ℂ] V₁}
 
+/- English proof (translation)
+Establish `key : ∀ (W : Type) [AddCommGroup W] [Module ℂ W] (d : W ≃ₗ[ℂ] W) (L : AddSubgroup W) (z : W), z ∈ imgLat (d : W →ₗ[ℂ] W) L ↔ d.symm z ∈ L`. Introduce `W _ _ d L z`. Simplify using `only [imgLat, AddSubgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`.
+
+Simplify using `using hy`. Introduce `hz`. Conclude with `⟨d.symm z, hz, by simp⟩`. Rewrite using `[key, c.lat]`. Apply `forall_congr'` to reduce the goal to its premises.
+
+Introduce `i`. Rewrite using `[key]`. Establish `hmap` using `c.map (δ.symm x) i`. Rewrite `hmap` using `[LinearEquiv.apply_symm_apply]`. Rewrite using `[hmap, LinearEquiv.symm_apply_apply]`.
+-/
 theorem Copies.mem_img (c : Copies e H H₁ α α₁ Λ Λ₁ δ Ae δ₁ Ae₁) (x : V) :
     x ∈ imgLat (δ : V →ₗ[ℂ] V) Λ ↔ ∀ i, e x i ∈ imgLat (δ₁ : V₁ →ₗ[ℂ] V₁) Λ₁ := by
   have key : ∀ (W : Type) [AddCommGroup W] [Module ℂ W] (d : W ≃ₗ[ℂ] W) (L : AddSubgroup W) (z : W),
@@ -57,6 +73,11 @@ theorem Copies.mem_img (c : Copies e H H₁ α α₁ Λ Λ₁ δ Ae δ₁ Ae₁)
   rw [LinearEquiv.apply_symm_apply] at hmap
   rw [hmap, LinearEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Rewrite using `[c.form, LinearEquiv.apply_symm_apply, Finset.sum_eq_single i₀]`. Simplify using the standard rewrite rules. Introduce `i _ hi`. Simplify using `[Pi.single_eq_of_ne hi]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem Copies.form_single (c : Copies e H H₁ α α₁ Λ Λ₁ δ Ae δ₁ Ae₁) (i₀ : ι) (x : V₁) (y : V) :
     H (e.symm (Pi.single i₀ x)) y = H₁ x (e y i₀) := by
   rw [c.form, LinearEquiv.apply_symm_apply, Finset.sum_eq_single i₀]
@@ -66,6 +87,11 @@ theorem Copies.form_single (c : Copies e H H₁ α α₁ Λ Λ₁ δ Ae δ₁ Ae
   · intro h
     exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Rewrite using `[c.lat]`. Introduce `i`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Distinguish the cases in `hi : i = i₀`. Substitute `hi` using the available equality.
+
+Simplify using `using hx`. Rewrite using `[Pi.single_eq_of_ne hi]`. Conclude with `Λ₁.zero_mem`.
+-/
 theorem Copies.single_mem (c : Copies e H H₁ α α₁ Λ Λ₁ δ Ae δ₁ Ae₁) (i₀ : ι) {x : V₁} (hx : x ∈ Λ₁) :
     e.symm (Pi.single i₀ x) ∈ Λ := by
   rw [c.lat]
@@ -77,6 +103,11 @@ theorem Copies.single_mem (c : Copies e H H₁ α α₁ Λ Λ₁ δ Ae δ₁ Ae�
   · rw [Pi.single_eq_of_ne hi]
     exact Λ₁.zero_mem
 
+/- English proof (translation)
+Rewrite using `[c.char _ (c.single_mem i₀ hx), LinearEquiv.apply_symm_apply, Finset.prod_eq_single i₀]`. Simplify using the standard rewrite rules. Introduce `i _ hi`. Rewrite using `[Pi.single_eq_of_ne hi, h0]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem Copies.char_single (c : Copies e H H₁ α α₁ Λ Λ₁ δ Ae δ₁ Ae₁) (h0 : α₁ 0 = 1) (i₀ : ι) {x : V₁} (hx : x ∈ Λ₁) :
     α (e.symm (Pi.single i₀ x)) = α₁ x := by
   rw [c.char _ (c.single_mem i₀ hx), LinearEquiv.apply_symm_apply, Finset.prod_eq_single i₀]
@@ -86,6 +117,35 @@ theorem Copies.char_single (c : Copies e H H₁ α α₁ Λ Λ₁ δ Ae δ₁ Ae
   · intro h
     exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Establish `hs : ∀ x : V₁, e (e.symm (Pi.single i₀ x)) i₀ = x` using `fun x => by simp`. Establish `hform : ∀ x y : V₁, H (e.symm (Pi.single i₀ x)) (e.symm (Pi.single i₀ y)) = H₁ x y`. Introduce `x y`. Rewrite using `[c.form_single, hs]`. Establish `hadd : ∀ x y : V₁, e.symm (Pi.single i₀ (x + y)) = e.symm (Pi.single i₀ x) + e.symm (Pi.single i₀ y)`.
+
+Introduce `x y`. Rewrite using `[Pi.single_add, map_add]`. Establish `hδs : ∀ y : V₁, δ (e.symm (Pi.single i₀ y)) = e.symm (Pi.single i₀ (δ₁ y))`. Introduce `y`. Apply `e.injective` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[c.map, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Distinguish the cases in `hi : i = i₀`. Substitute `hi` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[Pi.single_eq_of_ne hi]`. Establish `himg_single : ∀ x : V₁, x ∈ imgLat (δ₁ : V₁ →ₗ[ℂ] V₁) Λ₁ → e.symm (Pi.single i₀ x) ∈ imgLat (δ : V →ₗ[ℂ] V) Λ`. Introduce `x hx`. Rewrite using `[c.mem_img]`. Introduce `i`.
+
+Rewrite using `[LinearEquiv.apply_symm_apply]`. Distinguish the cases in `hi : i = i₀`. Substitute `hi` using the available equality. Simplify using `using hx`. Rewrite using `[Pi.single_eq_of_ne hi]`.
+
+Conclude with `(imgLat _ Λ₁).zero_mem`. Establish `hαimg : ∀ x : V₁, x ∈ imgLat (δ₁ : V₁ →ₗ[ℂ] V₁) Λ₁ → α (e.symm (Pi.single i₀ x)) = α₁ x`. Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `hx`. Use `show α (e.symm (Pi.single i₀ (δ₁ y))) = α₁ (δ₁ y)`.
+
+Rewrite using `[← hδs, hU.inv _ (c.single_mem i₀ hy), c.char_single h0 i₀ hy, hαδ]`. Use `⟨hH₁, hP₁, ?_, ⟨?_, ?_⟩, hI₁, ⟨?_, ?_⟩, fun x _ => hαδ x, ?_, ?_, hA₁⟩` and prove the remaining obligations. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Establish `hv : e.symm (Pi.single i₀ x) ∈ Λ`. Rewrite using `[← hU.selfDual]`. Introduce `y hy`. Take `⟨m, hm⟩` from `hx (e y i₀) ((c.lat y).1 hy i₀)`. Use `⟨m, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [altE] at hm ⊢`. Rewrite using `[c.form_single]`. Conclude with `hm`. Establish `h1` using `(c.lat _).1 hv i₀`. Rewrite `h1` using `[hs]`. Then use the resulting hypothesis.
+
+Introduce `hx y hy`. Establish `h1 : e.symm (Pi.single i₀ x) ∈ dualLat H Λ`. Rewrite using `[hU.selfDual]`. Conclude with `c.single_mem i₀ hx`. Take `⟨m, hm⟩` from `h1 _ (c.single_mem i₀ hy)`.
+
+Use `⟨m, ?_⟩` and prove the remaining obligations. Simplify using `only [altE] at hm ⊢`. Rewrite `hm` using `[hform]`. Conclude with `hm`. Introduce `x hx`.
+
+Rewrite using `[← c.char_single h0 i₀ hx]`. Conclude with `hU.semi.1 _ (c.single_mem i₀ hx)`. Introduce `x hx y hy`. Rewrite using `[← c.char_single h0 i₀ hx, ← c.char_single h0 i₀ hy, ← c.char_single h0 i₀ (Λ₁.add_mem hx hy), hadd, hU.semi.2 _ (c.single_mem i₀ hx) _ (c.single_mem i₀ hy)]`. Simplify using `only [altE, hform]`.
+
+Introduce `x hx`. Rewrite using `[← hαimg x hx]`. Conclude with `hU.semi'.1 _ (himg_single x hx)`. Introduce `x hx y hy`. Rewrite using `[← hαimg x hx, ← hαimg y hy, ← hαimg (x + y) ((imgLat _ Λ₁).add_mem hx hy), hadd, hU.semi'.2 _ (himg_single x hx) _ (himg_single y hy)]`.
+
+Simplify using `only [altE, hform]`. Conclude with `idx_coord e i₀ c.mem_img c.lat hU.idx₁`. Conclude with `idx_coord e i₀ c.lat c.mem_img hU.idx₂`.
+-/
 theorem Copies.unitaryData₁ (c : Copies e H H₁ α α₁ Λ Λ₁ δ Ae δ₁ Ae₁) (i₀ : ι) (hU : UnitaryData H Λ α δ Ae)
     (hH₁ : IsHerm H₁) (hP₁ : IsPosDef H₁) (hI₁ : IsIsom H₁ H₁ (δ₁ : V₁ →ₗ[ℂ] V₁)) (hA₁ : ∀ x, Ae₁ x = x - δ₁.symm x)
     (h0 : α₁ 0 = 1) (hαδ : ∀ x, α₁ (δ₁ x) = α₁ x) : UnitaryData H₁ Λ₁ α₁ δ₁ Ae₁ := by
@@ -161,6 +221,17 @@ theorem Copies.unitaryData₁ (c : Copies e H H₁ α α₁ Λ Λ₁ δ Ae δ₁
   · exact idx_coord e i₀ c.mem_img c.lat hU.idx₁
   · exact idx_coord e i₀ c.lat c.mem_img hU.idx₂
 
+/- English proof (translation)
+Take `⟨m1, hm1⟩` from `hq x hx`. Take `⟨m2, hm2⟩` from `hq (σ x) (hM.sΛ x hx)`. Take `⟨m3, hm3⟩` from `hq (x + σ x) (Λ.add_mem hx (hM.sΛ x hx))`. Establish `hexp : H (x + σ x) (x + σ x) = H x x + H x (σ x) + H x (σ x) + H (σ x) (σ x)`. Simplify using `only [map_add, LinearMap.add_apply]`.
+
+Rewrite using `[hM.sadj x x]`. Expand and normalize the polynomial expressions, which then agree. Establish `hk : c * (H x (σ x)).re * 2 = ((m3 - m1 - m2 : ℤ) : ℝ)`. Rewrite `hm3` using `[hexp]`. Simplify using `only [Complex.add_re] at hm3`.
+
+Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hl : H (ℓ x) (ℓ x) = -H x x + ((4 * n : ℕ) : ℂ) * H x (σ x)`. Rewrite using `[hM.adj, hM.rel, map_add, map_neg, map_nsmul, nsmul_eq_mul]`. Establish `hq' : c * (H (ℓ x) (ℓ x)).re = ((m1 + 2 * (-m1 + (n : ℤ) * (m3 - m1 - m2)) : ℤ) : ℝ)`.
+
+Rewrite using `[hl]`. Simplify using `only [Complex.add_re, Complex.neg_re, Complex.mul_re, Complex.natCast_re, Complex.natCast_im, zero_mul, sub_zero]`. Use `push_cast`. Move the coercions through the operations in `at hk`. Use polynomial arithmetic with `[hm1, hk]`.
+
+Rewrite using `[hα, hα, hq', hm1, round_intCast, round_intCast, zpow_add₀ (by norm_num), zpow_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem alpha_mult {H : Sesq V} {Λ : AddSubgroup V} {δ : V ≃ₗ[ℂ] V} {ℓ ℓ' σ : V →ₗ[ℂ] V} {n : ℕ}
     (hM : Multipliers H Λ δ ℓ ℓ' σ n) (c : ℝ) (α : V → ℂ) (hα : ∀ x, α x = (-1 : ℂ) ^ round (c * (H x x).re))
     (hq : ∀ x ∈ Λ, ∃ m : ℤ, c * (H x x).re = (m : ℝ)) {x : V} (hx : x ∈ Λ) : α (ℓ x) = α x := by

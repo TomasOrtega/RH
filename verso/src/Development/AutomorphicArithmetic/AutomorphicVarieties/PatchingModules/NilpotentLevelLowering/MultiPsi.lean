@@ -7,6 +7,13 @@ open UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Hi UpperTheory.V.AlgebraToo
 open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Establish `hd` using `UpperTheory.V.AlgebraTools.hkDualExp O n ι a c h`. Establish `hs` using `(UpperTheory.V.AlgebraTools.hkDdProps O n).2.2.1`. Establish `e1 : ∀ k, Φ (e (a k) * s) (e (c k) * t * e x) = ∑ m, Φ (e (a k * Hk.dd (c k * (x * a m))) * s) (e (c m) * t)`. Introduce `k`. Establish `: e (c k) * t * e x = ∑ m, e (c m) * t * e (Hk.dd (c k * (x * a m)))`.
+
+Rewrite using `[mul_right_comm, ← map_mul, ← (hd (c k * x)).2, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, mul_right_comm, show a m * (c k * x) = c k * (x * a m) by ring]`. Rewrite using `[this, h1]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[h3 _ _ _ (hs _), map_mul, mul_right_comm]`. Rewrite using `[Finset.sum_congr rfl fun k _ => e1 k, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[← h2, ← Finset.sum_mul, ← map_sum, (hd _).1, map_mul, mul_assoc]`.
+-/
 private theorem one_place {O A N ι : Type} [CommRing O] [IsDomain O] [CommRing A] [AddCommGroup N] [Fintype ι] {n : ℕ}
     (e : MvPolynomial (Fin n) O →+* A) (Φ : A → A → N)
     (h1 : ∀ s (f : ι → A), Φ s (∑ m, f m) = ∑ m, Φ s (f m))
@@ -30,6 +37,9 @@ private theorem one_place {O A N ι : Type} [CommRing O] [IsDomain O] [CommRing 
   refine Finset.sum_congr rfl fun m _ => ?_
   rw [← h2, ← Finset.sum_mul, ← map_sum, (hd _).1, map_mul, mul_assoc]
 
+/- English proof (translation)
+Take `⟨q, rfl⟩ : ∃ q', q = q' + 1` from `⟨q - 1, by have := j.pos; omega⟩`. Rewrite using `[← (Fin.insertNthEquiv (fun _ => ι) j).sum_comp, ← (Fin.insertNthEquiv (fun _ => ι) j).sum_comp, Fintype.sum_prod_type_right, Fintype.sum_prod_type_right]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Fin.prod_univ_succAbove _ j, Fin.insertNthEquiv_apply, Fin.insertNth_apply_same, Fin.insertNth_apply_succAbove]`. Conclude with `one_place (e j) Φ h1 h2 (h3 j) h x _ _`.
+-/
 private theorem many_places {O A N ι : Type} [CommRing O] [IsDomain O] [CommRing A] [AddCommGroup N] [Fintype ι] {n q : ℕ}
     (e : Fin q → MvPolynomial (Fin n) O →+* A) (Φ : A → A → N)
     (h1 : ∀ s (f : ι → A), Φ s (∑ m, f m) = ∑ m, Φ s (f m))
@@ -46,6 +56,11 @@ private theorem many_places {O A N ι : Type} [CommRing O] [IsDomain O] [CommRin
     Fin.insertNth_apply_succAbove]
   exact one_place (e j) Φ h1 h2 (h3 j) h x _ _
 
+/- English proof (translation)
+Establish `h0` using `congrArg (fun p => p.coeff (n - k)) (MSplitAlg.prod_root P n j)`. Establish `hc : Multiset.card (Finset.univ.val.map fun i : Fin n => MSplitAlg.root P n j i) = n` using `by simp`. Establish `h1` using `Multiset.prod_X_sub_C_coeff (Finset.univ.val.map fun i : Fin n => MSplitAlg.root P n j i) (k := n - k) (by rw [hc]; omega)`. Rewrite `h1` using `[hc, Multiset.map_map, show n - (n - k) = k by omega, Finset.esymm_map_val]`. Simplify using `only [Polynomial.coeff_map] at h0`.
+
+Rewrite using `[map_mul, ← h0, Finset.prod_eq_multiset_prod]`. Simplify using `only [Function.comp_def] at h1`. Rewrite using `[h1, map_pow, map_neg, map_one, ← mul_assoc, ← mul_pow]`. Simplify using `[emb, MvPolynomial.esymm, MSplitAlg.root, map_sum, map_prod]`.
+-/
 private theorem esymm_root {O R B : Type} [CommRing O] [CommRing R] [Algebra O R] [CommRing B] {q n : ℕ} (β : R →+* B)
     (P : Fin q → Polynomial B) (j : Fin q) (k : ℕ) (hk : k ≤ n) :
     Ideal.Quotient.mk (mSplitIdeal P n) (MvPolynomial.map β (emb O R j (MvPolynomial.esymm (Fin n) O k)))
@@ -61,6 +76,27 @@ private theorem esymm_root {O R B : Type} [CommRing O] [CommRing R] [Algebra O R
   rw [h1, map_pow, map_neg, map_one, ← mul_assoc, ← mul_pow]
   simp [emb, MvPolynomial.esymm, MSplitAlg.root, map_sum, map_prod]
 
+/- English proof (translation)
+Introduce `O R B M V _ _ _ _ _ _ _ _ _ q n β P act tr ι _ a c hd _ _ hβ he ψ hψ`. Set `π : PU R q n →+* MSplitAlg P n` to `(Ideal.Quotient.mk (mSplitIdeal P n)).comp (MvPolynomial.map β)`. Establish `hπ : ∀ t, Ideal.Quotient.mk (mSplitIdeal P n) (MvPolynomial.map β t) = π t` using `fun _ => rfl`. Simplify using `only [hπ] at hψ ⊢`. Establish `sc : ∀ (b : B) (y : MSplitAlg P n) (m : M), y ⊗ₜ[B] (b • m) = (y * algebraMap B _ b) ⊗ₜ[B] m`.
+
+Introduce `b y m`. Rewrite using `[← TensorProduct.smul_tmul, Algebra.smul_def, mul_comm]`. Establish `hC : ∀ (r : R) (y : MSplitAlg P n) w, y ⊗ₜ[B] tr (act (MvPolynomial.C r) w) = (y * π (MvPolynomial.C r)) ⊗ₜ[B] tr w`. Introduce `r y w`. Rewrite using `[← MvPolynomial.algebraMap_eq, AlgHom.commutes, Module.algebraMap_end_apply, hβ, sc, ← hπ, MvPolynomial.algebraMap_eq, MvPolynomial.map_C]`.
+
+Both sides reduce to the same expression. Establish `bal : ∀ j (z : MvPolynomial (Fin n) O), z.IsSymmetric → ∀ (y : MSplitAlg P n) w, y ⊗ₜ[B] tr (act (emb O R j z) w) = (y * π (emb O R j z)) ⊗ₜ[B] tr w`. Introduce `j z hz`. Take `⟨p, hp⟩` from `MvPolynomial.esymmAlgHom_surjective O (σ := Fin n) (n := n) (by simp) ⟨z, hz⟩`. Take `rfl : z = (MvPolynomial.esymmAlgHom (Fin n) O n p : MvPolynomial (Fin n) O)` from `by rw [hp]`.
+
+Use `clear hp hz`. Rewrite using `[MvPolynomial.esymmAlgHom_apply]`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C r`. Establish `: emb O R j (MvPolynomial.aeval (fun i : Fin n => MvPolynomial.esymm (Fin n) O (i + 1)) (MvPolynomial.C r : MvPolynomial (Fin n) O)) = MvPolynomial.C (algebraMap O R r)` using `by simp [emb]`.
+
+Rewrite using `[this]`. Conclude with `hC _`. Consider the case `add p p' hp hp'`. Introduce `y w`. Rewrite using `[map_add, map_add, map_add, map_add, LinearMap.add_apply, map_add, TensorProduct.tmul_add, hp, hp', mul_add, TensorProduct.add_tmul]`.
+
+Consider the case `mul_X p i hp`. Introduce `y w`. Rewrite using `[map_mul, map_mul, map_mul, map_mul, Module.End.mul_apply, hp, MvPolynomial.aeval_X, he j _ i.2, sc, ← esymm_root (O := O) β P j _ i.2, hπ, mul_assoc]`. Introduce `t`. Proceed by induction on `t using MvPolynomial.induction_on with`.
+
+Consider the case `C r`. Introduce `v`. Rewrite using `[hψ, hψ, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_comm, map_mul, Module.End.mul_apply, hC, TensorProduct.smul_tmul', smul_eq_mul, mul_comm]`.
+
+Consider the case `add p p' hp hp'`. Introduce `v`. Rewrite using `[map_add, map_add, LinearMap.add_apply, map_add, hp, hp', add_smul]`. Consider the case `mul_X p ji hp`. Introduce `v`.
+
+Take `⟨j, i⟩` from `ji`. Establish `hX : (MvPolynomial.X (j, i) : PU R q n) = emb O R j (MvPolynomial.X i)` using `by simp [emb]`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, hp, mul_smul, hX, hψ, hψ, Finset.smul_sum (r := π (emb O R j _))]`. Use `congr 1`. Use `many_places (emb O R) (fun s t => π s ⊗ₜ[B] tr (act t v)) (fun s f => by simp only [map_sum, LinearMap.sum_apply, TensorProduct.tmul_sum]) (fun s f => by simp only [map_sum, TensorProduct.sum_tmul]) (fun j s t z hz => by show π s ⊗ₜ[B] tr (act (t * emb O R j z) v) = π (s * emb O …` as an intermediate fact.
+
+Rewrite using `[mul_comm t, map_mul, Module.End.mul_apply, bal j z hz, map_mul]) hd j (MvPolynomial.X i)`. Simplify using `only [map_mul, Module.End.mul_apply] at this`. Rewrite using `[this]`. Simplify using `only [TensorProduct.smul_tmul', smul_eq_mul]`.
+-/
 theorem UpperTheory.V.Pa.Lev.multiPsi :
     ∀ (O R B M V : Type) [CommRing O] [IsDomain O] [CommRing R] [Algebra O R] [CommRing B] [AddCommGroup M] [Module B M] [AddCommGroup V] [Module R V] (q n : ℕ) (β : R →+* B) (P : Fin q → Polynomial B) (act : PU R q n →ₐ[R] Module.End R V) (tr : V →+ M) (ι : Type) [Fintype ι] (a c : ι → MvPolynomial (Fin n) O), Hk.IsDual a c → (∀ j, (P j).Monic) → (∀ j, (P j).natDegree = n) → (∀ (t : R) v, tr (t • v) = β t • tr v) → (∀ j k, k ≤ n → ∀ v, tr (act (emb O R j (MvPolynomial.esymm (Fin n) O k)) v) = ((-1) ^ k * (P j).coeff (n - k)) • tr v) → ∀ ψ : V →+ MSplitAlg P n ⊗[B] M, (∀ v, ψ v = ∑ i : Fin q → ι, Ideal.Quotient.mk (mSplitIdeal P n) (MvPolynomial.map β (∏ j, emb O R j (a (i j)))) ⊗ₜ tr (act (∏ j, emb O R j (c (i j))) v)) → ∀ (t : PU R q n) v, ψ (act t v) = Ideal.Quotient.mk (mSplitIdeal P n) (MvPolynomial.map β t) • ψ v := by
   intro O R B M V _ _ _ _ _ _ _ _ _ q n β P act tr ι _ a c hd _ _ hβ he ψ hψ

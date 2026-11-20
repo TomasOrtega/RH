@@ -9,6 +9,15 @@ namespace GlobalTheory.ThKOp
 
 open scoped Classical in
 
+/- English proof (translation)
+Establish `hr : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace F)`. Establish `: (InfiniteAdeleRing.ringEquiv_mixedSpace F : InfiniteAdeleRing F → mixedEmbedding.mixedSpace F) = fun x => ((fun v : {w : InfinitePlace F // InfinitePlace.IsReal w} => InfinitePlace.Completion.extensionEmbeddingOfIsReal v.2 (x v)), (fun v : {w : InfinitePlace F // InfinitePlace. …`. Use function extensionality and compare the values at `x`. Conclude with `InfiniteAdeleRing.ringEquiv_mixedSpace_apply F x`. Rewrite using `[this]`.
+
+Use `Continuous.prodMk (continuous_pi fun v => ?_) (continuous_pi fun v => ?_)` and prove the remaining obligations. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal v.2).continuous.comp (continuous_apply _)`. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbedding v.1).continuous.comp (continuous_apply _)`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ hΦ`.
+
+Take `⟨f, g, hg, rfl⟩` from `hΦ`. Establish `h1 : Continuous fun x : κ → AdeleRing (𝓞 F) F => fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1` using `continuous_pi fun i => hr.comp (continuous_fst.comp (continuous_apply i))`. Establish `h2 : Continuous fun x : κ → AdeleRing (𝓞 F) F => fun i => (x i).2` using `continuous_pi fun i => continuous_snd.comp (continuous_apply i)`. Conclude with `(f.continuous.comp h1).mul (hg.1.continuous.comp h2)`. Consider the case `zero => exact continuous_const`.
+
+Consider the case `add _ _ _ _ h h' => exact h.add h'`. Consider the case `smul c _ _ h => exact continuous_const.mul h`.
+-/
 theorem continuous_of_mem_schA {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
     {Φ : (κ → AdeleRing (𝓞 F) F) → ℂ} (hΦ : Φ ∈ schA F κ) : Continuous Φ := by
   have hr : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace F) := by

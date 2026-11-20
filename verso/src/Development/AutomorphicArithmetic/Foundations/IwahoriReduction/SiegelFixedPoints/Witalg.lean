@@ -4,6 +4,9 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsCuspFunctional
 open scoped MatrixGroups Matrix
 open GlobalTheory.KZ GlobalTheory.K4 GlobalTheory.Glue GlobalTheory.KummerEisensteinGalois UpperTheory.Kd.L
 
+/- English proof (translation)
+Apply `X.exp.toRingHom.injective` to reduce the goal to its premises. Use `show X.exp _ = X.exp _`. Use extensionality with `r`. Simplify using `[X.gal_exp]`.
+-/
 private theorem gal_mul' {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) (s t : Ω ≃ₐ[ℚ] Ω) (f : X.K) :
     X.gal (s * t) f = X.gal s (X.gal t f) := by
   apply X.exp.toRingHom.injective
@@ -11,6 +14,11 @@ private theorem gal_mul' {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* 
   ext r
   simp [X.gal_exp]
 
+/- English proof (translation)
+Unfold `Tower.kmap`. Establish `e : (AddMonoidHom.toIntLinearMap (MonoidHom.toAdditive (Units.map χ.toMonoidHom))) = (AddMonoidHom.toIntLinearMap (MonoidHom.toAdditive (Units.map φ.toMonoidHom))) ∘ₗ (AddMonoidHom.toIntLinearMap (MonoidHom.toAdditive (Units.map ψ.toMonoidHom)))`. Use extensionality with `u`. Conclude with `h _`. Use `show AdicCompletion.map (idl l) _ a = AdicCompletion.map (idl l) _ (AdicCompletion.map (idl l) _ a)`.
+
+Rewrite using `[AdicCompletion.map_comp_apply, ← LinearMap.baseChange_comp, e]`.
+-/
 private theorem kmap_comp' {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) (l : ℕ) [Fact l.Prime]
     (φ ψ χ : X.K ≃+* X.K) (h : ∀ f, χ f = φ (ψ f)) (a : X.Khat l) : X.kmap l χ a = X.kmap l φ (X.kmap l ψ a) := by
   unfold Tower.kmap
@@ -22,6 +30,25 @@ private theorem kmap_comp' {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+
   show AdicCompletion.map (idl l) _ a = AdicCompletion.map (idl l) _ (AdicCompletion.map (idl l) _ a)
   rw [AdicCompletion.map_comp_apply, ← LinearMap.baseChange_comp, e]
 
+/- English proof (translation)
+Introduce `Ω _ _ _ _ ε X l _ N n _`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Establish `hl : 0 < l` using `(Fact.out : l.Prime).pos`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `b b' f f' ⟨h1, h2, h3⟩ ⟨k1, k2, k3⟩`.
+
+Use `⟨fun γ hγ => ?_, ?_, fun δ a c => ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, map_mul, h1 γ hγ, k1 γ hγ]`. Rewrite using `[Pi.add_apply, map_add, h2, k2]`. Unfold `Tower.cls`. Rewrite using `[← Submodule.Quotient.mk_add, ← TensorProduct.tmul_add, ofMul_mul]`.
+
+Take `⟨g, hg, e⟩` from `h3 δ a c`. Take `⟨g', hg', e'⟩` from `k3 δ a c`. Use `⟨g * g', fun γ hγ => by rw [map_mul, hg γ hγ, hg' γ hγ], ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, map_mul, mul_pow, ← e, ← e']`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `⟨fun γ _ => by simp, ?_, fun δ _ _ => ⟨1, fun γ _ => by simp, by simp⟩⟩` and prove the remaining obligations. Simplify using `[Tower.cls]`. Introduce and unpack `s b f ⟨hfI, hcls, hδ⟩`. Establish `hf : ((Units.map (X.gal s).toMonoidHom f : X.Kˣ) : X.K) = X.gal s f` using `rfl`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hf]`. Conclude with `GlobalTheory.ThGal.inv_gal X s _ _ hfI`. Establish `hu : (![(![1, 0] : Fin 2 → ℤ_[l]) 0, (cyclotomicCharacter Ω l s.toRingEquiv : ℤ_[l]) * (![1, 0] : Fin 2 → ℤ_[l]) 1] : Fin 2 → ℤ_[l]) = ![1, 0]`. Apply the tactic sequence `funext i; fin_cases i <;> simp`. Establish `hg : X.galB l s b ![1, 0] = X.kmap l (X.gal s) (b ![(![1, 0] : Fin 2 → ℤ_[l]) 0, (cyclotomicCharacter Ω l s.toRingEquiv : ℤ_[l]) * (![1, 0] : Fin 2 → ℤ_[l]) 1])` using `rfl`.
+
+Rewrite `hg` using `[hu]`. Rewrite `hcls` using `[AdicCompletion.eval_apply]`. Rewrite using `[hg, AdicCompletion.eval_apply, Tower.kmap]`. Use `erw [AdicCompletion.map_val_apply]`. Rewrite using `[hcls]`.
+
+Simplify using `[Tower.cls, LinearMap.reduceModIdeal_apply]`. Introduce `δ hδ1 hδ2`. Take `⟨δ', h1, h2, hrec⟩` from `GlobalTheory.ThGal.exists_twist X s N l n hl f hfI δ hδ1 hδ2`. Take `⟨g, hg, hfg⟩` from `hδ δ' h1 h2`. Use `⟨X.gal s g, GlobalTheory.ThGal.inv_gal X s _ _ hg, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hf, ← hrec, ← map_mul, hfg, map_pow]`. Introduce `s t b`. Use function extensionality and compare the values at `u`. Use `show X.kmap l (X.gal (s * t)) (b ![u 0, (cyclotomicCharacter Ω l (s * t).toRingEquiv : ℤ_[l]) * u 1]) = X.kmap l (X.gal s) (X.kmap l (X.gal t) (b ![u 0, (cyclotomicCharacter Ω l t.toRingEquiv : ℤ_[l]) * ((cyclotomicCharacter Ω l s.toRingEquiv : ℤ_[l]) * u 1)]))`. Establish `hm : (s * t).toRingEquiv = s.toRingEquiv * t.toRingEquiv` using `rfl`.
+
+Rewrite using `[kmap_comp' X l _ _ _ (gal_mul' X s t), hm, map_mul, Units.val_mul, mul_left_comm, mul_assoc]`.
+-/
 theorem UpperTheory.Kd.L.witalg :
     ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] [CharZero Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (N n : ℕ), 1 ≤ N → (∀ (b b' : X.Fn l) (f f' : X.Kˣ), IsWit X N l n b f → IsWit X N l n b' f' → IsWit X N l n (b + b') (f * f')) ∧ IsWit X N l n 0 1 ∧ (∀ (s : Ω ≃ₐ[ℚ] Ω) (b : X.Fn l) (f : X.Kˣ), IsWit X N l n b f → IsWit X N l n (X.galB l s b) (Units.map (X.gal s).toMonoidHom f)) ∧ ∀ s t : Ω ≃ₐ[ℚ] Ω, ∀ b : X.Fn l, X.galB l (s * t) b = X.galB l s (X.galB l t b) := by
   intro Ω _ _ _ _ ε X l _ N n _

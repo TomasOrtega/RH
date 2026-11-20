@@ -117,6 +117,9 @@ structure MonomialCaseHypotheses : Prop where
     ∀ (T : MarkedIdealWithBoundary.{u}), T.IsAdmissible →
       ∀ D ∈ T.boundary, ∀ x ∈ D.support, orderAt D x = 1
 
+/- English proof (translation)
+The claim follows from `hR.card_lt_dim flat_comap_center := by intro T hT Y k' hk q g hg hT' J 𝒞 h𝒞 hop exact FunctorialResolution.EmbeddedResolution.comap_componentUnionIdeal_of_flat T hT Y k' q g hT' J 𝒞 h𝒞 hop center_smooth := hR.center_smooth center_snc := hR.center_snc center_support := by intro T …`.
+-/
 theorem monomialGeometryHypotheses_of_monomialCaseHypotheses (hR : MonomialCaseHypotheses.{u}) :
     MonomialGeometryHypotheses.{u} where
   card_lt_dim := hR.card_lt_dim
@@ -222,6 +225,9 @@ structure OrderReductionHypotheses : Prop where
                               C = closure ({π ξ'} : Set ↥T.scheme)
   monomial : MonomialCaseHypotheses.{u}
 
+/- English proof (translation)
+The claim follows from `FunctorialResolution.EmbeddedResolution.isoInvariantOrderCertificateDescend exceptional_components_not_subset := by intro T hT Z hZsm hZsnc X' π hπ J c hord J' htr C' hC' have := hT.charZero have := hT.smooth have := hT.isNoetherian have := FunctorialResolution.EmbeddedResolution …`.
+-/
 theorem geometricHypotheses_of_orderReductionHypotheses (hR : OrderReductionHypotheses.{u}) : PrincipalizationGeometryHypotheses.{u} where
   maxContactTransport := FunctorialResolution.EmbeddedResolution.isoInvariantOrderCertificateDescend
   exceptional_components_not_subset := by

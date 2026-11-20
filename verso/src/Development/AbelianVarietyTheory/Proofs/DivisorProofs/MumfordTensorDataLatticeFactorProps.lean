@@ -9,6 +9,11 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 variable {R : Type} [CommRing R] [IsDomain R] {D D' : DegPre R} {r : ℕ} {W : Matrix (Fin r) (Fin r) ℤ}
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_assoc, Matrix.mul_apply, Finset.sum_eq_single i₀]`. Use `congr 1`. Simplify using `[Matrix.mul_apply, Matrix.single_apply]`. Introduce `b _ hb`. Simplify using `[Matrix.mul_apply, Matrix.single_apply, Ne.symm hb]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem mul_single_mul_apply (M N : Matrix (Fin r) (Fin r) ℤ) (i₀ i j : Fin r) :
     (M * Matrix.single i₀ i₀ (1:ℤ) * N) i j = M i i₀ * N i₀ j := by
   rw [Matrix.mul_assoc, Matrix.mul_apply, Finset.sum_eq_single i₀]
@@ -18,6 +23,11 @@ theorem mul_single_mul_apply (M N : Matrix (Fin r) (Fin r) ℤ) (i₀ i j : Fin 
     simp [Matrix.mul_apply, Matrix.single_apply, Ne.symm hb]
   · simp
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i₀]`. Distinguish the cases in `h : j = i₀`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.single_apply, Ne.symm h, h]`.
+
+Introduce `b _ hb`. Simplify using `[Matrix.single_apply, Ne.symm hb]`. Simplify using the standard rewrite rules.
+-/
 theorem mul_single_apply' (M : Matrix (Fin r) (Fin r) ℤ) (i₀ i j : Fin r) :
     (M * Matrix.single i₀ i₀ (1:ℤ)) i j = if j = i₀ then M i i₀ else 0 := by
   rw [Matrix.mul_apply, Finset.sum_eq_single i₀]
@@ -28,10 +38,18 @@ theorem mul_single_apply' (M : Matrix (Fin r) (Fin r) ℤ) (i₀ i j : Fin r) :
     simp [Matrix.single_apply, Ne.symm hb]
   · simp
 
+/- English proof (translation)
+Simplify using `[Tens.xi]`.
+-/
 theorem Tens.xe_xi (T : Tens D D' W) (i₀ : Fin r) (y : D.X) :
     T.xe (T.xi i₀ y) = Pi.single i₀ y := by
   simp [Tens.xi]
 
+/- English proof (translation)
+Use `letI := T.mod s`. Rewrite using `[Tens.xe_smul]`. Simplify using `only [Tens.xe_xi]`. Rewrite using `[Finset.sum_eq_single i₀]`. Simplify using the standard rewrite rules.
+
+Introduce `b _ hb`. Simplify using `[hb]`. Simplify using the standard rewrite rules.
+-/
 theorem Tens.xe_smul_xi (T : Tens D D' W) (s : SymUnit r) (a : TensO s) (i₀ : Fin r) (y : D.X) (i : Fin r) :
     letI := T.mod s
     T.xe (a • T.xi i₀ y) i = TensO.mat s a i i₀ • y := by
@@ -43,6 +61,9 @@ theorem Tens.xe_smul_xi (T : Tens D D' W) (s : SymUnit r) (a : TensO s) (i₀ : 
   · intro b _ hb; simp [hb]
   · simp
 
+/- English proof (translation)
+Rewrite using `[TensO.mat_mul, TensO.star_def]`. Use `show ((s.1⁻¹ : (Matrix (Fin r) (Fin r) ℤ)ˣ) : Matrix (Fin r) (Fin r) ℤ) * (Matrix.single i₀ i₀ (1:ℤ)).transpose * (s.1 : Matrix (Fin r) (Fin r) ℤ) * ((s.1⁻¹ : (Matrix (Fin r) (Fin r) ℤ)ˣ) : Matrix (Fin r) (Fin r) ℤ) = _`. Rewrite using `[Matrix.transpose_single, Matrix.mul_assoc _ (s.1 : Matrix (Fin r) (Fin r) ℤ), Units.mul_inv, Matrix.mul_one]`.
+-/
 theorem TensO.mat_star_idem_mul_binv {r : ℕ} (s : SymUnit r) (i₀ : Fin r) :
     TensO.mat s (star (TensO.idem s i₀) * TensO.binv s) =
       ((s.1⁻¹ : (Matrix (Fin r) (Fin r) ℤ)ˣ) : Matrix (Fin r) (Fin r) ℤ) * Matrix.single i₀ i₀ 1 := by
@@ -51,6 +72,9 @@ theorem TensO.mat_star_idem_mul_binv {r : ℕ} (s : SymUnit r) (i₀ : Fin r) :
       (s.1 : Matrix (Fin r) (Fin r) ℤ) * ((s.1⁻¹ : (Matrix (Fin r) (Fin r) ℤ)ˣ) : Matrix (Fin r) (Fin r) ℤ) = _
   rw [Matrix.transpose_single, Matrix.mul_assoc _ (s.1 : Matrix (Fin r) (Fin r) ℤ), Units.mul_inv, Matrix.mul_one]
 
+/- English proof (translation)
+Rewrite using `[TensO.star_def]`. Use `show ((s.1⁻¹ : (Matrix (Fin r) (Fin r) ℤ)ˣ) : Matrix (Fin r) (Fin r) ℤ) * (Matrix.single i₀ i₀ (1:ℤ)).transpose * (s.1 : Matrix (Fin r) (Fin r) ℤ) = _`. Rewrite using `[Matrix.transpose_single]`.
+-/
 theorem TensO.mat_star_idem {r : ℕ} (s : SymUnit r) (i₀ : Fin r) :
     TensO.mat s (star (TensO.idem s i₀)) =
       ((s.1⁻¹ : (Matrix (Fin r) (Fin r) ℤ)ˣ) : Matrix (Fin r) (Fin r) ℤ) * Matrix.single i₀ i₀ 1 *
@@ -60,6 +84,9 @@ theorem TensO.mat_star_idem {r : ℕ} (s : SymUnit r) (i₀ : Fin r) :
       (s.1 : Matrix (Fin r) (Fin r) ℤ) = _
   rw [Matrix.transpose_single]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `h1` using `congrFun (congrFun (Units.mul_inv s.1) i₀) i₀`. Rewrite `h1` using `[Matrix.mul_apply, Finset.sum_eq_zero (fun k _ => by rw [h k, mul_zero]), Matrix.one_apply_eq]`. Conclude with `zero_ne_one h1`.
+-/
 theorem SymUnit.inv_col_ne {r : ℕ} (s : SymUnit r) (i₀ : Fin r) :
     ∃ i, ((s.1⁻¹ : (Matrix (Fin r) (Fin r) ℤ)ˣ) : Matrix (Fin r) (Fin r) ℤ) i i₀ ≠ 0 := by
   by_contra h
@@ -68,6 +95,21 @@ theorem SymUnit.inv_col_ne {r : ℕ} (s : SymUnit r) (i₀ : Fin r) :
   rw [Matrix.mul_apply, Finset.sum_eq_zero (fun k _ => by rw [h k, mul_zero]), Matrix.one_apply_eq] at h1
   exact zero_ne_one h1
 
+/- English proof (translation)
+Introduce `R _ _ D D' r W T s i₀`. Use `letI := T.mod s`. Establish `key : ∀ y i, T.xe (star (TensO.idem s i₀) • TensO.binv s • T.xi i₀ y) i = ((s.1⁻¹ : (Matrix (Fin r) (Fin r) ℤ)ˣ) : Matrix (Fin r) (Fin r) ℤ) i i₀ • y`. Introduce `y i`. Rewrite using `[← mul_smul, Tens.xe_smul_xi, TensO.mat_star_idem_mul_binv, mul_single_apply']`.
+
+Simplify using the standard rewrite rules. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y show T.xe (T.xi i₀ y) i₀ = y`. Rewrite using `[Tens.xe_xi]`. Simplify using the standard rewrite rules.
+
+Introduce `z`. Apply `T.xe.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Rewrite using `[Tens.xe_xi, Tens.xe_smul]`. Use `show Pi.single (M := fun _ => D.X) i₀ (T.xe z i₀) i = _`.
+
+Simplify using `only [TensO.idem, TensO.ofMat, TensO.mat, Matrix.single_apply]`. Distinguish the cases in `hi : i = i₀`. Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hi, Ne.symm hi]`.
+
+Introduce `y y' h`. Take `⟨i, hi⟩` from `SymUnit.inv_col_ne s i₀`. Establish `h'` using `congrArg (fun z => T.xe z i) h`. Simplify using `only [key] at h'`. Conclude with `smul_right_injective D.X hi h'`.
+
+Introduce `z`. Use `⟨∑ j, (s.1 : Matrix (Fin r) (Fin r) ℤ) i₀ j • T.xe z j, ?_⟩` and prove the remaining obligations. Apply `T.xe.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Rewrite using `[key, Tens.xe_smul, TensO.mat_star_idem, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_single_mul_apply, mul_smul]`.
+-/
 theorem tens_factor_latt : ∀ (R : Type) [CommRing R] [IsDomain R] (D D' : DegPre R) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ)
     (T : Tens D D' W) (s : SymUnit r) (i₀ : Fin r), letI := T.mod s;
     (∀ y, T.xp i₀ (T.xi i₀ y) = y) ∧ (∀ z, T.xi i₀ (T.xp i₀ z) = TensO.idem s i₀ • z) ∧

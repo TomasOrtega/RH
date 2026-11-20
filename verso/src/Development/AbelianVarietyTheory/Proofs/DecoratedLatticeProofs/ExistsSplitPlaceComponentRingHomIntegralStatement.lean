@@ -13,6 +13,9 @@ open GlobalTheory.AdForm
 open GlobalTheory.AdForm
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FinPl.SplitPhi.exists_ringHom_int | exact GlobalTheory.FinPl.SplitPhi.exists_ringHom_int | (intros; apply GlobalTheory.FinPl.SplitPhi.exists_ringHom_int <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_splitPlace_component_ringHom_integral : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : SplitPt D k) (PP : HeightOneSpectrum (𝓞 D.host.E)), Formalism.L2.NTheta.IsIdemAt p.e PP →
     ∃ φ : D.host.E ⊗[D.host.F] p.v.adicCompletion D.host.F →+* k,

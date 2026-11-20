@@ -13,6 +13,11 @@ variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologic
 
 namespace QZ
 
+/- English proof (translation)
+Take `⟨r, hr⟩` from `QuotientAddGroup.mk_surjective (toAddCircle x)`. Use `⟨mk (r / n), ?_⟩` and prove the remaining obligations. Rewrite using `[← mk_nsmul, nsmul_eq_mul, mul_div_cancel₀ _ (by exact_mod_cast hn)]`. Express the relevant statement in the definitionally equal form `toAddCircle.symm (r : AddCircle (1 : ℚ)) = x`. Rewrite using `[show ((r : AddCircle (1 : ℚ))) = toAddCircle x from hr]`.
+
+Conclude with `toAddCircle.symm_apply_apply x`.
+-/
 theorem exists_nsmul_eq {n : ℕ} (hn : n ≠ 0) (x : QZ) : ∃ y : QZ, n • y = x := by
   obtain ⟨r, hr⟩ := QuotientAddGroup.mk_surjective (toAddCircle x)
   refine ⟨mk (r / n), ?_⟩
@@ -28,6 +33,9 @@ namespace PreClassFormation
 variable [CompactSpace G] {C : Rep.{u} k G} [IsDiscreteRep C] (F : PreClassFormation C)
   {U V : OpenSubgroup G} (hVU : V ≤ U)
 
+/- English proof (translation)
+Rewrite using `[cohomologyCoresLE_cohomologyResLE, map_nsmul, F.inv_res U V hVU x]`.
+-/
 theorem inv_cohomologyCoresLE_cohomologyResLE (x : H2Open C U) :
     F.inv U ((cohomologyCoresLE C hVU 2).hom
         ((cohomologyResLE C (show (V : Subgroup G) ≤ U from hVU) 2).hom x)) =
@@ -36,11 +44,17 @@ theorem inv_cohomologyCoresLE_cohomologyResLE (x : H2Open C U) :
 
 omit [CompactSpace G] in
 
+/- English proof (translation)
+The claim follows from `hVinj (by rw [F.inv_res U V hVU y, hy])`.
+-/
 theorem cohomologyResLE_eq_of_inv (hVinj : Function.Injective (F.inv V)) {x : H2Open C V}
     {y : H2Open C U} (hy : (V : Subgroup G).relIndex U • F.inv U y = F.inv V x) :
     (cohomologyResLE C (show (V : Subgroup G) ≤ U from hVU) 2).hom y = x :=
   hVinj (by rw [F.inv_res U V hVU y, hy])
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `hx`. Rewrite using `[← F.cohomologyResLE_eq_of_inv hVU hVinj hy]`. Conclude with `F.inv_cohomologyCoresLE_cohomologyResLE hVU y`.
+-/
 theorem inv_cohomologyCoresLE_of (hVinj : Function.Injective (F.inv V)) {x : H2Open C V}
     (hx : ∃ y : H2Open C U, (V : Subgroup G).relIndex U • F.inv U y = F.inv V x) :
     F.inv U ((cohomologyCoresLE C hVU 2).hom x) = F.inv V x := by
@@ -57,6 +71,9 @@ variable [CompactSpace G] {C : Rep.{u} k G} [IsDiscreteRep C] (F : ClassFormatio
 
 include F in
 
+/- English proof (translation)
+Introduce `x`. Take `⟨q, hq⟩` from `QZ.exists_nsmul_eq (relIndex_ne_zero_of_isOpen V.isOpen (U : Subgroup G)) (F.inv V x)`. Take `⟨y, rfl⟩` from `F.exists_inv_eq U q`. Conclude with `⟨y, F.toPreClassFormation.cohomologyResLE_eq_of_inv hVU (F.inv_injective V) hq⟩`.
+-/
 theorem cohomologyResLE_surjective :
     Function.Surjective (cohomologyResLE C (show (V : Subgroup G) ≤ U from hVU) 2).hom := by
   intro x
@@ -65,6 +82,9 @@ theorem cohomologyResLE_surjective :
   obtain ⟨y, rfl⟩ := F.exists_inv_eq U q
   exact ⟨y, F.toPreClassFormation.cohomologyResLE_eq_of_inv hVU (F.inv_injective V) hq⟩
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `F.cohomologyResLE_surjective hVU x`. Conclude with `F.toPreClassFormation.inv_cohomologyCoresLE_cohomologyResLE hVU y`.
+-/
 theorem inv_cohomologyCoresLE (x : H2Open C V) :
     F.inv U ((cohomologyCoresLE C hVU 2).hom x) = F.inv V x := by
   obtain ⟨y, rfl⟩ := F.cohomologyResLE_surjective hVU x
@@ -100,6 +120,11 @@ namespace ClassFormationAt
 variable [CompactSpace G] {P : Set Nat.Primes} {C : Rep.{u} k G} [IsDiscreteRep C]
   (F : ClassFormationAt P C) {U V : OpenSubgroup G} (hVU : V ≤ U)
 
+/- English proof (translation)
+Establish `hi : (V : Subgroup G).relIndex U ≠ 0` using `relIndex_ne_zero_of_isOpen V.isOpen _`. Take `⟨q, hq⟩` from `QZ.exists_nsmul_eq hi (F.inv V x)`. Establish `hmem : q ∈ (F.inv U).range`. Use `QZ.mem_of_nsmul_eq_zero P (F.inv U).range (F.primaryComponent_le_range U) (n * (V : Subgroup G).relIndex U) (Nat.mul_ne_zero hn hi) (fun p hp => ?_) q ?_` and prove the remaining obligations. Break down `(Nat.Prime.dvd_mul p.2).1 hp with h | h` into its components or cases.
+
+Conclude with `hnP p h`. Conclude with `hP p h`. Rewrite using `[mul_smul, hq, hx]`. Take `⟨y, rfl⟩` from `(AddMonoidHom.mem_range).1 hmem`. Conclude with `F.toPreClassFormation.inv_cohomologyCoresLE_of hVU (F.inv_injective V) ⟨y, hq⟩`.
+-/
 theorem inv_cohomologyCoresLE
     (hP : ∀ p : Nat.Primes, (p : ℕ) ∣ (V : Subgroup G).relIndex U → p ∈ P) (x : H2Open C V)
     {n : ℕ} (hn : n ≠ 0) (hnP : ∀ p : Nat.Primes, (p : ℕ) ∣ n → p ∈ P) (hx : n • F.inv V x = 0) :

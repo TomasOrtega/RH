@@ -15,16 +15,28 @@ variable {F A J : Type*} [CommSemiring F] [Semiring A] [Algebra F A]
 
 def wop (T : J → A) (t : List J →₀ F) : A := t.sum fun w c => c • (w.map T).prod
 
+/- English proof (translation)
+The claim follows from `Finsupp.sum_zero_index`.
+-/
 @[simp] theorem wop_zero (T : J → A) : wop T (0 : List J →₀ F) = 0 := Finsupp.sum_zero_index
 
+/- English proof (translation)
+The claim follows from `Finsupp.sum_add_index' (fun _ => zero_smul _ _) (fun _ _ _ => add_smul _ _ _)`.
+-/
 theorem wop_add (T : J → A) (s t : List J →₀ F) : wop T (s + t) = wop T s + wop T t :=
   Finsupp.sum_add_index' (fun _ => zero_smul _ _) (fun _ _ _ => add_smul _ _ _)
 
+/- English proof (translation)
+The claim follows from `Finsupp.sum_single_index (zero_smul _ _)`.
+-/
 @[simp] theorem wop_single (T : J → A) (w : List J) (c : F) : wop T (Finsupp.single w c) = c • (w.map T).prod :=
   Finsupp.sum_single_index (zero_smul _ _)
 
 def wmul (s t : List J →₀ F) : List J →₀ F := s.sum fun w a => t.sum fun w' b => Finsupp.single (w ++ w') (a * b)
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, wop_add, ih]`.
+-/
 theorem wop_sum {ι : Type*} (T : J → A) (s : Finset ι) (f : ι → List J →₀ F) :
     wop T (∑ i ∈ s, f i) = ∑ i ∈ s, wop T (f i) := by
   classical
@@ -32,12 +44,18 @@ theorem wop_sum {ι : Type*} (T : J → A) (s : Finset ι) (f : ι → List J �
   | empty => simp
   | insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, wop_add, ih]
 
+/- English proof (translation)
+Unfold `wmul`. Simplify using `only [Finsupp.sum, wop_sum, wop_single]`. Unfold `wop`. Simplify using `only [Finsupp.sum, Finset.sum_mul_sum, List.map_append, List.prod_append, smul_mul_smul_comm]`.
+-/
 theorem wop_wmul (T : J → A) (s t : List J →₀ F) : wop T (wmul s t) = wop T s * wop T t := by
   unfold wmul
   simp only [Finsupp.sum, wop_sum, wop_single]
   unfold wop
   simp only [Finsupp.sum, Finset.sum_mul_sum, List.map_append, List.prod_append, smul_mul_smul_comm]
 
+/- English proof (translation)
+Unfold `wop`. Simplify using `only [Finsupp.sum, map_sum, map_smul, map_list_prod, List.map_map]`. Both sides reduce to the same expression.
+-/
 theorem map_wop {B : Type*} [Semiring B] [Algebra F B] (g : A →ₐ[F] B) (T : J → A) (t : List J →₀ F) :
     g (wop T t) = wop (fun j => g (T j)) t := by
   unfold wop
@@ -46,6 +64,9 @@ theorem map_wop {B : Type*} [Semiring B] [Algebra F B] (g : A →ₐ[F] B) (T : 
 
 def wmap {K : Type*} [CommSemiring K] (f : F →+* K) (t : List J →₀ F) : List J →₀ K := t.mapRange f f.map_zero
 
+/- English proof (translation)
+Unfold `wop wmap`. Rewrite using `[Finsupp.sum_mapRange_index (h := fun w (c : K) => c • (List.map (fun j => g (T j)) w).prod) (fun _ => zero_smul _ _)]`. Simplify using `only [Finsupp.sum, map_sum, Algebra.smul_def, map_mul, hg, map_list_prod, List.map_map]`. Both sides reduce to the same expression.
+-/
 theorem map_wop_wmap {K B : Type*} [CommSemiring K] [Semiring B] [Algebra K B] (f : F →+* K) (g : A →+* B)
     (hg : ∀ c, g (algebraMap F A c) = algebraMap K B (f c)) (T : J → A) (t : List J →₀ F) :
     g (wop T t) = wop (fun j => g (T j)) (wmap f t) := by
@@ -59,6 +80,9 @@ end Words
 def Cert {F A J : Type*} [Field F] [Ring A] [Algebra F A] (T : J → A) (θ : J → F) (t : List J →₀ F) : Prop :=
   wop θ t = 1 ∧ IsIdempotentElem (wop T t) ∧ ∀ j, ∃ N : ℕ, (T j - algebraMap F A (θ j)) ^ N * wop T t = 0
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by simp, by simp [IsIdempotentElem], fun _ => ⟨1, by simp⟩⟩`.
+-/
 example {F A J : Type*} [Field F] [Ring A] [Algebra F A] (θ : J → F) :
     Cert (fun j => algebraMap F A (θ j)) θ (Finsupp.single [] 1) :=
   ⟨by simp, by simp [IsIdempotentElem], fun _ => ⟨1, by simp⟩⟩
@@ -74,6 +98,11 @@ def ProjTwo : Prop := ∀ (F K : Type) [Field F] [Field K] (e : F ≃+* K) (A : 
   (J : Type) (T : J → A) (S : ∀ i, J → B i), (∀ j j', Commute (T j) (T j')) → (∀ i j j', Commute (S i j) (S i j')) →
   ∀ θ : J → F, ∃ t, Cert T θ t ∧ ∀ i, Cert (S i) (fun j => e (θ j)) (wmap e.toRingHom t)
 
+/- English proof (translation)
+Use `⟨?_, ?_, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_wop_wmap f f (fun _ => rfl), h.1, map_one]`. Rewrite using `[← map_wop_wmap f g hg]`. Conclude with `h.2.1.map g`. Take `⟨N, hN⟩` from `h.2.2 j`.
+
+Conclude with `⟨N, by rw [← map_wop_wmap f g hg, ← hg, ← map_sub, ← map_pow, ← map_mul, hN, map_zero]⟩`.
+-/
 theorem Cert.map {F K A B J : Type*} [Field F] [Field K] [Ring A] [Ring B] [Algebra F A] [Algebra K B] (f : F →+* K) (g : A →+* B)
     (hg : ∀ c, g (algebraMap F A c) = algebraMap K B (f c)) {T : J → A} {θ : J → F} {t : List J →₀ F} (h : Cert T θ t) :
     Cert (fun j => g (T j)) (fun j => f (θ j)) (wmap f t) := by

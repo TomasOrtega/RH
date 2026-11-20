@@ -20,10 +20,18 @@ section Lat
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {F : Type} [Zero F] {n : ℕ} {Sg : Type}
   {r s : Sg → ℕ} (D : LieLatticeData Ω F n Sg r s)
 
+/- English proof (translation)
+Simplify using `[vanSub, Submodule.mem_pi]`.
+-/
 theorem mem_vanSub {i : ℕ} {g : (Fin n → F) → Ω} : g ∈ vanSub Ω F n i ↔
     ∀ y : Fin n → F, (∀ j : Fin n, i ≤ (j : ℕ) → y j = 0) → g y = 0 := by
   simp [vanSub, Submodule.mem_pi]
 
+/- English proof (translation)
+Simplify using `only [LieLatticeData.kk, AddSubgroup.mem_map, AddSubgroup.mem_inf, AddSubgroup.mem_prod]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨g, m'⟩, ⟨h1, h2, -⟩, rfl⟩`. Conclude with `⟨g, h1, h2⟩`. Introduce and unpack `⟨g, h1, h2⟩`.
+
+Conclude with `⟨(g, m), ⟨h1, h2, AddSubgroup.mem_top _⟩, rfl⟩`.
+-/
 theorem mem_kk {τ : Sg} {i : ℕ} {m : Fin (r τ) → Ω} :
     m ∈ D.kk τ i ↔ ∃ g, (g, m) ∈ D.Th τ ∧ g ∈ vanSub Ω F n i := by
   simp only [LieLatticeData.kk, AddSubgroup.mem_map, AddSubgroup.mem_inf, AddSubgroup.mem_prod]
@@ -33,11 +41,21 @@ theorem mem_kk {τ : Sg} {i : ℕ} {m : Fin (r τ) → Ω} :
   · rintro ⟨g, h1, h2⟩
     exact ⟨(g, m), ⟨h1, h2, AddSubgroup.mem_top _⟩, rfl⟩
 
+/- English proof (translation)
+Simplify using `only [LieLatticeData.xId, AddSubgroup.mem_comap, AddSubgroup.mem_sup]`. Both sides reduce to the same expression.
+-/
 theorem mem_xId {χ : F → Ω} {i : Fin n} {c : Ω} : c ∈ D.xId χ i ↔
     ∃ g ∈ D.M, ∃ h ∈ vanSub Ω F n ((i : ℕ) + 1), g + h = c • fun y : Fin n → F => χ (y i) := by
   simp only [LieLatticeData.xId, AddSubgroup.mem_comap, AddSubgroup.mem_sup]
   rfl
 
+/- English proof (translation)
+Simplify using `only [LieLatticeData.stepGraph, AddSubgroup.mem_comap, AddSubgroup.mem_sup]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨g, m'⟩, h1, ⟨h, m''⟩, h2, h3⟩`. Establish `hz : m'' = 0` using `(AddSubgroup.mem_prod.1 h2).2`. Substitute `hz` using the available equality.
+
+Establish `e` using `congrArg Prod.fst h3`. Establish `e'` using `congrArg Prod.snd h3`. Simplify using `at e e'`. Substitute `e'` using the available equality. Conclude with `⟨g, h, h1, (AddSubgroup.mem_prod.1 h2).1, e⟩`.
+
+Introduce and unpack `⟨g, h, h1, h2, h3⟩`. Use `⟨(g, m), h1, (h, 0), AddSubgroup.mem_prod.2 ⟨h2, AddSubgroup.mem_bot.2 rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `[h3]`.
+-/
 theorem mem_stepGraph {τ : Sg} {χ : F → Ω} {i : Fin n} {c : Ω} {m : Fin (r τ) → Ω} :
     (c, m) ∈ D.stepGraph τ χ i ↔ ∃ g h, (g, m) ∈ D.Th τ ∧ h ∈ vanSub Ω F n ((i : ℕ) + 1) ∧
       g + h = c • fun y : Fin n → F => χ (y i) := by
@@ -55,6 +73,11 @@ theorem mem_stepGraph {τ : Sg} {χ : F → Ω} {i : Fin n} {c : Ω} {m : Fin (r
     refine ⟨(g, m), h1, (h, 0), AddSubgroup.mem_prod.2 ⟨h2, AddSubgroup.mem_bot.2 rfl⟩, ?_⟩
     simp [h3]
 
+/- English proof (translation)
+Simplify using `only [mulLat, AddSubgroup.mem_map, DistribMulAction.toAddMonoidHom_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨e, he, rfl⟩`. Conclude with `⟨e, he, rfl⟩`. Introduce and unpack `⟨e, he, rfl⟩`.
+
+Conclude with `⟨e, he, rfl⟩`.
+-/
 theorem mem_mulLat {V : Type} [AddCommGroup V] [Module Ω V] {c : Ω} {L : AddSubgroup V} {v : V} :
     v ∈ mulLat c L ↔ ∃ e ∈ L, v = c • e := by
   simp only [mulLat, AddSubgroup.mem_map, DistribMulAction.toAddMonoidHom_apply]
@@ -62,12 +85,22 @@ theorem mem_mulLat {V : Type} [AddCommGroup V] [Module Ω V] {c : Ω} {L : AddSu
   · rintro ⟨e, he, rfl⟩; exact ⟨e, he, rfl⟩
   · rintro ⟨e, he, rfl⟩; exact ⟨e, he, rfl⟩
 
+/- English proof (translation)
+Simplify using `[dotDual, AddSubgroup.mem_iInf]`.
+-/
 theorem mem_dotDual {R : Subalgebra o Ω} {N : ℕ} {L : AddSubgroup (Fin N → Ω)} {v : Fin N → Ω} :
     v ∈ dotDual R L ↔ ∀ l ∈ L, l ⬝ᵥ v ∈ R := by
   simp [dotDual, AddSubgroup.mem_iInf]
 
 variable [Fintype F] {R : Subalgebra o Ω} {p : ℕ} {w : Ω}
 
+/- English proof (translation)
+Use extensionality with `m`. Rewrite using `[mem_kk]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, -⟩`. Conclude with `((hb.th τ).2.1 m).1 ⟨g, hg⟩`.
+
+Introduce `hm`. Take `⟨g, hg⟩` from `((hb.th τ).2.1 m).2 hm`. Use `⟨g, hg, mem_vanSub.2 fun y hy => ?_⟩` and prove the remaining obligations. Establish `: y = 0` using `funext fun j => hy j (Nat.zero_le _)`. Rewrite using `[this]`.
+
+Conclude with `(((hb.th τ).1 g).1 ⟨m, hg⟩).2`.
+-/
 theorem kk_zero (hb : D.Base R p w) (τ : Sg) : D.kk τ 0 = dotDual R (D.lie τ) := by
   ext m
   rw [mem_kk]
@@ -81,6 +114,11 @@ theorem kk_zero (hb : D.Base R p w) (τ : Sg) : D.kk τ 0 = dotDual R (D.lie τ)
     rw [this]
     exact (((hb.th τ).1 g).1 ⟨m, hg⟩).2
 
+/- English proof (translation)
+Use extensionality with `m`. Rewrite using `[mem_kk, ← (hb.th τ).2.2 m]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, hv⟩`. Establish `: g = 0` using `funext fun y => mem_vanSub.1 hv y fun j hj => absurd j.2 (not_lt.2 hj)`.
+
+Rewrite `hg` using `[this]`. Then use the resulting hypothesis. Introduce `h`. Conclude with `⟨0, h, (vanSub Ω F n n).zero_mem⟩`.
+-/
 theorem kk_top (hb : D.Base R p w) (τ : Sg) : D.kk τ n = mulLat (p : Ω) (dotDual R (D.lie τ)) := by
   ext m
   rw [mem_kk, ← (hb.th τ).2.2 m]
@@ -91,11 +129,17 @@ theorem kk_top (hb : D.Base R p w) (τ : Sg) : D.kk τ n = mulLat (p : Ω) (dotD
   · intro h
     exact ⟨0, h, (vanSub Ω F n n).zero_mem⟩
 
+/- English proof (translation)
+Introduce `m hm`. Take `⟨g, hg, hv⟩` from `(mem_kk D).1 hm`. Conclude with `(mem_kk D).2 ⟨g, hg, mem_vanSub.2 fun y hy => mem_vanSub.1 hv y fun l hl => hy l (h.trans hl)⟩`.
+-/
 theorem kk_anti {i j : ℕ} (h : i ≤ j) (τ : Sg) : D.kk τ j ≤ D.kk τ i := by
   intro m hm
   obtain ⟨g, hg, hv⟩ := (mem_kk D).1 hm
   exact (mem_kk D).2 ⟨g, hg, mem_vanSub.2 fun y hy => mem_vanSub.1 hv y fun l hl => hy l (h.trans hl)⟩
 
+/- English proof (translation)
+Establish `h0 : m ∈ dotDual R (D.lie τ)`. Rewrite using `[← kk_zero D hb τ]`. Conclude with `kk_anti D (Nat.zero_le j) τ hm`. Conclude with `kk_anti D hi τ (by rw [kk_top D hb τ]; exact mem_mulLat.2 ⟨m, h0, rfl⟩)`.
+-/
 theorem smul_mem_kk (hb : D.Base R p w) {τ : Sg} {i j : ℕ} (hi : i ≤ n) {m : Fin (r τ) → Ω}
     (hm : m ∈ D.kk τ j) : (p : Ω) • m ∈ D.kk τ i := by
   have h0 : m ∈ dotDual R (D.lie τ) := by
@@ -110,6 +154,13 @@ section Step
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {F : Type} [Zero F] [One F] [Fintype F]
   {n : ℕ} {Sg : Type} {r s : Sg → ℕ} (D : LieLatticeData Ω F n Sg r s) {R : Subalgebra o Ω} {p : ℕ} {w : Ω}
 
+/- English proof (translation)
+Take `⟨g, hg, h, hh, e⟩` from `(mem_xId D).1 hc`. Set `y : Fin n → F` to `fun j => if j = i then 1 else 0`. Establish `hy : h y = 0` using `mem_vanSub.1 hh y fun j hj => by`. Establish `: j ≠ i` using `fun hji => by`. Rewrite `hj` using `[hji]`.
+
+Use linear arithmetic over natural numbers and integers. Simplify using `[y, this]`. Establish `e'` using `congrFun e y`. Establish `hyi : y i = 1` using `by simp [y]`. Simplify using `only [Pi.add_apply, hy, add_zero, Pi.smul_apply, hyi, h1, smul_eq_mul, mul_one] at e'`.
+
+Rewrite using `[← e']`. Use `hb.M_le hg` as an intermediate fact. Conclude with `(AddSubgroup.mem_pi _).1 this y (Set.mem_univ _)`.
+-/
 theorem mem_of_mem_xId (hb : D.Base R p w) {χ : F → Ω} (h1 : χ 1 = 1) (h01 : (0 : F) ≠ 1)
     {i : Fin n} {c : Ω} (hc : c ∈ D.xId χ i) : c ∈ R := by
   classical
@@ -127,6 +178,9 @@ theorem mem_of_mem_xId (hb : D.Base R p w) {χ : F → Ω} (h1 : χ 1 = 1) (h01 
   have := hb.M_le hg
   exact (AddSubgroup.mem_pi _).1 this y (Set.mem_univ _)
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `hb.le_M`. Use `⟨m, fun c hc => (mem_xId D).2 ⟨_, hm (mem_mulLat.2 ⟨fun y => c * χ (y i), ?_, rfl⟩), 0, (vanSub Ω F n _).zero_mem, ?_⟩⟩` and prove the remaining obligations. Conclude with `(AddSubgroup.mem_pi _).2 fun y _ => R.mul_mem hc (hχ _)`. Use function extensionality and compare the values at `y`. Simplify using `[mul_assoc]`.
+-/
 theorem exists_mul_mem_xId (hb : D.Base R p w) {χ : F → Ω} (hχ : ∀ a, χ a ∈ R) (i : Fin n) :
     ∃ m : ℕ, ∀ c ∈ R, (p : Ω) ^ m * c ∈ D.xId χ i := by
   obtain ⟨m, hm⟩ := hb.le_M
@@ -136,6 +190,17 @@ theorem exists_mul_mem_xId (hb : D.Base R p w) {χ : F → Ω} (hχ : ∀ a, χ 
   · funext y
     simp [mul_assoc]
 
+/- English proof (translation)
+Use `⟨fun v m h => ⟨?_, ?_⟩, fun v hv => ?_, fun m => ?_, fun v => ?_, fun m hm => ?_⟩` and prove the remaining obligations. Take `⟨g, h', hg, hh, e⟩` from `(mem_stepGraph D).1 h`. Conclude with `(mem_xId D).2 ⟨g, (((hb.th τ).1 g).1 ⟨m, hg⟩).1, h', hh, e⟩`. Rewrite using `[← honto]`. Conclude with `⟨(v, m), h, rfl⟩`.
+
+Take `⟨g, hg, h, hh, e⟩` from `(mem_xId D).1 hv`. Establish `hh0 : h 0 = 0` using `mem_vanSub.1 hh 0 fun _ _ => rfl`. Establish `e'` using `congrFun e 0`. Simplify using `only [Pi.add_apply, hh0, add_zero, Pi.smul_apply, Pi.zero_apply, h0, smul_zero] at e'`. Take `⟨m, hm⟩` from `((hb.th τ).1 g).2 ⟨hg, e'⟩`.
+
+Conclude with `⟨m, (mem_stepGraph D).2 ⟨g, h, hm, hh, e⟩⟩`. Rewrite using `[mem_stepGraph, mem_kk]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, h, hg, hh, e⟩`. Establish `: g = -h`.
+
+Rewrite `e` using `[zero_smul]`. Conclude with `eq_neg_of_add_eq_zero_left e`. Conclude with `⟨g, hg, this ▸ (vanSub Ω F n _).neg_mem hh⟩`. Introduce and unpack `⟨g, hg, hv⟩`. Conclude with `⟨g, -g, hg, (vanSub Ω F n _).neg_mem hv, by simp⟩`.
+
+Rewrite using `[← hinj]`. Both sides reduce to the same expression. Rewrite `hm` using `[← honto]`. Take `⟨⟨v, m'⟩, h, rfl⟩` from `hm`. Conclude with `⟨v, h⟩`.
+-/
 theorem step_facts (hb : D.Base R p w) {τ : Sg} {χ : F → Ω} (h0 : χ 0 = 0) {i : Fin n}
     {X : AddSubgroup Ω} (honto : (D.stepGraph τ χ i).map (AddMonoidHom.snd _ _) = D.kk τ i)
     (hinj : (D.stepGraph τ χ i).comap (AddMonoidHom.inl _ _) = X) :
@@ -176,12 +241,20 @@ section Line
 
 variable {O Ω : Type} [CommRing O] [Field Ω] [Algebra O Ω] {K : Type} [Fintype K] {ι : K → Type}
 
+/- English proof (translation)
+Simplify using `only [chartMon, ← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, mul_comm, zpow_mul, zpow_natCast]`.
+-/
 theorem chartMon_smul (x : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (a : K → ℤ) (p : ℕ) :
     chartMon x c ((p : ℤ) • a) = chartMon x c a ^ p := by
   simp only [chartMon, ← Finset.prod_pow]
   refine Finset.prod_congr rfl fun k _ => ?_
   rw [Pi.smul_apply, smul_eq_mul, mul_comm, zpow_mul, zpow_natCast]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce `v hv`. Take `⟨a, ha, rfl⟩` from `(hY v).1 hv`. Use `AddSubgroup.subset_closure ⟨a, ha, e ^ p, ⟨e, (hX e).2 ⟨1, R.one_mem, by simp⟩, rfl⟩, rfl⟩` and prove the remaining obligations. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `v ⟨a, ha, _, ⟨b, hb, rfl⟩, rfl⟩`. Take `⟨t, ht, rfl⟩` from `(hX b).1 hb`. Conclude with `(hY _).2 ⟨a * t ^ p, R.mul_mem ha (R.pow_mem ht p), by simp [mul_pow, mul_assoc]⟩`.
+-/
 theorem powSpan_line {R : Subalgebra O Ω} {p : ℕ} {X Y : AddSubgroup Ω} {e : Ω}
     (hX : ∀ v, v ∈ X ↔ ∃ a ∈ R, v = a * e) (hY : ∀ v, v ∈ Y ↔ ∃ a ∈ R, v = a * e ^ p) :
     Y = powSpan R p X := by
@@ -203,8 +276,18 @@ variable {Ω : Type} [Field Ω]
 noncomputable def dotB (N : ℕ) : (Fin N → Ω) →ₗ[Ω] (Fin N → Ω) →ₗ[Ω] Ω :=
   LinearMap.mk₂ Ω (fun a b => a ⬝ᵥ b) add_dotProduct smul_dotProduct dotProduct_add dotProduct_smul
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dotB_apply (N : ℕ) (a b : Fin N → Ω) : dotB N a b = a ⬝ᵥ b := rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `a b h`. Use function extensionality and compare the values at `i`. Use `LinearMap.congr_fun h (Pi.single i 1)` as an intermediate fact. Simplify `this` using `[dotB_apply]`.
+
+Introduce `f`. Use `⟨fun i => f (Pi.single i 1), LinearMap.ext fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.flip_apply, dotB_apply]`. Use `conv_rhs => rw [← Finset.univ_sum_single v]`. Simplify using `only [dotProduct, map_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `e : Pi.single i (v i) = v i • (Pi.single i 1 : Fin N → Ω)`. Rewrite using `[← Pi.single_smul]`. Simplify using the standard rewrite rules. Rewrite using `[e, map_smul, smul_eq_mul]`.
+-/
 theorem dotB_bijective (N : ℕ) : Function.Bijective (dotB (Ω := Ω) N).flip := by
   classical
   constructor
@@ -225,6 +308,55 @@ theorem dotB_bijective (N : ℕ) : Function.Bijective (dotB (Ω := Ω) N).flip :
 
 end Dot
 
+/- English proof (translation)
+Introduce `O _ _ _ Ω _ _ K _ _ ι _ x d hmod F _ _ _ n Sg _ r s p hp w χ φ D hfam hG1 hG2 hF hline Xb T hXb hT Lie W Om OmHT hB τ k hk1 hk2 q L Q hQ`. Establish `hinj : Function.Injective (algebraMap O Ω)`. Take `⟨-, -, hc, -⟩` from `hmod`. Use `(injective_iff_map_eq_zero _).2 fun a ha => ?_` and prove the remaining obligations. Establish `: a ∈ Ideal.comap (C : O →+* _) (mcIdeal O x)`.
+
+Rewrite using `[Ideal.mem_comap]`. Simplify using `[mcIdeal, RingHom.mem_ker, GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles.mcMap, MvPolynomial.algebraMap_apply, ha]`. Rewrite `this` using `[hc]`. Simplify using `using this`. Establish `hfc` using `GlobalTheory.T.lattice_family_injective_model_facts O Ω K ι x hinj p hp w χ φ D hfam`.
+
+Establish `hbase` using `hfam.base`. Establish `hch` using `hfam.char`. Establish `hp0 : (p : O) ≠ 0` using `hch.1`. Establish `hpΩ : algebraMap O Ω (p : O) = (p : Ω)` using `map_natCast _ _`. Establish `hBa` using `GlobalTheory.T.dvr_bundle_statement_a O Ω K ι`.
+
+Establish `hKK : ∀ i : ℕ, ∃ E : ChartBundle O (mseg x) (r (φ τ)) (Fin (r (φ τ)) → Ω), ∀ c, mseg x c ≠ 0 → E.lat c = (D c).kk (φ τ) i` using `fun i => (GlobalTheory.T.lattice_families_glue_to_bundle O Ω K ι x (r (φ τ)) _).1 _ ((hfc.2 (φ τ)).2.2.1 i) (fun c hc => (hG2 c hc).kk (φ τ) i)`. Use `choose KK hKK using hKK`. Establish `hSG : ∀ i j, i ≤ n → j ≤ n → SameGeneric O x (KK i) (KK j)`. Introduce `i j hi hj c hc`. Use `⟨fun v hv => ⟨p, hp0, ?_⟩, fun v hv => ⟨p, hp0, ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite `hv` using `[hKK i c hc]`. Rewrite using `[hKK j c hc, hpΩ]`. Conclude with `smul_mem_kk (D c) (hbase c hc) hj hv`. Rewrite `hv` using `[hKK j c hc]`. Rewrite using `[hKK i c hc, hpΩ]`.
+
+Conclude with `smul_mem_kk (D c) (hbase c hc) hi hv`. Establish `hXT : ∀ (σ : Sg) (i : Fin n), SameGeneric O x (Xb σ i) T`. Introduce `σ i c hc`. Establish `hb` using `hbase c hc`. Establish `hTc : ∀ v, v ∈ T.lat c ↔ v ∈ chartRing O (mseg x) c`.
+
+Introduce `v`. Rewrite using `[hT c hc v]`. Simplify using `[chartMon]`. Establish `hχR : ∀ a, algebraMap O Ω (χ σ a) ∈ chartRing O (mseg x) c` using `fun a => Subalgebra.algebraMap_mem _ _`. Take `⟨m, hm⟩` from `exists_mul_mem_xId (D c) hb hχR i`.
+
+Use `⟨fun v hv => ⟨1, one_ne_zero, ?_⟩, fun v hv => ⟨(p : O) ^ m, pow_ne_zero _ hp0, ?_⟩⟩` and prove the remaining obligations. Rewrite `hv` using `[hXb σ i c hc]`. Rewrite using `[map_one, one_smul, hTc]`. Conclude with `mem_of_mem_xId (D c) hb (by rw [(hch.2.2.2.2 σ).2, map_one]) hch.2.2.2.1 hv`. Rewrite using `[hXb σ i c hc, map_pow, hpΩ, smul_eq_mul]`.
+
+Conclude with `hm v ((hTc v).1 hv)`. Establish `hstep : ∀ i : Fin n, ck O x d _ (KK i) (KK ((i : ℕ) + 1)) k L Q = ck O x d 1 (Xb (φ τ) i) T k L Q - (p : ℤ) ^ k * ck O x d 1 (Xb τ i) T k L Q`. Introduce `i`. Take `⟨u, a, hu, hl⟩` from `hline τ i`. Take `⟨PB, hPB⟩` from `(GlobalTheory.T.chart_bundle_product O Ω K ι x).2.2.1 (u ^ (p : ℤ)) ((p : ℤ) • a) (zpow_ne_zero _ hu)`.
+
+Establish `hA : IsLine O x u a (Xb τ i).lat` using `fun c hc v => by`. Rewrite using `[hXb τ i c hc]`. Conclude with `hl c hc v`. Establish `hPBlat : ∀ c, mseg x c ≠ 0 → PB.lat c = powSpan (chartRing O (mseg x) c) p ((D c).xId (fun a => algebraMap O Ω (χ τ a)) i)`. Introduce `c hc`.
+
+Use `powSpan_line (e := u * chartMon x c a) (fun v => hl c hc v) (fun v => ?_)` and prove the remaining obligations. Rewrite using `[hPB c hc v, chartMon_smul, zpow_natCast, mul_pow]`. Take `⟨hPT, hpow⟩` from `GlobalTheory.T.line_bundle_chart_generic_comparison O Ω K ι x d hmod (Xb τ i) T PB u a (p : ℤ) hu hA hT (hXT τ i) hPB`. Establish `hfacts` using `fun c (hc : mseg x c ≠ 0) => step_facts (D c) (hbase c hc) (τ := φ τ) (χ := fun a => algebraMap O Ω (χ (φ τ) a)) (i := i) (by rw [(hch.2.2.2.2 _).1, map_zero]) ((hF c hc).onto (φ τ) i) ((hF c hc).inj τ i)`. Establish `hq : QuotEquiv O x (Xb (φ τ) i).lat PB.lat (KK i).lat (KK ((i : ℕ) + 1)).lat`.
+
+Use `⟨fun c => (D c).stepGraph (φ τ) (fun a => algebraMap O Ω (χ (φ τ) a)) i, ⟨((hfc.2 (φ τ)).2.1 i).2, fun c hc => ?_⟩, fun c hc => ?_⟩` and prove the remaining obligations. Take `⟨f1, f2, f3, f4, -⟩` from `hfacts c hc`. Rewrite using `[hXb _ i c hc, hKK (i : ℕ) c hc, hKK ((i : ℕ) + 1) c hc, hPBlat c hc]`. Conclude with `⟨f1, f2, f3, fun v hv => (f4 v).2 hv⟩`. Take `⟨-, -, -, f4, f5⟩` from `hfacts c hc`.
+
+Rewrite using `[hKK (i : ℕ) c hc, hPBlat c hc]`. Conclude with `⟨fun v hv => (f4 v).1 hv, f5⟩`. Establish `hXP : SameGeneric O x (Xb (φ τ) i) PB`. Introduce `c hc`. Take `⟨f1, f2, f3, f4, -⟩` from `hfacts c hc`.
+
+Use `⟨fun v hv => ⟨p, hp0, ?_⟩, fun v hv => ⟨1, one_ne_zero, ?_⟩⟩` and prove the remaining obligations. Rewrite `hv` using `[hXb _ i c hc]`. Rewrite using `[hPBlat c hc, hpΩ, ← f4]`. Take `⟨m, hm⟩` from `f2 v hv`. Establish `hkm` using `(f1 v m hm).2`.
+
+Establish `h1 : ((p : Ω) • v, (p : Ω) • m) ∈ (D c).stepGraph (φ τ) (fun a => algebraMap O Ω (χ (φ τ) a)) i`. Rewrite using `[Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem hm p`. Establish `h2` using `(f3 _).2 (smul_mem_kk (D c) (hbase c hc) (Nat.succ_le_of_lt i.2) hkm)`. Establish `h3` using `sub_mem h1 h2`.
+
+Simplify using `using h3`. Rewrite `hv` using `[hPBlat c hc]`. Rewrite using `[map_one, one_smul, hXb _ i c hc]`. Conclude with `(f1 v 0 ((f4 v).2 hv)).1`. Apply the tactic sequence `have hEq := GlobalTheory.T.chart_bundle_intersection_symmetry O Ω K ι x d 1 (r (φ τ)) Ω (Fin (r (φ τ)) → Ω) (Xb (φ τ) i) PB (KK i) (KK ((i : ℕ) + 1)) hmod hXP (hSG _ _ i.2.le (Nat.succ_le_of_lt i.2)) hq k hk1 hk2 q L Q hQ`.
+
+Establish `hsym` using `GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles.sameGeneric_symm O hPT`. Establish `hc1` using `(hBa x d 1 Ω (Xb (φ τ) i) T PB hmod (hXT _ i) hsym k hk1 hk2 q L Q hQ).1`. Establish `hc2` using `(hBa x d 1 Ω PB T PB hmod hPT hsym k hk1 hk2 q L Q hQ).2`. Establish `hpw` using `hpow k hk1 hk2 q L Q hQ`. Rewrite using `[← hEq, hc1, hc2, hpw]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `htel : ∀ j, j ≤ n → ck O x d _ (KK 0) (KK j) k L Q = ∑ i ∈ Finset.range j, ck O x d _ (KK i) (KK (i + 1)) k L Q`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`.
+
+Introduce `_`. Establish `h00` using `hSG 0 0 (Nat.zero_le _) (Nat.zero_le _)`. Use `(hBa x d _ _ (KK 0) (KK 0) (KK 0) hmod h00 h00 k hk1 hk2 q L Q hQ).1` as an intermediate fact. Simplify using `only [Finset.range_zero, Finset.sum_empty]`. Use linear arithmetic over natural numbers and integers.
+
+Consider the case `succ j ih`. Introduce `hj`. Rewrite using `[Finset.sum_range_succ, ← ih (by omega)]`. Conclude with `(hBa x d _ _ (KK 0) (KK j) (KK (j + 1)) hmod (hSG _ _ (Nat.zero_le _) (by omega)) (hSG _ _ (by omega) hj) k hk1 hk2 q L Q hQ).1`. Establish `hd : IsDualLat O x (dotB (r (φ τ))) (Lie (φ τ)).lat (KK 0).lat`.
+
+Use `⟨dotB_bijective _, fun c hc v => ?_⟩` and prove the remaining obligations. Rewrite using `[hKK 0 c hc, kk_zero (D c) (hbase c hc), mem_dotDual, (hB (φ τ) c hc).1]`. Both sides reduce to the same expression. Establish `hrefl : SameGeneric O x (Lie (φ τ)) (Lie (φ τ))` using `fun c _ => ⟨fun v hv => ⟨1, one_ne_zero, by simpa using hv⟩, fun v hv => ⟨1, one_ne_zero, by simpa using hv⟩⟩`. Establish `hQ' : Q.IsHomogeneous (d - (k - 1))`.
+
+Establish `: d - (k - 1) = d + 1 - k` using `by omega`. Rewrite using `[this]` and apply the resulting hypothesis. Establish `hdu` using `(GlobalTheory.T.dual_bundle_intersection O Ω K ι x d (r (φ τ)) _ _ (dotB (r (φ τ))) (Lie (φ τ)) (Lie (φ τ)) (KK 0) (KK 0) hmod hrefl hd hd).2 (k - 1) (by omega) q L Q hQ' (p : O) hp0`. Establish `hscale : ∀ c, mseg x c ≠ 0 → ∀ v, v ∈ (KK n).lat c ↔ ∃ e ∈ (KK 0).lat c, v = algebraMap O Ω (p : O) • e`. Introduce `c hc v`.
+
+Rewrite using `[hKK n c hc, hKK 0 c hc, kk_top (D c) (hbase c hc), kk_zero (D c) (hbase c hc), hpΩ, mem_mulLat]`. Establish `hBd` using `(GlobalTheory.T.dvr_bundle_statement_d O Ω K ι x d (r (φ τ)) _ (KK 0) (KK n) (p : O) hp0 hmod hscale k hk1 hk2 q L Q hQ).1`. Establish `hsum : ∑ i : Fin n, (ck O x d 1 (Xb (φ τ) i) T k L Q - (p : ℤ) ^ k * ck O x d 1 (Xb τ i) T k L Q) = ck O x d _ (KK 0) (KK n) k L Q`. Rewrite using `[htel n le_rfl, ← Fin.sum_univ_eq_sum_range (fun i => ck O x d _ (KK i) (KK (i + 1)) k L Q) n]`. Conclude with `Finset.sum_congr rfl fun i _ => (hstep i).symm`.
+
+Establish `hs : ((-1 : ℤ) ^ (k - 1)) * (-1) ^ (k - 1) = 1`. Rewrite using `[← mul_pow]`. Simplify using the standard rewrite rules. Rewrite using `[hsum, hBd, hdu]`. Take the linear combination `(-(k : ℤ) * rootNum O x d (r (φ τ)) (Lie (φ τ)) (psum (Fin (r (φ τ))) ℤ (k - 1)) L Q (p : O)) * hs`.
+-/
 theorem main : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (x : (Σ k, ι k) → Ω) (d : ℕ), GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsModelOver O (mcIdeal O x) d → ∀ {F : Type} [Zero F] [One F] [Fintype F] {n : ℕ} {Sg : Type} [Fintype Sg] {r s : Sg → ℕ} (p : ℕ), p.Prime → ∀ (w : O) (χ : Sg → F → O) (φ : Equiv.Perm Sg) (D : (∀ k, ι k) → LieLatticeData Ω F n Sg r s), IsLatticeFamily O x p w χ φ D → (∀ c, mseg x c ≠ 0 → (D c).Good₁ (chartRing O (mseg x) c) p (fun τ a => algebraMap O Ω (χ τ a))) → (∀ c, mseg x c ≠ 0 → (D c).Good₂ (chartRing O (mseg x) c) p (fun τ a => algebraMap O Ω (χ τ a))) → (∀ c, mseg x c ≠ 0 → (D c).Facts (chartRing O (mseg x) c) p (algebraMap O Ω w) (fun τ a => algebraMap O Ω (χ τ a)) φ) → (∀ τ i, ∃ (u : Ω) (a : _ → ℤ), u ≠ 0 ∧ IsLine O x u a fun c => (D c).xId (fun a => algebraMap O Ω (χ τ a)) i) → ∀ (Xb : Sg → Fin n → ChartBundle O (mseg x) 1 Ω) (T : ChartBundle O (mseg x) 1 Ω), (∀ τ i c, mseg x c ≠ 0 → (Xb τ i).lat c = (D c).xId (fun a => algebraMap O Ω (χ τ a)) i) → IsLine O x 1 0 T.lat → ∀ (Lie W : ∀ τ, ChartBundle O (mseg x) (r τ) (Fin (r τ) → Ω)) (Om OmHT : ∀ τ, ChartBundle O (mseg x) (s τ) (Fin (s τ) → Ω)), HasBundles O x D Lie W Om OmHT → ∀ τ, ∀ (k : ℕ), 1 ≤ k → k ≤ d + 1 → ∀ (q : ℕ) (L : Fin q → K → ℤ) (Q : MvPolynomial (Fin q) ℤ), Q.IsHomogeneous (d + 1 - k) → (k : ℤ) * rootNum O x d (r (φ τ)) (Lie (φ τ)) (psum (Fin (r (φ τ))) ℤ (k - 1)) L Q (p : O) = (-1) ^ (k - 1) * ∑ i, (ck O x d 1 (Xb (φ τ) i) T k L Q - (p : ℤ) ^ k * ck O x d 1 (Xb τ i) T k L Q) := by
   intro O _ _ _ Ω _ _ K _ _ ι _ x d hmod F _ _ _ n Sg _ r s p hp w χ φ D hfam hG1 hG2 hF hline Xb T hXb
     hT Lie W Om OmHT hB τ k hk1 hk2 q L Q hQ

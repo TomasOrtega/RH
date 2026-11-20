@@ -11,6 +11,17 @@ open UpperTheory.ConvolutionTheory.R2.G (FS2 Rw nE row)
 open UpperTheory.V.Af.Smo (EigAt)
 open scoped ComplexOrder
 
+/- English proof (translation)
+Introduce `E _ _ D ι s c φ hc hb h`. Use `haveI : IsFiniteMeasure ((adeleMeasurePi (ι := Fin 2) ℚ).restrict (FS2 ℚ)) := ⟨by`. Rewrite using `[Measure.restrict_apply_univ]`. Establish `h1 : adeleMeasurePi (ι` using `Fin 2) ℚ (FS2 ℚ) = 1 := GroundTheory.Automorphic.FourierWhittaker.vecMeasure_vecDomain`. Rewrite using `[h1]`.
+
+Conclude with `ENNReal.one_lt_top⟩`. Establish `hψ : Continuous (ψ (F` using `ℚ)) := continuous_subtype_val.comp continuous_adelicChar`. Establish `hn : Continuous (nE D : (Fin 2 → A ℚ) → GL (Fin 2) (A E))` using `UpperTheory.ConvolutionTheory.R2.Pp.cont_n.comp (D.continuous_mkE' (continuous_apply 0) (continuous_apply 1))`. Establish `hi : ∀ i, Integrable (fun u : Fin 2 → A ℚ => φ i (nE D u * h) * ψ (u 1)) ((adeleMeasurePi (ι` using `Fin 2) ℚ).restrict (FS2 ℚ)) := by`. Introduce `i`.
+
+Take `⟨B, hB⟩` from `hb i`. Use `Integrable.of_bound (C := B) (((hc i).comp (hn.mul continuous_const)).mul (hψ.comp (continuous_apply 1))).aestronglyMeasurable ?_` and prove the remaining obligations. Use `ae_of_all _ fun u => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, show ‖ψ (u 1)‖ = 1 from Circle.norm_coe _, mul_one]`. Conclude with `hB _`.
+
+Establish `e : ∀ u : Fin 2 → A ℚ, (∑ i ∈ s, c i * φ i (nE D u * h)) * ψ (u 1) = ∑ i ∈ s, c i * (φ i (nE D u * h) * ψ (u 1))` using `fun u => by`. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_assoc _ _ _`. Simplify using `only [Wo, e]`. Rewrite using `[integral_finset_sum _ fun i _ => (hi i).const_mul (c i)]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => integral_const_mul _ _`.
+-/
 theorem UpperTheory.whittaker_sum_mul_eq_sum_mul_whittaker :
     ∀ (E : Type) [Field E] [NumberField E] (D : Dat ℚ E) (ι : Type) (s : Finset ι) (c : ι → ℂ) (φ : ι → GL (Fin 2) (A E) → ℂ), (∀ i, Continuous (φ i)) → (∀ i, ∃ B : ℝ, ∀ g, ‖φ i g‖ ≤ B) → ∀ h : GL (Fin 2) (A E), Wo D (fun g => ∑ i ∈ s, c i * φ i g) h = ∑ i ∈ s, c i * Wo D (φ i) h := by
   intro E _ _ D ι s c φ hc hb h

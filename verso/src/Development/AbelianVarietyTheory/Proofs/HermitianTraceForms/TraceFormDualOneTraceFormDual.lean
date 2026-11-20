@@ -11,15 +11,24 @@ noncomputable section
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+The claim follows from `(IsCMField.ringOfIntegersComplexConj E ⟨a, h⟩).isIntegral_coe`.
+-/
 theorem isIntegral_cc {a : E} (h : IsIntegral ℤ a) : IsIntegral ℤ (cc a) :=
   (IsCMField.ringOfIntegersComplexConj E ⟨a, h⟩).isIntegral_coe
 
+/- English proof (translation)
+The claim follows from `Algebra.trace_eq_of_algEquiv ((IsCMField.complexConj E).restrictScalars ℚ) a`.
+-/
 theorem trace_cc (a : E) : Algebra.trace ℚ E (cc a) = Algebra.trace ℚ E a :=
   Algebra.trace_eq_of_algEquiv ((IsCMField.complexConj E).restrictScalars ℚ) a
 
 def conjFrac : FractionalIdeal (𝓞 E)⁰ E ≃+* FractionalIdeal (𝓞 E)⁰ E :=
   FractionalIdeal.ringEquivOfRingEquiv E E (IsCMField.ringOfIntegersComplexConj E).toRingEquiv
 
+/- English proof (translation)
+Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) x`. Rewrite using `[map_div₀, IsFractionRing.ringEquivOfRingEquiv_algebraMap, IsFractionRing.ringEquivOfRingEquiv_algebraMap, cc, map_div₀]`. Both sides reduce to the same expression.
+-/
 private theorem fractionRing_conj (x : E) :
     IsFractionRing.ringEquivOfRingEquiv (K := E) (L := E)
       (IsCMField.ringOfIntegersComplexConj E).toRingEquiv x = cc x := by
@@ -28,6 +37,11 @@ private theorem fractionRing_conj (x : E) :
     IsFractionRing.ringEquivOfRingEquiv_algebraMap, cc, map_div₀]
   rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Establish `h` using `(congrArg cc (fractionRing_conj y)).trans (cc_cc y)`. Conclude with `h.symm ▸ hy`. Introduce `h`.
+
+Conclude with `⟨cc x, h, (fractionRing_conj (cc x)).trans (cc_cc x)⟩`.
+-/
 theorem mem_conjFrac {a : FractionalIdeal (𝓞 E)⁰ E} {x : E} : x ∈ conjFrac a ↔ cc x ∈ a := by
   constructor
   · rintro ⟨y, hy, rfl⟩
@@ -36,18 +50,37 @@ theorem mem_conjFrac {a : FractionalIdeal (𝓞 E)⁰ E} {x : E} : x ∈ conjFra
   · intro h
     exact ⟨cc x, h, (fractionRing_conj (cc x)).trans (cc_cc x)⟩
 
+/- English proof (translation)
+Rewrite using `[mem_conjFrac, cc_cc]`.
+-/
 theorem cc_mem_conjFrac {a : FractionalIdeal (𝓞 E)⁰ E} {x : E} : cc x ∈ conjFrac a ↔ x ∈ a := by
   rw [mem_conjFrac, cc_cc]
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[mem_conjFrac, cc_mem_conjFrac]`.
+-/
 @[simp] theorem conjFrac_conjFrac (a : FractionalIdeal (𝓞 E)⁰ E) : conjFrac (conjFrac a) = a := by
   ext x; rw [mem_conjFrac, cc_mem_conjFrac]
 
+/- English proof (translation)
+The claim follows from `(map_ne_zero_iff _ conjFrac.injective).2 ha`.
+-/
 theorem conjFrac_ne_zero {a : FractionalIdeal (𝓞 E)⁰ E} (ha : a ≠ 0) : conjFrac a ≠ 0 :=
   (map_ne_zero_iff _ conjFrac.injective).2 ha
 
+/- English proof (translation)
+The claim follows from `map_inv₀ _ a`.
+-/
 theorem conjFrac_inv (a : FractionalIdeal (𝓞 E)⁰ E) : conjFrac a⁻¹ = (conjFrac a)⁻¹ :=
   map_inv₀ _ a
 
+/- English proof (translation)
+Use extensionality with `y`. Rewrite using `[mem_conjFrac, FractionalIdeal.mem_spanSingleton, FractionalIdeal.mem_spanSingleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩`. Use `⟨IsCMField.ringOfIntegersComplexConj E z, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← cc_cc y, ← hz, Algebra.smul_def, Algebra.smul_def, cc_mul]`. Both sides reduce to the same expression. Introduce and unpack `⟨z, hz⟩`. Use `⟨IsCMField.ringOfIntegersComplexConj E z, ?_⟩` and prove the remaining obligations. Rewrite using `[← hz, Algebra.smul_def, Algebra.smul_def, cc_mul, cc_cc]`.
+
+Both sides reduce to the same expression.
+-/
 theorem conjFrac_spanSingleton (x : E) :
     conjFrac (FractionalIdeal.spanSingleton (𝓞 E)⁰ x) =
       FractionalIdeal.spanSingleton (𝓞 E)⁰ (cc x) := by
@@ -62,6 +95,9 @@ theorem conjFrac_spanSingleton (x : E) :
     rw [← hz, Algebra.smul_def, Algebra.smul_def, cc_mul, cc_cc]; rfl
 
 omit [IsCMField E] in
+/- English proof (translation)
+Rewrite using `[FractionalIdeal.mem_one_iff]`. Conclude with `⟨fun ⟨z, hz⟩ => hz ▸ z.isIntegral_coe, fun h => ⟨⟨x, h⟩, rfl⟩⟩`.
+-/
 theorem mem_one_fractionalIdeal_iff {x : E} :
     x ∈ (1 : FractionalIdeal (𝓞 E)⁰ E) ↔ IsIntegral ℤ x := by
   rw [FractionalIdeal.mem_one_iff]
@@ -69,6 +105,9 @@ theorem mem_one_fractionalIdeal_iff {x : E} :
 
 omit [IsCMField E] in
 
+/- English proof (translation)
+Rewrite using `[coeIdeal_differentIdeal ℤ ℚ E (𝓞 E), inv_inv, FractionalIdeal.mem_dual (one_ne_zero (α := FractionalIdeal (𝓞 E)⁰ E))]`. Use `forall_congr' fun a => ?_` and prove the remaining obligations. Rewrite using `[mem_one_fractionalIdeal_iff, Algebra.traceForm_apply]`. Conclude with `imp_congr_right fun _ => ⟨fun ⟨k, hk⟩ => ⟨k, hk.symm⟩, fun ⟨k, hk⟩ => ⟨k, hk.symm⟩⟩`.
+-/
 theorem mem_inv_different_iff {x : E} :
     x ∈ ((differentIdeal ℤ (𝓞 E) : Ideal (𝓞 E)) : FractionalIdeal (𝓞 E)⁰ E)⁻¹ ↔
       ∀ a : E, IsIntegral ℤ a → ∃ k : ℤ, Algebra.trace ℚ E (x * a) = k := by
@@ -79,11 +118,21 @@ theorem mem_inv_different_iff {x : E} :
   exact imp_congr_right fun _ => ⟨fun ⟨k, hk⟩ => ⟨k, hk.symm⟩, fun ⟨k, hk⟩ => ⟨k, hk.symm⟩⟩
 
 omit [IsCMField E] in
+/- English proof (translation)
+Rewrite using `[coeIdeal_differentIdeal ℤ ℚ E (𝓞 E)]`. Conclude with `inv_ne_zero (FractionalIdeal.dual_ne_zero ℤ ℚ one_ne_zero)`.
+-/
 theorem coe_different_ne_zero :
     ((differentIdeal ℤ (𝓞 E) : Ideal (𝓞 E)) : FractionalIdeal (𝓞 E)⁰ E) ≠ 0 := by
   rw [coeIdeal_differentIdeal ℤ ℚ E (𝓞 E)]
   exact inv_ne_zero (FractionalIdeal.dual_ne_zero ℤ ℚ one_ne_zero)
 
+/- English proof (translation)
+Apply `inv_injective` to reduce the goal to its premises. Rewrite using `[← conjFrac_inv]`. Use extensionality with `x`. Rewrite using `[mem_conjFrac, mem_inv_different_iff, mem_inv_different_iff]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h a ha`. Rewrite using `[← trace_cc, cc_mul]`. Conclude with `h _ (isIntegral_cc ha)`. Introduce `h a ha`. Rewrite using `[← trace_cc, cc_mul, cc_cc]`.
+
+Conclude with `h _ (isIntegral_cc ha)`.
+-/
 theorem conjFrac_different :
     conjFrac ((differentIdeal ℤ (𝓞 E) : Ideal (𝓞 E)) : FractionalIdeal (𝓞 E)⁰ E) =
       (differentIdeal ℤ (𝓞 E) : Ideal (𝓞 E)) := by
@@ -100,6 +149,9 @@ theorem conjFrac_different :
     exact h _ (isIntegral_cc ha)
 
 omit [IsCMField E] in
+/- English proof (translation)
+Rewrite using `[FractionalIdeal.coe_mul]`. Conclude with `Submodule.smul_assoc _ _ _`.
+-/
 theorem fractionalIdeal_mul_smul (a b : FractionalIdeal (𝓞 E)⁰ E)
     (Λ : Submodule (𝓞 E) (Fin r → E)) :
     ((a * b : FractionalIdeal (𝓞 E)⁰ E) : Submodule (𝓞 E) E) • Λ =
@@ -108,18 +160,27 @@ theorem fractionalIdeal_mul_smul (a b : FractionalIdeal (𝓞 E)⁰ E)
   exact Submodule.smul_assoc _ _ _
 
 omit [IsCMField E] in
+/- English proof (translation)
+Rewrite using `[FractionalIdeal.coe_one]`. Conclude with `Submodule.one_smul _`.
+-/
 theorem fractionalIdeal_one_smul (Λ : Submodule (𝓞 E) (Fin r → E)) :
     ((1 : FractionalIdeal (𝓞 E)⁰ E) : Submodule (𝓞 E) E) • Λ = Λ := by
   rw [FractionalIdeal.coe_one]
   exact Submodule.one_smul _
 
 omit [IsCMField E] in
+/- English proof (translation)
+Rewrite using `[← fractionalIdeal_mul_smul, mul_inv_cancel₀ ha, fractionalIdeal_one_smul]`.
+-/
 theorem fractionalIdeal_smul_inv_smul {a : FractionalIdeal (𝓞 E)⁰ E} (ha : a ≠ 0)
     (Λ : Submodule (𝓞 E) (Fin r → E)) :
     (a : Submodule (𝓞 E) E) • ((a⁻¹ : FractionalIdeal (𝓞 E)⁰ E) : Submodule (𝓞 E) E) • Λ = Λ := by
   rw [← fractionalIdeal_mul_smul, mul_inv_cancel₀ ha, fractionalIdeal_one_smul]
 
 omit [IsCMField E] in
+/- English proof (translation)
+Rewrite using `[← fractionalIdeal_mul_smul, inv_mul_cancel₀ ha, fractionalIdeal_one_smul]`.
+-/
 theorem fractionalIdeal_inv_smul_smul {a : FractionalIdeal (𝓞 E)⁰ E} (ha : a ≠ 0)
     (Λ : Submodule (𝓞 E) (Fin r → E)) :
     ((a⁻¹ : FractionalIdeal (𝓞 E)⁰ E) : Submodule (𝓞 E) E) • (a : Submodule (𝓞 E) E) • Λ = Λ := by
@@ -127,6 +188,21 @@ theorem fractionalIdeal_inv_smul_smul {a : FractionalIdeal (𝓞 E)⁰ E} (ha : 
 
 omit [IsCMField E] in
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Take `⟨s, hs⟩` from `FractionalIdeal.fg_of_isUnit a ha.isUnit`. Take `⟨t, ht⟩` from `hΛ.1`. Use `⟨Finset.image₂ (· • ·) s t, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`.
+
+Introduce `x hx`. Take `⟨α, hα, y, hy, rfl⟩` from `Finset.mem_image₂.1 hx`. Conclude with `Submodule.smul_mem_smul (hs ▸ Submodule.subset_span hα) (ht ▸ Submodule.subset_span hy)`. Rewrite using `[Submodule.smul_le, ← hs, ← ht]`. Introduce `α hα y hy`.
+
+Proceed by induction on `hα using Submodule.span_induction with`. Consider the case `mem α hα`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => exact Submodule.subset_span (Finset.mem_coe.2 (Finset.mem_image₂_of_mem hα hy))`. Consider the case `zero => simp`.
+
+Consider the case `add y z _ _ hy hz => rw [smul_add]`. Conclude with `add_mem hy hz`. Consider the case `smul c y _ hy => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ c hy`. Consider the case `zero => simp`.
+
+Consider the case `add α β _ _ hα hβ => rw [add_smul]`. Conclude with `add_mem hα hβ`. Consider the case `smul c α _ hα => rw [smul_assoc]`. Conclude with `Submodule.smul_mem _ c hα`. Choose the witnesses or unpack the hypotheses as in `⟨α, hα0, hα⟩ : ∃ α : E, α ≠ 0 ∧ α ∈ a := by`.
+
+Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `ha (FractionalIdeal.eq_zero_iff.2 fun x hx => by_contra fun h0 => h x h0 hx)`. Rewrite using `[eq_top_iff, ← hΛ.2, Submodule.span_le]`. Introduce `y hy`.
+
+Establish `: y = α⁻¹ • α • y` using `by rw [smul_smul, inv_mul_cancel₀ hα0, one_smul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (Submodule.smul_mem_smul hα hy))`.
+-/
 theorem isLattice_fractionalIdeal_smul {a : FractionalIdeal (𝓞 E)⁰ E} (ha : a ≠ 0)
     {Λ : Submodule (𝓞 E) (Fin r → E)} (hΛ : ReciprocityTheory.MultiplicativeHeights.IsLattice Λ) :
     ReciprocityTheory.MultiplicativeHeights.IsLattice ((a : Submodule (𝓞 E) E) • Λ) := by
@@ -163,10 +239,16 @@ theorem isLattice_fractionalIdeal_smul {a : FractionalIdeal (𝓞 E)⁰ E} (ha :
     exact Submodule.smul_mem _ _ (Submodule.subset_span (Submodule.smul_mem_smul hα hy))
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+The claim follows from `Λ.smul_mem (⟨a, ha⟩ : 𝓞 E) hy`.
+-/
 theorem smul_mem_of_isIntegral (Λ : Submodule (𝓞 E) (Fin r → E)) {a : E} (ha : IsIntegral ℤ a)
     {y : Fin r → E} (hy : y ∈ Λ) : a • y ∈ Λ :=
   Λ.smul_mem (⟨a, ha⟩ : 𝓞 E) hy
 
+/- English proof (translation)
+Simplify using `[herm, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem herm_add_right (G : Matrix (Fin r) (Fin r) E) (x y y' : Fin r → E) :
     herm G x (y + y') = herm G x y + herm G x y' := by
   simp [herm, mul_add, Finset.sum_add_distrib]
@@ -183,9 +265,23 @@ def hermDual (G : Matrix (Fin r) (Fin r) E) (Λ : Submodule (𝓞 E) (Fin r → 
 
 variable {G : Matrix (Fin r) (Fin r) E} {Λ Λ₁ Λ₂ : Submodule (𝓞 E) (Fin r → E)}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_hermDual {x : Fin r → E} :
     x ∈ hermDual G Λ ↔ ∀ y ∈ Λ, IsIntegral ℤ (herm G x y) := Iff.rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx y hy`. Use `Submodule.smul_induction_on (p := fun x => herm G x y ∈ b) hx ?_ ?_` and prove the remaining obligations. Introduce `β hβ w hw`. Rewrite using `[herm_smul_left, ← mul_one b]`.
+
+Conclude with `FractionalIdeal.mul_mem_mul hβ (mem_one_fractionalIdeal_iff.2 (hw y hy))`. Introduce `u v hu hv`. Rewrite using `[herm_add_left]`. Conclude with `(b : Submodule (𝓞 E) E).add_mem hu hv`. Introduce `h`.
+
+Establish `h1 : (1 : E) ∈ b * b⁻¹`. Rewrite using `[mul_inv_cancel₀ hb]`. Conclude with `FractionalIdeal.one_mem_one _`. Rewrite using `[← one_smul E x]`. Use `FractionalIdeal.mul_induction_on (C := fun t : E => t • x ∈ (b : Submodule (𝓞 E) E) • hermDual G Λ) h1 ?_ ?_` and prove the remaining obligations.
+
+Introduce `β hβ γ hγ`. Rewrite using `[mul_smul]`. Use `Submodule.smul_mem_smul hβ fun y hy => ?_` and prove the remaining obligations. Rewrite using `[herm_smul_left, ← mem_one_fractionalIdeal_iff, ← inv_mul_cancel₀ hb]`. Conclude with `FractionalIdeal.mul_mem_mul hγ (h y hy)`.
+
+Introduce `u v hu hv`. Rewrite using `[add_smul]`. Conclude with `add_mem hu hv`.
+-/
 theorem mem_smul_hermDual_iff {b : FractionalIdeal (𝓞 E)⁰ E} (hb : b ≠ 0) {x : Fin r → E} :
     x ∈ (b : Submodule (𝓞 E) E) • hermDual G Λ ↔ ∀ y ∈ Λ, herm G x y ∈ b := by
   constructor
@@ -212,6 +308,15 @@ theorem mem_smul_hermDual_iff {b : FractionalIdeal (𝓞 E)⁰ E} (hb : b ≠ 0)
       rw [add_smul]
       exact add_mem hu hv
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[mem_smul_hermDual_iff (inv_ne_zero (conjFrac_ne_zero ha)), mem_hermDual]`. Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Rewrite using `[FractionalIdeal.mem_inv_iff (conjFrac_ne_zero ha)]`.
+
+Introduce `α hα`. Rewrite using `[mem_one_fractionalIdeal_iff, mul_comm, ← cc_cc α, ← herm_smul_right]`. Conclude with `h _ (Submodule.smul_mem_smul (mem_conjFrac.1 hα) hy)`. Introduce `h y hy`. Use `Submodule.smul_induction_on (p := fun y => IsIntegral ℤ (herm G x y)) hy ?_ ?_` and prove the remaining obligations.
+
+Introduce `α hα w hw`. Rewrite using `[herm_smul_right, mul_comm, ← mem_one_fractionalIdeal_iff]`. Conclude with `(FractionalIdeal.mem_inv_iff (conjFrac_ne_zero ha)).1 (h w hw) _ (cc_mem_conjFrac.2 hα)`. Introduce `u v hu hv`. Rewrite using `[herm_add_right]`.
+
+Conclude with `hu.add hv`.
+-/
 theorem hermDual_smul {a : FractionalIdeal (𝓞 E)⁰ E} (ha : a ≠ 0) :
     hermDual G ((a : Submodule (𝓞 E) E) • Λ) =
       (((conjFrac a)⁻¹ : FractionalIdeal (𝓞 E)⁰ E) : Submodule (𝓞 E) E) • hermDual G Λ := by
@@ -245,13 +350,24 @@ def traceFormBilin (ξ : E) (G : Matrix (Fin r) (Fin r) E) : LinearMap.BilinForm
       rw [EFf, EFf, ← algebraMap_smul E c y, herm_smul_right, hc, mul_left_comm,
         ← Algebra.smul_def, map_smul])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem traceFormBilin_apply (ξ : E) (G : Matrix (Fin r) (Fin r) E) (x y : Fin r → E) :
     traceFormBilin ξ G x y = EFf ξ G x y := rfl
 
+/- English proof (translation)
+Rewrite using `[EFf, EFf, herm_smul_left, herm_smul_right, cc_cc]`.
+-/
 theorem EFf_smul_left (ξ : E) (G : Matrix (Fin r) (Fin r) E) (a : E) (x y : Fin r → E) :
     EFf ξ G (a • x) y = EFf ξ G x (cc a • y) := by
   rw [EFf, EFf, herm_smul_left, herm_smul_right, cc_cc]
 
+/- English proof (translation)
+Use `LinearMap.BilinForm.Nondegenerate.ofSeparatingLeft fun x hx => ?_` and prove the remaining obligations. Use `eq_zero_of_herm G hG x fun y => ?_` and prove the remaining obligations. Establish `h : -ξ * herm G x y = 0` using `eq_zero_of_trace _ fun β => by`. Use `hx ((β : E) • y)` as an intermediate fact. Rewrite `this` using `[traceFormBilin_apply, EFf, herm_smul_right, mul_left_comm]`. Then use the resulting hypothesis.
+
+Conclude with `(mul_eq_zero.1 h).resolve_left (neg_ne_zero.2 hξ)`.
+-/
 theorem traceFormBilin_nondegenerate {ξ : E} (hξ : ξ ≠ 0) (hG : G.det ≠ 0) :
     (traceFormBilin ξ G).Nondegenerate := by
   refine LinearMap.BilinForm.Nondegenerate.ofSeparatingLeft fun x hx => ?_
@@ -276,9 +392,23 @@ def traceFormDual (ξ : E) (G : Matrix (Fin r) (Fin r) E) (Λ : Submodule (𝓞 
     rw [EFf_smul_left]
     exact hx _ (smul_mem_of_isIntegral Λ (isIntegral_cc c.isIntegral_coe) hy)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_traceFormDual {ξ : E} {x : Fin r → E} :
     x ∈ traceFormDual ξ G Λ ↔ ∀ y ∈ Λ, ∃ k : ℤ, EFf ξ G x y = k := Iff.rfl
 
+/- English proof (translation)
+Establish `hs : FractionalIdeal.spanSingleton (𝓞 E)⁰ ξ ≠ 0` using `FractionalIdeal.spanSingleton_ne_zero_iff.2 hξ`. Establish `key : ∀ t : E, t ∈ (FractionalIdeal.spanSingleton (𝓞 E)⁰ ξ * (differentIdeal ℤ (𝓞 E) : Ideal (𝓞 E)))⁻¹ ↔ ∀ a : E, IsIntegral ℤ a → ∃ k : ℤ, Algebra.trace ℚ E (-ξ * (a * t)) = k`. Introduce `t`. Rewrite using `[mul_inv, FractionalIdeal.spanSingleton_inv, FractionalIdeal.mem_singleton_mul]`. Establish `e : ∀ a : E, -ξ * (a * t) = ξ * t * -a` using `fun a => by ring`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩ a ha`. Rewrite using `[e, mul_inv_cancel_left₀ hξ]`. Conclude with `mem_inv_different_iff.1 hy _ ha.neg`. Introduce `h`.
+
+Use `⟨ξ * t, mem_inv_different_iff.2 fun a ha => ?_, (inv_mul_cancel_left₀ hξ t).symm⟩` and prove the remaining obligations. Use `h _ ha.neg` as an intermediate fact. Rewrite `this` using `[e, neg_neg]`. Then use the resulting hypothesis. Use extensionality with `x`. Rewrite using `[mem_smul_hermDual_iff (inv_ne_zero (mul_ne_zero hs coe_different_ne_zero)), mem_traceFormDual]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Rewrite using `[key]`. Introduce `a ha`. Use `h _ (smul_mem_of_isIntegral Λ (isIntegral_cc ha) hy)` as an intermediate fact.
+
+Rewrite `this` using `[EFf, herm_smul_right, cc_cc]`. Then use the resulting hypothesis. Introduce `h y hy`. Use `(key _).1 (h y hy) 1 isIntegral_one` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis.
+-/
 theorem traceFormDual_eq {ξ : E} (hξ : ξ ≠ 0) :
     traceFormDual ξ G Λ =
       (((FractionalIdeal.spanSingleton (𝓞 E)⁰ ξ *
@@ -313,6 +443,9 @@ theorem traceFormDual_eq {ξ : E} (hξ : ξ ≠ 0) :
     have := (key _).1 (h y hy) 1 isIntegral_one
     rwa [one_mul] at this
 
+/- English proof (translation)
+Rewrite using `[traceFormDual_eq hξ, fractionalIdeal_smul_inv_smul (mul_ne_zero (FractionalIdeal.spanSingleton_ne_zero_iff.2 hξ) coe_different_ne_zero)]`.
+-/
 theorem hermDual_eq_smul_traceFormDual {ξ : E} (hξ : ξ ≠ 0) :
     hermDual G Λ =
       ((FractionalIdeal.spanSingleton (𝓞 E)⁰ ξ *
@@ -323,6 +456,19 @@ theorem hermDual_eq_smul_traceFormDual {ξ : E} (hξ : ξ ≠ 0) :
 
 omit [IsCMField E] in
 
+/- English proof (translation)
+Establish `: (Λ.restrictScalars ℤ).IsLattice ℚ`. Prove the components needed by the constructor for the conclusion. Establish `: Module.Finite (𝓞 E) Λ` using `Module.Finite.iff_fg.2 hΛ.1`. Establish `: Module.Finite ℤ Λ` using `Module.Finite.trans (𝓞 E) Λ`. Conclude with `Module.Finite.iff_fg.1 this`.
+
+Rewrite using `[eq_top_iff]`. Introduce `x _`. Take `⟨d, hd, hdx⟩` from `exists_smul_mem (F := E) Λ (x := x) (hΛ.2 ▸ Submodule.mem_top)`. Choose the witnesses or unpack the hypotheses as in `⟨e, he⟩ : ∃ e : 𝓞 E, e * d = (Algebra.norm ℤ d : 𝓞 E) := by`. Use `Ideal.absNorm_mem (Ideal.span {d})` as an intermediate fact.
+
+Rewrite `this` using `[Ideal.absNorm_span_singleton, Ideal.mem_span_singleton']`. Take `⟨e, he⟩` from `this`. Break down `Int.natAbs_eq (Algebra.norm ℤ d) with h | h` into its components or cases. Conclude with `⟨e, by rw [he, h]; simp⟩`. Conclude with `⟨-e, by rw [neg_mul, he, h]; simp⟩`.
+
+Establish `hn : (Algebra.norm ℤ d : ℚ) ≠ 0`. Conclude with `Algebra.norm_ne_zero_iff.2 hd` after adjusting the coercions. Establish `h1 : (Algebra.norm ℤ d : ℚ) • x ∈ Λ`. Use `Λ.smul_mem e hdx` as an intermediate fact. Rewrite `this` using `[smul_smul, he, Int.cast_smul_eq_zsmul, ← Int.cast_smul_eq_zsmul ℚ]`. Then use the resulting hypothesis.
+
+Rewrite using `[← inv_smul_smul₀ hn x]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span h1)`. Set `b` to `Module.finBasis ℤ (Λ.restrictScalars ℤ)`. Use `⟨_, b.extendOfIsLattice ℚ, ?_⟩` and prove the remaining obligations. Establish `h1 : Set.range (b.extendOfIsLattice ℚ) = (Λ.restrictScalars ℤ).subtype '' Set.range b`.
+
+Rewrite using `[← Set.range_comp]`. Use `congr 1`. Conclude with `funext fun i => b.extendOfIsLattice_apply ℚ i`. Rewrite using `[h1, ← Submodule.map_span, b.span_eq, Submodule.map_top, Submodule.range_subtype]`.
+-/
 theorem exists_rat_basis_of_isLattice (hΛ : ReciprocityTheory.MultiplicativeHeights.IsLattice Λ) :
     ∃ (n : ℕ) (b : Module.Basis (Fin n) ℚ (Fin r → E)),
       Submodule.span ℤ (Set.range b) = Λ.restrictScalars ℤ := by
@@ -356,6 +502,15 @@ theorem exists_rat_basis_of_isLattice (hΛ : ReciprocityTheory.MultiplicativeHei
     exact funext fun i => b.extendOfIsLattice_apply ℚ i
   rw [h1, ← Submodule.map_span, b.span_eq, Submodule.map_top, Submodule.range_subtype]
 
+/- English proof (translation)
+Take `⟨n, b, hb⟩` from `exists_rat_basis_of_isLattice hΛ`. Establish `hbm : ∀ i, b i ∈ Λ` using `fun i => by`. Establish `: b i ∈ Λ.restrictScalars ℤ` using `hb ▸ Submodule.subset_span ⟨i, rfl⟩`. Conclude with `this`. Set `f : Module.Dual ℚ (Fin r → E)` to `b.constr ℚ fun i => (φ ⟨b i, hbm i⟩ : ℚ)`.
+
+Establish `hf : ∀ y : Λ, (φ y : ℚ) = f y`. Introduce and unpack `⟨y, hy⟩`. Establish `hy' : y ∈ Submodule.span ℤ (Set.range b)` using `hb ▸ hy`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).1 hy'`. Establish `: (⟨∑ i, c i • b i, hy⟩ : Λ) = ∑ i, c i • (⟨b i, hbm i⟩ : Λ)` using `by ext1; simp`.
+
+Rewrite using `[this, map_sum, Submodule.coe_sum, map_sum, Int.cast_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, Submodule.coe_smul_of_tower, map_zsmul, Module.Basis.constr_basis, smul_eq_mul, Int.cast_mul, zsmul_eq_mul]`. Set `x` to `((traceFormBilin ξ G).toDual (traceFormBilin_nondegenerate hξ hG)).symm f`. Establish `hx : ∀ y, EFf ξ G x y = f y` using `fun y => LinearMap.BilinForm.apply_toDual_symm_apply (B := traceFormBilin ξ G) f y`.
+
+Conclude with `⟨x, fun y hy => ⟨φ ⟨y, hy⟩, by rw [hx, hf]⟩, fun y => by rw [hx, hf]⟩`.
+-/
 theorem exists_traceFormDual_eq {ξ : E} (hξ : ξ ≠ 0) (hG : G.det ≠ 0)
     (hΛ : ReciprocityTheory.MultiplicativeHeights.IsLattice Λ) (φ : Λ →+ ℤ) :
     ∃ x ∈ traceFormDual ξ G Λ, ∀ y : Λ, (φ y : ℚ) = EFf ξ G x y := by
@@ -379,6 +534,9 @@ theorem exists_traceFormDual_eq {ξ : E} (hξ : ξ ≠ 0) (hG : G.det ≠ 0)
     LinearMap.BilinForm.apply_toDual_symm_apply (B := traceFormBilin ξ G) f y
   exact ⟨x, fun y hy => ⟨φ ⟨y, hy⟩, by rw [hx, hf]⟩, fun y => by rw [hx, hf]⟩
 
+/- English proof (translation)
+Take `⟨n, b, hb⟩` from `exists_rat_basis_of_isLattice hΛ`. Apply `LinearMap.ker_eq_bot.1 (traceFormBilin_nondegenerate hξ hG).ker_eq_bot` to reduce the goal to its premises. Use `b.ext fun i => h _ ?_` and prove the remaining obligations. Establish `: b i ∈ Λ.restrictScalars ℤ` using `hb ▸ Submodule.subset_span ⟨i, rfl⟩`. Conclude with `this`.
+-/
 theorem eq_of_EFf_eq {ξ : E} (hξ : ξ ≠ 0) (hG : G.det ≠ 0) (hΛ : ReciprocityTheory.MultiplicativeHeights.IsLattice Λ)
     {x x' : Fin r → E} (h : ∀ y ∈ Λ, EFf ξ G x y = EFf ξ G x' y) : x = x' := by
   obtain ⟨n, b, hb⟩ := exists_rat_basis_of_isLattice hΛ
@@ -387,6 +545,15 @@ theorem eq_of_EFf_eq {ξ : E} (hξ : ξ ≠ 0) (hG : G.det ≠ 0) (hΛ : Recipro
   have : b i ∈ Λ.restrictScalars ℤ := hb ▸ Submodule.subset_span ⟨i, rfl⟩
   exact this
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hint, hperf⟩`. Use `le_antisymm (fun x hx => ?_) hint` and prove the remaining obligations. Use `choose k hk using hx`. Set `φ : Λ →+ ℤ` to `AddMonoidHom.mk' (fun y => k y y.2) fun y y' => by`.
+
+Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises. Rewrite using `[Int.cast_add, ← hk, ← hk, ← hk]`. Conclude with `map_add (traceFormBilin ξ G x) _ _`. Take `⟨x', hx', h⟩` from `hperf φ`. Rewrite using `[eq_of_EFf_eq hξ hG hΛ (x := x) (x' := x') fun y hy => (hk y hy).trans (h ⟨y, hy⟩)]`.
+
+Conclude with `hx'`. Introduce `h`. Use `⟨fun x hx => ?_, fun φ => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[← h]`. Conclude with `hx`.
+
+Take `⟨x, hx, hφ⟩` from `exists_traceFormDual_eq hξ hG hΛ φ`. Conclude with `⟨x, h ▸ hx, hφ⟩`.
+-/
 theorem perfect_iff_traceFormDual_eq {ξ : E} (hξ : ξ ≠ 0) (hG : G.det ≠ 0)
     (hΛ : ReciprocityTheory.MultiplicativeHeights.IsLattice Λ) :
     ((∀ x ∈ Λ, ∀ y ∈ Λ, ∃ k : ℤ, EFf ξ G x y = k) ∧
@@ -409,6 +576,11 @@ theorem perfect_iff_traceFormDual_eq {ξ : E} (hξ : ξ ≠ 0) (hG : G.det ≠ 0
     · obtain ⟨x, hx, hφ⟩ := exists_traceFormDual_eq hξ hG hΛ φ
       exact ⟨x, h ▸ hx, hφ⟩
 
+/- English proof (translation)
+Rewrite using `[perfect_iff_traceFormDual_eq hξ hG hΛ]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[hermDual_eq_smul_traceFormDual hξ, h]`. Introduce `h`.
+
+Rewrite using `[traceFormDual_eq hξ, h, fractionalIdeal_inv_smul_smul (mul_ne_zero (FractionalIdeal.spanSingleton_ne_zero_iff.2 hξ) coe_different_ne_zero)]`.
+-/
 theorem perfect_iff_hermDual_eq {ξ : E} (hξ : ξ ≠ 0) (hG : G.det ≠ 0)
     (hΛ : ReciprocityTheory.MultiplicativeHeights.IsLattice Λ) :
     ((∀ x ∈ Λ, ∀ y ∈ Λ, ∃ k : ℤ, EFf ξ G x y = k) ∧
@@ -425,6 +597,9 @@ theorem perfect_iff_hermDual_eq {ξ : E} (hξ : ξ ≠ 0) (hG : G.det ≠ 0)
     rw [traceFormDual_eq hξ, h, fractionalIdeal_inv_smul_smul
       (mul_ne_zero (FractionalIdeal.spanSingleton_ne_zero_iff.2 hξ) coe_different_ne_zero)]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨fun _ hx => (h.ge hx :), fun _ hx => h.le hx⟩, fun h => le_antisymm h.2 h.1⟩`.
+-/
 theorem hermDual_eq_self_iff :
     hermDual G Λ = Λ ↔ (∀ x ∈ Λ, ∀ y ∈ Λ, IsIntegral ℤ (herm G x y)) ∧
       ∀ x, (∀ y ∈ Λ, IsIntegral ℤ (herm G x y)) → x ∈ Λ :=

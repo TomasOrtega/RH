@@ -1,5 +1,8 @@
 import Mathlib
 
+/- English proof (translation)
+Use `infer_instance`.
+-/
 theorem UpperTheory.Reformulated.B.Yoa6.aux1 :
     SMulCommClass ℂ ℂ ℂ := by
   infer_instance
@@ -26,6 +29,9 @@ private noncomputable def herm {V : Type} [AddCommGroup V] [Module ℂ V]
     (by intro a v w; simp only [map_smul, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul,
           RingHom.id_apply, map_mul, Complex.conj_conj]; ring)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private lemma herm_apply {V : Type} [AddCommGroup V] [Module ℂ V]
     (B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ) (c : ℂ) (v w : V) :
     herm B c v w = c * B v w + starRingEnd ℂ c * starRingEnd ℂ (B w v) := rfl
@@ -33,6 +39,17 @@ private lemma herm_apply {V : Type} [AddCommGroup V] [Module ℂ V]
 end UpperTheory.Reformulated.B.Yoa6.Helpers
 
 open UpperTheory.Reformulated.B.Yoa6.Helpers in
+/- English proof (translation)
+Introduce `G V _ _ _ ρ h`. Take `⟨B, hB0, hBinv⟩` from `h`. Establish `hherm : ∀ (c : ℂ) (v w : V), herm B c w v = starRingEnd ℂ (herm B c v w)`. Introduce `c v w`. Simplify using `only [herm_apply, map_add, map_mul, Complex.conj_conj]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hinv : ∀ (c : ℂ) (g : G) (v w : V), herm B c (ρ g v) (ρ g w) = herm B c v w`. Introduce `c g v w`. Simplify using `only [herm_apply, hBinv]`. Distinguish the cases in `h1 : herm B 1 = 0`.
+
+Use `⟨herm B Complex.I, ?_, hherm Complex.I, hinv Complex.I⟩` and prove the remaining obligations. Introduce `hI`. Apply `hB0` to reduce the goal to its premises. Use extensionality with `v w`. Establish `e1` using `congrArg (fun f => f v w) h1`.
+
+Establish `e2` using `congrArg (fun f => f v w) hI`. Simplify using `only [herm_apply, LinearMap.zero_apply, map_one, one_mul, Complex.conj_I] at e1 e2`. Simplify using `only [LinearMap.zero_apply]`. Establish `: (2 * Complex.I) * B v w = 0`. Take the linear combination `Complex.I * e1 + e2`.
+
+Break down `mul_eq_zero.mp this with h | h` into its components or cases. It suffices to derive a contradiction. Simplify using `[Complex.ext_iff] at h`. Conclude with `h`. Conclude with `⟨herm B 1, h1, hherm 1, hinv 1⟩`.
+-/
 theorem UpperTheory.Reformulated.B.Yoa6.main :
     ∀ {G V : Type} [inst : Group G] [inst_1 : AddCommGroup V] [inst_2 : _root_.Module ℂ V] {ρ : Representation ℂ G V},
       UpperTheory.Reformulated.B.Yoa6.HasSesq ρ →

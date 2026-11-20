@@ -17,6 +17,15 @@ open scoped Matrix nonZeroDivisors
 
 namespace GlobalTheory.DerLin
 
+/- English proof (translation)
+Introduce `p`. Establish `hs : Function.Surjective (TrivSqZeroExt.fstHom S S S).toRingHom` using `fun a => ⟨TrivSqZeroExt.inl a, rfl⟩`. Establish `hr` using `range_comap_of_surjective _ _ hs`. Establish `hp : (show PrimeSpectrum (DualNumber S) from p) ∈ PrimeSpectrum.zeroLocus (RingHom.ker (TrivSqZeroExt.fstHom S S S).toRingHom : Set (DualNumber S))`. Introduce `x hx`.
+
+Establish `hx0 : x.fst = 0` using `hx`. Establish `: x * x = 0`. Apply the tactic sequence `ext <;> simp [hx0]`. Establish `hP` using `(show PrimeSpectrum (DualNumber S) from p).isPrime`. Establish `h0 : x * x ∈ (show PrimeSpectrum (DualNumber S) from p).asIdeal`.
+
+Rewrite using `[this]`. Conclude with `Ideal.zero_mem _`. Conclude with `(hP.mem_or_mem h0).elim id id`. Rewrite `hp` using `[← hr]`. Take `⟨q, hq⟩` from `hp`.
+
+Conclude with `⟨q, hq⟩`.
+-/
 theorem surj_fst (S : Type) [CommRing S] :
     Function.Surjective (spMap (TrivSqZeroExt.fstHom S S S).toRingHom : Sp S ⟶ Sp (DualNumber S)) := by
   intro p
@@ -36,6 +45,11 @@ theorem surj_fst (S : Type) [CommRing S] :
   obtain ⟨q, hq⟩ := hp
   exact ⟨q, hq⟩
 
+/- English proof (translation)
+Introduce `p _`. Take `⟨q, rfl⟩` from `surj_fst S p`. Establish `h1` using `h (Set.mem_univ ((spMap (TrivSqZeroExt.fstHom S S S).toRingHom : Sp S ⟶ Sp (DualNumber S)) q))`. Express the relevant statement in the definitionally equal form `v' _ ∈ U at h1`. Express the relevant statement in the definitionally equal form `v _ ∈ U`.
+
+Rewrite `h1`, the goal using `[← Scheme.Hom.comp_apply]`. Rewrite using `[hh]`. Conclude with `h1`.
+-/
 theorem le_of_fst_eq {S : Type} [CommRing S] {X : Scheme.{0}} {v v' : Sp (DualNumber S) ⟶ X}
     (hh : spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ v = spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ v')
     {U : X.Opens} (h : ⊤ ≤ v' ⁻¹ᵁ U) : ⊤ ≤ v ⁻¹ᵁ U := by
@@ -47,6 +61,17 @@ theorem le_of_fst_eq {S : Type} [CommRing S] {X : Scheme.{0}} {v v' : Sp (DualNu
   rw [← Scheme.Hom.comp_apply] at h1 ⊢
   rw [hh]; exact h1
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo σ' g ty F k P hP m v w hvw a`. Take `⟨h1, h2, -⟩` from `GlobalTheory.T.exponential_derivative_at_zero_isTangent E H Dw l Xo σ' g ty F k P hP`. Take `⟨N, _, _, ν, ρ, -, hr, hc, -⟩` from `GlobalTheory.T.exists_tangent_module_universal_group E H Dw l Xo ℂ (F.u k P)`. Establish `htan : ∀ i, IsTanAt (F.u k P) (v i)` using `fun i => h1 _ _ (hvw i)`. Use `choose b hb using fun i => (hr (v i)).1 (htan i)`.
+
+Establish `hv : v = fun i => ν (b i)` using `funext fun i => (hb i).symm`. Establish `fwd : ∀ v', IsCombAt (F.u k P) v a v' → IsDerivAt0 (fun z => (F.ex k P z).left) (∑ i, a i • w i) v'`. Introduce `v' hv'`. Establish `ht' : IsTanAt (F.u k P) v'`. Rewrite `hv'` using `[hv, hc]`.
+
+Conclude with `(hr v').2 ⟨_, hv'.symm⟩`. Take `⟨v0, hv0, -⟩` from `h2 0`. Use `⟨ht'.2.trans ((h1 _ _ hv0).2.symm.trans hv0.1), fun U h f => ?_⟩` and prove the remaining obligations. Establish `hU : ∀ i, ⊤ ≤ v i ⁻¹ᵁ U` using `fun i => le_of_fst_eq ((htan i).2.trans ht'.2.symm) h`. Use `(GlobalTheory.T.derivative_along_tangent_combination_moduli E H Dw l Xo ℂ (F.u k P) m v a v' htan hv' U h hU f).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul]`. Conclude with `congrArg (a i * ·) ((hvw i).2 U (hU i) f)`. Introduce `v'`.
+
+Use `⟨fwd v', fun hd => ?_⟩` and prove the remaining obligations. Establish `hex : IsCombAt (F.u k P) v a (ν (∑ i, a i • b i))`. Rewrite using `[hv, hc]`. Rewrite using `[(h2 _).unique hd (fwd _ hex)]`. Conclude with `hex`.
+-/
 theorem isCombAt_iff_isDerivAt0 : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (σ' : KA l →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (F : FamilyUnif Xo σ' ty) (k : Fin F.n) (P : (F.Di k).La →+ (Fin g → ℂ)), IsPeriod (F.Di k) ty P → ∀ (m : ℕ) (v : Fin m → (Sp (DualNumber ℂ) ⟶ Xo.univ.t.G.left)) (w : Fin m → (Fin g → ℂ)), (∀ i, IsDerivAt0 (fun z => (F.ex k P z).left) (w i) (v i)) → ∀ (a : Fin m → ℂ) (v' : (Sp (DualNumber ℂ) ⟶ Xo.univ.t.G.left)), IsCombAt (F.u k P) v a v' ↔ IsDerivAt0 (fun z => (F.ex k P z).left) (∑ i, a i • w i) v' := by
   intro E _ _ _ H Dw l Xo σ' g ty F k P hP m v w hvw a
   obtain ⟨h1, h2, -⟩ := GlobalTheory.T.exponential_derivative_at_zero_isTangent E H Dw l Xo σ' g ty F k P hP

@@ -12,11 +12,19 @@ def DegreeZeroSectionExists : Prop := ∀ (R : Type) [CommRing R] (F : Shv R) (X
   ∃ α : Cocycle ((chains R).obj (sch.obj X)) (res R F) 0,
     ∀ (U : Scheme.{0}) (x : U ⟶ X), ev α.1 0 0 (by simp) U x = Sec.res x (Sec.map (resι R F) s)
 
+/- English proof (translation)
+Establish `h` using `φ.hom.naturality g.op`. Conclude with `(congrArg (fun f => f.hom s) h).symm`.
+-/
 theorem sec_res_map {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (s : Sec F U) :
     Sec.res g (Sec.map φ s) = Sec.map φ (Sec.res g s) := by
   have h := φ.hom.naturality g.op
   exact (congrArg (fun f => f.hom s) h).symm
 
+/- English proof (translation)
+Introduce `q _ A _ hA hq`. Take `⟨⟨ζ₀⟩, -⟩` from `hT q A hA hq`. Take `⟨α, hα⟩` from `hS (ZMod q) (tw q 0) (Spec (CommRingCat.of A)) (twGen 0 ζ₀)`. Use `⟨_, α, rfl, ?_⟩` and prove the remaining obligations. Introduce `U x ζ`.
+
+Use `(hα U x).trans ((sec_res_map (resι (ZMod q) (tw q 0)) (x : U ⟶ Spec (CommRingCat.of A)) (twGen 0 ζ₀)).trans ?_)` and prove the remaining obligations. Rewrite using `[hR q (x : U ⟶ Spec (CommRingCat.of A)) ζ₀ ζ]`. Both sides reduce to the same expression.
+-/
 theorem OneEx_of (hT : TwSec) (hR : TwRes0) (hS : DegreeZeroSectionExists) : OneEx := by
   intro q _ A _ hA hq
   obtain ⟨⟨ζ₀⟩, -⟩ := hT q A hA hq

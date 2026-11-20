@@ -6,6 +6,21 @@ open NumberField IsDedekindDomain
 
 namespace ReciprocityTheory.ChartRestriction.B3.IotaPl
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Take `⟨f, hf, hfx⟩` from `hx`. Use `set n := f.natDegree with hn`. Establish `hsum` using `hf.as_sum`.
+
+Rewrite `hfx` using `[hsum, Polynomial.eval₂_add, Polynomial.eval₂_X_pow, Polynomial.eval₂_finset_sum]`. Establish `key : x ^ n = -∑ i ∈ Finset.range n, Polynomial.eval₂ (algebraMap ℤ ℂ_[p]) x (Polynomial.C (f.coeff i) * Polynomial.X ^ i)`. Rewrite using `[eq_neg_iff_add_eq_zero]`. Conclude with `hfx`. Establish `hx1 : 1 ≤ ‖x‖` using `hlt.le`.
+
+Establish `bound : ‖∑ i ∈ Finset.range n, Polynomial.eval₂ (algebraMap ℤ ℂ_[p]) x (Polynomial.C (f.coeff i) * Polynomial.X ^ i)‖ ≤ ‖x‖ ^ (n - 1)`. Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity)` to reduce the goal to its premises. Introduce `i hi`. Rewrite using `[Polynomial.eval₂_mul, Polynomial.eval₂_C, Polynomial.eval₂_X_pow, norm_mul, norm_pow]`. Establish `hc : ‖(algebraMap ℤ ℂ_[p]) (f.coeff i)‖ ≤ 1`.
+
+Establish `h` using `IsUltrametricDist.norm_intCast_le_one ℂ_[p] (f.coeff i)`. Use `first`. Consider the case `(simpa using h)`. Consider the case `(rw [algebraMap_int_eq, eq_intCast]; exact h)`. Consider the case `(convert h using 2; exact (algebraMap ℤ ℂ_[p]).eq_intCast _)`.
+
+Establish `hi' : i ≤ n - 1`. Use `Finset.mem_range.mp hi` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : ‖x‖ ^ n ≤ ‖x‖ ^ (n - 1)`.
+
+Rewrite using `[← norm_pow, key, norm_neg]`. Conclude with `bound`. Break down `Nat.eq_zero_or_pos n with h0 | hpos` into its components or cases. Rewrite `key` using `[h0]`. Simplify using `at key`.
+
+Establish `h3 : ‖x‖ ^ (n - 1) < ‖x‖ ^ n` using `pow_lt_pow_right₀ hlt (by omega)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem norm_le_one_of_isIntegral_int {p : ℕ} [Fact p.Prime] {x : ℂ_[p]} (hx : IsIntegral ℤ x) :
     ‖x‖ ≤ 1 := by
   by_contra hlt
@@ -48,6 +63,9 @@ theorem norm_le_one_of_isIntegral_int {p : ℕ} [Fact p.Prime] {x : ℂ_[p]} (hx
 
 variable {K : Type} [Field K] [NumberField K] {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Take `⟨f, hf, hfy⟩` from `NumberField.RingOfIntegers.isIntegral_coe y`. Use `norm_le_one_of_isIntegral_int ⟨f, hf, ?_⟩` and prove the remaining obligations. Establish `e : (algebraMap ℤ ℂ_[p]) = ι.comp (algebraMap ℤ K)` using `RingHom.ext_int _ _`. Rewrite using `[e, ← Polynomial.hom_eval₂, hfy, map_zero]`.
+-/
 theorem norm_int_le (ι : K →+* ℂ_[p]) (y : 𝓞 K) : ‖ι (y : K)‖ ≤ 1 := by
   obtain ⟨f, hf, hfy⟩ := NumberField.RingOfIntegers.isIntegral_coe y
   refine norm_le_one_of_isIntegral_int ⟨f, hf, ?_⟩
@@ -71,8 +89,18 @@ def smallIdeal (ι : K →+* ℂ_[p]) : Ideal (𝓞 K) where
     have h1 := norm_int_le ι c
     nlinarith [norm_nonneg (ι (c : K)), norm_nonneg (ι (a : K))]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_smallIdeal (ι : K →+* ℂ_[p]) (y : 𝓞 K) : y ∈ smallIdeal ι ↔ ‖ι (y : K)‖ < 1 := Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[Ideal.isPrime_iff]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Establish `h1 : (1 : 𝓞 K) ∈ smallIdeal ι` using `(Ideal.eq_top_iff_one _).mp h`. Rewrite `h1` using `[mem_smallIdeal]`.
+
+Simplify using `at h1`. Introduce `a b hab`. Simplify using `only [mem_smallIdeal] at hab ⊢`. Establish `e : ι ((a * b : 𝓞 K) : K) = ι (a : K) * ι (b : K)` using `by simp`. Rewrite `hab` using `[e, norm_mul]`.
+
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Take `⟨ha, hb⟩` from `hc`. Use polynomial arithmetic with `[norm_int_le ι a, norm_int_le ι b]`.
+-/
 theorem smallIdeal_isPrime (ι : K →+* ℂ_[p]) : (smallIdeal ι).IsPrime := by
   rw [Ideal.isPrime_iff]
   refine ⟨?_, ?_⟩
@@ -89,6 +117,11 @@ theorem smallIdeal_isPrime (ι : K →+* ℂ_[p]) : (smallIdeal ι).IsPrime := b
     obtain ⟨ha, hb⟩ := hc
     nlinarith [norm_int_le ι a, norm_int_le ι b]
 
+/- English proof (translation)
+Establish `e : (p : ℂ_[p]) = (((algebraMap ℚ_[p] (PadicAlgCl p)) (p : ℚ_[p]) : PadicAlgCl p) : ℂ_[p])` using `by first`. Consider the case `simp`. Consider the case `(rw [map_natCast]; exact (map_natCast UniformSpace.Completion.coeRingHom p).symm)`. Rewrite using `[e, PadicComplex.norm_extends, PadicAlgCl.norm_extends]`. Use `first`.
+
+Consider the case `exact Padic.norm_p_lt_one`. Consider the case `(rw [Padic.norm_p]; exact inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : p.Prime).one_lt))`. Consider the case `(rw [padicNormE.norm_p]; exact inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : p.Prime).one_lt))`.
+-/
 theorem norm_p_lt_one : ‖(p : ℂ_[p])‖ < 1 := by
   have e : (p : ℂ_[p]) = (((algebraMap ℚ_[p] (PadicAlgCl p)) (p : ℚ_[p]) : PadicAlgCl p) : ℂ_[p]) := by
     first

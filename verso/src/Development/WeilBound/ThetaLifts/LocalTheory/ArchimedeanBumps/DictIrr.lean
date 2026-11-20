@@ -20,9 +20,17 @@ variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
 
 def ex (L : V →L[ℝ] ℝ) (x : V) : ℂ := Complex.exp (Complex.I * (L x : ℝ))
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompanionTheory.AdelicHeis.temperate_exp_I.comp L.hasTemperateGrowth`.
+-/
 theorem ex_temp (L : V →L[ℝ] ℝ) : (ex L).HasTemperateGrowth :=
   GlobalTheory.CompanionTheory.AdelicHeis.temperate_exp_I.comp L.hasTemperateGrowth
 
+/- English proof (translation)
+Establish `h` using `L.iteratedFDeriv_comp_right (f := fun t : ℝ => Complex.exp (Complex.I * t)) (n := ∞) GlobalTheory.CompanionTheory.AdelicHeis.temperate_exp_I.1 x (i := i) (by exact_mod_cast le_top)`. Establish `e : ex L = (fun t : ℝ => Complex.exp (Complex.I * t)) ∘ L` using `rfl`. Rewrite using `[e, h]`. Use `(ContinuousMultilinearMap.norm_compContinuousLinearMap_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_iteratedFDeriv_eq_norm_iteratedDeriv, GlobalTheory.CompanionTheory.AdelicHeis.iteratedDeriv_exp_I, norm_mul, norm_pow, Complex.norm_I, one_pow, one_mul, Complex.norm_exp_I_mul_ofReal]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem ex_deriv (L : V →L[ℝ] ℝ) (i : ℕ) (x : V) : ‖iteratedFDeriv ℝ i (ex L) x‖ ≤ ‖L‖ ^ i := by
   have h := L.iteratedFDeriv_comp_right (f := fun t : ℝ => Complex.exp (Complex.I * t)) (n := ∞)
     GlobalTheory.CompanionTheory.AdelicHeis.temperate_exp_I.1 x (i := i) (by exact_mod_cast le_top)
@@ -33,6 +41,13 @@ theorem ex_deriv (L : V →L[ℝ] ℝ) (i : ℕ) (x : V) : ‖iteratedFDeriv ℝ
     Complex.norm_I, one_pow, one_mul, Complex.norm_exp_I_mul_ofReal]
   simp
 
+/- English proof (translation)
+Use `⟨∑ i ∈ Finset.range (j + 1), (j.choose i : ℝ) * (SchwartzMap.seminorm ℂ k (j - i) g + SchwartzMap.seminorm ℂ (k + 1) (j - i) g), by positivity, fun u B hu hB h => ?_⟩` and prove the remaining obligations. Use `SchwartzMap.seminorm_le_bound ℂ k j _ (by positivity) fun x => ?_` and prove the remaining obligations. Rewrite using `[SchwartzMap.smulLeftCLM_apply hu]`. Establish `h1` using `norm_iteratedFDeriv_smul_le (𝕜 := ℝ) hu.1 (g.smooth ⊤) x (n := j) (by exact_mod_cast le_top)`. Use `(mul_le_mul_of_nonneg_left h1 (by positivity)).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_le_sum fun i hi => ?_` and prove the remaining obligations. Establish `h2` using `h i (Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)) x`. Establish `h3` using `SchwartzMap.le_seminorm ℂ k (j - i) g x`. Establish `h4` using `SchwartzMap.le_seminorm ℂ (k + 1) (j - i) g x`.
+
+Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := by gcongr`.
+-/
 theorem semi_mul (g : 𝓢(V, ℂ)) (k j : ℕ) : ∃ C : ℝ, 0 ≤ C ∧ ∀ (u : V → ℂ) (B : ℝ), u.HasTemperateGrowth → 0 ≤ B →
     (∀ i ≤ j, ∀ x, ‖iteratedFDeriv ℝ i u x‖ ≤ B * (1 + ‖x‖)) →
     SchwartzMap.seminorm ℂ k j (SchwartzMap.smulLeftCLM ℂ u g) ≤ B * C := by
@@ -53,6 +68,21 @@ theorem semi_mul (g : 𝓢(V, ℂ)) (k j : ℕ) : ∃ C : ℝ, 0 ≤ C ∧ ∀ (
         ring
     _ ≤ _ := by gcongr
 
+/- English proof (translation)
+Use `continuous_iff_continuousAt.2 fun L₀ => ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, (schwartz_withSeminorms ℂ V ℂ).tendsto_nhds]`. Introduce and unpack `⟨k, j⟩ ε hε`. Take `⟨C, hC, h⟩` from `semi_mul (SchwartzMap.smulLeftCLM ℂ (ex L₀) g) k j`. Establish `ht : Tendsto (fun L : V →L[ℝ] ℝ => ‖L - L₀‖) (𝓝 L₀) (𝓝 0)` using `tendsto_norm_sub_self L₀`.
+
+Establish `ht' : Tendsto (fun L : V →L[ℝ] ℝ => ‖L - L₀‖ * C) (𝓝 L₀) (𝓝 0)` using `by simpa using ht.mul_const C`. Use `filter_upwards [ht.eventually (gt_mem_nhds one_pos), ht'.eventually (gt_mem_nhds hε)] with L h1 h2`. Establish `hu : (ex (L - L₀) - fun _ => 1).HasTemperateGrowth` using `(ex_temp _).sub (Function.HasTemperateGrowth.const _)`. Establish `e : SchwartzMap.smulLeftCLM ℂ (ex L) g - SchwartzMap.smulLeftCLM ℂ (ex L₀) g = SchwartzMap.smulLeftCLM ℂ (ex (L - L₀) - fun _ => 1) (SchwartzMap.smulLeftCLM ℂ (ex L₀) g)`. Use extensionality with `x`.
+
+Simplify using `only [SchwartzMap.sub_apply, SchwartzMap.smulLeftCLM_apply_apply (ex_temp _), SchwartzMap.smulLeftCLM_apply_apply hu, Pi.sub_apply, smul_eq_mul]`. Simplify using `only [ex]`. Establish `: Complex.exp (Complex.I * (L x : ℝ)) = Complex.exp (Complex.I * ((L - L₀) x : ℝ)) * Complex.exp (Complex.I * (L₀ x : ℝ))`. Rewrite using `[← Complex.exp_add]`. Use `congr 1`.
+
+Simplify using `only [ContinuousLinearMap.sub_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, sub_mul, one_mul, mul_assoc]`. Rewrite using `[SchwartzMap.schwartzSeminormFamily_apply, e]`.
+
+Use `(h _ _ hu (norm_nonneg _) fun i _ x => ?_).trans_lt h2` and prove the remaining obligations. Break down `i with _ | i` into its components or cases. Rewrite using `[norm_iteratedFDeriv_zero]`. Use `(Real.norm_exp_I_mul_ofReal_sub_one_le).trans (((L - L₀).le_opNorm x).trans ?_)` and prove the remaining obligations. Use `gcongr`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[iteratedFDeriv_sub_apply ((ex_temp _).1.of_le (by exact_mod_cast le_top)).contDiffAt contDiffAt_const, iteratedFDeriv_const_of_ne (Nat.succ_ne_zero i), Pi.zero_apply, sub_zero]`. Use `(ex_deriv _ _ x).trans ?_` and prove the remaining obligations. Rewrite using `[pow_succ, mul_comm]`. Use `gcongr`.
+
+Conclude with `(pow_le_one₀ (norm_nonneg _) h1.le).trans (by linarith [norm_nonneg x])`.
+-/
 theorem cont_mod (g : 𝓢(V, ℂ)) : Continuous fun L : V →L[ℝ] ℝ => SchwartzMap.smulLeftCLM ℂ (ex L) g := by
   refine continuous_iff_continuousAt.2 fun L₀ => ?_
   rw [ContinuousAt, (schwartz_withSeminorms ℂ V ℂ).tendsto_nhds]
@@ -88,6 +118,21 @@ end
 
 variable {X : Type} [NormedAddCommGroup X] [InnerProductSpace ℝ X] [FiniteDimensional ℝ X]
 
+/- English proof (translation)
+Use `borelize X`. Take `⟨a, ha⟩` from `exists_density φ`. Set `Λ : X →L[ℝ] X →L[ℝ] ℝ` to `(2 * Real.pi) • innerSL ℝ`. Establish `hc : Continuous fun η => a η • SchwartzMap.smulLeftCLM ℂ (ex (Λ η)) g` using `a.continuous.smul ((cont_mod g).comp Λ.continuous)`. Take `⟨f, hf⟩` from `hS X X volume _ hc fun k j => by`.
+
+Take `⟨C, hC, hb⟩` from `semi_mul g k j`. Establish `ht : (fun η : X => (1 + ‖Λ‖ ^ 2 * ‖η‖ ^ 2) ^ j).HasTemperateGrowth` using `by fun_prop`. Use `Integrable.mono' (((SchwartzMap.smulLeftCLM ℂ (fun η : X => (1 + ‖Λ‖ ^ 2 * ‖η‖ ^ 2) ^ j) a).integrable.norm).mul_const (2 ^ j * C)) (((schwartz_withSeminorms ℂ X ℂ).continuous_seminorm (k, j)).comp hc).aestronglyMeasurable (Eventually.of_forall fun η => ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_of_nonneg (apply_nonneg _ _), map_smul_eq_mul, SchwartzMap.smulLeftCLM_apply_apply ht, norm_smul, Real.norm_of_nonneg (by positivity)]`. Establish `h1 : ‖Λ η‖ ≤ 2 * (1 + ‖Λ‖ ^ 2 * ‖η‖ ^ 2)`.
+
+Use polynomial arithmetic with `[Λ.le_opNorm η, sq_nonneg (‖Λ‖ * ‖η‖ - 1), sq_nonneg (‖Λ‖ * ‖η‖)]`. Establish `h0 : (1 : ℝ) ≤ 2 * (1 + ‖Λ‖ ^ 2 * ‖η‖ ^ 2)` using `by nlinarith [sq_nonneg (‖Λ‖ * ‖η‖)]`. Use `hb (ex (Λ η)) ((2 * (1 + ‖Λ‖ ^ 2 * ‖η‖ ^ 2)) ^ j) (ex_temp _) (by positivity) fun i hi x => (ex_deriv _ i x).trans (((pow_le_pow_left₀ (norm_nonneg _) h1 i).trans (pow_le_pow_right₀ h0 hi)).trans (le_mul_of_one_le_right (by positivity) (by linarith [norm_nonneg x])))` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Establish `e : SchwartzMap.smulLeftCLM ℂ φ g = f`.
+
+Use extensionality with `x`. Establish `: f x = ∫ η, (a η • SchwartzMap.smulLeftCLM ℂ (ex (Λ η)) g) x` using `(hf ((BoundedContinuousFunction.evalCLM ℂ x).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ X ℂ))).2`. Simplify using `only [SchwartzMap.smul_apply, SchwartzMap.smulLeftCLM_apply_apply (ex_temp _), smul_eq_mul] at this`. Rewrite using `[this, SchwartzMap.smulLeftCLM_apply_apply φ.hasTemperateGrowth, smul_eq_mul, ha, ← integral_mul_const]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `η`. Establish `: ch ⟪η, x⟫ = ex (Λ η) x`. Express the relevant statement in the definitionally equal form `_ = Complex.exp (Complex.I * ((2 * Real.pi * ⟪η, x⟫ : ℝ) : ℂ))`. Rewrite using `[ch]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, (hf l).2]`.
+
+Simplify using `[h]`.
+-/
 theorem kill_mul (hS : WeakInt) (l : 𝓢(X, ℂ) →L[ℂ] ℂ) (g : 𝓢(X, ℂ))
     (h : ∀ L, l (SchwartzMap.smulLeftCLM ℂ (ex L) g) = 0) (φ : 𝓢(X, ℂ)) : l (SchwartzMap.smulLeftCLM ℂ φ g) = 0 := by
   borelize X
@@ -127,6 +172,21 @@ theorem kill_mul (hS : WeakInt) (l : 𝓢(X, ℂ) →L[ℂ] ℂ) (g : 𝓢(X, �
   rw [e, (hf l).2]
   simp [h]
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y, g y ≠ 0 := by`. Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Conclude with `hg (SchwartzMap.ext hn)`. Use `ContinuousLinearMap.coeFn_injective (l.continuous.ext_on PositivityTheory.ThKOwn.dense_compactSupport continuous_const fun φ hφ => ?_)` and prove the remaining obligations.
+
+Take `⟨t, ht⟩` from `hφ.isCompact.elim_finite_subcover (fun a : X => {x | g (x - a) ≠ 0}) (fun a => isOpen_ne_fun (g.continuous.comp (continuous_id.sub continuous_const)) continuous_const) fun x _ => mem_iUnion.2 ⟨x - y, by simpa using hy⟩`. Set `W : X → ℂ` to `fun x => ∑ a ∈ t, starRingEnd ℂ (g (x - a)) * g (x - a)`. Establish `hW : ∀ x ∈ tsupport φ, W x ≠ 0` using `fun x hx => by`. Take `⟨a, ha, hx'⟩` from `mem_iUnion₂.1 (ht hx)`. Establish `: W x = ((∑ a ∈ t, Complex.normSq (g (x - a)) : ℝ) : ℂ)`.
+
+Simplify using `only [W, Complex.ofReal_sum, Complex.normSq_eq_conj_mul_self]`. Rewrite using `[this, Complex.ofReal_ne_zero]`. Conclude with `(Finset.sum_pos' (f := fun a => Complex.normSq (g (x - a))) (fun _ _ => Complex.normSq_nonneg _) ⟨a, ha, Complex.normSq_pos.2 hx'⟩).ne'`. Establish `hs : ∀ a, ContDiff ℝ ∞ fun x => g (x - a)` using `fun a => (g.smooth ⊤).comp (contDiff_id.sub contDiff_const)`. Establish `hc : ∀ a, ContDiff ℝ ∞ fun x => starRingEnd ℂ (g (x - a))` using `fun a => Complex.conjCLE.contDiff.comp (hs a)`.
+
+Establish `hWs : ContDiff ℝ ∞ W` using `ContDiff.sum fun a _ => (hc a).mul (hs a)`. Establish `hsup : ∀ a, HasCompactSupport fun x => φ x * (starRingEnd ℂ (g (x - a)) * (W x)⁻¹)` using `fun a => hφ.mul_right`. Establish `hsm : ∀ a, ContDiff ℝ ∞ fun x => φ x * (starRingEnd ℂ (g (x - a)) * (W x)⁻¹)` using `fun a => contDiff_iff_contDiffAt.2 fun x => by`. Distinguish the cases in `hx : x ∈ tsupport φ`. Conclude with `(φ.smooth ⊤).contDiffAt.mul ((hc a).contDiffAt.mul (hWs.contDiffAt.inv (hW x hx)))`.
+
+Use `(contDiffAt_const (c := (0 : ℂ))).congr_of_eventuallyEq ?_ filter_upwards [notMem_tsupport_iff_eventuallyEq.1 hx] with y hy` and prove the remaining obligations. Rewrite using `[hy]`. Simplify using the standard rewrite rules. Establish `e : φ = ∑ a ∈ t, SchwartzMap.smulLeftCLM ℂ ((hsup a).toSchwartzMap (hsm a)) (SchwartzMap.compSubConstCLM ℂ a g)`. Use extensionality with `x`.
+
+Rewrite using `[SchwartzMap.sum_apply]`. Simplify using `only [SchwartzMap.smulLeftCLM_apply_apply (SchwartzMap.hasTemperateGrowth _), SchwartzMap.compSubConstCLM_apply, smul_eq_mul, HasCompactSupport.toSchwartzMap_toFun]`. Distinguish the cases in `hx : x ∈ tsupport φ`. Establish `: ∀ a, φ x * (starRingEnd ℂ (g (x - a)) * (W x)⁻¹) * g (x - a) = φ x * (W x)⁻¹ * (starRingEnd ℂ (g (x - a)) * g (x - a))` using `fun a => by ring`. Simplify using `only [this, ← Finset.mul_sum]`.
+
+Rewrite using `[mul_assoc, inv_mul_cancel₀ (hW x hx), mul_one]`. Simplify using `[image_eq_zero_of_notMem_tsupport hx]`. Express the relevant statement in the definitionally equal form `l φ = 0`. Rewrite using `[e, map_sum]`. Conclude with `Finset.sum_eq_zero fun a _ => kill_mul hS l _ (fun L => h L a) _`.
+-/
 theorem irr_inner (hS : WeakInt) (l : 𝓢(X, ℂ) →L[ℂ] ℂ) (g : 𝓢(X, ℂ)) (hg : g ≠ 0)
     (h : ∀ L a, l (SchwartzMap.smulLeftCLM ℂ (ex L) (SchwartzMap.compSubConstCLM ℂ a g)) = 0) : l = 0 := by
   classical
@@ -172,6 +232,13 @@ theorem irr_inner (hS : WeakInt) (l : 𝓢(X, ℂ) →L[ℂ] ℂ) (g : 𝓢(X, �
   rw [e, map_sum]
   exact Finset.sum_eq_zero fun a _ => kill_mul hS l _ (fun L => h L a) _
 
+/- English proof (translation)
+Set `e : V ≃L[ℝ] EuclideanSpace ℝ (Fin (Module.finrank ℝ V))` to `toEuclidean`. Set `P` to `SchwartzMap.compCLMOfContinuousLinearEquiv (F := ℂ) ℂ e`. Set `Q` to `SchwartzMap.compCLMOfContinuousLinearEquiv (F := ℂ) ℂ e.symm`. Establish `hPQ : ∀ f, P (Q f) = f` using `fun f => by ext x; simp [P, Q]`. Use `irr_inner hS (l.comp P) (Q g) (fun h0 => hg (by rw [← hPQ g, h0, map_zero])) fun L a => by` as an intermediate fact.
+
+Rewrite using `[ContinuousLinearMap.comp_apply, ← h (L.comp (e : V →L[ℝ] _)) (e.symm a)]`. Use `congr 1`. Use extensionality with `x`. Simplify using `[P, Q, SchwartzMap.smulLeftCLM_apply_apply (ex_temp _), SchwartzMap.compSubConstCLM_apply, ex]`. Use extensionality with `f`.
+
+Rewrite using `[← hPQ f]`. Conclude with `DFunLike.congr_fun this (Q f)`.
+-/
 theorem irr (hS : WeakInt) {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (l : 𝓢(V, ℂ) →L[ℂ] ℂ) (g : 𝓢(V, ℂ)) (hg : g ≠ 0)
     (h : ∀ L a, l (SchwartzMap.smulLeftCLM ℂ (ex L) (SchwartzMap.compSubConstCLM ℂ a g)) = 0) : l = 0 := by

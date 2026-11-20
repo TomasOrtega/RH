@@ -10,6 +10,17 @@ section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host Formalism.L2.NT NumberField IsDedekindDomain Polynomial GlobalTheory.HeightCounting GlobalTheory.RowTie GlobalTheory.SplitRead GlobalTheory.NPin
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 namespace GlobalTheory.FormAllLevels
+/- English proof (translation)
+Introduce `hL D P X hA i`. Take `⟨J, χ, T, β, c, hβ, hJb, hJo, hT, hc, hmem, hin⟩` from `cls hL D P X hA i`. Take `⟨B, hB, hcs⟩` from `pet D.host.E D.R.nV (P.M.loc i).wt β hβ`. Take `⟨c', hc', hcs'⟩` from `hcs J χ T hJb hJo hT`. Establish `hpos : (0 : ℝ) < c * c'` using `mul_pos hc hc'`.
+
+Use `⟨((c * c' : ℝ) : ℂ) • B, ?_, ?_⟩` and prove the remaining obligations. Introduce `f hf f' hf'`. Take `⟨h1, h2, h3⟩` from `hB f hf f' hf'`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.smul_apply, smul_eq_mul, map_mul, Complex.conj_ofReal]`.
+
+Rewrite using `[h1]`. Introduce `hne`. Simplify using `only [LinearMap.smul_apply, smul_eq_mul, Complex.re_ofReal_mul]`. Conclude with `mul_pos hpos (h2 hne)`. Introduce `h`.
+
+Simplify using `only [LinearMap.smul_apply, h3 h]`. Introduce `x y`. Rewrite using `[hin x y, hcs' _ (hmem x) _ (hmem y)]`. Simplify using `only [LinearMap.smul_apply, smul_eq_mul]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem main_of_alt (pet : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (a : NG.AlgWt L n) (β : a.W →ₗ⋆[ℂ] a.W →ₗ[ℂ] ℂ), GlobalTheory.CoefDuty.IsInvForm a β → ∃ B, GlobalTheory.CoefDuty.IsPetersson a B ∧ ∀ (J : Subgroup (GAf L n)) (χ : J →* ℂˣ) (T : Finset (GAf L n)), GlobalTheory.CoefDuty.IsBounded J → (∃ N : ℕ, 0 < N ∧ ∀ κ, NG.Cong L n N κ → ∃ h : κ ∈ J, χ ⟨κ, h⟩ = 1) → GlobalTheory.CoefDuty.IsClassReps J T → ∃ c : ℝ, 0 < c ∧ ∀ f ∈ NG.TypeSp a.ρ J χ, ∀ f' ∈ NG.TypeSp a.ρ J χ, GlobalTheory.CoefDuty.classSum a β J T f f' = (c : ℂ) * B f f') (cls : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D) (X : GlobalTheory.NJoin.RealAt D P.cf P.C P.tp), GlobalTheory.NJoin.Agree X P.M P.rep → ∀ i, ∃ (J : Subgroup (GAf D.host.E D.R.nV)) (χ : J →* ℂˣ) (T : Finset (GAf D.host.E D.R.nV)) (β : (P.M.loc i).wt.W →ₗ⋆[ℂ] (P.M.loc i).wt.W →ₗ[ℂ] ℂ) (c : ℝ), GlobalTheory.CoefDuty.IsInvForm (P.M.loc i).wt β ∧ GlobalTheory.CoefDuty.IsBounded J ∧ (∃ N : ℕ, 0 < N ∧ ∀ κ, NG.Cong D.host.E D.R.nV N κ → ∃ h : κ ∈ J, χ ⟨κ, h⟩ = 1) ∧ GlobalTheory.CoefDuty.IsClassReps J T ∧ 0 < c ∧ (∀ x, (P.M.loc i).real x ∈ NG.TypeSp (P.M.loc i).wt.ρ J χ) ∧ ∀ x y, inner ℂ x y = (c : ℂ) * GlobalTheory.CoefDuty.classSum (P.M.loc i).wt β J T ((P.M.loc i).real x) ((P.M.loc i).real y)) : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D), ∀ (X : GlobalTheory.NJoin.RealAt D P.cf P.C P.tp) (_ : GlobalTheory.NJoin.Agree X P.M P.rep), ∀ i, MtForm D P.M i := by
   intro hL D P X hA i
   obtain ⟨J, χ, T, β, c, hβ, hJb, hJo, hT, hc, hmem, hin⟩ := cls hL D P X hA i
@@ -32,6 +43,9 @@ theorem main_of_alt (pet : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L
     simp only [LinearMap.smul_apply, smul_eq_mul]
     push_cast
     ring
+/- English proof (translation)
+The claim follows from `_root_.GlobalTheory.FormAllLevels.main_of_alt GlobalTheory.T.exists_pos_classSum_eq_mul_invariantForm _root_.GlobalTheory.T.invariant_form_bounded_congruence_alt`.
+-/
 theorem main_alt_alt : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D), ∀ (X : GlobalTheory.NJoin.RealAt D P.cf P.C P.tp) (_ : GlobalTheory.NJoin.Agree X P.M P.rep), ∀ i, MtForm D P.M i :=
   _root_.GlobalTheory.FormAllLevels.main_of_alt GlobalTheory.T.exists_pos_classSum_eq_mul_invariantForm _root_.GlobalTheory.T.invariant_form_bounded_congruence_alt
 end GlobalTheory.FormAllLevels

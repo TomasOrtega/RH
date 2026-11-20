@@ -16,12 +16,18 @@ section Card
 
 variable (l : ℕ) [Fact l.Prime]
 
+/- English proof (translation)
+Establish `: NeZero l` using `⟨(Fact.out : l.Prime).ne_zero⟩`. Use `Fintype.ofFinite V` as an intermediate fact. Rewrite using `[Nat.card_eq_fintype_card, Module.card_eq_pow_finrank (K := ZMod l) (V := V), ZMod.card]`.
+-/
 theorem natCard_eq_pow_finrank_zmod (V : Type*) [AddCommGroup V] [Module (ZMod l) V] [Finite V] :
     Nat.card V = l ^ Module.finrank (ZMod l) V := by
   have : NeZero l := ⟨(Fact.out : l.Prime).ne_zero⟩
   have := Fintype.ofFinite V
   rw [Nat.card_eq_fintype_card, Module.card_eq_pow_finrank (K := ZMod l) (V := V), ZMod.card]
 
+/- English proof (translation)
+Rewrite `h` using `[natCard_eq_pow_finrank_zmod l V]`. Conclude with `Nat.pow_right_injective (Fact.out : l.Prime).two_le h`.
+-/
 theorem finrank_eq_of_natCard_zmod {V : Type*} [AddCommGroup V] [Module (ZMod l) V] [Finite V]
     {r : ℕ} (h : Nat.card V = l ^ r) : Module.finrank (ZMod l) V = r := by
   rw [natCard_eq_pow_finrank_zmod l V] at h
@@ -33,6 +39,9 @@ section Roots
 
 variable {K Ksep : Type} [Field K] [Field Ksep] [Algebra K Ksep] (l : ℕ)
 
+/- English proof (translation)
+Establish `key : ∀ b : Additive (rootsOfUnity l Ksep), l • b = 0` using `fun b => by`. Apply `Additive.toMul.injective` to reduce the goal to its premises. Rewrite using `[toMul_nsmul, toMul_zero]`. Conclude with `Subtype.ext (by simpa using (mem_rootsOfUnity l _).1 (Additive.toMul b).2)`. Conclude with `key a`.
+-/
 theorem nsmul_galRootsOfUnity_eq_zero (a : galRootsOfUnity.{0} K Ksep l) : l • a = 0 := by
   have key : ∀ b : Additive (rootsOfUnity l Ksep), l • b = 0 := fun b => by
     apply Additive.toMul.injective
@@ -46,6 +55,13 @@ noncomputable abbrev rootsRepZMod (U : Subgroup Gal(Ksep/K)) : Rep.{0} (ZMod l) 
 
 variable [IsSepClosure K Ksep]
 
+/- English proof (translation)
+Establish `hlp : l.Prime` using `Fact.out`. Establish `: IsSepClosed Ksep` using `IsSepClosure.sep_closed K`. Establish `: NeZero (l : Ksep)` using `⟨by`. Rewrite using `[← map_natCast (algebraMap K Ksep)]`. Conclude with `(map_ne_zero _).mpr hl⟩`.
+
+Establish `: NeZero l` using `⟨hlp.ne_zero⟩`. Establish `hcard : Nat.card (rootsRepZMod (K` using `K) (Ksep := Ksep) l U) = l ^ 1 := (Nat.card_congr (Additive.toMul (α := rootsOfUnity l Ksep))).trans ((HasEnoughRootsOfUnity.natCard_rootsOfUnity Ksep l).trans (pow_one l).symm)`. Establish `: Finite (rootsRepZMod (K` using `K) (Ksep := Ksep) l U) := Nat.finite_of_card_ne_zero (by`. Rewrite using `[hcard]`. Conclude with `pow_ne_zero _ hlp.ne_zero)`.
+
+Conclude with `finrank_eq_of_natCard_zmod l hcard`.
+-/
 theorem finrank_rootsRepZMod [Fact l.Prime] (hl : (l : K) ≠ 0) (U : Subgroup Gal(Ksep/K)) :
     Module.finrank (ZMod l) (rootsRepZMod (K := K) (Ksep := Ksep) l U) = 1 := by
   have hlp : l.Prime := Fact.out
@@ -70,6 +86,13 @@ variable {K Ksep : Type} [Field K] [Field Ksep] [Algebra K Ksep] [IsSepClosure K
 
 omit [IsSepClosure K Ksep] in
 
+/- English proof (translation)
+Establish `hg : (((g : (U : Subgroup Gal(Ksep/K))) : Gal(Ksep/K))) ∈ (V : Subgroup Gal(Ksep/K))` using `Subgroup.mem_subgroupOf.1 g.2`. Establish `key : ∀ s : Additive (rootsOfUnity l Ksep), (galRootsOfUnity.{0} K Ksep l).ρ ((g : (U : Subgroup Gal(Ksep/K))) : Gal(Ksep/K)) s = s`. Introduce `s`. Rewrite using `[galRootsOfUnity_ρ_apply]`. Apply `Additive.toMul.injective` to reduce the goal to its premises.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[toMul_ofMul, coe_galRootsOfUnityHom_apply]`. Establish `hs : (((Additive.toMul s : rootsOfUnity l Ksep) : Ksepˣ) : Ksep) ^ l = 1`. Use `(mem_rootsOfUnity l _).1 (Additive.toMul s).2` as an intermediate fact.
+
+Rewrite using `[← Units.val_pow_eq_pow_val, this, Units.val_one]`. Conclude with `(mem_fixedField_iff _ _).1 (hμ _ hs) _ hg`. Conclude with `key t`.
+-/
 theorem rootsRepZMod_ρ_of_mem
     (hμ : ∀ ζ : Ksep, ζ ^ l = 1 → ζ ∈ fixedField (V : Subgroup Gal(Ksep/K)))
     (g : (openSubgroupOf U V : Subgroup (U : Subgroup Gal(Ksep/K))))
@@ -106,6 +129,9 @@ noncomputable def rootsCohomologyZModEquiv (n : ℕ) :
     (zmodRepOfTorsionEquiv l _ (nsmul_galRootsOfUnity_eq_zero (K := K) (Ksep := Ksep) l))
     (fun _ _ => rfl) n
 
+/- English proof (translation)
+The claim follows from `cohomologyAddEquivOfEquiv_cohomologyConj (A := Rep.res (U : Subgroup Gal(Ksep/K)).subtype (galRootsOfUnity.{0} K Ksep l)) (A' := rootsRepZMod (K := K) (Ksep := Ksep) l U) (zmodRepOfTorsionEquiv l _ (nsmul_galRootsOfUnity_eq_zero (K := K) (Ksep := Ksep) l)) (fun _ _ => rfl) _ n g …`.
+-/
 theorem rootsCohomologyZModEquiv_cohomologyConj
     [((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))).Normal] (n : ℕ)
     (g : (U : Subgroup Gal(Ksep/K)))
@@ -129,6 +155,9 @@ variable {K Ksep : Type} [Field K] [ValuativeRel K] [TopologicalSpace K]
   [IsNonarchimedeanLocalField K] [Field Ksep] [Algebra K Ksep] [IsSepClosure K Ksep]
   {l : ℕ} {U V : OpenSubgroup Gal(Ksep/K)}
 
+/- English proof (translation)
+Use `finite_cohomology_rootsOfUnity_open K Ksep hl V n hn` as an intermediate fact. Conclude with `Finite.of_equiv _ (asIso (cohomologyMapAlong (Subgroup.subgroupOfEquivOfLe (show (V : Subgroup Gal(Ksep/K)) ≤ U from h)).symm.toMonoidHom (continuous_subgroupOfEquivOfLe_symm _) (resSubgroupOfHom _ (galRootsOfUnity.{0} K Ksep l)) n)).toLinearEquiv.toEquiv.symm`.
+-/
 theorem finite_cohomology_roots_subgroupOf (hl : (l : K) ≠ 0) (h : V ≤ U)
     (n : ℕ) (hn : n ≤ 2) :
     Finite (cohomology (Rep.res ((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))).subtype
@@ -152,6 +181,9 @@ noncomputable def addEquivZModLinear (φ : X ≃+ Y) : X ≃ₗ[ZMod l] Y :=
     left_inv := φ.symm_apply_apply
     right_inv := φ.apply_symm_apply }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem addEquivZModLinear_apply (φ : X ≃+ Y) (x : X) : addEquivZModLinear (l := l) φ x = φ x :=
   rfl
 
@@ -167,6 +199,9 @@ attribute [local instance] Subgroup.fintypeQuotientOfFiniteIndex
 
 include h in
 
+/- English proof (translation)
+The claim follows from `compactSpace_openSubgroup (openSubgroupOf U V) d.toFun _ ((cohomologyConjRep (rootsRepZMod (K := K) (Ksep := Ksep) l U) ((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))) i).comp (quotientFixedFieldGalEquiv h).symm.toMonoidHom) = d.toFun Y ρY := by let := (Interme …`.
+-/
 theorem toFun_cohomologyConjRep_eq
     (d : letI := (IntermediateField.inclusion (fixedField_le_fixedField h)).toRingHom.toAlgebra
       AdditiveFunction.{0} l (fixedField (V : Subgroup Gal(Ksep/K)) ≃ₐ[fixedField
@@ -210,6 +245,37 @@ variable {K Ksep : Type} [Field K] [ValuativeRel K] [TopologicalSpace K]
 
 set_option maxHeartbeats 400000 in
 
+/- English proof (translation)
+Establish `hlp : l.Prime` using `Fact.out`. Establish `: NeZero l` using `⟨hlp.ne_zero⟩`. Establish `: CompactSpace (U : Subgroup Gal(Ksep/K))` using `compactSpace_openSubgroup U`. Establish `: CompactSpace ((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K)))` using `compactSpace_openSubgroup (openSubgroupOf U V)`. Establish `hT : ∀ (g : (openSubgroupOf U V : Subgroup (U : Subgroup Gal(Ksep/K)))) (t : rootsRepZMod (K` using `K) (Ksep := Ksep) l U), (rootsRepZMod (K := K) (Ksep := Ksep) l U).ρ g t = t := rootsRepZMod_ρ_of_mem hμ`.
+
+Establish `hM' : ∀ (g : (openSubgroupOf U V : Subgroup (U : Subgroup Gal(Ksep/K)))) (m : M), M.ρ g m = m` using `fun g m => hM g (Subgroup.mem_subgroupOf.1 g.2) m`. Establish `hTr : Module.finrank (ZMod l) (rootsRepZMod (K` using `K) (Ksep := Ksep) l U) = 1 := finrank_rootsRepZMod l hl _`. Establish `hrel0 : (V : Subgroup Gal(Ksep/K)).relIndex U ≠ 0` using `fun h0 => by`. Rewrite `hcop` using `[h0, Nat.coprime_zero_left]`. Conclude with `hlp.one_lt.ne' hcop`.
+
+Establish `hP : (((openSubgroupOf U V : Subgroup (U : Subgroup Gal(Ksep/K))).index : ZMod l)) ≠ 0`. Express the relevant statement in the definitionally equal form `(((V : Subgroup Gal(Ksep/K)).relIndex U : ℕ) : ZMod l) ≠ 0`. Rewrite using `[Ne, ZMod.natCast_eq_zero_iff]`. Conclude with `(Nat.Prime.coprime_iff_not_dvd hlp).1 hcop.symm`. Establish `hkey` using `finrank_cohomology_eq_finrank_invariants (openSubgroupOf U V) (rootsRepZMod (K := K) (Ksep := Ksep) l U) M hT hM' hTr hP`.
+
+Set `` to `(IntermediateField.inclusion (fixedField_le_fixedField h)).toRingHom.toAlgebra`. Establish `hcardΓ : Nat.card (fixedField (V : Subgroup Gal(Ksep/K)) ≃ₐ[fixedField (U : Subgroup Gal(Ksep/K))] fixedField (V : Subgroup Gal(Ksep/K))) = (V : Subgroup Gal(Ksep/K)).relIndex U` using `(Nat.card_congr (quotientFixedFieldGalEquiv h).toEquiv).symm`. Establish `: Finite (fixedField (V : Subgroup Gal(Ksep/K)) ≃ₐ[fixedField (U : Subgroup Gal(Ksep/K))] fixedField (V : Subgroup Gal(Ksep/K)))` using `Nat.finite_of_card_ne_zero (by rw [hcardΓ]; exact hrel0)`. Establish `hΓ : Nat.Coprime (Nat.card (fixedField (V : Subgroup Gal(Ksep/K)) ≃ₐ[fixedField (U : Subgroup Gal(Ksep/K))] fixedField (V : Subgroup Gal(Ksep/K)))) l`. Rewrite using `[hcardΓ]`.
+
+Conclude with `hcop`. Establish `: Module.Finite (ZMod l) (rootsRepZMod (K` using `K) (Ksep := Ksep) l U) := Module.finite_of_finrank_eq_succ hTr`. Establish `: Module.Finite (ZMod l) (homRep (rootsRepZMod (K` using `K) (Ksep := Ksep) l U) M) := inferInstanceAs (Module.Finite (ZMod l) (rootsRepZMod (K := K) (Ksep := Ksep) l U →ₗ[ZMod l] M))`. Set `σ` to `quotientRep (openSubgroupOf U V : Subgroup (U : Subgroup Gal(Ksep/K))) (homRep (rootsRepZMod (K := K) (Ksep := Ksep) l U) M) (homRep_ρ_of_mem _ _ _ hT hM')`. Set `d : AdditiveFunction.{0} l (fixedField (V : Subgroup Gal(Ksep/K)) ≃ₐ[fixedField (U : Subgroup Gal(Ksep/K))] fixedField (V : Subgroup Gal(Ksep/K)))` to `AdditiveFunction.invariantsTensor.{0} l _ hΓ (σ.comp (quotientFixedFieldGalEquiv h).symm.toMonoidHom)`.
+
+Establish `hstep : ∀ (i : ℕ) [Finite (cohomology (Rep.res ((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))).subtype (rootsRepZMod (K` using `K) (Ksep := Ksep) l U)) i)], (Module.finrank (ZMod l) (cohomology M i) : ℤ) = d.toFun _ ((cohomologyConjRep (rootsRepZMod (K := K) (Ksep := Ksep) l U) ((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))) i).comp (quotientFixedFieldGalEquiv h).symm.toMonoidHom) := by`. Introduce `i _`. Rewrite using `[hkey i, AdditiveFunction.invariantsTensor_apply]`. Establish `hc : Representation.tprod ((cohomologyConjRep (rootsRepZMod (K` using `K) (Ksep := Ksep) l U) ((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))) i).comp (quotientFixedFieldGalEquiv h).symm.toMonoidHom) (σ.comp (quotientFixedFieldGalEquiv h).symm.toMonoidHom) = ((cohomologyConjRep (rootsRepZMod (K := K) (Ksep := Ksep) l U) ((V : Subgr …`. Rewrite using `[hc, invariants_comp_of_surjective _ _ (quotientFixedFieldGalEquiv h).symm.surjective]`.
+
+Establish `hX : ∀ i ≤ 2, Finite (cohomology (Rep.res ((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))).subtype (rootsRepZMod (K` using `K) (Ksep := Ksep) l U)) i) := fun i hi => by`. Use `finite_cohomology_roots_subgroupOf (K := K) (Ksep := Ksep) hl h i hi` as an intermediate fact. Conclude with `Finite.of_equiv _ (rootsCohomologyZModEquiv (K := K) (Ksep := Ksep) (U := U) (V := V) l i).toEquiv`. Establish `hX0` using `hX 0 (by norm_num)`. Establish `hX1` using `hX 1 (by norm_num)`.
+
+Establish `hX2` using `hX 2 (by norm_num)`. Set `φ0` to `(rootsCohomologyZModEquiv (K := K) (Ksep := Ksep) (U := U) (V := V) l 0).symm.trans (cohomologyZeroRootsEquiv h l)`. Establish `: Finite (TorsN (Additive (fixedField (V : Subgroup Gal(Ksep/K)))ˣ) l)` using `Finite.of_equiv _ φ0.toEquiv`. Establish `e0` using `toFun_cohomologyConjRep_eq h d 0 _ φ0 (fun g x => by`. Take `⟨y, rfl⟩` from `(rootsCohomologyZModEquiv (K := K) (Ksep := Ksep) (U := U) (V := V) l 0).surjective x`.
+
+Simplify using `only [φ0, AddEquiv.trans_apply, AddEquiv.symm_apply_apply]`. Rewrite using `[← rootsCohomologyZModEquiv_cohomologyConj, AddEquiv.symm_apply_apply]`. Conclude with `cohomologyZeroRootsEquiv_cohomologyConj_gal h l g y)`. Set `φ1` to `(rootsCohomologyZModEquiv (K := K) (Ksep := Ksep) (U := U) (V := V) l 1).symm.trans (cohomologyOneRootsEquiv h hl)`. Establish `: Finite (ModN (Additive (fixedField (V : Subgroup Gal(Ksep/K)))ˣ) l)` using `Finite.of_equiv _ φ1.toEquiv`.
+
+Establish `e1` using `toFun_cohomologyConjRep_eq h d 1 _ φ1 (fun g x => by`. Take `⟨y, rfl⟩` from `(rootsCohomologyZModEquiv (K := K) (Ksep := Ksep) (U := U) (V := V) l 1).surjective x`. Simplify using `only [φ1, AddEquiv.trans_apply, AddEquiv.symm_apply_apply]`. Rewrite using `[← rootsCohomologyZModEquiv_cohomologyConj, AddEquiv.symm_apply_apply]`. Conclude with `cohomologyOneRootsEquiv_cohomologyConj_gal h hl g y)`.
+
+Set `φ2` to `(rootsCohomologyZModEquiv (K := K) (Ksep := Ksep) (U := U) (V := V) l 2).symm.trans ((cohomologyTwoRootsEquiv hl h).trans (AddEquiv.ulift.{0} (α := ZMod l)).symm)`. Establish `e2` using `toFun_cohomologyConjRep_eq h d 2 (Representation.trivial (ZMod l) _ (ULift.{0} (ZMod l))) φ2 (fun g x => by`. Take `⟨y, rfl⟩` from `(rootsCohomologyZModEquiv (K := K) (Ksep := Ksep) (U := U) (V := V) l 2).surjective x`. Simplify using `only [φ2, AddEquiv.trans_apply, AddEquiv.symm_apply_apply]`. Rewrite using `[← rootsCohomologyZModEquiv_cohomologyConj, AddEquiv.symm_apply_apply, cohomologyTwoRootsEquiv_cohomologyConj]`.
+
+Use the proof step `rfl)`. Establish `: IsScalarTower K (fixedField (U : Subgroup Gal(Ksep/K))) (fixedField (V : Subgroup Gal(Ksep/K)))` using `IsScalarTower.of_algebraMap_eq' rfl`. Establish `: FiniteDimensional (fixedField (U : Subgroup Gal(Ksep/K))) (fixedField (V : Subgroup Gal(Ksep/K)))` using `Module.Finite.of_restrictScalars_finite K _ _`. Establish `: ValuativeExtension (fixedField (U : Subgroup Gal(Ksep/K))) (fixedField (V : Subgroup Gal(Ksep/K)))` using `GroundTheory.LocalField.IntermediateField.valuativeExtension_inclusion (fixedField_le_fixedField h)`. Establish `: IsGalois (fixedField (U : Subgroup Gal(Ksep/K))) (fixedField (V : Subgroup Gal(Ksep/K)))` using `IsGalois.of_card_aut_eq_finrank (F := fixedField (U : Subgroup Gal(Ksep/K))) (E := fixedField (V : Subgroup Gal(Ksep/K))) (by rw [hcardΓ, relIndex_eq_finrank h])`.
+
+Establish `hlE : (l : fixedField (U : Subgroup Gal(Ksep/K))) ≠ 0`. Rewrite using `[← map_natCast (algebraMap K (fixedField (U : Subgroup Gal(Ksep/K))))]`. Conclude with `(map_ne_zero _).mpr hl`. Establish `hg` using `g_units_eq d hlE hn`. Rewrite `hg` using `[d.g_eq]`.
+
+Establish `: Fintype (fixedField (V : Subgroup Gal(Ksep/K)) ≃ₐ[fixedField (U : Subgroup Gal(Ksep/K))] fixedField (V : Subgroup Gal(Ksep/K)))` using `Fintype.ofFinite _`. Establish `hreg : d.toFun (MonoidAlgebra (ZMod l) (fixedField (V : Subgroup Gal(Ksep/K)) ≃ₐ[fixedField (U : Subgroup Gal(Ksep/K))] fixedField (V : Subgroup Gal(Ksep/K)))) (leftRegular (ZMod l) _) = Module.finrank (ZMod l) M`. Rewrite using `[AdditiveFunction.invariantsTensor_apply, finrank_invariants_leftRegular_tprod]`. Express the relevant statement in the definitionally equal form `((Module.finrank (ZMod l) (rootsRepZMod (K := K) (Ksep := Ksep) l U →ₗ[ZMod l] M) : ℕ) : ℤ) = _`. Rewrite using `[Module.finrank_linearMap, hTr, one_mul]`.
+
+Rewrite using `[hstep 0, hstep 1, hstep 2, e0, e1, e2, ← hreg]`. Express the relevant statement in the definitionally equal form `_ - _ + d.one = _`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem finrank_cohomology_alternating_sum_coprime (hl : (l : K) ≠ 0) (h : V ≤ U)
     [((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))).Normal]
     (hcop : Nat.Coprime ((V : Subgroup Gal(Ksep/K)).relIndex U) l)
@@ -358,6 +424,15 @@ set_option maxHeartbeats 400000 in
 omit [ValuativeRel Ksep] [TopologicalSpace Ksep] [IsValuativeTopology Ksep]
   [ValuativeExtension K Ksep] in
 
+/- English proof (translation)
+Establish `hlp : l.Prime` using `Fact.out`. Establish `: CompactSpace (U : Subgroup Gal(Ksep/K))` using `compactSpace_openSubgroup U`. Establish `: CompactSpace ((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K)))` using `compactSpace_openSubgroup (openSubgroupOf U V)`. Establish `hT : ∀ (g : (openSubgroupOf U V : Subgroup (U : Subgroup Gal(Ksep/K)))) (t : rootsRepZMod (K` using `K) (Ksep := Ksep) l U), (rootsRepZMod (K := K) (Ksep := Ksep) l U).ρ g t = t := rootsRepZMod_ρ_of_mem hμ`. Establish `hM' : ∀ (g : (openSubgroupOf U V : Subgroup (U : Subgroup Gal(Ksep/K)))) (m : M), M.ρ g m = m` using `fun g m => hM g (Subgroup.mem_subgroupOf.1 g.2) m`.
+
+Establish `hTr : Module.finrank (ZMod l) (rootsRepZMod (K` using `K) (Ksep := Ksep) l U) = 1 := finrank_rootsRepZMod l hl _`. Establish `hP : (((openSubgroupOf U V : Subgroup (U : Subgroup Gal(Ksep/K))).index : ZMod l)) ≠ 0`. Express the relevant statement in the definitionally equal form `(((V : Subgroup Gal(Ksep/K)).relIndex U : ℕ) : ZMod l) ≠ 0`. Rewrite using `[Ne, ZMod.natCast_eq_zero_iff]`. Conclude with `(Nat.Prime.coprime_iff_not_dvd hlp).1 hcop.symm`.
+
+Establish `: Finite (cohomology (Rep.res ((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))).subtype (rootsRepZMod (K` using `K) (Ksep := Ksep) l U)) i) := by`. Use `finite_cohomology_roots_subgroupOf (K := K) (Ksep := Ksep) hl h i hi` as an intermediate fact. Conclude with `Finite.of_equiv _ (rootsCohomologyZModEquiv (K := K) (Ksep := Ksep) (U := U) (V := V) l i).toEquiv`. Establish `: Module.Finite (ZMod l) (cohomology (Rep.res ((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))).subtype (rootsRepZMod (K` using `K) (Ksep := Ksep) l U)) i) := Module.Finite.of_finite`. Establish `: Module.Finite (ZMod l) (rootsRepZMod (K` using `K) (Ksep := Ksep) l U) := Module.finite_of_finrank_eq_succ hTr`.
+
+Establish `: Module.Finite (ZMod l) (homRep (rootsRepZMod (K` using `K) (Ksep := Ksep) l U) M) := inferInstanceAs (Module.Finite (ZMod l) (rootsRepZMod (K := K) (Ksep := Ksep) l U →ₗ[ZMod l] M))`. Establish `: NeZero l` using `⟨hlp.ne_zero⟩`. Use `Module.finite_of_finite (ZMod l) (M := ((cohomologyConjRep (rootsRepZMod (K := K) (Ksep := Ksep) l U) (openSubgroupOf U V : Subgroup _) i).tprod (quotientRep (openSubgroupOf U V : Subgroup _) (homRep (rootsRepZMod (K := K) (Ksep := Ksep) l U) M) (homRep_ρ_of_mem _ _ _ hT hM'))).i …` as an intermediate fact. Conclude with `Finite.of_equiv _ (coprimeTwistEquiv (openSubgroupOf U V) (rootsRepZMod (K := K) (Ksep := Ksep) l U) M hT hM' hTr hP i).symm.toEquiv`.
+-/
 theorem finite_cohomology_coprime (hl : (l : K) ≠ 0) (h : V ≤ U)
     [((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))).Normal]
     (hcop : Nat.Coprime ((V : Subgroup Gal(Ksep/K)).relIndex U) l)
@@ -402,6 +477,15 @@ theorem finite_cohomology_coprime (hl : (l : K) ≠ 0) (h : V ≤ U)
   exact Finite.of_equiv _ (coprimeTwistEquiv (openSubgroupOf U V)
     (rootsRepZMod (K := K) (Ksep := Ksep) l U) M hT hM' hTr hP i).symm.toEquiv
 
+/- English proof (translation)
+Establish `hlp : l.Prime` using `Fact.out`. Use `set MZ := zmodRepOfTorsion l M hMl`. Establish `: Finite MZ` using `‹Finite M›`. Establish `: Module.Finite (ZMod l) MZ` using `Module.Finite.of_finite`. Establish `hMZ : ∀ g : (U : Subgroup Gal(Ksep/K)), (g : Gal(Ksep/K)) ∈ V → ∀ m : MZ, MZ.ρ g m = m` using `hM`.
+
+Establish `hsum` using `finrank_cohomology_alternating_sum_coprime hl h hcop hμ MZ hMZ hn`. Establish `hcard : ∀ i ≤ 2, Nat.card (cohomology M i) = l ^ Module.finrank (ZMod l) (cohomology MZ i)` using `fun i hi => by`. Use `finite_cohomology_coprime hl h hcop hμ MZ hMZ i hi` as an intermediate fact. Rewrite using `[Nat.card_congr (cohomologyZModEquiv l M hMl i).toEquiv, natCard_eq_pow_finrank_zmod l]`. Establish `hcardM : Nat.card M = l ^ Module.finrank (ZMod l) MZ` using `natCard_eq_pow_finrank_zmod l MZ`.
+
+Establish `hl0 : (l : ℚ) ≠ 0` using `by exact_mod_cast hlp.ne_zero`. Rewrite using `[eulerChar_eq, hcard 0 (by norm_num), hcard 1 (by norm_num), hcard 2 (by norm_num), hcardM]`. Use `push_cast`. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_natCast, ← zpow_natCast (_ ^ _), ← zpow_natCast, ← zpow_mul, ← zpow_add₀ hl0, ← zpow_sub₀ hl0, ← zpow_neg]`. Use `congr 1`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem eulerChar_coprime (hl : (l : K) ≠ 0) (h : V ≤ U)
     [((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))).Normal]
     (hcop : Nat.Coprime ((V : Subgroup Gal(Ksep/K)).relIndex U) l)
@@ -435,6 +519,9 @@ theorem eulerChar_coprime (hl : (l : K) ≠ 0) (h : V ≤ U)
 omit [ValuativeRel Ksep] [TopologicalSpace Ksep] [IsValuativeTopology Ksep]
   [ValuativeExtension K Ksep] in
 
+/- English proof (translation)
+Establish `: Finite (zmodRepOfTorsion l M hMl)` using `‹Finite M›`. Establish `: Module.Finite (ZMod l) (zmodRepOfTorsion l M hMl)` using `Module.Finite.of_finite`. Use `finite_cohomology_coprime hl h hcop hμ (zmodRepOfTorsion l M hMl) hM i hi` as an intermediate fact. Conclude with `Finite.of_equiv _ (cohomologyZModEquiv l M hMl i).symm.toEquiv`.
+-/
 theorem finite_cohomology_coprime_of_torsion (hl : (l : K) ≠ 0) (h : V ≤ U)
     [((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))).Normal]
     (hcop : Nat.Coprime ((V : Subgroup Gal(Ksep/K)).relIndex U) l)

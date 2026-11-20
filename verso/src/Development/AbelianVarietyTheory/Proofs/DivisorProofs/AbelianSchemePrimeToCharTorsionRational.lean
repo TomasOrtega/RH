@@ -15,6 +15,19 @@ noncomputable section
 
 namespace GlobalTheory.TorsRat
 
+/- English proof (translation)
+Use `haveI : IsAffine Z := isAffine_of_isAffineHom s`. Set `φ : CommRingCat.of K₀ ⟶ Γ(Z, ⊤)` to `Spec.preimage (Z.isoSpec.inv ≫ s)`. Establish `hφ : Spec.map φ = Z.isoSpec.inv ≫ s` using `Spec.map_preimage _`. Establish `hF : IsFinite (Spec.map φ)` using `by rw [hφ]; infer_instance`. Establish `hF' : φ.hom.Finite` using `(IsFinite.SpecMap_iff φ).1 hF`.
+
+Set `ψ : Γ(Z, ⊤) ⟶ CommRingCat.of K` to `Spec.preimage (w ≫ Z.isoSpec.hom)`. Establish `hψ : Spec.map ψ = w ≫ Z.isoSpec.hom` using `Spec.map_preimage _`. Establish `hφψ : φ ≫ ψ = CommRingCat.ofHom e`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, hψ, hφ, Category.assoc, Iso.hom_inv_id_assoc, hw]`.
+
+Use `letI : Algebra K₀ Γ(Z, ⊤) := φ.hom.toAlgebra`. Use `letI : Algebra K₀ K := e.toAlgebra`. Use `haveI : Module.Finite K₀ Γ(Z, ⊤) := hF'`. Establish `hmem : ∀ b, ψ.hom b ∈ e.range`. Introduce `b`.
+
+Establish `hb : IsIntegral K₀ b` using `Algebra.IsIntegral.isIntegral b`. Set `ψa : Γ(Z, ⊤) →ₐ[K₀] K` to `{ ψ.hom with commutes' := fun c => congrArg (fun g => g.hom c) hφψ }`. Establish `hi : IsIntegral K₀ (ψ.hom b)` using `hb.map ψa`. Conclude with `minpoly.mem_range_of_degree_eq_one K₀ _ (IsAlgClosed.degree_eq_one_of_irreducible K₀ (minpoly.irreducible hi))`. Set `E : K₀ ≃+* e.range` to `RingEquiv.ofBijective e.rangeRestrict ⟨fun a b h => e.injective (congrArg Subtype.val h), e.rangeRestrict_surjective⟩`.
+
+Set `ψ₀ : Γ(Z, ⊤) →+* K₀` to `E.symm.toRingHom.comp (ψ.hom.codRestrict e.range hmem)`. Use `⟨Spec.map (CommRingCat.ofHom ψ₀) ≫ Z.isoSpec.inv, ?_⟩` and prove the remaining obligations. Establish `h2 : CommRingCat.ofHom ψ₀ ≫ CommRingCat.ofHom e = ψ`. Use extensionality with `b`. Use `show e (E.symm ⟨ψ.hom b, hmem b⟩) = ψ.hom b`.
+
+Conclude with `congrArg Subtype.val (E.apply_symm_apply ⟨ψ.hom b, hmem b⟩)`. Rewrite using `[← Category.assoc, ← Spec.map_comp, h2, hψ, Category.assoc, Iso.hom_inv_id, Category.comp_id]`.
+-/
 theorem exists_factor_of_isFinite {K₀ K : Type} [Field K₀] [IsAlgClosed K₀] [Field K]
     (e : K₀ →+* K) {Z : Scheme.{0}} (s : Z ⟶ Sp K₀) [IsFinite s] (w : Sp K ⟶ Z)
     (hw : w ≫ s = spMap e) : ∃ w₀ : Sp K₀ ⟶ Z, w = spMap e ≫ w₀ := by
@@ -49,6 +62,15 @@ theorem exists_factor_of_isFinite {K₀ K : Type} [Field K₀] [IsAlgClosed K₀
     exact congrArg Subtype.val (E.apply_symm_apply ⟨ψ.hom b, hmem b⟩)
   rw [← Category.assoc, ← Spec.map_comp, h2, hψ, Category.assoc, Iso.hom_inv_id, Category.comp_id]
 
+/- English proof (translation)
+Introduce `K₀ K _ _ _ e Y _ hY n hn y hy`. Establish `hn1 : 1 ≤ n`. Break down `Nat.eq_zero_or_pos n with h | h` into its components or cases. Substitute `h` using the available equality. Simplify using `at hn`.
+
+Conclude with `h`. Use `haveI := GlobalTheory.MulFiniteAny.isFinite_mulA K₀ Y hY n hn1`. Set `o : Sp K₀ ⟶ Y.left` to `(η[Y] : 𝟙_ (Over (Sp K₀)) ⟶ Y).left`. Establish `hyo : y.left ≫ (mulA Y n).left = spMap e ≫ o`. Establish `h1 : y ≫ mulA Y n = 1`.
+
+Rewrite using `[mulA, MonObj.comp_pow, Category.comp_id, hy]`. Establish `h2 : y.left ≫ (mulA Y n).left = (toUnit (Over.mk (spMap e)) ≫ η[Y]).left`. Rewrite using `[← Over.comp_left, h1, Hom.one_def]`. Establish `h3 : (toUnit (Over.mk (spMap e))).left = spMap e`. Use `Over.w (toUnit (Over.mk (spMap e)))` as an intermediate fact.
+
+Simplify using `using this`. Rewrite using `[h2, Over.comp_left, h3]`. Take `⟨w₀, hw₀⟩` from `exists_factor_of_isFinite e (pullback.snd (mulA Y n).left o) (pullback.lift y.left (spMap e) hyo) (pullback.lift_snd _ _ _)`. Use `⟨w₀ ≫ pullback.fst (mulA Y n).left o, ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← hw₀, pullback.lift_fst]`.
+-/
 theorem torsion_point_rational : ∀ (K₀ K : Type) [Field K₀] [IsAlgClosed K₀] [Field K] (e : K₀ →+* K)
     (Y : Over (Sp K₀)) [GrpObj Y],
     IsAbelianScheme Y → ∀ n : ℕ, IsUnit (n : K₀) → ∀ y : Over.mk (spMap e) ⟶ Y, y ^ n = 1 →

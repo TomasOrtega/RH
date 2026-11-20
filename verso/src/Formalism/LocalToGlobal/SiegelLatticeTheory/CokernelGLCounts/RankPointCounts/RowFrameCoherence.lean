@@ -120,6 +120,11 @@ open Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Loca
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `hn0 : n0c ≠ 0`. Introduce and unpack `rfl`. Rewrite `hnc` using `[hN]`. Simplify using `at hnc`. Substitute `hN` using the available equality.
+
+Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try ring`.
+-/
 theorem rowForm_alg (c S n0c g κ nc α mR : ℝ) (hN : nc = n0c * g / (α * κ)) (hnc : 0 < nc) (hα : 0 < α) (hκ : 0 < κ)
     (hm : 0 < mR) (hg : 0 < g) : c * (S / mR) = n0c * (g / (κ * (nc * α) * mR) * (c * S)) := by
   have hn0 : n0c ≠ 0 := by
@@ -130,6 +135,13 @@ theorem rowForm_alg (c S n0c g κ nc α mR : ℝ) (hN : nc = n0c * g / (α * κ)
   field_simp
   try ring
 
+/- English proof (translation)
+Establish `hKpos : 0 < ngFac D / (Formalism.L2.SG.MassDataConc.kapN D * (nc * ∏' q, Formalism.L2.SG.DataInst.alpD u u' q) * Formalism.MainNotions.S.Cnt.massRows D (X.Fu u) (Y.what₂ u))` using `div_pos hg (mul_pos (mul_pos hk (mul_pos hnc hα)) hm)`. Establish `hrow : ∀ ρ, rowNorm X Y u u' vR i0 i0' νq κ nc ρ = ngFac D / (Formalism.L2.SG.MassDataConc.kapN D * (nc * ∏' q, Formalism.L2.SG.DataInst.alpD u u' q) * Formalism.MainNotions.S.Cnt.massRows D (X.Fu u) (Y.what₂ u)) * ‖clsVec X Y u u' vR i0 i0' νq κ ρ‖ ^ 2`. Introduce `ρ`. Unfold `rowNorm`. Rewrite using `[hV ρ, norm_smul, mul_pow, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Real.sqrt_nonneg _), Real.sq_sqrt hKpos.le]`.
+
+Use `⟨(hS.2.1.mul_left _).congr fun ρ => (hrow ρ).symm, ?_⟩` and prove the remaining obligations. Rewrite using `[tsum_congr hrow, tsum_mul_left, ← hS.2.2]`. Establish `hKV : (bCF X hb Y.hK (Y.FN u) (Y.FN u') u u' X0 ψ (Y.tO u u') sd C Th vR Q M δ i0 i0' νq).KV = SigOf (Y.tO u u') / (bCF X hb Y.hK (Y.FN u) (Y.FN u') u u' X0 ψ (Y.tO u u') sd C Th vR Q M δ i0 i0' νq).ρ0` using `rfl`. Rewrite using `[hKV, hR]`. Unfold `NcTieC at hN`.
+
+Rewrite `hN` using `[hA]`. Conclude with `rowForm_alg _ _ _ _ _ _ _ _ hN hnc hα hk hm hg`.
+-/
 theorem rowFormC_of {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (Y : Formalism.L2.SG.Full.Full X)
     (u u' : D.what₂.Word) (X0 : Fin (2 * D.R.rS + 2) → Fin X.B.I.n → X.B.I.E)
     (ψ : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF X.B.I.F) ℂ) (sd C Th : ℝ)
@@ -164,6 +176,15 @@ theorem rowFormC_of {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (Y : F
   rw [hA] at hN
   exact rowForm_alg _ _ _ _ _ _ _ _ hN hnc hα hk hm hg
 
+/- English proof (translation)
+Unfold `SigRowsC`. Unfold `ClassFrameC at hCF`. Generalize the expression as in `hcdef : (bCF X hb Y.hK (Y.FN u) (Y.FN u') u u' X0 ψ (Y.tO u u') sd C Th vR Q M δ i0 i0' νq).c0 * (bCF X hb Y.hK (Y.FN u) (Y.FN u') u u' X0 ψ (Y.tO u u') sd C Th vR Q M δ i0 i0' νq).c0' = c at hCF hc ⊢`. Establish `hG : ∀ q : Formalism.L2.SG.TermOp.Rw (Y.what₂ u) (Y.what₂ u') Y.TR × ℕ, ‖liftVal X Y u u' vR i0 i0' νq κ q.1 q.2‖ ^ 2 = c * ‖∑' s : LiftT X Y u u' κ q.1 q.2, liftVec X Y u u' s.1‖ ^ 2`. Introduce `q`.
+
+Rewrite using `[hCF q.1 q.2, ← mul_assoc, mul_inv_cancel₀ hc.ne', one_mul]`. Establish `hGs : Summable (fun q : Formalism.L2.SG.TermOp.Rw (Y.what₂ u) (Y.what₂ u') Y.TR × ℕ => ‖liftVal X Y u u' vR i0 i0' νq κ q.1 q.2‖ ^ 2)` using `(hRR.2.1.mul_left c).congr fun q => (hG q).symm`. Establish `hGs' : Summable (fun p : ℕ × Formalism.L2.SG.TermOp.Rw (Y.what₂ u) (Y.what₂ u') Y.TR => ‖liftVal X Y u u' vR i0 i0' νq κ p.2 p.1‖ ^ 2)` using `(Equiv.prodComm _ _).summable_iff.mpr hGs`. Establish `hcls : ∀ ρ, ‖clsVec X Y u u' vR i0 i0' νq κ ρ‖ ^ 2 = ∑' R, ‖liftVal X Y u u' vR i0 i0' νq κ R ρ‖ ^ 2` using `fun ρ => (hTor ρ).2.symm`. Use `⟨hCA, (hGs'.prod).congr fun ρ => (hcls ρ).symm, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : c * SigOf (Y.tO u u') = ∑' q : Formalism.L2.SG.TermOp.Rw (Y.what₂ u) (Y.what₂ u') Y.TR × ℕ, ‖liftVal X Y u u' vR i0 i0' νq κ q.1 q.2‖ ^ 2`. Rewrite using `[hRR.2.2, ← tsum_mul_left]`. Conclude with `tsum_congr fun q => (hG q).symm`. Establish `h2 : (∑' q : Formalism.L2.SG.TermOp.Rw (Y.what₂ u) (Y.what₂ u') Y.TR × ℕ, ‖liftVal X Y u u' vR i0 i0' νq κ q.1 q.2‖ ^ 2) = ∑' p : ℕ × Formalism.L2.SG.TermOp.Rw (Y.what₂ u) (Y.what₂ u') Y.TR, ‖liftVal X Y u u' vR i0 i0' νq κ p.2 p.1‖ ^ 2` using `(Equiv.prodComm _ _).tsum_eq (fun p : ℕ × Formalism.L2.SG.TermOp.Rw (Y.what₂ u) (Y.what₂ u') Y.TR => ‖liftVal X Y u u' vR i0 i0' νq κ p.2 p.1‖ ^ 2)`. Rewrite using `[h1, h2, hGs'.tsum_prod' fun ρ => (hTor ρ).1]`.
+
+Conclude with `tsum_congr fun ρ => (hcls ρ).symm`.
+-/
 theorem sigRowsC_of {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (Y : Formalism.L2.SG.Full.Full X)
     (u u' : D.what₂.Word) (X0 : Fin (2 * D.R.rS + 2) → Fin X.B.I.n → X.B.I.E)
     (ψ : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF X.B.I.F) ℂ) (sd C Th : ℝ)
@@ -206,6 +227,25 @@ theorem sigRowsC_of {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (Y : F
   rw [h1, h2, hGs'.tsum_prod' fun ρ => (hTor ρ).1]
   exact tsum_congr fun ρ => (hcls ρ).symm
 
+/- English proof (translation)
+Introduce `ρ`. Use `set c := nc * ∏' q, Formalism.L2.SG.DataInst.alpD u u' q with hcdef`. Use `set mR := Formalism.MainNotions.S.Cnt.massRows D (X.Fu u) (Y.what₂ u) with hmR`. Use `set K0 := ngFac D / (Formalism.L2.SG.MassDataConc.kapN D * c) with hK0`. Establish `hK0pos : 0 < K0` using `div_pos hg (mul_pos hk hc)`.
+
+Establish `hKeq : ngFac D / (Formalism.L2.SG.MassDataConc.kapN D * c * mR) = K0 / mR`. Rewrite using `[hK0, div_div]`. Establish `hpt : ∀ p : Formalism.FourierDecayAlt.TB.Pt D.host.E, Formalism.L2.SG.DataInst.rowVec vR κ c ρ p • Formalism.L2.SG.RealObj.VtPt X u u' 1 i0 i0' (Y.FN u) (Y.FN u') νq p = ((Real.sqrt (K0 / mR) : ℝ) : ℂ) • ptVal X Y u u' vR i0 i0' νq κ ρ p`. Introduce `p`. Unfold `Formalism.L2.SG.DataInst.rowVec Formalism.L2.SG.RealObj.VtPt Formalism.L2.SG.RealObj.ptOfL ptVal`.
+
+Consider the cases of `hp : (Formalism.L2.SG.DataInst.ptOfList (D.R.rS + 1) p : Option (Point D.host.E (D.R.rS + 1))) with`. Consider the case `none => simp`. Consider the case `some w`. Simplify using `only`. Distinguish the cases in `hex : ∃ t : Term D u u' (X.Fu u) (Y.what₂ u), Formalism.L2.SG.DataInst.Elig t ∧ κ t = ρ ∧ t.atPt w`.
+
+Take `⟨t0, he, -, hat⟩` from `hex`. Take `⟨hφ, hn0, hnW⟩` from `hW hc p w hp ⟨t0, he, hat⟩`. Establish `hA : (∑' t : {t : Term D u u' (X.Fu u) (Y.what₂ u) // Formalism.L2.SG.DataInst.Elig t ∧ κ t = ρ ∧ t.atPt w}, ((Real.sqrt (Formalism.L2.SG.PairVal.massTerm t.1) : ℝ) : ℂ) * Formalism.L2.SG.PairVal.cAt vR t.1 w) = (((Real.sqrt mR)⁻¹ : ℝ) : ℂ) * ∑' t : {t : Term D u u' (X.Fu u) (Y.w …`. Rewrite using `[← tsum_mul_left]`. Use `tsum_congr fun t => ?_` and prove the remaining obligations.
+
+Establish `hmt : Formalism.L2.SG.PairVal.massTerm t.1 = Formalism.MainNotions.S.wRow D (X.Fu u) t.1.lam / mR` using `rfl`. Rewrite using `[hmt, Real.sqrt_div' _ hm.le]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hA, smul_smul, smul_smul, hnW]`.
+
+Use `congr 1`. Establish `e1 : Real.sqrt (K0 * (Formalism.MainNotions.S.LocalSplitGroups.n0 c (D.mem u).A.T (D.mem u').A.T w * Formalism.L2.SG.DataInst.phi (D` using `D) (D.R.rS + 1) p ^ 2)) = Real.sqrt K0 * Real.sqrt (Formalism.MainNotions.S.LocalSplitGroups.n0 c (D.mem u).A.T (D.mem u').A.T w) * Formalism.L2.SG.DataInst.phi (D := D) (D.R.rS + 1) p := by`. Rewrite using `[Real.sqrt_mul hK0pos.le, Real.sqrt_mul hn0.le, Real.sqrt_sq hφ.le]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : Real.sqrt (K0 / mR) = Real.sqrt K0 / Real.sqrt mR` using `Real.sqrt_div' _ hm.le`.
+
+Rewrite using `[e1, e2]`. Establish `h1 : Real.sqrt (Formalism.MainNotions.S.LocalSplitGroups.n0 c (D.mem u).A.T (D.mem u').A.T w) ≠ 0` using `(Real.sqrt_pos.mpr hn0).ne'`. Establish `h2 : Real.sqrt mR ≠ 0` using `(Real.sqrt_pos.mpr hm).ne'`. Establish `h3 : Formalism.L2.SG.DataInst.phi (D` using `D) (D.R.rS + 1) p ≠ 0 := hφ.ne'`. Establish `h1' : ((Real.sqrt (Formalism.MainNotions.S.LocalSplitGroups.n0 c (D.mem u).A.T (D.mem u').A.T w) : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast h1`.
+
+Establish `h2' : ((Real.sqrt mR : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast h2`. Establish `h3' : ((Formalism.L2.SG.DataInst.phi (D` using `D) (D.R.rS + 1) p : ℝ) : ℂ) ≠ 0 := by exact_mod_cast h3`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `hE : IsEmpty {t : Term D u u' (X.Fu u) (Y.what₂ u) // Formalism.L2.SG.DataInst.Elig t ∧ κ t = ρ ∧ t.atPt w}` using `⟨fun t => hex ⟨t.1, t.2.1, t.2.2.1, t.2.2.2⟩⟩`.
+
+Simplify using `[tsum_empty]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem rowVecC_of {D : D7} (X : HidaSetting D) (Y : Formalism.L2.SG.Full.Full X) (u u' : D.what₂.Word)
     (vR : Term D u u' (X.Fu u) (Y.what₂ u) → ℝ)
     (i0 i0' : ∀ _ : NumberField.InfinitePlace X.B.I.F, Fin D.R.k) (νq : X.B.I.Ginf → Measure X.B.I.Ginf)

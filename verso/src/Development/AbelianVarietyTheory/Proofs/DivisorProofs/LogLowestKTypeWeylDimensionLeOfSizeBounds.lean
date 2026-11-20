@@ -7,6 +7,11 @@ open MeasureTheory Formalism.IndefR.Lev Formalism.IndefR.Datum Formalism.IndefR.
 
 namespace GlobalTheory.OneMeasDim
 
+/- English proof (translation)
+Establish `e : ∑ i : Fin p, (Finset.univ.filter (fun j : Fin p => i < j)).card = ∑ i ∈ Finset.range p, i`. Rewrite using `[← Finset.sum_range_reflect]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => p - 1 - i) p |>.symm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.filter_lt_eq_Ioi, Fin.card_Ioi]`.
+
+Rewrite using `[e, mul_comm, Finset.sum_range_id_mul_two]`. Rewrite using `[sq]`. Conclude with `Nat.mul_le_mul_left _ (Nat.sub_le _ _)`.
+-/
 theorem two_mul_card_pairs_le (p : ℕ) :
     2 * ∑ i : Fin p, (Finset.univ.filter (fun j : Fin p => i < j)).card ≤ p ^ 2 := by
   have e : ∑ i : Fin p, (Finset.univ.filter (fun j : Fin p => i < j)).card = ∑ i ∈ Finset.range p, i := by
@@ -17,6 +22,9 @@ theorem two_mul_card_pairs_le (p : ℕ) :
   rw [e, mul_comm, Finset.sum_range_id_mul_two]
   rw [sq]; exact Nat.mul_le_mul_left _ (Nat.sub_le _ _)
 
+/- English proof (translation)
+The claim follows from `|((((d : ℚ) + (j : ℚ) - (i : ℚ)) / ((j : ℚ) - (i : ℚ)) : ℚ) : ℝ)| ≤ 1 + |(d : ℝ)| := by have hs : (1 : ℝ) ≤ (j : ℝ) - (i : ℝ) := by have : (i : ℝ) + 1 ≤ (j : ℝ) := by exact_mod_cast hij linarith have hs0 : (0 : ℝ) < (j : ℝ) - (i : ℝ) := by linarith push_cast rw [abs_div, abs_of_p …`.
+-/
 theorem abs_factor_le (d : ℤ) (i j : ℕ) (hij : i < j) :
     |((((d : ℚ) + (j : ℚ) - (i : ℚ)) / ((j : ℚ) - (i : ℚ)) : ℚ) : ℝ)| ≤ 1 + |(d : ℝ)| := by
   have hs : (1 : ℝ) ≤ (j : ℝ) - (i : ℝ) := by
@@ -32,6 +40,9 @@ theorem abs_factor_le (d : ℤ) (i j : ℕ) (hij : i < j) :
     exact this
   nlinarith [abs_nonneg (d : ℝ)]
 
+/- English proof (translation)
+The claim follows from `|((Formalism.IndefR.Mult.weylDimU lam : ℚ) : ℝ)| ≤ (1 + B) ^ (∑ i : Fin p, (Finset.univ.filter (fun j : Fin p => i < j)).card) := by unfold Formalism.IndefR.Mult.weylDimU rw [Rat.cast_prod, Finset.abs_prod, ← Finset.prod_pow_eq_pow_sum] refine Finset.prod_le_prod (fun _ _ => abs_ …`.
+-/
 theorem abs_weylDimU_le {p : ℕ} (lam : Fin p → ℤ) (B : ℝ) (hB : ∀ a b, |((lam a - lam b : ℤ) : ℝ)| ≤ B) :
     |((Formalism.IndefR.Mult.weylDimU lam : ℚ) : ℝ)| ≤
       (1 + B) ^ (∑ i : Fin p, (Finset.univ.filter (fun j : Fin p => i < j)).card) := by
@@ -50,6 +61,9 @@ namespace GlobalTheory.OneMeasDim
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+The claim follows from `|((Formalism.L2.NTheta.wtOf D (Wc D i) τ a - Formalism.L2.NTheta.wtOf D (Wc D i) τ b : ℤ) : ℝ)| ≤ GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.wtSize D i := by have hw : 0 ≤ GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.wtSize D i := Finset.sum_nonneg fun _ _ …`.
+-/
 theorem abs_wt_sub_le (D : D7) (i : Fin D.R.m) (τ : D.what₂.Tau) (a b : Fin ((Wc D i).sig (tauE D τ)).1 ⊕ Fin ((Wc D i).sig (tauE D τ)).2) :
     |((Formalism.L2.NTheta.wtOf D (Wc D i) τ a - Formalism.L2.NTheta.wtOf D (Wc D i) τ b : ℤ) : ℝ)| ≤ GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.wtSize D i := by
   have hw : 0 ≤ GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.wtSize D i :=
@@ -74,6 +88,35 @@ theorem abs_wt_sub_le (D : D7) (i : Fin D.R.m) (τ : D.what₂.Tau) (a b : Fin (
       (fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _) (Finset.mem_univ τ)
   linarith
 
+/- English proof (translation)
+Introduce `D i L hL τ`. Take `⟨hf, hs, -, -⟩` from `hL`. Establish `hb2 : (2 : ℝ) ≤ Real.exp L`. Establish `hr : 1 ≤ D.R.r`. Use `D.R.two_le_m` as an intermediate fact.
+
+Use `D.R.m_add_three_le_k` as an intermediate fact. Unfold `Formalism.BasicNotions.Ranks.r`. Use linear arithmetic over natural numbers and integers. Establish `hfn : 2 ≤ D.R.f`. Unfold `Formalism.BasicNotions.Ranks.f Formalism.BasicNotions.Ranks.n; have := And.intro (Nat.one_le_two_pow (n := D.R.e)) (show 0 < D.R.ord by positivity); omega`.
+
+Establish `hn : 1 ≤ D.R.nV` using `by unfold Formalism.BasicNotions.Ranks.nV; omega`. Establish `: (2 : ℝ) ≤ (D.R.f : ℝ) * D.R.r * D.R.nV`. Establish `: 2 ≤ D.R.f * D.R.r * D.R.nV`. Combine the equalities or inequalities in the displayed calculation. Conclude with `this` after adjusting the coercions.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hL0 : 0 ≤ L`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Use `Real.exp_lt_exp.2 h` as an intermediate fact.
+
+Rewrite `this` using `[Real.exp_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set b := Real.exp L with hbdef`. Use `set B := b ^ 2`. Establish `h1B : 1 + B ≤ Real.exp (3 * L)`.
+
+Rewrite using `[show 3 * L = L + L + L by ring, Real.exp_add, Real.exp_add, ← hbdef]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hlog1B : Real.log (1 + B) ≤ 3 * L`. Use `Real.log_le_log (by positivity) h1B` as an intermediate fact. Rewrite `this` using `[Real.log_exp]`. Then use the resulting hypothesis.
+
+Use `set p := ((Wc D i).sig (tauE D τ)).1`. Use `set q := ((Wc D i).sig (tauE D τ)).2`. Establish `hpq : p + q = D.R.r`. Establish `hr` using `D.sp.W_rank ((i:ℕ)+1) (by omega) (by have := i.2; omega)`. Rewrite using `[← hr]`.
+
+Take `⟨e, -⟩` from `(D.sp.W_sig ((i:ℕ)+1)) (tauE D τ)`. Simplify using `using (Fintype.card_congr e).symm`. Use `set κ := Formalism.L2.NTheta.wtOf D (Wc D i) τ`. Establish `hent : ∀ a b, |((κ a - κ b : ℤ) : ℝ)| ≤ B` using `fun a b => (abs_wt_sub_le D i τ a b).trans (hs i)`. Use `set N1 := ∑ a : Fin p, (Finset.univ.filter (fun j : Fin p => a < j)).card`.
+
+Use `set N2 := ∑ a : Fin q, (Finset.univ.filter (fun j : Fin q => a < j)).card`. Establish `w1` using `abs_weylDimU_le (fun a => κ (Sum.inl a)) B (fun a b => hent _ _)`. Establish `w2` using `abs_weylDimU_le (fun a => κ (Sum.inr a)) B (fun a b => hent _ _)`. Establish `hdim : GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.dimAt D i τ = ((Formalism.IndefR.Mult.weylDimU (fun a => κ (Sum.inl a)) : ℚ) : ℝ) * ((Formalism.IndefR.Mult.weylDimU (fun a => κ (Sum.inr a)) : ℚ) : ℝ)`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.dimAt Formalism.IndefR.Mult.dimK`.
+
+Use `push_cast`. Both sides reduce to the same expression. Establish `habs : |GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.dimAt D i τ| ≤ (1 + B) ^ (N1 + N2)`. Rewrite using `[hdim, abs_mul, pow_add]`. Conclude with `mul_le_mul w1 w2 (abs_nonneg _) (by positivity)`.
+
+Establish `hlog : Real.log (GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.dimAt D i τ) ≤ ((N1 + N2 : ℕ) : ℝ) * Real.log (1 + B)`. Rewrite using `[← Real.log_abs]`. Break down `eq_or_ne (GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.dimAt D i τ) 0 with h0 | h0` into its components or cases. Rewrite using `[h0, abs_zero, Real.log_zero]`. Establish `hB0 : (0 : ℝ) ≤ B` using `sq_nonneg b`.
+
+Conclude with `mul_nonneg (Nat.cast_nonneg _) (Real.log_nonneg (by linarith))`. Use `Real.log_le_log (abs_pos.2 h0) habs` as an intermediate fact. Rewrite `this` using `[Real.log_pow]`. Then use the resulting hypothesis. Establish `hN : 2 * (N1 + N2) ≤ D.R.r ^ 2`. Establish `a1 : 2 * N1 ≤ p ^ 2` using `two_mul_card_pairs_le p`.
+
+Establish `a2 : 2 * N2 ≤ q ^ 2` using `two_mul_card_pairs_le q`. Establish `a3 : p ^ 2 + q ^ 2 ≤ (p + q) ^ 2` using `by ring_nf; omega`. Rewrite using `[← hpq]`. Use linear arithmetic over natural numbers and integers. Establish `hN' : 2 * ((N1 + N2 : ℕ) : ℝ) ≤ (D.R.r : ℝ) ^ 2` using `by exact_mod_cast hN`.
+
+Establish `hN0 : (0 : ℝ) ≤ ((N1 + N2 : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem log_dimAt_le : ∀ (D : D7) (i : Fin D.R.m) (L : ℝ) (hL : GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.Sizes D L) (τ : D.what₂.Tau),
     Real.log (GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.dimAt D i τ) ≤ 3 / 2 * (D.R.r : ℝ) ^ 2 * L := by
   intro D i L hL τ

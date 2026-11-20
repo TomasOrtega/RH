@@ -21,6 +21,9 @@ open GlobalTheory.TorRef GlobalTheory.ShFam
 
 namespace GlobalTheory.TorRef
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.polarization_exists_of_components GlobalTheory.TorRef.polSuppSt (GlobalTheory.T.siegel_local_of_toroidal_integral hSieg) GlobalTheory.T.polarization_glue_holds GlobalTheory.T.phi_divisor_integral_holds GlobalTheory.T.phi_divisor_order_holds GlobalTheory.T.uniform_h …`.
+-/
 theorem polExSt_of_siegel_of_fan
     (hSieg : GlobalTheory.Published.SiegelToroidalIntegral)
     (hFan : GlobalTheory.Published.ToroidalChartsForFan) : PolExSt :=

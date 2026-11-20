@@ -10,6 +10,23 @@ namespace GlobalTheory.CompanionTheory.JacquetEigen
 
 open GroundTheory.Automorphic GroundTheory.Automorphic.Parabolic GroundTheory.Automorphic.GLnLocal in
 
+/- English proof (translation)
+Introduce `k _ _ _ _ N V _ _ π hπ h β _hβ a ha hcomm W T Λ hΛ hTW hWst hWT hex`. Take `⟨w₀, hw₀W, hw₀T⟩` from `hex`. Set `J` to `GroundTheory.Automorphic.Parabolic.jacquetAction k N β π`. Set `KM : ℕ → Subgroup (GroundTheory.Automorphic.Parabolic.levi k N β)` to `fun m => (congruenceSubgroup k N m).subgroupOf (GroundTheory.Automorphic.Parabolic.levi k N β)`. Establish `hA` using `isAdmissible_jacquetRep (β := β) hπ`.
+
+Take `⟨m₁, hm₁⟩` from `exists_subgroupOf_congruenceSubgroup_subset (F := k) (n := N) (β := β) ((hA.1 w₀).mem_nhds (one_mem (stabilizerOf _ w₀)))`. Establish `hfix₁ : w₀ ∈ fixedVectors J (KM m₁)`. Establish `: w₀ ∈ fixedVectors (jacquetRep k N β π) (KM m₁)` using `fun x hx => hm₁ hx`. Rewrite `this` using `[fixedVectors_jacquetRep_congruenceSubgroup]`. Then use the resulting hypothesis. Use `⟨m₁, fun m hm => ?_⟩` and prove the remaining obligations.
+
+Establish `hle : KM m ≤ KM m₁` using `fun x hx => Subgroup.mem_subgroupOf.2 (congruenceSubgroup_antitone k N hm (Subgroup.mem_subgroupOf.1 hx))`. Establish `hfix : w₀ ∈ fixedVectors J (KM m)` using `fixedVectors_antitone _ hle hfix₁`. Establish `hfin : FiniteDimensional ℂ (fixedVectors J (KM m))`. Use `hA.2 (KM m) (isCompact_subgroupOf_levi (isCompact_congruenceSubgroup k N m)) (isOpen_subgroupOf_levi (isOpen_congruenceSubgroup k N m))` as an intermediate fact. Rewrite `this` using `[fixedVectors_jacquetRep_congruenceSubgroup]`. Then use the resulting hypothesis.
+
+Set `A : Module.End ℂ _` to `J ⟨a, ha⟩`. Set `W' : Submodule ℂ (GroundTheory.Automorphic.Parabolic.JacquetModule k N β π)` to `W ⊓ fixedVectors J (KM m)`. Establish `hW'fin : FiniteDimensional ℂ W'` using `Submodule.finiteDimensional_of_le inf_le_right`. Establish `hst : ∀ w ∈ W', A w ∈ W'`. Introduce `w hw`.
+
+Use `⟨hWst w hw.1, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hw2` using `hw.2 g hg`. Establish `hc : g * ⟨a, ha⟩ = ⟨a, ha⟩ * g` using `Subtype.ext (hcomm g g.2).symm`. Use `show J g (J ⟨a, ha⟩ w) = J ⟨a, ha⟩ w`. Rewrite using `[← Module.End.mul_apply, ← map_mul, hc, map_mul, Module.End.mul_apply]`.
+
+Conclude with `congrArg _ hw2`. Set `B : W' →ₗ[ℂ] W'` to `A.restrict hst`. Set `Tc : Submodule ℂ W'` to `T.comap W'.subtype`. Establish `hw₀' : w₀ ∈ W'` using `⟨hw₀W, hfix⟩`. Establish `hsq : Tc.mkQ ∘ₗ B = (Λ • (LinearMap.id : (W' ⧸ Tc) →ₗ[ℂ] (W' ⧸ Tc))) ∘ₗ Tc.mkQ`.
+
+Use extensionality with `w`. Simplify using `only [LinearMap.comp_apply, LinearMap.smul_apply, LinearMap.id_apply, Submodule.mkQ_apply]`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.eq]`. Conclude with `hWT _ w.2.1`. Take `⟨y, hy0, hy⟩` from `GlobalTheory.CompanionTheory.EigenLift.nonzero_eigenvalue_lifts W' (W' ⧸ Tc) B (Λ • (LinearMap.id : (W' ⧸ Tc) →ₗ[ℂ] (W' ⧸ Tc))) Tc.mkQ (Submodule.mkQ_surjective _) hsq Λ (Tc.mkQ ⟨w₀, hw₀'⟩) (fun h0 => hw₀T (by simpa [Tc] using (Submodule.Quotient.mk_eq_zero Tc).1 h0))`.
+
+Use `rfl hΛ`. Use `⟨y, fun h0 => hy0 (Subtype.ext h0), fun g hg => y.2.2 g (Subgroup.mem_subgroupOf.2 hg), ?_⟩` and prove the remaining obligations. Conclude with `congrArg Subtype.val hy`.
+-/
 theorem exists_eigenvector_fixed : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], ∀ (N : ℕ) {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V), GroundTheory.Automorphic.IsAdmissible π → ∀ {h : ℕ} (β : Fin N → Fin h), Monotone β → ∀ (a : GL (Fin N) k) (ha : a ∈ GroundTheory.Automorphic.Parabolic.levi k N β), (∀ y ∈ GroundTheory.Automorphic.Parabolic.levi k N β, a * y = y * a) → ∀ (W T : Submodule ℂ (GroundTheory.Automorphic.Parabolic.JacquetModule k N β π)) (Λ : ℂ), Λ ≠ 0 → T ≤ W → (∀ w ∈ W, GroundTheory.Automorphic.Parabolic.jacquetAction k N β π ⟨a, ha⟩ w ∈ W) → (∀ w ∈ W, GroundTheory.Automorphic.Parabolic.jacquetAction k N β π ⟨a, ha⟩ w - Λ • w ∈ T) → (∃ w ∈ W, w ∉ T) → ∃ m₀ : ℕ, ∀ m : ℕ, m₀ ≤ m → ∃ y : GroundTheory.Automorphic.Parabolic.JacquetModule k N β π, y ≠ 0 ∧ (∀ g : GroundTheory.Automorphic.Parabolic.levi k N β, (g : GL (Fin N) k) ∈ GroundTheory.Automorphic.GLnLocal.congruenceSubgroup k N m → GroundTheory.Automorphic.Parabolic.jacquetAction k N β π g y = y) ∧ GroundTheory.Automorphic.Parabolic.jacquetAction k N β π ⟨a, ha⟩ y = Λ • y := by
   intro k _ _ _ _ N V _ _ π hπ h β _hβ a ha hcomm W T Λ hΛ hTW hWst hWT hex
   obtain ⟨w₀, hw₀W, hw₀T⟩ := hex

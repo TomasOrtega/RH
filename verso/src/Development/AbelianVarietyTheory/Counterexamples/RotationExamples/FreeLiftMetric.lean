@@ -14,6 +14,13 @@ namespace GlobalTheory.RowSlopeProbe
 section General
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBase K} {Df : DefSide Bs}
 
+/- English proof (translation)
+Establish `hs : ((Real.sqrt (t v) : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (Real.sqrt_pos.2 (ht v)).ne'`. Establish `hi : (scaleFrame t X v)⁻¹ = ((Real.sqrt (t v) : ℝ) : ℂ) • (X v)⁻¹`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Simplify using `only [scaleFrame, Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.nonsing_inv_mul _ (hX v)]`. Rewrite using `[Complex.ofReal_inv]`.
+
+Apply the tactic sequence `first | rw [mul_inv_cancel₀ hs, one_smul] | rw [inv_mul_cancel₀ hs, one_smul]`. Establish `h2 : ((Real.sqrt (t v) : ℝ) : ℂ) * ((Real.sqrt (t v) : ℝ) : ℂ) = (t v : ℂ)`. Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt (ht v).le]`. Simplify using `only [Formalism.HermitianLatticesTheory.majAt, Formalism.HermitianLatticesTheory.fcoord, hi, Matrix.smul_mulVec, Pi.smul_apply, smul_eq_mul, star_mul', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← h2, Complex.star_def, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem majAt_scale {d : ℕ} (X : InfinitePlace K → Matrix (Fin d) (Fin d) ℂ) (hX : ∀ v, IsUnit (X v).det)
     (t : InfinitePlace K → ℝ) (ht : ∀ v, 0 < t v) (v : InfinitePlace K) (x y : Fin d → K) :
     Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin d)) (scaleFrame t X) v x y =
@@ -32,6 +39,9 @@ theorem majAt_scale {d : ℕ} (X : InfinitePlace K → Matrix (Fin d) (Fin d) �
   rw [← h2, Complex.star_def, Complex.conj_ofReal]
   ring
 
+/- English proof (translation)
+Establish `hs : ((Real.sqrt (t v))⁻¹ : ℝ) ≠ 0` using `inv_ne_zero (Real.sqrt_pos.2 (ht v)).ne'`. Simplify using `only [scaleFrame, Matrix.det_smul]`. Conclude with `(IsUnit.mk0 _ (pow_ne_zero _ (by exact_mod_cast hs))).mul (hX v)`.
+-/
 theorem scale_unit {d : ℕ} (X : InfinitePlace K → Matrix (Fin d) (Fin d) ℂ) (hX : ∀ v, IsUnit (X v).det)
     (t : InfinitePlace K → ℝ) (ht : ∀ v, 0 < t v) (v : InfinitePlace K) : IsUnit (scaleFrame t X v).det := by
   have hs : ((Real.sqrt (t v))⁻¹ : ℝ) ≠ 0 := inv_ne_zero (Real.sqrt_pos.2 (ht v)).ne'

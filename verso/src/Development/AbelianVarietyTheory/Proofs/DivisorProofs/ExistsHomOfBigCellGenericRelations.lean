@@ -8,6 +8,21 @@ open GlobalTheory.SplitWeil (SB nabs)
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `key : ∀ g u w, C u → C (g * u) → C w → C (g * w) → C (u⁻¹ * w) → f (g * u) * (f u)⁻¹ = f (g * w) * (f w)⁻¹`. Introduce `g u w hu hgu hw hgw huw`. Establish `h1 : f w = f u * f (u⁻¹ * w)`. Establish `h` using `hmul u (u⁻¹ * w) hu huw (by rwa [mul_inv_cancel_left])`. Rewrite `h` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis.
+
+Establish `h2 : f (g * w) = f (g * u) * f (u⁻¹ * w)`. Establish `h` using `hmul (g * u) (u⁻¹ * w) hgu huw (by rwa [mul_assoc, mul_inv_cancel_left])`. Rewrite `h` using `[mul_assoc, mul_inv_cancel_left]`. Then use the resulting hypothesis. Rewrite using `[h1, h2]`. Use `group`.
+
+Use `choose u₀ hu₀ using fun g : G => hgen {1, g}`. Establish `hu₀1 : ∀ g, C (u₀ g)` using `fun g => by simpa using hu₀ g 1 (by simp)`. Establish `hu₀g : ∀ g, C (g * u₀ g)` using `fun g => hu₀ g g (by simp)`. Set `φ : G → H` to `fun g => f (g * u₀ g) * (f (u₀ g))⁻¹`. Establish `hφ : ∀ g u, C u → C (g * u) → φ g = f (g * u) * (f u)⁻¹`.
+
+Introduce `g u hu hgu`. Take `⟨w, hw⟩` from `hgen {1, g, u⁻¹, (u₀ g)⁻¹}`. Establish `hw1 : C w` using `by simpa using hw 1 (by simp)`. Establish `hwg : C (g * w)` using `hw g (by simp)`. Establish `hwu : C (u⁻¹ * w)` using `hw u⁻¹ (by simp)`.
+
+Establish `hwu₀ : C ((u₀ g)⁻¹ * w)` using `hw (u₀ g)⁻¹ (by simp)`. Rewrite using `[key g u w hu hgu hw1 hwg hwu]`. Conclude with `key g (u₀ g) w (hu₀1 g) (hu₀g g) hw1 hwg hwu₀`. Use `⟨MonoidHom.mk' φ ?_, fun g u hu hgu => hφ g u hu hgu⟩` and prove the remaining obligations. Introduce `g h`.
+
+Take `⟨w, hw⟩` from `hgen {1, h, g * h}`. Establish `hw1 : C w` using `by simpa using hw 1 (by simp)`. Establish `hwh : C (h * w)` using `hw h (by simp)`. Establish `hwgh : C (g * h * w)` using `hw (g * h) (by simp)`. Rewrite using `[hφ (g * h) w hw1 hwgh, hφ h w hw1 hwh, hφ g (h * w) hwh (by rwa [← mul_assoc]), ← mul_assoc g h w]`.
+
+Use `group`.
+-/
 theorem groupChunk_extend {G H : Type} [Group G] [Group H] (C : G → Prop) (f : G → H)
     (hmul : ∀ x y, C x → C y → C (x * y) → f (x * y) = f x * f y)
     (hgen : ∀ s : Finset G, ∃ u : G, ∀ g ∈ s, C (g * u)) :
@@ -48,6 +63,29 @@ theorem groupChunk_extend {G H : Type} [Group G] [Group H] (C : G → Prop) (f :
     ← mul_assoc g h w]
   group
 
+/- English proof (translation)
+Introduce `G H _ _ P w ρ W ha hb hc`. Set `C : G → Prop` to `fun g => ∃ p₁ p₂ : P, g = p₁ * w * p₂`. Establish `hwd : ∀ p₁ p₂ q₁ q₂ : P, (p₁ : G) * w * p₂ = q₁ * w * q₂ → ρ p₁ * W * ρ p₂ = ρ q₁ * W * ρ q₂`. Introduce `p₁ p₂ q₁ q₂ h`. Establish `h' : w * ((p₂ * q₂⁻¹ : P) : G) = ((p₁⁻¹ * q₁ : P) : G) * w`.
+
+Use `push_cast`. Combine the equalities or inequalities in the displayed calculation. Establish `h''` using `ha _ _ h'`. Rewrite `h''` using `[map_mul, map_mul, map_inv, map_inv]`. Combine the equalities or inequalities in the displayed calculation.
+
+Set `f : G → H` to `fun g => if h : C g then ρ h.choose * W * ρ h.choose_spec.choose else 1`. Establish `hf : ∀ p₁ p₂ : P, f (p₁ * w * p₂) = ρ p₁ * W * ρ p₂`. Introduce `p₁ p₂`. Establish `hC : C (p₁ * w * p₂)` using `⟨p₁, p₂, rfl⟩`. Simplify using `only [f]`.
+
+Rewrite using `[dif_pos hC]`. Conclude with `hwd _ _ _ _ hC.choose_spec.choose_spec.symm`. Establish `hmul : ∀ x y, C x → C y → C (x * y) → f (x * y) = f x * f y`. Introduce and unpack `x y ⟨p₁, p₂, rfl⟩ ⟨q₁, q₂, rfl⟩ ⟨r₁, r₂, hr⟩`. Establish `hin : ∃ a b : P, w * ((p₂ * q₁ : P) : G) * w = a * w * b` using `⟨p₁⁻¹ * r₁, r₂ * q₂⁻¹, by`.
+
+Use `push_cast`. Combine the equalities or inequalities in the displayed calculation. Take `⟨a, b, hab, hW⟩` from `hb _ hin`. Rewrite `hW` using `[map_mul]`. Establish `hxy : (p₁ : G) * w * p₂ * ((q₁ : G) * w * q₂) = ((p₁ * a : P) : G) * w * ((b * q₂ : P) : G)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hxy, hf, hf, hf, map_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨Φ, hΦ⟩` from `groupChunk_extend C f hmul hc`. Use `⟨Φ, fun p => ?_, ?_⟩` and prove the remaining obligations.
+
+Take `⟨u, hu⟩` from `hc {1}`. Take `⟨a, b, hab⟩` from `hu 1 (by simp)`. Rewrite `hab` using `[one_mul]`. Establish `e1 : (p : G) * u = ((p * a : P) : G) * w * b`. Rewrite using `[hab]`.
+
+Use `push_cast`. Use `group`. Rewrite using `[hΦ p u ⟨a, b, hab⟩ ⟨p * a, b, e1⟩, e1, hab, hf, hf, map_mul]`. Use `group`. Take `⟨u, hu⟩` from `hc {1, w}`.
+
+Take `⟨a, b, hab⟩` from `hu 1 (by simp)`. Rewrite `hab` using `[one_mul]`. Take `⟨c, d, hcd⟩` from `hu w (by simp)`. Establish `hin : ∃ p₁ p₂ : P, w * (a : G) * w = p₁ * w * p₂` using `⟨c, d * b⁻¹, by`. Combine the equalities or inequalities in the displayed calculation.
+
+Take `⟨r₁, r₂, hr, hW⟩` from `hb a hin`. Establish `e1 : w * u = (r₁ : G) * w * ((r₂ * b : P) : G)`. Rewrite using `[hab]`. Use `push_cast`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hΦ w u ⟨a, b, hab⟩ ⟨c, d, hcd⟩, e1, hab, hf, hf, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem bigCell_hom : ∀ (G H : Type) [Group G] [Group H] (P : Subgroup G) (w : G) (ρ : P →* H) (W : H), (∀ p q : P, w * p = q * w → W * ρ p = ρ q * W) → (∀ p : P, (∃ p₁ p₂ : P, w * p * w = p₁ * w * p₂) → ∃ p₁ p₂ : P, w * p * w = p₁ * w * p₂ ∧ W * ρ p * W = ρ p₁ * W * ρ p₂) → (∀ s : Finset G, ∃ u : G, ∀ g ∈ s, ∃ p₁ p₂ : P, g * u = p₁ * w * p₂) → ∃ Φ : G →* H, (∀ p : P, Φ p = ρ p) ∧ Φ w = W := by
   classical
   intro G H _ _ P w ρ W ha hb hc

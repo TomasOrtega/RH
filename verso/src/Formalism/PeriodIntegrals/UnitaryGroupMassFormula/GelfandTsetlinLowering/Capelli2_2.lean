@@ -12,6 +12,9 @@ namespace PI.WGL
 
 open Formalism.BasicNotions MvPolynomial
 
+/- English proof (translation)
+The claim follows from `capelliZ_of fun h lam mu φ hφ s hs u => capScalar highest_weight_irreducible h lam mu φ hφ s hs u`.
+-/
 theorem capelli_scalar_identity : CapelliZ :=
   capelliZ_of fun h lam mu φ hφ s hs u => capScalar highest_weight_irreducible h lam mu φ hφ s hs u
 

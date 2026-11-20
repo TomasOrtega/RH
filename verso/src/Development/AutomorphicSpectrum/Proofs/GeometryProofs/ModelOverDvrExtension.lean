@@ -12,6 +12,17 @@ section Fields
 
 open scoped IntermediateField
 
+/- English proof (translation)
+Establish `: Algebra.IsIntegral F (algebraicClosure F L).toSubalgebra` using `(algebraicClosure.isAlgebraic F L).isIntegral`. Use `Subalgebra.LinearDisjoint.of_linearDisjoint_finite_left _ _ fun B hB _ => ?_` and prove the remaining obligations. Establish `halg : B.IsAlgebraic` using `fun x hx => (mem_algebraicClosure_iff (F := F)).1 (hB hx)`. Set `M : IntermediateField F L` to `halg.toIntermediateField`. Use `haveI : FiniteDimensional F M := ‹Module.Finite F B›`.
+
+Express the relevant statement in the definitionally equal form `M.LinearDisjoint Ω`. Take `⟨θ, hθ⟩` from `Field.exists_primitive_element F M`. Establish `hi : IsIntegral F (θ : L)` using `(Algebra.IsIntegral.isIntegral (R := F) θ).map M.val`. Establish `e : F⟮(θ : L)⟯ = M`. Use `congrArg (IntermediateField.lift (F := M)) hθ` as an intermediate fact.
+
+Simplify using `using this`. Rewrite using `[← e]`. Use `IntermediateField.LinearDisjoint.of_basis_left (IntermediateField.adjoin.powerBasis hi).basis ?_` and prove the remaining obligations. Establish `hd` using `GlobalTheory.CompanionTheory.Ar.Cmp.RegularTensor.natDegree_minpoly_eq_of_closed (k := F) (F := Ω) h hi`. Establish `hl` using `linearIndependent_pow (K := Ω) (θ : L)`.
+
+Rewrite `hl` using `[hd]`. Establish `he : (F⟮(θ : L)⟯.val ∘ (IntermediateField.adjoin.powerBasis hi).basis) = fun i : Fin (IntermediateField.adjoin.powerBasis hi).dim => (θ : L) ^ (i : ℕ)`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[he]`.
+
+Conclude with `hl`.
+-/
 theorem linearDisjoint_algebraicClosure {F Ω L : Type} [Field F] [CharZero F] [Field Ω] [Field L]
     [Algebra F Ω] [Algebra Ω L] [Algebra F L] [IsScalarTower F Ω L]
     (h : ∀ a : Ω, IsAlgebraic F a → a ∈ Set.range (algebraMap F Ω)) :
@@ -41,6 +52,9 @@ theorem linearDisjoint_algebraicClosure {F Ω L : Type} [Field F] [CharZero F] [
   rw [he]
   exact hl
 
+/- English proof (translation)
+Establish `H` using `linearDisjoint_algebraicClosure (L := L) h`. Set `a : ι → algebraicClosure F L` to `fun i => ⟨e i, mem_algebraicClosure_iff.2 (he i)⟩`. Establish `ha : LinearIndependent F a` using `LinearIndependent.of_comp (algebraicClosure F L).val.toLinearMap hli`. Conclude with `H.linearIndependent_left ha`.
+-/
 theorem linearIndependent_of_closed {F Ω L : Type} [Field F] [CharZero F] [Field Ω] [Field L]
     [Algebra F Ω] [Algebra Ω L] [Algebra F L] [IsScalarTower F Ω L]
     (h : ∀ a : Ω, IsAlgebraic F a → a ∈ Set.range (algebraMap F Ω))
@@ -56,6 +70,17 @@ end Fields
 
 section Rings
 
+/- English proof (translation)
+Use `haveI := hcl`. Establish `hOΩ : Function.Injective (algebraMap O Ω)` using `IsIntegralClosure.algebraMap_injective O O Ω`. Use `haveI : FaithfulSMul O Ω := (faithfulSMul_iff_algebraMap_injective O Ω).2 hOΩ`. Set `F` to `FractionRing O`. Use `letI : Algebra F Ω := FractionRing.liftAlgebra O Ω`.
+
+Use `haveI : IsScalarTower O F Ω := FractionRing.isScalarTower_liftAlgebra O Ω`. Use `letI : Algebra F Ω' := ((algebraMap Ω Ω').comp (algebraMap F Ω)).toAlgebra`. Use `haveI : IsScalarTower F Ω Ω' := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI : IsScalarTower O F Ω' := IsScalarTower.of_algebraMap_eq fun a => by`. Express the relevant statement in the definitionally equal form `algebraMap O Ω' a = algebraMap Ω Ω' (algebraMap F Ω (algebraMap O F a))`.
+
+Rewrite using `[← IsScalarTower.algebraMap_apply O F Ω, ← IsScalarTower.algebraMap_apply O Ω Ω']`. Use `haveI : CharZero F := RingHom.charZero (algebraMap F Ω)`. Establish `hclosed : ∀ a : Ω, IsAlgebraic F a → a ∈ Set.range (algebraMap F Ω)`. Introduce `a ha`. Take `⟨r, hr, hint⟩` from `((IsFractionRing.isAlgebraic_iff O F Ω).2 ha).exists_integral_multiple`.
+
+Take `⟨c, hc⟩` from `(IsIntegrallyClosedIn.isIntegral_iff (R := O) (A := Ω)).1 hint`. Establish `hr' : algebraMap O Ω r ≠ 0` using `fun h0 => hr (hOΩ (by rw [h0, map_zero]))`. Use `⟨algebraMap O F c / algebraMap O F r, ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply, hc, Algebra.smul_def]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `he : ∀ i, IsAlgebraic F (algebraMap O' Ω' (e i))` using `fun i => (IsFractionRing.isAlgebraic_iff O F Ω').1 ((Algebra.IsAlgebraic.isAlgebraic (R := O) (e i)).algHom (IsScalarTower.toAlgHom O O' Ω'))`. Establish `hli' : LinearIndependent O (fun i => algebraMap O' Ω' (e i))` using `hli.map' (IsScalarTower.toAlgHom O O' Ω').toLinearMap (LinearMap.ker_eq_bot.2 hinj)`. Conclude with `linearIndependent_of_closed hclosed he ((LinearIndependent.iff_fractionRing O F).1 hli')`.
+-/
 theorem linearIndependent_base {O Ω O' Ω' : Type} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] [Field Ω] [CharZero Ω] [Algebra O Ω] [CommRing O'] [IsDomain O']
     [Algebra O O'] [Algebra.IsAlgebraic O O'] [Field Ω'] [Algebra Ω Ω'] [Algebra O' Ω'] [Algebra O Ω']
@@ -94,6 +119,19 @@ theorem linearIndependent_base {O Ω O' Ω' : Type} [CommRing O] [IsDomain O]
 
 open MvPolynomial
 
+/- English proof (translation)
+Set `M : Submodule O O'` to `Submodule.span O (↑(f.support.image (fun m => coeff m f)) : Set O')`. Use `haveI : Module.Finite O M := Module.Finite.span_of_finite O (Finset.finite_toSet _)`. Use `haveI : FaithfulSMul O O' := (faithfulSMul_iff_algebraMap_injective O O').2 hinj`. Use `haveI : Module.Free O M := Module.free_of_finite_type_torsion_free'`. Set `b` to `Module.finBasis O M`.
+
+Establish `hm : ∀ m, coeff m f ∈ M`. Introduce `m`. Distinguish the cases in `h : m ∈ f.support`. Conclude with `Submodule.subset_span (by simpa using ⟨m, by simpa using h, rfl⟩)`. Rewrite using `[notMem_support_iff.1 h]`.
+
+Conclude with `M.zero_mem`. Set `cm : (σ →₀ ℕ) → M` to `fun m => ⟨coeff m f, hm m⟩`. Set `g : Fin (Module.finrank O M) → MvPolynomial σ O` to `fun i => ∑ m ∈ f.support, monomial m (b.repr (cm m) i)`. Establish `hg : ∀ m i, coeff m (g i) = b.repr (cm m) i`. Introduce `m i`.
+
+Distinguish the cases in `h : m ∈ f.support`. Simplify using `[g, coeff_sum, coeff_monomial, h]`. Establish `h0 : cm m = 0` using `Subtype.ext (notMem_support_iff.1 h)`. Simplify using `[g, coeff_sum, coeff_monomial, h, h0]`. Use `⟨_, fun i => (b i : O'), g, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `b.linearIndependent.map' M.subtype (Submodule.ker_subtype _)`. Use extensionality with `m`. Establish `h1 : (cm m : O') = ∑ i, b.repr (cm m) i • (b i : O')`. Establish `h` using `congrArg (fun z : M => (z : O')) (b.sum_repr (cm m))`. Simplify using `only [AddSubmonoidClass.coe_finset_sum, SetLike.val_smul] at h`.
+
+Conclude with `h.symm`. Establish `h2 : coeff m f = (cm m : O')` using `rfl`. Rewrite using `[h2, h1, coeff_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_C_mul, coeff_map, hg, Algebra.smul_def, mul_comm]`.
+-/
 theorem exists_decomp {O O' σ : Type} [CommRing O] [IsDomain O] [IsPrincipalIdealRing O] [CommRing O']
     [IsDomain O'] [Algebra O O'] (hinj : Function.Injective (algebraMap O O'))
     (f : MvPolynomial σ O') :
@@ -132,6 +170,27 @@ theorem exists_decomp {O O' σ : Type} [CommRing O] [IsDomain O] [IsPrincipalIde
     refine Finset.sum_congr rfl fun i _ => ?_
     rw [coeff_C_mul, coeff_map, hg, Algebra.smul_def, mul_comm]
 
+/- English proof (translation)
+Set `φ : (MvPolynomial σ O ⧸ P) →+* (MvPolynomial σ O' ⧸ P')` to `Ideal.quotientMap P' (MvPolynomial.map (algebraMap O O')) hc.ge`. Establish `hφ : Function.Injective φ` using `Ideal.quotientMap_injective' hc.le`. Set `_ : Algebra (MvPolynomial σ O ⧸ P) (MvPolynomial σ O' ⧸ P')` to `φ.toAlgebra`. Establish `hφa : ∀ t, algebraMap (MvPolynomial σ O ⧸ P) (MvPolynomial σ O' ⧸ P') (Ideal.Quotient.mk P t) = Ideal.Quotient.mk P' (MvPolynomial.map (algebraMap O O') t)` using `fun t => Ideal.quotientMap_mk`. Establish `: IsScalarTower O (MvPolynomial σ O ⧸ P) (MvPolynomial σ O' ⧸ P')` using `IsScalarTower.of_algebraMap_eq fun a => by`.
+
+Express the relevant statement in the definitionally equal form `_ = algebraMap (MvPolynomial σ O ⧸ P) (MvPolynomial σ O' ⧸ P') (Ideal.Quotient.mk P (C a))`. Rewrite using `[hφa, map_C]`. Both sides reduce to the same expression. Establish `: IsScalarTower O O' (MvPolynomial σ O' ⧸ P')` using `inferInstance`. Establish `hOS : Function.Injective (algebraMap O (MvPolynomial σ O ⧸ P))`.
+
+Use `(injective_iff_map_eq_zero (algebraMap O (MvPolynomial σ O ⧸ P))).2 fun a ha => ?_` and prove the remaining obligations. Establish `h : (C a : MvPolynomial σ O) ∈ P` using `Ideal.Quotient.eq_zero_iff_mem.1 (show Ideal.Quotient.mk P (C a) = 0 from ha)`. Establish `: a ∈ P.comap (C : O →+* MvPolynomial σ O)` using `h`. Rewrite `this` using `[hC]`. Conclude with `(Submodule.mem_bot _).1 this`.
+
+Establish `hOS' : Function.Injective (algebraMap O' (MvPolynomial σ O' ⧸ P'))`. Use `(injective_iff_map_eq_zero (algebraMap O' (MvPolynomial σ O' ⧸ P'))).2 fun a ha => ?_` and prove the remaining obligations. Establish `h : (C a : MvPolynomial σ O') ∈ P'` using `Ideal.Quotient.eq_zero_iff_mem.1 (show Ideal.Quotient.mk P' (C a) = 0 from ha)`. Establish `: a ∈ P'.comap (C : O' →+* MvPolynomial σ O')` using `h`. Rewrite `this` using `[hC']`.
+
+Conclude with `(Submodule.mem_bot _).1 this`. Establish `: FaithfulSMul (MvPolynomial σ O ⧸ P) (MvPolynomial σ O' ⧸ P')` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hφ`. Establish `: FaithfulSMul O (MvPolynomial σ O ⧸ P)` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hOS`. Establish `: FaithfulSMul O' (MvPolynomial σ O' ⧸ P')` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hOS'`. Establish `: FaithfulSMul O O'` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hinj`.
+
+Establish `: Algebra.IsAlgebraic (MvPolynomial σ O ⧸ P) (MvPolynomial σ O' ⧸ P')`. Use `⟨fun b => ?_⟩` and prove the remaining obligations. Take `⟨f, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a`.
+
+Establish `h1 : IsAlgebraic O (algebraMap O' (MvPolynomial σ O' ⧸ P') a)` using `(Algebra.IsAlgebraic.isAlgebraic (R := O) a).algHom (IsScalarTower.toAlgHom O O' (MvPolynomial σ O' ⧸ P'))`. Conclude with `h1.extendScalars hOS`. Consider the case `add p q hp hq`. Rewrite using `[map_add]`. Conclude with `hp.add hq`.
+
+Consider the case `mul_X p i hp`. Rewrite using `[map_mul]`. Use `hp.mul ?_` and prove the remaining obligations. Establish `h2 : Ideal.Quotient.mk P' (X i) = algebraMap (MvPolynomial σ O ⧸ P) (MvPolynomial σ O' ⧸ P') (Ideal.Quotient.mk P (X i))`. Rewrite using `[hφa, map_X]`.
+
+Rewrite using `[h2]`. Conclude with `isAlgebraic_algebraMap _`. Establish `h1` using `trdeg_add_eq O O' (A := MvPolynomial σ O' ⧸ P')`. Establish `h2` using `trdeg_add_eq O (MvPolynomial σ O ⧸ P) (A := MvPolynomial σ O' ⧸ P')`. Rewrite `h1` using `[trdeg_eq_zero (R := O) (A := O'), zero_add]`.
+
+Rewrite `h2` using `[trdeg_eq_zero (R := MvPolynomial σ O ⧸ P) (A := MvPolynomial σ O' ⧸ P'), add_zero]`. Conclude with `h1.trans h2.symm`.
+-/
 theorem trdeg_eq {σ O O' : Type} [CommRing O] [IsDomain O] [CommRing O'] [IsDomain O'] [Algebra O O']
     [Algebra.IsAlgebraic O O'] (hinj : Function.Injective (algebraMap O O'))
     {P : Ideal (MvPolynomial σ O)} {P' : Ideal (MvPolynomial σ O')} [P.IsPrime] [P'.IsPrime]
@@ -206,6 +265,11 @@ variable {O Ω O' Ω' : Type} [CommRing O] [Field Ω] [Algebra O Ω] [CommRing O
   [IsScalarTower O O' Ω'] [IsScalarTower O Ω Ω']
   {K : Type} {J : K → Type} (y : (Σ k, J k) → Ω)
 
+/- English proof (translation)
+Proceed by induction on `h using MvPolynomial.induction_on with`. Consider the case `C a`. Simplify using `only [pointConeMap, map_C, aeval_C, MvPolynomial.algebraMap_apply]`. Rewrite using `[← IsScalarTower.algebraMap_apply O O' Ω', ← IsScalarTower.algebraMap_apply O Ω Ω']`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`.
+
+Consider the case `mul_X p i hp`. Simplify using `only [map_mul, hp]`. Simplify using `[pointConeMap]`.
+-/
 theorem pointConeMap_map (h : MvPolynomial (Σ k, J k) O) :
     pointConeMap O' (fun v => algebraMap Ω Ω' (y v)) (MvPolynomial.map (algebraMap O O') h) =
       MvPolynomial.map (algebraMap Ω Ω') (pointConeMap O y h) := by
@@ -218,6 +282,9 @@ theorem pointConeMap_map (h : MvPolynomial (Σ k, J k) O) :
     simp only [map_mul, hp]
     simp [pointConeMap]
 
+/- English proof (translation)
+Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `h hh`. Establish `h0 : pointConeMap O y h = 0` using `hh`. Express the relevant statement in the definitionally equal form `pointConeMap O' (fun v => algebraMap Ω Ω' (y v)) (MvPolynomial.map (algebraMap O O') h) = 0`. Rewrite using `[pointConeMap_map, h0, map_zero]`.
+-/
 theorem map_le_pointIdeal :
     (pointIdeal O y).map (MvPolynomial.map (algebraMap O O')) ≤
       pointIdeal O' (fun v => algebraMap Ω Ω' (y v)) := by
@@ -227,6 +294,9 @@ theorem map_le_pointIdeal :
   change pointConeMap O' (fun v => algebraMap Ω Ω' (y v)) (MvPolynomial.map (algebraMap O O') h) = 0
   rw [pointConeMap_map, h0, map_zero]
 
+/- English proof (translation)
+Use extensionality with `h`. Express the relevant statement in the definitionally equal form `pointConeMap O' (fun v => algebraMap Ω Ω' (y v)) (MvPolynomial.map (algebraMap O O') h) = 0 ↔ pointConeMap O y h = 0`. Rewrite using `[pointConeMap_map]`. Conclude with `map_eq_zero_iff _ (MvPolynomial.map_injective _ (algebraMap Ω Ω').injective)`.
+-/
 theorem comap_pointIdeal :
     (pointIdeal O' (fun v => algebraMap Ω Ω' (y v))).comap (MvPolynomial.map (algebraMap O O')) =
       pointIdeal O y := by
@@ -236,6 +306,11 @@ theorem comap_pointIdeal :
   rw [pointConeMap_map]
   exact map_eq_zero_iff _ (MvPolynomial.map_injective _ (algebraMap Ω Ω').injective)
 
+/- English proof (translation)
+Rewrite using `[eq_bot_iff]`. Introduce `a ha`. Establish `h0 : pointConeMap O' (fun v => algebraMap Ω Ω' (y v)) (C a : MvPolynomial (Σ k, J k) O') = 0` using `ha`. Simplify using `only [pointConeMap, aeval_C, MvPolynomial.algebraMap_eq] at h0`. Establish `h1 : algebraMap O' Ω' a = 0`.
+
+Simplify using `using h0`. Conclude with `(Submodule.mem_bot _).2 (hinj (by rw [h1, map_zero]))`.
+-/
 theorem comap_C_pointIdeal_eq_bot (hinj : Function.Injective (algebraMap O' Ω')) :
     (pointIdeal O' (fun v => algebraMap Ω Ω' (y v))).comap
       (C : O' →+* MvPolynomial (Σ k, J k) O') = ⊥ := by
@@ -257,6 +332,15 @@ variable {O Ω O' Ω' : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing
   [Field Ω'] [Algebra Ω Ω'] [Algebra O' Ω'] [Algebra O Ω'] [IsScalarTower O O' Ω']
   [IsScalarTower O Ω Ω'] {K : Type} {J : K → Type} (y : (Σ k, J k) → Ω)
 
+/- English proof (translation)
+Take `⟨r, e, g, hli, hfe⟩` from `exists_decomp hOO' f`. Use `⟨r, e, g, ?_, hfe⟩` and prove the remaining obligations. Establish `hLI` using `linearIndependent_base hcl hinj hli`. Establish `h0 : pointConeMap O' (fun v => algebraMap Ω Ω' (y v)) f = 0` using `hf`. Establish `hz : ∑ i, (C (algebraMap O' Ω' (e i)) : MvPolynomial K Ω') * MvPolynomial.map (algebraMap Ω Ω') (pointConeMap O y (g i)) = 0`.
+
+Rewrite `h0` using `[hfe, map_sum]`. Rewrite using `[← h0]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, pointConeMap_map]`. Use `congr 1`.
+
+Simplify using `[pointConeMap, MvPolynomial.algebraMap_apply]`. Introduce `i`. Express the relevant statement in the definitionally equal form `pointConeMap O y (g i) = 0`. Use extensionality with `n`. Establish `hn` using `congrArg (coeff n) hz`.
+
+Simplify using `only [coeff_sum, coeff_C_mul, coeff_map, coeff_zero] at hn`. Use `Fintype.linearIndependent_iff.1 hLI (fun i => coeff n (pointConeMap O y (g i))) (by simpa [Algebra.smul_def, mul_comm] using hn) i` as an intermediate fact. Simplify using `using this`.
+-/
 theorem exists_decomp_mem (hcl : IsIntegrallyClosedIn O Ω)
     (hinj : Function.Injective (algebraMap O' Ω')) (hOO' : Function.Injective (algebraMap O O'))
     {f : MvPolynomial (Σ k, J k) O'} (hf : f ∈ pointIdeal O' (fun v => algebraMap Ω Ω' (y v))) :
@@ -284,6 +368,9 @@ theorem exists_decomp_mem (hcl : IsIntegrallyClosedIn O Ω)
     (by simpa [Algebra.smul_def, mul_comm] using hn) i
   simpa using this
 
+/- English proof (translation)
+Use `le_antisymm (fun f hf => ?_) (map_le_pointIdeal y)` and prove the remaining obligations. Take `⟨r, e, g, hg, rfl⟩` from `exists_decomp_mem y hcl hinj hOO' hf`. Conclude with `Ideal.sum_mem _ fun i _ => Ideal.mul_mem_left _ _ (Ideal.mem_map_of_mem _ (hg i))`.
+-/
 theorem pointIdeal_eq_map (hcl : IsIntegrallyClosedIn O Ω)
     (hinj : Function.Injective (algebraMap O' Ω')) (hOO' : Function.Injective (algebraMap O O')) :
     pointIdeal O' (fun v => algebraMap Ω Ω' (y v)) =
@@ -294,6 +381,11 @@ theorem pointIdeal_eq_map (hcl : IsIntegrallyClosedIn O Ω)
 
 variable [DecidableEq K]
 
+/- English proof (translation)
+Introduce `f hf b`. Take `⟨r, e, g, hg, rfl⟩` from `exists_decomp_mem y hcl hinj hOO' hf`. Establish `hcomp : weightedHomogeneousComponent (blockWeight J) b (∑ i, C (e i) * MvPolynomial.map (algebraMap O O') (g i)) = ∑ i, C (e i) * MvPolynomial.map (algebraMap O O') (weightedHomogeneousComponent (blockWeight J) b (g i))`. Use extensionality with `m`. Simplify using `only [coeff_weightedHomogeneousComponent, coeff_sum, coeff_C_mul, coeff_map]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[hcomp]`. Conclude with `Ideal.sum_mem _ fun i _ => Ideal.mul_mem_left _ _ (map_le_pointIdeal y (Ideal.mem_map_of_mem _ (hP _ (hg i) b)))`.
+-/
 theorem isMultiHomogIdeal_pointIdeal (hcl : IsIntegrallyClosedIn O Ω)
     (hinj : Function.Injective (algebraMap O' Ω')) (hOO' : Function.Injective (algebraMap O O'))
     (hP : IsMultiHomogIdeal (pointIdeal O y)) :
@@ -324,6 +416,17 @@ open AlgebraicGeometry CategoryTheory NumberField MvPolynomial ReciprocityTheory
 open GroundTheory.Heights₂.Heights.NumbersDVR (pointIdeal segreVec IsFlagFrame IsFlagPair SameGenericFibre IsModelOver divCycle)
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles (mseg fnField)
 
+/- English proof (translation)
+Introduce `O _ _ _ Ω _ _ _ K _ _ J _ y d hM hcl O' _ _ _ _ _ _ Ω' _ _ _ _ _ _ hinj`. Use `haveI := hcl`. Establish `hOΩ : Function.Injective (algebraMap O Ω)` using `IsIntegralClosure.algebraMap_injective O O Ω`. Establish `hOO' : Function.Injective (algebraMap O O')`. Introduce `a b h`.
+
+Apply `hOΩ` to reduce the goal to its premises. Apply `(algebraMap Ω Ω').injective` to reduce the goal to its premises. Rewrite using `[← IsScalarTower.algebraMap_apply O Ω Ω', ← IsScalarTower.algebraMap_apply O Ω Ω', IsScalarTower.algebraMap_apply O O' Ω', IsScalarTower.algebraMap_apply O O' Ω' b, h]`. Use `⟨BaseChange.pointIdeal_eq_map y hcl hinj hOO', ?_⟩` and prove the remaining obligations. Establish `hcomap` using `BaseChange.comap_pointIdeal (O := O) (O' := O') (Ω' := Ω') y`.
+
+Establish `hC'` using `BaseChange.comap_C_pointIdeal_eq_bot (O' := O') (Ω' := Ω') y hinj`. Establish `hprime : (pointIdeal O' (fun v => algebraMap Ω Ω' (y v))).IsPrime` using `RingHom.ker_isPrime _`. Establish `hmp : GroundTheory.Heights₂.Heights.NumbersDVR.IsMultiProjPrime (pointIdeal O' (fun v => algebraMap Ω Ω' (y v)))`. Use `⟨hprime, BaseChange.isMultiHomogIdeal_pointIdeal y hcl hinj hOO' hM.multiProj.multiHomog, ?_⟩` and prove the remaining obligations. Introduce `k`.
+
+Take `⟨i, hi⟩` from `hM.multiProj.relevant k`. Use `⟨i, fun h => hi ?_⟩` and prove the remaining obligations. Rewrite using `[← hcomap]`. Conclude with `Ideal.mem_comap.2 (by rwa [map_X])`. Use `haveI := hM.multiProj.isPrime`.
+
+Establish `htr` using `BaseChange.trdeg_eq hOO' hcomap hM.noTorsion hC'`. Establish `hd` using `GroundTheory.Heights₂.Heights.NumbersDVR.DvrConeDimTrdeg.proof O K J _ hM.multiProj hM.noTorsion`. Establish `hd'` using `GroundTheory.Heights₂.Heights.NumbersDVR.DvrConeDimTrdeg.proof O' K J _ hmp hC'`. Use `⟨hmp, hC', ?_⟩` and prove the remaining obligations. Rewrite using `[← hM.dim, hd, hd', htr]`.
+-/
 theorem GlobalTheory.CompanionTheory.Ar.Num.model_baseChange_algebraic : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Ω : Type) [Field Ω] [CharZero Ω] [Algebra O Ω] (K : Type) [Fintype K] [DecidableEq K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (d : ℕ), IsModelOver (pointIdeal O y) d → IsIntegrallyClosedIn O Ω → ∀ (O' : Type) [CommRing O'] [IsDomain O'] [IsDiscreteValuationRing O'] [Algebra O O'] [IsLocalHom (algebraMap O O')] [Algebra.IsAlgebraic O O'] (Ω' : Type) [Field Ω'] [Algebra Ω Ω'] [Algebra O' Ω'] [Algebra O Ω'] [IsScalarTower O O' Ω'] [IsScalarTower O Ω Ω'], Function.Injective (algebraMap O' Ω') → pointIdeal O' (fun v => algebraMap Ω Ω' (y v)) = (pointIdeal O y).map (MvPolynomial.map (algebraMap O O')) ∧ IsModelOver (pointIdeal O' (fun v => algebraMap Ω Ω' (y v))) d := by
   intro O _ _ _ Ω _ _ _ K _ _ J _ y d hM hcl O' _ _ _ _ _ _ Ω' _ _ _ _ _ _ hinj
   haveI := hcl

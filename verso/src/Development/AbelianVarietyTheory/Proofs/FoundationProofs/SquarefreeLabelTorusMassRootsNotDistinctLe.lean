@@ -8,6 +8,13 @@ open Polynomial Classical GlobalTheory.BadShare
 namespace GlobalTheory.BadShare
 
 open Polynomial Classical in
+/- English proof (translation)
+Establish `hint : IsIntegral (ZMod g) x` using `Algebra.IsIntegral.isIntegral x`. Set `K` to `IntermediateField.adjoin (ZMod g) {x}`. Establish `hfin : Module.finrank (ZMod g) K = (minpoly (ZMod g) x).natDegree` using `IntermediateField.adjoin.finrank hint`. Use `haveI : FiniteDimensional (ZMod g) K := IntermediateField.adjoin.finiteDimensional hint`. Use `haveI : Finite K := Module.finite_of_finite (ZMod g)`.
+
+Use `letI : Fintype K := Fintype.ofFinite K`. Establish `hcard : Fintype.card K = g ^ (minpoly (ZMod g) x).natDegree`. Rewrite using `[← hfin, Module.card_eq_pow_finrank (K := ZMod g), ZMod.card]`. Set `x' : K` to `⟨x, IntermediateField.mem_adjoin_simple_self _ _⟩`. Establish `hx' : x' ≠ 0` using `fun h => hx (congrArg Subtype.val h)`.
+
+Use `FiniteField.pow_card_sub_one_eq_one x' hx'` as an intermediate fact. Rewrite `this` using `[hcard]`. Conclude with `congrArg Subtype.val this`.
+-/
 private theorem pow_card_pow_natDegree_minpoly_sub_one_eq_one {g : ℕ} [Fact g.Prime] (x : AlgebraicClosure (ZMod g)) (hx : x ≠ 0) :
     x ^ (g ^ (minpoly (ZMod g) x).natDegree - 1) = 1 := by
   have hint : IsIntegral (ZMod g) x := Algebra.IsIntegral.isIntegral x
@@ -26,6 +33,11 @@ private theorem pow_card_pow_natDegree_minpoly_sub_one_eq_one {g : ℕ} [Fact g.
   exact congrArg Subtype.val this
 
 open Polynomial Classical in
+/- English proof (translation)
+Establish `hx0 : x ≠ 0` using `by rintro rfl; simp [zero_pow hn.ne'] at hx`. Establish `hy0 : y ≠ 0` using `by rintro rfl; simp [zero_pow hm.ne'] at hy`. Take `⟨a, ha⟩` from `(_root_.GlobalTheory.BadShare.samePart_iff_of_ne_zero hl hx0 hy0).1 hs`. Rewrite using `[Nat.mem_primeFactors]`. Use `⟨hl, ?_, by positivity⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hdiv`. Establish `hcop : (n * m).Coprime l` using `(Nat.coprime_comm).1 ((Nat.Prime.coprime_iff_not_dvd hl).2 hdiv)`. Conclude with `hxy (_root_.GlobalTheory.BadShare.eq_of_pow_eq (M := n * m) (l := l) (a := a) hcop (by rw [pow_mul, hx, one_pow]) (by rw [mul_comm, pow_mul, hy, one_pow]) (by positivity) ha)`.
+-/
 private theorem mem_primeFactors_mul_of_same_of_ne {g : ℕ} [Fact g.Prime] (l : ℕ) (hl : l.Prime) (n m : ℕ)
     (hn : 0 < n) (hm : 0 < m) (x y : AlgebraicClosure (ZMod g)) (hx : x ^ n = 1) (hy : y ^ m = 1) (hxy : x ≠ y)
     (hs : _root_.GlobalTheory.BadShare.SamePart l x y) : l ∈ (n * m).primeFactors := by
@@ -40,6 +52,9 @@ private theorem mem_primeFactors_mul_of_same_of_ne {g : ℕ} [Fact g.Prime] (l :
     (by rw [pow_mul, hx, one_pow]) (by rw [mul_comm, pow_mul, hy, one_pow]) (by positivity) ha)
 
 open Polynomial Classical in
+/- English proof (translation)
+Establish `hix : IsIntegral (ZMod g) x` using `Algebra.IsIntegral.isIntegral x`. Establish `hiy : IsIntegral (ZMod g) y` using `Algebra.IsIntegral.isIntegral y`. Use `(minpoly.irreducible hix).coprime_iff_not_dvd.2 fun hd => h ?_` and prove the remaining obligations. Conclude with `eq_of_monic_of_associated (minpoly.monic hix) (minpoly.monic hiy) ((minpoly.irreducible hix).associated_of_dvd (minpoly.irreducible hiy) hd)`.
+-/
 private theorem isCoprime_minpoly_of_ne {g : ℕ} [Fact g.Prime] {x y : AlgebraicClosure (ZMod g)}
     (h : minpoly (ZMod g) x ≠ minpoly (ZMod g) y) : IsCoprime (minpoly (ZMod g) x) (minpoly (ZMod g) y) := by
   have hix : IsIntegral (ZMod g) x := Algebra.IsIntegral.isIntegral x
@@ -49,6 +64,15 @@ private theorem isCoprime_minpoly_of_ne {g : ℕ} [Fact g.Prime] {x y : Algebrai
     ((minpoly.irreducible hix).associated_of_dvd (minpoly.irreducible hiy) hd)
 
 open Polynomial Classical in
+/- English proof (translation)
+Use `set B := padicValNat l n`. Use `set m := n / l ^ B`. Establish `hnm : n = l ^ B * m` using `(Nat.mul_div_cancel' pow_padicValNat_dvd).symm`. Establish `hm0 : m ≠ 0` using `by rintro h; rw [h, mul_zero] at hnm; omega`. Establish `hcop : (l ^ B).Coprime m`.
+
+Use `Nat.coprime_ordCompl hl hn.ne'` as an intermediate fact. Rewrite `this` using `[Nat.factorization_def n hl]`. Conclude with `Nat.Coprime.pow_left _ this`. Use `haveI : NeZero m := ⟨hm0⟩`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t, l ^ B * t ≡ 1 [MOD m] := by`.
+
+Use `⟨(((l ^ B : ℕ) : ZMod m)⁻¹).val, ?_⟩` and prove the remaining obligations. Rewrite using `[← ZMod.natCast_eq_natCast_iff, Nat.cast_mul, ZMod.natCast_zmod_val, Nat.cast_one]`. Conclude with `ZMod.coe_mul_inv_eq_one _ hcop`. Use `⟨y ^ (l ^ B * t), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← pow_mul, mul_comm, ← mul_assoc, mul_comm m, ← hnm, pow_mul, hy, one_pow]`.
+
+Establish `hw : (y ^ l ^ B) ^ m = 1` using `by rw [← pow_mul, ← hnm, hy]`. Establish `key : ∀ a, (y ^ l ^ B) ^ a = (y ^ l ^ B) ^ (a % m)` using `fun a => by conv_lhs => rw [← Nat.div_add_mod a m, pow_add, pow_mul, hw, one_pow, one_mul]`. Rewrite using `[← pow_mul, mul_comm, pow_mul, key, ht, ← key, pow_one]`.
+-/
 private theorem exists_root_pow_eq_pow_padicVal {g : ℕ} [Fact g.Prime] (l : ℕ) (hl : l.Prime) (n : ℕ) (hn : 0 < n)
     (y : AlgebraicClosure (ZMod g)) (hy : y ^ n = 1) :
     ∃ z : AlgebraicClosure (ZMod g), z ^ (n / l ^ padicValNat l n) = 1 ∧
@@ -74,6 +98,17 @@ private theorem exists_root_pow_eq_pow_padicVal {g : ℕ} [Fact g.Prime] (l : �
     rw [← pow_mul, mul_comm, pow_mul, key, ht, ← key, pow_one]
 
 open Polynomial Classical in
+/- English proof (translation)
+Use `set B := padicValNat l (g ^ e - 1)`. Use `set m := (g ^ e - 1) / l ^ B`. Establish `hnm : g ^ e - 1 = l ^ B * m` using `(Nat.mul_div_cancel' pow_padicValNat_dvd).symm`. Establish `hcop : (l ^ (max a B)).Coprime m`. Use `Nat.coprime_ordCompl hl he.ne'` as an intermediate fact.
+
+Rewrite `this` using `[Nat.factorization_def _ hl]`. Conclude with `Nat.Coprime.pow_left _ this`. Establish `hK : z ^ l ^ max a B = x ^ l ^ max a B`. Establish `h1 : z ^ l ^ max a B = y ^ l ^ max a B`. Rewrite using `[← Nat.sub_add_cancel (le_max_right a B), pow_add, mul_comm, pow_mul, pow_mul, hzy]`.
+
+Establish `h2 : x ^ l ^ max a B = y ^ l ^ max a B`. Rewrite using `[← Nat.sub_add_cancel (le_max_left a B), pow_add, mul_comm, pow_mul, pow_mul, ha]`. Rewrite using `[h1, h2]`. Establish `h3 : z ^ (l ^ max a B * (g ^ d - 1)) = 1`. Rewrite using `[pow_mul, hK, ← pow_mul, mul_comm, pow_mul, hx, one_pow]`.
+
+Establish `h4 : z ^ Nat.gcd (l ^ max a B * (g ^ d - 1)) m = 1` using `pow_gcd_eq_one.2 ⟨h3, hz⟩`. Rewrite `h4` using `[Nat.Coprime.gcd_mul_left_cancel _ hcop]`. Establish `hzd : z ^ (g ^ d - 1) = 1`. Take `⟨k, hk⟩` from `Nat.gcd_dvd_left (g ^ d - 1) m`. Rewrite using `[hk, pow_mul, h4, one_pow]`.
+
+Establish `hze : z ^ (g ^ e - 1) = 1` using `by rw [hnm, mul_comm, pow_mul, hz, one_pow]`. Use `pow_gcd_eq_one.2 ⟨hzd, hze⟩` as an intermediate fact. Rewrite `this` using `[Nat.pow_sub_one_gcd_pow_sub_one]`. Then use the resulting hypothesis.
+-/
 private theorem pow_pow_gcd_sub_one_eq_one_of_same_prime_power {g : ℕ} [Fact g.Prime] (l : ℕ) (hl : l.Prime) (d e : ℕ) (he : 0 < g ^ e - 1)
     (x y z : AlgebraicClosure (ZMod g)) (hx : x ^ (g ^ d - 1) = 1)
     (a : ℕ) (ha : x ^ l ^ a = y ^ l ^ a)
@@ -105,6 +140,11 @@ private theorem pow_pow_gcd_sub_one_eq_one_of_same_prime_power {g : ℕ} [Fact g
   rwa [Nat.pow_sub_one_gcd_pow_sub_one] at this
 
 open Polynomial Classical in
+/- English proof (translation)
+Take `⟨hfin, hle⟩` from `(_root_.GlobalTheory.BadShare.samePart_roots_finite_ncard (AlgebraicClosure (ZMod g)) n l hn hl).2 z`. Use `le_trans ?_ hle` and prove the remaining obligations. Rewrite using `[← Set.ncard_coe_finset]`. Apply `Set.ncard_le_ncard _ hfin` to reduce the goal to its premises. Introduce `x hx`.
+
+Simplify using `only [Finset.coe_filter, Multiset.mem_toFinset, mem_nthRoots hn, Set.mem_setOf_eq] at hx ⊢`. Conclude with `hx`.
+-/
 private theorem card_nthRoots_samePrimePower_le {g : ℕ} [Fact g.Prime] (l n : ℕ) (hl : l.Prime) (hn : 0 < n) (z : AlgebraicClosure (ZMod g)) :
     ((nthRoots n (1 : AlgebraicClosure (ZMod g))).toFinset.filter (fun x => _root_.GlobalTheory.BadShare.SamePart l x z)).card ≤
       l ^ padicValNat l n := by
@@ -117,6 +157,23 @@ private theorem card_nthRoots_samePrimePower_le {g : ℕ} [Fact g.Prime] (l n : 
   exact hx
 
 open Polynomial Classical in
+/- English proof (translation)
+Use `set Xd := (nthRoots (g ^ d - 1) (1 : AlgebraicClosure (ZMod g))).toFinset`. Use `set Ye := (nthRoots (g ^ e - 1) (1 : AlgebraicClosure (ZMod g))).toFinset`. Use `set Rc := (nthRoots (g ^ Nat.gcd d e - 1) (1 : AlgebraicClosure (ZMod g))).toFinset`. Use `set Y' := Rc.biUnion (fun z => Ye.filter (fun y => _root_.GlobalTheory.BadShare.SamePart l y z))`. Establish `hg1 : 1 < g` using `(Fact.out : g.Prime).one_lt`.
+
+Establish `hd0 : 0 < d`. Break down `Nat.eq_zero_or_pos d with h | h` into its components or cases. Rewrite `hd` using `[h, pow_zero]`. Use linear arithmetic over natural numbers and integers. Conclude with `h`.
+
+Establish `hcpos : 0 < g ^ Nat.gcd d e - 1` using `Nat.sub_pos_of_lt (Nat.one_lt_pow (Nat.gcd_pos_of_pos_left e hd0).ne' hg1)`. Establish `hsub : (Xd ×ˢ Ye).filter (fun p => _root_.GlobalTheory.BadShare.SamePart l p.1 p.2) ⊆ Y'.biUnion (fun y => (Xd.filter (fun x => _root_.GlobalTheory.BadShare.SamePart l x y)) ×ˢ {y})`. Introduce and unpack `⟨x, y⟩ hp`. Simplify using `only [Finset.mem_filter, Finset.mem_product, Xd, Ye, Multiset.mem_toFinset, mem_nthRoots hd, mem_nthRoots he] at hp`. Take `⟨⟨hx, hy⟩, hs⟩` from `hp`.
+
+Establish `hx0 : x ≠ 0` using `by rintro rfl; simp [zero_pow hd.ne'] at hx`. Establish `hy0 : y ≠ 0` using `by rintro rfl; simp [zero_pow he.ne'] at hy`. Take `⟨a, ha⟩` from `(_root_.GlobalTheory.BadShare.samePart_iff_of_ne_zero hl hx0 hy0).1 hs`. Take `⟨z, hz, hzy⟩` from `exists_root_pow_eq_pow_padicVal l hl _ he y hy`. Establish `hc : z ^ (g ^ Nat.gcd d e - 1) = 1` using `pow_pow_gcd_sub_one_eq_one_of_same_prime_power l hl d e he x y z hx a ha hz hzy`.
+
+Establish `hz0 : z ≠ 0` using `by rintro rfl; simp [zero_pow hcpos.ne'] at hc`. Simplify using `only [Finset.mem_biUnion, Finset.mem_product, Finset.mem_filter, Finset.mem_singleton, Y', Rc, Xd, Ye, Multiset.mem_toFinset, mem_nthRoots hd, mem_nthRoots he, mem_nthRoots hcpos]`. Conclude with `⟨y, ⟨z, hc, hy, (_root_.GlobalTheory.BadShare.samePart_iff_of_ne_zero hl hy0 hz0).2 ⟨_, hzy.symm⟩⟩, ⟨hx, hs⟩, rfl⟩`. Use `(Finset.card_le_card hsub).trans ?_` and prove the remaining obligations. Use `(Finset.card_biUnion_le).trans ?_` and prove the remaining obligations.
+
+Establish `h1 : ∀ y ∈ Y', ((Xd.filter (fun x => _root_.GlobalTheory.BadShare.SamePart l x y)) ×ˢ {y}).card ≤ l ^ padicValNat l (g ^ d - 1)`. Introduce `y _`. Rewrite using `[Finset.card_product, Finset.card_singleton, mul_one]`. Conclude with `card_nthRoots_samePrimePower_le l _ hl hd y`. Use `(Finset.sum_le_sum h1).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_const, smul_eq_mul]`. Use `Nat.mul_le_mul_right _ ?_` and prove the remaining obligations. Use `(Finset.card_biUnion_le).trans ?_` and prove the remaining obligations. Use `(Finset.sum_le_sum (fun z _ => card_nthRoots_samePrimePower_le l _ hl he z)).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_const, smul_eq_mul]`.
+
+Use `Nat.mul_le_mul_right _ ?_` and prove the remaining obligations. Conclude with `(Multiset.toFinset_card_le _).trans (card_nthRoots _ _)`.
+-/
 private theorem card_root_pairs_samePrimePower_le {g : ℕ} [Fact g.Prime] (l : ℕ) (hl : l.Prime) (d e : ℕ)
     (hd : 0 < g ^ d - 1) (he : 0 < g ^ e - 1) :
     (((nthRoots (g ^ d - 1) (1 : AlgebraicClosure (ZMod g))).toFinset ×ˢ
@@ -165,6 +222,21 @@ private theorem card_root_pairs_samePrimePower_le {g : ℕ} [Fact g.Prime] (l : 
   exact (Multiset.toFinset_card_le _).trans (card_nthRoots _ _)
 
 open Polynomial Classical in
+/- English proof (translation)
+Establish `hg1 : 1 < g` using `(Fact.out : g.Prime).one_lt`. Establish `hd : 0 < g ^ d - 1` using `Nat.sub_pos_of_lt (Nat.one_lt_pow (by omega) hg1)`. Establish `he : 0 < g ^ e - 1` using `Nat.sub_pos_of_lt (Nat.one_lt_pow (by omega) hg1)`. Use `set S := (((nthRoots (g ^ d - 1) (1 : AlgebraicClosure (ZMod g))).toFinset ×ˢ (nthRoots (g ^ e - 1) (1 : AlgebraicClosure (ZMod g))).toFinset).filter (fun p => _root_.GlobalTheory.BadShare.SamePart l p.1 p.2)).filter (fun p => (minpoly (ZMod g) p.1).natDegree = d ∧ (minpoly (ZMod …`. Establish `hU` using `(_root_.GlobalTheory.BadShare.mass_union_bounds g N).2.2.1 _ S (_root_.GlobalTheory.BadShare.TwoFactors.PairFor d e l) (fun p f => minpoly (ZMod g) p.1 * minpoly (ZMod g) p.2 ∣ f) (by`.
+
+Introduce `f _ ⟨x, y, hx, hy, hs, hdx, hdy, hne', hPf, hQf⟩`. Use `⟨(x, y), ?_, (isCoprime_minpoly_of_ne hne').mul_dvd hPf hQf⟩` and prove the remaining obligations. Rewrite using `[hS, Finset.mem_filter, Finset.mem_filter, Finset.mem_product, Multiset.mem_toFinset, Multiset.mem_toFinset, mem_nthRoots hd, mem_nthRoots he]`. Conclude with `⟨⟨⟨hx, hy⟩, hs⟩, hdx, hdy, hne'⟩)`. Use `hU.trans ?_` and prove the remaining obligations.
+
+Establish `hterm : ∀ p ∈ S, _root_.GlobalTheory.BadShare.mass g N (fun f => minpoly (ZMod g) p.1 * minpoly (ZMod g) p.2 ∣ f) ≤ 1 / (((g ^ d - 1 : ℕ) : ℝ) * ((g ^ e - 1 : ℕ) : ℝ))`. Introduce and unpack `⟨x, y⟩ hp`. Rewrite `hp` using `[hS, Finset.mem_filter, Finset.mem_filter, Finset.mem_product, Multiset.mem_toFinset, Multiset.mem_toFinset, mem_nthRoots hd, mem_nthRoots he]`. Take `⟨⟨⟨hx, hy⟩, -⟩, hdx, hdy, hne'⟩` from `hp`. Establish `hix : IsIntegral (ZMod g) x` using `Algebra.IsIntegral.isIntegral x`.
+
+Establish `hiy : IsIntegral (ZMod g) y` using `Algebra.IsIntegral.isIntegral y`. Establish `hx0 : x ≠ 0` using `by rintro rfl; simp [zero_pow hd.ne'] at hx`. Establish `hy0 : y ≠ 0` using `by rintro rfl; simp [zero_pow he.ne'] at hy`. Establish `hmem : minpoly (ZMod g) x * minpoly (ZMod g) y ∈ _root_.GlobalTheory.BadShare.sqSet g (d + e)`. Rewrite using `[_root_.GlobalTheory.BadShare.mem_sqSet]`.
+
+Use `⟨(minpoly.monic hix).mul (minpoly.monic hiy), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[natDegree_mul (minpoly.ne_zero hix) (minpoly.ne_zero hiy), hdx, hdy]`. Conclude with `squarefree_mul_iff.2 ⟨(isCoprime_minpoly_of_ne hne').isRelPrime, (minpoly.irreducible hix).squarefree, (minpoly.irreducible hiy).squarefree⟩`. Rewrite using `[mul_coeff_zero]`. Conclude with `mul_ne_zero (minpoly.coeff_zero_ne_zero hix hx0) (minpoly.coeff_zero_ne_zero hiy hy0)`.
+
+Use `((_root_.GlobalTheory.BadShare.divisor_bound g).2 N _ _ hmem).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[_root_.GlobalTheory.BadShare.torusCard_mul (minpoly.ne_zero hix) (minpoly.ne_zero hiy), _root_.GlobalTheory.BadShare.torusCard_irreducible (minpoly.irreducible hix), _root_.GlobalTheory.BadShare.torusCard_irreducible (minpoly.irreducible hiy), hdx, hdy, one_div, Nat.cast_mul]`. Use `(Finset.sum_le_sum hterm).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_const, nsmul_eq_mul, mul_one_div]`. Use `gcongr`.
+
+Conclude with `(Finset.card_filter_le _ _).trans (card_root_pairs_samePrimePower_le l hl d e hd he)` after adjusting the coercions.
+-/
 private theorem mass_pairFor_le {g : ℕ} [Fact g.Prime] (N l : ℕ) (hl : l.Prime) (d e : ℕ) (hd1 : 1 ≤ d) (he1 : 1 ≤ e) :
     _root_.GlobalTheory.BadShare.mass g N (_root_.GlobalTheory.BadShare.TwoFactors.PairFor d e l) ≤
       (((g ^ Nat.gcd d e - 1) * l ^ padicValNat l (g ^ e - 1) * l ^ padicValNat l (g ^ d - 1) : ℕ) : ℝ) /
@@ -212,6 +284,23 @@ private theorem mass_pairFor_le {g : ℕ} [Fact g.Prime] (N l : ℕ) (hl : l.Pri
   exact_mod_cast (Finset.card_filter_le _ _).trans (card_root_pairs_samePrimePower_le l hl d e hd he)
 
 open Polynomial Classical in
+/- English proof (translation)
+Rewrite `hexc` using `[_root_.GlobalTheory.BadShare.bb_iff]`. Use `push_neg at hexc`. Take `⟨-, hexc⟩` from `hexc`. Establish `hPd : (l ^ padicValNat l (g ^ d - 1)) ^ 4 ≤ g ^ d`. Rewrite using `[← pow_mul, mul_comm]`.
+
+Conclude with `hexc hl d hd1 hdN`. Establish `hPe : (l ^ padicValNat l (g ^ e - 1)) ^ 4 ≤ g ^ e`. Rewrite using `[← pow_mul, mul_comm]`. Conclude with `hexc hl e he1 heN`. Use `set c := Nat.gcd d e`.
+
+Establish `hcd : c ≤ d` using `Nat.le_of_dvd (by omega) (Nat.gcd_dvd_left d e)`. Establish `hce : c ≤ e` using `Nat.le_of_dvd (by omega) (Nat.gcd_dvd_right d e)`. Establish `hnat : ((g ^ c - 1) * l ^ padicValNat l (g ^ e - 1) * l ^ padicValNat l (g ^ d - 1)) ^ 4 ≤ g ^ (3 * (d + e))`. Establish `h1 : (g ^ c - 1) ^ 4 ≤ g ^ (2 * (d + e))` using `(Nat.pow_le_pow_left (Nat.sub_le _ _) 4).trans (by rw [← pow_mul]; exact Nat.pow_le_pow_right (by omega) (by omega))`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[mul_pow, mul_pow]`. Use `_ ≤ g ^ (2 * (d + e)) * g ^ e * g ^ d := by gcongr`. Use `_ = g ^ (3 * (d + e)) := by rw [← pow_add, ← pow_add]; ring_nf`. Use `set q : ℝ := (g : ℝ) ^ ((1 : ℝ) / 4) with hq`. Establish `hg0 : (0 : ℝ) < g` using `by exact_mod_cast (by omega : 0 < g)`.
+
+Establish `hq0 : 0 < q` using `Real.rpow_pos_of_pos hg0 _`. Establish `hq4 : q ^ 4 = g`. Rewrite using `[hq, ← Real.rpow_natCast, ← Real.rpow_mul hg0.le]`. Evaluate the numerical expressions. Establish `hX : (((g ^ c - 1) * l ^ padicValNat l (g ^ e - 1) * l ^ padicValNat l (g ^ d - 1) : ℕ) : ℝ) ≤ q ^ (3 * (d + e))`.
+
+Establish `h4 : (q ^ (3 * (d + e))) ^ 4 = (g : ℝ) ^ (3 * (d + e))` using `by rw [← pow_mul, mul_comm, pow_mul, hq4]`. Rewrite using `[← pow_le_pow_iff_left₀ (by positivity) (by positivity) (by norm_num : (4 : ℕ) ≠ 0), h4]`. Conclude with `hnat` after adjusting the coercions. Establish `hden : ∀ k, 1 ≤ k → (4095 / 4096 : ℝ) * q ^ (4 * k) ≤ ((g ^ k - 1 : ℕ) : ℝ)`. Introduce `k hk`.
+
+Establish `hgk : g ≤ g ^ k` using `Nat.le_self_pow (by omega) g`. Rewrite using `[Nat.cast_sub (Nat.one_le_pow _ _ (by omega)), Nat.cast_pow, Nat.cast_one, pow_mul, hq4]`. Establish `: (4096 : ℝ) ≤ (g : ℝ) ^ k` using `by exact_mod_cast (by omega : 4096 ≤ g ^ k)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hDd` using `hden d hd1`.
+
+Establish `hDe` using `hden e he1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[one_div, inv_pow]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem pair_ratio_le_of_not_bb {g : ℕ} [Fact g.Prime] (hg : 2 ^ 12 ≤ g) (N l d e : ℕ) (hd1 : 1 ≤ d) (he1 : 1 ≤ e)
     (hdN : d ≤ N) (heN : e ≤ N) (hl : l.Prime) (hexc : ¬ _root_.GlobalTheory.BadShare.BB g N l) :
     (((g ^ Nat.gcd d e - 1) * l ^ padicValNat l (g ^ e - 1) * l ^ padicValNat l (g ^ d - 1) : ℕ) : ℝ) /
@@ -263,6 +352,9 @@ private theorem pair_ratio_le_of_not_bb {g : ℕ} [Fact g.Prime] (hg : 2 ^ 12 �
         ring
 
 open Polynomial Classical in
+/- English proof (translation)
+Establish `h : 2 ^ n.primeFactors.card ≤ n`. Use `(Finset.pow_card_le_prod _ _ 2 fun p hp => (Nat.prime_of_mem_primeFactors hp).two_le).trans ?_` and prove the remaining obligations. Conclude with `Nat.le_of_dvd (Nat.pos_of_ne_zero hn) (Nat.prod_primeFactors_dvd n)`. Rewrite using `[Real.le_logb_iff_rpow_le (by norm_num) (by exact_mod_cast Nat.pos_of_ne_zero hn), Real.rpow_natCast]`. Conclude with `h` after adjusting the coercions.
+-/
 private theorem card_primeFactors_le_logb_two (n : ℕ) (hn : n ≠ 0) : (n.primeFactors.card : ℝ) ≤ Real.logb 2 n := by
   have h : 2 ^ n.primeFactors.card ≤ n := by
     refine (Finset.pow_card_le_prod _ _ 2 fun p hp => (Nat.prime_of_mem_primeFactors hp).two_le).trans ?_
@@ -271,6 +363,21 @@ private theorem card_primeFactors_le_logb_two (n : ℕ) (hn : n ≠ 0) : (n.prim
   exact_mod_cast h
 
 open Polynomial Classical in
+/- English proof (translation)
+Establish `hA : ∑ d ∈ Finset.Icc 1 N, (d : ℝ) * r ^ d ≤ r / (1 - r) ^ 2`. Establish `hs : Summable (fun n : ℕ => (n : ℝ) * r ^ n)`. Simplify using `using summable_pow_mul_geometric_of_norm_lt_one 1 (by rwa [Real.norm_eq_abs, abs_of_nonneg hr0])`. Rewrite using `[← tsum_coe_mul_geometric_of_norm_lt_one (by rwa [Real.norm_eq_abs, abs_of_nonneg hr0])]`. Conclude with `hs.sum_le_tsum _ (fun i _ => by positivity)`.
+
+Establish `hB : ∑ e ∈ Finset.Icc 1 N, r ^ e ≤ r / (1 - r)`. Establish `hs : Summable (fun n : ℕ => r ^ n)` using `summable_geometric_of_lt_one hr0 hr1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun e he => ?_` and prove the remaining obligations.
+
+Rewrite using `[← pow_succ']`. Use `congr 1`. Use `(Finset.mem_Icc.1 he).1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `_ ≤ r * ∑' n : ℕ, r ^ n := by gcongr`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.range_eq_Ico]`. Conclude with `Finset.sum_nbij' (fun e => e - 1) (fun n => n + 1) (by intro a ha; simp at ha ⊢; omega) (by intro a ha; simp at ha ⊢; omega) (by intro a ha; simp at ha; omega) (by intro a ha; simp) (by intro a ha; rfl)`. Use `_ ≤ ∑' n : ℕ, r ^ n := hs.sum_le_tsum _ (fun i _ => by positivity)`. Use `_ = r / (1 - r) := by rw [tsum_geometric_of_lt_one hr0 hr1]; ring`.
+
+Establish `hsplit : ∑ de ∈ Finset.Icc 1 N ×ˢ Finset.Icc 1 N, ((de.1 + de.2 : ℕ) : ℝ) * r ^ (de.1 + de.2) = 2 * ((∑ d ∈ Finset.Icc 1 N, (d : ℝ) * r ^ d) * ∑ e ∈ Finset.Icc 1 N, r ^ e)`. Rewrite using `[Finset.sum_product, Finset.sum_mul_sum]`. Establish `: ∀ d e : ℕ, ((d + e : ℕ) : ℝ) * r ^ (d + e) = (d : ℝ) * r ^ d * r ^ e + (e : ℝ) * r ^ e * r ^ d`. Introduce `d e`. Use `push_cast`.
+
+Rewrite using `[pow_add]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [this, Finset.sum_add_distrib]`. Use `nth_rewrite 2 [Finset.sum_comm]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hsplit]`. Establish `h1r : 0 < 1 - r` using `by linarith`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem sum_icc_prod_add_mul_pow_le (N : ℕ) {r : ℝ} (hr0 : 0 ≤ r) (hr1 : r < 1) :
     ∑ de ∈ Finset.Icc 1 N ×ˢ Finset.Icc 1 N, ((de.1 + de.2 : ℕ) : ℝ) * r ^ (de.1 + de.2) ≤
       2 * r ^ 2 / (1 - r) ^ 3 := by
@@ -310,6 +417,45 @@ private theorem sum_icc_prod_add_mul_pow_le (N : ℕ) {r : ℝ} (hr0 : 0 ≤ r) 
 
 open Polynomial Classical in
 
+/- English proof (translation)
+Introduce `g _ N hg`. Establish `hg1 : 1 < g` using `(Fact.out : g.Prime).one_lt`. Use `set L : ℕ × ℕ → Finset ℕ := fun de => ((g ^ de.1 - 1) * (g ^ de.2 - 1)).primeFactors.filter (fun l => ¬ _root_.GlobalTheory.BadShare.BB g N l) with hL`. Use `set s := (Finset.Icc 1 N ×ˢ Finset.Icc 1 N).sigma L with hs`. Use `set One : (ZMod g)[X] → Prop := fun f => ∃ l, Nat.Prime l ∧ ¬_root_.GlobalTheory.BadShare.BB g N l ∧ ∃ P : (ZMod g)[X], P.Monic ∧ Irreducible P ∧ P ∣ f ∧ ∃ x ∈ P.aroots (AlgebraicClosure (ZMod g)), ∃ y ∈ P.aroots (AlgebraicClosure (ZMod g)), x ≠ y ∧ _root_.GlobalTheory.BadShare.S …`.
+
+Use `set B : Option ((_ : ℕ × ℕ) × ℕ) → (ZMod g)[X] → Prop := fun i => match i with`. Consider the case `none => One`. Consider the case `some t => _root_.GlobalTheory.BadShare.TwoFactors.PairFor t.1.1 t.1.2 t.2 with hB`. Establish `hU` using `(_root_.GlobalTheory.BadShare.mass_union_bounds g N).2.2.1 _ (Finset.insertNone s) (fun f => ¬ _root_.GlobalTheory.BadShare.RootsApart g N f) B (by`. Introduce `f hf hnot`.
+
+Rewrite `hf` using `[_root_.GlobalTheory.BadShare.mem_sqSet]`. Take `⟨hmon, hdeg, -, hc⟩` from `hf`. Establish `hf0 : f ≠ 0` using `hmon.ne_zero`. Unfold `_root_.GlobalTheory.BadShare.RootsApart at hnot`. Use `push_neg at hnot`.
+
+Take `⟨l, hl, hexc, x, hx, y, hy, hsame, hxy⟩` from `hnot`. Establish `hix : IsIntegral (ZMod g) x` using `Algebra.IsIntegral.isIntegral x`. Establish `hiy : IsIntegral (ZMod g) y` using `Algebra.IsIntegral.isIntegral y`. Establish `hPf : minpoly (ZMod g) x ∣ f` using `minpoly.dvd _ _ (mem_aroots.mp hx).2`. Establish `hQf : minpoly (ZMod g) y ∣ f` using `minpoly.dvd _ _ (mem_aroots.mp hy).2`.
+
+Distinguish the cases in `hPQ : minpoly (ZMod g) x = minpoly (ZMod g) y`. Use `⟨none, Finset.none_mem_insertNone, ?_⟩` and prove the remaining obligations. Use `⟨l, hl, hexc, minpoly (ZMod g) x, minpoly.monic hix, minpoly.irreducible hix, hPf, x, ?_, y, ?_, hxy, hsame⟩` and prove the remaining obligations. Conclude with `mem_aroots.mpr ⟨minpoly.ne_zero hix, minpoly.aeval _ _⟩`. Rewrite using `[hPQ]`.
+
+Conclude with `mem_aroots.mpr ⟨minpoly.ne_zero hiy, minpoly.aeval _ _⟩`. Establish `hdx : 1 ≤ (minpoly (ZMod g) x).natDegree` using `minpoly.natDegree_pos hix`. Establish `hdy : 1 ≤ (minpoly (ZMod g) y).natDegree` using `minpoly.natDegree_pos hiy`. Establish `hlx : (minpoly (ZMod g) x).natDegree ≤ N` using `hdeg ▸ natDegree_le_of_dvd hPf hf0`. Establish `hly : (minpoly (ZMod g) y).natDegree ≤ N` using `hdeg ▸ natDegree_le_of_dvd hQf hf0`.
+
+Establish `hpx` using `pow_card_pow_natDegree_minpoly_sub_one_eq_one x (_root_.GlobalTheory.BadShare.root_ne_zero hc hx)`. Establish `hpy` using `pow_card_pow_natDegree_minpoly_sub_one_eq_one y (_root_.GlobalTheory.BadShare.root_ne_zero hc hy)`. Establish `hdpos : 0 < g ^ (minpoly (ZMod g) x).natDegree - 1` using `Nat.sub_pos_of_lt (Nat.one_lt_pow (by omega) hg1)`. Establish `hepos : 0 < g ^ (minpoly (ZMod g) y).natDegree - 1` using `Nat.sub_pos_of_lt (Nat.one_lt_pow (by omega) hg1)`. Use `⟨some ⟨((minpoly (ZMod g) x).natDegree, (minpoly (ZMod g) y).natDegree), l⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Finset.some_mem_insertNone, hs, Finset.mem_sigma, Finset.mem_product, Finset.mem_Icc, Finset.mem_Icc, hL, Finset.mem_filter]`. Conclude with `⟨⟨⟨hdx, hlx⟩, hdy, hly⟩, mem_primeFactors_mul_of_same_of_ne l hl _ _ hdpos hepos x y hpx hpy hxy hsame, hexc⟩`. Conclude with `⟨x, y, hpx, hpy, hsame, rfl, rfl, hPQ, hPf, hQf⟩)`. Use `hU.trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_insertNone]`.
+
+Establish `hOne' : _root_.GlobalTheory.BadShare.mass g N (B none) ≤ 12 * Real.logb 2 g / Real.sqrt g` using `_root_.GlobalTheory.BadShare.mass_samePart_one_factor g N hg`. Establish `hTwo : ∑ t ∈ s, _root_.GlobalTheory.BadShare.mass g N (B (some t)) ≤ 7 / 2 * Real.logb 2 g / Real.sqrt g` using `by set q : ℝ := (g : ℝ) ^ ((1 : ℝ) / 4) with hq`. Establish `hg0 : (0 : ℝ) < g` using `by exact_mod_cast (by omega : 0 < g)`. Establish `hq0 : 0 < q` using `Real.rpow_pos_of_pos hg0 _`. Establish `hq4 : q ^ 4 = g` using `by rw [hq, ← Real.rpow_natCast, ← Real.rpow_mul hg0.le]; norm_num`.
+
+Establish `hq2 : q ^ 2 = Real.sqrt g`. Rewrite using `[Real.sqrt_eq_rpow, hq, ← Real.rpow_natCast, ← Real.rpow_mul hg0.le]`. Evaluate the numerical expressions. Establish `hq8 : 8 ≤ q`. Rewrite using `[← pow_le_pow_iff_left₀ (by norm_num) hq0.le (by norm_num : (4 : ℕ) ≠ 0), hq4]`.
+
+Establish `: (4096 : ℝ) ≤ g` using `by exact_mod_cast hg`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set r : ℝ := 1 / q with hr`. Establish `hr0 : 0 ≤ r` using `by positivity`. Establish `hr8 : r ≤ 1 / 8` using `by rw [hr]; exact one_div_le_one_div_of_le (by norm_num) hq8`.
+
+Establish `hr2 : r ^ 2 = 1 / Real.sqrt g` using `by rw [hr, div_pow, one_pow, hq2]`. Establish `hlb : 0 ≤ Real.logb 2 g` using `Real.logb_nonneg (by norm_num) (by exact_mod_cast hg1.le)`. Rewrite using `[hs, Finset.sum_sigma]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun de hde => Finset.sum_le_sum fun l hl => ?_` and prove the remaining obligations.
+
+Rewrite `hde` using `[Finset.mem_product, Finset.mem_Icc, Finset.mem_Icc]`. Rewrite `hl` using `[hL, Finset.mem_filter]`. Establish `hlp : l.Prime` using `Nat.prime_of_mem_primeFactors hl.1`. Conclude with `(mass_pairFor_le N l hlp de.1 de.2 hde.1.1 hde.2.1).trans (pair_ratio_le_of_not_bb hg N l de.1 de.2 hde.1.1 hde.2.1 hde.1.2 hde.2.2 hlp hl.2)`. Use `_ ≤ ∑ de ∈ Finset.Icc 1 N ×ˢ Finset.Icc 1 N, (Real.logb 2 g * (4096 / 4095 : ℝ) ^ 2) * (((de.1 + de.2 : ℕ) : ℝ) * r ^ (de.1 + de.2)) := by`.
+
+Use `Finset.sum_le_sum fun de hde => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_const, nsmul_eq_mul]`. Rewrite `hde` using `[Finset.mem_product, Finset.mem_Icc, Finset.mem_Icc]`. Establish `h1` using `Nat.one_lt_pow (n := de.1) (by omega) hg1`. Establish `h2` using `Nat.one_lt_pow (n := de.2) (by omega) hg1`.
+
+Establish `hne : (g ^ de.1 - 1) * (g ^ de.2 - 1) ≠ 0` using `mul_ne_zero (by omega) (by omega)`. Establish `hle : (g ^ de.1 - 1) * (g ^ de.2 - 1) ≤ g ^ (de.1 + de.2)`. Rewrite using `[pow_add]`. Conclude with `Nat.mul_le_mul (Nat.sub_le _ _) (Nat.sub_le _ _)`. Establish `hcard : ((L de).card : ℝ) ≤ ((de.1 + de.2 : ℕ) : ℝ) * Real.logb 2 g`.
+
+Use `(Nat.cast_le.2 (Finset.card_filter_le _ _)).trans ((card_primeFactors_le_logb_two _ hne).trans ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Use `_ = (Real.logb 2 g * (4096 / 4095 : ℝ) ^ 2) * ∑ de ∈ Finset.Icc 1 N ×ˢ Finset.Icc 1 N, (((de.1 + de.2 : ℕ) : ℝ) * r ^ (de.1 + de.2)) := by rw [Finset.mul_sum]`. Use `_ ≤ (Real.logb 2 g * (4096 / 4095 : ℝ) ^ 2) * (2 * r ^ 2 / (7 / 8) ^ 3) := by gcongr`.
+
+Use `(sum_icc_prod_add_mul_pow_le N hr0 (by linarith)).trans ?_` and prove the remaining obligations. Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = ((4096 / 4095 : ℝ) ^ 2 * 1024 / 343) * (Real.logb 2 g * r ^ 2) := by ring`. Use `_ ≤ 7 / 2 * (Real.logb 2 g * r ^ 2) := mul_le_mul_of_nonneg_right (by norm_num) (by positivity)`.
+
+Use `_ = 7 / 2 * Real.logb 2 g / Real.sqrt g := by rw [hr2]; ring`. Establish `hlog : Real.logb 2 g = Real.log g / Real.log 2` using `rfl`. Establish `hl2` using `Real.log_two_gt_d9`. Establish `hlg : 0 ≤ Real.log g` using `Real.log_nonneg (by exact_mod_cast hg1.le)`. Establish `hsq : 0 < Real.sqrt g` using `Real.sqrt_pos.2 (by exact_mod_cast (by omega : 0 < g))`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_le_iff₀ (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem _root_.GlobalTheory.BadShare.mass_not_rootsApart_le : ∀ (g : ℕ) [Fact g.Prime], ∀ N : ℕ, 2 ^ 12 ≤ g →
     (_root_.GlobalTheory.BadShare.mass g N fun f => ¬ _root_.GlobalTheory.BadShare.RootsApart g N f) ≤ 23 * Real.log g / Real.sqrt g := by
   intro g _ N hg

@@ -10,5 +10,8 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.CompanionTheory.FreeQuotProof GlobalTheory.CompanionTheory.Hypotheses₂ GlobalTheory.CompanionTheory.Hypotheses₂.FreeQuot
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.NormPrime.norm_notMem_iff | exact GlobalTheory.CompanionTheory.NormPrime.norm_notMem_iff | (intros; apply GlobalTheory.CompanionTheory.NormPrime.norm_notMem_iff <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.norm_not_mem_prime_iff : ∀ {A B : Type} [CommRing A] [CommRing B] [Algebra A B] [Module.Free A B] [Module.Finite A B] (e : B) (p : Ideal A), p.IsPrime → (Algebra.norm A e ∉ p ↔ ∀ q : Ideal B, q.IsPrime → q.comap (algebraMap A B) = p → e ∉ q) := by
   first | exact @GlobalTheory.CompanionTheory.NormPrime.norm_notMem_iff | exact GlobalTheory.CompanionTheory.NormPrime.norm_notMem_iff | (intros; apply GlobalTheory.CompanionTheory.NormPrime.norm_notMem_iff <;> assumption)

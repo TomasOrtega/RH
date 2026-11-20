@@ -16,6 +16,15 @@ set_option autoImplicit false
 
 namespace GlobalTheory.ArFormMul
 
+/- English proof (translation)
+Introduce `k _ X p D h t j θ hf hθ`. Establish `hpt : ∀ σ (x : (h.atlas σ).Pt), ((fun σ => (h.atlas σ).fn (t σ)) * θ) σ x = ((t σ x.pt : ℝ) : ℂ) • θ σ x` using `fun σ x => by show algebraMap ℂ _ _ * θ σ x = _`. Rewrite using `[Algebra.smul_def]`. Use `⟨fun σ => ⟨GlobalTheory.CxForm.FormMul.isForm_mul _ _ _ (hf.1 σ).1 (hθ.1 σ).1, fun x => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hpt]`.
+
+Take `⟨hT, hR⟩` from `(hθ.1 σ).2 x`. Use `⟨fun S hS => hT S ?_, fun S => ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `hS` to reduce the goal to its premises. Rewrite using `[map_smul, Finsupp.smul_apply, h0, smul_zero]`.
+
+Rewrite using `[map_smul, map_smul, map_smul, Finsupp.smul_apply, Finsupp.smul_apply, hR S, smul_eq_mul, smul_eq_mul, map_mul, Complex.conj_ofReal]`. Introduce `σ σ' x x' e hc`. Establish `h0` using `hf.2 σ σ' x x' e hc`. Establish `h1` using `hθ.2 σ σ' x x' e hc`. Rewrite `h0` using `[pow_zero, one_smul]`.
+
+Use `show GlobalTheory.CxForm.swap ((h.atlas σ').fn (t σ') x' * θ σ' x') = _ • ((h.atlas σ).fn (t σ) x * θ σ x)`. Rewrite using `[map_mul, h0, h1, mul_smul_comm]`.
+-/
 theorem isArForm_fn_mul : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (D : ℕ) (h : IsRegVar p D) (t : ∀ σ : k →+* ℂ, CxPts p σ → ℝ) (j : ℕ) (θ : h.Fld), h.IsArForm 0 (fun σ => (h.atlas σ).fn (t σ)) → h.IsArForm j θ → h.IsArForm j ((fun σ => (h.atlas σ).fn (t σ)) * θ) := by
   intro k _ X p D h t j θ hf hθ
   have hpt : ∀ σ (x : (h.atlas σ).Pt), ((fun σ => (h.atlas σ).fn (t σ)) * θ) σ x =

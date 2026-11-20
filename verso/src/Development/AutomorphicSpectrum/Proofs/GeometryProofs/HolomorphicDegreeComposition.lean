@@ -18,6 +18,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.DegComp
 
+/- English proof (translation)
+Establish `hU : IsOpen ((B.chart j).target ∩ (B.chart j).symm ⁻¹' (π ⁻¹' (A.chart k).source))` using `(B.chart j).isOpen_inter_preimage_symm ((A.chart k).open_source.preimage hπ.1)`. Establish `hI : Set.InjOn (A.chart k ∘ π ∘ (B.chart j).symm) ((B.chart j).target ∩ (B.chart j).symm ⁻¹' (π ⁻¹' (A.chart k).source))`. Introduce `a ha b hb hab`. Conclude with `(B.chart j).symm.injOn ha.1 hb.1 (hinj ((A.chart k).injOn ha.2 hb.2 hab))`. Establish `hb` using `GlobalTheory.InjHol.bijective_fderiv_of_injOn e _ (A.chart k ∘ π ∘ (B.chart j).symm) hU (fun w hw => (hπ.2 j k w hw).differentiableAt.differentiableWithinAt) hI y ⟨hy, hk⟩`.
+
+Introduce `h0`. Establish `hlt` using `LinearMap.bot_lt_ker_of_det_eq_zero h0`. Establish `hker : LinearMap.ker (fderiv ℂ (A.chart k ∘ π ∘ (B.chart j).symm) y : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ)) = ⊥` using `LinearMap.ker_eq_bot.mpr hb.1`. Rewrite `hlt` using `[hker]`. Conclude with `lt_irrefl _ hlt`.
+-/
 theorem det_ne_zero_of_injective {e : ℕ} {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     {A : FinHolAtlas e X} {B : FinHolAtlas e Y} {π : Y → X} (hπ : HoloMap B A π)
     (hinj : Function.Injective π) (j : Fin B.n) (k : Fin A.n) {y : Fin e → ℂ}
@@ -39,6 +44,13 @@ theorem det_ne_zero_of_injective {e : ℕ} {X Y : Type} [TopologicalSpace X] [To
   rw [hker] at hlt
   exact lt_irrefl _ hlt
 
+/- English proof (translation)
+Use `⟨isAnalyticSubset_empty A, interior_empty, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `using isAnalyticSubset_empty B`. Simplify using the standard rewrite rules. Introduce `x _`. Take `⟨y, rfl⟩` from `hbij.2 x`.
+
+Establish `hfib : π ⁻¹' {π y} = {y}`. Use extensionality with `z`. Simplify using `[hbij.1.eq_iff]`. Rewrite using `[hfib, Set.ncard_singleton]`. Introduce `j k y hy _ hk`.
+
+Conclude with `det_ne_zero_of_injective hπ hbij.1 j k hy hk`.
+-/
 theorem isDegreeOff_one_of_bijective {e : ℕ} {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] {A : FinHolAtlas e X} {B : FinHolAtlas e Y} {π : Y → X}
     (hπ : HoloMap B A π) (hbij : Function.Bijective π) : IsDegreeOff A B π 1 ∅ := by
@@ -54,6 +66,39 @@ theorem isDegreeOff_one_of_bijective {e : ℕ} {X Y : Type} [TopologicalSpace X]
   · intro j k y hy _ hk
     exact det_ne_zero_of_injective hπ hbij.1 j k hy hk
 
+/- English proof (translation)
+Introduce `e d X Y Z _ _ _ _ _ _ A B C π h br hπ hbij hh hd`. Take `⟨g, hgl, hgr, hg⟩` from `GlobalTheory.CompanionTheory.Ar.PB.Cj.exists_holoMap_inverse_of_degree_one A B π hπ (isDegreeOff_one_of_bijective hπ hbij)`. Use `⟨GlobalTheory.CompanionTheory.Ar.PB.CovMap.holoMap_comp hh hπ, ?_⟩` and prove the remaining obligations. Take `⟨han, hint, hpan, hpint, hfib, hdet⟩` from `hd`. Establish `hpre : (π ∘ h) ⁻¹' (π '' br) = h ⁻¹' br`.
+
+Use extensionality with `z`. Simplify using `[hbij.1.mem_set_image]`. Establish `himg : π '' br = g ⁻¹' br`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨y, hy, rfl⟩`. Simplify `hy` using `[hgl]`. Introduce `hx`. Conclude with `⟨g x, hx, hgr x⟩`. Set `E : Y ≃ₜ X` to `{ toFun := π, invFun := g, left_inv := hgl, right_inv := hgr, continuous_toFun := hπ.1, continuous_invFun := hg.1 }`.
+
+Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[himg]`. Introduce `x`. Take `⟨W, hW, hxW, r, f, hf, hS⟩` from `han (g x)`. Use `⟨g ⁻¹' W, hW.preimage hg.1, hxW, r, fun i => f i ∘ g, fun i => GlobalTheory.CompanionTheory.Ar.PB.Cj.holoOn_comp hg (hf i), ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `y`. Simplify using `using Set.ext_iff.1 hS (g y)`. Express the relevant statement in the definitionally equal form `interior (E '' br) = ∅`. Rewrite using `[← E.image_interior, hint, Set.image_empty]`. Rewrite using `[hpre]`.
+
+Conclude with `hpan`. Rewrite using `[hpre]`. Conclude with `hpint`. Introduce `x hx`. Establish `hgx : g x ∉ br` using `fun hb => hx ⟨g x, hb, hgr x⟩`.
+
+Establish `hset : (π ∘ h) ⁻¹' {x} = h ⁻¹' {g x}`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Establish `hz' : π (h z) = x` using `hz`.
+
+Express the relevant statement in the definitionally equal form `h z = g x`. Rewrite using `[← hz', hgl]`. Introduce `hz`. Establish `hz' : h z = g x` using `hz`. Express the relevant statement in the definitionally equal form `π (h z) = x`.
+
+Rewrite using `[hz', hgr]`. Rewrite using `[hset]`. Conclude with `hfib _ hgx`. Introduce `j k y hy hnot hk`. Establish `hnot' : (C.chart j).symm y ∉ h ⁻¹' br` using `by rwa [hpre] at hnot`.
+
+Take `⟨l, hl⟩` from `B.cover (h ((C.chart j).symm y))`. Take `⟨Q, hQdef⟩ : ∃ Q : (Fin e → ℂ) → Fin e → ℂ, Q = B.chart l ∘ h ∘ (C.chart j).symm` from `⟨_, rfl⟩`. Take `⟨P, hPdef⟩ : ∃ P : (Fin e → ℂ) → Fin e → ℂ, P = A.chart k ∘ π ∘ (B.chart l).symm` from `⟨_, rfl⟩`. Establish `hQa : AnalyticAt ℂ Q y`. Rewrite using `[hQdef]`.
+
+Conclude with `hh.2 j l y ⟨hy, hl⟩`. Establish `hu : (B.chart l).symm (Q y) = h ((C.chart j).symm y)`. Rewrite using `[hQdef]`. Conclude with `(B.chart l).left_inv hl`. Establish `hQt : Q y ∈ (B.chart l).target`.
+
+Rewrite using `[hQdef]`. Conclude with `(B.chart l).map_source hl`. Establish `hk' : π ((B.chart l).symm (Q y)) ∈ (A.chart k).source`. Rewrite using `[hu]`. Conclude with `hk`.
+
+Establish `hPa : AnalyticAt ℂ P (Q y)`. Rewrite using `[hPdef]`. Conclude with `hπ.2 l k _ ⟨hQt, hk'⟩`. Establish `hc : ContinuousAt (h ∘ (C.chart j).symm) y` using `hh.1.continuousAt.comp ((C.chart j).continuousAt_symm hy)`. Establish `heq : (A.chart k ∘ (π ∘ h) ∘ (C.chart j).symm) =ᶠ[nhds y] P ∘ Q` using `by filter_upwards [hc ((B.chart l).open_source.mem_nhds hl)] with t ht`.
+
+Establish `ht' : h ((C.chart j).symm t) ∈ (B.chart l).source` using `ht`. Rewrite using `[hPdef, hQdef]`. Simplify using `only [Function.comp, (B.chart l).left_inv ht']`. Establish `hcomp : fderiv ℂ (P ∘ Q) y = (fderiv ℂ P (Q y)).comp (fderiv ℂ Q y)` using `fderiv_comp y hPa.differentiableAt hQa.differentiableAt`. Rewrite using `[heq.fderiv_eq, hcomp]`.
+
+Express the relevant statement in the definitionally equal form `LinearMap.det ((fderiv ℂ P (Q y) : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ)) ∘ₗ (fderiv ℂ Q y : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ))) ≠ 0`. Rewrite using `[LinearMap.det_comp]`. Use `mul_ne_zero ?_ ?_` and prove the remaining obligations. Rewrite using `[hPdef]`. Conclude with `det_ne_zero_of_injective hπ hbij.1 l k hQt hk'`.
+
+Rewrite using `[hQdef]`. Conclude with `hdet j l y hy hnot' hl`.
+-/
 theorem holoMap_comp_isDegreeOff : ∀ (e d : ℕ) (X Y Z : Type) [TopologicalSpace X] [T2Space X] [TopologicalSpace Y] [CompactSpace Y] [T2Space Y] [TopologicalSpace Z] (A : FinHolAtlas e X) (B : FinHolAtlas e Y) (C : FinHolAtlas e Z) (π : Y → X) (h : Z → Y) (br : Set Y), HoloMap B A π → Function.Bijective π → HoloMap C B h → IsDegreeOff B C h d br → HoloMap C A (π ∘ h) ∧ IsDegreeOff A C (π ∘ h) d (π '' br) := by
   intro e d X Y Z _ _ _ _ _ _ A B C π h br hπ hbij hh hd
   obtain ⟨g, hgl, hgr, hg⟩ := GlobalTheory.CompanionTheory.Ar.PB.Cj.exists_holoMap_inverse_of_degree_one A B π hπ

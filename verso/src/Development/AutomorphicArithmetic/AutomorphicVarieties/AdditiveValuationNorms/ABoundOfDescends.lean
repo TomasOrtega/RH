@@ -19,6 +19,9 @@ def Descends (γ : G L₀ (AlgebraicClosure L₀)) : Prop :=
 
 variable {l L₀}
 
+/- English proof (translation)
+Use `⟨trivial, MonoidHom.mem_ker.2 (Units.ext ?_)⟩` and prove the remaining obligations. Use `show PadicInt.toZModPow 1 (cycZ k Ω l γ : ℤ_[l]) = 1`. Rewrite using `[← sub_eq_zero, ← map_one (PadicInt.toZModPow (p := l) 1), ← map_sub, ← RingHom.mem_ker, PadicInt.ker_toZModPow, pow_one, Ideal.mem_span_singleton]`. Conclude with `h`.
+-/
 theorem mem_levU_one {k Ω : Type} [Field k] [NumberField k] [Field Ω] [Algebra k Ω] [IsAlgClosure k Ω] {γ : G k Ω}
     (h : (l : ℤ_[l]) ∣ (cycZ k Ω l γ : ℤ_[l]) - 1) : γ ∈ levU l (⊤ : Subgroup (G k Ω)) 1 := by
   refine ⟨trivial, MonoidHom.mem_ker.2 (Units.ext ?_)⟩
@@ -27,12 +30,22 @@ theorem mem_levU_one {k Ω : Type} [Field k] [NumberField k] [Field Ω] [Algebra
     pow_one, Ideal.mem_span_singleton]
   exact h
 
+/- English proof (translation)
+Rewrite using `[h e he m L₁ hL, xTw_apply, zpow_natCast, Units.val_pow_eq_pow_val]`. Both sides reduce to the same expression.
+-/
 theorem Descends.eq_twLen {γ : G L₀ (AlgebraicClosure L₀)} (h : Descends l L₀ γ) {e : ℕ} (he : 1 ≤ e) {m : ℕ} {L₁ : Type}
     [Field L₁] [NumberField L₁] [Algebra L₀ L₁] (hL : IsLayer l m L₀ L₁) :
     shaInv L₁ l e = twLen (xRep l l (⊤ : Subgroup (G L₀ (AlgebraicClosure L₀))) γ) (cycZ L₀ _ l γ : ℤ_[l]) e m := by
   rw [h e he m L₁ hL, xTw_apply, zpow_natCast, Units.val_pow_eq_pow_val]
   rfl
 
+/- English proof (translation)
+Establish `hX : GenBy l R (XP l L₀)` using `ht.gen`. Establish `hγ` using `xUnip L₀ (AlgebraicClosure L₀) l l ⊤ isClosed_univ ht.gen.finite γ (mem_levU_one (lteNorm l _ c hu).2.1)`. Use `⟨?_, fun e he m L₁ _ _ _ h₁ L₂ _ _ _ h₂ Ω _ _ _ D => ?_⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `exists_centres_norm hX hγ hu`. Use `⟨ℚ_[l], inferInstance, inferInstance, inferInstance, c, R, fun i => s i, le_rfl, hc, fun e he m L₁ _ _ _ h₁ B hB => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h.eq_twLen he h₁]`. Use `hs e m B fun i => (hB i).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[PadicInt.norm_def]`. Use `push_cast`. Both sides reduce to the same expression.
+
+Use `haveI := ht.complex haveI : IsTotallyComplex L₂ := isTotallyComplex_of_algebra L₀ L₂`. Rewrite using `[h.eq_twLen he h₁]`. Use `(twLen_le_growth hX hγ hu e m).trans (add_le_add ?_ le_rfl)` and prove the remaining obligations. Rewrite using `[← h.eq_twLen he (m := jZero l R) h₂, ← shaLen_eq_shaInv D]`. Conclude with `shaLeV hP hF hT L₂ Ω l (ptCase_of_isTotallyComplex L₂ l) D e`.
+-/
 theorem aBound_of_descends (hP : GlobalTheory.Published.PoitouTateDuality) (hF : LocalFinitenessK) (hT : LocalTateDualityK) {R c : ℕ}
     (ht : IsTower l L₀ R) {γ : G L₀ (AlgebraicClosure L₀)} (hu : IsLevel l (cycZ L₀ _ l γ : ℤ_[l]) c)
     (hc : ∃ ζ : L₀, IsPrimitiveRoot ζ (l ^ c)) (h : Descends l L₀ γ) : Win.ABound l R L₀ := by

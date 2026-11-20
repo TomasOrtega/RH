@@ -20,9 +20,17 @@ variable {F : Type} [Field F] [NumberField F]
 def reindexFun {R : Type} {ι ι' : Type} (e : ι ≃ ι') : ((ι → R) → ℂ) →ₗ[ℂ] ((ι' → R) → ℂ) :=
   LinearMap.funLeft ℂ ℂ (fun y : ι' → R => y ∘ e)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem reindexFun_apply {R : Type} {ι ι' : Type} (e : ι ≃ ι') (Φ : (ι → R) → ℂ) (y : ι' → R) :
     reindexFun e Φ y = Φ (y ∘ e) := rfl
 
+/- English proof (translation)
+Introduce `g hg`. Set `L : (ι' → mixedEmbedding.mixedSpace F) ≃L[ℝ] (ι → mixedEmbedding.mixedSpace F)` to `(LinearEquiv.funCongrLeft ℝ (mixedEmbedding.mixedSpace F) e).toContinuousLinearEquiv`. Set `H : (ι' → FiniteAdeleRing (𝓞 F) F) ≃ₜ (ι → FiniteAdeleRing (𝓞 F) F)` to `{ toFun := fun y => y ∘ e invFun := fun z => z ∘ e.symm left_inv := fun y => by funext i; simp right_inv := fun z => by funext i; simp continuous_toFun := continuous_pi fun i => continuous_apply (e i) continuous_invFun := continuous_pi fun i => continuous_apply (e.symm i) }`. Use `⟨Unit, inferInstance, fun _ => SchwartzMap.compCLMOfContinuousLinearEquiv ℂ L, fun _ => g ∘ H, fun _ => ⟨hg.1.comp_continuous H.continuous, hg.2.comp_homeomorph H⟩, fun f => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `y`.
+
+Simplify using `only [Finset.univ_unique, Finset.sum_singleton]`. Both sides reduce to the same expression.
+-/
 theorem isTame_reindexFun {ι ι' : Type} [Fintype ι] [Fintype ι'] (e : ι ≃ ι') :
     IsTame F (reindexFun (R := AF F) e) := by
   intro g hg
@@ -41,6 +49,11 @@ theorem isTame_reindexFun {ι ι' : Type} [Fintype ι] [Fintype ι'] (e : ι ≃
   simp only [Finset.univ_unique, Finset.sum_singleton]
   rfl
 
+/- English proof (translation)
+Introduce `F _ _ κ κ₁ κ' _ _ _ T hT`. Establish `h : partL (κ'` using `κ') T = reindexFun (Equiv.sumComm κ' κ₁) ∘ₗ partR (κ := κ') T ∘ₗ reindexFun (Equiv.sumComm κ κ') := by`. Use `LinearMap.ext fun Φ => funext fun s => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, reindexFun_apply, partR_apply, partL_apply]`. Apply the tactic sequence `exact congrArg₂ (fun φ t => T φ t) (funext fun x => congrArg Φ (funext fun i => by cases i <;> rfl)) rfl`.
+
+Rewrite using `[h]`. Conclude with `((isTame_reindexFun _).comp (GlobalTheory.T.tame_part_right F κ' κ κ₁ T hT)).comp (isTame_reindexFun _)`.
+-/
 theorem isTame_partL : ∀ (F : Type) [Field F] [NumberField F] (κ κ₁ κ' : Type) [Fintype κ] [Fintype κ₁] [Fintype κ']
     (T : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ₁ → AF F) → ℂ)), IsTame F T → IsTame F (partL (κ' := κ') T) := by
   intro F _ _ κ κ₁ κ' _ _ _ T hT

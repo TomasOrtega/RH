@@ -12,6 +12,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data 
 def Sh (R : ℝ) : Set E :=
   {β | ∃ α : 𝓞 E, (α : E) = (X.den : E) * β ∧ ∀ σ : E →+* ℂ, ‖σ (α : E)‖ ≤ R}
 
+/- English proof (translation)
+Establish `hS` using `NumberField.Embeddings.finite_of_norm_le E ℂ R`. Establish `hd : ((X.den : 𝓞 E) : E) ≠ 0` using `by exact_mod_cast X.den_ne`. Use `(hS.image fun x => x / (X.den : E)).subset ?_` and prove the remaining obligations. Introduce and unpack `β ⟨α, hα, hb⟩`. Use `⟨(α : E), ⟨α.isIntegral_coe, hb⟩, ?_⟩` and prove the remaining obligations.
+
+Use `show (α : E) / (X.den : E) = β`. Rewrite using `[hα]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem Sh_finite (R : ℝ) (hR : 0 ≤ R) : (Sh X R).Finite := by
   have hS := NumberField.Embeddings.finite_of_norm_le E ℂ R
   have hd : ((X.den : 𝓞 E) : E) ≠ 0 := by exact_mod_cast X.den_ne
@@ -24,6 +29,13 @@ theorem Sh_finite (R : ℝ) (hR : 0 ≤ R) : (Sh X R).Finite := by
 
 def Sz (T : ℝ) : Set ℤ := {n | ((n : ℝ)) ^ 2 ≤ T}
 
+/- English proof (translation)
+Use `(Set.finite_Icc (-⌈T⌉) ⌈T⌉).subset ?_` and prove the remaining obligations. Introduce `n hn`. Establish `hn' : ((n : ℝ)) ^ 2 ≤ T` using `hn`. Establish `h1 : |n| ≤ n ^ 2`. Break down `eq_or_ne n 0 with h | h` into its components or cases.
+
+Simplify using `[h]`. Establish `h0 : 1 ≤ |n|` using `Int.one_le_abs h`. Use polynomial arithmetic with `[abs_mul_abs_self n, abs_nonneg n]`. Establish `h2 : ((|n| : ℤ) : ℝ) ≤ T`. Establish `h4 : ((|n| : ℤ) : ℝ) ≤ ((n ^ 2 : ℤ) : ℝ)` using `by exact_mod_cast h1`.
+
+Move the coercions through the operations in `at h4 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : |n| ≤ ⌈T⌉` using `by exact_mod_cast h2.trans (Int.le_ceil T)`. Conclude with `Set.mem_Icc.mpr ⟨by linarith [neg_abs_le n], by linarith [le_abs_self n]⟩`.
+-/
 theorem Sz_finite (T : ℝ) : (Sz T).Finite := by
   refine (Set.finite_Icc (-⌈T⌉) ⌈T⌉).subset ?_
   intro n hn
@@ -46,6 +58,9 @@ def TS (R T : ℝ) : Set ((ι → ι → E) × (Free.ChooseBasisIndex ℤ (𝓞 
   {t | ∃ f : Basis ι ℤ X.Λ, ((∀ i j, (HermitianLatticeMaps.ty X f).1 i j ∈ Sh X R) ∧
     ∀ k i j, (HermitianLatticeMaps.ty X f).2 k i j ∈ Sz T) ∧ HermitianLatticeMaps.ty X f = t}
 
+/- English proof (translation)
+Establish `hA : (Set.univ.pi fun _ : ι => Set.univ.pi fun _ : ι => Sh X R).Finite` using `Set.Finite.pi fun _ => Set.Finite.pi fun _ => Sh_finite X R hR`. Establish `hB : (Set.univ.pi fun _ : Free.ChooseBasisIndex ℤ (𝓞 E) => Set.univ.pi fun _ : ι => Set.univ.pi fun _ : ι => Sz T).Finite` using `Set.Finite.pi fun _ => Set.Finite.pi fun _ => Set.Finite.pi fun _ => Sz_finite T`. Use `(hA.prod hB).subset ?_` and prove the remaining obligations. Introduce and unpack `t ⟨f, ⟨h1, h2⟩, rfl⟩`. Conclude with `⟨fun i _ j _ => h1 i j, fun k _ i _ j _ => h2 k i j⟩`.
+-/
 theorem TS_finite (R T : ℝ) (hR : 0 ≤ R) : (TS X (ι := ι) R T).Finite := by
   have hA : (Set.univ.pi fun _ : ι => Set.univ.pi fun _ : ι => Sh X R).Finite :=
     Set.Finite.pi fun _ => Set.Finite.pi fun _ => Sh_finite X R hR

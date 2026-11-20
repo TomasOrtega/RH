@@ -24,6 +24,11 @@ section Transfer
 
 variable {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
 
+/- English proof (translation)
+Establish `e1 : (Formalism.L2.Theta.mt S g⁻¹).map (finPart D) = 1` using `congrArg Units.val (show finHom S g⁻¹ = 1 from inv_mem hg)`. Establish `e2 : (Formalism.L2.Theta.mt T h).map (finPart D) = 1` using `congrArg Units.val (show finHom T h = 1 from hh)`. Establish `e3 : (actO S T g h x).map (infPart D) = x.map (infPart D)`. Unfold `actO`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hx, Matrix.mul_zero, Matrix.zero_mul]`.
+
+Establish `e4 : (actO S T g h x).map (finPart D) = x.map (finPart D)`. Unfold `actO`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, e1, e2, Matrix.mul_one, Matrix.one_mul]`. Conclude with `Matrix.ext fun i j => GlobalTheory.SplitScalar.adele_ext (congrFun (congrFun e3 i) j) (congrFun (congrFun e4 i) j)`.
+-/
 theorem actO_eq_of_real {g : GA D S} {h : GA D T} (hg : g ∈ GinfC S) (hh : h ∈ GinfC T) {x : WO S T}
     (hx : x.map (infPart D) = 0) : actO S T g h x = x := by
   have e1 : (Formalism.L2.Theta.mt S g⁻¹).map (finPart D) = 1 := congrArg Units.val (show finHom S g⁻¹ = 1 from inv_mem hg)
@@ -36,6 +41,19 @@ theorem actO_eq_of_real {g : GA D S} {h : GA D T} (hg : g ∈ GinfC S) (hh : h �
     rw [Matrix.map_mul, Matrix.map_mul, e1, e2, Matrix.mul_one, Matrix.one_mul]
   exact Matrix.ext fun i j => GlobalTheory.SplitScalar.adele_ext (congrFun (congrFun e3 i) j) (congrFun (congrFun e4 i) j)
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.1 hf`. Set `L : Module.End ℂ (WO S T → ℂ)` to `∑ a ∈ c.support, c a • GlobalTheory.SplitScalar.heisL ψ S T a.1`. Establish `hL : ∀ F, L F = ∑ a ∈ c.support, c a • heisO ψ S T a.1 F` using `fun F => by`. Simplify using `only [L, LinearMap.sum_apply, LinearMap.smul_apply, GlobalTheory.SplitScalar.heisL_apply]`. Establish `hd : ∀ τ z F, IsThetaFunO ψ S T F → L (dRho (heisO ψ S T) θ τ z F) = dRho (heisO ψ S T) θ τ z (L F)` using `fun τ z F hF => by`.
+
+Rewrite using `[hL, hL, GlobalTheory.FockTranslate.dRho_sum hω.std.1.1 hθ hF τ z c.support (fun a => a.1) c fun a _ => a.2]`. Establish `hpt : ∀ Q, IsThetaFunO ψ S T (pureTensorO ψ θ S T sS sT BS BT f₀ Q) ∧ L (pureTensorO ψ θ S T sS sT BS BT f₀ Q) = pureTensorO ψ θ S T sS sT BS BT (L f₀) Q` using `fun Q => by`. Use `GlobalTheory.OrientedHeis.pureTensorL_intertwine (IsThetaFunO ψ S T) GlobalTheory.OrientedHeis.theta_zero (fun _ _ => GlobalTheory.OrientedHeis.theta_add) (fun c _ => GlobalTheory.OrientedHeis.theta_smul c) _ _ L (fun k F hF => ?_) f₀ h₀ Q` and prove the remaining obligations. Take `⟨τ, i, j⟩` from `k`. Use `⟨GlobalTheory.OrientedHeis.theta_smul _ (GlobalTheory.OrientedHeis.theta_sub (GlobalTheory.OrientedHeis.theta_dRho hθ hω.std τ _ hF) (GlobalTheory.OrientedHeis.theta_smul _ (GlobalTheory.OrientedHeis.theta_dRho hθ hω.std τ _ hF))), ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [aPlusAll, aPlus, crea]`. Rewrite using `[map_smul, map_sub, map_smul, hd _ _ _ hF, hd _ _ _ hF]`. Establish `hom : ∀ g ∈ GinfC S, ∀ k ∈ GinfC T, ∀ Q, ω (g, k) (pureTensorO ψ θ S T sS sT BS BT (L f₀) Q) = L (ω (g, k) (pureTensorO ψ θ S T sS sT BS BT f₀ Q))` using `fun g hg k hk Q => by`. Rewrite using `[← (hpt Q).2, hL, hL, map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul, hω.om_heis _ _ _ _ (hpt Q).1, actO_eq_of_real hg hk a.2]`. Establish `hder : ∀ (F : ℝ → WO S T → ℂ) (F' : WO S T → ℂ), (∀ z, HasDerivAt (fun t => F t z) (F' z) 0) → ∀ z, HasDerivAt (fun t => L (F t) z) (L F' z) 0` using `fun F F' hF z => by`. Simplify using `only [hL, Finset.sum_apply, Pi.smul_apply, heisO, smul_eq_mul]`. Conclude with `HasDerivAt.fun_sum fun a _ => ((hF _).const_mul _).const_mul _`. Establish `e : (c.sum fun i a => a • heisO ψ S T i.1 f₀) = L f₀` using `(hL f₀).symm`.
+
+Rewrite `h` using `[e]`. Use `⟨h.ne, h.bdd, fun τ g hg φ φ' H => h.eqK τ g hg φ φ' ?_, fun τ X hX φ φ' H => h.eqg τ X hX φ φ' fun z => ?_, fun τ g hg φ φ' v v' H => h.invK τ g hg φ φ' v v' ?_, fun τ X hX φ φ' v v' H => h.invg τ X hX φ φ' v v' fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[hom _ (GlobalTheory.FinTranslate.atTau_mem θ S τ g) _ (one_mem _), ← H, (hpt φ').2]`. Simplify using `only [fun t => hom _ (GlobalTheory.FinTranslate.oneP_mem θ S τ X t) _ (one_mem _) φ, ← (hpt φ').2]`. Conclude with `hder _ _ H z`.
+
+Rewrite using `[hom _ (one_mem _) _ (GlobalTheory.FinTranslate.atTau_mem θ T τ g), ← H, (hpt φ').2]`. Simplify using `only [fun t => hom _ (one_mem _) _ (GlobalTheory.FinTranslate.oneP_mem θ T τ X t) φ, ← (hpt φ').2]`. Conclude with `hder _ _ H z`.
+-/
 theorem isItW_of_mem_span {χS χT : (AE D)ˣ →* Circle} {ω : WRep S T} (hω : IsWeilDatumO ψ S T χS χT ω) (hθ : IsInfFam θ)
     {P P' : D.what₂.Tau → SPar} {M : DSModel S P} {M' : DSModel T P'}
     {sS BS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ} {sT BT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ}
@@ -79,6 +97,11 @@ theorem isItW_of_mem_span {χS χT : (AE D)ˣ →* Circle} {ω : WRep S T} (hω 
   · simp only [fun t => hom _ (one_mem _) _ (GlobalTheory.FinTranslate.oneP_mem θ T τ X t) φ, ← (hpt φ').2]
     exact hder _ _ H z
 
+/- English proof (translation)
+Take `⟨hv, e, he', ⟨Tm, hTm⟩, hall⟩` from `h`. Take `⟨P, he, hP⟩ : ∃ P, IsIdemSum e P ∧ ∀ PP, PP ∈ P ↔ PP ∈ L.Pg ∨ PP ∈ Q` from `⟨_, he', fun PP => Finset.mem_union⟩`. Establish `hinf` using `GlobalTheory.PlaceDatum.infPart_idemSum he`. Take `⟨K, hK, hC⟩` from `GlobalTheory.PlaceDatum.exists_nsmul_of_frMapO dS.1 dT.1 βS βT`. Establish `hSB` using `GlobalTheory.PlaceDatum.isSBHalf_of_red e _ (frMapO S T βS βT) (GlobalTheory.PlaceDatum.frMapO_add βS βT) (GlobalTheory.PlaceDatum.exists_den_frMapO dS.1.fg dT.1.fg βS βT) ⟨K, hK, fun t ht => hC t (GlobalTheory.PlaceDatum.infPart_of_half hinf ht)⟩ P (fun y => omegaG L χ y * omega …`.
+
+Rewrite using `[GlobalTheory.PlaceDatum.omegaG_congr _ _ y y' fun PP hPP => h PP ((hP PP).2 (Or.inl hPP)), GlobalTheory.PlaceDatum.omegaQ_congr _ _ _ 1 y y' fun PP hPP => h PP ((hP PP).2 (Or.inr hPP))]`. Rewrite using `[hall Tm hTm]`. Conclude with `(GlobalTheory.Chain.StepVac.placeModel_span_ne hv.1 dS dT (GlobalTheory.PlaceDatum.idemSum_mul_self he) he.2 hinf hTm hSB).1`.
+-/
 theorem stepVec_mem_span
     {sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ} {sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ}
     {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)}
@@ -102,6 +125,9 @@ theorem stepVec_mem_span
   rw [hall Tm hTm]
   exact (GlobalTheory.Chain.StepVac.placeModel_span_ne hv.1 dS dT (GlobalTheory.PlaceDatum.idemSum_mul_self he) he.2 hinf hTm hSB).1
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.1 hf`. Conclude with `⟨GlobalTheory.FinTranslate.isTheta_sum_heisO_fin D ψ S T hv.1.1 f₀ hv.2.theta _ c.support (fun a => a.1) c fun a _ => a.2, fun τ => GlobalTheory.FockTranslate.isFockVacAt_sum D ψ θ S T hv.1.1 hv.2.inf f₀ hv.2.theta τ _ (hv.2.fock τ) _ c.support (fun a => a.1) c fun a _ => a.2⟩`.
+-/
 theorem finVec_of_mem_span
     {sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ} {sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ}
     {ΛS : Set (Fin S.rank → D.host.E)} {ΛT : Set (Fin T.rank → D.host.E)} {f₀ f : WO S T → ℂ}
@@ -118,6 +144,11 @@ end Transfer
 variable {G₀ : Type} [Group G₀] [Fintype G₀] {Pl0 T : Type} {A : FamIn D.what₂.LL G₀ Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {F : Face D A}
 
+/- English proof (translation)
+Establish `hr : Odd D.R.r`. Establish `h1` using `D.R.k_even`. Establish `h2` using `D.R.m_even`. Establish `h3` using `D.R.two_le_m`. Unfold `Ranks.r`.
+
+Use `grind`. Rewrite using `[Lift.chrStep_eq_att _ _ hr D.R.t_odd (Nat.le_add_left 1 j)]`. Simplify using `[rkV]`.
+-/
 theorem chrStep_eq_muAt (R : RealDat D A Ks) (t : T) (j : ℕ) : Lift.chrStep (R.toLevCh.mu t) R.eta (j + 1) =
     (GridPre.muAt R t (j + 1) (rkV D 0 j), GridPre.muAt R t (j + 1) (rkV D 0 (j + 1))) := by
   have hr : Odd D.R.r := by

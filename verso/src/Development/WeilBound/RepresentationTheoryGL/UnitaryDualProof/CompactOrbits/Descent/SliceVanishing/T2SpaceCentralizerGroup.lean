@@ -10,17 +10,32 @@ open PositivityTheory.RgUd.T PositivityTheory.RgUd.T.Desc
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `Asm.t2`.
+-/
 theorem t2k : T2Space k := Asm.t2
 
+/- English proof (translation)
+The claim follows from `totallyDisconnectedSpace_localField`.
+-/
 theorem tdk : TotallyDisconnectedSpace k := totallyDisconnectedSpace_localField
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)).1`.
+-/
 theorem sck : SecondCountableTopology k := (GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)).1
 
+/- English proof (translation)
+Establish `: T2Space k` using `t2k`. Repeatedly rewrite using `[aeval_eq_sum_range]`. Conclude with `continuous_finsetSum _ fun i _ => (continuous_pow i).const_smul (P.coeff i)`.
+-/
 theorem continuous_aevalM (P : k[X]) : Continuous fun x : Matrix (Fin n) (Fin n) k => aeval x P := by
   have : T2Space k := t2k
   simp_rw [aeval_eq_sum_range]
   exact continuous_finsetSum _ fun i _ => (continuous_pow i).const_smul (P.coeff i)
 
+/- English proof (translation)
+Establish `: T2Space k` using `t2k`. Conclude with `hF.inter (isClosed_eq (continuous_aevalM P) continuous_id)`.
+-/
 theorem isClosed_Tset {F : Set (Matrix (Fin n) (Fin n) k)} (hF : IsClosed F) (P : k[X]) : IsClosed (Tset F P) := by
   have : T2Space k := t2k
   exact hF.inter (isClosed_eq (continuous_aevalM P) continuous_id)

@@ -13,6 +13,11 @@ open scoped Classical
 
 namespace UpperTheory.V.Z.Inf
 
+/- English proof (translation)
+Use `Units.ext <| Matrix.ext fun a b => FiniteAdeleRing.ext K fun v => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((AdelicGLn.finiteRestrictedEquiv K n).symm _ : AdelicGLn.FiniteAdelicGL K n) a b v = _`. Rewrite using `[AdelicGLn.finiteRestrictedEquiv_symm_apply, RestrictedProduct.coe_mulSingle_apply]`. Distinguish the cases in `h : v = w`. Substitute `h` using the available equality.
+
+Rewrite using `[Pi.mulSingle_eq_same]`. Conclude with `(congrArg (fun x : GL (Fin n) (v.adicCompletion K) => x a b) (pLoc_locGL v g)).symm`. Rewrite using `[Pi.mulSingle_eq_of_ne h]`. Conclude with `(congrArg (fun x : GL (Fin n) (v.adicCompletion K) => x a b) (pLoc_locGL_of_ne h g)).symm`.
+-/
 private theorem localEmbedding_eq {K : Type} [Field K] [NumberField K] {n : ℕ}
     (w : HeightOneSpectrum (𝓞 K)) (g : GL (Fin n) (w.adicCompletion K)) :
     AdelicGLn.localEmbedding w g = locGL K n w g := by
@@ -26,6 +31,15 @@ private theorem localEmbedding_eq {K : Type} [Field K] [NumberField K] {n : ℕ}
   · rw [Pi.mulSingle_eq_of_ne h]
     exact (congrArg (fun x : GL (Fin n) (v.adicCompletion K) => x a b) (pLoc_locGL_of_ne h g)).symm
 
+/- English proof (translation)
+Take `⟨hKeq, hu, hq, -⟩` from `UpperTheory.V.Af.Smo.sphDict K n w`. Establish `hTj` using `UpperTheory.V.Af.Smo.tjSet UpperTheory.V.Af.Smo.sphDict K n w`. Establish `hf : ∀ g, ∀ k ∈ integralGL (w.adicCompletion K) n, l (ρ (g * k) y) = l (ρ g y)`. Rewrite using `[hKeq]`. Conclude with `hE.inv`.
+
+Establish `hT : ∀ r ≤ n, Spherical.minusculeHecke (localHaar n w) r ∈ Spherical.eigenSubalgebra (localHaar n w) z (fun g => l (ρ g y)) hf`. Introduce `r hr`. Use `GlobalTheory.HenQ.ShellOp.minuscule_mem_of z hf hr fun g => ?_` and prove the remaining obligations. Rewrite using `[hKeq, ← hTj r hr, hE.eig _ hu r hr g, hq r hr, GlobalTheory.HenQ.ShellOp.esymm_eq, GlobalTheory.LFun.satEig]`. Establish `htop` using `Spherical.eigenSubalgebra_eq_top z hf hT (GlobalTheory.HenQ.ShellOp.central_mem_of_top z hf (hT n le_rfl))`.
+
+Establish `hne : fixedVectors ρ (integralGL (w.adicCompletion K) n) ≠ ⊥` using `(Submodule.ne_bot_iff _).2 ⟨y, hy, fun e => hl (by rw [e, map_zero])⟩`. Take `⟨z', hz'⟩` from `Spherical.exists_satakeParameter (μ := localHaar n w) hs hne`. Introduce `h u hu'`. Establish `h1 : h ∈ Spherical.eigenSubalgebra (localHaar n w) z (fun g => l (ρ g y)) hf` using `htop ▸ Algebra.mem_top`. Establish `h2` using `h1 1`.
+
+Simplify using `only [one_mul, map_one, Module.End.one_apply] at h2`. Establish `h3` using `dual_heckeAct (localHaar n w) (ρ := ρ) (h : HeckeAlgebra (localHaar n w)).mem (hs y) l`. Rewrite `h3` using `[h2, hz' h y hy, map_smul, smul_eq_mul]`. Rewrite using `[hz' h u hu', mul_right_cancel₀ hl h3]`.
+-/
 private theorem isSatake_of_eig {K : Type} [Field K] [NumberField K] {n : ℕ} (w : HeightOneSpectrum (𝓞 K))
     {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (GL (Fin n) (w.adicCompletion K)) V)
     (hirr : ρ.IsIrreducible) (hs : IsSmooth ρ) (y : V) (hy : y ∈ fixedVectors ρ (integralGL (w.adicCompletion K) n))
@@ -57,6 +71,23 @@ private theorem isSatake_of_eig {K : Type} [Field K] [NumberField K] {n : ℕ} (
 end UpperTheory.V.Z.Inf
 
 open UpperTheory.V UpperTheory.V.Z.Inf in
+/- English proof (translation)
+Introduce `K _ _ _ n σ h D v B hB`. Choose the witnesses or unpack the hypotheses as in `⟨z, rfl⟩ : ∃ z : Fin n → ℂˣ, Finset.univ.val.map z = B := by`. Take `⟨l, rfl⟩` from `Quotient.exists_rep B`. Establish `hl : l.length = n` using `hB.card`. Substitute `hl` using the available equality.
+
+Conclude with `⟨l.get, by rw [Fin.univ_val_map, List.ofFn_get]; rfl⟩`. Use `⟨z, ?_, rfl⟩` and prove the remaining obligations. Distinguish the cases in `hK : fixedVectors (D.finite.π v) (integralGL (v.adicCompletion K) n) = ⊥`. Introduce `f u hu`. Rewrite `hu` using `[hK, Submodule.mem_bot]`.
+
+Substitute `hu` using the available equality. Rewrite using `[smul_zero]`. Simplify using `using heckeAct_smul_right (μ := localHaar n v) (ρ := D.finite.π v) (f : HeckeAlgebra (localHaar n v)).mem 0 (Submodule.zero_mem _)`. Take `⟨a, x, hx, ha, hx0, hxK⟩` from `exists_pureTensor_spherical (Cm.toRep σ h) D`. Set `J : D.finite.W v →ₗ[ℂ] σ.V` to `(Cm.carrierEq σ).toLinearMap ∘ₗ Iv D a x hx v`.
+
+Establish `hJ : ∀ g y t, (J (D.finite.π v g y)).1.1 t = (J y).1.1 (t * finGL K n (locGL K n v g))`. Introduce `g y t`. Establish `e : J (D.finite.π v g y) = σ.op (.fin (locGL K n v g)) (J y)`. Rewrite using `[← localEmbedding_eq]`. Conclude with `(congrArg (Cm.carrierEq σ) (Iv_int D a x hx v g y)).trans (Cm.carrierEq_τ σ _ _)`.
+
+Rewrite using `[e]`. Both sides reduce to the same expression. Establish `h0 : J (x v) ≠ 0`. Introduce `e`. Establish `e' : Iv D a x hx v (x v) = 0` using `(Cm.carrierEq σ).map_eq_zero_iff.1 e`.
+
+Rewrite `e'` using `[Iv_self]`. Conclude with `phi_ne D a x hx ha hx0 e'`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t, (J (x v)).1.1 t ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+
+Conclude with `h0 (Subtype.ext (Subtype.ext (funext hc)))`. Set `l : Module.Dual ℂ (D.finite.W v)` to `{ toFun := fun y => (J y).1.1 t map_add' := fun y y' => by rw [map_add]; rfl map_smul' := fun c y => by rw [map_smul]; rfl }`. Establish `hE` using `Af.StrongMultiplicityOne.eigOfSat K n σ v _ ((CG.hasSat_mk σ v _).1 hB) (J (x v)).1 (J (x v)).2 (fun g k hk => by`. Rewrite `hk` using `[← (Af.Smo.sphDict K n v).1]`. Rewrite using `[← hJ, hxK v hK k hk]) t`.
+
+Use `isSatake_of_eig v _ (D.finite.isIrreducible v) (D.finite.isAdmissible v).1 (x v) (hxK v hK) l ht z ?_` and prove the remaining obligations. Establish `e : (fun g => l (D.finite.π v g (x v))) = fun g => (J (x v)).1.1 (t * finGL K n (locGL K n v g))`. Use function extensionality and compare the values at `fun g => hJ g _ t`. Rewrite using `[e]`. Conclude with `hE`.
+-/
 theorem UpperTheory.V.Z.Inf.satDict :
     UpperTheory.V.Z.Inf.SatDict := by
   intro K _ _ _ n σ h D v B hB

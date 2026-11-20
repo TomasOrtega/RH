@@ -24,21 +24,38 @@ def trG (X : GL (Fin k) A) : GL (Fin k) A where
     rw [← Matrix.transpose_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one,
       Matrix.transpose_one]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem trG_val (X : GL (Fin k) A) :
     ((trG X : GL (Fin k) A) : Matrix (Fin k) (Fin k) A) = (X : Matrix (Fin k) (Fin k) A).transpose :=
   rfl
 
+/- English proof (translation)
+Use `ext1`. Simplify using `[trG_val, Matrix.transpose_mul]`.
+-/
 theorem trG_mul (X Y : GL (Fin k) A) : trG (X * Y) = trG Y * trG X := by
   ext1
   simp [trG_val, Matrix.transpose_mul]
 
+/- English proof (translation)
+Use `ext1`. Simplify using `[trG_val]`.
+-/
 theorem trG_one : trG (1 : GL (Fin k) A) = 1 := by
   ext1
   simp [trG_val]
 
+/- English proof (translation)
+Rewrite using `[eq_inv_iff_mul_eq_one, ← trG_mul, mul_inv_cancel, trG_one]`.
+-/
 theorem trG_inv (X : GL (Fin k) A) : trG X⁻¹ = (trG X)⁻¹ := by
   rw [eq_inv_iff_mul_eq_one, ← trG_mul, mul_inv_cancel, trG_one]
 
+/- English proof (translation)
+Establish `h` using `hT A k i j hij c (addHaar : Measure (Fin k → A)) inferInstance`. Establish `e : (phi X : (Fin k → A) → (Fin k → A)) = Matrix.mulVec (Matrix.transvection i j c)`. Use function extensionality and compare the values at `v`. Rewrite using `[phi_apply, hX]`. Apply `modM_of_map X (addHaar : Measure (Fin k → A))` to reduce the goal to its premises.
+
+Rewrite using `[e]`. Conclude with `h`.
+-/
 theorem modM_transv (hT : TransvHaar) (X : GL (Fin k) A) (i j : Fin k) (hij : i ≠ j) (c : A)
     (hX : (X : Matrix (Fin k) (Fin k) A) = Matrix.transvection i j c) : modM X = 1 := by
   have h := hT A k i j hij c (addHaar : Measure (Fin k → A)) inferInstance
@@ -49,12 +66,20 @@ theorem modM_transv (hT : TransvHaar) (X : GL (Fin k) A) (i j : Fin k) (hij : i 
   rw [e]
   exact h
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[Matrix.transvection, Matrix.transpose_apply, Matrix.one_apply, Matrix.single_apply]`. Discharge the remaining goals by the proof search in `aesop`.
+-/
 theorem transvection_transpose (i j : Fin k) (c : A) :
     (Matrix.transvection i j c).transpose = Matrix.transvection j i c := by
   ext a b
   simp [Matrix.transvection, Matrix.transpose_apply, Matrix.one_apply, Matrix.single_apply]
   aesop
 
+/- English proof (translation)
+Proceed by induction on `hX using Subgroup.closure_induction with`. Consider the case `mem x hx`. Break down `hx with ⟨i, j, c, hij, hx⟩ | ⟨d, hx⟩` into its components or cases. Rewrite using `[modM_transv hT x i j hij c hx, modM_transv hT (trG x) j i hij.symm c (by rw [trG_val, hx, transvection_transpose])]`. Establish `: trG x = x` using `by ext1`.
+
+Rewrite using `[trG_val, hx, Matrix.diagonal_transpose]`. Rewrite using `[this]`. Consider the case `one => rw [trG_one]`. Consider the case `mul x y _ _ hx hy => rw [trG_mul, modM_mul, modM_mul, hx, hy, mul_comm]`. Consider the case `inv x _ hx => rw [trG_inv, modM_inv, modM_inv, hx]`.
+-/
 theorem modM_tr_of_mem (hT : TransvHaar) (X : GL (Fin k) A)
     (hX : X ∈ Subgroup.closure ({g : GL (Fin k) A | ∃ i j c, i ≠ j ∧
       (g : Matrix (Fin k) (Fin k) A) = Matrix.transvection i j c} ∪
@@ -75,11 +100,27 @@ theorem modM_tr_of_mem (hT : TransvHaar) (X : GL (Fin k) A)
 
 end Gen
 
+/- English proof (translation)
+Establish `h' : (x : ℝ) * x = 1` using `by exact_mod_cast h`. Establish `: (x : ℝ) = 1` using `by nlinarith [x.coe_nonneg]`. Conclude with `this` after adjusting the coercions.
+-/
 theorem nnreal_eq_one_of_mul_self {x : ℝ≥0} (h : x * x = 1) : x = 1 := by
   have h' : (x : ℝ) * x = 1 := by exact_mod_cast h
   have : (x : ℝ) = 1 := by nlinarith [x.coe_nonneg]
   exact_mod_cast this
 
+/- English proof (translation)
+Introduce `F _ _ k G X hG hXG μ hμ`. Take `⟨hlc, hsc, ht2⟩` from `PI.VolStabSW.TopoAF.afTop_holds F`. Establish `: BorelSpace (AF F)` using `⟨rfl⟩`. Establish `hd` using `congrArg Matrix.det hXG`. Rewrite `hd` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose]`.
+
+Establish `hdd : X.det * X.det = 1`. Establish `: (X.det * X.det) * G.det = 1 * G.det`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hG.mul_left_inj.1 this`. Establish `hX : IsUnit X.det` using `⟨⟨X.det, X.det, hdd, hdd⟩, rfl⟩`.
+
+Set `Xu : GL (Fin k) (AF F)` to `Matrix.nonsingInvUnit X hX`. Set `Gu : GL (Fin k) (AF F)` to `Matrix.nonsingInvUnit G hG`. Establish `hrel : trG Xu * Gu * Xu = Gu` using `by ext1`. Conclude with `hXG`. Establish `hm` using `congrArg modM hrel`.
+
+Rewrite `hm` using `[modM_mul, modM_mul, modM_tr_of_mem h3 Xu (h2 (AF F) (h1 F) k Xu)]`. Establish `hpos : 0 < modM Gu` using `addEquivAddHaarChar_pos (phi Gu)`. Establish `hsq : modM Xu * modM Xu = 1`. Establish `: (modM Xu * modM Xu) * modM Gu = 1 * modM Gu`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `mul_right_cancel₀ hpos.ne' this`. Establish `hmod` using `nnreal_eq_one_of_mul_self hsq`. Establish `e` using `map_phi_of_modM Xu hmod μ`. Establish `e2 : (phi Xu : (Fin k → AF F) → (Fin k → AF F)) = Matrix.mulVec X`. Use function extensionality and compare the values at `v`.
+
+Both sides reduce to the same expression. Rewrite `e` using `[e2]`. Conclude with `e`.
+-/
 theorem orthInv_of (h1 : AdeleStableRankOne) (h2 : ElimSR1) (h3 : TransvHaar) : OrthInv := by
   intro F _ _ k G X hG hXG μ hμ
   obtain ⟨hlc, hsc, ht2⟩ := PI.VolStabSW.TopoAF.afTop_holds F

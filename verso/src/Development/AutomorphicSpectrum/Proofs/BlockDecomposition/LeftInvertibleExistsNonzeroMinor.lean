@@ -10,6 +10,11 @@ open GlobalTheory.CompanionTheory.GodementH
 
 namespace GlobalTheory.CompanionTheory.GodementH
 
+/- English proof (translation)
+Establish `h1 : (L * M).det = (Matrix.detRowAlternating (R` using `R) (n := Fin n)).toMultilinearMap (fun i => ∑ j, L i j • M j) := by`. Establish `: (L * M) = Matrix.of (fun i => ∑ j, L i j • M j)`. Use extensionality with `i k`. Simplify using `[Matrix.mul_apply, Finset.sum_apply]`. Rewrite using `[this]`.
+
+Both sides reduce to the same expression. Rewrite using `[h1, MultilinearMap.map_sum]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[MultilinearMap.map_smul_univ]`. Both sides reduce to the same expression.
+-/
 theorem det_mul_eq_sum_mnr {R : Type} [CommRing R] {ι : Type} [Fintype ι] [DecidableEq ι] {n : ℕ}
     (M : Matrix ι (Fin n) R) (L : Matrix (Fin n) ι R) :
     (L * M).det = ∑ g : Fin n → ι, (∏ i, L i (g i)) * mnr M g := by
@@ -26,6 +31,11 @@ theorem det_mul_eq_sum_mnr {R : Type} [CommRing R] {ι : Type} [Fintype ι] [Dec
   rw [MultilinearMap.map_smul_univ]
   rfl
 
+/- English proof (translation)
+Introduce `R _ _ ι _ _ n M L h`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `key` using `det_mul_eq_sum_mnr M L`. Rewrite `key` using `[h, Matrix.det_one]`.
+
+Simplify using `[hc] at key`.
+-/
 theorem exists_mnr_ne_zero_of_left_inverse :
     ∀ (R : Type) [CommRing R] [Nontrivial R] (ι : Type) [Fintype ι] [DecidableEq ι] (n : ℕ)
       (M : Matrix ι (Fin n) R) (L : Matrix (Fin n) ι R),

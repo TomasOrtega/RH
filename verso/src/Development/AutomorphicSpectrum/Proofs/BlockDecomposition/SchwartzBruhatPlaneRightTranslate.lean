@@ -10,6 +10,9 @@ open scoped NumberField.AdeleRing ValuativeRel
 
 namespace GlobalTheory.CompanionTheory.WS.Comp
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;>`. Apply the tactic sequence `simp only [GlobalTheory.CompanionTheory.WS.rowAct, Units.val_mul, Matrix.mul_apply, Fin.sum_univ_two] <;> ring`.
+-/
 theorem rowAct_rowAct {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F]
     (h k : GL (Fin 2) F) (v : F × F) :
@@ -17,11 +20,17 @@ theorem rowAct_rowAct {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   ext <;>
     simp only [GlobalTheory.CompanionTheory.WS.rowAct, Units.val_mul, Matrix.mul_apply, Fin.sum_univ_two] <;> ring
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [GlobalTheory.CompanionTheory.WS.rowAct]`.
+-/
 theorem rowAct_one {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (v : F × F) :
     GlobalTheory.CompanionTheory.WS.rowAct (1 : GL (Fin 2) F) v = v := by
   ext <;> simp [GlobalTheory.CompanionTheory.WS.rowAct]
 
+/- English proof (translation)
+Unfold `GlobalTheory.CompanionTheory.WS.rowAct`. Use `fun_prop`.
+-/
 theorem continuous_rowAct {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (g : GL (Fin 2) F) :
     Continuous (GlobalTheory.CompanionTheory.WS.rowAct g) := by
@@ -38,6 +47,9 @@ def rowActHomeo {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   continuous_toFun := continuous_rowAct g
   continuous_invFun := continuous_rowAct g⁻¹
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ Ψ hΨ g`. Conclude with `⟨hΨ.1.comp_continuous (continuous_rowAct g), hΨ.2.comp_homeomorph (rowActHomeo g)⟩`.
+-/
 theorem isSB_comp_rowAct : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (Ψ : F × F → ℂ),
     GlobalTheory.CompanionTheory.WS.IsSB Ψ → ∀ g : GL (Fin 2) F, GlobalTheory.CompanionTheory.WS.IsSB (Ψ ∘ GlobalTheory.CompanionTheory.WS.rowAct g) := by

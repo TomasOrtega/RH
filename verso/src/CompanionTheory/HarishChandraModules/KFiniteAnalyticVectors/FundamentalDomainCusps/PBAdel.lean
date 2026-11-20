@@ -14,10 +14,42 @@ namespace CompanionTheory.D.gk.RF
 
 open Formalism.MainNotions.S Formalism.L2.SG.ProjRows Formalism.MainNotions.LeviCoordinates
 
+/- English proof (translation)
+Take `⟨γ, hγ, h⟩` from `hx`. Conclude with `⟨fun v => Formalism.L2.S.S7.DensRat.ratReal I γ hγ v, γ, hγ, fun _ => rfl, h⟩`.
+-/
 theorem exists_GF (I : AutInst) (x : I.Gf) (hx : x ∈ PI.AdelClassFin.GFf I) : ∃ g : I.Ginf, (g, x) ∈ I.GFset := by
   obtain ⟨γ, hγ, h⟩ := hx
   exact ⟨fun v => Formalism.L2.S.S7.DensRat.ratReal I γ hγ v, γ, hγ, fun _ => rfl, h⟩
 
+/- English proof (translation)
+Introduce `hCI hCK I μf _ _ Γ hΓ Kp hKo hKc ph hph hconv U hU`. Establish `: SecondCountableTopology I.Gf` using `rr_secondCountable I μf`. Establish `: (I.muA μf).IsMulLeftInvariant` using `rr_muA_left I μf`. Establish `: T2Space I.Gf` using `Formalism.L2.SG.Pf.finite_adeles_group_t2 I`. Establish `hmem : ∀ {g : I.GA}, g ∈ I.GFset → g ∈ Γ` using `fun h => by rw [← SetLike.mem_coe, hΓ]; exact h`.
+
+Take `⟨S, hS⟩` from `_root_.adelic_class_set_finite I Kp hKo`. Establish `hU' : (fun g : I.Ginf => ((g, 1) : I.GA)) ⁻¹' U ∈ 𝓝 1` using `(continuous_id.prodMk continuous_const).continuousAt.preimage_mem_nhds hU`. Establish `hs : ∀ s : I.Gf, ∃ M : ℕ, 1 ≤ M ∧ ∀ g ∈ GamSet I M, ∃ x, s⁻¹ * x * s ∈ Kp ∧ (g, x) ∈ I.GFset` using `fun s => hCK I ((fun x => s⁻¹ * x * s) ⁻¹' Kp) ((hKo.preimage (by fun_prop)).mem_nhds (by simp))`. Use `choose M hM hMK using hs`. Use `choose C hC hCy using fun s => hCI I (M s) (hM s) ph hph hconv _ hU'`.
+
+Use `⟨⋃ s ∈ S, C s ×ˢ ((fun k => s * k) '' Kp), S.isCompact_biUnion fun s _ => (hC s).prod (hKc.image (continuous_const.mul continuous_id)), fun x => ?_⟩` and prove the remaining obligations. Take `⟨γf, hγf, s, hsS, k, hk, hx⟩` from `hS x.2`. Take `⟨g₀, hg₀⟩` from `exists_GF I γf hγf`. Take `⟨y, hxe⟩ : ∃ y : I.Ginf, x = (g₀, γf) * (y, s * k)` from `⟨g₀⁻¹ * x.1, Prod.ext (by simp) (by simp [hx, mul_assoc])⟩`. Generalize the expression as in `((g₀, γf) : I.GA) = γ₀ at hxe hg₀`.
+
+Break down `hCy s y with ⟨γ, hγ, hγy⟩ | ⟨ν, hν, hνU, hv⟩` into its components or cases. Take `⟨xf, hxf, hGF⟩` from `hMK s γ hγ`. Use `Or.inl ⟨(γ, xf) * γ₀⁻¹, Γ.mul_mem (hmem hGF) (Γ.inv_mem (hmem hg₀)), mem_iUnion₂.2 ⟨s, hsS, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hxe, mul_assoc, inv_mul_cancel_left]`. Conclude with `⟨hγy, s⁻¹ * xf * s * k, Kp.mul_mem hxf hk, by simp [mul_assoc]⟩`.
+
+Use `right`. Set `j : I.Ginf → I.GA` to `fun m => γ₀ * (m, 1) * γ₀⁻¹`. Establish `hjE : MeasurableEmbedding j` using `(measurableEmbedding_mulRight γ₀⁻¹).comp ((measurableEmbedding_mulLeft γ₀).comp (measurableEmbedding_prod_mk_right 1))`. Use `⟨ν.map j, Measure.isProbabilityMeasure_map hjE.measurable.aemeasurable, hjE.ae_map_iff.2 (hνU.mono fun m hm => ?_), fun h hh z hz => ?_⟩` and prove the remaining obligations. Establish `: x⁻¹ * j m * x = (y⁻¹ * m * y, 1)`.
+
+Rewrite using `[hxe]`. Apply the tactic sequence `refine Prod.ext ?_ ?_ <;> simp [j, mul_assoc]`. Rewrite using `[this]`. Conclude with `hm`. Establish `hK0 : μf Kp ≠ 0` using `(hKo.measure_pos μf ⟨1, Kp.one_mem⟩).ne'`.
+
+Establish `hK1 : μf Kp ≠ ∞` using `hKc.measure_lt_top.ne`. Take `⟨hhc, B, hB⟩` from `hh.1`. Establish `hright : ∀ k ∈ Kp, ∀ g f, h (g, f * k) = h (g, f)` using `fun k hk g f => by`. Rewrite using `[hh.2.2 (g, f * k), hh.2.2 (g, f), ← integral_mul_left_eq_self (fun w => phK I μf ph Kp w * h ((g, f) * w)) ((1, k) : I.GA)]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `w`. Establish `e1 : phK I μf ph Kp ((1, k) * w) = phK I μf ph Kp w`. Simplify using `only [phK, Prod.fst_mul, Prod.snd_mul, one_mul]`. Use `congr 1`. Distinguish the cases in `hw : w.2 ∈ Kp`.
+
+Rewrite using `[indicator_of_mem (show w.2 ∈ (Kp : Set I.Gf) from hw), indicator_of_mem (show k * w.2 ∈ (Kp : Set I.Gf) from Kp.mul_mem hk hw)]`. Rewrite using `[indicator_of_notMem (show w.2 ∉ (Kp : Set I.Gf) from hw), indicator_of_notMem (show k * w.2 ∉ (Kp : Set I.Gf) from fun h => hw ((Kp.mul_mem_cancel_left hk).1 h))]`. Rewrite using `[e1, ← mul_assoc ((g, f) : I.GA), show ((g, f) : I.GA) * (1, k) = (g, f * k) by simp]`. Establish `hind : Integrable ((Kp : Set I.Gf).indicator fun _ => (((μf Kp).toReal⁻¹ : ℝ) : ℂ)) μf` using `(integrable_indicator_iff hKo.measurableSet).2 (integrableOn_const hK1)`. Establish `h0` using `hv (fun g => h (g, s)) ⟨hhc.comp (by fun_prop), B, fun _ => hB _⟩ (fun γ hγ g => by`.
+
+Take `⟨xf, hxf, hGF⟩` from `hMK s γ hγ`. Use `hh.2.1 _ (hmem hGF) (g, s)` as an intermediate fact. Rewrite `this` using `[Prod.mk_mul_mk, show xf * s = s * (s⁻¹ * xf * s) by group, hright _ hxf]`. Conclude with `this)`. Use the proof step `(fun g => by`.
+
+Establish `e1 : (fun w : I.GA => phK I μf ph Kp w * h ((g, s) * w)) = fun w => (ph w.1 * h (g * w.1, s)) * (Kp : Set I.Gf).indicator (fun _ => (((μf Kp).toReal⁻¹ : ℝ) : ℂ)) w.2`. Use function extensionality and compare the values at `w`. Distinguish the cases in `hw : w.2 ∈ Kp`. Establish `: h ((g, s) * w) = h (g * w.1, s)` using `hright _ hw _ _`. Rewrite using `[this, phK]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [phK, indicator_of_notMem (show w.2 ∉ (Kp : Set I.Gf) from hw), mul_zero, zero_mul]`. Rewrite using `[hh.2.2 (g, s), e1]`. Use `(integral_prod_mul (μ := muInf I) (ν := μf) (fun z => ph z * h (g * z, s)) _).trans ?_` and prove the remaining obligations. Rewrite using `[integral_indicator_const _ hKo.measurableSet, Measure.real, Complex.real_smul, ← Complex.ofReal_mul, mul_inv_cancel₀ (ENNReal.toReal_pos hK0 hK1).ne', Complex.ofReal_one, mul_one]) (y * z.1)`.
+
+Rewrite using `[hjE.integral_map, ← h0]`. Use `congr 1`. Use function extensionality and compare the values at `m`. Establish `: j m * x * z = γ₀ * (m * (y * z.1), s * (k * z.2))`. Rewrite using `[hxe]`.
+
+Apply the tactic sequence `refine Prod.ext ?_ ?_ <;> simp [j, mul_assoc]`. Rewrite using `[this, hh.2.1 _ (hmem hg₀), hright _ (Kp.mul_mem hk hz)]`.
+-/
 theorem adelic_cusp_of_infinite_cusp : CuspInf → CongK → CuspAdel := by
   intro hCI hCK I μf _ _ Γ hΓ Kp hKo hKc ph hph hconv U hU
   have : SecondCountableTopology I.Gf := rr_secondCountable I μf
@@ -100,6 +132,29 @@ theorem adelic_cusp_of_infinite_cusp : CuspInf → CongK → CuspAdel := by
     refine Prod.ext ?_ ?_ <;> simp [j, mul_assoc]
   rw [this, hh.2.1 _ (hmem hg₀), hright _ (Kp.mul_mem hk hz)]
 
+/- English proof (translation)
+Introduce `I μf _ _ fund hfund R hR φ₀ T hT Fv ⟨M, hM⟩`. Establish `: SecondCountableTopology I.Gf` using `rr_secondCountable I μf`. Establish `: (I.muA μf).IsMulLeftInvariant` using `rr_muA_left I μf`. Establish `: (I.muA μf).IsMulRightInvariant` using `Formalism.L2.S.S7.IwasawaBase.muA_right I μf`. Establish `: SigmaFinite (I.muA μf)` using `rr_muA_sigmaFinite I μf`.
+
+Use `set μ := I.muA μf`. Establish `hFD` using `rr_FD_of I μf fund hfund`. Take `⟨r, hrm, hr⟩` from `rr_exists_meas_rep hFD`. Set `f₀` to `(Lp.aestronglyMeasurable Fv).mk`. Establish `hf₀ : Measurable f₀` using `(Lp.aestronglyMeasurable Fv).stronglyMeasurable_mk.measurable`.
+
+Set `f : I.GA → ℂ` to `{x | ‖f₀ x‖ ≤ M}.indicator f₀`. Establish `hf : Measurable f` using `hf₀.indicator (measurableSet_le hf₀.norm measurable_const)`. Establish `hfb : ∀ x, ‖f x‖ ≤ |M|` using `fun x => by`. Distinguish the cases in `hx : x ∈ {x | ‖f₀ x‖ ≤ M}`. Rewrite using `[show f x = f₀ x from indicator_of_mem hx _]`.
+
+Conclude with `hx.trans (le_abs_self M)`. Rewrite using `[show f x = 0 from indicator_of_notMem hx _, norm_zero]`. Conclude with `abs_nonneg M`. Establish `hfe : ∀ᵐ x ∂μ, x ∈ fund → (Fv : I.GA → ℂ) x = f x`. Rewrite using `[← ae_restrict_iff' hfund.1]`.
+
+Use `filter_upwards [hM, (Lp.aestronglyMeasurable Fv).ae_eq_mk] with x h1 h2`. Rewrite using `[show f x = f₀ x from indicator_of_mem (show x ∈ {x | ‖f₀ x‖ ≤ M} from (congrArg norm h2).ge.trans h1) _]`. Conclude with `h2`. Establish `hN : ∀ᵐ x ∂μ, x ∉ rr_N (rr_GF I) fund` using `compl_mem_ae_iff.2 (rr_N_null hFD)`. Establish `hrep : ∀ x, x ∉ rr_N (rr_GF I) fund → I.rep fund x = r x` using `fun x hx => by`.
+
+Take `⟨γ, h1, h2, h3⟩` from `hr x`. Rewrite using `[h2]`. Conclude with `rr_rep_eq hFD hx h1 h3`. Establish `hse : ∀ᵐ x ∂μ, I.ext Fv x = f (r x)`. Establish `h1 : ∀ᵐ x ∂μ, ∀ γ : rr_GF I, (γ : I.GA) * x ∈ fund → (Fv : I.GA → ℂ) (γ * x) = f (γ * x)` using `ae_all_iff.2 fun γ => (measurePreserving_mul_left μ (γ : I.GA)).quasiMeasurePreserving.ae hfe`.
+
+Use `filter_upwards [h1, hN] with x a b`. Take `⟨γ, h1, h2, h3⟩` from `hr x`. Use `show (Fv : I.GA → ℂ) (I.rep fund x) = _`. Rewrite using `[hrep x b, h2]`. Conclude with `a ⟨γ, h1⟩ h3`.
+
+Establish `hs : Measurable fun x => f (r x)` using `hf.comp hrm`. Use `⟨fun x => f (r x), hs, ⟨_, fun _ => hfb _⟩, fun γ hγ => ?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hN] with x hx`. Rewrite using `[← hrep x hx, ← hrep _ (rr_N_smul (Γ := rr_GF I) hγ hx)]`. Conclude with `congrArg f (rr_rep_smul hFD hγ hx)`.
+
+Establish `hm2 : Measurable fun p : I.GA × I.GA => f (r (p.1 * p.2))` using `hs.comp measurable_mul`. Establish `hI : ∀ A : Set I.GA, (μ.restrict fund) A < ∞ → Integrable (fun p : I.GA × I.GA => φ₀ p.2 * f (r (p.1 * p.2))) (((μ.restrict fund).restrict A).prod μ)` using `fun A hA => by`. Establish `: IsFiniteMeasure ((μ.restrict fund).restrict A)` using `⟨by rwa [Measure.restrict_apply_univ]⟩`. Conclude with `(hT.1.comp_snd _).mul_bdd hm2.aestronglyMeasurable (Eventually.of_forall fun _ => hfb _)`. Use `ae_eq_of_forall_setIntegral_eq_of_sigmaFinite (fun A _ hA => integrableOn_Lp_of_measure_ne_top _ one_le_two hA.ne) (fun A _ hA => (hI A hA).integral_prod_left) fun A hAm hA => ?_` and prove the remaining obligations.
+
+Rewrite using `[← L2.inner_indicatorConstLp_one hAm hA.ne, hT.2, integral_integral_swap (hI A hA)]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[L2.inner_indicatorConstLp_one, integral_const_mul]`. Use `congr 1`.
+
+Use `integral_congr_ae (ae_restrict_of_ae ?_)` and prove the remaining obligations. Use `filter_upwards [hR y Fv, ae_restrict_of_ae ((measurePreserving_mul_right μ y).quasiMeasurePreserving.ae hse)] with x a b`. Rewrite using `[a, b]`.
+-/
 theorem convolution_operator_representation : ConvRep := by
   intro I μf _ _ fund hfund R hR φ₀ T hT Fv ⟨M, hM⟩
   have : SecondCountableTopology I.Gf := rr_secondCountable I μf

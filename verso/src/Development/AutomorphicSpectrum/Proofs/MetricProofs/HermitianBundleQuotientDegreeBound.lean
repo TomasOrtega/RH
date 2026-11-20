@@ -15,6 +15,13 @@ namespace GlobalTheory.CompanionTheory.Ar.PtBoundary
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Establish `h0 : Module.rank R (M ⧸ N) = 0`. Rewrite using `[rank_eq_zero_iff]`. Introduce `x`. Take `⟨x, rfl⟩` from `N.mkQ_surjective x`. Take `⟨a, ha, hax⟩` from `h x`.
+
+Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `hax`. Establish `h1` using `rank_quotient_add_rank_of_isDomain N`. Rewrite `h1` using `[h0, zero_add]`.
+
+Simplify using `only [Module.finrank, h1]`.
+-/
 theorem finrank_submodule_of_torsion {R M : Type*} [CommRing R] [IsDomain R] [AddCommGroup M]
     [Module R M] (N : Submodule R M) (h : ∀ x : M, ∃ a : R, a ≠ 0 ∧ a • x ∈ N) :
     Module.finrank R N = Module.finrank R M := by
@@ -30,6 +37,9 @@ theorem finrank_submodule_of_torsion {R M : Type*} [CommRing R] [IsDomain R] [Ad
   rw [h0, zero_add] at h1
   simp only [Module.finrank, h1]
 
+/- English proof (translation)
+Introduce `a x ha hx`. Rewrite `hx` using `[LinearMap.mem_ker, map_smul]`. Rewrite using `[LinearMap.mem_ker]`. Establish `: Module.IsTorsionFree (𝓞 K) E'.carrier` using `inferInstance`. Conclude with `(smul_eq_zero.mp hx).resolve_left ha`.
+-/
 theorem saturated_ker (E E' : HermitianBundle.{0} K) (q : E.carrier →ₗ[𝓞 K] E'.carrier) :
     E.Saturated (LinearMap.ker q) := by
   intro a x ha hx
@@ -43,6 +53,25 @@ def barMap (E E' : HermitianBundle.{0} K) (P : Submodule (𝓞 K) E.carrier) (hP
     (E.quot P hP).carrier →ₗ[𝓞 K] E'.carrier :=
   P.liftQ q hq
 
+/- English proof (translation)
+Use `letI := HermitianBundle.quot_projective hP`. Set `V` to `subFibre E.metric σ P`. Set `y' : Fibre σ (E.carrier ⧸ P)` to `y`. Set `s : Fibre σ E.carrier` to `fibreMap σ (HermitianBundle.quotSection E P hP) y'`. Set `v : FibreSpace E.metric σ` to `HermitianBundle.quotFibreMap E P hP σ y`.
+
+Set `x : Fibre σ E.carrier` to `(FibreSpace.equiv E.metric σ).symm v`. Establish `hvx : FibreSpace.equiv E.metric σ x = v` using `by simp [x]`. Establish `hdiff : FibreSpace.equiv E.metric σ s - v ∈ V`. Establish `hv : v = Vᗮ.starProjection (FibreSpace.equiv E.metric σ s)` using `rfl`. Establish `e : Vᗮ.starProjection (FibreSpace.equiv E.metric σ s) = FibreSpace.equiv E.metric σ s - V.starProjection (FibreSpace.equiv E.metric σ s)`.
+
+Rewrite using `[Submodule.starProjection_orthogonal']`. Both sides reduce to the same expression. Rewrite using `[hv, e, sub_sub_cancel]`. Conclude with `V.starProjection_apply_mem _`. Take `⟨w, hw⟩` from `hdiff`.
+
+Establish `hw' : fibreMap σ P.subtype w = s - x`. Apply `(FibreSpace.equiv E.metric σ).injective` to reduce the goal to its premises. Rewrite using `[map_sub, hvx]`. Conclude with `hw`. Establish `hsub : q ∘ₗ P.subtype = 0`.
+
+Use extensionality with `z`. Conclude with `hq z.2`. Establish `hsec : q ∘ₗ HermitianBundle.quotSection E P hP = P.liftQ q hq`. Establish `h1 : P.liftQ q hq ∘ₗ P.mkQ = q` using `Submodule.liftQ_mkQ P q hq`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← LinearMap.comp_assoc, h1]`. Use `_ = P.liftQ q hq := by`. Rewrite using `[HermitianBundle.mkQ_comp_quotSection, LinearMap.comp_id]`. Establish `hqx : (barMap E E' P hP q hq).lTensor (ComplexAt σ) y = q.lTensor (ComplexAt σ) x`. Establish `h1 : fibreMap σ q s = (barMap E E' P hP q hq).lTensor (ComplexAt σ) y`.
+
+Establish `h0 : fibreMap σ q s = fibreMap σ (P.liftQ q hq) y'` using `(fibreMap_fibreMap σ q (HermitianBundle.quotSection E P hP) y').trans (congrArg (fun f => fibreMap σ f y') hsec)`. Conclude with `h0`. Establish `h2 : fibreMap σ q (s - x) = 0`. Rewrite using `[← hw', fibreMap_fibreMap, hsub]`. Simplify using `[fibreMap]`.
+
+Rewrite `h2` using `[map_sub, h1]`. Conclude with `sub_eq_zero.mp h2`. Establish `hnorm : sqAt (E.quot P hP) σ y = sqAt E σ x`. Establish `h1 : sqAt E σ x = (inner ℂ (FibreSpace.equiv E.metric σ x) (FibreSpace.equiv E.metric σ x)).re` using `rfl`. Rewrite using `[h1, hvx]`.
+
+Both sides reduce to the same expression. Rewrite using `[hqx, hnorm]`. Conclude with `h σ x`.
+-/
 theorem sqAt_barMap_le (E E' : HermitianBundle.{0} K) (P : Submodule (𝓞 K) E.carrier)
     (hP : E.Saturated P) (q : E.carrier →ₗ[𝓞 K] E'.carrier) (hq : P ≤ LinearMap.ker q) (c : ℝ)
     (h : ∀ (σ : K →+* ℂ) (x : Fibre σ E.carrier),
@@ -98,10 +127,18 @@ theorem sqAt_barMap_le (E E' : HermitianBundle.{0} K) (P : Submodule (𝓞 K) E.
   rw [hqx, hnorm]
   exact h σ x
 
+/- English proof (translation)
+Rewrite using `[HermitianBundle.normDegree, HermitianBundle.degree_top_eq_arithDegree]`.
+-/
 theorem normDegree_top_eq (E : HermitianBundle.{0} K) :
     E.normDegree ⊤ = E.arithDegree / Module.finrank ℚ K := by
   rw [HermitianBundle.normDegree, HermitianBundle.degree_top_eq_arithDegree]
 
+/- English proof (translation)
+Establish `hgL : 0 ≤ g * L` using `mul_nonneg hg hL`. Use `set C' := C + g + g * L + L with hC'`. Establish `h1 : 2 + ρ + m ≤ 2 + C' + x` using `by rw [hC']; linarith`. Establish `h0 : 0 < 2 + ρ + m` using `by linarith`. Establish `h2 : Real.log (2 + ρ + m) ≤ Real.log (2 + C' + x)` using `Real.log_le_log h0 h1`.
+
+Establish `h3 : 0 ≤ Real.log (2 + ρ + m)` using `Real.log_nonneg (by linarith)`. Establish `h4 : C ≤ C'` using `by rw [hC']; linarith`. Establish `h5 : C * Real.log (2 + ρ + m) ≤ C' * Real.log (2 + C' + x)` using `mul_le_mul h4 h2 h3 (by linarith)`. Establish `h6 : L / 2 ≤ C'` using `by rw [hC']; linarith`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem final_real (C L ρ m x g : ℝ) (hC : 1 ≤ C) (hL : 0 ≤ L) (hρ : 0 ≤ ρ) (hm : 0 ≤ m) (hx : 0 ≤ x) (hg : 0 ≤ g)
     (hρg : ρ ≤ g) (hmx : m ≤ x + g * L) :
     C * Real.log (2 + ρ + m) + L / 2 ≤
@@ -118,6 +155,37 @@ theorem final_real (C L ρ m x g : ℝ) (hC : 1 ≤ C) (hL : 0 ≤ L) (hρ : 0 �
   have h6 : L / 2 ≤ C' := by rw [hC']; linarith
   linarith
 
+/- English proof (translation)
+Introduce `g C hC`. Establish `hC0 : 0 < C` using `by linarith`. Establish `hL : 0 ≤ Real.log C` using `Real.log_nonneg hC`. Use `⟨C + g + g * Real.log C + Real.log C, by positivity, ?_⟩` and prove the remaining obligations. Introduce `K _ _ E E' r ε q hg hli hker hfull hgram hexp hslope`.
+
+Use `set L := Real.log C with hLdef`. Use `set P : Submodule (𝓞 K) E.carrier := Submodule.span (𝓞 K) (Set.range ε) with hPdef`. Establish `hP : E.Saturated P` using `hker ▸ saturated_ker E E' q`. Establish `hPq : P ≤ LinearMap.ker q` using `hker.ge`. Use `set X := HermitianBundle.subQuotExtension E P hP with hX`.
+
+Use `set φ := barMap E E' P hP q hPq with hφ`. Establish `hφinj : Function.Injective φ`. Rewrite using `[← LinearMap.ker_eq_bot]`. Conclude with `Submodule.ker_liftQ_eq_bot _ _ _ hker.le`. Establish `hφq : ∀ e, φ (P.mkQ e) = q e` using `fun e => rfl`.
+
+Set `b : Module.Basis (Fin r) (𝓞 K) (E.sub P).carrier` to `Module.Basis.span hli`. Establish `hb : ∀ (σ : K →+* ℂ) (w : Fin r → ℂ), sqAt (E.sub P) σ (∑ a, ComplexAt.ofComplex σ (w a) ⊗ₜ[𝓞 K] b a) = sqAt E σ (∑ a, ComplexAt.ofComplex σ (w a) ⊗ₜ[𝓞 K] ε a)`. Introduce `σ w`. Establish `h1 : X.incl.lTensor (ComplexAt σ) (∑ a, ComplexAt.ofComplex σ (w a) ⊗ₜ[𝓞 K] b a) = ∑ a, ComplexAt.ofComplex σ (w a) ⊗ₜ[𝓞 K] ε a`. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.lTensor_tmul]`. Use `congr 1`. Conclude with `congrArg Subtype.val (Module.Basis.span_apply hli a)`. Rewrite using `[← h1]`.
+
+Simplify using `only [sqAt]`. Rewrite using `[X.incl_isometric]`. Take `⟨hP1, hP2⟩` from `GlobalTheory.T.slope_bound_comparable_metric K (E.sub P) r b C hC (fun σ w => by rw [hb]; exact hgram σ w)`. Take `⟨hQ1, hQ2⟩` from `GlobalTheory.T.normalized_degree_bounded_map K (E.quot P hP) E' φ C hφinj hC0 (fun σ y => sqAt_barMap_le E E' P hP q hPq C hexp σ y)`. Establish `hrP : Module.finrank (𝓞 K) (E.sub P).carrier = r`.
+
+Rewrite using `[Module.finrank_eq_card_basis b, Fintype.card_fin]`. Establish `hrk` using `X.finrank_eq`. Establish `hrange : Module.finrank (𝓞 K) ((⊤ : Submodule (𝓞 K) (E.quot P hP).carrier).map φ) = Module.finrank (𝓞 K) E'.carrier`. Apply `finrank_submodule_of_torsion` to reduce the goal to its premises. Introduce `e'`.
+
+Take `⟨a, e, ha, he⟩` from `hfull e'`. Conclude with `⟨a, ha, he ▸ ⟨P.mkQ e, trivial, hφq e⟩⟩`. Establish `hrQ : Module.finrank (𝓞 K) (E.quot P hP).carrier = Module.finrank (𝓞 K) E'.carrier`. Rewrite using `[← hrange, Submodule.map_top]`. Conclude with `(LinearMap.finrank_range_of_inj hφinj).symm`.
+
+Establish `hsum : r + Module.finrank (𝓞 K) E'.carrier = g`. Rewrite using `[← hg, hrk, hrP, hrQ]`. Take `⟨hI1, -⟩` from `GlobalTheory.T.normalized_degree_full_rank_sublattice K E' ((⊤ : Submodule (𝓞 K) (E.quot P hP).carrier).map φ) hrange`. Establish `hdeg : E.normDegree ⊤ = (E.sub P).normDegree ⊤ + (E.quot P hP).normDegree ⊤`. Rewrite using `[normDegree_top_eq, normDegree_top_eq, normDegree_top_eq, X.arithDegree_eq_add, add_div]`.
+
+Establish `hQd` using `hQ1 ⊤`. Establish `hrkTop : (E.quot P hP).rank ⊤ = Module.finrank (𝓞 K) E'.carrier`. Rewrite using `[HermitianBundle.rank, finrank_top, hrQ]`. Rewrite `hQd` using `[hrkTop]`. Use `set ρ : ℕ := Module.finrank (𝓞 K) E'.carrier with hρ`.
+
+Establish `hsumR : (r : ℝ) + ρ = g` using `by exact_mod_cast hsum`. Establish `hP2'` using `(abs_le.mp hP2).2`. Establish `hgL : (g : ℝ) * L = r * L + ρ * L` using `by rw [← hsumR]; ring`. Establish `hrL : 0 ≤ (r : ℝ) * L` using `by positivity`. Establish `hρL : 0 ≤ (ρ : ℝ) * L` using `by positivity`.
+
+Establish `hm : max (-E'.normDegree ⊤) 0 ≤ max (-E.normDegree ⊤) 0 + g * L`. Apply `max_le` to reduce the goal to its premises. Use `le_max_left (-E.normDegree ⊤) 0` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use `le_max_right (-E.normDegree ⊤) 0` as an intermediate fact.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hreal` using `final_real C L ρ (max (-E'.normDegree ⊤) 0) (max (-E.normDegree ⊤) 0) g hC hL (by positivity) (le_max_right _ _) (le_max_right _ _) (by positivity) (by have : (0 : ℝ) ≤ r := by positivity linarith) hm`. Establish `hfirst : L / 2 ≤ (C + g + g * L + L) * Real.log (2 + (C + g + g * L + L) + max (-E.normDegree ⊤) 0) + (C + g + g * L + L)`. Establish `h0 : (0 : ℝ) ≤ g` using `by positivity`. Establish `h1 : 0 ≤ (C + g + g * L + L)` using `by positivity`.
+
+Establish `h2 : 0 ≤ Real.log (2 + (C + g + g * L + L) + max (-E.normDegree ⊤) 0)` using `Real.log_nonneg (by have := le_max_right (-E.normDegree ⊤) 0; linarith)`. Establish `h3` using `mul_nonneg h1 h2`. Use the polynomial consequences of the given equalities and inequalities. Use `(SlopeMaxExtension.main K _ _ _ X).trans (max_le ?_ ?_)` and prove the remaining obligations. Conclude with `hP1.trans (by exact_mod_cast hfirst)`.
+
+Use `hQ2.trans ((add_le_add_left hslope _).trans ?_)` and prove the remaining obligations. Rewrite using `[← EReal.coe_add]`. Conclude with `hreal` after adjusting the coercions.
+-/
 theorem slopeMax_le_log : ∀ (g : ℕ) (C : ℝ), 1 ≤ C → ∃ C' : ℝ, 0 ≤ C' ∧ ∀ (K : Type) [Field K] [NumberField K] (E E' : HermitianBundle.{0} K) (r : ℕ) (ε : Fin r → E.carrier) (q : E.carrier →ₗ[𝓞 K] E'.carrier), Module.finrank (𝓞 K) E.carrier = g → LinearIndependent (𝓞 K) ε → LinearMap.ker q = Submodule.span (𝓞 K) (Set.range ε) → (∀ e' : E'.carrier, ∃ (a : 𝓞 K) (e : E.carrier), a ≠ 0 ∧ q e = a • e') → (∀ (σ : K →+* ℂ) (w : Fin r → ℂ), C⁻¹ * ∑ a, ‖w a‖ ^ 2 ≤ sqAt E σ (∑ a, ComplexAt.ofComplex σ (w a) ⊗ₜ[𝓞 K] ε a) ∧ sqAt E σ (∑ a, ComplexAt.ofComplex σ (w a) ⊗ₜ[𝓞 K] ε a) ≤ C * ∑ a, ‖w a‖ ^ 2) → (∀ (σ : K →+* ℂ) (x : Fibre σ E.carrier), sqAt E' σ (q.lTensor (ComplexAt σ) x) ≤ C * sqAt E σ x) → E'.slopeMax ≤ ((C * Real.log (2 + Module.finrank (𝓞 K) E'.carrier + max (-E'.normDegree ⊤) 0) : ℝ) : EReal) → E.slopeMax ≤ ((C' * Real.log (2 + C' + max (-E.normDegree ⊤) 0) + C' : ℝ) : EReal) := by
   intro g C hC
   have hC0 : 0 < C := by linarith

@@ -16,6 +16,11 @@ section D
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
   [MeasurableSpace F] [BorelSpace F]
 
+/- English proof (translation)
+Establish `hc : Continuous (fun A : Matrix (Fin 2) (Fin 2) F => ∑ i, ∑ j, (modulus (A i j) : ℝ))`. Use `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations. Conclude with `NNReal.continuous_coe.comp (continuous_modulus.comp (continuous_id.matrix_elem i j))`. Take `⟨C, hC⟩` from `hs.exists_bound_of_continuousOn hc.continuousOn`. Use `⟨max C 0, le_max_right _ _, fun A hA i j => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : (modulus (A i j) : ℝ) ≤ ∑ j, (modulus (A i j) : ℝ)` using `Finset.single_le_sum (f := fun j => (modulus (A i j) : ℝ)) (fun _ _ => NNReal.coe_nonneg _) (Finset.mem_univ j)`. Establish `h2 : ∑ j, (modulus (A i j) : ℝ) ≤ ∑ i, ∑ j, (modulus (A i j) : ℝ)` using `Finset.single_le_sum (f := fun i => ∑ j, (modulus (A i j) : ℝ)) (fun _ _ => Finset.sum_nonneg fun _ _ => NNReal.coe_nonneg _) (Finset.mem_univ i)`. Establish `h3` using `hC A hA`. Conclude with `(h1.trans h2).trans ((le_abs_self _).trans ((Real.norm_eq_abs _).symm.le.trans (h3.trans (le_max_left _ _))))`.
+-/
 theorem exists_entry_bound {s : Set (Matrix (Fin 2) (Fin 2) F)} (hs : IsCompact s) :
     ∃ R : ℝ, 0 ≤ R ∧ ∀ A ∈ s, ∀ i j, (modulus (A i j) : ℝ) ≤ R := by
   have hc : Continuous (fun A : Matrix (Fin 2) (Fin 2) F =>
@@ -34,6 +39,9 @@ theorem exists_entry_bound {s : Set (Matrix (Fin 2) (Fin 2) F)} (hs : IsCompact 
   exact (h1.trans h2).trans ((le_abs_self _).trans ((Real.norm_eq_abs _).symm.le.trans
     (h3.trans (le_max_left _ _))))
 
+/- English proof (translation)
+Establish `hc : Continuous (fun ξ : Fin 2 → F => mx ξ)`. Unfold `mx`. Conclude with `(NNReal.continuous_coe.comp (continuous_modulus.comp (continuous_apply 0))).max (NNReal.continuous_coe.comp (continuous_modulus.comp (continuous_apply 1)))`. Take `⟨C, hC⟩` from `hs.exists_bound_of_continuousOn hc.continuousOn`. Conclude with `⟨max C 0, le_max_right _ _, fun ξ hξ => (le_abs_self _).trans ((Real.norm_eq_abs _).symm.le.trans ((hC ξ hξ).trans (le_max_left _ _)))⟩`.
+-/
 theorem exists_mx_bound {s : Set (Fin 2 → F)} (hs : IsCompact s) :
     ∃ R : ℝ, 0 ≤ R ∧ ∀ ξ ∈ s, mx ξ ≤ R := by
   have hc : Continuous (fun ξ : Fin 2 → F => mx ξ) := by
@@ -44,6 +52,11 @@ theorem exists_mx_bound {s : Set (Fin 2 → F)} (hs : IsCompact s) :
   exact ⟨max C 0, le_max_right _ _, fun ξ hξ =>
     (le_abs_self _).trans ((Real.norm_eq_abs _).symm.le.trans ((hC ξ hξ).trans (le_max_left _ _)))⟩
 
+/- English proof (translation)
+Establish `h` using `(GlobalTheory.CompanionTheory.FourierPlane.fourier_inversion_plane_explicit F ψ hψ φ hφ).1`. Establish `e : ftN ψ φ = fun ξ : Fin 2 → F => ∫ y, φ y * (ψ (-(ξ 0 * y 0 + ξ 1 * y 1)) : ℂ) ∂LFS.vol2 ψ`. Use function extensionality and compare the values at `ξ`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [mul_comm (x 0), mul_comm (x 1)]`.
+
+Rewrite using `[e]`. Conclude with `h`.
+-/
 theorem ftN_mem (ψ : AddChar F Circle) (hψ : IsStd ψ) {φ : (Fin 2 → F) → ℂ}
     (hφ : φ ∈ GodementSectionLocal.schwartzBruhat2 F) :
     ftN ψ φ ∈ GodementSectionLocal.schwartzBruhat2 F := by
@@ -58,6 +71,19 @@ theorem ftN_mem (ψ : AddChar F Circle) (hψ : IsStd ψ) {φ : (Fin 2 → F) →
 
 end D
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ ψ hψ Φ hΦ`. Take `⟨n, Φ₁, Φ₂, h₁, h₂, hs⟩` from `GlobalTheory.CompanionTheory.PureTensor.k2pt F ψ hψ Φ hΦ`. Establish `hsum : ∀ A ξ, pFT ψ Φ A ξ = ∑ i, Φ₁ i A * ftN ψ (Φ₂ i) ξ` using `(GlobalTheory.CompanionTheory.PureTensorFourier.a3 F ψ hψ n Φ Φ₁ Φ₂ h₁ h₂ hs).1`. Establish `hg : ∀ i, IsLocallyConstant (ftN ψ (Φ₂ i)) ∧ HasCompactSupport (ftN ψ (Φ₂ i))` using `fun i => GodementSectionLocal.mem_schwartzBruhat2.1 (ftN_mem ψ hψ (h₂ i))`. Establish `hc₁ : ∀ i, Continuous (Φ₁ i)` using `fun i => (h₁ i).1.continuous`.
+
+Establish `hc₂ : ∀ i, Continuous (ftN ψ (Φ₂ i))` using `fun i => (hg i).1.continuous`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `e : (fun q : Matrix (Fin 2) (Fin 2) F × (Fin 2 → F) => pFT ψ Φ q.1 q.2) = fun q => ∑ i, Φ₁ i q.1 * ftN ψ (Φ₂ i) q.2` using `funext fun q => hsum q.1 q.2`. Rewrite using `[e]`. Conclude with `continuous_finset_sum _ fun i _ => ((hc₁ i).comp continuous_fst).mul ((hc₂ i).comp continuous_snd)`.
+
+Use `choose B₁ hB₁ using fun i => (hc₁ i).bounded_above_of_compact_support (h₁ i).2 choose B₂ hB₂ using fun i => (hc₂ i).bounded_above_of_compact_support (hg i).2 choose R₁ hR₁ hR₁' using fun i => exists_entry_bound (h₁ i).2.isCompact choose R₂ hR₂ hR₂' using fun i => exists_mx_bound …`. Establish `hB₁0 : ∀ i, 0 ≤ B₁ i` using `fun i => (norm_nonneg _).trans (hB₁ i 0)`. Establish `hB₂0 : ∀ i, 0 ≤ B₂ i` using `fun i => (norm_nonneg _).trans (hB₂ i 0)`. Use `⟨∑ i, B₁ i * B₂ i, ∑ i, (R₁ i + R₂ i), Finset.sum_nonneg fun i _ => mul_nonneg (hB₁0 i) (hB₂0 i), fun A ξ => ⟨?_, fun hne => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hsum]`.
+
+Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hB₁ i A) (hB₂ i ξ) (norm_nonneg _) (hB₁0 i)`. Rewrite `hne` using `[hsum]`. Take `⟨i, -, hi⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hne`.
+
+Establish `hA : Φ₁ i A ≠ 0` using `left_ne_zero_of_mul hi`. Establish `hξ : ftN ψ (Φ₂ i) ξ ≠ 0` using `right_ne_zero_of_mul hi`. Establish `hle : R₁ i + R₂ i ≤ ∑ i, (R₁ i + R₂ i)` using `Finset.single_le_sum (f := fun i => R₁ i + R₂ i) (fun i _ => add_nonneg (hR₁ i) (hR₂ i)) (Finset.mem_univ i)`. Use `⟨fun a b => ?_, ?_⟩` and prove the remaining obligations. Use `hR₁' i A (subset_tsupport _ hA) a b` as an intermediate fact.
+
+Combine the linear relations using `[hR₂ i]`. Use `hR₂' i ξ (subset_tsupport _ hξ)` as an intermediate fact. Combine the linear relations using `[hR₁ i]`.
+-/
 theorem pFT_continuous_bounded : ForS fun F _ _ _ _ _ _ ψ => ∀ Φ ∈ LFS.SB F,
     Continuous (fun q : Matrix (Fin 2) (Fin 2) F × (Fin 2 → F) => pFT ψ Φ q.1 q.2) ∧
     ∃ C R : ℝ, 0 ≤ C ∧ ∀ A ξ, ‖pFT ψ Φ A ξ‖ ≤ C ∧

@@ -9,5 +9,8 @@ open scoped ComplexOrder Classical
 open GlobalTheory.CompanionTheory.Ar.PB.WSq GlobalTheory.CompanionTheory.Ar.PB.WMan
 open GlobalTheory.CompanionTheory.Ar.PB.PFl
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.PB.PFl.PtsBase.main | exact GlobalTheory.CompanionTheory.Ar.PB.PFl.PtsBase.main | (intros; apply GlobalTheory.CompanionTheory.Ar.PB.PFl.PtsBase.main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.blockMap_frame_restriction : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (keep : Ψ × Fin N → Prop) (Kk : Type) [Fintype Kk] (ιk : Kk → Type) [∀ k, Fintype (ιk k)] (κ : Kk → K) (v : (Σ k, ιk k) → (Σ k, ι k)), IsBlockMap κ v → (∀ k, k ∈ Set.range κ ↔ ((∀ p, M.blk p ≠ some k) ∨ ∃ p, keep p ∧ M.blk p = some k)) → (∀ z ∈ mcPts (mCoordIdeal (y ∘ v)), pBase M v z ∈ mcPts (mCoordIdeal M.x)) ∧ ∀ z z' : (Σ k, ιk k) → ℂ, SameOrbit z z' → SameOrbit (pBase M v z) (pBase M v z') := by
   first | exact @GlobalTheory.CompanionTheory.Ar.PB.PFl.PtsBase.main | exact GlobalTheory.CompanionTheory.Ar.PB.PFl.PtsBase.main | (intros; apply GlobalTheory.CompanionTheory.Ar.PB.PFl.PtsBase.main <;> assumption)

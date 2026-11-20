@@ -30,6 +30,13 @@ namespace GlobalTheory.TripleDescent
 
 open GlobalTheory.CechPic
 
+/- English proof (translation)
+Use `choose u hu hn using fun g => RigidLinearisation.exists_normalised hL p e he (ρ g) (τ g) (hτ g) r hr (hiso g)`. Use `⟨u, hu, fun g h => corr_of_val hL fun y J hJ => ?_⟩` and prove the remaining obligations. Conclude with `RigidLinearisation.val_eq_of_rigid hL (fun U _ k => by`. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Fin.prod_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, τm, Category.comp_id]`. Use the proof step `simp) e (eq_one_of_surjective_appTop_of_section p e he hs) (hu _)`.
+
+Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ (hu g) (DVR.pullGen_isGen _ _ _ _ (hu h) _)) (fun y J hJ => by`. Establish `a₁` using `hn (g * h) X (𝟙 X) y J hJ`. Establish `a₂` using `hn g X (𝟙 X) y J hJ`. Establish `a₃` using `hn h X (ρ g) y J hJ`. Simplify using `only [Category.id_comp] at a₁ a₂`.
+
+Rewrite using `[val_mul hJ, val_pull hJ, hτ g, a₁, a₂, a₃, ρm]`. Use the proof step `simp) _ _ y J hJ`.
+-/
 theorem exists_linearisation {Ga : Type} [Group Ga] {X Y : Scheme.{0}} {L : LB Y} (hL : L.IsLB) (p : Y ⟶ X)
     (e : X ⟶ Y) (he : e ≫ p = 𝟙 X) (hs : Function.Surjective p.appTop.hom) (ρ : Ga → (X ⟶ X)) (τ : Ga → (Y ⟶ Y))
     (ρm : ∀ a c, ρ (a * c) = ρ a ≫ ρ c) (τm : ∀ a c, τ (a * c) = τ a ≫ τ c) (hτ : ∀ a, e ≫ τ a = ρ a ≫ e)
@@ -59,17 +66,28 @@ abbrev fibre (T : Over S) (j : S' ⟶ S) : Over S' := Over.mk (pullback.snd T.ho
 abbrev fibreProj (T : Over S) (j : S' ⟶ S) : Over.mk ((fibre T j).hom ≫ j) ⟶ T :=
   Over.homMk (pullback.fst T.hom j) pullback.condition
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Over.homMk (h.1.lift _ _ (Over.w (fibreProj T j ≫ p))) (h.1.lift_snd _ _ _), Over.OverMorphism.ext (h.1.lift_fst _ _ _)⟩`.
+-/
 theorem exists_liftPt (h : IsGrpPullback B A j φ) {T : Over S} (p : T ⟶ A) :
     ∃ x : fibre T j ⟶ B, pushPt h.1.w x = fibreProj T j ≫ p :=
   ⟨Over.homMk (h.1.lift _ _ (Over.w (fibreProj T j ≫ p))) (h.1.lift_snd _ _ _),
     Over.OverMorphism.ext (h.1.lift_fst _ _ _)⟩
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (by show (x.left ≫ _) ≫ _ = (x.left ≫ _) ≫ _ rw [Category.assoc, ha, Category.assoc])`.
+-/
 theorem pushPt_comp (h : IsGrpPullback B A j φ) {T : Over S'} (x : T ⟶ B) {a : A ⟶ A} {a' : B ⟶ B}
     (ha : a'.left ≫ φ = φ ≫ a.left) : pushPt h.1.w (x ≫ a') = pushPt h.1.w x ≫ a :=
   Over.OverMorphism.ext (by
     show (x.left ≫ _) ≫ _ = (x.left ≫ _) ≫ _
     rw [Category.assoc, ha, Category.assoc])
 
+/- English proof (translation)
+Establish `e` using `congrArg (fun z => z.left) (map_one (pushHom h (𝟙_ (Over S'))))`. Establish `e₁ : (1 : 𝟙_ (Over S') ⟶ B) = η[B]` using `by rw [Hom.one_def]; simp`. Rewrite `e` using `[e₁]`. Use `e.trans ?_` and prove the remaining obligations. Use `show (toUnit _ ≫ η[A]).left = _`.
+
+Simplify using `[eSec]`.
+-/
 theorem one_comm (h : IsGrpPullback B A j φ) : eSec B ≫ φ = j ≫ eSec A := by
   have e := congrArg (fun z => z.left) (map_one (pushHom h (𝟙_ (Over S'))))
   have e₁ : (1 : 𝟙_ (Over S') ⟶ B) = η[B] := by rw [Hom.one_def]; simp
@@ -78,6 +96,15 @@ theorem one_comm (h : IsGrpPullback B A j φ) : eSec B ≫ φ = j ≫ eSec A := 
   show (toUnit _ ≫ η[A]).left = _
   simp [eSec]
 
+/- English proof (translation)
+Use `choose f₀ hf₀ using hi`. Set `f : O → (A ⟶ A)` to `fun x => Over.homMk (f₀ x) (by`. Rewrite using `[← cancel_epi φ, ← Category.assoc, ← hf₀, Category.assoc, h.1.w, ← Category.assoc, Over.w])`. Establish `hf : ∀ x, (i.act x).left ≫ φ = φ ≫ (f x).left` using `hf₀`. Establish `ext : ∀ {a b : A ⟶ A}, φ ≫ a.left = φ ≫ b.left → a = b` using `fun e => Over.OverMorphism.ext ((cancel_epi φ).1 e)`.
+
+Use `⟨⟨f, fun x => hR _ _ _ hA hA _ (Over.OverMorphism.ext ?_), ext ?_, fun x y => ext ?_, fun x y => ext ?_⟩, hf⟩` and prove the remaining obligations. Use `i.hom x` as an intermediate fact. Establish `e : eSec B ≫ (i.act x).left = eSec B` using `congrArg (fun q => q.left) (IsMonHom.one_hom (i.act x))`. Use `show eSec A ≫ (f x).left = eSec A`. Rewrite using `[← cancel_epi j]`.
+
+Use `(Category.assoc _ _ _).symm.trans ?_` and prove the remaining obligations. Rewrite using `[← one_comm h, Category.assoc, ← hf, ← Category.assoc, e]`. Rewrite using `[← hf, i.one, Over.id_left, Over.id_left, Category.id_comp, Category.comp_id]`. Rewrite using `[← hf, i.mul, Over.comp_left, Over.comp_left, Category.assoc, hf, ← Category.assoc, hf, Category.assoc]`. Set `φ₀ : Over.mk (B.hom ≫ j) ⟶ A` to `Over.homMk φ h.1.w`.
+
+Establish `h` using `h.2 B (i.act x) (i.act y) (φ₀ ≫ f x) (φ₀ ≫ f y) (hf x).symm (hf y).symm`. Rewrite `h` using `[← MonObj.comp_mul]`. Rewrite using `[← hf, i.add, ← h]`. Both sides reduce to the same expression.
+-/
 theorem exists_oAct (hR : Out.RigiditySt) {O : Type} [CommRing O] (hA : IsAbelianScheme A) [Epi j] [Epi φ]
     (h : IsGrpPullback B A j φ) (i : OAct O B) (hi : ∀ x, ∃ f : A.left ⟶ A.left, (i.act x).left ≫ φ = φ ≫ f) :
     ∃ a : OAct O A, ∀ x, (i.act x).left ≫ φ = φ ≫ (a.act x).left := by
@@ -108,13 +135,22 @@ variable [IsCommMonObj A]
 def cubeCls {T : Over S} {n : ℕ} (x : Fin n → (T ⟶ A)) (c : Pic A.left) : Pic T.left :=
   ∑ I : Finset (Fin n), ((-1 : ℤ) ^ (n - I.card)) • pull (psum A x I).left c
 
+/- English proof (translation)
+The claim follows from `LB.isLB_linComb hL _ _`.
+-/
 theorem isLB_cube {T : Over S} {n : ℕ} (x : Fin n → (T ⟶ A)) {L : LB A.left} (hL : L.IsLB) : (cubeLB A x L).IsLB :=
   LB.isLB_linComb hL _ _
 
+/- English proof (translation)
+The claim follows from `(cls_linComb hL _ _ _).trans (Fintype.sum_equiv Equiv.ulift _ _ fun _ => rfl)`.
+-/
 theorem cls_cube {T : Over S} {n : ℕ} (x : Fin n → (T ⟶ A)) {L : LB A.left} (hL : L.IsLB) :
     cls _ (isLB_cube x hL) = cubeCls x (cls L hL) :=
   (cls_linComb hL _ _ _).trans (Fintype.sum_equiv Equiv.ulift _ _ fun _ => rfl)
 
+/- English proof (translation)
+Unfold `cubeCls`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, ← pull_comp, ← pull_comp, psum_push h x' x U hx I]`.
+-/
 theorem pull_cubeCls [IsCommMonObj B] (h : IsGrpPullback B A j φ) {T' : Over S'} {T : Over S} {n : ℕ}
     (x' : Fin n → (T' ⟶ B)) (x : Fin n → (T ⟶ A)) (U : Over.mk (T'.hom ≫ j) ⟶ T)
     (hx : ∀ i, pushPt h.1.w (x' i) = U ≫ x i) (c : Pic A.left) :
@@ -124,6 +160,9 @@ theorem pull_cubeCls [IsCommMonObj B] (h : IsGrpPullback B A j φ) {T' : Over S'
   refine Finset.sum_congr rfl fun I _ => ?_
   rw [map_zsmul, ← pull_comp, ← pull_comp, psum_push h x' x U hx I]
 
+/- English proof (translation)
+Unfold `cubeCls`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, ← pull_comp, ← Over.comp_left]`. Conclude with `congrArg (fun q : T' ⟶ A => _ • pull q.left c) (psum_hom (preHom U) x I)`.
+-/
 theorem pull_cubeCls_pre {T' T : Over S} {n : ℕ} (x : Fin n → (T ⟶ A)) (U : T' ⟶ T) (c : Pic A.left) :
     pull U.left (cubeCls x c) = cubeCls (fun i => U ≫ x i) c := by
   unfold cubeCls
@@ -132,6 +171,9 @@ theorem pull_cubeCls_pre {T' T : Over S} {n : ℕ} (x : Fin n → (T ⟶ A)) (U 
   rw [map_zsmul, ← pull_comp, ← Over.comp_left]
   exact congrArg (fun q : T' ⟶ A => _ • pull q.left c) (psum_hom (preHom U) x I)
 
+/- English proof (translation)
+Establish `e : ∀ I : Finset (Fin 3), psum A (fun _ : Fin 3 => (1 : T ⟶ A)) I = 1` using `fun I => (psum_hom (1 : (T ⟶ A) →* (T ⟶ A)) (fun _ => 1) I).symm`. Unfold `cubeCls`. Simplify using `only [e]`. Rewrite using `[← Finset.sum_smul, show ∑ I : Finset (Fin 3), (-1 : ℤ) ^ (3 - I.card) = 0 by decide, zero_smul]`.
+-/
 theorem cubeCls_one {T : Over S} (c : Pic A.left) : cubeCls (fun _ : Fin 3 => (1 : T ⟶ A)) c = 0 := by
   have e : ∀ I : Finset (Fin 3), psum A (fun _ : Fin 3 => (1 : T ⟶ A)) I = 1 := fun I =>
     (psum_hom (1 : (T ⟶ A) →* (T ⟶ A)) (fun _ => 1) I).symm
@@ -141,6 +183,9 @@ theorem cubeCls_one {T : Over S} (c : Pic A.left) : cubeCls (fun _ : Fin 3 => (1
 
 end Points
 
+/- English proof (translation)
+Take `⟨N, hN, rfl⟩` from `cls_surj c`. Conclude with `(cls_eq_zero_iff hN).2 (T.exists_gen_of_rigidified_faithfullyFlat_descent hG S S' π A N hA hN ‹_› ‹_› ‹_› ((cls_eq_zero_iff (pull_isLB hN _)).1 h₀) ((cls_eq_zero_iff (pull_isLB hN _)).1 h₁))`.
+-/
 theorem eq_zero_of_pull (hG : Out.GlobalFnsSt) {S S' : Scheme.{0}} (π : S' ⟶ S) [Flat π] [Surjective π]
     [QuasiCompact π] {A : Over S} [GrpObj A] (hA : IsAbelianScheme A) (c : Pic A.left)
     (h₀ : pull (η[A]).left c = 0) (h₁ : pull (fibreProj A π).left c = 0) : c = 0 := by
@@ -157,6 +202,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (hG : O
 
 include hG hA gp hc
 
+/- English proof (translation)
+Establish `hA₃` using `AbelianSchemeGerms.isAbelianScheme_tensor _ _ hA (AbelianSchemeGerms.isAbelianScheme_tensor _ _ hA hA)`. Use `eq_zero_of_pull hG π hA₃ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[pull_cubeCls_pre, ← cubeCls_one c]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+
+Apply the tactic sequence `fin_cases k <;> simp [x3, Hom.one_def]`. Use `choose x hx using fun k => exists_liftPt gp (x3 A k)`. Establish `e : cubeCls (x3 t.G) (cls t.PP.L t.PP.isLB) = 0` using `(cls_cube _ _).symm.trans ((cls_eq_zero_iff _).2 ⟨t.cub.t, t.cub.isGen⟩)`. Establish `e'` using `congrArg (pull (lift (x 0) (lift (x 1) (x 2))).left) e`. Rewrite `e'` using `[pull_cubeCls_pre, map_zero]`.
+
+Rewrite using `[pull_cubeCls gp x _ _ hx, hc, ← e']`. Use `congr 1`. Use function extensionality and compare the values at `k`. Apply the tactic sequence `fin_cases k <;> simp [x3]`.
+-/
 theorem theorem_of_cube_descends : cubeCls (x3 A) c = 0 := by
   have hA₃ := AbelianSchemeGerms.isAbelianScheme_tensor _ _ hA (AbelianSchemeGerms.isAbelianScheme_tensor _ _ hA hA)
   refine eq_zero_of_pull hG π hA₃ _ ?_ ?_
@@ -174,6 +226,21 @@ theorem theorem_of_cube_descends : cubeCls (x3 A) c = 0 := by
     funext k
     fin_cases k <;> simp [x3]
 
+/- English proof (translation)
+Establish `hA₂` using `AbelianSchemeGerms.isAbelianScheme_tensor _ _ hA hA`. Use `act.hom a` as an intermediate fact. Use `act.hom (H.bar a)` as an intermediate fact. Use `sub_eq_zero.1 (eq_zero_of_pull hG π hA₂ _ ?_ ?_)` and prove the remaining obligations. Rewrite using `[map_sub, pull_cubeCls_pre, pull_cubeCls_pre, sub_eq_zero]`.
+
+Establish `e₁ : η[A ⊗ A] ≫ fst A A = 1` using `by simp [Hom.one_def]`. Establish `e₂ : η[A ⊗ A] ≫ snd A A = 1` using `by simp [Hom.one_def]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Use `fin_cases k`.
+
+Use `show η[A ⊗ A] ≫ fst A A ≫ act.act a = η[A ⊗ A] ≫ fst A A`. Rewrite using `[← Category.assoc, e₁, MonObj.one_comp]`. Use `show η[A ⊗ A] ≫ snd A A = η[A ⊗ A] ≫ snd A A ≫ act.act (H.bar a)`. Rewrite using `[← Category.assoc, e₂, MonObj.one_comp]`. Take `⟨x, hx⟩` from `exists_liftPt gp (fst A A)`.
+
+Take `⟨y, hy⟩` from `exists_liftPt gp (snd A A)`. Establish `e : cubeCls _ (cls t.PP.L t.PP.isLB) = cubeCls _ (cls t.PP.L t.PP.isLB)` using `(cls_cube _ _).symm.trans (((cls_eq_iff _ _).2 (t.adj a)).trans (cls_cube _ _))`. Establish `e'` using `congrArg (pull (lift x y).left) e`. Rewrite `e'` using `[pull_cubeCls_pre, pull_cubeCls_pre]`. Rewrite using `[map_sub, sub_eq_zero, pull_cubeCls gp ![x ≫ t.act.act a, y] _ _ (fun k => ?_), pull_cubeCls gp ![x, y ≫ t.act.act (H.bar a)] _ _ (fun k => ?_), hc]`.
+
+Use `Eq.trans ?_ (e'.trans ?_)` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `k`. Apply the tactic sequence `fin_cases k <;> simp`. Use `congr 1`.
+
+Use function extensionality and compare the values at `k`. Apply the tactic sequence `fin_cases k <;> simp`. Use `fin_cases k`. Conclude with `hx`. Conclude with `(pushPt_comp gp y (hact _)).trans (by rw [hy, Category.assoc]; rfl)`.
+
+Use `fin_cases k`. Conclude with `(pushPt_comp gp x (hact a)).trans (by rw [hx, Category.assoc]; rfl)`. Conclude with `hy`.
+-/
 theorem cubeCls_adj (act : OAct (𝓞 E) A) (hact : ∀ x, (t.act.act x).left ≫ φ = φ ≫ (act.act x).left) (a : 𝓞 E) :
     cubeCls ![fst A A ≫ act.act a, snd A A] c = cubeCls ![fst A A, snd A A ≫ act.act (H.bar a)] c := by
   have hA₂ := AbelianSchemeGerms.isAbelianScheme_tensor _ _ hA hA
@@ -214,6 +281,11 @@ theorem cubeCls_adj (act : OAct (𝓞 E) A) (hact : ∀ x, (t.act.act x).left �
 
 omit hG hA [Flat π] [Surjective π] [QuasiCompact π] in
 
+/- English proof (translation)
+Set `U : Over.mk (t.G.hom ≫ π) ⟶ A` to `Over.homMk φ gp.1.w`. Establish `e` using `pull_cubeCls gp ![𝟙 t.G, t.act.act H.w0] ![𝟙 A, act.act H.w0] U (fun k => by fin_cases k`. Conclude with `Over.OverMorphism.ext ((Category.id_comp _).trans (Category.comp_id _).symm)`. Conclude with `Over.OverMorphism.ext (hact _)) c`. Rewrite `e` using `[hc]`.
+
+Conclude with `e.trans ((cls_cube _ _).symm.trans ((cls_eq_iff _ _).2 t.prim).symm)`.
+-/
 theorem pull_cubeCls_prim (act : OAct (𝓞 E) A) (hact : ∀ x, (t.act.act x).left ≫ φ = φ ≫ (act.act x).left) :
     pull φ (cubeCls ![𝟙 A, act.act H.w0] c) = cls t.PP.L t.PP.isLB := by
   let U : Over.mk (t.G.hom ≫ π) ⟶ A := Over.homMk φ gp.1.w
@@ -226,6 +298,21 @@ theorem pull_cubeCls_prim (act : OAct (𝓞 E) A) (hact : ∀ x, (t.act.act x).l
 
 end Triple
 
+/- English proof (translation)
+Introduce `hL _ _ E _ _ _ H K _ X Y π sY Ga _ ρ t g ν hπ hq hp _ ha hk ν₁ νm`. Establish `hG` using `hL.globalFns`. Use `hπ.fin` as an intermediate fact. Use `hπ.etale` as an intermediate fact. Use `hπ.onto` as an intermediate fact.
+
+Establish `: IsLocallyNoetherian Y`. Take `⟨N, i, hi, -, rfl⟩` from `hq`. Use `isProper_str K N` as an intermediate fact. Conclude with `LocallyOfFiniteType.isLocallyNoetherian (i ≫ PSpace.str K N)`. Establish `hB : IsAbelianScheme t.G` using `AbelianSchemeGerms.isAbelianScheme_of_proper _ t.semi`.
+
+Take `⟨A, _, φ, hA, gp, hφ⟩` from `T.exists_abelianScheme_descent_of_galoisCover K X Y π sY Ga ρ t.G (fun a => (ν a).φ) hπ (RelAmpleQProj.isQProjOver_of_relAmple K X (π ≫ sY) t.G t.PP.L (isQProjOver_comp_of_isFinite_noetherian K X Y π sY hπ.fin hq) t.PP.isLB ha) hB (fun a => (ν a).cart) ν₁ νm`. Use `hA.comm` as an intermediate fact. Use `hφ.fin` as an intermediate fact. Use `hφ.etale` as an intermediate fact. Use `hφ.onto` as an intermediate fact.
+
+Establish `: Epi π` using `Flat.epi_of_flat_of_surjective _`. Establish `: Epi φ` using `Flat.epi_of_flat_of_surjective _`. Take `⟨act, hact⟩` from `exists_oAct hL.rigidity hA gp t.act fun x => by`. Take `⟨f, hf, -⟩` from `(galoisCover_descent _ _ φ Ga _ hφ).1 _ ((t.act.act x).left ≫ φ) fun a => by`. Establish `e : (t.act.act x).left ≫ (ν a).φ = (ν a).φ ≫ (t.act.act x).left` using `(ν a).act x`.
+
+Rewrite using `[← Category.assoc, ← e, Category.assoc, hφ.inv a]`. Conclude with `⟨f, hf.symm⟩`. Take `⟨u, hu₁, hu₂⟩` from `exists_linearisation t.PP.isLB t.G.hom (eSec t.G) (Over.w η[t.G]) (hG _ _ hB).2 ρ (fun a => (ν a).φ) hπ.mul νm (fun a => one_comm (ν a).cart) t.PP.rig t.PP.rigGen fun a => by`. Take `⟨w, hw, -⟩` from `(ν a).lin`. Conclude with `⟨w, hw⟩`.
+
+Take `⟨M, hM, iM⟩` from `T.exists_descent_linearised_lineBundle_galoisCover _ _ φ Ga _ t.PP.L hφ t.PP.isLB u hu₁ hu₂`. Establish `hc : pull φ (cls M hM) = cls t.PP.L t.PP.isLB` using `((cls_eq_iff _ (pull_isLB hM φ)).2 iM).symm`. Take `⟨PP, cub, sym, iso, -, prim, adj⟩` from `PrimNorm.exists_primitive_normalisation hG E H Y A act M hA hM ((cls_eq_zero_iff (isLB_cube _ hM)).1 ((cls_cube _ hM).trans (theorem_of_cube_descends hG t hA gp _ hc))) fun a => (cls_eq_iff (isLB_cube _ hM) (isLB_cube _ hM)).1 ((cls_cube _ hM).trans ((cubeCls_adj hG t hA gp _ hc …`. Establish `iP : LBIso t.PP.L (PP.L.pull φ)` using `(cls_eq_iff t.PP.isLB (pull_isLB PP.isLB φ)).1 ((pull_cubeCls_prim t gp _ hc act hact).symm.trans (congrArg (pull φ) ((cls_cube _ hM).symm.trans ((cls_eq_iff PP.isLB (isLB_cube _ hM)).2 iso).symm)))`. Set `t' : SAB H Y` to `⟨A, isSemiAbelian_of_isAbelianScheme A hA, act, PP, cub, sym, adj, prim⟩`.
+
+Take `⟨m, hm⟩` from `exists_sabMap_of_isProper_of_lbIso hG E H Y X t' t π φ hA.proper gp iP hact`. Take `⟨h₁, h₂⟩` from `relAmple_kTriv_of_finite_etale_cover Y X π A t.G φ PP.L t.PP.L hπ.fin hπ.etale hπ.onto hA PP.isLB t.PP.isLB gp iP`. Conclude with `⟨t', m, fun a => by rw [hm]; exact hφ.inv a, hA.proper, h₁ ha, h₂ hk⟩`.
+-/
 theorem exists_sab_descent_of_galoisCover : Out.Laws → Out.Laws2 → (∀ (S : Scheme.{0}) (P : Out.PolAV S) (M : LB P.A.left), M.IsLB → ∃ t : LB.Gen (Theta P.A M), t.IsGen) → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (K : Type) [Field K] (X Y : Scheme.{0}) (π : X ⟶ Y) (sY : Y ⟶ Sp K) (Ga : Type) [Group Ga] (ρ : Ga → (X ⟶ X)) (t : SAB H X) (g : ℕ) (ν : ∀ a, SABMap t t (ρ a)), IsGaloisCover Ga ρ π → IsQProjOver sY → IsProper t.G.hom → SmoothOfRelativeDimension g t.G.hom → Out.RelAmple t.G t.PP.L → Out.KTriv t.G t.PP.L → (ν 1).φ = 𝟙 _ → (∀ a c, (ν (a * c)).φ = (ν a).φ ≫ (ν c).φ) → ∃ (t' : SAB H Y) (m : SABMap t t' π), (∀ a, (ν a).φ ≫ m.φ = m.φ) ∧ IsProper t'.G.hom ∧ Out.RelAmple t'.G t'.PP.L ∧ Out.KTriv t'.G t'.PP.L := by
   intro hL _ _ E _ _ _ H K _ X Y π sY Ga _ ρ t g ν hπ hq hp _ ha hk ν₁ νm
   have hG := hL.globalFns

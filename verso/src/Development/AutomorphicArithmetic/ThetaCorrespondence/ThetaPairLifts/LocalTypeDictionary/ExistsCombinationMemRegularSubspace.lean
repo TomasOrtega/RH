@@ -18,6 +18,17 @@ open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheor
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 noncomputable section
 namespace GlobalTheory.RegSo
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ B a a' G X om om' hT v t`. Use `haveI := hT.geo.hV'.lat`. Use `haveI := hT.geo.hW.lat`. Take `⟨b', hb'⟩` from `exists_isSplitBasis t G.V'.L hT.base.cm`. Take `⟨c, hc⟩` from `exists_isSplitBasis t G.W.L hT.base.cm`.
+
+Take `⟨b₁, -, ι', hι', hvac'⟩` from `_root_.GlobalTheory.T.splitPlace_sphericalVector_indicator_value hP F E σ B _ _ _ _ _ _ _ om' _ _ _ _ (GlobalTheory.ThKConst.isPair_small hT) v t b' c hb' hc`. Set `Q : GL (Fin a') (Fv F v)` to `Matrix.GeneralLinearGroup.mkOfDetNeZero b₁.valᵀ (by`. Rewrite using `[Matrix.det_transpose]`. Conclude with `b₁.isUnit.map Matrix.detMonoidHom |>.ne_zero)`. Set `Λ : Submodule 𝒪[Fv F v] (Fin (a + a') → Fv F v)` to `{ carrier := {x | ∀ j, (x ᵥ* c.val) j ∈ 𝒪[Fv F v]} add_mem' := fun {x y} hx hy j => by rw [Matrix.add_vecMul]; exact add_mem (hx j) (hy j) zero_mem' := fun j => by rw [Matrix.zero_vecMul]; exact zero_mem _ smul_mem' := fun s x hx j => by`.
+
+Rewrite using `[show s • x = (s : Fv F v) • x from rfl, Matrix.smul_vecMul]`. Conclude with `mul_mem s.2 (hx j) }`. Use `⟨_, Q, Λ, 1, isLinBar_one G.M' B.ψ t b₁ Q rfl c ι' hι', fun Y => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearMap.funLeft_apply]`. Rewrite using `[hvac', one_mul]`.
+
+Establish `key : mulHomeo Q c Y ∈ {Y : Matrix (Fin a') (Fin (a + a')) (Fv F v) | ∀ i j, Y i j ∈ v.adicCompletionIntegers F} ↔ Q.val * Y ∈ (GlobalTheory.SplitFlip.matLat (Fin a') Λ : Set (Matrix (Fin a') (Fin (a + a')) (Fv F v)))`. Rewrite using `[mulHomeo_apply]`. Use `show (∀ i j, (Q.val * Y * c.val) i j ∈ v.adicCompletionIntegers F) ↔ ∀ i j, ((Q.val * Y).row i ᵥ* c.val) j ∈ 𝒪[Fv F v]`. Simplify using `only [GlobalTheory.FinPl.SplitPoint.mem_integer_iff]`. Both sides reduce to the same expression.
+
+Distinguish the cases in `h : Q.val * Y ∈ (GlobalTheory.SplitFlip.matLat (Fin a') Λ : Set (Matrix (Fin a') (Fin (a + a')) (Fv F v)))`. Rewrite using `[Set.indicator_of_mem h, Set.indicator_of_mem (key.2 h)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem h, Set.indicator_of_notMem (fun h' => h (key.1 h'))]`.
+-/
 theorem regular_subspace_vacuum_at : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)
     (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple B G X om om' →
@@ -55,6 +66,15 @@ theorem regular_subspace_vacuum_at : _root_.GlobalTheory.FunPr.ThetaLocalInputs 
   · rw [Set.indicator_of_mem h, Set.indicator_of_mem (key.2 h)]
     rfl
   · rw [Set.indicator_of_notMem h, Set.indicator_of_notMem (fun h' => h (key.1 h'))]
+/- English proof (translation)
+Introduce `hP D ψ θ hθ W W₁ X A A₁ B α β hT ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hO hTD n Ψ hΨ`. Use `choose ΦD hΦD hD using fun i => hO.algB (Ψ i) (hΨ i)`. Use `choose m f φ hsum hSB hvac using fun i => decAlg Γ.M' Bs.ψ Bs.emb (ΦD i) (hΦD i)`. Establish `hfin : Set.Finite (⋃ i, ⋃ k, {v | ¬ φ i k v = Γ.M'.vac v})` using `Set.finite_iUnion fun i => Set.finite_iUnion fun k => Filter.eventually_cofinite.1 (hvac i k)`. Use `⟨hfin.toFinset, fun v hv hg t => ?_⟩` and prove the remaining obligations.
+
+Establish `h0 : ∀ i k, φ i k v = Γ.M'.vac v` using `fun i k => by`. Assume the negation of the conclusion as `h`. Conclude with `hv (hfin.mem_toFinset.2 (Set.mem_iUnion.2 ⟨i, Set.mem_iUnion.2 ⟨k, h⟩⟩))`. Establish `hTD'` using `isTriple_goodPlace hTD v t hg`. Take `⟨K, hK⟩` from `homAt W₁ Γ hO.JW₁ hTD.base.cm hTD.geo.hV'.herm v t`.
+
+Set `K' : GL (Fin W₁.rank) (Fv D.host.F v) →* GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA D.sp.cm.sig Γ.V'.J` to `{ toFun := fun g => GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU W₁ (-1) hO.JW₁ (K g) map_one' := by simp only [map_one]; exact GlobalTheory.LocWeilAct.conjU_one' _ _ _ map_mul' := fun g g' => by simp only [map_mul]; exact GlobalTheory.LocWeilAct.conjU_mul' _ …`. Take `⟨ν', α', hν', hact⟩` from `actAt { Bs with v₁ := v, τ₁ := t } Γ Xc om om' hTD' K' (fun g => (hK g).2.2)`. Take `⟨ι, Pm, Λ, c, hι, hvι⟩` from `_root_.GlobalTheory.RegSo.regular_subspace_vacuum_at hP _ _ D.sp.cm.sig { Bs with v₁ := v, τ₁ := t } _ _ Γ Xc om om' hTD' v t`. Take `⟨z, hzs, hzd, hz⟩` from `combAt { Bs with v₁ := v, τ₁ := t } Γ hTD.geo.hM' hTD.geo.lt om' (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU W₁ (-1) hO.JW₁) K ν' α' hν' ι hι (hact ι hι) (Γ.M'.vac v) Pm Λ c hvι`. Use `⟨z, fun k hk => ?_, hzd, fun i => ⟨(z.sum fun k c => c • om' (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU W₁ (-1) hO.JW₁ k, 1) (ΦD i)), datumComb D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hO hTD (ΦD i) (Ψ i) (hD i) z, ?_⟩⟩` and prove the remaining obligations.
+
+Take `⟨g, rfl⟩` from `hzs k hk`. Conclude with `⟨(hK g).1, (hK g).2.1⟩`. Rewrite using `[hsum i]`. Conclude with `hz (f i) (φ i) (hSB i) (hvac i) (h0 i)`.
+-/
 theorem exists_combination_mem_regular_subspace : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsInfFam θ →
     ∀ (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁) (B : Fr X) (α β : (AE D)ˣ →* Circle), IsTriple W W₁ X α β →
     ∀ (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁)) (𝓕₁ : Set (GA D W₁))
@@ -108,6 +128,9 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.RegSo.exists_combination_mem_regular_subspace | exact _root_.GlobalTheory.RegSo.exists_combination_mem_regular_subspace | (intros; apply _root_.GlobalTheory.RegSo.exists_combination_mem_regular_subspace <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.twisted_form_mem_regular_subspace : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsInfFam θ →
     ∀ (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁) (B : Fr X) (α β : (AE D)ˣ →* Circle), IsTriple W W₁ X α β →
     ∀ (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁)) (𝓕₁ : Set (GA D W₁))

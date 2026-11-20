@@ -11,10 +11,22 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+The claim follows from `a.2.2`.
+-/
 theorem eventually_evFin_mem (a : AF F) :
     ∀ᶠ v in Filter.cofinite, evFin F v a ∈ v.adicCompletionIntegers F :=
   a.2.2
 
+/- English proof (translation)
+Establish `hev : ∀ᶠ v in Filter.cofinite, vac v (fun i => evFin F v (x i)) = 1`. Establish `h1 : ∀ᶠ v in Filter.cofinite, ∀ i, evFin F v (x i) ∈ v.adicCompletionIntegers F` using `Filter.eventually_all.2 fun i => eventually_evFin_mem (x i)`. Use `filter_upwards [hstd, h1] with v hv h1v`. Rewrite using `[hv]`. Conclude with `Set.indicator_of_mem (s := {x : κ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F}) h1v 1`.
+
+Establish `hS` using `Filter.eventually_cofinite.1 hev`. Use `⟨∏ v ∈ hS.toFinset \ T, vac v (fun i => evFin F v (x i)), fun φ g hT hout => ?_⟩` and prove the remaining obligations. Establish `hsub : Function.mulSupport (fun v => g v fun i => evFin F v (x i)) ⊆ ↑(T ∪ (hS.toFinset \ T))`. Introduce `v hv`. Assume the negation of the conclusion as `hn`.
+
+Simplify using `only [Finset.coe_union, Finset.coe_sdiff, Set.Finite.coe_toFinset, Set.mem_union, Set.mem_diff, Set.mem_setOf_eq, Finset.mem_coe, not_or, not_and, not_not] at hn`. Rewrite `hv` using `[Function.mem_mulSupport, hout v hn.1]`. Conclude with `hv (not_not.1 fun h => hn.1 (hn.2 h))`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ hsub, Finset.prod_union Finset.disjoint_sdiff, mul_comm]`. Use `congr 1`.
+
+Conclude with `Finset.prod_congr rfl fun v hv => by rw [hout v (Finset.mem_sdiff.1 hv).2]`. Rewrite using `[← Finset.prod_coe_sort T]`. Conclude with `Finset.prod_congr rfl fun v _ => by rw [hT v.1 v.2]`.
+-/
 theorem finprod_eq_mul {κ : Type} [Finite κ] (vac : ∀ v : Pl F, (κ → Fv F v) → ℂ)
     (hstd : ∀ᶠ v in Filter.cofinite, vac v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1)
     (T : Finset (Pl F)) (x : κ → AF F) :
@@ -50,6 +62,13 @@ end
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n d Y W M ψ hM T`. Use `choose c hc using fun x => GlobalTheory.PureML.finprod_eq_mul M.vac hM.std T x`. Set `P : (Fin n × Fin d → AF F) → MultilinearMap ℂ (fun v : T => (Fin n × Fin d → Fv F v) → ℂ) ℂ` to `fun x => (MultilinearMap.mkPiAlgebra ℂ T ℂ).compLinearMap (fun v => LinearMap.proj (R := ℂ) (φ := fun _ : (Fin n × Fin d → Fv F v.1) => ℂ) (fun i => evFin F v.1 (x i)))`. Use `⟨{ toFun := fun f => MultilinearMap.pi (fun x => (f (fun i => evI F (x i)) * c x) • P x), map_add' := ?_, map_smul' := ?_ }, ?_⟩` and prove the remaining obligations. Introduce `f g`.
+
+Use extensionality with `φ x`. Simplify using `[add_mul, add_smul]`. Introduce `a f`. Use extensionality with `φ x`. Simplify using `[mul_assoc, smul_smul]`.
+
+Introduce `f φ`. Use function extensionality and compare the values at `x`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, hc x φ _ (fun v h => by simp [h]) (fun v h => by simp [h])]`. Simplify using `[P, MultilinearMap.mkPiAlgebra_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GlobalTheory.PureML.pure_multilinear : open Classical in ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n d : ℕ) (Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n) (W : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d) (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y W) (ψ : AddChar (AF F) ℂ), M.IsGood ψ → ∀ T : Finset (Pl F), ∃ Ψ : SInf F (Fin n × Fin d) →ₗ[ℂ] MultilinearMap ℂ (fun v : T => (Fin n × Fin d → Fv F v) → ℂ) ((Fin n × Fin d → AF F) → ℂ), ∀ f φ, Ψ f φ = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f (fun v => if h : v ∈ T then φ ⟨v, h⟩ else M.vac v) := by
   intro F E _ _ _ _ _ σ n d Y W M ψ hM T
   choose c hc using fun x => GlobalTheory.PureML.finprod_eq_mul M.vac hM.std T x

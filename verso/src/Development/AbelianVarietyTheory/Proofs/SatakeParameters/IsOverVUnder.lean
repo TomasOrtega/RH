@@ -25,6 +25,9 @@ def mvN (i : ℕ) (hi : i ≤ D.R.m) (β : (St i hi).Ch)
 def vUnder (P : HeightOneSpectrum (𝓞 t.X.E)) : HeightOneSpectrum (𝓞 D.host.F) :=
   HeightOneSpectrum.under (𝓞 D.host.F) (seamP t.seam P)
 
+/- English proof (translation)
+Unfold `IsOver vUnder`. Rewrite using `[HeightOneSpectrum.under_asIdeal]`.
+-/
 theorem isOver_vUnder (P : HeightOneSpectrum (𝓞 t.X.E)) : IsOver (vUnder (t := t) P) (seamP t.seam P) := by
   unfold IsOver vUnder
   rw [HeightOneSpectrum.under_asIdeal]

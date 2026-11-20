@@ -5,6 +5,13 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace UpperTheory
 
 set_option backward.isDefEq.respectTransparency false in
+/- English proof (translation)
+Establish `hf : z.v p₀ (p₀ + n) rfl ≫ D.d (p₀ + n) (p₀ + n + 1) = 0`. Establish `h0` using `congrArg (fun c => Cochain.v c p₀ (p₀ + n + 1) (by omega)) hz`. Simplify using `only [Cochain.zero_v] at h0`. Rewrite `h0` using `[δ_v n (n + 1) rfl z p₀ (p₀ + n + 1) (by omega) (p₀ + n) (p₀ + 1) (by omega) rfl, hv (p₀ + 1) (p₀ + n + 1) (by omega) (by omega), comp_zero, smul_zero, add_zero]`. Conclude with `h0`.
+
+Take `⟨g, hg⟩` from `H p₀ (p₀ + n) (z.v p₀ (p₀ + n) rfl) hf`. Use `⟨Cochain.single g (n - 1), ?_⟩` and prove the remaining obligations. Introduce `p q hpq hp`. Rewrite using `[Cochain.sub_v, δ_v (n - 1) n (by omega) _ p q hpq (q - 1) (p + 1) rfl rfl, Cochain.single_v_eq_zero g (n - 1) (p + 1) q (by omega) (by omega), comp_zero, smul_zero, add_zero]`. Break down `hp.lt_or_eq with hlt | rfl` into its components or cases.
+
+Rewrite using `[hv p q hpq hlt, Cochain.single_v_eq_zero g (n - 1) p (q - 1) (by omega) (by omega), zero_comp, sub_zero]`. Substitute `hpq` using the available equality. Rewrite using `[Cochain.single_v, hg, sub_self]`.
+-/
 private theorem hb_step {C : Type*} [Category C] [Preadditive C] (K D : CochainComplex C ℤ)
     (H : ∀ (p j : ℤ) (f : K.X p ⟶ D.X j), f ≫ D.d j (j + 1) = 0 →
       ∃ g : K.X p ⟶ D.X (j - 1), g ≫ D.d (j - 1) j = f)
@@ -31,6 +38,21 @@ private theorem hb_step {C : Type*} [Category C] [Preadditive C] (K D : CochainC
 
 end UpperTheory
 
+/- English proof (translation)
+Introduce `K D _ a _ H n`. Establish `hz0 : ∀ (z : Cocycle K D n) (k : ℕ), ∃ γ : Cochain K D (n - 1), ∀ (p q : ℤ) (hpq : p + n = q), -(k : ℤ) < p → ((z : Cochain K D n) - δ (n - 1) n γ).v p q hpq = 0`. Introduce `z k`. Proceed by induction on `k with`. Consider the case `zero`.
+
+Use `⟨0, fun p q hpq hp => ?_⟩` and prove the remaining obligations. Conclude with `(K.isZero_of_isStrictlyLE 0 p (by simpa using hp)).eq_of_src _ _`. Consider the case `succ k ih`. Take `⟨γ, hγ⟩` from `ih`. Take `⟨γ', hγ'⟩` from `UpperTheory.hb_step K D H n (-(k : ℤ)) ((z : Cochain K D n) - δ (n - 1) n γ) (by rw [δ_sub, z.δ_eq_zero, δ_δ, sub_zero]) (fun p q hpq hp => hγ p q hpq hp)`.
+
+Use `⟨γ + γ', fun p q hpq hp => ?_⟩` and prove the remaining obligations. Rewrite using `[δ_add, ← sub_sub]`. Conclude with `hγ' p q hpq (by push_cast at hp; omega)`. Establish `all : ∀ z : Cocycle K D n, CohomologyClass.mk z = 0`. Introduce `z`.
+
+Take `⟨γ, hγ⟩` from `hz0 z (n - a + 1).toNat`. Establish `hk` using `Int.self_le_toNat (n - a + 1)`. Establish `hzero : (z : Cochain K D n) - δ (n - 1) n γ = 0`. Apply `Cochain.ext` to reduce the goal to its premises. Introduce `p q hpq`.
+
+Rewrite using `[Cochain.zero_v]`. Distinguish the cases in `hp : -((n - a + 1).toNat : ℤ) < p`. Conclude with `hγ p q hpq hp`. Conclude with `(D.isZero_of_isStrictlyGE a q (by omega)).eq_of_tgt _ _`. Rewrite using `[CohomologyClass.mk_eq_zero_iff]`.
+
+Conclude with `⟨n - 1, by omega, γ, (sub_eq_zero.mp hzero).symm⟩`. Prove the components needed by the constructor for the conclusion. Introduce `x y`. Take `⟨x, rfl⟩` from `CohomologyClass.mk_surjective x`. Take `⟨y, rfl⟩` from `CohomologyClass.mk_surjective y`.
+
+Rewrite using `[all x, all y]`.
+-/
 theorem UpperTheory.subsingleton_cohomologyClass_of_bounded_of_cycles_lift :
     ∀ (K D : Cx ℤ) [K.IsStrictlyLE 0] (a : ℤ) [D.IsStrictlyGE a], (∀ (p j : ℤ) (f : K.X p ⟶ D.X j), f ≫ D.d j (j + 1) = 0 → ∃ g : K.X p ⟶ D.X (j - 1), g ≫ D.d (j - 1) j = f) → ∀ n : ℤ, Subsingleton (CohomologyClass K D n) := by
   intro K D _ a _ H n

@@ -17,6 +17,9 @@ variable {R : Type} [CommRing R] {I : Ideal R} (κ : DividedPowers I) {X : Schem
 
 def cov (V : Y.affineOpens) : X.Opens := i ⁻¹ᵁ V.1
 
+/- English proof (translation)
+Simplify using `only [cov]`. Rewrite using `[← Scheme.Hom.preimage_iSup, AlgebraicGeometry.iSup_affineOpens_eq_top Y]`. Simplify using the standard rewrite rules.
+-/
 theorem iSup_cov : ⨆ V, cov i V = ⊤ := by
   simp only [cov]
   rw [← Scheme.Hom.preimage_iSup, AlgebraicGeometry.iSup_affineOpens_eq_top Y]
@@ -59,26 +62,44 @@ def θS : sec κ t i ⋙ fgt κ t i ⟶ 𝟭 (SC κ t i) where
   app T := ObjectProperty.homMk (𝟙 T.obj)
   naturality _ _ f := ObjectProperty.hom_ext _ ((Category.comp_id f.hom).trans (Category.id_comp f.hom).symm)
 
+/- English proof (translation)
+Rewrite using `[← CoefMap.pullCohomologyOne_comp, CoefMap.pullCohomologyOne_eq_of_natTrans _ (CoefMap.id _) (θP κ t i) (fun T b ↦ mp_id (O κ t) T.obj.T b), CoefMap.pullCohomologyOne_id]`.
+-/
 theorem kn1 (c : H1 (OP κ t i)) : (nS κ t i).pull1 ((kP κ t i).pull1 c) = c := by
   rw [← CoefMap.pullCohomologyOne_comp, CoefMap.pullCohomologyOne_eq_of_natTrans _ (CoefMap.id _) (θP κ t i)
     (fun T b ↦ mp_id (O κ t) T.obj.T b), CoefMap.pullCohomologyOne_id]
 
+/- English proof (translation)
+Rewrite using `[← CoefMap.pullCohomologyOne_comp, CoefMap.pullCohomologyOne_eq_of_natTrans _ (CoefMap.id _) (θS κ t i) (fun T b ↦ mp_id (O κ t) T.obj b), CoefMap.pullCohomologyOne_id]`.
+-/
 theorem nk1 (c : H1 (OS κ t i)) : (kP κ t i).pull1 ((nS κ t i).pull1 c) = c := by
   rw [← CoefMap.pullCohomologyOne_comp, CoefMap.pullCohomologyOne_eq_of_natTrans _ (CoefMap.id _) (θS κ t i)
     (fun T b ↦ mp_id (O κ t) T.obj b), CoefMap.pullCohomologyOne_id]
 
+/- English proof (translation)
+Rewrite using `[← CoefMap.pullCohomologyTwo_comp, CoefMap.pullCohomologyTwo_eq_of_natTrans _ (CoefMap.id _) (θP κ t i) (fun T b ↦ mp_id (O κ t) T.obj.T b), CoefMap.pullCohomologyTwo_id]`.
+-/
 theorem kn2 (c : H2 (OP κ t i)) : (nS κ t i).pull2 ((kP κ t i).pull2 c) = c := by
   rw [← CoefMap.pullCohomologyTwo_comp, CoefMap.pullCohomologyTwo_eq_of_natTrans _ (CoefMap.id _) (θP κ t i)
     (fun T b ↦ mp_id (O κ t) T.obj.T b), CoefMap.pullCohomologyTwo_id]
 
+/- English proof (translation)
+Rewrite using `[← CoefMap.pullCohomologyTwo_comp, CoefMap.pullCohomologyTwo_eq_of_natTrans _ (CoefMap.id _) (θS κ t i) (fun T b ↦ mp_id (O κ t) T.obj b), CoefMap.pullCohomologyTwo_id]`.
+-/
 theorem nk2 (c : H2 (OS κ t i)) : (kP κ t i).pull2 ((nS κ t i).pull2 c) = c := by
   rw [← CoefMap.pullCohomologyTwo_comp, CoefMap.pullCohomologyTwo_eq_of_natTrans _ (CoefMap.id _) (θS κ t i)
     (fun T b ↦ mp_id (O κ t) T.obj b), CoefMap.pullCohomologyTwo_id]
 
+/- English proof (translation)
+Take `⟨f, rfl⟩` from `H1.mk_surjective _ c`. Both sides reduce to the same expression.
+-/
 theorem fac1 (c : H1 (O κ t)) : (CoefMap.restrict (O κ t) ((IsSm κ t i).ι ⋙ Pr.fgt κ t i)).pull1 c =
     (nS κ t i).pull1 ((CoefMap.restrict (O κ t) (IsSmall κ t (cov i)).ι).pull1 c) := by
   obtain ⟨f, rfl⟩ := H1.mk_surjective _ c; rfl
 
+/- English proof (translation)
+Take `⟨f, rfl⟩` from `H2.mk_surjective _ c`. Both sides reduce to the same expression.
+-/
 theorem fac2 (c : H2 (O κ t)) : (CoefMap.restrict (O κ t) ((IsSm κ t i).ι ⋙ Pr.fgt κ t i)).pull2 c =
     (nS κ t i).pull2 ((CoefMap.restrict (O κ t) (IsSmall κ t (cov i)).ι).pull2 c) := by
   obtain ⟨f, rfl⟩ := H2.mk_surjective _ c; rfl
@@ -89,6 +110,13 @@ namespace GlobalTheory.PDForm
 
 open SmallPairs
 
+/- English proof (translation)
+Establish `b1` using `SmallDescent.pull1_bijective R I κ X t Y.affineOpens (cov i) (iSup_cov i)`. Establish `b2` using `small_descent_H2_bijective R I κ X t Y.affineOpens (cov i) (iSup_cov i)`. Establish `n1 : Function.Bijective (nS κ t i).pull1` using `Function.bijective_iff_has_inverse.2 ⟨(kP κ t i).pull1, nk1 κ t i, kn1 κ t i⟩`. Establish `n2 : Function.Bijective (nS κ t i).pull2` using `Function.bijective_iff_has_inverse.2 ⟨(kP κ t i).pull2, nk2 κ t i, kn2 κ t i⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Establish `e : ⇑(CoefMap.restrict (O κ t) ((IsSm κ t i).ι ⋙ Pr.fgt κ t i)).pull1 = ⇑(nS κ t i).pull1 ∘ ⇑(CoefMap.restrict (O κ t) (IsSmall κ t (cov i)).ι).pull1` using `funext (fac1 κ t i)`. Rewrite using `[e]`. Conclude with `n1.comp b1`. Establish `e : ⇑(CoefMap.restrict (O κ t) ((IsSm κ t i).ι ⋙ Pr.fgt κ t i)).pull2 = ⇑(nS κ t i).pull2 ∘ ⇑(CoefMap.restrict (O κ t) (IsSmall κ t (cov i)).ι).pull2` using `funext (fac2 κ t i)`. Rewrite using `[e]`.
+
+Conclude with `n2.comp b2`.
+-/
 theorem pull_isSm_bijective (R : Type) [CommRing R] (I : Ideal R) (κ : DividedPowers I) (X : Scheme.{0})
     (t : X ⟶ Sp R) (Y : Scheme.{0}) (i : X ⟶ Y) :
     Function.Bijective (CoefMap.restrict (O κ t) ((IsSm κ t i).ι ⋙ Pr.fgt κ t i)).pull1 ∧

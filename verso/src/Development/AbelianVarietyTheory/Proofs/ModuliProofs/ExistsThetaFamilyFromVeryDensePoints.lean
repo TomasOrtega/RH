@@ -16,6 +16,15 @@ open GlobalTheory.ZM
 
 namespace GlobalTheory.ZM
 
+/- English proof (translation)
+Introduce `h1 h2 g J _ Mat κ n hn hodd`. Take `⟨j1, H1⟩` from `GlobalTheory.T.exists_theta_scheme_sections_good_fibres h1 h2 g J Mat κ n hn hodd`. Take `⟨j2, H2⟩` from `GlobalTheory.T.exists_family_addition_morphism_thetaLevel h1 h2 g J Mat κ n hn hodd`. Take `⟨j3, H3⟩` from `GlobalTheory.T.exists_inversion_endomorphisms_thetaLevelFamily h1 h2 g J Mat κ n hn hodd`. Take `⟨j4, H4⟩` from `GlobalTheory.T.exists_principallyPolarised_of_veryDense_fibres h1 h2 g J Mat κ n hn hodd`.
+
+Use `⟨j1 + j2 + j3 + j4 + 4, ?_⟩` and prove the remaining obligations. Introduce `j hj o _ b R _ _ _ β v hv`. Take `⟨Z, I, M, th, sc, p, hZ, hfib⟩` from `H1 j (by omega) o b R β v hv`. Take `⟨m, hm⟩` from `H2 j (by omega) o b R β v Z I M th sc p hv hZ hfib`. Take `⟨F, hF⟩` from `H3 j (by omega) o b R β v Z I M th sc p hv hZ hfib`.
+
+Take `⟨P, act, Q, hP, hgood⟩` from `H4 j (by omega) o b R β v Z I M th sc p m F hv hZ hfib hm hF`. Take `⟨t, ht, hlast⟩` from `GlobalTheory.T.exists_square_level_with_given_thetaPoint h1 h2 g n j J hn hodd (by omega) o b R β v P act Q hP (by`. Introduce `q f hq hf`. Take `⟨p', ⟨K, iK, iK', x, t', hker, hsh, hth⟩, hp'⟩` from `hv q f hq hf`. Take `⟨ψ, hψ⟩` from `hgood K x t' hsh hth`.
+
+Conclude with `⟨p', ⟨K, iK, iK', x, t', ψ, hker, hth, hψ⟩, hp'⟩)`. Use `⟨t, ht, ?_⟩` and prove the remaining obligations. Introduce `K _ _ x t' hsh hth`. Take `⟨ψ, hψ⟩` from `hgood K x t' hsh hth`. Conclude with `hlast K x t' ψ hth hψ`.
+-/
 theorem exists_tObj_of_veryDense : Out.Laws → Out.Laws2 → ∀ (g : ℕ) (J : Type) [Finite J] (Mat : J → Matrix (Fin (2 * g)) (Fin (2 * g)) ℤ) (κ n : ℕ), n.Prime → Odd n → ∃ j₀ : ℕ, ∀ j ≥ j₀, ∀ (o : Type) [CommRing o] (b : TBase o ((n ^ j) ^ 2)) (R : Type) [CommRing R] [IsNoetherianRing R] [IsReduced R] (β : o →+* R) (v : Ix g ((n ^ j) ^ 2) → R), VeryDense (objPrimes b Mat κ β v) → ∃ t : TObj g ((n ^ j) ^ 2) J b (spMap β), t.HasTh (𝟙 _) v ∧ ∀ (K : Type) [Field K] [IsAlgClosed K] (x : R →+* K) (t' : TObj g ((n ^ j) ^ 2) J b (spMap x ≫ spMap β)), t'.Shape Mat κ → t'.HasTh (𝟙 _) (fun a => x (v a)) → TMap t' t (spMap x) := by
   intro h1 h2 g J _ Mat κ n hn hodd
   obtain ⟨j1, H1⟩ := GlobalTheory.T.exists_theta_scheme_sections_good_fibres h1 h2 g J Mat κ n hn hodd

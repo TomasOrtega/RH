@@ -19,6 +19,9 @@ open NumberField MeasureTheory Topology in
 open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simpa using hP`. Consider the case `succ k ih`. Rewrite using `[succ_nsmul, ← add_assoc, pow_succ, ← mul_assoc]`. Conclude with `_root_.ReciprocityTheory.ChartRestriction.G.FD.BoundedSectionAlgebra.bdd_mul X ih hQ`.
+-/
 theorem _root_.GlobalTheory.UpTie.LeadCount.bdd_mul_pow (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) {la L : _root_.ReciprocityTheory.ChartRestriction.G.FD.Wt X.Ψ r} {P Q : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r → ℂ}
     (hP : X.IsBddSec la P) (hQ : X.IsBddSec L Q) (k : ℕ) : X.IsBddSec (la + k • L) (P * Q ^ k) := by
   induction k with
@@ -31,6 +34,9 @@ open NumberField MeasureTheory Topology in
 open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 
+/- English proof (translation)
+Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simpa using hP`. Consider the case `insert a t ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha, add_comm (α a), add_smul, ← add_assoc, mul_comm (s a ^ α a), ← mul_assoc]`. Conclude with `_root_.GlobalTheory.UpTie.LeadCount.bdd_mul_pow X ih (hs a) (α a)`.
+-/
 theorem _root_.GlobalTheory.UpTie.LeadCount.bdd_mul_prod {n : ℕ} (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) {la L : _root_.ReciprocityTheory.ChartRestriction.G.FD.Wt X.Ψ r}
     {P : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r → ℂ}
     (hP : X.IsBddSec la P) {s : Fin n → _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r → ℂ} (hs : ∀ k, X.IsBddSec L (s k)) (α : Fin n → ℕ)
@@ -43,6 +49,39 @@ theorem _root_.GlobalTheory.UpTie.LeadCount.bdd_mul_prod {n : ℕ} (X : _root_.R
       mul_comm (s a ^ α a), ← mul_assoc]
     exact _root_.GlobalTheory.UpTie.LeadCount.bdd_mul_pow X ih (hs a) (α a)
 
+/- English proof (translation)
+Introduce `E _ _ _ r X Xa Fl hM`. Take `⟨⟨bb, m, h1, h2, h3⟩, -, hL, -, hcusp⟩` from `hM`. Establish `hn` using `Xa.n_ge`. Establish `hT : nd X < Xa.T` using `by have := Xa.T_ge; nlinarith`. Establish `hsb : ∀ k, X.IsBddSec Xa.L (Fl.s k)` using `fun k => (Fl.s_van k).1.1`.
+
+Establish `hdeep : deepM X Xa Fl ≤ domSpan X (X.SS (Xa.Fp + Xa.T • Xa.L))`. Use `Submodule.span_mono (Set.image_mono ?_)` and prove the remaining obligations. Introduce and unpack `P ⟨α, g, hα, hg, rfl⟩`. Apply `hcusp` to reduce the goal to its premises. Establish `h` using `bdd_mul_prod X hg.1 hsb α Finset.univ`.
+
+Rewrite `h` using `[hα, add_assoc, ← add_smul, Nat.add_sub_cancel' hT.le]`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using `[monoM, Finset.prod_apply, mul_comm]`. Use `⟨hdeep, ?_⟩` and prove the remaining obligations.
+
+Establish `hF : ∀ j : Fin Fl.δ, ∃ F ∈ X.SSgt Xa.Fp 0, ∀ j', F (Fl.xs j') = if j' = j then 1 else 0` using `fun j => interpStatement_holds r X Xa Fl (GlobalTheory.ClosedDiscontinuity.propDisc_closed _ _) ⟨bb, m, h1, h2, fun x0 hx0 z hz ξ => by simpa using h3 0 (by simp) x0 hx0 z hz ξ⟩ hL (fun P hP => by simpa using hcusp 0 P (by simpa using hP)) (fun j' => if j' = j then 1 else 0)`. Use `choose F hFss hFval using hF`. Establish `hind : ∀ {G : Wt X.Ψ r} (f : Frame X.Ψ r → ℂ), X.IsSec G f → ∀ x, DifferentiableOn ℂ (fun z => X.dom.indicator f (cpt X x z)) (OmF X x)` using `fun f hf x => (OntoB.hol_comp X x hf.1).congr fun z hz => Set.indicator_of_mem (show cpt X x z ∈ X.dom from hz) f`. Establish `hz0 : ∀ i a, Fl.s a (Fl.xs i) = 0`. Introduce `i`.
+
+Use `(Fl.S_eq _ (Fl.xs_mem i)).2 ⟨i, 1, X.Γ.one_mem, fun τ => (1 : Matrix (Fin r) (Fin r) ℂ), ?_, ?_⟩` and prove the remaining obligations. Introduce `τ`. Use `⟨?_, fun a c h => Matrix.one_apply_ne h.ne'⟩` and prove the remaining obligations. Use `show (1 : Matrix (Fin r) (Fin r) ℂ).det ≠ 0`. Simplify using the standard rewrite rules.
+
+Use function extensionality and compare the values at `τ show mat (Fl.xs i) τ = ((1 : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * (mat (Fl.xs i) τ * (1 : Matrix (Fin r) (Fin r) ℂ))`. Simplify using the standard rewrite rules. Establish `key` using `GlobalTheory.Shares.LeadDeep.indep_disjoint Xa.T (Xa.T - nd X) Fl.xs Fl.s Fl.w0 (fun k => X.dom.indicator (F k)) ((fun f => X.dom.indicator f) '' X.SS (Xa.Fp + nd X • Xa.L)) (fun q => ⟨nd X, rfl, cpt X (Fl.xs q), OmF X (Fl.xs q), OntoB.isOpen_OmF X _, by show cpt X (Fl.xs q) 0 ∈ …`. Rewrite using `[IW.cpt_zero]`. Conclude with `Fl.xs_mem q,`.
+
+Use the proof step `IW.cpt_zero X _, fun k => OntoB.hol_comp X _ (hsb k).1.1, OntoB.hol_comp X _ Fl.weightForm_vanishes.1.1.1.1,`. Use `fun i => hind _ (hFss i).1.1.1 _,`. Use `by rintro f ⟨g, hg, rfl⟩; exact hind _ hg.1.1 _, hz0 q, Fl.w0_ne q, Fl.coord q⟩)`. Use the proof step `(by`. Use `Fintype.linearIndependent_iff.mpr fun c hc j => ?_` and prove the remaining obligations.
+
+Use `congrFun hc j` as an intermediate fact. Simplify `this)` using `[vals, Finset.sum_apply, Set.indicator_of_mem (Fl.xs_mem j), hFval]`. Take `⟨hli, hdis⟩` from `key`. Establish `hD : Submodule.span ℂ {g | ∃ (α : Fin (nd X) → ℕ) (f : Frame X.Ψ r → ℂ), ∑ i, α i = Xa.T - nd X ∧ f ∈ (fun f => X.dom.indicator f) '' X.SS (Xa.Fp + nd X • Xa.L) ∧ g = (∏ i, Fl.s i ^ α i) * f} = deepM X Xa Fl`. Unfold `deepM domSpan`.
+
+Use `congr 1`. Establish `e : ∀ (α : Fin (nd X) → ℕ) (g : Frame X.Ψ r → ℂ), (∏ i, Fl.s i ^ α i) * X.dom.indicator g = X.dom.indicator fun x => monoM X Fl.s α x * g x`. Introduce `α g`. Use function extensionality and compare the values at `x`. Apply the tactic sequence `by_cases hx : x ∈ X.dom <;> simp [hx, monoM, Finset.prod_apply]`.
+
+Use extensionality with `P`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨α, f, hα, ⟨g, hg, rfl⟩, rfl⟩`. Conclude with `⟨_, ⟨α, g, hα, hg, rfl⟩, (e α g).symm⟩`. Introduce and unpack `⟨f, ⟨α, g, hα, hg, rfl⟩, rfl⟩`.
+
+Conclude with `⟨α, _, hα, ⟨g, hg, rfl⟩, (e α g).symm⟩`. Rewrite `hdis` using `[hD]`. Use `letI : Fintype {α : Fin (nd X) → ℕ // ∑ i, α i < Xa.T - nd X} := Fintype.subtype (multiLt (nd X) (Xa.T - nd X)) fun _ => GlobalTheory.LeadIndep.mem_multiLt`. Establish `hrk` using `finrank_span_eq_card hli`. Establish `hcard` using `(GlobalTheory.card_exponents_and_choose_ratio_bounds (nd X) Xa.T).1 (by omega) hT`.
+
+Rewrite `hrk` using `[Fintype.card_prod, Fintype.card_fin, ← Nat.card_eq_fintype_card, hcard]`. Use `set A := Submodule.span ℂ (Set.range fun p : {α : Fin (nd X) → ℕ // ∑ i, α i < Xa.T - nd X} × Fin Fl.δ => (∏ i, Fl.s i ^ p.1.1 i) * Fl.w0 ^ (Xa.T - ∑ i, p.1.1 i) * X.dom.indicator (F p.2)) with hA`. Establish `hAle : A ≤ domSpan X (X.SS (Xa.Fp + Xa.T • Xa.L))`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `P ⟨⟨⟨α, hα⟩, k⟩, rfl⟩`.
+
+Use `⟨F k * (∏ i, Fl.s i ^ α i) * Fl.w0 ^ (Xa.T - ∑ i, α i), hcusp _ _ ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `bdd_mul_pow X (bdd_mul_prod X (hFss k).1.1 hsb α Finset.univ) Fl.weightForm_vanishes.1.1 (Xa.T - ∑ i, α i)`. Rewrite `h` using `[add_assoc, ← add_smul, Nat.add_sub_cancel' (by omega)]`. Then use the resulting hypothesis. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ X.dom`.
+
+Simplify using `only [Set.indicator_of_mem hx, Pi.mul_apply]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[hx]`. Use `haveI := (GlobalTheory.T.finrank_domain_span_le_binomial E r X Xa Fl).1`. Use `haveI : FiniteDimensional ℂ A := Submodule.finiteDimensional_of_le hAle`.
+
+Use `haveI : FiniteDimensional ℂ (deepM X Xa Fl) := Submodule.finiteDimensional_of_le hdeep`. Establish `hsum` using `Submodule.finrank_sup_add_finrank_inf_eq A (deepM X Xa Fl)`. Rewrite `hsum` using `[hdis.eq_bot, finrank_bot, add_zero, hrk]`. Establish `hle` using `Submodule.finrank_mono (sup_le hAle hdeep)`. Rewrite using `[mul_comm, ← hsum]`.
+
+Conclude with `hle`.
+-/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (Xa : ArchInM X) (Fl : FlatM X Xa), Margins X Xa → deepM X Xa Fl ≤ domSpan X (X.SS (Xa.Fp + Xa.T • Xa.L)) ∧ Fl.δ * (Xa.T - 1).choose (nd X) + Module.finrank ℂ (deepM X Xa Fl) ≤ Module.finrank ℂ (domSpan X (X.SS (Xa.Fp + Xa.T • Xa.L))) := by
   classical
   intro E _ _ _ r X Xa Fl hM

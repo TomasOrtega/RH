@@ -10,6 +10,9 @@ noncomputable section
 
 universe u w
 
+/- English proof (translation)
+Introduce `k _ Ω _ _ N y Q r h hV n hZ`. Conclude with `⟨VeryAmpleDim.proof k Ω N y n Q r h hZ hV, VeryAmpleDegree.proof VeryAmpleDim.proof hSecs hHilb k Ω N y n Q r h hZ hV⟩`.
+-/
 theorem VeryAmpleEmbed.Numbers.proof (hSecs : VeryAmpleSecs.Statement.{u, w})
     (hHilb : VeryAmpleHilbert.Statement.{u, w}) : VeryAmpleEmbed.Numbers.Statement.{u, w} := by
   intro k _ Ω _ _ N y Q r h hV n hZ

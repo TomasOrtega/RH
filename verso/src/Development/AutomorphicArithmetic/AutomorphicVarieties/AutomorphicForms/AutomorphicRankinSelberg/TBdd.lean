@@ -1,6 +1,15 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.AutomorphicRankinSelberg.StripInt
 
 open MeasureTheory in
+/- English proof (translation)
+Introduce `hF hD _ L _ G hG h0`. Take `⟨C, hC⟩` from `hD L`. Take `⟨-, D, hD⟩` from `hG`. Use `⟨(∑ _v : Fin 2 → ZMod L, |C| * D) * (volume : Measure UpperHalfPlane).real ModularGroup.fd, fun s hs => ?_⟩` and prove the remaining obligations. Unfold `UpperTheory.V.Af.Rs.TT`.
+
+Use `norm_setIntegral_le_of_norm_le_const hF.2 fun z hz => ?_` and prove the remaining obligations. Establish `hy : 0 < z.im` using `z.im_pos`. Establish `h3` using `ModularGroup.three_le_four_mul_im_sq_of_mem_fd hz`. Establish `hy2 : 1 / 2 ≤ z.im` using `by nlinarith`. Establish `he : ∑ v, G v z * (UpperTheory.V.Af.Rs.Zc L v s z : ℂ) = ∑ v, G v z * ((UpperTheory.V.Af.Rs.Zc L v s z - UpperTheory.V.Af.Rs.Zc L 0 s z : ℝ) : ℂ)`.
+
+Simplify using `only [Complex.ofReal_sub, mul_sub, Finset.sum_sub_distrib, ← Finset.sum_mul, h0 z, zero_mul, sub_zero]`. Rewrite using `[he]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun v _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs]`. Establish `h1` using `hC v 0 s hs z hz`.
+
+Establish `h2` using `hD v z hy2`. Establish `h4 : C * z.im ^ 3 ≤ |C| * z.im ^ 3` using `mul_le_mul_of_nonneg_right (le_abs_self C) (by positivity)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UpperTheory.V.Af.Rs.tBdd :
     UpperTheory.V.Af.Rs.FdFin → UpperTheory.V.Af.Rs.ZDiff → UpperTheory.V.Af.Rs.ZInt → UpperTheory.V.Af.Rs.TBdd := by
   intro hF hD _ L _ G hG h0

@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.UnitaryAdmissibl
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LeviRep
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.GodementJacquet MeasureTheory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.exists_vector_of_smooth_antilinear | exact GlobalTheory.exists_vector_of_smooth_antilinear | (intros; apply GlobalTheory.exists_vector_of_smooth_antilinear <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.unitary_admissible_matrix_coefficient : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (r : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (σ : Representation ℂ (GL (Fin r) k) V)
     (Bf : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ), IsAdmissible σ → (∀ v w, Bf w v = starRingEnd ℂ (Bf v w)) →

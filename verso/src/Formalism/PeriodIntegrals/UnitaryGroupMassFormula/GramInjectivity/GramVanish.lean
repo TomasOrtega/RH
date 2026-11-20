@@ -6,6 +6,21 @@ namespace PI.WwInjectiveWork
 
 open MvPolynomial
 
+/- English proof (translation)
+Take `⟨g, hg⟩ : ∃ g : ι → MvPolynomial σ K, ∀ j, g j = map (Int.castRingHom K) (f j)` from `⟨_, fun _ => rfl⟩`. Simplify using `only [← hg] at h ⊢`. Establish `key : ∀ l : Module.Dual ℚ K, ∀ j, l (ph (g j)) = 0`. Introduce `l`. Establish `lin : ∀ (x : K) (n : ℤ), algebraMap ℚ K (l x) * (n : K) = algebraMap ℚ K (l (x * n))`.
+
+Introduce `x n`. Rewrite using `[show x * (n : K) = n • x by rw [zsmul_eq_mul, mul_comm], map_zsmul, zsmul_eq_mul, map_mul, map_intCast, mul_comm]`. Establish `hrel : ∑ j, algebraMap ℚ K (l (ph (g j))) • g j = 0`. Use extensionality with `s`. Establish `hs` using `congrArg (fun p => l (coeff s p)) h`.
+
+Simplify using `only [coeff_sum, coeff_smul, smul_eq_mul, coeff_zero, map_sum, map_zero] at hs`. Establish `e : ∀ j, coeff s (g j) = ((coeff s (f j) : ℤ) : K)` using `fun j => by`. Rewrite using `[hg, coeff_map, eq_intCast]`. Rewrite using `[coeff_sum, coeff_zero]`. Simplify using `only [coeff_smul, smul_eq_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[e j, lin]`. Use `_ = algebraMap ℚ K (∑ j, l (ph (g j) * coeff s (g j))) := by rw [map_sum]`. Use `_ = 0 := by rw [hs, map_zero]`.
+
+Establish `hsum : ∑ j, l (ph (g j)) ^ 2 = 0`. Establish `h1 : l (ph (∑ j, algebraMap ℚ K (l (ph (g j))) • g j)) = 0`. Rewrite using `[hrel, map_zero, map_zero]`. Rewrite `h1` using `[map_sum, map_sum]`. Rewrite using `[← h1]`.
+
+Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, ← Algebra.smul_def, map_smul, smul_eq_mul, sq]`. Introduce `j`. Establish `hnn : ∀ k ∈ (Finset.univ : Finset ι), 0 ≤ l (ph (g k)) ^ 2` using `fun k _ => sq_nonneg _`. Establish `hj` using `(Finset.sum_eq_zero_iff_of_nonneg hnn).mp hsum j (Finset.mem_univ j)`.
+
+Conclude with `(pow_eq_zero_iff two_ne_zero).mp hj`. Conclude with `(Module.forall_dual_apply_eq_zero_iff ℚ (ph (g i))).mp (fun l => key l i)`.
+-/
 theorem gram_vanish {σ ι K : Type*} [Fintype ι] [Field K] [CharZero K]
     (f : ι → MvPolynomial σ ℤ) (ph : MvPolynomial σ K →ₗ[K] K)
     (h : ∑ i, ph (map (Int.castRingHom K) (f i)) • map (Int.castRingHom K) (f i) = 0)

@@ -15,6 +15,9 @@ namespace GlobalTheory
 
 namespace TorusEnd
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s _ ih => rw [Finset.inf_insert, top_le_preimage_inf, ih, Finset.forall_mem_insert]`.
+-/
 theorem top_le_preimage_finset_inf {X : Scheme.{0}} {κ : Type*} (x : Sp ℂ ⟶ X) (s : Finset κ) (U : κ → X.Opens) :
     ⊤ ≤ x ⁻¹ᵁ (s.inf U) ↔ ∀ i ∈ s, ⊤ ≤ x ⁻¹ᵁ U i := by
   classical
@@ -22,12 +25,20 @@ theorem top_le_preimage_finset_inf {X : Scheme.{0}} {κ : Type*} (x : Sp ℂ ⟶
   | empty => simp
   | insert a s _ ih => rw [Finset.inf_insert, top_le_preimage_inf, ih, Finset.forall_mem_insert]
 
+/- English proof (translation)
+Establish `: x (default : PrimeSpectrum ℂ) ∈ ⨆ i, U i` using `by rw [h]; trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 this`. Conclude with `⟨i, (top_le_preimage_iff_mem x _).2 hi⟩`.
+-/
 theorem exists_top_le_preimage_of_iSup_eq_top {X : Scheme.{0}} {κ : Type*} (x : Sp ℂ ⟶ X) (U : κ → X.Opens)
     (h : ⨆ i, U i = ⊤) : ∃ i, ⊤ ≤ x ⁻¹ᵁ U i := by
   have : x (default : PrimeSpectrum ℂ) ∈ ⨆ i, U i := by rw [h]; trivial
   obtain ⟨i, hi⟩ := TopologicalSpace.Opens.mem_iSup.1 this
   exact ⟨i, (top_le_preimage_iff_mem x _).2 hi⟩
 
+/- English proof (translation)
+Establish `hc : (valAtHom x.left U h).comp (RingHom.comp (X.hom.appLE ⊤ U le_top).hom (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom) = RingHom.id ℂ`. Use extensionality with `a`. Use `valAt'_constFn x.left X.hom (Over.w x) U a h` as an intermediate fact. Rewrite `this` using `[valAt'_eq_valAtHom _ h]`. Conclude with `this`.
+
+Rewrite using `[valAt'_eq_valAtHom _ h, MvPolynomial.hom_eval₂, hc]`. Simplify using `only [valAt'_eq_valAtHom _ h]`. Both sides reduce to the same expression.
+-/
 theorem valAt'_eval₂ {X : Over (Sp ℂ)} {κ : Type*} (x : 𝟙_ (Over (Sp ℂ)) ⟶ X) (U : X.left.Opens)
     (h : ⊤ ≤ x.left ⁻¹ᵁ U) (r : κ → Γ(X.left, U)) (P : MvPolynomial κ ℂ) :
     valAt' x.left U (MvPolynomial.eval₂ (RingHom.comp (X.hom.appLE ⊤ U le_top).hom
@@ -42,6 +53,11 @@ theorem valAt'_eval₂ {X : Over (Sp ℂ)} {κ : Type*} (x : 𝟙_ (Over (Sp ℂ
   simp only [valAt'_eq_valAtHom _ h]
   rfl
 
+/- English proof (translation)
+Use `(H (fun y => y ≫ m) fun y => ?_).unique (fun _ => rfl) (fun y => (h y).symm)` and prove the remaining obligations. Take `⟨_, ⟨D, hD, rfl⟩, hy, -⟩` from `X.left.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ ((y ≫ m).left (default : PrimeSpectrum ℂ))) isOpen_univ`. Use `⟨m.left ⁻¹ᵁ D, D, ?_, hD, fun y' hy' => ?_, fun φ => ⟨(m.left.app D).hom φ, fun y' _ => ?_⟩⟩` and prove the remaining obligations. Conclude with `(top_le_preimage_comp y.left m.left D).1 ((top_le_preimage_iff_mem _ D).2 hy)`. Conclude with `(top_le_preimage_comp y'.left m.left D).2 hy'`.
+
+Conclude with `valAt'_comp y'.left m.left D φ`.
+-/
 theorem hom_ext_of_points {X Y : Over (Sp ℂ)}
     (H : ∀ F : (𝟙_ (Over (Sp ℂ)) ⟶ Y) → (𝟙_ (Over (Sp ℂ)) ⟶ X), (∀ y : (𝟙_ (Over (Sp ℂ)) ⟶ Y), ∃ (U : Y.left.Opens) (D : X.left.Opens), ⊤ ≤ (y).left ⁻¹ᵁ U ∧ IsAffineOpen D ∧ (∀ y' : (𝟙_ (Over (Sp ℂ)) ⟶ Y), ⊤ ≤ (y').left ⁻¹ᵁ U → ⊤ ≤ (F y').left ⁻¹ᵁ D) ∧ ∀ φ : Γ(X.left, D), ∃ ρ : Γ(Y.left, U), ∀ y' : (𝟙_ (Over (Sp ℂ)) ⟶ Y), ⊤ ≤ (y').left ⁻¹ᵁ U → valAt' y'.left U ρ = valAt' (F y').left D φ) → ∃! m : Y ⟶ X, ∀ y, y ≫ m = F y)
     {m m' : Y ⟶ X} (h : ∀ y : 𝟙_ (Over (Sp ℂ)) ⟶ Y, y ≫ m = y ≫ m') : m = m' := by
@@ -57,6 +73,27 @@ end TorusEnd
 
 open TorusEnd in
 
+/- English proof (translation)
+Introduce `_ Hm Hred HG Hθ g τ hτ N hN X ex D ⟨hint, hprop, hsurj, hex, _, hD, hcov⟩ hreg _ hadd F hF`. Establish `hXr : IsReduced X.left` using `inferInstance`. Establish `hXf : LocallyOfFiniteType X.hom` using `inferInstance`. Set `Φ : (𝟙_ (Over (Sp ℂ)) ⟶ X) → (𝟙_ (Over (Sp ℂ)) ⟶ X)` to `fun y => ex (F (Function.surjInv hsurj y))`. Establish `hΦ : ∀ z, Φ (ex z) = ex (F z)` using `fun z => by`.
+
+Use `(hex _ _).2 ?_` and prove the remaining obligations. Rewrite using `[← map_sub]`. Conclude with `hF _ ((hex _ _).1 (Function.surjInv_eq hsurj _))`. Take `⟨d, hd⟩` from `HG g τ hτ N F hF`. Establish `hθ` using `(Hθ g τ hτ N (by omega)).1`.
+
+Take `⟨f, hf, -⟩` from `Hm X X hXr hXf Φ fun y => by`. Take `⟨z₀, rfl⟩` from `hsurj y`. Take `⟨c, hc⟩` from `exists_top_le_preimage_of_iSup_eq_top (ex (F z₀)).left D hcov`. Take `⟨haff, -, hmem, r, hr, hgen⟩` from `hD c`. Take `⟨G, hG0, hG⟩` from `hd z₀`.
+
+Use `choose U φ hU using fun c' => hreg d _ _ (hG _ (hθ c')) (hG _ (hθ c))`. Establish `hle : ∀ c', Finset.univ.inf U ≤ U c'` using `fun c' => Finset.inf_le (Finset.mem_univ c')`. Use `⟨Finset.univ.inf U, D c, ?_, haff, fun y' hy' => ?_, fun ψ => ?_⟩` and prove the remaining obligations. Conclude with `(top_le_preimage_finset_inf _ _ _).2 fun c' _ => (hU c' z₀).1.2 (mul_ne_zero ((hmem _).1 hc) hG0)`. Take `⟨z, rfl⟩` from `hsurj y'`.
+
+Rewrite using `[hΦ]`. Conclude with `(hmem _).2 (left_ne_zero_of_mul ((hU c z).1.1 (top_le_preimage_mono _ (hle c) hy')))`. Take `⟨P, rfl⟩` from `hgen ψ`. Use `⟨MvPolynomial.eval₂ (RingHom.comp (X.hom.appLE ⊤ _ le_top).hom (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom) (fun c' => resG X.left (hle c') (φ c')) P, fun y' hy' => ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `hsurj y'`.
+
+Establish `hq` using `(hU c z).1.1 (top_le_preimage_mono _ (hle c) hy')`. Establish `h1` using `left_ne_zero_of_mul hq`. Establish `h2` using `right_ne_zero_of_mul hq`. Rewrite using `[hΦ, valAt'_eval₂ _ _ hy', valAt'_eval₂ _ _ ((hmem _).2 h1)]`. Use `congr 2`.
+
+Use function extensionality and compare the values at `c'`. Rewrite using `[valAt'_res _ _ _ hy', (hU c' z).2 hq, hr c' _ h1, mul_div_mul_right _ _ h2]`. Establish `hfe : ∀ z, ex (F z) = ex z ≫ f` using `fun z => by rw [hf, hΦ]`. Establish `h0 : ex 0 = η[X]`. Establish `h` using `hadd 0 0`.
+
+Rewrite `h` using `[add_zero]`. Establish `h1 : ex 0 = 1` using `by simpa using h`. Rewrite using `[h1, Hom.one_def, toUnit_unit, Category.id_comp]`. Use `⟨f, ⟨?_, ?_⟩, hfe⟩` and prove the remaining obligations. Rewrite using `[← h0, ← hfe, map_zero]`.
+
+Establish `hft : LocallyOfFiniteType (X ⊗ X).hom`. Express the relevant statement in the definitionally equal form `LocallyOfFiniteType (pullback.fst X.hom X.hom ≫ X.hom)`. Use `infer_instance`. Use `hom_ext_of_points (Hm X (X ⊗ X) (Hred X X hXr hXr hXf hXf) hft) fun y => ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `hsurj (y ≫ fst X X)`.
+
+Take `⟨w, hw⟩` from `hsurj (y ≫ snd X X)`. Apply the tactic sequence `have hy : y = lift (ex z) (ex w) := by ext1 <;> simp [hz, hw]`. Rewrite using `[hy, ← Category.assoc, ← Hom.mul_def, ← hadd, ← hfe, map_add, hadd, Hom.mul_def, ← Category.assoc, lift_map, ← hfe, ← hfe]`.
+-/
 theorem exists_isMonHom_of_map_periodLattice :
     (∀ (X : Over (Sp ℂ)), IsReduced X.left → LocallyOfFiniteType X.hom → ∀ (U : X.left.Opens) (f f'
         : Γ(X.left, U)), (∀ x : (𝟙_ (Over (Sp ℂ)) ⟶

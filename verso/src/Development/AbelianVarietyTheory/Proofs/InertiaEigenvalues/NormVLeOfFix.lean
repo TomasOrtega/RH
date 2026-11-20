@@ -17,6 +17,9 @@ variable {K L Ω : Type} [Field K] [NumberField K] [Field L] [NumberField L] [Fi
 def liftG (τ : G K Ω) (hτ : ∀ x : L, τ (algebraMap L Ω x) = algebraMap L Ω x) : G L Ω :=
   AlgEquiv.ofRingEquiv (f := τ.toRingEquiv) hτ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem liftG_apply (τ : G K Ω) (hτ : ∀ x : L, τ (algebraMap L Ω x) = algebraMap L Ω x)
     (z : Ω) : liftG τ hτ z = τ z := rfl
 

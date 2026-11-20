@@ -25,6 +25,9 @@ variable {ε : Fin n → Bool} {lam lam' : Fin n → ℝ} {T : S7.KType ε (lowK
   {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} {Ψ' : Matrix (Fin n) (Fin n) ℂ → (T'.V →L[ℂ] T'.V)}
   {v₀ : T.V} {v₀' : T'.V}
 
+/- English proof (translation)
+Conclude with `occurrence_pairing dual hgap hP hv₀ hP' hW hB`.
+-/
 theorem occC_pairing (dual : Bool) (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0)
     (hP' : IsPsiFor ε lam' T' Ψ')
     (hW : ∀ v ∈ genSub (smE ε (rreg ε)) (datumV ε Ψ v₀), ∀ w ∈ genSub (smE ε (rreg ε)) (datumV ε Ψ v₀),
@@ -39,10 +42,16 @@ theorem occC_pairing (dual : Bool) (hgap : StdGap ε lam) (hP : IsPsiFor ε lam 
           (fun c => ((f c : smD ε (rreg ε)) : L2 ε)))) ((x' : smD ε (rreg ε)) : L2 ε) ≠ 0 := by
   exact occurrence_pairing dual hgap hP hv₀ hP' hW hB
 
+/- English proof (translation)
+Conclude with `projection_preserves_smooth hgap' hP' hv₀' x hx`.
+-/
 theorem occC_proj_smD (hgap' : StdGap ε lam') (hP' : IsPsiFor ε lam' T' Ψ') (hv₀' : v₀' ≠ 0) (x : L2 ε)
     (hx : x ∈ smD ε (rreg ε)) : ((Hlam ε Ψ' v₀').orthogonalProjectionOnto x : L2 ε) ∈ smD ε (rreg ε) := by
   exact projection_preserves_smooth hgap' hP' hv₀' x hx
 
+/- English proof (translation)
+Conclude with `projection_commutes_derived_action hgap' hP' hv₀' x (projection_preserves_smooth hgap' hP' hv₀' _ x.2) a b`.
+-/
 theorem occC_proj_smE (hgap' : StdGap ε lam') (hP' : IsPsiFor ε lam' T' Ψ') (hv₀' : v₀' ≠ 0) (x : smD ε (rreg ε))
     (a b : Fin n) :
     ((smE ε (rreg ε) a b ⟨((Hlam ε Ψ' v₀').orthogonalProjectionOnto (x : L2 ε) : L2 ε),
@@ -50,6 +59,9 @@ theorem occC_proj_smE (hgap' : StdGap ε lam') (hP' : IsPsiFor ε lam' T' Ψ') (
       ((Hlam ε Ψ' v₀').orthogonalProjectionOnto ((smE ε (rreg ε) a b x : smD ε (rreg ε)) : L2 ε) : L2 ε) := by
   exact projection_commutes_derived_action hgap' hP' hv₀' x (projection_preserves_smooth hgap' hP' hv₀' _ x.2) a b
 
+/- English proof (translation)
+Take `⟨y, hy, e⟩` from `occurrence_projection_mem dual hP hv₀ hgap' hP' hv₀' hW η f hη hf`. Conclude with `⟨y, hy, e⟩`.
+-/
 theorem occC_proj_mem (dual : Bool) (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0)
     (hgap' : StdGap ε lam') (hP' : IsPsiFor ε lam' T' Ψ') (hv₀' : v₀' ≠ 0)
     (hW : ∀ v ∈ genSub (smE ε (rreg ε)) (datumV ε Ψ v₀), ∀ w ∈ genSub (smE ε (rreg ε)) (datumV ε Ψ v₀),
@@ -63,6 +75,23 @@ theorem occC_proj_mem (dual : Bool) (hgap : StdGap ε lam) (hP : IsPsiFor ε lam
   obtain ⟨y, hy, e⟩ := occurrence_projection_mem dual hP hv₀ hgap' hP' hv₀' hW η f hη hf
   exact ⟨y, hy, e⟩
 
+/- English proof (translation)
+Take `⟨η, hη, f₀, hf₀, x', hx', hne0⟩` from `hne`. Establish `hσ` using `rreg_isURepOn ε`. Establish `hD` using `isDerivedOn_smE hσ`. Establish `hsm : ∀ f ∈ tensSub (genSub (smE ε (rreg ε)) (datumV ε Ψ v₀)), occC2phi dual ε η f ∈ smD ε (rreg ε)` using `fun f hf => toL2_mem_smD_of_isSmoothL2 (occurrence_phi_smooth_L2 dual hW hη hf)`. Establish `hsmP : ∀ f ∈ tensSub (genSub (smE ε (rreg ε)) (datumV ε Ψ v₀)), (Hlam ε Ψ' v₀').starProjection (occC2phi dual ε η f) ∈ smD ε (rreg ε)` using `fun f hf => projection_preserves_smooth hgap' hP' hv₀' _ (hsm f hf)`.
+
+Set `ps0 : tensSub (genSub (smE ε (rreg ε)) (datumV ε Ψ v₀)) →ₗ[ℂ] smD ε (rreg ε)` to `{ toFun := fun f => ⟨(Hlam ε Ψ' v₀').starProjection (occC2phi dual ε η f.1), hsmP f.1 f.2⟩ map_add' := fun f f' => Subtype.ext (by show (Hlam ε Ψ' v₀').starProjection (occC2phi dual ε η (f.1 + f'.1)) = _`. Rewrite using `[occurrence_phi_add dual hW hη f.2 f'.2, map_add]`. Use the proof step `rfl)`. Use the proof step `map_smul' := fun a f => Subtype.ext (by show (Hlam ε Ψ' v₀').starProjection (occC2phi dual ε η (a • f.1)) = _`. Rewrite using `[occurrence_phi_smul, map_smul]`.
+
+Use the proof step `rfl) }`. Take `⟨ps, hps⟩` from `LinearMap.exists_extend ps0`. Establish `hpsf : ∀ f (hf : f ∈ tensSub (genSub (smE ε (rreg ε)) (datumV ε Ψ v₀))), ps f = ⟨(Hlam ε Ψ' v₀').starProjection (occC2phi dual ε η f), hsmP f hf⟩` using `fun f hf => LinearMap.congr_fun hps ⟨f, hf⟩`. Use `⟨ps, ⟨fun f hf => ?_, fun a b f hf => ?_, fun k hk f hf f' hf' hff => ?_⟩, f₀, hf₀, ?_⟩` and prove the remaining obligations. Take `⟨y, hy, hyeq⟩` from `occurrence_projection_mem dual hP hv₀ hgap' hP' hv₀' hW η f hη hf`.
+
+Establish `e : ps f = y` using `by rw [hpsf f hf]; exact Subtype.ext hyeq.symm`. Rewrite using `[e]`. Conclude with `hy`. Establish `hf2` using `tensSub_stable dual a b f hf`. Rewrite using `[hpsf _ hf2, hpsf f hf]`.
+
+Establish `h3` using `projection_commutes_derived_action hgap' hP' hv₀' (⟨occC2phi dual ε η f, hsm f hf⟩ : smD ε (rreg ε)) (hsmP f hf) a b`. Apply `Subtype.ext` to reduce the goal to its premises. Use `Eq.trans ?_ h3.symm` and prove the remaining obligations. Use `show (Hlam ε Ψ' v₀').starProjection (occC2phi dual ε η (tensF dual (smE ε (rreg ε)) a b f)) = (Hlam ε Ψ' v₀').starProjection ((smE ε (rreg ε) a b ⟨occC2phi dual ε η f, hsm f hf⟩ : smD ε (rreg ε)) : L2 ε)`. Use `congr 1`.
+
+Use `Eq.trans ?_ (rightDerivative_toL2 (occurrence_phi_smooth_L2 dual hW hη hf) a b).symm` and prove the remaining obligations. Apply `toL2_congr_of_forall_inUJ_eq` to reduce the goal to its premises. Introduce `g hg`. Conclude with `(occA_coef_Eab dual hσ hD _ f a b hg).symm`. Rewrite using `[hpsf f' hf', hpsf f hf] show (Hlam ε Ψ' v₀').starProjection (occC2phi dual ε η f') = rreg ε k ((Hlam ε Ψ' v₀').starProjection (occC2phi dual ε η f))`.
+
+Rewrite using `[← occurrence_phi_k_equivariant dual η f f' hk hff, projection_commutes_right_regular hgap' hP' hv₀' k (cf_kset_sub hk)]`. Introduce `h0`. Apply `hne0` to reduce the goal to its premises. Establish `hP0 : (Hlam ε Ψ' v₀').starProjection (occC2phi dual ε η f₀) = 0`. Use `congrArg Subtype.val ((hpsf f₀ hf₀).symm.trans h0)` as an intermediate fact.
+
+Conclude with `this`. Establish `hx'H : ((x' : smD ε (rreg ε)) : L2 ε) ∈ Hlam ε Ψ' v₀'` using `Submodule.le_topologicalClosure _ (Submodule.mem_map_of_mem hx')`. Rewrite using `[← (Submodule.starProjection_eq_self_iff (K := Hlam ε Ψ' v₀')).2 hx'H, ← Submodule.inner_starProjection_left_eq_right]`. Use `show inner ℂ ((Hlam ε Ψ' v₀').starProjection (occC2phi dual ε η f₀)) _ = 0`. Rewrite using `[hP0, inner_zero_left]`.
+-/
 theorem occC_exists_ps (dual : Bool) (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0)
     (hgap' : StdGap ε lam') (hP' : IsPsiFor ε lam' T' Ψ') (hv₀' : v₀' ≠ 0)
     (hW : ∀ v ∈ genSub (smE ε (rreg ε)) (datumV ε Ψ v₀), ∀ w ∈ genSub (smE ε (rreg ε)) (datumV ε Ψ v₀),

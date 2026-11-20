@@ -14,6 +14,9 @@ def PureW (ι : PadicAlgCl l ≃+* ℂ) (r : G ℚ Ω →* M4 (PadicAlgCl l)) : 
     ∀ A : ValuationSubring Ω, A.valuation (p : Ω) < 1 → ∀ (f : ℕ) (σ : G ℚ Ω), 0 < f → σ ∈ H → IsFrob A (p ^ f) σ →
       ∀ x ∈ (r σ).charpoly.roots, ∀ y ∈ (r σ).charpoly.roots, y ≠ 0 → ‖ι x‖ < (p : ℝ) ^ f * ‖ι y‖
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem pureW' {ι : PadicAlgCl l ≃+* ℂ} {r : G ℚ Ω →* M4 (PadicAlgCl l)} (h : PureW ι r) : PureW ι r := h
 end
 
@@ -34,6 +37,9 @@ def ArithmeticPointDecomposition : Prop :=
           ∀ z ∈ b, ∀ z' ∈ b, ‖z‖ < (normV w : ℝ) * ‖z'‖)
 
 variable {B ι J}
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem end1W' (h : ArithmeticPointDecomposition B ι J) : ArithmeticPointDecomposition B ι J := h
 end
 

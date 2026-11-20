@@ -10,6 +10,11 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 
 namespace GlobalTheory.FinalJoin2
 
+/- English proof (translation)
+Take `⟨x₀, hx₀⟩` from `GlobalTheory.FinalJoin.runHolds_of_parOK`. Take `⟨CK, hCK⟩` from `GlobalTheory.FinalJoin.RecordRun.exists_pageRun_record_sub_four`. Use `⟨CK, max ((10 : ℝ) ^ 60) (x₀ 20 CK), ?_⟩` and prove the remaining obligations. Introduce `D T h hinj EX p hpar L Pm Tp hK hS hC hg hCP hz hx hF j hj`. Establish `hO : OPO L (recB h.toLawsCore)` using `(fieldSmall_iff_opo D T h L).1 hF`.
+
+Establish `hP` using `hCK D L Pm Tp hK hS hC hg ((le_max_left _ _).trans hx) hCP hz _ _ j (recPJ h j hj) hj hO`. Conclude with `(hx₀ D T h hinj EX p hpar j hj L _ _ _ _ _ _ _ _ _ _ _ hP ((le_max_right _ _).trans hx)).2`.
+-/
 theorem hyp_concl_at_run : ∃ (CK : ℝ) (x₁ : ℝ), ∀ (D : D7) (T : Top D) (h : LawsP T) (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D) (p : ℕ), (∀ j, InR D j → ParOK T EX p j) → ∀ (L : SizeData₂ D) (Pm : ParameterChoice' D L) (Tp : ParamsT D L Pm) (hK : DV.KapDef D), SizesAt L → Pm.CnW = 10 → (∀ i, Real.log (D.host.g i) ≤ 9 * L.sc.L + 1) → 1000 ≤ Tp.CP → Tp.CP ^ 20 ≤ zBase L → x₁ ≤ L.sc.x → FieldSmall D L → (∀ (j : ℕ) (hj : InR D j), HypC L (recPJ h j hj) ⟨CK, 20, Tp.CP, Tp.eP, Tp.CP, Tp.eP, 7⟩ Tp.CP Tp.eP 7 0 L.Ct (scalOfP (recB (h).toLawsCore) hinj EX p (kaR Tp hK j) (lR Tp hK j) (fR Tp hK j) Tp.TO) (kaR Tp hK j) (lR Tp hK j) (fR Tp hK j) Tp.TO Tp.nP Tp.nWn (LevelStarExponents.h0 L - 4) (nusR h j (lR Tp hK j)) ∧ Concl (recPJ h j hj) (scalOfP (recB (h).toLawsCore) hinj EX p (kaR Tp hK j) (lR Tp hK j) (fR Tp hK j) Tp.TO) (kaR Tp hK j) (lR Tp hK j) (fR Tp hK j) Tp.TO (nusR h j (lR Tp hK j)) ((recPJ h j hj).rk (kaR Tp hK j) ((recB (h).toLawsCore).Mlat j (kaR Tp hK j)) * D.R.f * D.R.m * L.sc.b * L.de2)) := by
   obtain ⟨x₀, hx₀⟩ := GlobalTheory.FinalJoin.runHolds_of_parOK
   obtain ⟨CK, hCK⟩ := GlobalTheory.FinalJoin.RecordRun.exists_pageRun_record_sub_four

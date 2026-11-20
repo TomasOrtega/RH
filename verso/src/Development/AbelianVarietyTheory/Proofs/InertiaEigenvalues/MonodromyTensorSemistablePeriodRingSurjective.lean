@@ -7,6 +7,11 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.PMon
 
+/- English proof (translation)
+Introduce `p`. Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq`. Take `⟨a, rfl⟩` from `hp`. Take `⟨b, rfl⟩` from `hq`.
+
+Conclude with `⟨a + b, map_add _ _ _⟩`. Consider the case `monomial n a`. Establish `hn : ((n + 1 : ℕ) : ℚ_[l]) ≠ 0` using `Nat.cast_ne_zero.mpr (Nat.succ_ne_zero n)`. Use `⟨-Polynomial.monomial (n + 1) (((n + 1 : ℕ) : ℚ_[l])⁻¹ • a), ?_⟩` and prove the remaining obligations. Rewrite using `[map_neg, monSt_apply, neg_neg, Polynomial.derivative_monomial, Nat.add_sub_cancel, ← nsmul_eq_mul', ← Nat.cast_smul_eq_nsmul ℚ_[l], smul_smul, mul_inv_cancel₀ hn, one_smul]`.
+-/
 theorem monSt_surjective_onto {l : ℕ} [Fact l.Prime] (P : LocPrime l) :
     Function.Surjective (monSt P) := by
   intro p
@@ -21,6 +26,11 @@ theorem monSt_surjective_onto {l : ℕ} [Fact l.Prime] (P : LocPrime l) :
     rw [map_neg, monSt_apply, neg_neg, Polynomial.derivative_monomial, Nat.add_sub_cancel,
       ← nsmul_eq_mul', ← Nat.cast_smul_eq_nsmul ℚ_[l], smul_smul, mul_inv_cancel₀ hn, one_smul]
 
+/- English proof (translation)
+Introduce `l _ P V _ _ x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, map_zero _⟩`. Consider the case `tmul v b`. Take `⟨c, rfl⟩` from `monSt_surjective_onto P b`.
+
+Conclude with `⟨v ⊗ₜ c, monV_tmul P v c⟩`. Consider the case `add x y hx hy`. Take `⟨a, rfl⟩` from `hx`. Take `⟨b, rfl⟩` from `hy`. Conclude with `⟨a + b, map_add _ _ _⟩`.
+-/
 theorem monV_surjective_onto :
     ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (V : Type) [AddCommGroup V] [Module ℚ_[l] V],
       Function.Surjective (monV P ℚ_[l] V) := by

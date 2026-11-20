@@ -21,6 +21,17 @@ open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 attribute [local instance] _root_.GlobalTheory.Fam.GeometricFamily.fld _root_.GlobalTheory.Fam.GeometricFamily.val _root_.GlobalTheory.Fam.GeometricFamily.top _root_.GlobalTheory.Fam.GeometricFamily.loc
 namespace GlobalTheory.Fam
+/- English proof (translation)
+Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hTr J hR row kom dd S s cV cK cP hs hpin t`. Take `⟨w, hw⟩` from `hpin t`. Establish `hstd : ∀ β, (J t).A.kb 0 β = TC.kStd X u (B.R.N 0)` using `(hR t).std 0 (by have := B.R.two_le_m; omega)`. Establish `key` using `_root_.GlobalTheory.T.true_geometry_row_column_entry_alt W hW u a ha hTr row (_root_.GlobalTheory.Fam.columnChoiceOfCoefficients a J kom dd S s cV cK cP) t (J t).Ch₀ (J t).A (J t).ι w a.c₀ hw hstd`. Establish `hone : ∀ i, Fintype.card (((J t).E i).Ch 0) = 1 ∧ ∀ α, ((J t).E i).wt 0 α = 1` using `fun i =>`.
+
+Set `h` to `GlobalTheory.T.bottom_spherical_card_weight_index _ _ _ _ _ _ _ ((J t).E i)`. Use the proof step `⟨h.1, h.2.1⟩`. Establish `hU : ∀ i, Nonempty (Unique (((J t).E i).Ch 0))` using `fun i => (Fintype.card_eq_one_iff_nonempty_unique).1 (hone i).1`. Set `α₀ : (J t).Ch 0` to `fun i => (hU i).some.default`. Establish `hall : ∀ α : (J t).Ch 0, α = α₀` using `fun α => funext fun i => (hU i).some.uniq (α i)`.
+
+Use `⟨α₀, hall, ?_, ?_⟩` and prove the remaining obligations. Use `show ((s t 0 α₀ • (J t).eps 0 α₀).mapDomain (· * a.g.b 0)) = _`. Establish `hw1 : (J t).wt 0 α₀ = 1`. Unfold `_root_.GlobalTheory.Fam.QuadraticExtensionData.wt`. Conclude with `Finset.prod_eq_one fun i _ => (hone i).2 _`.
+
+Establish `he : (J t).eps 0 α₀ = Finsupp.single 1 1`. Unfold `_root_.GlobalTheory.Fam.QuadraticExtensionData.eps`. Rewrite using `[if_pos (Or.inr rfl), hw1, one_smul]`. Apply `conv_single_one_of_forall` to reduce the goal to its premises. Introduce `x hx`.
+
+Rewrite `hx` using `[List.mem_ofFn]`. Take `⟨i, rfl⟩` from `hx`. Conclude with `((J t).E i).εL_zero _`. Rewrite using `[hs, one_smul, he, Finsupp.mapDomain_single, one_mul]`. Conclude with `key α₀`.
+-/
 theorem chartZero_colOf_alt : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.AllFamilyConditions W → ∀ (u : B.Word) (a : _root_.GlobalTheory.Fam.GeometricFamily W u), a.Is → a.True → ∀ (J : ∀ t, _root_.GlobalTheory.Fam.QuadraticExtensionData a t), (∀ t, (J t).Reads) → ∀ (row : ∀ t, RowCh (_root_.GlobalTheory.Fam.pk_z W) (_root_.GlobalTheory.Fam.complexLevelStructure W) u a.g t)
     (kom : ∀ (_ : W.P.T) j, Om ((I.rec7 l Z).sp.X j) ((I.rec7 l Z).sp.X (j + 1))) (dd : ∀ t j, (J t).Ch j → (J t).Ch (j + 1) → WO ((I.rec7 l Z).sp.X j) ((I.rec7 l Z).sp.X (j + 1)) →₀ ℂ) (S : ∀ t j, GlobalTheory.AdForm.ColT I l u (W.P.I.tup t) j → GlobalTheory.AdForm.ColT I l u (W.P.I.tup t) j) (s : ∀ t j, (J t).Ch j → ℂ) (cV cK : W.P.T → ℕ → ℂ) (cP : W.P.T → ℂ), (∀ t α, s t 0 α = 1) →
     (∀ t, ∃ w, PinChL (_root_.GlobalTheory.Fam.pk_z W) a.g (_root_.GlobalTheory.Fam.columnChoiceOfCoefficients a J kom dd S s cV cK cP t) a.c₀ (J t).A (J t).ι w) →

@@ -12,6 +12,9 @@ namespace GlobalTheory.CompanionTheory.CoefSmooth
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Introduce `g₀ hg₀`. Take `⟨U, F, hU, hgU, hF, hfF⟩` from `v.2 g₀ hg₀`. Use `⟨U, fun x => ⟪w, F x⟫_ℂ, hU, hgU, ?_, fun g hg hgJ => ?_⟩` and prove the remaining obligations. Conclude with `(((innerSL ℂ w).restrictScalars ℝ).contDiff.comp_contDiffOn hF)`. Conclude with `congrArg (fun z => ⟪w, z⟫_ℂ) (hfF g hg hgJ)`.
+-/
 theorem coef_smoothOnG (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H))
     (v : GlobalTheory.SmoothVecMod.smoothVec ε σ) (w : H) :
@@ -22,6 +25,9 @@ theorem coef_smoothOnG (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddComm
   · exact (((innerSL ℂ w).restrictScalars ℝ).contDiff.comp_contDiffOn hF)
   · exact congrArg (fun z => ⟪w, z⟫_ℂ) (hfF g hg hgJ)
 
+/- English proof (translation)
+Introduce `n ε H _ _ σ v w` and use `coef_smoothOnG n ε H σ v w`.
+-/
 theorem coef_smooth : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H))
     (v : GlobalTheory.SmoothVecMod.smoothVec ε σ) (w : H),

@@ -17,6 +17,21 @@ noncomputable section
 
 namespace GlobalTheory.DoublingZeta
 
+/- English proof (translation)
+Introduce `hSE hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM hq hp W₂ hJ hL hθ i hi K hK hI φ₀ hφ₀ hconv μ hμ`. Establish `hKc : IsCompact (K : Set (UA σ W₂.J))` using `GlobalTheory.T.doubling_stabilizer_compact hKP F E σ B hM.triple.base (a + a') _ _ G.W hM.triple.geo.hW W₂ hJ hL hθ K hK`. Take `⟨-, hfc, hαc⟩` from `GlobalTheory.DblUnfoldCont.continuity hSE hKP F E σ B a a' G X om om' R Rf hM hq hp W₂ hJ hL hθ i hi K hK hI φ₀ hφ₀ hconv μ hμ`. Take `⟨R₀, hR₀⟩` from `GlobalTheory.T.exists_integrable_hgtOf_rpow_doubling_embedding hKP F E σ B hM.triple.base (a + a') _ _ G.W hM.triple.geo.hW W₂ hJ hL hθ i hi K hK hI μ hμ`. Take `⟨C, hC⟩` from `hKc.exists_bound_of_continuousOn hφ₀.2.1.continuousOn`.
+
+Establish `hn : (Fintype.card (Fin (a + a')) : ℂ) = ((a + a' : ℕ) : ℂ)` using `by simp`. Use `⟨R₀ - ((a + a' : ℕ) : ℝ) / 2, fun s hs => ?_⟩` and prove the remaining obligations. Establish `hint` using `hR₀ (s.re + ((a + a' : ℕ) : ℝ) / 2) (by linarith)`. Establish `hio : Continuous fun g : UA σ G.W.J => i (1, g)`. Take `⟨hic, -, -⟩` from `GlobalTheory.DblUnfoldCont.continuity hSE hKP F E σ B a a' G X om om' R Rf hM hq hp W₂ hJ hL hθ i hi K hK hI φ₀ hφ₀ hconv μ hμ`.
+
+Conclude with `hic.comp (continuous_const.prodMk continuous_id)`. Use `haveI : BorelSpace (UA σ G.W.J) := ⟨rfl⟩`. Use `(hint.const_mul C).mono' (((hfc s).comp hio).mul hαc).aestronglyMeasurable (.of_forall fun g => ?_)` and prove the remaining obligations. Use `set x := i (1, g)`. Establish `hpos` using `hgtOf_pos (e := finSumFinEquiv) (mat := (UG (cA σ) (incM F W₂.J)).subtype) (ν := absE F E) (K := K) x`.
+
+Establish `h1 : ‖φ₀ x‖ ≤ C * ((hgtOf finSumFinEquiv (UG (cA σ) (incM F W₂.J)).subtype (absE F E) K x : ℝ≥0) : ℝ) ^ ((-(a : ℂ) / 2 + (Fintype.card (Fin (a + a')) : ℂ) / 2).re)` using `IsIwasawa.norm_le hI hφ₀.1 (fun k hk => hC k hk) x`. Establish `h2` using `norm_flatSec (δ := absAOf finSumFinEquiv (UG (cA σ) (incM F W₂.J)).subtype (absE F E)) (K := K) φ₀ (-(a : ℂ) / 2) s x`. Rewrite using `[norm_mul, Circle.norm_coe, mul_one]`. Express the relevant statement in the definitionally equal form `‖flatSec _ K φ₀ (-(a : ℂ) / 2) s x‖ ≤ _`. Rewrite using `[h2]`.
+
+Express the relevant statement in the definitionally equal form `‖φ₀ x‖ * ((hgtOf finSumFinEquiv (UG (cA σ) (incM F W₂.J)).subtype (absE F E) K x : ℝ≥0) : ℝ) ^ _ ≤ _`. Rewrite `h1` using `[hn]`. Establish `hre : ((-(a : ℂ) / 2 + ((a + a' : ℕ) : ℂ) / 2)).re = -(a : ℝ) / 2 + ((a + a' : ℕ) : ℝ) / 2` using `by simp`. Establish `hre' : (-(a : ℂ) / 2).re = -(a : ℝ) / 2` using `by simp`. Rewrite `h1` using `[hre]`.
+
+Rewrite using `[hre']`. Establish `hp0 : (0 : ℝ) < ((hgtOf finSumFinEquiv (UG (cA σ) (incM F W₂.J)).subtype (absE F E) K x : ℝ≥0) : ℝ)` using `hpos`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, ← Real.rpow_add hp0]`. Use `congr 2`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem zeta_integrable : GlobalTheory.Published.SiegelEisensteinDoubled → GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'), IsMatched B G X om om' R Rf → G.q = 0 → 1 ≤ G.p →
     ∀ W₂ : Spc F E ((a + a') + (a + a')), W₂.J = dblGram finSumFinEquiv G.W.J → W₂.L = sumLat finSumFinEquiv G.W.L G.W.L →
@@ -71,6 +86,19 @@ theorem zeta_integrable : GlobalTheory.Published.SiegelEisensteinDoubled → Glo
           (s.re + ((a + a' : ℕ) : ℝ) / 2) := by
         rw [mul_assoc, ← Real.rpow_add hp0]; congr 2; ring
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B n d Xs W M χX χW om r s' r₁ s₁ hP hd W₂ hJ hL hθ i hi K hK hI φ₀ hφ₀ hconv μ hμ`. Establish `hKc : IsCompact (K : Set (UA σ W₂.J))` using `GlobalTheory.T.doubling_stabilizer_compact hKP F E σ B hP.base d _ _ W hP.skew W₂ hJ hL hθ K hK`. Take `⟨hic, hfc, hαc⟩` from `GlobalTheory.DblUnfoldCont.continuity_pair hKP F E σ B n d Xs W M χX χW om r s' r₁ s₁ hP hd W₂ hJ hL hθ i hi K hK hI φ₀ hφ₀ hconv μ hμ`. Take `⟨R₀, hR₀⟩` from `GlobalTheory.T.exists_integrable_hgtOf_rpow_doubling_embedding hKP F E σ B hP.base d _ _ W hP.skew W₂ hJ hL hθ i hi K hK hI μ hμ`. Take `⟨C, hC⟩` from `hKc.exists_bound_of_continuousOn hφ₀.2.1.continuousOn`.
+
+Establish `hn : (Fintype.card (Fin d) : ℂ) = (d : ℂ)` using `by simp`. Use `⟨R₀ - (d : ℝ) / 2, fun s hs => ?_⟩` and prove the remaining obligations. Establish `hint` using `hR₀ (s.re + (d : ℝ) / 2) (by linarith)`. Establish `hio : Continuous fun g : UA σ W.J => i (1, g)` using `hic.comp (continuous_const.prodMk continuous_id)`. Use `haveI : BorelSpace (UA σ W.J) := ⟨rfl⟩`.
+
+Use `(hint.const_mul C).mono' (((hfc s).comp hio).mul hαc).aestronglyMeasurable (.of_forall fun g => ?_)` and prove the remaining obligations. Use `set x := i (1, g)`. Establish `hpos` using `hgtOf_pos (e := finSumFinEquiv) (mat := (UG (cA σ) (incM F W₂.J)).subtype) (ν := absE F E) (K := K) x`. Establish `h1 : ‖φ₀ x‖ ≤ C * ((hgtOf finSumFinEquiv (UG (cA σ) (incM F W₂.J)).subtype (absE F E) K x : ℝ≥0) : ℝ) ^ (((((n : ℂ) - (d : ℂ)) / 2) + (Fintype.card (Fin d) : ℂ) / 2).re)` using `IsIwasawa.norm_le hI hφ₀.1 (fun k hk => hC k hk) x`. Establish `h2` using `norm_flatSec (δ := absAOf finSumFinEquiv (UG (cA σ) (incM F W₂.J)).subtype (absE F E)) (K := K) φ₀ (((n : ℂ) - (d : ℂ)) / 2) s x`.
+
+Rewrite using `[norm_mul, Circle.norm_coe, mul_one]`. Express the relevant statement in the definitionally equal form `‖flatSec _ K φ₀ (((n : ℂ) - (d : ℂ)) / 2) s x‖ ≤ _`. Rewrite using `[h2]`. Express the relevant statement in the definitionally equal form `‖φ₀ x‖ * ((hgtOf finSumFinEquiv (UG (cA σ) (incM F W₂.J)).subtype (absE F E) K x : ℝ≥0) : ℝ) ^ _ ≤ _`. Rewrite `h1` using `[hn]`.
+
+Establish `hre : ((((n : ℂ) - (d : ℂ)) / 2) + (d : ℂ) / 2).re = (((n : ℂ) - (d : ℂ)) / 2).re + (d : ℝ) / 2` using `by simp`. Rewrite `h1` using `[hre]`. Establish `hp0 : (0 : ℝ) < ((hgtOf finSumFinEquiv (UG (cA σ) (incM F W₂.J)).subtype (absE F E) K x : ℝ≥0) : ℝ)` using `hpos`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, ← Real.rpow_add hp0]`.
+
+Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem zeta_integrable_pair : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (Xs : Spc F E n) (W : Spc F E d) (M : Model σ Xs W) (χX χW : Chr F E) (om : Rep σ Xs W) (r s' r₁ s₁ : ℕ),
     IsPair B M χX χW om r s' r₁ s₁ → 1 ≤ d →
     ∀ W₂ : Spc F E (d + d), W₂.J = dblGram finSumFinEquiv W.J → W₂.L = sumLat finSumFinEquiv W.L W.L →

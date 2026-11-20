@@ -16,6 +16,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.L
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.L2Cusps.BrRepHolds
 
 open UpperTheory.V.KernelIndexFullLattice in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨partA muHaar_holds quotPres_holds cmpEquiv_holds rangeLe_holds contMem_holds absCompact_holds, partB splitEq_holds muHaar_holds quotPres_holds cmpEquiv_holds cmpForm_holds rangeLe_holds contMem_holds absIrr_holds kernelIndexFullLattice_neBot kFinTr_holds kFinMem_holds brRep_hold …`.
+-/
 theorem UpperTheory.V.Af.cuspSpectrumGL :
     GlobalTheory.Published.CuspidalSpectrumGL :=
   ⟨partA muHaar_holds quotPres_holds cmpEquiv_holds rangeLe_holds contMem_holds absCompact_holds,

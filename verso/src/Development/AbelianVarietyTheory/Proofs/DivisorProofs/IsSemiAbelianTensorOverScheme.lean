@@ -10,6 +10,21 @@ attribute [local instance] Over.cartesianMonoidalCategory
 noncomputable section
 namespace GlobalTheory.SemiProd
 
+/- English proof (translation)
+Introduce `S X₁ X₂ _ _`. Set `comb : ∀ {M : Type} [CommGroup M], (Multiplicative X₁ →* M) → (Multiplicative X₂ →* M) → (Multiplicative (X₁ × X₂) →* M)` to `fun u v => u.comp (AddMonoidHom.toMultiplicative (AddMonoidHom.fst X₁ X₂)) * v.comp (AddMonoidHom.toMultiplicative (AddMonoidHom.snd X₁ X₂))`. Set `l : ∀ {Z : Over S}, (Z ⟶ splitTorus S X₁) → (Z ⟶ splitTorus S X₂) → (Z ⟶ splitTorus S (X₁ × X₂))` to `fun {Z} f g => (splitTorusPointsEquiv S (X₁ × X₂) Z).symm (comb (splitTorusPointsEquiv S X₁ Z f) (splitTorusPointsEquiv S X₂ Z g))`. Establish `f₁ : ∀ {Z : Over S} (f : Z ⟶ splitTorus S X₁) (g : Z ⟶ splitTorus S X₂), l f g ≫ SplitTorusPow.torusMap S (AddMonoidHom.inl X₁ X₂) = f`. Introduce `Z f g`.
+
+Apply `(splitTorusPointsEquiv S X₁ Z).injective` to reduce the goal to its premises. Rewrite using `[SplitTorusPow.points_comp_torusMap, MulEquiv.apply_symm_apply]`. Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations. Simplify using `[comb]`. Establish `f₂ : ∀ {Z : Over S} (f : Z ⟶ splitTorus S X₁) (g : Z ⟶ splitTorus S X₂), l f g ≫ SplitTorusPow.torusMap S (AddMonoidHom.inr X₁ X₂) = g`.
+
+Introduce `Z f g`. Apply `(splitTorusPointsEquiv S X₂ Z).injective` to reduce the goal to its premises. Rewrite using `[SplitTorusPow.points_comp_torusMap, MulEquiv.apply_symm_apply]`. Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations. Simplify using `[comb]`.
+
+Establish `u : ∀ {Z : Over S} (m : Z ⟶ splitTorus S (X₁ × X₂)), m = l (m ≫ SplitTorusPow.torusMap S (AddMonoidHom.inl X₁ X₂)) (m ≫ SplitTorusPow.torusMap S (AddMonoidHom.inr X₁ X₂))`. Introduce `Z m`. Apply `(splitTorusPointsEquiv S (X₁ × X₂) Z).injective` to reduce the goal to its premises. Rewrite using `[MulEquiv.apply_symm_apply, SplitTorusPow.points_comp_torusMap, SplitTorusPow.points_comp_torusMap]`. Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations.
+
+Establish `hx : x = Multiplicative.ofAdd (AddMonoidHom.inl X₁ X₂ x.toAdd.1) * Multiplicative.ofAdd (AddMonoidHom.inr X₁ X₂ x.toAdd.2)`. Rewrite using `[← ofAdd_add]`. Simplify using the standard rewrite rules. Use `conv_lhs => rw [hx]`. Rewrite using `[map_mul]`.
+
+Both sides reduce to the same expression. Establish `hl : IsLimit (BinaryFan.mk (SplitTorusPow.torusMap S (AddMonoidHom.inl X₁ X₂)) (SplitTorusPow.torusMap S (AddMonoidHom.inr X₁ X₂)))` using `BinaryFan.IsLimit.mk _ (fun f g => l f g) (fun f g => f₁ f g) (fun f g => f₂ f g) (fun f g m h₁ h₂ => by rw [u m]; exact congrArg₂ l h₁ h₂)`. Establish `e : lift (SplitTorusPow.torusMap S (AddMonoidHom.inl X₁ X₂)) (SplitTorusPow.torusMap S (AddMonoidHom.inr X₁ X₂)) = (hl.conePointUniqueUpToIso (tensorProductIsBinaryProduct _ _)).hom`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[lift_fst]`.
+
+Conclude with `(hl.conePointUniqueUpToIso_hom_comp (tensorProductIsBinaryProduct _ _) ⟨.left⟩).symm`. Rewrite using `[lift_snd]`. Conclude with `(hl.conePointUniqueUpToIso_hom_comp (tensorProductIsBinaryProduct _ _) ⟨.right⟩).symm`. Rewrite using `[e]`. Use `infer_instance`.
+-/
 theorem torus_prod_iso : ∀ (S : Scheme.{0}) (X₁ X₂ : Type) [AddCommGroup X₁] [AddCommGroup X₂], IsIso (lift (GlobalTheory.SplitTorusPow.torusMap S (AddMonoidHom.inl X₁ X₂)) (GlobalTheory.SplitTorusPow.torusMap S (AddMonoidHom.inr X₁ X₂))) := by
   intro S X₁ X₂ _ _
   let comb : ∀ {M : Type} [CommGroup M], (Multiplicative X₁ →* M) → (Multiplicative X₂ →* M) →
@@ -62,6 +77,9 @@ theorem torus_prod_iso : ∀ (S : Scheme.{0}) (X₁ X₂ : Type) [AddCommGroup X
   rw [e]
   infer_instance
 
+/- English proof (translation)
+Introduce `S P _ _ A B C D f g hf hg`. Apply the tactic sequence `have e : (f ⊗ₘ g).left = pullback.map A.hom C.hom B.hom D.hom f.left g.left (𝟙 S) (by simp) (by simp) := by first | rfl | simp`. Rewrite using `[e]`. Conclude with `P.pullback_map hf hg (Over.w f).symm (Over.w g).symm`.
+-/
 theorem tensorHom_prop : ∀ (S : Scheme.{0}) (P : MorphismProperty Scheme.{0}) [P.IsMultiplicative] [P.IsStableUnderBaseChange] (A B C D : Over S) (f : A ⟶ B) (g : C ⟶ D), P f.left → P g.left → P (f ⊗ₘ g).left := by
   intro S P _ _ A B C D f g hf hg
   have e : (f ⊗ₘ g).left = pullback.map A.hom C.hom B.hom D.hom f.left g.left (𝟙 S) (by simp) (by simp) := by
@@ -69,6 +87,21 @@ theorem tensorHom_prop : ∀ (S : Scheme.{0}) (P : MorphismProperty Scheme.{0}) 
   rw [e]
   exact P.pullback_map hf hg (Over.w f).symm (Over.w g).symm
 
+/- English proof (translation)
+Introduce `S T₁ T₂ G₁ G₂ B₁ B₂ _ _ i₁ i₂ q₁ q₂ h₁ h₂`. Establish `e₁ : (η : 𝟙_ (Over S) ⟶ B₁ ⊗ B₂) ≫ fst _ _ = η` using `by simp [MonObj.tensorObj.one_def]`. Establish `e₂ : (η : 𝟙_ (Over S) ⟶ B₁ ⊗ B₂) ≫ snd _ _ = η` using `by simp [MonObj.tensorObj.one_def]`. Establish `c₁ : ∀ {W : Over S} (a : W ⟶ G₁ ⊗ G₂) (b : W ⟶ 𝟙_ (Over S)), a ≫ (q₁ ⊗ₘ q₂) = b ≫ η → (a ≫ fst _ _) ≫ q₁ = toUnit W ≫ η`. Introduce `W a b h`.
+
+Use `congrArg (· ≫ fst _ _) h` as an intermediate fact. Simplify using `only [Category.assoc, tensorHom_fst, e₁] at this`. Rewrite using `[Category.assoc, this, toUnit_unique b (toUnit W)]`. Establish `c₂ : ∀ {W : Over S} (a : W ⟶ G₁ ⊗ G₂) (b : W ⟶ 𝟙_ (Over S)), a ≫ (q₁ ⊗ₘ q₂) = b ≫ η → (a ≫ snd _ _) ≫ q₂ = toUnit W ≫ η`. Introduce `W a b h`.
+
+Use `congrArg (· ≫ snd _ _) h` as an intermediate fact. Simplify using `only [Category.assoc, tensorHom_snd, e₂] at this`. Rewrite using `[Category.assoc, this, toUnit_unique b (toUnit W)]`. Establish `w : (i₁ ⊗ₘ i₂) ≫ (q₁ ⊗ₘ q₂) = toUnit (T₁ ⊗ T₂) ≫ (η : 𝟙_ (Over S) ⟶ B₁ ⊗ B₂)`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises.
+
+Simplify using `only [Category.assoc, tensorHom_fst, e₁, tensorHom_fst_assoc]`. Rewrite using `[h₁.w, ← Category.assoc, toUnit_unique (fst T₁ T₂ ≫ toUnit T₁) (toUnit _)]`. Simplify using `only [Category.assoc, tensorHom_snd, e₂, tensorHom_snd_assoc]`. Rewrite using `[h₂.w, ← Category.assoc, toUnit_unique (snd T₁ T₂ ≫ toUnit T₂) (toUnit _)]`. Use `⟨⟨w⟩, ⟨PullbackCone.IsLimit.mk _ (fun s => lift (h₁.lift (s.fst ≫ fst _ _) (toUnit _) (c₁ _ _ s.condition)) (h₂.lift (s.fst ≫ snd _ _) (toUnit _) (c₂ _ _ s.condition))) (fun s => ?_) (fun s => toUnit_unique _ _) (fun s m hm _ => ?_)⟩⟩` and prove the remaining obligations.
+
+Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, tensorHom_fst, lift_fst_assoc, h₁.lift_fst]`. Rewrite using `[Category.assoc, tensorHom_snd, lift_snd_assoc, h₂.lift_fst]`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[lift_fst]`.
+
+Apply `h₁.hom_ext` to reduce the goal to its premises. Rewrite using `[h₁.lift_fst, Category.assoc, ← tensorHom_fst, ← Category.assoc, hm]`. Conclude with `toUnit_unique _ _`. Rewrite using `[lift_snd]`. Apply `h₂.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[h₂.lift_fst, Category.assoc, ← tensorHom_snd, ← Category.assoc, hm]`. Conclude with `toUnit_unique _ _`.
+-/
 theorem kernel_tensor : ∀ (S : Scheme.{0}) (T₁ T₂ G₁ G₂ B₁ B₂ : Over S) [GrpObj B₁] [GrpObj B₂] (i₁ : T₁ ⟶ G₁) (i₂ : T₂ ⟶ G₂) (q₁ : G₁ ⟶ B₁) (q₂ : G₂ ⟶ B₂), IsPullback i₁ (toUnit T₁) q₁ (η : 𝟙_ (Over S) ⟶ B₁) → IsPullback i₂ (toUnit T₂) q₂ (η : 𝟙_ (Over S) ⟶ B₂) → IsPullback (i₁ ⊗ₘ i₂) (toUnit (T₁ ⊗ T₂)) (q₁ ⊗ₘ q₂) (η : 𝟙_ (Over S) ⟶ B₁ ⊗ B₂) := by
   intro S T₁ T₂ G₁ G₂ B₁ B₂ _ _ i₁ i₂ q₁ q₂ h₁ h₂
   have e₁ : (η : 𝟙_ (Over S) ⟶ B₁ ⊗ B₂) ≫ fst _ _ = η := by simp [MonObj.tensorObj.one_def]
@@ -110,6 +143,13 @@ theorem kernel_tensor : ∀ (S : Scheme.{0}) (T₁ T₂ G₁ G₂ B₁ B₂ : Ov
 
 variable {S : Scheme.{0}}
 
+/- English proof (translation)
+Use `haveI := hA.comm`. Use `haveI := hB.comm`. Use `haveI := hA.smooth`. Use `haveI := hB.smooth`. Use `haveI := hA.proper`.
+
+Use `haveI := hB.proper`. Use `haveI := hA.geomConnected`. Use `haveI := hB.geomConnected`. Use `⟨inferInstance, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show Smooth (pullback.fst A.hom B.hom ≫ A.hom)`.
+
+Use `infer_instance`. Use `show IsProper (pullback.fst A.hom B.hom ≫ A.hom)`. Use `infer_instance`. Use `show GeometricallyConnected (pullback.fst A.hom B.hom ≫ A.hom)`. Conclude with `GeometricallyConnected.comp _ _`.
+-/
 theorem isAbelianScheme_tensor {A B : Over S} [GrpObj A] [GrpObj B] (hA : IsAbelianScheme A)
     (hB : IsAbelianScheme B) : IsAbelianScheme (A ⊗ B) := by
   haveI := hA.comm; haveI := hB.comm; haveI := hA.smooth; haveI := hB.smooth
@@ -119,6 +159,19 @@ theorem isAbelianScheme_tensor {A B : Over S} [GrpObj A] [GrpObj B] (hA : IsAbel
   · show IsProper (pullback.fst A.hom B.hom ≫ A.hom); infer_instance
   · show GeometricallyConnected (pullback.fst A.hom B.hom ≫ A.hom); exact GeometricallyConnected.comp _ _
 
+/- English proof (translation)
+Use `letI := E₁.addCommGroup`. Use `haveI := E₁.free`. Use `haveI := E₁.finite`. Use `letI := E₁.grpB`. Use `letI := E₂.addCommGroup`.
+
+Use `haveI := E₂.free`. Use `haveI := E₂.finite`. Use `letI := E₂.grpB`. Use `haveI := E₁.q_hom`. Use `haveI := E₂.q_hom`.
+
+Use `haveI := E₁.i_hom`. Use `haveI := E₂.i_hom`. Use `haveI := torus_prod_iso (Spec (.of K)) E₁.X E₂.X`. Use `haveI := SplitTorusPow.isMonHom_torusMap (S := Spec (.of K)) (AddMonoidHom.inl E₁.X E₂.X)`. Use `haveI := SplitTorusPow.isMonHom_torusMap (S := Spec (.of K)) (AddMonoidHom.inr E₁.X E₂.X)`.
+
+Establish `key` using `kernel_tensor _ _ _ _ _ _ _ E₁.i E₂.i E₁.q E₂.q E₁.isKernel E₂.isKernel`. Use `haveI : IsIso (lift a₁ a₂).left := inferInstanceAs (IsIso ((Over.forget _).map (lift a₁ a₂)))`. Use `haveI : IsMonHom (inv (lift a₁ a₂)) := inferInstanceAs (IsMonHom (asIso (lift a₁ a₂)).inv)`. Establish `hP : ∀ (P : MorphismProperty Scheme.{0}) [P.IsMultiplicative] [P.IsStableUnderBaseChange], P E₁.q.left → P E₂.q.left → P (lift a₁ a₂ ≫ (E₁.q ⊗ₘ E₂.q)).left`. Introduce `P _ _ h₁ h₂`.
+
+Rewrite using `[Over.comp_left]`. Conclude with `P.comp_mem _ _ (P.of_isIso _) (tensorHom_prop _ P _ _ _ _ _ _ h₁ h₂)`. Use `⟨{ X := E₁.X × E₂.X B := E₁.B ⊗ E₂.B isAbelian := isAbelianScheme_tensor E₁.isAbelian E₂.isAbelian q := lift a₁ a₂ ≫ (E₁.q ⊗ₘ E₂.q) q_hom := inferInstance q_flat := hP @Flat E₁.q_flat E₂.q_flat q_surjective := hP @Surjective E₁.q_surjective E₂.q_surjective q_quasiCompact := hP @Q …` and prove the remaining obligations. Use `IsPullback.of_iso key (asIso (lift (SplitTorusPow.torusMap _ (AddMonoidHom.inl E₁.X E₂.X)) (SplitTorusPow.torusMap _ (AddMonoidHom.inr E₁.X E₂.X)))).symm (asIso (lift a₁ a₂)).symm (Iso.refl _) (Iso.refl _) ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using `only [Iso.refl_hom, Category.comp_id, Iso.symm_hom, asIso_inv, Category.assoc, IsIso.inv_hom_id]`.
+
+Simplify using `only [← Category.assoc, IsIso.inv_hom_id, Category.id_comp]`. Conclude with `toUnit_unique _ _`. Simplify using `only [Iso.refl_hom, Category.comp_id, Iso.symm_hom, asIso_inv, Category.assoc, IsIso.inv_hom_id_assoc]`. Simplify using `only [Iso.refl_hom, Category.comp_id, Category.id_comp]`.
+-/
 theorem torusExtension_of_prod {K : Type} [Field K] {G G₁ G₂ : Over (Spec (.of K))} [GrpObj G] [GrpObj G₁]
     [GrpObj G₂] (a₁ : G ⟶ G₁) (a₂ : G ⟶ G₂) [IsMonHom a₁] [IsMonHom a₂] [IsIso (lift a₁ a₂)]
     (E₁ : TorusExtension G₁) (E₂ : TorusExtension G₂) : Nonempty (TorusExtension G) := by
@@ -157,6 +210,17 @@ theorem torusExtension_of_prod {K : Type} [Field K] {G G₁ G₂ : Over (Spec (.
   · simp only [Iso.refl_hom, Category.comp_id, Iso.symm_hom, asIso_inv, Category.assoc, IsIso.inv_hom_id_assoc]
   · simp only [Iso.refl_hom, Category.comp_id, Category.id_comp]
 
+/- English proof (translation)
+Introduce `S G₁ G₂ _ _ h₁ h₂`. Use `haveI := h₁.comm`. Use `haveI := h₂.comm`. Use `haveI := h₁.smooth`. Use `haveI := h₂.smooth`.
+
+Use `haveI := h₁.separated`. Use `haveI := h₂.separated`. Use `haveI := h₁.quasiCompact`. Use `haveI := h₂.quasiCompact`. Use `haveI := h₁.geomConnected`.
+
+Use `haveI := h₂.geomConnected`. Use `⟨inferInstance, ?_, ?_, ?_, ?_, fun Ω _ _ p => ?_⟩` and prove the remaining obligations. Use `show Smooth (pullback.fst G₁.hom G₂.hom ≫ G₁.hom)`. Use `infer_instance`. Use `show IsSeparated (pullback.fst G₁.hom G₂.hom ≫ G₁.hom)`.
+
+Use `infer_instance`. Use `show QuasiCompact (pullback.fst G₁.hom G₂.hom ≫ G₁.hom)`. Use `infer_instance`. Use `show GeometricallyConnected (pullback.fst G₁.hom G₂.hom ≫ G₁.hom)`. Conclude with `GeometricallyConnected.comp _ _`.
+
+Take `⟨E₁⟩` from `h₁.fibres Ω p`. Take `⟨E₂⟩` from `h₂.fibres Ω p`. Use `haveI : IsIso (lift ((Over.pullback p).map (fst G₁ G₂)) ((Over.pullback p).map (snd G₁ G₂))) := isIso_prodComparison_of_preservesLimit_pair (Over.pullback p) G₁ G₂`. Conclude with `torusExtension_of_prod ((Over.pullback p).map (fst G₁ G₂)) ((Over.pullback p).map (snd G₁ G₂)) E₁ E₂`.
+-/
 theorem isSemiAbelian_tensor : ∀ (S : Scheme.{0}) (G₁ G₂ : Over S) [GrpObj G₁] [GrpObj G₂], IsSemiAbelian G₁ → IsSemiAbelian G₂ → IsSemiAbelian (G₁ ⊗ G₂) := by
   intro S G₁ G₂ _ _ h₁ h₂
   haveI := h₁.comm; haveI := h₂.comm; haveI := h₁.smooth; haveI := h₂.smooth

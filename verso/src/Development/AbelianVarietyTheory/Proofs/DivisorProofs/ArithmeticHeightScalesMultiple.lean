@@ -10,6 +10,15 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 
 namespace GlobalTheory.PtHtComb
 
+/- English proof (translation)
+Introduce `HC k _ X p D hX ι _ L n m h h' H H' x hx`. Take `⟨hc, hd⟩` from `hx`. Take `⟨Z, i, _, _, rfl⟩` from `exists_isClosedImmersion_genericPoint x`. Establish `hr : Set.range i = closure {i (genericPoint Z)}`. Establish `h₁` using `(genericPoint_spec Z).image i.continuous`.
+
+Rewrite `h₁` using `[Set.image_univ, i.isClosedEmbedding.isClosed_range.closure_eq]`. Conclude with `h₁.def.symm`. Rewrite `hd` using `[topologicalKrullDim_eq_of_isEmbedding i.isClosedEmbedding.isEmbedding hr]`. Establish `hc' : CharZero (Z.residueField (genericPoint Z))` using `(RingHom.charZero_iff (i.residueFieldMap (genericPoint Z)).hom.injective).1 hc`. Establish `hcΓ : CharZero Γ(Z, ⊤)` using `(Z.Γevaluation (genericPoint Z)).hom.charZero`.
+
+Establish `hZ : IsArithVar (i ≫ p) 0` using `hX.of_isClosedImmersion i hcΓ hd`. Take `⟨⟨Φ, hΦ, -⟩, -⟩` from `(HC.arExists k Z (i ≫ p) 0 hZ).2 ι fun j => (L j).pull i rfl`. Establish `key (n' : ι → ℤ) (g : X → ℝ) (G : (comb L n').IsArithHeight g) : g (i (genericPoint Z)) = Φ (lin fun j => (n' j : ℝ))`. Establish `e` using `(isometric_comb_pull L n' i rfl).isSelfInter hZ (hΦ n')`. Rewrite `e` using `[zero_add, pow_one]`.
+
+Conclude with `(G.isSelfInter_restrict hX i rfl).unique hZ e`. Rewrite using `[key _ _ H, key _ _ H', ← smul_eq_mul, ← map_smul]`. Use `congr 1`. Simplify using `only [lin, Finset.smul_sum, Int.cast_mul, Int.cast_natCast, MvPolynomial.smul_eq_C_mul, map_mul, mul_assoc]`.
+-/
 theorem height_comb_mul : GlobalTheory.Published.CycleHeights → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D →
     ∀ (ι : Type) [Fintype ι] (L : ι → HermLB p) (n : ι → ℤ) (m : ℕ) (h h' : X → ℝ),
     (comb L n).IsArithHeight h → (comb L (fun i => (m : ℤ) * n i)).IsArithHeight h' →

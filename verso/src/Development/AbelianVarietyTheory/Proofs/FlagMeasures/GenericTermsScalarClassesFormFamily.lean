@@ -7,6 +7,21 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.SnFamGen
 
+/- English proof (translation)
+Introduce `D X Y u u' hsym htr`. Establish `hG : ∀ t : TauC Y u u', t ∈ (Y.tO u u').genSet → t.G ≠ 0`. Introduce `t ht h0`. Establish `h1 : (Y.tO u u').G t ≠ 0` using `ht.1`. Apply `h1` to reduce the goal to its premises.
+
+Use `show Gt t = 0`. Simplify using `[Gt, h0]`. Establish `hrefl : ∀ t : TauC Y u u', t ∈ (Y.tO u u').genSet → t ∈ gCls Y u u' t`. Introduce `t ht`. Take `⟨h1, h2⟩` from `GlobalTheory.T.same_row_same_coset_scalar_corank_one D X Y u u' t t (hG t ht) rfl rfl`.
+
+Conclude with `⟨ht, rfl, h1, h2⟩`. Establish `hrow : ∀ t t' : TauC Y u u', t' ∈ gCls Y u u' t → (Y.tO u u').rowOf t' = (Y.tO u u').rowOf t` using `fun t t' h => h.2.1`. Establish `hsub : ∀ t ∈ (Y.tO u u').genSet, ∀ t' ∈ (Y.tO u u').genSet, (Y.tO u u').rowOf t = (Y.tO u u').rowOf t' → (Y.tO u u').s0 t t' = 1 → (Y.tO u u').scal t t' → gCls Y u u' t' ⊆ gCls Y u u' t`. Introduce `t ht t' ht' hr hs hc x hx`. Take `⟨hxg, hxr, hxs, hxc⟩` from `hx`.
+
+Take `⟨h1, h2⟩` from `htr t ht t' ht' x hxg hr hxr.symm hs hc hxs hxc`. Conclude with `⟨hxg, hxr.trans hr.symm, h1, h2⟩`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `t`. Simplify using `[setQ, Formalism.FourierDecayAlt.PB.Terms.genSet]`.
+
+Introduce `t ht t' ht' hn`. Prove the components needed by the constructor for the conclusion. Introduce `he`. Establish `: t' ∈ gCls Y u u' t` using `he ▸ hrefl t' ht'`. Conclude with `(hrow t t' this).symm`.
+
+Introduce `hr`. Take `⟨hs, hc⟩` from `GlobalTheory.T.same_row_same_coset_scalar_corank_one D X Y u u' t t' (hG t ht) hr hn`. Take `⟨hs', hc'⟩` from `hsym t ht t' ht' hr hs hc`. Conclude with `Set.Subset.antisymm (hsub t' ht' t ht hr.symm hs' hc') (hsub t ht t' ht' hr hs hc)`. Introduce `t ht t' ht' he`.
+
+Establish `: t' ∈ gCls Y u u' t` using `he ▸ hrefl t' ht'`. Conclude with `(hrow t t' this).symm`.
+-/
 theorem genFam : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), (∀ t ∈ (Y.tO u u').genSet, ∀ t' ∈ (Y.tO u u').genSet, (Y.tO u u').rowOf t = (Y.tO u u').rowOf t' → (Y.tO u u').s0 t t' = 1 → (Y.tO u u').scal t t' → (Y.tO u u').s0 t' t = 1 ∧ (Y.tO u u').scal t' t) → (∀ t ∈ (Y.tO u u').genSet, ∀ t' ∈ (Y.tO u u').genSet, ∀ t'' ∈ (Y.tO u u').genSet, (Y.tO u u').rowOf t = (Y.tO u u').rowOf t' → (Y.tO u u').rowOf t' = (Y.tO u u').rowOf t'' → (Y.tO u u').s0 t t' = 1 → (Y.tO u u').scal t t' → (Y.tO u u').s0 t' t'' = 1 → (Y.tO u u').scal t' t'' → (Y.tO u u').s0 t t'' = 1 ∧ (Y.tO u u').scal t t'') → FamQ Y u u' Not (Y.tO u u').genSet (gCls Y u u') := by
   intro D X Y u u' hsym htr
   have hG : ∀ t : TauC Y u u', t ∈ (Y.tO u u').genSet → t.G ≠ 0 := by

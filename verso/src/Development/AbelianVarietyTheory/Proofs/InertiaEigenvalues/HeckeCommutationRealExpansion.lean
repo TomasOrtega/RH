@@ -18,6 +18,11 @@ noncomputable section
 
 namespace GlobalTheory.GoodSS.Heart
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.AevalIntertwine.aeval_intertwine`. Consider the case `exact _root_.GlobalTheory.AevalIntertwine.aeval_intertwine`. Consider the case `(apply _root_.GlobalTheory.AevalIntertwine.aeval_intertwine <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.AevalIntertwine.aeval_intertwine <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.AevalIntertwine.aeval_intertwine <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.AevalIntertwine.aeval_intertwine ..)`.
+-/
 theorem aeval_map_of_comm {K M N : Type} [Field K] [AddCommGroup M] [Module K M] [AddCommGroup N] [Module K N]
     (f : M →ₗ[K] N) (A : Module.End K M) (B : Module.End K N) (h : ∀ x, f (A x) = B (f x)) (p : K[X]) (x : M) :
     f (Polynomial.aeval A p x) = Polynomial.aeval B p (f x) := by
@@ -29,6 +34,11 @@ theorem aeval_map_of_comm {K M N : Type} [Field K] [AddCommGroup M] [Module K M]
   | (intros; apply @_root_.GlobalTheory.AevalIntertwine.aeval_intertwine <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.AevalIntertwine.aeval_intertwine ..)
 
+/- English proof (translation)
+Establish `hr : ∀ x, (A ∘ₗ e) x ∈ LinearMap.range e` using `fun x => by`. Take `⟨x', hx'⟩` from `h x`. Conclude with `⟨x', hx'⟩`. Use `⟨(LinearEquiv.ofInjective e he).symm.toLinearMap ∘ₗ (A ∘ₗ e).codRestrict (LinearMap.range e) hr, fun x => ?_⟩` and prove the remaining obligations. Establish `h1` using `LinearEquiv.ofInjective_apply e (h := he) ((LinearEquiv.ofInjective e he).symm ⟨(A ∘ₗ e) x, hr x⟩)`.
+
+Rewrite `h1` using `[LinearEquiv.apply_symm_apply]`. Conclude with `h1.symm`.
+-/
 theorem exists_lift_end {H X : Type} [AddCommGroup H] [Module ℂ H] [AddCommGroup X] [Module ℂ X]
     (e : H →ₗ[ℂ] X) (he : Function.Injective e) (A : X →ₗ[ℂ] X) (h : ∀ x, ∃ x', e x' = A (e x)) :
     ∃ S : Module.End ℂ H, ∀ x, e (S x) = A (e x) := by
@@ -44,9 +54,17 @@ theorem exists_lift_end {H X : Type} [AddCommGroup H] [Module ℂ H] [AddCommGro
 
 variable {D : D7} (S : RatDat D.ntw)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem inWL_tmul (j : ℕ) (c : ↥D.LL0) (f : FmK S j) :
     inWL S j (c ⊗ₜ[S.Ks] f) = (c : D.what₂.LL) • (show ↥(S.A j).WK from f).1 := rfl
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a f`. Rewrite using `[TensorProduct.smul_tmul']`. Use `show ((c • a : ↥D.LL0) : D.what₂.LL) • (_ : S.WL j) = (c : D.what₂.LL) • (((a : ↥D.LL0) : D.what₂.LL) • (_ : S.WL j))`.
+
+Rewrite using `[smul_eq_mul, IntermediateField.coe_mul, mul_smul]`. Consider the case `add x y hx hy => rw [smul_add, map_add, map_add, hx, hy, smul_add]`.
+-/
 theorem inWL_smul (j : ℕ) (c : ↥D.LL0) (z : ↥D.LL0 ⊗[S.Ks] FmK S j) :
     inWL S j (c • z) = (c : D.what₂.LL) • inWL S j z := by
   induction z using TensorProduct.induction_on with
@@ -57,6 +75,11 @@ theorem inWL_smul (j : ℕ) (c : ↥D.LL0) (z : ↥D.LL0 ⊗[S.Ks] FmK S j) :
     rw [smul_eq_mul, IntermediateField.coe_mul, mul_smul]
   | add x y hx hy => rw [smul_add, map_add, map_add, hx, hy, smul_add]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x`. Rewrite using `[LinearMap.baseChange_tmul, inWL_tmul, inWL_tmul, LinearMap.map_smul]`. Both sides reduce to the same expression.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem inWL_opK (j : ℕ) (f : Module.End D.what₂.LL (S.WL j)) (hf : ∀ x ∈ (S.A j).WK, f x ∈ (S.A j).WK)
     (z : ↥D.LL0 ⊗[S.Ks] FmK S j) :
     inWL S j (LinearMap.baseChange ↥D.LL0 (opK S j f hf) z) = f (inWL S j z) := by
@@ -67,6 +90,9 @@ theorem inWL_opK (j : ℕ) (f : Module.End D.what₂.LL (S.WL j)) (hf : ∀ x �
     rfl
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Unfold `goodProjectorBaseChangeForms`. Use `finsum_eq_sum_of_support_subset _ fun g hg => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hgs`. Conclude with `hg (by simp only [hs g hgs, zero_mul, zero_smul])`.
+-/
 theorem goodProjector_eq_sum (j : ℕ) (hst : RhoStab S j) (hχ : ChiInLL0 S j) (eC : G0g D.nd → ↥D.LL0)
     (s : Finset (G0g D.nd)) (hs : ∀ g, g ∉ s → eC g = 0) :
     goodProjectorBaseChangeForms S j hst hχ eC = ∑ g ∈ s, (eC g * (chiL S j hχ (S.eG.symm g))⁻¹) •
@@ -76,6 +102,9 @@ theorem goodProjector_eq_sum (j : ℕ) (hst : RhoStab S j) (hχ : ChiInLL0 S j) 
   by_contra hgs
   exact hg (by simp only [hs g hgs, zero_mul, zero_smul])
 
+/- English proof (translation)
+Unfold `goodProjW`. Use `finsum_eq_sum_of_support_subset _ fun g hg => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hgs`. Conclude with `hg (by simp only [hs g hgs, IntermediateField.coe_zero, zero_mul, zero_smul])`.
+-/
 theorem goodProjW_eq_sum (j : ℕ) (eC : G0g D.nd → ↥D.LL0)
     (s : Finset (G0g D.nd)) (hs : ∀ g, g ∉ s → eC g = 0) :
     goodProjW S j eC = ∑ g ∈ s, (((eC g : ↥D.LL0) : D.what₂.LL) *
@@ -85,6 +114,11 @@ theorem goodProjW_eq_sum (j : ℕ) (eC : G0g D.nd → ↥D.LL0)
   by_contra hgs
   exact hg (by simp only [hs g hgs, IntermediateField.coe_zero, zero_mul, zero_smul])
 
+/- English proof (translation)
+Rewrite using `[goodProjector_eq_sum S j hst hχ eC s hs, goodProjW_eq_sum S j eC s hs, LinearMap.sum_apply, map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, inWL_smul, LinearMap.smul_apply]`. Establish `h` using `inWL_opK S j ((S.A j).ρ (S.eG.symm g)) (fun x hx => hst (S.eG.symm g) x hx) z`. Express the relevant statement in the definitionally equal form `inWL S j (LinearMap.baseChange ↥D.LL0 (opK S j ((S.A j).ρ (S.eG.symm g)) _) z) = _ at h`.
+
+Use `erw [h]`. Use `congr 1`.
+-/
 theorem inForms_goodProjector (j : ℕ) (hst : RhoStab S j) (hχ : ChiInLL0 S j) (eC : G0g D.nd → ↥D.LL0)
     (s : Finset (G0g D.nd)) (hs : ∀ g, g ∉ s → eC g = 0) (z : ↥D.LL0 ⊗[S.Ks] FmK S j) :
     inWL S j (goodProjectorBaseChangeForms S j hst hχ eC z) = goodProjW S j eC (inWL S j z) := by
@@ -97,6 +131,9 @@ theorem inForms_goodProjector (j : ℕ) (hst : RhoStab S j) (hχ : ChiInLL0 S j)
   erw [h]
   congr 1
 
+/- English proof (translation)
+Establish `hbm : ∀ f g : Module.End S.Ks (FmK S j), LinearMap.baseChange ↥D.LL0 (f * g) = LinearMap.baseChange ↥D.LL0 f * LinearMap.baseChange ↥D.LL0 g` using `fun f g => LinearMap.baseChange_comp g f`. Rewrite using `[goodProjector_eq_sum S j hst hχ eC s hs, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, smul_mul_assoc, ← hbm, ← hbm, hA]`.
+-/
 theorem goodProjector_comm (j : ℕ) (hst : RhoStab S j) (hχ : ChiInLL0 S j) (eC : G0g D.nd → ↥D.LL0)
     (s : Finset (G0g D.nd)) (hs : ∀ g, g ∉ s → eC g = 0) (A : Module.End S.Ks (FmK S j))
     (hA : ∀ g, A * rhoKG S j hst g = rhoKG S j hst g * A) :
@@ -115,6 +152,59 @@ namespace GlobalTheory.GoodSS.Heart
 set_option maxHeartbeats 1600000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ Rl F cG S Y H hG hC hX hR hU hI hS0c hS02 hS0b i hi j h1 h2 b k P hk`. Take `⟨i0, rfl⟩ : ∃ i0 : Fin D.R.m, j = (i0 : ℕ) + 1` from `⟨⟨j - 1, by omega⟩, by simp only; omega⟩`. Take `⟨hk1, hk2, hPs, hP0⟩` from `hk`. Take `⟨P', hPP', hP's, hP'0, hoffP, hoffP', h2P, h2P'⟩` from `GlobalTheory.T.exists_conjugate_splitPlace_off_stableSet D (D.ntw.S0 i) Rl.Sb P (fun P1 P2 h h' => hS0c i P1 P2 h h') (hS02 i) (hS0b i) hPs hP0`. Take `⟨α, α', R, R', hα, hRd, hα', hRd', hxR, hyR, hadj⟩` from `GlobalTheory.T.complexHecke_conjugatePlace_petersson_adjoint Rl F hR i0 k P P' hPs hPP' hoffP hoffP' h2P h2P' hk1 hk2`.
+
+Establish `hkP : HkIdx i k P` using `⟨hk1, hk2, hPs, hP0⟩`. Establish `hkP' : HkIdx i k P'` using `⟨hk1, hk2, hP's, hP'0⟩`. Take `⟨hPQ, hPg⟩` from `GlobalTheory.T.heckeOperatorsRationalForms_commute Rl cG S Y H hG hC i hi ((i0 : ℕ) + 1) h1 h2 b k P k P' hkP hkP'`. Take `⟨-, hQg⟩` from `GlobalTheory.T.heckeOperatorsRationalForms_commute Rl cG S Y H hG hC i hi ((i0 : ℕ) + 1) h1 h2 b k P' k P hkP' hkP`. Use `set s := (D.nexp.eAlg i b).coeff.support with hs`.
+
+Establish `hsupp : ∀ g, g ∉ s → D.nexp.eLL0 g = 0` using `fun g hg => by`. Establish `h0 : (D.nexp.eAlg i b).coeff g = 0` using `Finsupp.notMem_support_iff.1 hg`. Establish `hcoef : (D.nexp.eAlg i b).coeff g = readLL0 S i b (D.nexp.eLL0 g)`. Rewrite using `[D.nexp.eAlg_def]`. Both sides reduce to the same expression.
+
+Rewrite `h0` using `[hcoef]`. Conclude with `(map_eq_zero_iff _ (readLL0 S i b).injective).1 h0`. Use `set σ0 := Formalism.IndefR.Links.sg0 D A3.A with hσ0`. Use `set hst := Y.rho ((i0 : ℕ) + 1) h1 h2 with hhst`. Use `set hχ := Y.chi ((i0 : ℕ) + 1) h1 h2 with hhχ`.
+
+Use `set E := goodProjectorBaseChangeForms S ((i0 : ℕ) + 1) hst hχ D.nexp.eLL0 with hE`. Use `set V := LinearMap.range E with hV`. Use `set Tp := opK S ((i0 : ℕ) + 1) (H.hL ((i0 : ℕ) + 1) k P) (fun x hx => H.hs ((i0 : ℕ) + 1) h1 h2 k P x hx) with hTp`. Use `set Tq := opK S ((i0 : ℕ) + 1) (H.hL ((i0 : ℕ) + 1) k P') (fun x hx => H.hs ((i0 : ℕ) + 1) h1 h2 k P' x hx) with hTq`. Use `set T0 := LinearMap.baseChange ↥D.LL0 Tp with hT0`.
+
+Use `set T0' := LinearMap.baseChange ↥D.LL0 Tq with hT0'`. Establish `hTE : T0 * E = E * T0` using `goodProjector_comm S _ hst hχ _ s hsupp Tp hPg`. Establish `hTE' : T0' * E = E * T0'` using `goodProjector_comm S _ hst hχ _ s hsupp Tq hQg`. Establish `hVT : ∀ z ∈ V, T0 z ∈ V`. Introduce and unpack `_ ⟨y, rfl⟩`.
+
+Conclude with `⟨T0 y, (LinearMap.congr_fun hTE y).symm⟩`. Establish `hVT' : ∀ z ∈ V, T0' z ∈ V`. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `⟨T0' y, (LinearMap.congr_fun hTE' y).symm⟩`. Establish `hbm : ∀ f g : Module.End S.Ks (FmK S ((i0 : ℕ) + 1)), LinearMap.baseChange ↥D.LL0 (f * g) = LinearMap.baseChange ↥D.LL0 f * LinearMap.baseChange ↥D.LL0 g` using `fun f g => LinearMap.baseChange_comp g f`.
+
+Establish `hPQc : T0 * T0' = T0' * T0` using `by rw [hT0, hT0', ← hbm, hPQ, hbm]`. Establish `hfix : ∀ z ∈ V, goodProjW S ((i0 : ℕ) + 1) D.nexp.eLL0 (inWL S ((i0 : ℕ) + 1) z) = inWL S ((i0 : ℕ) + 1) z`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[inForms_goodProjector S _ hst hχ _ s hsupp y, ← Module.End.mul_apply, GlobalTheory.T.good_projector_forms_idempotent D S ((i0 : ℕ) + 1) i]`. Establish `hT0w : ∀ z, inWL S ((i0 : ℕ) + 1) (T0 z) = H.hL ((i0 : ℕ) + 1) k P (inWL S ((i0 : ℕ) + 1) z)` using `fun z => inWL_opK S _ _ _ z`.
+
+Establish `hT0w' : ∀ z, inWL S ((i0 : ℕ) + 1) (T0' z) = H.hL ((i0 : ℕ) + 1) k P' (inWL S ((i0 : ℕ) + 1) z)` using `fun z => inWL_opK S _ _ _ z`. Use `set φ : ↥D.LL0 →+* ℂ := σ0.comp (algebraMap ↥D.LL0 D.what₂.LL) with hφ`. Set `jm : ↥V →ₛₗ[φ] (Rl.HW i0 σ0).H` to `{ toFun := fun z => (Rl.FW i0).j σ0 ((Y.fi i0).e (inWL S ((i0 : ℕ) + 1) z.1)) map_add' := fun z w => by show (Rl.FW i0).j σ0 ((Y.fi i0).e (inWL S ((i0 : ℕ) + 1) (z.1 + w.1))) = _`. Rewrite using `[map_add, map_add, map_add]`. Use the proof step `map_smul' := fun c z => by show (Rl.FW i0).j σ0 ((Y.fi i0).e (inWL S ((i0 : ℕ) + 1) (c • z.1))) = _`.
+
+Rewrite using `[inWL_smul, LinearEquiv.map_smul, LinearMap.map_smulₛₗ]`. Use `rfl }`. Establish `hjm : ∀ z : ↥V, jm z = (Rl.FW i0).j σ0 ((Y.fi i0).e (inWL S ((i0 : ℕ) + 1) z.1))` using `fun _ => rfl`. Establish `he : Function.Injective (Rl.HW i0 σ0).e`. Rewrite using `[← LinearMap.ker_eq_bot, Submodule.eq_bot_iff]`.
+
+Introduce `x hx`. Rewrite `hx` using `[LinearMap.mem_ker]`. Take `⟨y', hy'⟩` from `hyR x`. Establish `h0` using `hadj 0 x x y' (by rw [hx, map_zero, map_zero]) hy'`. Rewrite `h0` using `[inner_zero_left]`.
+
+Conclude with `inner_self_eq_zero.1 h0`. Take `⟨S0, hS0⟩` from `exists_lift_end _ he _ hxR`. Take `⟨S1, hS1⟩` from `exists_lift_end _ he _ hyR`. Use `set c : ℂ := (((Rl.C.mu0 i0).val P : ℂˣ) : ℂ)⁻¹ ^ k * (((Nat.card (Formalism.L2.DIV.kP P) : ℕ) : ℂ) ^ (k * (D.R.nV / 2)))⁻¹ with hc`. Use `set c' : ℂ := (((Rl.C.mu0 i0).val P' : ℂˣ) : ℂ)⁻¹ ^ k * (((Nat.card (Formalism.L2.DIV.kP P') : ℕ) : ℂ) ^ (k * (D.R.nV / 2)))⁻¹ with hc'`.
+
+Establish `hc'0 : c' ≠ 0`. Establish `hq : ((Nat.card (Formalism.L2.DIV.kP P') : ℕ) : ℂ) ≠ 0` using `by haveI := Ideal.finiteQuotientOfFreeOfNeBot P'.asIdeal P'.ne_bot`. Conclude with `Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Conclude with `mul_ne_zero (pow_ne_zero _ (inv_ne_zero (Units.ne_zero _))) (inv_ne_zero (pow_ne_zero _ hq))`. Use `set T : Module.End ↥D.LL0 ↥V := T0.restrict hVT with hT`.
+
+Use `set T' : Module.End ↥D.LL0 ↥V := T0'.restrict hVT' with hT'`. Establish `htie : ∀ z : ↥V, (Rl.HW i0 σ0).e (jm (T z)) = c • Formalism.IndefR.Mult.heckeOn (Rl.MW i0 σ0) R ((Rl.HW i0 σ0).e (jm z))`. Introduce `z`. Establish `h` using `hX.tie i0 k P hPs hoffP ⟨i, hP0⟩ h2P hk2 α R hα hRd (inWL S ((i0 : ℕ) + 1) z.1) (hfix z.1 z.2)`. Rewrite using `[hjm, hjm]`.
+
+Use `show (Rl.HW i0 σ0).e ((Rl.FW i0).j σ0 ((Y.fi i0).e (inWL S ((i0 : ℕ) + 1) (T0 z.1)))) = _`. Rewrite using `[hT0w]`. Conclude with `h`. Establish `htie' : ∀ z : ↥V, (Rl.HW i0 σ0).e (jm (T' z)) = c' • Formalism.IndefR.Mult.heckeOn (Rl.MW i0 σ0) R' ((Rl.HW i0 σ0).e (jm z))`. Introduce `z`.
+
+Establish `h` using `hX.tie i0 k P' hP's hoffP' ⟨i, hP'0⟩ h2P' hk2 α' R' hα' hRd' (inWL S ((i0 : ℕ) + 1) z.1) (hfix z.1 z.2)`. Rewrite using `[hjm, hjm]`. Use `show (Rl.HW i0 σ0).e ((Rl.FW i0).j σ0 ((Y.fi i0).e (inWL S ((i0 : ℕ) + 1) (T0' z.1)))) = _`. Rewrite using `[hT0w']`. Conclude with `h`.
+
+Use `set SS : Module.End ℂ (Rl.HW i0 σ0).H := c • S0 with hSS`. Use `set SS' : Module.End ℂ (Rl.HW i0 σ0).H := (starRingEnd ℂ c) • S1 with hSS'`. Establish `hSj : ∀ z : ↥V, SS (jm z) = jm (T z)`. Introduce `z`. Apply `he` to reduce the goal to its premises.
+
+Rewrite using `[htie z, hSS, LinearMap.smul_apply, map_smul, hS0]`. Establish `hS'j : ∀ z : ↥V, SS' (jm z) = (starRingEnd ℂ c * c'⁻¹) • jm (T' z)`. Introduce `z`. Establish `h2 : jm (T' z) = c' • S1 (jm z)` using `he (by rw [htie' z, map_smul, hS1])`. Rewrite using `[hSS', LinearMap.smul_apply, h2, smul_smul, mul_assoc, inv_mul_cancel₀ hc'0, mul_one]`.
+
+Establish `hTT : ∀ z : ↥V, T (T' z) = T' (T z)` using `fun z => Subtype.ext (LinearMap.congr_fun hPQc z.1)`. Take `⟨nb, bs, hbs, -, hspan, hbLL, -⟩` from `GlobalTheory.T.isKsForm_of_algebraicFormsIso _ _ (Y.fi i0) (hI i0).1`. Use `haveI : IsScalarTower S.Ks ↥D.LL0 D.what₂.LL := IsScalarTower.of_algebraMap_eq fun x => (S.kKs_spec x).symm`. Use `haveI : Module.Finite S.Ks (FmK S ((i0 : ℕ) + 1)) := by`. Establish `h` using `FiniteDimensional.span_of_finite S.Ks (Set.finite_range bs)`.
+
+Rewrite `h` using `[hspan]`. Conclude with `h`. Use `haveI : FiniteDimensional ↥D.LL0 ↥V := inferInstance`. Establish `hind : ∀ (n : ℕ) (x : Fin n → ↥V), LinearIndependent ↥D.LL0 x → LinearIndependent ℂ (fun a => jm (x a))`. Introduce `n x hx`.
+
+Establish `hx1 : LinearIndependent ↥D.LL0 (fun a => (x a : ↥D.LL0 ⊗[S.Ks] FmK S ((i0 : ℕ) + 1)))` using `hx.map' V.subtype (Submodule.ker_subtype V)`. Establish `hx2 : LinearIndependent D.what₂.LL (fun a => inWL S ((i0 : ℕ) + 1) (x a).1)` using `GlobalTheory.T.linearIndependent_forms_intermediate_field S.Ks ↥D.LL0 D.what₂.LL (S.WL ((i0 : ℕ) + 1)) (S.A ((i0 : ℕ) + 1)).WK nb bs hbs hspan hbLL (inWL S ((i0 : ℕ) + 1)) (fun _ _ => rfl) n (fun a => (x a).1) hx1`. Establish `hx3 : LinearIndependent D.what₂.LL (fun a => (Y.fi i0).e (inWL S ((i0 : ℕ) + 1) (x a).1))` using `hx2.map' (Y.fi i0).e.toLinearMap (LinearEquiv.ker _)`. Conclude with `(hU i0 σ0).1 n _ hx3`. Establish `hkeep : ∀ u ∈ Submodule.span ℂ (Set.range jm), SS' u ∈ Submodule.span ℂ (Set.range jm)`.
+
+Introduce `u hu`. Establish `hle : Submodule.span ℂ (Set.range jm) ≤ (Submodule.span ℂ (Set.range jm)).comap SS'`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨z, rfl⟩`. Use `show SS' (jm z) ∈ Submodule.span ℂ (Set.range jm)`.
+
+Rewrite using `[hS'j]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨T' z, rfl⟩)`. Conclude with `hle hu`. Establish `hcomm : ∀ u ∈ Submodule.span ℂ (Set.range jm), SS (SS' u) = SS' (SS u)`. Introduce `u hu`.
+
+Establish `hle : Submodule.span ℂ (Set.range jm) ≤ LinearMap.eqLocus (SS * SS') (SS' * SS)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨z, rfl⟩`. Use `show SS (SS' (jm z)) = SS' (SS (jm z))`. Rewrite using `[hS'j, map_smul, hSj, hSj, hS'j, hTT]`.
+
+Conclude with `hle hu`. Establish `hadj' : ∀ u ∈ Submodule.span ℂ (Set.range jm), ∀ v ∈ Submodule.span ℂ (Set.range jm), inner ℂ (SS u) v = inner ℂ u (SS' v)`. Introduce `u _ v _`. Rewrite using `[hSS, hSS', LinearMap.smul_apply, LinearMap.smul_apply, inner_smul_left, inner_smul_right, hadj u v (S0 u) (S1 v) (hS0 u) (hS1 v)]`. Establish `hsep` using `GlobalTheory.T.minpoly_separable_of_complex_normal_reading ↥D.LL0 ↥V (Rl.HW i0 σ0).H φ jm T SS SS' hind (fun z => (hSj z).symm) hkeep hadj' hcomm`.
+
+Use `⟨minpoly ↥D.LL0 T, hsep, fun z hz => ?_⟩` and prove the remaining obligations. Establish `h` using `aeval_map_of_comm V.subtype T T0 (fun _ => rfl) (minpoly ↥D.LL0 T) ⟨z, hz⟩`. Rewrite `h` using `[minpoly.aeval, LinearMap.zero_apply, map_zero]`. Conclude with `h.symm`.
+-/
 theorem hL_separable_good : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type}
     {A3 : Formalism.L2.DIV.FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks]
     [Algebra Ks D.what₂.LL] (Rl : Formalism.IndefR.Links.RealDat3 D A3 Ks) (F : Formalism.IndefR.Links.Face3 D A3)

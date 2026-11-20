@@ -11,6 +11,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 namespace GlobalTheory.RowVal
 
+/- English proof (translation)
+Introduce `D T L sc G t B j hj x g ⟨e, he, hs, hg⟩`. Use `⟨e, he, ?_, fun w => by rw [map_inv, map_inv, hg w]⟩` and prove the remaining obligations. Introduce `i k`. Use `set c := e + Formalism.L2.Theta.cA D e`. Establish `hinv : Formalism.L2.Theta.mt _ x⁻¹ * Formalism.L2.Theta.mt _ x = 1`.
+
+Simplify using `[Formalism.L2.Theta.mt, map_inv]`. Establish `key : Formalism.L2.Theta.mt _ x⁻¹ - 1 = -(Formalism.L2.Theta.mt _ x⁻¹ * (Formalism.L2.Theta.mt _ x - 1))`. Rewrite using `[Matrix.mul_sub, hinv, Matrix.mul_one]`. Normalize the expressions using the abelian group laws. Rewrite using `[key, Matrix.neg_apply, Matrix.mul_apply, mul_neg, Finset.mul_sum]`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, hs l k]`.
+-/
 theorem hasLoc_inv : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (t : T) (B : Frames G) {j : ℕ}
     (hj : j ≤ D.R.m) (x : GA D (G.V (.grid D.R.m j)))
     (g : ∀ w : locPl G t, GL (Fin ((locGrid G t w.1).rank (D.R.m, j))) (Kw w.1)), HasLoc t B hj x g → HasLoc t B hj x⁻¹ (fun w => (g w)⁻¹) := by

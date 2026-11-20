@@ -21,6 +21,15 @@ noncomputable section
 
 namespace GlobalTheory.ArchLim
 
+/- English proof (translation)
+Introduce `D A N j S κ s σ _ m α Λ sg t hB Y q jm hq n`. Establish `hol` using `fun ch => GlobalTheory.T.toroidal_chart_boundary_regular s.T.Z σ Y q jm hq n ch`. Establish `sm` using `fun ch => GlobalTheory.T.boundary_setting_height_lower D A N j S κ s σ m α Λ sg t hB Y q jm hq n ch (hol ch)`. Establish `he` using `fun ch => GlobalTheory.T.boundary_setting_height_upper D A N j S κ s σ m α Λ sg t hB Y q jm hq n ch (hol ch) (sm ch)`. Use `⟨fun ch ch' y hy hy' => ?_, fun ch => GlobalTheory.T.boundary_setting_height_comparison D A N j S κ s σ m α Λ sg t hB Y q jm hq n ch (sm ch) (he ch)⟩` and prove the remaining obligations.
+
+Unfold `potDens`. Use `split_ifs with h`. Take `⟨O, hO, hyO, -, hsm⟩` from `sm ch' (up jm hq σ y) y hy' h (α.mem_U _)`. Establish `hd : ContDiffAt ℝ 2 (fun v => (poincarePot α Λ sg t).φ (up jm hq σ y) (up jm hq σ (ch'.e.symm v))) (ch'.e y)` using `(hsm.contDiffAt (hO.mem_nhds hyO)).of_le (by norm_cast)`. Establish `ho` using `ChartGlue.isOpen_over ch.e ch'.e.open_source`.
+
+Establish `hm` using `ChartGlue.mem_over ch.e hy hy'`. Establish `e : (fun v => ((poincarePot α Λ sg t).φ (up jm hq σ y) (up jm hq σ (ch.e.symm v)) : ℂ)) =ᶠ[𝓝 (ch.e y)] (fun v => ((poincarePot α Λ sg t).φ (up jm hq σ y) (up jm hq σ (ch'.e.symm v)) : ℂ)) ∘ ch'.e ∘ ch.e.symm` using `eventually_of_mem (ho.mem_nhds hm) fun v hv => by`. Simplify using `only [Function.comp_apply, ch'.e.left_inv hv.2]`. Establish `e₂ : (ch'.e ∘ ch.e.symm) (ch.e y) = ch'.e y` using `congrArg ch'.e (ch.e.left_inv hy)`. Rewrite using `[potMat, potMat, ReciprocityTheory.L2DbarEstimates.Y.cmpb_cHess_congr e, ReciprocityTheory.L2DbarEstimates.Y.cmpa_det_comp ho hm (ch.holo_trans ch') (e₂ ▸ Complex.ofRealCLM.contDiff.contDiffAt.comp _ hd), e₂, Complex.re_ofReal_mul, ChartGlue.transDet]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+-/
 theorem isMDens_potDens_poincarePot : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (σ : κ.c.F →+* ℂ) [CompactSpace (CxPts (genStr s.T.Z) σ)] (m : ℕ) (α : LocPot (CxPts (genStr s.T.Z) σ)) (Λ : Fin m → LocPot (CxPts (genStr s.T.Z) σ)) (sg : Fin m → CxPts (genStr s.T.Z) σ → CxPts (genStr s.T.Z) σ → ℂ) (t : ℝ), IsBoundarySetting (manifold s.T.Z σ).finAtlas α Λ sg t → ∀ (Y : Scheme.{0}) (q : Y ⟶ Sp _) (jm : Y ⟶ s.T.Z.X) (hq : jm ≫ s.T.Z.s = q) (n : ℕ), IsMDens (D := n) (potDens (poincarePot α Λ sg t) (boundary sg)ᶜ (up jm hq σ)) := by
   intro D A N j S κ s σ _ m α Λ sg t hB Y q jm hq n
   have hol := fun ch => GlobalTheory.T.toroidal_chart_boundary_regular s.T.Z σ Y q jm hq n ch

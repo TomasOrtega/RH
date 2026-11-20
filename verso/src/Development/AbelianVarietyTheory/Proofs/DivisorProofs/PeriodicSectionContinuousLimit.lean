@@ -6,6 +6,11 @@ open Set
 
 namespace GlobalTheory.TorusDegree
 
+/- English proof (translation)
+Set `p : ℝ × ℝ → ℝ × ℝ` to `fun v => ((projIcc (0 : ℝ) 1 zero_le_one v.1 : ℝ), (projIcc (0 : ℝ) 1 zero_le_one v.2 : ℝ))`. Establish `hp : Continuous p` using `(continuous_subtype_val.comp (continuous_projIcc.comp continuous_fst)).prodMk (continuous_subtype_val.comp (continuous_projIcc.comp continuous_snd))`. Establish `hm : ∀ v, p v ∈ Icc (0 : ℝ) 1 ×ˢ Icc (0 : ℝ) 1` using `fun v => ⟨(projIcc (0 : ℝ) 1 zero_le_one v.1).2, (projIcc (0 : ℝ) 1 zero_le_one v.2).2⟩`. Establish `hc : Continuous (fun v => f (p v))` using `hf.comp_continuous hp hm`. Take `⟨F, ⟨-, hF⟩, -⟩` from `Complex.isCoveringMapOn_exp.existsUnique_continuousMap_lifts (⟨fun v => f (p v), hc⟩ : C(ℝ × ℝ, ℂ)) (a₀ := 0) (Complex.exp_log (h0 _ (hm 0))) (fun v => h0 _ (hm v))`.
+
+Use `⟨F, F.continuous, fun v hv => ?_⟩` and prove the remaining obligations. Establish `h1 : Complex.exp (F v) = f (p v)` using `congrFun hF v`. Establish `h2 : p v = v`. Simplify using `only [p, projIcc_of_mem _ hv.1, projIcc_of_mem _ hv.2]`. Rewrite using `[h1, h2]`.
+-/
 theorem exists_log_on_square (f : ℝ × ℝ → ℂ)
     (hf : ContinuousOn f (Icc (0 : ℝ) 1 ×ˢ Icc (0 : ℝ) 1))
     (h0 : ∀ v ∈ Icc (0 : ℝ) 1 ×ˢ Icc (0 : ℝ) 1, f v ≠ 0) :
@@ -28,6 +33,15 @@ theorem exists_log_on_square (f : ℝ × ℝ → ℂ)
     simp only [p, projIcc_of_mem _ hv.1, projIcc_of_mem _ hv.2]
   rw [h1, h2]
 
+/- English proof (translation)
+Use `GlobalTheory.T.log_of_exp_continuity B b₀ V (fun q => A (q.1, p₀ q.2) + γ q.1 (p₀ q.2) - γ q.1 (p₁ q.2)) hV ?_ ?_` and prove the remaining obligations. Use `continuousOn_of_locally_continuousOn fun q hq => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `hcov (q.1, p₀ q.2)`. Establish `c₀ : Continuous (fun q : B × ℝ => (q.1, p₀ q.2))` using `continuous_fst.prodMk (hp₀.comp continuous_snd)`. Establish `c₁ : Continuous (fun q : B × ℝ => (q.1, p₁ q.2))` using `continuous_fst.prodMk (hp₁.comp continuous_snd)`.
+
+Use `⟨(fun q : B × ℝ => (q.1, p₀ q.2)) ⁻¹' O i, (hO i).preimage c₀, hi, ?_⟩` and prove the remaining obligations. Establish `m₀ : MapsTo (fun q : B × ℝ => (q.1, p₀ q.2)) (V ×ˢ Icc (0 : ℝ) 1 ∩ (fun q : B × ℝ => (q.1, p₀ q.2)) ⁻¹' O i) (O i ∩ V ×ˢ K)` using `fun z hz => ⟨hz.2, hz.1.1, hm₀ _ hz.1.2⟩`. Establish `m₁ : MapsTo (fun q : B × ℝ => (q.1, p₁ q.2)) (V ×ˢ Icc (0 : ℝ) 1 ∩ (fun q : B × ℝ => (q.1, p₀ q.2)) ⁻¹' O i) (O i ∩ V ×ˢ K)` using `fun z hz => ⟨hper i _ _ hz.2, hz.1.1, hm₁ _ hz.1.2⟩`. Establish `h` using `((hr i).comp c₀.continuousOn m₀).div ((hr i).comp c₁.continuousOn m₁) (fun z hz => mul_ne_zero (hs0 i _ (m₁ hz).1) (hr0 _ (m₁ hz).2))`. Use `h.congr fun z hz => ?_` and prove the remaining obligations.
+
+Establish `e₀` using `hγ z.1 hz.1.1 _ (hm₀ _ hz.1.2)`. Establish `e₁` using `hγ z.1 hz.1.1 _ (hm₁ _ hz.1.2)`. Establish `e₂` using `hco i z.1 z.2 hz.2`. Establish `n₁ : s i (z.1, p₁ z.2) ≠ 0` using `hs0 i _ (m₁ hz).1`. Establish `n₂ : r (z.1, p₁ z.2) ≠ 0` using `hr0 _ (m₁ hz).2`.
+
+Simplify using `only [Function.comp, Pi.div_apply]`. Rewrite using `[Complex.exp_sub, Complex.exp_add, e₀, e₁, e₂]`. Clear the denominators using the available nonvanishing facts. Introduce `b hb`. Conclude with `((((hA b).comp hp₀).add ((hγc b hb).comp hp₀)).sub ((hγc b hb).comp hp₁)).continuousOn`.
+-/
 theorem continuousAt_side {B : Type} [TopologicalSpace B] (b₀ : B) {J : Type}
     (O : J → Set (B × ℝ × ℝ)) (s : J → B × ℝ × ℝ → ℂ) (K : Set (ℝ × ℝ)) (V : Set B)
     (hV : V ∈ nhds b₀) (r : B × ℝ × ℝ → ℂ) (hr0 : ∀ q ∈ V ×ˢ K, r q ≠ 0)
@@ -70,6 +84,13 @@ theorem continuousAt_side {B : Type} [TopologicalSpace B] (b₀ : B) {J : Type}
   · intro b hb
     exact ((((hA b).comp hp₀).add ((hγc b hb).comp hp₀)).sub ((hγc b hb).comp hp₁)).continuousOn
 
+/- English proof (translation)
+Establish `h` using `Metric.continuousAt_iff'.1 hn 1 one_pos`. Use `filter_upwards [h] with b hb`. Establish `he : Complex.exp (n b - n b₀) = 1` using `by rw [Complex.exp_sub, h1, h1, div_one]`. Take `⟨k, hk⟩` from `Complex.exp_eq_one_iff.1 he`. Rewrite `hb` using `[dist_eq_norm, hk]`.
+
+Establish `hk0 : k = 0`. Assume the negation of the conclusion as `hne`. Establish `h1k : (1 : ℝ) ≤ |(k : ℝ)|` using `by exact_mod_cast Int.one_le_abs hne`. Establish `: ‖(k : ℂ) * (2 * Real.pi * Complex.I)‖ = |(k : ℝ)| * (2 * Real.pi)`. Simplify using `[abs_of_pos Real.pi_pos]`.
+
+Rewrite `hb` using `[this]`. Use polynomial arithmetic with `[Real.pi_gt_three]`. Rewrite `hk` using `[hk0]`. Simplify `hk` using `[sub_eq_zero]`.
+-/
 theorem eventually_eq_of_exp_eq_one {B : Type} [TopologicalSpace B] (b₀ : B) (n : B → ℂ)
     (hn : ContinuousAt n b₀) (h1 : ∀ b, Complex.exp (n b) = 1) :
     ∀ᶠ b in nhds b₀, n b = n b₀ := by
@@ -88,6 +109,27 @@ theorem eventually_eq_of_exp_eq_one {B : Type} [TopologicalSpace B] (b₀ : B) (
   rw [hk0] at hk
   simpa [sub_eq_zero] using hk
 
+/- English proof (translation)
+Introduce `B _ b₀ J O s α β hO hcov hper hs0 hsc hsq hαβ hco`. Take `⟨V, hV, r, hr0, hr⟩` from `GlobalTheory.T.nonvanishing_section_quotient_limit B b₀ J O s (Icc (0 : ℝ) 1 ×ˢ Icc (0 : ℝ) 1) (isCompact_Icc.prod isCompact_Icc) hO hcov hs0 (fun i => hsc i b₀) hsq`. Establish `hlog : ∀ b, ∃ g : ℝ × ℝ → ℂ, b ∈ V → Continuous g ∧ ∀ v ∈ Icc (0 : ℝ) 1 ×ˢ Icc (0 : ℝ) 1, Complex.exp (g v) = r (b, v)`. Introduce `b`. Distinguish the cases in `hb : b ∈ V`.
+
+Use `swap`. Conclude with `⟨0, fun h => absurd h hb⟩`. Establish `hc : ContinuousOn (fun v => r (b, v)) (Icc (0 : ℝ) 1 ×ˢ Icc (0 : ℝ) 1)`. Use `continuousOn_of_locally_continuousOn fun v hv => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `hcov (b, v)`.
+
+Establish `c₀ : Continuous (fun v : ℝ × ℝ => (b, v))` using `continuous_const.prodMk continuous_id`. Use `⟨{v | (b, v) ∈ O i}, (hO i).preimage c₀, hi, ?_⟩` and prove the remaining obligations. Establish `m₀ : MapsTo (fun v : ℝ × ℝ => (b, v)) (Icc (0 : ℝ) 1 ×ˢ Icc (0 : ℝ) 1 ∩ {v | (b, v) ∈ O i}) (O i ∩ V ×ˢ (Icc (0 : ℝ) 1 ×ˢ Icc (0 : ℝ) 1))` using `fun z hz => ⟨hz.2, hb, hz.1⟩`. Establish `h` using `((hr i).comp c₀.continuousOn m₀).div ((hsc i b).mono inter_subset_right) (fun z hz => hs0 i _ hz.2)`. Use `h.congr fun z hz => ?_` and prove the remaining obligations.
+
+Establish `n₁ : s i (b, z) ≠ 0` using `hs0 i _ hz.2`. Simplify using `only [Function.comp, Pi.div_apply]`. Clear the denominators using the available nonvanishing facts. Take `⟨g, hg⟩` from `exists_log_on_square _ hc (fun v hv => hr0 (b, v) ⟨hb, hv⟩)`. Conclude with `⟨g, fun _ => hg⟩`.
+
+Use `choose γ hγ using hlog`. Establish `h0 : (0 : ℝ) ∈ Icc (0 : ℝ) 1` using `⟨le_rfl, zero_le_one⟩`. Establish `h1 : (1 : ℝ) ∈ Icc (0 : ℝ) 1` using `⟨zero_le_one, le_rfl⟩`. Establish `ha` using `continuousAt_side b₀ O s _ V hV r hr0 hr hO hcov hs0 γ (fun b hb => (hγ b hb).1) (fun b hb => (hγ b hb).2) (fun t => (0, t)) (fun t => (1, t)) (by fun_prop) (by fun_prop) (fun t ht => ⟨h0, ht⟩) (fun t ht => ⟨h1, ht⟩) α (fun b => (hαβ b).1) (fun i b t h => by simpa using (hper i b …`. Establish `hb` using `continuousAt_side b₀ O s _ V hV r hr0 hr hO hcov hs0 γ (fun b hb => (hγ b hb).1) (fun b hb => (hγ b hb).2) (fun t => (t, 0)) (fun t => (t, 1)) (by fun_prop) (by fun_prop) (fun t ht => ⟨ht, h0⟩) (fun t ht => ⟨ht, h1⟩) β (fun b => (hαβ b).2) (fun i b t h => by simpa using (hper i b …`.
+
+Use `eventually_eq_of_exp_eq_one b₀ (fun b => α (b, 0, 1) - α (b, 0, 0) - (β (b, 1, 0) - β (b, 0, 0))) ?_ ?_` and prove the remaining obligations. Use `ha.sub hb using 2 with b` and compare the differences between its conclusion and the goal. Simplify using `only [Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree. Introduce `b`.
+
+Take `⟨i, hi⟩` from `hcov (b, 0, 0)`. Establish `h10 : (b, (1 : ℝ), (0 : ℝ)) ∈ O i` using `by simpa using (hper i b 0 0).1.2 hi`. Establish `h01 : (b, (0 : ℝ), (1 : ℝ)) ∈ O i` using `by simpa using (hper i b 0 0).2.2 hi`. Establish `h11 : (b, (1 : ℝ), (1 : ℝ)) ∈ O i` using `by simpa using (hper i b 0 1).1.2 h01`. Establish `e₁` using `(hco i b 0 0 hi).1`.
+
+Establish `e₂` using `(hco i b 0 0 hi).2`. Establish `e₃` using `(hco i b 0 1 h01).1`. Establish `e₄` using `(hco i b 1 0 h10).2`. Simplify using `only [zero_add] at e₁ e₂ e₃ e₄`. Establish `n₁` using `hs0 i _ h11`.
+
+Establish `key : Complex.exp (α (b, 0, 0)) * Complex.exp (β (b, 1, 0)) = Complex.exp (β (b, 0, 0)) * Complex.exp (α (b, 0, 1))`. Apply `mul_right_cancel₀ n₁` to reduce the goal to its premises. Rewrite using `[mul_assoc, ← e₄, ← e₁, mul_assoc, ← e₃, ← e₂]`. Simplify using `only [Complex.exp_sub]`. Use `Complex.exp_ne_zero (α (b, 0, 0))` as an intermediate fact.
+
+Use `Complex.exp_ne_zero (β (b, 1, 0))` as an intermediate fact. Use `Complex.exp_ne_zero (β (b, 0, 0))` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Take the linear combination `-key`.
+-/
 theorem degree_locally_constant : ∀ (B : Type) [TopologicalSpace B] (b₀ : B) (J : Type) (O : J → Set (B × ℝ × ℝ)) (s : J → B × ℝ × ℝ → ℂ) (α β : B × ℝ × ℝ → ℂ), (∀ i, IsOpen (O i)) → (∀ q, ∃ i, q ∈ O i) → (∀ i b x y, ((b, x + 1, y) ∈ O i ↔ (b, x, y) ∈ O i) ∧ ((b, x, y + 1) ∈ O i ↔ (b, x, y) ∈ O i)) → (∀ i, ∀ q ∈ O i, s i q ≠ 0) → (∀ i b, ContinuousOn (fun v : ℝ × ℝ => s i (b, v)) {v | (b, v) ∈ O i}) → (∀ i j, ContinuousOn (fun q => s i q / s j q) (O i ∩ O j)) → (∀ b, Continuous (fun v : ℝ × ℝ => α (b, v)) ∧ Continuous (fun v : ℝ × ℝ => β (b, v))) → (∀ i b x y, (b, x, y) ∈ O i → s i (b, x, y) = Complex.exp (α (b, x, y)) * s i (b, x + 1, y) ∧ s i (b, x, y) = Complex.exp (β (b, x, y)) * s i (b, x, y + 1)) → ∀ᶠ b in nhds b₀, α (b, 0, 1) - α (b, 0, 0) - (β (b, 1, 0) - β (b, 0, 0)) = α (b₀, 0, 1) - α (b₀, 0, 0) - (β (b₀, 1, 0) - β (b₀, 0, 0)) := by
   intro B _ b₀ J O s α β hO hcov hper hs0 hsc hsq hαβ hco
   obtain ⟨V, hV, r, hr0, hr⟩ := GlobalTheory.T.nonvanishing_section_quotient_limit B b₀ J O s (Icc (0 : ℝ) 1 ×ˢ Icc (0 : ℝ) 1)

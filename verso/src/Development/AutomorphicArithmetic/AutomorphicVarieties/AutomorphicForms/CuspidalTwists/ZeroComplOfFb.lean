@@ -13,6 +13,21 @@ namespace UpperTheory.V.TR.SS
 
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F] {a : ℕ}
 
+/- English proof (translation)
+Take `⟨e, he, he1, hL⟩` from `hlie`. Take `⟨c, hc, hK⟩` from `hcpt`. Establish `hle : cuspForms F a ≤ Sm F a` using `fun f hf => (hof f hf).1`. Set `j : cuspForms F a →ₗ[ℂ] Sm F a` to `Submodule.inclusion hle`. Establish `hj : Function.Injective j` using `Submodule.inclusion_injective _`.
+
+Establish `a1 : ∀ X ψ, act (.lie X) (j ψ) = j ((gkModuleCusp F a).ρ (e X) ψ)` using `fun X ψ => Subtype.ext (hL X (j ψ) ψ.2.1.isSmooth.1)`. Establish `a2 : ∀ k ψ, act (.cpt k) (j ψ) = j ((gkModuleCusp F a).σ (c k) ψ)` using `fun k ψ => Subtype.ext (funext fun g => congrArg (fun x => ψ.1 (g * x)) (hK k))`. Establish `a3 : ∀ k ψ, act (.fin k) (j ψ) = j (finRepCusp F a k ψ)` using `fun k ψ => Subtype.ext (funext fun g => congrArg (fun x => ψ.1 (g * x)) (hfin k))`. Establish `hmap : ∀ W : Submodule ℂ (cuspForms F a), (∀ X, ∀ φ ∈ W, (gkModuleCusp F a).ρ X φ ∈ W) → (∀ k, ∀ φ ∈ W, (gkModuleCusp F a).σ k φ ∈ W) → (∀ g, ∀ φ ∈ W, finRepCusp F a g φ ∈ W) → IsStable (W.map j)`. Introduce and unpack `W h1 h2 h3 o _ ⟨ψ, hψ, rfl⟩`.
+
+Consider the cases of `o with`. Consider the case `fin k => exact ⟨_, h3 k ψ hψ, (a3 k ψ).symm⟩`. Consider the case `cpt k => exact ⟨_, h2 _ ψ hψ, (a2 k ψ).symm⟩`. Consider the case `lie X => exact ⟨_, h1 _ ψ hψ, (a1 X ψ).symm⟩`. Use `⟨(centralCuspForms F a).map j, ?_, fun φ h1 h2 => ⟨⟨φ.1, hto φ h1⟩, fun s x => ?_, rfl⟩, hmap _ (fun X _ h => ρ_mem_centralCuspForms X h) (fun k _ h => σ_mem_centralCuspForms k h) fun g _ h => finRepCusp_mem_centralCuspForms g h, fun U hU hs => ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨ψ, -, rfl⟩`. Conclude with `(hof ψ.1 ψ.2).2`. Establish `h3 : (gkModuleCusp F a).ρ (e (oneL F a)) ⟨φ.1, hto φ h1⟩ = 0` using `hj ((a1 _ _).symm.trans (h2.trans (map_zero j).symm))`. Establish `h4 : UnitaryAdmissible.centralZ F a = UnitaryAdmissible.centralExp F a • e (oneL F a)` using `Subtype.ext (by`. Rewrite using `[UnitaryAdmissible.coe_centralZ, Algebra.algebraMap_eq_smul_one, ← he1]`.
+
+Use the proof step `rfl)`. Establish `h5 : lieActionCusp F a (UnitaryAdmissible.centralZ F a) ⟨φ.1, hto φ h1⟩ = (0 : ℂ) • ⟨φ.1, hto φ h1⟩`. Rewrite using `[h4, map_smul, zero_smul, LinearMap.smul_apply]`. Conclude with `(congrArg _ h3).trans (smul_zero _)`. Establish `h6` using `UnitaryAdmissible.apply_mul_centralSection h5 x s`.
+
+Rewrite using `[Reduction.centralSection_mul_comm, h6]`. Simplify using the standard rewrite rules. Establish `hU' : U ≤ LinearMap.range j` using `hU.trans LinearMap.map_le_range`. Take `⟨D, d1, d2, d3, d4, d5, d6⟩` from `exists_compl_centralCuspForms (U.comap j) ((Submodule.comap_mono hU).trans (Submodule.comap_map_eq_of_injective hj _).le) (fun X ψ h => by obtain ⟨X, rfl⟩ := he X; exact show j _ ∈ U from a1 X ψ ▸ hs _ _ h) (fun k ψ h => by obtain ⟨k, rfl⟩ := hc k; exact show j _ ∈ U from a2 k ψ …`. Establish `hUe : (U.comap j).map j = U` using `Submodule.map_comap_eq_self hU'`.
+
+Use `⟨D.map j, Submodule.map_mono d1, hmap D d2 d3 d4, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hUe, ← Submodule.map_inf j hj, d5, Submodule.map_bot]`. Rewrite using `[← hUe, ← Submodule.map_sup, d6]`.
+-/
 theorem zeroCompl_of (hto : ∀ φ : Sm F a, IsCuspForm φ → φ.1 ∈ cuspForms F a)
     (hof : ∀ f ∈ cuspForms F a, ∃ h : f ∈ Sm F a, IsCuspForm ⟨f, h⟩)
     (hlie : ∃ e : Lie F a → (isExpLieAlgebra F a).lieSubalgebra, Function.Surjective e ∧
@@ -67,6 +82,9 @@ theorem zeroCompl_of (hto : ∀ φ : Sm F a, IsCuspForm φ → φ.1 ∈ cuspForm
     · rw [← hUe, ← Submodule.map_inf j hj, d5, Submodule.map_bot]
     · rw [← hUe, ← Submodule.map_sup, d6]
 
+/- English proof (translation)
+Use `zeroCompl_of hto hof ⟨Fb.lieEq F a, (Fb.lieEq F a).surjective, Fb.lieEq_oneL, hlie⟩ ⟨fun k => ⟨Fb.grpEq F a (Unitary.toUnits k), (hcpt F a _).2 k.2⟩, fun k => ?_, fun k => (Fb.infEmb_grpEq _).symm⟩ fun k => by rw [Fb.finEmb_eq]` and prove the remaining obligations. Take `⟨y, hy⟩` from `(Fb.grpEq F a).surjective k.1`. Use `⟨⟨y.val, (hcpt F a y).1 (hy ▸ k.2)⟩, Subtype.ext (Eq.trans (congrArg (Fb.grpEq F a) (show _ = y from Units.ext rfl)) hy)⟩` and prove the remaining obligations.
+-/
 theorem zeroCompl_of_fb (hto : ∀ φ : Sm F a, IsCuspForm φ → φ.1 ∈ cuspForms F a)
     (hof : ∀ f ∈ cuspForms F a, ∃ h : f ∈ Sm F a, IsCuspForm ⟨f, h⟩)
     (hlie : ∀ (X : Lie F a) (φ : Sm F a) (h : φ.1 ∈ archSmooth F a),

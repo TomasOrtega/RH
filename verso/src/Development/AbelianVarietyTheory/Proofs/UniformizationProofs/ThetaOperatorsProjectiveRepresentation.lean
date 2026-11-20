@@ -22,6 +22,9 @@ namespace GlobalTheory.UT.PhiProj
 
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F] [Algebra (FractionRing R) F]
 
+/- English proof (translation)
+The claim follows from `(map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res r z le_top (hJ.mem φ r) c) rfl)`.
+-/
 theorem val_scale {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     {z : Z} {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) (c : Γ(Y, ⊤)ˣ) (t : LB.Gen (LB.LinComb L φ ε)) (r : Z ⟶ Y) :
     val (scaleGen c t) r z J = gm r z ⊤ c * val t r z J :=
@@ -30,6 +33,11 @@ theorem val_scale {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K
 def cUnit (ζ : F) (hζ : ζ ≠ 0) : Γ((TF (R := R) F).left, ⊤)ˣ :=
   ((Ne.isUnit hζ).map (Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom).unit
 
+/- English proof (translation)
+Establish `hcorr : LB.Gen.Corr D.P.L _ _ _ _ w' (scaleGen (cUnit (R` using `R) c hc) w) := corr_of_val D.P.isLB fun z J hJ => Units.ext (by`. Rewrite using `[hv z J hJ, val_scale hJ, Units.val_mul]`. Conclude with `congrArg₂ (· * ·) (gs_unit _ z ⊤ trivial (cUnit (R := R) c hc)) rfl)`. Use `(phiRel_iff hG p w' hw' s _).2 fun a β hβ T ρ z J hJ => ?_` and prove the remaining obligations. Establish `h1` using `(phiRel_iff hG p w hw s t).1 h a β hβ T ρ z J hJ`.
+
+Establish `hu : gs (ρ.left ≫ (fst (TF (R` using `R) F) D.P.A).left) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom c) = (gm (ρ ≫ fst (TF (R := R) F) D.P.A).left z ⊤ (cUnit (R := R) c hc)).val := gs_unit _ z ⊤ trivial (cUnit (R := R) c hc)`. Rewrite using `[sval_smul c t β ρ.left z hJ, h1, val_mul hJ, val_mul hJ, val_corr hJ hcorr, val_scale hJ, hu]`. Simplify using `only [Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem phiRel_of_ratio (hG : GlobalFnsSt) {k : ℕ} (p : QkPt D F k) {w w' : Frm D F k p.g.b} (hw : w.IsGen)
     (hw' : w'.IsGen) (c : F) (hc : c ≠ 0)
     (hv : ∀ z J, Good D.P.L z J → (val w' (𝟙 _) z J).val = cst F z c * (val w (𝟙 _) z J).val)
@@ -48,6 +56,9 @@ theorem phiRel_of_ratio (hG : GlobalFnsSt) {k : ℕ} (p : QkPt D F k) {w w' : Fr
   simp only [Units.val_mul]
   ring
 
+/- English proof (translation)
+Use `⟨scaleGen (cUnit (R := R) c hc) w, scaleGen_isGen _ w hw, fun z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[val_scale hJ, Units.val_mul]`. Conclude with `congrArg₂ (· * ·) (gs_unit _ z ⊤ trivial (cUnit (R := R) c hc)).symm rfl`.
+-/
 theorem exists_scaled {k : ℕ} {b : TF (R := R) F ⟶ D.P.A} {w : Frm D F k b} (hw : w.IsGen) (c : F) (hc : c ≠ 0) :
     ∃ w' : Frm D F k b, w'.IsGen ∧
       ∀ z J, Good D.P.L z J → (val w' (𝟙 _) z J).val = cst F z c * (val w (𝟙 _) z J).val := by
@@ -55,6 +66,11 @@ theorem exists_scaled {k : ℕ} {b : TF (R := R) F ⟶ D.P.A} {w : Frm D F k b} 
   rw [val_scale hJ, Units.val_mul]
   exact congrArg₂ (· * ·) (gs_unit _ z ⊤ trivial (cUnit (R := R) c hc)).symm rfl
 
+/- English proof (translation)
+Take `⟨z, hy, h, hι, ha⟩` from `he`. Take `⟨w', hw', hv⟩` from `GlobalTheory.exists_shifted_normalisation k p.g z p'.g.b (ha.1.trans (congrArg (p.g.b * ·) hι.1)) w hw`. Use `⟨w', hw', fun s t => ?_⟩` and prove the remaining obligations. Rewrite using `[phiRel_iff hG p w hw, phiRel_iff hG p' w' hw']`. Introduce `H α β hβ T ρ x J hJ`.
+
+Rewrite using `[← GlobalTheory.phi_value_shift hG k p.g h p'.g z hι ha w w' hv s α T ρ x J hJ]`. Conclude with `H (α + k • z) β (by rw [← hβ, hy]; abel) T ρ x J hJ`.
+-/
 theorem phiRel_of_equiv (hG : GlobalFnsSt) {k : ℕ} {p p' : QkPt D F k} (he : QkPt.Equiv D F p p')
     {w : Frm D F k p.g.b} (hw : w.IsGen) : ∃ w' : Frm D F k p'.g.b, w'.IsGen ∧
       ∀ s t, PhiRel D F k p w s t → PhiRel D F k p' w' s t := by
@@ -67,6 +83,13 @@ theorem phiRel_of_equiv (hG : GlobalFnsSt) {k : ℕ} {p p' : QkPt D F k} (he : Q
   rw [← GlobalTheory.phi_value_shift hG k p.g h p'.g z hι ha w w' hv s α T ρ x J hJ]
   exact H (α + k • z) β (by rw [← hβ, hy]; abel) T ρ x J hJ
 
+/- English proof (translation)
+Establish `hb : p.g.b = 1` using `hg.1`. Establish `hcorr : LB.Gen.Corr D.P.L _ _ _ _ w (LB.oneGen D.P.L)` using `corr_of_val D.P.isLB fun z J hJ => (hw.2 z J hJ).trans (val_one _).symm`. Use `(phiRel_iff hG p w hw.1 s s).2 fun α β hβ T ρ z J hJ => ?_` and prove the remaining obligations. Take `rfl : α = β` from `by rw [← hβ, hy, add_zero]`. Establish `C : IsCub (th D z J)` using `isCub_cubV D.cub hJ`.
+
+Establish `e₁ : ρ ≫ DegPre.trPt D F p.g.b = ρ` using `by rw [hb, H1.trPt_one, Category.comp_id]`. Establish `e₂ : uVal D F k α p.g.b ρ z J = 1`. Establish `e : ρ ≫ fst (TF (R` using `R) F) D.P.A ≫ p.g.b = 1 := by rw [hb, MonObj.comp_one, MonObj.comp_one]`. Rewrite using `[uVal, e, C.face₃, inv_one, _root_.mul_one]`. Conclude with `Finset.prod_eq_one fun _ _ => C.face₂ _ _`.
+
+Rewrite using `[e₁, e₂, val_mul hJ, val_corr hJ (hg.2 α), val_corr hJ hcorr, val_one, _root_.mul_one, _root_.mul_one, Units.val_one, _root_.mul_one]`.
+-/
 theorem phiRel_zero (hG : GlobalFnsSt) {k : ℕ} (p : QkPt D F k) (w : Frm D F k p.g.b) (hy : p.y = 0)
     (hg : p.g.IsZero) (hw : FrmOne w) (s : Fam D F k) : PhiRel D F k p w s s := by
   have hb : p.g.b = 1 := hg.1
@@ -83,6 +106,11 @@ theorem phiRel_zero (hG : GlobalFnsSt) {k : ℕ} (p : QkPt D F k) (w : Frm D F k
   rw [e₁, e₂, val_mul hJ, val_corr hJ (hg.2 α), val_corr hJ hcorr, val_one, _root_.mul_one, _root_.mul_one,
     Units.val_one, _root_.mul_one]
 
+/- English proof (translation)
+Take `⟨k, rfl⟩ : ∃ n, k = n + 1` from `⟨k - 1, by omega⟩`. Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Establish `: (Φ ^ (k + 1)) a = (Φ ^ (k + 1)) b`. Rewrite using `[pow_succ, Module.End.mul_apply, Module.End.mul_apply, hab]`.
+
+Rewrite `this` using `[h, h]`. Conclude with `smul_right_injective V hc this`. Introduce `b`. Use `⟨(Φ ^ k) (c⁻¹ • b), ?_⟩` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, ← pow_succ', h, smul_smul, mul_inv_cancel₀ hc, one_smul]`.
+-/
 theorem bijective_of_pow {F V : Type} [Field F] [AddCommGroup V] [Module F V] (Φ : V →ₗ[F] V) {k : ℕ} (hk : 1 ≤ k)
     {c : F} (hc : c ≠ 0) (h : ∀ s, (Φ ^ k) s = c • s) : Function.Bijective Φ := by
   obtain ⟨k, rfl⟩ : ∃ n, k = n + 1 := ⟨k - 1, by omega⟩
@@ -96,6 +124,19 @@ theorem bijective_of_pow {F V : Type} [Field F] [AddCommGroup V] [Module F V] (�
     refine ⟨(Φ ^ k) (c⁻¹ • b), ?_⟩
     rw [← Module.End.mul_apply, ← pow_succ', h, smul_smul, mul_inv_cancel₀ hc, one_smul]
 
+/- English proof (translation)
+Introduce `hL R _ _ _ I _ D F _ _ _ k hk`. Establish `hG : GlobalFnsSt` using `hL.1.globalFns`. Establish `ex : ∀ (p : QkPt D.toPre F k) (w : Frm D.toPre F k p.g.b), ∃ Φ : Fam D.toPre F k →ₗ[F] Fam D.toPre F k, w.IsGen → ∀ s t, PhiRel D.toPre F k p w s t ↔ t = Φ s` using `fun p w => by`. Distinguish the cases in `hw : w.IsGen`. Take `⟨Φ, h⟩` from `phiFun_of_globalFns hG R I D F k hk p w hw`.
+
+Conclude with `⟨Φ, fun _ => h⟩`. Conclude with `⟨0, fun h => (hw h).elim⟩`. Use `choose Φ hΦ using ex`. Establish `rel : ∀ p w, w.IsGen → ∀ s, PhiRel D.toPre F k p w s (Φ p w s)` using `fun p w hw s => (hΦ p w hw s _).2 rfl`. Use `⟨Φ, fun p w hw => ⟨?_, hΦ p w hw⟩, fun p w hw c hc => ?_, fun p w w' hw hw' => ?_, fun p p' w hw he => ?_, fun p p' p'' w w' hw hw' hadd => ?_, fun p w hy hg hw => ?_⟩` and prove the remaining obligations.
+
+Take `⟨c, hc, hcs⟩` from `H1.phiPow_core hG p w hw`. Use `bijective_of_pow (Φ p w) hk hc fun s => ?_` and prove the remaining obligations. Establish `h` using `hcs (fun i => (Φ p w ^ (i : ℕ)) s) (fun i => by`. Rewrite using `[hΦ p w hw]`. Simplify using `only [Fin.val_succ, Fin.val_castSucc, pow_succ', Module.End.mul_apply])`.
+
+Rewrite `h` using `[isSmul_iff]`. Simplify `h` using `only [Fin.val_last, Fin.val_zero, pow_zero, Module.End.one_apply]`. Take `⟨w', hw', hv⟩` from `exists_scaled hw c hc`. Conclude with `⟨w', hw', LinearMap.ext fun s => ((hΦ p w' hw' s _).1 (phiRel_of_ratio hG p hw hw' c hc hv s _ (rel p w hw s))).symm⟩`. Take `⟨c, hc, hv⟩` from `CoefBasic.exists_frame_ratio hw hw'`.
+
+Conclude with `⟨c, hc, LinearMap.ext fun s => ((hΦ p w' hw' s _).1 (phiRel_of_ratio hG p hw hw' c hc hv s _ (rel p w hw s))).symm⟩`. Take `⟨w', hw', h⟩` from `phiRel_of_equiv hG he hw`. Conclude with `⟨w', hw', LinearMap.ext fun s => ((hΦ p' w' hw' s _).1 (h s _ (rel p w hw s))).symm⟩`. Take `⟨q, hy, hg, he⟩` from `hadd`. Take `⟨w₂, hw₂, h₂⟩` from `GlobalTheory.ThetaMul.phi_mul_core hG p p' q hy hg w w' hw hw'`.
+
+Take `⟨w'', hw'', h⟩` from `phiRel_of_equiv hG he hw₂`. Conclude with `⟨w'', hw'', LinearMap.ext fun s => ((hΦ p'' w'' hw'' s _).1 (h s _ (h₂ s _ _ (rel p' w' hw' s) (rel p w hw _)))).symm⟩`. Conclude with `LinearMap.ext fun s => ((hΦ p w hw.1 s s).1 (phiRel_zero hG p w hy hg hw s)).symm`.
+-/
 theorem phi_projective : LL → AllD fun {R} _ _ {I} D F _ _ => ∀ (k : ℕ), 1 ≤ k → ∃ Φ : ∀ (p : QkPt D.toPre F k), Frm D.toPre F k p.g.b → (Fam D.toPre F k →ₗ[F] Fam D.toPre F k), (∀ p w, w.IsGen → Function.Bijective (Φ p w) ∧ ∀ s t, PhiRel D.toPre F k p w s t ↔ t = Φ p w s) ∧ (∀ p w, w.IsGen → ∀ c : F, c ≠ 0 → ∃ w', w'.IsGen ∧ Φ p w' = c • Φ p w) ∧ (∀ p w w', w.IsGen → w'.IsGen → ∃ c : F, c ≠ 0 ∧ Φ p w' = c • Φ p w) ∧ (∀ p p' w, w.IsGen → QkPt.Equiv D.toPre F p p' → ∃ w', w'.IsGen ∧ Φ p' w' = Φ p w) ∧ (∀ p p' p'' w w', w.IsGen → w'.IsGen → QkAdd p p' p'' → ∃ w'', w''.IsGen ∧ Φ p'' w'' = Φ p w ∘ₗ Φ p' w') ∧ ∀ p w, p.y = 0 → p.g.IsZero → FrmOne w → Φ p w = LinearMap.id := by
   intro hL R _ _ _ I _ D F _ _ _ k hk
   have hG : GlobalFnsSt := hL.1.globalFns

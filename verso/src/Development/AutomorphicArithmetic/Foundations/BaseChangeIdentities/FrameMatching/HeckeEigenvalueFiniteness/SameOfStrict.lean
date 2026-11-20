@@ -17,6 +17,11 @@ open PositivityTheory.Rg.BcB.F.FX PositivityTheory.Rg.BcB.F.FX.Bo
 
 open PositivityTheory.Rg.BcB.F PositivityTheory.Rg.BcB.F.RS PositivityTheory.Rg.BcB.CG
 
+/- English proof (translation)
+Set `J : Type` to `{x : Σ i, Fin (kA i) × Fin (kB i) // ∃ D : Pre E n, ∃ (Pa : Pre E (a x.1)) (Pb : Pre E (n - a x.1)), IsJoin (μ ^ (n - a x.1)) (μ ^ a x.1) Pa Pb D ∧ Strict Pa (PA x.1 x.2.1) ∧ Strict Pb (PB x.1 x.2.2)}`. Use `haveI : Finite J := Subtype.finite`. Take `⟨k, ⟨e⟩⟩` from `Finite.exists_equiv_fin J`. Use `choose Df Paf Pbf hf using fun x : J => x.2`. Use `⟨k, fun j => Df (e.symm j), fun i Pa Pb D hj ⟨ja, ha⟩ ⟨jb, hb⟩ => ?_⟩` and prove the remaining obligations.
+
+Set `x : J` to `⟨⟨i, ja, jb⟩, D, Pa, Pb, hj, ha, hb⟩`. Use `⟨e x, ?_⟩` and prove the remaining obligations. Use `show Strict D (Df (e.symm (e x)))`. Rewrite using `[e.symm_apply_apply]`. Conclude with `hSJ E n _ _ _ _ Pa (Paf x) Pb (Pbf x) D _ hj (hf x).1 (strict_common ha (hf x).2.1) (strict_common hb (hf x).2.2)`.
+-/
 theorem joins_fin (hSJ : StrictJoin)
     {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (μ : HChar E) {ι : Type} [Finite ι] (a : ι → ℕ) (kA kB : ι → ℕ)
     (PA : ∀ i, Fin (kA i) → Pre E (a i)) (PB : ∀ i, Fin (kB i) → Pre E (n - a i)) :
@@ -35,6 +40,9 @@ theorem joins_fin (hSJ : StrictJoin)
   rw [e.symm_apply_apply]
   exact hSJ E n _ _ _ _ Pa (Paf x) Pb (Pbf x) D _ hj (hf x).1 (strict_common ha (hf x).2.1) (strict_common hb (hf x).2.2)
 
+/- English proof (translation)
+Establish `h` using `hII (GLw n w) _ _ (prodAt D w) (prodAt D' w) (hSPr E n D D' hs w) K`. Conclude with `⟨fun τ => h.1 τ.V τ.ρ, h.2.1, hAd E n D' w K ho hle⟩`.
+-/
 theorem same_of_strict (hSPr : StrictProd) (hII : IsoInv) (hAd : AdmProd)
     {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (w : Pl E) (K : Subgroup (GLw n w))
     (ho : IsOpen (K : Set (GLw n w))) (hle : K ≤ GlobalTheory.LFun.KGL w n) (D D' : Pre E n) (hs : Strict D D') :

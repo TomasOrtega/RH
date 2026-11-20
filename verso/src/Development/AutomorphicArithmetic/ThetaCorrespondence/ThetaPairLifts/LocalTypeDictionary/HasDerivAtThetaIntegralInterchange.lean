@@ -21,6 +21,15 @@ namespace GlobalTheory.ThetaInterchange
 open Filter Topology GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
   {Y : Spc F E n} {Wd : Spc F E d}
+/- English proof (translation)
+Establish `hv : ∀ᶠ v in cofinite, φ v = M.vac v` using `(hs.and hG.std).mono fun v h => h.1.trans h.2.symm`. Take `⟨c, g, hc, hlim⟩` from `_root_.GlobalTheory.T.twisted_smoothLine_pure_weight hPr M ψ χX χW om hcm hψ hG hW γ hγ f φ hφ hv`. Use `⟨GlobalTheory.TensUniq.pure_mem_schA f φ hφ hs, pure g φ, GlobalTheory.TensUniq.pure_mem_schA g φ hφ hs, fun x => ?_, fun w => ?_⟩` and prove the remaining obligations. Establish `ev : Continuous fun s : SInf F (Fin n × Fin d) => s (fun j => evI F (x j))`. Establish `h1` using `(SchwartzMap.toBoundedContinuousFunctionCLM ℂ (Fin n × Fin d → mixedEmbedding.mixedSpace F) ℂ).continuous`.
+
+Conclude with `(continuous_eval_const (F := BoundedContinuousFunction (Fin n × Fin d → mixedEmbedding.mixedSpace F) ℂ) (fun j => evI F (x j))).comp h1`. Simplify using `only [hc]`. Rewrite using `[hasDerivAt_iff_tendsto_slope]`. Use `(((ev.tendsto g).comp hlim).mul_const (∏ᶠ v, φ v fun j => evFin F v (x j))).congr' (Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Rewrite using `[slope_def_module]`.
+
+Simplify using `only [Function.comp_apply, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, SchwartzMap.smul_apply, SchwartzMap.sub_apply, sub_zero, Complex.real_smul]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨Λ, hΛ⟩` from `GlobalTheory.ThetaHeisCLM.exists_clm_thetaSum_rho_pure M ψ hψ hG w φ hφ hv`. Simplify using `only [hc, hΛ]`. Rewrite using `[hasDerivAt_iff_tendsto_slope]`.
+
+Use `((Λ.continuous.tendsto g).comp hlim).congr' (Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `[slope_def_module, map_sub, map_smul]`.
+-/
 theorem thetaInterchange_isPure (hPr : _root_.GlobalTheory.FunPr.ThetaLocalInputs) (M : Model σ Y Wd) (ψ : AddChar (AF F) ℂ) (χX χW : Chr F E) (om : Rep σ Y Wd)
     (hcm : IsCMExt F E σ) (hψ : IsStd ψ)
     (hG : M.IsGood ψ) (hW : M.IsWeil ψ χX χW om) (γ : Multiplicative ℝ →* UA σ Wd.J) (hγ : γ ∈ Lines σ Wd)
@@ -48,6 +57,13 @@ theorem thetaInterchange_isPure (hPr : _root_.GlobalTheory.FunPr.ThetaLocalInput
     simp [slope_def_module, map_sub, map_smul]
 end GlobalTheory.ThetaInterchange
 open GlobalTheory.ThetaInterchange in
+/- English proof (translation)
+Introduce `hPr D n k Xs Ws Mo ψ' χX χW om τ hP hG γ hγ f f₁ r hr hr₁ hD d G e x`. Take `⟨hcm, hψ, -, -, -, -, -, -, -, -, hW, -, -⟩` from `hP`. Establish `hT : ∀ t : ℝ, ∀ Φ ∈ schA D.host.F (Fin n × Fin k), om (1, γ (Multiplicative.ofAdd t)) Φ ∈ schA D.host.F _` using `fun t Φ hΦ => (GlobalTheory.WeilM.IsUWeilPair.isUSplitting hW).pres _ Φ hΦ`. Set `N : Submodule ℂ ((Fin n × Fin k → AF D.host.F) → ℂ)` to `{ carrier := {Φ | Good Mo ψ' (fun t => om (1, γ (Multiplicative.ofAdd t))) Φ} zero_mem' := good_zero Mo ψ' _ add_mem' := fun ha hb => good_add Mo hψ hT ha hb smul_mem' := fun c _ ha => good_smul Mo ψ' _ c ha }`. Establish `hle : schA D.host.F (Fin n × Fin k) ≤ N` using `schA_le_of_pure fun f φ hφ hs => _root_.GlobalTheory.ThetaInterchange.thetaInterchange_isPure hPr Mo ψ' χX χW om hcm hψ hG hW γ hγ f φ hφ hs`.
+
+Take `⟨-, Φ', -, hpt, hth⟩` from `hle hr.2`. Establish `hΦ' : Φ' = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F) f₁ r`. Use function extensionality and compare the values at `fun y => (hpt y).unique (hD r hr y)`. Use `hth (GlobalTheory.TripleRead.ptO G e x)` as an intermediate fact. Rewrite `this` using `[hΦ']`.
+
+Conclude with `this`.
+-/
 theorem GlobalTheory.ThetaInterchange.hasDerivAt_theta_integral_interchange : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) {n k : ℕ} (Xs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E n) (Ws : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E k)
     (Mo : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model D.sp.cm.sig Xs Ws) (ψ' : AddChar (AF D.host.F) ℂ)
     (χX χW : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chr D.host.F D.host.E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep D.sp.cm.sig Xs Ws)
@@ -92,6 +108,9 @@ open GlobalTheory.SquareComm
 open scoped ComplexConjugate
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.ThetaInterchange.hasDerivAt_theta_integral_interchange | exact _root_.GlobalTheory.ThetaInterchange.hasDerivAt_theta_integral_interchange | (intros; apply _root_.GlobalTheory.ThetaInterchange.hasDerivAt_theta_integral_interchange <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.theta_interchange_derivative_pure : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) {n k : ℕ} (Xs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E n) (Ws : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E k)
     (Mo : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model D.sp.cm.sig Xs Ws) (ψ' : AddChar (AF D.host.F) ℂ)
     (χX χW : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chr D.host.F D.host.E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep D.sp.cm.sig Xs Ws)

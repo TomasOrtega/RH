@@ -25,6 +25,9 @@ variable {Ω : Type} [Field Ω] {τ : Type} {x : τ → Ω} {r : ℕ}
 
 abbrev primeTo (p : Nat.Primes) : Submonoid ℤ := (Ideal.span {((p : ℕ) : ℤ)}).primeCompl
 
+/- English proof (translation)
+Use `show s ∉ Ideal.span _ ↔ _`. Rewrite using `[Ideal.mem_span_singleton]`.
+-/
 theorem mem_primeTo {p : Nat.Primes} {s : ℤ} : s ∈ primeTo p ↔ ¬ ((p : ℕ) : ℤ) ∣ s := by
   show s ∉ Ideal.span _ ↔ _
   rw [Ideal.mem_span_singleton]
@@ -33,35 +36,56 @@ instance (p : S) : IsLocalization (primeTo (p : Nat.Primes)) (o p) := inferInsta
 
 variable (x) in
 
+/- English proof (translation)
+The claim follows from `inv_mem_chartRing_loc x i (o p) (primeTo (p : Nat.Primes)) (mem_primeTo.2 hs)`.
+-/
 theorem inv_mem_chartRing_at (p : S) (i : τ) {s : ℤ} (hs : ¬ (((p : Nat.Primes) : ℕ) : ℤ) ∣ s) :
     (s : Ω) ≠ 0 ∧ (s : Ω)⁻¹ ∈ chartRing (o p) x i :=
   inv_mem_chartRing_loc x i (o p) (primeTo (p : Nat.Primes)) (mem_primeTo.2 hs)
 
 variable (x o₀) in
 
+/- English proof (translation)
+The claim follows from `inv_mem_chartRing_loc x i o₀ (Submonoid.powers (primeProd S)) (Submonoid.mem_powers _)`.
+-/
 theorem inv_prod_mem_chartRing (i : τ) :
     ((primeProd S : ℤ) : Ω) ≠ 0 ∧ ((primeProd S : ℤ) : Ω)⁻¹ ∈ chartRing o₀ x i :=
   inv_mem_chartRing_loc x i o₀ (Submonoid.powers (primeProd S)) (Submonoid.mem_powers _)
 
 def primeProdErase (S : Finset Nat.Primes) (p : Nat.Primes) : ℤ := ∏ q ∈ S.erase p, ((q : ℕ) : ℤ)
 
+/- English proof (translation)
+The claim follows from `(Finset.mul_prod_erase S (fun q : Nat.Primes => ((q : ℕ) : ℤ)) hp).symm`.
+-/
 theorem primeProd_eq_mul {p : Nat.Primes} (hp : p ∈ S) :
     primeProd S = ((p : ℕ) : ℤ) * primeProdErase S p :=
   (Finset.mul_prod_erase S (fun q : Nat.Primes => ((q : ℕ) : ℤ)) hp).symm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, primeProd_eq_mul hp⟩`.
+-/
 theorem dvd_primeProd {p : Nat.Primes} (hp : p ∈ S) : ((p : ℕ) : ℤ) ∣ primeProd S :=
   ⟨_, primeProd_eq_mul hp⟩
 
+/- English proof (translation)
+The claim follows from `Finset.dvd_prod_of_mem _ (Finset.mem_erase.2 ⟨hqp, hq⟩)`.
+-/
 theorem dvd_primeProdErase {p q : Nat.Primes} (hq : q ∈ S) (hqp : q ≠ p) :
     ((q : ℕ) : ℤ) ∣ primeProdErase S p :=
   Finset.dvd_prod_of_mem _ (Finset.mem_erase.2 ⟨hqp, hq⟩)
 
+/- English proof (translation)
+Introduce `h`. Take `⟨q, hq, hpq⟩` from `(Prime.dvd_finsetProd_iff (Nat.prime_iff_prime_int.mp p.2) _).1 h`. Establish `: (p : ℕ) = q` using `(Nat.prime_dvd_prime_iff_eq p.2 q.2).1 (Int.natCast_dvd_natCast.1 hpq)`. Conclude with `(Finset.mem_erase.1 hq).1 (Subtype.ext this).symm`.
+-/
 theorem not_dvd_primeProdErase (p : Nat.Primes) : ¬ ((p : ℕ) : ℤ) ∣ primeProdErase S p := by
   intro h
   obtain ⟨q, hq, hpq⟩ := (Prime.dvd_finsetProd_iff (Nat.prime_iff_prime_int.mp p.2) _).1 h
   have : (p : ℕ) = q := (Nat.prime_dvd_prime_iff_eq p.2 q.2).1 (Int.natCast_dvd_natCast.1 hpq)
   exact (Finset.mem_erase.1 hq).1 (Subtype.ext this).symm
 
+/- English proof (translation)
+Introduce `hd`. Establish `: (p : ℕ) = q` using `(Nat.prime_dvd_prime_iff_eq p.2 q.2).1 (Int.natCast_dvd_natCast.1 hd)`. Conclude with `h (Subtype.ext this).symm`.
+-/
 theorem not_dvd_prime_of_ne {p q : Nat.Primes} (h : q ≠ p) : ¬ ((p : ℕ) : ℤ) ∣ ((q : ℕ) : ℤ) := by
   intro hd
   have : (p : ℕ) = q := (Nat.prime_dvd_prime_iff_eq p.2 q.2).1 (Int.natCast_dvd_natCast.1 hd)
@@ -69,6 +93,11 @@ theorem not_dvd_prime_of_ne {p q : Nat.Primes} (h : q ≠ p) : ¬ ((p : ℕ) : �
 
 variable (x o₀) in
 
+/- English proof (translation)
+Take `⟨hm0, hm⟩` from `inv_prod_mem_chartRing x o₀ (S := S) i`. Establish `h : (((p : ℕ) : ℤ) : Ω)⁻¹ = (primeProdErase S p : Ω) * ((primeProd S : ℤ) : Ω)⁻¹`. Rewrite `hm0`, the goal using `[primeProd_eq_mul hp]`. Move the coercions through the operations in `at hm0 ⊢`. Establish `h1 : ((p : ℕ) : Ω) ≠ 0` using `fun h => hm0 (by rw [h, zero_mul])`.
+
+Establish `h2 : (primeProdErase S p : Ω) ≠ 0` using `fun h => hm0 (by rw [h, mul_zero])`. Clear the denominators using the available nonvanishing facts. Rewrite using `[h]`. Conclude with `mul_mem (intCast_mem_chartRing x i o₀ _) hm`.
+-/
 theorem inv_prime_mem_chartRing {p : Nat.Primes} (hp : p ∈ S) (i : τ) :
     (((p : ℕ) : ℤ) : Ω)⁻¹ ∈ chartRing o₀ x i := by
   obtain ⟨hm0, hm⟩ := inv_prod_mem_chartRing x o₀ (S := S) i
@@ -81,10 +110,16 @@ theorem inv_prime_mem_chartRing {p : Nat.Primes} (hp : p ∈ S) (i : τ) :
   rw [h]
   exact mul_mem (intCast_mem_chartRing x i o₀ _) hm
 
+/- English proof (translation)
+The claim follows from `B.stable i a ha e he`.
+-/
 theorem smul_mem_of_chart {R : Type*} [CommRing R] [Algebra R Ω] (B : ChartBundle R x r E) {i : τ}
     {a : Ω} (ha : a ∈ chartRing R x i) {e : E} (he : e ∈ B.lat i) : a • e ∈ B.lat i :=
   B.stable i a ha e he
 
+/- English proof (translation)
+The claim follows from `B.stable i _ (intCast_mem_chartRing x i R z) e he`.
+-/
 theorem intCast_smul_mem {R : Type*} [CommRing R] [Algebra R Ω] (B : ChartBundle R x r E) {i : τ}
     (z : ℤ) {e : E} (he : e ∈ B.lat i) : (z : Ω) • e ∈ B.lat i :=
   B.stable i _ (intCast_mem_chartRing x i R z) e he
@@ -93,12 +128,22 @@ variable (B₀ : ChartBundle o₀ x r E) (Bp : ∀ p, ChartBundle (o p) x r E)
 
 def glueLat (i : τ) : AddSubgroup E := B₀.lat i ⊓ ⨅ p, (Bp p).lat i
 
+/- English proof (translation)
+Simplify using `[glueLat, AddSubgroup.mem_inf, AddSubgroup.mem_iInf]`.
+-/
 theorem mem_glueLat {i : τ} {e : E} :
     e ∈ glueLat B₀ Bp i ↔ e ∈ B₀.lat i ∧ ∀ p, e ∈ (Bp p).lat i := by
   simp [glueLat, AddSubgroup.mem_inf, AddSubgroup.mem_iInf]
 
 variable {B₀ Bp}
 
+/- English proof (translation)
+Take `⟨N, hN0, hN⟩` from `hSR.1 w hw`. Take `⟨k, n', hn', hN'⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hN0.ne' ((p : Nat.Primes) : ℕ) (p : Nat.Primes).2.one_lt.ne'`. Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `hs : ¬ (((p : Nat.Primes) : ℕ) : ℤ) ∣ (n' : ℤ)` using `fun h => hn' (Int.natCast_dvd_natCast.1 h)`. Take `⟨hs0, hsinv⟩` from `inv_mem_chartRing_at (o := o) x p i hs`.
+
+Establish `: ((((p : Nat.Primes) : ℕ) : ℤ) : Ω) ^ k • w = ((n' : ℤ) : Ω)⁻¹ • ((N : Ω) • w)`. Rewrite using `[smul_smul, hN']`. Use `congr 1`. Move the coercions through the operations in `at hs0 ⊢`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[this, Nat.cast_smul_eq_nsmul]`. Conclude with `smul_mem_of_chart (Bp p) hsinv hN`.
+-/
 theorem exists_prime_pow_smul_mem {i : τ} (p : S)
     (hSR : SameRationalSpan (B₀.lat i) ((Bp p).lat i)) {w : E} (hw : w ∈ B₀.lat i) :
     ∃ k : ℕ, ((((p : Nat.Primes) : ℕ) : ℤ) : Ω) ^ k • w ∈ (Bp p).lat i := by
@@ -116,6 +161,11 @@ theorem exists_prime_pow_smul_mem {i : τ} (p : S)
   rw [this, Nat.cast_smul_eq_nsmul]
   exact smul_mem_of_chart (Bp p) hsinv hN
 
+/- English proof (translation)
+Use `choose k hk using fun p => exists_prime_pow_smul_mem p (hSR p) hw`. Use `⟨Finset.univ.sup k, fun K' hK' p hp => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `hz p hp`. Establish `hle : k p ≤ K'` using `le_trans (Finset.le_sup (Finset.mem_univ p)) hK'`. Establish `: ((z : Ω) ^ K') • w = ((z : Ω) ^ (K' - k p) * (c : Ω) ^ k p) • ((((p : Nat.Primes) : ℕ) : ℤ) : Ω) ^ k p • w`.
+
+Rewrite using `[smul_smul]`. Use `congr 1`. Rewrite using `[hc, Int.cast_mul, mul_assoc, ← mul_pow, mul_comm (c : Ω), ← Int.cast_mul, ← hc, pow_sub_mul_pow _ hle]`. Rewrite using `[this]`. Conclude with `smul_mem_of_chart (Bp p) (mul_mem (pow_mem (intCast_mem_chartRing x i _ _) _) (pow_mem (intCast_mem_chartRing x i _ _) _)) (hk p)`.
+-/
 theorem exists_pow_smul_mem_all {i : τ} (hSR : ∀ p, SameRationalSpan (B₀.lat i) ((Bp p).lat i))
     {w : E} (hw : w ∈ B₀.lat i) (z : ℤ) (P : S → Prop)
     (hz : ∀ p, P p → (((p : Nat.Primes) : ℕ) : ℤ) ∣ z) :
@@ -135,6 +185,15 @@ theorem exists_pow_smul_mem_all {i : τ} (hSR : ∀ p, SameRationalSpan (B₀.la
   exact smul_mem_of_chart (Bp p) (mul_mem (pow_mem (intCast_mem_chartRing x i _ _) _)
     (pow_mem (intCast_mem_chartRing x i _ _) _)) (hk p)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hv`. Take `⟨K, hK⟩` from `exists_pow_smul_mem_all hSR hv (primeProd S) (fun _ => True) (fun p _ => dvd_primeProd p.2)`. Use `⟨K, (mem_glueLat B₀ Bp).2 ⟨?_, fun p => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← Int.cast_smul_eq_zsmul Ω, Int.cast_pow]`.
+
+Conclude with `smul_mem_of_chart B₀ (pow_mem (intCast_mem_chartRing x i _ _) _) hv`. Rewrite using `[← Int.cast_smul_eq_zsmul Ω, Int.cast_pow]`. Conclude with `hK K le_rfl p trivial`. Introduce and unpack `⟨n, hn⟩`. Establish `h0` using `((mem_glueLat B₀ Bp).1 hn).1`.
+
+Rewrite `h0` using `[← Int.cast_smul_eq_zsmul Ω, Int.cast_pow]`. Take `⟨hm0, hm⟩` from `inv_prod_mem_chartRing x o₀ (S := S) i`. Establish `: v = (((primeProd S : ℤ) : Ω)⁻¹) ^ n • (((primeProd S : ℤ) : Ω) ^ n • v)`. Rewrite using `[smul_smul, ← mul_pow, inv_mul_cancel₀ hm0, one_pow, one_smul]`. Rewrite using `[this]`.
+
+Conclude with `smul_mem_of_chart B₀ (pow_mem hm _) h0`.
+-/
 theorem mem_B₀_iff {i : τ} (hSR : ∀ p, SameRationalSpan (B₀.lat i) ((Bp p).lat i)) (v : E) :
     v ∈ B₀.lat i ↔ ∃ n : ℕ, primeProd S ^ n • v ∈ glueLat B₀ Bp i := by
   constructor
@@ -155,6 +214,25 @@ theorem mem_B₀_iff {i : τ} (hSR : ∀ p, SameRationalSpan (B₀.lat i) ((Bp p
     rw [this]
     exact smul_mem_of_chart B₀ (pow_mem hm _) h0
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hv`. Take `⟨N, hN0, hN⟩` from `(hSR p).2 v hv`. Take `⟨k, n', hn', hN'⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hN0.ne' ((p : Nat.Primes) : ℕ) (p : Nat.Primes).2.one_lt.ne'`. Establish `hw : ((n' : ℤ) : Ω) • v ∈ B₀.lat i`.
+
+Establish `: ((n' : ℤ) : Ω) • v = ((((p : Nat.Primes) : ℕ) : ℤ) : Ω)⁻¹ ^ k • ((N : Ω) • v)`. Rewrite using `[smul_smul, hN']`. Use `congr 1`. Establish `: (((p : Nat.Primes) : ℕ) : Ω) ≠ 0` using `Nat.cast_ne_zero.2 (p : Nat.Primes).2.ne_zero`. Use `push_cast`.
+
+Rewrite using `[inv_pow, mul_comm ((((p : Nat.Primes) : ℕ) : Ω) ^ k), ← mul_assoc, mul_comm _ (n' : Ω), mul_assoc, inv_mul_cancel₀ (pow_ne_zero _ this), mul_one]`. Rewrite using `[this, Nat.cast_smul_eq_nsmul]`. Conclude with `smul_mem_of_chart B₀ (pow_mem (inv_prime_mem_chartRing x o₀ p.2 i) _) hN`. Take `⟨K, hK⟩` from `exists_pow_smul_mem_all hSR hw (primeProdErase S p) (fun q => q ≠ p) (fun q hq => dvd_primeProdErase q.2 (fun h => hq (Subtype.ext h)))`. Establish `hs : ¬ (((p : Nat.Primes) : ℕ) : ℤ) ∣ (n' * primeProdErase S p ^ K)`.
+
+Rewrite using `[(Nat.prime_iff_prime_int.mp (p : Nat.Primes).2).dvd_mul]`. Introduce and unpack `(h | h)`. Conclude with `hn' (Int.natCast_dvd_natCast.1 h)`. Conclude with `not_dvd_primeProdErase _ ((Nat.prime_iff_prime_int.mp (p : Nat.Primes).2).dvd_of_dvd_pow h)`. Use `⟨n' * primeProdErase S p ^ K, hs, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Int.cast_smul_eq_zsmul Ω]`. Establish `heq : (((n' * primeProdErase S p ^ K : ℤ)) : Ω) • v = ((primeProdErase S p : Ω) ^ K) • (((n' : ℤ) : Ω) • v)`. Rewrite using `[smul_smul]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `(mem_glueLat B₀ Bp).2 ⟨?_, fun q => ?_⟩` and prove the remaining obligations. Rewrite using `[heq]`. Conclude with `smul_mem_of_chart B₀ (pow_mem (intCast_mem_chartRing x i _ _) _) hw`. Distinguish the cases in `hq : q = p`.
+
+Substitute `hq` using the available equality. Conclude with `intCast_smul_mem (Bp q) _ hv`. Rewrite using `[heq]`. Conclude with `hK K le_rfl q hq`. Introduce and unpack `⟨s, hs, hsv⟩`.
+
+Establish `h0` using `((mem_glueLat B₀ Bp).1 hsv).2 p`. Rewrite `h0` using `[← Int.cast_smul_eq_zsmul Ω]`. Take `⟨hs0, hsinv⟩` from `inv_mem_chartRing_at (o := o) x p i hs`. Establish `: v = ((s : Ω)⁻¹) • ((s : Ω) • v)`. Rewrite using `[smul_smul, inv_mul_cancel₀ hs0, one_smul]`.
+
+Rewrite using `[this]`. Conclude with `smul_mem_of_chart (Bp p) hsinv h0`.
+-/
 theorem mem_Bp_iff [CharZero Ω] {i : τ} (hSR : ∀ p, SameRationalSpan (B₀.lat i) ((Bp p).lat i)) (p : S) (v : E) :
     v ∈ (Bp p).lat i ↔ ∃ s : ℤ, ¬ (((p : Nat.Primes) : ℕ) : ℤ) ∣ s ∧ s • v ∈ glueLat B₀ Bp i := by
   constructor
@@ -202,12 +280,20 @@ theorem mem_Bp_iff [CharZero Ω] {i : τ} (hSR : ∀ p, SameRationalSpan (B₀.l
     rw [this]
     exact smul_mem_of_chart (Bp p) hsinv h0
 
+/- English proof (translation)
+Take `⟨h0, hp⟩` from `(mem_glueLat B₀ Bp).1 he`. Conclude with `(mem_glueLat B₀ Bp).2 ⟨B₀.stable i a (mem_chartRing_of_int x i o₀ ha) e h0, fun p => (Bp p).stable i a (mem_chartRing_of_int x i (o p) ha) e (hp p)⟩`.
+-/
 theorem glueLat_stable (i : τ) (a : Ω) (ha : a ∈ chartRing ℤ x i) (e : E)
     (he : e ∈ glueLat B₀ Bp i) : a • e ∈ glueLat B₀ Bp i := by
   obtain ⟨h0, hp⟩ := (mem_glueLat B₀ Bp).1 he
   exact (mem_glueLat B₀ Bp).2 ⟨B₀.stable i a (mem_chartRing_of_int x i o₀ ha) e h0,
     fun p => (Bp p).stable i a (mem_chartRing_of_int x i (o p) ha) e (hp p)⟩
 
+/- English proof (translation)
+Take `⟨h0, hp⟩` from `(mem_glueLat B₀ Bp).1 he`. Take `⟨m₀, hm₀⟩` from `B₀.overlap i j hi hj e h0`. Use `choose mp hmp using fun p => (Bp p).overlap i j hi hj e (hp p)`. Use `⟨max m₀ (Finset.univ.sup mp), (mem_glueLat B₀ Bp).2 ⟨?_, fun p => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← pow_sub_mul_pow _ (le_max_left m₀ (Finset.univ.sup mp)), mul_smul]`.
+
+Conclude with `smul_mem_of_chart B₀ (pow_mem (div_mem_chartRing x j i) _) hm₀`. Establish `hle : mp p ≤ max m₀ (Finset.univ.sup mp)` using `le_trans (Finset.le_sup (Finset.mem_univ p)) (le_max_right _ _)`. Rewrite using `[← pow_sub_mul_pow _ hle, mul_smul]`. Conclude with `smul_mem_of_chart (Bp p) (pow_mem (div_mem_chartRing x j i) _) (hmp p)`.
+-/
 theorem glueLat_overlap (i j : τ) (hi : x i ≠ 0) (hj : x j ≠ 0) (e : E)
     (he : e ∈ glueLat B₀ Bp i) : ∃ m : ℕ, (x i / x j) ^ m • e ∈ glueLat B₀ Bp j := by
   classical

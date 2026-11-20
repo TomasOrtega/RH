@@ -11,12 +11,20 @@ open scoped TensorProduct
 
 variable {S : Scheme.{0}} {O : Type} [Ring O]
 
+/- English proof (translation)
+Establish `h` using `act.add 0 0`. Rewrite `h` using `[add_zero]`. Establish `: act.act 0 * act.act 0 = act.act 0 * 1` using `h.symm.trans (_root_.mul_one _).symm`. Conclude with `mul_left_cancel this`.
+-/
 theorem act_zero {A : Over S} [GrpObj A] (act : OActN O A) : act.act 0 = 1 := by
   have h := act.add 0 0
   rw [add_zero] at h
   have : act.act 0 * act.act 0 = act.act 0 * 1 := h.symm.trans (_root_.mul_one _).symm
   exact mul_left_cancel this
 
+/- English proof (translation)
+Unfold `matEnd`. Use `Pi.hom_ext _ _ fun i => ?_` and prove the remaining obligations. Rewrite using `[Pi.lift_π, Category.id_comp, List.ofFn_eq_map]`. Rewrite using `[List.prod_map_eq_pow_single i]`. Rewrite using `[List.count_finRange, pow_one, Matrix.one_apply_eq, act.one, Category.comp_id]`.
+
+Introduce `j hj _`. Rewrite using `[Matrix.one_apply_ne' hj, act_zero, comp_one]`.
+-/
 theorem matEnd_one {A : Over S} [GrpObj A] (act : OActN O A) (m : ℕ) :
     matEnd act (1 : Matrix (Fin m) (Fin m) O) = 𝟙 _ := by
   classical
@@ -28,10 +36,16 @@ theorem matEnd_one {A : Over S} [GrpObj A] (act : OActN O A) (m : ℕ) :
   · intro j hj _
     rw [Matrix.one_apply_ne' hj, act_zero, comp_one]
 
+/- English proof (translation)
+Apply the tactic sequence `apply pullback.hom_ext <;> simp [matBC, matEnd_one]`.
+-/
 theorem matBC_one {A : Over S} [GrpObj A] (act : OActN O A) {B B' : Scheme.{0}} (p : S ⟶ B) (b : B' ⟶ B) (m : ℕ) :
     matBC act p b (1 : Matrix (Fin m) (Fin m) O) = 𝟙 _ := by
   apply pullback.hom_ext <;> simp [matBC, matEnd_one]
 
+/- English proof (translation)
+Simplify using `only [op, Finsupp.sum_single_index, zero_smul, one_smul, matBC_one]`. Unfold `pullE pullHQ`. Rewrite using `[CategoryTheory.Functor.map_id, pullHl_id, LinearMap.baseChange_id, LinearMap.baseChange_id]`. Both sides reduce to the same expression.
+-/
 theorem op_single_one (l : ℕ) [Fact l.Prime] {E : Type} [CommRing E] [Algebra ℚ_[l] E] {A : Over S} [GrpObj A]
     (act : OActN O A) {B B' : Scheme.{0}} (p : S ⟶ B) (b : B' ⟶ B) (m : ℕ) (n : ℤ) :
     op l act p b (Finsupp.single (1 : Matrix (Fin m) (Fin m) O) (1 : E)) n = 1 := by
@@ -40,12 +54,20 @@ theorem op_single_one (l : ℕ) [Fact l.Prime] {E : Type} [CommRing E] [Algebra 
   rw [CategoryTheory.Functor.map_id, pullHl_id, LinearMap.baseChange_id, LinearMap.baseChange_id]
   rfl
 
+/- English proof (translation)
+Rewrite using `[Hxi, op_single_one]`. Conclude with `LinearMap.range_id`.
+-/
 theorem Hxi_single_one (l : ℕ) [Fact l.Prime] {E : Type} [CommRing E] [Algebra ℚ_[l] E] {A : Over S} [GrpObj A]
     (act : OActN O A) {B B' : Scheme.{0}} (p : S ⟶ B) (b : B' ⟶ B) (m : ℕ) (k : ℕ) (i : ℤ) :
     Hxi l act p b (Finsupp.single (1 : Matrix (Fin m) (Fin m) O) (1 : E)) k i = ⊤ := by
   rw [Hxi, op_single_one]
   exact LinearMap.range_id
 
+/- English proof (translation)
+Establish `hh` using `act.hom (1 + 1)`. Establish `h2 : ∀ z : T ⟶ A, z ≫ act.act (1 + 1) = z * z` using `fun z => by`. Rewrite using `[act.add, act.one, comp_mul, Category.comp_id]`. Establish `h : (x * y) ≫ act.act (1 + 1) = (x ≫ act.act (1 + 1)) * (y ≫ act.act (1 + 1))` using `mul_comp _ _ _`. Rewrite `h` using `[h2, h2, h2]`.
+
+Establish `h' : x * (y * x) * y = x * (x * y) * y` using `by simpa [_root_.mul_assoc] using h`. Conclude with `(mul_left_cancel (mul_right_cancel h')).symm`.
+-/
 theorem pts_comm {A : Over S} [GrpObj A] (act : OActN O A) {T : Over S} (x y : T ⟶ A) : x * y = y * x := by
   have hh := act.hom (1 + 1)
   have h2 : ∀ z : T ⟶ A, z ≫ act.act (1 + 1) = z * z := fun z => by
@@ -55,6 +77,11 @@ theorem pts_comm {A : Over S} [GrpObj A] (act : OActN O A) {T : Over S} (x y : T
   have h' : x * (y * x) * y = x * (x * y) * y := by simpa [_root_.mul_assoc] using h
   exact (mul_left_cancel (mul_right_cancel h')).symm
 
+/- English proof (translation)
+Unfold `matEnd`. Rewrite using `[Pi.lift_π]`. Set `φ : (pow A m ⟶ A) →* (T ⟶ A)` to `{ toFun := fun g => x ≫ g, map_one' := comp_one _, map_mul' := fun _ _ => comp_mul _ _ _ }`. Express the relevant statement in the definitionally equal form `φ _ = _`. Rewrite using `[map_list_prod, List.map_ofFn]`.
+
+Use `congr 2`. Apply the tactic sequence `all_goals (funext j; simp [φ])`.
+-/
 theorem comp_matEnd_pr {A : Over S} [GrpObj A] (act : OActN O A) {m : ℕ} (M : Matrix (Fin m) (Fin m) O) {T : Over S}
     (x : T ⟶ pow A m) (i : Fin m) :
     x ≫ matEnd act M ≫ pr A i = (List.ofFn fun j => (x ≫ pr A j) ≫ act.act (M i j)).prod := by
@@ -66,6 +93,15 @@ theorem comp_matEnd_pr {A : Over S} [GrpObj A] (act : OActN O A) {m : ℕ} (M : 
   congr 2
   all_goals (funext j; simp [φ])
 
+/- English proof (translation)
+Use `letI : CommGroup (pow A m ⟶ A) := { (inferInstance : Group (pow A m ⟶ A)) with mul_comm := pts_comm act }`. Use `Pi.hom_ext _ _ fun i => ?_` and prove the remaining obligations. Establish `h1` using `comp_matEnd_pr act (M * N) (𝟙 _) i`. Establish `h2` using `comp_matEnd_pr act M (matEnd act N) i`. Establish `h3` using `fun j => comp_matEnd_pr act N (𝟙 _) j`.
+
+Simplify using `only [Category.id_comp] at h1 h3`. Rewrite using `[Category.assoc]`. Use `h1.trans (Eq.trans ?_ h2.symm)` and prove the remaining obligations. Simplify using `only [h3, List.prod_ofFn]`. Establish `hψ : ∀ (b : O) (g : Fin m → (pow A m ⟶ A)), (∏ k, g k) ≫ act.act b = ∏ k, g k ≫ act.act b` using `fun b g => by`.
+
+Use `act.hom b` as an intermediate fact. Set `ψ : (pow A m ⟶ A) →* (pow A m ⟶ A)` to `{ toFun := fun g => g ≫ act.act b, map_one' := one_comp _, map_mul' := fun _ _ => mul_comp _ _ _ }`. Conclude with `map_prod ψ g Finset.univ`. Establish `hχ : ∀ (z : pow A m ⟶ A) (c : Fin m → O), z ≫ act.act (∑ j, c j) = ∏ j, z ≫ act.act (c j)` using `fun z c => by`. Set `χ : Multiplicative O →* (pow A m ⟶ A)` to `{ toFun := fun b => z ≫ act.act b.toAdd map_one' := by change z ≫ act.act 0 = 1; rw [act_zero, comp_one] map_mul' := fun a b => by change z ≫ act.act (a.toAdd + b.toAdd) = _; rw [act.add, comp_mul] }`.
+
+Conclude with `map_prod χ (fun j => Multiplicative.ofAdd (c j)) Finset.univ`. Simplify using `only [hψ, Matrix.mul_apply, hχ, act.mul, Category.assoc]`. Conclude with `Finset.prod_comm`.
+-/
 theorem matEnd_mul {A : Over S} [GrpObj A] (act : OActN O A) {m : ℕ} (M N : Matrix (Fin m) (Fin m) O) :
     matEnd act (M * N) = matEnd act N ≫ matEnd act M := by
   letI : CommGroup (pow A m ⟶ A) := { (inferInstance : Group (pow A m ⟶ A)) with mul_comm := pts_comm act }
@@ -91,26 +127,41 @@ theorem matEnd_mul {A : Over S} [GrpObj A] (act : OActN O A) {m : ℕ} (M N : Ma
   simp only [hψ, Matrix.mul_apply, hχ, act.mul, Category.assoc]
   exact Finset.prod_comm
 
+/- English proof (translation)
+Apply the tactic sequence `apply pullback.hom_ext <;> simp [matBC, matEnd_mul, pullback.map, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc]`.
+-/
 theorem matBC_mul {A : Over S} [GrpObj A] (act : OActN O A) {B B' : Scheme.{0}} (p : S ⟶ B) (b : B' ⟶ B) {m : ℕ}
     (M N : Matrix (Fin m) (Fin m) O) : matBC act p b (M * N) = matBC act p b N ≫ matBC act p b M := by
   apply pullback.hom_ext <;> simp [matBC, matEnd_mul, pullback.map, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc]
 
 variable (l : ℕ) [Fact l.Prime] {E : Type} [CommRing E] [Algebra ℚ_[l] E]
 
+/- English proof (translation)
+Unfold `pullEt pullHQ`. Rewrite using `[CategoryTheory.Functor.map_id, pullHl_id, LinearMap.baseChange_id, LinearMap.baseChange_id]`.
+-/
 theorem pullEt_id (Y : Scheme.{0}) (n t : ℤ) : pullEt l E (𝟙 Y) n t = LinearMap.id := by
   unfold pullEt pullHQ
   rw [CategoryTheory.Functor.map_id, pullHl_id, LinearMap.baseChange_id, LinearMap.baseChange_id]
 
+/- English proof (translation)
+Unfold `pullEt pullHQ`. Rewrite using `[Functor.map_comp, pullHl_comp, LinearMap.baseChange_comp, LinearMap.baseChange_comp]`.
+-/
 theorem pullEt_comp {X Y Z : Scheme.{0}} (f : X ⟶ Y) (g : Y ⟶ Z) (n t : ℤ) :
     pullEt l E (f ≫ g) n t = pullEt l E f n t ∘ₗ pullEt l E g n t := by
   unfold pullEt pullHQ
   rw [Functor.map_comp, pullHl_comp, LinearMap.baseChange_comp, LinearMap.baseChange_comp]
 
+/- English proof (translation)
+Simplify using `only [opT, Finsupp.sum_single_index, zero_smul]`.
+-/
 theorem opT_single {A : Over S} [GrpObj A] (act : OActN O A) {B B' : Scheme.{0}} (p : S ⟶ B) (b : B' ⟶ B) {m : ℕ}
     (M : Matrix (Fin m) (Fin m) O) (c : E) (n t : ℤ) :
     opT l act p b (Finsupp.single M c) n t = c • pullEt l E (matBC act p b M) n t := by
   simp only [opT, Finsupp.sum_single_index, zero_smul]
 
+/- English proof (translation)
+Simplify using `only [opT_single, one_smul, matBC_mul, pullEt_comp]`. Both sides reduce to the same expression.
+-/
 theorem opT_single_mul {A : Over S} [GrpObj A] (act : OActN O A) {B B' : Scheme.{0}} (p : S ⟶ B) (b : B' ⟶ B) {m : ℕ}
     (M N : Matrix (Fin m) (Fin m) O) (n t : ℤ) :
     opT l act p b (Finsupp.single (M * N) (1 : E)) n t =
@@ -118,6 +169,11 @@ theorem opT_single_mul {A : Over S} [GrpObj A] (act : OActN O A) {B B' : Scheme.
   simp only [opT_single, one_smul, matBC_mul, pullEt_comp]
   rfl
 
+/- English proof (translation)
+Use extensionality with `f x`. Simplify using `only [altOp, Finsupp.sum_single_index, zero_smul, one_smul, altPull_apply, Module.End.mul_apply]`. Use `congr 1`. Use function extensionality and compare the values at `a i`. Simplify using `only [matAct_apply, Matrix.mul_apply, map_sum, map_mul, LinearMap.sum_apply, Module.End.mul_apply]`.
+
+Conclude with `Finset.sum_comm`.
+-/
 theorem altOp_single_mul {R : Type} [CommRing R] {V : Type} [AddCommGroup V] [Module R V] [Algebra R E]
     (ρ : O →+* Module.End R V) {m : ℕ} (M N : Matrix (Fin m) (Fin m) O) (q : ℕ) :
     altOp ρ (Finsupp.single (M * N) (1 : E)) q =
@@ -129,6 +185,9 @@ theorem altOp_single_mul {R : Type} [CommRing R] {V : Type} [AddCommGroup V] [Mo
   simp only [matAct_apply, Matrix.mul_apply, map_sum, map_mul, LinearMap.sum_apply, Module.End.mul_apply]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Rewrite using `[HxiT, opT_single, one_smul, matBC_one, pullEt_id]`. Conclude with `LinearMap.range_id`.
+-/
 theorem HxiT_single_one {A : Over S} [GrpObj A] (act : OActN O A) {B B' : Scheme.{0}} (p : S ⟶ B) (b : B' ⟶ B)
     (m k : ℕ) (t i : ℤ) : HxiT l act p b (Finsupp.single (1 : Matrix (Fin m) (Fin m) O) (1 : E)) k t i = ⊤ := by
   rw [HxiT, opT_single, one_smul, matBC_one, pullEt_id]
@@ -137,15 +196,26 @@ theorem HxiT_single_one {A : Over S} [GrpObj A] (act : OActN O A) {B B' : Scheme
 section Gal
 variable {k : Type} [Field k] (Ω : Type) [Field Ω] [Algebra k Ω]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem galEt_eq {Y : Scheme.{0}} (q : Y ⟶ Spec (CommRingCat.of k)) (n t : ℤ) (σ : Ω ≃ₐ[k] Ω) :
     galEt l E Ω q n t σ = (galHQ l Ω q n t σ).baseChange E := rfl
 
+/- English proof (translation)
+Unfold `galEt`. Rewrite using `[galMap_mul, pullEt_comp]`. Both sides reduce to the same expression.
+-/
 theorem galEt_mul {Y : Scheme.{0}} (q : Y ⟶ Spec (CommRingCat.of k)) (n t : ℤ) (σ τ : Ω ≃ₐ[k] Ω) :
     galEt l E Ω q n t (σ * τ) = galEt l E Ω q n t σ * galEt l E Ω q n t τ := by
   unfold galEt
   rw [galMap_mul, pullEt_comp]
   rfl
 
+/- English proof (translation)
+Unfold `opT Finsupp.sum`. Simplify using `only [LinearMap.sum_apply, map_sum, LinearMap.smul_apply, map_smul]`. Use `Finset.sum_congr rfl fun M _ => ?_` and prove the remaining obligations. Establish `h1` using `LinearMap.congr_fun (pullEt_comp (E := E) l u (matBC act p b M) n t) y`. Establish `h2` using `LinearMap.congr_fun (pullEt_comp (E := E) l (matBC act p b M) u n t) y`.
+
+Rewrite `h1` using `[h]`. Conclude with `congrArg _ (h1.symm.trans h2)`.
+-/
 theorem opT_comm_pull {A : Over S} [GrpObj A] (act : OActN O A) {B B' : Scheme.{0}} (p : S ⟶ B) (b : B' ⟶ B) {m : ℕ}
     (ε : Matrix (Fin m) (Fin m) O →₀ E) (n t : ℤ) (u : ksBC A m p b ⟶ ksBC A m p b)
     (h : ∀ M, u ≫ matBC act p b M = matBC act p b M ≫ u) (y : HEt l E (ksBC A m p b) n t) :
@@ -158,6 +228,9 @@ theorem opT_comm_pull {A : Over S} [GrpObj A] (act : OActN O A) {B B' : Scheme.{
   rw [h] at h1
   exact congrArg _ (h1.symm.trans h2)
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `[matBC, pullback.map, pullback.lift_fst, GlobalTheory.Et.galMap_fst, GlobalTheory.Et.galMap_fst_assoc]`. Simplify using `[matBC, pullback.map, pullback.lift_snd, pullback.lift_snd_assoc, GlobalTheory.Et.galMap_snd]`.
+-/
 theorem galMap_matBC {A : Over S} [GrpObj A] (act : OActN O A) (p : S ⟶ Spec (CommRingCat.of k)) {m : ℕ}
     (σ : Ω ≃ₐ[k] Ω) (M : Matrix (Fin m) (Fin m) O) :
     GlobalTheory.Et.galMap Ω ((pow A m).hom ≫ p) σ ≫ matBC act p _ M = matBC act p _ M ≫ GlobalTheory.Et.galMap Ω ((pow A m).hom ≫ p) σ := by
@@ -165,6 +238,9 @@ theorem galMap_matBC {A : Over S} [GrpObj A] (act : OActN O A) (p : S ⟶ Spec (
   · simp [matBC, pullback.map, pullback.lift_fst, GlobalTheory.Et.galMap_fst, GlobalTheory.Et.galMap_fst_assoc]
   · simp [matBC, pullback.map, pullback.lift_snd, pullback.lift_snd_assoc, GlobalTheory.Et.galMap_snd]
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `hx`. Conclude with `⟨_, (opT_comm_pull l act p _ ε (i + d) t _ (galMap_matBC Ω act p σ) y).symm⟩`.
+-/
 theorem HxiT_gal_stable {A : Over S} [GrpObj A] (act : OActN O A) (p : S ⟶ Spec (CommRingCat.of k)) {m : ℕ}
     (ε : Matrix (Fin m) (Fin m) O →₀ E) (d : ℕ) (t i : ℤ) (σ : Ω ≃ₐ[k] Ω)
     (x : HEt l E (GlobalTheory.Et.geom Ω ((pow A m).hom ≫ p)) (i + d) t)
@@ -175,17 +251,28 @@ theorem HxiT_gal_stable {A : Over S} [GrpObj A] (act : OActN O A) (p : S ⟶ Spe
 
 end Gal
 
+/- English proof (translation)
+Unfold `powMap`. Rewrite using `[← Over.comp_left, Pi.lift_π]`. Both sides reduce to the same expression.
+-/
 theorem powMap_pr {S' : Scheme.{0}} {A' : Over S'} {A : Over S} (f : S' ⟶ S) (φ : A'.left ⟶ A.left)
     (h : φ ≫ A.hom = A'.hom ≫ f) (m : ℕ) (i : Fin m) : powMap f φ h m ≫ (pr A i).left = (pr A' i).left ≫ φ := by
   unfold powMap
   rw [← Over.comp_left, Pi.lift_π]
   rfl
 
+/- English proof (translation)
+Unfold `powMap`. Conclude with `Over.w _`.
+-/
 theorem powMap_over {S' : Scheme.{0}} {A' : Over S'} {A : Over S} (f : S' ⟶ S) (φ : A'.left ⟶ A.left)
     (h : φ ≫ A.hom = A'.hom ≫ f) (m : ℕ) : powMap f φ h m ≫ (pow A m).hom = (pow A' m).hom ≫ f := by
   unfold powMap
   exact Over.w _
 
+/- English proof (translation)
+Take `⟨e, -⟩` from `h`. Establish `e0` using `e _ (𝟙 (Spec (CommRingCat.of ℂ))) 0`. Use `haveI : Unique (GlobalTheory.CxPts (𝟙 (Spec (CommRingCat.of ℂ))) (RingHom.id ℂ)) := { default := ⟨_, Category.comp_id _⟩ uniq := fun y => Subtype.ext ((Category.comp_id _).symm.trans y.2) }`. Establish `iso` using `AlgebraicTopology.singularHomologyFunctorZeroOfTotallyDisconnectedSpace (ModuleCat.{0} F) (ModuleCat.of F F) (TopCat.of (GlobalTheory.CxPts (𝟙 (Spec (CommRingCat.of ℂ))) (RingHom.id ℂ)))`. Establish `iso2` using `iso ≪≫ coproductUniqueIso _`.
+
+Establish `: Nontrivial (((AlgebraicTopology.singularHomologyFunctor (ModuleCat.{0} F) 0).obj (ModuleCat.of F F)).obj (TopCat.of (GlobalTheory.CxPts (𝟙 (Spec (CommRingCat.of ℂ))) (RingHom.id ℂ))))` using `iso2.toLinearEquiv.toEquiv.nontrivial`. Conclude with `e0.toEquiv.nontrivial`.
+-/
 theorem nontrivial_of_artinQE (F : Type) [Field F] [Algebra ℚ_[l] F] (h : ArtinQE l F) :
     Nontrivial (HE l F (Spec (CommRingCat.of ℂ)) (0 : ℕ)) := by
   obtain ⟨e, -⟩ := h
@@ -222,6 +309,11 @@ def intAct (A : Over S) [GrpObj A] [IsCommMonObj A] : OActN ℤ A where
     simp [φ]
   add b c := zpow_add _ _ _
 
+/- English proof (translation)
+Establish `h` using `comp_matEnd_pr act !![1, 1; 0, 1] (𝟙 _)`. Simplify using `only [Category.id_comp] at h`. Prove the components needed by the constructor for the conclusion. Rewrite using `[h]`. Simplify using `[act.one]`.
+
+Rewrite using `[h]`. Simplify using `[act.one, act_zero]`.
+-/
 theorem matEnd_shear {A : Over S} [GrpObj A] (act : OActN O A) :
     matEnd act !![1, 1; 0, 1] ≫ pr A 0 = pr A 0 * pr A 1 ∧ matEnd act !![1, 1; 0, 1] ≫ pr A 1 = pr A 1 := by
   have h := comp_matEnd_pr act !![1, 1; 0, 1] (𝟙 _)

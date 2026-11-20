@@ -18,8 +18,18 @@ variable {n : ℕ}
 
 def kap (ε : Fin n → Bool) (k : ReciprocityTheory.ChartRestriction.DS.S7.KG ε) : KG ε := k
 
+/- English proof (translation)
+The claim follows from `continuous_id`.
+-/
 theorem continuous_kap (ε : Fin n → Bool) : Continuous (kap ε) := continuous_id
 
+/- English proof (translation)
+Establish `hm : Measurable (kap ε)` using `(continuous_kap ε).measurable`. Establish `h0 : ReciprocityTheory.ChartRestriction.DS.S7.muK ε Set.univ ≠ 0` using `(isOpen_univ.measure_pos (ReciprocityTheory.ChartRestriction.DS.S7.muK ε) ⟨1, Set.mem_univ _⟩).ne'`. Establish `ht : ReciprocityTheory.ChartRestriction.DS.S7.muK ε Set.univ ≠ ⊤` using `measure_ne_top _ _`. Establish `key : ReciprocityTheory.ChartRestriction.DS.S7.muK ε = ReciprocityTheory.ChartRestriction.DS.S7.muK ε Set.univ • Measure.haarMeasure ⊤`. Simplify using `using Measure.haarMeasure_unique (ReciprocityTheory.ChartRestriction.DS.S7.muK ε) ⊤`.
+
+Establish `hdk : dk ε = Measure.haarMeasure ⊤`. Unfold `dk`. Combine the equalities or inequalities in the displayed calculation. Use extensionality with `s hs`. Rewrite using `[Measure.map_apply hm hs, hdk, Measure.haarMeasure_apply (hm hs)]`.
+
+Unfold `muK`. Rewrite using `[Measure.haarMeasure_apply hs]`. Simplify using `only [TopologicalSpace.PositiveCompacts.coe_top]`. Rewrite using `[Content.measure_apply _ MeasurableSet.univ, Content.measure_apply _ MeasurableSet.univ]`. Both sides reduce to the same expression.
+-/
 theorem map_kap (ε : Fin n → Bool) : Measure.map (kap ε) (dk ε) = muK ε := by
   have hm : Measurable (kap ε) := (continuous_kap ε).measurable
   have h0 : ReciprocityTheory.ChartRestriction.DS.S7.muK ε Set.univ ≠ 0 :=
@@ -42,6 +52,11 @@ theorem map_kap (ε : Fin n → Bool) : Measure.map (kap ε) (dk ε) = muK ε :=
   rw [Content.measure_apply _ MeasurableSet.univ, Content.measure_apply _ MeasurableSet.univ]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← map_kap ε]`. Prove the components needed by the constructor for the conclusion. Use `show Measure.map Inv.inv (Measure.map (kap ε) (dk ε)) = Measure.map (kap ε) (dk ε)`. Establish `hm : Measurable (kap ε)` using `(continuous_kap ε).measurable`. Rewrite using `[Measure.map_map measurable_inv hm]`.
+
+Establish `e1 : Measure.map (fun x => x⁻¹) (dk ε) = dk ε`. Conclude with `ReciprocityTheory.ChartRestriction.DS.CompactHaarProbability.dk_inv ε`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem muK_inv (ε : Fin n → Bool) : (muK ε).IsInvInvariant := by
   rw [← map_kap ε]
   constructor
@@ -55,6 +70,9 @@ theorem muK_inv (ε : Fin n → Bool) : (muK ε).IsInvInvariant := by
         (Measure.map_map hm measurable_inv).symm
     _ = Measure.map (kap ε) (dk ε) := by rw [e1]
 
+/- English proof (translation)
+Use `show (ENNReal.ofReal (cPQ ε) • ReciprocityTheory.ChartRestriction.DS.muPolar ε).IsInvInvariant`. Prove the components needed by the constructor for the conclusion. Use `show Measure.map (fun x => x⁻¹) (ENNReal.ofReal (cPQ ε) • ReciprocityTheory.ChartRestriction.DS.muPolar ε) = ENNReal.ofReal (cPQ ε) • ReciprocityTheory.ChartRestriction.DS.muPolar ε`. Rewrite using `[Measure.map_smul, ReciprocityTheory.ChartRestriction.DS.muPolar_inv ε]`.
+-/
 theorem muCD_inv (ε : Fin n → Bool) : (muCD ε).IsInvInvariant := by
   show (ENNReal.ofReal (cPQ ε) • ReciprocityTheory.ChartRestriction.DS.muPolar ε).IsInvInvariant
   constructor
@@ -64,6 +82,13 @@ theorem muCD_inv (ε : Fin n → Bool) : (muCD ε).IsInvInvariant := by
 
 def low (ε : Fin n → Bool) (B : Mode ε → ℂ) : PCoord ε → ℂ := fun x => pB ε B x.1.1 x.1.2
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a b`. Simplify using `only [pmat, low]`. Use `split_ifs with h1 h2`. Both sides reduce to the same expression. Establish `h` using `congrFun (congrFun (pB_conjTranspose ε B) a) b`.
+
+Rewrite `h` using `[Matrix.conjTranspose_apply]`. Conclude with `h`. Use `symm`. Apply `pB_ne` to reduce the goal to its premises. Assume the negation of the conclusion as `hne`.
+
+Break down `lt_trichotomy a b with h | h | h` into its components or cases. Conclude with `h2 ⟨h, fun e => hne e.symm⟩`. Substitute `h` using the available equality. Conclude with `hne rfl`. Conclude with `h1 ⟨h, hne⟩`.
+-/
 theorem pmat_low (ε : Fin n → Bool) (B : Mode ε → ℂ) : pmat (low ε B) = pB ε B := by
   funext a b
   simp only [pmat, low]
@@ -111,12 +136,21 @@ def lowL (ε : Fin n → Bool) : (Mode ε → ℂ) ≃ₗ[ℝ] (PCoord ε → �
       revert this h1 h2
       cases ε a <;> cases ε b <;> simp
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun x => (continuous_apply x.1.2).comp ((continuous_apply x.1.1).comp (continuous_pB ε))`.
+-/
 theorem continuous_low (ε : Fin n → Bool) : Continuous (low ε) :=
   continuous_pi fun x => (continuous_apply x.1.2).comp ((continuous_apply x.1.1).comp (continuous_pB ε))
 
+/- English proof (translation)
+The claim follows from `map_neg (lowL ε) B`.
+-/
 theorem low_neg (ε : Fin n → Bool) (B : Mode ε → ℂ) : low ε (-B) = -low ε B :=
   map_neg (lowL ε) B
 
+/- English proof (translation)
+Establish `: (Measure.map (low ε) (volume : Measure (Mode ε → ℂ))).IsAddHaarMeasure` using `(lowL ε).toContinuousLinearEquiv.isAddHaarMeasure_map (volume : Measure (Mode ε → ℂ))`. Conclude with `⟨Measure.addHaarScalarFactor (Measure.map (low ε) volume) volume, (Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure _ _).ne', Measure.isAddLeftInvariant_eq_smul _ _⟩`.
+-/
 theorem map_low (ε : Fin n → Bool) : ∃ c : ℝ≥0, c ≠ 0 ∧
     Measure.map (low ε) volume = c • (volume : Measure (PCoord ε → ℂ)) := by
   have : (Measure.map (low ε) (volume : Measure (Mode ε → ℂ))).IsAddHaarMeasure :=
@@ -125,6 +159,11 @@ theorem map_low (ε : Fin n → Bool) : ∃ c : ℝ≥0, c ≠ 0 ∧
     (Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure _ _).ne',
     Measure.isAddLeftInvariant_eq_smul _ _⟩
 
+/- English proof (translation)
+Establish `hp : pB ε (-B) = -pB ε B`. Use function extensionality and compare the values at `a b`. Use `show pB ε (-B) a b = -(pB ε B a b)`. Unfold `pB`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Establish `h1` using `((stEB n ε).2.2 (-B)).1`. Establish `h2` using `((stEB n ε).2.2 B).2`. Rewrite `h1` using `[hp, ← h2]`. Conclude with `Subtype.ext (Units.ext h1)`.
+-/
 theorem eB_neg (ε : Fin n → Bool) (B : Mode ε → ℂ) : eB ε (-B) = (eB ε B)⁻¹ := by
   have hp : pB ε (-B) = -pB ε B := by
     funext a b
@@ -138,17 +177,44 @@ theorem eB_neg (ε : Fin n → Bool) (B : Mode ε → ℂ) : eB ε (-B) = (eB ε
 
 def pol (ε : Fin n → Bool) (x : KG ε × (Mode ε → ℂ)) : UJ ε := x.1 * eB ε x.2
 
+/- English proof (translation)
+The claim follows from `(continuous_subtype_val.comp continuous_fst).mul ((stEB n ε).1.comp continuous_snd)`.
+-/
 theorem continuous_pol (ε : Fin n → Bool) : Continuous (pol ε) :=
   (continuous_subtype_val.comp continuous_fst).mul ((stEB n ε).1.comp continuous_snd)
 
 def den (ε : Fin n → Bool) (B : Mode ε → ℂ) : ℝ≥0 := (Jac (low ε B)).toNNReal
 
+/- English proof (translation)
+The claim follows from `continuous_real_toNNReal.comp ((ReciprocityTheory.ChartRestriction.DS.jac_continuous ε).comp (continuous_low ε))`.
+-/
 theorem continuous_den (ε : Fin n → Bool) : Continuous (den ε) :=
   continuous_real_toNNReal.comp ((ReciprocityTheory.ChartRestriction.DS.jac_continuous ε).comp (continuous_low ε))
 
 def rho (ε : Fin n → Bool) : Measure (KG ε × (Mode ε → ℂ)) :=
   (muK ε).prod (volume.withDensity fun B => (den ε B : ℝ≥0∞))
 
+/- English proof (translation)
+Take `⟨c0, hc0, hlow⟩` from `map_low ε`. Establish `hl : Measurable (low ε)` using `(continuous_low ε).measurable`. Establish `hJm : Measurable (fun z : PCoord ε → ℂ => ENNReal.ofReal (Jac z))` using `ENNReal.measurable_ofReal.comp (ReciprocityTheory.ChartRestriction.DS.jac_continuous ε).measurable`. Establish `hden : Measure.map (low ε) (volume.withDensity fun B => (den ε B : ℝ≥0∞)) = c0 • volume.withDensity (fun z : PCoord ε → ℂ => ENNReal.ofReal (Jac z))`. Rewrite `hlow`, the goal using `[ENNReal.smul_def]`.
+
+Use extensionality with `s hs`. Establish `hL` using `congrArg (fun m : Measure (PCoord ε → ℂ) => ∫⁻ z, s.indicator (fun z => ENNReal.ofReal (Jac z)) z ∂m) hlow`. Simplify using `only [lintegral_smul_measure, smul_eq_mul] at hL`. Rewrite `hL` using `[lintegral_map (hJm.indicator hs) hl, lintegral_indicator hs]`. Rewrite using `[Measure.map_apply hl hs, withDensity_apply _ (hl hs), Measure.smul_apply, withDensity_apply _ hs, smul_eq_mul, ← hL, ← lintegral_indicator (hl hs)]`.
+
+Use `lintegral_congr fun B => ?_` and prove the remaining obligations. Distinguish the cases in `hB : low ε B ∈ s`. Simplify using `[Set.indicator, hB, den, ENNReal.ofReal]`. Simplify using `[Set.indicator, hB]`. Establish `hκ : Measurable (Prod.map (kap ε) (id : (Mode ε → ℂ) → (Mode ε → ℂ)))` using `(continuous_kap ε).measurable.prodMap measurable_id`.
+
+Establish `hψ : Measurable (Prod.map (id : ReciprocityTheory.ChartRestriction.DS.S7.KG ε → ReciprocityTheory.ChartRestriction.DS.S7.KG ε) (low ε))` using `measurable_id.prodMap hl`. Establish `hprod : Measure.map (Prod.map id (low ε)) ((dk ε).prod (volume.withDensity fun B => (den ε B : ℝ≥0∞))) = (dk ε).prod (c0 • volume.withDensity fun z : PCoord ε → ℂ => ENNReal.ofReal (Jac z))`. Rewrite using `[← Measure.map_prod_map _ _ measurable_id hl, Measure.map_id, hden]`. Establish `hmk : Measure.map (Prod.map (kap ε) id) ((dk ε).prod (volume.withDensity fun B => (den ε B : ℝ≥0∞))) = rho ε`. Rewrite using `[← Measure.map_prod_map _ _ (continuous_kap ε).measurable measurable_id, Measure.map_id, map_kap]`.
+
+Both sides reduce to the same expression. Establish `hpt : (fun x => polarM (Prod.map id (low ε) x)) = fun x => Formalism.MainNotions.S.umat (pol ε (Prod.map (kap ε) id x))`. Use function extensionality and compare the values at `x`. Take `⟨k, B⟩` from `x`. Use `show polarM (k, low ε B) = Formalism.MainNotions.S.umat ((kap ε k : UJ ε) * eB ε B)`.
+
+Rewrite using `[show Formalism.MainNotions.S.umat ((kap ε k : UJ ε) * eB ε B) = toM (kap ε k : UJ ε) * toM (eB ε B) from rfl, toM_eB, ← pmat_low ε B]`. Both sides reduce to the same expression. Establish `hpm : Measurable (pol ε)` using `(continuous_pol ε).measurable`. Establish `hpolC : Continuous (Y` using `Fin n → Fin n → ℂ) (polarM (ε := ε)) := ReciprocityTheory.ChartRestriction.DS.polarM_continuous ε`. Establish `hpolM : Measurable (polarM (ε` using `ε)) := hpolC.measurable`.
+
+Establish `hce : Topology.IsClosedEmbedding (X` using `UJ ε) (Y := Fin n → Fin n → ℂ) (fun g => Formalism.MainNotions.S.umat g) := (Formalism.REAL.isClosedEmbeddingMatrix n ε).1`. Establish `humP : MeasurableEmbedding (α` using `UJ ε) (β := Fin n → Fin n → ℂ) (fun g => Formalism.MainNotions.S.umat g) := hce.measurableEmbedding`. Establish `hum : MeasurableEmbedding (fun g : UJ ε => Formalism.MainNotions.S.umat g)` using `humP`. Establish `hmain : Measure.map polarM ((dk ε).prod (c0 • volume.withDensity fun z : PCoord ε → ℂ => ENNReal.ofReal (Jac z))) = Measure.map (fun g : UJ ε => Formalism.MainNotions.S.umat g) (Measure.map (pol ε) (rho ε))`. Rewrite using `[← hprod, ← hmk, Measure.map_map hpolM hψ, Measure.map_map hpm hκ, Measure.map_map hum.measurable (hpm.comp hκ)]`.
+
+Conclude with `congrArg (fun F => Measure.map F ((dk ε).prod (volume.withDensity fun B => (den ε B : ℝ≥0∞)))) hpt`. Establish `h2 : Measure.map polarM ((dk ε).prod (volume.withDensity fun z : PCoord ε → ℂ => ENNReal.ofReal (Jac z))) = (c0 : ℝ≥0∞)⁻¹ • Measure.map (fun g : UJ ε => Formalism.MainNotions.S.umat g) (Measure.map (pol ε) (rho ε))`. Rewrite using `[← hmain, ENNReal.smul_def, Measure.prod_smul_right, Measure.map_smul, smul_smul, ENNReal.inv_mul_cancel (by exact_mod_cast hc0) ENNReal.coe_ne_top, one_smul]`. Use `⟨(cPQ ε).toNNReal * c0⁻¹, mul_ne_zero (Real.toNNReal_pos.mpr (ReciprocityTheory.ChartRestriction.DS.cPQ_pos ε)).ne' (inv_ne_zero hc0), ?_⟩` and prove the remaining obligations. Unfold `muCD ReciprocityTheory.ChartRestriction.DS.muPolarMat`.
+
+Use `erw [h2]`. Use extensionality with `s hs`. Rewrite using `[Measure.smul_apply]`. Use `erw [humP.comap_apply]`. Rewrite using `[Measure.smul_apply ((cPQ ε).toNNReal * c0⁻¹)]`.
+
+Use `erw [Measure.smul_apply ((c0 : ℝ≥0∞)⁻¹), humP.map_apply, humP.injective.preimage_image]`. Simplify using `only [ENNReal.smul_def, smul_eq_mul, ENNReal.coe_mul, ENNReal.coe_inv hc0, mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem map_pol (ε : Fin n → Bool) : ∃ c : ℝ≥0, c ≠ 0 ∧ muCD ε = c • Measure.map (pol ε) (rho ε) := by
   obtain ⟨c0, hc0, hlow⟩ := map_low ε
   have hl : Measurable (low ε) := (continuous_low ε).measurable
@@ -218,6 +284,13 @@ theorem map_pol (ε : Fin n → Bool) : ∃ c : ℝ≥0, c ≠ 0 ∧ muCD ε = c
   simp only [ENNReal.smul_def, smul_eq_mul, ENNReal.coe_mul, ENNReal.coe_inv hc0, mul_assoc]
   rfl
 
+/- English proof (translation)
+Establish `hfi : Integrable f μ` using `hf.integrable_of_hasCompactSupport hs`. Establish `hcne : (c : ℝ≥0∞) ≠ 0` using `ENNReal.coe_ne_zero.mpr hc`. Establish `hpm : Measurable (pol ε)` using `(continuous_pol ε).measurable`. Establish `hfm : Integrable f (Measure.map (pol ε) (rho ε))`. Rewrite `hfi` using `[h, ENNReal.smul_def]`.
+
+Conclude with `(integrable_smul_measure hcne ENNReal.coe_ne_top).mp hfi`. Establish `hfp : Integrable (fun x => f (pol ε x)) (rho ε)` using `(integrable_map_measure hf.aestronglyMeasurable hpm.aemeasurable).mp hfm`. Rewrite using `[h, integral_smul_nnreal_measure, integral_map hpm.aemeasurable hf.aestronglyMeasurable]`. Unfold `rho at hfp ⊢`. Rewrite using `[integral_prod_symm _ hfp, integral_withDensity_eq_integral_smul (continuous_den ε).measurable, NNReal.smul_def, ← integral_smul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `B`. Simplify using `only [NNReal.smul_def, Complex.real_smul, pol]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem left (ε : Fin n → Bool) (μ : Measure (UJ ε)) (c : ℝ≥0) (hc : c ≠ 0) [IsFiniteMeasureOnCompacts μ]
     (h : μ = c • Measure.map (pol ε) (rho ε)) (f : UJ ε → ℂ) (hf : Continuous f) (hs : HasCompactSupport f) :
     ∫ g, f g ∂μ = ∫ B, (((c : ℝ) * den ε B : ℝ) : ℂ) * ∫ k : KG ε, f (k * eB ε B) ∂(muK ε) := by
@@ -245,6 +318,21 @@ namespace GlobalTheory.PsCo.Pc3
 
 open Polar
 
+/- English proof (translation)
+Introduce `n ε μ _`. Use `ReciprocityTheory.ChartRestriction.DS.muCD_isHaar ε` as an intermediate fact. Take `⟨c, hc, hcd⟩` from `map_pol ε`. Establish `ha : μ = Measure.haarScalarFactor μ (muCD ε) • muCD ε` using `Measure.isMulLeftInvariant_eq_smul μ (muCD ε)`. Establish `hapos : 0 < Measure.haarScalarFactor μ (muCD ε)` using `Measure.haarScalarFactor_pos_of_isHaarMeasure μ (muCD ε)`.
+
+Use `set a := Measure.haarScalarFactor μ (muCD ε) with ha_def`. Establish `hne : a * c ≠ 0` using `mul_ne_zero hapos.ne' hc`. Establish `hμ : μ = (a * c) • Measure.map (pol ε) (rho ε)` using `by rw [ha, hcd, smul_smul]`. Establish `hinv : μ.IsInvInvariant`. Prove the components needed by the constructor for the conclusion.
+
+Use `show Measure.map Inv.inv μ = μ`. Rewrite using `[ha, Measure.map_smul]`. Rewrite using `[show Measure.map Inv.inv (muCD ε) = muCD ε from (muCD_inv ε).inv_eq_self]`. Establish `hJ : ∀ B, den ε (-B) = den ε B` using `fun B => by`. Simplify using `only [den, low_neg, ReciprocityTheory.ChartRestriction.DS.jac_neg]`.
+
+Use `muK_inv ε` as an intermediate fact. Use `⟨fun B => ((a * c : ℝ≥0) : ℝ) * den ε B, ?_, ?_, fun f hf hs => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `continuous_const.mul (NNReal.continuous_coe.comp (continuous_den ε))`. Establish `hj : 0 < Jac (low ε 0)`. Conclude with `ReciprocityTheory.ChartRestriction.DS.fdph_jac_pos _`.
+
+Establish `hd : (0 : ℝ) < den ε 0` using `NNReal.coe_pos.mpr (Real.toNNReal_pos.mpr hj)`. Conclude with `mul_pos (NNReal.coe_pos.mpr (pos_iff_ne_zero.mpr hne)) hd`. Conclude with `left ε μ (a * c) hne hμ f hf hs`. Establish `hg : ∀ B, ∫ k : KG ε, f (((k : UJ ε) * eB ε B)⁻¹) ∂(muK ε) = ∫ k : KG ε, f (eB ε (-B) * k) ∂(muK ε)`. Introduce `B`.
+
+Rewrite using `[eB_neg]`. Establish `e` using `integral_inv_eq_self (fun k : KG ε => f ((eB ε B)⁻¹ * (k : UJ ε))) (muK ε)`. Rewrite using `[← e]`. Use `congr 1`. Establish `hneg` using `Measure.integral_comp_smul (volume : Measure (Mode ε → ℂ)) (fun B => ((((a * c : ℝ≥0) : ℝ) * den ε B : ℝ) : ℂ) * ∫ k : KG ε, f (eB ε B * k) ∂(muK ε)) (-1)`.
+
+Simplify using `only [neg_one_smul, abs_inv, abs_pow, abs_neg, abs_one, one_pow, inv_one, one_smul] at hneg`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hg, hJ]`. Use `_ = ∫ B, ((((a * c : ℝ≥0) : ℝ) * den ε B : ℝ) : ℂ) * ∫ k : KG ε, f (eB ε B * k) ∂(muK ε) := hneg`.
+-/
 theorem stPolar : StPolar := by
   intro n ε μ _
   have := ReciprocityTheory.ChartRestriction.DS.muCD_isHaar ε

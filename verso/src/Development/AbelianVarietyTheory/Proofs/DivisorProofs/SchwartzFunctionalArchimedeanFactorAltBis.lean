@@ -11,6 +11,9 @@ open GlobalTheory.Doubling (absE)
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CosetTheta.eq_mul_thetaSum_coset | exact GlobalTheory.CosetTheta.eq_mul_thetaSum_coset | (intros; apply GlobalTheory.CosetTheta.eq_mul_thetaSum_coset <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.schwartz_functional_archimedean_factor_alt : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (ψ : AddChar (AF F) ℂ), IsStd ψ →
     ∀ L : ((κ → AF F) → ℂ) → ℂ, (∀ Ψ ∈ schA F κ, ∀ Ψ' ∈ schA F κ, L (Ψ + Ψ') = L Ψ + L Ψ') →
       (∀ c : ℂ, ∀ Ψ ∈ schA F κ, L (c • Ψ) = c * L Ψ) →

@@ -21,6 +21,9 @@ def extSqEquiv {R : Type} [CommRing R] {M N : Type*} [AddCommGroup M] [Module R 
     (by rw [← exteriorPower.map_comp]; simp [exteriorPower.map_id])
     (by rw [← exteriorPower.map_comp]; simp [exteriorPower.map_id])
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `exteriorPower.map 2 (E : M →ₗ[R] N) _ = _`. Rewrite using `[exteriorPower.map_apply_ιMulti]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`.
+-/
 theorem extSqEquiv_ιMulti {R : Type} [CommRing R] {M N : Type*} [AddCommGroup M] [Module R M] [AddCommGroup N]
     [Module R N] (E : M ≃ₗ[R] N) (a b : M) :
     extSqEquiv E (exteriorPower.ιMulti R 2 ![a, b]) = exteriorPower.ιMulti R 2 ![E a, E b] := by
@@ -30,6 +33,13 @@ theorem extSqEquiv_ιMulti {R : Type} [CommRing R] {M N : Type*} [AddCommGroup M
   funext i
   fin_cases i <;> rfl
 
+/- English proof (translation)
+Substitute `hs` using the available equality. Use `haveI : Smooth A.hom := hab.smooth`. Use `haveI : IsProper A.hom := hab.proper`. Take `⟨⟨hfin, hproj, hrank⟩, ⟨eH, heH⟩, -⟩` from `hA R A g hab hg`. Take `⟨hbij, e2, he2⟩` from `GlobalTheory.CechDR.cechDeRham_comparison_bijective_cup_smooth hC R A.left A.hom inferInstance inferInstance inferInstance`.
+
+Set `E1 : FirstDeRham A.hom ≃ₗ[R] HH1 A.hom` to `LinearEquiv.ofBijective (cmp1 A.hom) hbij`. Use `⟨Module.Finite.equiv E1.symm, Module.Projective.of_equiv E1.symm, ?_, ?_⟩` and prove the remaining obligations. Introduce `p`. Rewrite using `[Module.rankAtStalk_eq_of_equiv E1]`. Conclude with `hrank p`.
+
+Use `⟨(extSqEquiv E1).trans (eH.trans e2.symm), fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearEquiv.trans_apply, LinearEquiv.trans_apply, extSqEquiv_ιMulti, heH, LinearEquiv.symm_apply_eq]`. Conclude with `(he2 a b).symm`.
+-/
 theorem free_of (hC : GlobalTheory.Published.CrystallineSmoothLift) (hA : GlobalTheory.Published.AbelianHodgeDeRham)
     (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ) (hab : IsAbelianScheme A)
     (hg : SmoothOfRelativeDimension g A.hom) (s : A.left ⟶ Sp R) (hs : s = A.hom) :
@@ -55,6 +65,9 @@ end GlobalTheory.Proof.AbelianDeRhamFreeOfHodge
 
 open GlobalTheory.Proof.AbelianDeRhamFreeOfHodge in
 
+/- English proof (translation)
+Introduce `hC hA R _ A _ g hab hg`. Conclude with `free_of hC hA R A g hab hg _ (Category.comp_id _)`.
+-/
 theorem GlobalTheory.Proof.abelianDeRhamFree_of_hodge :
     GlobalTheory.Published.CrystallineSmoothLift → GlobalTheory.Published.AbelianHodgeDeRham → GlobalTheory.Published.AbelianDeRhamFree := by
   intro hC hA R _ A _ g hab hg

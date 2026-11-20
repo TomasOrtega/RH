@@ -22,6 +22,11 @@ import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.AbelianV
 
 namespace GlobalTheory.CovTop
 
+/- English proof (translation)
+Introduce `h hcube`. Establish `p4 : GlobalTheory.Published.ArCalc` using `GlobalTheory.Published.arCalc_of_form_mix_projection h.arForm h.arMix h.htProj`. Establish `p5 : GlobalTheory.Published.AbelianDeRham` using `GlobalTheory.T.abelian_de_rham_of_duality hcube h.dr h.crys h.dual h.poinc`. Establish `g1 : GlobalTheory.Published.GrothendieckDeformation` using `GlobalTheory.Published.grothendieckDeformation_of_lifting p5 h.lift`. Establish `hs : GlobalTheory.Published.HasseNormSt` using `GlobalTheory.QNorm.hasseNormSt`.
+
+Use `⟨GlobalTheory.SatForm.scholzeWeinsteinB_of_subspaces h.prism h.pdiv, ?_, ?_⟩` and prove the remaining obligations. Use `⟨?_, g1, h.chowCut⟩` and prove the remaining obligations. Conclude with `{ p1 := h.canExt.toroidalCompactification p2 := h.volGe p3 := h.hs.volNef p4 := p4 p5 := p5 p6 := GlobalTheory.T.tamagawa_special_unitary_of_su h.tam p8 := h.ray p12 := GlobalTheory.SS.semistableReductionSt p13 := h.approx p14 := h.green p16 := ⟨h.good, h.push⟩ p19 := GlobalTheor …`. Conclude with `⟨h.sieg, h.fan, GlobalTheory.Published.toroidalCharts_of_siegel_of_forFan h.sieg h.fan, GlobalTheory.Published.arDegree_of_heightProjection h.htProj h.chern⟩`.
+-/
 theorem hypotheses3_of_slim : Slim → GlobalTheory.Published.CubeTheorem →
     GlobalTheory.Published.ScholzeWeinsteinB ∧ Hypotheses3 ∧ GlobalTheory.CovHt.HypothesesH := by
   intro h hcube

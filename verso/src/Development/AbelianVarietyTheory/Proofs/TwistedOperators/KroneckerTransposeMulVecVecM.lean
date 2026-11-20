@@ -26,22 +26,34 @@ def kronRightHom (m n : Type) [Fintype m] [Fintype n] [DecidableEq m] [Decidable
   map_zero' := Matrix.kronecker_zero _
   map_add' A B := Matrix.kronecker_add _ _ _
 
+/- English proof (translation)
+Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Use `show Continuous fun Y : Matrix m m ℂ => Y i.1 j.1 * (1 : Matrix n n ℂ) i.2 j.2`. Conclude with `(continuous_apply_apply i.1 j.1).mul continuous_const`.
+-/
 theorem continuous_kronLeftHom : Continuous (kronLeftHom m n) := by
   refine continuous_pi fun i => continuous_pi fun j => ?_
   show Continuous fun Y : Matrix m m ℂ => Y i.1 j.1 * (1 : Matrix n n ℂ) i.2 j.2
   exact (continuous_apply_apply i.1 j.1).mul continuous_const
 
+/- English proof (translation)
+Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Use `show Continuous fun Z : Matrix n n ℂ => (1 : Matrix m m ℂ) i.1 j.1 * Z i.2 j.2`. Conclude with `continuous_const.mul (continuous_apply_apply i.2 j.2)`.
+-/
 theorem continuous_kronRightHom : Continuous (kronRightHom m n) := by
   refine continuous_pi fun i => continuous_pi fun j => ?_
   show Continuous fun Z : Matrix n n ℂ => (1 : Matrix m m ℂ) i.1 j.1 * Z i.2 j.2
   exact continuous_const.mul (continuous_apply_apply i.2 j.2)
 
+/- English proof (translation)
+Use `open Norms.Operator in`. Conclude with `(NormedSpace.map_exp (kronLeftHom m n) continuous_kronLeftHom Y).symm`.
+-/
 theorem exp_kronecker_one (Y : Matrix m m ℂ) :
     NormedSpace.exp (Y ⊗ₖ (1 : Matrix n n ℂ)) = NormedSpace.exp Y ⊗ₖ (1 : Matrix n n ℂ) := by
 
   open Norms.Operator in
   exact (NormedSpace.map_exp (kronLeftHom m n) continuous_kronLeftHom Y).symm
 
+/- English proof (translation)
+Use `open Norms.Operator in`. Conclude with `(NormedSpace.map_exp (kronRightHom m n) continuous_kronRightHom Z).symm`.
+-/
 theorem exp_one_kronecker (Z : Matrix n n ℂ) :
     NormedSpace.exp ((1 : Matrix m m ℂ) ⊗ₖ Z) = (1 : Matrix m m ℂ) ⊗ₖ NormedSpace.exp Z := by
   open Norms.Operator in
@@ -49,6 +61,11 @@ theorem exp_one_kronecker (Z : Matrix n n ℂ) :
 
 end general
 
+/- English proof (translation)
+Use function extensionality and compare the values at `ab`. Take `⟨a, b⟩` from `ab`. Simplify using `only [vecM, Matrix.mulVec, dotProduct, Matrix.kronecker_apply, Matrix.transpose_apply, Matrix.mul_apply, Fintype.sum_prod_type, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun d _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem kronecker_transpose_mulVec_vecM {p q : ℕ} (A B V : Mat p q) :
     (A ⊗ₖ Bᵀ) *ᵥ vecM V = vecM (A * V * B) := by
   funext ab
@@ -59,6 +76,11 @@ theorem kronecker_transpose_mulVec_vecM {p q : ℕ} (A B V : Mat p q) :
   refine Finset.sum_congr rfl fun d _ => Finset.sum_congr rfl fun c _ => ?_
   ring
 
+/- English proof (translation)
+Establish `hsplit : adMat Y = Y ⊗ₖ (1 : Mat p q) + (1 : Mat p q) ⊗ₖ (-Yᵀ)`. Rewrite using `[adMat, sub_eq_add_neg]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[Matrix.kronecker_apply, Matrix.kroneckerMap_apply]`.
+
+Establish `hcomm : Commute (Y ⊗ₖ (1 : Mat p q)) ((1 : Mat p q) ⊗ₖ (-Yᵀ))` using `by show _ * _ = _ * _`. Simplify using `only [← Matrix.mul_kronecker_mul, one_mul, mul_one]`. Rewrite using `[hsplit, Matrix.exp_add_of_commute _ _ hcomm, exp_kronecker_one, exp_one_kronecker, ← Matrix.mul_kronecker_mul, mul_one, one_mul, ← Matrix.transpose_neg, Matrix.exp_transpose]`. Conclude with `kronecker_transpose_mulVec_vecM _ _ _`.
+-/
 theorem exp_adMat_mulVec (p q : ℕ) (Y V : Mat p q) :
     NormedSpace.exp (adMat Y) *ᵥ vecM V =
       vecM (NormedSpace.exp Y * V * NormedSpace.exp (-Y)) := by

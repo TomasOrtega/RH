@@ -18,6 +18,23 @@ namespace GlobalTheory.HarmonicValueBaseChange
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Substitute `hK` using the available equality. Take `⟨hstar, hnabC⟩` from `hnab`. Take `⟨C, hex, hval⟩` from `hnabC S y`. Use `choose f hf using fun b => hex k (F b)`. Break down `y' with ⟨x1, xo, u1, tn, eg, bs, s1, gn⟩` into its components or cases.
+
+Take `⟨hx, hu, -⟩` from `hm`. Substitute `hx` using the available equality. Establish `hu' : u1 = fun τ i => spMap (dualMap ψ.toRingHom) ≫ y.u τ i`. Use function extensionality and compare the values at `τ i`. Conclude with `hu τ i`.
+
+Substitute `hu'` using the available equality. Establish `hh' : h = ptBC ψ.toRingHom y.x`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hh]`. Both sides reduce to the same expression.
+
+Substitute `hh'` using the available equality. Take `⟨B', x', e', -, hG, hA, -, -, -, -, hch, hfr, hga, hrig, hgerm⟩` from `GlobalTheory.T.rawChart_formalBiextension_baseChange E H Dw l Xo c S S' ψ y.x y.u (Formalism.MainNotions.ModuliIntegralCharts.H1.ChartAt.toRaw C)`. Set `C' : ChartAt Xo c ({ x` to `spMap ψ.toRingHom ≫ y.x, x_over := xo, u := fun τ i => spMap (dualMap ψ.toRingHom) ≫ y.u τ i, tan := tn, eig := eg, basis := bs, s := s1, gen := gn } : FrPt Xo c S') := { d := C.d, B := B', uvec := fun ℓ j => ψ (C.uvec ℓ j), x := x', e := e', wP := C.wP, h := MvPowerSeries.map ψ. …`. Establish `hf' : ∀ b, IsGerm ({ x` using `spMap ψ.toRingHom ≫ y.x, x_over := xo, u := fun τ i => spMap (dualMap ψ.toRingHom) ≫ y.u τ i, tan := tn, eig := eg, basis := bs, s := s1, gen := gn } : FrPt Xo c S') C'.d C'.x C'.B.A.act C'.e C'.wP k (F' b) (MvPowerSeries.map ψ.toRingHom (f b)) := by`. Introduce `b`.
+
+Rewrite using `[Formalism.MainNotions.ModuliIntegralCharts.H1.isGerm_iff_raw]`. Conclude with `hgerm k (F b) (F' b) (f b) (hF' b) ((Formalism.MainNotions.ModuliIntegralCharts.H1.isGerm_iff_raw y C.d C.x C.B.A.act C.e C.wP k (F b) (f b)).1 (hf b))`. Take `⟨C2, hex2, hval2⟩` from `hnabC S' ({ x := spMap ψ.toRingHom ≫ y.x, x_over := xo, u := fun τ i => spMap (dualMap ψ.toRingHom) ≫ y.u τ i, tan := tn, eig := eg, basis := bs, s := s1, gen := gn } : FrPt Xo c S')`. Use `choose f2 hf2 using fun b => hex2 k (F' b)`. Establish `hCI` using `hC E H Dw l Xo c hstar S' ({ x := spMap ψ.toRingHom ≫ y.x, x_over := xo, u := fun τ i => spMap (dualMap ψ.toRingHom) ≫ y.u τ i, tan := tn, eig := eg, basis := bs, s := s1, gen := gn } : FrPt Xo c S') C' C2 k n F' (fun b => MvPowerSeries.map ψ.toRingHom (f b)) f2 hf' hf2 a P hP`.
+
+Unfold `Formalism.MainNotions.ModuliIntegralCharts.H1.chartVal at hCI`. Establish `e1 : ∀ b α, nab y (k : ℤ) (F b) α = C.B.nabVal S C.h H.w0 k (f b) C.uvec (MvPolynomial.monomial α 1)` using `fun b α => hval k (F b) (f b) (hf b) α`. Establish `e2 : ∀ b α, nab ({ x` using `spMap ψ.toRingHom ≫ y.x, x_over := xo, u := fun τ i => spMap (dualMap ψ.toRingHom) ≫ y.u τ i, tan := tn, eig := eg, basis := bs, s := s1, gen := gn } : FrPt Xo c S') (k : ℤ) (F' b) α = C2.B.nabVal S' C2.h H.w0 k (f2 b) C2.uvec (MvPolynomial.monomial α 1) := fun b α => hval2 k (F' …`. Simplify using `only [e1, e2]`. Rewrite using `[← hCI, map_sum]`.
+
+Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_prod, AlgHom.commutes]`. Use `congr 1`. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `hmap` using `nabMap_holds S S' ψ.toRingHom C.d (𝓞 E) C.B B' hG hA C.h C.gauge H.w0 k (f b) (Lt1 Dw) C.uvec (MvPolynomial.monomial (colOf m b) 1)`.
+
+Rewrite `hmap` using `[MvPolynomial.map_monomial, map_one]`. Conclude with `hmap.symm`.
+-/
 theorem sum_map_of_harmA (hC : ChartIndepSt2) {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
     {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} [StarRing (𝓞 E)] (nab : NabV Xo c)
     (hnab : IsNab Xo c nab) {S S' : Type} [CommRing S] [Algebra c.F S] [Algebra ℚ S]
@@ -81,6 +98,19 @@ end GlobalTheory.HarmonicValueBaseChange
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hC E _ _ _ H Dw l Xo c _ nab hnab S S' _ _ _ _ ψ y y' hm h hh a n P hP N F F' hF'`. Set `_ : Algebra ℚ S` to `((algebraMap c.F S).comp (algebraMap ℚ c.F)).toAlgebra`. Set `_ : Algebra ℚ S'` to `((algebraMap c.F S').comp (algebraMap ℚ c.F)).toAlgebra`. Take `⟨D, hD0, hDi⟩` from `exists_integral_multiples ℤ ℚ (P.support.image fun m => P.coeff m)`. Establish `hsupp : (D • P).support = P.support` using `MvPolynomial.support_smul_eq hD0 P`.
+
+Establish `hQ1 : D • P ∈ HHa Dw.mult n c.F ComplexEmbedding.conjugate (InPsi H) (fun τ i => a (τ, i))`. Unfold `HHa at hP ⊢`. Simplify using `only [Set.mem_ofPred_eq] at hP ⊢`. Take `⟨hker, hrow, hdeg⟩` from `hP`. Use `⟨zsmul_mem hker D, fun σ i i' hi t => ?_, fun m hm => hdeg m (hsupp ▸ hm)⟩` and prove the remaining obligations.
+
+Rewrite using `[map_zsmul, hrow σ i i' hi t]`. Establish `hQ : D • P ∈ harmA c a n`. Unfold `harmA HaO`. Simplify using `only [Set.mem_ofPred_eq]`. Use `⟨hQ1, fun m => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[MvPolynomial.coeff_smul]`. Distinguish the cases in `hmem : m ∈ P.support`. Conclude with `hDi _ (Finset.mem_image_of_mem _ hmem)`. Establish `h0 : P.coeff m = 0` using `by simpa using hmem`. Rewrite using `[h0, smul_zero]`.
+
+Conclude with `zero_mem _`. Establish `key` using `HarmonicValueBaseChange.sum_map_of_harmA hC nab hnab ψ y y' hm h hh a n (D • P) hQ ((N : ℤ) ^ 2) (N ^ 2) (by push_cast; ring) F F' hF'`. Rewrite `key` using `[hsupp]`. Simplify using `only [MvPolynomial.coeff_smul, map_zsmul, smul_mul_assoc, ← Finset.smul_sum] at key`. Simplify using `only [zsmul_eq_mul] at key`.
+
+Establish `hu : IsUnit (D : S')`. Rewrite using `[← map_intCast (algebraMap c.F S') D]`. Conclude with `(IsUnit.mk0 _ (Int.cast_ne_zero.2 hD0)).map _`. Conclude with `hu.mul_left_cancel key`.
+-/
 theorem harmonicValue_baseChange : ChartIndepSt2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (nab : NabV Xo c), IsNab Xo c nab → ∀ (S S' : Type) [CommRing S] [Algebra c.F S] [CommRing S'] [Algebra c.F S'] (ψ : S →ₐ[c.F] S') (y : FrPt Xo c S) (y' : FrPt Xo c S'), FrMap ψ y y' → ∀ (h : ptO Xo y'.x ⟶ ptO Xo y.x), h.left = spMap ψ.toRingHom → ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (P : MvPolynomial (LtN Dw n) c.F), P ∈ HHa Dw.mult n c.F ComplexEmbedding.conjugate (InPsi H) (fun τ i => a (τ, i)) → ∀ (N : ℕ) (F : Fin n → LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) (ptO Xo y.x))) (F' : Fin n → LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) (ptO Xo y'.x))), (∀ b, IsPullSec Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) (h ▷ Xo.univ.t.G) (whiskerRight_snd _ _) (F b) (F' b)) → ψ (∑ m ∈ P.support, algebraMap c.F S (P.coeff m) * ∏ b, nab y ((N : ℤ) ^ 2) (F b) (colOf m b)) = ∑ m ∈ P.support, algebraMap c.F S' (P.coeff m) * ∏ b, nab y' ((N : ℤ) ^ 2) (F' b) (colOf m b) := by
   intro hC E _ _ _ H Dw l Xo c _ nab hnab S S' _ _ _ _ ψ y y' hm h hh a n P hP N F F' hF'
   let _ : Algebra ℚ S := ((algebraMap c.F S).comp (algebraMap ℚ c.F)).toAlgebra

@@ -19,22 +19,37 @@ variable (K) in
 
 def dvUnif : K := ((IsDiscreteValuationRing.exists_irreducible (normInteger K)).choose : K)
 
+/- English proof (translation)
+The claim follows from `(IsDiscreteValuationRing.exists_irreducible (normInteger K)).choose_spec`.
+-/
 theorem irreducible_dvUnif :
     Irreducible (IsDiscreteValuationRing.exists_irreducible (normInteger K)).choose :=
   (IsDiscreteValuationRing.exists_irreducible (normInteger K)).choose_spec
 
+/- English proof (translation)
+Use `(normInteger_integers (K := K)).isUnit_iff_valuation_eq_one.1 hz` as an intermediate fact. Rewrite `this` using `[NormedField.valuation_apply, ← NNReal.coe_eq_one]`. Conclude with `this`.
+-/
 theorem norm_eq_one_of_isUnit {z : normInteger K} (hz : IsUnit z) : ‖(z : K)‖ = 1 := by
   have := (normInteger_integers (K := K)).isUnit_iff_valuation_eq_one.1 hz
   rw [NormedField.valuation_apply, ← NNReal.coe_eq_one] at this
   exact this
 
+/- English proof (translation)
+Introduce `h`. Use `(irreducible_dvUnif (K := K)).ne_zero` as an intermediate fact. Conclude with `this (Subtype.ext h)`.
+-/
 theorem dvUnif_ne_zero : dvUnif K ≠ 0 := by
   intro h
   have := (irreducible_dvUnif (K := K)).ne_zero
   exact this (Subtype.ext h)
 
+/- English proof (translation)
+The claim follows from `norm_pos_iff.2 dvUnif_ne_zero`.
+-/
 theorem norm_dvUnif_pos : 0 < ‖dvUnif K‖ := norm_pos_iff.2 dvUnif_ne_zero
 
+/- English proof (translation)
+Establish `h1 : ‖dvUnif K‖ ≤ 1` using `mem_normInteger.1 (IsDiscreteValuationRing.exists_irreducible (normInteger K)).choose.2`. Use `lt_of_le_of_ne h1 fun h => (irreducible_dvUnif (K := K)).not_isUnit ?_` and prove the remaining obligations. Rewrite using `[(normInteger_integers (K := K)).isUnit_iff_valuation_eq_one, NormedField.valuation_apply, ← NNReal.coe_eq_one]`. Conclude with `h`.
+-/
 theorem norm_dvUnif_lt_one : ‖dvUnif K‖ < 1 := by
   have h1 : ‖dvUnif K‖ ≤ 1 := mem_normInteger.1
     (IsDiscreteValuationRing.exists_irreducible (normInteger K)).choose.2
@@ -43,6 +58,15 @@ theorem norm_dvUnif_lt_one : ‖dvUnif K‖ < 1 := by
     ← NNReal.coe_eq_one]
   exact h
 
+/- English proof (translation)
+Establish `key : ∀ y : K, y ≠ 0 → ‖y‖ ≤ 1 → ∃ n : ℕ, ‖y‖ = ‖dvUnif K‖ ^ n`. Introduce `y hy hy1`. Set `z : normInteger K` to `⟨y, mem_normInteger.2 hy1⟩`. Establish `hz : z ≠ 0` using `fun h => hy (congrArg Subtype.val h)`. Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hz irreducible_dvUnif`.
+
+Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (fun w : normInteger K => (w : K)) hu`. Simplify using `only [MulMemClass.coe_mul, SubmonoidClass.coe_pow] at h2`. Rewrite using `[show y = (z : K) from rfl, h2, norm_mul, norm_pow, norm_eq_one_of_isUnit u.isUnit, one_mul]`. Both sides reduce to the same expression.
+
+Break down `le_total ‖x‖ 1 with h | h` into its components or cases. Take `⟨n, hn⟩` from `key x hx h`. Conclude with `⟨n, by rw [hn, zpow_natCast]⟩`. Take `⟨n, hn⟩` from `key x⁻¹ (inv_ne_zero hx) (by rw [norm_inv]; exact inv_le_one_of_one_le₀ h)`. Use `⟨-(n : ℤ), ?_⟩` and prove the remaining obligations.
+
+Rewrite `hn` using `[norm_inv]`. Rewrite using `[zpow_neg, zpow_natCast, ← hn, inv_inv]`.
+-/
 theorem exists_norm_eq_zpow {x : K} (hx : x ≠ 0) : ∃ n : ℤ, ‖x‖ = ‖dvUnif K‖ ^ n := by
   have key : ∀ y : K, y ≠ 0 → ‖y‖ ≤ 1 → ∃ n : ℕ, ‖y‖ = ‖dvUnif K‖ ^ n := by
     intro y hy hy1
@@ -62,6 +86,9 @@ theorem exists_norm_eq_zpow {x : K} (hx : x ≠ 0) : ∃ n : ℤ, ‖x‖ = ‖d
     rw [norm_inv] at hn
     rw [zpow_neg, zpow_natCast, ← hn, inv_inv]
 
+/- English proof (translation)
+The claim follows from `(zpow_right_strictAnti₀ norm_dvUnif_pos norm_dvUnif_lt_one).injective`.
+-/
 theorem zpow_dvUnif_injective : Function.Injective fun n : ℤ => ‖dvUnif K‖ ^ n :=
   (zpow_right_strictAnti₀ norm_dvUnif_pos norm_dvUnif_lt_one).injective
 
@@ -82,17 +109,34 @@ def intBounded (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [Co
   zero_mem' := ⟨(bounded K).zero_mem, by simp [norm1]⟩
   neg_mem' {f} hf := ⟨(bounded K).neg_mem hf.1, by simpa [norm1] using hf.2⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_intBounded {f : Robba K} : f ∈ intBounded K ↔ f ∈ bounded K ∧ norm1 f ≤ 1 := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `mem_bounded_of_mul_eq_one u.mul_inv`.
+-/
 theorem unit_mem_bounded (u : (Robba K)ˣ) : (u : Robba K) ∈ bounded K :=
   mem_bounded_of_mul_eq_one u.mul_inv
 
+/- English proof (translation)
+The claim follows from `u.ne_zero`.
+-/
 theorem unit_ne_zero (u : (Robba K)ˣ) : (u : Robba K) ≠ 0 := u.ne_zero
 
+/- English proof (translation)
+The claim follows from `lt_of_le_of_ne (gaussNorm_nonneg_alt _) fun h => unit_ne_zero u ((gaussNorm_eq_zero_iff_alt (unit_mem_bounded u)).1 h.symm)`.
+-/
 theorem gaussNorm_unit_pos (u : (Robba K)ˣ) : 0 < norm1 (u : Robba K) :=
   lt_of_le_of_ne (gaussNorm_nonneg_alt _) fun h =>
     unit_ne_zero u ((gaussNorm_eq_zero_iff_alt (unit_mem_bounded u)).1 h.symm)
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `exists_norm1_eq (unit_mem_bounded u)`. Establish `hne : (u : Robba K).coeff m ≠ 0`. Introduce `h`. Rewrite `hm` using `[h, norm_zero]`. Conclude with `(gaussNorm_unit_pos u).ne' hm`.
+
+Take `⟨n, hn⟩` from `exists_norm_eq_zpow hne`. Conclude with `⟨n, hm.trans hn⟩`.
+-/
 theorem exists_norm1_eq_zpow (u : (Robba K)ˣ) : ∃ n : ℤ, norm1 (u : Robba K) = ‖dvUnif K‖ ^ n := by
   obtain ⟨m, hm⟩ := exists_norm1_eq (unit_mem_bounded u)
   have hne : (u : Robba K).coeff m ≠ 0 := by
@@ -104,22 +148,37 @@ theorem exists_norm1_eq_zpow (u : (Robba K)ˣ) : ∃ n : ℤ, norm1 (u : Robba K
 
 def ord (u : (Robba K)ˣ) : ℤ := (exists_norm1_eq_zpow u).choose
 
+/- English proof (translation)
+The claim follows from `(exists_norm1_eq_zpow u).choose_spec`.
+-/
 theorem gaussNorm_eq_zpow_ord (u : (Robba K)ˣ) : norm1 (u : Robba K) = ‖dvUnif K‖ ^ ord u :=
   (exists_norm1_eq_zpow u).choose_spec
 
+/- English proof (translation)
+The claim follows from `zpow_dvUnif_injective ((gaussNorm_eq_zpow_ord u).symm.trans h)`.
+-/
 theorem ord_eq_of_norm1_eq {u : (Robba K)ˣ} {n : ℤ} (h : norm1 (u : Robba K) = ‖dvUnif K‖ ^ n) :
     ord u = n :=
   zpow_dvUnif_injective ((gaussNorm_eq_zpow_ord u).symm.trans h)
 
+/- English proof (translation)
+Apply `ord_eq_of_norm1_eq` to reduce the goal to its premises. Rewrite using `[Units.val_mul, gaussNorm_mul_alt (unit_mem_bounded u) (unit_mem_bounded w), gaussNorm_eq_zpow_ord, gaussNorm_eq_zpow_ord, zpow_add₀ norm_dvUnif_pos.ne']`.
+-/
 theorem ord_mul (u w : (Robba K)ˣ) : ord (u * w) = ord u + ord w := by
   apply ord_eq_of_norm1_eq
   rw [Units.val_mul, gaussNorm_mul_alt (unit_mem_bounded u) (unit_mem_bounded w), gaussNorm_eq_zpow_ord,
     gaussNorm_eq_zpow_ord, zpow_add₀ norm_dvUnif_pos.ne']
 
+/- English proof (translation)
+Rewrite using `[gaussNorm_eq_zpow_ord, ← zpow_zero ‖dvUnif K‖]`. Conclude with `(zpow_le_zpow_iff_right_of_lt_one₀ norm_dvUnif_pos norm_dvUnif_lt_one).symm`.
+-/
 theorem ord_nonneg_iff (u : (Robba K)ˣ) : 0 ≤ ord u ↔ norm1 (u : Robba K) ≤ 1 := by
   rw [gaussNorm_eq_zpow_ord, ← zpow_zero ‖dvUnif K‖]
   exact (zpow_le_zpow_iff_right_of_lt_one₀ norm_dvUnif_pos norm_dvUnif_lt_one).symm
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[gaussNorm_eq_zpow_ord, h, zpow_zero]`. Introduce `h; exact ord_eq_of_norm1_eq (by rw [h, zpow_zero])`.
+-/
 theorem ord_eq_zero_iff (u : (Robba K)ˣ) : ord u = 0 ↔ norm1 (u : Robba K) = 1 := by
   constructor
   · intro h; rw [gaussNorm_eq_zpow_ord, h, zpow_zero]
@@ -140,6 +199,9 @@ namespace Robba
 def IsGaussScaling (ψ : Robba K →+* Robba K) (Q : ℕ) : Prop :=
   ∀ f : Robba K, ∀ᶠ ρ in 𝓝[<] (1 : ℝ), gaussNorm (ψ f).coeff ρ = gaussNorm f.coeff (ρ ^ Q)
 
+/- English proof (translation)
+Use `tendsto_nhdsWithin_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `((continuous_pow Q).tendsto (1 : ℝ)).mono_left (nhdsWithin_le_nhds (s := Set.Iio 1))` as an intermediate fact. Simplify using `using this`. Use `filter_upwards [Ioo_mem_nhdsLT (show (0 : ℝ) < 1 by norm_num)] with ρ hρ`. Conclude with `pow_lt_one₀ hρ.1.le hρ.2 hQ.ne'`.
+-/
 theorem tendsto_pow_nhdsLT {Q : ℕ} (hQ : 0 < Q) :
     Tendsto (fun ρ : ℝ => ρ ^ Q) (𝓝[<] 1) (𝓝[<] 1) := by
   refine tendsto_nhdsWithin_iff.2 ⟨?_, ?_⟩
@@ -148,6 +210,9 @@ theorem tendsto_pow_nhdsLT {Q : ℕ} (hQ : 0 < Q) :
   · filter_upwards [Ioo_mem_nhdsLT (show (0 : ℝ) < 1 by norm_num)] with ρ hρ
     exact pow_lt_one₀ hρ.1.le hρ.2 hQ.ne'
 
+/- English proof (translation)
+The claim follows from `| 0 => fun f => Eventually.of_forall fun ρ => by simp | d + 1 => fun f => by have ih := (IsGaussScaling.pow h hQ d f) filter_upwards [h ((ψ ^ d) f), (tendsto_pow_nhdsLT hQ).eventually ih] with ρ h1 h2 rw [pow_succ', RingHom.mul_def, RingHom.comp_apply, h1, h2, ← pow_mul, pow_succ …`.
+-/
 theorem IsGaussScaling.pow {ψ : Robba K →+* Robba K} {Q : ℕ} (h : IsGaussScaling ψ Q)
     (hQ : 0 < Q) : ∀ d : ℕ, IsGaussScaling (ψ ^ d) (Q ^ d)
   | 0 => fun f => Eventually.of_forall fun ρ => by simp
@@ -156,9 +221,23 @@ theorem IsGaussScaling.pow {ψ : Robba K →+* Robba K} {Q : ℕ} (h : IsGaussSc
     filter_upwards [h ((ψ ^ d) f), (tendsto_pow_nhdsLT hQ).eventually ih] with ρ h1 h2
     rw [pow_succ', RingHom.mul_def, RingHom.comp_apply, h1, h2, ← pow_mul, pow_succ']
 
+/- English proof (translation)
+The claim follows from `Ioo_mem_nhdsLT (by norm_num)`.
+-/
 theorem eventually_mem_Ioo : ∀ᶠ ρ in 𝓝[<] (1 : ℝ), ρ ∈ Set.Ioo 0 1 :=
   Ioo_mem_nhdsLT (by norm_num)
 
+/- English proof (translation)
+Distinguish the cases in `hf : f.coeff = 0`. Conclude with `⟨0, Eventually.of_forall fun ρ => by simp [hf, gaussNorm_zero]⟩`. Take `⟨r, hr0, hr1, hc⟩` from `exists_common f f`. Establish `hQ1 : (0 : ℤ) ≤ (Q : ℤ) - 1` using `by omega`. Use `⟨lowIndex f.coeff r, ?_⟩` and prove the remaining obligations.
+
+Use `filter_upwards [Ioo_mem_nhdsLT hr1, (tendsto_pow_nhdsLT hQ).eventually (Ioo_mem_nhdsLT hr1)] with ρ hρ hρQ`. Establish `hρ0 : 0 < ρ` using `hr0.trans hρ.1`. Establish `c'` using `(hc (ρ ^ Q) hρQ.1.le hρQ.2).1`. Establish `c` using `(hc ρ hρ.1.le hρ.2).1`. Establish `cr` using `(hc r le_rfl hr1).1`.
+
+Establish `hn : lowIndex f.coeff r ≤ lowIndex f.coeff (ρ ^ Q)` using `(lowIndex_le_highIndex hr0 cr hf).trans (highIndex_le_lowIndex hr0 hρQ.1 cr c' hf)`. Establish `hmem : ‖f.coeff (lowIndex f.coeff (ρ ^ Q))‖ * (ρ ^ Q) ^ lowIndex f.coeff (ρ ^ Q) = gaussNorm f.coeff (ρ ^ Q)` using `lowIndex_mem (hr0.trans hρQ.1) c' hf`. Use `set n := lowIndex f.coeff (ρ ^ Q)`. Rewrite using `[← hmem]`. Establish `h1 : ‖f.coeff n‖ * ρ ^ n ≤ gaussNorm f.coeff ρ` using `c.le_gaussNorm n`.
+
+Establish `e : (ρ ^ Q) ^ n = ρ ^ n * ρ ^ (((Q : ℤ) - 1) * n)`. Rewrite using `[← zpow_add₀ hρ0.ne', ← zpow_natCast, ← zpow_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ρ ^ (((Q : ℤ) - 1) * n) ≤ ρ ^ (((Q : ℤ) - 1) * lowIndex f.coeff r)` using `zpow_le_zpow_right_of_le_one₀ hρ0 hρ.2.le (mul_le_mul_of_nonneg_left hn hQ1)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ gaussNorm f.coeff ρ * ρ ^ (((Q : ℤ) - 1) * lowIndex f.coeff r) := mul_le_mul h1 h2 (by positivity) (gaussNorm_nonneg hρ0)`. Use `_ = _ := mul_comm _ _`.
+-/
 theorem exists_gaussNorm_pow_le (f : Robba K) {Q : ℕ} (hQ : 0 < Q) :
     ∃ n₀ : ℤ, ∀ᶠ ρ in 𝓝[<] (1 : ℝ),
       gaussNorm f.coeff (ρ ^ Q) ≤ ρ ^ (((Q : ℤ) - 1) * n₀) * gaussNorm f.coeff ρ := by
@@ -190,6 +269,11 @@ theorem exists_gaussNorm_pow_le (f : Robba K) {Q : ℕ} (hQ : 0 < Q) :
         mul_le_mul h1 h2 (by positivity) (gaussNorm_nonneg hρ0)
     _ = _ := mul_comm _ _
 
+/- English proof (translation)
+Use `Fintype.ofFinite ι` as an intermediate fact. Use `choose n hn using fun i => exists_gaussNorm_pow_le (x i) hQ`. Establish `hQ1 : (0 : ℤ) ≤ (Q : ℤ) - 1` using `by omega`. Use `⟨-∑ i, |n i|, ?_⟩` and prove the remaining obligations. Use `filter_upwards [eventually_all.2 hn, eventually_mem_Ioo] with ρ h hρ i`.
+
+Use `(h i).trans (mul_le_mul_of_nonneg_right ?_ (gaussNorm_nonneg hρ.1))` and prove the remaining obligations. Use `zpow_le_zpow_right_of_le_one₀ hρ.1 hρ.2.le (mul_le_mul_of_nonneg_left ?_ hQ1)` and prove the remaining obligations. Establish `h1 : |n i| ≤ ∑ j, |n j|` using `Finset.single_le_sum (f := fun j => |n j|) (fun j _ => abs_nonneg _) (Finset.mem_univ i)`. Establish `h2` using `neg_abs_le (n i)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_gaussNorm_pow_le_family {ι : Type*} [Finite ι] (x : ι → Robba K) {Q : ℕ}
     (hQ : 0 < Q) : ∃ n₀ : ℤ, ∀ᶠ ρ in 𝓝[<] (1 : ℝ), ∀ i,
       gaussNorm (x i).coeff (ρ ^ Q) ≤ ρ ^ (((Q : ℤ) - 1) * n₀) * gaussNorm (x i).coeff ρ := by
@@ -205,6 +289,11 @@ theorem exists_gaussNorm_pow_le_family {ι : Type*} [Finite ι] (x : ι → Robb
   have h2 := neg_abs_le (n i)
   linarith
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [gaussNorm_zero, hC, convergesAt_zero]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Take `⟨ic, ib⟩` from `ih (fun i hi => hc i (Finset.mem_insert_of_mem hi)) (fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+
+Establish `ca` using `hc a (Finset.mem_insert_self a s)`. Conclude with `⟨convergesAt_add hρ ca ic, (gaussNorm_add_le' hρ ca ic).trans (max_le (h a (Finset.mem_insert_self a s)) ib)⟩`.
+-/
 theorem gaussNorm_sum_le {ι : Type*} (s : Finset ι) (y : ι → Robba K) {ρ C : ℝ} (hρ : 0 < ρ)
     (hC : 0 ≤ C) (hc : ∀ i ∈ s, ConvergesAt (y i).coeff ρ)
     (h : ∀ i ∈ s, gaussNorm (y i).coeff ρ ≤ C) :
@@ -220,6 +309,17 @@ theorem gaussNorm_sum_le {ι : Type*} (s : Finset ι) (y : ι → Robba K) {ρ C
     exact ⟨convergesAt_add hρ ca ic, (gaussNorm_add_le' hρ ca ic).trans
       (max_le (h a (Finset.mem_insert_self a s)) ib)⟩
 
+/- English proof (translation)
+Take `⟨i₁, hi₁⟩` from `Function.ne_iff.1 hx`. Establish `hne : Nonempty ι` using `⟨i₁⟩`. Take `⟨n₀, hn₀⟩` from `exists_gaussNorm_pow_le_family x hQ`. Establish `hzpow : Tendsto (fun ρ : ℝ => ρ ^ (((Q : ℤ) - 1) * n₀)) (𝓝[<] 1) (𝓝 1)`. Use `((continuousAt_zpow₀ (1 : ℝ) (((Q : ℤ) - 1) * n₀) (Or.inl one_ne_zero)).tendsto).mono_left (nhdsWithin_le_nhds (s := Set.Iio (1 : ℝ)))` as an intermediate fact.
+
+Simplify using `using this`. Use `le_of_forall_pos_le_add fun ε hε => ?_` and prove the remaining obligations. Establish `hBε : ∀ᶠ ρ in 𝓝[<] (1 : ℝ), ∀ i j, gaussNorm (B i j).coeff ρ < 1 + ε` using `eventually_all.2 fun i => eventually_all.2 fun j => (tendsto_gaussNorm_norm1 (hB i j).1).eventually_lt_const (by linarith [(hB i j).2])`. Establish `hbound : ∀ᶠ ρ in 𝓝[<] (1 : ℝ), gaussNorm l.coeff ρ ≤ (1 + ε) * ρ ^ (((Q : ℤ) - 1) * n₀)` using `by filter_upwards [hn₀, hBε, eventually_mem_Ioo, eventually_all.2 fun i => (x i).eventually_convergesAt, eventually_all.2 fun i => eventually_all.2 fun j => (B i j).eventually_convergesAt, l.eventually_convergesAt, eventually_all.2 fun j => (ψ (x j)).eventually_convergesAt, event …`. Take `⟨i₀, hi₀⟩` from `Finite.exists_max fun i => gaussNorm (x i).coeff ρ`.
+
+Use `set X := gaussNorm (x i₀).coeff ρ`. Establish `hx1 : (x i₁).coeff ≠ 0` using `fun h0 => hi₁ (Robba.ext h0)`. Establish `hX : 0 < X` using `lt_of_lt_of_le (gaussNorm_pos hρ.1 (cx i₁) hx1) (hi₀ i₁)`. Establish `hz : 0 ≤ ρ ^ (((Q : ℤ) - 1) * n₀)` using `by have := hρ.1; positivity`. Establish `key` using `gaussNorm_sum_le Finset.univ (fun j => B i₀ j * ψ (x j)) hρ.1 (C := (1 + ε) * ρ ^ (((Q : ℤ) - 1) * n₀) * X) (by positivity) (fun j _ => convergesAt_mul hρ.1 (cB i₀ j) (cψ j)) (fun j _ => by`.
+
+Rewrite using `[gaussNorm_mul hρ.1 (cB i₀ j) (cψ j), hψρ j]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `key` using `[← h i₀, gaussNorm_mul hρ.1 cl (cx i₀)]`. Use `key.2` as an intermediate fact. Rewrite `this` using `[mul_le_mul_iff_left₀ hX]`.
+
+Conclude with `this`. Establish `hlim` using `hzpow.const_mul (1 + ε)`. Rewrite `hlim` using `[mul_one]`. Conclude with `le_of_tendsto_of_tendsto (tendsto_gaussNorm_norm1 hl) hlim hbound`.
+-/
 theorem gaussNorm_le_one_of_smul_eq {ψ : Robba K →+* Robba K} {Q : ℕ} (hψ : IsGaussScaling ψ Q)
     (hQ : 0 < Q) {ι : Type*} [Fintype ι] {x : ι → Robba K} (hx : x ≠ 0)
     {B : Matrix ι ι (Robba K)} (hB : ∀ i j, B i j ∈ intBounded K) {l : Robba K}
@@ -265,6 +365,9 @@ theorem gaussNorm_le_one_of_smul_eq {ψ : Robba K →+* Robba K} {Q : ℕ} (hψ 
 
 end Robba
 
+/- English proof (translation)
+Introduce `f` and use `FrobeniusLift.eventually_gaussNorm_phi f`.
+-/
 theorem FrobeniusLift.isGaussScaling (F : FrobeniusLift K) : Robba.IsGaussScaling F.phi F.q :=
   fun f => FrobeniusLift.eventually_gaussNorm_phi f
 
@@ -276,6 +379,9 @@ variable {ψ : Robba K →+* Robba K} {Q : ℕ}
 variable {M : Type*} [AddCommGroup M] [Module (Robba K) M] [Module.Free (Robba K) M]
   [Module.Finite (Robba K) M]
 
+/- English proof (translation)
+Set `A' : Matrix ι ι S` to `Matrix.of fun i j => ⟨A i j, h i j⟩`. Establish `e : A = A'.map S.subtype` using `by ext i j; rfl`. Rewrite using `[e, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(A'.det).2`.
+-/
 theorem det_mem_of_forall_mem {ι : Type*} [Fintype ι] [DecidableEq ι] {R : Type*} [CommRing R]
     (S : Subring R) (A : Matrix ι ι R) (h : ∀ i j, A i j ∈ S) : A.det ∈ S := by
   let A' : Matrix ι ι S := Matrix.of fun i j => ⟨A i j, h i j⟩
@@ -283,6 +389,23 @@ theorem det_mem_of_forall_mem {ι : Type*} [Fintype ι] [DecidableEq ι] {R : Ty
   rw [e, ← RingHom.mapMatrix_apply, ← RingHom.map_det]
   exact (A'.det).2
 
+/- English proof (translation)
+Use `set r := finrank (Robba K) N`. Set `bN : Basis (Fin r) (Robba K) N` to `Module.finBasisOfFinrankEq _ _ rfl`. Set `bI : Basis (Fin r) (Robba K) I` to `Module.finBasisOfFinrankEq _ _ hrank`. Take `⟨f, hf0, hf⟩` from `exists_det_mul_eq_of_le hIN hI hN bI bN`. Establish `uI` using `(isPhiModule_iff_isUnit_det bI _).1 hIphi`.
+
+Establish `uN` using `(isPhiModule_iff_isUnit_det bN _).1 hNphi`. Rewrite using `[deg_eq _ bN _ hNphi, deg_eq _ bI _ hIphi, degIn, degIn]`. Use `set lu : (Robba K)ˣ := uI.unit * uN.unit⁻¹`. Establish `hl : (lu : Robba K) * f = ψ f`. Establish `: (uN.unit : Robba K) * (lu * f) = (uN.unit : Robba K) * ψ f`.
+
+Simplify using `only [lu, Units.val_mul, IsUnit.unit_spec]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[uN.mul_val_inv, mul_one]`. Use `_ = _ := hf`. Conclude with `(uN.unit.isUnit.mul_left_cancel this)`.
+
+Establish `key` using `Robba.gaussNorm_le_one_of_smul_eq (ι := Unit) hψ hQ (x := fun _ => f) (fun h0 => hf0 (congrFun h0 ())) (B := 1) (fun i j => by`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[(Robba.intBounded K).one_mem]`. Simplify using `[Matrix.one_apply_ne h, (Robba.intBounded K).zero_mem])`.
+
+Use the proof step `(Robba.unit_mem_bounded lu) (fun i => by simp [hl])`. Establish `hord` using `(Robba.ord_nonneg_iff lu).2 key`. Establish `hmul : Robba.ord lu = Robba.ord uI.unit - Robba.ord uN.unit`. Simplify using `only [lu, Robba.ord_mul]`. Use `Robba.ord_mul uN.unit uN.unit⁻¹` as an intermediate fact.
+
+Rewrite `this` using `[mul_inv_cancel]`. Establish `h1 : Robba.ord (1 : (Robba K)ˣ) = 0` using `(Robba.ord_eq_zero_iff 1).2 (by`. Rewrite using `[Units.val_one]`. Use `le_antisymm (ciSup_le fun n => ?_) ?_` and prove the remaining obligations. Distinguish the cases in `hn : n = 0`.
+
+Substitute `hn` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hn]`. Simplify using `using Robba.norm_coeff_le_norm1 (Robba.bounded K).one_mem 0)`. Use linear arithmetic over natural numbers and integers.
+
+Express the relevant statement in the definitionally equal form `Robba.ord _ ≤ Robba.ord _`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem le_deg_of_le (hψ : Robba.IsGaussScaling ψ Q) (hQ : 0 < Q)
     (hψn : ∀ u : (Robba K)ˣ, Robba.norm1 (ψ u) = Robba.norm1 (u : Robba K))
     {Φ : M →ₛₗ[ψ] M} {I N : Submodule (Robba K) M} (hIN : I ≤ N) (hI : IsStable Φ I)
@@ -337,6 +460,9 @@ def IsEtale (Ψ : M →ₛₗ[ψ] M) : Prop :=
   ∃ b : Basis (Fin (finrank (Robba K) M)) (Robba K) M,
     (∀ i j, phiMatrix b Ψ i j ∈ Robba.intBounded K) ∧ Robba.norm1 (phiMatrix b Ψ).det = 1
 
+/- English proof (translation)
+Establish `hmem` using `det_mem_of_forall_mem _ _ hb.1`. Use `Robba.isUnit_of_mem_bounded hmem.1 fun h0 => ?_` and prove the remaining obligations. Use `hb.2` as an intermediate fact. Rewrite `this` using `[h0]`. Simplify using `[Robba.norm1] at this`.
+-/
 theorem IsEtale.isUnit_det {Ψ : M →ₛₗ[ψ] M} {b : Basis (Fin (finrank (Robba K) M)) (Robba K) M}
     (hb : (∀ i j, phiMatrix b Ψ i j ∈ Robba.intBounded K) ∧ Robba.norm1 (phiMatrix b Ψ).det = 1) :
     IsUnit (phiMatrix b Ψ).det := by
@@ -346,10 +472,16 @@ theorem IsEtale.isUnit_det {Ψ : M →ₛₗ[ψ] M} {b : Basis (Fin (finrank (Ro
   rw [h0] at this
   simp [Robba.norm1] at this
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `h`. Conclude with `(isPhiModule_iff_isUnit_det b Ψ).2 (IsEtale.isUnit_det hb)`.
+-/
 theorem IsEtale.isPhiModule {Ψ : M →ₛₗ[ψ] M} (h : IsEtale Ψ) : IsPhiModule Ψ := by
   obtain ⟨b, hb⟩ := h
   exact (isPhiModule_iff_isUnit_det b Ψ).2 (IsEtale.isUnit_det hb)
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `h`. Rewrite using `[deg_eq _ b _ ((isPhiModule_iff_isUnit_det b Ψ).2 (IsEtale.isUnit_det hb)), degIn]`. Conclude with `(Robba.ord_eq_zero_iff _).2 hb.2`.
+-/
 theorem IsEtale.deg_eq_zero (hψn : ∀ u : (Robba K)ˣ, Robba.norm1 (ψ u) = Robba.norm1 (u : Robba K))
     {Ψ : M →ₛₗ[ψ] M} (h : IsEtale Ψ) : deg (Robba.unitOrd ψ hψn) Ψ = 0 := by
   classical
@@ -357,6 +489,13 @@ theorem IsEtale.deg_eq_zero (hψn : ∀ u : (Robba K)ˣ, Robba.norm1 (ψ u) = Ro
   rw [deg_eq _ b _ ((isPhiModule_iff_isUnit_det b Ψ).2 (IsEtale.isUnit_det hb)), degIn]
   exact (Robba.ord_eq_zero_iff _).2 hb.2
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `lhs : (phiMatrix b Ψ * (Matrix.of fun i j => b.repr (bN j : M) i).map ψ) i j = b.repr (Ψ (bN j : M)) i`. Rewrite using `[repr_phi]`. Simplify using `[Matrix.mul_apply, mulVec, dotProduct]`. Establish `rhs : ((Matrix.of fun i j => b.repr (bN j : M) i) * phiMatrix bN (restrict Ψ N h)) i j = b.repr (Ψ (bN j : M)) i`.
+
+Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.of_apply, phiMatrix_apply]`. Use `congrArg (fun z : N => b.repr (z : M) i) (bN.sum_repr (restrict Ψ N h (bN j)))` as an intermediate fact. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, map_sum, map_smul, Finsupp.coe_finsetSum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul, coe_restrict_apply] at this`. Rewrite using `[← this]`.
+
+Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`. Rewrite using `[lhs, rhs]`.
+-/
 theorem mul_map_eq_mul_phiMatrix {ι κ : Type*} [Fintype ι] [DecidableEq ι] [Fintype κ]
     [DecidableEq κ] {Ψ : M →ₛₗ[ψ] M} (b : Basis ι (Robba K) M) {N : Submodule (Robba K) M}
     (h : IsStable Ψ N) (bN : Basis κ (Robba K) N) :
@@ -378,6 +517,17 @@ theorem mul_map_eq_mul_phiMatrix {ι κ : Type*} [Fintype ι] [DecidableEq ι] [
     exact Finset.sum_congr rfl fun k _ => mul_comm _ _
   rw [lhs, rhs]
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `hΨ`. Establish `hNphi` using `isPhiModule_restrict ((isPhiModule_iff_isUnit_det b Ψ).2 (IsEtale.isUnit_det hb)) h`. Use `set k := finrank (Robba K) N`. Set `bN : Basis (Fin k) (Robba K) N` to `Module.finBasisOfFinrankEq _ _ rfl`. Use `set Y : Matrix (Fin (finrank (Robba K) M)) (Fin k) (Robba K) := Matrix.of fun i j => b.repr (bN j : M) i`.
+
+Use `set C := phiMatrix bN (restrict Ψ N h)`. Establish `hrel` using `mul_map_eq_mul_phiMatrix b h bN`. Establish `hx : maxMinor Y ≠ 0`. Rewrite using `[maxMinor_ne_zero_iff_linearIndependent]`. Establish `hli` using `bN.linearIndependent.map' (b.equivFun.toLinearMap ∘ₗ N.subtype) (by rw [LinearMap.ker_comp, LinearEquiv.ker, Submodule.comap_bot, Submodule.ker_subtype])`.
+
+Establish `hcol : Y.col = (b.equivFun.toLinearMap ∘ₗ N.subtype) ∘ bN`. Use function extensionality and compare the values at `j i`. Simplify using `[Y, Matrix.col, Basis.equivFun_apply]`. Rewrite using `[hcol]`. Conclude with `hli`.
+
+Establish `hC` using `(isPhiModule_iff_isUnit_det bN _).1 hNphi`. Establish `key` using `compound_mulVec_map_maxMinor_of_mul_eq ψ (phiMatrix b Ψ) Y C hrel`. Establish `hle` using `Robba.gaussNorm_le_one_of_smul_eq hψ hQ hx (B := compound k (phiMatrix b Ψ)) (fun s t => det_mem_of_forall_mem _ _ fun i j => hb.1 _ _) (Robba.unit_mem_bounded hC.unit) (fun s => by`. Use `congrFun key s` as an intermediate fact. Simplify using `only [mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] at this`.
+
+Rewrite using `[IsUnit.unit_spec, ← this])`. Rewrite using `[deg_eq _ bN _ hNphi, degIn]`. Conclude with `(Robba.ord_nonneg_iff _).2 hle`.
+-/
 theorem deg_restrict_nonneg_of_isEtale (hψ : Robba.IsGaussScaling ψ Q) (hQ : 0 < Q)
     (hψn : ∀ u : (Robba K)ˣ, Robba.norm1 (ψ u) = Robba.norm1 (u : Robba K))
     {Ψ : M →ₛₗ[ψ] M} (hΨ : IsEtale Ψ) {N : Submodule (Robba K) M} (h : IsStable Ψ N)

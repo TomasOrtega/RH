@@ -39,8 +39,14 @@ def rhoA (D : D7) (m1 : D.Dt →* ℂˣ) (N' : ℕ) : D.Dt →* ℂˣ := m1⁻¹
 
 def rhoA' (D : D7) (m1 : D.Dt →* ℂˣ) (N : ℕ) : D.Dt →* ℂˣ := m1 * D.chiD ^ (((N / 2 : ℕ) : ℤ))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rhoOf_eq (D : D7) (mt : ℕ → D.Dt →* ℂˣ) (i : ℕ) : rhoOf D mt i = rhoA D (mt (i + 1)) (D.R.N (i + 1)) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rhoOf'_eq (D : D7) (mt : ℕ → D.Dt →* ℂˣ) (i : ℕ) : rhoOf' D mt i = rhoA' D (mt (i + 1)) (D.R.N i) := rfl
 
 def dOrt (D : D7) (T : Tor D) : ℂ := ((Real.sqrt (area T.abelian₂ / Real.pi) : ℝ) : ℂ)
@@ -176,12 +182,18 @@ def kjSum : Prop :=
     (∀ c, HomDeg D (Qc c) A.dg ∧ C.sharp i (φ c) = fun y => evFr D (Qc c) (O.frm i y)) →
     ∀ c' y', C.K i φ c' y' = ∑ c, (((Nat.card (C.stab i c) : ℕ) : ℂ)⁻¹) * termO D O i c c' (O.Th i c c') (Qc c) y'
 
+/- English proof (translation)
+Introduce `c0 hc0 hd ht φ Qc hQ c' y'`. Simplify using `only [ColumnChain.K, Formalism.ThetaLiftIndependence.kerOpM, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, ColumnChain.wt]`. Use `Finset.sum_congr rfl (fun c _ => ?_)` and prove the remaining obligations. Rewrite using `[h c0 hc0 hd c c' (O.Th i c c') (ht c c') (Qc c) (hQ c).1 (φ c) y' (hQ c).2]`.
+-/
 theorem kjSum_of (h : A.kjPair) : A.kjSum := by
   intro c0 hc0 hd ht φ Qc hQ c' y'
   simp only [ColumnChain.K, Formalism.ThetaLiftIndependence.kerOpM, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, ColumnChain.wt]
   refine Finset.sum_congr rfl (fun c _ => ?_)
   rw [h c0 hc0 hd c c' (O.Th i c c') (ht c c') (Qc c) (hQ c).1 (φ c) y' (hQ c).2]
 
+/- English proof (translation)
+Introduce `c0 hc0 hdef c c' G hG Qp hQ f y' hf`. Establish `h1` using `hdef c c' Qp hQ f y' hf`. Rewrite `h1` using `[h c0 hc0 c c' G hG Qp hQ y']`. Establish `hne : c0 * ∏ τ, dOrt D (tor0 D cc δ) ^ A.dg τ ≠ 0` using `mul_ne_zero hc0.1 (Finset.prod_ne_zero_iff.mpr fun τ _ => pow_ne_zero _ hd)`. Conclude with `mul_left_cancel₀ hne h1`.
+-/
 theorem kjPair_of (h : A.kjEntry) (hd : dOrt D (tor0 D cc δ) ≠ 0) : A.kjPair := by
   intro c0 hc0 hdef c c' G hG Qp hQ f y' hf
   have h1 := hdef c c' Qp hQ f y' hf
@@ -202,6 +214,9 @@ def kjForm {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {e : FamE D} {Q : Dt
         ∀ c' y', (Tw.fm u μ).emb (i + 1) y c' y' =
           ∑ c, (((Nat.card ((D.chTw u μ).stab i c) : ℕ) : ℂ)⁻¹) * termO D O i c c' (O.Th i c c') (Qc c) y'
 
+/- English proof (translation)
+Introduce `c0 hc0 hd ht x y hxy Qc hQ c' y'`. Rewrite using `[hxy]`. Conclude with `h c0 hc0 hd ht _ Qc hQ c' y'`.
+-/
 theorem kjForm_of {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {e : FamE D} {Q : DtAd D} (Tw : TwForms D) {u : D.what₂.Word}
     {μ : D.what₂.Tup} {O : LiftObj D (D.chTw u μ)} {i : ℕ} (A : AdLift D cc δ e Q O i) (h : A.kjSum) : kjForm Tw A := by
   intro c0 hc0 hd ht x y hxy Qc hQ c' y'
@@ -227,6 +242,9 @@ def kjAtP {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {e : FamE D} {Q : DtA
               termO D O j k (Kp.cls (j + 1) a' L') (O.Th j k (Kp.cls (j + 1) a' L')) (Qc k) y'
 
 open Formalism.MainNotions.G in
+/- English proof (translation)
+Introduce `j hj c0 hc0 hd ht x y hxy`. Use `⟨(Kp.cmp_K j hj x y hxy).symm, fun Qc hQ a' L' y' => ?_⟩` and prove the remaining obligations. Conclude with `kjForm_of Tw (A j) ((A j).kjSum_of (hA j hj)) c0 hc0 hd ht x y hxy Qc hQ _ y'`.
+-/
 theorem kernelAtPrime_pairCondition_of_lifts {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {e : FamE D} {Q : DtAd D} {Gt : GatTies D} {c : LatCmp D} {Tw : TwForms D}
     {u : D.what₂.Word} {w : D.what₂.places.Pl} [Fact (D.what₂.places.resChar w).Prime]
     {h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)} {Fl : Fills (D.gat u w h)} {Lv : Levels Fl} {Ch : Chain Lv}
@@ -241,6 +259,13 @@ def liftTieH (D : D7) {u : D.what₂.Word} {C : ColumnChain D.R D.what₂.Tau (D
   ∀ c c' (Qp : MvPolynomial (FrV D (D.R.N i)) ℂ), HomDeg D Qp dg → ∀ y' : C.Y (i + 1),
     C.unf i c c' (fun y => evFr D Qp (O.frm i y)) y' = applyAt0 D (polD D O.dgen Qp (O.frm (i + 1) y')) (O.Th i c c')
 
+/- English proof (translation)
+Introduce `c c' Qp hQ y'`. Establish `hsh : ∀ y, (∏ τ, (C.de i y τ) ^ (C.sSharp i τ)) ≠ 0` using `fun y => Finset.prod_ne_zero_iff.mpr fun τ _ => zpow_ne_zero _ (C.de_ne i y τ)`. Establish `hf : C.sharp i (fun y => (∏ τ, (C.de i y τ) ^ (C.sSharp i τ))⁻¹ * evFr D Qp (O.frm i y)) = fun y => evFr D Qp (O.frm i y)`. Use function extensionality and compare the values at `y`. Simplify using `only [ColumnChain.sharp, Formalism.BasicNotions.mulFun, LinearMap.coe_mk, AddHom.coe_mk]`.
+
+Rewrite using `[← mul_assoc, mul_inv_cancel₀ (hsh y), one_mul]`. Establish `h1` using `h c0 h0 hd c c' (O.Th i c c') (ht c c') Qp hQ _ y' hf`. Simplify using `only [ColumnChain.Kmap, LinearMap.smul_apply, LinearMap.comp_apply, hf, ColumnChain.divDe, Formalism.BasicNotions.mulFun, LinearMap.coe_mk, AddHom.coe_mk, Pi.smul_apply, smul_eq_mul, termO] at h1`. Rewrite `h1` using `[(O.c13 i hi).1 c, (O.c13 i hi).2 c']`. Establish `hρ : (((rhoOf D O.mt i (O.dt i c) : ℂˣ) : ℂ) * ((rhoOf' D O.mt i (O.dt (i + 1) c') : ℂˣ) : ℂ)) ≠ 0` using `mul_ne_zero (Units.ne_zero _) (Units.ne_zero _)`.
+
+Establish `hde : (∏ τ, (C.de (i + 1) y' τ) ^ (C.sDiv i τ))⁻¹ ≠ 0` using `inv_ne_zero (Finset.prod_ne_zero_iff.mpr fun τ _ => zpow_ne_zero _ (C.de_ne (i + 1) y' τ))`. Conclude with `mul_left_cancel₀ hde (mul_left_cancel₀ hρ h1)`.
+-/
 theorem liftTieH_of {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {e : FamE D} {Q : DtAd D} {u : D.what₂.Word}
     {C : ColumnChain D.R D.what₂.Tau (D.hcW u)} {O : LiftObj D C} {i : ℕ} (hi : i < D.R.m) (A : AdLift D cc δ e Q O i)
     (h : A.kjPair) (c0 : ℂ) (h0 : A.Θ.IsResidueClassZero c0) (hd : A.IsDef c0) (ht : A.ThIs) : liftTieH D O i A.dg := by
@@ -369,6 +394,9 @@ def repVal (D : D7) (Q : DtAd D) (mt : ℕ → D.Dt →* ℂˣ) : Prop :=
     ∀ i < D.R.m, ‖lamC lam ((rhoOf D mt i (Q.q (dtG D g)) : ℂˣ) : ℂ)‖ = 1 ∧
       ‖lamC lam ((rhoOf' D mt i (Q.q (dtG D g)) : ℂˣ) : ℂ)‖ = 1
 
+/- English proof (translation)
+Introduce `p _ lam N g hg`. Take `⟨k, z, hz1, hz2⟩` from `h p lam N g hg`. Conclude with `hu p lam _ k z hz1 hz2`.
+-/
 theorem repVal_of (D : D7) (Q : DtAd D) (mt : ℕ → D.Dt →* ℂˣ) (h : valDet D Q) (hu : repUnitsOf D mt) : repVal D Q mt := by
   intro p _ lam N g hg
   obtain ⟨k, z, hz1, hz2⟩ := h p lam N g hg
@@ -381,12 +409,22 @@ def ThetaUnitAbsoluteValue (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) : Pr
   ∀ (N N' : ℕ), ∀ e0 ∈ TT D (tor0 D cc δ) N N', ∀ Θ : ThetaD D cc δ N N', Θ.WB e0 →
     ∃ c0 : ℂ, Θ.IsResidueClassZero c0 ∧ ‖c0‖ = (Real.sqrt (normSq D (tor0 D cc δ) (La0 D (tor0 D cc δ) N N') e0))⁻¹
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.TaylorLogMetric.normSq`. Simplify using `only [Pi.smul_apply, smul_eq_mul, norm_mul, mul_pow, mul_assoc, MeasureTheory.average]`. Conclude with `MeasureTheory.integral_const_mul _ _`.
+-/
 private lemma unit_abs_of_normalisation_lemma (D : D7) (T : Tor D) {N N' : ℕ} (La' : AddSubgroup (VC D N N')) (c : ℂ)
     (G : VC D N N' → ℂ) : normSq D T La' (c • G) = ‖c‖ ^ 2 * normSq D T La' G := by
   unfold Formalism.MainNotions.TaylorLogMetric.normSq
   simp only [Pi.smul_apply, smul_eq_mul, norm_mul, mul_pow, mul_assoc, MeasureTheory.average]
   exact MeasureTheory.integral_const_mul _ _
 
+/- English proof (translation)
+Introduce `N N' e0 he Θ hWB`. Take `⟨c0, hc0, hgen⟩` from `h N N' Θ`. Use `⟨c0, hc0, ?_⟩` and prove the remaining obligations. Unfold `ThetaD.WB at hWB`. Rewrite `hWB` using `[hgen e0 he, unit_abs_of_normalisation_lemma]`.
+
+Establish `hn : normSq D (tor0 D cc δ) (La0 D (tor0 D cc δ) N N') e0 = (‖c0‖⁻¹) ^ 2`. Establish `hc : ‖c0‖ ≠ 0` using `norm_ne_zero_iff.mpr hc0.1`. Clear the denominators using the available nonvanishing facts. Rewrite using `[mul_comm]`. Conclude with `hWB`.
+
+Rewrite using `[hn, Real.sqrt_sq (inv_nonneg.mpr (norm_nonneg _)), inv_inv]`.
+-/
 theorem unit_abs_of_normalisation {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (h : kjOne D cc δ) : ThetaUnitAbsoluteValue D cc δ := by
   intro N N' e0 he Θ hWB
   obtain ⟨c0, hc0, hgen⟩ := h N N' Θ
@@ -404,6 +442,9 @@ def AdLift.WeightGeneratorsInLattice {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ :
     {C : ColumnChain D.R D.what₂.Tau (D.hcW u)} {O : LiftObj D C} {i : ℕ} (A : AdLift D cc δ e Q O i) : Prop :=
   A.Θ.WB (e00 D e (D.R.N i) (D.R.N (i + 1)))
 
+/- English proof (translation)
+Conclude with `Formalism.MainNotions.GL3Columns.unit_abs_of_normalisation h _ _ _ he A.Θ hw`.
+-/
 theorem AdLift.unit_abs_of_normalisation {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {e : FamE D} {Q : DtAd D} {u : D.what₂.Word}
     {C : ColumnChain D.R D.what₂.Tau (D.hcW u)} {O : LiftObj D C} {i : ℕ} (A : AdLift D cc δ e Q O i) (h : kjOne D cc δ)
     (he : e00 D e (D.R.N i) (D.R.N (i + 1)) ∈ TT D (tor0 D cc δ) (D.R.N i) (D.R.N (i + 1))) (hw : A.WeightGeneratorsInLattice) :
@@ -577,6 +618,9 @@ def cK (i : ℕ) (c : (D.chTw u μ).cls i) (c' : (D.chTw u μ).cls (i + 1)) : �
 
 def UnitsLatticeIndependent : Prop := ∀ i (c₁ c₂ : (D.chTw u μ).cls i) (c₁' c₂' : (D.chTw u μ).cls (i + 1)) τ, T.c0 i c₁ c₁' τ = T.c0 i c₂ c₂' τ
 
+/- English proof (translation)
+Unfold `KFTie.cK`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun z _ => by rw [h i c₁ c₂ c₁' c₂']`.
+-/
 theorem cK_of_C0Free (h : T.UnitsLatticeIndependent) (i : ℕ) (c₁ c₂ : (D.chTw u μ).cls i) (c₁' c₂' : (D.chTw u μ).cls (i + 1)) :
     T.cK i c₁ c₁' = T.cK i c₂ c₂' := by
   unfold KFTie.cK
@@ -625,6 +669,17 @@ namespace KFTie
 variable {D : D7} {Dx : DivX D} {Tw : TwForms D} {E : KerEnt D Dx Tw} {u : D.what₂.Word} {μ : D.what₂.Tup}
   {O : LiftObj D (D.chTw u μ)} {w : D.what₂.places.Pl} (T : KFTie E O w)
 
+/- English proof (translation)
+Introduce `i hi`. Establish `hbi` using `hb idl hp (D.what₂.places.resChar w) (E.lam w)`. Use `⟨fun c => ?_, fun c' => ?_, fun c c' => ?_⟩` and prove the remaining obligations. Unfold `KFTie.unS`. Rewrite using `[norm_mul, norm_prod, ((hbi (O.dt i c)).2 i hi).1, ← Finset.prod_mul_distrib]`.
+
+Use `Finset.prod_eq_one (fun τ _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_zpow, hd idl hp i hi.le c τ]`. Establish `hne : nrmId D (E.lam w) τ (idl (QuotientGroup.mk (O.dt i c))) ≠ 0`. Rewrite using `[← hd idl hp i hi.le c τ]`. Conclude with `norm_ne_zero_iff.mpr (T.B_bas i hi.le c τ).1`.
+
+Rewrite using `[zpow_neg, inv_mul_cancel₀ (zpow_ne_zero _ hne)]`. Unfold `KFTie.unT`. Rewrite using `[norm_mul, norm_prod, ((hbi (O.dt (i + 1) c')).2 i hi).2, ← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one (fun τ _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_zpow, hd idl hp (i + 1) hi c' τ]`.
+
+Establish `hne : nrmId D (E.lam w) τ (idl (QuotientGroup.mk (O.dt (i + 1) c'))) ≠ 0`. Rewrite using `[← hd idl hp (i + 1) hi c' τ]`. Conclude with `norm_ne_zero_iff.mpr (T.B_bas (i + 1) hi c' τ).1`. Rewrite using `[zpow_neg, mul_inv_cancel₀ (zpow_ne_zero _ hne)]`. Unfold `KFTie.cK`.
+
+Rewrite using `[norm_inv, norm_prod]`. Simplify using `[norm_pow, T.unitAbs_eq_one]`.
+-/
 theorem unUnit_of (idl : D.Dt ⧸ D.UO → IdE D) (hp : RelDetPinned D idl) (hb : brRhoOf D (D.chTw u μ) O.mt) (hd : T.detB) :
     T.unUnit := by
   intro i hi
@@ -653,6 +708,11 @@ theorem unUnit_of (idl : D.Dt ⧸ D.UO → IdE D) (hp : RelDetPinned D idl) (hb 
 def parUnit : Prop :=
   InertK D (D.what₂.places.resChar w) → D.what₂.places.resChar w ≠ 2 → ∀ i, i ≤ D.R.m → ∀ c, ‖∏ τ, (T.B i c τ).det‖ = 1
 
+/- English proof (translation)
+Introduce `hK h2 i hi c`. Rewrite using `[norm_prod]`. Repeatedly rewrite using `[hd idl hp i hi c]`. Take `⟨k, z, hz⟩` from `ha (O.dt i c)`. Establish `h1` using `hχ (D.what₂.places.resChar w) (E.lam w) h2 hK (O.dt i c) k z hz`.
+
+Rewrite `h1` using `[(hb idl hp _ (E.lam w) (O.dt i c)).1, Finset.prod_inv_distrib]`. Conclude with `inv_eq_one.mp h1`.
+-/
 theorem parUnit_of (idl : D.Dt ⧸ D.UO → IdE D) (hp : RelDetPinned D idl) (hb : brRhoOf D (D.chTw u μ) O.mt) (hd : T.detB)
     (hχ : chiUnitInert D) (ha : PowRatAll D) : T.parUnit := by
   intro hK h2 i hi c
@@ -663,6 +723,9 @@ theorem parUnit_of (idl : D.Dt ⧸ D.UO → IdE D) (hp : RelDetPinned D idl) (hb
   rw [(hb idl hp _ (E.lam w) (O.dt i c)).1, Finset.prod_inv_distrib] at h1
   exact inv_eq_one.mp h1
 
+/- English proof (translation)
+Unfold `KFTie.un`. Rewrite using `[norm_mul, norm_mul, (h i hi).2.2 c c', (h i hi).1 c, (h i hi).2.1 c']`. Evaluate the numerical expressions.
+-/
 theorem norm_un (h : T.unUnit) {i : ℕ} (hi : i < D.R.m) (c : (D.chTw u μ).cls i) (c' : (D.chTw u μ).cls (i + 1)) :
     ‖T.un i c c'‖ = 1 := by
   unfold KFTie.un
@@ -678,11 +741,17 @@ def kf {D : D7} {Dx : DivX D} {Tw : TwForms D} (E : KerEnt D Dx Tw) (O : ∀ u �
 def kfAll {D : D7} {Dx : DivX D} {Tw : TwForms D} (E : KerEnt D Dx Tw) (O : ∀ u μ, LiftObj D (D.chTw u μ)) : Prop :=
   ∀ u μ w, LevFree Dx u μ w → ∀ T : KFTie E (O u μ) w, T.kfPair ∧ T.kfSum ∧ T.unUnit
 
+/- English proof (translation)
+Introduce `u μ w hL _ _ T`. Conclude with `h u μ w hL T`.
+-/
 theorem kf_of_kfAll {D : D7} {Dx : DivX D} {Tw : TwForms D} {E : KerEnt D Dx Tw} {O : ∀ u μ, LiftObj D (D.chTw u μ)}
     (h : kfAll E O) : kf E O := by
   intro u μ w hL _ _ T
   exact h u μ w hL T
 
+/- English proof (translation)
+Introduce `u μ w hL i hi c c'`. Take `⟨T, hT⟩` from `hu u μ w hL`. Rewrite using `[hT i hi c c']`. Conclude with `KFTie.norm_un T (h u μ w hL T).2.2 hi c c'`.
+-/
 theorem unUnit_ent {D : D7} {Dx : DivX D} {Tw : TwForms D} {E : KerEnt D Dx Tw} {O : ∀ u μ, LiftObj D (D.chTw u μ)}
     (h : kfAll E O) (hu : ∀ u μ w, LevFree Dx u μ w → ∃ T : KFTie E (O u μ) w, T.UnIs) : E.UnUnit := by
   intro u μ w hL i hi c c'
@@ -831,29 +900,58 @@ def StatementWeightRecursion (D : D7) : Prop := wtI D → wtRec D
 def StatementWeightSecond (D : D7) (L : SizeData₂ D) : Prop := WTPar D L → wtI D → wtII D L
 def StatementWeightThird (D : D7) (L : SizeData₂ D) : Prop := WTPar D L → wtI D → wtII D L → wtIII D L
 
+/- English proof (translation)
+Simplify using `only [Formalism.BasicNotions.Ranks.N]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem N_cast (D : D7) (j : ℕ) : (D.R.N j : ℚ) = (D.R.k : ℚ) + (j : ℚ) * ((D.R.t : ℚ) + 1) := by
   simp only [Formalism.BasicNotions.Ranks.N]
   push_cast
   ring
 
+/- English proof (translation)
+Simplify using `only [sJ', sJ, Formalism.BasicNotions.sExp', Formalism.BasicNotions.sExp, Nat.add_sub_cancel, N_cast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sJ'_sub_sJ (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) (i : ℕ) :
     sJ' D u τ i - sJ D u τ i = -(((D.R.t : ℚ) + 1) / 2) := by
   simp only [sJ', sJ, Formalism.BasicNotions.sExp', Formalism.BasicNotions.sExp, Nat.add_sub_cancel, N_cast]
   push_cast
   ring
 
+/- English proof (translation)
+Simplify using `only [sJ', wJ, Formalism.BasicNotions.sExp', Formalism.BasicNotions.wG, N_cast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sJ'_sub_wJ (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) (i : ℕ) :
     sJ' D u τ i - wJ D u τ i = (i : ℚ) * ((D.R.t : ℚ) + 1) / 2 := by
   simp only [sJ', wJ, Formalism.BasicNotions.sExp', Formalism.BasicNotions.wG, N_cast]
   push_cast
   ring
 
+/- English proof (translation)
+Simplify using `only [sJ, wJ, Formalism.BasicNotions.sExp, Formalism.BasicNotions.wG, Nat.add_sub_cancel, N_cast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sJ_sub_wJ (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) (i : ℕ) :
     sJ D u τ i - wJ D u τ i = ((i : ℚ) + 1) * ((D.R.t : ℚ) + 1) / 2 := by
   simp only [sJ, wJ, Formalism.BasicNotions.sExp, Formalism.BasicNotions.wG, Nat.add_sub_cancel, N_cast]
   push_cast
   ring
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero`. Introduce `r hr`. Establish `hk : r < D.R.k` using `by simpa [Formalism.BasicNotions.Ranks.N] using hr`. Simplify using `[lamNo, lamTr, hk]`.
+
+Consider the case `succ j ih`. Introduce `r hr`. Distinguish the cases in `hrj : r < D.R.N j`. Establish `h1 : lamNo D u τ (j + 1) r = lamNo D u τ j r`. Simplify using `only [lamNo, lamTr, if_pos hrj]`.
+
+Establish `h2` using `sJ'_sub_sJ D u τ j`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[h1, ih r hrj]`. Establish `hN0 : D.R.N j = D.R.k + j * (D.R.t + 1)` using `rfl`.
+
+Establish `hN1 : D.R.N (j + 1) = D.R.k + j * (D.R.t + 1) + (D.R.t + 1)`. Simplify using `only [Formalism.BasicNotions.Ranks.N]`. Expand and normalize the polynomial expressions, which then agree. Establish `hr'` using `hr`. Rewrite `hr'` using `[hN1]`.
+
+Establish `hrj'` using `hrj`. Rewrite `hrj'` using `[hN0]`. Establish `hk : ¬ r < D.R.k`. Generalize the expression as in `j * (D.R.t + 1) = a at *`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hlo : j * (D.R.t + 1) ≤ r - D.R.k`. Generalize the expression as in `j * (D.R.t + 1) = a at *`. Use linear arithmetic over natural numbers and integers. Establish `hhi : r - D.R.k < (j + 1) * (D.R.t + 1)`. Rewrite using `[add_mul, one_mul]`.
+
+Generalize the expression as in `j * (D.R.t + 1) = a at *`. Use linear arithmetic over natural numbers and integers. Establish `hdiv : (r - D.R.k) / (D.R.t + 1) = j` using `Nat.div_eq_of_lt_le hlo hhi`. Simplify using `only [lamNo, lamTr, if_neg hrj, if_pos hr, if_neg hk, hdiv]`. Establish `h2` using `sJ_sub_wJ D u τ j`.
+
+Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem lamNo_eq (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) (j : ℕ) : ∀ r < D.R.N j, lamNo D u τ j r =
     if r < D.R.k then lamZ D u τ r else -wJ D u τ ((r - D.R.k) / (D.R.t + 1)) := by
   induction j with
@@ -894,6 +992,11 @@ theorem lamNo_eq (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) (j : ℕ) : 
       push_cast
       linarith
 
+/- English proof (translation)
+Introduce `u τ`. Use `⟨fun i hi => ⟨fun r hr => ?_, fun r hr1 hr2 => ?_, sJ'_sub_wJ D u τ i, sJ_sub_wJ D u τ i, fun r hr => ?_⟩, fun j _ => lamNo_eq D u τ j⟩` and prove the remaining obligations. Simplify using `only [lamTr, if_pos hr]`. Establish `h1` using `sJ'_sub_sJ D u τ i`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Simplify using `only [lamTr, if_neg (not_lt.mpr hr1), if_pos hr2]`. Simplify using `only [nuTr, lamNo]`. Establish `h1` using `sJ'_sub_wJ D u τ i`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem wtI_thm (D : D7) : wtI D := by
   intro u τ
   refine ⟨fun i hi => ⟨fun r hr => ?_, fun r hr1 hr2 => ?_, sJ'_sub_wJ D u τ i, sJ_sub_wJ D u τ i,
@@ -906,6 +1009,25 @@ theorem wtI_thm (D : D7) : wtI D := by
     have h1 := sJ'_sub_wJ D u τ i
     linarith
 
+/- English proof (translation)
+Introduce `u τ i hi`. Use `⟨fun C => ⟨?_, ?_⟩, fun r hr => ?_⟩` and prove the remaining obligations. Rewrite using `[C.sSharp_eq i hi τ]`. Simplify using `only [sJ', eJ, dif_pos hi]`. Rewrite using `[C.sDiv_eq i hi τ]`.
+
+Simplify using `only [sJ, eJ, dif_pos hi]`. Establish `hi1 : 1 ≤ i + 1 ∧ i + 1 ≤ D.R.m` using `⟨by omega, by omega⟩`. Establish `hw : Formalism.BasicNotions.DV.wSz D (i + 1) τ = (((D.hc τ).e ⟨i, hi⟩ : ℚ) : ℝ)`. Simplify using `only [Formalism.BasicNotions.DV.wSz, dif_pos hi1, Nat.add_sub_cancel]`. Establish `key : Formalism.BasicNotions.DV.nuRow D u (i + 1) τ r = (((Formalism.BasicNotions.DV.srcPar D u τ r + (D.hc τ).e ⟨i, hi⟩ - (((D.R.N i : ℚ) + (D.R.N (i + 1) : ℚ) - 1 - 2 * (r : ℚ)) / 2)) : ℚ) : ℝ)`.
+
+Unfold `Formalism.BasicNotions.DV.nuRow`. Rewrite using `[hw, Nat.add_sub_cancel]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`.
+
+Use `congr 1`. Establish `hlam : lamTr D u τ i r = lamNo D u τ i r - (i : ℚ) * ((D.R.t : ℚ) + 1) / 2`. Simplify using `only [lamNo]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [nuTr]`.
+
+Rewrite using `[hlam, lamNo_eq D u τ i r hr]`. Distinguish the cases in `hk : r < D.R.k`. Simplify using `only [if_pos hk, lamZ, dif_pos hk, Formalism.BasicNotions.DV.srcPar, sJ', eJ, dif_pos hi, Formalism.BasicNotions.sExp', D.hcW_e, N_cast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h2 : D.R.k ≤ r` using `not_lt.mp hk`. Establish `hNi : r < D.R.k + i * (D.R.t + 1)` using `hr`. Establish `hq : (r - D.R.k) / (D.R.t + 1) < i`. Rewrite using `[Nat.div_lt_iff_lt_mul (Nat.succ_pos _)]`. Generalize the expression as in `i * (D.R.t + 1) = a at *`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hqm : (r - D.R.k) / (D.R.t + 1) < D.R.m` using `hq.trans hi`. Establish `h1` using `Nat.div_add_mod (r - D.R.k) (D.R.t + 1)`. Establish `hr' : (r : ℚ) = (D.R.k : ℚ) + ((D.R.t : ℚ) + 1) * (((r - D.R.k) / (D.R.t + 1) : ℕ) : ℚ) + (((r - D.R.k) % (D.R.t + 1) : ℕ) : ℚ)`. Establish `e : r = D.R.k + ((D.R.t + 1) * ((r - D.R.k) / (D.R.t + 1)) + (r - D.R.k) % (D.R.t + 1))`.
+
+Rewrite using `[h1]`. Use linear arithmetic over natural numbers and integers. Use `conv_lhs => rw [e]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [if_neg hk, Formalism.BasicNotions.DV.srcPar, dif_neg hk, dif_pos hqm, wJ, Formalism.BasicNotions.wG, eJ, sJ', dif_pos hi, Formalism.BasicNotions.sExp', D.hcW_e, N_cast]`. Use `push_cast`. Take the linear combination `hr'`.
+-/
 theorem wtRec_thm (D : D7) : wtRec D := by
   intro u τ i hi
   refine ⟨fun C => ⟨?_, ?_⟩, fun r hr => ?_⟩
@@ -975,6 +1097,11 @@ def ClassSumIntegralAlt (D : D7) : Prop :=
     (∀ γA h, IsRatU D γA → f (γA * h) = f h) → (∀ h, ∀ j ∈ X.J, f (h * j) = f h) →
     X.I f = ∑ g ∈ R, ((X.gam g : ℕ) : ℂ)⁻¹ * f g
 
+/- English proof (translation)
+Take `⟨γ, hγ⟩` from `ha`. Take `⟨γ', hγ'⟩` from `hb`. Use `⟨γ * γ', ?_⟩` and prove the remaining obligations. Unfold `IsRat at hγ hγ' ⊢`. Rewrite using `[Subgroup.coe_mul, Units.val_mul, hγ, hγ']`.
+
+Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, map_sum, map_mul]`.
+-/
 theorem IsRatU.mul {D : D7} {N : ℕ} {a b : GA D N} (ha : IsRatU D a) (hb : IsRatU D b) : IsRatU D (a * b) := by
   obtain ⟨γ, hγ⟩ := ha
   obtain ⟨γ', hγ'⟩ := hb
@@ -984,6 +1111,15 @@ theorem IsRatU.mul {D : D7} {N : ℕ} {a b : GA D N} (ha : IsRatU D a) (hb : IsR
   ext i j
   simp [Matrix.mul_apply, map_sum, map_mul]
 
+/- English proof (translation)
+Take `⟨γ, hγ⟩` from `ha`. Use `⟨γ⁻¹, ?_⟩` and prove the remaining obligations. Unfold `IsRat at hγ ⊢`. Rewrite using `[Subgroup.coe_inv, Matrix.coe_units_inv, hγ]`. Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises.
+
+Establish `h1 : ((γ * γ⁻¹ : _) : Matrix (Fin N) (Fin N) D.host.E) = 1`. Rewrite using `[mul_inv_cancel]`. Both sides reduce to the same expression. Establish `h2 : (γ : Matrix (Fin N) (Fin N) D.host.E) * (γ⁻¹ : _) = 1` using `h1`. Combine the equalities or inequalities in the displayed calculation.
+
+Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, map_sum, map_mul]`. Use `_ = 1 := by`. Rewrite using `[h2]`. Use extensionality with `i j`.
+
+Simplify using `[Matrix.one_apply]`.
+-/
 theorem IsRatU.inv {D : D7} {N : ℕ} {a : GA D N} (ha : IsRatU D a) : IsRatU D a⁻¹ := by
   obtain ⟨γ, hγ⟩ := ha
   refine ⟨γ⁻¹, ?_⟩
@@ -1006,6 +1142,13 @@ theorem IsRatU.inv {D : D7} {N : ℕ} {a : GA D N} (ha : IsRatU D a) : IsRatU D 
 def ClsInt.cnt {D : D7} {N : ℕ} (X : ClsInt D N) (g h : GA D N) : ℕ :=
   Nat.card {γA : GA D N // IsRatU D γA ∧ g⁻¹ * (γA * h) ∈ X.J}
 
+/- English proof (translation)
+Unfold `ClsInt.cnt ClsInt.gam`. Conclude with `Nat.card_congr { toFun := fun x => ⟨x.1 * γ0⁻¹, x.2.1.mul h0.inv, by`. Establish `h1` using `X.J.mul_mem x.2.2 (X.J.inv_mem hJ)`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use the proof step `group⟩`.
+
+Use `invFun := fun y => ⟨y.1 * γ0, y.2.1.mul h0, by`. Establish `h1` using `X.J.mul_mem y.2.2 hJ`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use the proof step `group⟩`. Use `left_inv := fun x => Subtype.ext (by simp)`.
+
+Use `right_inv := fun y => Subtype.ext (by simp) }`.
+-/
 theorem ClsInt.cnt_eq {D : D7} {N : ℕ} (X : ClsInt D N) (g h γ0 : GA D N) (h0 : IsRatU D γ0) (hJ : g⁻¹ * (γ0 * h) ∈ X.J) :
     X.cnt g h = X.gam g := by
   unfold ClsInt.cnt ClsInt.gam
@@ -1021,6 +1164,9 @@ theorem ClsInt.cnt_eq {D : D7} {N : ℕ} (X : ClsInt D N) (g h γ0 : GA D N) (h0
       left_inv := fun x => Subtype.ext (by simp)
       right_inv := fun y => Subtype.ext (by simp) }
 
+/- English proof (translation)
+Unfold `ClsInt.cnt`. Rewrite using `[Nat.card_eq_zero]`. Use `left`. Conclude with `⟨fun x => hn ⟨x.1, x.2⟩⟩`.
+-/
 theorem ClsInt.cnt_zero {D : D7} {N : ℕ} (X : ClsInt D N) (g h : GA D N)
     (hn : ¬ ∃ γA : GA D N, IsRatU D γA ∧ g⁻¹ * (γA * h) ∈ X.J) : X.cnt g h = 0 := by
   unfold ClsInt.cnt
@@ -1028,6 +1174,13 @@ theorem ClsInt.cnt_zero {D : D7} {N : ℕ} (X : ClsInt D N) (g h : GA D N)
   left
   exact ⟨fun x => hn ⟨x.1, x.2⟩⟩
 
+/- English proof (translation)
+Introduce `hg`. Establish `hz : ∀ h, X.cnt g h = 0`. Introduce `h`. Distinguish the cases in `hex : ∃ γA : GA D N, IsRatU D γA ∧ g⁻¹ * (γA * h) ∈ X.J`. Take `⟨γ0, hγ0, hJ⟩` from `hex`.
+
+Rewrite using `[X.cnt_eq g h γ0 hγ0 hJ, hg]`. Conclude with `X.cnt_zero g h hex`. Establish `hu` using `X.unf g`. Establish `hfun : (fun h => ((Nat.card {γA : GA D N // IsRatU D γA ∧ g⁻¹ * (γA * h) ∈ X.J} : ℕ) : ℂ)) = 0`. Use function extensionality and compare the values at `h`.
+
+Establish `h1` using `hz h`. Unfold `ClsInt.cnt at h1`. Simplify using `[h1]`. Rewrite `hu` using `[hfun, map_zero]`. Conclude with `zero_ne_one hu`.
+-/
 theorem ClsInt.gam_ne {D : D7} {N : ℕ} (X : ClsInt D N) (g : GA D N) : X.gam g ≠ 0 := by
   intro hg
   have hz : ∀ h, X.cnt g h = 0 := by
@@ -1045,6 +1198,17 @@ theorem ClsInt.gam_ne {D : D7} {N : ℕ} (X : ClsInt D N) (g : GA D N) : X.gam g
   rw [hfun, map_zero] at hu
   exact zero_ne_one hu
 
+/- English proof (translation)
+Introduce `N X R hR f hL hJ`. Establish `key : f = ∑ g ∈ R, (((X.gam g : ℕ) : ℂ)⁻¹ * f g) • (fun h => ((X.cnt g h : ℕ) : ℂ))`. Use function extensionality and compare the values at `h`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Take `⟨g0, ⟨hg0R, γ0, hγ0, hJ0⟩, huniq⟩` from `hR h`.
+
+Rewrite using `[Finset.sum_eq_single g0]`. Rewrite using `[X.cnt_eq g0 h γ0 hγ0 hJ0]`. Establish `hgam : ((X.gam g0 : ℕ) : ℂ) ≠ 0` using `by exact_mod_cast X.gam_ne g0`. Establish `hf : f h = f g0`. Rewrite using `[← hL γ0 h hγ0]`.
+
+Establish `h1 : γ0 * h = g0 * (g0⁻¹ * (γ0 * h))` using `by group`. Rewrite using `[h1, hJ g0 _ hJ0]`. Rewrite using `[hf]`. Clear the denominators using the available nonvanishing facts. Introduce `g hgR hne`.
+
+Rewrite using `[X.cnt_zero g h (fun ⟨γ, hγ, hJg⟩ => hne (huniq g ⟨hgR, γ, hγ, hJg⟩)), Nat.cast_zero, mul_zero]`. Introduce `hn`. Conclude with `absurd hg0R hn`. Use `conv_lhs => rw [key]`. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl (fun g _ => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul]`. Establish `hu` using `X.unf g`. Unfold `ClsInt.cnt`. Rewrite using `[hu, mul_one]`.
+-/
 theorem class_sum_integral_holds (D : D7) : ClassSumIntegralAlt D := by
   intro N X R hR f hL hJ
   have key : f = ∑ g ∈ R, (((X.gam g : ℕ) : ℂ)⁻¹ * f g) • (fun h => ((X.cnt g h : ℕ) : ℂ)) := by
@@ -1091,6 +1255,9 @@ def csI (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) : Prop :=
     ∀ (g : GA D N) (g' : GA D N'), ∀ F ∈ TT D (tor0 D cc δ) N N', ∀ P,
       Θ.Th P (S.W.Om g g' F) = c0 * applyO D (tor0 D cc δ) P (S.W.Om g g' F)
 
+/- English proof (translation)
+Introduce `N N' S Θ`. Take `⟨c0, hc0, -⟩` from `h N N' Θ`. Conclude with `⟨c0, hc0, fun g g' F hF P => hc0.2 P _ (S.W.maps g g' F hF)⟩`.
+-/
 theorem csI_of {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (h : kjOne D cc δ) : csI D cc δ := by
   intro N N' S Θ
   obtain ⟨c0, hc0, -⟩ := h N N' Θ
@@ -1108,6 +1275,9 @@ def csII (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) : Prop :=
           embT D τ (γ' : Matrix (Fin N') (Fin N') D.host.E).det ^ (-S.a' τ)) *
         pull D (tor0 D cc δ) (γ : Matrix (Fin N) (Fin N) D.host.E) (γ' : Matrix (Fin N') (Fin N') D.host.E) (S.W.Om g g' F) y
 
+/- English proof (translation)
+Introduce `N N' S γ γ' γA γA' hγ hγ' g g' F hF`. Rewrite using `[S.W.mul _ _ _ _ F hF]`. Conclude with `h N N' S.posN S.posN' S.ev S.e0 S.unitaryTransvection_zero_first_mem_closure S.W.nz S.W S.ep S.ep' S.a S.a' S.a_eq S.a'_eq γ γ' γA γA' hγ hγ' (S.W.Om g g' F) (S.W.maps g g' F hF)`.
+-/
 theorem csII_of {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (h : oddRat D cc δ) : csII D cc δ := by
   intro N N' S γ γ' γA γA' hγ hγ' g g' F hF
   rw [S.W.mul _ _ _ _ F hF]
@@ -1275,6 +1445,9 @@ def Stmt (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (e : FamE D) (Q : DtAd
 
 open Formalism.MainNotions.G in
 
+/- English proof (translation)
+Conclude with `kernelAtPrime_pairCondition_of_lifts Kp A (fun j hj => ((hp.1.2.2.2.2.1) u _ O j (A j) (hr j hj)).2.1)`.
+-/
 theorem aux₃.atP {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {e : FamE D} {Q : DtAd D} (hp : aux₃ D cc δ e Q)
     {Gt : GatTies D} {c : LatCmp D} {Tw : TwForms D}
     {u : D.what₂.Word} {w : D.what₂.places.Pl} [Fact (D.what₂.places.resChar w).Prime]
@@ -1284,24 +1457,39 @@ theorem aux₃.atP {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {e : FamE D}
     (hr : ∀ j < D.R.m, RankOK D j) : kjAtP Kp A := by
   exact kernelAtPrime_pairCondition_of_lifts Kp A (fun j hj => ((hp.1.2.2.2.2.1) u _ O j (A j) (hr j hj)).2.1)
 
+/- English proof (translation)
+Conclude with `liftTieH_of hi A ((hp.1.2.2.2.2.1) u C O i A hr).2.1 c0 h0 hd ht`.
+-/
 theorem aux₃.liftTieH {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {e : FamE D} {Q : DtAd D} (hp : aux₃ D cc δ e Q)
     {u : D.what₂.Word} {C : ColumnChain D.R D.what₂.Tau (D.hcW u)} {O : LiftObj D C} {i : ℕ} (hi : i < D.R.m)
     (A : AdLift D cc δ e Q O i) (hr : RankOK D i) (c0 : ℂ) (h0 : A.Θ.IsResidueClassZero c0) (hd : A.IsDef c0) (ht : A.ThIs) :
     liftTieH D O i A.dg := by
   exact liftTieH_of hi A ((hp.1.2.2.2.2.1) u C O i A hr).2.1 c0 h0 hd ht
 
+/- English proof (translation)
+Conclude with `unit_abs_of_normalisation hp.1.1`.
+-/
 theorem unit_abs_of_proposition {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {e : FamE D} {Q : DtAd D} (hp : aux₃ D cc δ e Q) : ThetaUnitAbsoluteValue D cc δ := by
   exact unit_abs_of_normalisation hp.1.1
 
+/- English proof (translation)
+Conclude with `csI_of hp.1.1`.
+-/
 theorem csI_of_conditions {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {e : FamE D} {Q : DtAd D} (hp : aux₃ D cc δ e Q) : csI D cc δ := by
   exact csI_of hp.1.1
 
+/- English proof (translation)
+Conclude with `csII_of (hp.2.2.1 h1 h2 h3)`.
+-/
 theorem csII_of_conditions {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {e : FamE D} {Q : DtAd D} (hp : aux₃ D cc δ e Q)
     (h1 : admG1 D) (h2 : IntertwinerUnitary D) (h3 : admissible_poisson D) : csII D cc δ := by
   exact csII_of (hp.2.2.1 h1 h2 h3)
 
 open Formalism.MainNotions.G in
 
+/- English proof (translation)
+Introduce `u μ w hL T`. Take `⟨hdB, hkf⟩` from `(hp.2.2.2.2.2.1) Dx Tw E u μ (O u μ) w hL T`. Take `⟨h1, h2⟩` from `hkf (hK u μ) (hT u μ) (hR u μ)`. Conclude with `⟨h1, h2, KFTie.unUnit_of T idl hi ((hu u (D.chTw u μ) (O u μ).mt (h3 u μ)).2.2) hdB⟩`.
+-/
 theorem kfAll_of_conditions {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {e : FamE D} {Q : DtAd D} (hp : aux₃ D cc δ e Q)
     {Dx : DivX D} {Tw : TwForms D} {E : KerEnt D Dx Tw} {O : ∀ u μ, LiftObj D (D.chTw u μ)}
     (idl : D.Dt ⧸ D.UO → IdE D) (hi : RelDetPinned D idl) (hu : rhoUse D)

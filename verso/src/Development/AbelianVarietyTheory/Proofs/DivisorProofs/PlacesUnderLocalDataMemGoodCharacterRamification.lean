@@ -36,6 +36,13 @@ open GlobalTheory.SkewLat (scLat pairLat)
 
 namespace GlobalTheory.BigNZ.LocalPlaceUnderMembership
 
+/- English proof (translation)
+Introduce `D T L sc G μ₀ hL t i j B X a a' hα hβ hX w hw`. Assume the negation of the conclusion as `hn`. Establish `hab : w ∉ GlobalTheory.LFun.above D.host.E (X.T : Set (HeightOneSpectrum (𝓞 D.host.F)))` using `fun h => hn h`. Establish `hu : GlobalTheory.LFun.UnrAt (F` using `D.host.F) (E := D.host.E) (alpha G t i j / beta G i j) w := by`. Rewrite using `[← hα, ← hβ, div_eq_mul_inv]`.
+
+Conclude with `(hX.unrα w hab).mul (hX.unrβ w hab).inv`. Distinguish the cases in `hs : w.under (𝓞 D.host.F) ∈ G.pl.S0`. Break down `G.pl.mem_S0_of_sum_eq.1 hs with h | h` into its components or cases. Conclude with `GlobalTheory.ThetaGridRamifiedOverBasePlace.thetaGridCharacterQuotient_not_unramified_over_basePlace hL t i j w h hu`. Conclude with `GlobalTheory.FunObj.SqNum.not_unrAt_alpha_div_beta_over_S₁ hL t i j w h hu`.
+
+Break down `Finset.mem_union.1 hw with h | h` into its components or cases. Unfold `Places.W0 at h`. Take `⟨v, hv, rfl⟩` from `Finset.mem_image.1 h`. Conclude with `hs (by rw [G.pl.under_w hv]; exact hv)`. Conclude with `GlobalTheory.TwistRam.not_unrAt_alpha_div_beta hL t i j w w h rfl hs hu`.
+-/
 theorem under_locPl_mem : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (_hL : L.Is μ₀) (t : T)
     (i j : Fin D.R.m) (B : Base D.host.F D.host.E) (X : Chars D.host.F D.host.E) (a a' : ℕ),
     X.α = alpha G t i j → X.β = beta G i j → X.IsGood B a a' →

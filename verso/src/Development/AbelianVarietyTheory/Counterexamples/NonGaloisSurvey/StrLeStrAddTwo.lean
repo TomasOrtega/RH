@@ -17,6 +17,17 @@ namespace GlobalTheory.PtStringTest
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+Establish `hk : 1 ≤ D.R.k`. Use `D.R.m_add_three_le_k` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hn : D.R.k + (i : ℕ) - 1 < D.R.k + (i : ℕ)` using `by omega`. Establish `hlam : Formalism.L2.NTheta.lamAt (D.hc τ) (D.R.k + (i : ℕ) - 1) = -(D.hc τ).b i`.
+
+Unfold `Formalism.L2.NTheta.lamAt`. Rewrite using `[dif_neg (by omega), dif_pos (by omega)]`. Use `congr 2`. Use `ext`. Simplify using `only`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hc : ((D.R.k + (i : ℕ) - 1 : ℕ) : ℚ) + 1 = ((D.R.k + (i : ℕ) : ℕ) : ℚ)`. Establish `: D.R.k + (i : ℕ) - 1 + 1 = D.R.k + (i : ℕ)` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `hgap` using `(D.hc τ).gap_be i`.
+
+Establish `h1 : (1 : ℚ) ≤ -(D.hc τ).b i + (D.hc τ).e i - (((D.R.k + (i : ℕ) : ℕ) : ℚ) - (((D.R.k + (i : ℕ) - 1 : ℕ) : ℚ) + 1)) - ((D.R.t : ℚ) + 1) / 2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2` using `Int.floor_pos.2 h1`. Unfold `aPl`. Rewrite using `[if_pos hn, hlam]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem aPl_last_pos (i : Fin D.R.m) (τ : D.what₂.Tau) : 0 < aPl D i (D.R.k + i) τ (D.R.k + i - 1) := by
   have hk : 1 ≤ D.R.k := by
     have := D.R.m_add_three_le_k
@@ -41,6 +52,15 @@ theorem aPl_last_pos (i : Fin D.R.m) (τ : D.what₂.Tau) : 0 < aPl D i (D.R.k +
   rw [if_pos hn, hlam]
   omega
 
+/- English proof (translation)
+Establish `hsub : (Multiset.range n).map Nat.succ ≤ Multiset.range (n + 2)`. Rewrite using `[Multiset.le_iff_subset ((Multiset.nodup_range n).map Nat.succ_injective)]`. Introduce `a ha`. Simplify using `only [Multiset.mem_map, Multiset.mem_range] at ha`. Take `⟨b, hb, rfl⟩` from `ha`.
+
+Simplify using `only [Multiset.mem_range]`. Use linear arithmetic over natural numbers and integers. Unfold `str`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Multiset.map_map]`.
+
+Use `Multiset.map_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Nat.succ_eq_add_one]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ ≤ _ := Multiset.map_le_map hsub`.
+-/
 theorem str_le_str_add_two (q : ℕ) (z : ℂ) (n : ℕ) : str q z n ≤ str q z (n + 2) := by
   have hsub : (Multiset.range n).map Nat.succ ≤ Multiset.range (n + 2) := by
     rw [Multiset.le_iff_subset ((Multiset.nodup_range n).map Nat.succ_injective)]

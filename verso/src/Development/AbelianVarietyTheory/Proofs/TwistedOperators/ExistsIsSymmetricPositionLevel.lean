@@ -23,6 +23,9 @@ def symGroup (F : Type) [Field F] (κ l p : ℕ) : Subgroup (GL (Fin κ ⊕ Fin 
     refine ⟨_, Radical.conj_mem γ⁻¹ (inv_mem hu), γ⁻¹, Radical.Uni.inv (b := Fin.val) hγ, ?_⟩
     rw [map_inv]; group
 
+/- English proof (translation)
+Establish `hv : ∀ i j, (u * embX l γ).val (Sum.inr i) (Sum.inr j) = u.val (Sum.inr i) (Sum.inr j)`. Introduce `i j`. Rewrite using `[Units.val_mul, Radical.embX_val, ← fromBlocks_toBlocks u.val]`. Simplify using `[fromBlocks_multiply]`. Simplify using `only [simpleSum, hv]`.
+-/
 theorem simpleSum_mul_embX (u : GL (Fin κ ⊕ Fin l) F) (γ : GL (Fin κ) F) :
     simpleSum (u * embX l γ) = simpleSum u := by
   have hv : ∀ i j, (u * embX l γ).val (Sum.inr i) (Sum.inr j) = u.val (Sum.inr i) (Sum.inr j) := by
@@ -31,12 +34,18 @@ theorem simpleSum_mul_embX (u : GL (Fin κ ⊕ Fin l) F) (γ : GL (Fin κ) F) :
     simp [fromBlocks_multiply]
   simp only [simpleSum, hv]
 
+/- English proof (translation)
+Rewrite using `[Units.val_mul, Radical.embX_val]`. Use `conv_lhs => rw [← Matrix.fromBlocks_toBlocks u.val]`. Simplify using `[fromBlocks_multiply, Radical.toBlocks₁₁_of_mem hu]`.
+-/
 theorem toBlocks₁₁_mul_embX {p : ℕ} {u : GL (Fin κ ⊕ Fin l) F} (hu : u ∈ N F (Fin κ) l p) (γ : GL (Fin κ) F) :
     (u * embX l γ).val.toBlocks₁₁ = γ.val := by
   rw [Units.val_mul, Radical.embX_val]
   conv_lhs => rw [← Matrix.fromBlocks_toBlocks u.val]
   simp [fromBlocks_multiply, Radical.toBlocks₁₁_of_mem hu]
 
+/- English proof (translation)
+Simplify using `only [superSum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with hij`. Conclude with `Radical.Uni.mul_apply_succ (b := pos) h h' hij`. Simplify using the standard rewrite rules.
+-/
 theorem superSum_mul {a : Type} [Fintype a] [DecidableEq a] {pos : a → ℕ} {M M' : Matrix a a F}
     (h : IsUpperUnip pos M) (h' : IsUpperUnip pos M') :
     superSum pos (M * M') = superSum pos M + superSum pos M' := by
@@ -48,10 +57,18 @@ theorem superSum_mul {a : Type} [Fintype a] [DecidableEq a] {pos : a → ℕ} {M
 
 def symSum (x : GL (Fin κ ⊕ Fin l) F) : F := simpleSum x + superSum Fin.val x.val.toBlocks₁₁
 
+/- English proof (translation)
+Rewrite using `[symSum, simpleSum_mul_embX, toBlocks₁₁_mul_embX hu]`.
+-/
 theorem symSum_eq {p : ℕ} {u : GL (Fin κ ⊕ Fin l) F} (hu : u ∈ N F (Fin κ) l p) (γ : GL (Fin κ) F) :
     symSum (u * embX l γ) = simpleSum u + superSum Fin.val γ.val := by
   rw [symSum, simpleSum_mul_embX, toBlocks₁₁_mul_embX hu]
 
+/- English proof (translation)
+Take `⟨u, hu, γ, hγ, rfl⟩` from `hx`. Take `⟨u', hu', γ', hγ', rfl⟩` from `hy`. Establish `e : u * embX l γ * (u' * embX l γ') = u * (embX l γ * u' * (embX l γ)⁻¹) * embX l (γ * γ')`. Rewrite using `[map_mul]`. Use `group`.
+
+Rewrite using `[e, symSum_eq (mul_mem hu (Radical.conj_mem γ hu')), symSum_eq hu, symSum_eq hu', Radical.simpleSum_mul hu (Radical.conj_mem γ hu'), Radical.simpleSum_conj, Units.val_mul, superSum_mul hγ hγ']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem symSum_mul {p : ℕ} {x y : GL (Fin κ ⊕ Fin l) F} (hx : x ∈ symGroup F κ l p) (hy : y ∈ symGroup F κ l p) :
     symSum (x * y) = symSum x + symSum y := by
   obtain ⟨u, hu, γ, hγ, rfl⟩ := hx
@@ -67,6 +84,15 @@ end Plain
 section Local
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `hs : Function.Surjective (IsLocalRing.residue 𝒪[k])` using `IsLocalRing.residue_surjective`. Establish `key : ∀ y z : 𝒪[k], IsLocalRing.residue 𝒪[k] y = IsLocalRing.residue 𝒪[k] z → ψ ((ϖ⁻¹ : kˣ) * (y : k)) = ψ ((ϖ⁻¹ : kˣ) * (z : k))`. Introduce `y z h`. Establish `h1 : valuation k ((y : k) - z) < 1` using `(residue_eq_iff_lt y z).1 h`. Establish `h2` using `(hϖ _).1 h1`.
+
+Establish `h3 : ψ ((ϖ⁻¹ : kˣ) * ((y : k) - z)) = 1`. Use `hψ.eq_one ?_` and prove the remaining obligations. Establish `h0 : 0 < valuation k (ϖ : k)` using `by simp [zero_lt_iff]`. Simplify using `only [cball, Set.mem_setOf_eq, Units.val_one, map_one, map_mul, Units.val_inv_eq_inv_val, map_inv₀]`. Rewrite using `[inv_mul_le_one₀ h0]` and apply the resulting hypothesis.
+
+Rewrite using `[show ((ϖ⁻¹ : kˣ) : k) * (y : k) = (ϖ⁻¹ : kˣ) * ((y : k) - z) + (ϖ⁻¹ : kˣ) * (z : k) by ring, AddChar.map_add_eq_mul, h3, one_mul]`. Establish `h2 : ∀ y : 𝒪[k], ψ ((ϖ⁻¹ : kˣ) * ((Function.surjInv hs (IsLocalRing.residue 𝒪[k] y) : 𝒪[k]) : k)) = ψ ((ϖ⁻¹ : kˣ) * (y : k))` using `fun y => key _ _ (Function.surjInv_eq hs _)`. Use `⟨fun y => ψ ((ϖ⁻¹ : kˣ) * ((Function.surjInv hs y : 𝒪[k]) : k)), fun y z => ?_, h2⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `hs y`. Take `⟨z, rfl⟩` from `hs z`.
+
+Use `beta_reduce`. Rewrite using `[← map_add, h2, h2, h2, ← AddChar.map_add_eq_mul, ← mul_add]`. Both sides reduce to the same expression.
+-/
 theorem exists_residue_char {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) {ϖ : kˣ} (hϖ : IsUnif ϖ) :
     ∃ χ : 𝓀[k] → Circle, (∀ y z, χ (y + z) = χ y * χ z) ∧
       ∀ y : 𝒪[k], χ (IsLocalRing.residue 𝒪[k] y) = ψ ((ϖ⁻¹ : kˣ) * (y : k)) := by
@@ -97,6 +123,9 @@ def symSumInt {κ l : ℕ} (g : GL (Fin κ ⊕ Fin l) 𝒪[k]) : 𝒪[k] :=
     ∑ i : Fin κ, ∑ j : Fin κ, if j.val = i.val + 1 then g.val (Sum.inl i) (Sum.inl j) else 0
 
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Simplify using `only [symSumInt, symSum, simpleSum, superSum, map_add, map_sum, apply_ite f, map_zero]`. Both sides reduce to the same expression.
+-/
 theorem map_symSumInt {F : Type} [Field F] (f : 𝒪[k] →+* F) {κ l : ℕ} (g : GL (Fin κ ⊕ Fin l) 𝒪[k]) :
     f (symSumInt g) = symSum (Matrix.GeneralLinearGroup.map f g) := by
   simp only [symSumInt, symSum, simpleSum, superSum, map_add, map_sum, apply_ite f, map_zero]
@@ -104,6 +133,13 @@ theorem map_symSumInt {F : Type} [Field F] (f : 𝒪[k] →+* F) {κ l : ℕ} (g
 
 end Local
 
+/- English proof (translation)
+Introduce `k _ _ _ _ ψ hψ ϖ hϖ ρ κ l`. Take `⟨χ, hadd, hres⟩` from `exists_residue_char hψ hϖ`. Set `χ' : symGroup 𝓀[k] κ l (ρ + 1) →* ℂˣ` to `MonoidHom.mk' (fun x => Circle.toUnits (χ (symSum (x : GL (Fin κ ⊕ Fin l) 𝓀[k])))) fun x y => by`. Rewrite using `[Subgroup.coe_mul, symSum_mul x.2 y.2, hadd, map_mul]`. Use `⟨TypeDatum.ofResidue _ χ', fun g => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨g₀, ⟨u, hu, γ, hγ, e⟩, rfl⟩`. Conclude with `⟨u, hu, γ, hγ, g₀, rfl, e⟩`. Introduce and unpack `⟨u, hu, γ, hγ, g₀, rfl, e⟩`. Conclude with `⟨g₀, ⟨u, hu, γ, hγ, e⟩, rfl⟩`. Introduce and unpack `⟨_, g₀, hg, rfl⟩`.
+
+Rewrite using `[TypeDatum.ofResidue_lam _ χ' g₀ hg]`. Express the relevant statement in the definitionally equal form `((χ (symSum (Matrix.GeneralLinearGroup.map (IsLocalRing.residue 𝒪[k]) g₀)) : Circle) : ℂ) = _`. Rewrite using `[← map_symSumInt, hres, ← Circle.coe_mul, ← AddChar.map_add_eq_mul, ← mul_add]`. Conclude with `congrArg (fun z : k => ((ψ ((ϖ⁻¹ : kˣ) * z) : Circle) : ℂ)) (map_symSumInt (algebraMap 𝒪[k] k) g₀)`.
+-/
 theorem exists_isSymLevel : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle), HasConductor ψ 1 → ∀ ϖ : kˣ, IsUnif ϖ → ∀ ρ κ l : ℕ, ∃ P : TypeDatum k (Fin κ ⊕ Fin l), IsSymLevel ψ ϖ ρ P := by
   intro k _ _ _ _ ψ hψ ϖ hϖ ρ κ l
   obtain ⟨χ, hadd, hres⟩ := exists_residue_char hψ hϖ

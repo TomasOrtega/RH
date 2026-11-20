@@ -26,12 +26,22 @@ section Local
 
 variable {K : Type} [Field K] (A : ValuationSubring K)
 
+/- English proof (translation)
+Rewrite using `[Matrix.transvection, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, hab, Matrix.add_apply]`. Use `congr 1`. Simplify using `[Matrix.mul_apply, Matrix.single_apply, ite_and, ite_mul, Finset.sum_ite_eq, Finset.sum_ite_eq']`.
+-/
 theorem conj_single_apply {n : ℕ} (a b : Matrix (Fin n) (Fin n) K) (hab : a * b = 1) (i j p q : Fin n) :
     (a * Matrix.transvection i j (1 : K) * b) p q = (1 : Matrix (Fin n) (Fin n) K) p q + a p i * b j q := by
   rw [Matrix.transvection, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, hab, Matrix.add_apply]
   congr 1
   simp [Matrix.mul_apply, Matrix.single_apply, ite_and, ite_mul, Finset.sum_ite_eq, Finset.sum_ite_eq']
 
+/- English proof (translation)
+Set `t : GL (Fin n) A` to `⟨Matrix.transvection i j 1, Matrix.transvection i j (-1), by rw [Matrix.transvection_mul_transvection_same i j hij]; simp, by rw [Matrix.transvection_mul_transvection_same i j hij]; simp⟩`. Establish `h1` using `hγ t p q`. Establish `hm : ((Matrix.GeneralLinearGroup.map (algebraMap A K) t : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) = Matrix.transvection i j (1 : K)`. Use extensionality with `a b`. Simplify using `[t, Matrix.transvection, Matrix.one_apply, Matrix.single_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Establish `hab : (γ : Matrix (Fin n) (Fin n) K) * ((γ⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) = 1` using `by simp`. Rewrite `h1` using `[Units.val_mul, Units.val_mul, hm, conj_single_apply _ _ hab]`. Establish `h2 : (1 : Matrix (Fin n) (Fin n) K) p q ∈ A`. Rewrite using `[Matrix.one_apply]`.
+
+Use `split_ifs`. Conclude with `A.one_mem`. Conclude with `A.zero_mem`. Use `A.sub_mem h1 h2` as an intermediate fact. Simplify using `using this`.
+-/
 theorem prod_mem_off {n : ℕ} (γ : GL (Fin n) K)
     (hγ : ∀ h : GL (Fin n) A, ∀ p q,
       ((γ * Matrix.GeneralLinearGroup.map (algebraMap A K) h * γ⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) p q ∈ A)
@@ -55,6 +65,17 @@ theorem prod_mem_off {n : ℕ} (γ : GL (Fin n) K)
   have := A.sub_mem h1 h2
   simpa using this
 
+/- English proof (translation)
+Use `set a := (γ : Matrix (Fin n) (Fin n) K)`. Use `set b := ((γ⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)`. Establish `hab : a * b = 1` using `by simp [a, b]`. Establish `hba : b * a = 1` using `by simp [a, b]`. Distinguish the cases in `hij : i = j`.
+
+Substitute `hij` using the available equality. Distinguish the cases in `hk : ∃ k, k ≠ i`. Take `⟨k, hk⟩` from `hk`. Establish `e : a p i * b i q = ∑ r, (a p i * b k r) * (a r k * b i q)`. Establish `: ∑ r, b k r * a r k = 1`.
+
+Use `congrFun (congrFun hba k) k` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e]`. Conclude with `A.sum_mem fun r _ => mul_mem (prod_mem_off A γ hγ p i k r (Ne.symm hk)) (prod_mem_off A γ hγ r k i q hk)`.
+
+Use `push_neg at hk`. Rewrite using `[hk p, hk q]`. Establish `: ∑ r, a i r * b r i = 1`. Use `congrFun (congrFun hab i) i` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply]`.
+
+Rewrite `this` using `[Fintype.sum_eq_single i (fun r hr => absurd (hk r) hr)]`. Rewrite using `[this]`. Conclude with `A.one_mem`. Conclude with `prod_mem_off A γ hγ p i j q hij`.
+-/
 theorem prod_mem {n : ℕ} (γ : GL (Fin n) K)
     (hγ : ∀ h : GL (Fin n) A, ∀ p q,
       ((γ * Matrix.GeneralLinearGroup.map (algebraMap A K) h * γ⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) p q ∈ A)
@@ -95,6 +116,25 @@ section Local
 
 variable {K : Type} [Field K] (A : ValuationSubring K)
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Conclude with `⟨1, fun X => Subsingleton.elim _ _⟩`. Use `set a := (γ : Matrix (Fin n) (Fin n) K) with ha`. Use `set b := ((γ⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) with hb`. Establish `hab : a * b = 1` using `by simp [a, b]`.
+
+Establish `hba : b * a = 1` using `by simp [a, b]`. Take `⟨⟨p0, i0⟩, -, hmax⟩` from `Finset.univ.exists_max_image (fun x : Fin n × Fin n => A.valuation (a x.1 x.2)) ⟨(⟨0, hn⟩, ⟨0, hn⟩), Finset.mem_univ _⟩`. Use `set c := a p0 i0 with hc_def`. Establish `hc : c ≠ 0`. Introduce `hc`.
+
+Establish `h0 : a = 0`. Use extensionality with `p i`. Establish `h1` using `hmax (p, i) (Finset.mem_univ _)`. Simplify using `only [← hc_def, hc, map_zero] at h1`. Conclude with `(Valuation.zero_iff _).1 (le_antisymm h1 zero_le')`.
+
+Establish `h2 : (1 : Matrix (Fin n) (Fin n) K) = 0` using `by rw [← hab, h0, Matrix.zero_mul]`. Use `congrFun (congrFun h2 ⟨0, hn⟩) ⟨0, hn⟩` as an intermediate fact. Simplify using `at this`. Establish `hvc : A.valuation c ≠ 0` using `(Valuation.ne_zero_iff _).2 hc`. Establish `hM : ∀ p i, a p i / c ∈ A`.
+
+Introduce `p i`. Rewrite using `[← A.valuation_le_one_iff, map_div₀, div_eq_mul_inv]`. Combine the equalities or inequalities in the displayed calculation. Establish `hN : ∀ j q, c * b j q ∈ A` using `fun j q => prod_mem A γ hγ p0 i0 j q`. Set `M : Matrix (Fin n) (Fin n) A` to `Matrix.of fun p i => ⟨a p i / c, hM p i⟩`.
+
+Set `N : Matrix (Fin n) (Fin n) A` to `Matrix.of fun j q => ⟨c * b j q, hN j q⟩`. Establish `eM : (algebraMap A K).mapMatrix M = c⁻¹ • a`. Use extensionality with `p i`. Simplify using `[M, div_eq_inv_mul]`. Establish `eN : (algebraMap A K).mapMatrix N = c • b`.
+
+Use extensionality with `p i`. Simplify using `[N]`. Establish `hinj : Function.Injective (RingHom.mapMatrix (m` using `Fin n) (algebraMap A K)) := by`. Introduce `x y hxy`. Use extensionality with `p i`.
+
+Conclude with `congrFun (congrFun hxy p) i`. Establish `e1 : M * N = 1` using `hinj (by`. Rewrite using `[map_mul, map_one, eM, eN, Matrix.smul_mul, Matrix.mul_smul, smul_smul, inv_mul_cancel₀ hc, one_smul, hab])`. Establish `e2 : N * M = 1` using `hinj (by`. Rewrite using `[map_mul, map_one, eM, eN, Matrix.smul_mul, Matrix.mul_smul, smul_smul, mul_inv_cancel₀ hc, one_smul, hba])`.
+
+Use `⟨⟨M, N, e1, e2⟩, fun X => Units.ext ?_⟩` and prove the remaining obligations. Establish `f1 : ((Matrix.GeneralLinearGroup.map (algebraMap A K) (⟨M, N, e1, e2⟩ : GL (Fin n) A) : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) = c⁻¹ • a` using `eM`. Establish `f2 : (((Matrix.GeneralLinearGroup.map (algebraMap A K) (⟨M, N, e1, e2⟩ : GL (Fin n) A))⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) = c • b` using `eN`. Rewrite using `[Units.val_mul, Units.val_mul, Units.val_mul, Units.val_mul, f1, f2, ← ha, ← hb, Matrix.smul_mul, Matrix.mul_smul, Matrix.smul_mul, smul_smul, mul_inv_cancel₀ hc, one_smul]`.
+-/
 theorem exists_int_conj {n : ℕ} (γ : GL (Fin n) K)
     (hγ : ∀ h : GL (Fin n) A, ∀ p q,
       ((γ * Matrix.GeneralLinearGroup.map (algebraMap A K) h * γ⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) p q ∈ A) :
@@ -159,10 +199,16 @@ section Grp
 
 variable {G : Type} [Group G]
 
+/- English proof (translation)
+Establish `hx : x = a⁻¹ * (a * x * a⁻¹) * a` using `by group`. Rewrite using `[hx, ← e]`. Use `group`.
+-/
 theorem conj_of_conj_eq (a b h x : G) (e : b * h * b⁻¹ = a * x * a⁻¹) : a⁻¹ * b * h * (a⁻¹ * b)⁻¹ = x := by
   have hx : x = a⁻¹ * (a * x * a⁻¹) * a := by group
   rw [hx, ← e]; group
 
+/- English proof (translation)
+The claim follows from `(conj_of_conj_eq a b x y e.symm).symm`.
+-/
 theorem eq_conj_of_conj_eq (a b x y : G) (e : a * y * a⁻¹ = b * x * b⁻¹) : y = a⁻¹ * b * x * (a⁻¹ * b)⁻¹ :=
   (conj_of_conj_eq a b x y e.symm).symm
 
@@ -172,6 +218,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting (FinPl Sp
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h0 : Matrix.GeneralLinearGroup.map (GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdE φ) (intGL D.host.F D.host.E n w) = Matrix.GeneralLinearGroup.map (algebraMap (v.adicCompletionIntegers D.host.F) (Fv D.host.F v)) (Matrix.GeneralLinearGroup.map ρ w)` using `Units.ext (Matrix.ext fun i j => (hρ _).symm)`. Rewrite using `[← h0]`. Use `show Matrix.GeneralLinearGroup.map (GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdE φ) (β * intGL D.host.F D.host.E n w * β⁻¹) = _`. Simplify using `only [map_mul, map_inv]`. Both sides reduce to the same expression.
+-/
 theorem map_frGL {v : FinPl D} (φ : SplitProj D v) {n : ℕ}
     (ρ : Formalism.L2.Herm.intAf D.host.F D.host.E →+* v.adicCompletionIntegers D.host.F)
     (hρ : ∀ s, (ρ s : Fv D.host.F v) = GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdE φ s) (β : GL (Fin n) (Formalism.IndefR.Lev.EAf D))
@@ -189,6 +238,13 @@ theorem map_frGL {v : FinPl D} (φ : SplitProj D v) {n : ℕ}
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨κ, hs, hκ⟩` from `GlobalTheory.DownLift.GenSplit.exists_suppAt_grpCo_eq D V v φ e hφe (frCo φ β₁) (Matrix.GeneralLinearGroup.map (algebraMap (v.adicCompletionIntegers D.host.F) (Fv D.host.F v)) h)`. Take `⟨hG, h1, -, -⟩` from `GlobalTheory.DownLift.SplitIntLift.lift_of_integral D V β₁ Λ N hB PP v φ e hφP hφe r hN h κ hs hκ`. Take `⟨w, hw⟩` from `hSt κ hG h1`. Establish `hx : Matrix.GeneralLinearGroup.map (GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdE φ) (Formalism.IndefR.Lev.finE V κ) = Matrix.GeneralLinearGroup.map (rdA φ) (Formalism.L2.Theta.matHom V κ)` using `Units.ext (Matrix.ext fun i j => GlobalTheory.SplitProjChart.rdE_toEAf φ _)`. Establish `hg : grpCo φ V (frCo φ β₁) κ = (frCo φ β₁)⁻¹ * Matrix.GeneralLinearGroup.map (rdA φ) (Formalism.L2.Theta.matHom V κ) * frCo φ β₁` using `rfl`.
+
+Establish `e1 : frCo φ β₁ * Matrix.GeneralLinearGroup.map (algebraMap (v.adicCompletionIntegers D.host.F) (Fv D.host.F v)) h * (frCo φ β₁)⁻¹ = Matrix.GeneralLinearGroup.map (GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdE φ) (Formalism.IndefR.Lev.finE V κ)`. Rewrite using `[hx, ← hκ, hg]`. Use `group`. Establish `e2` using `map_frGL φ ρ hρ β₂ w`. Rewrite `e2` using `[hw, ← e1]`.
+
+Rewrite using `[conj_of_conj_eq _ _ _ _ e2]`. Conclude with `((Matrix.GeneralLinearGroup.map ρ w).val p q).2`.
+-/
 theorem conj_int {V : HSp D} {β₁ β₂ : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)}
     {N : ℕ} (hB : Formalism.IndefR.Lev.IsBaseFrame V β₁ Λ N) {e : Formalism.L2.Theta.AE D} {PP : Formalism.L2.DIV.Pl D.host.E}
     (hSt : ∀ κ ∈ GfC V, Formalism.IndefR.Lev.finE V κ ∈ Formalism.L2.DIV.St β₁ → Formalism.IndefR.Lev.finE V κ ∈ Formalism.L2.DIV.St β₂)
@@ -226,6 +282,19 @@ open GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting (FinPl Sp
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D V β₁ β₂ Λ N hB e PP he hSt`. Take `⟨v, φ, hφe, hφP⟩` from `(GlobalTheory.SplitIdemDict.idem_dictionary D).1 e PP he`. Take `⟨⟨r, -, -, -, hN⟩, -⟩` from `GlobalTheory.PlaceRed.red_dict D v φ PP hφP`. Set `ρ : Formalism.L2.Herm.intAf D.host.F D.host.E →+* v.adicCompletionIntegers D.host.F` to `((GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdE φ).comp (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype).codRestrict _ (fun s => (hN s.1 s.2).1)`. Establish `hρK : ∀ s, (ρ s : Fv D.host.F v) = GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdE φ s` using `fun s => rfl`.
+
+Establish `hρ : ∀ s, r (ρ s) = resS D.host.F PP s` using `fun s => (hN s.1 s.2).2`. Establish `hinj : Function.Injective (Matrix.GeneralLinearGroup.map (n` using `Fin V.rank) (algebraMap (v.adicCompletionIntegers D.host.F) (Fv D.host.F v))) := by`. Introduce `x y hxy`. Use `Units.ext (Matrix.ext fun i j => Subtype.ext ?_)` and prove the remaining obligations. Use `congrArg (fun g : GL (Fin V.rank) (Fv D.host.F v) => (g : Matrix (Fin V.rank) (Fin V.rank) (Fv D.host.F v)) i j) hxy` as an intermediate fact.
+
+Conclude with `this`. Take `⟨m₀, hm₀⟩` from `exists_int_conj (v.adicCompletionIntegers D.host.F) ((frCo φ β₂)⁻¹ * frCo φ β₁) (conj_int hB hSt hφe hφP r hN ρ hρK)`. Use `⟨Matrix.GeneralLinearGroup.map r m₀, fun y hy1 hy2 => ?_⟩` and prove the remaining obligations. Take `⟨w₁, rfl⟩` from `hy1`. Take `⟨w₂, hw⟩` from `hy2`.
+
+Establish `hl : redFn β₂ PP (frGL β₁ w₁) = Formalism.UG.bc (resS D.host.F PP) w₂` using `by rw [← hw, redFn_frGL]`. Rewrite using `[hl, redFn_frGL]`. Establish `hbc : ∀ w : GL (Fin V.rank) (Formalism.L2.Herm.intAf D.host.F D.host.E), Formalism.UG.bc (resS D.host.F PP) w = Matrix.GeneralLinearGroup.map r (Matrix.GeneralLinearGroup.map ρ w)` using `fun w => Units.ext (Matrix.ext fun i j => (hρ _).symm)`. Establish `key : Matrix.GeneralLinearGroup.map ρ w₂ = m₀ * Matrix.GeneralLinearGroup.map ρ w₁ * m₀⁻¹`. Apply `hinj` to reduce the goal to its premises.
+
+Establish `h2` using `congrArg (Matrix.GeneralLinearGroup.map (GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdE φ)) hw`. Rewrite `h2` using `[map_frGL φ ρ hρK, map_frGL φ ρ hρK]`. Simplify using `only [map_mul, map_inv]`. Rewrite using `[← hm₀]`. Conclude with `eq_conj_of_conj_eq _ _ _ _ h2`.
+
+Rewrite using `[hbc, hbc, key]`. Simplify using `only [map_mul, map_inv]`.
+-/
 theorem redFn_conj_of_stab_le : ∀ (D : D7) (V : HSp D) (β₁ β₂ : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (N : ℕ), Formalism.IndefR.Lev.IsBaseFrame V β₁ Λ N → ∀ (e : Formalism.L2.Theta.AE D) (PP : Formalism.L2.DIV.Pl D.host.E), Formalism.L2.NTheta.IsIdemAt e PP → (∀ κ ∈ GfC V, Formalism.IndefR.Lev.finE V κ ∈ Formalism.L2.DIV.St β₁ → Formalism.IndefR.Lev.finE V κ ∈ Formalism.L2.DIV.St β₂) → ∃ m : GL (Fin V.rank) (Formalism.L2.DIV.kP PP), ∀ y, y ∈ Formalism.L2.DIV.St β₁ → y ∈ Formalism.L2.DIV.St β₂ → Formalism.L2.DIV.redFn β₂ PP y = m * Formalism.L2.DIV.redFn β₁ PP y * m⁻¹ := by
   intro D V β₁ β₂ Λ N hB e PP he hSt
   obtain ⟨v, φ, hφe, hφP⟩ := (GlobalTheory.SplitIdemDict.idem_dictionary D).1 e PP he

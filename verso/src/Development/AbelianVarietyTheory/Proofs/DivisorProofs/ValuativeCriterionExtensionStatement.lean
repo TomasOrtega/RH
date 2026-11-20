@@ -8,5 +8,8 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjVar
 open GlobalTheory.FlagCls
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FlagCls.ExtLoc.extends_of_forall_dominating | exact GlobalTheory.FlagCls.ExtLoc.extends_of_forall_dominating | (intros; apply GlobalTheory.FlagCls.ExtLoc.extends_of_forall_dominating <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.valuative_criterion_extension : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsIntegrallyClosed R] (K : Type) [Field K] [Algebra R K] [IsFractionRing R K] (Y : Scheme.{0}) (p : Sp K ⟶ Y) (y : Y), (∀ (V : ValuationSubring K) (ρ : R →+* V), IsLocalHom ρ → V.subtype.comp ρ = algebraMap R K → ∃ q : Sp V ⟶ Y, spMap V.subtype ≫ q = p ∧ q (IsLocalRing.closedPoint V) = y) → ∃ q : Sp R ⟶ Y, spMap (algebraMap R K) ≫ q = p := by
   first | exact @GlobalTheory.FlagCls.ExtLoc.extends_of_forall_dominating | exact GlobalTheory.FlagCls.ExtLoc.extends_of_forall_dominating | (intros; apply GlobalTheory.FlagCls.ExtLoc.extends_of_forall_dominating <;> assumption)

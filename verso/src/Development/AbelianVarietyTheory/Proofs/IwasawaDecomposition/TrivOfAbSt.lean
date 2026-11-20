@@ -13,6 +13,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.LocM.Cht
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Y p C P A _ hab`. Establish `hloc : IsLocalHom A.f` using `⟨fun a ha => by`. Assume the negation of the conclusion as `h`. Conclude with `(mem_maximalIdeal _).1 ((mem_maximalIdeal_ball (A.f a)).2 (A.f_loc a ((mem_maximalIdeal _).2 h))) ha⟩`. Establish `e1 : spMap A.f (closedPoint _) = closedPoint A.R` using `comap_closedPoint A.f`.
+
+Establish `e2 : P.yt (closedPoint ↥(intO ↥C.S)) = A.ι (closedPoint A.R)`. Establish `h` using `congrArg (fun g : Sp ↥(intO ↥C.S) ⟶ Y.X => g (closedPoint ↥(intO ↥C.S))) A.fac`. Conclude with `h.symm.trans ((Scheme.Hom.comp_apply _ _ _).trans (congrArg A.ι e1))`. Establish `h₁ : closedPoint A.R ∈ abLocus A.t.G` using `(abLocus_pullback abLocusOne Y.t.semi A.m.cart.1 _).1 (e2 ▸ hab)`. Establish `hmax : (maximalIdeal A.R ^ (0 + 1)).IsMaximal`.
+
+Rewrite using `[zero_add, pow_one]`. Use `infer_instance`. Establish `hF : IsField (A.R ⧸ maximalIdeal A.R ^ (0 + 1))` using `(Ideal.Quotient.maximal_ideal_iff_isField_quotient _).1 hmax`. Establish `hle : maximalIdeal A.R ^ (0 + 1) ≤ (closedPoint A.R).asIdeal`. Rewrite using `[zero_add, pow_one]`.
+
+Conclude with `le_rfl`. Choose the witnesses or unpack the hypotheses as in `⟨q, hq⟩ : closedPoint A.R ∈ Set.range (PrimeSpectrum.comap (Ideal.Quotient.mk (maximalIdeal A.R ^ (0 + 1)))) := by`. Rewrite using `[range_comap_of_surjective _ _ Ideal.Quotient.mk_surjective, Ideal.mk_ker]`. Conclude with `hle`. Set `g` to `A.U.U.gt 0`.
+
+Establish `m : Mono g.i` using `⟨fun a b h => g.isKernel.hom_ext h (toUnit_unique _ _)⟩`. Establish `hq' : thick A.R (maximalIdeal A.R) 0 q ∈ abLocus A.t.G`. Rewrite `h₁` using `[← hq]`. Conclude with `h₁`. Conclude with `ArcNotAbelian.subsingleton_of_mem_abLocus A.t.G A.t.semi _ hF _ q hq' A.U.D.toPre.X g.i g.i_hom`.
+-/
 theorem trivOfAbSt : TrivOfAbSt := by
   intro E _ _ _ H Dw l Xo c O _ β Y p C P A _ hab
   have hloc : IsLocalHom A.f := ⟨fun a ha => by

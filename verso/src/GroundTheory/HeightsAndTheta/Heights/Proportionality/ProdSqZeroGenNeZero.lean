@@ -29,6 +29,9 @@ def CurvatureMinus.Statement : Prop :=
         (((1 - ‖z 0‖ ^ 2) ^ (-2 : ℤ) : ℝ) : ℂ) ∧
       0 < (1 - ‖z 0‖ ^ 2) ^ (-2 : ℤ)
 
+/- English proof (translation)
+Evaluate the numerical expressions.
+-/
 example : ‖(fun _ : Fin 1 => (1 / 2 : ℂ)) 0‖ < 1 := by norm_num
 
 def TopPowerDiagonal.Statement : Prop :=
@@ -44,10 +47,18 @@ abbrev SquareZeroRing (σ : Type) : Type := MvPolynomial σ ℚ ⧸ squaresIdeal
 def sqZeroGen {σ : Type} (i : σ) : SquareZeroRing σ :=
   Ideal.Quotient.mk _ (MvPolynomial.X i)
 
+/- English proof (translation)
+Rewrite using `[sqZeroGen, ← map_pow, Ideal.Quotient.eq_zero_iff_mem, MvPolynomial.X_pow_eq_monomial]`. Conclude with `Ideal.subset_span ⟨_, ⟨i, rfl⟩, rfl⟩`.
+-/
 theorem sqZeroGen_sq {σ : Type} (i : σ) : sqZeroGen i ^ 2 = 0 := by
   rw [sqZeroGen, ← map_pow, Ideal.Quotient.eq_zero_iff_mem, MvPolynomial.X_pow_eq_monomial]
   exact Ideal.subset_span ⟨_, ⟨i, rfl⟩, rfl⟩
 
+/- English proof (translation)
+Establish `hx : ∏ i : σ, (MvPolynomial.X i : MvPolynomial σ ℚ) = MvPolynomial.monomial (∑ i : σ, Finsupp.single i 1) 1`. Rewrite using `[MvPolynomial.monomial_sum_one]`. Both sides reduce to the same expression. Establish `hp : ∏ i : σ, sqZeroGen i = Ideal.Quotient.mk (squaresIdeal σ) (∏ i : σ, MvPolynomial.X i)`. Simplify using `[sqZeroGen, map_prod]`.
+
+Rewrite using `[hp, ne_eq, Ideal.Quotient.eq_zero_iff_mem, hx, squaresIdeal, MvPolynomial.mem_ideal_span_monomial_image]`. Introduce `h`. Take `⟨si, ⟨j, rfl⟩, hle⟩` from `h (∑ i : σ, Finsupp.single i 1) (by rw [MvPolynomial.support_monomial, if_neg one_ne_zero]; exact Finset.mem_singleton_self _)`. Use `hle j` as an intermediate fact. Simplify using `[Finsupp.finsetSum_apply, Finsupp.single_apply] at this`.
+-/
 theorem prod_sqZeroGen_ne_zero {σ : Type} [Fintype σ] : ∏ i : σ, sqZeroGen i ≠ 0 := by
   classical
   have hx : ∏ i : σ, (MvPolynomial.X i : MvPolynomial σ ℚ) =
@@ -65,6 +76,9 @@ theorem prod_sqZeroGen_ne_zero {σ : Type} [Fintype σ] : ∏ i : σ, sqZeroGen 
   have := hle j
   simp [Finsupp.finsetSum_apply, Finsupp.single_apply] at this
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨sqZeroGen_sq, prod_sqZeroGen_ne_zero⟩`.
+-/
 example (D : ℕ) : (∀ j : Fin D, sqZeroGen j ^ 2 = 0) ∧ ∏ j : Fin D, sqZeroGen j ≠ 0 :=
   ⟨sqZeroGen_sq, prod_sqZeroGen_ne_zero⟩
 
@@ -87,6 +101,9 @@ def TopPowerPairs.Statement : Prop :=
       (∑ p ∈ increasingPairs N, (lam p.1 - lam p.2) * e p) ^ N.choose 2 =
         ((N.choose 2).factorial : R) * vandermondeDesc N lam * ∏ p ∈ increasingPairs N, e p)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _p hp => (Finset.mem_filter.mp hp).2, fun q _ => sqZeroGen_sq q, prod_sqZeroGen_ne_zero⟩`.
+-/
 example : (∀ p ∈ increasingPairs 3, p.1 < p.2) ∧
     (∀ p ∈ increasingPairs 3, sqZeroGen p ^ 2 = 0) ∧ ∏ p : Fin 3 × Fin 3, sqZeroGen p ≠ 0 :=
   ⟨fun _p hp => (Finset.mem_filter.mp hp).2, fun q _ => sqZeroGen_sq q, prod_sqZeroGen_ne_zero⟩
@@ -99,6 +116,9 @@ def PolarisationPowers.Statement : Prop :=
     (∀ lam : Fin n → ℝ, A (linForm lam ^ D) = B (linForm lam ^ D)) →
       ∀ p ∈ MvPolynomial.homogeneousSubmodule (Fin n) ℝ D, A p = B p
 
+/- English proof (translation)
+Use `⟨fun lam => ?_, by simp⟩` and prove the remaining obligations. Simplify using `[linForm]`.
+-/
 example : (∀ lam : Fin 2 → ℝ,
       MvPolynomial.constantCoeff (linForm lam ^ 1) = (0 : MvPolynomial (Fin 2) ℝ →ₗ[ℝ] ℝ)
         (linForm lam ^ 1)) ∧
@@ -209,6 +229,9 @@ def AmplePerturbation.Statement : Prop :=
           ((ε : ℝ) • ((2 : ℝ) • H + b))) <
         I (fun _ => L + (ε : ℝ) • H)
 
+/- English proof (translation)
+Use `⟨fun σ v => ?_, by simp⟩` and prove the remaining obligations. Simplify using `only [MultilinearMap.mkPiAlgebra_apply, Function.comp_apply]`. Conclude with `Equiv.prod_comp σ v`.
+-/
 example (D : ℕ) : (∀ (σ : Equiv.Perm (Fin D)) (v : Fin D → ℝ),
       MultilinearMap.mkPiAlgebra ℝ (Fin D) ℝ (v ∘ σ) = MultilinearMap.mkPiAlgebra ℝ (Fin D) ℝ v) ∧
     0 < MultilinearMap.mkPiAlgebra ℝ (Fin D) ℝ (fun _ => (1 : ℝ)) := by
@@ -245,6 +268,9 @@ def ReflectionWeights.Statement : Prop :=
     reflInvPart N y lam i = ∑ l ∈ (Finset.Icc 1 N).erase i, reflInvCoeff N lam i l • y l ∧
     ∀ l, l ≠ i → reflInvCoeff N (lam ∘ Equiv.swap i (i + 1)) i l = reflInvCoeff N lam i l
 
+/- English proof (translation)
+Evaluate the numerical expressions.
+-/
 example : (fun l : ℕ => (l : ℝ)) 0 = 0 ∧ 2 ≤ 3 ∧ 1 ≤ 1 ∧ 1 < 3 := by norm_num
 
 end Reflection

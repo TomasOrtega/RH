@@ -32,15 +32,24 @@ def sqzPoint (φ : O →+* C) (n : ι → C) (hn : ∀ a b, n a * n b = 0) :
     rw [h1, fst_mul, map_mul]
     linear_combination (-1 : C) * hcross
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sqzPoint_apply (φ : O →+* C) (n : ι → C) (hn : ∀ a b, n a * n b = 0)
     (x : TrivSqZeroExt O (ι → O)) :
     sqzPoint φ n hn x = φ x.fst + ∑ i, φ (x.snd i) * n i := rfl
 
+/- English proof (translation)
+Rewrite using `[sqzPoint_apply]`. Simplify using the standard rewrite rules.
+-/
 @[simp] theorem sqzPoint_inl (φ : O →+* C) (n : ι → C) (hn : ∀ a b, n a * n b = 0) (a : O) :
     sqzPoint φ n hn (inl a) = φ a := by
   rw [sqzPoint_apply]
   simp
 
+/- English proof (translation)
+Rewrite using `[sqzPoint_apply]`. Simplify using the standard rewrite rules.
+-/
 @[simp] theorem sqzPoint_inr (φ : O →+* C) (n : ι → C) (hn : ∀ a b, n a * n b = 0) (v : ι → O) :
     sqzPoint φ n hn (inr v) = ∑ i, φ (v i) * n i := by
   rw [sqzPoint_apply]
@@ -52,6 +61,9 @@ section Leibniz
 
 variable {A O M : Type*} [CommRing A] [CommRing O] [AddCommGroup M] [Module O M]
 
+/- English proof (translation)
+Establish `h` using `hd 1 1`. Simplify using `using h`.
+-/
 theorem leibniz_map_one (ε : A →+* O) (d : A →+ M)
     (hd : ∀ f f', d (f * f') = ε f • d f' + ε f' • d f) : d 1 = 0 := by
   have h := hd 1 1
@@ -70,10 +82,16 @@ def sqzOfLeibniz (ε : A →+* O) (d : A →+ M)
     rw [op_smul_eq_smul]
     exact hd f f')
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem sqzOfLeibniz_fst (ε : A →+* O) (d : A →+ M)
     (hd : ∀ f f', d (f * f') = ε f • d f' + ε f' • d f) (f : A) :
     (sqzOfLeibniz ε d hd f).fst = ε f := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem sqzOfLeibniz_snd (ε : A →+* O) (d : A →+ M)
     (hd : ∀ f f', d (f * f') = ε f • d f' + ε f' • d f) (f : A) :
     (sqzOfLeibniz ε d hd f).snd = d f := rfl

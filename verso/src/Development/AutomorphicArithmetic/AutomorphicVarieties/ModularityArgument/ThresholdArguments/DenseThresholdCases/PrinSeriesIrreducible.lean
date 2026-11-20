@@ -15,6 +15,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace UpperTheory.V.Z.Sym.W
 section Loc
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
+/- English proof (translation)
+Set `x : Fin n → IrrGL k` to `fun i => IrrGL.ofChar (ω i) (hω i)`. Establish `hx : ∀ i, (x i).IsCusp` using `fun i => IrrGL.isCusp_ofChar _ _`. Establish `hd : ∑ i, (x i).1 = n` using `by show ∑ _i : Fin n, 1 = n`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, mul_one]`. Establish `hnu : ∀ i j, x j ≠ (x i).nu 1` using `fun i j e => by`.
+
+Simplify using `only [x, IrrGL.nu, IrrGL.tw_ofChar, IrrGL.ofChar_inj] at e`. Conclude with `h i j e`. Establish `hP : (prodIrr x hd).IsIrreducible` using `GlobalTheory.RgGu.Holds.lUnlinkedIrr_holds k n n (fun i => Segment.single (x i) (hx i)) x hd (fun i j => GlobalTheory.CompanionTheory.BZPair.not_linked_single (hx i) (hx j) (hnu i j) (hnu j i)) (fun i => (single_spec (hx i)).2.1)`. Set `e₀` to `Equiv.sigmaUnique (Fin n) fun _ => Fin 1`. Take `⟨p⟩` from `(Placing.parInd_jac_placing k _ _ _ e₀ (stdBlocks (fun i => (x i).1) hd) _).1 (piTensor fun i => detRep (Fin 1) (ω i))`.
+
+Establish `hM : (multiProd e₀ fun i => detRep (Fin 1) (ω i)).IsIrreducible` using `GlobalTheory.Parabolic.isIrreducible_of_equiv (p.trans (multiProdEquiv (stdBlocks (fun i => (x i).1) hd) fun i => equivRep (IrrRep.det (Fin 1) (ω i) (hω i)))).symm hP`. Use `haveI := nontrivial_of_irreducible hM`. Use `haveI := nontrivial_of_isSubquotient (GlobalTheory.PermPrin.isSubquotient_multiProd_prinSeries e₀ ω)`. Take `⟨E⟩` from `equiv_of_isSubquotient (GlobalTheory.PrinProd.isSubquotient_prinSeries_multiProd k n ω) hM`. Conclude with `GlobalTheory.Parabolic.isIrreducible_of_equiv E hM`.
+-/
 private theorem prinSeries_irreducible {n : ℕ} (ω : Fin n → kˣ →* ℂˣ) (hω : ∀ i, IsSmoothChar (ω i))
     (h : ∀ i j, ω j ≠ ω i * absPow k 1) : (prinSeries ω).IsIrreducible := by
   let x : Fin n → IrrGL k := fun i => IrrGL.ofChar (ω i) (hω i)
@@ -41,6 +48,13 @@ private theorem prinSeries_irreducible {n : ℕ} (ω : Fin n → kˣ →* ℂˣ)
   obtain ⟨E⟩ := equiv_of_isSubquotient (GlobalTheory.PrinProd.isSubquotient_prinSeries_multiProd k n ω) hM
   exact GlobalTheory.Parabolic.isIrreducible_of_equiv E hM
 end Loc
+/- English proof (translation)
+Introduce `_ L _ _ n w τ hT`. Use `haveI : CharZero (w.adicCompletion L) := charZero_of_injective_algebraMap (algebraMap L _).injective`. Take `⟨ξ, hξ, hs, hu⟩` from `GlobalTheory.RoadU.plainTor_exists_chars _ _ hT`. Establish `hs' : HasSupport τ.ρ (GlobalTheory.RoadU.chars ξ hξ)` using `hs.of_equiv (IrrGL.equivOf τ.ρ τ.smooth τ.irred).symm`. Establish `hmem : ∀ i, IrrGL.ofChar (ξ i) (hξ i) ∈ GlobalTheory.RoadU.chars ξ hξ` using `fun i => Multiset.mem_map_of_mem _ (Finset.mem_univ i)`.
+
+Establish `hne : ∀ i j, ξ j ≠ ξ i * absPow (w.adicCompletion L) 1` using `fun i j e => by`. Use `hu _ (hmem j) _ (hmem i) ?_` and prove the remaining obligations. Simplify using `only [IrrGL.nu, IrrGL.tw_ofChar, IrrGL.ofChar_inj]`. Conclude with `e`. Take `⟨hi, hq⟩` from `(UpperTheory.Gal.LocD.ofSupport_holds _ n τ.V τ.ρ ξ hξ).1 hs'`.
+
+Take `⟨E⟩` from `hq.nonempty_equiv hi (prinSeries_irreducible ξ hξ hne)`. Conclude with `⟨ξ, hξ, ⟨E.symm⟩, fun i j => hne j i⟩`.
+-/
 theorem principal_series_of_statement_w : _root_.UpperTheory.V.Z.Sym.W.PsOfAlt := by
   intro _ L _ _ n w τ hT
   haveI : CharZero (w.adicCompletion L) := charZero_of_injective_algebraMap (algebraMap L _).injective

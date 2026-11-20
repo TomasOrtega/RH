@@ -4,6 +4,9 @@ import Formalism.PadicSubsetSums.StableGradedCounts.LocalEstimateThird
 
 namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 
+/- English proof (translation)
+The claim follows from `propW_of_localEstimates local_estimate_second local_estimate_third`.
+-/
 theorem property_W_of_estimates : PropW := propW_of_localEstimates local_estimate_second local_estimate_third
 
 end Formalism.IrreducibleCountingLemmas.GaloisIrreducibility

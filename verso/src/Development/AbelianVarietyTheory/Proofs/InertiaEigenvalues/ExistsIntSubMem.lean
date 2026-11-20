@@ -6,6 +6,13 @@ open GlobalTheory.TypeLeaf Formalism.BasicNotions Formalism.MainNotions Formalis
 
 namespace GlobalTheory.SplitFrobDense
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `h1 : ∀ x : 𝓞 H.E, H.conj (x : H.E) = x` using `fun x => by`. Use `hc x ⟨H.conj x, (RingOfIntegers.isIntegral_coe x).map (H.conj.toAlgHom.restrictScalars ℤ)⟩ rfl` as an intermediate fact. Conclude with `congrArg (fun z : 𝓞 H.E => (z : H.E)) (sub_eq_zero.1 this)`.
+
+Establish `h2 : ∀ z : H.E, H.conj z = z` using `fun z => by`. Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 H.E) z`. Rewrite using `[map_div₀]`. Conclude with `congrArg₂ (· / ·) (h1 a) (h1 b)`. Use `H.isCMField_hostE` as an intermediate fact.
+
+Use `IsTotallyComplex.complexEmbedding_not_isReal H.φ₀ (ComplexEmbedding.isReal_iff.2 ?_)` and prove the remaining obligations. Use extensionality with `z`. Conclude with `(H.conjE_apply H.φ₀ z).symm.trans (congrArg H.φ₀ (h2 z))`.
+-/
 theorem exists_conj_ne {R : Ranks} (H : Host R) :
     ∃ x y : 𝓞 H.E, (y : H.E) = H.conj (x : H.E) ∧ y - x ≠ 0 := by
   by_contra hc
@@ -22,6 +29,13 @@ theorem exists_conj_ne {R : Ranks} (H : Host R) :
   ext z
   exact (H.conjE_apply H.φ₀ z).symm.trans (congrArg H.φ₀ (h2 z))
 
+/- English proof (translation)
+Use `v.isPrime` as an intermediate fact. Establish `: NeZero v.asIdeal` using `⟨v.ne_bot⟩`. Establish `hp` using `Nat.absNorm_under_prime v.asIdeal`. Establish `h` using `Ideal.absNorm_pow_inertiaDeg (v.asIdeal.under ℤ) v.asIdeal`. Rewrite `h` using `[hv, pow_one]`.
+
+Rewrite `hp` using `[h]`. Establish `: Fact (Ideal.absNorm v.asIdeal).Prime` using `⟨hp⟩`. Establish `hc : Nat.card (𝓞 E ⧸ v.asIdeal) = Ideal.absNorm v.asIdeal` using `rfl`. Establish `: Nontrivial (𝓞 E ⧸ v.asIdeal)` using `Ideal.Quotient.nontrivial_iff.2 v.isPrime.ne_top`. Establish `hm` using `mem_zmultiples_of_prime_card hc (g := (1 : 𝓞 E ⧸ v.asIdeal)) (g' := Ideal.Quotient.mk _ x) one_ne_zero`.
+
+Take `⟨n, hn⟩` from `AddSubgroup.mem_zmultiples_iff.1 hm`. Use `⟨n, Ideal.Quotient.eq.1 ?_⟩` and prove the remaining obligations. Rewrite using `[← hn]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_int_sub_mem {E : Type} [Field E] [NumberField E] (v : HeightOneSpectrum (𝓞 E))
     (hv : v.asIdeal.inertiaDeg ℤ = 1) (x : 𝓞 E) : ∃ n : ℤ, x - n ∈ v.asIdeal := by
   have := v.isPrime
@@ -40,6 +54,17 @@ theorem exists_int_sub_mem {E : Type} [Field E] [NumberField E] (v : HeightOneSp
   rw [← hn]
   simp
 
+/- English proof (translation)
+Introduce `D hC T hT`. Rewrite using `[dense_iff_inter_open]`. Introduce and unpack `V hV ⟨g, hg⟩`. Establish `: IsGalois D.host.E D.nd.Om` using `{}`. Establish `hn : (fun u : G D.host.E D.nd.Om => u * g) ⁻¹' V ∈ nhds (1 : G D.host.E D.nd.Om)` using `(hV.preimage (continuous_mul_const g)).mem_nhds (by simpa using hg)`.
+
+Take `⟨L, hfd, hN, hL⟩` from `(krullTopology_mem_nhds_one_iff_of_normal D.host.E D.nd.Om _).1 hn`. Establish `hgal : IsGalois D.host.E L` using `{}`. Take `⟨x, y, hxy, hne⟩` from `exists_conj_ne D.host`. Establish `f1 : {v : PlE D.host | v.asIdeal ∣ Ideal.span {y - x}}.Finite` using `Ideal.finite_factors (by simpa using hne)`. Take `⟨v, hv, hf, -, B, hB, -, σ, hσ, hU⟩` from `hC D.host.E D.nd.Om L.fixingSubgroup L.fixingSubgroup_isOpen ((InfiniteGalois.normal_iff_isGalois L).2 hgal) g (f1.toFinset ∪ hT.toFinset)`.
+
+Simplify using `only [Finset.mem_union, Set.Finite.mem_toFinset, Set.mem_setOf_eq, Ideal.dvd_span_singleton, not_or] at hv`. Take `⟨h1, h2⟩` from `hv`. Take `⟨n, hx⟩` from `exists_int_sub_mem v hf x`. Establish `hsplit : IsSplitPl D.host v`. Use `⟨x - n, hx, fun z hz hzv => h1 ?_⟩` and prove the remaining obligations.
+
+Establish `hz' : z = y - n`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[hz]`. Simplify using `[hxy]`. Use `v.asIdeal.sub_mem hzv hx` as an intermediate fact.
+
+Rewrite `this` using `[hz', sub_sub_sub_cancel_right]`. Then use the resulting hypothesis. Use `hL hU` as an intermediate fact. Simplify using `only [Set.mem_preimage, inv_mul_cancel_right] at this`. Conclude with `⟨σ, this, v, h2, hsplit, B, hB, hσ⟩`.
+-/
 theorem frobDense : ∀ D : D7, GlobalTheory.TwSys.Cheb → FrobDense D := by
   classical
   intro D hC T hT

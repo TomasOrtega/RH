@@ -19,6 +19,17 @@ open Classical in
 def margC (φ : β → α) (T : α → Finset ℤ) : ℕ := ∏ t, (if ∃ i, φ i = t then 1 else (T t).card)
 
 open Classical in
+/- English proof (translation)
+Establish `key : (Fintype.piFinset T).filter (fun a => (fun i => a (φ i)) = a') = Fintype.piFinset (fun t => if h : ∃ i, φ i = t then ({a' h.choose} : Finset ℤ) else T t)`. Use extensionality with `a`. Simplify using `only [Finset.mem_filter, Fintype.mem_piFinset]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hT, rfl⟩ t split_ifs with h`.
+
+Simplify using `only [Finset.mem_singleton]`. Rewrite using `[h.choose_spec]`. Conclude with `hT t`. Introduce `h`. Use `⟨fun t => ?_, funext fun i => ?_⟩` and prove the remaining obligations.
+
+Establish `ht` using `h t split_ifs at ht with hx`. Rewrite `ht` using `[Finset.mem_singleton]`. Rewrite using `[ht]`. Use `ha' hx.choose` as an intermediate fact. Rewrite `this` using `[hx.choose_spec]`. Then use the resulting hypothesis.
+
+Conclude with `ht`. Establish `ht` using `h (φ i)`. Rewrite `ht` using `[dif_pos (⟨i, rfl⟩ : ∃ j, φ j = φ i), Finset.mem_singleton]`. Use `show a (φ i) = a' i`. Rewrite using `[ht]`.
+
+Conclude with `congrArg a' (hφ (Exists.choose_spec (⟨i, rfl⟩ : ∃ j, φ j = φ i)))`. Rewrite using `[key, Fintype.card_piFinset]`. Unfold `margC`. Use `Finset.prod_congr rfl fun t _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem marg_fibre (φ : β → α) (hφ : Function.Injective φ) (T : α → Finset ℤ) (a' : β → ℤ)
     (ha' : ∀ i, a' i ∈ T (φ i)) :
     ((Fintype.piFinset T).filter (fun a => (fun i => a (φ i)) = a')).card = margC φ T := by
@@ -52,6 +63,11 @@ theorem marg_fibre (φ : β → α) (hφ : Function.Injective φ) (T : α → Fi
   split_ifs <;> simp
 
 open Classical in
+/- English proof (translation)
+Rewrite using `[← Finset.sum_fiberwise_of_maps_to (s := Fintype.piFinset T) (t := Fintype.piFinset T') (g := fun a i => a (φ i)) (f := fun a => F (fun i => a (φ i))) (fun a ha => by`. Rewrite `ha`, the goal using `[Fintype.mem_piFinset]`. Introduce `i`. Rewrite using `[hT]`. Conclude with `ha (φ i))]`.
+
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a' ha' => ?_` and prove the remaining obligations. Rewrite `ha'` using `[Fintype.mem_piFinset]`. Establish `e : ∑ a ∈ (Fintype.piFinset T).filter (fun a => (fun i => a (φ i)) = a'), F (fun i => a (φ i)) = ∑ a ∈ (Fintype.piFinset T).filter (fun a => (fun i => a (φ i)) = a'), F a'` using `Finset.sum_congr rfl fun a ha => by rw [(Finset.mem_filter.mp ha).2]`. Rewrite using `[e, Finset.sum_const, marg_fibre φ hφ T a' (fun i => by rw [← hT]; exact ha' i), nsmul_eq_mul]`.
+-/
 theorem marg_sum (φ : β → α) (hφ : Function.Injective φ) (T : α → Finset ℤ) (T' : β → Finset ℤ)
     (hT : ∀ i, T' i = T (φ i)) (F : (β → ℤ) → ℝ) :
     ∑ a ∈ Fintype.piFinset T, F (fun i => a (φ i)) = (margC φ T : ℝ) * ∑ a' ∈ Fintype.piFinset T', F a' := by
@@ -69,6 +85,9 @@ theorem marg_sum (φ : β → α) (hφ : Function.Injective φ) (T : α → Fins
     Finset.sum_congr rfl fun a ha => by rw [(Finset.mem_filter.mp ha).2]
   rw [e, Finset.sum_const, marg_fibre φ hφ T a' (fun i => by rw [← hT]; exact ha' i), nsmul_eq_mul]
 
+/- English proof (translation)
+Establish `h` using `marg_sum φ hφ T T' hT (fun _ => (1 : ℝ))`. Simplify using `using h`.
+-/
 theorem marg_card (φ : β → α) (hφ : Function.Injective φ) (T : α → Finset ℤ) (T' : β → Finset ℤ)
     (hT : ∀ i, T' i = T (φ i)) :
     ((Fintype.piFinset T).card : ℝ) = (margC φ T : ℝ) * ((Fintype.piFinset T').card : ℝ) := by
@@ -77,6 +96,11 @@ theorem marg_card (φ : β → α) (hφ : Function.Injective φ) (T : α → Fin
 
 end marg
 
+/- English proof (translation)
+Unfold `stepP`. Rewrite using `[if_neg]`. Introduce `hs`. Simplify using `only [IsSg] at hs`. Simplify using `only [IsResidueClassZero] at h`.
+
+Rewrite `hs` using `[h]`. Consider the cases of `hs`.
+-/
 theorem frobenius_step_large_order (p : ℕ) (h : IsResidueClassZero D p) : stepP D p = hP D p := by
   unfold stepP
   rw [if_neg]
@@ -88,27 +112,46 @@ theorem frobenius_step_large_order (p : ℕ) (h : IsResidueClassZero D p) : step
 
 def phi (D : D7) (p : ℕ) (t0 : HH D) : Fin (addOrderOf (hP D p)) → HH D := fun i => t0 + (i : ℕ) • hP D p
 
+/- English proof (translation)
+Introduce `i j hij`. Simplify using `only [phi, add_right_inj] at hij`. Conclude with `Fin.ext (nsmul_injOn_Iio_addOrderOf i.2 j.2 hij)`.
+-/
 theorem phi_inj (p : ℕ) (t0 : HH D) : Function.Injective (phi D p t0) := by
   intro i j hij
   simp only [phi, add_right_inj] at hij
   exact Fin.ext (nsmul_injOn_Iio_addOrderOf i.2 j.2 hij)
 
+/- English proof (translation)
+Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih => rw [succ_nsmul, ← add_assoc, X.bs_step, ih]`.
+-/
 theorem bs_iter (X : Inst D L) (h t : HH D) (i : ℕ) : X.bs h (t + i • h) = X.bs h t := by
   induction i with
   | zero => simp
   | succ i ih => rw [succ_nsmul, ← add_assoc, X.bs_step, ih]
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `X.bs_orb h t`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem bs_idem (X : Inst D L) (h t : HH D) : X.bs h (X.bs h t) = X.bs h t := by
   obtain ⟨i, hi⟩ := X.bs_orb h t
   calc X.bs h (X.bs h t) = X.bs h (X.bs h t + i • h) := (bs_iter X h _ i).symm
     _ = X.bs h t := by rw [hi]
 
+/- English proof (translation)
+Unfold `reps at ht0`. Simplify using `only [Finset.mem_image, Finset.mem_univ, true_and] at ht0`. Take `⟨t, rfl⟩` from `ht0`. Conclude with `bs_idem X _ t`.
+-/
 theorem bs_rep (X : Inst D L) (p : ℕ) (t0 : HH D) (ht0 : t0 ∈ reps X p) : X.bs (stepP D p) t0 = t0 := by
   unfold reps at ht0
   simp only [Finset.mem_image, Finset.mem_univ, true_and] at ht0
   obtain ⟨t, rfl⟩ := ht0
   exact bs_idem X _ t
 
+/- English proof (translation)
+Establish `hs` using `frobenius_step_large_order p hc`. Establish `hr` using `bs_rep X p t0 ht0`. Rewrite `hr` using `[hs]`. Use extensionality with `t`. Simplify using `only [topsOn, topsPos, Finset.mem_filter, Finset.mem_image, Finset.mem_univ, true_and, phi, hs]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨htT, hbt⟩`. Take `⟨i, hi⟩` from `X.bs_orb (hP D p) t`. Rewrite `hi` using `[hbt]`. Establish `hpos : 0 < addOrderOf (hP D p)` using `addOrderOf_pos _`.
+
+Apply the tactic sequence `refine ⟨⟨i % addOrderOf (hP D p), Nat.mod_lt _ hpos⟩, ?_, ?_⟩ <;>`. Simplify using `only [Fin.val_mk, mod_addOrderOf_nsmul, hi, htT]`. Introduce and unpack `⟨i, hi, rfl⟩`. Conclude with `⟨hi, by rw [bs_iter, hr]⟩`.
+-/
 theorem topsOn_eq_image (X : Inst D L) (p : ℕ) (hc : IsResidueClassZero D p) (t0 : HH D) (ht0 : t0 ∈ reps X p) :
     topsOn X p t0 = (topsPos D p t0).image (phi D p t0) := by
   have hs := frobenius_step_large_order p hc
@@ -126,11 +169,21 @@ theorem topsOn_eq_image (X : Inst D L) (p : ℕ) (hc : IsResidueClassZero D p) (
   · rintro ⟨i, hi, rfl⟩
     exact ⟨hi, by rw [bs_iter, hr]⟩
 
+/- English proof (translation)
+Unfold `Nv`. Rewrite using `[topsOn_eq_image X p hc t0 ht0, Finset.card_image_of_injective _ (phi_inj p t0)]`.
+-/
 theorem Nv_eq (X : Inst D L) (p : ℕ) (hc : IsResidueClassZero D p) (t0 : HH D) (ht0 : t0 ∈ reps X p) :
     Nv X p t0 = (topsPos D p t0).card := by
   unfold Nv
   rw [topsOn_eq_image X p hc t0 ht0, Finset.card_image_of_injective _ (phi_inj p t0)]
 
+/- English proof (translation)
+Establish `hd : ∀ x ∈ S, ∀ y ∈ S, x ≠ y → Disjoint (topsOn X p x) (topsOn X p y)`. Introduce `x _ y _ hxy`. Rewrite using `[Finset.disjoint_left]`. Introduce `t hx hy`. Simplify using `only [topsOn, Finset.mem_filter] at hx hy`.
+
+Conclude with `hxy (hx.2.symm.trans hy.2)`. Simplify using `only [Nv]`. Rewrite using `[← Finset.card_biUnion hd]`. Use `Finset.card_le_card (Finset.biUnion_subset.mpr fun t0 _ => ?_)` and prove the remaining obligations. Unfold `topsOn`.
+
+Conclude with `Finset.filter_subset _ _`.
+-/
 theorem sum_Nv_le (X : Inst D L) (p : ℕ) (S : Finset (HH D)) : ∑ t0 ∈ S, Nv X p t0 ≤ D.host.TT.card := by
   classical
   have hd : ∀ x ∈ S, ∀ y ∈ S, x ≠ y → Disjoint (topsOn X p x) (topsOn X p y) := by
@@ -145,6 +198,9 @@ theorem sum_Nv_le (X : Inst D L) (p : ℕ) (S : Finset (HH D)) : ∑ t0 ∈ S, N
   unfold topsOn
   exact Finset.filter_subset _ _
 
+/- English proof (translation)
+Unfold `goodReps at h`. Simplify using `only [Finset.mem_filter] at h`. Conclude with `h`.
+-/
 theorem mem_goodReps {X : Inst D L} {p : ℕ} {t0 : HH D} (h : t0 ∈ goodReps X p) : t0 ∈ reps X p ∧ Good X p t0 := by
   unfold goodReps at h
   simp only [Finset.mem_filter] at h
@@ -171,6 +227,11 @@ def RestHypI (X : Inst D L) (K : Consts) : Prop :=
   ∀ p, Cand D L K p → L.sc.p0 D.R.k ≤ (p : ℝ) → ∀ t0 ∈ goodReps X p,
     HypI D L K p (addOrderOf (hP D p)) (topsPos D p t0).card
 
+/- English proof (translation)
+Take `⟨h1, h2, d, hd, hl, hu⟩` from `hb`. Establish `hX : 0 ≤ s.X'` using `le_trans (Nat.cast_nonneg p) h2.le`. Unfold `InBand`. Use `⟨h1, h2, d, hd, le_trans ?_ hl, le_trans hu ?_⟩` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_left (by linarith) hX`.
+
+Conclude with `mul_le_mul_of_nonneg_left (by linarith) hX`.
+-/
 theorem inBand_of_inBand0 (D : D7) (K : Consts) (s : Scale) (h : rho D K s ≤ rhoB D K s) (p : ℕ)
     (hb : InBand0 D K s p) : InBand D K s p := by
   obtain ⟨h1, h2, d, hd, hl, hu⟩ := hb
@@ -180,6 +241,11 @@ theorem inBand_of_inBand0 (D : D7) (K : Consts) (s : Scale) (h : rho D K s ≤ r
   · exact mul_le_mul_of_nonneg_left (by linarith) hX
   · exact mul_le_mul_of_nonneg_left (by linarith) hX
 
+/- English proof (translation)
+Unfold `meanLoc`. Simplify using `only [Finset.sum_const, nsmul_eq_mul]`. Rewrite using `[← mul_assoc, mul_div_right_comm]`. Break down `eq_or_ne (((boxLoc n' TT (winA D s)).card : ℝ) * ((boxLoc n' TT (winB D K s)).card : ℝ)) 0 with h | h` into its components or cases. Rewrite using `[h, div_zero, zero_mul]`.
+
+Conclude with `hc`. Rewrite using `[div_self h, one_mul]`.
+-/
 theorem meanLoc_const_le (K : Consts) (s : Scale) (n' : ℕ) (TT : Finset (Fin n')) (c : ℝ) (hc : 0 ≤ c) :
     meanLoc D K s n' TT (fun _ _ => c) ≤ c := by
   unfold meanLoc
@@ -190,12 +256,20 @@ theorem meanLoc_const_le (K : Consts) (s : Scale) (n' : ℕ) (TT : Finset (Fin n
     exact hc
   · rw [div_self h, one_mul]
 
+/- English proof (translation)
+Establish `hk : 0 ≤ K.kII` using `hK.2.2.1`. Establish `hx : 0 < L.sc.x` using `lt_trans zero_lt_one L.sc.one_lt_alt`. Unfold `kapIIf`. Conclude with `le_min zero_le_one (by positivity)`.
+-/
 theorem kapIIf_nonneg (K : Consts) (hK : K.Nonneg) (L : SizeData₂ D) (N : ℕ) : 0 ≤ kapIIf K L N := by
   have hk : 0 ≤ K.kII := hK.2.2.1
   have hx : 0 < L.sc.x := lt_trans zero_lt_one L.sc.one_lt_alt
   unfold kapIIf
   exact le_min zero_le_one (by positivity)
 
+/- English proof (translation)
+Establish `hg` using `(mem_goodReps ht0).2`. Use `h8 p (addOrderOf (hP D p)) hc.1 (topsPos D p t0) hg N.second_level_lt_good_bound ?_ hp hc.2.1 ?_ (hI p hc hp t0 ht0)` and prove the remaining obligations. Establish `h2 : (3 * Gp L.sc : ℝ) ≤ (addOrderOf (hP D p) : ℝ)` using `N.Gp.trans hc.2.2.2.1`. Conclude with `h2` after adjusting the coercions. Introduce `h0`.
+
+Conclude with `hc.2.2.2.2 hp (inBand_of_inBand0 D K L.sc hρ p h0)`.
+-/
 theorem kappa_nonneg_and_mean_bound (X : Inst D L) (K : Consts) (Cm : ℝ) (h8 : adm8 D L X K Cm) (N : NumMean D L K Cm)
     (hI : RestHypI X K) (hρ : rho D K L.sc ≤ rhoB D K L.sc) (p : ℕ) (hc : Cand D L K p) (hp : L.sc.p0 D.R.k ≤ (p : ℝ)) (t0 : HH D)
     (ht0 : t0 ∈ goodReps X p) :
@@ -209,6 +283,17 @@ theorem kappa_nonneg_and_mean_bound (X : Inst D L) (K : Consts) (Cm : ℝ) (h8 :
   · intro h0
     exact hc.2.2.2.2 hp (inBand_of_inBand0 D K L.sc hρ p h0)
 
+/- English proof (translation)
+Introduce `p hc t0 ht0`. Establish `hr : t0 ∈ reps X p` using `(mem_goodReps ht0).1`. Establish `hN` using `Nv_eq X p hc.2.2.1 t0 hr`. Establish `hII : kapIIf K L (topsPos D p t0).card ≤ (Nv X p t0 : ℝ) * L.sc.x ^ (-12 : ℝ)`. Rewrite using `[hN]`.
+
+Unfold `kapIIf`. Use `mul_le_mul_of_nonneg_left N.kII (Nat.cast_nonneg (topsPos D p t0).card : (0 : ℝ) ≤ _)` as an intermediate fact. Use `le_trans (min_le_right _ _) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Distinguish the cases in `hp : (p : ℝ) < L.sc.p0 D.R.k`.
+
+Prove the components needed by the constructor for the conclusion. Simplify using `only [kapLoc, if_pos hp]`. Conclude with `le_trans (meanLoc_const_le K L.sc _ _ _ (kapIIf_nonneg K hK L _)) hII`. Introduce `_ a b`. Unfold `kapv kapLoc`.
+
+Rewrite using `[if_pos hp]`. Conclude with `hII`. Prove the components needed by the constructor for the conclusion. Simplify using `only [kapLoc, if_neg hp]`. Use `le_trans (kappa_nonneg_and_mean_bound X K Cm h8 N hI hρ p hc (not_lt.1 hp) t0 ht0).2 ?_` and prove the remaining obligations.
+
+Rewrite using `[hN]`. Use `mul_le_mul_of_nonneg_left N.kI (Nat.cast_nonneg (topsPos D p t0).card : (0 : ℝ) ≤ _)` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Introduce `h`. Conclude with `absurd h hp`.
+-/
 theorem slopeEstimate_of_lemmaB_slopeLine (X : Inst D L) (K : Consts) (hK : K.Nonneg) (Cm : ℝ) (h8 : adm8 D L X K Cm)
     (N : NumMean D L K Cm) (hI : RestHypI X K) (hρ : rho D K L.sc ≤ rhoB D K L.sc) : Conclusion2 D L X K := by
   intro p hc t0 ht0
@@ -240,6 +325,9 @@ theorem slopeEstimate_of_lemmaB_slopeLine (X : Inst D L) (K : Consts) (hK : K.No
         _ ≤ _ := this
     · intro h; exact absurd h hp
 
+/- English proof (translation)
+Unfold `kapv kapLoc`. Use `split_ifs with hp`. Conclude with `kapIIf_nonneg K hK L _`. Conclude with `(kappa_nonneg_and_mean_bound X K Cm h8 N hI hρ p hc (not_lt.mp hp) t0 ht0).1 _ _`.
+-/
 theorem kapv_nonneg (X : Inst D L) (K : Consts) (hK : K.Nonneg) (Cm : ℝ) (h8 : adm8 D L X K Cm)
     (N : NumMean D L K Cm) (hI : RestHypI X K) (hρ : rho D K L.sc ≤ rhoB D K L.sc) (p : ℕ) (hc : Cand D L K p) (t0 : HH D)
     (ht0 : t0 ∈ goodReps X p) (a b : HH D → ℤ) : 0 ≤ kapv X K a b p t0 := by
@@ -248,6 +336,9 @@ theorem kapv_nonneg (X : Inst D L) (K : Consts) (hK : K.Nonneg) (Cm : ℝ) (h8 :
   · exact kapIIf_nonneg K hK L _
   · exact (kappa_nonneg_and_mean_bound X K Cm h8 N hI hρ p hc (not_lt.mp hp) t0 ht0).1 _ _
 
+/- English proof (translation)
+Unfold `Sig`. Conclude with `mul_nonneg (Nat.cast_nonneg _) (Finset.sum_nonneg fun t0 ht0 => kapv_nonneg X K hK Cm h8 N hI hρ p hc t0 ht0 a b)`.
+-/
 theorem Sig_nonneg (X : Inst D L) (K : Consts) (hK : K.Nonneg) (Cm : ℝ) (h8 : adm8 D L X K Cm)
     (N : NumMean D L K Cm) (hI : RestHypI X K) (hρ : rho D K L.sc ≤ rhoB D K L.sc) (a b : HH D → ℤ) (p : ℕ) (hc : Cand D L K p) :
     0 ≤ Sig X K a b p := by
@@ -255,6 +346,9 @@ theorem Sig_nonneg (X : Inst D L) (K : Consts) (hK : K.Nonneg) (Cm : ℝ) (h8 : 
   exact mul_nonneg (Nat.cast_nonneg _)
     (Finset.sum_nonneg fun t0 ht0 => kapv_nonneg X K hK Cm h8 N hI hρ p hc t0 ht0 a b)
 
+/- English proof (translation)
+Use `⟨_, fun F => marg_sum (phi D p t0) (phi_inj p t0) _ _ ?_ F, marg_card (phi D p t0) (phi_inj p t0) _ _ ?_⟩` and prove the remaining obligations. Use `all_goals`. Introduce `i`. Unfold `topsPos phi`. Apply the tactic sequence `split_ifs <;> simp_all`.
+-/
 theorem box_marg (p : ℕ) (t0 : HH D) (W : Finset ℤ) :
     ∃ c : ℝ, (∀ F : (Fin (addOrderOf (hP D p)) → ℤ) → ℝ,
         ∑ a ∈ box D W, F (wPos D p t0 a) = c * ∑ a' ∈ boxLoc _ (topsPos D p t0) W, F a') ∧
@@ -266,6 +360,11 @@ theorem box_marg (p : ℕ) (t0 : HH D) (W : Finset ℤ) :
     unfold topsPos phi
     split_ifs <;> simp_all
 
+/- English proof (translation)
+Unfold `box`. Rewrite using `[Fintype.piFinset_nonempty]`. Introduce `t`. Use `split_ifs`. Conclude with `hW`.
+
+Conclude with `Finset.singleton_nonempty 0`.
+-/
 theorem box_nonempty (W : Finset ℤ) (hW : W.Nonempty) : (box D W).Nonempty := by
   unfold box
   rw [Fintype.piFinset_nonempty]
@@ -274,6 +373,11 @@ theorem box_nonempty (W : Finset ℤ) (hW : W.Nonempty) : (box D W).Nonempty := 
   · exact hW
   · exact Finset.singleton_nonempty 0
 
+/- English proof (translation)
+Unfold `boxLoc`. Rewrite using `[Fintype.piFinset_nonempty]`. Introduce `t`. Use `split_ifs`. Conclude with `hW`.
+
+Conclude with `Finset.singleton_nonempty 0`.
+-/
 theorem boxLoc_nonempty (n' : ℕ) (TT : Finset (Fin n')) (W : Finset ℤ) (hW : W.Nonempty) :
     (boxLoc n' TT W).Nonempty := by
   unfold boxLoc
@@ -283,15 +387,31 @@ theorem boxLoc_nonempty (n' : ℕ) (TT : Finset (Fin n')) (W : Finset ℤ) (hW :
   · exact hW
   · exact Finset.singleton_nonempty 0
 
+/- English proof (translation)
+Rewrite using `[Finset.nonempty_Icc, Int.le_floor]`. Use `Int.ceil_lt_add_one y` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem Icc_ceil_floor_nonempty (y w : ℝ) (hw : 1 ≤ w) : (Finset.Icc ⌈y⌉ ⌊y + w⌋).Nonempty := by
   rw [Finset.nonempty_Icc, Int.le_floor]
   have := Int.ceil_lt_add_one y
   linarith
 
+/- English proof (translation)
+The claim follows from `Icc_ceil_floor_nonempty _ _ N.winA`.
+-/
 theorem winA_nonempty (K : Consts) (Cm : ℝ) (N : NumMean D L K Cm) : (winA D L.sc).Nonempty := Icc_ceil_floor_nonempty _ _ N.winA
 
+/- English proof (translation)
+The claim follows from `Icc_ceil_floor_nonempty _ _ N.winB`.
+-/
 theorem winB_nonempty (K : Consts) (Cm : ℝ) (N : NumMean D L K Cm) : (winB D K L.sc).Nonempty := Icc_ceil_floor_nonempty _ _ N.winB
 
+/- English proof (translation)
+Take `⟨cA, hA, hcA⟩` from `box_marg (D := D) p t0 (winA D L.sc)`. Take `⟨cB, hB, hcB⟩` from `box_marg (D := D) p t0 (winB D K L.sc)`. Establish `hLA : ((boxLoc _ (topsPos D p t0) (winA D L.sc)).card : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr (Finset.card_ne_zero.mpr (boxLoc_nonempty _ _ _ (winA_nonempty K Cm N)))`. Establish `hLB : ((boxLoc _ (topsPos D p t0) (winB D K L.sc)).card : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr (Finset.card_ne_zero.mpr (boxLoc_nonempty _ _ _ (winB_nonempty K Cm N)))`. Establish `e1 : ∀ a, ∑ b ∈ box D (winB D K L.sc), F (wPos D p t0 a) (wPos D p t0 b) = cB * ∑ b' ∈ boxLoc _ (topsPos D p t0) (winB D K L.sc), F (wPos D p t0 a) b'` using `fun a => hB (fun b' => F (wPos D p t0 a) b')`.
+
+Establish `e2 : ∀ b', ∑ a ∈ box D (winA D L.sc), F (wPos D p t0 a) b' = cA * ∑ a' ∈ boxLoc _ (topsPos D p t0) (winA D L.sc), F a' b'` using `fun b' => hA (fun a' => F a' b')`. Repeatedly rewrite using `[e1]`. Rewrite using `[← Finset.mul_sum, Finset.sum_comm]`. Repeatedly rewrite using `[e2]`. Rewrite using `[← Finset.mul_sum, Finset.sum_comm, hcA, hcB]`.
+
+Unfold `meanLoc`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem sum_box_product_eq_mean (K : Consts) (Cm : ℝ) (N : NumMean D L K Cm) (p : ℕ) (t0 : HH D)
     (F : (Fin (addOrderOf (hP D p)) → ℤ) → (Fin (addOrderOf (hP D p)) → ℤ) → ℝ) :
     ∑ a ∈ box D (winA D L.sc), ∑ b ∈ box D (winB D K L.sc), F (wPos D p t0 a) (wPos D p t0 b) =
@@ -316,6 +436,9 @@ theorem sum_box_product_eq_mean (K : Consts) (Cm : ℝ) (N : NumMean D L K Cm) (
   unfold meanLoc
   field_simp
 
+/- English proof (translation)
+Rewrite using `[show (∑ a ∈ box D (winA D L.sc), ∑ b ∈ box D (winB D K L.sc), kapv X K a b p t0) = _ from sum_box_product_eq_mean K Cm N p t0 (fun a b => kapLoc X K p (addOrderOf (hP D p)) (topsPos D p t0) a b)]`. Establish `hm` using `(h2 p hc t0 ht0).1`. Conclude with `mul_le_mul_of_nonneg_left hm (by positivity)`.
+-/
 theorem sum_kapv_le (X : Inst D L) (K : Consts) (Cm : ℝ) (N : NumMean D L K Cm) (h2 : Conclusion2 D L X K)
     (p : ℕ) (hc : Cand D L K p) (t0 : HH D) (ht0 : t0 ∈ goodReps X p) :
     ∑ a ∈ box D (winA D L.sc), ∑ b ∈ box D (winB D K L.sc), kapv X K a b p t0 ≤
@@ -326,6 +449,15 @@ theorem sum_kapv_le (X : Inst D L) (K : Consts) (Cm : ℝ) (N : NumMean D L K Cm
   have hm := (h2 p hc t0 ht0).1
   exact mul_le_mul_of_nonneg_left hm (by positivity)
 
+/- English proof (translation)
+Establish `hx : 0 < L.sc.x` using `lt_trans zero_lt_one L.sc.one_lt_alt`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Sig, Finset.mul_sum]`. Conclude with `(Finset.sum_congr rfl fun _ _ => Finset.sum_comm).trans Finset.sum_comm`. Use `_ ≤ (D.R.m : ℝ) * ∑ t0 ∈ goodReps X p, ((box D (winA D L.sc)).card : ℝ) * ((box D (winB D K L.sc)).card : ℝ) * ((Nv X p t0 : ℝ) * L.sc.x ^ (-12 : ℝ)) := by`.
+
+Use `mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun t0 ht0 => sum_kapv_le X K Cm N h2 p hc t0 ht0) ?_` and prove the remaining obligations. Check the signs of the components of the expression. Use `_ = ((box D (winA D L.sc)).card : ℝ) * ((box D (winB D K L.sc)).card : ℝ) * ((D.R.m : ℝ) * L.sc.x ^ (-12 : ℝ) * ((∑ t0 ∈ goodReps X p, Nv X p t0 : ℕ) : ℝ)) := by`. Simplify using `only [Nat.cast_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun t0 _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := by`. Establish `h' : ((∑ t0 ∈ goodReps X p, Nv X p t0 : ℕ) : ℝ) ≤ (D.host.TT.card : ℝ)`. Conclude with `sum_Nv_le X p (goodReps X p)` after adjusting the coercions. Establish `hm : 0 ≤ (D.R.m : ℝ) * L.sc.x ^ (-12 : ℝ)` using `by positivity`.
+
+Establish `hc2 : 0 ≤ ((box D (winA D L.sc)).card : ℝ) * ((box D (winB D K L.sc)).card : ℝ)`. Check the signs of the components of the expression. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sum_Sig_le (X : Inst D L) (K : Consts) (Cm : ℝ) (N : NumMean D L K Cm) (h2 : Conclusion2 D L X K)
     (p : ℕ) (hc : Cand D L K p) :
     ∑ a ∈ box D (winA D L.sc), ∑ b ∈ box D (winB D K L.sc), Sig X K a b p ≤
@@ -358,10 +490,30 @@ theorem sum_Sig_le (X : Inst D L) (K : Consts) (Cm : ℝ) (N : NumMean D L K Cm)
             mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left h' hm) hc2
           _ = _ := by ring
 
+/- English proof (translation)
+Unfold `candF`. Simplify using `only [Finset.mem_filter, Finset.mem_range]`.
+-/
 theorem mem_candF {K : Consts} {p : ℕ} : p ∈ candF D L K ↔ p < ⌈L.sc.X'⌉₊ ∧ Cand D L K p := by
   unfold candF
   simp only [Finset.mem_filter, Finset.mem_range]
 
+/- English proof (translation)
+Establish `hx : 0 < L.sc.x` using `lt_trans zero_lt_one L.sc.one_lt_alt`. Establish `ht : 0 < L.sc.x ^ (L.sc.eps / 3)` using `by positivity`. Use `set t := L.sc.x ^ (L.sc.eps / 3) with htdef`. Establish `hX : L.sc.X' = Real.exp t` using `rfl`. Use `set M := ⌈L.sc.X'⌉₊ with hM`.
+
+Establish `hM1 : 1 ≤ M` using `Nat.one_le_iff_ne_zero.mpr (by`. Rewrite using `[hM]`. Conclude with `(Nat.ceil_pos.mpr (by rw [hX]; exact Real.exp_pos t)).ne')`. Establish `hlt : ∀ n ∈ Finset.range M, (n : ℝ) < Real.exp t` using `fun n hn => by`. Rewrite using `[← hX]`.
+
+Conclude with `Nat.lt_ceil.mp (Finset.mem_range.mp hn)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `Finset.sum_le_sum_of_subset_of_nonneg (fun n hn => Finset.mem_range.mpr (mem_candF.mp hn).1) (fun n _ _ => div_nonneg (Real.log_natCast_nonneg n) (Nat.cast_nonneg n))`. Use `_ ≤ ∑ n ∈ Finset.range M, t * (1 / (n : ℝ)) := by`. Use `Finset.sum_le_sum fun n hn => ?_` and prove the remaining obligations.
+
+Break down `Nat.eq_zero_or_pos n with h0 | hpos` into its components or cases. Simplify using `[h0]`. Establish `hn0 : (0 : ℝ) < n` using `Nat.cast_pos.mpr hpos`. Establish `hlog : Real.log n < t` using `(Real.log_lt_iff_lt_exp hn0).mpr (hlt n hn)`. Rewrite using `[div_eq_mul_one_div]`.
+
+Conclude with `mul_le_mul_of_nonneg_right hlog.le (by positivity)`. Use `_ = t * (harmonic (M - 1) : ℝ) := by`. Rewrite using `[← Finset.mul_sum]`. Use `congr 1`. Take `⟨k, hk⟩ : ∃ k, M = k + 1` from `⟨M - 1, by omega⟩`.
+
+Rewrite using `[hk, Nat.add_sub_cancel, Finset.sum_range_succ']`. Simplify using `only [harmonic]`. Use `push_cast`. Simplify using the standard rewrite rules. Use `_ ≤ t * (1 + Real.log (M - 1 : ℕ)) := mul_le_mul_of_nonneg_left (harmonic_le_one_add_log _) ht.le`.
+
+Use `_ ≤ t * (1 + t) := by`. Use `mul_le_mul_of_nonneg_left ?_ ht.le` and prove the remaining obligations. Establish `: Real.log ((M - 1 : ℕ) : ℝ) ≤ t`. Break down `Nat.eq_zero_or_pos (M - 1) with h0 | hpos` into its components or cases. Rewrite using `[h0]`.
+
+Simplify using `using ht.le`. Establish `h1 : (0 : ℝ) < ((M - 1 : ℕ) : ℝ)` using `Nat.cast_pos.mpr hpos`. Conclude with `((Real.log_lt_iff_lt_exp h1).mpr (hlt (M - 1) (Finset.mem_range.mpr (by omega)))).le`. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ ≤ t * (2 + t) := by nlinarith`.
+-/
 theorem sum_cand_le (K : Consts) :
     ∑ p ∈ candF D L K, Real.log p / p ≤ L.sc.x ^ (L.sc.eps / 3) * (2 + L.sc.x ^ (L.sc.eps / 3)) := by
   have hx : 0 < L.sc.x := lt_trans zero_lt_one L.sc.one_lt_alt
@@ -409,6 +561,11 @@ theorem sum_cand_le (K : Consts) :
         linarith
     _ ≤ t * (2 + t) := by nlinarith
 
+/- English proof (translation)
+Establish `hx : 0 < s.x` using `lt_trans zero_lt_one s.one_lt_alt`. Use `split_ifs with h`. Establish `e : s.x ^ s.eps * s.x ^ (-s.eps) = 1`. Rewrite using `[← Real.rpow_add hx]`. Simplify using the standard rewrite rules.
+
+Establish `hp : 0 < s.x ^ s.eps` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Check the signs of the components of the expression.
+-/
 theorem markov_ind (s : Scale) (S : ℝ) (hS : 0 ≤ S) [Decidable (s.x ^ (-s.eps) < S)] :
     (if s.x ^ (-s.eps) < S then (1 : ℝ) else 0) ≤ s.x ^ s.eps * S := by
   have hx : 0 < s.x := lt_trans zero_lt_one s.one_lt_alt
@@ -420,6 +577,11 @@ theorem markov_ind (s : Scale) (S : ℝ) (hS : 0 ≤ S) [Decidable (s.x ^ (-s.ep
     nlinarith
   · positivity
 
+/- English proof (translation)
+Unfold `ZZ`. Use `Finset.sum_le_sum fun p hp => ?_` and prove the remaining obligations. Establish `hc : Cand D L K p` using `(mem_candF.mp hp).2`. Establish `h0 : 0 ≤ Real.log p / p` using `div_nonneg (Real.log_natCast_nonneg p) (Nat.cast_nonneg p)`. Rewrite using `[mul_assoc]`.
+
+Use `mul_le_mul_of_nonneg_left ?_ h0` and prove the remaining obligations. Use `markov_ind L.sc (Sig X K a b p) (hS p hc)` as an intermediate fact. Rewrite using `[add_mul, one_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ZZ_le (X : Inst D L) (K : Consts) (a b : HH D → ℤ) (hS : ∀ p, Cand D L K p → 0 ≤ Sig X K a b p) :
     ZZ X K a b ≤ ∑ p ∈ candF D L K, Real.log p / p * (L.sc.x ^ L.sc.eps + 1) * Sig X K a b p := by
   unfold ZZ
@@ -432,6 +594,21 @@ theorem ZZ_le (X : Inst D L) (K : Consts) (a b : HH D → ℤ) (hS : ∀ p, Cand
   rw [add_mul, one_mul]
   linarith
 
+/- English proof (translation)
+Establish `hS : ∀ a b p, Cand D L K p → 0 ≤ Sig X K a b p` using `fun a b p hc => Sig_nonneg X K hK Cm h8 N hI hρ a b p hc`. Unfold `MeanEx`. Use `⟨hS, ?_⟩` and prove the remaining obligations. Establish `hx : 0 < L.sc.x` using `lt_trans zero_lt_one L.sc.one_lt_alt`. Establish `key : ∑ a ∈ box D (winA D L.sc), ∑ b ∈ box D (winB D K L.sc), ZZ X K a b ≤ ((box D (winA D L.sc)).card : ℝ) * ((box D (winB D K L.sc)).card : ℝ) * (L.sc.x ^ (-9 : ℝ) / 4)`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.mul_sum]`. Conclude with `(Finset.sum_congr rfl fun _ _ => Finset.sum_comm).trans Finset.sum_comm`. Use `_ ≤ ∑ p ∈ candF D L K, Real.log p / p * (L.sc.x ^ L.sc.eps + 1) * (((box D (winA D L.sc)).card : ℝ) * ((box D (winB D K L.sc)).card : ℝ) * ((D.R.m : ℝ) * (D.host.TT.card : ℝ) * L.sc.x ^ (-12 : ℝ))) := by`. Use `Finset.sum_le_sum fun p hp => mul_le_mul_of_nonneg_left (sum_Sig_le X K Cm N h2 p (mem_candF.mp hp).2) ?_` and prove the remaining obligations.
+
+Use `Real.log_natCast_nonneg p` as an intermediate fact. Check the signs of the components of the expression. Use `_ = ((box D (winA D L.sc)).card : ℝ) * ((box D (winB D K L.sc)).card : ℝ) * ((L.sc.x ^ L.sc.eps + 1) * (D.R.m : ℝ) * (D.host.TT.card : ℝ) * L.sc.x ^ (-12 : ℝ)) * ∑ p ∈ candF D L K, Real.log p / p := by`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ ((box D (winA D L.sc)).card : ℝ) * ((box D (winB D K L.sc)).card : ℝ) * ((L.sc.x ^ L.sc.eps + 1) * (D.R.m : ℝ) * (D.host.TT.card : ℝ) * L.sc.x ^ (-12 : ℝ)) * (L.sc.x ^ (L.sc.eps / 3) * (2 + L.sc.x ^ (L.sc.eps / 3))) := by`. Use `mul_le_mul_of_nonneg_left (sum_cand_le K) ?_` and prove the remaining obligations. Check the signs of the components of the expression. Use `_ ≤ _ := by`.
+
+Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left N.tot (by positivity)`. Establish `hA` using `box_nonempty (D := D) _ (winA_nonempty K Cm N)`. Establish `hB` using `box_nonempty (D := D) _ (winB_nonempty K Cm N)`. Establish `key2 : ∑ a ∈ box D (winA D L.sc), ∑ b ∈ box D (winB D K L.sc), ZZ X K a b ≤ ∑ a ∈ box D (winA D L.sc), ∑ b ∈ box D (winB D K L.sc), L.sc.x ^ (-9 : ℝ) / 4`.
+
+Use `key.trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [Finset.sum_const, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨a, ha, hab⟩` from `Finset.exists_le_of_sum_le hA key2`. Take `⟨b, hb, hle⟩` from `Finset.exists_le_of_sum_le hB hab`.
+
+Conclude with `⟨a, ha, b, hb, hle⟩`.
+-/
 theorem meanEx_of (X : Inst D L) (K : Consts) (hK : K.Nonneg) (Cm : ℝ) (h8 : adm8 D L X K Cm)
     (N : NumMean D L K Cm) (hI : RestHypI X K) (hρ : rho D K L.sc ≤ rhoB D K L.sc) (h2 : Conclusion2 D L X K) : MeanEx X K := by
   have hS : ∀ a b p, Cand D L K p → 0 ≤ Sig X K a b p :=
@@ -480,6 +657,13 @@ theorem meanEx_of (X : Inst D L) (K : Consts) (hK : K.Nonneg) (Cm : ℝ) (h8 : a
   obtain ⟨b, hb, hle⟩ := Finset.exists_le_of_sum_le hB hab
   exact ⟨a, ha, b, hb, hle⟩
 
+/- English proof (translation)
+Take `⟨hS, a, ha, b, hb, hZ⟩` from `h`. Unfold `WeightVectorExists`. Use `⟨a, ha, b, hb, ?_⟩` and prove the remaining obligations. Unfold `WReq`. Unfold `ZZ at hZ`.
+
+Establish `hc : cands D L K = candF D L K` using `rfl`. Rewrite using `[hc]`. Establish `h4 : ∑ p ∈ candF D L K, Real.log p / p * (2 * (if L.sc.x ^ (-L.sc.eps) < Sig X K a b p then (1 : ℝ) else 0) + 4 * Sig X K a b p) ≤ 4 * ∑ p ∈ candF D L K, Real.log p / p * ((if L.sc.x ^ (-L.sc.eps) < Sig X K a b p then (1 : ℝ) else 0) + Sig X K a b p)`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun p _ => ?_` and prove the remaining obligations.
+
+Establish `h0 : 0 ≤ Real.log p / p` using `div_nonneg (Real.log_natCast_nonneg p) (Nat.cast_nonneg p)`. Apply the tactic sequence `have hi : (0 : ℝ) ≤ if L.sc.x ^ (-L.sc.eps) < Sig X K a b p then 1 else 0 := by split_ifs <;> norm_num`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem weight_condition_of_mean_excess (X : Inst D L) (K : Consts) (h : MeanEx X K) : WeightVectorExists D L X K := by
   obtain ⟨hS, a, ha, b, hb, hZ⟩ := h
   unfold WeightVectorExists

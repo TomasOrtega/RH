@@ -21,6 +21,13 @@ open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCate
 open scoped CategoryTheory.Obj in
 attribute [local instance] Over.cartesianMonoidalCategory in
 
+/- English proof (translation)
+Establish `h' : ∀ b : {b : B // n • b = 0}, ∃ g, p g = b ∧ n • g = 0` using `fun b => h b b.2`. Use `choose s hs using h'`. Establish `hp : ∀ g : {g : G // n • g = 0}, n • p g = 0` using `fun g => by`. Rewrite using `[← map_nsmul, g.2, map_zero]`. Establish `hsec : ∀ (b b' : {b : B // n • b = 0}), (b : B) = b' → s b = s b'`.
+
+Introduce and unpack `b b' hbb`. Rewrite using `[Subtype.ext hbb]`. Rewrite using `[← Nat.card_prod]`. Use `Nat.card_congr { toFun := fun g => (⟨p g, hp g⟩, ⟨g - s ⟨p g, hp g⟩, ?_, ?_⟩) invFun := fun x => ⟨s x.1 + x.2.1, by rw [nsmul_add, (hs _).2, x.2.2.1, add_zero]⟩ left_inv := fun g => Subtype.ext (add_sub_cancel _ _) right_inv := fun x => ?_ }` and prove the remaining obligations. Rewrite using `[nsmul_sub, g.2, (hs _).2, sub_zero]`.
+
+Rewrite using `[map_sub, (hs _).1, sub_self]`. Establish `hx : p (s x.1 + x.2.1) = x.1` using `by rw [map_add, (hs _).1, x.2.2.2, add_zero]`. Use `Prod.ext (Subtype.ext hx) (Subtype.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `s x.1 + x.2.1 - s ⟨p (s x.1 + x.2.1), _⟩ = x.2.1`. Rewrite using `[hsec ⟨p (s x.1 + x.2.1), _⟩ x.1 hx, add_sub_cancel_left]`.
+-/
 theorem _root_.GlobalTheory.GtCount.card_torsion_eq_mul {G B : Type} [AddCommGroup G] [AddCommGroup B] (p : G →+ B) (n : ℕ)
     (h : ∀ b : B, n • b = 0 → ∃ g, p g = b ∧ n • g = 0) :
     Nat.card {g : G // n • g = 0} = Nat.card {b : B // n • b = 0} * Nat.card {g : G // n • g = 0 ∧ p g = 0} := by
@@ -48,6 +55,15 @@ open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCate
 open scoped CategoryTheory.Obj in
 attribute [local instance] Over.cartesianMonoidalCategory in
 
+/- English proof (translation)
+Use `haveI : NeZero (n : F) := ⟨hn⟩`. Use `haveI : NeZero n := ⟨by rintro rfl; simp at hn⟩`. Establish `hroots : Nat.card (rootsOfUnity n F) = n`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot F n`. Conclude with `hζ.card_rootsOfUnity`.
+
+Set `b` to `Module.Free.chooseBasis ℤ X`. Set `e₁ : {t : Multiplicative X →* Fˣ // t ^ n = 1} ≃ (Multiplicative X →* rootsOfUnity n F)` to `{ toFun := fun t => (t.1).codRestrict (rootsOfUnity n F) fun x => by`. Use `DFunLike.congr_fun t.2 x` as an intermediate fact. Simplify `this` using `[MonoidHom.pow_apply, mem_rootsOfUnity]`. Use `invFun := fun s => ⟨(rootsOfUnity n F).subtype.comp s, by`.
+
+Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations. Simplify `(mem_rootsOfUnity _ _).1 (s x).2⟩` using `[MonoidHom.pow_apply]`. Use `left_inv := fun t => Subtype.ext (MonoidHom.ext fun x => rfl)`. Use `right_inv := fun s => MonoidHom.ext fun x => Subtype.ext rfl }`. Set `e` to `e₁.trans (MonoidHom.toAdditiveRight.trans ((addMonoidHomLequivInt ℤ).toEquiv.trans (b.constr ℤ).symm.toEquiv))`.
+
+Rewrite using `[Nat.card_congr e, Nat.card_fun, Nat.card_congr Additive.toMul, hroots, Module.finrank_eq_card_chooseBasisIndex, Nat.card_eq_fintype_card]`.
+-/
 theorem _root_.GlobalTheory.GtCount.card_torus_torsion (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (F : Type) [Field F]
     [IsAlgClosed F] (n : ℕ) (hn : (n : F) ≠ 0) :
     Nat.card {t : Multiplicative X →* Fˣ // t ^ n = 1} = n ^ Module.finrank ℤ X := by
@@ -77,6 +93,9 @@ open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCate
 open scoped CategoryTheory.Obj in
 attribute [local instance] Over.cartesianMonoidalCategory in
 attribute [local instance] _root_.GlobalTheory.TorusExt.gtGroup in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.UU.GtTors`. Simplify using `[_root_.GlobalTheory.TorusExt.isNsmul_iff_eq, _root_.GlobalTheory.TorusExt.isZero_iff_eq]`.
+-/
 theorem _root_.GlobalTheory.GtCount.gtTors_iff {R : Type} [CommRing R] [IsDomain R] {D : _root_.ReciprocityTheory.ChartRestriction.G.Out.DegPre R} {F : Type} [Field F]
     [Algebra (FractionRing R) F] (n : ℕ) (g : _root_.ReciprocityTheory.ChartRestriction.G.Out.GtPtF D F) : _root_.GlobalTheory.UU.GtTors D n g ↔ n • g = 0 := by
   unfold _root_.GlobalTheory.UU.GtTors
@@ -87,6 +106,13 @@ open scoped CategoryTheory.Obj in
 attribute [local instance] Over.cartesianMonoidalCategory in
 attribute [local instance] _root_.GlobalTheory.TorusExt.gtGroup in
 
+/- English proof (translation)
+Set `φ` to `_root_.GlobalTheory.TorusExt.torusPt D F`. Establish `hinj : Function.Injective φ` using `_root_.GlobalTheory.TorusExt.torusPt_injective`. Set `e : {t : Multiplicative D.X →* Fˣ // t ^ n = 1} → {g : _root_.ReciprocityTheory.ChartRestriction.G.Out.GtPtF D F // n • g = 0 ∧ g.b = 1}` to `fun t => ⟨φ (Additive.ofMul t.1), by`. Rewrite using `[← map_nsmul, ← ofMul_pow, t.2, ofMul_one, map_zero], _root_.GlobalTheory.TorusExt.torusPt_b _⟩`. Establish `he : Function.Bijective e`.
+
+Use `⟨fun t t' htt => Subtype.ext ?_, fun g => ?_⟩` and prove the remaining obligations. Conclude with `Additive.ofMul.injective (hinj (congrArg Subtype.val htt))`. Take `⟨t, ht⟩` from `_root_.GlobalTheory.TorusExt.exists_torusPt_eq g.2.2`. Use `⟨⟨t, ?_⟩, Subtype.ext ht.symm⟩` and prove the remaining obligations. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Apply `hinj` to reduce the goal to its premises. Rewrite using `[ofMul_pow, map_nsmul, ← ht, g.2.1, ofMul_one, map_zero]`. Rewrite using `[← Nat.card_congr (Equiv.ofBijective e he), _root_.GlobalTheory.GtCount.card_torus_torsion D.X F n hn]`.
+-/
 theorem _root_.GlobalTheory.GtCount.card_torsion_over_zero {R : Type} [CommRing R] [IsDomain R] (D : _root_.ReciprocityTheory.ChartRestriction.G.Out.DegPre R) (F : Type) [Field F] [IsAlgClosed F]
     [Algebra (FractionRing R) F] (n : ℕ) (hn : (n : F) ≠ 0) :
     Nat.card {g : _root_.ReciprocityTheory.ChartRestriction.G.Out.GtPtF D F // n • g = 0 ∧ g.b = 1} = n ^ D.rank := by
@@ -110,6 +136,15 @@ open scoped CategoryTheory.Obj in
 attribute [local instance] Over.cartesianMonoidalCategory in
 attribute [local instance] _root_.GlobalTheory.TorusExt.gtGroup in
 
+/- English proof (translation)
+Introduce `hL _ R _ _ _ D F _ _ _ N hN`. Establish `hN0 : N ≠ 0` using `by rintro rfl; simp at hN`. Establish `hz : _root_.ReciprocityTheory.ChartRestriction.G.Out.DegPre.zeroF D F = 1` using `by unfold _root_.ReciprocityTheory.ChartRestriction.G.Out.DegPre.zeroF; rfl`. Establish `h0 : (0 : _root_.ReciprocityTheory.ChartRestriction.G.Out.GtPtF D F).b = 1`. Simplify using `using _root_.GlobalTheory.TorusExt.nsmul_b 0 (0 : _root_.ReciprocityTheory.ChartRestriction.G.Out.GtPtF D F)`.
+
+Set `p : _root_.ReciprocityTheory.ChartRestriction.G.Out.GtPtF D F →+ Additive (_root_.ReciprocityTheory.ChartRestriction.G.Out.TF F ⟶ D.P.A)` to `{ toFun := fun g => Additive.ofMul g.b map_zero' := by rw [h0]; rfl map_add' := fun g g' => by rw [_root_.GlobalTheory.TorusExt.add_b]; rfl }`. Establish `hsurj : ∀ b : Additive (_root_.ReciprocityTheory.ChartRestriction.G.Out.TF F ⟶ D.P.A), N • b = 0 → ∃ g, p g = b ∧ N • g = 0`. Introduce `b hb`. Take `⟨g, hgb, hg⟩` from `_root_.GlobalTheory.TorusExt.exists_nsmul_eq_of_pow_eq hN0 (0 : _root_.ReciprocityTheory.ChartRestriction.G.Out.GtPtF D F) (b := Additive.toMul b) (by rw [h0]; exact hb)`. Conclude with `⟨g, by simp [p, hgb], hg⟩`.
+
+Establish `hB : Nat.card {b : Additive (_root_.ReciprocityTheory.ChartRestriction.G.Out.TF F ⟶ D.P.A) // N • b = 0} = N ^ (2 * D.P.g)`. Use `(hL.mulN (Spec (CommRingCat.of R)) D.P N (Nat.one_le_iff_ne_zero.2 hN0)).2.2.2.2 F (_root_.ReciprocityTheory.ChartRestriction.G.Out.TF F).hom hN` as an intermediate fact. Rewrite using `[← this]`. Conclude with `Nat.card_congr (Equiv.subtypeEquiv Additive.toMul fun b => Iff.rfl)`. Simplify using `only [_root_.GlobalTheory.GtCount.gtTors_iff, hz]`.
+
+Use `⟨?_, _root_.GlobalTheory.GtCount.card_torsion_over_zero D F N hN⟩` and prove the remaining obligations. Rewrite using `[_root_.GlobalTheory.GtCount.card_torsion_eq_mul p N hsurj, hB, pow_add]`. Use `congr 1`. Rewrite using `[← _root_.GlobalTheory.GtCount.card_torsion_over_zero D F N hN]`. Conclude with `Nat.card_congr (Equiv.subtypeEquivRight fun g => by simp [p])`.
+-/
 theorem _root_.GlobalTheory.GtCount.card_gtTors : _root_.ReciprocityTheory.ChartRestriction.G.Out.Laws → _root_.ReciprocityTheory.ChartRestriction.G.Out.Laws2 → (∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] (D : _root_.ReciprocityTheory.ChartRestriction.G.Out.DegPre R) (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] (N : ℕ), (N : F) ≠ 0 → Nat.card {g : _root_.ReciprocityTheory.ChartRestriction.G.Out.GtPtF D F // _root_.GlobalTheory.UU.GtTors D N g} = N ^ (2 * D.P.g + D.rank) ∧ Nat.card {g : _root_.ReciprocityTheory.ChartRestriction.G.Out.GtPtF D F // _root_.GlobalTheory.UU.GtTors D N g ∧ g.b = _root_.ReciprocityTheory.ChartRestriction.G.Out.DegPre.zeroF D F} = N ^ D.rank) := by
   intro hL _ R _ _ _ D F _ _ _ N hN
   have hN0 : N ≠ 0 := by rintro rfl; simp at hN

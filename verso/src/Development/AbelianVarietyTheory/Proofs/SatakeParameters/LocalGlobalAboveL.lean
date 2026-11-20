@@ -17,6 +17,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.CaraianiAboveL
 
+/- English proof (translation)
+Introduce `hF hL hC E Ω _ _ _ _ _ _ l _ ι a ha π hc hcoh r wt HT hG P AI hT w A h O _ _ _ Bw hj σ hσ rc hrc`. Take `⟨R, hRc, hRs, hRaway, hRabove⟩` from `hC E Ω l ι a ha π hc hcoh`. Establish `htr : ∀ (w' : HeightOneSpectrum (𝓞 E)), ((l : ℕ) : 𝓞 E) ∉ w'.asIdeal → ∀ (A' : ValuationSubring Ω) (h' : IsPlaceOver A' w') (τ : Weil h'), (R (τ : G E Ω)).val.trace = (r (τ : G E Ω)).val.trace`. Introduce `w' hl A' h' τ`. Take `⟨rc', hrc', -⟩` from `hL.1 E Ω A' w' h'`.
+
+Take `⟨σ', hσ', -⟩` from `LocEx.exists_isLocComp hF E a π w'`. Conclude with `GlobalTheory.T.weil_trace_eq_of_same_wd E Ω l ι a R r w' A' h' (rc' (algNorm σ')) hl (hRaway w' hl A' h' rc' hrc' σ' hσ') (hG.away w' hl A' h' rc' hrc' σ' hσ') τ`. Take `⟨p, hp⟩` from `GlobalTheory.T.semisimple_conj_of_trace_equal E Ω l a R r hRc hG.cont hRs hG.ss htr`. Take `⟨hpst, hR⟩` from `hRabove P AI hT w A h O Bw hj`. Establish `hwd` using `GlobalTheory.T.fontaineParameter_invariant_under_conjugation E Ω l ι a P AI hT w A h O Bw hj (R.comp (Dec (F := E) A).subtype) (r.comp (Dec (F := E) A).subtype) p (fun g => hp g) hpst`.
+
+Rewrite using `[hwd.2]`. Conclude with `hR σ hσ rc hrc`.
+-/
 theorem main : GlobalTheory.Published.AutomorphicFormsFiniteGL → GlobalTheory.Published.LocalLanglandsGL → GlobalTheory.Published.CaraianiLocalGlobal →
     GlobalTheory.Published.LocalGlobalAboveL := by
   intro hF hL hC E Ω _ _ _ _ _ _ l _ ι a ha π hc hcoh r wt HT hG P AI hT w A h O _ _ _ Bw hj σ hσ rc hrc

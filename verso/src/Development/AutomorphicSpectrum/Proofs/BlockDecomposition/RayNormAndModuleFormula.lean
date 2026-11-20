@@ -8,6 +8,13 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.SW.RankOneSiegelWeil.MdRay
 
+/- English proof (translation)
+Establish `hw : w.IsReal` using `hF.isReal w`. Set `e` to `InfinitePlace.Completion.ringEquivRealOfIsReal hw`. Set `ρ : ℝ →+* ℝ` to `(e : w.Completion →+* ℝ).comp ((Pi.evalRingHom _ w).comp θ)`. Establish `hρ : ρ ε = ε`. Establish `: ρ = RingHom.id ℝ` using `Subsingleton.elim _ _`.
+
+Rewrite using `[this]`. Both sides reduce to the same expression. Establish `hnorm : ‖θ ε w‖ = ‖e (θ ε w)‖`. Rewrite using `[InfinitePlace.Completion.ringEquivRealOfIsReal_apply]`. Conclude with `((InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hw).norm_map_of_map_zero (map_zero _) _).symm`.
+
+Rewrite using `[hnorm]`. Express the relevant statement in the definitionally equal form `‖ρ ε‖ = |ε|`. Rewrite using `[hρ, Real.norm_eq_abs]`.
+-/
 theorem norm_theta {F : Type} [Field F] [NumberField F] (hF : IsTotallyReal F) (θ : ℝ →+* Ainf F)
     (ε : ℝ) (w : InfinitePlace F) : ‖θ ε w‖ = |ε| := by
   have hw : w.IsReal := hF.isReal w
@@ -24,6 +31,13 @@ theorem norm_theta {F : Type} [Field F] [NumberField F] (hF : IsTotallyReal F) (
   change ‖ρ ε‖ = |ε|
   rw [hρ, Real.norm_eq_abs]
 
+/- English proof (translation)
+Introduce `F _ _ hF θ _ r hr`. Use `⟨norm_theta hF θ, fun δ hδ => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hr δ hδ`. Establish `hmd : md (r δ) = (∏ w : InfinitePlace F, ‖(r δ : AF F).1 w‖ ^ w.mult) * ∏ᶠ v : HeightOneSpectrum (𝓞 F), ‖(r δ : AF F).2 v‖` using `IdeleGroup.ideleModule_eq _`. Establish `hfin : ∏ᶠ v : HeightOneSpectrum (𝓞 F), ‖(r δ : AF F).2 v‖ = 1`.
+
+Use `finprod_eq_one_of_forall_eq_one fun v => ?_` and prove the remaining obligations. Rewrite using `[h2]`. Conclude with `norm_one`. Rewrite using `[hmd, hfin, mul_one, h1]`. Simplify using `only [norm_theta hF θ δ, abs_of_pos hδ]`.
+
+Rewrite using `[Finset.prod_pow_eq_pow_sum, InfinitePlace.sum_mult_eq]`.
+-/
 theorem norm_md_ray : ∀ (F : Type) [Field F] [NumberField F], IsTotallyReal F → ∀ θ : ℝ →+* Ainf F,
     Continuous θ → ∀ r, IsRay θ r → (∀ (ε : ℝ) (w : InfinitePlace F), ‖θ ε w‖ = |ε|) ∧
       ∀ δ : ℝ, 0 < δ → md (r δ) = δ ^ Module.finrank ℚ F := by

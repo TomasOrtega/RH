@@ -41,6 +41,15 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmThetaNormBound
 
 namespace GlobalTheory.SumSize.Join
 
+/- English proof (translation)
+Introduce `P`. Establish `hInp : ∀ D, GlobalTheory.NormSum.Inp D` using `GlobalTheory.T.cmThetaNormBoundHypotheses_satisfied`. Establish `hOK : GlobalTheory.RowClaim.SumOKK` using `GlobalTheory.T.row_sum_of_published_inputs P`. Establish `hDep : GlobalTheory.SumSize.DepthK` using `GlobalTheory.T.depth_of_sum_bound P hOK`. Establish `hDict : GlobalTheory.SumSize.DictK` using `GlobalTheory.T.dictionary_bound_of_inputs P hInp`.
+
+Establish `hScal` using `GlobalTheory.T.finite_infinite_scalar_bounds P`. Establish `hForm` using `GlobalTheory.T.finite_infinite_form_bounds P`. Establish `hPair` using `GlobalTheory.T.finite_infinite_pair_bounds P`. Establish `hPsi` using `GlobalTheory.Adopt.finite_infinite_psi_bounds P`. Establish `hTopF` using `GlobalTheory.T.finite_top_of_dictionary_depth P hInp hDict hDep`.
+
+Establish `hRowF` using `GlobalTheory.T.finite_row_of_dictionary_depth P hInp hDict hDep`. Establish `hTopI` using `GlobalTheory.T.infinite_top_of_dictionary_depth P hInp hDict hDep`. Establish `hRowI` using `GlobalTheory.T.infinite_row_of_dictionary_depth P hInp hDict hDep`. Use `⟨?_, GlobalTheory.Adopt.away_from_places_bound P, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.Adopt.finiteSumDenominatorBound_of_factor_claims hOK hDep hScal.1 (GlobalTheory.Adopt.finite_coefficient_bound P) (GlobalTheory.T.finite_data_bound P) (GlobalTheory.T.finite_gamma_bound P) hTopF hRowF hPair.1 hPsi.1 hForm.1`.
+
+Conclude with `GlobalTheory.T.archimedeanSumSizeBound_largeData_from_factors hOK hDep hScal.2 (GlobalTheory.T.infinite_tensor_bound P) (GlobalTheory.T.infinite_count_of_depth P hDep) (GlobalTheory.T.infinite_class_bound P) hTopI hRowI hPair.2 hPsi.2 hForm.2`.
+-/
 theorem fin_away_inf : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.SumSize.FinK ∧ GlobalTheory.SumSize.AwayK ∧ GlobalTheory.SumSize.InfK := by
   intro P
   have hInp : ∀ D, GlobalTheory.NormSum.Inp D := GlobalTheory.T.cmThetaNormBoundHypotheses_satisfied

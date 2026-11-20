@@ -15,11 +15,17 @@ structure Retr (S N : Subgroup G) (π : G → G) : Prop where
   mem : ∀ x ∈ N, π x ∈ S
   id : ∀ s ∈ S, π s = s
 
+/- English proof (translation)
+Establish `h1` using `h.mul 1 N.one_mem 1 N.one_mem`. Rewrite `h1` using `[mul_one]`. Simplify using `using h1`.
+-/
 theorem Retr.one {S N : Subgroup G} {π : G → G} (h : Retr S N π) : π 1 = 1 := by
   have h1 := h.mul 1 N.one_mem 1 N.one_mem
   rw [mul_one] at h1
   simpa using h1
 
+/- English proof (translation)
+Establish `h1` using `h.mul x⁻¹ (N.inv_mem hx) x hx`. Rewrite `h1` using `[inv_mul_cancel, h.one]`. Conclude with `eq_inv_of_mul_eq_one_left h1.symm`.
+-/
 theorem Retr.inv {S N : Subgroup G} {π : G → G} (h : Retr S N π) {x : G} (hx : x ∈ N) : π x⁻¹ = (π x)⁻¹ := by
   have h1 := h.mul x⁻¹ (N.inv_mem hx) x hx
   rw [inv_mul_cancel, h.one] at h1
@@ -35,6 +41,17 @@ def img {S N : Subgroup G} {π : G → G} (h : Retr S N π) (H : Subgroup G) (hH
     rintro _ ⟨x, hx, rfl⟩
     exact ⟨x⁻¹, H.inv_mem hx, h.inv (hH hx)⟩
 
+/- English proof (translation)
+Use extensionality with `y`. Rewrite using `[mem_cj, mem_cj]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `hyS : y ∈ S` using `hC ((mem_cj).2 hy)`.
+
+Establish `hyN : y ∈ N` using `h.le hyS`. Use `(Set.mem_image π _ _).2 ⟨g₀ * y * g₀⁻¹, hy, ?_⟩` and prove the remaining obligations. Rewrite using `[h.mul _ (N.mul_mem hg hyN) _ (N.inv_mem hg), h.mul _ hg _ hyN, h.inv hg, h.id y hyS]`. Introduce `hy`. Take `⟨x, hx, hxe⟩` from `(Set.mem_image π _ _).1 hy`.
+
+Establish `hz : g₀⁻¹ * x * g₀ ∈ cj g₀ H`. Rewrite using `[mem_cj]`. Simplify `hx` using `[mul_assoc]`. Establish `hzS` using `hC hz`. Establish `e1 : π (g₀⁻¹ * x * g₀) = g₀⁻¹ * x * g₀` using `h.id _ hzS`.
+
+Rewrite `e1` using `[h.mul _ (N.mul_mem (N.inv_mem hg) (hH hx)) _ hg, h.mul _ (N.inv_mem hg) _ (hH hx), h.inv hg, hxe]`. Establish `hyz : y = g₀⁻¹ * x * g₀`. Rewrite using `[← e1]`. Use `group`. Rewrite using `[hyz]`.
+
+Simplify `hx` using `[mul_assoc]`.
+-/
 theorem cj_eq_cj_img {S N : Subgroup G} {π : G → G} (h : Retr S N π) {H : Subgroup G} (hH : H ≤ N) {g₀ : G}
     (hg : g₀ ∈ N) (hC : cj g₀ H ≤ S) : cj g₀ H = cj (π g₀) (img h H hH) := by
   ext y

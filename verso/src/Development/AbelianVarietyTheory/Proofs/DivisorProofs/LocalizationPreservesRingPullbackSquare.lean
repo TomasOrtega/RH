@@ -3,6 +3,11 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MapMkOfComp
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Substitute `he` using the available equality. Establish `hΦ' : ∀ y, Φ (algebraMap A LA y) = algebraMap R LR (φ y)` using `fun y => RingHom.congr_fun hΦ y`. Establish `hs` using `IsLocalization.mk'_spec LA a₀ (⟨s ^ (j + k), j + k, rfl⟩ : Submonoid.powers s)`. Establish `h2` using `congrArg Φ hs`. Simplify using `only [map_mul, hΦ'] at h2`.
+
+Rewrite `h2` using `[ha, map_pow]`. Apply `(IsLocalization.map_units LR (⟨φ s ^ (j + k), j + k, rfl⟩ : Submonoid.powers (φ s))).mul_left_inj.mp` to reduce the goal to its premises. Use `show _ * algebraMap R LR (φ s ^ (j + k)) = x * algebraMap R LR (φ s ^ (j + k))`. Rewrite using `[h2, map_mul, ← hx, pow_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem locPullback_side {A R LA LR : Type} [CommRing A] [CommRing R] [CommRing LA] [CommRing LR]
     [Algebra A LA] [Algebra R LR] (s : A) [IsLocalization.Away s LA] (φ : A →+* R)
     [IsLocalization.Away (φ s) LR] (Φ : LA →+* LR)
@@ -21,6 +26,13 @@ theorem locPullback_side {A R LA LR : Type} [CommRing A] [CommRing R] [CommRing 
   rw [h2, map_mul, ← hx, pow_add, map_mul]
   ring
 
+/- English proof (translation)
+Use `first`. Consider the case `(run_tac Lean.Elab.Tactic.liftMetaTactic (fun g => do pure [← g.revertAll]))`. Conclude with `@_root_.GlobalTheory.QuotientMapComposition.main`. Consider the case `(run_tac Lean.Elab.Tactic.liftMetaTactic (fun g => do pure [← g.revertAll]))`. Conclude with `_root_.GlobalTheory.QuotientMapComposition.main`.
+
+Consider the case `exact @_root_.GlobalTheory.QuotientMapComposition.main`. Consider the case `exact _root_.GlobalTheory.QuotientMapComposition.main`. Consider the case `(apply _root_.GlobalTheory.QuotientMapComposition.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.QuotientMapComposition.main <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.QuotientMapComposition.main <;> first | assumption | infer_instance)`.
+
+Consider the case `(intros; exact _root_.GlobalTheory.QuotientMapComposition.main ..)`.
+-/
 theorem localization_pullback_square_of_lift {A R₀ A' B₀ : Type} [CommRing A] [CommRing R₀] [CommRing A'] [CommRing B₀]
     (φ : A →+* R₀) (ψ : A →+* A') (α : R₀ →+* B₀) (κ : A' →+* B₀) (hsq : α.comp φ = κ.comp ψ)
     (hinj : ∀ a, φ a = 0 → ψ a = 0 → a = 0) (hlift : ∀ r c, α r = κ c → ∃ a, φ a = r ∧ ψ a = c)
@@ -44,6 +56,13 @@ theorem localization_pullback_square_of_lift {A R₀ A' B₀ : Type} [CommRing A
   | (intros; apply @_root_.GlobalTheory.QuotientMapComposition.main <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.QuotientMapComposition.main ..)
 
+/- English proof (translation)
+Use `first`. Consider the case `(run_tac Lean.Elab.Tactic.liftMetaTactic (fun g => do pure [← g.revertAll]))`. Conclude with `@_root_.GlobalTheory.QuotientMapComposition.main`. Consider the case `(run_tac Lean.Elab.Tactic.liftMetaTactic (fun g => do pure [← g.revertAll]))`. Conclude with `_root_.GlobalTheory.QuotientMapComposition.main`.
+
+Consider the case `exact @_root_.GlobalTheory.QuotientMapComposition.main`. Consider the case `exact _root_.GlobalTheory.QuotientMapComposition.main`. Consider the case `(apply _root_.GlobalTheory.QuotientMapComposition.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.QuotientMapComposition.main <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.QuotientMapComposition.main <;> first | assumption | infer_instance)`.
+
+Consider the case `(intros; exact _root_.GlobalTheory.QuotientMapComposition.main ..)`.
+-/
 theorem locPullback : ∀ {A R₀ A' B₀ : Type} [CommRing A] [CommRing R₀] [CommRing A'] [CommRing B₀]
     (φ : A →+* R₀) (ψ : A →+* A') (α : R₀ →+* B₀) (κ : A' →+* B₀), α.comp φ = κ.comp ψ →
     (∀ a, φ a = 0 → ψ a = 0 → a = 0) → (∀ r c, α r = κ c → ∃ a, φ a = r ∧ ψ a = c) →

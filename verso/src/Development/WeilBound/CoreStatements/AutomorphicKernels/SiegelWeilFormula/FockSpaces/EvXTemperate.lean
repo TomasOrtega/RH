@@ -9,6 +9,11 @@ open PositivityTheory.Rg.Sw
 
 namespace PositivityTheory.SiegelWeilFormula.KFock
 
+/- English proof (translation)
+Take `⟨a, i, b⟩` from `k`. Establish `hc : Function.HasTemperateGrowth (fun x : Fin m → Fin n → ℂ => x a i)` using `((ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin n => ℂ) i).comp (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin m => Fin n → ℂ) a)).hasTemperateGrowth`. Consider the cases of `b with`. Consider the case `false => simpa using hc`. Consider the case `true`.
+
+Establish `hs` using `(Complex.conjCLE.toContinuousLinearMap.comp ((ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin n => ℂ) i).comp (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin m => Fin n → ℂ) a))).hasTemperateGrowth`. Use `hs using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+-/
 private theorem hasTemperateGrowth_evX' {m n : ℕ} (k : Fin m × Fin n × Bool) :
     Function.HasTemperateGrowth
       (fun x : Fin m → Fin n → ℂ => if k.2.2 = true then star (x k.1 k.2.1) else x k.1 k.2.1) := by
@@ -26,6 +31,13 @@ private theorem hasTemperateGrowth_evX' {m n : ℕ} (k : Fin m × Fin n × Bool)
     funext x
     simp
 
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a`. Use `Function.HasTemperateGrowth.const (E := Fin m → Fin n → ℂ) a using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using `[evX]`.
+
+Consider the case `add p q hp hq`. Use `hp.add hq using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using `[evX]`. Consider the case `mul_X p k hp`.
+
+Establish `e : (fun x : Fin m → Fin n → ℂ => evX (p * MvPolynomial.X k) x) = fun x => evX p x * (if k.2.2 = true then star (x k.1 k.2.1) else x k.1 k.2.1)`. Use function extensionality and compare the values at `x`. Simplify using `[evX]`. Rewrite using `[e]`. Conclude with `hp.fun_mul (hasTemperateGrowth_evX' k)`.
+-/
 theorem evX_temperate {m n : ℕ} (P : PX m n) :
     Function.HasTemperateGrowth (fun x : Fin m → Fin n → ℂ => evX P x) := by
   induction P using MvPolynomial.induction_on with
@@ -49,6 +61,9 @@ def eucl (m n : ℕ) (s : ℝ) (hs : s ≠ 0) : (Fin m → Fin n → ℂ) ≃L[�
   ((LinearEquiv.smulOfNeZero ℝ (Fin m → Fin n → ℂ) s hs).trans
     ((LinearEquiv.curry ℝ ℂ (Fin m) (Fin n)).symm.trans (WithLp.linearEquiv 2 ℝ (Fin m × Fin n → ℂ)).symm)).toContinuousLinearEquiv
 
+/- English proof (translation)
+Rewrite using `[EuclideanSpace.norm_eq, Real.sq_sqrt (by positivity), Finset.mul_sum, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[eucl, norm_smul, mul_pow]`.
+-/
 theorem eucl_norm_sq (m n : ℕ) (s : ℝ) (hs : s ≠ 0) (x : Fin m → Fin n → ℂ) :
     ‖eucl m n s hs x‖ ^ 2 = s ^ 2 * ∑ a, ∑ i, ‖x a i‖ ^ 2 := by
   rw [EuclideanSpace.norm_eq, Real.sq_sqrt (by positivity), Finset.mul_sum, Fintype.sum_prod_type]
@@ -57,6 +72,11 @@ theorem eucl_norm_sq (m n : ℕ) (s : ℝ) (hs : s ≠ 0) (x : Fin m → Fin n �
   refine Finset.sum_congr rfl fun i _ => ?_
   simp [eucl, norm_smul, mul_pow]
 
+/- English proof (translation)
+Establish `hpi : 0 < Real.pi` using `Real.pi_pos`. Use `set s := Real.sqrt (c / Real.pi) with hsdef`. Establish `hs : s ≠ 0` using `(Real.sqrt_pos.mpr (div_pos hc hpi)).ne'`. Use `⟨SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (eucl m n s hs) (GroundTheory.Global.gaussianSchwartz (EuclideanSpace ℂ (Fin m × Fin n))), fun x => ?_⟩` and prove the remaining obligations. Establish `hs2 : s ^ 2 = c / Real.pi` using `Real.sq_sqrt (div_pos hc hpi).le`.
+
+Simplify using `only [SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, GroundTheory.Global.gaussianSchwartz_apply, eucl_norm_sq, gs]`. Rewrite using `[hs2, Complex.ofReal_exp]`. Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem gsSch (m n : ℕ) {c : ℝ} (hc : 0 < c) : ∃ G : 𝓢(Fin m → Fin n → ℂ, ℂ), ∀ x, G x = gs c x := by
   have hpi : 0 < Real.pi := Real.pi_pos
   set s := Real.sqrt (c / Real.pi) with hsdef

@@ -15,6 +15,21 @@ noncomputable section
 
 namespace GlobalTheory.SymDiv
 
+/- English proof (translation)
+Introduce `R _ A _ _ hA L hL hamp`. Establish `hprop : IsProper A.hom` using `hA.proper`. Use `set σ := (GrpObj.inv : A ⟶ A).left with hσ`. Establish `hii : (GrpObj.inv : A ⟶ A) ≫ (GrpObj.inv : A ⟶ A) = 𝟙 A`. Establish `h` using `IsIso.hom_inv_id (GrpObj.inv : A ⟶ A)`.
+
+Rewrite `h` using `[GrpObj.inv_inv]`. Then use the resulting hypothesis. Establish `hii' : σ ≫ σ = 𝟙 A.left`. Rewrite using `[hσ, ← Over.comp_left, hii, Over.id_left]`. Establish `: IsIso σ` using `⟨⟨σ, hii', hii'⟩⟩`. Use `set L' := LB.LinComb L (K := Fin 2) ![𝟙 A.left, σ] ![1, 1] with hL'def`.
+
+Establish `hL' : L'.IsLB` using `LB.isLB_linComb hL (K := Fin 2) ![𝟙 A.left, σ] ![1, 1]`. Establish `hamL : IsAmpleLB L` using `(relAmple_iff_isAmpleLB_of_isAffine A hL).1 hamp`. Establish `hamσ : IsAmpleLB (L.pull σ)` using `hamL.pull_of_isAffineHom σ`. Establish `hamL' : IsAmpleLB L'`. Use `hamL.tensor hamσ hL' ?_` and prove the remaining obligations.
+
+Establish `hM` using `pull_isLB hL σ`. Establish `hD1` using `LB.isLB_div hL' hL`. Establish `hD2` using `LB.isLB_div hD1 hM`. Use `(CechPic.cls_eq_zero_iff hD2).1 ?_` and prove the remaining obligations. Rewrite using `[CechPic.cls_div hD1 hM, CechPic.cls_div hL' hL, CechPic.cls_linComb hL _ _ hL', CechPic.cls_pull hL σ hM]`.
+
+Simplify using `only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, one_zsmul, CechPic.pull_id]`. Normalize the expressions using the abelian group laws. Establish `: CompactSpace A.left` using `hamL'.compactSpace`. Take `⟨i₀, h₀⟩` from `exists_chart hL' (genericPoint A.left)`. Use `⟨ofLB hL' i₀ h₀, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `e : LBIso L' (toLB (ofLB hL' i₀ h₀))` using `(presents_ofLB hL' i₀ h₀).lbIso (presents_toLB _)`. Establish `hT` using `isLB_toLB (ofLB hL' i₀ h₀)`. Conclude with `(ampleDiv_iff_isAmpleLB _ _).2 (hamL'.of_lbIso hT e.symm)`. Establish `e : LBIso L' (toLB (ofLB hL' i₀ h₀))` using `(presents_ofLB hL' i₀ h₀).lbIso (presents_toLB _)`. Establish `hT` using `isLB_toLB (ofLB hL' i₀ h₀)`.
+
+Establish `hs : LBIso (L'.pull σ) L'` using `GlobalTheory.SymLB.pull_inv_symm_iso _ A L hL`. Establish `e₁ : LBIso ((toLB (ofLB hL' i₀ h₀)).pull σ) (L'.pull σ)` using `GlobalTheory.FamRep.lbIso_pull e.symm σ`. Conclude with `LBIso.trans (pull_isLB hT σ) hL' hT (LBIso.trans (pull_isLB hT σ) (pull_isLB hL' σ) hL' e₁ hs) e`.
+-/
 theorem exists_ampleDiv_symm : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] [IsIntegral A.left], IsAbelianScheme A → ∀ L : LB A.left, L.IsLB → RelAmple A L → ∃ D : CartierDiv A.left, AmpleDiv D ∧ LBIso ((toLB D).pull (GrpObj.inv : A ⟶ A).left) (toLB D) := by
   intro R _ A _ _ hA L hL hamp
   classical

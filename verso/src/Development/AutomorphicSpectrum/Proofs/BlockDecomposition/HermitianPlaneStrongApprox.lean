@@ -60,6 +60,15 @@ instance (u : Pl F) : IsTopologicalDivisionRing (Kp u) :=
   | .inl w => inferInstanceAs (IsTopologicalDivisionRing w.Completion)
   | .inr v => inferInstanceAs (IsTopologicalDivisionRing (v.adicCompletion F))
 
+/- English proof (translation)
+Consider the cases of `u with`. Consider the case `inl w`. Conclude with `(continuous_single w).prodMk continuous_const`. Consider the case `inr v`. Establish `hS : Filter.cofinite ≤ Filter.principal ({v}ᶜ : Set (HeightOneSpectrum (𝓞 F)))` using `Filter.le_principal_iff.2 (Set.finite_singleton v).compl_mem_cofinite`.
+
+Set `f : Fv F v → RestrictedProduct (fun u : HeightOneSpectrum (𝓞 F) => u.adicCompletion F) (fun u => (u.adicCompletionIntegers F : Set (u.adicCompletion F))) (Filter.principal {v}ᶜ)` to `fun a => ⟨Pi.single v a, fun u hu => by`. Rewrite using `[Set.mem_setOf_eq, Pi.single_eq_of_ne hu]`. Conclude with `zero_mem _⟩`. Establish `hf : Continuous f` using `RestrictedProduct.continuous_rng_of_principal.2 (continuous_single v)`. Establish `h2 : Continuous (singleV F v)`.
+
+Use `((RestrictedProduct.continuous_inclusion hS).comp hf).congr fun a => ?_` and prove the remaining obligations. Use `Subtype.ext (funext fun u => ?_)` and prove the remaining obligations. Distinguish the cases in `h : u = v`. Substitute `h` using the available equality. Conclude with `(Pi.single_eq_same u a).trans (StrongApprox.evalV_single_same u a).symm`.
+
+Conclude with `(Pi.single_eq_of_ne h a).trans (StrongApprox.evalV_single_ne h a).symm`. Conclude with `continuous_const.prodMk h2`.
+-/
 theorem continuous_inc (u : Pl F) : Continuous (inc u) := by
   classical
   cases u with
@@ -82,12 +91,20 @@ theorem continuous_inc (u : Pl F) : Continuous (inc u) := by
       · exact (Pi.single_eq_of_ne h a).trans (StrongApprox.evalV_single_ne h a).symm
     exact continuous_const.prodMk h2
 
+/- English proof (translation)
+Consider the cases of `u with`. Consider the case `inl w => exact Pi.single_eq_same w y`. Consider the case `inr v => exact Pi.single_eq_same v y`.
+-/
 theorem proj_inc_same (u : Pl F) (y : Kp u) : proj u (inc u y) = y := by
   classical
   cases u with
   | inl w => exact Pi.single_eq_same w y
   | inr v => exact Pi.single_eq_same v y
 
+/- English proof (translation)
+Consider the cases of `u with`. Consider the case `inl w`. Consider the cases of `u' with`. Consider the case `inl w' => exact Pi.single_eq_of_ne (fun h' => h (congrArg Sum.inl h')) y`. Consider the case `inr v' => rfl`.
+
+Consider the case `inr v`. Consider the cases of `u' with`. Consider the case `inl w' => rfl`. Consider the case `inr v' => exact Pi.single_eq_of_ne (fun h' => h (congrArg Sum.inr h')) y`.
+-/
 theorem proj_inc_ne {u u' : Pl F} (h : u' ≠ u) (y : Kp u) : proj u' (inc u y) = 0 := by
   classical
   cases u with
@@ -100,6 +117,9 @@ theorem proj_inc_ne {u u' : Pl F} (h : u' ≠ u) (y : Kp u) : proj u' (inc u y) 
     | inl w' => rfl
     | inr v' => exact Pi.single_eq_of_ne (fun h' => h (congrArg Sum.inr h')) y
 
+/- English proof (translation)
+Conclude with `Prod.ext (funext fun w => h (Sum.inl w)) (Subtype.ext (funext fun v => h (Sum.inr v)))`.
+-/
 theorem adele_ext {a b : AF F} (h : ∀ u : Pl F, proj u a = proj u b) : a = b := by
   exact Prod.ext (funext fun w => h (Sum.inl w)) (Subtype.ext (funext fun v => h (Sum.inr v)))
 
@@ -139,27 +159,42 @@ instance qTop : TopologicalSpace (Q d β R) :=
 def qHomeo : Q d β R ≃ₜ R × R × R × R :=
   (QuaternionAlgebra.equivProd _ _ _).toHomeomorphOfIsInducing ⟨rfl⟩
 
+/- English proof (translation)
+Establish `h` using `continuous_induced_dom (f := (QuaternionAlgebra.equivProd (algebraMap F R d) 0 (algebraMap F R β) : Q d β R → R × R × R × R)) (t := inferInstance)`. Conclude with `h.fst`.
+-/
 theorem continuous_re : Continuous fun x : Q d β R => x.re := by
   have h := continuous_induced_dom
     (f := (QuaternionAlgebra.equivProd (algebraMap F R d) 0 (algebraMap F R β) : Q d β R → R × R × R × R))
     (t := inferInstance)
   exact h.fst
+/- English proof (translation)
+Establish `h` using `continuous_induced_dom (f := (QuaternionAlgebra.equivProd (algebraMap F R d) 0 (algebraMap F R β) : Q d β R → R × R × R × R)) (t := inferInstance)`. Conclude with `h.snd.fst`.
+-/
 theorem continuous_imI : Continuous fun x : Q d β R => x.imI := by
   have h := continuous_induced_dom
     (f := (QuaternionAlgebra.equivProd (algebraMap F R d) 0 (algebraMap F R β) : Q d β R → R × R × R × R))
     (t := inferInstance)
   exact h.snd.fst
+/- English proof (translation)
+Establish `h` using `continuous_induced_dom (f := (QuaternionAlgebra.equivProd (algebraMap F R d) 0 (algebraMap F R β) : Q d β R → R × R × R × R)) (t := inferInstance)`. Conclude with `h.snd.snd.fst`.
+-/
 theorem continuous_imJ : Continuous fun x : Q d β R => x.imJ := by
   have h := continuous_induced_dom
     (f := (QuaternionAlgebra.equivProd (algebraMap F R d) 0 (algebraMap F R β) : Q d β R → R × R × R × R))
     (t := inferInstance)
   exact h.snd.snd.fst
+/- English proof (translation)
+Establish `h` using `continuous_induced_dom (f := (QuaternionAlgebra.equivProd (algebraMap F R d) 0 (algebraMap F R β) : Q d β R → R × R × R × R)) (t := inferInstance)`. Conclude with `h.snd.snd.snd`.
+-/
 theorem continuous_imK : Continuous fun x : Q d β R => x.imK := by
   have h := continuous_induced_dom
     (f := (QuaternionAlgebra.equivProd (algebraMap F R d) 0 (algebraMap F R β) : Q d β R → R × R × R × R))
     (t := inferInstance)
   exact h.snd.snd.snd
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hf`. Conclude with `⟨continuous_re.comp hf, continuous_imI.comp hf, continuous_imJ.comp hf, continuous_imK.comp hf⟩`. Introduce and unpack `⟨h1, h2, h3, h4⟩`. Conclude with `continuous_induced_rng.2 (h1.prodMk (h2.prodMk (h3.prodMk h4)))`.
+-/
 theorem continuous_q_iff {X : Type*} [TopologicalSpace X] {f : X → Q d β R} :
     Continuous f ↔ Continuous (fun x => (f x).re) ∧ Continuous (fun x => (f x).imI) ∧
       Continuous (fun x => (f x).imJ) ∧ Continuous (fun x => (f x).imK) := by
@@ -205,28 +240,46 @@ section QuatAlg
 
 variable {F : Type} [Field F] {d β : F} {R : Type} [CommRing R] [Algebra F R]
 
+/- English proof (translation)
+Simplify using `only [qn, QuaternionAlgebra.re_mul, QuaternionAlgebra.imI_mul, QuaternionAlgebra.imJ_mul, QuaternionAlgebra.imK_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem qn_mul (x y : Q d β R) : qn (x * y) = qn x * qn y := by
   simp only [qn, QuaternionAlgebra.re_mul, QuaternionAlgebra.imI_mul, QuaternionAlgebra.imJ_mul,
     QuaternionAlgebra.imK_mul]
   ring
 
+/- English proof (translation)
+Simplify using `[qn]`.
+-/
 theorem qn_one : qn (1 : Q d β R) = 1 := by simp [qn]
 
+/- English proof (translation)
+Simplify using `only [qn, QuaternionAlgebra.re_star, QuaternionAlgebra.imI_star, QuaternionAlgebra.imJ_star, QuaternionAlgebra.imK_star]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem qn_star (x : Q d β R) : qn (star x) = qn x := by
   simp only [qn, QuaternionAlgebra.re_star, QuaternionAlgebra.imI_star, QuaternionAlgebra.imJ_star,
     QuaternionAlgebra.imK_star]
   ring
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp only [QuaternionAlgebra.algebraMap_eq, QuaternionAlgebra.re_mul, QuaternionAlgebra.imI_mul, QuaternionAlgebra.imJ_mul, QuaternionAlgebra.imK_mul, QuaternionAlgebra.re_star, QuaternionAlgebra.imI_star, QuaternionAlgebra.imJ_star, QuaternionAlgebra.imK_star, qn] <;> ri …`.
+-/
 theorem mul_star_eq (x : Q d β R) : x * star x = algebraMap R (Q d β R) (qn x) := by
   ext <;> simp only [QuaternionAlgebra.algebraMap_eq, QuaternionAlgebra.re_mul, QuaternionAlgebra.imI_mul,
     QuaternionAlgebra.imJ_mul, QuaternionAlgebra.imK_mul, QuaternionAlgebra.re_star, QuaternionAlgebra.imI_star,
     QuaternionAlgebra.imJ_star, QuaternionAlgebra.imK_star, qn] <;> ring
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp only [QuaternionAlgebra.algebraMap_eq, QuaternionAlgebra.re_mul, QuaternionAlgebra.imI_mul, QuaternionAlgebra.imJ_mul, QuaternionAlgebra.imK_mul, QuaternionAlgebra.re_star, QuaternionAlgebra.imI_star, QuaternionAlgebra.imJ_star, QuaternionAlgebra.imK_star, qn] <;> ri …`.
+-/
 theorem star_mul_eq (x : Q d β R) : star x * x = algebraMap R (Q d β R) (qn x) := by
   ext <;> simp only [QuaternionAlgebra.algebraMap_eq, QuaternionAlgebra.re_mul, QuaternionAlgebra.imI_mul,
     QuaternionAlgebra.imJ_mul, QuaternionAlgebra.imK_mul, QuaternionAlgebra.re_star, QuaternionAlgebra.imI_star,
     QuaternionAlgebra.imJ_star, QuaternionAlgebra.imK_star, qn] <;> ring
 
+/- English proof (translation)
+Simplify using `[qn, qmap]`.
+-/
 theorem qn_qmap {R' : Type} [CommRing R'] [Algebra F R'] (f : R →ₐ[F] R') (x : Q d β R) :
     qn (qmap f x) = f (qn x) := by
   simp [qn, qmap]

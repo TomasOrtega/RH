@@ -17,6 +17,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.CMPatch
 
+/- English proof (translation)
+Introduce `a b h`. Use extensionality with `x`. Use `congrArg (fun σ : G F Ω => σ x) h` as an intermediate fact. Simplify using `using this`.
+-/
 theorem res_injective (F Ω E : Type) [Field F] [Field Ω] [Algebra F Ω] [Field E] [Algebra F E] [Algebra E Ω]
     [IsScalarTower F E Ω] : Function.Injective (res F Ω E) := by
   intro a b h
@@ -24,6 +27,23 @@ theorem res_injective (F Ω E : Type) [Field F] [Field Ω] [Algebra F Ω] [Field
   have := congrArg (fun σ : G F Ω => σ x) h
   simpa using this
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ _ l _ ι a π S hS r hr`. Use `haveI : Infinite ↥S := hS.to_subtype`. Use `haveI : Algebra.IsIntegral F Ω := (IsAlgClosure.isAlgebraic (R := F) (K := Ω)).isIntegral`. Take `⟨η, hηinj, hη⟩` from `GlobalTheory.T.quadratic_cm_character_injective F Ω`. Set `e : ∀ Q : ↥S, G ↥Q.1.K Ω ≃* (η Q.1).ker` to `fun Q => (MonoidHom.ofInjective (res_injective F Ω ↥Q.1.K)).trans (MulEquiv.subgroupCongr (hη Q.1).1.symm)`.
+
+Establish `he : ∀ Q : ↥S, ∀ (s : G ↥Q.1.K Ω), ((e Q s : (η Q.1).ker) : G F Ω) = res F Ω ↥Q.1.K s` using `fun Q s => rfl`. Establish `hes : ∀ Q : ↥S, ∀ (h : (η Q.1).ker), res F Ω ↥Q.1.K ((e Q).symm h) = h`. Introduce `Q h`. Rewrite using `[← he, MulEquiv.apply_symm_apply]`. Set `r' : ∀ Q : ↥S, (η Q.1).ker →* GL (Fin a) (Qbar l)` to `fun Q => (r Q).comp (e Q).symm.toMonoidHom`.
+
+Establish `hr' : ∀ Q : ↥S, ∀ (h : (η Q.1).ker), r' Q h = r Q ((e Q).symm h)` using `fun Q h => rfl`. Establish `hcont : ∀ Q : ↥S, Continuous (r' Q)`. Introduce `Q`. Use `haveI : CompactSpace (G ↥Q.1.K Ω) := inferInstanceAs (CompactSpace (Ω ≃ₐ[↥Q.1.K] Ω))`. Establish `hc : Continuous (e Q)` using `(UpperTheory.V.Af.continuous_restrictScalarsHom F ↥Q.1.K Ω).subtype_mk _`.
+
+Set `hm` to `hc.homeoOfEquivCompactToT2 (f := (e Q).toEquiv)`. Conclude with `(hr Q).1.comp hm.symm.continuous`. Establish `hss : ∀ Q : ↥S, IsSSRep (r' Q)`. Introduce `Q`. Use `UpperTheory.semisimple_restriction_to_normal_subgroup _ _ _ a (r Q) (e Q).symm.toMonoidHom ?_ (hr Q).2.1` and prove the remaining obligations.
+
+Rewrite using `[MonoidHom.range_eq_top.mpr (e Q).symm.surjective]`. Use `infer_instance`. Take `⟨ρ, hρc, hρs, hev⟩` from `GlobalTheory.IndexTwoPatch.main (G F Ω) (Qbar l) a ↥S (fun Q => η Q.1) (hηinj.comp Subtype.val_injective) (fun Q => (hη Q.1).2) r' (fun Q => ⟨hcont Q, hss Q⟩) (by`. Introduce `Q g h h' hh`. Rewrite using `[hr', hr']`.
+
+Conclude with `GlobalTheory.T.attached_rep_conjugation_trace F Ω ↥Q.1.K Q.1.two l ι a π (r Q) (hr Q).1 (hr Q).2.1 (hr Q).2.2 g ((e Q).symm h) ((e Q).symm h') (by rw [hes, hes]; exact hh))`. Use the proof step `(by`. Introduce `Q Q' h h' hh`. Rewrite using `[hr', hr']`. Conclude with `GlobalTheory.T.attached_reps_agree_on_intersection F Ω Q.1 Q'.1 l ι a π (r Q) (r Q') (hr Q).1 (hr Q').1 (hr Q).2.1 (hr Q').2.1 (hr Q).2.2 (hr Q').2.2 _ _ (by rw [hes, hes]; exact hh))`.
+
+Use `⟨ρ, hρc, hρs, hev.mono fun Q hQ => ?_⟩` and prove the remaining obligations. Establish `hres : IsSSRep (ρ.comp (res F Ω ↥Q.1.K))`. Use `UpperTheory.semisimple_restriction_to_normal_subgroup _ _ _ a ρ (res F Ω ↥Q.1.K) ?_ hρs` and prove the remaining obligations. Rewrite using `[← (hη Q.1).1]`. Use `infer_instance`.
+
+Use `⟨hres, GlobalTheory.T.semisimple_iso_of_trace_eq (G ↥Q.1.K Ω) (Qbar l) a (r Q) (ρ.comp (res F Ω ↥Q.1.K)) (hr Q).2.1 hres fun s => ?_⟩` and prove the remaining obligations. Establish `h1` using `hQ (e Q s)`. Rewrite `h1` using `[hr', MulEquiv.symm_apply_apply, he]`. Conclude with `h1.symm`.
+-/
 theorem main : ∀ (F Ω : Type) [Field F] [NumberField F] [IsTotallyReal F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ) (π : TR.CuspSub F a) (S : Set (QCM F Ω)), S.Infinite → ∀ r : ∀ Q : ↥S, G ↥Q.1.K Ω →* GL (Fin a) (Qbar l), (∀ Q, Continuous (r Q) ∧ IsSSRep (r Q) ∧ AttRes π ι ↥Q.1.K (r Q)) → ∃ ρ : G F Ω →* GL (Fin a) (Qbar l), Continuous ρ ∧ IsSSRep ρ ∧ ∀ᶠ Q : ↥S in Filter.cofinite, IsSSRep (ρ.comp (res F Ω ↥Q.1.K)) ∧ RepIso (r Q) (ρ.comp (res F Ω ↥Q.1.K)) := by
   intro F Ω _ _ _ _ _ _ l _ ι a π S hS r hr
   classical

@@ -4,6 +4,17 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HypercohomologyMappingConeSecondVariableExactStatement
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC
 
+/- English proof (translation)
+Introduce `R _ D C f m hD hC iD iC`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `haveI : ∀ n, Injective ((mappingCone f).X n) := fun n => Injective.of_iso (HomologicalComplex.homotopyCofiber.XIsoBiprod f n (n + 1) rfl).symm (@Injective.instBiprod _ _ _ _ _ _ (iD (n + 1)) (iC n)) haveI : (mappingCone f).IsStrictlyGE (m - 1) := CochainComplex.isStrictlyGE_mappi …`. Conclude with `isKInjective_of_injective _ (m - 1)`. Introduce `K`.
+
+Establish `ex` using `fun n => GlobalTheory.T.hypercohomology_mappingCone_second_variable_exact R K f n`. Prove the components needed by the constructor for the conclusion. Introduce `hb n`. Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Establish `h0 : ∀ x : CohomologyClass K (mappingCone f) n, x = 0`.
+
+Introduce `x`. Establish `h1 : cpush K f (n + 1) (cpost K (mappingCone.fst f) n (n + 1) rfl x) = 0` using `((ex n).2.2 _).2 ⟨x, rfl⟩`. Establish `h2 : cpost K (mappingCone.fst f) n (n + 1) rfl x = 0` using `(hb (n + 1)).1 (by rw [h1, map_zero])`. Take `⟨y, rfl⟩` from `((ex n).2.1 x).1 h2`. Take `⟨z, rfl⟩` from `(hb n).2 y`.
+
+Conclude with `((ex n).1 _).2 ⟨z, rfl⟩`. Rewrite using `[h0 x, h0 y]`. Introduce `hs n`. Use `⟨?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`.
+
+Introduce `z hz`. Take `⟨k, rfl⟩ : ∃ k, n = k + 1` from `⟨n - 1, by ring⟩`. Take `⟨w, rfl⟩` from `((ex k).2.2 z).1 hz`. Rewrite using `[Subsingleton.elim w 0, map_zero]`. Conclude with `((ex n).1 y).1 (Subsingleton.elim _ _)`.
+-/
 theorem GlobalTheory.EtC.cone_kinj_and_bijective_iff : ∀ (R : Type) [CommRing R] {D C : Cx R} (f : D ⟶ C) (m : ℤ),
     D.IsStrictlyGE m → C.IsStrictlyGE m → (∀ n, CategoryTheory.Injective (D.X n)) →
     (∀ n, CategoryTheory.Injective (C.X n)) → (mappingCone f).IsKInjective ∧ ∀ K : Cx R,

@@ -35,6 +35,11 @@ def IsLower (D D' : Datum H) (Z : Submodule (𝓞 E) D.La) (f : perp D Z →ₗ[
 def lowLevel (l : Level H) : Level H :=
   { l with A := l.M', A_pos := Nat.lcm_pos (by have := l.three_le; omega) l.A_pos }
 
+/- English proof (translation)
+Unfold `KA`. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce `x hx`. Break down `hx with rfl | hx` into its components or cases. Conclude with `c.le (IntermediateField.subset_adjoin _ _ (by simp))`.
+
+Rewrite `hx` using `[Set.mem_singleton_iff]`. Substitute `hx` using the available equality. Conclude with `c.zeta_mem`.
+-/
 theorem ka_le (l : Level H) (c : Coeff l) : KA (lowLevel l) ≤ c.F := by
   unfold KA
   rw [IntermediateField.adjoin_le_iff]

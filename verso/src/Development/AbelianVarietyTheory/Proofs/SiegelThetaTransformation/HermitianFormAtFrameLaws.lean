@@ -15,6 +15,15 @@ open GlobalTheory.Dict
 
 namespace GlobalTheory.Dict
 
+/- English proof (translation)
+Establish `key : ∀ z w, (f z w).im = 0`. Introduce `z w`. Establish `hz : z ∈ Submodule.span ℝ S` using `hS ▸ Submodule.mem_top`. Establish `hw : w ∈ Submodule.span ℝ S` using `hS ▸ Submodule.mem_top`. Proceed by induction on `hz using Submodule.span_induction with`.
+
+Consider the case `mem u hu`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem v hv => exact h u hu v hv`. Consider the case `zero => rw [(h2 u).map_zero, zero_im]`. Consider the case `add a b _ _ ha hb => rw [(h2 u).map_add, add_im, ha, hb, add_zero]`.
+
+Consider the case `smul t a _ ha => rw [(h2 u).map_smul, smul_im, ha, smul_zero]`. Consider the case `zero => rw [(h1 w).map_zero, zero_im]`. Consider the case `add a b _ _ ha hb => rw [(h1 w).map_add, add_im, ha, hb, add_zero]`. Consider the case `smul t a _ ha`. Rewrite using `[← Complex.coe_smul, (h1 w).map_smul, smul_eq_mul, im_ofReal_mul, ha, mul_zero]`.
+
+Establish `h3` using `key (I • z) w`. Rewrite `h3` using `[(h1 w).map_smul, smul_eq_mul, I_mul_im]`. Conclude with `Complex.ext h3 (key z w)`.
+-/
 theorem form_eq_zero_of_im {V : Type} [AddCommGroup V] [Module ℂ V] (f : V → V → ℂ)
     (h1 : ∀ w, IsLinearMap ℂ (fun z => f z w)) (h2 : ∀ z, IsLinearMap ℝ (f z)) (S : Set V)
     (hS : Submodule.span ℝ S = ⊤) (h : ∀ u ∈ S, ∀ v ∈ S, (f u v).im = 0) (z w : V) : f z w = 0 := by
@@ -37,6 +46,11 @@ theorem form_eq_zero_of_im {V : Type} [AddCommGroup V] [Module ℂ V] (f : V →
   rw [(h1 w).map_smul, smul_eq_mul, I_mul_im] at h3
   exact Complex.ext h3 (key z w)
 
+/- English proof (translation)
+Use `sub_eq_zero.1 (form_eq_zero_of_im (fun z w => hermForm M (a * z) w - hermForm M' z (b * w)) (fun w => ⟨fun u v => ?_, fun c u => ?_⟩) (fun z => ⟨fun u v => ?_, fun c u => ?_⟩) S hS (fun u hu v hv => by rw [sub_im, h u hu v hv, sub_self]) z w)` and prove the remaining obligations. Simplify using `only [hermForm, mul_add, add_dotProduct]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hermForm, mul_smul_comm, smul_dotProduct, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [hermForm, mul_add, star_add, mulVec_add, dotProduct_add]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hermForm, mul_smul_comm, star_smul, star_trivial, mulVec_smul, dotProduct_smul, smul_sub]`.
+-/
 theorem hermForm_eq_of_im {g : ℕ} (M M' : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → ℂ) (S : Set (Fin g → ℂ))
     (hS : Submodule.span ℝ S = ⊤)
     (h : ∀ u ∈ S, ∀ v ∈ S, (hermForm M (a * u) v).im = (hermForm M' u (b * v)).im) (z w : Fin g → ℂ) :
@@ -52,9 +66,23 @@ theorem hermForm_eq_of_im {g : ℕ} (M M' : Matrix (Fin g) (Fin g) ℂ) (a b : F
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r g : ℕ} {X : Data E r}
   {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} (idx : Fin g ≃ X.Ψ × Fin r)
 
+/- English proof (translation)
+The claim follows from `(hermForm_Hm bas idx x z w).symm`.
+-/
 theorem hx_eq_hermForm (x : Frame X.Ψ r) (z w : Fin g → ℂ) :
     hx X bas idx x z w = hermForm (ThFr.Hm X bas idx x) z w := (hermForm_Hm bas idx x z w).symm
 
+/- English proof (translation)
+Establish `col (s : Fin g → Fin g ⊕ Fin g) (t : Fin g → ℝ) : perMat X bas idx s x *ᵥ (fun k => (t k : ℂ)) ∈ Submodule.span ℝ (Set.range (pv X idx x))`. Establish `: perMat X bas idx s x *ᵥ (fun k => (t k : ℂ)) = ∑ k, t k • pv X idx x (bas (Pi.single (s k) 1))`. Use function extensionality and compare the values at `i`. Simplify using `[mulVec, dotProduct, pv, mul_comm]`. Rewrite using `[this]`.
+
+Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`. Use `eq_top_iff.2 fun z _ => ?_` and prove the remaining obligations. Establish `hu` using `isUnit_det_perMat idx hs hx`. Establish `hY` using `(tauMat_im_posDef idx hs hx).det_pos.ne'.isUnit`. Use `set τ := tauMat X bas idx x with hτ`.
+
+Use `set y := hMat X bas idx x *ᵥ z with hy`. Take `⟨t, ht⟩ : ∃ t : Fin g → ℝ, τ.map Complex.im *ᵥ t = fun k => (y k).im` from `⟨(τ.map Complex.im)⁻¹ *ᵥ _, by rw [mulVec_mulVec, mul_nonsing_inv _ hY, one_mulVec]⟩`. Establish `h1 : y = (fun k => (((y - τ *ᵥ fun k => (t k : ℂ)) k).re : ℂ)) + τ *ᵥ fun k => (t k : ℂ)`. Use function extensionality and compare the values at `k`. Apply `Complex.ext` to reduce the goal to its premises.
+
+Simplify using the standard rewrite rules. Use `congrFun ht k` as an intermediate fact. Simplify using `only [mulVec, dotProduct, map_apply] at this`. Simplify using `[mulVec, dotProduct, this]`. Establish `hAB : perMat X bas idx Sum.inl x * τ = perMat X bas idx Sum.inr x` using `mul_nonsing_inv_cancel_left _ _ hu`.
+
+Establish `h2 : z = perMat X bas idx Sum.inl x *ᵥ y`. Rewrite using `[hy, mulVec_mulVec, hMat, mul_nonsing_inv _ hu, one_mulVec]`. Rewrite using `[h2, h1, mulVec_add, mulVec_mulVec, hAB]`. Conclude with `add_mem (col _ _) (col _ _)`.
+-/
 theorem span_range_pv (hs : IsSympl X bas) {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
     Submodule.span ℝ (Set.range (pv X idx x)) = ⊤ := by
   have col (s : Fin g → Fin g ⊕ Fin g) (t : Fin g → ℝ) :
@@ -86,6 +114,13 @@ theorem span_range_pv (hs : IsSympl X bas) {x : Frame X.Ψ r} (hx : x ∈ X.dom)
   rw [h2, h1, mulVec_add, mulVec_mulVec, hAB]
   exact add_mem (col _ _) (col _ _)
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff, ← span_range_pv idx hs hx, Submodule.span_le]`. Introduce and unpack `_ ⟨v, rfl⟩`. Take `⟨k, hk, hv⟩` from `GlobalTheory.LatFin.exists_int_smul_mem L hL v`. Establish `: pv X idx x v = (k : ℝ)⁻¹ • pv X idx x (k • v)`. Use function extensionality and compare the values at `i`.
+
+Establish `hk' : (k : ℂ) ≠ 0` using `Int.cast_ne_zero.2 hk`. Rewrite using `[pv, pv, per_zsmul]`. Simplify using `only [Function.comp_apply, Pi.smul_apply, zsmul_eq_mul, real_smul, ofReal_inv, Pi.mul_apply, Pi.intCast_apply, ofReal_intCast]`. Rewrite using `[inv_mul_cancel_left₀ hk']`. Rewrite using `[this]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, hv, rfl⟩)`.
+-/
 theorem span_image_pv (hs : IsSympl X bas) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (L : Lt E r)
     (hL : Submodule.span E (L : Set (Fin r → E)) = ⊤) :
     Submodule.span ℝ (pv X idx x '' (L : Set (Fin r → E))) = ⊤ := by
@@ -102,10 +137,16 @@ theorem span_image_pv (hs : IsSympl X bas) {x : Frame X.Ψ r} (hx : x ∈ X.dom)
   rw [this]
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, hv, rfl⟩)
 
+/- English proof (translation)
+The claim follows from `funext fun _ => per_smul X x a v _`.
+-/
 theorem pv_smul (x : Frame X.Ψ r) (a : E) (v : Fin r → E) :
     pv X idx x (a • v) = fun j => rowType X (idx j) a * pv X idx x v j :=
   funext fun _ => per_smul X x a v _
 
+/- English proof (translation)
+Establish `h (b : E) : IsCMField.complexConj E (IsCMField.complexConj E a * b) = a * IsCMField.complexConj E b`. Rewrite using `[map_mul, IsCMField.complexConj_apply_apply]`. Simplify using `only [EF_def, herm, cc, Pi.smul_apply, smul_eq_mul, h]`. Use `congr 2`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem EF_smul_left (a : E) (u v : Fin r → E) : EF X (a • u) v = EF X u (cc a • v) := by
   have h (b : E) : IsCMField.complexConj E (IsCMField.complexConj E a * b) = a * IsCMField.complexConj E b := by
     rw [map_mul, IsCMField.complexConj_apply_apply]
@@ -113,6 +154,25 @@ theorem EF_smul_left (a : E) (u v : Fin r → E) : EF X (a • u) v = EF X u (cc
   congr 2
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Introduce `E _ _ _ r X g bas idx n hs _ x hx`. Establish `him {x : Frame X.Ψ r} (hx : x ∈ X.dom) (u v) : (hermForm (ThFr.Hm X bas idx x) (pv X idx x u) (pv X idx x v)).im = (EF X u v : ℝ)` using `im_hermForm_Hm idx hs hx u v`. Simplify using `only [hx_eq_hermForm]`. Use `⟨fun z w => ?_, fun z hz => hermForm_Hm_pos idx hs hx hz, him hx, fun a z w => ?_, pv_smul idx x, fun u v h => ?_, fun L hL => ⟨span_image_pv idx hs hx L hL, fun M _ h z w => ?_⟩, fun ga hga => ⟨hga.lact_mem hx, fun v => ?_, fun h τ i => ?_, fun z w => ?_⟩⟩` and prove the remaining obligations. Establish `hH` using `Hm_isHermitian idx hs hx`.
+
+Rewrite using `[hermForm, hermForm, ← RCLike.star_def, ← star_dotProduct_star, star_mulVec, star_star, hH.eq, dotProduct_mulVec]`. Use `hermForm_eq_of_im _ _ (fun j => rowType X (idx j) a) (fun j => rowType X (idx j) (cc a)) _ (span_range_pv idx hs hx) ?_ z w` and prove the remaining obligations. Introduce and unpack `_ ⟨u, rfl⟩ _ ⟨v, rfl⟩`. Establish `h1` using `him hx (a • u) v`. Establish `h2` using `him hx u (cc a • v)`.
+
+Rewrite `h1`, `h2` using `[pv_smul]`. Rewrite `h1` using `[EF_smul_left]`. Conclude with `h1.trans h2.symm`. Take `⟨m, rfl⟩` from `vecQ_surjective X bas u`. Take `⟨m', rfl⟩` from `vecQ_surjective X bas v`.
+
+Establish `h' (t) : EF X (vecQ X bas m) (vecQ X bas t) = EF X (vecQ X bas m') (vecQ X bas t)`. Use `(him hx (vecQ X bas m) (vecQ X bas t)).symm.trans (h ▸ him hx (vecQ X bas m') (vecQ X bas t))` as an intermediate fact. Conclude with `this` after adjusting the coercions. Simplify using `only [EF_vecQ hs] at h'`. Use `congr 1`.
+
+Use function extensionality and compare the values at `j`. Break down `j with j | j` into its components or cases. Simplify `h' (Pi.single (Sum.inr j) 1)` using `[Pi.single_apply]`. Simplify `h' (Pi.single (Sum.inl j) 1)` using `[Pi.single_apply]`. Use `hermForm_eq_of_im M (ThFr.Hm X bas idx x) 1 1 _ (span_image_pv idx hs hx L hL) (by` as an intermediate fact.
+
+Introduce and unpack `_ ⟨u, hu, rfl⟩ _ ⟨v, hv, rfl⟩`. Rewrite using `[_root_.one_mul, _root_.one_mul, h u hu v hv, him hx]) z w`. Rewrite `this` using `[_root_.one_mul, _root_.one_mul]`. Then use the resulting hypothesis. Rewrite using `[pv, per_lact x hga, pv]`. Establish `e1 : mat (lact ga x) τ = (ga : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ` using `rfl`.
+
+Establish `e2 : FD.gram τ.1 X.Gm (mat (lact ga x) τ) = FD.gram τ.1 X.Gm (mat x τ)`. Use extensionality with `a b`. Simplify using `only [FD.gram, Matrix.of_apply, e1, PerMove.col_mul, PerMove.hermC_unitary _ _ _ hga]`. Establish `h'` using `h τ i`. Unfold `dmin at h' ⊢`.
+
+Rewrite using `[e2]` and apply the resulting hypothesis. Use `hermForm_eq_of_im (ThFr.Hm X bas idx (lact ga x)) (ThFr.Hm X bas idx x) 1 1 _ (span_range_pv idx hs hx) (by` as an intermediate fact. Introduce and unpack `_ ⟨u, rfl⟩ _ ⟨v, rfl⟩`. Establish `h1` using `him (hga.lact_mem hx) ((ga : Matrix (Fin r) (Fin r) E) *ᵥ u) ((ga : Matrix (Fin r) (Fin r) E) *ᵥ v)`. Rewrite `h1` using `[pv, pv, per_lact x hga, per_lact x hga, EF_def, hga, ← EF_def]`.
+
+Rewrite using `[_root_.one_mul, _root_.one_mul, him hx]`. Conclude with `h1) z w`. Rewrite `this` using `[_root_.one_mul, _root_.one_mul]`. Then use the resulting hypothesis.
+-/
 theorem hx_laws : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ x ∈ X.dom, (∀ z w, hx X bas idx x w z = conj (hx X bas idx x z w)) ∧ (∀ z, z ≠ 0 → 0 < (hx X bas idx x z z).re) ∧ (∀ u v, (hx X bas idx x (pv X idx x u) (pv X idx x v)).im = (EF X u v : ℝ)) ∧ (∀ (a : E) z w, hx X bas idx x (fun j => rowType X (idx j) a * z j) w = hx X bas idx x z (fun j => rowType X (idx j) (cc a) * w j)) ∧ (∀ (a : E) v, pv X idx x (a • v) = fun j => rowType X (idx j) a * pv X idx x v j) ∧ Function.Injective (pv X idx x) ∧ (∀ L : Lt E r, Submodule.span E (L : Set (Fin r → E)) = ⊤ → Submodule.span ℝ (pv X idx x '' (L : Set (Fin r → E))) = ⊤ ∧ ∀ Hm : Matrix (Fin g) (Fin g) ℂ, Hm.IsHermitian → (∀ u ∈ L, ∀ v ∈ L, (hermForm Hm (pv X idx x u) (pv X idx x v)).im = (EF X u v : ℝ)) → ∀ z w, hermForm Hm z w = hx X bas idx x z w) ∧ ∀ ga : GL (Fin r) E, IsUn X ga → lact ga x ∈ X.dom ∧ (∀ v, pv X idx (lact ga x) ((ga : Matrix (Fin r) (Fin r) E) *ᵥ v) = pv X idx x v) ∧ (IsUnitFr X x → IsUnitFr X (lact ga x)) ∧ ∀ z w, hx X bas idx (lact ga x) z w = hx X bas idx x z w := by
   intro E _ _ _ r X g bas idx n hs _ x hx
   have him {x : Frame X.Ψ r} (hx : x ∈ X.dom) (u v) :

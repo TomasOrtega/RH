@@ -6,6 +6,15 @@ namespace Formalism.MainNotions.flipOneThree.Pf.QB
 
 open Formalism.MainNotions.G Formalism.MainNotions.flipOneThree Formalism.GradedWeylDivisibility MvPolynomial
 
+/- English proof (translation)
+Proceed by induction on `J using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty, zero_mul, add_zero]`. Conclude with `(congrArg (fun ψ => ψ v) (MvPolynomial.aeval_unique θ)).symm`. Consider the case `@insert j0 J hj0 ih`.
+
+Establish `h0` using `hv 0 (midI r j0) (Fin.succ_pos _)`. Use `set f : Fin (r + 1 + 1) × Fin (r + 1 + 1) → S := fun w => θ (X w) + (∑ j ∈ J, if w.2 = midI r j then e j else 0) * θ (X (w.1, 0)) with hf`. Establish `hz : ∀ j : Fin r, ((0 : Fin (r + 1 + 1)) = midI r j) ↔ False` using `fun j => ⟨fun h => Fin.succ_ne_zero _ h.symm, False.elim⟩`. Establish `hφ : (aeval (Option.elim' (e j0) f)).comp (colAddGen A 0 (midI r j0)) = aeval (fun w : Fin (r + 1 + 1) × Fin (r + 1 + 1) => θ (X w) + (∑ j ∈ insert j0 J, if w.2 = midI r j then e j else 0) * θ (X (w.1, 0)))`. Rewrite using `[colAddGen, MvPolynomial.comp_aeval]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `w`. Distinguish the cases in `hw : w.2 = midI r j0`. Apply the tactic sequence `simp [hw, hf, Finset.sum_insert hj0, hz] try ring`. Apply the tactic sequence `simp [hw, hf, Finset.sum_insert hj0, hz] try ring`.
+
+Rewrite using `[← hφ, AlgHom.comp_apply, h0, MvPolynomial.aeval_rename]`. Conclude with `ih`.
+-/
 theorem multiInv {A S : Type} [CommRing A] [CommRing S] [Algebra A S] (r : ℕ)
     (v : MvPolynomial (Fin (r + 1 + 1) × Fin (r + 1 + 1)) A)
     (hv : ∀ l j : Fin (r + 1 + 1), l < j → colAddGen A l j v = rename some v)
@@ -39,6 +48,35 @@ theorem multiInv {A S : Type} [CommRing A] [CommRing S] [Algebra A S] (r : ℕ)
 
 variable {K : Type} [Field K] {r : ℕ}
 
+/- English proof (translation)
+Establish `hmidOf_midI : ∀ j : Fin r, midOf (midI r j) = some j`. Introduce `j`. Unfold `midOf midI`. Apply the tactic sequence `rw [dif_pos (by first | (simp [Fin.val_succ]; done) | (simp [Fin.val_succ]; omega))]`. Conclude with `congrArg some (Fin.ext (by simp [Fin.val_succ]))`.
+
+Establish `hsome : ∀ (t : Fin (r + 1 + 1)) (j : Fin r), midOf t = some j → t = midI r j`. Introduce `t j h`. Unfold `midOf at h`. Use `split_ifs at h with h1`. Consider the cases of `h`.
+
+Apply `Fin.ext` to reduce the goal to its premises. Simplify using `[midI, Fin.val_succ]`. Use linear arithmetic over natural numbers and integers. Establish `hnone : ∀ (t : Fin (r + 1 + 1)) (j : Fin r), midOf t = none → t ≠ midI r j`. Introduce `t j h ht`.
+
+Rewrite `h` using `[ht, hmidOf_midI]`. Consider the cases of `h`. Establish `h00 : midOf (0 : Fin (r + 1 + 1)) = none`. Unfold `midOf`. Rewrite using `[dif_neg (by simp)]`.
+
+Establish `hth0 : ∀ a, th K r b (X (a, 0)) = X (a, 0)`. Introduce `a`. Simplify using `[th, Formalism.MainNotions.flipOneThree.Pf.subY, h00]`. Set `e : Fin r → MvPolynomial (Fin (r + 1 + 1) × Fin (r + 1 + 1)) (MvPolynomial (Bool × (Fin r × Fin r)) K)` to `fun j => C (C c * X (b, (j0, j)))`. Establish `hmult` using `multiInv r v hv (th K r b) e Finset.univ`.
+
+Establish `key : (psiB (MvPolynomial (Bool × (Fin r × Fin r)) K) (colAdd K 0 (midI r j0) c)).comp (th K r b).toRingHom = (aeval (fun w : Fin (r + 1 + 1) × Fin (r + 1 + 1) => th K r b (X w) + (∑ j ∈ Finset.univ, if w.2 = midI r j then e j else 0) * th K r b (X (w.1, 0)))).toRingHom`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `k`. Simplify using `[th, psiB, MvPolynomial.algebraMap_apply]`. Introduce and unpack `⟨a, t⟩`.
+
+Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, aeval_X, hth0]`. Break down `hw : midOf t with _ | j` into its components or cases. Establish `e1 : th K r b (X (a, t)) = X (a, t)` using `by simp [th, Formalism.MainNotions.flipOneThree.Pf.subY, hw]`. Establish `hz : (∑ j ∈ Finset.univ, if t = midI r j then e j else 0) = 0` using `Finset.sum_eq_zero fun j _ => if_neg (hnone t j hw)`. Rewrite using `[e1, hz, zero_mul, add_zero]`.
+
+Simplify using `[psiB, Formalism.GradedWeylDivisibility.colAdd, hnone t j0 hw]`. Establish `ht : t = midI r j` using `hsome t j hw`. Substitute `ht` using the available equality. Establish `e1 : th K r b (X (a, midI r j)) = ∑ i : Fin r, C (X (b, (i, j))) * X (a, midI r i)`. Simplify using `[th, Formalism.MainNotions.flipOneThree.Pf.subY, hmidOf_midI, Formalism.GradedWeylDivisibility.blockEmb]`.
+
+Establish `hz : (∑ j' ∈ Finset.univ, if midI r j = midI r j' then e j' else 0) = e j`. Rewrite using `[Finset.sum_eq_single j]`. Simplify using the standard rewrite rules. Introduce `j' _ hj'`. Rewrite using `[if_neg]`.
+
+Introduce `h`. Apply `hj'` to reduce the goal to its premises. Use `congrArg midOf h` as an intermediate fact. Rewrite `this` using `[hmidOf_midI, hmidOf_midI]`. Conclude with `(Option.some_injective _ this).symm`.
+
+Simplify using the standard rewrite rules. Establish `hmid : ∀ i : Fin r, i ≠ j0 → midI r i ≠ midI r j0`. Introduce `i hi h`. Apply `hi` to reduce the goal to its premises. Establish `h2` using `congrArg midOf h`.
+
+Rewrite `h2` using `[hmidOf_midI, hmidOf_midI]`. Conclude with `Option.some_injective _ h2`. Establish `hterm : ∀ i : Fin r, psiB (MvPolynomial (Bool × (Fin r × Fin r)) K) (colAdd K 0 (midI r j0) c) (C (X (b, (i, j))) * X (a, midI r i)) = C (X (b, (i, j))) * X (a, midI r i) + (if i = j0 then e j * X (a, 0) else 0)`. Introduce `i`. Simplify using `only [psiB, map_mul, coe_eval₂Hom, eval₂_C, eval₂_X, Formalism.GradedWeylDivisibility.colAdd, aeval_X]`.
+
+Distinguish the cases in `hi : i = j0`. Substitute `hi` using the available equality. Simplify using `[e, MvPolynomial.algebraMap_apply, MvPolynomial.algebraMap_eq]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[hmid i hi, hi]`.
+
+Rewrite using `[e1, hz, map_sum, Finset.sum_congr rfl (fun i _ => hterm i), Finset.sum_add_distrib]`. Simplify using the standard rewrite rules. Conclude with `(RingHom.congr_fun key v).trans hmult`.
+-/
 theorem caseC (j0 : Fin r) (c : K) (b : Bool) (v : MvPolynomial (Fin (r + 1 + 1) × Fin (r + 1 + 1)) K)
     (hv : ∀ l j : Fin (r + 1 + 1), l < j → colAddGen K l j v = rename some v) :
     psiB (MvPolynomial (Bool × (Fin r × Fin r)) K) (colAdd K 0 (midI r j0) c) (th K r b v) = th K r b v := by
@@ -119,6 +157,9 @@ theorem caseC (j0 : Fin r) (c : K) (b : Bool) (v : MvPolynomial (Fin (r + 1 + 1)
         simp
   exact (RingHom.congr_fun key v).trans hmult
 
+/- English proof (translation)
+Rewrite using `[lam_eq, lcoef_comm, map_mul, caseC j0 c true v hv, caseC j0 c false t ht]`.
+-/
 theorem lam_addC (L : MvPolynomial (Bool × (Fin r × Fin r)) K →ₗ[K] K) (j0 : Fin r) (c : K)
     (v t : MvPolynomial (Fin (r + 1 + 1) × Fin (r + 1 + 1)) K)
     (hv : ∀ l j : Fin (r + 1 + 1), l < j → colAddGen K l j v = rename some v)

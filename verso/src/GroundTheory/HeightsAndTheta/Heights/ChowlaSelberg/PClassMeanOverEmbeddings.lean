@@ -12,6 +12,29 @@ noncomputable section
 
 variable {K : Type} [Field K] [NumberField K] [Algebra.IsQuadraticExtension ℚ K]
 
+/- English proof (translation)
+Introduce `σ`. Use `S.isTotallyComplex` as an intermediate fact. Establish `hK` using `Algebra.IsQuadraticExtension.finrank_eq_two ℚ K`. Establish `hhom : ∀ (τ : K →+* ℂ) (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (Λ : Submodule ℤ ℂ) (c : ℂ), c ≠ 0 → (Λ : Set ℂ) = (c * ·) '' idealLattice τ J → logPeriod Λ = logPeriod (idealLattice τ J)`. Introduce `τ J Λ c hc h`.
+
+Establish `e : Λ = scaleLattice c (idealPeriodPair τ hK J).lattice`. Apply `SetLike.coe_injective` to reduce the goal to its premises. Rewrite using `[h, scaleLattice, Submodule.map_coe, lattice_idealPeriodPair]`. Both sides reduce to the same expression. Rewrite using `[e, hScale _ c hc, lattice_idealPeriodPair]`.
+
+Establish `hcls : ∀ (τ : K →+* ℂ) (𝔟 : (FractionalIdeal (𝓞 K)⁰ K)ˣ), logPeriod (idealLattice τ 𝔟) = classLogPeriod τ (ClassGroup.mk K 𝔟)`. Introduce `τ 𝔟`. Establish `hJ : ClassGroup.mk K 𝔟 = ClassGroup.mk K (FractionalIdeal.mk0 K (classRep (ClassGroup.mk K 𝔟)))`. Rewrite using `[ClassGroup.mk_mk0, mk0_classGroupRep]`. Take `⟨c, hc, h⟩` from `(classGroup_mk_eq_iff τ hK _ _).1 hJ`.
+
+Rewrite using `[classLogPeriod, classLattice, ← FractionalIdeal.coe_mk0, hhom τ 𝔟 _ c hc h]`. Establish `hconj : ∀ τ : K →+* ℂ, classMean τ = classMean σ`. Introduce `τ`. Break down `S.eq_or_eq_conjugate σ τ with rfl | rfl` into its components or cases. Both sides reduce to the same expression.
+
+Unfold `classMean`. Use `congr 1`. Use `Finset.sum_congr rfl fun C _ ↦ ?_` and prove the remaining obligations. Rewrite using `[classLogPeriod, classLogPeriod, classLattice, classLattice, idealLattice_conjugate, ← FractionalIdeal.coe_mk0, ← lattice_idealPeriodPair σ hK, hConj]`. Establish `hs : ∀ s : F.k →+* ℂ, (classNumber K : ℝ)⁻¹ * ∑ C : ClassGroup (𝓞 K), logPeriod (idealLattice (F.restrict s) ↑(FractionalIdeal.mk0 K (classRep C)) * F.periodLattice s) = classMean σ`.
+
+Introduce `s`. Take `⟨I, c, hc, h⟩` from `F.exists_periodLattice_eq S s`. Establish `e : ∀ C : ClassGroup (𝓞 K), logPeriod (idealLattice (F.restrict s) ↑(FractionalIdeal.mk0 K (classRep C)) * F.periodLattice s) = classLogPeriod (F.restrict s) (C * ClassGroup.mk K I)`. Introduce `C`. Establish `h'` using `idealLattice_mul_homothetic (F.restrict s) (I : FractionalIdeal (𝓞 K)⁰ K) (↑(FractionalIdeal.mk0 K (classRep C))) h`.
+
+Rewrite `h'` using `[← Units.val_mul]`. Rewrite using `[hhom _ _ _ c hc h', hcls, map_mul, ClassGroup.mk_mk0, mk0_classGroupRep]`. Rewrite using `[Finset.sum_congr rfl fun C _ ↦ e C, Fintype.sum_equiv (Equiv.mulRight (ClassGroup.mk K I)) (fun C ↦ classLogPeriod (F.restrict s) (C * ClassGroup.mk K I)) (classLogPeriod (F.restrict s)) (fun C ↦ rfl)]`. Conclude with `hconj _`. Establish `hN : (Fintype.card (F.k →+* ℂ) : ℝ) ≠ 0`.
+
+Establish `: Nonempty (F.k →+* ℂ)` using `⟨(IsAlgClosed.lift : F.k →ₐ[ℚ] ℂ).toRingHom⟩`. Conclude with `Fintype.card_ne_zero` after adjusting the coercions. Establish `hh : (classNumber K : ℝ) ≠ 0` using `by exact_mod_cast classNumber_ne_zero K`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+
+Conclude with `(inv_mul_cancel_left₀ hh _).symm`. Use `_ = (classNumber K : ℝ)⁻¹ * ∑ C : ClassGroup (𝓞 K), embMean F.k (fun s ↦ logPeriod (idealLattice (F.restrict s) ↑(FractionalIdeal.mk0 K (classRep C)) * F.periodLattice s)) := by`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun C _ ↦ (hMean _).symm`. Use `_ = embMean F.k (fun s ↦ (classNumber K : ℝ)⁻¹ * ∑ C : ClassGroup (𝓞 K), logPeriod (idealLattice (F.restrict s) ↑(FractionalIdeal.mk0 K (classRep C)) * F.periodLattice s)) := by`.
+
+Simplify using `only [embMean, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ ↦ Finset.sum_congr rfl fun _ _ ↦ by ring`. Use `_ = classMean σ := by`. Simplify using `only [hs, embMean, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem ClassMeanOverEmbeddings.proof (S : PrimeDiscriminant K) (F : CMFamily K)
     (hMean : MeanOverEmbeddings.Statement S F) (hScale : PhScale.Statement)
     (hConj : PhConj.Statement) : ClassMeanOverEmbeddings.Statement S F := by

@@ -33,6 +33,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.Rec.LatMul
 
+/- English proof (translation)
+Use `letI := io.toAlgebra`. Use `letI := (φ.comp io).toAlgebra`. Take `⟨p, ψ, y0, h0⟩` from `y.2.1`. Set `φA : T.Fr →ₐ[c.F] T'.Fr` to `{ φ with commutes' := fun _ => rfl }`. Establish `h1 : evI y f = ψ (f p y0)` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.evalAt_eq_of (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) hWD f hf p ψ y0 y.1 h0`.
+
+Establish `h2 : evI z f = (φA.comp ψ) (f p y0)` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.evalAt_eq_of (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) hWD f hf p (φA.comp ψ) y0 z.1 (ReciprocityTheory.ChartRestriction.G.PullbackSections.frMap_trans ψ φA h0 h)`. Rewrite using `[h2, h1]`. Both sides reduce to the same expression.
+-/
 theorem evI_of_isBC {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
     (hWD : EvalWD (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z)) (f : Rul Xo c)
@@ -55,6 +60,17 @@ end GlobalTheory.CompanionTheory.Ar.Rec.LatMul
 
 open GlobalTheory.CompanionTheory.Ar.Rec.LatMul in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c r U h e hL hU a Z w hw`. Establish `hI` using `GlobalTheory.T.valuation_component_unique E H Dw l Xo c r U h e hL`. Use `(mem_latIn _ _ _ _).2 ⟨(hI.2.2 a).1 Z w hw.1, ?_⟩` and prove the remaining obligations. Introduce and unpack `la _ ⟨⟨q, T, io, e', ho, y, hy, eta, heta, rfl⟩, rfl⟩`. Establish `hv : ∃ Z₀, _` using `hI.1 la _ ⟨⟨_, T, io, e', ho, y, hy, eta, heta, rfl⟩, rfl⟩`.
+
+Take `⟨T', φV, φ, r', z, t, hfin, hbc, hz, hphi⟩` from `hU la T io e' ho y hy`. Establish `hw0 : (0 : EReal) ≤ nval T.V e' (evI y w)`. Establish `h0` using `hw.2 la (show (Ref.pjSys Xo c).Pt la from PtV.mk la (hfin.overLa ho) z hz t hphi)`. Rewrite `h0` using `[Ref.pjSys_val_mk Xo c la (hfin.overLa ho) z hz t hphi w, evI_of_isBC hL.evalWD w hw.1.1.1 y z hbc, hfin.nval_eq]`. Conclude with `h0`.
+
+Take `⟨Z₀, h0, h1⟩` from `hv`. Set `p : PtV Xo c (algCls Xo c) Unit (fun _ _ _ _ => True) la` to `PtV.mk la ho y hy eta heta`. Establish `hmul : vAtV p (e Z * w) = vAtV p (e Z) + nval T.V e' (evI y w)` using `vAtV_mul _ _ _`. Use `show (0 : EReal) ≤ vAtV p (e Z * w)`. Rewrite using `[hmul]`.
+
+Distinguish the cases in `hZ : Z = Z₀`. Substitute `hZ` using the available equality. Establish `h0' : vAtV p (e Z) = 0` using `h0`. Rewrite using `[h0', zero_add]`. Conclude with `hw0`.
+
+Establish `h1' : vAtV p (e Z) = ⊤` using `(h1 Z hZ).1`. Rewrite using `[h1', EReal.top_add_of_ne_bot (nval_ne_bot _ _)]`. Conclude with `le_top`.
+-/
 theorem GlobalTheory.CompanionTheory.Ar.Rec.indicator_mul_mem_latOn : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (h : GenFrEx Xo c) (e : Comp Xo c → Rul Xo c), CompLaws U h e → Ref.UnifAll Xo c → ∀ (a : WZ E) (Z : Comp Xo c) (w : Rul Xo c), w ∈ (Ref.pjSys Xo c).lat (cuspZ Xo c U a) → e Z * w ∈ latOn U h a Z := by
   intro E _ _ _ H Dw l Xo c r U h e hL hU a Z w hw
   have hI := GlobalTheory.T.valuation_component_unique E H Dw l Xo c r U h e hL

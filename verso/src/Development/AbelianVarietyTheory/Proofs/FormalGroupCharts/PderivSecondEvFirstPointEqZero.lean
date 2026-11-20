@@ -13,6 +13,15 @@ namespace GlobalTheory.FormalLog
 
 variable {k : Type} [CommRing k] {d : ℕ} (G : FGLaw k d)
 
+/- English proof (translation)
+Use `set M : Fin d → PS k 1 d := fun e => pderiv k ((0 : Fin 1), e) (Om G i a) - pderiv k ((0 : Fin 1), a) (Om G i e) with hMdef`. Establish `hM : ∀ b, ∑ e, M e * Jac G e b = 0`. Introduce `b`. Simplify using `only [hMdef, sub_mul, Finset.sum_sub_distrib]`. Rewrite using `[← om_key G i a b]`.
+
+Simplify using `only [mul_comm, sub_self]`. Establish `h1 : M c = ∑ e, M e * (JM G * Om G) e c`. Rewrite using `[mul_om]`. Simplify using `[Matrix.one_apply]`. Establish `h2 : ∑ e, M e * (JM G * Om G) e c = 0`.
+
+Simplify using `only [Matrix.mul_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Use `hM b` as an intermediate fact. Simplify using `only [JM, Matrix.of_apply]`.
+
+Rewrite using `[show ∑ x, M x * (Jac G x b * Om G b c) = (∑ x, M x * Jac G x b) * Om G b c by`. Rewrite using `[Finset.sum_mul]; exact Finset.sum_congr rfl fun x _ => by ring, this, zero_mul]`. Establish `h3 : M c = 0` using `h1.trans h2`. Conclude with `sub_eq_zero.1 h3`.
+-/
 theorem om_closed (i a c : Fin d) :
     pderiv k ((0 : Fin 1), c) (Om G i a) = pderiv k ((0 : Fin 1), a) (Om G i c) := by
   set M : Fin d → PS k 1 d := fun e => pderiv k ((0 : Fin 1), e) (Om G i a) - pderiv k ((0 : Fin 1), a) (Om G i e)
@@ -36,19 +45,31 @@ theorem om_closed (i a c : Fin d) :
   have h3 : M c = 0 := h1.trans h2
   exact sub_eq_zero.1 h3
 
+/- English proof (translation)
+Rewrite using `[pderiv_ev czY, Fintype.sum_prod_type, Fin.sum_univ_one]`. Simplify using `[pderiv_pt]`.
+-/
 theorem d_evY (h : PS k 1 d) (b : Fin d) :
     pderiv k ((1 : Fin 2), b) (ev (n := 2) ![pt k d 1] h) = ev (n := 2) ![pt k d 1] (pderiv k ((0 : Fin 1), b) h) := by
   rw [pderiv_ev czY, Fintype.sum_prod_type, Fin.sum_univ_one]
   simp [pderiv_pt]
 
+/- English proof (translation)
+Rewrite using `[pderiv_ev czX, Fintype.sum_prod_type, Fin.sum_univ_one]`. Simplify using `[pderiv_pt]`.
+-/
 theorem d_evX (h : PS k 1 d) (a : Fin d) :
     pderiv k ((0 : Fin 2), a) (ev (n := 2) ![pt k d 0] h) = ev (n := 2) ![pt k d 0] (pderiv k ((0 : Fin 1), a) h) := by
   rw [pderiv_ev czX, Fintype.sum_prod_type, Fin.sum_univ_one]
   simp [pderiv_pt]
 
+/- English proof (translation)
+The claim follows from `pderiv_ev_zero czY _ _ (fun j l => by fin_cases j; simp [pderiv_pt])`.
+-/
 theorem pderiv_first_ev_second_point_eq_zero (h : PS k 1 d) (a : Fin d) : pderiv k ((0 : Fin 2), a) (ev (n := 2) ![pt k d 1] h) = 0 :=
   pderiv_ev_zero czY _ _ (fun j l => by fin_cases j; simp [pderiv_pt])
 
+/- English proof (translation)
+The claim follows from `pderiv_ev_zero czX _ _ (fun j l => by fin_cases j; simp [pderiv_pt])`.
+-/
 theorem pderiv_second_ev_first_point_eq_zero (h : PS k 1 d) (b : Fin d) : pderiv k ((1 : Fin 2), b) (ev (n := 2) ![pt k d 0] h) = 0 :=
   pderiv_ev_zero czX _ _ (fun j l => by fin_cases j; simp [pderiv_pt])
 
@@ -56,6 +77,11 @@ variable [Algebra ℚ k]
 
 def logOf (i : Fin d) : PS k 1 d := prim (fun v : Fin 1 × Fin d => Om G i v.2)
 
+/- English proof (translation)
+Establish `hcl : ∀ v w : Fin 1 × Fin d, pderiv k w (Om G i v.2) = pderiv k v (Om G i w.2)`. Introduce and unpack `⟨v1, v⟩ ⟨w1, w⟩`. Take `rfl : v1 = 0` from `Subsingleton.elim _ _`. Take `rfl : w1 = 0` from `Subsingleton.elim _ _`. Conclude with `om_closed G i v w`.
+
+Conclude with `pderiv_prim _ hcl ((0 : Fin 1), a)`.
+-/
 theorem pderiv_logOf (i a : Fin d) : pderiv k ((0 : Fin 1), a) (logOf G i) = Om G i a := by
   have hcl : ∀ v w : Fin 1 × Fin d, pderiv k w (Om G i v.2) = pderiv k v (Om G i w.2) := by
     rintro ⟨v1, v⟩ ⟨w1, w⟩
@@ -64,6 +90,15 @@ theorem pderiv_logOf (i a : Fin d) : pderiv k ((0 : Fin 1), a) (logOf G i) = Om 
     exact om_closed G i v w
   exact pderiv_prim _ hcl ((0 : Fin 1), a)
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero]`. Use `set g := ev (n := 2) ![G.F] (logOf G i) - (ev (n := 2) ![pt k d 0] (logOf G i) + ev (n := 2) ![pt k d 1] (logOf G i))`. Establish `hd : ∀ v, pderiv k v g = 0`. Introduce and unpack `⟨j, c⟩`. Use `fin_cases j`.
+
+Simplify using `only [Fin.zero_eta]`. Simplify using `only [g, map_sub, map_add, d_evF, pderiv_logOf, pderiv_first_ev_second_point_eq_zero, d_evX]`. Rewrite using `[om_P G i c]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Fin.mk_one]`.
+
+Simplify using `only [g, map_sub, map_add, d_evF, pderiv_logOf, pderiv_second_ev_first_point_eq_zero, d_evY]`. Use `om_Q G i c` as an intermediate fact. Simplify using `only [Ar] at this`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hc : constantCoeff g = 0`. Simplify using `only [g, map_sub, map_add, cc_ev (czFF G), cc_ev czX, cc_ev czY, logOf, constantCoeff_prim]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[eq_C_of_pderiv_zero hd, hc, map_zero]`.
+-/
 theorem logOf_add (i : Fin d) :
     ev (n := 2) ![G.F] (logOf G i) = ev (n := 2) ![pt k d 0] (logOf G i) + ev (n := 2) ![pt k d 1] (logOf G i) := by
   rw [← sub_eq_zero]
@@ -84,6 +119,11 @@ theorem logOf_add (i : Fin d) :
     ring
   rw [eq_C_of_pderiv_zero hd, hc, map_zero]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j c`. Use `fin_cases j`. Use `show ev (n := 2) ![pt k d 0, pt k d 1] (G.F c) = G.F c`. Establish `e : (![pt k (n` using `2) d 0, pt k d 1] : Fin 2 → Pt k 2 d) = fun j => pt k (n := 2) d j := by`. Apply the tactic sequence `funext j; fin_cases j <;> rfl`.
+
+Rewrite using `[e, ev_pt]`.
+-/
 theorem addPt : (![G.add (pt k (n := 2) d 0) (pt k d 1)] : Fin 1 → Pt k 2 d) = ![G.F] := by
   funext j c
   fin_cases j
@@ -92,6 +132,13 @@ theorem addPt : (![G.add (pt k (n := 2) d 0) (pt k d 1)] : Fin 1 → Pt k 2 d) =
     funext j; fin_cases j <;> rfl
   rw [e, ev_pt]
 
+/- English proof (translation)
+Introduce `k _ _ d G`. Use `⟨fun i => logOf G i, fun i => constantCoeff_prim _, ?_, ?_⟩` and prove the remaining obligations. Use `Matrix.ext fun i j => ?_ show coeff (Finsupp.single ((0 : Fin 1), j) 1) (logOf G i) = (1 : Matrix (Fin d) (Fin d) k) i j` and prove the remaining obligations. Establish `h` using `congrArg constantCoeff (pderiv_logOf G i j)`. Rewrite `h` using `[← coeff_zero_eq_constantCoeff_apply, coeff_pderiv, zero_add]`.
+
+Establish `h2` using `congrFun (congrFun (cc_om G) i) j`. Simplify using `only [Matrix.map_apply] at h2`. Simplify `h` using `[h2]`. Use function extensionality and compare the values at `i show ev (n := 2) ![G.add (pt k d 0) (pt k d 1)] (logOf G i) = ev (n := 2) ![pt k d 0] (logOf G i) + ev (n := 2) ![pt k d 1] (logOf G i)`. Rewrite using `[addPt]`.
+
+Conclude with `logOf_add G i`.
+-/
 theorem logSt : LogSt := by
   intro k _ _ d G
   refine ⟨fun i => logOf G i, fun i => constantCoeff_prim _, ?_, ?_⟩
@@ -109,6 +156,11 @@ theorem logSt : LogSt := by
     exact logOf_add G i
 
 omit [Algebra ℚ k] in
+/- English proof (translation)
+Rewrite using `[ev_ev cz1 czY]`. Establish `e : (fun j c => ev (n` using `1) ![pt k d 0, 0] ((![pt k (n := 2) d 1] : Fin 1 → Pt k 2 d) j c)) = fun (_ : Fin 1) (_ : Fin d) => (0 : PS k 1 d) := by`. Use function extensionality and compare the values at `j c`. Use `fin_cases j`. Simplify using `[pt_apply, ev_X cz1]`.
+
+Rewrite using `[e, ev_zeroFam]`.
+-/
 theorem ez_y (h : PS k 1 d) : ev (n := 1) ![pt k d 0, 0] (ev (n := 2) ![pt k d 1] h) = C (constantCoeff h) := by
   rw [ev_ev cz1 czY]
   have e : (fun j c => ev (n := 1) ![pt k d 0, 0] ((![pt k (n := 2) d 1] : Fin 1 → Pt k 2 d) j c)) =
@@ -116,6 +168,25 @@ theorem ez_y (h : PS k 1 d) : ev (n := 1) ![pt k d 0, 0] (ev (n := 2) ![pt k d 1
     funext j c; fin_cases j; simp [pt_apply, ev_X cz1]
   rw [e, ev_zeroFam]
 
+/- English proof (translation)
+Introduce `k _ _ d G ℓ h0 h1 hadd u g`. Establish `hℓ : CZ (![ℓ] : Fin 1 → Pt k 1 d)` using `CZ.cons h0 CZ.nil`. Establish `hadd' : ∀ c, ev (n` using `2) ![G.F] (ℓ c) = ev (n := 2) ![pt k d 0] (ℓ c) + ev (n := 2) ![pt k d 1] (ℓ c) := by`. Introduce `c`. Use `congrFun hadd c` as an intermediate fact.
+
+Express the relevant statement in the definitionally equal form `ev (n := 2) ![G.add (pt k d 0) (pt k d 1)] (ℓ c) = _ at this`. Rewrite `this` using `[addPt]`. Then use the resulting hypothesis. Establish `DJ : ∀ c b, ∑ j, pderiv k ((0 : Fin 1), j) (ℓ c) * Jac G j b = C (if c = b then 1 else 0)`. Introduce `c b`. Establish `h` using `congrArg (fun x => ev (n := 1) ![pt k d 0, 0] (pderiv k ((1 : Fin 2), b) x)) (hadd' c)`.
+
+Use `beta_reduce at h`. Simplify using `only [d_evF, map_add, pderiv_second_ev_first_point_eq_zero, d_evY, zero_add, ev_sum cz1, ev_mul cz1, ez_F, ez_dy, ez_y] at h`. Rewrite using `[h]`. Use `congr 1`. Establish `hc` using `congrFun (congrFun h1 c) b`.
+
+Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_pderiv, zero_add]`. Simplify using `only [dLin] at hc`. Simplify using `[hc, Matrix.one_apply]`. Establish `hch : ∀ j, pderiv k ((0 : Fin 1), j) (ev (n` using `1) ![ℓ] g) = ∑ c, ev (n := 1) ![ℓ] (pderiv k ((0 : Fin 1), c) g) * pderiv k ((0 : Fin 1), j) (ℓ c) := by`. Introduce `j`.
+
+Rewrite using `[pderiv_ev hℓ, Fintype.sum_prod_type, Fin.sum_univ_one]`. Both sides reduce to the same expression. Establish `step : ∀ c, ∑ i, C (u i) * ∑ j, pderiv k ((0 : Fin 1), j) (ℓ c) * Jac G j i = (C (u c) : PS k 1 d)`. Introduce `c`. Simplify using `only [DJ, ← map_mul, mul_ite, mul_one, mul_zero]`.
+
+Rewrite using `[← map_sum]`. Simplify using `[Finset.sum_ite_eq]`. Use `show ∑ j : Fin d, (∑ i : Fin d, C (u i) * Jac G j i) * pderiv k ((0 : Fin 1), j) (ev (n := 1) ![ℓ] g) = _`. Simplify using `only [hch]`. Rewrite using `[ev_sum hℓ]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul_sum, Finset.sum_comm]`. Use `_ = ∑ c, ∑ j, ∑ i, C (u i) * Jac G j i * (ev (n := 1) ![ℓ] (pderiv k ((0 : Fin 1), c) g) * pderiv k ((0 : Fin 1), j) (ℓ c)) := Finset.sum_comm`. Use `_ = ∑ c, ∑ i, ∑ j, C (u i) * Jac G j i * (ev (n := 1) ![ℓ] (pderiv k ((0 : Fin 1), c) g) * pderiv k ((0 : Fin 1), j) (ℓ c)) := Finset.sum_congr rfl fun c _ => Finset.sum_comm`.
+
+Use `_ = ∑ c, ev (n := 1) ![ℓ] (pderiv k ((0 : Fin 1), c) g) * ∑ i, C (u i) * ∑ j, pderiv k ((0 : Fin 1), j) (ℓ c) * Jac G j i := by`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `only [Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ = _ := by`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[step, ev_mul hℓ, ev_C hℓ, mul_comm]`.
+-/
 theorem logDerivSt : LogDerivSt := by
   intro k _ _ d G ℓ h0 h1 hadd u g
   have hℓ : CZ (![ℓ] : Fin 1 → Pt k 1 d) := CZ.cons h0 CZ.nil
@@ -169,6 +240,9 @@ theorem logDerivSt : LogDerivSt := by
         refine Finset.sum_congr rfl fun c _ => ?_
         rw [step, ev_mul hℓ, ev_C hℓ, mul_comm]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨logSt, logDerivSt⟩`.
+-/
 theorem logSt_and_logDerivSt : LogSt ∧ LogDerivSt := ⟨logSt, logDerivSt⟩
 
 end GlobalTheory.FormalLog

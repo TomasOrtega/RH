@@ -13,6 +13,23 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.FlatModel.Proj
 
+/- English proof (translation)
+Use `set T := Algebra.traceMatrix ℤ b with hT`. Establish `hd' : T.det ≠ 0` using `hd`. Establish `nd : ∀ x y : O, (∀ l, Algebra.trace ℤ O (x * b l) = Algebra.trace ℤ O (y * b l)) → x = y`. Introduce `x y h`. Rewrite using `[← sub_eq_zero]`.
+
+Establish `h1 : Matrix.vecMul (b.repr (x - y)) T = 0`. Use function extensionality and compare the values at `l`. Establish `h2 : Algebra.trace ℤ O ((x - y) * b l) = 0` using `by rw [sub_mul, map_sub, h, sub_self]`. Rewrite `h2` using `[← b.sum_repr (x - y), Finset.sum_mul, map_sum]`. Simplify using `only [smul_mul_assoc, map_smul, smul_eq_mul] at h2`.
+
+Conclude with `h2`. Establish `h3` using `Matrix.eq_zero_of_vecMul_eq_zero hd' h1`. Apply `b.repr.injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `DFunLike.coe_injective h3`.
+
+Set `c : κ → O` to `fun i => ∑ j, T.adjugate i j • b j`. Establish `hc : ∀ i k, Algebra.trace ℤ O (c i * b k) = if i = k then T.det else 0`. Introduce `i k`. Establish `h1` using `congrFun (congrFun (Matrix.adjugate_mul T) i) k`. Simplify using `only [Matrix.mul_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul, mul_ite, _root_.mul_one, mul_zero] at h1`.
+
+Rewrite using `[← h1]`. Simplify using `only [c, Finset.sum_mul, map_sum, smul_mul_assoc, map_smul, smul_eq_mul]`. Both sides reduce to the same expression. Establish `hc2 : ∀ i x, Algebra.trace ℤ O (c i * x) = T.det * b.repr x i`. Introduce `i x`.
+
+Use `conv_lhs => rw [← b.sum_repr x]`. Simplify using `only [Finset.mul_sum, map_sum, mul_smul_comm, map_smul, hc, smul_eq_mul, mul_ite, mul_zero]`. Simplify using `[mul_comm]`. Use `⟨c, fun a k => nd _ _ fun l => ?_, nd _ _ fun l => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm a, _root_.mul_assoc, hc2]`.
+
+Simplify using `only [Finset.sum_mul, map_sum, smul_mul_assoc, map_smul, hc, smul_eq_mul, mul_ite, mul_zero]`. Simplify using `[mul_comm]`. Simplify using `only [Finset.sum_mul, map_sum, _root_.mul_assoc, hc2]`. Rewrite using `[← zsmul_eq_mul, map_smul, Algebra.trace_eq_matrix_trace b, smul_eq_mul, Matrix.trace, ← Finset.mul_sum]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.diag, Algebra.leftMulMatrix_eq_repr_mul, mul_comm]`.
+-/
 theorem exists_dual {O κ : Type} [CommRing O] [Fintype κ] [DecidableEq κ] (b : Module.Basis κ ℤ O)
     (hd : Algebra.discr ℤ b ≠ 0) :
     ∃ c : κ → O, (∀ a k, a * c k = ∑ i, b.repr (a * b i) k • c i) ∧
@@ -60,6 +77,11 @@ section Lin
 variable {O S M κ : Type} [CommRing O] [CommRing S] [AddCommGroup M] [Module S M] [Fintype κ]
   (ρ : O →+* Module.End S M) (σ : O →+* S) (b : Module.Basis κ ℤ O) (c : κ → O)
 
+/- English proof (translation)
+Establish `h1 : ∀ i, ρ a (ρ (b i) v) = ∑ k, b.repr (a * b i) k • ρ (b k) v` using `fun i => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Use `conv_lhs => rw [← b.sum_repr (a * b i)]`. Simplify using `only [map_sum, map_zsmul, LinearMap.sum_apply, LinearMap.smul_apply]`. Simplify using `only [map_sum, map_smul, h1, Finset.smul_sum, smul_smul, ← map_mul, hc, map_zsmul, Finset.sum_smul]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm, smul_assoc]`.
+-/
 theorem eig_proj (hc : ∀ a k, a * c k = ∑ i, b.repr (a * b i) k • c i) (a : O) (v : M) :
     ρ a (∑ i, σ (c i) • ρ (b i) v) = σ a • ∑ i, σ (c i) • ρ (b i) v := by
   have h1 : ∀ i, ρ a (ρ (b i) v) = ∑ k, b.repr (a * b i) k • ρ (b k) v := fun i => by
@@ -71,6 +93,9 @@ theorem eig_proj (hc : ∀ a k, a * c k = ∑ i, b.repr (a * b i) k • c i) (a 
   refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => ?_
   rw [smul_comm, smul_assoc]
 
+/- English proof (translation)
+Simplify using `only [hv, smul_smul, ← map_mul, ← Finset.sum_smul, ← map_sum, hc, map_intCast]`.
+-/
 theorem proj_eig {d : ℤ} (hc : ∑ i, c i * b i = (d : O)) (v : M) (hv : ∀ a, ρ a v = σ a • v) :
     ∑ i, σ (c i) • ρ (b i) v = (d : S) • v := by
   simp only [hv, smul_smul, ← map_mul, ← Finset.sum_smul, ← map_sum, hc, map_intCast]
@@ -80,6 +105,9 @@ end Lin
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {X : Scheme.{0}}
   {t : SAB H X}
 
+/- English proof (translation)
+Take `⟨y, hy, rfl⟩` from `h`. Take `⟨z, hz, e⟩` from `(GlobalTheory.LieMet.isComb_iff T w _).2 rfl`. Rewrite using `[← e]`. Establish `: y = z` using `funext fun i => Over.OverMorphism.ext ((hy i).trans (hz i).symm)`. Rewrite using `[this]`.
+-/
 theorem eq_of_comb {S : Type} [CommRing S] {x : Sp S ⟶ X} {m : ℕ} (T : Fin m → TanM x t.G) {w : Fin m → S}
     {u : Sp (DualNumber S) ⟶ t.G.left} (h : IsCombAtG t x (fun i => (tv (T i)).left) w u) :
     u = (tv (∑ i, w i • T i)).left := by
@@ -89,6 +117,27 @@ theorem eq_of_comb {S : Type} [CommRing S] {x : Sp S ⟶ X} {m : ℕ} (T : Fin m
   have : y = z := funext fun i => Over.OverMorphism.ext ((hy i).trans (hz i).symm)
   rw [this]
 
+/- English proof (translation)
+Set `b` to `RingOfIntegers.basis E`. Take `⟨c, hc1, hc2⟩` from `exists_dual b (discr_ne_zero E)`. Establish `hbas : ∀ w, IsTanAtG t ξ w → ∃ a, IsCombAtG t ξ e a w` using `fun w hw => by`. Establish `h0 : spMap (RingHom.id R) = 𝟙 (Sp R)` using `Spec.map_id _`. Establish `h1 : spMap (dualMap (RingHom.id R)) = 𝟙 _`.
+
+Apply the tactic sequence `have : dualMap (RingHom.id R) = RingHom.id _ := by ext s <;> simp [dualMap]`. Rewrite using `[this]`. Conclude with `Spec.map_id _`. Use `he.2 R (RingHom.id R) w (by rwa [h0, Category.id_comp])` as an intermediate fact. Simplify using `only [h0, h1, Category.id_comp] at this`.
+
+Conclude with `this.exists`. Use `choose ρ hρ using fun (a : 𝓞 E) (k : Fin g) => hbas _ (GlobalTheory.LieMet.isTan_tv (actR t.act a (GlobalTheory.LieMet.tanOf (he.1 k))))`. Use `⟨fun k j => ∑ i, σ (c i) * ρ (b i) k j, fun S _ φ => ?_⟩` and prove the remaining obligations. Establish `he'` using `isTanBasis_bc he φ`. Set `T : Fin g → TanM (spMap φ ≫ ξ) t.G` to `fun j => GlobalTheory.LieMet.tanOf (he'.1 j)`.
+
+Establish `hT : bcV t φ e = fun j => (tv (T j)).left` using `rfl`. Establish `hA : ∀ a k, actR t.act a (T k) = ∑ j, φ (ρ a k j) • T j` using `fun a k => by`. Use `(GlobalTheory.LieMet.isComb_iff T _ _).1 ?_` and prove the remaining obligations. Use `GlobalTheory.GradedPieces.comb_map φ rfl (hρ a k)` as an intermediate fact. Establish `e1 : spMap (dualMap φ) ≫ (tv (actR t.act a (GlobalTheory.LieMet.tanOf (he.1 k)))).left = (tv (actR t.act a (T k))).left` using `(Category.assoc _ _ _).symm`.
+
+Rewrite `this` using `[e1]`. Conclude with `this`. Establish `hU : ∀ k, ∑ j, φ (∑ i, σ (c i) * ρ (b i) k j) • T j = ∑ i, (φ.comp σ) (c i) • actR t.act (b i) (T k)` using `fun k => by`. Simplify using `only [hA, map_sum, map_mul, Finset.sum_smul, Finset.smul_sum, smul_smul, RingHom.comp_apply]`. Conclude with `Finset.sum_comm`.
+
+Use `⟨fun k u hu a => ?_, fun w v hw hv => ?_⟩` and prove the remaining obligations. Rewrite `hu` using `[hT]`. Rewrite using `[eq_of_comb T hu, GlobalTheory.ShFam.Pad.Pull.eig_iff, hU]`. Conclude with `eig_proj _ _ b c hc1 a _`. Rewrite `hw` using `[hT]`.
+
+Establish `hv0` using `eq_of_comb T hw`. Establish `hv1 : ∀ a, actR t.act a (∑ i, w i • T i) = (φ.comp σ) a • ∑ i, w i • T i` using `fun a => by`. Rewrite using `[← GlobalTheory.ShFam.Pad.Pull.eig_iff, ← hv0]`. Conclude with `hv a`. Establish `h2` using `proj_eig _ _ b c hc2 _ hv1`.
+
+Establish `h3 : ∑ j, (∑ k, w k • fun j => φ (∑ i, σ (c i) * ρ (b i) k j)) j • T j = ∑ j, (((discr E : ℤ) : S) • w) j • T j`. Establish `h4 : ∑ j, (((discr E : ℤ) : S) • w) j • T j = ((discr E : ℤ) : S) • ∑ j, w j • T j`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Finset.smul_sum, smul_smul]`. Rewrite using `[h4]`. Use `Eq.trans ?_ h2` and prove the remaining obligations.
+
+Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_smul, mul_smul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.smul_sum, hU]`. Simplify using `only [map_sum, map_smul, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => smul_comm _ _ _`. Establish `hu` using `he.2 S φ _ (GlobalTheory.LieMet.isTan_tv (∑ j, (((discr E : ℤ) : S) • w) j • T j))`. Establish `h5` using `hu.unique ((GlobalTheory.LieMet.isComb_iff T _ _).2 rfl) ((GlobalTheory.LieMet.isComb_iff T _ _).2 h3.symm)`. Rewrite using `[h5]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`.
+-/
 theorem exists_eigFam {R : Type} [CommRing R] {ξ : Sp R ⟶ X} {g : ℕ} {e : Fin g → (Sp (DualNumber R) ⟶ t.G.left)}
     (he : IsTanBasis t ξ e) (σ : 𝓞 E →+* R) : ∃ U : Fin g → Fin g → R, EigFam t ξ σ e U := by
   classical
@@ -146,6 +195,9 @@ theorem exists_eigFam {R : Type} [CommRing R] {ξ : Sp R ⟶ X} {g : ℕ} {e : F
     rw [h5]
     exact Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ he _` and use `exists_eigFam he _`.
+-/
 theorem projSt : ProjSt :=
   fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ he _ => exists_eigFam he _
 

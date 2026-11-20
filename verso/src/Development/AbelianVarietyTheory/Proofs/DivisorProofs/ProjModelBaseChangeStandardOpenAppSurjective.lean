@@ -11,6 +11,9 @@ open GlobalTheory.Desc
 
 namespace GlobalTheory.Desc
 
+/- English proof (translation)
+Establish `hn` using `congrArg (fun φ => φ.hom (c.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R₁)).inv.hom r))) (f.naturality (homOfLE (le_top : U ≤ ⊤)).op)`. Simplify using `only [CommRingCat.comp_apply] at hn`. Rewrite using `[hn]`. Conclude with `fnOf_resG (X := Y) (le_top : f ⁻¹ᵁ U ≤ ⊤) h _`.
+-/
 theorem fnOf_app_const {Y Z : Scheme.{0}} [IsIntegral Y] {R₁ : Type} [CommRing R₁] (f : Y ⟶ Z) (c : Z ⟶ Sp R₁)
     (U : Z.Opens) (h : genericPoint Y ∈ f ⁻¹ᵁ U) (r : R₁) :
     fnOf (f ⁻¹ᵁ U) h ((f.app U).hom ((Z.presheaf.map (homOfLE (le_top : U ≤ ⊤)).op).hom
@@ -21,6 +24,21 @@ theorem fnOf_app_const {Y Z : Scheme.{0}} [IsIntegral Y] {R₁ : Type} [CommRing
   rw [hn]
   exact fnOf_resG (X := Y) (le_top : f ⁻¹ᵁ U ≤ ⊤) h _
 
+/- English proof (translation)
+Introduce `s`. Distinguish the cases in `hW : genericPoint Y ∈ f ⁻¹ᵁ a ⁻¹ᵁ Dp k b`. Use `swap`. Conclude with `⟨0, fn_ext fun h => absurd h hW⟩`. Establish `hgen : genericPoint Y ∈ locus D₁ k (θ b)` using `(hloc _).1 hW`.
+
+Establish `hθb0 : θ b ≠ 0` using `CartierDiv.GeneratesAt.ne_zero (D := k • D₁) hgen`. Establish `hb0 : b ≠ 0` using `fun e => hθb0 (by rw [e, map_zero])`. Establish `hPg : genericPoint P ∈ Dp k b` using `(hP.gen k hk b hb).2 hb0`. Establish `hreg : ∀ y ∈ locus D₁ k (θ b), RegAt y (fnOf (f ⁻¹ᵁ a ⁻¹ᵁ Dp k b) hW s)` using `fun y hy => regAt_fnOf (U := f ⁻¹ᵁ a ⁻¹ᵁ Dp k b) (x := y) ((hloc y).2 hy) hW s`. Establish `hbsec : θ b ∈ Sec D₁ k`.
+
+Rewrite using `[hspan k]`. Conclude with `subset_spanBy _ _ ⟨b, hb, rfl⟩`. Take `⟨n, hn⟩` from `GlobalTheory.T.exists_mul_pow_mem_cartierMultiple_of_regular_locus Y D₁ k (θ b) hbsec _ hreg`. Rewrite `hn` using `[hspan]`. Take `⟨M, r, t, ht, hsum⟩` from `hn`.
+
+Use `choose u hu hut using ht`. Establish `hv : ∀ i, ∃ v, (∀ z ∈ Dp k b, RegAt z v) ∧ ψ v = u i / b ^ n` using `fun i => (hP.ring k hk b hb hb0 (u i / b ^ n)).2 ⟨n, u i, hu i, rfl⟩`. Use `choose v hvreg hvψ using hv`. Establish `hA : ∀ i, ∃ A : Γ(P, Dp k b), fnOf (Dp k b) hPg A = v i` using `fun i => exists_fnOf_eq hPg (hvreg i)`. Use `choose A hA using hA`.
+
+Establish `hterm : ∀ i, fnOf (f ⁻¹ᵁ a ⁻¹ᵁ Dp k b) hW ((f.app (a ⁻¹ᵁ Dp k b)).hom ((Z.presheaf.map (homOfLE (le_top : a ⁻¹ᵁ Dp k b ≤ ⊤)).op).hom (c.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R₁)).inv.hom (r i))) * (a.app (Dp k b)).hom (A i))) = cst (f ≫ c) (r i) * t i / θ b ^ n`. Introduce `i`. Rewrite using `[map_mul, map_mul, fnOf_app_const f c _ hW (r i)]`. Establish `e` using `GlobalTheory.T.rationalFunction_app_of_preservesGenericPoint P Y (f ≫ a) (θ.comp ψ) hff (Dp k b) hPg hW (A i)`. Rewrite `e` using `[hA i, RingHom.comp_apply, hvψ i, map_div₀, map_pow, hut i]`.
+
+Rewrite using `[mul_div_assoc, ← e]`. Both sides reduce to the same expression. Use `⟨∑ i, (Z.presheaf.map (homOfLE (le_top : a ⁻¹ᵁ Dp k b ≤ ⊤)).op).hom (c.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R₁)).inv.hom (r i))) * (a.app (Dp k b)).hom (A i), fnOf_injective _ hW ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum, map_sum]`. Repeatedly rewrite using `[hterm]`.
+
+Rewrite using `[← Finset.sum_div, ← hsum, mul_div_assoc, div_self (pow_ne_zero n hθb0), _root_.mul_one]`.
+-/
 theorem app_surjective_of_factor {R F : Type} [CommRing R] [Field F] {c₀ : R →+* F} {N : ℕ → Set F}
     {P : Scheme.{0}} [IsIntegral P] {p : P ⟶ Sp R} {ψ : P.functionField →+* F} {Dp : ℕ → F → P.Opens}
     (hP : IsModel c₀ N p ψ Dp) {R₁ : Type} [CommRing R₁] {Y Z : Scheme.{0}} [IsIntegral Y] [CompactSpace Y]
@@ -70,6 +88,9 @@ theorem app_surjective_of_factor {R F : Type} [CommRing R] [Field F] {c₀ : R �
   simp_rw [hterm]
   rw [← Finset.sum_div, ← hsum, mul_div_assoc, div_self (pow_ne_zero n hθb0), _root_.mul_one]
 
+/- English proof (translation)
+Introduce `R F _ _ _ c₀ N _ P _ p ψ Dp hP R₁ _ _ ρ _ _ Y _ _ _ q θ D₁ _ _ _ hspan m hff hloc hm k hk b hb`. Establish `hfc : pullback.lift m q hm ≫ pullback.snd p (spMap ρ) = q` using `pullback.lift_snd _ _ _`. Establish `hfa : pullback.lift m q hm ≫ pullback.fst p (spMap ρ) = m` using `pullback.lift_fst _ _ _`. Conclude with `app_surjective_of_factor hP (pullback.lift m q hm) (pullback.fst p (spMap ρ)) (pullback.snd p (spMap ρ)) θ D₁ (by rw [hfc]; exact hspan) (by rw [hfa]; exact hff) k hk b hb (by rw [hfa]; exact hloc k hk b hb)`.
+-/
 theorem lift_app_surjective : ∀ (R F : Type) [CommRing R] [IsDomain R] [Field F] (c₀ : R →+* F) (N : ℕ → Set F), GradedFam c₀ N → ∀ (P : Scheme.{0}) [IsIntegral P] (p : P ⟶ Sp R) (ψ : P.functionField →+* F) (Dp : ℕ → F → P.Opens), IsModel c₀ N p ψ Dp → ∀ (R₁ : Type) [CommRing R₁] [IsDomain R₁] (ρ : R →+* R₁), ρ.Flat → Function.Injective c₀ → ∀ (Y : Scheme.{0}) [IsIntegral Y] [CompactSpace Y] [QuasiSeparatedSpace Y] (q : Y ⟶ Sp R₁) (θ : F →+* Y.functionField) (D₁ : CartierDiv Y), θ.comp c₀ = (GlobalTheory.Desc.cst q).comp ρ → LinDisj c₀ (GlobalTheory.Desc.cst q) θ → AmpleDiv D₁ → (∀ k, Sec D₁ k = spanBy (GlobalTheory.Desc.cst q) (θ '' N k)) → ∀ m : Y ⟶ P, PFF (𝟙 _) m (θ.comp ψ) → (∀ k, 1 ≤ k → ∀ b ∈ N k, ∀ y, m y ∈ Dp k b ↔ y ∈ locus D₁ k (θ b)) → ∀ (hm : m ≫ p = q ≫ spMap ρ) (k : ℕ), 1 ≤ k → ∀ b ∈ N k, Function.Surjective ((pullback.lift m q hm).app ((pullback.fst p (spMap ρ)) ⁻¹ᵁ Dp k b)) := by
   intro R F _ _ _ c₀ N _ P _ p ψ Dp hP R₁ _ _ ρ _ _ Y _ _ _ q θ D₁ _ _ _ hspan m hff hloc hm k hk b hb
   have hfc : pullback.lift m q hm ≫ pullback.snd p (spMap ρ) = q := pullback.lift_snd _ _ _

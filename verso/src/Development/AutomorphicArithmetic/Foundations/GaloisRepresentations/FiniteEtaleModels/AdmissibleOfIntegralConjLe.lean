@@ -13,6 +13,9 @@ open UpperTheory.Gal.G3 (sp)
 
 namespace UpperTheory.Gal.FiniteEtaleModels
 
+/- English proof (translation)
+Substitute `h h'` using the available equality. Both sides reduce to the same expression.
+-/
 theorem powMap_congr {X Y : Scheme.{0}} {A : Over X} {B : Over Y} {f f' : X ⟶ Y} {φ φ' : A.left ⟶ B.left} (h : f = f') (h' : φ = φ')
     (u : φ ≫ B.hom = A.hom ≫ f) (u' : φ' ≫ B.hom = A.hom ≫ f') (k : ℕ) : GlobalTheory.KS.powMap f φ u k = GlobalTheory.KS.powMap f' φ' u' k := by
   subst h h'; rfl
@@ -21,11 +24,19 @@ section
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGroup p} {L : Link D G} {E : Type} [Field E] [NumberField E] {gb : GBase D.toG E}
   {w : HeightOneSpectrum (𝓞 E)} {q : ℕ} [Fact q.Prime] {r : ℤ} {𝔴 𝔫 : Ideal (𝓞 D.F)} {S : Site gb w q r 𝔴 𝔫}
 
+/- English proof (translation)
+Establish `h` using `(hP _ _ _ X₁.Y.univ.A X₂.Y.univ.A X₂.Y.univ.A d.t (𝟙 _) d.Φ (𝟙 _) d.w (by simp) k).2.1`. Rewrite using `[Down.pw, ← Category.assoc, h, Category.assoc, d.ov]`.
+-/
 theorem Down.pw_ov (hP : PowCart) {N₁ N₂ : ℕ} {𝔟₁ 𝔟₂ : Ideal (𝓞 D.F)} {X₁ : Ext S N₁ 𝔟₁} {X₂ : Ext S N₂ 𝔟₂} (d : Down X₁ X₂) (k : ℕ) :
     d.pw k ≫ (GlobalTheory.KS.pow X₂.Y.univ.A k).hom ≫ X₂.Y.s = (GlobalTheory.KS.pow X₁.Y.univ.A k).hom ≫ X₁.Y.s := by
   have h := (hP _ _ _ X₁.Y.univ.A X₂.Y.univ.A X₂.Y.univ.A d.t (𝟙 _) d.Φ (𝟙 _) d.w (by simp) k).2.1
   rw [Down.pw, ← Category.assoc, h, Category.assoc, d.ov]
 
+/- English proof (translation)
+Take `⟨π, o, ψ, φ, hw, hov, htr, he⟩` from `T.tr_eq M₁ M₂ h a b`. Use `⟨⟨π, o, ψ, φ, hov, htr⟩, fun {_ _ _ _ X₁ X₂ _ _ _ _} C₁ C₂ d hd => ?_⟩` and prove the remaining obligations. Establish `e1` using `(hP _ _ _ (T.M M₁).univ.A X₁.Y.univ.A X₂.Y.univ.A C₁.j d.t C₁.m.φ d.Φ C₁.m.cart.1.w d.w k).2.2 (by rw [Category.assoc, d.w, ← Category.assoc, C₁.m.cart.1.w, Category.assoc])`. Establish `e2` using `(hP _ _ _ (T.M M₁).univ.A (T.M M₂).univ.A X₂.Y.univ.A π C₂.j (ψ.left ≫ φ.φ) C₂.m.φ hw C₂.m.cart.1.w k).2.2 (by rw [Category.assoc, C₂.m.cart.1.w, ← Category.assoc, hw, Category.assoc])`. Establish `e3 : C₁.pw k ≫ d.pw k = GlobalTheory.KS.powMap π (ψ.left ≫ φ.φ) hw k ≫ C₂.pw k` using `e1.trans ((powMap_congr hd.1 (hd.2.trans (Category.assoc _ _ _).symm) _ _ k).trans e2.symm)`.
+
+Use `show ((T.e M₁).hom ≫ C₁.pw k) ≫ d.pw k = _ ≫ (T.e M₂).hom ≫ C₂.pw k`. Rewrite using `[Category.assoc, e3, ← Category.assoc, ← he, Category.assoc]`.
+-/
 theorem exists_wit (hP : PowCart) {k : ℕ} (T : KS L gb k) (h : G.GAf) (M₁ M₂ : Lv p) (a b) :
     ∃ W : Wit T h M₁ M₂, ∀ {N₁ N₂ : ℕ} {𝔟₁ 𝔟₂ : Ideal (𝓞 D.F)} {X₁ : Ext S N₁ 𝔟₁} {X₂ : Ext S N₂ 𝔟₂} {c₁ c₂ : ℕ} {a₁ a₂ : 𝓞 D.F}
       (C₁ : X₁.site.Cl (T.M M₁).univ c₁ a₁) (C₂ : X₂.site.Cl (T.M M₂).univ c₂ a₂) (d : Down X₁ X₂), d.Extends W C₁ C₂ →
@@ -49,6 +60,9 @@ def Ok {N₁ N₂ : ℕ} {𝔟₁ 𝔟₂ : Ideal (𝓞 D.F)} {X₁ : Ext S N₁
     (t : (GlobalTheory.KS.pow X₁.Y.univ.A k).left ⟶ (GlobalTheory.KS.pow X₂.Y.univ.A k).left) : Prop :=
   t ≫ X₂.ps k = X₁.ps k ∧ ∀ a b, π₁ ≫ t = T.X.tr (T.lev M₁) (T.lev M₂) h a b ≫ π₂
 
+/- English proof (translation)
+Take `⟨W, hW⟩` from `exists_wit (S := S) hP T h M₁ M₂ ad.1 ad.2`. Take `⟨d, hd, hq⟩` from `H W`. Conclude with `⟨d, ⟨d.pw_ov hP k, fun _ _ => hW C₁ C₂ d hd⟩, hq⟩`.
+-/
 theorem ok_of (hP : PowCart) {N₁ N₂ : ℕ} {𝔟₁ 𝔟₂ : Ideal (𝓞 D.F)} {X₁ : Ext S N₁ 𝔟₁} {X₂ : Ext S N₂ 𝔟₂} {k : ℕ} (T : KS L gb k) (h : G.GAf)
     {M₁ M₂ : Lv p} {c₁ c₂ : ℕ} {a₁ a₂ : 𝓞 D.F} (C₁ : X₁.site.Cl (T.M M₁).univ c₁ a₁) (C₂ : X₂.site.Cl (T.M M₂).univ c₂ a₂)
     (Q : Down X₁ X₂ → Prop) (ad : T.X.admitted (T.lev M₁) (T.lev M₂) h)
@@ -58,6 +72,9 @@ theorem ok_of (hP : PowCart) {N₁ N₂ : ℕ} {𝔟₁ 𝔟₂ : Ideal (𝓞 D.
   obtain ⟨d, hd, hq⟩ := H W
   exact ⟨d, ⟨d.pw_ov hP k, fun _ _ => hW C₁ C₂ d hd⟩, hq⟩
 
+/- English proof (translation)
+Use `⟨by rw [Category.assoc, H'.1, H.1], fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, H.2 ad.1 ad.2, Category.assoc, H'.2 ad'.1 ad'.2, ← Category.assoc, T.X.tr_mul]`.
+-/
 theorem Ok.comp {N₁ N₂ N₃ : ℕ} {𝔟₁ 𝔟₂ 𝔟₃ : Ideal (𝓞 D.F)} {X₁ : Ext S N₁ 𝔟₁} {X₂ : Ext S N₂ 𝔟₂} {X₃ : Ext S N₃ 𝔟₃} {k : ℕ} {T : KS L gb k}
     {h h' : G.GAf} {M₁ M₂ M₃ : Lv p} {π₁ : T.X.Z (T.lev M₁) ⟶ (GlobalTheory.KS.pow X₁.Y.univ.A k).left}
     {π₂ : T.X.Z (T.lev M₂) ⟶ (GlobalTheory.KS.pow X₂.Y.univ.A k).left} {π₃ : T.X.Z (T.lev M₃) ⟶ (GlobalTheory.KS.pow X₃.Y.univ.A k).left} {t t'}
@@ -66,15 +83,24 @@ theorem Ok.comp {N₁ N₂ N₃ : ℕ} {𝔟₁ 𝔟₂ 𝔟₃ : Ideal (𝓞 D.
   refine ⟨by rw [Category.assoc, H'.1, H.1], fun a b => ?_⟩
   rw [← Category.assoc, H.2 ad.1 ad.2, Category.assoc, H'.2 ad'.1 ad'.2, ← Category.assoc, T.X.tr_mul]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(T.Δ_eq _).2 hi, fun u hu => by rw [T.K_eq] at hu ⊢; exact ha u hu⟩`.
+-/
 theorem admissible_of_integral_conj_le {k : ℕ} (T : KS L gb k) {h : G.GAf} {M₁ M₂ : Lv p} (hi : Integ L h) (ha : ∀ u ∈ L.KN M₁.1, h * u * h⁻¹ ∈ L.KN M₂.1) :
     T.X.admitted (T.lev M₁) (T.lev M₂) h :=
   ⟨(T.Δ_eq _).2 hi, fun u hu => by rw [T.K_eq] at hu ⊢; exact ha u hu⟩
 
+/- English proof (translation)
+The claim follows from `(hCls q (datAt S.atq S.sp) (Ow w) E S.b gb _ S.mat M.1 _ c a _ hn.1 (lt_of_lt_of_le (by norm_num) M.2.1) X.lev.1 X.lev.2.1 hn.2 X.Y _ _ (T.M M).univ).1`.
+-/
 theorem cls_of (hNum : NumEx) (hCls : ClsEx) {N₁ : ℕ} {𝔟 : Ideal (𝓞 D.F)} (X : Ext S N₁ 𝔟) {k : ℕ} (T : KS L gb k) (M : Lv p) (c : ℕ) (a : 𝓞 D.F)
     (hn : X.site.Num M.1 c a) : Nonempty (X.site.Cl (T.M M).univ c a) :=
   (hCls q (datAt S.atq S.sp) (Ow w) E S.b gb _ S.mat M.1 _ c a _ hn.1 (lt_of_lt_of_le (by norm_num) M.2.1) X.lev.1 X.lev.2.1 hn.2 X.Y _ _
     (T.M M).univ).1
 
+/- English proof (translation)
+Introduce `u hu` and use `by obtain ⟨u1, u2⟩ := (hK₁ u).1 hu refine (hK₀ u).2 ⟨u1, fun v hv => AddSubgroup.closure_mono ?_ (u2 v hv)⟩ rintro z ⟨x, hx, y⟩ refine ⟨x, Ideal.mul_mono ?_ hle hx, y⟩ rw [Ideal.span_singleton_le_span_singleton, Nat.cast_mul] exact dvd_mul_right _ _`.
+-/
 theorem lev_le {N₀ κ : ℕ} {𝔞 𝔞' : Ideal (𝓞 D.F)} {K₀ K₁ : Subgroup G.GAf} (hK₀ : IsLev L (Ideal.span {(N₀ : 𝓞 D.F)} * 𝔞) K₀)
     (hK₁ : IsLev L (Ideal.span {((N₀ * κ : ℕ) : 𝓞 D.F)} * 𝔞') K₁) (hle : 𝔞' ≤ 𝔞) : K₁ ≤ K₀ := fun u hu => by
   obtain ⟨u1, u2⟩ := (hK₁ u).1 hu
@@ -84,6 +110,15 @@ theorem lev_le {N₀ κ : ℕ} {𝔞 𝔞' : Ideal (𝓞 D.F)} {K₀ K₁ : Subg
   rw [Ideal.span_singleton_le_span_singleton, Nat.cast_mul]
   exact dvd_mul_right _ _
 
+/- English proof (translation)
+Establish `ad : T.X.admitted (T.lev M) (T.lev N) 1` using `admissible_of_integral_conj_le T (integ_of_mem (one_mem _)) fun u hu => by simpa using KN_anti hd hu`. Take `⟨d, ok, fd, ed, pd⟩` from `ok_of hP T 1 C₁ C₀ _ ad (hF p D G L hSc E gb w q r 𝔴 _ S k T N₀ κ 𝔞' 𝔞 X₁ X₀ hle M N c₁ c₀ a₁ a₀ n₁ n₀ hd C₁ C₀)`. Take `⟨t, ht⟩` from `hd`. Establish `n₀' : X₀.site.Num M.1 (c₀ * t) (t * a₀)`. Rewrite using `[ht]; exact (hNum p D E gb w q r 𝔴 _ X₀.site N.1 (lt_of_lt_of_le (by norm_num) N.2.1)).2 c₀ a₀ t n₀`.
+
+Take `⟨C₀'⟩` from `cls_of hNum hCls X₀ T M _ _ n₀'`. Establish `pb` using `(hP _ _ _ X₁.Y.univ.A X₀.Y.univ.A X₀.Y.univ.A d.t (𝟙 _) d.Φ (𝟙 _) d.w (by simp) k).1 pd`. Establish `fs : IsFinite (d.pw k)` using `MorphismProperty.of_isPullback pb.flip fd`. Establish `ets : Etale (d.pw k)` using `MorphismProperty.of_isPullback pb.flip ed`. Establish `e0 : X₁.site.pi T C₁ ≫ d.pw k = X₀.site.pi T C₀'` using `(ok.2 ad.1 ad.2).trans (hInv p D G L E gb w q r 𝔴 _ X₀.site k T K₀ hK₀ M N t c₀ a₀ ht n₀ C₀' C₀ 1 (one_mem _) _ _)`.
+
+Establish `q0 : IsQuot T.X (Ow w) K₀ (T.lev M) (X₀.ps k) (X₁.site.pi T C₁ ≫ d.pw k)` using `e0.symm ▸ hQ p D G L hSc E gb w q r 𝔴 _ X₀.site k T K₀ hK₀ M _ _ n₀' C₀'`. Establish `q1 : IsQuot T.X (Ow w) K₁ (T.lev M) (d.pw k ≫ X₀.ps k) (X₁.site.pi T C₁)`. Rewrite using `[ok.1]`. Conclude with `hQ p D G L hSc E gb w q r 𝔴 _ X₁.site k T K₁ hK₁ M _ _ n₁ C₁`. Establish `fl : Flat (X₀.ps k)`.
+
+Take `⟨n, hn⟩` from `X₀.dim k`. Use `haveI : Smooth (X₀.ps k) := hn.smooth`. Use `infer_instance`. Conclude with `⟨d.pw k, ok, q0, q1, hE (Ow w) E _ _ _ _ _ fl fs ets (hD E _ T.X (Ow w) K₀ K₁ _ _ _ _ _ _ (lev_le hK₀ hK₁ hle) q0 q1)⟩`.
+-/
 theorem forget_of (hSc : Sc D G) (hNum : NumEx) (hCls : ClsEx) (hInv : PiInv) (hP : PowCart) (hQ : QuotOf) (hF : StepF) (hD : DegGen) (hE : FEtExt)
     {k : ℕ} (T : KS L gb k) {N₀ κ : ℕ} {𝔞 𝔞' : Ideal (𝓞 D.F)} (X₁ : Ext S (N₀ * κ) 𝔞') (X₀ : Ext S N₀ 𝔞) (hle : 𝔞' ≤ 𝔞) {K₀ K₁ : Subgroup G.GAf}
     (hK₀ : IsLev L (Ideal.span {(N₀ : 𝓞 D.F)} * 𝔞) K₀) (hK₁ : IsLev L (Ideal.span {((N₀ * κ : ℕ) : 𝓞 D.F)} * 𝔞') K₁) {M N : Lv p}
@@ -113,6 +148,13 @@ theorem forget_of (hSc : Sc D G) (hNum : NumEx) (hCls : ClsEx) (hInv : PiInv) (h
     infer_instance
   exact ⟨d.pw k, ok, q0, q1, hE (Ow w) E _ _ _ _ _ fl fs ets (hD E _ T.X (Ow w) K₀ K₁ _ _ _ _ _ _ (lev_le hK₀ hK₁ hle) q0 q1)⟩
 
+/- English proof (translation)
+Break down `hcase with h1 | ⟨𝔴', i, m', u', le', hi, dv, tj⟩` into its components or cases. Rewrite `ad₁` using `[h1]`. Rewrite using `[h1, _root_.one_mul]`. Take `⟨d, ok, -⟩` from `ok_of hP T h₂ C₁ C₀ (fun _ => True) (admissible_of_integral_conj_le T i₂ fun u hu => by simpa using ad₁ _ (ad₂ u hu)) fun W => (hA p D G L hSc E gb w q r 𝔴 _ S k T N₀ κ 𝔞' 𝔞 X₁ X₀ hle _ i₂ hκ M N c₁ c₀ a₁ a₀ n₁ n₀ C₁ C₀ W).imp fun _ h => ⟨h, trivial⟩`. Conclude with `⟨_, ok⟩`.
+
+Take `⟨X₂⟩` from `hExt p D G hSc E gb w q r 𝔴 _ S N₀ 𝔞' ⟨X₀.lev.1, X₀.lev.2.1, X₀.lev.2.2.1, X₁.lev.2.2.2.1, X₁.lev.2.2.2.2⟩`. Take `⟨c₂, a₂, n₂⟩` from `(hNum p D E gb w q r 𝔴 _ X₂.site N₁.1 (lt_of_lt_of_le (by norm_num) N₁.2.1)).1 hN₁`. Take `⟨C₂⟩` from `cls_of hNum hCls X₂ T N₁ c₂ a₂ n₂`. Take `⟨d₂, ok₂, -⟩` from `ok_of hP T h₂ C₁ C₂ (fun _ => True) (admissible_of_integral_conj_le T i₂ ad₂) fun W => (hA p D G L hSc E gb w q r 𝔴 _ S k T N₀ κ 𝔞' 𝔞' X₁ X₂ le_rfl _ i₂ hκ M N₁ c₁ c₂ a₁ a₂ n₁ n₂ C₁ C₂ W).imp fun _ h => ⟨h, trivial⟩`. Take `⟨d₁, ok₁, -⟩` from `ok_of hP T h₁ C₂ C₀ (fun _ => True) (admissible_of_integral_conj_le T i₁ ad₁) fun W => (hB p D G L hSc E gb w q r 𝔴 _ S k T N₀ 𝔞' 𝔞 X₂ X₀ 𝔴' i m' u' le' hi h₁ i₁ tj N₁ N c₂ c₀ a₂ a₀ n₂ n₀ dv C₂ C₀ W).imp fun _ h => ⟨h, trivial⟩`.
+
+Conclude with `⟨_, ok₂.comp ok₁ (admissible_of_integral_conj_le T i₂ ad₂) (admissible_of_integral_conj_le T i₁ ad₁)⟩`.
+-/
 theorem transl_of (hSc : Sc D G) (hNum : NumEx) (hCls : ClsEx) (hP : PowCart) (hExt : ExtEx) (hA : StepA) (hB : StepB)
     {k : ℕ} (T : KS L gb k) {N₀ κ : ℕ} {𝔞 𝔞' : Ideal (𝓞 D.F)} (X₁ : Ext S (N₀ * κ) 𝔞') (X₀ : Ext S N₀ 𝔞) (hle : 𝔞' ≤ 𝔞) {M N N₁ : Lv p}
     {c₁ c₀ : ℕ} {a₁ a₀ : 𝓞 D.F} (n₁ : X₁.site.Num M.1 c₁ a₁) (n₀ : X₀.site.Num N.1 c₀ a₀)
@@ -139,6 +181,17 @@ theorem transl_of (hSc : Sc D G) (hNum : NumEx) (hCls : ClsEx) (hP : PowCart) (h
 
 end
 
+/- English proof (translation)
+Introduce `p _ D G L hSc E _ _ e gb hstd k T N J A _ g θ w 𝔴 hpl ⟨q, r, N₀, 𝔞, K₀, hat, hlev, hK₀, hNK, hNm, hdeck, hall⟩`. Use `haveI : Fact q.Prime := ⟨hat.prime⟩`. Take `⟨S⟩` from `hSite p D G hSc E e gb hstd w q r 𝔴 _ hpl hat ⟨N₀, 𝔞, hlev.1, hlev.2.1, hlev.2.2.1, hlev.2.2.2.1, hlev.2.2.2.2, rfl⟩`. Establish `pos : ∀ M : Lv p, 0 < M.1` using `fun M => lt_of_lt_of_le (by norm_num) M.2.1`. Take `⟨X₀⟩` from `hExt p D G hSc E gb w q r 𝔴 _ S N₀ 𝔞 hlev`.
+
+Take `⟨c₀, a₀, n₀⟩` from `(hNum p D E gb w q r 𝔴 _ X₀.site N.1 (pos N)).1 hNm`. Take `⟨C₀⟩` from `cls_of hNum hCls X₀ T N c₀ a₀ n₀`. Take `⟨Cv⟩` from `hCov p D G L E gb w q r 𝔴 _ X₀.site k T K₀ hK₀ N c₀ a₀ n₀ C₀ hNK J A g θ hdeck`. Use `⟨Cv.toCover, fun j => ?_⟩` and prove the remaining obligations. Take `⟨κ, 𝔞', K₁, h₁, h₂, N₁, hlev', hK₁, hle, -, hMm, hdec, hh, i₁, i₂, hκ, hN₁, ad₂, ad₁, hcase⟩` from `hall j`.
+
+Take `⟨X₁⟩` from `hExt p D G hSc E gb w q r 𝔴 _ S (N₀ * κ) 𝔞' hlev'`. Take `⟨c₁, a₁, n₁⟩` from `(hNum p D E gb w q r 𝔴 _ X₁.site (g j).M.1 (pos _)).1 hMm`. Take `⟨C₁⟩` from `cls_of hNum hCls X₁ T (g j).M c₁ a₁ n₁`. Take `⟨s, ok, q0, q1, fe⟩` from `forget_of hSc hNum hCls hInv hP hQ hF hD hE T X₁ X₀ hle hK₀ hK₁ (g j).dvd n₁ n₀ C₁ C₀`. Use `hL p D G L E gb k T N J A g θ (Ow w) Cv.toCover j K₀ K₁ _ (X₁.site.pi T C₁) s _ (lev_le hK₀ hK₁ hle) hNK q0 q1 (fun a b => (ok.2 a b).symm) fe hdec fun x hx => ?_` and prove the remaining obligations.
+
+Establish `x1 : x ∈ L.KN 1` using `(g j).le_one hx`. Establish `κx : ∀ v ∈ LaHat D, ∃ v' ∈ LaHat D, L.actG (h₂ * x) v' = κ • v` using `fun v hv => by`. Take `⟨v', hv', e'⟩` from `hκ v hv`. Use `⟨L.actG x⁻¹ v', integ_of_mem (inv_mem x1) v' hv', ?_⟩` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel_right, e']`.
+
+Take `⟨t, okt⟩` from `transl_of hSc hNum hCls hP hExt hA hB T X₁ X₀ hle n₁ n₀ C₁ C₀ i₁ (i₂.mul (integ_of_mem x1)) κx hN₁ (ad₂ x hx) ad₁ hcase`. Rewrite `okt` using `[← _root_.mul_assoc, ← hh]`. Conclude with `⟨t, okt.1.trans ok.1.symm, okt.2⟩`.
+-/
 theorem ksGood_of (hSite : SiteEx) (hNum : NumEx) (hCls : ClsEx) (hCov : KSCover) (hInv : PiInv) (hP : PowCart) (hExt : ExtEx)
     (hQ : QuotOf) (hA : StepA) (hB : StepB) (hF : StepF) (hD : DegGen) (hE : FEtExt) (hL : LiesAbs) : KSGood := by
   intro p _ D G L hSc E _ _ e gb hstd k T N J A _ g θ w 𝔴 hpl ⟨q, r, N₀, 𝔞, K₀, hat, hlev, hK₀, hNK, hNm, hdeck, hall⟩

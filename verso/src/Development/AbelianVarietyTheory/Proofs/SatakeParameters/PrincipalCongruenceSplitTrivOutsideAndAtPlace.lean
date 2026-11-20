@@ -10,6 +10,21 @@ namespace GlobalTheory.CongSplitBoth
 
 open GlobalTheory.IdemSplit GlobalTheory.CongSplit
 
+/- English proof (translation)
+Introduce `L _ _ _ n N v κ hc`. Use `set e := idemAt L v with he_def`. Establish `he : e * e = e` using `idemAt_mul_self L v`. Establish `he' : (1 - e) * (1 - e) = 1 - e`. Rewrite using `[sub_mul, one_mul, mul_sub, mul_one, he, sub_self, sub_zero]`.
+
+Establish `hσ : conjAL L e = e` using `conjAL_idemAt L v`. Establish `hσ' : conjAL L (1 - e) = 1 - e` using `by rw [map_sub, map_one, hσ]`. Establish `hei : e ∈ ALint L` using `idemAt_mem L v`. Establish `hei' : 1 - e ∈ ALint L` using `Subring.sub_mem _ (one_mem _) hei`. Use `⟨gaFold he hσ κ, gaFold he' hσ' κ, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `w hw`. Establish `hw' : w ≠ v` using `by simpa using hw`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, gaFold_val, fold_apply, map_add, map_mul, map_mul, map_sub, map_one, compAt_idemAt_ne L v hw', compAt_one_apply]`. Simplify using the standard rewrite rules.
+
+Introduce `w hw`. Establish `hw' : w = v` using `by simpa using hw`. Substitute `hw'` using the available equality. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, gaFold_val, fold_apply, map_add, map_mul, map_mul, map_sub, map_one, compAt_one_apply]`.
+
+Simplify using `[he_def, compAt_idemAt_self]`. Use `⟨gaFold_mem_Umax L he hσ hei κ hc.1, fun i j => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, hEq⟩` from `hc.2 i j`. Use `⟨e * y, Subring.mul_mem _ hei hy, ?_⟩` and prove the remaining obligations. Rewrite using `[gaFold_val, fold_apply]`.
+
+Take the linear combination `e * hEq`. Use `⟨gaFold_mem_Umax L he' hσ' hei' κ hc.1, fun i j => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, hEq⟩` from `hc.2 i j`. Use `⟨(1 - e) * y, Subring.mul_mem _ hei' hy, ?_⟩` and prove the remaining obligations. Rewrite using `[gaFold_val, fold_apply, sub_sub_cancel]`.
+
+Take the linear combination `(1 - e) * hEq`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext show (κ.1 : Matrix (Fin n) (Fin n) (AL L)) = fold e _ * fold (1 - e) _` to reduce the goal to its premises. Rewrite using `[fold_mul_fold he, ← add_smul, add_sub_cancel, one_smul]`.
+-/
 theorem split_cong_at_place : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (N : ℕ) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (κ : GAf L n), NG.Cong L n N κ → ∃ x y : GAf L n, TrivOutside {v} x ∧ TrivOutside {v}ᶜ y ∧ NG.Cong L n N x ∧ NG.Cong L n N y ∧ κ = x * y := by
   intro L _ _ _ n N v κ hc
   set e := idemAt L v with he_def

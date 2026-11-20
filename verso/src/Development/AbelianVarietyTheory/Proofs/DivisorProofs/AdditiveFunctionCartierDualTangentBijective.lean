@@ -11,6 +11,9 @@ namespace GlobalTheory
 
 namespace PDiv
 
+/- English proof (translation)
+Establish `hp : IsPrimitiveElem R a` using `(CartierDual.isPrimitiveElem_iff_mul a).2 h`. Rewrite using `[LinearMap.mem_ker, cobOne_apply, sub_sub, sub_eq_zero]`. Conclude with `hp`.
+-/
 theorem mem_ker_cobOne_of_mul {R A : Type} [CommRing R] [CommRing A] [Bialgebra R A]
     [Module.Finite R A] [Module.Projective R A] {a : A}
     (h : ∀ φ ψ : CartierDual R A, (φ * ψ) a = φ 1 * ψ a + ψ 1 * φ a) :
@@ -19,6 +22,15 @@ theorem mem_ker_cobOne_of_mul {R A : Type} [CommRing R] [CommRing A] [Bialgebra 
   rw [LinearMap.mem_ker, cobOne_apply, sub_sub, sub_eq_zero]
   exact hp
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `b b' hbb`. Use `Subtype.ext (CartierDual.eq_of_forall_apply (R := R) fun φ => ?_)` and prove the remaining obligations. Rewrite using `[← primTangent_d b φ, ← primTangent_d b' φ, hbb]`. Introduce `l`.
+
+Set `δ : CartierDual R A →ₗ[R] R` to `l ∘ₗ AugCot.d (counitAlgHom R (CartierDual R A))`. Take `⟨a, ha⟩` from `(CartierDual.toBidual_bijective (R := R) (M := A)).2 (toConv δ)`. Establish `hδ : ∀ φ : CartierDual R A, φ a = δ φ` using `fun φ => by`. Use `congrArg (fun x => x φ) ha` as an intermediate fact. Simplify using `using this`.
+
+Establish `hmem : a ∈ LinearMap.ker (cobOne R A)` using `mem_ker_cobOne_of_mul fun φ ψ => by`. Rewrite using `[hδ, hδ, hδ]`. Simplify using `only [δ, LinearMap.comp_apply, AugCot.d_mul, map_add, map_smul, smul_eq_mul]`. Both sides reduce to the same expression. Use `⟨⟨a, hmem⟩, AugCot.hom_ext fun φ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[primTangent_d]`. Conclude with `hδ φ`.
+-/
 theorem primTangent_bijective {R A : Type} [CommRing R] [CommRing A] [Bialgebra R A]
     [Module.Finite R A] [Module.Projective R A] [IsCocomm R A] :
     Function.Bijective (primTangent R A) := by

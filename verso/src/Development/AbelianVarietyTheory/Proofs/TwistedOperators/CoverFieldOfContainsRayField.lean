@@ -15,6 +15,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.TwistField
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A T _ R hT hL hQ hray`. Unfold `GlobalTheory.TwistField.CoverField`. Introduce `i t l₂ hdvd hM hA Xo₂ c₂ hc`. Take `⟨hHost, hLev, -, -⟩` from `hT.pins`. Unfold `Par.PinHost at hHost`.
+
+Unfold `Par.PinLevel at hLev`. Establish `hn : GlobalTheory.IndefiniteRowSideFullHecke.RayFieldTheta.tupLevel R t = l₂.M`. Rewrite using `[hM, hLev.1]`. Both sides reduce to the same expression. Establish `hsq : ∃ a : D.host.K, a ^ 2 = -(T.Q.H.d : D.host.K)`.
+
+Use `⟨⟨D.host.sqrtMinusD, Formalism.L2.Pj.LPb.sqrtMinusD_mem_K D⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hHost.1]`. Apply `Subtype.ext` to reduce the goal to its premises. Use `push_cast`. Conclude with `Formalism.BasicNotions.Host.sqrtMinusD_sq D.host`.
+
+Establish `h3 : 3 ≤ GlobalTheory.IndefiniteRowSideFullHecke.RayFieldTheta.tupLevel R t` using `hn ▸ l₂.three_le`. Establish `hW` using `(GlobalTheory.T.weberValues_mem_of_containsRayField D.host.E T.Q.H D.host.K D.what₂.LL (GlobalTheory.IndefiniteRowSideFullHecke.RayFieldTheta.embK D) D.what₂.embLL (Formalism.L2.Pj.LPb.finrank_K D) hsq _ h3 (hray t)).1`. Use `GlobalTheory.T.geometricallyIrreducible_components_weberValues D T.Q hT.pins ((i : ℕ) + 1) ⟨by omega, by omega⟩ l₂ Xo₂ c₂ (GlobalTheory.IndefiniteRowSideFullHecke.RayFieldTheta.tupLevel R t) (by omega) ?_ (Or.inl (hc ▸ hW))` and prove the remaining obligations. Use `show Nat.lcm l₂.M l₂.A ∣ _`. Rewrite using `[hA, Nat.lcm_one_right, hn]`.
+-/
 theorem coverField_of_containsRayField : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F), LawsJ T → R.toLevCh.Is A.μ0 → QGuard R → (∀ t, GlobalTheory.IndefiniteRowSideFullHecke.RayFieldTheta.ContainsRayField (GlobalTheory.IndefiniteRowSideFullHecke.RayFieldTheta.embK D) (GlobalTheory.IndefiniteRowSideFullHecke.RayFieldTheta.tupLevel R t)) → GlobalTheory.TwistField.CoverField T R := by
   intro D G _ _ Pl0 T0 A T _ R hT hL hQ hray
   unfold GlobalTheory.TwistField.CoverField

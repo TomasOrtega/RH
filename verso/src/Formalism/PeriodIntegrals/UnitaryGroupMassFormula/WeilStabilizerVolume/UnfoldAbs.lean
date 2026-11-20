@@ -24,6 +24,9 @@ instance subMeasurableInv (H : Subgroup G) : MeasurableInv H where
     exact ((measurable_inv.comp measurable_subtype_coe).subtype_mk :
       Measurable fun x : H => (⟨(x : G)⁻¹, H.inv_mem x.2⟩ : H))
 
+/- English proof (translation)
+The claim follows from `ht.nullMeasurableSet ae_covers := by have h1 : ∀ (γ : Γ), ∀ᵐ g ∂μ, g ∉ (fun g => (γ : G) * g) ⁻¹' (s \ t) := fun γ => measure_eq_zero_iff_ae_notMem.1 (by rw [measure_preimage_mul]; exact hnull) have h2 := (ae_all_iff (ι := Γ)).2 h1 filter_upwards [h.ae_covers, h2] with g hg h3 ob …`.
+-/
 theorem fd_of_subset {Γ : Subgroup G} [Countable Γ] {μ : Measure G} [μ.IsMulLeftInvariant]
     {s t : Set G} (h : IsFundamentalDomain Γ s μ) (hts : t ⊆ s) (ht : MeasurableSet t)
     (hnull : μ (s \ t) = 0) : IsFundamentalDomain Γ t μ where
@@ -40,6 +43,13 @@ theorem fd_of_subset {Γ : Subgroup G} [Countable Γ] {μ : Measure G} [μ.IsMul
   aedisjoint := fun γ γ' hne =>
     measure_mono_null (inter_subset_inter (smul_set_mono hts) (smul_set_mono hts)) (h.aedisjoint hne)
 
+/- English proof (translation)
+Establish `hpair : ∀ᵐ g ∂μ, ∀ γ γ' : Γ, γ • g ∈ s → γ' • g ∈ s → γ = γ'`. Rewrite using `[ae_all_iff]`. Introduce `γ`. Rewrite using `[ae_all_iff]`. Introduce `γ'`.
+
+Distinguish the cases in `hγ : γ = γ'`. Conclude with `Filter.Eventually.of_forall fun _ _ _ => hγ`. Establish `hd : μ (γ⁻¹ • s ∩ γ'⁻¹ • s) = 0` using `h.aedisjoint (show γ⁻¹ ≠ γ'⁻¹ from fun e => hγ (inv_injective e)) filter_upwards [compl_mem_ae_iff.2 hd] with g hg h1 h2`. Conclude with `absurd ⟨Set.mem_inv_smul_set_iff.2 h1, Set.mem_inv_smul_set_iff.2 h2⟩ hg`. Use `filter_upwards [h.ae_covers, hpair] with g hc hu`.
+
+Take `⟨γ0, hγ0⟩` from `hc`. Rewrite using `[tsum_eq_single γ0]`. Conclude with `Set.indicator_of_mem hγ0 _`. Introduce `γ hne`. Conclude with `Set.indicator_apply_eq_zero.2 fun hm => absurd (hu γ γ0 hm hγ0) hne`.
+-/
 theorem fd_count_ae {Γ : Subgroup G} [Countable Γ] {μ : Measure G} {s : Set G}
     (h : IsFundamentalDomain Γ s μ) :
     ∀ᵐ g ∂μ, ∑' γ : Γ, s.indicator (fun _ => (1 : ℝ≥0∞)) ((γ : G) * g) = 1 := by
@@ -61,6 +71,9 @@ theorem fd_count_ae {Γ : Subgroup G} [Countable Γ] {μ : Measure G} {s : Set G
   · intro γ hne
     exact Set.indicator_apply_eq_zero.2 fun hm => absurd (hu γ γ0 hm hγ0) hne
 
+/- English proof (translation)
+Use `Function.Injective.countable (f := fun x : (Γ ⊓ H).subgroupOf H => (⟨((x : H) : G), (Subgroup.mem_inf.1 (Subgroup.mem_subgroupOf.1 x.2)).1⟩ : Γ)) ?_` and prove the remaining obligations. Introduce `a b hab`. Establish `e : ((a : H) : G) = ((b : H) : G)` using `congrArg (fun z : Γ => (z : G)) hab`. Conclude with `Subtype.ext (Subtype.ext e)`.
+-/
 theorem countable_subgroupOf {Γ H : Subgroup G} [Countable Γ] :
     Countable ((Γ ⊓ H).subgroupOf H) := by
   refine Function.Injective.countable
@@ -70,6 +83,11 @@ theorem countable_subgroupOf {Γ H : Subgroup G} [Countable Γ] :
   have e : ((a : H) : G) = ((b : H) : G) := congrArg (fun z : Γ => (z : G)) hab
   exact Subtype.ext (Subtype.ext e)
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `g`. Simplify using `[mul_inv_rev]`. Use `_ = ∫⁻ g, f g⁻¹ ∂μ := lintegral_mul_left_eq_self (fun h => f h⁻¹) r⁻¹`.
+
+Use `_ = ∫⁻ g, f g ∂μ := lintegral_inv_eq_self f`.
+-/
 theorem lint_mul_right {μ : Measure G} [μ.IsMulLeftInvariant] [μ.IsInvInvariant]
     (f : G → ℝ≥0∞) (r : G) : ∫⁻ g, f (g * r) ∂μ = ∫⁻ g, f g ∂μ := by
   calc ∫⁻ g, f (g * r) ∂μ = ∫⁻ g, f (g⁻¹ * r) ∂μ := (lintegral_inv_eq_self (fun g => f (g * r))).symm
@@ -87,9 +105,15 @@ def orbS (Γ : Subgroup G) (y0 : Y) : Set Y := {x | ∃ γ ∈ Γ, γ • y0 = x
 def repO (Γ : Subgroup G) (y0 : Y) (x : orbS Γ y0) : G :=
   Classical.choose (x.2 : ∃ γ ∈ Γ, γ • y0 = (x : Y))
 
+/- English proof (translation)
+Conclude with `(Classical.choose_spec x.2).1`.
+-/
 theorem repO_mem (Γ : Subgroup G) (y0 : Y) (x : orbS Γ y0) : repO Γ y0 x ∈ Γ := by
   exact (Classical.choose_spec x.2).1
 
+/- English proof (translation)
+Conclude with `(Classical.choose_spec x.2).2`.
+-/
 theorem repO_smul (Γ : Subgroup G) (y0 : Y) (x : orbS Γ y0) : repO Γ y0 x • y0 = x := by
   exact (Classical.choose_spec x.2).2
 
@@ -99,18 +123,27 @@ def cntN (Γ : Subgroup G) (A : Set G) (g : G) : ℝ≥0∞ :=
 def cfun (Γ : Subgroup G) (A : Set G) (y0 : Y) (g : G) : ℝ≥0∞ :=
   ∑' x : orbS Γ y0, A.indicator (fun _ => (1 : ℝ≥0∞)) (repO Γ y0 x * g⁻¹)
 
+/- English proof (translation)
+Unfold `cntN`. Conclude with `Measurable.ennreal_tsum fun γ => (measurable_const.indicator hA).comp (measurable_const_mul (γ : G))`.
+-/
 theorem meas_cntN (Γ : Subgroup G) [Countable Γ] {A : Set G} (hA : MeasurableSet A) :
     Measurable (cntN Γ A) := by
   unfold cntN
   exact Measurable.ennreal_tsum fun γ =>
     (measurable_const.indicator hA).comp (measurable_const_mul (γ : G))
 
+/- English proof (translation)
+Unfold `cfun`. Conclude with `Measurable.ennreal_tsum fun x => (measurable_const.indicator hA).comp ((measurable_const_mul (repO Γ y0 x)).comp measurable_inv)`.
+-/
 theorem meas_cfun (Γ : Subgroup G) (y0 : Y) [Countable (orbS Γ y0)] {A : Set G}
     (hA : MeasurableSet A) : Measurable (cfun Γ A y0) := by
   unfold cfun
   exact Measurable.ennreal_tsum fun x =>
     (measurable_const.indicator hA).comp ((measurable_const_mul (repO Γ y0 x)).comp measurable_inv)
 
+/- English proof (translation)
+Unfold `cntN`. Establish `e` using `(Equiv.mulRight (⟨γ, hγ⟩ : Γ)).tsum_eq (fun δ : Γ => A.indicator (fun _ => (1 : ℝ≥0∞)) ((δ : G) * g))`. Simplify `e` using `[mul_assoc]`.
+-/
 theorem cntN_mul (Γ : Subgroup G) (A : Set G) {γ : G} (hγ : γ ∈ Γ) (g : G) :
     cntN Γ A (γ * g) = cntN Γ A g := by
   unfold cntN
@@ -118,6 +151,15 @@ theorem cntN_mul (Γ : Subgroup G) (A : Set G) {γ : G} (hγ : γ ∈ Γ) (g : G
     (fun δ : Γ => A.indicator (fun _ => (1 : ℝ≥0∞)) ((δ : G) * g))
   simpa [mul_assoc] using e
 
+/- English proof (translation)
+Set `F : orbS Γ y0 × (Γ ⊓ H).subgroupOf H → Γ` to `fun p => ⟨repO Γ y0 p.1 * ((p.2 : H) : G), Γ.mul_mem (repO_mem Γ y0 p.1) (Subgroup.mem_inf.1 (Subgroup.mem_subgroupOf.1 p.2.2)).1⟩`. Establish `hF : Function.Bijective F`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, δ⟩ ⟨x', δ'⟩ he`. Establish `he' : repO Γ y0 x * ((δ : H) : G) = repO Γ y0 x' * ((δ' : H) : G)` using `congrArg Subtype.val he`.
+
+Establish `hδ : ((δ : H) : G) • y0 = y0` using `(hH _).1 (δ : H).2`. Establish `hδ' : ((δ' : H) : G) • y0 = y0` using `(hH _).1 (δ' : H).2`. Establish `hx : (x : Y) = x'`. Combine the equalities or inequalities in the displayed calculation. Establish `hxx : x = x'` using `Subtype.ext hx`.
+
+Substitute `hxx` using the available equality. Establish `e : ((δ : H) : G) = ((δ' : H) : G)` using `mul_left_cancel he'`. Conclude with `Prod.ext rfl (Subtype.ext (Subtype.ext e))`. Introduce `γ`. Establish `hd : (repO Γ y0 ⟨(γ : G) • y0, γ, γ.2, rfl⟩)⁻¹ * γ ∈ H`.
+
+Rewrite using `[hH, mul_smul, inv_smul_eq_iff, repO_smul]`. Use `⟨(⟨(γ : G) • y0, γ, γ.2, rfl⟩, ⟨⟨_, hd⟩, Subgroup.mem_subgroupOf.2 (Subgroup.mem_inf.2 ⟨Γ.mul_mem (Γ.inv_mem (repO_mem Γ y0 _)) γ.2, hd⟩)⟩), ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `mul_inv_cancel_left _ _`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sum_rep_eq {Γ H : Subgroup G} (y0 : Y) (hH : ∀ k : G, k ∈ H ↔ k • y0 = y0)
     (u : G → ℝ≥0∞) :
     ∑' x : orbS Γ y0, ∑' δ : (Γ ⊓ H).subgroupOf H, u (repO Γ y0 x * ((δ : H) : G)) =

@@ -11,6 +11,13 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainN
 
 namespace GlobalTheory.Proof.LocDegPos
 
+/- English proof (translation)
+Introduce `E _ _ l hl`. Use `⟨fun v => ?_, fun s hs => ?_⟩` and prove the remaining obligations. Use `haveI := v.isPrime`. Conclude with `Nat.mul_pos (Ideal.ramificationIdx_pos v.asIdeal ℤ) (Ideal.inertiaDeg_pos v.asIdeal ℤ)`. Establish `hfin : Set.Finite {v : HeightOneSpectrum (𝓞 E) | ((l : ℕ) : 𝓞 E) ∈ v.asIdeal}`.
+
+Establish `hf : ((Ideal.span {(l : ℤ)}).primesOver (𝓞 E)).Finite` using `IsDedekindDomain.primesOver_finite _ _`. Use `Set.Finite.of_finite_image (f := fun v : HeightOneSpectrum (𝓞 E) => v.asIdeal) (hf.subset ?_) (fun a _ b _ h => HeightOneSpectrum.ext h)` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Use `⟨v.isPrime, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.liesOver_span_iff v.isPrime.ne_top (Nat.prime_iff_prime_int.1 hl)]`.
+
+Simplify using `using hv`. Use `letI : Fintype {v : HeightOneSpectrum (𝓞 E) // ((l : ℕ) : 𝓞 E) ∈ v.asIdeal} := hfin.fintype`. Establish `hsum` using `GlobalTheory.Proof.LocalDegreeSum.sum_locDeg E l`. Rewrite using `[← hsum, ← Finset.sum_subtype_of_mem (fun v => Formalism.MainNotions.N.locDeg E v) (p := fun v : HeightOneSpectrum (𝓞 E) => ((l : ℕ) : 𝓞 E) ∈ v.asIdeal) (fun v hv => hs v hv)]`. Conclude with `Finset.sum_le_sum_of_subset (Finset.subset_univ _)`.
+-/
 theorem locDeg_pos_and_sum_le : ∀ (E : Type) [Field E] [NumberField E] (l : ℕ), l.Prime → (∀ v : HeightOneSpectrum (𝓞 E), 0 < Formalism.MainNotions.N.locDeg E v) ∧ ∀ s : Finset (HeightOneSpectrum (𝓞 E)), (∀ v ∈ s, v ∈ placesOver E l) → ∑ v ∈ s, Formalism.MainNotions.N.locDeg E v ≤ Module.finrank ℚ E := by
   intro E _ _ l hl
   refine ⟨fun v => ?_, fun s hs => ?_⟩

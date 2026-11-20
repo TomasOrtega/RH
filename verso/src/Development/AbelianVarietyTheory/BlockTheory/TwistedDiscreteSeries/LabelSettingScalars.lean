@@ -49,8 +49,14 @@ def reached (t : T) (c : EigSys D) (k : ℕ) : Set (MMap (R.MY k)) :=
   Nat.rec (motive := fun k => Set (MMap (R.MY k))) (rowPart R (badPl R t) c : Set (MMap (R.MY 0)))
     (fun k P => {x | ∃ u ∈ P, IsUp R t k u x}) k
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem reached_zero (t : T) (c : EigSys D) : reached R t c 0 = (rowPart R (badPl R t) c : Set (MMap (R.MY 0))) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem reached_succ (t : T) (c : EigSys D) (k : ℕ) :
     reached R t c (k + 1) = {x | ∃ u ∈ reached R t c k, IsUp R t k u x} := rfl
 
@@ -107,6 +113,9 @@ def OneStep : Prop :=
   ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m)
     (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), OneStepAt R F
 
+/- English proof (translation)
+Use `inf_le_inf_right _ fun u hu => ?_` and prove the remaining obligations. Rewrite `hu`, the goal using `[partDual, mem_partFull]`. Use `⟨hu.1, fun P d Rp hR => hu.2 P d Rp ?_⟩` and prove the remaining obligations. Take `⟨e, f, ϖ, α, h1, h2⟩` from `hR`. Conclude with `⟨e, f, ϖ, α, fun v hv => h1 v (h hv), h2⟩`.
+-/
 theorem rowPart_mono {Sb Sb' : Finset (HeightOneSpectrum (𝓞 D.host.F))} (h : Sb ⊆ Sb') (c : EigSys D) :
     rowPart R Sb c ≤ rowPart R Sb' c := by
   refine inf_le_inf_right _ fun u hu => ?_
@@ -115,14 +124,23 @@ theorem rowPart_mono {Sb Sb' : Finset (HeightOneSpectrum (𝓞 D.host.F))} (h : 
   obtain ⟨e, f, ϖ, α, h1, h2⟩ := hR
   exact ⟨e, f, ϖ, α, fun v hv => h1 v (h hv), h2⟩
 
+/- English proof (translation)
+Take `⟨eR, plg, iso, -, h1, h2, h3, -⟩` from `h`. Conclude with `⟨eR, plg, iso, h1, h2, h3⟩`.
+-/
 theorem GoodTypes.record {R : RealDat D A Ks} (h : GoodTypes R) : R.grp_record := by
   obtain ⟨eR, plg, iso, -, h1, h2, h3, -⟩ := h
   exact ⟨eR, plg, iso, h1, h2, h3⟩
 
+/- English proof (translation)
+Conclude with `h.2.2.symm.trans h'.2.2` after adjusting the coercions.
+-/
 theorem IsLValue.unique {R : RealDat D A Ks} {t : T} {B : GlobalTheory.LFun.Fam D.host.E} {j : ℕ} {l l' : ℝ}
     (h : IsLValue R t B j l) (h' : IsLValue R t B j l') : l = l' := by
   exact_mod_cast h.2.2.symm.trans h'.2.2
 
+/- English proof (translation)
+The claim follows from `ext_inner_right ℂ fun y => hasPeterssonInner_unique _ _ _ _ _ v hv (h y) (h' y)`.
+-/
 theorem IsUpTop.unique {R : RealDat D A Ks} {t : T} {u : MMap (R.MY (D.R.m - 1))} {x x' : (R.HX t).H}
     (v : (R.MY (D.R.m - 1)).Vec) (hv : ∏ τ, ⟪(v τ : (R.MY (D.R.m - 1)).H τ), (v τ : (R.MY (D.R.m - 1)).H τ)⟫_ℂ ≠ 0)
     (h : IsUpTop R t u x) (h' : IsUpTop R t u x') : x = x' :=

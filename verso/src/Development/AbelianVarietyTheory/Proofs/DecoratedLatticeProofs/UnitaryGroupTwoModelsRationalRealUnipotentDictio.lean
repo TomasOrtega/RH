@@ -12,6 +12,15 @@ open NumberField Matrix Formalism.MainNotions.S
 open scoped TensorProduct
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes (AF Ainf HA fstA sndA inclR)
 
+/- English proof (translation)
+Establish `key : (fun a : Ainf I.F => θ (a ⊗ₜ[I.F] (1 : I.E))) = fun a : Ainf I.F => InfinitePlace.Completion.extensionEmbedding v (a v)`. Use `(InfiniteAdeleRing.denseRange_algebraMap I.F).equalizer hθ.2 ((InfinitePlace.Completion.isometry_extensionEmbedding v).continuous.comp (continuous_apply v)) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Establish `e : (algebraMap I.F (Ainf I.F) x) ⊗ₜ[I.F] (1 : I.E) = (1 : Ainf I.F) ⊗ₜ[I.F] (algebraMap I.F I.E x)`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`.
+
+Simplify using `only [Function.comp_apply]`. Rewrite using `[e, hθ.1, I.φ_over]`. Conclude with `(Formalism.L2.SG.AdBridge.evV_algebraMap I v x).symm`. Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Proceed by induction on `z using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul a x`. Rewrite using `[Formalism.L2.SG.AdBridge.thetaV_tmul]`. Establish `e : (Algebra.TensorProduct.map (fstA I.F) (AlgHom.id I.F I.E)) (a ⊗ₜ[I.F] x) = (a.1 ⊗ₜ[I.F] (1 : I.E)) * ((1 : Ainf I.F) ⊗ₜ[I.F] x)`. Rewrite using `[Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`.
+
+Both sides reduce to the same expression. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Rewrite using `[e, map_mul, hθ.1, congrFun key a.1]`. Both sides reduce to the same expression. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 theorem comp_eq_thetaV (I : AutInst) (v : InfinitePlace I.F) (θ : Ainf I.F ⊗[I.F] I.E →+* ℂ)
     (hθ : Formalism.MainNotions.StandardLattice.IsInfEmb (I.φ v) θ) :
     θ.comp (Algebra.TensorProduct.map (fstA I.F) (AlgHom.id I.F I.E)).toRingHom =
@@ -40,6 +49,11 @@ theorem comp_eq_thetaV (I : AutInst) (v : InfinitePlace I.F) (θ : Ainf I.F ⊗[
     rfl
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x`. Rewrite using `[Formalism.L2.SG.AdBridge.tauF_tmul, Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.comm_tmul]`. Both sides reduce to the same expression.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem tauF_apply (I : AutInst) (z : AF I.F ⊗[I.F] I.E) :
     Formalism.L2.SG.AdBridge.tauF I z =
       Algebra.TensorProduct.comm I.F _ _ (Algebra.TensorProduct.map (sndA I.F) (AlgHom.id I.F I.E) z) := by
@@ -50,6 +64,9 @@ theorem tauF_apply (I : AutInst) (z : AF I.F ⊗[I.F] I.E) :
     rfl
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.StandardLattice.finMat`. Rewrite using `[Matrix.map_map]`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Function.comp_apply]`. Rewrite using `[tauF_apply]`.
+-/
 theorem fin_eq (I : AutInst) (h : Formalism.L2.SG.AdBridge.HAd I) :
     (Formalism.L2.SG.AdBridge.hmat I h).map (Formalism.L2.SG.AdBridge.tauF I) =
       (Formalism.MainNotions.StandardLattice.finMat I.cm.sig I.J h).map (Algebra.TensorProduct.comm I.F _ _) := by
@@ -59,6 +76,9 @@ theorem fin_eq (I : AutInst) (h : Formalism.L2.SG.AdBridge.HAd I) :
   simp only [Matrix.map_apply, Function.comp_apply]
   rw [tauF_apply]
 
+/- English proof (translation)
+Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 (I.P_unit v)`. Rewrite using `[(he x).1 v, Formalism.L2.SG.AdBridge.ofHAInf, ← comp_eq_thetaV I v θv hθv, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hd, Matrix.one_mul, Matrix.mul_nonsing_inv_cancel_right _ _ hd]`. Unfold `Formalism.MainNotions.StandardLattice.infMat`. Rewrite using `[Matrix.map_map]`. Both sides reduce to the same expression.
+-/
 theorem infMat_bridge (I : AutInst) (e : I.GA ≃ₜ* Formalism.L2.SG.AdBridge.HAd I) (he : Formalism.L2.SG.AdBridge.IsBridge I e)
     (v : InfinitePlace I.F) (θv : Ainf I.F ⊗[I.F] I.E →+* ℂ) (hθv : Formalism.MainNotions.StandardLattice.IsInfEmb (I.φ v) θv) (x : I.GA) :
     Formalism.MainNotions.StandardLattice.infMat I.cm.sig I.J θv (e x) = I.P v * uMat (x.1 v) * (I.P v)⁻¹ := by
@@ -77,6 +97,19 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open scoped TensorProduct Topology
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D θ hθ V fr`. Establish `hb` using `Formalism.IndefR.Eqv.UI.brg_isBridge fr`. Establish `hθv : ∀ v : InfinitePlace D.host.F, IsInfEmb (Formalism.IndefR.Eqv.UI.phiV D v) (θ ((Formalism.L2.Host.tauPl D).symm v))` using `fun v => hθ _`. Use `⟨fun x => ?_, fun x τ A hA => ?_, fun W hW => ?_⟩` and prove the remaining obligations. Establish `h1` using `(Formalism.L2.SG.Closed.adelic_isomorphism_statement (Formalism.IndefR.Eqv.UI.instV fr)).2.1 (Formalism.IndefR.Eqv.UI.brg fr) hb`.
+
+Establish `e : Formalism.IndefR.Eqv.UI.brg fr x ∈ GQ V ↔ Formalism.IndefR.Eqv.UI.brg fr x ∈ Formalism.L2.SG.AdBridge.ratHA (Formalism.IndefR.Eqv.UI.instV fr)` using `Iff.rfl`. Rewrite using `[e, ← h1]`. Conclude with `(Formalism.IndefR.Eqv.UI.brg fr).injective.mem_set_image`. Substitute `hA` using the available equality. Establish `h` using `infMat_bridge (Formalism.IndefR.Eqv.UI.instV fr) _ hb (Formalism.L2.Host.tauPl D τ) (θ τ) (by have h := hθv (Formalism.L2.Host.tauPl D τ); rwa [Equiv.symm_apply_apply] at h) x`.
+
+Conclude with `h`. Take `⟨r, C, hC, rfl⟩` from `(GlobalTheory.CuspCompare.isIsot_iff (Formalism.IndefR.Eqv.UI.instV fr) W).1 hW`. Use `⟨r, C, hC, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨L, R, hL, hR⟩` from `GlobalTheory.CuspCompare.exists_inverses (starRingEnd D.host.E) (Formalism.IndefR.Eqv.UI.instV fr).J_det hC.2.1`. Set `T : GA D V ≃* (Formalism.IndefR.Eqv.UI.instV fr).GA` to `(Formalism.IndefR.Eqv.UI.brg fr).symm.toMulEquiv`.
+
+Establish `hT : ∀ g, Formalism.IndefR.Eqv.UI.brg fr (T g) = g` using `fun g => (Formalism.IndefR.Eqv.UI.brg fr).apply_symm_apply g`. Unfold `NI at hx`. Use `(GlobalTheory.CuspCompare.mem_closure_iff_of_equiv T (GlobalTheory.T.strong_approximation_unitaryUnipotentRadical _ _ hW).1 (fun g => ?_) _).1 hx` as an intermediate fact. Conclude with `((Formalism.IndefR.Eqv.UI.brg fr).symm_apply_apply x) ▸ this`. Rewrite using `[GlobalTheory.CuspCompare.mem_NA_iff (Formalism.IndefR.Eqv.UI.instV fr) _ hθv g (T g) ?_ ?_ hL hR]`.
+
+Conclude with `and_congr Iff.rfl (and_congr Iff.rfl (GlobalTheory.CuspCompare.perp_cond (incA D) hL hR _).2)`. Rewrite using `[(hb (T g)).2, Formalism.L2.SG.AdBridge.ofHAFin, fin_eq]`. Conclude with `congrArg (fun h => (finMat _ _ h).map _) (hT g)`. Introduce `v`. Rewrite using `[← infMat_bridge _ _ hb v _ (hθv v) (T g)]`.
+
+Conclude with `congrArg (infMat _ _ _) (hT g)`.
+-/
 theorem bridge_dict : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)), IsInfFam θ → ∀ (V : HSp D) (fr : Formalism.IndefR.Eqv.UI.Frames D V), (∀ x, Formalism.IndefR.Eqv.UI.brg fr x ∈ GQ V ↔ x ∈ (Formalism.IndefR.Eqv.UI.instV fr).GFset) ∧ (∀ (x : (Formalism.IndefR.Eqv.UI.instV fr).GA) (τ : D.what₂.Tau) (A : Matrix (Fin V.rank) (Fin V.rank) ℂ), A = uMat (x.1 (Formalism.L2.Host.tauPl D τ)) → infMat D.sp.cm.sig V.gram (θ τ) (Formalism.IndefR.Eqv.UI.brg fr x) = fr.P (Formalism.L2.Host.tauPl D τ) * A * (fr.P (Formalism.L2.Host.tauPl D τ))⁻¹) ∧ ∀ W, (Formalism.IndefR.Eqv.UI.instV fr).IsIsot W → ∃ (r : ℕ) (C₀ : Matrix (Fin V.rank) (Fin r) D.host.E), IsIsoFrame V C₀ ∧ ∀ x, Formalism.IndefR.Eqv.UI.brg fr x ∈ NI V C₀ → x ∈ (Formalism.IndefR.Eqv.UI.instV fr).NA W := by
   intro D θ hθ V fr
   have hb := Formalism.IndefR.Eqv.UI.brg_isBridge fr

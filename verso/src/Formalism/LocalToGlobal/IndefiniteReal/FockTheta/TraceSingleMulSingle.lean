@@ -14,41 +14,73 @@ variable {ι X : Type} [DecidableEq ι] {Sm : Set (X → ℂ)} {aP aM : ι → (
 
 def lpow (aP : ι → (X → ℂ) → (X → ℂ)) (l : List ι) (v : X → ℂ) : X → ℂ := l.foldr (fun i g => aP i g) v
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem opPow_eq (k : ι →₀ ℕ) : opPow aP k v = lpow aP (Finsupp.toMultiset k).toList v := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lpow_nil : lpow aP [] v = v := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lpow_cons (j : ι) (l : List ι) : lpow aP (j :: l) v = aP j (lpow aP l v) := rfl
 
+/- English proof (translation)
+Establish `e` using `h.linP i 1 0 0 h.zero_mem h.zero_mem`. Rewrite `e` using `[smul_zero, add_zero, one_smul]`. Establish `e2 : aP i 0 + aP i 0 = aP i 0 + 0` using `by rw [add_zero]; exact e.symm`. Conclude with `add_left_cancel e2`.
+-/
 theorem creation_zero (h : IsCCR Sm aP aM) (i : ι) : aP i 0 = 0 := by
   have e := h.linP i 1 0 0 h.zero_mem h.zero_mem
   rw [smul_zero, add_zero, one_smul] at e
   have e2 : aP i 0 + aP i 0 = aP i 0 + 0 := by rw [add_zero]; exact e.symm
   exact add_left_cancel e2
 
+/- English proof (translation)
+Establish `e` using `h.linM i 1 0 0 h.zero_mem h.zero_mem`. Rewrite `e` using `[smul_zero, add_zero, one_smul]`. Establish `e2 : aM i 0 + aM i 0 = aM i 0 + 0` using `by rw [add_zero]; exact e.symm`. Conclude with `add_left_cancel e2`.
+-/
 theorem aM_zero (h : IsCCR Sm aP aM) (i : ι) : aM i 0 = 0 := by
   have e := h.linM i 1 0 0 h.zero_mem h.zero_mem
   rw [smul_zero, add_zero, one_smul] at e
   have e2 : aM i 0 + aM i 0 = aM i 0 + 0 := by rw [add_zero]; exact e.symm
   exact add_left_cancel e2
 
+/- English proof (translation)
+Establish `e` using `h.linP i c 0 f h.zero_mem hf`. Rewrite `e` using `[zero_add, creation_zero h i, zero_add]`. Then use the resulting hypothesis.
+-/
 theorem creation_smul (h : IsCCR Sm aP aM) (i : ι) (c : ℂ) {f : X → ℂ} (hf : f ∈ Sm) : aP i (c • f) = c • aP i f := by
   have e := h.linP i c 0 f h.zero_mem hf
   rwa [zero_add, creation_zero h i, zero_add] at e
 
+/- English proof (translation)
+Establish `e` using `h.linM i c 0 f h.zero_mem hf`. Rewrite `e` using `[zero_add, aM_zero h i, zero_add]`. Then use the resulting hypothesis.
+-/
 theorem aM_smul (h : IsCCR Sm aP aM) (i : ι) (c : ℂ) {f : X → ℂ} (hf : f ∈ Sm) : aM i (c • f) = c • aM i f := by
   have e := h.linM i c 0 f h.zero_mem hf
   rwa [zero_add, aM_zero h i, zero_add] at e
 
+/- English proof (translation)
+Establish `e` using `h.linM i 1 f g hf hg`. Rewrite `e` using `[one_smul, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem aM_add (h : IsCCR Sm aP aM) (i : ι) {f g : X → ℂ} (hf : f ∈ Sm) (hg : g ∈ Sm) :
     aM i (f + g) = aM i f + aM i g := by
   have e := h.linM i 1 f g hf hg
   rwa [one_smul, one_smul] at e
 
+/- English proof (translation)
+The claim follows from `| [] => hv | j :: l => h.memP j _ (lpow_mem h hv l)`.
+-/
 theorem lpow_mem (h : IsCCR Sm aP aM) (hv : v ∈ Sm) : ∀ l : List ι, lpow aP l v ∈ Sm
   | [] => hv
   | j :: l => h.memP j _ (lpow_mem h hv l)
 
+/- English proof (translation)
+Proceed by induction on `hp with`. Consider the case `nil => rfl`. Consider the case `cons x _ ih => rw [lpow_cons, lpow_cons, ih]`. Consider the case `swap x y l => show aP y (aP x (lpow aP l v)) = aP x (aP y (lpow aP l v))`. Conclude with `h.commP y x _ (lpow_mem h hv l)`.
+
+Consider the case `trans _ _ ih1 ih2 => exact ih1.trans ih2`.
+-/
 theorem lpow_perm (h : IsCCR Sm aP aM) (hv : v ∈ Sm) {l l' : List ι} (hp : l.Perm l') :
     lpow aP l v = lpow aP l' v := by
   induction hp with
@@ -59,6 +91,9 @@ theorem lpow_perm (h : IsCCR Sm aP aM) (hv : v ∈ Sm) {l l' : List ι} (hp : l.
     exact h.commP y x _ (lpow_mem h hv l)
   | trans _ _ ih1 ih2 => exact ih1.trans ih2
 
+/- English proof (translation)
+Rewrite using `[opPow_eq]`. Apply `lpow_perm h hv` to reduce the goal to its premises. Establish `e : ((Finsupp.toMultiset k).toList : Multiset ι) = (l : Multiset ι)`. Rewrite using `[Multiset.coe_toList, hl]`. Conclude with `Multiset.coe_eq_coe.mp e`.
+-/
 theorem opPow_of_list (h : IsCCR Sm aP aM) (hv : v ∈ Sm) (k : ι →₀ ℕ) (l : List ι)
     (hl : (l : Multiset ι) = Finsupp.toMultiset k) : opPow aP k v = lpow aP l v := by
   rw [opPow_eq]
@@ -67,14 +102,23 @@ theorem opPow_of_list (h : IsCCR Sm aP aM) (hv : v ∈ Sm) (k : ι →₀ ℕ) (
     rw [Multiset.coe_toList, hl]
   exact Multiset.coe_eq_coe.mp e
 
+/- English proof (translation)
+Rewrite using `[opPow_eq]`. Conclude with `lpow_mem h hv _`.
+-/
 theorem opPow_mem (h : IsCCR Sm aP aM) (hv : v ∈ Sm) (k : ι →₀ ℕ) : opPow aP k v ∈ Sm := by
   rw [opPow_eq]
   exact lpow_mem h hv _
 
+/- English proof (translation)
+Rewrite using `[opPow_eq]`. Simplify using `[lpow]`.
+-/
 theorem opPow_zero : opPow aP (0 : ι →₀ ℕ) v = v := by
   rw [opPow_eq]
   simp [lpow]
 
+/- English proof (translation)
+Rewrite using `[opPow_of_list h hv (k + Finsupp.single j 1) (j :: (Finsupp.toMultiset k).toList)]`. Both sides reduce to the same expression. Rewrite using `[← Multiset.cons_coe, Multiset.coe_toList, map_add, Finsupp.toMultiset_single, one_smul, add_comm, Multiset.singleton_add]`.
+-/
 theorem opPow_add_single (h : IsCCR Sm aP aM) (hv : v ∈ Sm) (k : ι →₀ ℕ) (j : ι) :
     opPow aP (k + Finsupp.single j 1) v = aP j (opPow aP k v) := by
   rw [opPow_of_list h hv (k + Finsupp.single j 1) (j :: (Finsupp.toMultiset k).toList)]
@@ -82,6 +126,9 @@ theorem opPow_add_single (h : IsCCR Sm aP aM) (hv : v ∈ Sm) (k : ι →₀ ℕ
   · rw [← Multiset.cons_coe, Multiset.coe_toList, map_add, Finsupp.toMultiset_single, one_smul, add_comm,
       Multiset.singleton_add]
 
+/- English proof (translation)
+The claim follows from `| [] => by simp [lpow_nil, hi] | j :: l => by have ih := aM_lpow h hv i hi l have hc := h.ccr i j _ (lpow_mem h hv l) rw [sub_eq_iff_eq_add] at hc rw [lpow_cons, hc, ih, creation_smul h _ _ (lpow_mem h hv _)] by_cases hij : i = j · subst hij rw [List.count_cons_self, List.erase_c …`.
+-/
 theorem aM_lpow (h : IsCCR Sm aP aM) (hv : v ∈ Sm) (i : ι) (hi : aM i v = 0) : ∀ l : List ι,
     aM i (lpow aP l v) = ((l.count i : ℕ) : ℂ) • lpow aP (l.erase i) v
   | [] => by simp [lpow_nil, hi]
@@ -103,6 +150,11 @@ theorem aM_lpow (h : IsCCR Sm aP aM) (hv : v ∈ Sm) (i : ι) (hi : aM i v = 0) 
       congr 2
       simp [Ne.symm hij]
 
+/- English proof (translation)
+Use extensionality with `a`. Rewrite using `[Finsupp.count_toMultiset, Finsupp.tsub_apply]`. Distinguish the cases in `ha : a = i`. Substitute `ha` using the available equality. Rewrite using `[Multiset.count_erase_self, Finsupp.count_toMultiset, Finsupp.single_eq_same]`.
+
+Rewrite using `[Multiset.count_erase_of_ne ha, Finsupp.count_toMultiset]`. Simplify using `[Finsupp.single_apply, Ne.symm ha]`.
+-/
 theorem toMultiset_sub_single (k : ι →₀ ℕ) (i : ι) :
     Finsupp.toMultiset (k - Finsupp.single i 1) = (Finsupp.toMultiset k).erase i := by
   ext a
@@ -113,12 +165,20 @@ theorem toMultiset_sub_single (k : ι →₀ ℕ) (i : ι) :
   · rw [Multiset.count_erase_of_ne ha, Finsupp.count_toMultiset]
     simp [Finsupp.single_apply, Ne.symm ha]
 
+/- English proof (translation)
+Rewrite using `[opPow_eq, aM_lpow h hv i hi, opPow_of_list h hv (k - Finsupp.single i 1) ((Finsupp.toMultiset k).toList.erase i)]`. Rewrite using `[← Multiset.coe_count, Multiset.coe_toList, Finsupp.count_toMultiset]`. Rewrite using `[← Multiset.coe_erase, Multiset.coe_toList, toMultiset_sub_single]`.
+-/
 theorem aM_opPow (h : IsCCR Sm aP aM) (hv : v ∈ Sm) (i : ι) (hi : aM i v = 0) (k : ι →₀ ℕ) :
     aM i (opPow aP k v) = ((k i : ℕ) : ℂ) • opPow aP (k - Finsupp.single i 1) v := by
   rw [opPow_eq, aM_lpow h hv i hi, opPow_of_list h hv (k - Finsupp.single i 1) ((Finsupp.toMultiset k).toList.erase i)]
   · rw [← Multiset.coe_count, Multiset.coe_toList, Finsupp.count_toMultiset]
   · rw [← Multiset.coe_erase, Multiset.coe_toList, toMultiset_sub_single]
 
+/- English proof (translation)
+Rewrite using `[show MvPolynomial.monomial k c = c • MvPolynomial.monomial k (1 : ℂ) by`. Rewrite using `[MvPolynomial.smul_monomial, smul_eq_mul, mul_one], map_smul]`. Use `congr 1`. Unfold `pureTensorL`. Establish `e : MvPolynomial.monomial k (1 : ℂ) = MvPolynomial.basisMonomials ι ℂ k`.
+
+Rewrite using `[MvPolynomial.coe_basisMonomials]`. Rewrite using `[e, (MvPolynomial.basisMonomials ι ℂ).constr_basis]`.
+-/
 theorem pt_monomial (k : ι →₀ ℕ) (c : ℂ) :
     pureTensorL aP v (MvPolynomial.monomial k c) = c • opPow aP k v := by
   rw [show MvPolynomial.monomial k c = c • MvPolynomial.monomial k (1 : ℂ) by
@@ -129,6 +189,9 @@ theorem pt_monomial (k : ι →₀ ℕ) (c : ℂ) :
     rw [MvPolynomial.coe_basisMonomials]
   rw [e, (MvPolynomial.basisMonomials ι ℂ).constr_basis]
 
+/- English proof (translation)
+Use `conv_lhs => rw [P.as_sum]`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl (fun α _ => pt_monomial α _)`.
+-/
 theorem pt_sum (P : MvPolynomial ι ℂ) :
     pureTensorL aP v P = ∑ α ∈ P.support, P.coeff α • opPow aP α v := by
   conv_lhs => rw [P.as_sum]
@@ -137,6 +200,13 @@ theorem pt_sum (P : MvPolynomial ι ℂ) :
 
 end CCRAlg
 
+/- English proof (translation)
+Unfold `CCRMemAbs`. Introduce `ι X _ Sm aP aM v h hv P`. Rewrite using `[pt_sum]`. Establish `key : ∀ s : Finset (ι →₀ ℕ), ∑ α ∈ s, P.coeff α • opPow aP α v ∈ Sm`. Introduce `s`.
+
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty]`. Conclude with `h.zero_mem`. Consider the case `@insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`.
+
+Conclude with `h.add_mem _ _ (h.smul_mem _ _ (opPow_mem h hv a)) ih`. Conclude with `key _`.
+-/
 theorem ccrMemAbs : CCRMemAbs := by
   classical
   unfold CCRMemAbs
@@ -151,6 +221,17 @@ theorem ccrMemAbs : CCRMemAbs := by
       exact h.add_mem _ _ (h.smul_mem _ _ (opPow_mem h hv a)) ih
   exact key _
 
+/- English proof (translation)
+Unfold `CCRDerivAt`. Introduce `ι X _ Sm aP aM v h hv i hi P`. Establish `mem : ∀ s : Finset (ι →₀ ℕ), ∑ α ∈ s, P.coeff α • opPow aP α v ∈ Sm`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`.
+
+Consider the case `empty => rw [Finset.sum_empty]`. Conclude with `h.zero_mem`. Consider the case `@insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `h.add_mem _ _ (h.smul_mem _ _ (opPow_mem h hv a)) ih`.
+
+Establish `key : ∀ s : Finset (ι →₀ ℕ), aM i (∑ α ∈ s, P.coeff α • opPow aP α v) = ∑ α ∈ s, pureTensorL aP v (MvPolynomial.pderiv i (MvPolynomial.monomial α (P.coeff α)))`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, Finset.sum_empty]`. Conclude with `aM_zero h i`.
+
+Consider the case `@insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, aM_add h i (h.smul_mem _ _ (opPow_mem h hv a)) (mem s), ih, aM_smul h i _ (opPow_mem h hv a), aM_opPow h hv i hi a, MvPolynomial.pderiv_monomial, pt_monomial, smul_smul]`. Use `conv_lhs => rw [pt_sum]`. Use `conv_rhs => rw [P.as_sum]`. Rewrite using `[map_sum, map_sum]`.
+
+Conclude with `key _`.
+-/
 theorem ccrDerivAt : CCRDerivAt := by
   classical
   unfold CCRDerivAt
@@ -181,36 +262,59 @@ section Norm
 variable {ι X : Type} [DecidableEq ι] {Sm : Set (X → ℂ)} {aP aM : ι → (X → ℂ) → (X → ℂ)} {v : X → ℂ}
   {ip : (X → ℂ) → (X → ℂ) → ℂ}
 
+/- English proof (translation)
+Establish `e` using `(hs 0 0 f 1 h0 h0 hf).1`. Rewrite `e` using `[smul_zero, add_zero, one_mul]`. Take the linear combination `-e`.
+-/
 theorem ip_zero_left (hs : IsSesq Sm ip) (h0 : (0 : X → ℂ) ∈ Sm) {f : X → ℂ} (hf : f ∈ Sm) : ip 0 f = 0 := by
   have e := (hs 0 0 f 1 h0 h0 hf).1
   rw [smul_zero, add_zero, one_mul] at e
   linear_combination -e
 
+/- English proof (translation)
+Establish `e` using `(hs 0 0 f 1 h0 h0 hf).2`. Rewrite `e` using `[smul_zero, add_zero, map_one, one_mul]`. Take the linear combination `-e`.
+-/
 theorem ip_zero_right (hs : IsSesq Sm ip) (h0 : (0 : X → ℂ) ∈ Sm) {f : X → ℂ} (hf : f ∈ Sm) : ip f 0 = 0 := by
   have e := (hs 0 0 f 1 h0 h0 hf).2
   rw [smul_zero, add_zero, map_one, one_mul] at e
   linear_combination -e
 
+/- English proof (translation)
+Establish `e` using `(hs 0 g h c h0 hg hh).1`. Rewrite `e` using `[zero_add, ip_zero_left hs h0 hh, zero_add]`. Then use the resulting hypothesis.
+-/
 theorem ip_smul_left (hs : IsSesq Sm ip) (h0 : (0 : X → ℂ) ∈ Sm) (c : ℂ) {g h : X → ℂ} (hg : g ∈ Sm) (hh : h ∈ Sm) :
     ip (c • g) h = c * ip g h := by
   have e := (hs 0 g h c h0 hg hh).1
   rwa [zero_add, ip_zero_left hs h0 hh, zero_add] at e
 
+/- English proof (translation)
+Establish `e` using `(hs 0 g h c h0 hg hh).2`. Rewrite `e` using `[zero_add, ip_zero_right hs h0 hh, zero_add]`. Then use the resulting hypothesis.
+-/
 theorem ip_smul_right (hs : IsSesq Sm ip) (h0 : (0 : X → ℂ) ∈ Sm) (c : ℂ) {g h : X → ℂ} (hg : g ∈ Sm) (hh : h ∈ Sm) :
     ip h (c • g) = starRingEnd ℂ c * ip h g := by
   have e := (hs 0 g h c h0 hg hh).2
   rwa [zero_add, ip_zero_right hs h0 hh, zero_add] at e
 
+/- English proof (translation)
+Establish `e` using `(hs f g h 1 hf hg hh).1`. Rewrite `e` using `[one_smul, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem ip_add_left (hs : IsSesq Sm ip) {f g h : X → ℂ} (hf : f ∈ Sm) (hg : g ∈ Sm) (hh : h ∈ Sm) :
     ip (f + g) h = ip f h + ip g h := by
   have e := (hs f g h 1 hf hg hh).1
   rwa [one_smul, one_mul] at e
 
+/- English proof (translation)
+Establish `e` using `(hs f g h 1 hf hg hh).2`. Rewrite `e` using `[one_smul, map_one, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem ip_add_right (hs : IsSesq Sm ip) {f g h : X → ℂ} (hf : f ∈ Sm) (hg : g ∈ Sm) (hh : h ∈ Sm) :
     ip h (f + g) = ip h f + ip h g := by
   have e := (hs f g h 1 hf hg hh).2
   rwa [one_smul, map_one, one_mul] at e
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty]`. Conclude with `h.zero_mem`. Consider the case `@insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`.
+
+Conclude with `h.add_mem _ _ (h.smul_mem _ _ (hf a (Finset.mem_insert_self a s))) (ih (fun b hb => hf b (Finset.mem_insert_of_mem hb)))`.
+-/
 theorem sum_mem' (h : IsCCR Sm aP aM) {β : Type} (S : Finset β) (c : β → ℂ) (f : β → X → ℂ)
     (hf : ∀ b ∈ S, f b ∈ Sm) : ∑ b ∈ S, c b • f b ∈ Sm := by
   classical
@@ -221,6 +325,11 @@ theorem sum_mem' (h : IsCCR Sm aP aM) {β : Type} (S : Finset β) (c : β → �
     exact h.add_mem _ _ (h.smul_mem _ _ (hf a (Finset.mem_insert_self a s)))
       (ih (fun b hb => hf b (Finset.mem_insert_of_mem hb)))
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, Finset.sum_empty]`. Conclude with `ip_zero_left hs h.zero_mem hg`. Consider the case `@insert a s ha ih`. Establish `hf' : ∀ b ∈ s, f b ∈ Sm` using `fun b hb => hf b (Finset.mem_insert_of_mem hb)`.
+
+Establish `ha' : f a ∈ Sm` using `hf a (Finset.mem_insert_self a s)`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, ip_add_left hs (h.smul_mem _ _ ha') (sum_mem' h s c f hf') hg, ip_smul_left hs h.zero_mem _ ha' hg, ih hf']`.
+-/
 theorem ip_sum_left (h : IsCCR Sm aP aM) (hs : IsSesq Sm ip) {β : Type} (S : Finset β) (c : β → ℂ)
     (f : β → X → ℂ) (hf : ∀ b ∈ S, f b ∈ Sm) {g : X → ℂ} (hg : g ∈ Sm) :
     ip (∑ b ∈ S, c b • f b) g = ∑ b ∈ S, c b * ip (f b) g := by
@@ -234,6 +343,11 @@ theorem ip_sum_left (h : IsCCR Sm aP aM) (hs : IsSesq Sm ip) {β : Type} (S : Fi
       ip_add_left hs (h.smul_mem _ _ ha') (sum_mem' h s c f hf') hg,
       ip_smul_left hs h.zero_mem _ ha' hg, ih hf']
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, Finset.sum_empty]`. Conclude with `ip_zero_right hs h.zero_mem hg`. Consider the case `@insert a s ha ih`. Establish `hf' : ∀ b ∈ s, f b ∈ Sm` using `fun b hb => hf b (Finset.mem_insert_of_mem hb)`.
+
+Establish `ha' : f a ∈ Sm` using `hf a (Finset.mem_insert_self a s)`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, ip_add_right hs (h.smul_mem _ _ ha') (sum_mem' h s c f hf') hg, ip_smul_right hs h.zero_mem _ ha' hg, ih hf']`.
+-/
 theorem ip_sum_right (h : IsCCR Sm aP aM) (hs : IsSesq Sm ip) {β : Type} (S : Finset β) (c : β → ℂ)
     (f : β → X → ℂ) (hf : ∀ b ∈ S, f b ∈ Sm) {g : X → ℂ} (hg : g ∈ Sm) :
     ip g (∑ b ∈ S, c b • f b) = ∑ b ∈ S, starRingEnd ℂ (c b) * ip g (f b) := by
@@ -249,6 +363,9 @@ theorem ip_sum_right (h : IsCCR Sm aP aM) (hs : IsSesq Sm ip) {β : Type} (S : F
 
 def fct (α : ι →₀ ℕ) : ℕ := ∏ k ∈ α.support, (α k).factorial
 
+/- English proof (translation)
+Unfold `fct`. Use `Finset.prod_subset hT (fun k _ hk => ?_)` and prove the remaining obligations. Establish `e : β k = 0` using `by simpa using hk`. Rewrite using `[e, Nat.factorial_zero]`.
+-/
 private theorem fct_eq_lemma {β : ι →₀ ℕ} {T : Finset ι} (hT : β.support ⊆ T) :
     fct β = ∏ k ∈ T, (β k).factorial := by
   unfold fct
@@ -256,6 +373,13 @@ private theorem fct_eq_lemma {β : ι →₀ ℕ} {T : Finset ι} (hT : β.suppo
   have e : β k = 0 := by simpa using hk
   rw [e, Nat.factorial_zero]
 
+/- English proof (translation)
+Establish `hT1 : (α + Finsupp.single j 1).support ⊆ insert j α.support`. Introduce `k hk`. Distinguish the cases in `hkj : k = j`. Rewrite using `[hkj]`. Conclude with `Finset.mem_insert_self j _`.
+
+Rewrite using `[Finset.mem_insert] right`. Rewrite `hk`, the goal using `[Finsupp.mem_support_iff]`. Simplify `hk` using `[Finsupp.single_apply, Ne.symm hkj]`. Establish `hT0 : α.support ⊆ insert j α.support` using `Finset.subset_insert _ _`. Rewrite using `[fct_eq_lemma hT1, fct_eq_lemma hT0, ← Finset.mul_prod_erase (insert j α.support) _ (Finset.mem_insert_self j _), ← Finset.mul_prod_erase (insert j α.support) (fun k => (α k).factorial) (Finset.mem_insert_self j _)]`.
+
+Establish `e : ∏ x ∈ (insert j α.support).erase j, ((α + Finsupp.single j 1 : ι →₀ ℕ) x).factorial = ∏ x ∈ (insert j α.support).erase j, (α x).factorial` using `Finset.prod_congr rfl (fun x hx => by`. Rewrite using `[Finsupp.add_apply, Finsupp.single_apply, if_neg (Ne.symm (Finset.ne_of_mem_erase hx)), add_zero])`. Rewrite using `[e, Finsupp.add_apply, Finsupp.single_eq_same, Nat.factorial_succ, mul_assoc]`.
+-/
 theorem fct_add_single (α : ι →₀ ℕ) (j : ι) : fct (α + Finsupp.single j 1) = (α j + 1) * fct α := by
   classical
   have hT1 : (α + Finsupp.single j 1).support ⊆ insert j α.support := by
@@ -275,6 +399,11 @@ theorem fct_add_single (α : ι →₀ ℕ) (j : ι) : fct (α + Finsupp.single 
       rw [Finsupp.add_apply, Finsupp.single_apply, if_neg (Ne.symm (Finset.ne_of_mem_erase hx)), add_zero])
   rw [e, Finsupp.add_apply, Finsupp.single_eq_same, Nat.factorial_succ, mul_assoc]
 
+/- English proof (translation)
+Use extensionality with `k`. Distinguish the cases in `hk : a = k`. Substitute `hk` using the available equality. Simplify using `only [Finsupp.coe_add, Finsupp.coe_tsub, Pi.add_apply, Pi.sub_apply, Finsupp.single_eq_same]`. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `only [Finsupp.coe_add, Finsupp.coe_tsub, Pi.add_apply, Pi.sub_apply, Finsupp.single_apply, if_neg hk]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem sub_single_add_lemma_2 (β : ι →₀ ℕ) (a : ι) (h : β a ≠ 0) :
     β - Finsupp.single a 1 + Finsupp.single a 1 = β := by
   ext k
@@ -285,6 +414,21 @@ private theorem sub_single_add_lemma_2 (β : ι →₀ ℕ) (a : ι) (h : β a �
   · simp only [Finsupp.coe_add, Finsupp.coe_tsub, Pi.add_apply, Pi.sub_apply, Finsupp.single_apply, if_neg hk]
     omega
 
+/- English proof (translation)
+Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty`. Introduce `β`. Rewrite using `[Multiset.toFinsupp_zero, opPow_zero]`. Distinguish the cases in `hβ : (0 : ι →₀ ℕ) = β`.
+
+Rewrite using `[if_pos hβ, ← hβ, opPow_zero]`. Simplify using `[fct]`. Rewrite using `[if_neg hβ]`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, β j ≠ 0 := by`. Assume the negation of the conclusion as `hc`.
+
+Use `push_neg at hc`. Conclude with `hβ (Finsupp.ext fun k => (hc k).symm)`. Rewrite using `[← sub_single_add_lemma_2 β j hj, opPow_add_single h hv, ← hMP j v _ hv (opPow_mem h hv _), hvac j, ip_zero_left hs h.zero_mem (opPow_mem h hv _)]`. Consider the case `@cons a t ih`. Introduce `β`.
+
+Establish `e : Multiset.toFinsupp (a ::ₘ t) = Multiset.toFinsupp t + Finsupp.single a 1`. Rewrite using `[← Multiset.singleton_add, map_add, Multiset.toFinsupp_singleton, add_comm]`. Rewrite using `[e, opPow_add_single h hv, hPM a _ _ (opPow_mem h hv _) (opPow_mem h hv _), aM_opPow h hv a (hvac a), ip_smul_right hs h.zero_mem _ (opPow_mem h hv _) (opPow_mem h hv _), ih, map_natCast]`. Distinguish the cases in `hβa : β a = 0`. Rewrite using `[hβa, Nat.cast_zero, zero_mul, if_neg]`.
+
+Introduce `hc`. Use `congrArg (fun f => f a) hc` as an intermediate fact. Simplify using `[hβa] at this`. Establish `hd` using `sub_single_add_lemma_2 β a hβa`. Distinguish the cases in `ht : Multiset.toFinsupp t = β - Finsupp.single a 1`.
+
+Rewrite using `[if_pos ht, if_pos (by rw [ht, hd])] conv_rhs => rw [← hd, fct_add_single]`. Establish `e' : (((β - Finsupp.single a 1 : ι →₀ ℕ) a + 1 : ℕ) : ℂ) = ((β a : ℕ) : ℂ)`. Rewrite using `[Finsupp.tsub_apply, Finsupp.single_eq_same, Nat.sub_add_cancel (Nat.one_le_iff_ne_zero.mpr hβa)]`. Rewrite using `[Nat.cast_mul, e', mul_assoc]`. Rewrite using `[if_neg ht, if_neg, mul_zero]`.
+
+Introduce `hc`. Apply `ht` to reduce the goal to its premises. Rewrite using `[← hc, add_tsub_cancel_right]`.
+-/
 theorem ip_opPow (h : IsCCR Sm aP aM) (hv : v ∈ Sm) (hvac : ∀ i, aM i v = 0) (hs : IsSesq Sm ip)
     (hMP : ∀ i f g, f ∈ Sm → g ∈ Sm → ip (aM i f) g = ip f (aP i g))
     (hPM : ∀ i f g, f ∈ Sm → g ∈ Sm → ip (aP i f) g = ip f (aM i g)) (s : Multiset ι) :
@@ -329,6 +473,15 @@ theorem ip_opPow (h : IsCCR Sm aP aM) (hv : v ∈ Sm) (hvac : ∀ i, aM i v = 0)
 
 end Norm
 
+/- English proof (translation)
+Unfold `FockNormAbs`. Introduce `ι X _ Sm aP aM v ip h hv hvac hs hMP hPM P Q`. Establish `hO : ∀ α β : ι →₀ ℕ, ip (opPow aP α v) (opPow aP β v) = if α = β then (fct β : ℂ) * ip v v else 0` using `fun α β => by`. Establish `e` using `ip_opPow h hv hvac hs hMP hPM (Finsupp.toMultiset α) β`. Apply the tactic sequence `first | simpa only [Finsupp.toMultiset_toFinsupp] using e | simpa using e`.
+
+Rewrite using `[pt_sum, pt_sum, ip_sum_left h hs _ _ _ (fun α _ => opPow_mem h hv α) (sum_mem' h _ _ _ (fun β _ => opPow_mem h hv β))]`. Unfold `Formalism.REAL.fockF`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl (fun α _ => ?_)` and prove the remaining obligations. Rewrite using `[ip_sum_right h hs _ _ _ (fun β _ => opPow_mem h hv β) (opPow_mem h hv α)]`.
+
+Simplify using `only [hO, mul_ite, mul_zero, Finset.sum_ite_eq, starRingEnd_apply]`. Distinguish the cases in `hα : α ∈ Q.support`. Rewrite using `[if_pos hα]`. Unfold `fct`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[if_neg hα]`. Establish `e : Q.coeff α = 0` using `by simpa using hα`. Rewrite using `[e]`. Simplify using the standard rewrite rules.
+-/
 theorem fockNormAbs : FockNormAbs := by
   unfold FockNormAbs
   intro ι X _ Sm aP aM v ip h hv hvac hs hMP hPM P Q
@@ -354,6 +507,13 @@ theorem fockNormAbs : FockNormAbs := by
 
 section Mat
 
+/- English proof (translation)
+Establish `hBh : Bᴴ * Biᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, h1, Matrix.conjTranspose_one]`. Establish `hBh2 : Biᴴ * Bᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, h2, Matrix.conjTranspose_one]`. Establish `c1 : ∀ Y : Matrix (Fin k) (Fin k) ℂ, Bi * (B * Y) = Y` using `fun Y => by`. Rewrite using `[← Matrix.mul_assoc, h1, Matrix.one_mul]`. Establish `c2 : ∀ Y : Matrix (Fin k) (Fin k) ℂ, B * (Bi * Y) = Y` using `fun Y => by`.
+
+Rewrite using `[← Matrix.mul_assoc, h2, Matrix.one_mul]`. Establish `c3 : ∀ Y : Matrix (Fin k) (Fin k) ℂ, D * (D * Y) = Y` using `fun Y => by`. Rewrite using `[← Matrix.mul_assoc, hD, Matrix.one_mul]`. Establish `c4 : ∀ Y : Matrix (Fin k) (Fin k) ℂ, Bᴴ * (Biᴴ * Y) = Y` using `fun Y => by`. Rewrite using `[← Matrix.mul_assoc, hBh, Matrix.one_mul]`.
+
+Establish `c5 : ∀ Y : Matrix (Fin k) (Fin k) ℂ, Biᴴ * (Bᴴ * Y) = Y` using `fun Y => by`. Rewrite using `[← Matrix.mul_assoc, hBh2, Matrix.one_mul]`. Substitute `hs hG` using the available equality. Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_, ?_⟩ <;>`. Simplify using `only [Matrix.conjTranspose_mul, hDh, Matrix.mul_assoc, c1, c2, c3, c4, c5, h2, hBh2, hD]`.
+-/
 theorem cart_of {k : ℕ} {B Bi D s G : Matrix (Fin k) (Fin k) ℂ} (h1 : Bi * B = 1) (h2 : B * Bi = 1)
     (hD : D * D = 1) (hDh : Dᴴ = D) (hs : s = B * D * Bi) (hG : G = Biᴴ * D * Bi) :
     s * s = 1 ∧ sᴴ * G * s = G ∧ sᴴ * G = G * s ∧ (B * D * Bᴴ) * sᴴ = s * (B * D * Bᴴ) ∧ G * (B * D * Bᴴ) = 1 := by
@@ -373,6 +533,19 @@ theorem cart_of {k : ℕ} {B Bi D s G : Matrix (Fin k) (Fin k) ℂ} (h1 : Bi * B
   refine ⟨?_, ?_, ?_, ?_, ?_⟩ <;>
     simp only [Matrix.conjTranspose_mul, hDh, Matrix.mul_assoc, c1, c2, c3, c4, c5, h2, hBh2, hD]
 
+/- English proof (translation)
+Unfold `IsONBasis at h`. Take `⟨ε, hε, hG, hs⟩` from `h`. Use `⟨ε, hε, ?_⟩` and prove the remaining obligations. Establish `hD : (diagonal fun a => (ε a : ℂ)) * (diagonal fun a => (ε a : ℂ)) = 1`. Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `rcases hε a with ⟨h1, _⟩ | ⟨h1, _⟩ <;> simp [h1]`. Establish `hDh : (diagonal fun a => (ε a : ℂ))ᴴ = diagonal fun a => (ε a : ℂ)`. Rewrite using `[diagonal_conjTranspose]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `a`. Simplify using the standard rewrite rules. Generalize the expression as in `(diagonal fun a => (ε a : ℂ)) = D at hG hs hD hDh ⊢`. Establish `hB : IsUnit B.det` using `Matrix.isUnit_det_of_left_inverse (show (D * (Bᴴ * G)) * B = 1 by rw [Matrix.mul_assoc, hG, hD])`.
+
+Establish `hBi1 : B⁻¹ * B = 1` using `Matrix.nonsing_inv_mul B hB`. Establish `hBi2 : B * B⁻¹ = 1` using `Matrix.mul_nonsing_inv B hB`. Establish `hs' : s = B * D * B⁻¹` using `by rw [← hs, Matrix.mul_assoc, hBi2, Matrix.mul_one]`. Establish `c : ∀ Y : Matrix (Fin k) (Fin k) ℂ, B⁻¹ᴴ * (Bᴴ * Y) = Y` using `fun Y => by`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.conjTranspose_mul, hBi2, Matrix.conjTranspose_one, Matrix.one_mul]`.
+
+Establish `hG' : G = B⁻¹ᴴ * D * B⁻¹`. Rewrite using `[← hG]`. Simplify using `only [Matrix.mul_assoc, c, hBi2, Matrix.mul_one]`. Establish `hc` using `cart_of hBi1 hBi2 hD hDh hs' hG'`. Establish `hGinv : G⁻¹ = B * D * Bᴴ` using `Matrix.inv_eq_right_inv hc.2.2.2.2`.
+
+Conclude with `⟨hBi1, hBi2, hs', hG', hGinv, hc.1, hc.2.1, hc.2.2.1, by rw [hGinv]; exact hc.2.2.2.1⟩`.
+-/
 theorem onb_data {k p : ℕ} {G s B : Matrix (Fin k) (Fin k) ℂ} (h : IsONBasis G s B p) :
     ∃ ε : Fin k → ℝ, (∀ a, (ε a = 1 ∧ a.val < p) ∨ (ε a = -1 ∧ p ≤ a.val)) ∧ B⁻¹ * B = 1 ∧ B * B⁻¹ = 1 ∧
       s = B * diagonal (fun a => (ε a : ℂ)) * B⁻¹ ∧ G = B⁻¹ᴴ * diagonal (fun a => (ε a : ℂ)) * B⁻¹ ∧
@@ -406,6 +579,11 @@ theorem onb_data {k p : ℕ} {G s B : Matrix (Fin k) (Fin k) ℂ} (h : IsONBasis
   have hGinv : G⁻¹ = B * D * Bᴴ := Matrix.inv_eq_right_inv hc.2.2.2.2
   exact ⟨hBi1, hBi2, hs', hG', hGinv, hc.1, hc.2.1, hc.2.2.1, by rw [hGinv]; exact hc.2.2.2.1⟩
 
+/- English proof (translation)
+Apply the tactic sequence `rcases hεS c with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;> rcases hεT i with ⟨h3, h4⟩ | ⟨h3, h4⟩ <;> rw [h1, h3]`. Rewrite using `[if_pos (show PosF pS pT i c from iff_of_true h4 h2)]`. Evaluate the numerical expressions. Rewrite using `[if_neg (show ¬ PosF pS pT i c from fun hp => absurd (Iff.mpr hp h2) (by omega))]; norm_num`. Rewrite using `[if_neg (show ¬ PosF pS pT i c from fun hp => absurd (Iff.mp hp h4) (by omega))]; norm_num`.
+
+Rewrite using `[if_pos (show PosF pS pT i c from iff_of_false (by omega) (by omega))]; norm_num`.
+-/
 theorem eps_prod {m n pS pT : ℕ} {εS : Fin n → ℝ} {εT : Fin m → ℝ}
     (hεS : ∀ a, (εS a = 1 ∧ a.val < pS) ∨ (εS a = -1 ∧ pS ≤ a.val))
     (hεT : ∀ a, (εT a = 1 ∧ a.val < pT) ∨ (εT a = -1 ∧ pT ≤ a.val)) (i : Fin m) (c : Fin n) :
@@ -416,6 +594,9 @@ theorem eps_prod {m n pS pT : ℕ} {εS : Fin n → ℝ} {εT : Fin m → ℝ}
   · rw [if_neg (show ¬ PosF pS pT i c from fun hp => absurd (Iff.mp hp h4) (by omega))]; norm_num
   · rw [if_pos (show PosF pS pT i c from iff_of_false (by omega) (by omega))]; norm_num
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Matrix.single_apply, Matrix.diagonal_apply, ite_and, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mul_sum, Finset.sum_mul]`. Apply the tactic sequence `split_ifs <;> subst_vars <;> first | ring1 | (exfalso; simp_all)`.
+-/
 theorem diag_single_diag {p q r : ℕ} (d : Fin p → ℂ) (d' : Fin q → ℂ) (a : Fin p) (b : Fin q) (x : ℂ)
     (Y : Matrix (Fin q) (Fin r) ℂ) :
     diagonal d * (Matrix.single a b x * (diagonal d' * Y)) = Matrix.single a b (d a * x * d' b) * Y := by
@@ -424,6 +605,9 @@ theorem diag_single_diag {p q r : ℕ} (d : Fin p → ℂ) (d' : Fin q → ℂ) 
     Finset.sum_ite_eq', Finset.mul_sum, Finset.sum_mul]
   split_ifs <;> subst_vars <;> first | ring1 | (exfalso; simp_all)
 
+/- English proof (translation)
+Simplify using `[Matrix.trace, Matrix.mul_apply, Matrix.single_apply, ite_and, Finset.sum_ite_eq, Finset.sum_ite_eq']`. Apply the tactic sequence `split_ifs <;> simp_all`.
+-/
 theorem trace_single_mul_single {p q : ℕ} (a : Fin p) (b b' : Fin q) (e : Fin p) (x y : ℂ) :
     (Matrix.single a b x * Matrix.single b' e y).trace = if b = b' ∧ a = e then x * y else 0 := by
   simp [Matrix.trace, Matrix.mul_apply, Matrix.single_apply, ite_and, Finset.sum_ite_eq, Finset.sum_ite_eq']
@@ -434,19 +618,35 @@ variable {m n : ℕ}
 def tt (GS : Matrix (Fin n) (Fin n) ℂ) (GT : Matrix (Fin m) (Fin m) ℂ) (z w : Matrix (Fin m) (Fin n) ℂ) : ℂ :=
   (GS⁻¹ * wᴴ * GT * z).trace
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem eM_eq (GS : Matrix (Fin n) (Fin n) ℂ) (GT : Matrix (Fin m) (Fin m) ℂ) (ξ : ℂ) (z w : Matrix (Fin m) (Fin n) ℂ) :
     eM GS GT ξ z w = 2 * (ξ * tt GS GT z w).re := rfl
 
+/- English proof (translation)
+Unfold `tt`. Rewrite using `[Matrix.mul_smul, Matrix.trace_smul, smul_eq_mul]`.
+-/
 theorem tt_smul_left (GS : Matrix (Fin n) (Fin n) ℂ) (GT : Matrix (Fin m) (Fin m) ℂ) (c : ℂ)
     (z w : Matrix (Fin m) (Fin n) ℂ) : tt GS GT (c • z) w = c * tt GS GT z w := by
   unfold tt
   rw [Matrix.mul_smul, Matrix.trace_smul, smul_eq_mul]
 
+/- English proof (translation)
+Unfold `tt`. Rewrite using `[Matrix.conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_mul, Matrix.trace_smul, smul_eq_mul]`.
+-/
 theorem tt_smul_right (GS : Matrix (Fin n) (Fin n) ℂ) (GT : Matrix (Fin m) (Fin m) ℂ) (c : ℂ)
     (z w : Matrix (Fin m) (Fin n) ℂ) : tt GS GT z (c • w) = star c * tt GS GT z w := by
   unfold tt
   rw [Matrix.conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_mul, Matrix.trace_smul, smul_eq_mul]
 
+/- English proof (translation)
+Apply the tactic sequence `have hI : Complex.I * star Complex.I = 1 := by first | simp | simp [Complex.ext_iff]`. Unfold `cplxO`. Rewrite using `[tt_smul_left, tt_smul_right, ← mul_assoc, hI, one_mul]`. Unfold `tt`. Establish `e1 : ∀ Y : Matrix (Fin n) (Fin n) ℂ, GS⁻¹ * (sSᴴ * Y) = sS * (GS⁻¹ * Y)` using `fun Y => by`.
+
+Rewrite using `[← Matrix.mul_assoc, hS3, Matrix.mul_assoc]`. Establish `e2 : ∀ Y : Matrix (Fin m) (Fin n) ℂ, sTᴴ * (GT * (sT * Y)) = GT * Y` using `fun Y => by`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hT2]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc, e1, e2]`. Rewrite using `[Matrix.trace_mul_comm sS]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[hS, Matrix.mul_one]`.
+-/
 theorem tt_JJ {GS sS : Matrix (Fin n) (Fin n) ℂ} {GT sT : Matrix (Fin m) (Fin m) ℂ} (hS : sS * sS = 1)
     (hS3 : GS⁻¹ * sSᴴ = sS * GS⁻¹) (hT2 : sTᴴ * GT * sT = GT) (z w : Matrix (Fin m) (Fin n) ℂ) :
     tt GS GT (cplxO sS sT z) (cplxO sS sT w) = tt GS GT z w := by
@@ -464,6 +664,11 @@ theorem tt_JJ {GS sS : Matrix (Fin n) (Fin n) ℂ} {GT sT : Matrix (Fin m) (Fin 
   simp only [Matrix.mul_assoc]
   rw [hS, Matrix.mul_one]
 
+/- English proof (translation)
+Unfold `tt`. Establish `e1 : ∀ Y : Matrix (Fin n) (Fin n) ℂ, GS⁻¹ * (sSᴴ * Y) = sS * (GS⁻¹ * Y)` using `fun Y => by`. Rewrite using `[← Matrix.mul_assoc, hS3, Matrix.mul_assoc]`. Establish `e2 : sTᴴ * (GT * z) = GT * (sT * z)` using `by rw [← Matrix.mul_assoc, hT1, Matrix.mul_assoc]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc, e1, e2]`.
+
+Rewrite using `[Matrix.trace_mul_comm sS]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem tt_swap {GS sS : Matrix (Fin n) (Fin n) ℂ} {GT sT : Matrix (Fin m) (Fin m) ℂ}
     (hS3 : GS⁻¹ * sSᴴ = sS * GS⁻¹) (hT1 : sTᴴ * GT = GT * sT) (z w : Matrix (Fin m) (Fin n) ℂ) :
     tt GS GT z (sT * w * sS) = tt GS GT (sT * z * sS) w := by
@@ -475,6 +680,13 @@ theorem tt_swap {GS sS : Matrix (Fin n) (Fin n) ℂ} {GT sT : Matrix (Fin m) (Fi
   rw [Matrix.trace_mul_comm sS]
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Take `⟨εS, hεS, hS1, hS2, hsS, -, -, -, -, -, -⟩` from `onb_data hS`. Take `⟨εT, hεT, hT1, hT2, hsT, -, -, -, -, -, -⟩` from `onb_data hT`. Unfold `cplxO unitMap`. Rewrite using `[hsS, hsT]`. Establish `key : BT * diagonal (fun a : Fin m => (εT a : ℂ)) * BT⁻¹ * (BT * single i c (1 : ℂ) * BS⁻¹) * (BS * diagonal (fun a : Fin n => (εS a : ℂ)) * BS⁻¹) = BT * (single i c ((εT i : ℂ) * 1 * (εS c : ℂ)) * BS⁻¹)`.
+
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc BT⁻¹ BT, hT1, Matrix.one_mul, ← Matrix.mul_assoc BS⁻¹ BS, hS1, Matrix.one_mul, diag_single_diag]`. Rewrite using `[key, mul_one, eps_prod hεS hεT i c]`. Use `split_ifs`. Rewrite using `[Matrix.mul_assoc BT]`.
+
+Establish `e : single i c (-1 : ℂ) = (-1 : ℂ) • single i c 1`. Rewrite using `[Matrix.smul_single, smul_eq_mul, mul_one]`. Rewrite using `[e, Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.mul_assoc BT]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem J_unit {pS pT : ℕ} {GS sS BS : Matrix (Fin n) (Fin n) ℂ} {GT sT BT : Matrix (Fin m) (Fin m) ℂ}
     (hS : IsONBasis GS sS BS pS) (hT : IsONBasis GT sT BT pT) (i : Fin m) (c : Fin n) :
     cplxO sS sT (unitMap BS BT i c) = (if PosF pS pT i c then Complex.I else -Complex.I) • unitMap BS BT i c := by
@@ -497,6 +709,15 @@ theorem J_unit {pS pT : ℕ} {GS sS BS : Matrix (Fin n) (Fin n) ℂ} {GT sT BT :
     congr 1
     ring
 
+/- English proof (translation)
+Take `⟨εS, hεS, hS1, hS2, -, -, hGSi, -, -, -, -⟩` from `onb_data hS`. Take `⟨εT, hεT, hT1, hT2, -, hGT, -, -, -, -, -⟩` from `onb_data hT`. Unfold `tt unitMap`. Rewrite using `[hGSi, hGT, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_single, star_one]`. Establish `cS : ∀ Y : Matrix (Fin n) (Fin n) ℂ, BSᴴ * (BS⁻¹ᴴ * Y) = Y` using `fun Y => by`.
+
+Rewrite using `[← Matrix.mul_assoc, ← Matrix.conjTranspose_mul, hS1, Matrix.conjTranspose_one, Matrix.one_mul]`. Establish `cT : ∀ Y : Matrix (Fin m) (Fin n) ℂ, BTᴴ * (BT⁻¹ᴴ * Y) = Y` using `fun Y => by`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.conjTranspose_mul, hT1, Matrix.conjTranspose_one, Matrix.one_mul]`. Establish `cT2 : ∀ Y : Matrix (Fin m) (Fin n) ℂ, BT⁻¹ * (BT * Y) = Y` using `fun Y => by`. Rewrite using `[← Matrix.mul_assoc, hT1, Matrix.one_mul]`.
+
+Simplify using `only [Matrix.mul_assoc, cS, cT, cT2]`. Rewrite using `[diag_single_diag, Matrix.trace_mul_comm BS]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[hS1, Matrix.mul_one, trace_single_mul_single]`. Use `beta_reduce`.
+
+Distinguish the cases in `hic : i = i' ∧ c = c'`. Rewrite using `[← hic.1, ← hic.2, if_pos ⟨rfl, rfl⟩, if_pos ⟨rfl, rfl⟩, ← eps_prod hεS hεT i c]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg (fun h' => hic ⟨h'.1.symm, h'.2.symm⟩), if_neg hic]`.
+-/
 theorem tt_unit {pS pT : ℕ} {GS sS BS : Matrix (Fin n) (Fin n) ℂ} {GT sT BT : Matrix (Fin m) (Fin m) ℂ}
     (hS : IsONBasis GS sS BS pS) (hT : IsONBasis GT sT BT pT) (i : Fin m) (c : Fin n) (i' : Fin m) (c' : Fin n) :
     tt GS GT (unitMap BS BT i c) (unitMap BS BT i' c') =
@@ -523,6 +744,25 @@ theorem tt_unit {pS pT : ℕ} {GS sS BS : Matrix (Fin n) (Fin n) ℂ} {GT sT BT 
 
 end Mat
 
+/- English proof (translation)
+Unfold `UnitBracket`. Introduce `m n pS pT GS sS BS GT sT BT ξ hS hT hre him`. Take `⟨εS, hεS, hS1, hS2, hsS, hGS, hGSi, hSS, hS2', hSG, hS3⟩` from `onb_data hS`. Take `⟨εT, hεT, hT1, hT2, hsT, hGT, hGTi, hTT, hTG2, hTG, hT3⟩` from `onb_data hT`. Establish `hJ : ∀ z w : Matrix (Fin m) (Fin n) ℂ, tt GS GT (cplxO sS sT z) (cplxO sS sT w) = tt GS GT z w` using `fun z w => tt_JJ hSS hS3 hTG2 z w`.
+
+Establish `hL : ∀ z w : Matrix (Fin m) (Fin n) ℂ, tt GS GT (cplxO sS sT z) w = Complex.I * tt GS GT (sT * z * sS) w`. Introduce `z w`. Unfold `cplxO`. Rewrite using `[tt_smul_left]`. Establish `hR : ∀ z w : Matrix (Fin m) (Fin n) ℂ, tt GS GT z (cplxO sS sT w) = -Complex.I * tt GS GT (sT * z * sS) w`.
+
+Introduce `z w`. Unfold `cplxO`. Rewrite using `[tt_smul_right, tt_swap hS3 hTG]`. Use `congr 1`. Apply the tactic sequence `first | simp | rfl`.
+
+Use `⟨fun i c => J_unit hS hT i c, fun i c i' c' => ?_, fun z w => ?_⟩` and prove the remaining obligations. Establish `hu : sT * unitMap BS BT i c * sS = (if PosF pS pT i c then (1 : ℂ) else -1) • unitMap BS BT i c`. Establish `e` using `J_unit hS hT i c`. Unfold `cplxO at e`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[show (-Complex.I) * Complex.I = 1 by simp, one_smul]`. Use `_ = (-Complex.I) • (Complex.I • (sT * unitMap BS BT i c * sS)) := by rw [smul_smul]`. Use `_ = (-Complex.I) • ((if PosF pS pT i c then Complex.I else -Complex.I) • unitMap BS BT i c) := by`. Rewrite using `[e]`. Use `_ = (if PosF pS pT i c then (1 : ℂ) else -1) • unitMap BS BT i c := by`.
+
+Rewrite using `[smul_smul]`. Use `congr 1`. Apply the tactic sequence `split_ifs <;> simp`. Unfold `brk`. Simplify using `only [eM_eq, hJ, hL, hR]`.
+
+Rewrite using `[hu, tt_smul_left, tt_unit hS hT i c i' c']`. Distinguish the cases in `hic : i = i' ∧ c = c'`. Rewrite using `[if_pos hic, if_pos hic]`. Distinguish the cases in `hP : PosF pS pT i c`. Simplify using `only [hP, if_true]`.
+
+Apply the tactic sequence `apply Complex.ext <;> simp [Complex.mul_re, Complex.mul_im, hre] <;> ring`. Simplify using `only [hP, if_false]`. Apply the tactic sequence `apply Complex.ext <;> simp [Complex.mul_re, Complex.mul_im, hre] <;> ring`. Rewrite using `[if_neg hic, if_neg hic]`. Simplify using the standard rewrite rules.
+
+Unfold `brkPP`. Simplify using `only [eM_eq, hJ, hL, hR]`. Rewrite using `[neg_mul, mul_neg, Complex.neg_re]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem unitBracket : UnitBracket := by
   unfold UnitBracket
   intro m n pS pT GS sS BS GT sT BT ξ hS hT hre him

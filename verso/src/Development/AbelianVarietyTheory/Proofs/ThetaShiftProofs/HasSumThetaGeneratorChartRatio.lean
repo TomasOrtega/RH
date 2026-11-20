@@ -23,12 +23,21 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.Reg.ChartInhab GlobalTheory.Reg.LiftUnique
 open scoped LaurentSeries
 
+/- English proof (translation)
+Rewrite using `[Geo.Tor.cst, map_mul, gs_mul q z ⊤ trivial]`. Both sides reduce to the same expression.
+-/
 theorem cstMul {V : Type} [CommRing V] {Z : Scheme.{0}} (q : Z ⟶ Sp V) (z : Z) (a b : V) :
     Geo.Tor.cst q z (a * b) = Geo.Tor.cst q z a * Geo.Tor.cst q z b := by rw [Geo.Tor.cst, map_mul, gs_mul q z ⊤ trivial]; rfl
 
+/- English proof (translation)
+Rewrite using `[Geo.Tor.cst, gs_eq q z ⊤ trivial, map_one, map_one, map_one]`.
+-/
 theorem cstOne {V : Type} [CommRing V] {Z : Scheme.{0}} (q : Z ⟶ Sp V) (z : Z) : Geo.Tor.cst q z 1 = 1 := by
   rw [Geo.Tor.cst, gs_eq q z ⊤ trivial, map_one, map_one, map_one]
 
+/- English proof (translation)
+Establish `hz : r z ∈ (L.pull F).U (fun _ => j) ⊓ L'.U k` using `⟨mem_pull.2 hj, hk⟩`. Establish `a` using `congrArg (gs r z _) (h (fun _ => j) k)`. Conclude with `(gs_res _ z _ hz _).symm.trans (a.trans ((gs_mul _ z _ hz _ _).trans (congrArg₂ (· * ·) (gs_unit _ z _ hz _) (gs_res _ z _ hz _))))`.
+-/
 theorem gs_of_isoMaps {X X' : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X} {w : LB.Iso L' (L.pull F)}
     {σ : LB.Sec L'} {s : LB.Sec (L.pull F)} (h : IsoMaps w σ s) (Z : Scheme.{0}) (r : Z ⟶ X') (z : Z) (j : L.ι)
     (k : L'.ι) (hj : F (r z) ∈ L.U j) (hk : r z ∈ L'.U k) :
@@ -41,6 +50,9 @@ theorem gs_of_isoMaps {X X' : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X}
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
 
+/- English proof (translation)
+Establish `hp : IsProper G.G.hom` using `MorphismProperty.of_isPullback (P := @IsProper) m1.cart.1 Xo.univ.proper`. Establish `hab : IsAbelianScheme G.G` using `⟨G.semi.comm, G.semi.smooth, hp, G.semi.geomConnected⟩`. Conclude with `GlobalTheory.iso_eq_of_maps_along_section (S := Sp V) (exists_chart G.PP.isLB) (fun y => (exists_chart t.PP.isLB (m2.φ y)).elim fun j hj => ⟨fun _ => j, mem_pull.2 hj⟩) G.G.hom (eSec G.G) (Over.w η[G.G]) (hG _ _ hab).2 h.1 h'.1 h.2 h'.2`.
+-/
 theorem rigIso_eq (hG : Out.GlobalFnsSt) {V : Type} [CommRing V] {x : Sp V ⟶ Xo.X} {G : SAB H (Sp V)}
     {B : Scheme.{0}} {t : SAB H B} {f : Sp V ⟶ B} (m2 : SABMap G t f)
     {w w' : LB.Iso G.PP.L (t.PP.L.pull m2.φ)} (m1 : SABMap G Xo.univ.t x)
@@ -51,6 +63,9 @@ theorem rigIso_eq (hG : Out.GlobalFnsSt) {V : Type} [CommRing V] {x : Sp V ⟶ X
     (fun y => (exists_chart t.PP.isLB (m2.φ y)).elim fun j hj => ⟨fun _ => j, mem_pull.2 hj⟩)
     G.G.hom (eSec G.G) (Over.w η[G.G]) (hG _ _ hab).2 h.1 h'.1 h.2 h'.2
 
+/- English proof (translation)
+The claim follows from `gs_constFn (fst (Over.mk x) Xo.univ.t.G).left _ g p hp a`.
+-/
 theorem gs_scal' {T : Type} [CommRing T] (x : Sp T ⟶ Xo.X) (a : T) (i : (PPx x).ι) {Z : Scheme.{0}} (g : Z ⟶ Gx x)
     (p : Z) (hp : g p ∈ (PPx x).U i) :
     gs g p _ (scal x a i) = Geo.Tor.cst (g ≫ (fst (Over.mk x) Xo.univ.t.G).left) p a :=
@@ -70,12 +85,20 @@ def Cut {T : Type} [CommRing T] (z : Sp T ⟶ Xo.XF c) (x : Sp T ⟶ Xo.X) (a : 
 
 variable {Y V s₀ w₀ w₁}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => (congrArg (fun q => q p ∈ Xo.univ.t.PP.L.U j₀) e).mpr (Set.mem_iInter.1 h 0), fun h => Set.mem_iInter.2 fun _ => (congrArg (fun q => q p ∈ Xo.univ.t.PP.L.U j₀) e).mp h⟩`.
+-/
 theorem mem_chart {T : Type} [CommRing T] {x : Sp T ⟶ Xo.X} {Z : Scheme.{0}} {g : Z ⟶ Gx x} {f : Z ⟶ Y.oF.t.G.left}
     (e : f ≫ Y.m0.toSABMap.φ = g ≫ (snd (Over.mk x) Xo.univ.t.G).left) (p : Z) (j₀ : Xo.univ.t.PP.L.ι) :
     g p ∈ (PPx x).U (fun _ => j₀) ↔ Y.m0.toSABMap.φ (f p) ∈ Xo.univ.t.PP.L.U j₀ :=
   ⟨fun h => (congrArg (fun q => q p ∈ Xo.univ.t.PP.L.U j₀) e).mpr (Set.mem_iInter.1 h 0),
     fun h => Set.mem_iInter.2 fun _ => (congrArg (fun q => q p ∈ Xo.univ.t.PP.L.U j₀) e).mp h⟩
 
+/- English proof (translation)
+Take `⟨pm, h₁, h₂, h₃⟩` from `hs`. Introduce `Z g f p j k j₀ e₁ e₂ m₁ m₂ m₃`. Establish `mg` using `(mem_chart e₁ p j₀).2 m₃`. Establish `hle` using `FramedBaseChange.chart_le pm h₁ (fun _ => j₀)`. Establish `e` using `h Z (g ≫ pm) f p j k j₀ (by rw [Category.assoc, h₁]; exact e₁) (by rw [e₂, Category.assoc, reassoc_of% h₂]) m₁ m₂ m₃`.
+
+Rewrite using `[e, ← h₃ _ hle, gs_appLE pm _ _ hle g p mg, gs_mul (g ≫ pm) p _ (hle mg), gs_scal' x b _ (g ≫ pm) p (hle mg), cstMul, _root_.mul_assoc, Category.assoc, h₂, ← Category.assoc, cst_comp]`.
+-/
 theorem Cut.pull {T T' : Type} [CommRing T] [CommRing T'] (φ : T →+* T') {z : Sp T ⟶ Xo.XF c} {x : Sp T ⟶ Xo.X}
     {x' : Sp T' ⟶ Xo.X} {a b : T} {s : LB.Sec (PPx x)} {s' : LB.Sec (PPx x')} (h : Cut Y V s₀ w₀ w₁ z x (a * b) s)
     (hs : SecBC φ b x x' s s') : Cut Y V s₀ w₀ w₁ (spMap φ ≫ z) x' (φ a) s' := by
@@ -88,6 +111,13 @@ theorem Cut.pull {T T' : Type} [CommRing T] [CommRing T'] (φ : T →+* T') {z :
   rw [e, ← h₃ _ hle, gs_appLE pm _ _ hle g p mg, gs_mul (g ≫ pm) p _ (hle mg), gs_scal' x b _ (g ≫ pm) p (hle mg),
     cstMul, _root_.mul_assoc, Category.assoc, h₂, ← Category.assoc, cst_comp]
 
+/- English proof (translation)
+Substitute `hx` using the available equality. Take `⟨pm, h₁, h₂, h₃⟩` from `hs`. Choose the witnesses or unpack the hypotheses as in `rfl : pm = 𝟙 _ := by`. Apply `FramedBaseChange.pulledGroup_hom_ext` to reduce the goal to its premises. Rewrite using `[h₁, Category.id_comp]`.
+
+Rewrite using `[h₂, Category.id_comp]`. Conclude with `(congrArg _ (Spec.map_id _)).trans (Category.comp_id _)`. Introduce `Z g f p j k j₀ e₁ e₂ m₁ m₂ m₃`. Establish `mg` using `(mem_chart e₁ p j₀).2 m₃`. Establish `e` using `h Z g f p j k j₀ e₁ e₂ m₁ m₂ m₃`.
+
+Establish `hle` using `FramedBaseChange.chart_le (𝟙 _) h₁ (fun _ => j₀)`. Rewrite using `[e, ← h₃ _ hle, gs_appLE (𝟙 _) _ _ hle g p mg, Category.comp_id, gs_mul g p _ mg, gs_scal' x' b _ g p mg, cstMul, _root_.mul_assoc]`.
+-/
 theorem Cut.chg {T : Type} [CommRing T] {z : Sp T ⟶ Xo.XF c} {x x' : Sp T ⟶ Xo.X}
     {a b : T} {s : LB.Sec (PPx x)} {s' : LB.Sec (PPx x')} (hx : x' = x) (h : Cut Y V s₀ w₀ w₁ z x' a s')
     (hs : SecBC (RingHom.id T) b x x' s s') : Cut Y V s₀ w₀ w₁ z x (a * b) s := by
@@ -105,6 +135,9 @@ theorem Cut.chg {T : Type} [CommRing T] {z : Sp T ⟶ Xo.XF c} {x x' : Sp T ⟶ 
   rw [e, ← h₃ _ hle, gs_appLE (𝟙 _) _ _ hle g p mg, Category.comp_id, gs_mul g p _ mg, gs_scal' x' b _ g p mg,
     cstMul, _root_.mul_assoc]
 
+/- English proof (translation)
+Establish `cond : (snd (Over.mk x) Xo.univ.t.G).left ≫ Xo.univ.t.G.hom = (fst (Over.mk x) Xo.univ.t.G).left ≫ x` using `(Over.w (snd (Over.mk x) Xo.univ.t.G)).trans (Over.w (fst (Over.mk x) Xo.univ.t.G)).symm`. Establish `cond' : (g ≫ (snd (Over.mk x) Xo.univ.t.G).left) ≫ Xo.univ.t.G.hom = (g ≫ (fst (Over.mk x) Xo.univ.t.G).left ≫ z) ≫ pullback.fst _ _`. Rewrite using `[Category.assoc, cond, Category.assoc, Category.assoc, hx]`. Conclude with `⟨Y.m0.toSABMap.cart.1.lift _ _ cond', Y.m0.toSABMap.cart.1.lift_fst _ _ cond', Y.m0.toSABMap.cart.1.lift_snd _ _ cond'⟩`.
+-/
 theorem exists_lift' {T : Type} [CommRing T] (z : Sp T ⟶ Xo.XF c) {x : Sp T ⟶ Xo.X} (hx : z ≫ pullback.fst _ _ = x)
     {Z : Scheme.{0}} (g : Z ⟶ Gx x) : ∃ f : Z ⟶ Y.oF.t.G.left,
       f ≫ Y.m0.toSABMap.φ = g ≫ (snd (Over.mk x) Xo.univ.t.G).left ∧
@@ -117,6 +150,9 @@ theorem exists_lift' {T : Type} [CommRing T] (z : Sp T ⟶ Xo.XF c) {x : Sp T �
   exact ⟨Y.m0.toSABMap.cart.1.lift _ _ cond', Y.m0.toSABMap.cart.1.lift_fst _ _ cond',
     Y.m0.toSABMap.cart.1.lift_snd _ _ cond'⟩
 
+/- English proof (translation)
+Establish `: (f ≫ Y.m.φ) ≫ Y.t.G.hom = q ≫ z ≫ Y.j`. Rewrite using `[Category.assoc, Y.m.cart.1.w, reassoc_of% e]`. Both sides reduce to the same expression. Conclude with `(congrArg (fun u => u p ∈ V) this).mpr (hV (x := q p) trivial)`.
+-/
 theorem mem_over {T : Type} [CommRing T] {z : Sp T ⟶ Xo.XF c} (hV : ⊤ ≤ (z ≫ Y.j) ⁻¹ᵁ V) {Z : Scheme.{0}}
     {f : Z ⟶ Y.oF.t.G.left} {q : Z ⟶ Sp T} (e : f ≫ Y.oF.t.G.hom = q ≫ z) (p : Z) :
     Y.m.φ (f p) ∈ Y.t.G.hom ⁻¹ᵁ V := by
@@ -124,6 +160,11 @@ theorem mem_over {T : Type} [CommRing T] {z : Sp T ⟶ Xo.XF c} (hV : ⊤ ≤ (z
     rw [Category.assoc, Y.m.cart.1.w, reassoc_of% e]; rfl
   exact (congrArg (fun u => u p ∈ V) this).mpr (hV (x := q p) trivial)
 
+/- English proof (translation)
+Take `⟨j₀, rfl⟩ : ∃ j₀ : Xo.univ.t.PP.L.ι, i = fun _ => j₀` from `⟨i 0, funext fun k => congrArg i (Subsingleton.elim k 0)⟩`. Take `⟨f, e₁, e₂⟩` from `exists_lift' (Y := Y) z hx (𝟙 _)`. Use `fn_ext fun p hp => ?_` and prove the remaining obligations. Take `⟨j, hj⟩` from `exists_chart Y.t.PP.isLB (Y.m.φ (f p))`. Take `⟨k, hk⟩` from `exists_chart Y.oF.t.PP.isLB (f p)`.
+
+Establish `hm : Y.m.φ (f p) ∈ Y.t.G.hom ⁻¹ᵁ V ⊓ Y.t.PP.L.U j` using `⟨mem_over hV (e₂.trans (Category.assoc _ _ _).symm) p, hj⟩`. Establish `h0` using `(mem_chart e₁ p j₀).1 hp`. Establish `e` using `(h _ _ f p j k j₀ e₁ e₂ hm hk h0).symm.trans (h' _ _ f p j k j₀ e₁ e₂ hm hk h0)`. Rewrite using `[gs_mul _ p _ hp, gs_mul _ p _ hp, gs_scal' x a _ (𝟙 _) p hp, gs_scal' x a' _ (𝟙 _) p hp]`. Conclude with `(Units.mul_right_inj _).1 e`.
+-/
 theorem Cut.eq {T : Type} [CommRing T] {z : Sp T ⟶ Xo.XF c} {x : Sp T ⟶ Xo.X} (hx : z ≫ pullback.fst _ _ = x)
     (hV : ⊤ ≤ (z ≫ Y.j) ⁻¹ᵁ V) {a a' : T} {s s' : LB.Sec (PPx x)} (h : Cut Y V s₀ w₀ w₁ z x a s)
     (h' : Cut Y V s₀ w₀ w₁ z x a' s') (i : (PPx x).ι) : scal x a i * s.f i = scal x a' i * s'.f i := by
@@ -140,6 +181,19 @@ theorem Cut.eq {T : Type} [CommRing T] {z : Sp T ⟶ Xo.XF c} {x : Sp T ⟶ Xo.X
   rw [gs_mul _ p _ hp, gs_mul _ p _ hp, gs_scal' x a _ (𝟙 _) p hp, gs_scal' x a' _ (𝟙 _) p hp]
   exact (Units.mul_right_inj _).1 e
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨t', ⟨n⟩⟩ : ∃ t' : SAB H (Sp T), Nonempty (SABMap t' Y.oF.t z) := by`. Take `⟨_, _, _, _, _, m, -⟩` from `sabPull Out.CubePf.cubePull z Y.oF.t`. Conclude with `⟨_, ⟨m⟩⟩`. Take `⟨wn, rn⟩` from `exists_rigIso n`. Take `⟨m1, e1, w1, r1, T1⟩` from `exists_comp_rig Y.m0.toSABMap n x hx.symm h₀ rn`.
+
+Take `⟨m2, e2, w2, r2, T2⟩` from `exists_comp_rig Y.m n _ rfl h₁ rn`. Establish `hm : ∀ p, m2.φ p ∈ Y.t.G.hom ⁻¹ᵁ V` using `fun p => (congrArg (fun q => q p ∈ Y.t.G.hom ⁻¹ᵁ V) e2).mpr (mem_over hV n.cart.1.w p)`. Establish `le : ∀ j, m2.φ ⁻¹ᵁ Y.t.PP.L.U j ≤ m2.φ ⁻¹ᵁ (Y.t.G.hom ⁻¹ᵁ V ⊓ Y.t.PP.L.U j)` using `fun j p hp => ⟨hm p, hp⟩`. Take `⟨τ, hτ⟩` from `sec_down ((isGen_iff w2).1 r2.1) Y.t.PP.isLB t'.PP.isLB (fun j => (m2.φ.appLE _ _ (le j)).hom (s₀ j)) (fun y j j' a b => by`. Rewrite using `[gs_appLE m2.φ _ _ (le j) (𝟙 _) y a, gs_appLE m2.φ _ _ (le j') (𝟙 _) y b, Category.id_comp]`.
+
+Conclude with `GlobalTheory.ThetaUnit.gs_secOn hs m2.φ y (hm y) a b)`. Take `⟨S, hS⟩` from `exists_up m1 ((isGen_iff w1).1 r1.1) τ`. Take `⟨h, hφ, hh, -, h0g⟩` from `exists_inv m1`. Use `⟨S, fun Z g f p j k j₀ a₁ a₂ b₁ b₂ b₃ => ?_⟩` and prove the remaining obligations. Establish `ef : (g ≫ h) ≫ n.φ = f`.
+
+Apply `Y.m0.toSABMap.cart.1.hom_ext` to reduce the goal to its premises. Use `Eq.trans ?_ a₁.symm` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, ← hφ, e1]`. Rewrite using `[a₂, Category.assoc, n.cart.1.w, Category.assoc, reassoc_of% hh]`. Substitute `ef` using the available equality.
+
+Take `⟨k', hk'⟩` from `exists_chart t'.PP.isLB ((g ≫ h) p)`. Establish `c₁ : m1.φ ((g ≫ h) p) ∈ Xo.univ.t.PP.L.U j₀` using `(congrArg (fun q => q ((g ≫ h) p) ∈ Xo.univ.t.PP.L.U j₀) e1).mpr b₃`. Establish `c₂ : m2.φ ((g ≫ h) p) ∈ Y.t.PP.L.U j` using `(congrArg (fun q => q ((g ≫ h) p) ∈ Y.t.PP.L.U j) e2).mpr b₁.2`. Establish `u₁` using `hS Z (g ≫ h) p j₀ k' c₁ hk'`. Establish `u₂` using `hτ Z (g ≫ h) p j k' c₂ hk'`.
+
+Rewrite `u₂` using `[gs_appLE m2.φ _ _ (le j) (g ≫ h) p c₂, T2 Z _ p j k k' b₁.2 b₂ hk']`. Rewrite `u₁` using `[Category.assoc, h0g, Category.comp_id, T1 Z _ p j₀ k k' b₃ b₂ hk']`. Establish `eg : ((g ≫ h) ≫ n.φ) ≫ Y.m.φ = (g ≫ h) ≫ m2.φ` using `by rw [e2, Category.assoc]`. Rewrite using `[eg, u₁, u₂, cstOne, Units.val_mul, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_cut (h₀ : RigIso Y.m0.toSABMap w₀) (h₁ : RigIso Y.m w₁)
     (hs : s₀ ∈ secOn Y.t.PP.L (Y.t.G.hom ⁻¹ᵁ V)) {T : Type} [CommRing T] {z : Sp T ⟶ Xo.XF c} {x : Sp T ⟶ Xo.X}
     (hx : z ≫ pullback.fst _ _ = x) (hV : ⊤ ≤ (z ≫ Y.j) ⁻¹ᵁ V) : ∃ S, Cut Y V s₀ w₀ w₁ z x 1 S := by
@@ -178,6 +232,11 @@ theorem exists_cut (h₀ : RigIso Y.m0.toSABMap w₀) (h₁ : RigIso Y.m w₁)
   rw [eg, u₁, u₂, cstOne, Units.val_mul, Units.val_mul]
   ring
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `exists_cut h₀ h₁ hs hx hV`. Take `⟨a, ha, hu⟩` from `hg S`. Establish `one : ∀ i, scal x 1 i * S.f i = S.f i` using `fun i => fn_ext fun p hp => by`. Rewrite using `[gs_mul _ p _ hp, gs_scal' x 1 _ (𝟙 _) p hp, cstOne, _root_.one_mul]`. Use `⟨a, ?_, fun a' h' => hu a' fun i => (one i).symm.trans (hS.eq hx hV h' i)⟩` and prove the remaining obligations.
+
+Introduce `Z g f p j k j₀ e₁ e₂ m₁ m₂ m₃`. Establish `mg` using `(mem_chart e₁ p j₀).2 m₃`. Rewrite using `[hS Z g f p j k j₀ e₁ e₂ m₁ m₂ m₃, cstOne, _root_.one_mul, ha (fun _ => j₀), gs_mul g p _ mg, gs_scal' x a _ g p mg]`.
+-/
 theorem exists_cut_gen (h₀ : RigIso Y.m0.toSABMap w₀) (h₁ : RigIso Y.m w₁)
     (hs : s₀ ∈ secOn Y.t.PP.L (Y.t.G.hom ⁻¹ᵁ V)) {T : Type} [CommRing T] {z : Sp T ⟶ Xo.XF c} {x : Sp T ⟶ Xo.X}
     (hx : z ≫ pullback.fst _ _ = x) (hV : ⊤ ≤ (z ≫ Y.j) ⁻¹ᵁ V) {s : LB.Sec (PPx x)} (hg : SecGen x s) :
@@ -191,6 +250,13 @@ theorem exists_cut_gen (h₀ : RigIso Y.m0.toSABMap w₀) (h₁ : RigIso Y.m w�
   have mg := (mem_chart e₁ p j₀).2 m₃
   rw [hS Z g f p j k j₀ e₁ e₂ m₁ m₂ m₃, cstOne, _root_.one_mul, ha (fun _ => j₀), gs_mul g p _ mg, gs_scal' x a _ g p mg]
 
+/- English proof (translation)
+Substitute `hL` using the available equality. Take `rfl` from `eq_of_heq hθ`. Use `⟨w₂, hw, fun Z q p j k a b => ?_⟩` and prove the remaining obligations. Establish `c₂ : q p ∈ (LB.div (Y.t.PP.L.pull m.φ) t.PP.L).U (fun _ => j, k)` using `⟨mem_pull.2 a.2, b⟩`. Establish `c₃ : q p ∈ LB.wchart t.PP.L (fun _ : Fin 1 => 𝟙 t.G.left) (fun _ => k)` using `Set.mem_iInter.2 fun _ => b`.
+
+Establish `hp : q p ∈ m.φ ⁻¹ᵁ (Y.t.G.hom ⁻¹ᵁ V ⊓ Y.t.PP.L.U j) ⊓ ((LB.div (Y.t.PP.L.pull m.φ) t.PP.L).U (fun _ => j, k) ⊓ LB.wchart t.PP.L (fun _ : Fin 1 => 𝟙 t.G.left) (fun _ => k))` using `⟨a, c₂, c₃⟩`. Establish `e` using `congrArg (gs q p _) (h j k _ inf_le_left (inf_le_right.trans inf_le_left) (inf_le_right.trans inf_le_right))`. Establish `le : LB.wchart t.PP.L (fun _ : Fin 1 => 𝟙 t.G.left) (fun _ => k) ≤ t.PP.L.U k` using `fun y hy => Set.mem_iInter.1 hy 0`. Rewrite `e` using `[gs_appLE m.φ _ _ _ q p hp, gs_mul q p _ hp, gs_mul q p _ hp, gs_constFn _ _ q p hp, _root_.mul_assoc]`. Use `e.trans (congrArg₂ (· * ·) ((gs_res q p _ hp _).trans (gs_unit q p _ c₂ _)) (congrArg _ ((gs_res q p _ hp _).trans ?_)))` and prove the remaining obligations.
+
+Conclude with `(congrArg (gs q p _) (hσ (fun _ => k) le)).trans (gs_res q p _ c₃ _)`.
+-/
 theorem pullsToMul_gs {A : Type} [CommRing A] {χ : Sp A ⟶ Y.X} {t : SAB H (Sp A)} (m : SABMap t Y.t χ)
     (L : RigLB t.G) (hL : L = t.PP) (w₂ : LB.Iso L.L (Y.t.PP.L.pull m.φ)) (hw : IsRigIso m.cm L Y.t.PP w₂)
     (σ : Out.H0 L.L 1) (θ' : LB.Sec L.L) (θ : LB.Sec t.PP.L) (hσ : SectionOfLineBundleOne σ θ') (hθ : HEq θ θ') (r : A)
@@ -214,6 +280,25 @@ theorem pullsToMul_gs {A : Type} [CommRing A] {χ : Sp A ⟶ Y.X} {t : SAB H (Sp
     (congrArg _ ((gs_res q p _ hp _).trans ?_)))
   exact (congrArg (gs q p _) (hσ (fun _ => k) le)).trans (gs_res q p _ c₃ _)
 
+/- English proof (translation)
+Substitute `zx` using the available equality. Take `⟨n, en⟩` from `sabCancel pullCubCancel E H _ _ _ Xo.univ.t Y.oF.t t' _ z Y.m0.toSABMap m1`. Establish `en' : m1.φ = n.φ ≫ Y.m0.toSABMap.φ` using `en`. Choose the witnesses or unpack the hypotheses as in `rfl : φ = n.φ := by`. Apply `Y.m0.toSABMap.cart.1.hom_ext` to reduce the goal to its premises.
+
+Conclude with `φ1.trans en'`. Rewrite using `[φb, n.cart.1.w]`. Take `⟨wn, rn⟩` from `exists_rigIso n`. Take `⟨w1', r1', T1⟩` from `cube_rig_comp Y.m0.toSABMap.cm n.cm m1.cm en' (by rw [m1.base, n.base, Y.m0.toSABMap.base]) _ _ _ w₀ wn h₀ rn`. Take `rfl : w1' = w1` from `rigIso_eq hG m1 m1 r1' r1`.
+
+Take `⟨N, eN, wN, rN, TN⟩` from `exists_comp_rig m m2 _ zj hw r2`. Take `⟨wN', rN', TN'⟩` from `cube_rig_comp Y.m.cm n.cm N.cm (eN.trans φ2.symm) (by rw [N.base, n.base, Y.m.base]; rfl) _ _ _ w₁ wn h₁ rn`. Take `rfl : wN' = wN` from `rigIso_eq hG N m1 rN' rN`. Take `⟨h, hφ, hh, -, h0g⟩` from `exists_inv m1`. Introduce `Z g f p j k j₀ a₁ a₂ b₁ b₂ b₃`.
+
+Establish `ef : (g ≫ h) ≫ n.φ = f`. Apply `Y.m0.toSABMap.cart.1.hom_ext` to reduce the goal to its premises. Use `Eq.trans ?_ a₁.symm` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, ← hφ, en']`. Rewrite using `[a₂, Category.assoc, n.cart.1.w, Category.assoc, reassoc_of% hh]`.
+
+Substitute `ef` using the available equality. Take `⟨k', hk'⟩` from `exists_chart t'.PP.isLB ((g ≫ h) p)`. Take `⟨i, hi⟩` from `exists_chart t.PP.isLB (m2.φ ((g ≫ h) p))`. Establish `c₁ : m1.φ ((g ≫ h) p) ∈ Xo.univ.t.PP.L.U j₀` using `(congrArg (fun q => q ((g ≫ h) p) ∈ Xo.univ.t.PP.L.U j₀) en').mpr b₃`. Establish `c₂ : m.φ (m2.φ ((g ≫ h) p)) ∈ Y.t.G.hom ⁻¹ᵁ V ⊓ Y.t.PP.L.U j` using `(congrArg (fun q => q ((g ≫ h) p) ∈ Y.t.G.hom ⁻¹ᵁ V ⊓ Y.t.PP.L.U j) φ2).mp b₁`.
+
+Establish `c₃ : N.φ ((g ≫ h) p) ∈ Y.t.PP.L.U j` using `(congrArg (fun q => q ((g ≫ h) p) ∈ Y.t.PP.L.U j) eN).mpr c₂.2`. Establish `le₁ : (Xo.univ.t.PP.L.pull m1.φ).U (fun _ => j₀) ≤ toGx m1 ⁻¹ᵁ (PPx _).U (fun _ => j₀)` using `fun q hq => le_toGx m1 j₀ (mem_pull.1 hq)`. Establish `le₂ : (t.PP.L.pull m2.φ).U (fun _ => i) ≤ m2.φ ⁻¹ᵁ t.PP.L.U i` using `fun q hq => mem_pull.1 hq`. Establish `u₁` using `gs_of_isoMaps i1 Z (g ≫ h) p j₀ k' c₁ hk'`. Establish `u₂` using `gs_of_isoMaps i2 Z (g ≫ h) p i k' hi hk'`.
+
+Rewrite `u₁` using `[hc (toGx m1) (toGx_snd m1) (toGx_fst m1) (fun _ => j₀) le₁, gs_appLE (toGx m1) _ _ le₁ (g ≫ h) p (mem_pull.2 c₁), Category.assoc, h0g, Category.comp_id, T1 Z _ p j₀ k k' c₁ b₂ hk']`. Rewrite `u₂` using `[ps (fun _ => i) le₂, gs_appLE m2.φ _ _ le₂ (g ≫ h) p (mem_pull.2 hi)]`. Establish `u₃` using `hθ Z ((g ≫ h) ≫ m2.φ) p j i c₂ hi`. Establish `u₄` using `congrArg Units.val ((TN Z (g ≫ h) p j i k' c₂.2 hi hk').symm.trans (TN' Z (g ≫ h) p j k k' c₃ b₂ hk'))`. Establish `eg : ((g ≫ h) ≫ n.φ) ≫ Y.m.φ = ((g ≫ h) ≫ m2.φ) ≫ m.φ` using `by rw [Category.assoc, φ2, Category.assoc _ m2.φ]`.
+
+Establish `ec : ((g ≫ h) ≫ m2.φ) ≫ t.G.hom = (g ≫ (fst (Over.mk (z ≫ pullback.fst _ _)) Xo.univ.t.G).left) ≫ spMap io`. Rewrite using `[Category.assoc, m2.cart.1.w, Category.assoc, reassoc_of% hh, Category.assoc]`. Rewrite `u₃` using `[ec, cst_comp, u₂]`. Rewrite `u₄` using `[Units.val_mul, Units.val_mul]`. Rewrite using `[eg, u₃, u₁, Units.val_mul]`.
+
+Take the linear combination `((gw w₀ ((g ≫ h) ≫ n.φ) p j₀ k).val * Geo.Tor.cst (g ≫ (fst (Over.mk (z ≫ pullback.fst _ _)) Xo.univ.t.G).left) p (io r) * gs (g ≫ h) p _ (σ'.f k')) * u₄`.
+-/
 theorem cut_arc (hG : Out.GlobalFnsSt) (h₀ : RigIso Y.m0.toSABMap w₀) (h₁ : RigIso Y.m w₁)
     {A S : Type} [CommRing A] [CommRing S] (io : A →+* S) {χ : Sp A ⟶ Y.X} {t : SAB H (Sp A)} (m : SABMap t Y.t χ)
     (θ : LB.Sec t.PP.L) (r : A) (w : LB.Iso t.PP.L (Y.t.PP.L.pull m.φ)) (hw : RigIso m w)
@@ -282,6 +367,17 @@ theorem cut_arc (hG : Out.GlobalFnsSt) (h₀ : RigIso Y.m0.toSABMap w₀) (h₁ 
   rw [eg, u₃, u₁, Units.val_mul]
   linear_combination ((gw w₀ ((g ≫ h) ≫ n.φ) p j₀ k).val * Geo.Tor.cst (g ≫ (fst (Over.mk (z ≫ pullback.fst _ _)) Xo.univ.t.G).left) p (io r) * gs (g ≫ h) p _ (σ'.f k')) * u₄
 
+/- English proof (translation)
+Take `⟨i, pt, hpt, hne⟩` from `(GlobalTheory.sec_values_complex_fibre hT E H Dw l Xo x s).2.1.1 hg`. Take `⟨j₀, rfl⟩ : ∃ j₀ : Xo.univ.t.PP.L.ι, i = fun _ => j₀` from `⟨i 0, funext fun k => congrArg i (Subsingleton.elim k 0)⟩`. Establish `hpt' : pt ≫ (fst (Over.mk x) Xo.univ.t.G).left = 𝟙 _` using `hpt`. Establish `hU : ⊤ ≤ pt ⁻¹ᵁ (PPx x).U (fun _ => j₀)`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hne (dif_neg h)`. Take `⟨f, e₁, e₂⟩` from `exists_lift' (Y := Y) z hx pt`. Establish `e₃ : f ≫ Y.oF.t.G.hom = z` using `by rw [e₂, reassoc_of% hpt']`. Set `p : Sp ℂ` to `IsLocalRing.closedPoint ℂ`. Establish `all : ∀ {X : Scheme.{0}} (u : Sp ℂ ⟶ X) (U : X.Opens), u p ∈ U → ⊤ ≤ u ⁻¹ᵁ U` using `fun u U h q _ => (Subsingleton.elim (α := PrimeSpectrum ℂ) p q) ▸ h`.
+
+Take `⟨j, hj⟩` from `exists_chart Y.t.PP.isLB (Y.m.φ (f p))`. Take `⟨k, hk⟩` from `exists_chart Y.oF.t.PP.isLB (f p)`. Establish `hm : Y.m.φ (f p) ∈ Y.t.G.hom ⁻¹ᵁ V ⊓ Y.t.PP.L.U j` using `⟨mem_over hV (e₂.trans (Category.assoc _ _ _).symm) p, hj⟩`. Establish `h0` using `(mem_chart e₁ p j₀).1 (hU (x := p) trivial)`. Establish `c₁ : f p ∈ (LB.div (Y.t.PP.L.pull Y.m.φ) Y.oF.t.PP.L).U (fun _ => j, k)` using `⟨mem_pull.2 hj, hk⟩`.
+
+Establish `c₀ : f p ∈ (LB.div (Xo.univ.t.PP.L.pull Y.m0.toSABMap.φ) Y.oF.t.PP.L).U (fun _ => j₀, k)` using `⟨mem_pull.2 h0, hk⟩`. Establish `e` using `hc _ pt f p j k j₀ e₁ e₂ hm hk h0`. Establish `e'` using `congrArg (TorusExt.stalkConst p) (hb pt f j k j₀ hpt e₁ e₃ (all f _ c₁) (all f _ c₀))`. Establish `v₀ : TorusExt.stalkConst p (valAt' f _ (w₀.s (fun _ => j₀, k)).val) = (gw w₀ f p j₀ k).val` using `(TorusExt.gs_eq_stalkConst f p (all f _ c₀) _).symm.trans (gs_unit f p _ c₀ _)`. Establish `v₁ : TorusExt.stalkConst p (valAt' f _ (w₁.s (fun _ => j, k)).val) = (gw w₁ f p j k).val` using `(TorusExt.gs_eq_stalkConst f p (all f _ c₁) _).symm.trans (gs_unit f p _ c₁ _)`.
+
+Establish `v₂ : TorusExt.stalkConst p (valAt' (f ≫ Y.m.φ) _ (s₀ j)) = gs (f ≫ Y.m.φ) p _ (s₀ j)` using `(TorusExt.gs_eq_stalkConst (f ≫ Y.m.φ) p (all (f ≫ Y.m.φ) _ hm) _).symm`. Establish `v₃ : TorusExt.stalkConst p (valAt' pt ((PPx x).U (fun _ => j₀)) (s.f (fun _ => j₀))) = gs pt p _ (s.f (fun _ => j₀))` using `(TorusExt.gs_eq_stalkConst pt p hU _).symm`. Establish `v₄ : Geo.Tor.cst (𝟙 (Sp ℂ)) p a = TorusExt.stalkConst p a` using `gs_eq _ p ⊤ trivial _`. Rewrite `e'` using `[map_mul, map_mul, v₀, v₁, v₂, e, Units.mul_right_inj, hpt', v₄, ← v₃, ← map_mul]`. Conclude with `mul_right_cancel₀ hne ((TorusExt.stalkConst p).injective e')`.
+-/
 theorem cut_complex (hT : Out.SecTwistSt) {z : Sp ℂ ⟶ Xo.XF c} {x : Sp ℂ ⟶ Xo.X} (hx : z ≫ pullback.fst _ _ = x)
     (hV : ⊤ ≤ (z ≫ Y.j) ⁻¹ᵁ V) {s : LB.Sec (PPx x)} (hg : SecGen x s) {a : ℂ} (hc : Cut Y V s₀ w₀ w₁ z x a s) (b : ℂ)
     (hb : ∀ (pt : Sp ℂ ⟶ Gx x) (f : Sp ℂ ⟶ Y.oF.t.G.left) j k j₀, pt ≫ Formalism.L2.PjFree.gxSnd x = 𝟙 _ →
@@ -325,6 +421,25 @@ theorem cut_complex (hT : Out.SecTwistSt) {z : Sp ℂ ⟶ Xo.XF c} {x : Sp ℂ �
   rw [map_mul, map_mul, v₀, v₁, v₂, e, Units.mul_right_inj, hpt', v₄, ← v₃, ← map_mul] at e'
   exact mul_right_cancel₀ hne ((TorusExt.stalkConst p).injective e')
 
+/- English proof (translation)
+Take `⟨fr, d, n, t, r, v⟩` from `h`. Take `⟨fr', d', n', t', r', v'⟩` from `h'`. Establish `ex : ∀ z, ∃ i, ⊤ ≤ e z ⁻¹ᵁ D₀.P.L.U i` using `fun z => by`. Take `⟨i, hi⟩` from `exists_chart D₀.P.isLB (e z (IsLocalRing.closedPoint ℂ))`. Conclude with `⟨i, fun q _ => (Subsingleton.elim (α := PrimeSpectrum ℂ) (IsLocalRing.closedPoint ℂ) q) ▸ hi⟩`.
+
+Use `choose J hJ using ex`. Establish `op : ∀ i, IsOpen {z | ⊤ ≤ e z ⁻¹ᵁ D₀.P.L.U i}` using `fun i => by simpa using (he _ (th.f i)).1`. Set `ρ : (Fin g → ℂ) → ℂ` to `fun z => fr (J z) z / fr' (J z) z`. Establish `hρ : ∀ i z, ⊤ ≤ e z ⁻¹ᵁ D₀.P.L.U i → ρ z = fr i z / fr' i z` using `fun i z hi => by`. Establish `hm : ⊤ ≤ e z ⁻¹ᵁ (D₀.P.L.U (J z) ⊓ D₀.P.L.U i)` using `fun q hq => ⟨hJ z hq, hi hq⟩`.
+
+Establish `a` using `t _ _ z hm`. Establish `a'` using `t' _ _ z hm`. Establish `hg` using `left_ne_zero_of_mul (a ▸ n _ z (hJ z))`. Use `show fr (J z) z / fr' (J z) z = _`. Rewrite using `[a, a', mul_div_mul_left _ _ hg]`.
+
+Establish `dρ : Differentiable ℂ ρ` using `fun z => by`. Establish `hn` using `(op (J z)).mem_nhds (hJ z)`. Use `(((d _).differentiableAt hn).mul (((d' _).differentiableAt hn).inv (n' _ z (hJ z)))).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hn] with u hu using (hρ _ u hu).trans (div_eq_mul_inv _ _)`. Establish `hU : ⊤ ≤ e z₀ ⁻¹ᵁ D₀.P.L.U j`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hne (dif_neg h)`. Establish `hn` using `(op j).mem_nhds hU`. Establish `cv : ContinuousAt (fun z => valAt' (e z) (D₀.P.L.U j) (th.f j)) z₀` using `((he _ (th.f j)).2.differentiableAt (by simpa using hn)).continuousAt`. Establish `ev : ∀ᶠ z in nhds z₀, κ * ρ z = κ'` using `by filter_upwards [hn, cv.eventually_ne hne] with u hu hv`.
+
+Establish `a : _ = κ * θ u * _` using `v j u hu`. Establish `a' : _ = κ' * θ u * _` using `v' j u hu`. Establish `hθ : θ u ≠ 0` using `fun h0 => hv (by rw [a, h0]; ring)`. Rewrite using `[hρ j u hu, ← mul_div_assoc, div_eq_iff (n' j u hu)]`. Apply `mul_left_cancel₀ hθ` to reduce the goal to its premises.
+
+Take the linear combination `a' - a`. Establish `dl : Differentiable ℂ (fun s : ℂ => s • z₀)` using `differentiable_id.smul_const z₀`. Establish `an : AnalyticOnNhd ℂ (fun s : ℂ => κ * ρ (s • z₀)) Set.univ` using `fun s _ => (((dρ.comp dl).const_mul κ).analyticAt s)`. Establish `ev' : (fun s : ℂ => κ * ρ (s • z₀)) =ᶠ[nhds 1] fun _ => κ'`. Establish `: Filter.Tendsto (fun s : ℂ => s • z₀) (nhds 1) (nhds z₀)`.
+
+Simplify using `using dl.continuous.tendsto 1`. Conclude with `this.eventually ev`. Use `congrFun (an.eq_of_eventuallyEq analyticOnNhd_const ev') 0` as an intermediate fact. Establish `r1 : ρ 0 = 1` using `by show fr (J 0) 0 / fr' (J 0) 0 = 1`. Rewrite using `[r _ (hJ 0), ← r' _ (hJ 0), div_self (n' _ 0 (hJ 0))]`.
+
+Simplify `this` using `[r1]`.
+-/
 theorem const_eq {g : ℕ} {D₀ : Out.DegPre ℂ} {e : (Fin g → ℂ) → (Sp ℂ ⟶ D₀.P.A.left)} (he : IsHolTo Set.univ e)
     {th : D₀.P.L.Sec} {θ : (Fin g → ℂ) → ℂ} {κ κ' : ℂ} (h : IsFnInRigFrame D₀ e th (fun z => κ * θ z))
     (h' : IsFnInRigFrame D₀ e th (fun z => κ' * θ z)) (z₀ : Fin g → ℂ) (j : D₀.P.L.ι)
@@ -376,6 +491,17 @@ theorem const_eq {g : ℕ} {D₀ : Out.DegPre ℂ} {e : (Fin g → ℂ) → (Sp 
     rw [r _ (hJ 0), ← r' _ (hJ 0), div_self (n' _ 0 (hJ 0))]
   simpa [r1] using this
 
+/- English proof (translation)
+Take `⟨x, -, hx⟩` from `h (IsLocalRing.closedPoint ℂ)`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`. Use `haveI := D₀.P.isAb.proper`. Establish `: JacobsonSpace D₀.P.A.left` using `LocallyOfFiniteType.jacobsonSpace D₀.P.A.hom`. Take `⟨y, hy, hc⟩` from `nonempty_inter_closedPoints (Z := (D₀.P.A.left.basicOpen (th.f j) : Set _)) ⟨x, hj⟩ (D₀.P.A.left.basicOpen (th.f j)).isOpen.isLocallyClosed`.
+
+Establish `hb : pointOfClosedPoint (K` using `ℂ) D₀.P.A.hom y hc ≫ D₀.P.A.hom = (Out.TF (R := ℂ) ℂ).hom := by`. Use `(pointOfClosedPoint_comp (K := ℂ) D₀.P.A.hom y hc).trans ?_` and prove the remaining obligations. Use `show _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, ← IsScalarTower.algebraMap_eq]`. Conclude with `(Spec.map_id _).symm`.
+
+Take `⟨u, hu⟩` from `TorusExt.exists_lift (D := D₀) (F := ℂ) (Over.homMk _ hb)`. Use `⟨u, j, ?_⟩` and prove the remaining obligations. Rewrite using `[hu]`. Use `show valAt' (pointOfClosedPoint (K := ℂ) D₀.P.A.hom y hc) _ _ ≠ 0`. Establish `hq : ∀ q, pointOfClosedPoint (K` using `ℂ) D₀.P.A.hom y hc q = y := pointOfClosedPoint_apply (K := ℂ) _ y hc`.
+
+Generalize the expression as in `pointOfClosedPoint (K := ℂ) D₀.P.A.hom y hc = b at hq`. Set `p : Sp ℂ` to `IsLocalRing.closedPoint ℂ`. Establish `hm : b p ∈ D₀.P.A.left.basicOpen (th.f j)` using `(hq p).symm ▸ hy`. Establish `hU : ⊤ ≤ b ⁻¹ᵁ D₀.P.L.U j` using `fun q _ => D₀.P.A.left.basicOpen_le _ (show b q ∈ _ from (hq q).symm ▸ hy)`. Establish `hun` using `((GlobalTheory.ThetaUnit.mem_basicOpen_iff_gs (th.f j) (x := b p) (hU (x := p) trivial)).1 hm).map (b.stalkMap p).hom`.
+
+Rewrite `hun` using `[← gs_stalkMap b p _ (hU (x := p) trivial), TorusExt.gs_eq_stalkConst b p hU]`. Introduce `h0`. Rewrite `hun` using `[show valF b _ (th.f j) = 0 from h0, map_zero]`. Conclude with `not_isUnit_zero hun`.
+-/
 theorem exists_val_ne [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] {D₀ : Out.DegPre ℂ}
     {th : D₀.P.L.Sec} (h : ThNZ th) : ∃ (u : Out.GtPtF D₀ ℂ) (j : D₀.P.L.ι),
       valAt' (show Sp ℂ ⟶ _ from u.b.left) (D₀.P.L.U j) (th.f j) ≠ 0 := by
@@ -407,6 +533,17 @@ theorem exists_val_ne [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (Fract
 
 open GlobalTheory.Conv in
 
+/- English proof (translation)
+Establish `hs : s ∈ convLaurent`. Establish `: s = A / (B ^ n * R)` using `by rw [h]; field_simp`. Rewrite using `[this]`. Conclude with `div_mem hA (mul_mem (pow_mem hB n) hR)`. Take `⟨T, hT⟩` from `exists_forall_mem_halfRing (S := {A, B, R, s}) (Set.toFinite _) (by`.
+
+Apply the tactic sequence `rintro x (rfl | rfl | rfl | rfl) <;> assumption)`. Set `A' : halfRing T` to `⟨A, hT A (by simp)⟩`. Set `B' : halfRing T` to `⟨B, hT B (by simp)⟩`. Set `R' : halfRing T` to `⟨R, hT R (by simp)⟩`. Set `s' : halfRing T` to `⟨s, hT s (by simp)⟩`.
+
+Establish `h' : A' = B' ^ n * (R' * s')` using `Subtype.ext h`. Take `⟨T₁, h₁, hb⟩` from `exists_ev_ne_zero (s := B') fun e => hB0 (congrArg Subtype.val e)`. Take `⟨T₂, h₂, hr⟩` from `exists_ev_ne_zero (s := R') fun e => hR0 (congrArg Subtype.val e)`. Use `⟨max T₁ T₂, fun w hw a b r ha' hb' hr' => ?_⟩` and prove the remaining obligations. Establish `w₁` using `(le_max_left _ _).trans_lt hw`.
+
+Establish `w₂` using `(le_max_right _ _).trans_lt hw`. Establish `w₀` using `h₁.trans_lt w₁`. Take `rfl` from `ev_eq_of_hasSum w₀ A' ha'`. Take `rfl` from `ev_eq_of_hasSum w₀ B' hb'`. Take `rfl` from `ev_eq_of_hasSum w₀ R' hr'`.
+
+Use `⟨hb w w₀ w₁, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[h', map_mul, map_mul, map_pow]`. Take `rfl` from `mul_left_cancel₀ (hr w w₀ w₂) (mul_left_cancel₀ (pow_ne_zero n (hb w w₀ w₁)) hx)`. Conclude with `hasSum_ev w₀ s'`.
+-/
 theorem exists_hasSum_div {A B R s : ℂ⸨X⸩} (n : ℕ) (hA : A ∈ convLaurent) (hB : B ∈ convLaurent) (hR : R ∈ convLaurent)
     (hB0 : B ≠ 0) (hR0 : R ≠ 0) (h : A = B ^ n * (R * s)) : ∃ T : ℝ, ∀ w : ℂ, T < w.im → ∀ a b r : ℂ,
       HasSum (fun m : ℤ => A.coeff m * eTwoPi w ^ m) a → HasSum (fun m : ℤ => B.coeff m * eTwoPi w ^ m) b →
@@ -437,12 +574,26 @@ theorem exists_hasSum_div {A B R s : ℂ⸨X⸩} (n : ℕ) (hA : A ∈ convLaure
   obtain rfl := mul_left_cancel₀ (hr w w₀ w₂) (mul_left_cancel₀ (pow_ne_zero n (hb w w₀ w₁)) hx)
   exact hasSum_ev w₀ s'
 
+/- English proof (translation)
+Take `⟨-, -, pm, h₁, h₂, h₃⟩` from `h`. Use `⟨pm, h₁, h₂, fun i hi => Eq.trans (congrArg _ (fn_ext fun p hp => ?_)) (h₃ i hi)⟩` and prove the remaining obligations. Rewrite using `[gs_mul _ p _ hp, gs_scal' y.x 1 _ (𝟙 _) p hp, cstOne, _root_.one_mul]`.
+-/
 theorem secBC_of_frMap {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T] {φ : S →ₐ[c.F] T}
     {y : FrPt Xo c S} {y' : FrPt Xo c T} (h : FrMap φ y y') : SecBC φ.toRingHom 1 y.x y'.x y.s y'.s := by
   obtain ⟨-, -, pm, h₁, h₂, h₃⟩ := h
   refine ⟨pm, h₁, h₂, fun i hi => Eq.trans (congrArg _ (fn_ext fun p hp => ?_)) (h₃ i hi)⟩
   rw [gs_mul _ p _ hp, gs_scal' y.x 1 _ (𝟙 _) p hp, cstOne, _root_.one_mul]
 
+/- English proof (translation)
+Establish `hV : ∀ (T : Type) [CommRing T] (ψ : R →+* T), IsUnit (ψ h) → ⊤ ≤ ((spMap ψ ≫ j) ≫ Y.j) ⁻¹ᵁ V` using `fun T _ ψ hu q _ => hh (x := spMap ψ q) fun hq => q.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hq hu)`. Set `π : R →ₐ[c.F] Localization.Away h` to `IsScalarTower.toAlgHom _ _ _`. Take `⟨y', hy'⟩` from `GlobalTheory.Frames.FramedBaseChange.exists_frMap hB E H Dw l Xo c _ _ π y₀`. Establish `hx' : (spMap π.toRingHom ≫ j) ≫ pullback.fst _ _ = y'.x` using `by rw [Category.assoc, hj, hy'.1]`. Take `⟨q, hq, -⟩` from `exists_cut_gen h₀ h₁ hs hx' (hV _ π.toRingHom (IsLocalization.Away.algebraMap_isUnit h)) y'.gen`.
+
+Take `⟨n, a, ha⟩` from `IsLocalization.Away.surj h q`. Use `⟨a, n, fun T _ _ ψ hu => ⟨hV T ψ.toRingHom hu, fun y₁ y G s b hm hc hb => ?_⟩⟩` and prove the remaining obligations. Set `ψ' : Localization.Away h →ₐ[c.F] T` to `IsLocalization.liftAlgHom (M := Submonoid.powers h) (f := ψ) (by`. Introduce and unpack `⟨_, k, rfl⟩`. Simplify using `using hu.pow k)`.
+
+Establish `e : ∀ r, ψ' (algebraMap R _ r) = ψ r` using `fun r => by simp [ψ']`. Establish `e' : ψ'.comp π = ψ` using `AlgHom.ext e`. Establish `hm' : FrMap ψ' y' y₁` using `FramedBaseChange.cancel π ψ' hy' (e' ▸ hm)`. Establish `c₁` using `Cut.pull ψ'.toRingHom (a := q) (b := 1) ((_root_.mul_one q).symm ▸ hq) (secBC_of_frMap hm')`. Establish `ez : spMap ψ'.toRingHom ≫ spMap π.toRingHom ≫ j = spMap ψ.toRingHom ≫ j`.
+
+Rewrite using `[← Category.assoc, ← FramedBaseChange.spec_comp, ← e']`. Both sides reduce to the same expression. Rewrite `c₁` using `[ez]`. Establish `c₂` using `hb.chg hc.1 hc.2.2`. Establish `hx₁ : (spMap ψ.toRingHom ≫ j) ≫ pullback.fst _ _ = y₁.x` using `by rw [Category.assoc, hj, hm.1]`.
+
+Use `(exists_cut_gen h₀ h₁ hs hx₁ (hV T ψ.toRingHom hu) y₁.gen).unique c₁ c₂` as an intermediate fact. Rewrite using `[← this, ← e a, ← ha, map_mul, map_pow, e, mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem exists_ratio (hB : Out.SecBaseChangeSt) (h₀ : RigIso Y.m0.toSABMap w₀) (h₁ : RigIso Y.m w₁)
     (hs : s₀ ∈ secOn Y.t.PP.L (Y.t.G.hom ⁻¹ᵁ V)) {R : Type} [CommRing R] [Algebra c.F R] (j : Sp R ⟶ Xo.XF c)
     (y₀ : FrPt Xo c R) (hj : j ≫ pullback.fst _ _ = y₀.x) (h : R)
@@ -484,6 +635,39 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped LaurentSeries
 open GlobalTheory.GenRatio
 
+/- English proof (translation)
+Introduce `hL hL2 E _ _ _ H Dw l Xo c σ _ _ O _ β Y a χ W g ty Fu Ha _ y e th Θ p j y₀ φ y₁ G s hal hχ hmono hPI hth harc hj hφ hchg`. Distinguish the cases in `hne : ∃ (w : ℂ) (ψ : p.R →ₐ[c.F] CAt σ), ∀ f : p.R, HasSum (fun m : ℤ => (φ f).coeff m * eTwoPi w ^ m) (toC (ψ f))`. Use `swap`. Conclude with `⟨0, fun w _ ψ _ _ _ _ h => (hne ⟨w, ψ, h⟩).elim⟩`. Take `⟨v, ψ₀, hv⟩` from `hne`.
+
+Establish `conv : ∀ f, φ f ∈ Conv.convLaurent` using `fun f => Conv.mem_convLaurent_of_summable (Conv.eTwoPi_ne_zero v) (hv f).summable`. Take `⟨z, t', m1, m2, φG, zj, zx, φb, φ1, φ2, -, θ, w1, w2, σ', s1, θ2, ⟨σ0, fam, θ', hexp, hpull, hH0, hHEq⟩, r1, r2, i1, i2, ps, hc⟩` from `harc`. Take `⟨hA, hB⟩` from `GlobalTheory.theta_generates_along_arc hL.globalFns hL.secBaseChange Y a χ W`. Take `⟨σ1, -, -, -, -, huniq, -, -, ⟨w₂, hw₂⟩, hrest⟩` from `hA (fam 0) ((hB th).2 (fam 0) hpull hth _)`. Take `rfl : σ0 = σ1` from `huniq σ0 fam rfl hexp`.
+
+Take `⟨⟨V, s₀, hV, hgen⟩, hr⟩` from `(hrest w₂ hw₂.1).2 hPI`. Take `⟨r, hr⟩` from `hr V s₀ hV hgen`. Take `⟨w₀, h₀⟩` from `Reg.ChartInhab.exists_rigIso Y.m0.toSABMap`. Take `⟨w₁, h₁⟩` from `Reg.ChartInhab.exists_rigIso Y.m`. Take `⟨u, ju, hu⟩` from `exists_val_ne hth`.
+
+Take `⟨z₀, rfl⟩` from `Ha.onto u`. Establish `hw0 : Ha.T < ((Ha.T + 1 : ℝ) * Complex.I : ℂ).im` using `by simp`. Take `⟨fr₀, hfr₀⟩` from `Θ.frame _ hw0`. Take `⟨κ, -, -, onB, hmain⟩` from `Ha.theta th σ0 fam Θ.bas Θ.S Θ.h Θ.τ Θ.c₁ Θ.c₂ w₂ w₁ w₀ ⟨ju, fun h0 => hu (by`. Rewrite using `[h0]`.
+
+Distinguish the cases in `h : ⊤ ≤ (show Sp ℂ ⟶ _ from (Ha.ex₀ z₀).b.left) ⁻¹ᵁ a.D₀.P.L.U ju`. Conclude with `(dif_pos h).trans ((congrArg _ (map_zero _)).trans (map_zero _))`. Conclude with `dif_neg h)⟩`. Use `hexp hpull Θ.sympl Θ.ker Θ.per Θ.half₁ Θ.half₂ hw₂ h₁ h₀ ⟨_, fr₀, hw0, hfr₀⟩`. Take `rfl : κ = Θ.κ` from `const_eq Ha.hol_b (onB _ hw0) (Θ.onB _ hw0) z₀ ju hu`.
+
+Take `⟨T', hT'⟩` from `hmain V s₀ r.val hV hgen.1 hr`. Take `⟨w, hw, hθ⟩` from `pullsToMul_gs W.m W.P.U.LG W.P.bundle w₂ hw₂ σ0 θ' θ hH0 hHEq r.val hr`. Establish `cK` using `cut_arc hL.globalFns h₀ h₁ _ W.m θ r.val w hw hθ y.s m1 m2 φG zj zx φb φ1 φ2 w1 w2 σ' s1 θ2 r1 r2 i1 i2 ps hc`. Establish `hz : z = spMap φ.toRingHom ≫ j`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[zx, Category.assoc, hj.2.1, hchg.1, hφ.1]`. Rewrite using `[← cancel_mono (spMap β), Category.assoc, Category.assoc, Category.assoc, reassoc_of% hj.2.2]`. Establish `e₁ : Y.j ≫ Y.s = pullback.snd _ _ ≫ spMap β`. Rewrite using `[Model.j, Category.assoc, pullback.condition, reassoc_of% Y.jQ_over]`. Rewrite using `[← e₁, reassoc_of% zj, hχ, ← FramedBaseChange.spec_comp, ← FramedBaseChange.spec_comp, ← FramedBaseChange.spec_comp, ← FramedBaseChange.spec_comp]`.
+
+Use `congr 1`. Conclude with `RingHom.ext fun x => (hal (β x)).symm.trans (φ.commutes (β x)).symm`. Substitute `hz` using the available equality. Establish `hpt : spMap φ.toRingHom (IsLocalRing.closedPoint ℂ⸨X⸩) ∈ (j ≫ Y.j) ⁻¹ᵁ V` using `(congrArg (fun q => q (IsLocalRing.closedPoint ℂ⸨X⸩) ∈ V) zj).mpr (hV (x := spMap _ _) trivial)`. Take `⟨_, ⟨h, rfl⟩, hh, hle⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.1 PrimeSpectrum.isBasis_basic_opens hpt`.
+
+Establish `hh0 : φ h ≠ 0` using `fun h0 => hh (show φ h ∈ IsLocalRing.maximalIdeal _ from h0 ▸ zero_mem _)`. Take `⟨b, n, hb⟩` from `exists_ratio hL.secBaseChange h₀ h₁ hgen.1 j y₀ hj.2.1 h hle`. Establish `eK` using `(hb _ φ hh0.isUnit).2 y₁ y G s _ hφ hchg cK`. Establish `hrc : (HahnSeries.ofPowerSeries ℤ ℂ r.val : ℂ⸨X⸩) ∈ Conv.convLaurent`. Take `⟨x, hx, -⟩` from `hT' ((T' + 1 : ℝ) * Complex.I) (by simp)`.
+
+Conclude with `Conv.mem_convLaurent_of_summable (Conv.eTwoPi_ne_zero _) (Conv.sumsAt_iff.1 hx).summable`. Take `⟨T, hT⟩` from `exists_hasSum_div n (conv b) (conv h) hrc hh0 (r.isUnit.map (HahnSeries.ofPowerSeries ℤ ℂ)).ne_zero eK`. Use `⟨max T (max T' Ha.T), fun ω hω ψ yw₁ yw Gw sw hψ hm hx hgenw hcw => ?_⟩` and prove the remaining obligations. Simplify using `only [max_lt_iff] at hω`. Take `⟨ρ, hρ, hval⟩` from `hT' ω hω.2.1`.
+
+Take `⟨hψh, hfin⟩` from `hT ω hω.1 _ _ _ (hψ b) (hψ h) (Conv.sumsAt_iff.1 hρ)`. Take `⟨hVw, hbw⟩` from `hb _ ψ (IsUnit.mk0 (toC (ψ h)) hψh)`. Establish `hxw : (spMap ψ.toRingHom ≫ j) ≫ pullback.fst _ _ = yw.x` using `by rw [Category.assoc, hj.2.1, hcw.1, hm.1]`. Take `⟨a', ha', -⟩` from `exists_cut_gen h₀ h₁ hgen.1 hxw hVw yw.gen`. Take `⟨fr, hfr, hs⟩` from `hgenw`.
+
+Establish `hsn : (spMap ψ.toRingHom ≫ j) ≫ pullback.snd _ _ = spMap (algebraMap c.F (CAt σ))`. Rewrite using `[Category.assoc, hj.2.2, ← FramedBaseChange.spec_comp]`. Use `congr 1`. Conclude with `RingHom.ext fun x => ψ.commutes x`. Establish `ea : toC a' = ρ`.
+
+Use `cut_complex hL2.secTwist (z := spMap ψ.toRingHom ≫ j) (x := yw.x) hxw hVw yw.gen ha' ρ ?_` and prove the remaining obligations. Introduce `pt f k₁ k k₀ a₁ a₂ a₃ a₄ a₅`. Establish `ov : (f ≫ Y.m0.toSABMap.φ) ≫ Xo.univ.t.G.hom = Fu.u Ha.i (Ha.Pw ω)`. Rewrite using `[Category.assoc, Y.m0.toSABMap.cart.1.w, reassoc_of% a₃]`. Conclude with `(Category.assoc _ _ _).symm.trans (hxw.trans hx)`.
+
+Take `⟨ζ, hζ⟩` from `Fu.ex_onto Ha.i _ (Ha.period ω hω.2.2) (Over.homMk _ ov)`. Establish `hζ' : f ≫ Y.m0.toSABMap.φ = (Fu.ex Ha.i (Ha.Pw ω) ζ).left` using `(congrArg (fun q => q.left) hζ).symm`. Establish `hU : ⊤ ≤ (Fu.ex Ha.i (Ha.Pw ω) ζ).left ⁻¹ᵁ Xo.univ.t.PP.L.U k₀`. Rewrite using `[← hζ']`. Conclude with `fun q hq => mem_pull.1 (a₅ hq).1`.
+
+Use `(hval fr hfr ζ f k₁ k k₀ hζ' (by rw [reassoc_of% a₃]; exact hsn) a₄ a₅).trans (congrArg _ ?_)` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (ρ * ·) (hs k₀ ζ pt (a₂.symm.trans hζ') a₁ hU)).symm` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `hfin _ ?_` and prove the remaining obligations. Rewrite using `[← ea]`.
+
+Conclude with `hbw yw₁ yw Gw sw a' hm hcw ha'`.
+-/
 theorem hasSum_generator_ratio : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (a : ArcIn Dw l β ℂ (σ.comp β)) (χ : Sp (PowerSeries ℂ) ⟶ Y.X) (W : Wit Y a χ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (Fu : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) ty) (Ha : HolArc Y σ a χ W Fu) [Algebra c.F ℂ⸨X⸩] (y : FrPt Xo c ℂ⸨X⸩) (e : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Out.GtPt a.D₀ (epsR ℂ)) (th : a.D₀.P.L.Sec) (Θ : ThetaDat Ha th) (p : TRing c.F) (j : Sp p.R ⟶ Xo.XF c) (y₀ : FrPt Xo c p.R) (φ : p.R →ₐ[c.F] ℂ⸨X⸩) (y₁ : FrPt Xo c ℂ⸨X⸩) (G : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) ℂ⸨X⸩) (s : ℂ⸨X⸩), (∀ x : c.F, algebraMap c.F ℂ⸨X⸩ x = HahnSeries.ofPowerSeries ℤ ℂ (PowerSeries.C (R := ℂ) (σ x))) → χ ≫ Y.s = spMap (PowerSeries.C (R := ℂ)) ≫ spMap (σ.comp β) → Mono (spMap β) → PushInvertible Y.t.G Y.t.PP.L → ThNZ th → IsArcFr W e th (HahnSeries.ofPowerSeries ℤ ℂ) y → OpenChart j y₀ → FrMap φ y₀ y₁ → FrChg G s y₁ y → ∃ T : ℝ, ∀ w : ℂ, T < w.im → ∀ (ψ : p.R →ₐ[c.F] CAt σ) (yw₁ yw : FrPt Xo c (CAt σ)) (Gw : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) (CAt σ)) (sw : CAt σ), (∀ f : p.R, HasSum (fun m : ℤ => (φ f).coeff m * eTwoPi w ^ m) (toC (ψ f))) → FrMap ψ y₀ yw₁ → yw.x = Fu.u Ha.i (Ha.Pw w) → AnGen Fu Ha.i (Ha.Pw w) yw (fun z => thetaChar (Θ.τ w) Θ.c₁ Θ.c₂ (Θ.h.mulVec z)) Θ.κ → FrChg Gw sw yw₁ yw → HasSum (fun m : ℤ => (s).coeff m * eTwoPi w ^ m) (toC sw) := by
   intro hL hL2 E _ _ _ H Dw l Xo c σ _ _ O _ β Y a χ W g ty Fu Ha _ y e th Θ p j y₀ φ y₁ G s hal hχ hmono hPI hth harc hj
     hφ hchg

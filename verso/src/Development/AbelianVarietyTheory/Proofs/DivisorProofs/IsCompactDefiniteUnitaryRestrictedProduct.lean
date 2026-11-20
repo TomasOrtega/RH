@@ -16,10 +16,16 @@ namespace GlobalTheory.BCT.LocCpt
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 omit [IsCMField E] in
+/- English proof (translation)
+The claim follows from `Continuous.units_map _ (continuous_id.matrix_map (RestrictedProduct.continuous_eval w))`.
+-/
 theorem continuous_mapLoc (w : Pl E) : Continuous (GeneralLinearGroup.map (n := Fin n) (pLoc E w)) :=
   Continuous.units_map _ (continuous_id.matrix_map (RestrictedProduct.continuous_eval w))
 
 omit [IsCMField E] in
+/- English proof (translation)
+Take `⟨k, rfl⟩` from `hg`. Conclude with `(k.val i j).2`.
+-/
 theorem entry_mem_of_mem_KGL {w : Pl E} {g : GL (Fin n) (w.adicCompletion E)} (hg : g ∈ GlobalTheory.LFun.KGL w n) (i j : Fin n) :
     g.val i j ∈ (w.adicCompletionIntegers E : Set (w.adicCompletion E)) := by
   obtain ⟨k, rfl⟩ := hg
@@ -27,6 +33,19 @@ theorem entry_mem_of_mem_KGL {w : Pl E} {g : GL (Fin n) (w.adicCompletion E)} (h
 
 omit [IsCMField E] in
 
+/- English proof (translation)
+Set `Q : Fin n → Fin n → ∀ w : Pl E, Set (w.adicCompletion E)` to `fun i j w => (fun g : GL (Fin n) (w.adicCompletion E) => g.val i j) '' D w`. Set `Q' : Fin n → Fin n → ∀ w : Pl E, Set (w.adicCompletion E)` to `fun i j w => (fun g : GL (Fin n) (w.adicCompletion E) => (g⁻¹).val i j) '' D w`. Establish `hQ : ∀ i j w, IsCompact (Q i j w)` using `fun i j w => (hD w).image (Units.continuous_val.matrix_elem i j)`. Establish `hQ' : ∀ i j w, IsCompact (Q' i j w)` using `fun i j w => (hD w).image (Units.continuous_coe_inv.matrix_elem i j)`. Establish `hQK : ∀ i j, ∀ᶠ w in cofinite, Q i j w ⊆ (w.adicCompletionIntegers E : Set (w.adicCompletion E))` using `fun i j => hDK.mono fun w hw => by`.
+
+Introduce and unpack `_ ⟨g, hg, rfl⟩`. Conclude with `entry_mem_of_mem_KGL (hw hg) i j`. Establish `hQK' : ∀ i j, ∀ᶠ w in cofinite, Q' i j w ⊆ (w.adicCompletionIntegers E : Set (w.adicCompletion E))` using `fun i j => hDK.mono fun w hw => by`. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Conclude with `entry_mem_of_mem_KGL ((GlobalTheory.LFun.KGL w n).inv_mem (hw hg)) i j`.
+
+Set `P : Set (Matrix (Fin n) (Fin n) (Af E))` to `Set.univ.pi fun i => Set.univ.pi fun j => {a : Af E | ∀ w, a w ∈ Q i j w}`. Set `P' : Set (Matrix (Fin n) (Fin n) (Af E))` to `Set.univ.pi fun i => Set.univ.pi fun j => {a : Af E | ∀ w, a w ∈ Q' i j w}`. Establish `hP : IsCompact P` using `isCompact_univ_pi fun i => isCompact_univ_pi fun j => GlobalTheory.IdeleCyl.isCompact_restrictedProduct_forall_mem (fun w : Pl E => w.adicCompletion E) (fun w => (w.adicCompletionIntegers E : Set (w.adicCompletion E))) (Q i j) (hQ i j) (hQK i j)`. Establish `hP' : IsCompact P'` using `isCompact_univ_pi fun i => isCompact_univ_pi fun j => GlobalTheory.IdeleCyl.isCompact_restrictedProduct_forall_mem (fun w : Pl E => w.adicCompletion E) (fun w => (w.adicCompletionIntegers E : Set (w.adicCompletion E))) (Q' i j) (hQ' i j) (hQK' i j)`. Establish `hC : IsClosed {g : GL (Fin n) (Af E) | ∀ w, GeneralLinearGroup.map (pLoc E w) g ∈ D w}`.
+
+Simplify using `only [Set.setOf_forall]`. Use `isClosed_iInter fun w => ?_` and prove the remaining obligations. Use `haveI : T2Space (GL (Fin n) (w.adicCompletion E)) := Units.isEmbedding_embedProduct.t2Space`. Conclude with `(hD w).isClosed.preimage (continuous_mapLoc w)`. Use `IsCompact.of_isClosed_subset (Units.isClosedEmbedding_embedProduct.isCompact_preimage (hP.prod (hP'.image MulOpposite.continuous_op))) hC ?_` and prove the remaining obligations.
+
+Introduce `g hg`. Use `⟨fun i _ j _ w => ⟨GeneralLinearGroup.map (pLoc E w) g, hg w, rfl⟩, ⟨(g⁻¹ : GL (Fin n) (Af E)).val, fun i _ j _ w => ?_, rfl⟩⟩` and prove the remaining obligations. Use `⟨GeneralLinearGroup.map (pLoc E w) g, hg w, ?_⟩` and prove the remaining obligations. Use `show ((GeneralLinearGroup.map (pLoc E w) g)⁻¹ : GL (Fin n) (w.adicCompletion E)).val i j = _`. Rewrite using `[← map_inv]`.
+
+Both sides reduce to the same expression.
+-/
 theorem isCompact_box (D : ∀ w : Pl E, Set (GL (Fin n) (w.adicCompletion E))) (hD : ∀ w, IsCompact (D w))
     (hDK : ∀ᶠ w in cofinite, D w ⊆ GlobalTheory.LFun.KGL w n) :
     IsCompact {g : GL (Fin n) (Af E) | ∀ w, GeneralLinearGroup.map (pLoc E w) g ∈ D w} := by
@@ -76,6 +95,11 @@ namespace GlobalTheory.BCT.LocCpt
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
+/- English proof (translation)
+Establish `inj : Function.Injective (O.subtype.mapMatrix (m` using `Fin n)) := fun A B h => by ext i j; exact congrFun (congrFun h i) j`. Set `A : Matrix (Fin n) (Fin n) O` to `fun i j => ⟨g.val i j, h1 i j⟩`. Set `B : Matrix (Fin n) (Fin n) O` to `fun i j => ⟨(g⁻¹).val i j, h2 i j⟩`. Establish `hA : O.subtype.mapMatrix A = g.val` using `rfl`. Establish `hB : O.subtype.mapMatrix B = (g⁻¹).val` using `rfl`.
+
+Use `⟨⟨A, B, inj ?_, inj ?_⟩, Units.ext rfl⟩` and prove the remaining obligations. Rewrite using `[map_mul, hA, hB, map_one, Units.mul_inv]`. Rewrite using `[map_mul, hA, hB, map_one, Units.inv_mul]`.
+-/
 theorem mem_GLint_of_entries' {K : Type} [Field K] (O : Subring K) (g : GL (Fin n) K)
     (h1 : ∀ a b, g.val a b ∈ O) (h2 : ∀ a b, (g⁻¹).val a b ∈ O) : g ∈ Formalism.UG.GLint (Fin n) O := by
   have inj : Function.Injective (O.subtype.mapMatrix (m := Fin n)) :=
@@ -88,6 +112,11 @@ theorem mem_GLint_of_entries' {K : Type} [Field K] (O : Subring K) (g : GL (Fin 
   · rw [map_mul, hA, hB, map_one, Units.mul_inv]
   · rw [map_mul, hA, hB, map_one, Units.inv_mul]
 
+/- English proof (translation)
+Take `⟨u, ⟨huS, hu⟩, -⟩` from `hS w`. Distinguish the cases in `hw : IsSplitAt w`. Break down `(GlobalTheory.SplitPts.over_split hw).2.2 u hu with rfl | rfl` into its components or cases. Conclude with `Or.inl huS`. Conclude with `Or.inr huS`.
+
+Use `left`. Assume the negation of the conclusion as `hwS`. Conclude with `hw ⟨u, fun h => hwS (h ▸ huS), hu⟩`.
+-/
 theorem mem_or_conj_mem {S : Set (Pl E)} (hS : IsSection S) (w : Pl E) :
     w ∈ S ∨ conjSrc (GlobalTheory.SplitPts.conjE E) w ∈ S := by
   obtain ⟨u, ⟨huS, hu⟩, -⟩ := hS w
@@ -99,6 +128,11 @@ theorem mem_or_conj_mem {S : Set (Pl E)} (hS : IsSection S) (w : Pl E) :
     by_contra hwS
     exact hw ⟨u, fun h => hwS (h ▸ huS), hu⟩
 
+/- English proof (translation)
+Use `set Y := GeneralLinearGroup.map (conjLoc (GlobalTheory.SplitPts.conjE E) w) (cLoc (conjSrc (GlobalTheory.SplitPts.conjE E) w) x)`. Establish `h : (Y.val)ᵀ * (cLoc w x).val = 1` using `GlobalTheory.SplitPts.comp_eq x w`. Apply `Units.ext` to reduce the goal to its premises. Use `show (cLoc w x).val = ((Y⁻¹).val)ᵀ`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← Matrix.mul_assoc, ← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one, Matrix.one_mul]`. Use `_ = ((Y⁻¹).val)ᵀ := by rw [h, Matrix.mul_one]`.
+-/
 theorem cLoc_eq_invT (x : UA E n) (w : Pl E) :
     cLoc w x = invT n _ (GeneralLinearGroup.map (conjLoc (GlobalTheory.SplitPts.conjE E) w)
       (cLoc (conjSrc (GlobalTheory.SplitPts.conjE E) w) x)) := by
@@ -114,6 +148,33 @@ end GlobalTheory.BCT.LocCpt
 
 open GlobalTheory.BCT.LocCpt in
 
+/- English proof (translation)
+Introduce `E _ _ _ hU n S hS C hC hCK`. Use `set c := GlobalTheory.SplitPts.conjE E`. Set `φ : ∀ w : Pl E, GL (Fin n) ((conjSrc c w).adicCompletion E) → GL (Fin n) (w.adicCompletion E)` to `fun w g => invT n _ (GeneralLinearGroup.map (conjLoc c w) g)`. Establish `hφ : ∀ w, Continuous (φ w)` using `fun w => (GlobalTheory.SplitPts.continuous_invT _).comp (Continuous.units_map _ (continuous_id.matrix_map (conjLoc_spec c w).1))`. Set `D : ∀ w : Pl E, Set (GL (Fin n) (w.adicCompletion E))` to `fun w => if w ∈ S then Subtype.val '' C w else φ w '' (Subtype.val '' C (conjSrc c w))`.
+
+Establish `hD : ∀ w, IsCompact (D w)`. Introduce `w`. Distinguish the cases in `hw : w ∈ S`. Simplify using `only [D, if_pos hw]`. Conclude with `(hC w).image continuous_subtype_val`.
+
+Simplify using `only [D, if_neg hw]`. Conclude with `((hC _).image continuous_subtype_val).image (hφ w)`. Establish `hDK : ∀ᶠ w in cofinite, D w ⊆ GlobalTheory.LFun.KGL w n`. Establish `h1 : ∀ᶠ w in cofinite, C (conjSrc c w) = KL n (conjSrc c w)` using `(conjSrc_injective c).tendsto_cofinite.eventually hCK`. Use `filter_upwards [hCK, h1] with w hw hw'`.
+
+Distinguish the cases in `hwS : w ∈ S`. Simplify using `only [D, if_pos hwS, hw]`. Introduce and unpack `_ ⟨k, hk, rfl⟩`. Conclude with `Subgroup.mem_subgroupOf.1 hk`. Simplify using `only [D, if_neg hwS, hw']`.
+
+Introduce and unpack `_ ⟨_, ⟨k, hk, rfl⟩, rfl⟩`. Establish `hk' : (k : GL (Fin n) _) ∈ GlobalTheory.LFun.KGL (conjSrc c w) n` using `Subgroup.mem_subgroupOf.1 hk`. Establish `hO : ∀ y, y ∈ ((conjSrc c w).adicCompletionIntegers E : Set _) → conjLoc c w y ∈ (w.adicCompletionIntegers E : Set (w.adicCompletion E))` using `fun y hy => by`. Rewrite using `[SetLike.mem_coe, HeightOneSpectrum.mem_adicCompletionIntegers, (conjLoc_spec c w).2.2 y]`. Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 hy`.
+
+Apply `mem_GLint_of_entries'` to reduce the goal to its premises. Introduce `a b`. Conclude with `hO _ (entry_mem_of_mem_KGL ((GlobalTheory.LFun.KGL _ n).inv_mem hk') b a)`. Introduce `a b`. Conclude with `hO _ (entry_mem_of_mem_KGL hk' b a)`.
+
+Establish `hB` using `isCompact_box D hD hDK`. Establish `hmem : ∀ (x : finU E n) (w : Pl E), toSub (UL n w) (cLoc w (x : UA E n)) ∈ C w ↔ cLoc w (x : UA E n) ∈ Subtype.val '' C w`. Introduce `x w`. Establish `hx` using `GlobalTheory.BCT.ThBasic.cLoc_mem_UL hU n w (x : UA E n)`. Rewrite using `[toSub, dif_pos hx]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨_, h, rfl⟩`. Introduce and unpack `⟨k, hk, e⟩`. Establish `: k = ⟨_, hx⟩` using `Subtype.ext e`.
+
+Rewrite using `[← this]` and apply the resulting hypothesis. Establish `hclosed : IsClosed {x : finU E n | ∀ w ∈ S, toSub (UL n w) (cLoc w (x : UA E n)) ∈ C w}`. Simplify using `only [hmem, Set.setOf_forall]`. Use `isClosed_iInter fun w => isClosed_iInter fun _ => ?_` and prove the remaining obligations. Use `haveI : T2Space (GL (Fin n) (w.adicCompletion E)) := Units.isEmbedding_embedProduct.t2Space`.
+
+Conclude with `((hC w).image continuous_subtype_val).isClosed.preimage ((GlobalTheory.DefU.Inert.continuous_cLoc w).comp continuous_subtype_val)`. Use `haveI := GlobalTheory.DefU.LocAdm.t2Space_adelicGL_cmField (E := E) (n := n)`. Establish `hfc : IsClosed ((finU E n : Subgroup (UA E n)) : Set (UA E n))` using `by haveI : T2Space (GL (Fin n) (Cinf E)) := Units.isEmbedding_embedProduct.t2Space`. Establish `hc` using `GlobalTheory.CuspRep.ContAut.continuous_map_pInf E n`. Conclude with `isClosed_eq (hc.comp continuous_subtype_val) continuous_const`.
+
+Establish `hι : Topology.IsClosedEmbedding (fun x : finU E n => ((x : UA E n) : GA E n))` using `GlobalTheory.DefU.LocAdm.isClosed_UA.isClosedEmbedding_subtypeVal.comp hfc.isClosedEmbedding_subtypeVal`. Use `IsCompact.of_isClosed_subset (hι.isCompact_preimage (hB.image GlobalTheory.DefU.LocAdm.continuous_finGL)) hclosed ?_` and prove the remaining obligations. Introduce `x hx`. Use `⟨GeneralLinearGroup.map (pFin E) ((x : UA E n) : GA E n), fun w => ?_, ?_⟩` and prove the remaining obligations. Establish `e : ∀ u : Pl E, GeneralLinearGroup.map (pLoc E u) (GeneralLinearGroup.map (pFin E) ((x : UA E n) : GA E n)) = cLoc u (x : UA E n)` using `fun u => Units.ext rfl`.
+
+Rewrite using `[e]`. Distinguish the cases in `hwS : w ∈ S`. Simplify using `only [D, if_pos hwS]`. Conclude with `(hmem x w).1 (hx w hwS)`. Simplify using `only [D, if_neg hwS]`.
+
+Establish `hw'` using `(mem_or_conj_mem hS w).resolve_left hwS`. Use `⟨cLoc (conjSrc c w) (x : UA E n), (hmem x _).1 (hx _ hw'), ?_⟩` and prove the remaining obligations. Conclude with `(cLoc_eq_invT (x : UA E n) w).symm`. Establish `h1 : GeneralLinearGroup.map (pInf E) ((x : UA E n) : GA E n) = 1` using `x.2`. Conclude with `ga_ext (by rw [pInf_finGL, h1]) (by rw [pFin_finGL])`.
+-/
 theorem GlobalTheory.BCT.LocCpt.loc_cpt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n : ℕ, ∀ S : Set (Pl E),
     IsSection S → ∀ C : ∀ w : Pl E, Set (UL n w), (∀ w, IsCompact (C w)) → (∀ᶠ w in cofinite, C w = KL n w) →
     IsCompact {x : finU E n | ∀ w ∈ S, toSub (UL n w) (cLoc w (x : UA E n)) ∈ C w} := by

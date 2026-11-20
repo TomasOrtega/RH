@@ -5,6 +5,15 @@ open scoped TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `letI : Algebra K ℂ := σ.toAlgebra`. Use `haveI := Fintype.ofFinite ι`. Set `B` to `Algebra.TensorProduct.basis ℂ b`. Set `J : ℂ ⊗[K] V →ₗ[ℂ] W` to `B.constr ℂ (fun k => j (b k))`. Establish `hJb : ∀ k, J (1 ⊗ₜ b k) = j (b k)` using `fun k => by`.
+
+Use `B.constr_basis ℂ (fun k => j (b k)) k` as an intermediate fact. Rewrite `this` using `[Algebra.TensorProduct.basis_apply]`. Then use the resulting hypothesis. Establish `hJ : ∀ v, J (1 ⊗ₜ v) = j v` using `fun v => by`. Rewrite using `[← b.sum_repr v, TensorProduct.tmul_sum, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[TensorProduct.tmul_smul, map_smulₛₗ j, ← hJb, ← map_smul, ← algebraMap_smul ℂ (b.repr v k)]`. Both sides reduce to the same expression. Establish `hinj : Function.Injective J`. Apply `Module.Basis.injective_constr_of_linearIndependent` to reduce the goal to its premises. Conclude with `hb`.
+
+Establish `key : ∀ A : Submodule K V, Submodule.span ℂ (j '' (A : Set V)) = (A.baseChange ℂ).map J` using `fun A => by`. Rewrite using `[Submodule.baseChange_eq_span, Submodule.map_span, Submodule.map_coe, Set.image_image]`. Use `congr 1`. Conclude with `Set.image_congr fun v _ => (hJ v).symm`. Rewrite using `[key, key, key, baseChange_inf, Submodule.map_inf _ hinj]`.
+-/
 theorem span_image_inf_of_linearIndependent {K V W ι : Type} [Field K] [AddCommGroup V]
     [Module K V] [AddCommGroup W] [Module ℂ W] [Finite ι] (σ : K →+* ℂ) (j : V →ₛₗ[σ] W)
     (b : Module.Basis ι K V) (hb : LinearIndependent ℂ (fun k => j (b k)))

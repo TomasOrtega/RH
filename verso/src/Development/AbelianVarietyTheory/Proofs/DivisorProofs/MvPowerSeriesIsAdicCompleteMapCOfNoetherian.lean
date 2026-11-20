@@ -6,6 +6,11 @@ open IsLocalRing GlobalTheory.FormalOrigin
 
 namespace GlobalTheory.PowerSeriesComplete
 
+/- English proof (translation)
+Introduce `R _ _ I hI n`. Establish `hfg : I.FG` using `IsNoetherian.noetherian I`. Establish `hC : (MvPowerSeries.C : R →+* MvPowerSeries (Fin n) R) = algebraMap R (MvPowerSeries (Fin n) R)` using `rfl`. Establish `hP : IsPrecomplete I (MvPowerSeries (Fin n) R)` using `GlobalTheory.CompleteBaseChange.isPrecomplete_pi (M := R) (Fin n →₀ ℕ) hfg`. Establish `hH : IsHausdorff I (MvPowerSeries (Fin n) R)` using `GlobalTheory.CompleteBaseChange.isHausdorff_pi (M := R) (Fin n →₀ ℕ) hfg`.
+
+Rewrite using `[hC]`. Conclude with `{ toIsHausdorff := IsHausdorff.map_algebraMap_iff.2 hH toIsPrecomplete := IsPrecomplete.map_algebraMap_iff.2 hP }`.
+-/
 theorem isAdicComplete_map_C : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (I : Ideal R),
     IsAdicComplete I R → ∀ n : ℕ, IsAdicComplete (I.map (MvPowerSeries.C : R →+* MvPowerSeries (Fin n) R))
       (MvPowerSeries (Fin n) R) := by

@@ -18,6 +18,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.GL2Factorization.IwasawaCoord
 
+/- English proof (translation)
+Establish `hv1 : Continuous (fun q : ℝˣ × ℝˣ => (q.1 : ℝ))` using `Units.continuous_val.comp continuous_fst`. Establish `hv2 : Continuous (fun q : ℝˣ × ℝˣ => (q.2 : ℝ))` using `Units.continuous_val.comp continuous_snd`. Establish `hi1 : Continuous (fun q : ℝˣ × ℝˣ => ((q.1⁻¹ : ℝˣ) : ℝ))` using `(Units.continuous_iff.1 continuous_id).2.comp continuous_fst`. Establish `hi2 : Continuous (fun q : ℝˣ × ℝˣ => ((q.2⁻¹ : ℝˣ) : ℝ))` using `(Units.continuous_iff.1 continuous_id).2.comp continuous_snd`. Rewrite using `[Units.continuous_iff]`.
+
+Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `refine continuous_matrix fun i j => ?_ show Continuous fun q : ℝˣ × ℝˣ => (!![(q.1 : ℝ), 0; 0, (q.2 : ℝ)] : Matrix (Fin 2) (Fin 2) ℝ) i j fin_cases i <;> fin_cases j <;> first | (simpa using hv1) | (simpa using hv2) | (simpa using continuous_const)`. Apply the tactic sequence `refine continuous_matrix fun i j => ?_ show Continuous fun q : ℝˣ × ℝˣ => (!![((q.1⁻¹ : ℝˣ) : ℝ), 0; 0, ((q.2⁻¹ : ℝˣ) : ℝ)] : Matrix (Fin 2) (Fin 2) ℝ) i j fin_cases i <;> fin_cases j <;> first | (simpa using hi1) | (simpa using hi2) | (simpa using continuous_const)`.
+-/
 theorem continuous_diagonal_real_torus :
     Continuous (fun q : ℝˣ × ℝˣ => (dg2 q.1 q.2 : GL (Fin 2) ℝ)) := by
   have hv1 : Continuous (fun q : ℝˣ × ℝˣ => (q.1 : ℝ)) := Units.continuous_val.comp continuous_fst
@@ -38,6 +43,9 @@ theorem continuous_diagonal_real_torus :
     fin_cases i <;> fin_cases j <;>
       first | (simpa using hi1) | (simpa using hi2) | (simpa using continuous_const)
 
+/- English proof (translation)
+Establish `h : Continuous (fun p : ℝˣ × ℝˣ × GL (Fin 2) ℝ => ((p.1 * p.2.1, p.2.1) : ℝˣ × ℝˣ))` using `(continuous_fst.mul (continuous_fst.comp continuous_snd)).prodMk (continuous_fst.comp continuous_snd)`. Conclude with `(continuous_diagonal_real_torus.comp h).mul (continuous_snd.comp continuous_snd)`.
+-/
 theorem continuous_iwasawa_coord :
     Continuous (fun p : ℝˣ × ℝˣ × GL (Fin 2) ℝ => dg2 (p.1 * p.2.1) p.2.1 * p.2.2) := by
   have h : Continuous (fun p : ℝˣ × ℝˣ × GL (Fin 2) ℝ => ((p.1 * p.2.1, p.2.1) : ℝˣ × ℝˣ)) :=

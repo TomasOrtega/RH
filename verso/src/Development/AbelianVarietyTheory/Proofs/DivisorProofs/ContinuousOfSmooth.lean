@@ -22,6 +22,11 @@ section Atlas
 
 variable {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas e X}
 
+/- English proof (translation)
+Use `continuous_iff_continuousAt.2 fun x => ?_` and prove the remaining obligations. Take `⟨j, hj⟩` from `A.cover x`. Establish `h1` using `(h j).continuousOn`. Rewrite `h1` using `[Set.preimage_univ, Set.inter_univ]`. Establish `h2 : ContinuousAt (f ∘ (A.chart j).symm) (A.chart j x)` using `h1.continuousAt ((A.chart j).open_target.mem_nhds ((A.chart j).map_source hj))`.
+
+Use `(h2.comp ((A.chart j).continuousAt hj)).congr ?_` and prove the remaining obligations. Use `filter_upwards [(A.chart j).open_source.mem_nhds hj] with y hy`. Simplify using `[(A.chart j).left_inv hy]`.
+-/
 theorem continuous_of_smooth {f : X → ℝ} (h : A.Smooth f) : Continuous f := by
   refine continuous_iff_continuousAt.2 fun x => ?_
   obtain ⟨j, hj⟩ := A.cover x
@@ -33,6 +38,9 @@ theorem continuous_of_smooth {f : X → ℝ} (h : A.Smooth f) : Continuous f := 
   filter_upwards [(A.chart j).open_source.mem_nhds hj] with y hy
   simp [(A.chart j).left_inv hy]
 
+/- English proof (translation)
+Use `interior_eq_empty_iff_dense_compl.1 (Set.eq_empty_iff_forall_notMem.2 fun x hx => ?_)` and prove the remaining obligations. Take `⟨j, hj⟩` from `A.cover x`. Establish `ho` using `(A.chart j).isOpen_inter_preimage_symm (isOpen_interior (s := Z))`. Establish `hp` using `ho.measure_pos MeasureTheory.volume ⟨A.chart j x, (A.chart j).map_source hj, by simpa [(A.chart j).left_inv hj] using hx⟩`. Conclude with `hp.ne' (MeasureTheory.measure_mono_null (Set.inter_subset_inter_right _ (Set.preimage_mono interior_subset)) (h.2.1 j))`.
+-/
 theorem dense_compl_bd {Z : Set X} {r : X → ℝ} {Om : LocPot X} (h : IsBd A Z r Om) : Dense Zᶜ := by
   refine interior_eq_empty_iff_dense_compl.1 (Set.eq_empty_iff_forall_notMem.2 fun x hx => ?_)
   obtain ⟨j, hj⟩ := A.cover x
@@ -44,6 +52,11 @@ theorem dense_compl_bd {Z : Set X} {r : X → ℝ} {Om : LocPot X} (h : IsBd A Z
 
 end Atlas
 
+/- English proof (translation)
+Establish `h0 : IsPreimmersion (spMap (algebraMap (𝓞 F) F))` using `IsPreimmersion.of_isLocalization (nonZeroDivisors (𝓞 F))`. Establish `: IsPreimmersion V.j` using `MorphismProperty.of_isPullback V.pb.flip h0`. Take `⟨w, h₁, h₂⟩` from `(hd σ).2 z`. Take `⟨w', h₁', h₂'⟩` from `(hd σ').2 z'`. Establish `h₃ : w' = spMap (starRingEnd ℂ) ≫ w` using `by rw [← cancel_mono V.j, h₁', Category.assoc, h₁, h]`.
+
+Rewrite using `[← h₂, ← h₂', h₃, Category.assoc]`.
+-/
 theorem down_conj {F : Type} [Field F] [NumberField F] {Y : Var F} {V : Cover Y} {e : ℕ} {M : Man e} {I : ManIs M Y}
     {ε : (𝓞 F →+* ℂ) → Fin (M.n + 1)} {π : ∀ σ, CxPts V.p σ → M.X (ε σ)}
     (hd : V.IsDown I ε π) {σ σ' : 𝓞 F →+* ℂ} {z : CxPts V.p σ} {z' : CxPts V.p σ'}
@@ -57,6 +70,13 @@ theorem down_conj {F : Type} [Field F] [NumberField F] {Y : Var F} {V : Cover Y}
   have h₃ : w' = spMap (starRingEnd ℂ) ≫ w := by rw [← cancel_mono V.j, h₁', Category.assoc, h₁, h]
   rw [← h₂, ← h₂', h₃, Category.assoc]
 
+/- English proof (translation)
+Take `⟨x, P, h⟩` from `h`. Establish `hu : under y' = under y` using `ConjMet.base_conj (Y := O.Φ.C c) e`. Use `Finset.sum_congr rfl fun z _ => congrArg _ ?_` and prove the remaining obligations. Establish `h₁ : y ∈ Var.eqnSet σ (divOf (O.Φ.C c) (O.ex z)) (eqn (divOf (O.Φ.C c) (O.ex z)) (under y))` using `Base.isEqn_eqn _ _`. Establish `h₂ : y' ∈ Var.eqnSet σ' (divOf (O.Φ.C c) (O.ex z)) (eqn (divOf (O.Φ.C c) (O.ex z)) (under y'))` using `Base.isEqn_eqn _ _`.
+
+Take `⟨a, b, -⟩` from `mets_conj D _ _ _ _ _ O.s x O.Φ c σ σ' _ y y' _ e h₁`. Establish `k : ∀ (m : Var.Met (O.var c) σ (divOf (O.Φ.C c) (O.ex z))) (m' : Var.Met (O.var c) σ' (divOf (O.Φ.C c) (O.ex z))), m'.h (eqn (divOf (O.Φ.C c) (O.ex z)) (under y)) y' = m.h (eqn (divOf (O.Φ.C c) (O.ex z)) (under y)) y → lnN (C` using `cxSt _) m' (genAt _ (under y')) y' = lnN (C := cxSt _) m (genAt _ (under y)) y := fun m m' hm => by`. Use `congrArg (Real.log · / 2) ((Var.pn_frame h₂).trans (Eq.trans ?_ (Var.pn_frame h₁).symm))` and prove the remaining obligations. Rewrite using `[hu, hm]`. Rewrite using `[lnRatio, lnRatio, h.hm_eq, h.h0_eq]`.
+
+Conclude with `congrArg₂ (· - ·) (k _ _ (a R)) (k _ _ b)`.
+-/
 theorem chg_conj {D : D7} {O : Setup D} (h : O.Core) (c : O.s.Comp) (R : Option ℝ) (u : D.what₂.Tau → Fin O.N → ℝ)
     {σ σ' : D.what₂.LL →+* ℂ} {y : Pts (O.var c) σ} {y' : Pts (O.var c) σ'} (e : y'.1 = spMap (starRingEnd ℂ) ≫ y.1) :
     O.chg c R u σ' y' = O.chg c R u σ y := by
@@ -76,6 +96,15 @@ theorem chg_conj {D : D7} {O : Setup D} (h : O.Core) (c : O.s.Comp) (R : Option 
   rw [lnRatio, lnRatio, h.hm_eq, h.h0_eq]
   exact congrArg₂ (· - ·) (k _ _ (a R)) (k _ _ b)
 
+/- English proof (translation)
+Set `I` to `h.man c`. Establish `hσ : I.ε a' = (starRingEnd ℂ).comp (I.ε a)` using `ConjMet.emb_conj (Y := O.Φ.C c) e`. Set `j : (T.M c).X a → (T.M c).X a'` to `fun z => (I.pt a').symm (ConjChart.conjPts (O.var c).str hσ (I.pt a z))`. Establish `hj : Continuous j` using `(I.pt a').symm.continuous.comp ((ConjChart.conjPts (O.var c).str hσ).continuous.comp (I.pt a).continuous)`. Establish `hj' : ∀ z, (I.pt a' (j z)).1 = spMap (starRingEnd ℂ) ≫ (I.pt a z).1` using `fun z => by`.
+
+Simplify using `only [j, Homeomorph.apply_symm_apply]`. Both sides reduce to the same expression. Establish `key : g a' ∘ j = g a`. Use `Continuous.ext_on (dense_compl_bd ((T.M c).bd a)) ((continuous_of_smooth (hg a')).comp hj) (continuous_of_smooth (hg a)) fun z hz => ?_` and prove the remaining obligations. Establish `hu : under (I.pt a' (j z)) = under (I.pt a z)` using `ConjMet.base_conj (Y := O.Φ.C c) (hj' z)`.
+
+Establish `hz' : j z ∉ (T.M c).Z a'` using `fun h' => hz (((h.an c).Z a z).2 (hu ▸ ((h.an c).Z a' _).1 h'))`. Express the relevant statement in the definitionally equal form `g a' (j z) = g a z`. Rewrite using `[he _ _ hz', he _ _ hz, (h.an c).ph u _ _ hz', (h.an c).ph u _ _ hz]`. Conclude with `chg_conj hO c none u (hj' z)`. Take `rfl : x' = j x` from `(I.pt a').injective (Subtype.ext (e.trans (hj' x).symm))`.
+
+Conclude with `congrFun key x`.
+-/
 theorem ext_conj {D : D7} {O : Setup D} (hO : O.Core) {A : SlopeTestRemainingChoices O.Y} {T : Real0 O.Y} {H : Ht O.Y} (h : O.Reads A T H)
     (c : O.s.Comp) (u : D.what₂.Tau → Fin O.N → ℝ) {g : (T.M c).Fun} (hg : (T.M c).Smooth g)
     (he : ∀ σ x, x ∉ (T.M c).Z σ → g σ x = (T.F c).ph u σ x) {a a' : Fin ((T.M c).n + 1)}
@@ -100,6 +129,9 @@ theorem ext_conj {D : D7} {O : Setup D} (hO : O.Core) {A : SlopeTestRemainingCho
   obtain rfl : x' = j x := (I.pt a').injective (Subtype.ext (e.trans (hj' x).symm))
   exact congrFun key x
 
+/- English proof (translation)
+Introduce `D O hO A T H h c u g hg he V ε π hd t σ σ' _ y y' e _`. Use `ext_conj hO h c u hg he (down_conj hd e)` as an intermediate fact. Express the relevant statement in the definitionally equal form `(2 : ℝ) * (g _ _ - t) = 2 * (g _ _ - t)`. Rewrite using `[this]`.
+-/
 theorem isConj_pull : ∀ (D : D7) (O : Setup D), O.Core → ∀ (A : SlopeTestRemainingChoices O.Y) (T : Real0 O.Y) (H : Ht O.Y) (h : O.Reads A T H) (c : O.s.Comp)
     (u : D.what₂.Tau → Fin O.N → ℝ) (g : (T.M c).Fun), (T.M c).Smooth g →
     (∀ σ x, x ∉ (T.M c).Z σ → g σ x = (T.F c).ph u σ x) → ∀ (V : Cover (O.var c))

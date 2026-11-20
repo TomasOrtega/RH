@@ -16,6 +16,9 @@ structure Lev where
   le : Uc k (c + 1) ≤ H
   H_le : H ≤ Uo k
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨u, -, rfl⟩`. Conclude with `(Valuation.integer.integers (valuation k)).one_of_isUnit u.isUnit`.
+-/
 theorem Uc_le_Uo (c : ℕ) : Uc k c ≤ Uo k := by
   rintro _ ⟨u, -, rfl⟩
   exact (Valuation.integer.integers (valuation k)).one_of_isUnit u.isUnit
@@ -105,6 +108,9 @@ structure Pres (V : Lev k) {n : ℕ} (σ : GL (Fin n) k →* GL (Fin n) k) : Pro
   Nm : ∀ c, ∀ g ∈ (glIwa k n).Nm c, σ g ∈ (glIwa k n).Nm c
   K : ∀ c, ∀ g ∈ Kc k n c, σ g ∈ Kc k n c
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨continuous_id, fun _ => rfl, fun _ h => h, fun _ h => h, fun _ _ h => h, fun _ _ h => h⟩`.
+-/
 theorem pres_id (V : Lev k) (n : ℕ) : Pres V (MonoidHom.id (GL (Fin n) k)) :=
   ⟨continuous_id, fun _ => rfl, fun _ h => h, fun _ h => h, fun _ _ h => h, fun _ _ h => h⟩
 

@@ -22,15 +22,27 @@ section
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Unfold `Apart`. Rewrite using `[(GlobalTheory.SplitPts.over_split hu).2.1]`.
+-/
 private theorem apart_cpl {w u : HeightOneSpectrum (𝓞 E)} (hu : IsSplitAt u) : Apart w (cpl u) ↔ Apart w u := by
   unfold Apart
   rw [(GlobalTheory.SplitPts.over_split hu).2.1]
 
+/- English proof (translation)
+The claim follows from `Ne.symm h`.
+-/
 private theorem apart_symm {w u : HeightOneSpectrum (𝓞 E)} (h : Apart w u) : Apart u w := Ne.symm h
 
+/- English proof (translation)
+The claim follows from `(hC E u l l (by simp)).2 h`.
+-/
 private theorem mem_cpl (hC : CplMem) {l : ℕ} {u : HeightOneSpectrum (𝓞 E)} (h : ((l : ℕ) : 𝓞 E) ∈ u.asIdeal) :
     ((l : ℕ) : 𝓞 E) ∈ (cpl u).asIdeal := (hC E u l l (by simp)).2 h
 
+/- English proof (translation)
+Break down `hS E l d hl hd x hx u w hu hw with h | h` into its components or cases. Conclude with `⟨u, hu, h, h1, fun _ => Iff.rfl⟩`. Conclude with `⟨cpl u, mem_cpl hC hu, h, h2, fun _ => apart_cpl hs⟩`.
+-/
 private theorem move (hC : CplMem) (hS : SameOr) {l d : ℕ} (hl : l.Prime) (hd : 0 < d) {x : E} (hx : x ^ 2 = -(d : E))
     {u w : HeightOneSpectrum (𝓞 E)} (hs : IsSplitAt u) (hu : ((l : ℕ) : 𝓞 E) ∈ u.asIdeal) (hw : ((l : ℕ) : 𝓞 E) ∈ w.asIdeal)
     {p : HeightOneSpectrum (𝓞 E) → Prop} (h1 : p u) (h2 : p (cpl u)) :
@@ -41,6 +53,19 @@ private theorem move (hC : CplMem) (hS : SameOr) {l d : ℕ} (hl : l.Prime) (hd 
 
 end
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ _ l _ ι a ha hodd d hd T hT w₀ v' hw₀ hs₀ hv' hs' hap U₀ S Y`. Use `⟨∅, by simp, fun U hA hty hwt hsph hsv _ => ?_⟩` and prove the remaining obligations. Take `⟨hd0, x, hx⟩` from `hd.1`. Establish `hlac : LacWtAt ι v' U`. Take `⟨-, τ, hτ, h⟩` from `hwt`.
+
+Take `⟨lam, hlam⟩` from `GlobalTheory.Cong.exists_weight_of_isAutRepU E a U hA.1`. Conclude with `⟨τ, hτ, lam τ, hlam τ, hGap a _ (card_wtJumps _) (h _ (hlam τ) _ (wtJumps_val _))⟩`. Establish `geo : ∀ w : HeightOneSpectrum (𝓞 E), ((l : ℕ) : 𝓞 E) ∈ w.asIdeal → ∃ u₀ u', SameK x w u' ∧ (∀ y, Apart y u₀ ↔ Apart y w₀) ∧ (∀ y, Apart y u' ↔ Apart y v') ∧ _` using `fun w hw => by`. Take `⟨u₀, a1, a2, a3, a4⟩` from `move hC hS (Fact.out : l.Prime) hd0 hx hs₀ hw₀ hw (p := fun u => GlobalTheory.CongW.TyEll E l a u U) hty (hTy E l a U w₀ hs₀ hty)`. Take `⟨u', b1, b2, b3, b4⟩` from `move hC hS (Fact.out : l.Prime) hd0 hx hs' hv' hw (p := fun u => (∃ B, SatU U u B) ∧ LacWtAt ι u U) ⟨hsv, hlac⟩ ⟨hSat E a U hA.1 v' hs' hsv, hLac E l ι a ha U v' hlac⟩`.
+
+Conclude with `⟨u₀, u', fun y hy => (b2 y hy).symm, a4, b4, hG E Ω l ι a hodd d hd x hx T hT u₀ u' a1 b1 ((a4 u').2 (apart_symm ((b4 w₀).2 (apart_symm hap)))) (fun y hy => (a2 y hy).trans (b2 y hy).symm) S U hA a3 (fun y h1 h2 h3 => hsph y h1 ((a4 y).1 h2) h3) b3.1 b3.2⟩`. Take `⟨_, _, -, -, -, g1, g2, -⟩` from `geo v' hv'`. Take `⟨r, ⟨r1, r2, V, X, v1, v2, v3⟩, hr⟩` from `hD E Ω l ι a ha d hd.1 U hA.1 g1`. Establish `hgm : ∀ w B, SatU U w B → GlobalTheory.CongW.GenOf DGen a (normV w) B → GenericMul B` using `fun w B hB hg => hGen a _ B ha hB.choose_spec.2.card hg`. Establish `hsp : ∀ w : HeightOneSpectrum (𝓞 E), ((l : ℕ) : 𝓞 E) ∈ w.asIdeal → IsSplitAt w` using `fun w hw => by`.
+
+Assume the negation of the conclusion as `h`. Conclude with `(hd.2.2.2 w h).1 hw`. Use `⟨r, r1, r2, ⟨V, X, v1, v2, fun w h1 h2 h3 _ => v3 w h1 h2 h3⟩, fun w _ h1 h2 _ B hB hg => ?_, fun w _ h1 h2 h3 h4 => ?_, fun w _ h1 h2 h3 _ B hB hg => ?_⟩` and prove the remaining obligations. Take `⟨dd, ρ, k1, k2⟩` from `g2 w h1 h2 ⟨B, hB⟩`. Conclude with `(hr dd ρ k1 w).1 h1.1 h2 B hB (hgm w B hB hg) (k2 B hB)`.
+
+Take `⟨u₀, u', c1, c2, c3, -, -, g3⟩` from `geo w h1`. Take `⟨⟨dd, ρ, k1, k2, k3⟩, -⟩` from `g3 w h1 c1 ((c2 w).2 h2) ((c3 w).2 h3) (hsph w (hsp w h1) h2 h4)`. Conclude with `(hr dd ρ k1 w).2.1 k2 k3`. Take `⟨u₀, u', c1, c2, c3, -, -, g3⟩` from `geo w h1`. Take `⟨-, dd, ρ, k1, k2⟩` from `g3 w h1 c1 ((c2 w).2 h2) ((c3 w).2 h3) ⟨B, hB⟩`.
+
+Conclude with `((hr dd ρ k1 w).2.2 (hsp w h1) B hB (hgm w B hB hg) (k2 B hB)).2.phiAt`.
+-/
 theorem seedFinOdd_of (hD : DivAll) (hC : CplMem) (hS : SameOr) (hSat : SatConj) (hTy : TyConj) (hLac : LacConj) (hGap : GapLac)
     (hGen : DGenMul) (hG : GeoOne) : SeedFinOdd := by
   intro E Ω _ _ _ _ _ _ l _ ι a ha hodd d hd T hT w₀ v' hw₀ hs₀ hv' hs' hap U₀ S Y

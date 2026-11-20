@@ -16,6 +16,9 @@ def isoVal (w : LB.Iso (L₁.pull f₁) (L₂.pull f₂)) (r : Z ⟶ Y) (z : Z) 
     (Z.presheaf.stalk z)ˣ :=
   gm r z ((L₂.pull f₂).U (fun _ => i₂) ⊓ (L₁.pull f₁).U (fun _ => i₁)) (w.s (fun _ => i₂, fun _ => i₁))
 
+/- English proof (translation)
+Use `(isGen_iff w).1 hw _ r z i₂ j₂ (fun _ => i₁) (fun _ => j₁) a₂ b₂ (mem_pull.2 a₁) (mem_pull.2 b₁)` as an intermediate fact. Conclude with `this.trans (congrArg (fun u => _ * u⁻¹ * _) (gm_pull_g L₁ f₁ r z (fun _ => i₁) (fun _ => j₁) (mem_pull.2 a₁) (mem_pull.2 b₁)))`.
+-/
 theorem isoVal_trans {w : LB.Iso (L₁.pull f₁) (L₂.pull f₂)} (hw : w.IsGen) (r : Z ⟶ Y) (z : Z)
     {i₂ j₂ : L₂.ι} {i₁ j₁ : L₁.ι} (a₂ : f₂ (r z) ∈ L₂.U i₂) (b₂ : f₂ (r z) ∈ L₂.U j₂)
     (a₁ : f₁ (r z) ∈ L₁.U i₁) (b₁ : f₁ (r z) ∈ L₁.U j₁) :
@@ -28,10 +31,16 @@ def powVal {L : LB X₁} {g : Z₁ ⟶ X₁} {k : ℤ} (a : LB.Sec (LB.LinComb L
     (r : Z ⟶ Z₁) (z : Z) (i : L.ι) : Z.presheaf.stalk z :=
   gs r z (LB.wchart L (fun _ : Fin 1 => g) (fun _ => i)) (a.f (fun _ => i))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sval_eq_powVal {L : LB X₁} {g : Z₁ ⟶ X₁} {k : ℤ}
     (a : LB.Sec (LB.LinComb L (K := Fin 1) (fun _ => g) (fun _ => k))) (r : Z ⟶ Z₁) (z : Z)
     (J : (Z ⟶ X₁) → L.ι) : sval a r z J = powVal a r z (J (r ≫ g)) := rfl
 
+/- English proof (translation)
+The claim follows from `(sec_trans a r z (mem_wchart.2 fun _ => hi) (mem_wchart.2 fun _ => hj)).trans (congrArg (fun u : (Z.presheaf.stalk z)ˣ => u.val * _) (Fin.prod_univ_one _))`.
+-/
 theorem powVal_trans {L : LB X₁} {g : Z₁ ⟶ X₁} {k : ℤ}
     (a : LB.Sec (LB.LinComb L (K := Fin 1) (fun _ => g) (fun _ => k))) (r : Z ⟶ Z₁) (z : Z) {i j : L.ι}
     (hi : g (r z) ∈ L.U i) (hj : g (r z) ∈ L.U j) :
@@ -39,6 +48,15 @@ theorem powVal_trans {L : LB X₁} {g : Z₁ ⟶ X₁} {k : ℤ}
   (sec_trans a r z (mem_wchart.2 fun _ => hi) (mem_wchart.2 fun _ => hj)).trans
     (congrArg (fun u : (Z.presheaf.stalk z)ˣ => u.val * _) (Fin.prod_univ_one _))
 
+/- English proof (translation)
+Establish `glue : ∀ i : L.ι, ∃ a : Γ(Y', LB.wchart L (fun _ : Fin 1 => g) (fun _ => i)), ∀ Z r z p, g (r z) ∈ L.U i → r z ∈ W p → gs r z _ a = v Z r z i p` using `fun i => by`. Take `⟨a, ha, -⟩` from `sec_glue (LB.wchart L (fun _ : Fin 1 => g) (fun _ => i)) (fun p => LB.wchart L (fun _ : Fin 1 => g) (fun _ => i) ⊓ W p) (fun _ => inf_le_left) (fun y hy => by`. Take `⟨p, hp⟩` from `hW y`. Conclude with `Opens.mem_iSup.2 ⟨p, hy, hp⟩) (u i) (fun p p' => fn_ext fun y hy => by`. Establish `hi` using `mem_wchart.1 hy.1.1 0`.
+
+Conclude with `((gs_res (𝟙 Y') y inf_le_left hy _).trans (huv _ _ y i p hi hy.1.2)).trans ((h₁ y i p p' hi hy.1.2 hy.2.2).trans ((gs_res (𝟙 Y') y inf_le_right hy _).trans (huv _ _ y i p' hi hy.2.2)).symm))`. Use `⟨a, fun Z r z p hi hp => ?_⟩` and prove the remaining obligations. Establish `hz : r z ∈ LB.wchart L (fun _ : Fin 1 => g) (fun _ => i) ⊓ W p` using `⟨mem_wchart.2 fun _ => hi, hp⟩`. Conclude with `(gs_res r z inf_le_left hz a).symm.trans ((congrArg (gs r z _) (ha p)).trans (huv Z r z i p hi hp))`. Establish `glue' : ∀ j : Fin 1 → L.ι, ∃ a : Γ(Y', LB.wchart L (fun _ : Fin 1 => g) j), ∀ Z r z p, g (r z) ∈ L.U (j 0) → r z ∈ W p → gs r z _ a = v Z r z (j 0) p` using `fun j => by`.
+
+Take `⟨i, rfl⟩ : ∃ i, j = fun _ => i` from `⟨j 0, funext fun t => congrArg j (Subsingleton.elim _ _)⟩`. Conclude with `glue i`. Use `choose a ha using glue'`. Use `⟨⟨a, fun (j j' : Fin 1 → L.ι) => fn_ext fun y hy => ?_⟩, fun Z r z i p hi hp => ha _ Z r z p hi hp⟩` and prove the remaining obligations. Take `⟨p, hp⟩` from `hW y`.
+
+Establish `m` using `mem_wchart.1 hy.1 0`. Establish `m'` using `mem_wchart.1 hy.2 0`. Use `((gs_res (𝟙 Y') y _ hy _).trans (ha j _ _ y p m hp)).trans (Eq.trans ?_ ((gs_mul (𝟙 Y') y _ hy _ _).trans (congrArg₂ (· * ·) ((gs_unit (𝟙 Y') y _ hy _).trans (congrArg Units.val ((gm_linComb L _ _ (𝟙 Y') y j j' hy.1 hy.2).trans (Fin.prod_univ_one _)))) ((gs_res (𝟙 Y') y _ hy _).t …` and prove the remaining obligations. Conclude with `h₂ y _ _ p m m' hp`.
+-/
 theorem exists_sec_of_local {L : LB X₂} {g : Y' ⟶ X₂} {k : ℤ} {I : Type} (W : I → Y'.Opens)
     (hW : ∀ y, ∃ p, y ∈ W p)
     (u : ∀ (i : L.ι) (p : I), Γ(Y', LB.wchart L (fun _ : Fin 1 => g) (fun _ => i) ⊓ W p))
@@ -78,6 +96,9 @@ theorem exists_sec_of_local {L : LB X₂} {g : Y' ⟶ X₂} {k : ℤ} {I : Type}
       ((gs_res (𝟙 Y') y _ hy _).trans (ha j' _ _ y p m' hp)))).symm)
   exact h₂ y _ _ p m m' hp
 
+/- English proof (translation)
+The claim follows from `(gs_unit r z O hz _).trans (congrArg Units.val ((map_zpow _ _ _).trans (congrArg (· ^ n) ((gm_res r z hO hz _).trans (gm_pull r m z _ (hO hz) _)))))`.
+-/
 theorem gs_isoUnit (w : LB.Iso (L₁.pull f₁) (L₂.pull f₂)) (m : Y' ⟶ Y) (n : ℤ) (i₂ : L₂.ι) (i₁ : L₁.ι)
     {O : Y'.Opens} (hO : O ≤ m ⁻¹ᵁ ((L₂.pull f₂).U (fun _ => i₂) ⊓ (L₁.pull f₁).U (fun _ => i₁)))
     (r : Z ⟶ Y') (z : Z) (hz : r z ∈ O) :
@@ -85,6 +106,13 @@ theorem gs_isoUnit (w : LB.Iso (L₁.pull f₁) (L₂.pull f₂)) (m : Y' ⟶ Y)
   (gs_unit r z O hz _).trans (congrArg Units.val ((map_zpow _ _ _).trans (congrArg (· ^ n)
     ((gm_res r z hO hz _).trans (gm_pull r m z _ (hO hz) _)))))
 
+/- English proof (translation)
+Substitute `e₂` using the available equality. Establish `pt : ∀ y, g₁ (h₁ y) = f₁ (m y)` using `fun y => congrArg (fun q : Y' ⟶ X₁ => q y) e₁`. Establish `l₁ : ∀ i₂ i₁, LB.wchart L₂ (fun _ : Fin 1 => m ≫ f₂) (fun _ => i₂) ⊓ (m ≫ f₁) ⁻¹ᵁ L₁.U i₁ ≤ m ⁻¹ᵁ ((L₂.pull f₂).U (fun _ => i₂) ⊓ (L₁.pull f₁).U (fun _ => i₁))` using `fun i₂ i₁ y hy => ⟨mem_pull.2 (mem_wchart.1 hy.1 0), mem_pull.2 hy.2⟩`. Establish `l₂ : ∀ i₂ i₁, LB.wchart L₂ (fun _ : Fin 1 => m ≫ f₂) (fun _ => i₂) ⊓ (m ≫ f₁) ⁻¹ᵁ L₁.U i₁ ≤ h₁ ⁻¹ᵁ LB.wchart L₁ (fun _ : Fin 1 => g₁) (fun _ => i₁)` using `fun i₂ i₁ y hy => (mem_wchart (y := h₁ y)).2 fun _ => (pt y).symm ▸ hy.2`. Use `exists_sec_of_local (fun i₁ => (m ≫ f₁) ⁻¹ᵁ L₁.U i₁) (fun y => exists_chart hL₁ _) (fun i₂ i₁ => (res (l₁ i₂ i₁) (pullU m _ (w.s (fun _ => i₂, fun _ => i₁))) ^ k).val * (Y'.presheaf.map (homOfLE (l₂ i₂ i₁)).op).hom ((h₁.app _).hom (a.f (fun _ => i₁)))) (fun Z r z i₂ i₁ => (isoVal …` and prove the remaining obligations.
+
+Establish `hz : r z ∈ LB.wchart L₂ (fun _ : Fin 1 => m ≫ f₂) (fun _ => i₂) ⊓ (m ≫ f₁) ⁻¹ᵁ L₁.U i₁` using `⟨mem_wchart.2 fun _ => a₂, a₁⟩`. Conclude with `(gs_mul r z _ hz _ _).trans (congrArg₂ (· * ·) (gs_isoUnit w m k i₂ i₁ _ r z hz) ((gs_res r z _ hz _).trans (gs_pull r h₁ z _ (l₂ i₂ i₁ hz) _)))`. Establish `c₁ : g₁ ((𝟙 Y' ≫ h₁) y) ∈ L₁.U i₁` using `(pt y).symm ▸ a₁`. Establish `c₂ : g₁ ((𝟙 Y' ≫ h₁) y) ∈ L₁.U j₁` using `(pt y).symm ▸ b₁`. Use `beta_reduce`.
+
+Rewrite using `[isoVal_trans hw (𝟙 Y' ≫ m) y a₂ a₂ a₁ b₁, powVal_trans a (𝟙 Y' ≫ h₁) y c₁ c₂, gm_self hL₂ ((𝟙 Y' ≫ m) ≫ f₂) y a₂, Category.assoc, Category.assoc, e₁, ← mul_assoc, ← Units.val_mul]`. Use `congr 2`. Rewrite using `[one_mul, mul_zpow, inv_zpow, mul_comm, mul_inv_cancel_left]`. Use `beta_reduce`. Rewrite using `[isoVal_trans hw (𝟙 Y' ≫ m) y a₂ b₂ a₁ a₁, gm_self hL₁ ((𝟙 Y' ≫ m) ≫ f₁) y a₁, inv_one, mul_one, mul_zpow, Units.val_mul, mul_assoc, Category.assoc]`.
+-/
 theorem exists_move (hL₁ : L₁.IsLB) (hL₂ : L₂.IsLB) {w : LB.Iso (L₁.pull f₁) (L₂.pull f₂)} (hw : w.IsGen)
     (m : Y' ⟶ Y) (k : ℤ) {g₁ : Z₁ ⟶ X₁} (h₁ : Y' ⟶ Z₁) (e₁ : h₁ ≫ g₁ = m ≫ f₁) {g₂ : Y' ⟶ X₂} (e₂ : g₂ = m ≫ f₂)
     (a : LB.Sec (LB.LinComb L₁ (K := Fin 1) (fun _ => g₁) (fun _ => k))) :
@@ -119,6 +147,15 @@ theorem exists_move (hL₁ : L₁.IsLB) (hL₂ : L₂.IsLB) {w : LB.Iso (L₁.pu
     rw [isoVal_trans hw (𝟙 Y' ≫ m) y a₂ b₂ a₁ a₁, gm_self hL₁ ((𝟙 Y' ≫ m) ≫ f₁) y a₁, inv_one, mul_one,
       mul_zpow, Units.val_mul, mul_assoc, Category.assoc]
 
+/- English proof (translation)
+Substitute `e₁` using the available equality. Establish `pt : ∀ y, g₂ (h₂ y) = f₂ (m y)` using `fun y => congrArg (fun q : Y' ⟶ X₂ => q y) e₂`. Establish `l₁ : ∀ i₁ i₂, LB.wchart L₁ (fun _ : Fin 1 => m ≫ f₁) (fun _ => i₁) ⊓ (m ≫ f₂) ⁻¹ᵁ L₂.U i₂ ≤ m ⁻¹ᵁ ((L₂.pull f₂).U (fun _ => i₂) ⊓ (L₁.pull f₁).U (fun _ => i₁))` using `fun i₁ i₂ y hy => ⟨mem_pull.2 hy.2, mem_pull.2 (mem_wchart.1 hy.1 0)⟩`. Establish `l₂ : ∀ i₁ i₂, LB.wchart L₁ (fun _ : Fin 1 => m ≫ f₁) (fun _ => i₁) ⊓ (m ≫ f₂) ⁻¹ᵁ L₂.U i₂ ≤ h₂ ⁻¹ᵁ LB.wchart L₂ (fun _ : Fin 1 => g₂) (fun _ => i₂)` using `fun i₁ i₂ y hy => (mem_wchart (y := h₂ y)).2 fun _ => (pt y).symm ▸ hy.2`. Take `⟨a, ha⟩` from `exists_sec_of_local (L := L₁) (g := m ≫ f₁) (k := k) (fun i₂ => (m ≫ f₂) ⁻¹ᵁ L₂.U i₂) (fun y => exists_chart hL₂ _) (fun i₁ i₂ => (res (l₁ i₁ i₂) (pullU m _ (w.s (fun _ => i₂, fun _ => i₁))) ^ (-k)).val * (Y'.presheaf.map (homOfLE (l₂ i₁ i₂)).op).hom ((h₂.app _).hom (b.f (fun _ = …`.
+
+Establish `hz : r z ∈ LB.wchart L₁ (fun _ : Fin 1 => m ≫ f₁) (fun _ => i₁) ⊓ (m ≫ f₂) ⁻¹ᵁ L₂.U i₂` using `⟨mem_wchart.2 fun _ => a₁, a₂⟩`. Conclude with `(gs_mul r z _ hz _ _).trans (congrArg₂ (· * ·) (gs_isoUnit w m (-k) i₂ i₁ _ r z hz) ((gs_res r z _ hz _).trans (gs_pull r h₂ z _ (l₂ i₁ i₂ hz) _))))`. Use the proof step `(fun y i₁ i₂ j₂ a₁ a₂ b₂ => by`. Establish `c₁ : g₂ ((𝟙 Y' ≫ h₂) y) ∈ L₂.U i₂` using `(pt y).symm ▸ a₂`. Establish `c₂ : g₂ ((𝟙 Y' ≫ h₂) y) ∈ L₂.U j₂` using `(pt y).symm ▸ b₂`.
+
+Use `beta_reduce`. Rewrite using `[isoVal_trans hw (𝟙 Y' ≫ m) y a₂ b₂ a₁ a₁, powVal_trans b (𝟙 Y' ≫ h₂) y c₁ c₂, gm_self hL₁ ((𝟙 Y' ≫ m) ≫ f₁) y a₁, Category.assoc, Category.assoc, e₂, ← mul_assoc, ← Units.val_mul]`. Use `congr 2`. Rewrite using `[inv_one, mul_one, mul_zpow, zpow_neg, mul_comm, mul_inv_cancel_left])`. Use the proof step `(fun y i₁ j₁ i₂ a₁ b₁ a₂ => by beta_reduce`.
+
+Rewrite using `[isoVal_trans hw (𝟙 Y' ≫ m) y a₂ a₂ a₁ b₁, gm_self hL₂ ((𝟙 Y' ≫ m) ≫ f₂) y a₂, one_mul, mul_zpow, inv_zpow', neg_neg, Units.val_mul, mul_assoc, Category.assoc])`. Use `⟨a, fun Z r z i₂ i₁ a₂ a₁ => ?_⟩` and prove the remaining obligations. Rewrite using `[ha Z r z i₁ i₂ a₁ a₂, ← mul_assoc, ← Units.val_mul, zpow_neg, mul_inv_cancel, Units.val_one, one_mul]`.
+-/
 theorem exists_move_back (hL₁ : L₁.IsLB) (hL₂ : L₂.IsLB) {w : LB.Iso (L₁.pull f₁) (L₂.pull f₂)} (hw : w.IsGen)
     (m : Y' ⟶ Y) (k : ℤ) {g₂ : Z₂ ⟶ X₂} (h₂ : Y' ⟶ Z₂) (e₂ : h₂ ≫ g₂ = m ≫ f₂) {g₁ : Y' ⟶ X₁} (e₁ : g₁ = m ≫ f₁)
     (b : LB.Sec (LB.LinComb L₂ (K := Fin 1) (fun _ => g₂) (fun _ => k))) :
@@ -158,6 +195,15 @@ theorem exists_move_back (hL₁ : L₁.IsLB) (hL₂ : L₂.IsLB) {w : LB.Iso (L�
   refine ⟨a, fun Z r z i₂ i₁ a₂ a₁ => ?_⟩
   rw [ha Z r z i₁ i₂ a₁ a₂, ← mul_assoc, ← Units.val_mul, zpow_neg, mul_inv_cancel, Units.val_one, one_mul]
 
+/- English proof (translation)
+Establish `key : ∀ (Z : Scheme.{0}) (r : Z ⟶ Y') (z : Z) i₂ i₁ (O : Y'.Opens) (_ : r z ∈ O) (a₀ : O ≤ m ⁻¹ᵁ ((L₂.pull f₂).U (fun _ => i₂) ⊓ (L₁.pull f₁).U (fun _ => i₁))) (a₁ : O ≤ h₁ ⁻¹ᵁ LB.wchart L₁ (fun _ : Fin 1 => g₁) (fun _ => i₁)) (a₂ : O ≤ h₂ ⁻¹ᵁ LB.wchart L₂ (fun _ : Fin 1 => g₂) ( …` using `fun Z r z i₂ i₁ O hz a₀ a₁ a₂ => ⟨(gs_res r z a₂ hz _).trans (gs_pull r h₂ z _ (a₂ hz) _), (gs_mul r z _ hz _ _).trans (congrArg₂ (· * ·) ((congrArg (gs r z O) (by rw [zpow_natCast, Units.val_pow_eq_pow_val])).trans (gs_isoUnit w m k i₂ i₁ a₀ r z hz)) ((gs_res r z a₁ hz _).trans …`. Establish `pt₁ : ∀ y, g₁ (h₁ y) = f₁ (m y)` using `fun y => congrArg (fun q : Y' ⟶ X₁ => q y) e₁`. Establish `pt₂ : ∀ y, g₂ (h₂ y) = f₂ (m y)` using `fun y => congrArg (fun q : Y' ⟶ X₂ => q y) e₂`. Prove the components needed by the constructor for the conclusion. Introduce `H Z r z i₂ i₁ a₂ a₁`.
+
+Establish `hz : r z ∈ GeneratorPullback.isoW L₁ L₂ f₁ f₂ m g₁ h₁ g₂ h₂ (fun _ => i₂, fun _ => i₁) (fun _ => i₁) (fun _ => i₂)` using `⟨⟨⟨mem_pull.2 a₂, mem_pull.2 a₁⟩, (mem_wchart (y := h₁ (r z))).2 fun _ => (pt₁ _).symm ▸ a₁⟩, (mem_wchart (y := h₂ (r z))).2 fun _ => (pt₂ _).symm ▸ a₂⟩`. Take `⟨k₁, k₂⟩` from `key Z r z i₂ i₁ _ hz (inf_le_left.trans inf_le_left) (inf_le_left.trans inf_le_right) inf_le_right`. Conclude with `k₁.symm.trans ((congrArg (gs r z _) (H.2.2 (fun _ => i₂, fun _ => i₁) (fun _ => i₁) (fun _ => i₂)`. Use `rfl rfl)).trans k₂)`. Introduce `H`.
+
+Use `⟨e₁, e₂, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨p₁, p₂⟩ j₁ j₂ c₁ c₂`. Take `rfl : j₁ = fun _ => p₂ PUnit.unit` from `funext fun i => (congrArg j₁ (Subsingleton.elim i 0)).trans c₁`. Take `rfl : j₂ = fun _ => p₁ PUnit.unit` from `funext fun i => (congrArg j₂ (Subsingleton.elim i 0)).trans c₂`. Use `fn_ext fun y hy => ?_` and prove the remaining obligations.
+
+Take `⟨k₁, k₂⟩` from `key _ (𝟙 Y') y (p₁ PUnit.unit) (p₂ PUnit.unit) _ hy (inf_le_left.trans inf_le_left) (inf_le_left.trans inf_le_right) inf_le_right`. Conclude with `k₁.trans ((H y _ _ (mem_pull.1 hy.1.1.1) (mem_pull.1 hy.1.1.2)).trans k₂.symm)`.
+-/
 theorem isoRelM_iff (w : LB.Iso (L₁.pull f₁) (L₂.pull f₂)) (m : Y' ⟶ Y) (k : ℕ) {g₁ : Z₁ ⟶ X₁} (h₁ : Y' ⟶ Z₁)
     (e₁ : h₁ ≫ g₁ = m ≫ f₁) {g₂ : Z₂ ⟶ X₂} (h₂ : Y' ⟶ Z₂) (e₂ : h₂ ≫ g₂ = m ≫ f₂)
     (a : LB.Sec (LB.LinComb L₁ (K := Fin 1) (fun _ => g₁) (fun _ => (k : ℤ))))

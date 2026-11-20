@@ -11,6 +11,11 @@ open scoped ComplexOrder
 
 namespace GlobalTheory.ColRows
 
+/- English proof (translation)
+Use `⟨S.hDim h, (S.hB h).equivFun.symm, fun v => frameOf (GlobalTheory.PeriodClassSum.gramAt S h v), fun v => (frameOfSpec _ _ (GlobalTheory.PeriodClassSum.gramAt_posDef S h v (hG v))).1, fun v x => ?_⟩` and prove the remaining obligations. Establish `h1` using `(GlobalTheory.PeriodClassSum.isFormsOf_formsLat S h hG ⊥).2 v ((S.hB h).equivFun.symm x)`. Establish `h2 : Formalism.HermitianLatticesTheory.normAt (Pi.basisFun K (Fin (S.hDim h))) (fun v => frameOf (GlobalTheory.PeriodClassSum.gramAt S h v)) v x = Formalism.HermitianLatticesTheory.normAt (S.hB h) (fun v => frameOf (GlobalTheory.PeriodClassSum.gramAt S h v)) v ((S.hB h).equivFun. …`. Unfold `Formalism.HermitianLatticesTheory.normAt Formalism.HermitianLatticesTheory.fcoord`. Use `congr 2`.
+
+Use function extensionality and compare the values at `i`. Simplify using `only [Formalism.HermitianLatticesTheory.vecAt, Pi.basisFun_repr]`. Rewrite using `[← Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`. Rewrite using `[h2]`. Conclude with `h1`.
+-/
 theorem datFramed_of_gram_posDef {K : Type} [Field K] [NumberField K] [StarRing K] (S : GSD K) (h : S.Ok)
     (hG : ∀ v : InfinitePlace K, (S.gramV.map v.embedding).PosDef) : DatFramed S h := by
   refine ⟨S.hDim h, (S.hB h).equivFun.symm, fun v => frameOf (GlobalTheory.PeriodClassSum.gramAt S h v),
@@ -26,6 +31,11 @@ theorem datFramed_of_gram_posDef {K : Type} [Field K] [NumberField K] [StarRing 
   rw [h2]
   exact h1
 
+/- English proof (translation)
+Introduce `X _ Pr R W Ch sel Sg mu P u h`. Use `datFramed_of_gram_posDef _ h fun v => ?_` and prove the remaining obligations. Establish `e : (evGSD W Ch sel mu P u).gramV = GlobalTheory.TestLat.Compare.gramB X.K (W.lamTrue u R.m)`. Use extensionality with `i k`. Use `show pairVr X.emb (W.lamTrue u R.m) 1 (bVV _ _ i) (bVV _ _ k) = _`.
+
+Rewrite using `[GlobalTheory.ColNorms.pairVr_one_eq]`. Conclude with `GlobalTheory.PeriodClassSum.pairK_one_basis (W.lamTrue u R.m) i k`. Rewrite using `[e]`. Conclude with `GlobalTheory.PeriodClassSum.gramB_posDef (W.lamTrue u R.m) v.embedding`.
+-/
 theorem evGSD_datFramed : ∀ (X : Fields) (hX : X.Ok) (Pr : Primes X) (R : Ranks) (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (Sg : Set ℕ) (mu : Tup X.F X.E X.K Sg) (P : LevFam X.E X.K R.r Pr.vGs) (u : Pr.Word) (h : (evGSD W Ch sel mu P u).Ok), DatFramed (evGSD W Ch sel mu P u) h := by
   intro X _ Pr R W Ch sel Sg mu P u h
   refine datFramed_of_gram_posDef _ h fun v => ?_

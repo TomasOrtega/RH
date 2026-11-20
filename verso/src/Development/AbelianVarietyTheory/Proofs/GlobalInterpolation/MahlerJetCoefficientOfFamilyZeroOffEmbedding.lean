@@ -13,6 +13,9 @@ open MvPolynomial
 
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
+/- English proof (translation)
+Unfold `monoJet`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.PullbackSections.lD_eq G 0 _ (List.length_map _)]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[List.get_eq_getElem]`.
+-/
 theorem monoJet_eq_listJet {κ : Type} [Fintype κ] (v : κ → V) (G : V → ℂ) (m : κ →₀ ℕ) :
     monoJet v G m = ReciprocityTheory.ChartRestriction.G.PullbackSections.lD G 0 (m.toMultiset.toList.map v) := by
   unfold monoJet
@@ -21,6 +24,11 @@ theorem monoJet_eq_listJet {κ : Type} [Fintype κ] (v : κ → V) (G : V → �
   funext i
   simp [List.get_eq_getElem]
 
+/- English proof (translation)
+Rewrite using `[monoJet_eq_listJet, monoJet_eq_listJet]`. Apply `ReciprocityTheory.ChartRestriction.G.PullbackSections.lD_perm (hG.contDiffAt)` to reduce the goal to its premises. Rewrite using `[← Multiset.coe_eq_coe, ← Multiset.map_coe, ← Multiset.map_coe, Multiset.coe_toList, Multiset.coe_toList, ← Finsupp.toMultiset_map m e, Multiset.map_map]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Conclude with `hw i`.
+-/
 theorem monoJet_mapDomain {κ ι' : Type} [Fintype κ] [Fintype ι'] (e : κ ↪ ι') (w : κ → V) (u : ι' → V)
     (G : V → ℂ) (hG : ContDiff ℂ ⊤ G) (hw : ∀ i, u (e i) = w i) (m : κ →₀ ℕ) :
     monoJet u G (Finsupp.mapDomain e m) = monoJet w G m := by
@@ -32,6 +40,23 @@ theorem monoJet_mapDomain {κ ι' : Type} [Fintype κ] [Fintype ι'] (e : κ ↪
   funext i
   exact hw i
 
+/- English proof (translation)
+Introduce `V _ _ κ ι' _ _ e w u G hG hw hu`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `k ⟨p, hp, hkp⟩`. Simplify using `only [GlobalTheory.MomN.mahler]`. Take `⟨n, hn⟩` from `Nat.exists_eq_succ_of_ne_zero hkp`.
+
+Establish `hP : (∏ i, C (((k i).factorial : ℂ)⁻¹) * Polynomial.aeval (X i : MvPolynomial ι' ℂ) (descPochhammer ℂ (k i))) = X p * (C (((k p).factorial : ℂ)⁻¹) * Polynomial.aeval (X p : MvPolynomial ι' ℂ) ((descPochhammer ℂ n).comp (Polynomial.X - 1)) * ∏ i ∈ Finset.univ.erase p, C (((k i).fa …`. Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ p)]`. Simplify using `only [hn, descPochhammer_succ_left, map_mul, Polynomial.aeval_X]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hP]`.
+
+Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `m hm`. Rewrite `hm` using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_X_mul']`. Establish `hpm : p ∈ m.support`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hm (if_neg h)`. Establish `hmem : p ∈ m.toMultiset.toList`. Rewrite using `[Multiset.mem_toList]`. Simplify using `using hpm`. Take `⟨idx, hidx⟩` from `List.get_of_mem hmem`.
+
+Establish `hz : monoJet u G m = 0`. Unfold `monoJet`. Conclude with `ContinuousMultilinearMap.map_coord_zero _ idx (by show u ((Finsupp.toMultiset m).toList.get idx) = 0`. Rewrite using `[hidx]`. Conclude with `hu p hp)`.
+
+Rewrite using `[hz, mul_zero]`. Introduce `k hk`. Simplify using `only [GlobalTheory.MomN.mahler]`. Establish `hprod : (∏ p : ι', C (((k p).factorial : ℂ)⁻¹) * Polynomial.aeval (X p : MvPolynomial ι' ℂ) (descPochhammer ℂ (k p))) = rename e (∏ i : κ, C (((k (e i)).factorial : ℂ)⁻¹) * Polynomial.aeval (X i : MvPolynomial κ ℂ) (descPochhammer ℂ (k (e i))))`. Rewrite using `[map_prod]`.
+
+Use `symm`. Apply `Fintype.prod_of_injective e e.injective` to reduce the goal to its premises. Introduce `b hb`. Simplify using `[hk b hb]`. Introduce `a`.
+
+Simplify using `[← Polynomial.aeval_algHom_apply, rename_X]`. Rewrite using `[hprod, MvPolynomial.support_rename_of_injective e.injective, Finset.sum_image (fun a _ b _ h => Finsupp.mapDomain_injective e.injective h)]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_rename_mapDomain _ e.injective, monoJet_mapDomain e w u G hG hw]`.
+-/
 theorem mahler_embed : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] (κ ι' : Type) [Fintype κ] [Fintype ι']
     (e : κ ↪ ι') (w : κ → V) (u : ι' → V) (G : V → ℂ), ContDiff ℂ ⊤ G → (∀ i, u (e i) = w i) →
     (∀ p, p ∉ Set.range e → u p = 0) →

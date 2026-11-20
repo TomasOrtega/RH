@@ -20,6 +20,9 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 variable {M : Loc.Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : Loc.HermSp M V)
 
+/- English proof (translation)
+Set `L : V →+ E` to `⟨⟨fun x => H.h x y, H.h_zero_left y⟩, fun a b => H.h_add_left a b y⟩`. Use `map_sum L (fun b => c b • g b) Finset.univ` as an intermediate fact. Simplify using `only [L, AddMonoidHom.coe_mk, ZeroHom.coe_mk] at this`. Rewrite using `[this]`. Conclude with `Finset.sum_congr rfl fun b _ => H.h_smul_left _ _ _`.
+-/
 theorem h_sum_left {ι : Type} [Fintype ι] (c : ι → E) (g : ι → V) (y : V) :
     H.h (∑ b, c b • g b) y = ∑ b, c b * H.h (g b) y := by
   let L : V →+ E := ⟨⟨fun x => H.h x y, H.h_zero_left y⟩, fun a b => H.h_add_left a b y⟩
@@ -28,16 +31,27 @@ theorem h_sum_left {ι : Type} [Fintype ι] (c : ι → E) (g : ι → V) (y : V
   rw [this]
   exact Finset.sum_congr rfl fun b _ => H.h_smul_left _ _ _
 
+/- English proof (translation)
+Establish `e : x - y = x + (-1 : E) • y` using `by simp [sub_eq_add_neg]`. Rewrite using `[e, H.h_add_left, H.h_smul_left]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem h_sub_left (x y z : V) : H.h (x - y) z = H.h x z - H.h y z := by
   have e : x - y = x + (-1 : E) • y := by simp [sub_eq_add_neg]
   rw [e, H.h_add_left, H.h_smul_left]
   ring
 
+/- English proof (translation)
+Unfold `Loc.HermSp.Dl`. Rewrite using `[dif_pos le_rfl]`. Both sides reduce to the same expression.
+-/
 theorem dl_last {r : ℕ} (f g : Fin (r + 1) → V) : H.Dl f g (r + 1) = (H.Zhat f g).det := by
   unfold Loc.HermSp.Dl
   rw [dif_pos le_rfl]
   rfl
 
+/- English proof (translation)
+Unfold `Loc.HermSp.om'`. Rewrite using `[h_sum_left]`. Establish `e : ∑ b, (H.Zhat f g).adjugate b (Fin.last r) * H.h (g b) (f a) = (H.Zhat f g * (H.Zhat f g).adjugate) a (Fin.last r)`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun b _ => mul_comm _ _`.
+
+Rewrite using `[e, Matrix.mul_adjugate, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]`.
+-/
 theorem om_pair {r : ℕ} (f g : Fin (r + 1) → V) (a : Fin (r + 1)) :
     H.h (H.om' f g) (f a) = (H.Zhat f g).det * (if a = Fin.last r then 1 else 0) := by
   unfold Loc.HermSp.om'
@@ -48,6 +62,13 @@ theorem om_pair {r : ℕ} (f g : Fin (r + 1) → V) (a : Fin (r + 1)) :
     exact Finset.sum_congr rfl fun b _ => mul_comm _ _
   rw [e, Matrix.mul_adjugate, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]
 
+/- English proof (translation)
+Introduce `s hs`. Establish `hl : ∀ s ∈ H.X f, H.h s (H.om' f g) = 0`. Introduce `s hs`. Proceed by induction on `hs using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨i, rfl⟩` from `hx`. Rewrite using `[H.h_herm (H.om' f g), om_pair]`. Simplify using `[Fin.castSucc_ne_last]`. Consider the case `zero => exact H.h_zero_left _`. Consider the case `add x y _ _ hx hy => rw [H.h_add_left, hx, hy, add_zero]`.
+
+Consider the case `smul c x _ hx => rw [H.h_smul_left, hx, mul_zero]`. Rewrite using `[H.h_herm s, hl s hs, map_zero]`.
+-/
 theorem om_perp {r : ℕ} (f g : Fin (r + 1) → V) : H.om' f g ∈ H.perp (H.X f) := by
   intro s hs
   have hl : ∀ s ∈ H.X f, H.h s (H.om' f g) = 0 := by
@@ -62,6 +83,15 @@ theorem om_perp {r : ℕ} (f g : Fin (r + 1) → V) : H.om' f g ∈ H.perp (H.X 
     | smul c x _ hx => rw [H.h_smul_left, hx, mul_zero]
   rw [H.h_herm s, hl s hs, map_zero]
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun E).1 hd`. Establish `hc : H.Zhat f g *ᵥ c = 0`. Use function extensionality and compare the values at `a`. Use `h0 a` as an intermediate fact. Rewrite `this` using `[h_sum_left]`.
+
+Rewrite using `[Pi.zero_apply, ← this, Matrix.mulVec, dotProduct]`. Conclude with `Finset.sum_congr rfl fun b _ => mul_comm _ _`. Establish `h2 : (H.Zhat f g).det • c = 0`. Use `congrArg (fun v => (H.Zhat f g).adjugate *ᵥ v) hc` as an intermediate fact. Simplify using `only [Matrix.mulVec_mulVec, Matrix.adjugate_mul, Matrix.mulVec_zero] at this`.
+
+Rewrite `this` using `[Matrix.smul_mulVec, Matrix.one_mulVec]`. Then use the resulting hypothesis. Establish `h3 : c = 0`. Take `⟨u, hu⟩` from `hdet`. Use `congrArg (fun v => (↑u⁻¹ : E) • v) h2` as an intermediate fact. Simplify using `only [← hu, smul_zero, smul_smul, Units.inv_mul, one_smul] at this`.
+
+Conclude with `this`. Substitute `h3` using the available equality. Simplify using the standard rewrite rules.
+-/
 theorem uniq_loc {r : ℕ} (f g : Fin (r + 1) → V) (hdet : IsUnit (H.Zhat f g).det) {d : V}
     (hd : d ∈ Submodule.span E (Set.range g)) (h0 : ∀ a, H.h d (f a) = 0) : d = 0 := by
   obtain ⟨c, rfl⟩ := (Submodule.mem_span_range_iff_exists_fun E).1 hd
@@ -83,6 +113,11 @@ theorem uniq_loc {r : ℕ} (f g : Fin (r + 1) → V) (hdet : IsUnit (H.Zhat f g)
   subst h3
   simp
 
+/- English proof (translation)
+Establish `hs'` using `hs ⟨_, om_perp H f g₁⟩ ⟨_, om_perp H f g₂⟩ rfl rfl`. Simplify using `only [LinearEquiv.refl_toLinearMap, LinearMap.id_apply] at hs'`. Establish `h0 : H.mkW f (c₁ • ⟨_, om_perp H f g₁⟩ - c₂ • ⟨_, om_perp H f g₂⟩) = 0`. Rewrite using `[LinearMap.map_sub, LinearMap.map_smul, LinearMap.map_smul, hs', sub_self]`. Establish `h1` using `(Submodule.Quotient.mk_eq_zero _).1 h0`.
+
+Rewrite `h1` using `[Submodule.mem_comap]`. Conclude with `h1`.
+-/
 theorem sendsTo_refl_mem {r : ℕ} (f g₁ g₂ : Fin (r + 1) → V) (c₁ c₂ : E)
     (hs : H.SendsTo (LinearEquiv.refl E (H.Wb f)).toLinearMap c₁ c₂ (H.om' f g₁) (H.om' f g₂)) :
     c₁ • H.om' f g₁ - c₂ • H.om' f g₂ ∈ H.X f := by
@@ -94,6 +129,9 @@ theorem sendsTo_refl_mem {r : ℕ} (f g₁ g₂ : Fin (r + 1) → V) (c₁ c₂ 
   rw [Submodule.mem_comap] at h1
   exact h1
 
+/- English proof (translation)
+Rewrite using `[smul_sub, smul_comm k d₁, smul_comm k d₂, ha, hb, smul_smul, smul_smul, mul_comm d₂ d₁, ← smul_sub]`.
+-/
 theorem smul_combine {W : Type} [AddCommGroup W] [Module E W] (k d₁ d₂ : E) (a b A B : W)
     (ha : k • a = d₂ • A) (hb : k • b = d₁ • B) : k • (d₁ • a - d₂ • b) = (d₁ * d₂) • (A - B) := by
   rw [smul_sub, smul_comm k d₁, smul_comm k d₂, ha, hb, smul_smul, smul_smul, mul_comm d₂ d₁, ← smul_sub]
@@ -114,6 +152,9 @@ def fL {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) : Fin (D.R.rS + 1) → Vp D p
 def gL (G : Fin (D.R.rS + 1) → (VS D).V) : Fin (D.R.rS + 1) → Vp D p :=
   fun b => sF' Zd p b • baseChange₂ D p (G b)
 
+/- English proof (translation)
+Unfold `fL`. Rewrite using `[Formalism.L2.SG.Pf.ScalarFramePf.h_smul_right]`. Use `congr 1`. Conclude with `baseChangeAt_form Zd.M p (Zd.hcj p) Ω (F0.fvec a)`.
+-/
 theorem h_bcP_f {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (Ω : (VS D).V) (a : Fin (D.R.rS + 1)) :
     (locH Zd p).h (baseChange₂ D p Ω) (fL Zd p F0 a) =
       (Zd.M p).L.cj (sF Zd p a) * (D.s.atP p).ιE ((VS D).hT (F0.fvec a) Ω) := by
@@ -122,6 +163,11 @@ theorem h_bcP_f {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (Ω : (VS D).V) (a :
   congr 1
   exact baseChangeAt_form Zd.M p (Zd.hcj p) Ω (F0.fvec a)
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun D.host.E).1 hΩ`. Rewrite using `[map_sum]`. Use `Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Rewrite using `[baseChange_smul₂]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations.
+
+Take `⟨u, hu⟩` from `isUnit_sF' Zd p b`. Establish `e : baseChange₂ D p (G b) = (↑u⁻¹ : (D.s.atP p).Ep) • gL Zd p G b`. Simplify using `only [gL, ← hu, smul_smul, Units.inv_mul, one_smul]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩)`.
+-/
 theorem bcP_sp (G : Fin (D.R.rS + 1) → (VS D).V) {Ω : (VS D).V}
     (hΩ : Ω ∈ Submodule.span D.host.E (Set.range G)) :
     baseChange₂ D p Ω ∈ Submodule.span (D.s.atP p).Ep (Set.range (gL Zd p G)) := by
@@ -136,6 +182,11 @@ theorem bcP_sp (G : Fin (D.R.rS + 1) → (VS D).V) {Ω : (VS D).V}
   rw [e]
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩)
 
+/- English proof (translation)
+Apply `sub_eq_zero.1` to reduce the goal to its premises. Use `uniq_loc (locH Zd p) _ _ hdet (Submodule.sub_mem _ (Submodule.smul_mem _ _ ?_) (Submodule.smul_mem _ _ (bcP_sp Zd p G hsp))) fun a => ?_` and prove the remaining obligations. Conclude with `Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩)`. Rewrite using `[h_sub_left, (locH Zd p).h_smul_left, (locH Zd p).h_smul_left, om_pair, h_bcP_f, hΩ]`. Distinguish the cases in `ha : a = Fin.last D.R.rS`.
+
+Substitute `ha` using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using `[ha]`.
+-/
 theorem omL_eq {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (G : Fin (D.R.rS + 1) → (VS D).V) {Ω : (VS D).V}
     (hsp : Ω ∈ Submodule.span D.host.E (Set.range G))
     (hΩ : ∀ a, (VS D).hT (F0.fvec a) Ω = if a = Fin.last D.R.rS then 1 else 0)
@@ -151,6 +202,9 @@ theorem omL_eq {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (G : Fin (D.R.rS + 1)
     · subst ha; simp; ring
     · simp [ha]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [Loc.HermSp.Zhat, Matrix.of_apply, Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.map_apply, fL, gL, Formalism.L2.SG.Pf.ScalarFramePf.h_bcP]`. Rewrite using `[show brS (VS D) (G b) (F0.fvec a) = (VS D).hT (F0.fvec a) (G b) from rfl]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem zhat_fg {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (G : Fin (D.R.rS + 1) → (VS D).V) :
     (locH Zd p).Zhat (fL Zd p F0) (gL Zd p G) =
       Matrix.diagonal (fun a => (Zd.M p).L.cj (sF Zd p a)) *
@@ -161,6 +215,9 @@ theorem zhat_fg {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (G : Fin (D.R.rS + 1
   rw [show brS (VS D) (G b) (F0.fvec a) = (VS D).hT (F0.fvec a) (G b) from rfl]
   ring
 
+/- English proof (translation)
+Establish `e : ((Matrix.of fun a b => (VS D).hT (F0.fvec a) (G b)).map (D.s.atP p).ιE).det = (D.s.atP p).ιE (Matrix.of fun a b => (VS D).hT (F0.fvec a) (G b)).det` using `(RingHom.map_det _ _).symm`. Rewrite using `[zhat_fg, Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal, Matrix.det_diagonal, e]`. Use `((IsUnit.prod_univ_iff.2 fun a => (isUnit_sF Zd p a).map _).mul ((isUnit_iff_ne_zero.2 h).map _)).mul (IsUnit.prod_univ_iff.2 fun b => isUnit_sF' Zd p b)` and prove the remaining obligations.
+-/
 theorem isUnit_zhat_fg {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (G : Fin (D.R.rS + 1) → (VS D).V)
     (h : (Matrix.of fun a b => (VS D).hT (F0.fvec a) (G b)).det ≠ 0) :
     IsUnit ((locH Zd p).Zhat (fL Zd p F0) (gL Zd p G)).det := by
@@ -170,6 +227,17 @@ theorem isUnit_zhat_fg {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (G : Fin (D.R
   refine ((IsUnit.prod_univ_iff.2 fun a => (isUnit_sF Zd p a).map _).mul
     ((isUnit_iff_ne_zero.2 h).map _)).mul (IsUnit.prod_univ_iff.2 fun b => isUnit_sF' Zd p b)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hv`. Take `⟨ℓ, hℓv, hℓX⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem hv inferInstance`. Set `Lp : Vp D p →ₗ[(D.s.atP p).Ep] (D.s.atP p).Ep` to `{ toFun := fun y => ∑ i, y i * (D.s.atP p).ιE (ℓ ((VS D).frame i)) map_add' := fun x y => by simp [add_mul, Finset.sum_add_distrib] map_smul' := fun a y => by simp [Finset.mul_sum, mul_assoc] }`. Establish `hb : ∀ x, Lp (baseChange₂ D p x) = (D.s.atP p).ιE (ℓ x)`. Introduce `x`.
+
+Establish `e : ℓ x = ∑ i, (VS D).frame.repr x i * ℓ ((VS D).frame i)` using `by conv_lhs => rw [← (VS D).frame.sum_repr x]`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_smul, smul_eq_mul]`. Rewrite using `[e, map_sum]`. Simplify using `only [Lp, LinearMap.coe_mk, AddHom.coe_mk, baseChange₂, AddMonoidHom.coe_mk, ZeroHom.coe_mk]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => (map_mul _ _ _).symm`. Establish `hℓe : ∀ i : Fin D.R.rS, ℓ (F0.fvec i.castSucc) = 0`. Introduce `i`. Establish `: ℓ (F0.fvec i.castSucc) ∈ F0.X.map ℓ` using `Submodule.mem_map_of_mem (by rw [fvec_cs]; exact Submodule.subset_span ⟨i, rfl⟩)`. Rewrite `this` using `[hℓX]`.
+
+Conclude with `(Submodule.mem_bot _).1 this`. Establish `hle : Submodule.span (D.s.atP p).Ep (Set.range fun i : Fin D.R.rS => c i • baseChange₂ D p (F0.fvec i.castSucc)) ≤ LinearMap.ker Lp`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, map_smul, hb, hℓe, map_zero, smul_zero]`.
+
+Establish `hz` using `hle h`. Rewrite `hz` using `[LinearMap.mem_ker, hb]`. Conclude with `hℓv ((D.s.atP p).ιE.injective (by rw [hz, map_zero]))`.
+-/
 theorem descend {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (c : Fin D.R.rS → (D.s.atP p).Ep) {v : (VS D).V}
     (h : baseChange₂ D p v ∈ Submodule.span (D.s.atP p).Ep (Set.range fun i => c i • baseChange₂ D p (F0.fvec i.castSucc))) :
     v ∈ F0.X := by
@@ -209,6 +277,13 @@ section Main
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, rfl⟩`. Establish `key : ∑ a, ((ξ a b : 𝓞 E) : E) • frameAct f ξ⁻¹ a = f b`. Simplify using `only [frameAct, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+
+Establish `h1 : ∀ c, ∑ a, ((ξ a b : 𝓞 E) : E) * ((ξ⁻¹ c a : 𝓞 E) : E) = (((ξ⁻¹ * ξ) c b : 𝓞 E) : E)`. Introduce `c`. Rewrite using `[Matrix.mul_apply]`. Use `push_cast`. Conclude with `Finset.sum_congr rfl fun a _ => mul_comm _ _`.
+
+Simplify using `only [← Finset.sum_smul, h1, hξ, Matrix.one_apply]`. Simplify using the standard rewrite rules. Rewrite using `[← key]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`.
+-/
 theorem sp_frameAct {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {n : ℕ}
     (f : Fin n → S.V) (ξ : Matrix (Fin n) (Fin n) (𝓞 E)) (hξ : ξ⁻¹ * ξ = 1) :
     Submodule.span E (Set.range f) ≤ Submodule.span E (Set.range (frameAct f ξ⁻¹)) := by
@@ -227,6 +302,11 @@ theorem sp_frameAct {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpac
   rw [← key]
   exact Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `admissibility_witness_unitriangular Λ F F'`. Establish `hbt : (admXi D Λ F F').BlockTriangular id` using `fun i j hij => h1 i j hij`. Establish `hdet : (admXi D Λ F F').det = 1`. Rewrite using `[Matrix.det_of_isUpperTriangular hbt]`. Simplify using `[h2]`.
+
+Conclude with `Matrix.nonsing_inv_mul _ (by rw [hdet]; exact isUnit_one)`.
+-/
 theorem admissibility_witness_inv_mul {D : Formalism.BasicNotions.D7} (Λ : Submodule (𝓞 D.host.E) (VS D).V) {T T' : D.host.E}
     (F : LFlag (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T') : (admXi D Λ F F')⁻¹ * admXi D Λ F F' = 1 := by
   obtain ⟨h1, h2⟩ := admissibility_witness_unitriangular Λ F F'
@@ -248,6 +328,13 @@ variable {D : Formalism.BasicNotions.D7} (Zd : LocDat D) {u u' : D.what₂.Word}
 
 variable (u u' F0 what₂)
 
+/- English proof (translation)
+Establish `e1` using `omL_eq Zd p F0 Gγ hsγ hγ hunγ`. Establish `e2` using `omL_eq Zd p F0 G₂ hs₂ h₂ hun2`. Establish `hm` using `sendsTo_refl_mem (locH Zd p) (fL Zd p F0) (gL Zd p Gγ) (gL Zd p G₂) _ _ hs`. Rewrite `hm` using `[dl_last, dl_last]`. Establish `hm2` using `Submodule.smul_mem _ ((Zd.M p).L.cj (Formalism.L2.SG.Pf.ScalarFramePf.sF Zd p (Fin.last D.R.rS))) hm`.
+
+Rewrite `hm2` using `[smul_combine _ _ _ _ _ _ _ e1 e2, ← map_sub]`. Take `⟨uu, huu⟩` from `hun2.mul hunγ`. Establish `hX` using `Submodule.smul_mem _ (↑uu⁻¹ : (D.s.atP p).Ep) hm2`. Rewrite `hX` using `[← huu, smul_smul, Units.inv_mul, one_smul]`. Establish `hd` using `OmL.descend p F0 (fun i => Formalism.L2.SG.Pf.ScalarFramePf.sF Zd p i.castSucc) hX`.
+
+Rewrite using `[← neg_sub]`. Conclude with `Submodule.neg_mem _ hd`.
+-/
 theorem omLoc_at (p : PlF D) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (Gγ G₂ : Fin (D.R.rS + 1) → (VS D).V)
     {Ωγ Ω₂ : (VS D).V} (hsγ : Ωγ ∈ Submodule.span D.host.E (Set.range Gγ))
     (hs₂ : Ω₂ ∈ Submodule.span D.host.E (Set.range G₂))
@@ -273,6 +360,13 @@ theorem omLoc_at (p : PlF D) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (Gγ G�
   rw [← neg_sub]
   exact Submodule.neg_mem _ hd
 
+/- English proof (translation)
+Introduce `_ γ Z _ F'₂ φ φ' hS _ hdZ Ω₂ Ωγ h₂ hγ`. Take `⟨p⟩` from `Formalism.L2.SG.Pf.LocModel.plF_nonempty D`. Establish `hT2` using `hS.2.1 p`. Establish `hφ` using `hS.2.2 p`. Establish `hs` using `hT2.2.2.2.1.2.2.2.1`.
+
+Rewrite `hs` using `[hφ]`. Establish `hunγ` using `hT2.1.1.2.2.2.1`. Rewrite `hunγ` using `[dl_last]`. Use `omLoc_at Zd p F0 (frameAct (frame (repF γ)) (admXi D γ.lam (lf D F0) (repF γ))⁻¹) F'₂.fl.fvec (sp_frameAct _ _ (admissibility_witness_inv_mul γ.lam (lf D F0) (repF γ)) hγ.1) h₂.1 hγ.2 h₂.2 hunγ ?_ hs` and prove the remaining obligations. Apply `isUnit_zhat_fg` to reduce the goal to its premises.
+
+Establish `e : (Matrix.of fun a b => (VS D).hT (F0.fvec a) (F'₂.fl.fvec b)) = Z` using `hS.1`. Rewrite using `[e]`. Conclude with `hdZ`.
+-/
 theorem omega_local_holds : OmLoc Zd u u' F0 what₂ := by
   intro _ γ Z _ F'₂ φ φ' hS _ hdZ Ω₂ Ωγ h₂ hγ
   obtain ⟨p⟩ := Formalism.L2.SG.Pf.LocModel.plF_nonempty D

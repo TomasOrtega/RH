@@ -11,16 +11,27 @@ namespace GlobalTheory.LocAcycDegOne
 
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `q _ T _ _ _ hT hq A _ _ _ _ hSH hA`. Take `⟨O, _, _, _, _, _, _, π, hπ, hO⟩` from `GlobalTheory.T.surj_of_strictHenselisation_polynomial_alt T A hSH hA`. Conclude with `GlobalTheory.T.henselian_directed_union_subalgebras q T hT hq O hO A π hπ`.
+-/
 theorem unitsL : ∀ (q : ℕ) [NeZero q] (T : Type) [CommRing T] [IsDomain T] [IsLocalRing T], AIC T → IsUnit (q : T) → ∀ (A : Type) [CommRing A] [Algebra (Polynomial T) A] [Algebra T A] [IsScalarTower T (Polynomial T) A], SH A → (∀ a : A, ∃ (E : Type) (_ : CommRing E) (_ : Algebra (Polynomial T) E) (_ : Algebra.Etale (Polynomial T) E) (φ : E →ₐ[Polynomial T] A), a ∈ φ.range) → ∀ u : (TensorProduct T (FractionRing T) A)ˣ, ∃ v : (TensorProduct T (FractionRing T) A)ˣ, v ^ q = u := by
   intro q _ T _ _ _ hT hq A _ _ _ _ hSH hA
   obtain ⟨O, _, _, _, _, _, _, π, hπ, hO⟩ := GlobalTheory.T.surj_of_strictHenselisation_polynomial_alt T A hSH hA
   exact GlobalTheory.T.henselian_directed_union_subalgebras q T hT hq O hO A π hπ
 
+/- English proof (translation)
+Introduce `q _ T _ _ _ hT hq A _ _ _ _ hSH hA`. Take `⟨O, _, _, _, _, _, _, π, hπ, hO⟩` from `GlobalTheory.T.surj_of_strictHenselisation_polynomial_alt T A hSH hA`. Conclude with `GlobalTheory.T.pic_generic_fibre_quotient_strictHenselisation_no_torsion_alt q T hT hq O hO A π hπ`.
+-/
 theorem picL : ∀ (q : ℕ) [NeZero q] (T : Type) [CommRing T] [IsDomain T] [IsLocalRing T], AIC T → IsUnit (q : T) → ∀ (A : Type) [CommRing A] [Algebra (Polynomial T) A] [Algebra T A] [IsScalarTower T (Polynomial T) A], SH A → (∀ a : A, ∃ (E : Type) (_ : CommRing E) (_ : Algebra (Polynomial T) E) (_ : Algebra.Etale (Polynomial T) E) (φ : E →ₐ[Polynomial T] A), a ∈ φ.range) → ∀ c : CommRing.Pic (TensorProduct T (FractionRing T) A), c ^ q = 1 → c = 1 := by
   intro q _ T _ _ _ hT hq A _ _ _ _ hSH hA
   obtain ⟨O, _, _, _, _, _, _, π, hπ, hO⟩ := GlobalTheory.T.surj_of_strictHenselisation_polynomial_alt T A hSH hA
   exact GlobalTheory.T.pic_generic_fibre_quotient_strictHenselisation_no_torsion_alt q T hT hq O hO A π hπ
 
+/- English proof (translation)
+Establish `hcyc : (Polynomial.cyclotomic q T).Monic` using `Polynomial.cyclotomic.monic q T`. Establish `hdeg : 0 < (Polynomial.cyclotomic q T).natDegree`. Rewrite using `[Polynomial.natDegree_cyclotomic]`. Conclude with `Nat.totient_pos.2 (Nat.pos_of_ne_zero (NeZero.ne q))`. Take `⟨ζ, hζ⟩` from `hT _ hcyc hdeg`.
+
+Use `⟨algebraMap T B ζ, ?_⟩` and prove the remaining obligations. Establish `h0` using `congrArg (algebraMap T B) hζ`. Rewrite `h0` using `[← Polynomial.map_cyclotomic_int, Polynomial.eval_map, Polynomial.hom_eval₂, map_zero]`. Rewrite using `[Polynomial.aeval_def, algebraMap_int_eq]`. Rewrite `h0` using `[show (algebraMap T B).comp (Int.castRingHom T) = Int.castRingHom B from RingHom.ext_int _ _]`. Then use the resulting hypothesis.
+-/
 theorem exists_cyclotomic_root (q : ℕ) [NeZero q] (T B : Type) [CommRing T] [Nontrivial T] [CommRing B] [Algebra T B] (hT : AIC T) :
     ∃ ζ : B, Polynomial.aeval ζ (Polynomial.cyclotomic q ℤ) = 0 := by
   have hcyc : (Polynomial.cyclotomic q T).Monic := Polynomial.cyclotomic.monic q T
@@ -33,6 +44,11 @@ theorem exists_cyclotomic_root (q : ℕ) [NeZero q] (T B : Type) [CommRing T] [N
   rw [Polynomial.aeval_def, algebraMap_int_eq]
   rwa [show (algebraMap T B).comp (Int.castRingHom T) = Int.castRingHom B from RingHom.ext_int _ _] at h0
 
+/- English proof (translation)
+Introduce `q _ T _ _ _ hT hq A _ _ _ _ hSH hA i`. Establish `hqB : IsUnit (q : TensorProduct T (FractionRing T) A)`. Simplify using `using hq.map (algebraMap T (TensorProduct T (FractionRing T) A))`. Establish `hz` using `exists_cyclotomic_root q T (TensorProduct T (FractionRing T) A) hT`. Take `⟨e⟩` from `GlobalTheory.T.tateTwistCohomology_spec_twist_independent q (TensorProduct T (FractionRing T) A) hqB hz 1 i 1`.
+
+Establish `h1 : Subsingleton (Ht q (sp (TensorProduct T (FractionRing T) A)) 1 1)` using `GlobalTheory.T.kummer_etale_vanishing q _ hqB (fun u => (unitsL q T hT hq A hSH hA u).imp fun _ h => h.symm) (picL q T hT hq A hSH hA)`. Use `⟨fun x y => e.injective ?_⟩` and prove the remaining obligations. Conclude with `Subsingleton.elim _ _`.
+-/
 theorem tateTwistCohomology_genericFibre_henselLine_subsingleton : ∀ (q : ℕ) [NeZero q] (T : Type) [CommRing T] [IsDomain T] [IsLocalRing T], AIC T → IsUnit (q : T) → ∀ (A : Type) [CommRing A] [Algebra (Polynomial T) A] [Algebra T A] [IsScalarTower T (Polynomial T) A], SH A → (∀ a : A, ∃ (E : Type) (_ : CommRing E) (_ : Algebra (Polynomial T) E) (_ : Algebra.Etale (Polynomial T) E) (φ : E →ₐ[Polynomial T] A), a ∈ φ.range) → ∀ i : ℤ, Subsingleton (Ht q (sp (TensorProduct T (FractionRing T) A)) 1 i) := by
   intro q _ T _ _ _ hT hq A _ _ _ _ hSH hA i
   have hqB : IsUnit (q : TensorProduct T (FractionRing T) A) := by

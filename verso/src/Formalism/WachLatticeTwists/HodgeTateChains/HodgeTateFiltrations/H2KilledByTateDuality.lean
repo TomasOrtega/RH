@@ -7,6 +7,9 @@ namespace Formalism.RepresentationBoundsCohomology.TorsionBoundCyclotomic
 
 open Polynomial
 
+/- English proof (translation)
+Introduce `ℓ _ s m t e gK U A _ _ Hf y he h`. Establish `hle : cTB ℓ s m e gK U ≤ cB ℓ s m t gK U` using `Finset.le_sup (f := fun e => cTB ℓ s m e gK U) (Finset.mem_range.2 he)`. Take `⟨j, hj⟩` from `Nat.exists_eq_add_of_le hle`. Rewrite using `[hj, add_comm, pow_add, mul_smul]`. Conclude with `Hf.smul_mem _ h`.
+-/
 theorem tbcB : StatTBcB := by
   intro ℓ _ s m t e gK U A _ _ Hf y he h
   have hle : cTB ℓ s m e gK U ≤ cB ℓ s m t gK U :=
@@ -15,6 +18,17 @@ theorem tbcB : StatTBcB := by
   rw [hj, add_comm, pow_add, mul_smul]
   exact Hf.smul_mem _ h
 
+/- English proof (translation)
+Introduce `ℓ _ u s hs h2 hu e H2 M0 P _ _ _ _ _ _ pair hinj hM0 x`. Take `⟨hne, hval⟩` from `Formalism.WindowSums.valuation_zpow_sub_one ℓ u s hs h2 hu ((e : ℤ) + 1) (by omega)`. Establish `hv : padicValInt ℓ ((e : ℤ) + 1) = padicValNat ℓ (e + 1)`. Unfold `padicValInt`. Use `congr 1`.
+
+Rewrite `hval` using `[hv]`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c : ℤ_[ℓ]ˣ, (((u ^ ((e : ℤ) + 1) : ℤ_[ℓ]ˣ) : ℤ_[ℓ]) - 1) = (c : ℤ_[ℓ]) * (ℓ : ℤ_[ℓ]) ^ (s + padicValNat ℓ (e + 1)) := by`. Establish `h` using `PadicInt.unitCoeff_spec hne`. Rewrite `h` using `[hval]`. Conclude with `⟨_, h⟩`.
+
+Establish `hk : ∀ y : M0, ((ℓ : ℤ_[ℓ]) ^ (s + padicValNat ℓ (e + 1))) • y = 0`. Introduce `y`. Establish `h1 : (((u ^ ((e : ℤ) + 1) : ℤ_[ℓ]ˣ) : ℤ_[ℓ]) - 1) • y = 0`. Rewrite using `[sub_smul, one_smul, hM0, sub_self]`. Rewrite `h1` using `[hc, mul_smul]`.
+
+Establish `h3` using `congrArg (fun v => ((c⁻¹ : ℤ_[ℓ]ˣ) : ℤ_[ℓ]) • v) h1`. Simplify `h3` using `[smul_smul]`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_smul, map_zero]`. Use extensionality with `y`.
+
+Rewrite using `[LinearMap.smul_apply, ← map_smul, hk, map_zero, LinearMap.zero_apply]`.
+-/
 theorem h2_killed_by_tate_duality : H2KilledByTateDuality := by
   intro ℓ _ u s hs h2 hu e H2 M0 P _ _ _ _ _ _ pair hinj hM0 x
   obtain ⟨hne, hval⟩ := Formalism.WindowSums.valuation_zpow_sub_one ℓ u s hs h2 hu ((e : ℤ) + 1) (by omega)
@@ -39,6 +53,11 @@ theorem h2_killed_by_tate_duality : H2KilledByTateDuality := by
   ext y
   rw [LinearMap.smul_apply, ← map_smul, hk, map_zero, LinearMap.zero_apply]
 
+/- English proof (translation)
+Introduce `ℓ _ w U i V _ _ g hkill x`. Prove the components needed by the constructor for the conclusion. Establish `h0 : aeval g ((X - 1) * Rpoly ℓ w U i) x = 0` using `by rw [hkill]; rfl`. Rewrite `h0` using `[map_mul, Module.End.mul_apply]`. Establish `h1 : g (aeval g (Rpoly ℓ w U i) x) - aeval g (Rpoly ℓ w U i) x = 0` using `by simpa using h0`.
+
+Conclude with `sub_eq_zero.1 h1`. Take `⟨R', hR'⟩` from `poly_split (Rpoly ℓ w U i)`. Use `⟨aeval g R' x, ?_⟩` and prove the remaining obligations. Rewrite using `[aeval_split g _ R' hR' x, add_sub_cancel_left]`.
+-/
 theorem freeAlg : StatFreeAlg := by
   intro ℓ _ w U i V _ _ g hkill x
   constructor
@@ -50,6 +69,9 @@ theorem freeAlg : StatFreeAlg := by
     refine ⟨aeval g R' x, ?_⟩
     rw [aeval_split g _ R' hR' x, add_sub_cancel_left]
 
+/- English proof (translation)
+Introduce `y`. Take `⟨z, t, hz⟩` from `hF y`. Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le h`. Use `⟨((ℓ : ℤ_[ℓ]) ^ j) • z, t, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, add_comm, pow_add, mul_smul, ← smul_sub, smul_comm, hz, smul_zero]`.
+-/
 lemma freeMono {ℓ : ℕ} [Fact ℓ.Prime] {H0 H1 : Type} [AddCommGroup H0] [Module ℤ_[ℓ] H0]
     [AddCommGroup H1] [Module ℤ_[ℓ] H1] (cup : H0 →ₗ[ℤ_[ℓ]] H1) (al al' : ℕ) (h : al ≤ al')
     (hF : FreeIn ℓ cup al) : FreeIn ℓ cup al' := by
@@ -59,6 +81,23 @@ lemma freeMono {ℓ : ℕ} [Fact ℓ.Prime] {H0 H1 : Type} [AddCommGroup H0] [Mo
   refine ⟨((ℓ : ℤ_[ℓ]) ^ j) • z, t, ?_⟩
   rw [map_smul, add_comm, pow_add, mul_smul, ← smul_sub, smul_comm, hz, smul_zero]
 
+/- English proof (translation)
+Introduce `ℓ _ w m hm h2 hw U i A P H0A cup ⟨hS, ⟨hI1, hI2⟩, hT4, ⟨_, hT3⟩, htf, hHT⟩ hlog y`. Establish `hkill : aeval P.gm ((X - 1) * Rpoly ℓ w U i) = 0`. Take `⟨q, hq⟩` from `(htpoly ℓ w U i).1`. Rewrite using `[hq, map_mul, hHT, zero_mul]`. Take `⟨hne, hval⟩` from `rVal ℓ w m hm h2 hw U i`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c : ℤ_[ℓ]ˣ, (Rpoly ℓ w U i).eval 1 = (c : ℤ_[ℓ]) * (ℓ : ℤ_[ℓ]) ^ (rI ℓ m U i) := by`. Establish `h` using `PadicInt.unitCoeff_spec hne`. Rewrite `h` using `[hval]`. Conclude with `⟨_, h⟩`. Take `⟨a, x, hax⟩` from `(hI1 ((ℓ : ℤ_[ℓ]) • P.lam y)).1 (by rw [map_smul]; exact hT4 _)`.
+
+Take `⟨hfix, y', hy'⟩` from `freeAlg ℓ w U i P.Wm P.gm hkill a`. Generalize the expression as in `aeval P.gm (Rpoly ℓ w U i) a = a0 at hfix hy'`. Establish `h1 : P.infm a0 = ((Rpoly ℓ w U i).eval 1) • P.infm a`. Establish `h` using `(hI2 (a0 - ((Rpoly ℓ w U i).eval 1) • a) 0).2 ⟨⟨y', hy'⟩, 0, by rw [map_zero, sub_zero]⟩`. Rewrite `h` using `[map_zero, add_zero, map_sub, map_smul]`.
+
+Conclude with `sub_eq_zero.1 h`. Establish `hfix' : P.gm (((c⁻¹ : ℤ_[ℓ]ˣ) : ℤ_[ℓ]) • a0) = ((c⁻¹ : ℤ_[ℓ]ˣ) : ℤ_[ℓ]) • a0`. Rewrite using `[map_smul, hfix]`. Take `⟨z, hz⟩` from `hlog _ hfix'`. Establish `h3 : ((ℓ : ℤ_[ℓ]) ^ (rI ℓ m U i)) • P.infm a = P.infm (((c⁻¹ : ℤ_[ℓ]ˣ) : ℤ_[ℓ]) • a0)`.
+
+Rewrite using `[map_smul, h1, hc, smul_smul, ← mul_assoc, Units.inv_mul, one_mul]`. Take `⟨x'', hx''⟩` from `hT3 x`. Establish `h4 : (ℓ : ℤ_[ℓ]) • P.infX x = 0`. Establish `h` using `(hI2 0 ((ℓ : ℤ_[ℓ]) • x)).2 ⟨⟨0, by rw [map_zero, sub_zero]⟩, x'', hx''⟩`. Rewrite `h` using `[map_zero, zero_add, map_smul]`.
+
+Conclude with `h`. Use `⟨z, 1, ?_⟩` and prove the remaining obligations. Establish `h5 : ((ℓ : ℤ_[ℓ]) ^ (rI ℓ m U i + m + 2)) • y = cup z + ((ℓ : ℤ_[ℓ]) ^ m) • (((ℓ : ℤ_[ℓ]) ^ (rI ℓ m U i)) • P.io (P.infX x))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_smul, hS, smul_smul, smul_smul, smul_smul]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `_ = ((ℓ : ℤ_[ℓ]) ^ m) • (P.io (((ℓ : ℤ_[ℓ]) ^ (rI ℓ m U i)) • P.infm a) + ((ℓ : ℤ_[ℓ]) ^ (rI ℓ m U i)) • P.io (P.infX x)) := by`. Rewrite using `[hax, map_add, smul_add, map_smul]`. Use `_ = _ := by rw [h3, smul_add, hz]`.
+
+Rewrite using `[h5, add_sub_cancel_left, pow_one, smul_comm, smul_comm (ℓ : ℤ_[ℓ]), ← map_smul, h4, map_zero, smul_zero, smul_zero]`.
+-/
 theorem freePiece : StatFreePiece := by
   intro ℓ _ w m hm h2 hw U i A P H0A cup ⟨hS, ⟨hI1, hI2⟩, hT4, ⟨_, hT3⟩, htf, hHT⟩ hlog y
   have hkill : aeval P.gm ((X - 1) * Rpoly ℓ w U i) = 0 := by
@@ -101,6 +140,17 @@ theorem freePiece : StatFreePiece := by
   rw [h5, add_sub_cancel_left, pow_one, smul_comm, smul_comm (ℓ : ℤ_[ℓ]), ← map_smul, h4, map_zero, smul_zero,
     smul_zero]
 
+/- English proof (translation)
+Introduce `ℓ _ H0' H0 H0'' H1' H1 H1'' _ _ _ _ _ _ _ _ _ _ _ _ i0 p0 dl i1 p1 cup' cup cup'' c' c'' al' al'' hex0 hex1 hc1 hc2 hT5 hk' hk'' hF' hF'' y`. Take `⟨z'', t, hz''⟩` from `hF'' (p1 y)`. Establish `h1 : ((ℓ : ℤ_[ℓ]) ^ c'') • (((ℓ : ℤ_[ℓ]) ^ al'') • p1 y - cup'' z'') = 0` using `hk'' _ ⟨t, hz''⟩`. Establish `h2 : dl (((ℓ : ℤ_[ℓ]) ^ c') • z'') = 0` using `by rw [map_smul]; exact hk' _ (hT5 z'')`. Take `⟨z1, hz1⟩` from `(hex0 _).1 h2`.
+
+Establish `h3 : p1 (((ℓ : ℤ_[ℓ]) ^ (c' + c'' + al'')) • y - cup (((ℓ : ℤ_[ℓ]) ^ c'') • z1)) = 0`. Rewrite using `[map_sub, ← hc2, map_smul p0, hz1, map_smul, map_smul, map_smul]`. Establish `h4 : ((ℓ : ℤ_[ℓ]) ^ (c' + c'' + al'')) • p1 y - ((ℓ : ℤ_[ℓ]) ^ c'') • (((ℓ : ℤ_[ℓ]) ^ c') • cup'' z'') = ((ℓ : ℤ_[ℓ]) ^ c') • (((ℓ : ℤ_[ℓ]) ^ c'') • (((ℓ : ℤ_[ℓ]) ^ al'') • p1 y - cup'' z''))`. Simplify using `only [smul_sub, smul_smul, ← pow_add]`. Establish `e1 : c' + c'' + al'' = c' + (c'' + al'')` using `by ring`.
+
+Establish `e2 : c'' + c' = c' + c''` using `by ring`. Rewrite using `[e1, e2]`. Rewrite using `[h4, h1, smul_zero]`. Take `⟨y', hy'⟩` from `(hex1 _).1 h3`. Take `⟨z', t', hz'⟩` from `hF' y'`.
+
+Use `⟨((ℓ : ℤ_[ℓ]) ^ (al' + c'')) • z1 + i0 z', t', ?_⟩` and prove the remaining obligations. Establish `h5` using `congrArg i1 hz'`. Rewrite `h5` using `[map_smul, map_sub, map_smul, hy', ← hc1, map_zero]`. Establish `h6 : ((ℓ : ℤ_[ℓ]) ^ (al' + al'' + c' + c'')) • y - cup (((ℓ : ℤ_[ℓ]) ^ (al' + c'')) • z1 + i0 z') = ((ℓ : ℤ_[ℓ]) ^ al') • (((ℓ : ℤ_[ℓ]) ^ (c' + c'' + al'')) • y - cup (((ℓ : ℤ_[ℓ]) ^ c'') • z1)) - cup (i0 z')`. Rewrite using `[map_add, smul_sub, smul_smul, ← pow_add, map_smul, map_smul, smul_smul, ← pow_add]`.
+
+Establish `e1 : al' + al'' + c' + c'' = al' + (c' + c'' + al'')` using `by ring`. Rewrite using `[e1]`. Normalize the expressions using the abelian group laws. Rewrite using `[h6]`. Conclude with `h5`.
+-/
 theorem freeExt : StatFreeExt := by
   intro ℓ _ H0' H0 H0'' H1' H1 H1'' _ _ _ _ _ _ _ _ _ _ _ _ i0 p0 dl i1 p1 cup' cup cup'' c' c'' al' al''
     hex0 hex1 hc1 hc2 hT5 hk' hk'' hF' hF'' y
@@ -129,6 +179,21 @@ theorem freeExt : StatFreeExt := by
     rw [e1]; abel
   rw [h6]; exact h5
 
+/- English proof (translation)
+Introduce `α γ P hmono hone hext`. Establish `main : ∀ n, ∀ i j, j - i = n → i < j → P i j (∑ x ∈ Finset.Ico i j, α x + (∑ x ∈ Finset.Ico i j, γ x) * Nat.clog 2 (j - i))`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`.
+
+Introduce `i j hn hij`. Distinguish the cases in `h1 : j = i + 1`. Substitute `h1` using the available equality. Establish `e1 : i + 1 - i = 1` using `by omega`. Rewrite using `[e1, Nat.clog_one_right, Nat.mul_zero, Nat.add_zero, Nat.Ico_succ_singleton, Finset.sum_singleton]`.
+
+Conclude with `hone i`. Establish `hik : i < i + (j - i) / 2` using `by omega`. Establish `hkj : i + (j - i) / 2 < j` using `by omega`. Establish `A1` using `ih (i + (j - i) / 2 - i) (by omega) i (i + (j - i) / 2) rfl hik`. Establish `A2` using `ih (j - (i + (j - i) / 2)) (by omega) (i + (j - i) / 2) j rfl hkj`.
+
+Establish `A3` using `hext i (i + (j - i) / 2) j _ _ hik hkj A1 A2`. Use `hmono _ _ _ _ ?_ A3` and prove the remaining obligations. Establish `hc : Nat.clog 2 (j - i) = Nat.clog 2 ((j - i + 2 - 1) / 2) + 1` using `Nat.clog_of_two_le (by norm_num) (by omega)`. Establish `c1 : Nat.clog 2 (i + (j - i) / 2 - i) ≤ Nat.clog 2 ((j - i + 2 - 1) / 2)` using `Nat.clog_mono_right 2 (by omega)`. Establish `c2 : Nat.clog 2 (j - (i + (j - i) / 2)) ≤ Nat.clog 2 ((j - i + 2 - 1) / 2)` using `Nat.clog_mono_right 2 (by omega)`.
+
+Establish `sα` using `Finset.sum_Ico_consecutive α hik.le hkj.le`. Establish `sγ` using `Finset.sum_Ico_consecutive γ hik.le hkj.le`. Rewrite using `[hc, ← sα, ← sγ]`. Generalize the expression as in `Nat.clog 2 ((j - i + 2 - 1) / 2) = L at c1 c2`. Generalize the expression as in `Nat.clog 2 (i + (j - i) / 2 - i) = L1 at c1`.
+
+Generalize the expression as in `Nat.clog 2 (j - (i + (j - i) / 2)) = L2 at c2`. Generalize the expression as in `∑ x ∈ Finset.Ico i (i + (j - i) / 2), γ x = g1`. Generalize the expression as in `∑ x ∈ Finset.Ico (i + (j - i) / 2) j, γ x = g2`. Use polynomial arithmetic with `[Nat.mul_le_mul_left g1 c1, Nat.mul_le_mul_left g2 c2]`. Introduce `i j hij`.
+
+Conclude with `main _ i j rfl hij`.
+-/
 theorem halving : StatHalving := by
   intro α γ P hmono hone hext
   have main : ∀ n, ∀ i j, j - i = n → i < j →
@@ -167,6 +232,11 @@ theorem halving : StatHalving := by
   intro i j hij
   exact main _ i j rfl hij
 
+/- English proof (translation)
+Introduce `ℓ _ w m hm h2 hw U a D hD hP hlog hLL i j hij`. Use `halving (fun x => rI ℓ m U (a + x) + m + 2) (fun x => 2 + max 1 (rI ℓ m U (a + x))) (fun i j al => FreeIn ℓ (D.cup i j) al) (fun i j al al' h hF => freeMono _ al al' h hF) (fun i => freePiece ℓ w m hm h2 hw U (a + i) _ (D.piece i) _ (D.cup i (i + 1)) (hP i) (hlog i)) (fun i k j a …` and prove the remaining obligations. Take `⟨e0, e1, c1, c2, t5⟩` from `hD i k j hik hkj`. Establish `h` using `freeExt ℓ (D.H0 k j) (D.H0 i j) (D.H0 i k) (D.H1 k j) (D.H1 i j) (D.H1 i k) (D.i0 i k j) (D.p0 i k j) (D.dl i k j) (D.i1 i k j) (D.p1 i k j) (D.cup k j) (D.cup i j) (D.cup i k) _ _ al' al'' e0 e1 c1 c2 t5 (hLL k j hkj) (hLL i k hik) hF' hF''`. Establish `hs` using `Finset.sum_Ico_consecutive (fun x => 2 + max 1 (rI ℓ m U (a + x))) hik.le hkj.le`.
+
+Use `freeMono _ _ _ (le_of_eq ?_) h` and prove the remaining obligations. Rewrite using `[← hs]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem freeGm : StatFreeGm := by
   intro ℓ _ w m hm h2 hw U a D hD hP hlog hLL i j hij
   refine halving (fun x => rI ℓ m U (a + x) + m + 2) (fun x => 2 + max 1 (rI ℓ m U (a + x)))

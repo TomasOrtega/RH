@@ -16,6 +16,17 @@ noncomputable section
 
 namespace GlobalTheory.UPel.HT
 
+/- English proof (translation)
+Introduce `p _ D R _ b N hN C C₀ _ _ _ _ π hπ hsq' t o₀`. Establish `hsq : RingHom.ker π ^ 2 = 0` using `by rw [hsq']; rfl`. Take `⟨tR, rfl⟩ : ∃ tR : R →+* C, t = spMap tR` from `⟨(Spec.preimage t).hom, by simp [spMap]⟩`. Take `⟨E, hEc, hEf, hEs, hEi, hEl⟩` from `GlobalTheory.T.harrisTaylor_exists_isotropic_stable_summand p D R b N C C₀ π hπ hsq tR o₀`. Take `⟨A, _, i, h, act, hA, hE, hact⟩` from `GlobalTheory.T.harrisTaylor_exists_lift_orderAction_hodge_summand p D R b N C C₀ π hπ hsq tR o₀ E hEc hEf hEs`.
+
+Use `haveI : IsCommMonObj A := hA.comm`. Substitute `hE` using the available equality. Take `⟨P, φ₂, hP, r1, r2, hsym, hamp, hker, hros, hsq2, hpol⟩` from `GlobalTheory.T.harrisTaylor_exists_polarisation_bundle_lift p D R b N C C₀ π hπ hsq tR o₀ A i h hA act hact hEi`. Take `⟨eta, e1, e2, e3, e4, e5⟩` from `GlobalTheory.T.harrisTaylor_primeToP_level_lift_squareZero p D R b N C C₀ π hπ hsq tR o₀ A i h hA act hact hN P φ₂ hP hsq2 hpol`. Conclude with `⟨{ A := A ab := hA act := act P := P isLB := hP rig₁ := r1 rig₂ := r2`.
+
+Use symmetry as in `:= hsym`. Use `ample := hamp`. Use `kerP := hker`. Use `rosati := hros`. Use `lie := fun R' _ β x hx v hv => GlobalTheory.T.harrisTaylor_lift_lie_of_hodge_summand_lie p D R b N C C₀ π hπ hsq tR o₀ A i h hA act hact hEl R' β x hx v hv`.
+
+Use `lieRank := fun k _ _ x β hx j => GlobalTheory.T.harrisTaylor_lieMultiplicity_squareZeroLift p D R b N C C₀ π hπ hsq tR o₀ A i h act hact k x β hx j`. Use `eta := eta`. Use `eta_add := e1`. Use `eta_lin := e2`. Use `eta_ker := e3`.
+
+Use `geom := e4 },`. Use the proof step `⟨{ φ := i φ₂ := φ₂ cart := h sq := hsq2 act := hact pol := hpol eta := e5 }⟩⟩`.
+-/
 theorem exists_sqZero_lift : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : GlobalTheory.UPel.HT.Base D R) (N : ℕ), N.Coprime p → ∀ (C C₀ : Type) [CommRing C] [IsLocalRing C] [IsArtinianRing C] [CommRing C₀] (π : C →+* C₀), Function.Surjective π → RingHom.ker π ^ 2 = ⊥ → ∀ (t : Sp C ⟶ Sp R) (o₀ : GlobalTheory.UPel.HT.Obj b N (spMap π ≫ t)), ∃ o : GlobalTheory.UPel.HT.Obj b N t, Nonempty (GlobalTheory.UPel.HT.ObjMap o₀ o (spMap π)) := by
   intro p _ D R _ b N hN C C₀ _ _ _ _ π hπ hsq' t o₀
   have hsq : RingHom.ker π ^ 2 = 0 := by rw [hsq']; rfl

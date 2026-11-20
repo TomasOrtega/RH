@@ -10,6 +10,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.Div
 
+/- English proof (translation)
+Apply `fn_ext` to reduce the goal to its premises. Introduce `x hx`. Establish `hk : φ x ∈ H.U k` using `(GlobalTheory.Cartier.pull_U H φ _).le hx.1`. Establish `hx' : x ∈ H'.U k'` using `hx.2`. Establish `e` using `h x hk hx'`.
+
+Establish `h1 : gs (𝟙 X') x _ (resG X' (inf_le_right : (H.pull φ).U (fun _ => k) ⊓ H'.U k' ≤ H'.U k') b) = gs (𝟙 X') x _ b` using `gs_res (𝟙 X') x inf_le_right hx b`. Establish `h2 : gs (𝟙 X') x _ ((φ.appLE (H.U k) ((H.pull φ).U (fun _ => k) ⊓ H'.U k') (inf_le_left.trans (GlobalTheory.Cartier.pull_U H φ _).le)).hom a) = gs φ x _ a`. Use `gs_res (𝟙 X') x (inf_le_left.trans (GlobalTheory.Cartier.pull_U H φ _).le) hx ((φ.app (H.U k)).hom a)` as an intermediate fact. Use `Eq.trans ?_ (this.trans ((gs_pull (𝟙 X') φ x (H.U k) hk a).trans (by rw [Category.id_comp])))` and prove the remaining obligations. Both sides reduce to the same expression.
+
+Establish `h3 : gs (𝟙 X') x _ (((@id (Γ(X', (H.pull φ).U (fun _ => k) ⊓ H'.U k')ˣ) (w.s (fun _ => k, k')))⁻¹).val) = ((Geo.Tor.gw w (𝟙 _) x k k')⁻¹).val`. Rewrite using `[gs_unit (𝟙 X') x _ hx, map_inv]`. Both sides reduce to the same expression. Rewrite using `[h1, gs_mul (𝟙 X') x _ hx, h2, h3, e, ← mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_mul]`.
+-/
 theorem resG_eq_inv_mul_appLE {X X' : Scheme.{0}} {H : LB X} {H' : LB X'} {φ : X' ⟶ X}
     (w : LB.Iso H' (H.pull φ)) (k : H.ι) (k' : H'.ι) (a : Γ(X, H.U k)) (b : Γ(X', H'.U k'))
     (h : ∀ z, φ z ∈ H.U k → z ∈ H'.U k' →
@@ -36,6 +43,13 @@ theorem resG_eq_inv_mul_appLE {X X' : Scheme.{0}} {H : LB X} {H' : LB X'} {φ : 
     rfl
   rw [h1, gs_mul (𝟙 X') x _ hx, h2, h3, e, ← mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_mul]
 
+/- English proof (translation)
+Introduce `R _ X f H n s hH hs X' f' H' s' φ w hH' hs' hf _ hrel`. Substitute `hf` using the available equality. Take `⟨hc, hci⟩` from `(GlobalTheory.ProjSpace.veryAmpleBy_iff f s).1 hs`. Take `⟨hc', hci'⟩` from `(GlobalTheory.ProjSpace.veryAmpleBy_iff (φ ≫ f) s').1 hs'`. Establish `heq : GlobalTheory.ProjSpace.toProj (φ ≫ f) s' hc' = φ ≫ GlobalTheory.ProjSpace.toProj f s hc`.
+
+Use `GlobalTheory.ProjSpace.toProj_eq_comp_of_locally hc φ hc' fun z => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `exists_chart hH (φ z)`. Take `⟨k', hk'⟩` from `exists_chart hH' z`. Conclude with `⟨(H.pull φ).U (fun _ => k) ⊓ H'.U k', ⟨(GlobalTheory.Cartier.pull_U H φ _).ge hk, hk'⟩, k, inf_le_left.trans (GlobalTheory.Cartier.pull_U H φ _).le, k', inf_le_right, _, fun j => resG_eq_inv_mul_appLE w k k' _ _ fun y hy hy' => hrel j y k k' hy hy'⟩`. Establish `: IsClosedImmersion (φ ≫ GlobalTheory.ProjSpace.toProj f s hc)` using `heq ▸ hci'`.
+
+Conclude with `IsClosedImmersion.of_comp_isClosedImmersion φ (GlobalTheory.ProjSpace.toProj f s hc)`.
+-/
 theorem isClosedImmersion_of_veryAmpleBy_compat : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of R)) (H : LB X) (n : ℕ) (s : Fin (n + 1) → LB.Sec H), H.IsLB → VeryAmpleBy f H s → ∀ (X' : Scheme.{0}) (f' : X' ⟶ Spec (CommRingCat.of R)) (H' : LB X') (s' : Fin (n + 1) → LB.Sec H') (φ : X' ⟶ X) (w : LB.Iso H' (H.pull φ)), H'.IsLB → VeryAmpleBy f' H' s' → φ ≫ f = f' → w.IsGen → (∀ j, (∀ z (k : (H).ι) (k' : (H').ι), (φ) z ∈ (H).U k → z ∈ (H').U k' → gs (φ) z _ ((s j).f k) = (Geo.Tor.gw (w) (𝟙 _) z k k').val * gs (𝟙 _) z _ ((s' j).f k'))) → IsClosedImmersion φ := by
   intro R _ X f H n s hH hs X' f' H' s' φ w hH' hs' hf _ hrel
   subst hf

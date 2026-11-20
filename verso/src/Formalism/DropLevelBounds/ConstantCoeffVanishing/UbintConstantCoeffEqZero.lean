@@ -14,6 +14,11 @@ section UBIntLemmas
 
 variable {C : Type} [Field C] {σ : Type}
 
+/- English proof (translation)
+Use extensionality with `m`. Express the relevant statement in the definitionally equal form `∑ k ∈ Finset.range (m.degree + 1), coeff m ((0 : MvPowerSeries σ C) ^ k) / (k.factorial : C) = coeff m 1`. Rewrite using `[Finset.sum_eq_single 0]`. Simplify using the standard rewrite rules. Introduce `k _ hk`.
+
+Simplify using `[zero_pow hk]`. Introduce `h`. Simplify using `at h`.
+-/
 theorem ubint_mvExp_zero : mvExp (0 : MvPowerSeries σ C) = 1 := by
   ext m
   change ∑ k ∈ Finset.range (m.degree + 1), coeff m ((0 : MvPowerSeries σ C) ^ k) / (k.factorial : C) =
@@ -25,6 +30,11 @@ theorem ubint_mvExp_zero : mvExp (0 : MvPowerSeries σ C) = 1 := by
   · intro h
     simp at h
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [ubint_mvExp_zero]`. Consider the case `@insert a s ha ih`. Establish `hs : ∀ i ∈ s, constantCoeff (f i) = 0` using `fun i hi => hf i (Finset.mem_insert_of_mem hi)`. Establish `h0 : constantCoeff (∑ i ∈ s, f i) = 0`.
+
+Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero hs`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha, expSeriesAdd C σ (f a) _ (hf a (Finset.mem_insert_self a s)) h0, ih hs]`.
+-/
 theorem ubint_mvExp_sum [CharZero C] {ι : Type} (s : Finset ι) (f : ι → MvPowerSeries σ C)
     (hf : ∀ i ∈ s, constantCoeff (f i) = 0) :
     mvExp (∑ i ∈ s, f i) = ∏ i ∈ s, mvExp (f i) := by

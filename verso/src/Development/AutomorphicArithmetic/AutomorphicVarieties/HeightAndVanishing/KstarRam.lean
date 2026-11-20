@@ -5,6 +5,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Clas
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.Top UpperTheory.V.HV
 
 open Polynomial in
+/- English proof (translation)
+Establish `hs` using `h.splits`. Establish `hd : ((X ^ 2 + C (p : ℚ) : ℚ[X]).map (algebraMap ℚ L)).degree ≠ 0`. Rewrite using `[degree_map, degree_X_pow_add_C two_pos]`. Evaluate the numerical expressions. Take `⟨s, hs⟩` from `hs.exists_eval_eq_zero hd`.
+
+Use `⟨s, eq_neg_of_add_eq_zero_left ?_⟩` and prove the remaining obligations. Simplify using `using hs`.
+-/
 private theorem sqrt_div_mul_eq_sqrt_mul (p : ℕ) (L : Type) [Field L] [Algebra ℚ L]
     [h : IsSplittingField ℚ L (X ^ 2 + C (p : ℚ) : ℚ[X])] : ∃ s : L, s ^ 2 = -(p : L) := by
   have hs := h.splits
@@ -16,10 +21,36 @@ private theorem sqrt_div_mul_eq_sqrt_mul (p : ℕ) (L : Type) [Field L] [Algebra
   simpa using hs
 
 open Polynomial in
+/- English proof (translation)
+Conclude with `@sqrt_div_mul_eq_sqrt_mul p (SplittingField (X ^ 2 + C (p : ℚ) : ℚ[X])) _ _ (Polynomial.IsSplittingField.splittingField _)`.
+-/
 private theorem sqrt_kstar (p : ℕ) : ∃ s : Kstar p, s ^ 2 = -(p : Kstar p) := by
   exact @sqrt_div_mul_eq_sqrt_mul p (SplittingField (X ^ 2 + C (p : ℚ) : ℚ[X])) _ _
     (Polynomial.IsSplittingField.splittingField _)
 
+/- English proof (translation)
+Introduce `p hp hp4 Ω _ _ _ _ A hA hle`. Use `haveI := Fact.mk hp`. Use `haveI : NeZero p := ⟨hp.ne_zero⟩`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Establish `hp2 : p ≠ 2` using `by rintro rfl; norm_num at hp4`.
+
+Establish `hsub : Subsingleton (ZMod (ordCompl[p] p))ˣ`. Establish `hd : ordCompl[p] p = 1`. Rewrite using `[Nat.Prime.factorization_self hp, pow_one, Nat.div_self hp.pos]`. Rewrite using `[hd]`. Use `infer_instance`.
+
+Establish `hmem : (-1 : (ZMod p)ˣ) ∈ UpperTheory.V.B3.pPart p p`. Unfold `UpperTheory.V.B3.pPart`. Rewrite using `[MonoidHom.mem_ker]`. Conclude with `Subsingleton.elim _ _`. Rewrite `hmem` using `[← UpperTheory.V.B1.cycIne Ω p p A hA]`.
+
+Take `⟨g, hg, hgb⟩` from `hmem`. Use `haveI : NeZero ((p : ℕ) : Ω) := ⟨Nat.cast_ne_zero.mpr hp.ne_zero⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω p`. Take `⟨s0, hs0⟩` from `sqrt_kstar p`. Use `set s : Ω := algebraMap (Kstar p) Ω s0 with hsdef`.
+
+Establish `hodd : Odd (p / 2)` using `Nat.odd_iff.mpr (by omega)`. Establish `hs : s ^ 2 = ((UpperTheory.V.CF.pStar p : ℤ) : Ω)`. Unfold `UpperTheory.V.CF.pStar`. Use `push_cast`. Rewrite using `[Odd.neg_one_pow hodd, hsdef, ← map_pow, hs0]`.
+
+Simplify using the standard rewrite rules. Establish `hgauss` using `((UpperTheory.V.CF.gauss Ω p ζ hp2 hζ).2 s hs).2`. Establish `hgζ` using `((UpperTheory.V.B1.cycN_eq_iff ℚ Ω p g (-1)).mp hgb) ζ hζ.pow_eq_one`. Establish `h1` using `hgauss (g : Ω →+* Ω) _ hgζ`. Establish `hleg : legendreSym p (((((-1 : (ZMod p)ˣ) : ZMod p).val : ℕ) : ℤ)) = -1`.
+
+Rewrite using `[legendreSym.mod]`. Establish `: ((((-1 : (ZMod p)ˣ) : ZMod p).val : ℕ) : ℤ) % p = (-1 : ℤ) % p`. Rewrite using `[← ZMod.intCast_eq_intCast_iff']`. Use `push_cast`. Rewrite using `[ZMod.natCast_zmod_val]`.
+
+Rewrite using `[this, ← legendreSym.mod, legendreSym.at_neg_one hp2, ZMod.χ₄_nat_three_mod_four hp4]`. Rewrite `h1` using `[hleg]`. Establish `hfix : g s = s` using `hle hg s0`. Establish `h2 : (g : Ω →+* Ω) s = g s` using `rfl`. Rewrite `h1` using `[h2, hfix]`.
+
+Establish `hs_zero : s = 0`. Establish `: (2 : Ω) * s = 0` using `by push_cast at h1; linear_combination h1`. Break down `mul_eq_zero.mp this with h | h` into its components or cases. Evaluate the numerical expressions using `at h`. Conclude with `h`.
+
+Establish `: ((UpperTheory.V.CF.pStar p : ℤ) : Ω) = 0` using `by rw [← hs, hs_zero]; ring`. Unfold `UpperTheory.V.CF.pStar at this`. Move the coercions through the operations in `at this`. Rewrite `this` using `[Odd.neg_one_pow hodd]`. Establish `: (p : Ω) = 0` using `by linear_combination -this`.
+
+Conclude with `hp.ne_zero (by exact_mod_cast this)`.
+-/
 theorem UpperTheory.V.HV.kstarRam :
     ∀ p : ℕ, p.Prime → p % 4 = 3 → ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] [Algebra (Kstar p) Ω] (A : ValuationSubring Ω), A.valuation (p : Ω) < 1 →
       ¬ Ine (F := ℚ) A ≤ galOf ℚ (Kstar p) Ω := by

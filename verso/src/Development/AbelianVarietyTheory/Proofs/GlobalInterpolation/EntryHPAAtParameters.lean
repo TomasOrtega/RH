@@ -8,18 +8,27 @@ namespace GlobalTheory.Fc.RL.PrimAt
 
 variable {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Prm hL}
 
+/- English proof (translation)
+Establish `h : (fun r : RPk b.R b.S => Formalism.IndefR.Links.PrimRows3 r.B.Q.Rl r.B.Q.F ∧ r.P.A3.fam3.TypesSep3) (rpkX w.y.y)` using `⟨w.y.intersectionNumber_baseChange.prim, w.y.intersectionNumber_baseChange.sep⟩`. Rewrite `h` using `[← w.y.eq]`. Conclude with `h`.
+-/
 theorem of_wit {K : Ctx} {q : WPt p.s K} {c : ℝ} {b : Bundle (q.w.D q.Z) q.O c} (w : BWit q b) : R1.P_hPA _ _ c b := by
   have h : (fun r : RPk b.R b.S => Formalism.IndefR.Links.PrimRows3 r.B.Q.Rl r.B.Q.F ∧ r.P.A3.fam3.TypesSep3) (rpkX w.y.y) :=
     ⟨w.y.intersectionNumber_baseChange.prim, w.y.intersectionNumber_baseChange.sep⟩
   rw [← w.y.eq] at h
   exact h
 
+/- English proof (translation)
+Use `RowE.row (R := R1.P_hPA) (RowE.of_all fun κ K β c b _ _ hl => ?_)` and prove the remaining obligations. Take `⟨q, b', ⟨w⟩, he⟩` from `hl`. Use `congrArg (fun s : Σ (D : D7) (O : Obj D), Bundle D O c => R1.P_hPA s.1 s.2.1 c s.2.2) he` as an intermediate fact. Conclude with `cast this.symm (of_wit w)`.
+-/
 theorem row (p : Prm hL) (Q : V4.Slot) : R1.PeriodAdmissibilityAtBundlePoints Q (IsLinked p) := by
   refine RowE.row (R := R1.P_hPA) (RowE.of_all fun κ K β c b _ _ hl => ?_)
   obtain ⟨q, b', ⟨w⟩, he⟩ := hl
   have := congrArg (fun s : Σ (D : D7) (O : Obj D), Bundle D O c => R1.P_hPA s.1 s.2.1 c s.2.2) he
   exact cast this.symm (of_wit w)
 
+/- English proof (translation)
+Introduce `_ N S Γ` and use `At.of_row (row (prmR N S Γ) _)`.
+-/
 theorem at_linked : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (N : NExt hL) (S : SExt) (Γ : GeoP),
     RL.At (prmR N S Γ) R1.PeriodAdmissibilityAtBundlePoints :=
   fun _ N S Γ => At.of_row (row (prmR N S Γ) _)

@@ -12,15 +12,27 @@ namespace Formalism.L2.DIV
 
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G] {Pl0 : Type}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem FamIn.comap_fam_R {T T' : Type} {m : ℕ} (A : FamIn K G Pl0 T' m) (f : T → T') (t0 : T) (t : T) :
     (A.comap f t0).fam.R t = A.fam.R (f t) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem FamIn.comap_fam_L {T T' : Type} {m : ℕ} (A : FamIn K G Pl0 T' m) (f : T → T') (t0 : T) (j : Fin m) (t : T) :
     (A.comap f t0).fam.L j t = A.fam.L j (f t) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem FamIn3.comap_rowI {I0 Ty T T' : Type} {m : ℕ} (A3 : FamIn3 K G Pl0 I0 Ty T' m) (f : T → T') (t0 : T) (t : T) :
     (A3.comap f t0).rowI t = A3.rowI (f t) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem FamIn3.comap_liftI {I0 Ty T T' : Type} {m : ℕ} (A3 : FamIn3 K G Pl0 I0 Ty T' m) (f : T → T') (t0 : T) (j : Fin m)
     (t : T) : (A3.comap f t0).liftI j t = A3.liftI j (f t) := rfl
 
@@ -43,6 +55,9 @@ def FamReal.comap (B : FamReal D A cR cL lR lL) (f : T → T') (t0 : T) :
   rankR := B.rankR
   rankL := B.rankL
 
+/- English proof (translation)
+The claim follows from `h.ranks v0 := h.v0 tauL_ok := h.tauL_ok pl_inj := h.pl_inj q := h.q S_fin := h.S_fin ok t P := h.ok (f t) P gramR_eq := h.gramR_eq mapR := h.mapR mapL := h.mapL coefR t := h.coefR (f t) coefL i t := h.coefL i (f t)`.
+-/
 theorem FamTie.comap {B : FamReal D A cR cL lR lL} {pl : Pl0 → Pl D.host.E} {S : Set (Pl D.host.E)}
     {Qt : T' → Finset (Pl D.host.E)} {tauL : D.what₂.Tau → (D.host.E →+* D.what₂.LL)}
     {lamR : D.what₂.Tau → DomWeight D.sp.X'.rank} {lamL : ∀ (i : Fin m), D.what₂.Tau → DomWeight (D.sp.V ((i : ℕ) + 1)).rank}
@@ -94,6 +109,9 @@ def LevCh.comap {T T' : Type} (L : LevCh D T') (f : T → T') : LevCh D T where
   βV := L.βV
   βW := L.βW
 
+/- English proof (translation)
+The claim follows from `h.mu0 eta := h.eta xi t := h.xi (f t) xi_inj := h.xi_inj.comp hf xi_base := by show L.xiH (f t0) = 1 rw [h0]; exact h.xi_base xi_fin t := h.xi_fin (f t) xi_triv t := h.xi_triv (f t) xi_tame t := h.xi_tame (f t) Pg := h.Pg Q_pl t := h.Q_pl (f t) Q_off t := h.Q_off (f t) Q_de p hp …`.
+-/
 theorem LevCh.comap_is {T T' : Type} {L : LevCh D T'} {μ0 : T'} (h : L.Is μ0) {f : T → T'} (hf : Function.Injective f) {t0 : T}
     (h0 : f t0 = μ0) : (L.comap f).Is t0 where
   mu0 := h.mu0
@@ -215,6 +233,9 @@ structure RealDat3.ReducedWeakCharacterisation {A3 : FamIn3 D.what₂.LL G Pl0 I
   fullP : R.full_P
   allPl : R.AllPlaces
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.base, h.inert, h.fullY, h.fullX, h.fullP, h.allPl⟩`.
+-/
 theorem RealDat3.reduced_weak_of_weak_characterisation {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {R : RealDat3 D A3 Ks} {F : Face3 D A3}
     (h : R.WeakCharacterisation F) : R.ReducedWeakCharacterisation F :=
   ⟨h.base, h.inert, h.fullY, h.fullX, h.fullP, h.allPl⟩
@@ -225,10 +246,18 @@ structure RealDat.ExLift {A : FamIn D.what₂.LL G Pl0 T' D.R.m} (R : RealDat D 
   ioP : ∀ i, (∃ y, ∀ t : T, IsIoW R.θ (R.MW i (sg0 D A)) (R.cV i) (R.ωP i (f t)) (R.ptP i (f t)) (RealDat.Delta (D := D) i) y) →
     ∃ y, R.PIoP i y
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun k hk _ => h1 k hk, fun _ => h2, fun i _ => h3 i⟩`.
+-/
 theorem RealDat.exLift_of_ex {A : FamIn D.what₂.LL G Pl0 T' D.R.m} {R : RealDat D A Ks} (f : T → T') (h1 : R.ex_ItY) (h2 : R.ex_ItX)
     (h3 : R.ex_ioP) : R.ExLift f :=
   ⟨fun k hk _ => h1 k hk, fun _ => h2, fun i _ => h3 i⟩
 
+/- English proof (translation)
+Use `⟨fun k hk ⟨y, hy⟩ => ⟨y, fun t => ?_⟩, fun ⟨y, hy⟩ => ⟨y, fun t => ?_⟩, fun i ⟨y, hy⟩ => ⟨y, fun t => ?_⟩⟩` and prove the remaining obligations. Take `⟨s, rfl⟩` from `hs t`. Conclude with `hy s`. Take `⟨s, rfl⟩` from `hs t`. Conclude with `hy s`.
+
+Take `⟨s, rfl⟩` from `hs t`. Conclude with `hy s`.
+-/
 theorem RealDat.exLift_of_surj {A : FamIn D.what₂.LL G Pl0 T' D.R.m} {R : RealDat D A Ks} {f : T → T'} (hs : Function.Surjective f) :
     R.ExLift f := by
   refine ⟨fun k hk ⟨y, hy⟩ => ⟨y, fun t => ?_⟩, fun ⟨y, hy⟩ => ⟨y, fun t => ?_⟩, fun i ⟨y, hy⟩ => ⟨y, fun t => ?_⟩⟩
@@ -238,6 +267,13 @@ theorem RealDat.exLift_of_surj {A : FamIn D.what₂.LL G Pl0 T' D.R.m} {R : Real
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Take `⟨⟨hlev, hgrp, hfam, hmod, hch, hth⟩, hin, hY, hX, hP, hall⟩` from `h`. Use `⟨⟨LevCh.comap_is hlev hf h0, ?_, ?_, ?_, ?_, ?_⟩, ?_, fun t k hk => hY (f t) k hk, fun t => hX (f t), fun i t => hP i (f t), hall⟩` and prove the remaining obligations. Conclude with `⟨fun t q => hgrp.red_R (f t) q, fun i t q => hgrp.red_L i (f t) q, hgrp.levels, hgrp.record, hgrp.chiW⟩`. Take `⟨g, c0R, c0L, ht⟩` from `hfam.tie`. Conclude with `⟨⟨g, c0R, c0L, ht.comap f t0⟩, hfam.Sb, fun t PP => hfam.roots (f t) PP, hfam.pl_onto, fun t P => hfam.degR (f t) P, fun i t P => hfam.degL i (f t) P, fun i t P hP => hfam.muVal i (f t) P hP, fun P hP => hfam.etaVal P (by`.
+
+Establish `hP' : P ∈ A3.A.ok (f t0)` using `hP`. Rewrite using `[h0] at hP')⟩` and apply the resulting hypothesis. Conclude with `⟨hmod.inf, hmod.vpos, hmod.cX, hmod.cV, hmod.prX, fun t => hmod.HX (f t), fun i t => hmod.HV i (f t), hmod.HE, hmod.HW, hmod.gE, hmod.gW, fun t x => hmod.jX (f t) x, fun i t x => hmod.jV i (f t) x, fun t j h2 => hmod.νY (f t) j h2, fun t => hmod.νY' (f t), hmod.ν0, fun t => hmod. …`. Use `⟨fun t k hk => hch.ωY (f t) k hk, fun t => hch.ωX (f t), fun t k hk => hch.vY (f t) k hk, fun t => hch.vX (f t), fun t k hk P => hch.ptY (f t) k hk P, fun t P => hch.ptX (f t) P, fun k hk => ?_, ?_, fun t k hk => hch.ioY (f t) k hk, fun t => hch.ioX (f t), fun t => hch.Th (f t)⟩` and prove the remaining obligations. Conclude with `⟨fun ⟨y, hy⟩ t => (hch.ItY k hk).1 (hex.ItY k hk ⟨y, hy⟩) (f t), fun hn => (hch.ItY k hk).2 fun ⟨y, hy⟩ => hn ⟨y, fun t => hy (f t)⟩⟩`.
+
+Conclude with `⟨fun ⟨y, hy⟩ t => hch.ItX.1 (hex.ItX ⟨y, hy⟩) (f t), fun hn => hch.ItX.2 fun ⟨y, hy⟩ => hn ⟨y, fun t => hy (f t)⟩⟩`. Use `⟨fun i t => hth.ωP i (f t), fun i t => hth.vP i (f t), fun i t P => hth.pt_theta i (f t) P, fun i => ?_, fun i t => hth.thF i (f t), fun i t => hth.thG i (f t)⟩` and prove the remaining obligations. Conclude with `⟨fun ⟨y, hy⟩ t => (hth.ioP i).1 (hex.ioP i ⟨y, hy⟩) (f t), fun hn => (hth.ioP i).2 fun ⟨y, hy⟩ => hn ⟨y, fun t => hy (f t)⟩⟩`. Conclude with `⟨⟨hin.tie.plI_inj, fun t Q => hin.tie.okI (f t) Q⟩, hin.onto, fun t => hin.hR (f t), fun i t => hin.hL i (f t), hin.SF⟩`.
+-/
 theorem RealDat3.reduced_weak_characterisation_comap {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T' D.R.m} {R : RealDat3 D A3 Ks} {F : Face3 D A3}
     (h : R.ReducedWeakCharacterisation F) {f : T → T'} (hf : Function.Injective f) {t0 : T} (h0 : f t0 = A3.A.μ0) (hex : R.toRealDat.ExLift f)
     (mu : HeightOneSpectrum (𝓞 D.what₂.LL) → T)
@@ -285,6 +321,11 @@ variable {X : Col.Fields} {Pr : Col.Primes X} {R : Ranks} (W : Col.Wts X Pr.Word
 def tupFIncl {TU TU' : Finset (Tup X.F X.E X.K S)} (hs : TU ⊆ TU') (τ : TupF TU) : TupF TU' :=
   ⟨τ.1, τ.2.imp id fun h => hs h⟩
 
+/- English proof (translation)
+Introduce `a b h`. Take `⟨a, ha⟩` from `a`. Take `⟨b, hb⟩` from `b`. Establish `h1 : a = b` using `congrArg Subtype.val h`. Substitute `h1` using the available equality.
+
+Both sides reduce to the same expression.
+-/
 theorem tupFIncl_injective {TU TU' : Finset (Tup X.F X.E X.K S)} (hs : TU ⊆ TU') : Function.Injective (tupFIncl hs) := by
   intro a b h
   obtain ⟨a, ha⟩ := a
@@ -293,6 +334,9 @@ theorem tupFIncl_injective {TU TU' : Finset (Tup X.F X.E X.K S)} (hs : TU ⊆ TU
   subst h1
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tupFIncl_mu0F {TU TU' : Finset (Tup X.F X.E X.K S)} (hs : TU ⊆ TU') : tupFIncl hs (mu0F TU) = mu0F TU' := rfl
 
 end ColComap

@@ -21,6 +21,9 @@ section Helpers
 
 variable {e : ℕ} {X : Type} [TopologicalSpace X]
 
+/- English proof (translation)
+Establish `hC` using `potential_contDiffAt_chart hΘ x j hy h`. Conclude with `TailChernBound.levi_smul' c hC w`.
+-/
 theorem levi_rsmul_eq (A : FinHolAtlas e X) (Θ : LocPot X) (hΘ : IsPotential A Θ) (c : ℝ) (x : X)
     (j : Fin A.n) {y : Fin e → ℂ} (hy : y ∈ (A.chart j).target)
     (h : (A.chart j).symm y ∈ Θ.U x) (w : Fin e → ℂ) :
@@ -28,12 +31,18 @@ theorem levi_rsmul_eq (A : FinHolAtlas e X) (Θ : LocPot X) (hΘ : IsPotential A
   have hC := potential_contDiffAt_chart hΘ x j hy h
   exact TailChernBound.levi_smul' c hC w
 
+/- English proof (translation)
+Introduce `x j y hy w hw`. Rewrite using `[levi_rsmul_eq A Θ hΘ c x j hy.1 hy.2]`. Conclude with `mul_pos hc (hpos x j y hy w hw)`.
+-/
 theorem isPosPot_rsmul (A : FinHolAtlas e X) (Θ : LocPot X) (hΘ : IsPotential A Θ)
     (hpos : IsPosPot A Θ) {c : ℝ} (hc : 0 < c) : IsPosPot A (Θ.rsmul c) := by
   intro x j y hy w hw
   rw [levi_rsmul_eq A Θ hΘ c x j hy.1 hy.2]
   exact mul_pos hc (hpos x j y hy w hw)
 
+/- English proof (translation)
+Establish `c1` using `potential_contDiffAt_chart hΘ x j hy h1`. Establish `c2` using `potential_contDiffAt_chart hP x j hy h2`. Establish `h0 : 0 ≤ levi (fun z => K * (Θ.φ x ∘ (A.chart j).symm) z + (-1) * (P.φ x ∘ (A.chart j).symm) z) y w` using `h x j y ⟨hy, ⟨h1, h2⟩⟩ w`. Rewrite `h0` using `[TailChernBound.levi_lin K (-1) c1 c2 w]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem levi_le_of_psh (A : FinHolAtlas e X) (Θ P : LocPot X) (hΘ : IsPotential A Θ)
     (hP : IsPotential A P) (K : ℝ) (h : IsPsh A (Θ.rsmul K + P.rsmul (-1))) (x : X) (j : Fin A.n)
     {y : Fin e → ℂ} (hy : y ∈ (A.chart j).target) (h1 : (A.chart j).symm y ∈ Θ.U x)
@@ -46,6 +55,9 @@ theorem levi_le_of_psh (A : FinHolAtlas e X) (Θ P : LocPot X) (hΘ : IsPotentia
   rw [TailChernBound.levi_lin K (-1) c1 c2 w] at h0
   linarith
 
+/- English proof (translation)
+Introduce `x j y hy w`. Establish `e1 : Q.φ x = P.φ x` using `funext (hφ x)`. Rewrite using `[e1]`. Conclude with `h x j y ⟨hy.1, hU x hy.2⟩ w`.
+-/
 theorem isPsh_congr (A : FinHolAtlas e X) {P Q : LocPot X} (hU : ∀ x, Q.U x ⊆ P.U x)
     (hφ : ∀ x z, Q.φ x z = P.φ x z) (h : IsPsh A P) : IsPsh A Q := by
   intro x j y hy w
@@ -53,6 +65,13 @@ theorem isPsh_congr (A : FinHolAtlas e X) {P Q : LocPot X} (hU : ∀ x, Q.U x �
   rw [e1]
   exact h x j y ⟨hy.1, hU x hy.2⟩ w
 
+/- English proof (translation)
+Use `⟨fun x j t ht => ?_, fun x x' y hy => hs.2 _ _ _ hy⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `A.cover (h ((A'.chart j).symm t))`. Take `⟨hz, hs'⟩` from `chart_image_mem (A := A) (A' := A') (h := h) j k hk`. Establish `hzU : (A.chart k).symm ((A.chart k ∘ h ∘ (A'.chart j).symm) t) ∈ L.U (h x)`. Rewrite using `[hs']`.
+
+Conclude with `ht.2`. Establish `h1 : AnalyticAt ℂ (s (h x) ∘ (A.chart k).symm) ((A.chart k ∘ h ∘ (A'.chart j).symm) t)` using `hs.1 (h x) k _ ⟨hz, hzU⟩`. Establish `h2` using `hh.2 j k t ⟨ht.1, hk⟩`. Establish `h3` using `h1.comp h2`. Use `h3.congr ?_` and prove the remaining obligations.
+
+Use `filter_upwards [holoMap_preimage_mem_nhds hh j k ht.1 hk] with t' ht'`. Simplify using `only [Function.comp_apply, (A.chart k).left_inv ht'.2]`.
+-/
 theorem isSection_pull {e' : ℕ} {X' : Type} [TopologicalSpace X'] {A : FinHolAtlas e X}
     {A' : FinHolAtlas e' X'} {h : X' → X} (hh : HoloMap A' A h) {L : LocPot X} {s : X → X → ℂ}
     (hs : IsSection A L s) :
@@ -70,6 +89,9 @@ theorem isSection_pull {e' : ℕ} {X' : Type} [TopologicalSpace X'] {A : FinHolA
   filter_upwards [holoMap_preimage_mem_nhds hh j k ht.1 hk] with t' ht'
   simp only [Function.comp_apply, (A.chart k).left_inv ht'.2]
 
+/- English proof (translation)
+Establish `h : fderiv ℝ (fun y => F y - c) = fderiv ℝ F`. Use function extensionality and compare the values at `y`. Conclude with `fderiv_sub_const ..`. Unfold `hessC`. Rewrite using `[h]`.
+-/
 theorem hessC_sub_const {D : ℕ} (F : (Fin D → ℂ) → ℝ) (c : ℝ) (z : Fin D → ℂ) :
     hessC (fun y => F y - c) z = hessC F z := by
   have h : fderiv ℝ (fun y => F y - c) = fderiv ℝ F := by
@@ -78,6 +100,11 @@ theorem hessC_sub_const {D : ℕ} (F : (Fin D → ℂ) → ℝ) (c : ℝ) (z : F
   unfold hessC
   rw [h]
 
+/- English proof (translation)
+Unfold `locDens maDens`. Establish `: (fun k => hessC (fun y' => (Φ' k).φ ((A.chart j).symm y) ((A.chart j).symm y')) y) = fun k => hessC (fun y' => (Φ k).φ ((A.chart j).symm y) ((A.chart j).symm y')) y`. Use function extensionality and compare the values at `k`. Simplify using `only [h]`. Conclude with `hessC_sub_const _ _ _`.
+
+Rewrite using `[this]`.
+-/
 theorem locDens_sub_const (A : FinHolAtlas e X) (Φ Φ' : Fin e → LocPot X) (c : Fin e → ℝ)
     (h : ∀ i x z, (Φ' i).φ x z = (Φ i).φ x z - c i) (j : Fin A.n) (y : Fin e → ℂ) :
     locDens A Φ' j y = locDens A Φ j y := by
@@ -89,6 +116,9 @@ theorem locDens_sub_const (A : FinHolAtlas e X) (Φ Φ' : Fin e → LocPot X) (c
     exact hessC_sub_const _ _ _
   rw [this]
 
+/- English proof (translation)
+Establish `: locDens A Φ' = locDens A Φ`. Use function extensionality and compare the values at `j y`. Conclude with `locDens_sub_const A Φ Φ' c h j y`. Unfold `mInt`. Simplify using `only [integralWith, this]`.
+-/
 theorem mInt_sub_const (A : FinHolAtlas e X) (Φ Φ' : Fin e → LocPot X) (c : Fin e → ℝ)
     (h : ∀ i x z, (Φ' i).φ x z = (Φ i).φ x z - c i) (g : X → ℝ) :
     mInt A Φ' g = mInt A Φ g := by
@@ -98,6 +128,11 @@ theorem mInt_sub_const (A : FinHolAtlas e X) (Φ Φ' : Fin e → LocPot X) (c : 
   unfold mInt
   simp only [integralWith, this]
 
+/- English proof (translation)
+Introduce `R hR`. Take `⟨h1, h2⟩` from `h R hR`. Use `⟨h1, h2.trans ?_⟩` and prove the remaining obligations. Establish `hR0 : 0 < R` using `(Real.exp_pos 1).trans_le hR`. Establish `hl : 0 ≤ Real.log R` using `Real.log_nonneg ((Real.one_le_exp zero_le_one).trans hR)`.
+
+Use `gcongr`.
+-/
 theorem tailLogBound_mono (A : FinHolAtlas e X) (Yo : Set X) (r : X → ℝ) (T : Fin e → LocPot X)
     {c c' : ℝ} (hc : c ≤ c') (h : TailLogBound A Yo r T c) : TailLogBound A Yo r T c' := by
   intro R hR
@@ -107,12 +142,21 @@ theorem tailLogBound_mono (A : FinHolAtlas e X) (Yo : Set X) (r : X → ℝ) (T 
   have hl : 0 ≤ Real.log R := Real.log_nonneg ((Real.one_le_exp zero_le_one).trans hR)
   gcongr
 
+/- English proof (translation)
+Simplify using `[ell]`.
+-/
 theorem ell_eq (t : ℝ) : ell t = Real.log (1 / t) := by
   simp [ell]
 
+/- English proof (translation)
+Simplify using `[errE, epsT, ell]`.
+-/
 theorem errE_eq (C t : ℝ) : errE C t = epsT C t := by
   simp [errE, epsT, ell]
 
+/- English proof (translation)
+Rewrite `h` using `[ell_eq]`. Assume the negation of the conclusion as `hc`. Establish `h1 : 1 / t < 1 / t₁` using `one_div_lt_one_div_of_lt ht₁ (not_le.1 hc)`. Use `Real.log_lt_log (by positivity) h1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem le_of_ell_le {t₁ t : ℝ} (ht₁ : 0 < t₁) (ht : 0 < t) (h : Real.log (1 / t₁) ≤ ell t) :
     t ≤ t₁ := by
   rw [ell_eq] at h
@@ -121,6 +165,9 @@ theorem le_of_ell_le {t₁ t : ℝ} (ht₁ : 0 < t₁) (ht : 0 < t) (h : Real.lo
   have := Real.log_lt_log (by positivity) h1
   linarith
 
+/- English proof (translation)
+Rewrite using `[ell_eq]`. Conclude with `Real.log_le_log (one_div_pos.2 (ht.trans_le h)) (one_div_le_one_div_of_le ht h)`.
+-/
 theorem ell_le_of_le {t₁ t : ℝ} (ht : 0 < t) (h : t ≤ t₁) : Real.log (1 / t₁) ≤ ell t := by
   rw [ell_eq]
   exact Real.log_le_log (one_div_pos.2 (ht.trans_le h)) (one_div_le_one_div_of_le ht h)
@@ -129,6 +176,17 @@ end Helpers
 
 section Tail
 
+/- English proof (translation)
+Establish `h : ∀ b : ℕ, _` using `fun b : ℕ => GlobalTheory.T.uniform_energy_bound_of_section hTB A (fun i : Fin n => if (i : ℕ) < b then P i else Om) L s m W C₁ (fun i => by split_ifs; exacts [hP i, hOm]) (fun i => by split_ifs; exacts [hPp i, hOmp]) hL hs hsnc hnorm hC₁`. Use `choose CE hCE0 hCE using h`. Use `⟨∑ b ∈ Finset.range (n + 1), CE b, Finset.sum_nonneg fun i _ => hCE0 i, fun b hb uu T hu hpsh hbd h1 h2 => ?_⟩` and prove the remaining obligations. Use `tailLogBound_mono _ _ _ _ (Finset.single_le_sum (f := CE) (fun i _ => hCE0 i) (Finset.mem_range.2 (by omega))) (hCE b (fun i => if (i : ℕ) < b then uu i else fun _ => 0) T ?_ ?_ ?_ ?_)` and prove the remaining obligations. Introduce `i split_ifs`.
+
+Conclude with `hu i`. Conclude with `fun _ => contDiffOn_const`. Introduce `i split_ifs`. Conclude with `hpsh i`. Conclude with `isPsh_congr A (P := Om) (fun x z hz => hz.1) (fun x z => add_zero _) (TailBoundAlt.isPsh_of_isPosPot A _ hOmp)`.
+
+Introduce `i y hy split_ifs`. Conclude with `hbd i y hy`. Establish `hlog : 0 ≤ Real.log (rW L s y)` using `Real.log_nonneg ((Real.one_le_exp zero_le_one).trans (rW_ge L s hnorm y))`. Establish `: -C₁ * Real.log (rW L s y) ≤ 0` using `by nlinarith`. Conclude with `⟨this, le_rfl⟩`.
+
+Introduce `i x y`. Distinguish the cases in `hi : (i : ℕ) < b`. Simplify using `only [hi, if_true]`. Conclude with `h1 i hi x y`. Simplify using `only [hi, if_false, add_zero]`.
+
+Conclude with `h2 i hi x y`.
+-/
 theorem tail_mixed (hTB : TailBoundStatement) {n : ℕ} {Y : Type} [TopologicalSpace Y]
     [CompactSpace Y] [T2Space Y] (A : FinHolAtlas n Y) (L : LocPot Y) (s : Y → Y → ℂ) {r : ℕ}
     (m : Fin r → ℕ) (W : Fin r → Set Y) (hL : IsPotential A L) (hs : IsSection A L s)
@@ -179,6 +237,13 @@ end Tail
 
 section Green
 
+/- English proof (translation)
+Take `⟨_, hμ⟩` from `maMeasure_thm A Φ hΦ hψ`. Establish `hN : Continuous (secNorm L' v)` using `GroundTheory.Heights₂.Heights.AnalyticLimit.continuous_secNorm A L' v hL' hv`. Establish `hmeas : Measurable (greenEp L' v ε)` using `((hN.measurable.pow_const 2).const_div ε |>.const_add 1).log`. Establish `hlogN : Integrable (logNormSec L' v) (maMeasure A Φ)` using `((hμ _ hN.measurable.log).1).1 (logNormIntegrable A L' v m W hL' hv hsnc Φ hΦ)`. Establish `hc : Continuous fun x => Real.log (secNorm L' v x ^ 2 + 1)` using `((hN.pow 2).add continuous_const).log fun x => (by positivity : (0 : ℝ) < secNorm L' v x ^ 2 + 1).ne'`.
+
+Establish `hh : Integrable (fun x => Real.log (secNorm L' v x ^ 2 + 1)) (maMeasure A Φ)` using `((hμ _ hc.measurable).1).1 (mIntegrableCont A Φ hΦ _ hc)`. Establish `hG1 : Integrable (greenEp L' v 1) (maMeasure A Φ)`. Rewrite using `[show greenEp L' v 1 = fun x => Real.log (secNorm L' v x ^ 2 + 1) - 2 * logNormSec L' v x from`. Use function extensionality and compare the values at `(GroundTheory.Heights₂.Heights.AnalyticLimit.greenEp_one_eq L' v)]`. Conclude with `hh.sub (hlogN.const_mul 2)`.
+
+Establish `hint : Integrable (greenEp L' v ε) (maMeasure A Φ)` using `hG1.mono' hmeas.aestronglyMeasurable (ae_of_all _ fun x => by`. Rewrite using `[Real.norm_of_nonneg (GroundTheory.Heights₂.Heights.AnalyticLimit.greenEp_nonneg L' v hε.le x)]`. Conclude with `GroundTheory.Heights₂.Heights.AnalyticLimit.greenEp_le_one L' v hε.le hε1 x)`. Conclude with `⟨hint, ((hμ _ hmeas).2 (((hμ _ hmeas).1).2 hint)).symm⟩`.
+-/
 theorem green_integrable {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X] [T2Space X]
     [MeasurableSpace X] [BorelSpace X] (A : FinHolAtlas e X) (L' : LocPot X) (v : X → X → ℂ)
     {r : ℕ} (m : Fin r → ℕ) (W : Fin r → Set X) (hL' : IsPotential A L') (hv : IsSection A L' v)
@@ -213,6 +278,13 @@ end Green
 
 section Core
 
+/- English proof (translation)
+Establish `hQ : IsPotential A (P + Θ.rsmul (-(1 / 2)))` using `isPotentialAdd A _ _ hP (isPotentialRsmul A _ _ hΘ)`. Establish `hQ'` using `isPotentialPullback A A' h hh _ hQ`. Establish `hΘp` using `isPotentialPullback A A' h hh _ hΘ`. Establish `hQpsh` using `isPsh_pull hh hQ hpsh`. Use `isPosPot_of_lt A' (Θ.pullback h hh.1) ((P + Θ.rsmul (-(1 / 2))).pullback h hh.1) (fun _ => 0) hΘp hΘ' hQ' (fun _ => contDiffOn_const) 0 (1 / 2) (by norm_num) ?_ _ ?_ ?_` and prove the remaining obligations.
+
+Use `isPsh_congr A' (P := (P + Θ.rsmul (-(1 / 2))).pullback h hh.1) (fun x z hz => hz.1.1) (fun x z => ?_) hQpsh show _ + 0 + 0 * _ = _` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Introduce `x z hz`. Conclude with `⟨⟨hz, hsub _ hz⟩, hsub _ hz⟩`. Introduce `x z show P.φ (h x) (h z) = (P.φ (h x) (h z) + -(1 / 2) * Θ.φ (h x) (h z)) + 0 + 1 / 2 * Θ.φ (h x) (h z)`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isPosPot_pull_of_half {e e' : ℕ} {X X' : Type} [TopologicalSpace X] [TopologicalSpace X']
     {A : FinHolAtlas e X} {A' : FinHolAtlas e' X'} {h : X' → X} (hh : HoloMap A' A h)
     (Θ P : LocPot X) (hΘ : IsPotential A Θ) (hP : IsPotential A P)
@@ -236,6 +308,41 @@ theorem isPosPot_pull_of_half {e e' : ℕ} {X X' : Type} [TopologicalSpace X] [T
       1 / 2 * Θ.φ (h x) (h z)
     ring
 
+/- English proof (translation)
+Take `⟨B, hB, n', m', W', hΘB, hposB, hsncB⟩` from `GlobalTheory.T.uniform_restriction_statement_holds A Θ L s m W hΘ hpos hL hs L' v Dg hL' hv hsncv hsncsv`. Use `haveI : CompactSpace Dg := isCompact_iff_compactSpace.mp (show IsClosed Dg from SimpleNormalCrossingSliceCharts.isClosed_divisorComponent A L' v ![1] ![Dg] hsncv 0).isCompact`. Establish `hLB : IsPotential B (L.pullback Subtype.val hB.1)` using `isPotentialPullback A B _ hB L hL`. Establish `hsB : IsSection B (L.pullback Subtype.val hB.1) (fun x y => s x.1 y.1)` using `isSection_pull hB hs`. Establish `hK` using `fun a => tail_chern_bound A Θ (thS a) hΘ hpos (hpot a)`.
+
+Use `choose K hK0 hK1 hK2 using hK`. Take `⟨Kt, hKt⟩ : ∃ Kt : ℝ, Kt = ∑ a, K a + 1` from `⟨_, rfl⟩`. Establish `hKpos : 0 < Kt`. Establish `: 0 ≤ ∑ a, K a` using `Finset.sum_nonneg fun a _ => hK0 a`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hKa : ∀ a, K a ≤ Kt` using `fun a => by`. Establish `: K a ≤ ∑ a, K a` using `Finset.single_le_sum (f := K) (fun i _ => hK0 i) (Finset.mem_univ a)`. Combine the linear equalities and inequalities to obtain the conclusion. Set `Om : KaehlerForm A` to `⟨Θ.rsmul Kt, isPotentialRsmul A Kt Θ hΘ, isPosPot_rsmul A Θ hΘ hpos hKpos⟩`. Establish `hOmB : IsPosPot B (Om.pot.pullback Subtype.val hB.1)` using `isPosPot_rsmul B _ hΘB hposB hKpos`.
+
+Take `⟨CE₁, hCE₁, hT₁⟩` from `tail_mixed hTB A L s m W hL hs hsnc hnorm thS Om.pot hpot hposS Om.isPot Om.pos C₁ hC₁`. Take `⟨CE₂, hCE₂, hT₂⟩` from `tail_mixed hTB B (L.pullback Subtype.val hB.1) (fun x y => s x.1 y.1) m' W' hLB hsB hsncB (fun y => hnorm y.1) (fun i => (thS i.castSucc).pullback Subtype.val hB.1) (Om.pot.pullback Subtype.val hB.1) (fun i => isPotentialPullback A B _ hB _ (hpot _)) (fun i => isPosPot_pull_of_ha …`. Establish `hBd` using `bdry_isAnalyticSubset_interior_empty A L s m W hs hsnc`. Establish `hBdB` using `bdry_isAnalyticSubset_interior_empty B _ _ m' W' hsB hsncB`. Establish `hYo : IsOpen (bdry s)ᶜ` using `(LeviFormBoundaryTopology.isClosed_bdry hs).isOpen_compl`.
+
+Establish `hsnc1 : IsSNC A L' v (fun _ : Fin 1 => 1) (fun _ : Fin 1 => Dg)`. Establish `e1 : (fun _ : Fin 1 => (1 : ℕ)) = ![1]`. Use function extensionality and compare the values at `k`. Use `fin_cases k`. Both sides reduce to the same expression.
+
+Establish `e2 : (fun _ : Fin 1 => Dg) = ![Dg]`. Use function extensionality and compare the values at `k`. Use `fin_cases k`. Both sides reduce to the same expression. Rewrite using `[e1, e2]`.
+
+Conclude with `hsncv`. Establish `e3 : (Subtype.val ⁻¹' (bdry s)ᶜ : Set Dg)ᶜ = bdry (fun x y : Dg => s x.1 y.1)`. Use extensionality with `y`. Simplify using `[bdry]`. Establish `hform : ∀ a t, 0 < t → Real.log (1 / t₁) ≤ ell t → IsSmoothPotForm A (bdry s)ᶜ (rW L s) Om C₁ (thS a) (uS a t)`.
+
+Introduce `a t ht hl`. Take `⟨hsm, hpshu, hle0, hlow⟩` from `hfam a t ht (le_of_ell_le ht₁ ht hl)`. Establish `hΘpsh` using `TailBoundAlt.isPsh_of_isPosPot A _ hpos`. Establish `hSpsh` using `TailBoundAlt.isPsh_of_isPosPot A _ (hposS a)`. Use `⟨⟨hpot a, ?_, ?_, fun j => (hsm j).mono fun y hy => ⟨hy.1, trivial⟩, fun x _ => hle0 x, fun x hx => ?_, fun x k y hy w => hpshu x k y ⟨hy.1, hy.2.2⟩ w, Or.inl hsm⟩, hsm⟩` and prove the remaining obligations.
+
+Introduce `x k y hy w`. Establish `hyΘ : (A.chart k).symm y ∈ Θ.U x` using `hy.2.2`. Establish `h1` using `levi_le_of_psh A Θ (thS a) hΘ (hpot a) (K a) (hK2 a) x k hy.1 hyΘ hy.2.1.2 w`. Establish `h2` using `hΘpsh x k y ⟨hy.1, hyΘ⟩ w`. Use `show 1 * _ ≤ 1 * levi ((Θ.rsmul Kt).φ x ∘ (A.chart k).symm) y w`.
+
+Rewrite using `[levi_rsmul_eq A Θ hΘ Kt x k hy.1 hyΘ, one_mul, one_mul]`. Conclude with `h1.trans (mul_le_mul_of_nonneg_right (hKa a) h2)`. Introduce `x k y hy w`. Establish `hyΘ : (A.chart k).symm y ∈ Θ.U x` using `hy.2.1.2`. Establish `h2` using `hΘpsh x k y ⟨hy.1, hyΘ⟩ w`.
+
+Establish `h3` using `hSpsh x k y ⟨hy.1, hy.2.2⟩ w`. Use `show -1 * levi ((Θ.rsmul Kt).φ x ∘ (A.chart k).symm) y w ≤ 1 * _`. Rewrite using `[levi_rsmul_eq A Θ hΘ Kt x k hy.1 hyΘ]`. Use polynomial arithmetic with `[mul_nonneg hKpos.le h2]`. Use `hlow x hx` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Set `S : UIData e X` to `{ A := A Om := Om L := L' s := v nc := 1 mult := fun _ => 1 comp := fun _ => Dg B := fun _ => B L_pot := hL' s_sec := hv s_snc := hsnc1 B_holo := fun _ => hB Yo := (bdry s)ᶜ Yo_open := hYo bd_analytic := by rw [compl_compl]; exact hBd.1 bd_interior := by rw [compl_compl]; exact h …`. Establish `htt` using `le_of_ell_le ht₁ ht hl`. Use `tailLogBound_mono _ _ _ _ (by linarith : CE₁ ≤ CE₁ + CE₂) (hT₁ b (by omega) (fun i => uS i t) _ (fun i => (hfam i t ht htt).1) (fun i => (hfam i t ht htt).2.1) (fun i y hy => ⟨(hfam i t ht htt).2.2.2 y hy, (hfam i t ht htt).2.2.1 y⟩) ?_ ?_)` and prove the remaining obligations. Introduce `i hi x y`.
+
+Establish `: mixedForms Om.pot (curForms thS uS t) b i = curForms thS uS t i` using `if_pos hi`. Rewrite using `[this]`. Both sides reduce to the same expression. Introduce `i hi x y`. Establish `: mixedForms Om.pot (curForms thS uS t) b i = Om.pot` using `if_neg hi`.
+
+Rewrite using `[this]`. Use `tailComp := fun k b hb t ht hl => by`. Establish `htt` using `le_of_ell_le ht₁ ht hl`. Use `tailLogBound_mono _ _ _ _ (by linarith : CE₂ ≤ CE₁ + CE₂) (hT₂ b hb (fun i => uS i.castSucc t ∘ Subtype.val) _ (fun i => smoothOn_pull hB isOpen_univ (hfam _ t ht htt).1) (fun i => ?_) (fun i y hy => ⟨(hfam _ t ht htt).2.2.2 y.1 hy, (hfam _ t ht htt).2.2.1 y.1⟩) ?_ ?_)` and prove the remaining obligations. Use `isPsh_congr B (P := (thS i.castSucc + LocPot.ofFun (uS i.castSucc t)).pullback Subtype.val hB.1) (fun x z hz => ⟨hz.1, trivial⟩) (fun x z => rfl) (isPsh_pull hB (isPotentialAdd A _ _ (hpot _) (isPotential_ofFun A _ (hfam _ t ht htt).1)) (hfam _ t ht htt).2.1)` and prove the remaining obligations.
+
+Introduce `i hi x y`. Establish `: restForms Om.pot (curForms thS uS t) b i = curForms thS uS t i.castSucc` using `if_pos hi`. Use `show (restForms Om.pot (curForms thS uS t) b i).φ x.1 y.1 = _`. Rewrite using `[this]`. Both sides reduce to the same expression.
+
+Introduce `i hi x y`. Establish `: restForms Om.pot (curForms thS uS t) b i = Om.pot` using `if_neg hi`. Use `show (restForms Om.pot (curForms thS uS t) b i).φ x.1 y.1 = _`. Rewrite using `[this]`. Use `rfl }`.
+
+Take `⟨ε₀, hε₀, t₃, ht₃, h⟩` from `hUI S η hη`. Use `⟨ε₀, min t₃ t₁, hε₀, lt_min ht₃ ht₁, min_le_right _ _, fun ε t hε hεle ht htle => ?_⟩` and prove the remaining obligations. Conclude with `h ε t hε hεle ht (htle.trans (min_le_left _ _)) (ell_le_of_le ht (htle.trans (min_le_right _ _)))`.
+-/
 theorem green_small_core (hUI : GroundTheory.Heights₂.Heights.AnalyticLimit.UniformIntegrability.Statement)
     (hTB : TailBoundStatement) {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X] [T2Space X]
     (A : FinHolAtlas (e + 1) X) (Θ L : LocPot X) (s : X → X → ℂ) {n : ℕ} (m : Fin n → ℕ)
@@ -404,6 +511,19 @@ theorem green_small_core (hUI : GroundTheory.Heights₂.Heights.AnalyticLimit.Un
 
 end Core
 
+/- English proof (translation)
+Introduce `hUI hTB e X _ _ _ _ _ A Θ L s n m W hΘ hpos hL hs hsnc hnorm L' v Dg hL' hv hsncv hsncsv th ph phT C₅ C t₀ hWt hR η hη`. Establish `hbase` using `fun i => fixedMember_base A Θ L s (th i) (ph i) (phT i) C₅ C t₀ hΘ hpos hnorm (hWt i) (hR i)`. Use `choose t₂ ht₂ ht₂0 hb using hbase`. Take `⟨t₁, ht₁, hle⟩ : ∃ t₁ : ℝ, 0 < t₁ ∧ ∀ i, t₁ ≤ t₂ i` from `⟨Finset.univ.inf' Finset.univ_nonempty t₂, (Finset.lt_inf'_iff _).2 fun i _ => ht₂ i, fun i => Finset.inf'_le _ (Finset.mem_univ i)⟩`. Establish `hB1` using `fun i => hb i t₁ ht₁ (hle i)`.
+
+Establish `hle₀ : ∀ i t, t ≤ t₁ → t ≤ t₀` using `fun i t h => h.trans ((hle i).trans (ht₂0 i))`. Take `⟨ε₀, t₃, hε₀, ht₃, ht₃₁, hmain⟩` from `green_small_core hUI hTB A Θ L s m W hΘ hpos hL hs hsnc hnorm L' v Dg hL' hv hsncv hsncsv (fun a => th a + LocPot.ofFun (phT a t₁) + Θ) (fun a t y => phT a t y - phT a t₁ y - C * epsT C t₁) (fun a y => ph a y - phT a t₁ y - C * epsT C t₁) C (|C₅| + |C| + 1) t₁ (by positivity) ht₁ …`. Take `⟨-, -, h3, -⟩` from `(hR a).2.2 t ht (hle₀ a t htt)`. Use `h3 y hy` as an intermediate fact. Use the proof step `linarith)`.
+
+Use the proof step `(fun a t ht htt y hy hr => by`. Take `⟨-, -, -, -, -, h6, -⟩` from `(hR a).2.2 t ht (hle₀ a t htt)`. Use `h6 y hy (by rw [← ell_eq]; exact hr)` as an intermediate fact. Rewrite using `[errE_eq]`. Use the proof step `linarith)`.
+
+Use the proof step `(fun a t t' ht htt htt' y => by`. Take `⟨-, -, -, -, -, -, -, h8⟩` from `(hR a).2.2 t ht (hle₀ a t (htt.trans htt'))`. Use `h8 t' htt (hle₀ a t' htt') y` as an intermediate fact. Rewrite using `[errE_eq]`. Use the proof step `linarith)`.
+
+Use `η hη`. Use `⟨min ε₀ 1, t₃, lt_min hε₀ one_pos, ht₃, fun ε t hε hεle ht htle => ?_⟩` and prove the remaining obligations. Establish `htt₁ : t ≤ t₁` using `htle.trans ht₃₁`. Establish `hΦ` using `fun i => hb i t ht (htt₁.trans (hle i))`. Take `⟨hint, heq⟩` from `green_integrable A L' v ![1] ![Dg] hL' hv hsncv (fun i => th i + LocPot.ofFun (phT i t) + Θ) (fun i => (hΦ i).1) (fun i => TailBoundAlt.isPsh_of_isPosPot A _ (hΦ i).2.2.1) hε (hεle.trans (min_le_right _ _))`.
+
+Use `⟨hint, ?_⟩` and prove the remaining obligations. Rewrite using `[heq, ← mInt_sub_const A _ (fun i => potForm (th i + LocPot.ofFun (phT i t₁) + Θ) (fun y => phT i t y - phT i t₁ y - C * epsT C t₁)) (fun _ => C * epsT C t₁) (fun i x z => ?_)]`. Conclude with `hmain ε t hε (hεle.trans (min_le_left _ _)) ht htle`. Use `show (th i).φ x z + phT i t₁ z + Θ.φ x z + (phT i t z - phT i t₁ z - C * epsT C t₁) = (th i).φ x z + phT i t z + Θ.φ x z - C * epsT C t₁`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem green_small_uniform : GroundTheory.Heights₂.Heights.AnalyticLimit.UniformIntegrability.Statement → TailBoundStatement → ∀ {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X] [T2Space X] [MeasurableSpace X] [BorelSpace X] (A : FinHolAtlas (e + 1) X) (Θ L : LocPot X) (s : X → X → ℂ) {n : ℕ} (m : Fin n → ℕ) (W : Fin n → Set X), IsPotential A Θ → IsPosPot A Θ → IsPotential A L → IsSection A L s → IsSNC A L s m W → (∀ y, logNormSec L s y ≤ 0) → ∀ (L' : LocPot X) (v : X → X → ℂ) (Dg : Set X), IsPotential A L' → IsSection A L' v → IsSNC A L' v ![1] ![Dg] → IsSNC A (L + L') (fun x y => s x y * v x y) (Fin.snoc m 1) (Fin.snoc W Dg) → ∀ (th : Fin (e + 1) → LocPot X) (ph : Fin (e + 1) → X → ℝ) (phT : Fin (e + 1) → ℝ → X → ℝ) (C₅ C t₀ : ℝ), (∀ i, IsSingWeight A L s (th i) (ph i) C₅) → (∀ i, IsRegFamily A Θ L s (th i) (ph i) (phT i) C t₀) → ∀ η : ℝ, 0 < η → ∃ ε₀ t₁ : ℝ, 0 < ε₀ ∧ 0 < t₁ ∧ ∀ ε t : ℝ, 0 < ε → ε ≤ ε₀ → 0 < t → t ≤ t₁ → Integrable (GroundTheory.Heights₂.Heights.AnalyticLimit.greenEp L' v ε) (maMeasure A (fun i => th i + LocPot.ofFun (phT i t) + Θ)) ∧ ∫ y, GroundTheory.Heights₂.Heights.AnalyticLimit.greenEp L' v ε y ∂maMeasure A (fun i => th i + LocPot.ofFun (phT i t) + Θ) ≤ η := by
   intro hUI hTB e X _ _ _ _ _ A Θ L s n m W hΘ hpos hL hs hsnc hnorm L' v Dg hL' hv hsncv hsncsv
     th ph phT C₅ C t₀ hWt hR η hη

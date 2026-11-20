@@ -4,6 +4,13 @@ open NumberField IsDedekindDomain
 
 namespace ChowFormHeightComparison₂.RegularPointExistence
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hx`. Set `S : Subring F` to `(algebraMap R F).range`. Establish `hxS : x ∉ S` using `fun hm => hx hm`. Use `letI : Algebra R S := (algebraMap R F).rangeRestrict.toAlgebra`. Use `haveI : IsScalarTower R S F := IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+
+Use `haveI : Algebra.IsIntegral R S := ⟨fun y => RingHom.isIntegral_of_surjective _ (algebraMap R F).rangeRestrict_surjective y⟩`. Use `haveI : IsIntegrallyClosedIn S F := isIntegrallyClosedIn_iff.2 ⟨Subtype.val_injective, fun {y} hy => by`. Take `⟨a, ha⟩` from `IsIntegrallyClosed.algebraMap_eq_of_integral (isIntegral_trans (R := R) y hy)`. Conclude with `⟨⟨y, a, ha⟩, rfl⟩⟩`. Take `⟨V, hV, hxV⟩` from `Subring.exists_le_valuationSubring_of_isIntegrallyClosedIn hxS`.
+
+Conclude with `hxV (h V fun r => hV ⟨r, rfl⟩)`.
+-/
 theorem mem_of_forall_valuationSubring {R F : Type} [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field F]
     [Algebra R F] [IsFractionRing R F] {x : F}
     (h : ∀ O : ValuationSubring F, (∀ r : R, algebraMap R F r ∈ O) → x ∈ O) : ∃ a : R, algebraMap R F a = x := by
@@ -20,6 +27,29 @@ theorem mem_of_forall_valuationSubring {R F : Type} [CommRing R] [IsDomain R] [I
   obtain ⟨V, hV, hxV⟩ := Subring.exists_le_valuationSubring_of_isIntegrallyClosedIn hxS
   exact hxV (h V fun r => hV ⟨r, rfl⟩)
 
+/- English proof (translation)
+Set `ι : 𝓞 K →+* Ω` to `(algebraMap K Ω).comp (algebraMap (𝓞 K) K)`. Establish `hι : ∀ a, O.valuation (ι a) ≤ 1` using `fun a => (O.valuation_le_one_iff _).2 (hO a)`. Set `P : Ideal (𝓞 K)` to `{ carrier := {a | O.valuation (ι a) < 1} add_mem' := fun {a b} ha hb => by show O.valuation (ι (a + b)) < 1`. Rewrite using `[map_add]`. Conclude with `O.valuation.map_add_lt ha hb`.
+
+Use the proof step `zero_mem' := by simp`. Use the proof step `smul_mem' := fun c x hx => by show O.valuation (ι (c * x)) < 1`. Rewrite using `[map_mul, map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (hι c)) hx }`. Establish `hP : P ≠ ⊤` using `fun h => by`.
+
+Establish `h0 : (1 : 𝓞 K) ∈ P` using `h ▸ Submodule.mem_top`. Establish `h1 : O.valuation (ι 1) < 1` using `h0`. Simplify using `at h1`. Take `⟨M, hM, hPM⟩` from `Ideal.exists_le_maximal P hP`. Set `la : HeightOneSpectrum (𝓞 K)` to `⟨M, hM.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hM (RingOfIntegers.not_isField K)⟩`.
+
+Establish `hle : ∀ (x : Ω) (a : 𝓞 K), O.valuation (x - ι a) < 1 → O.valuation x ≤ 1` using `fun x a h => by`. Establish `: x = (x - ι a) + ι a` using `by ring`. Rewrite using `[this]`. Conclude with `O.valuation.map_add_le h.le (hι a)`. Establish `hmul : ∀ (x y : Ω) (a b : 𝓞 K), O.valuation (x - ι a) < 1 → O.valuation (y - ι b) < 1 → O.valuation (x * y - ι (a * b)) < 1` using `fun x y a b ha hb => by`.
+
+Establish `: x * y - ι (a * b) = x * (y - ι b) + ι b * (x - ι a)` using `by rw [map_mul]; ring`. Rewrite using `[this]`. Use `O.valuation.map_add_lt ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (hle x a ha)) hb`.
+
+Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (hι b)) ha`. Establish `hadd : ∀ (x y : Ω) (a b : 𝓞 K), O.valuation (x - ι a) < 1 → O.valuation (y - ι b) < 1 → O.valuation (x + y - ι (a + b)) < 1` using `fun x y a b ha hb => by`. Establish `: x + y - ι (a + b) = (x - ι a) + (y - ι b)` using `by rw [map_add]; ring`. Rewrite using `[this]`.
+
+Conclude with `O.valuation.map_add_lt ha hb`. Set `R : Subring Ω` to `{ carrier := {x | ∃ a : 𝓞 K, O.valuation (x - ι a) < 1} mul_mem' := fun ⟨a, ha⟩ ⟨b, hb⟩ => ⟨a * b, hmul _ _ a b ha hb⟩ one_mem' := ⟨1, by simp⟩ add_mem' := fun ⟨a, ha⟩ ⟨b, hb⟩ => ⟨a + b, hadd _ _ a b ha hb⟩ zero_mem' := ⟨0, by simp⟩ neg_mem' := fun {x} ⟨a, ha⟩ => ⟨-a, by`. Establish `: -x - ι (-a) = -(x - ι a)` using `by rw [map_neg]; ring`. Rewrite using `[this, Valuation.map_neg]`. Conclude with `ha⟩ }`.
+
+Set `I : Ideal R` to `{ carrier := {x | ∃ a ∈ M, O.valuation ((x : Ω) - ι a) < 1} add_mem' := fun ⟨a, ha', ha⟩ ⟨b, hb', hb⟩ => ⟨a + b, M.add_mem ha' hb', hadd _ _ a b ha hb⟩ zero_mem' := ⟨0, M.zero_mem, by simp⟩ smul_mem' := fun c x ⟨b, hb', hb⟩ => by`. Take `⟨a, ha⟩` from `c.2`. Conclude with `⟨a * b, M.mul_mem_left a hb', hmul _ _ a b ha hb⟩ }`. Establish `hI : I ≠ ⊤` using `fun h => by`. Establish `h0 : (1 : R) ∈ I` using `h ▸ Submodule.mem_top`.
+
+Take `⟨a, ha', ha⟩` from `h0`. Establish `h1 : 1 - a ∈ P` using `by show O.valuation (ι (1 - a)) < 1`. Rewrite using `[map_sub, map_one]`. Conclude with `ha`. Establish `h2 : (1 : 𝓞 K) ∈ M` using `by simpa using M.add_mem (hPM h1) ha'`.
+
+Conclude with `hM.ne_top ((Ideal.eq_top_iff_one M).2 h2)`. Take `⟨B, hRB, hIB⟩` from `Ideal.image_subset_nonunits_valuationSubring I hI`. Establish `hιR : ∀ a, ι a ∈ R` using `fun a => ⟨a, by simp⟩`. Use `⟨la, B, ValuationSubring.nonunits_le_nonunits.1 fun x hx => ?_, fun a => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Establish `hx' : O.valuation (x - ι 0) < 1`.
+
+Simplify using `using (O.mem_nonunits_iff).1 hx`. Conclude with `hIB ⟨⟨x, 0, hx'⟩, ⟨0, M.zero_mem, hx'⟩, rfl⟩`. Conclude with `(B.valuation_le_one_iff _).2 (hRB (hιR a))`. Conclude with `(B.mem_nonunits_iff).1 (hIB ⟨⟨ι a, hιR a⟩, ⟨a, ha, by simp⟩, rfl⟩)`.
+-/
 theorem exists_refine {K Ω : Type} [Field K] [NumberField K] [Field Ω] [Algebra K Ω] (O : ValuationSubring Ω)
     (hO : ∀ a : 𝓞 K, algebraMap K Ω (a : K) ∈ O) :
     ∃ (la : HeightOneSpectrum (𝓞 K)) (O' : ValuationSubring Ω), O' ≤ O ∧

@@ -19,6 +19,19 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.BKGal.ExtClass
 
+/- English proof (translation)
+Establish `hL : D₁.phi x ∈ D₁.L` using `D₁.phi_mem_L hx.1`. Establish `hM : E K l e ^ η • (D₁.phi x - x) ∈ D₁.M`. Rewrite using `[smul_sub]`. Conclude with `sub_mem (D₁.upper _ hL) (D₁.M.smul_mem (EIn l e (A O K) ^ η) hx.1)`. Establish `hG0 : G.app (E K l e ^ η • (D₁.phi x - x)) = 0` using `by rw [map_smul, hG, smul_zero]`.
+
+Take `⟨w, hw, hFw⟩` from `(hex.exact _ hM).1 hG0`. Establish `hu : IsUnit (E K l e ^ η)` using `(isUnit_E l e).pow η`. Use `set y₀ := Ezpow K l e (-(η : ℤ)) • w with hy₀def`. Establish `hE : E K l e ^ η • y₀ = w`. Rewrite using `[hy₀def, smul_smul, E_pow_mul_Ezpow_neg, one_smul]`.
+
+Establish `hFy₀ : F.app y₀ = D₁.phi x - x`. Use `(hu.smul_left_cancel).1 ?_` and prove the remaining obligations. Rewrite using `[← map_smul, hE]`. Conclude with `hFw`. Establish `hy₀ : y₀ ∈ D₀.EM η`.
+
+Rewrite using `[mem_divE, hE]`. Conclude with `hw`. Establish `hinj : ∀ v ∈ D₀.EM η, F.app v = 0 → v = 0` using `fun v hv h => (hu.smul_left_cancel).1 (by`. Rewrite using `[smul_zero]`. Conclude with `hex.inj _ hv (by rw [map_smul, h, smul_zero]))`.
+
+Establish `hinv2 : ∀ g, D₁.desc.act g (D₁.phi x - x) = D₁.phi x - x` using `fun g => by`. Rewrite using `[map_sub, D₁.desc.act_phi, hx.2 g]`. Use `⟨y₀, ⟨hy₀, fun g => ?_⟩, hFy₀, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Use `hinj _ (sub_mem (D₀.desc.act_mem_EM g hy₀) hy₀) ?_` and prove the remaining obligations.
+
+Rewrite using `[map_sub, F.app_act, hFy₀, hinv2, sub_self]`. Use `(GlobalTheory.T.breuilKisin_exactTriple_jumps_characters_lift O K l e a ι κ μ η H D₀ D₁ D₂ F G hex).2.2.1 ?_` and prove the remaining obligations. Rewrite using `[map_zero, Hom.onPol_Mon, hFy₀, PhiMod.Mon_phi_sub, (D₁.cls_eq_zero_iff).2 (D₁.EN_mem_Man (D₁.M_le_Man hx.1)), neg_zero]`.
+-/
 theorem lift_phi_sub {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [CompleteSpace K]
     [Algebra O K] [IsUnitBall O K] {l e a : ℕ} [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] [NeZero a]
     [TameDescentExponentData K l e a] {ι κ μ : Type} [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ] [Fintype μ]
@@ -61,6 +74,9 @@ end GlobalTheory.BKGal.ExtClass
 
 namespace GlobalTheory.BKGal.ExtClass
 
+/- English proof (translation)
+Use `P.raises_phi.eq_zero (α := Unit) (σ := id) Function.surjective_id (δ := fun _ => u - P.xi (red u)) (fun _ => by rw [mem_uPow_one, map_sub, PhiMod.red_xi, sub_self]) (fun _ => by rw [map_sub, hu, PhiMod.phi_xi, ← PhiMod.red_phi, hu]) ()` as an intermediate fact. Conclude with `(sub_eq_zero.1 this).symm`.
+-/
 theorem xi_red_of_phi_eq {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebra O K]
     [IsUnitBall O K] {l e a : ℕ} [Fact l.Prime] {ι : Type} [Fintype ι] [DecidableEq ι]
     (P : PhiMod O K l e a ι) {u : Vec K a ι} (hu : P.phi u = u) : P.xi (red u) = u := by
@@ -71,6 +87,23 @@ theorem xi_red_of_phi_eq {O K : Type} [CommRing O] [NormedField K] [IsUltrametri
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `hBS hFB l _ a e _ _ ϖ LL _ _ Pl AI hStd N η H Sig U hN T hT Pk c hc`. Establish `hl2 : l ≠ 2`. Establish `h1` using `hN.large`. Establish `h2` using `hN.two_le`. Introduce and unpack `rfl`.
+
+Establish `: 8 ≤ N ^ 3`. Combine the equalities or inequalities in the displayed calculation. Use linear arithmetic over natural numbers and integers. Take `⟨hUnit, hExt⟩` from `GlobalTheory.T.extensionLattice_isCrysTameTypeWithJumps hFB l a e ϖ LL Pl AI hStd Sig U hN.zero_mem_Sig hN.zero_mem_U`. Take `⟨Tp, f, g, v, hfg, hv, hgv, hcv, hTp⟩` from `hExt T hT c hc`.
+
+Take `⟨Pp, hPp⟩` from `GlobalTheory.T.exists_breuilKisinModule_tameDescent_goodLattice hBS hFB l a e ϖ LL hl2 Pl AI hStd η H Sig U hN.range_U Tp hTp`. Take `⟨Pu, hPu⟩` from `GlobalTheory.T.exists_breuilKisinModule_tameDescent_goodLattice hBS hFB l a e ϖ LL hl2 Pl AI hStd η H Sig U hN.range_U _ hUnit`. Take `⟨F, hF⟩` from `GlobalTheory.T.latticeHom_lifts_breuilKisinDescentHom hBS l a e ϖ LL η H T Tp Pk Pp f`. Establish `hG'` using `GlobalTheory.T.latticeHom_lifts_breuilKisinDescentHom hBS l a e ϖ LL η H Tp (unitLat (Gl l) : QLat LL) Pp Pu g`. Take `⟨G, hG⟩` from `hG'`.
+
+Establish `hex : IsExactTriple F.toHom G.toHom` using `GlobalTheory.T.isExactTriple_breuilKisin_of_shortExactLattices l a e ϖ LL _ _ _ Pk.D.toPhiMod Pp.D.toPhiMod Pu.D.toPhiMod T Tp (unitLat (Gl l) : QLat LL) Pk.R.I Pp.R.I Pu.R.I f g F.toHom G.toHom hfg hF hG`. Establish `hB : GlobalTheory.IndefiniteRowSideFullHecke.RepresentationBounds.Bounds l e Sig U N η H` using `⟨hN.frob_mem, hN.zero_mem_Sig, hN.card_Sig, hN.two_le, hN.range_U, hN.zero_mem_U, hN.card_U, hN.one_le, hN.lt, hN.large⟩`. Establish `hK` using `GlobalTheory.T.cokernel_latticeMap_killed_by_prime_pow (↥(OL LL)) (↥LL.1) l e a (Fin Pp.n) (Fin Pu.n) Sig U N η H hB Pp.D Pu.D hPp hPu.chars_subset G hex.finiteLength`. Take `⟨u, x, hx1, hu, hφu, hux⟩` from `GlobalTheory.T.breuilKisinDescent_unitLattice_datum hBS l a e ϖ LL η H Pu`. Take `⟨x₂, hx₂, hGx₂⟩` from `hK.2.2.2.1 u.1 hu`.
+
+Establish `hG0 : G.app (Pp.D.phi x₂ - x₂) = 0`. Rewrite using `[map_sub, G.toHom.app_phi, hGx₂, map_nsmul, hφu, sub_self]`. Take `⟨y, hy, hFy, hMon⟩` from `lift_phi_sub F G hex hx₂ hG0`. Use `⟨y, hy, hMon, ?_⟩` and prove the remaining obligations. Establish `hFinj` using `GlobalTheory.T.injective_of_phiModule_exact_triple _ _ _ _ _ _ _ _ _ _ _ F.toHom G.toHom hex`.
+
+Use `set d := red (Pp.D.phi x₂) with hd`. Establish `hL : Pp.D.phi x₂ ∈ Pp.D.L` using `Pp.D.phi_mem_L hx₂.1`. Establish `hσp : Pp.D.phi x₂ - Pp.D.xi d ∈ Pp.D.MMl`. Use `sub_mem (Pp.D.ext_mono ((A_le_S l e).trans (le_away _ _)) hL) ?_` and prove the remaining obligations. Rewrite using `[PhiMod.xi_apply]`.
+
+Use `((GlobalTheory.T.breuilKisin_section_trivialises_invertPrime_tensor (↥(OL LL)) (↥LL.1) l e a (Fin Pp.n) Pp.D.toPhiMod).2 _).2 ?_` and prove the remaining obligations. Conclude with `mem_tot.2 fun τ i => by`. Rewrite using `[cst_apply]`. Conclude with `HasK.C_mem _`. Establish `hGσ : G.app (Pp.D.phi x₂ - Pp.D.xi d) = 0`.
+
+Rewrite using `[map_sub, Hom.app_xi, hd, ← Hom.red_app, G.toHom.app_phi, hGx₂, map_nsmul, hφu, map_nsmul, map_nsmul, xi_red_of_phi_eq _ hφu, sub_self]`. Take `⟨σ, hσ, hFσ⟩` from `GlobalTheory.T.exists_preimage_invertedPrime_breuil_of_exactTriple _ _ _ _ _ _ _ _ _ _ _ F.toHom G.toHom hex _ hσp hGσ`. Establish `hσinv : σ ∈ Pk.D.desc.inv` using `fun γ => hFinj (by`. Rewrite using `[F.app_act, hFσ, map_sub, Pp.D.desc.act_phi, hx₂.2 γ, Descent.act_xi, hd, ← Descent.red_act, Pp.D.desc.act_phi, hx₂.2 γ])`. Conclude with `GlobalTheory.T.extensionClass_eq_lPow_smul_galois l a e ϖ LL η H T Tp f g hfg Pk Pp Pu F G hF hG hex hFinj u x hx1 hu hφu hux (GlobalTheory.IndefiniteRowSideFullHecke.RepresentationBounds.rho l Sig N) x₂ hx₂ hGx₂ v c hv hgv hcv σ hσ hσinv hFσ y hy hFy`.
+-/
 theorem main : GlobalTheory.Published.BhattScholzeCrystallineLattices → GlobalTheory.Published.FontaineBcris → ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (ϖ : PiSys l e) (LL : FinExt l) [HasUnr a LL] [TameDescentExponentData ↥LL.1 l e a] (Pl : LocPrime l) (AI : LocAinf l Pl), IsStd Pl AI → ∀ (N η H : ℕ) (Sig : Finset (ZMod e)) (U : Finset ℤ), GlobalTheory.IndefiniteRowSideFullHecke.ConductorExponents.Numerics l e N η H Sig U → ∀ T : QLat LL, IsGood a ϖ Pl T Sig U → ∀ Pk : Pack a ϖ η H T, ∀ c ∈ latticeFiniteCocycles (Pl.PD (Formalism.MainNotions.ElementDenominator.qlExt l)) T.L, ∃ y ∈ Pk.D.Y, Pk.D.Mon y = 0 ∧ Pk.R.ClassOf y ((l : ↥LL.1) ^ GlobalTheory.IndefiniteRowSideFullHecke.ConductorExponents.eW N (maxPeriod l Sig) • c) := by
   intro hBS hFB l _ a e _ _ ϖ LL _ _ Pl AI hStd N η H Sig U hN T hT Pk c hc
   have hl2 : l ≠ 2 := by

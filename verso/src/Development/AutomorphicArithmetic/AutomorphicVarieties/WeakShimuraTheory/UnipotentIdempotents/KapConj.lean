@@ -3,6 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp UpperTheory.V.Ws.Lk
 
+/- English proof (translation)
+Substitute `h1` using the available equality. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `h0'` using `congrArg Additive.ofMul h0`. Establish `h2'` using `congrArg Additive.ofMul h2`. Simplify using `only [ofMul_mul, ofMul_pow, ofMul_inv, ofMul_one, add_smul, one_smul, neg_smul, smul_add, smul_neg] at h0' h2' ⊢`.
+
+Establish `hk : Additive.ofMul k' = -(Additive.ofMul k + (e • Additive.ofMul o + 3 • Additive.ofMul o + Additive.ofMul x + Additive.ofMul p))`. Rewrite using `[eq_neg_iff_add_eq_zero, ← h0']`. Normalize the expressions using the abelian group laws. Establish `hb : Additive.ofMul b' = -Additive.ofMul b`. Rewrite using `[eq_neg_iff_add_eq_zero, add_comm]`.
+
+Conclude with `h2'`. Rewrite using `[hk, hb]`. Simplify using `only [smul_add, smul_neg, neg_add, neg_neg, two_smul]`. Normalize the expressions using the abelian group laws.
+-/
 private theorem kapConj_alg {M : Type} [CommGroup M] (k k' y b b' o x p E : M) (e n : ℕ)
     (h0 : k * k' * (o ^ (e + 3) * x * p) = 1) (h1 : y ^ 2 * o = E) (h2 : b * b' = 1) :
     (k * y⁻¹ ^ (e + 4) * b ^ n) * (k' * y⁻¹ ^ (e + 4) * b' ^ n) * (E * o⁻¹ * x * (E ^ e * p)) * E ^ 3 = 1 := by
@@ -22,6 +29,21 @@ private theorem kapConj_alg {M : Type} [CommGroup M] (k k' y b b' o x p E : M) (
   simp only [smul_add, smul_neg, neg_add, neg_neg, two_smul]
   abel
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ c D T P hDeep σ hσ g g' hgg`. Establish `hKL` using `K_le T`. Establish `hFL : T.F ≤ T.L` using `T.hL ▸ le_sup_left`. Establish `hres : ∀ h : G T.L Ω, resQ T.K (resLe hKL h) = resQ T.L h` using `fun h => rfl`. Establish `hresF : ∀ h : G T.L Ω, resQ T.F (resLe hFL h) = resQ T.L h` using `fun h => rfl`.
+
+Establish `hss : resQ T.K (resLe hKL g') = σ * resQ T.K (resLe hKL g) * σ⁻¹`. Rewrite using `[hres, hres]`. Conclude with `hgg`. Take `⟨m, hm, hψ⟩` from `hDeep`. Establish `hψg : ∃ m, l.Coprime m ∧ D.ψ (resQ T.K (resLe hKL g)) ^ m = 1` using `⟨m, hm, by rw [hres, ← hresF]; exact hψ _⟩`.
+
+Establish `h0` using `P.κ₀_conj σ hσ _ _ hss hψg`. Take `⟨hb, ht⟩` from `P.conj σ hσ _ _ hss`. Use `⟨?_, hb, ht⟩` and prove the remaining obligations. Establish `hγ : P.γ (resQ T.L g') = P.γ (resQ T.L g)`. Rewrite using `[hgg, map_mul, map_mul, map_inv, mul_comm (P.γ σ), mul_inv_cancel_right]`.
+
+Establish `hcyc : cycBar T.L Ω l g = cycBar ℚ Ω l (resQ T.L g)`. Both sides reduce to the same expression. Establish `hchi : ∀ x, toQ (chiO ℚ Ω l c.O) x = cycBar ℚ Ω l x` using `fun x => by`. Rewrite using `[← (auChi ℚ Ω c).1]`. Establish `hth : ∀ x, toQ D.th x = toQ (chiO ℚ Ω l c.O) x * (toQ D.om x)⁻¹ * toQ D.ξ x * (toQ (chiO ℚ Ω l c.O) x ^ D.e * toQ D.ψ x)`.
+
+Introduce `x`. Simplify using `only [toQ, W.pushCh, Raw.th, Raw.al, Raw.Psi, Chr.Psi, MonoidHom.comp_apply, MonoidHom.mul_apply, MonoidHom.inv_apply, map_mul, map_inv]`. Rewrite using `[show (chiO ℚ Ω l c.O ^ (D.e : ℤ)) x = (chiO ℚ Ω l c.O x) ^ (D.e : ℤ) from rfl, zpow_natCast, map_pow]`. Establish `hk0 : toQ (D.om ^ (D.e + 3) * D.ξ * D.ψ) (resQ T.L g) = toQ D.om (resQ T.L g) ^ (D.e + 3) * toQ D.ξ (resQ T.L g) * toQ D.ψ (resQ T.L g)`. Simplify using `only [toQ, W.pushCh, MonoidHom.comp_apply, MonoidHom.mul_apply, MonoidHom.pow_apply, map_mul, map_pow]`.
+
+Rewrite `h0` using `[hres, hk0]`. Establish `h1` using `P.γ_sq (resQ T.L g)`. Establish `key` using `kapConj_alg _ _ _ _ _ _ _ _ _ D.e (D.e % 2) h0 h1 hb`. Rewrite using `[hth, hchi, hcyc]`. Simplify using `only [Pre.κ, Pre.βL, MonoidHom.mul_apply, MonoidHom.comp_apply, MonoidHom.pow_apply, MonoidHom.inv_apply]`.
+
+Rewrite using `[hγ]`. Conclude with `key`.
+-/
 theorem UpperTheory.V.Ws.Lk.kapConj :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {D : Raw Ω c} {T : Tower D} (P : Pre T), T.Deep → ∀ σ ∉ T.K.fixingSubgroup, ∀ g g' : G T.L Ω, resQ T.L g' = σ * resQ T.L g * σ⁻¹ → P.κ g * P.κ g' * toQ D.th (resQ T.L g) * cycBar T.L Ω l g ^ 3 = 1 ∧ P.βL g * P.βL g' = 1 ∧ P.tL g * P.tL g' = 1 := by
   intro Ω _ _ _ l _ c D T P hDeep σ hσ g g' hgg

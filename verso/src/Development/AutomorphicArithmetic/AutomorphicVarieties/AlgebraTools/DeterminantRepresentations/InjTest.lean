@@ -6,6 +6,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Deter
 
 open Polynomial UpperTheory.V.W
 
+/- English proof (translation)
+Use extensionality with `β`. Rewrite using `[← sub_eq_zero]`. Use `hf _ fun x => ?_` and prove the remaining obligations. Use `congrArg (MvPolynomial.coeff β) (h x)` as an intermediate fact. Rewrite `this` using `[MvPolynomial.coeff_map, MvPolynomial.coeff_map]`.
+
+Rewrite using `[map_sub, this, sub_self]`.
+-/
 private theorem injTest_mvInj {A : Type} [CommRing A] {X : Type} (K : X → Type) [∀ x, CommRing (K x)]
     (f : ∀ x, A →+* K x) (hf : ∀ a, (∀ x, f x a = 0) → a = 0) {σ : Type} (P Q : MvPolynomial σ A)
     (h : ∀ x, MvPolynomial.map (f x) P = MvPolynomial.map (f x) Q) : P = Q := by
@@ -16,6 +21,9 @@ private theorem injTest_mvInj {A : Type} [CommRing A] {X : Type} (K : X → Type
   rw [MvPolynomial.coeff_map, MvPolynomial.coeff_map] at this
   rw [map_sub, this, sub_self]
 
+/- English proof (translation)
+Proceed by induction on `z using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [smul_add, map_add, ha, hb]`. Consider the case `single g s => simp`.
+-/
 private theorem injTest_smul {R S G : Type} [CommRing R] [CommRing S] [Group G] (φ : R →+* S) (r : R)
     (z : MonoidAlgebra R G) :
     MonoidAlgebra.mapRingHom G φ (r • z) = φ r • MonoidAlgebra.mapRingHom G φ z := by
@@ -24,6 +32,9 @@ private theorem injTest_smul {R S G : Type} [CommRing R] [CommRing S] [Group G] 
   | add a b ha hb => simp only [smul_add, map_add, ha, hb]
   | single g s => simp
 
+/- English proof (translation)
+Proceed by induction on `z using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `single g s => simp`.
+-/
 private theorem injTest_comp {R S T G : Type} [CommRing R] [CommRing S] [CommRing T] [Group G]
     (φ : R →+* S) (ψ : S →+* T) (z : MonoidAlgebra R G) :
     MonoidAlgebra.mapRingHom G ψ (MonoidAlgebra.mapRingHom G φ z) = MonoidAlgebra.mapRingHom G (ψ.comp φ) z := by
@@ -32,6 +43,17 @@ private theorem injTest_comp {R S T G : Type} [CommRing R] [CommRing S] [CommRin
   | add a b ha hb => simp only [map_add, ha, hb]
   | single g s => simp
 
+/- English proof (translation)
+Introduce `n A G _ _ X K _ f hf`. Use `⟨fun D D' h => ?_, fun D y h => ?_⟩` and prove the remaining obligations. Use `UpperTheory.V.AlgebraTools.Det.extGen D D' fun m g => ?_` and prove the remaining obligations. Use `injTest_mvInj K f hf _ _ fun x => ?_` and prove the remaining obligations. Rewrite using `[← (UpperTheory.V.AlgebraTools.Det.mapApi D (f x)).2.2.2.2.1, ← (UpperTheory.V.AlgebraTools.Det.mapApi D' (f x)).2.2.2.2.1, h x]`.
+
+Introduce `B _ _ w`. Take `⟨m, g, b, rfl⟩` from `UpperTheory.V.AlgebraTools.Det.genSpan (A := A) B w`. Use `set z : MonoidAlgebra (MvPolynomial (Fin m) A) G := 1 + GDet.gen (fun j => MonoidAlgebra.single (g j) (1 : A)) * MonoidAlgebra.mapRingHom G MvPolynomial.C y with hz`. Establish `h1 : D.D (MvPolynomial (Fin m) A) z = 1`. Use `injTest_mvInj K f hf _ _ fun x => ?_` and prove the remaining obligations.
+
+Rewrite using `[← (UpperTheory.V.AlgebraTools.Det.mapApi D (f x)).2.2.2.1, map_one, hz, map_add, map_one, map_mul, injTest_comp]`. Establish `e : (MvPolynomial.map (f x) : MvPolynomial (Fin m) A →+* _).comp MvPolynomial.C = (algebraMap (K x) (MvPolynomial (Fin m) (K x))).comp (f x)`. Use extensionality with `a : 1`. Simplify using the standard rewrite rules. Rewrite using `[e, ← injTest_comp]`.
+
+Conclude with `h x _ _`. Establish `h2` using `D.nat _ B (MvPolynomial.aeval b) z`. Establish `e : ((MvPolynomial.aeval b : MvPolynomial (Fin m) A →ₐ[A] B) : MvPolynomial (Fin m) A →+* B).comp MvPolynomial.C = algebraMap A B`. Use extensionality with `a : 1`. Simplify using the standard rewrite rules.
+
+Rewrite `h2` using `[h1, map_one, hz, map_add, map_one, map_mul, injTest_comp, e, GDet.gen, map_sum]`. Simplify using `only [injTest_smul, injTest_comp, e] at h2`. Simplify `h2` using `only [RingHom.coe_coe, MvPolynomial.aeval_X]`.
+-/
 theorem UpperTheory.V.AlgebraTools.Det.injTest :
     ∀ {n : ℕ} {A G : Type} [CommRing A] [Group G] {X : Type} (K : X → Type) [∀ x, CommRing (K x)] (f : ∀ x, A →+* K x),
     (∀ a, (∀ x, f x a = 0) → a = 0) →

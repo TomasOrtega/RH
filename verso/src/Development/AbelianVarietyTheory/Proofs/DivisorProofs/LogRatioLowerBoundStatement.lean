@@ -6,5 +6,8 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.AllWt GlobalTheory.CompHt GlobalTheory.BigTop GlobalTheory.CovTop GlobalTheory.CovTop.MeasRd
 open Formalism.MainNotions
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CovTop.MeasLow.lower | exact GlobalTheory.CovTop.MeasLow.lower | (intros; apply GlobalTheory.CovTop.MeasLow.lower <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.log_ratio_lower_bound : Hypotheses2 → Closed FamHyp fun Fm _ => ∃ K : ℝ, 0 ≤ K ∧ EvTied Fm fun _ _ _ p => ∀ i, -(K * unitE p) ≤ Real.log (ratAt p i) := by
   first | exact @GlobalTheory.CovTop.MeasLow.lower | exact GlobalTheory.CovTop.MeasLow.lower | (intros; apply GlobalTheory.CovTop.MeasLow.lower <;> assumption)

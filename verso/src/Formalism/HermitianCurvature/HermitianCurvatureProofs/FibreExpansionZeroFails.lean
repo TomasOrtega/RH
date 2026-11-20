@@ -4,15 +4,47 @@ open Formalism.FourierDecayAlt
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+Introduce `r i a _ hai`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem fibre_chain_expansion : C6.FibChainExp := by
   intro r i a _ hai; nlinarith
 
+/- English proof (translation)
+Introduce `r i hi`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem fibre_expansion_identity : C6.FibExpText := by
   intro r i hi; nlinarith
 
+/- English proof (translation)
+Introduce `h`. Use `h 0 0` as an intermediate fact. Evaluate the numerical expressions using `at this`.
+-/
 theorem fibre_expansion_zero_fails : C6.FibExpZeroFails := by
   intro h; have := h 0 0; norm_num at this
 
+/- English proof (translation)
+Introduce `Cb CV hCb`. Use `⟨Cb ^ 2 + 3 * Cb + 6 * CV + 1, ?_⟩` and prove the remaining obligations. Introduce `r n N o κ As A₀ hr hn h1 h2 ho hκ hA`. Unfold `C6.AV C6.mmV`. Use `push_cast`.
+
+Establish `hx : (1:ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `hxy : 2 * (r:ℝ) + 2 ≤ n` using `by exact_mod_cast hn`. Establish `h1' : (N:ℝ) * (n:ℝ) ^ 2 ≤ As` using `by exact_mod_cast h1`. Establish `h2' : (n:ℝ) ^ 3 ≤ As` using `by exact_mod_cast h2`. Establish `hV : (0:ℝ) ≤ CV` using `by positivity`.
+
+Establish `hN : (0:ℝ) ≤ N` using `by positivity`. Establish `hy : (1:ℝ) ≤ n` using `by linarith`. Establish `hn2 : (n:ℝ) ^ 2 ≤ As` using `le_trans (by nlinarith) h2'`. Establish `hn1 : (n:ℝ) ≤ As` using `le_trans (by nlinarith) hn2`. Establish `hR3 : ((r:ℝ) + 1) ^ 3 ≤ As` using `le_trans (pow_le_pow_left₀ (by positivity) (by linarith) 3) h2'`.
+
+Establish `hr3 : (r:ℝ) ^ 3 ≤ As` using `le_trans (pow_le_pow_left₀ (by positivity) (by linarith) 3) hR3`. Establish `hNn : (N:ℝ) * n ≤ As` using `le_trans (mul_le_mul_of_nonneg_left (by nlinarith) hN) h1'`. Establish `ho' : (o:ℝ) ≤ Cb * As`. Combine the equalities or inequalities in the displayed calculation. Establish `hAs0 : (0:ℝ) ≤ As` using `le_trans (by positivity) hn1`.
+
+Use `set P : ℝ := ((r:ℝ) + 1) ^ 4 * As with hP`. Establish `hR4 : (1:ℝ) ≤ ((r:ℝ) + 1) ^ 4` using `one_le_pow₀ (by linarith)`. Establish `hP1 : (As:ℝ) ≤ P` using `by nlinarith`. Establish `hRR : (r:ℝ) + 1 ≤ ((r:ℝ) + 1) ^ 4`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hP2 : ((r:ℝ) + 1) * As ≤ P` using `mul_le_mul_of_nonneg_right hRR hAs0`. Establish `hx4 : (r:ℝ) ^ 4 ≤ ((r:ℝ) + 1) ^ 4` using `pow_le_pow_left₀ (by positivity) (by linarith) 4`. Establish `hP3 : (r:ℝ) ^ 4 * n ≤ P` using `mul_le_mul hx4 hn1 (by positivity) (by positivity)`. Establish `hP4 : (r:ℝ) * n ^ 2 ≤ P` using `mul_le_mul (by linarith) hn2 (by positivity) (by positivity)`. Establish `hx2 : (r:ℝ) ^ 2 ≤ ((r:ℝ) + 1) ^ 4`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hP5 : (r:ℝ) ^ 5 ≤ P`. Establish `: (r:ℝ) ^ 5 = (r:ℝ) ^ 2 * (r:ℝ) ^ 3` using `by ring`. Rewrite using `[this]; exact mul_le_mul hx2 hr3 (by positivity) (by positivity)`. Establish `hP6 : ((r:ℝ) + 1) * ((r:ℝ) ^ 2 + 1) ≤ P`.
+
+Establish `: ((r:ℝ) + 1) * ((r:ℝ) ^ 2 + 1) ≤ ((r:ℝ) + 1) ^ 3` using `by nlinarith`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hκ' : (κ:ℝ) ≤ Cb ^ 2 * P`. Establish `a1 : (κ:ℝ) ≤ Cb * ((r:ℝ) + 1) * (Cb * As)` using `le_trans hκ (mul_le_mul_of_nonneg_left ho' (by positivity))`. Establish `a2 : Cb * ((r:ℝ) + 1) * (Cb * As) = Cb ^ 2 * (((r:ℝ) + 1) * As)` using `by ring`.
+
+Rewrite `a1` using `[a2]`. Conclude with `le_trans a1 (mul_le_mul_of_nonneg_left hP2 (by positivity))`. Establish `hoR : ((r:ℝ) + 1) * o ≤ Cb * P`. Combine the equalities or inequalities in the displayed calculation. Establish `hP0 : 0 ≤ P` using `by positivity`.
+
+Establish `e1 : (r:ℝ) * (CV * ((r:ℝ) ^ 3 * n + (n:ℝ) ^ 2 + (r:ℝ) ^ 4)) = CV * ((r:ℝ) ^ 4 * n) + CV * ((r:ℝ) * n ^ 2) + CV * (r:ℝ) ^ 5` using `by ring`. Establish `e2 : 3 * ((r:ℝ) + 1) * (CV * ((r:ℝ) ^ 2 + 1) + o) = 3 * CV * (((r:ℝ) + 1) * ((r:ℝ) ^ 2 + 1)) + 3 * (((r:ℝ) + 1) * o)` using `by ring`. Rewrite using `[e1, e2]`. Use `mul_le_mul_of_nonneg_left hP3 hV` as an intermediate fact. Use `mul_le_mul_of_nonneg_left hP4 hV` as an intermediate fact.
+
+Use `mul_le_mul_of_nonneg_left hP5 hV` as an intermediate fact. Use `mul_le_mul_of_nonneg_left hP6 (by positivity : (0:ℝ) ≤ 3 * CV)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem c6_budgetArith_proof : C6.BudgetArith := by
   intro Cb CV hCb
   refine ⟨Cb ^ 2 + 3 * Cb + 6 * CV + 1, ?_⟩
@@ -77,6 +109,25 @@ theorem c6_budgetArith_proof : C6.BudgetArith := by
   have := mul_le_mul_of_nonneg_left hP6 (by positivity : (0:ℝ) ≤ 3 * CV)
   nlinarith
 
+/- English proof (translation)
+Introduce `c₃ Cb hc hCb`. Use `⟨c₃ * Cb + 2 * c₃ + 3 * Cb + 4, ?_⟩` and prove the remaining obligations. Introduce `r n N o As A₀ hr hn h1 h2 ho hA`. Establish `hx : (1:ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `hxy : 2 * (r:ℝ) + 2 ≤ n` using `by exact_mod_cast hn`.
+
+Establish `h1' : (N:ℝ) * (n:ℝ) ^ 2 ≤ As` using `by exact_mod_cast h1`. Establish `h2' : (n:ℝ) ^ 3 ≤ As` using `by exact_mod_cast h2`. Establish `hN : (0:ℝ) ≤ N` using `by positivity`. Establish `hy : (1:ℝ) ≤ n` using `by linarith`. Establish `hn2 : (n:ℝ) ^ 2 ≤ As` using `le_trans (by nlinarith) h2'`.
+
+Establish `hn1 : (n:ℝ) ≤ As` using `le_trans (by nlinarith) hn2`. Establish `hA1 : (1:ℝ) ≤ As` using `le_trans hy hn1`. Establish `hNn : (N:ℝ) * n ≤ As` using `le_trans (mul_le_mul_of_nonneg_left (by nlinarith) hN) h1'`. Establish `ho' : (o:ℝ) ≤ Cb * As`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `set P : ℝ := ((r:ℝ) + 1) ^ 4 * As with hP`. Establish `hAs0 : (0:ℝ) ≤ As` using `by linarith`. Establish `q2 : ((r:ℝ) + 1) ^ 2 ≤ ((r:ℝ) + 1) ^ 4` using `pow_le_pow_right₀ (by linarith) (by norm_num)`. Establish `q3 : ((r:ℝ) + 1) ^ 3 ≤ ((r:ℝ) + 1) ^ 4` using `pow_le_pow_right₀ (by linarith) (by norm_num)`. Establish `q1 : ((r:ℝ) + 1) ≤ ((r:ℝ) + 1) ^ 4`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hR4 : (1:ℝ) ≤ ((r:ℝ) + 1) ^ 4` using `one_le_pow₀ (by linarith)`. Establish `p1 : ((r:ℝ) + 1) ^ 2 * o ≤ Cb * P`. Combine the equalities or inequalities in the displayed calculation. Establish `p2 : ((r:ℝ) + 1) ^ 2 * ((r:ℝ) * n) ≤ P`.
+
+Establish `: (r:ℝ) * n ≤ ((r:ℝ) + 1) * As` using `mul_le_mul (by linarith) hn1 (by positivity) (by positivity)`. Combine the equalities or inequalities in the displayed calculation. Establish `p3 : ((r:ℝ) + 1) ^ 2 ≤ P`. Combine the equalities or inequalities in the displayed calculation. Establish `p4 : ((r:ℝ) + 1) * o ≤ Cb * P`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `p5 : ((r:ℝ) + 1) ≤ P`. Combine the equalities or inequalities in the displayed calculation. Establish `hP0 : 0 ≤ P` using `by positivity`. Establish `e : c₃ * ((r:ℝ) + 1) ^ 2 * ((o:ℝ) + r * n + 1) = c₃ * (((r:ℝ) + 1) ^ 2 * o) + c₃ * (((r:ℝ) + 1) ^ 2 * ((r:ℝ) * n)) + c₃ * ((r:ℝ) + 1) ^ 2` using `by ring`.
+
+Establish `e' : 3 * ((r:ℝ) + 1) * ((o:ℝ) + 1) = 3 * (((r:ℝ) + 1) * o) + 3 * ((r:ℝ) + 1)` using `by ring`. Rewrite using `[e, e']`. Use `mul_le_mul_of_nonneg_left p1 hc` as an intermediate fact. Use `mul_le_mul_of_nonneg_left p2 hc` as an intermediate fact. Use `mul_le_mul_of_nonneg_left p3 hc` as an intermediate fact.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem big_cell_threshold : C6.BigCellVanishingThreshold := by
   intro c₃ Cb hc hCb
   refine ⟨c₃ * Cb + 2 * c₃ + 3 * Cb + 4, ?_⟩

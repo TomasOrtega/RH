@@ -4,6 +4,9 @@ import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ComplexMultiplication
 
 namespace GlobalTheory.CompanionTheory.Hypotheses₂
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.Published.ComplexMultiplicationJSt.hilbertClassFieldJ GlobalTheory.CompanionTheory.Published.complexMultiplicationJ`.
+-/
 theorem hilbertClassFieldJ : GlobalTheory.Published.HilbertClassFieldJ :=
   GlobalTheory.Published.ComplexMultiplicationJSt.hilbertClassFieldJ GlobalTheory.CompanionTheory.Published.complexMultiplicationJ
 

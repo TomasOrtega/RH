@@ -16,6 +16,9 @@ namespace GlobalTheory.CompanionTheory.ModelS.SkewInt
 
 open scoped Matrix.Norms.Operator in
 
+/- English proof (translation)
+Establish `h` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) X t`. Set `L : Mat n →L[ℝ] ℂ` to `LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ i j)`. Conclude with `L.hasFDerivAt.comp_hasDerivAt t h`.
+-/
 theorem exp_entry_hasDerivAt {n : ℕ} (X : Mat n) (t : ℝ) (i j : Fin n) :
     HasDerivAt (fun s : ℝ => (NormedSpace.exp (s • X) : Mat n) i j)
       ((NormedSpace.exp (t • X) * X : Mat n) i j) t := by
@@ -23,6 +26,11 @@ theorem exp_entry_hasDerivAt {n : ℕ} (X : Mat n) (t : ℝ) (i j : Fin n) :
   let L : Mat n →L[ℝ] ℂ := LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ i j)
   exact L.hasFDerivAt.comp_hasDerivAt t h
 
+/- English proof (translation)
+Establish `: HasDerivAt (fun s : ℝ => (fun i j => (NormedSpace.exp (s • X) : Mat n) i j : Fin n → Fin n → ℂ)) (fun i j => (NormedSpace.exp (t • X) * X : Mat n) i j) t`. Rewrite using `[hasDerivAt_pi]`. Introduce `i`. Rewrite using `[hasDerivAt_pi]`. Introduce `j`.
+
+Conclude with `exp_entry_hasDerivAt X t i j`. Conclude with `this`.
+-/
 theorem exp_hasDerivAt {n : ℕ} (X : Mat n) (t : ℝ) :
     HasDerivAt (fun s : ℝ => (NormedSpace.exp (s • X) : Mat n)) (NormedSpace.exp (t • X) * X) t := by
   have : HasDerivAt (fun s : ℝ => (fun i j => (NormedSpace.exp (s • X) : Mat n) i j : Fin n → Fin n → ℂ))
@@ -34,6 +42,11 @@ theorem exp_hasDerivAt {n : ℕ} (X : Mat n) (t : ℝ) :
     exact exp_entry_hasDerivAt X t i j
   exact this
 
+/- English proof (translation)
+Set `L : Mat n →L[ℝ] Mat n` to `LinearMap.toContinuousLinearMap (LinearMap.mulLeft ℝ k)`. Establish `h` using `L.hasFDerivAt.comp_hasDerivAt t (exp_hasDerivAt X t)`. Establish `e : L (NormedSpace.exp (t • X) * X) = k * NormedSpace.exp (t • X) * X`. Rewrite using `[Matrix.mul_assoc]`. Both sides reduce to the same expression.
+
+Conclude with `h.congr_deriv e`.
+-/
 theorem curve_hasDerivAt {n : ℕ} (k X : Mat n) (t : ℝ) :
     HasDerivAt (fun s : ℝ => k * (NormedSpace.exp (s • X) : Mat n)) (k * NormedSpace.exp (t • X) * X) t := by
   let L : Mat n →L[ℝ] Mat n := LinearMap.toContinuousLinearMap (LinearMap.mulLeft ℝ k)
@@ -43,12 +56,32 @@ theorem curve_hasDerivAt {n : ℕ} (k X : Mat n) (t : ℝ) :
     rfl
   exact h.congr_deriv e
 
+/- English proof (translation)
+Rewrite using `[Matrix.mem_unitaryGroup_iff, star_eq_conjTranspose, ← Matrix.exp_conjTranspose, conjTranspose_smul, star_trivial, hX, smul_neg, Matrix.exp_neg]`. Conclude with `Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 (Matrix.isUnit_exp _))`.
+-/
 theorem exp_mem_unitary {n : ℕ} {X : Mat n} (hX : Xᴴ = -X) (t : ℝ) :
     (NormedSpace.exp (t • X) : Mat n) ∈ Matrix.unitaryGroup (Fin n) ℂ := by
   rw [Matrix.mem_unitaryGroup_iff, star_eq_conjTranspose, ← Matrix.exp_conjTranspose, conjTranspose_smul,
     star_trivial, hX, smul_neg, Matrix.exp_neg]
   exact Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 (Matrix.isUnit_exp _))
 
+/- English proof (translation)
+Introduce `n _ _ κ _ _ u hu X hX`. Use `haveI : CompactSpace (Matrix.unitaryGroup (Fin n) ℂ) := GlobalTheory.compactSpace_unitaryGroup (Fin n) ℂ`. Use `haveI : SecondCountableTopology (Mat n) := inferInstanceAs (SecondCountableTopology (Fin n → Fin n → ℂ))`. Use `haveI : SecondCountableTopology (Matrix.unitaryGroup (Fin n) ℂ) := TopologicalSpace.Subtype.secondCountableTopology _`. Set `kt : ℝ → Matrix.unitaryGroup (Fin n) ℂ` to `fun t => ⟨NormedSpace.exp (t • X), exp_mem_unitary hX t⟩`.
+
+Establish `hval : ∀ (y : Matrix.unitaryGroup (Fin n) ℂ) (t : ℝ), y.1 * (NormedSpace.exp (t • X) : Mat n) = (y * kt t).1` using `fun _ _ => rfl`. Establish `hcv : Continuous fun k : Matrix.unitaryGroup (Fin n) ℂ => k.1` using `continuous_subtype_val`. Establish `hRd` using `GlobalTheory.CompanionTheory.RCalc.Rd_contDiffOn X hu`. Establish `cU : Continuous fun k : Matrix.unitaryGroup (Fin n) ℂ => u k.1` using `hu.continuousOn.comp_continuous hcv unit_mem`. Establish `cR : Continuous fun k : Matrix.unitaryGroup (Fin n) ℂ => Rd X u k.1` using `hRd.continuousOn.comp_continuous hcv unit_mem`.
+
+Take `⟨C, hC⟩` from `isCompact_univ.exists_bound_of_continuousOn cR.continuousOn`. Establish `key` using `GlobalTheory.CompanionTheory.RCalc.ByParts.integral_deriv_eq_zero (μ := κ) (V := ℂ) (F := fun t y => u (y.1 * (NormedSpace.exp (t • X) : Mat n))) (F' := fun t y => Rd X u (y.1 * (NormedSpace.exp (t • X) : Mat n))) (K := Set.univ) isCompact_univ (ε := 1) one_pos C ?_ ?_ ?_ ?_ ?_ ? …`. Simplify using `using key`. Introduce `t _`. Simplify using `only [hval]`.
+
+Conclude with `cU.comp (continuous_mul_right (kt t))`. Simplify using `only [hval]`. Conclude with `cR.comp (continuous_mul_right (kt 0))`. Introduce `y t _`. Establish `hg : y.1 * (NormedSpace.exp (t • X) : Mat n) ∈ GLs n`.
+
+Rewrite using `[hval]`. Conclude with `unit_mem _`. Establish `h` using `(GlobalTheory.CompanionTheory.RCalc.differentiableAt_of_smooth hu hg).hasFDerivAt.comp_hasDerivAt t (curve_hasDerivAt y.1 X t)`. Conclude with `h`. Introduce `y hy`.
+
+Conclude with `absurd (Set.mem_univ y) hy`. Introduce `t _ y hy`. Conclude with `absurd (Set.mem_univ y) hy`. Introduce `t _ y _`. Simplify using `only [hval]`.
+
+Conclude with `hC _ (Set.mem_univ _)`. Introduce `t _`. Simplify using `only [hval]`. Establish `h0 : kt 0 = 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `[kt]`. Rewrite using `[h0]`. Simplify using `only [mul_one]`. Conclude with `integral_mul_right_eq_self (fun y : Matrix.unitaryGroup (Fin n) ℂ => u y.1) (kt t)`.
+-/
 theorem integral_Rd_skew : ∀ (n : ℕ) [MeasurableSpace (Matrix.unitaryGroup (Fin n) ℂ)] [BorelSpace (Matrix.unitaryGroup (Fin n) ℂ)] (κ : Measure (Matrix.unitaryGroup (Fin n) ℂ)) [IsFiniteMeasure κ] [κ.IsMulRightInvariant] (u : Mat n → ℂ), ContDiffOn ℝ ∞ u (GLs n) → ∀ X : Mat n, Xᴴ = -X → ∫ k : Matrix.unitaryGroup (Fin n) ℂ, Rd X u k.1 ∂κ = 0 := by
   intro n _ _ κ _ _ u hu X hX
   haveI : CompactSpace (Matrix.unitaryGroup (Fin n) ℂ) := GlobalTheory.compactSpace_unitaryGroup (Fin n) ℂ

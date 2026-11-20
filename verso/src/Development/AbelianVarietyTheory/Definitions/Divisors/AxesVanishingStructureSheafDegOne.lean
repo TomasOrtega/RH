@@ -64,6 +64,11 @@ variable {R R' : Type} [CommRing R] [CommRing R'] {X X' : Scheme.{0}}
 
 abbrev HO2 (s : X ⟶ Sp R) : Type := CatCoh.H2 (OAff s)
 
+/- English proof (translation)
+Establish `H` using `_root_.GlobalTheory.CechDR.hasLoc_OAff s'`. Establish `hcov` using `_root_.GlobalTheory.CechDR.pair_cover_affine φ s'`. Establish `hdir` using `_root_.GlobalTheory.CechDR.exists_pair_below_two φ s'`. Establish `hs` using `_root_.GlobalTheory.sep_of_factoring_cover (OAff s') (pairFst φ) H hcov`. Establish `hg` using `_root_.GlobalTheory.CatCoh.Desc.glue_comma_of_basis (OAff s') (pairFst φ) H hcov hdir`.
+
+Establish `hv` using `_root_.GlobalTheory.CatCoh.Desc.Basis.oneCocycle_vanishing_comma_of_basis (OAff s') (pairFst φ) H hcov hdir`. Establish `hv2` using `GlobalTheory.T.twoCocycle_coboundary_of_basisFunctor (OAff s') (pairFst φ) H hcov hdir`. Conclude with `⟨GlobalTheory.T.comma_descent_injective _ _ hs hg hv, GlobalTheory.T.comma_descent_restriction_equiv _ _ hs hg hv hv2⟩`.
+-/
 theorem pairRes_pull2_bijective (φ : X' ⟶ X) (s' : X' ⟶ Sp R') : Function.Bijective (pairRes φ s').pull2 := by
   have H := _root_.GlobalTheory.CechDR.hasLoc_OAff s'
   have hcov := _root_.GlobalTheory.CechDR.pair_cover_affine φ s'
@@ -161,6 +166,9 @@ section Over
 
 variable {R : Type} [CommRing R] {Y A : Over (Sp R)}
 
+/- English proof (translation)
+Rewrite using `[spMap_id, Over.w f]`. Conclude with `(Category.comp_id _).symm`.
+-/
 theorem ovw (f : Y ⟶ A) : f.left ≫ A.hom = Y.hom ≫ spMap (RingHom.id R) := by
   rw [spMap_id, Over.w f]; exact (Category.comp_id _).symm
 
@@ -194,6 +202,9 @@ def OStr : Prop :=
     SmoothOfRelativeDimension g A.hom →
     FP R (HO1 A.hom) g ∧ WedgeO (OAff A.hom) ∧ StructureSheafH1BaseChange A.hom ∧ StructureSheafH2BaseChange A.hom
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, ⟨⟨Fin.elim0, Fin.elim0, fun i ↦ i.elim0, fun T _ ↦ (h T).elim _ _⟩⟩⟩`.
+-/
 example (R : Type) [CommRing R] {C : Type} [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R)
     (h : ∀ T, Subsingleton Ω[F.obj T⁄R]) : HasFrame F :=
   ⟨0, ⟨⟨Fin.elim0, Fin.elim0, fun i ↦ i.elim0, fun T _ ↦ (h T).elim _ _⟩⟩⟩

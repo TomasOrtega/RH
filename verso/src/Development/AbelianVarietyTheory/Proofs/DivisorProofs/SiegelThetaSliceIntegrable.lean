@@ -22,11 +22,17 @@ attribute [local instance] GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAd
 
 variable {F : Type} [Field F] [NumberField F] {κ m : Type} [Fintype κ] [Fintype m]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, mul_comm]`.
+-/
 theorem sum_eq_mulVec {R : Type} [CommRing R] (f : F →+* R) (M : Matrix κ m F) (v : m → R) :
     (fun i => ∑ j, v j * f (M i j)) = (M.map f) *ᵥ v := by
   funext i
   simp only [Matrix.mulVec, dotProduct, Matrix.map_apply, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_mulVec, ← Matrix.map_mul, hNM, Matrix.map_one _ (map_zero f) (map_one f), Matrix.one_mulVec]`.
+-/
 theorem mulVec_map_leftInv {R : Type} [CommRing R] (f : F →+* R) {M : Matrix κ m F} {N : Matrix m κ F}
     [DecidableEq m] (hNM : N * M = 1) (v : m → R) : (N.map f) *ᵥ ((M.map f) *ᵥ v) = v := by
   rw [Matrix.mulVec_mulVec, ← Matrix.map_mul, hNM, Matrix.map_one _ (map_zero f) (map_one f), Matrix.one_mulVec]
@@ -69,14 +75,23 @@ variable (F) in
 def archM (M : Matrix κ m F) : (m → mixedEmbedding.mixedSpace F) →L[ℝ] (κ → mixedEmbedding.mixedSpace F) :=
   LinearMap.toContinuousLinearMap ((Matrix.mulVecLin (M.map (mixedEmbedding F))).restrictScalars ℝ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem archM_apply (M : Matrix κ m F) (x : m → mixedEmbedding.mixedSpace F) :
     archM F M x = (M.map (mixedEmbedding F)) *ᵥ x := rfl
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_le_archM {M : Matrix κ m F} {N : Matrix m κ F} (hNM : N * M = 1) (x : m → mixedEmbedding.mixedSpace F) :
     ‖x‖ ≤ ‖archM F N‖ * ‖archM F M x‖ := by
   calc ‖x‖ = ‖archM F N (archM F M x)‖ := by rw [archM_apply, archM_apply, mulVec_map_leftInv _ hNM]
     _ ≤ _ := ContinuousLinearMap.le_opNorm _ _
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[pow_one, mul_assoc]`. Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem norm_le_archM_eI {M : Matrix κ m F} {N : Matrix m κ F} (hNM : N * M = 1) (u : Vi F m) :
     ‖u‖ ≤ ‖(eI F m).symm.toContinuousLinearMap‖ * ‖archM F N‖ * (1 + ‖archM F M (eI F m u)‖) ^ 1 := by
   calc ‖u‖ = ‖(eI F m).symm.toContinuousLinearMap (eI F m u)‖ := by simp
@@ -93,16 +108,32 @@ def compA {M : Matrix κ m F} {N : Matrix m κ F} (hNM : N * M = 1) :
   SchwartzMap.compCLM ℂ ((archM F M).comp (eI F m).toContinuousLinearMap).hasTemperateGrowth
     ⟨1, ‖(eI F m).symm.toContinuousLinearMap‖ * ‖archM F N‖, fun u => norm_le_archM_eI hNM u⟩
 
+/- English proof (translation)
+The claim follows from `map_sum (RingHom.fst (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F)) x Finset.univ`.
+-/
 theorem fst_sum (x : m → AF F) : (∑ j, x j).1 = ∑ j, (x j).1 :=
   map_sum (RingHom.fst (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F)) x Finset.univ
 
+/- English proof (translation)
+The claim follows from `map_sum (RingHom.snd (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F)) x Finset.univ`.
+-/
 theorem snd_sum (x : m → AF F) : (∑ j, x j).2 = ∑ j, (x j).2 :=
   map_sum (RingHom.snd (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F)) x Finset.univ
 
+/- English proof (translation)
+Rewrite using `[InfiniteAdeleRing.mixedEmbedding_eq_algebraMap_comp]`.
+-/
 theorem ringEquiv_algebraMap (c : F) :
     InfiniteAdeleRing.ringEquiv_mixedSpace F (algebraMap F (InfiniteAdeleRing F) c) = mixedEmbedding F c := by
   rw [InfiniteAdeleRing.mixedEmbedding_eq_algebraMap_comp]
 
+/- English proof (translation)
+Unfold `pureA`. Use `congr 1`. Use `congr 1`. Rewrite using `[archM_apply, ← sum_eq_mulVec]`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[fst_sum, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `show InfiniteAdeleRing.ringEquiv_mixedSpace F ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (eI F m p.1 j) * algebraMap F (InfiniteAdeleRing F) (M i j)) = _`. Rewrite using `[map_mul, RingEquiv.apply_symm_apply, ringEquiv_algebraMap]`. Use `congr 1`.
+
+Rewrite using `[← sum_eq_mulVec]`. Use function extensionality and compare the values at `i`. Rewrite using `[snd_sum]`. Both sides reduce to the same expression.
+-/
 theorem pureA_glue (M : Matrix κ m F) (f : (κ → mixedEmbedding.mixedSpace F) → ℂ)
     (g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ) (p : Vi F m × Vf F m) :
     pureA F f g (fun i => ∑ j, glue p j * algebraMap F (AF F) (M i j)) =
@@ -123,6 +154,11 @@ theorem pureA_glue (M : Matrix κ m F) (f : (κ → mixedEmbedding.mixedSpace F)
     rw [snd_sum]
     rfl
 
+/- English proof (translation)
+Establish `hc : Continuous fun v : Vf F m => (M.map (algebraMap F (FiniteAdeleRing (𝓞 F) F))) *ᵥ v` using `continuous_const.matrix_mulVec continuous_id`. Establish `hr : Continuous fun w : κ → FiniteAdeleRing (𝓞 F) F => (N.map (algebraMap F (FiniteAdeleRing (𝓞 F) F))) *ᵥ w` using `continuous_const.matrix_mulVec continuous_id`. Use `(hg.1.continuous.comp hc).integrable_of_hasCompactSupport ?_` and prove the remaining obligations. Use `HasCompactSupport.intro (hg.2.isCompact.image hr) fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+
+Conclude with `hv ⟨_, subset_tsupport _ h, mulVec_map_leftInv _ hNM v⟩`.
+-/
 theorem integrable_fin {M : Matrix κ m F} {N : Matrix m κ F} (hNM : N * M = 1)
     {g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ} (hg : g ∈ SB (κ → FiniteAdeleRing (𝓞 F) F)) :
     Integrable (fun v : Vf F m => g ((M.map (algebraMap F (FiniteAdeleRing (𝓞 F) F))) *ᵥ v)) Measure.addHaar := by
@@ -135,6 +171,9 @@ theorem integrable_fin {M : Matrix κ m F} {N : Matrix m κ F} (hNM : N * M = 1)
   by_contra h
   exact hv ⟨_, subset_tsupport _ h, mulVec_map_leftInv _ hNM v⟩
 
+/- English proof (translation)
+Establish `e : (fun p : Vi F m × Vf F m => pureA F f g (fun i => ∑ j, glue p j * algebraMap F (AF F) (M i j))) = fun p => compA hNM f p.1 * g ((M.map (algebraMap F (FiniteAdeleRing (𝓞 F) F))) *ᵥ p.2)`. Use function extensionality and compare the values at `fun p => pureA_glue M f g p`. Rewrite using `[e]`. Conclude with `(compA hNM f).integrable.mul_prod (integrable_fin hNM hg)`.
+-/
 theorem integrable_pure {M : Matrix κ m F} {N : Matrix m κ F} (hNM : N * M = 1)
     (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ)
     {g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ} (hg : g ∈ SB (κ → FiniteAdeleRing (𝓞 F) F)) :
@@ -146,6 +185,11 @@ theorem integrable_pure {M : Matrix κ m F} {N : Matrix m κ F} (hNM : N * M = 1
   rw [e]
   exact (compA hNM f).integrable.mul_prod (integrable_fin hNM hg)
 
+/- English proof (translation)
+Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, g, hg, rfl⟩` from `hx`. Conclude with `integrable_pure hNM f hg`. Consider the case `zero => exact integrable_zero _ _ _`.
+
+Consider the case `add x y _ _ hx hy => exact hx.add hy`. Consider the case `smul c x _ hx => exact hx.smul c`.
+-/
 theorem integrable_schA {M : Matrix κ m F} {N : Matrix m κ F} (hNM : N * M = 1)
     {φ : (κ → AF F) → ℂ} (hφ : φ ∈ schA F κ) :
     Integrable (fun p : Vi F m × Vf F m => φ (fun i => ∑ j, glue p j * algebraMap F (AF F) (M i j))) (mu F m) := by
@@ -157,6 +201,17 @@ theorem integrable_schA {M : Matrix κ m F} {N : Matrix m κ F} (hNM : N * M = 1
   | add x y _ _ hx hy => exact hx.add hy
   | smul c x _ hx => exact hx.smul c
 
+/- English proof (translation)
+Introduce `F _ _ κ _ m _ _ B hB μ hμ φ hφ`. Use `letI : MeasurableSpace (m → AF F) := borel _`. Use `haveI : BorelSpace (m → AF F) := ⟨rfl⟩`. Use `haveI : μ.IsAddHaarMeasure := hμ`. Take `⟨C, hC⟩` from `LinearMap.exists_leftInverse_of_injective B (LinearMap.ker_eq_bot.2 hB)`.
+
+Establish `hNM : LinearMap.toMatrix' C * LinearMap.toMatrix' B = 1`. Rewrite using `[← LinearMap.toMatrix'_comp, hC, LinearMap.toMatrix'_id]`. Establish `hM : ∀ i j, B (Pi.single j 1) i = LinearMap.toMatrix' B i j` using `fun i j => (LinearMap.toMatrix'_apply B i j).symm`. Simplify using `only [hM]`. Use `haveI : (mu F m).IsAddHaarMeasure := by unfold mu; infer_instance`.
+
+Use `haveI : (μ.map (coordE F m)).IsAddHaarMeasure := (coordE F m).isAddHaarMeasure_map μ`. Establish `hν : μ.map (coordE F m) = Measure.addHaarScalarFactor (μ.map (coordE F m)) (mu F m) • mu F m` using `Measure.isAddLeftInvariant_eq_smul _ _`. Establish `h2 : Integrable (fun p : Vi F m × Vf F m => φ (fun i => ∑ j, glue p j * algebraMap F (AF F) (LinearMap.toMatrix' B i j))) (μ.map (coordE F m))`. Rewrite using `[hν]`. Conclude with `(integrable_schA hNM hφ).smul_measure_nnreal`.
+
+Establish `h3` using `(integrable_map_equiv (coordE F m).toHomeomorph.toMeasurableEquiv _).1 h2`. Use `h3.congr (ae_of_all _ fun t => ?_)` and prove the remaining obligations. Establish `et : glue (coordE F m t) = t` using `(coordE F m).symm_apply_apply t`. Simplify using `only [Function.comp_apply]`. Use `show φ (fun i => ∑ j, glue (coordE F m t) j * _) = _`.
+
+Rewrite using `[et]`.
+-/
 theorem main : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (m : Type) [Fintype m]
     [DecidableEq m] (B : (m → F) →ₗ[F] (κ → F)), Function.Injective B →
     ∀ μ : @Measure (m → AF F) (borel _), GlobalTheory.SiegelAvg.IsHaarB μ →

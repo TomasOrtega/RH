@@ -20,6 +20,9 @@ variable {D : D7} {Tw : TwForms D} {inQ : D.what₂.Tup → HeightOneSpectrum (�
 def ClsCharted1 (T : Formalism.L2.Herm.TwChTied D inQ) (K : KerLabelsMu Tw u μ w h Lv) (ch : ∀ j, Lv.comp j → T.Ch u μ j) : Prop :=
   ∀ j, 1 ≤ j → j ≤ D.R.m → ∀ (a : Lv.comp j) (L : (Fl.Pj j).Tup), (Fl.Pj j).IsLatTup L → T.chOf u μ j (K.cls j a L) = ch j a
 
+/- English proof (translation)
+Unfold `ybOf`. Rewrite using `[hC (D.R.m - 1) h1 (Nat.sub_le _ _) a L hL]`.
+-/
 theorem yb_cls {K : KerLabelsMu Tw u μ w h Lv} {ch : ∀ j, Lv.comp j → T.Ch u μ j} (hC : ClsCharted1 T K ch) (h1 : 1 ≤ D.R.m - 1)
     (a : Lv.comp (D.R.m - 1)) (L : (Fl.Pj (D.R.m - 1)).Tup) (hL : (Fl.Pj (D.R.m - 1)).IsLatTup L) :
     T.yb u μ h1 (T.chOf u μ (D.R.m - 1) (K.cls (D.R.m - 1) a L)) = ybOf T ch h1 a := by
@@ -43,6 +46,11 @@ def chTie_atInTw (Gt : GatTies D) : ChTie T ((atInTw W u μ hμ dt Lc).st Gt) wh
 
 variable {W hμ dt Lc}
 
+/- English proof (translation)
+Introduce `j h1 hj a L hL`. Consider the cases of `j with`. Consider the case `zero => omega`. Consider the case `succ j`. Rewrite using `[hch j hj]`.
+
+Conclude with `labAt_chOf (st := (atInTw W u μ hμ dt Lc).st Gt) X H j hj a L hL`.
+-/
 theorem clsCharted1_atInTw {Gt : GatTies D} {c : LatCmp D} (X : LabIn ((atInTw W u μ hμ dt Lc).I Gt))
     (H : CmpJHyp c ((atInTw W u μ hμ dt Lc).I Gt)) (ch : ∀ j, Lv.comp j → T.Ch u μ j)
     (hch : ∀ j (hj : j + 1 ≤ D.R.m) a, ch (j + 1) a = ((Lc j hj).eC.symm a).1) : ClsCharted1 T (labAt X H) ch := by

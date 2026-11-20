@@ -14,6 +14,21 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open GlobalTheory.Doubling (absE)
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ} {Y : Spc F E n}
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n Y r s hB hn hY χ hχ c hc K a hK ha s₁ f hf`. Use `haveI := GlobalTheory.Doubling.isTopologicalRing_tens (F := F) (E := E) (R := AF F)`. Take `⟨b, K₀, p, t, hb, hK₀, hp, hk⟩` from `h2 F E σ B n Y r s hB hY K hK`. Take `⟨d, hd⟩ : ∃ d : ℝ, d = absE F E (Matrix.GeneralLinearGroup.det t)` from `⟨_, rfl⟩`. Establish `d0 : 0 < d` using `hd ▸ absE_pos _`.
+
+Establish `a0 : ∀ x, 0 < a x` using `fun x => by`. Take `⟨q, u, hq, k, hk, rfl⟩` from `ha.iwa x`. Conclude with `ha.val q u hq k hk ▸ absE_pos _`. Establish `hk' : ∀ k ∈ K₀, p * k * p⁻¹ ∈ K` using `fun k h => (hk _).2 (by simpa [mul_assoc] using h)`. Establish `ha₀ : IsHgt K₀ fun x => d * a (x * p⁻¹)`.
+
+Use `⟨fun x => ?_, fun q u hq k h => ?_⟩` and prove the remaining obligations. Take `⟨q, u, hq, k, h, e⟩` from `ha.iwa (x * p⁻¹)`. Conclude with `⟨q * p, _, hq.mul hp, _, (hk k).1 h, by rw [mul_inv_eq_iff_eq_mul.1 e]; group⟩`. Rewrite using `[show q * k * p⁻¹ = q * p⁻¹ * (p * k * p⁻¹) by group, ha.val _ _ (hq.mul hp.inv) _ (hk' k h), map_mul, map_mul, map_inv, map_inv, NNReal.coe_mul, NNReal.coe_inv, ← hd]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hf₀ : IsSec K₀ χ s₁ fun x => f (x * p⁻¹)`. Use `⟨hf.cont.comp (continuous_mul_const _), fun q u x hq => by rw [mul_assoc, hf.law q u _ hq], ?_⟩` and prove the remaining obligations. Use `haveI := hf.fin`. Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ (Set.range fun k : K => fun x => f (x * k.1))).map (LinearMap.funLeft ℂ ℂ fun x => x * p⁻¹)) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`.
+
+Conclude with `⟨_, Submodule.subset_span ⟨⟨_, hk' k k.2⟩, rfl⟩, funext fun x => by simp [LinearMap.funLeft, mul_assoc]⟩`. Take `⟨Ê, ⟨t₁, e1, e2⟩, e3⟩` from `h1 F E σ B n Y r s hB hn hY χ hχ c hc b K₀ _ hb hK₀ ha₀ s₁ _ hf₀`. Establish `dc : Differentiable ℂ fun z : ℂ => (d : ℂ) ^ (s₁ - z)` using `(differentiable_id.const_sub s₁).const_cpow (.inl (Complex.ofReal_ne_zero.2 d0.ne'))`. Use `(eisCont_of_reg (f := flat a f s₁) (Ê := fun z x => (d : ℂ) ^ (s₁ - z) * Ê z (x * p)) (t := t₁) (fun z hz x => ?_) (fun x => dc.differentiableOn.mul (e2 _)) fun s₀ => ?_).imp fun U hU => ⟨_, hU⟩` and prove the remaining obligations. Use `(congrArg (HasSum · _) (funext fun q => ?_)).mp ((e1 z hz (x * p)).mul_left ((d : ℂ) ^ (s₁ - z)))` and prove the remaining obligations.
+
+Simplify using `only [eisTerm, flat, ← mul_assoc, mul_inv_cancel_right]`. Rewrite using `[Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg d0.le (a0 _).le, ← mul_assoc, ← Complex.cpow_add _ _ (Complex.ofReal_ne_zero.2 d0.ne')]`. Simplify using the standard rewrite rules. Take `⟨k, U, H, hU, e4, e5⟩` from `e3 s₀`. Use `⟨k, _, (reg_of_weak hU e5).mul one_le_height_GL2 (dc.analyticAt s₀) (continuous_mul_const p) (b := ht2 p) fun x => ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mul_comm]`. Conclude with `heightGL_mul_le F x.1 p.1` after adjusting the coercions. Use `filter_upwards [mem_nhdsWithin_of_mem_nhds hU, self_mem_nhdsWithin] with z hz hz' x`. Rewrite using `[e4 z hz hz', mul_left_comm]`.
+-/
 theorem eisContinues_of_k (h1 : _root_.GlobalTheory.ThK.Dbl.EisBL_k) (h2 : _root_.GlobalTheory.ThK.Dbl.FrameConj_k) : _root_.GlobalTheory.ThK.Dbl.EisContinues_k := by
   intro F E _ _ _ _ _ σ B n Y r s hB hn hY χ hχ c hc K a hK ha s₁ f hf
   haveI := GlobalTheory.Doubling.isTopologicalRing_tens (F := F) (E := E) (R := AF F)

@@ -21,6 +21,9 @@ def CechPointEval.Statement : Prop :=
         Set.InjOn (φ I) (locPart ι (quotPart F (mIdealOver F y)) (cellMon F I) β) ∧
         (locPart ι (quotPart F (mIdealOver F y)) (cellMon F I) β).map (φ I) = V
 
+/- English proof (translation)
+The claim follows from `h F Unit (IndefiniteRowSideFullHecke.Kleiman2.pnIdx 0) (IndefiniteRowSideFullHecke.Kleiman2.pnField F 0) (IndefiniteRowSideFullHecke.Kleiman2.pnPt F 0) (fun c _ => isField_chartRingOver_pnPt_zero F c) 0`.
+-/
 example (F : Type) [Field F] (h : CechPointEval.Statement) :=
   h F Unit (IndefiniteRowSideFullHecke.Kleiman2.pnIdx 0) (IndefiniteRowSideFullHecke.Kleiman2.pnField F 0) (IndefiniteRowSideFullHecke.Kleiman2.pnPt F 0)
     (fun c _ => isField_chartRingOver_pnPt_zero F c) 0

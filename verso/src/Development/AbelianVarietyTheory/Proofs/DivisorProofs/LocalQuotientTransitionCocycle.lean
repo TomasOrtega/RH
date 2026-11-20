@@ -8,6 +8,21 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `S 𝒰 A H _ _ i B q b hfl hsu hqc hb hchar j k l T x y z hxy hxz`. Set `κ : pullback (x ≫ pullback.fst _ _) (q j).left ⟶ T` to `pullback.fst _ _`. Set `α : pullback (x ≫ pullback.fst _ _) (q j).left ⟶ pullback A.hom (𝒰.f j)` to `pullback.snd _ _`. Establish `hκα : κ ≫ x ≫ pullback.fst _ _ = α ≫ (q j).left`. Simplify `pullback.condition (f := x ≫ pullback.fst _ _) (g := (q j).left)` using `[κ, α, Category.assoc]`.
+
+Use `haveI : Flat κ := by dsimp [κ]; infer_instance`. Use `haveI : Surjective κ := by dsimp [κ]; infer_instance`. Use `haveI : QuasiCompact κ := by dsimp [κ]; infer_instance`. Use `haveI : Epi κ := Flat.epi_of_flat_of_surjective _`. Establish `hqj : (q j).left ≫ (B j).hom = pullback.snd A.hom (𝒰.f j)`.
+
+Simplify using `using Over.w (q j)`. Establish `ha : (α ≫ pullback.fst _ _) ≫ A.hom = κ ≫ x ≫ pullback.fst _ _ ≫ (B j).hom ≫ 𝒰.f j`. Simplify using `only [Category.assoc]`. Rewrite using `[pullback.condition, ← reassoc_of% hqj, ← reassoc_of% hκα]`. Establish `hak : (α ≫ pullback.fst _ _) ≫ A.hom = (κ ≫ x ≫ pullback.snd _ _) ≫ 𝒰.f k`.
+
+Rewrite using `[ha]`. Simplify using `only [Category.assoc, pullback.condition]`. Establish `hyz : y ≫ pullback.snd _ _ = z ≫ pullback.snd _ _`. Rewrite using `[← cancel_mono (𝒰.f l)]`. Simplify using `only [Category.assoc]`.
+
+Rewrite using `[← pullback.condition, ← pullback.condition, ← reassoc_of% hxy, reassoc_of% (hb j k), ← pullback.condition, ← reassoc_of% hxz]`. Establish `hal : (α ≫ pullback.fst _ _) ≫ A.hom = (κ ≫ z ≫ pullback.snd _ _) ≫ 𝒰.f l`. Rewrite using `[ha]`. Simplify using `only [Category.assoc, ← pullback.condition]`. Rewrite using `[← reassoc_of% hxz]`.
+
+Establish `hk1` using `pullback.lift_fst _ _ hak`. Establish `hk2` using `pullback.lift_snd _ _ hak`. Establish `hl1` using `pullback.lift_fst _ _ hal`. Establish `hl2` using `pullback.lift_snd _ _ hal`. Establish `h1` using `hchar j k _ α (pullback.lift _ _ hak) (κ ≫ x) hk1.symm (by rw [Category.assoc]; exact hκα) (by rw [hk2, Category.assoc])`.
+
+Establish `h2` using `hchar j l _ α (pullback.lift _ _ hal) (κ ≫ z) hl1.symm (by rw [Category.assoc, ← hxz]; exact hκα) (by rw [hl2, Category.assoc])`. Establish `h3` using `hchar k l _ (pullback.lift _ _ hak) (pullback.lift _ _ hal) (κ ≫ y) (hk1.trans hl1.symm) (by rw [Category.assoc, ← hxy, ← Category.assoc]; exact h1) (by rw [hl2, Category.assoc, hyz])`. Rewrite using `[← cancel_epi κ, ← Category.assoc, h3, ← h2, Category.assoc]`.
+-/
 theorem cocycle_local_quotient_transition : ∀ (S : Scheme.{0}) (𝒰 : S.OpenCover.{0}) (A H : Over S) [GrpObj A] [GrpObj H] (i : H ⟶ A)
     (B : ∀ j, Over (𝒰.X j)) (q : ∀ j, (Over.pullback (𝒰.f j)).obj A ⟶ B j) (b : ∀ j k, pullback ((B j).hom ≫ 𝒰.f j) (𝒰.f k) ⟶ (B k).left),
     (∀ j, Flat (q j).left) → (∀ j, Surjective (q j).left) → (∀ j, QuasiCompact (q j).left) →

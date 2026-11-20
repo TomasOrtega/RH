@@ -29,6 +29,17 @@ namespace GlobalTheory.RoadU
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hI hG E Ω _ _ _ _ _ _ l _ ι a ha π χ hS r hr w _ B hB`. Establish `hAF : GlobalTheory.Published.AutomorphicFormsFiniteGL` using `GlobalTheory.automorphicFormsFiniteGL`. Establish `hQL : QuadLift` using `GlobalTheory.QuadLiftBridge.quadLift hI.ac hI.js`. Take `⟨Q, hdec, hsplit, hram, hgood⟩` from `(GlobalTheory.GalCut.infinite_qcm_split_good hAF E Ω l a π w).nonempty`. Take `⟨P, hP⟩` from `hQL E Q.K Q.two a ha π hram`.
+
+Take `⟨⟨χ', hχ'⟩, -⟩` from `GlobalTheory.LiftPolar.main hAF hI.js hI.gk E Q.K l a ha π χ P hP hS.all`. Establish `hrP` using `GlobalTheory.GalCut.weak_comp_res E Q.K Ω l ι a π P hP r hr`. Use `show ClauseAt .dR π ι r w`. Introduce `Pr AI hT A hA O _ _ _ Bw hj`. Establish `hdA` using `hdec A hA`.
+
+Establish `hjK` using `GlobalTheory.RealGal.bridge_j_mem_Kw_of_dec_le E Ω Q.K l A O Bw hdA`. Take `⟨Bw', e1, e2, e3⟩` from `UpperTheory.V.Af.Cq.exBridge E Q.K Ω l A O Bw hjK`. Establish `hj' : Induces Bw'` using `fun x => by rw [e2]; exact hj x`. Take `⟨w', hu, hw', hn⟩` from `GlobalTheory.PlaceNormDec.exists_place_normV_eq E Ω Q w A hA hdA`. Establish `hBP : (CG.mk P).HasSat w' (B.map (· ^ 1))` using `hP.sat w' 1 B (by rw [hu, pow_one]; exact hn) (by rw [hu]; exact hB)`.
+
+Establish `hc : ClauseAt .dR P ι _ w'` using `hG Q.K Ω l ι a ha P χ' ⟨hχ'.1, hχ'.2.1, hgood P hP⟩ _ hrP w' (hsplit w' hu) _ hBP`. Establish `hc'` using `hc Pr AI hT A hw' O Bw' hj'`. Establish `D` using `GlobalTheory.RealGal.dRSstCrysPstJumps_descend E Ω Q.K l Pr A O Bw Bw' e1 e2 e3 a r`. Use `⟨D.1 hc'.1, fun τ LL' τ' hτ J hJ => ?_⟩` and prove the remaining obligations. Take `⟨τK, τ'', hτK, hind⟩` from `GlobalTheory.induced_embedding_extends E Ω Q.K l A O Bw Bw' e1 e2 τ LL' τ' hτ`.
+
+Establish `hJK : J.map (fun n : ℤ => (n : ℂ)) = ((CG.mk P).infChar (ι.toRingHom.comp τK)).map (fun z => ((a : ℂ) - 1) / 2 - z)`. Rewrite using `[hP.inf, RingHom.comp_assoc, hτK]`. Conclude with `hJ`. Establish `hres` using `D.2.2.2.2 τK J (hc'.2 τK LL' τ'' hind J hJK)`. Rewrite `hres` using `[hτK]`. Then use the resulting hypothesis.
+-/
 theorem holdsS_dR_all_of_good : Inputs → SphericalLevelCondition .good .dR → SphericalLevelCondition .all .dR := by
   intro hI hG E Ω _ _ _ _ _ _ l _ ι a ha π χ hS r hr w _ B hB
   have hAF : GlobalTheory.Published.AutomorphicFormsFiniteGL := GlobalTheory.automorphicFormsFiniteGL

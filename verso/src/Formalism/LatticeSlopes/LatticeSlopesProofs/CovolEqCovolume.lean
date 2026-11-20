@@ -7,6 +7,17 @@ noncomputable section
 
 namespace Formalism.F
 
+/- English proof (translation)
+Introduce `E _ _ _ _ _ L _ _`. Rewrite using `[covol, dif_pos (inferInstance : DiscreteTopology L)]`. Use `set b := Module.finBasis ℤ L with hb`. Use `set bR : Basis (Fin (Module.finrank ℤ L)) ℝ E := b.ofZLatticeBasis ℝ L with hbR`. Establish `hrank : Module.finrank ℝ E = Module.finrank ℤ L` using `(ZLattice.rank ℝ L).symm`.
+
+Use `set o : OrthonormalBasis (Fin (Module.finrank ℤ L)) ℝ E := (stdOrthonormalBasis ℝ E).reindex (finCongr hrank)`. Use `set A := o.toBasis.toMatrix bR with hA`. Establish `hgo : Matrix.gram ℝ (fun i => o.toBasis i) = 1`. Use extensionality with `i j`. Simplify using `[Matrix.gram, Matrix.one_apply, orthonormal_iff_ite.mp o.orthonormal]`.
+
+Establish `hv : (fun i => ((b i : L) : E)) = fun j => ∑ i, A i j • o.toBasis i`. Use function extensionality and compare the values at `j`. Rewrite using `[hA, o.toBasis.sum_toMatrix_smul_self]`. Conclude with `(Basis.ofZLatticeBasis_apply ℝ L b j).symm`. Establish `hg : Matrix.gram ℝ (fun i => ((b i : L) : E)) = A.transpose * A`.
+
+Rewrite using `[hv, gram_sum_smul_eq_transpose_mul, hgo, Matrix.mul_one]`. Establish `hdet : (Matrix.gram ℝ (fun i => ((b i : L) : E))).det = (o.toBasis.det bR) ^ 2`. Rewrite using `[hg, Matrix.det_mul, Matrix.det_transpose, Basis.det_apply, sq]`. Establish `h1 : ZLattice.covolume L = (MeasureTheory.volume (ZSpan.fundamentalDomain bR)).toReal`. Rewrite using `[ZLattice.covolume_eq_measure_fundamentalDomain L MeasureTheory.volume (ZLattice.isAddFundamentalDomain b MeasureTheory.volume)]`.
+
+Both sides reduce to the same expression. Establish `h2` using `ZSpan.measure_fundamentalDomain bR MeasureTheory.volume o.toBasis`. Establish `h3 : MeasureTheory.volume (ZSpan.fundamentalDomain o.toBasis) = 1`. Rewrite using `[MeasureTheory.measure_congr (ZSpan.fundamentalDomain_ae_parallelepiped o.toBasis MeasureTheory.volume), OrthonormalBasis.coe_toBasis, o.volume_parallelepiped]`. Rewrite using `[hdet, Real.sqrt_sq_eq_abs, h1, h2, h3, mul_one, ENNReal.toReal_ofReal (abs_nonneg _)]`.
+-/
 theorem covol_eq_covolume' : CovolEqCovolume := by
   intro E _ _ _ _ _ L _ _
   classical

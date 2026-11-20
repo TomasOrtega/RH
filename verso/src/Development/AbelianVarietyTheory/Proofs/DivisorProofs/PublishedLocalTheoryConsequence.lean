@@ -30,6 +30,9 @@ open GlobalTheory.LiftRows
 
 namespace GlobalTheory.MultEqHead
 
+/- English proof (translation)
+Introduce `hHCA hDSC hCRD hHCF hCTC hDMF hFF hPC hHCC hLC hLW hZPR hGL hGC`. Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hG`. Conclude with `GlobalTheory.T.cuspidal_trace_multiplicity_given hCRD hHCF hDMF hGC (GlobalTheory.T.published_inputs_imply_trace_formula hHCA hDSC hCRD hHCF hCTC hDMF hFF hPC hHCC hLC hLW hZPR hGL) R F hG`.
+-/
 theorem multEq_of_classicalTheorems :
     GlobalTheory.Published.HarishChandraAnalyticity → GlobalTheory.Published.DiscreteSeriesClassification → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspTraceClass → GlobalTheory.Published.DixmierMalliavinFactorisation → GlobalTheory.Published.FlathFactorisation → GlobalTheory.Published.PseudoCoefficientUpq → GlobalTheory.Published.HarishChandraCharacters → GlobalTheory.Published.LanglandsClassification → GlobalTheory.Published.LabesseWaldspurger → GlobalTheory.Published.ZelevinskyPolynomialRing → GlobalTheory.Published.GeometricLemma → GlobalTheory.Published.GreenCuspidal → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Given R F → GlobalTheory.CuspMult.MultEq R := by
   intro hHCA hDSC hCRD hHCF hCTC hDMF hFF hPC hHCC hLC hLW hZPR hGL hGC

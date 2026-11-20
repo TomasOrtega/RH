@@ -6,6 +6,11 @@ open Formalism.BasicNotions.TH GlobalTheory.FockAlg GlobalTheory.RealLift Global
 
 namespace GlobalTheory.HoweR
 
+/- English proof (translation)
+Introduce `v hv`. Simplify using `only [hwSub, wtSub, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply] at hv ⊢`. Take `⟨h1, h2⟩` from `hv`. Use `⟨fun a => ?_, fun a b hab => ?_⟩` and prove the remaining obligations. Use `congrArg f (h1 a)` as an intermediate fact.
+
+Simplify `this` using `[hf, map_sub, map_smul]`. Rewrite using `[← hf, h2 a b hab, map_zero]`.
+-/
 theorem hwSub_stable_of_comm {p q : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (act : Mat p q →ₗ[ℂ] Module.End ℂ V) (f : Module.End ℂ V)
     (hf : ∀ Z v, f (act Z v) = act Z (f v)) (μ : Ix p q → ℚ) :
@@ -19,6 +24,19 @@ theorem hwSub_stable_of_comm {p q : ℕ} {V : Type} [AddCommGroup V] [Module ℂ
     simpa [hf, map_sub, map_smul] using this
   · rw [← hf, h2 a b hab, map_zero]
 
+/- English proof (translation)
+Introduce `T _ _ R S V _ _ a hg hc N N' hN hN' μ`. Establish `key : ∀ s : Finset T, (N ⊔ N') ⊓ (⨅ w ∈ s, hwSub (a w) (μ w)) ≤ (N ⊓ ⨅ w ∈ s, hwSub (a w) (μ w)) ⊔ (N' ⊓ ⨅ w ∈ s, hwSub (a w) (μ w))`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`.
+
+Consider the case `insert w s hws ih => set H := ⨅ w ∈ s, hwSub (a w) (μ w) with hH`. Establish `hHst : ∀ X, ∀ v ∈ H, a w X v ∈ H`. Introduce `X v hv`. Rewrite `hv`, the goal using `[hH, Submodule.mem_iInf]`. Introduce `w'`.
+
+Establish `hv'` using `hv w'`. Rewrite `hv'`, the goal using `[Submodule.mem_iInf]`. Introduce `hw'`. Establish `hne : w ≠ w'` using `fun h => hws (h ▸ hw')`. Conclude with `hwSub_stable_of_comm (a w') (a w X) (fun Z u => hc w w' hne X Z u) (μ w') v (hv' hw')`.
+
+Establish `hK : ∀ M : Submodule ℂ V, (∀ Z, ∀ y ∈ M, a w Z y ∈ M) → KStable (a w) (M ⊓ H)`. Introduce `M hM X _ v hv`. Conclude with `Submodule.mem_inf.mpr ⟨hM X v (Submodule.mem_inf.mp hv).1, hHst X v (Submodule.mem_inf.mp hv).2⟩`. Establish `hsp` using `GlobalTheory.T.howeHighestWeight_sup_stable_le (R w) (S w) V (a w) (hg w) (N ⊓ H) (N' ⊓ H) (hK N (hN w)) (hK N' (hN' w)) (μ w)`. Rewrite using `[Finset.iInf_insert]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[inf_comm (hwSub (a w) (μ w)) H, inf_assoc]`. Use `_ ≤ ((N ⊓ H) ⊔ (N' ⊓ H)) ⊓ hwSub (a w) (μ w) := inf_le_inf_right _ ih`. Use `_ ≤ ((N ⊓ H) ⊓ hwSub (a w) (μ w)) ⊔ ((N' ⊓ H) ⊓ hwSub (a w) (μ w)) := hsp`. Use `_ = (N ⊓ (hwSub (a w) (μ w) ⊓ H)) ⊔ (N' ⊓ (hwSub (a w) (μ w) ⊓ H)) := by`.
+
+Rewrite using `[inf_assoc, inf_assoc, inf_comm H]`. Simplify using `using key Finset.univ`.
+-/
 theorem hw_joint_split : ∀ (T : Type) [Fintype T] [DecidableEq T] (R S : T → ℕ) (V : Type) [AddCommGroup V]
     [Module ℂ V] (a : ∀ w, Mat (R w) (S w) →ₗ[ℂ] Module.End ℂ V), (∀ w, Good (a w)) →
     (∀ w w', w ≠ w' → ∀ Z Z' v, a w Z (a w' Z' v) = a w' Z' (a w Z v)) →

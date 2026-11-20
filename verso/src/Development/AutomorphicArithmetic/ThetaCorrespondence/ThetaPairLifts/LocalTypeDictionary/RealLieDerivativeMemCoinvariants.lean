@@ -17,6 +17,43 @@ open scoped ComplexConjugate
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 namespace GlobalTheory.RealDict
+/- English proof (translation)
+Introduce `hPr D ψ θ hψ hθ ε M X A B χS χT ω eS eT hW hE Xs Ws Mo ψ' χX χW om τ hP hR Φ hinj hrange hF γ hγ f hf f₁ hact`. Take `⟨hcm, hstd, hherm, hdetX, hskew, hdetW, -, -, -, -, hweil, -, -⟩` from `hP`. Establish `hpsi` using `hR.psi`. Substitute `hpsi` using the available equality. Take `⟨f₀, r, hvac, hne, hFr⟩` from `hF`.
+
+Rewrite `hf` using `[← hrange]`. Take `⟨P, rfl⟩` from `hf`. Take `⟨g, hg, hder⟩` from `_root_.GlobalTheory.T.theta_lineDeriv_vanishes_on_coinvariants hPr D ψ' θ hψ hθ ε M X A B χS χT ω eS eT hW hE Xs hR.JX f₀ hvac γ hγ`. Take `⟨Q, hQ, hQd⟩` from `hder P`. Establish `hGM : M.gram.det ≠ 0`.
+
+Introduce `h0`. Apply `hdetX` to reduce the goal to its premises. Rewrite using `[hR.JX, Matrix.det_smul, h0, mul_zero]`. Establish `hG : (sgn ε M).gram.det ≠ 0`. Consider the cases of `ε`.
+
+Conclude with `hGM`. Express the relevant statement in the definitionally equal form `(-M.gram).det ≠ 0`. Rewrite using `[Matrix.det_neg]`. Conclude with `mul_ne_zero (pow_ne_zero _ (by norm_num)) hGM`. Take `⟨T, hT, hTinj⟩` from `GlobalTheory.T.thetaTransform_darbouxModel_linear_injective D Mo ψ' (sgn ε M).gram (Equiv.refl _) hR.good hstd hdetX hdetW hG`.
+
+Establish `hΦ1 : Φ 1 ≠ 0` using `fun h => one_ne_zero (hinj (h.trans (map_zero Φ).symm))`. Establish `hRf₁ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rest (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F) f₁ r` using `GlobalTheory.T.complementaryAdelicSchwartz_archimedean_replace _ f₁ r (hFr 1).1 hΦ1`. Establish `hRQ` using `(hFr Q).1`. Establish `hone : GlobalTheory.TripleRead.toUX X (Equiv.refl (Fin X.rank)) hR.JW 1 = 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Apply `Units.ext` to reduce the goal to its premises. Use `show (GlobalTheory.TripleRead.toUX X (Equiv.refl (Fin X.rank)) hR.JW 1).1.1 = 1`. Rewrite using `[GlobalTheory.TripleRead.toUX_val, GlobalTheory.WeilVacMove.mt_one]`. Conclude with `Matrix.submatrix_one_equiv _`. Establish `key : ∀ x, GlobalTheory.TripleRead.thO Mo ψ' (sgn ε M).gram (Equiv.refl _) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F) f₁ r) x = GlobalTheory.TripleRead.thO Mo ψ' (sgn ε M).gram (Equiv.refl …`.
+
+Introduce `x`. Establish `h1` using `_root_.GlobalTheory.T.thetaSum_differentiable_along_line hPr Mo ψ' χX χW om hstd hR.good hweil γ hγ (Φ P) f₁ r (hFr P).1 hact (GlobalTheory.TripleRead.ptO (sgn ε M).gram (Equiv.refl _) x)`. Establish `h2 : ∀ t : ℝ, GlobalTheory.WeilM.thetaSum D.host.F (Mo.co.rho ψ' (GlobalTheory.TripleRead.ptO (sgn ε M).gram (Equiv.refl _) x) (om (γ (Multiplicative.ofAdd t), 1) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMod …` using `sgn ε M) ψ' θ (frSgn ε A) B f₀ P) x := by`. Introduce `t`. Establish `h3` using `hR.transp (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F) (Φ P) r) (hFr P).1.2 (g t) 1`.
+
+Rewrite `h3` using `[hg t, hone, (hFr P).2]`. Conclude with `congrFun h3 x`. Simplify using `only [h2] at h1`. Establish `h4` using `h1.unique (hQd x)`. Rewrite using `[(hFr Q).2]`.
+
+Conclude with `h4`. Take `⟨d, hd⟩ : ∃ d : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf D.host.F (Fin M.rank × Fin X.rank), d = f₁ - Φ Q` from `⟨_, rfl⟩`. Establish `e1 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F) d r = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F) f …`. Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens, sub_mul, hd]`.
+
+Establish `hmem : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F) d r ∈ GlobalTheory.WeilM.schA D.host.F (Fin M.rank × Fin X.rank)`. Rewrite using `[e1]`. Conclude with `sub_mem hRf₁.2 hRQ.2`. Establish `hT0 : T (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F) d r) = 0`. Rewrite using `[e1, map_sub, hT _ hRf₁.2, hT _ hRQ.2, funext key, sub_self]`.
+
+Establish `hz` using `hTinj _ hmem hT0`. Establish `hr : ∃ x₀, r x₀ ≠ 0`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `h0 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F) (Φ 1) r = 0` using `funext fun x => by`.
+
+Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens, hcon]`. Establish `h2` using `(hFr 1).2`. Rewrite `h2` using `[h0, ← hT 0 (zero_mem _), map_zero, GlobalTheory.LieScalar.ptF_one]`. Conclude with `hne h2.symm`. Establish `hfeq : f₁ = Φ Q`.
+
+Take `⟨x₀, hx₀⟩` from `hr`. Rewrite using `[← sub_eq_zero, ← hd]`. Use `DFunLike.ext _ _ fun y => ?_` and prove the remaining obligations. Set `z : Fin M.rank × Fin X.rank → AF D.host.F` to `fun i => LinearMap.inl D.host.F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf D.host.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) ((InfiniteAdeleRing.ringEquiv_mixedSpace D.host.F).symm (y i - GlobalTheory.IndefiniteRowSideFullHecke …`. Establish `hzAt : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F) z`.
+
+Introduce `u hu`. Establish `hu1 : u.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace D.host.F).injective (by rw [map_zero]; exact hu)`. Use function extensionality and compare the values at `i`. Use `show u * z i = 0`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+
+Use `show u.1 * (z i).1 = 0`. Rewrite using `[hu1, zero_mul]`. Use `show u.2 * (z i).2 = 0`. Simplify using `[z]`. Establish `hev : (fun i => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F ((x₀ + z) i)) = y`.
+
+Use function extensionality and compare the values at `i`. Use `show InfiniteAdeleRing.ringEquiv_mixedSpace D.host.F ((x₀ i).1 + (z i).1) = y i`. Rewrite using `[map_add]`. Use `show GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F (x₀ i) + InfiniteAdeleRing.ringEquiv_mixedSpace D.host.F ((InfiniteAdeleRing.ringEquiv_mixedSpace D.host.F).symm (y i - GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F (x₀ i))) = y i`. Rewrite using `[RingEquiv.apply_symm_apply, add_sub_cancel]`.
+
+Establish `h5` using `congrFun hz (x₀ + z)`. Establish `h6 : r (x₀ + z) = r x₀` using `(hFr 1).1.1 x₀ z hzAt`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens, Pi.zero_apply] at h5`. Rewrite `h5` using `[hev, h6]`. Simplify `h5` using `[hx₀]`.
+
+Rewrite using `[hfeq]`. Conclude with `Submodule.mem_map_of_mem hQ`.
+-/
 theorem lie_derivative_mem_coinvariants : _root_.GlobalTheory.FunPr.ThetaLocalInputs →
   ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
   ∀ (ε : Bool) (M X : HSp D) (A : Fr M) (B : Fr X) (χS χT : (AE D)ˣ →* Circle) (ω : WRep M X) (eS eT : D.what₂.Tau → ℚ),
@@ -138,6 +175,9 @@ open GlobalTheory.SquareComm
 open scoped ComplexConjugate
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.RealDict.lie_derivative_mem_coinvariants | exact _root_.GlobalTheory.RealDict.lie_derivative_mem_coinvariants | (intros; apply _root_.GlobalTheory.RealDict.lie_derivative_mem_coinvariants <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.real_lie_derivative_mem_coinvariants : _root_.GlobalTheory.FunPr.ThetaLocalInputs →
   ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
   ∀ (ε : Bool) (M X : HSp D) (A : Fr M) (B : Fr X) (χS χT : (AE D)ˣ →* Circle) (ω : WRep M X) (eS eT : D.what₂.Tau → ℚ),

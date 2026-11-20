@@ -16,12 +16,18 @@ def Stab (S A : Submodule ℂ V) (U : Set H) (T : H → Module.End ℂ V) (P : S
 
 variable {S A : Submodule ℂ V} {U : Set H} {T : H → Module.End ℂ V}
 
+/- English proof (translation)
+Use `⟨le_sup_of_le_left h.1, sup_le h.2.1 h'.2.1, fun i hi x hx => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hx`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (h.2.2 i hi y hy) (h'.2.2 i hi z hz)`.
+-/
 theorem Stab.sup {P P' : Submodule ℂ V} (h : Stab S A U T P) (h' : Stab S A U T P') : Stab S A U T (P ⊔ P') := by
   refine ⟨le_sup_of_le_left h.1, sup_le h.2.1 h'.2.1, fun i hi x hx => ?_⟩
   obtain ⟨y, hy, z, hz, rfl⟩ := Submodule.mem_sup.1 hx
   rw [map_add]
   exact Submodule.add_mem_sup (h.2.2 i hi y hy) (h'.2.2 i hi z hz)
 
+/- English proof (translation)
+Introduce `hs`. Use `hP (le_antisymm h.2.1 fun φ hφ => (sup_le h.1 (Submodule.span_le.2 ?_)) (hgen φ hφ))` and prove the remaining obligations. Introduce and unpack `_ ⟨i, hi, rfl⟩`. Conclude with `h.2.2 i hi s hs`.
+-/
 theorem Stab.not_mem {s : V} (hgen : ∀ φ ∈ S, φ ∈ A ⊔ Submodule.span ℂ {z | ∃ h ∈ U, z = T h s}) {P : Submodule ℂ V}
     (h : Stab S A U T P) (hP : P ≠ S) : s ∉ P := by
   intro hs
@@ -29,6 +35,19 @@ theorem Stab.not_mem {s : V} (hgen : ∀ φ ∈ S, φ ∈ A ⊔ Submodule.span �
   rintro _ ⟨i, hi, rfl⟩
   exact h.2.2 i hi s hs
 
+/- English proof (translation)
+Introduce `e`. Establish `hs' : s ∈ P ⊔ P'` using `e ▸ hs`. Take `⟨x, hx, y, hy, hxy⟩` from `Submodule.mem_sup.1 hs'`. Take `⟨m, k, w, c, hw, hc⟩` from `hline x (h.2.1 hx)`. Establish `hxP : ∑ i, w i • T (k i) x ∈ P` using `P.sum_mem fun i _ => P.smul_mem _ (h.2.2 _ (hw i).1 x hx)`.
+
+Establish `hyP : ∑ i, w i • T (k i) y ∈ P'` using `P'.sum_mem fun i _ => P'.smul_mem _ (h'.2.2 _ (hw i).1 y hy)`. Establish `hsum : ∑ i, w i • T (k i) x + ∑ i, w i • T (k i) y = ((m + 1 : ℕ) : ℂ) • s`. Rewrite using `[← Finset.sum_add_distrib]`. Repeatedly rewrite using `[← smul_add, ← map_add, hxy, (hw _).2]`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, Nat.cast_smul_eq_nsmul]`.
+
+Establish `h1 : c • s ∈ P`. Use `P.sub_mem hxP (h.1 hc)` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Establish `h2 : (((m + 1 : ℕ) : ℂ) - c) • s ∈ P'`. Establish `e2 : (((m + 1 : ℕ) : ℂ) - c) • s = ∑ i, w i • T (k i) y + (∑ i, w i • T (k i) x - c • s)`.
+
+Rewrite using `[sub_smul, ← hsum]`. Normalize the expressions using the abelian group laws. Rewrite using `[e2]`. Conclude with `P'.add_mem hyP (h'.1 hc)`. Distinguish the cases in `hc0 : c = 0`.
+
+Substitute `hc0` using the available equality. Use `Stab.not_mem hgen h' hP' ?_` and prove the remaining obligations. Use `P'.smul_mem (((m + 1 : ℕ) : ℂ))⁻¹ h2` as an intermediate fact. Rewrite `this` using `[sub_zero, smul_smul, inv_mul_cancel₀ (by exact_mod_cast Nat.succ_ne_zero m), one_smul]`. Then use the resulting hypothesis. Use `Stab.not_mem hgen h hP ?_` and prove the remaining obligations.
+
+Use `P.smul_mem c⁻¹ h1` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hc0, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem Stab.sup_ne {s : V} (hs : s ∈ S) (hgen : ∀ φ ∈ S, φ ∈ A ⊔ Submodule.span ℂ {z | ∃ h ∈ U, z = T h s})
     (hline : ∀ φ ∈ S, ∃ (m : ℕ) (k : Fin (m + 1) → H) (w : Fin (m + 1) → ℂ) (c : ℂ),
       (∀ i, k i ∈ U ∧ w i • T (k i) s = s) ∧ ∑ i, w i • T (k i) φ - c • s ∈ A)
@@ -67,23 +86,40 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {ω : UA σ X.J × UA σ W.J → Module.End ℂ (Fn F n d v)} {ρ : Matrix (Fin n) (Fin d) (AE F E) → Module.End ℂ (Fn F n d v)}
 
 omit [NumberField E] in
+/- English proof (translation)
+Introduce `u _` and use `by simp [mat]`.
+-/
 theorem one_uat (v : Pl F) : (1 : UA σ X.J) ∈ UAt σ X (evFin F v) := fun u _ => by simp [mat]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hN.1, hN.2.1, fun h hh x hx => hN.2.2 h hh x hx _ (L.pres 1 (one_uat v) h hh x (hN.2.1 hx)) ((L.acts 1 (one_uat v) h hh x (hN.2.1 hx) _).2 rfl)⟩`.
+-/
 theorem stab_of (L : IsLocRep M ψ om v ω ρ) {N} (hN : GlobalTheory.Published.ThetaSub om v N) :
     Stab (SB _) (augAt om v) (UAt σ W (evFin F v)) (fun h => ω (1, h)) N :=
   ⟨hN.1, hN.2.1, fun h hh x hx => hN.2.2 h hh x hx _ (L.pres 1 (one_uat v) h hh x (hN.2.1 hx))
     ((L.acts 1 (one_uat v) h hh x (hN.2.1 hx) _).2 rfl)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hN.1, hN.2.1, fun h hh φ hφ φ₁ _ hA => by rw [(L.acts 1 (one_uat v) h hh φ (hN.2.1 hφ) φ₁).1 hA] exact hN.2.2 h hh φ hφ⟩`.
+-/
 theorem thetaSub_of (L : IsLocRep M ψ om v ω ρ) {N}
     (hN : Stab (SB _) (augAt om v) (UAt σ W (evFin F v)) (fun h => ω (1, h)) N) : GlobalTheory.Published.ThetaSub om v N :=
   ⟨hN.1, hN.2.1, fun h hh φ hφ φ₁ _ hA => by
     rw [(L.acts 1 (one_uat v) h hh φ (hN.2.1 hφ) φ₁).1 hA]
     exact hN.2.2 h hh φ hφ⟩
 
+/- English proof (translation)
+The claim follows from `thetaSub_of L ((stab_of L hN).sup (stab_of L hN'))`.
+-/
 theorem thetaSub_sup (L : IsLocRep M ψ om v ω ρ) {N N'} (hN : GlobalTheory.Published.ThetaSub om v N)
     (hN' : GlobalTheory.Published.ThetaSub om v N') : GlobalTheory.Published.ThetaSub om v (N ⊔ N') :=
   thetaSub_of L ((stab_of L hN).sup (stab_of L hN'))
 
+/- English proof (translation)
+Break down `hs with hs | hs` into its components or cases. Take `⟨s, hs⟩` from `hs ω ρ L`. Conclude with `Stab.sup_ne hs.mem hs.gen hs.line (stab_of L hN) (stab_of L hN') h1 h2`. Establish `e1` using `(hs N hN).resolve_right h1`. Establish `e2` using `(hs N' hN').resolve_right h2`.
+
+Rewrite using `[e1, e2, sup_idem]`. Rewrite `h1` using `[e1]`. Conclude with `h1`.
+-/
 theorem sup_ne_of (L : IsLocRep M ψ om v ω ρ) (hs : SphAt M ψ om v ∨ IrrAt om v) {N N'} (hN : GlobalTheory.Published.ThetaSub om v N)
     (hN' : GlobalTheory.Published.ThetaSub om v N') (h1 : N ≠ SB _) (h2 : N' ≠ SB _) : N ⊔ N' ≠ SB _ := by
   rcases hs with hs | hs
@@ -95,12 +131,18 @@ theorem sup_ne_of (L : IsLocRep M ψ om v ω ρ) (hs : SphAt M ψ om v ∨ IrrAt
     rw [e1] at h1
     exact h1
 
+/- English proof (translation)
+Introduce `N N' hN hN'`. Establish `hq : GlobalTheory.Published.ThetaSub om v (N ⊔ N') ∧ N ⊔ N' ≠ SB _` using `⟨thetaSub_sup L hN.prop.1 hN'.prop.1, sup_ne_of L hs hN.prop.1 hN'.prop.1 hN.prop.2 hN'.prop.2⟩`. Conclude with `(hN.eq_of_ge hq le_sup_left).symm.trans (hN'.eq_of_ge hq le_sup_right)`.
+-/
 theorem maxAt_of (L : IsLocRep M ψ om v ω ρ) (hs : SphAt M ψ om v ∨ IrrAt om v) : PositivityTheory.HoweDualityUnitaryAlt.MaxAt om v := by
   intro N N' hN hN'
   have hq : GlobalTheory.Published.ThetaSub om v (N ⊔ N') ∧ N ⊔ N' ≠ SB _ :=
     ⟨thetaSub_sup L hN.prop.1 hN'.prop.1, sup_ne_of L hs hN.prop.1 hN'.prop.1 hN.prop.2 hN'.prop.2⟩
   exact (hN.eq_of_ge hq le_sup_left).symm.trans (hN'.eq_of_ge hq le_sup_right)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨PositivityTheory.ThKH.Locrep.locRepEx F E σ _ _ B G.V G.W G.M om ⟨hT.base, ⟨_, _, hT.geo.hV⟩, ⟨_, _, hT.geo.hW⟩, hT.geo.hM, ⟨_, _, hT.weil⟩⟩ v, PositivityTheory.ThKH.Locrep.locRepEx F E σ _ _ B G.V' G.W G.M' om' ⟨hT.base, ⟨_, _, hT.geo.hV'⟩, ⟨_, _, hT.geo.hW⟩, hT.geo.hM', ⟨_, _, …`.
+-/
 theorem locRep_tri {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {Y : Chars F E} {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W}
     (hT : IsTriple B G Y om om') (v : Pl F) :
     (∃ ω ρ, IsLocRep G.M B.ψ om v ω ρ) ∧ ∃ ω ρ, IsLocRep G.M' B.ψ om' v ω ρ :=
@@ -109,6 +151,9 @@ theorem locRep_tri {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {Y : Chars F E}
     PositivityTheory.ThKH.Locrep.locRepEx F E σ _ _ B G.V' G.W G.M' om'
       ⟨hT.base, ⟨_, _, hT.geo.hV'⟩, ⟨_, _, hT.geo.hW⟩, hT.geo.hM', ⟨_, _, hT.weil'⟩⟩ v⟩
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v _`. Take `⟨h1, h2⟩` from `h F E σ B a a' G X om om' hT v`. Take `⟨⟨ω, ρ, L⟩, ⟨ω', ρ', L'⟩⟩` from `locRep_tri hT v`. Conclude with `⟨maxAt_of L h1, maxAt_of L' h2⟩`.
+-/
 theorem maxFinT_of (h : SphTri) : PositivityTheory.HoweDualityUnitaryAlt.MaxFinT := by
   intro F E _ _ _ _ _ σ B a a' G X om om' hT v _
   obtain ⟨h1, h2⟩ := h F E σ B a a' G X om om' hT v

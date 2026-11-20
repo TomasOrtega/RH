@@ -11,6 +11,13 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.BigTop GlobalTheo
 noncomputable section
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.BigTop.Fun
+/- English proof (translation)
+Introduce `Q hS hD hG`. Take `⟨CF0, hG⟩` from `hG`. Use `⟨CF0, fun CF hCF => (hS.and hD).imp fun {eps} Fm CH he h => ?_⟩` and prove the remaining obligations. Take `⟨⟨x1, h1⟩, ⟨x2, h2⟩⟩` from `h`. Introduce `_`.
+
+Take `⟨C0, x₀, hC⟩` from `hG eps CF hCF`. Use `⟨C0, fun C hC0 => ⟨max x₀ (max x1 x2), fun x hx hle i p hp d hd => ?_⟩⟩` and prove the remaining obligations. Take `⟨_, a, ht⟩` from `hd`. Establish `hset` using `h1 x hx (le_of_max_le_left (le_of_max_le_right hle)) i p hp ht.ok.eser`. Establish `hdl` using `h2 x hx (le_of_max_le_right (le_of_max_le_right hle)) i p hp`.
+
+Establish `hx0 : x₀ ≤ (Fm.L x i).sc.x` using `(le_of_max_le_left hle).trans (Fm.L_x x i hx).ge`. Conclude with `hC C hC0 _ (Fm.L x i) (Fm.L_eps x i) hx0 ⟨hset.size, hset.host, hset.hF, hdl⟩ _ p.R.toLevCh p.P.A3.A.μ0 hset.core.lev d.G`.
+-/
 theorem gBig_atTied_alt : ∀ Q : GlobalTheory.SqTop.GP, _root_.GlobalTheory.BigTop.Fun.SettingAtPoint → (Closed FamHyp fun Fm _ => _root_.GlobalTheory.BigTop.EventuallyAtPoints Fm fun x _ i _ => |(Fm.L x i).logDerivativeAtOne| ≤ (Fm.L x i).sc.x ^ (Fm.L x i).sc.eps) → GlobalTheory.SqTop.GBig @Q → _root_.GlobalTheory.BigTop.Fun.LeafConditions (@Fitted @Comparison₂) fun p _ d C _ => Q d.G p.P.A3.A.μ0 C p.Z.x p.Z.b := by
   intro Q hS hD hG
   obtain ⟨CF0, hG⟩ := hG

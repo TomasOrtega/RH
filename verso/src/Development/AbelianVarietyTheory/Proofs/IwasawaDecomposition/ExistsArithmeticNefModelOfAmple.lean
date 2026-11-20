@@ -16,6 +16,11 @@ open GlobalTheory.CechPic GlobalTheory.ProjSpace GlobalTheory.Points
 
 namespace GlobalTheory.AmpleModelPos
 
+/- English proof (translation)
+Take `⟨a, s, hs⟩` from `hA`. Take `⟨b, t, ht⟩` from `hB`. Use `isGenerated_of_finite (fun q : Fin a × Fin b => EndOnTorsion.tensSec (s q.1) (t q.2)) (top_le_iff.1 fun y _ => ?_)` and prove the remaining obligations. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hs.ge (Set.mem_univ y))`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 (ht.ge (Set.mem_univ y))`.
+
+Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨(i, j), (EndOnTorsion.nonzeroLocus_tensSec (s i) (t j)).ge ⟨hi, hj⟩⟩`.
+-/
 theorem isGenerated_tens {X : Scheme.{0}} {A B : LB X} (hA : IsGenerated A) (hB : IsGenerated B) :
     IsGenerated (tens A B) := by
   obtain ⟨a, s, hs⟩ := hA
@@ -30,6 +35,15 @@ section Pull
 
 variable {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {σ : k →+* ℂ} {D N : ℕ}
 
+/- English proof (translation)
+Introduce `i c y hy ξ`. Take `⟨j, rfl⟩ : ∃ j : Fin (N + 1), i = fun _ => j` from `⟨i PUnit.unit, rfl⟩`. Establish `hW : y ∈ ptsIn p σ (f ⁻¹ᵁ chart k N j)` using `mem_ptsIn.2 (Set.mem_iInter.1 (mem_ptsIn.1 hy.2) PUnit.unit)`. Establish `ho` using `ChartGlue.isOpen_over (R.chart c).e (isOpen_ptsIn (p := p) (σ := σ) (f ⁻¹ᵁ chart k N j))`. Establish `hn` using `ho.mem_nhds (ChartGlue.mem_over (R.chart c).e hy.1 hW)`.
+
+Set `g (a : Fin (N + 1)) : ReciprocityTheory.L2DbarEstimates.V D → ℂ` to `ev p σ (f ⁻¹ᵁ chart k N j) (f.app _ (ratio k N j a)) ∘ (R.chart c).e.symm`. Establish `hg (a) : ContDiffAt ℂ 2 (g a) ((R.chart c).e y)` using `((ReciprocityTheory.L2DbarEstimates.contDiffOn_of_differentiableOn D _ _ ho ((R.chart c).holo _ _)).contDiffAt hn).of_le (WithTop.coe_le_coe.2 le_top)`. Establish `hj : g j ((R.chart c).e y) = 1`. Simplify using `only [g, Function.comp_apply, (R.chart c).e.left_inv hy.1]`. Establish `h1 : ratio k N j j = 1` using `ratioOn_self`.
+
+Rewrite using `[h1, map_one, ev_eq hW, map_one]`. Establish `hpos : 0 < ∑ a, Complex.normSq (g a ((R.chart c).e y))` using `Finset.sum_pos' (fun a _ => Complex.normSq_nonneg _) ⟨j, Finset.mem_univ _, by rw [hj, map_one]; exact one_pos⟩`. Use `ReciprocityTheory.L2DbarEstimates.leviV_log_sum_nonneg (u := fun a v => Complex.normSq (g a v)) (fun a => ReciprocityTheory.L2DbarEstimates.contDiffAt_normSq_comp (hg a)) (fun a => ReciprocityTheory.L2DbarEstimates.logPshAt_normSq (hg a)) hpos ξ` as an intermediate fact. Establish `e : (fun v => (((ProjAn.fsO1 k σ N).pull f hf).φ (fun _ => j) ((R.chart c).e.symm v) : ℂ)) = fun v => ((Real.log (∑ a, Complex.normSq (g a v)) : ℝ) : ℂ)`. Use function extensionality and compare the values at `v`.
+
+Rewrite using `[ProjPos.fubiniStudy_weight_pullback_chart_formula]`. Simplify using `only [g, Function.comp_apply, Complex.normSq_eq_norm_sq]`. Rewrite using `[e]`. Conclude with `this`.
+-/
 theorem semiPos_pull_fsO1 (f : Y ⟶ PSpace k N) (hf : f ≫ PSpace.str k N = p) (R : AnRead p σ D) :
     ((ProjAn.fsO1 k σ N).pull f hf).SemiPos R := by
   intro i c y hy ξ
@@ -64,6 +78,9 @@ variable {F : Type} [Field F] [NumberField F] {Y : Var F}
 
 omit [NumberField F] in
 
+/- English proof (translation)
+Rewrite using `[valR_comp, ratio, baseChange_app_ratioOn]`. Establish `key : ∀ (U : (PSpace F n).Opens) (hU : U = chart F n j) (hi : U ≤ chart F n j), valR x U (ratioOn U j hi a) = valR x (chart F n j) (ratio F n j a)`. Introduce and unpack `_ rfl _`. Both sides reduce to the same expression. Conclude with `key _ (baseChange_preimage_chart n _ j) _`.
+-/
 theorem valR_ratio_baseChange {n : ℕ} (x : Sp ℂ ⟶ PSpace F n) (j a : Fin (n + 1)) :
     valR (x ≫ baseChange n (algebraMap (𝓞 F) F)) (chart (𝓞 F) n j) (ratio (𝓞 F) n j a) =
       valR x (chart F n j) (ratio F n j a) := by
@@ -76,6 +93,9 @@ theorem valR_ratio_baseChange {n : ℕ} (x : Sp ℂ ⟶ PSpace F n) (j a : Fin (
 
 omit [NumberField F] in
 
+/- English proof (translation)
+Rewrite using `[show j = fun _ => j PUnit.unit from rfl, ProjPos.fubiniStudy_weight_pullback_chart_formula, ProjPos.fubiniStudy_weight_pullback_chart_formula]`. Use `congrArg Real.log (Finset.sum_congr rfl fun a _ => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖valR ((y : Sp ℂ ⟶ Y.X) ≫ Z.j) _ _‖ ^ 2 = ‖valR (y : Sp ℂ ⟶ Y.X) _ _‖ ^ 2`. Rewrite using `[← valR_comp, ← valR_comp, Category.assoc, h, ← Category.assoc, valR_ratio_baseChange]`.
+-/
 theorem pull_fsO1_ptMap (Z : TrueGeo.Model Y) (σ : F →+* ℂ) {n : ℕ} (f : Y.X ⟶ PSpace F n)
     (hf : f ≫ PSpace.str F n = Y.str) (g : Z.X ⟶ PSpace (𝓞 F) n) (hg : g ≫ PSpace.str (𝓞 F) n = Z.p)
     (h : Z.j ≫ g = f ≫ baseChange n (algebraMap (𝓞 F) F)) (j : PUnit → Fin (n + 1)) (y : Pts Y σ) :
@@ -86,6 +106,39 @@ theorem pull_fsO1_ptMap (Z : TrueGeo.Model Y) (σ : F →+* ℂ) {n : ℕ} (f : 
   change ‖valR ((y : Sp ℂ ⟶ Y.X) ≫ Z.j) _ _‖ ^ 2 = ‖valR (y : Sp ℂ ⟶ Y.X) _ _‖ ^ 2
   rw [← valR_comp, ← valR_comp, Category.assoc, h, ← Category.assoc, valR_ratio_baseChange]
 
+/- English proof (translation)
+Introduce `F _ _ Y Δ hΔ`. Use `CommonModel.isProper_of_isProjOver Y.isProjOver` as an intermediate fact. Take `⟨e, he, he1⟩` from `((AmpleDominates.eventually_isGenerated Y.str hΔ Y.isAmple_projective_O_one.isLB).and (Filter.eventually_ge_atTop 1)).exists`. Take `⟨b, sb, hsb⟩` from `he.exists_fin_succ`. Set `α` to `algebraMap (𝓞 F) F`.
+
+Set `c` to `Y.str ≫ spMap α`. Establish `hfa : (Y.ι ≫ baseChange Y.N α) ≫ PSpace.str (𝓞 F) Y.N = Y.str ≫ spMap α`. Rewrite using `[Category.assoc, baseChange_str, ← Category.assoc]`. Both sides reduce to the same expression. Take `⟨X, π, j, hX, hπ, hfl, H, ⟨ga, ha₁, ha₂⟩, gb, hb₁, hb₂⟩` from `IntModel.exists_flat_model_two (O := 𝓞 F) Y.str Y.isProjOver ⟨Y.N, 𝟙 _, inferInstance, Category.id_comp _⟩ ⟨b, 𝟙 _, inferInstance, Category.id_comp _⟩ hfa (toProj_str c sb hsb)`.
+
+Use `CommonModel.isProper_of_isProjOver hπ` as an intermediate fact. Establish `hZ : Flat (spMap (Int.castRingHom (𝓞 F)))`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`. Conclude with `(RingHom.flat_algebraMap_iff (R := ℤ) (S := 𝓞 F)).2 inferInstance`. Establish `har : IsArithVar π Y.dim` using `⟨inferInstance, inferInstance, hX, hπ, inferInstance, IntModel.topologicalKrullDim_eq_succ (RingOfIntegers.not_isField F) H Y.topologicalKrullDim_eq⟩`.
+
+Set `Z : TrueGeo.Model Y` to `⟨X, π, har, j, H⟩`. Set `La : HermLB Z.p` to `(hermitianTwistingSheaf (𝓞 F) Y.N).pull ga ha₂`. Set `Lb : HermLB Z.p` to `(hermitianTwistingSheaf (𝓞 F) b).pull gb hb₂`. Set `L : HermLB Z.p` to `La.tens Lb`. Set `fb` to `toProj Y.str sb hsb`.
+
+Establish `hfb : fb ≫ PSpace.str F b = Y.str` using `toProj_str _ _ _`. Establish `hb₁' : Z.j ≫ gb = fb ≫ baseChange b α` using `hb₁.trans (toProj_baseChange α Y.str sb hsb).symm`. Establish `hL : (L.B.pull Z.j).IsLB` using `LB.isLB_pull L.isLB Z.j`. Establish `ea : pull Z.j (cls La.B La.isLB) = cls Y.O1 (LB.isLB_pull (O1_isLB F Y.N) Y.ι)`. Establish `e₀ : cls La.B La.isLB = pull ga (cls _ (O1_isLB (𝓞 F) Y.N))` using `cls_pull (O1_isLB (𝓞 F) Y.N) ga La.isLB`.
+
+Rewrite using `[e₀, ← pull_comp, show Z.j ≫ ga = Y.ι ≫ baseChange Y.N α from ha₁, pull_comp, ← cls_pull (O1_isLB (𝓞 F) Y.N) _ (LB.isLB_pull (O1_isLB (𝓞 F) Y.N) _), (cls_eq_iff _ (O1_isLB F Y.N)).2 (lbIso_pull_O1 Y.N α), cls_pull (O1_isLB F Y.N)]`. Establish `eb : pull Z.j (cls Lb.B Lb.isLB) = cls _ he.isLB` using `IntModel.pull_cls_O1 Z.j c he.isLB sb hsb gb hb₁ Lb.isLB`. Take `⟨r, hr⟩` from `IntModel.exists_presents (((⟨e, he1⟩ : ℕ+) : ℕ) • Δ) hL (by`. Express the relevant statement in the definitionally equal form `toPic (e • Δ) = _`. Establish `e₁ : cls L.B L.isLB = cls La.B La.isLB + cls Lb.B Lb.isLB` using `cls_tens La.isLB Lb.isLB L.isLB`.
+
+Rewrite using `[cls_pull L.isLB Z.j hL, e₁, map_add, ea, eb, cls_div (isLB_lbPow (isLB_toLB Δ) e) (LB.isLB_pull (O1_isLB F Y.N) Y.ι), cls_lbPow (isLB_toLB Δ), map_nsmul, toPic_apply]`. Use the proof step `abel)`. Use `⟨⟨e, he1⟩, Z, L, r, hr, OfLattice.nefFib_of_isGenerated har L (isGenerated_tens ((isGenerated_O1 _ _).pull ga) ((isGenerated_O1 _ _).pull gb)), fun σ => ?_⟩` and prove the remaining obligations. Set `ψa` to `(ProjAn.fsO1 F σ Y.N).pull Y.ι rfl`. Set `ψb` to `(ProjAn.fsO1 F σ b).pull fb hfb`.
+
+Establish `sa : ψa.IsSmooth (Y.an σ)` using `ProjPos.fubiniStudy_weight_pullback_isSmooth _ _ _`. Establish `pa : ψa.StrictPos (Y.an σ)` using `ProjPos.fubiniStudy_weight_pullback_closed_immersion_strictPos _ _ _`. Establish `sb' : ψb.IsSmooth (Y.an σ)` using `ProjPos.fubiniStudy_weight_pullback_isSmooth _ _ _`. Establish `pb : ψb.SemiPos (Y.an σ)` using `semiPos_pull_fsO1 _ _ _`. Establish `eq (i : (L.B.pull Z.j).ι) (y : Pts Y σ) : (pullW Z L σ).φ i y = ψa.φ (i PUnit.unit).1 y + ψb.φ (i PUnit.unit).2 y`.
+
+Rewrite using `[pullW_φ]`. Conclude with `congrArg₂ (· + ·) (pull_fsO1_ptMap Z σ Y.ι rfl ga ha₂ ha₁ _ y) (pull_fsO1_ptMap Z σ fb hfb gb hb₂ hb₁' _ y)`. Establish `mem (i : (L.B.pull Z.j).ι) (y : Pts Y σ) (hy : y ∈ ptsIn Y.str σ ((L.B.pull Z.j).U i)) : y ∈ ptsIn Y.str σ (((O1 F Y.N).pull Y.ι).U (i PUnit.unit).1) ∧ y ∈ ptsIn Y.str σ (((O1 F b).pull fb).U (i PUnit.unit).2)`. Establish `h1` using `mem_ptsIn_inf.1 (mem_of_mem_linComb (m := fun _ => OfModel.ptMap Z σ y) (fun _ => rfl) hy PUnit.unit)`. Establish `ha` using `mem_ptsIn.1 (mem_of_mem_linComb (m := fun _ => PtsOver.map ga ha₂ _ (OfModel.ptMap Z σ y)) (fun _ => rfl) h1.1 PUnit.unit)`.
+
+Establish `hb` using `mem_ptsIn.1 (mem_of_mem_linComb (m := fun _ => PtsOver.map gb hb₂ _ (OfModel.ptMap Z σ y)) (fun _ => rfl) h1.2 PUnit.unit)`. Use `⟨mem_ptsIn.2 (Set.mem_iInter.2 fun _ => ?_), mem_ptsIn.2 (Set.mem_iInter.2 fun _ => ?_)⟩` and prove the remaining obligations. Establish `e : ((y : Sp ℂ ⟶ Y.X) ≫ Z.j) ≫ ga = ((y : Sp ℂ ⟶ Y.X) ≫ Y.ι) ≫ baseChange Y.N α`. Rewrite using `[Category.assoc, Category.assoc]`. Conclude with `congrArg _ ha₁`.
+
+Establish `ha'` using `ha`. Express the relevant statement in the definitionally equal form `(((y : Sp ℂ ⟶ Y.X) ≫ Z.j) ≫ ga).base (IsLocalRing.closedPoint ℂ) ∈ chart (𝓞 F) Y.N ((i PUnit.unit).1 PUnit.unit) at ha'`. Rewrite `ha'` using `[e]`. Establish `hm : ((y : Sp ℂ ⟶ Y.X) ≫ Y.ι).base (IsLocalRing.closedPoint ℂ) ∈ chart F Y.N ((i PUnit.unit).1 PUnit.unit)`. Conclude with `(SetLike.ext_iff.1 (baseChange_preimage_chart Y.N α ((i PUnit.unit).1 PUnit.unit)) _).1 ha'`.
+
+Conclude with `hm`. Establish `e : ((y : Sp ℂ ⟶ Y.X) ≫ Z.j) ≫ gb = ((y : Sp ℂ ⟶ Y.X) ≫ fb) ≫ baseChange b α`. Rewrite using `[Category.assoc, Category.assoc]`. Conclude with `congrArg _ hb₁'`. Establish `hb'` using `hb`.
+
+Express the relevant statement in the definitionally equal form `(((y : Sp ℂ ⟶ Y.X) ≫ Z.j) ≫ gb).base (IsLocalRing.closedPoint ℂ) ∈ chart (𝓞 F) b ((i PUnit.unit).2 PUnit.unit) at hb'`. Rewrite `hb'` using `[e]`. Establish `hm : ((y : Sp ℂ ⟶ Y.X) ≫ fb).base (IsLocalRing.closedPoint ℂ) ∈ chart F b ((i PUnit.unit).2 PUnit.unit)`. Conclude with `(SetLike.ext_iff.1 (baseChange_preimage_chart b α ((i PUnit.unit).2 PUnit.unit)) _).1 hb'`. Conclude with `hm`.
+
+Establish `hs : (pullW Z L σ).IsSmooth (Y.an σ)`. Use `(Weight.isCInf_iff_isSmooth (Y.an σ)).1 fun i y hy => ?_` and prove the remaining obligations. Take `⟨m1, m2⟩` from `mem i y hy`. Conclude with `(((Weight.isCInf_iff_isSmooth (Y.an σ)).2 sa _ y m1).add ((Weight.isCInf_iff_isSmooth (Y.an σ)).2 sb' _ y m2)).congr (.of_forall fun z => eq i z)`. Use `⟨hs, fun i c y hy ξ hξ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨m1, m2⟩` from `mem i y hy.2`. Establish `e' : (pullW Z L σ).φ i = fun z => ψa.φ (i PUnit.unit).1 z + ψb.φ (i PUnit.unit).2 z` using `funext (eq i)`. Use `show 0 < ((Y.an σ).chart c).levi ((pullW Z L σ).φ i) y ξ`. Rewrite using `[e']`. Use `lt_of_lt_of_eq ?_ (AlgChart.levi_add (sa.contDiffAt_two hy.1 m1) (sb'.contDiffAt_two hy.1 m2) ξ).symm` and prove the remaining obligations.
+
+Conclude with `add_pos_of_pos_of_nonneg (pa _ c y ⟨hy.1, m1⟩ ξ hξ) (pb _ c y ⟨hy.1, m2⟩ ξ)`.
+-/
 theorem exists_model_strictPos : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (Δ : Y.Dv), Y.ample Δ →
     ∃ (q : ℕ+) (Z : TrueGeo.Model Y) (L : HermLB Z.p) (r : (L.B.pull Z.j).ι → Y.Fnˣ),
       Presents ((q : ℕ) • Δ) (L.B.pull Z.j) r ∧ ArInt.NefFib L ∧

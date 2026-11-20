@@ -10,6 +10,13 @@ open Formalism.FourierDecayAlt
 
 noncomputable section
 
+/- English proof (translation)
+Take `⟨Cc, hCc⟩` from `Formalism.FourierDecayAlt.P.limit_of_module_forms Cb`. Use `⟨Cc, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P p f χ ε A N nn Y hDD hχ hε hf hfA hA`. Establish `hFL` using `(hCc Wp Wq P p f χ ε A N (cutN P.k P.r) hDD hχ hε hf hfA hA (fun _ _ => rfl)).2`. Introduce `w hw hN`.
+
+Establish `hT` using `hFL 0 w hw.1 hN [] []`. Establish `hre` using `(Complex.continuous_re.tendsto _).comp hT`. Establish `e1 : ∀ n : ℕ, TBB.Ew p nn (apx (D.cutF p.T.base χ f ε) n) 0 w [] = (p.RR (fun g => cutN P.k P.r n g • D.cutF p.T.base χ f ε g) 0 w [] []).re / TBB.normC nn w` using `fun n => Formalism.FourierDecayAlt.P.TBBx3.ew_zero_nil p nn _ w`. Establish `e2 : TBB.Ew p nn (D.cutF p.T.base χ f ε) 0 w [] = (p.RR (D.cutF p.T.base χ f ε) 0 w [] []).re / TBB.normC nn w` using `Formalism.FourierDecayAlt.P.TBBx3.ew_zero_nil p nn _ w`. Simplify using `only [e1, e2]`.
+
+Conclude with `hre.div_const _`.
+-/
 theorem limZeroN_of_formLimit (Cb : ℝ) : ∃ Cc : ℝ, ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par)
     (p : KB.Pl P Wp Wq) (f : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (χ : ℝ → ℝ) (ε A : ℝ) (N : ℕ) (nn : ℝ → ℝ) (Y : Finset ℝ),

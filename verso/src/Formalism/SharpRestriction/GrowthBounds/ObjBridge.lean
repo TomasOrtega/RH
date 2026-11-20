@@ -36,6 +36,9 @@ def dvrOfStd {p n' : ℕ} {W Qq O Kf : Type} [CommRing W] [IsDomain W] [IsDiscre
     exact pow_ne_zero 2 h.2.1.ne_zero
   complete := h.1.complete_O
 
+/- English proof (translation)
+The claim follows from `h.1.w_sq`.
+-/
 theorem dvrOfStd_sq {p n' : ℕ} {W Qq O Kf : Type} [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field Qq]
     [Algebra W Qq] [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf] [Algebra O Kf]
     {ι : Qq →+* Kf} {σ : Qq ≃+* Qq} {j : W →+* O} {w : O} (h : UnramifiedQuadraticSetting p n' W Qq O Kf ι σ j w) :

@@ -2,6 +2,15 @@ import Mathlib
 
 namespace GlobalTheory.NormBoundOfSpan
 
+/- English proof (translation)
+Introduce `f hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨j, rfl⟩` from `hx`. Conclude with `⟨1, zero_le_one, fun p r _ h => by simpa using h j⟩`.
+
+Consider the case `zero => exact ⟨0, le_rfl, fun p r _ _ => by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨C, hC, h1⟩` from `hx`. Take `⟨D, hD, h2⟩` from `hy`. Use `⟨C + D, add_nonneg hC hD, fun p r hr h => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.add_apply, add_mul]`. Conclude with `(norm_add_le _ _).trans (add_le_add (h1 p r hr h) (h2 p r hr h))`. Consider the case `smul a x _ hx`. Take `⟨C, hC, h1⟩` from `hx`. Use `⟨‖a‖ * C, mul_nonneg (norm_nonneg a) hC, fun p r hr h => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.smul_apply, smul_eq_mul, norm_mul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (h1 p r hr h) (norm_nonneg a)`.
+-/
 theorem norm_le_of_mem_span {K E ι : Type} [NormedField K] [AddCommGroup E] [Module K E]
     (φ : ι → E →ₗ[K] K) :
     ∀ f ∈ Submodule.span K (Set.range φ), ∃ (C : ℝ), (0 : ℝ) ≤ C ∧ ∀ (p : E) (r : ℝ),

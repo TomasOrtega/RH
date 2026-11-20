@@ -61,6 +61,9 @@ def conjE {X Y : Type} (U : (X → ℂ) ≃ₗ[ℂ] (Y → ℂ)) : (X → ℂ) �
       funext x
       simp [conjLin_apply] }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjE_apply {X Y : Type} (U : (X → ℂ) ≃ₗ[ℂ] (Y → ℂ)) (φ : X → ℂ) : conjE U φ = conjLin U.toLinearMap φ := rfl
 
 end GlobalTheory.DblTr
@@ -71,27 +74,42 @@ section Gen
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+The claim follows from `partL_congr fun b => h _ (sliceL_mem hΦ b)`.
+-/
 theorem partL_eq_of_eqOn {κ κ₁ κ' : Type} [Fintype κ] [Fintype κ'] {T e : ((κ → AF F) → ℂ) → (κ₁ → AF F) → ℂ}
     (h : ∀ Φ ∈ schA F κ, T Φ = e Φ) {Φ : (κ ⊕ κ' → AF F) → ℂ} (hΦ : Φ ∈ schA F (κ ⊕ κ')) :
     partL T Φ = partL e Φ :=
   partL_congr fun b => h _ (sliceL_mem hΦ b)
 
+/- English proof (translation)
+The claim follows from `partR_congr fun a => h _ (sliceR_mem hΦ a)`.
+-/
 theorem partR_eq_of_eqOn {κ κ' κ₁' : Type} [Fintype κ] [Fintype κ'] {T e : ((κ' → AF F) → ℂ) → (κ₁' → AF F) → ℂ}
     (h : ∀ Φ ∈ schA F κ', T Φ = e Φ) {Φ : (κ ⊕ κ' → AF F) → ℂ} (hΦ : Φ ∈ schA F (κ ⊕ κ')) :
     partR T Φ = partR e Φ :=
   partR_congr fun a => h _ (sliceR_mem hΦ a)
 
+/- English proof (translation)
+Introduce `Φ hΦ` and use `by funext y rw [conjLin_apply, conjLin_apply, h _ (GlobalTheory.ConjSch.conj_mem_schA Φ hΦ)]`.
+-/
 theorem conjLin_eq_of_eqOn {κ κ₁ : Type} [Fintype κ] {T e : ((κ → AF F) → ℂ) →ₗ[ℂ] (κ₁ → AF F) → ℂ}
     (h : ∀ Φ ∈ schA F κ, T Φ = e Φ) : ∀ Φ ∈ schA F κ, conjLin T Φ = conjLin e Φ := fun Φ hΦ => by
   funext y
   rw [conjLin_apply, conjLin_apply, h _ (GlobalTheory.ConjSch.conj_mem_schA Φ hΦ)]
 
+/- English proof (translation)
+Introduce `g hg`. Take `⟨T, hT⟩` from `hl g hg`. Conclude with `⟨T, fun f => by rw [h _ (Submodule.subset_span ⟨f, g, hg, rfl⟩), hT]⟩`.
+-/
 theorem adm_congr {κ : Type} [Fintype κ] {l l' : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ} (h : ∀ Φ ∈ schA F κ, l Φ = l' Φ)
     (hl : l' ∈ (adeleClass F).adm κ) : l ∈ (adeleClass F).adm κ := by
   intro g hg
   obtain ⟨T, hT⟩ := hl g hg
   exact ⟨T, fun f => by rw [h _ (Submodule.subset_span ⟨f, g, hg, rfl⟩), hT]⟩
 
+/- English proof (translation)
+Establish `h1 : partL U Φ = partL u Φ` using `partL_eq_of_eqOn hUu hΦ`. Establish `h2 : partL u Φ ∈ schA F (κ ⊕ κ)` using `partL_mem u hu Φ hΦ`. Use `⟨?_, partR_mem (conjLin u) (GlobalTheory.DblEval.ConjLoc.isLocOp_conjLin u hu) _ h2⟩` and prove the remaining obligations. Rewrite using `[h1]`. Conclude with `partR_eq_of_eqOn (conjLin_eq_of_eqOn (T := U.toLinearMap) hUu) h2`.
+-/
 theorem dbl_eq {κ : Type} [Fintype κ] (U : ((κ → AF F) → ℂ) ≃ₗ[ℂ] ((κ → AF F) → ℂ))
     (u : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ → AF F) → ℂ)) (hu : IsLocOp u) (hUu : ∀ Φ ∈ schA F κ, U Φ = u Φ)
     {Φ : (κ ⊕ κ → AF F) → ℂ} (hΦ : Φ ∈ schA F (κ ⊕ κ)) :
@@ -103,6 +121,9 @@ theorem dbl_eq {κ : Type} [Fintype κ] (U : ((κ → AF F) → ℂ) ≃ₗ[ℂ]
   rw [h1]
   exact partR_eq_of_eqOn (conjLin_eq_of_eqOn (T := U.toLinearMap) hUu) h2
 
+/- English proof (translation)
+Establish `h1 : partR (conjLin U.toLinearMap) Φ = partR (conjLin u) Φ` using `partR_eq_of_eqOn (conjLin_eq_of_eqOn (T := U.toLinearMap) hUu) hΦ`. Establish `h2 : partR (conjLin u) Φ ∈ schA F (κ ⊕ κ)` using `partR_mem (conjLin u) (GlobalTheory.DblEval.ConjLoc.isLocOp_conjLin u hu) Φ hΦ`. Use `⟨?_, partL_mem u hu _ h2⟩` and prove the remaining obligations. Rewrite using `[h1]`. Conclude with `partL_eq_of_eqOn hUu h2`.
+-/
 theorem dbl_eq' {κ : Type} [Fintype κ] (U : ((κ → AF F) → ℂ) ≃ₗ[ℂ] ((κ → AF F) → ℂ))
     (u : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ → AF F) → ℂ)) (hu : IsLocOp u) (hUu : ∀ Φ ∈ schA F κ, U Φ = u Φ)
     {Φ : (κ ⊕ κ → AF F) → ℂ} (hΦ : Φ ∈ schA F (κ ⊕ κ)) :
@@ -126,6 +147,41 @@ section Main
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Introduce `dd hdd`. Establish `hconj : ∀ Φ ∈ schA F κ, (fun x => starRingEnd ℂ (Φ x)) ∈ schA F κ` using `fun Φ hΦ => GlobalTheory.ConjSch.conj_mem_schA Φ hΦ`. Establish `hSmem : ∀ φ, φ ∈ schA F κ ↔ conjE T φ ∈ schA F κ` using `fun φ => by`. Prove the components needed by the constructor for the conclusion. Introduce `hφ`.
+
+Use `hconj _ ((hmem _).1 (hconj φ hφ))` as an intermediate fact. Conclude with `this`. Introduce `hφ`. Establish `h1 : (fun x => starRingEnd ℂ (conjE T φ x)) = T (fun x => starRingEnd ℂ (φ x))`. Use function extensionality and compare the values at `x`.
+
+Simplify using `[conjE_apply, conjLin_apply]`. Establish `h2` using `hconj _ hφ`. Rewrite `h2` using `[h1, ← hmem]`. Establish `h3` using `hconj _ h2`. Simplify using `using h3`.
+
+Establish `hLmem : ∀ Φ ∈ schA F (κ ⊕ κ), partL T Φ ∈ schA F (κ ⊕ κ)` using `fun Φ hΦ => by`. Rewrite using `[partL_eq_of_eqOn hTe hΦ]`. Conclude with `partL_mem e hL Φ hΦ`. Establish `hRmem : ∀ Φ ∈ schA F (κ ⊕ κ), partR (conjE T) Φ ∈ schA F (κ ⊕ κ)` using `fun Φ hΦ => by`. Establish `h` using `partR_eq_of_eqOn (κ := κ) (conjLin_eq_of_eqOn (T := T.toLinearMap) hTe) hΦ`.
+
+Rewrite using `[show partR (conjE T) Φ = partR (conjLin T.toLinearMap) Φ from rfl, h]`. Conclude with `partR_mem (conjLin e) (GlobalTheory.DblEval.ConjLoc.isLocOp_conjLin e hL) Φ hΦ`. Establish `heis₂ : ∀ w, ∀ φ ∈ schA F κ, conjE T (d.rho ψ⁻¹ w φ) = d₁.rho ψ⁻¹ w (conjE T φ)` using `fun w φ hφ => by`. Use function extensionality and compare the values at `y`. Rewrite using `[conjE_apply, conjLin_apply]`.
+
+Establish `h1 : (fun x => starRingEnd ℂ (d.rho ψ⁻¹ w φ x)) = d.rho ψ w (fun x => starRingEnd ℂ (φ x))`. Use function extensionality and compare the values at `fun x => conj_schr_inv ψ hψ _ _ _`. Rewrite using `[LinearEquiv.coe_coe, h1, Heisenberg₂ w _ (hconj φ hφ)]`. Conclude with `conj_schr ψ hψ _ _ _`. Establish `hunitS : ∀ μ : @Measure (κ → AF F) (borel _), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ → ∃ C : ℝ≥0∞, ∀ Φ ∈ schA F κ, ∫⁻ x, ‖conjE T Φ x‖ₑ ^ 2 ∂μ = C * ∫⁻ x, ‖Φ x‖ₑ ^ 2 ∂μ` using `fun μ hμ => by`.
+
+Take `⟨C, hC⟩` from `hunit μ hμ`. Use `⟨C, fun Φ hΦ => ?_⟩` and prove the remaining obligations. Establish `h1` using `hC _ (hconj Φ hΦ)`. Establish `hce : ∀ z : ℂ, ‖starRingEnd ℂ z‖ₑ = ‖z‖ₑ` using `fun z => by`. Rewrite using `[enorm_eq_nnnorm, enorm_eq_nnnorm]`.
+
+Use `congr 1`. Use `ext`. Simplify using the standard rewrite rules. Simplify using `only [conjE_apply, conjLin_apply, LinearEquiv.coe_coe, hce] at h1 ⊢`. Conclude with `h1`.
+
+Use `set Td : ((κ ⊕ κ → AF F) → ℂ) ≃ₗ[ℂ] ((κ ⊕ κ → AF F) → ℂ) := (partLe (κ' := κ) T).trans (partRe (κ := κ) (conjE T)) with hTd`. Establish `hTd_apply : ∀ Φ, Td Φ = partR (conjE T) (partL T Φ)` using `fun Φ => rfl`. Establish `hTd_symm : ∀ Φ, Td.symm Φ = partL T.symm (partR (conjE T).symm Φ)` using `fun Φ => rfl`. Establish `hTeq : ∀ Φ ∈ schA F (κ ⊕ κ), Td Φ = partR (conjLin e) (partL e Φ) ∧ partR (conjLin e) (partL e Φ) ∈ schA F (κ ⊕ κ)` using `fun Φ hΦ => dbl_eq T e hL hTe hΦ`. Establish `hTeq' : ∀ Φ ∈ schA F (κ ⊕ κ), Td.symm Φ = partL e' (partR (conjLin e') Φ) ∧ partL e' (partR (conjLin e') Φ) ∈ schA F (κ ⊕ κ)` using `fun Φ hΦ => dbl_eq' T.symm e' hL' hTe' hΦ`.
+
+Use `⟨GlobalTheory.DblSchr.dblD c d₁, Td, conjE T, GlobalTheory.DblSchr.isDblCoord_dblD c d₁, ⟨fun Φ => ?_, fun w Φ hΦ => ?_, fun l => ?_, fun μ hμ => ?_⟩, hSmem, fun φ₁ _ φ₂ _ => ?_⟩` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `hΦ`. Rewrite using `[(hTeq Φ hΦ).1]`. Conclude with `(hTeq Φ hΦ).2`.
+
+Introduce `hΦ`. Use `(hTeq' _ hΦ)` as an intermediate fact. Rewrite `this` using `[LinearEquiv.symm_apply_apply]`. Rewrite using `[this.1]`. Conclude with `this.2`.
+
+Rewrite using `[← Matrix.fromCols_toCols w, rho_dbl c ξ JA JB d dd hdd, rho_dbl c ξ JA JB d₁ _ (GlobalTheory.DblSchr.isDblCoord_dblD c d₁), hTd_apply, hTd_apply]`. Establish `hc1 : ∀ Ψ : (κ ⊕ κ → AF F) → ℂ, partL T (partR (d.rho ψ⁻¹ w.toCols₂) Ψ) = partR (d.rho ψ⁻¹ w.toCols₂) (partL T Ψ)` using `fun Ψ => partL_partR_rho T.toLinearMap d ψ⁻¹ _ Ψ`. Establish `hc2 : ∀ Ψ : (κ ⊕ κ → AF F) → ℂ, partR (conjE T) (partL (d₁.rho ψ w.toCols₁) Ψ) = partL (d₁.rho ψ w.toCols₁) (partR (conjE T) Ψ)` using `fun Ψ => partR_partL_rho (conjE T).toLinearMap d₁ ψ _ Ψ`. Rewrite using `[partL_intertwine T (d.rho ψ w.toCols₁) (d₁.rho ψ w.toCols₁) T _ (fun φ hφ => Heisenberg₂ _ φ hφ) (fun b => by rw [sliceL_partR_rho]; exact Submodule.smul_mem _ _ (sliceL_mem hΦ _)), hc1, hc2, partR_intertwine (conjE T) (d.rho ψ⁻¹ w.toCols₂) (d₁.rho ψ⁻¹ w.toCols₂) (conjE T) _ (fu …`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hl`. Use `adm_congr (l' := (l ∘ₗ partRₗ (conjLin e)) ∘ₗ partLₗ e) (fun Φ hΦ => ?_) (partL_adm e hL _ (partR_adm (conjLin e) (GlobalTheory.DblEval.ConjLoc.isLocOp_conjLin e hL) l hl))` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, partLₗ_apply, partRₗ_apply]`. Rewrite using `[(hTeq Φ hΦ).1]`. Introduce `hl`.
+
+Use `adm_congr (l' := ((l ∘ₗ Td.toLinearMap) ∘ₗ partLₗ e') ∘ₗ partRₗ (conjLin e')) (fun Φ hΦ => ?_) (partR_adm (conjLin e') (GlobalTheory.DblEval.ConjLoc.isLocOp_conjLin e' hL') _ (partL_adm e' hL' _ hl))` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, partLₗ_apply, partRₗ_apply]`. Rewrite using `[← (hTeq' Φ hΦ).1, LinearEquiv.apply_symm_apply]`. Take `⟨C₁, hC₁⟩` from `GlobalTheory.T.partial_fourier_preserves_schwartz_L2 T.toLinearMap hunit hLmem μ hμ`. Take `⟨C₂, hC₂⟩` from `GlobalTheory.T.partial_right_preserves_l2_norm (κ := κ) (conjE T).toLinearMap hunitS hRmem μ hμ`.
+
+Use `⟨C₂ * C₁, fun φ hφ => ?_⟩` and prove the remaining obligations. Rewrite using `[hTd_apply]`. Establish `h2` using `hC₂ _ (hLmem φ hφ)`. Establish `h1` using `hC₁ φ hφ`. Simplify using `only [LinearEquiv.coe_coe] at h1 h2`.
+
+Rewrite using `[h2, h1, mul_assoc]`. Use function extensionality and compare the values at `y`. Rewrite using `[hTd_apply]`. Simplify using `only [partR, partL, boxFun, Sum.elim_comp_inl, Sum.elim_comp_inr]`. Establish `h1 : (fun x => T (fun x' => φ₁ x' * φ₂ x) (y ∘ Sum.inl)) = T φ₁ (y ∘ Sum.inl) • φ₂` using `funext fun x => by`.
+
+Rewrite using `[show (fun x' => φ₁ x' * φ₂ x) = φ₂ x • φ₁ from funext fun x' => by simp [mul_comm], map_smul]`. Simplify using `[mul_comm]`. Rewrite using `[h1, map_smul]`. Both sides reduce to the same expression.
+-/
 theorem hasDbl_of_loc {E' : Type} [CommRing E'] [Algebra (AF F) E'] (c : E' →ₐ[AF F] E') {α β : Type} [Fintype α]
     [DecidableEq α] [Fintype β] [DecidableEq β] (ξ : E') (JA : Matrix α α E') (JB : Matrix β β E') {κ : Type}
     [Fintype κ] (ψ : AddChar (AF F) ℂ) (hψ : ∀ t, ‖ψ t‖ = 1) (d d₁ : Darboux (symp c ξ JA JB) κ)

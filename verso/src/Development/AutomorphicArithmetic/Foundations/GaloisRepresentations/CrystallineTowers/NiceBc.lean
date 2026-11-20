@@ -9,6 +9,13 @@ open UpperTheory.Gal.Int.Geo
 
 namespace UpperTheory.Gal.Seam
 
+/- English proof (translation)
+Use `⟨MorphismProperty.of_isPullback (P := @IsFinite) h hs.1, MorphismProperty.of_isPullback (P := @Etale) h hs.2.1, ?_⟩` and prove the remaining obligations. Introduce `K _ _ x`. Rewrite using `[← hs.2.2 K (x ≫ g)]`. Use `Nat.card_congr { toFun := fun y => ⟨y.1 ≫ v, by rw [Category.assoc, h.w, ← Category.assoc, y.2]⟩ invFun := fun y => ⟨h.lift y.1 x (by rw [y.2]), h.lift_snd _ _ _⟩ left_inv := ?_ right_inv := ?_ }` and prove the remaining obligations. Introduce `y`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `h.hom_ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Simplify using `[y.2]`. Introduce `y`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+-/
 private theorem fEt_of_isPullback {P Y Z' Z : Scheme.{0}} {v : P ⟶ Y} {s' : P ⟶ Z'} {s : Y ⟶ Z} {g : Z' ⟶ Z} {d : ℕ}
     (h : IsPullback v s' s g) (hs : FEt s d) : FEt s' d := by
   refine ⟨MorphismProperty.of_isPullback (P := @IsFinite) h hs.1,
@@ -29,6 +36,9 @@ private theorem fEt_of_isPullback {P Y Z' Z : Scheme.{0}} {v : P ⟶ Y} {s' : P 
     apply Subtype.ext
     simp
 
+/- English proof (translation)
+Establish `hfst : H.sΩ K g ≫ pullback.fst H.q (Spec.map (CommRingCat.ofHom (algebraMap k K))) = pullback.fst (H.s g ≫ H.q) (Spec.map (CommRingCat.ofHom (algebraMap k K))) ≫ H.s g` using `pullback.lift_fst _ _ _`. Establish `hsnd : H.sΩ K g ≫ pullback.snd H.q (Spec.map (CommRingCat.ofHom (algebraMap k K))) = pullback.snd (H.s g ≫ H.q) (Spec.map (CommRingCat.ofHom (algebraMap k K)))` using `pullback.lift_snd _ _ _`. Use `IsPullback.of_bot (v₂₁ := pullback.snd H.q (Spec.map (CommRingCat.ofHom (algebraMap k K)))) (v₂₂ := H.q) (h₃₁ := Spec.map (CommRingCat.ofHom (algebraMap k K))) ?_ hfst.symm (IsPullback.of_hasPullback _ _)` and prove the remaining obligations. Rewrite using `[hsnd]`. Conclude with `IsPullback.of_hasPullback _ _`.
+-/
 private theorem isPullback_sΩ {k : Type} [Field k] (H : HTower k) (K : Type) [Field K] [Algebra k K] (g : H.Γ) :
     IsPullback (pullback.fst (H.s g ≫ H.q) (Spec.map (CommRingCat.ofHom (algebraMap k K)))) (H.sΩ K g) (H.s g)
       (pullback.fst H.q (Spec.map (CommRingCat.ofHom (algebraMap k K)))) := by
@@ -43,6 +53,11 @@ private theorem isPullback_sΩ {k : Type} [Field k] (H : HTower k) (K : Type) [F
   rw [hsnd]
   exact IsPullback.of_hasPullback _ _
 
+/- English proof (translation)
+Introduce `k K _ _ τ H hN`. Take `⟨hsm, hproj, hfet⟩` from `hN`. Use `letI : Algebra k K := τ.toAlgebra`. Unfold `bcAlong`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `haveI := hsm show Smooth (pullback.snd H.q (Spec.map (CommRingCat.ofHom (algebraMap k K)))) infer_instance`. Conclude with `GlobalTheory.ProjSpace.isProjOver_pullback_snd (algebraMap k K) hproj`. Introduce `g`. Take `⟨d, hd⟩` from `hfet g`. Conclude with `⟨d, fEt_of_isPullback (isPullback_sΩ H K g) hd⟩`.
+-/
 theorem niceBc : NiceBc := by
   intro k K _ _ τ H hN
   obtain ⟨hsm, hproj, hfet⟩ := hN

@@ -7,16 +7,45 @@ namespace GlobalTheory.WordSep
 
 open GlobalTheory.SignedHC
 
+/- English proof (translation)
+Break down `hij.eq_or_lt with rfl | h` into its components or cases. Conclude with `le_rfl`. Conclude with `(G.v_anti i j hi h hj).le`.
+-/
 private theorem v_le {G : GridData} {i j : ℕ} (hi : 2 ≤ i) (hij : i ≤ j) (hj : j ≤ G.k) : G.v j ≤ G.v i := by
   rcases hij.eq_or_lt with rfl | h
   · exact le_rfl
   · exact (G.v_anti i j hi h hj).le
 
+/- English proof (translation)
+Break down `hl.eq_or_lt with rfl | h` into its components or cases. Conclude with `le_rfl`. Conclude with `(G.b_mono 1 l le_rfl h hlm).le`.
+-/
 private theorem b_ge {G : GridData} {l : ℕ} (hl : 1 ≤ l) (hlm : l ≤ G.m) : G.b 1 ≤ G.b l := by
   rcases hl.eq_or_lt with rfl | h
   · exact le_rfl
   · exact (G.b_mono 1 l le_rfl h hlm).le
 
+/- English proof (translation)
+Establish `hk` using `G.two_le_k`. Break down `hx with ⟨l, hl, rfl⟩ | ⟨j, hj2, hjk, rfl⟩` into its components or cases. Establish `hal : (G.v 2 : ℚ) + 3 / 2 ≤ G.a l`. Unfold `GridData.a`. Establish `h1 : (1 : ℚ) ≤ (G.m : ℚ) + 1 - l`.
+
+Establish `: (l : ℚ) ≤ G.m` using `by exact_mod_cast hl`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : (1 : ℚ) ≤ G.ga` using `by exact_mod_cast hga`. Use the polynomial consequences of the given equalities and inequalities. Choose the witnesses or unpack the hypotheses as in `⟨z, hz, hzle⟩ : ∃ z : ℤ, y = z ∧ z ≤ G.v 2 := by`.
+
+Break down `hy with ⟨j, hj2, hjk, rfl⟩ | ⟨l', hl1, hlm, rfl⟩` into its components or cases. Conclude with `⟨_, rfl, v_le le_rfl hj2 hjk⟩`. Use `⟨-G.b l', by push_cast; ring, ?_⟩` and prove the remaining obligations. Use `b_ge (G := G) hl1 hlm` as an intermediate fact. Use `v_le (G := G) le_rfl hk le_rfl` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `: (z : ℚ) ≤ G.v 2` using `by exact_mod_cast hzle`. Substitute `hz` using the available equality. Prove the components needed by the constructor for the conclusion. Introduce `_`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Introduce `h`. Combine the linear equalities and inequalities to obtain the conclusion. Choose the witnesses or unpack the hypotheses as in `⟨z, hz, hzc⟩ : ∃ z : ℤ, y = z ∧ (G.v j ≤ z ∨ z ≤ G.v j - 2) := by`. Break down `hy with ⟨j', hj2', hjk', rfl⟩ | ⟨l', hl1, hlm, rfl⟩` into its components or cases.
+
+Use `⟨_, rfl, ?_⟩` and prove the remaining obligations. Break down `le_or_gt j' j with h | h` into its components or cases. Conclude with `Or.inl (v_le hj2' h hjk)`. Use `right`. Establish `h1` using `v_le (G := G) (by omega : 2 ≤ j + 1) (by omega : j + 1 ≤ j') hjk'`.
+
+Establish `h2` using `hgap j hj2 (by omega)`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨-G.b l', by push_cast; ring, Or.inr ?_⟩` and prove the remaining obligations. Use `b_ge (G := G) hl1 hlm` as an intermediate fact. Use `v_le (G := G) hj2 hjk le_rfl` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Substitute `hz` using the available equality. Unfold `GridData.vHalf`. Break down `hzc with h | h` into its components or cases. Establish `: (G.v j : ℚ) ≤ z` using `by exact_mod_cast h`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h'`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `h'`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `: (z : ℚ) ≤ G.v j - 2` using `by exact_mod_cast h`. Prove the components needed by the constructor for the conclusion. Introduce `_`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `h'`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sep_rat {G : GridData} (hga : 0 < G.ga)
     (hgap : ∀ i, 2 ≤ i → i < G.k → G.v (i + 1) + 2 ≤ G.v i) (hb : 2 ≤ G.v G.k + G.b 1)
     {x y : ℚ} (hx : (∃ l, l ≤ G.m ∧ x = G.a l) ∨ ∃ j, 2 ≤ j ∧ j ≤ G.k ∧ x = G.vHalf j)
@@ -68,6 +97,17 @@ theorem sep_rat {G : GridData} (hga : 0 < G.ga)
       · intro _; linarith
       · intro h'; linarith
 
+/- English proof (translation)
+Introduce and unpack `G n lam ε mu ε' hga hgap hb ⟨-, q, hq, hS⟩ ⟨-, q', hq', hT⟩`. Establish `key : ∀ a i, (q' i < q a → q' i + 1 < q a) ∧ q a ≠ q' i`. Introduce `a i`. Establish `ha : (q a, ε a) ∈ G.lam`. Rewrite using `[← G.parPi_zero, hS]`.
+
+Conclude with `Finset.mem_image_of_mem _ (Finset.mem_univ a)`. Establish `hi : (q' i, ε' i) ∈ G.parD0`. Rewrite using `[hT]`. Conclude with `Finset.mem_image_of_mem _ (Finset.mem_univ i)`. Use `sep_rat hga hgap hb ?_ ?_` and prove the remaining obligations.
+
+Break down `GridData.mem_lam.1 ha with ⟨l, hl, e⟩ | ⟨h, -⟩` into its components or cases. Conclude with `Or.inl ⟨l, hl, (Prod.ext_iff.1 e).1⟩`. Conclude with `Or.inr (GridData.mem_cloudHalf.1 h)`. Break down `GridData.mem_discrete_parameter_iff.1 hi with ⟨h, -⟩ | ⟨l, h1, h2, e⟩` into its components or cases. Conclude with `Or.inl (GridData.mem_cloud.1 h)`.
+
+Conclude with `Or.inr ⟨l, h1, h2, (Prod.ext_iff.1 e).1⟩`. Use `⟨fun a i h => ?_, fun a i h => ?_⟩` and prove the remaining obligations. Rewrite `h`, the goal using `[hq, hq']`. Use `(key a i).1 (by exact_mod_cast h)` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+
+Rewrite `h` using `[hq, hq']`. Conclude with `(key a i).2 (by exact_mod_cast h)`.
+-/
 theorem word_sep : ∀ {G : GlobalTheory.SignedHC.GridData} {n : ℕ} {lam : Fin (n + 1) → ℝ} {ε : Fin (n + 1) → Bool}
     {mu : Fin n → ℝ} {ε' : Fin n → Bool}, 0 < G.ga → (∀ i, 2 ≤ i → i < G.k → G.v (i + 1) + 2 ≤ G.v i) →
     2 ≤ G.v G.k + G.b 1 → IsEnum (G.parPi 0) lam ε → IsEnum G.parD0 mu ε' →

@@ -6,6 +6,13 @@ open Formalism Formalism.MainNotions Formalism.BasicNotions Formalism.BasicNotio
 
 namespace GlobalTheory.WildAdditive
 
+/- English proof (translation)
+Introduce and unpack `⟨u, hu⟩`. Establish `htop : (⊤ : Submodule ℤ_[l] O) ≤ IsLocalRing.maximalIdeal ℤ_[l] • ⊤`. Introduce `x _`. Establish `hx : x = (l : ℤ_[l]) • (((u⁻¹ : Oˣ) : O) * x)`. Rewrite using `[Algebra.smul_def, map_natCast, ← hu, ← mul_assoc, Units.mul_inv, one_mul]`.
+
+Rewrite using `[hx]`. Establish `hl : (l : ℤ_[l]) ∈ IsLocalRing.maximalIdeal ℤ_[l]`. Rewrite using `[PadicInt.maximalIdeal_eq_span_p]`. Conclude with `Ideal.subset_span rfl`. Conclude with `Submodule.smul_mem_smul hl Submodule.mem_top`.
+
+Establish `hbot` using `Submodule.eq_bot_of_le_smul_of_le_jacobson_bot (IsLocalRing.maximalIdeal ℤ_[l]) ⊤ (Module.finite_def.mp inferInstance) htop (IsLocalRing.maximalIdeal_le_jacobson _)`. Conclude with `top_ne_bot hbot`.
+-/
 theorem not_isUnit_natCast (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [Nontrivial O]
     [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] : ¬ IsUnit (l : O) := by
   rintro ⟨u, hu⟩
@@ -22,6 +29,17 @@ theorem not_isUnit_natCast (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [Non
     (Module.finite_def.mp inferInstance) htop (IsLocalRing.maximalIdeal_le_jacobson _)
   exact top_ne_bot hbot
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨a, b, hb, hab⟩` from `IsFractionRing.div_surjective (A := O) (y 0)`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hl : (l : O) ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal _).mpr (not_isUnit_natCast l O)`. Rewrite `hl` using `[(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).mp hϖ, Ideal.mem_span_singleton]`.
+
+Take `⟨k, hk⟩` from `IsDiscreteValuationRing.associated_pow_irreducible (nonZeroDivisors.ne_zero hb) hϖ`. Take `⟨c, hc⟩` from `hk.dvd.trans (pow_dvd_pow_of_dvd hl k)`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Unfold `stdG`.
+
+Rewrite using `[LinearMap.mem_range]`. Use `⟨fun _ => c * a, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Establish `hj : j = 0` using `Subsingleton.elim j 0`. Substitute `hj` using the available equality.
+
+Establish `hb' : algebraMap O (FractionRing O) b ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hb`. Establish `hlk : ((l ^ k : ℕ) : FractionRing O) = algebraMap O (FractionRing O) b * algebraMap O (FractionRing O) c`. Rewrite using `[← map_mul, ← hc, map_pow, map_natCast, Nat.cast_pow]`. Simplify using `only [LinearMap.compLeft_apply, Function.comp_apply, Algebra.linearMap_apply, Pi.smul_apply, nsmul_eq_mul, ← hab]`. Rewrite using `[hlk, map_mul]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_pow_nsmul_eq_zero (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] (x : KOG O 1) :
     ∃ n : ℕ, l ^ n • x = 0 := by
@@ -54,6 +72,25 @@ theorem exists_pow_nsmul_eq_zero (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O
   rw [hlk, map_mul]
   field_simp
 
+/- English proof (translation)
+Establish `hI1 : (1 : G E Ω) ∈ I` using `I.one_mem`. Establish `hf1 : f 1 = 0`. Establish `h` using `hadd 1 hI1 1 hI1`. Rewrite `h` using `[one_mul]`. Simplify using `using h`.
+
+Establish `hpow : ∀ n : ℕ, f (σ ^ n) = n • f σ`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp [hf1]`. Consider the case `succ n ih => rw [pow_succ, hadd _ (I.pow_mem hI n) _ hI, ih, succ_nsmul]`.
+
+Establish `hU : f ⁻¹' {f 1} ∈ nhds (1 : G E Ω)` using `(hf.isOpen_fiber (f 1)).mem_nhds rfl`. Take `⟨L, hLfin, hLsub⟩` from `(krullTopology_mem_nhds_one_iff E Ω _).mp hU`. Establish `hUo : IsOpen (L.fixingSubgroup : Set (G E Ω))` using `L.fixingSubgroup_isOpen`. Establish `: Finite (G E Ω ⧸ L.fixingSubgroup)` using `L.fixingSubgroup.quotient_finite_of_isOpen hUo`. Establish `: L.fixingSubgroup.FiniteIndex` using `Subgroup.finiteIndex_of_finite_quotient`.
+
+Establish `hd : L.fixingSubgroup.normalCore.index ≠ 0` using `Subgroup.FiniteIndex.index_ne_zero`. Establish `hσU : σ ^ L.fixingSubgroup.normalCore.index ∈ L.fixingSubgroup` using `L.fixingSubgroup.normalCore_le (L.fixingSubgroup.normalCore.pow_index_mem σ)`. Take `⟨a, d, hdl, hdec⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hd l hl.ne_one`. Establish `hl1 : A.valuation (l : Ω) = 1`. Establish `h1` using `(hA (l : 𝓞 E)).not.mpr hlv`.
+
+Establish `h2` using `A.valuation_le_one (l : A)`. Simplify using `only [map_natCast] at h1 h2`. Conclude with `le_antisymm h2 (not_lt.mp h1)`. Establish `hk : ¬ A.valuation ((l ^ a : ℕ) : Ω) < 1`. Rewrite using `[Nat.cast_pow, map_pow, hl1, one_pow]`.
+
+Conclude with `lt_irrefl _`. Establish `hτ : ∀ y : Ω, y ≠ 0 → A.valuation ((σ ^ d) y / y - 1) < 1` using `GlobalTheory.WildInertiaChar.wild_pow A σ hσ d`. Establish `hτU : σ ^ d ∈ L.fixingSubgroup`. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`.
+
+Apply `GlobalTheory.WildInertiaChar.fixed_of_pow_fixed A (σ ^ d) hτ (l ^ a) hk x` to reduce the goal to its premises. Rewrite `hσU` using `[IntermediateField.mem_fixingSubgroup_iff]`. Rewrite using `[← pow_mul, mul_comm, ← hdec]`. Conclude with `hσU x hx`. Establish `hd0 : d • f σ = 0`.
+
+Rewrite using `[← hpow d]`. Use `hLsub hτU` as an intermediate fact. Simplify `this` using `[hf1]`. Take `⟨n, hn⟩` from `hM (f σ)`. Establish `hcop : IsCoprime ((l ^ n : ℕ) : ℤ) (d : ℤ)` using `Nat.isCoprime_iff_coprime.mpr (Nat.Coprime.pow_left n ((Nat.Prime.coprime_iff_not_dvd hl).mpr hdl))`.
+
+Take `⟨u, w, huw⟩` from `hcop`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[add_smul, mul_smul, mul_smul, natCast_zsmul, natCast_zsmul]`. Use `_ = 0 := by rw [hn, hd0, smul_zero, smul_zero, add_zero]`.
+-/
 theorem eq_zero_of_wild (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     [IsAlgClosure E Ω] (v : HeightOneSpectrum (𝓞 E)) (A : ValuationSubring Ω) (l : ℕ)
     (hl : l.Prime) (hlv : ((l : ℕ) : 𝓞 E) ∉ v.asIdeal) (hA : IsPlaceOver A v)
@@ -113,6 +150,11 @@ theorem eq_zero_of_wild (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Alge
         rw [add_smul, mul_smul, mul_smul, natCast_zsmul, natCast_zsmul]
     _ = 0 := by rw [hn, hd0, smul_zero, smul_zero, add_zero]
 
+/- English proof (translation)
+Distinguish the cases in `hy : y = 0`. Simplify using `[hy]`. Establish `h1 : A.valuation (σ y / y) = 1`. Use `Valuation.map_one_add_of_lt A.valuation (hσ y hy)` as an intermediate fact. Simplify using `using this`.
+
+Rewrite using `[← div_mul_cancel₀ (σ y) hy, map_mul, h1, one_mul]`.
+-/
 private theorem valuation_apply_eq_of_valuation_div_sub_one_lt {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω]
     (A : ValuationSubring Ω) (σ : Ω ≃ₐ[E] Ω)
     (hσ : ∀ y : Ω, y ≠ 0 → A.valuation (σ y / y - 1) < 1) (y : Ω) :
@@ -124,6 +166,15 @@ private theorem valuation_apply_eq_of_valuation_div_sub_one_lt {E Ω : Type} [Fi
       simpa using this
     rw [← div_mul_cancel₀ (σ y) hy, map_mul, h1, one_mul]
 
+/- English proof (translation)
+Rewrite using `[mem_Ine]`. Set `: MulAction (G E Ω) (ValuationSubring Ω)` to `ValuationSubring.pointwiseMulAction`. Use `⟨MulAction.mem_stabilizer_iff.mpr ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, ← ValuationSubring.valuation_le_one_iff, ← ValuationSubring.valuation_le_one_iff]`.
+
+Establish `key : A.valuation x = A.valuation (σ⁻¹ • x)`. Establish `h` using `valuation_apply_eq_of_valuation_div_sub_one_lt A σ hσ (σ⁻¹ • x)`. Rewrite `h` using `[← AlgEquiv.smul_def, smul_inv_smul]`. Then use the resulting hypothesis. Rewrite using `[key]`. Introduce `x hx`.
+
+Distinguish the cases in `h0 : x = 0`. Simplify using `[h0]`. Establish `h3 : σ x - x = x * (σ x / x - 1)`. Rewrite using `[mul_sub, mul_div_cancel₀ _ h0, mul_one]`. Rewrite using `[h3, map_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem mem_ine_of_valuation_div_sub_one_lt_one {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     (A : ValuationSubring Ω) (σ : G E Ω)
     (hσ : ∀ y : Ω, y ≠ 0 → A.valuation (σ y / y - 1) < 1) : σ ∈ Ine (F := E) A := by
@@ -146,6 +197,9 @@ private theorem mem_ine_of_valuation_div_sub_one_lt_one {E Ω : Type} [Field E] 
       calc _ ≤ 1 * A.valuation (σ x / x - 1) := by gcongr
         _ < 1 := by rw [one_mul]; exact hσ x h0
 
+/- English proof (translation)
+Introduce `D i v hv f hf hadd σ hσ`. Conclude with `eq_zero_of_wild D.host.E D.nd.Om v (D.nd.plOm.1 v) (D.nd.l i) (D.nd.lPrime i).out hv (D.nd.plOm.2 v) (KOG (D.nd.O i) 1) f hf (Ine (F := D.host.E) (D.nd.plOm.1 v)) hadd (exists_pow_nsmul_eq_zero (D.nd.l i) (D.nd.O i)) σ (mem_ine_of_valuation_div_sub_one_lt_one _ σ hσ) hσ`.
+-/
 theorem main : ∀ (D : D7) (i : D.nd.Loc) (v : HeightOneSpectrum (𝓞 D.host.E)), v ∉ placesOver D.host.E (D.nd.l i) → ∀ f : GE D.nd → KOG (D.nd.O i) 1, IsLocallyConstant f → (∀ a ∈ Ine (F := D.host.E) (D.nd.plOm.1 v), ∀ b ∈ Ine (F := D.host.E) (D.nd.plOm.1 v), f (a * b) = f a + f b) → ∀ σ ∈ wildSet D.nd (D.nd.plOm.1 v), f σ = 0 := by
   intro D i v hv f hf hadd σ hσ
   exact eq_zero_of_wild D.host.E D.nd.Om v (D.nd.plOm.1 v) (D.nd.l i) (D.nd.lPrime i).out hv

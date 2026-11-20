@@ -7,6 +7,11 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe GlobalTheory.TorsionF
 
 namespace GlobalTheory.TorsionForm.FlatAcyc
 
+/- English proof (translation)
+Unfold `sgn`. Establish `e : (S.erase i).filter (· < j) = (S.filter (· < j)).erase i`. Use extensionality with `x`. Simplify using `[Finset.mem_filter, Finset.mem_erase]`. The claim follows by propositional logic.
+
+Establish `hm : i ∈ S.filter (· < j)` using `Finset.mem_filter.2 ⟨hi, hij⟩`. Establish `hc` using `Finset.card_erase_add_one hm`. Rewrite using `[e, ← hc, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sgn_erase_of_lt {m : ℕ} {i j : Fin m} {S : Finset (Fin m)} (hi : i ∈ S) (hij : i < j) :
     sgn j (S.erase i) = -sgn j S := by
   unfold sgn
@@ -16,6 +21,11 @@ theorem sgn_erase_of_lt {m : ℕ} {i j : Fin m} {S : Finset (Fin m)} (hi : i ∈
   have hc := Finset.card_erase_add_one hm
   rw [e, ← hc, pow_succ]; ring
 
+/- English proof (translation)
+Unfold `sgn`. Establish `e : (S.erase i).filter (· < j) = S.filter (· < j)`. Use extensionality with `x`. Simplify using `only [Finset.mem_filter, Finset.mem_erase]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨⟨_, h⟩, h'⟩`. Conclude with `⟨h, h'⟩`. Introduce and unpack `⟨h, h'⟩`. Conclude with `⟨⟨fun e => hij (e ▸ h'), h⟩, h'⟩`. Rewrite using `[e]`.
+-/
 theorem sgn_erase_of_not_lt {m : ℕ} {i j : Fin m} {S : Finset (Fin m)} (hij : ¬ i < j) :
     sgn j (S.erase i) = sgn j S := by
   unfold sgn
@@ -26,12 +36,20 @@ theorem sgn_erase_of_not_lt {m : ℕ} {i j : Fin m} {S : Finset (Fin m)} (hij : 
     · rintro ⟨h, h'⟩; exact ⟨⟨fun e => hij (e ▸ h'), h⟩, h'⟩
   rw [e]
 
+/- English proof (translation)
+Break down `lt_or_gt_of_ne hij with h | h` into its components or cases. Rewrite using `[sgn_erase_of_lt hi h, sgn_erase_of_not_lt (not_lt.2 h.le)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[sgn_erase_of_lt hj h, sgn_erase_of_not_lt (not_lt.2 h.le)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sgn_mul_erase {m : ℕ} {i j : Fin m} {S : Finset (Fin m)} (hi : i ∈ S) (hj : j ∈ S)
     (hij : i ≠ j) : sgn i S * sgn j (S.erase i) = -(sgn j S * sgn i (S.erase j)) := by
   rcases lt_or_gt_of_ne hij with h | h
   · rw [sgn_erase_of_lt hi h, sgn_erase_of_not_lt (not_lt.2 h.le)]; ring
   · rw [sgn_erase_of_lt hj h, sgn_erase_of_not_lt (not_lt.2 h.le)]; ring
 
+/- English proof (translation)
+Establish `e : (insert i S).erase i = S` using `Finset.erase_insert hi`. Use `split_ifs with h`. Use `sgn_erase_of_lt (Finset.mem_insert_self i S) h (j := j)` as an intermediate fact. Rewrite `this` using `[e]`. Rewrite using `[this]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `sgn_erase_of_not_lt (S := insert i S) h` as an intermediate fact. Rewrite `this` using `[e]`. Rewrite using `[this]`.
+-/
 theorem sgn_insert_eq {m : ℕ} {i j : Fin m} {S : Finset (Fin m)} (hi : i ∉ S) :
     sgn j (insert i S) = if i < j then -sgn j S else sgn j S := by
   have e : (insert i S).erase i = S := Finset.erase_insert hi
@@ -41,6 +59,13 @@ theorem sgn_insert_eq {m : ℕ} {i j : Fin m} {S : Finset (Fin m)} (hi : i ∉ S
   · have := sgn_erase_of_not_lt (S := insert i S) h
     rw [e] at this; rw [this]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `S`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[wedge]`. Apply the tactic sequence `by_cases hi : i ∈ S <;> by_cases hj : j ∈ S`.
+
+Establish `hj' : j ∈ S.erase i` using `Finset.mem_erase.2 ⟨Ne.symm hij, hj⟩`. Establish `hi' : i ∈ S.erase j` using `Finset.mem_erase.2 ⟨hij, hi⟩`. Simplify using `only [wedge, hi, hj, hj', hi', if_true, Pi.neg_apply]`. Rewrite using `[Finset.erase_right_comm, ← mul_assoc, ← mul_assoc, sgn_mul_erase hi hj hij]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `: j ∉ S.erase i` using `fun h => hj (Finset.mem_of_mem_erase h)`. Simplify using `[wedge, hi, hj, this]`. Establish `: i ∉ S.erase j` using `fun h => hi (Finset.mem_of_mem_erase h)`. Simplify using `[wedge, hi, hj, this]`. Simplify using `[wedge, hi, hj]`.
+-/
 theorem wedge_wedge {m : ℕ} (i j : Fin m) (w : Ext m) :
     wedge i (wedge j w) = -wedge j (wedge i w) := by
   funext S
@@ -57,6 +82,15 @@ theorem wedge_wedge {m : ℕ} (i j : Fin m) (w : Ext m) :
     simp [wedge, hi, hj, this]
   · simp [wedge, hi, hj]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `S`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[contr]`. Apply the tactic sequence `by_cases hi : i ∈ S <;> by_cases hj : j ∈ S`.
+
+Simplify using `[contr, hi, hj]`. Simplify using `[contr, hi, hj]`. Simplify using `[contr, hi, hj]`. Establish `hj' : j ∉ insert i S` using `by simp [Ne.symm hij, hj]`. Establish `hi' : i ∉ insert j S` using `by simp [hij, hi]`.
+
+Simplify using `only [contr, hi, hj, hj', hi', if_false, Pi.neg_apply]`. Rewrite using `[Finset.insert_comm j i S, sgn_insert_eq hi, sgn_insert_eq hj]`. Break down `lt_or_gt_of_ne hij with h | h` into its components or cases. Simplify using `[h, not_lt.2 h.le]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `[h, not_lt.2 h.le]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem contr_contr {m : ℕ} (i j : Fin m) (w : Ext m) :
     contr i (contr j w) = -contr j (contr i w) := by
   funext S
@@ -74,6 +108,15 @@ theorem contr_contr {m : ℕ} (i j : Fin m) (w : Ext m) :
     · simp [h, not_lt.2 h.le]; ring
     · simp [h, not_lt.2 h.le]; ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `S`. Apply the tactic sequence `by_cases hi : i ∈ S <;> by_cases hj : j ∈ S`. Establish `: j ∈ S.erase i` using `Finset.mem_erase.2 ⟨Ne.symm hij, hj⟩`. Simplify using `[wedge, contr, hi, hj, this]`. Establish `hj' : j ∉ S.erase i` using `fun h => hj (Finset.mem_of_mem_erase h)`.
+
+Establish `hi' : i ∈ insert j S` using `Finset.mem_insert_of_mem hi`. Simplify using `only [wedge, contr, hi, hj, hj', hi', if_true, if_false, Pi.neg_apply]`. Rewrite using `[Finset.erase_insert_of_ne (Ne.symm hij), sgn_insert_eq hj]`. Break down `lt_or_gt_of_ne hij with h | h` into its components or cases. Rewrite using `[sgn_erase_of_lt hi h]`.
+
+Simplify using `[not_lt.2 h.le]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[sgn_erase_of_not_lt (not_lt.2 h.le)]`. Simplify using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `[wedge, contr, hi, hj]`. Establish `: i ∉ insert j S` using `by simp [hij, hi]`. Simplify using `[wedge, contr, hi, hj, this]`.
+-/
 theorem wedge_contr_of_ne {m : ℕ} {i j : Fin m} (hij : i ≠ j) (w : Ext m) :
     wedge i (contr j w) = -contr j (wedge i w) := by
   funext S
@@ -91,15 +134,27 @@ theorem wedge_contr_of_ne {m : ℕ} {i j : Fin m} (hij : i ≠ j) (w : Ext m) :
   · have : i ∉ insert j S := by simp [hij, hi]
     simp [wedge, contr, hi, hj, this]
 
+/- English proof (translation)
+Apply the tactic sequence `funext S; simp only [wedge, Pi.add_apply]; split_ifs <;> ring`.
+-/
 theorem wedge_add {m : ℕ} (i : Fin m) (v w : Ext m) : wedge i (v + w) = wedge i v + wedge i w := by
   funext S; simp only [wedge, Pi.add_apply]; split_ifs <;> ring
 
+/- English proof (translation)
+Apply the tactic sequence `funext S; simp only [wedge, Pi.smul_apply, smul_eq_mul]; split_ifs <;> ring`.
+-/
 theorem wedge_smul {m : ℕ} (i : Fin m) (c : ℂ) (w : Ext m) : wedge i (c • w) = c • wedge i w := by
   funext S; simp only [wedge, Pi.smul_apply, smul_eq_mul]; split_ifs <;> ring
 
+/- English proof (translation)
+Apply the tactic sequence `funext S; simp only [contr, Pi.add_apply]; split_ifs <;> ring`.
+-/
 theorem contr_add {m : ℕ} (i : Fin m) (v w : Ext m) : contr i (v + w) = contr i v + contr i w := by
   funext S; simp only [contr, Pi.add_apply]; split_ifs <;> ring
 
+/- English proof (translation)
+Apply the tactic sequence `funext S; simp only [contr, Pi.smul_apply, smul_eq_mul]; split_ifs <;> ring`.
+-/
 theorem contr_smul {m : ℕ} (i : Fin m) (c : ℂ) (w : Ext m) : contr i (c • w) = c • contr i w := by
   funext S; simp only [contr, Pi.smul_apply, smul_eq_mul]; split_ifs <;> ring
 
@@ -117,36 +172,57 @@ def contrR {m : ℕ} (i : Fin m) : Ext m →L[ℝ] Ext m :=
         have := contr_smul i (r : ℂ) w
         simpa [Complex.coe_smul] using this }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem wedgeR_apply {m : ℕ} (i : Fin m) (w : Ext m) : wedgeR i w = wedge i w := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem contrR_apply {m : ℕ} (i : Fin m) (w : Ext m) : contrR i w = contr i w := rfl
 
 section Deriv
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [SMul ℂ V]
 
+/- English proof (translation)
+Simplify using `only [d01, fderiv_fun_add hF hG, ContinuousLinearMap.add_apply]`. Use `module`.
+-/
 theorem dbar_add_vector {m : ℕ} {F G : V → Ext m} {P : V} (hF : DifferentiableAt ℝ F P)
     (hG : DifferentiableAt ℝ G P) (v : V) :
     d01 (fun Q => F Q + G Q) P v = d01 F P v + d01 G P v := by
   simp only [d01, fderiv_fun_add hF hG, ContinuousLinearMap.add_apply]
   module
 
+/- English proof (translation)
+Simplify using `only [d10, fderiv_fun_add hF hG, ContinuousLinearMap.add_apply]`. Use `module`.
+-/
 theorem dz_add_vector {m : ℕ} {F G : V → Ext m} {P : V} (hF : DifferentiableAt ℝ F P)
     (hG : DifferentiableAt ℝ G P) (v : V) :
     d10 (fun Q => F Q + G Q) P v = d10 F P v + d10 G P v := by
   simp only [d10, fderiv_fun_add hF hG, ContinuousLinearMap.add_apply]
   module
 
+/- English proof (translation)
+Simplify using `only [d01, fderiv_fun_sum hF, ContinuousLinearMap.sum_apply, Finset.smul_sum, ← Finset.sum_add_distrib]`.
+-/
 theorem d01_sum {m : ℕ} {ι : Type} (s : Finset ι) {F : ι → V → Ext m} {P : V}
     (hF : ∀ i ∈ s, DifferentiableAt ℝ (F i) P) (v : V) :
     d01 (fun Q => ∑ i ∈ s, F i Q) P v = ∑ i ∈ s, d01 (F i) P v := by
   simp only [d01, fderiv_fun_sum hF, ContinuousLinearMap.sum_apply, Finset.smul_sum,
     ← Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [d10, fderiv_fun_sum hF, ContinuousLinearMap.sum_apply, Finset.smul_sum, ← Finset.sum_sub_distrib]`.
+-/
 theorem d10_finset_sum' {m : ℕ} {ι : Type} (s : Finset ι) {F : ι → V → Ext m} {P : V}
     (hF : ∀ i ∈ s, DifferentiableAt ℝ (F i) P) (v : V) :
     d10 (fun Q => ∑ i ∈ s, F i Q) P v = ∑ i ∈ s, d10 (F i) P v := by
   simp only [d10, fderiv_fun_sum hF, ContinuousLinearMap.sum_apply, Finset.smul_sum,
     ← Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Establish `: fderiv ℝ (fun Q => L (F Q)) P = L.comp (fderiv ℝ F P)` using `(L.hasFDerivAt.comp P hF.hasFDerivAt).fderiv`. Simplify using `only [d01, this, ContinuousLinearMap.comp_apply, hL, map_add]`.
+-/
 theorem dbar_clinear_map_comm {m m' : ℕ} (L : Ext m →L[ℝ] Ext m') (hL : ∀ (c : ℂ) w, L (c • w) = c • L w)
     {F : V → Ext m} {P : V} (hF : DifferentiableAt ℝ F P) (v : V) :
     d01 (fun Q => L (F Q)) P v = L (d01 F P v) := by
@@ -154,6 +230,9 @@ theorem dbar_clinear_map_comm {m m' : ℕ} (L : Ext m →L[ℝ] Ext m') (hL : �
     (L.hasFDerivAt.comp P hF.hasFDerivAt).fderiv
   simp only [d01, this, ContinuousLinearMap.comp_apply, hL, map_add]
 
+/- English proof (translation)
+Establish `: fderiv ℝ (fun Q => L (F Q)) P = L.comp (fderiv ℝ F P)` using `(L.hasFDerivAt.comp P hF.hasFDerivAt).fderiv`. Simplify using `only [d10, this, ContinuousLinearMap.comp_apply, hL, map_sub]`.
+-/
 theorem dz_clinear_map_comm {m m' : ℕ} (L : Ext m →L[ℝ] Ext m') (hL : ∀ (c : ℂ) w, L (c • w) = c • L w)
     {F : V → Ext m} {P : V} (hF : DifferentiableAt ℝ F P) (v : V) :
     d10 (fun Q => L (F Q)) P v = L (d10 F P v) := by
@@ -161,18 +240,30 @@ theorem dz_clinear_map_comm {m m' : ℕ} (L : Ext m →L[ℝ] Ext m') (hL : ∀ 
     (L.hasFDerivAt.comp P hF.hasFDerivAt).fderiv
   simp only [d10, this, ContinuousLinearMap.comp_apply, hL, map_sub]
 
+/- English proof (translation)
+The claim follows from `dbar_clinear_map_comm (wedgeR i) (wedge_smul i) hF v`.
+-/
 theorem dbar_wedge_comm {m : ℕ} (i : Fin m) {F : V → Ext m} {P : V} (hF : DifferentiableAt ℝ F P) (v : V) :
     d01 (fun Q => wedge i (F Q)) P v = wedge i (d01 F P v) :=
   dbar_clinear_map_comm (wedgeR i) (wedge_smul i) hF v
 
+/- English proof (translation)
+The claim follows from `dz_clinear_map_comm (wedgeR i) (wedge_smul i) hF v`.
+-/
 theorem dz_wedge_comm {m : ℕ} (i : Fin m) {F : V → Ext m} {P : V} (hF : DifferentiableAt ℝ F P) (v : V) :
     d10 (fun Q => wedge i (F Q)) P v = wedge i (d10 F P v) :=
   dz_clinear_map_comm (wedgeR i) (wedge_smul i) hF v
 
+/- English proof (translation)
+The claim follows from `dbar_clinear_map_comm (contrR i) (contr_smul i) hF v`.
+-/
 theorem dbar_contraction_comm {m : ℕ} (i : Fin m) {F : V → Ext m} {P : V} (hF : DifferentiableAt ℝ F P) (v : V) :
     d01 (fun Q => contr i (F Q)) P v = contr i (d01 F P v) :=
   dbar_clinear_map_comm (contrR i) (contr_smul i) hF v
 
+/- English proof (translation)
+Simplify using `only [d01, fderiv_fun_smul hφ hF, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.smulRight_apply, smul_eq_mul]`. Use `module`.
+-/
 theorem d01_smul {m : ℕ} {φ : V → ℂ} {F : V → Ext m} {P : V} (hφ : DifferentiableAt ℝ φ P)
     (hF : DifferentiableAt ℝ F P) (v : V) :
     d01 (fun Q => φ Q • F Q) P v = d01 φ P v • F P + φ P • d01 F P v := by
@@ -180,6 +271,9 @@ theorem d01_smul {m : ℕ} {φ : V → ℂ} {F : V → Ext m} {P : V} (hφ : Dif
     ContinuousLinearMap.smul_apply, ContinuousLinearMap.smulRight_apply, smul_eq_mul]
   module
 
+/- English proof (translation)
+Simplify using `only [d10, fderiv_fun_smul hφ hF, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.smulRight_apply, smul_eq_mul]`. Use `module`.
+-/
 theorem d10_smul {m : ℕ} {φ : V → ℂ} {F : V → Ext m} {P : V} (hφ : DifferentiableAt ℝ φ P)
     (hF : DifferentiableAt ℝ F P) (v : V) :
     d10 (fun Q => φ Q • F Q) P v = d10 φ P v • F P + φ P • d10 F P v := by
@@ -187,6 +281,9 @@ theorem d10_smul {m : ℕ} {φ : V → ℂ} {F : V → Ext m} {P : V} (hφ : Dif
     ContinuousLinearMap.smul_apply, ContinuousLinearMap.smulRight_apply, smul_eq_mul]
   module
 
+/- English proof (translation)
+Simplify using `only [d01, fderiv_fun_mul hφ hψ, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dbar_mul_leibniz {φ ψ : V → ℂ} {P : V} (hφ : DifferentiableAt ℝ φ P)
     (hψ : DifferentiableAt ℝ ψ P) (v : V) :
     d01 (fun Q => φ Q * ψ Q) P v = d01 φ P v * ψ P + φ P * d01 ψ P v := by
@@ -194,6 +291,9 @@ theorem dbar_mul_leibniz {φ ψ : V → ℂ} {P : V} (hφ : DifferentiableAt ℝ
     ContinuousLinearMap.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Simplify using `only [d10, fderiv_fun_mul hφ hψ, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dz_mul_leibniz {φ ψ : V → ℂ} {P : V} (hφ : DifferentiableAt ℝ φ P)
     (hψ : DifferentiableAt ℝ ψ P) (v : V) :
     d10 (fun Q => φ Q * ψ Q) P v = d10 φ P v * ψ P + φ P * d10 ψ P v := by
@@ -201,6 +301,9 @@ theorem dz_mul_leibniz {φ ψ : V → ℂ} {P : V} (hφ : DifferentiableAt ℝ �
     ContinuousLinearMap.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Establish `: fderiv ℝ (fun Q => F Q S) P = (ContinuousLinearMap.proj S).comp (fderiv ℝ F P)` using `((ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Finset (Fin m) => ℂ) S).hasFDerivAt.comp P hF.hasFDerivAt).fderiv`. Simplify using `[d01, this]`.
+-/
 theorem dbar_apply_component {m : ℕ} {F : V → Ext m} {P : V} (hF : DifferentiableAt ℝ F P) (S : Finset (Fin m))
     (v : V) : d01 (fun Q => F Q S) P v = d01 F P v S := by
   have : fderiv ℝ (fun Q => F Q S) P = (ContinuousLinearMap.proj S).comp (fderiv ℝ F P) :=
@@ -208,6 +311,9 @@ theorem dbar_apply_component {m : ℕ} {F : V → Ext m} {P : V} (hF : Different
       hF.hasFDerivAt).fderiv
   simp [d01, this]
 
+/- English proof (translation)
+Establish `: fderiv ℝ (fun Q => F Q S) P = (ContinuousLinearMap.proj S).comp (fderiv ℝ F P)` using `((ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Finset (Fin m) => ℂ) S).hasFDerivAt.comp P hF.hasFDerivAt).fderiv`. Simplify using `[d10, this]`.
+-/
 theorem dz_apply_component {m : ℕ} {F : V → Ext m} {P : V} (hF : DifferentiableAt ℝ F P) (S : Finset (Fin m))
     (v : V) : d10 (fun Q => F Q S) P v = d10 F P v S := by
   have : fderiv ℝ (fun Q => F Q S) P = (ContinuousLinearMap.proj S).comp (fderiv ℝ F P) :=
@@ -215,6 +321,9 @@ theorem dz_apply_component {m : ℕ} {F : V → Ext m} {P : V} (hF : Differentia
       hF.hasFDerivAt).fderiv
   simp [d10, this]
 
+/- English proof (translation)
+Establish `: fderiv ℝ (fun Q => (starRingEnd ℂ) (φ Q)) P = (Complex.conjCLE.toContinuousLinearMap).comp (fderiv ℝ φ P)` using `(Complex.conjCLE.toContinuousLinearMap.hasFDerivAt.comp P hφ.hasFDerivAt).fderiv`. Simplify using `only [d10, d01, this, ContinuousLinearMap.comp_apply, smul_eq_mul]`. Simplify using `[map_add, map_mul, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dz_conj_eq_conj_dbar {φ : V → ℂ} {P : V} (hφ : DifferentiableAt ℝ φ P) (v : V) :
     d10 (fun Q => (starRingEnd ℂ) (φ Q)) P v = (starRingEnd ℂ) (d01 φ P v) := by
   have : fderiv ℝ (fun Q => (starRingEnd ℂ) (φ Q)) P =
@@ -239,12 +348,18 @@ def fibreOp {g : ℕ} (G : Matrix (Fin g) (Fin g) ℂ) (ψ : (Fin g → ℂ) →
     (f : (Fin g → ℂ) → Ext (0 + 0 + g)) (z : Fin g → ℂ) : Ext (0 + 0 + g) :=
   dbarF f z + dbarAdjF G ψ f z
 
+/- English proof (translation)
+Simplify using `only [d01, hφ.fderiv_restrictScalars ℝ, ContinuousLinearMap.coe_restrictScalars', map_smul, smul_eq_mul]`. Put the polynomial expressions in normal form. Simplify using `[Complex.I_sq]`.
+-/
 theorem dbar_eq_zero_of_holomorphic {g : ℕ} {φ : (Fin g → ℂ) → ℂ} {z : Fin g → ℂ}
     (hφ : DifferentiableAt ℂ φ z) (v : Fin g → ℂ) : d01 φ z v = 0 := by
   simp only [d01, hφ.fderiv_restrictScalars ℝ, ContinuousLinearMap.coe_restrictScalars',
     map_smul, smul_eq_mul]
   ring_nf; simp [Complex.I_sq]
 
+/- English proof (translation)
+Simplify using `only [d01, fderiv_comp_add_right]`.
+-/
 theorem dbar_comp_translate {g : ℕ} {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] [SMul ℂ W]
     (F : (Fin g → ℂ) → W) (z w v : Fin g → ℂ) :
     d01 (fun z' => F (z' + w)) z v = d01 F (z + w) v := by

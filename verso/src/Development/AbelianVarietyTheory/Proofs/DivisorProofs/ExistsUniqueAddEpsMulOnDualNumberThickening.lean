@@ -17,6 +17,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.EpsThick
 
+/- English proof (translation)
+Introduce `k _ Y Y' q π ρ H O F`. Take `⟨ab, hab⟩` from `comb_surjective H O F`. Conclude with `⟨ab, hab.symm, fun y hy => comb_injective H O (hy.symm.trans hab.symm)⟩`.
+-/
 theorem existsUnique_add_eps_mul_of_field : ∀ (k : Type) [Field k] (Y Y' : Scheme.{0}) (q : Y ⟶ Sp k) (π : Y' ⟶ Sp (DualNumber k)) (ρ : Y' ⟶ Y), IsPullback ρ π q (spMap (algebraMap k (DualNumber k))) → ∀ (O : Y.Opens) (F : Γ(Y', ρ ⁻¹ᵁ O)), ∃! ab : Γ(Y, O) × Γ(Y, O), F = (ρ.app O).hom ab.1 + constFn π _ DualNumber.eps * (ρ.app O).hom ab.2 := by
   intro k _ Y Y' q π ρ H O F
   obtain ⟨ab, hab⟩ := comb_surjective H O F

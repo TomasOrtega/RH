@@ -21,6 +21,19 @@ def AddIntF : Prop :=
     (∀ c : F, c ≠ 0 → ¬ ∀ a ∈ Λ, ∃ r : 𝓞 F, a = c * r) →
     ∀ g : F →+ ℂ, (∀ a ∈ Λ, ∃ n : ℤ, g a = n) → ∀ a, g a = 0
 
+/- English proof (translation)
+Introduce `F _ _ Λ hne hnd χ hχ h1 x`. Take `⟨ℓ, hℓc, hℓ⟩` from `hL F χ hχ`. Establish `hI : (2 * Real.pi * Complex.I : ℂ) ≠ 0` using `Complex.two_pi_I_ne_zero`. Set `g : F →+ ℂ` to `AddMonoidHom.mk' (fun a => ℓ (algebraMap F (InfiniteAdeleRing F) a) / (2 * Real.pi * Complex.I)) (by intro a b; simp only [map_add, add_div])`. Establish `hint : ∀ a ∈ Λ, ∃ n : ℤ, g a = n`.
+
+Introduce `a ha`. Establish `he : Complex.exp (ℓ (algebraMap F (InfiniteAdeleRing F) a)) = 1`. Rewrite using `[← hℓ]`. Conclude with `h1 a ha`. Take `⟨n, hn⟩` from `Complex.exp_eq_one_iff.mp he`.
+
+Use `⟨n, ?_⟩` and prove the remaining obligations. Use `show ℓ (algebraMap F (InfiniteAdeleRing F) a) / (2 * Real.pi * Complex.I) = n`. Rewrite using `[hn, mul_div_assoc, div_self hI, mul_one]`. Establish `hg` using `hA F Λ hne hnd g hint`. Establish `hzero : ∀ a : F, ℓ (algebraMap F (InfiniteAdeleRing F) a) = 0`.
+
+Introduce `a`. Establish `h` using `hg a`. Express the relevant statement in the definitionally equal form `ℓ (algebraMap F (InfiniteAdeleRing F) a) / (2 * Real.pi * Complex.I) = 0 at h`. Break down `div_eq_zero_iff.mp h with h | h` into its components or cases. Conclude with `h`.
+
+Conclude with `absurd h hI`. Establish `hdense : DenseRange (algebraMap F (InfiniteAdeleRing F))` using `by first`. Consider the case `exact InfiniteAdeleRing.denseRange_algebraMap F`. Consider the case `exact InfiniteAdeleRing.denseRange_algebraMap`. Consider the case `exact NumberField.InfiniteAdeleRing.denseRange_algebraMap F`.
+
+Establish `hx : ℓ x = 0` using `hdense.induction_on x (isClosed_eq hℓc continuous_const) hzero`. Rewrite using `[hℓ, hx, Complex.exp_zero]`.
+-/
 theorem chInf_of (hL : ChLift) (hA : AddIntF) : ChInf := by
   intro F _ _ Λ hne hnd χ hχ h1 x
   obtain ⟨ℓ, hℓc, hℓ⟩ := hL F χ hχ

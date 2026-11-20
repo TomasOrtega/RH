@@ -7,6 +7,13 @@ set_option autoImplicit false
 
 namespace GlobalTheory.LatNat
 
+/- English proof (translation)
+Establish `hc : IsAlgebraic ℤ c` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ K).2 (.of_finite ℚ c)`. Take `⟨y, hy, hint⟩` from `hc.exists_integral_multiple`. Use `⟨y.natAbs, Int.natAbs_pos.2 hy, ?_⟩` and prove the remaining obligations. Break down `Int.natAbs_eq y with h | h` into its components or cases. Establish `: ((y.natAbs : ℕ) : K) * c = y • c` using `by conv_rhs => rw [h]`.
+
+Simplify using `[zsmul_eq_mul]`. Rewrite using `[this]`. Conclude with `hint`. Establish `: ((y.natAbs : ℕ) : K) * c = -(y • c)` using `by conv_rhs => rw [h]`. Simplify using `[zsmul_eq_mul]`.
+
+Rewrite using `[this]`. Conclude with `hint.neg`.
+-/
 theorem natMul_integral {K : Type} [Field K] [NumberField K] (c : K) :
     ∃ m : ℕ, 0 < m ∧ IsIntegral ℤ ((m : K) * c) := by
   have hc : IsAlgebraic ℤ c := (IsFractionRing.isAlgebraic_iff ℤ ℚ K).2 (.of_finite ℚ c)
@@ -47,6 +54,11 @@ def natSat {K : Type} [Field K] [NumberField K] {g : ℕ} (L : Submodule (𝓞 K
     rw [this]
     exact L.smul_mem a hx
 
+/- English proof (translation)
+Establish `hle : Submodule.span K (L : Set (Fin g → K)) ≤ natSat L` using `Submodule.span_le.2 fun x hx => ⟨1, one_pos, by simpa using hx⟩`. Rewrite `hle` using `[hL.2]`. Establish `hk : ∀ k : Fin g, ∃ n : ℕ, 0 < n ∧ n • (Pi.single k 1 : Fin g → K) ∈ L` using `fun k => hle (Submodule.mem_top (x := (Pi.single k 1 : Fin g → K)))`. Use `choose n hn hmem using hk`. Use `⟨∏ k, n k, Finset.prod_pos fun k _ => hn k, fun k => ?_⟩` and prove the remaining obligations.
+
+Take `⟨q, hq⟩ : n k ∣ ∏ i, n i` from `Finset.dvd_prod_of_mem n (Finset.mem_univ k)`. Rewrite using `[Nat.cast_smul_eq_nsmul K, hq, mul_comm, mul_smul]`. Conclude with `L.toAddSubmonoid.nsmul_mem (hmem k) q`.
+-/
 theorem exists_natMul_single_mem (K : Type) [Field K] [NumberField K] (g : ℕ) (L : Submodule (𝓞 K) (Fin g → K))
     (hL : Full L) : ∃ D : ℕ, 0 < D ∧ ∀ k : Fin g, (D : K) • (Pi.single k 1 : Fin g → K) ∈ L := by
   have hle : Submodule.span K (L : Set (Fin g → K)) ≤ natSat L :=

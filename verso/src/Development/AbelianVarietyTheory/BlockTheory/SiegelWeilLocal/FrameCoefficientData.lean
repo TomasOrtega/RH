@@ -55,6 +55,9 @@ end Groups
 def invVol {G : Type} [Group G] (K₀ K : Subgroup G) : ℝ≥0∞ :=
   (K.relIndex K₀ : ℝ≥0∞) / (K₀.relIndex K : ℝ≥0∞)
 
+/- English proof (translation)
+Simplify using `[invVol]`.
+-/
 theorem invVol_self {G : Type} [Group G] (K₀ : Subgroup G) : invVol K₀ K₀ = 1 := by
   simp [invVol]
 
@@ -377,6 +380,15 @@ def negStd (E : Type) [CommRing E] [StarRing E] (n : ℕ) :
     (fun x y y' => by simp [mul_add, Finset.sum_add_distrib, add_comm])
     (fun c x y => by simp [Finset.mul_sum, mul_left_comm, mul_comm, mul_assoc, starRingEnd_apply])
 
+/- English proof (translation)
+Establish `hX : A.X E 0 = ⊥` using `by simp [Frame.X]`. Establish `hm : ∀ v : Fin n → E, v ∈ Submodule.span (MaxOrd o E) (Set.range fun i : Fin n => (Pi.single i 1 : Fin n → E)) ↔ ∀ i, v i ∈ MaxOrd o E`. Introduce `v`. Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨c, rfl⟩ i`. Simplify using `[Finset.sum_apply, Pi.single_apply, Subalgebra.smul_def]`. Introduce `hv`. Use `⟨fun i => ⟨v i, hv i⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i`.
+
+Simplify using `[Finset.sum_apply, Pi.single_apply, Subalgebra.smul_def]`. Use `⟨⟨Finset.univ.image fun i : Fin n => (Pi.single i 1 : Fin n → E), by simp [hX]⟩, fun v => ?_, (hm _).2 hz, fun c hc => by simpa [h1] using (hm _).1 hc i₀⟩` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `hv`. Use `⟨fun w hw => by simp [hX] at hw; simp [hw], fun w hw => ?_⟩` and prove the remaining obligations.
+
+Conclude with `(MaxOrd o E).neg_mem ((MaxOrd o E).sum_mem fun i _ => (MaxOrd o E).mul_mem ((hm _).1 hv i) (hs _ ((hm _).1 hw i)))`. Introduce and unpack `⟨-, hv⟩`. Use `(hm _).2 fun i => ?_` and prove the remaining obligations. Use `hv (Pi.single i 1) (Submodule.subset_span ⟨i, rfl⟩)` as an intermediate fact. Simplify `this` using `[negStd, Pi.single_apply, apply_ite (star : E → E)]`.
+-/
 theorem isInnerLattice_std (n : ℕ) (A : Frame F (Fin n → E) 0) (i₀ : Fin n)
     (hz : ∀ i, A.z i ∈ MaxOrd o E) (h1 : A.z i₀ = 1)
     (hs : ∀ x ∈ MaxOrd o E, star x ∈ MaxOrd o E) :

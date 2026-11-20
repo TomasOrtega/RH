@@ -8,6 +8,31 @@ namespace GlobalTheory.CompanionTheory.TorusQuot
 
 open Module Polynomial
 
+/- English proof (translation)
+Set `S : Set (Submodule ℂ V)` to `{K | K ≠ ⊤ ∧ ∀ i, ∀ x ∈ K, A i x ∈ K}`. Establish `hS : S.Nonempty` using `⟨⊥, bot_ne_top, fun i x hx => by`. Rewrite `hx`, the goal using `[Submodule.mem_bot]`. Rewrite using `[hx, map_zero]⟩`. Take `⟨K, ⟨hK, hKs⟩, hmax⟩` from `(wellFounded_gt (α := Submodule ℂ V)).has_min S hS`.
+
+Establish `hrange : ∀ i, LinearMap.range (A i) ≤ K`. Introduce `i`. Establish `hstable : ∀ j, ∀ x ∈ K ⊔ LinearMap.range (A i), A j x ∈ K ⊔ LinearMap.range (A i)`. Introduce `j x hx`. Take `⟨k, hk, y, ⟨z, rfl⟩, rfl⟩` from `Submodule.mem_sup.1 hx`.
+
+Rewrite using `[map_add]`. Use `Submodule.add_mem _ (Submodule.mem_sup_left (hKs j k hk)) (Submodule.mem_sup_right ⟨A j z, ?_⟩)` and prove the remaining obligations. Use `LinearMap.congr_fun (hc i j) z` as an intermediate fact. Simplify `this` using `[Module.End.mul_apply]`. Distinguish the cases in `htop : K ⊔ LinearMap.range (A i) = ⊤`.
+
+It suffices to derive a contradiction. Establish `hpow : ∀ n : ℕ, ∀ x ∈ K, (A i ^ n) x ∈ K`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro x hx`.
+
+Simplify using `using hx`. Consider the case `succ n ih`. Introduce `x hx`. Rewrite using `[pow_succ, Module.End.mul_apply]`. Conclude with `ih _ (hKs i x hx)`.
+
+Establish `hall : ∀ n : ℕ, K ⊔ LinearMap.range (A i ^ n) = ⊤`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[pow_zero, eq_top_iff]`.
+
+Introduce `x _`. Conclude with `Submodule.mem_sup_right ⟨x, rfl⟩`. Consider the case `succ n ih`. Rewrite using `[eq_top_iff]`. Introduce `x _`.
+
+Establish `hx : x ∈ K ⊔ LinearMap.range (A i ^ n)` using `by rw [ih]; trivial`. Take `⟨k, hk, y, ⟨z, rfl⟩, rfl⟩` from `Submodule.mem_sup.1 hx`. Establish `hz : z ∈ K ⊔ LinearMap.range (A i)` using `by rw [htop]; trivial`. Take `⟨k', hk', y', ⟨a, rfl⟩, rfl⟩` from `Submodule.mem_sup.1 hz`. Rewrite using `[map_add, ← add_assoc]`.
+
+Use `Submodule.add_mem _ (Submodule.mem_sup_left (K.add_mem hk (hpow n _ hk'))) (Submodule.mem_sup_right ⟨a, ?_⟩)` and prove the remaining obligations. Rewrite using `[pow_succ, Module.End.mul_apply]`. Establish `hnil : IsNilpotent (A i)` using `Module.End.isNilpotent_iff_of_finite.2 (hn i)`. Take `⟨n, hn0⟩` from `hnil`. Use `hall n` as an intermediate fact.
+
+Rewrite `this` using `[hn0, LinearMap.range_zero, sup_bot_eq]`. Conclude with `hK this`. Establish `hle : K ≤ K ⊔ LinearMap.range (A i)` using `le_sup_left`. Establish `hnot` using `hmax _ ⟨htop, hstable⟩`. Establish `heq : K = K ⊔ LinearMap.range (A i)`.
+
+Assume the negation of the conclusion as `hne`. Conclude with `hnot (lt_of_le_of_ne hle hne)`. Rewrite using `[heq]`. Conclude with `le_sup_right`. Take `⟨φ, hφ0, hφ⟩` from `Submodule.exists_le_ker_of_lt_top K (lt_top_iff_ne_top.2 hK)`.
+
+Conclude with `⟨φ, hφ0, fun i x => hφ (hrange i ⟨x, rfl⟩)⟩`.
+-/
 theorem exists_functional_of_commuting_nilpotent {ι V : Type} [AddCommGroup V] [Module ℂ V]
     [FiniteDimensional ℂ V] [Nontrivial V] (A : ι → End ℂ V)
     (hc : ∀ i j, A i * A j = A j * A i) (hn : ∀ i x, ∃ k : ℕ, (A i ^ k) x = 0) :
@@ -72,6 +97,17 @@ theorem exists_functional_of_commuting_nilpotent {ι V : Type} [AddCommGroup V] 
   obtain ⟨φ, hφ0, hφ⟩ := Submodule.exists_le_ker_of_lt_top K (lt_top_iff_ne_top.2 hK)
   exact ⟨φ, hφ0, fun i x => hφ (hrange i ⟨x, rfl⟩)⟩
 
+/- English proof (translation)
+Set `g : ℂ[X]` to `∑ i ∈ Finset.range K, X ^ i`. Establish `hg : (X - 1 : ℂ[X]) * g = X ^ K - 1`. Rewrite using `[mul_comm]`. Conclude with `geom_sum_mul X K`. Establish `hirr : Irreducible (X - 1 : ℂ[X])`.
+
+Simplify using `using irreducible_X_sub_C (1 : ℂ)`. Establish `hnd : ¬ (X - 1 : ℂ[X]) ∣ g`. Introduce `hd`. Establish `hroot : IsRoot g 1`. Establish `: (X - C 1 : ℂ[X]) ∣ g` using `by simpa using hd`.
+
+Conclude with `dvd_iff_isRoot.1 this`. Establish `hev : g.eval 1 = (K : ℂ)` using `by simp [g, eval_finset_sum]`. Rewrite `hroot` using `[IsRoot.def, hev]`. Conclude with `(Nat.cast_ne_zero.2 hK.ne') hroot`. Take `⟨a, b, hab⟩` from `((hirr.coprime_iff_not_dvd).2 hnd).pow_left (m := r)`.
+
+Establish `hpoly : a * (X - 1) * (X - 1) ^ r + b * (X ^ K - 1) = (X - 1 : ℂ[X])`. Rewrite using `[← hg]`. Take the linear combination `(X - 1 : ℂ[X]) * hab`. Establish `hkey` using `congrArg (aeval T) hpoly`. Simplify using `only [map_add, map_mul, map_pow, map_sub, aeval_X, map_one] at hkey`.
+
+Establish `happ` using `LinearMap.congr_fun hkey w`. Simplify using `only [LinearMap.add_apply, Module.End.mul_apply, LinearMap.sub_apply, Module.End.one_apply, h1, h2, map_zero, sub_self, zero_add] at happ`. Use `sub_eq_zero.1 happ.symm` as an intermediate fact. Conclude with `this`.
+-/
 theorem fixed_of_pow_fixed_of_gen {V : Type} [AddCommGroup V] [Module ℂ V] (T : End ℂ V) (w : V)
     (K r : ℕ) (hK : 0 < K) (h1 : (T ^ K) w = w) (h2 : ((T - 1) ^ r) w = 0) : T w = w := by
   let g : ℂ[X] := ∑ i ∈ Finset.range K, X ^ i
@@ -100,6 +136,9 @@ theorem fixed_of_pow_fixed_of_gen {V : Type} [AddCommGroup V] [Module ℂ V] (T 
   have := sub_eq_zero.1 happ.symm
   exact this
 
+/- English proof (translation)
+Proceed by induction on `k generalizing y with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ih]`. Use `congr 1`.
+-/
 theorem coe_restrict_sub_pow {V : Type} [AddCommGroup V] [Module ℂ V] (p : Submodule ℂ V)
     (f : End ℂ V) (hf : ∀ x ∈ p, f x ∈ p) (μ : ℂ) (k : ℕ) (y : p) :
     (((f.restrict hf - μ • (1 : End ℂ p)) ^ k) y : V) = ((f - μ • (1 : End ℂ V)) ^ k) (y : V) := by
@@ -109,6 +148,17 @@ theorem coe_restrict_sub_pow {V : Type} [AddCommGroup V] [Module ℂ V] (p : Sub
     rw [pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ih]
     congr 1
 
+/- English proof (translation)
+Set `T : Λ → End ℂ E` to `fun l => (ρ l : End ℂ M).restrict (hE l)`. Establish `hT : ∀ i j, Commute (T i) (T j)`. Introduce `i j`. Use extensionality with `x`. Use `LinearMap.congr_fun (hc i j) (x : M)` as an intermediate fact.
+
+Simplify `this` using `[T, Module.End.mul_apply]`. Establish `hmaps : ∀ i j φ, Set.MapsTo (T i) (End.maxGenEigenspace (T j) φ) (End.maxGenEigenspace (T j) φ)` using `fun i j φ => End.mapsTo_maxGenEigenspace_of_comm (hT j i) φ`. Establish `htop` using `End.iSup_iInf_maxGenEigenspace_eq_top_of_forall_mapsTo T hmaps (fun i => End.iSup_maxGenEigenspace_eq_top (T i))`. Establish `hle : (⊤ : Submodule ℂ E).map E.subtype ≤ ⨆ χ : Λ → ℂ, ⨅ l, End.maxGenEigenspace (ρ l : End ℂ M) (χ l)`. Rewrite using `[← htop, Submodule.map_iSup]`.
+
+Use `iSup_mono fun χ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.map_le_iff_le_comap]`. Introduce `y hy`. Rewrite using `[Submodule.mem_comap, Submodule.mem_iInf]`. Introduce `l`.
+
+Establish `hl` using `(Submodule.mem_iInf _).1 hy l`. Take `⟨k, hk⟩` from `(End.mem_maxGenEigenspace _ _ _).1 hl`. Use `(End.mem_maxGenEigenspace _ _ _).2 ⟨k, ?_⟩` and prove the remaining obligations. Use `coe_restrict_sub_pow E (ρ l) (hE l) (χ l) k y` as an intermediate fact. Rewrite `this` using `[hk]`.
+
+Conclude with `this.symm`. Conclude with `hle ⟨⟨w, hw⟩, trivial, rfl⟩`.
+-/
 theorem mem_iSup_iInf_of_finite {Λ M : Type} [Group Λ] [AddCommGroup M] [Module ℂ M]
     (ρ : Representation ℂ Λ M) (hc : ∀ l l', ρ l * ρ l' = ρ l' * ρ l)
     (E : Submodule ℂ M) [FiniteDimensional ℂ E] (hE : ∀ l, ∀ x ∈ E, ρ l x ∈ E) (w : M)
@@ -141,6 +191,55 @@ theorem mem_iSup_iInf_of_finite {Λ M : Type} [Group Λ] [AddCommGroup M] [Modul
     exact this.symm
   exact hle ⟨⟨w, hw⟩, trivial, rfl⟩
 
+/- English proof (translation)
+Introduce `Λ _ M _ _ ρ hc U hU hpow hex hfd ξ v hv0 hv`. Establish `hmem : ∀ (m : ℕ) (w : M), w ∈ (⨅ u : U m, LinearMap.ker (ρ (u : Λ) - 1)) ↔ ∀ u ∈ U m, ρ u w = w`. Introduce `m w`. Rewrite using `[Submodule.mem_iInf]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h u hu`. Use `h ⟨u, hu⟩` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, LinearMap.sub_apply, Module.End.one_apply, sub_eq_zero]`. Conclude with `this`. Introduce `h u`.
+
+Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, Module.End.one_apply, sub_eq_zero]`. Conclude with `h u u.2`. Establish `hcomm : ∀ l l' (x : M), ρ l (ρ l' x) = ρ l' (ρ l x)` using `fun l l' x => by`. Use `LinearMap.congr_fun (hc l l') x` as an intermediate fact. Simplify `this` using `[Module.End.mul_apply]`.
+
+Set `t : (Λ → ℂ) → Submodule ℂ M` to `fun χ => ⨅ l, End.maxGenEigenspace (ρ l : End ℂ M) (χ l)`. Establish `htS : ∀ χ l, ∀ x ∈ t χ, ρ l x ∈ t χ`. Introduce `χ l x hx`. Use `(Submodule.mem_iInf _).2 fun j => ?_` and prove the remaining obligations. Establish `hcj : Commute (ρ j : End ℂ M) (ρ l)` using `hc j l`.
+
+Conclude with `End.mapsTo_maxGenEigenspace_of_comm hcj (χ j) ((Submodule.mem_iInf _).1 hx j)`. Set `ξ' : Λ → ℂ` to `ξ`. Set `N : Submodule ℂ M` to `t ξ'`. Set `C : Submodule ℂ M` to `⨆ χ, ⨆ (_ : χ ≠ ξ'), t χ`. Establish `hind : iSupIndep t` using `End.independent_iInf_maxGenEigenspace_of_forall_mapsTo (fun l => (ρ l : End ℂ M)) (fun i j φ => End.mapsTo_maxGenEigenspace_of_comm (show Commute (ρ j : End ℂ M) (ρ i) from hc j i) φ)`.
+
+Establish `hsup : N ⊔ C = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `w _`. Take `⟨m, hm⟩` from `hex w`. Use `haveI := hfd m`.
+
+Establish `hst : ∀ l, ∀ x ∈ (⨅ u : U m, LinearMap.ker (ρ (u : Λ) - 1)), ρ l x ∈ (⨅ u : U m, LinearMap.ker (ρ (u : Λ) - 1))`. Introduce `l x hx`. Use `(hmem m _).2 fun u hu => ?_` and prove the remaining obligations. Rewrite using `[hcomm, (hmem m x).1 hx u hu]`. Establish `hw` using `mem_iSup_iInf_of_finite ρ hc _ hst w ((hmem m w).2 hm)`.
+
+Establish `hle : (⨆ χ : Λ → ℂ, t χ) ≤ N ⊔ C`. Use `iSup_le fun χ => ?_` and prove the remaining obligations. Distinguish the cases in `h : χ = ξ'`. Rewrite using `[h]`. Conclude with `le_sup_left`.
+
+Conclude with `le_trans (le_iSup₂ (f := fun χ (_ : χ ≠ ξ') => t χ) χ h) le_sup_right`. Conclude with `hle hw`. Establish `hIC : IsCompl N C` using `⟨hind ξ', codisjoint_iff.2 hsup⟩`. Establish `hCS : ∀ l, ∀ x ∈ C, ρ l x ∈ C`. Introduce `l`.
+
+Establish `: C ≤ C.comap (ρ l : End ℂ M)`. Use `iSup₂_le fun χ h x hx => ?_` and prove the remaining obligations. Conclude with `(le_iSup₂ (f := fun χ (_ : χ ≠ ξ') => t χ) χ h) (htS χ l x hx)`. Conclude with `fun x hx => this hx`. Establish `hvN : v ∈ N` using `(Submodule.mem_iInf _).2 hv`.
+
+Take `⟨m0, hm0⟩` from `hex v`. Establish `hξ1 : ∀ u ∈ U m0, ξ u = 1`. Introduce `u hu`. Take `⟨r, hr⟩` from `(End.mem_maxGenEigenspace _ _ _).1 (hv u)`. Assume the negation of the conclusion as `hne`.
+
+Establish `hact : ∀ k : ℕ, (((ρ u : End ℂ M) - ξ u • (1 : End ℂ M)) ^ k) v = (1 - ξ u) ^ k • v`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`.
+
+Establish `hstep : ((ρ u : End ℂ M) - ξ u • (1 : End ℂ M)) v = (1 - ξ u) • v`. Rewrite using `[LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, hm0 u hu, sub_smul, one_smul]`. Rewrite using `[pow_succ, Module.End.mul_apply, hstep, map_smul, ih, smul_smul, pow_succ, mul_comm]`. Rewrite `hr` using `[hact r]`. Break down `smul_eq_zero.1 hr with h | h` into its components or cases.
+
+Conclude with `pow_ne_zero r (sub_ne_zero.2 (Ne.symm hne)) h`. Conclude with `hv0 h`. Establish `hNfix : ∀ w ∈ N, ∀ u ∈ U m0, ρ u w = w`. Introduce `w hw u hu`. Take `⟨m1, hm1⟩` from `hex w`.
+
+Take `⟨K, hK, huK⟩` from `hpow m0 (max m0 m1) (le_max_left _ _) u hu`. Take `⟨r, hr⟩` from `(End.mem_maxGenEigenspace _ _ _).1 ((Submodule.mem_iInf _).1 hw u)`. Use `fixed_of_pow_fixed_of_gen (ρ u) w K r hK ?_ ?_` and prove the remaining obligations. Rewrite using `[← map_pow]`. Conclude with `hm1 _ (hU (le_max_right m0 m1) huK)`.
+
+Establish `h1 : ξ' u = 1` using `hξ1 u hu`. Rewrite `hr` using `[h1, one_smul]`. Conclude with `hr`. Use `haveI : FiniteDimensional ℂ N := by haveI := hfd m0`. Conclude with `Submodule.finiteDimensional_of_le (S₂ := ⨅ u : U m0, LinearMap.ker (ρ (u : Λ) - 1)) fun w hw => (hmem m0 w).2 (hNfix w hw)`.
+
+Use `haveI : Nontrivial N := ⟨⟨⟨v, hvN⟩, 0, fun h => hv0 (congrArg Subtype.val h)⟩⟩`. Establish `hNS : ∀ l, ∀ x ∈ N, ρ l x ∈ N` using `htS ξ'`. Set `T : Λ → End ℂ N` to `fun l => (ρ l : End ℂ M).restrict (hNS l)`. Set `A : Λ → End ℂ N` to `fun l => T l - ξ l • (1 : End ℂ N)`. Establish `hT : ∀ i j, Commute (T i) (T j)`.
+
+Introduce `i j`. Use extensionality with `x`. Simplify `hcomm i j (x : M)` using `[T, Module.End.mul_apply]`. Establish `hs : ∀ (a : ℂ) (B : End ℂ N), Commute (a • (1 : End ℂ N)) B` using `fun a B => (Commute.one_left B).smul_left a`. Establish `hAc : ∀ i j, A i * A j = A j * A i` using `fun i j => Commute.sub_left (Commute.sub_right (hT i j) (hs _ _).symm) (hs _ _)`.
+
+Establish `hAn : ∀ i x, ∃ k : ℕ, (A i ^ k) x = 0`. Introduce `i x`. Take `⟨k, hk⟩` from `(End.mem_maxGenEigenspace _ _ _).1 ((Submodule.mem_iInf _).1 x.2 i)`. Use `⟨k, Subtype.ext ?_⟩` and prove the remaining obligations. Use `coe_restrict_sub_pow N (ρ i) (hNS i) (ξ i) k x` as an intermediate fact.
+
+Rewrite `hk` using `[show (ξ' i) = ξ i from rfl]`. Rewrite `this` using `[hk]`. Conclude with `this`. Take `⟨φ, hφ0, hφ⟩` from `exists_functional_of_commuting_nilpotent A hAc hAn`. Set `P : M →ₗ[ℂ] N` to `Submodule.linearProjOfIsCompl N C hIC`.
+
+Establish `hPN : ∀ x : N, P x = x` using `fun x => Submodule.linearProjOfIsCompl_apply_left hIC x`. Establish `hPC : ∀ x ∈ C, P x = 0` using `fun x hx => (Submodule.linearProjOfIsCompl_apply_eq_zero_iff hIC).2 hx`. Use `⟨φ ∘ₗ P, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Apply `hφ0` to reduce the goal to its premises.
+
+Use extensionality with `x`. Use `LinearMap.congr_fun h (x : M)` as an intermediate fact. Simplify `this` using `[hPN]`. Introduce `l w`. Establish `hw : w ∈ N ⊔ C` using `by rw [hsup]; trivial`.
+
+Take `⟨n, hn, c, hc', rfl⟩` from `Submodule.mem_sup.1 hw`. Establish `hφT : φ (T l ⟨n, hn⟩) = ξ l * φ ⟨n, hn⟩`. Establish `h0` using `hφ l ⟨n, hn⟩`. Establish `hx : A l ⟨n, hn⟩ = T l ⟨n, hn⟩ - ξ l • (⟨n, hn⟩ : N)` using `rfl`. Rewrite `h0` using `[hx, map_sub, map_smul, smul_eq_mul, sub_eq_zero]`.
+
+Conclude with `h0`. Establish `h1 : P (ρ l n) = T l ⟨n, hn⟩` using `hPN ⟨ρ l n, hNS l n hn⟩`. Establish `h2 : P n = ⟨n, hn⟩` using `hPN ⟨n, hn⟩`. Simplify using `only [LinearMap.comp_apply, map_add, hPC c hc', hPC _ (hCS l c hc'), h1, h2, add_zero, map_zero, hφT]`.
+-/
 theorem exists_quotient_character : ∀ (Λ : Type) [Group Λ] (M : Type) [AddCommGroup M] [Module ℂ M] (ρ : Representation ℂ Λ M), (∀ l l', ρ l * ρ l' = ρ l' * ρ l) → ∀ (U : ℕ → Subgroup Λ), Antitone U → (∀ m m', m ≤ m' → ∀ u ∈ U m, ∃ N : ℕ, 0 < N ∧ u ^ N ∈ U m') → (∀ w : M, ∃ m, ∀ u ∈ U m, ρ u w = w) → (∀ m, FiniteDimensional ℂ ↥(⨅ u : U m, LinearMap.ker (ρ (u : Λ) - 1))) → ∀ (ξ : Λ →* ℂ) (v : M), v ≠ 0 → (∀ l, v ∈ Module.End.maxGenEigenspace (ρ l) (ξ l)) → ∃ f : M →ₗ[ℂ] ℂ, f ≠ 0 ∧ ∀ l w, f (ρ l w) = ξ l * f w := by
   classical
   intro Λ _ M _ _ ρ hc U hU hpow hex hfd ξ v hv0 hv

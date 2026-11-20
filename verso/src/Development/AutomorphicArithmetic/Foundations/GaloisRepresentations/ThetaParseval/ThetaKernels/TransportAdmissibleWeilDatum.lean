@@ -15,6 +15,11 @@ namespace GlobalTheory.WeilAdmCM
 variable {F : Type} [Field F] [NumberField F]
 end GlobalTheory.WeilAdmCM
 namespace GlobalTheory.WeilAdmCM
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ0 hξσ χS χT hcS hcT hrS hrT ω hω JA JB ξ hJA hJB κ _ co hco om htr p l hl`. Establish `hP : (∀ p, ∀ φ ∈ schA F κ, om p φ ∈ schA F κ) ∧ ∀ p w, ∀ φ ∈ schA F κ, om p (co.rho B.ψ w φ) = co.rho B.ψ (actAB (cA σ) p w) (om p φ)` using `_root_.GlobalTheory.T.weil_representation_pair_continuous F E σ B hB nS nT JS JT hS hT ξ₀ hξ0 hξσ χS χT hcS hcT hrS hrT ω hω JA JB ξ hJA hJB κ co hco om htr`. Establish `hU : IsUnitaryOn (adeleClass F) om` using `_root_.GlobalTheory.T.weil_pair_local_factor F E σ B hB nS nT JS JT hS hT ξ₀ hξ0 hξσ χS χT hcS hcT hrS hrT ω hω JA JB ξ hJA hJB κ co hco om htr`. Use `weilAdmissible_of_heisenberg_unitary B.ψ hB.std κ (co.e.symm.trans ((GlobalTheory.WeilAdm.actLin _ p).trans co.e)) (om p) (hP.1 p) (fun w φ hφ => ?_) (fun μ hμ φ hφ => hU μ hμ p φ hφ) l hl` and prove the remaining obligations. Establish `h` using `hP.2 p (co.e.symm w) φ hφ`.
+
+Simplify using `only [GlobalTheory.WeilM.Darboux.rho, LinearEquiv.apply_symm_apply] at h`. Conclude with `h`.
+-/
 theorem transport_admissible_weil_datum : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
       IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ →

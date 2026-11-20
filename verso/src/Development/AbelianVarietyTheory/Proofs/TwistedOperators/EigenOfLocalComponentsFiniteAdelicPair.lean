@@ -11,6 +11,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.PlaceProduct
 
+/- English proof (translation)
+Establish `h1 : e * (1 - f) = e` using `by linear_combination -h`. Establish `h2 : (1 - e) * f = f` using `by linear_combination -h`. Establish `h3 : (1 - e) * (1 - f) = 1 - (e + f)` using `by linear_combination h`. Simplify using `only [add_mul, mul_add, smul_mul_smul_comm, mul_one, one_mul]`. Rewrite using `[h, h1, h2, h3, zero_smul, zero_add, add_smul]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem mix_orth {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] {e f : A} (h : e * f = 0)
     (a : Matrix n n A) :
     (e • a + (1 - e) • (1 : Matrix n n A)) * (f • a + (1 - f) • (1 : Matrix n n A)) =
@@ -22,12 +27,24 @@ theorem mix_orth {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] 
   rw [h, h1, h2, h3, zero_smul, zero_add, add_smul]
   abel
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i (fun j _ hj => h2 i j (Ne.symm hj)) (fun hn => absurd hi hn), h1]`.
+-/
 theorem sum_idem {A ι : Type} [CommRing A] (e : ι → A) (h1 : ∀ i, e i * e i = e i)
     (h2 : ∀ i j, i ≠ j → e i * e j = 0) (B : Finset ι) : (∑ i ∈ B, e i) * (∑ i ∈ B, e i) = ∑ i ∈ B, e i := by
   rw [Finset.sum_mul_sum]
   refine Finset.sum_congr rfl fun i hi => ?_
   rw [Finset.sum_eq_single i (fun j _ hj => h2 i j (Ne.symm hj)) (fun hn => absurd hi hn), h1]
 
+/- English proof (translation)
+Take `⟨Φ, hΦ⟩` from `GlobalTheory.IdemSupport.exists_comp D`. Establish `hsum : ∀ A : Finset (HeightOneSpectrum (𝓞 D.host.F)), algebraMap (AF D.host.F) (AE D) (∑ v ∈ A, ε v) = ∑ v ∈ A, algebraMap (AF D.host.F) (AE D) (ε v)` using `fun A => map_sum _ _ _`. Establish `hid : ∀ A : Finset (HeightOneSpectrum (𝓞 D.host.F)), algebraMap (AF D.host.F) (AE D) (∑ v ∈ A, ε v) * algebraMap (AF D.host.F) (AE D) (∑ v ∈ A, ε v) = algebraMap (AF D.host.F) (AE D) (∑ v ∈ A, ε v)`. Introduce `A`. Rewrite using `[hsum]`.
+
+Conclude with `sum_idem (fun v => algebraMap (AF D.host.F) (AE D) (ε v)) (fun v => GlobalTheory.IdemSupport.place_idem hΦ (hε v)) (fun v w hvw => GlobalTheory.IdemSupport.place_orth hΦ (hε v) (hε w) hvw) A`. Establish `hc` using `fun A : Finset (HeightOneSpectrum (𝓞 D.host.F)) => GlobalTheory.IdemSupport.cA_algebraMap (D := D) (∑ v ∈ A, ε v)`. Use `choose gs hgs using fun A => GlobalTheory.IdemSupport.exists_piece V (hid A) (hc A) g`. Use `⟨gs, hgs, ?_, ?_⟩` and prove the remaining obligations. Apply `GlobalTheory.IdemSupport.mt_inj V` to reduce the goal to its premises.
+
+Rewrite using `[hgs, GlobalTheory.IdemSupport.mt_one, Finset.sum_empty, map_zero, zero_smul, sub_zero, one_smul, zero_add]`. Introduce `v B hvB`. Apply `GlobalTheory.IdemSupport.mt_inj V` to reduce the goal to its premises. Rewrite using `[GlobalTheory.IdemSupport.mt_mul, hgs, hgs, hgs, Finset.sum_cons, Finset.sum_singleton, map_add]`. Use `(mix_orth ?_ _).symm` and prove the remaining obligations.
+
+Rewrite using `[hsum, Finset.mul_sum]`. Conclude with `Finset.sum_eq_zero fun w hw => GlobalTheory.IdemSupport.place_orth hΦ (hε v) (hε w) (fun hvw => hvB (by rw [hvw]; exact hw))`.
+-/
 theorem exists_components (D : D7) (V : HSp D) (g : GA D V)
     (ε : HeightOneSpectrum (𝓞 D.host.F) → AF D.host.F) (hε : ∀ v, IsPlaceIdem D v (ε v)) :
     ∃ gs : Finset (HeightOneSpectrum (𝓞 D.host.F)) → GA D V,
@@ -60,6 +77,17 @@ theorem exists_components (D : D7) (V : HSp D) (g : GA D V)
     exact Finset.sum_eq_zero fun w hw =>
       GlobalTheory.IdemSupport.place_orth hΦ (hε v) (hε w) (fun hvw => hvB (by rw [hvw]; exact hw))
 
+/- English proof (translation)
+Introduce `D S T om f hcont g hg h hh A s hs hloc`. Use `choose ε hε using fun v : HeightOneSpectrum (𝓞 D.host.F) => GlobalTheory.IdemSupport.exists_placeIdem (D := D) v`. Take `⟨gs, hgs, hgs0, hgsm⟩` from `exists_components D S g ε hε`. Take `⟨hs', hhs, hhs0, hhsm⟩` from `exists_components D T h ε hε`. Establish `key : ∀ B : Finset (HeightOneSpectrum (𝓞 D.host.F)), om (gs B, hs' B) f = (∏ v ∈ B, s v) • f`.
+
+Introduce `B`. Proceed by induction on `B using Finset.cons_induction with`. Consider the case `empty`. Rewrite using `[hgs0, hhs0, Finset.prod_empty, one_smul]`. Use `show om 1 f = f`.
+
+Rewrite using `[map_one]`. Both sides reduce to the same expression. Consider the case `cons v B hvB ih`. Establish `hv` using `hloc v (ε v) (hε v) (gs {v}) (hs' {v}) (by rw [hgs, Finset.sum_singleton]) (by rw [hhs, Finset.sum_singleton])`. Rewrite using `[hgsm v B hvB, hhsm v B hvB, ← Prod.mk_mul_mk, map_mul, Module.End.mul_apply, ih, map_smul, hv, smul_smul, Finset.prod_cons, mul_comm]`.
+
+Establish `hpair : Filter.Tendsto (fun B => (gs B, hs' B)) Filter.atTop (nhds (g, h))` using `(GlobalTheory.T.tendsto_placeComponents_finiteAdelicUnitary D S g hg ε hε gs hgs).prodMk_nhds (GlobalTheory.T.tendsto_placeComponents_finiteAdelicUnitary D T h hh ε hε hs' hhs)`. Use function extensionality and compare the values at `w`. Rewrite using `[Pi.smul_apply, smul_eq_mul]`. Establish `ht` using `((hcont w).tendsto (g, h)).comp hpair`. Use `tendsto_nhds_unique ht (tendsto_const_nhds.congr' ?_)` and prove the remaining obligations.
+
+Use `filter_upwards [Filter.eventually_ge_atTop A] with B hB`. Use `show _ = om (gs B, hs' B) f w`. Rewrite using `[key, Pi.smul_apply, smul_eq_mul, Finset.prod_subset hB fun v _ hv => hs v hv]`.
+-/
 theorem eigen_of_local_components : ∀ (D : D7) (S T : HSp D) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) (f : WO S T → ℂ), (∀ w, Continuous fun p : GA D S × GA D T => om p f w) → ∀ g ∈ GfC S, ∀ h ∈ GfC T, ∀ (A : Finset (HeightOneSpectrum (𝓞 D.host.F))) (s : HeightOneSpectrum (𝓞 D.host.F) → ℂ), (∀ v, v ∉ A → s v = 1) → (∀ (v : HeightOneSpectrum (𝓞 D.host.F)) (ε : AF D.host.F), IsPlaceIdem D v ε → ∀ (g' : GA D S) (h' : GA D T), Formalism.L2.Theta.mt S g' = algebraMap (AF D.host.F) (AE D) ε • Formalism.L2.Theta.mt S g + (1 - algebraMap (AF D.host.F) (AE D) ε) • (1 : Matrix (Fin S.rank) (Fin S.rank) (AE D)) → Formalism.L2.Theta.mt T h' = algebraMap (AF D.host.F) (AE D) ε • Formalism.L2.Theta.mt T h + (1 - algebraMap (AF D.host.F) (AE D) ε) • (1 : Matrix (Fin T.rank) (Fin T.rank) (AE D)) → om (g', h') f = s v • f) → om (g, h) f = (∏ v ∈ A, s v) • f := by
   intro D S T om f hcont g hg h hh A s hs hloc
   choose ε hε using fun v : HeightOneSpectrum (𝓞 D.host.F) => GlobalTheory.IdemSupport.exists_placeIdem (D := D) v

@@ -33,6 +33,13 @@ def Heart : Prop := ∀ (q : ℕ) (A : Type) [CommRing A] [IsLocalRing A], SH A 
       g = a.comap (pullback.fst (fibMap p ι₁) (fibMap p ι₂)).base.hom -
         b.comap (pullback.snd (fibMap p ι₁) (fibMap p ι₂)).base.hom
 
+/- English proof (translation)
+Unfold `LateralTheory.E.ChartSurjCut.Root at hR`. Unfold `LateralTheory.E.ChartSurjCut.LCIso at hL`. Introduce `H q i A _ _ hSH hq Z U V p hp hZ ι₁ ι₂ h1 h2 hU hV hcov hstd w`. Take `⟨ζ⟩` from `hR q A p hZ hq`. Take `⟨e, he⟩` from `hL H q i Z ζ`.
+
+Establish `k1 : fibMap p ι₁ ≫ pullback.fst p (cpt A) = pullback.fst (ι₁ ≫ p) (cpt A) ≫ ι₁` using `by rw [fibMap]; exact pullback.lift_fst _ _ _`. Establish `k2 : fibMap p ι₂ ≫ pullback.fst p (cpt A) = pullback.fst (ι₂ ≫ p) (cpt A) ≫ ι₂` using `by rw [fibMap]; exact pullback.lift_fst _ _ _`. Establish `eq : pullback.snd (fibMap p ι₁) (fibMap p ι₂) ≫ pullback.fst (ι₂ ≫ p) (cpt A) ≫ ι₂ = pullback.fst (fibMap p ι₁) (fibMap p ι₂) ≫ pullback.fst (ι₁ ≫ p) (cpt A) ≫ ι₁`. Rewrite using `[← k2, ← k1, ← Category.assoc, ← pullback.condition, Category.assoc]`. Take `⟨a, b, hab⟩` from `hT q A hSH hq p hp hZ ι₁ ι₂ h1 h2 hU hV hcov hstd ((e _ (pullback.fst (fibMap p ι₁) (fibMap p ι₂) ≫ pullback.fst (ι₁ ≫ p) (cpt A) ≫ ι₁)).symm w)`.
+
+Use `⟨e _ (pullback.fst (ι₁ ≫ p) (cpt A) ≫ ι₁) a, e _ (pullback.fst (ι₂ ≫ p) (cpt A) ≫ ι₂) b, ?_⟩` and prove the remaining obligations. Rewrite using `[he _ _ (pullback.fst (fibMap p ι₁) (fibMap p ι₂)) rfl, he _ _ (pullback.snd (fibMap p ι₁) (fibMap p ι₂)) eq, ← map_sub, ← hab, AddEquiv.apply_symm_apply]`.
+-/
 theorem chartSurj (hR : LateralTheory.E.ChartSurjCut.Root) (hL : LateralTheory.E.ChartSurjCut.LCIso) (hT : Heart) :
     ∀ (H : Hyp) (q : ℕ) (i : ℤ) (A : Type) [CommRing A] [IsLocalRing A], SH A → IsUnit (q : A) →
     ∀ {Z U V : Scheme.{0}} (p : Z ⟶ Spec (CommRingCat.of A)), IL p → AICSch Z → ∀ (ι₁ : U ⟶ Z) (ι₂ : V ⟶ Z),
@@ -57,6 +64,15 @@ theorem chartSurj (hR : LateralTheory.E.ChartSurjCut.Root) (hL : LateralTheory.E
   rw [he _ _ (pullback.fst (fibMap p ι₁) (fibMap p ι₂)) rfl, he _ _ (pullback.snd (fibMap p ι₁) (fibMap p ι₂)) eq,
     ← map_sub, ← hab, AddEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Introduce `H q i A _ _ hSH hq Z p hp hZ`. Take `⟨U, V, ι₁, ι₂, h1, h2, hU, hV, hcov, hstd⟩` from `hC A p hp`. Take `⟨hf1, hf2, hfcov⟩` from `hF A p ι₁ ι₂ h1 h2 hcov`. Take `⟨δ, hex, -⟩` from `hMV H (ZMod q) (tw q i)`. Establish `e` using `hex (fibMap p ι₁) (fibMap p ι₂) hfcov 0`.
+
+Establish `aU` using `hA H q A p ι₁ h1 hU hZ hq`. Establish `aV` using `hA H q A p ι₂ h2 hV hZ hq`. Establish `key : ∀ x : Ht q (sch.obj (fib p)) 1 i, x = 0`. Introduce `x`. Establish `s1` using `aU 1 i one_pos`.
+
+Establish `s2` using `aV 1 i one_pos`. Take `⟨w, hw⟩` from `(e.2.2 x).1 ⟨@Subsingleton.elim _ s1 _ _, @Subsingleton.elim _ s2 _ _⟩`. Take `⟨a, b, hab⟩` from `chartSurj hR hL hT H q i A hSH hq p hp hZ ι₁ ι₂ h1 h2 hU hV hcov hstd w`. Rewrite using `[← hw]`. Conclude with `(e.2.1 w).2 ⟨a, b, hab⟩`.
+
+Conclude with `⟨fun x y => by rw [key x, key y]⟩`.
+-/
 theorem goal_of (hMV : MV) (hC : StdCharts) (hF : LateralTheory.E.LineOneCut.FibCover) (hA : ChartAcyc)
     (hR : LateralTheory.E.ChartSurjCut.Root) (hL : LateralTheory.E.ChartSurjCut.LCIso) (hT : Heart) : LineOne := by
   intro H q i A _ _ hSH hq Z p hp hZ

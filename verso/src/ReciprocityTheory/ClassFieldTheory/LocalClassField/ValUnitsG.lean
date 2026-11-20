@@ -11,6 +11,9 @@ variable (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p))
 def redK : OK p K →+* resK p K :=
   (resMap p K).codRestrict (resK p K) fun x => (mem_resK_iff p K _).2 ⟨toObar p K x, (x : K).2, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[Subtype.ext_iff]`. Use `show IsLocalRing.residue (Obar p) (toObar p K a) = IsLocalRing.residue (Obar p) (toObar p K b) ↔ _`. Rewrite using `[residue_eq_iff]`. Both sides reduce to the same expression.
+-/
 theorem redK_eq_iff (a b : OK p K) :
     redK p K a = redK p K b ↔ ‖((a : K) : PadicAlgCl p) - ((b : K) : PadicAlgCl p)‖ < 1 := by
   rw [Subtype.ext_iff]
@@ -18,6 +21,9 @@ theorem redK_eq_iff (a b : OK p K) :
   rw [residue_eq_iff]
   rfl
 
+/- English proof (translation)
+Introduce and unpack `⟨c, hc⟩`. Take `⟨x, hx, rfl⟩` from `(mem_resK_iff p K c).1 hc`. Conclude with `⟨⟨⟨x, hx⟩, x.2⟩, Subtype.ext rfl⟩`.
+-/
 theorem redK_surjective : Function.Surjective (redK p K) := by
   rintro ⟨c, hc⟩
   obtain ⟨x, hx, rfl⟩ := (mem_resK_iff p K c).1 hc
@@ -39,6 +45,9 @@ def gradFun (hK : FiniteDimensional ℚ_[p] K) {π : Kˣ} (hπ : vK p K π = 1) 
     rw [norm_div, norm_pow, div_le_one (pow_pos (norm_units_pos π) i), norm_pow_uniformiser p K hK hπ i]
     exact x.2.2⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gradFun_val (hK : FiniteDimensional ℚ_[p] K) {π : Kˣ} (hπ : vK p K π = 1) (i : ℕ) (x : UKi p K i) :
     ((gradFun p hK hπ i x : K) : PadicAlgCl p) =
       ((((x : Kˣ) : K) : PadicAlgCl p) - 1) / ((π : K) : PadicAlgCl p) ^ i := rfl

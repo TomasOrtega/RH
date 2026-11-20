@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvolutionNormClass
 import Mathlib
 open scoped TensorProduct Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | (exact @GlobalTheory.RatRed.ratred) | (exact GlobalTheory.RatRed.ratred) | (intros; apply GlobalTheory.RatRed.ratred <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.involution_norm_class_remove_rational_factor : ∀ (E : Type) [CommRing E] [Algebra ℚ E] [FiniteDimensional ℚ E] (τ : E ≃ₐ[ℚ] E) (S : Finset ℕ) (A : Finset E),
     (∀ a : E, IsUnit a → τ a = a →
       (∀ ℓ : ℕ, ℓ.Prime → ℓ ∉ S → ∃ (b x y : E), IsUnit b ∧ a = x * (b * τ b) ∧ b * τ b = y * a ∧

@@ -16,6 +16,9 @@ namespace GoodPlacesAlt
 
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G]
 
+/- English proof (translation)
+Establish `himg : Finset.univ.image (fun t => Formalism.IndefR.TransferLatticeStatement.charOf (τ t)) = Xc`. Use extensionality with `χ`. Rewrite using `[hX χ]`. Simplify using the standard rewrite rules. Rewrite using `[← himg, Finset.sum_image (fun s _ t _ h => hinj s t h)]`.
+-/
 theorem sum_chars_eq {S : Type} [Fintype S] {Ws : S → Type} [∀ s, AddCommGroup (Ws s)] [∀ s, Module K (Ws s)]
     (τ : ∀ s, Representation K G (Ws s)) (Xc : Finset (G → K))
     (hinj : ∀ s t, Formalism.IndefR.TransferLatticeStatement.charOf (τ s) = Formalism.IndefR.TransferLatticeStatement.charOf (τ t) → s = t) (hX : CharsX τ Xc)
@@ -28,6 +31,13 @@ theorem sum_chars_eq {S : Type} [Fintype S] {Ws : S → Type} [∀ s, AddCommGro
     simp
   rw [← himg, Finset.sum_image (fun s _ t _ h => hinj s t h)]
 
+/- English proof (translation)
+Establish `key : ∀ s : Finset G, (∑ g ∈ s, c g • M g) *ᵥ x = ∑ g ∈ s, c g • (M g *ᵥ x)`. Introduce `s`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `a s ha ih`.
+
+Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, Matrix.add_mulVec, ← ih]`. Use `first`. Consider the case `rw [Matrix.smul_mulVec]`. Consider the case `rw [Matrix.smul_mulVec_assoc]`. Consider the case `simp [Matrix.mulVec, dotProduct, Finset.mul_sum, mul_assoc]`.
+
+Conclude with `key Finset.univ`.
+-/
 theorem mulVec_sum_smul {n : ℕ} (c : G → K) (M : G → Matrix (Fin n) (Fin n) K) (x : Fin n → K) :
     (∑ g, c g • M g) *ᵥ x = ∑ g, c g • (M g *ᵥ x) := by
   classical
@@ -43,11 +53,21 @@ theorem mulVec_sum_smul {n : ℕ} (c : G → K) (M : G → Matrix (Fin n) (Fin n
         | simp [Matrix.mulVec, dotProduct, Finset.mul_sum, mul_assoc]
   exact key Finset.univ
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[cpt, Finset.sum_apply, map_sum]`.
+-/
 theorem cpt_sum_smul (σ : K →+* ℂ) {n : ℕ} (c : G → K) (y : G → Fin n → K) :
     cpt σ (∑ g, c g • y g) = ∑ g, σ (c g) • cpt σ (y g) := by
   funext i
   simp [cpt, Finset.sum_apply, map_sum]
 
+/- English proof (translation)
+Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_one, LinearMap.id_apply]`. Establish `h1 : f (cpt σ ((∑ g, c g • ρ g) *ᵥ x)) = f (cpt σ x)`.
+
+Rewrite using `[mulVec_sum_smul, cpt_sum_smul, map_sum]`. Simplify using `only [map_smul, hρ]`. Conclude with `hfix x`. Establish `h2` using `hf h1`. Use function extensionality and compare the values at `i`.
+
+Conclude with `σ.injective (congrFun h2 i)`.
+-/
 theorem sum_eq_one_of {E : Type} [AddCommGroup E] [Module ℂ E] (σ : K →+* ℂ) {n : ℕ}
     (f : (Fin n → ℂ) →ₗ[ℂ] E) (hf : Function.Injective f) (ρ : G → Matrix (Fin n) (Fin n) K)
     (act : G → E →ₗ[ℂ] E) (hρ : ∀ g x, f (cpt σ (ρ g *ᵥ x)) = act g (f (cpt σ x)))
@@ -72,6 +92,11 @@ namespace In
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {m : ℕ}
   (I : In K G Pl0 T m)
 
+/- English proof (translation)
+Establish `hc : ∀ g : G, (idemOf I.A.fam.X).coeff g = ∑ χ ∈ I.A.fam.X, χ 1 / (Fintype.card G : K) * χ g⁻¹`. Introduce `g`. Simplify using `[idemOf, chiIdem, MonoidAlgebra.coeff_sum, MonoidAlgebra.coeff_single, Finsupp.finset_sum_apply, Finsupp.single_apply]`. Simplify using `only [eMat]`. Rewrite using `[GoodPlacesAlt.sum_chars_eq τ I.A.fam.X hinj hX (fun χ => (χ 1 / (Fintype.card G : K)) • ∑ x : G, χ x⁻¹ • I.ρf x)]`.
+
+Simplify using `only [hc, Finset.sum_smul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem sum_eMat_eq {S : Type} [Fintype S] {Ws : S → Type} [∀ s, AddCommGroup (Ws s)] [∀ s, Module K (Ws s)]
     (τ : ∀ s, Representation K G (Ws s))
     (hinj : ∀ s t, Formalism.IndefR.TransferLatticeStatement.charOf (τ s) = Formalism.IndefR.TransferLatticeStatement.charOf (τ t) → s = t) (hX : CharsX τ I.A.fam.X) :
@@ -88,6 +113,9 @@ theorem sum_eMat_eq {S : Type} [Fintype S] {Ws : S → Type} [∀ s, AddCommGrou
   simp only [hc, Finset.sum_smul, Finset.smul_sum, smul_smul]
   rw [Finset.sum_comm]
 
+/- English proof (translation)
+Rewrite using `[CxData.iC_eq_comp, CxData.lin_uQ_cpt]`. Both sides reduce to the same expression.
+-/
 theorem iCg_cpt (x : Fin ((lv (faceOf I.A ⊥ 1 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) false).dQ I.A.fam.base.μ0) → K) :
     I.X.iC I.cg false I.A.fam.base.μ0 (cpt I.A.fam.base.v0.embedding x) =
       I.X.Θ I.A.fam.base.μ0 (I.X.jR I.A.fam.base.μ0
@@ -95,6 +123,11 @@ theorem iCg_cpt (x : Fin ((lv (faceOf I.A ⊥ 1 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.z
   rw [CxData.iC_eq_comp, CxData.lin_uQ_cpt]
   rfl
 
+/- English proof (translation)
+Establish `hgood : goodAt (I.A.fam.lvl ⊥ 1).X (I.A.fam.lvl ⊥ 1).P (I.A.fam.lvl ⊥ 1).ψ = idemOf I.A.fam.X` using `by show idemOf I.A.fam.X * lvlIdem ⊥ 1 = _`. Rewrite using `[level_idempotent_bot K G 1, mul_one]`. Establish `hidem : goodAt (I.A.fam.lvl ⊥ 1).X (I.A.fam.lvl ⊥ 1).P (I.A.fam.lvl ⊥ 1).ψ * goodAt (I.A.fam.lvl ⊥ 1).X (I.A.fam.lvl ⊥ 1).P (I.A.fam.lvl ⊥ 1).ψ = goodAt (I.A.fam.lvl ⊥ 1).X (I.A.fam.lvl ⊥ 1).P (I.A.fam.lvl ⊥ 1).ψ`. Rewrite using `[hgood]`. Conclude with `(idempotent_central K G I.A.fam.X hok.irr).1`.
+
+Establish `h : (I.A.fam.R I.A.fam.base.μ0).S.gaOp (I.A.fam.R I.A.fam.base.μ0).r (goodAt (I.A.fam.lvl ⊥ 1).X (I.A.fam.lvl ⊥ 1).P (I.A.fam.lvl ⊥ 1).ψ) ((I.A.fam.R I.A.fam.base.μ0).toF (I.A.fam.lvl ⊥ 1) (I.X.zs.Z I.A.fam.base.μ0) x) = (I.A.fam.R I.A.fam.base.μ0).toF (I.A.fam.lvl ⊥ 1) (I.X.zs.Z …` using `BlockDat.gaOp_fix (I.A.fam.R I.A.fam.base.μ0) (I.A.fam.lvl ⊥ 1) hidem (((I.A.fam.R I.A.fam.base.μ0).zE (I.A.fam.lvl ⊥ 1) (I.X.zs.Z I.A.fam.base.μ0)).mulVec x)`. Rewrite `h` using `[hgood]`. Use `conv_rhs => rw [← h]`. Simplify using `only [CSD.gaOp, LinearMap.sum_apply, LinearMap.smul_apply]`.
+-/
 theorem idemOf_fix {s : ℕ} (hok : I.A.fam.Ok s)
     (x : Fin ((I.A.fam.R I.A.fam.base.μ0).dZ (I.A.fam.lvl ⊥ 1) (I.X.zs.Z I.A.fam.base.μ0)) → K) :
     ∑ g : G, (idemOf I.A.fam.X).coeff g •
@@ -118,6 +151,9 @@ theorem idemOf_fix {s : ℕ} (hok : I.A.fam.Ok s)
   conv_rhs => rw [← h]
   simp only [CSD.gaOp, LinearMap.sum_apply, LinearMap.smul_apply]
 
+/- English proof (translation)
+Establish `hq : ∀ (g : G) (f : I.A.fam.amb.FR I.A.fam.base.μ0), I.gE g (I.X.Θ I.A.fam.base.μ0 (I.X.jR I.A.fam.base.μ0 f)) = I.X.Θ I.A.fam.base.μ0 (I.X.jR I.A.fam.base.μ0 ((I.A.fam.R I.A.fam.base.μ0).r g f))` using `fun g f => (hH.gequiv I.A.fam.base.μ0 g f).symm`. Rewrite using `[I.iCg_cpt x]`. Repeatedly rewrite using `[hq]`. Use `conv_rhs => rw [← I.idemOf_fix hH.ok x]`. Simplify using `only [map_sum, LinearMap.map_smulₛₗ, map_smul]`.
+-/
 theorem iCg_fix {s : ℕ} (hH : I.Hyp s)
     (x : Fin ((lv (faceOf I.A ⊥ 1 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) false).dQ I.A.fam.base.μ0) → K) :
     ∑ g : G, I.A.fam.base.v0.embedding ((idemOf I.A.fam.X).coeff g) •
@@ -132,6 +168,9 @@ theorem iCg_fix {s : ℕ} (hH : I.Hyp s)
   conv_rhs => rw [← I.idemOf_fix hH.ok x]
   simp only [map_sum, LinearMap.map_smulₛₗ, map_smul]
 
+/- English proof (translation)
+Introduce `s hH hG hX`. Rewrite using `[I.sum_eMat_eq τ hG.2.2.2 hX]`. Take `⟨-, -, hρg⟩` from `hρ s hH`. Conclude with `GoodPlacesAlt.sum_eq_one_of I.A.fam.base.v0.embedding I.iCg hH.h2g.1 I.ρf (fun g => I.gE g) hρg (fun g => (idemOf I.A.fam.X).coeff g) (fun x => I.iCg_fix hH x)`.
+-/
 theorem pGood_of_rho (hρ : I.PRho) {S : Type} [Fintype S] {Ws : S → Type} [∀ s, AddCommGroup (Ws s)]
     [∀ s, Module K (Ws s)] (τ : ∀ s, Representation K G (Ws s)) : I.PGood τ := by
   intro s hH hG hX
@@ -140,6 +179,9 @@ theorem pGood_of_rho (hρ : I.PRho) {S : Type} [Fintype S] {Ws : S → Type} [�
   exact GoodPlacesAlt.sum_eq_one_of I.A.fam.base.v0.embedding I.iCg hH.h2g.1 I.ρf (fun g => I.gE g) hρg
     (fun g => (idemOf I.A.fam.X).coeff g) (fun x => I.iCg_fix hH x)
 
+/- English proof (translation)
+The claim follows from `pGood_of_rho I hρ τ`.
+-/
 theorem pGood_of (_hJt : I.PJt) (hρ : I.PRho) {S : Type} [Fintype S] {Ws : S → Type} [∀ s, AddCommGroup (Ws s)]
     [∀ s, Module K (Ws s)] [∀ s, FiniteDimensional K (Ws s)] (τ : ∀ s, Representation K G (Ws s)) : I.PGood τ := pGood_of_rho I hρ τ
 

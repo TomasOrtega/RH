@@ -5,6 +5,9 @@ open Formalism.BasicNotions GlobalTheory.Mem GlobalTheory.MemN NumberField IsDed
 
 namespace GlobalTheory.MemN
 
+/- English proof (translation)
+Introduce `g hg` and use `⟨@GaloisStage.exists_teichC g ⟨hg⟩, fun l hl => @GaloisStage.exists_iota g l ⟨hg⟩ ⟨hl⟩⟩`.
+-/
 theorem exists_teichmuller_maps : ∀ (g : ℕ) (hg : g.Prime), (∃ τ : Fb g hg →* ℂ, ∀ x y, x ≠ 0 → y ≠ 0 → τ x = τ y → x = y) ∧ ∀ (l : ℕ) (hl : l.Prime), ∃ ι : Fb g hg →* Fb l hl, ∀ x y, x ≠ 0 → y ≠ 0 → (orderOf x).Coprime l → (orderOf y).Coprime l → ι x = ι y → x = y :=
   fun g hg => ⟨@GaloisStage.exists_teichC g ⟨hg⟩, fun l hl => @GaloisStage.exists_iota g l ⟨hg⟩ ⟨hl⟩⟩
 

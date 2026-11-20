@@ -10,6 +10,25 @@ namespace GlobalTheory.BdryUnit
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.AllWt GlobalTheory.IndefiniteRowSideFullHecke.FramedFlatCoordinates
 
+/- English proof (translation)
+Substitute `hx` using the available equality. Take `⟨e, he⟩` from `LiePull.exists_pushEquiv h (epsAt x) (spMap (algebraMap R (DualNumber R)) ≫ x ≫ f) (Category.assoc _ _ _).symm`. Take `⟨e₀, he₀⟩` from `LiePull.exists_pushEquiv h (Over.mk x) (x ≫ f) rfl`. Establish `one : (1 : Over.mk (x ≫ f) ⟶ G).left = (1 : Over.mk x ⟶ G').left ≫ φ`. Rewrite using `[← he₀, map_one]`.
+
+Establish `sc : ∀ c : R, spMap (epsScaleR c) ≫ spMap (algebraMap R (DualNumber R)) = spMap (algebraMap R (DualNumber R))` using `fun c => by`. Use `(Spec.map_comp _ _).symm.trans (congrArg Spec.map ?_)` and prove the remaining obligations. Apply the tactic sequence `ext a <;> simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `fs : spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ spMap (algebraMap R (DualNumber R)) = 𝟙 _`. Use `(Spec.map_comp _ _).symm.trans ((congrArg Spec.map ?_).trans (Spec.map_id _))` and prove the remaining obligations.
+
+Use extensionality with `a`. Simplify using the standard rewrite rules. Establish `hR : ∀ (c : R) (u v : epsAt x ⟶ G'), u.left = spMap (epsScaleR c) ≫ v.left ↔ (e u).left = spMap (epsScaleR c) ≫ (e v).left` using `fun c u v => by`. Rewrite using `[he, he]`. Use `⟨fun E => by rw [E]; exact Category.assoc _ _ _, fun E => h.1.hom_ext (E.trans (Category.assoc _ _ _).symm) ?_⟩` and prove the remaining obligations.
+
+Use `(Over.w u).trans (Eq.symm ((Category.assoc _ _ _).trans ?_))` and prove the remaining obligations. Use `(congrArg (spMap (epsScaleR c) ≫ ·) (Over.w v)).trans ?_` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ x) (sc c))`. Use `⟨e.toEquiv, he, fun χ n v => ?_⟩` and prove the remaining obligations. Establish `hP : ∀ v : epsAt x ⟶ G', IsEigenTangent a' x χ v ↔ IsEigenTangent a (x ≫ f) χ (e v)` using `fun v => by`.
+
+Use `and_congr ?_ (forall_congr' fun c => ?_)` and prove the remaining obligations. Rewrite using `[one, he]`. Use `⟨fun E => by rw [← E]; exact (Category.assoc _ _ _).symm, fun E => h.1.hom_ext ((Category.assoc _ _ _).trans E) ?_⟩` and prove the remaining obligations. Use `((Category.assoc _ _ _).trans ?_).trans (Over.w (1 : Over.mk x ⟶ G')).symm` and prove the remaining obligations. Use `(congrArg (spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ ·) (Over.w v)).trans ?_` and prove the remaining obligations.
+
+Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ x) fs).trans (Category.id_comp _))`. Establish `E : e (v ≫ a'.act c) = e v ≫ a.act c` using `Over.OverMorphism.ext (by`. Rewrite using `[he, Over.comp_left, Over.comp_left, he, Category.assoc, hact, Category.assoc])`. Rewrite using `[hR, E]`. Establish `pr : ∀ u : Fin n → (epsAt x ⟶ G'), e (List.ofFn u).prod = (List.ofFn fun i => e (u i)).prod` using `fun u => by`.
+
+Rewrite using `[map_list_prod, List.map_ofFn]`. Both sides reduce to the same expression. Establish `hC : ∀ (c : Fin n → R) (w : epsAt x ⟶ G'), IsCombination x c (fun i => (v i).left) w ↔ IsCombination (x ≫ f) c (fun i => (e (v i)).left) (e w)` using `fun c w => by`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`.
+
+Conclude with `⟨fun i => e (u i), fun i => (hR _ _ _).1 (hu i), pr u⟩`. Introduce and unpack `⟨u, hu, hw⟩`. Use `⟨fun i => e.symm (u i), fun i => (hR _ _ _).2 (by simpa using hu i), e.injective ?_⟩` and prove the remaining obligations. Rewrite using `[pr, hw]`. Simplify using the standard rewrite rules.
+
+Use `and_congr (forall_congr' fun i => hP _) (Iff.trans ?_ e.surjective.forall.symm)` and prove the remaining obligations. Conclude with `forall_congr' fun w => imp_congr (hP w) (existsUnique_congr fun c => hC c w)`.
+-/
 theorem exists_eigEquiv {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) {O : Type} [CommRing O] {a : OAct O G} {a' : OAct O G'}
     (hact : ∀ c, (a'.act c).left ≫ φ = φ ≫ (a.act c).left) {R : Type} [CommRing R] (x : Sp R ⟶ S')
@@ -68,6 +87,13 @@ theorem exists_eigEquiv {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Take `⟨e₀, he₀, hb₀⟩` from `exists_eigEquiv Y.m0.toSABMap.cart Y.m0.toSABMap.act (ptF y) y.x (pullback.lift_fst _ _ _).symm`. Take `⟨e, he, hb⟩` from `exists_eigEquiv Y.m.cart Y.m.act (ptF y) ((ptF y ≫ Y.jQ) ≫ pullback.fst _ _) (Category.assoc _ _ _)`. Set `u : Fin (Dw.mult τ) → (epsAt y.x ⟶ Xo.univ.t.G)` to `fun i => Over.homMk (y.u τ i) (y.tan τ i).1`. Establish `hu : IsEigenBasis Xo.univ.t.act y.x (chr c τ (algebraMap c.F S)) u`.
+
+Use `⟨fun i => ⟨(y.tan τ i).2, fun a => y.eig τ i a⟩, fun w hw => ?_⟩` and prove the remaining obligations. Use `(existsUnique_congr fun a => ⟨?_, ?_⟩).1 (y.basis τ w.left ⟨Over.w w, hw.1⟩ fun a => hw.2 a)` and prove the remaining obligations. Introduce and unpack `⟨u', h1, h2⟩`. Conclude with `⟨u', h1, Over.OverMorphism.ext h2.symm⟩`. Introduce and unpack `⟨u', h1, h2⟩`.
+
+Conclude with `⟨u', h1, congrArg (fun z => z.left) h2.symm⟩`. Establish `hw` using `(hb₀ (chr c τ (algebraMap c.F S)) _ fun i => e₀.symm (u i)).2 ((funext fun i => e₀.apply_symm_apply (u i) : (fun i => e₀ (e₀.symm (u i))) = u).symm ▸ hu)`. Use `⟨fun i => e (e₀.symm (u i)), (hb _ _ _).1 hw, fun i => ⟨i, rfl, (e₀.symm (u i)).left, ⟨Over.w _, (hw.1 i).1⟩, ?_, (he _).symm⟩⟩` and prove the remaining obligations. Rewrite using `[← he₀, Equiv.apply_symm_apply]`. Both sides reduce to the same expression.
+-/
 theorem exists_eigenBasis_sameVec (Y : Model Xo c (RingHom.id c.F)) {S : Type} [CommRing S] [Algebra c.F S]
     (y : FrPt Xo c S) (τ : E →+* ℂ) (n : ℕ) (hn : Dw.mult τ = n) :
     ∃ v : Fin n → (epsAt ((ptF y ≫ Y.jQ) ≫ pullback.fst _ _) ⟶ Y.t.G),
@@ -93,6 +119,9 @@ theorem exists_eigenBasis_sameVec (Y : Model Xo c (RingHom.id c.F)) {S : Type} [
   rw [← he₀, Equiv.apply_symm_apply]
   rfl
 
+/- English proof (translation)
+Take `⟨v, hv, ev⟩` from `exists_eigenBasis_sameVec Y y τ.1 Dw.p (if_pos τ.2)`. Take `⟨w, hw, ew⟩` from `exists_eigenBasis_sameVec Y y (conjEmb τ.1) Dw.q (if_neg (conj_not_mem τ))`. Use `⟨⟨ptF y ≫ Y.jQ, by rw [Category.assoc, Y.jQ_over]; exact pullback.lift_snd _ _ _, ?_, v, w, hv, hw⟩, rfl, ev, ew⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `subset_closure ⟨ptF y z, hy z, by simp⟩`.
+-/
 theorem exists_matches (Y : Model Xo c (RingHom.id c.F)) (V : (Xo.XF c).Opens) (τ : Psi H) {S : Type} [CommRing S]
     [Algebra c.F S] (y : FrPt Xo c S) (hy : ∀ s, ptF y s ∈ (V : Set (Xo.XF c))) :
     ∃ a : Framed Y V τ.1 S (algebraMap c.F S), Matches Y V τ y a := by

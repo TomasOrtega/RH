@@ -18,6 +18,21 @@ noncomputable section
 
 namespace GlobalTheory.EisConvGrowth
 
+/- English proof (translation)
+Introduce `D V a ha hI μ s₁ φ hφ h`. Use `haveI := t2Space_adeleRing' (F := D.host.F)`. Take `⟨C₁, hC₁⟩ : ∃ C : ℝ, ∀ g, ‖φ g‖ ≤ C * (hgt V a g : ℝ) ^ (s₁.re + (V.rank : ℝ) / 2)` from `hI.exists_norm_le continuous_absE (isCompact_Khat V a) hφ`. Take `⟨C₂, hC₂, h₂⟩` from `GlobalTheory.SWAbsGrowth.hgt_mul_le V a ha`. Use `set τ : ℝ := s₁.re + (V.rank : ℝ) / 2 with hτ`.
+
+Establish `hτ0 : 0 ≤ τ`. Establish `: (0 : ℝ) ≤ (V.rank : ℝ) / 2` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs` using `GlobalTheory.Eis.sphConv D V a hI s₁.re h`. Use `set S := ∑' q : GlobalTheory.Eis.SiegelCosets V, (hgt V a (q.out : GQ (dblSp V)) : ℝ) ^ τ with hS`.
+
+Establish `hS0 : 0 ≤ S` using `tsum_nonneg fun _ => by positivity`. Use `set M : ℕ := ⌈τ⌉₊ with hM`. Use `⟨max C₁ 0 * (max C₂ 1) ^ M * S, 2 * V.rank * M, fun y => ?_⟩` and prove the remaining obligations. Use `set H := GlobalTheory.Grow.height (dblSp V) y with hH`. Establish `hH1 : 1 ≤ H` using `GlobalTheory.Grow.one_le_height _ y`.
+
+Use `set K := max C₂ 1 * H ^ (2 * V.rank) with hK`. Establish `hone : 1 ≤ K` using `one_le_mul_of_one_le_of_one_le (le_max_right _ _) (one_le_pow₀ hH1)`. Use `set c := max C₁ 0 * K ^ M with hc`. Establish `hq : ∀ x : GA D (dblSp V), ‖φ (x * y)‖ ≤ c * (hgt V a x : ℝ) ^ τ`. Introduce `x`.
+
+Use `(hC₁ _).trans ?_` and prove the remaining obligations. Use `(mul_le_mul_of_nonneg_right (le_max_left C₁ 0) (by positivity)).trans ?_` and prove the remaining obligations. Rewrite using `[hc, mul_assoc]`. Use `mul_le_mul_of_nonneg_left ?_ (le_max_right _ _)` and prove the remaining obligations. Establish `h3 : (hgt V a (x * y) : ℝ) ≤ hgt V a x * K` using `(h₂ x y).trans (mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right (le_max_left _ _) (by positivity)) (NNReal.coe_nonneg _))`.
+
+Use `(Real.rpow_le_rpow (NNReal.coe_nonneg _) h3 hτ0).trans ?_` and prove the remaining obligations. Rewrite using `[Real.mul_rpow (NNReal.coe_nonneg _) (by positivity), mul_comm]`. Use `mul_le_mul_of_nonneg_right ?_ (by positivity)` and prove the remaining obligations. Rewrite using `[← Real.rpow_natCast _ M]`. Conclude with `Real.rpow_le_rpow_of_exponent_le hone (Nat.le_ceil τ)`.
+
+Establish `hsum : HasSum (fun q : GlobalTheory.Eis.SiegelCosets V => c * (hgt V a (q.out : GQ (dblSp V)) : ℝ) ^ τ) (c * S)` using `hs.hasSum.mul_left c`. Establish `hb : ‖GlobalTheory.Eis.eis V φ y‖ ≤ c * S` using `tsum_of_norm_bounded hsum fun q => hq _`. Use `hb.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[hc, hK, mul_pow, ← pow_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eis_modGrowth : ∀ (D : D7) (V : HSp D) (a : GL (Fin V.rank) (AE D)), IsMaj V a → HasIwasawa D.sp.cm.sig (dblSp V).gram (Khat V a) → ∀ (μ : (AE D)ˣ →* Circle) (s₁ : ℂ) (φ : GA D (dblSp V) → ℂ), φ ∈ degPS V a μ s₁ → (V.rank : ℝ) / 2 < s₁.re → GlobalTheory.Grow.ModGrowth (dblSp V) (GlobalTheory.Eis.eis V φ) := by
   intro D V a ha hI μ s₁ φ hφ h
   haveI := t2Space_adeleRing' (F := D.host.F)

@@ -8,6 +8,11 @@ open GlobalTheory.KZ GlobalTheory.K4 UpperTheory.V.Z.Kato.Sym UpperTheory.V.Z.Ka
 
 attribute [local instance] algMdl
 
+/- English proof (translation)
+Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Simplify using the standard rewrite rules. Establish `h0 : 0 < B.valuation x`. Rewrite using `[zero_lt_iff]`. Conclude with `(Valuation.ne_zero_iff _).2 hx`.
+
+Rewrite using `[← one_lt_inv₀ h0, ← map_inv₀, ← not_le, B.valuation_le_one_iff]`. Simplify using `[hx]`.
+-/
 private theorem val_lt_one_iff {K : Type} [Field K] (B : ValuationSubring K) (x : K) :
     B.valuation x < 1 ↔ x = 0 ∨ x⁻¹ ∉ B := by
   rcases eq_or_ne x 0 with rfl | hx
@@ -18,6 +23,11 @@ private theorem val_lt_one_iff {K : Type} [Field K] (B : ValuationSubring K) (x 
     rw [← one_lt_inv₀ h0, ← map_inv₀, ← not_le, B.valuation_le_one_iff]
     simp [hx]
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[val_lt_one_iff]`. Break down `h with h | h` into its components or cases. Conclude with `Or.inl ((map_eq_zero e).1 h)`. Use `right`. Rewrite using `[ValuationSubring.mem_comap, map_inv₀]`.
+
+Conclude with `h`.
+-/
 private theorem val_comap_lt_one {K L : Type} [Field K] [Field L] (B : ValuationSubring L) (e : K →+* L) (x : K)
     (h : B.valuation (e x) < 1) : (B.comap e).valuation x < 1 := by
   rw [val_lt_one_iff] at h ⊢
@@ -27,6 +37,19 @@ private theorem val_comap_lt_one {K L : Type} [Field K] [Field L] (B : Valuation
     rw [ValuationSubring.mem_comap, map_inv₀]
     exact h
 
+/- English proof (translation)
+Introduce `Ω _ _ _ ε X l n M hl hM hd u v hu hv huF hvF e he η hη`. Take `⟨hau, hku⟩` from `chB Ω ε X l n M hl hM hd u hu.1 huF e he`. Take `⟨hav, hkv⟩` from `chB Ω ε X l n M hl hM hd v hv.1 hvF e he`. Take `⟨c1, c2, c3, -, -⟩` from `cjB Ω ε X M e he`. Take `⟨hcob, hlc, hun⟩` from `hη`.
+
+Establish `hD : ∀ g, InD X g → FixF X M g ∧ cj X M e g ∈ geo (topF X M) (topL X M) (topBar X M)` using `fun g hg => c3 g fun f _ => hg f`. Use `⟨hu, hv, hau, hav, fun g h hg hh => ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show ka X (l ^ n) (e (topRoot X M (l ^ n) u)) g * ka X (l ^ n) (e (topRoot X M (l ^ n) v)) h = η (cj X M e h) - η (cj X M e (g * h)) + η (cj X M e g)`. Rewrite using `[hku g (hD g hg).1, hkv h (hD h hh).1, (c2 g h (hD g hg).1 (hD h hh).1).2.2.1]`. Conclude with `hcob _ (hD g hg).2 _ (hD h hh).2`.
+
+Take `⟨B, hB⟩` from `lcGeo (topF X M) (topL X M) (topBar X M) _ η hlc`. Use `⟨B.image e, fun h h' hh hh' hb => ?_⟩` and prove the remaining obligations. Use `hB _ (hD h hh).2 _ (hD h' hh').2 fun b hbB => e.injective ?_` and prove the remaining obligations. Rewrite using `[c1 h (hD h hh).1, c1 h' (hD h' hh').1]`. Conclude with `hb _ (Finset.mem_image_of_mem _ hbB)`.
+
+Introduce `B h hB hh hin`. Use `hun (B.comap (e : topBar X M →+* Kb X)) _ (fun f hf => ?_) (fun z hz => ?_) (hD h hh).2` and prove the remaining obligations. Rewrite using `[ValuationSubring.mem_comap] show e _ ∈ B`. Rewrite using `[he f]`. Break down `hf with hf | ⟨c, hc⟩` into its components or cases.
+
+Rewrite using `[hf]`. Conclude with `hB.2`. Rewrite using `[← hc]`. Conclude with `hB.1 c`. Apply `val_comap_lt_one` to reduce the goal to its premises.
+
+Rewrite `hz` using `[ValuationSubring.valuation_le_one_iff]`. Use `show B.valuation (e _) < 1`. Rewrite using `[map_sub, c1 h (hD h hh).1]`. Conclude with `hin _ ((ValuationSubring.valuation_le_one_iff _ _).2 hz)`.
+-/
 theorem UpperTheory.V.Z.Kato.Sym.PT.ptIs :
     UpperTheory.V.Z.Kato.Sym.PT.PtIs := by
   intro Ω _ _ _ ε X l n M hl hM hd u v hu hv huF hvF e he η hη

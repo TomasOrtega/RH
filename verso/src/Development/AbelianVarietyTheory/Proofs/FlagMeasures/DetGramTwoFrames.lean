@@ -6,6 +6,9 @@ open scoped Pointwise ENNReal Classical
 
 namespace GlobalTheory.HL
 
+/- English proof (translation)
+Establish `h : Matrix.fromBlocks A B C D = Matrix.fromBlocks B A D C * (Matrix.fromBlocks (1 : Matrix n n R) 1 0 1 * Matrix.fromBlocks (1 : Matrix n n R) 0 (-1) 1 * Matrix.fromBlocks (1 : Matrix n n R) 1 0 1 * Matrix.fromBlocks (-1 : Matrix n n R) 0 0 1)`. Simplify using `[Matrix.fromBlocks_multiply]`. Rewrite using `[h]`. Simplify using `only [Matrix.det_mul, Matrix.det_fromBlocks_zero₂₁, Matrix.det_fromBlocks_zero₁₂, Matrix.det_one, Matrix.det_neg, mul_one, one_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem det_fromBlocks_swapCols {R n : Type} [CommRing R] [Fintype n] [DecidableEq n]
     (A B C D : Matrix n n R) :
     (Matrix.fromBlocks A B C D).det = (-1) ^ Fintype.card n * (Matrix.fromBlocks B A D C).det := by
@@ -19,6 +22,9 @@ theorem det_fromBlocks_swapCols {R n : Type} [CommRing R] [Fintype n] [Decidable
     Matrix.det_one, Matrix.det_neg, mul_one, one_mul]
   ring
 
+/- English proof (translation)
+Apply the tactic sequence `ext (i | i) (j | j) <;> by_cases h : i = l <;> simp [Matrix.updateRow_apply, h]`.
+-/
 theorem fromBlocks_updateRow_eq {R n : Type} [CommRing R] [Fintype n] [DecidableEq n]
     (Z Z' : Matrix n n R) (l : n) (a b c d : n → R) :
     ((Matrix.fromBlocks Z 0 0 Z').updateRow (Sum.inl l) (Sum.elim a b)).updateRow (Sum.inr l)
@@ -27,6 +33,11 @@ theorem fromBlocks_updateRow_eq {R n : Type} [CommRing R] [Fintype n] [Decidable
         ((0 : Matrix n n R).updateRow l c) (Z'.updateRow l d) := by
   ext (i | i) (j | j) <;> by_cases h : i = l <;> simp [Matrix.updateRow_apply, h]
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_succ_row _ (Fin.last r), Finset.sum_eq_single (Fin.last r)]`. Establish `: (Z.updateRow (Fin.last r) (Pi.single (Fin.last r) t)).submatrix (Fin.last r).succAbove (Fin.last r).succAbove = Z.submatrix Fin.castSucc Fin.castSucc`. Use extensionality with `i j`. Simplify using `[Matrix.updateRow_apply, Fin.succAbove_last, Fin.castSucc_ne_last]`. Rewrite using `[this]`.
+
+Simplify using `[← two_mul, pow_mul]`. Introduce `b _ hb`. Simplify using `[Pi.single_apply, hb]`. Simplify using the standard rewrite rules.
+-/
 theorem det_updateRow_last_single {R : Type} [CommRing R] (r : ℕ)
     (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) R) (t : R) :
     (Z.updateRow (Fin.last r) (Pi.single (Fin.last r) t)).det =
@@ -43,6 +54,21 @@ theorem det_updateRow_last_single {R : Type} [CommRing R] (r : ℕ)
     simp [Pi.single_apply, hb]
   · simp
 
+/- English proof (translation)
+Use `set F : (n ⊕ n → R) → (n ⊕ n → R) → R := fun u v => (((Matrix.fromBlocks Z 0 0 Z').updateRow (Sum.inl l) u).updateRow (Sum.inr l) v).det with hF`. Establish `hz : (0 : Matrix n n R).updateRow l 0 = 0`. Use extensionality with `i j`. Simplify using `[Matrix.updateRow_apply]`. Establish `hz0 : ∀ X : Matrix n n R, (X.updateRow l 0).det = 0` using `fun X => Matrix.det_eq_zero_of_row_eq_zero l (by simp)`.
+
+Establish `add2 : ∀ u v w, F u (v + w) = F u v + F u w` using `fun u v w => Matrix.det_updateRow_add _ _ _ _`. Establish `add1 : ∀ u v w, F (u + v) w = F u w + F v w` using `fun u v w => by`. Simplify using `only [hF]`. Establish `hne : (Sum.inl l : n ⊕ n) ≠ Sum.inr l` using `by simp`. Rewrite using `[Matrix.updateRow_comm _ hne, Matrix.updateRow_comm _ hne, Matrix.updateRow_comm _ hne]`.
+
+Conclude with `Matrix.det_updateRow_add _ _ _ _`. Establish `swap : ∀ u v, F u v = - F v u` using `fun u v => by`. Simplify using `only [hF]`. Establish `hne : (Sum.inl l : n ⊕ n) ≠ Sum.inr l` using `by simp`. Establish `: ((Matrix.fromBlocks Z 0 0 Z').updateRow (Sum.inl l) u).updateRow (Sum.inr l) v = (((Matrix.fromBlocks Z 0 0 Z').updateRow (Sum.inl l) v).updateRow (Sum.inr l) u).submatrix (Equiv.swap (Sum.inl l) (Sum.inr l)) id`.
+
+Use extensionality with `i j`. Distinguish the cases in `h1 : i = Sum.inl l`. Substitute `h1` using the available equality. Simplify using `[Matrix.updateRow_apply]`. Distinguish the cases in `h2 : i = Sum.inr l`.
+
+Substitute `h2` using the available equality. Simplify using `[Matrix.updateRow_apply]`. Simplify using `[Matrix.updateRow_apply, Equiv.swap_apply_of_ne_of_ne h1 h2, h1, h2]`. Rewrite using `[this, Matrix.det_permute, Equiv.Perm.sign_swap hne]`. Simplify using the standard rewrite rules.
+
+Establish `val : ∀ a b c d : n → R, F (Sum.elim a b) (Sum.elim c d) = (Matrix.fromBlocks (Z.updateRow l a) ((0 : Matrix n n R).updateRow l b) ((0 : Matrix n n R).updateRow l c) (Z'.updateRow l d)).det` using `fun a b c d => by`. Simplify using `only [hF, fromBlocks_updateRow_eq]`. Establish `e : ∀ a b : n → R, Sum.elim a b = Sum.elim a (0 : n → R) + Sum.elim (0 : n → R) b`. Apply the tactic sequence `intro a b; ext (i | i) <;> simp`. Establish `h0` using `val (Z l) b c (Z' l)`.
+
+Rewrite `h0` using `[Matrix.updateRow_eq_self, Matrix.updateRow_eq_self]`. Rewrite using `[← h0, e (Z l) b, e c (Z' l), add1, add2, add2, swap (Sum.elim 0 b) (Sum.elim c 0)]`. Simplify using `only [val, hz, Matrix.det_fromBlocks_zero₂₁, Matrix.det_fromBlocks_zero₁₂, hz0, Matrix.updateRow_eq_self]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem det_fromBlocks_rowBlocks {R n : Type} [CommRing R] [Fintype n] [DecidableEq n]
     (Z Z' : Matrix n n R) (l : n) (b c : n → R) :
     (Matrix.fromBlocks Z ((0 : Matrix n n R).updateRow l b)
@@ -87,6 +113,11 @@ theorem det_fromBlocks_rowBlocks {R n : Type} [CommRing R] [Fintype n] [Decidabl
     Matrix.updateRow_eq_self]
   ring
 
+/- English proof (translation)
+Establish `hs : ∀ t : R, Matrix.single (Fin.last r) (Fin.last r) t = (0 : Matrix (Fin (r + 1)) (Fin (r + 1)) R).updateRow (Fin.last r) (Pi.single (Fin.last r) t)`. Introduce `t`. Use extensionality with `i j`. Simplify using `only [Matrix.updateRow_apply, Matrix.single_apply, Pi.single_apply, Matrix.zero_apply]`. Apply the tactic sequence `by_cases hi : i = Fin.last r <;> by_cases hj : j = Fin.last r <;>`.
+
+Simplify using `[hi, hj, eq_comm]`. Rewrite using `[det_fromBlocks_swapCols, hs, hs, det_fromBlocks_rowBlocks, det_updateRow_last_single, det_updateRow_last_single, Fintype.card_fin]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem det_gram_two_frames {R : Type} [CommRing R] (r : ℕ)
     (Z Z' : Matrix (Fin (r + 1)) (Fin (r + 1)) R) (T T' : R) :
     (Matrix.fromBlocks (Matrix.single (Fin.last r) (Fin.last r) (-T)) Z Z'

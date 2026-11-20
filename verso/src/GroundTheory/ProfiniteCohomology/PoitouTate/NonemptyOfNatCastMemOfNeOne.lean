@@ -17,6 +17,9 @@ section Nonempty
 
 variable {K : FiniteSubfield} (S : Set (HeightOneSpectrum (𝓞 K.1))) {N : ℕ}
 
+/- English proof (translation)
+Take `⟨p, hp, hpN⟩` from `Nat.exists_prime_and_dvd hN`. Take `⟨k, rfl⟩` from `hpN`. Use `nonempty_of_natCast_mem S p hp fun v hv => hS v ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_mul]`. Conclude with `v.asIdeal.mul_mem_right _ hv`.
+-/
 theorem nonempty_of_natCast_mem_of_ne_one (hN : N ≠ 1)
     (hS : ∀ v : HeightOneSpectrum (𝓞 K.1), ((N : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S) : Nonempty S := by
   obtain ⟨p, hp, hpN⟩ := Nat.exists_prime_and_dvd hN
@@ -37,6 +40,9 @@ section Hypotheses
 set_option maxHeartbeats 1000000 in
 include hS in
 
+/- English proof (translation)
+Establish `: Finite (gsRoots S N)` using `(nonempty_addEquiv_gsRoots_of_mem S hS).elim fun e => Finite.of_equiv _ e.toEquiv.symm`. Use `AddMonoidHom.ext fun z => ?_` and prove the remaining obligations. Take `⟨ξ, hξ⟩` from `(gsOddTatePoitouTateHypotheses S ιr ιs hS hodd).surjective_ptTLocalToCompact_two (gsRoots S N) (nsmul_gsRoots S N) z`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem gsTrace_eq_gsOddTrace (hodd : Odd N) : gsTrace S ιr ιs N = gsOddTrace S ιr ιs hS hodd := by
   have : Finite (gsRoots S N) :=
     (nonempty_addEquiv_gsRoots_of_mem S hS).elim fun e => Finite.of_equiv _ e.toEquiv.symm
@@ -54,6 +60,9 @@ theorem gsTrace_eq_gsOddTrace (hodd : Odd N) : gsTrace S ιr ιs N = gsOddTrace 
 
 include hS in
 
+/- English proof (translation)
+Break down `Nat.even_or_odd N with hev | hodd` into its components or cases. Conclude with `gsEvenTatePoitouTateHypotheses S ιr ιs hS hev`. Conclude with `(gsTrace_eq_gsOddTrace S ιr ιs hS hodd).symm ▸ gsOddTatePoitouTateHypotheses S ιr ιs hS hodd`.
+-/
 theorem gsTatePoitouTateHypotheses :
     TatePoitouTateHypotheses (gsFinFamily S ιs) (gsRealFamily S ιr) (gsRoots S N)
       (gsTrace S ιr ιs N) (gsLocalInvRootsQZ S ιs N) (gsRealInvRootsQZ S ιr N) := by
@@ -68,6 +77,9 @@ variable (M : Rep.{0} (ULift.{0} ℤ) (galUnramifiedOutside K.1 ℚ̄ S)) [IsDis
 
 include hS hM in
 
+/- English proof (translation)
+The claim follows from `(gsTatePoitouTateHypotheses S ιr ιs hS).duality M hM h hs`.
+-/
 theorem poitouTateReal_duality {r s : ℕ} (h : r + s = 3) (hs : 1 ≤ s) :
     Function.Bijective (tateCompactDualityMap (gsFinFamily S ιs) (gsRealFamily S ιr) (gsRoots S N) h
       (gsTrace S ιr ιs N) M) :=
@@ -75,6 +87,9 @@ theorem poitouTateReal_duality {r s : ℕ} (h : r + s = 3) (hs : 1 ≤ s) :
 
 include hS hM in
 
+/- English proof (translation)
+The claim follows from `(gsTatePoitouTateHypotheses S ιr ιs hS).bijective_ptTCompactDualMap M hM h hr`.
+-/
 theorem poitouTateReal_compactDual {r s : ℕ} (h : r + s = 3) (hr : 1 ≤ r) :
     Function.Bijective (ptTCompactDualMap (gsFinFamily S ιs) (gsRealFamily S ιr) (gsRoots S N) M
       (gsTrace S ιr ιs N) h) :=
@@ -82,6 +97,9 @@ theorem poitouTateReal_compactDual {r s : ℕ} (h : r + s = 3) (hr : 1 ≤ r) :
 
 include hS hM in
 
+/- English proof (translation)
+The claim follows from `(gsTatePoitouTateHypotheses S ιr ιs hS).nineTerm M hM`.
+-/
 theorem poitouTateReal_nineTerm :
     Function.Injective (ptTGlobalToLocalHat (gsFinFamily S ιs) (gsRealFamily S ιr) M) ∧
     Function.Exact (ptTGlobalToLocalHat (gsFinFamily S ιs) (gsRealFamily S ιr) M)
@@ -117,6 +135,9 @@ theorem poitouTateReal_nineTerm :
 
 include hS hM in
 
+/- English proof (translation)
+The claim follows from `(gsTatePoitouTateHypotheses S ιr ιs hS).sha M hM`.
+-/
 theorem poitouTateReal_sha :
     Finite (ptTSha (gsFinFamily S ιs) (gsRealFamily S ιr) M 1) ∧
       Finite (ptTSha (gsFinFamily S ιs) (gsRealFamily S ιr) (dualRep (gsRoots S N) M) 2) ∧
@@ -128,6 +149,11 @@ theorem poitouTateReal_sha :
 
 include ιs hS hM in
 
+/- English proof (translation)
+Use `(injective_iff_map_eq_zero _).2 fun x hx => ?_` and prove the remaining obligations. Establish `h0 : (ptTGlobalToLocal (gsFinFamily S ιs) (gsRealFamily S ιr) M 3).hom x = 0`. Use `(ptTGlobalToLocal_apply _ _ M 3 x).trans (Prod.ext (funext fun v => ?_) (funext fun w => ?_))` and prove the remaining obligations. Conclude with `(subsingleton_cohomology_gsFinFamily_of_three_le S ιs (NeZero.ne N) M hM v le_rfl).elim _ _`. Conclude with `congrFun hx w`.
+
+Conclude with `(gsTatePoitouTateHypotheses S ιr ιs hS).injective_ptTGlobalToLocal_three M hM (h0.trans (map_zero _).symm)`.
+-/
 theorem injective_gsRealRes_three : Function.Injective (gsRealRes S ιr M 3).hom := by
   refine (injective_iff_map_eq_zero _).2 fun x hx => ?_
   have h0 : (ptTGlobalToLocal (gsFinFamily S ιs) (gsRealFamily S ιr) M 3).hom x = 0 := by
@@ -139,6 +165,11 @@ theorem injective_gsRealRes_three : Function.Injective (gsRealRes S ιr M 3).hom
 
 include ιs hS hM in
 
+/- English proof (translation)
+Use `⟨?_, surjective_gsRealRes_of_three_le S ιr (NeZero.ne N) hS M hM hr⟩` and prove the remaining obligations. Break down `r with _ | _ | _ | _ | r` into its components or cases. Conclude with `absurd hr (by norm_num)`. Conclude with `absurd hr (by norm_num)`. Conclude with `absurd hr (by norm_num)`.
+
+Conclude with `injective_gsRealRes_three S ιr ιs hS M hM`. Conclude with `injective_gsRealRes_of_four_le S ιr (NeZero.ne N) hS M hM (by omega)`.
+-/
 theorem bijective_gsRealRes {r : ℕ} (hr : 3 ≤ r) : Function.Bijective (gsRealRes S ιr M r).hom := by
   refine ⟨?_, surjective_gsRealRes_of_three_le S ιr (NeZero.ne N) hS M hM hr⟩
   rcases r with _ | _ | _ | _ | r

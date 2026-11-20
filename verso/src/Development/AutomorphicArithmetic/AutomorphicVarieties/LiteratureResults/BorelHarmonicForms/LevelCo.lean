@@ -4,6 +4,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af UpperTheory.V.AlgRepEndIrreducible UpperTheory.V.Lit UpperTheory.V.Lit.Bor
 open scoped TensorProduct
 
+/- English proof (translation)
+Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul φ v => simp only [LinearMap.rTensor_tmul, cmp_tmul, map_smul]`.
+-/
 private theorem cmp_rT {W : Type} [AddCommGroup W] [Module ℂ W] {d : ℕ} (T : W →ₗ[ℂ] W) (i : Fin d)
     (m : W ⊗[ℂ] (Fin d → ℂ)) : cmp i (T.rTensor _ m) = T (cmp i m) := by
   induction m using TensorProduct.induction_on with
@@ -11,6 +14,9 @@ private theorem cmp_rT {W : Type} [AddCommGroup W] [Module ℂ W] {d : ℕ} (T :
   | add x y hx hy => simp only [map_add, hx, hy]
   | tmul φ v => simp only [LinearMap.rTensor_tmul, cmp_tmul, map_smul]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Apply `h` to reduce the goal to its premises. Rewrite using `[← sum_cmp m]`. Simplify using `[hc]`.
+-/
 private theorem ex_cmp {W : Type} [AddCommGroup W] [Module ℂ W] {d : ℕ} {m : W ⊗[ℂ] (Fin d → ℂ)} (h : m ≠ 0) :
     ∃ i, cmp i m ≠ 0 := by
   by_contra hc
@@ -19,6 +25,11 @@ private theorem ex_cmp {W : Type} [AddCommGroup W] [Module ℂ W] {d : ℕ} {m :
   rw [← sum_cmp m]
   simp [hc]
 
+/- English proof (translation)
+Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul φ v`. Simplify using `only [LinearMap.rTensor_tmul, TensorProduct.map_tmul]`.
+
+Use `congr 1`. Conclude with `LinearMap.congr_fun h.eq φ`.
+-/
 private theorem rT_map {W : Type} [AddCommGroup W] [Module ℂ W] {d : ℕ} (T A : Module.End ℂ W)
     (B : Module.End ℂ (Fin d → ℂ)) (h : Commute T A) (m : W ⊗[ℂ] (Fin d → ℂ)) :
     T.rTensor _ (TensorProduct.map A B m) = TensorProduct.map A B (T.rTensor _ m) := by
@@ -30,6 +41,15 @@ private theorem rT_map {W : Type} [AddCommGroup W] [Module ℂ W] {d : ℕ} (T A
     congr 1
     exact LinearMap.congr_fun h.eq φ
 
+/- English proof (translation)
+Introduce `E _ _ _ a U hU π Ξ hC hF`. Take `⟨q, ω, h0, hK, hB⟩` from `basicEx E a _ (tensorK π Ξ) (tensorLie π Ξ) hC`. Choose the witnesses or unpack the hypotheses as in `⟨X, hX⟩ : ∃ X, ω X ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+
+Conclude with `h0 (AlternatingMap.ext hc)`. Take `⟨i, hi⟩` from `ex_cmp hX`. Take `⟨T, hT, hTK, hTU⟩` from `levelOp E a U hU π hF _ hi`. Use `⟨q, ((T.rTensor (Fin Ξ.d → ℂ)).restrictScalars ℝ).compAlternatingMap ω, fun h => hT ?_, fun k Y => ?_, fun Y j hj => ?_, fun Y j u hu => ?_⟩` and prove the remaining obligations. Establish `h1 : T.rTensor (Fin Ξ.d → ℂ) (ω X) = 0` using `DFunLike.congr_fun h X`.
+
+Rewrite using `[← cmp_rT, h1, map_zero]`. Express the relevant statement in the definitionally equal form `T.rTensor (Fin Ξ.d → ℂ) (ω _) = tensorK π Ξ k (T.rTensor (Fin Ξ.d → ℂ) (ω Y))`. Rewrite using `[hK k Y]`. Conclude with `rT_map T _ _ (hTK k) _`. Express the relevant statement in the definitionally equal form `T.rTensor (Fin Ξ.d → ℂ) (ω Y) = 0`.
+
+Rewrite using `[hB Y j hj, map_zero]`. Express the relevant statement in the definitionally equal form `π.op (.fin u) (cmp j (T.rTensor (Fin Ξ.d → ℂ) (ω Y))) = cmp j (T.rTensor (Fin Ξ.d → ℂ) (ω Y))`. Rewrite using `[cmp_rT]`. Conclude with `hTU _ u hu`.
+-/
 theorem UpperTheory.V.Lit.Bor.levelCo :
     UpperTheory.V.Lit.Bor.LevelCo := by
   intro E _ _ _ a U hU π Ξ hC hF

@@ -8,6 +8,11 @@ namespace Formalism.L2.SG.LocalCountModules.LocCnt0LAlg
 
 variable {E : Type} [CommRing E] (O : Subring E) (cj : E →+* E) {r : ℕ}
 
+/- English proof (translation)
+Unfold `bRaw`. Rewrite using `[Finset.sum_eq_single (Fin.last r)]`. Simplify using `[lamL, lamC]`. Introduce `j _ hj`. Simplify using `[Pi.single_apply, hj]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem bRaw_e (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (y : Fin (r + 1) → O) :
     bRaw O cj Z y (Pi.single (Fin.last r) 1) = lamL O Z y := by
   unfold bRaw
@@ -17,6 +22,11 @@ theorem bRaw_e (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (y : Fin (r + 1) → O
     simp [Pi.single_apply, hj]
   · simp
 
+/- English proof (translation)
+Unfold `bRaw`. Establish `hinv : (Z.map O.subtype) * (Z.map O.subtype)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hu`. Establish `e : ∀ j, cj ((cjT O cj hO Z j (Fin.last r) : O) : E) = (Z.map O.subtype) (Fin.last r) j` using `fun j => hcj _`. Simplify using `only [e]`. Rewrite using `[show ∑ j, (Z.map O.subtype) (Fin.last r) j * ((Z.map O.subtype)⁻¹.mulVec (fun i => (y i : E))) j = ((Z.map O.subtype).mulVec ((Z.map O.subtype)⁻¹.mulVec (fun i => (y i : E)))) (Fin.last r) from rfl, Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec]`.
+
+Conclude with `(y _).2`.
+-/
 theorem bRaw_b_mem (hcj : ∀ x, cj (cj x) = x) (hO : ∀ x ∈ O, cj x ∈ O)
     (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (hu : IsUnit (Z.map O.subtype).det)
     (y : Fin (r + 1) → O) : bRaw O cj Z y (fun i => cjT O cj hO Z i (Fin.last r)) ∈ O := by
@@ -29,6 +39,15 @@ theorem bRaw_b_mem (hcj : ∀ x, cj (cj x) = x) (hO : ∀ x ∈ O, cj x ∈ O)
     Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec]
   exact (y _).2
 
+/- English proof (translation)
+Unfold `lamS lamStarC`. Establish `hinv : (Z.map O.subtype) * (Z.map O.subtype)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hu`. Establish `hcoe : ∀ b, (((cjT O cj hO Z).mulVec w b : O) : E) = ∑ c, cj ((Z c b : O) : E) * (w c : E)`. Introduce `b`. Simplify using `[Matrix.mulVec, dotProduct, cjT]`.
+
+Simplify using `only [hcoe, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Establish `hrow : ∀ c, ∑ b, cj ((Z.map O.subtype)⁻¹ b (Fin.last r)) * (cj ((Z c b : O) : E) * (w c : E)) = cj (if c = Fin.last r then 1 else 0) * (w c : E)`. Introduce `c`. Establish `h1` using `congrFun (congrFun hinv c) (Fin.last r)`.
+
+Rewrite `h1` using `[Matrix.mul_apply, Matrix.one_apply]`. Rewrite using `[← h1, map_sum, Finset.sum_mul]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `b _`. Rewrite using `[map_mul]`.
+
+Simplify using `only [Matrix.map_apply, Subring.coe_subtype]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl (fun c _ => hrow c)]`. Simplify using `[apply_ite cj]`.
+-/
 theorem lamS_mulVec (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (hO : ∀ x ∈ O, cj x ∈ O)
     (hu : IsUnit (Z.map O.subtype).det) (w : Fin (r + 1) → O) :
     lamS O cj Z ((cjT O cj hO Z).mulVec w) = (w (Fin.last r) : E) := by
@@ -53,6 +72,19 @@ theorem lamS_mulVec (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (hO : ∀ x ∈ O
   rw [Finset.sum_congr rfl (fun c _ => hrow c)]
   simp [apply_ite cj]
 
+/- English proof (translation)
+Unfold `headCols at hk`. Establish `hinv : (Z.map O.subtype) * (Z.map O.subtype)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hu`. Proceed by induction on `hk using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, rfl⟩` from `hx`.
+
+Unfold `lamS lamStarC`. Establish `h1` using `congrFun (congrFun hinv a.castSucc) (Fin.last r)`. Rewrite `h1` using `[Matrix.mul_apply, Matrix.one_apply_ne (Fin.castSucc_lt_last a).ne]`. Establish `key : ∑ b, cj ((Z.map O.subtype)⁻¹ b (Fin.last r)) * ((cjT O cj hO Z b a.castSucc : O) : E) = cj (∑ b, (Z.map O.subtype) a.castSucc b * (Z.map O.subtype)⁻¹ b (Fin.last r))`. Rewrite using `[map_sum]`.
+
+Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `b _`. Rewrite using `[map_mul, mul_comm]`. Both sides reduce to the same expression. Rewrite using `[key, h1, map_zero]`.
+
+Consider the case `zero`. Unfold `lamS lamStarC`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy`. Unfold `lamS lamStarC at hx hy ⊢`.
+
+Simplify using `only [Pi.add_apply, Subring.coe_add, mul_add, Finset.sum_add_distrib, hx, hy, add_zero]`. Consider the case `smul c x _ hx`. Unfold `lamS lamStarC at hx ⊢`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`.
+
+Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `b _`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Subring.coe_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = 0 := by rw [hx, mul_zero]`.
+-/
 theorem lamS_K (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (hO : ∀ x ∈ O, cj x ∈ O)
     (hu : IsUnit (Z.map O.subtype).det) (k : Fin (r + 1) → O)
     (hk : k ∈ headCols (cjT O cj hO Z)) : lamS O cj Z k = 0 := by
@@ -89,6 +121,13 @@ theorem lamS_K (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (hO : ∀ x ∈ O, cj 
           ring
       _ = 0 := by rw [hx, mul_zero]
 
+/- English proof (translation)
+Unfold `lamS lamStarC`. Establish `hinv : (Z.map O.subtype) * (Z.map O.subtype)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hu`. Establish `h1` using `congrFun (congrFun hinv (Fin.last r)) (Fin.last r)`. Rewrite `h1` using `[Matrix.mul_apply, Matrix.one_apply_eq]`. Establish `key : ∑ b, cj ((Z.map O.subtype)⁻¹ b (Fin.last r)) * ((cjT O cj hO Z b (Fin.last r) : O) : E) = cj (∑ b, (Z.map O.subtype) (Fin.last r) b * (Z.map O.subtype)⁻¹ b (Fin.last r))`.
+
+Rewrite using `[map_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `b _`. Rewrite using `[map_mul, mul_comm]`. Both sides reduce to the same expression.
+
+Rewrite using `[key, h1, map_one]`.
+-/
 theorem lamS_b (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (hO : ∀ x ∈ O, cj x ∈ O)
     (hu : IsUnit (Z.map O.subtype).det) :
     lamS O cj Z (fun i => cjT O cj hO Z i (Fin.last r)) = 1 := by
@@ -105,6 +144,11 @@ theorem lamS_b (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (hO : ∀ x ∈ O, cj 
     rfl
   rw [key, h1, map_one]
 
+/- English proof (translation)
+Unfold `lamS lamStarC`. Rewrite using `[Finset.sum_eq_single (Fin.last r)]`. Rewrite using `[hκ, map_zero, zero_mul]`. Introduce `b _ hb`. Simplify using `[Pi.single_apply, hb]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem lamS_e (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O)
     (hκ : (Z.map O.subtype)⁻¹ (Fin.last r) (Fin.last r) = 0) :
     lamS O cj Z (Pi.single (Fin.last r) 1) = 0 := by
@@ -119,6 +163,13 @@ variable (hcj : ∀ x, cj (cj x) = x) (hO : ∀ x ∈ O, cj x ∈ O)
 variable {Z₁ Z₂ : Matrix (Fin (r + 1)) (Fin (r + 1)) O}
 include hcj
 
+/- English proof (translation)
+Take `⟨y₂', hy⟩` from `Submodule.Quotient.mk_surjective _ (p.1.2 (eCl (cjT O cj hO Z₁)))`. Rewrite using `[← hy, eCl, ← sub_eq_zero, ← Submodule.Quotient.mk_sub]`. Apply `mk_eq_zero_of O cj hcj hO Z₂ hu₂` to reduce the goal to its premises. Introduce `y`. Take `⟨y₁, hy₁⟩` from `Submodule.Quotient.mk_surjective _ (p.1.1.symm (Submodule.Quotient.mk y))`.
+
+Establish `e1 : p.1.1 (Submodule.Quotient.mk y₁) = Submodule.Quotient.mk y`. Rewrite using `[hy₁]`. Conclude with `p.1.1.apply_symm_apply _`. Establish `A` using `p.2.2.2 y₁ (Pi.single (Fin.last r) 1) y y₂' e1 hy.symm`. Rewrite `A` using `[bRaw_e O cj Z₁, ← lam_keep O hu₁ hu₂ p.1.1.toLinearMap p.2.1.1 y₁ y e1]`.
+
+Rewrite using `[bRaw_sub_right, bRaw_e]`. Conclude with `A`. Rewrite using `[lamS_sub, p.2.2.1 _ y₂' hy.symm, lamS_e O cj Z₁ hκ₁, lamS_e O cj Z₂ hκ₂, sub_zero]`.
+-/
 theorem pair_e (hu₁ : IsUnit (Z₁.map O.subtype).det) (hu₂ : IsUnit (Z₂.map O.subtype).det)
     (hκ₁ : (Z₁.map O.subtype)⁻¹ (Fin.last r) (Fin.last r) = 0)
     (hκ₂ : (Z₂.map O.subtype)⁻¹ (Fin.last r) (Fin.last r) = 0)
@@ -136,6 +187,13 @@ theorem pair_e (hu₁ : IsUnit (Z₁.map O.subtype).det) (hu₂ : IsUnit (Z₂.m
     exact A
   · rw [lamS_sub, p.2.2.1 _ y₂' hy.symm, lamS_e O cj Z₁ hκ₁, lamS_e O cj Z₂ hκ₂, sub_zero]
 
+/- English proof (translation)
+Take `⟨y₂', hy⟩` from `Submodule.Quotient.mk_surjective _ (p.1.2 (bCls (cjT O cj hO Z₁)))`. Rewrite using `[← hy, bCls, ← sub_eq_zero, ← Submodule.Quotient.mk_sub]`. Apply `mk_eq_zero_of O cj hcj hO Z₂ hu₂` to reduce the goal to its premises. Introduce `y`. Take `⟨y₁, hy₁⟩` from `Submodule.Quotient.mk_surjective _ (p.1.1.symm (Submodule.Quotient.mk y))`.
+
+Establish `e1 : p.1.1 (Submodule.Quotient.mk y₁) = Submodule.Quotient.mk y`. Rewrite using `[hy₁]`. Conclude with `p.1.1.apply_symm_apply _`. Establish `A` using `p.2.2.2 y₁ _ y y₂' e1 hy.symm`. Rewrite using `[bRaw_sub_right]`.
+
+Establish `B` using `O.add_mem A (bRaw_b_mem O cj hcj hO Z₁ hu₁ y₁)`. Rewrite `B` using `[sub_add_cancel]`. Conclude with `O.sub_mem B (bRaw_b_mem O cj hcj hO Z₂ hu₂ y)`. Rewrite using `[lamS_sub, p.2.2.1 _ y₂' hy.symm, lamS_b O cj Z₁ hO hu₁, lamS_b O cj Z₂ hO hu₂, sub_self]`.
+-/
 theorem pair_b (hu₁ : IsUnit (Z₁.map O.subtype).det) (hu₂ : IsUnit (Z₂.map O.subtype).det)
     (p : PairSet O cj hO Z₁ Z₂) : p.1.2 (bCls (cjT O cj hO Z₁)) = bCls (cjT O cj hO Z₂) := by
   obtain ⟨y₂', hy⟩ := Submodule.Quotient.mk_surjective _ (p.1.2 (bCls (cjT O cj hO Z₁)))

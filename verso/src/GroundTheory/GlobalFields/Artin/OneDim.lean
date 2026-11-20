@@ -16,6 +16,9 @@ section Circle
 
 variable {G : Type*} [Group G] [Finite G]
 
+/- English proof (translation)
+Establish `h : ((χ g : ℂˣ) : ℂ) ^ Nat.card G = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, ← map_pow, pow_card_eq_one', map_one, Units.val_one]`. Conclude with `Complex.norm_eq_one_of_pow_eq_one h Nat.card_pos.ne'`.
+-/
 theorem norm_coe_apply_eq_one (χ : G →* ℂˣ) (g : G) : ‖((χ g : ℂˣ) : ℂ)‖ = 1 := by
   have h : ((χ g : ℂˣ) : ℂ) ^ Nat.card G = 1 := by
     rw [← Units.val_pow_eq_pow_val, ← map_pow, pow_card_eq_one', map_one, Units.val_one]
@@ -29,9 +32,15 @@ def toCircleHom (χ : G →* ℂˣ) : G →* Circle where
     rw [map_mul, Units.val_mul])
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_toCircleHom (χ : G →* ℂˣ) (g : G) : (toCircleHom χ g : ℂ) = χ g :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[← Circle.coe_eq_one, coe_toCircleHom, Units.val_eq_one]`.
+-/
 theorem toCircleHom_eq_one_iff (χ : G →* ℂˣ) (g : G) : toCircleHom χ g = 1 ↔ χ g = 1 := by
   rw [← Circle.coe_eq_one, coe_toCircleHom, Units.val_eq_one]
 
@@ -49,17 +58,26 @@ def charBar : (charField χ ≃ₐ[K] charField χ) →* ℂˣ :=
   (QuotientGroup.kerLift χ).comp (IsGalois.normalAutEquivQuotient χ.ker).symm.toMonoidHom
 
 @[simp]
+/- English proof (translation)
+Rewrite using `[charBar, MonoidHom.comp_apply, ← IsGalois.normalAutEquivQuotient_apply]`. Simplify using the standard rewrite rules.
+-/
 theorem charBar_restrictNormalHom (σ : Gal(L/K)) :
     charBar χ (AlgEquiv.restrictNormalHom (charField χ) σ) = χ σ := by
   rw [charBar, MonoidHom.comp_apply, ← IsGalois.normalAutEquivQuotient_apply]
   simp
 
+/- English proof (translation)
+The claim follows from `(QuotientGroup.kerLift_injective χ).comp (MulEquiv.injective _)`.
+-/
 theorem charBar_injective : Function.Injective (charBar χ) :=
   (QuotientGroup.kerLift_injective χ).comp (MulEquiv.injective _)
 
 instance isMulCommutative_charField : IsMulCommutative (charField χ ≃ₐ[K] charField χ) :=
   ⟨⟨fun a b ↦ charBar_injective χ (by rw [map_mul, map_mul, mul_comm])⟩⟩
 
+/- English proof (translation)
+Rewrite using `[← charBar_restrictNormalHom, ← (charBar_injective χ).eq_iff, map_one]`.
+-/
 theorem restrictNormalHom_eq_one_iff (σ : Gal(L/K)) :
     AlgEquiv.restrictNormalHom (charField χ) σ = 1 ↔ χ σ = 1 := by
   rw [← charBar_restrictNormalHom, ← (charBar_injective χ).eq_iff, map_one]
@@ -76,10 +94,16 @@ def heckeCharacterOfChar : HeckeCharacter K where
   continuous_toFun :=
     (continuous_of_discreteTopology (f := toCircleHom (charBar χ))).comp continuous_reciprocityMap
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem heckeCharacterOfChar_apply (c : IdeleClassGroup K) :
     (heckeCharacterOfChar χ c : ℂ) = charBar χ (reciprocityMap K (charField χ) c) :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[HeckeCharacter.localComponent_apply, HeckeCharacter.toIdele_apply]`. Express the relevant statement in the definitionally equal form `toCircleHom (charBar χ) (reciprocityMap K (charField χ) (IdeleClassGroup.mk K (IdeleGroup.finiteEmbedding v a))) = _`. Rewrite using `[reciprocityMap_mk, ideleSymbol_finiteEmbedding]`.
+-/
 theorem localComponent_heckeCharacterOfChar (v : HeightOneSpectrum (𝓞 K))
     (a : (v.adicCompletion K)ˣ) :
     (heckeCharacterOfChar χ).localComponent v a =
@@ -93,6 +117,9 @@ end Hecke
 
 section Places
 
+/- English proof (translation)
+Use `h.mul_inv_mem_inertia h'` as an intermediate fact. Rewrite `this` using `[hI, Subgroup.mem_bot, mul_inv_eq_one]`. Then use the resulting hypothesis.
+-/
 theorem IsArithFrobAt.eq_of_inertia_eq_bot {R S : Type*} [CommRing R] [CommRing S] [Algebra R S]
     {G : Type*} [Group G] [MulSemiringAction G S] [SMulCommClass G R S] {Q : Ideal S}
     (hI : Q.inertia G = ⊥) {σ σ' : G} (h : IsArithFrobAt R σ Q) (h' : IsArithFrobAt R σ' Q) :
@@ -112,6 +139,9 @@ instance liesOver_under_charField_base :
     (w.under (𝓞 (charField χ))).asIdeal.LiesOver v.asIdeal :=
   Ideal.LiesOver.tower_bot w.asIdeal _ v.asIdeal
 
+/- English proof (translation)
+Rewrite using `[HeightOneSpectrum.under_asIdeal, ← map_inertia_restrictNormalHom (F := charField χ) w.asIdeal, Subgroup.map_eq_bot_iff]`. Use `⟨fun h σ hσ ↦ (restrictNormalHom_eq_one_iff χ σ).1 (h hσ), fun h σ hσ ↦ (restrictNormalHom_eq_one_iff χ σ).2 (h σ hσ)⟩` and prove the remaining obligations.
+-/
 theorem inertia_under_charField_eq_bot_iff :
     (w.under (𝓞 (charField χ))).asIdeal.inertia (charField χ ≃ₐ[K] charField χ) = ⊥ ↔
       ∀ σ ∈ w.asIdeal.inertia Gal(L/K), χ σ = 1 := by
@@ -123,12 +153,18 @@ theorem inertia_under_charField_eq_bot_iff :
 
 include v in
 
+/- English proof (translation)
+Rewrite using `[← inertia_under_charField_eq_bot_iff χ w, ← natCard_inertia v (w.under (𝓞 (charField χ))), Subgroup.card_eq_one]`.
+-/
 theorem ramificationIdx_under_charField_eq_one_iff :
     (w.under (𝓞 (charField χ))).asIdeal.ramificationIdx (𝓞 K) = 1 ↔
       ∀ σ ∈ w.asIdeal.inertia Gal(L/K), χ σ = 1 := by
   rw [← inertia_under_charField_eq_bot_iff χ w, ← natCard_inertia v (w.under (𝓞 (charField χ))),
     Subgroup.card_eq_one]
 
+/- English proof (translation)
+Rewrite using `[← ramificationIdx_under_charField_eq_one_iff χ v w, ← localConductorExponent_eq_zero_iff (charField χ) v (w.under (𝓞 (charField χ))), ← Nat.le_zero, ← unitsLevel_le_ker_localSymbol_iff, unitsLevel_zero]`.
+-/
 theorem units_le_ker_localSymbol_charField_iff :
     (Submonoid.ofClass (v.adicCompletionIntegers K)).units ≤
         (localSymbol (charField χ) v).ker ↔
@@ -137,6 +173,9 @@ theorem units_le_ker_localSymbol_charField_iff :
     ← localConductorExponent_eq_zero_iff (charField χ) v (w.under (𝓞 (charField χ))),
     ← Nat.le_zero, ← unitsLevel_le_ker_localSymbol_iff, unitsLevel_zero]
 
+/- English proof (translation)
+Use extensionality with `a`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.mem_ker]`. Express the relevant statement in the definitionally equal form `(heckeCharacterOfChar χ).localComponent v a = 1 ↔ _`. Rewrite using `[localComponent_heckeCharacterOfChar, toCircleHom_eq_one_iff, ← map_one (charBar χ), (charBar_injective χ).eq_iff]`.
+-/
 theorem ker_localComponent_heckeCharacterOfChar :
     ((heckeCharacterOfChar χ).localComponent v : (v.adicCompletion K)ˣ →* Circle).ker =
       (localSymbol (charField χ) v).ker := by
@@ -146,17 +185,28 @@ theorem ker_localComponent_heckeCharacterOfChar :
   rw [localComponent_heckeCharacterOfChar, toCircleHom_eq_one_iff, ← map_one (charBar χ),
     (charBar_injective χ).eq_iff]
 
+/- English proof (translation)
+Rewrite using `[ker_localComponent_heckeCharacterOfChar, units_le_ker_localSymbol_charField_iff χ v w]`.
+-/
 theorem units_le_ker_localComponent_iff :
     (Submonoid.ofClass (v.adicCompletionIntegers K)).units ≤
         ((heckeCharacterOfChar χ).localComponent v : (v.adicCompletion K)ˣ →* Circle).ker ↔
       ∀ σ ∈ w.asIdeal.inertia Gal(L/K), χ σ = 1 := by
   rw [ker_localComponent_heckeCharacterOfChar, units_le_ker_localSymbol_charField_iff χ v w]
 
+/- English proof (translation)
+Rewrite using `[HeckeCharacter.not_dvd_conductor_iff, units_le_ker_localComponent_iff χ v w]`.
+-/
 theorem not_dvd_conductor_heckeCharacterOfChar_iff :
     ¬ v.asIdeal ∣ (heckeCharacterOfChar χ).conductor ↔
       ∀ σ ∈ w.asIdeal.inertia Gal(L/K), χ σ = 1 := by
   rw [HeckeCharacter.not_dvd_conductor_iff, units_le_ker_localComponent_iff χ v w]
 
+/- English proof (translation)
+Take `⟨π₀, hord, hval⟩` from `exists_ord_eq_one_valued v`. Establish `hv` using `(not_dvd_conductor_heckeCharacterOfChar_iff χ v w).2 hχ`. Rewrite using `[(heckeCharacterOfChar χ).localComponent_uniformizer_eq hv hπ hval, localComponent_heckeCharacterOfChar, coe_toCircleHom]`. Establish `he` using `(ramificationIdx_under_charField_eq_one_iff χ v w).2 hχ`. Establish `hI` using `(inertia_under_charField_eq_bot_iff χ w).2 hχ`.
+
+Rewrite using `[localSymbol_eq_arithFrobAt v (w.under (𝓞 (charField χ))) he hord, IsArithFrobAt.eq_of_inertia_eq_bot hI (IsArithFrobAt.arithFrobAt _ _ _) (IsArithFrobAt.restrictNormalHom (F := charField χ) hφ), charBar_restrictNormalHom]`.
+-/
 theorem localComponent_uniformizer (hχ : ∀ σ ∈ w.asIdeal.inertia Gal(L/K), χ σ = 1)
     {π : (v.adicCompletion K)ˣ} (hπ : Valued.v (π : v.adicCompletion K) = exp (-1 : ℤ))
     {φ : Gal(L/K)} (hφ : IsArithFrobAt (𝓞 K) φ w.asIdeal) :

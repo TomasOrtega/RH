@@ -30,6 +30,11 @@ def conjugateSplitOff {S0 : Set (HeightOneSpectrum (𝓞 E))} (P : SplitOff S0) 
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
   {n : ℕ} {ST SG : Finset (HeightOneSpectrum (𝓞 E))} {S : GSD K}
 
+/- English proof (translation)
+Rewrite using `[c.mem_nb, c.mem_nb, DecoSet.mem_heckeNb P.ne_bot (conjIdeal_ne_bot P.ne_bot), DecoSet.mem_heckeNb (conjPrime₂ P).ne_bot (conjIdeal_ne_bot (conjPrime₂ P).ne_bot)]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hn, hf, hb⟩`. Conclude with `⟨wmp_isHeckeNbr_symm (c.pts d').2.lat (c.pts d).2.lat (c.pts d').2.uni (c.pts d).2.uni hn, hf.symm, hb.symm⟩`. Introduce and unpack `⟨hn, hf, hb⟩`.
+
+Establish `h'` using `wmp_isHeckeNbr_symm (c.pts d).2.lat (c.pts d').2.lat (c.pts d).2.uni (c.pts d').2.uni hn`. Rewrite `h'` using `[conjugatePrime_conjugatePrime]`. Conclude with `⟨h', hf.symm, hb.symm⟩`.
+-/
 theorem mem_neighbour_iff_conj (c : DecoPts S E n ST SG) (P : HeightOneSpectrum (𝓞 E)) (i : ℕ) (d d' : S.D) :
     d ∈ c.nb P.asIdeal i d' ↔ d' ∈ c.nb (conjPrime₂ P).asIdeal i d := by
   rw [c.mem_nb, c.mem_nb, DecoSet.mem_heckeNb P.ne_bot (conjIdeal_ne_bot P.ne_bot),
@@ -42,11 +47,17 @@ theorem mem_neighbour_iff_conj (c : DecoPts S E n ST SG) (P : HeightOneSpectrum 
     rw [conjugatePrime_conjugatePrime] at h'
     exact ⟨h', hf.symm, hb.symm⟩
 
+/- English proof (translation)
+Rewrite using `[c.mem_nb, c.mem_nb, c.pts_smul, c.pts_smul]`. Conclude with `DecoSet.smul_mem_heckeNb_iff (c.hom g)`.
+-/
 theorem neighbour_smul_iff (c : DecoPts S E n ST SG) (P : Ideal (𝓞 E)) (i : ℕ) (g : S.G) (d' d : S.D) :
     g • d ∈ c.nb P i (g • d') ↔ d ∈ c.nb P i d' := by
   rw [c.mem_nb, c.mem_nb, c.pts_smul, c.pts_smul]
   exact DecoSet.smul_mem_heckeNb_iff (c.hom g)
 
+/- English proof (translation)
+Establish `key` using `LocOp.ofNbr_adjoint (S := S) (S' := S) h h (MulEquiv.refl S.G) (c.nb P.asIdeal i) (c.nb (conjPrime₂ P).asIdeal i) LinearMap.id LinearMap.id (fun g d' d => neighbour_smul_iff c _ i g d' d) (fun _ _ => rfl) (fun g d d' => neighbour_smul_iff c _ i g d d') (fun _ _ => rfl) (fun d d' …`. Conclude with `key`.
+-/
 theorem heckeOperator_adjoint_conj (c : DecoPts S E n ST SG) (h : S.Ok) (P : HeightOneSpectrum (𝓞 E)) (i : ℕ) (φ ψ : S.EqFun) :
     S.ip h ((heckeD c P.asIdeal i).op φ) ψ = S.ip h φ ((heckeD c (conjPrime₂ P).asIdeal i).op ψ) := by
   have key := LocOp.ofNbr_adjoint (S := S) (S' := S) h h (MulEquiv.refl S.G) (c.nb P.asIdeal i)

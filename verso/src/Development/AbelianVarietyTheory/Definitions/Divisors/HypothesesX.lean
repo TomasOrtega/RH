@@ -19,6 +19,9 @@ structure HypothesesX : Prop where
 
   fsch : GlobalTheory.Published.FubiniStudyChowHeight
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.sep, h.green⟩`.
+-/
 example (h : HypothesesX) : GlobalTheory.Published.PointSeparationPair ∧ GlobalTheory.Published.GreenCuspidal := ⟨h.sep, h.green⟩
 
 end GlobalTheory.CovTop

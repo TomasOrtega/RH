@@ -14,6 +14,9 @@ namespace GlobalTheory.SemiAbExtDomain
 
 variable {R : Type} [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.semiAbelianHomExtension_holds.fractionField R K G H hG hH f`.
+-/
 theorem existsUnique_hom_extension_generic (K : Type) [Field K] [Algebra R K] [IsFractionRing R K]
     (G H : Over (Sp R)) [GrpObj G] [GrpObj H] (hG : IsSemiAbelian G) (hH : IsSemiAbelian H)
     (f : (Over.pullback (spMap (algebraMap R K))).obj G ⟶ (Over.pullback (spMap (algebraMap R K))).obj H)
@@ -21,6 +24,9 @@ theorem existsUnique_hom_extension_generic (K : Type) [Field K] [Algebra R K] [I
     ∃! F : G ⟶ H, IsMonHom F ∧ (Over.pullback (spMap (algebraMap R K))).map F = f :=
   GlobalTheory.semiAbelianHomExtension_holds.fractionField R K G H hG hH f
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.semiAbelianHomExtension_holds.generic_existsUnique_iso (GlobalTheory.IsNormalScheme.pred _) (.fractionField R K) hG hH e`.
+-/
 theorem existsUnique_iso_extension_generic (K : Type) [Field K] [Algebra R K] [IsFractionRing R K]
     (G H : Over (Sp R)) [GrpObj G] [GrpObj H] (hG : IsSemiAbelian G) (hH : IsSemiAbelian H)
     (e : (Over.pullback (spMap (algebraMap R K))).obj G ≅ (Over.pullback (spMap (algebraMap R K))).obj H)

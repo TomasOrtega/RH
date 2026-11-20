@@ -38,6 +38,19 @@ open GlobalTheory.LamT (CMPt)
 
 namespace GlobalTheory.CovData
 
+/- English proof (translation)
+Establish `hr : 0 < D.R.r`. Use `D.R.two_le_m` as an intermediate fact. Use `D.R.m_add_three_le_k` as an intermediate fact. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hN : 3 ≤ D.host.g 0 * D.host.g 1 * Y.d.pd`. Establish `h0` using `(D.host.g_prime 0).two_le`. Establish `h1` using `(D.host.g_prime 1).two_le`. Establish `hp : 1 ≤ Y.d.pd` using `by rw [hG.pd]; exact Nat.one_le_pow _ _ (by norm_num)`. Establish `: 4 ≤ D.host.g 0 * D.host.g 1` using `Nat.mul_le_mul h0 h1`.
+
+Use the polynomial consequences of the given equalities and inequalities. Introduce `k γ hγ hc`. Take `⟨γ', hγ', u, n, hn, hu, he⟩` from `GlobalTheory.unf_group_contains_congruence_upto_rootsOfUnity _ _ _ _ _ _ σ _ (Formalism.L2.PjFree.Unf.ofPj (Y.U σ)) ((Formalism.L2.PjFree.isUnf_ofPj _).2 (hG.unf σ hσ)) hG.lev.2 hr k γ hγ (fun x hx => by`. Take `⟨y, hy, h⟩` from `hc x hx`. Use `⟨((D.host.g 0 * D.host.g 1 * Y.d.pd : ℕ) : D.host.E) • y, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem hy _`. Rewrite using `[h, smul_smul, ← Nat.cast_mul])`. Take `⟨th, hrk, hth, hD⟩` from `hG.dictU σ hσ`. Establish `hmu : MuUnit (D.sp.W j) (Y.dict σ) (fun _ => (1 : ℂ))` using `⟨fun _ _ => (mul_one 1).symm, fun _ => norm_one, fun _ _ => rfl, hG.unit σ hσ⟩`.
+
+Establish `h1` using `GlobalTheory.PrincCore.root_eq_one (D.sp.W j) hrk hr (Y.U σ).X (Y.dict σ) (fun _ => (1 : ℂ)) Y.Kf th hth hD hmu _ hN hG.levelK k γ γ' hγ' (fun x hx => by`. Take `⟨y, hy, h⟩` from `hc x hx`. Use `⟨((Y.d.l₂.M : ℕ) : D.host.E) • y, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem hy _`.
+
+Rewrite using `[h, smul_smul, ← Nat.cast_mul, mul_comm])`. Use `u n hn hu he`. Rewrite `he` using `[h1, one_smul]`. Conclude with `Units.ext he ▸ hγ'`.
+-/
 theorem hasPrinc_good (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ) (hG : Y.Good e o)
     (σ : Y.d.c₂.F →+* ℂ) (hσ : GoodEmb Y.d.c₂ σ) :
     GlobalTheory.FrameNorm.HasPrinc (Formalism.L2.PjFree.Unf.ofPj (Y.U σ))
@@ -76,6 +89,17 @@ end GlobalTheory.CovData
 
 namespace GlobalTheory.CovData
 
+/- English proof (translation)
+Introduce `D T j Y e o hG σ hσ k`. Take `⟨hr, hm⟩` from `hG.modelW σ hσ`. Establish `hx1 : xiR D ≤ 1` using `(ReciprocityTheory.ChartRestriction.G.PullbackSections.PfModelDataX.xiR_le_half D).trans (by norm_num)`. Establish `habs` using `hG.xiAbs σ hσ k`. Establish `hperf` using `GlobalTheory.traceForm_integral_perfect_of_isUnf _ _ _ _ _ _ σ _ (Formalism.L2.PjFree.Unf.ofPj (Y.U σ)) ((Formalism.L2.PjFree.isUnf_ofPj _).2 (hG.unf σ hσ)) k`.
+
+Establish `hone : FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 D.host.E)) ((Y.U σ).X k).ξ0 * D.host.AA * D.host.AAbar * (differentIdeal ℤ (𝓞 D.host.E) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) = 1`. Establish `h1` using `Formalism.IndefR.Fin.factPrincipalDatum D.R D.host`. Rewrite using `[(hm k).2, show -D.host.xi0 = (-1 : (𝓞 D.host.E)ˣ) • D.host.xi0 by simp, ← (FractionalIdeal.spanSingleton_eq_spanSingleton.2 ⟨-1, rfl⟩)]`. Conclude with `h1`. Establish `hA : D.host.AA ≠ 0`.
+
+Introduce `e0`. Rewrite `hone` using `[e0]`. Simplify using `at hone`. Establish `hM : 0 < Y.d.l₂.M * (D.host.g 0 * D.host.g 1 * Y.d.pd)`. Establish `h0` using `(D.host.g_prime 0).pos`.
+
+Establish `h1` using `(D.host.g_prime 1).pos`. Establish `hp : 0 < Y.d.pd` using `by rw [hG.pd]; positivity`. Establish `hl : 0 < Y.d.l₂.M` using `by have := Y.d.l₂.three_le; omega`. Check the signs of the components of the expression. Take `⟨Xx, h1, -, h3⟩` from `GlobalTheory.exists_dataX_of_perfect_traceForm _ _ ((Y.U σ).X k) D.host.AA D.host.AAbar (xiR D) _ (fun a => by`.
+
+Rewrite using `[GlobalTheory.LatticeData.cc_eq_conj]`. Conclude with `⟨conj_mem_AA D, fun ha => by simpa only [conj_conj] using conj_mem_AAbar D ha⟩)`. Use `hone habs hx1 hperf.1 hperf.2 hM (hasPrinc_good D T j Y e o hG σ hσ k)`. Conclude with `⟨Xx, D.host.AA, h1, hA, h3⟩`.
+-/
 theorem exists_dataX_good : ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o →
     ∀ σ, GoodEmb Y.d.c₂ σ → ∀ k : (Y.U σ).Comp, ∃ (Xx : FD.DataX D.host.E D.R.r)
       (𝔄 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E), Xx.toData = (Y.U σ).X k ∧ 𝔄 ≠ 0 ∧

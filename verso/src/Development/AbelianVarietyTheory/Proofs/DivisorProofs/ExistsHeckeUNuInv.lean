@@ -22,6 +22,19 @@ open GlobalTheory.Mem.Col2.SplitChar (finIdl)
 
 namespace GlobalTheory.BottomNu
 
+/- English proof (translation)
+Introduce `D T L sc μ₀ hL G i j`. Establish `hu : (nuH G μ₀ i j)⁻¹.IsUnitary`. Establish `h` using `GlobalTheory.ChrEqUnique.isUnitary_of_chrEq D _ _ (chrEq_nu G μ₀ i j hL)`. Introduce `x`. Establish `e : (((nuH G μ₀ i j)⁻¹).1 x : ℂˣ) = ((nuH G μ₀ i j).1 x)⁻¹` using `rfl`.
+
+Rewrite using `[e, Units.val_inv_eq_inv_val, norm_inv, h x, inv_one]`. Establish `hm : 1 ≤ D.R.m - (i : ℕ) ∧ D.R.m - (i : ℕ) ≤ D.R.m` using `⟨by omega, by omega⟩`. Establish `htriv : (nuH G μ₀ i j)⁻¹.TrivOn D.host.F`. Establish `h1` using `(L.C.isMu0 j).triv`. Establish `h2` using `G.ch.triv (D.R.m - i) hm.1 hm.2`.
+
+Establish `h3 : (L.xiH μ₀).TrivOn D.host.F` using `hL.xi_triv μ₀`. Conclude with `(((h1.mul h3).mul h2.inv)).inv`. Establish `hp : ∀ τ, Even (2 * ((GlobalTheory.ChiGrid.num D sc.cGap τ).e (j + 1) + GlobalTheory.ChiGrid.cen D sc.cGap τ (D.R.m - i)) - ((botBig D i j + botSmall D i j : ℕ) : ℤ))`. Introduce `τ`. Take `⟨h1, h2, -⟩` from `ranks_exact D i j`.
+
+Take `⟨u, hu⟩` from `D.R.t_odd`. Take `⟨v, hv⟩` from `odd_sLen D`. Establish `e : rankV D (i + 1) (j + 1) = rankV D i j + D.R.t + sLen D` using `by simp only [rankV]; ring`. Take `⟨w, hw⟩ : ∃ w : ℕ, botBig D i j + botSmall D i j = 2 * w` from `⟨(botBig D i j + botSmall D i j) / 2, by omega⟩`. Use `⟨(GlobalTheory.ChiGrid.num D sc.cGap τ).e (j + 1) + GlobalTheory.ChiGrid.cen D sc.cGap τ (D.R.m - i) - w, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hw]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hc : ∃ m : ℕ, 0 < m ∧ ∀ u, IntU D u → (∃ s ∈ OhE D, (u : AE D) - 1 = (m : AE D) * s) → (nuH G μ₀ i j)⁻¹.1 (finIdl D u) = 1`. Take `⟨M, hM, h⟩` from `GlobalTheory.T.exists_nat_heckeCharacter_trivial_congruent_units D.host.E (nuH G μ₀ i j)⁻¹`.
+
+Use `⟨M, hM, fun u hu ⟨s, hs, e⟩ => h _ (GlobalTheory.Mem.Col2.SplitChar.finIdl_unit hu) (fun w => by rw [GlobalTheory.Mem.Col2.SplitChar.finIdl_fst]; rfl) fun P => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.Mem.Col2.SplitChar.vl_sub_one, e, map_mul, GlobalTheory.Mem.Col2.SplitChar.vl_nat, HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Conclude with `mul_le_of_le_one_right' (GlobalTheory.Mem.Col2.SplitChar.vl_le hs P)`. Conclude with `⟨GlobalTheory.SplitCharGen.ofHChar _ (nuH G μ₀ i j)⁻¹ _ hu (GlobalTheory.T.squareNu_inv_hasInfinityType_cmType hL G i j) hp hc (GlobalTheory.T.heckeCharacter_trivial_subfield_kills_idele_norms D _ htriv (GlobalTheory.T.exists_nat_heckeCharacter_trivial_congruent_units D.host.E _) …`.
+-/
 theorem exists_heckeU_nu_inv : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {μ₀ : T}, L.Is μ₀ → ∀ (G : GridData L sc) (i j : Fin D.R.m), ∃ χ : HeckeU D (botBig D i j + botSmall D i j), (∀ x, χ.f x = (nuH G μ₀ i j)⁻¹.1 (finIdl D x)) ∧ ∀ τ, ((botBig D i j + botSmall D i j : ℕ) : ℤ) ≤ χ.n τ := by
   intro D T L sc μ₀ hL G i j
   have hu : (nuH G μ₀ i j)⁻¹.IsUnitary := by

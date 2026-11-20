@@ -11,6 +11,11 @@ open GlobalTheory.Mem.R3.LiftBrg
 
 namespace GlobalTheory.Mem.FinPartLift
 
+/- English proof (translation)
+Introduce `D V g`. Take `⟨β, hβ⟩` from `g.2`. Take `⟨α, hα, e⟩` from `GlobalTheory.AdIsomCorrection.exists_finE V (Formalism.IndefR.Lev.finE V β) (GlobalTheory.LevSplit.finE_mem_UA V β)`. Use `⟨α, hα, ?_⟩` and prove the remaining obligations. Rewrite using `[← hβ]`.
+
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Establish `h` using `congrArg (fun x : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D) => x.val i j) e`. Conclude with `(Algebra.TensorProduct.comm D.host.F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.host.E).injective h`.
+-/
 theorem exists_gfC_finHom_eq : ∀ {D : D7} (V : HSp D) (g : Bridge.Gf V), ∃ α ∈ GfC V, finHom V α = (g : GL (Fin V.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)) := by
   intro D V g
   obtain ⟨β, hβ⟩ := g.2

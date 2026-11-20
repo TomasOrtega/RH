@@ -9,6 +9,9 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HermitianClassFinitenes
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HermitianClassFiniteness.RtUnitaryOf
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HermitianClassFiniteness.LevelStep
 
+/- English proof (translation)
+The claim follows from `PI.UnitaryGroupMassFormula.InHHClassFin.stabClassFinite_of_steps (fun _ _ Γ K K' h => PI.UnitaryGroupMassFormula.InHHClassFin.classSet_mono Γ K K' h) (fun _ _ Γ K K' h hi => PI.UnitaryGroupMassFormula.InHHClassFin.classSet_finIdx Γ K K' h hi) (fun _ _ _ _ Φ Γ K => PI.UnitaryGroup …`.
+-/
 theorem stabClassFinite : PI.InHHClassFin.StabClassFinite :=
   PI.UnitaryGroupMassFormula.InHHClassFin.stabClassFinite_of_steps
     (fun _ _ Γ K K' h => PI.UnitaryGroupMassFormula.InHHClassFin.classSet_mono Γ K K' h)
@@ -18,4 +21,7 @@ theorem stabClassFinite : PI.InHHClassFin.StabClassFinite :=
     PI.UnitaryGroupMassFormula.InHHClassFin.frameIso PI.UnitaryGroupMassFormula.InHHClassFin.frameGram PI.UnitaryGroupMassFormula.InHHClassFin.frameRat
     PI.UnitaryGroupMassFormula.InHHClassFin.levelStep
 
+/- English proof (translation)
+The claim follows from `stabClassFinite`.
+-/
 theorem stabilizer_class_finite : PI.InHHClassFin.StabClassFinite := stabClassFinite

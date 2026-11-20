@@ -29,6 +29,9 @@ def cechIso {R : Type} [CommRing R] (f : X ⟶ Spec (CommRingCat.of R)) (M : LB 
     fun {s t} h x => (SecOnR.restrict_restrict f _ inf_le_right x).trans
       (SecOnR.restrict_restrict f inf_le_right (cechOpen_anti ⊤ D h) x).symm)
 
+/- English proof (translation)
+Use `ModuleCat.preservesFiniteLimits_extendScalars_of_flat (RingHom.flat_algebraMap_iff.2 (inferInstance : Module.Flat R O))` as an intermediate fact. Establish `: (ModuleCat.extendScalars.{0, 0, 0} (algebraMap R O)).IsLeftAdjoint` using `(ModuleCat.extendRestrictScalarsAdj (algebraMap R O)).isLeftAdjoint`. Take `⟨e⟩` from `Semicont.nonempty_extendScalars_obj_equiv O (C.homology n)`. Conclude with `⟨((C.sc n).mapHomologyIso (ModuleCat.extendScalars.{0, 0, 0} (algebraMap R O))).toLinearEquiv ≪≫ₗ e⟩`.
+-/
 theorem nonempty_homology_equiv {R : Type} (O : Type) [CommRing R] [CommRing O]
     [Algebra R O] [Module.Flat R O] (C : CochainComplex (ModuleCat.{0} R) ℕ) (n : ℕ) :
     Nonempty ((((ModuleCat.extendScalars.{0, 0, 0} (algebraMap R O)).mapHomologicalComplex _).obj
@@ -41,6 +44,9 @@ theorem nonempty_homology_equiv {R : Type} (O : Type) [CommRing R] [CommRing O]
   exact ⟨((C.sc n).mapHomologyIso
     (ModuleCat.extendScalars.{0, 0, 0} (algebraMap R O))).toLinearEquiv ≪≫ₗ e⟩
 
+/- English proof (translation)
+Use `letI := algebraΓOfHom f`. Use `haveI := LB.isQuasicoherent_toMod hM`. Conclude with `⟨((HomologicalComplex.homologyFunctor _ _ n).mapIso (cechIso f M D)).toLinearEquiv ≪≫ₗ cechHEquivCoh R hc hD (LB.toMod M) n ≪≫ₗ (cohOn.mapIso R ⊤ n (Twist.unitTwistIso M)).symm⟩`.
+-/
 theorem nonempty_coh_equiv {R : Type} [CommRing R] (f : X ⟶ Spec (CommRingCat.of R)) {M : LB X} (hM : M.IsLB)
     {κ : Type} [LinearOrder κ] [Finite κ] {D : κ → X.Opens} (hc : ⨆ i, D i = ⊤)
     (hD : ∀ s : Finset κ, s.Nonempty → IsAffineOpen (⨅ i ∈ s, D i)) (n : ℕ) :
@@ -54,6 +60,13 @@ theorem nonempty_coh_equiv {R : Type} [CommRing R] (f : X ⟶ Spec (CommRingCat.
 variable {k E : Type} [Field k] [Field E] [Algebra k E] {f : X ⟶ Spec (CommRingCat.of k)}
   {f' : X' ⟶ Spec (CommRingCat.of E)} {π : X' ⟶ X}
 
+/- English proof (translation)
+Use `letI := algebraΓOfHom f`. Use `letI := algebraΓOfHom f'`. Establish `: CompactSpace X` using `QuasiCompact.compactSpace_of_compactSpace f`. Use `isAffineHom_diagonal_of_isSeparated f` as an intermediate fact. Take `⟨m, D, hD, hc⟩` from `exists_fin_affine_cover (X := X) (V := ⊤) isCompact_univ`.
+
+Establish `hD'` using `isAffineOpen_finset_biInf hD`. Take `⟨e₁⟩` from `nonempty_coh_equiv f hM hc hD' n`. Take `⟨e₂⟩` from `nonempty_coh_equiv f' (LB.isLB_pull hM π) (D := fun i => π ⁻¹ᵁ D i) (by rw [← Scheme.Hom.preimage_iSup, hc]; rfl) (fun s hs => isAffineOpen_biInf_preimage H (hD' s hs)) n`. Take `⟨e₃⟩` from `nonempty_homology_equiv E (cechLB f M D) n`. Establish `e₄` using `((HomologicalComplex.homologyFunctor _ _ n).mapIso (cechLBBaseChangeIso hM H hD')).toLinearEquiv`.
+
+Rewrite using `[hdim_def, hdim_def, ← e₁.finrank_eq, ← e₂.finrank_eq]`. Conclude with `e₄.finrank_eq.symm.trans (e₃.finrank_eq.trans Module.finrank_baseChange)`.
+-/
 theorem hdim_pull [QuasiCompact f] [IsSeparated f]
     (H : IsPullback π f' f (Spec.map (CommRingCat.ofHom (algebraMap k E)))) {M : LB X} (hM : M.IsLB) (n : ℕ) :
     letI := algebraΓOfHom f
@@ -73,6 +86,11 @@ theorem hdim_pull [QuasiCompact f] [IsSeparated f]
   rw [hdim_def, hdim_def, ← e₁.finrank_eq, ← e₂.finrank_eq]
   exact e₄.finrank_eq.symm.trans (e₃.finrank_eq.trans Module.finrank_baseChange)
 
+/- English proof (translation)
+Use `letI := algebraΓOfHom f`. Use `letI := algebraΓOfHom f'`. Establish `h : chiPic k (structureModule X) = chiPic E (structureModule X') ∘ pull π`. Use function extensionality and compare the values at `c`. Take `⟨M, hM, rfl⟩` from `cls_surj c`.
+
+Conclude with `finsum_congr fun n => congrArg (fun a : ℕ => (-1 : ℤ) ^ n * a) (hdim_pull H hM n).symm`. Rewrite using `[interNum_eq_multiDiff k _ hL, h, multiDiff_comap, Function.comp_apply, map_zero, interNum_eq_multiDiff E _ fun i ↦ pull_isLB (hL i) π]`. Both sides reduce to the same expression.
+-/
 theorem interNum_pull [QuasiCompact f] [IsSeparated f]
     (H : IsPullback π f' f (Spec.map (CommRingCat.ofHom (algebraMap k E)))) {ι : Type} [Fintype ι] {L : ι → LB X}
     (hL : ∀ i, (L i).IsLB) :
@@ -89,6 +107,11 @@ theorem interNum_pull [QuasiCompact f] [IsSeparated f]
     interNum_eq_multiDiff E _ fun i ↦ pull_isLB (hL i) π]
   rfl
 
+/- English proof (translation)
+Introduce `k E _ _ _ S h`. Establish `: IsProper S.str`. Take `⟨N, i, hi, e⟩` from `h`. Use `isProper_str k N` as an intermediate fact. Rewrite using `[← e]`.
+
+Use `infer_instance`. Conclude with `interNum_pull (ι := Fin S.D) (L := fun _ => S.L) (S.isPullback_baseChange E) fun _ => S.isLB`.
+-/
 theorem del_baseChange : ∀ (k E : Type) [Field k] [Field E] [Algebra k E] (S : LinSys k),
     IsProjOver S.str → (S.baseChange E).del = S.del := by
   intro k E _ _ _ S h

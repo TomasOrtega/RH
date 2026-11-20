@@ -28,6 +28,11 @@ open GlobalTheory.CompanionTheory.Ar.Flat
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Introduce `U f`. Establish `hc : Differentiable ℂ (fun z : W => (b, z))` using `by fun_prop`. Use `⟨?_, (h U f).2.comp hc.differentiableOn fun z hz => ⟨⟨hb, trivial⟩, hz.2⟩⟩` and prove the remaining obligations. Use `(h U f).1.preimage hc.continuous using 1` and compare the differences between its conclusion and the goal. Use extensionality with `z`.
+
+Conclude with `⟨fun hz => ⟨⟨hb, trivial⟩, hz.2⟩, fun hz => ⟨trivial, hz.2⟩⟩`.
+-/
 theorem isHolTo_fibreSlice {V W : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [NormedAddCommGroup W]
     [NormedSpace ℂ W] {X : Scheme.{0}} {B : Set V} {y : V × W → (Sp ℂ ⟶ X)} (h : IsHolTo (B ×ˢ Set.univ) y)
     {b : V} (hb : b ∈ B) : IsHolTo Set.univ (fun z => y (b, z)) := by
@@ -38,6 +43,13 @@ theorem isHolTo_fibreSlice {V W : Type} [NormedAddCommGroup V] [NormedSpace ℂ 
   ext z
   exact ⟨fun hz => ⟨⟨hb, trivial⟩, hz.2⟩, fun hz => ⟨trivial, hz.2⟩⟩
 
+/- English proof (translation)
+Use `tB.semi.smooth` as an intermediate fact. Use `tB.semi.geomConnected` as an intermediate fact. Establish `hAb : IsAbelianScheme tB.G` using `⟨tB.semi.comm, tB.semi.smooth, hP.1, tB.semi.geomConnected⟩`. Establish `hA : IsAbelianScheme A` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hAb hφ`. Establish `: ConnectedSpace tB.G.left` using `GeometricallyConnected.geometrically_connectedSpace (f := tB.G.hom) (𝟙 _) (𝟙 _) tB.G.hom (IsPullback.of_horiz_isIso ⟨by simp⟩)`.
+
+Take `⟨d, hd⟩` from `exists_dim_of_preconnected tB.G.hom (eSec tB.G (default : PrimeSpectrum ℂ))`. Take `⟨-, ws, gs', -⟩` from `tB.sym`. Establish `hL'` using `pull_isLB tB.PP.isLB φ`. Establish `hw` using `(isGen_iff _).1 (idIso_isGen hL')`. Set `Q : Out.PolAV (Sp ℂ)` to `{ A := A, isAb := hA, g := d smoothDim := (smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback hφ.1 hd L := tB.PP.L.pull φ, isLB := hL' rigid := GlobalTheory.PolBaseChange.rigidified_pull hφ ⟨tB.PP.rig, tB.PP.rigGen⟩ sym := GlobalTheory.PolBaseChange.sym_pull hφ fu …`.
+
+Take `⟨-, -, -, -, h₁, h₂, -⟩` from `GlobalTheory.AHWeil.tangent_and_weil_of_isAH GlobalTheory.thetaUnifAV_all Q g u Hm χ hu`. Conclude with `⟨hA, h₁, h₂⟩`.
+-/
 theorem tangent_of_isGrpPullback {tB : SAB H (Sp ℂ)} (A : Over (Sp ℂ)) [GrpObj A] (φ : A.left ⟶ tB.G.left)
     (hφ : IsGrpPullback A tB.G (𝟙 _) φ) (hP : IsPrincipal tB) {g : ℕ} (u : HolUnif A (tB.PP.L.pull φ) g)
     (Hm : Matrix (Fin g) (Fin g) ℂ) (χ : u.Λ → ℂ) (hu : u.IsAH Hm χ) :
@@ -64,6 +76,25 @@ theorem tangent_of_isGrpPullback {tB : SAB H (Sp ℂ)} (A : Over (Sp ℂ)) [GrpO
   obtain ⟨-, -, -, -, h₁, h₂, -⟩ := GlobalTheory.AHWeil.tangent_and_weil_of_isAH GlobalTheory.thetaUnifAV_all Q g u Hm χ hu
   exact ⟨hA, h₁, h₂⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H R _ t g n M B ψ e b P A _ φ g' u Hm χ hb hφ hu hP`. Take `⟨hA, h₁, h₂⟩` from `tangent_of_isGrpPullback A φ hφ hP u Hm χ hu`. Take `⟨p, hp⟩` from `GlobalTheory.CMSpreadCompare.exists_pointEquiv P.m.cart (𝟙_ _) (s := spMap (ψ b)) (Category.id_comp _).symm`. Take `⟨c, hc⟩` from `GlobalTheory.CMSpreadCompare.exists_pointEquiv hφ (𝟙_ _) (s := 𝟙 _) (Category.comp_id _).symm`. Use `letI := P.τ.grpB`.
+
+Use `haveI : IsMonHom P.τ.q := P.τ.q_hom`. Use `haveI : IsMonHom P.e.hom := P.e_hom`. Set `r : (Fin g → ℂ) → (𝟙_ (Over (Sp ℂ)) ⟶ P.tB.G)` to `fun y => p.symm (e.ex b y) ≫ P.τ.q ≫ P.e.hom`. Set `G : (Fin g → ℂ) → (𝟙_ (Over (Sp ℂ)) ⟶ A)` to `fun y => c.symm (r y)`. Establish `hr : ∀ z w, r (z + w) = r z * r w` using `fun z w => by`.
+
+Simplify using `only [r, e.add b hb, map_mul, MonObj.mul_comp]`. Establish `hG : ∀ z w, G (z + w) = G z * G w` using `fun z w => by`. Simplify using `only [G, hr, map_mul]`. Establish `hGr : ∀ y, (G y).left ≫ φ = (r y).left` using `fun y => by`. Rewrite using `[← hc, c.apply_symm_apply]`.
+
+Establish `hs : IsHolTo Set.univ (fun y => (p.symm (e.ex b y)).left)`. Use `GlobalTheory.HolFibre.isHolTo_of_isPullback P.m.cart.1 ?_ ?_` and prove the remaining obligations. Establish `h` using `isHolTo_fibreSlice e.hol hb`. Establish `e₁ : (fun y => (p.symm (e.ex b y)).left ≫ P.m.cm.F) = fun y => (e.ex b y).left`. Use function extensionality and compare the values at `fun y => by rw [← hp, p.apply_symm_apply]`.
+
+Rewrite using `[e₁]`. Conclude with `h`. Establish `e₁ : (fun y => (p.symm (e.ex b y)).left ≫ P.tK.G.hom) = fun _ => 𝟙 (Sp ℂ)`. Use function extensionality and compare the values at `fun y => Over.w (p.symm (e.ex b y))`. Rewrite using `[e₁]`.
+
+Conclude with `GlobalTheory.HolFibre.isHolTo_const isOpen_univ _`. Establish `hol : IsHolTo (Set.univ : Set (Fin g → ℂ)) (fun z => (G z).left)`. Use `GlobalTheory.HolFibre.isHolTo_of_isPullback hφ.1 ?_ ?_` and prove the remaining obligations. Establish `h` using `GlobalTheory.CMSpreadCompare.isHolTo_postcomp hs (P.τ.q ≫ P.e.hom).left`. Establish `e₁ : (fun y => (G y).left ≫ φ) = fun y => (p.symm (e.ex b y)).left ≫ (P.τ.q ≫ P.e.hom).left`.
+
+Use function extensionality and compare the values at `fun y => by rw [hGr]; rfl`. Rewrite using `[e₁]`. Conclude with `h`. Establish `e₁ : (fun y => (G y).left ≫ A.hom) = fun _ => 𝟙 (Sp ℂ)` using `funext fun y => Over.w (G y)`. Rewrite using `[e₁]`.
+
+Conclude with `GlobalTheory.HolFibre.isHolTo_const isOpen_univ _`. Take `⟨F, hF, -⟩` from `GlobalTheory.existsUnique_linear_lift_of_isHolTo A hA _ g' g u h₁ h₂ G hG hol`. Use `⟨F, fun y s hs' => ?_⟩` and prove the remaining obligations. Establish `es : s = p.symm (e.ex b y)`. Rewrite using `[eq_comm, MulEquiv.symm_apply_eq]`.
+
+Conclude with `Over.OverMorphism.ext ((hp s).trans hs').symm`. Rewrite using `[hF, hGr, es]`.
+-/
 theorem exists_isAbLift : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] (t : SAB H (Sp R)) (g n : ℕ) (M : LieModel t.G (𝟙 (Sp R)) (Fin g → R)) (B : Set (Fin n → ℂ)) (ψ : (Fin n → ℂ) → (R →+* ℂ)) (e : Flat.FamExp t.G M B ψ) (b : Fin n → ℂ) (P : AbPart t (spMap (ψ b))) (A : Over (Sp ℂ)) (_ : GrpObj A) (φ : A.left ⟶ P.tB.G.left) (g' : ℕ) (u : HolUnif A (P.tB.PP.L.pull φ) g') (Hm : Matrix (Fin g') (Fin g') ℂ) (χ : u.Λ → ℂ), b ∈ B → IsGrpPullback A P.tB.G (𝟙 _) φ → u.IsAH Hm χ → IsPrincipal P.tB → ∃ ℓ : (Fin g → ℂ) →ₗ[ℂ] (Fin g' → ℂ), GlobalTheory.CompanionTheory.Ar.QuotLoc.IsAbLift e b P φ u ℓ := by
   intro E _ _ _ H R _ t g n M B ψ e b P A _ φ g' u Hm χ hb hφ hu hP
   obtain ⟨hA, h₁, h₂⟩ := tangent_of_isGrpPullback A φ hφ hP u Hm χ hu

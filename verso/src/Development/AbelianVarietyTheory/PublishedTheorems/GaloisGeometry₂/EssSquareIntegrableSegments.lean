@@ -20,6 +20,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Use `QuotientGroup.subsingleton_iff.2 (eq_top_iff.2 fun g _ => Subgroup.mem_center_iff.2 fun h => ?_)` and prove the remaining obligations. Use extensionality with `i j`. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Take `rfl : j = 0` from `Subsingleton.elim _ _`. Simplify using `[Matrix.mul_apply, mul_comm]`.
+-/
 theorem subsingleton_adGL_one : Subsingleton (AdGL k 1) := by
   refine QuotientGroup.subsingleton_iff.2 (eq_top_iff.2 fun g _ => Subgroup.mem_center_iff.2 fun h => ?_)
   ext i j
@@ -27,6 +30,9 @@ theorem subsingleton_adGL_one : Subsingleton (AdGL k 1) := by
   obtain rfl : j = 0 := Subsingleton.elim _ _
   simp [Matrix.mul_apply, mul_comm]
 
+/- English proof (translation)
+Introduce `_ _ μ hμ v l _`. Use `subsingleton_adGL_one (k := k)` as an intermediate fact. Establish `: IsFiniteMeasure μ` using `⟨(Set.toFinite _).isCompact.measure_lt_top⟩`. Conclude with `⟨fun _ => ‖l v‖, fun g => by rw [h], memLp_const _⟩`.
+-/
 theorem isSqIntCoeff_of_trivial {V : Type} [AddCommGroup V] [Module ℂ V] {π : Representation ℂ (GL (Fin 1) k) V}
     (h : ∀ g v, π g v = v) : IsSqIntCoeff π := by
   intro _ _ μ hμ v l _
@@ -34,6 +40,13 @@ theorem isSqIntCoeff_of_trivial {V : Type} [AddCommGroup V] [Module ℂ V] {π :
   have : IsFiniteMeasure μ := ⟨(Set.toFinite _).isCompact.measure_lt_top⟩
   exact ⟨fun _ => ‖l v‖, fun g => by rw [h], memLp_const _⟩
 
+/- English proof (translation)
+Establish `hi : IsSmoothChar χ⁻¹`. Establish `: χ⁻¹.ker = χ.ker` using `by ext; simp`. Unfold `IsSmoothChar`. Rewrite using `[this]`. Conclude with `hχ`.
+
+Use `⟨le_rfl, ⟨χ⁻¹, hi, ?_⟩, _, (single_spec (IrrGL.isCusp_ofChar χ hχ)).2.1⟩` and prove the remaining obligations. Establish `e : (IrrGL.ofChar χ hχ).tw χ⁻¹ hi = IrrGL.ofChar 1 isSmoothChar_one`. Simplify using `only [IrrGL.tw_ofChar, mul_inv_cancel]`. Rewrite using `[e]`. Use `@isSqIntCoeff_of_trivial k _ _ _ _ _ _ _ _ fun g v => ?_` and prove the remaining obligations.
+
+Set `φ` to `equivRep (IrrRep.det (k := k) (Fin 1) 1 isSmoothChar_one)`. Take `⟨w, rfl⟩` from `φ.toLinearEquiv.surjective v`. Use `(φ.toIntertwiningMap.isIntertwining _ _ g w).symm.trans (congrArg φ ?_)` and prove the remaining obligations. Use `show ((detChar (Fin 1) (1 : kˣ →* ℂˣ) g : ℂˣ) : ℂ) • w = w`. Simplify using the standard rewrite rules.
+-/
 theorem both_sides_ofChar (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) :
     1 ≤ (IrrGL.ofChar χ hχ).1 ∧
       (∃ (ψ : kˣ →* ℂˣ) (hψ : IsSmoothChar ψ), IsSqIntCoeff ((IrrGL.ofChar χ hχ).tw ψ hψ).rep) ∧

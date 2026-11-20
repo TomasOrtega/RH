@@ -97,14 +97,23 @@ open Classical in
 def cutF (k r : ℕ) (i : Fin (r + 1)) (D : Set (Mx k r)) (f : Mx k r → E) : Mx k r → E :=
   fun g => if g ∈ Glev k r i ∩ D then f g else 0
 
+/- English proof (translation)
+Unfold `cutF`. Conclude with `if_pos hg`.
+-/
 theorem cutF_of_mem {f : Mx k r → E} {g : Mx k r} (hg : g ∈ Glev k r i ∩ D) : cutF k r i D f g = f g := by
   unfold cutF
   exact if_pos hg
 
+/- English proof (translation)
+Unfold `cutF`. Conclude with `if_neg hg`.
+-/
 theorem cutF_of_not_mem {f : Mx k r → E} {g : Mx k r} (hg : g ∉ Glev k r i ∩ D) : cutF k r i D f g = 0 := by
   unfold cutF
   exact if_neg hg
 
+/- English proof (translation)
+Introduce `g₀ hg₀`. Take `⟨U, F, hU, hgU, hF, hfF⟩` from `hf g₀ hg₀`. Use `⟨U ∩ D, F, hU.inter hD, ⟨hgU, hg₀.2⟩, hF.mono Set.inter_subset_left, fun g hg hgl => ?_⟩` and prove the remaining obligations. Rewrite using `[cutF_of_mem ⟨hgl, hg.2⟩]`. Conclude with `hfF g hg.1 hgl`.
+-/
 theorem cutF_smooth (hD : IsOpen D) {f : Mx k r → E} (hf : SmoothLev k r i D f) :
     SmoothLev k r i D (cutF k r i D f) := by
   intro g₀ hg₀
@@ -113,11 +122,17 @@ theorem cutF_smooth (hD : IsOpen D) {f : Mx k r → E} (hf : SmoothLev k r i D f
   rw [cutF_of_mem ⟨hgl, hg.2⟩]
   exact hfF g hg.1 hgl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨cutF_smooth hD hf, fun _ hg => cutF_of_not_mem hg⟩`.
+-/
 theorem cutF_mem (hD : IsOpen D) {f : Mx k r → E} (hf : SmoothLev k r i D f) : cutF k r i D f ∈ SV k r i D E :=
   ⟨cutF_smooth hD hf, fun _ hg => cutF_of_not_mem hg⟩
 
 def mkV (hD : IsOpen D) (f : Mx k r → E) (hf : SmoothLev k r i D f) : SV k r i D E := ⟨cutF k r i D f, cutF_mem hD hf⟩
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Distinguish the cases in `hg : g ∈ Glev k r i ∩ D`. Conclude with `h g hg`. Rewrite using `[φ.2.2 g hg, ψ.2.2 g hg]`.
+-/
 theorem SV_ext {φ ψ : SV k r i D E} (h : ∀ g ∈ Glev k r i ∩ D, φ.1 g = ψ.1 g) : φ = ψ := by
   apply Subtype.ext
   funext g
@@ -147,6 +162,9 @@ def opV (k r : ℕ) (i : Fin (r + 1)) (D : Set (Mx k r)) (T : (Mx k r → E) →
         exact h0 }
   else 0
 
+/- English proof (translation)
+Rewrite using `[opV, dif_pos (show IsOpen D ∧ Qx2.Good k r i D T from ⟨hD, hT⟩)]`. Conclude with `cutF_of_mem hg`.
+-/
 theorem opV_apply (hD : IsOpen D) {T : (Mx k r → E) → Mx k r → E} (hT : Qx2.Good k r i D T) (φ : SV k r i D E)
     {g : Mx k r} (hg : g ∈ Glev k r i ∩ D) : (opV k r i D T φ).1 g = T φ.1 g := by
   rw [opV, dif_pos (show IsOpen D ∧ Qx2.Good k r i D T from ⟨hD, hT⟩)]

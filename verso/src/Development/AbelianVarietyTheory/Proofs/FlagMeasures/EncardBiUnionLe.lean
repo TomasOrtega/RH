@@ -12,6 +12,15 @@ section Count
 
 variable {α : Type} {R : α → α → Prop}
 
+/- English proof (translation)
+Establish `hset : {O : Set α | ∃ a ∈ X, O = {b | b ∈ X ∧ R a b}} = (fun O => {b | b ∈ O ∧ b ∈ X}) '' ((fun a => {b | R a b}) '' X)`. Use extensionality with `O`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`. Conclude with `⟨{b | R a b}, ⟨a, ha, rfl⟩, by ext b; simp [and_comm]⟩`.
+
+Introduce and unpack `⟨_, ⟨a, ha, rfl⟩, rfl⟩`. Conclude with `⟨a, ha, by ext b; simp [and_comm]⟩`. Rewrite using `[cntCl, hset]`. Apply `Set.InjOn.encard_image` to reduce the goal to its premises. Introduce and unpack `_ ⟨a, ha, rfl⟩ _ ⟨a', ha', rfl⟩ hEq`.
+
+Establish `hEq' : {b | b ∈ {b | R a b} ∧ b ∈ X} = {b | b ∈ {b | R a' b} ∧ b ∈ X}` using `hEq`. Establish `hmem : a' ∈ {b | b ∈ {b | R a b} ∧ b ∈ X}`. Rewrite using `[hEq']`. Conclude with `⟨hR.refl a', ha'⟩`. Establish `haa' : R a a'` using `hmem.1`.
+
+Use extensionality with `b`. Conclude with `⟨fun hb => hR.trans (hR.symm haa') hb, fun hb => hR.trans haa' hb⟩`.
+-/
 theorem cntCl_eq_encard (hR : Equivalence R) (X : Set α) :
     cntCl X R = ((fun a => {b | R a b}) '' X).encard := by
 
@@ -34,6 +43,9 @@ theorem cntCl_eq_encard (hR : Equivalence R) (X : Set α) :
   ext b
   exact ⟨fun hb => hR.trans (hR.symm haa') hb, fun hb => hR.trans haa' hb⟩
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.set_biUnion_insert]`. Conclude with `(Set.encard_union_le _ _).trans (add_le_add le_rfl ih)`.
+-/
 theorem encard_biUnion_le' {ι β : Type} (s : Finset ι) (Y : ι → Set β) :
     (⋃ i ∈ s, Y i).encard ≤ ∑ i ∈ s, (Y i).encard := by
   induction s using Finset.induction_on with
@@ -42,6 +54,11 @@ theorem encard_biUnion_le' {ι β : Type} (s : Finset ι) (Y : ι → Set β) :
     rw [Finset.sum_insert ha, Finset.set_biUnion_insert]
     exact (Set.encard_union_le _ _).trans (add_le_add le_rfl ih)
 
+/- English proof (translation)
+Simplify using `only [cntCl_eq_encard hR]`. Combine the equalities or inequalities in the displayed calculation. Apply `Set.encard_le_encard` to reduce the goal to its premises. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Take `⟨i, hi, b, hb, hab⟩` from `h a ha`.
+
+Use `Set.mem_biUnion hi ⟨b, hb, ?_⟩` and prove the remaining obligations. Use extensionality with `c`. Conclude with `⟨fun hc => hR.trans hab hc, fun hc => hR.trans (hR.symm hab) hc⟩`. Use `_ ≤ ∑ i ∈ s, ((fun a => {b | R a b}) '' Y i).encard := encard_biUnion_le' s _`.
+-/
 theorem cntCl_le_sum (hR : Equivalence R) {ι : Type} (s : Finset ι) (X : Set α) (Y : ι → Set α)
     (h : ∀ a ∈ X, ∃ i ∈ s, ∃ b ∈ Y i, R a b) : cntCl X R ≤ ∑ i ∈ s, cntCl (Y i) R := by
   simp only [cntCl_eq_encard hR]
@@ -62,6 +79,11 @@ section Grp
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T : E}
   {Λ : Submodule (𝓞 E) S.V} {F : LFlag S r T}
 
+/- English proof (translation)
+Simplify using `only [Formalism.HermitianLatticesTheory.gmap, Submodule.mem_map, LinearMap.restrictScalars_apply, LinearEquiv.coe_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify using `using hy`. Introduce `hx`.
+
+Conclude with `⟨g.symm x, hx, by simp⟩`.
+-/
 theorem mem_gmap (g : S.V ≃ₗ[E] S.V) (x : S.V) : x ∈ Formalism.HermitianLatticesTheory.gmap g Λ ↔ g.symm x ∈ Λ := by
   simp only [Formalism.HermitianLatticesTheory.gmap, Submodule.mem_map, LinearMap.restrictScalars_apply, LinearEquiv.coe_coe]
   constructor
@@ -70,15 +92,28 @@ theorem mem_gmap (g : S.V ≃ₗ[E] S.V) (x : S.V) : x ∈ Formalism.HermitianLa
   · intro hx
     exact ⟨g.symm x, hx, by simp⟩
 
+/- English proof (translation)
+Establish `hx` using `mem_gmap (Λ := Λ) n (n x)`. Rewrite `hx` using `[hn.2, LinearEquiv.symm_apply_apply]`. Conclude with `hx`.
+-/
 theorem aut_mem_iff {n : S.V ≃ₗ[E] S.V} (hn : IsAutLam S Λ n) (x : S.V) : n x ∈ Λ ↔ x ∈ Λ := by
   have hx := mem_gmap (Λ := Λ) n (n x)
   rw [hn.2, LinearEquiv.symm_apply_apply] at hx
   exact hx
 
+/- English proof (translation)
+Use `show Submodule.span E (F.fl.e '' {i | i.1 < j}) ≤ Submodule.span E (F.fl.e '' {i | i.1 < j + 1})`. Conclude with `Submodule.span_mono (Set.image_mono fun i (hi : i.1 < j) => Nat.lt_succ_of_lt hi)`.
+-/
 theorem Xflag_mono (j : ℕ) : Xflag F j ≤ Xflag F (j + 1) := by
   show Submodule.span E (F.fl.e '' {i | i.1 < j}) ≤ Submodule.span E (F.fl.e '' {i | i.1 < j + 1})
   exact Submodule.span_mono (Set.image_mono fun i (hi : i.1 < j) => Nat.lt_succ_of_lt hi)
 
+/- English proof (translation)
+Establish `key : ∀ a, Xsp F ≤ LinearMap.ker (S.hT (F.fl.e a))` using `fun a => by show Submodule.span E (Set.range F.fl.e) ≤ _`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, rfl⟩`. Conclude with `F.fl.e_iso a b`. Introduce `y hy`.
+
+Simplify using `only [orth, Submodule.mem_iInf, LinearMap.mem_ker]`. Introduce `x hx`. Establish `key2 : Xsp F ≤ LinearMap.ker (S.hT.flip y)` using `by show Submodule.span E (Set.range F.fl.e) ≤ _`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`.
+
+Conclude with `key a hy`. Simplify using `using key2 hx`.
+-/
 theorem X_le_orth : Xsp F ≤ orth S (Xsp F) := by
 
   have key : ∀ a, Xsp F ≤ LinearMap.ker (S.hT (F.fl.e a)) := fun a => by
@@ -96,6 +131,11 @@ theorem X_le_orth : Xsp F ≤ orth S (Xsp F) := by
     exact key a hy
   simpa using key2 hx
 
+/- English proof (translation)
+Introduce `x hx`. Establish `hmap : ∀ y ∈ B, n y ∈ B` using `fun y hy => by simpa using B.add_mem (hAB (h y hy)) hy`. Establish `hinj : Function.Injective (n.toLinearMap.restrict hmap)` using `fun a b hab => Subtype.ext (n.injective (congrArg Subtype.val hab))`. Take `⟨⟨y, hy⟩, hyx⟩` from `LinearMap.surjective_of_injective hinj ⟨x, hx⟩`. Establish `hny : n y = x` using `congrArg Subtype.val hyx`.
+
+Establish `hy' : n.symm x = y` using `by rw [← hny, LinearEquiv.symm_apply_apply]`. Rewrite using `[hy', ← neg_sub]`. Establish `hxy` using `h y hy`. Rewrite `hxy` using `[hny]`. Conclude with `A.neg_mem hxy`.
+-/
 theorem symm_sub_mem (n : S.V ≃ₗ[E] S.V) {A B : Submodule E S.V} (hAB : A ≤ B)
     (h : ∀ x ∈ B, n x - x ∈ A) : ∀ x ∈ B, n.symm x - x ∈ A := by
   intro x hx
@@ -111,6 +151,11 @@ theorem symm_sub_mem (n : S.V ≃ₗ[E] S.V) {A B : Submodule E S.V} (hAB : A �
   rw [hny] at hxy
   exact A.neg_mem hxy
 
+/- English proof (translation)
+Introduce `x hx`. Establish `hnx : n x ∈ B` using `by simpa using B.add_mem (hAB (h x hx)) hx`. Use `show m (n x) - x ∈ A`. Establish `e : m (n x) - x = (m (n x) - n x) + (n x - x)` using `by abel`. Rewrite using `[e]`.
+
+Conclude with `A.add_mem (h' _ hnx) (h x hx)`.
+-/
 theorem trans_sub_mem (n m : S.V ≃ₗ[E] S.V) {A B : Submodule E S.V} (hAB : A ≤ B)
     (h : ∀ x ∈ B, n x - x ∈ A) (h' : ∀ x ∈ B, m x - x ∈ A) : ∀ x ∈ B, (m * n) x - x ∈ A := by
   intro x hx
@@ -120,6 +165,11 @@ theorem trans_sub_mem (n m : S.V ≃ₗ[E] S.V) {A B : Submodule E S.V} (hAB : A
   rw [e]
   exact A.add_mem (h' _ hnx) (h x hx)
 
+/- English proof (translation)
+Use `⟨⟨(Formalism.HermitianLatticesTheory.isom S.hT).one_mem, ?_⟩, fun j x _ => ?_, fun x _ => ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Rewrite using `[mem_gmap]`. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
+
+Simplify using the standard rewrite rules.
+-/
 theorem one_mem_NLam : (1 : S.V ≃ₗ[E] S.V) ∈ NLam Λ F := by
   refine ⟨⟨(Formalism.HermitianLatticesTheory.isom S.hT).one_mem, ?_⟩, fun j x _ => ?_, fun x _ => ?_⟩
   · ext x
@@ -128,6 +178,11 @@ theorem one_mem_NLam : (1 : S.V ≃ₗ[E] S.V) ∈ NLam Λ F := by
   · simp
   · simp
 
+/- English proof (translation)
+Establish `hsymm : ∀ {k : S.V ≃ₗ[E] S.V}, IsAutLam S Λ k → ∀ y, k.symm y ∈ Λ ↔ y ∈ Λ` using `fun hk y => by`. Rewrite using `[← aut_mem_iff hk, LinearEquiv.apply_symm_apply]`. Use `⟨⟨(Formalism.HermitianLatticesTheory.isom S.hT).mul_mem hm.1.1 hn.1.1, ?_⟩, fun j => trans_sub_mem n m (Xflag_mono j) (hn.2.1 j) (hm.2.1 j), trans_sub_mem n m X_le_orth hn.2.2 hm.2.2⟩` and prove the remaining obligations. Use extensionality with `x`. Rewrite using `[mem_gmap]`.
+
+Conclude with `(hsymm hn.1 _).trans (hsymm hm.1 _)`.
+-/
 theorem mul_mem_NLam {n m : S.V ≃ₗ[E] S.V} (hn : n ∈ NLam Λ F) (hm : m ∈ NLam Λ F) : m * n ∈ NLam Λ F := by
   have hsymm : ∀ {k : S.V ≃ₗ[E] S.V}, IsAutLam S Λ k → ∀ y, k.symm y ∈ Λ ↔ y ∈ Λ := fun hk y => by
     rw [← aut_mem_iff hk, LinearEquiv.apply_symm_apply]
@@ -138,6 +193,9 @@ theorem mul_mem_NLam {n m : S.V ≃ₗ[E] S.V} (hn : n ∈ NLam Λ F) (hm : m �
   rw [mem_gmap]
   exact (hsymm hn.1 _).trans (hsymm hm.1 _)
 
+/- English proof (translation)
+Use `⟨⟨(Formalism.HermitianLatticesTheory.isom S.hT).inv_mem hn.1.1, ?_⟩, fun j => symm_sub_mem n (Xflag_mono j) (hn.2.1 j), symm_sub_mem n X_le_orth hn.2.2⟩` and prove the remaining obligations. Use extensionality with `x`. Rewrite using `[mem_gmap, LinearEquiv.symm_symm]`. Conclude with `aut_mem_iff hn.1 x`.
+-/
 theorem symm_mem_NLam {n : S.V ≃ₗ[E] S.V} (hn : n ∈ NLam Λ F) : n.symm ∈ NLam Λ F := by
   refine ⟨⟨(Formalism.HermitianLatticesTheory.isom S.hT).inv_mem hn.1.1, ?_⟩,
     fun j => symm_sub_mem n (Xflag_mono j) (hn.2.1 j), symm_sub_mem n X_le_orth hn.2.2⟩
@@ -145,6 +203,9 @@ theorem symm_mem_NLam {n : S.V ≃ₗ[E] S.V} (hn : n ∈ NLam Λ F) : n.symm �
   rw [mem_gmap, LinearEquiv.symm_symm]
   exact aut_mem_iff hn.1 x
 
+/- English proof (translation)
+Use function extensionality and compare the values at `b`. Simplify using `only [frameAct]`. Rewrite using `[Finset.sum_eq_single b (fun a _ hab => by rw [Matrix.one_apply_ne hab]; simp) (fun hb => absurd (Finset.mem_univ b) hb), Matrix.one_apply_eq]`. Simplify using the standard rewrite rules.
+-/
 theorem frameAct_one {k : ℕ} (f : Fin k → S.V) : frameAct f 1 = f := by
   funext b
   simp only [frameAct]
@@ -152,6 +213,11 @@ theorem frameAct_one {k : ℕ} (f : Fin k → S.V) : frameAct f 1 = f := by
     (fun hb => absurd (Finset.mem_univ b) hb), Matrix.one_apply_eq]
   simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `b`. Simplify using `only [frameAct, Finset.smul_sum, smul_smul, Matrix.mul_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul]`.
+
+Use `congr 1`. Use `push_cast`. Conclude with `Finset.sum_congr rfl fun a _ => mul_comm _ _`.
+-/
 theorem frameAct_mul {k : ℕ} (f : Fin k → S.V) (ξ η : Matrix (Fin k) (Fin k) (𝓞 E)) :
     frameAct (frameAct f ξ) η = frameAct f (ξ * η) := by
   funext b
@@ -163,11 +229,19 @@ theorem frameAct_mul {k : ℕ} (f : Fin k → S.V) (ξ η : Matrix (Fin k) (Fin 
   push_cast
   exact Finset.sum_congr rfl fun a _ => mul_comm _ _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `b`. Simplify using `only [frameAct, map_sum, map_smul]`.
+-/
 theorem map_frameAct {k : ℕ} (n : S.V ≃ₗ[E] S.V) (f : Fin k → S.V) (ξ : Matrix (Fin k) (Fin k) (𝓞 E)) :
     (fun a => n (frameAct f ξ a)) = frameAct (fun a => n (f a)) ξ := by
   funext b
   simp only [frameAct, map_sum, map_smul]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single a]`. Introduce `c _ hca`. Break down `lt_or_gt_of_ne hca with hc | hc` into its components or cases. Rewrite using `[h1 a c hc, zero_mul]`. Rewrite using `[h2 c a hc, mul_zero]`.
+
+Introduce `ha`. Conclude with `absurd (Finset.mem_univ a) ha`.
+-/
 theorem uni_mul {k : ℕ} {O : Type} [CommRing O] {ξ η : Matrix (Fin k) (Fin k) O}
     (h1 : ∀ a b, b < a → ξ a b = 0) (h2 : ∀ a b, b < a → η a b = 0) (a : Fin k) :
     (ξ * η) a a = ξ a a * η a a := by
@@ -179,6 +253,13 @@ theorem uni_mul {k : ℕ} {O : Type} [CommRing O] {ξ η : Matrix (Fin k) (Fin k
   · intro ha
     exact absurd (Finset.mem_univ a) ha
 
+/- English proof (translation)
+Establish `hbt : ξ.BlockTriangular id` using `fun i j hij => h1 i j hij`. Establish `hdet : ξ.det = 1`. Rewrite using `[Matrix.det_of_isUpperTriangular hbt]`. Simplify using `[h2]`. Establish `hu : IsUnit ξ.det`.
+
+Rewrite using `[hdet]`. Conclude with `isUnit_one`. Set `_` to `Matrix.invertibleOfIsUnitDet ξ hu`. Establish `hinv : ξ⁻¹.BlockTriangular id` using `Matrix.blockTriangular_inv_of_blockTriangular hbt`. Establish `hmul : ξ * ξ⁻¹ = 1` using `Matrix.mul_nonsing_inv ξ hu`.
+
+Use `⟨ξ⁻¹, fun a b hab => hinv hab, fun a => ?_, hmul⟩` and prove the remaining obligations. Establish `hd` using `uni_mul h1 (fun a b hab => hinv hab) a`. Rewrite `hd` using `[hmul, Matrix.one_apply_eq, h2, one_mul]`. Conclude with `hd.symm`.
+-/
 theorem uni_inv {k : ℕ} {O : Type} [CommRing O] {ξ : Matrix (Fin k) (Fin k) O}
     (h1 : ∀ a b, b < a → ξ a b = 0) (h2 : ∀ a, ξ a a = 1) :
     ∃ η : Matrix (Fin k) (Fin k) O, (∀ a b, b < a → η a b = 0) ∧ (∀ a, η a a = 1) ∧ ξ * η = 1 := by
@@ -202,6 +283,15 @@ end Grp
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Use `⟨fun F' => ?_, fun {F₁ F₂} h => ?_, fun {F₁ F₂ F₃} h h' => ?_⟩` and prove the remaining obligations. Use `⟨1, one_mem_NLam, 1, fun a b hab => Matrix.one_apply_ne (ne_of_gt hab), fun a => Matrix.one_apply_eq a, ?_⟩` and prove the remaining obligations. Rewrite using `[frameAct_one]`. Both sides reduce to the same expression. Take `⟨n, hn, ξ, h1, h2, hfr⟩` from `h`.
+
+Take `⟨η, hη1, hη2, hξη⟩` from `uni_inv h1 h2`. Use `⟨n.symm, symm_mem_NLam hn, η, hη1, hη2, ?_⟩` and prove the remaining obligations. Rewrite using `[hfr, map_frameAct]`. Simplify using `only [LinearEquiv.symm_apply_apply]`. Rewrite using `[frameAct_mul, hξη, frameAct_one]`.
+
+Take `⟨n, hn, ξ, h1, h2, hfr⟩` from `h`. Take `⟨m, hm, ζ, k1, k2, hfr'⟩` from `h'`. Use `⟨m * n, mul_mem_NLam hn hm, ξ * ζ, fun a b hab => ?_, fun a => ?_, ?_⟩` and prove the remaining obligations. Conclude with `Matrix.BlockTriangular.mul (b := id) (fun i j hij => h1 i j hij) (fun i j hij => k1 i j hij) hab`. Rewrite using `[uni_mul h1 k1 a, h2, k2, one_mul]`.
+
+Rewrite using `[hfr', hfr, map_frameAct, frameAct_mul]`. Both sides reduce to the same expression.
+-/
 theorem TEqv_equivalence (D : D7) (Λ : LatV D) {T T' : D.host.E} (F : Fg D T) :
     Equivalence (TEqv D Λ F (T' := T')) := by
   refine ⟨fun F' => ?_, fun {F₁ F₂} h => ?_, fun {F₁ F₂ F₃} h h' => ?_⟩

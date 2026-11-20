@@ -25,20 +25,32 @@ structure IsAct : Prop where
 
 variable {ρ}
 
+/- English proof (translation)
+Use `h.add 0 0 x` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `mul_eq_left.1 this.symm`.
+-/
 theorem IsAct.zero (h : IsAct ρ) (x : M) : ρ 0 x = 1 := by
   have := h.add 0 0 x
   rw [add_zero] at this
   exact mul_eq_left.1 this.symm
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [Nat.cast_zero, h.zero, pow_zero]`. Consider the case `succ n ih => rw [Nat.cast_succ, h.add, ih, h.one, pow_succ]`.
+-/
 theorem IsAct.natCast (h : IsAct ρ) (n : ℕ) (x : M) : ρ (n : O) x = x ^ n := by
   induction n with
   | zero => rw [Nat.cast_zero, h.zero, pow_zero]
   | succ n ih => rw [Nat.cast_succ, h.add, ih, h.one, pow_succ]
 
+/- English proof (translation)
+Rewrite using `[h.add, h.mul, h.natCast, hx, map_one, _root_.mul_one]`.
+-/
 theorem IsAct.add_mul_eq (h : IsAct ρ) {N : ℕ} {x : M} (hx : x ^ N = 1) (a c : O) :
     ρ (a + (N : O) * c) x = ρ a x := by
   rw [h.add, h.mul, h.natCast, hx, map_one, _root_.mul_one]
 
+/- English proof (translation)
+Use `h.add (a - b) b x` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Rewrite using `[this, mul_inv_cancel_right]`.
+-/
 theorem IsAct.sub (h : IsAct ρ) (a b : O) (x : M) : ρ (a - b) x = ρ a x * (ρ b x)⁻¹ := by
   have := h.add (a - b) b x
   rw [sub_add_cancel] at this
@@ -46,10 +58,16 @@ theorem IsAct.sub (h : IsAct ρ) (a b : O) (x : M) : ρ (a - b) x = ρ a x * (ρ
 
 def comb (ρ : O → M →* M) (u : Fin 2 → M) (a b : O) : M := ρ a (u 0) * ρ b (u 1)
 
+/- English proof (translation)
+Rewrite using `[comb, mul_pow, ← map_pow, ← map_pow, hu, hu, map_one, map_one, _root_.mul_one]`.
+-/
 theorem comb_pow (h : IsAct ρ) {N : ℕ} {u : Fin 2 → M} (hu : ∀ i, u i ^ N = 1) (a b : O) :
     comb ρ u a b ^ N = 1 := by
   rw [comb, mul_pow, ← map_pow, ← map_pow, hu, hu, map_one, map_one, _root_.mul_one]
 
+/- English proof (translation)
+Simplify using `only [comb]`. Rewrite using `[h.sub, h.sub, mul_inv, _root_.mul_mul_mul_comm]`.
+-/
 theorem comb_sub (h : IsAct ρ) (u : Fin 2 → M) (a b a' b' : O) :
     comb ρ u (a - a') (b - b') = comb ρ u a b * (comb ρ u a' b')⁻¹ := by
   simp only [comb]
@@ -60,24 +78,39 @@ variable (O) in
 def rep (N : ℕ) : O ⧸ Ideal.span {(N : O)} → O :=
   Function.surjInv (Ideal.Quotient.mk_surjective (I := Ideal.span {(N : O)}))
 
+/- English proof (translation)
+The claim follows from `Function.surjInv_eq _ q`.
+-/
 theorem mk_rep (N : ℕ) (q : O ⧸ Ideal.span {(N : O)}) : Ideal.Quotient.mk _ (rep O N q) = q :=
   Function.surjInv_eq _ q
 
+/- English proof (translation)
+Establish `h` using `mk_rep N (Ideal.Quotient.mk (Ideal.span {(N : O)}) a)`. Rewrite `h` using `[Ideal.Quotient.eq, Ideal.mem_span_singleton]`. Take `⟨c, hc⟩` from `h`. Conclude with `⟨c, by rw [← hc]; ring⟩`.
+-/
 theorem exists_rep_eq (N : ℕ) (a : O) : ∃ c, rep O N (Ideal.Quotient.mk _ a) = a + (N : O) * c := by
   have h := mk_rep N (Ideal.Quotient.mk (Ideal.span {(N : O)}) a)
   rw [Ideal.Quotient.eq, Ideal.mem_span_singleton] at h
   obtain ⟨c, hc⟩ := h
   exact ⟨c, by rw [← hc]; ring⟩
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `exists_rep_eq N a`. Take `⟨d, hd⟩` from `exists_rep_eq N b`. Rewrite using `[comb, comb, hc, hd, h.add_mul_eq (hu 0), h.add_mul_eq (hu 1)]`.
+-/
 theorem comb_rep (h : IsAct ρ) {N : ℕ} {u : Fin 2 → M} (hu : ∀ i, u i ^ N = 1) (a b : O) :
     comb ρ u (rep O N (Ideal.Quotient.mk _ a)) (rep O N (Ideal.Quotient.mk _ b)) = comb ρ u a b := by
   obtain ⟨c, hc⟩ := exists_rep_eq N a
   obtain ⟨d, hd⟩ := exists_rep_eq N b
   rw [comb, comb, hc, hd, h.add_mul_eq (hu 0), h.add_mul_eq (hu 1)]
 
+/- English proof (translation)
+Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`.
+-/
 theorem mk_eq_zero_iff (N : ℕ) (a : O) : Ideal.Quotient.mk (Ideal.span {(N : O)}) a = 0 ↔ (N : O) ∣ a := by
   rw [Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Use `hne (Ideal.Quotient.mk _ a, Ideal.Quotient.mk _ b) (fun h0 => hn ?_) ((comb_rep h hu a b).trans hab)` and prove the remaining obligations. Rewrite `h0` using `[Prod.ext_iff]`. Conclude with `⟨(mk_eq_zero_iff N a).1 h0.1, (mk_eq_zero_iff N b).1 h0.2⟩`.
+-/
 theorem inj_of_ne (h : IsAct ρ) {N : ℕ} {u : Fin 2 → M} (hu : ∀ i, u i ^ N = 1)
     (hne : ∀ q : (O ⧸ Ideal.span {(N : O)}) × (O ⧸ Ideal.span {(N : O)}), q ≠ 0 →
       comb ρ u (rep O N q.1) (rep O N q.2) ≠ 1) (a b : O) (hab : comb ρ u a b = 1) :
@@ -91,6 +124,11 @@ def combQ (h : IsAct ρ) {N : ℕ} {u : Fin 2 → M} (hu : ∀ i, u i ^ N = 1)
     (q : (O ⧸ Ideal.span {(N : O)}) × (O ⧸ Ideal.span {(N : O)})) : {y : M // y ^ N = 1} :=
   ⟨comb ρ u (rep O N q.1) (rep O N q.2), comb_pow h hu _ _⟩
 
+/- English proof (translation)
+Introduce `q q' hqq`. Establish `e : comb ρ u (rep O N q.1 - rep O N q'.1) (rep O N q.2 - rep O N q'.2) = 1`. Rewrite using `[comb_sub h, mul_inv_eq_one]`. Conclude with `congrArg Subtype.val hqq`. Take `⟨h1, h2⟩` from `hinj _ _ e`.
+
+Rewrite `h1`, `h2` using `[← mk_eq_zero_iff, map_sub, mk_rep, mk_rep, sub_eq_zero]`. Conclude with `Prod.ext h1 h2`.
+-/
 theorem combQ_injective (h : IsAct ρ) {N : ℕ} {u : Fin 2 → M} (hu : ∀ i, u i ^ N = 1)
     (hinj : ∀ a b, comb ρ u a b = 1 → (N : O) ∣ a ∧ (N : O) ∣ b) : Function.Injective (combQ h hu) := by
   intro q q' hqq
@@ -101,12 +139,20 @@ theorem combQ_injective (h : IsAct ρ) {N : ℕ} {u : Fin 2 → M} (hu : ∀ i, 
   rw [← mk_eq_zero_iff, map_sub, mk_rep, mk_rep, sub_eq_zero] at h1 h2
   exact Prod.ext h1 h2
 
+/- English proof (translation)
+Introduce and unpack `⟨y, hy⟩`. Take `⟨a, b, rfl⟩` from `hsurj y hy`. Conclude with `⟨(Ideal.Quotient.mk _ a, Ideal.Quotient.mk _ b), Subtype.ext (comb_rep h hu a b)⟩`.
+-/
 theorem combQ_surjective (h : IsAct ρ) {N : ℕ} {u : Fin 2 → M} (hu : ∀ i, u i ^ N = 1)
     (hsurj : ∀ y, y ^ N = 1 → ∃ a b, y = comb ρ u a b) : Function.Surjective (combQ h hu) := by
   rintro ⟨y, hy⟩
   obtain ⟨a, b, rfl⟩ := hsurj y hy
   exact ⟨(Ideal.Quotient.mk _ a, Ideal.Quotient.mk _ b), Subtype.ext (comb_rep h hu a b)⟩
 
+/- English proof (translation)
+Establish `hg : Function.Bijective (combQ h hp)` using `⟨combQ_injective h hp hpinj, combQ_surjective h hp hpsurj⟩`. Set `e` to `Equiv.ofBijective _ hg`. Use `haveI : Finite {y : M // y ^ N = 1} := Finite.of_equiv _ e`. Establish `hf : Function.Bijective (combQ h hu)` using `(combQ_injective h hu huinj).bijective_of_nat_card_le (Nat.card_congr e).ge`. Introduce `y hy`.
+
+Take `⟨q, hq⟩` from `hf.2 ⟨y, hy⟩`. Conclude with `⟨_, _, (congrArg Subtype.val hq).symm⟩`.
+-/
 theorem surj_of_basis (h : IsAct ρ) {N : ℕ} [Finite (O ⧸ Ideal.span {(N : O)})] {u p : Fin 2 → M}
     (hu : ∀ i, u i ^ N = 1) (hp : ∀ i, p i ^ N = 1)
     (huinj : ∀ a b, comb ρ u a b = 1 → (N : O) ∣ a ∧ (N : O) ∣ b)
@@ -148,20 +194,34 @@ def ptAct {S : Scheme.{0}} (X : Obj F 𝔠 S) (T : Over S) (a : 𝓞 F) : (T ⟶
     haveI := X.rm.hom a
     exact MonObj.mul_comp x y _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ptAct_apply {S : Scheme.{0}} (X : Obj F 𝔠 S) (T : Over S) (a : 𝓞 F) (x : T ⟶ X.A) :
     ptAct X T a x = x ≫ X.rm.act a := rfl
 
+/- English proof (translation)
+Rewrite using `[ptAct_apply, ptAct_apply, ptAct_apply, X.rm.add, MonObj.comp_mul]`. Use `one x := by rw [ptAct_apply, X.rm.one, Category.comp_id]`. Use `mul a b x := by rw [ptAct_apply, ptAct_apply, ptAct_apply, X.rm.mul, Category.assoc]`.
+-/
 theorem isAct_ptAct {S : Scheme.{0}} (X : Obj F 𝔠 S) (T : Over S) : IsAct (ptAct X T) where
   add a b x := by
     rw [ptAct_apply, ptAct_apply, ptAct_apply, X.rm.add, MonObj.comp_mul]
   one x := by rw [ptAct_apply, X.rm.one, Category.comp_id]
   mul a b x := by rw [ptAct_apply, ptAct_apply, ptAct_apply, X.rm.mul, Category.assoc]
 
+/- English proof (translation)
+Simplify using `only [comb, ptAct_apply]`. Rewrite using `[MonObj.comp_mul, Category.assoc, Category.assoc]`.
+-/
 theorem comp_comb {S : Scheme.{0}} (X : Obj F 𝔠 S) {T T' : Over S} (g : T' ⟶ T) (u : Fin 2 → (T ⟶ X.A))
     (a b : 𝓞 F) : g ≫ comb (ptAct X T) u a b = comb (ptAct X T') (fun i => g ≫ u i) a b := by
   simp only [comb, ptAct_apply]
   rw [MonObj.comp_mul, Category.assoc, Category.assoc]
 
+/- English proof (translation)
+Use `haveI := X.ab`. Establish `hu : IsUnit (N : Γ(Sp R, ⊤))`. Simplify using `using hN.map (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom`. Take `⟨⟨h1, h2⟩, h3, h4⟩` from `GlobalTheory.GrpTangent.finiteEtale_mulN_torsion X.A hu`. Establish `e : Out.mulA X.A N = mulN X.A N` using `(GlobalTheory.GrpTangent.mulN_eq_pow X.A N).symm`.
+
+Rewrite using `[e]`. Use `haveI := h2`. Conclude with `⟨⟨h1, inferInstance⟩, h3, h4⟩`.
+-/
 theorem finEt {R : Type} [CommRing R] (X : Obj F 𝔠 (Sp R)) {N : ℕ} (hN : IsUnit (N : R)) :
     (IsFinite (Out.mulA X.A N).left ∧ Flat (Out.mulA X.A N).left) ∧
       IsFinite (torsion X.A N).hom ∧ Etale (torsion X.A N).hom := by
@@ -174,6 +234,9 @@ theorem finEt {R : Type} [CommRing R] (X : Obj F 𝔠 (Sp R)) {N : ℕ} (hN : Is
   haveI := h2
   exact ⟨⟨h1, inferInstance⟩, h3, h4⟩
 
+/- English proof (translation)
+Take `⟨U, hU, HU⟩` from `GlobalTheory.TorsionSections.clopenCond_torsion_eq ha hb`. Take `⟨e, he, H⟩` from `GlobalTheory.exists_isIdempotentElem_range_spMap_subset (B := B) (U := (U : Set (Over.mk (spMap φ ≫ 𝟙 (Sp R))).left)) ⟨hU, U.isOpen⟩`. Use `⟨e, he, fun T _ χ => (H T χ).trans ?_⟩` and prove the remaining obligations. Use `(HU (Over.mk (spMap χ ≫ spMap φ ≫ 𝟙 (Sp R))) (Over.homMk (spMap χ) rfl)).symm.trans ?_` and prove the remaining obligations. Conclude with `⟨fun h => congrArg CommaMorphism.left h, fun h => Over.OverMorphism.ext h⟩`.
+-/
 theorem exists_idem {R B : Type} [CommRing R] [CommRing B] (X : Obj F 𝔠 (Sp R)) {N : ℕ}
     [IsFinite (torsion X.A N).hom] [Etale (torsion X.A N).hom] (φ : R →+* B)
     (a b : Over.mk (spMap φ ≫ 𝟙 (Sp R)) ⟶ X.A) (ha : a ^ N = 1) (hb : b ^ N = 1) :
@@ -186,6 +249,11 @@ theorem exists_idem {R B : Type} [CommRing R] [CommRing B] (X : Obj F 𝔠 (Sp R
   refine (HU (Over.mk (spMap χ ≫ spMap φ ≫ 𝟙 (Sp R))) (Over.homMk (spMap χ) rfl)).symm.trans ?_
   exact ⟨fun h => congrArg CommaMorphism.left h, fun h => Over.OverMorphism.ext h⟩
 
+/- English proof (translation)
+Set `Φ₀ : (Z ⟶ G') → (Over.mk (Z.hom ≫ f) ⟶ G)` to `fun x => Over.homMk (x.left ≫ φ) (by show (x.left ≫ φ) ≫ G.hom = Z.hom ≫ f`. Rewrite using `[Category.assoc, h.1.w, ← Category.assoc, Over.w x])`. Set `Φ : (Z ⟶ G') →ₙ* (Over.mk (Z.hom ≫ f) ⟶ G)` to `⟨Φ₀, fun x y => Over.OverMorphism.ext (h.2 Z x y (Φ₀ x) (Φ₀ y) rfl rfl).symm⟩`. Establish `hinj : Function.Injective Φ` using `fun x y hxy => Over.OverMorphism.ext (h.1.hom_ext (congrArg CommaMorphism.left hxy) (by rw [Over.w x, Over.w y]))`. Establish `hsurj : Function.Surjective Φ` using `fun x₀ => ⟨Over.homMk (h.1.lift x₀.left Z.hom (Over.w x₀)) (h.1.lift_snd _ _ _), Over.OverMorphism.ext (h.1.lift_fst _ _ _)⟩`.
+
+Conclude with `⟨MulEquiv.ofBijective Φ ⟨hinj, hsurj⟩, fun x => rfl⟩`.
+-/
 theorem ptEquiv {S S' : Scheme.{0}} {G' : Over S'} {G : Over S} [GrpObj G'] [GrpObj G]
     {f : S' ⟶ S} {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) (Z : Over S') :
     ∃ e : (Z ⟶ G') ≃* (Over.mk (Z.hom ≫ f) ⟶ G), ∀ x, (e x).left = x.left ≫ φ := by
@@ -210,14 +278,23 @@ namespace GlobalTheory.RealMult.LevFlat
 
 variable {R B R' Ω : Type} [CommRing R] [CommRing B] [CommRing R'] [CommRing Ω]
 
+/- English proof (translation)
+Rewrite using `[spMap_comp, Category.comp_id, Category.id_comp]`.
+-/
 theorem spMap_eq₁ (φ : R →+* B) (lo : B →+* R') :
     spMap lo ≫ spMap φ ≫ 𝟙 (Sp R) = 𝟙 (Sp R') ≫ spMap (lo.comp φ) := by
   rw [spMap_comp, Category.comp_id, Category.id_comp]
 
+/- English proof (translation)
+Rewrite using `[spMap_comp, spMap_comp, Category.comp_id, Category.assoc]`.
+-/
 theorem spMap_eq₂ (φ : R →+* B) (lo : B →+* R') (χ : R' →+* Ω) :
     spMap (χ.comp lo) ≫ spMap φ ≫ 𝟙 (Sp R) = spMap χ ≫ spMap (lo.comp φ) := by
   rw [spMap_comp, spMap_comp, Category.comp_id, Category.assoc]
 
+/- English proof (translation)
+Rewrite using `[spMap_comp, Category.assoc]`.
+-/
 theorem spMap_eq₃ {Y : Scheme.{0}} (lo : B →+* R') (χ : R' →+* Ω) (x : Sp B ⟶ Y) :
     spMap χ ≫ spMap lo ≫ x = spMap (χ.comp lo) ≫ x := by
   rw [spMap_comp, Category.assoc]
@@ -228,6 +305,51 @@ namespace GlobalTheory.RealMult
 
 open LevFlat
 
+/- English proof (translation)
+Introduce `F _ _ _ 𝔠 N hN1 R _ hN X`. Take `⟨⟨hf1, hf2⟩, ht1, ht2⟩` from `finEt X hN`. Use `haveI := hf1`. Use `haveI := hf2`. Use `haveI := ht1`.
+
+Use `haveI := ht2`. Use `haveI : Finite (𝓞 F ⧸ Ideal.span {((N : ℕ) : 𝓞 F)}) := Ideal.finiteQuotientOfFreeOfNeBot _ (by`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `(by omega : N ≠ 0))` after adjusting the coercions. Take `⟨B, _, φ, w, hφ, hw, hU⟩` from `GlobalTheory.TorsTuple.exists_tuple X.A N R (𝟙 (Sp R)) (Fin 2)`.
+
+Establish `hρ` using `isAct_ptAct X (Over.mk (spMap φ ≫ 𝟙 (Sp R)))`. Set `J` to `{q : (𝓞 F ⧸ Ideal.span {((N : ℕ) : 𝓞 F)}) × (𝓞 F ⧸ Ideal.span {((N : ℕ) : 𝓞 F)}) // q ≠ 0}`. Use `haveI : Fintype J := Fintype.ofFinite J`. Set `c : J → (Over.mk (spMap φ ≫ 𝟙 (Sp R)) ⟶ X.A)` to `fun q => comb (ptAct X _) w (rep (𝓞 F) N q.1.1) (rep (𝓞 F) N q.1.2)`. Establish `hc : ∀ q, c q ^ N = 1` using `fun q => comb_pow hρ hw _ _`.
+
+Use `choose f hf Hf using fun q : J => exists_idem X φ (c q) 1 (hc q) (one_pow N)`. Set `e : B` to `∏ q, (1 - f q)`. Establish `hne : ∀ (K : Type) [Field K] (χ : B →+* K), IsUnit (χ e) → ∀ q : J, ¬ spMap χ ≫ (c q).left = spMap χ ≫ (1 : Over.mk (spMap φ ≫ 𝟙 (Sp R)) ⟶ X.A).left`. Introduce `K _ χ hu q hq`. Establish `h1 : IsUnit (χ (1 - f q))` using `isUnit_of_dvd_unit (map_dvd χ (Finset.dvd_prod_of_mem (fun q => 1 - f q) (Finset.mem_univ q))) hu`.
+
+Rewrite `h1` using `[map_sub, map_one, (Hf q K χ).2 hq, sub_self]`. Conclude with `not_isUnit_zero h1`. Establish `hunit : ∀ (K : Type) [Field K] (χ : B →+* K), (∀ q : J, ¬ spMap χ ≫ (c q).left = spMap χ ≫ (1 : Over.mk (spMap φ ≫ 𝟙 (Sp R)) ⟶ X.A).left) → IsUnit (χ e)`. Introduce `K _ χ H`. Rewrite using `[isUnit_iff_ne_zero, map_prod]`.
+
+Use `Finset.prod_ne_zero_iff.2 fun q _ => ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_one, sub_ne_zero]`. Introduce `h`. Conclude with `H q ((Hf q K χ).1 h.symm)`. Establish `hind : ∀ (K : Type) [Field K] (s : Sp K ⟶ Sp R) (g : Over.mk s ⟶ Over.mk (spMap φ ≫ 𝟙 (Sp R))) (χ : B →+* K), IsUnit (χ e) → g.left = spMap χ → ∀ q : J, comb (ptAct X (Over.mk s)) (fun i => g ≫ w i) (rep (𝓞 F) N q.1.1) (rep (𝓞 F) N q.1.2) ≠ 1`.
+
+Introduce `K _ s g χ hu hg q h1`. Use `hne K χ hu q ?_` and prove the remaining obligations. Establish `h2 : g ≫ c q = g ≫ 1` using `by rw [MonObj.comp_one, comp_comb]; exact h1`. Establish `h3 : g.left ≫ (c q).left = g.left ≫ (1 : Over.mk (spMap φ ≫ 𝟙 (Sp R)) ⟶ X.A).left` using `congrArg CommaMorphism.left h2`. Rewrite `h3` using `[hg]`.
+
+Conclude with `h3`. Set `R'` to `Localization.Away e`. Set `lo : B →+* R'` to `algebraMap B R'`. Establish `hlo : IsUnit (lo e)` using `IsLocalization.Away.algebraMap_isUnit e`. Set `σ : R →+* R'` to `lo.comp φ`.
+
+Establish `hff : σ.FaithfullyFlat`. Use `GlobalTheory.faithfullyFlat_points_baseChange_descent.1 _ _ _ (GlobalTheory.faithfullyFlat_points_baseChange_descent.2.1 _ _ φ e hφ) fun K _ _ ψ => ?_` and prove the remaining obligations. Establish `hK : (N : K) ≠ 0` using `by simpa using (hN.map ψ).ne_zero`. Take `⟨p, hp, hpinj, -⟩` from `hT F 𝔠 (Sp R) X N K (spMap ψ ≫ 𝟙 (Sp R)) hK`. Take `⟨χ, hχ, hu⟩` from `hU K ψ p hp`.
+
+Substitute `hχ` using the available equality. Set `g : Over.mk (spMap (χ.comp φ) ≫ 𝟙 (Sp R)) ⟶ Over.mk (spMap φ ≫ 𝟙 (Sp R))` to `Over.homMk (spMap χ) (by show spMap χ ≫ spMap φ ≫ 𝟙 (Sp R) = spMap (χ.comp φ) ≫ 𝟙 (Sp R)`. Rewrite using `[spMap_comp, Category.assoc])`. Establish `hgw : (fun i => g ≫ w i) = p` using `funext fun i => Over.OverMorphism.ext (hu i).symm`. Establish `hχe : IsUnit (χ e)`.
+
+Use `hunit K χ fun q hq => q.2 ?_` and prove the remaining obligations. Establish `h1 : comb (ptAct X _) (fun i => g ≫ w i) (rep (𝓞 F) N q.1.1) (rep (𝓞 F) N q.1.2) = 1`. Rewrite using `[← comp_comb]`. Establish `: g ≫ c q = g ≫ 1` using `Over.OverMorphism.ext hq`. Rewrite using `[this, MonObj.comp_one]`.
+
+Rewrite `h1` using `[hgw]`. Take `⟨d1, d2⟩` from `hpinj _ _ h1`. Rewrite `d1`, `d2` using `[← mk_eq_zero_iff, mk_rep]`. Conclude with `Prod.ext d1 d2`. Use `⟨IsLocalization.Away.lift e hχe, ?_⟩` and prove the remaining obligations.
+
+Use `show (IsLocalization.Away.lift e hχe).comp ((algebraMap B (Localization.Away e)).comp φ) = χ.comp φ`. Rewrite using `[← RingHom.comp_assoc, IsLocalization.Away.lift_comp]`. Take `⟨X', φ', hX'⟩` from `Obj.exists_isPullBy X (spMap σ)`. Use `⟨R', inferInstance, σ, X', φ', hff, hX', ?_⟩` and prove the remaining obligations. Establish `hEact : ∀ (Z : Over (Sp R')) (E : (Z ⟶ X'.A) ≃* (Over.mk (Z.hom ≫ spMap σ) ⟶ X.A)), (∀ x, (E x).left = x.left ≫ φ') → ∀ x a, E (x ≫ X'.rm.act a) = E x ≫ X.rm.act a`.
+
+Introduce `Z E hE x a`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hE, Over.comp_left, Over.comp_left, hE, Category.assoc, hX'.act a, Category.assoc]`. Take `⟨E1, hE1⟩` from `ptEquiv hX'.grp (𝟙_ (Over (Sp R')))`. Set `g0 : Over.mk ((𝟙_ (Over (Sp R'))).hom ≫ spMap σ) ⟶ Over.mk (spMap φ ≫ 𝟙 (Sp R))` to `Over.homMk (spMap lo) (by`.
+
+Conclude with `spMap_eq₁ φ lo)`. Set `pt : Fin 2 → (𝟙_ (Over (Sp R')) ⟶ X'.A)` to `fun i => E1.symm (g0 ≫ w i)`. Establish `hpt : ∀ i, pt i ^ N = 1` using `fun i => by show E1.symm (g0 ≫ w i) ^ N = 1`. Rewrite using `[← map_pow, ← MonObj.comp_pow, hw, MonObj.comp_one, map_one]`. Establish `hpt0 : ∀ i, (pt i).left ≫ φ' = spMap lo ≫ (w i).left` using `fun i => by`.
+
+Rewrite using `[← hE1, MulEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Establish `key : ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (t : Sp Ω ⟶ Sp R'), ∃ E : (Over.mk t ⟶ X'.A) ≃* (Over.mk (t ≫ spMap σ) ⟶ X.A), (∀ x a, E (x ≫ X'.rm.act a) = E x ≫ X.rm.act a) ∧ (∀ a b, comb (ptAct X _) (fun i => E (toUnit (Over.mk t) ≫ pt i)) a b = 1 → (N : 𝓞 F) ∣ a ∧ (N : 𝓞 F) ∣ b) …`. Introduce `Ω _ _ t`. Take `⟨E, hE⟩` from `ptEquiv hX'.grp (Over.mk t)`.
+
+Take `⟨χ', rfl⟩ : ∃ χ' : R' →+* Ω, spMap χ' = t` from `⟨(Spec.preimage t).hom, Spec.map_preimage t⟩`. Set `gt : Over.mk (spMap χ' ≫ spMap σ) ⟶ Over.mk (spMap φ ≫ 𝟙 (Sp R))` to `Over.homMk (spMap (χ'.comp lo)) (by`. Conclude with `spMap_eq₂ φ lo χ')`. Establish `hu : (fun i => E (toUnit (Over.mk (spMap χ')) ≫ pt i)) = fun i => gt ≫ w i` using `funext fun i => by`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Rewrite using `[hE, Over.comp_left, Over.toUnit_left, Category.assoc, hpt0, Over.comp_left]`. Conclude with `spMap_eq₃ lo χ' (w i).left`. Establish `hρ'` using `isAct_ptAct X (Over.mk (spMap χ' ≫ spMap σ))`. Establish `huN : ∀ i, (fun i => E (toUnit (Over.mk (spMap χ')) ≫ pt i)) i ^ N = 1` using `fun i => by show E (toUnit _ ≫ pt i) ^ N = 1`. Rewrite using `[← map_pow, ← MonObj.comp_pow, hpt, MonObj.comp_one, map_one]`.
+
+Establish `huinj : ∀ a b, comb (ptAct X _) (fun i => E (toUnit (Over.mk (spMap χ')) ≫ pt i)) a b = 1 → (N : 𝓞 F) ∣ a ∧ (N : 𝓞 F) ∣ b`. Use `inj_of_ne hρ' huN fun q hq => ?_` and prove the remaining obligations. Rewrite using `[hu]`. Conclude with `hind Ω _ gt (χ'.comp lo) (hlo.map χ') rfl ⟨q, hq⟩`. Establish `hΩ : (N : Ω) ≠ 0` using `by simpa using (hN.map (χ'.comp σ)).ne_zero`.
+
+Take `⟨p, hp, hpinj, hpsurj⟩` from `hT F 𝔠 (Sp R) X N Ω (spMap χ' ≫ spMap σ) hΩ`. Conclude with `⟨E, hEact _ E hE, huinj, surj_of_basis hρ' huN hp huinj hpinj hpsurj⟩`. Use `⟨⟨pt, hpt, fun Ω _ _ t a b hab => ?_, fun Ω _ _ t y hy => ?_⟩⟩` and prove the remaining obligations. Take `⟨E, hEa, hinj, -⟩` from `key Ω t`. Use `hinj a b ?_` and prove the remaining obligations.
+
+Use `congrArg E hab` as an intermediate fact. Rewrite `this` using `[map_mul, map_one, ← Category.assoc, ← Category.assoc, hEa, hEa]`. Conclude with `this`. Take `⟨E, hEa, -, hsurj⟩` from `key Ω t`. Take `⟨a, b, hab⟩` from `hsurj (E y) (by rw [← map_pow, hy, map_one])`.
+
+Use `⟨a, b, E.injective ?_⟩` and prove the remaining obligations. Rewrite using `[hab, map_mul, ← Category.assoc, ← Category.assoc, hEa, hEa]`. Both sides reduce to the same expression.
+-/
 theorem exists_faithfullyFlat_level_of (hT : TorsionFreeRankTwo) :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔠 : FracId F) (N : ℕ), 1 ≤ N →
       ∀ (R : Type) [CommRing R], IsUnit (N : R) → ∀ X : Obj F 𝔠 (Sp R),

@@ -21,11 +21,23 @@ section Norms
 
 variable {m n : Type} [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n]
 
+/- English proof (translation)
+Break down `hx.eq_or_lt with h0 | h0` into its components or cases. Rewrite using `[← h0]` and apply the resulting hypothesis. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem le_of_sq_le_mul {x c : ℝ} (hx : 0 ≤ x) (hc : 0 ≤ c) (h : x ^ 2 ≤ c * x) : x ≤ c := by
   rcases hx.eq_or_lt with h0 | h0
   · rwa [← h0]
   · nlinarith
 
+/- English proof (translation)
+Establish `hu : IsUnit H.det` using `(isUnit_iff_isUnit_det _).1 hH.isUnit`. Establish `hD : (dualGram H).PosDef` using `hH.inv.transpose`. Establish `h1 : ∀ v u : n → ℂ, form H v (star (H⁻¹ *ᵥ u)) = v ⬝ᵥ u` using `fun v u => by`. Rewrite using `[form, star_star, mulVec_mulVec, mul_nonsing_inv _ hu, one_mulVec]`. Establish `h2 : ∀ u : n → ℂ, gnorm H (star (H⁻¹ *ᵥ u)) = gnorm (dualGram H) u` using `fun u => by`.
+
+Rewrite using `[gnorm, gnorm, h1, form_eq_transpose, dualGram, transpose_transpose, ← Complex.conj_re, ← RCLike.star_def, star_dotProduct, star_star, dotProduct_comm]`. Use `opNorm_le_of_bound (opNorm_nonneg _ _ _) fun u => ?_` and prove the remaining obligations. Establish `e : (-Tᵀ) *ᵥ u = (-1 : ℂ) • (Tᵀ *ᵥ u)` using `by rw [neg_mulVec]; simp`. Rewrite using `[e, gnorm_smul hD.posSemidef, norm_neg, norm_one, one_mul]`. Use `le_of_sq_le_mul (gnorm_nonneg _ _) (mul_nonneg (opNorm_nonneg _ _ _) (gnorm_nonneg _ _)) ?_` and prove the remaining obligations.
+
+Use `set w := star (H⁻¹ *ᵥ (Tᵀ *ᵥ u)) with hw`. Establish `e2 : form H w w = form H (T *ᵥ w) (star (H⁻¹ *ᵥ u))` using `(h1 w (Tᵀ *ᵥ u)).trans (by rw [h1, dotProduct_mulVec, vecMul_transpose])`. Rewrite using `[← h2 (Tᵀ *ᵥ u), ← hw, gnorm_sq hH.posSemidef, e2]`. Use `(Complex.re_le_norm _).trans ((norm_form_le hH.posSemidef _ _).trans ?_)` and prove the remaining obligations. Rewrite using `[h2, mul_right_comm]`.
+
+Conclude with `mul_le_mul_of_nonneg_right (gnorm_mulVec_le hH hH.posSemidef T w) (gnorm_nonneg _ _)`.
+-/
 theorem opNorm_neg_transpose_le {H : Matrix n n ℂ} (hH : H.PosDef) (T : Matrix n n ℂ) :
     opNorm (dualGram H) (dualGram H) (-Tᵀ) ≤ opNorm H H T := by
   have hu : IsUnit H.det := (isUnit_iff_isUnit_det _).1 hH.isUnit
@@ -47,6 +59,9 @@ theorem opNorm_neg_transpose_le {H : Matrix n n ℂ} (hH : H.PosDef) (T : Matrix
   rw [h2, mul_right_comm]
   exact mul_le_mul_of_nonneg_right (gnorm_mulVec_le hH hH.posSemidef T w) (gnorm_nonneg _ _)
 
+/- English proof (translation)
+Establish `h : ∀ v, gnorm (Aᵀ * K * Aᴴᵀ) v = gnorm K (A *ᵥ v)` using `fun v => by`. Rewrite using `[gnorm, gnorm, form_mulVec, form]`. Use `opNorm_le_of_bound (opNorm_nonneg _ _ _) fun v => ?_` and prove the remaining obligations. Rewrite using `[h, h, mulVec_mulVec, Matrix.mul_assoc, mul_nonsing_inv_cancel_left _ _ hA, ← mulVec_mulVec]`. Conclude with `gnorm_mulVec_le hK hK.posSemidef F _`.
+-/
 theorem opNorm_conj_le {K A : Matrix n n ℂ} (hK : K.PosDef) (hA : IsUnit A.det) (F : Matrix n n ℂ) :
     opNorm (Aᵀ * K * Aᴴᵀ) (Aᵀ * K * Aᴴᵀ) (A⁻¹ * F * A) ≤ opNorm K K F := by
   have h : ∀ v, gnorm (Aᵀ * K * Aᴴᵀ) v = gnorm K (A *ᵥ v) := fun v => by
@@ -55,6 +70,21 @@ theorem opNorm_conj_le {K A : Matrix n n ℂ} (hK : K.PosDef) (hA : IsUnit A.det
   rw [h, h, mulVec_mulVec, Matrix.mul_assoc, mul_nonsing_inv_cancel_left _ _ hA, ← mulVec_mulVec]
   exact gnorm_mulVec_le hK hK.posSemidef F _
 
+/- English proof (translation)
+Use `set J : Matrix n m ℂ := (1 : Matrix n n ℂ).submatrix id j with hJ`. Establish `hN : (M.submatrix j j).PosDef` using `hM.submatrix hj`. Establish `hMJ : M * J = J * M.submatrix j j`. Use extensionality with `s b`. Distinguish the cases in `hs : s ∈ Set.range j`.
+
+Take `⟨a, rfl⟩` from `hs`. Simplify using `[hJ, mul_apply, one_apply, hj.eq_iff]`. Establish `: ∀ a, s ≠ j a` using `fun a h => hs ⟨a, h.symm⟩`. Simplify using `[hJ, mul_apply, one_apply, this, h0 s b hs]`. Establish `hstar : ∀ u, star (J *ᵥ u) = J *ᵥ star u` using `fun u => by`.
+
+Use extensionality with `s`. Simplify using `[hJ, mulVec, dotProduct, one_apply, apply_ite]`. Establish `hJJ : Jᵀ * J = 1`. Use extensionality with `a b`. Simplify using `[hJ, mul_apply, one_apply, hj.eq_iff]`.
+
+Establish `hT : T.submatrix j j = Jᵀ * T * J`. Use extensionality with `a b`. Simplify using `[hJ, mul_apply, one_apply]`. Establish `h1 : ∀ w u, form M w (J *ᵥ u) = form (M.submatrix j j) (Jᵀ *ᵥ w) u` using `fun w u => by`. Rewrite using `[form, form, hstar, mulVec_mulVec, hMJ, ← mulVec_mulVec, dotProduct_mulVec, mulVec_transpose]`.
+
+Establish `h2 : ∀ u, gnorm M (J *ᵥ u) = gnorm (M.submatrix j j) u` using `fun u => by`. Rewrite using `[gnorm, gnorm, h1, mulVec_mulVec, hJJ, one_mulVec]`. Use `opNorm_le_of_bound (opNorm_nonneg _ _ _) fun v => ?_` and prove the remaining obligations. Use `le_of_sq_le_mul (gnorm_nonneg _ _) (mul_nonneg (opNorm_nonneg _ _ _) (gnorm_nonneg _ _)) ?_` and prove the remaining obligations. Rewrite using `[gnorm_sq hN.posSemidef]`.
+
+Use `conv_lhs => enter [1, 2]`. Rewrite using `[hT, ← mulVec_mulVec, ← mulVec_mulVec]`. Rewrite using `[← h1]`. Use `(Complex.re_le_norm _).trans ((norm_form_le hM.posSemidef _ _).trans ?_)` and prove the remaining obligations. Rewrite using `[h2, ← h2 v]`.
+
+Conclude with `mul_le_mul_of_nonneg_right (gnorm_mulVec_le hM hM.posSemidef T _) (gnorm_nonneg _ _)`.
+-/
 theorem opNorm_submatrix_le {M : Matrix n n ℂ} (hM : M.PosDef) {j : m → n} (hj : Function.Injective j)
     (h0 : ∀ s b, s ∉ Set.range j → M s (j b) = 0) (T : Matrix n n ℂ) :
     opNorm (M.submatrix j j) (M.submatrix j j) (T.submatrix j j) ≤ opNorm M M T := by
@@ -86,6 +116,9 @@ theorem opNorm_submatrix_le {M : Matrix n n ℂ} (hM : M.PosDef) {j : m → n} (
   rw [h2, ← h2 v]
   exact mul_le_mul_of_nonneg_right (gnorm_mulVec_le hM hM.posSemidef T _) (gnorm_nonneg _ _)
 
+/- English proof (translation)
+Establish `h : ∀ v, gnorm ((c : ℂ) • H) v = √c * gnorm H v` using `fun v => by`. Rewrite using `[gnorm, gnorm, form_smul, Complex.re_ofReal_mul, Real.sqrt_mul hc]`. Use `opNorm_le_of_bound (opNorm_nonneg _ _ _) fun v => ?_` and prove the remaining obligations. Rewrite using `[h, h, mul_left_comm]`. Conclude with `mul_le_mul_of_nonneg_left (gnorm_mulVec_le hH hH.posSemidef T v) (Real.sqrt_nonneg _)`.
+-/
 theorem opNorm_smul_metric_le {H : Matrix n n ℂ} (hH : H.PosDef) {c : ℝ} (hc : 0 ≤ c) (T : Matrix n n ℂ) :
     opNorm ((c : ℂ) • H) ((c : ℂ) • H) T ≤ opNorm H H T := by
   have h : ∀ v, gnorm ((c : ℂ) • H) v = √c * gnorm H v := fun v => by
@@ -101,6 +134,11 @@ section Frames
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ E] [IsScalarTower ℝ ℂ E]
 variable {m n : Type} [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n]
 
+/- English proof (translation)
+Use `(eq_conn_of_compatible (H := fun x => (M x).submatrix j j) (z := z) ((isUnit_iff_isUnit_det _).1 (hM.submatrix hj).isUnit) ?_).symm` and prove the remaining obligations. Use extensionality with `a b`. Establish `h` using `congrFun (congrFun (conn_transpose_mul ((isUnit_iff_isUnit_det _).1 hM.isUnit) ξ) (j a)) (j b)`. Use `Eq.trans ?_ h` and prove the remaining obligations. Simplify using `only [mul_apply, transpose_apply, submatrix_apply]`.
+
+Use `Finset.sum_of_injOn j hj.injOn (fun _ _ => Finset.mem_univ _) (fun s _ hs => ?_) fun _ _ => rfl` and prove the remaining obligations. Rewrite using `[h0 s b (by simpa using hs), mul_zero]`.
+-/
 theorem conn_submatrix {M : E → Matrix n n ℂ} {z : E} (hM : (M z).PosDef) {j : m → n} (hj : Function.Injective j)
     (h0 : ∀ s b, s ∉ Set.range j → M z s (j b) = 0) (ξ : E) :
     conn (fun x => (M x).submatrix j j) z ξ = (conn M z ξ).submatrix j j := by
@@ -113,6 +151,9 @@ theorem conn_submatrix {M : E → Matrix n n ℂ} {z : E} (hM : (M z).PosDef) {j
   refine Finset.sum_of_injOn j hj.injOn (fun _ _ => Finset.mem_univ _) (fun s _ hs => ?_) fun _ _ => rfl
   rw [h0 s b (by simpa using hs), mul_zero]
 
+/- English proof (translation)
+Rewrite using `[curv, mdbar_congr (B := fun x => (conn M x ξ).submatrix j j) (h.mono fun x hx => conn_submatrix hx.1 hj hx.2 ξ)]`. Both sides reduce to the same expression.
+-/
 theorem curv_submatrix {M : E → Matrix n n ℂ} {z : E} {j : m → n} (hj : Function.Injective j)
     (h : ∀ᶠ x in 𝓝 z, (M x).PosDef ∧ ∀ s b, s ∉ Set.range j → M x s (j b) = 0) (ξ η : E) :
     curv (fun x => (M x).submatrix j j) z ξ η = (curv M z ξ η).submatrix j j := by
@@ -120,10 +161,16 @@ theorem curv_submatrix {M : E → Matrix n n ℂ} {z : E} {j : m → n} (hj : Fu
     (h.mono fun x hx => conn_submatrix hx.1 hj hx.2 ξ)]
   rfl
 
+/- English proof (translation)
+Rewrite using `[conn_smul (f := fun _ => c) (differentiableAt_const _) hc h hu]`. Simplify using the standard rewrite rules.
+-/
 theorem conn_const_smul {M : E → Matrix n n ℂ} {z : E} {c : ℝ} (hc : c ≠ 0) (h : MContDiffAt 1 M z)
     (hu : IsUnit (M z).det) (ξ : E) : conn (fun x => (c : ℂ) • M x) z ξ = conn M z ξ := by
   rw [conn_smul (f := fun _ => c) (differentiableAt_const _) hc h hu]; simp
 
+/- English proof (translation)
+Rewrite using `[curv, curv, mdbar_congr (B := fun x => conn M x ξ)]`. Use `filter_upwards [h.eventually_two, h.eventually_isUnit hu] with x h1 h2`. Conclude with `conn_const_smul hc (h1.of_le one_le_two) h2 ξ`.
+-/
 theorem curv_const_smul {M : E → Matrix n n ℂ} {z : E} {c : ℝ} (hc : c ≠ 0) (h : MContDiffAt 2 M z)
     (hu : IsUnit (M z).det) (ξ η : E) : curv (fun x => (c : ℂ) • M x) z ξ η = curv M z ξ η := by
   rw [curv, curv, mdbar_congr (B := fun x => conn M x ξ)]
@@ -132,6 +179,13 @@ theorem curv_const_smul {M : E → Matrix n n ℂ} {z : E} {c : ℝ} (hc : c ≠
 
 end Frames
 
+/- English proof (translation)
+Establish `h1 : MContDiffAt 1 A 0` using `fun i k => (hA i k).contDiffAt.restrict_scalars ℝ`. Set `f : (Fin e → ℂ) → (Fin g → Fin g → ℂ × ℂ × ((Fin e → ℂ) →L[ℂ] ℂ))` to `fun z i k => (A z i k, (A z)⁻¹ i k, fderiv ℂ (fun x => A x i k) z)`. Establish `hf : ContinuousAt f 0` using `continuousAt_pi.2 fun i => continuousAt_pi.2 fun k => (h1 i k).continuousAt.prodMk ((h1.inv h0 i k).continuousAt.prodMk (hA i k).fderiv.continuousAt)`. Establish `hB : 0 ≤ ‖f 0‖ + 1` using `by positivity`. Use `⟨g * (‖f 0‖ + 1), by positivity, ?_⟩` and prove the remaining obligations.
+
+Use `filter_upwards [hf.norm.eventually_lt continuousAt_const (lt_add_one ‖f 0‖), h1.eventually_isUnit h0, eventually_all.2 fun i => eventually_all.2 fun k => (hA i k).eventually_analyticAt] with z hz hu ha`. Establish `hik : ∀ i k, ‖f z i k‖ ≤ ‖f 0‖ + 1` using `fun i k => (norm_le_pi_norm (f z i) k).trans ((norm_le_pi_norm (f z) i).trans hz.le)`. Apply the tactic sequence `refine ⟨hu, GlobalTheory.ConnPointwise.opNorm_one_le_of_entry _ hB fun i k => (norm_fst_le (f z i k)).trans (hik i k), GlobalTheory.ConnPointwise.opNorm_one_le_of_entry _ hB fun i k => (norm_fst_le (f z i k).2).trans ((norm_snd_le (f z i k)).trans (hik i k)), fun ξ => ?_⟩`. Rewrite using `[mul_assoc]`. Apply the tactic sequence `refine GlobalTheory.ConnPointwise.opNorm_one_le_of_entry _ (by positivity) fun i k => ?_`.
+
+Rewrite using `[mdel_apply, GlobalTheory.del_eq_fderiv (ha i k).differentiableAt]`. Conclude with `(fderiv ℂ (fun x => A x i k) z).le_of_opNorm_le ((norm_snd_le (f z i k).2).trans ((norm_snd_le (f z i k)).trans (hik i k))) ξ`.
+-/
 theorem holo_local_bounds {e g : ℕ} {A : (Fin e → ℂ) → Matrix (Fin g) (Fin g) ℂ}
     (hA : ∀ i k, AnalyticAt ℂ (fun z => A z i k) 0) (h0 : IsUnit (A 0).det) :
     ∃ B : ℝ, 0 ≤ B ∧ ∀ᶠ z in 𝓝 (0 : Fin e → ℂ), IsUnit (A z).det ∧ opNorm 1 1 (A z) ≤ B ∧ opNorm 1 1 (A z)⁻¹ ≤ B ∧
@@ -155,6 +209,15 @@ theorem holo_local_bounds {e g : ℕ} {A : (Fin e → ℂ) → Matrix (Fin g) (F
   exact (fderiv ℂ (fun x => A x i k) z).le_of_opNorm_le
     ((norm_snd_le (f z i k).2).trans ((norm_snd_le (f z i k)).trans (hik i k))) ξ
 
+/- English proof (translation)
+Use `(pi_norm_le_iff_of_nonneg (gnorm_nonneg _ _)).2 fun k => Real.le_sqrt_of_sq_le ?_` and prove the remaining obligations. Rewrite using `[form_modelGram, GlobalTheory.IndefiniteRowSideFullHecke.ModelDdcForms.modelAt]`. Use `le_trans ?_ (Finset.single_le_sum (fun l _ => ?_) (Finset.mem_univ k))` and prove the remaining obligations. Use `split_ifs with h`. Take `⟨i, hi⟩` from `h`.
+
+Establish `h0 : 0 < ‖z k‖` using `norm_pos_iff.2 (hz.2 i k hi)`. Establish `h1 : ‖z k‖ < 1` using `(norm_le_pi_norm z k).trans_lt (mem_ball_zero_iff.1 hz.1)`. Establish `ht : 0 < GlobalTheory.IndefiniteRowSideFullHecke.ModelDdcForms.tOf (z k)` using `GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram.tlog_pos (hz.2 i k hi) h1`. Establish `h2` using `(abs_lt.1 (Real.abs_log_mul_self_lt _ h0 h1.le)).1`. Establish `h3 : ‖z k‖ * GlobalTheory.IndefiniteRowSideFullHecke.ModelDdcForms.tOf (z k) ≤ 1`.
+
+Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.ModelDdcForms.tOf, ← mul_div_assoc, div_le_one (by positivity)]`. Use polynomial arithmetic with `[Real.pi_gt_three]`. Rewrite using `[le_div_iff₀ (by positivity), ← mul_pow]`. Conclude with `mul_le_of_le_one_right (sq_nonneg _) (pow_le_one₀ (by positivity) h3)`. Conclude with `le_rfl`.
+
+Apply the tactic sequence `split_ifs <;> positivity`.
+-/
 theorem norm_le_gnorm_modelGram {e m : ℕ} (σ : Fin m → Option (Fin e)) {z : Fin e → ℂ} (hz : z ∈ punct σ 1)
     (ξ : Fin e → ℂ) : ‖ξ‖ ≤ gnorm (modelGram σ z) ξ := by
   classical
@@ -179,6 +242,17 @@ section Bounds
 
 variable {e g q : ℕ} {V : Set (Fin e → ℂ)} {G : (Fin e → ℂ) → Matrix (Fin e) (Fin e) ℂ}
 
+/- English proof (translation)
+Establish `hY'` using `hY.isHermFrame`. Establish `hD` using `hY'.dual`. Establish `hDp : ∀ z ∈ V, (dualGram (Y z)).PosDef` using `fun z hz => (hY.posDef z hz).inv.transpose`. Establish `hAs : ∀ z ∈ V, ∀ k, MContDiffAt k A z` using `fun z hz k i l => (hA z hz i l).contDiffAt.restrict_scalars ℝ`. Establish `hA0 : ∀ z ∈ V, ∀ η, mdbar A z η = 0` using `fun z hz η => by`.
+
+Use extensionality with `i k`. Simplify using `[GlobalTheory.dbar_eq_zero (hA z hz i k).differentiableAt]`. Establish `hp : ∀ z ∈ V, ((A z)ᵀ * dualGram (Y z) * (A z)ᴴᵀ).PosDef` using `fun z hz => by`. Use `(hDp z hz).mul_mul_conjTranspose_same (B := (A z)ᵀ) ?_` and prove the remaining obligations. Conclude with `vecMul_injective_of_isUnit ((isUnit_iff_isUnit_det _).2 (by rw [det_transpose]; exact (hb z hz).1))`.
+
+Establish `one : (1 : Matrix (Fin g) (Fin g) ℂ).PosDef` using `PosDef.one`. Use `⟨⟨hY.isOpen, fun a b z hz => ((((hAs z hz _).transpose.mul (hD.mContDiffAt hz)).mul (hAs z hz _).conjTranspose.transpose) a b).contDiffWithinAt, hp⟩, fun z hz => ⟨one, (h1 z hz).2.1, fun ξ => ?_⟩, fun z hz => ⟨hp z hz, (h1 z hz).2.1, fun ξ η => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[conn_changeFrame (hD.one hz) (hD.isUnit z hz) (hAs z hz _) (hb z hz).1 (hA0 z hz), conn_dual (hY'.one hz) (hY'.isUnit z hz)]`. Take `⟨-, b1, b2, b3⟩` from `hb z hz`. Establish `h3` using `opNorm_neg_transpose_le one (conn Y z ξ)`.
+
+Rewrite `h3` using `[show dualGram (1 : Matrix (Fin g) (Fin g) ℂ) = 1 by simp [dualGram]]`. Establish `h4` using `h3.trans ((h1 z hz).2.2 ξ)`. Establish `h5` using `gnorm_nonneg (G z) ξ`. Establish `h6` using `(opNorm_mul_le one one one.posSemidef _ _).trans (mul_le_mul h4 b1 (opNorm_nonneg _ _ _) (by positivity))`. Establish `h7` using `(opNorm_add_le one one.posSemidef _ _).trans (add_le_add h6 (b3 ξ))`.
+
+Conclude with `(opNorm_mul_le one one one.posSemidef _ _).trans ((mul_le_mul b2 h7 (opNorm_nonneg _ _ _) hB).trans_eq (by ring))`. Rewrite using `[curv_changeFrame (hD.two hz) (hD.isUnit z hz) (hAs z hz _) (hb z hz).1 (mem_of_superset (hY.isOpen.mem_nhds hz) hA0), curv_dual (hY'.two hz) (hY'.isUnit z hz)]`. Conclude with `(opNorm_conj_le (hDp z hz) (hb z hz).1 _).trans ((opNorm_neg_transpose_le (hY.posDef z hz) _).trans ((h2 z hz).2.2 ξ η))`.
+-/
 theorem bounds_dual_changeFrame {Y A : (Fin e → ℂ) → Matrix (Fin g) (Fin g) ℂ} {C B : ℝ} (hC : 0 ≤ C) (hB : 0 ≤ B)
     (hY : IsPosFrame V Y) (h1 : OneFormBound V (fun _ => 1) G (conn Y) C) (h2 : TwoFormBound V Y G (curv Y) C)
     (hA : ∀ z ∈ V, ∀ i k, AnalyticAt ℂ (fun x => A x i k) z)
@@ -217,6 +291,13 @@ theorem bounds_dual_changeFrame {Y A : (Fin e → ℂ) → Matrix (Fin g) (Fin g
     exact (opNorm_conj_le (hDp z hz) (hb z hz).1 _).trans
       ((opNorm_neg_transpose_le (hY.posDef z hz) _).trans ((h2 z hz).2.2 ξ η))
 
+/- English proof (translation)
+Establish `hN : IsPosFrame V fun x => (M x).submatrix j j` using `⟨hM.isOpen, fun a b => hM.smooth _ _, fun z hz => (hM.posDef z hz).submatrix hj⟩`. Establish `hN'` using `hN.isHermFrame`. Establish `hp : ∀ z ∈ V, (H z).PosDef` using `fun z hz => by`. Rewrite using `[hH z hz]; exact (hN.posDef z hz).smul (by exact_mod_cast hc)`. Establish `he : ∀ z ∈ V, H =ᶠ[𝓝 z] fun x => (c : ℂ) • (M x).submatrix j j` using `fun z hz => mem_of_superset (hM.isOpen.mem_nhds hz) hH`.
+
+Use `⟨⟨hM.isOpen, fun a b => ((hN.smooth a b).const_smul (c : ℂ)).congr fun z hz => by rw [hH z hz]; rfl, hp⟩, fun z hz => ⟨PosDef.one, (h1 z hz).2.1, fun ξ => ?_⟩, fun z hz => ⟨hp z hz, (h1 z hz).2.1, fun ξ η => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[conn_congr (he z hz), conn_const_smul hc.ne' (hN'.one hz) (hN'.isUnit z hz), conn_submatrix (hM.posDef z hz) hj (h0 z hz)]`. Establish `h3` using `opNorm_submatrix_le (PosDef.one (n := Fin g) (R := ℂ)) hj (fun s b hs => one_apply_ne fun h => hs ⟨b, h.symm⟩) (conn M z ξ)`. Rewrite `h3` using `[submatrix_one _ hj]`. Conclude with `h3.trans ((h1 z hz).2.2 ξ)`.
+
+Rewrite using `[curv_congr (he z hz), curv_const_smul hc.ne' (hN'.two hz) (hN'.isUnit z hz), curv_submatrix hj (mem_of_superset (hM.isOpen.mem_nhds hz) fun x hx => ⟨hM.posDef x hx, h0 x hx⟩), hH z hz]`. Conclude with `(opNorm_smul_metric_le (hN.posDef z hz) hc.le _).trans ((opNorm_submatrix_le (hM.posDef z hz) hj (h0 z hz) _).trans ((h2 z hz).2.2 ξ η))`.
+-/
 theorem bounds_block {M : (Fin e → ℂ) → Matrix (Fin g) (Fin g) ℂ} {H : (Fin e → ℂ) → Matrix (Fin q) (Fin q) ℂ}
     {C c : ℝ} (hc : 0 < c) {j : Fin q → Fin g} (hj : Function.Injective j) (hM : IsPosFrame V M)
     (h1 : OneFormBound V (fun _ => 1) G (conn M) C) (h2 : TwoFormBound V M G (curv M) C)
@@ -243,6 +324,11 @@ theorem bounds_block {M : (Fin e → ℂ) → Matrix (Fin g) (Fin g) ℂ} {H : (
     exact (opNorm_smul_metric_le (hN.posDef z hz) hc.le _).trans
       ((opNorm_submatrix_le (hM.posDef z hz) hj (h0 z hz) _).trans ((h2 z hz).2.2 ξ η))
 
+/- English proof (translation)
+Establish `hp : ∀ z ∈ V, (Y (φ z)).PosDef` using `fun z hz => (h2 _ (hW z hz)).1`. Use `⟨⟨hV, fun a b z hz => ((hY _ (hW z hz) a b).comp z ((hφ z hz).contDiffAt.restrict_scalars ℝ)).contDiffWithinAt, hp⟩, fun z hz => ⟨PosDef.one, hG z hz, fun ξ => ?_⟩, fun z hz => ⟨hp z hz, hG z hz, fun ξ η => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[conn_comp_holo ((hY _ (hW z hz)).of_le (by norm_cast)) (hφ z hz).differentiableAt]`. Use `((h1 _ (hW z hz)).2.2 _).trans ((mul_le_mul_of_nonneg_left (hS z hz ξ) hC).trans ?_)` and prove the remaining obligations. Rewrite using `[← mul_assoc]`.
+
+Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left (by nlinarith) hC) (gnorm_nonneg _ _)`. Rewrite using `[curv_comp_holo ((hY _ (hW z hz)).of_le (by norm_cast)) ((isUnit_iff_isUnit_det _).1 (hp z hz).isUnit) (hφ z hz).contDiffAt]`. Use `((h2 _ (hW z hz)).2.2 _ _).trans ?_` and prove the remaining obligations. Use `gnorm_nonneg (G z) ξ` as an intermediate fact. Conclude with `(mul_le_mul (mul_le_mul_of_nonneg_left (hS z hz ξ) hC) (hS z hz η) (gnorm_nonneg _ _) (by positivity)).trans_eq (by ring)`.
+-/
 theorem bounds_pullback {n : ℕ} {W : Set (Fin n → ℂ)} {Y : (Fin n → ℂ) → Matrix (Fin g) (Fin g) ℂ}
     {G' : (Fin n → ℂ) → Matrix (Fin n) (Fin n) ℂ} {φ : (Fin e → ℂ) → Fin n → ℂ} {C D : ℝ} (hC : 0 ≤ C) (hD : 1 ≤ D)
     (hV : IsOpen V) (hG : ∀ z ∈ V, (G z).PosSemidef) (hY : ∀ w ∈ W, MContDiffAt ∞ Y w)
@@ -270,6 +356,23 @@ end Bounds
 
 open GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram in
 
+/- English proof (translation)
+Introduce `e m σ ι _ μ ρ U H hρ hU ⟨n, k, hk, g, rk, τ₀, B, φ, Q, κ, hP, hφ, hφ0, hφ1, hQ, hcard, hli, hκ, hH⟩`. Take `⟨ρ₁, c₀, C, hρ₁, hρ₁', -, -, -, h1, h2⟩` from `GlobalTheory.HodgeChartRow.hodgeChartBounds_of_schur_lemW GlobalTheory.schur_block_lower_bound GlobalTheory.smul_inv_mul_posSemidef_uniform_bound n k g rk hk τ₀ B hP`. Take `⟨ρ₂, D, hρ₂, hρ₂', hS⟩` from `GlobalTheory.T.poincare_metric_bound_punctured_polydisc e m n k hk σ ρ φ hρ hφ hφ1 fun z hz => (hH z hz.1 (hU hz)).1`. Set `ε : (Σ τ, Fin (μ τ)) ≃ Fin g` to `Fintype.equivFinOfCardEq hcard`. Set `A : (Fin e → ℂ) → Matrix (Fin g) (Fin g) ℂ` to `fun z => of fun l i => Q (ε.symm i).1 z (ε.symm i).2 l`.
+
+Establish `hA : ∀ z ∈ Metric.ball (0 : Fin e → ℂ) ρ, ∀ i l, AnalyticAt ℂ (fun x => A x i l) z` using `fun z hz i l => GlobalTheory.SCV.analyticOnNhd_of_differentiableOn Metric.isOpen_ball (hQ _ _ _) z hz`. Establish `hφa` using `GlobalTheory.SCV.analyticOnNhd_of_differentiableOn Metric.isOpen_ball hφ`. Establish `hA0 : IsUnit (A 0).det`. Rewrite using `[← det_transpose, ← isUnit_iff_isUnit_det, ← linearIndependent_rows_iff_isUnit]`. Conclude with `hli.comp ε.symm ε.symm.injective`.
+
+Take `⟨b, hb0, hb⟩` from `holo_local_bounds (hA 0 (Metric.mem_ball_self hρ)) hA0`. Establish `hnear : ∀ᶠ z in 𝓝 (0 : Fin e → ℂ), ‖φ z‖ < ρ₁` using `(hφa 0 (Metric.mem_ball_self hρ)).continuousAt.norm.eventually_lt continuousAt_const (by simpa [hφ0] using hρ₁)`. Take `⟨ρ₃, hρ₃, h3⟩` from `Metric.eventually_nhds_iff_ball.1 (hb.and hnear)`. Use `set ρ' := min (min ρ₂ ρ₃) 1 with hρ'`. Establish `l2 : ρ' ≤ ρ₂` using `(min_le_left _ _).trans (min_le_left _ _)`.
+
+Establish `l3 : ρ' ≤ ρ₃` using `(min_le_left _ _).trans (min_le_right _ _)`. Establish `l0 : ρ' ≤ ρ` using `l2.trans hρ₂'`. Establish `hV : ∀ z ∈ punct σ ρ', z ∈ Metric.ball (0 : Fin e → ℂ) ρ ∧ z ∈ U` using `fun z hz => ⟨(punct_mono σ l0 hz).1, hU (punct_mono σ l0 hz)⟩`. Establish `hH'` using `fun z (hz : z ∈ punct σ ρ') => hH z (hV z hz).1 (hV z hz).2`. Take `⟨p0, p1, p2⟩` from `bounds_pullback (V := punct σ ρ') (G := modelGram σ) (φ := φ) (le_max_right C 0) (le_max_right D 1) (isOpen_punct σ ρ') (fun z _ => modelGram_posSemidef σ z) (fun w hw => (GlobalTheory.HodgeGramLocal.hodgeGram_local n k g rk hk τ₀ B hP w ⟨fun i => (hw.1 i).trans_le (hρ₁'.trans (b …`.
+
+Take `⟨q0, q1, q2⟩` from `bounds_dual_changeFrame (A := A) (by positivity) hb0 p0 p1 p2 (fun z hz => hA z (hV z hz).1) fun z hz => by`. Take `⟨⟨a1, a2, a3, a4⟩, -⟩` from `h3 z (punct_mono σ l3 hz).1`. Conclude with `⟨a1, a2, a3, fun ξ => (a4 ξ).trans (mul_le_mul_of_nonneg_left (norm_le_gnorm_modelGram σ (punct_mono σ (min_le_right _ _) hz) ξ) hb0)⟩`. Establish `hent : ∀ z ∈ punct σ ρ', ∀ (p p' : Σ τ, Fin (μ τ)), ((A z)ᵀ * dualGram (hodgeGram hk τ₀ B (φ z)) * (A z)ᴴᵀ) (ε p) (ε p') = (Q p.1 z * (hodgeGram hk τ₀ B (φ z))⁻¹ * (Q p'.1 z)ᴴ) p.2 p'.2` using `fun z hz p p' => by`. Establish `hs : (hodgeGram hk τ₀ B (φ z)).IsSymm` using `IsSymm.ext fun a c => by`.
+
+Establish `hB : ∀ i, (B i c a : ℝ) = B i a c` using `fun i => by simpa using (hP.psd i).isHermitian.apply a c`. Simplify using `[hodgeGram, imPeriod, Matrix.sum_apply, hB, (hP.symm _ (hH' z hz).1.1).apply]`. Rewrite using `[dualGram, transpose_nonsing_inv, hs.eq]`. Simplify using `only [mul_apply, transpose_apply, conjTranspose_apply, A, of_apply]`. Rewrite using `[ε.symm_apply_apply, ε.symm_apply_apply]`.
+
+Use `⟨ρ', _, lt_min (lt_min hρ₂ hρ₃) one_pos, l0, fun τ => bounds_block (j := fun a => ε ⟨τ, a⟩) (hκ τ) (ε.injective.comp sigma_mk_injective) q0 (q1.mono (le_max_left _ _)) (q2.mono (le_max_right _ _)) (fun z hz s a hs => ?_) fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨⟨τ', a'⟩, rfl⟩` from `ε.surjective s`. Establish `hne : τ' ≠ τ` using `by rintro rfl; exact hs ⟨a', rfl⟩`. Rewrite using `[hent z hz, (hH' z hz).2.2 τ' τ hne, Matrix.zero_apply]`. Rewrite using `[(hH' z hz).2.1 τ]`.
+
+Use `congr 1`. Use extensionality with `a a'`. Conclude with `(hent z hz ⟨τ, a⟩ ⟨τ, a'⟩).symm`.
+-/
 theorem blockModel_bounds : ∀ (e m : ℕ) (σ : Fin m → Option (Fin e)) (ι : Type) [Fintype ι] (μ : ι → ℕ) (ρ : ℝ) (U : Set (Fin e → ℂ)) (H : ∀ τ, (Fin e → ℂ) → Matrix (Fin (μ τ)) (Fin (μ τ)) ℂ), 0 < ρ → punct σ ρ ⊆ U → IsBlockModel ρ U H → ∃ ρ' C : ℝ, 0 < ρ' ∧ ρ' ≤ ρ ∧ ∀ τ, GlobalTheory.HermFrame.IsPosFrame (punct σ ρ') (H τ) ∧ GlobalTheory.HermFrame.OneFormBound (punct σ ρ') (fun _ => (1 : Matrix (Fin (μ τ)) (Fin (μ τ)) ℂ)) (modelGram σ) (GlobalTheory.HermFrame.conn (H τ)) C ∧ GlobalTheory.HermFrame.TwoFormBound (punct σ ρ') (H τ) (modelGram σ) (GlobalTheory.HermFrame.curv (H τ)) C := by
   intro e m σ ι _ μ ρ U H hρ hU ⟨n, k, hk, g, rk, τ₀, B, φ, Q, κ, hP, hφ, hφ0, hφ1, hQ, hcard, hli, hκ, hH⟩
   classical

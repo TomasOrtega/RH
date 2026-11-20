@@ -9,5 +9,8 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Mum.IntFam.existsUnique_over | exact GlobalTheory.Mum.IntFam.existsUnique_over | (intros; apply GlobalTheory.Mum.IntFam.existsUnique_over <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.existsUnique_fieldExtension : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegPre R) (k : ℕ) (F₀ : IntFam I D k) (F : Type) [Field F] [Algebra (FractionRing R) F], ∃! s : Fam D F k, F₀.Over s := by
   first | exact @GlobalTheory.Mum.IntFam.existsUnique_over | exact GlobalTheory.Mum.IntFam.existsUnique_over | (intros; apply GlobalTheory.Mum.IntFam.existsUnique_over <;> assumption)

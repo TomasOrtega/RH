@@ -6,6 +6,9 @@ import ReciprocityTheory.NeutralLocalFields.HilbertClassField
 import ReciprocityTheory.NeutralLocalFields.LocalFieldComparison.HilbertClassFieldA
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Neutral.HilbertClassField
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.addHom_complexConjugation_eq_zero | exact GlobalTheory.addHom_complexConjugation_eq_zero | (intros; apply GlobalTheory.addHom_complexConjugation_eq_zero <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.galoisAddHom_vanishes_complexConjugation : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [Algebra ℤ_[l] O],
     (l ≠ 2 ∨ InfinitePlace.nrRealPlaces E = 0) →

@@ -11,6 +11,13 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyReal E]
 private noncomputable def diagR (E : Type) [Field E] [NumberField E] [IsTotallyReal E] : E →+* TR.Rinf E :=
   (TR.pInf E).comp (algebraMap E (Ad E))
 
+/- English proof (translation)
+Establish `h : ((infDiag k : Ideles E) : AdeleRing (𝓞 E) E) = (algebraMap E (InfiniteAdeleRing E) k, 1)`. Unfold `infDiag`. Rewrite using `[MonoidHom.finsetProd_apply, Units.coe_prod]`. Set `ι : (∀ w : InfinitePlace E, w.Completion) →* AdeleRing (𝓞 E) E` to `MonoidHom.inl (InfiniteAdeleRing E) (FiniteAdeleRing (𝓞 E) E)`. Express the relevant statement in the definitionally equal form `∏ w : InfinitePlace E, ι (Pi.mulSingle w (algebraMap E w.Completion k)) = ι (fun w => algebraMap E w.Completion k)`.
+
+Rewrite using `[← map_prod, Finset.univ_prod_mulSingle]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[h]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = 1 - TR.infEq E 1 + TR.infEq E ((TR.infEq E).symm (algebraMap E (InfiniteAdeleRing E) k))`.
+
+Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `(1 : Af E) = 1 - 0 + 0`. Simplify using the standard rewrite rules.
+-/
 private theorem infDiag_eqR (k : Eˣ) : infDiag k = TR.infId E (Units.map (diagR E).toMonoidHom k) := by
   classical
   have h : ((infDiag k : Ideles E) : AdeleRing (𝓞 E) E) = (algebraMap E (InfiniteAdeleRing E) k, 1) := by
@@ -29,12 +36,20 @@ private theorem infDiag_eqR (k : Eˣ) : infDiag k = TR.infId E (Units.map (diagR
   · change (1 : Af E) = 1 - 0 + 0
     simp
 
+/- English proof (translation)
+Establish `hc : Continuous (TR.infEq E).symm` using `continuous_pi fun w => (InfinitePlace.Completion.isometryEquivRealOfIsReal (IsTotallyReal.isReal w)).continuous.comp (continuous_apply w)`. Conclude with `(TR.infEq E).symm.surjective.denseRange.comp (InfiniteAdeleRing.denseRange_algebraMap E) hc`.
+-/
 private theorem denseRange_diagR : DenseRange (diagR E) := by
   have hc : Continuous (TR.infEq E).symm := continuous_pi fun w =>
     (InfinitePlace.Completion.isometryEquivRealOfIsReal (IsTotallyReal.isReal w)).continuous.comp
       (continuous_apply w)
   exact (TR.infEq E).symm.surjective.denseRange.comp (InfiniteAdeleRing.denseRange_algebraMap E) hc
 
+/- English proof (translation)
+Use `dense_iff_inter_open.2 fun U hU ⟨u, hu⟩ => ?_` and prove the remaining obligations. Take `⟨k, v, hv, hk⟩` from `denseRange_diagR.exists_mem_open (Units.isOpenEmbedding_val.isOpenMap U hU) ⟨_, u, hu, rfl⟩`. Establish `h0 : k ≠ 0`. Introduce and unpack `rfl`. Conclude with `v.ne_zero (hk.trans (map_zero _))`.
+
+Conclude with `⟨v, hv, Units.mk0 k h0, Units.ext hk.symm⟩`.
+-/
 private theorem denseRange_unitsR : DenseRange (Units.map (diagR E).toMonoidHom) := by
   refine dense_iff_inter_open.2 fun U hU ⟨u, hu⟩ => ?_
   obtain ⟨k, v, hv, hk⟩ := denseRange_diagR.exists_mem_open (Units.isOpenEmbedding_val.isOpenMap U hU) ⟨_, u, hu, rfl⟩
@@ -43,6 +58,9 @@ private theorem denseRange_unitsR : DenseRange (Units.map (diagR E).toMonoidHom)
     exact v.ne_zero (hk.trans (map_zero _))
   exact ⟨v, hv, Units.mk0 k h0, Units.ext hk.symm⟩
 
+/- English proof (translation)
+Establish `hr` using `IsTotallyReal.isReal (InfinitePlace.mk φ)`. Establish `e : diagR E k (InfinitePlace.mk φ) = InfinitePlace.embedding_of_isReal hr k` using `InfinitePlace.Completion.extensionEmbeddingOfIsReal_coe hr (WithAbs.toAbs _ k)`. Rewrite using `[e, InfinitePlace.embedding_of_isReal_apply, InfinitePlace.embedding_mk_eq_of_isReal (InfinitePlace.isReal_mk_iff.1 hr)]`.
+-/
 private theorem diagR_mk (φ : E →+* ℂ) (k : E) : ((diagR E k (InfinitePlace.mk φ) : ℝ) : ℂ) = φ k := by
   have hr := IsTotallyReal.isReal (InfinitePlace.mk φ)
   have e : diagR E k (InfinitePlace.mk φ) = InfinitePlace.embedding_of_isReal hr k :=
@@ -50,6 +68,13 @@ private theorem diagR_mk (φ : E →+* ℂ) (k : E) : ((diagR E k (InfinitePlace
   rw [e, InfinitePlace.embedding_of_isReal_apply,
     InfinitePlace.embedding_mk_eq_of_isReal (InfinitePlace.isReal_mk_iff.1 hr)]
 
+/- English proof (translation)
+Establish `hc : ∀ v, Continuous fun u : (TR.Rinf E)ˣ => u.val v` using `fun v => (continuous_apply v).comp Units.continuous_val`. Establish `ho : IsOpen {u : (TR.Rinf E)ˣ | ∀ v, 0 < u.val v}`. Rewrite using `[Set.setOf_forall]`. Conclude with `isOpen_iInter_of_finite fun v => isOpen_lt continuous_const (hc v)`. Establish `hcl : IsClosed {u : (TR.Rinf E)ˣ | ((TR.chiInf χ u : ℂˣ) : ℂ) = ∏ φ : E →+* ℂ, ((u.val (InfinitePlace.mk φ) : ℝ) : ℂ) ^ n φ}` using `isClosed_eq (Units.continuous_val.comp (TR.continuous_chiInf χ)) (continuous_finsetProd _ fun φ _ => (Complex.continuous_ofReal.comp (hc _)).zpow₀ _ fun u => Or.inl (Complex.ofReal_ne_zero.2 (TR.unit_ne_zero u _)))`.
+
+Use `closure_minimal ?_ hcl (denseRange_unitsR.open_subset_closure_inter ho hu)` and prove the remaining obligations. Introduce and unpack `_ ⟨hk, k, rfl⟩`. Establish `h1` using `h k fun φ => by`. Establish `h2` using `hk (InfinitePlace.mk (Complex.ofRealHom.comp φ))`. Establish `h3` using `diagR_mk (Complex.ofRealHom.comp φ) (k : E)`.
+
+Conclude with `h2.trans_eq (Complex.ofReal_injective h3)`. Rewrite `h1` using `[HChar.inf, MonoidHom.comp_apply, infDiag_eqR]`. Use `h1.trans (Finset.prod_congr rfl fun φ _ => ?_)` and prove the remaining obligations. Conclude with `congrArg (· ^ n φ) (diagR_mk φ (k : E)).symm`.
+-/
 private theorem chiInf_pos {χ : HChar E} {n : (E →+* ℂ) → ℤ} (h : IsAlgPos χ n) (u : (TR.Rinf E)ˣ)
     (hu : ∀ v, 0 < u.val v) :
     ((TR.chiInf χ u : ℂˣ) : ℂ) = ∏ φ : E →+* ℂ, ((u.val (InfinitePlace.mk φ) : ℝ) : ℂ) ^ n φ := by
@@ -76,6 +101,13 @@ open Classical in
 private noncomputable def negAt (v : InfinitePlace E) : (TR.Rinf E)ˣ :=
   Units.map (MonoidHom.mulSingle (fun _ : InfinitePlace E => ℝ) v) (-1)
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `1 - TR.infEq E 1 + TR.infEq E (Pi.mulSingle v (-1)) = Pi.mulSingle v (-1)`. Rewrite using `[map_one, sub_self]`. Use `(zero_add _).trans (funext fun w => ?_)` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal w)).symm ((Pi.mulSingle v (-1) : TR.Rinf E) w) = _`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Rewrite using `[Pi.mulSingle_eq_same, Pi.mulSingle_eq_same, map_neg, map_one]`. Rewrite using `[Pi.mulSingle_eq_of_ne h, Pi.mulSingle_eq_of_ne h, map_one]`.
+
+Express the relevant statement in the definitionally equal form `(1 : Af E) - 0 + 0 = 1`. Simplify using the standard rewrite rules.
+-/
 private theorem infId_negAt (v : InfinitePlace E) : TR.infId E (negAt v) = ReciprocityTheory.Neutral.Bridge.HCFR.infIdele E v (-1) := by
   classical
   apply Units.ext
@@ -92,11 +124,29 @@ private theorem infId_negAt (v : InfinitePlace E) : TR.infId E (negAt v) = Recip
   · change (1 : Af E) - 0 + 0 = 1
     simp
 
+/- English proof (translation)
+Use `⟨fun φ ψ h => ?_, fun w => ⟨w.embedding, w.mk_embedding⟩⟩` and prove the remaining obligations. Rewrite using `[← InfinitePlace.embedding_mk_eq_of_isReal (IsTotallyReal.complexEmbedding_isReal φ), h, InfinitePlace.embedding_mk_eq_of_isReal (IsTotallyReal.complexEmbedding_isReal ψ)]`.
+-/
 private theorem bij_mk : Function.Bijective (InfinitePlace.mk : (E →+* ℂ) → InfinitePlace E) := by
   refine ⟨fun φ ψ h => ?_, fun w => ⟨w.embedding, w.mk_embedding⟩⟩
   rw [← InfinitePlace.embedding_mk_eq_of_isReal (IsTotallyReal.complexEmbedding_isReal φ), h,
     InfinitePlace.embedding_mk_eq_of_isReal (IsTotallyReal.complexEmbedding_isReal ψ)]
 
+/- English proof (translation)
+Set `s : (TR.Rinf E)ˣ` to `∏ v, if u.val v < 0 then negAt v else 1`. Establish `h1 : ∀ w, s.val w = if u.val w < 0 then -1 else 1` using `fun w => by`. Simplify using `only [s, Units.coe_prod, Finset.prod_apply]`. Rewrite using `[Finset.prod_eq_single w _ fun hw => absurd (Finset.mem_univ w) hw]`. Use `split_ifs`.
+
+Conclude with `Pi.mulSingle_eq_same (M := fun _ : InfinitePlace E => ℝ) w _`. Both sides reduce to the same expression. Introduce `v _ hv split_ifs`. Conclude with `Pi.mulSingle_eq_of_ne (M := fun _ : InfinitePlace E => ℝ) hv.symm _`. Both sides reduce to the same expression.
+
+Establish `h2 : ((TR.chiInf χ s : ℂˣ) : ℂ) = ∏ φ : E →+* ℂ, ((s.val (InfinitePlace.mk φ) : ℝ) : ℂ) ^ b`. Rewrite using `[bij_mk.prod_comp fun w => ((s.val w : ℝ) : ℂ) ^ b]`. Simplify using `only [h1]`. Simplify using `only [s, map_prod, Units.coe_prod]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations.
+
+Use `split_ifs`. Establish `e : TR.chiInf χ (negAt v) = χ.locInf v (-1)` using `congrArg χ.1 (infId_negAt v)`. Rewrite using `[e, hs]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+
+Establish `h3` using `chiInf_pos h (s * u) fun w => by`. Express the relevant statement in the definitionally equal form `0 < s.val w * u.val w`. Rewrite using `[h1]`. Use `split_ifs with hw`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite using `[one_mul]`. Conclude with `lt_of_le_of_ne (not_lt.1 hw) (TR.unit_ne_zero u w).symm`. Rewrite `h3` using `[map_mul, Units.val_mul]`. Use `mul_left_cancel₀ (TR.chiInf χ s).ne_zero (h3.trans ?_)` and prove the remaining obligations. Rewrite using `[h2, ← Finset.prod_mul_distrib]`.
+
+Use `Finset.prod_congr rfl fun φ _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_zpow, ← Complex.ofReal_mul]`. Both sides reduce to the same expression.
+-/
 private theorem chiInf_all {χ : HChar E} {b : ℤ} (h : IsAlgPos χ fun _ => b)
     (hs : ∀ v : InfinitePlace E, χ.locInf v (-1) = (-1) ^ b) (u : (TR.Rinf E)ˣ) :
     ((TR.chiInf χ u : ℂˣ) : ℂ) = ∏ φ : E →+* ℂ, ((u.val (InfinitePlace.mk φ) : ℝ) : ℂ) ^ b := by
@@ -138,6 +188,9 @@ private theorem chiInf_all {χ : HChar E} {b : ℤ} (h : IsAlgPos χ fun _ => b)
 
 end Real
 
+/- English proof (translation)
+Introduce `F _ _ _ χ b h hs k`. Rewrite using `[HChar.inf, MonoidHom.comp_apply, infDiag_eqR]`. Use `(chiInf_all h hs _).trans (Finset.prod_congr rfl fun φ _ => ?_)` and prove the remaining obligations. Conclude with `congrArg (· ^ b) (diagR_mk φ (k : F))`.
+-/
 theorem UpperTheory.heckeChar_algebraic_of_sign :
     UpperTheory.V.Af.Cr.AlgOfSign := by
   intro F _ _ _ χ b h hs k

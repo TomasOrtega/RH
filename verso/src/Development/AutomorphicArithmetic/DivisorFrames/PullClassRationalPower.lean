@@ -6,6 +6,15 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.CechPic GlobalTheory.ProjVar
 open GlobalTheory.VertCmp
 open scoped Classical
 
+/- English proof (translation)
+Introduce `X Z _ _ g hg L hL s N hN s' m hs hs' hu`. Establish `hP` using `presents_divOfRatSec hL hs`. Establish `hQ : Presents (m • divOfRatSec hL hs) (N.pull g) fun J => Units.map (SmallSec.fnMap g hg).toMonoidHom (s' (J PUnit.unit))`. Use `⟨LB.isLB_pull hN g, fun J K h => ?_, fun J x hx => ?_⟩` and prove the remaining obligations. Establish `le : (N.pull g).U J ⊓ (N.pull g).U K ≤ g ⁻¹ᵁ (N.U (J PUnit.unit) ⊓ N.U (K PUnit.unit))` using `fun y hy => ⟨mem_pull.1 hy.1, mem_pull.1 hy.2⟩`.
+
+Establish `hgg : (N.pull g).g J K = res le (pullU g _ (N.g (J PUnit.unit) (K PUnit.unit)))`. Simplify using `only [LB.pull, LB.LinComb, Fintype.prod_unique, zpow_one]`. Both sides reduce to the same expression. Establish `hZ : genericPoint Z ∈ N.U (J PUnit.unit) ⊓ N.U (K PUnit.unit)` using `gen_mem (x := g (genericPoint X)) (le h)`. Establish `e : fnOf _ h (res le (pullU g _ (N.g (J PUnit.unit) (K PUnit.unit)))).val = SmallSec.fnMap g hg (fnOf _ hZ (N.g (J PUnit.unit) (K PUnit.unit)).val)` using `(fnOf_resG le h _).trans (SmallSec.fnMap_fnOf g hg hZ (le h) _).symm`.
+
+Rewrite using `[hgg, e]`. Simplify using `only [Units.coe_map, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe]`. Rewrite using `[hs' _ _ hZ, map_mul]`. Take `⟨i, hi⟩` from `exists_chart hL x`. Use `((hP.isEqn i x hi).nsmul m).iff_unitAt.2 ?_` and prove the remaining obligations.
+
+Use `(hu x i (J PUnit.unit) hi (mem_pull.1 hx)).inv` as an intermediate fact. Rewrite `this` using `[inv_div]`. Simplify `this` using `only [Units.coe_map, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe, Units.val_pow_eq_pow_val]`. Conclude with `hQ.toPic_eq.symm.trans ((map_nsmul toPic m _).trans (congrArg (m • ·) hP.toPic_eq))`.
+-/
 theorem UpperTheory.pull_class_rational_power :
     ∀ (X Z : Scheme.{0}) [IsIntegral X] [IsIntegral Z] (g : X ⟶ Z) (hg : g (genericPoint X) ⤳ genericPoint Z) (L : LB X) (hL : L.IsLB) (s : L.ι → X.functionFieldˣ) (N : LB Z) (hN : N.IsLB) (s' : N.ι → Z.functionFieldˣ) (m : ℕ), IsRatSec L s → IsRatSec N s' → (∀ (x : X) (i : L.ι) (i' : N.ι), x ∈ L.U i → g x ∈ N.U i' → UnitAt x ((s i : X.functionField) ^ m / SmallSec.fnMap g hg (s' i' : Z.functionField))) → cls (N.pull g) (LB.isLB_pull hN g) = m • cls L hL := by
   intro X Z _ _ g hg L hL s N hN s' m hs hs' hu

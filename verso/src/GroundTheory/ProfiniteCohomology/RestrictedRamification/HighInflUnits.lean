@@ -17,11 +17,19 @@ section Primary
 
 variable {X Y : Type*} [AddCommGroup X] [AddCommGroup Y] {ℓ : ℕ} {f : X →+ Y}
 
+/- English proof (translation)
+Take `⟨m, hm, hmx⟩` from `h.1 x hx`. Conclude with `eq_zero_of_coprime_nsmul_eq_zero hm hmx hk`.
+-/
 theorem IsIsoModCoprime.eq_zero_of_pow_nsmul (h : IsIsoModCoprime ℓ f) {x : X} (hx : f x = 0) {k : ℕ}
     (hk : ℓ ^ k • x = 0) : x = 0 := by
   obtain ⟨m, hm, hmx⟩ := h.1 x hx
   exact eq_zero_of_coprime_nsmul_eq_zero hm hmx hk
 
+/- English proof (translation)
+Take `⟨m, hm, x, hx⟩` from `h.2 y`. Take `⟨u, w, huw⟩ : IsCoprime (m : ℤ) ((ℓ ^ k : ℕ) : ℤ)` from `Nat.isCoprime_iff_coprime.2 (hm.pow_right k)`. Establish `hy : f (u • x) = y`. Rewrite using `[map_zsmul, hx]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[add_smul, mul_smul w, natCast_zsmul, hk, smul_zero, add_zero]`. Use `_ = y := by rw [huw, one_smul]`. Take `⟨x', hx', hfx'⟩` from `exists_primary_map_eq f hℓ (hX (u • x)) (k := k) (by rw [hy]; exact hk)`. Conclude with `⟨x', hx', hfx'.trans hy⟩`.
+-/
 theorem IsIsoModCoprime.exists_pow_nsmul (h : IsIsoModCoprime ℓ f) (hℓ : ℓ.Prime) (hX : IsAddTorsion X)
     {y : Y} {k : ℕ} (hk : ℓ ^ k • y = 0) : ∃ x, (∃ j : ℕ, ℓ ^ j • x = 0) ∧ f x = y := by
   obtain ⟨m, hm, x, hx⟩ := h.2 y
@@ -41,10 +49,18 @@ def primaryComponentMap (ℓ : ℕ) (f : X →+ Y) :
     obtain ⟨k, hk⟩ := x.2
     exact ⟨k, (map_nsmul f _ _).symm.trans ((congrArg f hk).trans (map_zero f))⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_primaryComponentMap_apply (x : AddCommGroup.primaryComponent X ℓ) :
     (primaryComponentMap ℓ f x : Y) = f x :=
   rfl
 
+/- English proof (translation)
+Use `⟨(injective_iff_map_eq_zero _).2 fun x hx => ?_, fun y => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `x.2`. Conclude with `Subtype.ext (h.eq_zero_of_pow_nsmul (congrArg Subtype.val hx) hk)`. Take `⟨k, hk⟩` from `y.2`. Take `⟨x, ⟨j, hj⟩, hx⟩` from `h.exists_pow_nsmul hℓ hX hk`.
+
+Conclude with `⟨⟨x, j, hj⟩, Subtype.ext hx⟩`.
+-/
 theorem IsIsoModCoprime.bijective_primaryComponentMap (h : IsIsoModCoprime ℓ f) (hℓ : ℓ.Prime)
     (hX : IsAddTorsion X) : Function.Bijective (primaryComponentMap ℓ f) := by
   refine ⟨(injective_iff_map_eq_zero _).2 fun x hx => ?_, fun y => ?_⟩
@@ -64,6 +80,17 @@ variable {ℓ : ℕ} (hℓ : ℓ.Prime) (hS : ∀ v : HeightOneSpectrum (𝓞 K.
 
 include hℓ hS in
 
+/- English proof (translation)
+Take `⟨U, hU, hNU, y', rfl⟩` from `exists_isOpen_cohomologyResLE_eq (unitsLimitRep K) (gsKernel K S) (isClosed_gsKernel K S) r y`. Take `⟨L, hL, hLS, rfl⟩` from `exists_finiteSubfield_of_isOpen K S U hU hNU`. Establish `hℓ2 : 2 < ℓ ^ 2` using `by nlinarith [hℓ.two_le]`. Establish `: NeZero (ℓ ^ 2)` using `⟨pow_ne_zero _ hℓ.ne_zero⟩`. Set `F₂ : FiniteSubfield` to `⟨Cyclotomic.rootsOfUnityField (ℓ ^ 2), inferInstance⟩`.
+
+Set `E : FiniteSubfield` to `CyclotomicSymbol.compositum L F₂`. Establish `: Fact (F₂ ≤ E)` using `CyclotomicSymbol.fact_le_compositum_right L F₂`. Establish `: IsTotallyComplex F₂.1` using `IsCyclotomicExtension.Rat.isTotallyComplex (n := ℓ ^ 2) F₂.1 hℓ2`. Set `_ : Algebra F₂.1 E.1` to `FiniteSubfield.algebraOfLE (Fact.out : F₂ ≤ E)`. Establish `: IsTotallyComplex E.1` using `NumberField.isTotallyComplex_of_algebra (F := F₂.1) E.1`.
+
+Establish `hLE : Fact (L ≤ E)` using `CyclotomicSymbol.fact_le_compositum_left L F₂`. Establish `: Fact (K ≤ E)` using `⟨hL.out.trans hLE.out⟩`. Establish `hES : ∀ x ∈ E.1, x ∈ maxUnramifiedOutside K.1 ℚ̄ S`. Establish `hle : E.1 ≤ (maxUnramifiedOutside K.1 ℚ̄ S).restrictScalars ℚ`. Express the relevant statement in the definitionally equal form `L.1 ⊔ F₂.1 ≤ _`.
+
+Use `sup_le (fun x hx => hLS x hx) fun x hx => ?_` and prove the remaining obligations. Conclude with `mem_maxUnramifiedOutside_of_mem_rootsOfUnityField hℓ hS 2 x hx`. Conclude with `fun x hx => hle hx`. Establish `hNE : gsKernel K S ≤ E.1.fixingSubgroup.subgroupOf K.1.fixingSubgroup` using `fun σ hσ => (IntermediateField.mem_fixingSubgroup_iff _ _).2 fun x hx => (mem_gsKernel_iff K S σ).1 hσ x (hES x hx)`. Establish `hEL` using `fixingSubgroup_subgroupOf_mono (K := K) hLE.out`.
+
+Establish `hz : (cohomologyResLE (unitsLimitRep K) hEL r).hom y' = 0`. Apply `unitsSubgroupOfMap_injective E r` to reduce the goal to its premises. Establish `: Subsingleton (cohomology (unitsLimitRep E) r)` using `subsingleton_cohomology_unitsLimitRep_of_three_le (fun v => IsTotallyComplex.isComplex v) hr`. Conclude with `Subsingleton.elim _ _`. Rewrite using `[← cohomologyResLE_comp (unitsLimitRep K) hEL hNE r, ConcreteCategory.comp_apply, hz, map_zero]`.
+-/
 theorem eq_zero_cohomology_gsKernel_of_three_le {r : ℕ} (hr : 3 ≤ r)
     (y : cohomology (Rep.res (gsKernel K S).subtype (unitsLimitRep K)) r) : y = 0 := by
   obtain ⟨U, hU, hNU, y', rfl⟩ :=
@@ -98,6 +125,9 @@ theorem eq_zero_cohomology_gsKernel_of_three_le {r : ℕ} (hr : 3 ≤ r)
 
 include hℓ hS in
 
+/- English proof (translation)
+Break down `(show i = 1 ∨ i = 2 ∨ 3 ≤ i by omega) with rfl | rfl | h3` into its components or cases. Use `ModuleCat.subsingleton_of_isZero (isZero_cohomology_one_gsKernel K S)` as an intermediate fact. Conclude with `⟨1, Nat.coprime_one_left ℓ, Subsingleton.elim _ _⟩`. Conclude with `exists_coprime_smul_cohomology_two_gsKernel K S hℓ hS y`. Conclude with `⟨1, Nat.coprime_one_left ℓ, by rw [eq_zero_cohomology_gsKernel_of_three_le K S hℓ hS h3 y, smul_zero]⟩`.
+-/
 theorem exists_coprime_nsmul_cohomology_gsKernel {i : ℕ} (hi : 1 ≤ i)
     (y : cohomology (Rep.res (gsKernel K S).subtype (unitsLimitRep K)) i) :
     ∃ m : ℕ, m.Coprime ℓ ∧ m • y = 0 := by
@@ -114,6 +144,9 @@ def gsUnitsInfl (r : ℕ) :
   (gsBrauerInfl K S r).hom.toAddMonoidHom.comp
     (cohomologyULiftIntAddEquiv (galUnits K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) r).toAddMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gsUnitsInfl_apply (r : ℕ) (x : cohomology (galUnits K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) r) :
     gsUnitsInfl K S r x =
       (gsBrauerInfl K S r).hom (cohomologyULiftIntAddEquiv (galUnits K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) r x) :=
@@ -123,6 +156,11 @@ variable {ℓ : ℕ} (hℓ : ℓ.Prime) (hS : ∀ v : HeightOneSpectrum (𝓞 K.
 
 include hℓ hS in
 
+/- English proof (translation)
+Establish `h` using `isIsoModCoprime_cohomologyInfl (isClosed_gsKernel K S) ℓ hr (fun i hi y => exists_coprime_nsmul_cohomology_gsKernel K S hℓ hS hi y)`. Establish `hsurj : Function.Surjective (cohomologyMapAlong (gsQuotientEquiv K S).toMonoidHom (continuous_gsQuotientEquiv K S) (invariantsGsKernelMor K S) r).hom` using `(ModuleCat.epi_iff_surjective _).1 inferInstance`. Establish `hinj : Function.Injective (cohomologyMapAlong (gsQuotientEquiv K S).toMonoidHom (continuous_gsQuotientEquiv K S) (invariantsGsKernelMor K S) r).hom` using `(ModuleCat.mono_iff_injective _).1 inferInstance`. Establish `he : ∀ x, (cohomologyInfl (unitsLimitRep K) (gsKernel K S) r).hom x = (gsBrauerInfl K S r).hom ((cohomologyMapAlong (gsQuotientEquiv K S).toMonoidHom (continuous_gsQuotientEquiv K S) (invariantsGsKernelMor K S) r).hom x)` using `fun x => (congrArg (fun φ => φ.hom x) (cohomologyMapAlong_invariantsGsKernelMor_comp_gsBrauerInfl K S r)).symm`. Establish `h' : IsIsoModCoprime ℓ (gsBrauerInfl K S r).hom.toAddMonoidHom` using `IsIsoModCoprime.of_comp_surjective (e := (cohomologyMapAlong (gsQuotientEquiv K S).toMonoidHom (continuous_gsQuotientEquiv K S) (invariantsGsKernelMor K S) r).hom.toAddMonoidHom) (h.congr he) hsurj`.
+
+Conclude with `h'.comp (IsIsoModCoprime.of_bijective (cohomologyULiftIntAddEquiv (galUnits K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) r).bijective)`.
+-/
 theorem isIsoModCoprime_gsUnitsInfl {r : ℕ} (hr : 1 ≤ r) : IsIsoModCoprime ℓ (gsUnitsInfl K S r) := by
   have h := isIsoModCoprime_cohomologyInfl (isClosed_gsKernel K S) ℓ hr
     (fun i hi y => exists_coprime_nsmul_cohomology_gsKernel K S hℓ hS hi y)
@@ -144,6 +182,9 @@ theorem isIsoModCoprime_gsUnitsInfl {r : ℕ} (hr : 1 ≤ r) : IsIsoModCoprime �
 
 include hℓ hS in
 
+/- English proof (translation)
+The claim follows from `(isIsoModCoprime_gsUnitsInfl K S hℓ hS hr).eq_zero_of_pow_nsmul hx hk`.
+-/
 theorem eq_zero_of_gsUnitsInfl_eq_zero {r : ℕ} (hr : 1 ≤ r)
     (x : cohomology (galUnits K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) r) (hx : gsUnitsInfl K S r x = 0) {k : ℕ}
     (hk : ℓ ^ k • x = 0) : x = 0 :=
@@ -151,6 +192,9 @@ theorem eq_zero_of_gsUnitsInfl_eq_zero {r : ℕ} (hr : 1 ≤ r)
 
 include hℓ hS in
 
+/- English proof (translation)
+The claim follows from `(isIsoModCoprime_gsUnitsInfl K S hℓ hS hr).exists_pow_nsmul hℓ (isTorsion_cohomology _ hr) hk`.
+-/
 theorem exists_gsUnitsInfl_eq {r : ℕ} (hr : 1 ≤ r) (y : cohomology (unitsLimitRep K) r) {k : ℕ}
     (hk : ℓ ^ k • y = 0) : ∃ x, (∃ j : ℕ, ℓ ^ j • x = 0) ∧ gsUnitsInfl K S r x = y :=
   (isIsoModCoprime_gsUnitsInfl K S hℓ hS hr).exists_pow_nsmul hℓ (isTorsion_cohomology _ hr) hk
@@ -161,6 +205,9 @@ noncomputable def gsUnitsInflPrimaryEquiv {r : ℕ} (hr : 1 ≤ r) :
   AddEquiv.ofBijective (primaryComponentMap ℓ (gsUnitsInfl K S r))
     ((isIsoModCoprime_gsUnitsInfl K S hℓ hS hr).bijective_primaryComponentMap hℓ (isTorsion_cohomology _ hr))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_gsUnitsInflPrimaryEquiv_apply {r : ℕ} (hr : 1 ≤ r)
     (x : AddCommGroup.primaryComponent (cohomology (galUnits K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) r) ℓ) :
     (gsUnitsInflPrimaryEquiv K S hℓ hS hr x : cohomology (unitsLimitRep K) r) = gsUnitsInfl K S r x :=

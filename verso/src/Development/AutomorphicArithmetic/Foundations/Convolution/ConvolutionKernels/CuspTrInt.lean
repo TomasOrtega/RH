@@ -14,6 +14,31 @@ open MeasureTheory NumberField GroundTheory.Automorphic GroundTheory.Automorphic
 open GroundTheory.Automorphic.CuspidalProjection PositivityTheory.Rg.Tf.Core UpperTheory.ConvolutionTheory.K
 open scoped InnerProductSpace
 
+/- English proof (translation)
+Introduce `K _ _ n μ _ θ f a g M ha hg hM hf`. Use `haveI := Reduction.isFiniteMeasure_quotientMeasure (K := K) (n := n) μ`. Use `haveI : Fact ((2 : ENNReal) ≠ ⊤) := ⟨by simp⟩`. Use `haveI : SecondCountableTopology (RightCosetSpace (Gam K n)) := (isOpenQuotientMap_mk (Gam K n)).isQuotientMap.secondCountableTopology (isOpenQuotientMap_mk (Gam K n)).isOpenMap`. Use `haveI : MeasurableSpace.CountablyGenerated (RightCosetSpace (Gam K n)) := BorelSpace.countablyGenerated`.
+
+Use `haveI : IsSeparable (quotientMeasure (Gam K n) μ) := isSeparable_of_sigmaFinite _`. Use `haveI : SecondCountableTopology (Lp ℂ 2 (quotientMeasure (Gam K n) μ)) := Lp.SecondCountableTopology`. Use `haveI : TopologicalSpace.SeparableSpace (Lp ℂ 2 (quotientMeasure (Gam K n) μ)) := TopologicalSpace.SecondCountableTopology.to_separableSpace`. Take `⟨h1, q1⟩` from `qmapPres (Gam K n) μ θ.e θ.mem_gam θ.pres`. Establish `hout : ∀ (b : CC K n) (x : G1 K n), kv μ b (Quotient.out (mk (Gam K n) x)) = kv μ b x`.
+
+Introduce `b x`. Take `⟨γ, hγ⟩` from `mk_eq_mk_iff.1 (show mk (Gam K n) (Quotient.out (mk (Gam K n) x)) = mk (Gam K n) x from Quotient.out_eq _)`. Rewrite using `[← hγ]`. Conclude with `(ropAe K n μ b).2 _ γ.2 x`. Establish `hmem : ∀ b : CC K n, CuspDecay μ b → MemLp (fun y : RightCosetSpace (Gam K n) => Pc μ (kv μ b (Quotient.out y))) 2 (quotientMeasure (Gam K n) μ)`.
+
+Introduce `b hb`. Take `⟨C, -, hC⟩` from `(kvBd K n μ b).2 hb 0`. Establish `hc : Continuous fun y : RightCosetSpace (Gam K n) => Pc μ (kv μ b (Quotient.out y))` using `(isOpenQuotientMap_mk (Gam K n)).isQuotientMap.continuous_iff.2 (((Pc μ).continuous.comp (kvCont K n μ b)).congr fun x => by simp only [Function.comp_apply, hout])`. Conclude with `MemLp.of_bound hc.aestronglyMeasurable C (Filter.Eventually.of_forall fun y => by simpa using hC _)`. Establish `hsa : ∀ u w : L2 μ, ⟪Pc μ u, w⟫_ℂ = ⟪u, Pc μ w⟫_ℂ` using `fun u w => Submodule.inner_starProjection_left_eq_right _ _ _`.
+
+Establish `hPP : ∀ u : L2 μ, Pc μ (Pc μ u) = Pc μ u` using `fun u => Submodule.starProjection_eq_self_iff.2 (Submodule.starProjection_apply_mem _ _)`. Establish `hker : ∀ (b : CC K n) (φ : L2 μ), ((Rop μ b ∘L Pc μ) φ : RightCosetSpace (Gam K n) → ℂ) =ᵐ[quotientMeasure (Gam K n) μ] fun y => ⟪Pc μ (kv μ b (Quotient.out y)), φ⟫_ℂ`. Introduce `b φ`. Simplify using `only [hsa]`. Conclude with `(ropAe K n μ b).1 (Pc μ φ)`.
+
+Establish `m1` using `hmem a ha`. Establish `m2 : MemLp (fun y : RightCosetSpace (Gam K n) => Pc μ (kv μ (ccStar g) (θ.e (Quotient.out y)))) 2 (quotientMeasure (Gam K n) μ)`. Use `(hmem _ hg).comp_measurePreserving q1` as an intermediate fact. Simplify `this` using `only [Function.comp_def, hout]`. Establish `hPadj : ContinuousLinearMap.adjoint (Pc μ) = Pc μ` using `((ContinuousLinearMap.eq_adjoint_iff _ _).2 hsa).symm`.
+
+Establish `hB : ContinuousLinearMap.adjoint (Pc μ ∘L Rop μ g ∘L θ.U) = ContinuousLinearMap.adjoint θ.U ∘L (Rop μ (ccStar g) ∘L Pc μ)`. Rewrite using `[ContinuousLinearMap.adjoint_comp, ContinuousLinearMap.adjoint_comp, ropAdj, hPadj]`. Both sides reduce to the same expression. Establish `hBk : ∀ φ : L2 μ, (ContinuousLinearMap.adjoint (Pc μ ∘L Rop μ g ∘L θ.U) φ : RightCosetSpace (Gam K n) → ℂ) =ᵐ[quotientMeasure (Gam K n) μ] fun y => ⟪Pc μ (kv μ (ccStar g) (θ.e (Quotient.out y))), φ⟫_ℂ`. Introduce `φ`.
+
+Rewrite using `[hB]`. Use `(twAdj K n μ θ _).trans ?_` and prove the remaining obligations. Use `q1.quasiMeasurePreserving.ae_eq_comp (hker (ccStar g) φ)` as an intermediate fact. Simplify using `only [Function.comp_def, hout] at this`. Conclude with `this`.
+
+Establish `sA` using `hsOfKer _ _ _ m1 (hker a)`. Establish `sB : IsHilbertSchmidt (Pc μ ∘L Rop μ g ∘L θ.U)`. Use `(hsOfKer _ _ _ m2 hBk).adjoint` as an intermediate fact. Rewrite `this` using `[ContinuousLinearMap.adjoint_adjoint]`. Then use the resulting hypothesis. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Establish `m3` using `M.comp_memLp' m2`. Use `(m1.norm.integrable_mul m3.norm).mono' (m1.1.inner m3.1) (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Conclude with `norm_inner_le_norm _ _`. Rewrite using `[← traceKer _ _ M _ _ _ m1 m2 sA sB (hker a) hBk, cuspTr]`. Use `congr 1`.
+
+Use `ext1 φ`. Establish `c1 : ∀ b (u : L2 μ), Rop μ b (Pc μ u) = Pc μ (Rop μ b u)` using `fun b u => DFunLike.congr_fun (ropPc K n μ b) u`. Establish `c2 : ∀ u : L2 μ, M (Pc μ u) = Pc μ (M u)` using `fun u => DFunLike.congr_fun hM u`. Establish `c3 : ∀ u : L2 μ, θ.U (Pc μ u) = Pc μ (θ.U u)` using `fun u => DFunLike.congr_fun θ.U_comm u`. Rewrite using `[hf]`.
+
+Simplify using `only [ContinuousLinearMap.comp_apply, c1, c2, c3, hPP]`.
+-/
 theorem UpperTheory.ConvolutionTheory.K.cuspTrInt :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (μ : Measure (G1 K n)) [μ.IsHaarMeasure] (θ : Twist μ) (f a g : CC K n) (M : L2 μ →L[ℂ] L2 μ),
       CuspDecay μ a → CuspDecay μ (ccStar g) → M ∘L Pc μ = Pc μ ∘L M → Rop μ f = Rop μ a ∘L M ∘L Rop μ g →

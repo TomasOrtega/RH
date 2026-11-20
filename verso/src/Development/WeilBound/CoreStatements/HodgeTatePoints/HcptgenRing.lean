@@ -8,6 +8,13 @@ namespace PositivityTheory.HtPt.Hcptgen
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles
 
+/- English proof (translation)
+Proceed by induction on `hf using IsWeightedHomogeneous.induction_on with`. Consider the case `zero => simp`. Consider the case `add p q _ _ hp hq => rw [map_add, map_add, hp, hq, mul_add]`. Consider the case `monomial m r hm`. Rewrite using `[aeval_monomial, aeval_monomial, ← hm]`.
+
+Establish `e : (∏ k, c k ^ (Finsupp.weight w m) k) = m.prod fun p n => (∏ k, c k ^ w p k) ^ n`. Rewrite using `[Finsupp.weight_apply, Finsupp.sum, Finsupp.prod]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, ← Finset.prod_pow_eq_pow_sum, ← Finset.prod_pow, ← pow_mul, mul_comm]`. Conclude with `Finset.prod_comm`. Rewrite using `[e]`.
+
+Simplify using `only [mul_pow, Finsupp.prod_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem aeval_scale {σ K R A : Type} [Fintype K] [CommRing R] [CommRing A] [Algebra R A] (w : σ → K → ℕ)
     (c : K → A) (z : σ → A) {f : MvPolynomial σ R} {d : K → ℕ} (hf : IsWeightedHomogeneous w f d) :
     aeval (fun p => (∏ k, c k ^ w p k) * z p) f = (∏ k, c k ^ d k) * aeval z f := by
@@ -27,6 +34,11 @@ theorem aeval_scale {σ K R A : Type} [Fintype K] [CommRing R] [CommRing A] [Alg
 
 variable {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Algebra o Ω] {K : Type} [Fintype K] {J : K → Type}
 
+/- English proof (translation)
+Establish `hk : y ⟨k, s k⟩ ≠ 0` using `Finset.prod_ne_zero_iff.1 hs k (Finset.mem_univ k)`. Rewrite using `[div_eq_div_iff hk hs]`. Unfold `mseg`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ k), ← Finset.mul_prod_erase _ _ (Finset.mem_univ k), Function.update_self]`. Establish `e : ∏ j ∈ Finset.univ.erase k, y ⟨j, Function.update s k i j⟩ = ∏ j ∈ Finset.univ.erase k, y ⟨j, s j⟩` using `Finset.prod_congr rfl fun j hj => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hj)]`.
+
+Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ratio_eq [DecidableEq K] (y : (Σ k, J k) → Ω) (s : ∀ k, J k) (hs : mseg y s ≠ 0) (k : K) (i : J k) :
     y ⟨k, i⟩ / y ⟨k, s k⟩ = mseg y (Function.update s k i) / mseg y s := by
   have hk : y ⟨k, s k⟩ ≠ 0 := Finset.prod_ne_zero_iff.1 hs k (Finset.mem_univ k)
@@ -41,6 +53,23 @@ theorem ratio_eq [DecidableEq K] (y : (Σ k, J k) → Ω) (s : ∀ k, J k) (hs :
 
 open GroundTheory.Heights₂.Heights.NumbersDVR in
 
+/- English proof (translation)
+Use `le_antisymm (fun u hu => ?_) (Algebra.adjoin_le ?_)` and prove the remaining obligations. Establish `hk : ∀ k, y ⟨k, s k⟩ ≠ 0` using `fun k => Finset.prod_ne_zero_iff.1 hs k (Finset.mem_univ k)`. Take `⟨n, U, hU, hv⟩` from `GenericProjClosureDivisor.chart_form (O := o) (Φ := Ω) y (Pi.basisFun Ω (Fin 0)) (Fin.elim0 : Fin 0 → _) (Fin.elim0 : Fin 0 → _) Fin.elim0 s hs hu`. Set `c : Option (Option K) → Ω` to `fun b => b.elim 1 fun b' => b'.elim 1 fun k => y ⟨k, s k⟩`. Set `z : (Σ b, bundleIdx (bundleIdx J 0) 0 b) → Ω` to `fun p => pairProjCoord y (Pi.basisFun Ω (Fin 0)) (Fin.elim0 : Fin 0 → _) (Fin.elim0 : Fin 0 → _) Fin.elim0 p / c p.1`.
+
+Establish `hc : ∀ b, c b ≠ 0`. Introduce and unpack `(_ | _ | k)`. Conclude with `one_ne_zero`. Conclude with `one_ne_zero`. Conclude with `hk k`.
+
+Establish `h` using `aeval_scale _ c z hU`. Establish `e1 : (fun p => (∏ b, c b ^ blockWeight (bundleIdx (bundleIdx J 0) 0) p b) * z p) = pairProjCoord y (Pi.basisFun Ω (Fin 0)) (Fin.elim0 : Fin 0 → _) (Fin.elim0 : Fin 0 → _) Fin.elim0`. Use function extensionality and compare the values at `p`. Establish `: ∏ b, c b ^ blockWeight (bundleIdx (bundleIdx J 0) 0) p b = c p.1`. Rewrite using `[Finset.prod_eq_single p.1]`.
+
+Simplify using `[blockWeight]`. Introduce `b _ hb`. Simplify using `[blockWeight, Pi.single_eq_of_ne hb]`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+
+Conclude with `mul_div_cancel₀ _ (hc _)`. Establish `e2 : ∏ b, c b ^ GenericProjClosureDivisor.vdeg (fun _ : K => n) b = segreVec y s ^ n`. Simplify using `[Fintype.prod_option, c, GenericProjClosureDivisor.vdeg, segreVec, Finset.prod_pow]`. Rewrite `h` using `[e1, e2, hv, Algebra.algebraMap_self_apply, mul_comm]`. Establish `hu' : u = aeval z U` using `mul_left_cancel₀ (pow_ne_zero n hs) h`.
+
+Establish `hz : aeval z U ∈ Algebra.adjoin o (Set.range z)`. Rewrite using `[Algebra.adjoin_range_eq_range_aeval]`. Conclude with `⟨U, rfl⟩`. Rewrite using `[hu']`. Use `Algebra.adjoin_mono ?_ hz` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨⟨_ | _ | k, i⟩, rfl⟩`. Conclude with `Fin.elim0 i`. Conclude with `Fin.elim0 i`. Conclude with `⟨Function.update s k i, (ratio_eq y s hs k i).symm⟩`. Introduce and unpack `_ ⟨j, rfl⟩`.
+
+Conclude with `div_mem_chartRing _ _ _`.
+-/
 theorem chartRing_mseg (y : (Σ k, J k) → Ω) (s : ∀ k, J k) (hs : mseg y s ≠ 0) :
     chartRing o (mseg y) s = Algebra.adjoin o (Set.range fun j => mseg y j / mseg y s) := by
   classical

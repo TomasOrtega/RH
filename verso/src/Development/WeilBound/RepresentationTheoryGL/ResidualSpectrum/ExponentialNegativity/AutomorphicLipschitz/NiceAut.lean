@@ -17,11 +17,31 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {N : ℕ}
 
 omit [IsTotallyComplex E] in
 
+/- English proof (translation)
+Rewrite using `[diffSum_eq_altSum, altSum_succ, altSum_zero]`. Simplify using `[archExp_zero]`.
+-/
 theorem diffSum_one (ψ : AdelicGLn.AdelicGL E N → ℂ) (x : AdelicGLn.AdelicGL E N) (Y : ArchMatrix E N) :
     diffSum ψ x (fun _ : Fin 1 => Y) = ψ (x * CuspidalSpectrum.archExp Y) - ψ x := by
   rw [diffSum_eq_altSum, altSum_succ, altSum_zero]
   simp [archExp_zero]
 
+/- English proof (translation)
+Establish `hs` using `GlobalTheory.CompanionTheory.ArchSmooth.sm_mem_archSmooth E N φ`. Set `_ : MeasurableSpace (archGroup E N)` to `borel _`. Establish `_ : BorelSpace (archGroup E N)` using `⟨rfl⟩`. Establish `hD` using `fun J : Fin 1 → Fin (archDim E N) => GlobalTheory.CompanionTheory.HCRep.uJ_eq_conv E N φ hs hφ Measure.haar 1 J`. Use `choose D hDc hDs hDeq using hD`.
+
+Take `⟨c, hc0, hc⟩` from `exists_abs_archBasis_repr_le (K := E) (n := N)`. Use `set T : Set (archGroup E N) := ⋃ J, tsupport (D J) with hTdef`. Establish `hT : IsCompact T` using `isCompact_iUnion fun J => (hDs J).isCompact`. Use `set S : Set (ArchMatrix E N) := Metric.closedBall 0 (max R 0) with hSdef`. Establish `hS : IsCompact S` using `isCompact_closedBall _ _`.
+
+Use `set f : ArchMatrix E N × archGroup E N → AdelicGLn.AdelicGL E N := fun p => CuspidalSpectrum.archExp p.1 * infEmb E N p.2 with hfdef`. Establish `hf : Continuous f` using `(continuous_archExp.comp continuous_fst).mul (continuous_infEmb.comp continuous_snd)`. Use `set I : ℝ := ∑ J, ∫ y, ‖D J y‖ ∂(Measure.haar : Measure (archGroup E N)) with hIdef`. Establish `hI0 : 0 ≤ I` using `Finset.sum_nonneg fun J _ => integral_nonneg fun _ => norm_nonneg _`. Use `⟨insert 1 (f '' (S ×ˢ T)), (archDim E N : ℝ) * c * I, ((hS.prod hT).image hf).insert 1, by positivity, fun g Y M hYY hYR hM => ?_⟩` and prove the remaining obligations.
+
+Establish `hM0 : 0 ≤ M` using `(norm_nonneg _).trans (by simpa using hM 1 (mem_insert _ _))`. Establish `hB0 : 0 ≤ M * I` using `mul_nonneg hM0 hI0`. Establish `h` using `norm_diffSum_le hc0 hc 1 ⟨φ.1, hs⟩ g (fun _ : Fin 1 => Y) (fun _ _ => Commute.refl Y) (M * I) hB0 (fun J t ht => by set Z : ArchMatrix E N := ∑ i, t i • (fun _ : Fin 1 => Y) i with hZdef`. Establish `hZ : Z ∈ S`. Rewrite using `[hSdef, mem_closedBall_zero_iff, hZdef, Fin.sum_univ_one, norm_smul, Real.norm_of_nonneg (ht 0).1]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hDeq J]`. Establish `hb : ∀ y, ‖φ.1 (g * CuspidalSpectrum.archExp Z * infEmb E N y) * D J y‖ ≤ M * ‖D J y‖`. Introduce `y`. Rewrite using `[norm_mul]`.
+
+Distinguish the cases in `hy : y ∈ tsupport (D J)`. Use `mul_le_mul_of_nonneg_right ?_ (norm_nonneg _)` and prove the remaining obligations. Establish `hq : CuspidalSpectrum.archExp Z * infEmb E N y ∈ insert 1 (f '' (S ×ˢ T))` using `mem_insert_of_mem _ ⟨(Z, y), ⟨hZ, mem_iUnion.2 ⟨J, hy⟩⟩, rfl⟩`. Simplify `hM _ hq` using `only [mul_assoc]`. Rewrite using `[image_eq_zero_of_notMem_tsupport hy, norm_zero, mul_zero, mul_zero]`.
+
+Establish `hint : Integrable (fun y => ‖D J y‖) (Measure.haar : Measure (archGroup E N))` using `(hDc J).norm.integrable_of_hasCompactSupport (hDs J).norm`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h` using `[diffSum_one]`. Use `h.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_one, pow_one]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lip_of_autForm (φ : Sm E N) (hφ : IsAutForm φ) (R : ℝ) :
     ∃ (Q₀ : Set (AdelicGLn.AdelicGL E N)) (C : ℝ), IsCompact Q₀ ∧ 0 ≤ C ∧
       ∀ g (Y : ArchMatrix E N) (M : ℝ), Y * Y = 0 → ‖Y‖ ≤ R → (∀ q ∈ Q₀, ‖φ.1 (g * q)‖ ≤ M) →
@@ -84,6 +104,9 @@ end PositivityTheory.Rg.Rs.JNiceAut
 
 namespace PositivityTheory.Rg.Rs
 
+/- English proof (translation)
+Introduce `E _ _ _ N φ hφ hcen`. Conclude with `{ cont := ContAut.continuous_of_isOpen_stab E N φ hφ.level left := GlobalTheory.CompanionTheory.LeftInv.isLeftInvariant_of_isAutForm E N φ hφ centre := hcen level := GlobalTheory.CompanionTheory.AutLevel.exists_open_level E N φ hφ lip := fun R => JNiceAut.lip_of_autForm φ hφ R }`.
+-/
 theorem niceAut_holds : NiceAut := by
   intro E _ _ _ N φ hφ hcen
   exact { cont := ContAut.continuous_of_isOpen_stab E N φ hφ.level

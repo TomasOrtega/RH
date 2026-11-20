@@ -1,6 +1,12 @@
 import Development.WeilBound.ThetaLifts.LeviDeterminants.CharacterAdmissibility.LeavesX
 import Development.WeilBound.ThetaLifts.LeviDeterminants.MixedModels.AdelicEstimatesHolds
 
+/- English proof (translation)
+The claim follows from `PositivityTheory.ThKF0.Chr.theta_tower_hermitian_first PositivityTheory.Mix.adelic_estimates_holds`.
+-/
 theorem PositivityTheory.Mix.theta_tower_hermitian_first_holds : type_of% (PositivityTheory.ThKF0.Chr.theta_tower_hermitian_first PositivityTheory.Mix.adelic_estimates_holds) := PositivityTheory.ThKF0.Chr.theta_tower_hermitian_first PositivityTheory.Mix.adelic_estimates_holds
 
+/- English proof (translation)
+The claim follows from `PositivityTheory.ThKF0.Chr.theta_tower_hermitian_second PositivityTheory.Mix.adelic_estimates_holds`.
+-/
 theorem PositivityTheory.Mix.theta_tower_hermitian_second_holds : type_of% (PositivityTheory.ThKF0.Chr.theta_tower_hermitian_second PositivityTheory.Mix.adelic_estimates_holds) := PositivityTheory.ThKF0.Chr.theta_tower_hermitian_second PositivityTheory.Mix.adelic_estimates_holds

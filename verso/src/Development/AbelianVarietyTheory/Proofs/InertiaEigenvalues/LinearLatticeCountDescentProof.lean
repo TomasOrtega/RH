@@ -23,6 +23,13 @@ namespace GlobalTheory.UnitLemma.Desc
 
 open Classical
 
+/- English proof (translation)
+Take `⟨ι, _, e, S, hP⟩` from `GlobalTheory.T.involutionIdempotentDecomposition_of_separable_charpoly K B hs`. Establish `: ∀ i, ∃ y : B.A, i ∈ S → B.Plus y ∧ y * (1 - e i) = 1 - e i ∧ K.eta (Algebra.norm K.E y) = -1`. Introduce `i`. Distinguish the cases in `hi : i ∈ S`. Take `⟨f, hf, hf0, hfld, hS, -⟩` from `hP.2 i`.
+
+Take `⟨he, hσ⟩` from `hS hi`. Take `⟨y, hy⟩` from `GlobalTheory.T.exists_plus_element_eta_norm_neg_one K B f hf hf0 hfld hσ`. Conclude with `⟨y, fun _ => by rw [he]; exact hy⟩`. Conclude with `⟨1, fun h => absurd h hi⟩`. Use `choose π hπ using this`.
+
+Conclude with `⟨ι, inferInstance, e, π, S, hP, fun i hi => hπ i hi⟩`.
+-/
 theorem frame_exists (K : UQ) (B : InvAlg K) (hs : B.P.Separable) :
     ∃ (ι : Type) (_ : Fintype ι) (e π : ι → B.A) (S : Finset ι), IsFrame B e π S := by
   obtain ⟨ι, _, e, S, hP⟩ := GlobalTheory.T.involutionIdempotentDecomposition_of_separable_charpoly K B hs
@@ -37,21 +44,40 @@ theorem frame_exists (K : UQ) (B : InvAlg K) (hs : B.P.Separable) :
   choose π hπ using this
   exact ⟨ι, inferInstance, e, π, S, hP, fun i hi => hπ i hi⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hx.1.mul hy.1, by rw [map_mul, hx.2, hy.2]⟩`.
+-/
 theorem plus_mul {K : UQ} (B : InvAlg K) {x y : B.A} (hx : B.Plus x) (hy : B.Plus y) : B.Plus (x * y) :=
   ⟨hx.1.mul hy.1, by rw [map_mul, hx.2, hy.2]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isUnit_one, map_one _⟩`.
+-/
 theorem plus_one {K : UQ} (B : InvAlg K) : B.Plus 1 := ⟨isUnit_one, map_one _⟩
 
+/- English proof (translation)
+The claim follows from `Finset.prod_induction _ B.Plus (fun _ _ => plus_mul B) (plus_one B) h`.
+-/
 theorem plus_prod {K : UQ} (B : InvAlg K) {ι : Type} (π : ι → B.A) (J : Finset ι) (h : ∀ j ∈ J, B.Plus (π j)) :
     B.Plus (∏ j ∈ J, π j) :=
   Finset.prod_induction _ B.Plus (fun _ _ => plus_mul B) (plus_one B) h
 
+/- English proof (translation)
+Rewrite using `[IsScalarTower.algebraMap_apply K.O K.E B.A]`. Use `IsUnit.map _ (isUnit_iff_ne_zero.2 ?_)` and prove the remaining obligations. Introduce `h`. Conclude with `ha.1 (IsFractionRing.injective K.O K.E (by rw [h, map_zero]))`.
+-/
 theorem isUnit_a {K : UQ} (B : InvAlg K) (a : K.O) (ha : K.Small a) : IsUnit (algebraMap K.O B.A a) := by
   rw [IsScalarTower.algebraMap_apply K.O K.E B.A]
   refine IsUnit.map _ (isUnit_iff_ne_zero.2 ?_)
   intro h
   exact ha.1 (IsFractionRing.injective K.O K.E (by rw [h, map_zero]))
 
+/- English proof (translation)
+Establish `hπ : ∀ J ∈ S.powerset, B.Plus ((∏ j ∈ J, π j) * x)` using `fun J hJ => plus_mul B (plus_prod B π J fun j hj => (hF.2 j (Finset.mem_powerset.1 hJ hj)).1) hx`. Establish `hu : ∀ k : ℕ, IsUnit (x * algebraMap K.O B.A a ^ (2 * k))` using `fun k => hx.1.mul ((isUnit_a B a ha).pow _)`. Establish `heq : ∀ k : ℕ, ((HH B π I (S \ I) (x * algebraMap K.O B.A a ^ (2 * k)) 1 : ℚ) : ℝ) / (B.rho (algebraMap K.O B.A a ^ k) : ℝ) = ∑ J ∈ S.powerset, (-1 : ℝ) ^ (J ∩ I).card * ((B.GG ((∏ j ∈ J, π j) * x * algebraMap K.O B.A a ^ (2 * k)) : ℝ) / (B.rho (algebraMap K.O B.A a ^ k) : ℝ))`. Introduce `k`. Rewrite using `[GlobalTheory.T.signedInvolutionStableLatticeSum_eq_alternating_sum K B ι e π S hB hF I hI _ (hu k)]`.
+
+Use `push_cast`. Rewrite using `[Finset.sum_div]`. Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, mul_div_assoc]`. Repeatedly rewrite using `[heq]`.
+
+Conclude with `tendsto_finset_sum _ fun J hJ => (hℓ _ (hπ J hJ)).const_mul _`.
+-/
 theorem lim_HH {K : UQ} (B : InvAlg K) {ι : Type} [Fintype ι] [DecidableEq ι] (e π : ι → B.A) (S : Finset ι) (a : K.O)
     (hB : B.LieReg) (ha : K.Small a) (hF : IsFrame B e π S) (ℓ : B.A → ℝ)
     (hℓ : ∀ x, B.Plus x → B.LinLim a x (ℓ x)) (I : Finset ι) (hI : I ⊆ S) (x : B.A) (hx : B.Plus x) :
@@ -73,6 +99,15 @@ theorem lim_HH {K : UQ} (B : InvAlg K) {ι : Type} [Fintype ι] [DecidableEq ι]
   simp_rw [heq]
   exact tendsto_finset_sum _ fun J hJ => (hℓ _ (hπ J hJ)).const_mul _
 
+/- English proof (translation)
+Use `set h : Finset ι → ℝ := fun I => ∑ J ∈ S.powerset, (-1 : ℝ) ^ (J ∩ I).card * ℓ (∏ j ∈ J, π j) with hh`. Establish `lim1 : ∀ I ⊆ S, Tendsto (fun k : ℕ => ((HH B π I (S \ I) (algebraMap K.O B.A a ^ (2 * k)) 1 : ℚ) : ℝ) / (B.rho (algebraMap K.O B.A a ^ k) : ℝ)) atTop (𝓝 (h I))`. Introduce `I hI`. Use `lim_HH B e π S a hB ha hF ℓ hℓ I hI 1 (plus_one B)` as an intermediate fact. Simplify using `only [one_mul, mul_one] at this`.
+
+Conclude with `this`. Establish `key : ∀ I ⊆ S, ∀ x, B.Plus x → ∑ J ∈ S.powerset, (-1 : ℝ) ^ (J ∩ I).card * ℓ ((∏ j ∈ J, π j) * x) = (chi B e I x : ℝ) * h I`. Introduce `I hI x hx`. Establish `t1` using `lim_HH B e π S a hB ha hF ℓ hℓ I hI x hx`. Establish `t2` using `GlobalTheory.T.tendsto_signedLatticeSum_sub_normCharacter_mul K B ι e π S a hB ha hF I hI x hx`.
+
+Establish `t3` using `(lim1 I hI).const_mul (chi B e I x : ℝ)`. Establish `t4` using `t2.add t3`. Rewrite `t4` using `[zero_add]`. Use `tendsto_nhds_unique t1 (t4.congr fun k => ?_)` and prove the remaining obligations. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨lim1 I hI, ?_⟩` and prove the remaining obligations. Use `haveI : Finite B.Cl := GlobalTheory.T.finite_classes_of_separable_charPoly K B hB.2`. Conclude with `GlobalTheory.T.normCharacterOnIdempotentPart_orthogonality_classes K B ι e π S hF this ℓ h key I hI`.
+-/
 theorem sum_formula {K : UQ} (B : InvAlg K) {ι : Type} [Fintype ι] [DecidableEq ι] (e π : ι → B.A) (S : Finset ι) (a : K.O)
     (hB : B.LieReg) (ha : K.Small a) (hF : IsFrame B e π S) (ℓ : B.A → ℝ)
     (hℓ : ∀ x, B.Plus x → B.LinLim a x (ℓ x)) (I : Finset ι) (hI : I ⊆ S) :
@@ -103,6 +138,31 @@ theorem sum_formula {K : UQ} (B : InvAlg K) {ι : Type} [Fintype ι] [DecidableE
   haveI : Finite B.Cl := GlobalTheory.T.finite_classes_of_separable_charPoly K B hB.2
   exact GlobalTheory.T.normCharacterOnIdempotentPart_orthogonality_classes K B ι e π S hF this ℓ h key I hI
 
+/- English proof (translation)
+Introduce `K B₁ B₂ hg₁ hg₂ hsep a ha ℓ ℓ₁ ℓ₂ hℓ hℓ₁ hℓ₂`. Establish `hs₁ : B₁.P.Separable` using `hsep.of_mul_left`. Establish `hs₂ : B₂.P.Separable` using `hsep.of_mul_right`. Establish `hP : (B₁.prod B₂).P = B₁.P * B₂.P`. Establish `h1 : LinearMap.mulLeft K.E (B₁.prod B₂).g = (LinearMap.mulLeft K.E B₁.g).prodMap (LinearMap.mulLeft K.E B₂.g)`.
+
+Conclude with `LinearMap.ext fun _ => rfl`. Establish `h2` using `LinearMap.charpoly_prodMap (LinearMap.mulLeft K.E B₁.g) (LinearMap.mulLeft K.E B₂.g)`. Rewrite `h2` using `[← h1]`. Conclude with `h2`. Take `⟨ι₁, _, e₁, π₁, S₁, hF₁⟩` from `frame_exists K B₁ hs₁`.
+
+Take `⟨ι₂, _, e₂, π₂, S₂, hF₂⟩` from `frame_exists K B₂ hs₂`. Establish `hF` using `GlobalTheory.T.isUniformizerIdempotentFrame_prod K B₁ B₂ ι₁ ι₂ e₁ π₁ e₂ π₂ S₁ S₂ hF₁ hF₂`. Establish `hL₁ : B₁.LieReg` using `⟨hg₁, hs₁⟩`. Establish `hL₂ : B₂.LieReg` using `⟨hg₂, hs₂⟩`. Establish `hL : (B₁.prod B₂).LieReg` using `⟨by show ((B₁.σ B₁.g, B₂.σ B₂.g) : B₁.A × B₂.A) = (B₁.g, B₂.g)`.
+
+Rewrite using `[hg₁, hg₂], hP ▸ hsep⟩`. Establish `hΛ : (S₁.disjSum S₂) \ S₁.map Function.Embedding.inl = S₂.map Function.Embedding.inr`. Apply the tactic sequence `ext x; cases x <;> simp`. Establish `hΛS : S₁.map Function.Embedding.inl ⊆ S₁.disjSum S₂`. Apply the tactic sequence `intro x; cases x <;> simp`.
+
+Take `⟨l₁, c₁⟩` from `sum_formula B₁ e₁ π₁ S₁ a hL₁ ha hF₁ ℓ₁ hℓ₁ S₁ subset_rfl`. Take `⟨l₂, c₂⟩` from `sum_formula B₂ e₂ π₂ S₂ a hL₂ ha hF₂ ℓ₂ hℓ₂ ∅ (Finset.empty_subset _)`. Take `⟨l, c⟩` from `sum_formula (B₁.prod B₂) _ _ _ a hL ha hF ℓ hℓ _ hΛS`. Rewrite `l₁` using `[Finset.sdiff_self]`. Rewrite `l₂` using `[Finset.sdiff_empty]`.
+
+Rewrite `l` using `[hΛ]`. Express the relevant statement in the definitionally equal form `Tendsto (fun k : ℕ => ((HH (B₁.prod B₂) (Sum.elim (fun i => ((π₁ i, 1) : B₁.A × B₂.A)) (fun j => ((1, π₂ j) : B₁.A × B₂.A))) (S₁.map Function.Embedding.inl) (S₂.map Function.Embedding.inr) (algebraMap K.O (B₁.A × B₂.A) a ^ (2 * k)) 1 : ℚ) : ℝ) / ((B₁.prod B₂).rho (algebraMap K.O …`. Use `set h₁ := ∑ J ∈ S₁.powerset, (-1 : ℝ) ^ (J ∩ S₁).card * ℓ₁ (∏ j ∈ J, π₁ j)`. Use `set h₂ := ∑ J ∈ S₂.powerset, (-1 : ℝ) ^ (J ∩ ∅).card * ℓ₂ (∏ j ∈ J, π₂ j)`. Use `set h := ∑ J ∈ (S₁.disjSum S₂).powerset, (-1 : ℝ) ^ (J ∩ S₁.map Function.Embedding.inl).card * ℓ (∏ j ∈ J, Sum.elim (fun i => ((π₁ i, 1) : B₁.A × B₂.A)) (fun j => ((1, π₂ j) : B₁.A × B₂.A)) j)`.
+
+Establish `hd` using `GlobalTheory.T.tendsto_signedLatticeSum_product_sub_factors K B₁ B₂ ι₁ ι₂ e₁ π₁ e₂ π₂ S₁ S₂ a hL₁ hL₂ hsep ha hF₁ hF₂`. Use `set v := val K.O (resultant B₁.P B₂.P)`. Establish `hrho : ∀ k : ℕ, (B₁.prod B₂).rho (algebraMap K.O (B₁.A × B₂.A) a ^ k) = B₁.rho (algebraMap K.O B₁.A a ^ k) * B₂.rho (algebraMap K.O B₂.A a ^ k)` using `fun k => GlobalTheory.T.rho_prod_finiteAlgebraWithInvolution K B₁ B₂ _ _`. Establish `hh : h = (-(K.q : ℝ)) ^ v * (h₁ * h₂)`. Establish `t1` using `(l₁.mul l₂).const_mul ((-(K.q : ℝ)) ^ v)`.
+
+Establish `t2` using `hd.add t1`. Rewrite `t2` using `[zero_add]`. Use `tendsto_nhds_unique l (t2.congr fun k => ?_)` and prove the remaining obligations. Rewrite using `[hrho k]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e₁' : ∑ᶠ k : B₁.Cl, (K.eta (Algebra.norm K.E k.rep) : ℝ) * ℓ₁ k.rep = ∑ᶠ k : B₁.Cl, (chi B₁ e₁ S₁ k.rep : ℝ) * ℓ₁ k.rep`. Use `finsum_congr fun k => ?_` and prove the remaining obligations. Rewrite using `[((GlobalTheory.T.normCharacterOnIdempotentPart_frame_properties K B₁ ι₁ e₁ π₁ S₁ hF₁).2.2.2 (InvAlg.Cl.rep k) ⟨Units.isUnit _, (Quot.out k).2⟩)]`. Establish `e₂' : ∑ᶠ k : B₂.Cl, ℓ₂ k.rep = ∑ᶠ k : B₂.Cl, (chi B₂ e₂ ∅ k.rep : ℝ) * ℓ₂ k.rep`.
+
+Use `finsum_congr fun k => ?_` and prove the remaining obligations. Simplify using `[chi, eS, UQ.eta, val]`. Establish `e' : ∑ᶠ k : (B₁.prod B₂).Cl, (K.eta (Algebra.norm K.E (InvAlg.Cl.rep k).1) : ℝ) * ℓ k.rep = ∑ᶠ k : (B₁.prod B₂).Cl, (chi (B₁.prod B₂) (Sum.elim (fun i => ((e₁ i, 0) : B₁.A × B₂.A)) (fun j => ((0, e₂ j) : B₁.A × B₂.A))) (S₁.map Function.Embedding.inl) k.rep : ℝ) * ℓ k.rep`. Use `finsum_congr fun k => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.normCharacterOnIdempotentPart_prod_inl K B₁ B₂ ι₁ ι₂ e₁ e₂ S₁ (InvAlg.Cl.rep k)]`.
+
+Establish `hk : (B₁.prod B₂).Plus k.rep` using `⟨Units.isUnit _, (Quot.out k).2⟩`. Establish `hk1 : B₁.Plus (InvAlg.Cl.rep k).1` using `⟨(Prod.isUnit_iff.1 hk.1).1, congrArg Prod.fst hk.2⟩`. Rewrite using `[((GlobalTheory.T.normCharacterOnIdempotentPart_frame_properties K B₁ ι₁ e₁ π₁ S₁ hF₁).2.2.2 (InvAlg.Cl.rep k).1 hk1)]`. Rewrite using `[e₁', e₂', e', c, c₁, c₂, hh, GlobalTheory.T.card_cl_prod_finiteAlgebraWithInvolution, Finset.card_disjSum]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem linearDescent : LinearDescent := by
   intro K B₁ B₂ hg₁ hg₂ hsep a ha ℓ ℓ₁ ℓ₂ hℓ hℓ₁ hℓ₂
   have hs₁ : B₁.P.Separable := hsep.of_mul_left

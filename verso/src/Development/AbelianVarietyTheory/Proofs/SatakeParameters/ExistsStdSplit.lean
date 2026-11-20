@@ -11,6 +11,11 @@ namespace GlobalTheory.ColPeriod
 
 open Formalism.L2.Col Formalism.HermitianLatticesTheory GlobalTheory.StdReps
 
+/- English proof (translation)
+Introduce `P hP Q hQ h`. Establish `h1 : cO X.E (Pr.piG i) ∈ Q.asIdeal` using `decoFin_mem_of_mem_divs hQ`. Establish `h2 : cO X.E (Pr.piG i) ∈ P.asIdeal` using `decoFin_mem_of_mem_divs hP`. Rewrite `h1` using `[h, mem_conjP, cO_cO]`. Take `⟨a, b, e⟩` from `hPr.piG_cop i`.
+
+Apply `one_notMem P` to reduce the goal to its premises. Rewrite using `[← e]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ h2)`.
+-/
 theorem splitNonConj_vG {X : Fields} {Pr : Primes X} (hPr : Pr.Ok) (i : Fin 2) :
     GlobalTheory.IndefiniteRowSideFullHecke.StandardDeterminantUnit.SplitNonConj (Pr.vG i) := by
   intro P hP Q hQ h
@@ -22,6 +27,15 @@ theorem splitNonConj_vG {X : Fields} {Pr : Primes X} (hPr : Pr.Ok) (i : Fin 2) :
   rw [← e]
   exact Ideal.add_mem _ (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ h2)
 
+/- English proof (translation)
+Take `⟨g, hg, hc⟩` from `exists_unitary_carries hST hN.1`. Set `f : Sp E n ≃ₗ[E] Sp E n` to `Matrix.toLin'OfInv (M := gᴴ) (M' := g) hg (mul_eq_one_comm.1 hg)`. Establish `hf : ∀ x, f x = g *ᵥ x` using `fun x => rfl`. Establish `hU : f ∈ UF E n`. Introduce `x y`.
+
+Rewrite using `[hf, hf, hStd_apply, hStd_apply]`. Express the relevant statement in the definitionally equal form `star (g *ᵥ x) ⬝ᵥ (g *ᵥ y) = star x ⬝ᵥ y`. Rewrite using `[star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, hg, one_mulVec]`. Establish `huni : IsUnimodular (hStd E n) (gmap f N)`. Establish `e : dual (hStd E n) N = N` using `hN.2`.
+
+Express the relevant statement in the definitionally equal form `dual (hStd E n) (gmap f N) = gmap f N`. Rewrite using `[dual_gmap f hU, e]`. Use `⟨⟨f, hU⟩, fun P hP => ?_⟩` and prove the remaining obligations. Establish `h : localization₂ P.asIdeal (gmap f N) = stdAt E n P`. Use extensionality with `x`.
+
+Rewrite using `[mem_localization_gmap, ← (hc P hP).2, ← hf, LinearEquiv.apply_symm_apply]`. Conclude with `⟨h, le_antisymm (localization_conj_le_of_le stdLat_lattice.fg stdLat_unimodular huni h.ge) (localization_conj_le_of_le (gmap_lattice f N hN.1).fg huni stdLat_unimodular h.le)⟩`.
+-/
 theorem exists_std_split {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} {ST : Finset (HeightOneSpectrum (𝓞 E))}
     (hST : GlobalTheory.IndefiniteRowSideFullHecke.StandardDeterminantUnit.SplitNonConj ST) {N : Submodule (𝓞 E) (Sp E n)} (hN : IsSdLat N) :
     ∃ γ : UF E n, ∀ P ∈ ST, localization₂ P.asIdeal (gmap γ.1 N) = stdAt E n P ∧
@@ -45,6 +59,15 @@ theorem exists_std_split {E : Type} [Field E] [NumberField E] [StarRing E] {n : 
   exact ⟨h, le_antisymm (localization_conj_le_of_le stdLat_lattice.fg stdLat_unimodular huni h.ge)
     (localization_conj_le_of_le (gmap_lattice f N hN.1).fg huni stdLat_unimodular h.le)⟩
 
+/- English proof (translation)
+Introduce `X Pr hPr i n N hN`. Take `⟨γ, hγ⟩` from `exists_std_split (splitNonConj_vG hPr i) hN`. Use `⟨γ, fun Q hQ => ?_⟩` and prove the remaining obligations. Establish `h0 : X.conjO (Pr.piG i) ≠ 0`. Introduce `h`.
+
+Establish `h1` using `hPr.piG_norm i`. Rewrite `h1` using `[h, mul_zero]`. Conclude with `(hPr.g_prime i).ne_zero (by exact_mod_cast h1.symm)`. Rewrite `hQ` using `[← hPr.piG_norm i]`. Break down `Q.isPrime.mem_or_mem hQ with h | h` into its components or cases.
+
+Establish `hm : conjPrime₂ Q ∈ Pr.vG i` using `(Formalism.L2.Col.mem_divs h0 _).2 (by`. Express the relevant statement in the definitionally equal form `cO X.E (cO X.E (Pr.piG i)) ∈ Q.asIdeal`. Rewrite using `[cO_cO])` and apply the resulting hypothesis. Establish `hcc : conjPrime₂ (conjPrime₂ Q) = Q`. Use extensionality with `x`.
+
+Rewrite using `[mem_conjP, mem_conjP, cO_cO]`. Use `(hγ _ hm).2` as an intermediate fact. Rewrite `this` using `[hcc]`. Then use the resulting hypothesis. Conclude with `(hγ _ ((Formalism.L2.Col.mem_divs h0 _).2 h)).1`.
+-/
 theorem stdMove : StdMove := by
   intro X Pr hPr i n N hN
   obtain ⟨γ, hγ⟩ := exists_std_split (splitNonConj_vG hPr i) hN

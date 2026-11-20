@@ -6,6 +6,15 @@ namespace Formalism.LatticeBaseChangeAlt
 
 open Module
 
+/- English proof (translation)
+Rewrite using `[Finset.mul_sum]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `z _`. Establish `hf : (0 : ℝ) ≤ f z` using `Nat.cast_nonneg _`. Establish `hep0 : (1 : ℝ) ≤ ep z` using `by exact_mod_cast hep z`.
+
+Establish `hT0 : (1 : ℝ) ≤ T` using `by exact_mod_cast hT`. Establish `hbound : ((max 0 ⌈(ep z : ℝ) * ((T : ℝ) * ν z - e)⌉ : ℤ) : ℝ) ≤ (ep z : ℝ) * T * c' * v z`. Establish `hy : 0 ≤ (ep z : ℝ) * T * c' * v z`. Use `hv z` as an intermediate fact. Check the signs of the components of the expression.
+
+Rewrite using `[Int.cast_max, Int.cast_zero]`. Apply `max_le hy` to reduce the goal to its premises. Establish `h1` using `mul_le_mul_of_nonneg_left (hν z) (by linarith : (0 : ℝ) ≤ T)`. Establish `h2 : (T : ℝ) * ν z - e ≤ T * c' * v z - 1` using `by nlinarith`. Establish `h3 : (ep z : ℝ) * ((T : ℝ) * ν z - e) ≤ (ep z) * (T * c' * v z - 1)` using `mul_le_mul_of_nonneg_left h2 (by linarith)`.
+
+Establish `h4` using `Int.ceil_lt_add_one ((ep z : ℝ) * ((T : ℝ) * ν z - e))`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem levelsChain_of_add_one_le (ι : Type) [Fintype ι] (ep f : ι → ℕ) (ν v : ι → ℝ) (νs c' : ℝ) (T : ℕ) (e : ℤ)
     (hep : ∀ z, 1 ≤ ep z) (hT : 1 ≤ T) (hc : 0 ≤ c') (hv : ∀ z, 0 ≤ v z)
     (hν : ∀ z, ν z ≤ νs + c' * v z) (he : (T : ℝ) * νs + 1 ≤ e) :
@@ -33,6 +42,19 @@ theorem levelsChain_of_add_one_le (ι : Type) [Fintype ι] (ep f : ι → ℕ) (
       ≤ (ep z : ℝ) * T * c' * v z * f z := mul_le_mul_of_nonneg_right hbound hf
     _ = T * c' * (((ep z : ℝ) * f z) * v z) := by ring
 
+/- English proof (translation)
+Introduce `ι _ ep f ν v νs c' T R I hep hT hc hv hν O K K₁ V W _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ϖ hϖ M Θ N₁ Z Zm N' e be n th c AA AA' N₁' ρ a a' hM hΘ h1 h2 h3 h4 h5 h6 ha ha' h7 h8 h9 h10 h11 h12 h13 h14 h15 h16 h17 hcase hA hN V'`. Establish `h` using `localStepExt O K K₁ V W ϖ hϖ M Θ N₁ Z Zm N' e be n th c AA AA' N₁' ρ a a' hM hΘ h1 h2 h3 h4 h5 h6 ha ha' h7 h8 h9 h10 h11 h12 h13 h14 h15 h16 (ne_top_of_le_ne_top (ENat.natCast_ne_top _) hA) (ne_top_of_le_ne_top (ENat.natCast_ne_top _) hN) h17 V'`. Establish `hAn` using `ENat.toNat_le_of_le_natCast hA`. Establish `hNn` using `ENat.toNat_le_of_le_natCast hN`. Establish `hlev : ∑ z, ((max 0 ⌈(ep z : ℝ) * ((T : ℝ) * ν z - ((e : ℤ) : ℝ))⌉ : ℤ) : ℝ) * f z ≤ T * c' * ∑ z, ((ep z : ℝ) * f z) * v z`.
+
+Break down `hcase with h0 | h0` into its components or cases. Conclude with `levelsChain ι ep f ν v νs c' T (e : ℤ) hep hT hc hv hν (Or.inl (by exact_mod_cast h0))`. Conclude with `levelsChain_of_add_one_le ι ep f ν v νs c' T (e : ℤ) hep hT hc hv hν (by exact_mod_cast h0)`. Simplify using `only [Int.cast_natCast] at hlev`. Establish `hsumcast : (((∑ z, (max 0 ⌈(ep z : ℝ) * ((T : ℝ) * ν z - (e : ℝ))⌉).toNat * f z : ℕ)) : ℝ) = ∑ z, ((max 0 ⌈(ep z : ℝ) * ((T : ℝ) * ν z - (e : ℝ))⌉ : ℤ) : ℝ) * f z`.
+
+Rewrite using `[Nat.cast_sum]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_mul]`. Use `congr 1`. Establish `h0 : (0 : ℤ) ≤ max 0 ⌈(ep z : ℝ) * ((T : ℝ) * ν z - (e : ℝ))⌉` using `le_max_left _ _`.
+
+Rewrite using `[← Int.cast_natCast, Int.toNat_of_nonneg h0]`. Establish `hRnn : (0 : ℝ) ≤ R` using `Nat.cast_nonneg R`. Establish `key : ((Module.length O (↥AA' ⧸ AA.comap AA'.subtype)).toNat : ℝ) ≤ (R : ℝ) * ((T : ℝ) * c' * ∑ z, ((ep z : ℝ) * f z) * v z)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hAn` after adjusting the coercions.
+
+Use `_ ≤ _ := by`. Rewrite using `[Nat.cast_mul, hsumcast]`. Conclude with `mul_le_mul_of_nonneg_left hlev hRnn`. Establish `key2 : ((Module.length O (↥AA ⧸ N₁'.comap AA.subtype)).toNat : ℝ) ≤ (R : ℝ) * (I : ℝ)`. Conclude with `hNn` after adjusting the coercions.
+
+Establish `hd : (0 : ℝ) ≤ (finrank K K₁ : ℝ)` using `Nat.cast_nonneg _`. Establish `hR : (finrank K K₁ : ℝ) * (Formalism.LatticeIndexTer.idx O V (M ⊓ V'.restrictScalars O) (Θ ⊓ V'.restrictScalars O) : ℝ) ≤ (finrank K K₁ : ℝ) * ((e : ℝ) * (finrank K V' : ℝ) + ((Module.length O (↥AA' ⧸ AA.comap AA'.subtype)).toNat : ℝ) + ((Module.length O (↥AA ⧸ N₁'.comap AA.subty …`. Conclude with `h` after adjusting the coercions. Establish `hmul` using `mul_le_mul_of_nonneg_left (add_le_add key key2) hd`. Use polynomial arithmetic with `[hR, hmul]`.
+-/
 theorem localLevelsExt : LocalStepLevelsExt := by
   intro ι _ ep f ν v νs c' T R I hep hT hc hv hν O K K₁ V W _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
     ϖ hϖ M Θ N₁ Z Zm N' e be n th c AA AA' N₁' ρ a a' hM hΘ h1 h2 h3 h4 h5 h6 ha ha' h7 h8 h9 h10

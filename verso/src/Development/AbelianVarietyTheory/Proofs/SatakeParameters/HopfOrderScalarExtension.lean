@@ -17,17 +17,29 @@ def extZero (s : Fin n → Prop) [DecidablePred s] : ({i // s i} → ℂ) →ₗ
   map_add' a b := by funext i; by_cases hi : s i <;> simp [hi]
   map_smul' r a := by funext i; by_cases hi : s i <;> simp [hi]
 
+/- English proof (translation)
+Simplify using `[extZero, i.2]`.
+-/
 theorem extZero_apply_mem (s : Fin n → Prop) [DecidablePred s] (w : {i // s i} → ℂ) (i : {i // s i}) :
     extZero s w i = w i := by simp [extZero, i.2]
 
+/- English proof (translation)
+Simplify using `[extZero, hi]`.
+-/
 theorem extZero_apply_not (s : Fin n → Prop) [DecidablePred s] (w : {i // s i} → ℂ) {i : Fin n} (hi : ¬ s i) :
     extZero s w i = 0 := by simp [extZero, hi]
 
+/- English proof (translation)
+Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc]`.
+-/
 theorem quad_mulVec (h X : Matrix (Fin n) (Fin n) ℂ) (u : Fin n → ℂ) :
     star (X *ᵥ u) ⬝ᵥ h *ᵥ (X *ᵥ u) = star u ⬝ᵥ (Xᴴ * h * X) *ᵥ u := by
   rw [Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec,
     Matrix.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.SylvesterInertia.re_quad_eq_sum h hh, Matrix.mulVec_mulVec, Matrix.mem_unitaryGroup_iff'.mp hh.eigenvectorUnitary.2, Matrix.one_mulVec]`.
+-/
 theorem re_quad_ext (h : Matrix (Fin n) (Fin n) ℂ) (hh : h.IsHermitian) (s : Fin n → Prop) [DecidablePred s]
     (w : {i // s i} → ℂ) :
     (star ((hh.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) *ᵥ extZero s w) ⬝ᵥ
@@ -36,6 +48,11 @@ theorem re_quad_ext (h : Matrix (Fin n) (Fin n) ℂ) (hh : h.IsHermitian) (s : F
   rw [GlobalTheory.SylvesterInertia.re_quad_eq_sum h hh, Matrix.mulVec_mulVec,
     Matrix.mem_unitaryGroup_iff'.mp hh.eigenvectorUnitary.2, Matrix.one_mulVec]
 
+/- English proof (translation)
+Use `GlobalTheory.SylvesterInertia.finrank_le_card_of_vanish (star (hh.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ)) S _ fun u hu hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hpos` using `hS u hu hne`. Rewrite `hpos` using `[GlobalTheory.SylvesterInertia.re_quad_eq_sum h hh u]`. Use `absurd hpos (not_lt.mpr (Finset.sum_nonpos fun i _ => ?_))` and prove the remaining obligations.
+
+Distinguish the cases in `hi : 0 < hh.eigenvalues i`. Rewrite using `[hv i hi, map_zero, mul_zero]`. Conclude with `mul_nonpos_of_nonpos_of_nonneg (not_lt.mp hi) (Complex.normSq_nonneg _)`.
+-/
 theorem finrank_le_pos (h : Matrix (Fin n) (Fin n) ℂ) (hh : h.IsHermitian) (S : Submodule ℂ (Fin n → ℂ))
     (hS : ∀ u ∈ S, u ≠ 0 → 0 < (star u ⬝ᵥ h *ᵥ u).re) :
     Module.finrank ℂ S ≤ Fintype.card {i : Fin n // 0 < hh.eigenvalues i} := by
@@ -61,6 +78,13 @@ def phi (h X : Matrix (Fin n) (Fin n) ℂ) (hh : h.IsHermitian) (s : Fin n → P
     ({i // s i} → ℂ) →ₗ[ℂ] (Fin n → ℂ) :=
   Matrix.mulVecLin X ∘ₗ Matrix.mulVecLin (hh.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) ∘ₗ extZero s
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `Function.ne_iff.mp hw`. Establish `hle : ∀ i ∈ (Finset.univ : Finset (Fin n)), (0 : Fin n → ℝ) i ≤ hh.eigenvalues i * Complex.normSq (extZero (fun i => 0 < hh.eigenvalues i) w i)`. Introduce `i _`. Distinguish the cases in `hi : 0 < hh.eigenvalues i`. Conclude with `mul_nonneg hi.le (Complex.normSq_nonneg _)`.
+
+Rewrite using `[extZero_apply_not _ w hi]`. Simplify using the standard rewrite rules. Establish `hlt : ∃ i ∈ (Finset.univ : Finset (Fin n)), (0 : Fin n → ℝ) i < hh.eigenvalues i * Complex.normSq (extZero (fun i => 0 < hh.eigenvalues i) w i)`. Use `⟨j.1, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Rewrite using `[extZero_apply_mem]`.
+
+Conclude with `mul_pos j.2 (Complex.normSq_pos.mpr hj)`. Simplify using `using Finset.sum_lt_sum hle hlt`.
+-/
 theorem sum_pos (h : Matrix (Fin n) (Fin n) ℂ) (hh : h.IsHermitian) (w : {i // 0 < hh.eigenvalues i} → ℂ)
     (hw : w ≠ 0) : 0 < ∑ i, hh.eigenvalues i * Complex.normSq (extZero (fun i => 0 < hh.eigenvalues i) w i) := by
   obtain ⟨j, hj⟩ := Function.ne_iff.mp hw

@@ -19,6 +19,11 @@ namespace GlobalTheory.RawLift.FamSum
 
 section Generic
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a l ih`. Rewrite `hl` using `[List.nodup_cons]`. Rewrite using `[List.map_cons, List.prod_cons, map_mul, ih hl.2]`.
+
+Distinguish the cases in `ha : a = v`. Substitute `ha` using the available equality. Simplify using `[hl.1, h1]`. Simplify using `[h0 a ha, Ne.symm ha]`.
+-/
 theorem map_listProd {Γ ι : Type} [Group Γ] (c : Γ →* Γ) (v : ι) (r : ι → Γ) (h1 : c (r v) = r v)
     (h0 : ∀ w, w ≠ v → c (r w) = 1) (l : List ι) (hl : l.Nodup) :
     c (l.map r).prod = if v ∈ l then r v else 1 := by
@@ -32,6 +37,11 @@ theorem map_listProd {Γ ι : Type} [Group Γ] (c : Γ →* Γ) (v : ι) (r : ι
       simp [hl.1, h1]
     · simp [h0 a ha, Ne.symm ha]
 
+/- English proof (translation)
+Proceed by induction on `l using List.reverseRecOn with`. Consider the case `nil => simpa using h1`. Consider the case `append_singleton l a ih`. Rewrite `hl` using `[List.nodup_append]`. Simplify using `only [List.map_append, List.prod_append, List.map_cons, List.map_nil, List.prod_cons, List.prod_nil, mul_one]`.
+
+Rewrite using `[hφ a, ih hl.1]`. Use `(S a).list_prod_mem fun x hx => ?_` and prove the remaining obligations. Take `⟨w, hw, rfl⟩` from `List.mem_map.1 hx`. Conclude with `hS a w (hl.2.2 w hw a (List.mem_singleton_self a))`.
+-/
 theorem mul_listProd {Γ ι : Type} [Group Γ] (φ : Γ → ℂ) (h1 : φ 1 = 1) (r : ι → Γ) (S : ι → Subgroup Γ)
     (hS : ∀ v w, w ≠ v → r w ∈ S v) (hφ : ∀ v, ∀ γ ∈ S v, φ (γ * r v) = φ γ * φ (r v)) (l : List ι) (hl : l.Nodup) :
     φ (l.map r).prod = (l.map fun w => φ (r w)).prod := by
@@ -50,6 +60,11 @@ end Generic
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+Establish `h : ∃ f, IsFinIdem D v f`. Take `⟨ε, hε⟩` from `GlobalTheory.IdemSupport.exists_placeIdem (D := D) v`. Conclude with `⟨_, ε, hε, rfl⟩`. Unfold `Eu.fid`. Rewrite using `[dif_pos h]`.
+
+Conclude with `h.choose_spec`.
+-/
 theorem isFinIdem_fid (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) : IsFinIdem D v (Eu.fid D v) := by
   have h : ∃ f, IsFinIdem D v f := by
     obtain ⟨ε, hε⟩ := GlobalTheory.IdemSupport.exists_placeIdem (D := D) v
@@ -58,6 +73,9 @@ theorem isFinIdem_fid (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) : IsFinId
   rw [dif_pos h]
   exact h.choose_spec
 
+/- English proof (translation)
+Take `⟨Φ, hΦ⟩` from `GlobalTheory.IdemSupport.exists_comp D`. Take `⟨ε, hε, e⟩` from `isFinIdem_fid D v`. Take `⟨ε', hε', e'⟩` from `isFinIdem_fid D w`. Rewrite using `[e, e']`. Conclude with `GlobalTheory.IdemSupport.place_orth hΦ hε hε' h`.
+-/
 theorem fid_orth {v w : HeightOneSpectrum (𝓞 D.host.F)} (h : v ≠ w) : Eu.fid D v * Eu.fid D w = 0 := by
   obtain ⟨Φ, hΦ⟩ := GlobalTheory.IdemSupport.exists_comp D
   obtain ⟨ε, hε, e⟩ := isFinIdem_fid D v
@@ -65,6 +83,9 @@ theorem fid_orth {v w : HeightOneSpectrum (𝓞 D.host.F)} (h : v ≠ w) : Eu.fi
   rw [e, e']
   exact GlobalTheory.IdemSupport.place_orth hΦ hε hε' h
 
+/- English proof (translation)
+Take `⟨Φ, hΦ⟩` from `GlobalTheory.IdemSupport.exists_comp D`. Take `⟨ε, hε, e⟩` from `isFinIdem_fid D v`. Rewrite `h` using `[e]`. Conclude with `GlobalTheory.IdemSupport.mem_GfC_of_suppF V (GlobalTheory.IdemSupport.place_comp hΦ hε).1 h`.
+-/
 theorem mem_GfC_of_fid (V : HSp D) {v : HeightOneSpectrum (𝓞 D.host.F)} {g : GA D V} (h : SuppF V (Eu.fid D v) g) :
     g ∈ GfC V := by
   obtain ⟨Φ, hΦ⟩ := GlobalTheory.IdemSupport.exists_comp D
@@ -72,12 +93,18 @@ theorem mem_GfC_of_fid (V : HSp D) {v : HeightOneSpectrum (𝓞 D.host.F)} {g : 
   rw [e] at h
   exact GlobalTheory.IdemSupport.mem_GfC_of_suppF V (GlobalTheory.IdemSupport.place_comp hΦ hε).1 h
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `_ ↔ SuppF V (1 - f) g`. Use `forall_congr' fun i => forall_congr' fun j => ?_` and prove the remaining obligations. Apply the tactic sequence `constructor <;> intro h <;> linear_combination -h`.
+-/
 theorem trivAt_iff (V : HSp D) (f : Formalism.L2.Theta.AE D) (g : GA D V) :
     TrivAt V f g ↔ g ∈ GlobalTheory.IdemSupport.suppGroup V (1 - f) := by
   change _ ↔ SuppF V (1 - f) g
   refine forall_congr' fun i => forall_congr' fun j => ?_
   constructor <;> intro h <;> linear_combination -h
 
+/- English proof (translation)
+Apply `GlobalTheory.IdemSupport.mt_inj V` to reduce the goal to its premises. Rewrite using `[GlobalTheory.IdemSupport.mt_one, ← sub_eq_zero]`. Use extensionality with `a b`. Rewrite using `[← h a b, h' a b]`. Both sides reduce to the same expression.
+-/
 theorem eq_one_of_supp_triv (V : HSp D) {f : Formalism.L2.Theta.AE D} {g : GA D V} (h : SuppF V f g) (h' : TrivAt V f g) :
     g = 1 := by
   apply GlobalTheory.IdemSupport.mt_inj V
@@ -86,17 +113,26 @@ theorem eq_one_of_supp_triv (V : HSp D) {f : Formalism.L2.Theta.AE D} {g : GA D 
   rw [← h a b, h' a b]
   rfl
 
+/- English proof (translation)
+Introduce `a b`. Rewrite using `[← h a b, ← mul_assoc, hf, zero_mul]`.
+-/
 theorem trivAt_of_supp (V : HSp D) {f f' : Formalism.L2.Theta.AE D} (hf : f * f' = 0) {g : GA D V} (h : SuppF V f' g) :
     TrivAt V f g := by
   intro a b
   rw [← h a b, ← mul_assoc, hf, zero_mul]
 
+/- English proof (translation)
+Establish `: g * c⁻¹ ∈ GlobalTheory.IdemSupport.suppGroup V f` using `mul_mem hg (inv_mem (show c ∈ _ from hc))`. Establish `h` using `eq_one_of_supp_triv V this ht`. Conclude with `(mul_inv_eq_one.1 h).symm`.
+-/
 theorem cmp_self (V : HSp D) {f : Formalism.L2.Theta.AE D} {g c : GA D V} (hg : SuppF V f g) (hc : SuppF V f c)
     (ht : TrivAt V f (g * c⁻¹)) : c = g := by
   have : g * c⁻¹ ∈ GlobalTheory.IdemSupport.suppGroup V f := mul_mem hg (inv_mem (show c ∈ _ from hc))
   have h := eq_one_of_supp_triv V this ht
   exact (mul_inv_eq_one.1 h).symm
 
+/- English proof (translation)
+Use `eq_one_of_supp_triv V hc ?_` and prove the remaining obligations. Rewrite `hg`, `ht`, the goal using `[trivAt_iff]`. Use `mul_mem (inv_mem ht) hg` as an intermediate fact. Simplify using `using this`.
+-/
 theorem cmp_other (V : HSp D) {f : Formalism.L2.Theta.AE D} {g c : GA D V} (hg : TrivAt V f g) (hc : SuppF V f c)
     (ht : TrivAt V f (g * c⁻¹)) : c = 1 := by
   refine eq_one_of_supp_triv V hc ?_
@@ -104,9 +140,15 @@ theorem cmp_other (V : HSp D) {f : Formalism.L2.Theta.AE D} {g c : GA D V} (hg :
   have := mul_mem (inv_mem ht) hg
   simpa using this
 
+/- English proof (translation)
+The claim follows from `(Quotient.out x).2`.
+-/
 theorem rep_supp {R : RealDat D A Ks} {i : Fin D.R.m} {v : HeightOneSpectrum (𝓞 D.host.F)} (x : Eu.LX R i v) :
     Eu.rep x ∈ GfC (Wc D i) ∧ SuppF (Wc D i) (Eu.fid D v) (Eu.rep x) := (Quotient.out x).2
 
+/- English proof (translation)
+Rewrite using `[← Quotient.out_eq x, ← Quotient.out_eq y]`. Apply `Quotient.sound` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((QuotientGroup.leftRel (levW R i)).comap _) _ _`. Rewrite using `[Setoid.comap_rel, QuotientGroup.leftRel_apply]`. Conclude with `h`.
+-/
 theorem eq_of_rep {R : RealDat D A Ks} {i : Fin D.R.m} {v : HeightOneSpectrum (𝓞 D.host.F)} {x y : Eu.LX R i v}
     (h : (Eu.rep x)⁻¹ * Eu.rep y ∈ levW R i) : x = y := by
   rw [← Quotient.out_eq x, ← Quotient.out_eq y]
@@ -115,6 +157,9 @@ theorem eq_of_rep {R : RealDat D A Ks} {i : Fin D.R.m} {v : HeightOneSpectrum (�
   rw [Setoid.comap_rel, QuotientGroup.leftRel_apply]
   exact h
 
+/- English proof (translation)
+Establish `h` using `Quotient.mk_out (s := (QuotientGroup.leftRel (levW R i)).comap (Subtype.val : Eu.locSet R i v → GA D (Wc D i))) g`. Rewrite `h` using `[Setoid.comap_rel, QuotientGroup.leftRel_apply]`. Conclude with `h`.
+-/
 theorem rep_mk {R : RealDat D A Ks} {i : Fin D.R.m} {v : HeightOneSpectrum (𝓞 D.host.F)} (g : Eu.locSet R i v) :
     (Eu.rep (R := R) (i := i) (v := v) (Quotient.mk _ g))⁻¹ * g.1 ∈ levW R i := by
   have h := Quotient.mk_out (s := (QuotientGroup.leftRel (levW R i)).comap
@@ -122,6 +167,11 @@ theorem rep_mk {R : RealDat D A Ks} {i : Fin D.R.m} {v : HeightOneSpectrum (𝓞
   rw [Setoid.comap_rel, QuotientGroup.leftRel_apply] at h
   exact h
 
+/- English proof (translation)
+Unfold `Eu.famProd`. Use `split_ifs with h`. Use `Subgroup.list_prod_mem _ fun x hx => ?_` and prove the remaining obligations. Take `⟨w, -, rfl⟩` from `List.mem_map.1 hx`. Conclude with `(rep_supp (F w)).1`.
+
+Conclude with `one_mem _`.
+-/
 theorem famProd_mem (R : RealDat D A Ks) (i : Fin D.R.m) (F : ∀ v, Eu.LX R i v) : Eu.famProd R i F ∈ GfC (Wc D i) := by
   unfold Eu.famProd
   split_ifs with h
@@ -130,6 +180,11 @@ theorem famProd_mem (R : RealDat D A Ks) (i : Fin D.R.m) (F : ∀ v, Eu.LX R i v
     exact (rep_supp (F w)).1
   · exact one_mem _
 
+/- English proof (translation)
+Unfold `Eu.famProd`. Rewrite using `[dif_pos hF, map_listProd c v (fun w => Eu.rep (F w)) (cmp_self _ (rep_supp (F v)).2 (hc _).1 (hc _).2) (fun w hw => cmp_other _ (trivAt_of_supp _ (fid_orth hw.symm) (rep_supp (F w)).2) (hc _).1 (hc _).2) _ (Finset.nodup_toList _)]`. Use `split_ifs with h`. Rewrite using `[inv_mul_cancel]`. Conclude with `one_mem _`.
+
+Establish `: F v = Eu.lx0 R i v`. Assume the negation of the conclusion as `hne`. Conclude with `h (Finset.mem_toList.2 (hF.mem_toFinset.2 hne))`. Rewrite using `[inv_one, one_mul, this]`. Conclude with `Eu.trivial_level_coset_representative_mem_level R i v`.
+-/
 theorem cmp_famProd (R : RealDat D A Ks) (i : Fin D.R.m) (v : HeightOneSpectrum (𝓞 D.host.F))
     (c : GA D (Wc D i) →* GA D (Wc D i))
     (hc : ∀ g, SuppF (Wc D i) (Eu.fid D v) (c g) ∧ TrivAt (Wc D i) (Eu.fid D v) (g * (c g)⁻¹))
@@ -151,6 +206,19 @@ def famCls (R : RealDat D A Ks) (i : Fin D.R.m) (F : {F : ∀ v, Eu.LX R i v // 
     GfC (Wc D i) ⧸ (levW R i).subgroupOf (GfC (Wc D i)) :=
   QuotientGroup.mk ⟨Eu.famProd R i F.1, famProd_mem R i F.1⟩
 
+/- English proof (translation)
+Take `⟨-, -, cmp, h1, h2⟩` from `h`. Establish `hc` using `fun v => cmp_famProd R i v (cmp v) (h1 v _ (isFinIdem_fid D v))`. Prove the components needed by the constructor for the conclusion. Introduce `F F' e`. Establish `e1 : (Eu.famProd R i F.1)⁻¹ * Eu.famProd R i F'.1 ∈ levW R i` using `Subgroup.mem_subgroupOf.1 (QuotientGroup.eq.1 e)`.
+
+Establish `e2` using `(h2 _ (mul_mem (inv_mem (famProd_mem R i F.1)) (famProd_mem R i F'.1))).1.1 e1`. Use `Subtype.ext (funext fun v => eq_of_rep ?_)` and prove the remaining obligations. Establish `e3` using `e2 v`. Rewrite `e3` using `[map_mul, map_inv]`. Use `mul_mem (mul_mem (inv_mem (hc v F.1 F.2)) e3) (hc v F'.1 F'.2)` as an intermediate fact.
+
+Simplify `this` using `only [_root_.mul_inv_rev, inv_inv, mul_assoc, mul_inv_cancel_left]`. Introduce `q`. Take `⟨⟨g, hg⟩, rfl⟩` from `QuotientGroup.mk_surjective q`. Establish `hm : ∀ v, cmp v g ∈ Eu.locSet R i v` using `fun v => ⟨mem_GfC_of_fid _ (h1 v _ (isFinIdem_fid D v) g).1, (h1 v _ (isFinIdem_fid D v) g).1⟩`. Set `F : ∀ v, Eu.LX R i v` to `fun v => Quotient.mk _ ⟨cmp v g, hm v⟩`.
+
+Establish `hr : ∀ v, (Eu.rep (F v))⁻¹ * cmp v g ∈ levW R i` using `fun v => rep_mk ⟨cmp v g, hm v⟩`. Establish `hF : {w | F w ≠ Eu.lx0 R i w}.Finite`. Use `(h2 g hg).2.subset fun w hw hk => hw (eq_of_rep ?_)` and prove the remaining obligations. Use `mul_mem (mul_mem (hr w) (inv_mem hk)) (Eu.trivial_level_coset_representative_mem_level R i w)` as an intermediate fact. Simplify `this` using `only [mul_assoc, mul_inv_cancel_left]`.
+
+Use `⟨⟨F, hF⟩, QuotientGroup.eq.2 (Subgroup.mem_subgroupOf.2 ?_)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Eu.famProd R i F)⁻¹ * g ∈ levW R i`. Use `(h2 _ (mul_mem (inv_mem (famProd_mem R i F)) hg)).1.2 fun v => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_inv]`. Use `mul_mem (hc v F hF) (hr v)` as an intermediate fact.
+
+Simplify `this` using `only [mul_assoc, mul_inv_cancel_left]`.
+-/
 theorem famCls_bijective (R : RealDat D A Ks) (i : Fin D.R.m) (h : LevProd R i) : Function.Bijective (famCls R i) := by
   obtain ⟨-, -, cmp, h1, h2⟩ := h
   have hc := fun v => cmp_famProd R i v (cmp v) (h1 v _ (isFinIdem_fid D v))
@@ -181,6 +249,9 @@ theorem famCls_bijective (R : RealDat D A Ks) (i : Fin D.R.m) (h : LevProd R i) 
     have := mul_mem (hc v F hF) (hr v)
     simpa only [mul_assoc, mul_inv_cancel_left] using this
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul ((levW R i).subgroupOf (GfC (Wc D i))) ⟨Eu.famProd R i F.1, famProd_mem R i F.1⟩`. Conclude with `⟨k.1.1, Subgroup.mem_subgroupOf.1 k.2, congrArg Subtype.val hk⟩`.
+-/
 theorem out_famCls (R : RealDat D A Ks) (i : Fin D.R.m)
     (F : {F : ∀ v, Eu.LX R i v // {w | F w ≠ Eu.lx0 R i w}.Finite}) :
     ∃ k ∈ levW R i, ((famCls R i F).out : GfC (Wc D i)) = Eu.famProd R i F.1 * k := by
@@ -188,6 +259,13 @@ theorem out_famCls (R : RealDat D A Ks) (i : Fin D.R.m)
     ⟨Eu.famProd R i F.1, famProd_mem R i F.1⟩
   exact ⟨k.1.1, Subgroup.mem_subgroupOf.1 k.2, congrArg Subtype.val hk⟩
 
+/- English proof (translation)
+Rewrite using `[finprod_eq_prod_of_mulSupport_subset (s := hF.toFinset), ← Finset.prod_map_toList]`. Unfold `Eu.famProd`. Rewrite using `[dif_pos hF]`. Use `mul_listProd (coef R i t μ 𝓕) (Model.coef_one R i t hVN μ 𝓕 hμ) (fun w => Eu.rep (F w)) (fun v => GfC (Wc D i) ⊓ GlobalTheory.IdemSupport.suppGroup (Wc D i) (1 - Eu.fid D v)) (fun v w hw => ?_) (fun v γ hγ => ?_) _ (Finset.nodup_toList _)` and prove the remaining obligations. Conclude with `⟨(rep_supp (F w)).1, (trivAt_iff _ _ _).1 (trivAt_of_supp _ (fid_orth hw.symm) (rep_supp (F w)).2)⟩`.
+
+Conclude with `hM μ 𝓕 hμ v _ (isFinIdem_fid D v) γ hγ.1 ((trivAt_iff _ _ _).2 hγ.2) _ (rep_supp (F v)).2`. Introduce `v hv`. Rewrite using `[Finset.mem_coe, Set.Finite.mem_toFinset]`. Introduce `e`. Apply `hv` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `Eu.acoef R i t μ 𝓕 v (F v) = 1`. Rewrite using `[e]`. Conclude with `Eu.local_coefficient_trivial_level_coset hLF hVN hμ v`.
+-/
 theorem coef_famProd (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (hM : FinMult R i t) (hLF : LevFix R i t)
     (hVN : VecNe R i t) {μ 𝓕} (hμ : IsCovolOne (ratL (Wc D i) (Vc D i)) μ 𝓕)
     (F : ∀ v, Eu.LX R i v) (hF : {w | F w ≠ Eu.lx0 R i w}.Finite) :
@@ -208,6 +286,9 @@ theorem coef_famProd (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (hM : FinMult 
     rw [e]
     exact Eu.local_coefficient_trivial_level_coset hLF hVN hμ v
 
+/- English proof (translation)
+Establish `hex` using `h.2.2.1 γ hγ`. Unfold `Eu.Bop`. Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec.2 x y`.
+-/
 theorem trPair_eq_bop {R : RealDat D A Ks} {i : Fin D.R.m} (h : TransLaws R i) {γ : GA D (Wc D i)}
     (hγ : γ ∈ GfC (Wc D i)) (x y) : trPair R i γ x y = ⟪x, Eu.Bop R i γ y⟫_ℂ := by
   have hex := h.2.2.1 γ hγ
@@ -215,6 +296,9 @@ theorem trPair_eq_bop {R : RealDat D A Ks} {i : Fin D.R.m} (h : TransLaws R i) {
   rw [dif_pos hex]
   exact hex.choose_spec.2 x y
 
+/- English proof (translation)
+Take `⟨k, hk, e⟩` from `out_famCls R i F`. Rewrite using `[e, Model.coef_mul_lev R i t hLF μ 𝓕 _ k hk, coef_famProd R i t hM hLF hVN hμ F.1 F.2]`.
+-/
 theorem coef_out (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (hM : FinMult R i t) (hLF : LevFix R i t)
     (hVN : VecNe R i t) {μ 𝓕} (hμ : IsCovolOne (ratL (Wc D i) (Vc D i)) μ 𝓕)
     (F : {F : ∀ v, Eu.LX R i v // {w | F w ≠ Eu.lx0 R i w}.Finite}) :
@@ -222,6 +306,11 @@ theorem coef_out (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (hM : FinMult R i 
   obtain ⟨k, hk, e⟩ := out_famCls R i F
   rw [e, Model.coef_mul_lev R i t hLF μ 𝓕 _ k hk, coef_famProd R i t hM hLF hVN hμ F.1 F.2]
 
+/- English proof (translation)
+Take `⟨k, hk, e⟩` from `out_famCls R i F`. Establish `e2` using `hT.2.2.2.1 _ (famProd_mem R i F.1) 1 (one_mem _) k hk x y`. Rewrite `e2` using `[one_mul]`. Rewrite using `[e, e2, trPair_eq_bop hT (famProd_mem R i F.1)]`. Unfold `Eu.Bfam`.
+
+Both sides reduce to the same expression.
+-/
 theorem trPair_out (R : RealDat D A Ks) (i : Fin D.R.m) (hT : TransLaws R i)
     (F : {F : ∀ v, Eu.LX R i v // {w | F w ≠ Eu.lx0 R i w}.Finite}) (x y) :
     trPair R i ((famCls R i F).out : GfC (Wc D i)) x y = ⟪x, Eu.Bfam R i F.1 y⟫_ℂ := by
@@ -232,6 +321,9 @@ theorem trPair_out (R : RealDat D A Ks) (i : Fin D.R.m) (hT : TransLaws R i)
   unfold Eu.Bfam
   rfl
 
+/- English proof (translation)
+Establish `H1` using `(Equiv.ofBijective _ he).hasSum_iff.2 H`. Use `(congrArg (fun f => HasSum f s) (funext fun F => ?_)).mp H1` and prove the remaining obligations. Rewrite using `[← hc, ← hp]`. Both sides reduce to the same expression.
+-/
 theorem hasSum_reindex {X Y : Type} (e : X → Y) (he : Function.Bijective e) (a s : ℂ) (c p : Y → ℂ) (c' p' : X → ℂ)
     (hc : ∀ F, c (e F) = c' F) (hp : ∀ F, p (e F) = p' F) (H : HasSum (fun q => a * (c q * p q)) s) :
     HasSum (fun F => a * (c' F * p' F)) s := by
@@ -242,6 +334,9 @@ theorem hasSum_reindex {X Y : Type} (e : X → Y) (he : Function.Bijective e) (a
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R i t hP hT hM hLF hVN hS th hth μ 𝓕 hμ`. Use `(hS th hth μ 𝓕 hμ).imp fun a H => ⟨H.1, fun x y => ?_⟩` and prove the remaining obligations. Conclude with `hasSum_reindex (famCls R i) (famCls_bijective R i hP) _ _ _ _ _ _ (coef_out R i t hM hLF hVN hμ) (fun F => trPair_out R i hT F x y) (H.2 x y)`.
+-/
 theorem hasSum_families : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), ∀ i t, LevProd R i → TransLaws R i → FinMult R i t → LevFix R i t → VecNe R i t → FinSum R i t → ∀ th, IsRaw R i t th → ∀ (μ : Measure (WO (Vc D i) (Wc D i))) (𝓕 : Set (WO (Vc D i) (Wc D i))), IsCovolOne (ratL (Wc D i) (Vc D i)) μ 𝓕 → ∃ a : ℝ, 0 < a ∧ ∀ x y, HasSum (fun F : {F : ∀ v, Eu.LX R i v // {w | F w ≠ Eu.lx0 R i w}.Finite} => (a : ℂ) * ((∏ᶠ v, Eu.acoef R i t μ 𝓕 v (F.1 v)) * ⟪x, Eu.Bfam R i F.1 y⟫_ℂ)) ⟪LinearMap.adjoint th x, LinearMap.adjoint th y⟫_ℂ := by
   intro D G _ _ Pl0 T A Ks _ _ _ R i t hP hT hM hLF hVN hS th hth μ 𝓕 hμ
   refine (hS th hth μ 𝓕 hμ).imp fun a H => ⟨H.1, fun x y => ?_⟩

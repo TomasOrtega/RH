@@ -27,20 +27,35 @@ def archV (x : κ → AdeleRing (𝓞 F) F) : κ → mixedEmbedding.mixedSpace F
 
 def finV (x : κ → AdeleRing (𝓞 F) F) : κ → FiniteAdeleRing (𝓞 F) F := fun i => (x i).2
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun i => (GlobalTheory.Core.Rk.RapidInt.continuous_toMixed F).comp (continuous_fst.comp (continuous_apply i))`.
+-/
 theorem continuous_archV : Continuous (archV F (κ := κ)) :=
   continuous_pi fun i => (GlobalTheory.Core.Rk.RapidInt.continuous_toMixed F).comp (continuous_fst.comp (continuous_apply i))
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun i => continuous_snd.comp (continuous_apply i)`.
+-/
 theorem continuous_finV : Continuous (finV F (κ := κ)) :=
   continuous_pi fun i => continuous_snd.comp (continuous_apply i)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `map_add (InfiniteAdeleRing.ringEquiv_mixedSpace F) (x i).1 (y i).1`.
+-/
 theorem archV_add (x y : κ → AdeleRing (𝓞 F) F) : archV F (x + y) = archV F x + archV F y := by
   funext i
   exact map_add (InfiniteAdeleRing.ringEquiv_mixedSpace F) (x i).1 (y i).1
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Both sides reduce to the same expression.
+-/
 theorem finV_add (x y : κ → AdeleRing (𝓞 F) F) : finV F (x + y) = finV F x + finV F y := by
   funext i
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [archV]`. Rewrite using `[InfiniteAdeleRing.mixedEmbedding_eq_algebraMap_comp]`. Both sides reduce to the same expression.
+-/
 theorem archV_alg (ξ : κ → F) :
     archV F (fun i => algebraMap F (AdeleRing (𝓞 F) F) (ξ i)) = fun i => mixedEmbedding F (ξ i) := by
   funext i
@@ -48,19 +63,35 @@ theorem archV_alg (ξ : κ → F) :
   rw [InfiniteAdeleRing.mixedEmbedding_eq_algebraMap_comp]
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem finV_alg (ξ : κ → F) :
     finV F (fun i => algebraMap F (AdeleRing (𝓞 F) F) (ξ i)) = fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ i) :=
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pureA_eq (f : (κ → mixedEmbedding.mixedSpace F) → ℂ) (g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ)
     (x : κ → AdeleRing (𝓞 F) F) : pureA F f g x = f (archV F x) * g (finV F x) := rfl
 
+/- English proof (translation)
+Establish `h1 : ‖z‖ ≤ ‖z + a‖ + ‖a‖`. Simplify using `using norm_sub_le (z + a) a`. Use polynomial arithmetic with `[norm_nonneg (z + a), norm_nonneg a]`.
+-/
 theorem one_add_norm_le {V : Type} [NormedAddCommGroup V] (z a : V) :
     1 + ‖z‖ ≤ (1 + ‖z + a‖) * (1 + ‖a‖) := by
   have h1 : ‖z‖ ≤ ‖z + a‖ + ‖a‖ := by
     simpa using norm_sub_le (z + a) a
   nlinarith [norm_nonneg (z + a), norm_nonneg a]
 
+/- English proof (translation)
+Use `set C := 2 ^ k * (Finset.Iic (k, 0)).sup (fun m => SchwartzMap.seminorm ℝ m.1 m.2) f`. Establish `hf : (1 + ‖z + a‖) ^ k * ‖f (z + a)‖ ≤ C`. Use `SchwartzMap.one_add_le_sup_seminorm_apply (𝕜 := ℝ) (m := (k, 0)) le_rfl le_rfl f (z + a)` as an intermediate fact. Rewrite `this` using `[norm_iteratedFDeriv_zero]`. Then use the resulting hypothesis. Establish `hpos : 0 < (1 + ‖z‖) ^ k` using `pow_pos (by positivity) k`.
+
+Rewrite using `[← div_eq_mul_inv, le_div_iff₀ hpos]`. Establish `h1 : (1 + ‖z‖) ^ k ≤ (1 + ‖z + a‖) ^ k * (1 + R) ^ k`. Rewrite using `[← mul_pow]`. Use `pow_le_pow_left₀ (by positivity) ((one_add_norm_le z a).trans ?_) k` and prove the remaining obligations. Use `gcongr`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem schwartz_shift_le {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (f : SchwartzMap V ℂ) (k : ℕ)
     {R : ℝ} (z a : V) (ha : ‖a‖ ≤ R) :
     ‖f (z + a)‖ ≤ (1 + R) ^ k * (2 ^ k * (Finset.Iic (k, 0)).sup (fun m => SchwartzMap.seminorm ℝ m.1 m.2) f) *
@@ -81,6 +112,11 @@ theorem schwartz_shift_le {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] 
     _ ≤ C * (1 + R) ^ k := mul_le_mul_of_nonneg_right hf (pow_nonneg (by linarith [norm_nonneg a]) k)
     _ = (1 + R) ^ k * C := by ring
 
+/- English proof (translation)
+Use `Summable.of_norm_bounded_eventually (ZLattice.summable_norm_pow_inv L k hk) ?_` and prove the remaining obligations. Use `(Set.finite_singleton (0 : L)).subset fun z hz => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Apply `hz` to reduce the goal to its premises. Establish `hz0 : 0 < ‖z‖` using `norm_pos_iff.2 h0`.
+
+Use `show ‖((1 + ‖z‖) ^ k)⁻¹‖ ≤ ‖z‖⁻¹ ^ k`. Rewrite using `[Real.norm_of_nonneg (inv_nonneg.2 (pow_nonneg (by positivity) k)), ← inv_pow]`. Conclude with `pow_le_pow_left₀ (inv_nonneg.2 (by positivity)) (inv_anti₀ hz0 (by linarith)) k`.
+-/
 theorem summable_one_add_norm_inv {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (L : Submodule ℤ V) [DiscreteTopology L] {k : ℕ} (hk : Module.finrank ℤ L < k) :
     Summable fun z : L => ((1 + ‖z‖) ^ k)⁻¹ := by
@@ -106,12 +142,40 @@ section Theta
 
 variable (F : Type) [Field F] [NumberField F] {κ : Type} [Fintype κ] [Invertible (2 : AdeleRing (𝓞 F) F)]
 
+/- English proof (translation)
+The claim follows from `RestrictedProduct.isOpen_forall_mem (A := fun v : HeightOneSpectrum (𝓞 F) => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) (fun v => Valued.isOpen_valuationSubring _)`.
+-/
 theorem isOpen_integral :
     IsOpen {a : FiniteAdeleRing (𝓞 F) F | ∀ v, a v ∈ HeightOneSpectrum.adicCompletionIntegers F v} :=
   RestrictedProduct.isOpen_forall_mem
     (A := fun v : HeightOneSpectrum (𝓞 F) => (v.adicCompletionIntegers F : Set (v.adicCompletion F)))
     (fun v => Valued.isOpen_valuationSubring _)
 
+/- English proof (translation)
+Take `⟨B, hB⟩` from `hg.1.continuous.bounded_above_of_compact_support hg.2`. Use `set x₀ := finV F p₀.1`. Establish `hK : IsCompact ((fun z => z - x₀) '' tsupport g)` using `hg.2.isCompact.image (continuous_id.sub continuous_const)`. Take `⟨N, hN, hKN⟩` from `exists_nat_mul_integral_of_isCompact F hK`. Use `haveI := discreteTopology_denomLattice F κ hN`.
+
+Use `set k := Module.finrank ℤ (denomLattice F κ N) + 1`. Use `set C := 2 ^ k * (Finset.Iic (k, 0)).sup (fun m => SchwartzMap.seminorm ℝ m.1 m.2) f`. Use `set R := ‖archV F p₀.1‖ + 1`. Use `set S : Set (κ → F) := {ξ | (fun i => mixedEmbedding F (ξ i)) ∈ denomLattice F κ N}`. Use `set s : Set ((κ → AdeleRing (𝓞 F) F) × (κ → AdeleRing (𝓞 F) F)) := {p | ‖archV F p.1 - archV F p₀.1‖ < 1} ∩ ⋂ i, (fun p : (κ → AdeleRing (𝓞 F) F) × (κ → AdeleRing (𝓞 F) F) => (N : FiniteAdeleRing (𝓞 F) F) * (finV F p.1 i - x₀ i)) ⁻¹' {a | ∀ v, a v ∈ HeightOneSpectrum.adicCompleti …`.
+
+Establish `hs : s ∈ 𝓝 p₀`. Use `IsOpen.mem_nhds (IsOpen.inter ?_ (isOpen_iInter_of_finite fun i => (isOpen_integral F).preimage ?_)) ?_` and prove the remaining obligations. Conclude with `isOpen_lt (((continuous_archV F).comp continuous_fst).sub continuous_const).norm continuous_const`. Conclude with `continuous_const.mul (((continuous_apply i).comp ((continuous_finV F).comp continuous_fst)).sub continuous_const)`. Use `⟨by simp, Set.mem_iInter.2 fun i => ?_⟩` and prove the remaining obligations.
+
+Introduce `v`. Simplify using `[x₀]`. Use `⟨s, hs, S.indicator fun ξ => B * ((1 + R) ^ k * C * ((1 + ‖(fun i => mixedEmbedding F (ξ i))‖) ^ k)⁻¹), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← summable_subtype_iff_indicator]`. Set `j : S → denomLattice F κ N` to `fun ξ => ⟨_, ξ.2⟩`.
+
+Establish `hj : Function.Injective j` using `fun a b h => Subtype.ext (funext fun i => mixedEmbedding_injective F (congrFun (congrArg Subtype.val h) i))`. Conclude with `(((summable_one_add_norm_inv (denomLattice F κ N) (Nat.lt_succ_self _)).comp_injective hj).mul_left ((1 + R) ^ k * C)).mul_left B`. Introduce `ξ p hp`. Establish `hp1 : ‖archV F p.1‖ ≤ R`. Establish `h` using `hp.1`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hn : ‖schr ψ p (pureA F f g) (fun i => algebraMap F (AdeleRing (𝓞 F) F) (ξ i))‖ = ‖f ((fun i => mixedEmbedding F (ξ i)) + archV F p.1)‖ * ‖g ((fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ i)) + finV F p.1)‖`. Simplify using `only [schr]`. Rewrite using `[norm_mul, hψ, one_mul, pureA_eq, archV_add, finV_add, archV_alg, finV_alg, norm_mul]`. Rewrite using `[hn]`.
+
+Distinguish the cases in `hξ : ξ ∈ S`. Rewrite using `[Set.indicator_of_mem hξ]`. Establish `h1` using `schwartz_shift_le f k (fun i => mixedEmbedding F (ξ i)) (archV F p.1) hp1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Set.indicator_of_notMem hξ]`.
+
+Establish `hg0 : g ((fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ i)) + finV F p.1) = 0`. Assume the negation of the conclusion as `h0`. Apply `hξ` to reduce the goal to its premises. Establish `hy : ((fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ i)) + finV F p.1) - x₀ ∈ (fun z => z - x₀) '' tsupport g` using `⟨_, subset_tsupport _ h0, rfl⟩`. Use `fun i => ?_` and prove the remaining obligations.
+
+Establish `H : ∀ v, ((N : FiniteAdeleRing (𝓞 F) F) * algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ i)) v ∈ HeightOneSpectrum.adicCompletionIntegers F v`. Introduce `v`. Establish `h1` using `hKN _ hy i v`. Establish `h2` using `(Set.mem_iInter.1 hp.2 i) v`. Establish `e : (N : FiniteAdeleRing (𝓞 F) F) * algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ i) = (N : FiniteAdeleRing (𝓞 F) F) * (((fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ i)) + finV F p.1) - x₀) i - (N : FiniteAdeleRing (𝓞 F) F) * (finV F p.1 i - x₀ i)`.
+
+Simplify using `only [Pi.sub_apply, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `sub_mem h1 h2`. Take `⟨y, hy⟩` from `(IntegralFinAdele.integral_finiteAdele_properties F).2.2.2.1 ((N : F) * ξ i) fun v => by`.
+
+Rewrite using `[map_mul, map_natCast]`. Conclude with `H v`. Use `⟨y, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (mixedEmbedding F) hy`. Rewrite `h2` using `[← nsmul_eq_mul, map_nsmul, ← Nat.cast_smul_eq_nsmul ℝ]`.
+
+Conclude with `h2.symm`. Rewrite using `[hg0, norm_zero, mul_zero]`.
+-/
 theorem local_bound (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (hψ : ∀ x, ‖ψ x‖ = 1)
     (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ) {g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ}
     (hg : g ∈ SB (κ → FiniteAdeleRing (𝓞 F) F)) (p₀ : (κ → AdeleRing (𝓞 F) F) × (κ → AdeleRing (𝓞 F) F)) :
@@ -208,6 +272,13 @@ section Theta2
 
 variable (F : Type) [Field F] [NumberField F] {κ : Type} [Fintype κ] [Invertible (2 : AdeleRing (𝓞 F) F)]
 
+/- English proof (translation)
+Establish `hterm : ∀ ξ : κ → F, Continuous fun p : (κ → AdeleRing (𝓞 F) F) × (κ → AdeleRing (𝓞 F) F) => schr ψ p (pureA F f g) (fun i => algebraMap F (AdeleRing (𝓞 F) F) (ξ i))` using `fun ξ => by`. Simplify using `only [schr, pureA_eq]`. Use `(hψc.comp ?_).mul ((f.continuous.comp ?_).mul (hg.1.continuous.comp ?_))` and prove the remaining obligations. Conclude with `(continuous_const.dotProduct continuous_snd).add (continuous_const.mul (continuous_fst.dotProduct continuous_snd))`. Conclude with `(continuous_archV F).comp (continuous_const.add continuous_fst)`.
+
+Conclude with `(continuous_finV F).comp (continuous_const.add continuous_fst)`. Use `⟨fun p => ?_, continuous_iff_continuousAt.2 fun p₀ => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, u, hu, hb⟩` from `local_bound F ψ hψ f hg p`. Conclude with `hu.of_norm_bounded fun ξ => hb ξ p (mem_of_mem_nhds hs)`. Take `⟨s, hs, u, hu, hb⟩` from `local_bound F ψ hψ f hg p₀`.
+
+Conclude with `(continuousOn_tsum (fun ξ => (hterm ξ).continuousOn) hu fun ξ p hp => hb ξ p hp).continuousAt hs`.
+-/
 theorem pure_cont (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (hψc : Continuous ψ) (hψ : ∀ x, ‖ψ x‖ = 1)
     (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ) {g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ}
     (hg : g ∈ SB (κ → FiniteAdeleRing (𝓞 F) F)) :
@@ -227,6 +298,17 @@ theorem pure_cont (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (hψc : Continuous �
   · obtain ⟨s, hs, u, hu, hb⟩ := local_bound F ψ hψ f hg p₀
     exact (continuousOn_tsum (fun ξ => (hterm ξ).continuousOn) hu fun ξ p hp => hb ξ p hp).continuousAt hs
 
+/- English proof (translation)
+Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ h`. Take `⟨f, g, hg, rfl⟩` from `h`. Conclude with `pure_cont F ψ hψc hψ f hg`. Consider the case `zero`.
+
+Establish `e : ∀ p, schr ψ p (0 : (κ → AdeleRing (𝓞 F) F) → ℂ) = 0` using `fun p => funext fun x => by simp [schr]`. Use `⟨fun p => by simpa [e] using (summable_zero : Summable fun _ : κ → F => (0 : ℂ)), ?_⟩` and prove the remaining obligations. Simplify using `only [e, thetaSum, Pi.zero_apply, tsum_zero]`. Conclude with `continuous_const`. Consider the case `add Φ Ψ _ _ h1 h2`.
+
+Establish `e : ∀ p, schr ψ p (Φ + Ψ) = schr ψ p Φ + schr ψ p Ψ` using `fun p => funext fun x => by`. Simplify using `[schr, mul_add]`. Use `⟨fun p => by simpa [e] using (h1.1 p).add (h2.1 p), ?_⟩` and prove the remaining obligations. Establish `e2 : (fun p => thetaSum F (schr ψ p (Φ + Ψ))) = fun p => thetaSum F (schr ψ p Φ) + thetaSum F (schr ψ p Ψ)` using `funext fun p => by`. Rewrite using `[e]`.
+
+Conclude with `(h1.1 p).tsum_add (h2.1 p)`. Rewrite using `[e2]`. Conclude with `h1.2.add h2.2`. Consider the case `smul c Φ _ h`. Establish `e : ∀ p, schr ψ p (c • Φ) = c • schr ψ p Φ` using `fun p => funext fun x => by`.
+
+Simplify using `only [schr, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨fun p => by simpa [e] using (h.1 p).mul_left c, ?_⟩` and prove the remaining obligations. Simplify using `only [e, thetaSum_smul]`. Conclude with `continuous_const.mul h.2`.
+-/
 theorem schA_cont (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (hψc : Continuous ψ) (hψ : ∀ x, ‖ψ x‖ = 1)
     {Φ : (κ → AdeleRing (𝓞 F) F) → ℂ} (hΦ : Φ ∈ schA F κ) :
     (∀ p, Summable fun ξ : κ → F => schr ψ p Φ (fun i => algebraMap F (AdeleRing (𝓞 F) F) (ξ i))) ∧
@@ -260,6 +342,9 @@ theorem schA_cont (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (hψc : Continuous �
 
 end Theta2
 
+/- English proof (translation)
+Introduce `D ψ hψ S T JA JB ξ _ _ κ _ co _ Φ hΦ`. Use `haveI : IsModuleTopology (AF D.host.F) (Matrix (Fin T.rank) (Fin S.rank) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE D.host.F D.host.E)) := inferInstanceAs (IsModuleTopology (AF D.host.F) (Fin T.rank → Fin S.rank → GlobalTheory.IndefiniteRowSideFullHecke.WeilTens …`. Establish `hc : Continuous co.e` using `IsModuleTopology.continuous_of_linearMap co.e.toLinearMap`. Conclude with `(schA_cont D.host.F ψ hψ.1.1 hψ.1.2.1 hΦ).2.comp hc`.
+-/
 theorem continuous_thetaTr : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (JA : Matrix (Fin T.rank) (Fin T.rank) D.host.E) (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E)
       (ξ : AF D.host.F ⊗[D.host.F] D.host.E), JA = T.gramᵀ →

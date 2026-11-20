@@ -6,6 +6,21 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace LateralTheory.E.LeafTw0LocGenPfB
 open LateralTheory.E.LeafTw0LocGenPfA
 
+/- English proof (translation)
+Establish `key : ∀ x : V, ∃ (Wx : V.Opens) (_ : x ∈ Wx) (a : (ZMod q)ˣ), V.presheaf.map (homOfLE le_top : Wx ⟶ ⊤).op ξ.1 = V.presheaf.map (homOfLE le_top : Wx ⟶ ⊤).op (ζ.1 ^ (a : ZMod q).val)`. Introduce `x`. Establish `hq : IsUnit ((q : V.presheaf.stalk x))`. Simplify using `using ζ.2.1.map (V.presheaf.germ ⊤ x trivial).hom`. Establish `hr : ∀ z : Γ(V, ⊤), Polynomial.aeval z (Polynomial.cyclotomic q ℤ) = 0 → Polynomial.aeval ((V.presheaf.germ ⊤ x trivial).hom z) (Polynomial.cyclotomic q ℤ) = 0`.
+
+Introduce `z hz`. Establish `h` using `Polynomial.aeval_algHom_apply (V.presheaf.germ ⊤ x trivial).hom.toIntAlgHom z (Polynomial.cyclotomic q ℤ)`. Rewrite `h` using `[hz, map_zero]`. Conclude with `h`. Take `⟨a, ha⟩` from `local_pow hq (hr _ ζ.2.2) (hr _ ξ.2.2)`.
+
+Establish `h2 : (V.presheaf.germ ⊤ x trivial).hom ξ.1 = (V.presheaf.germ ⊤ x trivial).hom (ζ.1 ^ (a : ZMod q).val)`. Rewrite using `[map_pow]`. Conclude with `ha`. Take `⟨Wx, hx, i1, i2, he⟩` from `TopCat.Presheaf.germ_eq V.presheaf (U := ⊤) (V := ⊤) x trivial trivial _ _ h2`. Use `⟨Wx, hx, a, ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : i1 = homOfLE le_top` using `Subsingleton.elim _ _`. Establish `e2 : i2 = homOfLE le_top` using `Subsingleton.elim _ _`. Substitute `e1 e2` using the available equality. Conclude with `he`. Use `choose Wx hx a ha using key`.
+
+Establish `fin : ∀ (x : V) {W : Scheme.{0}} (g' : W ⟶ (Wx x).toScheme), (g' ≫ (Wx x).ι).appTop ξ.1 = ((g' ≫ (Wx x).ι).appTop ζ.1) ^ (a x : ZMod q).val`. Introduce `x W g'`. Establish `hle : (Wx x).ι ''ᵁ ⊤ ≤ Wx x` using `by simp`. Establish `hW : ∀ z : Γ(V, ⊤), (Wx x).ι.appTop z = V.presheaf.map (homOfLE hle).op (V.presheaf.map (homOfLE le_top : Wx x ⟶ ⊤).op z)`. Introduce `z`.
+
+Rewrite using `[Scheme.Opens.ι_appTop, ← ConcreteCategory.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression. Rewrite using `[Scheme.Hom.comp_appTop, ConcreteCategory.comp_apply, ConcreteCategory.comp_apply, hW, hW, ha x]`. Simplify using `only [map_pow]`. Conclude with `map_pow (ConcreteCategory.hom (Scheme.Hom.appTop g')) _ _`.
+
+Set `𝒰 : V.Cover (Scheme.precoverage @Etale)` to `Scheme.Cover.mkOfCovers V (fun x => (Wx x).toScheme) (fun x => (Wx x).ι) (fun x => ⟨x, ⟨x, hx x⟩, rfl⟩)`. Use `⟨_, Scheme.Cover.mem_grothendieckTopology 𝒰, fun W h hh => ?_⟩` and prove the remaining obligations. Take `⟨x, g, rfl⟩` from `(Sieve.mem_ofArrows_iff _ _ _).1 hh`. Conclude with `⟨a x, fin x g⟩`.
+-/
 theorem geo {q : ℕ} [NeZero q] (V : Scheme.{0}) (ζ ξ : Prim q Γ(V, ⊤)) :
     Loc V fun W h => ∃ a : (ZMod q)ˣ, h.appTop ξ.1 = (h.appTop ζ.1) ^ (a : ZMod q).val := by
   classical

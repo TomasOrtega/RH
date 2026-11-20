@@ -19,16 +19,27 @@ def expG {n : ℕ} (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) ℂ) (t : �
     ⟨(Matrix.isUnit_exp ((t : ℂ) • X)).unit, exp_indefinite_unitary_holds n ε X h t⟩
   else 1
 
+/- English proof (translation)
+Rewrite using `[expG, dif_pos h]`. Conclude with `IsUnit.unit_spec _`.
+-/
 lemma toM_expG {n : ℕ} (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) ℂ) (t : ℝ) (h : inG ε X) :
     toM (expG ε X t) = NormedSpace.exp ((t : ℂ) • X) := by
   rw [expG, dif_pos h]
   exact IsUnit.unit_spec _
 
+/- English proof (translation)
+Use `⟨Submonoid.mul_mem _ hg.1 hh.1, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, hh.2, ← Matrix.mul_assoc, hg.2, Matrix.mul_assoc]`.
+-/
 lemma Kset_mul {n : ℕ} (ε : Fin n → Bool) {g h : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Kset ε)
     (hh : h ∈ Kset ε) : g * h ∈ Kset ε := by
   refine ⟨Submonoid.mul_mem _ hg.1 hh.1, ?_⟩
   rw [Matrix.mul_assoc, hh.2, ← Matrix.mul_assoc, hg.2, Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `hJ : star (Jm ε) = Jm ε`. Rewrite using `[Jm, Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose]`. Apply the tactic sequence `congr 1; funext a; by_cases ha : ε a <;> simp [ha]`. Use `⟨Unitary.star_mem hg.1, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg star hg.2`.
+
+Rewrite `h` using `[star_mul, star_mul, hJ]`. Conclude with `h.symm`.
+-/
 lemma Kset_star {n : ℕ} (ε : Fin n → Bool) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Kset ε) :
     star g ∈ Kset ε := by
   have hJ : star (Jm ε) = Jm ε := by
@@ -61,10 +72,18 @@ def KG {n : ℕ} (ε : Fin n → Bool) : Subgroup (UJ ε) where
     rw [h2]
     exact Kset_star ε hg
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 lemma mem_KG {n : ℕ} (ε : Fin n → Bool) (g : UJ ε) : g ∈ KG ε ↔ toM g ∈ Kset ε := Iff.rfl
 
 abbrev toMK {n : ℕ} {ε : Fin n → Bool} (k : KG ε) : Matrix (Fin n) (Fin n) ℂ := toM (k : UJ ε)
 
+/- English proof (translation)
+Use extensionality with `M`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, rfl⟩`. Conclude with `k.2`. Introduce `hM`.
+
+Establish `hu : M * star M = 1` using `Unitary.mul_star_self_of_mem hM.1`. Establish `hu' : star M * M = 1` using `Unitary.star_mul_self_of_mem hM.1`. Establish `hUJ : inUJ ε M` using `by show Mᴴ * Jm ε * M = Jm ε`. Rewrite using `[Matrix.mul_assoc, ← hM.2, ← Matrix.mul_assoc, ← Matrix.star_eq_conjTranspose, hu', Matrix.one_mul]`. Conclude with `⟨⟨⟨⟨M, star M, hu, hu'⟩, hUJ⟩, hM⟩, rfl⟩`.
+-/
 lemma range_toMK {n : ℕ} (ε : Fin n → Bool) :
     Set.range (fun k : KG ε => toMK k) = Kset ε := by
   ext M
@@ -91,6 +110,11 @@ def muK {n : ℕ} (ε : Fin n → Bool) : Measure (KG ε) := Measure.haarMeasure
 instance instIsHaarMuK (n : ℕ) (ε : Fin n → Bool) : (muK ε).IsHaarMeasure := by
   unfold muK; infer_instance
 
+/- English proof (translation)
+Take `⟨hG, hJ⟩` from `h`. Establish `hs : star (t : ℂ) = t` using `Complex.conj_ofReal t`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `inG at hG ⊢`. Rewrite using `[Matrix.conjTranspose_smul, hs, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, hG, smul_zero]`.
+
+Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, hJ]`.
+-/
 lemma inK_smul_real {n : ℕ} (ε : Fin n → Bool) {Z : Matrix (Fin n) (Fin n) ℂ} (h : inK ε Z) (t : ℝ) :
     inK ε ((t : ℂ) • Z) := by
   obtain ⟨hG, hJ⟩ := h
@@ -174,12 +198,21 @@ def EwordV {n : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (ε 
   | [] => id
   | p :: w => fun f => EabV ε p.1 p.2 (EwordV ε w f)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 lemma smoothOnGV_iff {n : ℕ} (ε : Fin n → Bool) (f : Matrix (Fin n) (Fin n) ℂ → ℂ) :
     SmoothOnGV ε f ↔ SmoothOnG ε f := Iff.rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma rdV_eq {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (f : Matrix (Fin n) (Fin n) ℂ → ℂ) :
     RdV X f = Rd X f := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma eabV_eq {n : ℕ} (ε : Fin n → Bool) (a b : Fin n) (f : Matrix (Fin n) (Fin n) ℂ → ℂ) :
     EabV ε a b f = Eab ε a b f := rfl
 

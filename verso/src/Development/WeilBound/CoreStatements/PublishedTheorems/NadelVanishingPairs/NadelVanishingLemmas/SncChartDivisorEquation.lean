@@ -30,6 +30,11 @@ def ordU (v : Y) : Y.functionFieldˣ →* Multiplicative ℤ where
   map_mul' f g := by
     simp [Units.val_mul, Scheme.ord_mul f.ne_zero g.ne_zero, ofAdd_add]
 
+/- English proof (translation)
+Establish `h` using `congrArg Multiplicative.toAdd (map_prod (ordU (Y := Y) v) (fun j => u j ^ m j) J)`. Rewrite `h` using `[toAdd_prod]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[map_zpow, toAdd_zpow, smul_eq_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem ord_prod_zpow {ι : Type} (J : Finset ι) (u : ι → Y.functionFieldˣ) (m : ι → ℤ) (v : Y) :
     Scheme.ord ((∏ j ∈ J, u j ^ m j : Y.functionFieldˣ) : Y.functionField) v =
       ∑ j ∈ J, m j * Scheme.ord (u j : Y.functionField) v := by
@@ -45,6 +50,19 @@ theorem ord_prod_zpow {ι : Type} (J : Finset ι) (u : ι → Y.functionFieldˣ)
 
 end GlobalTheory.Discrepancy.MonoEqn
 
+/- English proof (translation)
+Use `haveI := hufd v`. Use `haveI : Ring.KrullDimLE 1 (X.presheaf.stalk v) := krullDimLE_of_coheight_le hv.le`. Distinguish the cases in `hF : IsField (X.presheaf.stalk v)`. Take `⟨a, b, hb, hab⟩` from `IsFractionRing.div_surjective (A := X.presheaf.stalk v) h`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`.
+
+Take `⟨b', hbb'⟩` from `hF.mul_inv_cancel hb0`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Apply `h0` to reduce the goal to its premises. Rewrite using `[← hab, map_zero, zero_div]`.
+
+Take `⟨a', haa'⟩` from `hF.mul_inv_cancel ha0`. Use `⟨a * b', ?_, ?_⟩` and prove the remaining obligations. Use `isUnit_iff_exists_inv.mpr ⟨a' * b, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hab, map_mul]`.
+
+Establish `: algebraMap (X.presheaf.stalk v) X.functionField b * algebraMap (X.presheaf.stalk v) X.functionField b' = 1`. Rewrite using `[← map_mul, hbb', map_one]`. Rewrite using `[eq_div_iff (fun h' => hb0 (IsFractionRing.injective (X.presheaf.stalk v) X.functionField (by rw [h', map_zero]))), mul_assoc, mul_comm _ (algebraMap _ _ b), this, mul_one]`. Use `haveI : IsDiscreteValuationRing (X.presheaf.stalk v) := by`. Establish `hmax : ∀ I : Ideal (X.presheaf.stalk v), I ≠ ⊥ → I.IsPrime → I.IsMaximal` using `Ring.krullDimLE_one_iff_of_isPrime_bot.mp inferInstance`.
+
+Establish `hne : IsLocalRing.maximalIdeal (X.presheaf.stalk v) ≠ ⊥` using `IsLocalRing.isField_iff_maximalIdeal_eq.not.mp hF`. Establish `key` using `(IsDiscreteValuationRing.TFAE (X.presheaf.stalk v) hF).out 3 0`. Conclude with `key.mp ⟨inferInstance, ⟨IsLocalRing.maximalIdeal _, ⟨hne, inferInstance⟩, fun P hP => IsLocalRing.eq_maximalIdeal (hmax P hP.1 hP.2)⟩⟩`. Establish `h1 : Scheme.ordHom v hv h = 1`. Use `(Scheme.ord_eq_iff hv h0 (n := 0)).mp hord` as an intermediate fact.
+
+Simplify using `using this`. Establish `hmem : h ∈ MonoidHom.mker (Ring.ordFrac (X.presheaf.stalk v) (K` using `X.functionField)) := MonoidHom.mem_mker.mpr h1`. Rewrite `hmem` using `[Ring.mker_ordFrac_eq_isUnitSubmonoid]`. Take `⟨a, ha, rfl⟩` from `hmem`. Conclude with `⟨a, ha, rfl⟩`.
+-/
 private theorem unitAt_of_ord_eq_zero_coheight_one {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X]
     (hufd : ∀ x : X, UniqueFactorizationMonoid (X.presheaf.stalk x)) {v : X}
     (hv : Order.coheight v = 1) {h : X.functionField} (h0 : h ≠ 0)
@@ -87,12 +105,18 @@ private theorem unitAt_of_ord_eq_zero_coheight_one {X : Scheme.{0}} [IsIntegral 
     obtain ⟨a, ha, rfl⟩ := hmem
     exact ⟨a, ha, rfl⟩
 
+/- English proof (translation)
+Establish `h` using `Scheme.ord_mul (x := v) (one_ne_zero : (1 : X.functionField) ≠ 0) one_ne_zero`. Rewrite `h` using `[mul_one]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem Scheme_ord_one {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X] (v : X) :
     Scheme.ord (1 : X.functionField) v = 0 := by
   have h := Scheme.ord_mul (x := v) (one_ne_zero : (1 : X.functionField) ≠ 0) one_ne_zero
   rw [mul_one] at h
   omega
 
+/- English proof (translation)
+Establish `h` using `Scheme.ord_mul (x := v) g.ne_zero (g⁻¹).ne_zero`. Rewrite `h` using `[Units.mul_inv, Scheme_ord_one]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem Scheme_ord_units_inv {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X]
     (g : (X.functionField)ˣ) (v : X) :
     Scheme.ord ((g⁻¹ : (X.functionField)ˣ) : X.functionField) v =
@@ -101,6 +125,13 @@ private theorem Scheme_ord_units_inv {X : Scheme.{0}} [IsIntegral X] [IsLocallyN
   rw [Units.mul_inv, Scheme_ord_one] at h
   omega
 
+/- English proof (translation)
+Use `haveI : GlobalTheory.IsNormalScheme X := ⟨fun x => inferInstance, fun x => by haveI := hufd x; infer_instance⟩`. Establish `key : ∀ g : (X.functionField)ˣ, (∀ v, v ⤳ y → Order.coheight v = 1 → Scheme.ord (g : X.functionField) v = 0) → RegAt y (g : X.functionField)`. Introduce `g hg`. Apply `regAt_of_forall_coheight_eq_one` to reduce the goal to its premises. Introduce `z hz hz1`.
+
+Conclude with `(unitAt_of_ord_eq_zero_coheight_one hufd hz1 g.ne_zero (hg z hz hz1)).regAt`. Take `⟨a, ha⟩` from `key h hord`. Take `⟨b, hb⟩` from `key h⁻¹ (fun v hv hv1 => by rw [Scheme_ord_units_inv, hord v hv hv1, neg_zero])`. Use `⟨a, ?_, ha⟩` and prove the remaining obligations. Establish `hab : algebraMap (X.presheaf.stalk y) X.functionField (a * b) = algebraMap (X.presheaf.stalk y) X.functionField 1`.
+
+Rewrite using `[map_mul, ha, hb, map_one, Units.mul_inv]`. Conclude with `isUnit_iff_exists_inv.mpr ⟨b, IsFractionRing.injective _ _ hab⟩`.
+-/
 private theorem unitAt_of_ord_eq_zero_on_generizations {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X]
     (hufd : ∀ x : X, UniqueFactorizationMonoid (X.presheaf.stalk x)) {y : X}
     (h : (X.functionField)ˣ)
@@ -125,6 +156,19 @@ private theorem unitAt_of_ord_eq_zero_on_generizations {X : Scheme.{0}} [IsInteg
 
 open GlobalTheory.Discrepancy.MonoEqn in
 
+/- English proof (translation)
+Introduce `k _ _ Y _ _ q n _ B y U hy z J w u hc D hD`. Use `haveI : Smooth q := SmoothOfRelativeDimension.smooth n q`. Establish `hufd : ∀ x : Y, UniqueFactorizationMonoid (Y.presheaf.stalk x)` using `fun x => AbelianProjective.ufd_stalk (K := k) q x`. Take `⟨h, hh⟩` from `D.exists_isEqn y`. Take `⟨W, hyW, hW⟩` from `hh.exists_nhds`.
+
+Establish `key : ∀ v, v ⤳ y → Order.coheight v = 1 → Scheme.ord (((∏ j ∈ J, u j ^ D.mult (w j)) : Y.functionFieldˣ) : Y.functionField) v = D.mult v`. Introduce `v hv hv1`. Rewrite using `[ord_prod_zpow]`. Distinguish the cases in `hex : ∃ j ∈ J, v = w j`. Take `⟨j0, hj0, rfl⟩` from `hex`.
+
+Rewrite using `[Finset.sum_eq_single j0]`. Rewrite using `[hc.ord_self j0 hj0, mul_one]`. Introduce `j hj hne`. Rewrite using `[hc.ord_other j hj (w j0) hv (fun heq => hne (hc.inj hj hj0 heq.symm)), mul_zero]`. Introduce `h'`.
+
+Conclude with `absurd hj0 h'`. Establish `h0 : D.mult v = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hex ((hc.mem v hv hv1).mp (hD (CartierDiv.mem_supp_of_mult_ne_zero hne)))`. Rewrite using `[h0]`.
+
+Use `Finset.sum_eq_zero (fun j hj => ?_)` and prove the remaining obligations. Rewrite using `[hc.ord_other j hj v hv (fun heq => hex ⟨j, hj, heq⟩), mul_zero]`. Use `show D.germ y = germOf y _`. Rewrite using `[show D.germ y = germOf y h from hh, germOf_eq_iff]`. Establish `hu` using `unitAt_of_ord_eq_zero_on_generizations hufd ((∏ j ∈ J, u j ^ D.mult (w j)) * h⁻¹) (fun v hv hv1 => by`.
+
+Rewrite using `[Units.val_mul, Scheme.ord_mul (Units.ne_zero _) (Units.ne_zero _), Scheme_ord_units_inv, key v hv hv1, ← (hW v (hv.mem_open W.isOpen hyW)).mult_eq, add_neg_cancel])`. Simplify `hu` using `[div_eq_mul_inv]`.
+-/
 theorem GlobalTheory.Discrepancy.IsSncChart.isEqn_monomial : ∀ (k : Type) [Field k] [CharZero k] (Y : Scheme.{0}) [IsIntegral Y] [IsLocallyNoetherian Y] (q : Y ⟶ Sp k) (n : ℕ) [SmoothOfRelativeDimension n q] (B : Closeds Y) (y : Y) (U : Y.Opens) (hy : y ∈ U) (z : Fin n → Γ(Y, U)) (J : Finset (Fin n)) (w : Fin n → Y) (u : Fin n → Y.functionFieldˣ), IsSncChart q n B y U hy z J w u → ∀ D : CartierDiv Y, D.supp ≤ B → D.IsEqn y (∏ j ∈ J, u j ^ D.mult (w j)) := by
   intro k _ _ Y _ _ q n _ B y U hy z J w u hc D hD
   haveI : Smooth q := SmoothOfRelativeDimension.smooth n q

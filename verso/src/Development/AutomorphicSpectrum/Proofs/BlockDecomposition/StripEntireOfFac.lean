@@ -13,9 +13,17 @@ section Slice
 
 variable {X : Type} [NormedAddCommGroup X] [NormedSpace ℂ X]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ => differentiableOn_const c, continuousOn_const, fun _ _ _ => ⟨‖c‖, fun _ _ => le_rfl⟩⟩`.
+-/
 lemma Fac_const (c : X) (Ω : Set (ℝ × ℝ)) : Fac (fun _ => c) Ω :=
   ⟨fun _ _ => differentiableOn_const c, continuousOn_const, fun _ _ _ => ⟨‖c‖, fun _ _ => le_rfl⟩⟩
 
+/- English proof (translation)
+Use `⟨lineHol_exp _, by fun_prop, fun C _ hCc => ?_⟩` and prove the remaining obligations. Establish `hc : Continuous fun x : ℝ × ℝ => x.1 ^ 2 + x.2 ^ 2` using `by fun_prop`. Take `⟨M, hM⟩` from `(hCc.image hc).bddAbove`. Use `⟨Real.exp M, fun l hl => ?_⟩` and prove the remaining obligations. Rewrite using `[Complex.norm_exp]`.
+
+Use `Real.exp_le_exp.2 (le_trans ?_ (hM ⟨_, hl, rfl⟩))` and prove the remaining obligations. Simplify using `only [pow_two, Complex.add_re, Complex.mul_re]`. Use polynomial arithmetic with `[mul_self_nonneg l.1.im, mul_self_nonneg l.2.im]`.
+-/
 lemma Fac_exp (Ω : Set (ℝ × ℝ)) : Fac (fun l : ℂ × ℂ => Complex.exp (l.1 ^ 2 + l.2 ^ 2)) Ω := by
   refine ⟨lineHol_exp _, by fun_prop, fun C _ hCc => ?_⟩
   have hc : Continuous fun x : ℝ × ℝ => x.1 ^ 2 + x.2 ^ 2 := by fun_prop
@@ -26,13 +34,26 @@ lemma Fac_exp (Ω : Set (ℝ × ℝ)) : Fac (fun l : ℂ × ℂ => Complex.exp (
   simp only [pow_two, Complex.add_re, Complex.mul_re]
   nlinarith [mul_self_nonneg l.1.im, mul_self_nonneg l.2.im]
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp`.
+-/
 lemma line_zero (τ : ℂ) : (0 : ℂ × ℂ) + τ • ((0 : ℂ), (1 : ℂ)) = (0, τ) := by
   ext <;> simp
 
+/- English proof (translation)
+Simplify `h` using `[tube]`.
+-/
 lemma slice_mem_tube {C : Set ℝ} {y : ℂ} (h : y.re ∈ C) :
     ((0 : ℂ), y) ∈ tube (({0} : Set ℝ) ×ˢ C) := by
   simpa [tube] using h
 
+/- English proof (translation)
+Use `⟨?_, fun b c hc => ?_⟩` and prove the remaining obligations. Establish `h₁` using `hA.hol 0 (0, 1)`. Simplify using `only [line_zero] at h₁`. Establish `hs : {τ : ℂ | ((0 : ℂ), τ) ∈ tube {x : ℝ × ℝ | x.2 < a}} = {z | z.re < a}`. Use extensionality with `z`.
+
+Simplify using `[tube]`. Rewrite `h₁` using `[hs]`. Establish `e : f = fun τ => A (0, τ)` using `funext h`. Rewrite using `[e]`. Conclude with `h₁`.
+
+Take `⟨M, hM⟩` from `hA.bdd (({0} : Set ℝ) ×ˢ Set.Icc b c) (by rintro x ⟨-, hx⟩; exact lt_of_le_of_lt hx.2 hc) (isCompact_singleton.prod isCompact_Icc)`. Conclude with `⟨M, fun z h₁ h₂ => by rw [h]; exact hM _ (slice_mem_tube ⟨h₁, h₂⟩)⟩`.
+-/
 lemma leftGood_of_fac {f : ℂ → X} {A : ℂ × ℂ → X} {a : ℝ} (hA : Fac A {x | x.2 < a})
     (h : ∀ y, f y = A (0, y)) : LeftGood f a := by
   refine ⟨?_, fun b c hc => ?_⟩
@@ -49,6 +70,13 @@ lemma leftGood_of_fac {f : ℂ → X} {A : ℂ × ℂ → X} {a : ℝ} (hA : Fac
       (isCompact_singleton.prod isCompact_Icc)
     exact ⟨M, fun z h₁ h₂ => by rw [h]; exact hM _ (slice_mem_tube ⟨h₁, h₂⟩)⟩
 
+/- English proof (translation)
+Use `⟨?_, fun b c => ?_⟩` and prove the remaining obligations. Establish `h₁` using `hA.hol 0 (0, 1)`. Simplify using `only [line_zero] at h₁`. Establish `hs : {τ : ℂ | ((0 : ℂ), τ) ∈ tube (Set.univ : Set (ℝ × ℝ))} = Set.univ`. Use extensionality with `z`.
+
+Simplify using `[tube]`. Rewrite `h₁` using `[hs]`. Establish `e : f = fun τ => A (0, τ)` using `funext h`. Rewrite using `[e]`. Conclude with `differentiableOn_univ.1 h₁`.
+
+Take `⟨M, hM⟩` from `hA.bdd (({0} : Set ℝ) ×ˢ Set.Icc b c) (Set.subset_univ _) (isCompact_singleton.prod isCompact_Icc)`. Conclude with `⟨M, fun z h₁ h₂ => by rw [h]; exact hM _ (slice_mem_tube ⟨h₁, h₂⟩)⟩`.
+-/
 lemma stripEntire_of_fac {f : ℂ → X} {A : ℂ × ℂ → X} (hA : Fac A Set.univ)
     (h : ∀ y, f y = A (0, y)) : StripEntire f := by
   refine ⟨?_, fun b c => ?_⟩
@@ -64,6 +92,13 @@ lemma stripEntire_of_fac {f : ℂ → X} {A : ℂ × ℂ → X} (hA : Fac A Set.
       (isCompact_singleton.prod isCompact_Icc)
     exact ⟨M, fun z h₁ h₂ => by rw [h]; exact hM _ (slice_mem_tube ⟨h₁, h₂⟩)⟩
 
+/- English proof (translation)
+Use `⟨fun g => ?_, ?_, fun b a g => ?_⟩` and prove the remaining obligations. Establish `h₁` using `hΦ.hol g 0 (0, 1)`. Simplify using `only [line_zero] at h₁`. Establish `hs : {τ : ℂ | ((0 : ℂ), τ) ∈ tube (Set.univ : Set (ℝ × ℝ))} = Set.univ`. Use extensionality with `z`.
+
+Simplify using `[tube]`. Rewrite `h₁` using `[hs]`. Conclude with `differentiableOn_univ.1 h₁`. Establish `hc : Continuous fun y : ℂ × T => (((0 : ℂ), y.1), y.2)` using `by fun_prop`. Use `hΦ.cont.comp hc.continuousOn (s := Set.univ) (fun y _ => by simp [tube])` as an intermediate fact.
+
+Conclude with `continuousOn_univ.1 this`. Take `⟨U, hU, M, hM⟩` from `hΦ.bdd (({0} : Set ℝ) ×ˢ Set.Icc b a) (Set.subset_univ _) (isCompact_singleton.prod isCompact_Icc) g`. Conclude with `⟨U, hU, M, fun z h₁ h₂ g' hg' => hM _ (slice_mem_tube ⟨h₁, h₂⟩) g' hg'⟩`.
+-/
 lemma slice_good {T : Type} [TopologicalSpace T] {Φ : ℂ × ℂ → T → X} (hΦ : TubeGood Φ Set.univ) :
     (∀ g, Differentiable ℂ fun y : ℂ => Φ (0, y) g) ∧
     (Continuous fun y : ℂ × T => Φ (0, y.1) y.2) ∧
@@ -85,6 +120,11 @@ lemma slice_good {T : Type} [TopologicalSpace T] {Φ : ℂ × ℂ → T → X} (
 
 end Slice
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Take `⟨z₀, hz₀⟩` from `h₁`. Take `⟨z₁, hz₁⟩` from `h₂`. Establish `hev : ∀ᶠ z in 𝓝 z₀, f z ≠ 0` using `hf.continuous.continuousAt.eventually_ne hz₀`.
+
+Establish `hg0 : g =ᶠ[𝓝 z₀] 0` using `hev.mono fun z hz => (mul_eq_zero.1 (hcon z)).resolve_left hz`. Establish `hga : AnalyticOnNhd ℂ g Set.univ` using `fun z _ => hg.analyticAt z`. Conclude with `hz₁ (hga.eqOn_zero_of_preconnected_of_eventuallyEq_zero isPreconnected_univ (Set.mem_univ z₀) hg0 (Set.mem_univ z₁))`.
+-/
 lemma exists_ne_mul {f g : ℂ → ℂ} (hf : Differentiable ℂ f) (hg : Differentiable ℂ g)
     (h₁ : ∃ z, f z ≠ 0) (h₂ : ∃ z, g z ≠ 0) : ∃ z, f z * g z ≠ 0 := by
   by_contra hcon
@@ -98,6 +138,11 @@ lemma exists_ne_mul {f g : ℂ → ℂ} (hf : Differentiable ℂ f) (hg : Differ
   exact hz₁ (hga.eqOn_zero_of_preconnected_of_eventuallyEq_zero isPreconnected_univ
     (Set.mem_univ z₀) hg0 (Set.mem_univ z₁))
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `h`. Establish `hβ' : (β : ℂ) ≠ 0` using `by exact_mod_cast hβ`. Use `⟨(z - γ) / β, ?_⟩` and prove the remaining obligations. Establish `e : aff α β γ (0, (z - γ) / (β : ℂ)) = z`. Simplify using `only [aff]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]` and apply the resulting hypothesis.
+-/
 lemma exists_ne_aff {f : ℂ → ℂ} (h : ∃ z, f z ≠ 0) (α β γ : ℝ) (hβ : β ≠ 0) :
     ∃ y : ℂ, f (aff α β γ (0, y)) ≠ 0 := by
   obtain ⟨z, hz⟩ := h
@@ -109,6 +154,9 @@ lemma exists_ne_aff {f : ℂ → ℂ} (h : ∃ z, f z ≠ 0) (α β γ : ℝ) (h
     ring
   rwa [e]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨min u (-2 * R), max u R, min_le_left _ _, min_le_right _ _, min_choice _ _, le_max_left _ _, le_max_right _ _, max_choice _ _⟩`.
+-/
 lemma ex_bounds (u R : ℝ) :
     ∃ m M : ℝ, m ≤ u ∧ m ≤ -2 * R ∧ (m = u ∨ m = -2 * R) ∧ u ≤ M ∧ R ≤ M ∧ (M = u ∨ M = R) :=
   ⟨min u (-2 * R), max u R, min_le_left _ _, min_le_right _ _, min_choice _ _, le_max_left _ _,
@@ -118,6 +166,9 @@ section Conds
 
 variable {G : Type} [Group G]
 
+/- English proof (translation)
+Establish `: f = f'` using `funext e`. Rewrite using `[this]` and apply the resulting hypothesis.
+-/
 lemma conv_congr {Γ P : Subgroup G} {f f' : G → ℝ} (h : Conv Γ P f') (e : ∀ g, f g = f' g) :
     Conv Γ P f := by
   have : f = f' := funext e
@@ -125,6 +176,9 @@ lemma conv_congr {Γ P : Subgroup G} {f f' : G → ℝ} (h : Conv Γ P f') (e : 
 
 variable {Γ A B : Subgroup G} {a b h : G → ℝ} {N R Rw : ℝ}
 
+/- English proof (translation)
+The claim follows from `|t - x.2| ≤ ε → Conv Γ A (fun g => p * a g + t * h g) ∧ Conv Γ B fun g => (h g + N * b g) - q * b g + t * h g := by rintro x ⟨h₁, h₂⟩ have hN' := abs_le.1 (show |N| ≤ R - 1 by linarith) have hR1 : 1 ≤ R := by linarith [abs_nonneg N] obtain ⟨m, M, m₁, m₂, m₃, M₁, M₂, M₃⟩ := ex_bou …`.
+-/
 lemma cond_first (hN : |N| + 1 ≤ R) (hw : Rw ≤ R)
     (hA : ∀ z y : ℝ, R < z → R < y → Conv Γ A fun g => z * a g + y * h g)
     (hB : ∀ r y : ℝ, R < r → R < y → Conv Γ B fun g => r * (h g + b g) + y * h g) :
@@ -144,6 +198,9 @@ lemma cond_first (hN : |N| + 1 ≤ R) (hw : Rw ≤ R)
       fun g => by ring
     rcases m₃ with e | e <;> linarith [ht'.1, hN'.2]
 
+/- English proof (translation)
+The claim follows from `|t - x.2| ≤ ε → Conv Γ B (fun g => p * (-b g) + t * (h g + b g)) ∧ Conv Γ B fun g => (-b g) - q * (-b g) + t * (h g + b g) := by rintro x ⟨h₁, h₂⟩ have hN' := abs_le.1 (show |N| ≤ R - 1 by linarith) have hR1 : 1 ≤ R := by linarith [abs_nonneg N] obtain ⟨m, M, m₁, m₂, m₃, M₁, M₂, …`.
+-/
 lemma cond_c (hN : |N| + 1 ≤ R) (hw : Rw ≤ R)
     (hB : ∀ r y : ℝ, R < r → R < y → Conv Γ B fun g => r * (h g + b g) + y * h g) :
     ∀ x ∈ coneC (10 * R), ∃ p q ε : ℝ, 0 < ε ∧ Rw < p ∧ q < -Rw ∧ q < x.1 ∧ x.1 < p ∧ ∀ t : ℝ,
@@ -162,6 +219,9 @@ lemma cond_c (hN : |N| + 1 ≤ R) (hw : Rw ≤ R)
   · refine conv_congr (hB (t - 1 + (m - 1)) (1 - (m - 1)) ?_ (by linarith)) fun g => by ring
     rcases m₃ with e | e <;> linarith [ht'.1]
 
+/- English proof (translation)
+The claim follows from `|t - x.2| ≤ ε → Conv Γ B (fun g => p * b g + t * h g) ∧ Conv Γ A fun g => (N * a g - h g) - q * a g + t * h g := by rintro x ⟨h₁, h₂⟩ have hN' := abs_le.1 (show |N| ≤ R - 1 by linarith) have hR1 : 1 ≤ R := by linarith [abs_nonneg N] obtain ⟨m, M, m₁, m₂, m₃, M₁, M₂, M₃⟩ := ex_bou …`.
+-/
 lemma cond_a (hN : |N| + 1 ≤ R) (hw : Rw ≤ R)
     (hA : ∀ z y : ℝ, R < z → R < y → Conv Γ A fun g => z * a g + y * h g)
     (hB : ∀ r y : ℝ, R < r → R < y → Conv Γ B fun g => r * (h g + b g) + y * h g) :
@@ -181,6 +241,9 @@ lemma cond_a (hN : |N| + 1 ≤ R) (hw : Rw ≤ R)
   · exact conv_congr (hA (N - (m - 1)) (t - 1) (by linarith [hN'.1]) (by linarith [ht'.1]))
       fun g => by ring
 
+/- English proof (translation)
+The claim follows from `|t - x.2| ≤ ε → Conv Γ A (fun g => p * (h g - a g) + t * a g) ∧ Conv Γ A fun g => ((N - 1) * (h g - a g)) - q * (h g - a g) + t * a g := by rintro x ⟨h₁, h₂⟩ have hN' := abs_le.1 (show |N| ≤ R - 1 by linarith) have hR1 : 1 ≤ R := by linarith [abs_nonneg N] obtain ⟨m, M, m₁, m₂, m …`.
+-/
 lemma cond_b (hN : |N| + 1 ≤ R) (hw : Rw ≤ R)
     (hA : ∀ z y : ℝ, R < z → R < y → Conv Γ A fun g => z * a g + y * h g) :
     ∀ x ∈ coneC (10 * R), ∃ p q ε : ℝ, 0 < ε ∧ Rw < p ∧ q < -Rw ∧ q < x.1 ∧ x.1 < p ∧ ∀ t : ℝ,
@@ -206,6 +269,9 @@ section Series
 
 variable {G : Type} [Group G]
 
+/- English proof (translation)
+Establish `e : (Γ ⊓ S).subgroupOf Γ = S.subgroupOf Γ` using `Subgroup.inf_subgroupOf_left S Γ`. Establish `key : ∀ U V : Subgroup Γ, U = V → ∑' r : Quotient (QuotientGroup.rightRel U), f (Quotient.out r).1 = ∑' q : Quotient (QuotientGroup.rightRel V), f (Quotient.out q).1`. Introduce and unpack `U _ rfl`. Both sides reduce to the same expression. Conclude with `key _ _ e`.
+-/
 lemma tsum_cos_inf {X : Type} [AddCommMonoid X] [TopologicalSpace X] (Γ S : Subgroup G)
     (f : G → X) : ∑' r : Cos (Γ ⊓ S) Γ, f (rep r) = ∑' q : Cos S Γ, f (rep q) := by
   have e : (Γ ⊓ S).subgroupOf Γ = S.subgroupOf Γ := Subgroup.inf_subgroupOf_left S Γ
@@ -219,6 +285,9 @@ lemma tsum_cos_inf {X : Type} [AddCommMonoid X] [TopologicalSpace X] (Γ S : Sub
 variable {L W : Type} [NormedAddCommGroup L] [NormedSpace ℂ L] [NormedAddCommGroup W]
   [NormedSpace ℂ W] [CompleteSpace W]
 
+/- English proof (translation)
+The claim follows from `(ContinuousLinearMap.apply ℂ W w).map_tsum hs.of_norm`.
+-/
 lemma outer_apply {Γ Δ : Subgroup G} (ξ : G → ℝ) (H : ℂ → G → L →L[ℂ] W) (l : ℂ × ℂ) (g : G)
     (hs : Summable fun r : Cos Δ Γ => ‖Complex.exp (l.2 * ξ (rep r * g)) • H l.1 (rep r * g)‖)
     (w : L) : outer Γ Δ ξ H l g w =
@@ -232,6 +301,9 @@ section Eis
 variable {G : Type} [Group G] [TopologicalSpace G] {W : Type} [NormedAddCommGroup W]
   [NormedSpace ℂ W]
 
+/- English proof (translation)
+Simplify using `only [eis, map_smul]`. Rewrite using `[← tsum_const_smul'' s]`. Use `congr 1`. Use extensionality with `q`. Rewrite using `[smul_comm]`.
+-/
 lemma eis_smul (Γ K P : Subgroup G) (c : G → ℂ) (ρ : K →* (W →L[ℂ] W)) (Λ : G → ℂ) (g : G) (s : ℂ)
     (w : W) : eis Γ K P c ρ Λ g (s • w) = s • eis Γ K P c ρ Λ g w := by
   simp only [eis, map_smul]

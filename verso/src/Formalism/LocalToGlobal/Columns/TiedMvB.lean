@@ -17,6 +17,11 @@ section Lat
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} {ST SG : Finset (HeightOneSpectrum (𝓞 E))}
 
+/- English proof (translation)
+Establish `hex : ∀ P : ST, ∃ a ∈ P.1.asIdeal, a ∉ Q.asIdeal` using `fun P => exists_mem_notMem (P := P.1) (Q := Q) fun e => hQ (e ▸ P.2)`. Use `choose a ha ha' using hex`. Use `le_antisymm (localizationAt_mono Q hd.L_le_N) (localization_le_of_smul_mem (a := ∏ P : ST, a P) ?_ fun x hx => hd.smul_N_mem_L (fun P => Ideal.mem_of_dvd _ (Finset.dvd_prod_of_mem a (Finset.mem_univ P)) (ha P)) hx)` and prove the remaining obligations. Introduce `h`. Take `⟨P, -, hP⟩` from `(Ideal.IsPrime.prod_mem_iff (hp := Q.isPrime)).1 h`.
+
+Conclude with `ha' P hP`.
+-/
 theorem tam_locP_L_off {d : Deco E n ST SG} (hd : d.Ok) (Q : HeightOneSpectrum (𝓞 E)) (hQ : Q ∉ ST) :
     localization₂ Q.asIdeal d.L = localization₂ Q.asIdeal d.N := by
   classical
@@ -31,6 +36,11 @@ theorem tam_locP_L_off {d : Deco E n ST SG} (hd : d.Ok) (Q : HeightOneSpectrum (
 
 variable {F : Type} [Field F] [NumberField F] [Algebra F E]
 
+/- English proof (translation)
+Distinguish the cases in `hS : Q ∈ ST`. Use extensionality with `x`. Rewrite using `[hd.mem_locP_L ⟨Q, hS⟩, hd₁.mem_locP_L ⟨Q, hS⟩, h.f ⟨Q, hS⟩ hQ]`. Use `show x ∈ localization₂ Q.asIdeal d.N ∧ _ ↔ x ∈ localization₂ Q.asIdeal d₁.N ∧ _`. Rewrite using `[h.N Q hQ]`.
+
+Rewrite using `[tam_locP_L_off hd Q hS, tam_locP_L_off hd₁ Q hS, h.N Q hQ]`.
+-/
 theorem tam_locP_L_same {v : HeightOneSpectrum (𝓞 F)} {d d₁ : Deco E n ST SG} (hd : d.Ok) (hd₁ : d₁.Ok)
     (h : Deco.SameOff ST SG v d d₁) (Q : HeightOneSpectrum (𝓞 E)) (hQ : ¬ IsOver v Q) :
     localization₂ Q.asIdeal d.L = localization₂ Q.asIdeal d₁.L := by
@@ -42,12 +52,23 @@ theorem tam_locP_L_same {v : HeightOneSpectrum (𝓞 F)} {d d₁ : Deco E n ST S
   · rw [tam_locP_L_off hd Q hS, tam_locP_L_off hd₁ Q hS, h.N Q hQ]
 
 omit [StarRing E] in
+/- English proof (translation)
+Rewrite using `[e]`.
+-/
 theorem localizationAt_congr (I : Ideal (𝓞 E)) [I.IsPrime] {A B : Submodule (𝓞 E) (Fin n → E)} (e : A = B) : localization₂ I A = localization₂ I B := by
   rw [e]
 
+/- English proof (translation)
+The claim follows from `e ▸ h`.
+-/
 theorem SameOffC.congr_right {I : Ideal (𝓞 E)} {A B B' : Submodule (𝓞 E) (Fin n → E)} (h : SameOffC I A B) (e : B' = B) :
     SameOffC I A B' := e ▸ h
 
+/- English proof (translation)
+Substitute `hI` using the available equality. Introduce `q hq h1 h2`. Establish `hb : q ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField hq (RingOfIntegers.not_isField E)`. Use `h ⟨q, hq.isPrime, hb⟩ fun hQ => ?_` and prove the remaining obligations. Break down `rll_over_cases hc hov hQ with e | e` into its components or cases.
+
+Conclude with `h1 (congrArg HeightOneSpectrum.asIdeal e)`. Conclude with `h2 ((congrArg HeightOneSpectrum.asIdeal e).trans (conjIdeal_asIdeal P).symm)`.
+-/
 theorem tam_sameOffC (hc : Formalism.BasicNotions.CMData F E) {v : HeightOneSpectrum (𝓞 F)} {P : HeightOneSpectrum (𝓞 E)} (hov : IsOver v P)
     {A B : Submodule (𝓞 E) (Fin n → E)} (h : ∀ Q : HeightOneSpectrum (𝓞 E), ¬ IsOver v Q → localization₂ Q.asIdeal A = localization₂ Q.asIdeal B)
     (I : Ideal (𝓞 E)) (hI : I = P.asIdeal) : SameOffC I A B := by
@@ -68,12 +89,18 @@ variable (hc : Formalism.BasicNotions.CMData F E) (n : ℕ) [NeZero n] (ST SG : 
 
 omit [NeZero n] in
 
+/- English proof (translation)
+Take `⟨γ, rfl⟩` from `(ratHom_bijective hc n).2 g`. Rewrite using `[tud_ufGL_ratHom]`. Conclude with `γ.2`.
+-/
 theorem tam_ufGL_mem (g : UF E n) : ufGL E n g ∈ URat hc n := by
   obtain ⟨γ, rfl⟩ := (ratHom_bijective hc n).2 g
   rw [tud_ufGL_ratHom]
   exact γ.2
 
 omit [NeZero n] in
+/- English proof (translation)
+Take `⟨γ, rfl⟩` from `(ratHom_bijective hc n).2 g`. Use `congr 1`. Conclude with `Subtype.ext (tud_ufGL_ratHom hc n γ)`.
+-/
 theorem tam_ratHom (g : UF E n) : ratHom hc n ⟨ufGL E n g, tam_ufGL_mem hc n g⟩ = g := by
   obtain ⟨γ, rfl⟩ := (ratHom_bijective hc n).2 g
   congr 1
@@ -81,6 +108,15 @@ theorem tam_ratHom (g : UF E n) : ratHom hc n ⟨ufGL E n g, tam_ufGL_mem hc n g
 
 include hc in
 
+/- English proof (translation)
+Substitute `hg₀` using the available equality. Establish `hap : ∀ y, ((ufGL E n g₀.1 : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) *ᵥ y = ((g₀.1 : UF E n) : Sp E n ≃ₗ[E] Sp E n) y`. Introduce `y`. Establish `h1` using `rlc_ratHom_apply hc n ⟨ufGL E n g₀.1, tam_ufGL_mem hc n g₀.1⟩ y`. Rewrite `h1` using `[tam_ratHom]`.
+
+Conclude with `h1.symm`. Establish `hm : ∀ L : Submodule (𝓞 E) (Sp E n), Formalism.L2.Forms.mulLat ((ufGL E n g₀.1 : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) L = gmap ((g₀.1 : UF E n) : Sp E n ≃ₗ[E] Sp E n) L`. Introduce `L`. Unfold `Formalism.L2.Forms.mulLat gmap`. Use `congr 1`.
+
+Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`. Conclude with `hap y`. Use `⟨by rw [hm, rlc_smul_val, Deco.L_act], by rw [hm, rlc_smul_val, Deco.Lsh_act _ g₀.1.2], fun P y => ?_⟩` and prove the remaining obligations. Use `show d'.1.f P y = d'.1.f P (((g₀.1 : UF E n) : Sp E n ≃ₗ[E] Sp E n).symm (((ufGL E n g₀.1 : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) *ᵥ y))`.
+
+Rewrite using `[hap, LinearEquiv.symm_apply_apply]`.
+-/
 theorem tam_lat_move (g₀ : UF E n × H) (d' d₁ : DecoSet E n ST SG) (hg₀ : g₀ • d' = d₁) :
     Formalism.L2.Forms.mulLat ((ufGL E n g₀.1 : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) d'.1.L = d₁.1.L ∧
       Formalism.L2.Forms.mulLat ((ufGL E n g₀.1 : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) d'.1.Lsh = d₁.1.Lsh ∧
@@ -103,6 +139,9 @@ theorem tam_lat_move (g₀ : UF E n × H) (d' d₁ : DecoSet E n ST SG) (hg₀ :
   show d'.1.f P y = d'.1.f P (((g₀.1 : UF E n) : Sp E n ≃ₗ[E] Sp E n).symm (((ufGL E n g₀.1 : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) *ᵥ y))
   rw [hap, LinearEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Take `⟨γ, η, κ, hγ, -, hη, e⟩` from `updn_move hc n ST SG H hS c₀ v d d₁ d' h g₀ hg₀`. Rewrite using `[← hγ, tud_ufGL_ratHom]`. Conclude with `⟨κ.1, κ.2, η.1, η.2, hη, e⟩`.
+-/
 theorem tam_move (hS : DecoPtSurj hc n ST SG) (c₀ : DiaG E ST) (v : HeightOneSpectrum (𝓞 F)) (d d₁ d' : DecoSet E n ST SG)
     (h : Deco.SameOff ST SG v d.1 d₁.1) (g₀ : UF E n × H) (hg₀ : g₀ • d' = d₁) :
     Formalism.L2.Herm.AdStep hc.sig (1 : Matrix (Fin n) (Fin n) E) (levU hc n ST SG H)
@@ -112,6 +151,9 @@ theorem tam_move (hS : DecoPtSurj hc n ST SG) (c₀ : DiaG E ST) (v : HeightOneS
   rw [← hγ, tud_ufGL_ratHom]
   exact ⟨κ.1, κ.2, η.1, η.2, hη, e⟩
 
+/- English proof (translation)
+Use `⟨fun _ _ => rfl, fun Q hQ => ?_, fun _ _ => rfl⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Use `show d.1.f Q x = ((Pi.mulSingle P a : DiaG E ST) Q).1 * d.1.f Q x`. Rewrite using `[Pi.mulSingle_eq_of_ne (fun e => hQ (by rw [e]; exact hov)), Units.val_one, one_mul]`.
+-/
 theorem tam_sameOff_dia (d : DecoSet E n ST SG) (P : ST) (a : (𝓞 E ⧸ P.1.asIdeal)ˣ) {v : HeightOneSpectrum (𝓞 F)}
     (hov : IsOver v P.1) : Deco.SameOff ST SG v d.1 (d.dia1 P a).1 := by
   classical
@@ -129,6 +171,15 @@ variable (hc : Formalism.BasicNotions.CMData F E) {n : ℕ} [NeZero n] {ST SG : 
 
 include hc in
 
+/- English proof (translation)
+Establish `hfr` using `tud_f_rep n ST SG d P hx`. Establish `hd₁ : (d.upL P q x).1 = d.1.up P q (modP.rep x)` using `d.up_val P hP hq hq2 (modP.rep_mem x) hfr`. Establish `hSO` using `tud_sameOff_up hc d P hP hq hq2 hov (modP.rep_mem x) hfr`. Use `⟨hSO, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[tud_locP_L ha, DecoSet.locP_LshKer_up hP hq hq2 ha (d.upL_mem P hP hq hq2 hx) P]`.
+
+Introduce `w t ht hw hrw`. Rewrite using `[(d.upL P q x).2.locP_Lsh ha P, show (d.upL P q x).1.N = upN P.1.asIdeal d.1.N (modP.rep x) from congrArg Deco.N hd₁, localizationAt_upN d.2.lat d.2.uni P.1 hP.ne (modP.rep_mem x)]`. Conclude with `localizationAt_upA hq hq2 d.2.N_le_Lsh (by rw [← d.2.locP_Lsh ha P]; exact le_locP _ _) hw ht hrw`. Introduce `y hy`. Establish `hy2` using `(d.upL P q x).2.Lsh_le_at ha P hy`.
+
+Rewrite using `[hd₁, Deco.up_f, if_pos]`. Rewrite `hy2` using `[hd₁]`. Conclude with `hy2`. Introduce `P' hP'`. Rewrite using `[hd₁]`.
+
+Conclude with `Deco.up_f_ne d.1 P q _ hP'`.
+-/
 theorem tam_upL {v : HeightOneSpectrum (𝓞 F)} (d : DecoSet E n ST SG) (P : ST) (hov : IsOver v P.1) (hP : MoveHyp ST SG P) {q : 𝓞 E}
     (hq : q ∈ P.1.asIdeal) (hq2 : q ∉ P.1.asIdeal ^ 2) {a : 𝓞 E} (ha : SepElt ST a) (x : d.lv P) (hx : d.fv P x = 1) :
     Deco.SameOff ST SG v d.1 (d.upL P q x).1 ∧
@@ -158,6 +209,11 @@ theorem tam_upL {v : HeightOneSpectrum (𝓞 F)} (d : DecoSet E n ST SG) (P : ST
 
 include hc in
 
+/- English proof (translation)
+Establish `hd₁` using `d.dnL_val P hP hg`. Use `⟨tud_sameOff_dn hc d P hP hg hov, ?_, fun y => ?_, fun P' hP' => ?_⟩` and prove the remaining obligations. Rewrite using `[(d.dnL P g).2.locP_Lsh ha P, show (d.dnL P g).1.N = d.1.dnN P from congrArg Deco.N hd₁, (d.2.dnN_spec P hP.ne).2.2.2, ← d.2.locP_LshKer_self ha P, tud_locP_L ha]`. Rewrite using `[hd₁] show Function.update d.1.f P _ P _ = _`. Rewrite using `[Function.update_self]`.
+
+Rewrite using `[hd₁] show Function.update d.1.f P _ P' = _`. Rewrite using `[Function.update_of_ne hP']`.
+-/
 theorem tam_dnL {v : HeightOneSpectrum (𝓞 F)} (d : DecoSet E n ST SG) (P : ST) (hov : IsOver v P.1) (hP : MoveHyp ST SG P)
     {a : 𝓞 E} (ha : SepElt ST a) (g : Module.Dual (𝓞 E ⧸ P.1.asIdeal) (d.lk P)) (hg : g ≠ 0) :
     Deco.SameOff ST SG v d.1 (d.dnL P g).1 ∧
@@ -178,6 +234,9 @@ theorem tam_dnL {v : HeightOneSpectrum (𝓞 F)} (d : DecoSet E n ST SG) (P : ST
 
 omit [NeZero n] in
 
+/- English proof (translation)
+Use `⟨Deco.L_dia _ _, fun y => ?_, fun P' hP' => ?_⟩` and prove the remaining obligations. Use `show ((Pi.mulSingle P a : DiaG E ST) P).1 * d.1.f P y = _`. Rewrite using `[Pi.mulSingle_eq_same]`. Use function extensionality and compare the values at `y show ((Pi.mulSingle P a : DiaG E ST) P').1 * d.1.f P' y = _`. Rewrite using `[Pi.mulSingle_eq_of_ne hP', Units.val_one, one_mul]`.
+-/
 theorem tam_diaL (d : DecoSet E n ST SG) (P : ST) (a : (𝓞 E ⧸ P.1.asIdeal)ˣ) :
     (d.dia1 P a).1.L = d.1.L ∧ (∀ y, (d.dia1 P a).1.f P y = a.1 * d.1.f P y) ∧
       ∀ P' : ST, P' ≠ P → (d.dia1 P a).1.f P' = d.1.f P' := by
@@ -213,6 +272,9 @@ abbrev tamMv (d₁ : DecoSet X.E (R.N i) (Pr.vT u) Pr.vGs) : UF X.E (R.N i) := (
 
 variable (Q : StepCrd Pr σ₀ (R.N i) fun c : StCl W Λ u i => (tudR W Λ u i c).1.L)
 
+/- English proof (translation)
+Establish `hLd` using `tie_Ld_eq hc σ₀ u (tudR W Λ u i) Q (clsD (colVal W u i (Pr.vT u) Pr.vGs) (Λ i) d₁)`. Rewrite using `[hLd, Q.hlat]`. Conclude with `tam_lat_move hc (R.N i) (Pr.vT u) Pr.vGs (Λ i).grp ((stepGSD W Λ u i).outSec.mv d₁) _ d₁ ((stepGSD W Λ u i).outSec.mv_smul d₁)`.
+-/
 theorem tam_lat (d₁ : DecoSet X.E (R.N i) (Pr.vT u) Pr.vGs) :
     Formalism.L2.Forms.mulLat (tamG hc Q (tamMv W Λ u i d₁)).1.1 (Q.lat (clsD (colVal W u i (Pr.vT u) Pr.vGs) (Λ i) d₁)) = d₁.1.L ∧
       Formalism.L2.Forms.mulLat (tamG hc Q (tamMv W Λ u i d₁)).1.1
@@ -226,6 +288,19 @@ theorem tam_lat (d₁ : DecoSet X.E (R.N i) (Pr.vT u) Pr.vGs) :
 include hX in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `ha` using `sepElt_of_ok hPr u`. Establish `hP` using `moveHyp_of_ok hPr u P`. Take `⟨hq, hq2⟩` from `T_unif hX hPr u P`. Establish `hLd` using `tie_Ld_eq hc σ₀ u (tudR W Λ u i) Q c`. Establish `hLd'` using `tie_Ld_eq hc σ₀ u (tudR W Λ u i) Q (tudUp W Λ hc hPr σ₀ u i Q P c z)`.
+
+Establish `hfv` using `tie_fv hc hPr σ₀ u (tudR W Λ u i) Q`. Establish `hrz` using `tud_rep_pr hc hPr σ₀ u (tudR W Λ u i) Q P c z`. Establish `hzL : z.1 ∈ (tudR W Λ u i c).1.Lsh` using `hLd ▸ z.2`. Take `⟨hL, hLs, hf⟩` from `tam_lat W Λ hc σ₀ u i Q ((tudR W Λ u i c).upL P (Pr.T u : 𝓞 X.E) (tiePr hc hPr σ₀ u (tudR W Λ u i) Q P c z))`. Take `⟨h1, h2, h3, h4, h5⟩` from `tam_upL hc (tudR W Λ u i c) P (tieEV_over hc hX hPr u P) hP hq hq2 ha _ hz`.
+
+Establish `h3'` using `h3 (tud_unit hPr u P) hzL hrz`. Rewrite `h3'` using `[map_natCast]`. Establish `hlat : Q.lat c = (tudR W Λ u i c).1.L` using `congrFun Q.hlat c`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hL]`.
+
+Conclude with `(tam_sameOffC hc (tieEV_over hc hX hPr u P) (fun Q' hQ' => (tam_locP_L_same (tudR W Λ u i c).2 (Subtype.property _) h1 Q' hQ').symm) _ Ideal.mk_ker).congr_right hlat`. Simplify using `only [Ideal.mk_ker]`. Rewrite using `[hL]`. Conclude with `h2.trans (localizationAt_congr _ hLd.symm)`. Simplify using `only [Ideal.mk_ker]`.
+
+Rewrite using `[hLs]`. Conclude with `h3'.trans (localizationAt_congr _ (congrArg (· ⊔ Submodule.span (𝓞 X.E) {((Pr.T u : ℕ) : X.E)⁻¹ • z.1}) hLd.symm))`. Introduce `x hx`. Rewrite using `[hfv, hfv, hf]`. Conclude with `h4 _ (hLs ▸ Submodule.mem_map_of_mem x.2)`.
+
+Introduce `P' hP' x hx`. Rewrite using `[hfv, hfv, hf, h5 P' hP']`.
+-/
 theorem tam_up (P : Pr.vT u) (c : StCl W Λ u i) (z : ↥(dualL (hc.sig : X.E →+* X.E) Q.J (Q.lat c)))
     (hz : (tudR W Λ u i c).fv P (tiePr hc hPr σ₀ u (tudR W Λ u i) Q P c z) = 1) :
     SameOffC (RingHom.ker (Ideal.Quotient.mk P.1.asIdeal))
@@ -287,6 +362,15 @@ theorem tam_up (P : Pr.vT u) (c : StCl W Λ u i) (z : ↥(dualL (hc.sig : X.E �
 include hX in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `ha` using `sepElt_of_ok hPr u`. Establish `hP` using `moveHyp_of_ok hPr u P`. Establish `hfv` using `tie_fv hc hPr σ₀ u (tudR W Λ u i) Q`. Establish `hprk` using `tud_prk hc hPr σ₀ u (tudR W Λ u i) Q P c _ Ideal.mk_ker g`. Take `⟨hL, hLs, hf⟩` from `tam_lat W Λ hc σ₀ u i Q ((tudR W Λ u i c).dnL P g)`.
+
+Take `⟨h1, h2, h3, h5⟩` from `tam_dnL hc (tudR W Λ u i c) P (tieEV_over hc hX hPr u P) hP ha g hg`. Establish `hlat : Q.lat c = (tudR W Λ u i c).1.L` using `congrFun Q.hlat c`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hL]`. Conclude with `(tam_sameOffC hc (tieEV_over hc hX hPr u P) (fun Q' hQ' => (tam_locP_L_same (tudR W Λ u i c).2 (Subtype.property _) h1 Q' hQ').symm) _ Ideal.mk_ker).congr_right hlat`.
+
+Simplify using `only [Ideal.mk_ker]`. Rewrite using `[hLs]`. Conclude with `h2.trans (localizationAt_congr _ hlat.symm)`. Introduce `x hx`. Rewrite using `[hfv, hprk, hf]`.
+
+Conclude with `h3 _`. Introduce `P' hP' x hx`. Rewrite using `[hfv, hfv, hf, h5 P' hP']`.
+-/
 theorem tam_dn (P : Pr.vT u) (c : StCl W Λ u i) (g : Module.Dual (𝓞 X.E ⧸ P.1.asIdeal) ((tudR W Λ u i c).lk P)) (hg : g ≠ 0) :
     SameOffC (RingHom.ker (Ideal.Quotient.mk P.1.asIdeal))
         (Formalism.L2.Forms.mulLat (tamG hc Q (tamMv W Λ u i ((tudR W Λ u i c).dnL P g))).1.1 (Q.lat (tudDn W Λ u i P c g))) (Q.lat c) ∧
@@ -324,6 +408,13 @@ theorem tam_dn (P : Pr.vT u) (c : StCl W Λ u i) (g : Module.Dual (𝓞 X.E ⧸ 
   · intro P' hP' x hx
     rw [hfv, hfv, hf, h5 P' hP']
 
+/- English proof (translation)
+Establish `hfv` using `tie_fv hc hPr σ₀ u (tudR W Λ u i) Q`. Take `⟨hL, -, hf⟩` from `tam_lat W Λ hc σ₀ u i Q ((tudR W Λ u i c).dia1 P a)`. Take `⟨h1, h2, h3⟩` from `tam_diaL (tudR W Λ u i c) P a`. Establish `hlat : Q.lat c = (tudR W Λ u i c).1.L` using `congrFun Q.hlat c`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `hL.trans (h1.trans hlat.symm)`. Introduce `x hx`. Rewrite using `[hfv, hfv]`. Conclude with `(hf P x.1).trans (h2 _)`. Introduce `P' hP' x hx`.
+
+Rewrite using `[hfv, hfv]`. Conclude with `(hf P' x.1).trans (congrFun (h3 P' hP') _)`.
+-/
 theorem tam_dil (P : Pr.vT u) (a : (𝓞 X.E ⧸ P.1.asIdeal)ˣ) (c : StCl W Λ u i) :
     Formalism.L2.Forms.mulLat (tamG hc Q (tamMv W Λ u i ((tudR W Λ u i c).dia1 P a))).1.1 (Q.lat (tamDil W Λ u i P a c)) = Q.lat c ∧
       (∀ (x : ↥(dualL (hc.sig : X.E →+* X.E) Q.J (Q.lat (tamDil W Λ u i P a c))))
@@ -349,6 +440,9 @@ theorem tam_dil (P : Pr.vT u) (a : (𝓞 X.E ⧸ P.1.asIdeal)ˣ) (c : StCl W Λ 
 
 include hX in
 
+/- English proof (translation)
+The claim follows from `(tam_upL hc (tudR W Λ u i c) P (tieEV_over hc hX hPr u P) (moveHyp_of_ok hPr u P) (T_unif hX hPr u P).1 (T_unif hX hPr u P).2 (sepElt_of_ok hPr u) _ hz).1`.
+-/
 theorem tam_so_up (P : Pr.vT u) (c : StCl W Λ u i) (z : ↥(dualL (hc.sig : X.E →+* X.E) Q.J (Q.lat c)))
     (hz : (tudR W Λ u i c).fv P (tiePr hc hPr σ₀ u (tudR W Λ u i) Q P c z) = 1) :
     Deco.SameOff (Pr.vT u) Pr.vGs (tieEV hc hX hPr u P).1 (tudR W Λ u i c).1
@@ -359,6 +453,9 @@ theorem tam_so_up (P : Pr.vT u) (c : StCl W Λ u i) (z : ↥(dualL (hc.sig : X.E
 omit Q in
 include hX in
 
+/- English proof (translation)
+The claim follows from `tud_sameOff_dn hc (tudR W Λ u i c) P (moveHyp_of_ok hPr u P) hg (tieEV_over hc hX hPr u P)`.
+-/
 theorem tam_so_dn (P : Pr.vT u) (c : StCl W Λ u i) (g : Module.Dual (𝓞 X.E ⧸ P.1.asIdeal) ((tudR W Λ u i c).lk P)) (hg : g ≠ 0) :
     Deco.SameOff (Pr.vT u) Pr.vGs (tieEV hc hX hPr u P).1 (tudR W Λ u i c).1 ((tudR W Λ u i c).dnL P g).1 :=
   tud_sameOff_dn hc (tudR W Λ u i c) P (moveHyp_of_ok hPr u P) hg (tieEV_over hc hX hPr u P)
@@ -371,6 +468,9 @@ variable {X : Fields} {Pr : Primes X} (hc : CMData X.F X.E) (hX : X.Ok) (hPr : P
   {n : ℕ} [NeZero n] (Λ : LevFam X.E X.K n Pr.vGs)
   (c₀ : DiaG X.E (Pr.vT u)) (s : DecoCl n (Pr.vT u) Pr.vGs Λ.grp → DecoSet X.E n (Pr.vT u) Pr.vGs)
 
+/- English proof (translation)
+Take `⟨n', hn, J, rfl, f, rfl, bad, rfl, lat, hlat⟩` from `H`. Substitute `hn` using the available equality. Take `rfl : lat = fun c => (s c).1.L` from `funext fun c => (hlat c).trans (Formalism.L2.Forms.reL_rfl _)`. Rewrite using `[Formalism.L2.Forms.reGL_rfl]`. Conclude with `tam_move hc _ (Pr.vT u) Pr.vGs Λ.grp hS c₀ v (s c) d₁ (s c') h g₀ hg₀`.
+-/
 theorem tam_ad (hS : DecoPtSurj hc n (Pr.vT u) Pr.vGs) (hs : ∀ c, decoCls n (Pr.vT u) Pr.vGs Λ.grp (s c) = c)
     (hK : LocalLevelIsKOneAtT hc u Λ) (H : HCrd Pr n fun c => (s c).1.L) (v : HeightOneSpectrum (𝓞 X.F))
     (c c' : DecoCl n (Pr.vT u) Pr.vGs Λ.grp) (d₁ : DecoSet X.E n (Pr.vT u) Pr.vGs)

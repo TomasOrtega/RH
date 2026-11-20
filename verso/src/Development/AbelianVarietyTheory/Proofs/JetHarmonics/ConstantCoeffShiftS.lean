@@ -10,6 +10,13 @@ variable {q : ℕ} [Fact q.Prime]
 
 def sS (ζ : ℂ_[q]) : ℂ_[q]⟦X⟧ := C ζ * (1 + X) - 1
 
+/- English proof (translation)
+Establish `hs : sS ζ = C ζ * X + C (ζ - 1)`. Simplify using `only [sS, map_sub, map_one]`. Expand and normalize the polynomial expressions, which then agree. Establish `hterm : ∀ k ∈ Finset.range (m + 1), (C ζ * X) ^ k * C (ζ - 1) ^ (m - k) * (m.choose k : ℂ_[q]⟦X⟧) = C (ζ ^ k * (ζ - 1) ^ (m - k) * (m.choose k : ℂ_[q])) * X ^ k`. Introduce `k _`.
+
+Simplify using `only [mul_pow, map_mul, map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hs, add_pow, Finset.sum_congr rfl hterm, map_sum]`. Simplify using `only [PowerSeries.coeff_C_mul_X_pow]`. Rewrite using `[Finset.sum_ite_eq]`.
+
+Use `split_ifs with hn`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hn` using `[Finset.mem_range]`. Rewrite using `[Nat.choose_eq_zero_of_lt (by omega)]`. Simplify using the standard rewrite rules.
+-/
 lemma coeff_sS_pow (ζ : ℂ_[q]) (m n : ℕ) :
     coeff n (sS ζ ^ m) = (m.choose n : ℂ_[q]) * ζ ^ n * (ζ - 1) ^ (m - n) := by
   have hs : sS ζ = C ζ * X + C (ζ - 1) := by
@@ -30,15 +37,24 @@ lemma coeff_sS_pow (ζ : ℂ_[q]) (m n : ℕ) :
     rw [Nat.choose_eq_zero_of_lt (by omega)]
     simp
 
+/- English proof (translation)
+Simplify using `only [shiftS, PowerSeries.coeff_mk, coeff_sS_pow]`.
+-/
 lemma coeff_shiftS (ζ : ℂ_[q]) (f : ℂ_[q]⟦X⟧) (n : ℕ) :
     coeff n (shiftS ζ f) = ∑' m, coeff m f * coeff n (sS ζ ^ m) := by
   simp only [shiftS, PowerSeries.coeff_mk, coeff_sS_pow]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma norm_le_one_of {ζ : ℂ_[q]} (h : ‖ζ - 1‖ < 1) : ‖ζ‖ ≤ 1 := by
   calc ‖ζ‖ = ‖(ζ - 1) + 1‖ := by rw [sub_add_cancel]
     _ ≤ max ‖ζ - 1‖ ‖(1 : ℂ_[q])‖ := IsUltrametricDist.norm_add_le_max _ _
     _ ≤ 1 := max_le h.le (by rw [norm_one])
 
+/- English proof (translation)
+Rewrite using `[coeff_sS_pow, norm_mul, norm_mul, norm_pow, norm_pow]`. Establish `h1` using `IsUltrametricDist.norm_natCast_le_one ℂ_[q] (m.choose n)`. Establish `h2 : ‖ζ‖ ^ n ≤ 1` using `pow_le_one₀ (norm_nonneg _) (norm_le_one_of h)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma norm_coeff_sS_pow {ζ : ℂ_[q]} (h : ‖ζ - 1‖ < 1) (m n : ℕ) :
     ‖coeff n (sS ζ ^ m)‖ ≤ ‖ζ - 1‖ ^ (m - n) := by
   rw [coeff_sS_pow, norm_mul, norm_mul, norm_pow, norm_pow]
@@ -47,6 +63,11 @@ lemma norm_coeff_sS_pow {ζ : ℂ_[q]} (h : ‖ζ - 1‖ < 1) (m n : ℕ) :
   calc ‖(m.choose n : ℂ_[q])‖ * ‖ζ‖ ^ n * ‖ζ - 1‖ ^ (m - n) ≤ 1 * 1 * ‖ζ - 1‖ ^ (m - n) := by gcongr
     _ = ‖ζ - 1‖ ^ (m - n) := by ring
 
+/- English proof (translation)
+Establish `hB0 : 0 ≤ B` using `le_trans (norm_nonneg _) (ha 0)`. Establish `hg : Summable fun m : ℕ => B * ‖ζ - 1‖ ^ (m - n)`. Use `Summable.mul_left B ((summable_nat_add_iff n).mp ?_)` and prove the remaining obligations. Simplify using `using summable_geometric_of_lt_one (norm_nonneg (ζ - 1)) h`. Use `Summable.of_nonneg_of_le (fun m => norm_nonneg _) (fun m => ?_) hg` and prove the remaining obligations.
+
+Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (ha m) (norm_coeff_sS_pow h m n) (norm_nonneg _) hB0`.
+-/
 lemma summable_norm_term {ζ : ℂ_[q]} (h : ‖ζ - 1‖ < 1) {a : ℕ → ℂ_[q]} {B : ℝ} (ha : ∀ m, ‖a m‖ ≤ B)
     (n : ℕ) : Summable fun m => ‖a m * coeff n (sS ζ ^ m)‖ := by
   have hB0 : 0 ≤ B := le_trans (norm_nonneg _) (ha 0)
@@ -57,9 +78,17 @@ lemma summable_norm_term {ζ : ℂ_[q]} (h : ‖ζ - 1‖ < 1) {a : ℕ → ℂ_
   rw [norm_mul]
   exact mul_le_mul (ha m) (norm_coeff_sS_pow h m n) (norm_nonneg _) hB0
 
+/- English proof (translation)
+The claim follows from `(summable_norm_term h ha n).of_norm`.
+-/
 lemma summable_term {ζ : ℂ_[q]} (h : ‖ζ - 1‖ < 1) {a : ℕ → ℂ_[q]} {B : ℝ} (ha : ∀ m, ‖a m‖ ≤ B)
     (n : ℕ) : Summable fun m => a m * coeff n (sS ζ ^ m) := (summable_norm_term h ha n).of_norm
 
+/- English proof (translation)
+Introduce `n`. Establish `hB0 : 0 ≤ B` using `le_trans (norm_nonneg _) (hf 0)`. Rewrite using `[coeff_shiftS]`. Establish `hs` using `summable_term (a := fun m => coeff m f) h hf n`. Establish `hterm : ∀ m, ‖coeff m f * coeff n (sS ζ ^ m)‖ ≤ B` using `fun m => by`.
+
+Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hcl : IsClosed {x : ℂ_[q] | ‖x‖ ≤ B}` using `isClosed_le continuous_norm continuous_const`. Use `hcl.mem_of_tendsto hs.hasSum.tendsto_sum_nat (Filter.Eventually.of_forall fun N => ?_)` and prove the remaining obligations. Conclude with `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hB0 fun m _ => hterm m`.
+-/
 lemma bd_shiftS {ζ : ℂ_[q]} (h : ‖ζ - 1‖ < 1) {f : ℂ_[q]⟦X⟧} {B : ℝ} (hf : Bd B f) :
     Bd B (shiftS ζ f) := by
   intro n
@@ -76,6 +105,11 @@ lemma bd_shiftS {ζ : ℂ_[q]} (h : ‖ζ - 1‖ < 1) {f : ℂ_[q]⟦X⟧} {B : 
   refine hcl.mem_of_tendsto hs.hasSum.tendsto_sum_nat (Filter.Eventually.of_forall fun N => ?_)
   exact IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hB0 fun m _ => hterm m
 
+/- English proof (translation)
+Take `⟨B, hB⟩` from `hf`. Take `⟨B', hB'⟩` from `hg`. Use extensionality with `n`. Rewrite using `[map_add, coeff_shiftS, coeff_shiftS, coeff_shiftS]`. Simplify using `only [map_add, add_mul]`.
+
+Conclude with `(summable_term (a := fun m => coeff m f) h hB n).tsum_add (summable_term (a := fun m => coeff m g) h hB' n)`.
+-/
 lemma shiftS_add {ζ : ℂ_[q]} (h : ‖ζ - 1‖ < 1) {f g : ℂ_[q]⟦X⟧} (hf : Bdd f) (hg : Bdd g) :
     shiftS ζ (f + g) = shiftS ζ f + shiftS ζ g := by
   obtain ⟨B, hB⟩ := hf
@@ -86,6 +120,13 @@ lemma shiftS_add {ζ : ℂ_[q]} (h : ‖ζ - 1‖ < 1) {f g : ℂ_[q]⟦X⟧} (h
   exact (summable_term (a := fun m => coeff m f) h hB n).tsum_add
     (summable_term (a := fun m => coeff m g) h hB' n)
 
+/- English proof (translation)
+Take `⟨B, hB⟩` from `hf`. Take `⟨B', hB'⟩` from `hg`. Use extensionality with `n`. Simplify using `only [coeff_shiftS, PowerSeries.coeff_mul]`. Establish `hprod : ∀ p : ℕ × ℕ, (∑' m, coeff m f * coeff p.1 (sS ζ ^ m)) * (∑' m, coeff m g * coeff p.2 (sS ζ ^ m)) = ∑' m, ∑ x ∈ Finset.HasAntidiagonal.antidiagonal m, (coeff x.1 f * coeff p.1 (sS ζ ^ x.1)) * (coeff x.2 g * coeff p.2 (sS ζ ^ x.2))` using `fun p => tsum_mul_tsum_eq_tsum_sum_antidiagonal_of_summable_norm (summable_norm_term (a := fun m => coeff m f) h hB p.1) (summable_norm_term (a := fun m => coeff m g) h hB' p.2)`.
+
+Establish `hsum : ∀ p : ℕ × ℕ, Summable fun m => ∑ x ∈ Finset.HasAntidiagonal.antidiagonal m, (coeff x.1 f * coeff p.1 (sS ζ ^ x.1)) * (coeff x.2 g * coeff p.2 (sS ζ ^ x.2))` using `fun p => (summable_norm_sum_mul_antidiagonal_of_summable_norm (summable_norm_term (a := fun m => coeff m f) h hB p.1) (summable_norm_term (a := fun m => coeff m g) h hB' p.2)).of_norm`. Rewrite using `[Finset.sum_congr rfl (fun p _ => hprod p), ← Summable.tsum_finsetSum (fun p _ => hsum p)]`. Use `tsum_congr fun m => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations.
+
+Establish `hx' : x.1 + x.2 = m` using `Finset.HasAntidiagonal.mem_antidiagonal.mp hx`. Rewrite using `[← hx', pow_add, PowerSeries.coeff_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma shiftS_mul {ζ : ℂ_[q]} (h : ‖ζ - 1‖ < 1) {f g : ℂ_[q]⟦X⟧} (hf : Bdd f) (hg : Bdd g) :
     shiftS ζ (f * g) = shiftS ζ f * shiftS ζ g := by
   obtain ⟨B, hB⟩ := hf
@@ -112,21 +153,35 @@ lemma shiftS_mul {ζ : ℂ_[q]} (h : ‖ζ - 1‖ < 1) {f g : ℂ_[q]⟦X⟧} (h
   refine Finset.sum_congr rfl fun p _ => ?_
   ring
 
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[coeff_shiftS, tsum_eq_single 0 (fun m hm => by simp [PowerSeries.coeff_C, hm])]`. Apply the tactic sequence `by_cases hn : n = 0 <;> simp [PowerSeries.coeff_C, PowerSeries.coeff_one, hn]`.
+-/
 lemma shiftS_C (ζ c : ℂ_[q]) : shiftS ζ (C c) = C c := by
   ext n
   rw [coeff_shiftS, tsum_eq_single 0 (fun m hm => by simp [PowerSeries.coeff_C, hm])]
   by_cases hn : n = 0 <;> simp [PowerSeries.coeff_C, PowerSeries.coeff_one, hn]
 
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[coeff_shiftS, tsum_eq_single 1 (fun m hm => by simp [PowerSeries.coeff_X, hm])]`. Simplify using `[sS]`.
+-/
 lemma shiftS_X (ζ : ℂ_[q]) : shiftS ζ X = C ζ * (1 + X) - 1 := by
   ext n
   rw [coeff_shiftS, tsum_eq_single 1 (fun m hm => by simp [PowerSeries.coeff_X, hm])]
   simp [sS]
 
+/- English proof (translation)
+Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, coeff_shiftS]`. Simplify using `[coeff_sS_pow, ev]`.
+-/
 lemma constantCoeff_shiftS (ζ : ℂ_[q]) (f : ℂ_[q]⟦X⟧) :
     constantCoeff (shiftS ζ f) = ev f (ζ - 1) := by
   rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply, coeff_shiftS]
   simp [coeff_sS_pow, ev]
 
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[coeff_shiftS, tsum_eq_single n (fun m hm => ?_)]`. Simplify using `[coeff_sS_pow]`. Rewrite using `[coeff_sS_pow]`. Break down `lt_or_gt_of_ne hm with hlt | hlt` into its components or cases.
+
+Simplify using `[Nat.choose_eq_zero_of_lt hlt]`. Simplify using `[Nat.sub_ne_zero_of_lt hlt]`.
+-/
 lemma shiftS_one (f : ℂ_[q]⟦X⟧) : shiftS 1 f = f := by
   ext n
   rw [coeff_shiftS, tsum_eq_single n (fun m hm => ?_)]
@@ -136,6 +191,9 @@ lemma shiftS_one (f : ℂ_[q]⟦X⟧) : shiftS 1 f = f := by
     · simp [Nat.choose_eq_zero_of_lt hlt]
     · simp [Nat.sub_ne_zero_of_lt hlt]
 
+/- English proof (translation)
+Break down `n with _ | n` into its components or cases. Rewrite using `[DT, add_mul, one_mul, map_add, PowerSeries.coeff_zero_X_mul, PowerSeries.coeff_derivative]`. Simplify using the standard rewrite rules. Simplify using `[DT, add_mul, PowerSeries.coeff_derivative, PowerSeries.coeff_succ_X_mul]`.
+-/
 lemma coeff_DT (f : ℂ_[q]⟦X⟧) (n : ℕ) :
     coeff n (DT f) = coeff (n + 1) f * ((n : ℂ_[q]) + 1) + coeff n f * n := by
   rcases n with _ | n
@@ -143,6 +201,13 @@ lemma coeff_DT (f : ℂ_[q]⟦X⟧) (n : ℕ) :
     simp
   · simp [DT, add_mul, PowerSeries.coeff_derivative, PowerSeries.coeff_succ_X_mul]
 
+/- English proof (translation)
+Unfold `DT`. Rewrite using `[Derivation.leibniz_pow]`. Establish `hd : derivative ℂ_[q] (sS ζ) = C ζ` using `by simp [sS]`. Establish `h1 : (1 + X) * C ζ = sS ζ + 1`. Unfold `sS`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hd]`. Break down `m with _ | m` into its components or cases. Simplify using the standard rewrite rules. Simplify using `only [Nat.add_sub_cancel, nsmul_eq_mul, smul_eq_mul, map_natCast]`.
+
+Rewrite using `[show (1 + X) * ((((m + 1 : ℕ) : ℂ_[q]⟦X⟧)) * (sS ζ ^ m * C ζ)) = ((m + 1 : ℕ) : ℂ_[q]⟦X⟧) * sS ζ ^ m * ((1 + X) * C ζ) by ring, h1, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma DT_sS_pow (ζ : ℂ_[q]) (m : ℕ) :
     DT (sS ζ ^ m) = C (m : ℂ_[q]) * (sS ζ ^ (m - 1) + sS ζ ^ m) := by
   unfold DT
@@ -159,6 +224,19 @@ lemma DT_sS_pow (ζ : ℂ_[q]) (m : ℕ) :
         ((m + 1 : ℕ) : ℂ_[q]⟦X⟧) * sS ζ ^ m * ((1 + X) * C ζ) by ring, h1, pow_succ]
     ring
 
+/- English proof (translation)
+Take `⟨B, hB⟩` from `hf`. Establish `hn1 : ∀ m : ℕ, ‖(m : ℂ_[q])‖ ≤ 1` using `fun m => IsUltrametricDist.norm_natCast_le_one ℂ_[q] m`. Establish `hB1 : ∀ m : ℕ, ‖coeff m f * (m : ℂ_[q])‖ ≤ B` using `fun m => by`. Rewrite using `[norm_mul]`. Use polynomial arithmetic with `[hB m, hn1 m, norm_nonneg (coeff m f), norm_nonneg (m : ℂ_[q])]`.
+
+Establish `hB2 : ∀ m : ℕ, ‖coeff (m + 1) f * ((m : ℂ_[q]) + 1)‖ ≤ B` using `fun m => by`. Establish `h0` using `hB1 (m + 1)`. Move the coercions through the operations in `at h0`. Conclude with `h0`. Use extensionality with `n`.
+
+Establish `hk : ∀ m : ℕ, coeff (n + 1) (sS ζ ^ m) * ((n : ℂ_[q]) + 1) + coeff n (sS ζ ^ m) * n = (m : ℂ_[q]) * coeff n (sS ζ ^ (m - 1)) + (m : ℂ_[q]) * coeff n (sS ζ ^ m)`. Introduce `m`. Rewrite using `[← coeff_DT, DT_sS_pow, PowerSeries.coeff_C_mul, map_add, mul_add]`. Establish `s0` using `summable_term (a := fun m => coeff m f) h hB n`. Establish `s1` using `summable_term (a := fun m => coeff m f) h hB (n + 1)`.
+
+Establish `s2` using `summable_term (a := fun m => coeff m f * (m : ℂ_[q])) h hB1 n`. Establish `s3` using `summable_term (a := fun m => coeff (m + 1) f * ((m : ℂ_[q]) + 1)) h hB2 n`. Establish `s4 : Summable fun m : ℕ => coeff m f * (m : ℂ_[q]) * coeff n (sS ζ ^ (m - 1))`. Use `(summable_nat_add_iff 1).mp ?_` and prove the remaining obligations. Simplify using `using s3`.
+
+Rewrite using `[coeff_DT, coeff_shiftS, coeff_shiftS, coeff_shiftS]`. Simplify using `only [coeff_DT, add_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← tsum_mul_right, ← tsum_mul_right, ← Summable.tsum_add (s1.mul_right _) (s0.mul_right _)]`. Use `_ = ∑' m, (coeff m f * (m : ℂ_[q]) * coeff n (sS ζ ^ (m - 1)) + coeff m f * (m : ℂ_[q]) * coeff n (sS ζ ^ m)) := tsum_congr fun m => by linear_combination (coeff m f) * hk m`.
+
+Use `_ = ∑' m, coeff m f * (m : ℂ_[q]) * coeff n (sS ζ ^ (m - 1)) + ∑' m, coeff m f * (m : ℂ_[q]) * coeff n (sS ζ ^ m) := s4.tsum_add s2`. Use `_ = ∑' m, coeff (m + 1) f * ((m : ℂ_[q]) + 1) * coeff n (sS ζ ^ m) + ∑' m, coeff m f * (m : ℂ_[q]) * coeff n (sS ζ ^ m) := by`. Rewrite using `[s4.tsum_eq_zero_add]`. Simplify using the standard rewrite rules. Use `_ = _ := (s3.tsum_add s2).symm`.
+-/
 lemma DT_shiftS {ζ : ℂ_[q]} (h : ‖ζ - 1‖ < 1) {f : ℂ_[q]⟦X⟧} (hf : Bdd f) :
     DT (shiftS ζ f) = shiftS ζ (DT f) := by
   obtain ⟨B, hB⟩ := hf
@@ -200,6 +278,9 @@ lemma DT_shiftS {ζ : ℂ_[q]} (h : ‖ζ - 1‖ < 1) {f : ℂ_[q]⟦X⟧} (hf :
         simp
     _ = _ := (s3.tsum_add s2).symm
 
+/- English proof (translation)
+Introduce `q _ ζ h`. Conclude with `⟨fun f B hf => bd_shiftS h hf, fun f g hf hg => ⟨shiftS_add h hf hg, shiftS_mul h hf hg⟩, shiftS_C ζ, shiftS_X ζ, constantCoeff_shiftS ζ, fun f hf => DT_shiftS h hf, shiftS_one⟩`.
+-/
 theorem shift_laws : ∀ (q : ℕ) [Fact q.Prime] (ζ : ℂ_[q]), ‖ζ - 1‖ < 1 → (∀ (f : ℂ_[q]⟦X⟧) (B : ℝ), Bd B f → Bd B (shiftS ζ f)) ∧ (∀ f g : ℂ_[q]⟦X⟧, Bdd f → Bdd g → shiftS ζ (f + g) = shiftS ζ f + shiftS ζ g ∧ shiftS ζ (f * g) = shiftS ζ f * shiftS ζ g) ∧ (∀ c : ℂ_[q], shiftS ζ (C c) = C c) ∧ shiftS ζ X = C ζ * (1 + X) - 1 ∧ (∀ f : ℂ_[q]⟦X⟧, constantCoeff (shiftS ζ f) = ev f (ζ - 1)) ∧ (∀ f : ℂ_[q]⟦X⟧, Bdd f → DT (shiftS ζ f) = shiftS ζ (DT f)) ∧ (∀ f : ℂ_[q]⟦X⟧, shiftS 1 f = f) := by
   intro q _ ζ h
   exact ⟨fun f B hf => bd_shiftS h hf, fun f g hf hg => ⟨shiftS_add h hf hg, shiftS_mul h hf hg⟩,

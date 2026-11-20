@@ -40,6 +40,9 @@ def stabSub (ρ : Representation ℂ G V) (v : V) : Subgroup G where
     calc ρ a⁻¹ v = ρ a⁻¹ (ρ a v) := by rw [ha']
       _ = v := by rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one]; rfl
 
+/- English proof (translation)
+Introduce `g hg`. Use `show ρ g (x + y) = x + y`. Establish `h1 : ρ g x = x` using `hg.1`. Establish `h2 : ρ g y = y` using `hg.2`. Rewrite using `[map_add, h1, h2]`.
+-/
 theorem stabSub_add_le (ρ : Representation ℂ G V) (x y : V) :
     stabSub ρ x ⊓ stabSub ρ y ≤ stabSub ρ (x + y) := by
   intro g hg
@@ -51,6 +54,17 @@ theorem stabSub_add_le (ρ : Representation ℂ G V) (x y : V) :
 end GlobalTheory.CompanionTheory.BZPsiPG.FibKer.SmTop
 
 open GlobalTheory.CompanionTheory.BZPsiPG.FibKer.SmTop in
+/- English proof (translation)
+Introduce `k _ _ _ _ i V W _ _ _ _ τ hτ v`. Establish `hU : Continuous (uMh k i)` using `(GlobalTheory.T.continuous_levi_unipotent_proj k i).2.1.comp continuous_toAdd`. It suffices to establish `h : IsOpen (stabSub (topRep τ W) v : Set (Multiplicative (Fin i → k))) from h`. Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero`.
+
+Establish `: (stabSub (topRep τ W) 0 : Set (Multiplicative (Fin i → k))) = Set.univ`. Use extensionality with `g`. Simplify using `only [Set.mem_univ, iff_true]`. Use `show topRep τ W g 0 = 0`. Conclude with `map_zero _`.
+
+Rewrite using `[this]`. Conclude with `isOpen_univ`. Consider the case `tmul a b`. Establish `hle : (stabSub τ a).comap (uMh k i) ≤ stabSub (topRep τ W) (a ⊗ₜ[ℂ] b)`. Introduce `g hg`.
+
+Establish `hg' : τ (uM k i g.toAdd) a = a` using `hg`. Use `show LinearMap.rTensor W (τ (uM k i g.toAdd)) (a ⊗ₜ[ℂ] b) = a ⊗ₜ[ℂ] b`. Rewrite using `[LinearMap.rTensor_tmul, hg']`. Use `Subgroup.isOpen_mono hle ?_` and prove the remaining obligations. Conclude with `(hτ a).preimage hU`.
+
+Consider the case `add x y hx hy`. Conclude with `Subgroup.isOpen_mono (stabSub_add_le _ x y) (by rw [Subgroup.coe_inf]; exact hx.inter hy)`.
+-/
 theorem GlobalTheory.CompanionTheory.BZPsiPG.FibKer.isSmooth_topRep : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (i : ℕ) {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] (τ : Representation ℂ (Mir k i) V), IsSmooth τ → IsSmooth (topRep τ W) := by
   intro k _ _ _ _ i V W _ _ _ _ τ hτ v
   have hU : Continuous (uMh k i) := (GlobalTheory.T.continuous_levi_unipotent_proj k i).2.1.comp continuous_toAdd

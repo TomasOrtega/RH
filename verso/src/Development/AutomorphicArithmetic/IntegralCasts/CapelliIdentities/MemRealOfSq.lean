@@ -1,5 +1,10 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `Y _ δ q hq h`. Rewrite using `[NumberField.mem_maximalRealSubfield_iff]`. Introduce `φ`. Establish `h1 : (φ δ) ^ 2 = (q : ℂ)` using `by rw [← map_pow, h, map_natCast]`. Establish `h2 : (φ δ) ^ 2 = ((Real.sqrt q : ℝ) : ℂ) ^ 2`.
+
+Rewrite using `[h1, ← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg q), Complex.ofReal_natCast]`. Break down `sq_eq_sq_iff_eq_or_eq_neg.mp h2 with h3 | h3` into its components or cases. Rewrite using `[h3, Complex.star_def, Complex.conj_ofReal]`. Rewrite using `[h3, star_neg, Complex.star_def, Complex.conj_ofReal]`.
+-/
 theorem UpperTheory.Reformulated.B.Qh55.mem_real_of_sq :
     ∀ {Y : Type} [inst : Field Y] {δ : Y}
     {q : ℕ}, (0 : ℕ) < q → δ ^ (2 : ℕ) = (↑q : Y) → δ ∈ NumberField.maximalRealSubfield Y := by

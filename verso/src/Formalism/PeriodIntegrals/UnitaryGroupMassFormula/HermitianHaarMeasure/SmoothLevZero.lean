@@ -16,10 +16,18 @@ section test
 
 variable {k r : ℕ} {i : Fin (r + 1)}
 
+/- English proof (translation)
+Introduce `g₀ _`. Conclude with `⟨Set.univ, fun _ => (0 : ℂ), isOpen_univ, Set.mem_univ _, contDiffOn_const, fun _ _ _ => rfl⟩`.
+-/
 theorem smoothLev_zero : SmoothLev k r i Set.univ (0 : Mx k r → ℂ) := by
   intro g₀ _
   exact ⟨Set.univ, fun _ => (0 : ℂ), isOpen_univ, Set.mem_univ _, contDiffOn_const, fun _ _ _ => rfl⟩
 
+/- English proof (translation)
+Introduce `g₀ hg₀`. Take `⟨U, F, hU, hgU, hF, hfF⟩` from `hf g₀ hg₀`. Take `⟨V, G, hV, hgV, hG, hhG⟩` from `hh g₀ hg₀`. Use `⟨U ∩ V, fun x => F x + G x, hU.inter hV, ⟨hgU, hgV⟩, (hF.mono fun _ hx => hx.1).add (hG.mono fun _ hx => hx.2), fun g hg hgl => ?_⟩` and prove the remaining obligations. Use `show f g + h g = F g + G g`.
+
+Rewrite using `[hfF g hg.1 hgl, hhG g hg.2 hgl]`.
+-/
 theorem smoothLev_add {f h : Mx k r → ℂ} (hf : SmoothLev k r i Set.univ f) (hh : SmoothLev k r i Set.univ h) :
     SmoothLev k r i Set.univ (f + h) := by
   intro g₀ hg₀
@@ -30,6 +38,9 @@ theorem smoothLev_add {f h : Mx k r → ℂ} (hf : SmoothLev k r i Set.univ f) (
   show f g + h g = F g + G g
   rw [hfF g hg.1 hgl, hhG g hg.2 hgl]
 
+/- English proof (translation)
+Introduce `g₀ hg₀`. Take `⟨U, F, hU, hgU, hF, hfF⟩` from `hf g₀ hg₀`. Use `⟨U, fun x => c * F x, hU, hgU, contDiffOn_const.mul hF, fun g hg hgl => ?_⟩` and prove the remaining obligations. Use `show c • f g = c * F g`. Rewrite using `[hfF g hg hgl, smul_eq_mul]`.
+-/
 theorem smoothLev_smul (c : ℂ) {f : Mx k r → ℂ} (hf : SmoothLev k r i Set.univ f) :
     SmoothLev k r i Set.univ (c • f) := by
   intro g₀ hg₀
@@ -38,9 +49,17 @@ theorem smoothLev_smul (c : ℂ) {f : Mx k r → ℂ} (hf : SmoothLev k r i Set.
   show c • f g = c * F g
   rw [hfF g hg hgl, smul_eq_mul]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨∅, isCompact_empty, fun _ _ _ => rfl⟩`.
+-/
 theorem cptOn_zero : CptOn k r i (0 : Mx k r → ℂ) :=
   ⟨∅, isCompact_empty, fun _ _ _ => rfl⟩
 
+/- English proof (translation)
+Take `⟨K, hK, hfK⟩` from `hf`. Take `⟨L, hL, hhL⟩` from `hh`. Use `⟨K ∪ L, hK.union hL, fun g hg hn => ?_⟩` and prove the remaining obligations. Establish `h1 : g ∉ K` using `fun hk => hn (Or.inl hk)`. Establish `h2 : g ∉ L` using `fun hl => hn (Or.inr hl)`.
+
+Use `show f g + h g = 0`. Rewrite using `[hfK g hg h1, hhL g hg h2, add_zero]`.
+-/
 theorem cptOn_add {f h : Mx k r → ℂ} (hf : CptOn k r i f) (hh : CptOn k r i h) : CptOn k r i (f + h) := by
   obtain ⟨K, hK, hfK⟩ := hf
   obtain ⟨L, hL, hhL⟩ := hh
@@ -50,6 +69,9 @@ theorem cptOn_add {f h : Mx k r → ℂ} (hf : CptOn k r i f) (hh : CptOn k r i 
   show f g + h g = 0
   rw [hfK g hg h1, hhL g hg h2, add_zero]
 
+/- English proof (translation)
+Take `⟨K, hK, hfK⟩` from `hf`. Use `⟨K, hK, fun g hg hn => ?_⟩` and prove the remaining obligations. Use `show c • f g = 0`. Rewrite using `[hfK g hg hn, smul_zero]`.
+-/
 theorem cptOn_smul (c : ℂ) {f : Mx k r → ℂ} (hf : CptOn k r i f) : CptOn k r i (c • f) := by
   obtain ⟨K, hK, hfK⟩ := hf
   refine ⟨K, hK, fun g hg hn => ?_⟩
@@ -62,9 +84,15 @@ def testSub (k r : ℕ) (i : Fin (r + 1)) : Submodule ℂ (Mx k r → ℂ) where
   add_mem' hf hh := ⟨smoothLev_add hf.1 hh.1, cptOn_add hf.2 hh.2⟩
   smul_mem' c _ hf := ⟨smoothLev_smul c hf.1, cptOn_smul c hf.2⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_testSub {f : Mx k r → ℂ} : f ∈ testSub k r i ↔ TestF k r i f :=
   Iff.rfl
 
+/- English proof (translation)
+Establish `h' : a.val + i.val = b.val + i.val` using `congrArg Fin.val h`. Conclude with `Fin.ext (by omega)`.
+-/
 theorem posL_inj {a b : Fin (mdim k r i)} (h : posL k r i a = posL k r i b) : a = b := by
   have h' : a.val + i.val = b.val + i.val := congrArg Fin.val h
   exact Fin.ext (by omega)
@@ -92,9 +120,15 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {i : Fin (r + 1)} {μ 
 
 abbrev ιo (k r : ℕ) : Mt k r → Mx k r := fun x => Matrix.of x
 
+/- English proof (translation)
+Introduce `f hf h hh` and use `H.TI k r i μ H.hμ f h hf hh`.
+-/
 theorem hI (H : Hyp k r z z' i μ) : IntOn μ (ιo k r) (testSub k r i) :=
   fun f hf h hh => H.TI k r i μ H.hμ f h hf hh
 
+/- English proof (translation)
+Use `first`. Consider the case `exact ae_iff.mpr H.hμ.conc`. Consider the case `(rw [ae_iff]; exact H.hμ.conc)`.
+-/
 theorem hG (H : Hyp k r z z' i μ) : ∀ᵐ x ∂μ, ιo k r x ∈ Glev k r i := by
   first
     | exact ae_iff.mpr H.hμ.conc
@@ -110,11 +144,17 @@ def MOp {k r : ℕ} (φ : Mx k r → ℂ) : (Mx k r → ℂ) → Mx k r → ℂ 
 
 def MOp' {k r : ℕ} (φ : Mx k r → ℂ) : (Mx k r → ℂ) → Mx k r → ℂ := fun f g => star (φ g) * f g
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Simplify using `only [EOp', EOp, Finset.sum_apply, Pi.smul_apply]`.
+-/
 theorem EOp'_eq (a b : Fin (mdim k r i)) (f : Mx k r → ℂ) :
     EOp' k r i a b f = ∑ c, ∑ d, (Hm k r i c b * Hm k r i a d) • EOp k r i c d f := by
   funext g
   simp only [EOp', EOp, Finset.sum_apply, Pi.smul_apply]
 
+/- English proof (translation)
+The claim follows from `H.ET k r i a b f hf mem' f hf := by rw [EOp'_eq] exact Submodule.sum_mem _ fun c _ => Submodule.sum_mem _ fun d _ => Submodule.smul_mem _ _ (H.ET k r i c d f hf) lin f hf h hh c g hg := by have := (H.EP ℂ k r z i Set.univ a b f h c isOpen_univ hf.1 hh.1).2.2 g ⟨hg, trivial⟩ simpa …`.
+-/
 theorem adjOp_E (H : Hyp k r z z' i μ) (a b : Fin (mdim k r i)) :
     AdjOp (μ := μ) (ι := ιo k r) (𝓕 := testSub k r i) (Glev k r i) (EOp k r i a b) (EOp' k r i a b) where
   mem f hf := H.ET k r i a b f hf
@@ -139,6 +179,9 @@ theorem adjOp_E (H : Hyp k r z z' i μ) (a b : Fin (mdim k r i)) :
     ring
   adj f hf h hh := H.EA k r i μ H.hμ a b f h hf hh
 
+/- English proof (translation)
+The claim follows from `(hφ f hf).1 mem' f hf := (hφ f hf).2 lin f _ h _ c g _ := by simp only [MOp]; ring lin' f _ h _ c g _ := by simp only [MOp']; ring adj f _ h _ := by unfold pr MOp MOp' congr 1 funext x simp only [star_mul', star_star] ring`.
+-/
 theorem adjOp_M (φ : Mx k r → ℂ)
     (hφ : ∀ f, TestF k r i f → TestF k r i (fun g => φ g * f g) ∧ TestF k r i (fun g => star (φ g) * f g)) :
     AdjOp (μ := μ) (ι := ιo k r) (𝓕 := testSub k r i) (Glev k r i) (MOp φ) (MOp' φ) where
@@ -153,10 +196,16 @@ theorem adjOp_M (φ : Mx k r → ℂ)
     simp only [star_mul', star_star]
     ring
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(H.MT k r z i c f hf).1, (H.MT k r z i c f hf).2.1⟩`.
+-/
 theorem yTest (H : Hyp k r z z' i μ) (c : Fin (mdim k r i)) (f : Mx k r → ℂ) (hf : TestF k r i f) :
     TestF k r i (fun g => yv k r z i g c * f g) ∧ TestF k r i (fun g => star (yv k r z i g c) * f g) :=
   ⟨(H.MT k r z i c f hf).1, (H.MT k r z i c f hf).2.1⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(H.MT k r z i c f hf).2.2.1, (H.MT k r z i c f hf).2.2.2⟩`.
+-/
 theorem ybTest (H : Hyp k r z z' i μ) (c : Fin (mdim k r i)) (f : Mx k r → ℂ) (hf : TestF k r i f) :
     TestF k r i (fun g => ybv k r z i g c * f g) ∧ TestF k r i (fun g => star (ybv k r z i g c) * f g) :=
   ⟨(H.MT k r z i c f hf).2.2.1, (H.MT k r z i c f hf).2.2.2⟩
@@ -169,13 +218,22 @@ def YA (H : Hyp k r z z' i μ) (c : Fin (mdim k r i)) : A (hI H) :=
 def YbA (H : Hyp k r z z' i μ) (c : Fin (mdim k r i)) : A (hI H) :=
   toA (hI H) (hG H) (adjOp_M (fun g => ybv k r z i g c) (ybTest H c))
 
+/- English proof (translation)
+The claim follows from `repOn_toA (hI H) (hG H) (adjOp_E H a b)`.
+-/
 theorem repE (H : Hyp k r z z' i μ) (a b : Fin (mdim k r i)) : RepOn (hI H) (EA H a b) (EOp k r i a b) :=
   repOn_toA (hI H) (hG H) (adjOp_E H a b)
 
+/- English proof (translation)
+The claim follows from `repOn_toA (hI H) (hG H) (adjOp_M _ (yTest H c))`.
+-/
 theorem repY (H : Hyp k r z z' i μ) (c : Fin (mdim k r i)) :
     RepOn (hI H) (YA H c) (MOp (fun g => yv k r z i g c)) :=
   repOn_toA (hI H) (hG H) (adjOp_M _ (yTest H c))
 
+/- English proof (translation)
+The claim follows from `repOn_toA (hI H) (hG H) (adjOp_M _ (ybTest H c))`.
+-/
 theorem repYb (H : Hyp k r z z' i μ) (c : Fin (mdim k r i)) :
     RepOn (hI H) (YbA H c) (MOp (fun g => ybv k r z i g c)) :=
   repOn_toA (hI H) (hG H) (adjOp_M _ (ybTest H c))

@@ -18,15 +18,24 @@ def piW : Fin (D.R.rS + 1) → Fin (D.R.rS + 1) := fun b =>
 
 def blkW : Fin (D.R.rS + 1) → ℕ := fun i => blkOf w.1 i.val
 
+/- English proof (translation)
+Apply `Fin.ext` to reduce the goal to its premises. Use `show ptPar w.1 (ptPar w.1 a.val) = a.val`. Conclude with `ptPar_invol w.1 a.val (by rw [w.2.2]; exact a.2)`.
+-/
 theorem piW_invol (a : Fin (D.R.rS + 1)) : piW w (piW w a) = a := by
   apply Fin.ext
   show ptPar w.1 (ptPar w.1 a.val) = a.val
   exact ptPar_invol w.1 a.val (by rw [w.2.2]; exact a.2)
 
+/- English proof (translation)
+Use `show blkOf w.1 (ptPar w.1 a.val) = blkOf w.1 a.val`. Conclude with `blkOf_ptPar w.1 a.val (by rw [w.2.2]; exact a.2)`.
+-/
 theorem piW_blk (a : Fin (D.R.rS + 1)) : blkW w (piW w a) = blkW w a := by
   show blkOf w.1 (ptPar w.1 a.val) = blkOf w.1 a.val
   exact blkOf_ptPar w.1 a.val (by rw [w.2.2]; exact a.2)
 
+/- English proof (translation)
+Use `show ptPar w.1 b.val < ptPar w.1 a.val`. Conclude with `ptPar_anti w.1 a.val b.val (by rw [w.2.2]; exact b.2) hab h`.
+-/
 theorem piW_anti (a b : Fin (D.R.rS + 1)) (h : blkW w a = blkW w b) (hab : a < b) : piW w b < piW w a := by
   show ptPar w.1 b.val < ptPar w.1 a.val
   exact ptPar_anti w.1 a.val b.val (by rw [w.2.2]; exact b.2) hab h
@@ -36,6 +45,11 @@ def Fw (v : InfinitePlace X.B.I.F) : Fin (D.R.rS + 1) → Fin X.B.I.n → ℂ :=
 def Gw (v : InfinitePlace X.B.I.F) : Fin (D.R.rS + 1) → Fin X.B.I.n → ℂ :=
   fun b => uMat (gamW X u u' w v) *ᵥ frm X u' D.host.rdE v b
 
+/- English proof (translation)
+Use `show hJ (X.B.I.ε v) (uMat (gamW X u u' w v) *ᵥ frm X u' D.host.rdE v a) (uMat (gamW X u u' w v) *ᵥ frm X u' D.host.rdE v b) = _`. Rewrite using `[Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.JL.hJ_adj, Matrix.mulVec_mulVec]`. Establish `h1 : uMat (gamW X u u' w v)⁻¹ * uMat (gamW X u u' w v) = 1`. Simplify using `[uMat]`. Rewrite using `[h1, Matrix.one_mulVec]`.
+
+Conclude with `gram_frm X v u' D.host.rdE a b`.
+-/
 theorem hGG_w (v : InfinitePlace X.B.I.F) (a b : Fin (D.R.rS + 1)) :
     hJ (X.B.I.ε v) (Gw X u u' w v a) (Gw X u u' w v b) = lastDiag (-((Tw u' : ℝ) : ℂ)) a b := by
   show hJ (X.B.I.ε v) (uMat (gamW X u u' w v) *ᵥ frm X u' D.host.rdE v a)
@@ -46,6 +60,17 @@ theorem hGG_w (v : InfinitePlace X.B.I.F) (a b : Fin (D.R.rS + 1)) :
   rw [h1, Matrix.one_mulVec]
   exact gram_frm X v u' D.host.rdE a b
 
+/- English proof (translation)
+Establish `hrep : IsPtRep X u u' w (gamW X u u' w)`. Unfold `gamW`. Rewrite using `[dif_pos hw.1]`. Conclude with `hw.1.choose_spec`. Establish `hk : ∀ a : Fin (D.R.rS + 1), (((D.host.rdE : ℝ) : ℂ) ^ (D.R.rS - a.1))⁻¹ ≠ 0` using `fun a => inv_ne_zero (pow_ne_zero _ (by exact_mod_cast rdE_pos_c.ne'))`.
+
+Establish `hZ : Zm (X.B.I.ε v) (Fw X u v) (Gw X u u' w v) c b = (star ((((D.host.rdE : ℝ) : ℂ) ^ (D.R.rS - c.1))⁻¹) * (((D.host.rdE : ℝ) : ℂ) ^ (D.R.rS - b.1))⁻¹) * ZX X u u' 1 (gamW X u u' w) v c b`. Simplify using `only [Zm, Matrix.of_apply, Fw, Gw, ZX, Formalism.L2.SG.RealObj.Zhat, frm, famSc, hJ, Matrix.mulVec_smul, star_smul, Complex.ofReal_one, one_pow, inv_one, one_smul]`. Simplify using `[dotProduct_smul, smul_dotProduct, Matrix.mulVec_smul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `congrFun (congrFun (hrep v) c) b`.
+
+Simplify using `only [Formalism.L2.SG.RealObj.ZhatO] at h2`. Establish `h3 : ZX X u u' 1 (gamW X u u' w) v c b ≠ 0 ↔ Formalism.L2.SG.RealObj.ptC X v w c b ≠ 0`. Rewrite using `[← h2]`. Simplify using the standard rewrite rules. Establish `hb : b.val < (w.1.map Prod.snd).sum` using `by rw [w.2.2]; exact b.2`.
+
+Rewrite using `[hZ, mul_ne_zero_iff, h3]`. Simplify using `only [mul_ne_zero (star_ne_zero.mpr (hk c)) (hk b), true_and, Formalism.L2.SG.RealObj.ptC, Matrix.map_apply, Formalism.MainNotions.S.ptMat]`. Rewrite using `[ptEntry_eq w.1 c.val b.val hb]`. Simplify using `only [ne_eq, map_eq_zero_iff _ (X.B.I.φ v).injective, EmbeddingLike.map_eq_zero_iff, ite_eq_right_iff, not_forall, exists_prop]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨_, h, _⟩`. Conclude with `Fin.ext h`. Introduce `h`. Conclude with `⟨mul_ne_zero (star_ne_zero.mpr (hk c)) (hk b), congrArg Fin.val h, ptSc_ne w.1 w.2.1 b.val hb⟩`.
+-/
 theorem hZ_w (hw : OkPt X u u' w) (v : InfinitePlace X.B.I.F) (c b : Fin (D.R.rS + 1)) :
     Zm (X.B.I.ε v) (Fw X u v) (Gw X u u' w v) c b ≠ 0 ↔ c = piW w b := by
   have hrep : IsPtRep X u u' w (gamW X u u' w) := by

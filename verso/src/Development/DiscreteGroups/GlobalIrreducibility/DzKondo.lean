@@ -17,6 +17,37 @@ open Kon
 
 set_option linter.style.haveILetI false
 
+/- English proof (translation)
+Introduce `g _ n hn2 hbig K _ _ hK ψ₀ hψ₀`. Establish `hgp : g.Prime` using `Fact.out`. Establish `hn0 : 0 < n` using `by omega`. Establish `hKpos : 0 < Nat.card K` using `by rw [hK]; exact pow_pos hgp.pos _`. Establish `: Finite K` using `Nat.finite_of_card_ne_zero hKpos.ne'`.
+
+Set `_ : Fintype K` to `Fintype.ofFinite K`. Establish `: FiniteDimensional (ZMod g) K` using `Module.Finite.of_finite`. Establish `hcard : Fintype.card K = g ^ n` using `by rw [← Nat.card_eq_fintype_card, hK]`. Establish `hfr : Module.finrank (ZMod g) K = n`. Establish `h1` using `Module.card_eq_pow_finrank (K := ZMod g) (V := K)`.
+
+Rewrite `h1` using `[ZMod.card, hcard]`. Conclude with `(Nat.pow_right_injective hgp.two_le h1).symm`. Take `⟨θ₀, hθ₀, ι, kOf, hlink, τE, hτe, hτ1, hτ2, hex⟩` from `named_family g n hn0 K hfr`. Establish `hN : 0 < g ^ n - 1` using `by have := Nat.one_lt_pow hn0.ne' hgp.one_lt; omega`. Establish `hD0 : (∏ i ∈ Finset.Ico 1 n, ((g : ℂ) ^ i - 1)) ≠ 0`.
+
+Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `i hi`. Establish `hi1` using `(Finset.mem_Ico.1 hi).1`. Establish `h1 : ((g ^ i : ℕ) : ℂ) ≠ 1`. Rewrite using `[Ne, Nat.cast_eq_one]; exact (Nat.one_lt_pow (by omega) hgp.one_lt).ne'`.
+
+Rewrite using `[sub_ne_zero]`. Conclude with `h1` after adjusting the coercions. Establish `hGL : glCard (ZMod g) n ≠ 0` using `by unfold glCard; exact Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Establish `hNc : ((g ^ n - 1 : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Establish `hε : ((-1 : ℂ) ^ (n - 1)) ≠ 0` using `pow_ne_zero _ (neg_ne_zero.2 one_ne_zero)`.
+
+Use `⟨(-1) ^ (n - 1) * glCard (ZMod g) n / (((g ^ n - 1 : ℕ) : ℂ) * ∏ i ∈ Finset.Ico 1 n, ((g : ℂ) ^ i - 1)), div_ne_zero (mul_ne_zero hε hGL) (mul_ne_zero hNc hD0), ?_⟩` and prove the remaining obligations. Introduce `θ hθ τ hτ hf`. Establish `hname : ∀ x, τ.character x = τE θ x`. Take `⟨θ', hθ', heq⟩` from `hex τ.character hτ`. Take `⟨i, hi, hii⟩` from `orbit_of_agree hn2 hbig hK θ θ' hθ (fun z hz => by`.
+
+Take `⟨y, hy, hzy⟩` from `hz`. Establish `e1` using `hf y hy z hzy`. Establish `e2` using `(hτ1 θ' hθ').2.2 y hy z hzy`. Rewrite `e1` using `[heq]`. Use `show fo g n θ z = fo g n θ' z`.
+
+Conclude with `mul_left_cancel₀ hε (e1.symm.trans e2))`. Establish `h3 : τE θ = τE θ'` using `(hτ2 θ θ' hθ hθ').2 ⟨i, hi, hii⟩`. Introduce `x`. Rewrite using `[heq, ← h3]`. Establish `hsimple` using `simple_of_isIrr τ hτ.2.1`.
+
+Set `fψ : Gn g n → ℂ` to `fun y => ((ψ₀ (Matrix.trace (y : Mt g n)) : Circle) : ℂ)`. Establish `hfcl : ∀ x y : Gn g n, fψ (y * x * y⁻¹) = fψ x`. Introduce `x y`. Simplify using `only [fψ, Units.val_mul]`. Rewrite using `[Matrix.trace_mul_comm, ← mul_assoc, Units.inv_mul, one_mul]`.
+
+Take `⟨c, hc1, hc2⟩` from `central_scalar τ fψ hfcl`. Establish `hdim : (Module.finrank ℂ τ : ℂ) = ∏ i ∈ Finset.Ico 1 n, ((g : ℂ) ^ i - 1)`. Rewrite using `[← FDRep.char_one, hname, (hτ1 θ hθ).2.1]`. Establish `hip` using `ipGL_psi_trace (F := ZMod g) (Fin n → ZMod g) (by rw [Module.finrank_fin_fun]; exact hn0) θ₀ hθ₀ (kOf θ) (fun a => ((ψ₀ a : Circle) : ℂ))`. Rewrite `hip` using `[Module.finrank_fin_fun]`.
+
+Rewrite `hip` using `[(GlobalTheory.T.generalLinearFunctionExtendZeroEnd_properties (ZMod g) n (fun _ => 0)).2.2.1, finsum_eq_sum_of_fintype]`. Establish `e : ∀ y : Gn g n, fψ y * τ.character y⁻¹ = star (psi (rootSum θ₀ (kOf θ)) (Fin n → ZMod g) (Matrix.toLin' (y : Mt g n)) * star ((ψ₀ (-(LinearMap.charpoly (Matrix.toLin' (y : Mt g n))).nextCoeff) : Circle) : ℂ)) * (-1) ^ (n - 1)`. Introduce `y`. Rewrite using `[GlobalTheory.BadShare.ZCalc.character_inv, hname, hτe, ← trace_eq_nextCoeff hn0]`. Simplify using `only [fψ, starRingEnd_apply, star_mul', star_pow, star_neg, star_one, star_star]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hsum : ∑ y : Gn g n, fψ y * τ.character y⁻¹ = (-1) ^ (n - 1) * glCard (ZMod g) n * aC n θ₀ (hT n fun a => ((ψ₀ a : Circle) : ℂ)) (kOf θ)`. Rewrite using `[Finset.sum_congr rfl (fun y _ => e y), ← Finset.sum_mul, ← star_sum]`. Rewrite using `[show (∑ y : Gn g n, psi (rootSum θ₀ (kOf θ)) (Fin n → ZMod g) (Matrix.toLin' (y : Mt g n)) * star ((ψ₀ (-(LinearMap.charpoly (Matrix.toLin' (y : Mt g n))).nextCoeff) : Circle) : ℂ)) = glCard (ZMod g) n * star (aC n θ₀ (hT n fun a => ((ψ₀ a : Circle) : ℂ)) (kOf θ)) from hip]`. Rewrite using `[star_mul', star_star, glCard, star_natCast]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hgs` using `aC_eq_gs hn0 hK θ₀ ι θ (kOf θ) (hlink θ) ψ₀`. Rewrite `hc2` using `[hdim, hsum, hgs]`. Establish `hcval : c = (-1) ^ (n - 1) * glCard (ZMod g) n / (((g ^ n - 1 : ℕ) : ℂ) * ∏ i ∈ Finset.Ico 1 n, ((g : ℂ) ^ i - 1)) * gs ψ₀ θ⁻¹`. Unfold `gs`.
+
+Establish `h4 : c = (c * ∏ i ∈ Finset.Ico 1 n, ((g : ℂ) ^ i - 1)) / ∏ i ∈ Finset.Ico 1 n, ((g : ℂ) ^ i - 1)`. Clear the denominators using the available nonvanishing facts. Rewrite using `[h4, hc2]`. Clear the denominators using the available nonvanishing facts. Introduce `v`.
+
+Rewrite using `[finsum_eq_sum_of_fintype]`. Conclude with `(hc1 v).trans (by rw [hcval])`.
+-/
 theorem lKondo : LKondo := by
   intro g _ n hn2 hbig K _ _ hK ψ₀ hψ₀
   classical

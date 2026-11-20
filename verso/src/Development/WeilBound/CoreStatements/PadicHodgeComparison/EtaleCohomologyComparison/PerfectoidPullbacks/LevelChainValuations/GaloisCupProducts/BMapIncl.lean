@@ -18,11 +18,17 @@ namespace CrystallineSemistableComparison.Pb.Kap
 
 namespace LevelChangeComparison
 
+/- English proof (translation)
+Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective w`. Both sides reduce to the same expression.
+-/
 theorem qid {B : Type} [CommRing B] (J : Ideal B) (h : J ≤ J.comap (RingHom.id B)) (w : B ⧸ J) :
     Ideal.quotientMap J (RingHom.id B) h w = w := by
   obtain ⟨b, rfl⟩ := Ideal.Quotient.mk_surjective w
   rfl
 
+/- English proof (translation)
+Establish `e : Ideal.quotientMap J (RingHom.id B) h = RingHom.id _` using `RingHom.ext (qid J h)`. Rewrite using `[e]`. Simplify using the standard rewrite rules.
+-/
 theorem spec_qid {B : Type} [CommRing B] (J : Ideal B) (h : J ≤ J.comap (RingHom.id B)) {Y : Scheme.{0}}
     (y : Spec (CommRingCat.of (B ⧸ J)) ⟶ Y) :
     Spec.map (CommRingCat.ofHom (Ideal.quotientMap J (RingHom.id B) h)) ≫ y = y := by
@@ -30,6 +36,9 @@ theorem spec_qid {B : Type} [CommRing B] (J : Ideal B) (h : J ≤ J.comap (RingH
   rw [e]
   simp
 
+/- English proof (translation)
+Establish `h` using `T.hs`. Rewrite `h` using `[Finset.prod_of_isEmpty, ht, map_one, mul_one]`. Conclude with `Units.ext h.symm`.
+-/
 theorem s_one {b : Base} {L : b.Fun} (hι : IsEmpty L.ι) (ht : b.t = 1) (T : Thick L) : T.s = 1 := by
   have h := T.hs
   rw [Finset.prod_of_isEmpty, ht, map_one, mul_one] at h
@@ -81,6 +90,9 @@ end LevelChangeComparison
 
 end
 
+/- English proof (translation)
+Establish `e₁` using `CrystallineSemistableComparison.pull_pull L.ι (smB M s' hL hQ').o (incl (ts_le L.γB M.q 1 h {⊤})).o j z`. Establish `e₂` using `CrystallineSemistableComparison.pull_pull L.ι (incl (ts_le L.γ M.p l h {⊤})).o (smB M s hL hQ).o j z`. Conclude with `e₁.trans (Eq.trans rfl e₂.symm)`.
+-/
 theorem bMap_incl {m : ℕ} {L : Lev (per l K) m} (hL : L.Good) (M : Model l K) {s s' : ℕ} (h : s ≤ s')
     (hQ : ∀ T, QB L M s T → QA L M s (((nmB M hL).mor 0).obj T))
     (hQ' : ∀ T, QB L M s' T → QA L M s' (((nmB M hL).mor 0).obj T)) (j : ℕ) (z : HO (QA L M s') j) :

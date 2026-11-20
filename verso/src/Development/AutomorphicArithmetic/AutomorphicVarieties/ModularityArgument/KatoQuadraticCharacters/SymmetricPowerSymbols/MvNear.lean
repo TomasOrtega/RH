@@ -5,6 +5,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open scoped MatrixGroups Matrix
 open GlobalTheory.KZ GlobalTheory.K4 UpperTheory.V.Z.Kato.Sym
 
+/- English proof (translation)
+Rewrite using `[Polynomial.aeval_eq_sum_range, Polynomial.aeval_eq_sum_range, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul, map_pow, hσ]`. Distinguish the cases in `h : p.coeff i = 0`. Simplify using `[h]`.
+
+Rewrite using `[hp _ (Polynomial.coeff_mem_coeffs h)]`.
+-/
 private theorem semi_aeval {K L : Type} [Field K] [Field L] [Algebra K L] (σ : RingAut L) (τ : K ≃+* K)
     (hσ : ∀ f, σ (algebraMap K L f) = algebraMap K L (τ f)) (p : Polynomial K) (hp : ∀ c ∈ p.coeffs, τ c = c) (x : L) :
     σ (Polynomial.aeval x p) = Polynomial.aeval (σ x) p := by
@@ -15,6 +20,21 @@ private theorem semi_aeval {K L : Type} [Field K] [Field L] [Algebra K L] (σ : 
   · simp [h]
   · rw [hp _ (Polynomial.coeff_mem_coeffs h)]
 
+/- English proof (translation)
+Use `set E := IntermediateField.adjoin K (B : Set (AlgebraicClosure K)) with hE`. Use `haveI : FiniteDimensional K E := IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x`. Take `⟨α, hα⟩` from `Field.exists_primitive_element K E`. Establish `hβ : IntermediateField.adjoin K {(α : AlgebraicClosure K)} = E`. Use `congrArg (IntermediateField.map E.val) hα` as an intermediate fact.
+
+Rewrite `this` using `[IntermediateField.adjoin_map]`. Simplify `this` using `[← AlgHom.fieldRange_eq_map]`. Generalize the expression as in `(α : AlgebraicClosure K) = β at hβ`. Establish `hi : IsIntegral K β` using `Algebra.IsIntegral.isIntegral β`. Establish `hp : ∀ b : AlgebraicClosure K, ∃ p : Polynomial K, b ∈ B → Polynomial.aeval β p = b`.
+
+Introduce `b`. Distinguish the cases in `hb : b ∈ B`. Establish `h1 : b ∈ IntermediateField.adjoin K {β}`. Rewrite using `[hβ]`. Conclude with `IntermediateField.subset_adjoin _ _ hb`.
+
+Establish `h2 : b ∈ (IntermediateField.adjoin K {β}).toSubalgebra` using `h1`. Rewrite `h2` using `[IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic hi.isAlgebraic, Algebra.adjoin_singleton_eq_range_aeval]`. Take `⟨p, hp⟩` from `h2`. Conclude with `⟨p, fun _ => hp⟩`. Conclude with `⟨0, fun h => absurd h hb⟩`.
+
+Use `choose p hp using hp`. Use `⟨(minpoly K β).coeffs ∪ B.biUnion fun b => (p b).coeffs, fun τ σ₀ h0 hS => ?_⟩` and prove the remaining obligations. Establish `hr : Polynomial.aeval (σ₀ β) (minpoly K β) = 0`. Rewrite using `[← semi_aeval σ₀ τ h0 _ fun c hc => hS c (Finset.mem_union_left _ hc), minpoly.aeval, map_zero]`. Take `⟨g, hg⟩` from `minpoly.exists_algEquiv_of_root hi.isAlgebraic hr`.
+
+Establish `hl : ∀ f, (σ₀.trans g.toRingEquiv) (algebraMap K _ f) = algebraMap K _ (τ f)` using `fun f => by`. Rewrite using `[RingEquiv.trans_apply, h0]`. Conclude with `g.commutes _`. Use `⟨σ₀.trans g.toRingEquiv, hl, fun b hb => ?_⟩` and prove the remaining obligations. Use `semi_aeval _ τ hl (p b) (fun c hc => hS c (Finset.mem_union_right _ (Finset.mem_biUnion.2 ⟨b, hb, hc⟩))) β` as an intermediate fact.
+
+Rewrite `this` using `[hp b hb]`. Rewrite using `[this]`. Establish `e : (σ₀.trans g.toRingEquiv) β = β` using `hg`. Rewrite using `[e, hp b hb]`.
+-/
 private theorem fix_lift {K : Type} [Field K] [CharZero K] (B : Finset (AlgebraicClosure K)) :
     ∃ S : Finset K, ∀ (τ : K ≃+* K) (σ₀ : RingAut (AlgebraicClosure K)),
       (∀ f, σ₀ (algebraMap K _ f) = algebraMap K _ (τ f)) → (∀ f ∈ S, τ f = f) →
@@ -54,6 +74,23 @@ private theorem fix_lift {K : Type} [Field K] [CharZero K] (B : Finset (Algebrai
   have e : (σ₀.trans g.toRingEquiv) β = β := hg
   rw [e, hp b hb]
 
+/- English proof (translation)
+Introduce `Ω _ _ _ ε X m hm u v P hP`. Use `haveI : CharZero Ω := algebraRat.charZero Ω`. Use `haveI : CharZero X.K := charZero_of_injective_algebraMap (algebraMap Ω X.K).injective`. Take `⟨hz, -, l3, -, -, l6, -⟩` from `lgB Ω ε X m hm`. Take `⟨B, hB⟩` from `hP.lc`.
+
+Take `⟨S, hS⟩` from `fix_lift (K := X.K) ({P.a, P.b, zt X m} ∪ B.biUnion fun b => ((minpoly X.K b).aroots (Kb X)).toFinset)`. Use `⟨S, fun τ s hτ hfix => ?_⟩` and prove the remaining obligations. Take `⟨σ₀, h0⟩` from `(admB Ω ε X).2.2.2.2.2.2.1 τ`. Take `⟨σ, hσ, hb⟩` from `hS τ σ₀ h0 hfix`. Establish `ea : σ P.a = P.a` using `hb _ (by simp)`.
+
+Establish `eb : σ P.b = P.b` using `hb _ (by simp)`. Establish `ez : σ (zt X m) = zt X m` using `hb _ (by simp)`. Establish `ec : ∀ h, InD X h → ∀ b ∈ B, σ (h b) = h b`. Introduce `h hh b hbB`. Use `hb _ (Finset.mem_union_right _ (Finset.mem_biUnion.2 ⟨b, hbB, ?_⟩))` and prove the remaining obligations.
+
+Rewrite using `[Multiset.mem_toFinset, Polynomial.mem_aroots]`. Use `⟨minpoly.ne_zero (Algebra.IsIntegral.isIntegral b), ?_⟩` and prove the remaining obligations. Rewrite using `[← semi_aeval h (RingEquiv.refl _) hh _ (fun _ _ => rfl), minpoly.aeval, map_zero]`. Establish `l0 : ∀ b : Kb X, b ≠ 0 → lg X m b b = 0` using `fun b h => l3 b b 0 h (by simp)`. Establish `hc : cyc m s = 1`.
+
+Establish `h1` using `l3 (zt X m ^ (1 : ZMod m).val) 1 1 one_ne_zero (by simp)`. Establish `h2` using `l6 σ τ s hτ hσ (zt X m ^ (1 : ZMod m).val) 1 one_ne_zero (by rw [← pow_mul, mul_comm, pow_mul, hz.pow_eq_one, one_pow, one_pow])`. Rewrite `h2` using `[map_pow, ez, map_one, h1, mul_one]`. Conclude with `h2.symm`. Establish `a0 : P.a ≠ 0` using `fun h => hP.hu.1 ((io X).injective (by rw [← hP.ha, h, zero_pow hm.ne', map_zero]))`.
+
+Establish `b0 : P.b ≠ 0` using `fun h => hP.hv.1 ((io X).injective (by rw [← hP.hb, h, zero_pow hm.ne', map_zero]))`. Use `⟨σ, hσ, 1, by simp, fun h hh => ?_⟩` and prove the remaining obligations. Establish `inv : ∀ x, σ⁻¹ (σ x) = x` using `fun x => σ.symm_apply_apply x`. Establish `e : P.η (σ⁻¹ * h * σ) = P.η h`. Use `hB _ _ (fun f => ?_) hh fun b hbB => ?_` and prove the remaining obligations.
+
+Use `show σ⁻¹ (h (σ (io X f))) = io X f`. Rewrite using `[hσ, hh, ← hσ, inv]`. Use `show σ⁻¹ (h (σ b)) = h b`. Establish `: σ b = b` using `ec 1 (fun _ => rfl) b hbB`. Rewrite using `[this, ← ec h hh b hbB, inv, ec h hh b hbB]`.
+
+Simplify using `only [dif, Pt.mv, ka, hc, ea, eb, e, l0 _ a0, l0 _ b0, map_one, l0 1 one_ne_zero]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.V.Z.Kato.Sym.mvNear :
     UpperTheory.V.Z.Kato.Sym.MvNear := by
   classical

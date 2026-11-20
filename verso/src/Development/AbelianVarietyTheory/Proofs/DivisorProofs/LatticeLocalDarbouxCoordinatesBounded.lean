@@ -14,6 +14,15 @@ set_option maxHeartbeats 1000000
 
 namespace GlobalTheory.LatVacBdd
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `insert b S hb ih`. Take `⟨c, hc0, hc⟩` from `ih`. Distinguish the cases in `hcb : c * b ∈ v.adicCompletionIntegers F`.
+
+Use `⟨c, hc0, ?_⟩` and prove the remaining obligations. Introduce `a ha`. Break down `Finset.mem_insert.1 ha with rfl | ha` into its components or cases. Conclude with `hcb`. Conclude with `hc a ha`.
+
+Establish `hinv : (c * b)⁻¹ ∈ v.adicCompletionIntegers F` using `((v.adicCompletionIntegers F).mem_or_inv_mem (c * b)).resolve_left hcb`. Establish `hcb0 : c * b ≠ 0` using `fun h => hcb (h ▸ zero_mem _)`. Use `⟨c * (c * b)⁻¹, mul_ne_zero hc0 (inv_ne_zero hcb0), ?_⟩` and prove the remaining obligations. Introduce `a ha`. Break down `Finset.mem_insert.1 ha with rfl | ha` into its components or cases.
+
+Rewrite using `[mul_assoc, mul_comm _ a, ← mul_assoc, mul_inv_cancel₀ hcb0]`. Conclude with `one_mem _`. Rewrite using `[mul_comm c, mul_assoc]`. Conclude with `mul_mem hinv (hc a ha)`.
+-/
 theorem exists_ne_zero_mul_mem {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
     (S : Finset (v.adicCompletion F)) :
     ∃ c : v.adicCompletion F, c ≠ 0 ∧ ∀ a ∈ S, c * a ∈ v.adicCompletionIntegers F := by
@@ -39,6 +48,31 @@ theorem exists_ne_zero_mul_mem {F : Type} [Field F] [NumberField F] (v : HeightO
 
 end GlobalTheory.LatVacBdd
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v`. Use `choose yf zf hyz using hT.geo.hM.rat`. Take `⟨sX, hsX⟩` from `hT.geo.hV.lat.fg.restrictScalars (R := ℤ)`. Take `⟨sY, hsY⟩` from `hT.geo.hW.lat.fg.restrictScalars (R := ℤ)`. Set `f : (Fin a → E) →ₗ[ℤ] (Fin (a + a') → E) →ₗ[ℤ] Matrix (Fin a) (Fin (a + a')) E` to `LinearMap.mk₂ ℤ (fun x y => Matrix.vecMulVec x y) (fun x x' y => by ext i j; simp [Matrix.vecMulVec_apply, add_mul]) (fun c x y => by ext i j; simp [Matrix.vecMulVec_apply, mul_assoc]) (fun x y y' => by ext i j; simp [Matrix.vecMulVec_apply, mul_add]) (fun c x y => by ext i j; si …`.
+
+Set `T₀ : Finset (Matrix (Fin a) (Fin (a + a')) E)` to `Finset.image₂ (fun x y => f x y) sX sY`. Establish `hmem : ∀ x ∈ G.V.L, ∀ y ∈ G.W.L, Matrix.vecMulVec x y ∈ Submodule.span ℤ (T₀ : Set _)`. Introduce `x hx y hy`. Establish `hx' : x ∈ Submodule.span ℤ (sX : Set (Fin a → E))`. Rewrite using `[hsX]`.
+
+Conclude with `hx`. Establish `hy' : y ∈ Submodule.span ℤ (sY : Set (Fin (a + a') → E))`. Rewrite using `[hsY]`. Conclude with `hy`. Use `Submodule.apply_mem_map₂ f hx' hy'` as an intermediate fact.
+
+Rewrite `this` using `[Submodule.map₂_span_span]`. Rewrite using `[Finset.coe_image₂]`. Conclude with `this`. Establish `hgen : latAtV G.V G.W v ≤ AddSubgroup.closure {z | ∃ b : AF F, At (evFin F v) b ∧ evFin F v b ∈ v.adicCompletionIntegers F ∧ ∃ t ∈ T₀, z = b • incM F t}`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `z ⟨b, hb, hbv, x, hx, y, hy, rfl⟩`. Set `g : Matrix (Fin a) (Fin (a + a')) E →+ Matrix (Fin a) (Fin (a + a')) (AE F E)` to `(DistribSMul.toAddMonoidHom _ b).comp (AddMonoidHom.mapMatrix (inclR (F := F) (E := E) (AF F)).toAddMonoidHom)`. Establish `h1 : Matrix.vecMulVec x y ∈ AddSubgroup.closure (T₀ : Set _)`. Rewrite using `[← Submodule.span_int_eq_addSubgroupClosure]`. Conclude with `hmem x hx y hy`.
+
+Establish `h2 : g (Matrix.vecMulVec x y) ∈ (AddSubgroup.closure (T₀ : Set _)).map g` using `AddSubgroup.mem_map_of_mem g h1`. Rewrite `h2` using `[AddMonoidHom.map_closure]`. Use `AddSubgroup.closure_mono ?_ h2` and prove the remaining obligations. Introduce and unpack `_ ⟨t, ht, rfl⟩`. Conclude with `⟨b, hb, hbv, t, ht, rfl⟩`.
+
+Set `S : Finset (Fv F v)` to `(T₀ ×ˢ (Finset.univ : Finset (Fin a × Fin (a + a')))).image (fun p => algebraMap F (Fv F v) (yf p.1 p.2)) ∪ (T₀ ×ˢ (Finset.univ : Finset (Fin a × Fin (a + a')))).image (fun p => algebraMap F (Fv F v) (zf p.1 p.2))`. Take `⟨c, hc0, hc⟩` from `GlobalTheory.LatVacBdd.exists_ne_zero_mul_mem v S`. Establish `hcy : ∀ t ∈ T₀, ∀ k, c * algebraMap F (Fv F v) (yf t k) ∈ v.adicCompletionIntegers F` using `fun t ht k => hc _ (Finset.mem_union_left _ (Finset.mem_image.2 ⟨(t, k), Finset.mem_product.2 ⟨ht, Finset.mem_univ _⟩, rfl⟩))`. Establish `hcz : ∀ t ∈ T₀, ∀ k, c * algebraMap F (Fv F v) (zf t k) ∈ v.adicCompletionIntegers F` using `fun t ht k => hc _ (Finset.mem_union_right _ (Finset.mem_image.2 ⟨(t, k), Finset.mem_product.2 ⟨ht, Finset.mem_univ _⟩, rfl⟩))`. Establish `hev : ∀ y : F, evFin F v (algebraMap F (AF F) y) = algebraMap F (Fv F v) y` using `fun y => AlgHom.commutes _ _`.
+
+Use `⟨c, hc0, fun γ hγ => ?_⟩` and prove the remaining obligations. Use `clear_value T₀`. Use `revert hγ`. Introduce `hγ`. Establish `hγ'` using `hgen hγ`.
+
+Use `clear hγ`. Proceed by induction on `hγ' using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨b, -, hbv, t, ht, rfl⟩` from `hz`. Introduce `k`.
+
+Simplify using `only [GlobalTheory.LatVac.locCo, AddMonoidHom.coe_mk, ZeroHom.coe_mk, LinearEquiv.map_smul, hyz, Prod.smul_fst, Prod.smul_snd, Pi.smul_apply, smul_eq_mul, map_mul, hev]`. Conclude with `⟨by rw [mul_left_comm]; exact mul_mem hbv (hcy t ht k), by rw [mul_left_comm]; exact mul_mem hbv (hcz t ht k)⟩`. Consider the case `zero => intro k`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy`.
+
+Introduce `k`. Rewrite using `[map_add]`. Conclude with `⟨by rw [Prod.fst_add, Pi.add_apply, mul_add]; exact add_mem (hx k).1 (hy k).1, by rw [Prod.snd_add, Pi.add_apply, mul_add]; exact add_mem (hx k).2 (hy k).2⟩`. Consider the case `neg x _ hx`. Introduce `k`.
+
+Rewrite using `[map_neg]`. Conclude with `⟨by rw [Prod.fst_neg, Pi.neg_apply, mul_neg]; exact neg_mem (hx k).1, by rw [Prod.snd_neg, Pi.neg_apply, mul_neg]; exact neg_mem (hx k).2⟩`.
+-/
 theorem GlobalTheory.LatVacBdd.locCo_bounded : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ v : Pl F, ∃ c : Fv F v, c ≠ 0 ∧ ∀ γ ∈ latAtV G.V G.W v, ∀ k,

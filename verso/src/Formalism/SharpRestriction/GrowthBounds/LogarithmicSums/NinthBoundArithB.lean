@@ -4,6 +4,9 @@ noncomputable section
 
 namespace Formalism.MainNotions.AuxBlock8.Pf.G5.Nu
 
+/- English proof (translation)
+Establish `h1` using `Real.exp_one_gt_d9`. Establish `h2 : Real.exp 4 = Real.exp 1 ^ 4` using `by rw [← Real.exp_nat_mul]; norm_num`. Rewrite using `[h2]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem forty_le_exp_four : (40 : ℝ) ≤ Real.exp 4 := by
   have h1 := Real.exp_one_gt_d9
   have h2 : Real.exp 4 = Real.exp 1 ^ 4 := by rw [← Real.exp_nat_mul]; norm_num
@@ -11,6 +14,21 @@ theorem forty_le_exp_four : (40 : ℝ) ≤ Real.exp 4 := by
   calc (40 : ℝ) ≤ (27 / 10) ^ 4 := by norm_num
     _ ≤ Real.exp 1 ^ 4 := pow_le_pow_left₀ (by norm_num) (by linarith) 4
 
+/- English proof (translation)
+Establish `hw0 : 0 < w` using `by linarith`. Establish `hY0 : 0 ≤ Y` using `by linarith`. Establish `hXp0 : 0 ≤ Xpp` using `by linarith`. Establish `hb0 : 0 ≤ b` using `le_trans (by positivity) e7`. Establish `ha0 : 0 ≤ a` using `by rw [hab]; positivity`.
+
+Establish `e : (Xpp * (θ + 3 * S / w) + 2) * (lg * (θ * w + S)) = lg * ((Xpp * w) * θ ^ 2 + 2 * θ * w) + lg * ((Xpp * θ + 2) * S + 3 * S * Xpp * θ + 3 * S ^ 2 * (Xpp / w))`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, hXw]`. Establish `t1 : a * θ ^ 2 + 2 * θ * w ≤ 3 * a * θ`.
+
+Use polynomial arithmetic with `[mul_nonneg (mul_nonneg ha0 hθ0) (sub_nonneg.2 hθ1), mul_nonneg hθ0 (sub_nonneg.2 hwa)]`. Establish `t10 : 0 ≤ a * θ ^ 2 + 2 * θ * w` using `by positivity`. Establish `T1 : lg * (a * θ ^ 2 + 2 * θ * w) ≤ b / 80`. Combine the equalities or inequalities in the displayed calculation. Establish `hXw' : Xpp / w ≤ Xpp` using `div_le_self hXp0 hw1`.
+
+Establish `hXw0 : 0 ≤ Xpp / w` using `by positivity`. Establish `hYY : Y ≤ Y ^ 2` using `by nlinarith`. Establish `a0 : Xpp * θ ≤ Xpp` using `by nlinarith`. Establish `a1 : (Xpp * θ + 2) * S ≤ (3 * Xpp) * Y` using `mul_le_mul (by linarith) hSY hS0 (by linarith)`. Establish `a2 : 3 * S * Xpp * θ ≤ 3 * Y * Xpp`.
+
+Establish `h1 : 3 * S * Xpp ≤ 3 * Y * Xpp` using `by gcongr`. Establish `h2 : 3 * S * Xpp * θ ≤ 3 * S * Xpp * 1` using `mul_le_mul_of_nonneg_left hθ1 (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `a3 : 3 * S ^ 2 * (Xpp / w) ≤ 3 * Y ^ 2 * Xpp` using `by gcongr`. Establish `a4 : Y * Xpp ≤ Y ^ 2 * Xpp` using `mul_le_mul_of_nonneg_right hYY hXp0`.
+
+Establish `t2 : (Xpp * θ + 2) * S + 3 * S * Xpp * θ + 3 * S ^ 2 * (Xpp / w) ≤ 9 * Y ^ 2 * Xpp` using `by linarith`. Establish `t20 : 0 ≤ (Xpp * θ + 2) * S + 3 * S * Xpp * θ + 3 * S ^ 2 * (Xpp / w)` using `by positivity`. Establish `T2 : lg * ((Xpp * θ + 2) * S + 3 * S * Xpp * θ + 3 * S ^ 2 * (Xpp / w)) ≤ b / 80`. Establish `h3 : (1000 : ℝ) ≤ Y ^ 3`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h4 : 0 ≤ Y ^ 4 * X'` using `by positivity`. Establish `h5 : 720 * (Y ^ 4 * X') ≤ Y ^ 7 * X'`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ninth_bound_arith_b (Xpp θ lg w a x S Y X' b : ℝ) (hXw : Xpp * w = a) (hab : a = x * b) (hθ0 : 0 ≤ θ) (hθ1 : θ ≤ 1)
     (hlg0 : 0 ≤ lg) (hlg : lg ≤ 2 * x) (hlgY : lg ≤ Y) (hw1 : 1 ≤ w) (hwa : w ≤ a) (hx : 0 < x)
     (hq : 480 * x ^ 2 * θ ≤ 1) (hS0 : 0 ≤ S) (hSY : S ≤ Y) (hY : 10 ≤ Y) (hX1 : 1 ≤ Xpp) (hXY : Xpp ≤ X' * Y)

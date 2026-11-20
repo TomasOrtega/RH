@@ -23,6 +23,9 @@ namespace GlobalTheory.Core.Rk.RegKill
 
 variable {D : D7}
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons f l ih`. Rewrite using `[List.foldr_cons, ih (fun g hg => hl g (List.mem_cons_of_mem _ hg))]`. Conclude with `hl f List.mem_cons_self`.
+-/
 theorem foldr_ops_zero {X : Type} (l : List ((X → ℂ) → (X → ℂ))) (hl : ∀ f ∈ l, f 0 = 0) :
     l.foldr (fun f acc => f acc) 0 = 0 := by
   induction l with
@@ -31,6 +34,9 @@ theorem foldr_ops_zero {X : Type} (l : List ((X → ℂ) → (X → ℂ))) (hl :
     rw [List.foldr_cons, ih (fun g hg => hl g (List.mem_cons_of_mem _ hg))]
     exact hl f List.mem_cons_self
 
+/- English proof (translation)
+Unfold `opPow`. Proceed by induction on `(Multiset.toList (Finsupp.toMultiset k)) with`. Consider the case `nil => rfl`. Consider the case `cons i l ih => rw [List.foldr_cons, ih, hA]`.
+-/
 theorem opPow_zero {ι X : Type} (A : ι → (X → ℂ) → (X → ℂ)) (hA : ∀ i, A i 0 = 0) (k : ι →₀ ℕ) :
     opPow A k 0 = 0 := by
   unfold opPow
@@ -38,6 +44,15 @@ theorem opPow_zero {ι X : Type} (A : ι → (X → ℂ) → (X → ℂ)) (hA : 
   | nil => rfl
   | cons i l ih => rw [List.foldr_cons, ih, hA]
 
+/- English proof (translation)
+Establish `hR : ∀ Z, RderC θ T τ Z (0 : GA D T → ℂ) = 0`. Introduce `Z`. Use function extensionality and compare the values at `g`. Simplify using `[RderC, Rder]`. Establish `hg : ∀ k, gelf θ T τ k (0 : GA D T → ℂ) = 0`.
+
+Introduce `k`. Use function extensionality and compare the values at `g`. Simplify using `only [gelf]`. Rewrite using `[Finset.sum_apply]`. Use `Finset.sum_eq_zero fun idx _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[foldr_ops_zero]`. Both sides reduce to the same expression. Introduce `f hf`. Take `⟨a, rfl⟩` from `List.mem_ofFn.1 hf`. Conclude with `hR _`.
+
+Unfold `centreAct polyAct`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[opPow_zero _ hg, smul_zero]`.
+-/
 theorem centreAct_zero (θ : InfFam D) (τ : D.what₂.Tau) (T : HSp D) (p : MvPolynomial ℕ ℂ) :
     centreAct θ τ T p (0 : GA D T → ℂ) = 0 := by
   have hR : ∀ Z, RderC θ T τ Z (0 : GA D T → ℂ) = 0 := by
@@ -59,18 +74,27 @@ theorem centreAct_zero (θ : InfFam D) (τ : D.what₂.Tau) (T : HSp D) (p : MvP
   refine Finset.sum_eq_zero fun k _ => ?_
   rw [opPow_zero _ hg, smul_zero]
 
+/- English proof (translation)
+The claim follows from `CoeffAt.laurent_eq ⟨_, isExtAt_const 0 s₀, laurentConst_of_tendsto (by simpa using tendsto_const_nhds)⟩`.
+-/
 theorem laurent_zero (s₀ : ℂ) (n : ℤ) : laurent (fun _ : ℂ => (0 : ℂ)) s₀ n = 0 :=
   CoeffAt.laurent_eq ⟨_, isExtAt_const 0 s₀, laurentConst_of_tendsto (by simpa using tendsto_const_nhds)⟩
 
 section
 variable {S T : HSp D} (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ))
 
+/- English proof (translation)
+Unfold `thetaKO`. Apply the tactic sequence `have e : (((1 : GA D S), h) : GA D S × GA D T) * (g, 1) = (g, h) := by ext <;> simp`. Rewrite using `[← Module.End.mul_apply, ← map_mul, e]`.
+-/
 theorem thetaKO_one_om (g : GA D S) (h : GA D T) (f : WO S T → ℂ) :
     thetaKO om 1 h (om (g, 1) f) = thetaKO om g h f := by
   unfold thetaKO
   have e : (((1 : GA D S), h) : GA D S × GA D T) * (g, 1) = (g, h) := by ext <;> simp
   rw [← Module.End.mul_apply, ← map_mul, e]
 
+/- English proof (translation)
+Unfold `thetaKO`. Apply the tactic sequence `have e : ((γ * g, h) : GA D S × GA D T) = (γ, 1) * (g, h) := by ext <;> simp`. Rewrite using `[e, map_mul, Module.End.mul_apply]`. Conclude with `hω.om_aut γ hγ 1 (one_mem _) _ (hω.om_pres _ _ hf)`.
+-/
 theorem thetaKO_rat {ψ : AddChar (AF D.host.F) ℂ} {χS χT : (AE D)ˣ →* Circle} (hω : IsWeilDatumO ψ S T χS χT om)
     {γ : GA D S} (hγ : γ ∈ GQ S) (g : GA D S) (h : GA D T) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
     thetaKO om (γ * g) h f = thetaKO om g h f := by
@@ -81,6 +105,31 @@ theorem thetaKO_rat {ψ : AddChar (AF D.host.F) ℂ} {χS χT : (AE D)ˣ →* Ci
 
 end
 
+/- English proof (translation)
+Introduce `D ψ θ A cA a hDef W W₀ r' d₀ b' χ omh hW m mW hm hmW u hu hinv hK hAux τ zH P hP hReg φ hφ hfin`. Take `⟨φ', hφ', hcol⟩` from `GlobalTheory.T.theta_kernel_exists_for_continuous D ψ θ A cA a hDef W χ omh hW φ hφ hfin m hm u hu hinv`. Establish `hZ` using `GlobalTheory.T.omega_centre_linear D ψ θ (dblSp A) W 1 χ omh hDef.inf hW τ zH`. Establish `hzero : ∀ h, thetaKO omh 1 h φ' = 0`. Introduce `h`.
+
+Establish `e` using `hcol (fun f => thetaKO omh 1 h f) (fun f f' _ _ => by simp [thetaKO, map_add]) (fun c f _ => by simp [thetaKO, map_smul]) (fun γ hγ g => by`. Simplify using `only [thetaKO_one_om]`. Conclude with `thetaKO_rat omh hW hγ g h hφ)`. Rewrite using `[← e]`. Simplify using `only [thetaKO_one_om]`.
+
+Conclude with `hK φ hφ h`. Establish `hshift : ∀ f, IsThetaFunO ψ (dblSp A) W f → ∀ g, regRes omh mW θ τ d₀ b' zH P (omh (g, 1) f) 1 = regRes omh mW θ τ d₀ b' zH P f g`. Introduce `f hf g`. Establish `hf1` using `hW.om_pres (g, 1) f hf`. Unfold `regRes`.
+
+Use `congr 1`. Use function extensionality and compare the values at `s`. Unfold `regInt thetaPair`. Use `congr 2`. Use function extensionality and compare the values at `q`.
+
+Unfold `AutomorphicL2Unitary.descend`. Use `beta_reduce`. Use `congr 1`. Rewrite using `[hZ.2.2 _ hf1, hZ.2.2 _ hf]`. Simplify using `only [thetaKO_one_om]`.
+
+Establish `hrat : ∀ f, IsThetaFunO ψ (dblSp A) W f → ∀ γ ∈ GQ (dblSp A), ∀ g, regRes omh mW θ τ d₀ b' zH P f (γ * g) = regRes omh mW θ τ d₀ b' zH P f g`. Introduce `f hf γ hγ g`. Establish `hF` using `(hReg f hf).1`. Unfold `regRes`. Use `congr 1`.
+
+Use function extensionality and compare the values at `s`. Unfold `regInt thetaPair`. Use `congr 2`. Use function extensionality and compare the values at `q`. Unfold `AutomorphicL2Unitary.descend`.
+
+Use `beta_reduce`. Rewrite using `[thetaKO_rat omh hW hγ g _ hF]`. Establish `hlin` using `GlobalTheory.T.regularised_integral_linear_properties D ψ θ (dblSp A) W W₀ r' d₀ b' 1 χ omh hDef.inf hW mW hAux τ zH P hReg`. Establish `e` using `hcol (fun f => regRes omh mW θ τ d₀ b' zH P f 1) (fun f f' hf hf' => hlin.1 f f' hf hf' 1) (fun c f hf => hlin.2 c f hf 1) (fun γ hγ g => by`. Rewrite using `[hshift _ hφ, hshift _ hφ, hrat _ hφ γ hγ])`.
+
+Establish `hfun : (fun g => regRes omh mW θ τ d₀ b' zH P (omh (g, 1) φ) 1) = regRes omh mW θ τ d₀ b' zH P φ`. Use function extensionality and compare the values at `(hshift φ hφ)`. Rewrite `e` using `[hfun]`. Rewrite using `[e]`. Establish `hI : regInt omh mW θ τ d₀ b' zH P φ' 1 = fun _ => 0`.
+
+Use function extensionality and compare the values at `s`. Unfold `regInt thetaPair`. Establish `hint : (fun h => thetaKO omh 1 h (omCentreT omh θ τ zH φ') * sphericalEisenstein d₀ b' h s) = fun _ => (0 : ℂ)`. Use function extensionality and compare the values at `h`. Rewrite using `[hZ.2.2 _ hφ']`.
+
+Establish `h0 : (fun h' => thetaKO omh 1 h' φ') = (0 : GA D W → ℂ)` using `funext hzero`. Rewrite using `[h0, centreAct_zero]`. Simplify using the standard rewrite rules. Rewrite using `[hint]`. Simplify using `[AutomorphicL2Unitary.descend]`.
+
+Use `show laurent (regInt omh mW θ τ d₀ b' zH P φ' 1) (rhoH W r') (-1) = 0`. Rewrite using `[hI]`. Conclude with `laurent_zero _ _`.
+-/
 theorem dblInt_regRes_eq_zero : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (A : HSp D) (cA : CptF A) (a : GL (Fin A.rank) (AE D)), Defin θ A cA a → ∀ (W W₀ : HSp D) (r' : ℕ) (d₀ : HypDec W W₀ r') (b' : GL (Fin W.rank) (AE D)) (χ : (AE D)ˣ →* Circle) (omh : WRep (dblSp A) W), IsWeilDatumO ψ (dblSp A) W 1 χ omh → ∀ (m : Measure (GA D A)) (mW : Measure (GA D W)), m.IsHaarMeasure → mW.IsHaarMeasure → ∀ u : GA D A → ℂ, Continuous u → (∀ γ ∈ GQ A, ∀ g, u (γ * g) = u g) → Kills ψ χ omh m u → EisensteinContinues d₀ b' → ∀ (τ : D.what₂.Tau) (zH : MvPolynomial ℕ ℂ) (P : Polynomial ℂ), P ≠ 0 → (∀ φ', IsThetaFunO ψ (dblSp A) W φ' → RegIntProps ψ omh mW θ τ d₀ b' zH P φ') → ∀ φ, IsThetaFunO ψ (dblSp A) W φ → IsKFinVec omh (Khat A a) φ → GlobalTheory.Eis.dblInt A χ⁻¹ m (regRes omh mW θ τ d₀ b' zH P φ) (fun g => conj (u g)) (fun g => conj (u g)) = 0 := by
   intro D ψ θ A cA a hDef W W₀ r' d₀ b' χ omh hW m mW hm hmW u hu hinv hK hAux τ zH P hP hReg φ hφ hfin
   obtain ⟨φ', hφ', hcol⟩ := GlobalTheory.T.theta_kernel_exists_for_continuous D ψ θ A cA a hDef W χ omh hW φ hφ hfin m hm u hu hinv

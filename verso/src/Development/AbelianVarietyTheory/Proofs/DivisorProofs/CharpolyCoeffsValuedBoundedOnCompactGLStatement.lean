@@ -6,5 +6,8 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CharpolyBound.bound | exact GlobalTheory.CharpolyBound.bound | (intros; apply GlobalTheory.CharpolyBound.bound <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.charpoly_coeffs_valued_bounded_on_compact_GL : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (w : Pl E) (C : Set (GLw n w)), IsCompact C → ∃ B : WithZero (Multiplicative ℤ), ∀ g ∈ C, (∀ k, Valued.v (g.val.charpoly.coeff k) ≤ B) ∧ Valued.v ((g.val.charpoly.coeff 0)⁻¹) ≤ B := by
   first | exact @GlobalTheory.CharpolyBound.bound | exact GlobalTheory.CharpolyBound.bound | (intros; apply GlobalTheory.CharpolyBound.bound <;> assumption)

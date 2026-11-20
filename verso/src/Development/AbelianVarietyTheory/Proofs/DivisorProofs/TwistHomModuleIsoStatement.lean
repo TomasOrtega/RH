@@ -11,5 +11,8 @@ open GlobalTheory.VB
 open GlobalTheory.IndefiniteRowSideFullHecke.GenericFiniteMaps
 open GlobalTheory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TwistHomMod.nonempty_iso | exact GlobalTheory.TwistHomMod.nonempty_iso | (intros; apply GlobalTheory.TwistHomMod.nonempty_iso <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.twist_hom_module_iso : ∀ (Y : Scheme.{0}) (F G : Y.Modules) (M : LB Y), Nonempty (twist (homMod F G) M ≅ homMod F (twist G M)) := by
   first | exact @GlobalTheory.TwistHomMod.nonempty_iso | exact GlobalTheory.TwistHomMod.nonempty_iso | (intros; apply GlobalTheory.TwistHomMod.nonempty_iso <;> assumption)

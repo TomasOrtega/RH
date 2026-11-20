@@ -14,9 +14,17 @@ namespace IntegerTail
 
 private def w (m : ℕ) : ℝ := Real.log m / (m : ℝ) ^ 2
 
+/- English proof (translation)
+The claim follows from `div_nonneg (Real.log_natCast_nonneg m) (by positivity)`.
+-/
 private theorem w_nonneg (m : ℕ) : 0 ≤ w m :=
   div_nonneg (Real.log_natCast_nonneg m) (by positivity)
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih`. Rewrite using `[show c + (j + 1) = (c + j) + 1 by omega, Finset.sum_Ioc_succ_top (by omega)]`. Establish `hk` using `log_div_sq_le_phiT_sub ((c + j : ℕ) : ℝ) (by exact_mod_cast (show 3 ≤ c + j by omega))`.
+
+Establish `e : ((c + j + 1 : ℕ) : ℝ) = ((c + j : ℕ) : ℝ) + 1` using `by push_cast; ring`. Unfold `w`. Rewrite using `[e]`. Unfold `w at ih`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem sum_Ioc_le (c : ℕ) (hc : 3 ≤ c) (j : ℕ) :
     ∑ m ∈ Ioc c (c + j), w m ≤ phiT (c : ℝ) - phiT ((c + j : ℕ) : ℝ) := by
   induction j with
@@ -31,6 +39,9 @@ private theorem sum_Ioc_le (c : ℕ) (hc : 3 ≤ c) (j : ℕ) :
     unfold w at ih
     linarith
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_Ioc_consecutive _ hac (Nat.le_add_right c K)]`. Establish `h1` using `sum_Ioc_le c hc K`. Establish `h2` using `phiT_nonneg (t := ((c + K : ℕ) : ℝ)) (by exact_mod_cast (show 1 ≤ c + K by omega))`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem sum_Ioc_le' (a c : ℕ) (hac : a ≤ c) (hc : 3 ≤ c) (K : ℕ) :
     ∑ m ∈ Ioc a (c + K), w m ≤ ∑ m ∈ Ioc a c, w m + phiT (c : ℝ) := by
   rw [← Finset.sum_Ioc_consecutive _ hac (Nat.le_add_right c K)]
@@ -38,6 +49,11 @@ private theorem sum_Ioc_le' (a c : ℕ) (hac : a ≤ c) (hc : 3 ≤ c) (K : ℕ)
   have h2 := phiT_nonneg (t := ((c + K : ℕ) : ℝ)) (by exact_mod_cast (show 1 ≤ c + K by omega))
   linarith
 
+/- English proof (translation)
+Establish `hB : 0 < B` using `by linarith`. Establish `hl` using `Real.one_sub_inv_le_log_of_pos hB`. Establish `hBl : B - 1 ≤ B * Real.log B`. Establish `: B * (1 - B⁻¹) = B - 1` using `by field_simp`. Use the polynomial consequences of the given equalities and inequalities.
+
+Rewrite using `[le_div_iff₀ hB]`. Use polynomial arithmetic with `[mul_nonneg (show 0 ≤ 3 - B by linarith) (show 0 ≤ 10 * B - 6 by linarith)]`.
+-/
 private theorem ten_ninths_le (B : ℝ) (h1 : 1 ≤ B) (h3 : B ≤ 3) :
     10 / 9 ≤ 2 * (1 + Real.log B) / B := by
   have hB : 0 < B := by linarith
@@ -48,6 +64,13 @@ private theorem ten_ninths_le (B : ℝ) (h1 : 1 ≤ B) (h3 : B ≤ 3) :
   rw [le_div_iff₀ hB]
   nlinarith [mul_nonneg (show 0 ≤ 3 - B by linarith) (show 0 ≤ 10 * B - 6 by linarith)]
 
+/- English proof (translation)
+Establish `h2` using `Real.log_two_lt_d9`. Establish `h34` using `Real.log_le_sub_one_of_pos (show (0 : ℝ) < 3 / 4 by norm_num)`. Establish `h3 : Real.log 3 ≤ 2 * Real.log 2 - 1 / 4`. Establish `: Real.log (3 / 4) = Real.log 3 - 2 * Real.log 2`. Rewrite using `[Real.log_div (by norm_num) (by norm_num), show (4 : ℝ) = 2 ^ 2 by norm_num, Real.log_pow]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `w phiT`. Use `push_cast`.
+
+Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem head_le : w 2 + w 3 + phiT (3 : ℝ) ≤ 10 / 9 := by
   have h2 := Real.log_two_lt_d9
   have h34 := Real.log_le_sub_one_of_pos (show (0 : ℝ) < 3 / 4 by norm_num)
@@ -62,6 +85,25 @@ private theorem head_le : w 2 + w 3 + phiT (3 : ℝ) ≤ 10 / 9 := by
   norm_num
   linarith
 
+/- English proof (translation)
+Use `set n := ⌊B⌋₊ with hn`. Establish `hB0 : 0 < B` using `by linarith`. Establish `hnle : (n : ℝ) ≤ B` using `Nat.floor_le hB0.le`. Establish `hnlt : B < (n : ℝ) + 1` using `Nat.lt_floor_add_one B`. Establish `hn1 : 1 ≤ n` using `Nat.le_floor (by exact_mod_cast hB)`.
+
+Establish `hsub : ∀ c, n ≤ c → ∑ m ∈ range K, intWeight B m ≤ ∑ m ∈ Ioc n (c + K), w m`. Introduce `c hc`. Establish `: ∑ m ∈ range K, intWeight B m = ∑ m ∈ (range K).filter (fun m : ℕ => B < m), w m`. Rewrite using `[Finset.sum_filter]`. Both sides reduce to the same expression.
+
+Rewrite using `[this]`. Apply `Finset.sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises. Introduce `m hm`. Rewrite `hm` using `[Finset.mem_filter, Finset.mem_range]`. Rewrite using `[Finset.mem_Ioc]`.
+
+Establish `: (n : ℝ) < m` using `lt_of_le_of_lt hnle hm.2`. Prove the components needed by the constructor for the conclusion. Conclude with `this` after adjusting the coercions. Use linear arithmetic over natural numbers and integers. Introduce `m _ _`.
+
+Conclude with `w_nonneg m`. Break down `le_or_gt 3 n with h3 | h3` into its components or cases. Use `(hsub n le_rfl).trans ?_` and prove the remaining obligations. Use `(sum_Ioc_le' n n le_rfl h3 K).trans ?_` and prove the remaining obligations. Simplify using `only [Finset.Ioc_self, Finset.sum_empty, zero_add]`.
+
+Unfold `phiT`. Establish `hn1' : (1 : ℝ) ≤ n` using `by exact_mod_cast hn1`. Establish `hlog : Real.log n ≤ Real.log B` using `Real.log_le_log (by linarith) hnle`. Establish `hlogn : 0 ≤ Real.log n` using `Real.log_nonneg hn1'`. Rewrite using `[div_le_div_iff₀ (by linarith) hB0]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Use `(hsub 3 h3.le).trans ?_` and prove the remaining obligations. Establish `hIoc : ∑ m ∈ Ioc n (3 + K), w m ≤ ∑ m ∈ Ioc 1 (3 + K), w m` using `Finset.sum_le_sum_of_subset_of_nonneg (Finset.Ioc_subset_Ioc_left hn1) (fun m _ _ => w_nonneg m)`. Use `hIoc.trans ((sum_Ioc_le' 1 3 (by norm_num) le_rfl K).trans ?_)` and prove the remaining obligations. Establish `hpair : ∑ m ∈ Ioc 1 3, w m = w 2 + w 3`.
+
+Rewrite using `[show Ioc 1 3 = {2, 3} by decide, Finset.sum_pair (by norm_num)]`. Rewrite using `[hpair]`. Establish `hB3 : B ≤ 3`. Establish `: (n : ℝ) ≤ 2` using `by exact_mod_cast (show n ≤ 2 by omega)`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Conclude with `head_le.trans (ten_ninths_le B hB hB3)`.
+-/
 private theorem partial_le (B : ℝ) (hB : 1 ≤ B) (K : ℕ) :
     ∑ m ∈ range K, intWeight B m ≤ 2 * (1 + Real.log B) / B := by
   set n := ⌊B⌋₊ with hn
@@ -110,6 +152,13 @@ private theorem partial_le (B : ℝ) (hB : 1 ≤ B) (K : ℕ) :
 
 end IntegerTail
 
+/- English proof (translation)
+Introduce `B hB`. Use `set s : Set ℕ := {m | B < m}`. Establish `hind : s.indicator (fun m : ℕ => Real.log m / (m : ℝ) ^ 2) = intWeight B`. Use function extensionality and compare the values at `m`. Distinguish the cases in `h : B < m`.
+
+Simplify using `[s, Set.indicator_of_mem, h, intWeight]`. Simplify using `[s, Set.indicator_of_notMem, h, intWeight]`. Establish `hsum : Summable (intWeight B)` using `summable_of_sum_range_le (intWeight_nonneg B) (IntegerTail.partial_le B hB)`. Establish `hsub : Summable (fun m : s => Real.log m / (m : ℝ) ^ 2)` using `(summable_subtype_iff_indicator (f := fun m : ℕ => Real.log m / (m : ℝ) ^ 2) (s := s)).mpr (by rw [hind]; exact hsum)`. Use `⟨hsub, ?_⟩` and prove the remaining obligations.
+
+Establish `: ∑' m : s, Real.log m / (m : ℝ) ^ 2 ≤ 2 * (1 + Real.log B) / B`. Rewrite using `[tsum_subtype s (fun m : ℕ => Real.log m / (m : ℝ) ^ 2), hind]`. Conclude with `Real.tsum_le_of_sum_range_le (intWeight_nonneg B) (IntegerTail.partial_le B hB)`. Conclude with `this`.
+-/
 theorem IntegerTail.intersectionNumber_baseChange : IntegerTail.Statement := by
   intro B hB
   set s : Set ℕ := {m | B < m}

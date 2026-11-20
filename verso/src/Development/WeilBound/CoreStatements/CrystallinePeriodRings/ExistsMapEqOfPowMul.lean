@@ -11,6 +11,9 @@ open GroundTheory.PAdicHodge Formalism Formalism.BasicNotions Formalism.BasicNot
 
 section Abstract
 
+/- English proof (translation)
+Take `⟨⟨x, ⟨_, k, rfl⟩⟩, e⟩` from `IsLocalization.surj (Submonoid.powers a) y`. Use `⟨k, x, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg F e`. Rewrite `h1` using `[map_mul, h, h, map_pow]`. Rewrite using `[← h1, mul_comm]`.
+-/
 theorem away_exists {A E : Type} [CommRing A] [CommRing E] {a : A} (F : Localization.Away a →+* E)
     (f : A →+* E) (h : ∀ x, F (algebraMap A (Localization.Away a) x) = f x)
     (y : Localization.Away a) : ∃ (k : ℕ) (x : A), f x = f a ^ k * F y := by
@@ -22,6 +25,11 @@ theorem away_exists {A E : Type} [CommRing A] [CommRing E] {a : A} (F : Localiza
 
 variable {A : Type} [CommRing A] {a t : A}
 
+/- English proof (translation)
+Take `⟨⟨z, ⟨_, n, rfl⟩⟩, hz⟩` from `IsLocalization.surj (S := Localization.Away (algebraMap A (Localization.Away a) t)) (Submonoid.powers (algebraMap A (Localization.Away a) t)) x`. Take `⟨⟨y, ⟨_, m, rfl⟩⟩, hy⟩` from `IsLocalization.surj (S := Localization.Away a) (Submonoid.powers a) z`. Use `⟨m, n, y, ?_⟩` and prove the remaining obligations. Establish `h1 : x * Per6.Loc2.mk₁ a t (algebraMap A (Localization.Away a) t ^ n) = Per6.Loc2.mk₁ a t z` using `hz`. Establish `h2` using `congrArg (Per6.Loc2.mk₁ a t) hy`.
+
+Simplify using `only [map_mul, map_pow] at h1 h2`. Establish `e : ∀ w, Per6.Loc2.mk₀ a t w = Per6.Loc2.mk₁ a t (algebraMap A (Localization.Away a) w)` using `fun _ => rfl`. Rewrite using `[e, e, e, ← h2, ← h1]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem loc2_surj (x : Per6.Loc2 a t) : ∃ (m n : ℕ) (y : A),
     Per6.Loc2.mk₀ a t a ^ m * Per6.Loc2.mk₀ a t t ^ n * x = Per6.Loc2.mk₀ a t y := by
   obtain ⟨⟨z, ⟨_, n, rfl⟩⟩, hz⟩ := IsLocalization.surj
@@ -39,6 +47,11 @@ theorem loc2_surj (x : Per6.Loc2 a t) : ∃ (m n : ℕ) (y : A),
   rw [e, e, e, ← h2, ← h1]
   ring
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨m, n, y, h⟩` from `loc2_surj x`. Establish `h1` using `congrArg (Per6.Loc2.lift f ha ht) h`. Rewrite `h1` using `[map_mul, hx, mul_zero, Per6.Loc2.lift_mk₀]`.
+
+Establish `hy : y = 0` using `hf (h1.symm.trans (map_zero f).symm)`. Rewrite `h` using `[hy, map_zero]`. Conclude with `(((Per6.Loc2.isUnit_left a t).pow m).mul ((Per6.Loc2.isUnit_right a t).pow n)).mul_right_eq_zero.1 h`.
+-/
 theorem loc2_lift_injective {E : Type} [CommRing E] (f : A →+* E) (ha : IsUnit (f a))
     (ht : IsUnit (f t)) (hf : Function.Injective f) :
     Function.Injective (Per6.Loc2.lift f ha ht) := by
@@ -55,9 +68,17 @@ theorem loc2_lift_injective {E : Type} [CommRing E] (f : A →+* E) (ha : IsUnit
 def IsFrac {B : Type} [CommRing B] (f : A →+* B) (a t : A) : Prop :=
   IsUnit (f a) ∧ IsUnit (f t) ∧ ∀ x : B, ∃ (m n : ℕ) (y : A), f a ^ m * f t ^ n * x = f y
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Per6.Loc2.isUnit_left a t, Per6.Loc2.isUnit_right a t, loc2_surj⟩`.
+-/
 theorem loc2_isFrac : IsFrac (Per6.Loc2.mk₀ a t) a t :=
   ⟨Per6.Loc2.isUnit_left a t, Per6.Loc2.isUnit_right a t, loc2_surj⟩
 
+/- English proof (translation)
+Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Take `⟨m, n, y, hy⟩` from `hf.2.2 x`. Establish `h1` using `congrArg g hy`. Establish `h2` using `congrArg h hy`. Simplify using `only [map_mul, map_pow] at h1 h2`.
+
+Rewrite `h2` using `[← e, ← e, ← e, ← h1]`. Conclude with `(((hf.1.map g).pow m).mul ((hf.2.1.map g).pow n)).mul_left_cancel h2.symm`.
+-/
 theorem IsFrac.hom_ext {B E : Type} [CommRing B] [Semiring E] {f : A →+* B} (hf : IsFrac f a t)
     {g h : B →+* E} (e : ∀ x, g (f x) = h (f x)) : g = h := by
   refine RingHom.ext fun x => ?_
@@ -71,10 +92,16 @@ theorem IsFrac.hom_ext {B E : Type} [CommRing B] [Semiring E] {f : A →+* B} (h
 def liftF {E : Type} [Field E] (f : A →+* E) (ha : f a ≠ 0) (ht : f t ≠ 0) : Per6.Loc2 a t →+* E :=
   Per6.Loc2.lift f (isUnit_iff_ne_zero.2 ha) (isUnit_iff_ne_zero.2 ht)
 
+/- English proof (translation)
+The claim follows from `RingHom.ext (Per6.Loc2.lift_mk₀ f (isUnit_iff_ne_zero.2 ha) (isUnit_iff_ne_zero.2 ht))`.
+-/
 theorem liftF_comp {E : Type} [Field E] (f : A →+* E) (ha : f a ≠ 0) (ht : f t ≠ 0) :
     (liftF f ha ht).comp (Per6.Loc2.mk₀ a t) = f :=
   RingHom.ext (Per6.Loc2.lift_mk₀ f (isUnit_iff_ne_zero.2 ha) (isUnit_iff_ne_zero.2 ht))
 
+/- English proof (translation)
+The claim follows from `RingHom.ext (Per6.Loc2.map_mk₀ f ha c hc ht)`.
+-/
 theorem loc2_map_comp (f : A →+* A) (ha : f a = a) (c : A) (hc : IsUnit (Per6.Loc2.mk₀ a t c))
     (ht : f t = c * t) :
     (Per6.Loc2.map f ha c hc ht).comp (Per6.Loc2.mk₀ a t) = (Per6.Loc2.mk₀ a t).comp f :=
@@ -83,12 +110,18 @@ theorem loc2_map_comp (f : A →+* A) (ha : f a = a) (c : A) (hc : IsUnit (Per6.
 def Fac {B E : Type} [CommRing B] [Field E] (F : B →+* E) (f : A →+* B) (g : A →+* E) : Prop :=
   ∀ x, F (f x) = g x
 
+/- English proof (translation)
+The claim follows from `RingHom.congr_fun (liftF_comp f ha ht)`.
+-/
 theorem liftF_fac {E : Type} [Field E] (f : A →+* E) (ha : f a ≠ 0) (ht : f t ≠ 0) :
     Fac (liftF f ha ht) (Per6.Loc2.mk₀ a t) f :=
   RingHom.congr_fun (liftF_comp f ha ht)
 
 def Inj {B E : Type} [CommRing B] [Field E] (f : B →+* E) : Prop := Function.Injective f
 
+/- English proof (translation)
+The claim follows from `loc2_lift_injective f _ _ hf`.
+-/
 theorem liftF_inj {E : Type} [Field E] (f : A →+* E) (ha : f a ≠ 0) (ht : f t ≠ 0)
     (hf : Function.Injective f) : Inj (liftF f ha ht) :=
   loc2_lift_injective f _ _ hf
@@ -103,11 +136,17 @@ def pullHom {B C E : Type} [CommRing B] [Field C] [Field E] (ι : B →+* E)
   map_add' x y := hι (by
     rw [map_add ι, (hf _).choose_spec, (hf _).choose_spec, (hf _).choose_spec, map_add])
 
+/- English proof (translation)
+The claim follows from `(hf c).choose_spec`.
+-/
 theorem map_pullHom {B C E : Type} [CommRing B] [Field C] [Field E] (ι : B →+* E)
     (hι : Function.Injective ι) (f : C →+* E) (hf : ∀ c, ∃ b, ι b = f c) (c : C) :
     ι (pullHom ι hι f hf c) = f c :=
   (hf c).choose_spec
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨↑(hu.unit⁻¹) ^ k * b, by rw [map_mul, h, map_pow, ← mul_assoc, ← mul_pow, ← map_mul, IsUnit.val_inv_mul, map_one, one_pow, one_mul]⟩`.
+-/
 theorem exists_map_eq_of_pow_mul {B E : Type} [CommRing B] [Field E] (ι : B →+* E) {u b : B}
     (hu : IsUnit u) {k : ℕ} {z : E} (h : ι b = ι u ^ k * z) : ∃ x, ι x = z :=
   ⟨↑(hu.unit⁻¹) ^ k * b, by
@@ -122,10 +161,16 @@ local notation "Acris" => ACris.ACris ℂ_[l] l
 
 def cD : Acris →+* Per6.BdR l := (algebraMap (Per6.BdRp l) (Per6.BdR l)).comp (ACris.iota ℂ_[l] l)
 
+/- English proof (translation)
+The claim follows from `(IsPerfectoidField.algebraMap_bDeRham_injective (K := ℂ_[l]) (p := l)).comp (ACris.iota_injective (K := ℂ_[l]) (p := l))`.
+-/
 theorem cD_injective : Function.Injective (cD l) :=
   (IsPerfectoidField.algebraMap_bDeRham_injective (K := ℂ_[l]) (p := l)).comp
     (ACris.iota_injective (K := ℂ_[l]) (p := l))
 
+/- English proof (translation)
+Introduce `h`. Establish `h1 : (l : Acris) = 0` using `cD_injective l (h.trans (map_zero _).symm)`. Establish `h2` using `congrArg (ACris.iota ℂ_[l] l) h1`. Rewrite `h2` using `[map_natCast, map_zero]`. Conclude with `(IsPerfectoidField.isUnit_natCast_p_bDeRhamPlus (K := ℂ_[l]) l).ne_zero h2`.
+-/
 theorem cD_l_ne_zero : cD l (l : Acris) ≠ 0 := by
   intro h
   have h1 : (l : Acris) = 0 := cD_injective l (h.trans (map_zero _).symm)
@@ -133,64 +178,112 @@ theorem cD_l_ne_zero : cD l (l : Acris) ≠ 0 := by
   rw [map_natCast, map_zero] at h2
   exact (IsPerfectoidField.isUnit_natCast_p_bDeRhamPlus (K := ℂ_[l]) l).ne_zero h2
 
+/- English proof (translation)
+The claim follows from `congrArg (algebraMap (Per6.BdRp l) (Per6.BdR l)) (ACris.iota_periodT (untilt_epsilon (p := l)))`.
+-/
 theorem cD_tA : cD l (Per6.tA l) = algebraMap (Per6.BdRp l) (Per6.BdR l) (tBdR l) :=
   congrArg (algebraMap (Per6.BdRp l) (Per6.BdR l)) (ACris.iota_periodT (untilt_epsilon (p := l)))
 
+/- English proof (translation)
+Rewrite using `[cD_tA]`. Conclude with `algebraMap_tBdR_ne_zero`.
+-/
 theorem cD_tA_ne_zero : cD l (Per6.tA l) ≠ 0 := by
   rw [cD_tA]
   exact algebraMap_tBdR_ne_zero
 
 def ιCD : Per6.Bcris l →+* Per6.BdR l := liftF (cD l) (cD_l_ne_zero l) (cD_tA_ne_zero l)
 
+/- English proof (translation)
+The claim follows from `liftF_fac _ _ _`.
+-/
 theorem ιCD_fac : Fac (ιCD l) (Per6.cB l) (cD l) := liftF_fac _ _ _
 
 variable {l} in
+/- English proof (translation)
+The claim follows from `ιCD_fac l x`.
+-/
 theorem ιCD_cB (x : Acris) : ιCD l (Per6.cB l x) = cD l x := ιCD_fac l x
 
 variable {l} in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cD_apply (x : Acris) :
     cD l x = algebraMap (Per6.BdRp l) (Per6.BdR l) (ACris.iota ℂ_[l] l x) := rfl
 
+/- English proof (translation)
+The claim follows from `liftF_inj _ _ _ (cD_injective l)`.
+-/
 theorem ιCD_inj : Inj (ιCD l) :=
   liftF_inj _ _ _ (cD_injective l)
 
 variable {l} in
+/- English proof (translation)
+The claim follows from `ιCD_inj l`.
+-/
 theorem ιCD_injective : Function.Injective (ιCD l) := ιCD_inj l
 
+/- English proof (translation)
+The claim follows from `loc2_isFrac`.
+-/
 theorem cB_isFrac : IsFrac (Per6.cB l) (l : Acris) (Per6.tA l) := loc2_isFrac
 
+/- English proof (translation)
+The claim follows from `(cB_isFrac l).1`.
+-/
 theorem isUnit_cB_l : IsUnit (Per6.cB l (l : Acris)) := (cB_isFrac l).1
 
 variable {l} in
 
+/- English proof (translation)
+The claim follows from `(cB_isFrac l).2.2 x`.
+-/
 theorem bcris_surj (x : Per6.Bcris l) : ∃ (m n : ℕ) (y : Acris),
     Per6.cB l (l : Acris) ^ m * Per6.cB l (Per6.tA l) ^ n * x = Per6.cB l y :=
   (cB_isFrac l).2.2 x
 
 variable {l} in
+/- English proof (translation)
+The claim follows from `(cB_isFrac l).hom_ext h`.
+-/
 theorem bcris_hom_ext {E : Type} [Semiring E] {f g : Per6.Bcris l →+* E}
     (h : ∀ x, f (Per6.cB l x) = g (Per6.cB l x)) : f = g :=
   (cB_isFrac l).hom_ext h
 
+/- English proof (translation)
+The claim follows from `loc2_map_comp _ _ _ _ _`.
+-/
 theorem φB_comp : (Per6.φB l).comp (Per6.cB l) = (Per6.cB l).comp (ACris.phi ℂ_[l] l) :=
   loc2_map_comp _ _ _ _ _
 
 variable {l} in
+/- English proof (translation)
+The claim follows from `((RingHom.comp_apply _ _ x).symm.trans (RingHom.congr_fun (φB_comp l) x)).trans (RingHom.comp_apply _ _ x)`.
+-/
 theorem φB_cB (x : Acris) : Per6.φB l (Per6.cB l x) = Per6.cB l (ACris.phi ℂ_[l] l x) :=
   ((RingHom.comp_apply _ _ x).symm.trans (RingHom.congr_fun (φB_comp l) x)).trans
     (RingHom.comp_apply _ _ x)
 
 variable {l} in
+/- English proof (translation)
+The claim follows from `loc2_map_comp _ _ _ _ _`.
+-/
 theorem σB_comp (g : GQ l) :
     (Per6.σB g).comp (Per6.cB l) = (Per6.cB l).comp (ACris.galCris (Per6.toBot g)) :=
   loc2_map_comp _ _ _ _ _
 
 variable {l} in
+/- English proof (translation)
+The claim follows from `((RingHom.comp_apply _ _ x).symm.trans (RingHom.congr_fun (σB_comp g) x)).trans (RingHom.comp_apply _ _ x)`.
+-/
 theorem σB_cB (g : GQ l) (x : Acris) :
     Per6.σB g (Per6.cB l x) = Per6.cB l (ACris.galCris (Per6.toBot g) x) :=
   ((RingHom.comp_apply _ _ x).symm.trans (RingHom.congr_fun (σB_comp g) x)).trans
     (RingHom.comp_apply _ _ x)
 
+/- English proof (translation)
+Unfold `MaximalUnramifiedExtension unramifiedClosure primeToPRoots`. Use `congr 1`. Use extensionality with `x`. Use `exists_congr fun m => and_congr_right fun _ => and_congr_left fun _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.coprime_comm, (Fact.out : l.Prime).coprime_iff_not_dvd]`.
+-/
 theorem kur_eq : MaximalUnramifiedExtension l = unramifiedClosure l := by
   unfold MaximalUnramifiedExtension unramifiedClosure primeToPRoots
   congr 1
@@ -202,11 +295,17 @@ def oD : Om l →+* Per6.BdR l := algClToBdRField l
 
 variable {l} in
 
+/- English proof (translation)
+The claim follows from `away_exists (ACris.iotaPlus ℂ_[l] l) (ACris.iota ℂ_[l] l) ACris.iotaPlus_algebraMap y`.
+-/
 theorem exists_iota_eq (y : ACris.BCrisPlus ℂ_[l] l) : ∃ (k : ℕ) (a : Acris),
     ACris.iota ℂ_[l] l a = ACris.iota ℂ_[l] l (l : Acris) ^ k * ACris.iotaPlus ℂ_[l] l y :=
   away_exists (ACris.iotaPlus ℂ_[l] l) (ACris.iota ℂ_[l] l) ACris.iotaPlus_algebraMap y
 
 variable {l} in
+/- English proof (translation)
+Take `⟨k, a, h⟩` from `exists_iota_eq y`. Establish `e : cD l a = cD l (l : Acris) ^ k * algebraMap (Per6.BdRp l) (Per6.BdR l) (ACris.iotaPlus ℂ_[l] l y)`. Rewrite using `[cD_apply, cD_apply, h, map_mul, map_pow]`. Rewrite `e` using `[← ιCD_cB, ← ιCD_cB]`. Conclude with `exists_map_eq_of_pow_mul (ιCD l) (isUnit_cB_l l) e`.
+-/
 theorem exists_ιCD_eq_iotaPlus (y : ACris.BCrisPlus ℂ_[l] l) :
     ∃ b, ιCD l b = algebraMap (Per6.BdRp l) (Per6.BdR l) (ACris.iotaPlus ℂ_[l] l y) := by
   obtain ⟨k, a, h⟩ := exists_iota_eq y
@@ -216,6 +315,9 @@ theorem exists_ιCD_eq_iotaPlus (y : ACris.BCrisPlus ℂ_[l] l) :
   rw [← ιCD_cB, ← ιCD_cB] at e
   exact exists_map_eq_of_pow_mul (ιCD l) (isUnit_cB_l l) e
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `(ACris.mem_algClInBCrisPlus (p := l)).1 (ACris.unramifiedClosure_le ((kur_eq l).le c.2))`. Take `⟨b, hb⟩` from `exists_ιCD_eq_iotaPlus y`. Conclude with `⟨b, hb.trans (congrArg (algebraMap (Per6.BdRp l) (Per6.BdR l)) hy)⟩`.
+-/
 theorem exists_ιCD_eq (c : ↥(MaximalUnramifiedExtension l)) : ∃ b, ιCD l b = ((oD l).comp (algebraMap ↥(MaximalUnramifiedExtension l) (Om l))) c := by
   obtain ⟨y, hy⟩ := (ACris.mem_algClInBCrisPlus (p := l)).1
     (ACris.unramifiedClosure_le ((kur_eq l).le c.2))
@@ -226,16 +328,25 @@ def uB : ↥(MaximalUnramifiedExtension l) →+* Per6.Bcris l :=
   pullHom (ιCD l) ιCD_injective ((oD l).comp (algebraMap ↥(MaximalUnramifiedExtension l) (Om l))) (exists_ιCD_eq l)
 
 variable {l} in
+/- English proof (translation)
+The claim follows from `map_pullHom _ _ _ (exists_ιCD_eq l) c`.
+-/
 theorem ιCD_uB (c : ↥(MaximalUnramifiedExtension l)) : ιCD l (uB l c) = oD l (c : Om l) :=
   map_pullHom _ _ _ (exists_ιCD_eq l) c
 
 def qB : ℚ_[l] →+* Per6.Bcris l := (uB l).comp (algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l))
 
 variable {l} in
+/- English proof (translation)
+The claim follows from `ιCD_uB _`.
+-/
 theorem ιCD_qB (q : ℚ_[l]) : ιCD l (qB l q) = oD l (algebraMap ℚ_[l] (Om l) q) :=
   ιCD_uB _
 
 variable {l} in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem uB_algebraMap (q : ℚ_[l]) : uB l (algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l) q) = qB l q := rfl
 
 def tB : Per6.Bcris l := Per6.cB l (Per6.tA l)
@@ -253,9 +364,15 @@ def actC : GQ l →* (ℂ_[l] ≃+* ℂ_[l]) := (galCpHom (K := ⊥)).comp (toBo
 def tiltInv : PreTilt ↥(normInteger ℂ_[l]) l →+* OCb l :=
   Perfection.map l (Per6.modPEquiv l).symm.toRingHom
 
+/- English proof (translation)
+The claim follows from `Perfection.ext fun _ => (Per6.modPEquiv l).apply_symm_apply _`.
+-/
 theorem tiltMap_tiltInv (x : PreTilt ↥(normInteger ℂ_[l]) l) : Per6.tiltMap l (tiltInv l x) = x :=
   Perfection.ext fun _ => (Per6.modPEquiv l).apply_symm_apply _
 
+/- English proof (translation)
+The claim follows from `Perfection.ext fun _ => (Per6.modPEquiv l).symm_apply_apply _`.
+-/
 theorem tiltInv_tiltMap (x : OCb l) : tiltInv l (Per6.tiltMap l x) = x :=
   Perfection.ext fun _ => (Per6.modPEquiv l).symm_apply_apply _
 

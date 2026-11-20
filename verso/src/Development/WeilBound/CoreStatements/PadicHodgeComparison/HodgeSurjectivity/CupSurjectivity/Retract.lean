@@ -19,11 +19,23 @@ def retractPt (l : ℕ) [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgC
   GlobalTheory.ProjSpace.pt (RingHom.id (OK l K)) (fun _ => 1)
     (Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨0, rfl⟩) isUnit_one)
 
+/- English proof (translation)
+Rewrite using `[retractPt, GlobalTheory.ProjSpace.pt_str]`. Simplify using `[spMap]`.
+-/
 theorem retractPt_str (l : ℕ) [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l)) :
     retractPt l K ≫ PSpace.str (OK l K) 2 = 𝟙 _ := by
   rw [retractPt, GlobalTheory.ProjSpace.pt_str]
   simp [spMap]
 
+/- English proof (translation)
+Introduce `l _ K _ M d hM hd`. Set `N : Model l K` to `⟨pullback M.p (PSpace.str (OK l K) 2), pullback.fst _ _ ≫ M.p⟩`. Establish `h2 : SmoothOfRelativeDimension 2 (pullback.fst M.p (PSpace.str (OK l K) 2))` using `haveI := smoothOfRelativeDimension_isStableUnderBaseChange (n := 2) MorphismProperty.pullback_fst (P := @SmoothOfRelativeDimension 2) _ _ (GlobalTheory.Adelic.smoothOfRelativeDimension_pspace _ 2)`. Establish `hN : SmoothOfRelativeDimension (d + 1 + 1) N.p`. Use `h2` as an intermediate fact.
+
+Use `hd` as an intermediate fact. Establish `: SmoothOfRelativeDimension (2 + d) (pullback.fst M.p (PSpace.str (OK l K) 2) ≫ M.p)` using `smoothOfRelativeDimension_comp 2 d _ _`. Rewrite using `[show d + 1 + 1 = 2 + d by omega]`. Conclude with `this`. Establish `hsm : Smooth N.p` using `SmoothOfRelativeDimension.smooth (d + 1 + 1) N.p`.
+
+Take `⟨⟨hproj, ϖ, hϖ, -⟩, -⟩` from `hM`. Use `⟨N, pullback.fst _ _, pullback.lift (𝟙 _) (M.p ≫ retractPt l K) ?_, rfl, pullback.lift_fst _ _ _, ⟨⟨?_, ϖ, hϖ, ?_⟩, hsm⟩, hN⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, retractPt_str, Category.comp_id, Category.id_comp]`. Conclude with `GlobalTheory.ProjSpace.isProjOver_pullback hproj (GlobalTheory.ProjSpace.isProjOver_pspace_str _ 2)`. Introduce `x`.
+
+Conclude with `GlobalTheory.T.hasStrictlySemistableChartAt_of_smooth _ ϖ N.X N.p ⊤ x trivial inferInstance`.
+-/
 theorem retract_pf : Retract := by
   intro l _ K _ M d hM hd
   let N : Model l K := ⟨pullback M.p (PSpace.str (OK l K) 2), pullback.fst _ _ ≫ M.p⟩

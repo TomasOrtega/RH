@@ -22,6 +22,9 @@ attribute [local instance] GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAd
   GlobalTheory.DiagForm.measAf GlobalTheory.DiagForm.borelAf
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.diagHeis_archFourier | exact GlobalTheory.diagHeis_archFourier | (intros; apply GlobalTheory.diagHeis_archFourier <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.archimedean_partial_fourier_surjective : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ],
     ∃ A : SchwartzMap (κ ⊕ κ → mixedEmbedding.mixedSpace F) ℂ →L[ℂ] SchwartzMap (κ ⊕ κ → mixedEmbedding.mixedSpace F) ℂ,
       Function.Surjective A ∧

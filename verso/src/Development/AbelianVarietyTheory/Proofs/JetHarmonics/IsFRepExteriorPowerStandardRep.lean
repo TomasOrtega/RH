@@ -8,6 +8,9 @@ open scoped InnerProductSpace ENNReal
 
 namespace GlobalTheory.WedgeFRep
 
+/- English proof (translation)
+Unfold `B.gN`. Apply `Real.le_sqrt_of_sq_le` to reduce the goal to its premises. Rewrite using `[← Complex.normSq_eq_norm_sq]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem entry_le_hs {k r : ℕ} (g : Mx k r) (i j : Fin (2 * r + k + 1)) : ‖g i j‖ ≤ B.gN g := by
   unfold B.gN
   apply Real.le_sqrt_of_sq_le
@@ -18,6 +21,15 @@ theorem entry_le_hs {k r : ℕ} (g : Mx k r) (i j : Fin (2 * r + k + 1)) : ‖g 
     _ ≤ _ := Finset.single_le_sum (f := fun i' => ∑ j', Complex.normSq (g i' j'))
           (fun _ _ => Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _) (Finset.mem_univ i)
 
+/- English proof (translation)
+Establish `hm : ∀ g h : Mx k r, cmp l (g * h) = cmp l g * cmp l h` using `fun g h => (GlobalTheory.T.compoundMatrix_cauchyBinet_properties _ l g h).1`. Establish `hc : ∀ g : Mx k r, cmp l gᴴ = (cmp l g)ᴴ` using `fun g => (GlobalTheory.T.compoundMatrix_cauchyBinet_properties _ l g g).2.1`. Establish `h1 : cmp l (1 : Mx k r) = 1` using `(GlobalTheory.T.compoundMatrix_cauchyBinet_properties _ l 1 1).2.2.1`. Use `⟨?_, ?_, h1, fun g _ h _ => hm g h, ?_, ?_, ⟨(l.factorial : ℝ), ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hc, PI.StabPairsW.hpk_conjTranspose]`.
+
+Rewrite using `[← hm, PI.StabPairsW.hpk_mul_self, h1]`. Introduce `g hg`. Establish `hg' : gᴴ * Formalism.QuantumDeterminants.Hpk k r * g = Formalism.QuantumDeterminants.Hpk k r` using `hg`. Rewrite using `[← hc, ← hm, ← hm, hg']`. Introduce `I J`.
+
+Apply `Continuous.continuousOn` to reduce the goal to its premises. Unfold `BranchingSupport.cmp`. Conclude with `(continuous_id.matrix_submatrix _ _).matrix_det`. Introduce `g _ I J`. Use `Matrix.det_le (A := g.submatrix (I.1.orderEmbOfFin I.2) (J.1.orderEmbOfFin J.2)) (abv := IsAbsoluteValue.toAbsoluteValue (norm : ℂ → ℝ)) (x := B.gN g) (fun i j => entry_le_hs g _ _)` as an intermediate fact.
+
+Rewrite `this` using `[Fintype.card_fin, nsmul_eq_mul]`. Conclude with `this`. Introduce `g _ hu`. Rewrite `hu`, the goal using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose]`. Rewrite using `[← hc, ← hm, hu, h1]`.
+-/
 theorem isFRep_cmp (k r l : ℕ) :
     IsFRep (k := k) (r := r) (cmp l) (cmp l (Formalism.QuantumDeterminants.Hpk k r)) l := by
   have hm : ∀ g h : Mx k r, cmp l (g * h) = cmp l g * cmp l h := fun g h => (GlobalTheory.T.compoundMatrix_cauchyBinet_properties _ l g h).1

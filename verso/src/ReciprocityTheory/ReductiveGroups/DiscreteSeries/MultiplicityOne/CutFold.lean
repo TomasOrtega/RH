@@ -6,6 +6,21 @@ open MeasureTheory
 
 namespace ReciprocityTheory.ChartRestriction.DS.Mult1.Fold
 
+/- English proof (translation)
+Establish `hΦ : MeasurePreserving (fun p : β × α => (p.1, F p.1 p.2)) (ν.prod μ) (ν.prod μ)` using `(MeasurePreserving.id ν).skew_product hF hmp`. Establish `hbG : Measurable fun q : β × α => b (G q.1 q.2)` using `hb.comp hG`. Establish `hHm : AEStronglyMeasurable (fun q : β × α => b (G q.1 q.2) • φ q.2) (ν.prod μ)` using `hbG.aestronglyMeasurable.smul hφ.1.comp_snd`. Establish `hHi : Integrable (fun q : β × α => b (G q.1 q.2) • φ q.2) (ν.prod μ)`. Rewrite using `[integrable_prod_iff' hHm]`.
+
+Prove the components needed by the constructor for the conclusion. Use `filter_upwards [h1] with y hy`. Conclude with `hy.1.smul_const (φ y)`. Use `hφ.norm.congr ?_ filter_upwards [h1] with y hy show ‖φ y‖ = ∫ s, ‖b (G s y) • φ y‖ ∂ν` and prove the remaining obligations. Establish `hn : ∀ s, ‖b (G s y) • φ y‖ = b (G s y) * ‖φ y‖` using `fun s => by`.
+
+Rewrite using `[norm_smul, Real.norm_of_nonneg (hb0 _)]`. Simplify using `only [hn]`. Rewrite using `[integral_mul_const, hy.2, one_mul]`. Establish `hcomp : (fun p : β × α => b p.2 • φ (F p.1 p.2)) =ᵐ[ν.prod μ] ((fun q : β × α => b (G q.1 q.2) • φ q.2) ∘ fun p : β × α => (p.1, F p.1 p.2))` using `by filter_upwards [hinv] with p hp`. Simplify using `only [Function.comp_apply, hp]`.
+
+Establish `hint : Integrable (fun p : β × α => b p.2 • φ (F p.1 p.2)) (ν.prod μ)` using `(hΦ.integrable_comp_of_integrable hHi).congr hcomp.symm`. Use `⟨hint, ?_⟩` and prove the remaining obligations. Establish `e1 : (∫ x, b x • ∫ s, φ (F s x) ∂ν ∂μ) = ∫ p, b p.2 • φ (F p.1 p.2) ∂(ν.prod μ)`. Rewrite using `[integral_prod_symm _ hint]`. Use `integral_congr_ae (ae_of_all _ fun x => ?_)` and prove the remaining obligations.
+
+Conclude with `(integral_smul (b x) fun s => φ (F s x)).symm`. Establish `hm : AEStronglyMeasurable (fun q : β × α => b (G q.1 q.2) • φ q.2) (Measure.map (fun p : β × α => (p.1, F p.1 p.2)) (ν.prod μ))`. Rewrite using `[hΦ.map_eq]`. Conclude with `hHm`. Establish `e2 : (∫ p, b p.2 • φ (F p.1 p.2) ∂(ν.prod μ)) = ∫ q, b (G q.1 q.2) • φ q.2 ∂(ν.prod μ)`.
+
+Rewrite using `[integral_congr_ae hcomp]`. Combine the equalities or inequalities in the displayed calculation. Establish `e3 : (∫ q, b (G q.1 q.2) • φ q.2 ∂(ν.prod μ)) = ∫ y, φ y ∂μ`. Rewrite using `[integral_prod_symm _ hHi]`. Use `integral_congr_ae ?_` and prove the remaining obligations.
+
+Use `filter_upwards [h1] with y hy`. Use `show ∫ s, b (G s y) • φ y ∂ν = φ y`. Rewrite using `[integral_smul_const, hy.2, one_smul]`. Rewrite using `[e1, e2, e3]`.
+-/
 theorem cutFold {α β E : Type*} [MeasurableSpace α] [MeasurableSpace β] [NormedAddCommGroup E]
     [NormedSpace ℝ E] [CompleteSpace E] (μ : Measure α) (ν : Measure β) [SFinite μ] [SFinite ν]
     (F G : β → α → α) (hF : Measurable (Function.uncurry F)) (hG : Measurable (Function.uncurry G))

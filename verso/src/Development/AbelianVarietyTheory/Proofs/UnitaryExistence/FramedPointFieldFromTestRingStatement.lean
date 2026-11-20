@@ -16,5 +16,8 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.B
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.Frames
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Frames.framedPoint_field_fromTest | exact GlobalTheory.Frames.framedPoint_field_fromTest | (intros; apply GlobalTheory.Frames.framedPoint_field_fromTest <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.framedPoint_field_from_testRing : Out.SecBaseChangeSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), SpreadSt Xo c := by
   first | exact @GlobalTheory.Frames.framedPoint_field_fromTest | exact GlobalTheory.Frames.framedPoint_field_fromTest | (intros; apply GlobalTheory.Frames.framedPoint_field_fromTest <;> assumption)

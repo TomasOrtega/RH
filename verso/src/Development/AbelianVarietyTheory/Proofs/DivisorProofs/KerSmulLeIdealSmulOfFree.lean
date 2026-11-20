@@ -4,6 +4,15 @@ open scoped TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `Λ _ t ht M _ _ hfree m hm`. Set `b` to `Module.Free.chooseBasis Λ M`. Establish `hc : ∀ i, ∃ d, b.repr m i = t * d`. Introduce `i`. Establish `h0 : t * b.repr m i = 0`.
+
+Use `congrArg (fun x => b.repr x i) hm` as an intermediate fact. Simplify using `using this`. Take `⟨d, hd⟩` from `Ideal.mem_span_singleton'.mp (ht _ h0)`. Conclude with `⟨d, by rw [← hd, mul_comm]⟩`. Use `choose d hd using hc`.
+
+Establish `hm' : m = t • ∑ i ∈ (b.repr m).support, d i • b i`. Establish `e` using `b.linearCombination_repr m`. Rewrite `e` using `[Finsupp.linearCombination_apply, Finsupp.sum]`. Rewrite using `[Finset.smul_sum]`. Use `conv_lhs => rw [← e]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hd i, mul_smul]`. Rewrite using `[hm']`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self t) Submodule.mem_top`.
+-/
 theorem ker_smul_le_ideal_smul_of_free : ∀ (Λ : Type) [CommRing Λ] (t : Λ), (∀ x : Λ, t * x = 0 → x ∈ Ideal.span {t}) → ∀ (M : Type 1) [AddCommGroup M] [Module Λ M], Module.Free Λ M → ∀ m : M, t • m = 0 → m ∈ Ideal.span {t} • (⊤ : Submodule Λ M) := by
   intro Λ _ t ht M _ _ hfree m hm
   let b := Module.Free.chooseBasis Λ M

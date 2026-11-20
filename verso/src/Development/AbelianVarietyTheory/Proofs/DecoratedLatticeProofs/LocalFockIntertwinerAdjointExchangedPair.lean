@@ -17,6 +17,15 @@ noncomputable section
 
 namespace GlobalTheory.AdjLocIt
 
+/- English proof (translation)
+Introduce `H _ _ _ f g hg hw`. Use `set F : ℝ → H := fun t => f 0 + ∫ s in (0 : ℝ)..t, g s with hFdef`. Establish `hF : ∀ t, HasDerivAt F (g t) t` using `fun t => ((hg.integral_hasStrictDerivAt 0 t).hasDerivAt).const_add (f 0)`. Establish `heq : f = F`. Use function extensionality and compare the values at `t`.
+
+Use `ext_inner_left ℂ fun y => ?_` and prove the remaining obligations. Establish `hd : ∀ s, HasDerivAt (fun s => ⟪y, f s⟫_ℂ - ⟪y, F s⟫_ℂ) 0 s` using `fun s => by`. Establish `h2` using `(hasDerivAt_const s y).inner ℂ (hF s)`. Simplify using `only [inner_zero_left, add_zero] at h2`. Establish `h3` using `(hw y s).sub h2`.
+
+Rewrite `h3` using `[sub_self]`. Then use the resulting hypothesis. Establish `hc` using `is_const_of_deriv_eq_zero (f := fun s => ⟪y, f s⟫_ℂ - ⟪y, F s⟫_ℂ) (fun s => (hd s).differentiableAt) (fun s => (hd s).deriv) t 0`. Establish `hF0 : F 0 = f 0` using `by simp [hFdef]`. Simplify using `only [hF0, sub_self] at hc`. Conclude with `sub_eq_zero.1 hc`.
+
+Introduce `t`. Rewrite using `[heq]`. Conclude with `hF t`.
+-/
 theorem weak_deriv : ∀ (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (f g : ℝ → H), Continuous g → (∀ (y : H) (t : ℝ), HasDerivAt (fun s => ⟪y, f s⟫_ℂ) ⟪y, g t⟫_ℂ t) → ∀ t, HasDerivAt f (g t) t := by
   intro H _ _ _ f g hg hw
   set F : ℝ → H := fun t => f 0 + ∫ s in (0 : ℝ)..t, g s with hFdef
@@ -39,6 +48,13 @@ theorem weak_deriv : ∀ (H : Type) [NormedAddCommGroup H] [InnerProductSpace �
   rw [heq]
   exact hF t
 
+/- English proof (translation)
+Use `T.continuous_of_isClosed_graph (IsSeqClosed.isClosed fun {u p} hu hp => ?_)` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, LinearMap.mem_graph_iff]`. Use `ext_inner_left ℂ fun y => ?_` and prove the remaining obligations. Take `⟨y', hy'⟩` from `h y`. Establish `h1 : Filter.Tendsto (fun n => ⟪y, (u n).2⟫_ℂ) Filter.atTop (nhds ⟪y, p.2⟫_ℂ)` using `((continuous_const.inner continuous_snd).tendsto p).comp hp`.
+
+Establish `h2 : Filter.Tendsto (fun n => ⟪y, (u n).2⟫_ℂ) Filter.atTop (nhds ⟪y', p.1⟫_ℂ)`. Establish `e : (fun n => ⟪y, (u n).2⟫_ℂ) = fun n => ⟪y', (u n).1⟫_ℂ` using `funext fun n => by`. Rewrite using `[(LinearMap.mem_graph_iff _ _).1 (SetLike.mem_coe.1 (hu n)), hy']`. Rewrite using `[e]`. Conclude with `((continuous_const.inner continuous_fst).tendsto p).comp hp`.
+
+Rewrite using `[hy', tendsto_nhds_unique h1 h2]`.
+-/
 theorem continuous_of_adj {E F : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [CompleteSpace E]
     [NormedAddCommGroup F] [InnerProductSpace ℂ F] [CompleteSpace F] (T : E →ₗ[ℂ] F)
     (h : ∀ y : F, ∃ y' : E, ∀ x, ⟪y, T x⟫_ℂ = ⟪y', x⟫_ℂ) : Continuous T := by
@@ -55,6 +71,9 @@ theorem continuous_of_adj {E F : Type} [NormedAddCommGroup E] [InnerProductSpace
     exact ((continuous_const.inner continuous_fst).tendsto p).comp hp
   rw [hy', tendsto_nhds_unique h1 h2]
 
+/- English proof (translation)
+Establish `hu : IsUnit G.det` using `isUnit_iff_ne_zero.2 hG`. Establish `e : Xᴴ = -(G * X) * G⁻¹`. Establish `h1 : Xᴴ * G = -(G * X)` using `eq_neg_of_add_eq_zero_left hX`. Rewrite using `[← h1, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.mul_one]`. Rewrite using `[starRingEnd_apply, ← Matrix.trace_conjTranspose, e, Matrix.neg_mul, Matrix.trace_neg, Matrix.mul_assoc, Matrix.trace_mul_comm, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu, Matrix.mul_one]`.
+-/
 theorem conj_trace_of_lie {n : ℕ} {G X : Matrix (Fin n) (Fin n) ℂ} (hG : G.det ≠ 0) (hX : Xᴴ * G + G * X = 0) :
     starRingEnd ℂ X.trace = -X.trace := by
   have hu : IsUnit G.det := isUnit_iff_ne_zero.2 hG
@@ -64,6 +83,13 @@ theorem conj_trace_of_lie {n : ℕ} {G X : Matrix (Fin n) (Fin n) ℂ} (hG : G.d
   rw [starRingEnd_apply, ← Matrix.trace_conjTranspose, e, Matrix.neg_mul, Matrix.trace_neg, Matrix.mul_assoc,
     Matrix.trace_mul_comm, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu, Matrix.mul_one]
 
+/- English proof (translation)
+Rewrite using `[← M.fr_gram τ, det_mul, det_mul, det_conjTranspose]`. Establish `h1 : (M.fr τ).det ≠ 0` using `((isUnit_iff_isUnit_det _).1 (M.fr_unit τ)).ne_zero`. Establish `hJ : Formalism.REAL.Jm (M.ε τ) * Formalism.REAL.Jm (M.ε τ) = 1`. Rewrite using `[Formalism.REAL.Jm, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `a`. Apply the tactic sequence `cases M.ε τ a <;> simp`. Establish `h2 : (Formalism.REAL.Jm (M.ε τ)).det ≠ 0`. Introduce `h`. Use `congrArg det hJ` as an intermediate fact.
+
+Rewrite `this` using `[det_mul, h, zero_mul, det_one]`. Conclude with `zero_ne_one this`. Conclude with `mul_ne_zero (mul_ne_zero (star_ne_zero.2 h1) h2) h1`.
+-/
 theorem gram_det_ne {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (τ : D.what₂.Tau) :
     (gramAt D V τ).det ≠ 0 := by
   rw [← M.fr_gram τ, det_mul, det_mul, det_conjTranspose]
@@ -84,6 +110,9 @@ section Exp
 
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
+/- English proof (translation)
+The claim follows from `NormedSpace.exp_continuous.comp (continuous_id.smul continuous_const)`.
+-/
 theorem exp_cont {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) : Continuous fun t : ℝ => NormedSpace.exp (t • X) :=
   NormedSpace.exp_continuous.comp (continuous_id.smul continuous_const)
 
@@ -91,11 +120,21 @@ end Exp
 
 variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar}
 
+/- English proof (translation)
+The claim follows from `((GlobalTheory.HolDict.ModelRep.model_rep D V S M τ).2.1.2.2 x).comp_continuous (exp_cont X) (fun t => SchurOrthogonalityAlt.gp_exp_mem τ hX t)`.
+-/
 theorem cont_rep_exp (M : DSModel V S) (τ : D.what₂.Tau) {X : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hX : X ∈ lieAt V τ) (x : M.H τ) : Continuous fun t : ℝ => M.rep τ (NormedSpace.exp (t • X)) x :=
   ((GlobalTheory.HolDict.ModelRep.model_rep D V S M τ).2.1.2.2 x).comp_continuous (exp_cont X)
     (fun t => SchurOrthogonalityAlt.gp_exp_mem τ hX t)
 
+/- English proof (translation)
+Establish `hm` using `SchurOrthogonalityAlt.gp_exp_mem τ hX (-t)`. Establish `hp` using `SchurOrthogonalityAlt.gp_exp_mem τ hX t`. Establish `hU` using `(GlobalTheory.HolDict.ModelRep.model_rep D V S M τ).2.1`. Establish `h2 : M.rep τ (NormedSpace.exp ((-t) • X)) (M.rep τ (NormedSpace.exp (t • X)) x) = x`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← SchurOrthogonalityAlt.rep_mul M τ hm hp, ← SchurOrthogonalityAlt.gp_exp_split, neg_add_cancel, zero_smul, NormedSpace.exp_zero, SchurOrthogonalityAlt.gp_rep_one]`.
+
+Both sides reduce to the same expression. Set `Li : M.H τ →ₗᵢ[ℂ] M.H τ` to `{ toLinearMap := (M.rep τ (NormedSpace.exp ((-t) • X))).toLinearMap, norm_map' := hU.2.1 _ hm }`. Establish `h1` using `Li.inner_map_map y (M.rep τ (NormedSpace.exp (t • X)) x)`. Rewrite using `[← h1]`. Use `show ⟪_, M.rep τ (NormedSpace.exp ((-t) • X)) (M.rep τ (NormedSpace.exp (t • X)) x)⟫_ℂ = _`.
+
+Rewrite using `[h2]`. Both sides reduce to the same expression.
+-/
 theorem inner_rep_exp (M : DSModel V S) (τ : D.what₂.Tau) {X : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hX : X ∈ lieAt V τ) (t : ℝ) (y x : M.H τ) :
     ⟪y, M.rep τ (NormedSpace.exp (t • X)) x⟫_ℂ = ⟪M.rep τ (NormedSpace.exp ((-t) • X)) y, x⟫_ℂ := by
@@ -114,6 +153,9 @@ theorem inner_rep_exp (M : DSModel V S) (τ : D.what₂.Tau) {X : Matrix (Fin V.
   rw [h2]
   rfl
 
+/- English proof (translation)
+Establish `h : Xᴴ * gramAt D V τ + gramAt D V τ * X = 0` using `hX`. Use `show (-X)ᴴ * gramAt D V τ + gramAt D V τ * (-X) = 0`. Rewrite using `[conjTranspose_neg, Matrix.neg_mul, Matrix.mul_neg, ← neg_add, h, neg_zero]`.
+-/
 theorem neg_mem_lie {τ : D.what₂.Tau} {X : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hX : X ∈ lieAt V τ) :
     -X ∈ lieAt V τ := by
   have h : Xᴴ * gramAt D V τ + gramAt D V τ * X = 0 := hX
@@ -123,20 +165,41 @@ theorem neg_mem_lie {τ : D.what₂.Tau} {X : Matrix (Fin V.rank) (Fin V.rank) �
 section Loc
 variable {a b : ℕ} (ε : Fin a → Bool) (ε' : Fin b → Bool)
 
+/- English proof (translation)
+Simplify using `only [locS, Matrix.add_apply, add_smul, Finset.sum_add_distrib]`.
+-/
 theorem locS_add (X Y : Matrix (Fin a) (Fin a) ℂ) : locS (b := b) ε ε' (X + Y) = locS ε ε' X + locS ε ε' Y := by
   simp only [locS, Matrix.add_apply, add_smul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [locS, Matrix.smul_apply, smul_eq_mul, mul_smul, Finset.smul_sum]`.
+-/
 theorem locS_smul (c : ℂ) (X : Matrix (Fin a) (Fin a) ℂ) : locS (b := b) ε ε' (c • X) = c • locS ε ε' X := by
   simp only [locS, Matrix.smul_apply, smul_eq_mul, mul_smul, Finset.smul_sum]
 
+/- English proof (translation)
+Simplify using `only [locS, Matrix.neg_apply, neg_smul, Finset.sum_neg_distrib]`.
+-/
 theorem locS_neg (X : Matrix (Fin a) (Fin a) ℂ) : locS (b := b) ε ε' (-X) = -locS ε ε' X := by
   simp only [locS, Matrix.neg_apply, neg_smul, Finset.sum_neg_distrib]
 
+/- English proof (translation)
+Simplify using `only [locT, Matrix.neg_apply, neg_smul, Finset.sum_neg_distrib]`.
+-/
 theorem locT_neg (Y : Matrix (Fin b) (Fin b) ℂ) : locT (a := a) ε ε' (-Y) = -locT ε ε' Y := by
   simp only [locT, Matrix.neg_apply, neg_smul, Finset.sum_neg_distrib]
 
 end Loc
 
+/- English proof (translation)
+Use `choose f hf using h`. Establish `hjs : ∀ (c : ℂ) Q, j.symm (c • Q) = conj c • j.symm Q` using `fun c Q => by`. Apply `j.injective` to reduce the goal to its premises. Rewrite using `[hj, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, Complex.conj_conj]`. Use `⟨LinearMap.mk₂ ℂ (fun Q w => f (j.symm Q) w) ?_ ?_ ?_ ?_, fun Q w y => (hf _ _ y).symm⟩` and prove the remaining obligations.
+
+Introduce `Q₁ Q₂ w`. Use `ext_inner_right ℂ fun y => ?_` and prove the remaining obligations. Simplify using `only [inner_add_left, ← hf, map_add, LinearMap.add_apply, inner_add_right]`. Introduce `c Q w`. Use `ext_inner_right ℂ fun y => ?_` and prove the remaining obligations.
+
+Simplify using `only [inner_smul_left, ← hf, hjs, map_smul, LinearMap.smul_apply, inner_smul_right, Complex.conj_conj]`. Introduce `Q w₁ w₂`. Use `ext_inner_right ℂ fun y => ?_` and prove the remaining obligations. Simplify using `only [inner_add_left, ← hf]`. Introduce `c Q w`.
+
+Use `ext_inner_right ℂ fun y => ?_` and prove the remaining obligations. Simplify using `only [inner_smul_left, ← hf]`.
+-/
 theorem exists_adj {L L' E F : Type} [AddCommGroup L] [Module ℂ L] [AddCommGroup L'] [Module ℂ L']
     [NormedAddCommGroup E] [InnerProductSpace ℂ E] [NormedAddCommGroup F] [InnerProductSpace ℂ F]
     (A : L →ₗ[ℂ] F →ₗ[ℂ] E) (j : L ≃+ L') (hj : ∀ (c : ℂ) P, j (c • P) = conj c • j P)
@@ -160,6 +223,53 @@ theorem exists_adj {L L' E F : Type} [AddCommGroup L] [Module ℂ L] [AddCommGro
     refine ext_inner_right ℂ fun y => ?_
     simp only [inner_smul_left, ← hf]
 
+/- English proof (translation)
+Introduce `D V W S S' M M' τ aS aT A hA`. Take `⟨j, hjc, hj⟩` from `GlobalTheory.T.fock_sign_transpose_exchanges_local_gl_actions V.rank W.rank (M.ε τ) (M'.ε τ)`. Take `⟨A', hA'⟩` from `exists_adj A j hjc hA.adj`. Use `haveI := (GlobalTheory.HolDict.ModelRep.model_rep D V S M τ).1`. Use `haveI := (GlobalTheory.HolDict.ModelRep.model_rep D W S' M' τ).1`.
+
+Establish `hA'r : ∀ Q w y, ⟪y, A' Q w⟫_ℂ = ⟪A (j.symm Q) y, w⟫_ℂ` using `fun Q w y => by`. Rewrite using `[← inner_conj_symm, hA' Q w y, inner_conj_symm]`. Establish `hcont : ∀ Q, Continuous (A' Q)` using `fun Q => continuous_of_adj (A' Q) fun y => ⟨A (j.symm Q) y, fun x => hA'r Q x y⟩`. Establish `hcq : ∀ q : ℚ, starRingEnd ℂ (q : ℂ) = q` using `fun q => map_ratCast (starRingEnd ℂ) q`. Establish `hsrc : ∀ Y ∈ lieAt W τ, ∀ Q w, HasDerivAt (fun t : ℝ => M'.rep τ (NormedSpace.exp (t • Y)) (A' Q w)) (A' (locS (M'.ε τ) (M.ε τ) ((M'.fr τ * Y * (M'.fr τ)⁻¹).map (starRingEnd ℂ)) Q - ((aS : ℂ) * Y.trace) • Q) w) 0`.
+
+Introduce `Y hY Q w`. Use `set Q₂ := locS (M'.ε τ) (M.ε τ) ((M'.fr τ * Y * (M'.fr τ)⁻¹).map (starRingEnd ℂ)) Q - ((aS : ℂ) * Y.trace) • Q with hQ₂`. Use `set P₂ := locT (M.ε τ) (M'.ε τ) (M'.fr τ * Y * (M'.fr τ)⁻¹) (j.symm Q) + ((aS : ℂ) * Y.trace) • j.symm Q with hP₂`. Establish `hjP : j P₂ = Q₂`. Establish `hc : starRingEnd ℂ ((aS : ℂ) * Y.trace) = -((aS : ℂ) * Y.trace)`.
+
+Rewrite using `[map_mul, hcq, conj_trace_of_lie (gram_det_ne M' τ) hY, mul_neg]`. Rewrite using `[hP₂, hQ₂, map_add, (hj _).1, hjc, AddEquiv.apply_symm_apply, hc, neg_smul, ← sub_eq_add_neg]`. Establish `hg : Continuous fun t : ℝ => M'.rep τ (NormedSpace.exp (t • Y)) (A' Q₂ w)` using `cont_rep_exp M' τ hY _`. Establish `hw : ∀ (y : M'.H τ) (t₀ : ℝ), HasDerivAt (fun s : ℝ => ⟪y, M'.rep τ (NormedSpace.exp (s • Y)) (A' Q w)⟫_ℂ) ⟪y, M'.rep τ (NormedSpace.exp (t₀ • Y)) (A' Q₂ w)⟫_ℂ t₀`. Introduce `y t₀`.
+
+Establish `e : (fun s : ℝ => ⟪y, M'.rep τ (NormedSpace.exp (s • Y)) (A' Q w)⟫_ℂ) = fun s : ℝ => ⟪A (j.symm Q) (M'.rep τ (NormedSpace.exp ((-s) • Y)) y), w⟫_ℂ`. Use function extensionality and compare the values at `fun s => by rw [inner_rep_exp M' τ hY, hA'r]`. Rewrite using `[e]`. Use `set y₀ := M'.rep τ (NormedSpace.exp ((-t₀) • Y)) y with hy₀`. Establish `h1` using `hA.tgt (-Y) (neg_mem_lie hY) (j.symm Q) y₀`.
+
+Establish `hv : -A (locT (M.ε τ) (M'.ε τ) (M'.fr τ * -Y * (M'.fr τ)⁻¹) (j.symm Q) + ((aS : ℂ) * (-Y).trace) • j.symm Q) y₀ = A P₂ y₀`. Rewrite using `[Matrix.mul_neg, Matrix.neg_mul, locT_neg, Matrix.trace_neg, mul_neg, neg_smul, LinearMap.neg_apply, ← neg_add, map_neg, LinearMap.neg_apply, neg_neg]`. Rewrite `h1` using `[hv]`. Establish `h2 : HasDerivAt (fun s : ℝ => A (j.symm Q) (M'.rep τ (NormedSpace.exp ((-s) • Y)) y)) (A P₂ y₀) t₀`. Establish `h3 : HasDerivAt (fun s : ℝ => A (j.symm Q) (M'.rep τ (NormedSpace.exp ((s - t₀) • -Y)) y₀)) (A P₂ y₀) t₀` using `HasDerivAt.comp_sub_const t₀ t₀ (by rw [sub_self]; exact h1)`.
+
+Use `h3.congr_of_eventuallyEq (Filter.Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Use `show A (j.symm Q) (M'.rep τ (NormedSpace.exp ((-s) • Y)) y) = A (j.symm Q) (M'.rep τ (NormedSpace.exp ((s - t₀) • -Y)) y₀)`. Rewrite using `[hy₀, ← ContinuousLinearMap.comp_apply, ← SchurOrthogonalityAlt.rep_mul M' τ (SchurOrthogonalityAlt.gp_exp_mem τ (neg_mem_lie hY) _) (SchurOrthogonalityAlt.gp_exp_mem τ hY _)]`. Establish `e2 : NormedSpace.exp ((s - t₀) • -Y) * NormedSpace.exp ((-t₀) • Y) = NormedSpace.exp ((-s) • Y)`. Rewrite using `[smul_neg, ← neg_smul, ← SchurOrthogonalityAlt.gp_exp_split]`.
+
+Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`. Establish `h4` using `h2.inner ℂ (hasDerivAt_const t₀ w)`. Simplify using `only [inner_zero_right, zero_add] at h4`.
+
+Use `h4.congr_deriv ?_` and prove the remaining obligations. Rewrite using `[inner_rep_exp M' τ hY t₀, ← hjP, hA'r, AddEquiv.symm_apply_apply]`. Establish `h5` using `weak_deriv (M'.H τ) _ _ hg hw 0`. Simplify `h5` using `only [zero_smul, NormedSpace.exp_zero, SchurOrthogonalityAlt.gp_rep_one, ContinuousLinearMap.one_apply]`. Establish `htgt : ∀ X ∈ lieAt V τ, ∀ Q w, HasDerivAt (fun t : ℝ => A' Q (M.rep τ (NormedSpace.exp (t • X)) w)) (-A' (locT (M'.ε τ) (M.ε τ) (M.fr τ * X * (M.fr τ)⁻¹) Q + ((aT : ℂ) * X.trace) • Q) w) 0`.
+
+Introduce `X hX Q w`. Use `set Q₁ := locT (M'.ε τ) (M.ε τ) (M.fr τ * X * (M.fr τ)⁻¹) Q + ((aT : ℂ) * X.trace) • Q with hQ₁`. Use `set P₁ := locS (M.ε τ) (M'.ε τ) ((M.fr τ * X * (M.fr τ)⁻¹).map (starRingEnd ℂ)) (j.symm Q) - ((aT : ℂ) * X.trace) • j.symm Q with hP₁`. Establish `hjP : j P₁ = Q₁`. Establish `hc : starRingEnd ℂ ((aT : ℂ) * X.trace) = -((aT : ℂ) * X.trace)`.
+
+Rewrite using `[map_mul, hcq, conj_trace_of_lie (gram_det_ne M τ) hX, mul_neg]`. Rewrite using `[hP₁, hQ₁, map_sub, (hj _).2, hjc, AddEquiv.apply_symm_apply, hc, neg_smul, sub_neg_eq_add]`. Establish `hg : Continuous fun t : ℝ => -A' Q₁ (M.rep τ (NormedSpace.exp (t • X)) w)` using `((hcont Q₁).comp (cont_rep_exp M τ hX w)).neg`. Establish `hw : ∀ (y : M'.H τ) (t₀ : ℝ), HasDerivAt (fun s : ℝ => ⟪y, A' Q (M.rep τ (NormedSpace.exp (s • X)) w)⟫_ℂ) ⟪y, -A' Q₁ (M.rep τ (NormedSpace.exp (t₀ • X)) w)⟫_ℂ t₀`. Introduce `y t₀`.
+
+Establish `e : (fun s : ℝ => ⟪y, A' Q (M.rep τ (NormedSpace.exp (s • X)) w)⟫_ℂ) = fun s : ℝ => ⟪M.rep τ (NormedSpace.exp ((-s) • X)) (A (j.symm Q) y), w⟫_ℂ`. Use function extensionality and compare the values at `fun s => by rw [hA'r, inner_rep_exp M τ hX]`. Rewrite using `[e]`. Establish `h1` using `hA.src (-X) (neg_mem_lie hX) (j.symm Q) y`. Establish `hv : A (locS (M.ε τ) (M'.ε τ) ((M.fr τ * -X * (M.fr τ)⁻¹).map (starRingEnd ℂ)) (j.symm Q) - ((aT : ℂ) * (-X).trace) • j.symm Q) y = -A P₁ y`.
+
+Establish `em : (M.fr τ * -X * (M.fr τ)⁻¹).map (starRingEnd ℂ) = -(M.fr τ * X * (M.fr τ)⁻¹).map (starRingEnd ℂ)`. Rewrite using `[Matrix.mul_neg, Matrix.neg_mul, Matrix.map_neg _ (map_neg _)]`. Rewrite using `[em, locS_neg, Matrix.trace_neg, mul_neg, neg_smul, LinearMap.neg_apply, hP₁]`. Simplify using `only [map_sub, map_add, map_neg, LinearMap.sub_apply, LinearMap.add_apply, LinearMap.neg_apply]`. Normalize the expressions using the abelian group laws.
+
+Rewrite `h1` using `[hv]`. Establish `h2 : HasDerivAt (fun s : ℝ => M.rep τ (NormedSpace.exp ((-s) • X)) (A (j.symm Q) y)) (M.rep τ (NormedSpace.exp ((-t₀) • X)) (-A P₁ y)) t₀`. Establish `h3 : HasDerivAt (fun s : ℝ => M.rep τ (NormedSpace.exp ((s - t₀) • -X)) (A (j.symm Q) y)) (-A P₁ y) t₀` using `HasDerivAt.comp_sub_const t₀ t₀ (by rw [sub_self]; exact h1)`. Establish `h4` using `((M.rep τ (NormedSpace.exp ((-t₀) • X))).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt t₀ h3`. Use `h4.congr_of_eventuallyEq (Filter.Eventually.of_forall fun s => ?_)` and prove the remaining obligations.
+
+Use `show M.rep τ (NormedSpace.exp ((-s) • X)) (A (j.symm Q) y) = M.rep τ (NormedSpace.exp ((-t₀) • X)) (M.rep τ (NormedSpace.exp ((s - t₀) • -X)) (A (j.symm Q) y))`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← SchurOrthogonalityAlt.rep_mul M τ (SchurOrthogonalityAlt.gp_exp_mem τ hX _) (SchurOrthogonalityAlt.gp_exp_mem τ (neg_mem_lie hX) _)]`. Establish `e2 : NormedSpace.exp ((-t₀) • X) * NormedSpace.exp ((s - t₀) • -X) = NormedSpace.exp ((-s) • X)`. Rewrite using `[smul_neg, ← neg_smul, ← SchurOrthogonalityAlt.gp_exp_split]`. Use `congr 2`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`. Establish `h4` using `h2.inner ℂ (hasDerivAt_const t₀ w)`. Simplify using `only [inner_zero_right, zero_add] at h4`. Use `h4.congr_deriv ?_` and prove the remaining obligations.
+
+Rewrite using `[inner_neg_right, ← hjP, hA'r, AddEquiv.symm_apply_apply, inner_rep_exp M τ hX t₀, map_neg, inner_neg_left]`. Establish `h5` using `weak_deriv (M'.H τ) _ _ hg hw 0`. Simplify `h5` using `only [zero_smul, NormedSpace.exp_zero, SchurOrthogonalityAlt.gp_rep_one, ContinuousLinearMap.one_apply]`. Establish `hsm : ∀ Q w, A' Q w ∈ M'.sm τ`. Introduce `Q w`.
+
+Use `Submodule.subset_span ?_` and prove the remaining obligations. Set `δ : Matrix (Fin W.rank) (Fin W.rank) ℂ → LPol V.rank W.rank → LPol V.rank W.rank` to `fun Y Q => locS (M'.ε τ) (M.ε τ) ((M'.fr τ * Y * (M'.fr τ)⁻¹).map (starRingEnd ℂ)) Q - ((aS : ℂ) * Y.trace) • Q`. Establish `hadd : ∀ Q Y₁ Y₂, A' (δ (Y₁ + Y₂) Q) w = A' (δ Y₁ Q) w + A' (δ Y₂ Q) w`. Introduce `Q Y₁ Y₂`. Establish `em : (M'.fr τ * (Y₁ + Y₂) * (M'.fr τ)⁻¹).map (starRingEnd ℂ) = (M'.fr τ * Y₁ * (M'.fr τ)⁻¹).map (starRingEnd ℂ) + (M'.fr τ * Y₂ * (M'.fr τ)⁻¹).map (starRingEnd ℂ)`.
+
+Rewrite using `[Matrix.mul_add, Matrix.add_mul, Matrix.map_add _ (map_add _)]`. Establish `e : δ (Y₁ + Y₂) Q = δ Y₁ Q + δ Y₂ Q` using `by show locS (M'.ε τ) (M.ε τ) ((M'.fr τ * (Y₁ + Y₂) * (M'.fr τ)⁻¹).map (starRingEnd ℂ)) Q - ((aS : ℂ) * (Y₁ + Y₂).trace) • Q = (locS (M'.ε τ) (M.ε τ) ((M'.fr τ * Y₁ * (M'.fr τ)⁻¹).map (starRingEnd ℂ)) Q - ((aS : ℂ) * Y₁.trace) • Q) + (locS (M'.ε τ) (M.ε τ) ((M'.fr τ * Y₂ * (M'.fr …`. Rewrite using `[em, locS_add, LinearMap.add_apply, Matrix.trace_add, mul_add, add_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, map_add, LinearMap.add_apply]`.
+
+Establish `hsmul : ∀ Q (c : ℝ) Y, A' (δ ((c : ℂ) • Y) Q) w = (c : ℂ) • A' (δ Y Q) w`. Introduce `Q c Y`. Establish `em : (M'.fr τ * ((c : ℂ) • Y) * (M'.fr τ)⁻¹).map (starRingEnd ℂ) = (c : ℂ) • (M'.fr τ * Y * (M'.fr τ)⁻¹).map (starRingEnd ℂ)`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`. Use extensionality with `i k`.
+
+Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, Complex.conj_ofReal]`. Establish `e : δ ((c : ℂ) • Y) Q = (c : ℂ) • δ Y Q` using `by show locS (M'.ε τ) (M.ε τ) ((M'.fr τ * ((c : ℂ) • Y) * (M'.fr τ)⁻¹).map (starRingEnd ℂ)) Q - ((aS : ℂ) * ((c : ℂ) • Y).trace) • Q = (c : ℂ) • (locS (M'.ε τ) (M.ε τ) ((M'.fr τ * Y * (M'.fr τ)⁻¹).map (starRingEnd ℂ)) Q - ((aS : ℂ) * Y.trace) • Q)`. Rewrite using `[em, locS_smul, LinearMap.smul_apply, Matrix.trace_smul, smul_sub, smul_smul, smul_eq_mul, mul_left_comm]`. Rewrite using `[e, map_smul, LinearMap.smul_apply]`. Conclude with `GlobalTheory.T.smoothVectors_of_lie_closed_family W.rank (gramAt D W τ) (M'.H τ) (M'.rep τ) (LPol V.rank W.rank) (fun Q => A' Q w) δ (gram_det_ne M' τ) (GlobalTheory.HolDict.ModelRep.model_rep D W S' M' τ).2.1 hadd hsmul (fun Y hY Q => hsrc Y hY Q w) Q`.
+
+Use `⟨A', hsm, ?_, fun Q y => ⟨A (j.symm Q) y, fun w => hA'r Q w y⟩, hsrc, htgt⟩` and prove the remaining obligations. Take `⟨P, y, -, hne⟩` from `hA.ne`. Use `⟨j P, A P y, hA.sm P y, fun h0 => hne ?_⟩` and prove the remaining obligations. Establish `h1` using `hA'r (j P) (A P y) y`. Rewrite `h1` using `[h0, inner_zero_right, AddEquiv.symm_apply_apply]`.
+
+Conclude with `inner_self_eq_zero.1 h1.symm`.
+-/
 theorem adj_locIt : ∀ (D : D7) (V W : HSp D) (S S' : D.what₂.Tau → SPar) (M : DSModel V S) (M' : DSModel W S') (τ : D.what₂.Tau) (aS aT : ℚ) (A : LPol W.rank V.rank →ₗ[ℂ] M'.H τ →ₗ[ℂ] M.H τ), LocIt M M' τ aS aT A → ∃ A' : LPol V.rank W.rank →ₗ[ℂ] M.H τ →ₗ[ℂ] M'.H τ, LocIt M' M τ aT aS A' := by
   intro D V W S S' M M' τ aS aT A hA
   obtain ⟨j, hjc, hj⟩ := GlobalTheory.T.fock_sign_transpose_exchanges_local_gl_actions V.rank W.rank (M.ε τ) (M'.ε τ)

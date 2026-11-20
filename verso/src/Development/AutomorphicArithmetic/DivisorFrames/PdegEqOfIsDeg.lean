@@ -6,6 +6,15 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.CechPic GlobalTheory.ProjVar
 open GlobalTheory.VertCmp
 open scoped Classical
 
+/- English proof (translation)
+Establish `e : i'.ker = i.ker`. Rewrite using `[← InterModel.radical_ker i, ← InterModel.radical_ker i', ← Scheme.IdealSheafData.vanishingIdeal_support, ← Scheme.IdealSheafData.vanishingIdeal_support]`. Use `congr 1`. Use `ext1`. Rewrite using `[Scheme.Hom.support_ker, Scheme.Hom.support_ker, h]`.
+
+Set `j : Z ⟶ Z'` to `IsClosedImmersion.lift i' i e.le`. Establish `hj : j ≫ i' = i` using `IsClosedImmersion.lift_fac _ _ _`. Establish `: IsClosedImmersion (j ≫ i')` using `hj ▸ inferInstance`. Establish `: IsClosedImmersion j` using `IsClosedImmersion.of_comp j i'`. Establish `hr : Set.range j = (⊤ : TopologicalSpace.Closeds Z')` using `Set.eq_univ_of_forall fun y => by`.
+
+Take `⟨x, hx⟩` from `h.ge ⟨y, rfl⟩`. Conclude with `⟨x, i'.isClosedEmbedding.injective (by rw [← hx, ← hj]; rfl)⟩`. Establish `hL' : ∀ a, ((N a).pull i').IsLB` using `fun a => LB.isLB_pull (hN a) i'`. Rewrite using `[← interNumOn_id, ← InterModel.interNumRed_eq_interNumOn (ZMod p) (𝟙 _) ⊤ (by simp), InterModel.interNumRed_eq_interNumOn (ZMod p) j ⊤ hr, interNumOn_eq_interNum_pull (fun r => RingHom.congr_fun (RingHom.ext_zmod (j.appTop.hom.comp (algebraMap _ _)) (algebraMap _ _)) r) hL']`. Use `interNum_congr_cls _ _ (fun a => LB.isLB_pull (hL' a) j) (fun a => LB.isLB_pull (hN a) i) fun a => ?_` and prove the remaining obligations.
+
+Conclude with `((CechPic.pull_comp j i' (cls (N a) (hN a))).symm.trans (by rw [hj])).trans (CechPic.cls_pull (hN a) i _).symm`.
+-/
 private theorem interNum_eq_of_range_eq (p : ℕ) [Fact p.Prime] {X Z Z' : Scheme.{0}} {d : ℕ} (N : Fin d → LB X)
     (hN : ∀ j, (N j).IsLB) [Algebra (ZMod p) Γ(Z, ⊤)] [Algebra (ZMod p) Γ(Z', ⊤)] (i : Z ⟶ X) (i' : Z' ⟶ X)
     [IsClosedImmersion i] [IsClosedImmersion i'] [IsReduced Z] [IsReduced Z'] (h : Set.range i = Set.range i') :
@@ -31,10 +40,18 @@ private theorem interNum_eq_of_range_eq (p : ℕ) [Fact p.Prime] {X Z Z' : Schem
   refine interNum_congr_cls _ _ (fun a => LB.isLB_pull (hL' a) j) (fun a => LB.isLB_pull (hN a) i) fun a => ?_
   exact ((CechPic.pull_comp j i' (cls (N a) (hN a))).symm.trans (by rw [hj])).trans (CechPic.cls_pull (hN a) i _).symm
 
+/- English proof (translation)
+Rewrite using `[← Set.image_singleton, i.isClosedEmbedding.closure_image_eq, (genericPoint_spec Z).def, Set.image_univ]`.
+-/
 private theorem range_eq_closure {X Z : Scheme.{0}} (i : Z ⟶ X) [IsClosedImmersion i] [IsIntegral Z] :
     Set.range i = closure {i (genericPoint Z)} := by
   rw [← Set.image_singleton, i.isClosedEmbedding.closure_image_eq, (genericPoint_spec Z).def, Set.image_univ]
 
+/- English proof (translation)
+Introduce `p _ X d N hN z a ha`. Establish `hex : ∃ a, IsDeg p N z a` using `⟨a, ha⟩`. Rewrite using `[pdeg, dif_pos hex]`. Take `⟨Z', i', _, _, _, hz', -, e'⟩` from `hex.choose_spec`. Take `⟨Z, i, _, _, _, hz, -, e⟩` from `ha`.
+
+Rewrite using `[e', e]`. Conclude with `interNum_eq_of_range_eq p N hN i i' (by rw [range_eq_closure, range_eq_closure, hz, hz'])`.
+-/
 theorem UpperTheory.pdeg_eq_of_isDeg :
     ∀ (p : ℕ) [Fact p.Prime] (X : Scheme.{0}) (d : ℕ) (N : Fin d → LB X), (∀ j, (N j).IsLB) → ∀ (z : X) (a : ℤ), IsDeg p N z a → pdeg p N z = a := by
   intro p _ X d N hN z a ha

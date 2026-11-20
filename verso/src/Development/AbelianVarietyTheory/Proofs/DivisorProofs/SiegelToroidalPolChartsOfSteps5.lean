@@ -15,6 +15,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `g hg φ hφ hφ' n hn ho`. Establish `hn0 : n ≠ 0` using `by omega`. Use `haveI : IsNoetherianRing (cycAway n) := by haveI := (GlobalTheory.SiegelTor.arBase_cycAway n hn0).1; infer_instance`. Take `⟨F⟩` from `hF g n hg hn ho`. Take `⟨Z, z, i, OZ, hMA⟩` from `hMin g hg n hn ho F`.
+
+Establish `hMA'` using `hMA`. Take `⟨o', _, β, S', s', U, c, π', G', _, e', _, N', ⟨hTh, hZp, hZn, hiz, hid, hOZ, hOZa⟩, -⟩` from `hMA'`. Take `⟨d, J, S, π, j, BD, hd, hJ, hV, hBl, hP, hj, hjd, hji, hjpre, hBD, hVj, k₀, hk₀⟩` from `hPoin g hg n hn ho F Z z i hTh OZ hOZ hOZa φ hφ`. Use `haveI := hj`. Establish `hBlow : BlowAt F z i φ d π j BD` using `⟨J, hd, hJ, hV, hBl, hP, hjd, hji, hjpre, hBD, hVj⟩`.
+
+Take `⟨hsm, hpre⟩` from `hChart g hg φ hφ hφ' n hn ho F Z z i OZ d S π j BD hMA hBlow`. Take `⟨G, _, e, hGs, hGd, hGe, hGab⟩` from `hDesc g hg φ n hn ho F Z z i d S π j BD hBlow hpre`. Use `haveI := hsm`. Use `haveI : Smooth (π ≫ z) := SmoothOfRelativeDimension.smooth (g * (g + 1) / 2) _`. Use `haveI : QuasiSeparated G.hom := by haveI := hGs.separated; infer_instance`.
+
+Take `⟨a, N, ha, hN, hiso⟩` from `GlobalTheory.T.hodgeBundle_power_iso_minimalSiegelCompactification g n F Z z i OZ S π j G e hMA (fun x => ⟨hBl.1.isDomain_stalk x, hBl.1.isIntegrallyClosed_stalk x⟩) hP hjd hji hGs hGd hGe`. Take `⟨N'', hN'', hgen, k, hk⟩` from `GlobalTheory.T.exists_globallyGenerated_ample_power_toroidalPullback (cycAway n) Z S z π OZ (hodge G g) (GlobalTheory.CechPic.dual BD.lb) a N hZp hOZ hOZa (isLB_hodge G g) (GlobalTheory.CechPic.isLB_dual BD.isLB_lb) ha hN hiso ⟨k₀, hk₀⟩`. Use `⟨F, S, π ≫ z, j, hj, G, inferInstance, e, BD, d, N'', hP, hsm, by rw [← Category.assoc, hji, hiz], ?_, hGs, hGd, hGe, hGab, hd, ?_, hN'', hgen, k, hk⟩` and prove the remaining obligations. Introduce `x`. Conclude with `GlobalTheory.T.mem_closure_moduliFibre_of_monomialPeriodPreChart F (π ≫ z) j φ BD d x (hpre x)`.
+
+Introduce `x`. Conclude with `GlobalTheory.T.hasPolarisedChart_of_monomialPreChart_semiAbelianExt F (π ≫ z) j G e φ BD d x hn0 hGs hGd hGe hGab (hpre x)`.
+-/
 theorem GlobalTheory.SiegJoin.siegelToroidalPolCharts_of_steps5
     (hF : ∀ g n : ℕ, 1 ≤ g → 3 ≤ n → Odd n → Nonempty (SFam g n (zetaAway n))) (hMin : GlobalTheory.SiegJoin.MinSt5)
     (hPoin : GlobalTheory.Poinc.PoinSt) (hChart : GlobalTheory.SiegJoin.ChartSt5) (hDesc : GlobalTheory.SiegJoin.DescSt5) :

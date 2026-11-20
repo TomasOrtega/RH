@@ -29,6 +29,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 abbrev cw (w : HeightOneSpectrum (𝓞 E)) : HeightOneSpectrum (𝓞 E) :=
   conjSrc (IsCMField.complexConj E).toRingEquiv w
 
+/- English proof (translation)
+Establish `key : ∀ v, Matrix.GeneralLinearGroup.map (pLoc E v) (thetaGL n (cFin E) (locGL E n (cw w) g)) = thetaGL n (RingHom.id _) (Matrix.GeneralLinearGroup.map (conjLoc _ v) (Matrix.GeneralLinearGroup.map (pLoc E (cw v)) (locGL E n (cw w) g)))` using `fun v => map_thetaGL (pLoc E v) (RingHom.id _) (RingHom.id _) (fun _ => rfl) (Matrix.GeneralLinearGroup.map (cFin E) (locGL E n (cw w) g))`. Establish `key2 : ∀ v, Matrix.GeneralLinearGroup.map (pLoc E v) (thetaGL n (cFin E) (locGL E n (cw w) g)) = Matrix.GeneralLinearGroup.map (pLoc E v) (locGL E n w (thetaGL n (RingHom.id _) (Matrix.GeneralLinearGroup.map (conjLoc _ w) g)))` using `fun v => by`. Rewrite using `[key]`. Distinguish the cases in `h : v = w`. Substitute `h` using the available equality.
+
+Rewrite using `[pLoc_locGL, pLoc_locGL]`. Rewrite using `[pLoc_locGL_of_ne h, pLoc_locGL_of_ne (fun e => h (conjSrc_injective _ e)), map_one, map_one]`. Use `Units.ext (Matrix.ext fun i j => FiniteAdeleRing.ext _ fun v => ?_)` and prove the remaining obligations. Conclude with `congrArg (fun u : GL (Fin n) (v.adicCompletion E) => u.val i j) (key2 v)`.
+-/
 theorem theta_locGL (w : HeightOneSpectrum (𝓞 E)) (g : GL (Fin n) ((cw w).adicCompletion E)) :
     thetaGL n (cFin E) (locGL E n (cw w) g) =
       locGL E n w (thetaGL n (RingHom.id _) (Matrix.GeneralLinearGroup.map (conjLoc _ w) g)) := by
@@ -48,6 +53,9 @@ theorem theta_locGL (w : HeightOneSpectrum (𝓞 E)) (g : GL (Fin n) ((cw w).adi
   refine Units.ext (Matrix.ext fun i j => FiniteAdeleRing.ext _ fun v => ?_)
   exact congrArg (fun u : GL (Fin n) (v.adicCompletion E) => u.val i j) (key2 v)
 
+/- English proof (translation)
+Introduce `y` and use `by classical refine ⟨pLoc E _ (cFin E (sLoc E w y)), ?_⟩ rw [← pLoc_conjFin] exact (congrArg (pLoc E w) (cFin_cFin _)).trans (Pi.single_eq_same (M := fun v : HeightOneSpectrum (𝓞 E) => v.adicCompletion E) w y)`.
+-/
 theorem conjLoc_surj (w : HeightOneSpectrum (𝓞 E)) :
     Function.Surjective (conjLoc (IsCMField.complexConj E).toRingEquiv w) := fun y => by
   classical
@@ -56,6 +64,9 @@ theorem conjLoc_surj (w : HeightOneSpectrum (𝓞 E)) :
   exact (congrArg (pLoc E w) (cFin_cFin _)).trans
     (Pi.single_eq_same (M := fun v : HeightOneSpectrum (𝓞 E) => v.adicCompletion E) w y)
 
+/- English proof (translation)
+Rewrite using `[(GlobalTheory.Mem.Chr.conjPl_iff_comap _ _ _).1 (conjPl_conjSrc (IsCMField.complexConj E).toRingEquiv w)]`. Conclude with `Nat.card_congr (Ideal.quotientEquiv _ _ (RingOfIntegers.mapRingEquiv _) (Ideal.map_comap_of_surjective _ (RingEquiv.surjective _) _).symm).toEquiv`.
+-/
 theorem absNorm_cw (w : HeightOneSpectrum (𝓞 E)) : Ideal.absNorm (cw w).asIdeal = Ideal.absNorm w.asIdeal := by
   rw [(GlobalTheory.Mem.Chr.conjPl_iff_comap _ _ _).1 (conjPl_conjSrc (IsCMField.complexConj E).toRingEquiv w)]
   exact Nat.card_congr (Ideal.quotientEquiv _ _ (RingOfIntegers.mapRingEquiv _)
@@ -64,6 +75,9 @@ theorem absNorm_cw (w : HeightOneSpectrum (𝓞 E)) : Ideal.absNorm (cw w).asIde
 def cloc (w : HeightOneSpectrum (𝓞 E)) : (cw w).adicCompletion E ≃+* w.adicCompletion E :=
   RingEquiv.ofBijective (conjLoc _ w) ⟨(conjLoc _ w).injective, conjLoc_surj w⟩
 
+/- English proof (translation)
+Establish `e1 : GlobalTheory.LFun.ConjPlace.invT (cloc w) n g = GlobalTheory.CuspRep.invT n _ (Matrix.GeneralLinearGroup.map (conjLoc _ w) g)` using `Units.ext (Matrix.ext fun i j => GlobalTheory.LFun.ConjPlace.invT_val _ g i j)`. Rewrite using `[e1]`. Both sides reduce to the same expression.
+-/
 theorem thetaGL_conj (w : HeightOneSpectrum (𝓞 E)) (g : GL (Fin n) ((cw w).adicCompletion E)) :
     thetaGL n (RingHom.id _) (Matrix.GeneralLinearGroup.map (conjLoc _ w) g) =
       PhiU n _ * GlobalTheory.LFun.ConjPlace.invT (cloc w) n g * (PhiU n _)⁻¹ := by
@@ -73,6 +87,11 @@ theorem thetaGL_conj (w : HeightOneSpectrum (𝓞 E)) (g : GL (Fin n) ((cw w).ad
   rw [e1]
   rfl
 
+/- English proof (translation)
+Establish `h : ∀ i j : Fin n, GlobalTheory.Tw.Phi n K i j ∈ O` using `fun i j => by`. Simplify using `only [GlobalTheory.Tw.Phi, Matrix.of_apply]`. Use `split_ifs`. Conclude with `pow_mem (neg_mem (one_mem O)) _`. Conclude with `zero_mem O`.
+
+Conclude with `GlobalTheory.AdelicU.mem_GLint_iff.2 ⟨h, fun i j => h j i⟩`.
+-/
 theorem phiU_mem {K : Type} [Field K] (O : Subring K) (n : ℕ) : PhiU n K ∈ Formalism.UG.GLint (Fin n) O := by
   have h : ∀ i j : Fin n, GlobalTheory.Tw.Phi n K i j ∈ O := fun i j => by
     simp only [GlobalTheory.Tw.Phi, Matrix.of_apply]
@@ -81,6 +100,13 @@ theorem phiU_mem {K : Type} [Field K] (O : Subring K) (n : ℕ) : PhiU n K ∈ F
     · exact zero_mem O
   exact GlobalTheory.AdelicU.mem_GLint_iff.2 ⟨h, fun i j => h j i⟩
 
+/- English proof (translation)
+Establish `hK` using `GlobalTheory.LFun.ConjPlace.mem_iff_invT (n := a) c (GlobalTheory.LFun.ConjPlace.map_mem_Ov_iff c hc)`. Establish `hf : ∀ g y, T.toLinearMap ((ρ.comp (GlobalTheory.LFun.ConjPlace.invT c a).symm.toMonoidHom) g y) = ρ' g (T.toLinearMap y)` using `fun g y => by`. Express the relevant statement in the definitionally equal form `T (ρ ((GlobalTheory.LFun.ConjPlace.invT c a).symm g) y) = ρ' g (T y)`. Rewrite using `[← hT, MulEquiv.apply_symm_apply]`. Establish `key : ∀ x, GlobalTheory.LFun.IsSatVecGL w ρ x B → GlobalTheory.LFun.IsSatVecGL w' ρ' (T x) (B.map (·⁻¹))` using `fun x hx => (GlobalTheory.LFun.ConjPlace.isSatVecGL_invT c hc hq hx).map T.toLinearMap hf ((map_ne_zero_iff T T.injective).2 hx.1)`.
+
+Prove the components needed by the constructor for the conclusion. Take `⟨x, hx⟩` from `h.exists_vec`. Conclude with `(Submodule.ne_bot_iff _).2 ⟨_, (key x hx).2.1, (key x hx).1⟩`. Introduce `y hy h0`. Take `⟨x, rfl⟩` from `T.surjective y`.
+
+Use `key x (h.2 x (GlobalTheory.LGrp.mem_fixed.2 fun k hk => T.injective ?_) ((map_ne_zero_iff T T.injective).1 h0))` and prove the remaining obligations. Use `GlobalTheory.LGrp.mem_fixed.1 hy _ ((hK k).1 hk)` as an intermediate fact. Rewrite `this` using `[hT]`. Then use the resulting hypothesis.
+-/
 theorem hasSatGL_of_invT {w w' : HeightOneSpectrum (𝓞 E)} {a : ℕ}
     (c : w.adicCompletion E ≃+* w'.adicCompletion E) (hc : ∀ x, Valued.v (c x) = Valued.v x)
     (hq : Formalism.UG.qV E w' = Formalism.UG.qV E w)
@@ -105,6 +131,13 @@ theorem hasSatGL_of_invT {w w' : HeightOneSpectrum (𝓞 E)} {a : ℕ}
     have := GlobalTheory.LGrp.mem_fixed.1 hy _ ((hK k).1 hk)
     rwa [hT] at this
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[CG.hasSat_mk]`. Set `ρ'` to `(thetaSub π).locRep w`. Set `T₀ : π.V ≃ₗ[ℂ] (thetaSub π).V` to `(pull E a).submoduleMap π.V`. Establish `h0 : ∀ g x, ρ' (thetaGL a (RingHom.id _) (Matrix.GeneralLinearGroup.map (conjLoc _ w) g)) (T₀ x) = T₀ (π.locRep (cw w) g x)` using `fun g x => by`. Rewrite using `[CuspSub.locRep_eq, CuspSub.locRep_eq, ← theta_locGL]`.
+
+Conclude with `Subtype.ext (pull_act (.fin (locGL E a (cw w) g)) x.1).symm`. Set `k` to `PhiU a (w.adicCompletion E)`. Set `S : (thetaSub π).V ≃ₗ[ℂ] (thetaSub π).V` to `LinearEquiv.ofLinear (ρ' k⁻¹) (ρ' k) (by rw [← Module.End.mul_eq_comp, ← map_mul, inv_mul_cancel, map_one]; rfl) (by rw [← Module.End.mul_eq_comp, ← map_mul, mul_inv_cancel, map_one]; rfl)`. Use `hasSatGL_of_invT (cloc w) (conjLoc_spec _ w).2.2 (absNorm_cw w).symm (T₀.trans S) (fun g x => ?_) h` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ρ' _ (ρ' k⁻¹ (T₀ x)) = ρ' k⁻¹ (T₀ _)`.
+
+Rewrite using `[← h0, thetaGL_conj, ← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul]`. Use `congr 2`. Simplify using `only [k]`. Use `group`.
+-/
 theorem hasSat_thetaSub {a : ℕ} (π : CuspSub E a) (w : HeightOneSpectrum (𝓞 E)) (C : Multiset ℂˣ)
     (h : (CG.mk π).HasSat (cw w) C) : (CG.mk (thetaSub π)).HasSat w (C.map (·⁻¹)) := by
   rw [CG.hasSat_mk] at h ⊢

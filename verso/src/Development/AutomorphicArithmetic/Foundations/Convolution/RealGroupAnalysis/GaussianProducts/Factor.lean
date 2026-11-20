@@ -5,6 +5,33 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.G
 open scoped Classical ENNReal nonZeroDivisors
 
+/- English proof (translation)
+Introduce `X Y _ _ _ _ _ _ r H hr hH hf`. Establish `key : ∀ F : Set X, IsClosed F → MeasurableSet (r '' F)`. Introduce `F hF`. Establish `e : r '' F = ⋃ n, r '' (F ∩ compactCovering X n)`. Rewrite using `[← Set.image_iUnion, ← Set.inter_iUnion, iUnion_compactCovering, Set.inter_univ]`.
+
+Rewrite using `[e]`. Use `MeasurableSet.iUnion fun n => ?_` and prove the remaining obligations. Conclude with `(((isCompact_compactCovering X n).inter_left hF).image hr).isClosed.measurableSet`. Establish `hrange : MeasurableSet (Set.range r)`. Rewrite using `[← Set.image_univ]`.
+
+Conclude with `key _ isClosed_univ`. Set `h : Y → ℂ` to `fun y => if hy : ∃ x, r x = y then H hy.choose else 0`. Establish `hh : ∀ x, h (r x) = H x`. Introduce `x`. Establish `hy : ∃ x', r x' = r x` using `⟨x, rfl⟩`.
+
+Simplify using `only [h, dif_pos hy]`. Conclude with `hf _ _ hy.choose_spec`. Use `⟨h, measurable_of_isClosed fun C hC => ?_, hh⟩` and prove the remaining obligations. Establish `himg : MeasurableSet (r '' (H ⁻¹' C))` using `key _ (hC.preimage hH)`. Establish `hout : ∀ y, y ∉ Set.range r → h y = 0`.
+
+Introduce `y hy`. Establish `hy' : ¬ ∃ x, r x = y` using `hy`. Simplify using `only [h, dif_neg hy']`. Distinguish the cases in `h0 : (0 : ℂ) ∈ C`. Establish `e : h ⁻¹' C = r '' (H ⁻¹' C) ∪ (Set.range r)ᶜ`.
+
+Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Distinguish the cases in `hyr : y ∈ Set.range r`. Take `⟨x, rfl⟩` from `hyr`.
+
+Use `Or.inl ⟨x, ?_, rfl⟩` and prove the remaining obligations. Establish `: h (r x) ∈ C` using `hy`. Rewrite `this` using `[hh]`. Conclude with `this`. Conclude with `Or.inr hyr`.
+
+Introduce and unpack `(⟨x, hx, rfl⟩ | hy)`. Use `show h (r x) ∈ C`. Rewrite using `[hh]`. Conclude with `hx`. Use `show h y ∈ C`.
+
+Rewrite using `[hout y hy]`. Conclude with `h0`. Rewrite using `[e]`. Conclude with `himg.union hrange.compl`. Establish `e : h ⁻¹' C = r '' (H ⁻¹' C)`.
+
+Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Distinguish the cases in `hyr : y ∈ Set.range r`. Take `⟨x, rfl⟩` from `hyr`.
+
+Use `⟨x, ?_, rfl⟩` and prove the remaining obligations. Establish `: h (r x) ∈ C` using `hy`. Rewrite `this` using `[hh]`. Conclude with `this`. Establish `: h y ∈ C` using `hy`.
+
+Rewrite `this` using `[hout y hyr]`. Conclude with `absurd this h0`. Introduce and unpack `⟨x, hx, rfl⟩ show h (r x) ∈ C`. Rewrite using `[hh]`. Conclude with `hx`.
+
+Rewrite using `[e]`. Conclude with `himg`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.G.factor :
     ∀ (X Y : Type) [TopologicalSpace X] [SigmaCompactSpace X] [TopologicalSpace Y] [T2Space Y] [MeasurableSpace Y] [BorelSpace Y]
     (r : X → Y) (H : X → ℂ), Continuous r → Continuous H → (∀ x x', r x = r x' → H x = H x') → ∃ h : Y → ℂ, Measurable h ∧ ∀ x, h (r x) = H x := by

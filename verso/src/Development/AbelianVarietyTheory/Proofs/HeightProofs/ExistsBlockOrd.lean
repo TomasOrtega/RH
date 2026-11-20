@@ -19,11 +19,27 @@ def Factors {T : GrpData p q} (U : URep T) (e : Ix p q ≃ Fin n)
     (σ : Matrix (Fin n) (Fin n) ℂ → (U.H →L[ℂ] U.H)) : Prop :=
   ∀ x, U.π x = σ (Matrix.reindex e e ((T.cov x : GL (Ix p q) ℂ) : Mat p q))
 
+/- English proof (translation)
+Take `⟨h1, h2, -⟩` from `h`. Apply the tactic sequence `cases a <;> cases b <;> simp [sameBlock, h1, h2]`.
+-/
 theorem BlockOrd.sameBlock_iff {e : Ix p q ≃ Fin n} {ε : Fin n → Bool} (h : BlockOrd e ε) (a b : Ix p q) :
     sameBlock a b ↔ ε (e a) = ε (e b) := by
   obtain ⟨h1, h2, -⟩ := h
   cases a <;> cases b <;> simp [sameBlock, h1, h2]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hab`. Use `⟨h.2.2 a b hab, ?_⟩` and prove the remaining obligations. Rewrite using `[← h.sameBlock_iff]`. Apply the tactic sequence `cases a <;> cases b <;> simp_all [posC, sameBlock]`.
+
+Introduce and unpack `⟨hlt, heq⟩`. Rewrite `heq` using `[← h.sameBlock_iff]`. Establish `hne : a ≠ b` using `fun hab => by subst hab; exact lt_irrefl _ hlt`. Establish `hnot : ¬ posC b a` using `fun hba => lt_asymm hlt (h.2.2 b a hba)`. Consider the cases of `a with`.
+
+Consider the case `inl i`. Consider the cases of `b with`. Consider the case `inl j`. Simplify using `only [posC] at hnot ⊢`. Break down `lt_trichotomy i j with hij | hij | hij` into its components or cases.
+
+Conclude with `hij`. Conclude with `absurd (congrArg Sum.inl hij) hne`. Conclude with `absurd hij hnot`. Consider the case `inr j => simp [sameBlock] at heq`. Consider the case `inr i`.
+
+Consider the cases of `b with`. Consider the case `inl j => simp [sameBlock] at heq`. Consider the case `inr j`. Simplify using `only [posC] at hnot ⊢`. Break down `lt_trichotomy i j with hij | hij | hij` into its components or cases.
+
+Conclude with `hij`. Conclude with `absurd (congrArg Sum.inr hij) hne`. Conclude with `absurd hij hnot`.
+-/
 theorem BlockOrd.posC_iff {e : Ix p q ≃ Fin n} {ε : Fin n → Bool} (h : BlockOrd e ε) (a b : Ix p q) :
     posC a b ↔ e a < e b ∧ ε (e a) = ε (e b) := by
   constructor
@@ -55,6 +71,27 @@ theorem BlockOrd.posC_iff {e : Ix p q ≃ Fin n} {ε : Fin n → Bool} (h : Bloc
         · exact absurd (congrArg Sum.inr hij) hne
         · exact absurd hij hnot
 
+/- English proof (translation)
+Use `set S := Finset.univ.filter fun a => ε a = true with hS`. Use `set T := Finset.univ.filter fun a => ε a = false with hT`. Establish `hcard : p + q = n`. Establish `h0` using `Finset.card_filter_add_card_filter_not (s := (Finset.univ : Finset (Fin n))) (fun a => ε a = true)`. Simplify using `only [Bool.not_eq_true, Finset.card_univ, Fintype.card_fin] at h0`.
+
+Rewrite using `[← hp, ← hq]`. Conclude with `h0`. Set `f : Ix p q → Fin n` to `fun x => match x with`. Consider the case `Sum.inl i => S.orderEmbOfFin hp i`. Consider the case `Sum.inr j => T.orderEmbOfFin hq j`.
+
+Establish `fS : ∀ i, ε (f (Sum.inl i)) = true` using `fun i => (Finset.mem_filter.mp (S.orderEmbOfFin_mem hp i)).2`. Establish `fT : ∀ j, ε (f (Sum.inr j)) = false` using `fun j => (Finset.mem_filter.mp (T.orderEmbOfFin_mem hq j)).2`. Establish `hinj : Function.Injective f`. Introduce `x y hxy`. Consider the cases of `x with`.
+
+Consider the case `inl i`. Consider the cases of `y with`. Consider the case `inl j => exact congrArg Sum.inl ((S.orderEmbOfFin hp).injective hxy)`. Consider the case `inr j`. Establish `h1` using `fS i`.
+
+Rewrite `h1` using `[hxy, fT j]`. Conclude with `absurd h1 (by simp)`. Consider the case `inr i`. Consider the cases of `y with`. Consider the case `inl j`.
+
+Establish `h1` using `fT i`. Rewrite `h1` using `[hxy, fS j]`. Conclude with `absurd h1 (by simp)`. Consider the case `inr j => exact congrArg Sum.inr ((T.orderEmbOfFin hq).injective hxy)`. Establish `hbij : Function.Bijective f`.
+
+Rewrite using `[Fintype.bijective_iff_injective_and_card]`. Use `⟨hinj, ?_⟩` and prove the remaining obligations. Simplify using `[hcard]`. Use `⟨Equiv.ofBijective f hbij, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`.
+
+Conclude with `fS i`. Introduce `j`. Conclude with `fT j`. Introduce `a b hab`. Simplify using `only [Equiv.ofBijective_apply]`.
+
+Consider the cases of `a with`. Consider the case `inl i`. Consider the cases of `b with`. Consider the case `inl j => exact (S.orderEmbOfFin hp).strictMono hab`. Consider the case `inr j => exact absurd hab (by simp [posC])`.
+
+Consider the case `inr i`. Consider the cases of `b with`. Consider the case `inl j => exact absurd hab (by simp [posC])`. Consider the case `inr j => exact (T.orderEmbOfFin hq).strictMono hab`.
+-/
 theorem exists_blockOrd (ε : Fin n → Bool) (hp : (Finset.univ.filter fun a => ε a = true).card = p)
     (hq : (Finset.univ.filter fun a => ε a = false).card = q) : ∃ e : Ix p q ≃ Fin n, BlockOrd e ε := by
   classical
@@ -112,6 +149,11 @@ theorem exists_blockOrd (ε : Fin n → Bool) (hp : (Finset.univ.filter fun a =>
       | inl j => exact absurd hab (by simp [posC])
       | inr j => exact (T.orderEmbOfFin hq).strictMono hab
 
+/- English proof (translation)
+Take `⟨h1, h2, -⟩` from `h`. Use extensionality with `a b`. Take `⟨a', rfl⟩` from `e.surjective a`. Take `⟨b', rfl⟩` from `e.surjective b`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, Formalism.REAL.Jm, Matrix.diagonal_apply, EmbeddingLike.apply_eq_iff_eq, Jm, Formalism.UG.Jpq]`.
+
+Apply the tactic sequence `cases a' <;> cases b' <;> simp [h1, h2, Matrix.one_apply] <;> split_ifs <;> simp`.
+-/
 theorem BlockOrd.reindex_Jm {e : Ix p q ≃ Fin n} {ε : Fin n → Bool} (h : BlockOrd e ε) :
     Matrix.reindex e e (Jm p q) = Formalism.REAL.Jm ε := by
   obtain ⟨h1, h2, -⟩ := h
@@ -122,6 +164,11 @@ theorem BlockOrd.reindex_Jm {e : Ix p q ≃ Fin n} {ε : Fin n → Bool} (h : Bl
     Matrix.diagonal_apply, EmbeddingLike.apply_eq_iff_eq, Jm, Formalism.UG.Jpq]
   cases a' <;> cases b' <;> simp [h1, h2, Matrix.one_apply] <;> split_ifs <;> simp
 
+/- English proof (translation)
+Establish `key : ∀ M N : Mat p q, Matrix.reindex e e M * Matrix.reindex e e N = Matrix.reindex e e (M * N)`. Introduce `M N`. Simplify using `[Matrix.reindex_apply, Matrix.submatrix_mul_equiv]`. Unfold `Formalism.REAL.inUJ`. Rewrite using `[← h.reindex_Jm, Matrix.conjTranspose_reindex, key, key]`.
+
+Conclude with `(Matrix.reindex e e).injective.eq_iff`.
+-/
 theorem BlockOrd.inUJ_iff {e : Ix p q ≃ Fin n} {ε : Fin n → Bool} (h : BlockOrd e ε) (g : Mat p q) :
     Formalism.REAL.inUJ ε (Matrix.reindex e e g) ↔ gᴴ * Jm p q * g = Jm p q := by
   have key : ∀ M N : Mat p q, Matrix.reindex e e M * Matrix.reindex e e N = Matrix.reindex e e (M * N) := by
@@ -131,6 +178,11 @@ theorem BlockOrd.inUJ_iff {e : Ix p q ≃ Fin n} {ε : Fin n → Bool} (h : Bloc
   rw [← h.reindex_Jm, Matrix.conjTranspose_reindex, key, key]
   exact (Matrix.reindex e e).injective.eq_iff
 
+/- English proof (translation)
+Unfold `Formalism.UG.Upq Formalism.UG.UJ`. Rewrite using `[Subgroup.mem_mk]`. Use `show Formalism.UG.cT (starRingEnd ℂ) (g : Mat p q) * Formalism.UG.Jpq p q * (g : Mat p q) = Formalism.UG.Jpq p q ↔ _`. Establish `hc : Formalism.UG.cT (starRingEnd ℂ) (g : Mat p q) = (g : Mat p q)ᴴ`. Use extensionality with `i j`.
+
+Simplify using `[Formalism.UG.cT, Matrix.conjTranspose_apply]`. Rewrite using `[hc]`. Both sides reduce to the same expression.
+-/
 theorem mem_Upq (g : GL (Ix p q) ℂ) : g ∈ Formalism.UG.Upq p q ↔ (g : Mat p q)ᴴ * Jm p q * g = Jm p q := by
   unfold Formalism.UG.Upq Formalism.UG.UJ
   rw [Subgroup.mem_mk]
@@ -141,11 +193,25 @@ theorem mem_Upq (g : GL (Ix p q) ℂ) : g ∈ Formalism.UG.Upq p q ↔ (g : Mat 
   rw [hc]
   rfl
 
+/- English proof (translation)
+Use `show Formalism.REAL.inUJ ε _`. Conclude with `(h.inUJ_iff _).mpr ((mem_Upq _).mp (T.cov_mem x))`.
+-/
 theorem BlockOrd.cov_mem {e : Ix p q ≃ Fin n} {ε : Fin n → Bool} (h : BlockOrd e ε) (T : GrpData p q) (x : T.G) :
     Matrix.reindex e e ((T.cov x : GL (Ix p q) ℂ) : Mat p q) ∈ UJset ε := by
   show Formalism.REAL.inUJ ε _
   exact (h.inUJ_iff _).mpr ((mem_Upq _).mp (T.cov_mem x))
 
+/- English proof (translation)
+Establish `hg' : Formalism.REAL.inUJ ε g` using `hg`. Use `set g' : Mat p q := (Matrix.reindex e e).symm g`. Establish `hre : Matrix.reindex e e g' = g` using `(Matrix.reindex e e).apply_symm_apply g`. Establish `hU : g'ᴴ * Jm p q * g' = Jm p q`. Rewrite using `[← h.inUJ_iff, hre]`.
+
+Conclude with `hg'`. Establish `hJJ : Jm p q * Jm p q = 1`. Simplify using `[Jm, Formalism.UG.Jpq, Matrix.fromBlocks_multiply]`. Establish `hleft : (Jm p q * g'ᴴ * Jm p q) * g' = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc g'ᴴ, hU, hJJ]`.
+
+Establish `hright : g' * (Jm p q * g'ᴴ * Jm p q) = 1` using `mul_eq_one_comm.mp hleft`. Set `u : GL (Ix p q) ℂ` to `⟨g', Jm p q * g'ᴴ * Jm p q, hright, hleft⟩`. Establish `hu : u ∈ Formalism.UG.Upq p q` using `(mem_Upq u).mpr hU`. Establish `hdet : (u : Mat p q).det ≠ 0`. Use `(Matrix.isUnit_iff_isUnit_det (u : Mat p q)).mp u.isUnit` as an intermediate fact.
+
+Conclude with `this.ne_zero`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq (u : Mat p q).det (by norm_num : 0 < 2)`. Establish `hz0 : z ≠ 0`. Introduce and unpack `rfl`. Conclude with `hdet (by rw [← hz]; simp)`.
+
+Take `⟨x, ⟨hx, -⟩, -⟩` from `T.bij u hu (Units.mk0 z hz0) (by simpa using hz)`. Use `⟨x, ?_⟩` and prove the remaining obligations. Rewrite using `[hx]`. Conclude with `hre`.
+-/
 theorem BlockOrd.cov_surj {e : Ix p q ≃ Fin n} {ε : Fin n → Bool} (h : BlockOrd e ε) (T : GrpData p q)
     {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) :
     ∃ x : T.G, Matrix.reindex e e ((T.cov x : GL (Ix p q) ℂ) : Mat p q) = g := by
@@ -174,6 +240,13 @@ theorem BlockOrd.cov_surj {e : Ix p q ≃ Fin n} {ε : Fin n → Bool} (h : Bloc
   rw [hx]
   exact hre
 
+/- English proof (translation)
+Use `⟨fun M => if hM : ∃ x, Matrix.reindex e e ((T.cov x : GL (Ix p q) ℂ) : Mat p q) = M then U.π hM.choose else 0, ?_⟩` and prove the remaining obligations. Introduce `x`. Establish `hM : ∃ y, Matrix.reindex e e ((T.cov y : GL (Ix p q) ℂ) : Mat p q) = Matrix.reindex e e ((T.cov x : GL (Ix p q) ℂ) : Mat p q)` using `⟨x, rfl⟩`. Simplify using `only [dif_pos hM]`. Use `set y := hM.choose with hy`.
+
+Establish `hyx : T.cov y = T.cov x` using `Units.ext ((Matrix.reindex e e).injective hM.choose_spec)`. Establish `h1 : T.cov (y⁻¹ * x) = 1`. Rewrite using `[map_mul, map_inv, hyx, inv_mul_cancel]`. Establish `h2 : U.π y⁻¹ * U.π x = 1`. Rewrite using `[← map_mul]`.
+
+Conclude with `h _ h1`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_factors {T : GrpData p q} (U : URep T) (e : Ix p q ≃ Fin n)
     (h : ∀ x, T.cov x = 1 → U.π x = 1) : ∃ σ, Factors U e σ := by
   classical

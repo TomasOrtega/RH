@@ -21,16 +21,39 @@ namespace Adel
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 omit [IsCMField E] in
+/- English proof (translation)
+Rewrite using `[cpt, adeleqof_map_cW, map_mul, map_inv, adeleqof_pFin_ratGL]`. Both sides reduce to the same expression.
+-/
 theorem cpt_eq (w : Pl E) (u : GL (Fin n) E) (x : GA E n) :
     cpt w u x = GeneralLinearGroup.map (pLoc E w) (gFin x * (ratF E n u)⁻¹) := by
   rw [cpt, adeleqof_map_cW, map_mul, map_inv, adeleqof_pFin_ratGL]; rfl
 
+/- English proof (translation)
+Rewrite using `[cpt', adeleqof_map_cW, adeleqof_pFin_thetaGL, map_mul, map_inv, adeleqof_pFin_ratGL]`. Both sides reduce to the same expression.
+-/
 theorem cpt'_eq (w : Pl E) (u : GL (Fin n) E) (x : GA E n) :
     cpt' w u x = GeneralLinearGroup.map (pLoc E w) (thF E n (gFin x * (ratF E n u)⁻¹)) := by
   rw [cpt', adeleqof_map_cW, adeleqof_pFin_thetaGL, map_mul, map_inv, adeleqof_pFin_ratGL]; rfl
 
 end Adel
 
+/- English proof (translation)
+Introduce `E _ _ _ B u₁ u₂`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `ψ ψ'`. Use function extensionality and compare the values at `x y g`. Simplify using `only [mulF, rt, mul_assoc]`.
+
+Introduce `t ht`. Use `⟨t.r + B.c + |logSize (finGL E B.a (ratF E B.a u₁))| + |logSize (finGL E B.b (ratF E B.b u₂))|, ?_⟩` and prove the remaining obligations. Use `⟨ht.T, add_nonneg (add_nonneg (add_nonneg ht.r B.c_nonneg) (abs_nonneg _)) (abs_nonneg _), ht.ka, ht.kb, fun x y => ⟨(ht.ψ x y).1.comp (continuous_mul_const _), (ht.ψ x y).2.comp_homeomorph (Homeomorph.mulRight (ratF E B.a u₁, ratF E B.b u₂)⁻¹)⟩, ?_⟩` and prove the remaining obligations. Introduce `x y h hne`. Establish `hh` using `ht.size x y _ hne`.
+
+Simplify using `only [Prod.fst_mul, Prod.fst_inv, Prod.snd_mul, Prod.snd_inv] at hh`. Take `⟨h1, h2⟩` from `hh`. Establish `e1 : finGL E B.a h.1 = finGL E B.a (h.1 * (ratF E B.a u₁)⁻¹) * finGL E B.a (ratF E B.a u₁)`. Rewrite using `[← map_mul, inv_mul_cancel_right]`. Establish `e2 : finGL E B.b h.2 = finGL E B.b (h.2 * (ratF E B.b u₂)⁻¹) * finGL E B.b (ratF E B.b u₂)`.
+
+Rewrite using `[← map_mul, inv_mul_cancel_right]`. Establish `c1` using `B.ca (finGL E B.a (h.1 * (ratF E B.a u₁)⁻¹)) (finGL E B.a (ratF E B.a u₁))`. Establish `c2` using `B.cb (finGL E B.b (h.2 * (ratF E B.b u₂)⁻¹)) (finGL E B.b (ratF E B.b u₂))`. Establish `a1` using `le_abs_self (logSize (finGL E B.a (ratF E B.a u₁)))`. Establish `a2` using `le_abs_self (logSize (finGL E B.b (ratF E B.b u₂)))`.
+
+Establish `p1` using `abs_nonneg (logSize (finGL E B.a (ratF E B.a u₁)))`. Establish `p2` using `abs_nonneg (logSize (finGL E B.b (ratF E B.b u₂)))`. Rewrite using `[e1, e2]`. Apply the tactic sequence `constructor <;> · dsimp only; linarith`. Introduce `ψ hψ choose ra hra using fun x y => (hS E B.a).1 _ ((hψ x y).2.image ((continuous_finGL' (E := E) B.a).comp continuous_fst)) choose rb hrb using fun x y => (hS E B.b).1 _ ((hψ x y).2.image ((continuous_finGL' (E := E) B.b).comp continuous_snd))`.
+
+Use `⟨∑ x, ∑ y, (|ra x y| + |rb x y|), Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => by positivity, ?_⟩` and prove the remaining obligations. Introduce `x y h hne`. Establish `key : |ra x y| + |rb x y| ≤ ∑ x, ∑ y, (|ra x y| + |rb x y|)` using `(Finset.single_le_sum (f := fun y' => |ra x y'| + |rb x y'|) (fun _ _ => by positivity) (Finset.mem_univ y)).trans (Finset.single_le_sum (f := fun x' => ∑ y', (|ra x' y'| + |rb x' y'|)) (fun _ _ => Finset.sum_nonneg fun _ _ => by positivity) (Finset.mem_univ x))`. Establish `hm : h ∈ tsupport (ψ x y)` using `subset_tsupport _ hne`. Establish `b1 : logSize (finGL E B.a h.1) ≤ ra x y` using `hra x y _ ⟨h, hm, rfl⟩`.
+
+Establish `b2 : logSize (finGL E B.b h.2) ≤ rb x y` using `hrb x y _ ⟨h, hm, rfl⟩`. Use `le_abs_self (ra x y)` as an intermediate fact. Use `le_abs_self (rb x y)` as an intermediate fact. Use `abs_nonneg (ra x y)` as an intermediate fact. Use `abs_nonneg (rb x y)` as an intermediate fact.
+
+Conclude with `⟨by linarith, by linarith⟩`.
+-/
 theorem rtAlg (hS : SizeBasic) : RtAlg := by
   intro E _ _ _ B u₁ u₂
   refine ⟨?_, ?_, ?_⟩
@@ -78,6 +101,19 @@ theorem rtAlg (hS : SizeBasic) : RtAlg := by
     have := abs_nonneg (rb x y)
     exact ⟨by linarith, by linarith⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ κ _ S P B e hS hP hne u₁ u₂ Ta Tb N Lo w t₀ L₀ hLo hL₀ ht₀`. Establish `key : (lmWd Lo w L₀).Ok P ∧ (BGen.wd w t₀).ψ = rt u₁ u₂ (fm S P B e (lmWd Lo w L₀))`. Proceed by induction on `w with`. Consider the case `nil => exact ⟨hL₀, ht₀⟩`. Consider the case `cons g w ih`.
+
+Establish `ih'` using `ih (fun s hs => hLo s (List.mem_cons_of_mem _ hs))`. Break down `g with c | s` into its components or cases. Conclude with `ih'`. Take `⟨hs1, hs2⟩` from `hLo s (by simp)`. Take `⟨-, hB, hC, -, -⟩` from `h1 E κ S P B e hS hP (Lo s) (lmWd Lo w L₀) hs1 ih'.1`.
+
+Use `⟨hB, ?_⟩` and prove the remaining obligations. Use `show mulF B.ν s.ψ (BGen.wd w t₀).ψ = rt u₁ u₂ (fm S P B e ((Lo s).mul (lmWd Lo w L₀)))`. Rewrite using `[ih'.2, hs2, (h3 E B u₁ u₂).1, hC]`. Use `⟨key.1, key.2, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`.
+
+Take `⟨-, hT⟩` from `h2 E κ S P B e hP hne (lmWd Lo w L₀) N key.1`. Establish `hT3 : F.trM (BGen.wd w t₀).Φ (opM Ta Tb (tenN P B e N)) g = _` using `tensTr E B.a B.b B.Ma B.Mb B.κ (BGen.wd w t₀).ka (BGen.wd w t₀).kb Ta Tb (BGen.wd w t₀).ψ (tenN P B e N) g`. Establish `hA : ∏ v, (BGen.wd w t₀).arch Ta Tb v (GeneralLinearGroup.map (cV v) g.1, GeneralLinearGroup.map (cV v) g.2) = (∏ v, phiOf (B.Ma v) (Ta v) ((BGen.wd w t₀).ka v) (gInf v g.1)) * ∏ v, phiOf (B.Mb v) (Tb v) ((BGen.wd w t₀).kb v) (gInf v g.2)`. Simplify using `only [PT.arch]`. Conclude with `Finset.prod_mul_distrib`.
+
+Establish `hF : finFn S ((lmWd Lo w L₀).tr P N) (lmWd Lo w L₀).t (hFin g * (ratF E B.a u₁, ratF E B.b u₂)⁻¹) = ∏ᶠ v ∈ S, (lmWd Lo w L₀).tr P N v (cpt v u₁ g.1, cpt v u₂ g.2) * if IsSplitAt v then (lmWd Lo w L₀).t v (cpt' v u₁ g.1, cpt' v u₂ g.2) else 1`. Simplify using `only [finFn, Adel.cpt_eq, Adel.cpt'_eq]`. Both sides reduce to the same expression. Rewrite using `[hT3, key.2]`. Simplify using `only [rt]`.
+
+Rewrite using `[hT, Pi.smul_apply, smul_eq_mul, adel, hA, hF]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem adelRep (h1 : FmAlg) (h2 : FmTr) (h3 : RtAlg) : AdelRep := by
   intro E _ _ _ κ _ S P B e hS hP hne u₁ u₂ Ta Tb N Lo w t₀ L₀ hLo hL₀ ht₀
   have key : (lmWd Lo w L₀).Ok P ∧ (BGen.wd w t₀).ψ = rt u₁ u₂ (fm S P B e (lmWd Lo w L₀)) := by

@@ -10,10 +10,16 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.PlaceInt
 namespace GlobalTheory.PlaceInt.AdaptExists
 
+/- English proof (translation)
+Simplify using `[stdLat, Submodule.mem_pi, Submodule.mem_one]`.
+-/
 theorem mem_std {E : Type} [Field E] {n : ℕ} (v : Fin n → E) :
     v ∈ stdLat E n ↔ ∀ i, ∃ a : 𝓞 E, algebraMap (𝓞 E) E a = v i := by
   simp [stdLat, Submodule.mem_pi, Submodule.mem_one]
 
+/- English proof (translation)
+Rewrite using `[mem_std]`. Introduce `i`. Distinguish the cases in `h : i = j`. Substitute `h; exact ⟨1, by simp⟩` using the available equality. Conclude with `⟨0, by simp [h]⟩`.
+-/
 theorem single_mem {E : Type} [Field E] {n : ℕ} (j : Fin n) : (Pi.single j (1 : E) : Fin n → E) ∈ stdLat E n := by
   rw [mem_std]
   intro i
@@ -21,16 +27,45 @@ theorem single_mem {E : Type} [Field E] {n : ℕ} (j : Fin n) : (Pi.single j (1 
   · subst h; exact ⟨1, by simp⟩
   · exact ⟨0, by simp [h]⟩
 
+/- English proof (translation)
+Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `L.toAddSubmonoid.nsmul_mem hv k`.
+-/
 theorem nat_smul_mem {E : Type} [Field E] {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E)) (k : ℕ) {v : Fin n → E}
     (hv : v ∈ L) : (k : E) • v ∈ L := by
   rw [Nat.cast_smul_eq_nsmul]
   exact L.toAddSubmonoid.nsmul_mem hv k
 
+/- English proof (translation)
+Use `choose a ha using fun j => (mem_std (c j)).1 (hc j)`. Conclude with `⟨Matrix.of fun i j => a j i, fun i j => ha j i⟩`.
+-/
 theorem exists_cols {E : Type} [Field E] {n : ℕ} (c : Fin n → Fin n → E) (hc : ∀ j, c j ∈ stdLat E n) :
     ∃ q : Matrix (Fin n) (Fin n) (𝓞 E), ∀ i j, algebraMap (𝓞 E) E (q i j) = c j i := by
   choose a ha using fun j => (mem_std (c j)).1 (hc j)
   exact ⟨Matrix.of fun i j => a j i, fun i j => ha j i⟩
 
+/- English proof (translation)
+Take `⟨hodd, -, hN⟩` from `hL`. Establish `hN0 : 0 < N` using `hodd.pos`. Establish `hm : 0 < 2 * ℓ` using `Nat.mul_pos two_pos hl.pos`. Establish `hinj : Function.Injective (algebraMap (𝓞 E) E)` using `RingOfIntegers.coe_injective`. Take `⟨k₂, ga, hk₂, hun, hin, hon⟩` from `GlobalTheory.AdaptUnitary.exists_unitary_adapted E H n Λ N hU hN0 (hN.trans inf_le_left) (2 * ℓ) hm`.
+
+Take `⟨k₁, g, hk₁, -, hcols, hsp⟩` from `LocBasis.exists_matrix_primeTo E n Λ.Ln N hN0 inf_le_right hN (2 * ℓ) hm`. Use `set G := g.map (algebraMap (𝓞 E) E) with hG`. Establish `hNe : ∀ j : Fin n, (N : E) • (Pi.single j (1 : E) : Fin n → E) ∈ Λ.Ln`. Introduce `j`. Establish `h` using `hN (Submodule.smul_mem_smul (Ideal.mem_span_singleton_self (N : 𝓞 E)) (single_mem (E := E) j))`.
+
+Rewrite `h` using `[Nat.cast_smul_eq_nsmul, ← Nat.cast_smul_eq_nsmul E]`. Then use the resulting hypothesis. Use `choose v hv hve using fun j => hsp _ (hNe j)`. Take `⟨q, hq⟩` from `exists_cols v hv`. Take `⟨p, hp⟩` from `exists_cols (fun j => (k₂ : E) • ga.mulVec (G.mulVec (Pi.single j 1))) (fun j => hin _ (hcols _ (single_mem j)).1)`. Establish `hP : p.map (algebraMap (𝓞 E) E) = (k₂ : E) • (ga * G)`.
+
+Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, hp, Matrix.mulVec_mulVec, Matrix.mulVec_single_one]`. Both sides reduce to the same expression. Establish `hGQ : G * q.map (algebraMap (𝓞 E) E) = ((k₁ * N : ℕ) : E) • (1 : Matrix (Fin n) (Fin n) E)`. Use extensionality with `i j`.
+
+Establish `h` using `congrFun (hve j) i`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, hq]`. Simplify using `only [Matrix.mulVec, dotProduct] at h`. Rewrite using `[← h]`. Simplify using `[Matrix.one_apply, Pi.single_apply]`.
+
+Establish `hprod : (p * q).map (algebraMap (𝓞 E) E) = ((k₁ * k₂ * N : ℕ) : E) • ga`. Rewrite using `[Matrix.map_mul, hP, Matrix.smul_mul, Matrix.mul_assoc, hGQ, Matrix.mul_smul, Matrix.mul_one, smul_smul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hk : Nat.Coprime (k₁ * k₂) (2 * ℓ)` using `Nat.Coprime.mul_left hk₁ hk₂`. Use `⟨{ k := k₁ * k₂, k₁ := k₁, ga := ga, p := p, q := q, g := g odd := (Nat.coprime_two_right).1 (Nat.Coprime.coprime_mul_right_right hk) cop := Nat.Coprime.coprime_mul_left_right hk cop₁ := Nat.Coprime.coprime_mul_left_right hk₁ unitary := hun into := ?_ onto := ?_ prod := hprod col …` and prove the remaining obligations. Introduce `w hw`. Rewrite using `[Nat.cast_mul, mul_smul]`. Conclude with `nat_smul_mem _ _ (hin w hw)`.
+
+Introduce `w hw`. Take `⟨u, hu, e⟩` from `hon w hw`. Conclude with `⟨(k₁ : E) • u, nat_smul_mem _ _ hu, by rw [Nat.cast_mul, mul_smul, e, Matrix.mulVec_smul]⟩`. Apply `Matrix.map_injective hinj show (g * q).map _ = Matrix.map _ _` to reduce the goal to its premises. Rewrite using `[Matrix.map_mul, hGQ]`.
+
+Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [h]`. Introduce `j k`. Apply `hinj` to reduce the goal to its premises. Establish `he : ∀ a b, algebraMap (𝓞 E) E ((p * q) a b) = ((k₁ * k₂ * N : ℕ) : E) * ga a b` using `fun a b => congrFun (congrFun hprod a) b`.
+
+Establish `hb : ∀ a : 𝓞 E, algebraMap (𝓞 E) E (H.bar a) = IsCMField.complexConj E (algebraMap (𝓞 E) E a)` using `H.bar_eq`. Use `show algebraMap (𝓞 E) E (∑ i, H.bar ((p * q) i j) * (p * q) i k) = algebraMap (𝓞 E) E (if j = k then (((k₁ * k₂ * N) ^ 2 : ℕ) : 𝓞 E) else 0)`. Rewrite using `[map_sum]`. Simplify using `only [map_mul (algebraMap (𝓞 E) E), hb, he, map_mul (IsCMField.complexConj E), map_natCast]`. Establish `: ∀ i, ((k₁ * k₂ * N : ℕ) : E) * IsCMField.complexConj E (ga i j) * (((k₁ * k₂ * N : ℕ) : E) * ga i k) = ((k₁ * k₂ * N : ℕ) : E) ^ 2 * (IsCMField.complexConj E (ga i j) * ga i k)` using `fun i => by ring`.
+
+Simplify using `only [this]`. Rewrite using `[← Finset.mul_sum, hun]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem exists_adapt (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (n : ℕ) (Λ : GenLat E n)
     (N M ℓ : ℕ) (hU : Λ.Unimod) (hL : Λ.LevOK N M) (hl : ℓ.Prime) :
     ∃ A : Adapt Λ N ℓ, IsSim H (A.p * A.q) ((A.k * N) ^ 2) := by

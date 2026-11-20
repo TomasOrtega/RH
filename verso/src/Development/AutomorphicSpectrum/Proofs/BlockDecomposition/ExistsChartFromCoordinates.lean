@@ -12,6 +12,13 @@ variable {B : Type} [CommRing B]
 def HasDP (J : Ideal B) (x : B) : Prop :=
   ∃ y : ℕ → B, y 0 = 1 ∧ (∀ n, n ≠ 0 → y n ∈ J) ∧ ∀ n, (n.factorial : B) * y n = x ^ n
 
+/- English proof (translation)
+Rewrite using `[(Commute.all x x').add_pow' n, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Take `rfl : k.1 + k.2 = n` from `Finset.HasAntidiagonal.mem_antidiagonal.1 hk`. Rewrite using `[← h k.1, ← h' k.2, nsmul_eq_mul]`. Establish `e : ((k.1 + k.2).factorial : B) = ((k.1 + k.2).choose k.1 : B) * k.1.factorial * k.2.factorial`.
+
+Use `Nat.choose_mul_factorial_mul_factorial (Nat.le_add_right k.1 k.2)` as an intermediate fact. Rewrite `this` using `[Nat.add_sub_cancel_left]`. Use `congrArg (Nat.cast : ℕ → B) this` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this.symm`.
+
+Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fact_sum (x x' : B) (y y' : ℕ → B) (h : ∀ n, (n.factorial : B) * y n = x ^ n)
     (h' : ∀ n, (n.factorial : B) * y' n = x' ^ n) (n : ℕ) :
     (n.factorial : B) * ∑ k ∈ Finset.HasAntidiagonal.antidiagonal n, y k.1 * y' k.2 = (x + x') ^ n := by
@@ -28,6 +35,15 @@ theorem fact_sum (x x' : B) (y y' : ℕ → B) (h : ∀ n, (n.factorial : B) * y
   rw [e]
   ring
 
+/- English proof (translation)
+Use `Submodule.span_induction ?_ ?_ ?_ ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Use `⟨fun n => f (γ.dpow n a), by simp [γ.dpow_zero ha], fun n hn => Ideal.mem_map_of_mem f (γ.dpow_mem hn ha), fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_natCast f, ← map_mul, γ.factorial_mul_dpow_eq_pow ha, map_pow]`. Use `⟨fun n => if n = 0 then 1 else 0, by simp, fun n hn => by simp [hn], fun n => ?_⟩` and prove the remaining obligations.
+
+Apply the tactic sequence `rcases n with _ | n <;> simp`. Introduce and unpack `x x' _ _ ⟨y, h0, h1, h2⟩ ⟨y', h0', h1', h2'⟩`. Use `⟨fun n => ∑ k ∈ Finset.HasAntidiagonal.antidiagonal n, y k.1 * y' k.2, by simp [h0, h0'], fun n hn => Ideal.sum_mem _ fun k hk => ?_, fact_sum x x' y y' h2 h2'⟩` and prove the remaining obligations. Distinguish the cases in `hk1 : k.1 = 0`. Establish `hk2 : k.2 ≠ 0`.
+
+Use `Finset.HasAntidiagonal.mem_antidiagonal.1 hk` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `Ideal.mul_mem_left _ _ (h1' _ hk2)`. Conclude with `Ideal.mul_mem_right _ _ (h1 _ hk1)`. Introduce and unpack `a x _ ⟨y, h0, h1, h2⟩`.
+
+Use `⟨fun n => a ^ n * y n, by simp [h0], fun n hn => Ideal.mul_mem_left _ _ (h1 n hn), fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[smul_eq_mul, mul_pow, ← h2 n]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hasDP_of_mem {R : Type} [CommRing R] {I : Ideal R} (γ : DividedPowers I) (f : R →+* B) {x : B}
     (hx : x ∈ I.map f) : HasDP (I.map f) x := by
   refine Submodule.span_induction ?_ ?_ ?_ ?_ hx
@@ -59,22 +75,37 @@ def dpOf (n : ℕ) (x : B) : B := if hx : x ∈ J then (h x hx).choose n else 0
 
 variable {J h}
 
+/- English proof (translation)
+Rewrite using `[dpOf, dif_pos hx]`. Conclude with `(h x hx).choose_spec.1`.
+-/
 theorem dpOf_zero {x : B} (hx : x ∈ J) : dpOf J h 0 x = 1 := by
   rw [dpOf, dif_pos hx]
   exact (h x hx).choose_spec.1
 
+/- English proof (translation)
+Rewrite using `[dpOf, dif_pos hx]`. Conclude with `(h x hx).choose_spec.2.1 n hn`.
+-/
 theorem dpOf_mem {n : ℕ} {x : B} (hn : n ≠ 0) (hx : x ∈ J) : dpOf J h n x ∈ J := by
   rw [dpOf, dif_pos hx]
   exact (h x hx).choose_spec.2.1 n hn
 
+/- English proof (translation)
+Rewrite using `[dpOf, dif_pos hx]`. Conclude with `(h x hx).choose_spec.2.2 n`.
+-/
 theorem dpOf_spec (n : ℕ) {x : B} (hx : x ∈ J) : (n.factorial : B) * dpOf J h n x = x ^ n := by
   rw [dpOf, dif_pos hx]
   exact (h x hx).choose_spec.2.2 n
 
+/- English proof (translation)
+The claim follows from `sub_eq_zero.1 (hn m hm _ (by rw [mul_sub, e, sub_self]))`.
+-/
 theorem cancel (hn : ∀ n : ℕ, n ≠ 0 → ∀ x : B, (n : B) * x = 0 → x = 0) {m : ℕ} (hm : m ≠ 0) {a b : B}
     (e : (m : B) * a = (m : B) * b) : a = b :=
   sub_eq_zero.1 (hn m hm _ (by rw [mul_sub, e, sub_self]))
 
+/- English proof (translation)
+The claim follows from `cancel hn n.factorial_ne_zero ((dpOf_spec n hx).trans e.symm)`.
+-/
 theorem dpOf_eq (hn : ∀ n : ℕ, n ≠ 0 → ∀ x : B, (n : B) * x = 0 → x = 0) {n : ℕ} {x z : B} (hx : x ∈ J)
     (e : (n.factorial : B) * z = x ^ n) : dpOf J h n x = z :=
   cancel hn n.factorial_ne_zero ((dpOf_spec n hx).trans e.symm)
@@ -126,6 +157,9 @@ def dpExt (hn : ∀ n : ℕ, n ≠ 0 → ∀ x : B, (n : B) * x = 0 → x = 0) :
       _ = ((m.factorial * n.factorial ^ m : ℕ) : B) * ((m.uniformBell n : ℕ) * dpOf J h (m * n) x) := by
         rw [← e]; push_cast; ring
 
+/- English proof (translation)
+Use `⟨dpExt (I.map f) (fun x hx => hasDP_of_mem γ f hx) hn, ?_⟩` and prove the remaining obligations. Use `⟨le_rfl, fun {n} a ha => ?_⟩` and prove the remaining obligations. Use `dpOf_eq hn (Ideal.mem_map_of_mem f ha) ?_` and prove the remaining obligations. Rewrite using `[← map_natCast f, ← map_mul, γ.factorial_mul_dpow_eq_pow ha, map_pow]`.
+-/
 theorem exists_dp {R : Type} [CommRing R] {I : Ideal R} (γ : DividedPowers I) (f : R →+* B)
     (hn : ∀ n : ℕ, n ≠ 0 → ∀ x : B, (n : B) * x = 0 → x = 0) :
     ∃ δ : DividedPowers (I.map f), IsDPMorphism γ δ f := by
@@ -139,9 +173,19 @@ end DP
 section P
 variable {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J)
 
+/- English proof (translation)
+The claim follows from `Ideal.span_mono fun _ ⟨l, hl, hr, e⟩ => ⟨l, hl, h.trans hr, e⟩`.
+-/
 theorem dividedPowerFiltration_anti {a b : ℕ} (h : a ≤ b) : pdP δ b ≤ pdP δ a :=
   Ideal.span_mono fun _ ⟨l, hl, hr, e⟩ => ⟨l, hl, h.trans hr, e⟩
 
+/- English proof (translation)
+Rewrite using `[pdP, pdP, Ideal.span_mul_span']`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨l, hl, hr, rfl⟩, _, ⟨l', hl', hr', rfl⟩, rfl⟩`. Use `Ideal.subset_span ⟨l ++ l', ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `q hq`.
+
+Break down `List.mem_append.1 hq with h | h` into its components or cases. Conclude with `hl q h`. Conclude with `hl' q h`. Rewrite using `[List.map_append, List.sum_append]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[List.map_append, List.prod_append]`.
+-/
 theorem dividedPowerFiltration_mul (a b : ℕ) : pdP δ a * pdP δ b ≤ pdP δ (a + b) := by
   rw [pdP, pdP, Ideal.span_mul_span']
   refine Ideal.span_le.2 ?_
@@ -155,12 +199,23 @@ theorem dividedPowerFiltration_mul (a b : ℕ) : pdP δ a * pdP δ b ≤ pdP δ 
     omega
   · rw [List.map_append, List.prod_append]
 
+/- English proof (translation)
+The claim follows from `Ideal.subset_span ⟨[], by simp, by simp, by simp⟩`.
+-/
 theorem one_mem_pdP_zero : (1 : B) ∈ pdP δ 0 :=
   Ideal.subset_span ⟨[], by simp, by simp, by simp⟩
 
+/- English proof (translation)
+The claim follows from `Ideal.subset_span ⟨[(n, x)], by simpa using hx, by simp, by simp⟩`.
+-/
 theorem dpow_mem_pdP (n : ℕ) {x : B} (hx : x ∈ J) : δ.dpow n x ∈ pdP δ n :=
   Ideal.subset_span ⟨[(n, x)], by simpa using hx, by simp, by simp⟩
 
+/- English proof (translation)
+Proceed by induction on `r with`. Consider the case `zero`. Rewrite using `[pow_zero, Ideal.one_eq_top]`. Conclude with `(Ideal.eq_top_of_unit_mem _ 1 1 (one_mem_pdP_zero δ) (mul_one 1)).ge`. Consider the case `succ r ih`.
+
+Rewrite using `[pow_succ]`. Use `(Ideal.mul_mono ih fun x hx => ?_).trans (dividedPowerFiltration_mul δ r 1)` and prove the remaining obligations. Use `dpow_mem_pdP δ 1 hx` as an intermediate fact. Rewrite `this` using `[δ.dpow_one hx]`. Then use the resulting hypothesis.
+-/
 theorem pow_le_pdP (r : ℕ) : J ^ r ≤ pdP δ r := by
   induction r with
   | zero =>
@@ -174,6 +229,15 @@ theorem pow_le_pdP (r : ℕ) : J ^ r ≤ pdP δ r := by
 
 variable {R : Type} [CommRing R] {I : Ideal R} (γ : DividedPowers I)
 
+/- English proof (translation)
+Establish `gen : ∀ a ∈ I, ∀ n, δ.dpow n (f a) ∈ (pdP γ n).map f` using `fun a ha n => by`. Rewrite using `[h.2 a ha]`. Conclude with `Ideal.mem_map_of_mem f (dpow_mem_pdP γ n ha)`. Use `Submodule.span_induction ?_ ?_ ?_ ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩ n`.
+
+Conclude with `gen a ha n`. Introduce `n`. Use `gen 0 I.zero_mem n` as an intermediate fact. Rewrite `this` using `[map_zero]`. Then use the resulting hypothesis. Introduce `x y hx hy ihx ihy n`.
+
+Rewrite using `[δ.dpow_add hx hy]`. Use `Ideal.sum_mem _ fun k hk => ?_` and prove the remaining obligations. Establish `e : k.1 + k.2 = n` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hk`. Establish `h1` using `Ideal.mul_mem_mul (ihx k.1) (ihy k.2)`. Rewrite `h1` using `[← Ideal.map_mul]`.
+
+Establish `h2` using `Ideal.map_mono (f := f) (dividedPowerFiltration_mul γ k.1 k.2) h1`. Rewrite `h2` using `[e]`. Then use the resulting hypothesis. Introduce `a x hx ih n`. Rewrite using `[smul_eq_mul, δ.dpow_mul hx]`. Conclude with `Ideal.mul_mem_left _ _ (ih n)`.
+-/
 theorem dpow_mem_map (f : R →+* B) (δ : DividedPowers (I.map f)) (h : IsDPMorphism γ δ f) {x : B}
     (hx : x ∈ I.map f) : ∀ n, δ.dpow n x ∈ (pdP γ n).map f := by
   have gen : ∀ a ∈ I, ∀ n, δ.dpow n (f a) ∈ (pdP γ n).map f := fun a ha n => by
@@ -197,6 +261,15 @@ theorem dpow_mem_map (f : R →+* B) (δ : DividedPowers (I.map f)) (h : IsDPMor
     rw [smul_eq_mul, δ.dpow_mul hx]
     exact Ideal.mul_mem_left _ _ (ih n)
 
+/- English proof (translation)
+Use `le_antisymm ?_ (Ideal.map_le_iff_le_comap.2 fun x hx => dividedPowerFiltration_map h r hx)` and prove the remaining obligations. Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨l, hl, hr, rfl⟩`. Establish `key : ∀ l : List (ℕ × B), (∀ q ∈ l, q.2 ∈ I.map f) → (l.map fun q => δ.dpow q.1 q.2).prod ∈ (pdP γ (l.map Prod.fst).sum).map f`. Introduce `l`.
+
+Proceed by induction on `l with`. Consider the case `nil`. Introduce `_`. Use `Ideal.mem_map_of_mem f (one_mem_pdP_zero γ)` as an intermediate fact. Simplify using `using this`.
+
+Consider the case `cons q l ih`. Introduce `hq`. Simplify using `only [List.map_cons, List.prod_cons, List.sum_cons]`. Establish `h1` using `Ideal.mul_mem_mul (dpow_mem_map γ f δ h (hq q (by simp)) q.1) (ih fun q' h' => hq q' (by simp [h']))`. Rewrite `h1` using `[← Ideal.map_mul]`.
+
+Conclude with `Ideal.map_mono (dividedPowerFiltration_mul γ _ _) h1`. Conclude with `Ideal.map_mono (dividedPowerFiltration_anti γ hr) (key l hl)`.
+-/
 theorem dividedPowerFiltration_eq_map (f : R →+* B) (δ : DividedPowers (I.map f)) (h : IsDPMorphism γ δ f) (r : ℕ) :
     pdP δ r = (pdP γ r).map f := by
   refine le_antisymm ?_ (Ideal.map_le_iff_le_comap.2 fun x hx => dividedPowerFiltration_map h r hx)
@@ -224,6 +297,11 @@ end P
 section Alg
 variable {O R G : Type} [CommRing O] [CommRing R] [CommRing G] [Algebra O R] [Algebra O G]
 
+/- English proof (translation)
+Set `f : MvPolynomial (Fin d) O →+* G` to `MvPolynomial.eval₂Hom (algebraMap O G) t`. Establish `h' : f.Etale` using `h`. Use `algebraize [f]`. Establish `: IsScalarTower O (MvPolynomial (Fin d) O) G` using `.of_algebraMap_eq' (by`. Use extensionality with `a`.
+
+Simplify using `[RingHom.algebraMap_toAlgebra, f, MvPolynomial.algebraMap_eq])`. Conclude with `Module.Flat.trans O (MvPolynomial (Fin d) O) G`.
+-/
 theorem flat_of_etale {d : ℕ} (t : Fin d → G)
     (h : (MvPolynomial.eval₂Hom (algebraMap O G) t : MvPolynomial (Fin d) O →+* G).Etale) :
     Module.Flat O G := by
@@ -235,6 +313,17 @@ theorem flat_of_etale {d : ℕ} (t : Fin d → G)
     simp [RingHom.algebraMap_toAlgebra, f, MvPolynomial.algebraMap_eq])
   exact Module.Flat.trans O (MvPolynomial (Fin d) O) G
 
+/- English proof (translation)
+Set `π : R →ₐ[O] R ⧸ P` to `Ideal.Quotient.mkₐ O P`. Establish `hπ : Function.Surjective π` using `Ideal.Quotient.mkₐ_surjective O P`. Establish `hker` using `Algebra.TensorProduct.rTensor_ker (R := O) (S := O) (C := G) π hπ`. Establish `hkerπ : RingHom.ker π = P` using `Ideal.Quotient.mkₐ_ker O P`. Rewrite `hker` using `[hkerπ]`.
+
+Rewrite `hx`, the goal using `[← hker]`. Rewrite `hx`, the goal using `[RingHom.mem_ker]`. Establish `inj : Function.Injective (((l : O) • LinearMap.id : (R ⧸ P) →ₗ[O] (R ⧸ P)).rTensor G)`. Use `Module.Flat.rTensor_preserves_injective_linearMap _ ?_` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`.
+
+Introduce `z hz`. Take `⟨z, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Establish `hz' : Ideal.Quotient.mk P ((l : R) * z) = 0`. Use `hz` as an intermediate fact. Rewrite `this` using `[LinearMap.smul_apply, LinearMap.id_apply, Nat.cast_smul_eq_nsmul, nsmul_eq_mul]`.
+
+Simplify using `using this`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (hl z (Ideal.Quotient.eq_zero_iff_mem.1 hz'))`. Use `inj ?_` and prove the remaining obligations. Rewrite using `[map_zero, LinearMap.rTensor_smul, LinearMap.rTensor_id, LinearMap.smul_apply, LinearMap.id_apply]`. Rewrite `hx` using `[map_mul, map_natCast]`.
+
+Rewrite using `[Nat.cast_smul_eq_nsmul, nsmul_eq_mul]` and apply the resulting hypothesis.
+-/
 theorem tf_tensor [Module.Flat O G] (P : Ideal R) (l : ℕ) (hl : ∀ x, (l : R) * x ∈ P → x ∈ P) (x : R ⊗[O] G)
     (hx : (l : R ⊗[O] G) * x ∈ P.map (Algebra.TensorProduct.includeLeft : R →ₐ[O] R ⊗[O] G)) :
     x ∈ P.map (Algebra.TensorProduct.includeLeft : R →ₐ[O] R ⊗[O] G) := by
@@ -260,6 +349,23 @@ theorem tf_tensor [Module.Flat O G] (P : Ideal R) (l : ℕ) (hl : ∀ x, (l : R)
   rw [map_mul, map_natCast] at hx
   rwa [Nat.cast_smul_eq_nsmul, nsmul_eq_mul]
 
+/- English proof (translation)
+Set `f : MvPolynomial (Fin d) O →+* G` to `MvPolynomial.eval₂Hom (algebraMap O G) t`. Set `g : MvPolynomial (Fin d) R →+* R ⊗[O] G` to `MvPolynomial.eval₂Hom Algebra.TensorProduct.includeLeftRingHom (fun i => (1 : R) ⊗ₜ[O] t i)`. Use `letI a1 : Algebra (MvPolynomial (Fin d) O) G := f.toAlgebra`. Use `letI a2 : Algebra (MvPolynomial (Fin d) R) (R ⊗[O] G) := g.toAlgebra`. Use `letI a3 : Algebra (MvPolynomial (Fin d) O) (R ⊗[O] G) := (g.comp (MvPolynomial.map (algebraMap O R))).toAlgebra`.
+
+Use `letI a4 : Algebra G (R ⊗[O] G) := Algebra.TensorProduct.rightAlgebra`. Use `letI a5 : Algebra (MvPolynomial (Fin d) O) (MvPolynomial (Fin d) R) := MvPolynomial.algebraMvPolynomial`. Use `haveI t1 : IsScalarTower O (MvPolynomial (Fin d) O) G := .of_algebraMap_eq' (by`. Use extensionality with `a`. Simplify using `[RingHom.algebraMap_toAlgebra, f, MvPolynomial.algebraMap_eq])`.
+
+Use `haveI t2 : IsScalarTower O (MvPolynomial (Fin d) O) (MvPolynomial (Fin d) R) := .of_algebraMap_eq' (by`. Use extensionality with `a`. Simplify using `[MvPolynomial.algebraMap_eq, MvPolynomial.algebraMap_apply])`. Use `haveI t3 : IsScalarTower R (MvPolynomial (Fin d) R) (R ⊗[O] G) := .of_algebraMap_eq' (by`. Use extensionality with `a`.
+
+Simplify using `[RingHom.algebraMap_toAlgebra, g, MvPolynomial.algebraMap_eq])`. Use `haveI t4 : IsScalarTower O (MvPolynomial (Fin d) R) (R ⊗[O] G) := .of_algebraMap_eq' (by`. Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = g (algebraMap O (MvPolynomial (Fin d) R) a)`. Rewrite using `[MvPolynomial.algebraMap_apply]`.
+
+Simplify using `only [g, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_C]`. Use the proof step `rfl)`. Use `haveI t5 : IsScalarTower (MvPolynomial (Fin d) O) (MvPolynomial (Fin d) R) (R ⊗[O] G) := .of_algebraMap_eq' rfl`. Use `haveI t6 : IsScalarTower (MvPolynomial (Fin d) O) G (R ⊗[O] G) := .of_algebraMap_eq' (by`. Use `MvPolynomial.ringHom_ext (fun a => ?_) fun i => ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `g (MvPolynomial.map _ (MvPolynomial.C a)) = (1 : R) ⊗ₜ[O] f (MvPolynomial.C a)`. Simplify using `only [g, f, MvPolynomial.map_C, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_C]`. Express the relevant statement in the definitionally equal form `(algebraMap O R a) ⊗ₜ[O] (1 : G) = _`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`. Express the relevant statement in the definitionally equal form `g (MvPolynomial.map _ (MvPolynomial.X i)) = (1 : R) ⊗ₜ[O] f (MvPolynomial.X i)`.
+
+Simplify using `[g, f])`. Use `haveI t7 : IsScalarTower O G (R ⊗[O] G) := inferInstance`. Establish `p1 : Algebra.IsPushout O (MvPolynomial (Fin d) O) R (MvPolynomial (Fin d) R)` using `inferInstance`. Establish `p2 : Algebra.IsPushout O G R (R ⊗[O] G)` using `inferInstance`. Establish `p3` using `(Algebra.IsPushout.comp_iff O (MvPolynomial (Fin d) O) R (MvPolynomial (Fin d) R) (T := G) (T' := R ⊗[O] G)).1 p2`.
+
+Conclude with `RingHom.Etale.isStableUnderBaseChange (MvPolynomial (Fin d) O) G (MvPolynomial (Fin d) R) (R ⊗[O] G) h`.
+-/
 theorem etale_tensor {d : ℕ} (t : Fin d → G)
     (h : (MvPolynomial.eval₂Hom (algebraMap O G) t : MvPolynomial (Fin d) O →+* G).Etale) :
     (MvPolynomial.eval₂Hom (Algebra.TensorProduct.includeLeftRingHom : R →+* R ⊗[O] G)
@@ -309,6 +415,11 @@ end Alg
 section Sch
 variable {O : Type} [CommRing O] {X : Scheme.{0}} {V : X.Opens}
 
+/- English proof (translation)
+Establish `E : hV.fromSpec.appLE V ⊤ h = (Scheme.ΓSpecIso Γ(X, V)).inv`. Rewrite using `[Scheme.Hom.appLE, hV.fromSpec_app_self, Category.assoc, ← Functor.map_comp]`. Rewrite using `[show (eqToHom hV.fromSpec_preimage_self).op ≫ (homOfLE h).op = 𝟙 _ from Subsingleton.elim _ _, CategoryTheory.Functor.map_id, Category.comp_id]`. Unfold `GlobalTheory.Cris.evalAt`. Rewrite using `[E]`.
+
+Conclude with `Iso.inv_hom_id_apply (Scheme.ΓSpecIso Γ(X, V)) a`.
+-/
 theorem evalAt_fromSpec (hV : IsAffineOpen V) (h : ⊤ ≤ hV.fromSpec ⁻¹ᵁ V) (a : Γ(X, V)) :
     GlobalTheory.Cris.evalAt (B := Γ(X, V)) hV.fromSpec V h a = a := by
   have E : hV.fromSpec.appLE V ⊤ h = (Scheme.ΓSpecIso Γ(X, V)).inv := by
@@ -319,13 +430,24 @@ theorem evalAt_fromSpec (hV : IsAffineOpen V) (h : ⊤ ≤ hV.fromSpec ⁻¹ᵁ 
   rw [E]
   exact Iso.inv_hom_id_apply (Scheme.ΓSpecIso Γ(X, V)) a
 
+/- English proof (translation)
+The claim follows from `hV.fromSpec_preimage_self.ge`.
+-/
 theorem top_le_fromSpec (hV : IsAffineOpen V) : ⊤ ≤ hV.fromSpec ⁻¹ᵁ V := hV.fromSpec_preimage_self.ge
 
+/- English proof (translation)
+Introduce `x _`. Conclude with `top_le_fromSpec hV (show _ ∈ (⊤ : (Spec Γ(X, V)).Opens) from trivial)`.
+-/
 theorem top_le_specMap (hV : IsAffineOpen V) {B : Type} [CommRing B] (g : Γ(X, V) →+* B) :
     ⊤ ≤ (Spec.map (CommRingCat.ofHom g) ≫ hV.fromSpec) ⁻¹ᵁ V := by
   intro x _
   exact top_le_fromSpec hV (show _ ∈ (⊤ : (Spec Γ(X, V)).Opens) from trivial)
 
+/- English proof (translation)
+Substitute `e` using the available equality. Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Use `evalAt_map (B := Γ(X, V)) (B' := CommRingCat.of B) (CommRingCat.ofHom g) hV.fromSpec (top_le_fromSpec hV) h a` as an intermediate fact. Rewrite using `[this]`. Express the relevant statement in the definitionally equal form `g _ = g a`.
+
+Rewrite using `[evalAt_fromSpec]`.
+-/
 theorem evalAt_specMap (hV : IsAffineOpen V) {B : Type} [CommRing B] (g : Γ(X, V) →+* B)
     (y : Spec (CommRingCat.of B) ⟶ X) (e : y = Spec.map (CommRingCat.ofHom g) ≫ hV.fromSpec)
     (h : ⊤ ≤ y ⁻¹ᵁ V) : GlobalTheory.Cris.evalAt y V h = g := by
@@ -336,6 +458,11 @@ theorem evalAt_specMap (hV : IsAffineOpen V) {B : Type} [CommRing B] (g : Γ(X, 
   change g _ = g a
   rw [evalAt_fromSpec]
 
+/- English proof (translation)
+Establish `hr : Set.range y ⊆ Set.range hV.fromSpec`. Rewrite using `[hV.range_fromSpec]`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `h (show x ∈ (⊤ : (Spec (CommRingCat.of B)).Opens) from trivial)`. Set `u` to `IsOpenImmersion.lift hV.fromSpec y hr`.
+
+Establish `hu : u ≫ hV.fromSpec = y` using `IsOpenImmersion.lift_fac _ _ _`. Establish `e : y = Spec.map (CommRingCat.ofHom (Spec.preimage u).hom) ≫ hV.fromSpec`. Rewrite using `[CommRingCat.ofHom_hom, Spec.map_preimage, hu]`. Rewrite using `[evalAt_specMap hV _ y e h]`. Conclude with `e.symm`.
+-/
 theorem eq_specMap (hV : IsAffineOpen V) {B : Type} [CommRing B] (y : Spec (CommRingCat.of B) ⟶ X)
     (h : ⊤ ≤ y ⁻¹ᵁ V) : Spec.map (CommRingCat.ofHom (GlobalTheory.Cris.evalAt y V h)) ≫ hV.fromSpec = y := by
   have hr : Set.range y ⊆ Set.range hV.fromSpec := by
@@ -349,6 +476,11 @@ theorem eq_specMap (hV : IsAffineOpen V) {B : Type} [CommRing B] (y : Spec (Comm
   rw [evalAt_specMap hV _ y e h]
   exact e.symm
 
+/- English proof (translation)
+Set `u : Spec Γ(X, V) ⟶ Spec (CommRingCat.of O)` to `hV.fromSpec ≫ q`. Set `ψ : O →+* Γ(X, V)` to `(Spec.preimage u).hom`. Establish `hψ : hV.fromSpec ≫ q = Spec.map (CommRingCat.ofHom (ψ.comp (RingHom.id O)))`. Rewrite using `[RingHom.comp_id, CommRingCat.ofHom_hom, Spec.map_preimage]`. Establish `e : strV q V = ψ`.
+
+Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Use `evalAt_base (B := Γ(X, V)) q (RingHom.id O) ψ hV.fromSpec hψ (top_le_fromSpec hV) a` as an intermediate fact. Rewrite `this` using `[evalAt_fromSpec]`. Conclude with `this`. Rewrite using `[e, hψ, RingHom.comp_id]`.
+-/
 theorem fromSpec_comp (q : X ⟶ Spec (CommRingCat.of O)) (hV : IsAffineOpen V) :
     hV.fromSpec ≫ q = Spec.map (CommRingCat.ofHom (strV q V)) := by
   let u : Spec Γ(X, V) ⟶ Spec (CommRingCat.of O) := hV.fromSpec ≫ q
@@ -368,6 +500,29 @@ section Rep
 variable {O R : Type} [CommRing O] [CommRing R] [Algebra O R] {I : Ideal R} {X : Scheme.{0}}
   {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I} {V : X.Opens} [Algebra O Γ(X, V)]
 
+/- English proof (translation)
+Set `e' : Γ(X, V) →+* B'` to `GlobalTheory.Cris.evalAt y'.1.2 V hy'`. Set `ψ' : R ⧸ I →+* B'` to `y'.1.1`. Establish `hcomp : ∀ a, e' (algebraMap O Γ(X, V) a) = ψ' (κ a)` using `fun a => by`. Rewrite using `[hstr]`. Conclude with `evalAt_base q κ ψ' y'.1.2 y'.2 hy' a`.
+
+Use `letI : Algebra O B' := (ψ'.comp κ).toAlgebra`. Set `f1 : R →ₐ[O] B'` to `{ ψ'.comp (Ideal.Quotient.mk I) with commutes' := fun a => by`. Express the relevant statement in the definitionally equal form `ψ' (Ideal.Quotient.mk I (algebraMap O R a)) = ψ' (κ a)`. Rewrite using `[hκ] }`. Set `f2 : Γ(X, V) →ₐ[O] B'` to `{ e' with commutes' := hcomp }`.
+
+Set `Φ : R ⊗[O] Γ(X, V) →ₐ[O] B'` to `Algebra.TensorProduct.productMap f1 f2`. Establish `hΦ : ∀ r f, Φ (r ⊗ₜ[O] f) = ψ' (Ideal.Quotient.mk I r) * e' f` using `fun r f => by`. Simplify using `only [Φ, Algebra.TensorProduct.productMap_apply_tmul]`. Both sides reduce to the same expression. Establish `hJ : ∀ a ∈ I.map (Algebra.TensorProduct.includeLeftRingHom : R →+* R ⊗[O] Γ(X, V)), Φ.toRingHom a = 0`.
+
+Establish `: I.map (Algebra.TensorProduct.includeLeftRingHom : R →+* R ⊗[O] Γ(X, V)) ≤ RingHom.ker Φ.toRingHom`. Use `Ideal.map_le_iff_le_comap.2 fun x hx => ?_` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker]`. Express the relevant statement in the definitionally equal form `Φ (x ⊗ₜ[O] 1) = 0`. Rewrite using `[hΦ, Ideal.Quotient.eq_zero_iff_mem.2 hx, map_zero, zero_mul]`.
+
+Conclude with `fun a ha => this ha`. Set `φ` to `Ideal.Quotient.lift _ Φ.toRingHom hJ`. Establish `hφ : ∀ r f, φ (Ideal.Quotient.mk _ (r ⊗ₜ[O] f)) = ψ' (Ideal.Quotient.mk I r) * e' f` using `fun r f => by`. Rewrite using `[Ideal.Quotient.lift_mk]`. Conclude with `hΦ r f`.
+
+Use `⟨φ, ?_, fun φ₂ h => ?_⟩` and prove the remaining obligations. Use `Subtype.ext (Prod.ext ?_ ?_)` and prove the remaining obligations. Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Express the relevant statement in the definitionally equal form `φ (y.1.1 (Ideal.Quotient.mk I r)) = ψ' (Ideal.Quotient.mk I r)`.
+
+Rewrite using `[h1, hφ, map_one, mul_one]`. Express the relevant statement in the definitionally equal form `Spec.map (CommRingCat.ofHom φ) ≫ y.1.2 = y'.1.2`. Establish `e : φ.comp g = e'` using `RingHom.ext fun f => by`. Rewrite using `[RingHom.comp_apply, hg, hφ, map_one, map_one, one_mul]`. Rewrite using `[h2, ← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, e]`.
+
+Conclude with `eq_specMap hV _ hy'`. Establish `a : φ₂.comp y.1.1 = ψ'` using `congrArg (fun z => z.1.1) h`. Establish `b : Spec.map (CommRingCat.ofHom φ₂) ≫ y.1.2 = y'.1.2` using `congrArg (fun z => z.1.2) h`. Establish `e : e' = φ₂.comp g`. Use `evalAt_specMap hV (φ₂.comp g) y'.1.2 ?_ hy'` and prove the remaining obligations.
+
+Rewrite using `[← b, h2, ← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `Ideal.Quotient.ringHom_ext (RingHom.ext fun x => ?_)` and prove the remaining obligations. Use `TensorProduct.induction_on x (by simp) (fun r f => ?_) (fun u v hu hv => ?_)` and prove the remaining obligations. Establish `t : r ⊗ₜ[O] f = (r ⊗ₜ[O] (1 : Γ(X, V))) * ((1 : R) ⊗ₜ[O] f)`. Simplify using the standard rewrite rules.
+
+Express the relevant statement in the definitionally equal form `φ₂ (Ideal.Quotient.mk _ (r ⊗ₜ[O] f)) = φ (Ideal.Quotient.mk _ (r ⊗ₜ[O] f))`. Rewrite using `[hφ, t, map_mul, map_mul, ← hg, ← h1]`. Express the relevant statement in the definitionally equal form `(φ₂.comp y.1.1) _ * (φ₂.comp g) f = _`. Rewrite using `[a, ← e]`. Simplify using `only [RingHom.comp_apply, map_add] at hu hv ⊢`.
+
+Rewrite using `[hu, hv]`.
+-/
 theorem rep_tensor (hstr : algebraMap O Γ(X, V) = strV q V)
     (hκ : ∀ a, κ a = Ideal.Quotient.mk I (algebraMap O R a)) (hV : IsAffineOpen V)
     (y : PtOver X q κ ((R ⊗[O] Γ(X, V)) ⧸
@@ -437,6 +592,29 @@ theorem rep_tensor (hstr : algebraMap O Γ(X, V) = strV q V)
 
 end Rep
 
+/- English proof (translation)
+Introduce `O R _ _ _ I γ l s hb X q κ hκ V d c`. Use `letI a0 : Algebra O Γ(X, V) := (strV q V).toAlgebra`. Establish `hstr : algebraMap O Γ(X, V) = strV q V` using `rfl`. Establish `hE : (MvPolynomial.eval₂Hom (algebraMap O Γ(X, V)) c.t : MvPolynomial (Fin d) O →+* Γ(X, V)).Etale` using `c.etale`. Use `haveI hF : Module.Flat O Γ(X, V) := flat_of_etale c.t hE`.
+
+Set `iL : R →+* R ⊗[O] Γ(X, V)` to `Algebra.TensorProduct.includeLeftRingHom`. Establish `hl : ∀ x : R ⊗[O] Γ(X, V), (l : R ⊗[O] Γ(X, V)) * x = 0 → x = 0` using `fun x h => by`. Use `tf_tensor (G := Γ(X, V)) (O := O) (pdP γ s) l (hb.tf s) x (by rw [h]; exact zero_mem _)` as an intermediate fact. Rewrite `this` using `[hb.nil, Ideal.map_bot]`. Conclude with `this`.
+
+Establish `hlk : ∀ (k : ℕ) (x : R ⊗[O] Γ(X, V)), (l : R ⊗[O] Γ(X, V)) ^ k * x = 0 → x = 0` using `fun k => by`. Proceed by induction on `k with`. Consider the case `zero => intro x h`. Simplify using `using h`. Consider the case `succ k ih`.
+
+Introduce `x h`. Use `ih x (hl _ ?_)` and prove the remaining obligations. Rewrite using `[← h, pow_succ']`. Expand and normalize the polynomial expressions, which then agree. Establish `hn : ∀ n : ℕ, n ≠ 0 → ∀ x : R ⊗[O] Γ(X, V), (n : R ⊗[O] Γ(X, V)) * x = 0 → x = 0` using `fun n hn0 x h => by`.
+
+Take `⟨k, u, hu⟩` from `hb.dv n hn0`. Use `hlk k x ?_` and prove the remaining obligations. Establish `e` using `congrArg iL hu`. Rewrite `e` using `[map_mul, map_pow, map_natCast, map_natCast]`. Rewrite using `[← e, mul_comm (n : R ⊗[O] Γ(X, V)), mul_assoc, h, mul_zero]`.
+
+Take `⟨δ, hδ⟩` from `exists_dp γ iL hn`. Establish `hP` using `dividedPowerFiltration_eq_map γ iL δ hδ`. Set `g : Γ(X, V) →+* (R ⊗[O] Γ(X, V)) ⧸ I.map iL` to `(Ideal.Quotient.mk _).comp (Algebra.TensorProduct.includeRight : Γ(X, V) →ₐ[O] R ⊗[O] Γ(X, V)).toRingHom`. Set `ψ : R ⧸ I →+* (R ⊗[O] Γ(X, V)) ⧸ I.map iL` to `Ideal.quotientMap _ iL Ideal.le_comap_map`. Establish `hcomp : g.comp (strV q V) = ψ.comp κ` using `RingHom.ext fun a => by`.
+
+Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ ((1 : R) ⊗ₜ[O] (algebraMap O Γ(X, V) a)) = ψ (κ a)`. Rewrite using `[hκ]`. Express the relevant statement in the definitionally equal form `_ = Ideal.Quotient.mk _ ((algebraMap O R a) ⊗ₜ[O] (1 : Γ(X, V)))`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`. Set `y : PtOver X q κ ((R ⊗[O] Γ(X, V)) ⧸ I.map iL)` to `⟨(ψ, Spec.map (CommRingCat.ofHom g) ≫ c.affine.fromSpec), by`.
+
+Express the relevant statement in the definitionally equal form `(Spec.map (CommRingCat.ofHom g) ≫ c.affine.fromSpec) ≫ q = _`. Rewrite using `[Category.assoc, fromSpec_comp q c.affine, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hcomp]⟩`. Establish `hnil : IsNilpotent (I.map iL)` using `⟨s, by`. Establish `h` using `pow_le_pdP δ s`. Rewrite `h` using `[hP, hb.nil, Ideal.map_bot]`.
+
+Conclude with `le_bot_iff.1 h⟩`. Set `D : Thick (nlFun γ 0 X q κ)` to `mkT (R ⊗[O] Γ(X, V)) iL (I.map iL) δ ⟨fun h => (h rfl).elim, fun _ => hnil⟩ hδ y (fun r => rfl)`. Establish `hin : InU V D` using `top_le_specMap c.affine g`. Set `c' : Chart γ 0 q κ V d` to `{ D := D t := fun k => (1 : R) ⊗ₜ[O] c.t k etale := etale_tensor c.t hE J_eq := rfl inV := hin rep := fun B' y' hy' => rep_tensor hstr hκ c.affine y (fun r => rfl) g (fun f => rfl) rfl B' y' hy' }`. Establish `key : ∀ (r : ℕ) (x : R ⊗[O] Γ(X, V)), (l : R ⊗[O] Γ(X, V)) * x ∈ pdP δ r → x ∈ pdP δ r` using `fun r x hx => by`.
+
+Rewrite `hx`, the goal using `[hP]`. Conclude with `tf_tensor (pdP γ r) l (hb.tf r) x hx`. Use `⟨c', RingEquiv.refl _, ⟨?_, fun r x hx => ?_⟩, fun r => rfl, fun k => rfl, fun f => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pdP δ s = ⊥`. Rewrite using `[hP, hb.nil, Ideal.map_bot]`.
+
+Conclude with `key r x hx`. Use `evalAt_specMap c.affine g (pt D) rfl hin` as an intermediate fact. Conclude with `RingHom.congr_fun this f`.
+-/
 theorem chart_exists : ∀ {O R : Type} [CommRing O] [CommRing R] [Algebra O R] {I : Ideal R} (γ : DividedPowers I) (l s : ℕ)
     (hb : TFBase γ l s) {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of O)) (κ : O →+* R ⧸ I)
     (hκ : ∀ a, κ a = Ideal.Quotient.mk I (algebraMap O R a)) {V : X.Opens} {d : ℕ} (c : Coord q V d),

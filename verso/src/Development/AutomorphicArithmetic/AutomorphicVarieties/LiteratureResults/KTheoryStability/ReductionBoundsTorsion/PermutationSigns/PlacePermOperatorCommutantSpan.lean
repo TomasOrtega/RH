@@ -15,6 +15,9 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι] {q : ℕ}
 def mt (x : Fin q → Matrix ι ι ℂ) : Matrix (Fin q → ι) (Fin q → ι) ℂ :=
   Matrix.of fun I J => ∏ i, x i (I i) (J i)
 
+/- English proof (translation)
+Use extensionality with `I J`. Simplify using `only [tp, mt, of_apply, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ]`. Use `Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib]`.
+-/
 theorem tp_sum {K : Type} [Fintype K] [DecidableEq K] (M : K → Matrix ι ι ℂ) (c : K → ℂ) :
     tp q (∑ k, c k • M k) = ∑ f : Fin q → K, (∏ j, c (f j)) • mt (fun j => M (f j)) := by
   ext I J
@@ -30,6 +33,9 @@ def polyOf {K : Type} [Fintype K] (φ : Matrix (Fin q → ι) (Fin q → ι) ℂ
   ∑ f : Fin q → K, C (φ (mt fun j => M (f j))) * ∏ j, X (f j)
 
 open MvPolynomial in
+/- English proof (translation)
+Rewrite using `[tp_sum, map_sum, polyOf, map_sum]`. Use `Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, map_mul, eval_C, map_prod]`. Simplify using `only [eval_X]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eval_polyOf {K : Type} [Fintype K] [DecidableEq K]
     (φ : Matrix (Fin q → ι) (Fin q → ι) ℂ →ₗ[ℂ] ℂ) (M : K → Matrix ι ι ℂ) (c : K → ℂ) :
     eval c (polyOf φ M) = φ (tp q (∑ k, c k • M k)) := by
@@ -40,6 +46,11 @@ theorem eval_polyOf {K : Type} [Fintype K] [DecidableEq K]
   ring
 
 open MvPolynomial in
+/- English proof (translation)
+Unfold `polyOf`. Use `totalDegree_finsetSum_le fun f _ => ?_` and prove the remaining obligations. Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[totalDegree_C, zero_add]`. Use `(totalDegree_finsetProd _ _).trans ?_` and prove the remaining obligations.
+
+Simplify using `[totalDegree_X]`.
+-/
 theorem totalDegree_polyOf {K : Type} [Fintype K]
     (φ : Matrix (Fin q → ι) (Fin q → ι) ℂ →ₗ[ℂ] ℂ) (M : K → Matrix ι ι ℂ) :
     (polyOf φ M).totalDegree ≤ q := by
@@ -50,6 +61,9 @@ theorem totalDegree_polyOf {K : Type} [Fintype K]
   refine (totalDegree_finsetProd _ _).trans ?_
   simp [totalDegree_X]
 
+/- English proof (translation)
+Establish `hP : polyOf φ M = 0` using `MvPolynomial.eq_zero_of_eval_zero_at_prod_finset _ S (fun k => lt_of_le_of_lt ((MvPolynomial.degreeOf_le_totalDegree _ _).trans (totalDegree_polyOf φ M)) (hS k)) (fun x hx => by rw [eval_polyOf]; exact h0 x hx)`. Rewrite using `[← eval_polyOf, hP, map_zero]`.
+-/
 theorem grid {K : Type} [Fintype K] [DecidableEq K]
     (φ : Matrix (Fin q → ι) (Fin q → ι) ℂ →ₗ[ℂ] ℂ) (M : K → Matrix ι ι ℂ) (S : K → Finset ℂ)
     (hS : ∀ k, q < (S k).card) (h0 : ∀ c : K → ℂ, (∀ k, c k ∈ S k) → φ (tp q (∑ k, c k • M k)) = 0)
@@ -66,19 +80,36 @@ section GlobalTheory
 
 variable {W : Type} [Fintype W] [DecidableEq W] {m q : ℕ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem blk_apply (d : W → Matrix (Fin m) (Fin m) ℂ) (x y : Ix W m) :
     blk d x y = if x.1 = y.1 then d x.1 x.2 y.2 else 0 := rfl
 
+/- English proof (translation)
+Apply the tactic sequence `ext x y; simp only [blk_apply, Matrix.add_apply, Pi.add_apply]; split_ifs <;> simp`.
+-/
 theorem blk_add (d e : W → Matrix (Fin m) (Fin m) ℂ) : blk (d + e) = blk d + blk e := by
   ext x y; simp only [blk_apply, Matrix.add_apply, Pi.add_apply]; split_ifs <;> simp
 
+/- English proof (translation)
+Apply the tactic sequence `ext x y; simp only [blk_apply, Matrix.smul_apply, Pi.smul_apply, smul_eq_mul]; split_ifs <;> simp`.
+-/
 theorem blk_smul (a : ℂ) (d : W → Matrix (Fin m) (Fin m) ℂ) : blk (a • d) = a • blk d := by
   ext x y; simp only [blk_apply, Matrix.smul_apply, Pi.smul_apply, smul_eq_mul]; split_ifs <;> simp
 
+/- English proof (translation)
+Apply the tactic sequence `ext x y; simp only [blk_apply, Matrix.sum_apply, Finset.sum_apply]; split_ifs <;> simp`.
+-/
 theorem blk_sum {K : Type} (s : Finset K) (d : K → W → Matrix (Fin m) (Fin m) ℂ) :
     blk (∑ k ∈ s, d k) = ∑ k ∈ s, blk (d k) := by
   ext x y; simp only [blk_apply, Matrix.sum_apply, Finset.sum_apply]; split_ifs <;> simp
 
+/- English proof (translation)
+Use extensionality with `x y`. Express the relevant statement in the definitionally equal form `M x y = if x.1 = y.1 then M (x.1, x.2) (x.1, y.2) else 0`. Use `split_ifs with h`. Take `⟨w, a⟩` from `x`. Take `⟨w', b⟩` from `y`.
+
+Simplify using `only at h`. Substitute `h` using the available equality. Both sides reduce to the same expression. Conclude with `hM x y h`.
+-/
 theorem eq_blk (M : Matrix (Ix W m) (Ix W m) ℂ) (hM : ∀ x y : Ix W m, x.1 ≠ y.1 → M x y = 0) :
     M = blk (fun w a b => M (w, a) (w, b)) := by
   ext x y
@@ -88,6 +119,25 @@ theorem eq_blk (M : Matrix (Ix W m) (Ix W m) ℂ) (hM : ∀ x y : Ix W m, x.1 �
     simp only at h; subst h; rfl
   · exact hM x y h
 
+/- English proof (translation)
+Use `set v : W → Matrix (Fin m) (Fin m) ℂ := fun w => ((hd w).eigenvectorUnitary : Matrix (Fin m) (Fin m) ℂ)`. Establish `hv : ∀ w, v w ∈ unitaryGroup (Fin m) ℂ` using `fun w => ((hd w).eigenvectorUnitary).2`. Set `M : Ix W m → Matrix (Ix W m) (Ix W m) ℂ` to `fun k => blk fun w => if w = k.1 then v w * diagonal (Pi.single k.2 1) * star (v w) else 0`. Establish `hsum : ∀ c : Ix W m → ℂ, ∑ k, c k • M k = blk fun w => v w * diagonal (fun a => c (w, a)) * star (v w)`. Introduce `c`.
+
+Repeatedly rewrite using `[M, ← blk_smul, ← blk_sum]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Rewrite using `[Finset.sum_apply, Fintype.sum_prod_type, Finset.sum_eq_single w]`. Simplify using `only [Pi.smul_apply, if_true]`.
+
+Establish `hd1 : ∑ x : Fin m, c (w, x) • diagonal (Pi.single x (1 : ℂ)) = diagonal fun a => c (w, a)`. Use extensionality with `i j`. Simplify using `only [Matrix.sum_apply, Matrix.smul_apply, diagonal_apply, smul_eq_mul]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+
+Simplify using `[Pi.single_apply]`. Simplify using the standard rewrite rules. Rewrite using `[← hd1, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`.
+
+Introduce `w' _ hw'`. Simplify using `[Ne.symm hw']`. Simplify using the standard rewrite rules. Establish `hcirc : ∀ c : Ix W m → ℂ, (∀ k, ‖c k‖ = 1) → φ (tp q (∑ k, c k • M k)) = 0`. Introduce `c hc`.
+
+Rewrite using `[hsum]`. Use `hU _ fun w => ?_` and prove the remaining obligations. Use `Submonoid.mul_mem _ (Submonoid.mul_mem _ (hv w) ?_) (Unitary.star_mem (hv w))` and prove the remaining obligations. Rewrite using `[mem_unitaryGroup_iff, star_eq_conjTranspose, diagonal_conjTranspose, diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `a`. Simplify using `only [Pi.star_apply]`. Rewrite using `[Complex.star_def, Complex.mul_conj', hc (w, a)]`. Simplify using the standard rewrite rules. Establish `hq : 0 < q + 1` using `Nat.succ_pos q`.
+
+Establish `hζ` using `Complex.isPrimitiveRoot_exp (q + 1) (Nat.succ_ne_zero q)`. Establish `hall` using `grid φ M (fun _ => Polynomial.nthRootsFinset (q + 1) (1 : ℂ)) (fun _ => by rw [hζ.card_nthRootsFinset]; omega) (fun c hc => hcirc c fun k => Complex.norm_eq_one_of_pow_eq_one ((Polynomial.mem_nthRootsFinset hq (1 : ℂ)).1 (hc k)) (Nat.succ_ne_zero q))`. Use `hall fun k => ((hd k.1).eigenvalues k.2 : ℂ)` as an intermediate fact. Rewrite `this` using `[hsum]`. Establish `e : d = fun w => v w * diagonal (fun a => ((hd w).eigenvalues a : ℂ)) * star (v w)`.
+
+Use function extensionality and compare the values at `w`. Use `conv_lhs => rw [(hd w).spectral_theorem]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `this`.
+-/
 theorem herm_of_unit (φ : Matrix (Fin q → Ix W m) (Fin q → Ix W m) ℂ →ₗ[ℂ] ℂ)
     (hU : ∀ d : W → Matrix (Fin m) (Fin m) ℂ, (∀ w, d w ∈ unitaryGroup (Fin m) ℂ) → φ (tp q (blk d)) = 0)
     (d : W → Matrix (Fin m) (Fin m) ℂ) (hd : ∀ w, (d w).IsHermitian) : φ (tp q (blk d)) = 0 := by
@@ -142,6 +192,19 @@ theorem herm_of_unit (φ : Matrix (Fin q → Ix W m) (Fin q → Ix W m) ℂ →�
   rw [e]
   exact this
 
+/- English proof (translation)
+Use `set H : W → Matrix (Fin m) (Fin m) ℂ := fun w => (2 : ℂ)⁻¹ • (d w + (d w)ᴴ)`. Use `set K : W → Matrix (Fin m) (Fin m) ℂ := fun w => ((2 : ℂ)⁻¹ * -Complex.I) • (d w - (d w)ᴴ)`. Set `M : Fin 2 → Matrix (Ix W m) (Ix W m) ℂ` to `![blk H, blk K]`. Establish `hM : ∀ c : Fin 2 → ℂ, ∑ k, c k • M k = blk (c 0 • H + c 1 • K)`. Introduce `c`.
+
+Simplify using `[M, Fin.sum_univ_two, blk_add, blk_smul]`. Establish `hall` using `grid φ M (fun _ => (Finset.range (q + 1)).image (Nat.cast : ℕ → ℂ)) (fun _ => by rw [Finset.card_image_of_injective _ Nat.cast_injective, Finset.card_range]; omega) (fun c hc => by`. Rewrite using `[hM]`. Use `hH _ fun w => ?_` and prove the remaining obligations. Take `⟨a, -, ha⟩` from `Finset.mem_image.1 (hc 0)`.
+
+Take `⟨b, -, hb⟩` from `Finset.mem_image.1 (hc 1)`. Rewrite using `[← ha, ← hb]`. Simplify using `only [IsHermitian, Pi.add_apply, Pi.smul_apply, H, K, conjTranspose_add, conjTranspose_smul, conjTranspose_sub, conjTranspose_conjTranspose]`. Simplify using `only [star_natCast, star_mul', star_inv₀, star_ofNat, star_neg, Complex.star_def, Complex.conj_I]`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.add_apply, Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul]`. Use the proof step `ring)`. Use `hall ![1, Complex.I]` as an intermediate fact. Rewrite `this` using `[hM]`. Establish `e : d = (![1, Complex.I] : Fin 2 → ℂ) 0 • H + (![1, Complex.I] : Fin 2 → ℂ) 1 • K`.
+
+Use function extensionality and compare the values at `w`. Use extensionality with `i j`. Simplify using `only [Pi.add_apply, Pi.smul_apply, H, K, Matrix.add_apply, Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]`. Take the linear combination `(2 : ℂ)⁻¹ * (d w i j - (d w)ᴴ i j) * Complex.I_sq`. Rewrite using `[e]`.
+
+Conclude with `this`.
+-/
 theorem all_of_herm (φ : Matrix (Fin q → Ix W m) (Fin q → Ix W m) ℂ →ₗ[ℂ] ℂ)
     (hH : ∀ d : W → Matrix (Fin m) (Fin m) ℂ, (∀ w, (d w).IsHermitian) → φ (tp q (blk d)) = 0)
     (d : W → Matrix (Fin m) (Fin m) ℂ) : φ (tp q (blk d)) = 0 := by
@@ -183,9 +246,19 @@ section Comm
 
 variable {W : Type} [Fintype W] [DecidableEq W] {m q : ℕ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem perm'_apply (σ : Equiv.Perm (Fin q)) (w : Fin q → W) (I J : Fin q → Ix W m) :
     perm' σ w I J = if (∀ i, (I i).1 = w i) ∧ J = I ∘ σ then 1 else 0 := rfl
 
+/- English proof (translation)
+Establish `hB : (B ∘ σ.symm) ∘ σ = B` using `by funext i; simp`. Rewrite using `[mul_apply, Finset.sum_eq_single (B ∘ σ.symm)]`. Rewrite using `[perm'_apply] split_ifs with h1 h2 h2`. Rewrite using `[mul_one]`. Conclude with `absurd h1.1 h2`.
+
+Conclude with `absurd ⟨h2, hB.symm⟩ h1`. Rewrite using `[mul_zero]`. Introduce `K _ hK`. Rewrite using `[perm'_apply, if_neg, mul_zero]`. Introduce and unpack `⟨-, rfl⟩`.
+
+Conclude with `hK (by funext i; simp)`. Simplify using the standard rewrite rules.
+-/
 theorem mul_perm' (Z : Matrix (Fin q → Ix W m) (Fin q → Ix W m) ℂ) (σ : Equiv.Perm (Fin q))
     (w : Fin q → W) (A B : Fin q → Ix W m) :
     (Z * perm' σ w : Matrix (Fin q → Ix W m) (Fin q → Ix W m) ℂ) A B =
@@ -204,6 +277,13 @@ theorem mul_perm' (Z : Matrix (Fin q → Ix W m) (Fin q → Ix W m) ℂ) (σ : E
     exact hK (by funext i; simp)
   · simp
 
+/- English proof (translation)
+Rewrite using `[mul_apply, Finset.sum_eq_single (A ∘ σ)]`. Rewrite using `[perm'_apply] split_ifs with h1 h2 h2`. Rewrite using `[one_mul]`. Conclude with `absurd h1.1 h2`. Conclude with `absurd ⟨h2, rfl⟩ h1`.
+
+Rewrite using `[zero_mul]`. Introduce `K _ hK`. Rewrite using `[perm'_apply, if_neg, zero_mul]`. Introduce and unpack `⟨-, rfl⟩`. Conclude with `hK rfl`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem perm'_mul (Z : Matrix (Fin q → Ix W m) (Fin q → Ix W m) ℂ) (σ : Equiv.Perm (Fin q))
     (w : Fin q → W) (A B : Fin q → Ix W m) :
     (perm' σ w * Z : Matrix (Fin q → Ix W m) (Fin q → Ix W m) ℂ) A B =
@@ -221,6 +301,11 @@ theorem perm'_mul (Z : Matrix (Fin q → Ix W m) (Fin q → Ix W m) ℂ) (σ : E
     exact hK rfl
   · simp
 
+/- English proof (translation)
+Use `congrFun (congrFun (hZ 1 fun i => (J i).1) I) J` as an intermediate fact. Rewrite `this` using `[mul_perm', perm'_mul]`. Establish `e1 : J ∘ (1 : Equiv.Perm (Fin q)).symm = J` using `by funext i; rfl`. Rewrite `this` using `[e1]`. Rewrite `this` using `[if_pos (fun _ => rfl)]`.
+
+Assume the negation of the conclusion as `hne`. Rewrite `this` using `[if_neg hne]`. Conclude with `h this`.
+-/
 theorem compat_of_comm (Z : Matrix (Fin q → Ix W m) (Fin q → Ix W m) ℂ)
     (hZ : ∀ (σ : Equiv.Perm (Fin q)) (w : Fin q → W), Z * perm' σ w = perm' σ w * Z)
     (I J : Fin q → Ix W m) (h : Z I J ≠ 0) : ∀ i, (I i).1 = (J i).1 := by
@@ -233,6 +318,11 @@ theorem compat_of_comm (Z : Matrix (Fin q → Ix W m) (Fin q → Ix W m) ℂ)
   rw [if_neg hne] at this
   exact h this
 
+/- English proof (translation)
+Use `congrFun (congrFun (hZ σ fun i => (I i).1) I) (J ∘ σ)` as an intermediate fact. Rewrite `this` using `[mul_perm', perm'_mul]`. Establish `hJ : (J ∘ σ) ∘ σ.symm = J` using `by funext i; simp`. Rewrite `this` using `[hJ]`. Rewrite `this` using `[if_pos (fun _ => rfl)]`.
+
+Rewrite using `[← this]`. Distinguish the cases in `h : Z I J = 0`. Apply the tactic sequence `rw [h]; split_ifs <;> rfl`. Rewrite using `[if_pos fun i => (compat_of_comm Z hZ I J h i).symm]`.
+-/
 theorem sym_of_comm (Z : Matrix (Fin q → Ix W m) (Fin q → Ix W m) ℂ)
     (hZ : ∀ (σ : Equiv.Perm (Fin q)) (w : Fin q → W), Z * perm' σ w = perm' σ w * Z)
     (σ : Equiv.Perm (Fin q)) (I J : Fin q → Ix W m) : Z (I ∘ σ) (J ∘ σ) = Z I J := by
@@ -255,6 +345,17 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι] {q : ℕ}
 def symU (I J : Fin q → ι) : Matrix (Fin q → ι) (Fin q → ι) ℂ :=
   ∑ σ : Equiv.Perm (Fin q), Matrix.single (I ∘ σ) (J ∘ σ) 1
 
+/- English proof (translation)
+Establish `key : ∀ (σ : Equiv.Perm (Fin q)) (K L : Fin q → ι), ∑ I, ∑ J, Z I J * Matrix.single (I ∘ σ) (J ∘ σ) (1 : ℂ) K L = Z K L`. Introduce `σ K L`. Rewrite using `[Finset.sum_eq_single (K ∘ σ.symm)]`. Rewrite using `[Finset.sum_eq_single (L ∘ σ.symm)]`. Establish `h1 : (K ∘ σ.symm) ∘ σ = K` using `by funext i; simp`.
+
+Establish `h2 : (L ∘ σ.symm) ∘ σ = L` using `by funext i; simp`. Rewrite using `[h1, h2, Matrix.single_apply_same, mul_one, hsym]`. Introduce `J _ hJ`. Rewrite using `[Matrix.single_apply, if_neg, mul_zero]`. Introduce and unpack `⟨-, h⟩`.
+
+Conclude with `hJ (by rw [← h]; funext i; simp)`. Simplify using the standard rewrite rules. Introduce `I _ hI`. Use `Finset.sum_eq_zero fun J _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.single_apply, if_neg, mul_zero]`.
+
+Introduce and unpack `⟨h, -⟩`. Conclude with `hI (by rw [← h]; funext i; simp)`. Simplify using the standard rewrite rules. Use extensionality with `K L`. Simplify using `only [Matrix.smul_apply, Matrix.sum_apply, symU, smul_eq_mul, Finset.mul_sum]`.
+
+Use `conv_rhs => enter [2, I]`. Rewrite using `[Finset.sum_comm]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [key, Finset.sum_const, Finset.card_univ, Fintype.card_perm, Fintype.card_fin, nsmul_eq_mul]`.
+-/
 theorem decomp (Z : Matrix (Fin q → ι) (Fin q → ι) ℂ)
     (hsym : ∀ (σ : Equiv.Perm (Fin q)) I J, Z (I ∘ σ) (J ∘ σ) = Z I J) :
     ((Nat.factorial q : ℕ) : ℂ) • Z = ∑ I, ∑ J, Z I J • symU I J := by
@@ -283,6 +384,13 @@ theorem decomp (Z : Matrix (Fin q → ι) (Fin q → ι) ℂ)
   rw [Finset.sum_comm]
   simp only [key, Finset.sum_const, Finset.card_univ, Fintype.card_perm, Fintype.card_fin, nsmul_eq_mul]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hs : Function.Surjective f`. Introduce `k`. Assume the negation of the conclusion as `hk`.
+
+Use `push_neg at hk`. Use `congrArg (fun g : Fin q →₀ ℕ => g k) h` as an intermediate fact. Simplify using `only [Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.single_apply] at this`. Simplify using `[hk] at this`. Conclude with `⟨Finite.injective_iff_surjective.2 hs, hs⟩`.
+
+Introduce `h`. Conclude with `Fintype.sum_bijective f h _ _ fun _ => rfl`.
+-/
 theorem nu_iff (f : Fin q → Fin q) :
     (∑ j, Finsupp.single (f j) 1 : Fin q →₀ ℕ) = ∑ j, Finsupp.single j 1 ↔ Function.Bijective f := by
   constructor
@@ -298,6 +406,13 @@ theorem nu_iff (f : Fin q → Fin q) :
   · intro h
     exact Fintype.sum_bijective f h _ _ fun _ => rfl
 
+/- English proof (translation)
+Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Use extensionality with `K L`. Simplify using `only [mt, of_apply, hx, Matrix.single_apply]`. Rewrite using `[Finset.prod_boole]`. Simplify using `only [Finset.mem_univ, true_implies]`.
+
+Use `congr 1`. Apply `propext` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨funext fun i => (h i).1, funext fun i => (h i).2⟩`.
+
+Introduce and unpack `⟨h1, h2⟩ i`. Conclude with `⟨congrFun h1 i, congrFun h2 i⟩`.
+-/
 theorem sum_perm_mt (x : Fin q → Matrix ι ι ℂ) (I J : Fin q → ι)
     (hx : ∀ j, x j = Matrix.single (I j) (J j) 1) :
     ∑ σ : Equiv.Perm (Fin q), mt (fun j => x (σ j)) = symU I J := by
@@ -316,6 +431,13 @@ theorem sum_perm_mt (x : Fin q → Matrix ι ι ℂ) (I J : Fin q → ι)
 
 open MvPolynomial in
 
+/- English proof (translation)
+Establish `hP : polyOf φ x = 0` using `MvPolynomial.funext fun t => by rw [eval_polyOf, h0, map_zero]`. Establish `hc` using `congrArg (coeff (∑ j : Fin q, Finsupp.single j 1)) hP`. Rewrite `hc` using `[coeff_zero, polyOf, coeff_sum]`. Establish `hX : ∀ f : Fin q → Fin q, (∏ j, X (f j) : MvPolynomial (Fin q) ℂ) = monomial (∑ j, Finsupp.single (f j) 1) 1` using `fun f => by`. Rewrite using `[monomial_sum_one]`.
+
+Both sides reduce to the same expression. Simplify using `only [hX, coeff_C_mul, coeff_monomial, mul_ite, mul_one, mul_zero] at hc`. Rewrite `hc` using `[← Finset.sum_filter]`. Establish `hfil : (Finset.univ.filter fun f : Fin q → Fin q => (∑ j, Finsupp.single (f j) 1 : Fin q →₀ ℕ) = ∑ j, Finsupp.single j 1) = Finset.univ.map ⟨fun σ : Equiv.Perm (Fin q) => (σ : Fin q → Fin q), DFunLike.coe_injective⟩`. Use extensionality with `f`.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_map, Function.Embedding.coeFn_mk, nu_iff]`. Conclude with `⟨fun h => ⟨Equiv.ofBijective f h, rfl⟩, fun ⟨σ, hσ⟩ => hσ ▸ σ.bijective⟩`. Rewrite `hc` using `[hfil, Finset.sum_map]`. Rewrite using `[map_sum]`. Conclude with `hc`.
+-/
 theorem sym_zero (φ : Matrix (Fin q → ι) (Fin q → ι) ℂ →ₗ[ℂ] ℂ) (x : Fin q → Matrix ι ι ℂ)
     (h0 : ∀ t : Fin q → ℂ, φ (tp q (∑ j, t j • x j)) = 0) :
     φ (∑ σ : Equiv.Perm (Fin q), mt (fun j => x (σ j))) = 0 := by
@@ -343,6 +465,21 @@ end Sym
 end WeightTwoPolynomials
 
 open WeightTwoPolynomials in
+/- English proof (translation)
+Introduce `W _ _ m q Z hZ`. Assume the negation of the conclusion as `hZS`. Take `⟨φ, hφZ, hφS⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem hZS inferInstance`. Establish `hφ : ∀ y ∈ Submodule.span ℂ {M | ∃ d : W → Matrix (Fin m) (Fin m) ℂ, (∀ w, d w ∈ Matrix.unitaryGroup (Fin m) ℂ) ∧ M = tp q (blk d)}, φ y = 0`. Introduce `y hy`.
+
+Establish `: φ y ∈ (Submodule.span ℂ _).map φ` using `Submodule.mem_map_of_mem hy`. Rewrite `this` using `[hφS]`. Conclude with `(Submodule.mem_bot ℂ).1 this`. Establish `hU : ∀ d : W → Matrix (Fin m) (Fin m) ℂ, (∀ w, d w ∈ unitaryGroup (Fin m) ℂ) → φ (tp q (blk d)) = 0` using `fun d hd => hφ _ (Submodule.subset_span ⟨d, hd, rfl⟩)`. Establish `hAll` using `all_of_herm φ (herm_of_unit φ hU)`.
+
+Apply `hφZ` to reduce the goal to its premises. Establish `hfac : ((Nat.factorial q : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (Nat.factorial_ne_zero q)`. Establish `hdec` using `congrArg φ (decomp Z (sym_of_comm Z hZ))`. Rewrite `hdec` using `[map_smul, smul_eq_mul, map_sum]`. Establish `hterm : ∀ I J, φ (Z I J • symU I J) = 0`.
+
+Introduce `I J`. Rewrite using `[map_smul, smul_eq_mul]`. Distinguish the cases in `h : Z I J = 0`. Rewrite using `[h, zero_mul]`. Establish `hc` using `compat_of_comm Z hZ I J h`.
+
+Establish `h0 : ∀ t : Fin q → ℂ, φ (tp q (∑ j, t j • Matrix.single (I j) (J j) (1 : ℂ))) = 0`. Introduce `t`. Rewrite using `[eq_blk (∑ j, t j • Matrix.single (I j) (J j) (1 : ℂ))]`. Conclude with `hAll _`. Introduce `x y hxy`.
+
+Simplify using `only [Matrix.sum_apply, Matrix.smul_apply, Matrix.single_apply, smul_eq_mul]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg, mul_zero]`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `hxy (hc j)`.
+
+Establish `hs` using `sym_zero φ (fun j => Matrix.single (I j) (J j) (1 : ℂ)) h0`. Rewrite `hs` using `[sum_perm_mt _ I J fun _ => rfl]`. Rewrite using `[hs, mul_zero]`. Simplify using `only [map_sum, hterm, Finset.sum_const_zero] at hdec`. Conclude with `(mul_eq_zero.1 hdec).resolve_left hfac`.
+-/
 theorem sw2 : PlacePermOperatorCommutantSpan := by
   intro W _ _ m q Z hZ
   by_contra hZS

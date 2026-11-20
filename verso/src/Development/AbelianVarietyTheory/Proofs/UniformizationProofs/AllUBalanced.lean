@@ -22,6 +22,9 @@ open GlobalTheory.UT
 
 namespace GlobalTheory.UT
 
+/- English proof (translation)
+Take `⟨-, h1, h2, h3, h4⟩` from `GlobalTheory.twistBaseChange_and_valuation_statements`. Introduce `R _ _ _ I hI D A G _ _ hG U`. Conclude with `⟨GlobalTheory.RingActData.exists_oAct GlobalTheory.firstFiveLaws h1 h2 h3 h4 R I hI D A G hG U, GlobalTheory.PsiPrim.traceFormTwistIso_of_primitive_lineBundle GlobalTheory.firstFiveLaws h1 h2 h3 h4 R I hI D A G hG U⟩`.
+-/
 theorem allU_balanced : AllU fun {_} _ _ {_} {_} {_} {_} _ _ U => Cl.Balanced U := by
   obtain ⟨-, h1, h2, h3, h4⟩ := GlobalTheory.twistBaseChange_and_valuation_statements
   intro R _ _ _ I hI D A G _ _ hG U

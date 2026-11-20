@@ -13,15 +13,29 @@ namespace GlobalTheory.BSP.StratCocycle
 
 variable {l : ℕ} {R : Type} [CommRing R]
 
+/- English proof (translation)
+The claim follows from `Hom.ext' rfl`.
+-/
 theorem comp_assoc {P P' P'' P''' : Obj l R} (h : Hom P'' P''') (g : Hom P' P'') (f : Hom P P') :
     (h.comp g).comp f = h.comp (g.comp f) := Hom.ext' rfl
 
+/- English proof (translation)
+The claim follows from `Hom.ext' rfl`.
+-/
 theorem comp_id {P P' : Obj l R} (f : Hom P P') : f.comp (Hom.id P) = f := Hom.ext' rfl
 
+/- English proof (translation)
+Rewrite using `[Matrix.map_map]`. Both sides reduce to the same expression.
+-/
 theorem map_comp {P P' P'' : Obj l R} {d : ℕ} (ε : Matrix (Fin d) (Fin d) P.A) (g : Hom P' P'') (f : Hom P P') :
     ε.map (g.comp f).f = (ε.map f.f).map g.f := by
   rw [Matrix.map_map]; rfl
 
+/- English proof (translation)
+Take `⟨Δ, ⟨hΔl, hΔr⟩, -⟩` from `univ P (Hom.id _) (Hom.id _)`. Establish `hk' : k = (k.comp inl).comp Δ`. Use `(univ B (k.comp inl) (k.comp inr)).unique ⟨rfl, rfl⟩ ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(comp_assoc _ _ _).trans ((congrArg (Hom.comp (k.comp inl)) hΔl).trans (comp_id _))`. Conclude with `(comp_assoc _ _ _).trans ((congrArg (Hom.comp (k.comp inl)) hΔr).trans ((comp_id _).trans hk))`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem unit_of_codiag {P Q B : Obj l R} {d : ℕ} (inl inr : Hom P Q)
     (univ : ∀ (C : Obj l R) (f g : Hom P C), ∃! h : Hom Q C, h.comp inl = f ∧ h.comp inr = g)
     (ε : Matrix (Fin d) (Fin d) Q.A)
@@ -38,6 +52,13 @@ theorem unit_of_codiag {P Q B : Obj l R} {d : ℕ} (inl inr : Hom P Q)
         congrArg (fun M : Matrix (Fin d) (Fin d) P.A => M.map (k.comp inl).f) (h1 Δ (hΔl.trans hΔr.symm))
     _ = 1 := Matrix.map_one _ (map_zero _) (map_one _)
 
+/- English proof (translation)
+Take `⟨k₂₃, ⟨h₂₃l, h₂₃r⟩, -⟩` from `univ Q₂ (i₁.comp inr) j`. Take `⟨k₁₃, ⟨h₁₃l, h₁₃r⟩, -⟩` from `univ Q₂ (i₁.comp inl) j`. Establish `hc'` using `hc k₂₃ k₁₃ h₂₃l.symm h₁₃l.symm (h₂₃r.trans h₁₃r.symm)`. Take `⟨m, ⟨hml, hmr⟩, -⟩` from `univ₂ B k₁ (k₂.comp inr)`. Establish `e₂ : k₂ = m.comp k₂₃`.
+
+Use `(univ B (k₂.comp inl) (k₂.comp inr)).unique ⟨rfl, rfl⟩ ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(comp_assoc _ _ _).trans ((congrArg (Hom.comp m) h₂₃l).trans ((comp_assoc _ _ _).symm.trans ((congrArg (fun q => Hom.comp q inr) hml).trans h12)))`. Conclude with `(comp_assoc _ _ _).trans ((congrArg (Hom.comp m) h₂₃r).trans hmr)`. Establish `e₃ : k₃ = m.comp k₁₃`. Use `(univ B (k₃.comp inl) (k₃.comp inr)).unique ⟨rfl, rfl⟩ ⟨?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `(comp_assoc _ _ _).trans ((congrArg (Hom.comp m) h₁₃l).trans ((comp_assoc _ _ _).symm.trans ((congrArg (fun q => Hom.comp q inl) hml).trans h13)))`. Conclude with `(comp_assoc _ _ _).trans ((congrArg (Hom.comp m) h₁₃r).trans (hmr.trans h23))`. Substitute `e₂ e₃ hml` using the available equality. Rewrite using `[map_comp ε m i₁, map_comp ε m k₂₃, map_comp ε m k₁₃, ← Matrix.map_mul, hc']`.
+-/
 theorem cocycle_of_triple {P Q Q₂ B : Obj l R} {d : ℕ} (inl inr : Hom P Q)
     (univ : ∀ (C : Obj l R) (f g : Hom P C), ∃! h : Hom Q C, h.comp inl = f ∧ h.comp inr = g)
     (i₁ : Hom Q Q₂) (j : Hom P Q₂)
@@ -64,6 +85,9 @@ theorem cocycle_of_triple {P Q Q₂ B : Obj l R} {d : ℕ} (inl inr : Hom P Q)
   subst e₂ e₃ hml
   rw [map_comp ε m i₁, map_comp ε m k₂₃, map_comp ε m k₁₃, ← Matrix.map_mul, hc']
 
+/- English proof (translation)
+Introduce `l _ K bk d ρ τ s ht En ε hrel B`. Establish `cocB` using `GlobalTheory.T.breuilKisinCoproduct_unit_cocycle_identities l K bk d ρ τ s ht En ε hrel`. Use `haveI : IsAdicComplete bk.J bk.S := bk.complete`. Use `⟨unit_of_codiag En.inl En.inr En.univ ε (fun Δ h => (cocB bk.prism (Hom.id _) Unit (TopBasis.self bk.J)).1 Δ h), fun k₁ k₂ k₃ h12 h13 h23 => ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.T.nonempty_breuilKisinPrismCoproduct l K bk En.Q _ _ (GlobalTheory.T.isOrientedPrismUniformizerFrame_breuilKisinHom l K bk En.Q En.inl)).elim fun En₂ => (GlobalTheory.T.breuilKisinEnvelopes_adicTopologicalBasis l K bk En En₂).2.elim fun ι htb => htb.elim fun tb => c …`.
+-/
 theorem unit_cocycle : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d : ℕ)
     (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l]) (τ : Ainf l) (s : Seed bk d ρ τ) (ht : Height s)
     (En : Env bk bk.prism (bk.toP bk.E) (bk.toP X)) (ε : Matrix (Fin d) (Fin d) En.Q.A),

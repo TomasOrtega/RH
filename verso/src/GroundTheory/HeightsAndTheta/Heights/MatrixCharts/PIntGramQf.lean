@@ -10,6 +10,9 @@ open Matrix
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `d k S N z`. Simplify using `only [MCSchur.qf, intGram, ← mulVec_mulVec]`. Rewrite using `[dotProduct_mulVec, vecMul_transpose]`.
+-/
 theorem IntGramQf.proof : IntGramQf.Statement := by
   intro d k S N z
   simp only [MCSchur.qf, intGram, ← mulVec_mulVec]

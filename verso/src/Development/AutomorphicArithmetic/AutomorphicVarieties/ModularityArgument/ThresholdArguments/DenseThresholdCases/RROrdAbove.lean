@@ -19,6 +19,41 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.LocLanglands GlobalTheory.LocGL GlobalTheory.GalOfCusp GlobalTheory.HeckeGal UpperTheory.V UpperTheory.V.Af UpperTheory.V.Sd
 open UpperTheory.Zero.LLC UpperTheory.V.Z.Win UpperTheory.Gal.SV
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
+/- English proof (translation)
+Introduce `hP F Ω _ _ _ _ _ _ l _ hl _ ι ξ s c m a π r H w hw A h`. Take `⟨-, hm, hs, ha, ⟨lam, hU, hlam⟩, hinf⟩` from `H.above w hw`. Take `⟨χ₀, hpol⟩` from `H.pol`. Take `⟨⟨σ, hσ⟩, hiso⟩` from `_root_.UpperTheory.V.Af.local_comp_real_of_printed_results hP.toClassicalTheorems F 2 π w`. Establish `hiso` using `hiso σ hσ`.
+
+Take `⟨rc, hrc⟩` from `recTExists F Ω A w h`. Take `⟨ar, har, ε, hLV⟩` from `toV' hrc`. Establish `hq0 : ((normV w : ℕ) : Qbar l) ≠ 0` using `Nat.cast_ne_zero.2 (one_lt_normV w).ne_bot`. Establish `hqc : ((normV w : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (one_lt_normV w).ne_bot`. Establish `hqn : ‖((normV w : ℕ) : Qbar l)‖ ≠ 0` using `norm_ne_zero_iff.2 hq0`.
+
+Establish `hn : ‖ι.symm lam * (normV w : Qbar l) ^ m w 0‖ = 1`. Use `IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (x := ι.symm lam * (normV w : Qbar l) ^ m w 0 - a w) (y := a w) (by rw [ha]; exact hlam.ne)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, ha, max_eq_right hlam.le]`. Then use the resulting hypothesis. Establish `hl0 : lam ≠ 0`. Introduce and unpack `rfl`.
+
+Simplify using `at hn`. Establish `hn' : ‖ι.symm lam‖ = ‖((normV w : ℕ) : Qbar l)‖ ^ (-m w 0)`. Rewrite `hn` using `[norm_mul, norm_zpow]`. Rewrite using `[zpow_neg]`. Conclude with `eq_inv_of_mul_eq_one_left hn`.
+
+Take `⟨μ₁, μ₂, Lf, hL0, hunr, hval, hLf⟩` from `_root_.UpperTheory.V.Sd.jacqOfU_alt hP.toClassicalTheorems F w σ 1 (Units.mk0 lam hl0) one_ne_zero (UpperTheory.hasUEigenvalue_of_locIsotypic F w _ π.finPart σ hiso 1 lam hU)`. Take `⟨s1, s2, hsub, hcen⟩` from `UpperTheory.isSubquotient_principalSeries_of_borel_functional F w σ μ₁ μ₂ Lf hL0 hLf`. Use `set ω : Fin 2 → (w.adicCompletion F)ˣ →* ℂˣ := ![μ₁ * GlobalTheory.SmGL.absPow (w.adicCompletion F) (-1), μ₂] with hω`. Establish `hω0 : ∀ t : Weil h, (ω 0 (ar t) : ℂ) = lam ^ (-deg t)` using `fun t => by`. Express the relevant statement in the definitionally equal form `((μ₁ (ar t) * GlobalTheory.SmGL.absPow (w.adicCompletion F) (-1) (ar t) : ℂˣ) : ℂ) = _`.
+
+Rewrite using `[Units.val_mul, UpperTheory.V.Sd.OrdinaryAbove.abs_val, UpperTheory.V.Sd.OrdinaryAbove.unr_val w μ₁ hunr, har.ord_eq, Units.val_zpow_eq_zpow_val, ← mul_zpow, mul_comm, hval]`. Both sides reduce to the same expression. Establish `hsm : ∀ j, GlobalTheory.SmGL.IsSmoothChar (ω j)`. Use `Fin.forall_fin_two.2 ⟨?_, s2⟩` and prove the remaining obligations. Conclude with `Subgroup.isOpen_mono (H₁ := μ₁.ker ⊓ (GlobalTheory.SmGL.absPow (w.adicCompletion F) (-1)).ker) (fun x hx => by`.
+
+Express the relevant statement in the definitionally equal form `μ₁ x * GlobalTheory.SmGL.absPow (w.adicCompletion F) (-1) x = 1`. Rewrite using `[hx.1, hx.2, mul_one])`. Use the proof step `(IsOpen.inter s1 (GlobalTheory.SmGL.isSmoothChar_of_isUnram (GlobalTheory.SmGL.isUnram_absPow _ _)))`. Establish `hn0 : ∀ t : Weil h, ‖ι.symm (ω 0 (ar t) : ℂ)‖ = ‖((normV w : ℕ) : Qbar l)‖ ^ (m w 0 * deg t)` using `fun t => by`. Rewrite using `[hω0, map_zpow₀, norm_zpow, hn', ← zpow_mul, neg_mul_neg]`.
+
+Establish `hn1 : ∀ t : Weil h, ‖ι.symm (ω 1 (ar t) : ℂ)‖ = ‖((normV w : ℕ) : Qbar l)‖ ^ (m w 1 * deg t)` using `fun t => by`. Establish `h1` using `_root_.UpperTheory.V.Sd.OrdinaryAbove.central_weil_ordinary_above hP H hw h har hiso t _ (hcen (ar t))`. Establish `h2 : ((μ₁ (ar t) * μ₂ (ar t) : ℂˣ) : ℂ) = (ω 0 (ar t) : ℂ) * (ω 1 (ar t) : ℂ) * ((normV w : ℕ) : ℂ) ^ deg t`. Express the relevant statement in the definitionally equal form `_ = ((μ₁ (ar t) * GlobalTheory.SmGL.absPow (w.adicCompletion F) (-1) (ar t) : ℂˣ) : ℂ) * (μ₂ (ar t) : ℂ) * _`. Rewrite using `[Units.val_mul, Units.val_mul, UpperTheory.V.Sd.OrdinaryAbove.abs_val, har.ord_eq, zpow_neg]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite `h1` using `[h2, map_mul, map_mul, norm_mul, norm_mul, hn0, map_zpow₀, map_natCast, norm_zpow, ← hs, show (m w 0 + m w 1 + 1) * deg t = m w 0 * deg t + m w 1 * deg t + deg t by ring, zpow_add₀ hqn, zpow_add₀ hqn]`. Conclude with `mul_left_cancel₀ (zpow_ne_zero _ hqn) (mul_right_cancel₀ (zpow_ne_zero _ hqn) h1)`. Establish `hcp` using `RR.ps_alg hLV σ ω hsm hsub`. Take `⟨-, wt, HT, -, -, hall⟩` from `hX F Ω l ι 2 one_le_two π χ₀ H.reg hpol`.
+
+Establish `hG` using `hall r H.cont H.att`. Establish `hpl` using `(Birth.ordPlain F Ω l ι ξ s c m a π r H w σ hσ).elim id fun ⟨B, hB⟩ => hG.plain w B hB σ hσ`. Establish `hdr : Hi.DRat ι h (r.comp (Dec (F` using `F) A).subtype) (fun _ => Finset.univ.val.map fun j => -m w j) fun s => (rc (algNorm σ)).charPol s := by`. Introduce `O _ _ _ Bw hj`. Take `⟨k1, k2⟩` from `hG.loc w σ hσ hpl`.
+
+Take `⟨h1, h2⟩` from `k2 A h O Bw hj`. Use `⟨h1, fun τ LL' τ' hτ => ?_, fun s => ?_⟩` and prove the remaining obligations. Establish `e : HT τ = Finset.univ.val.map fun j => -m w j`. Use `Multiset.map_injective (f := fun n : ℤ => (n : ℂ)) Int.cast_injective ?_` and prove the remaining obligations. Use `hG.weights τ _ (hinf τ (embAt_of_induced h Bw hj τ LL' τ' hτ))` as an intermediate fact.
+
+Simplify using `only [this, infOf, Multiset.map_map]`. Conclude with `Multiset.map_congr rfl fun i _ => by simp`. Conclude with `e ▸ h2 τ LL' τ' hτ`. Rewrite using `[((k1 A h rc hrc).2 O Bw hj (hGd F Ω A w h rc hrc 2 σ hpl)).2]`. Rewrite `hdr` using `[funext hcp]`.
+
+Apply the tactic sequence `obtain ⟨κ, hκ, hv⟩ := _root_.UpperTheory.deRham_weights_of_localArtin_characters' hP.litN F Ω l hl ι 2 w hw A h ar har _ (H.cont.comp continuous_subtype_val) (m w) (fun i j hij => by fin_cases i <;> fin_cases j <;> first | exact hm | exact absurd hij (by decide)) ω hsm (Fin.foral …`. Establish `k0 : ∀ g : ↥(Dec (F` using `F) A), (g : G F Ω) ∈ Ine (F := F) A → κ 0 g = cycBar F Ω l g ^ m w 0 := fun g hg => by`. Establish `h1` using `hv 0 (ineIncl h ⟨g, hg⟩)`. Rewrite `h1` using `[hω0, deg_ineIncl, mul_zero, zpow_zero, neg_zero, zpow_zero, map_one, mul_one, one_mul]`. Conclude with `Units.ext (h1.trans (Units.val_zpow_eq_zpow_val _ _).symm)`.
+
+Use `⟨κ, hκ, Fin.forall_fin_two.2 ⟨k0, fun g hg => ?_⟩, fun g hg => ?_⟩` and prove the remaining obligations. Establish `h1` using `UpperTheory.V.Sd.OrdinaryAbove.det_flag _ κ hκ g`. Establish `h2 : Matrix.GeneralLinearGroup.det (r g) = cycBar F Ω l g ^ s * ξ g` using `DFunLike.congr_fun H.det (g : G F Ω)`. Establish `h3 : ξ g = 1` using `(H.ram w A h).2 (Or.inr hw) hg`. Rewrite `h2` using `[h3, mul_one, ← hs, _root_.zpow_add]`.
+
+Rewrite `h1` using `[k0 g hg]`. Conclude with `mul_left_cancel (h1.symm.trans h2)`. Set `t : Weil h` to `⟨g, mem_Weil_of_isFrob h hg⟩`. Establish `hd : deg t = 1` using `deg_eq_one_iff.2 hg`. Establish `h1` using `hv 0 t⁻¹`.
+
+Rewrite `h1` using `[hω0, deg_inv, hd, neg_neg, zpow_one, mul_neg_one, zpow_neg]`. Establish `h2 : (κ 0 g⁻¹ : Qbar l) * ((normV w : Qbar l) ^ m w 0)⁻¹ = ι.symm lam * (cycBar F Ω l (g : G F Ω)⁻¹ : Qbar l) ^ m w 0` using `h1`. Establish `h3 : ((κ 0 g⁻¹ * cycBar F Ω l (g : G F Ω) ^ m w 0 : (Qbar l)ˣ) : Qbar l) = ι.symm lam * (normV w : Qbar l) ^ m w 0`. Rewrite `h2` using `[mul_inv_eq_iff_eq_mul₀ (zpow_ne_zero _ hq0), map_inv (cycBar F Ω l), Units.val_inv_eq_inv_val (cycBar F Ω l _), inv_zpow]`. Rewrite using `[Units.val_mul, Units.val_zpow_eq_zpow_val, h2, mul_right_comm _ _ (_ ^ _), inv_mul_cancel_right₀ (zpow_ne_zero _ (Units.ne_zero _))]`.
+
+Rewrite using `[h3]`. Conclude with `hlam`.
+-/
 theorem UpperTheory.V.Z.Win.RR.ordAbove_of_alt (hX : ExRS) (hGd : GdOf) :
     _root_.UpperTheory.V.Af.HypothesesH' → UpperTheory.V.Sd.OrdAbove := by
   intro hP F Ω _ _ _ _ _ _ l _ hl _ ι ξ s c m a π r H w hw A h

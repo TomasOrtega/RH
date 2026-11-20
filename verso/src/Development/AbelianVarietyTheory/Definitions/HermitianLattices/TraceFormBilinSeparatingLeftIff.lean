@@ -18,23 +18,38 @@ open scoped TensorProduct nonZeroDivisors
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+The claim follows from `(traceForm_nondegenerate ℚ K).1 t fun a => by rw [Algebra.traceForm_apply, mul_comm]; exact h a`.
+-/
 theorem eq_zero_of_forall_trace_mul {K : Type} [Field K] [NumberField K] {t : K}
     (h : ∀ a : K, Algebra.trace ℚ K (a * t) = 0) : t = 0 :=
   (traceForm_nondegenerate ℚ K).1 t fun a => by rw [Algebra.traceForm_apply, mul_comm]; exact h a
 
+/- English proof (translation)
+Rewrite using `[herm_single_right]`. Simplify using the standard rewrite rules.
+-/
 theorem herm_single_single (G : Matrix (Fin r) (Fin r) E) (a b : Fin r) :
     herm G (Pi.single a 1) (Pi.single b 1) = G a b := by
   rw [herm_single_right]; simp
 
+/- English proof (translation)
+Use extensionality with `a b`. Rewrite using `[← herm_single_single G, h, herm_single_single]`.
+-/
 theorem herm_injective {G G' : Matrix (Fin r) (Fin r) E} (h : ∀ x y, herm G x y = herm G' x y) :
     G = G' := by
   ext a b
   rw [← herm_single_single G, h, herm_single_single]
 
+/- English proof (translation)
+Simplify using `[herm, dotProduct, mulVec, Finset.mul_sum, mul_assoc]`.
+-/
 theorem herm_eq_dotProduct (G : Matrix (Fin r) (Fin r) E) (x y : Fin r → E) :
     herm G x y = x ⬝ᵥ G *ᵥ fun b => cc (y b) := by
   simp [herm, dotProduct, mulVec, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Establish `h : (fun b => cc ((γ *ᵥ y) b)) = γ.map cc *ᵥ fun b => cc (y b)`. Use function extensionality and compare the values at `b`. Simplify using `[mulVec, dotProduct, cc_sum]`. Rewrite using `[herm_eq_dotProduct, herm_eq_dotProduct, h, ← mulVec_mulVec, ← mulVec_mulVec, dotProduct_mulVec x, vecMul_transpose]`.
+-/
 theorem herm_mulVec {s : ℕ} (G : Matrix (Fin r) (Fin r) E) (γ : Matrix (Fin r) (Fin s) E)
     (x y : Fin s → E) : herm G (γ *ᵥ x) (γ *ᵥ y) = herm (γᵀ * G * γ.map cc) x y := by
   have h : (fun b => cc ((γ *ᵥ y) b)) = γ.map cc *ᵥ fun b => cc (y b) := by
@@ -46,31 +61,52 @@ theorem herm_mulVec {s : ℕ} (G : Matrix (Fin r) (Fin r) E) (γ : Matrix (Fin r
 def IsConjAdj (B : LinearMap.BilinForm ℚ (Fin r → E)) : Prop :=
   ∀ (a : E) (x y : Fin r → E), B (a • x) y = B x (cc a • y)
 
+/- English proof (translation)
+Rewrite using `[EFf, neg_neg]`.
+-/
 theorem EFf_neg_eq_trace (ξ : E) (G : Matrix (Fin r) (Fin r) E) (x y : Fin r → E) :
     EFf (-ξ) G x y = Algebra.trace ℚ E (ξ * herm G x y) := by
   rw [EFf, neg_neg]
 
+/- English proof (translation)
+Rewrite using `[EFf, herm_smul_left, mul_left_comm]`.
+-/
 theorem EFf_smul_eq_trace (ξ0 : E) (G : Matrix (Fin r) (Fin r) E) (a : E) (x y : Fin r → E) :
     EFf ξ0 G (a • x) y = Algebra.trace ℚ E (a * (-ξ0 * herm G x y)) := by
   rw [EFf, herm_smul_left, mul_left_comm]
 
+/- English proof (translation)
+The claim follows from `EFf_smul_left ξ0 G`.
+-/
 theorem traceFormBilin_isConjAdj (ξ0 : E) (G : Matrix (Fin r) (Fin r) E) : IsConjAdj (traceFormBilin ξ0 G) :=
   EFf_smul_left ξ0 G
 
+/- English proof (translation)
+Rewrite using `[EFf, EFf, ← trace_cc, cc_mul, cc_neg, hξ, herm_conj G hG, ← map_neg]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem EFf_swap {ξ0 : E} (hξ : cc ξ0 = -ξ0) {G : Matrix (Fin r) (Fin r) E}
     (hG : ∀ a b, cc (G a b) = G b a) (x y : Fin r → E) : EFf ξ0 G y x = -EFf ξ0 G x y := by
   rw [EFf, EFf, ← trace_cc, cc_mul, cc_neg, hξ, herm_conj G hG, ← map_neg]
   congr 1; ring
 
+/- English proof (translation)
+Use `EFf_swap hξ hG x x` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem EFf_self {ξ0 : E} (hξ : cc ξ0 = -ξ0) {G : Matrix (Fin r) (Fin r) E}
     (hG : ∀ a b, cc (G a b) = G b a) (x : Fin r → E) : EFf ξ0 G x x = 0 := by
   have := EFf_swap hξ hG x x
   linarith
 
+/- English proof (translation)
+The claim follows from `EFf_self hξ hG`.
+-/
 theorem traceFormBilin_isAlt {ξ0 : E} (hξ : cc ξ0 = -ξ0) {G : Matrix (Fin r) (Fin r) E}
     (hG : ∀ a b, cc (G a b) = G b a) : (traceFormBilin ξ0 G).IsAlt :=
   EFf_self hξ hG
 
+/- English proof (translation)
+Establish `: -ξ0 * herm G x y - -ξ0 * herm G' x' y' = 0` using `eq_zero_of_forall_trace_mul fun a => by`. Rewrite using `[mul_sub, map_sub, ← EFf_smul_eq_trace, ← EFf_smul_eq_trace, h, sub_self]`. Conclude with `mul_left_cancel₀ (neg_ne_zero.mpr h0) (sub_eq_zero.mp this)`.
+-/
 theorem herm_eq_of_EFf_smul {s : ℕ} {ξ0 : E} (h0 : ξ0 ≠ 0) {G : Matrix (Fin r) (Fin r) E}
     {G' : Matrix (Fin s) (Fin s) E} {x y : Fin r → E} {x' y' : Fin s → E}
     (h : ∀ a : E, EFf ξ0 G (a • x) y = EFf ξ0 G' (a • x') y') : herm G x y = herm G' x' y' := by
@@ -79,11 +115,21 @@ theorem herm_eq_of_EFf_smul {s : ℕ} {ξ0 : E} (h0 : ξ0 ≠ 0) {G : Matrix (Fi
       rw [mul_sub, map_sub, ← EFf_smul_eq_trace, ← EFf_smul_eq_trace, h, sub_self]
   exact mul_left_cancel₀ (neg_ne_zero.mpr h0) (sub_eq_zero.mp this)
 
+/- English proof (translation)
+Introduce `G G' h` and use `herm_injective fun x y => herm_eq_of_EFf_smul h0 fun a => by rw [← traceFormBilin_apply, ← traceFormBilin_apply, h]`.
+-/
 theorem traceFormBilin_injective {ξ0 : E} (h0 : ξ0 ≠ 0) :
     Function.Injective (traceFormBilin ξ0 : Matrix (Fin r) (Fin r) E → _) := fun G G' h =>
   herm_injective fun x y => herm_eq_of_EFf_smul h0 fun a => by
     rw [← traceFormBilin_apply, ← traceFormBilin_apply, h]
 
+/- English proof (translation)
+Use `⟨fun h a b => ?_, traceFormBilin_isAlt hξ⟩` and prove the remaining obligations. Establish `: -ξ0 * G b a - -ξ0 * cc (G a b) = 0` using `eq_zero_of_forall_trace_mul fun t => by`. Establish `h1` using `h.neg_eq (t • Pi.single b 1) (Pi.single a 1)`. Establish `h2 : EFf ξ0 G (Pi.single a 1) (t • Pi.single b 1) = -Algebra.trace ℚ E (t * (-ξ0 * cc (G a b)))`. Rewrite using `[EFf, herm_smul_right, herm_single_single, ← trace_cc, ← map_neg]`.
+
+Simplify using `only [cc_mul, cc_neg, cc_cc, hξ]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[traceFormBilin_apply, traceFormBilin_apply, EFf_smul_eq_trace, herm_single_single, h2]`. Rewrite using `[mul_sub, map_sub, neg_inj.mp h1, sub_self]`.
+
+Conclude with `(mul_left_cancel₀ (neg_ne_zero.mpr h0) (sub_eq_zero.mp this)).symm`.
+-/
 theorem traceFormBilin_isAlt_iff {ξ0 : E} (h0 : ξ0 ≠ 0) (hξ : cc ξ0 = -ξ0)
     (G : Matrix (Fin r) (Fin r) E) : (traceFormBilin ξ0 G).IsAlt ↔ ∀ a b, cc (G a b) = G b a := by
   refine ⟨fun h a b => ?_, traceFormBilin_isAlt hξ⟩
@@ -99,6 +145,9 @@ theorem traceFormBilin_isAlt_iff {ξ0 : E} (h0 : ξ0 ≠ 0) (hξ : cc ξ0 = -ξ0
       rw [mul_sub, map_sub, neg_inj.mp h1, sub_self]
   exact (mul_left_cancel₀ (neg_ne_zero.mpr h0) (sub_eq_zero.mp this)).symm
 
+/- English proof (translation)
+Use `⟨fun h y => ?_, fun h y => by simp [EFf, h]⟩` and prove the remaining obligations. Establish `: -ξ0 * herm G x y = 0` using `eq_zero_of_forall_trace_mul fun a => by rw [← EFf_smul_eq_trace, EFf_smul_left, h]`. Conclude with `(mul_eq_zero.mp this).resolve_left (neg_ne_zero.mpr h0)`.
+-/
 theorem forall_EFf_eq_zero_iff {ξ0 : E} (h0 : ξ0 ≠ 0) (G : Matrix (Fin r) (Fin r) E)
     (x : Fin r → E) : (∀ y, EFf ξ0 G x y = 0) ↔ ∀ y, herm G x y = 0 := by
   refine ⟨fun h y => ?_, fun h y => by simp [EFf, h]⟩
@@ -106,6 +155,11 @@ theorem forall_EFf_eq_zero_iff {ξ0 : E} (h0 : ξ0 ≠ 0) (G : Matrix (Fin r) (F
     eq_zero_of_forall_trace_mul fun a => by rw [← EFf_smul_eq_trace, EFf_smul_left, h]
   exact (mul_eq_zero.mp this).resolve_left (neg_ne_zero.mpr h0)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h hd`. Take `⟨v, hv, hvG⟩` from `Matrix.exists_vecMul_eq_zero_iff.mpr hd`. Use `hv (h v ((forall_EFf_eq_zero_iff h0 G v).mpr fun y => ?_))` and prove the remaining obligations. Rewrite using `[herm_eq_dotProduct, dotProduct_mulVec, hvG, zero_dotProduct]`.
+
+Introduce `hd v hv`. Conclude with `eq_zero_of_herm G hd v ((forall_EFf_eq_zero_iff h0 G v).mp hv)`.
+-/
 theorem traceFormBilin_separatingLeft_iff {ξ0 : E} (h0 : ξ0 ≠ 0) (G : Matrix (Fin r) (Fin r) E) :
     (traceFormBilin ξ0 G).SeparatingLeft ↔ G.det ≠ 0 := by
   constructor
@@ -116,11 +170,17 @@ theorem traceFormBilin_separatingLeft_iff {ξ0 : E} (h0 : ξ0 ≠ 0) (G : Matrix
   · intro hd v hv
     exact eq_zero_of_herm G hd v ((forall_EFf_eq_zero_iff h0 G v).mp hv)
 
+/- English proof (translation)
+Rewrite using `[← traceFormBilin_separatingLeft_iff h0]`. Conclude with `⟨fun h => h.1, LinearMap.BilinForm.Nondegenerate.ofSeparatingLeft⟩`.
+-/
 theorem traceFormBilin_nondegenerate_iff {ξ0 : E} (h0 : ξ0 ≠ 0) (G : Matrix (Fin r) (Fin r) E) :
     (traceFormBilin ξ0 G).Nondegenerate ↔ G.det ≠ 0 := by
   rw [← traceFormBilin_separatingLeft_iff h0]
   exact ⟨fun h => h.1, LinearMap.BilinForm.Nondegenerate.ofSeparatingLeft⟩
 
+/- English proof (translation)
+Use `⟨fun h x y => herm_eq_of_EFf_smul h0 fun a => ?_, fun h x y => by rw [EFf, EFf, h]⟩` and prove the remaining obligations. Rewrite using `[← mulVec_smul, h]`.
+-/
 theorem EFf_mulVec_iff {s : ℕ} {ξ0 : E} (h0 : ξ0 ≠ 0) (G : Matrix (Fin r) (Fin r) E)
     (G' : Matrix (Fin s) (Fin s) E) (γ : Matrix (Fin r) (Fin s) E) :
     (∀ x y, EFf ξ0 G (γ *ᵥ x) (γ *ᵥ y) = EFf ξ0 G' x y) ↔
@@ -131,6 +191,9 @@ theorem EFf_mulVec_iff {s : ℕ} {ξ0 : E} (h0 : ξ0 ≠ 0) (G : Matrix (Fin r) 
 def traceRep {K : Type} [Field K] [NumberField K] (f : Module.Dual ℚ K) : K :=
   ((Algebra.traceForm ℚ K).toDual (traceForm_nondegenerate ℚ K)).symm f
 
+/- English proof (translation)
+Rewrite using `[mul_comm, ← Algebra.traceForm_apply]`. Conclude with `LinearMap.BilinForm.apply_toDual_symm_apply _ _`.
+-/
 theorem trace_mul_traceRep {K : Type} [Field K] [NumberField K] (f : Module.Dual ℚ K) (a : K) :
     Algebra.trace ℚ K (a * traceRep f) = f a := by
   rw [mul_comm, ← Algebra.traceForm_apply]
@@ -142,12 +205,20 @@ def skewGram (ξ0 : E) (B : LinearMap.BilinForm ℚ (Fin r → E)) : Matrix (Fin
 
 omit [IsCMField E] in
 
+/- English proof (translation)
+Rewrite using `[skewGram, Matrix.of_apply, mul_inv_cancel_left₀ (neg_ne_zero.mpr h0), trace_mul_traceRep]`. Both sides reduce to the same expression.
+-/
 theorem trace_skewGram {ξ0 : E} (h0 : ξ0 ≠ 0) (B : LinearMap.BilinForm ℚ (Fin r → E))
     (a b : Fin r) (t : E) :
     Algebra.trace ℚ E (t * (-ξ0 * skewGram ξ0 B a b)) = B (Pi.single a t) (Pi.single b 1) := by
   rw [skewGram, Matrix.of_apply, mul_inv_cancel_left₀ (neg_ne_zero.mpr h0), trace_mul_traceRep]
   rfl
 
+/- English proof (translation)
+Establish `key : ∀ a b t u, B (Pi.single a t) (Pi.single b u) = B' (Pi.single a t) (Pi.single b u)`. Introduce `a b t u`. Establish `hu : (Pi.single b u : Fin r → E) = cc (cc u) • Pi.single b 1`. Rewrite using `[cc_cc, ← Pi.single_smul, smul_eq_mul, mul_one]`. Rewrite using `[hu, ← h, ← h', ← Pi.single_smul, hh]`.
+
+Use `LinearMap.pi_ext fun a t => LinearMap.pi_ext fun b u => key a b t u` and prove the remaining obligations.
+-/
 theorem IsConjAdj.ext {B B' : LinearMap.BilinForm ℚ (Fin r → E)} (h : IsConjAdj B)
     (h' : IsConjAdj B')
     (hh : ∀ a b t, B (Pi.single a t) (Pi.single b 1) = B' (Pi.single a t) (Pi.single b 1)) :
@@ -159,6 +230,9 @@ theorem IsConjAdj.ext {B B' : LinearMap.BilinForm ℚ (Fin r → E)} (h : IsConj
     rw [hu, ← h, ← h', ← Pi.single_smul, hh]
   refine LinearMap.pi_ext fun a t => LinearMap.pi_ext fun b u => key a b t u
 
+/- English proof (translation)
+Use `(traceFormBilin_isConjAdj _ _).ext hB fun a b t => ?_` and prove the remaining obligations. Establish `ht : (Pi.single a t : Fin r → E) = t • Pi.single a 1`. Rewrite using `[← Pi.single_smul, smul_eq_mul, mul_one]`. Rewrite using `[← trace_skewGram h0 B, traceFormBilin_apply, ht, EFf_smul_eq_trace, herm_single_single]`.
+-/
 theorem traceFormBilin_skewGram {ξ0 : E} (h0 : ξ0 ≠ 0) {B : LinearMap.BilinForm ℚ (Fin r → E)}
     (hB : IsConjAdj B) : traceFormBilin ξ0 (skewGram ξ0 B) = B := by
   refine (traceFormBilin_isConjAdj _ _).ext hB fun a b t => ?_
@@ -166,33 +240,54 @@ theorem traceFormBilin_skewGram {ξ0 : E} (h0 : ξ0 ≠ 0) {B : LinearMap.BilinF
     rw [← Pi.single_smul, smul_eq_mul, mul_one]
   rw [← trace_skewGram h0 B, traceFormBilin_apply, ht, EFf_smul_eq_trace, herm_single_single]
 
+/- English proof (translation)
+Rewrite using `[← traceFormBilin_apply, traceFormBilin_skewGram h0 hB]`.
+-/
 theorem EFf_skewGram {ξ0 : E} (h0 : ξ0 ≠ 0) {B : LinearMap.BilinForm ℚ (Fin r → E)}
     (hB : IsConjAdj B) (x y : Fin r → E) : EFf ξ0 (skewGram ξ0 B) x y = B x y := by
   rw [← traceFormBilin_apply, traceFormBilin_skewGram h0 hB]
 
+/- English proof (translation)
+The claim follows from `traceFormBilin_injective h0 (traceFormBilin_skewGram h0 (traceFormBilin_isConjAdj ξ0 G))`.
+-/
 theorem skewGram_traceFormBilin {ξ0 : E} (h0 : ξ0 ≠ 0) (G : Matrix (Fin r) (Fin r) E) :
     skewGram ξ0 (traceFormBilin ξ0 G) = G :=
   traceFormBilin_injective h0 (traceFormBilin_skewGram h0 (traceFormBilin_isConjAdj ξ0 G))
 
+/- English proof (translation)
+Establish `: B = traceFormBilin ξ0 G` using `LinearMap.ext₂ h`. Rewrite using `[this, skewGram_traceFormBilin h0]`.
+-/
 theorem eq_skewGram {ξ0 : E} (h0 : ξ0 ≠ 0) {B : LinearMap.BilinForm ℚ (Fin r → E)}
     {G : Matrix (Fin r) (Fin r) E} (h : ∀ x y, B x y = EFf ξ0 G x y) : G = skewGram ξ0 B := by
   have : B = traceFormBilin ξ0 G := LinearMap.ext₂ h
   rw [this, skewGram_traceFormBilin h0]
 
+/- English proof (translation)
+The claim follows from `(traceFormBilin_isAlt_iff h0 hξ _).mp (by rwa [traceFormBilin_skewGram h0 hB]) a b`.
+-/
 theorem skewGram_herm {ξ0 : E} (h0 : ξ0 ≠ 0) (hξ : cc ξ0 = -ξ0)
     {B : LinearMap.BilinForm ℚ (Fin r → E)} (hB : IsConjAdj B) (halt : B.IsAlt) (a b : Fin r) :
     cc (skewGram ξ0 B a b) = skewGram ξ0 B b a :=
   (traceFormBilin_isAlt_iff h0 hξ _).mp (by rwa [traceFormBilin_skewGram h0 hB]) a b
 
+/- English proof (translation)
+Rewrite using `[← traceFormBilin_isAlt_iff h0 hξ, traceFormBilin_skewGram h0 hB]`.
+-/
 theorem skewGram_herm_iff {ξ0 : E} (h0 : ξ0 ≠ 0) (hξ : cc ξ0 = -ξ0)
     {B : LinearMap.BilinForm ℚ (Fin r → E)} (hB : IsConjAdj B) :
     (∀ a b, cc (skewGram ξ0 B a b) = skewGram ξ0 B b a) ↔ B.IsAlt := by
   rw [← traceFormBilin_isAlt_iff h0 hξ, traceFormBilin_skewGram h0 hB]
 
+/- English proof (translation)
+Rewrite using `[← traceFormBilin_nondegenerate_iff h0, traceFormBilin_skewGram h0 hB]`.
+-/
 theorem skewGram_det_ne_zero_iff {ξ0 : E} (h0 : ξ0 ≠ 0) {B : LinearMap.BilinForm ℚ (Fin r → E)}
     (hB : IsConjAdj B) : (skewGram ξ0 B).det ≠ 0 ↔ B.Nondegenerate := by
   rw [← traceFormBilin_nondegenerate_iff h0, traceFormBilin_skewGram h0 hB]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨skewGram ξ0 B, ⟨skewGram_herm h0 hξ hB halt, fun x y => (EFf_skewGram h0 hB x y).symm⟩, fun _ hG => eq_skewGram h0 hG.2⟩`.
+-/
 theorem existsUnique_herm_EFf {ξ0 : E} (h0 : ξ0 ≠ 0) (hξ : cc ξ0 = -ξ0)
     {B : LinearMap.BilinForm ℚ (Fin r → E)} (hB : IsConjAdj B) (halt : B.IsAlt) :
     ∃! G : Matrix (Fin r) (Fin r) E,
@@ -208,6 +303,9 @@ def hermEquivSkew {ξ0 : E} (h0 : ξ0 ≠ 0) (hξ : cc ξ0 = -ξ0) :
   left_inv G := Subtype.ext (skewGram_traceFormBilin h0 G.1)
   right_inv B := Subtype.ext (traceFormBilin_skewGram h0 B.2.1)
 
+/- English proof (translation)
+Simplify using `only [hG]`. Conclude with `EFf_mulVec_iff h0 G G γ`.
+-/
 theorem preserves_iff_herm {ξ0 : E} (h0 : ξ0 ≠ 0) {B : LinearMap.BilinForm ℚ (Fin r → E)}
     {G : Matrix (Fin r) (Fin r) E} (hG : ∀ x y, B x y = EFf ξ0 G x y) (γ : GL (Fin r) E) :
     (∀ x y, B ((γ : Matrix (Fin r) (Fin r) E) *ᵥ x) ((γ : Matrix (Fin r) (Fin r) E) *ᵥ y) = B x y) ↔
@@ -218,6 +316,9 @@ theorem preserves_iff_herm {ξ0 : E} (h0 : ξ0 ≠ 0) {B : LinearMap.BilinForm �
 
 omit [IsCMField E] in
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [skewGram, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul, ← mul_neg, _root_.mul_inv_rev]`. Rewrite using `[mul_comm _ c⁻¹, mul_assoc, mul_inv_cancel_left₀ hc]`.
+-/
 theorem smul_skewGram_mul {c : E} (hc : c ≠ 0) (ξ0 : E) (B : LinearMap.BilinForm ℚ (Fin r → E)) :
     c • skewGram (c * ξ0) B = skewGram ξ0 B := by
   ext a b
@@ -233,6 +334,9 @@ def IsIntConjAdj (E : Type) [Field E] [NumberField E] [IsCMField E] {M : Type} [
     [Module (𝓞 E) M] (β : LinearMap.BilinForm ℤ M) : Prop :=
   ∀ (a : 𝓞 E) (x y : M), β (a • x) y = β x (IsCMField.ringOfIntegersComplexConj E a • y)
 
+/- English proof (translation)
+The claim follows from `IsCMField.coe_ringOfIntegersComplexConj E a`.
+-/
 theorem coe_ringOfIntegersComplexConj (a : 𝓞 E) :
     ((IsCMField.ringOfIntegersComplexConj E a : 𝓞 E) : E) = cc (a : E) :=
   IsCMField.coe_ringOfIntegersComplexConj E a
@@ -241,6 +345,15 @@ namespace IsLatticeEmb
 
 variable {φ : M →ₗ[𝓞 E] (Fin r → E)}
 
+/- English proof (translation)
+Introduce `a v w`. Take `⟨m, hm, x, hx⟩` from `h.exists_zsmul v`. Take `⟨n, hn, y, hy⟩` from `h.exists_zsmul w`. Establish `halg : IsAlgebraic ℤ a` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).mpr (Algebra.IsAlgebraic.isAlgebraic _)`. Take `⟨k, hk, hint⟩` from `halg.exists_integral_multiple`.
+
+Set `α : 𝓞 E` to `⟨k • a, hint⟩`. Establish `hα : (α : E) = k • a` using `rfl`. Establish `h1 : φ (α • x) = k • m • a • v`. Rewrite using `[map_smul, ← algebraMap_smul E α, hx, smul_comm m a v, ← smul_assoc k]`. Both sides reduce to the same expression.
+
+Establish `h2 : φ (IsCMField.ringOfIntegersComplexConj E α • y) = k • n • cc a • w`. Rewrite using `[map_smul, ← algebraMap_smul E (IsCMField.ringOfIntegersComplexConj E α), hy, smul_comm n (cc a) w, ← smul_assoc k]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `((IsCMField.ringOfIntegersComplexConj E α : 𝓞 E) : E) = _`. Rewrite using `[coe_ringOfIntegersComplexConj, hα, zsmul_eq_mul, zsmul_eq_mul, cc_mul, cc_intCast]`.
+
+Establish `h3 : h.extend β (φ (α • x)) (φ y) = h.extend β (φ x) (φ (IsCMField.ringOfIntegersComplexConj E α • y))`. Rewrite using `[extend_apply, extend_apply, hβ]`. Simplify using `only [h1, h2, hx, hy, map_zsmul, LinearMap.smul_apply] at h3`. Rewrite `h3` using `[smul_comm k n]`. Conclude with `smul_right_injective ℚ hm (smul_right_injective ℚ hk (smul_right_injective ℚ hn h3))`.
+-/
 theorem extend_isConjAdj (h : IsLatticeEmb φ) {β : LinearMap.BilinForm ℤ M}
     (hβ : IsIntConjAdj E β) : IsConjAdj (h.extend β) := by
   intro a v w
@@ -269,32 +382,54 @@ theorem extend_isConjAdj (h : IsLatticeEmb φ) {β : LinearMap.BilinForm ℤ M}
 def gram (h : IsLatticeEmb φ) (ξ0 : E) (β : LinearMap.BilinForm ℤ M) : Matrix (Fin r) (Fin r) E :=
   skewGram ξ0 (h.extend β)
 
+/- English proof (translation)
+Rewrite using `[gram, EFf_skewGram h0 (h.extend_isConjAdj hβ), extend_apply]`.
+-/
 theorem EFf_gram (h : IsLatticeEmb φ) {ξ0 : E} (h0 : ξ0 ≠ 0) {β : LinearMap.BilinForm ℤ M}
     (hβ : IsIntConjAdj E β) (x y : M) : EFf ξ0 (h.gram ξ0 β) (φ x) (φ y) = β x y := by
   rw [gram, EFf_skewGram h0 (h.extend_isConjAdj hβ), extend_apply]
 
+/- English proof (translation)
+Establish `: h.extend β = traceFormBilin ξ0 G` using `h.bilin_ext fun x y => by rw [extend_apply, traceFormBilin_apply, hG]`. Rewrite using `[gram, this, skewGram_traceFormBilin h0]`.
+-/
 theorem eq_gram (h : IsLatticeEmb φ) {ξ0 : E} (h0 : ξ0 ≠ 0) {β : LinearMap.BilinForm ℤ M}
     {G : Matrix (Fin r) (Fin r) E} (hG : ∀ x y, EFf ξ0 G (φ x) (φ y) = β x y) :
     G = h.gram ξ0 β := by
   have : h.extend β = traceFormBilin ξ0 G := h.bilin_ext fun x y => by rw [extend_apply, traceFormBilin_apply, hG]
   rw [gram, this, skewGram_traceFormBilin h0]
 
+/- English proof (translation)
+The claim follows from `skewGram_herm h0 hξ (h.extend_isConjAdj hβ) (h.extend_isAlt halt) a b`.
+-/
 theorem gram_herm (h : IsLatticeEmb φ) {ξ0 : E} (h0 : ξ0 ≠ 0) (hξ : cc ξ0 = -ξ0)
     {β : LinearMap.BilinForm ℤ M} (hβ : IsIntConjAdj E β) (halt : ∀ x, β x x = 0) (a b : Fin r) :
     cc (h.gram ξ0 β a b) = h.gram ξ0 β b a :=
   skewGram_herm h0 hξ (h.extend_isConjAdj hβ) (h.extend_isAlt halt) a b
 
+/- English proof (translation)
+Rewrite using `[gram, skewGram_det_ne_zero_iff h0 (h.extend_isConjAdj hβ), extend_nondegenerate_iff]`.
+-/
 theorem gram_det_ne_zero_iff (h : IsLatticeEmb φ) {ξ0 : E} (h0 : ξ0 ≠ 0)
     {β : LinearMap.BilinForm ℤ M} (hβ : IsIntConjAdj E β) :
     (h.gram ξ0 β).det ≠ 0 ↔ Function.Injective β := by
   rw [gram, skewGram_det_ne_zero_iff h0 (h.extend_isConjAdj hβ), extend_nondegenerate_iff]
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨x, rfl⟩ _ ⟨y, rfl⟩`. Conclude with `⟨β x y, hG x y⟩`.
+-/
 theorem EF_int_of_eq {ξ0 : E} {β : LinearMap.BilinForm ℤ M} {G : Matrix (Fin r) (Fin r) E}
     (hG : ∀ x y, EFf ξ0 G (φ x) (φ y) = β x y) :
     ∀ x ∈ LinearMap.range φ, ∀ y ∈ LinearMap.range φ, ∃ k : ℤ, EFf ξ0 G x y = k := by
   rintro _ ⟨x, rfl⟩ _ ⟨y, rfl⟩
   exact ⟨β x y, hG x y⟩
 
+/- English proof (translation)
+Set `e` to `LinearEquiv.ofInjective φ h.1`. Establish `he : ∀ x, ((e x : LinearMap.range φ) : Fin r → E) = φ x` using `fun x => rfl`. Prove the components needed by the constructor for the conclusion. Introduce `hp f`. Take `⟨_, ⟨x, rfl⟩, hx⟩` from `hp (f.toAddMonoidHom.comp e.symm.toAddEquiv.toAddMonoidHom)`.
+
+Use `⟨x, LinearMap.ext fun y => ?_⟩` and prove the remaining obligations. Use `hx (e y)` as an intermediate fact. Rewrite `this` using `[he, hG]`. Simplify using `using this.symm`. Introduce `hs f`.
+
+Take `⟨x, hx⟩` from `hs (f.comp e.toAddEquiv.toAddMonoidHom).toIntLinearMap`. Use `⟨φ x, ⟨x, rfl⟩, fun y => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `e.surjective y`. Rewrite using `[he, hG, hx]`. Both sides reduce to the same expression.
+-/
 theorem EF_perf_iff (h : IsLatticeEmb φ) {ξ0 : E} {β : LinearMap.BilinForm ℤ M}
     {G : Matrix (Fin r) (Fin r) E} (hG : ∀ x y, EFf ξ0 G (φ x) (φ y) = β x y) :
     (∀ f : LinearMap.range φ →+ ℤ, ∃ x ∈ LinearMap.range φ, ∀ y : LinearMap.range φ,
@@ -315,6 +450,9 @@ theorem EF_perf_iff (h : IsLatticeEmb φ) {ξ0 : E} {β : LinearMap.BilinForm �
     rw [he, hG, hx]
     rfl
 
+/- English proof (translation)
+Use `(h.eq_gram h0 fun x y => ?_).symm` and prove the remaining obligations. Rewrite using `[← hg, ← h'.EFf_gram h0 hβ', ← hγ, ← hγ, EFf, EFf, herm_mulVec]`.
+-/
 theorem gram_eq_of_mulVec {s : ℕ} {φ' : M' →ₗ[𝓞 E] (Fin s → E)} (h : IsLatticeEmb φ)
     (h' : IsLatticeEmb φ') {ξ0 : E} (h0 : ξ0 ≠ 0) {β : LinearMap.BilinForm ℤ M}
     {β' : LinearMap.BilinForm ℤ M'} (hβ' : IsIntConjAdj E β') {g : M → M'}
@@ -323,6 +461,19 @@ theorem gram_eq_of_mulVec {s : ℕ} {φ' : M' →ₗ[𝓞 E] (Fin s → E)} (h :
   refine (h.eq_gram h0 fun x y => ?_).symm
   rw [← hg, ← h'.EFf_gram h0 hβ', ← hγ, ← hγ, EFf, EFf, herm_mulVec]
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (γ : Matrix (Fin r) (Fin r) E).mulVec` using `mulVec_injective_iff_isUnit.mpr γ.isUnit`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hu, hs⟩`. Establish `h2` using `h.comp_GL γ`. Establish `hr : LinearMap.range (((γ : Matrix (Fin r) (Fin r) E).mulVecLin.restrictScalars (𝓞 E)) ∘ₗ φ) = LinearMap.range φ`.
+
+Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Conclude with `(hs _).mp ⟨x, rfl⟩`. Introduce `hv`.
+
+Take `⟨w, rfl⟩` from `mulVec_surjective_iff_isUnit.mpr γ.isUnit v`. Take `⟨x, rfl⟩` from `(hs w).mpr hv`. Conclude with `⟨x, rfl⟩`. Set `g : M ≃ₗ[𝓞 E] M` to `(LinearEquiv.ofInjective _ h2.1).trans ((LinearEquiv.ofEq _ _ hr).trans (LinearEquiv.ofInjective φ h.1).symm)`. Establish `hg : ∀ x, (γ : Matrix (Fin r) (Fin r) E) *ᵥ φ x = φ (g x)` using `fun x => by`.
+
+Simplify using `only [g, LinearEquiv.trans_apply, LinearEquiv.ofInjective_symm_apply]`. Both sides reduce to the same expression. Use `⟨g, hg, fun x y => ?_⟩` and prove the remaining obligations. Establish `: ((β (g x) (g y) : ℤ) : ℚ) = β x y` using `by rw [← hG, ← hG, ← hg, ← hg, EFf, EFf, hu]`. Conclude with `this` after adjusting the coercions.
+
+Introduce and unpack `⟨g, hg, hβ⟩`. Use `⟨(EFf_mulVec_iff h0 G G _).mp fun v w => ?_, fun v => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `: traceFormBilin ξ0 ((γ : Matrix (Fin r) (Fin r) E)ᵀ * G * (γ : Matrix (Fin r) (Fin r) E).map cc) = traceFormBilin ξ0 G` using `h.bilin_ext fun x y => by`. Rewrite using `[traceFormBilin_apply, traceFormBilin_apply, EFf, ← herm_mulVec, hg, hg, ← EFf, hG, hG, hβ]`. Rewrite using `[EFf, herm_mulVec, ← EFf, ← traceFormBilin_apply, this, traceFormBilin_apply]`.
+
+Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨g x, (hg x).symm⟩`. Introduce and unpack `⟨x, hx⟩`. Use `⟨g.symm x, hinj ?_⟩` and prove the remaining obligations. Rewrite using `[hg, g.apply_symm_apply, hx]`.
+-/
 theorem isUStab_iff (h : IsLatticeEmb φ) {ξ0 : E} (h0 : ξ0 ≠ 0) {β : LinearMap.BilinForm ℤ M}
     {G : Matrix (Fin r) (Fin r) E} (hG : ∀ x y, EFf ξ0 G (φ x) (φ y) = β x y) (γ : GL (Fin r) E) :
     IsUStab G (LinearMap.range φ) γ ↔
@@ -387,25 +538,42 @@ section LatticeEF
 variable {ξ0 : E} {G : Matrix (Fin r) (Fin r) E} {Λ : Submodule (𝓞 E) (Fin r → E)}
   (hint : ∀ x ∈ Λ, ∀ y ∈ Λ, ∃ k : ℤ, EFf ξ0 G x y = k)
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `hint x x.2 y y.2`. Express the relevant statement in the definitionally equal form `(((EFf ξ0 G x y).num : ℤ) : ℚ) = _`. Rewrite using `[hk, Rat.num_intCast]`.
+-/
 theorem latticeEF_apply (x y : Λ) : ((latticeEF ξ0 G Λ hint x y : ℤ) : ℚ) = EFf ξ0 G x y := by
   obtain ⟨k, hk⟩ := hint x x.2 y y.2
   change (((EFf ξ0 G x y).num : ℤ) : ℚ) = _
   rw [hk, Rat.num_intCast]
 
+/- English proof (translation)
+Introduce `a x y` and use `Int.cast_injective (α := ℚ) (by rw [latticeEF_apply, latticeEF_apply, Submodule.coe_smul, Submodule.coe_smul, ← algebraMap_smul E a, ← algebraMap_smul E (IsCMField.ringOfIntegersComplexConj E a), EFf_smul_left, ← coe_ringOfIntegersComplexConj])`.
+-/
 theorem latticeEF_isIntConjAdj : IsIntConjAdj E (latticeEF ξ0 G Λ hint) := fun a x y =>
   Int.cast_injective (α := ℚ) (by
     rw [latticeEF_apply, latticeEF_apply, Submodule.coe_smul, Submodule.coe_smul,
       ← algebraMap_smul E a, ← algebraMap_smul E (IsCMField.ringOfIntegersComplexConj E a),
       EFf_smul_left, ← coe_ringOfIntegersComplexConj])
 
+/- English proof (translation)
+The claim follows from `Int.cast_injective (α := ℚ) (by rw [latticeEF_apply, EFf_self hξ hG, Int.cast_zero])`.
+-/
 theorem latticeEF_self (hξ : cc ξ0 = -ξ0) (hG : ∀ a b, cc (G a b) = G b a) (x : Λ) :
     latticeEF ξ0 G Λ hint x x = 0 :=
   Int.cast_injective (α := ℚ) (by rw [latticeEF_apply, EFf_self hξ hG, Int.cast_zero])
 
+/- English proof (translation)
+The claim follows from `((isLatticeEmb_subtype hΛ).eq_gram h0 fun x y => (latticeEF_apply hint x y).symm).symm`.
+-/
 theorem gram_latticeEF (hΛ : IsLattice Λ) (h0 : ξ0 ≠ 0) :
     (isLatticeEmb_subtype hΛ).gram ξ0 (latticeEF ξ0 G Λ hint) = G :=
   ((isLatticeEmb_subtype hΛ).eq_gram h0 fun x y => (latticeEF_apply hint x y).symm).symm
 
+/- English proof (translation)
+Establish `h` using `isLatticeEmb_subtype hΛ`. Establish `h1` using `h.gram_det_ne_zero_iff h0 (latticeEF_isIntConjAdj hint)`. Rewrite `h1` using `[gram_latticeEF hint hΛ h0]`. Establish `h2` using `h.EF_perf_iff (ξ0 := ξ0) (G := G) fun x y => (latticeEF_apply hint x y).symm`. Rewrite `h2` using `[Submodule.range_subtype]`.
+
+Rewrite using `[h1, h2]`. Both sides reduce to the same expression.
+-/
 theorem latticeEF_bijective_iff (hΛ : IsLattice Λ) (h0 : ξ0 ≠ 0) :
     Function.Bijective (latticeEF ξ0 G Λ hint) ↔
       G.det ≠ 0 ∧ ∀ f : Λ →+ ℤ, ∃ x ∈ Λ, ∀ y : Λ, (f y : ℚ) = EFf ξ0 G x y := by
@@ -419,6 +587,9 @@ theorem latticeEF_bijective_iff (hΛ : IsLattice Λ) (h0 : ξ0 ≠ 0) :
 
 end LatticeEF
 
+/- English proof (translation)
+Take `⟨φ, h⟩` from `exists_isLatticeEmb (K := E) hr`. Conclude with `⟨φ, h.gram ξ0 β, h.1, h.2, h.gram_herm h0 hξ hβ halt, (h.gram_det_ne_zero_iff h0 hβ).mpr hu.1, h.EFf_gram h0 hβ, IsLatticeEmb.EF_int_of_eq (h.EFf_gram h0 hβ), (h.EF_perf_iff (h.EFf_gram h0 hβ)).mpr hu.2⟩`.
+-/
 theorem exists_lattice_EFf [Module.Finite (𝓞 E) M] [Module.IsTorsionFree (𝓞 E) M]
     (hr : Module.finrank (𝓞 E) M = r) {ξ0 : E} (h0 : ξ0 ≠ 0) (hξ : cc ξ0 = -ξ0)
     {β : LinearMap.BilinForm ℤ M} (halt : ∀ x, β x x = 0) (hβ : IsIntConjAdj E β)
@@ -442,12 +613,21 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 variable {H : Host E}
 
+/- English proof (translation)
+The claim follows from `RingOfIntegers.ext (H.bar_eq a)`.
+-/
 theorem host_bar_eq (H : Host E) (a : 𝓞 E) : H.bar a = IsCMField.ringOfIntegersComplexConj E a :=
   RingOfIntegers.ext (H.bar_eq a)
 
+/- English proof (translation)
+Introduce `a x y` and use `by rw [D.adj, host_bar_eq]`.
+-/
 theorem datum_isIntConjAdj (D : Datum H) : IsIntConjAdj E D.EF := fun a x y => by
   rw [D.adj, host_bar_eq]
 
+/- English proof (translation)
+Use `D.fin` as an intermediate fact. Use `D.proj` as an intermediate fact. Conclude with `exists_isLatticeEmb D.rank`.
+-/
 theorem datum_exists_isLatticeEmb (D : Datum H) :
     ∃ φ : D.La →ₗ[𝓞 E] (Fin (D.p + D.q) → E), IsLatticeEmb φ := by
   have := D.fin
@@ -457,23 +637,35 @@ theorem datum_exists_isLatticeEmb (D : Datum H) :
 def datumEmb (D : Datum H) : D.La →ₗ[𝓞 E] (Fin (D.p + D.q) → E) :=
   (datum_exists_isLatticeEmb D).choose
 
+/- English proof (translation)
+The claim follows from `(datum_exists_isLatticeEmb D).choose_spec`.
+-/
 theorem datumEmb_isLatticeEmb (D : Datum H) : IsLatticeEmb (datumEmb D) :=
   (datum_exists_isLatticeEmb D).choose_spec
 
 abbrev datumLat (D : Datum H) : Submodule (𝓞 E) (Fin (D.p + D.q) → E) :=
   LinearMap.range (datumEmb D)
 
+/- English proof (translation)
+The claim follows from `(datumEmb_isLatticeEmb D).2`.
+-/
 theorem datumLat_isLattice (D : Datum H) : IsLattice (datumLat D) := (datumEmb_isLatticeEmb D).2
 
 def datumEquivLat (D : Datum H) : D.La ≃ₗ[𝓞 E] datumLat D :=
   LinearEquiv.ofInjective _ (datumEmb_isLatticeEmb D).1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_datumEquivLat (D : Datum H) (x : D.La) :
     (datumEquivLat D x : Fin (D.p + D.q) → E) = datumEmb D x := rfl
 
 def datumGram (D : Datum H) (ξ0 : E) : Matrix (Fin (D.p + D.q)) (Fin (D.p + D.q)) E :=
   (datumEmb_isLatticeEmb D).gram ξ0 D.EF
 
+/- English proof (translation)
+The claim follows from `have hβ := datum_isIntConjAdj D ⟨h.gram_herm h0 hξ hβ D.alt, (h.gram_det_ne_zero_iff h0 hβ).mpr D.unimod.1, h.EFf_gram h0 hβ, IsLatticeEmb.EF_int_of_eq (h.EFf_gram h0 hβ), (h.EF_perf_iff (h.EFf_gram h0 hβ)).mpr D.unimod.2⟩`.
+-/
 theorem datum_gram_spec (D : Datum H) {φ : D.La →ₗ[𝓞 E] (Fin r → E)} (h : IsLatticeEmb φ)
     {ξ0 : E} (h0 : ξ0 ≠ 0) (hξ : cc ξ0 = -ξ0) :
     (∀ a b, cc (h.gram ξ0 D.EF a b) = h.gram ξ0 D.EF b a) ∧ (h.gram ξ0 D.EF).det ≠ 0 ∧
@@ -487,6 +679,9 @@ theorem datum_gram_spec (D : Datum H) {φ : D.La →ₗ[𝓞 E] (Fin r → E)} (
     IsLatticeEmb.EF_int_of_eq (h.EFf_gram h0 hβ),
     (h.EF_perf_iff (h.EFf_gram h0 hβ)).mpr D.unimod.2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨datumLat D, datumEquivLat D, datumGram D ξ0, datumLat_isLattice D, datum_gram_spec D (datumEmb_isLatticeEmb D) h0 hξ⟩`.
+-/
 theorem datum_exists_lattice_EFf (D : Datum H) {ξ0 : E} (h0 : ξ0 ≠ 0) (hξ : cc ξ0 = -ξ0) :
     ∃ (Λ : Submodule (𝓞 E) (Fin (D.p + D.q) → E)) (e : D.La ≃ₗ[𝓞 E] Λ)
       (G : Matrix (Fin (D.p + D.q)) (Fin (D.p + D.q)) E),
@@ -497,40 +692,67 @@ theorem datum_exists_lattice_EFf (D : Datum H) {ξ0 : E} (h0 : ξ0 ≠ 0) (hξ :
   ⟨datumLat D, datumEquivLat D, datumGram D ξ0, datumLat_isLattice D,
     datum_gram_spec D (datumEmb_isLatticeEmb D) h0 hξ⟩
 
+/- English proof (translation)
+Rewrite using `[← h.finrank_eq, D.rank]`.
+-/
 theorem datum_rank_eq (D : Datum H) {φ : D.La →ₗ[𝓞 E] (Fin r → E)} (h : IsLatticeEmb φ) :
     r = D.p + D.q := by rw [← h.finrank_eq, D.rank]
 
 section
 variable (D : Datum H) {ξ0 : E}
 
+/- English proof (translation)
+The claim follows from `(datum_gram_spec D (datumEmb_isLatticeEmb D) h0 hξ).1 a b`.
+-/
 theorem datumGram_herm (h0 : ξ0 ≠ 0) (hξ : cc ξ0 = -ξ0) (a b : Fin (D.p + D.q)) :
     cc (datumGram D ξ0 a b) = datumGram D ξ0 b a :=
   (datum_gram_spec D (datumEmb_isLatticeEmb D) h0 hξ).1 a b
 
+/- English proof (translation)
+The claim follows from `((datumEmb_isLatticeEmb D).gram_det_ne_zero_iff h0 (datum_isIntConjAdj D)).mpr D.unimod.1`.
+-/
 theorem datumGram_det_ne_zero (h0 : ξ0 ≠ 0) : (datumGram D ξ0).det ≠ 0 :=
   ((datumEmb_isLatticeEmb D).gram_det_ne_zero_iff h0 (datum_isIntConjAdj D)).mpr D.unimod.1
 
+/- English proof (translation)
+The claim follows from `(datumEmb_isLatticeEmb D).EFf_gram h0 (datum_isIntConjAdj D) x y`.
+-/
 theorem EFf_datumGram (h0 : ξ0 ≠ 0) (x y : D.La) :
     EFf ξ0 (datumGram D ξ0) (datumEmb D x) (datumEmb D y) = D.EF x y :=
   (datumEmb_isLatticeEmb D).EFf_gram h0 (datum_isIntConjAdj D) x y
 
+/- English proof (translation)
+The claim follows from `(datumEmb_isLatticeEmb D).eq_gram h0 hG`.
+-/
 theorem eq_datumGram (h0 : ξ0 ≠ 0) {G : Matrix (Fin (D.p + D.q)) (Fin (D.p + D.q)) E}
     (hG : ∀ x y, EFf ξ0 G (datumEmb D x) (datumEmb D y) = D.EF x y) : G = datumGram D ξ0 :=
   (datumEmb_isLatticeEmb D).eq_gram h0 hG
 
+/- English proof (translation)
+The claim follows from `IsLatticeEmb.EF_int_of_eq (EFf_datumGram D h0)`.
+-/
 theorem datum_EF_int (h0 : ξ0 ≠ 0) :
     ∀ x ∈ datumLat D, ∀ y ∈ datumLat D, ∃ k : ℤ, EFf ξ0 (datumGram D ξ0) x y = k :=
   IsLatticeEmb.EF_int_of_eq (EFf_datumGram D h0)
 
+/- English proof (translation)
+The claim follows from `((datumEmb_isLatticeEmb D).EF_perf_iff (EFf_datumGram D h0)).mpr D.unimod.2`.
+-/
 theorem datum_EF_perf (h0 : ξ0 ≠ 0) : ∀ f : datumLat D →+ ℤ, ∃ x ∈ datumLat D,
     ∀ y : datumLat D, (f y : ℚ) = EFf ξ0 (datumGram D ξ0) x y :=
   ((datumEmb_isLatticeEmb D).EF_perf_iff (EFf_datumGram D h0)).mpr D.unimod.2
 
+/- English proof (translation)
+The claim follows from `(perfect_iff_traceFormDual_eq h0 (datumGram_det_ne_zero D h0) (datumLat_isLattice D)).mp ⟨datum_EF_int D h0, datum_EF_perf D h0⟩`.
+-/
 theorem traceFormDual_datumLat (h0 : ξ0 ≠ 0) :
     traceFormDual ξ0 (datumGram D ξ0) (datumLat D) = datumLat D :=
   (perfect_iff_traceFormDual_eq h0 (datumGram_det_ne_zero D h0) (datumLat_isLattice D)).mp
     ⟨datum_EF_int D h0, datum_EF_perf D h0⟩
 
+/- English proof (translation)
+The claim follows from `(datumEmb_isLatticeEmb D).isUStab_iff h0 (EFf_datumGram D h0) γ`.
+-/
 theorem datum_isUStab_iff (h0 : ξ0 ≠ 0) (γ : GL (Fin (D.p + D.q)) E) :
     IsUStab (datumGram D ξ0) (datumLat D) γ ↔
       ∃ g : D.La ≃ₗ[𝓞 E] D.La,
@@ -555,9 +777,15 @@ def val : ConjDual E ≃ₗ[ℤ] Module.Dual ℤ (𝓞 E) := (AddEquiv.refl _).t
 instance : SMul (𝓞 E) (ConjDual E) where
   smul a f := val.symm (val f ∘ₗ LinearMap.mulLeft ℤ (IsCMField.ringOfIntegersComplexConj E a))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem val_smul (a : 𝓞 E) (f : ConjDual E) (x : 𝓞 E) :
     val (a • f) x = val f (IsCMField.ringOfIntegersComplexConj E a * x) := rfl
 
+/- English proof (translation)
+The claim follows from `val.injective (LinearMap.ext h)`.
+-/
 @[ext] theorem ext {f g : ConjDual E} (h : ∀ x, val f x = val g x) : f = g :=
   val.injective (LinearMap.ext h)
 
@@ -595,16 +823,32 @@ def hypForm (E : Type) [Field E] [NumberField E] [IsCMField E] :
     (fun u v v' => by simp; ring) (fun n u v => by
       simp only [Prod.smul_fst, Prod.smul_snd, map_zsmul, LinearMap.smul_apply, smul_sub])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem hypForm_apply (u v : 𝓞 E × ConjDual E) :
     hypForm E u v = ConjDual.val v.2 u.1 - ConjDual.val u.2 v.1 := rfl
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem hypForm_self (u : 𝓞 E × ConjDual E) : hypForm E u u = 0 := by simp
 
+/- English proof (translation)
+Introduce `a u v` and use `by have : IsCMField.ringOfIntegersComplexConj E (IsCMField.ringOfIntegersComplexConj E a) = a := RingOfIntegers.ext (IsCMField.complexConj_apply_apply E (a : E)) simp [this]`.
+-/
 theorem hypForm_isIntConjAdj : IsIntConjAdj E (hypForm E) := fun a u v => by
   have : IsCMField.ringOfIntegersComplexConj E (IsCMField.ringOfIntegersComplexConj E a) = a :=
     RingOfIntegers.ext (IsCMField.complexConj_apply_apply E (a : E))
   simp [this]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce and unpack `⟨x, f⟩ h`. Use `Prod.ext ?_ (ConjDual.ext fun y => ?_)` and prove the remaining obligations. Use `(Module.forall_dual_apply_eq_zero_iff ℤ x).mp fun g => ?_` and prove the remaining obligations.
+
+Simplify using `using LinearMap.congr_fun h (0, ConjDual.val.symm g)`. Simplify using `using LinearMap.congr_fun h (y, 0)`. Introduce `F`. Take `⟨x, hx⟩` from `(Module.bijective_dual_eval ℤ (𝓞 E)).2 (F ∘ₗ LinearMap.inr ℤ _ _ ∘ₗ ConjDual.val.symm.toLinearMap)`. Use `⟨(x, ConjDual.val.symm (-(F ∘ₗ LinearMap.inl ℤ _ _))), LinearMap.ext fun v => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `LinearMap.congr_fun hx (ConjDual.val v.2)`. Establish `h2 : F v = F (v.1, 0) + F (0, v.2)` using `by rw [← map_add]; simp`. Simplify using `only [Module.Dual.eval_apply] at h1`. Simplify using `[h1, h2, add_comm]`.
+-/
 theorem hypForm_bijective : Function.Bijective (hypForm E) := by
   constructor
   · rw [injective_iff_map_eq_zero]
@@ -622,6 +866,9 @@ theorem hypForm_bijective : Function.Bijective (hypForm E) := by
     simp only [Module.Dual.eval_apply] at h1
     simp [h1, h2, add_comm]
 
+/- English proof (translation)
+Take `⟨φ, h⟩` from `exists_isLatticeEmb (K := E) (M := 𝓞 E × ConjDual E) rfl`. Establish `h1` using `h.finrank_int_eq`. Establish `: Module.Free ℤ (ConjDual E)` using `Module.Free.of_equiv ConjDual.val.symm`. Rewrite `h1` using `[Module.finrank_prod, ConjDual.val.finrank_eq, Module.finrank_linearMap_self, RingOfIntegers.rank, ← two_mul]`. Conclude with `(Nat.eq_of_mul_eq_mul_right Module.finrank_pos h1).symm`.
+-/
 theorem finrank_hyp : Module.finrank (𝓞 E) (𝓞 E × ConjDual E) = 2 := by
   obtain ⟨φ, h⟩ := exists_isLatticeEmb (K := E) (M := 𝓞 E × ConjDual E) rfl
   have h1 := h.finrank_int_eq
@@ -630,6 +877,9 @@ theorem finrank_hyp : Module.finrank (𝓞 E) (𝓞 E × ConjDual E) = 2 := by
     RingOfIntegers.rank, ← two_mul] at h1
   exact (Nat.eq_of_mul_eq_mul_right Module.finrank_pos h1).symm
 
+/- English proof (translation)
+Take `⟨φ, G, -, h1, h2, h3, -, h4, h5⟩` from `exists_lattice_EFf finrank_hyp h0 hξ hypForm_self hypForm_isIntConjAdj hypForm_bijective`. Conclude with `⟨_, G, h1, h2, h3, h4, h5⟩`.
+-/
 theorem exists_perfect_lattice_rank_two {ξ0 : E} (h0 : ξ0 ≠ 0) (hξ : cc ξ0 = -ξ0) :
     ∃ (Λ : Submodule (𝓞 E) (Fin 2 → E)) (G : Matrix (Fin 2) (Fin 2) E),
       IsLattice Λ ∧ (∀ a b, cc (G a b) = G b a) ∧ G.det ≠ 0 ∧
@@ -641,6 +891,9 @@ theorem exists_perfect_lattice_rank_two {ξ0 : E} (h0 : ξ0 ≠ 0) (hξ : cc ξ0
 
 end SkewModel
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Establish `: -ξ0 * (1 * -ξ0) = -algebraMap ℚ E d` using `by rw [← hd]; ring`. Rewrite using `[EFf, herm_one, Matrix.cons_val_zero, Matrix.cons_val_zero, hξ, this, map_neg, Algebra.trace_algebraMap, nsmul_eq_mul, mul_comm]`. Establish `: -ξ0 * (ξ0 * 1) = algebraMap ℚ E d` using `by rw [← neg_inj, ← hd]; ring`. Rewrite using `[EFf, herm_one, Matrix.cons_val_zero, Matrix.cons_val_zero, cc_one, this, Algebra.trace_algebraMap, nsmul_eq_mul, mul_comm]`.
+-/
 example {ξ0 : E} (hξ : cc ξ0 = -ξ0) (d : ℚ) (hd : ξ0 ^ 2 = -algebraMap ℚ E d) :
     EFf ξ0 (1 : Matrix (Fin 1) (Fin 1) E) ![1] ![ξ0] = -(d * Module.finrank ℚ E) ∧
       EFf ξ0 (1 : Matrix (Fin 1) (Fin 1) E) ![ξ0] ![1] = d * Module.finrank ℚ E := by
@@ -652,6 +905,11 @@ example {ξ0 : E} (hξ : cc ξ0 = -ξ0) (d : ℚ) (hd : ξ0 ^ 2 = -algebraMap �
     rw [EFf, herm_one, Matrix.cons_val_zero, Matrix.cons_val_zero, cc_one, this,
       Algebra.trace_algebraMap, nsmul_eq_mul, mul_comm]
 
+/- English proof (translation)
+Take `⟨ξ0, hξ, h0⟩` from `exists_imag (E := E)`. Use `⟨ξ0, traceFormBilin ξ0 1, h0, hξ, traceFormBilin_isConjAdj _ _, traceFormBilin_isAlt hξ fun a b => ?_, (traceFormBilin_nondegenerate_iff h0 _).mpr (by simp), skewGram_traceFormBilin h0 _⟩` and prove the remaining obligations. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[h, Ne.symm h]`.
+-/
 example : ∃ (ξ0 : E) (B : LinearMap.BilinForm ℚ (Fin r → E)), ξ0 ≠ 0 ∧ cc ξ0 = -ξ0 ∧
     IsConjAdj B ∧ B.IsAlt ∧ B.Nondegenerate ∧ skewGram ξ0 B = 1 := by
   obtain ⟨ξ0, hξ, h0⟩ := exists_imag (E := E)
@@ -661,6 +919,11 @@ example : ∃ (ξ0 : E) (B : LinearMap.BilinForm ℚ (Fin r → E)), ξ0 ≠ 0 �
   · subst h; simp
   · simp [h, Ne.symm h]
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `h ![1]`. Establish `: -(1 : E) * (1 * 1) = -algebraMap ℚ E 1` using `by simp`. Rewrite `h1` using `[traceFormBilin_apply, EFf, herm_one, Matrix.cons_val_zero, cc_one, this, map_neg, Algebra.trace_algebraMap]`. Use `Module.finrank_pos (R := ℚ) (M := E)` as an intermediate fact.
+
+Simplify using `at h1`. Use linear arithmetic over natural numbers and integers.
+-/
 example : ¬ (traceFormBilin (1 : E) (1 : Matrix (Fin 1) (Fin 1) E)).IsAlt := by
   intro h
   have h1 := h ![1]
@@ -671,6 +934,11 @@ example : ¬ (traceFormBilin (1 : E) (1 : Matrix (Fin 1) (Fin 1) E)).IsAlt := by
   simp at h1
   omega
 
+/- English proof (translation)
+Introduce `h`. Take `⟨ξ0, hξ, h0⟩` from `exists_imag (E := E)`. Establish `: ξ0 + ξ0 = 0` using `eq_zero_of_forall_trace_mul fun a => by`. Establish `h1` using `h ξ0 ![a] ![1]`. Simplify using `only [LinearMap.compl₁₂_apply, LinearMap.proj_apply, Algebra.traceForm_apply, Pi.smul_apply, Matrix.cons_val_zero, smul_eq_mul, hξ, mul_one, map_neg] at h1`.
+
+Rewrite using `[mul_add, map_add]`. Rewrite `h1` using `[mul_comm ξ0 a]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h0 (by linear_combination this / 2)`.
+-/
 example : ¬ IsConjAdj ((Algebra.traceForm ℚ E).compl₁₂ (LinearMap.proj (0 : Fin 1))
     (LinearMap.proj (φ := fun _ : Fin 1 => E) (0 : Fin 1))) := by
   intro h

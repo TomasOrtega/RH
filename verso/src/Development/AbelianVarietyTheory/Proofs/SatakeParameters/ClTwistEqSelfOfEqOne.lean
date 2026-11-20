@@ -21,10 +21,20 @@ open GlobalTheory.GalCut GlobalTheory.Published
 namespace GlobalTheory
 
 open GlobalTheory.SmGL GlobalTheory.LocGL in
+/- English proof (translation)
+Substitute `h1` using the available equality. Conclude with `clTwist_one c hχ`.
+-/
 private theorem clTwist_eq_self_of_eq_one {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (c : IrrCl G) (χ : G →* ℂˣ) (hχ : IsSmoothChar χ) (h1 : χ = 1) : clTwist c χ hχ = c := by
   subst h1; exact clTwist_one c hχ
 
+/- English proof (translation)
+Establish `h1 : (CG.mk π).IsLoc w (Quotient.mk _ σ)` using `hσ`. Rewrite `h1` using `[hπ]`. Establish `h2` using `CG.IsLoc.unique E 1 _ w _ _ h1 (CG.isLoc_ofChar ψ w)`. Take `⟨e⟩` from `Quotient.exact h2`. Unfold `algNorm IrrGL.nu IrrGL.tw IrrGL.of IrrGL.ofChar`.
+
+Use `congr 1`. Use `(clTwist_eq_self_of_eq_one _ _ _ ?_).trans ?_` and prove the remaining obligations. Use extensionality with `g`. Simplify using `[GlobalTheory.SmGL.detChar, GlobalTheory.SmGL.absPow]`. Apply `Quotient.sound` to reduce the goal to its premises.
+
+Conclude with `⟨e.trans (Representation.Equiv.refl _)⟩`.
+-/
 theorem rankOne_algNorm_locComp (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (π : CuspSub E 1)
     (ψ : HChar E) (hπ : CG.mk π = CG.ofChar ψ) (w : HeightOneSpectrum (𝓞 E))
     (σ : SmIrr (GL (Fin 1) (w.adicCompletion E))) (hσ : π.IsLocComp w σ) :

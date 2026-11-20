@@ -20,11 +20,23 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Introduce `i hi` and use `S.principalizationSequence.center_snc i hi`.
+-/
 private theorem centersHaveStrictNormalCrossingsWithBoundary {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
     [AlgebraicGeometry.IsAffine Y] {pY : Y ⟶ Spec (CommRingCat.of k)}
     [AlgebraicGeometry.LocallyOfFiniteType pY] (S : AffineSpacePrincipalizationData k Y pY) :
     S.CentersHaveStrictNormalCrossingsWithBoundary := fun i hi => S.principalizationSequence.center_snc i hi
 
+/- English proof (translation)
+Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `_`. Establish `: AlgebraicGeometry.Smooth S.ambientToSpec` using `S.ambient_smooth`.
+
+Rewrite using `[AffineSpacePrincipalizationData.schemeAtToSpec_def, SequenceOfBlowups.projectionToBase_zero]`. Use `infer_instance`. Consider the case `succ n ih`. Introduce `hn`. Establish `hlt : n < S.ambientLength` using `hn`.
+
+Establish `hsm0 : AlgebraicGeometry.Smooth (S.ambientBlowups.projectionToBase n ≫ S.ambientToSpec)` using `ih (Nat.le_of_lt hlt)`. Establish `hZE : HasStrictNormalCrossingsWith (S.ambientBlowups.projectionToBase n ≫ S.ambientToSpec) (S.ambientBlowups.center n) (S.principalizationSequence.boundary n)` using `S.principalizationSequence.center_snc n hlt`. Establish `hb : Blowup.IsBlowupAlongIdealSheaf (S.ambientBlowups.transitionMapSucc n) (S.ambientBlowups.center n)` using `S.ambientBlowups.isBlowupAlongIdealSheaf_blowupMorphism n hlt`. Establish `hres` using `smooth_comp_of_isBlowupAlongIdealSheaf hZE hb`. Rewrite using `[AffineSpacePrincipalizationData.schemeAtToSpec_def, SequenceOfBlowups.projectionToBase_succ, Category.assoc]`.
+
+Conclude with `hres`.
+-/
 private theorem smooth_schemeAtToSpec {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
     [AlgebraicGeometry.IsAffine Y] {pY : Y ⟶ Spec (CommRingCat.of k)}
     [AlgebraicGeometry.LocallyOfFiniteType pY] (S : AffineSpacePrincipalizationData k Y pY) :
@@ -49,6 +61,17 @@ private theorem smooth_schemeAtToSpec {k : Type u} [Field k] [CharZero k] {Y : S
       rw [AffineSpacePrincipalizationData.schemeAtToSpec_def, SequenceOfBlowups.projectionToBase_succ, Category.assoc]
       exact hres
 
+/- English proof (translation)
+Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `_`. Establish `: AlgebraicGeometry.Smooth (S.schemeAtToSpec 0)` using `smooth_schemeAtToSpec S 0 (Nat.zero_le _)`.
+
+Establish `h0 : S.boundary 0 = ([] : List (S.ambientLevel 0).IdealSheafData)`. Rewrite using `[AffineSpacePrincipalizationData.boundary_def, IdealBlowupSequence.boundary_zero]`. Both sides reduce to the same expression. Rewrite using `[h0]`. Conclude with `inStrictNormalCrossingPosition_nil (S.schemeAtToSpec 0)`.
+
+Consider the case `succ n ih`. Introduce `hn`. Establish `hlt : n < S.ambientLength` using `hn`. Establish `: AlgebraicGeometry.IsNoetherian (S.ambientLevel (n + 1))` using `isNoetherian_ambientLevel S (n + 1) hn`. Establish `: TopologicalSpace.NoetherianSpace ↥(S.ambientLevel (n + 1))` using `inferInstance`.
+
+Establish `hE : InStrictNormalCrossingPosition (S.ambientBlowups.projectionToBase n ≫ S.ambientToSpec) (S.principalizationSequence.boundary n)` using `ih (Nat.le_of_lt hlt)`. Establish `hZE : HasStrictNormalCrossingsWith (S.ambientBlowups.projectionToBase n ≫ S.ambientToSpec) (S.ambientBlowups.center n) (S.principalizationSequence.boundary n)` using `S.principalizationSequence.center_snc n hlt`. Establish `hb : Blowup.IsBlowupAlongIdealSheaf (S.ambientBlowups.transitionMapSucc n) (S.ambientBlowups.center n)` using `S.ambientBlowups.isBlowupAlongIdealSheaf_blowupMorphism n hlt`. Establish `hres` using `inStrictNormalCrossingPosition_strictTransform_append (S.ambientBlowups.projectionToBase n ≫ S.ambientToSpec) (S.ambientBlowups.transitionMapSucc n) (S.ambientBlowups.center n) (S.principalizationSequence.boundary n) hb hE hZE`. Rewrite using `[AffineSpacePrincipalizationData.schemeAtToSpec_def, SequenceOfBlowups.projectionToBase_succ, Category.assoc, AffineSpacePrincipalizationData.boundary_def, S.principalizationSequence.boundary_succ n hlt]`.
+
+Conclude with `hres`.
+-/
 private theorem boundaryInStrictNormalCrossingPosition {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
     [AlgebraicGeometry.IsAffine Y] {pY : Y ⟶ Spec (CommRingCat.of k)}
     [AlgebraicGeometry.LocallyOfFiniteType pY] (S : AffineSpacePrincipalizationData k Y pY) :
@@ -83,18 +106,27 @@ private theorem boundaryInStrictNormalCrossingPosition {k : Type u} [Field k] [C
         AffineSpacePrincipalizationData.boundary_def, S.principalizationSequence.boundary_succ n hlt]
       exact hres
 
+/- English proof (translation)
+Introduce `k _ _ Y pY _ _ _ _`. Conclude with `centersHaveStrictNormalCrossingsWithBoundary (AffineSpacePrincipalizationData.ofAffine A hemb hsnc hsm k Y pY)`.
+-/
 theorem affineCentersHaveStrictNormalCrossingsWithBoundary (A : PrincipalizationAlgorithm.{u}) (hemb : AffineEmbedsIntoAffineSpace.{u})
     (hsnc : NilIsStrictNormalCrossingsOnAffineSpace.{u}) (hsm : AffineSpaceIsSmooth.{u}) :
     AffineCentersHaveStrictNormalCrossingsWithBoundary A hemb hsnc hsm := by
   intro k _ _ Y pY _ _ _ _
   exact centersHaveStrictNormalCrossingsWithBoundary (AffineSpacePrincipalizationData.ofAffine A hemb hsnc hsm k Y pY)
 
+/- English proof (translation)
+Introduce `k _ _ Y pY _ _ _ _`. Conclude with `smooth_schemeAtToSpec (AffineSpacePrincipalizationData.ofAffine A hemb hsnc hsm k Y pY)`.
+-/
 theorem affineAllLevelsSmooth (A : PrincipalizationAlgorithm.{u}) (hemb : AffineEmbedsIntoAffineSpace.{u})
     (hsnc : NilIsStrictNormalCrossingsOnAffineSpace.{u}) (hsm : AffineSpaceIsSmooth.{u}) :
     AffineAllLevelsSmooth A hemb hsnc hsm := by
   intro k _ _ Y pY _ _ _ _
   exact smooth_schemeAtToSpec (AffineSpacePrincipalizationData.ofAffine A hemb hsnc hsm k Y pY)
 
+/- English proof (translation)
+Introduce `k _ _ Y pY _ _ _ _`. Conclude with `boundaryInStrictNormalCrossingPosition (AffineSpacePrincipalizationData.ofAffine A hemb hsnc hsm k Y pY)`.
+-/
 theorem affineBoundaryInStrictNormalCrossingPosition (A : PrincipalizationAlgorithm.{u}) (hemb : AffineEmbedsIntoAffineSpace.{u})
     (hsnc : NilIsStrictNormalCrossingsOnAffineSpace.{u}) (hsm : AffineSpaceIsSmooth.{u}) :
     AffineBoundaryInStrictNormalCrossingPosition A hemb hsnc hsm := by

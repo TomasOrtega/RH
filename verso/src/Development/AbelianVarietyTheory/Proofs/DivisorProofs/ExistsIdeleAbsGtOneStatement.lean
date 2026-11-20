@@ -9,5 +9,8 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.DivAbsBig.exists_idele_absE_gt_one | exact GlobalTheory.DivAbsBig.exists_idele_absE_gt_one | (intros; apply GlobalTheory.DivAbsBig.exists_idele_absE_gt_one <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_idele_abs_gt_one : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E], ∃ t : (AE F E)ˣ, 1 < (absE F E t : ℝ) := by
   first | exact @GlobalTheory.DivAbsBig.exists_idele_absE_gt_one | exact GlobalTheory.DivAbsBig.exists_idele_absE_gt_one | (intros; apply GlobalTheory.DivAbsBig.exists_idele_absE_gt_one <;> assumption)

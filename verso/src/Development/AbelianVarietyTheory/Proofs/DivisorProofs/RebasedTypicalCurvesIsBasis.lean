@@ -7,6 +7,15 @@ open MvPowerSeries ReciprocityTheory.PGsh ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.DepthStages.RebaseBasis
 
+/- English proof (translation)
+Introduce `C _ _ _ v p hp hv d h ty G γ X hB hX hdet hty`. Take `⟨hγc, hγty, hγdet⟩` from `hB`. Establish `key : ∀ a, _` using `fun a => pt6' C v p hp hv d d G γ (X a) hγc (hX a)`. Establish `hlc : ∀ a n, G.lc p (rebase G X γ a) n = ∑ b, X a b ^ (p ^ n) • G.lc p (γ b) n` using `fun a n => (key a).2.2.1 n`. Establish `htan : ∀ a, tangent (rebase G X γ a) = ∑ b, X a b • tangent (γ b)` using `fun a => (key a).2.1`.
+
+Use `⟨⟨fun a => (key a).1, fun a => ⟨(key a).2.2.2 fun b => (hγty b).1, ?_⟩, ?_⟩, htan, hlc⟩` and prove the remaining obligations. Introduce `n c hc`. Rewrite using `[hlc]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hXab : X a b = 0`. Rewrite using `[hXab, zero_pow (pow_ne_zero _ hp.ne_zero), zero_mul]`. Establish `hb` using `hty a b hXab`. Rewrite using `[(hγty b).2 n c (by rw [hb]; exact hc), mul_zero]`. Establish `hM : (Matrix.of fun a b => tangent (rebase G X γ a) b) = X * Matrix.of fun a b => tangent (γ a) b`.
+
+Use extensionality with `a b`. Rewrite using `[Matrix.of_apply, htan, Matrix.mul_apply]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Matrix.of_apply]`. Rewrite using `[hM, Matrix.det_mul, v.map_mul, hdet, hγdet, add_zero]`.
+-/
 theorem rebase_isBasis : ∀ (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : AddValuation C (WithTop ℝ)) (p : ℕ),
     p.Prime → v (p : C) = 1 → ∀ (d h : ℕ) (ty : Fin d → ZMod h) (G : LogFGL v d)
       (γ : Fin d → Fin d → PowerSeries C) (X : Matrix (Fin d) (Fin d) C),

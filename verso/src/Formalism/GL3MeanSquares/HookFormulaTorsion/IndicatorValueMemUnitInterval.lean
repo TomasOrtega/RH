@@ -6,6 +6,9 @@ namespace Formalism.HermitianLattices.FormalDegreeBoundsAlt
 open Finset
 open Formalism.LogVandermondeBounds.StandardLattice
 
+/- English proof (translation)
+Rewrite using `[← Real.log_div hp.ne' hq.ne']`. Establish `h1` using `Real.log_le_sub_one_of_pos (div_pos hp hq)`. Establish `h2 : p / q - 1 = (p - q) / q` using `by field_simp`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private lemma g5w7_log_sub_le {p q : ℝ} (hp : 0 < p) (hq : 0 < q) :
     Real.log p - Real.log q ≤ (p - q) / q := by
   rw [← Real.log_div hp.ne' hq.ne']
@@ -13,6 +16,9 @@ private lemma g5w7_log_sub_le {p q : ℝ} (hp : 0 < p) (hq : 0 < q) :
   have h2 : p / q - 1 = (p - q) / q := by field_simp
   linarith
 
+/- English proof (translation)
+Unfold `vandN`. Rewrite using `[prod_range_succ, Ico_self, prod_empty, mul_one, ← prod_mul_distrib]`. Use `prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[prod_Ico_succ_top (by have := mem_range.1 hi; omega)]`.
+-/
 private lemma g5w7_vandN_succ (x : ℕ → ℝ) (N : ℕ) :
     vandN x (N + 1) = vandN x N * ∏ i ∈ range N, (x i - x N) := by
   unfold vandN
@@ -20,6 +26,11 @@ private lemma g5w7_vandN_succ (x : ℕ → ℝ) (N : ℕ) :
   refine prod_congr rfl fun i hi => ?_
   rw [prod_Ico_succ_top (by have := mem_range.1 hi; omega)]
 
+/- English proof (translation)
+Unfold `vandN`. Rewrite using `[prod_range_succ', mul_comm]`. Use `congr 1`. Rewrite using `[prod_Ico_eq_prod_range]`. Use `prod_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[add_comm (0 + 1) j]`. Use `prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← prod_Ico_add' (fun j => x (i + 1) - x j) (i + 1) N 1]`.
+-/
 private lemma g5w7_vandN_head (x : ℕ → ℝ) (N : ℕ) :
     vandN x (N + 1) = (∏ j ∈ range N, (x 0 - x (j + 1))) * vandN (fun i => x (i + 1)) N := by
   unfold vandN
@@ -31,12 +42,22 @@ private lemma g5w7_vandN_head (x : ℕ → ℝ) (N : ℕ) :
   · refine prod_congr rfl fun i _ => ?_
     rw [← prod_Ico_add' (fun j => x (i + 1) - x j) (i + 1) N 1]
 
+/- English proof (translation)
+Unfold `vandN`. Use `prod_congr rfl fun i hi => prod_congr rfl fun j hj => ?_` and prove the remaining obligations. Rewrite using `[h i (mem_range.1 hi), h j (mem_Ico.1 hj).2]`.
+-/
 private lemma g5w7_vandN_congr {x y : ℕ → ℝ} {N : ℕ} (h : ∀ i, i < N → x i = y i) :
     vandN x N = vandN y N := by
   unfold vandN
   refine prod_congr rfl fun i hi => prod_congr rfl fun j hj => ?_
   rw [h i (mem_range.1 hi), h j (mem_Ico.1 hj).2]
 
+/- English proof (translation)
+Unfold `vandN`. Rewrite using `[Real.log_prod]`. Use `sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Real.log_prod]`. Introduce `j hj`.
+
+Rewrite `hj` using `[mem_Ico]`. Conclude with `h i j (by omega) hj.2`. Introduce `i _`. Rewrite using `[prod_ne_zero_iff]`. Introduce `j hj`.
+
+Rewrite `hj` using `[mem_Ico]`. Conclude with `h i j (by omega) hj.2`.
+-/
 private lemma g5w7_log_vandN (x : ℕ → ℝ) (N : ℕ) (h : ∀ i j, i < j → j < N → x i - x j ≠ 0) :
     Real.log (vandN x N) = ∑ i ∈ range N, ∑ j ∈ Ico (i + 1) N, Real.log (x i - x j) := by
   unfold vandN
@@ -52,6 +73,11 @@ private lemma g5w7_log_vandN (x : ℕ → ℝ) (N : ℕ) (h : ∀ i j, i < j →
     rw [mem_Ico] at hj
     exact h i j (by omega) hj.2
 
+/- English proof (translation)
+Establish `h` using `harmonic_le_one_add_log n`. Establish `e : ((harmonic n : ℚ) : ℝ) = ∑ d ∈ range n, 1 / ((d : ℝ) + 1)`. Unfold `harmonic`. Use `push_cast`. Use `sum_congr rfl fun d _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[one_div]`. Rewrite `h` using `[e]`. Conclude with `h`.
+-/
 private lemma g5w7_H_le (n : ℕ) : ∑ d ∈ range n, 1 / ((d : ℝ) + 1) ≤ 1 + Real.log n := by
   have h := harmonic_le_one_add_log n
   have e : ((harmonic n : ℚ) : ℝ) = ∑ d ∈ range n, 1 / ((d : ℝ) + 1) := by
@@ -62,11 +88,23 @@ private lemma g5w7_H_le (n : ℕ) : ∑ d ∈ range n, 1 / ((d : ℝ) + 1) ≤ 1
   rw [e] at h
   exact h
 
+/- English proof (translation)
+Use `sum_le_sum_of_subset_of_nonneg (range_subset_range.2 h) fun d _ _ => ?_` and prove the remaining obligations. Check the signs of the components of the expression.
+-/
 private lemma g5w7_H_mono {a n : ℕ} (h : a ≤ n) :
     ∑ d ∈ range a, 1 / ((d : ℝ) + 1) ≤ ∑ d ∈ range n, 1 / ((d : ℝ) + 1) := by
   refine sum_le_sum_of_subset_of_nonneg (range_subset_range.2 h) fun d _ _ => ?_
   positivity
 
+/- English proof (translation)
+Establish `inner : ∀ i ∈ range n, ∑ j ∈ Ico (i + 1) n, a i j ≤ C * (1 + Real.log n)`. Introduce `i _`. Combine the equalities or inequalities in the displayed calculation. Use `sum_le_sum fun j hj => ?_` and prove the remaining obligations. Rewrite `hj` using `[mem_Ico]`.
+
+Conclude with `h i j (by omega) hj.2`. Use `_ = C * ∑ d ∈ range (n - (i + 1)), 1 / ((d : ℝ) + 1) := by`. Rewrite using `[sum_Ico_eq_sum_range, mul_sum]`. Use `sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Use `push_cast`.
+
+Rewrite using `[mul_one_div]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ C * (1 + Real.log n) := by`. Use `mul_le_mul_of_nonneg_left ?_ hC` and prove the remaining obligations.
+
+Conclude with `(g5w7_H_mono (by omega)).trans (g5w7_H_le n)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sum_const, card_range, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma g5w7_pair_sum_le (n : ℕ) (C : ℝ) (hC : 0 ≤ C) (a : ℕ → ℕ → ℝ)
     (h : ∀ i j, i < j → j < n → a i j ≤ C / ((j : ℝ) - i)) :
     ∑ i ∈ range n, ∑ j ∈ Ico (i + 1) n, a i j ≤ C * n * (1 + Real.log n) := by
@@ -90,28 +128,46 @@ private lemma g5w7_pair_sum_le (n : ℕ) (C : ℝ) (hC : 0 ≤ C) (a : ℕ → �
     _ = C * n * (1 + Real.log n) := by
         rw [sum_const, card_range, nsmul_eq_mul]; ring
 
+/- English proof (translation)
+Unfold `cloudV`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma cloudV_sub_cloudV (c Δ : ℝ) (i j : ℕ) :
     cloudV c Δ i - cloudV c Δ j = 4 * Δ * ((j : ℝ) - i) := by
   unfold cloudV; ring
 
+/- English proof (translation)
+Unfold `wordU cloudV`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma g5w7_word_diff (c Δ : ℝ) (δ : ℕ → ℕ) (i j : ℕ) :
     wordU c Δ δ i - wordU c Δ δ j = 4 * Δ * ((j : ℝ) - i) + ((δ j : ℝ) - δ i) * Δ := by
   unfold wordU cloudV; ring
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Nat.cast_nonneg _, by exact_mod_cast hδ l⟩`.
+-/
 private lemma indicator_value_mem_unit_interval {δ : ℕ → ℕ} (hδ : ∀ l, δ l ≤ 1) (l : ℕ) : (0 : ℝ) ≤ δ l ∧ (δ l : ℝ) ≤ 1 :=
   ⟨Nat.cast_nonneg _, by exact_mod_cast hδ l⟩
 
+/- English proof (translation)
+Establish `: ((i + 1 : ℕ) : ℝ) ≤ j` using `by exact_mod_cast h`. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private lemma g5w7_gap {i j : ℕ} (h : i < j) : (1 : ℝ) ≤ (j : ℝ) - i := by
   have : ((i + 1 : ℕ) : ℝ) ≤ j := by exact_mod_cast h
   push_cast at this
   linarith
 
+/- English proof (translation)
+Rewrite using `[cloudV_sub_cloudV]`. Use `g5w7_gap h` as an intermediate fact. Check the signs of the components of the expression.
+-/
 private lemma g5w7_cloud_pos (c : ℝ) {Δ : ℝ} (hΔ : 0 < Δ) {i j : ℕ} (h : i < j) :
     0 < cloudV c Δ i - cloudV c Δ j := by
   rw [cloudV_sub_cloudV]
   have := g5w7_gap h
   positivity
 
+/- English proof (translation)
+Rewrite using `[g5w7_word_diff]`. Establish `h1` using `g5w7_gap h`. Establish `hi` using `indicator_value_mem_unit_interval hδ i`. Establish `hj` using `indicator_value_mem_unit_interval hδ j`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h1 hΔ.le, mul_nonneg hΔ.le hj.1, mul_le_mul_of_nonneg_left hi.2 hΔ.le]`.
+-/
 private lemma g5w7_word_pos (c : ℝ) {Δ : ℝ} (hΔ : 0 < Δ) {δ : ℕ → ℕ} (hδ : ∀ l, δ l ≤ 1) {i j : ℕ} (h : i < j) :
     0 < wordU c Δ δ i - wordU c Δ δ j := by
   rw [g5w7_word_diff]
@@ -121,6 +177,13 @@ private lemma g5w7_word_pos (c : ℝ) {Δ : ℝ} (hΔ : 0 < Δ) {δ : ℕ → �
   nlinarith [mul_le_mul_of_nonneg_left h1 hΔ.le, mul_nonneg hΔ.le hj.1,
     mul_le_mul_of_nonneg_left hi.2 hΔ.le]
 
+/- English proof (translation)
+Rewrite using `[g5w7_log_vandN _ _ fun i j hij _ => (g5w7_word_pos c hΔ hδ hij).ne', g5w7_log_vandN _ _ fun i j hij _ => (g5w7_cloud_pos c hΔ hij).ne', ← sum_sub_distrib]`. Repeatedly rewrite using `[← sum_sub_distrib]`. Use `g5w7_pair_sum_le n (1 / 4) (by norm_num) _ fun i j hij _ => ?_` and prove the remaining obligations. Use `(g5w7_log_sub_le (g5w7_word_pos c hΔ hδ hij) (g5w7_cloud_pos c hΔ hij)).trans ?_` and prove the remaining obligations. Establish `h1` using `g5w7_gap hij`.
+
+Establish `hi` using `indicator_value_mem_unit_interval hδ i`. Establish `hj` using `indicator_value_mem_unit_interval hδ j`. Establish `hc` using `g5w7_cloud_pos c hΔ hij`. Rewrite using `[div_le_div_iff₀ hc (by linarith)]`. Rewrite using `[g5w7_word_diff, cloudV_sub_cloudV]`.
+
+Establish `hD : 0 ≤ Δ * ((j : ℝ) - i)` using `by positivity`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right (show (δ j : ℝ) - δ i ≤ 1 by linarith) hD]`.
+-/
 private lemma g5w7_cloud_upper (n : ℕ) (c : ℝ) {Δ : ℝ} (hΔ : 0 < Δ) {δ : ℕ → ℕ} (hδ : ∀ l, δ l ≤ 1) :
     Real.log (vandN (wordU c Δ δ) n) - Real.log (vandN (cloudV c Δ) n) ≤ 1 / 4 * n * (1 + Real.log n) := by
   rw [g5w7_log_vandN _ _ fun i j hij _ => (g5w7_word_pos c hΔ hδ hij).ne',
@@ -137,6 +200,13 @@ private lemma g5w7_cloud_upper (n : ℕ) (c : ℝ) {Δ : ℝ} (hΔ : 0 < Δ) {δ
   have hD : 0 ≤ Δ * ((j : ℝ) - i) := by positivity
   nlinarith [mul_le_mul_of_nonneg_right (show (δ j : ℝ) - δ i ≤ 1 by linarith) hD]
 
+/- English proof (translation)
+Rewrite using `[g5w7_log_vandN _ _ fun i j hij _ => (g5w7_word_pos c hΔ hδ hij).ne', g5w7_log_vandN _ _ fun i j hij _ => (g5w7_cloud_pos c hΔ hij).ne', ← sum_sub_distrib]`. Repeatedly rewrite using `[← sum_sub_distrib]`. Use `g5w7_pair_sum_le n (1 / 3) (by norm_num) _ fun i j hij _ => ?_` and prove the remaining obligations. Use `(g5w7_log_sub_le (g5w7_cloud_pos c hΔ hij) (g5w7_word_pos c hΔ hδ hij)).trans ?_` and prove the remaining obligations. Establish `h1` using `g5w7_gap hij`.
+
+Establish `hi` using `indicator_value_mem_unit_interval hδ i`. Establish `hj` using `indicator_value_mem_unit_interval hδ j`. Establish `hw` using `g5w7_word_pos c hΔ hδ hij`. Rewrite using `[div_le_div_iff₀ hw (by linarith)]`. Rewrite using `[g5w7_word_diff, cloudV_sub_cloudV]`.
+
+Establish `hD : 0 ≤ Δ * (1 + 3 * ((j : ℝ) - i))` using `by positivity`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right (show (-1 : ℝ) ≤ (δ j : ℝ) - δ i by linarith) hD, mul_le_mul_of_nonneg_left h1 hΔ.le]`.
+-/
 private lemma g5w7_cloud_lower (n : ℕ) (c : ℝ) {Δ : ℝ} (hΔ : 0 < Δ) {δ : ℕ → ℕ} (hδ : ∀ l, δ l ≤ 1) :
     Real.log (vandN (cloudV c Δ) n) - Real.log (vandN (wordU c Δ δ) n) ≤ 1 / 3 * n * (1 + Real.log n) := by
   rw [g5w7_log_vandN _ _ fun i j hij _ => (g5w7_word_pos c hΔ hδ hij).ne',
@@ -155,10 +225,16 @@ private lemma g5w7_cloud_lower (n : ℕ) (c : ℝ) {Δ : ℝ} (hΔ : 0 < Δ) {δ
   nlinarith [mul_le_mul_of_nonneg_right (show (-1 : ℝ) ≤ (δ j : ℝ) - δ i by linarith) hD,
     mul_le_mul_of_nonneg_left h1 hΔ.le]
 
+/- English proof (translation)
+Establish `: 0 ≤ Real.log n` using `Real.log_natCast_nonneg n`. Check the signs of the components of the expression.
+-/
 private lemma g5w7_nlog_nonneg (n : ℕ) : 0 ≤ (n : ℝ) * (1 + Real.log n) := by
   have : 0 ≤ Real.log n := Real.log_natCast_nonneg n
   positivity
 
+/- English proof (translation)
+The claim follows from `|Real.log (vandN (wordU c Δ δ) n) - Real.log (vandN (wordU c Δ δ') n)| ≤ 7 / 12 * n * (1 + Real.log n) := by have a1 := g5w7_cloud_upper n c hΔ hδ have a2 := g5w7_cloud_lower n c hΔ hδ have b1 := g5w7_cloud_upper n c hΔ hδ' have b2 := g5w7_cloud_lower n c hΔ hδ' rw [abs_le] const …`.
+-/
 private lemma g5w7_cloud_two (n : ℕ) (c : ℝ) {Δ : ℝ} (hΔ : 0 < Δ) {δ δ' : ℕ → ℕ} (hδ : ∀ l, δ l ≤ 1)
     (hδ' : ∀ l, δ' l ≤ 1) :
     |Real.log (vandN (wordU c Δ δ) n) - Real.log (vandN (wordU c Δ δ') n)| ≤
@@ -170,17 +246,31 @@ private lemma g5w7_cloud_two (n : ℕ) (c : ℝ) {Δ : ℝ} (hΔ : 0 < Δ) {δ �
   rw [abs_le]
   constructor <;> linarith
 
+/- English proof (translation)
+Simplify using `[colU]`.
+-/
 private lemma g5w7_colU_zero (n : ℕ) (c Δ u0 uk : ℝ) (δ : ℕ → ℕ) : colU (n + 2) c Δ δ u0 uk 0 = u0 := by
   simp [colU]
 
+/- English proof (translation)
+Simplify using `[colU]`.
+-/
 private lemma g5w7_colU_last (n : ℕ) (c Δ u0 uk : ℝ) (δ : ℕ → ℕ) : colU (n + 2) c Δ δ u0 uk (n + 1) = uk := by
   simp [colU]
 
+/- English proof (translation)
+Unfold `colU`. Rewrite using `[if_neg (by omega), if_neg (by omega), Nat.add_sub_cancel]`.
+-/
 private lemma g5w7_colU_mid (n : ℕ) (c Δ u0 uk : ℝ) (δ : ℕ → ℕ) {i : ℕ} (h : i < n) :
     colU (n + 2) c Δ δ u0 uk (i + 1) = wordU c Δ δ i := by
   unfold colU
   rw [if_neg (by omega), if_neg (by omega), Nat.add_sub_cancel]
 
+/- English proof (translation)
+Rewrite using `[g5w7_vandN_head, g5w7_vandN_succ, prod_range_succ, g5w7_colU_zero, g5w7_colU_last]`. Use `congr 1`. Use `congr 1`. Conclude with `prod_congr rfl fun j hj => by rw [g5w7_colU_mid n c Δ u0 uk δ (mem_range.1 hj)]`. Use `congr 1`.
+
+Conclude with `g5w7_vandN_congr fun i hi => g5w7_colU_mid n c Δ u0 uk δ hi`. Conclude with `prod_congr rfl fun j hj => by rw [g5w7_colU_mid n c Δ u0 uk δ (mem_range.1 hj)]`.
+-/
 private lemma g5w7_colU_vand (n : ℕ) (c Δ u0 uk : ℝ) (δ : ℕ → ℕ) :
     vandN (colU (n + 2) c Δ δ u0 uk) (n + 2) =
       ((∏ j ∈ range n, (u0 - wordU c Δ δ j)) * (u0 - uk)) *
@@ -193,12 +283,18 @@ private lemma g5w7_colU_vand (n : ℕ) (c Δ u0 uk : ℝ) (δ : ℕ → ℕ) :
     · exact g5w7_vandN_congr fun i hi => g5w7_colU_mid n c Δ u0 uk δ hi
     · exact prod_congr rfl fun j hj => by rw [g5w7_colU_mid n c Δ u0 uk δ (mem_range.1 hj)]
 
+/- English proof (translation)
+Unfold `vandN`. Use `prod_pos fun i _ => prod_pos fun j hj => ?_` and prove the remaining obligations. Rewrite `hj` using `[mem_Ico]`. Conclude with `h i j (by omega) hj.2`.
+-/
 private lemma g5w7_vandN_pos {x : ℕ → ℝ} {N : ℕ} (h : ∀ i j, i < j → j < N → 0 < x i - x j) : 0 < vandN x N := by
   unfold vandN
   refine prod_pos fun i _ => prod_pos fun j hj => ?_
   rw [mem_Ico] at hj
   exact h i j (by omega) hj.2
 
+/- English proof (translation)
+Establish `p1 : 0 < ∏ j ∈ range n, (u0 - wordU c Δ δ j)` using `prod_pos fun j hj => h1 j (mem_range.1 hj)`. Establish `p3 : 0 < ∏ j ∈ range n, (wordU c Δ δ j - uk)` using `prod_pos fun j hj => h3 j (mem_range.1 hj)`. Establish `pv : 0 < vandN (wordU c Δ δ) n` using `g5w7_vandN_pos fun i j hij _ => g5w7_word_pos c hΔ hδ hij`. Rewrite using `[g5w7_colU_vand, Real.log_mul (mul_ne_zero p1.ne' h2) (mul_ne_zero pv.ne' p3.ne'), Real.log_mul p1.ne' h2, Real.log_mul pv.ne' p3.ne', Real.log_prod fun j hj => (h1 j (mem_range.1 hj)).ne', Real.log_prod fun j hj => (h3 j (mem_range.1 hj)).ne']`.
+-/
 private lemma g5w7_colU_log (n : ℕ) (c : ℝ) {Δ : ℝ} (u0 uk : ℝ) {δ : ℕ → ℕ} (hΔ : 0 < Δ) (hδ : ∀ l, δ l ≤ 1)
     (h1 : ∀ j, j < n → 0 < u0 - wordU c Δ δ j) (h2 : u0 - uk ≠ 0) (h3 : ∀ j, j < n → 0 < wordU c Δ δ j - uk) :
     Real.log (vandN (colU (n + 2) c Δ δ u0 uk) (n + 2)) =
@@ -211,6 +307,11 @@ private lemma g5w7_colU_log (n : ℕ) (c : ℝ) {Δ : ℝ} (u0 uk : ℝ) {δ : �
     Real.log_mul p1.ne' h2, Real.log_mul pv.ne' p3.ne',
     Real.log_prod fun j hj => (h1 j (mem_range.1 hj)).ne', Real.log_prod fun j hj => (h3 j (mem_range.1 hj)).ne']
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using `using g5w7_nlog_nonneg k`. Establish `h1 : (n : ℝ) ≤ k` using `by exact_mod_cast h`. Establish `h2 : Real.log n ≤ Real.log k` using `Real.log_le_log (by exact_mod_cast hn) h1`. Establish `h3 : 0 ≤ Real.log n` using `Real.log_natCast_nonneg n`.
+
+Establish `h4 : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Use polynomial arithmetic with `[mul_le_mul h1 (show 1 + Real.log n ≤ 1 + Real.log k by linarith) (by linarith) (by linarith)]`.
+-/
 private lemma g5w7_nlog_mono {n k : ℕ} (h : n ≤ k) : (n : ℝ) * (1 + Real.log n) ≤ (k : ℝ) * (1 + Real.log k) := by
   rcases Nat.eq_zero_or_pos n with rfl | hn
   · simpa using g5w7_nlog_nonneg k
@@ -220,6 +321,9 @@ private lemma g5w7_nlog_mono {n k : ℕ} (h : n ≤ k) : (n : ℝ) * (1 + Real.l
     have h4 : (0 : ℝ) ≤ n := Nat.cast_nonneg n
     nlinarith [mul_le_mul h1 (show 1 + Real.log n ≤ 1 + Real.log k by linarith) (by linarith) (by linarith)]
 
+/- English proof (translation)
+Establish `hq0 : 0 < q` using `lt_of_lt_of_le (by positivity) hq`. Use `(g5w7_log_sub_le hp hq0).trans ?_` and prove the remaining obligations. Rewrite using `[div_le_div_iff₀ hq0 hK]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hpq hK.le]`.
+-/
 private lemma g5w7_term_le {p q Δ K : ℝ} (hΔ : 0 < Δ) (hK : 0 < K) (hq : K * Δ ≤ q) (hpq : p - q ≤ Δ) (hp : 0 < p) :
     Real.log p - Real.log q ≤ 1 / K := by
   have hq0 : 0 < q := lt_of_lt_of_le (by positivity) hq
@@ -227,6 +331,25 @@ private lemma g5w7_term_le {p q Δ K : ℝ} (hΔ : 0 < Δ) (hK : 0 < K) (hq : K 
   rw [div_le_div_iff₀ hq0 hK]
   nlinarith [mul_le_mul_of_nonneg_right hpq hK.le]
 
+/- English proof (translation)
+Establish `hn : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Establish `hlow : ∀ e : ℕ → ℕ, (∀ l, e l ≤ 1) → ∀ l, 4 * ((n : ℝ) + 2) * Δ ≤ u0 - wordU c Δ e l`. Introduce `e he l`. Establish `h1` using `indicator_value_mem_unit_interval he l`. Establish `h2 : (0 : ℝ) ≤ l` using `Nat.cast_nonneg l`.
+
+Establish `h3 : 0 ≤ (e l : ℝ) * Δ` using `mul_nonneg h1.1 hΔ.le`. Establish `h4 : 0 ≤ 4 * Δ * (l : ℝ)` using `by positivity`. Unfold `wordU`. Unfold `cloudV at hu0 ⊢`. Simplify using `only [Nat.cast_zero, mul_zero, sub_zero] at hu0`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hK : 0 < 4 * ((n : ℝ) + 2)` using `by positivity`. Establish `hKΔ : 0 < 4 * ((n : ℝ) + 2) * Δ` using `by positivity`. Establish `h3Δ : 0 < 3 * Δ` using `by positivity`. Rewrite using `[g5w7_colU_log n c u0 uk hΔ hδ (fun j _ => lt_of_lt_of_le hKΔ (hlow δ hδ j)) hz (fun j hj => lt_of_lt_of_le h3Δ (hq δ hδ j hj)), g5w7_colU_log n c u0 uk hΔ hδ' (fun j _ => lt_of_lt_of_le hKΔ (hlow δ' hδ' j)) hz (fun j hj => lt_of_lt_of_le h3Δ (hq δ' hδ' j hj))]`.
+
+Establish `A : (∑ j ∈ range n, Real.log (u0 - wordU c Δ δ j)) - ∑ j ∈ range n, Real.log (u0 - wordU c Δ δ' j) ≤ 1 / 4`. Rewrite using `[← sum_sub_distrib]`. Combine the equalities or inequalities in the displayed calculation. Use `sum_le_sum fun j _ => ?_` and prove the remaining obligations. Use `g5w7_term_le hΔ hK (hlow δ' hδ' j) ?_ (lt_of_lt_of_le hKΔ (hlow δ hδ j))` and prove the remaining obligations.
+
+Establish `h1` using `indicator_value_mem_unit_interval hδ j`. Establish `h2` using `indicator_value_mem_unit_interval hδ' j`. Unfold `wordU`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right h1.2 hΔ.le, mul_nonneg h2.1 hΔ.le]`. Use `_ = (n : ℝ) / (4 * ((n : ℝ) + 2)) := by`.
+
+Rewrite using `[sum_const, card_range, nsmul_eq_mul, mul_one_div]`. Use `_ ≤ 1 / 4 := by`. Rewrite using `[div_le_div_iff₀ hK (by norm_num)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `B : (∑ j ∈ range n, Real.log (wordU c Δ δ j - uk)) - ∑ j ∈ range n, Real.log (wordU c Δ δ' j - uk) ≤ (n : ℝ) / 3`.
+
+Rewrite using `[← sum_sub_distrib]`. Combine the equalities or inequalities in the displayed calculation. Use `sum_le_sum fun j hj => ?_` and prove the remaining obligations. Establish `hj'` using `mem_range.1 hj`. Use `g5w7_term_le hΔ (by norm_num) (hq δ' hδ' j hj') ?_ (lt_of_lt_of_le h3Δ (hq δ hδ j hj'))` and prove the remaining obligations.
+
+Establish `h1` using `indicator_value_mem_unit_interval hδ j`. Establish `h2` using `indicator_value_mem_unit_interval hδ' j`. Unfold `wordU`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right h2.2 hΔ.le, mul_nonneg h1.1 hΔ.le]`. Use `_ = (n : ℝ) / 3 := by`.
+
+Rewrite using `[sum_const, card_range, nsmul_eq_mul, mul_one_div]`. Establish `C` using `(abs_le.1 (g5w7_cloud_two n c hΔ hδ hδ')).2`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private lemma g5w7_var_one (n : ℕ) (c : ℝ) {Δ : ℝ} (u0 uk : ℝ) {δ δ' : ℕ → ℕ} (hΔ : 0 < Δ) (hδ : ∀ l, δ l ≤ 1)
     (hδ' : ∀ l, δ' l ≤ 1) (hu0 : 4 * ((n : ℝ) + 2) * Δ ≤ u0 - cloudV c Δ 0)
     (hq : ∀ e : ℕ → ℕ, (∀ l, e l ≤ 1) → ∀ l, l < n → 3 * Δ ≤ wordU c Δ e l - uk) (hz : u0 - uk ≠ 0) :
@@ -281,6 +404,21 @@ private lemma g5w7_var_one (n : ℕ) (c : ℝ) {Δ : ℝ} (u0 uk : ℝ) {δ δ' 
   have C := (abs_le.1 (g5w7_cloud_two n c hΔ hδ hδ')).2
   linarith
 
+/- English proof (translation)
+Introduce `k c Δ u0 uk δ δ' hk hΔ hδ hδ' hu0 halt`. Take `⟨n, rfl⟩ : ∃ n, k = n + 2` from `⟨k - 2, by omega⟩`. Establish `e2 : n + 2 - 2 = n` using `rfl`. Rewrite `halt` using `[e2]`. Establish `ek : ((n + 2 : ℕ) : ℝ) = (n : ℝ) + 2` using `by push_cast; ring`.
+
+Establish `hn : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Establish `mono` using `g5w7_nlog_mono (show n ≤ n + 2 by omega)`. Establish `nn` using `g5w7_nlog_nonneg n`. Establish `lg : 0 ≤ Real.log n` using `Real.log_natCast_nonneg n`. Distinguish the cases in `hz : u0 - uk = 0`.
+
+Rewrite using `[g5w7_colU_vand, g5w7_colU_vand, hz]`. Simplify using `only [mul_zero, zero_mul, Real.log_zero, sub_zero, abs_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hu0`, `halt` using `[ek]`. Establish `hq : ∀ e : ℕ → ℕ, (∀ l, e l ≤ 1) → ∀ l, l < n → 3 * Δ ≤ wordU c Δ e l - uk`.
+
+Introduce `e he l hl`. Establish `h1` using `indicator_value_mem_unit_interval he l`. Establish `h2` using `mul_le_mul_of_nonneg_right h1.2 hΔ.le`. Break down `halt with rfl | h` into its components or cases. Establish `h3` using `g5w7_gap hl`.
+
+Establish `h4` using `mul_le_mul_of_nonneg_left h3 hΔ.le`. Unfold `wordU cloudV`. Use the polynomial consequences of the given equalities and inequalities. Establish `h3` using `h l hl`. Establish `h4 : 0 ≤ (n : ℝ) * Δ` using `by positivity`.
+
+Unfold `wordU`. Use the polynomial consequences of the given equalities and inequalities. Establish `a1` using `g5w7_var_one n c u0 uk hΔ hδ hδ' hu0 hq hz`. Establish `a2` using `g5w7_var_one n c u0 uk hΔ hδ' hδ hu0 hq hz`. Establish `hb : 7 / 12 * (n : ℝ) * (1 + Real.log n) + 1 / 4 + (n : ℝ) / 3 ≤ ((n + 2 : ℕ) : ℝ) * (1 + Real.log ((n + 2 : ℕ) : ℝ)) + 2`.
+
+Establish `: (n : ℝ) / 3 ≤ 1 / 3 * ((n : ℝ) * (1 + Real.log n))` using `by nlinarith`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith`.
+-/
 theorem explicit_variation_bound : VandermondeVariationExplicit := by
   intro k c Δ u0 uk δ δ' hk hΔ hδ hδ' hu0 halt
   obtain ⟨n, rfl⟩ : ∃ n, k = n + 2 := ⟨k - 2, by omega⟩

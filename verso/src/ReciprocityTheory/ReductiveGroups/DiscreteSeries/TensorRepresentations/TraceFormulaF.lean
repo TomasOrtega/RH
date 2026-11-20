@@ -13,10 +13,26 @@ section TR
 
 variable {n : ℕ} {G : Type*} [Group G] [MeasurableSpace G] [MeasurableInv G] {μ : Measure G} [μ.IsInvInvariant]
 
+/- English proof (translation)
+Simplify using `only [RCLike.inner_apply, map_mul, Complex.conj_conj]`.
+-/
 theorem tf_inner_conj_conj (a b : ℂ) :
     inner ℂ (starRingEnd ℂ a) (starRingEnd ℂ b) = starRingEnd ℂ (inner ℂ a b) := by
   simp only [RCLike.inner_apply, map_mul, Complex.conj_conj]
 
+/- English proof (translation)
+Establish `hJs : ∀ x y, inner ℂ (J x) y = inner ℂ x (J y)`. Introduce `x y`. Simplify using `only [PiLp.inner_apply, hJ, inner_smul_left, inner_smul_right, Complex.conj_ofReal]`. Establish `hP : ∀ v ∈ HP, HP.starProjection v = v` using `fun v hv => Submodule.starProjection_eq_self_iff.2 hv`. Establish `hwm : ∀ c, w c ∈ HP` using `fun c => by`.
+
+Rewrite using `[hw c]`. Conclude with `HP.smul_mem _ (Submodule.starProjection_apply_mem HP _)`. Establish `k1 : ∀ g a b, inner ℂ (w a) (ρ g⁻¹ (u b)) = starRingEnd ℂ (inner ℂ (w b) (ρ g (u a)))`. Introduce `g a b`. Rewrite using `[inner_conj_symm, hw a, hw b, inner_smul_left, inner_smul_right, Complex.conj_ofReal]`.
+
+Use `congr 1`. Combine the equalities or inequalities in the displayed calculation. Establish `k2 : ∀ g a b, inner ℂ (w a) (ρ g⁻¹ (w b)) = starRingEnd ℂ (inner ℂ (w b) (ρ g (w a)))`. Introduce `g a b`. Rewrite using `[inner_conj_symm, hadj]`.
+
+Rewrite using `[MeasureTheory.L2.inner_def, MeasureTheory.L2.inner_def, ← integral_conj]`. Establish `e1 : ∫ g, inner ℂ ((u c c' : Lp ℂ 2 μ) g) ((w c c' : Lp ℂ 2 μ) g) ∂μ = ∫ g, inner ℂ (inner ℂ (w c') (ρ g (u c))) (inner ℂ (w c') (ρ g (w c))) ∂μ`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hrep _ (hu c) c', hrep _ (hwm c) c'] with g h1 h2`. Rewrite using `[h1, h2]`.
+
+Establish `e2 : ∫ g, starRingEnd ℂ (inner ℂ ((u c' c : Lp ℂ 2 μ) g) ((w c' c : Lp ℂ 2 μ) g)) ∂μ = ∫ g, starRingEnd ℂ (inner ℂ (inner ℂ (w c) (ρ g (u c'))) (inner ℂ (w c) (ρ g (w c')))) ∂μ`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hrep _ (hu c') c, hrep _ (hwm c') c] with g h1 h2`. Rewrite using `[h1, h2]`. Rewrite using `[e1, e2, ← integral_inv_eq_self _ μ]`.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[k1, k2, tf_inner_conj_conj]`.
+-/
 theorem tf_tr_swap (ρ : G → (PiLp 2 (fun _ : Fin n => Lp ℂ 2 μ) →L[ℂ] PiLp 2 (fun _ : Fin n => Lp ℂ 2 μ)))
     (hadj : ∀ g x y, inner ℂ (ρ g x) y = inner ℂ x (ρ g⁻¹ y))
     (J : PiLp 2 (fun _ : Fin n => Lp ℂ 2 μ) →L[ℂ] PiLp 2 (fun _ : Fin n => Lp ℂ 2 μ)) (s : Fin n → ℝ)
@@ -71,6 +87,11 @@ section Core
 
 variable {n : ℕ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
+/- English proof (translation)
+Rewrite using `[tset_mem]`. Introduce `i`. Distinguish the cases in `h : i = c`. Substitute `h` using the available equality. Simplify using `using S.smul_mem a hy`.
+
+Simplify using `[h]`.
+-/
 theorem tf_single_smul_mem {D : Submodule ℂ H} {S : Submodule ℂ D} (c : Fin n) (a : ℂ) {y : D} (hy : y ∈ S) :
     (Pi.single c (a • y) : Fin n → D) ∈ tensSub S := by
   rw [tset_mem]
@@ -79,6 +100,9 @@ theorem tf_single_smul_mem {D : Submodule ℂ H} {S : Submodule ℂ D} (c : Fin 
   · subst h; simpa using S.smul_mem a hy
   · simp [h]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = c`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+-/
 theorem tf_coe_single {D : Submodule ℂ H} (c : Fin n) (a : ℂ) (y : D) :
     (fun i => (((Pi.single c (a • y) : Fin n → D) i : D) : H)) = Pi.single c (a • (y : H)) := by
   funext i
@@ -86,6 +110,9 @@ theorem tf_coe_single {D : Submodule ℂ H} (c : Fin n) (a : ℂ) (y : D) :
   · subst h; simp
   · simp [h]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = c`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+-/
 theorem tf_coe_single' {D : Submodule ℂ H} (c : Fin n) (y : D) :
     (fun i => (((Pi.single c y : Fin n → D) i : D) : H)) = Pi.single c (y : H) := by
   funext i
@@ -93,6 +120,9 @@ theorem tf_coe_single' {D : Submodule ℂ H} (c : Fin n) (y : D) :
   · subst h; simp
   · simp [h]
 
+/- English proof (translation)
+Establish `h` using `((coef_embed dual hσ hD hsm hgap hV hc hVK hW _ (tf_single_smul_mem c (tfSgn ε c) hy) f hf).1).2 []`. Rewrite `h` using `[tf_coe_single]`. Conclude with `h`.
+-/
 theorem tf_ph_memLp (dual : Bool) {lam : Fin n → ℝ} [CompleteSpace H] {ε : Fin n → Bool}
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ D}
     (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) (hsm : ∀ v : D, IsSmoothVecU ε σ v)
@@ -109,6 +139,9 @@ theorem tf_ph_memLp (dual : Bool) {lam : Fin n → ℝ} [CompleteSpace H] {ε : 
   rw [tf_coe_single] at h
   exact h
 
+/- English proof (translation)
+Use `vectorL2_ext fun c => ?_` and prove the remaining obligations. Rewrite using `[tfRdiag_apply, tfPh_apply, tfPh_apply, rightRegular_toL2 ε _ hh]`. Use `toL2_congr_of_eq_on_UJset fun x hx => ?_` and prove the remaining obligations. Simplify using `only [coefMap]`. Rewrite using `[tf_tensGrp_mul dual hσ hx hh]`.
+-/
 theorem tfRdiag_tfPh (dual : Bool) {ε : Fin n → Bool} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
     (hσ : IsURepOn (UJset ε) σ) {h : Matrix (Fin n) (Fin n) ℂ} (hh : h ∈ UJset ε) (y : H) (ζ : Fin n → H) :
     tfRdiag ε h (tfPh dual ε σ y ζ) = tfPh dual ε σ y (tensGrp dual σ h ζ) := by
@@ -118,12 +151,18 @@ theorem tfRdiag_tfPh (dual : Bool) {ε : Fin n → Bool} {σ : Matrix (Fin n) (F
   simp only [coefMap]
   rw [tf_tensGrp_mul dual hσ hx hh]
 
+/- English proof (translation)
+Simplify using `only [PiLp.inner_apply, tfJ_apply, inner_smul_left, inner_smul_right]`. Use `sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `tf_star_sgn ε i`.
+-/
 theorem tfJ_inner (ε : Fin n → Bool) (x x' : tfL2n ε) : inner ℂ (tfJ ε x) x' = inner ℂ x (tfJ ε x') := by
   simp only [PiLp.inner_apply, tfJ_apply, inner_smul_left, inner_smul_right]
   refine sum_congr rfl fun i _ => ?_
   congr 1
   exact tf_star_sgn ε i
 
+/- English proof (translation)
+Simplify using `only [tfFormBH, Pi.sub_apply, inner_sub_left, mul_sub, sum_sub_distrib]`.
+-/
 theorem tfFormBH_sub_left (ε : Fin n → Bool) (f f' g : Fin n → H) :
     tfFormBH ε (f - f') g = tfFormBH ε f g - tfFormBH ε f' g := by
   simp only [tfFormBH, Pi.sub_apply, inner_sub_left, mul_sub, sum_sub_distrib]

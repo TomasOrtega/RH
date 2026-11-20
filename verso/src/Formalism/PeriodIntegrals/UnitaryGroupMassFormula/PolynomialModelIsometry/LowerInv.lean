@@ -9,18 +9,33 @@ open scoped InnerProductSpace
 
 def lowerInv_e (r : ℝ) : ℂ := Complex.exp ((r : ℂ) * Complex.I)
 
+/- English proof (translation)
+Unfold `lowerInv_e`. Rewrite using `[← Complex.exp_nat_mul, ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma lowerInv_e_mul_pow (r s : ℝ) (m : ℕ) :
     lowerInv_e r * lowerInv_e s ^ m = lowerInv_e (r + m * s) := by
   unfold lowerInv_e
   rw [← Complex.exp_nat_mul, ← Complex.exp_add]
   congr 1; push_cast; ring
 
+/- English proof (translation)
+Unfold `lowerInv_e`. Rewrite using `[← Complex.exp_conj]`. Use `congr 1`. Simplify using `[Complex.conj_ofReal]`.
+-/
 lemma lowerInv_conj_e (r : ℝ) : (starRingEnd ℂ) (lowerInv_e r) = lowerInv_e (-r) := by
   unfold lowerInv_e
   rw [← Complex.exp_conj]
   congr 1
   simp [Complex.conj_ofReal]
 
+/- English proof (translation)
+Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C r => exact ⟨Polynomial.C r, fun c => by simp [evM]⟩`. Consider the case `add p q hp hq`. Take `⟨p1, h1⟩` from `hp`. Take `⟨q1, h2⟩` from `hq`.
+
+Use `⟨p1 + q1, fun c => ?_⟩` and prove the remaining obligations. Establish `e : evM (A + c • B) (p + q) = evM (A + c • B) p + evM (A + c • B) q`. Simplify using `[evM]`. Rewrite using `[e, h1, h2, Polynomial.eval_add]`. Consider the case `mul_X p i hp`.
+
+Take `⟨p1, h1⟩` from `hp`. Use `⟨p1 * (Polynomial.C (A i.1 i.2) + Polynomial.C (B i.1 i.2) * Polynomial.X), fun c => ?_⟩` and prove the remaining obligations. Establish `e : evM (A + c • B) (p * X i) = evM (A + c • B) p * (A i.1 i.2 + c * B i.1 i.2)`. Simplify using `[evM]`. Rewrite using `[e, h1, Polynomial.eval_mul, Polynomial.eval_add, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_C, Polynomial.eval_X]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma lowerInv_evM_affine {N : ℕ} (A B : Matrix (Fin N) (Fin N) ℂ)
     (Q : MvPolynomial (Fin N × Fin N) ℂ) :
     ∃ p : Polynomial ℂ, ∀ c : ℂ, evM (A + c • B) Q = p.eval c := by
@@ -42,6 +57,11 @@ lemma lowerInv_evM_affine {N : ℕ} (A B : Matrix (Fin N) (Fin N) ℂ)
       Polynomial.eval_C, Polynomial.eval_X]
     ring
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff, torus, Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.star_apply, Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq, Complex.norm_exp_ofReal_mul_I]`.
+
+Simplify using the standard rewrite rules. Simplify using `[Jm, allPos]`.
+-/
 lemma lowerInv_torus_mem {N : ℕ} (θ : Fin N → ℝ) : torus θ ∈ Kset (allPos N) := by
   refine ⟨?_, ?_⟩
   · rw [Matrix.mem_unitaryGroup_iff, torus, Matrix.star_eq_conjTranspose,
@@ -53,6 +73,11 @@ lemma lowerInv_torus_mem {N : ℕ} (θ : Fin N → ℝ) : torus θ ∈ Kset (all
     simp
   · simp [Jm, allPos]
 
+/- English proof (translation)
+Unfold `torus`. Rewrite using `[Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[← Complex.exp_add]`.
+
+Use `congr 1`. Move the coercions through the operations in `[Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma lowerInv_torus_mul {N : ℕ} (θ φ : Fin N → ℝ) : torus θ * torus φ = torus (θ + φ) := by
   unfold torus
   rw [Matrix.diagonal_mul_diagonal]
@@ -63,6 +88,9 @@ lemma lowerInv_torus_mul {N : ℕ} (θ φ : Fin N → ℝ) : torus θ * torus φ
   push_cast [Pi.add_apply]
   ring
 
+/- English proof (translation)
+Unfold `torus`. Rewrite using `[← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+-/
 lemma lowerInv_torus_zero {N : ℕ} : torus (0 : Fin N → ℝ) = 1 := by
   unfold torus
   rw [← Matrix.diagonal_one]
@@ -70,11 +98,23 @@ lemma lowerInv_torus_zero {N : ℕ} : torus (0 : Fin N → ℝ) = 1 := by
   funext i
   simp
 
+/- English proof (translation)
+Unfold `torus`. Rewrite using `[Matrix.det_diagonal]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun i _ => Complex.exp_ne_zero _`.
+-/
 lemma lowerInv_det_ne {N : ℕ} (θ : Fin N → ℝ) : (torus θ).det ≠ 0 := by
   unfold torus
   rw [Matrix.det_diagonal]
   exact Finset.prod_ne_zero_iff.mpr fun i _ => Complex.exp_ne_zero _
 
+/- English proof (translation)
+Establish `key : Complex.exp ((θ b : ℂ) * Complex.I) * lowerInv_e (θ a - θ b) = Complex.exp ((θ a : ℂ) * Complex.I)`. Unfold `lowerInv_e`. Rewrite using `[← Complex.exp_add]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Use extensionality with `i j`. Simplify using `only [torus, Matrix.add_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.single_apply]`. Distinguish the cases in `h : b = i ∧ a = j`. Take `⟨rfl, rfl⟩` from `h`.
+
+Simplify using `only [and_self, if_true]`. Rewrite using `[Matrix.one_apply_ne (ne_of_gt hab), ← key]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [if_neg h, add_zero]`. Distinguish the cases in `hij : i = j`.
+
+Substitute `hij` using the available equality. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Matrix.one_apply_ne hij]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma lowerInv_comm {N : ℕ} {a b : Fin N} (hab : a < b) (θ : Fin N → ℝ) (c : ℂ) :
     (1 + Matrix.single b a c) * torus θ =
       torus θ * (1 + Matrix.single b a (c * lowerInv_e (θ a - θ b))) := by
@@ -98,11 +138,19 @@ section
 variable {N : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {σ : Matrix (Fin N) (Fin N) ℂ → (H →L[ℂ] H)}
 
+/- English proof (translation)
+Set `L : H →ₗᵢ[ℂ] H` to `{ toLinearMap := (σ g).toLinearMap, norm_map' := fun v => hU.2.1 g hg v }`. Conclude with `L.inner_map_map u w`.
+-/
 lemma lowerInv_inner_pres (hU : IsURepOn (Kset (allPos N)) σ) {g : Matrix (Fin N) (Fin N) ℂ}
     (hg : g ∈ Kset (allPos N)) (u w : H) : ⟪σ g u, σ g w⟫_ℂ = ⟪u, w⟫_ℂ := by
   let L : H →ₗᵢ[ℂ] H := { toLinearMap := (σ g).toLinearMap, norm_map' := fun v => hU.2.1 g hg v }
   exact L.inner_map_map u w
 
+/- English proof (translation)
+Establish `h1 : σ (torus θ) (σ (torus (-θ)) y) = y`. Establish `h` using `hU.1.2 (torus θ) (lowerInv_torus_mem θ) (torus (-θ)) (lowerInv_torus_mem (-θ))`. Rewrite `h` using `[lowerInv_torus_mul, add_neg_cancel, lowerInv_torus_zero, hU.1.1]`. Establish `h'` using `congrArg (fun f : H →L[ℂ] H => f y) h`. Simplify using `using h'.symm`.
+
+Rewrite using `[← lowerInv_inner_pres hU (lowerInv_torus_mem θ) (σ (torus (-θ)) y) w, h1]`.
+-/
 lemma lowerInv_adj (hU : IsURepOn (Kset (allPos N)) σ) (θ : Fin N → ℝ) (y w : H) :
     ⟪y, σ (torus θ) w⟫_ℂ = ⟪σ (torus (-θ)) y, w⟫_ℂ := by
   have h1 : σ (torus θ) (σ (torus (-θ)) y) = y := by
@@ -114,6 +162,19 @@ lemma lowerInv_adj (hU : IsURepOn (Kset (allPos N)) σ) (θ : Fin N → ℝ) (y 
 
 end
 
+/- English proof (translation)
+Introduce and unpack `⟨cc, hcc, heq⟩`. Set `L : (Fin N → ℝ) →ₗ[ℝ] ℝ` to `∑ x : Fin N, ((x : ℕ) : ℝ) • LinearMap.proj x`. Establish `hL : ∀ v, L v = ∑ x : Fin N, ((x : ℕ) : ℝ) * v x`. Introduce `v`. Simplify using `[L, LinearMap.sum_apply]`.
+
+Establish `hroot : ∀ x y : Fin N, L (root x y) = ((x : ℕ) : ℝ) - ((y : ℕ) : ℝ)`. Introduce `x y`. Rewrite using `[hL]`. Simplify using `[root, Pi.single_apply, mul_sub, Finset.sum_sub_distrib]`. Establish `h1` using `congrArg L heq`.
+
+Simplify using `only [map_sum, map_smul, hroot] at h1`. Establish `lhs : L (Λ - (Λ + (m : ℝ) • root a b)) = (m : ℝ) * (((b : ℕ) : ℝ) - ((a : ℕ) : ℝ))`. Rewrite using `[sub_add_cancel_left, map_neg, map_smul, hroot, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[lhs]`.
+
+Establish `hle : ∑ x, ∑ y, (cc x y : ℝ) • (((x : ℕ) : ℝ) - ((y : ℕ) : ℝ)) ≤ 0` using `Finset.sum_nonpos fun x _ => Finset.sum_nonpos fun y _ => by`. Distinguish the cases in `h : cc x y = 0`. Simplify using `[h]`. Establish `hxy : (x : ℕ) < y` using `(hcc x y h).1`. Rewrite using `[smul_eq_mul]`.
+
+Apply `mul_nonpos_of_nonneg_of_nonpos (by positivity)` to reduce the goal to its premises. Rewrite using `[sub_nonpos]`. Conclude with `hxy.le` after adjusting the coercions. Establish `hpos : 0 < (m : ℝ) * (((b : ℕ) : ℝ) - ((a : ℕ) : ℝ))`. Apply `mul_pos (by exact_mod_cast hm)` to reduce the goal to its premises.
+
+Rewrite using `[sub_pos]`. Conclude with `hab` after adjusting the coercions. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma lowerInv_not_cdom {N : ℕ} {Λ : Fin N → ℝ} {a b : Fin N} (hab : a < b) {m : ℕ} (hm : 1 ≤ m) :
     ¬ CDom (allPos N) (Λ + (m : ℝ) • root a b) Λ := by
   rintro ⟨cc, hcc, heq⟩
@@ -142,6 +203,11 @@ lemma lowerInv_not_cdom {N : ℕ} {Λ : Fin N → ℝ} {a b : Fin N} (hab : a < 
     rw [sub_pos]; exact_mod_cast hab
   linarith
 
+/- English proof (translation)
+Establish `hq : q = Polynomial.C D * p.comp (Polynomial.C u * Polynomial.X)`. Apply `Polynomial.funext` to reduce the goal to its premises. Introduce `c`. Rewrite using `[h, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_comp, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_X, mul_comm u c]`. Rewrite using `[hq, Polynomial.coeff_C_mul, Polynomial.comp_C_mul_X_coeff]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma lowerInv_coeff_scale (p q : Polynomial ℂ) (D u : ℂ) (h : ∀ c, q.eval c = D * p.eval (c * u))
     (m : ℕ) : q.coeff m = D * u ^ m * p.coeff m := by
   have hq : q = Polynomial.C D * p.comp (Polynomial.C u * Polynomial.X) := by
@@ -152,6 +218,43 @@ lemma lowerInv_coeff_scale (p q : Polynomial ℂ) (D u : ℂ) (h : ∀ c, q.eval
   rw [hq, Polynomial.coeff_C_mul, Polynomial.comp_C_mul_X_coeff]
   ring
 
+/- English proof (translation)
+Introduce `N Λ H _ _ σ S K P hU hKT hP hPσ v0 hv0 a b hab c x`. Establish `: FiniteDimensional ℂ S` using `hKT.1`. Establish `hex : ∀ y : S, ∃ p : Polynomial ℂ, ∀ c : ℂ, p.eval c = ⟪v0, P (1 + Matrix.single b a c) y⟫_ℂ`. Introduce `y`. Take `⟨Q, hQ⟩` from `hP.poly y v0`.
+
+Take `⟨p, hp⟩` from `lowerInv_evM_affine 1 (Matrix.single b a 1) Q`. Use `⟨p, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[← hp c, hQ, Matrix.smul_single, smul_eq_mul, mul_one]`. Use `choose pp hpp using hex`. Establish `hadd : ∀ y z : S, pp (y + z) = pp y + pp z` using `fun y z => Polynomial.funext fun c => by`.
+
+Rewrite using `[Polynomial.eval_add, hpp, hpp, hpp, map_add, inner_add_right]`. Establish `hsmul : ∀ (r : ℂ) (y : S), pp (r • y) = Polynomial.C r * pp y` using `fun r y => Polynomial.funext fun c => by`. Rewrite using `[Polynomial.eval_mul, Polynomial.eval_C, hpp, hpp, map_smul, inner_smul_right]`. Set `ψ : ℕ → S →ₗ[ℂ] ℂ` to `fun m => { toFun := fun y => (pp y).coeff m map_add' := fun y z => by simp only [hadd, Polynomial.coeff_add] map_smul' := fun r y => by`. Simplify using `only [hsmul, Polynomial.coeff_C_mul, smul_eq_mul, RingHom.id_apply] }`.
+
+Establish `hψ_apply : ∀ m (y : S), ψ m y = (pp y).coeff m` using `fun _ _ => rfl`. Establish `hstab : ∀ θ (y : S), σ (torus θ) (y : H) ∈ S` using `fun θ y => hKT.2.1 _ (lowerInv_torus_mem θ) _ y.2`. Establish `hv0eig : ∀ (θ : Fin N → ℝ) (w : H), ⟪(v0 : H), σ (torus θ) w⟫_ℂ = lowerInv_e (∑ i, Λ i * θ i) * ⟪(v0 : H), w⟫_ℂ`. Introduce `θ w`. Establish `hw : σ (torus (-θ)) (v0 : H) = Complex.exp (((∑ i, Λ i * (-θ) i : ℝ) : ℂ) * Complex.I) • (v0 : H)` using `hv0 (-θ) (lowerInv_torus_mem (-θ))`.
+
+Rewrite using `[lowerInv_adj hU θ, hw, inner_smul_left]`. Use `lowerInv_conj_e (∑ i, Λ i * (-θ) i)` as an intermediate fact. Unfold `lowerInv_e at this ⊢`. Rewrite using `[this]`. Use `congr 3`.
+
+Simplify using `[Finset.sum_neg_distrib]`. Establish `hv0P : ∀ θ (y : S), ⟪v0, P (torus θ) y⟫_ℂ = (torus θ).det ^ K * lowerInv_e (∑ i, Λ i * θ i) * ⟪v0, y⟫_ℂ`. Introduce `θ y`. Rewrite using `[Submodule.coe_inner, hPσ _ (lowerInv_torus_mem θ), inner_smul_right, hv0eig, Submodule.coe_inner, mul_assoc]`. Establish `hrel : ∀ θ (y : S) (c : ℂ), (pp (P (torus θ) y)).eval c = ((torus θ).det ^ K * lowerInv_e (∑ i, Λ i * θ i)) * (pp y).eval (c * lowerInv_e (θ a - θ b))`.
+
+Introduce `θ y c`. Rewrite using `[hpp, hpp, ← LinearMap.comp_apply, ← hP.mul, lowerInv_comm hab, hP.mul, LinearMap.comp_apply, hv0P]`. Establish `hψ : ∀ m, 1 ≤ m → ψ m = 0`. Introduce `m hm`. Set `y : S` to `(InnerProductSpace.toDual ℂ S).symm (LinearMap.toContinuousLinearMap (ψ m))`.
+
+Establish `hyx : ∀ z : S, ⟪y, z⟫_ℂ = ψ m z` using `fun z => by`. Rewrite using `[InnerProductSpace.toDual_symm_apply]`. Both sides reduce to the same expression. Establish `hsc : ∀ θ (z : S), ψ m (P (torus θ) z) = (torus θ).det ^ K * lowerInv_e (∑ i, Λ i * θ i) * lowerInv_e (θ a - θ b) ^ m * ψ m z` using `fun θ z => by`. Rewrite using `[hψ_apply, hψ_apply, lowerInv_coeff_scale _ _ _ _ (hrel θ z) m]`.
+
+Establish `hwt : IsWtOn (Kset (allPos N)) σ (Λ + (m : ℝ) • root a b) (y : H)`. Introduce `θ _`. Use `show σ (torus θ) (y : H) = _`. Establish `key : ∀ z : S, ⟪σ (torus θ) (y : H), (z : H)⟫_ℂ = lowerInv_e (∑ i, Λ i * (-θ) i) * lowerInv_e ((-θ) a - (-θ) b) ^ m * ⟪(y : H), (z : H)⟫_ℂ`. Introduce `z`.
+
+Establish `h1` using `hsc (-θ) z`. Rewrite `h1` using `[← hyx, ← hyx, Submodule.coe_inner, Submodule.coe_inner, hPσ _ (lowerInv_torus_mem _), inner_smul_right, lowerInv_adj hU, neg_neg, mul_assoc ((torus (-θ)).det ^ K), mul_assoc ((torus (-θ)).det ^ K)]`. Conclude with `mul_left_cancel₀ (pow_ne_zero _ (lowerInv_det_ne (-θ))) h1`. Establish `hE : lowerInv_e (∑ i, Λ i * (-θ) i) * lowerInv_e ((-θ) a - (-θ) b) ^ m = (starRingEnd ℂ) (Complex.exp (((∑ i, (Λ + (m : ℝ) • root a b) i * θ i : ℝ) : ℂ) * Complex.I))`. Rewrite using `[lowerInv_e_mul_pow]`.
+
+Use `lowerInv_conj_e (∑ i, (Λ + (m : ℝ) • root a b) i * θ i)` as an intermediate fact. Unfold `lowerInv_e at this ⊢`. Rewrite using `[this]`. Use `congr 3`. Simplify using `only [Pi.add_apply, Pi.smul_apply, Pi.neg_apply, smul_eq_mul, root, Pi.sub_apply, add_mul, Finset.sum_add_distrib, mul_sub, sub_mul, Finset.sum_sub_distrib, Pi.single_apply, mul_ite, ite_mul, mul_one, mul_zero, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true, mul_neg, Fins …`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `set ev := Complex.exp (((∑ i, (Λ + (m : ℝ) • root a b) i * θ i : ℝ) : ℂ) * Complex.I)`. Set `w : S` to `⟨σ (torus θ) (y : H), hstab θ y⟩ - ev • y`. Establish `hw0 : ∀ z : S, ⟪w, z⟫_ℂ = 0`. Introduce `z`.
+
+Rewrite using `[inner_sub_left, inner_smul_left, Submodule.coe_inner, Submodule.coe_inner]`. Use `show ⟪σ (torus θ) (y : H), (z : H)⟫_ℂ - _ = 0`. Rewrite using `[key, hE, sub_self]`. Establish `hw : w = 0` using `inner_self_eq_zero.mp (hw0 w)`. Use `congrArg (fun u : S => (u : H)) hw` as an intermediate fact.
+
+Simplify using `only [w, Submodule.coe_sub, Submodule.coe_smul, ZeroMemClass.coe_zero] at this`. Conclude with `sub_eq_zero.mp this`. Assume the negation of the conclusion as `hne`. Establish `hy0 : (y : H) ≠ 0`. Introduce `h0`.
+
+Apply `hne` to reduce the goal to its premises. Use extensionality with `z`. Rewrite using `[← hyx, Submodule.coe_inner, h0, inner_zero_left]`. Both sides reduce to the same expression. Conclude with `lowerInv_not_cdom hab hm (hKT.2.2.2.2 _ (y : H) y.2 hy0 hwt)`.
+
+Establish `hconst : pp x = Polynomial.C ((pp x).coeff 0)`. Use extensionality with `m`. Break down `Nat.eq_zero_or_pos m with rfl | hm` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[Polynomial.coeff_C, if_neg (by omega)]`.
+
+Use `LinearMap.congr_fun (hψ m hm) x` as an intermediate fact. Rewrite `this` using `[hψ_apply]`. Simplify using `using this`. Establish `h0` using `hpp x 0`. Rewrite `h0` using `[Matrix.single_zero, add_zero, hP.one, LinearMap.id_apply]`.
+
+Rewrite using `[← hpp, hconst, Polynomial.eval_C]`. Rewrite `h0` using `[hconst, Polynomial.eval_C]`. Conclude with `h0`.
+-/
 theorem lower_triangular_invariance : LowerInv := by
   intro N Λ H _ _ σ S K P hU hKT hP hPσ v0 hv0 a b hab c x
   have : FiniteDimensional ℂ S := hKT.1

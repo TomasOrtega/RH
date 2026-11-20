@@ -16,6 +16,11 @@ open GlobalTheory.CompanionTheory.KoszulCount
 
 namespace GlobalTheory.CompanionTheory.KoszulCount
 
+/- English proof (translation)
+Introduce `Y x`. Establish `hsm : Smooth Y.str` using `SmoothOfRelativeDimension.smooth Y.dim Y.str`. Use `haveI hAr : IsRegularRing (Y.X.presheaf.stalk x) := ExtendRig.isRegularRing_stalk isRegularRing_of_smooth ℂ Y.str x`. Use `⟨IsRegularLocalRing.of_isRegularRing_of_isLocalRing _, ?_⟩` and prove the remaining obligations. Take `⟨U, hU, hx, -⟩` from `Opens.isBasis_iff_nbhd.1 Y.X.isBasis_affineOpens (Opens.mem_top x)`.
+
+Establish `hdim : ringKrullDim Γ(Y.X, U) = Y.dim` using `SmoothDim.ringKrullDim_affineOpen ℂ _ Y.str _ inferInstance U hU ⟨x, hx⟩`. Use `letI : Algebra Γ(Y.X, U) (Y.X.presheaf.stalk x) := (Y.X.presheaf.germ U x hx).hom.toAlgebra`. Use `haveI := hU.isLocalization_stalk ⟨x, hx⟩`. Rewrite using `[← hdim, IsLocalization.AtPrime.ringKrullDim_eq_height (hU.primeIdealOf ⟨x, hx⟩).asIdeal (Y.X.presheaf.stalk x)]`. Conclude with `Ideal.height_le_ringKrullDim_of_ne_top Ideal.IsPrime.ne_top'`.
+-/
 theorem stalk_isRegularLocalRing_and_ringKrullDim_le :
     ∀ (Y : Var ℂ) (x : Y.X), IsRegularLocalRing (Y.X.presheaf.stalk x) ∧
       ringKrullDim (Y.X.presheaf.stalk x) ≤ Y.dim := by

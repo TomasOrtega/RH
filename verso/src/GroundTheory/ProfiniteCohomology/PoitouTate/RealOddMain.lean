@@ -23,6 +23,9 @@ variable {K : FiniteSubfield} (S : Set (HeightOneSpectrum (𝓞 K.1))) [Fintype 
 
 include hM in
 
+/- English proof (translation)
+The claim follows from `(gsOddTatePoitouTateHypotheses S ιr ιs hS hodd).nineTerm M hM`.
+-/
 theorem poitouTateReal_nineTerm_of_odd :
     Function.Injective (ptTGlobalToLocalHat (gsFinFamily S ιs) (gsRealFamily S ιr) M) ∧
     Function.Exact (ptTGlobalToLocalHat (gsFinFamily S ιs) (gsRealFamily S ιr) M)
@@ -58,6 +61,9 @@ theorem poitouTateReal_nineTerm_of_odd :
 
 include hM in
 
+/- English proof (translation)
+The claim follows from `(gsOddTatePoitouTateHypotheses S ιr ιs hS hodd).sha M hM`.
+-/
 theorem poitouTateReal_sha_of_odd :
     Finite (ptTSha (gsFinFamily S ιs) (gsRealFamily S ιr) M 1) ∧
       Finite (ptTSha (gsFinFamily S ιs) (gsRealFamily S ιr) (dualRep (gsRoots S N) M) 2) ∧
@@ -69,6 +75,11 @@ theorem poitouTateReal_sha_of_odd :
 
 include ιs hS hodd hM in
 
+/- English proof (translation)
+Use `(injective_iff_map_eq_zero _).2 fun x hx => ?_` and prove the remaining obligations. Establish `h0 : (ptTGlobalToLocal (gsFinFamily S ιs) (gsRealFamily S ιr) M 3).hom x = 0`. Use `(ptTGlobalToLocal_apply _ _ M 3 x).trans (Prod.ext (funext fun v => ?_) (funext fun w => ?_))` and prove the remaining obligations. Conclude with `(subsingleton_cohomology_gsFinFamily_of_three_le S ιs (NeZero.ne N) M hM v le_rfl).elim _ _`. Conclude with `congrFun hx w`.
+
+Conclude with `(gsOddTatePoitouTateHypotheses S ιr ιs hS hodd).injective_ptTGlobalToLocal_three M hM (h0.trans (map_zero _).symm)`.
+-/
 theorem injective_gsRealRes_three_of_odd : Function.Injective (gsRealRes S ιr M 3).hom := by
   refine (injective_iff_map_eq_zero _).2 fun x hx => ?_
   have h0 : (ptTGlobalToLocal (gsFinFamily S ιs) (gsRealFamily S ιr) M 3).hom x = 0 := by
@@ -80,6 +91,11 @@ theorem injective_gsRealRes_three_of_odd : Function.Injective (gsRealRes S ιr M
 
 include ιs hS hodd hM in
 
+/- English proof (translation)
+Use `⟨?_, surjective_gsRealRes_of_three_le S ιr (NeZero.ne N) hS M hM hr⟩` and prove the remaining obligations. Break down `r with _ | _ | _ | _ | r` into its components or cases. Conclude with `absurd hr (by norm_num)`. Conclude with `absurd hr (by norm_num)`. Conclude with `absurd hr (by norm_num)`.
+
+Conclude with `injective_gsRealRes_three_of_odd S ιr ιs hS hodd M hM`. Conclude with `injective_gsRealRes_of_four_le S ιr (NeZero.ne N) hS M hM (by omega)`.
+-/
 theorem bijective_gsRealRes_of_odd {r : ℕ} (hr : 3 ≤ r) : Function.Bijective (gsRealRes S ιr M r).hom := by
   refine ⟨?_, surjective_gsRealRes_of_three_le S ιr (NeZero.ne N) hS M hM hr⟩
   rcases r with _ | _ | _ | _ | r

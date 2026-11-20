@@ -9,5 +9,8 @@ open NumberField GlobalTheory.QFam GlobalTheory.WpFam GlobalTheory.LatVal Recipr
 open GlobalTheory.CMVal GlobalTheory.HeckeGal
 open ModularForm (E₄ E₆)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.WpInt.main | exact GlobalTheory.WpInt.main | (intros; apply GlobalTheory.WpInt.main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isIntegral_weierstrassP_torsion_integral_j : ∀ (N : ℕ) [NeZero N] (τ : ℍ) (ω : ℂ), IsIntegral ℤ (jT τ) → ω ^ 12 = DD τ → ∀ x : Fin 2 → ZMod N, IsIntegral ℤ (12 * (N : ℂ) ^ 2 * wp N x τ / ω ^ 2) ∧ IsIntegral ℤ ((N : ℂ) ^ 3 * wpd N x τ / ω ^ 3) := by
   first | exact @GlobalTheory.WpInt.main | exact GlobalTheory.WpInt.main | (intros; apply GlobalTheory.WpInt.main <;> assumption)

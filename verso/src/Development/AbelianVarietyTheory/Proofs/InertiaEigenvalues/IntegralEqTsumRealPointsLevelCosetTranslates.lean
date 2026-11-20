@@ -14,6 +14,11 @@ namespace GlobalTheory.CosetSum
 
 open GlobalTheory.AutMult
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, k, hk, rfl⟩`. Establish `h1 : toFin W u = 1` using `toFin_coe_inf (V := W) ⟨u, hu⟩`. Establish `h2 : toFin W k = ⟨k, hK hk⟩` using `toFin_coe (V := W) ⟨k, hK hk⟩`. Rewrite using `[map_mul, h1, h2, one_mul, Subgroup.mem_subgroupOf]`.
+
+Conclude with `hk`. Introduce `h'`. Conclude with `⟨toInf W h, (toInf W h).2, toFin W h, (Subgroup.mem_subgroupOf).1 h', (toInf_mul_toFin h).symm⟩`.
+-/
 theorem mem_realLevSet_iff {D : D7} {W : HSp D} {K : Subgroup (GA D W)} (hK : K ≤ GfC W) (h : GA D W) :
     (∃ u ∈ GinfC W, ∃ k ∈ K, h = u * k) ↔ toFin W h ∈ K.subgroupOf (GfC W) := by
   constructor
@@ -25,6 +30,25 @@ theorem mem_realLevSet_iff {D : D7} {W : HSp D} {K : Subgroup (GA D W)} (hK : K 
   · intro h'
     exact ⟨toInf W h, (toInf W h).2, toFin W h, (Subgroup.mem_subgroupOf).1 h', (toInf_mul_toFin h).symm⟩
 
+/- English proof (translation)
+Introduce `D W ν K hν hKf hKo Φ hΦ`. Take `⟨i0, -, i2, -, i4, -⟩` from `GlobalTheory.Ker.CongTop.adelicUnitary_top_cong D W`. Use `haveI := i0`. Use `haveI := i2`. Use `haveI := i4`.
+
+Use `set K' := K.subgroupOf (GfC W) with hK'`. Use `set C : Set (GA D W) := {h : GA D W | ∃ u ∈ GinfC W, ∃ k ∈ K, h = u * k} with hCdef`. Establish `hK'o : IsOpen (K' : Set (GfC W))` using `hKo`. Establish `hC : C = toFin W ⁻¹' (K' : Set (GfC W))` using `Set.ext fun h => mem_realLevSet_iff hKf h`. Establish `hCo : IsOpen C` using `hC ▸ hK'o.preimage (continuous_toFin W)`.
+
+Establish `hCm : MeasurableSet C` using `hCo.measurableSet`. Use `⟨hCm, ?_⟩` and prove the remaining obligations. Set `s : GfC W ⧸ K' → Set (GA D W)` to `fun q => (fun g => ((Quotient.out q : GfC W) : GA D W)⁻¹ * g) ⁻¹' C`. Establish `hmem : ∀ q g, g ∈ s q ↔ q = QuotientGroup.mk (toFin W g)`. Introduce `q g`.
+
+Use `show _ ∈ C ↔ _`. Rewrite using `[hC, Set.mem_preimage, map_mul, map_inv, toFin_coe, SetLike.mem_coe]`. Use `conv_rhs => rw [← QuotientGroup.out_eq' q]`. Rewrite using `[QuotientGroup.eq]`. Establish `hsm : ∀ q, MeasurableSet (s q)` using `fun q => (measurable_const_mul _) hCm`.
+
+Establish `hd : Pairwise (Function.onFun Disjoint s)`. Introduce `q q' hne`. Conclude with `Set.disjoint_left.2 fun g h1 h2 => hne (((hmem q g).1 h1).trans ((hmem q' g).1 h2).symm)`. Establish `hU : (⋃ q, s q) = Set.univ` using `Set.eq_univ_of_forall fun g => Set.mem_iUnion.2 ⟨_, (hmem _ g).2 rfl⟩`. Use `haveI : Countable (GfC W ⧸ K') := by`.
+
+Establish `hpd : (Set.univ : Set (GfC W ⧸ K')).PairwiseDisjoint (fun q => (fun x => (Quotient.out q : GfC W)⁻¹ * x) ⁻¹' (K' : Set (GfC W)))`. Introduce `q _ q' _ hne`. Use `Set.disjoint_left.2 fun x h1 h2 => hne ?_` and prove the remaining obligations. Establish `e1 : QuotientGroup.mk (Quotient.out q) = (QuotientGroup.mk x : GfC W ⧸ K')` using `QuotientGroup.eq.2 h1`. Establish `e2 : QuotientGroup.mk (Quotient.out q') = (QuotientGroup.mk x : GfC W ⧸ K')` using `QuotientGroup.eq.2 h2`.
+
+Rewrite `e1`, `e2` using `[QuotientGroup.out_eq']`. Conclude with `e1.trans e2.symm`. Conclude with `Set.countable_univ_iff.1 (hpd.countable_of_isOpen (fun q _ => hK'o.preimage (continuous_const.mul continuous_id)) (fun q _ => ⟨Quotient.out q, by simp [K'.one_mem]⟩))`. Establish `hsum` using `hasSum_integral_iUnion hsm hd (by rw [hU]; exact hΦ.integrableOn)`. Rewrite `hsum` using `[hU, Measure.restrict_univ]`.
+
+Use `(funext fun q => ?_ : (fun q : GfC W ⧸ K' => ∫ h in C, Φ (((Quotient.out q : GfC W) : GA D W) * h) ∂ν) = fun q => ∫ x in s q, Φ x ∂ν) ▸ hsum` and prove the remaining obligations. Establish `hpre : (fun h => ((Quotient.out q : GfC W) : GA D W) * h) ⁻¹' s q = C`. Use extensionality with `h`. Simplify using `[s]`. Rewrite using `[← hpre]`.
+
+Conclude with `((measurePreserving_mul_left ν _).setIntegral_preimage_emb (measurableEmbedding_mulLeft _) Φ (s q))`.
+-/
 theorem integral_eq_sum_cosets : ∀ (D : D7) (W : HSp D) (ν : Measure (GA D W)) (K : Subgroup (GA D W)), ν.IsHaarMeasure → K ≤ GfC W → IsOpen {g : GfC W | (g : GA D W) ∈ K} → ∀ Φ : GA D W → ℂ, Integrable Φ ν → MeasurableSet {h : GA D W | ∃ u ∈ GinfC W, ∃ k ∈ K, h = u * k} ∧ HasSum (fun q : GfC W ⧸ K.subgroupOf (GfC W) => ∫ h in {h : GA D W | ∃ u ∈ GinfC W, ∃ k ∈ K, h = u * k}, Φ (((Quotient.out q : GfC W) : GA D W) * h) ∂ν) (∫ g, Φ g ∂ν) := by
   intro D W ν K hν hKf hKo Φ hΦ
   obtain ⟨i0, -, i2, -, i4, -⟩ := GlobalTheory.Ker.CongTop.adelicUnitary_top_cong D W

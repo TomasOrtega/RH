@@ -14,6 +14,11 @@ namespace GlobalTheory.StdSumFix
 
 variable {D : D7}
 
+/- English proof (translation)
+Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨b, hb, s, hs, rfl⟩` from `hy`. Conclude with `AddSubgroup.subset_closure ⟨b, hb, t * s, mul_mem ht hs, by ring⟩`. Consider the case `zero => rw [mul_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [mul_neg]`. Conclude with `neg_mem hx`.
+-/
 theorem hatId_mul_left {𝔪 : Ideal (𝓞 D.host.E)} {t y : AE D} (ht : t ∈ OhE D) (hy : y ∈ hatId D 𝔪) :
     t * y ∈ hatId D 𝔪 := by
   induction hy using AddSubgroup.closure_induction with
@@ -26,33 +31,60 @@ theorem hatId_mul_left {𝔪 : Ideal (𝓞 D.host.E)} {t y : AE D} (ht : t ∈ O
 
 abbrev mat {N : ℕ} (k : GA D N) : Matrix (Fin N) (Fin N) (AE D) := ((k : GL (Fin N) (AE D)) : Matrix (Fin N) (Fin N) (AE D))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_mul {N : ℕ} (x y : GA D N) : mat (x * y) = mat x * mat y := rfl
 
+/- English proof (translation)
+Simplify using `[mat]`.
+-/
 theorem mat_inv_mul {N : ℕ} (x : GA D N) : mat x⁻¹ * mat x = 1 := by
   simp [mat]
 
+/- English proof (translation)
+Simplify using `[mat]`.
+-/
 theorem mat_mul_inv {N : ℕ} (x : GA D N) : mat x * mat x⁻¹ = 1 := by
   simp [mat]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Conclude with `sum_mem fun l _ => hatId_mul_left (hA i l) (hB l j)`.
+-/
 theorem ent_mul_left {𝔪 : Ideal (𝓞 D.host.E)} {N : ℕ} {A B : Matrix (Fin N) (Fin N) (AE D)}
     (hA : ∀ i j, A i j ∈ OhE D) (hB : ∀ i j, B i j ∈ hatId D 𝔪) (i j : Fin N) : (A * B) i j ∈ hatId D 𝔪 := by
   rw [Matrix.mul_apply]; exact sum_mem fun l _ => hatId_mul_left (hA i l) (hB l j)
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]; exact sum_mem fun l _ => by rw [mul_comm]; exact hatId_mul_left (hA l j) (hB i l)`.
+-/
 theorem ent_mul_right {𝔪 : Ideal (𝓞 D.host.E)} {N : ℕ} {A B : Matrix (Fin N) (Fin N) (AE D)}
     (hB : ∀ i j, B i j ∈ hatId D 𝔪) (hA : ∀ i j, A i j ∈ OhE D) (i j : Fin N) : (B * A) i j ∈ hatId D 𝔪 := by
   rw [Matrix.mul_apply]; exact sum_mem fun l _ => by rw [mul_comm]; exact hatId_mul_left (hA l j) (hB i l)
 
+/- English proof (translation)
+The claim follows from `((mem_intG k).1 hk i j).1`.
+-/
 theorem ent_of_mem {N : ℕ} {k : GA D N} (hk : k ∈ intG D N) (i j : Fin N) : mat k i j ∈ OhE D :=
   ((mem_intG k).1 hk i j).1
 
+/- English proof (translation)
+The claim follows from `((mem_intG k⁻¹).1 (inv_mem hk) i j).1`.
+-/
 theorem ent_inv_of_mem {N : ℕ} {k : GA D N} (hk : k ∈ intG D N) (i j : Fin N) : mat k⁻¹ i j ∈ OhE D :=
   ((mem_intG k⁻¹).1 (inv_mem hk) i j).1
 
 variable {𝔪 : Ideal (𝓞 D.host.E)} {N : ℕ}
 
+/- English proof (translation)
+Introduce `i j` and use `by simp only [OneMemClass.coe_one, Units.val_one, sub_self, Matrix.zero_apply]; exact zero_mem _`.
+-/
 theorem congOne_one : CongOne D 𝔪 (1 : GA D N) := fun i j => by
   simp only [OneMemClass.coe_one, Units.val_one, sub_self, Matrix.zero_apply]; exact zero_mem _
 
+/- English proof (translation)
+Introduce `i j` and use `by have e : mat (x * y) - 1 = mat x * (mat y - 1) + (mat x - 1) := by rw [mat_mul, mul_sub, mul_one]; abel change (mat (x * y) - 1) i j ∈ _ rw [e, Matrix.add_apply] exact add_mem (ent_mul_left (ent_of_mem hx) cy i j) (cx i j)`.
+-/
 theorem congOne_mul {x y : GA D N} (hx : x ∈ intG D N) (cx : CongOne D 𝔪 x) (cy : CongOne D 𝔪 y) :
     CongOne D 𝔪 (x * y) := fun i j => by
   have e : mat (x * y) - 1 = mat x * (mat y - 1) + (mat x - 1) := by rw [mat_mul, mul_sub, mul_one]; abel
@@ -60,12 +92,18 @@ theorem congOne_mul {x y : GA D N} (hx : x ∈ intG D N) (cx : CongOne D 𝔪 x)
   rw [e, Matrix.add_apply]
   exact add_mem (ent_mul_left (ent_of_mem hx) cy i j) (cx i j)
 
+/- English proof (translation)
+Introduce `i j` and use `by have e : mat x⁻¹ - 1 = -(mat x⁻¹ * (mat x - 1)) := by rw [mul_sub, mat_inv_mul, mul_one]; abel change (mat x⁻¹ - 1) i j ∈ _ rw [e, Matrix.neg_apply] exact neg_mem (ent_mul_left (ent_inv_of_mem hx) cx i j)`.
+-/
 theorem congOne_inv {x : GA D N} (hx : x ∈ intG D N) (cx : CongOne D 𝔪 x) : CongOne D 𝔪 x⁻¹ := fun i j => by
   have e : mat x⁻¹ - 1 = -(mat x⁻¹ * (mat x - 1)) := by rw [mul_sub, mat_inv_mul, mul_one]; abel
   change (mat x⁻¹ - 1) i j ∈ _
   rw [e, Matrix.neg_apply]
   exact neg_mem (ent_mul_left (ent_inv_of_mem hx) cx i j)
 
+/- English proof (translation)
+Introduce `i j` and use `by have e : mat (g * x * g⁻¹) - 1 = mat g * (mat x - 1) * mat g⁻¹ := by rw [mat_mul, mat_mul, mul_sub, sub_mul, mul_one, mat_mul_inv] change (mat (g * x * g⁻¹) - 1) i j ∈ _ rw [e] exact ent_mul_right (ent_mul_left (ent_of_mem hg) cx) (ent_inv_of_mem hg) i j`.
+-/
 theorem congOne_conj {g x : GA D N} (hg : g ∈ intG D N) (cx : CongOne D 𝔪 x) : CongOne D 𝔪 (g * x * g⁻¹) :=
   fun i j => by
   have e : mat (g * x * g⁻¹) - 1 = mat g * (mat x - 1) * mat g⁻¹ := by
@@ -80,9 +118,19 @@ namespace GlobalTheory.StdSumFix
 
 variable {D : D7}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨differentiable_const 0, 1, one_pos, fun x _ => by funext z; simp [Wd, U]⟩`.
+-/
 theorem zero_mem_TT (T : Tor D) (N N' : ℕ) : (0 : VC D N N' → ℂ) ∈ TT D T N N' :=
   ⟨differentiable_const 0, 1, one_pos, fun x _ => by funext z; simp [Wd, U]⟩
 
+/- English proof (translation)
+Take `⟨hF1, m, hm, hFm⟩` from `hF`. Take `⟨hG1, n, hn, hGn⟩` from `hG`. Use `⟨hF1.add hG1, m * n, Nat.mul_pos hm hn, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1` using `hFm (n • x) (AddSubgroup.nsmul_mem _ hx n)`. Establish `h2` using `hGn (m • x) (AddSubgroup.nsmul_mem _ hx m)`.
+
+Rewrite `h1`, `h2` using `[smul_smul]`. Rewrite `h2` using `[mul_comm n m]`. Use function extensionality and compare the values at `z`. Establish `e1` using `congrFun h1 z`. Establish `e2` using `congrFun h2 z`.
+
+Simplify using `only [Wd, U, Pi.add_apply] at e1 e2 ⊢`. Take the linear combination `e1 + e2`.
+-/
 theorem add_mem_TT {T : Tor D} {N N' : ℕ} {F G : VC D N N' → ℂ} (hF : F ∈ TT D T N N') (hG : G ∈ TT D T N N') :
     F + G ∈ TT D T N N' := by
   obtain ⟨hF1, m, hm, hFm⟩ := hF
@@ -98,6 +146,11 @@ theorem add_mem_TT {T : Tor D} {N N' : ℕ} {F G : VC D N N' → ℂ} (hF : F �
   simp only [Wd, U, Pi.add_apply] at e1 e2 ⊢
   linear_combination e1 + e2
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `⟨by simpa using zero_mem_TT (tor0 D cc δ) N N', ?_⟩` and prove the remaining obligations. Establish `h` using `W.smul g g' 0 0 (zero_mem_TT _ N N')`. Simplify using `using h`.
+
+Consider the case `@insert i s hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi]`. Establish `hfi` using `hf i (Finset.mem_insert_self i s)`. Take `⟨h1, h2⟩` from `ih (fun j hj => hf j (Finset.mem_insert_of_mem hj))`. Conclude with `⟨add_mem_TT hfi h1, by rw [W.add g g' _ hfi _ h1, h2]⟩`.
+-/
 theorem Om_sum {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {N N' : ℕ} {e0 : VC D N N' → ℂ} (W : WeilO D cc δ N N' e0)
     (g : GA D N) (g' : GA D N') {ι : Type*} (s : Finset ι) (f : ι → VC D N N' → ℂ)
     (hf : ∀ i ∈ s, f i ∈ TT D (tor0 D cc δ) N N') :
@@ -125,6 +178,9 @@ section Reps
 variable {δ : ℂ} {a d : ℕ} {e0 : VC D a d → ℂ} (W : WeilO D ⊤ δ a d e0) {𝔪 : Ideal (𝓞 D.host.E)}
   {v : VC D a d → ℂ} {R : Finset (GA D a)}
 
+/- English proof (translation)
+Establish `h` using `W.mul r (r⁻¹ * x) 1 1 v hv`. Rewrite `h` using `[mul_inv_cancel_left, mul_one]`. Rewrite using `[h, hfix _ (mul_mem (inv_mem hr) hx) hc]`.
+-/
 theorem Om_rep (hv : v ∈ TT D (tor0 D ⊤ δ) a d) (hfix : ∀ k ∈ intG D a, CongOne D 𝔪 k → W.Om k 1 v = v)
     {x r : GA D a} (hx : x ∈ intG D a) (hr : r ∈ intG D a) (hc : CongOne D 𝔪 (r⁻¹ * x)) :
     W.Om x 1 v = W.Om r 1 v := by
@@ -132,6 +188,13 @@ theorem Om_rep (hv : v ∈ TT D (tor0 D ⊤ δ) a d) (hfix : ∀ k ∈ intG D a,
   rw [mul_inv_cancel_left, mul_one] at h
   rw [h, hfix _ (mul_mem (inv_mem hr) hx) hc]
 
+/- English proof (translation)
+Set `ψ : GA D a → GA D a` to `fun r => if h : r ∈ R then (hR (φ r) (hφ r h)).exists.choose else r`. Establish `hψ : ∀ r ∈ R, ψ r ∈ R ∧ CongOne D 𝔪 ((ψ r)⁻¹ * φ r)` using `fun r hr => by`. Simplify using `only [ψ, dif_pos hr]`. Conclude with `(hR (φ r) (hφ r hr)).exists.choose_spec`. Use `Finset.sum_nbij ψ (fun r hr => (hψ r hr).1) ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce `r₁ hr₁ r₂ hr₂ e`. Establish `h1` using `(hψ r₁ hr₁).2`. Establish `h2` using `(hψ r₂ hr₂).2`. Rewrite `h1` using `[e]`. Conclude with `inj r₁ hr₁ r₂ hr₂ (ψ r₂) (hψ r₂ hr₂).1 h1 h2`.
+
+Introduce `s hs`. Take `⟨r, hr, hc⟩` from `surj s hs`. Conclude with `⟨r, hr, (hR (φ r) (hφ r hr)).unique (hψ r hr) ⟨hs, hc⟩⟩`. Introduce `r hr`. Conclude with `Om_rep W hv hfix (hφ r hr) (hRi _ (hψ r hr).1) (hψ r hr).2`.
+-/
 theorem sum_reindex (hv : v ∈ TT D (tor0 D ⊤ δ) a d) (hfix : ∀ k ∈ intG D a, CongOne D 𝔪 k → W.Om k 1 v = v)
     (hRi : ∀ r ∈ R, r ∈ intG D a) (hR : ∀ k ∈ intG D a, ∃! r, r ∈ R ∧ CongOne D 𝔪 (r⁻¹ * k))
     (φ : GA D a → GA D a) (hφ : ∀ r ∈ R, φ r ∈ intG D a)
@@ -156,6 +219,25 @@ theorem sum_reindex (hv : v ∈ TT D (tor0 D ⊤ δ) a d) (hfix : ∀ k ∈ intG
 
 end Reps
 
+/- English proof (translation)
+Introduce `D δ a d e0 W 𝔪 v hv hfix R hRi hR`. Establish `hTT : ∀ r ∈ R, W.Om r 1 v ∈ TT D (tor0 D ⊤ δ) a d` using `fun r _ => W.maps r 1 v hv`. Establish `uniq : ∀ r₁ ∈ R, ∀ r₂ ∈ R, CongOne D 𝔪 (r₁⁻¹ * r₂) → r₁ = r₂` using `fun r₁ h₁ r₂ h₂ hc => (hR r₂ (hRi r₂ h₂)).unique ⟨h₁, hc⟩ ⟨h₂, by rw [inv_mul_cancel]; exact congOne_one⟩`. Use `⟨fun k hk => ?_, fun j k c hk hj => ?_⟩` and prove the remaining obligations. Rewrite using `[(Om_sum W k 1 R _ hTT).2]`.
+
+Establish `e : ∀ r ∈ R, W.Om k 1 (W.Om r 1 v) = W.Om (k * r) 1 v` using `fun r _ => by`. Rewrite using `[← W.mul k r 1 1 v hv, mul_one]`. Rewrite using `[Finset.sum_congr rfl e]`. Use `sum_reindex W hv hfix hRi hR (fun r => k * r) (fun r hr => mul_mem hk (hRi r hr)) ?_ ?_` and prove the remaining obligations. Introduce `r₁ h₁ r₂ h₂ s hs c₁ c₂`.
+
+Establish `hm : s⁻¹ * (k * r₁) ∈ intG D a` using `mul_mem (inv_mem (hRi s hs)) (mul_mem hk (hRi r₁ h₁))`. Establish `h` using `congOne_mul (inv_mem hm) (congOne_inv hm c₁) c₂`. Establish `e' : (s⁻¹ * (k * r₁))⁻¹ * (s⁻¹ * (k * r₂)) = r₁⁻¹ * r₂` using `by group`. Rewrite `h` using `[e']`. Conclude with `uniq r₁ h₁ r₂ h₂ h`.
+
+Introduce `s hs`. Take `⟨r, ⟨hr, hc⟩, -⟩` from `hR (k⁻¹ * s) (mul_mem (inv_mem hk) (hRi s hs))`. Use `⟨r, hr, ?_⟩` and prove the remaining obligations. Establish `h` using `congOne_inv (mul_mem (inv_mem (hRi r hr)) (mul_mem (inv_mem hk) (hRi s hs))) hc`. Establish `e' : (r⁻¹ * (k⁻¹ * s))⁻¹ = s⁻¹ * (k * r)` using `by group`.
+
+Rewrite `h` using `[e']`. Then use the resulting hypothesis. Rewrite using `[(Om_sum W 1 j R _ hTT).2]`. Establish `e : ∀ r ∈ R, W.Om 1 j (W.Om r 1 v) = c • W.Om (r * k) 1 v` using `fun r _ => by`. Rewrite using `[← W.mul 1 r j 1 v hv, one_mul, mul_one, show W.Om r j v = W.Om (r * 1) (1 * j) v by rw [mul_one, one_mul], W.mul r 1 1 j v hv, hj, W.smul r 1 c _ (W.maps k 1 v hv), ← W.mul r k 1 1 v hv, mul_one]`. Rewrite using `[Finset.sum_congr rfl e, ← Finset.smul_sum]`.
+
+Use `congr 1`. Use `sum_reindex W hv hfix hRi hR (fun r => r * k) (fun r hr => mul_mem (hRi r hr) hk) ?_ ?_` and prove the remaining obligations. Introduce `r₁ h₁ r₂ h₂ s hs c₁ c₂`. Establish `hm₂ : s⁻¹ * (r₂ * k) ∈ intG D a` using `mul_mem (inv_mem (hRi s hs)) (mul_mem (hRi r₂ h₂) hk)`. Establish `hm₁ : s⁻¹ * (r₁ * k) ∈ intG D a` using `mul_mem (inv_mem (hRi s hs)) (mul_mem (hRi r₁ h₁) hk)`.
+
+Establish `h` using `congOne_conj (g := r₂⁻¹ * s) (mul_mem (inv_mem (hRi r₂ h₂)) (hRi s hs)) (congOne_mul hm₁ c₁ (congOne_inv hm₂ c₂))`. Establish `e' : r₂⁻¹ * s * (s⁻¹ * (r₁ * k) * (s⁻¹ * (r₂ * k))⁻¹) * (r₂⁻¹ * s)⁻¹ = r₂⁻¹ * r₁` using `by group`. Rewrite `h` using `[e']`. Conclude with `(uniq r₂ h₂ r₁ h₁ h).symm`. Introduce `s hs`.
+
+Take `⟨r, ⟨hr, hc⟩, -⟩` from `hR (s * k⁻¹) (mul_mem (hRi s hs) (inv_mem hk))`. Use `⟨r, hr, ?_⟩` and prove the remaining obligations. Establish `hm : r⁻¹ * (s * k⁻¹) ∈ intG D a` using `mul_mem (inv_mem (hRi r hr)) (mul_mem (hRi s hs) (inv_mem hk))`. Establish `h` using `congOne_conj (g := k⁻¹) (inv_mem hk) (congOne_inv hm hc)`. Establish `e' : k⁻¹ * (r⁻¹ * (s * k⁻¹))⁻¹ * k⁻¹⁻¹ = s⁻¹ * (r * k)` using `by group`.
+
+Rewrite `h` using `[e']`. Then use the resulting hypothesis.
+-/
 theorem stdSum_fix_eig : ∀ (D : D7) (δ : ℂ) (a d : ℕ) (e0 : VC D a d → ℂ) (W : WeilO D ⊤ δ a d e0)
     (𝔪 : Ideal (𝓞 D.host.E)) (v : VC D a d → ℂ), v ∈ TT D (tor0 D ⊤ δ) a d →
     (∀ k ∈ intG D a, CongOne D 𝔪 k → W.Om k 1 v = v) → ∀ R : Finset (GA D a), (∀ r ∈ R, r ∈ intG D a) →

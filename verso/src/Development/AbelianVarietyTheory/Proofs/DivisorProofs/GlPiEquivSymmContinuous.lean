@@ -13,6 +13,19 @@ def matPiEquiv (S : Type) [CommRing S] (n k : ℕ) :
   map_mul' M N := by funext i; exact map_mul ((Pi.evalRingHom (fun _ : Fin k => S) i).mapMatrix) M N
   map_add' M N := by funext i; exact map_add ((Pi.evalRingHom (fun _ : Fin k => S) i).mapMatrix) M N
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Use `⟨fun a b => ?_, fun a b => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((x : Matrix (Fin n) (Fin n) A) a b : T) ∈ A`. Conclude with `SetLike.coe_mem _`.
+
+Rewrite using `[← map_inv]`. Express the relevant statement in the definitionally equal form `(((x⁻¹ : GL (Fin n) A) : Matrix (Fin n) (Fin n) A) a b : T) ∈ A`. Conclude with `SetLike.coe_mem _`. Introduce and unpack `⟨h1, h2⟩`. Set `P : Matrix (Fin n) (Fin n) A` to `Matrix.of fun a b => ⟨_, h1 a b⟩`.
+
+Set `Q : Matrix (Fin n) (Fin n) A` to `Matrix.of fun a b => ⟨_, h2 a b⟩`. Establish `hP : P.map A.subtype = (g : Matrix (Fin n) (Fin n) T)` using `by ext a b; rfl`. Establish `hQ : Q.map A.subtype = ((g⁻¹ : GL (Fin n) T) : Matrix (Fin n) (Fin n) T)` using `by ext a b; rfl`. Establish `inj : Function.Injective (fun M : Matrix (Fin n) (Fin n) A => M.map A.subtype)`. Introduce `M N h`.
+
+Use function extensionality and compare the values at `a b`. Conclude with `Subtype.ext (congrFun (congrFun h a) b)`. Establish `hPQ : P * Q = 1` using `inj (by`. Simplify using `only`. Rewrite using `[Matrix.map_mul, hP, hQ, Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Conclude with `g.mul_inv)`. Establish `hQP : Q * P = 1` using `inj (by`. Simplify using `only`. Rewrite using `[Matrix.map_mul, hP, hQ, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `g.inv_mul)`.
+
+Use `⟨⟨P, Q, hPQ, hQP⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Both sides reduce to the same expression.
+-/
 theorem mem_range_map_subtype_iff {T : Type} [CommRing T] (n : ℕ) (A : Subring T) (g : GL (Fin n) T) :
     g ∈ (GeneralLinearGroup.map (n := Fin n) A.subtype).range ↔
       (∀ a b, (g : Matrix (Fin n) (Fin n) T) a b ∈ A) ∧
@@ -50,11 +63,17 @@ def glPiEquiv {R S : Type} [CommRing R] [CommRing S] (d n : ℕ) (e : R ≃+* (F
     GL (Fin n) R ≃* (Fin (d + 1) → GL (Fin n) S) :=
   (Units.mapEquiv (e.mapMatrix.trans (matPiEquiv S n (d + 1))).toMulEquiv).trans MulEquiv.piUnits
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem glPiEquiv_val {R S : Type} [CommRing R] [CommRing S] (d n : ℕ) (e : R ≃+* (Fin (d + 1) → S))
     (g : GL (Fin n) R) (i : Fin (d + 1)) (a b : Fin n) :
     ((glPiEquiv d n e g i : GL (Fin n) S) : Matrix (Fin n) (Fin n) S) a b = e ((g : Matrix (Fin n) (Fin n) R) a b) i :=
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem glPiEquiv_inv_val {R S : Type} [CommRing R] [CommRing S] (d n : ℕ) (e : R ≃+* (Fin (d + 1) → S))
     (g : GL (Fin n) R) (i : Fin (d + 1)) (a b : Fin n) :
     (((glPiEquiv d n e g i)⁻¹ : GL (Fin n) S) : Matrix (Fin n) (Fin n) S) a b =
@@ -65,6 +84,11 @@ end GlobalTheory.LKRes
 
 namespace GlobalTheory.LKRes
 
+/- English proof (translation)
+Simplify using `only [mem_range_map_subtype_iff, glPiEquiv_val, glPiEquiv_inv_val, hAB]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ i`. Conclude with `⟨fun a b => h1 a b i, fun a b => h2 a b i⟩`. Introduce `h`.
+
+Conclude with `⟨fun a b i => (h i).1 a b, fun a b i => (h i).2 a b⟩`.
+-/
 theorem glPiEquiv_mem_iff {R S : Type} [CommRing R] [CommRing S] (d n : ℕ) (e : R ≃+* (Fin (d + 1) → S))
     (A : Subring R) (B : Subring S) (hAB : ∀ x : R, x ∈ A ↔ ∀ i, e x i ∈ B) (g : GL (Fin n) R) :
     g ∈ (GeneralLinearGroup.map (n := Fin n) A.subtype).range ↔

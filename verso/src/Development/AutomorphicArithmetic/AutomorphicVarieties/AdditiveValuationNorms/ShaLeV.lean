@@ -4,6 +4,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Galo
 
 open UpperTheory.V UpperTheory.V.PropA Formalism.GaloisCohomology
 
+/- English proof (translation)
+Introduce `hPT hLF hLT F Ω _ _ _ _ _ l _ hc D e`. Establish `hfl` using `fun r hr => GlobalTheory.TateLimit.finite_level D e hPT hc r hr`. Establish `hsa : PTShaAt D e` using `GlobalTheory.TateLimit.ptShaAt D e hLF hLT (fun r hr => (hfl r hr).1) (fun r hr => (hfl r hr).2.1) (hfl 1 one_pos).2.2`. Rewrite using `[VLen, ← hsa hc]`. Conclude with `Module.length_le_of_injective (f := (Sha2Zl D e).subtype) (hf := Subtype.val_injective)`.
+-/
 theorem UpperTheory.V.PropA.shaLeV :
     GlobalTheory.Published.PoitouTateDuality → LocalFinitenessK → LocalTateDualityK →
       ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime],

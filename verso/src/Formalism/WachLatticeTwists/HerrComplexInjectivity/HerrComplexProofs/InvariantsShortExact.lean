@@ -8,6 +8,19 @@ namespace Formalism.RepresentationBoundsCohomology.JN
 
 open Formalism.CoboundaryTransfers Formalism.RepresentationBoundsCohomology.N1 Formalism.RepresentationBoundsCohomology.N2
 
+/- English proof (translation)
+Establish `hex : ∀ x, ∃ x', J₂.j x' = fun i => F.f i (J₁.j x i)` using `fun x => (J₂.j_range _).1 (fun i d => by rw [← hF, (J₁.j_range _).2 ⟨x, rfl⟩ i d])`. Use `choose f hf using hex`. Establish `hf' : ∀ x i, J₂.j (f x) i = F.f i (J₁.j x i)` using `fun x i => congrFun (hf x) i`. Use `⟨{ f := { toFun := f map_add' := ?_ map_smul' := ?_ } φ_comm := ?_ γ_comm := ?_ N_le := ?_ }, hf'⟩` and prove the remaining obligations. Introduce `a b`.
+
+Apply `J₂.j_inj` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Rewrite using `[map_add, Pi.add_apply, hf', hf', hf', map_add, Pi.add_apply, map_add]`. Introduce `a x`. Apply `J₂.j_inj` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[RingHom.id_apply, J₂.j_smul, hf', hf', J₁.j_smul, map_smul]`. Introduce `x`. Apply `J₂.j_inj` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+
+Use `show J₂.j (f (V₁.φ x)) i = J₂.j (V₂.φ (f x)) i`. Rewrite using `[hf', c₁.1, c₂.1, hf', F.φ_comm]`. Introduce `x`. Apply `J₂.j_inj` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+
+Use `show J₂.j (f (V₁.γ x)) i = J₂.j (V₂.γ (f x)) i`. Rewrite using `[hf', c₁.2, c₂.2, hf', F.γ_comm]`. Introduce `x hx`. Use `(J₂.j_N _).2 fun i => ?_` and prove the remaining obligations. Use `show J₂.j (f x) i ∈ W₂.N i`.
+
+Rewrite using `[hf']`. Conclude with `F.N_le i _ ((J₁.j_N x).1 hx i)`.
+-/
 theorem inv_hom {O A A₀ : Type} [CommRing O] [CommRing A] [Algebra O A] [CommRing A₀]
     [Algebra O A₀] {S : HidaSetting O A} {B : Base O A₀} {Δ : Type} [Group Δ] [Fintype Δ]
     [MulSemiringAction Δ A] {IB : InvBase S B Δ} {ι : Type} {pr : Equiv.Perm ι} {D₁ D₂ : Type}
@@ -55,6 +68,21 @@ theorem inv_hom {O A A₀ : Type} [CommRing O] [CommRing A] [Algebra O A] [CommR
     rw [hf']
     exact F.N_le i _ ((J₁.j_N x).1 hx i)
 
+/- English proof (translation)
+Introduce `O A A₀ _ _ _ _ _ S B Δ _ _ _ IB ι pr D₀ D₁ D₂ _ _ _ _ _ _ _ _ _ _ _ _ W₀ W₁ W₂ E ρ₀ ρ₁ ρ₂ M₀ D₀' D₁' D₂' _ _ _ _ _ _ _ _ _ _ _ _ V₀ V₁ V₂ J₀ J₁ J₂ c0 c1 c2 hι hπ hsat`. Take `⟨Gι, hGι⟩` from `inv_hom E.ι J₀ J₁ c0 c1 hι`. Take `⟨Gπ, hGπ⟩` from `inv_hom E.π J₁ J₂ c1 c2 hπ`. Use `⟨{ ι := Gι, π := Gπ, ι_inj := ?_, exact := ?_, sat := ?_ }, hGι, hGπ⟩` and prove the remaining obligations. Introduce `x y hxy`.
+
+Apply `J₀.j_inj` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Apply `E.ι_inj i` to reduce the goal to its premises. Rewrite using `[← hGι, ← hGι, hxy]`. Introduce `x`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `h0 : ∀ i, E.π.f i (J₁.j x i) = 0`. Introduce `i`. Rewrite using `[← hGπ, hx, map_zero]`.
+
+Both sides reduce to the same expression. Use `choose y hy using fun i => (E.exact i _).1 (h0 i)`. Establish `hxinv : ∀ i d, ρ₁ i d (J₁.j x i) = J₁.j x i` using `(J₁.j_range _).2 ⟨x, rfl⟩`. Establish `hyinv : ∀ i d, ρ₀ i d (y i) = y i`. Introduce `i d`.
+
+Apply `E.ι_inj i` to reduce the goal to its premises. Rewrite using `[hι, hy, hxinv]`. Take `⟨x₀, hx₀⟩` from `(J₀.j_range y).1 hyinv`. Use `⟨x₀, J₁.j_inj (funext fun i => ?_)⟩` and prove the remaining obligations. Rewrite using `[hGι, hx₀, hy]`.
+
+Introduce and unpack `⟨x₀, rfl⟩`. Apply `J₂.j_inj` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Rewrite using `[hGπ, hGι, map_zero]`. Conclude with `(E.exact i _).2 ⟨_, rfl⟩`.
+
+Introduce `x₀ hx₀`. Use `(J₀.j_N _).2 fun i => hsat i _ ?_` and prove the remaining obligations. Rewrite using `[← hGι]`. Conclude with `(J₁.j_N _).1 hx₀ i`.
+-/
 theorem invariants_short_exact : StatInvSES := by
   intro O A A₀ _ _ _ _ _ S B Δ _ _ _ IB ι pr D₀ D₁ D₂ _ _ _ _ _ _ _ _ _ _ _ _ W₀ W₁ W₂ E ρ₀ ρ₁ ρ₂ M₀
     D₀' D₁' D₂' _ _ _ _ _ _ _ _ _ _ _ _ V₀ V₁ V₂ J₀ J₁ J₂ c0 c1 c2 hι hπ hsat

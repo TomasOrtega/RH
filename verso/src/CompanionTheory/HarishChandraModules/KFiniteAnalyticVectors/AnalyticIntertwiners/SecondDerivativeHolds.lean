@@ -19,10 +19,22 @@ variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [Inne
 def resB (W : Submodule ℂ (smD ε σ)) (hW : IsKStableSub ε (smE ε σ) W) (a b : Fin n) : Module.End ℂ W :=
   if h : ε a = ε b then (smE ε σ a b).restrict (fun x hx => hW a b h x hx) else 0
 
+/- English proof (translation)
+Simplify using `[resB, dif_pos h]`.
+-/
 theorem resB_apply {W : Submodule ℂ (smD ε σ)} (hW : IsKStableSub ε (smE ε σ) W) {a b : Fin n} (h : ε a = ε b)
     (x : W) : ((resB W hW a b x : W) : smD ε σ) = smE ε σ a b x := by
   simp [resB, dif_pos h]
 
+/- English proof (translation)
+Introduce `a b c d hab hcd`. Establish `hG` using `(isDerivedOn_smE hσ).glRep a b c d`. Use `LinearMap.ext fun x => Subtype.ext ?_` and prove the remaining obligations. Establish `h1` using `congrArg (fun T : Module.End ℂ (smD ε σ) => T x) hG`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at h1`.
+
+Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, Submodule.coe_sub, resB_apply hW hab, resB_apply hW hcd]`. Rewrite using `[h1]`. Apply the tactic sequence `by_cases hbc : b = c <;> by_cases hda : d = a`. Substitute `hbc` using the available equality. Substitute `hda` using the available equality.
+
+Simplify using `[resB_apply hW (rfl : ε d = ε d), resB_apply hW (rfl : ε b = ε b)]`. Substitute `hbc` using the available equality. Simplify using `[hda, resB_apply hW (hab.trans hcd)]`. Substitute `hda` using the available equality. Simplify using `[hbc, resB_apply hW (hcd.trans hab)]`.
+
+Simplify using `[hbc, hda]`.
+-/
 theorem kRel_resB (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ) {W : Submodule ℂ (smD ε σ)}
     (hW : IsKStableSub ε (smE ε σ) W) : Formalism.REAL.KRel ε (resB W hW) := by
   intro a b c d hab hcd
@@ -41,6 +53,9 @@ theorem kRel_resB (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions
     simp [hbc, resB_apply hW (hcd.trans hab)]
   · simp [hbc, hda]
 
+/- English proof (translation)
+Introduce `a b hab x y`. Establish `hU` using `isInfUnitary_of_isDerivedOn hσ (isDerivedOn_smE hσ) a b (x : smD ε σ) (y : smD ε σ)`. Rewrite `hU` using `[adjSign, if_pos hab, one_mul]`. Simplify using `only [Submodule.coe_inner, resB_apply hW hab, resB_apply hW hab.symm]`. Conclude with `hU`.
+-/
 theorem kUnit_resB (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ) {W : Submodule ℂ (smD ε σ)}
     (hW : IsKStableSub ε (smE ε σ) W) : Formalism.REAL.KUnit ε (resB W hW) := by
   intro a b hab x y
@@ -49,6 +64,11 @@ theorem kUnit_resB (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotion
   simp only [Submodule.coe_inner, resB_apply hW hab, resB_apply hW hab.symm]
   exact hU
 
+/- English proof (translation)
+Establish `hD` using `isDerivedOn_smE hσ`. Take `⟨C, hC0, hC⟩` from `exists_norm_actM_pow_le_of_isKStableSub hW inferInstance hZ`. Establish `hs : Summable fun m : ℕ => C ^ m * ‖x‖ * |(1 : ℝ) - 0| ^ m / (m.factorial : ℝ)`. Use `(Real.summable_pow_div_factorial C).mul_right ‖x‖` as an intermediate fact. Use `this.congr fun m => ?_` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish `hsum` using `hasSum_orbit_of_bound hσ hD hZ.1 x (fun m => C ^ m * ‖x‖) (fun m => hC x hx m) 0 1 hs`. Rewrite `hsum` using `[exp_zero_smul, hσ.1.1]`. Simplify `hsum` using `only [Complex.ofReal_one, one_smul, ContinuousLinearMap.one_apply, sub_zero]`.
+-/
 theorem hasSum_actM_pow_div_factorial (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ) {W : Submodule ℂ (smD ε σ)}
     [FiniteDimensional ℂ W] (hW : IsKStableSub ε (smE ε σ) W) {Z : Matrix (Fin n) (Fin n) ℂ} (hZ : inK ε Z)
     {x : smD ε σ} (hx : x ∈ W) :
@@ -65,6 +85,17 @@ theorem hasSum_actM_pow_div_factorial (hσ : Formalism.MainNotions.S.IsURepOn (F
   rw [exp_zero_smul, hσ.1.1] at hsum
   simpa only [Complex.ofReal_one, one_smul, ContinuousLinearMap.one_apply, sub_zero] using hsum
 
+/- English proof (translation)
+Proceed by induction on `m generalizing x with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Establish `e1 : (⟨((actM (smE ε σ) Z) ^ (m + 1)) x, actM_pow_mem_of_isKStableSub_inK hW hZ x.2 (m + 1)⟩ : W) = ∑ a, ∑ b, Z a b • resB W hW a b ⟨((actM (smE ε σ) Z) ^ m) x, actM_pow_mem_of_isKStableSub_inK hW hZ x.2 m⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `only [Submodule.coe_sum, Submodule.coe_smul]`. Use `show ((actM (smE ε σ) Z) ^ (m + 1)) (x : smD ε σ) = _`. Rewrite using `[pow_succ', Module.End.mul_apply]`. Simplify using `only [actM, LinearMap.sum_apply, LinearMap.smul_apply]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hab : ε a = ε b`. Rewrite using `[resB_apply hW hab]`. Rewrite using `[inK_apply_eq_zero hZ hab, zero_smul, zero_smul]`. Rewrite using `[e1, map_sum]`. Simplify using `only [map_sum, map_smul, Submodule.coe_sum, Submodule.coe_smul]`.
+
+Rewrite using `[pow_succ', Module.End.mul_apply, ← ih x]`. Simplify using `only [actM, LinearMap.sum_apply, LinearMap.smul_apply]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hab : ε a = ε b`. Rewrite using `[hφ a b hab, resB_apply hW' hab]`.
+
+Rewrite using `[inK_apply_eq_zero hZ hab, zero_smul, zero_smul]`.
+-/
 theorem intertwiner_actM_pow_comm {W W' : Submodule ℂ (smD ε σ)} (hW : IsKStableSub ε (smE ε σ) W)
     (hW' : IsKStableSub ε (smE ε σ) W') (φ : W →ₗ[ℂ] W')
     (hφ : ∀ a b, ε a = ε b → ∀ x : W, φ (resB W hW a b x) = resB W' hW' a b (φ x))
@@ -95,6 +126,17 @@ theorem intertwiner_actM_pow_comm {W W' : Submodule ℂ (smD ε σ)} (hW : IsKSt
     · rw [hφ a b hab, resB_apply hW' hab]
     · rw [inK_apply_eq_zero hZ hab, zero_smul, zero_smul]
 
+/- English proof (translation)
+Take `⟨Z, hZ, rfl⟩` from `exists_exp_eq_of_mem_Kset hg`. Set `Wh : Submodule ℂ H` to `W.map (smD ε σ).subtype`. Establish `: FiniteDimensional ℂ Wh` using `Module.Finite.map W _`. Set `e : W ≃ₗ[ℂ] Wh` to `Submodule.equivMapOfInjective _ Subtype.val_injective W`. Set `Φ : H →L[ℂ] H` to `((smD ε σ).subtypeL.comp W'.subtypeL).comp ((LinearMap.toContinuousLinearMap φ).comp ((LinearMap.toContinuousLinearMap (e.symm : Wh →ₗ[ℂ] W)).comp Wh.orthogonalProjection))`.
+
+Establish `hΦ : ∀ z : W, Φ ((z : smD ε σ) : H) = (((φ z : W') : smD ε σ) : H)`. Introduce `z`. Establish `hz : ((z : smD ε σ) : H) ∈ Wh` using `Submodule.mem_map_of_mem z.2`. Establish `h1 : Wh.orthogonalProjection ((z : smD ε σ) : H) = ⟨_, hz⟩` using `Submodule.orthogonalProjection_mem_subspace_eq_self (⟨_, hz⟩ : Wh)`. Establish `h2 : e.symm ⟨_, hz⟩ = z`.
+
+Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Simplify using `only [Φ, ContinuousLinearMap.comp_apply, h1, LinearMap.coe_toContinuousLinearMap', LinearEquiv.coe_coe, h2]`. Both sides reduce to the same expression. Establish `hs` using `(hasSum_actM_pow_div_factorial hσ hW hZ x.2).map Φ Φ.continuous`.
+
+Establish `hs'` using `hasSum_actM_pow_div_factorial hσ hW' hZ (φ x).2`. Rewrite `hs` using `[Function.comp_def]`. Simplify using `only [map_smul] at hs`. Establish `e3 : ∀ m : ℕ, Φ ((((actM (smE ε σ) Z) ^ m) x : smD ε σ) : H) = ((((actM (smE ε σ) Z) ^ m) (φ x) : smD ε σ) : H)`. Introduce `m`.
+
+Use `hΦ ⟨_, actM_pow_mem_of_isKStableSub_inK hW hZ x.2 m⟩` as an intermediate fact. Rewrite using `[this, intertwiner_actM_pow_comm hW hW' φ hφ hZ m x]`. Simplify using `only [e3] at hs`. Rewrite `hs` using `[← hxy, hΦ]`. Conclude with `hs.unique hs'`.
+-/
 theorem intertwiner_comm_kset (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ) {W W' : Submodule ℂ (smD ε σ)}
     [FiniteDimensional ℂ W] [FiniteDimensional ℂ W'] (hW : IsKStableSub ε (smE ε σ) W)
     (hW' : IsKStableSub ε (smE ε σ) W') (φ : W →ₗ[ℂ] W')

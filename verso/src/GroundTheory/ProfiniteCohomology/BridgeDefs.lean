@@ -14,6 +14,9 @@ abbrev underlyingRep (X : TopRep.{u} k G) : Rep.{u} k G :=
   Rep.of X.ρ.toRepresentation
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem underlyingRep_ρ_apply (X : TopRep.{u} k G) (g : G) (x : X) :
     (underlyingRep X).ρ g x = X.ρ g x :=
   rfl

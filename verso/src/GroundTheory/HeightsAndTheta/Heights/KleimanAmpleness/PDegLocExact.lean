@@ -12,6 +12,11 @@ universe u v
 
 namespace DegLocExact
 
+/- English proof (translation)
+Proceed by induction on `a using DirectSum.Decomposition.inductionOn 𝒜 with`. Consider the case `zero => simp [h0]`. Consider the case `@homogeneous i m`. Take `⟨m, hm⟩` from `m`. Distinguish the cases in `hik : i = k`.
+
+Substitute `hik` using the available equality. Rewrite using `[DirectSum.decompose_of_mem_same (ℳ := 𝒜) hm, DirectSum.decompose_of_mem_same (ℳ := ℬ) (hφ _ _ hm)]`. Rewrite using `[DirectSum.decompose_of_mem_ne (ℳ := 𝒜) hm hik, DirectSum.decompose_of_mem_ne (ℳ := ℬ) (hφ _ _ hm) hik, h0]`. Consider the case `add m m' hm hm' => simp [hadd, DirectSum.decompose_add, hm, hm']`.
+-/
 theorem decompose_map {ι R A B : Type*} [DecidableEq ι] [Semiring R] [AddCommMonoid A] [Module R A]
     [AddCommMonoid B] [Module R B] (𝒜 : ι → Submodule R A) (ℬ : ι → Submodule R B)
     [DirectSum.Decomposition 𝒜] [DirectSum.Decomposition ℬ] (φ : A → B) (h0 : φ 0 = 0)
@@ -29,6 +34,9 @@ theorem decompose_map {ι R A B : Type*} [DecidableEq ι] [Semiring R] [AddCommM
         DirectSum.decompose_of_mem_ne (ℳ := ℬ) (hφ _ _ hm) hik, h0]
   | add m m' hm hm' => simp [hadd, DirectSum.decompose_add, hm, hm']
 
+/- English proof (translation)
+Establish `h` using `decompose_map 𝒜 ℬ φ h0 hadd hφ a k`. Rewrite `h` using `[DirectSum.decompose_of_mem_same (ℳ := ℬ) ha]`. Rewrite using `[← hinj h]`. Conclude with `SetLike.coe_mem _`.
+-/
 theorem mem_of_map_mem {ι R A B : Type*} [DecidableEq ι] [Semiring R] [AddCommMonoid A] [Module R A]
     [AddCommMonoid B] [Module R B] (𝒜 : ι → Submodule R A) (ℬ : ι → Submodule R B)
     [DirectSum.Decomposition 𝒜] [DirectSum.Decomposition ℬ] (φ : A → B) (h0 : φ 0 = 0)
@@ -42,6 +50,15 @@ theorem mem_of_map_mem {ι R A B : Type*} [DecidableEq ι] [Semiring R] [AddComm
 variable {S : Type u} [CommRing S] {N : ℕ} {M : Type v} [AddCommGroup M] [Module (Poly S N) M]
   [Module S M] [IsScalarTower S (Poly S N) M]
 
+/- English proof (translation)
+Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨m, s, a, e, hm, hs, hae, rfl⟩` from `hz`. Conclude with `⟨m, s, e, hs, by rwa [← hae, sub_add_cancel], rfl⟩`. Consider the case `zero => exact ⟨0, 1, 0, isHomogeneous_one _ _, zero_mem _, (LocalizedModule.zero_mk _).symm⟩`.
+
+Consider the case `add x y _ _ hx hy`. Take `⟨m1, s1, e1, hs1, hm1, rfl⟩` from `hx`. Take `⟨m2, s2, e2, hs2, hm2, rfl⟩` from `hy`. Use `⟨(s2 : Poly S N) • m1 + (s1 : Poly S N) • m2, s1 * s2, e1 + e2, by simpa using hs1.mul hs2, add_mem ?_ ?_, LocalizedModule.mk_add_mk⟩` and prove the remaining obligations. Establish `h : c + ((e1 + e2 : ℕ) : ℤ) = c + e1 + e2` using `by push_cast; ring`.
+
+Rewrite using `[h]`. Conclude with `𝓜.smul_mem e2 _ _ m1 hs2 hm1`. Establish `h : c + ((e1 + e2 : ℕ) : ℤ) = c + e2 + e1` using `by push_cast; ring`. Rewrite using `[h]`. Conclude with `𝓜.smul_mem e1 _ _ m2 hs1 hm2`.
+
+Consider the case `smul r x _ hx`. Take `⟨m, s, e, hs, hm, rfl⟩` from `hx`. Use `⟨r • m, s, e, hs, Submodule.smul_mem _ r hm, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap S (Poly S N) r • (LocalizedModule.mk m s : LocalizedModule _ M) = _`. Rewrite using `[LocalizedModule.smul'_mk, algebraMap_smul]`.
+-/
 theorem exists_frac (𝓜 : GradedPMod S N M) (c : ℤ) (I : StdCell N) (z : LocMod S N M I.1)
     (hz : z ∈ degLoc 𝓜 c I) :
     ∃ (m : M) (s : monos (S := S) I.1) (e : ℕ), (s : Poly S N).IsHomogeneous e ∧
@@ -66,6 +83,17 @@ theorem exists_frac (𝓜 : GradedPMod S N M) (c : ℤ) (I : StdCell N) (z : Loc
     change algebraMap S (Poly S N) r • (LocalizedModule.mk m s : LocalizedModule _ M) = _
     rw [LocalizedModule.smul'_mk, algebraMap_smul]
 
+/- English proof (translation)
+Introduce `S _ N M' M M'' _ _ _ _ _ _ _ _ _ _ _ _ 𝓜' 𝓜 𝓜'' f g hf hg hfg c I`. Set `_` to `𝓜'.isInternal.chooseDecomposition`. Set `_` to `𝓜.isInternal.chooseDecomposition`. Set `_` to `𝓜''.isInternal.chooseDecomposition`. Use `⟨fun z hz hz0 => ?_, fun z hz => ?_⟩` and prove the remaining obligations.
+
+Take `⟨m, s, e, hs, hm, rfl⟩` from `exists_frac 𝓜 c I z hz`. Rewrite `hz0` using `[locMap_mk]`. Establish `h0 : (LocalizedModule.mk (g.toLin m) s : LocalizedModule (monos (S` using `S) I.1) M'') = LocalizedModule.mk 0 s := by rw [LocalizedModule.zero_mk]; exact hz0`. Take `⟨u, hu⟩` from `LocalizedModule.mk_eq.1 h0`. Use `set T : monos (S := S) I.1 := u * s with hT`.
+
+Take `⟨e', he'⟩` from `monos_isHomogeneous T.2`. Establish `hgT : g.toLin ((T : Poly S N) • m) = 0`. Rewrite using `[map_smul, hT, Submonoid.coe_mul, mul_smul, ← Submonoid.smul_def, ← Submonoid.smul_def, hu, smul_zero, smul_zero]`. Take `⟨m', hm'⟩` from `(hfg _).1 hgT`. Establish `hTm : (T : Poly S N) • m ∈ 𝓜.piece (c + e + e')` using `𝓜.smul_mem e' _ _ m he' hm`.
+
+Establish `hm'd : m' ∈ 𝓜'.piece (c + e + e')` using `mem_of_map_mem 𝓜'.piece 𝓜.piece f.toLin (map_zero _) (map_add _) f.map_piece hf (hm' ▸ hTm)`. Use `⟨LocalizedModule.mk m' (T * s), Submodule.subset_span ⟨m', T * s, c + e + e', e' + e, hm'd, by simpa using he'.mul hs, by push_cast; ring, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[locMap_mk, hm', ← Submonoid.smul_def, LocalizedModule.mk_cancel_common_left]`. Take `⟨m'', s, e, hs, hm'', rfl⟩` from `exists_frac 𝓜'' c I z hz`. Take `⟨m, rfl⟩` from `hg m''`.
+
+Use `⟨LocalizedModule.mk (DirectSum.decompose 𝓜.piece m (c + e) : M) s, Submodule.subset_span ⟨_, s, c + e, e, SetLike.coe_mem _, hs, by ring, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[locMap_mk, decompose_map 𝓜.piece 𝓜''.piece g.toLin (map_zero _) (map_add _) g.map_piece, DirectSum.decompose_of_mem_same (ℳ := 𝓜''.piece) hm'']`.
+-/
 theorem proof : DegLocExact.Statement := by
   intro S _ N M' M M'' _ _ _ _ _ _ _ _ _ _ _ _ 𝓜' 𝓜 𝓜'' f g hf hg hfg c I
   let _ := 𝓜'.isInternal.chooseDecomposition

@@ -5,6 +5,11 @@ open MeasureTheory GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.SatakeB
 
 namespace GlobalTheory.UnitaryBorel
 
+/- English proof (translation)
+Introduce `L _ _ σ n b hb`. Take `⟨d, hd, hd'⟩` from `Formalism.UG.P.fSatake_diag_exists (σ := σ) (fun i => (((b : Formalism.UG.GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i i) (Formalism.UG.P.fSatake_unit_diag hb)`. Establish `hne : ∀ i, (((b : Formalism.UG.GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i i ≠ 0` using `Formalism.UG.P.fSatake_ne_zero_of_borel hb`. Establish `hu : (((d⁻¹ * b : Formalism.UG.GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = Matrix.diagonal (fun i => ((((b : Formalism.UG.GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i i)⁻¹) * (((b : Formalism.UG.GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)`. Rewrite using `[Subgroup.coe_mul, Units.val_mul, hd']`.
+
+Use `⟨d, d⁻¹ * b, by group, ⟨fun i j hji => ?_, fun i => ?_⟩, fun i j hij => by rw [hd, Matrix.diagonal_apply_ne _ hij], fun i => by rw [hd, Matrix.diagonal_apply_eq]⟩` and prove the remaining obligations. Rewrite using `[hu, Matrix.diagonal_mul, hb i j hji, mul_zero]`. Rewrite using `[hu, Matrix.diagonal_mul, inv_mul_cancel₀ (hne i)]`.
+-/
 theorem borel_eq_diag_mul_unip_sameDiag : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (σ : L →+* L) (n : ℕ)
     (β : GU σ n), IsBorelU β →
     ∃ t ν : GU σ n, β = t * ν ∧ IsUnipU ν ∧

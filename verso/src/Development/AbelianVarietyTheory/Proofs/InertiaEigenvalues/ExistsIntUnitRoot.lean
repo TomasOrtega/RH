@@ -15,6 +15,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.IntegralHilbertNinety
 
+/- English proof (translation)
+Use `⟨fun h0 => ?_, fun e => star_star e, fun e he => ?_⟩` and prove the remaining obligations. Establish `hs : Function.Surjective (algebraMap D.host.F D.host.E)` using `fun e => (D.sp.cm.fixed e).1 (AlgHom.congr_fun h0 e)`. Establish `h1 : Module.finrank D.host.F D.host.E = 1` using `(LinearEquiv.finrank_eq (LinearEquiv.ofBijective (Algebra.linearMap D.host.F D.host.E) ⟨(algebraMap D.host.F D.host.E).injective, hs⟩)).symm.trans (Module.finrank_self _)`. Use `D.sp.cm.deg2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `(D.sp.cm.fixed e).1 he`.
+-/
 theorem conj_sig (D : D7) : Formalism.L2.DIV.IsConjOf D.sp.cm.sig := by
   refine ⟨fun h0 => ?_, fun e => star_star e, fun e he => ?_⟩
   · have hs : Function.Surjective (algebraMap D.host.F D.host.E) := fun e => (D.sp.cm.fixed e).1 (AlgHom.congr_fun h0 e)
@@ -25,6 +30,9 @@ theorem conj_sig (D : D7) : Formalism.L2.DIV.IsConjOf D.sp.cm.sig := by
     omega
   · exact (D.sp.cm.fixed e).1 he
 
+/- English proof (translation)
+Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => rfl`. Consider the case `add a b ha hb => rw [RingHom.map_add, RingHom.map_add, ha, hb, RingHom.map_add, RingHom.map_add]`.
+-/
 theorem swap_sig (D : D7) (w : Af D.host.F ⊗[D.host.F] D.host.E) :
     Formalism.IndefR.Lev.swapAE D (sigR (Af D.host.F) D.sp.cm.sig w) =
       Formalism.UG.sigR D.sp.cm.sig _ (Formalism.IndefR.Lev.swapAE D w) := by
@@ -36,11 +44,39 @@ theorem swap_sig (D : D7) (w : Af D.host.F ⊗[D.host.F] D.host.E) :
 abbrev swapEquiv (D : D7) : Af D.host.F ⊗[D.host.F] D.host.E ≃+* Formalism.IndefR.Lev.EAf D :=
   (Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).toRingEquiv
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem swapEquiv_apply (D : D7) (w : Af D.host.F ⊗[D.host.F] D.host.E) :
     swapEquiv D w = Formalism.IndefR.Lev.swapAE D w := rfl
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `D z hz ⟨y₀, hy₀⟩`. Establish `hss : ∀ w, sigR (Af D.host.F) D.sp.cm.sig (sigR (Af D.host.F) D.sp.cm.sig w) = w` using `fun w => by`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => show a ⊗ₜ[D.host.F] (D.sp.cm.sig (D.sp.cm.sig x)) = a ⊗ₜ[D.host.F] x`.
+
+Rewrite using `[(conj_sig D).2.1 x]`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`. Establish `hzs : (z : Af D.host.F ⊗[D.host.F] D.host.E) * sigR (Af D.host.F) D.sp.cm.sig z = 1`. Establish `h1 : sigR (Af D.host.F) D.sp.cm.sig (y₀ : Af D.host.F ⊗[D.host.F] D.host.E) = sigR (Af D.host.F) D.sp.cm.sig z * y₀` using `by conv_lhs => rw [hy₀]`. Rewrite using `[map_mul, hss]`.
+
+Establish `h2 : (y₀ : Af D.host.F ⊗[D.host.F] D.host.E) = z * sigR (Af D.host.F) D.sp.cm.sig z * y₀`. Rewrite using `[mul_assoc, ← h1]`. Conclude with `hy₀`. Establish `h3` using `congrArg (· * ((y₀⁻¹ : (Af D.host.F ⊗[D.host.F] D.host.E)ˣ) : Af D.host.F ⊗[D.host.F] D.host.E)) h2`. Simplify using `only [Units.mul_inv, mul_assoc, mul_one] at h3`.
+
+Conclude with `h3.symm`. Establish `hzinv : ((z⁻¹ : (Af D.host.F ⊗[D.host.F] D.host.E)ˣ) : Af D.host.F ⊗[D.host.F] D.host.E) = sigR (Af D.host.F) D.sp.cm.sig z` using `Units.inv_eq_of_mul_eq_one_right hzs`. Take `⟨z', hz'⟩ : ∃ z' : (Formalism.L2.DIV.AfE D.host.F D.host.E)ˣ, (z' : Formalism.L2.DIV.AfE D.host.F D.host.E) = Formalism.IndefR.Lev.swapAE D z` from `⟨Units.map (Formalism.IndefR.Lev.swapAE D).toMonoidHom z, Units.coe_map _ _⟩`. Establish `hconj : ∀ u : (Formalism.L2.DIV.AfE D.host.F D.host.E)ˣ, ((Formalism.L2.DIV.conjId D.sp.cm.sig u : (Formalism.L2.DIV.AfE D.host.F D.host.E)ˣ) : Formalism.L2.DIV.AfE D.host.F D.host.E) = Formalism.UG.sigR D.sp.cm.sig (FiniteAdeleRing (𝓞 D.host.F) D.host.F) (u : Formalism.L2.DIV.Af …`. Introduce `u`.
+
+Rewrite using `[Formalism.L2.DIV.conjId, Units.coe_map]`. Both sides reduce to the same expression. Establish `hU1 : z' ∈ Formalism.L2.DIV.U1 D.sp.cm.sig`. Rewrite using `[Formalism.L2.DIV.U1, MonoidHom.mem_ker, MonoidHom.mul_apply, MonoidHom.id_apply]`. Apply `Units.ext` to reduce the goal to its premises.
+
+Rewrite using `[Units.val_mul, Units.val_one, hconj, hz', ← swap_sig, ← map_mul, hzs, map_one]`. Establish `hz'inv : ((z'⁻¹ : (Formalism.L2.DIV.AfE D.host.F D.host.E)ˣ) : Formalism.L2.DIV.AfE D.host.F D.host.E) = Formalism.IndefR.Lev.swapAE D ((z⁻¹ : (Af D.host.F ⊗[D.host.F] D.host.E)ˣ) : Af D.host.F ⊗[D.host.F] D.host.E)` using `Units.inv_eq_of_mul_eq_one_right (by rw [hz', ← map_mul, Units.mul_inv, map_one])`. Establish `hint : z' ∈ Formalism.L2.DIV.intU D.host.F D.host.E`. Rewrite using `[Formalism.L2.DIV.intU, Submonoid.mem_units_iff]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hz']`. Conclude with `(GlobalTheory.IdemSupport.mem_intAE_iff _).1 hz`. Rewrite using `[hz'inv]`. Use `(GlobalTheory.IdemSupport.mem_intAE_iff _).1 ?_` and prove the remaining obligations. Rewrite using `[hzinv]`.
+
+Conclude with `GlobalTheory.DetOnto.sigR_mem_intAE D hz`. Take `⟨x, hx, hxz, -⟩` from `GlobalTheory.TwU.IntegralHilbert90Unramified.exists_integral_h90_preimage_trivial_where_trivial D.host.F D.host.E D.sp.cm.sig (conj_sig D) (GlobalTheory.HeckeAdjoint.unramified_host D) z' hU1 hint`. Establish `hx'` using `(Submonoid.mem_units_iff _ _).1 hx`. Establish `hxe : (x : Formalism.L2.DIV.AfE D.host.F D.host.E) = (z' : Formalism.L2.DIV.AfE D.host.F D.host.E) * Formalism.UG.sigR D.sp.cm.sig _ (x : Formalism.L2.DIV.AfE D.host.F D.host.E)`. Establish `h` using `congrArg (fun u : (Formalism.L2.DIV.AfE D.host.F D.host.E)ˣ => ((u * Formalism.L2.DIV.conjId D.sp.cm.sig x : (Formalism.L2.DIV.AfE D.host.F D.host.E)ˣ) : Formalism.L2.DIV.AfE D.host.F D.host.E)) hxz`.
+
+Simplify using `only [Formalism.L2.DIV.h90, MonoidHom.div_apply, MonoidHom.id_apply, div_mul_cancel] at h`. Rewrite `h` using `[Units.val_mul, hconj]`. Conclude with `h`. Use `⟨Units.map (swapEquiv D).symm.toRingHom.toMonoidHom x, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.IdemSupport.mem_intAE_iff, ← swapEquiv_apply]`.
+
+Express the relevant statement in the definitionally equal form `swapEquiv D ((swapEquiv D).symm (x : Formalism.L2.DIV.AfE D.host.F D.host.E)) ∈ _`. Rewrite using `[RingEquiv.apply_symm_apply]`. Conclude with `hx'.1`. Rewrite using `[GlobalTheory.IdemSupport.mem_intAE_iff, ← swapEquiv_apply, ← map_inv]`. Express the relevant statement in the definitionally equal form `swapEquiv D ((swapEquiv D).symm ((x⁻¹ : (Formalism.L2.DIV.AfE D.host.F D.host.E)ˣ) : Formalism.L2.DIV.AfE D.host.F D.host.E)) ∈ _`.
+
+Rewrite using `[RingEquiv.apply_symm_apply]`. Conclude with `hx'.2`. Apply `(swapEquiv D).injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `swapEquiv D ((swapEquiv D).symm (x : Formalism.L2.DIV.AfE D.host.F D.host.E)) = swapEquiv D ((z : Af D.host.F ⊗[D.host.F] D.host.E) * sigR (Af D.host.F) D.sp.cm.sig ((swapEquiv D).symm (x : Formalism.L2.DIV.AfE D.host.F D.host.E)))`. Rewrite using `[RingEquiv.apply_symm_apply, map_mul, swapEquiv_apply, swapEquiv_apply, swap_sig, ← swapEquiv_apply D ((swapEquiv D).symm _), RingEquiv.apply_symm_apply, ← hz']`.
+
+Conclude with `hxe`.
+-/
 theorem exists_int_unit_root : ∀ (D : D7) (z : (Af D.host.F ⊗[D.host.F] D.host.E)ˣ),
     (z : Af D.host.F ⊗[D.host.F] D.host.E) ∈ intAE D →
     (∃ y₀ : (Af D.host.F ⊗[D.host.F] D.host.E)ˣ, (y₀ : Af D.host.F ⊗[D.host.F] D.host.E) =

@@ -8,6 +8,9 @@ open NumberField IsDedekindDomain CategoryTheory GroundTheory.ProfCoh GroundTheo
 
 namespace PositivityTheory.Lit1.GEN.W_dictfwd_b
 
+/- English proof (translation)
+Unfold `eulerChar`. Simplify using `[Finset.prod_range_succ, div_eq_mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eulerChar_eq_div {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (A : Rep.{0} (ULift.{0} ℤ) G) [IsDiscreteRep A] :
     eulerChar A = (Nat.card (cohomology A 0) : ℚ) * Nat.card (cohomology A 2) /
@@ -18,6 +21,19 @@ theorem eulerChar_eq_div {G : Type} [Group G] [TopologicalSpace G] [IsTopologica
 
 open scoped Classical in
 
+/- English proof (translation)
+Establish `hP : (∏ v : {v : InfinitePlace K.1 // v.IsReal}, (gsRealH0Card S A ιr v : ℚ)) ≠ 0` using `(Finset.prod_pos fun v _ => by exact_mod_cast gsRealH0Card_pos S A ιr v).ne'`. Establish `hn : (0 : ℚ) < Nat.card A` using `by exact_mod_cast Nat.card_pos`. Unfold `gsEulerRatio at h`. Rewrite `h` using `[eulerChar_eq_div]`. Establish `hcard : Fintype.card (InfinitePlace K.1) = InfinitePlace.nrRealPlaces K.1 + InfinitePlace.nrComplexPlaces K.1` using `InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces K.1`.
+
+Establish `hrank : Module.finrank ℚ K.1 = InfinitePlace.nrRealPlaces K.1 + 2 * InfinitePlace.nrComplexPlaces K.1` using `(InfinitePlace.card_add_two_mul_card_eq_rank K.1).symm`. Rewrite `h` using `[hcard]`. Rewrite using `[hrank]`. Use `set a : ℚ := ((Nat.card (cohomology A 0) : ℕ) : ℚ)`. Use `set b : ℚ := ((Nat.card (cohomology A 1) : ℕ) : ℚ)`.
+
+Use `set c : ℚ := ((Nat.card (cohomology A 2) : ℕ) : ℚ)`. Use `set n : ℚ := ((Nat.card A : ℕ) : ℚ)`. Use `set P : ℚ := ∏ v : {v : InfinitePlace K.1 // v.IsReal}, (gsRealH0Card S A ιr v : ℚ)`. Establish `hb : b ≠ 0`. Introduce `hb0`.
+
+Rewrite `h` using `[hb0, div_zero, zero_mul, zero_div]`. Conclude with `zero_ne_one h`. Establish `key : a * c * n ^ (InfinitePlace.nrRealPlaces K.1 + InfinitePlace.nrComplexPlaces K.1) = b * P`. Clear denominators, using `at h` for the nonvanishing conditions. Combine the linear relations using `[h]`.
+
+Establish `: (a * c * n ^ (InfinitePlace.nrRealPlaces K.1 + 2 * InfinitePlace.nrComplexPlaces K.1) : ℚ) = b * (P * n ^ InfinitePlace.nrComplexPlaces K.1)`. Rewrite using `[show InfinitePlace.nrRealPlaces K.1 + 2 * InfinitePlace.nrComplexPlaces K.1 = (InfinitePlace.nrRealPlaces K.1 + InfinitePlace.nrComplexPlaces K.1) + InfinitePlace.nrComplexPlaces K.1 by ring, pow_add, ← mul_assoc, key]`. Expand and normalize the polynomial expressions, which then agree. Apply `Nat.cast_injective (R := ℚ)` to reduce the goal to its premises. Use `push_cast`.
+
+Conclude with `this`.
+-/
 theorem natEq_of_gsEulerRatio_eq_one {K : FiniteSubfield} (S : Set (HeightOneSpectrum (𝓞 K.1)))
     (ιr : ∀ v : {v : InfinitePlace K.1 // v.IsReal},
       AlgebraicClosure ℚ →ₐ[K.1] AlgebraicClosure v.1.Completion)
@@ -62,6 +78,15 @@ theorem natEq_of_gsEulerRatio_eq_one {K : FiniteSubfield} (S : Set (HeightOneSpe
   push_cast
   exact this
 
+/- English proof (translation)
+Establish `hc : Continuous f` using `continuous_of_discreteTopology`. Establish `e : ∀ (j : Fin 1) (g' : Fin 1 → G), Fin.contractNth j (· * ·) g' = Fin.elim0` using `fun _ _ => Subsingleton.elim _ _`. Establish `key : ∀ g' : Fin 1 → G, ReciprocityTheory.Gal.dn rho 0 f g' = rho (g' 0) (f Fin.elim0) - f Fin.elim0`. Introduce `g'`. Rewrite using `[ReciprocityTheory.Gal.dn_apply]`.
+
+Establish `e1 : (fun i : Fin 0 => g' i.succ) = Fin.elim0` using `Subsingleton.elim _ _`. Simplify using `only [e1, e, Fin.sum_univ_one]`. Simplify using `[sub_eq_add_neg]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, hk⟩ g`.
+
+Establish `h1` using `congrFun (LinearMap.mem_ker.1 hk) (fun _ => g)`. Rewrite `h1` using `[key]`. Conclude with `sub_eq_zero.1 h1`. Introduce `h`. Use `⟨hc, LinearMap.mem_ker.2 (funext fun g => ?_)⟩` and prove the remaining obligations.
+
+Rewrite using `[key, h (g 0), sub_self]`. Both sides reduce to the same expression.
+-/
 theorem mem_Zn_zero_iff {R G M : Type*} [CommRing R] [Group G] [TopologicalSpace G] [AddCommGroup M]
     [Module R M] [TopologicalSpace M] [IsTopologicalAddGroup M] [ContinuousConstSMul R M]
     (rho : Representation R G M) (f : (Fin 0 → G) → M) :
@@ -85,6 +110,11 @@ theorem mem_Zn_zero_iff {R G M : Type*} [CommRing R] [Group G] [TopologicalSpace
     rw [key, h (g 0), sub_self]
     rfl
 
+/- English proof (translation)
+Establish `hbot : (ReciprocityTheory.Gal.Bn rho 0).comap (ReciprocityTheory.Gal.Zn rho 0).subtype = ⊥` using `by show (⊥ : Submodule R _).comap _ = ⊥`. Rewrite using `[Submodule.comap_bot, Submodule.ker_subtype]`. Establish `e1 : ReciprocityTheory.Gal.Hn rho 0 ≃ ReciprocityTheory.Gal.Zn rho 0` using `(Submodule.quotEquivOfEqBot _ hbot).toEquiv`. Rewrite using `[Nat.card_congr e1]`. Use `Nat.card_congr { toFun := fun m => ⟨fun _ => m.1, (mem_Zn_zero_iff rho _).2 fun g => m.2 g⟩ invFun := fun f => ⟨f.1 Fin.elim0, fun g => ((mem_Zn_zero_iff rho f.1).1 f.2) g⟩ left_inv := fun m => rfl right_inv := fun f => Subtype.ext (funext fun x => by` and prove the remaining obligations.
+
+Simplify using `only`. Rewrite using `[Subsingleton.elim x Fin.elim0]) }`.
+-/
 theorem card_H0_eq_card_Hn_zero_alt {R G M : Type*} [CommRing R] [Group G] [TopologicalSpace G]
     [AddCommGroup M] [Module R M] [TopologicalSpace M] [IsTopologicalAddGroup M]
     [ContinuousConstSMul R M] (rho : Representation R G M) :
@@ -146,14 +176,35 @@ noncomputable def gsIso (S : Set (HeightOneSpectrum (𝓞 F))) :
     continuous_toFun := hq
     continuous_invFun := Continuous.continuous_symm_of_equiv_compact_to_t2 (f := q.toEquiv) hq }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gsIso_toGS (S : Set (HeightOneSpectrum (𝓞 F))) (g : G F Ω) :
     gsIso (Ω := Ω) S (toGS Ω S g) = resS S g := by
   rfl
 
+/- English proof (translation)
+Rewrite using `[← gsIso_toGS, ContinuousMulEquiv.symm_apply_apply]`.
+-/
 theorem gsIso_symm_resS (S : Set (HeightOneSpectrum (𝓞 F))) (g : G F Ω) :
     (gsIso (Ω := Ω) S).symm (resS S g) = toGS Ω S g := by
   rw [← gsIso_toGS, ContinuousMulEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Set `e : galUnramifiedOutside F Ω (S : Set (HeightOneSpectrum (𝓞 F))) ≃ₜ* GS Ω (S : Set (HeightOneSpectrum (𝓞 F)))` to `(gsIso (Ω := Ω) (S : Set (HeightOneSpectrum (𝓞 F)))).symm`. Establish `hc'` using `ReciprocityTheory.Neutral.Bridge.contAction_comp e hc`. Set `rho' : Representation (ZMod (l ^ r)) (galUnramifiedOutside F Ω (S : Set (HeightOneSpectrum (𝓞 F)))) M` to `rhoS.comp (e : galUnramifiedOutside F Ω (S : Set (HeightOneSpectrum (𝓞 F))) →* GS Ω (S : Set (HeightOneSpectrum (𝓞 F))))`. Take `⟨A, hA, eA, he⟩` from `PositivityTheory.LocalTateOrthogonality.Gcoh.gcRep _ (ZMod (l ^ r)) M rho' hc'`. Establish `hAf : Finite A.V` using `Finite.of_equiv _ eA.toEquiv`.
+
+Establish `hn : ∀ a : A.V, (l ^ r) • a = 0`. Introduce `a`. Take `⟨m, rfl⟩` from `eA.surjective a`. Rewrite using `[← map_nsmul, ← Nat.cast_smul_eq_nsmul (ZMod (l ^ r)), ZMod.natCast_self, zero_smul, map_zero]`. Take `⟨e0, -⟩` from `PositivityTheory.LocalTateOrthogonality.Gcoh.gc0 _ (ZMod (l ^ r)) M rho' A eA he`.
+
+Take `⟨e1, -⟩` from `PositivityTheory.LocalTateOrthogonality.Gcoh.gc1 _ (ZMod (l ^ r)) M rho' A eA he`. Take `⟨e2, -⟩` from `PositivityTheory.LocalTateOrthogonality.Gcoh.gc2 _ (ZMod (l ^ r)) M rho' A eA he`. Establish `t1` using `ReciprocityTheory.Neutral.Bridge.equivH1OfIso e rhoS rho' (fun _ _ => rfl)`. Establish `t2` using `ReciprocityTheory.Neutral.Bridge.equivH2OfIso e rhoS rho' (fun _ _ => rfl)`. Establish `hH0 : H0 rho' = H0 rhoS`.
+
+Use extensionality with `m`. Rewrite using `[mem_riemannRochSpace_iff_regularAt_everywhere, mem_riemannRochSpace_iff_regularAt_everywhere]`. Prove the components needed by the constructor for the conclusion. Introduce `h g`. Take `⟨g', rfl⟩` from `e.surjective g`.
+
+Conclude with `h g'`. Introduce `h g`. Conclude with `h (e g)`. Use `⟨A, hA, hAf, hn, (Nat.card_congr eA.toEquiv).symm, ?_, ?_, ?_, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← Nat.card_congr e0.toEquiv, hH0]`.
+
+Conclude with `(Nat.card_congr (t1.toAddEquiv.trans e1).toEquiv).symm`. Conclude with `(Nat.card_congr (t2.toAddEquiv.trans e2).toEquiv).symm`. Establish `hg : e (resS (S : Set (HeightOneSpectrum (𝓞 F))) g) = toGS Ω _ g` using `gsIso_symm_resS _ g`. Use `(Nat.card_congr (Equiv.subtypeEquiv eA.toEquiv fun m => ?_)).symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `rhoS (toGS Ω _ g) m = m ↔ A.ρ (resS _ g) (eA m) = eA m`.
+
+Rewrite using `[← he, eA.apply_eq_iff_eq]`. Express the relevant statement in the definitionally equal form `rhoS (toGS Ω _ g) m = m ↔ rhoS (e (resS _ g)) m = m`. Rewrite using `[hg]`.
+-/
 theorem dict_A {l : ℕ} [Fact l.Prime] {r : ℕ} {M : Type} [AddCommGroup M]
     [Module (ZMod (l ^ r)) M] [Finite M] [TopologicalSpace M] [DiscreteTopology M]
     (S : Finset (HeightOneSpectrum (𝓞 F)))
@@ -203,6 +254,17 @@ theorem dict_A {l : ℕ} [Fact l.Prime] {r : ℕ} {M : Type} [AddCommGroup M]
     change rhoS (toGS Ω _ g) m = m ↔ rhoS (e (resS _ g)) m = m
     rw [hg]
 
+/- English proof (translation)
+Take `⟨j, hj, hjw⟩` from `hc`. Take `⟨j', hj', hj'w⟩` from `hc'`. Establish `hreal : ComplexEmbedding.IsReal (j.comp (algebraMap F Ω))`. Rewrite using `[← InfinitePlace.isReal_mk_iff, hjw]`. Conclude with `hw`.
+
+Establish `hres : j'.comp (algebraMap F Ω) = j.comp (algebraMap F Ω)`. Break down `InfinitePlace.mk_eq_iff.1 (hj'w.trans hjw.symm) with h | h` into its components or cases. Conclude with `h`. Combine the equalities or inequalities in the displayed calculation. Set `_ : Algebra Ω ℂ` to `j.toAlgebra`.
+
+Set `_ : Algebra F ℂ` to `(j.comp (algebraMap F Ω)).toAlgebra`. Establish `: IsScalarTower F Ω ℂ` using `IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Establish `: Normal F Ω` using `IsAlgClosure.normal F Ω`. Set `J' : Ω →ₐ[F] ℂ` to `{ j' with commutes' := fun x => RingHom.congr_fun hres x }`. Set `σ : Gal(Ω/F)` to `Normal.algHomEquivAut F ℂ Ω J'`.
+
+Establish `hσ : ∀ x, j (σ x) = j' x` using `fun x => congrArg (fun f : Ω →ₐ[F] ℂ => f x) ((Normal.algHomEquivAut F ℂ Ω).symm_apply_apply J')`. Establish `key : σ * c' = c * σ`. Apply `AlgEquiv.ext` to reduce the goal to its premises. Introduce `x`. Apply `j.injective` to reduce the goal to its premises.
+
+Use `show j (σ (c' x)) = j (c (σ x))`. Rewrite using `[hσ, hj', hj, hσ]`. Use `⟨σ⁻¹, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem isCCAt_conj {w : InfinitePlace F} (hw : w.IsReal) {c c' : G F Ω} (hc : IsCCAt w c)
     (hc' : IsCCAt w c') : ∃ g : G F Ω, c' = g * c * g⁻¹ := by
   obtain ⟨j, hj, hjw⟩ := hc
@@ -237,12 +299,28 @@ theorem isCCAt_conj {w : InfinitePlace F} (hw : w.IsReal) {c c' : G F Ω} (hc : 
     _ = σ⁻¹ * (c * σ) := by rw [key]
     _ = σ⁻¹ * c * σ⁻¹⁻¹ := by group
 
+/- English proof (translation)
+Rewrite using `[← InfinitePlace.mk_embedding w, InfinitePlace.comap_mk, InfinitePlace.comap_mk, InfinitePlace.comap_mk]`. Both sides reduce to the same expression.
+-/
 theorem comap_comap' {k L N : Type*} [Field k] [Field L] [Field N] (w : InfinitePlace N)
     (f : L →+* N) (g : k →+* L) : (w.comap f).comap g = w.comap (f.comp g) := by
   rw [← InfinitePlace.mk_embedding w, InfinitePlace.comap_mk, InfinitePlace.comap_mk,
     InfinitePlace.comap_mk]
   rfl
 
+/- English proof (translation)
+Establish `h1 : ∀ w : InfinitePlace F, (w.comap (σ.symm : K.1 →+* F)).comap (σ : F →+* K.1) = w`. Introduce `w`. Rewrite using `[comap_comap']`. Establish `: (σ.symm : K.1 →+* F).comp (σ : F →+* K.1) = RingHom.id F`. Use extensionality with `x`.
+
+Simplify using the standard rewrite rules. Rewrite using `[this, InfinitePlace.comap_id]`. Establish `h2 : ∀ v : InfinitePlace K.1, (v.comap (σ : F →+* K.1)).comap (σ.symm : K.1 →+* F) = v`. Introduce `v`. Rewrite using `[comap_comap']`.
+
+Establish `: (σ : F →+* K.1).comp (σ.symm : K.1 →+* F) = RingHom.id K.1`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[this, InfinitePlace.comap_id]`. Set `eP : InfinitePlace F ≃ InfinitePlace K.1` to `⟨fun w => w.comap (σ.symm : K.1 →+* F), fun v => v.comap (σ : F →+* K.1), h1, h2⟩`.
+
+Use `⟨eP.subtypeEquiv fun w => (InfinitePlace.isReal_comap_iff σ.symm).symm, Fintype.card_congr eP, ?_⟩` and prove the remaining obligations. Introduce and unpack `w g g' hgg' ⟨j, hj, hjw⟩`. Use `⟨j.comp τ.toRingHom, fun x => ?_, ?_⟩` and prove the remaining obligations. Use `show j (τ (g x)) = starRingEnd ℂ (j (τ x))`. Rewrite using `[← hgg', hj]`.
+
+Establish `: (j.comp τ.toRingHom).comp (algebraMap F Ω) = (j.comp (algebraMap K.1 (AlgebraicClosure ℚ))).comp (σ : F →+* K.1)`. Use extensionality with `x`. Use `show j (τ (algebraMap F Ω x)) = j (algebraMap K.1 (AlgebraicClosure ℚ) (σ x))`. Rewrite using `[hτ]`. Both sides reduce to the same expression.
+
+Rewrite using `[this, ← InfinitePlace.comap_mk, hjw]`. Conclude with `h1 w.1`.
+-/
 theorem realPlaces_transport (K : FiniteSubfield) (τ : Ω ≃+* AlgebraicClosure ℚ) (σ : F ≃+* K.1)
     (hτ : ∀ x : F, τ (algebraMap F Ω x) = ((σ x : K.1) : AlgebraicClosure ℚ)) :
     ∃ e : {w : InfinitePlace F // w.IsReal} ≃ {v : InfinitePlace K.1 // v.IsReal},
@@ -280,6 +358,15 @@ theorem realPlaces_transport (K : FiniteSubfield) (τ : Ω ≃+* AlgebraicClosur
     rw [this, ← InfinitePlace.comap_mk, hjw]
     exact h1 w.1
 
+/- English proof (translation)
+Use `haveI : IsGalois F Ω := IsAlgClosure.isGalois F Ω`. Establish `he : ∀ x : F, τ (algebraMap F Ω x) = algebraMap K.1 (AlgebraicClosure ℚ) (σ x)` using `fun x => (hτ x).trans rfl`. Set `T : Finset (HeightOneSpectrum (𝓞 K.1))` to `S.map (GlobalTheory.CompanionTheory.GSCd.Transport.placeEquiv (RingOfIntegers.mapRingEquiv σ)).toEmbedding`. Establish `hC : GlobalTheory.CompanionTheory.GSCd.Transport.Corr σ (S : Set (HeightOneSpectrum (𝓞 F))) (T : Set (HeightOneSpectrum (𝓞 K.1)))`. Introduce `v`.
+
+Simplify using `[T]`. Use `⟨(T : Set (HeightOneSpectrum (𝓞 K.1))), T.finite_toSet, fun n hn w hw => ?_, fun x => ⟨fun hx => ?_, fun hx => ?_⟩⟩` and prove the remaining obligations. Establish `hv : (GlobalTheory.CompanionTheory.GSCd.Transport.placeEquiv (RingOfIntegers.mapRingEquiv σ)).symm w ∈ S`. Apply `hn` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `RingOfIntegers.mapRingEquiv σ (n : 𝓞 F) ∈ w.asIdeal`.
+
+Rewrite using `[map_natCast]`. Conclude with `hw`. Conclude with `Finset.mem_coe.2 (Finset.mem_map.2 ⟨_, hv, (GlobalTheory.CompanionTheory.GSCd.Transport.placeEquiv _).apply_symm_apply w⟩)`. Conclude with `GlobalTheory.CompanionTheory.GSCd.Transport.mem_max σ τ he hC hx`. Use `GlobalTheory.CompanionTheory.GSCd.Transport.mem_max σ.symm τ.symm (GlobalTheory.CompanionTheory.GSCd.Transport.symm_compat σ τ he) hC.symm hx` as an intermediate fact.
+
+Rewrite `this` using `[RingEquiv.symm_apply_apply]`. Then use the resulting hypothesis.
+-/
 theorem places_transport (K : FiniteSubfield) (τ : Ω ≃+* AlgebraicClosure ℚ) (σ : F ≃+* K.1)
     (hτ : ∀ x : F, τ (algebraMap F Ω x) = ((σ x : K.1) : AlgebraicClosure ℚ))
     (S : Finset (HeightOneSpectrum (𝓞 F))) :
@@ -310,6 +397,11 @@ theorem places_transport (K : FiniteSubfield) (τ : Ω ≃+* AlgebraicClosure �
       hC.symm hx
     rwa [RingEquiv.symm_apply_apply] at this
 
+/- English proof (translation)
+Use `⟨AlgEquiv.ofRingEquiv (f := (τ.trans g'.toRingEquiv).trans τ.symm) fun r => ?_, fun x => ?_⟩` and prove the remaining obligations. Use `show τ.symm (g' (τ (algebraMap F Ω r))) = algebraMap F Ω r`. Rewrite using `[hτ]`. Establish `h1 : g' ((σ r : K.1) : AlgebraicClosure ℚ) = ((σ r : K.1) : AlgebraicClosure ℚ)` using `g'.commutes (σ r)`. Rewrite using `[h1, ← hτ, RingEquiv.symm_apply_apply]`.
+
+Use `show g' (τ x) = τ (τ.symm (g' (τ x)))`. Rewrite using `[RingEquiv.apply_symm_apply]`.
+-/
 theorem exists_transport_elem (K : FiniteSubfield) (τ : Ω ≃+* AlgebraicClosure ℚ) (σ : F ≃+* K.1)
     (hτ : ∀ x : F, τ (algebraMap F Ω x) = ((σ x : K.1) : AlgebraicClosure ℚ))
     (g' : G K.1 (AlgebraicClosure ℚ)) : ∃ g : G F Ω, ∀ x : Ω, g' (τ x) = τ (g x) := by
@@ -328,6 +420,11 @@ section Arch
 
 open ReciprocityTheory.Gal Formalism.ConjugateSelfDual
 
+/- English proof (translation)
+Unfold `gsRealH0Card`. Rewrite using `[Nat.card_congr (H0Iso _).toLinearEquiv.toEquiv]`. Use `Nat.card_congr (Equiv.subtypeEquivRight fun b => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(∀ g, B.ρ (gsRealFamily S' ιr v g) b = b) ↔ B.ρ (gsRealFamily S' ιr v s) b = b`. Use `⟨fun h => h s, fun h g => ?_⟩` and prove the remaining obligations.
+
+Break down `hs g with hg | hg` into its components or cases. Rewrite using `[hg, map_one, map_one]`. Both sides reduce to the same expression. Rewrite using `[hg]`. Conclude with `h`.
+-/
 theorem real_H0_card_eq_fixed_of_gen (K : FiniteSubfield) (S' : Set (HeightOneSpectrum (𝓞 K.1)))
     (ιr : ∀ v : {v : InfinitePlace K.1 // v.IsReal},
         AlgebraicClosure ℚ →ₐ[K.1] AlgebraicClosure v.1.Completion)
@@ -348,6 +445,31 @@ theorem real_H0_card_eq_fixed_of_gen (K : FiniteSubfield) (S' : Set (HeightOneSp
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Establish `hv : v.1.IsReal` using `v.2`. Set `ρ` to `InfinitePlace.Completion.ringEquivRealOfIsReal hv`. Set `φ : v.1.Completion →+* ℂ` to `Complex.ofRealHom.comp ρ.toRingHom`. Set `_ : Algebra v.1.Completion ℂ` to `φ.toAlgebra`. Set `κA : AlgebraicClosure v.1.Completion →ₐ[v.1.Completion] ℂ` to `IsAlgClosed.lift`.
+
+Establish `hκr : ∀ r : v.1.Completion, κA (algebraMap v.1.Completion _ r) = (ρ r : ℂ)` using `fun r => κA.commutes r`. Take `⟨y, hy⟩` from `IsAlgClosed.exists_root ((Polynomial.X ^ 2 + 1 : Polynomial (AlgebraicClosure v.1.Completion))) (by rw [← Polynomial.C_1, Polynomial.degree_X_pow_add_C (by norm_num : 0 < 2)]; norm_num)`. Establish `hy2 : κA y ^ 2 = -1`. Establish `h` using `congrArg κA (show y ^ 2 + 1 = 0 by simpa using hy)`. Rewrite `h` using `[map_add, map_pow, map_one, map_zero]`.
+
+Take the linear combination `h`. Establish `hsurj : Function.Surjective κA`. Introduce `z`. Establish `hI : ∃ t, κA t = Complex.I`. Establish `: (κA y - Complex.I) * (κA y + Complex.I) = 0`.
+
+Combine the equalities or inequalities in the displayed calculation. Break down `mul_eq_zero.1 this with h | h` into its components or cases. Conclude with `⟨y, sub_eq_zero.1 h⟩`. Conclude with `⟨-y, by rw [map_neg]; linear_combination -h⟩`. Take `⟨t, ht⟩` from `hI`.
+
+Use `⟨algebraMap v.1.Completion _ (ρ.symm z.re) + algebraMap v.1.Completion _ (ρ.symm z.im) * t, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_mul, hκr, hκr, ht, RingEquiv.apply_symm_apply, RingEquiv.apply_symm_apply]`. Conclude with `Complex.re_add_im z`. Set `e : AlgebraicClosure v.1.Completion ≃+* ℂ` to `RingEquiv.ofBijective κA.toRingHom ⟨κA.toRingHom.injective, hsurj⟩`. Establish `he : ∀ t, e t = κA t` using `fun _ => rfl`.
+
+Establish `hreal : ∀ r : v.1.Completion, e.symm (ρ r : ℂ) = algebraMap v.1.Completion _ r`. Introduce `r`. Rewrite using `[e.symm_apply_eq, he, hκr]`. Set `s : Gal(AlgebraicClosure v.1.Completion / v.1.Completion)` to `{ toRingEquiv := (e.trans (starRingAut : ℂ ≃+* ℂ)).trans e.symm commutes' := fun r => by show e.symm (starRingEnd ℂ (e (algebraMap v.1.Completion _ r))) = algebraMap v.1.Completion _ r`. Rewrite using `[he, hκr, Complex.conj_ofReal, hreal] }`.
+
+Establish `hs : ∀ t, κA (s t) = starRingEnd ℂ (κA t)`. Introduce `t`. Use `show e (e.symm ((starRingAut : ℂ ≃+* ℂ) (e t))) = _`. Rewrite using `[RingEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+
+Use `⟨κA.toRingHom, s, hs, fun g => ?_, fun x => ?_⟩` and prove the remaining obligations. Set `f : ℂ →ₐ[ℝ] ℂ` to `{ toRingHom := (e.symm.trans (g.toRingEquiv.trans e)).toRingHom commutes' := fun a => by show e (g (e.symm (Complex.ofReal a))) = Complex.ofReal a`. Establish `: (Complex.ofReal a) = (ρ (ρ.symm a) : ℂ)` using `by rw [RingEquiv.apply_symm_apply]`. Rewrite using `[this, hreal, AlgEquiv.commutes, he, hκr] }`. Break down `Complex.real_algHom_eq_id_or_conj f with hf | hf` into its components or cases.
+
+Use `left`. Use extensionality with `t`. Apply `e.injective` to reduce the goal to its premises. Use `congrArg (fun F : ℂ →ₐ[ℝ] ℂ => F (e t)) hf` as an intermediate fact. Simplify `this` using `[f]`.
+
+Use `right`. Use extensionality with `t`. Apply `e.injective` to reduce the goal to its premises. Use `congrArg (fun F : ℂ →ₐ[ℝ] ℂ => F (e t)) hf` as an intermediate fact. Simplify using `only [f] at this`.
+
+Rewrite using `[he (s t), hs]`. Simplify using `at this`. Conclude with `this`. Establish `hsc : algebraMap K.1 (AlgebraicClosure v.1.Completion) x = algebraMap v.1.Completion (AlgebraicClosure v.1.Completion) (algebraMap K.1 v.1.Completion x)` using `IsScalarTower.algebraMap_apply _ _ _ x show κA (algebraMap K.1 (AlgebraicClosure v.1.Completion) x) = _`. Rewrite using `[hsc, hκr, InfinitePlace.Completion.ringEquivRealOfIsReal_apply, ← InfinitePlace.embedding_of_isReal_apply hv]`.
+
+Use `congr 1`. Conclude with `InfinitePlace.Completion.extensionEmbeddingOfIsReal_coe hv _`.
+-/
 theorem exists_cc_gen (K : FiniteSubfield) (v : {v : InfinitePlace K.1 // v.IsReal}) :
     ∃ (κ : AlgebraicClosure v.1.Completion →+* ℂ) (s : Gal(AlgebraicClosure v.1.Completion / v.1.Completion)),
       (∀ y, κ (s y) = starRingEnd ℂ (κ y)) ∧ (∀ g, g = 1 ∨ g = s) ∧
@@ -425,6 +547,13 @@ theorem exists_cc_gen (K : FiniteSubfield) (v : {v : InfinitePlace K.1 // v.IsRe
     congr 1
     exact InfinitePlace.Completion.extensionEmbeddingOfIsReal_coe hv _
 
+/- English proof (translation)
+Take `⟨κ, s, hκs, hs, hκK⟩` from `exists_cc_gen K v`. Use `⟨decompHom v.1.Completion (ιr v) s, ⟨κ.comp (ιr v).toRingHom, fun x => ?_, ?_⟩, fun B _ => ?_⟩` and prove the remaining obligations. Use `show κ (ιr v (decompHom v.1.Completion (ιr v) s x)) = starRingEnd ℂ (κ (ιr v x))`. Rewrite using `[decompHom_apply, hκs]`. Establish `: (κ.comp (ιr v).toRingHom).comp (algebraMap K.1 (AlgebraicClosure ℚ)) = v.1.embedding`.
+
+Use extensionality with `x`. Use `show κ (ιr v (algebraMap K.1 (AlgebraicClosure ℚ) x)) = v.1.embedding x`. Rewrite using `[AlgHom.commutes, hκK]`. Rewrite using `[this, InfinitePlace.mk_embedding]`. Rewrite using `[real_H0_card_eq_fixed_of_gen K S' ιr v s hs B]`.
+
+Establish `hfam : gsRealFamily S' ιr v s = resS (Ω` using `AlgebraicClosure ℚ) S' (decompHom v.1.Completion (ιr v) s) := by show decompHomS v.1.Completion S' (ιr v) s = _`. Rewrite using `[decompHomS_eq]`. Both sides reduce to the same expression. Simplify using `only [hfam]`.
+-/
 theorem real_H0_card_eq_fixed (K : FiniteSubfield) (S' : Set (HeightOneSpectrum (𝓞 K.1)))
     (ιr : ∀ v : {v : InfinitePlace K.1 // v.IsReal},
         AlgebraicClosure ℚ →ₐ[K.1] AlgebraicClosure v.1.Completion)

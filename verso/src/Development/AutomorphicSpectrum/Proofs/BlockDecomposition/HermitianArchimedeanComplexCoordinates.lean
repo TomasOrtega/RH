@@ -50,6 +50,9 @@ def hermEquiv (σ : E →ₐ[F] E) (Θ : Ainf F ⊗[F] E ≃+* (InfinitePlace F 
     ext a c
     simp [matC]
 
+/- English proof (translation)
+Use `continuous_pi fun w => Continuous.subtype_mk ?_ _` and prove the remaining obligations. Use `continuous_matrix fun a c => ?_` and prove the remaining obligations. Establish `h1 : Continuous fun b : HermR (Ainf F) σ n => (b : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)) a c` using `(continuous_id.matrix_elem a c).comp continuous_subtype_val`. Conclude with `(continuous_apply w).comp (hΘ.comp h1)`.
+-/
 theorem continuous_hermEquiv (σ : E →ₐ[F] E) (Θ : Ainf F ⊗[F] E ≃+* (InfinitePlace F → ℂ))
     (hconj : ∀ z w, Θ (sigR (Ainf F) σ z) w = conj (Θ z w)) (hΘ : Continuous Θ) (n : ℕ) :
     Continuous (hermEquiv σ Θ hconj n) := by
@@ -60,6 +63,9 @@ theorem continuous_hermEquiv (σ : E →ₐ[F] E) (Θ : Ainf F ⊗[F] E ≃+* (I
     (continuous_id.matrix_elem a c).comp continuous_subtype_val
   exact (continuous_apply w).comp (hΘ.comp h1)
 
+/- English proof (translation)
+Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Use `continuous_matrix fun a c => ?_` and prove the remaining obligations. Use `hΘ.comp (continuous_pi fun w => ?_)` and prove the remaining obligations. Establish `h1 : Continuous fun b : hermC n => (b : Matrix (Fin n) (Fin n) ℂ) a c` using `(continuous_id.matrix_elem a c).comp continuous_subtype_val`. Conclude with `h1.comp (continuous_apply w)`.
+-/
 theorem continuous_hermEquiv_symm (σ : E →ₐ[F] E) (Θ : Ainf F ⊗[F] E ≃+* (InfinitePlace F → ℂ))
     (hconj : ∀ z w, Θ (sigR (Ainf F) σ z) w = conj (Θ z w)) (hΘ : Continuous Θ.symm) (n : ℕ) :
     Continuous (hermEquiv σ Θ hconj n).symm := by
@@ -70,6 +76,11 @@ theorem continuous_hermEquiv_symm (σ : E →ₐ[F] E) (Θ : Ainf F ⊗[F] E ≃
     (continuous_id.matrix_elem a c).comp continuous_subtype_val
   exact h1.comp (continuous_apply w)
 
+/- English proof (translation)
+Establish `e : (Θ.symm : (InfinitePlace F → ℂ) → Ainf F ⊗[F] E) = (hΘ.homeomorph Θ).symm`. Use function extensionality and compare the values at `y`. Apply `(hΘ.homeomorph Θ).injective` to reduce the goal to its premises. Rewrite using `[Homeomorph.apply_symm_apply]`. Conclude with `Θ.apply_symm_apply y`.
+
+Rewrite using `[e]`. Conclude with `(hΘ.homeomorph Θ).symm.continuous`.
+-/
 theorem continuous_symm (Θ : Ainf F ⊗[F] E ≃+* (InfinitePlace F → ℂ)) (hΘ : IsHomeomorph Θ) :
     Continuous Θ.symm := by
   have e : (Θ.symm : (InfinitePlace F → ℂ) → Ainf F ⊗[F] E) = (hΘ.homeomorph Θ).symm := by
@@ -80,6 +91,13 @@ theorem continuous_symm (Θ : Ainf F ⊗[F] E ≃+* (InfinitePlace F → ℂ)) (
   rw [e]
   exact (hΘ.homeomorph Θ).symm.continuous
 
+/- English proof (translation)
+Establish `c1 : Continuous Θ` using `hΘ.continuous`. Establish `c2 : Continuous Θ.symm` using `continuous_symm Θ hΘ`. Use `{ continuous_add := ?_, continuous_neg := ?_ }` and prove the remaining obligations. Establish `: (fun p : (Ainf F ⊗[F] E) × (Ainf F ⊗[F] E) => p.1 + p.2) = fun p => Θ.symm (Θ p.1 + Θ p.2)`. Use function extensionality and compare the values at `p`.
+
+Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `c2.comp ((c1.comp continuous_fst).add (c1.comp continuous_snd))`. Establish `: (fun x : Ainf F ⊗[F] E => -x) = fun x => Θ.symm (-Θ x)`. Use function extensionality and compare the values at `x`.
+
+Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `c2.comp c1.neg`.
+-/
 theorem topAddGroup_tens (Θ : Ainf F ⊗[F] E ≃+* (InfinitePlace F → ℂ)) (hΘ : IsHomeomorph Θ) :
     IsTopologicalAddGroup (Ainf F ⊗[F] E) := by
   have c1 : Continuous Θ := hΘ.continuous
@@ -95,6 +113,13 @@ theorem topAddGroup_tens (Θ : Ainf F ⊗[F] E ≃+* (InfinitePlace F → ℂ)) 
     rw [this]
     exact c2.comp c1.neg
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ _ e τ Θ hc n`. Take `⟨hΘ, hconj, -, -⟩` from `hc`. Establish `c1 : Continuous Θ` using `hΘ.continuous`. Establish `c2 : Continuous Θ.symm` using `continuous_symm Θ hΘ`. Use `haveI := topAddGroup_tens Θ hΘ`.
+
+Use `haveI : BorelSpace (HermR (Ainf F) σ n) := ⟨rfl⟩`. Establish `h1` using `continuous_hermEquiv σ Θ hconj c1 n`. Establish `h2` using `continuous_hermEquiv_symm σ Θ hconj c2 n`. Use `⟨hermEquiv σ Θ hconj n, fun b w => rfl, fun ν hν => ⟨?_, fun G hG => ?_⟩⟩` and prove the remaining obligations. Conclude with `AddEquiv.isAddHaarMeasure_map ν (hermEquiv σ Θ hconj n) h1 h2`.
+
+Conclude with `hG.comp_measurable h1.measurable`.
+-/
 theorem exists_hermEquiv : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
   IsCMExt F E σ → ∀ (e : Ainf F ≃+* (InfinitePlace F → ℝ)) (τ : InfinitePlace F → (E →+* ℂ))
   (Θ : Ainf F ⊗[F] E ≃+* (InfinitePlace F → ℂ)), IsCoord σ e τ Θ →

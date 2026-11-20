@@ -5,6 +5,11 @@ open Matrix GlobalTheory.KZ GlobalTheory.KZ.ES
 
 namespace GlobalTheory.KZ.ES
 
+/- English proof (translation)
+Establish `hmm : 0 < (m * m').det` using `by rw [Matrix.det_mul]; exact mul_pos h h'`. Unfold `toGQ`. Rewrite using `[dif_pos hmm, dif_pos h, dif_pos h']`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+
+Simplify using `only [Matrix.GeneralLinearGroup.mkOfDetNeZero, Units.val_mul] at *`. Conclude with `Matrix.map_mul (f := Int.castRingHom ℚ)`.
+-/
 theorem toGQ_mul_pos' (m m' : Matrix (Fin 2) (Fin 2) ℤ) (h : 0 < m.det) (h' : 0 < m'.det) :
     toGQ (m * m') = toGQ m * toGQ m' := by
   have hmm : 0 < (m * m').det := by rw [Matrix.det_mul]; exact mul_pos h h'
@@ -15,6 +20,11 @@ theorem toGQ_mul_pos' (m m' : Matrix (Fin 2) (Fin 2) ℤ) (h : 0 < m.det) (h' : 
   simp only [Matrix.GeneralLinearGroup.mkOfDetNeZero, Units.val_mul] at *
   exact Matrix.map_mul (f := Int.castRingHom ℚ)
 
+/- English proof (translation)
+Set `γ : SL(2, ℤ)` to `⟨!![1, ((t * M : ℕ) : ℤ); 0, 1], by simp [Matrix.det_fin_two]⟩`. Establish `hγ : γ ∈ CongruenceSubgroup.Gamma M`. Rewrite using `[CongruenceSubgroup.Gamma_mem]`. Simplify using `[γ]`. Establish `e : toGQ !![1, ((t * M : ℕ) : ℤ); 0, 1] = ofSL γ` using `Betti.toGQ_sl γ`.
+
+Rewrite using `[e]`. Conclude with `hf γ hγ`.
+-/
 theorem sl_trans_of_lev {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) (M : ℕ) (f : X.K)
     (hf : Lev X M f) (t : ℕ) : X.sl (toGQ !![1, ((t * M : ℕ) : ℤ); 0, 1]) f = f := by
   let γ : SL(2, ℤ) := ⟨!![1, ((t * M : ℕ) : ℤ); 0, 1], by simp [Matrix.det_fin_two]⟩
@@ -24,6 +34,23 @@ theorem sl_trans_of_lev {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* �
   have e : toGQ !![1, ((t * M : ℕ) : ℤ); 0, 1] = ofSL γ := Betti.toGQ_sl γ
   rw [e]; exact hf γ hγ
 
+/- English proof (translation)
+Introduce `Ω _ _ _ ε X M M' q f hq hdvd hcop hlev`. Take `⟨e, rfl⟩` from `hdvd`. Establish `hqe : Nat.Coprime q e` using `Nat.Coprime.coprime_dvd_right (dvd_mul_left e M) hcop`. Use `set g : ℕ → X.K := fun i => X.sl (toGQ !![1, ((i : ℤ) * (M : ℤ)); 0, (q : ℤ)]) f with hg`. Establish `step : ∀ j : ℕ, X.sl (toGQ !![1, ((j : ℤ) * ((M * e : ℕ) : ℤ)); 0, (q : ℤ)]) f = g (j * e % q)`.
+
+Introduce `j`. Establish `hm : !![1, ((j : ℤ) * ((M * e : ℕ) : ℤ)); 0, (q : ℤ)] = !![1, (((j * e / q) * M : ℕ) : ℤ); 0, 1] * !![1, (((j * e % q : ℕ) : ℤ) * (M : ℤ)); 0, (q : ℤ)]`. Establish `hd` using `Nat.mod_add_div (j * e) q`. Generalize the expression as in `j * e % q = a at hd ⊢`. Generalize the expression as in `j * e / q = b at hd ⊢`.
+
+Establish `hdz : (a : ℤ) + (q : ℤ) * (b : ℤ) = (j : ℤ) * (e : ℤ)` using `by exact_mod_cast hd`. Apply the tactic sequence `ext i k; fin_cases i <;> fin_cases k <;> simp [Matrix.mul_apply, Fin.sum_univ_two]`. Take the linear combination `(M : ℤ) * hdz.symm`. Establish `h1 : (0 : ℤ) < (!![1, (((j * e / q) * M : ℕ) : ℤ); 0, 1] : Matrix (Fin 2) (Fin 2) ℤ).det`. Simplify using `[Matrix.det_fin_two]`.
+
+Establish `h2 : (0 : ℤ) < (!![1, (((j * e % q : ℕ) : ℤ) * (M : ℤ)); 0, (q : ℤ)] : Matrix (Fin 2) (Fin 2) ℤ).det`. Simplify using `[Matrix.det_fin_two]`. Conclude with `hq` after adjusting the coercions. Rewrite using `[hm, toGQ_mul_pos' _ _ h1 h2, X.sl_mul, sl_trans_of_lev X M f hlev]`. Establish `hinj : Set.InjOn (fun j => j * e % q) (Finset.range q : Set ℕ)`.
+
+Introduce `a ha b hb hab`. Simplify using `only [Finset.coe_range, Set.mem_Iio] at ha hb`. Establish `h' : a * e ≡ b * e [MOD q]` using `hab`. Use `Nat.ModEq.cancel_right_of_coprime (by simpa [Nat.gcd_comm] using hqe) h'` as an intermediate fact. Simplify `this` using `[Nat.ModEq, Nat.mod_eq_of_lt ha, Nat.mod_eq_of_lt hb]`.
+
+Establish `himg : (Finset.range q).image (fun j => j * e % q) = Finset.range q`. Apply `Finset.eq_of_subset_of_card_le` to reduce the goal to its premises. Introduce `x hx`. Simplify using `only [Finset.mem_image, Finset.mem_range] at hx ⊢`. Take `⟨j, _, rfl⟩` from `hx`.
+
+Conclude with `Nat.mod_lt _ hq`. Rewrite using `[Finset.card_image_of_injOn hinj]`. Unfold `Nq`. Repeatedly rewrite using `[step]`. Use `show ∏ j ∈ Finset.range q, g j = _`.
+
+Rewrite using `[← Finset.prod_image (f := g) hinj, himg]`.
+-/
 theorem Nq_eq_of_dvd : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε),
     ∀ (M M' q : ℕ) (f : X.K), 0 < q → M ∣ M' → Nat.Coprime q M' → Lev X M f → Nq X M q f = Nq X M' q f := by
   intro Ω _ _ _ ε X M M' q f hq hdvd hcop hlev

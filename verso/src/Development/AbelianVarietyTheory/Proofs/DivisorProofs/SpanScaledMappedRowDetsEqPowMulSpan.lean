@@ -6,6 +6,9 @@ open NumberField
 open Pointwise
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `h : (Matrix.of fun i => β i • fun a => τE (c i a)) = Matrix.diagonal β * (Matrix.of c).map τE`. Use extensionality with `i j`. Simplify using `[Matrix.diagonal_mul]`. Rewrite using `[h, Matrix.det_mul, Matrix.det_diagonal, RingHom.map_det]`. Both sides reduce to the same expression.
+-/
 theorem twistDet_rows {E K : Type} [Field E] [Field K] (τE : E →+* K) {p : ℕ}
     (β : Fin p → K) (c : Fin p → Fin p → E) :
     (Matrix.of fun i => β i • fun a => τE (c i a)).det = (∏ i, β i) * τE (Matrix.of c).det := by
@@ -16,11 +19,39 @@ theorem twistDet_rows {E K : Type} [Field E] [Field K] (τE : E →+* K) {p : �
   rw [h, Matrix.det_mul, Matrix.det_diagonal, RingHom.map_det]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← Submodule.prod_span]`. Simplify using `[Finset.prod_const, Finset.card_fin]`.
+-/
 theorem pow_eq_span_prod_set {K : Type} [Field K] [NumberField K] (p : ℕ) (𝔟 : Submodule (𝓞 K) K) :
     𝔟 ^ p = Submodule.span (𝓞 K) (∏ _i ∈ (Finset.univ : Finset (Fin p)), (𝔟 : Set K)) := by
   rw [← Submodule.prod_span]
   simp [Finset.prod_const, Finset.card_fin]
 
+/- English proof (translation)
+Use `set S : Set K := {d | ∃ y : Fin p → Fin p → K, (∀ i, y i ∈ {x : Fin p → K | ∃ β ∈ 𝔟, ∃ c ∈ Λ, x = β • fun a => τE (c a)}) ∧ d = (Matrix.of y).det} with hS`. Establish `hpow` using `pow_eq_span_prod_set p 𝔟`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `d ⟨y, hy, rfl⟩`.
+
+Use `choose β hβ c hc hyc using hy`. Establish `hy' : y = fun i => β i • fun a => τE (c i a)` using `funext hyc`. Substitute `hy'` using the available equality. Rewrite using `[twistDet_rows]`. Use `Submodule.mul_mem_mul ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[hpow]`. Use `Submodule.subset_span ?_` and prove the remaining obligations. Rewrite using `[Set.mem_finset_prod]`. Conclude with `⟨β, fun {i} _ => hβ i, rfl⟩`. Conclude with `Submodule.subset_span ⟨_, Submodule.subset_span ⟨c, hc, rfl⟩, rfl⟩`.
+
+Rewrite using `[Submodule.mul_le]`. Establish `key : ∀ c : Fin p → Fin p → E, (∀ i, c i ∈ Λ) → ∀ m ∈ 𝔟 ^ p, m * τE (Matrix.of c).det ∈ Submodule.span (𝓞 K) S`. Introduce `c hc m hm`. Rewrite `hm` using `[hpow]`. Proceed by induction on `hm using Submodule.span_induction with`.
+
+Consider the case `mem x hx`. Rewrite `hx` using `[Set.mem_finset_prod]`. Take `⟨β, hβ, rfl⟩` from `hx`. Use `Submodule.subset_span ⟨fun i => β i • fun a => τE (c i a), fun i => ?_, ?_⟩` and prove the remaining obligations. Conclude with `⟨β i, hβ (Finset.mem_univ i), c i, hc i, rfl⟩`.
+
+Rewrite using `[twistDet_rows]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [add_mul]`. Conclude with `add_mem hx hy`. Consider the case `smul r x _ hx => rw [smul_mul_assoc]`.
+
+Conclude with `Submodule.smul_mem _ r hx`. Establish `key2 : ∀ e ∈ GlobalTheory.IdxTensor.dets E p Λ, ∀ m ∈ 𝔟 ^ p, m * τE e ∈ Submodule.span (𝓞 K) S`. Introduce `e he`. Proceed by induction on `he using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨c, hc, rfl⟩` from `hx`. Conclude with `key c hc`. Consider the case `zero => intro m _`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy`.
+
+Introduce `m hm`. Rewrite using `[map_add, mul_add]`. Conclude with `add_mem (hx m hm) (hy m hm)`. Consider the case `smul a x _ hx`. Introduce `m hm`.
+
+Rewrite using `[Algebra.smul_def, map_mul]`. Establish `: τE (algebraMap (𝓞 E) E a) = ((τ a : 𝓞 K) : K)` using `hτ a`. Rewrite using `[this, mul_left_comm, ← Algebra.smul_def (τ a)]`. Conclude with `Submodule.smul_mem _ (τ a) (hx m hm)`. Introduce `m hm n hn`.
+
+Proceed by induction on `hn using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨e, he, rfl⟩` from `hx`. Conclude with `key2 e he m hm`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `add_mem hx hy`. Consider the case `smul r x _ hx => rw [mul_smul_comm]`. Conclude with `Submodule.smul_mem _ r hx`.
+-/
 theorem span_twistDets_eq {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K]
     (τ : 𝓞 E →+* 𝓞 K) (τE : E →+* K) (hτ : ∀ x : 𝓞 E, τE x = ((τ x : 𝓞 K) : K)) (p : ℕ)
     (𝔟 : Submodule (𝓞 K) K) (Λ : Submodule (𝓞 E) (Fin p → E)) :

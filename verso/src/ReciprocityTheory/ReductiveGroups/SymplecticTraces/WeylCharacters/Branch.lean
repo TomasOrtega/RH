@@ -6,6 +6,9 @@ open Finset
 
 namespace ReciprocityTheory.ChartRestriction.TR.Weyl
 
+/- English proof (translation)
+The claim follows from `| 0, _ => rfl | n + 1, t => by rw [gtChar] have h : interl (0 : Fin (n + 1) → ℤ) = {0} := by ext mu simp only [interl, Fintype.mem_piFinset, Pi.zero_apply, Finset.mem_Icc, Finset.mem_singleton] constructor · intro h; funext i; have := h i; simp only [Pi.zero_apply]; omega · rintr …`.
+-/
 theorem gtChar_zero {K : Type*} [Field K] : ∀ (n : ℕ) (t : Fin n → K), gtChar n 0 t = 1
   | 0, _ => rfl
   | n + 1, t => by

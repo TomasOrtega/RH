@@ -70,6 +70,9 @@ def IdentStatement : Prop :=
   ∀ (n : ℕ) (Ω : Set (V n)) (F : V n → ℂ) (a : V n),
     IsOpen Ω → Convex ℝ Ω → DifferentiableOn ℂ F Ω → a ∈ Ω → F =ᶠ[𝓝 a] 0 → EqOn F 0 Ω
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨contDiff_const, HasCompactSupport.zero, by simp [tsupport]⟩`.
+-/
 theorem isTest_zero {n : ℕ} (Ω : Set (V n)) : IsTest Ω (fun _ => 0) :=
   ⟨contDiff_const, HasCompactSupport.zero, by simp [tsupport]⟩
 

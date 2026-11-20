@@ -27,6 +27,13 @@ namespace GlobalTheory.ThetaRuleValue
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
   {Dw : Datum H} {l : Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Take `⟨U, iU, jU, κ, u, G, hff, hu, hG⟩` from `exists_faithfullyFlat_isVtOver firstFiveLaws.1 E H Dw l Xo c K y n x`. Establish `hκ : Function.Injective κ` using `hff.injective`. Establish `: Nontrivial U` using `hκ.nontrivial`. Take `⟨m, hm⟩` from `Ideal.exists_maximal U`. Set `iF : Field (U ⧸ m)` to `Ideal.Quotient.field m`.
+
+Set `ψ : U →ₐ[c.F] U ⧸ m` to `Ideal.Quotient.mkₐ c.F m`. Take `⟨z, hz⟩` from `FramedBaseChange.exists_frMap firstFiveLaws.1 E H Dw l Xo c U (U ⧸ m) ψ u`. Set `h : ptO Xo z.x ⟶ ptO Xo u.x` to `Over.homMk (spMap ψ.toRingHom) hz.1.symm`. Use `choose F' hF' using fun b => GermD.exists_pullSec Xo.univ.t.G Xo.univ.t.PP.L ((l.M : ℤ) ^ 2) (h ▷ Xo.univ.t.G) (whiskerRight_snd _ _) (G b)`. Use `⟨U ⧸ m, iF, inferInstance, ψ.comp κ, z, F', FramedBaseChange.trans κ ψ hu hz, fun b => ?_⟩` and prove the remaining obligations.
+
+Establish `e : h ≫ levPt Xo u.x (x b) = levPt Xo z.x (x b)`. Unfold `levPt`. Rewrite using `[← Category.assoc, comp_toUnit]`. Rewrite using `[← e]`. Conclude with `(GlobalTheory.VtBaseChange.isVtOver_isUUOver_baseChange E H Dw l Xo l.M (l.Mb ^ 2) _ _ h u.s z.s (GlobalTheory.FramedBaseChange.isPullSec ψ hz h rfl) (G b) (F' b) (hF' b)).1 _ (hG b)`.
+-/
 theorem exists_field_isVtOver {K : Type} [Field K] [Algebra c.F K] (y : FrPt Xo c K) (n : ℕ) (x : Fin n → Dw.La) :
     ∃ (F : Type) (_ : Field F) (_ : Algebra c.F F) (κ : K →ₐ[c.F] F) (z : FrPt Xo c F)
       (Fs : Fin n → LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L ((l.M : ℤ) ^ 2) (ptO Xo z.x))),
@@ -51,6 +58,13 @@ theorem exists_field_isVtOver {K : Type} [Field K] [Algebra c.F K] (y : FrPt Xo 
   exact (GlobalTheory.VtBaseChange.isVtOver_isUUOver_baseChange E H Dw l Xo l.M (l.Mb ^ 2) _ _ h u.s z.s
     (GlobalTheory.FramedBaseChange.isPullSec ψ hz h rfl) (G b) (F' b) (hF' b)).1 _ (hG b)
 
+/- English proof (translation)
+Set `` to `io.toAlgebra`. Introduce `κ`. Take `⟨g, hg⟩ : ∃ g : T.Fr →+* F, κ.toRingHom = g` from `⟨_, rfl⟩`. Establish `hi : inst = (g.comp io).toAlgebra`. Use `Algebra.algebra_ext _ _ fun r => ?_` and prove the remaining obligations.
+
+Rewrite using `[← hg]`. Conclude with `(κ.commutes r).symm`. Substitute `hi` using the available equality. Set `` to `g.toAlgebra`. Introduce `z hz a n x P hP Fs hF f hf`.
+
+Establish `key` using `GlobalTheory.T.thetaRule_value_integral_framed_point_extension_field E H Dw l Xo c nab hnab T io y F κ hg z hz a n x P hP Fs hF f hf`. Conclude with `(congrArg (fun k : T.Fr →+* F => k (evI y f)) hg).trans key`.
+-/
 theorem map_evI_eq_thExpr (nab : NabV Xo c) (hnab : letI := H.starRing; IsNab Xo c nab) (T : CDVR)
     (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (F : Type) [Field F] [inst : Algebra c.F F] :
     letI := io.toAlgebra
@@ -72,6 +86,11 @@ theorem map_evI_eq_thExpr (nab : NabV Xo c) (hnab : letI := H.starRing; IsNab Xo
   have key := GlobalTheory.T.thetaRule_value_integral_framed_point_extension_field E H Dw l Xo c nab hnab T io y F κ hg z hz a n x P hP Fs hF f hf
   exact (congrArg (fun k : T.Fr →+* F => k (evI y f)) hg).trans key
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c nab hnab T T' io io' y y' φ hφ a n f hf`. Set `` to `io.toAlgebra`. Set `` to `io'.toAlgebra`. Take `⟨x, P, hP, hf⟩` from `hf`. Take `⟨F, iF, jF, κ, z, Fs, hz, hF⟩` from `exists_field_isVtOver y'.1 n x`.
+
+Apply `κ.toRingHom.injective` to reduce the goal to its premises. Establish `h₁` using `map_evI_eq_thExpr nab hnab T io y F (κ.comp φ) z (FramedBaseChange.trans φ κ hφ hz) a n x P hP Fs hF f hf`. Establish `h₂` using `map_evI_eq_thExpr nab hnab T' io' y' F κ z hz a n x P hP Fs hF f hf`. Conclude with `h₁.trans h₂.symm`.
+-/
 theorem evI_baseChange : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), letI := H.starRing; ∀ (nab : NabV Xo c), IsNab Xo c nab → ∀ (T T' : CDVR) (io : c.F →+* T.Fr) (io' : c.F →+* T'.Fr) (y : IntFr Xo c T io) (y' : IntFr Xo c T' io'), letI := io.toAlgebra; letI := io'.toAlgebra; ∀ φ : T.Fr →ₐ[c.F] T'.Fr, FrMap φ y.1 y'.1 → ∀ (a : ((E →+* ℂ) × ℕ → ℕ)) (n : ℕ), ∀ f ∈ thGen Xo c nab a n, φ (evI y f) = evI y' f := by
   intro E _ _ _ H Dw l Xo c nab hnab T T' io io' y y' φ hφ a n f hf
   let := io.toAlgebra

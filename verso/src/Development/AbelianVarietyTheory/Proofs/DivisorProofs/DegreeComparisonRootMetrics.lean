@@ -33,6 +33,23 @@ section Calculus
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k} {D : ℕ}
 
+/- English proof (translation)
+Introduce `v j`. Take `⟨N, e, b, hv⟩` from `exists_finite_family v`. Use `choose Φ hΦ using fun o : Option ι => ((hA.arExists k X p D hX).2 (Option (Fin N)) (fun o' : Option (Fin N) => o'.elim (fnB (w o) (hu o) (hc o)) e)).1`. Set `Λ : Option ι → MvPolynomial (Fin N) ℝ →ₗ[ℝ] ℝ` to `fun o => Φ o ∘ₗ LinearMap.mulLeft ℝ (MvPolynomial.X none) ∘ₗ (MvPolynomial.rename some).toLinearMap`. Establish `hΛ : ∀ o Q, Λ o Q = Φ o (MvPolynomial.X none * MvPolynomial.rename some Q)` using `fun _ _ => rfl`.
+
+Establish `h₁ : ∀ o, num (Function.update v j (cl (fnB (w o) (hu o) (hc o)))) = Λ o (∏ i ∈ Finset.univ.erase j, lin (b i))`. Introduce `o`. Set `a : Fin (D + 1) → Option (Fin N) → ℝ` to `fun i o' => if i = j then o'.elim 1 0 else o'.elim 0 (b i)`. Establish `e₁` using `hnum _ _ _ (hΦ o) a`. Establish `e₂ : (fun i => ∑ o', a i o' • cl ((fun o' : Option (Fin N) => o'.elim (fnB (w o) (hu o) (hc o)) e) o')) = Function.update v j (cl (fnB (w o) (hu o) (hc o)))`.
+
+Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = j`. Substitute `hi` using the available equality. Simplify using `[a, Fintype.sum_option]`. Simplify using `[a, hi, Fintype.sum_option, hv i]`.
+
+Rewrite using `[← e₂, ← e₁, hΛ, ← Finset.mul_prod_erase _ _ (Finset.mem_univ j), map_prod]`. Use `congr 2`. Simplify using `[a, lin, Fintype.sum_option]`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Simplify using `[a, lin, Fintype.sum_option, Finset.ne_of_mem_erase hi]`.
+
+Establish `h₂ : Λ none - ∑ i, t i • Λ (some i) = 0`. Use `GlobalTheory.ArInt.Model.eq_zero_of_pow D _ (fun n => ?_) fun P d hd hP => ?_` and prove the remaining obligations. Establish `key` using `fun o => hA.arMix.fnB hA.arExists hX (hΦ o) n`. Use `hX.finite_emb` as an intermediate fact. Set `` to `Fintype.ofFinite (k →+* ℂ)`.
+
+Simplify using `only [LinearMap.sub_apply, LinearMap.sum_apply, LinearMap.smul_apply, hΛ, map_pow, (key _).2, chInt, finsum_eq_sum_of_fintype, smul_eq_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm, ← Finset.sum_sub_distrib]`. Use `Finset.sum_eq_zero fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[show w none σ = fun y => ∑ i, t i * w (some i) σ y from funext (hw σ)]`. Simplify using `only [GlobalTheory.Weight.chernInt]`.
+
+Rewrite using `[MeasureTheory.integral_finsetSum _ fun i _ => ((key (some i)).1 σ).1.const_mul _, MeasureTheory.integral_finsetSum _ fun i _ => ((key (some i)).1 σ).2.const_mul _, ← Finset.sum_sub_distrib, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[MeasureTheory.integral_const_mul, MeasureTheory.integral_const_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hz : ∀ o, Λ o P = 0` using `fun o => (hΦ o).2 _ (1 + d) (by omega) ((isHomogeneous_X ℝ none).mul hP.rename_isHomogeneous)`.
+
+Simplify using `[hz]`. Establish `h₃` using `LinearMap.congr_fun h₂ (∏ i ∈ Finset.univ.erase j, lin (b i))`. Rewrite using `[num.map_update_sub, num.map_update_sum]`. Simplify using `only [num.map_update_smul, h₁]`. Simplify using `using h₃`.
+-/
 theorem fnB_sub_sum_mem_rad (hA : GlobalTheory.Published.ArCalc) (hX : GlobalTheory.IsArithVar p D) {num : VertForm.Form (Cl p) D}
     (hnum : IsArForm D num) {ι : Type} [Fintype ι] (t : ι → ℝ)
     (w : Option ι → ∀ σ : k →+* ℂ, GlobalTheory.CxPts p σ → ℝ) (hu : ∀ o σ y, GlobalTheory.CxPts.CInfAt (w o σ) y)
@@ -94,6 +111,15 @@ section Cover
 
 variable {F : Type} [Field F] [NumberField F] {Y : Var F}
 
+/- English proof (translation)
+Substitute `hdim` using the available equality. Take `⟨P, π, -, hP, hπ, -, hj, -, -, -⟩` from `GlobalTheory.ModelDom.exists_normal_dominating F Y M M`. Use `M.ar.isIntegral` as an intermediate fact. Use `P.ar.isIntegral` as an intermediate fact. Establish `hd` using `(GlobalTheory.ModelBirational.main F Y P M π hπ hj).2`.
+
+Establish `hg : π (genericPoint P.X) = genericPoint M.X`. Rewrite using `[← GlobalTheory.ModelBirational.j_genericPoint P, ← GlobalTheory.ModelBirational.j_genericPoint M, ← hj, Scheme.Hom.comp_apply]`. Establish `hΨ'` using `(hA.arProj _ M.X P.X M.p P.p _ M.ar P.ar π hπ hg (by rw [hd]; exact one_ne_zero)).2 _ L Ψ hΨ`. Rewrite `hΨ'` using `[hd, Nat.cast_one, one_smul]`. Establish `n₀` using `fun i => norms_of_induces (Cover.induces_ofModel hP (InducedPull.induced_pull F C Y (A i) M P π hπ hj (L i) m 0 (hL i)))`.
+
+Use `sub_eq_zero.1 (GlobalTheory.ArInt.Model.eq_zero_of_pow (Y.dim + 1) _ (fun n => ?_) fun Q d hd hQ => ?_)` and prove the remaining obligations. Establish `n₁` using `(norms_comb hN fun i => ((m : ℕ) : ℤ) * n i).congr (f' := fun x => ∏ i, (genAt (A i).D x ^ (m : ℕ)) ^ n i) (a' := fun σ y => ∑ i, (n i : ℝ) * ((m : ℕ) * lnAdl (A i) σ y)) (l' := fun v e y => ∑ i, (n i : ℝ) * ((m : ℕ) * (A i).lg v e y)) (fun x => Finset.prod_congr rfl fun i _ => b …`. Establish `key` using `GlobalTheory.ArSelfObj.selfInter_eq hA V P hP n₁ (norms_comb n₀ n) (hΦ.1 _) (hΨ'.1 n)`. Establish `e : lin (fun i => ((((m : ℕ) : ℤ) * n i : ℤ) : ℝ)) = ((m : ℕ) : ℝ) • lin fun i => (n i : ℝ)`. Simplify using `[lin, Finset.smul_sum, smul_eq_C_mul, mul_assoc]`.
+
+Rewrite `key` using `[e, smul_pow, map_smul]`. Simplify `key` using `[sub_eq_zero]`. Simplify using `[hΦ.2 Q d hd hQ, hΨ.2 Q d hd hQ]`.
+-/
 theorem smul_eq_smul_of_norms (hA : GlobalTheory.Published.ArCalc) {C : CxSt F} (V : Cover Y) (M : GlobalTheory.TrueGeo.Model Y) {ι : Type}
     [Fintype ι] (A : ι → Adl C Y) (L : ι → GlobalTheory.HermLB M.p) (m : ℕ+) (hL : ∀ i, (A i).Induced M (L i) m 0)
     {Ψ : MvPolynomial ι ℝ →ₗ[ℝ] ℝ} (hΨ : haveI := M.ar.isIntegral; IsArFun L Y.dim Ψ) (N : ι → GlobalTheory.HermLB V.p)
@@ -132,6 +158,13 @@ section Absorb
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k} {D : ℕ}
 
+/- English proof (translation)
+Take `⟨num, hnum, -⟩` from `exists_symm_arForm hA k X p D hX`. Take `⟨r₁, r₂, -, -⟩` from `arForm_rad_rules hA k X p D hX num hnum`. Establish `e₁` using `hnum _ _ _ hΦ fun _ o => o.elim 1 fun o' => o'.elim 0 t`. Establish `e₂` using `hnum _ _ _ hΨ fun _ i => -t i`. Rewrite `e₁`, `e₂` using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
+
+Rewrite using `[e₁, e₂]`. Use `map_congr_rad num fun _ => ?_` and prove the remaining obligations. Establish `h` using `add_mem (fnB_sub_sum_mem_rad hA hX hnum t w hu hc hw) (sum_mem fun i (_ : i ∈ Finset.univ) => Submodule.smul_mem _ (t i) (add_mem (add_mem (r₂ (ρ i)) (r₂ (fnB (w (some i)) (hu _) (hc _)))) (r₁ (ρ i) (fnB (w (some i)) (hu _) (hc _)).dual)))`. Use `h using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Fintype.sum_option, Option.elim, one_smul, zero_smul, smul_add, smul_sub, neg_smul, Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.sum_neg_distrib]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem absorb (hA : GlobalTheory.Published.ArCalc) (hX : GlobalTheory.IsArithVar p D) {ι : Type} [Fintype ι] (t : ι → ℝ)
     (w : Option ι → ∀ σ : k →+* ℂ, GlobalTheory.CxPts p σ → ℝ) (hu : ∀ o σ y, GlobalTheory.CxPts.CInfAt (w o σ) y)
     (hc : ∀ o σ σ', (GlobalTheory.Weight.ofFun (w o σ)).IsConj (GlobalTheory.Weight.ofFun (w o σ')))
@@ -162,6 +195,9 @@ section Roots
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Hs : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum Hs}
 
+/- English proof (translation)
+Establish `key (st) (n : ℤ) (hn : n ≠ 0) : Pad.parOf (Finsupp.single (a, R, st) n : Pad.Sym E →₀ ℤ) = R`. Establish `h : (Finsupp.single (a, R, st) n : Pad.Sym E →₀ ℤ).support.Nonempty` using `Finsupp.support_nonempty_iff.2 (Finsupp.single_ne_zero.2 hn)`. Rewrite using `[Pad.parOf, dif_pos h, Finset.mem_singleton.1 (Finsupp.support_single_subset h.choose_spec)]`. Unfold `rootSym`. Apply the tactic sequence `split_ifs <;> exact key _ _ (by norm_num)`.
+-/
 theorem parOf_rootSym (a : ℕ → Bool) (R : Option ℝ) (τ : E →+* ℂ) (i : ℕ) : Pad.parOf (rootSym Dw a R τ i) = R := by
   have key (st) (n : ℤ) (hn : n ≠ 0) : Pad.parOf (Finsupp.single (a, R, st) n : Pad.Sym E →₀ ℤ) = R := by
     have h : (Finsupp.single (a, R, st) n : Pad.Sym E →₀ ℤ).support.Nonempty :=
@@ -170,6 +206,9 @@ theorem parOf_rootSym (a : ℕ → Bool) (R : Option ℝ) (τ : E →+* ℂ) (i 
   unfold rootSym
   split_ifs <;> exact key _ _ (by norm_num)
 
+/- English proof (translation)
+Unfold `rootSym`. Apply the tactic sequence `split_ifs <;> rw [Finsupp.sum_single_index (h₀ _), Finsupp.sum_single_index (h₀ _), h]`.
+-/
 theorem sum_rootSym (a : ℕ → Bool) (R : Option ℝ) (τ : E →+* ℂ) (i : ℕ) (f : Pad.Sym E → ℤ → ℝ) (h₀ : ∀ s, f s 0 = 0)
     (h : ∀ st n, f (a, R, st) n = f (a, none, st) n) : (rootSym Dw a R τ i).sum f = (rootSym Dw a none τ i).sum f := by
   unfold rootSym
@@ -184,9 +223,17 @@ section Objects
 variable {D : D7} {O : Setup D} (hm : ∀ k, Mets (O.Φ.C k) (cxSt D.what₂.LL)) (c : O.s.Comp) (P : Finset ℕ) (R : Option ℝ)
   (x : D.what₂.Tau × Fin O.N)
 
+/- English proof (translation)
+Simplify using `only [Setup.root0, Setup.adl0, adlOf, expo_rootSym]`.
+-/
 theorem root_D : (adlOf (O.Φ.C c) (hm c) (rootSym O.S.Dw (ArIn.ind P) R (DV.tauEmb D x.1) x.2)).D = (O.root0 c P x).D := by
   simp only [Setup.root0, Setup.adl0, adlOf, expo_rootSym]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `v e y`. Simplify using `only [Setup.root0, Setup.adl0, adlOf, lgOf, expo_rootSym]`. Use `split_ifs`. Use `congr 2`. Conclude with `sum_rootSym _ _ _ _ _ (fun _ => (congrArg (· * _) Int.cast_zero).trans (zero_mul _)) fun _ _ => rfl`.
+
+Both sides reduce to the same expression.
+-/
 theorem root_lg : (adlOf (O.Φ.C c) (hm c) (rootSym O.S.Dw (ArIn.ind P) R (DV.tauEmb D x.1) x.2)).lg = (O.root0 c P x).lg := by
   funext v e y
   simp only [Setup.root0, Setup.adl0, adlOf, lgOf, expo_rootSym]
@@ -195,6 +242,11 @@ theorem root_lg : (adlOf (O.Φ.C c) (hm c) (rootSym O.S.Dw (ArIn.ind P) R (DV.ta
     exact sum_rootSym _ _ _ _ _ (fun _ => (congrArg (· * _) Int.cast_zero).trans (zero_mul _)) fun _ _ => rfl
   · rfl
 
+/- English proof (translation)
+Establish `key (g : Mets (O.Φ.C c) (cxSt D.what₂.LL)) (S : Option ℝ) : lnAdl (adlOf (O.Φ.C c) g (rootSym O.S.Dw (ArIn.ind P) S (DV.tauEmb D x.1) x.2)) σ y = lnN (g S σ (O.ex x)) (genAt (divOf (O.Φ.C c) (O.ex x)) (under y)) y`. Establish `e (n : Pad.Letter O.S.Dw → ℤ) (hn : n = O.ex x) (S' : Option ℝ) (hS : S' = S) : lnN (g S' σ n) (genAt (divOf (O.Φ.C c) n) (under y)) y = lnN (g S σ (O.ex x)) (genAt (divOf (O.Φ.C c) (O.ex x)) (under y)) y`. Substitute `hn hS` using the available equality. Both sides reduce to the same expression. Use `Eq.trans ?_ (e _ (expo_rootSym O.S.Dw (ArIn.ind P) S _ _) _ (parOf_rootSym (Dw := O.S.Dw) (ArIn.ind P) S (DV.tauEmb D x.1) x.2))` and prove the remaining obligations.
+
+Simplify using `only [lnAdl, adlOf, Pi.zero_apply, mul_zero, sub_zero]`. Rewrite using `[key, Setup.root0, Setup.adl0, key, lnRatio]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem root_lnAdl (σ : D.what₂.LL →+* ℂ) (y : Pts (O.var c) σ) :
     lnAdl (adlOf (O.Φ.C c) (hm c) (rootSym O.S.Dw (ArIn.ind P) R (DV.tauEmb D x.1) x.2)) σ y =
       lnAdl (O.root0 c P x) σ y + lnRatio (hm c R σ (O.ex x)) (O.met.h0 c σ (O.ex x)) y := by
@@ -211,6 +263,13 @@ theorem root_lnAdl (σ : D.what₂.LL →+* ℂ) (y : Pts (O.var c) σ) :
   rw [key, Setup.root0, Setup.adl0, key, lnRatio]
   ring
 
+/- English proof (translation)
+Take `⟨x₀, P₀, hc⟩` from `hO`. Establish `hu : under p' = under p`. Rewrite using `[under, e]`. Conclude with `(Scheme.Hom.comp_apply _ _ _).trans (congrArg p.1 (Subsingleton.elim (α := PrimeSpectrum ℂ) _ _))`. Use `Finset.sum_congr rfl fun r _ => congrArg _ ?_` and prove the remaining obligations.
+
+Establish `h₁ : p ∈ GlobalTheory.ProjVar.Var.eqnSet σ (divOf (O.Φ.C c) (O.ex r)) (eqn _ (under p))` using `Base.isEqn_eqn _ _`. Take `⟨k₁, -, -⟩` from `GlobalTheory.ShFam.mets_conj _ _ _ _ _ _ _ x' O.Φ c σ σ' (O.ex r) p p' _ e h₁`. Take `⟨-, k₂, -⟩` from `GlobalTheory.ShFam.mets_conj _ _ _ _ _ _ _ x₀ O.Φ c σ σ' (O.ex r) p p' _ e h₁`. Rewrite using `[hc.h0_eq]`. Use `(InterpChgCover.lnRatio_eq_h _ _ p' hu).trans (Eq.trans ?_ (InterpChgCover.lnRatio_eq_h _ _ p rfl).symm)` and prove the remaining obligations.
+
+Conclude with `congrArg₂ (fun a b => Real.log a / 2 - Real.log b / 2) (k₁ R) k₂`.
+-/
 theorem chgWith_conj (hO : O.Core) (x' : ToroidalCompactificationData O.s) (u : D.what₂.Tau → Fin O.N → ℝ)
     (σ σ' : D.what₂.LL →+* ℂ) (p : Pts (O.var c) σ) (p' : Pts (O.var c) σ') (e : p'.1 = spMap (starRingEnd ℂ) ≫ p.1) :
     chgWith O (metsOf x' O.Φ) c R u σ' p' = chgWith O (metsOf x' O.Φ) c R u σ p := by
@@ -226,6 +285,13 @@ theorem chgWith_conj (hO : O.Core) (x' : ToroidalCompactificationData O.s) (u : 
   refine (InterpChgCover.lnRatio_eq_h _ _ p' hu).trans (Eq.trans ?_ (InterpChgCover.lnRatio_eq_h _ _ p rfl).symm)
   exact congrArg₂ (fun a b => Real.log a / 2 - Real.log b / 2) (k₁ R) k₂
 
+/- English proof (translation)
+Introduce `a`. Take `⟨x₀, P₀, hc⟩` from `hO`. Set `I` to `h.man c`. Establish `h₁ : ∀ n, (metsOf x' O.Φ c (some r) (I.ε a) n).SmoothOn Set.univ` using `fun n => (GlobalTheory.metsOf_smooth _ _ _ _ _ _ _ x' O.Φ c (I.ε a) n).1 r hr`. Establish `h₀ : ∀ n, (O.met.h0 c (I.ε a) n).SmoothOn Set.univ` using `fun n => by`.
+
+Rewrite using `[hc.h0_eq]`. Conclude with `(GlobalTheory.metsOf_smooth _ _ _ _ _ _ _ x₀ O.Φ c (I.ε a) n).2.1`. Establish `hg : ((O.var c).an (I.ε a)).SmoothOn Set.univ (chgWith O (metsOf x' O.Φ) c (some r) u (I.ε a))`. Introduce `i`. Use `(ContDiffOn.sum (s := Finset.univ) fun z _ => (contDiffOn_const (c := u z.1 z.2)).mul (GlobalTheory.HodgeChgSmooth.smoothOn_lnRatio (h₁ (O.ex z)) (h₀ (O.ex z)) i)).congr fun v _ => ?_` and prove the remaining obligations.
+
+Simplify using `[chgWith]`. Establish `key` using `GlobalTheory.HodgeChgSmooth.smoothOn_of_manIs I (O.dim_eq c) a isOpen_univ hg (f := psiOf h x' r u c a) fun z _ => rfl`. Introduce `j`. Simplify using `using key j`.
+-/
 theorem smooth_psiOf (hO : O.Core) {A : SlopeTestRemainingChoices O.Y} {T : Real0 O.Y} {H : Ht O.Y} (h : O.Reads A T H) (x' : ToroidalCompactificationData O.s) {r : ℝ}
     (hr : 2 ≤ r) (u : D.what₂.Tau → Fin O.N → ℝ) : (T.M c).Smooth (psiOf h x' r u c) := by
   intro a
@@ -248,6 +314,21 @@ theorem smooth_psiOf (hO : O.Core) {A : SlopeTestRemainingChoices O.Y} {T : Real
 
 end Objects
 
+/- English proof (translation)
+Introduce `p2 ph D O hO A T H h x' B hB R hR c u M L m Ψ hL hΨ ε π hd hu hc Φ hΦ`. Establish `hA` using `p2.p4`. Establish `hR2 : (2 : ℝ) ≤ R` using `by linarith [Real.add_one_le_exp (2 : ℝ)]`. Establish `hdim : (O.var c).dim = dimY O.Y` using `O.dim_eq c`. Set `W` to `h.mdl (GlobalTheory.FlagAr.setB O.Y B) c`.
+
+Establish `hW : GlobalTheory.IsArithVar W.V.p (dimY O.Y)` using `hdim ▸ W.V.ar`. Set `s : D.what₂.Tau × Fin O.N → D.what₂.Tau → Fin O.N → ℝ` to `fun x τ i => if (τ, i) = x then 1 else 0`. Establish `hs (x σ y) : chgWith O (metsOf x' O.Φ) c (some R) (s x) σ y = lnRatio (metsOf x' O.Φ c (some R) σ (O.ex x)) (O.met.h0 c σ (O.ex x)) y`. Simplify using `[chgWith, s]`. Set `w : Option (D.what₂.Tau × Fin O.N) → ∀ σ : 𝓞 D.what₂.LL →+* ℂ, GlobalTheory.CxPts W.V.p σ → ℝ` to `fun o => (T.M c).pull ε π ((2 : ℝ) • psiOf h x' R (o.elim u s) c)`.
+
+Establish `hwu : ∀ o σ y, GlobalTheory.CxPts.CInfAt (w o σ) y` using `fun o => OnModelCInf.cInfAt_pull _ _ _ _ _ (h.man c) ε π hd _ fun σ j => (smooth_psiOf c hO h x' hR2 (o.elim u s) σ j).const_smul (2 : ℝ)`. Establish `hwc : ∀ o σ σ', (GlobalTheory.Weight.ofFun (w o σ)).IsConj (GlobalTheory.Weight.ofFun (w o σ'))` using `fun o => ArSelfObj.pull_conj hd (g := chgWith O (metsOf x' O.Φ) c (some R) (o.elim u s)) (fun _ _ => rfl) (chgWith_conj c (some R) hO x' _)`. Establish `hw : ∀ σ y, w none σ y = ∑ x, u x.1 x.2 * w (some x) σ y`. Introduce `σ y`. Express the relevant statement in the definitionally equal form `2 * chgWith O _ c _ u _ _ = ∑ x, u x.1 x.2 * (2 * chgWith O _ c _ (s x) _ _)`.
+
+Simplify using `only [hs]`. Rewrite using `[chgWith, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun x _ => by ring`. Take `⟨Θ, hΘ⟩` from `((hA.arExists _ W.V.X W.V.p _ hW).2 _ fun x => (W.root (GlobalTheory.FlagAr.setB O.Y B) x).tens (fnB (w (some x)) (hwu _) (hwc _)).dual).1`. Establish `e₁` using `absorb hA hW (fun x => u x.1 x.2) w hwu hwc hw (W.root (GlobalTheory.FlagAr.setB O.Y B)) W.amp hΦ hΘ`.
+
+Establish `e₂` using `smul_eq_smul_of_norms hA W.V M _ L m hL hΨ _ (fun x => (norms_tens _ _ W.V _ _ _ _ _ _ _ _ (norms_of_induces (Setup.induces_root0 D O hO.dualRef _ c W _ subset_rfl x)) (Norms.dual _ _ W.V _ _ _ _ ((norms_triv_fnB _ _ W.V).2 _ (hwu (some x)) (hwc (some x)) (fun σ y => -chgWith O ( …`. Rewrite using `[show w (some x) _ y' = _ from ArSelfObj.pull_eq hd (g := chgWith O (metsOf x' O.Φ) c (some R) (s x)) (fun _ _ => rfl) σ z y y' h₁ h₂]`. Use the proof step `ring))).congr (fun y => by rw [root_D]; simp) (fun σ y => by rw [root_lnAdl, hs]; simp)`. Use `fun v e y => by rw [root_lg]; simp) hdim hΘ`. Establish `e₃` using `LinearMap.congr_fun e₂ (linRoot u ^ (dimY O.Y + 1))`.
+
+Establish `e₄ : (lin fun x : D.what₂.Tau × Fin O.N => -u x.1 x.2) = linRoot u` using `by simp [lin, linRoot]`. Rewrite `e₁` using `[e₄]`. Simplify using `only [LinearMap.smul_apply, smul_eq_mul] at e₃`. Establish `hn : (0 : ℝ) < (Module.finrank ℚ D.what₂.LL : ℝ)` using `Nat.cast_pos.2 Module.finrank_pos`. Establish `hm : (0 : ℝ) < ((m : ℕ) : ℝ) ^ (dimY O.Y + 1)` using `pow_pos (Nat.cast_pos.2 m.2) _`.
+
+Establish `hV : (0 : ℝ) < (W.V.deg : ℝ)` using `Nat.cast_pos.2 W.V.deg_pos`. Use `Eq.trans ?_ (congrArg (· / W.V.ν) e₁.symm)` and prove the remaining obligations. Rewrite using `[Cover.ν, div_eq_div_iff (mul_pos hm hn).ne' (mul_pos hn hV).ne']`. Take the linear combination `-(Module.finrank ℚ D.what₂.LL : ℝ) * e₃`.
+-/
 theorem degree_comparison_normalized : Hypotheses2 → HypothesesH → ∀ (D : D7) (O : Setup D), O.Core → ∀ (A : SlopeTestRemainingChoices O.Y) (T : Real0 O.Y) (H : Ht O.Y) (h : O.Reads A T H) (x' : GlobalTheory.ShFam.ToroidalCompactificationData O.s) (B : ℝ), 2 ≤ B → ∀ R : ℝ, Real.exp 2 ≤ R → ∀ (c : O.s.Comp) (u : D.what₂.Tau → Fin O.N → ℝ) (M : GlobalTheory.TrueGeo.Model (O.var c)) (L : D.what₂.Tau × Fin O.N → GlobalTheory.HermLB M.p) (m : ℕ+) (Ψ : MvPolynomial (D.what₂.Tau × Fin O.N) ℝ →ₗ[ℝ] ℝ), (∀ x, (adlOf (O.Φ.C c) (GlobalTheory.ShFam.metsOf x' O.Φ c) (rootSym O.S.Dw (ArIn.ind (GlobalTheory.FlagAr.setB O.Y B)) (some R) (DV.tauEmb D x.1) x.2)).Induced M (L x) m 0) → (haveI := M.ar.isIntegral; IsArFun L (O.var c).dim Ψ) → ∀ (ε : (𝓞 D.what₂.LL →+* ℂ) → Fin ((T.M c).n + 1)) (π : ∀ σ, GlobalTheory.CxPts (h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).V.p σ → (T.M c).X (ε σ)), (h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).V.IsDown (h.man c) ε π → ∀ (hu : ∀ σ y, GlobalTheory.CxPts.CInfAt ((T.M c).pull ε π ((2 : ℝ) • psiOf h x' R u c) σ) y) (hc : ∀ σ σ', (GlobalTheory.Weight.ofFun ((T.M c).pull ε π ((2 : ℝ) • psiOf h x' R u c) σ)).IsConj (GlobalTheory.Weight.ofFun ((T.M c).pull ε π ((2 : ℝ) • psiOf h x' R u c) σ'))) (Φ : MvPolynomial (Option (Option (D.what₂.Tau × Fin O.N))) ℝ →ₗ[ℝ] ℝ), IsArFun (fun o => o.elim (fnB ((T.M c).pull ε π ((2 : ℝ) • psiOf h x' R u c)) hu hc) ((h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).gens (GlobalTheory.FlagAr.setB O.Y B))) (dimY O.Y) Φ → Ψ (linRoot u ^ (dimY O.Y + 1)) / (((m : ℕ) : ℝ) ^ (dimY O.Y + 1) * (Module.finrank ℚ D.what₂.LL : ℝ)) = Φ (lin (fun o => o.elim 1 fun o' => o'.elim 0 fun x => u x.1 x.2) ^ (dimY O.Y + 1)) / (h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).V.ν := by
   intro p2 ph D O hO A T H h x' B hB R hR c u M L m Ψ hL hΨ ε π hd hu hc Φ hΦ
   have hA := p2.p4
@@ -295,6 +376,11 @@ theorem degree_comparison_normalized : Hypotheses2 → HypothesesH → ∀ (D : 
   rw [Cover.ν, div_eq_div_iff (mul_pos hm hn).ne' (mul_pos hn hV).ne']
   linear_combination -(Module.finrank ℚ D.what₂.LL : ℝ) * e₃
 
+/- English proof (translation)
+Introduce `p2 ph D O hO A T H h B hB R hR c u M L m Ψ hL hΨ ε π hd`. Take `⟨x', P, hC⟩` from `id hO`. Establish `hR2 : (2 : ℝ) ≤ R` using `by linarith [Real.add_one_le_exp (2 : ℝ)]`. Rewrite using `[phR_eq_psiOf h hC hR2 u c]`. Rewrite `hL` using `[hC.hm_eq]`.
+
+Conclude with `degree_comparison_normalized p2 ph D O hO A T H h x' B hB R hR c u M L m Ψ hL hΨ ε π hd`.
+-/
 theorem compare_main : Hypotheses2 → HypothesesH → ∀ (D : D7) (O : Setup D), O.Core → ∀ (A : SlopeTestRemainingChoices O.Y) (T : Real0 O.Y) (H : Ht O.Y) (h : O.Reads A T H) (B : ℝ), 2 ≤ B → ∀ R : ℝ, Real.exp 2 ≤ R → ∀ (c : O.s.Comp) (u : D.what₂.Tau → Fin O.N → ℝ) (M : GlobalTheory.TrueGeo.Model (O.var c)) (L : D.what₂.Tau × Fin O.N → GlobalTheory.HermLB M.p) (m : ℕ+) (Ψ : MvPolynomial (D.what₂.Tau × Fin O.N) ℝ →ₗ[ℝ] ℝ), (∀ x, (adlOf (O.Φ.C c) (O.met.hm c) (rootSym O.S.Dw (ArIn.ind (GlobalTheory.FlagAr.setB O.Y B)) (some R) (DV.tauEmb D x.1) x.2)).Induced M (L x) m 0) → (haveI := M.ar.isIntegral; IsArFun L (O.var c).dim Ψ) → ∀ (ε : (𝓞 D.what₂.LL →+* ℂ) → Fin ((T.M c).n + 1)) (π : ∀ σ, GlobalTheory.CxPts (h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).V.p σ → (T.M c).X (ε σ)), (h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).V.IsDown (h.man c) ε π → ∀ (hu : ∀ σ y, GlobalTheory.CxPts.CInfAt ((T.M c).pull ε π ((2 : ℝ) • (T.F c).phR R u) σ) y) (hc : ∀ σ σ', (GlobalTheory.Weight.ofFun ((T.M c).pull ε π ((2 : ℝ) • (T.F c).phR R u) σ)).IsConj (GlobalTheory.Weight.ofFun ((T.M c).pull ε π ((2 : ℝ) • (T.F c).phR R u) σ'))) (Φ : MvPolynomial (Option (Option (D.what₂.Tau × Fin O.N))) ℝ →ₗ[ℝ] ℝ), IsArFun (fun o => o.elim (fnB ((T.M c).pull ε π ((2 : ℝ) • (T.F c).phR R u)) hu hc) ((h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).gens (GlobalTheory.FlagAr.setB O.Y B))) (dimY O.Y) Φ → Ψ (linRoot u ^ (dimY O.Y + 1)) / (((m : ℕ) : ℝ) ^ (dimY O.Y + 1) * (Module.finrank ℚ D.what₂.LL : ℝ)) = Φ (lin (fun o => o.elim 1 fun o' => o'.elim 0 fun x => u x.1 x.2) ^ (dimY O.Y + 1)) / (h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).V.ν := by
   intro p2 ph D O hO A T H h B hB R hR c u M L m Ψ hL hΨ ε π hd
   obtain ⟨x', P, hC⟩ := id hO

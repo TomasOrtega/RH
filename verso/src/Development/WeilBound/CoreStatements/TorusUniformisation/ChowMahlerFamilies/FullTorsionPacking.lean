@@ -22,18 +22,34 @@ noncomputable def preHom {X : Scheme.{0}} (G : Over X) [GrpObj G] {A B : Over X}
   map_one' := MonObj.comp_one u
   map_mul' g h := MonObj.comp_mul u g h
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem sp_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   rw [← Spec.map_comp]; rfl
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_id]`. Both sides reduce to the same expression.
+-/
 theorem sp_id {A : Type} [CommRing A] : spMap (RingHom.id A) = 𝟙 _ := by
   rw [← Spec.map_id]; rfl
 
+/- English proof (translation)
+Use `⟨Function.Surjective.denseRange fun y => ?_⟩` and prove the remaining obligations. Use `haveI : Subsingleton (Spec (CommRingCat.of A)) := inferInstanceAs (Subsingleton (PrimeSpectrum A))`. Conclude with `⟨(default : PrimeSpectrum B), Subsingleton.elim _ _⟩`.
+-/
 theorem isDominant_spMap {A B : Type} [Field A] [Field B] (i : A →+* B) : IsDominant (spMap i) := by
   refine ⟨Function.Surjective.denseRange fun y => ?_⟩
   haveI : Subsingleton (Spec (CommRingCat.of A)) := inferInstanceAs (Subsingleton (PrimeSpectrum A))
   exact ⟨(default : PrimeSpectrum B), Subsingleton.elim _ _⟩
 
+/- English proof (translation)
+Establish `h : fracToField R = (FractionRing.algEquiv R Ω : FractionRing R →+* Ω)`. Apply `IsLocalization.ringHom_ext (nonZeroDivisors R)` to reduce the goal to its premises. Use extensionality with `r`. Establish `h1 : fracToField R (algebraMap R (FractionRing R) r) = algebraMap R Ω r` using `IsFractionRing.lift_algebraMap _ r`. Conclude with `h1.trans ((FractionRing.algEquiv R Ω).commutes r).symm`.
+
+Use `⟨((FractionRing.algEquiv R Ω).symm : Ω →+* FractionRing R), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h]`. Use extensionality with `z`. Simplify using the standard rewrite rules. Use extensionality with `r`.
+
+Conclude with `(FractionRing.algEquiv R Ω).symm.commutes r`.
+-/
 theorem exists_inv {Ω : Type} [Field Ω] {O : Type} [CommRing O] [Algebra O Ω] (R : Subalgebra O Ω)
     [IsFractionRing R Ω] : ∃ e' : Ω →+* FractionRing R, (fracToField R).comp e' = RingHom.id Ω ∧
       e'.comp (algebraMap R Ω) = algebraMap R (FractionRing R) := by
@@ -51,6 +67,27 @@ theorem exists_inv {Ω : Type} [Field Ω] {O : Type} [CommRing O] [Algebra O Ω]
 end PositivityTheory.Xgn.FullTorsionPacking
 
 open PositivityTheory.Xgn.FullTorsionPacking in
+/- English proof (translation)
+Introduce `X G _ hG Ω _ ξ O _ _ R _ _ _ x hx T _ pt N n hN hNn hFT hinj honto`. Take `⟨e', he, he'⟩` from `exists_inv R`. Establish `hu : spMap e' ≫ ξ = (genPt R).hom ≫ x`. Establish `h0 : spMap e' ≫ spMap (algebraMap R Ω) = spMap (algebraMap R (FractionRing R))`. Rewrite using `[sp_comp, he']`.
+
+Substitute `hx` using the available equality. Conclude with `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ x) h0)`. Establish `hee : spMap (fracToField R) ≫ spMap e' = 𝟙 _`. Rewrite using `[sp_comp, he, sp_id]`. Set `u : Over.mk ((genPt R).hom ≫ x) ⟶ Over.mk ξ` to `Over.homMk (spMap e') hu`.
+
+Set `τ : T →* (Over.mk ((genPt R).hom ≫ x) ⟶ G)` to `(preHom G u).comp pt`. Establish `hτ : ∀ t, (τ t).left = spMap e' ≫ (pt t).left` using `fun t => rfl`. Establish `hpt : ∀ t, (pt t).left = spMap (fracToField R) ≫ (τ t).left` using `fun t => by`. Rewrite using `[hτ, ← Category.assoc, hee]`. Conclude with `(Category.id_comp _).symm`.
+
+Establish `hτinj : Function.Injective τ` using `fun s t h => by`. Apply `hinj` to reduce the goal to its premises. Use `ext1`. Rewrite using `[hpt, hpt, h]`. Establish `hτN : ∀ t, τ t ^ N = 1` using `fun t => by`.
+
+Express the relevant statement in the definitionally equal form `preHom G u (pt t) ^ N = 1`. Rewrite using `[← map_pow, (honto _).2 ⟨t, rfl⟩, map_one]`. Take `⟨Γ, i, hΓ, hi⟩` from `GlobalTheory.T.torsion_embedding_geometric_points R T X G hG x N hN τ hτinj hτN (by`. Introduce `Ω' _ _ a g hg`. Establish `hw : spMap (a.comp e') ≫ ξ = Spec.map (CommRingCat.ofHom a) ≫ (genPt R).hom ≫ x`.
+
+Establish `h0 : spMap (a.comp e') ≫ ξ = spMap a ≫ spMap e' ≫ ξ`. Rewrite using `[← sp_comp, Category.assoc]`. Conclude with `h0.trans (congrArg (spMap a ≫ ·) hu)`. Set `w : Over.mk (spMap (a.comp e') ≫ ξ) ⟶ Over.mk (Spec.map (CommRingCat.ofHom a) ≫ (genPt R).hom ≫ x)` to `Over.homMk (𝟙 _) ((Category.id_comp _).trans hw.symm)`. Establish `hgN : preHom G w g ^ N = 1` using `by rw [← map_pow, hg, map_one]`.
+
+Establish `hgn : preHom G w g ^ n = 1`. Take `⟨m, rfl⟩` from `hNn`. Rewrite using `[pow_mul, hgN, one_pow]`. Take `⟨x₀, hx₀⟩` from `hFT Ω' (a.comp e') _ hgn`. Set `v : Over.mk (spMap (a.comp e') ≫ ξ) ⟶ Over.mk ξ` to `Over.homMk (spMap (a.comp e')) rfl`.
+
+Establish `hv : preHom G v x₀ = preHom G w g` using `by ext1`. Conclude with `hx₀.symm`. Establish `h1 : preHom G v (x₀ ^ N) = preHom G v 1`. Rewrite using `[map_pow, hv, hgN, map_one]`. Establish `h2 : x₀ ^ N = 1` using `by haveI := hG.separated haveI := isDominant_spMap (a.comp e') haveI : IsReduced (Over.mk ξ).left := inferInstanceAs (IsReduced (Spec (CommRingCat.of Ω))) ext1`.
+
+Use `ext_of_isDominant_of_isSeparated G.hom ?_ (spMap (a.comp e')) ?_` and prove the remaining obligations. Rewrite using `[Over.w, Over.w]`. Conclude with `congrArg CommaMorphism.left h1`. Take `⟨t, rfl⟩` from `(honto _).1 h2`. Use `⟨t, ?_⟩` and prove the remaining obligations.
+
+Establish `h3 : (preHom G w g).left = g.left` using `Category.id_comp _`. Establish `h4 : ∀ q : Spec (CommRingCat.of Ω) ⟶ G.left, spMap (a.comp e') ≫ q = spMap a ≫ spMap e' ≫ q` using `fun q => by`. Rewrite using `[← sp_comp, Category.assoc]`. Conclude with `h3.symm.trans (hx₀.trans (h4 _)))`. Conclude with `⟨Γ, i, hΓ, fun t => (hpt t).trans (congrArg (spMap (fracToField R) ≫ ·) (hi t).symm)⟩`.
+-/
 theorem PositivityTheory.Xgn.full_torsion_packing : ∀ (X : Scheme.{0}) (G : Over X) [GrpObj G], IsSemiAbelian G → ∀ (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (O : Type) [CommRing O] [Algebra O Ω] (R : Subalgebra O Ω) [IsNoetherianRing R] [CharZero R] [IsFractionRing R Ω] (x : Spec (CommRingCat.of R) ⟶ X), spMap (algebraMap R Ω) ≫ x = ξ → ∀ (T : Type) [CommGroup T] (pt : T →* (Over.mk ξ ⟶ G)) (N n : ℕ), 1 ≤ N → N ∣ n → FullTorsion G ξ n → Function.Injective pt → (∀ g : Over.mk ξ ⟶ G, g ^ N = 1 ↔ ∃ t, pt t = g) → ∃ (Γ : QFGroup R T) (i : Γ.G.left ⟶ G.left), Γ.IsTorsionAlong G x N i ∧ ∀ t, (pt t).left = spMap (fracToField R) ≫ (Γ.pt t).left ≫ i := by
   intro X G _ hG Ω _ ξ O _ _ R _ _ _ x hx T _ pt N n hN hNn hFT hinj honto
   obtain ⟨e', he, he'⟩ := exists_inv R

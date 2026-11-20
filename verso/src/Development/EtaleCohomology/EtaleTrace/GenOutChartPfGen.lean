@@ -33,10 +33,16 @@ def ChartGenOn : Prop := ∀ (k : Type) [Field k] {X : Scheme.{0}} [IsIntegral X
         (X.presheaf.germ U y hy (φ (HomogeneousLocalization.Away.mk _ hx m g hg))) = eval₂ (kHom p) w g / w i ^ m) →
   GenOn p w U (chartMor i U hx φ)
 
+/- English proof (translation)
+Introduce `k _ X _ p N w i hi U hx φ hφ`. Conclude with `⟨chartMor i U hx φ, h1 k p N w i hi U hx φ hφ, h2 k p N w i hi U hx φ hφ⟩`.
+-/
 theorem ChartGen_of (h1 : ChartOverK) (h2 : ChartGenOn) : ChartGen := by
   intro k _ X _ p N w i hi U hx φ hφ
   exact ⟨chartMor i U hx φ, h1 k p N w i hi U hx φ hφ, h2 k p N w i hi U hx φ hφ⟩
 
+/- English proof (translation)
+The claim follows from `GenOutChart_of_gen (ChartGen_of h1 h2)`.
+-/
 theorem GenOutChart_of_two (h1 : ChartOverK) (h2 : ChartGenOn) : GenOutChart :=
   GenOutChart_of_gen (ChartGen_of h1 h2)
 

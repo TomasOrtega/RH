@@ -41,6 +41,9 @@ def NabZero (nab : NabV Xo c) : Prop :=
       (ReciprocityTheory.ChartRestriction.G.Out.rigT Xo.univ.t.G Xo.univ.t.PP.L Xo.univ.t.PP.rig (ptO Xo y.x) k)
       (toΓ S (nab y k F 0))
 
+/- English proof (translation)
+Use `⟨fun p y => (h p.R y a n x P hP).exists.choose, fun p y => (h p.R y a n x P hP).exists.choose_spec, ?_⟩` and prove the remaining obligations. Introduce `g hg`. Use function extensionality and compare the values at `p y`. Conclude with `(h p.R y a n x P hP).unique (hg p y) (h p.R y a n x P hP).exists.choose_spec`.
+-/
 theorem existsUnique_thRule (nab : NabV Xo c) (h : ThValTot Xo c nab) {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ}
     (x : Fin n → Dw.La) {P : MvPolynomial (LtN Dw n) c.F} (hP : P ∈ harmA c a n) :
     ∃! f : Rul Xo c, IsThRule Xo c nab x P f := by

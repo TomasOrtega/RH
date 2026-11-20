@@ -15,11 +15,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 open UpperTheory.V.Lit.Geo UpperTheory.V.Lit.Geo.Cs Filter Topology
 open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af GlobalTheory.UnitaryBC UpperTheory.V.Lit.Dr UpperTheory.V.Lit.Bor
 
+/- English proof (translation)
+The claim follows from `isOpen_iff_mem_nhds.2 fun p hp => by obtain ⟨τ, -, h⟩ := UpperTheory.V.Lit.Dr.locSec E a p hp exact h.mono fun x hx => ⟨τ x, hx⟩`.
+-/
 private theorem cone_open (E : Type) [Field E] [NumberField E] (a : ℕ) : IsOpen (cone E a) :=
   isOpen_iff_mem_nhds.2 fun p hp => by
     obtain ⟨τ, -, h⟩ := UpperTheory.V.Lit.Dr.locSec E a p hp
     exact h.mono fun x hx => ⟨τ x, hx⟩
 
+/- English proof (translation)
+Establish `e : (fun s => hom (W s) ((0 : G.Om (q + 1)).1 s)) = fun _ _ => 0`. Use function extensionality and compare the values at `s p`. Establish `: (fun t => hk (W s) t ((0 : G.Om (q + 1)).1 s) p) = fun _ => 0`. Use function extensionality and compare the values at `t`. Use extensionality with `v`.
+
+Simplify using `[hk_apply]`. Rewrite using `[hom, this, intervalIntegral.integral_zero]`. Rewrite using `[homOm, e]`. Use `Subtype.ext (funext fun s => funext fun p => ?_)` and prove the remaining obligations. Distinguish the cases in `hp : p ∈ G.Y`.
+
+Rewrite using `[toOm_apply G (fun _ => contDiffOn_const) s hp]`. Both sides reduce to the same expression. Rewrite using `[((toOm G _).2 s).2 p hp]`. Both sides reduce to the same expression.
+-/
 private theorem homOm_zero {Γ V S : Type} [Group Γ] [NormedAddCommGroup V] [NormedSpace ℝ V] {d : ℕ}
     (G : UpperTheory.V.Lit.Dr.Geo Γ V S d) (W : S → V → V) (q : ℕ) : homOm G W (0 : G.Om (q + 1)) = 0 := by
   have e : (fun s => hom (W s) ((0 : G.Om (q + 1)).1 s)) = fun _ _ => 0 := by
@@ -37,6 +47,13 @@ private theorem homOm_zero {Γ V S : Type} [Group Γ] [NormedAddCommGroup V] [No
   · rw [((toOm G _).2 s).2 p hp]
     rfl
 
+/- English proof (translation)
+Establish `e : (fun s => pb (flow (W s) 1) ((0 : G.Om q).1 s)) = fun _ _ => 0`. Use function extensionality and compare the values at `s p`. Use extensionality with `v`. Simplify using `[pb_apply]`. Rewrite using `[pbOm, e]`.
+
+Use `Subtype.ext (funext fun s => funext fun p => ?_)` and prove the remaining obligations. Distinguish the cases in `hp : p ∈ G.Y`. Rewrite using `[toOm_apply G (fun _ => contDiffOn_const) s hp]`. Both sides reduce to the same expression. Rewrite using `[((toOm G _).2 s).2 p hp]`.
+
+Both sides reduce to the same expression.
+-/
 private theorem pbOm_zero {Γ V S : Type} [Group Γ] [NormedAddCommGroup V] [NormedSpace ℝ V] {d : ℕ}
     (G : UpperTheory.V.Lit.Dr.Geo Γ V S d) (W : S → V → V) (q : ℕ) : pbOm G W (0 : G.Om q) = 0 := by
   have e : (fun s => pb (flow (W s) 1) ((0 : G.Om q).1 s)) = fun _ _ => 0 := by
@@ -51,23 +68,69 @@ private theorem pbOm_zero {Γ V S : Type} [Group Γ] [NormedAddCommGroup V] [Nor
   · rw [((toOm G _).2 s).2 p hp]
     rfl
 
+/- English proof (translation)
+Introduce `g x X` and use `by rw [AlternatingMap.sub_apply, map_sub, Pi.sub_apply, Matrix.mulVec_sub, ← h g x X, ← h' g x X] rfl`.
+-/
 private theorem corr_sub {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} (ho : IsOpen (cone E a))
     (U : Subgroup (GL (Fin a) (Af E))) (Ξ : AlgRep E a) {q : ℕ} {α β : Co Ξ q} {w w' : (geo ho U Ξ).Om q}
     (h : Corr U Ξ α w.1) (h' : Corr U Ξ β w'.1) : Corr U Ξ (α - β) (w - w').1 := fun g x X => by
   rw [AlternatingMap.sub_apply, map_sub, Pi.sub_apply, Matrix.mulVec_sub, ← h g x X, ← h' g x X]
   rfl
 
+/- English proof (translation)
+Introduce `g x X` and use `by simp`.
+-/
 private theorem corr_zero {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} (ho : IsOpen (cone E a))
     (U : Subgroup (GL (Fin a) (Af E))) (Ξ : AlgRep E a) (q : ℕ) :
     Corr U Ξ (0 : Co Ξ q) (0 : (geo ho U Ξ).Om q).1 := fun g x X => by
   simp
 
+/- English proof (translation)
+Rewrite using `[div_mul_cancel₀ _ hc.ne', Real.exp_neg, ← div_eq_mul_inv, div_le_iff₀ (Real.exp_pos _)]`. Use `Real.add_one_le_exp (2 * D)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem half (D c : ℝ) (hD : 0 ≤ D) (hc : 0 < c) : D * Real.exp (-(2 * D / c * c)) ≤ 1 / 2 := by
   rw [div_mul_cancel₀ _ hc.ne', Real.exp_neg, ← div_eq_mul_inv, div_le_iff₀ (Real.exp_pos _)]
   have := Real.add_one_le_exp (2 * D)
   linarith
 
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+Introduce `E _ _ _ a ha U hUo hUc Ξ q ω hω hd hR`. Establish `ho` using `cone_open E a`. Take `⟨f, Y, C, c, f₀, hS⟩` from `stepEx E a ha U hUc`. Establish `hC : 0 ≤ C` using `(abs_nonneg _).trans (hS.near 1 0 1 (by simp) (by simp))`. Take `⟨W, hW⟩` from `fieldDef E a U Y C hS.fld`.
+
+Establish `hF` using `(fieldFlow E a ho U Ξ Y C hS.fld W hW).1`. Establish `hH` using `omHom _ _ _ _ _ W hF`. Take `⟨lam, hl⟩` from `h1 E a ha`. Take `⟨Φ, hΦ⟩` from `h2 E a U f Y C c f₀ hS`. Establish `hΦf` using `h3 E a ho U Ξ f Y C c f₀ hS Φ hΦ`.
+
+Take `⟨w, hw, hg⟩` from `(levGood E a ho U Ξ q).1 ω hω`. Establish `hdw : (geo ho U Ξ).dOm q w = 0`. Establish `c1` using `UpperTheory.V.Lit.Dr.corrD E a ho U Ξ q ω w hw`. Rewrite `c1` using `[hd]`. Conclude with `(UpperTheory.V.Lit.Dr.corrUniq E a ho U Ξ (q + 1)).2 _ _ _ c1 (corr_zero ho U Ξ _)`.
+
+Take `⟨B, hB, hrap⟩` from `h4 E a U Ξ f lam C hl hS.f_le q ω hω hR`. Take `⟨u, u0, us⟩ : ∃ u : ℕ → (geo ho U Ξ).Om q, u 0 = w ∧ ∀ j, u (j + 1) = pbOm (geo ho U Ξ) W (u j)` from `⟨fun j => (pbOm (geo ho U Ξ) W)^[j] w, rfl, fun j => Function.iterate_succ_apply' _ _ _⟩`. Establish `ug : ∀ j, Good (geo ho U Ξ) (u j)` using `fun j => by`. Proceed by induction on `j with`. Consider the case `zero => rwa [u0]`.
+
+Consider the case `succ j ih => rw [us]`. Conclude with `((omGood _ _ _ _ _ W hF q).1 _ ih).1`. Establish `ud : ∀ j, (geo ho U Ξ).dOm q (u j) = 0` using `fun j => by`. Proceed by induction on `j with`. Consider the case `zero => rwa [u0]`.
+
+Consider the case `succ j ih => rw [us, hH.1, ih, pbOm_zero]`. Establish `dec : ∀ k, ∃ A M : ℝ, 0 ≤ A ∧ 0 ≤ M ∧ ∀ j, Dec U Ξ f lam f₀ k A B ((1 / 2) ^ j * M) (u j).1` using `fun k => by`. Take `⟨D, hD, hP⟩` from `h6 E a ho U Ξ f Y C c f₀ hS W hW lam hl q k B hB`. Establish `hA : 0 ≤ 2 * D / c` using `div_nonneg (by linarith) hS.c_pos.le`. Take `⟨M, hM, hM'⟩` from `h5 E a U Ξ q ω w.1 hw (fun g => Real.exp (B * |lam g| - 2 * D / c * f g)) (fun _ => (Real.exp_pos _).le) (hrap _ hA) k`.
+
+Use `⟨2 * D / c, M, hA, hM, fun j => ?_⟩` and prove the remaining obligations. Proceed by induction on `j with`. Consider the case `zero`. Rewrite using `[u0, pow_zero, one_mul]`. Conclude with `fun g x _ => hM' g x`.
+
+Consider the case `succ j ih`. Rewrite using `[us]`. Establish `hj : (0 : ℝ) ≤ (1 / 2) ^ j * M` using `by positivity`. Use `Dec.of_le U Ξ (hP _ _ hA hj _ ih) ?_` and prove the remaining obligations. Rewrite using `[pow_succ', mul_assoc (1 / 2 : ℝ)]`.
+
+Conclude with `mul_le_mul_of_nonneg_right (half D c hD hS.c_pos) hj`. Establish `geom : ∀ x : ℝ, Summable fun j : ℕ => x * (1 / 2 : ℝ) ^ j` using `fun x => summable_geometric_two.mul_left x`. Establish `lim : ∀ s, ∀ p ∈ cone E a, f₀ + C < Φ s p → Tendsto (fun j => (u j).1 s p) atTop (𝓝 0)` using `fun s p hp hlt => by`. Take `⟨A, M, hA, hM, hj⟩` from `dec 0`. Take `⟨N, hN, D, hD⟩` from `h8 E a ho U Ξ f lam hS.f_nonneg hl Φ hΦ hΦf q 0 A B f₀ hA hB s p hp (by linarith)`.
+
+Use `squeeze_zero_norm (fun j => ?_) (geom (D * M)).tendsto_atTop_zero` and prove the remaining obligations. Use `(hD _ (by positivity) _ (hj j) p (mem_of_mem_nhds hN)).norm_le.trans_eq ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Consider the cases of `q with`. Consider the case `zero`.
+
+Use `⟨ω, hω, hd, h11 E a U Ξ f Y C c f₀ hS Φ hΦ 0 ω w.1 (f₀ + C) hw fun s p hp hlt => ?_, sub_self ω⟩` and prove the remaining obligations. Establish `e : ∀ j, u j = w` using `fun j => by`. Proceed by induction on `j with`. Consider the case `zero => exact u0`. Consider the case `succ j ih`.
+
+Use `hH.2.2.1 w` as an intermediate fact. Rewrite `this` using `[hdw, homOm_zero, sub_eq_zero]`. Rewrite using `[us, ih, this]`. Use `lim s p hp hlt` as an intermediate fact. Simplify using `only [e] at this`.
+
+Conclude with `tendsto_nhds_unique tendsto_const_nhds this`. Consider the case `succ q`. Establish `hO` using `omGood _ _ _ _ _ W hF q`. Take `⟨z, hz, hz'⟩` from `h9 _ _ _ _ (geo ho U Ξ) Φ hΦf (f₀ + C) q (fun j => homOm (geo ho U Ξ) W (u j)) u (fun j => (hO.2.2 _ (ug j)).inv) (fun j => by`. Use `hH.2.2.2 q (u j)` as an intermediate fact.
+
+Rewrite `this` using `[ud j, homOm_zero, add_zero]`. Conclude with `this.symm.trans (congrArg (· - u j) (us j).symm))`. Use the proof step `(fun k s p hp hlt => by`. Take `⟨A, M, hA, hM, hj⟩` from `dec k`. Take `⟨D', hD', hK⟩` from `h7 E a ho U Ξ f Y C c f₀ hS W hW lam hl q k A B hA hB`.
+
+Take `⟨N, hN, D, hD⟩` from `h8 E a ho U Ξ f lam hS.f_nonneg hl Φ hΦ hΦf q k A B (f₀ + C) hA hB s p hp hlt`. Use `⟨N, hN, _, geom (D * D' * M), fun j x hx => ?_⟩` and prove the remaining obligations. Establish `p1 : (0 : ℝ) ≤ (1 / 2) ^ j * M` using `mul_nonneg (pow_nonneg (by norm_num) _) hM`. Establish `p2` using `hK _ p1 _ (hj j)`. Establish `p3` using `hD _ (mul_nonneg hD' p1) _ p2 x hx`.
+
+Establish `p4 : D * (D' * ((1 / 2) ^ j * M)) = D * D' * M * (1 / 2) ^ j` using `by ring`. Rewrite `p3` using `[p4]`. Conclude with `p3) lim`. Take `⟨l, hgl⟩` from `UpperTheory.V.Lit.Dr.gauge E a ha ho U Ξ hUc`. Rewrite `hz'` using `[u0]`.
+
+Take `⟨z', g', hz''⟩` from `h10 _ _ _ _ (geo ho U Ξ) (UpperTheory.V.Lit.Dr.coneConvex E a).2 l hgl Φ hΦf (f₀ + C + 1) q w z hdw hg.basic hz hz'`. Take `⟨η, cη, lη⟩` from `(levGood E a ho U Ξ q).2 _ g'`. Establish `cd` using `UpperTheory.V.Lit.Dr.corrD E a ho U Ξ q η z' cη`. Establish `cs` using `corr_sub ho U Ξ hw cd`. Use `⟨ω - dCo (smLie Ξ) η, (levD E a U Ξ _ ω hω).2 _ (levD E a U Ξ q η lη).1, ?_, h11 E a U Ξ f Y C c f₀ hS Φ hΦ _ _ _ (f₀ + C + 1) cs fun s p hp hlt => ?_, η, lη, (sub_sub_cancel _ _).symm⟩` and prove the remaining obligations.
+
+Establish `c1` using `UpperTheory.V.Lit.Dr.corrD E a ho U Ξ _ _ _ cs`. Rewrite `c1` using `[map_sub, hdw, hH.2.1, sub_zero]`. Conclude with `(UpperTheory.V.Lit.Dr.corrUniq E a ho U Ξ _).1 _ _ _ c1 (corr_zero ho U Ξ _)`. Express the relevant statement in the definitionally equal form `w.1 s p - ((geo ho U Ξ).dOm q z').1 s p = 0`. Rewrite using `[hz'' s p hp hlt, sub_self]`.
+-/
 theorem UpperTheory.V.Lit.Geo.Cs.galois_twist_preserves_siegel_bound (h1 : LamEx) (h2 : DescEx) (h3 : DescFun) (h4 : RapidAll) (h5 : CorrSz) (h6 : DecP)
     (h7 : DecK) (h8 : Loc) (h9 : GeoSum) (h10 : GeoRet) (h11 : Supp) : G2 := by
   intro E _ _ _ a ha U hUo hUc Ξ q ω hω hd hR

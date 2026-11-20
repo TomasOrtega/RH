@@ -39,11 +39,17 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution.MaxContactCoverGeometry
 
+/- English proof (translation)
+The claim follows from `(Ideal.relIsoOfBijective φ hφ).symm.map_iInf K`.
+-/
 private theorem map_iInf_of_bijective {A B : Type*} [CommRing A] [CommRing B]
     (φ : A →+* B) (hφ : Function.Bijective φ) {ι : Type*} (K : ι → Ideal A) :
     Ideal.map φ (⨅ i, K i) = ⨅ i, Ideal.map φ (K i) :=
   (Ideal.relIsoOfBijective φ hφ).symm.map_iInf K
 
+/- English proof (translation)
+Establish `: IsIso (Scheme.Hom.appLE g (g ''ᵁ S) S e)`. Rewrite using `[← Scheme.Hom.appIso_hom' g S]`. Use `infer_instance`. Conclude with `ConcreteCategory.bijective_of_isIso _`.
+-/
 private theorem bijective_appLE_image {A B : Scheme.{u}} (g : A ⟶ B) [IsOpenImmersion g]
     (S : A.Opens) (e : S ≤ g ⁻¹ᵁ (g ''ᵁ S)) :
     Function.Bijective (CommRingCat.Hom.hom (Scheme.Hom.appLE g (g ''ᵁ S) S e)) := by
@@ -52,11 +58,19 @@ private theorem bijective_appLE_image {A B : Scheme.{u}} (g : A ⟶ B) [IsOpenIm
     infer_instance
   exact ConcreteCategory.bijective_of_isIso _
 
+/- English proof (translation)
+Simplify using `only [AlgebraicGeometry.Scheme.IdealSheafData.ideal_iInf, iInf_apply]`.
+-/
 private theorem ideal_iInf {X : Scheme.{u}} {ι : Type v} [Finite ι]
     (I : ι → X.IdealSheafData) (U : X.affineOpens) :
     (⨅ i, I i).ideal U = ⨅ i, (I i).ideal U := by
   simp only [AlgebraicGeometry.Scheme.IdealSheafData.ideal_iInf, iInf_apply]
 
+/- English proof (translation)
+Use `Scheme.IdealSheafData.ext ?_` and prove the remaining obligations. Use function extensionality and compare the values at `V`. Establish `hU : IsAffineOpen (f ''ᵁ (V : X.Opens))` using `V.2.image_of_isOpenImmersion f`. Establish `e : (V : X.Opens) ≤ f ⁻¹ᵁ (f ''ᵁ (V : X.Opens))` using `(f.preimage_image_eq (V : X.Opens)).ge`. Establish `hbij : Function.Bijective (f.appLE (f ''ᵁ (V : X.Opens)) (V : X.Opens) e).hom` using `bijective_appLE_image f (V : X.Opens) e`.
+
+Establish `key : ∀ I : Y.IdealSheafData, (I.comap f).ideal V = (I.ideal ⟨f ''ᵁ (V : X.Opens), hU⟩).map (f.appLE (f ''ᵁ (V : X.Opens)) (V : X.Opens) e).hom` using `fun I => Scheme.IdealSheafData.comap_ideal_eq_map_appLE I f ⟨f ''ᵁ (V : X.Opens), hU⟩ V e`. Establish `h1 : (⨅ i, J i).ideal ⟨f ''ᵁ (V : X.Opens), hU⟩ = ⨅ i, (J i).ideal ⟨f ''ᵁ (V : X.Opens), hU⟩` using `ideal_iInf J ⟨f ''ᵁ (V : X.Opens), hU⟩`. Establish `h2 : (⨅ i, (J i).comap f).ideal V = ⨅ i, ((J i).comap f).ideal V` using `ideal_iInf (fun i => (J i).comap f) V`. Rewrite using `[h2, key (⨅ i, J i), h1, map_iInf_of_bijective _ hbij]`. Conclude with `iInf_congr fun i => (key (J i)).symm`.
+-/
 theorem comap_iInf {X Y : Scheme.{u}} (f : X ⟶ Y) [IsOpenImmersion f]
     {ι : Type v} [Finite ι] (J : ι → Y.IdealSheafData) :
     (⨅ i, J i).comap f = ⨅ i, (J i).comap f := by
@@ -80,11 +94,21 @@ theorem comap_iInf {X Y : Scheme.{u}} (f : X ⟶ Y) [IsOpenImmersion f]
   rw [h2, key (⨅ i, J i), h1, map_iInf_of_bijective _ hbij]
   exact iInf_congr fun i => (key (J i)).symm
 
+/- English proof (translation)
+The claim follows from `FunctorialResolution.EmbeddedResolution.comap_ker_subschemeι_comp I f`.
+-/
 theorem ker_subschemeι_comp_comap_self {X Y : Scheme.{u}} (f : X ⟶ Y) [IsOpenImmersion f] [QuasiCompact f]
     (I : X.IdealSheafData) :
     ((I.subschemeι ≫ f).ker).comap f = I :=
   FunctorialResolution.EmbeddedResolution.comap_ker_subschemeι_comp I f
 
+/- English proof (translation)
+Use `FunctorialResolution.Blowup.comap_eq_top_of_notMem_support f ((J.subschemeι ≫ g).ker) ?_` and prove the remaining obligations. Introduce `x hx`. Establish `hx' : f.base x ∈ (((J.subschemeι ≫ g).ker).support : Set ↥Y)` using `hx`. Rewrite `hx'` using `[Scheme.Hom.support_ker]`. Establish `hopen : IsOpen (Set.range ⇑f.base)` using `f.isOpenEmbedding.isOpen_range`.
+
+Take `⟨y, hy1, hy2⟩` from `mem_closure_iff.mp hx' (Set.range ⇑f.base) hopen (Set.mem_range_self x)`. Take `⟨x₀, hx₀⟩` from `hy1`. Take `⟨w, hw⟩` from `hy2`. Establish `hwe : g.base (J.subschemeι.base w) = y`. Rewrite using `[← hw]`.
+
+Simplify using the standard rewrite rules. Conclude with `hdisj x₀ (J.subschemeι.base w) (hx₀.trans hwe.symm)`.
+-/
 theorem ker_subschemeι_comp_comap_eq_top_of_disjoint {X X' Y : Scheme.{u}} (f : X ⟶ Y) [IsOpenImmersion f]
     (g : X' ⟶ Y) [QuasiCompact g]
     (hdisj : ∀ (x : ↥X) (x' : ↥X'), f.base x ≠ g.base x') (J : X'.IdealSheafData) :
@@ -110,6 +134,9 @@ instance instIsClosedImmersionStarι (i : (MaxContactCoverData.chosenCoverData T
   FunctorialResolution.Blowup.isClosedImmersion_sigmaι
     (fun j : (MaxContactCoverData.chosenCoverData T hv).idx => MaxContactOpenCover.coverPiece T hv j) i
 
+/- English proof (translation)
+The claim follows from `FunctorialResolution.Blowup.quasiCompact_sigmaι (fun j : (MaxContactCoverData.chosenCoverData T hv).idx => MaxContactOpenCover.coverPiece T hv j) i`.
+-/
 theorem quasiCompact_coverPieceι (i : (MaxContactCoverData.chosenCoverData T hv).idx) :
     QuasiCompact (MaxContactOpenCover.coverPieceι T hv i) :=
   FunctorialResolution.Blowup.quasiCompact_sigmaι
@@ -119,24 +146,38 @@ instance instQuasiCompactStarι (i : (MaxContactCoverData.chosenCoverData T hv).
     QuasiCompact (MaxContactOpenCover.coverPieceι T hv i) :=
   quasiCompact_coverPieceι T hv i
 
+/- English proof (translation)
+The claim follows from `FunctorialResolution.Blowup.sigmaι_base_ne (fun k : (MaxContactCoverData.chosenCoverData T hv).idx => MaxContactOpenCover.coverPiece T hv k) hij x y`.
+-/
 theorem coverPieceι_base_ne_of_ne {i j : (MaxContactCoverData.chosenCoverData T hv).idx} (hij : i ≠ j)
     (x : ↥(MaxContactOpenCover.coverPiece T hv i)) (y : ↥(MaxContactOpenCover.coverPiece T hv j)) :
     (MaxContactOpenCover.coverPieceι T hv i).base x ≠ (MaxContactOpenCover.coverPieceι T hv j).base y :=
   FunctorialResolution.Blowup.sigmaι_base_ne
     (fun k : (MaxContactCoverData.chosenCoverData T hv).idx => MaxContactOpenCover.coverPiece T hv k) hij x y
 
+/- English proof (translation)
+The claim follows from `ker_subschemeι_comp_comap_self (MaxContactOpenCover.coverPieceι T hv i) _`.
+-/
 theorem ker_subschemeι_comp_coverPieceι_comap_self (i : (MaxContactCoverData.chosenCoverData T hv).idx) :
     ((((MaxContactCoverData.chosenCoverData T hv).localIdeal i).subschemeι ≫
         MaxContactOpenCover.coverPieceι T hv i).ker).comap (MaxContactOpenCover.coverPieceι T hv i) =
       (MaxContactCoverData.chosenCoverData T hv).localIdeal i :=
   ker_subschemeι_comp_comap_self (MaxContactOpenCover.coverPieceι T hv i) _
 
+/- English proof (translation)
+The claim follows from `ker_subschemeι_comp_comap_eq_top_of_disjoint (MaxContactOpenCover.coverPieceι T hv i) (MaxContactOpenCover.coverPieceι T hv j) (coverPieceι_base_ne_of_ne T hv hij) _`.
+-/
 theorem ker_subschemeι_comp_coverPieceι_comap_of_ne {i j : (MaxContactCoverData.chosenCoverData T hv).idx} (hij : i ≠ j) :
     ((((MaxContactCoverData.chosenCoverData T hv).localIdeal j).subschemeι ≫
         MaxContactOpenCover.coverPieceι T hv j).ker).comap (MaxContactOpenCover.coverPieceι T hv i) = ⊤ :=
   ker_subschemeι_comp_comap_eq_top_of_disjoint (MaxContactOpenCover.coverPieceι T hv i) (MaxContactOpenCover.coverPieceι T hv j)
     (coverPieceι_base_ne_of_ne T hv hij) _
 
+/- English proof (translation)
+Establish `key : (⨅ j : (MaxContactCoverData.chosenCoverData T hv).idx, (((MaxContactCoverData.chosenCoverData T hv).localIdeal j).subschemeι ≫ MaxContactOpenCover.coverPieceι T hv j).ker).comap (MaxContactOpenCover.coverPieceι T hv i) = (MaxContactCoverData.chosenCoverData T hv).localIdeal …`. Rewrite using `[comap_iInf]`. Use `le_antisymm (le_trans (iInf_le _ i) (le_of_eq (ker_subschemeι_comp_coverPieceι_comap_self T hv i))) (le_iInf fun j => ?_)` and prove the remaining obligations. Break down `eq_or_ne j i with rfl | h` into its components or cases. Conclude with `le_of_eq (ker_subschemeι_comp_coverPieceι_comap_self T hv _).symm`.
+
+Rewrite using `[ker_subschemeι_comp_coverPieceι_comap_of_ne T hv h.symm]`. Conclude with `le_top`. Conclude with `key`.
+-/
 theorem comap_coverMaxContactIdeal_coverPieceι (i : (MaxContactCoverData.chosenCoverData T hv).idx) :
     (MaxContactCoverData.coverMaxContactIdeal T hv).comap (MaxContactOpenCover.coverPieceι T hv i) =
       (MaxContactCoverData.chosenCoverData T hv).localIdeal i := by
@@ -153,6 +194,9 @@ theorem comap_coverMaxContactIdeal_coverPieceι (i : (MaxContactCoverData.chosen
       exact le_top
   exact key
 
+/- English proof (translation)
+The claim follows from `FunctorialResolution.EmbeddedResolution.isMaxContactHypersurface_coverMaxContactIdeal_of_comap_eq T hv hgood (comap_coverMaxContactIdeal_coverPieceι T hv)`.
+-/
 theorem isMaxContactHypersurface_coverMaxContactIdeal
     [AlgebraicGeometry.LocallyOfFiniteType (MaxContactCoverData.coverTriple T hv).structMap]
     (hgood : MaxContactReduction.IsMaxContactCover T (MaxContactCoverData.chosenCoverData T hv) hv.locallyOfFiniteType
@@ -162,6 +206,9 @@ theorem isMaxContactHypersurface_coverMaxContactIdeal
       (MaxContactCoverData.tunedMult T) (MaxContactCoverData.coverMaxContactIdeal T hv) :=
   FunctorialResolution.EmbeddedResolution.isMaxContactHypersurface_coverMaxContactIdeal_of_comap_eq T hv hgood (comap_coverMaxContactIdeal_coverPieceι T hv)
 
+/- English proof (translation)
+The claim follows from `FunctorialResolution.EmbeddedResolution.inStrictNormalCrossingPositionAt_coverMaxContactIdeal T hv hgood (comap_coverMaxContactIdeal_coverPieceι T hv) x`.
+-/
 theorem inStrictNormalCrossingPositionAt_of_isMaxContactCover
     (hgood : MaxContactReduction.IsMaxContactCover T (MaxContactCoverData.chosenCoverData T hv) hv.locallyOfFiniteType
       (MaxContactCoverData.balancedTunedIdeal T hv) (MaxContactCoverData.tunedMult T))
@@ -170,6 +217,9 @@ theorem inStrictNormalCrossingPositionAt_of_isMaxContactCover
       [MaxContactCoverData.coverMaxContactIdeal T hv] x :=
   FunctorialResolution.EmbeddedResolution.inStrictNormalCrossingPositionAt_coverMaxContactIdeal T hv hgood (comap_coverMaxContactIdeal_coverPieceι T hv) x
 
+/- English proof (translation)
+The claim follows from `FunctorialResolution.EmbeddedResolution.inStrictNormalCrossingPosition_coverMaxContactIdeal T hv hgood (comap_coverMaxContactIdeal_coverPieceι T hv) hsm`.
+-/
 theorem inStrictNormalCrossingPosition_of_isMaxContactCover
     (hgood : MaxContactReduction.IsMaxContactCover T (MaxContactCoverData.chosenCoverData T hv) hv.locallyOfFiniteType
       (MaxContactCoverData.balancedTunedIdeal T hv) (MaxContactCoverData.tunedMult T))

@@ -6,6 +6,9 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open Formalism.IndefR Formalism.IndefR.Links GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.ChiGrid GlobalTheory.Unf GlobalTheory.FunObj GlobalTheory.RowUnf GlobalTheory.RowChain
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RowChars.rowChars | exact GlobalTheory.RowChars.rowChars | (intros; apply GlobalTheory.RowChars.rowChars <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.thetaGrid_lastRow_column_characters_differ : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (Wl : G.Weil) (t : T),
     ∃ χz : (AE D)ˣ →* Circle, IsHeckeChar D χz ∧ ResEta D χz 1 ∧
       (∀ j, j < D.R.m → G.chrS (.top t j) = G.chrT (.top t j)) ∧

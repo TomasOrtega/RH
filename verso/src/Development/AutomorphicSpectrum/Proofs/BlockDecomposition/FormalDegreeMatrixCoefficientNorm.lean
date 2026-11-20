@@ -14,6 +14,9 @@ variable {Γ : Type} [Group Γ] [TopologicalSpace Γ] [SecondCountableTopology �
   {ν : Measure Γ} {A B : Type} [NormedAddCommGroup A] [InnerProductSpace ℂ A]
   [NormedAddCommGroup B] [InnerProductSpace ℂ B]
 
+/- English proof (translation)
+Establish `hm : AEStronglyMeasurable (fun g => ⟪w, σ g v⟫_ℂ) ν` using `(continuous_const.inner (hσ.cont v)).aestronglyMeasurable`. Use `(memLp_two_iff_integrable_sq_norm hm).2 ?_` and prove the remaining obligations. Use `((hd.2 v w v w).1.norm).congr (.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [norm_mul, norm_star, sq]`.
+-/
 theorem memLp_coef {σ : Γ → (A →L[ℂ] A)} (hσ : IsU σ) {d : ℝ} (hd : IsFd ν σ d) (w v : A) :
     MemLp (fun g => ⟪w, σ g v⟫_ℂ) 2 ν := by
   have hm : AEStronglyMeasurable (fun g => ⟪w, σ g v⟫_ℂ) ν :=
@@ -22,6 +25,11 @@ theorem memLp_coef {σ : Γ → (A →L[ℂ] A)} (hσ : IsU σ) {d : ℝ} (hd : 
   refine ((hd.2 v w v w).1.norm).congr (.of_forall fun g => ?_)
   simp only [norm_mul, norm_star, sq]
 
+/- English proof (translation)
+Establish `hc : Continuous fun g => ⟪v, ρ g v⟫_ℂ` using `continuous_const.inner (hρ.cont v)`. Use `(memLp_two_iff_integrable_sq_norm hc.aestronglyMeasurable).2 ?_` and prove the remaining obligations. Use `(hm.norm.mul_const (‖v‖ * ‖v‖)).mono' (hc.norm.pow 2).aestronglyMeasurable (.of_forall fun g => ?_)` and prove the remaining obligations. Establish `h1 : ‖⟪v, ρ g v⟫_ℂ‖ ≤ ‖v‖ * ‖v‖` using `(norm_inner_le_norm _ _).trans (by rw [hρ.norm])`. Rewrite using `[Real.norm_of_nonneg (by positivity), norm_star, sq]`.
+
+Conclude with `mul_le_mul_of_nonneg_left h1 (norm_nonneg _)`.
+-/
 theorem memLp_diag {ρ : Γ → (B →L[ℂ] B)} (hρ : IsU ρ) (v : B)
     (hm : Integrable (fun g => star ⟪v, ρ g v⟫_ℂ) ν) : MemLp (fun g => ⟪v, ρ g v⟫_ℂ) 2 ν := by
   have hc : Continuous fun g => ⟪v, ρ g v⟫_ℂ := continuous_const.inner (hρ.cont v)
@@ -31,6 +39,9 @@ theorem memLp_diag {ρ : Γ → (B →L[ℂ] B)} (hρ : IsU ρ) (v : B)
   rw [Real.norm_of_nonneg (by positivity), norm_star, sq]
   exact mul_le_mul_of_nonneg_left h1 (norm_nonneg _)
 
+/- English proof (translation)
+Rewrite using `[L2.inner_def]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hf.coeFn_toLp, hg.coeFn_toLp] with x h1 h2`. Rewrite using `[h1, h2]`. Simplify using `[RCLike.inner_apply, mul_comm]`.
+-/
 theorem inner_toLp {f g : Γ → ℂ} (hf : MemLp f 2 ν) (hg : MemLp g 2 ν) :
     ⟪hf.toLp f, hg.toLp g⟫_ℂ = ∫ x, star (f x) * g x ∂ν := by
   rw [L2.inner_def]
@@ -39,6 +50,13 @@ theorem inner_toLp {f g : Γ → ℂ} (hf : MemLp f 2 ν) (hg : MemLp g 2 ν) :
   rw [h1, h2]
   simp [RCLike.inner_apply, mul_comm]
 
+/- English proof (translation)
+Establish `hd0 : (d : ℂ) ≠ 0` using `by exact_mod_cast hd.1.ne'`. Establish `hs : conj ((√d : ℝ) : ℂ) * ((√d : ℝ) : ℂ) = d`. Rewrite using `[Complex.conj_ofReal, ← Complex.ofReal_mul, Real.mul_self_sqrt hd.1.le]`. Rewrite using `[orthonormal_iff_ite]`. Introduce and unpack `⟨k, l⟩ ⟨k', l'⟩`.
+
+Rewrite using `[inner_smul_left, inner_smul_right, ← mul_assoc, hs, inner_toLp]`. Establish `h` using `(hd.2 (e l') (e k') (e l) (e k)).2`. Establish `h2 : ∫ x, star ⟪e k, σ x (e l)⟫_ℂ * ⟪e k', σ x (e l')⟫_ℂ ∂ν = ⟪e l, e l'⟫_ℂ * ⟪e k', e k⟫_ℂ / (d : ℂ)`. Rewrite using `[← h]`. Conclude with `integral_congr_ae (.of_forall fun x => mul_comm _ _)`.
+
+Simplify using `only []`. Rewrite using `[h2, orthonormal_iff_ite.1 he l l', orthonormal_iff_ite.1 he k' k]`. Apply the tactic sequence `by_cases h1 : k = k' <;> by_cases h3 : l = l' <;> simp [h1, h3, hd0, eq_comm]`.
+-/
 theorem orthonormal_coef {σ : Γ → (A →L[ℂ] A)} (hσ : IsU σ) {d : ℝ} (hd : IsFd ν σ d) {ι : Type*} {e : ι → A}
     (he : Orthonormal ℂ e) :
     Orthonormal ℂ fun p : ι × ι => ((√d : ℝ) : ℂ) • (memLp_coef hσ hd (e p.1) (e p.2)).toLp _ := by
@@ -60,6 +78,17 @@ theorem orthonormal_coef {σ : Γ → (A →L[ℂ] A)} (hσ : IsU σ) {d : ℝ} 
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `Γ _ _ _ _ _ _ _ ν _ _ A B _ _ _ _ _ _ σ ρ d hσ hρ hd v hm`. Use `set T := coefOp ν σ hσ (fun g => star ⟪v, ρ g v⟫_ℂ) hm with hT`. Set `e` to `GroundTheory.Automorphic.stdHilbertBasis ℂ A`. Establish `hX` using `memLp_diag hρ v hm`. Establish `hon` using `orthonormal_coef hσ hd e.orthonormal`.
+
+Establish `hsum` using `Orthonormal.inner_products_summable (hX.toLp _) hon`. Establish `hsd : √d ^ 2 = d` using `Real.sq_sqrt hd.1.le`. Establish `key : ∀ p : _ × _, ‖⟪e p.1, T (e p.2)⟫_ℂ‖ ^ 2 = d⁻¹ * ‖⟪((√d : ℝ) : ℂ) • (memLp_coef hσ hd (e p.1) (e p.2)).toLp _, hX.toLp _⟫_ℂ‖ ^ 2`. Introduce `p`. Establish `h1 : ⟪e p.1, T (e p.2)⟫_ℂ = ⟪hX.toLp _, (memLp_coef hσ hd (e p.1) (e p.2)).toLp _⟫_ℂ`.
+
+Rewrite using `[hT, inner_coefOp, inner_toLp]`. Rewrite using `[h1, inner_smul_left, norm_mul, RCLike.norm_conj, Complex.norm_real, Real.norm_of_nonneg (Real.sqrt_nonneg _), mul_pow, hsd, norm_inner_symm, ← mul_assoc, inv_mul_cancel₀ hd.1.ne', one_mul]`. Establish `hs2 : Summable fun p : _ × _ => ‖⟪e p.1, T (e p.2)⟫_ℂ‖ ^ 2`. Repeatedly rewrite using `[key]`. Conclude with `hsum.mul_left _`.
+
+Rewrite using `[GroundTheory.Automorphic.isHilbertSchmidt_iff e]`. Establish `h3 : ∑' l, ‖T (e l)‖ₑ ^ 2 = ∑' p : _ × _, ENNReal.ofReal (‖⟪e p.1, T (e p.2)⟫_ℂ‖ ^ 2)`. Repeatedly rewrite using `[GroundTheory.Automorphic.enorm_sq_eq_tsum e (T _)]`. Rewrite using `[ENNReal.tsum_comm, ← ENNReal.tsum_prod]`. Use `tsum_congr fun p => ?_` and prove the remaining obligations.
+
+Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm]`. Rewrite using `[h3]`. Conclude with `hs2.tsum_ofReal_lt_top`.
+-/
 theorem isHilbertSchmidt_coefOp : ∀ {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [LocallyCompactSpace Γ]
     [SecondCountableTopology Γ] [MeasurableSpace Γ] [BorelSpace Γ] (ν : Measure Γ) [ν.IsHaarMeasure] [ν.IsMulRightInvariant] {A B : Type} [NormedAddCommGroup A] [InnerProductSpace ℂ A] [CompleteSpace A] [NormedAddCommGroup B]
     [InnerProductSpace ℂ B] [CompleteSpace B] (σ : Γ → (A →L[ℂ] A)) (ρ : Γ → (B →L[ℂ] B)) (d : ℝ) (hσ : IsU σ), IsU ρ → IsFd ν σ d →

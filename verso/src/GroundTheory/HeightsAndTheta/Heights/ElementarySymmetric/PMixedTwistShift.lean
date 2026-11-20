@@ -19,6 +19,9 @@ namespace MixedTwistShiftAlt
 
 variable {k : Type u} [Field k] {Ω : Type w} [Field Ω] [Algebra k Ω] {N : ℕ} {x : Fin (N + 1) → Ω}
 
+/- English proof (translation)
+The claim follows from `| [], F => by simp | i :: l, F => by rw [List.foldl_cons, foldl_twist_sub L I l, SubSystem.twist_sub_eq_mul_of_line, List.map_cons, List.prod_cons] ring`.
+-/
 theorem foldl_twist_sub {n : ℕ} (L : Fin n → SubSystem k x Ω) (I : Chart x) :
     ∀ (l : List (Fin n)) (F : SubSystem k x Ω),
       (l.foldl (fun F i => F.twist (L i)) F).sub I = F.sub I * (l.map fun i => (L i).sub I).prod
@@ -28,6 +31,9 @@ theorem foldl_twist_sub {n : ℕ} (L : Fin n → SubSystem k x Ω) (I : Chart x)
       List.prod_cons]
     ring
 
+/- English proof (translation)
+The claim follows from `| [] => rfl | j :: l => by by_cases hj : j ∈ T <;> simp [hj, prod_map_filter g T l]`.
+-/
 theorem prod_map_filter {R : Type*} [CommMonoid R] {n : ℕ} (g : Fin n → R) (T : Finset (Fin n)) :
     ∀ l : List (Fin n),
       ((l.filter (· ∈ T)).map g).prod = (l.map fun j => g j ^ (if j ∈ T then 1 else 0)).prod
@@ -35,11 +41,17 @@ theorem prod_map_filter {R : Type*} [CommMonoid R] {n : ℕ} (g : Fin n → R) (
   | j :: l => by
     by_cases hj : j ∈ T <;> simp [hj, prod_map_filter g T l]
 
+/- English proof (translation)
+Establish `h0 : (twistSys k x 0).sub I = 1` using `(SubSystem.pow_sub (twistSys k x 0) 0 I).trans (pow_zero _)`. Rewrite using `[tensorSub, foldl_twist_sub, h0, one_mul, prod_map_filter, Fin.prod_univ_def]`.
+-/
 theorem tensorSub_sub {n : ℕ} (L : Fin n → SubSystem k x Ω) (T : Finset (Fin n)) (I : Chart x) :
     (tensorSub L T).sub I = ∏ j, (L j).sub I ^ (if j ∈ T then 1 else 0) := by
   have h0 : (twistSys k x 0).sub I = 1 := (SubSystem.pow_sub (twistSys k x 0) 0 I).trans (pow_zero _)
   rw [tensorSub, foldl_twist_sub, h0, one_mul, prod_map_filter, Fin.prod_univ_def]
 
+/- English proof (translation)
+Establish `h0 : (twistSys k x 0).sub I = 1` using `(SubSystem.pow_sub (twistSys k x 0) 0 I).trans (pow_zero _)`. Rewrite using `[SnapperSections.twistPows_sub, tensorSub_sub, h0, one_mul, Fin.prod_univ_castSucc]`. Simplify using `only [Fin.snoc_castSucc, Fin.snoc_last]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem twistPows_snoc_sub {n : ℕ} (L : Fin n → LineBundle k x) (M : LineBundle k x) (T : Finset (Fin n))
     (m : ℕ) (I : Chart x) :
     ((twistSys k x 0).twistPows (n + 1)
@@ -55,6 +67,29 @@ end MixedTwistShiftAlt
 
 open MixedTwistShiftAlt in
 
+/- English proof (translation)
+Introduce `k _ Ω _ _ N x n qq hp hh hle hdim L M d`. Use `set L' : Fin (n + 1) → LineBundle k x := Fin.snoc (α := fun _ => LineBundle k x) L M with hL'`. Use `set ν : Finset (Fin n) → ℕ → Fin (n + 1) → ℕ := fun T m => Fin.snoc (α := fun _ => ℕ) (fun i => if i ∈ T then 1 else 0) m with hν`. Use `set f : (Fin (n + 1) → ℕ) → ℤ → ℚ := fun e c => (pieceChar k qq 0 L' e c : ℚ) with hf`. Use `set Ls : Fin n → SubSystem k x Ω := fun i => (L i).toSubSystem with hLs`.
+
+Establish `hA : ∀ T (c : ℤ), ((tensorSub Ls T).twist M.toSubSystem).twist (twistSys k x c) = ((twistSys k x 0).twistPows (n + 1) (fun j => (L' j).toSubSystem) (ν T 1)).twist (twistSys k x c)`. Introduce `T c`. Use `congr 1`. Use `SubSystem.ext_sub fun I => ?_` and prove the remaining obligations. Rewrite using `[twistPows_snoc_sub, SubSystem.twist_sub_eq_mul_of_line, pow_one]`.
+
+Establish `hB : ∀ T (c : ℤ), (tensorSub Ls T).twist (twistSys k x c) = ((twistSys k x 0).twistPows (n + 1) (fun j => (L' j).toSubSystem) (ν T 0)).twist (twistSys k x c)`. Introduce `T c`. Use `congr 1`. Use `SubSystem.ext_sub fun I => ?_` and prove the remaining obligations. Rewrite using `[twistPows_snoc_sub, pow_zero, one_mul]`.
+
+Establish `hev : ∀ m : ℕ, ∀ᶠ c : ℤ in atTop, ∀ T : Finset (Fin n), restrLen qq (((twistSys k x 0).twistPows (n + 1) (fun j => (L' j).toSubSystem) (ν T m)).twist (twistSys k x c)) = pieceChar k qq 0 L' (ν T m) c` using `fun m => eventually_all.2 fun T => hR k Ω N x qq hh hle (n + 1) L' (ν T m)`. Establish `hsum : ∀ (m : ℕ) (c : ℤ), (∀ T : Finset (Fin n), restrLen qq (((twistSys k x 0).twistPows (n + 1) (fun j => (L' j).toSubSystem) (ν T m)).twist (twistSys k x c)) = pieceChar k qq 0 L' (ν T m) c) → ((∑ T : Finset (Fin n), (-1 : ℤ) ^ (n - T.card) * restrLen qq (((twistSys k x 0).twi …`. Introduce `m c h`. Rewrite using `[subsetDiff]`. Use `push_cast`.
+
+Conclude with `Finset.sum_congr rfl fun T _ => by rw [h T]`. Take `⟨hconst, hzero⟩` from `hD n f (pieceChar_isNumPolyLT hH hS hP L' (n + 1) qq hp hh hle hdim 0)`. Establish `hT1 : Tendsto (fun c : ℕ => (c : ℤ) + d) atTop atTop` using `tendsto_atTop_add_const_right _ d tendsto_natCast_atTop_atTop`. Establish `hLhs : ∀ᶠ c : ℕ in atTop, ((∑ T : Finset (Fin n), (-1 : ℤ) ^ (n - T.card) * restrLen qq (((tensorSub Ls T).twist M.toSubSystem).twist (twistSys k x ((c : ℤ) + d))) : ℤ) : ℚ) = subsetDiff n f 1 ((c : ℤ) + d)` using `by filter_upwards [hT1.eventually (hev 1)] with c hc`. Simplify using `only [hA]`.
+
+Conclude with `hsum 1 _ hc`. Use `split_ifs with hW`. Establish `hI : ∀ᶠ c : ℕ in atTop, (interSum qq Ls c : ℚ) = subsetDiff n f 0 (c : ℤ)` using `by filter_upwards [tendsto_natCast_atTop_atTop.eventually (hev 0)] with c hc`. Rewrite using `[interSum]`. Simplify using `only [hB]`.
+
+Conclude with `hsum 0 _ hc`. Take `⟨c₀, hc₀⟩` from `hI.exists_forall_of_atTop`. Establish `hκ : ∀ᶠ c : ℕ in atTop, interSum qq Ls c = interSum qq Ls c₀` using `by filter_upwards [eventually_ge_atTop c₀] with c hc`. Conclude with `(hc₀ c hc).trans ((hconst 0 0 c c₀).trans (hc₀ c₀ le_rfl).symm)` after adjusting the coercions. Establish `hlim : interNum qq Ls = interSum qq Ls c₀` using `(tendsto_const_nhds.congr' (hκ.mono fun _ hc => hc.symm)).limUnder_eq`.
+
+Rewrite using `[hlim]`. Use `filter_upwards [hLhs] with c hc`. Conclude with `hc.trans ((hconst 1 0 _ c₀).trans (hc₀ c₀ le_rfl).symm)` after adjusting the coercions. Establish `hlow : IsNumPolyLT (n + 1) n f`. Distinguish the cases in `hrel : ∃ i, (X i : Poly k N) ∉ qq`.
+
+Use `hp` as an intermediate fact. Take `⟨e, he⟩` from `SnapperSections.exists_dim_eq qq hh hrel`. Establish `hen : e ≠ n` using `fun h => hW ⟨hp, hh, hle, hrel, by subst h; exact he⟩`. Establish `hle' : e + 1 ≤ n + 1`. Rewrite `hdim` using `[he]`.
+
+Conclude with `hdim` after adjusting the coercions. Use `pieceChar_isNumPolyLT hH hS hP L' n qq hp hh hle ?_ 0` and prove the remaining obligations. Rewrite using `[he]`. Conclude with `(by omega : e + 1 ≤ n)` after adjusting the coercions. Use `push Not at hrel`.
+
+Conclude with `⟨0, Or.inl rfl, fun e c => by simp [hf, pieceChar_of_irrelevant qq hrel]⟩`. Use `filter_upwards [hLhs] with c hc`. Conclude with `hc.trans (hzero hlow 1 _)` after adjusting the coercions.
+-/
 theorem MixedTwistShift.proof (hH : SnapperHyperplane.Statement.{u, w}) (hS : SnapperSection.Statement.{u, w})
     (hP : SnapperDiffPoly.Statement) (hR : RestrLenEuler.Statement.{u, w}) (hD : SubsetDiffConst.Statement) :
     MixedTwistShift.Statement.{u, w} := by

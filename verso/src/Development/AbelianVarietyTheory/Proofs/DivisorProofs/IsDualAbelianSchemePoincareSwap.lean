@@ -21,6 +21,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.BidualAbelian
 
+/- English proof (translation)
+Establish `hs : (swap P).IsLB` using `pull_isLB hP _`. Establish `hss : (swap (swap P)).IsLB` using `pull_isLB hs _`. Use `(isAdditive_iff hss).2 fun Y a a' t ↦ ?_` and prove the remaining obligations. Rewrite using `[evc_swap hs hss, evc_swap hs hss, evc_swap hs hss, evc_swap hP hs, evc_swap hP hs, evc_swap hP hs]`. Conclude with `(isAdditive_iff hP).1 h Y a a' t`.
+-/
 theorem isAdditive_swap_swap {S : Scheme.{0}} {A B : Over S} [GrpObj A] [GrpObj B] {P : LB (A ⊗ B).left}
     (hP : P.IsLB) (h : IsAdditive P) : IsAdditive (swap (swap P)) := by
   have hs : (swap P).IsLB := pull_isLB hP _
@@ -29,6 +32,27 @@ theorem isAdditive_swap_swap {S : Scheme.{0}} {A B : Over S} [GrpObj A] [GrpObj 
   rw [evc_swap hs hss, evc_swap hs hss, evc_swap hs hss, evc_swap hP hs, evc_swap hP hs, evc_swap hP hs]
   exact (isAdditive_iff hP).1 h Y a a' t
 
+/- English proof (translation)
+Introduce `S A B C _ _ _ P Q κ hA hB hC hAB hBC hd hQ hm e Ω _ _ t`. Establish `hA'` using `GlobalTheory.IsoOverField.isAbelianScheme_pullback t A hA`. Establish `hB'` using `GlobalTheory.IsoOverField.isAbelianScheme_pullback t B hB`. Establish `hC'` using `GlobalTheory.IsoOverField.isAbelianScheme_pullback t C hC`. Take `⟨g, hgA⟩` from `GlobalTheory.AbelianDim.exists_relDim Ω ((Over.pullback t).obj A) hA'`.
+
+Establish `hgB : SmoothOfRelativeDimension g ((Over.pullback t).obj B).hom` using `hAB g (Sp Ω) t hgA`. Establish `hgC : SmoothOfRelativeDimension g ((Over.pullback t).obj C).hom` using `hBC g (Sp Ω) t hgB`. Establish `key : ∀ {X Y : Over S} (a : X ⟶ Y), ((Over.pullback t).map a).left ≫ pullback.fst Y.hom t = pullback.fst X.hom t ≫ a.left` using `fun a ↦ pullback.lift_fst _ _ _`. Set `h : ((Over.pullback t).obj A ⊗ (Over.pullback t).obj B).left ⟶ (A ⊗ B).left` to `(Functor.LaxMonoidal.μ (Over.pullback t) A B).left ≫ pullback.fst (A ⊗ B).hom t`. Establish `h₁ : h ≫ (fst A B).left = (fst ((Over.pullback t).obj A) ((Over.pullback t).obj B)).left ≫ pullback.fst A.hom t`.
+
+Simplify using `only [h, Category.assoc]`. Rewrite using `[← key, ← Category.assoc, ← Over.comp_left]`. Rewrite using `[show Functor.LaxMonoidal.μ (Over.pullback t) A B ≫ (Over.pullback t).map (fst A B) = fst _ _ by simp]`. Establish `h₂ : h ≫ (snd A B).left = (snd ((Over.pullback t).obj A) ((Over.pullback t).obj B)).left ≫ pullback.fst B.hom t`. Simplify using `only [h, Category.assoc]`.
+
+Rewrite using `[← key, ← Category.assoc, ← Over.comp_left]`. Rewrite using `[show Functor.LaxMonoidal.μ (Over.pullback t) A B ≫ (Over.pullback t).map (snd A B) = snd _ _ by simp]`. Establish `hP' : (P.pull h).IsLB` using `pull_isLB hd.isLB _`. Establish `hd' : IsDual _ _ (P.pull h)` using `IsDual.baseChange (isGrpPullback_pullback A t) (isGrpPullback_pullback B t) h₁ h₂ hP' ((cls_eq_iff hP' hP').1 rfl) hd`. Establish `ker` using `GlobalTheory.T.dualPoincare_left_kernel_trivial_algClosed Ω _ _ g (P.pull h) hA' hB' hgA hgB hd'`.
+
+Establish `hs : (swap P).IsLB` using `pull_isLB hd.isLB _`. Establish `hE : (ev Q (fst B A) (snd B A ≫ κ)).IsLB` using `pull_isLB hQ.isLB _`. Establish `ce : cls _ hs = cls _ hE` using `(cls_eq_iff hs hE).2 e`. Establish `mono : Mono ((Over.pullback t).map κ)`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `T x y hxy`. Establish `z1 : (x * y⁻¹) ≫ (Over.pullback t).map κ = 1`. Rewrite using `[MonObj.mul_comp, GrpObj.inv_comp, hxy, mul_inv_cancel]`. Establish `tr : Triv (ev (P.pull h) (fst T ((Over.pullback t).obj B) ≫ (x * y⁻¹)) (snd T ((Over.pullback t).obj B)))`. Use `(triv_ev_iff hP' _ _).2 ?_` and prove the remaining obligations.
+
+Set `a : Over.mk (T ⊗ (Over.pullback t).obj B).hom ⟶ (Over.pullback t).obj A` to `fst T ((Over.pullback t).obj B) ≫ (x * y⁻¹)`. Set `b : Over.mk (T ⊗ (Over.pullback t).obj B).hom ⟶ (Over.pullback t).obj B` to `snd T _`. Set `a₀` to `pushP (isGrpPullback_pullback A t) (s₀ := (T ⊗ (Over.pullback t).obj B).hom ≫ t) rfl a`. Set `b₀` to `pushP (isGrpPullback_pullback B t) (s₀ := (T ⊗ (Over.pullback t).obj B).hom ≫ t) rfl b`. Establish `e1 : evc hP' a b = evc hd.isLB a₀ b₀` using `evc_eq h₁ h₂ hd.isLB hP' ((cls_eq_iff hP' hP').1 rfl) a b a₀ b₀ rfl rfl`.
+
+Use `e1.trans ?_` and prove the remaining obligations. Establish `one : a₀ ≫ κ = 1`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left]`. Use `show (a.left ≫ pullback.fst A.hom t) ≫ κ.left = _`.
+
+Rewrite using `[Category.assoc, ← key, ← Category.assoc, ← Over.comp_left]`. Use `show (fst T ((Over.pullback t).obj B) ≫ (x * y⁻¹) ≫ (Over.pullback t).map κ).left ≫ _ = _`. Rewrite using `[z1, MonObj.comp_one]`. Conclude with `one_left_comp (isGrpPullback_pullback C t) rfl`. Establish `e2 : evc hs b₀ a₀ = evc hE b₀ a₀` using `by unfold evc; rw [ce]`.
+
+Rewrite using `[← evc_swap hd.isLB hs, e2, evc_ev hQ.isLB, lift_fst, lift_snd_assoc, one, evc_one_right hQ.isLB hQ.zero]`. Establish `hz` using `ker T (x * y⁻¹) tr`. Combine the equalities or inequalities in the displayed calculation. Conclude with `GlobalTheory.AbMonoIso.isIso_of_mono (Sp Ω) _ _ hA' hC' g g hgA hgC le_rfl _ inferInstance mono`.
+-/
 theorem fibre_isIso : ∀ (S : Scheme.{0}) (A B C : Over S) [GrpObj A] [GrpObj B] [GrpObj C] (P : LB (A ⊗ B).left)
     (Q : LB (B ⊗ C).left) (κ : A ⟶ C), IsAbelianScheme A → IsAbelianScheme B → IsAbelianScheme C → DimLe A B →
     DimLe B C → IsDual A B P → IsDual B C Q → IsMonHom κ → LBIso (swap P) (ev Q (fst B A) (snd B A ≫ κ)) →
@@ -91,6 +115,11 @@ theorem fibre_isIso : ∀ (S : Scheme.{0}) (A B C : Over S) [GrpObj A] [GrpObj B
       _ = y := by rw [hz, _root_.one_mul]
   exact GlobalTheory.AbMonoIso.isIso_of_mono (Sp Ω) _ _ hA' hC' g g hgA hgC le_rfl _ inferInstance mono
 
+/- English proof (translation)
+Introduce `S A B _ _ P hA hB hAB hd`. Take `⟨C, _, Q, hC, hBC, hQ⟩` from `GlobalTheory.T.exists_dual_abelianScheme_poincare S B hB`. Establish `hs : (swap P).IsLB` using `pull_isLB hd.isLB _`. Establish `ha : IsAdditive (swap P)` using `isDual_isAdditive_swap S A B P hB hd`. Take `⟨κ, e, -⟩` from `hQ.univ A (swap P) hs ha`.
+
+Establish `hm : IsMonHom κ` using `isMonHom_of_classifying S B A C (swap P) Q hQ (isDual_isAdditive_swap S B C Q hC hQ) hs (isAdditive_swap_swap hd.isLB hd.additive) κ e`. Establish `hi : IsIso κ` using `isIso_of_isIso_pullback hA hC κ fun Ω _ _ t ↦ fibre_isIso S A B C P Q κ hA hB hC hAB hBC hd hQ hm e Ω t`. Conclude with `transport S B A C (swap P) Q hQ hs κ hi hm e`.
+-/
 theorem isDual_swap : ∀ (S : Scheme.{0}) (A B : Over S) [GrpObj A] [GrpObj B] (P : LB (A ⊗ B).left),
     IsAbelianScheme A → IsAbelianScheme B → DimLe A B → IsDual A B P → IsDual B A (swap P) := by
   intro S A B _ _ P hA hB hAB hd

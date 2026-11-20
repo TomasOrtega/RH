@@ -22,6 +22,9 @@ variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T1 : Type}
   {κ : ∀ j : Fin D.R.m, WeightFamilies.Wt D ((j : ℕ) + 1)} {v₀ : ∀ (j : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (Rl.MW j σ).Vec}
   (fw : FWTie T0 Rl.toRealDat κ v₀)
 
+/- English proof (translation)
+The claim follows from `((GlobalTheory.Frames.frBor_calculus E H Dw l Xo c _ w w w).1 1).2 ⟨fun _ => 1, fun _ _ _ h => Matrix.one_apply_ne h.ne, fun _ _ => Matrix.one_apply_eq _, (GlobalTheory.Frames.frChg_refl_and_comp E H Dw l Xo c _ w w w).1⟩`.
+-/
 theorem frBor_one {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l}
     {c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l} {A : Type} [CommRing A] [Algebra c.F A] (w : FrPt Xo c A) : FrBor 1 w w :=
@@ -31,6 +34,9 @@ theorem frBor_one {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Recipr
 def IsUnitDiag {p : ℕ} [Fact p.Prime] {F ι : Type} [Field F] {φ : F →+* ℂ_[p]} (t : ι → (PAt φ)ˣ) : Prop :=
   ∀ a, ‖toCp φ (t a)‖ = 1
 
+/- English proof (translation)
+Introduce `_` and use `by simp`.
+-/
 theorem isUnitDiag_one {p : ℕ} [Fact p.Prime] {F ι : Type} [Field F] {φ : F →+* ℂ_[p]} : IsUnitDiag (1 : ι → (PAt φ)ˣ) :=
   fun _ => by simp
 
@@ -67,11 +73,20 @@ namespace SideTie
 
 variable {YS fw T} {i : D.ntw.Tw} {j : Fin D.R.m} {b : Bool} (Z : SideTie YS fw T i j b)
 
+/- English proof (translation)
+Rewrite using `[Z.ev_eq, h]`. Both sides reduce to the same expression.
+-/
 theorem ev_some {y z} (h : Z.pt y = some z) (f) : T.ev i _ b f y = valAt YS fw j z.1 (toK YS j b f) := by
   rw [Z.ev_eq, h]; rfl
 
+/- English proof (translation)
+Rewrite using `[Z.ev_eq, h]`. Both sides reduce to the same expression.
+-/
 theorem ev_none {y} (h : Z.pt y = none) (f) : T.ev i _ b f y = 0 := by rw [Z.ev_eq, h]; rfl
 
+/- English proof (translation)
+Take `⟨Tc, io, k, hk, y₀, u, hy, hu, hv⟩` from `z.exists_valC (wtA (κ j)) (κ j).n`. Use `⟨Tc, io, k, hk, y₀, u, hy, hu, fun a x => ?_⟩` and prove the remaining obligations. Rewrite using `[Z.ev_some h, ← hv _ (cuspOf_mem_sec YS fw j x), ← valAt_tmul]`. Conclude with `congrArg _ ((toK YS j b).apply_symm_apply _)`.
+-/
 theorem ev_eq_evI {y z} (h : Z.pt y = some z) :
     ∃ (Tc : CDVR) (io : T0.Q.c.F →+* Tc.Fr) (k : Tc.Fr →+* ℂ_[D.ntw.l i]) (_ : IsReading (embC YS (T.iC i) b) Tc io k)
       (y₀ : IntFr (T0.Q.Xo ((j : ℕ) + 1)) T0.Q.c Tc io) (u : ℂ_[D.ntw.l i]), y₀.IsAlg ∧ ‖u‖ = 1 ∧
@@ -85,6 +100,9 @@ theorem ev_eq_evI {y z} (h : Z.pt y = some z) :
 
 include Z in
 
+/- English proof (translation)
+Take `⟨y, z', t, hy, ht, hb⟩` from `Z.cover z`. Conclude with `⟨y, _, norm_wchar ht _, fun f => by rw [Z.ev_some hy]; exact valAt_frBor YS fw j hb _⟩`.
+-/
 theorem exists_ev_eq (z : Pts YS (T.iC i) b ((j : ℕ) + 1)) :
     ∃ (y : T.Pt i ((j : ℕ) + 1)) (u : ℂ_[D.ntw.l i]), ‖u‖ = 1 ∧ ∀ f, valAt YS fw j z.1 (toK YS j b f) = u * T.ev i _ b f y := by
   obtain ⟨y, z', t, hy, ht, hb⟩ := Z.cover z
@@ -92,6 +110,9 @@ theorem exists_ev_eq (z : Pts YS (T.iC i) b ((j : ℕ) + 1)) :
 
 include Z in
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `PtC.exists_of_reading hk y₀ hy`. Take `⟨y, u, hu, h⟩` from `Z.exists_ev_eq z`. Use `⟨y, u, hu, fun a x => ?_⟩` and prove the remaining obligations. Rewrite using `[← h, ← hz _ _ _ (cuspOf_mem_sec YS fw j x), ← valAt_tmul]`. Conclude with `congrArg _ ((toK YS j b).apply_symm_apply _).symm`.
+-/
 theorem exists_ev_eq_evI {Tc : CDVR} {io : T0.Q.c.F →+* Tc.Fr} {k : Tc.Fr →+* ℂ_[D.ntw.l i]}
     (hk : IsReading (embC YS (T.iC i) b) Tc io k) (y₀ : IntFr (T0.Q.Xo ((j : ℕ) + 1)) T0.Q.c Tc io) (hy : y₀.IsAlg) :
     ∃ (y : T.Pt i ((j : ℕ) + 1)) (u : ℂ_[D.ntw.l i]), ‖u‖ = 1 ∧ ∀ (a : NX.KB S i b) (x : NX.FmK S ((j : ℕ) + 1)),
@@ -105,6 +126,11 @@ theorem exists_ev_eq_evI {Tc : CDVR} {io : T0.Q.c.F →+* Tc.Fr} {k : Tc.Fr →+
 
 include Z in
 
+/- English proof (translation)
+Use `⟨fun h z => ?_, fun h y => ?_⟩` and prove the remaining obligations. Take `⟨y, u, hu, e⟩` from `Z.exists_ev_eq z`. Rewrite using `[e, norm_mul, hu, one_mul]`. Conclude with `h y`. Break down `hy : Z.pt y with _ | z` into its components or cases.
+
+Rewrite using `[Z.ev_none hy, norm_zero]`. Conclude with `hB`. Rewrite using `[Z.ev_some hy]`. Conclude with `h z`.
+-/
 theorem norm_le_iff {B : ℝ} (hB : 0 ≤ B) (f : D.nexp.Fm i ((j : ℕ) + 1) b) : (∀ y, ‖T.ev i _ b f y‖ ≤ B) ↔
     ∀ z : Pts YS (T.iC i) b ((j : ℕ) + 1), ‖valAt YS fw j z.1 (toK YS j b f)‖ ≤ B := by
   refine ⟨fun h z => ?_, fun h y => ?_⟩
@@ -117,10 +143,16 @@ theorem norm_le_iff {B : ℝ} (hB : 0 ≤ B) (f : D.nexp.Fm i ((j : ℕ) + 1) b)
 
 include Z in
 
+/- English proof (translation)
+The claim follows from `and_congr (Z.fmUr f) (Z.norm_le_iff hB f)`.
+-/
 theorem ball_iff {B : ℝ} (hB : 0 ≤ B) (f : D.nexp.Fm i ((j : ℕ) + 1) b) :
     (f ∈ T.FmUr i _ b ∧ ∀ y, ‖T.ev i _ b f y‖ ≤ B) ↔ toK YS j b f ∈ urBall YS fw (T.iC i) b j B :=
   and_congr (Z.fmUr f) (Z.norm_le_iff hB f)
 
+/- English proof (translation)
+Take `⟨u, hu, H⟩` from `Z.hk k P h`. Take `⟨e, he⟩` from `H y z hy`. Take `⟨z', t, w, -, -, ht, -, e'⟩` from `he c`. Rewrite using `[e', norm_mul, hu, one_mul]`. Conclude with `norm_wchar ht _`.
+-/
 theorem norm_hkU {k P} (h : HkIdx i k P) {y z} (hy : Z.pt y = some z) (c) : ‖T.hkU i _ b k P c y‖ = 1 := by
   obtain ⟨u, hu, H⟩ := Z.hk k P h
   obtain ⟨e, he⟩ := H y z hy
@@ -130,11 +162,19 @@ theorem norm_hkU {k P} (h : HkIdx i k P) {y z} (hy : Z.pt y = some z) (c) : ‖T
 
 include Z in
 
+/- English proof (translation)
+Break down `hy : Z.pt y with _ | z` into its components or cases. Conclude with `Z.hk_none k P h y hy c`. Conclude with `Z.norm_hkU h hy c`.
+-/
 theorem norm_hkU_all {k P} (h : HkIdx i k P) (c) (y) : ‖T.hkU i ((j : ℕ) + 1) b k P c y‖ = 1 := by
   rcases hy : Z.pt y with _ | z
   · exact Z.hk_none k P h y hy c
   · exact Z.norm_hkU h hy c
 
+/- English proof (translation)
+Take `⟨u, hu, H⟩` from `Z.hk k P h`. Use `⟨u, hu, fun y z hy => ?_⟩` and prove the remaining obligations. Take `⟨e, he⟩` from `H y z hy`. Use `choose z' t w h1 h2 _ h4 h5 using he`. Use `⟨fun C => w (e.symm C), fun C => by simpa using h2 (e.symm C), fun f => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Z.ev_some hy, T.hk_ev i _ b k P h.1 h.2.1 h.2.2.1 h.2.2.2, ← finsum_comp_equiv e, finsum_eq_sum_of_fintype, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[h5, Z.ev_some (h1 c), e.symm_apply_apply, valAt_frBor YS fw j (h4 c), mul_assoc]`.
+-/
 theorem hecke {k P} (h : HkIdx i k P) : ∃ s : T0.Q.c.F, ‖embC YS (T.iC i) b s‖ = 1 ∧ ∀ y z, Z.pt y = some z →
     ∃ quot : HkKer P.asIdeal (charAt P) k z.1 → FrC YS (T.iC i) b ((j : ℕ) + 1),
       (∀ C, IsHkQuot P.asIdeal (charAt P) k z.1 C (quot C)) ∧ ∀ f,
@@ -153,6 +193,11 @@ theorem hecke {k P} (h : HkIdx i k P) : ∃ s : T0.Q.c.F, ‖embC YS (T.iC i) b 
 
 include Z in
 
+/- English proof (translation)
+Take `⟨s, hs, H⟩` from `Z.hecke h`. Use `⟨s, hs, fun f g hfg => ?_⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `(toK YS j b).surjective g`. Rewrite using `[← map_smul]`. Use `congrArg _ (T.ev_inj i _ b (funext fun y => ?_))` and prove the remaining obligations.
+
+Break down `hy : Z.pt y with _ | z` into its components or cases. Rewrite using `[Z.ev_none hy, Z.ev_none hy]`. Take `⟨quot, hq, hv⟩` from `H y z hy`. Rewrite using `[Z.ev_some hy, Z.ev_some hy, hv, map_smul, valAt_smul, hfg z quot hq]`. Both sides reduce to the same expression.
+-/
 theorem exists_hkF_eq {k P} (h : HkIdx i k P) : ∃ s : T0.Q.c.F, ‖embC YS (T.iC i) b s‖ = 1 ∧
     ∀ (f : D.nexp.Fm i ((j : ℕ) + 1) b) (g : NX.Fm S i ((j : ℕ) + 1) b),
       (∀ (z : Pts YS (T.iC i) b ((j : ℕ) + 1)) (quot : HkKer P.asIdeal (charAt P) k z.1 → FrC YS (T.iC i) b ((j : ℕ) + 1)),
@@ -172,6 +217,9 @@ theorem exists_hkF_eq {k P} (h : HkIdx i k P) : ∃ s : T0.Q.c.F, ‖embC YS (T.
 
 include Z in
 
+/- English proof (translation)
+Take `⟨s, -, H⟩` from `Z.exists_hkF_eq h`. Rewrite using `[Z.fmUr, H f g hfg]`. Conclude with `smul_mem_ratForms (sideK_mem_kurAt YS _ b s) hg`.
+-/
 theorem hkF_mem_fmUr {k P} (h : HkIdx i k P) (f : D.nexp.Fm i ((j : ℕ) + 1) b) {g : NX.Fm S i ((j : ℕ) + 1) b}
     (hg : g ∈ ratForms S _ b (kurAt YS (T.iC i) b))
     (hfg : ∀ (z : Pts YS (T.iC i) b ((j : ℕ) + 1)) (quot : HkKer P.asIdeal (charAt P) k z.1 → FrC YS (T.iC i) b ((j : ℕ) + 1)),
@@ -184,6 +232,9 @@ theorem hkF_mem_fmUr {k P} (h : HkIdx i k P) (f : D.nexp.Fm i ((j : ℕ) + 1) b)
 
 include Z in
 
+/- English proof (translation)
+Introduce `x hx` and use `by obtain ⟨f, rfl⟩ := (toK YS j b).surjective x have : f = 0 := T.ev_inj i _ b (funext fun y => by rw [map_zero, Pi.zero_apply, ← norm_le_zero_iff] exact (Z.norm_le_iff le_rfl f).2 (fun z => by rw [hx z, norm_zero]) y) rw [this, map_zero]`.
+-/
 theorem detects : Detects YS fw (T.iC i) b j := fun x hx => by
   obtain ⟨f, rfl⟩ := (toK YS j b).surjective x
   have : f = 0 := T.ev_inj i _ b (funext fun y => by
@@ -195,6 +246,11 @@ end SideTie
 
 variable {YS} in
 
+/- English proof (translation)
+Establish `e : s' = (toK YS j b).restrictScalars (D.ntw.O i) '' s`. Use extensionality with `x`. Take `⟨g, rfl⟩` from `(toK YS j b).surjective x`. Conclude with `⟨fun hx => ⟨g, (h g).2 hx, rfl⟩, fun ⟨g', hg, e⟩ => (h g).1 ((toK YS j b).injective e ▸ hg)⟩`. Rewrite using `[e, Submodule.span_image_linearEquiv]`.
+
+Conclude with `⟨fun hf => ⟨f, hf, rfl⟩, fun ⟨g, hg, e⟩ => (toK YS j b).injective e ▸ hg⟩`.
+-/
 theorem mem_span_toK {i : D.ntw.Tw} {j : Fin D.R.m} {b : Bool} {s : Set (D.nexp.Fm i ((j : ℕ) + 1) b)}
     {s' : Set (NX.Fm S i ((j : ℕ) + 1) b)} (h : ∀ f, f ∈ s ↔ toK YS j b f ∈ s') (f : D.nexp.Fm i ((j : ℕ) + 1) b) :
     f ∈ Submodule.span (D.ntw.O i) s ↔ toK YS j b f ∈ Submodule.span (D.ntw.O i) s' := by
@@ -210,6 +266,9 @@ def SupPin (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool) : Prop :=
 
 variable {YS fw T} in
 
+/- English proof (translation)
+Rewrite using `[T.Bsup_def]`. Conclude with `mem_span_toK (Z.ball_iff zero_le_one) f`.
+-/
 theorem SideTie.mem_bsup_iff {i : D.ntw.Tw} {j : Fin D.R.m} {b : Bool} (Z : SideTie YS fw T i j b)
     (f : D.nexp.Fm i ((j : ℕ) + 1) b) :
     f ∈ D.nexp.Bsup i _ b ↔ toK YS j b f ∈ Submodule.span (D.ntw.O i) (urBall YS fw (T.iC i) b j 1) := by
@@ -218,6 +277,9 @@ theorem SideTie.mem_bsup_iff {i : D.ntw.Tw} {j : Fin D.R.m} {b : Bool} (Z : Side
 
 variable {YS fw T} in
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun h f => ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Take `⟨f, rfl⟩` from `(toK YS j b).surjective x`. Conclude with `(h f).symm.trans (Z.mem_bsup_iff f)`. Rewrite using `[Z.mem_bsup_iff, h]`.
+-/
 theorem SideTie.supPin_iff {i : D.ntw.Tw} {j : Fin D.R.m} {b : Bool} (Z : SideTie YS fw T i j b) :
     SupPin YS i j b ↔ SupDescent YS fw (T.iC i) b j := by
   refine ⟨fun h => ?_, fun h f => ?_⟩
@@ -228,11 +290,17 @@ theorem SideTie.supPin_iff {i : D.ntw.Tw} {j : Fin D.R.m} {b : Bool} (Z : SideTi
 
 variable {YS fw T} in
 
+/- English proof (translation)
+The claim follows from `Z.supPin_iff.1 h`.
+-/
 theorem SideTie.supDescent {i : D.ntw.Tw} {j : Fin D.R.m} {b : Bool} (Z : SideTie YS fw T i j b) (h : SupPin YS i j b) :
     SupDescent YS fw (T.iC i) b j := Z.supPin_iff.1 h
 
 variable {YS fw T} in
 
+/- English proof (translation)
+Rewrite using `[Z.isUnramified₂, ← kurAt_eq YS _ h, inf_idem]`. Consider the cases of `b`. Conclude with `kurAt_eq YS _ h`. Both sides reduce to the same expression.
+-/
 theorem ThetaTie.kur_eq (Z : ThetaTie YS fw T)
     (h : ∀ x : S.Ks, ∃ y : S.Ks, algebraMap S.Ks D.what₂.LL y = star (algebraMap S.Ks D.what₂.LL x)) (i : D.ntw.Tw) (b : Bool) :
     T.MaximalUnramifiedExtension i = kurAt YS (T.iC i) b := by
@@ -243,6 +311,9 @@ theorem ThetaTie.kur_eq (Z : ThetaTie YS fw T)
 
 variable {YS fw T} in
 
+/- English proof (translation)
+Establish `h' : T.iC i ζ ^ n = 1` using `by rw [← map_pow, h, map_one]`. Rewrite using `[Z.isUnramified₂]`. Conclude with `⟨root_mem_kurC _ hn h', root_mem_kurC _ hn h'⟩`.
+-/
 theorem ThetaTie.root_mem_kur (Z : ThetaTie YS fw T) (i : D.ntw.Tw) {ζ : FractionRing (D.ntw.O i)} {n : ℕ} (hn : ¬ D.ntw.l i ∣ n)
     (h : ζ ^ n = 1) : ζ ∈ T.MaximalUnramifiedExtension i := by
   have h' : T.iC i ζ ^ n = 1 := by rw [← map_pow, h, map_one]
@@ -255,15 +326,24 @@ def extLift {m : ℕ} {α : ℕ → Type} (f : ∀ n : Fin m, α ((n : ℕ) + 1)
   | 0 => d 0
   | n + 1 => if h : n < m then f ⟨n, h⟩ else d _
 
+/- English proof (translation)
+The claim follows from `dif_pos n.2`.
+-/
 theorem extLift_succ {m : ℕ} {α : ℕ → Type} (f : ∀ n : Fin m, α ((n : ℕ) + 1)) (d : ∀ j, α j) (n : Fin m) :
     extLift f d ((n : ℕ) + 1) = f n := dif_pos n.2
 
+/- English proof (translation)
+Consider the cases of `j with`. Consider the case `zero => rfl`. Consider the case `succ n => exact dif_neg fun h' => h (Finset.mem_Icc.2 ⟨Nat.le_add_left _ _, h'⟩)`.
+-/
 theorem extLift_off {m : ℕ} {α : ℕ → Type} (f : ∀ n : Fin m, α ((n : ℕ) + 1)) (d : ∀ j, α j) {j : ℕ}
     (h : j ∉ Finset.Icc 1 m) : extLift f d j = d j := by
   cases j with
   | zero => rfl
   | succ n => exact dif_neg fun h' => h (Finset.mem_Icc.2 ⟨Nat.le_add_left _ _, h'⟩)
 
+/- English proof (translation)
+Distinguish the cases in `h : j ∈ Finset.Icc 1 m`. Take `⟨a, b⟩` from `Finset.mem_Icc.1 h`. Take `⟨n, rfl⟩` from `Nat.exists_eq_add_of_le' a`. Conclude with `h1 ⟨n, b⟩`. Conclude with `h2 j h`.
+-/
 theorem lift_cases {m : ℕ} {p : ℕ → Prop} (h1 : ∀ n : Fin m, p ((n : ℕ) + 1)) (h2 : ∀ j, j ∉ Finset.Icc 1 m → p j) (j : ℕ) :
     p j := by
   by_cases h : j ∈ Finset.Icc 1 m
@@ -274,10 +354,21 @@ theorem lift_cases {m : ℕ} {p : ℕ → Prop} (h1 : ∀ n : Fin m, p ((n : ℕ
 
 def atSide {P : Bool → Type} (b : Bool) (y : Σ b', P b') : Option (P b) := if h : y.1 = b then some (h ▸ y.2) else none
 
+/- English proof (translation)
+The claim follows from `dif_pos rfl`.
+-/
 theorem atSide_same {P : Bool → Type} (b : Bool) (z : P b) : atSide b (⟨b, z⟩ : Σ b', P b') = some z := dif_pos rfl
 
+/- English proof (translation)
+The claim follows from `dif_neg h`.
+-/
 theorem atSide_other {P : Bool → Type} {b : Bool} {y : Σ b', P b'} (h : y.1 ≠ b) : atSide b y = none := dif_neg h
 
+/- English proof (translation)
+Take `⟨b', z'⟩` from `y`. Distinguish the cases in `e : b' = b`. Substitute `e` using the available equality. Rewrite `h` using `[atSide_same, Option.some.injEq]`. Rewrite using `[h]`.
+
+Rewrite `h` using `[atSide_other e]`. Consider the cases of `h`.
+-/
 theorem eq_of_atSide {P : Bool → Type} {b : Bool} {y : Σ b', P b'} {z : P b} (h : atSide b y = some z) : y = ⟨b, z⟩ := by
   obtain ⟨b', z'⟩ := y
   by_cases e : b' = b
@@ -308,6 +399,9 @@ def allMove (j k : ℕ) (P : PlE D.host) (c : Fin (kerNum YS iC j k P)) (y : All
   if h : Nonempty (Fin (kerNum YS iC j k P) ≃ HkKer P.asIdeal (charAt P) k y.2.1) ∧
       ∀ C, ∃ z' : Pts YS iC y.1 j, IsHkQuot P.asIdeal (charAt P) k y.2.1 C z'.1 then ⟨y.1, (h.2 (h.1.some c)).choose⟩ else y
 
+/- English proof (translation)
+Unfold `allMove`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem allMove_fst (j k : ℕ) (P : PlE D.host) (c) (y : AllPts YS iC j) : (allMove YS iC j k P c y).1 = y.1 := by
   unfold allMove
   split_ifs <;> rfl
@@ -328,6 +422,9 @@ structure GeoLaws : Prop where
 
 variable {YS fw iC}
 
+/- English proof (translation)
+Establish `h1 : Nonempty (Fin (kerNum YS iC ((j : ℕ) + 1) k P) ≃ HkKer P.asIdeal (charAt P) k z.1)`. Rewrite using `[kerNum, dif_pos (h.count j k P hk)]`. Conclude with `(h.count j k P hk).choose_spec b z`. Establish `h2` using `h.stable b j k P hk z`. Conclude with `⟨h1.some, fun C => (h2 C).choose, fun C => (h2 C).choose_spec, fun c => dif_pos ⟨h1, h2⟩⟩`.
+-/
 theorem GeoLaws.move (h : GeoLaws YS fw iC) {j : Fin D.R.m} {k P} (hk : HkIdx i k P) (b : Bool) (z : Pts YS iC b ((j : ℕ) + 1)) :
     ∃ (e : Fin (kerNum YS iC ((j : ℕ) + 1) k P) ≃ HkKer P.asIdeal (charAt P) k z.1)
       (q : HkKer P.asIdeal (charAt P) k z.1 → Pts YS iC b ((j : ℕ) + 1)),
@@ -338,11 +435,17 @@ theorem GeoLaws.move (h : GeoLaws YS fw iC) {j : Fin D.R.m} {k P} (hk : HkIdx i 
   have h2 := h.stable b j k P hk z
   exact ⟨h1.some, fun C => (h2 C).choose, fun C => (h2 C).choose_spec, fun c => dif_pos ⟨h1, h2⟩⟩
 
+/- English proof (translation)
+Rewrite using `[hkUnit, dif_pos (h.hecke b j k P hk)]`. Conclude with `(h.hecke b j k P hk).choose_spec`.
+-/
 theorem GeoLaws.hkUnit_spec (h : GeoLaws YS fw iC) {j : Fin D.R.m} {k P} (hk : HkIdx i k P) (b : Bool) :
     ‖hkUnit YS fw iC j b k P‖ = 1 ∧ HeckeIs YS fw iC b j k P (hkUnit YS fw iC j b k P) := by
   rw [hkUnit, dif_pos (h.hecke b j k P hk)]
   exact (h.hecke b j k P hk).choose_spec
 
+/- English proof (translation)
+Unfold `hkUnit`. Use `split_ifs`. Conclude with `⟨_, rfl⟩`. Conclude with `⟨1, (map_one _).symm⟩`.
+-/
 theorem exists_hkUnit_eq (j : Fin D.R.m) (b : Bool) (k : ℕ) (P : PlE D.host) :
     ∃ s : T0.Q.c.F, hkUnit YS fw iC j b k P = embC YS iC b s := by
   unfold hkUnit
@@ -350,15 +453,26 @@ theorem exists_hkUnit_eq (j : Fin D.R.m) (b : Bool) (k : ℕ) (P : PlE D.host) :
   · exact ⟨_, rfl⟩
   · exact ⟨1, (map_one _).symm⟩
 
+/- English proof (translation)
+The claim follows from `(congrArg (fun o : Option (Pts YS iC b ((j : ℕ) + 1)) => o.elim 0 fun z => valAt YS fw j z.1 (toK YS j b f)) (atSide_same (P := fun b => Pts YS iC b ((j : ℕ) + 1)) b z)).trans rfl`.
+-/
 theorem allEv_same {j : Fin D.R.m} {b : Bool} (f : D.nexp.Fm i ((j : ℕ) + 1) b) (z : Pts YS iC b ((j : ℕ) + 1)) :
     allEv YS fw iC j b f ⟨b, z⟩ = valAt YS fw j z.1 (toK YS j b f) :=
   (congrArg (fun o : Option (Pts YS iC b ((j : ℕ) + 1)) => o.elim 0 fun z => valAt YS fw j z.1 (toK YS j b f))
     (atSide_same (P := fun b => Pts YS iC b ((j : ℕ) + 1)) b z)).trans rfl
 
+/- English proof (translation)
+The claim follows from `congrArg (fun o : Option (Pts YS iC b ((j : ℕ) + 1)) => o.elim 0 fun z => valAt YS fw j z.1 (toK YS j b f)) (atSide_other h)`.
+-/
 theorem allEv_other {j : Fin D.R.m} {b : Bool} (f : D.nexp.Fm i ((j : ℕ) + 1) b) {y : AllPts YS iC ((j : ℕ) + 1)} (h : y.1 ≠ b) :
     allEv YS fw iC j b f y = 0 :=
   congrArg (fun o : Option (Pts YS iC b ((j : ℕ) + 1)) => o.elim 0 fun z => valAt YS fw j z.1 (toK YS j b f)) (atSide_other h)
 
+/- English proof (translation)
+Use `⟨fun h z => allEv_same (fw := fw) f z ▸ h ⟨b, z⟩, fun h ⟨b', z⟩ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hb : b' = b`. Substitute `hb` using the available equality. Rewrite using `[allEv_same]`. Conclude with `h z`.
+
+Rewrite using `[allEv_other f hb, norm_zero]`. Conclude with `hB`.
+-/
 theorem allEv_ball {j : Fin D.R.m} {b : Bool} {B : ℝ} (hB : 0 ≤ B) (f : D.nexp.Fm i ((j : ℕ) + 1) b) :
     (∀ y, ‖allEv YS fw iC j b f y‖ ≤ B) ↔ ∀ z : Pts YS iC b ((j : ℕ) + 1), ‖valAt YS fw j z.1 (toK YS j b f)‖ ≤ B := by
   refine ⟨fun h z => allEv_same (fw := fw) f z ▸ h ⟨b, z⟩, fun h ⟨b', z⟩ => ?_⟩
@@ -374,6 +488,9 @@ variable (YS fw) in
 def evN (j : ℕ) : ∀ b, D.nexp.Fm i j b →+ (AllPts YS iC j → ℂ_[D.ntw.l i]) :=
   extLift (α := fun j => ∀ b, D.nexp.Fm i j b →+ (AllPts YS iC j → ℂ_[D.ntw.l i])) (allEv YS fw iC) (fun _ _ => 0) j
 
+/- English proof (translation)
+The claim follows from `extLift_succ _ _ j`.
+-/
 theorem evN_succ (j : Fin D.R.m) : evN YS fw (iC := iC) ((j : ℕ) + 1) = allEv YS fw iC j := extLift_succ _ _ j
 
 variable (YS iC) in
@@ -382,6 +499,9 @@ def fmUrN (j : ℕ) : ∀ b, AddSubgroup (D.nexp.Fm i j b) :=
   extLift (α := fun j => ∀ b, AddSubgroup (D.nexp.Fm i j b))
     (fun j b => (ratForms S _ b (kurAt YS iC b)).comap (toK YS j b).toAddEquiv.toAddMonoidHom) (fun _ _ => ⊤) j
 
+/- English proof (translation)
+Rewrite using `[fmUrN, extLift_succ]`. Both sides reduce to the same expression.
+-/
 theorem mem_fmUrN (j : Fin D.R.m) (b : Bool) (f) :
     f ∈ fmUrN YS iC ((j : ℕ) + 1) b ↔ toK YS j b f ∈ ratForms S _ b (kurAt YS iC b) := by
   rw [fmUrN, extLift_succ]; rfl
@@ -391,6 +511,9 @@ variable (YS fw iC) in
 def hkUnitN (j : ℕ) (b : Bool) (k : ℕ) (P : PlE D.host) : ℂ_[D.ntw.l i] :=
   extLift (α := fun _ => ℂ_[D.ntw.l i]) (fun j => hkUnit YS fw iC j b k P) (fun _ => 1) j
 
+/- English proof (translation)
+The claim follows from `extLift_succ (α := fun _ => ℂ_[D.ntw.l i]) _ _ j`.
+-/
 theorem hkUnitN_succ (j : Fin D.R.m) (b : Bool) (k : ℕ) (P : PlE D.host) :
     hkUnitN YS fw iC ((j : ℕ) + 1) b k P = hkUnit YS fw iC j b k P := extLift_succ (α := fun _ => ℂ_[D.ntw.l i]) _ _ j
 
@@ -399,6 +522,13 @@ namespace GeoLaws
 variable (h : GeoLaws YS fw iC)
 include h
 
+/- English proof (translation)
+Proceed by induction on `j using lift_cases (m := D.R.m) with`. Consider the case `h1 j`. Rewrite using `[evN_succ]`. Take `⟨b', z⟩` from `y`. Distinguish the cases in `hb : b' = b`.
+
+Substitute `hb` using the available equality. Rewrite using `[allEv_same, allEv_same, map_smul, valAt_smul]`. Rewrite using `[allEv_other _ hb, allEv_other _ hb, mul_zero]`. Consider the case `h2 j hj`. Use `h.off j hj b` as an intermediate fact.
+
+Rewrite using `[Subsingleton.elim (a • f) 0, Subsingleton.elim f 0, map_zero, Pi.zero_apply, mul_zero]`.
+-/
 theorem ev_smul (j : ℕ) (b : Bool) (a : FractionRing (D.ntw.O i)) (f : D.nexp.Fm i j b) (y : AllPts YS iC j) :
     evN YS fw j b (a • f) y = iC a * evN YS fw j b f y := by
   induction j using lift_cases (m := D.R.m) with
@@ -413,6 +543,11 @@ theorem ev_smul (j : ℕ) (b : Bool) (a : FractionRing (D.ntw.O i)) (f : D.nexp.
     have := h.off j hj b
     rw [Subsingleton.elim (a • f) 0, Subsingleton.elim f 0, map_zero, Pi.zero_apply, mul_zero]
 
+/- English proof (translation)
+Proceed by induction on `j using lift_cases (m := D.R.m) with`. Consider the case `h1 j`. Rewrite using `[evN_succ]`. Use `(injective_iff_map_eq_zero _).2 fun f hf => (toK YS j b).injective ?_` and prove the remaining obligations. Rewrite using `[map_zero]`.
+
+Use `h.detects b j _ fun z => ?_` and prove the remaining obligations. Rewrite using `[← allEv_same, hf, Pi.zero_apply]`. Consider the case `h2 j hj`. Use `h.off j hj b` as an intermediate fact. Conclude with `fun _ _ _ => Subsingleton.elim _ _`.
+-/
 theorem ev_inj (j : ℕ) (b : Bool) : Function.Injective (evN YS fw (iC := iC) j b) := by
   induction j using lift_cases (m := D.R.m) with
   | h1 j =>
@@ -425,6 +560,13 @@ theorem ev_inj (j : ℕ) (b : Bool) : Function.Injective (evN YS fw (iC := iC) j
     have := h.off j hj b
     exact fun _ _ _ => Subsingleton.elim _ _
 
+/- English proof (translation)
+Proceed by induction on `j using lift_cases (m := D.R.m) with`. Consider the case `h1 j`. Rewrite using `[evN_succ, hkUnitN_succ, ← Finset.mul_sum]`. Distinguish the cases in `hb : y.1 = b`. Take `⟨b', z⟩` from `y`.
+
+Take `rfl : b' = b` from `hb`. Take `⟨e, q, hq, hm⟩` from `h.move hk b' z`. Rewrite using `[allEv_same, (h.hkUnit_spec hk b').2 z (fun C => (q C).1) hq f, ← finsum_comp_equiv e, finsum_eq_sum_of_fintype]`. Use `congrArg _ (Finset.sum_congr rfl fun c _ => ?_)` and prove the remaining obligations. Rewrite using `[hm, allEv_same]`.
+
+Rewrite using `[allEv_other _ hb, Finset.sum_eq_zero fun c _ => allEv_other _ ((allMove_fst YS iC _ k P c y).trans_ne hb), mul_zero]`. Consider the case `h2 j hj`. Use `h.off j hj b` as an intermediate fact. Rewrite using `[Subsingleton.elim (D.nexp.hkF i j b k P f) 0, Subsingleton.elim f 0, map_zero]`. Simplify using `only [Pi.zero_apply, mul_zero, Finset.sum_const_zero]`.
+-/
 theorem hk_ev (j : ℕ) (b : Bool) {k : ℕ} {P : PlE D.host} (hk : HkIdx i k P) (f : D.nexp.Fm i j b) (y : AllPts YS iC j) :
     evN YS fw j b (D.nexp.hkF i j b k P f) y = ∑ c, hkUnitN YS fw iC j b k P * evN YS fw j b f (allMove YS iC j k P c y) := by
   induction j using lift_cases (m := D.R.m) with
@@ -443,6 +585,11 @@ theorem hk_ev (j : ℕ) (b : Bool) {k : ℕ} {P : PlE D.host} (hk : HkIdx i k P)
     rw [Subsingleton.elim (D.nexp.hkF i j b k P f) 0, Subsingleton.elim f 0, map_zero]
     simp only [Pi.zero_apply, mul_zero, Finset.sum_const_zero]
 
+/- English proof (translation)
+Proceed by induction on `j using lift_cases (m := D.R.m) with`. Consider the case `h1 j`. Rewrite `hf`, the goal using `[mem_fmUrN]`. Rewrite using `[map_smul]`. Conclude with `smul_mem_ratForms (by cases b; exacts [ha.2, ha.1]) hf`.
+
+Consider the case `h2 j hj`. Use `h.off j hj b` as an intermediate fact. Rewrite using `[Subsingleton.elim (a • f) f]`. Conclude with `hf`.
+-/
 theorem fmUr_smul (j : ℕ) (b : Bool) (a : FractionRing (D.ntw.O i)) (f : D.nexp.Fm i j b)
     (ha : a ∈ kurAt YS iC true ⊓ kurAt YS iC false) (hf : f ∈ fmUrN YS iC j b) : a • f ∈ fmUrN YS iC j b := by
   induction j using lift_cases (m := D.R.m) with
@@ -455,6 +602,11 @@ theorem fmUr_smul (j : ℕ) (b : Bool) (a : FractionRing (D.ntw.O i)) (f : D.nex
     rw [Subsingleton.elim (a • f) f]
     exact hf
 
+/- English proof (translation)
+Proceed by induction on `j using lift_cases (m := D.R.m) with`. Consider the case `h1 j`. Use `Submodule.map_injective_of_injective (f := (toK YS j b).toLinearMap) (toK YS j b).injective ?_` and prove the remaining obligations. Rewrite using `[Submodule.map_top, LinearEquiv.range, Submodule.map_span, ← span_ratForms (S := S) (b := b) _ (kurAt YS iC b)]`. Use `congrArg _ (Set.ext fun x => ?_)` and prove the remaining obligations.
+
+Take `⟨g, rfl⟩` from `(toK YS j b).surjective x`. Conclude with `⟨fun ⟨g', hg, e⟩ => (show toK YS j b g' = toK YS j b g from e) ▸ (mem_fmUrN j b g').1 hg, fun hx => ⟨g, (mem_fmUrN j b g).2 hx, rfl⟩⟩`. Consider the case `h2 j hj`. Use `h.off j hj b` as an intermediate fact. Conclude with `Subsingleton.elim _ _`.
+-/
 theorem fmUr_span (j : ℕ) (b : Bool) :
     Submodule.span (FractionRing (D.ntw.O i)) (fmUrN YS iC j b : Set (D.nexp.Fm i j b)) = ⊤ := by
   induction j using lift_cases (m := D.R.m) with
@@ -469,6 +621,11 @@ theorem fmUr_span (j : ℕ) (b : Bool) :
     have := h.off j hj b
     exact Subsingleton.elim _ _
 
+/- English proof (translation)
+Proceed by induction on `j using lift_cases (m := D.R.m) with`. Consider the case `h1 j`. Use extensionality with `f`. Rewrite using `[h.pin b j f, h.sup b j, evN_succ]`. Conclude with `(mem_span_toK (fun f => and_congr (mem_fmUrN j b f) (allEv_ball zero_le_one f)) f).symm`.
+
+Consider the case `h2 j hj`. Use `h.off j hj b` as an intermediate fact. Conclude with `Subsingleton.elim _ _`.
+-/
 theorem bsup_def (j : ℕ) (b : Bool) : D.nexp.Bsup i j b =
     Submodule.span (D.ntw.O i) {f | f ∈ fmUrN YS iC j b ∧ ∀ y, ‖evN YS fw (iC := iC) j b f y‖ ≤ 1} := by
   induction j using lift_cases (m := D.R.m) with
@@ -514,6 +671,11 @@ def geoNTh (h : ∀ i, GeoLaws YS fw (T.iC i)) : NTh D.R D.host D.what₂ D.LL0 
     FmUr_span := fun i => (h i).fmUr_span
     Bsup_def := fun i => (h i).bsup_def }
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `exists_hkUnit_eq (YS := YS) (fw := fw) (iC := iC) j b k P`. Use `⟨s, hs ▸ (h.hkUnit_spec (j := j) hk b).1, fun y z hy => ?_⟩` and prove the remaining obligations. Take `rfl` from `eq_of_atSide hy`. Take `⟨e, q, hq, hm⟩` from `h.move hk b z`. Use `⟨e, fun c => ⟨q (e c), 1, (q (e c)).1, by rw [hm, atSide_same], hq _, isUnitDiag_one, frBor_one _, ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[hkUnitN_succ, hs]`. Simplify using `only [wtChar, wchar, Pi.one_apply, Units.val_one, one_pow, Finset.prod_const_one, map_one, mul_one]`.
+-/
 theorem GeoLaws.hk_tie (h : GeoLaws YS fw iC) (j : Fin D.R.m) (b : Bool) {k P} (hk : HkIdx i k P) :
     ∃ s : T0.Q.c.F, ‖embC YS iC b s‖ = 1 ∧ ∀ (y : AllPts YS iC ((j : ℕ) + 1)) (z : Pts YS iC b ((j : ℕ) + 1)), atSide b y = some z →
       ∃ e : Fin (kerNum YS iC ((j : ℕ) + 1) k P) ≃ HkKer P.asIdeal (charAt P) k z.1, ∀ c,
@@ -528,6 +690,9 @@ theorem GeoLaws.hk_tie (h : GeoLaws YS fw iC) (j : Fin D.R.m) (b : Bool) {k P} (
   rw [hkUnitN_succ, hs]
   simp only [wtChar, wchar, Pi.one_apply, Units.val_one, one_pow, Finset.prod_const_one, map_one, mul_one]
 
+/- English proof (translation)
+Rewrite using `[evN_succ]`. Both sides reduce to the same expression.
+-/
 theorem evN_eq (j : Fin D.R.m) (b : Bool) (f : D.nexp.Fm i ((j : ℕ) + 1) b) (y : AllPts YS iC ((j : ℕ) + 1)) :
     evN YS fw ((j : ℕ) + 1) b f y = (atSide b y).elim 0 fun z => valAt YS fw j z.1 (toK YS j b f) := by
   rw [evN_succ]
@@ -543,18 +708,33 @@ def geoTie (h : ∀ i, GeoLaws YS fw (T.iC i)) : ThetaTie YS fw (geoNTh h) where
       hk_none := fun k P hk _ _ _ => (congrArg norm (hkUnitN_succ j b k P)).trans ((h i).hkUnit_spec hk b).1 }
   isUnramified₂ _ := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(PtC.exists_of_reading hk y₀ hy).choose⟩`.
+-/
 theorem nonempty_pts_of_reading {b : Bool} {j : ℕ} {Tc : CDVR} {io : T0.Q.c.F →+* Tc.Fr} {k : Tc.Fr →+* ℂ_[D.ntw.l i]}
     (hk : IsReading (embC YS iC b) Tc io k) (y₀ : IntFr (T0.Q.Xo j) T0.Q.c Tc io) (hy : y₀.IsAlg) : Nonempty (Pts YS iC b j) :=
   ⟨(PtC.exists_of_reading hk y₀ hy).choose⟩
 
 end Record
 
+/- English proof (translation)
+The claim follows from `natCast_mem_placeAt _`.
+-/
 example {i : D.ntw.Tw} (b : Bool) : ((D.ntw.l i : ℕ) : 𝓞 T0.Q.c.F) ∈ (placeC YS (T.iC i) b).asIdeal := natCast_mem_placeAt _
 
+/- English proof (translation)
+The claim follows from `sideK_eKs YS i b a`.
+-/
 example (i : D.ntw.Tw) (b : Bool) (a : S.Ks) : sideK YS i b (eKs YS a) = NX.readLL0 S i b (S.kKs a) := sideK_eKs YS i b a
 
+/- English proof (translation)
+The claim follows from `mem_kurC _ s`.
+-/
 example {i : D.ntw.Tw} (b : Bool) (s : T0.Q.c.F) : embC YS (T.iC i) b s ∈ kurC (embC YS (T.iC i) b) := mem_kurC _ s
 
+/- English proof (translation)
+The claim follows from `atSide_other (by simp)`.
+-/
 example (n : ℕ) : atSide (P := fun _ => ℕ) true ⟨false, n⟩ = none := atSide_other (by simp)
 
 end GlobalTheory.GeoTie

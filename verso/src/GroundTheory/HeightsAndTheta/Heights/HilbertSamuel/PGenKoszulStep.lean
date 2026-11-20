@@ -17,6 +17,11 @@ namespace GenKoszulStep
 variable {S : Type} [CommRing S] {K : Type} [Fintype K] [LinearOrder K] {ι : K → Type} [∀ k, Fintype (ι k)]
   [∀ k, LinearOrder (ι k)]
 
+/- English proof (translation)
+Rewrite using `[KH.cechHc, Submodule.Quotient.subsingleton_iff, eq_top_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx hdx`. Establish `hZ : x ∈ KH.cechZc ι 𝓜 c (n + 1)` using `⟨hx, hdx⟩`. Take `⟨y, hy, hyx⟩` from `h (Submodule.mem_top (x := ⟨x, hZ⟩))`.
+
+Conclude with `⟨y, hy, hyx⟩`. Introduce and unpack `h ⟨x, hx, hdx⟩ -`. Take `⟨y, hy, hyx⟩` from `h x hx hdx`. Conclude with `⟨y, hy, hyx⟩`.
+-/
 theorem subsingleton_cechHc_iff {M : Type} [AddCommGroup M] [Module (MRingOver S ι) M] [Module S M]
     [IsScalarTower S (MRingOver S ι) M] (𝓜 : (K → ℤ) → Submodule S M) (c : K → ℤ) (n : ℕ) :
     Subsingleton (KH.cechHc ι 𝓜 c (n + 1)) ↔
@@ -32,6 +37,17 @@ theorem subsingleton_cechHc_iff {M : Type} [AddCommGroup M] [Module (MRingOver S
     obtain ⟨y, hy, hyx⟩ := h x hx hdx
     exact ⟨y, hy, hyx⟩
 
+/- English proof (translation)
+Use `choose r zz uu hz hu hs using h`. Establish `: Finite (KH.Cell K ι 0)` using `by unfold KH.Cell; infer_instance`. Set `_ : Fintype (KH.Cell K ι 0)` to `Fintype.ofFinite _`. Use `set e := Fintype.equivFin (Σ I : KH.Cell K ι 0, Fin (r I))`. Set `v : ∀ I : KH.Cell K ι 0, (Σ I' : KH.Cell K ι 0, Fin (r I')) → LocalizedModule (KH.cellMon S I.1) (MRingOver S ι ⧸ V)` to `fun I σ => if h : σ.1 = I then h ▸ uu σ.1 σ.2 else 0`.
+
+Use `⟨Fintype.card (Σ I : KH.Cell K ι 0, Fin (r I)), fun j => zz (e.symm j).1 (e.symm j).2, fun j => hz _ _, fun I => ⟨fun j => v I (e.symm j), fun j => ?_, ?_⟩⟩` and prove the remaining obligations. Establish `hv : ∀ σ, v I σ ∈ KH.locPart ι (KH.quotPart S V) (KH.cellMon S I.1) (-α)`. Introduce and unpack `⟨I', i⟩`. Simplify using `only [v]`. Use `split_ifs with hI`.
+
+Substitute `hI` using the available equality. Conclude with `hu _ i`. Conclude with `Submodule.zero_mem _`. Conclude with `hv (e.symm j)`. Rewrite using `[Equiv.sum_comp e.symm (fun σ => v I σ * zz σ.1 σ.2 I), Fintype.sum_sigma, Finset.sum_eq_single I]`.
+
+Simplify using `only [v, dif_pos rfl]`. Conclude with `hs I`. Introduce `I' _ hI'`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Simplify using `only [v, dif_neg hI']`.
+
+Conclude with `zero_mul (zz I' i I)`. Simplify using the standard rewrite rules.
+-/
 theorem gather {V : Ideal (MRingOver S ι)} {α : K → ℤ} (h : KH.GeneratedV S V α) :
     ∃ (R : ℕ) (z : Fin R → KH.CechC S ι (MRingOver S ι ⧸ V) 0),
       (∀ j, z j ∈ KH.cechZc ι (KH.quotPart S V) α 0) ∧
@@ -69,6 +85,13 @@ end GenKoszulStep
 
 open GenKoszulStep
 
+/- English proof (translation)
+Introduce `S _ K _ _ ι _ _ V α _ hα`. Take `⟨R, z, hz, hu⟩` from `gather hα`. Use `⟨R, fun c hc => ?_⟩` and prove the remaining obligations. Establish `hB'` using `hB S K ι V α R z hz c`. Establish `hC'` using `hC S K ι V α R z hu c`.
+
+Establish `key` using `hD (fun p n => KosC S ι V R p n) (fun p n => kosPart S ι V R α c p n) (fun p n => kosCech S ι V R p n) (fun p n => kosD z p n) R (fun p n x hx J _ => hDeg S K ι _ _ _ n (x J) (hx J trivial)) (fun p n x hx => (hB' p n).1 x hx) (fun p n x _ => funext fun J => LinearMap.congr_fun (h …`. Establish `hJ` using `fun J => (subsingleton_cechHc_iff _ _ n).mp (hc p hp1 hpR (n + 1) (by omega)) (x J) (hx J trivial) (congrFun h0 J)`. Use `choose y hy hdy using hJ`. Conclude with `⟨y, fun J _ => hy J, funext hdy⟩)`. Introduce `i hi`.
+
+Take `⟨n, rfl⟩ : ∃ n, i = n + 1` from `⟨i - 1, by omega⟩`. Rewrite using `[subsingleton_cechHc_iff]`. Introduce `x hx hdx`. Take `⟨y, hy, hdy⟩` from `key n (fun _ => x) (fun J _ => by simpa using hx) (funext fun _ => hdx)`. Conclude with `⟨y ⟨∅, Finset.card_empty⟩, by simpa using hy _ trivial, congrFun hdy _⟩`.
+-/
 theorem GenKoszulStep.proof (hB : KoszulCechComplex.Statement) (hC : KoszulCechExact.Statement)
     (hD : DoubleComplexVanish.Statement) (hSq : KH.CechDSqStatement) (hDeg : KH.CechDDegStatement) :
     GenKoszulStep.Statement := by

@@ -17,10 +17,18 @@ noncomputable section
 
 namespace GlobalTheory.TwU.PlaceAbove
 
+/- English proof (translation)
+Establish `h3 : ∀ y : D.host.E, sigD D y = D.host.conj y` using `fun y => bridge_star_holds D.R D.host y`. Rewrite using `[h3, ← Formalism.L2.Herm.star_conj, ← Formalism.L2.Herm.star_conj, star_star]`.
+-/
 theorem involution_conj (D : D7) (x : D.host.E) : sigD D (D.host.conj x) = x := by
   have h3 : ∀ y : D.host.E, sigD D y = D.host.conj y := fun y => bridge_star_holds D.R D.host y
   rw [h3, ← Formalism.L2.Herm.star_conj, ← Formalism.L2.Herm.star_conj, star_star]
 
+/- English proof (translation)
+Distinguish the cases in `hs : s.val % 2 = 1`. Establish `hodd : IsOddPos s` using `hs`. Establish `hne : ¬ Even s.val` using `by rw [Nat.not_even_iff_odd, Nat.odd_iff]; exact hs`. Rewrite using `[if_neg hne, if_pos hodd, involution_conj]`. Establish `hodd : ¬ IsOddPos s` using `hs`.
+
+Establish `hev : Even s.val` using `by rw [Nat.even_iff]; omega`. Rewrite using `[if_pos hev, if_neg hodd]`.
+-/
 theorem posArg_eq_self (D : D7) {n : ℕ} (s : Fin n) (x : D.host.E) :
     (if Even s.val then (if IsOddPos s then D.host.conj x else x)
       else sigD D (if IsOddPos s then D.host.conj x else x)) = x := by
@@ -36,6 +44,13 @@ end GlobalTheory.TwU.PlaceAbove
 
 open GlobalTheory.TwU.PlaceAbove in
 
+/- English proof (translation)
+Introduce `p _ X E D pos lam ρ e hK hpos`. Introduce `v s x`. Establish `h1` using `hpos v s (if IsOddPos s then D.host.conj x else x)`. Rewrite `h1` using `[posArg_eq_self D s x]`. Establish `hz` using `embLL_mem_alg D (tEL D (pos ⟨v, s⟩) x)`.
+
+Establish `h2` using `hK (tEL D (pos ⟨v, s⟩) x) hz`. Establish `he : Formalism.MainNotions.TaylorLogMetric.embT D (pos ⟨v, s⟩) x = D.what₂.embLL (tEL D (pos ⟨v, s⟩) x)` using `(tEL_emb D (pos ⟨v, s⟩) x).symm`. Establish `hL : Formalism.MainNotions.TaylorLogMetric.lamC lam (Formalism.MainNotions.TaylorLogMetric.embT D (pos ⟨v, s⟩) x) = lam ⟨D.what₂.embLL (tEL D (pos ⟨v, s⟩) x), hz⟩`. Unfold `Formalism.MainNotions.TaylorLogMetric.lamC`. Rewrite using `[dif_pos (he ▸ hz)]`.
+
+Use `congr 1`. Conclude with `Subtype.ext he`. Use `show Formalism.MainNotions.TaylorLogMetric.lamC lam (Formalism.MainNotions.TaylorLogMetric.embT D (pos ⟨v, s⟩) x) = _`. Rewrite using `[hL, ← h2, h1]`. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.TwU.lamPos_of_posEmb : ∀ {p : ℕ} [Fact p.Prime] (X : Sys p) (E : CEmb X.G) (D : D7) (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ D.what₂.Tau) (lam : TaylorLogMetric.Qbar →+* ℂ_[p]) (ρ : ∀ v : X.Pl, D.host.E →+* X.G.P.Qq v) (e : D.what₂.LL →+* X.G.Kf), (∀ (z : D.what₂.LL) (hz : D.what₂.embLL z ∈ algebraicClosure ℚ ℂ), E.iK (e z) = lam ⟨D.what₂.embLL z, hz⟩) → (∀ (v : X.Pl) (s : Fin (X.G.P.n' v)) (x : D.host.E), e (tEL D (pos ⟨v, s⟩) (if Even s.val then x else sigD D x)) = X.G.P.ι v ((X.G.P.σ v ^ s.val) (ρ v x))) → LamPos X E pos lam ρ := by
   intro p _ X E D pos lam ρ e hK hpos
   intro v s x

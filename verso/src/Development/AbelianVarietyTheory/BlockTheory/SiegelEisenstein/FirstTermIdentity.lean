@@ -37,6 +37,11 @@ def FirstTermIdentity : Prop :=
           ∀ g, ∃ b : ℂ, ResidueAt (regIntS ω' d' l'.K m' P Ψ g) (RegSW.rhoH T' r') b ∧
             ResidueAt (eisS ω H Φ g) (StdUnn.s0 T n) (κ * b))
 
+/- English proof (translation)
+Establish `e` using `d.rank_add`. Use `⟨by omega, by omega, ?_⟩` and prove the remaining obligations. Establish `: T.rank = n + t` using `by omega`. Rewrite using `[StdUnn.s0, this]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 example {D : D7} {n t : ℕ} {T T' : HSp D} (d : HypDec T T' t) (h : T.rank + T'.rank = 2 * n) (h' : T'.rank < T.rank) :
     T'.rank < n ∧ 0 < t ∧ StdUnn.s0 T n = (t : ℂ) / 2 := by
   have e := d.rank_add
@@ -44,6 +49,9 @@ example {D : D7} {n t : ℕ} {T T' : HSp D} (d : HypDec T T' t) (h : T.rank + T'
   have : T.rank = n + t := by omega
   rw [StdUnn.s0, this]; push_cast; ring
 
+/- English proof (translation)
+Establish `e` using `d.rank_add`. Use linear arithmetic over natural numbers and integers.
+-/
 example {D : D7} {t : ℕ} {T T' : HSp D} (d : HypDec T T' t) : T.rank % 2 = T'.rank % 2 := by
   have e := d.rank_add
   omega

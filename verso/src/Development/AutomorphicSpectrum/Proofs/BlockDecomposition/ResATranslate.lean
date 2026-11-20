@@ -16,6 +16,9 @@ open Set GlobalTheory.Eis
 
 variable {D : D7} {p : ℕ}
 
+/- English proof (translation)
+Introduce `γ hγ g` and use `by obtain ⟨a, ha⟩ := GlobalTheory.StdUnn.LeftInvSect.exists_blkA hγ.1 obtain ⟨u, hu⟩ := GlobalTheory.StdUnn.LeftInvSect.det_rat hγ.2 a ha have h1 : absA D (Units.map (incA D).toMonoidHom u) = 1 := absE_inclR u rw [hs γ hγ.1 a ha g, hu, h1] simp`.
+-/
 theorem law_ratInv {n : ℕ} {z : ℂ} {s : G D n → ℂ} (hs : IsLaw 1 z s) : LeftInv (P D n ⊓ GF D n) s := fun γ hγ g => by
   obtain ⟨a, ha⟩ := GlobalTheory.StdUnn.LeftInvSect.exists_blkA hγ.1
   obtain ⟨u, hu⟩ := GlobalTheory.StdUnn.LeftInvSect.det_rat hγ.2 a ha
@@ -23,30 +26,61 @@ theorem law_ratInv {n : ℕ} {z : ℂ} {s : G D n → ℂ} (hs : IsLaw 1 z s) : 
   rw [hs γ hγ.1 a ha g, hu, h1]
   simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hf.1.comp (continuous_id.mul continuous_const), law_right hf.2 x⟩`.
+-/
 theorem rho_right {f : G D p → ℂ} (hf : IsRho f) (x : G D p) : IsRho fun g => f (g * x) :=
   ⟨hf.1.comp (continuous_id.mul continuous_const), law_right hf.2 x⟩
 
+/- English proof (translation)
+The claim follows from `fam_law hH hf.2 σ`.
+-/
 theorem fam_law_real {H : G D p → ℝ≥0} (hH : IsHt H) {f : G D p → ℂ} (hf : IsRho f) (σ : ℝ) :
     IsLaw 1 (σ : ℂ) (fam H f ((p : ℂ) / 2) (σ : ℂ)) := fam_law hH hf.2 σ
 
+/- English proof (translation)
+The claim follows from `(fam_cont hH hf s₁).comp (f := fun g : G D p => ((σ, g) : ℝ × G D p)) (by fun_prop)`.
+-/
 theorem fam_cont_at {H : G D p → ℝ≥0} (hH : IsHt H) {f : G D p → ℂ} (hf : Continuous f) (s₁ : ℂ) (σ : ℝ) :
     Continuous (fam H f s₁ (σ : ℂ)) :=
   (fam_cont hH hf s₁).comp (f := fun g : G D p => ((σ, g) : ℝ × G D p)) (by fun_prop)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Establish `: ((((p : ℝ) / 2 : ℝ) : ℂ)) - (p : ℂ) / 2 = 0` using `by push_cast; ring`. Simplify using `[fam, this]`.
+-/
 theorem fam_at (H : G D p → ℝ≥0) (f : G D p → ℂ) : fam H f ((p : ℂ) / 2) (((p : ℝ) / 2 : ℝ) : ℂ) = f := by
   funext g
   have : ((((p : ℝ) / 2 : ℝ) : ℂ)) - (p : ℂ) / 2 = 0 := by push_cast; ring
   simp [fam, this]
 
+/- English proof (translation)
+Introduce `γ hγ g` and use `by simp only [res, eisS] rw [leftInv_cosetSum (law_ratInv (fam_law_real hH hf σ)) γ hγ g]`.
+-/
 theorem res_leftInv {H : G D p → ℝ≥0} (hH : IsHt H) {f : G D p → ℂ} (hf : IsRho f) (σ : ℝ) :
     LeftInv (GF D p) (res H f σ) := fun γ hγ g => by
   simp only [res, eisS]
   rw [leftInv_cosetSum (law_ratInv (fam_law_real hH hf σ)) γ hγ g]
 
+/- English proof (translation)
+Simplify using `only [eisS]`. Rewrite using `[cosetSum_mul_right, one_mul]`.
+-/
 theorem eis_right (s : G D p → ℂ) (x : G D p) : eisS s x = eisS (fun g => s (g * x)) 1 := by
   simp only [eisS]
   rw [cosetSum_mul_right, one_mul]
 
+/- English proof (translation)
+Take `⟨B, hB0, hB⟩` from `eis_bound hS hp hH (isCompact_singleton (x := (1 : G D p)))`. Establish `hK : IsCompact (Icc ((p : ℝ) / 2) (p / 2 + 1) ×ˢ C)` using `isCompact_Icc.prod hC`. Establish `hε' : 0 < ε / (2 * (B + 1))` using `by positivity`. Establish `hfc` using `fam_cont hH hf.1 ((p : ℂ) / 2)`. Establish `hev : ∀ᶠ x' in 𝓝 x, ∀ y ∈ Icc ((p : ℝ) / 2) (p / 2 + 1) ×ˢ C, ‖fam H f ((p : ℂ) / 2) (y.1 : ℂ) (y.2 * x') - fam H f ((p : ℂ) / 2) (y.1 : ℂ) (y.2 * x)‖ < ε / (2 * (B + 1)) * (H y.2 : ℝ) ^ (y.1 + p / 2)`.
+
+Use `hK.eventually_forall_of_forall_eventually fun y _ => ?_` and prove the remaining obligations. Establish `c1 : Continuous fun u : G D p × (ℝ × G D p) => fam H f ((p : ℂ) / 2) (u.2.1 : ℂ) (u.2.2 * u.1)` using `hfc.comp (f := fun u : G D p × (ℝ × G D p) => ((u.2.1, u.2.2 * u.1) : ℝ × G D p)) (by fun_prop)`. Establish `c2 : Continuous fun u : G D p × (ℝ × G D p) => fam H f ((p : ℂ) / 2) (u.2.1 : ℂ) (u.2.2 * x)` using `hfc.comp (f := fun u : G D p × (ℝ × G D p) => ((u.2.1, u.2.2 * x) : ℝ × G D p)) (by fun_prop)`. Establish `c3 : Continuous fun u : G D p × (ℝ × G D p) => ε / (2 * (B + 1)) * (H u.2.2 : ℝ) ^ (u.2.1 + p / 2)` using `continuous_const.mul ((NNReal.continuous_coe.comp (hH.1.comp (continuous_snd.comp continuous_snd))).rpow ((continuous_fst.comp continuous_snd).add continuous_const) fun u => Or.inl (NNReal.coe_pos.2 (hH.2.1 _)).ne')`. Use `((c1.sub c2).norm.continuousAt.eventually_lt c3.continuousAt ?_)` and prove the remaining obligations.
+
+Simplify using `only [Pi.sub_apply, sub_self, norm_zero]`. Conclude with `mul_pos hε' (Real.rpow_pos_of_pos (NNReal.coe_pos.2 (hH.2.1 _)) _)`. Use `filter_upwards [hev] with x' hx' σ hσ`. Establish `hI' : σ ∈ Icc ((p : ℝ) / 2) (p / 2 + 1)` using `⟨hσ.1.le, hσ.2⟩`. Establish `hl` using `fam_law_real hH hf σ`.
+
+Establish `hc` using `fam_cont_at hH hf.1 ((p : ℂ) / 2) σ`. Establish `hct : ∀ y : G D p, Continuous fun g => fam H f ((p : ℂ) / 2) (σ : ℂ) (g * y)` using `fun y => hc.comp (continuous_id.mul continuous_const)`. Establish `hb` using `law_bound hH hcov (law_sub (law_right hl x') (law_right hl x)) (δ := ε / (2 * (B + 1))) (fun c hc => (hx' (σ, c) ⟨hI', hc⟩).le)`. Establish `hf'` using `(hB σ hσ 1 rfl _ _ hb).2`. Rewrite `hf'` using `[eis_sub (conv_of_section hS hp hH hC hcov hσ (hct x') (law_right hl x') 1) (conv_of_section hS hp hH hC hcov hσ (hct x) (law_right hl x) 1), ← eis_right, ← eis_right]`.
+
+Establish `e : res H f σ x' - res H f σ x = ((σ - p / 2 : ℝ) : ℂ) * (eisS (fam H f ((p : ℂ) / 2) (σ : ℂ)) x' - eisS (fam H f ((p : ℂ) / 2) (σ : ℂ)) x)`. Simplify using `only [res]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, norm_mul, Complex.norm_real, Real.norm_of_nonneg (by linarith [hσ.1])]`. Establish `: ε / (2 * (B + 1)) * B ≤ ε`.
+
+Rewrite using `[div_mul_eq_mul_div, div_le_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem res_equi (hS : SphBound) (hp : 1 ≤ p) {H : G D p → ℝ≥0} (hH : IsHt H) {C : Set (G D p)} (hC : IsCompact C)
     (hcov : ∀ g, ∃ q ∈ P D p, ∃ c ∈ C, g = q * c) {f : G D p → ℂ} (hf : IsRho f) (x : G D p) {ε : ℝ} (hε : 0 < ε) :
     ∀ᶠ x' in 𝓝 x, ∀ σ ∈ Ioc ((p : ℝ) / 2) (p / 2 + 1), ‖res H f σ x' - res H f σ x‖ ≤ ε := by
@@ -88,6 +122,11 @@ theorem res_equi (hS : SphBound) (hp : 1 ≤ p) {H : G D p → ℝ≥0} (hH : Is
     nlinarith
   linarith
 
+/- English proof (translation)
+Rewrite using `[continuous_iff_continuousAt]`. Introduce `x`. Rewrite using `[ContinuousAt, Metric.tendsto_nhds]`. Introduce `ε hε`. Use `filter_upwards [res_equi hS hp hH hC hcov hf x (half_pos hε)] with x' hx'`.
+
+Rewrite using `[dist_eq_norm]`. Combine the linear relations using `[hx' σ hσ]`.
+-/
 theorem res_cont (hS : SphBound) (hp : 1 ≤ p) {H : G D p → ℝ≥0} (hH : IsHt H) {C : Set (G D p)} (hC : IsCompact C)
     (hcov : ∀ g, ∃ q ∈ P D p, ∃ c ∈ C, g = q * c) {f : G D p → ℂ} (hf : IsRho f) {σ : ℝ}
     (hσ : σ ∈ Ioc ((p : ℝ) / 2) (p / 2 + 1)) : Continuous (res H f σ) := by
@@ -99,6 +138,9 @@ theorem res_cont (hS : SphBound) (hp : 1 ≤ p) {H : G D p → ℝ≥0} (hH : Is
   rw [dist_eq_norm]
   linarith [hx' σ hσ]
 
+/- English proof (translation)
+Use `filter_upwards [res_equi hS hp hH hC hcov hf x hε] with x' hx'`. Establish `h1` using `((res_tendsto hS hp hH hC hcov hf x').sub (res_tendsto hS hp hH hC hcov hf x)).norm`. Use `le_of_tendsto h1 ?_` and prove the remaining obligations. Use `ufil_le p ?_` and prove the remaining obligations. Use `filter_upwards [ev_Ioc p] with σ hσ using hx' σ hσ`.
+-/
 theorem resA_near (hS : SphBound) (hp : 1 ≤ p) {H : G D p → ℝ≥0} (hH : IsHt H) {C : Set (G D p)} (hC : IsCompact C)
     (hcov : ∀ g, ∃ q ∈ P D p, ∃ c ∈ C, g = q * c) {f : G D p → ℂ} (hf : IsRho f) (x : G D p) {ε : ℝ} (hε : 0 < ε) :
     ∀ᶠ x' in 𝓝 x, ‖resA H f x' - resA H f x‖ ≤ ε := by
@@ -108,6 +150,11 @@ theorem resA_near (hS : SphBound) (hp : 1 ≤ p) {H : G D p → ℝ≥0} (hH : I
   refine ufil_le p ?_
   filter_upwards [ev_Ioc p] with σ hσ using hx' σ hσ
 
+/- English proof (translation)
+Rewrite using `[continuous_iff_continuousAt]`. Introduce `x`. Rewrite using `[ContinuousAt, Metric.tendsto_nhds]`. Introduce `ε hε`. Use `filter_upwards [resA_near hS hp hH hC hcov hf x (half_pos hε)] with x' hx'`.
+
+Rewrite using `[dist_eq_norm]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem resA_cont (hS : SphBound) (hp : 1 ≤ p) {H : G D p → ℝ≥0} (hH : IsHt H) {C : Set (G D p)} (hC : IsCompact C)
     (hcov : ∀ g, ∃ q ∈ P D p, ∃ c ∈ C, g = q * c) {f : G D p → ℂ} (hf : IsRho f) : Continuous (resA H f) := by
   rw [continuous_iff_continuousAt]
@@ -118,6 +165,9 @@ theorem resA_cont (hS : SphBound) (hp : 1 ≤ p) {H : G D p → ℝ≥0} (hH : I
   rw [dist_eq_norm]
   linarith
 
+/- English proof (translation)
+Introduce `γ hγ g` and use `by refine tendsto_nhds_unique (res_tendsto hS hp hH hC hcov hf (γ * g)) ?_ have := res_tendsto hS hp hH hC hcov hf g refine this.congr fun σ => ?_ rw [res_leftInv hH hf σ γ hγ g]`.
+-/
 theorem resA_leftInv (hS : SphBound) (hp : 1 ≤ p) {H : G D p → ℝ≥0} (hH : IsHt H) {C : Set (G D p)} (hC : IsCompact C)
     (hcov : ∀ g, ∃ q ∈ P D p, ∃ c ∈ C, g = q * c) {f : G D p → ℂ} (hf : IsRho f) : LeftInv (GF D p) (resA H f) := fun γ hγ g => by
   refine tendsto_nhds_unique (res_tendsto hS hp hH hC hcov hf (γ * g)) ?_
@@ -125,6 +175,15 @@ theorem resA_leftInv (hS : SphBound) (hp : 1 ≤ p) {H : G D p → ℝ≥0} (hH 
   refine this.congr fun σ => ?_
   rw [res_leftInv hH hf σ γ hγ g]
 
+/- English proof (translation)
+Use `hC'.induction_on (p := fun S => ∀ᶠ σ in ((ufil p : Ultrafilter ℝ) : Filter ℝ), ∀ c ∈ S, ‖res H f σ c - resA H f c‖ ≤ ε) (by simp) (fun s t hst h => h.mono fun σ hσ c hc => hσ c (hst hc)) (fun s t hs ht => by filter_upwards [hs, ht] with σ h1 h2 c hc` and prove the remaining obligations. Conclude with `hc.elim (h1 c) (h2 c)) fun x _ => ?_`. Establish `hε3 : 0 < ε / 3` using `by positivity`. Use `⟨_, mem_nhdsWithin_of_mem_nhds ((res_equi hS hp hH hC hcov hf x hε3).and (resA_near hS hp hH hC hcov hf x hε3)), ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ᶠ σ in ((ufil p : Ultrafilter ℝ) : Filter ℝ), ‖res H f σ x - resA H f x‖ < ε / 3`.
+
+Use `(res_tendsto hS hp hH hC hcov hf x)` as an intermediate fact. Rewrite `this` using `[Metric.tendsto_nhds]`. Use `filter_upwards [this _ hε3] with σ hσ`. Rewrite `hσ` using `[dist_eq_norm]`. Then use the resulting hypothesis. Use `filter_upwards [h1, ufil_le p (ev_Ioc p)] with σ hσ hI c hc`.
+
+Establish `a1` using `hc.1 σ hI`. Establish `a2` using `hc.2`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ ≤ ‖res H f σ c - res H f σ x‖ + ‖res H f σ x - resA H f x‖ + ‖resA H f c - resA H f x‖ := (norm_sub_le _ _).trans (by gcongr; exact norm_add_le _ _)`. Use `_ ≤ ε := by linarith`.
+-/
 theorem resA_unif (hS : SphBound) (hp : 1 ≤ p) {H : G D p → ℝ≥0} (hH : IsHt H) {C : Set (G D p)} (hC : IsCompact C)
     (hcov : ∀ g, ∃ q ∈ P D p, ∃ c ∈ C, g = q * c) {f : G D p → ℂ} (hf : IsRho f) {C' : Set (G D p)} (hC' : IsCompact C')
     {ε : ℝ} (hε : 0 < ε) :
@@ -150,6 +209,11 @@ theorem resA_unif (hS : SphBound) (hp : 1 ≤ p) {H : G D p → ℝ≥0} (hH : I
         (norm_sub_le _ _).trans (by gcongr; exact norm_add_le _ _)
     _ ≤ ε := by linarith
 
+/- English proof (translation)
+Establish `hfx` using `rho_right hf x`. Establish `hd` using `tendsto_diff hS hp hH hC hcov (S := fun σ g => fam H f ((p : ℂ) / 2) (σ : ℂ) (g * x)) (S' := fun σ => fam H (fun g => f (g * x)) ((p : ℂ) / 2) (σ : ℂ)) ((fam_cont hH hf.1 _).comp (f := fun u : ℝ × G D p => ((u.1, u.2 * x) : ℝ × G D p)) (by fun_prop)).continuousOn (fam_cont hH hfx …`. Establish `h1` using `(hd.mono_left (ufil_le p)).add (res_tendsto hS hp hH hC hcov hfx 1)`. Rewrite `h1` using `[zero_add]`. Use `tendsto_nhds_unique (res_tendsto hS hp hH hC hcov hf x) (h1.congr fun σ => ?_)` and prove the remaining obligations.
+
+Simplify using `only [res]`. Rewrite using `[eis_right (fam H f ((p : ℂ) / 2) (σ : ℂ)) x]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem resA_translate (hS : SphBound) (hp : 1 ≤ p) {H : G D p → ℝ≥0} (hH : IsHt H) {C : Set (G D p)} (hC : IsCompact C)
     (hcov : ∀ g, ∃ q ∈ P D p, ∃ c ∈ C, g = q * c) {f : G D p → ℂ} (hf : IsRho f) (x : G D p) :
     resA H f x = resA H (fun g => f (g * x)) 1 := by

@@ -16,6 +16,9 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] {H : HermSp M V} {r : ℕ}
   (Fr : FrameD H r) (L : Submodule M.L.O (H.Wb Fr.f))
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[M.L.O_def]`. Conclude with `hx.map (M.L.cj.toAlgHom.restrictScalars 𝒪[F])`.
+-/
 lemma cjO {x : E} (hx : x ∈ M.L.O) : M.L.cj x ∈ M.L.O := by
   rw [M.L.O_def] at hx ⊢
   exact hx.map (M.L.cj.toAlgHom.restrictScalars 𝒪[F])
@@ -26,13 +29,26 @@ def Gen : Set V :=
 
 variable {Fr L}
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span hv`.
+-/
 lemma gen_mem {v : V} (hv : v ∈ Gen Fr L) : v ∈ Fr.LamStd L := Submodule.subset_span hv
 
+/- English proof (translation)
+The claim follows from `(Fr.LamStd L).smul_mem (⟨c, hc⟩ : M.L.O) hv`.
+-/
 lemma smulO {c : E} (hc : c ∈ M.L.O) {v : V} (hv : v ∈ Fr.LamStd L) : c • v ∈ Fr.LamStd L :=
   (Fr.LamStd L).smul_mem (⟨c, hc⟩ : M.L.O) hv
 
 variable (Fr L)
 
+/- English proof (translation)
+Establish `h1 : ∀ b, H.h (Fr.e a) (Fr.es b) = if a = b then 1 else 0` using `fun b => Fr.h_es a b`. Establish `h2 : ∀ b, H.h (Fr.e a) (Fr.e b) = 0` using `fun b => Fr.h_iso _ _ (Or.inl (Fin.castSucc_ne_last a))`. Use `⟨fun b => ?_, fun b => ?_, ⟨0, ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[h1]`. Use `split_ifs`.
+
+Conclude with `M.L.O.one_mem`. Conclude with `M.L.O.zero_mem`. Rewrite using `[h2]`. Conclude with `M.L.O.zero_mem`. Simplify using `only [FrameD.prF, h1, h2, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true, Finset.sum_const_zero, sub_self, sub_zero, ZeroMemClass.coe_zero]`.
+
+Rewrite using `[map_zero]`. Conclude with `L.zero_mem`.
+-/
 lemma e_gen (a : Fin r) : Fr.e a ∈ Gen Fr L := by
   have h1 : ∀ b, H.h (Fr.e a) (Fr.es b) = if a = b then 1 else 0 := fun b => Fr.h_es a b
   have h2 : ∀ b, H.h (Fr.e a) (Fr.e b) = 0 := fun b => Fr.h_iso _ _ (Or.inl (Fin.castSucc_ne_last a))
@@ -45,6 +61,13 @@ lemma e_gen (a : Fin r) : Fr.e a ∈ Gen Fr L := by
       if_true, Finset.sum_const_zero, sub_self, sub_zero, ZeroMemClass.coe_zero]
   · rw [map_zero]; exact L.zero_mem
 
+/- English proof (translation)
+Establish `h1 : ∀ b, H.h (Fr.es k) (Fr.es b) = 0` using `fun b => Fr.h_ss k b`. Establish `h2 : ∀ b, H.h (Fr.es k) (Fr.e b) = if b = k then 1 else 0` using `fun b => by`. Rewrite using `[h_right H, show Fr.e b = Fr.f b.castSucc from rfl, Fr.h_es]`. Apply the tactic sequence `split_ifs <;> simp`. Use `⟨fun b => ?_, fun b => ?_, ⟨0, ?_, ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[h1]`. Conclude with `M.L.O.zero_mem`. Rewrite using `[h2]`. Use `split_ifs`. Conclude with `M.L.O.one_mem`.
+
+Conclude with `M.L.O.zero_mem`. Simplify using `only [FrameD.prF, h1, h2, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true, Finset.sum_const_zero, sub_self, sub_zero, ZeroMemClass.coe_zero]`. Rewrite using `[map_zero]`. Conclude with `L.zero_mem`.
+-/
 lemma es_gen (k : Fin r) : Fr.es k ∈ Gen Fr L := by
   have h1 : ∀ b, H.h (Fr.es k) (Fr.es b) = 0 := fun b => Fr.h_ss k b
   have h2 : ∀ b, H.h (Fr.es k) (Fr.e b) = if b = k then 1 else 0 := fun b => by
@@ -59,6 +82,11 @@ lemma es_gen (k : Fin r) : Fr.es k ∈ Gen Fr L := by
       if_true, Finset.sum_const_zero, sub_self, sub_zero, ZeroMemClass.coe_zero]
   · rw [map_zero]; exact L.zero_mem
 
+/- English proof (translation)
+Use `⟨Submodule.sum_mem _ fun a _ => smulO (hβ a) (gen_mem (e_gen Fr L a)), fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[h_right H]`. Apply `cjO` to reduce the goal to its premises. Establish `hl : H.h (∑ a, β a • Fr.e a) v = ∑ a, β a * H.h (Fr.e a) v` using `by show (lf H v) _ = _`. Rewrite using `[map_sum]`.
+
+Simplify using `only [map_smul, smul_eq_mul]`. Both sides reduce to the same expression. Rewrite using `[hl]`. Conclude with `M.L.O.sum_mem fun a _ => M.L.O.mul_mem (hβ a) (by rw [h_right H]; exact cjO (hv.2.1 a))`.
+-/
 lemma comb_mem (β : Fin r → E) (hβ : ∀ a, β a ∈ M.L.O) :
     (∑ a, β a • Fr.e a) ∈ Fr.LamStd L ∧ ∀ v ∈ Gen Fr L, H.h v (∑ a, β a • Fr.e a) ∈ M.L.O := by
   refine ⟨Submodule.sum_mem _ fun a _ => smulO (hβ a) (gen_mem (e_gen Fr L a)), fun v hv => ?_⟩
@@ -74,12 +102,18 @@ lemma comb_mem (β : Fin r → E) (hβ : ∀ a, β a ∈ M.L.O) :
 
 variable {Fr L}
 
+/- English proof (translation)
+Establish `: Fr.LamStd L ≤ (Fr.LamStd L).comap (g.restrictScalars M.L.O)` using `Submodule.span_le.2 fun v hv => h v hv`. Conclude with `fun v hv => this hv`.
+-/
 lemma pres_of_gen (g : V →ₗ[E] V) (h : ∀ v ∈ Gen Fr L, g v ∈ Fr.LamStd L) :
     ∀ v ∈ Fr.LamStd L, g v ∈ Fr.LamStd L := by
   have : Fr.LamStd L ≤ (Fr.LamStd L).comap (g.restrictScalars M.L.O) :=
     Submodule.span_le.2 fun v hv => h v hv
   exact fun v hv => this hv
 
+/- English proof (translation)
+Introduce `y hy`. Use `show eichF H x (Fr.es k) 0 y ∈ _`. Unfold `eichF`. Rewrite using `[map_zero, zero_mul, zero_smul, add_zero]`. Conclude with `sub_mem (add_mem (gen_mem hy) (smulO (hy.1 k) hxl)) (smulO (hxh y hy) (gen_mem (es_gen Fr L k)))`.
+-/
 lemma eich_gen {x : V} (hxl : x ∈ Fr.LamStd L) (hxh : ∀ v ∈ Gen Fr L, H.h v x ∈ M.L.O) (k : Fin r) :
     ∀ y ∈ Gen Fr L, eichL H x (Fr.es k) 0 y ∈ Fr.LamStd L := by
   intro y hy
@@ -99,6 +133,29 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] {H : HermSp M V} {r : ℕ}
   (Fr : FrameD H r) (L : Submodule M.L.O (H.Wb Fr.f))
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro _; exact ⟨1, (NUg Fr).one_mem, fun c => by simp, by simp, fun v hv => by simpa using hv⟩`. Consider the case `succ k ih`. Introduce `hk`.
+
+Take `⟨n, hn, hne, hnz, hnl⟩` from `ih (by omega)`. Use `set kk : Fin r := ⟨k, by omega⟩ with hkk`. Establish `hx : u kk ∈ H.X Fr.f` using `Fj_le_X Fr _ (hu kk)`. Establish `hxv : H.h (u kk) (Fr.es kk) = 0` using `Fj_es Fr kk.val kk le_rfl _ (hu kk)`. Establish `hc : 2 * algebraMap F E (0 : F) + H.h (Fr.es kk) (Fr.es kk) = 0`.
+
+Rewrite using `[Fr.h_ss, map_zero]`. Expand and normalize the polynomial expressions, which then agree. Establish `hM` using `eich_mem Fr hx hxv hc (fun a => by`. Rewrite using `[Fr.h_es]`. Distinguish the cases in `hak : a = kk`.
+
+Substitute `hak` using the available equality. Simplify using `using hu _`. Simplify using `[hak])`. Use `set g := eichE H (X_iso Fr (u kk) hx (u kk) hx) hxv hc with hg`. Establish `hgl : ∀ v ∈ Fr.LamStd L, g v ∈ Fr.LamStd L ∧ g⁻¹ v ∈ Fr.LamStd L`.
+
+Introduce `v hv`. Use `⟨pres_of_gen _ (eich_gen (hul kk) (huh kk) kk) v hv, ?_⟩` and prove the remaining obligations. Establish `hxh' : ∀ y ∈ Gen Fr L, H.h y (-u kk) ∈ M.L.O` using `fun y hy => by`. Rewrite using `[h_neg_right]`. Conclude with `M.L.O.neg_mem (huh kk y hy)`.
+
+Conclude with `pres_of_gen _ (eich_gen (neg_mem (hul kk)) hxh' kk) v hv`. Use `⟨g * n, mul_mem hM hn, fun c => ?_, ?_, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearEquiv.mul_apply, hne c, hg, eichE_apply]`. Establish `hcx : H.h (Fr.f c.castSucc) (u kk) = 0` using `X_iso Fr _ (Fj_le_X Fr (c.val + 1) (e_mem Fr c)) _ hx`. Distinguish the cases in `hck : c.val < k`.
+
+Establish `hfix : eichF H (u kk) (Fr.es kk) 0 (u c) = u c` using `eich_fix H _ _ _ _ (Fj_es Fr c.val kk (by simp [hkk]; omega) _ (hu c)) (X_iso Fr _ (Fj_le_X Fr _ (hu c)) _ hx)`. Establish `hne' : c ≠ kk` using `fun h => by subst h; simp [hkk] at hck`. Establish `hadd : eichF H (u kk) (Fr.es kk) 0 (Fr.f c.castSucc + u c) = eichF H (u kk) (Fr.es kk) 0 (Fr.f c.castSucc) + eichF H (u kk) (Fr.es kk) 0 (u c)` using `(eichL H (u kk) (Fr.es kk) 0).map_add _ _`. Establish `hes : H.h (Fr.f c.castSucc) (Fr.es kk) = 0` using `by rw [Fr.h_es, if_neg hne']`. Rewrite using `[if_pos hck, if_pos (by omega), hadd, hfix]`.
+
+Simplify using `[eichF, hcx, hes]`. Rewrite using `[if_neg hck]`. Distinguish the cases in `hce : c = kk`. Substitute `hce` using the available equality. Establish `h1 : H.h (Fr.f kk.castSucc) (Fr.es kk) = 1` using `by rw [Fr.h_es, if_pos rfl]`.
+
+Establish `: kk.val < k + 1` using `by simp [hkk]`. Rewrite using `[if_pos this]`. Simplify using `[eichF, hcx, h1]`. Establish `: ¬ c.val < k + 1` using `fun h => hce (Fin.ext (by simp [hkk]; omega))`. Establish `hes : H.h (Fr.f c.castSucc) (Fr.es kk) = 0` using `by rw [Fr.h_es, if_neg hce]`.
+
+Rewrite using `[if_neg this]`. Simplify using `[eichF, hcx, hes]`. Rewrite using `[LinearEquiv.mul_apply, hnz, hg, eichE_apply]`. Conclude with `eich_fix H _ _ _ _ (z_es Fr kk) (z_X Fr _ hx)`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[LinearEquiv.mul_apply]`. Conclude with `(hgl _ (hnl v hv).1).1`. Rewrite using `[mul_inv_rev, LinearEquiv.mul_apply]`. Conclude with `(hnl _ (hgl v hv).2).2`.
+-/
 lemma levi_lam (u : Fin r → V) (hu : ∀ c, u c ∈ Fr.Fj c.val) (hul : ∀ c, u c ∈ Fr.LamStd L)
     (huh : ∀ c, ∀ v ∈ Gen Fr L, H.h v (u c) ∈ M.L.O) :
     ∀ k, k ≤ r → ∃ n ∈ NUg Fr, (∀ c : Fin r, n (Fr.f c.castSucc) =
@@ -167,6 +224,19 @@ namespace GlobalTheory.LocOver.UnipLevi
 
 open GlobalTheory.LocOver.UnipOnto
 
+/- English proof (translation)
+Introduce `F _ _ _ E _ _ _ _ M _ V _ _ H r Fr L A hA hAO`. Use `set u : Fin r → V := fun c => (∑ a, A a c.castSucc • Fr.f a) - Fr.f c.castSucc with hud`. Establish `hm` using `mem_of_tri Fr.f (fun b => ∑ a, A a b • Fr.f a) ⟨A, hA, fun b => rfl⟩`. Establish `hu : ∀ c : Fin r, u c ∈ Fr.Fj c.val` using `fun c => spanf_le Fr c.val c.isLt.le (by simpa using hm c.castSucc)`. Establish `hdec : ∀ c : Fin r, u c = (∑ a : Fin r, A a.castSucc c.castSucc • Fr.e a) - Fr.e c`.
+
+Introduce `c`. Simplify using `only [hud]`. Rewrite using `[Fin.sum_univ_castSucc, hA.1 _ _ (Fin.castSucc_lt_last c), zero_smul, add_zero]`. Both sides reduce to the same expression. Establish `hul : ∀ c, u c ∈ Fr.LamStd L` using `fun c => by`.
+
+Rewrite using `[hdec]`. Conclude with `sub_mem (comb_mem Fr L _ (fun a => hAO _ _)).1 (gen_mem (e_gen Fr L c))`. Establish `huh : ∀ c, ∀ v ∈ Gen Fr L, H.h v (u c) ∈ M.L.O` using `fun c v hv => by`. Rewrite using `[hdec, h_sub_right]`. Conclude with `M.L.O.sub_mem ((comb_mem Fr L _ (fun a => hAO _ _)).2 v hv) (hv.2.1 c)`.
+
+Take `⟨n, hn, hne, hnz, hnl⟩` from `levi_lam Fr L u hu hul huh r le_rfl`. Use `⟨n, by rw [N_eq]; exact hn, fun c => ?_, hnz, ?_⟩` and prove the remaining obligations. Rewrite using `[hne c, if_pos c.isLt]`. Conclude with `add_sub_cancel _ _`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Introduce and unpack `_ ⟨v, hv, rfl⟩`. Conclude with `(hnl v hv).1`. Introduce `v hv`. Use `⟨n⁻¹ v, (hnl v hv).2, ?_⟩` and prove the remaining obligations. Use `show n (n⁻¹ v) = v`.
+
+Rewrite using `[← LinearEquiv.mul_apply, mul_inv_cancel]`. Both sides reduce to the same expression.
+-/
 theorem levi_integral : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E]
     [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] (M : Model F E), M.OK → ∀ {V : Type}
     [AddCommGroup V] [Module E V] (H : HermSp M V) (r : ℕ) (Fr : FrameD H r)

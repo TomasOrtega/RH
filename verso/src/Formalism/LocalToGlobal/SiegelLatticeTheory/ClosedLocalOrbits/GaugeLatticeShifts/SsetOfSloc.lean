@@ -14,6 +14,17 @@ section Model
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Take `⟨-, hfix, -⟩` from `hh`. Establish `key : ∀ i : Fin (2 * r + k + 1), w i • (h *ᵥ Pi.single i (1:ℂ)) = w i • Pi.single i (1:ℂ)`. Introduce `i`. Establish `hlt` using `i.isLt`. Distinguish the cases in `h1 : i.val < r`.
+
+Establish `he : eI k r ⟨i.val, h1⟩ = i` using `Fin.ext rfl`. Use `(hfix ⟨i.val, h1⟩).1` as an intermediate fact. Rewrite `this` using `[he]`. Conclude with `congrArg (fun v => w i • v) this`. Distinguish the cases in `h2 : r + k < i.val`.
+
+Establish `he : esI k r ⟨2 * r + k - i.val, by omega⟩ = i` using `Fin.ext (by show 2 * r + k - (2 * r + k - i.val) = i.val omega)`. Use `(hfix ⟨2 * r + k - i.val, by omega⟩).2` as an intermediate fact. Rewrite `this` using `[he]`. Conclude with `congrArg (fun v => w i • v) this`. Rewrite using `[hw i (by omega) (by omega), zero_smul, zero_smul]`.
+
+Establish `hw' : w = ∑ i, w i • Pi.single i (1:ℂ)`. Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `conv_lhs => rw [hw']`. Rewrite using `[show h *ᵥ (∑ i, w i • Pi.single i (1:ℂ)) = ∑ i, w i • (h *ᵥ Pi.single i (1:ℂ)) by`.
+
+Simplify using `only [← Matrix.mulVecLin_apply, map_sum, map_smul]]`. Rewrite using `[Finset.sum_congr rfl (fun i _ => key i), ← hw']`.
+-/
 theorem uw_fix {z : Fin (2 * r + k + 1) → ℂ} {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hh : h ∈ UWset k r z) {w : Fin (2 * r + k + 1) → ℂ} (hw : ∀ i : Fin (2 * r + k + 1), r ≤ i.val → i.val ≤ r + k → w i = 0) :
     h *ᵥ w = w := by
@@ -42,12 +53,24 @@ theorem uw_fix {z : Fin (2 * r + k + 1) → ℂ} {h : Matrix (Fin (2 * r + k + 1
       simp only [← Matrix.mulVecLin_apply, map_sum, map_smul]]
   rw [Finset.sum_congr rfl (fun i _ => key i), ← hw']
 
+/- English proof (translation)
+Use `first`. Consider the case `simp [Matrix.mulVec, dotProduct, Pi.single_apply]`. Consider the case `simp [Pi.single_apply]`.
+-/
 private theorem mulVec_single_one_apply_gauge_lattice_shifts {n : ℕ} (m : Matrix (Fin n) (Fin n) ℂ) (j i : Fin n) :
     (m *ᵥ Pi.single j (1:ℂ)) i = m i j := by
   first
   | simp [Matrix.mulVec, dotProduct, Pi.single_apply]
   | simp [Pi.single_apply]
 
+/- English proof (translation)
+Establish `ha` using `a.isLt`. Use `delta Sset at hM`. Simplify using `only [Set.mem_setOf_eq] at hM`. Take `⟨h, hh, m, hm, rfl⟩` from `hM`. Use `delta Nset at hm`.
+
+Simplify using `only [Set.mem_setOf_eq] at hm`. Take `⟨-, hm1, -⟩` from `hm`. Establish `hfix : h *ᵥ (m *ᵥ bvec (eI k r a)) = m *ᵥ bvec (eI k r a)`. Apply `uw_fix hh` to reduce the goal to its premises. Introduce `j hj1 hj2`.
+
+Establish `hne : j ≠ eI k r a` using `fun e => by`. Use `congrArg Fin.val e` as an intermediate fact. Express the relevant statement in the definitionally equal form `j.val = a.val at this`. Use linear arithmetic over natural numbers and integers. Use `hm1 a j (by omega)` as an intermediate fact.
+
+Rewrite using `[show bvec (eI k r a) = Pi.single (eI k r a) (1:ℂ) from rfl, mulVec_single_one_apply_gauge_lattice_shifts, this]`. Simplify using `[hne]`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, ← Matrix.mulVec_mulVec, hfix]`. Rewrite using `[show bvec (eI k r a) = Pi.single (eI k r a) (1:ℂ) from rfl, Pi.sub_apply, mulVec_single_one_apply_gauge_lattice_shifts, hm1 a i hi]`. Simplify using `[Pi.single_apply]`.
+-/
 theorem sset_col {z : Fin (2 * r + k + 1) → ℂ} {M : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hM : M ∈ Sset k r z) (a : Fin r) (i : Fin (2 * r + k + 1)) (hi : a.val ≤ i.val) :
     ((M - 1) *ᵥ bvec (eI k r a)) i = 0 := by
@@ -72,6 +95,17 @@ theorem sset_col {z : Fin (2 * r + k + 1) → ℂ} {M : Matrix (Fin (2 * r + k +
   rw [show bvec (eI k r a) = Pi.single (eI k r a) (1:ℂ) from rfl, Pi.sub_apply, mulVec_single_one_apply_gauge_lattice_shifts, hm1 a i hi]
   simp [Pi.single_apply]
 
+/- English proof (translation)
+Use `delta inWb at hz`. Use `delta Sset at hM`. Simplify using `only [Set.mem_setOf_eq] at hM`. Take `⟨h, hh, m, hm, rfl⟩` from `hM`. Use `delta Nset at hm`.
+
+Simplify using `only [Set.mem_setOf_eq] at hm`. Take `⟨-, -, hm2⟩` from `hm`. Take `⟨-, -, hz'⟩` from `id hh`. Establish `hmz : ∀ i : Fin (2 * r + k + 1), r ≤ i.val → (m *ᵥ z) i = z i`. Introduce `i hi`.
+
+Establish `hterm : ∀ j, m i j * z j = if i = j then z j else 0`. Introduce `j`. Distinguish the cases in `hj : r ≤ j.val ∧ j.val ≤ r + k`. Apply the tactic sequence `rw [hm2 i j hj.1 hj.2 hi] split_ifs <;> simp`. Rewrite using `[hz j (by omega)]`.
+
+Simplify using the standard rewrite rules. Simplify using `[Matrix.mulVec, dotProduct, hterm]`. Establish `hv : h *ᵥ (m *ᵥ z - z) = m *ᵥ z - z`. Apply `uw_fix hh` to reduce the goal to its premises. Introduce `j hj1 hj2`.
+
+Rewrite using `[Pi.sub_apply, hmz j hj1, sub_self]`. Establish `hfix : h *ᵥ (m *ᵥ z) = m *ᵥ z`. Establish `hsplit : m *ᵥ z = z + (m *ᵥ z - z)` using `by abel`. Rewrite using `[hsplit, Matrix.mulVec_add, hz', hv]`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, ← Matrix.mulVec_mulVec, hfix, Pi.sub_apply, hmz i hi, sub_self]`.
+-/
 theorem sub_one_mulVec_apply_eq_zero_of_mem_Sset {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z)
     {M : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hM : M ∈ Sset k r z) (i : Fin (2 * r + k + 1))
     (hi : r ≤ i.val) : ((M - 1) *ᵥ z) i = 0 := by
@@ -102,6 +136,19 @@ theorem sub_one_mulVec_apply_eq_zero_of_mem_Sset {z : Fin (2 * r + k + 1) → �
     rw [hsplit, Matrix.mulVec_add, hz', hv]
   rw [Matrix.sub_mulVec, Matrix.one_mulVec, ← Matrix.mulVec_mulVec, hfix, Pi.sub_apply, hmz i hi, sub_self]
 
+/- English proof (translation)
+Establish `hv : ∀ b : Fin r, (eI k r b).val = b.val` using `fun b => rfl`. Establish `hw' : w = ∑ b : Fin r, (if b.val < a then w (eI k r b) else 0) • bvec (eI k r b)`. Use extensionality with `j`. Rewrite using `[Finset.sum_apply]`. Distinguish the cases in `hj : j.val < a`.
+
+Rewrite using `[Finset.sum_eq_single ⟨j.val, by omega⟩]`. Establish `he : eI k r ⟨j.val, by omega⟩ = j` using `Fin.ext rfl`. Simplify using `[he, hj, bvec]`. Introduce `b _ hb`. Establish `hne : j ≠ eI k r b` using `fun h => hb (Fin.ext (by`.
+
+Use `congrArg Fin.val h` as an intermediate fact. Rewrite `this` using `[hv]`. Simplify using `only [Fin.val_mk]`. Use the proof step `omega))`. Simplify using `[bvec, Pi.single_apply, hne]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[hw j (by omega)]`. Use `(Finset.sum_eq_zero fun b _ => ?_).symm` and prove the remaining obligations. Use `split_ifs with hb`.
+
+Establish `hne : j ≠ eI k r b` using `fun h => hj (by`. Use `congrArg Fin.val h` as an intermediate fact. Rewrite `this` using `[hv]`. Use the proof step `omega)`. Simplify using `[bvec, Pi.single_apply, hne]`.
+
+Simplify using the standard rewrite rules. Use `conv_lhs => rw [hw']`. Simplify using `only [← Matrix.mulVecLin_apply, map_sum, map_smul]`.
+-/
 theorem sum_low {n : ℕ} (Q : Matrix (Fin n) (Fin (2 * r + k + 1)) ℂ) (a : ℕ) (ha : a ≤ r)
     (w : Fin (2 * r + k + 1) → ℂ) (hw : ∀ i : Fin (2 * r + k + 1), a ≤ i.val → w i = 0) :
     Q *ᵥ w = ∑ b : Fin r, (if b.val < a then w (eI k r b) else 0) • (Q *ᵥ bvec (eI k r b)) := by
@@ -138,10 +185,16 @@ end Model
 
 variable {D : D7} {X : HidaSetting D} {θ : ℝ}
 
+/- English proof (translation)
+The claim follows from `((transpC' C τ).2.2.2 b b rfl).1`.
+-/
 theorem qcs_e (C : Choice X θ) (τ : D.what₂.Tau) (b : Fin D.R.rS) :
     Qcs C τ *ᵥ bvec (eI D.R.k D.R.rS b) = cfS D ^ (D.R.rS - (b : ℕ)) • rv X.B.I (vOf X τ) (X.eR b) :=
   ((transpC' C τ).2.2.2 b b rfl).1
 
+/- English proof (translation)
+Establish `h1` using `(transpC' C τ).1`. Establish `hc : cfS D ^ (D.R.rS - (b : ℕ)) ≠ 0` using `pow_ne_zero _ (Formalism.L2.SG.Pf.cfS_ne D)`. Establish `e` using `congrArg (fun v => Qics C τ *ᵥ v) (qcs_e C τ b)`. Simplify using `only [Matrix.mulVec_mulVec, h1, Matrix.one_mulVec, Matrix.mulVec_smul] at e`. Rewrite using `[e, smul_smul, inv_mul_cancel₀ hc, one_smul]`.
+-/
 theorem qics_e (C : Choice X θ) (τ : D.what₂.Tau) (b : Fin D.R.rS) :
     Qics C τ *ᵥ rv X.B.I (vOf X τ) (X.eR b) = (cfS D ^ (D.R.rS - (b : ℕ)))⁻¹ • bvec (eI D.R.k D.R.rS b) := by
   have h1 := (transpC' C τ).1
@@ -150,6 +203,11 @@ theorem qics_e (C : Choice X θ) (τ : D.what₂.Tau) (b : Fin D.R.rS) :
   simp only [Matrix.mulVec_mulVec, h1, Matrix.one_mulVec, Matrix.mulVec_smul] at e
   rw [e, smul_smul, inv_mul_cancel₀ hc, one_smul]
 
+/- English proof (translation)
+Rewrite using `[sum_low (Qcs C τ) a ha w hw]`. Use `Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Use `split_ifs with hb`. Rewrite using `[qcs_e C τ b]`. Apply `Submodule.smul_mem` to reduce the goal to its premises.
+
+Apply `Submodule.smul_mem` to reduce the goal to its premises. Use `delta spanLt`. Conclude with `Submodule.subset_span ⟨b, hb, rfl⟩`. Rewrite using `[zero_smul]`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem qcs_span (C : Choice X θ) (τ : D.what₂.Tau) (a : ℕ) (ha : a ≤ D.R.rS)
     (w : Fin (2 * D.R.rS + D.R.k + 1) → ℂ) (hw : ∀ i : Fin (2 * D.R.rS + D.R.k + 1), a ≤ i.val → w i = 0) :
     Qcs C τ *ᵥ w ∈ spanLt (fun b => rv X.B.I (vOf X τ) (X.eR b)) a := by
@@ -164,6 +222,11 @@ theorem qcs_span (C : Choice X θ) (τ : D.what₂.Tau) (a : ℕ) (ha : a ≤ D.
   · rw [zero_smul]
     exact Submodule.zero_mem _
 
+/- English proof (translation)
+Establish `h2` using `(transpC' C τ).2.1`. Use `set M := Matrix.of (Tm C τ x) with hMdef`. Establish `hU : uMat x - 1 = Qcs C τ * (M - 1) * Qics C τ` using `by show uMat x - 1 = Qcs C τ * (Qics C τ * uMat x * Qcs C τ - 1) * Qics C τ`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, h2, show Qcs C τ * (Qics C τ * uMat x * Qcs C τ) * Qics C τ = (Qcs C τ * Qics C τ) * uMat x * (Qcs C τ * Qics C τ) by`. Simplify using `only [Matrix.mul_assoc], h2, Matrix.one_mul, Matrix.mul_one]`.
+
+Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hU, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, qics_e C τ a, Matrix.mulVec_smul, Matrix.mulVec_smul]`. Use `Submodule.smul_mem _ _ (qcs_span C τ a.val a.isLt.le _ fun i hi => sset_col hx a i hi)` and prove the remaining obligations. Rewrite using `[hU, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, zc_eq C u τ]`. Conclude with `qcs_span C τ D.R.rS le_rfl _ fun i hi => sub_one_mulVec_apply_eq_zero_of_mem_Sset (Formalism.L2.SG.Pf.zTr C u τ).1 hx i hi`.
+-/
 theorem sloc_of_sset (C : Choice X θ) (τ : D.what₂.Tau) (u : D.what₂.Word) (x : Formalism.REAL.UJ (X.B.I.ε (vOf X τ)))
     (hx : Matrix.of (Tm C τ x) ∈ Sset D.R.k D.R.rS (zB X (C.Qi τ) u τ)) :
     x ∈ Formalism.L2.SG.Pf.WuDec.Sloc X u (vOf X τ) := by
@@ -180,6 +243,11 @@ theorem sloc_of_sset (C : Choice X θ) (τ : D.what₂.Tau) (u : D.what₂.Word)
   · rw [hU, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, zc_eq C u τ]
     exact qcs_span C τ D.R.rS le_rfl _ fun i hi => sub_one_mulVec_apply_eq_zero_of_mem_Sset (Formalism.L2.SG.Pf.zTr C u τ).1 hx i hi
 
+/- English proof (translation)
+Use `show ∀ i : Fin (2 * D.R.rS + D.R.k + 1), a ≤ i.val → bvec (eI D.R.k D.R.rS b) i = 0`. Introduce `i hi`. Establish `hne : i ≠ eI D.R.k D.R.rS b` using `fun e => by`. Use `congrArg Fin.val e` as an intermediate fact. Express the relevant statement in the definitionally equal form `i.val = b.val at this`.
+
+Use linear arithmetic over natural numbers and integers. Use `show (Pi.single (eI D.R.k D.R.rS b) (1:ℂ) : Fin (2 * D.R.rS + D.R.k + 1) → ℂ) i = 0`. Simplify using `only [Pi.single_apply, hne, if_false]`.
+-/
 theorem bvec_supSub (a : ℕ) (b : Fin D.R.rS) (hb : b.val < a) :
     bvec (eI D.R.k D.R.rS b) ∈ Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.JL.SetCorrespondence.supSub D.R.k D.R.rS a := by
   show ∀ i : Fin (2 * D.R.rS + D.R.k + 1), a ≤ i.val → bvec (eI D.R.k D.R.rS b) i = 0
@@ -191,6 +259,11 @@ theorem bvec_supSub (a : ℕ) (b : Fin D.R.rS) (hb : b.val < a) :
   show (Pi.single (eI D.R.k D.R.rS b) (1:ℂ) : Fin (2 * D.R.rS + D.R.k + 1) → ℂ) i = 0
   simp only [Pi.single_apply, hne, if_false]
 
+/- English proof (translation)
+Establish `hle : spanLt (fun b => rv X.B.I (vOf X τ) (X.eR b)) a ≤ (Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.JL.SetCorrespondence.supSub D.R.k D.R.rS a).comap (Matrix.mulVecLin (Qics C τ))` using `by delta spanLt`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Use `show Matrix.mulVecLin (Qics C τ) (rv X.B.I (vOf X τ) (X.eR b)) ∈ Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.JL.SetCorrespondence.supSub D.R.k D.R.rS a`. Rewrite using `[Matrix.mulVecLin_apply, qics_e C τ b]`.
+
+Conclude with `Submodule.smul_mem _ _ (bvec_supSub a b hb)`. Use `hle hw` as an intermediate fact. Rewrite `this` using `[Submodule.mem_comap, Matrix.mulVecLin_apply]`. Then use the resulting hypothesis.
+-/
 theorem qics_span (C : Choice X θ) (τ : D.what₂.Tau) (a : ℕ) (w : Fin X.B.I.n → ℂ)
     (hw : w ∈ spanLt (fun b => rv X.B.I (vOf X τ) (X.eR b)) a) :
     Qics C τ *ᵥ w ∈ Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.JL.SetCorrespondence.supSub D.R.k D.R.rS a := by
@@ -205,6 +278,15 @@ theorem qics_span (C : Choice X θ) (τ : D.what₂.Tau) (a : ℕ) (w : Fin X.B.
   have := hle hw
   rwa [Submodule.mem_comap, Matrix.mulVecLin_apply] at this
 
+/- English proof (translation)
+Establish `h1` using `(transpC' C τ).1`. Establish `h2` using `(transpC' C τ).2.1`. Use `Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.JL.SetCorrespondence.fwd _ _ (Tm_mem C τ x) (Formalism.L2.SG.Pf.zTr C u τ).1 ⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Establish `hM : (Matrix.of (Tm C τ x) - 1) *ᵥ Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.JL.SetCorrespondence.stdX D.R.k D.R.rS a = cfS D ^ (D.R.rS - (a : ℕ)) • (Qics C τ *ᵥ ((uMat x - 1) *ᵥ rv X.B.I (vOf X τ) (X.eR a)))` using `by show (Qics C τ * uMat x * Qcs C τ - 1) *ᵥ bvec (eI D.R.k D.R.rS a) = _`. Rewrite using `[show Qics C τ * uMat x * Qcs C τ - 1 = Qics C τ * (uMat x - 1) * Qcs C τ by`.
+
+Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, h1], ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec,`. Use `qcs_e C τ a, Matrix.mulVec_smul, Matrix.mulVec_smul]`. Rewrite using `[hM]`. Conclude with `Submodule.smul_mem _ _ (qics_span C τ a.val _ (hx.1 a))`. Establish `hz : Qcs C τ *ᵥ zB X (C.Qi τ) u τ = rv X.B.I (vOf X τ) (X.zR u)`.
+
+Rewrite using `[← zc_eq C u τ, Matrix.mulVec_mulVec, h2, Matrix.one_mulVec]`. Establish `hM : (Matrix.of (Tm C τ x) - 1) *ᵥ zB X (C.Qi τ) u τ = Qics C τ *ᵥ ((uMat x - 1) *ᵥ rv X.B.I (vOf X τ) (X.zR u))` using `by show (Qics C τ * uMat x * Qcs C τ - 1) *ᵥ zB X (C.Qi τ) u τ = _`. Rewrite using `[show Qics C τ * uMat x * Qcs C τ - 1 = Qics C τ * (uMat x - 1) * Qcs C τ by`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, h1], ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hz]`. Rewrite using `[hM]`.
+
+Conclude with `qics_span C τ D.R.rS _ hx.2`.
+-/
 theorem sset_of_sloc (C : Choice X θ) (τ : D.what₂.Tau) (u : D.what₂.Word) (x : Formalism.REAL.UJ (X.B.I.ε (vOf X τ)))
     (hx : x ∈ Formalism.L2.SG.Pf.WuDec.Sloc X u (vOf X τ)) :
     Matrix.of (Tm C τ x) ∈ Sset D.R.k D.R.rS (zB X (C.Qi τ) u τ) := by

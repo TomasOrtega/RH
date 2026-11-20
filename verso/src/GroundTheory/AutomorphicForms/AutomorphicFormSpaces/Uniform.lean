@@ -12,6 +12,19 @@ namespace AutomorphicForm
 
 set_option linter.unusedSectionVars false
 
+/- English proof (translation)
+Set `kerS : Finset X → Submodule ℂ W` to `fun S => ⨅ x ∈ S, LinearMap.ker ((LinearMap.proj (R := ℂ) (φ := fun _ : X => ℂ) x).comp W.subtype)`. Establish `mem_kerS : ∀ (S : Finset X) (w : W), w ∈ kerS S ↔ ∀ x ∈ S, (w : X → ℂ) x = 0`. Introduce `S w`. Simplify using `only [kerS, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.coe_comp, Function.comp_apply, Submodule.coe_subtype, LinearMap.coe_proj, Function.eval]`. Establish `key : ∀ m : ℕ, ∀ S : Finset X, Module.finrank ℂ (kerS S) = m → ∃ S' : Finset X, kerS S' = ⊥`.
+
+Introduce `m`. Proceed by induction on `m using Nat.strong_induction_on with`. Consider the case `_ m ih`. Introduce `S hS`. Distinguish the cases in `h : kerS S = ⊥`.
+
+Conclude with `⟨S, h⟩`. Take `⟨w, hw, hw0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h`. Establish `: ∃ x, (w : X → ℂ) x ≠ 0`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+
+Conclude with `hw0 (Subtype.ext (funext hc))`. Take `⟨x, hx⟩` from `this`. Establish `hle : kerS (insert x S) ≤ kerS S` using `fun v hv => (mem_kerS S v).2 fun y hy => (mem_kerS _ v).1 hv y (Finset.mem_insert_of_mem hy)`. Establish `hne : kerS (insert x S) ≠ kerS S`. Introduce `e`.
+
+Rewrite `hw` using `[← e]`. Conclude with `hx ((mem_kerS _ w).1 hw x (Finset.mem_insert_self x S))`. Establish `hlt` using `Submodule.finrank_lt_finrank_of_lt (lt_of_le_of_ne hle hne)`. Conclude with `ih _ (hS ▸ hlt) _ rfl`. Take `⟨S, hS⟩` from `key _ ∅ rfl`.
+
+Use `⟨S, fun w hw h0 => ?_⟩` and prove the remaining obligations. Establish `: (⟨w, hw⟩ : W) ∈ kerS S` using `(mem_kerS S _).2 h0`. Rewrite `this` using `[hS, Submodule.mem_bot]`. Conclude with `congrArg Subtype.val this`.
+-/
 theorem exists_finset_eval_eq_zero {X : Type*} (W : Submodule ℂ (X → ℂ)) [FiniteDimensional ℂ W] :
     ∃ S : Finset X, ∀ w ∈ W, (∀ x ∈ S, w x = 0) → w = 0 := by
   classical
@@ -56,12 +69,22 @@ open Reduction
 abbrev finPart (g : AdelicGLn.AdelicGL K n) : AdelicGLn.FiniteAdelicGL K n :=
   (AdelicGLn.prodEquiv K n g).2
 
+/- English proof (translation)
+Apply `(AdelicGLn.prodEquiv K n).injective` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, map_inv, prodEquiv_finEmb, prodEquiv_finEmb]`. Apply the tactic sequence `ext <;> simp [finPart]`.
+-/
 theorem inv_mul_finEmb_mul (k : AdelicGLn.AdelicGL K n) (y : AdelicGLn.FiniteAdelicGL K n) :
     k⁻¹ * finEmb K n y * k = finEmb K n ((finPart k)⁻¹ * y * finPart k) := by
   apply (AdelicGLn.prodEquiv K n).injective
   rw [map_mul, map_mul, map_inv, prodEquiv_finEmb, prodEquiv_finEmb]
   ext <;> simp [finPart]
 
+/- English proof (translation)
+Rewrite `hy` using `[AdelicGLn.mem_integralFiniteGL_iff_forall]`. Use `⟨fun w => ?_, fun v => ?_⟩` and prove the remaining obligations. Establish `: infAt w (finEmb K n y) = 1` using `by show (AdelicGLn.infiniteEquiv K n (AdelicGLn.prodEquiv K n (finEmb K n y)).1) w = 1`. Rewrite using `[prodEquiv_finEmb, map_one]`. Both sides reduce to the same expression.
+
+Rewrite using `[this]`. Conclude with `one_mem _`. Establish `: finAt v (finEmb K n y) = AdelicGLn.finiteRestrictedEquiv K n y v` using `by show (AdelicGLn.finiteRestrictedEquiv K n (AdelicGLn.prodEquiv K n (finEmb K n y)).2) v = _`. Rewrite using `[prodEquiv_finEmb]`. Rewrite using `[this]`.
+
+Conclude with `hy v`.
+-/
 theorem finEmb_mem_maxCompact {y : AdelicGLn.FiniteAdelicGL K n}
     (hy : y ∈ AdelicGLn.integralFiniteGL K n) : finEmb K n y ∈ maxCompact := by
   rw [AdelicGLn.mem_integralFiniteGL_iff_forall] at hy
@@ -78,16 +101,27 @@ theorem finEmb_mem_maxCompact {y : AdelicGLn.FiniteAdelicGL K n}
     rw [this]
     exact hy v
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Simplify using `only [rightTranslate, mul_one]`.
+-/
 theorem rightTranslate_one' {M : Type*} [MulOneClass M] {F : Type*} (f : M → F) :
     rightTranslate (1 : M) f = f := by
   funext g
   simp only [rightTranslate, mul_one]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Simplify using `only [rightTranslate, mul_assoc]`.
+-/
 theorem rightTranslate_mul' {M : Type*} [Semigroup M] {F : Type*} (a b : M)
     (f : M → F) : rightTranslate (a * b) f = rightTranslate a (rightTranslate b f) := by
   funext g
   simp only [rightTranslate, mul_assoc]
 
+/- English proof (translation)
+Establish `hc : Tendsto (fun y : AdelicGLn.FiniteAdelicGL K n => (finPart k)⁻¹ * y * finPart k) (𝓝 1) (𝓝 1)`. Establish `: Continuous fun y : AdelicGLn.FiniteAdelicGL K n => (finPart k)⁻¹ * y * finPart k` using `(continuous_const.mul continuous_id).mul continuous_const`. Simplify using `using this.tendsto 1`. Use `(hc.eventually (hφ.2 (g * k))).mono fun y hy => ?_` and prove the remaining obligations. Rewrite using `[← hy, ← inv_mul_finEmb_mul]`.
+
+Use `congr 1`. Use `group`.
+-/
 theorem IsSmooth.eventually_mul_finEmb_mul {φ : AdelicGLn.AdelicGL K n → ℂ} (hφ : IsSmooth φ)
     (g k : AdelicGLn.AdelicGL K n) :
     ∀ᶠ y in 𝓝 (1 : AdelicGLn.FiniteAdelicGL K n), φ (g * finEmb K n y * k) = φ (g * k) := by
@@ -101,6 +135,31 @@ theorem IsSmooth.eventually_mul_finEmb_mul {φ : AdelicGLn.AdelicGL K n → ℂ}
   congr 1
   group
 
+/- English proof (translation)
+Use `set Kc := (maxCompact : Subgroup (AdelicGLn.AdelicGL K n))`. Use `set s : Set (AdelicGLn.AdelicGL K n → ℂ) := range fun k : Kc => rightTranslate (k : AdelicGLn.AdelicGL K n) φ with hs_def`. Use `set W := Submodule.span ℂ s`. Establish `: FiniteDimensional ℂ W` using `hk`. Take `⟨S, hS⟩` from `exists_finset_eval_eq_zero W`.
+
+Take `⟨b, hbs, hbspan, hbli⟩` from `exists_linearIndependent ℂ s`. Establish `hbfin : b.Finite`. Establish `hli : LinearIndependent ℂ (fun x : b => (⟨(x : AdelicGLn.AdelicGL K n → ℂ), Submodule.subset_span (hbs x.2)⟩ : W))`. Apply `LinearIndependent.of_comp W.subtype` to reduce the goal to its premises. Conclude with `hbli`.
+
+Conclude with `Set.finite_coe_iff.1 hli.finite`. Establish `hbk : ∀ w ∈ b, ∃ k : Kc, w = rightTranslate (k : AdelicGLn.AdelicGL K n) φ`. Introduce `w hw`. Take `⟨k, hk⟩` from `hbs hw`. Conclude with `⟨k, hk.symm⟩`.
+
+Establish `hstab : ∀ u ∈ AdelicGLn.integralFiniteGL K n, ∀ w ∈ W, rightTranslate (finEmb K n u) w ∈ W`. Introduce `u hu w hw`. Use `Submodule.span_induction (p := fun w _ => rightTranslate (finEmb K n u) w ∈ W) ?_ ?_ ?_ ?_ hw` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Rewrite using `[← rightTranslate_mul']`.
+
+Conclude with `Submodule.subset_span ⟨⟨_, mul_mem (finEmb_mem_maxCompact hu) k.2⟩, rfl⟩`. Conclude with `W.zero_mem`. Introduce `x y _ _ hx hy`. Conclude with `W.add_mem hx hy`. Introduce `c x _ hx`.
+
+Conclude with `W.smul_mem c hx`. Establish `hnhds : ∀ᶠ u in 𝓝 (1 : AdelicGLn.FiniteAdelicGL K n), u ∈ AdelicGLn.integralFiniteGL K n ∧ ∀ w ∈ hbfin.toFinset, ∀ x ∈ S, w (x * finEmb K n u) = w x`. Establish `h0 : ∀ᶠ u in 𝓝 (1 : AdelicGLn.FiniteAdelicGL K n), u ∈ AdelicGLn.integralFiniteGL K n` using `(AdelicGLn.isOpen_integralFiniteGL K n).mem_nhds (one_mem _)`. Use `h0.and ?_` and prove the remaining obligations. Rewrite using `[eventually_all_finset]`.
+
+Introduce `w hw`. Rewrite using `[eventually_all_finset]`. Introduce `x _`. Take `⟨k, rfl⟩` from `hbk w (hbfin.mem_toFinset.1 hw)`. Simplify `hs.eventually_mul_finEmb_mul x k` using `only [rightTranslate]`.
+
+Set `H : Subgroup (AdelicGLn.FiniteAdelicGL K n)` to `{ carrier := {u | u ∈ AdelicGLn.integralFiniteGL K n ∧ ∀ w ∈ W, rightTranslate (finEmb K n u) w = w} one_mem' := ⟨one_mem _, fun w _ => by rw [map_one, rightTranslate_one']⟩ mul_mem' := fun {u v} hu hv => ⟨mul_mem hu.1 hv.1, fun w hw => by`. Rewrite using `[map_mul, rightTranslate_mul', hv.2 w hw, hu.2 w hw]⟩`. Use the proof step `inv_mem' := fun {u} hu => ⟨inv_mem hu.1, fun w hw => by`. Use `congrArg (rightTranslate (finEmb K n u⁻¹)) (hu.2 w hw)` as an intermediate fact. Rewrite `this` using `[← rightTranslate_mul', ← map_mul, inv_mul_cancel, map_one, rightTranslate_one']`.
+
+Conclude with `this.symm⟩ }`. Establish `hHnhds : (H : Set (AdelicGLn.FiniteAdelicGL K n)) ∈ 𝓝 1`. Use `Filter.mem_of_superset hnhds fun u hu => ⟨hu.1, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite `hw` using `[show W = Submodule.span ℂ b from hbspan.symm]`. Use `Submodule.span_induction (p := fun w _ => rightTranslate (finEmb K n u) w = w) ?_ ?_ ?_ ?_ hw` and prove the remaining obligations.
+
+Introduce `w hwb`. Establish `hwW : w ∈ W` using `Submodule.subset_span (hbs hwb)`. Establish `hd` using `W.sub_mem (hstab u hu.1 w hwW) hwW`. Use `hS _ hd fun x hx => by` as an intermediate fact. Simplify using `only [Pi.sub_apply, rightTranslate]`.
+
+Rewrite using `[hu.2 w (hbfin.mem_toFinset.2 hwb) x hx, sub_self]`. Conclude with `sub_eq_zero.1 this`. Both sides reduce to the same expression. Introduce `x y _ _ hx hy`. Rewrite using `[show rightTranslate (finEmb K n u) (x + y) = rightTranslate (finEmb K n u) x + rightTranslate (finEmb K n u) y from rfl, hx, hy]`.
+
+Introduce `c x _ hx`. Rewrite using `[show rightTranslate (finEmb K n u) (c • x) = c • rightTranslate (finEmb K n u) x from rfl, hx]`. Use `⟨⟨H, Subgroup.isOpen_of_mem_nhds H hHnhds⟩, fun u hu => hu.1, fun g u hu => ?_⟩` and prove the remaining obligations. Establish `hφW : φ ∈ W` using `Submodule.subset_span ⟨1, rightTranslate_one' φ⟩`. Conclude with `congrFun (hu.2 φ hφW) g`.
+-/
 theorem exists_openSubgroup_rightInvariant {φ : AdelicGLn.AdelicGL K n → ℂ} (hs : IsSmooth φ)
     (hk : IsKFinite φ) :
     ∃ U : OpenSubgroup (AdelicGLn.FiniteAdelicGL K n),
@@ -187,6 +246,17 @@ theorem exists_openSubgroup_rightInvariant {φ : AdelicGLn.AdelicGL K n → ℂ}
   have hφW : φ ∈ W := Submodule.subset_span ⟨1, rightTranslate_one' φ⟩
   exact congrFun (hu.2 φ hφW) g
 
+/- English proof (translation)
+Take `⟨U, -, hU⟩` from `exists_openSubgroup_rightInvariant hs hk`. Use `continuous_iff_continuousAt.2 fun g₀ => ?_` and prove the remaining obligations. Set `e : AdelicGLn.AdelicGL K n → AdelicGLn.InfiniteAdelicGL K n × AdelicGLn.FiniteAdelicGL K n` to `fun g => AdelicGLn.prodEquiv K n (g₀⁻¹ * g)`. Establish `he : Continuous e` using `(AdelicGLn.prodEquiv K n).continuous.comp (continuous_const.mul continuous_id)`. Set `F : AdelicGLn.InfiniteAdelicGL K n × AdelicGLn.FiniteAdelicGL K n → ℂ` to `fun p => φ (g₀ * infEmb K n (archEquiv K n p.1) * finEmb K n p.2)`.
+
+Establish `hφF : φ = F ∘ e`. Use function extensionality and compare the values at `g`. Simplify using `only [F, e, Function.comp_apply, mul_assoc]`. Rewrite using `[infEmb_mul_finEmb, mul_inv_cancel_left]`. Establish `hslice : Continuous (archSlice φ g₀)`.
+
+Use `letI := (isExpLieAlgebra K n).chartedSpace`. Conclude with `(hs.1 g₀).continuous`. Establish `hF : ContinuousAt F (e g₀)`. Establish `hFeq : F =ᶠ[𝓝 (e g₀)] fun p => archSlice φ g₀ (archEquiv K n p.1)`. Establish `he1 : e g₀ = 1` using `by simp only [e, inv_mul_cancel, map_one]`.
+
+Establish `hmem : (univ ×ˢ (U : Set (AdelicGLn.FiniteAdelicGL K n))) ∈ 𝓝 (e g₀)`. Rewrite using `[he1]`. Conclude with `prod_mem_nhds univ_mem (U.isOpen.mem_nhds (one_mem U))`. Use `filter_upwards [hmem] with p hp`. Conclude with `hU _ p.2 hp.2`.
+
+Use `ContinuousAt.congr ?_ hFeq.symm` and prove the remaining obligations. Conclude with `(hslice.comp ((archEquiv K n).continuous.comp continuous_fst)).continuousAt`. Rewrite using `[hφF]`. Conclude with `hF.comp he.continuousAt`.
+-/
 theorem continuous_of_isSmooth_of_isKFinite {φ : AdelicGLn.AdelicGL K n → ℂ} (hs : IsSmooth φ)
     (hk : IsKFinite φ) : Continuous φ := by
   obtain ⟨U, -, hU⟩ := exists_openSubgroup_rightInvariant hs hk
@@ -217,6 +287,9 @@ theorem continuous_of_isSmooth_of_isKFinite {φ : AdelicGLn.AdelicGL K n → ℂ
   rw [hφF]
   exact hF.comp he.continuousAt
 
+/- English proof (translation)
+The claim follows from `continuous_of_isSmooth_of_isKFinite hφ.isSmooth hφ.isKFinite`.
+-/
 theorem IsAutomorphicForm.continuous {φ : AdelicGLn.AdelicGL K n → ℂ} (hφ : IsAutomorphicForm φ) :
     Continuous φ :=
   continuous_of_isSmooth_of_isKFinite hφ.isSmooth hφ.isKFinite

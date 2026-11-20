@@ -16,6 +16,13 @@ section SpecAux
 variable {Wp Wq : Type*} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp] [NormedAddCommGroup Wq]
     [NormedSpace ℂ Wq] {X : Type*}
 
+/- English proof (translation)
+Use `revert hf`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `_`. Establish `e : (fun x => ∑ i ∈ (∅ : Finset β), f i x) = fun _ => (0 : Wq →L[ℂ] Wp)`. Use function extensionality and compare the values at `x`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `h0`. Introduce `a s ha ih hf`. Establish `e : (fun x => ∑ i ∈ insert a s, f i x) = fun x => f a x + ∑ i ∈ s, f i x`.
+
+Use function extensionality and compare the values at `x`. Rewrite using `[Finset.sum_insert ha]`. Rewrite using `[e]`. Conclude with `hadd _ (hf a (Finset.mem_insert_self a s)) _ (ih fun i hi => hf i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem spec_sum_mem {β : Type*} (𝓕 : Set (X → (Wq →L[ℂ] Wp)))
     (h0 : (fun _ => (0 : Wq →L[ℂ] Wp)) ∈ 𝓕)
     (hadd : ∀ F₁ ∈ 𝓕, ∀ F₂ ∈ 𝓕, (fun x => F₁ x + F₂ x) ∈ 𝓕)
@@ -35,6 +42,15 @@ theorem spec_sum_mem {β : Type*} (𝓕 : Set (X → (Wq →L[ℂ] Wp)))
     exact hadd _ (hf a (Finset.mem_insert_self a s)) _
       (ih fun i hi => hf i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => exact ⟨hJ, fun g _ σ v _ => by simp⟩`. Consider the case `succ n ih`. Take `⟨h1, h2⟩` from `ih`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Function.iterate_succ_apply']`. Conclude with `hA _ h1`. Introduce `g hg σ v hv`. Rewrite using `[Function.iterate_succ_apply']`. Simplify using `only [ContinuousLinearMap.smul_apply]`.
+
+Rewrite using `[heig _ h1 g hg σ v hv Y₀, h2 g hg σ v hv]`. Simplify using `only [smul_smul]`. Use `congr 1`. Establish `hcg` using `hc g hg`. Rewrite using `[pow_succ]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem spec_iter {ι : Type*} (𝓕 : Set (X → (Wq →L[ℂ] Wp))) (G : Set X)
     (T : ℂ → (X → (Wq →L[ℂ] Wp)) → X → (Wq →L[ℂ] Wp)) (c : X → ℂ) (hc : ∀ g ∈ G, c g ≠ 0)
     (Y₀ : ℂ) (hA : ∀ F ∈ 𝓕, (fun x => (c x)⁻¹ • T Y₀ F x) ∈ 𝓕)
@@ -63,6 +79,31 @@ theorem spec_iter {ι : Type*} (𝓕 : Set (X → (Wq →L[ℂ] Wp))) (G : Set X
 
 end SpecAux
 
+/- English proof (translation)
+Establish `hinjOn : Set.InjOn (fun σ => lam σ Y₀) (Finset.univ : Finset ι)` using `fun a _ b _ h => hinj h`. Establish `hit` using `spec_iter 𝓕 G T c hc Y₀ hA lam S heig J hJ`. Take `⟨dec, hdec⟩ : ∃ dec : ι → X → (Wq →L[ℂ] Wp), ∀ σ x, dec σ x = ∑ n ∈ Finset.range ((Lagrange.basis Finset.univ (fun σ => lam σ Y₀) σ).natDegree + 1), (Lagrange.basis Finset.univ (fun σ => lam σ Y₀) σ).coeff n • ((fun F x => (c x)⁻¹ • T Y₀ F x)^[n] J) x` from `⟨_, fun _ _ => rfl⟩`. Establish `hmem : ∀ σ, dec σ ∈ 𝓕`. Introduce `σ`.
+
+Establish `hfun : dec σ = fun x => ∑ n ∈ Finset.range ((Lagrange.basis Finset.univ (fun σ => lam σ Y₀) σ).natDegree + 1), (fun n x => (Lagrange.basis Finset.univ (fun σ => lam σ Y₀) σ).coeff n • ((fun F x => (c x)⁻¹ • T Y₀ F x)^[n] J) x) n x` using `funext (hdec σ)`. Rewrite using `[hfun]`. Conclude with `spec_sum_mem 𝓕 h0 hadd _ _ fun n _ => hsmul _ (hit n).1 _`. Establish `hkey : ∀ σ, ∀ g ∈ G, ∀ τ, ∀ v ∈ S g τ, dec σ g v = if σ = τ then J g v else 0`. Introduce `σ g hg τ v hv`.
+
+Establish `h1 : dec σ g v = ((Lagrange.basis Finset.univ (fun σ => lam σ Y₀) σ).eval (lam τ Y₀)) • J g v`. Rewrite using `[hdec, Polynomial.eval_eq_sum_range, Finset.sum_smul, _root_.sum_apply]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[_root_.smul_apply, (hit n).2 g hg τ v hv, smul_smul]`. Rewrite using `[h1]`.
+
+Use `split_ifs with hστ`. Substitute `hστ` using the available equality. Establish `he` using `Lagrange.eval_basis_self hinjOn (Finset.mem_univ σ)`. Rewrite using `[he, one_smul]`. Establish `he` using `Lagrange.eval_basis_of_ne (v := fun σ => lam σ Y₀) hστ (Finset.mem_univ τ)`.
+
+Rewrite using `[he, zero_smul]`. Establish `htop : ∀ g ∈ G, ∀ v : Wq, v ∈ ⨆ i, S g i` using `fun g hg v => by`. Rewrite using `[(hS g hg).submodule_iSup_eq_top]`. Conclude with `Submodule.mem_top`. Use `⟨dec, hmem, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `g hg`. Use extensionality with `v`. Rewrite using `[_root_.sum_apply]`. Use `Submodule.iSup_induction (S g) (motive := fun v => J g v = ∑ σ, dec σ g v) (htop g hg v) ?_ ?_ ?_` and prove the remaining obligations. Introduce `τ w hw`.
+
+Simplify using `only [hkey _ g hg τ w hw, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Simplify using the standard rewrite rules. Introduce `x y hx hy`. Simplify using `only [map_add, hx, hy, Finset.sum_add_distrib]`. Introduce `σ Y g hg`.
+
+Use extensionality with `v`. Rewrite using `[_root_.smul_apply]`. Use `Submodule.iSup_induction (S g) (motive := fun v => T Y (dec σ) g v = (c g * lam σ Y) • dec σ g v) (htop g hg v) ?_ ?_ ?_` and prove the remaining obligations. Introduce `τ w hw`. Rewrite using `[heig (dec σ) (hmem σ) g hg τ w hw Y, hkey σ g hg τ w hw]`.
+
+Use `split_ifs with hστ`. Rewrite using `[hστ]`. Rewrite using `[smul_zero, smul_zero]`. Simplify using the standard rewrite rules. Introduce `x y hx hy`.
+
+Rewrite using `[map_add, map_add, hx, hy, smul_add]`. Introduce `g hg σ v`. Use `Submodule.iSup_induction (S g) (motive := fun v => ∃ w ∈ S g σ, dec σ g v = J g w) (htop g hg v) ?_ ?_ ?_` and prove the remaining obligations. Introduce `τ w hw`. Distinguish the cases in `hστ : σ = τ`.
+
+Substitute `hστ` using the available equality. Conclude with `⟨w, hw, by rw [hkey σ g hg σ w hw, if_pos rfl]⟩`. Conclude with `⟨0, zero_mem _, by rw [hkey σ g hg τ w hw, if_neg hστ, map_zero]⟩`. Conclude with `⟨0, zero_mem _, by rw [map_zero, map_zero]⟩`. Introduce and unpack `x y ⟨w₁, hw₁, h₁⟩ ⟨w₂, hw₂, h₂⟩`.
+
+Conclude with `⟨w₁ + w₂, add_mem hw₁ hw₂, by rw [map_add, map_add, h₁, h₂]⟩`.
+-/
 theorem spec_abstract {Wp Wq : Type*} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp] [NormedAddCommGroup Wq]
     [NormedSpace ℂ Wq] {X ι : Type*} [Fintype ι] [DecidableEq ι]
     (𝓕 : Set (X → (Wq →L[ℂ] Wp))) (G : Set X)

@@ -13,6 +13,13 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.SW.FChi
 
+/- English proof (translation)
+Use `haveI : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩`. Set `B` to `Algebra.TensorProduct.basis R (Module.finBasis F E)`. Establish `h : (fun y : R ⊗[F] E => Algebra.norm R y) = fun y => (Algebra.leftMulMatrix B y).det`. Use function extensionality and compare the values at `y`. Conclude with `Algebra.norm_eq_matrix_det B y`.
+
+Express the relevant statement in the definitionally equal form `Continuous (fun y : R ⊗[F] E => Algebra.norm R y)`. Rewrite using `[h]`. Use `Continuous.matrix_det ?_` and prove the remaining obligations. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Set `L : (R ⊗[F] E) →ₗ[R] R` to `(Matrix.entryLinearMap R R i j) ∘ₗ (Algebra.leftMulMatrix B).toLinearMap`.
+
+Conclude with `IsModuleTopology.continuous_of_linearMap L`.
+-/
 theorem continuous_norm_tensor {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
     (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R]
     [IsTopologicalRing (R ⊗[F] E)] :
@@ -30,6 +37,9 @@ theorem continuous_norm_tensor {F E : Type} [Field F] [Field E] [Algebra F E] [F
     (Matrix.entryLinearMap R R i j) ∘ₗ (Algebra.leftMulMatrix B).toLinearMap
   exact IsModuleTopology.continuous_of_linearMap L
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by omega)`. Establish `e : r ⊗ₜ[F] (1 : E) = algebraMap R (R ⊗[F] E) r`. Simplify using `[Algebra.TensorProduct.algebraMap_apply]`. Rewrite using `[e, Algebra.norm_algebraMap, Module.finrank_baseChange, h2]`.
+-/
 theorem norm_tmul_one {F E : Type} [Field F] [Field E] [Algebra F E]
     (h2 : Module.finrank F E = 2) (R : Type) [CommRing R] [Nontrivial R] [Algebra F R] (r : R) :
     Algebra.norm R (r ⊗ₜ[F] (1 : E)) = r ^ 2 := by
@@ -39,6 +49,15 @@ theorem norm_tmul_one {F E : Type} [Field F] [Field E] [Algebra F E]
     simp [Algebra.TensorProduct.algebraMap_apply]
   rw [e, Algebra.norm_algebraMap, Module.finrank_baseChange, h2]
 
+/- English proof (translation)
+Take `⟨⟨lcA, scA, t2A⟩, -⟩` from `GlobalTheory.CompanionTheory.AdeleTop.adele_top F`. Use `haveI : BorelSpace (AF F) := ⟨rfl⟩`. Set `μ' : Measure (Unit → AF F)` to `Measure.pi fun _ => μA`. Use `haveI : μ'.IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Establish `h` using `GlobalTheory.T.adelic_haar_scaling_by_real_idele F hF θ hθ Unit μ' t ht`.
+
+Establish `he : μ'.map (MeasurableEquiv.funUnique Unit (AF F)) = μA` using `(measurePreserving_funUnique μA Unit).map_eq`. Establish `hf : Measurable (fun y : AF F => pairA F (θ t) 1 * y)` using `(continuous_const.mul continuous_id).measurable`. Establish `hg : Measurable (fun (x : Unit → AF F) (i : Unit) => (show AdeleRing (𝓞 F) F from (θ t, 1)) * x i)` using `measurable_pi_lambda _ fun i => (continuous_const.mul (continuous_apply i)).measurable`. Establish `hc : (fun y : AF F => pairA F (θ t) 1 * y) ∘ (MeasurableEquiv.funUnique Unit (AF F)) = (MeasurableEquiv.funUnique Unit (AF F)) ∘ (fun (x : Unit → AF F) (i : Unit) => (show AdeleRing (𝓞 F) F from (θ t, 1)) * x i)` using `rfl`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[he]`. Use `_ = (μ'.map (fun (x : Unit → AF F) (i : Unit) => (show AdeleRing (𝓞 F) F from (θ t, 1)) * x i)).map (MeasurableEquiv.funUnique Unit (AF F)) := by`. Rewrite using `[Measure.map_map hf (MeasurableEquiv.measurable _), Measure.map_map (MeasurableEquiv.measurable _) hg, hc]`. Use `_ = ENNReal.ofReal ((t ^ Module.finrank ℚ F)⁻¹) • μA := by`. Rewrite using `[h, Measure.map_smul, he]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem map_scale_adele {F : Type} [Field F] [NumberField F] (hF : IsTotallyReal F)
     (θ : ℝ →+* Ainf F) (hθ : Continuous θ) (μA : Measure (AF F)) (hA : μA.IsAddHaarMeasure)
     (t : ℝ) (ht : 0 < t) :
@@ -72,6 +91,37 @@ theorem map_scale_adele {F : Type} [Field F] [NumberField F] (hF : IsTotallyReal
         rw [h, Measure.map_smul, he]
         simp
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM τ hτ M μW μA hW hA`. Take `⟨⟨lcA, scA, t2A⟩, -⟩` from `GlobalTheory.CompanionTheory.AdeleTop.adele_top F`. Take `⟨trK, lcK, scK, t2K, cSig, -, -, bor, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (AF F)`. Use `haveI : BorelSpace (AF F) := ⟨rfl⟩`. Use `haveI : BorelSpace (Fin 1 → Fin M → AF F ⊗[F] E) := bor 1 M`.
+
+Establish `h2 : Module.finrank F E = 2` using `hCM.2.2.1`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by omega)`. Establish `cN : Continuous (Algebra.norm (AF F) : AF F ⊗[F] E → AF F)` using `continuous_norm_tensor (AF F)`. Set `a : (AF F ⊗[F] E)ˣ → ((Fin 1 → Fin M → AF F ⊗[F] E) × AF F) →+ ((Fin 1 → Fin M → AF F ⊗[F] E) × AF F)` to `fun t => { toFun := fun p => (sigR (AF F) σ (t : AF F ⊗[F] E) • p.1, Algebra.norm (AF F) (t : AF F ⊗[F] E) * p.2) map_zero' := by simp map_add' := by intro p q; simp [smul_add, mul_add] }`. Establish `ha : ∀ t p, a t p = (sigR (AF F) σ (t : AF F ⊗[F] E) • p.1, Algebra.norm (AF F) (t : AF F ⊗[F] E) * p.2)` using `fun _ _ => rfl`.
+
+Use `haveI : LocallyCompactSpace (AF F ⊗[F] E)ˣ := (Units.isClosedEmbedding_embedProduct (α := AF F ⊗[F] E)).locallyCompactSpace`. Use `haveI : SecondCountableTopology (AF F ⊗[F] E)ᵐᵒᵖ := (MulOpposite.opHomeomorph (M := AF F ⊗[F] E)).symm.secondCountableTopology`. Use `haveI : SecondCountableTopology (AF F ⊗[F] E)ˣ := (Units.isEmbedding_embedProduct (M := AF F ⊗[F] E)).secondCountableTopology`. Establish `hcont : Continuous fun p : (AF F ⊗[F] E)ˣ × ((Fin 1 → Fin M → AF F ⊗[F] E) × AF F) => a p.1 p.2`. Establish `hv : Continuous fun p : (AF F ⊗[F] E)ˣ × ((Fin 1 → Fin M → AF F ⊗[F] E) × AF F) => ((p.1 : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E)` using `Units.continuous_val.comp continuous_fst`.
+
+Use `Continuous.prodMk ?_ ?_` and prove the remaining obligations. Conclude with `(cSig.comp hv).smul (continuous_fst.comp continuous_snd)`. Conclude with `(cN.comp hv).mul (continuous_snd.comp continuous_snd)`. Use `haveI : μW.IsAddHaarMeasure := hW`. Use `haveI : μA.IsAddHaarMeasure := hA`.
+
+Use `haveI : IsTopologicalAddGroup (Fin 1 → Fin M → AF F ⊗[F] E) := inferInstance`. Use `haveI : LocallyCompactSpace (Fin 1 → Fin M → AF F ⊗[F] E) := inferInstance`. Use `haveI : SecondCountableTopology (Fin 1 → Fin M → AF F ⊗[F] E) := inferInstance`. Use `haveI : SigmaFinite μW := inferInstance`. Use `haveI : SigmaFinite μA := inferInstance`.
+
+Use `haveI : (μW.prod μA).IsAddHaarMeasure := inferInstance`. Take `⟨χ, hχc, hχ⟩` from `GlobalTheory.T.group_action_haar_scaling_continuous ((Fin 1 → Fin M → AF F ⊗[F] E) × AF F) (μW.prod μA) (AF F ⊗[F] E)ˣ a hcont continuous_inv (by intro y; rw [ha]; simp) (by intro s t y; simp only [ha, Units.val_mul, map_mul, smul_smul, mul_assoc])`. Use `⟨χ, hχc, hχ, ?_⟩` and prove the remaining obligations. Introduce `x`. Establish `hτ'` using `hτ`.
+
+Take `⟨-, θ, hθ, hval⟩` from `hτ`. Establish `hu` using `hval x`. Establish `hsig : sigR (AF F) σ ((τ (Multiplicative.ofAdd x) : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) = ((τ (Multiplicative.ofAdd x) : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E)`. Rewrite using `[hu]`. Simplify using `[sigR]`.
+
+Use `haveI : Nontrivial (Ainf F) := by`. Take `⟨v⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Unfold `Ainf InfiniteAdeleRing`. Conclude with `Pi.nontrivial_at v`. Use `haveI : Nontrivial (AF F) := inferInstanceAs (Nontrivial (Ainf F × Af F))`.
+
+Establish `hnorm : Algebra.norm (AF F) ((τ (Multiplicative.ofAdd x) : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) = pairA F (θ (Real.exp (2 * x))) 1`. Rewrite using `[hu, norm_tmul_one h2, sq]`. Establish `e2 : Real.exp (2 * x) = Real.exp x * Real.exp x`. Rewrite using `[← Real.exp_add]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2, map_mul]`. Express the relevant statement in the definitionally equal form `((θ (Real.exp x) * θ (Real.exp x), (1 : Af F) * 1) : Ainf F × Af F) = (_, 1)`. Rewrite using `[one_mul]`. Establish `hWm` using `GlobalTheory.T.haar_scaling_under_flow F E σ hCM τ hτ' 1 M μW hW x`.
+
+Establish `hAm` using `map_scale_adele hCM.1 θ hθ μA hA (Real.exp (2 * x)) (Real.exp_pos _)`. Establish `mW : Measurable (fun X : Fin 1 → Fin M → AF F ⊗[F] E => ((τ (Multiplicative.ofAdd x) : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) • X)` using `(continuous_const_smul _).measurable`. Establish `mA : Measurable (fun y : AF F => pairA F (θ (Real.exp (2 * x))) 1 * y)` using `(continuous_const.mul continuous_id).measurable`. Establish `hmap` using `Measure.map_prod_map μW μA mW mA`. Rewrite `hmap` using `[hWm, hAm, Measure.prod_smul_left, Measure.prod_smul_right, smul_smul]`.
+
+Establish `hfun : (a (τ (Multiplicative.ofAdd x)) : _ → _) = Prod.map (fun X : Fin 1 → Fin M → AF F ⊗[F] E => ((τ (Multiplicative.ofAdd x) : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) • X) (fun y : AF F => pairA F (θ (Real.exp (2 * x))) 1 * y)`. Use function extensionality and compare the values at `p`. Rewrite using `[ha, hsig, hnorm]`. Both sides reduce to the same expression. Establish `hfin` using `hχ (τ (Multiplicative.ofAdd x))`.
+
+Rewrite `hfin` using `[hfun, ← hmap]`. Take `⟨S, hS, hS0⟩` from `exists_compact_mem_nhds (0 : (Fin 1 → Fin M → AF F ⊗[F] E) × AF F)`. Establish `pos : (μW.prod μA) S ≠ 0` using `(Measure.measure_pos_of_mem_nhds _ hS0).ne'`. Establish `fin : (μW.prod μA) S ≠ ⊤` using `hS.measure_lt_top.ne`. Establish `hS1` using `congrArg (fun m : Measure _ => m S) hfin`.
+
+Simplify using `only [Measure.smul_apply, smul_eq_mul, ENNReal.smul_def] at hS1`. Establish `hS2` using `(ENNReal.mul_left_inj pos fin).1 hS1`. Establish `hS3` using `congrArg ENNReal.toReal hS2`. Rewrite `hS3` using `[ENNReal.toReal_mul, ENNReal.toReal_ofReal (Real.exp_pos _).le, ENNReal.toReal_ofReal (by positivity), ENNReal.coe_toReal]`. Rewrite using `[← hS3, ← Real.exp_nat_mul, ← Real.exp_neg, ← Real.exp_add]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_modulus_chi : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ τ : Multiplicative ℝ →* (AF F ⊗[F] E)ˣ, IsFlow τ →
     ∀ (M : ℕ) (μW : Measure (Fin 1 → Fin M → AF F ⊗[F] E)) (μA : Measure (AF F)),

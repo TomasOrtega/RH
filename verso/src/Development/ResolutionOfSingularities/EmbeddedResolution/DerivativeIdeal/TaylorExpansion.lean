@@ -6,6 +6,21 @@ section
 
 variable {A R : Type*} [CommRing A] [CommRing R] [Algebra A R]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `key : ∀ i : ℕ, ⇑D (n.choose i • ((⇑D)^[i] f * (⇑D)^[n - i] g)) = n.choose i • ((⇑D)^[i] f * (⇑D)^[n - i + 1] g) + n.choose i • ((⇑D)^[i + 1] f * (⇑D)^[n - i] g)`. Introduce `i`.
+
+Rewrite using `[map_nsmul, Derivation.leibniz, smul_eq_mul, smul_eq_mul, ← Function.iterate_succ_apply' (⇑D) (n - i) g, ← Function.iterate_succ_apply' (⇑D) i f, mul_comm ((⇑D)^[n - i] g) ((⇑D)^[i + 1] f), smul_add]`. Establish `e3 : ∑ i ∈ Finset.range (n + 1), n.choose (i + 1) • ((⇑D)^[i + 1] f * (⇑D)^[n - i] g) = ∑ i ∈ Finset.range n, n.choose (i + 1) • ((⇑D)^[i + 1] f * (⇑D)^[n - i] g)`. Rewrite using `[Finset.sum_range_succ, Nat.choose_eq_zero_of_lt (show n < n + 1 by omega), zero_smul, add_zero]`. Establish `e1 : ∑ i ∈ Finset.range (n + 1), n.choose i • ((⇑D)^[i] f * (⇑D)^[n - i + 1] g) = (∑ i ∈ Finset.range n, n.choose (i + 1) • ((⇑D)^[i + 1] f * (⇑D)^[n - i] g)) + f * (⇑D)^[n + 1] g`. Establish `inner : ∑ i ∈ Finset.range n, n.choose (i + 1) • ((⇑D)^[i + 1] f * (⇑D)^[n - (i + 1) + 1] g) = ∑ i ∈ Finset.range n, n.choose (i + 1) • ((⇑D)^[i + 1] f * (⇑D)^[n - i] g)`.
+
+Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `h` using `Finset.mem_range.mp hi`. Establish `hi' : n - (i + 1) + 1 = n - i` using `by omega`. Rewrite using `[hi']`. Rewrite using `[Finset.sum_range_succ', inner]`.
+
+Simplify using `only [Nat.choose_zero_right, one_smul, Function.iterate_zero_apply, Nat.sub_zero]`. Establish `e2 : ∑ i ∈ Finset.range (n + 1 + 1), (n + 1).choose i • ((⇑D)^[i] f * (⇑D)^[n + 1 - i] g) = ((∑ i ∈ Finset.range (n + 1), n.choose i • ((⇑D)^[i + 1] f * (⇑D)^[n - i] g)) + ∑ i ∈ Finset.range n, n.choose (i + 1) • ((⇑D)^[i + 1] f * (⇑D)^[n - i] g)) + f * (⇑D)^[n + 1] g`. Establish `inner2 : ∑ i ∈ Finset.range (n + 1), (n + 1).choose (i + 1) • ((⇑D)^[i + 1] f * (⇑D)^[n + 1 - (i + 1)] g) = (∑ i ∈ Finset.range (n + 1), n.choose i • ((⇑D)^[i + 1] f * (⇑D)^[n - i] g)) + ∑ i ∈ Finset.range n, n.choose (i + 1) • ((⇑D)^[i + 1] f * (⇑D)^[n - i] g)`. Rewrite using `[← e3, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Establish `hc : (n + 1).choose (i + 1) = n.choose i + n.choose (i + 1)` using `Nat.choose_succ_succ n i`. Establish `hs : n + 1 - (i + 1) = n - i` using `by omega`. Rewrite using `[hc, hs, add_smul]`. Rewrite using `[Finset.sum_range_succ', inner2]`. Simplify using `only [Nat.choose_zero_right, one_smul, Function.iterate_zero_apply, Nat.sub_zero]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ih]`. Use `_ = ∑ i ∈ Finset.range (n + 1), ⇑D (n.choose i • ((⇑D)^[i] f * (⇑D)^[n - i] g)) := by`. Rewrite using `[map_sum]`. Use `_ = ∑ i ∈ Finset.range (n + 1), (n.choose i • ((⇑D)^[i] f * (⇑D)^[n - i + 1] g) + n.choose i • ((⇑D)^[i + 1] f * (⇑D)^[n - i] g)) := Finset.sum_congr rfl fun i _ => key i`.
+
+Use `_ = (∑ i ∈ Finset.range (n + 1), n.choose i • ((⇑D)^[i] f * (⇑D)^[n - i + 1] g)) + ∑ i ∈ Finset.range (n + 1), n.choose i • ((⇑D)^[i + 1] f * (⇑D)^[n - i] g) := Finset.sum_add_distrib`. Use `_ = ∑ i ∈ Finset.range (n + 1 + 1), (n + 1).choose i • ((⇑D)^[i] f * (⇑D)^[n + 1 - i] g) := by`. Rewrite using `[e1, e2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem iterate_deriv_mul_eq_sum_nsmul (D : Derivation A R R) (n : ℕ) (f g : R) :
     (⇑D)^[n] (f * g) =
       ∑ i ∈ Finset.range (n + 1), n.choose i • ((⇑D)^[i] f * (⇑D)^[n - i] g) := by
@@ -70,6 +85,9 @@ private theorem iterate_deriv_mul_eq_sum_nsmul (D : Derivation A R R) (n : ℕ) 
             (n + 1).choose i • ((⇑D)^[i] f * (⇑D)^[n + 1 - i] g) := by
             rw [e1, e2]; ring
 
+/- English proof (translation)
+Rewrite using `[iterate_deriv_mul_eq_sum_nsmul D n f g]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [nsmul_eq_mul]`.
+-/
 theorem iterate_deriv_mul (D : Derivation A R R) (n : ℕ) (f g : R) :
     (⇑D)^[n] (f * g) =
       ∑ i ∈ Finset.range (n + 1), (n.choose i : R) * ((⇑D)^[i] f * (⇑D)^[n - i] g) := by
@@ -89,11 +107,21 @@ def truncatedSeries (σ : R →+* S) (D : Derivation A R R) (β : S) (N : ℕ) (
   ∑ j ∈ Finset.range N, algebraMap ℚ S ((j.factorial : ℚ)⁻¹) * σ ((⇑D)^[j] f) * β ^ j
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem truncatedSeries_apply (σ : R →+* S) (D : Derivation A R R) (β : S) (N : ℕ) (f : R) :
     truncatedSeries σ D β N f =
       ∑ j ∈ Finset.range N, algebraMap ℚ S ((j.factorial : ℚ)⁻¹) * σ ((⇑D)^[j] f) * β ^ j :=
   rfl
 
+/- English proof (translation)
+Establish `hz : (⇑D) (0 : R) = 0` using `by simp`. Establish `key : ∀ k : ℕ, (⇑D)^[k + 1] f = 0`. Introduce `k`. Rewrite using `[Function.iterate_succ_apply, hf]`. Conclude with `Function.iterate_fixed hz k`.
+
+Rewrite using `[truncatedSeries_apply, Finset.sum_eq_single 0]`. Simplify using the standard rewrite rules. Introduce `b _ hb0`. Take `⟨k, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hb0`. Rewrite using `[key k]`.
+
+Simplify using the standard rewrite rules. Introduce `h`. Conclude with `absurd (Finset.mem_range.mpr (by omega : 0 < N)) h`.
+-/
 theorem truncatedSeries_of_deriv_eq_zero (σ : R →+* S) (D : Derivation A R R) (β : S) (N : ℕ)
     (hN : 1 ≤ N) (f : R) (hf : D f = 0) : truncatedSeries σ D β N f = σ f := by
   have hz : (⇑D) (0 : R) = 0 := by simp
@@ -110,6 +138,11 @@ theorem truncatedSeries_of_deriv_eq_zero (σ : R →+* S) (D : Derivation A R R)
   · intro h
     exact absurd (Finset.mem_range.mpr (by omega : 0 < N)) h
 
+/- English proof (translation)
+Take `⟨M, rfl⟩ : ∃ M, N = M + 1` from `⟨N - 1, (Nat.succ_pred_eq_of_pos hN).symm⟩`. Establish `key : truncatedSeries σ D β (M + 1) f - σ f = ∑ j ∈ Finset.range M, algebraMap ℚ S (((j + 1).factorial : ℚ)⁻¹) * σ ((⇑D)^[j + 1] f) * β ^ (j + 1)`. Rewrite using `[truncatedSeries_apply, Finset.sum_range_succ']`. Simplify using the standard rewrite rules. Rewrite using `[key]`.
+
+Use `Ideal.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Ideal.mem_span_singleton]`. Conclude with `dvd_mul_of_dvd_right (dvd_pow_self β j.succ_ne_zero) _`.
+-/
 theorem truncatedSeries_sub_mem_span_singleton (σ : R →+* S) (D : Derivation A R R) (β : S) (N : ℕ)
     (hN : 1 ≤ N) (f : R) :
     truncatedSeries σ D β N f - σ f ∈ Ideal.span ({β} : Set S) := by
@@ -124,6 +157,11 @@ theorem truncatedSeries_sub_mem_span_singleton (σ : R →+* S) (D : Derivation 
   rw [Ideal.mem_span_singleton]
   exact dvd_mul_of_dvd_right (dvd_pow_self β j.succ_ne_zero) _
 
+/- English proof (translation)
+Establish `hj : ((j.factorial : ℚ)) ≠ 0` using `Nat.cast_ne_zero.mpr (Nat.factorial_pos j).ne'`. Establish `hi : ((i.factorial : ℚ)) ≠ 0` using `Nat.cast_ne_zero.mpr (Nat.factorial_pos i).ne'`. Establish `hji : (((j - i).factorial : ℚ)) ≠ 0` using `Nat.cast_ne_zero.mpr (Nat.factorial_pos (j - i)).ne'`. Establish `h1 : (j.choose i : ℚ) * (i.factorial : ℚ) * ((j - i).factorial : ℚ) = (j.factorial : ℚ)`. Conclude with `Nat.choose_mul_factorial_mul_factorial h` after adjusting the coercions.
+
+Establish `key : ((j.factorial : ℚ))⁻¹ * (j.choose i : ℚ) = ((i.factorial : ℚ))⁻¹ * (((j - i).factorial : ℚ))⁻¹`. Clear the denominators using the available nonvanishing facts. Take the linear combination `h1`. Establish `h2` using `congrArg (algebraMap ℚ S') key`. Simplify `h2` using `only [map_mul, map_natCast]`.
+-/
 private theorem factorial_inv_mul_choose {S' : Type*} [CommRing S'] [Algebra ℚ S'] (j i : ℕ)
     (h : i ≤ j) :
     algebraMap ℚ S' ((j.factorial : ℚ)⁻¹) * (j.choose i : S')
@@ -141,10 +179,18 @@ private theorem factorial_inv_mul_choose {S' : Type*} [CommRing S'] [Algebra ℚ
   have h2 := congrArg (algebraMap ℚ S') key
   simpa only [map_mul, map_natCast] using h2
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem coeff_eq {A' R' S' : Type*} [CommRing A'] [CommRing R'] [CommRing S']
     [Algebra A' R'] [Algebra ℚ S'] (σ : R' →+* S') (D : Derivation A' R' R') (i : ℕ) (f : R') :
     coeff σ D i f = algebraMap ℚ S' ((i.factorial : ℚ)⁻¹) * σ ((⇑D)^[i] f) := rfl
 
+/- English proof (translation)
+Rewrite using `[truncatedSeries_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[iterate_deriv_mul D j f g, map_sum, Finset.mul_sum, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hij : i ≤ j` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)`.
+
+Establish `key` using `factorial_inv_mul_choose (S' := S) j i hij`. Simplify using `only [coeff_eq, map_mul, map_natCast]`. Take the linear combination `(σ ((⇑D)^[i] f) * σ ((⇑D)^[j - i] g) * β ^ j) * key`.
+-/
 theorem truncatedSeries_mul (σ : R →+* S) (D : Derivation A R R) (β : S) (N : ℕ) (f g : R) :
     truncatedSeries σ D β N (f * g) =
       ∑ j ∈ Finset.range N,
@@ -159,6 +205,9 @@ theorem truncatedSeries_mul (σ : R →+* S) (D : Derivation A R R) (β : S) (N 
   simp only [coeff_eq, map_mul, map_natCast]
   linear_combination (σ ((⇑D)^[i] f) * σ ((⇑D)^[j - i] g) * β ^ j) * key
 
+/- English proof (translation)
+Establish `hz : (⇑D) (0 : R) = 0` using `by simp`. Rewrite using `[truncatedSeries_apply]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Function.iterate_fixed hz j]`. Simplify using the standard rewrite rules.
+-/
 theorem truncatedSeries_zero (σ : R →+* S) (D : Derivation A R R) (β : S) (N : ℕ) :
     truncatedSeries σ D β N 0 = 0 := by
   have hz : (⇑D) (0 : R) = 0 := by simp
@@ -167,6 +216,13 @@ theorem truncatedSeries_zero (σ : R →+* S) (D : Derivation A R R) (β : S) (N
   rw [Function.iterate_fixed hz j]
   simp
 
+/- English proof (translation)
+Establish `key : ∀ j : ℕ, (⇑D)^[j] (f + g) = (⇑D)^[j] f + (⇑D)^[j] g`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ k ih`.
+
+Simplify using `only [Function.iterate_succ_apply', ih, map_add]`. Simplify using `only [truncatedSeries_apply]`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[key j, map_add]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem truncatedSeries_add (σ : R →+* S) (D : Derivation A R R) (β : S) (N : ℕ) (f g : R) :
     truncatedSeries σ D β N (f + g) = truncatedSeries σ D β N f + truncatedSeries σ D β N g := by
   have key : ∀ j : ℕ, (⇑D)^[j] (f + g) = (⇑D)^[j] f + (⇑D)^[j] g := by
@@ -181,11 +237,21 @@ theorem truncatedSeries_add (σ : R →+* S) (D : Derivation A R R) (β : S) (N 
   rw [key j, map_add]
   ring
 
+/- English proof (translation)
+Establish `h1 : D (1 : R) = 0` using `by simp`. Rewrite using `[truncatedSeries_of_deriv_eq_zero σ D β N hN 1 h1, map_one]`.
+-/
 theorem truncatedSeries_one (σ : R →+* S) (D : Derivation A R R) (β : S) (N : ℕ) (hN : 1 ≤ N) :
     truncatedSeries σ D β N 1 = 1 := by
   have h1 : D (1 : R) = 0 := by simp
   rw [truncatedSeries_of_deriv_eq_zero σ D β N hN 1 h1, map_one]
 
+/- English proof (translation)
+Proceed by induction on `N with`. Consider the case `zero => simp`. Consider the case `succ N ih`. Establish `hL : ∑ j ∈ Finset.range (N + 1), ∑ i ∈ Finset.range (j + 1), h i j = (∑ j ∈ Finset.range N, ∑ i ∈ Finset.range (j + 1), h i j) + ∑ i ∈ Finset.range (N + 1), h i N` using `Finset.sum_range_succ (fun j => ∑ i ∈ Finset.range (j + 1), h i j) N`. Establish `hR1 : ∑ i ∈ Finset.range (N + 1), ∑ j ∈ Finset.Ico i (N + 1), h i j = (∑ i ∈ Finset.range N, ∑ j ∈ Finset.Ico i (N + 1), h i j) + ∑ j ∈ Finset.Ico N (N + 1), h N j` using `Finset.sum_range_succ (fun i => ∑ j ∈ Finset.Ico i (N + 1), h i j) N`.
+
+Establish `hR2 : ∑ i ∈ Finset.range N, ∑ j ∈ Finset.Ico i (N + 1), h i j = (∑ i ∈ Finset.range N, ∑ j ∈ Finset.Ico i N, h i j) + ∑ i ∈ Finset.range N, h i N`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hiN : i ≤ N` using `le_of_lt (Finset.mem_range.mp hi)`. Conclude with `Finset.sum_Ico_succ_top hiN (fun j => h i j)`.
+
+Establish `hR3 : ∑ j ∈ Finset.Ico N (N + 1), h N j = h N N`. Rewrite using `[Finset.sum_Ico_succ_top (le_refl N) (fun j => h N j), Finset.Ico_self, Finset.sum_empty, zero_add]`. Establish `hlast : ∑ i ∈ Finset.range (N + 1), h i N = (∑ i ∈ Finset.range N, h i N) + h N N` using `Finset.sum_range_succ (fun i => h i N) N`. Rewrite using `[hL, hR1, hR2, hR3, ih, hlast, add_assoc]`.
+-/
 private theorem sum_range_sum_range_succ_eq_sum_sum_Ico {T : Type*} [AddCommMonoid T] (N : ℕ) (h : ℕ → ℕ → T) :
     ∑ j ∈ Finset.range N, ∑ i ∈ Finset.range (j + 1), h i j
       = ∑ i ∈ Finset.range N, ∑ j ∈ Finset.Ico i N, h i j := by
@@ -215,6 +281,9 @@ private theorem sum_range_sum_range_succ_eq_sum_sum_Ico {T : Type*} [AddCommMono
       Finset.sum_range_succ (fun i => h i N) N
     rw [hL, hR1, hR2, hR3, ih, hlast, add_assoc]
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_Ico_eq_sum_range]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hk : i + k - i = k` using `by omega`. Simplify using `only [hk]`.
+-/
 private theorem sum_Ico_mul_pow_eq_sum_range {T : Type*} [CommRing T] (a b : ℕ → T) (β : T) (N i : ℕ) :
     ∑ j ∈ Finset.Ico i N, a i * b (j - i) * β ^ j
       = ∑ k ∈ Finset.range (N - i), a i * b k * β ^ (i + k) := by
@@ -223,6 +292,21 @@ private theorem sum_Ico_mul_pow_eq_sum_range {T : Type*} [CommRing T] (a b : ℕ
   have hk : i + k - i = k := by omega
   simp only [hk]
 
+/- English proof (translation)
+Establish `hprod : (∑ j ∈ Finset.range N, a j * β ^ j) * (∑ j ∈ Finset.range N, b j * β ^ j) = ∑ i ∈ Finset.range N, ∑ k ∈ Finset.range N, a i * b k * β ^ (i + k)`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`.
+
+Establish `htri : (∑ j ∈ Finset.range N, β ^ j * ∑ i ∈ Finset.range (j + 1), a i * b (j - i)) = ∑ i ∈ Finset.range N, ∑ k ∈ Finset.range (N - i), a i * b k * β ^ (i + k)`. Establish `e1 : (∑ j ∈ Finset.range N, β ^ j * ∑ i ∈ Finset.range (j + 1), a i * b (j - i)) = ∑ j ∈ Finset.range N, ∑ i ∈ Finset.range (j + 1), a i * b (j - i) * β ^ j`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+
+Use `e1.trans ((sum_range_sum_range_succ_eq_sum_sum_Ico N (fun i j => a i * b (j - i) * β ^ j)).trans ?_)` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun i _ => sum_Ico_mul_pow_eq_sum_range a b β N i`. Establish `hdist : (∑ i ∈ Finset.range N, ∑ k ∈ Finset.range (N - i), a i * b k * β ^ (i + k)) - (∑ i ∈ Finset.range N, ∑ k ∈ Finset.range N, a i * b k * β ^ (i + k)) = ∑ i ∈ Finset.range N, ((∑ k ∈ Finset.range (N - i), a i * b k * β ^ (i + k)) - ∑ k ∈ Finset.range N, a i * b k * β ^ (i + …`. Use `(eq_sub_of_add_eq ?_).symm` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Rewrite using `[hprod, htri, hdist]`. Use `Ideal.sum_mem _ fun i hi => ?_` and prove the remaining obligations. Establish `hiN : i < N` using `Finset.mem_range.mp hi`. Establish `hsplit : ∑ k ∈ Finset.range N, a i * b k * β ^ (i + k) = (∑ k ∈ Finset.range (N - i), a i * b k * β ^ (i + k)) + ∑ k ∈ Finset.Ico (N - i) N, a i * b k * β ^ (i + k)`.
+
+Rewrite using `[Finset.range_eq_Ico, Finset.range_eq_Ico]`. Conclude with `(Finset.sum_Ico_consecutive _ (Nat.zero_le (N - i)) (Nat.sub_le N i)).symm`. Rewrite using `[hsplit]`. Establish `hre : (∑ k ∈ Finset.range (N - i), a i * b k * β ^ (i + k)) - ((∑ k ∈ Finset.range (N - i), a i * b k * β ^ (i + k)) + ∑ k ∈ Finset.Ico (N - i) N, a i * b k * β ^ (i + k)) = -(∑ k ∈ Finset.Ico (N - i) N, a i * b k * β ^ (i + k))` using `by ring`. Rewrite using `[hre]`.
+
+Use `neg_mem (Ideal.sum_mem _ fun k hk => ?_)` and prove the remaining obligations. Establish `hk1 : N - i ≤ k` using `(Finset.mem_Ico.mp hk).1`. Establish `hpow : β ^ (i + k) ∈ J`. Establish `he : i + k = N + (i + k - N)` using `by omega`. Rewrite using `[he, pow_add]`.
+
+Conclude with `Ideal.mul_mem_right _ _ hβ`. Conclude with `Ideal.mul_mem_left _ _ hpow`.
+-/
 private theorem sum_convolution_sub_mul_mem {T : Type*} [CommRing T] (β : T) (N : ℕ) (J : Ideal T)
     (hβ : β ^ N ∈ J) (a b : ℕ → T) :
     (∑ j ∈ Finset.range N, β ^ j * ∑ i ∈ Finset.range (j + 1), a i * b (j - i))
@@ -271,6 +355,9 @@ private theorem sum_convolution_sub_mul_mem {T : Type*} [CommRing T] (β : T) (N
     exact Ideal.mul_mem_right _ _ hβ
   exact Ideal.mul_mem_left _ _ hpow
 
+/- English proof (translation)
+Establish `hf : truncatedSeries σ D β N f = ∑ j ∈ Finset.range N, coeff σ D j f * β ^ j` using `rfl`. Establish `hg : truncatedSeries σ D β N g = ∑ j ∈ Finset.range N, coeff σ D j g * β ^ j` using `rfl`. Rewrite using `[truncatedSeries_mul σ D β N f g, hf, hg]`. Conclude with `sum_convolution_sub_mul_mem β N J hβ (fun i => coeff σ D i f) (fun i => coeff σ D i g)`.
+-/
 theorem truncatedSeries_mul_sub_mem (σ : R →+* S) (D : Derivation A R R) (β : S) (N : ℕ)
     (J : Ideal S) (hβ : β ^ N ∈ J) (f g : R) :
     truncatedSeries σ D β N (f * g) - truncatedSeries σ D β N f * truncatedSeries σ D β N g ∈ J := by
@@ -282,6 +369,9 @@ theorem truncatedSeries_mul_sub_mem (σ : R →+* S) (D : Derivation A R R) (β 
   exact sum_convolution_sub_mul_mem β N J hβ (fun i => coeff σ D i f)
     (fun i => coeff σ D i g)
 
+/- English proof (translation)
+Establish `h1 : D 1 = 0` using `by simp`. Rewrite using `[truncatedSeries_of_deriv_eq_zero σ D β N hN 1 h1]`. Simplify using the standard rewrite rules.
+-/
 private theorem mk_truncatedSeries_one (σ : R →+* S) (D : Derivation A R R) (β : S) (N : ℕ)
     (J : Ideal S) (hN : 1 ≤ N) :
     Ideal.Quotient.mk J (truncatedSeries σ D β N 1) = 1 := by
@@ -289,6 +379,9 @@ private theorem mk_truncatedSeries_one (σ : R →+* S) (D : Derivation A R R) (
   rw [truncatedSeries_of_deriv_eq_zero σ D β N hN 1 h1]
   simp
 
+/- English proof (translation)
+Establish `h : truncatedSeries σ D β N (f * g) - truncatedSeries σ D β N f * truncatedSeries σ D β N g ∈ J` using `truncatedSeries_mul_sub_mem σ D β N J hβ f g`. Establish `h2 : Ideal.Quotient.mk J (truncatedSeries σ D β N (f * g)) = Ideal.Quotient.mk J (truncatedSeries σ D β N f * truncatedSeries σ D β N g)` using `Ideal.Quotient.eq.mpr h`. Rewrite using `[h2, map_mul]`.
+-/
 private theorem mk_truncatedSeries_mul (σ : R →+* S) (D : Derivation A R R) (β : S) (N : ℕ)
     (J : Ideal S) (hβ : β ^ N ∈ J) (f g : R) :
     Ideal.Quotient.mk J (truncatedSeries σ D β N (f * g)) =
@@ -302,11 +395,17 @@ private theorem mk_truncatedSeries_mul (σ : R →+* S) (D : Derivation A R R) (
     Ideal.Quotient.eq.mpr h
   rw [h2, map_mul]
 
+/- English proof (translation)
+Rewrite using `[truncatedSeries_zero, map_zero]`.
+-/
 private theorem mk_truncatedSeries_zero (σ : R →+* S) (D : Derivation A R R) (β : S) (N : ℕ)
     (J : Ideal S) :
     Ideal.Quotient.mk J (truncatedSeries σ D β N 0) = 0 := by
   rw [truncatedSeries_zero, map_zero]
 
+/- English proof (translation)
+Rewrite using `[truncatedSeries_add, map_add]`.
+-/
 private theorem mk_truncatedSeries_add (σ : R →+* S) (D : Derivation A R R) (β : S) (N : ℕ)
     (J : Ideal S) (f g : R) :
     Ideal.Quotient.mk J (truncatedSeries σ D β N (f + g)) =
@@ -323,6 +422,9 @@ def truncatedSeriesRingHom (σ : R →+* S) (D : Derivation A R R) (β : S) (N :
     map_add' := mk_truncatedSeries_add σ D β N J }
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem truncatedSeriesRingHom_apply (σ : R →+* S) (D : Derivation A R R) (β : S) (N : ℕ) (J : Ideal S)
     (hN : 1 ≤ N) (hβ : β ^ N ∈ J) (f : R) :
     truncatedSeriesRingHom σ D β N J hN hβ f = Ideal.Quotient.mk J (truncatedSeries σ D β N f) :=

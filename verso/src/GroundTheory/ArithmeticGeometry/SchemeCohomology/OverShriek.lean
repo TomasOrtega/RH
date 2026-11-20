@@ -23,12 +23,18 @@ noncomputable def shriekMap {X Y : C} (g : Y ⟶ X) :
     (DirectSum.of (shriekSummand P Y) (g ≫ s)).comp
       (P.map (Over.homMk g rfl : Over.mk (g ≫ s) ⟶ Over.mk s).op).hom
 
+/- English proof (translation)
+The claim follows from `DirectSum.toAddMonoid_of _ _ _`.
+-/
 lemma shriekMap_of {X Y : C} (g : Y ⟶ X) (s : X ⟶ U) (x : shriekSummand P X s) :
     shriekMap P g (DirectSum.of _ s x) =
       DirectSum.of (shriekSummand P Y) (g ≫ s)
         (P.map (Over.homMk g rfl : Over.mk (g ≫ s) ⟶ Over.mk s).op x) :=
   DirectSum.toAddMonoid_of _ _ _
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[Over.OverMorphism.ext ha]`. Use the proof step `@[simps]`.
+-/
 lemma shriek_of_eq_of {Y : C} {V : Over U} {t t' : Y ⟶ U} (h : t = t') (a : Over.mk t ⟶ V)
     (a' : Over.mk t' ⟶ V) (ha : a.left = a'.left) (x : P.obj (op V)) :
     DirectSum.of (shriekSummand P Y) t (P.map a.op x) =
@@ -78,6 +84,9 @@ noncomputable def shriekPresheafMap {Q : (Over U)ᵒᵖ ⥤ AddCommGrpCat.{v}} (
     congr 1
     exact NatTrans.naturality_apply φ _ x
 
+/- English proof (translation)
+The claim follows from `DirectSum.toAddMonoid_of (fun t => (DirectSum.of (shriekSummand Q X.unop) t).comp (φ.app (op (Over.mk t))).hom) s x`.
+-/
 lemma shriekPresheafMap_app_of {P Q : (Over U)ᵒᵖ ⥤ AddCommGrpCat.{v}} (φ : P ⟶ Q) (X : Cᵒᵖ)
     (s : X.unop ⟶ U) (x : shriekSummand P X.unop s) :
     (shriekPresheafMap φ).app X (DirectSum.of (shriekSummand P X.unop) s x) =
@@ -139,6 +148,9 @@ noncomputable abbrev shriekHomOfRestrictApp (β : P ⟶ (Over.forget U).op ⋙ Q
     (⨁ s : X.unop ⟶ U, shriekSummand P X.unop s) →+ Q.obj X :=
   DirectSum.toAddMonoid fun s => (β.app (op (Over.mk s))).hom
 
+/- English proof (translation)
+The claim follows from `DirectSum.toAddMonoid_of _ _ _ @[simps]`.
+-/
 lemma shriekHomOfRestrictApp_of (β : P ⟶ (Over.forget U).op ⋙ Q) (X : Cᵒᵖ) (s : X.unop ⟶ U)
     (x : shriekSummand P X.unop s) :
     shriekHomOfRestrictApp β X (DirectSum.of (shriekSummand P X.unop) s x) =

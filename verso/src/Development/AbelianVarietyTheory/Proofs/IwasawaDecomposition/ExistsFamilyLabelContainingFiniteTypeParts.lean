@@ -17,6 +17,21 @@ namespace GlobalTheory.Mem.R3.LabProof
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `hW hDS hHC hCD D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hPins hHolds hHost σ`. Take `⟨c, hE, hWp⟩` from `GlobalTheory.T.exists_sphericalEigensystem_of_finiteType_with_parts hW hDS hHC hCD D G Pl0 I0 T A3 Ks R F cG X0 Y Z hPins hHolds hHost σ`. Establish `hcar` using `GlobalTheory.T.eigensystem_carried_by_finiteType_of_meets_level_rows hW hDS hHC hCD D G Pl0 I0 T A3 Ks R F cG X0 Y Z hPins hHolds hHost`. Take `⟨b, hb⟩` from `principalLevelFrame.rowRepR_occ R.θ (Y.eFT σ)`. Take `⟨U, hU, hU0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hb`.
+
+Take `⟨x, hx, hxU⟩` from `hE b U hU`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Rewrite `hxU` using `[map_zero]`. Conclude with `hU0 hxU.symm`.
+
+Take `⟨p, hp⟩` from `hcar c b x hx0 hx (by rw [hxU]; exact hU.1)`. Establish `hinjW : ∀ i, Function.Injective (R.HW i (sg0 D A3.A)).e` using `fun i => (hPins.char.base.models.HW i _).1`. Use `⟨p, fun i => ?_, fun k hk => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Establish `h1` using `(Y.tied.lift.isot i σ y).1 hy`.
+
+Rewrite `h1` using `[Y.prtWE]`. Take `⟨U', hU', hU'e⟩` from `h1`. Take `⟨w, hw, hwU⟩` from `hWp i U' hU'`. Rewrite `hU'e` using `[Y.mjRead]`. Establish `h2 : (R.HW i (sg0 D A3.A)).e (Y.mj.eW i y) = (R.HW i (sg0 D A3.A)).e w`.
+
+Rewrite using `[hwU]`. Conclude with `(PiTensorProduct.lift : Mult.MMap (R.MW i (sg0 D A3.A)) ≃ₗ[ℂ] _).injective hU'e.symm`. Establish `h3 : Y.mj.eW i y ∈ R.Wc' i c` using `(hinjW i h2) ▸ hw`. Conclude with `le_iSup₂_of_le (f := fun c (_ : R.Carries p c) => R.Wc' i c) c hp le_rfl h3`. Establish `h1` using `Y.tied.base.ft k`.
+
+Rewrite `h1` using `[hk, Y.prtE0]`. Take `⟨U', hU', hU'e⟩` from `h1`. Take `⟨w, hw, hwU⟩` from `hE false U' hU'`. Use `⟨w, le_iSup₂_of_le (f := fun c (_ : R.Carries p c) => R.EEc c) c hp le_rfl hw, ?_⟩` and prove the remaining obligations. Rewrite using `[← hU'e, hwU]`.
+
+Both sides reduce to the same expression.
+-/
 theorem hasLab_exists : GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (X0 : BaseLevelRowSide D) (Y : Read (A3 := A3) R.toRealDat F.lv2 X0) (Z : ReadL R F X0 Y), Pins R F cG → Holds R F → HostHyp D → ∀ σ : D.what₂.FT, ∃ p, HasLab Y σ p := by
   intro hW hDS hHC hCD D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hPins hHolds hHost σ
   obtain ⟨c, hE, hWp⟩ := GlobalTheory.T.exists_sphericalEigensystem_of_finiteType_with_parts hW hDS hHC hCD D G Pl0 I0 T A3 Ks R F cG X0 Y Z hPins hHolds hHost σ

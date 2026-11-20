@@ -17,6 +17,9 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE
 
 namespace GlobalTheory.MemN
 
+/- English proof (translation)
+Use `haveI : Fact p.Prime := ⟨hp⟩`. Take `⟨w, hw⟩` from `IsCyclic.exists_generator (α := (ZMod p)ˣ)`. Use `⟨w, ?_⟩` and prove the remaining obligations. Rewrite using `[orderOf_eq_card_of_forall_mem_zpowers hw, Nat.card_eq_fintype_card, ZMod.card_units_eq_totient, Nat.totient_prime hp]`.
+-/
 theorem exists_units_orderOf_eq (p : ℕ) (hp : p.Prime) : ∃ w : (ZMod p)ˣ, orderOf w = p - 1 := by
   haveI : Fact p.Prime := ⟨hp⟩
   obtain ⟨w, hw⟩ := IsCyclic.exists_generator (α := (ZMod p)ˣ)
@@ -26,6 +29,17 @@ theorem exists_units_orderOf_eq (p : ℕ) (hp : p.Prime) : ∃ w : (ZMod p)ˣ, o
 
 open Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial in
 
+/- English proof (translation)
+Introduce `B C W hS`. Use `choose w hw using fun k : Fin 2 => exists_units_orderOf_eq (B.host.g k) (B.host.g_prime k)`. Set `χ : Chi B.toPre` to `fun k _ j => w k ^ (2 * (j.1 + 1))`. Establish `heta : ∀ j w, 1 ≤ j → j ≤ B.R.m → W.etaJ j w = 0` using `fun j w _ _ => hS.eta j w`. Establish `hgood : GoodChi B.toPre χ ∨ ((∀ μ, W.eOp μ = 0) ∧ ∀ μ j, W.eMt μ j = 0)` using `Or.inl (goodChi B.toPre χ)`.
+
+Take `⟨L⟩` from `GlobalTheory.T.local_stage_nonempty`. Take `⟨nd, hE, hχ, -⟩` from `GlobalTheory.T.exists_unramified_data_character B C W χ hS.sha`. Take `⟨tw, hT⟩` from `GlobalTheory.T.exists_twist_empty_local B C W nd hE`. Take `⟨A, hlab, hine⟩` from `GlobalTheory.T.exists_automorphic_unipotent_labels B C W nd hE`. Take `⟨bc⟩` from `GlobalTheory.T.base_change_nonempty B.R B.host W.what₂ nd A hE`.
+
+Take `⟨T, hT0, hy⟩` from `GlobalTheory.T.exists_types_idempotent_coefficients B C W χ nd A hE hχ hlab hine hgood`. Use `choose e he using hy`. Take `⟨Y, hY, ⟨th⟩⟩` from `GlobalTheory.T.exists_exponent_theta_data B C W nd tw hT e`. Take `⟨eq, heq⟩` from `hχ`. Use `⟨{ toLocStage := L nd := nd ntw := tw naut := A nbc := bc nexp := Y ntypes := T nStage_trivialCharacter_compat := hT0 nStage_trivialCharacter_coeff_eq := fun g => by rw [hY]; exact he g nth := th nbr := fun i => hE.elim i nbr_ind := fun i => hE.elim i self_good := fun i => hE.eli …` and prove the remaining obligations.
+
+Rewrite using `[heta j w h1 h2]`. Conclude with `(Finset.sum_eq_zero fun i _ => hE.elim i).symm }, hE, ?_⟩`. Introduce `k v`. Use `⟨w k, hw k, fun j => ?_⟩` and prove the remaining obligations. Use `show nd.chiT k v j = _`.
+
+Rewrite using `[heq k v]`.
+-/
 theorem exists_nStage_tameChi :
     ∀ (B : Base) (C : Cols B) (W : RowsRest B C), StandIn W → ∃ N : NStage B C W, IsEmpty N.nd.Loc ∧
       ∀ (k : Fin 2) (v : N.nd.PlG k), ∃ w : (ZMod (B.host.g k))ˣ, orderOf w = B.host.g k - 1 ∧

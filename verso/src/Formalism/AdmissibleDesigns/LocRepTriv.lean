@@ -15,6 +15,9 @@ section Loc
 
 variable {O : Type} [CommRing O] [IsDomain O] {Γ : Type} [Group Γ] {M : Type} [AddCommGroup M] [Module O M]
 
+/- English proof (translation)
+Proceed by induction on `x using LocalizedModule.induction_on with`. Consider the case `h m s => show LocalizedModule.map (nonZeroDivisors O) (Representation.trivial O Γ M g) (LocalizedModule.mk m s) = LocalizedModule.mk m s`. Rewrite using `[LocalizedModule.map_mk]`. Both sides reduce to the same expression.
+-/
 theorem locRep_triv (g : Γ) (x : KHf.MK (O := O) M) :
     KHf.locRep (Representation.trivial O Γ M) g x = x := by
   induction x using LocalizedModule.induction_on with
@@ -30,6 +33,9 @@ section Rec
 
 variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D i) (δO : D.nd.O i)
 
+/- English proof (translation)
+Establish `h : l.1 ∈ K.plSet i dc`. Unfold `K.plSet`. Simplify using `[l.2]`. Rewrite using `[K.colIdx, K.plOf_idx i dc h]`. Conclude with `l.2`.
+-/
 theorem col_mem (l : K.Col i dc) : K.plOf i dc (K.colIdx i dc l) ∈ dc.col := by
   have h : l.1 ∈ K.plSet i dc := by
     unfold K.plSet
@@ -37,6 +43,27 @@ theorem col_mem (l : K.Col i dc) : K.plOf i dc (K.colIdx i dc l) ∈ dc.col := b
   rw [K.colIdx, K.plOf_idx i dc h]
   exact l.2
 
+/- English proof (translation)
+Introduce `f hf`. Establish `hn` using `col_over i dc l`. Use `Submodule.mem_map_of_mem ?_` and prove the remaining obligations. Use `show (fun g => KHf.mkK (((KFin.uzOf i dc δO l f hf.1 : _ → _) g))) ∈ ((KHf.fZ i dc (K.colIdx i dc l) (KHf.locRep (Representation.trivial (D.nd.O i) ↥(KFin.Γc i dc l) ↥(Ideal.span {δO})))).restrictScalars (D.nd.O i))`. Rewrite using `[Submodule.restrictScalars_mem, KHf.fZ_pos i dc _ hn]`.
+
+Establish `hU` using `hA (K.plOf i dc (K.colIdx i dc l)) hn (col_mem i dc l) (TruncatedSeriesCountingIdentities.CoefExt.self i _ hn)`. Set `Bw` to `D.nbr i (K.plOf i dc (K.colIdx i dc l)) hn`. Set `V` to `KHf.MK (O := D.nd.O i) ↥(Ideal.span {δO})`. Set `c' : Br.G D.nbr i _ hn → Br.LLw Bw` to `fun g => KHf.eK Bw (algebraMap (D.nd.O i) (FractionRing (D.nd.O i)) (f (Br.iota D.nbr i _ hn g)))`. Establish `hc' : c' ∈ Z1ur (1 : Representation (Br.LLw Bw) (Br.G D.nbr i _ hn) (Br.LLw Bw)) (Br.inert D.nbr i _ hn)`.
+
+Use `⟨⟨hf.2.2 hn, fun g h => ?_⟩, 0, fun g hg => ?_⟩` and prove the remaining obligations. Use `show c' (g * h) = c' g + c' h`. Establish `h1 : f (Br.iota D.nbr i _ hn g * Br.iota D.nbr i _ hn h) = f (Br.iota D.nbr i _ hn g) + f (Br.iota D.nbr i _ hn h)` using `hf.1 _ _`. Simplify using `only [c', map_mul]`. Rewrite using `[h1, map_add, map_add]`.
+
+Use `show c' g = 0 - 0`. Rewrite using `[sub_zero]`. Use `show KHf.eK Bw (algebraMap (D.nd.O i) (FractionRing (D.nd.O i)) (f (Br.iota D.nbr i _ hn g))) = 0`. Rewrite using `[hf.2.1 _ hg, map_zero, map_zero]`. Establish `hcf : c' ∈ finiteCocycles (Br.PD D.loc D.nbr i _ hn) (1 : Representation (Br.LLw Bw) (Br.G D.nbr i _ hn) (Br.LLw Bw))`.
+
+Establish `hU' : finiteCocycles (Br.PD D.loc D.nbr i _ hn) (1 : Representation (Br.LLw Bw) (Br.G D.nbr i _ hn) (Br.LLw Bw)) = Z1ur 1 (Br.inert D.nbr i _ hn)` using `hU`. Rewrite using `[hU']`. Conclude with `hc'`. Set `v0 : KHf.TrV (KHf.eK Bw) V` to `KHf.mkK (⟨δO, Ideal.mem_span_singleton_self δO⟩ : ↥(Ideal.span {δO}))`. Set `f0 : Br.LLw Bw →ₗ[Br.LLw Bw] KHf.TrV (KHf.eK Bw) V` to `LinearMap.toSpanSingleton _ _ v0`.
+
+Establish `hf0 : Continuous f0` using `continuous_id.smul continuous_const`. Set `ρ'` to `KHf.repL (KHf.eK Bw) (KHf.locRep (Representation.trivial (D.nd.O i) ↥(KFin.Γc i dc l) ↥(Ideal.span {δO}))) (Br.iota D.nbr i _ hn)`. Establish `heq : ∀ g x, f0 ((1 : Representation (Br.LLw Bw) (Br.G D.nbr i _ hn) (Br.LLw Bw)) g x) = ρ' g (f0 x)` using `fun g x => (locRep_triv (Br.iota D.nbr i _ hn g) (f0 x : V)).symm`. Establish `key` using `(cocyclesFunctorial_holds _ _ _ _ _ _ (Br.PD D.loc D.nbr i _ hn) (Br.LLw Bw) (Br.LLw Bw) (KHf.TrV (KHf.eK Bw) V) 1 ρ' f0 hf0 heq c').2 hcf`. Set `lhs : Br.G D.nbr i _ hn → KHf.TrV (KHf.eK Bw) V` to `fun g => ((KHf.mkK ((KFin.uzOf i dc δO l f hf.1 : ↥(KFin.Γc i dc l) → ↥(Ideal.span {δO})) (Br.iota D.nbr i _ hn g)) : V) : KHf.TrV (KHf.eK Bw) V)`.
+
+Use `show lhs ∈ finiteCocycles (Br.PD D.loc D.nbr i _ hn) ρ'`. It suffices to establish `hfun : lhs = ⇑f0 ∘ c' by`. Rewrite using `[hfun]`. Conclude with `key`. Use function extensionality and compare the values at `g`.
+
+Use `show _ = f0 (c' g)`. Rewrite using `[LinearMap.toSpanSingleton_apply]`. Use `show _ = ((KHf.eK Bw).symm (c' g) • (show V from v0) : V)`. Simplify using `only [c', RingEquiv.symm_apply_apply]`. Rewrite using `[algebraMap_smul]`.
+
+Rewrite using `[← map_smul]`. Use `show KHf.mkK ((KFin.uzOf i dc δO l f hf.1 : ↥(KFin.Γc i dc l) → ↥(Ideal.span {δO})) (Br.iota D.nbr i _ hn g)) = KHf.mkK _`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show δO * f (Br.iota D.nbr i _ hn g) = f (Br.iota D.nbr i _ hn g) * δO`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem unrFinIn (hA : EmbeddingTypes.UnramifiedTrivialH1f i dc) (l : K.Col i dc) : KFin.UnrFinIn i dc δO l := by
   intro f hf
   have hn := col_over i dc l
@@ -96,6 +123,9 @@ theorem unrFinIn (hA : EmbeddingTypes.UnramifiedTrivialH1f i dc) (l : K.Col i dc
   show δO * f (Br.iota D.nbr i _ hn g) = f (Br.iota D.nbr i _ hn g) * δO
   ring
 
+/- English proof (translation)
+The claim follows from `KFin.unrFin i dc δO (unrHom i dc) (unrFinIn i dc δO hA)`.
+-/
 theorem unrFin (hA : EmbeddingTypes.UnramifiedTrivialH1f i dc) : KHf.UnrFin i dc δO (KFin.uz i dc δO) :=
   KFin.unrFin i dc δO (unrHom i dc) (unrFinIn i dc δO hA)
 

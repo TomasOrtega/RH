@@ -15,6 +15,15 @@ noncomputable section
 
 namespace GlobalTheory.EtC
 
+/- English proof (translation)
+Apply `HomologicalComplex.from_single_hom_ext` to reduce the goal to its premises. Apply `Sheaf.hom_ext` to reduce the goal to its premises. Use extensionality with `U b`. Take `⟨-, -, -, -, h5, -⟩` from `GlobalTheory.T.chosenInjectiveResolution_etaleSheaf_properties S F`. Set `e` to `HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) 0 ((restr (Int.castRingHom S)).obj F)`.
+
+Set `a : Sec ((restr (Int.castRingHom S)).obj F) U.unop` to `Sec.map e.hom b`. Establish `hb : b = Sec.map (sglι ((restr (Int.castRingHom S)).obj F)) a`. Express the relevant statement in the definitionally equal form `b = Sec.map (e.hom ≫ e.inv) b`. Rewrite using `[Iso.hom_inv_id]`. Both sides reduce to the same expression.
+
+Establish `h1` using `rAug_f_zero (Int.castRingHom S) (resAug F) U.unop a`. Express the relevant statement in the definitionally equal form `Sec.map (δ.toZ.f 0) (Sec.map ((rAug (Int.castRingHom S) (resAug F)).f 0) b) = 0`. Rewrite using `[hb]`. Establish `key : δ.app U.unop 0 (Sec.map ((resAug F).f 0) (Sec.map (sglι F) (show Sec F U.unop from a))) = 0`. Establish `h6 : Sec.map ((resAug F).f 0) (Sec.map (sglι F) (show Sec F U.unop from a)) = Sec.map (resι S F) a`.
+
+Rewrite using `[← h5]`. Both sides reduce to the same expression. Rewrite using `[h6]`. Conclude with `hδ _ _`. Conclude with `(congrArg (δ.app U.unop 0) h1).trans key`.
+-/
 theorem rAug_comp_toZ_eq_zero_of_kill (S : Type) [CommRing S] (F : Shv S) (R : Type) [CommRing R] (G : Shv R) (δ : SemiMap (res S F) (res R G))
     (hδ : ∀ (U : Scheme.{0}) (a : Sec F U), δ.app U 0 (Sec.map (resι S F) a) = 0) :
     rAug (Int.castRingHom S) (resAug F) ≫ δ.toZ = 0 := by
@@ -36,6 +45,9 @@ theorem rAug_comp_toZ_eq_zero_of_kill (S : Type) [CommRing S] (F : Shv S) (R : T
     rw [h6]; exact hδ _ _
   exact (congrArg (δ.app U.unop 0) h1).trans key
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `CohomologyClass.mk_surjective x`. Rewrite using `[cpost_mk]`. Establish `: zcomp z (Cocycle.ofHom (0 : I ⟶ J)) (add_zero n) = 0` using `by ext1; simp [zcomp]`. Rewrite using `[this, CohomologyClass.mk_zero]`.
+-/
 theorem cpush_zero_hom {R : Type} [CommRing R] (K : Cx R) {I J : Cx R} (n : ℤ) (x : CohomologyClass K I n) :
     cpush K (0 : I ⟶ J) n x = 0 := by
   obtain ⟨z, rfl⟩ := CohomologyClass.mk_surjective x
@@ -44,6 +56,15 @@ theorem cpush_zero_hom {R : Type} [CommRing R] (K : Cx R) {I J : Cx R} (n : ℤ)
     ext1; simp [zcomp]
   rw [this, CohomologyClass.mk_zero]
 
+/- English proof (translation)
+Take `⟨-, -, -, hqF, -⟩` from `GlobalTheory.T.chosenInjectiveResolution_etaleSheaf_properties S F`. Take `⟨-, hinjG, hgeG, hqG, -⟩` from `GlobalTheory.T.chosenInjectiveResolution_etaleSheaf_properties R G`. Set `G'` to `(restr (Int.castRingHom R)).obj G`. Take `⟨hKI', -, hGE', -⟩` from `GlobalTheory.T.chosenInjectiveResolution_etaleSheaf_properties ℤ G'`. Use `haveI := hqF`.
+
+Use `haveI := hqG`. Use `haveI := hgeG`. Use `haveI := hKI'`. Use `haveI := hGE'`. Use `haveI : QuasiIso (rAug (Int.castRingHom S) (resAug F)) := rAug_quasiIso _ _`.
+
+Use `haveI : QuasiIso (rAug (Int.castRingHom R) (resAug G)) := rAug_quasiIso _ _`. Take `⟨v, hv⟩` from `(GlobalTheory.T.extend_chainMap_along_quasiIso_kInjective ℤ G' ((rcx (Int.castRingHom R)).obj (res R G)) (res ℤ G') (rAug (Int.castRingHom R) (resAug G))).1 (resAug G')`. Establish `hacyc : ∀ (t : ℤ) (P : PSh) (m : ℤ), 0 < m → Subsingleton (H ℤ (disc.obj P) (((rcx (Int.castRingHom R)).obj (res R G)).X t) m)` using `fun t P m hm => GlobalTheory.T.restrictScalars_injective_sheaf_acyclic ℤ R (Int.castRingHom R) ((res R G).X t) P m hm`. Establish `hbij` using `GlobalTheory.T.acyclic_resolution_computes_etale_cohomology ℤ G' ((rcx (Int.castRingHom R)).obj (res R G)) (rAug (Int.castRingHom R) (resAug G)) v hv hacyc E n`. Establish `hzero` using `rAug_comp_toZ_eq_zero_of_kill S F R G δ hδ`.
+
+Take `⟨hom⟩` from `(GlobalTheory.T.extend_chainMap_along_quasiIso_kInjective ℤ ((restr (Int.castRingHom S)).obj F) ((rcx (Int.castRingHom S)).obj (res S F)) (res ℤ G') (rAug (Int.castRingHom S) (resAug F))).2 (δ.toZ ≫ v) 0 (by rw [← Category.assoc, hzero]; simp)`. Establish `h1` using `((GlobalTheory.T.hypercohomologyPullbackPushforward_functorial ℤ).2.2.2.2 _ _ ⟨hom⟩ ((chains ℤ).obj E) n).2`. Establish `h2 : cpush ((chains ℤ).obj E) v n (cpush ((chains ℤ).obj E) δ.toZ n y) = cpush ((chains ℤ).obj E) v n 0`. Rewrite using `[← (GlobalTheory.T.hypercohomologyPullbackPushforward_functorial ℤ).2.2.1, h1, cpush_zero_hom, map_zero]`. Conclude with `hbij.1 h2`.
+-/
 theorem cpush_toZ_eq_zero_of_kill (S : Type) [CommRing S] (F : Shv S) (R : Type) [CommRing R] (G : Shv R) (δ : SemiMap (res S F) (res R G))
     (hδ : ∀ (U : Scheme.{0}) (a : Sec F U), δ.app U 0 (Sec.map (resι S F) a) = 0) (E : Spc) (n : ℤ)
     (y : CohomologyClass ((chains ℤ).obj E) ((rcx (Int.castRingHom S)).obj (res S F)) n) :
@@ -70,6 +91,15 @@ theorem cpush_toZ_eq_zero_of_kill (S : Type) [CommRing S] (F : Shv S) (R : Type)
     rw [← (GlobalTheory.T.hypercohomologyPullbackPushforward_functorial ℤ).2.2.1, h1, cpush_zero_hom, map_zero]
   exact hbij.1 h2
 
+/- English proof (translation)
+Introduce `S R _ _ F G δ hδ E n x`. Set `ιA` to `idSemi (Int.castRingHom S) (res S F)`. Set `ιB` to `idSemi (Int.castRingHom R) (res R G)`. Set `ρ' : SemiMap (res S F) ((rcx (Int.castRingHom R)).obj (res R G))` to `{ app := fun U s => δ.app U s nat := fun g s a => δ.nat g s a comm := fun U s t a => δ.comm U s t a }`. Establish `hA` using `(GlobalTheory.T.sheafComplexSemilinearMap_comp_bijective S ℤ ιA ρ' δ.toZ (fun _ _ _ => rfl)).1 E n x`.
+
+Establish `hB` using `(GlobalTheory.T.sheafComplexSemilinearMap_comp_bijective R ℤ ιB ιB (𝟙 _) (fun _ _ _ => rfl)).2 (fun _ _ => ⟨fun _ _ h => h, fun b => ⟨b, rfl⟩⟩) E n`. Establish `hcomp : ρ'.op.app E n x = ιB.op.app E n (δ.op.app E n x)`. Take `⟨α, rfl⟩` from `CohomologyClass.mk_surjective x`. Take `⟨β, hβ⟩` from `(GlobalTheory.T.exists_image_cocycle_semilinearSheafComplexMap S R δ).1 E n α`. Take `⟨γ, hγ⟩` from `(GlobalTheory.T.exists_image_cocycle_semilinearSheafComplexMap R ℤ ιB).1 E n β`.
+
+Rewrite using `[(GlobalTheory.T.exists_image_cocycle_semilinearSheafComplexMap S R δ).2 E n α β hβ, (GlobalTheory.T.exists_image_cocycle_semilinearSheafComplexMap R ℤ ιB).2 E n β γ hγ, (GlobalTheory.T.exists_image_cocycle_semilinearSheafComplexMap S ℤ ρ').2 E n α γ ?_]`. Introduce `p s h U y`. Rewrite using `[hγ p s h U y, hβ p s h U y]`. Both sides reduce to the same expression. Apply `hB.1` to reduce the goal to its premises.
+
+Rewrite using `[map_zero, ← hcomp, hA, cpush_toZ_eq_zero_of_kill S F R G δ hδ E n]`.
+-/
 theorem semiMap_op_eq_zero_of_kill : ∀ (S R : Type) [CommRing S] [CommRing R] (F : Shv S) (G : Shv R)
     (δ : SemiMap (res S F) (res R G)), (∀ (U : Scheme.{0}) (a : Sec F U), δ.app U 0 (Sec.map (resι S F) a) = 0) →
     ∀ (E : Spc) (n : ℤ) (x : H S E F n), δ.op.app E n x = 0 := by

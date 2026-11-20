@@ -6,6 +6,17 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.QkT
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.strongInduction generalizing a with`. Consider the case `H s ih`. Introduce `y₀ hy₀`. Distinguish the cases in `hz : ∃ z ∈ s, z ≠ y₀`. Take `⟨z, hzs, hzy⟩` from `hz`.
+
+Take `⟨u, hu, hunit⟩` from `hsep y₀ hy₀ z hzs (Ne.symm hzy)`. Use `set b : Y → M := fun y => (u y - u z) • a y with hb`. Establish `hbrel : ∀ t, P t → ∑ y ∈ s.erase z, t y • b y = 0`. Introduce `t ht`. Rewrite using `[Finset.sum_erase s (by simp [hb])]`.
+
+Establish `e : ∀ y, t y • b y = (t * u) y • a y - u z • (t y • a y)`. Introduce `y`. Simplify using `only [hb, Pi.mul_apply, smul_smul, ← sub_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [e, Finset.sum_sub_distrib, ← Finset.smul_sum, h t ht, h (t * u) (hmul t u ht hu), smul_zero, sub_zero]`. Establish `hsub : s.erase z ⊂ s` using `Finset.erase_ssubset hzs`. Establish `key` using `ih (s.erase z) hsub (fun y hy w hw hne => hsep y (Finset.mem_of_mem_erase hy) w (Finset.mem_of_mem_erase hw) hne) b hbrel y₀ (Finset.mem_erase.mpr ⟨Ne.symm hzy, hy₀⟩)`. Conclude with `(hunit.smul_eq_zero).mp key`. Use `push Not at hz`.
+
+Use `h 1 h1` as an intermediate fact. Rewrite `this` using `[Finset.sum_eq_single_of_mem y₀ hy₀ (fun z hz' hne => absurd (hz z hz') hne)]`. Simplify using `using this`.
+-/
 theorem coeff_eq_zero_of_sum_smul_eq_zero_of_separating {Y A M : Type*} [CommRing A]
     [AddCommGroup M] [Module A M] (P : (Y → A) → Prop) (h1 : P 1)
     (hmul : ∀ t t', P t → P t' → P (t * t')) (s : Finset Y)
@@ -40,6 +51,25 @@ theorem coeff_eq_zero_of_sum_smul_eq_zero_of_separating {Y A M : Type*} [CommRin
       rw [Finset.sum_eq_single_of_mem y₀ hy₀ (fun z hz' hne => absurd (hz z hz') hne)] at this
       simpa using this
 
+/- English proof (translation)
+Introduce `Y _ _ _ n hn s`. Set `b` to `Module.Free.chooseBasis ℤ Y`. Use `⟨∑ p ∈ s ×ˢ s, ∑ i, (b.repr (p.1 - p.2) i).natAbs, ?_⟩` and prove the remaining obligations. Introduce `j hj A _ _ ζ _ hζ hprim M _ _ a ha`. Establish `hN : n ^ j ≠ 0` using `pow_ne_zero _ hn.ne_zero`.
+
+Set `u : Aˣ` to `Units.ofPowEqOne ζ (n ^ j) hζ hN`. Establish `hu : u ^ (n ^ j) = 1` using `Units.pow_ofPowEqOne hζ hN`. Set `χ : _ → Multiplicative Y →* Aˣ` to `fun i => (zpowersHom Aˣ u).comp (AddMonoidHom.toMultiplicative (b.coord i).toAddMonoidHom)`. Establish `hχ : ∀ i y, χ i (Multiplicative.ofAdd y) = u ^ (b.repr y i)`. Introduce `i y`.
+
+Simplify using `[χ, zpowersHom]`. Establish `hχord : ∀ i y, χ i y ^ (n ^ j) = 1`. Introduce `i y`. Rewrite using `[show y = Multiplicative.ofAdd (Multiplicative.toAdd y) from rfl, hχ, ← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, hu, one_zpow]`. Set `P : (Y → A) → Prop` to `fun f => ∃ t : Multiplicative Y →* Aˣ, (∀ y, t y ^ (n ^ j) = 1) ∧ f = fun y => (t (Multiplicative.ofAdd y) : A)`.
+
+Use `coeff_eq_zero_of_sum_smul_eq_zero_of_separating P ⟨1, fun _ => one_pow _, by funext; simp⟩ ?_ s ?_ a ?_` and prove the remaining obligations. Introduce and unpack `_ _ ⟨t, ht, rfl⟩ ⟨t', ht', rfl⟩`. Conclude with `⟨t * t', fun y => by rw [MonoidHom.mul_apply, mul_pow, ht, ht', one_mul], by funext y; simp⟩`. Introduce `y hy z hz hyz`. Establish `hw : b.repr (y - z) ≠ 0`.
+
+Rewrite using `[Ne, LinearEquiv.map_eq_zero_iff]`. Conclude with `sub_ne_zero.mpr hyz`. Take `⟨i, hi⟩` from `Finsupp.ne_iff.mp hw`. Simplify using `only [Finsupp.coe_zero, Pi.zero_apply] at hi`. Use `⟨_, ⟨χ i, hχord i, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, hχ, hχ, map_sub]`. Set `v : (IsLocalRing.ResidueField A)ˣ` to `Units.map (IsLocalRing.residue A).toMonoidHom u`. Establish `hv : IsPrimitiveRoot v (n ^ j)` using `IsPrimitiveRoot.coe_units_iff.mp (by simpa [v, u] using hprim)`. Establish `hres : ∀ k : ℤ, IsLocalRing.residue A ((u ^ k : Aˣ) : A) = ((v ^ k : _ˣ) : _)`. Introduce `k`.
+
+Rewrite using `[show v ^ k = Units.map (IsLocalRing.residue A).toMonoidHom (u ^ k) from (map_zpow _ u k).symm]`. Both sides reduce to the same expression. Rewrite using `[hres, hres, sub_ne_zero, Ne, Units.val_inj, ← div_eq_one, div_eq_mul_inv, ← zpow_sub, ← Finsupp.sub_apply, ← map_sub, hv.zpow_eq_one_iff_dvd]`. Introduce `hdvd`. Apply `hi` to reduce the goal to its premises.
+
+Apply `Int.eq_zero_of_dvd_of_natAbs_lt_natAbs hdvd` to reduce the goal to its premises. Establish `h1 : (b.repr (y - z) i).natAbs ≤ ∑ p ∈ s ×ˢ s, ∑ i, (b.repr (p.1 - p.2) i).natAbs`. Use `le_trans ?_ (Finset.single_le_sum (f := fun p : Y × Y => ∑ i, (b.repr (p.1 - p.2) i).natAbs) (fun _ _ => Nat.zero_le _) (show (y, z) ∈ s ×ˢ s from Finset.mem_product.mpr ⟨hy, hz⟩))` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun i => (b.repr (y - z) i).natAbs) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)`. Establish `h2 : j < n ^ j` using `Nat.lt_pow_self hn.one_lt`.
+
+Simplify using `only [Int.natAbs_natCast]`. Use linear arithmetic over natural numbers and integers. Introduce and unpack `_ ⟨t, ht, rfl⟩`. Conclude with `ha t ht`.
+-/
 theorem laurent_coeff_eq_zero_of_vanish_torsion :
     ∀ (Y : Type) [AddCommGroup Y] [Module.Free ℤ Y] [Module.Finite ℤ Y] (n : ℕ), n.Prime →
     ∀ s : Finset Y, ∃ j₀ : ℕ, ∀ j ≥ j₀, ∀ (A : Type) [CommRing A] [IsLocalRing A] (ζ : A),

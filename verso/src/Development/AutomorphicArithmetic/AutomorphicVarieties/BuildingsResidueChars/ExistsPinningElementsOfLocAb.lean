@@ -8,6 +8,11 @@ open UpperTheory.V.W
 
 end
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `CommGroup.mem_primaryComponent.1 hg`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `h1 : g ^ (l ^ n) ∈ (commutator G).topologicalClosure`. Rewrite using `[← QuotientGroup.eq_one_iff, QuotientGroup.mk_pow]`. Conclude with `hn`.
+
+Establish `hker : (commutator G).topologicalClosure ≤ ψ.ker` using `Subgroup.topologicalClosure_minimal _ (Abelianization.commutator_subset_ker ψ) (isClosed_ker_of_adicCont ψ hψc)`. Rewrite using `[← map_pow]`. Conclude with `hker h1`.
+-/
 private theorem exists_pow_l_pow_eq_one_of_mem_muG {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] {R : Type} [CommRing R] [IsLocalRing R] [IsNoetherianRing R]
     (ψ : G →* Rˣ) (hψc : AdicCont (maximalIdeal R) fun g => ((ψ g : Rˣ) : R))
@@ -23,6 +28,49 @@ private theorem exists_pow_l_pow_eq_one_of_mem_muG {l : ℕ} [Fact l.Prime] {G :
   rw [← map_pow]
   exact hker h1
 
+/- English proof (translation)
+Introduce `l _ G _ _ _ _ I d A`. Establish `hlp : l.Prime` using `Fact.out`. Establish `hs : ∀ k : Fin d, ∃ g ∈ I, A.a g = Multiplicative.ofAdd ((Pi.single k 1 : Fin d → ℤ_[l]), (0 : ℤ_[l]))` using `fun k => (A.inertia _).2 rfl`. Use `choose s hsI hsa using hs`. Use `⟨s, hsI, ?_⟩` and prove the remaining obligations.
+
+Introduce `R _ _ _ _ hl ψ hψc hψI hψs g hg`. Use `haveI : CharP R l := (CharP.charP_iff_prime_eq_zero hlp).2 hl`. Establish `hsk : ∀ k, ψ (s k) = 1` using `fun k => hψs _ ⟨k, rfl⟩`. Establish `hq : ∀ (N : ℕ) (u : Rˣ), Units.map (↑(Ideal.Quotient.mk (maximalIdeal R ^ N)) : R →* R ⧸ maximalIdeal R ^ N) u = 1 ↔ (u : R) - 1 ∈ maximalIdeal R ^ N`. Introduce `N u`.
+
+Rewrite using `[Units.ext_iff]`. Use `show Ideal.Quotient.mk (maximalIdeal R ^ N) (u : R) = 1 ↔ _`. Rewrite using `[← map_one (Ideal.Quotient.mk (maximalIdeal R ^ N)), Ideal.Quotient.eq]`. Set `ρN : (N : ℕ) → G →* (R ⧸ maximalIdeal R ^ N)ˣ` to `fun N => (Units.map (↑(Ideal.Quotient.mk (maximalIdeal R ^ N)) : R →* R ⧸ maximalIdeal R ^ N)).comp ψ`. Establish `hloc : ∀ N, IsLocallyConstant (ρN N)` using `fun N => (adicCont_units _ _).1 hψc N`.
+
+Use `haveI hfin1 : Finite (ρN 1).range := (hloc 1).range_finite.to_subtype`. Use `set M := Nat.card (ρN 1).range with hMdef`. Establish `hM0 : M ≠ 0` using `Nat.card_pos.ne'`. Establish `hres : ∀ g, ((ψ g ^ M : Rˣ) : R) - 1 ∈ maximalIdeal R`. Introduce `g`.
+
+Establish `h1` using `congrArg (fun u : (ρN 1).range => (u : (R ⧸ maximalIdeal R ^ 1)ˣ)) (pow_card_eq_one' (G := (ρN 1).range) (x := ⟨ρN 1 g, g, rfl⟩))`. Simplify using `only [Subgroup.coe_pow, OneMemClass.coe_one, ← hMdef] at h1`. Rewrite `h1` using `[← map_pow]`. Simplify using `using (hq 1 _).1 h1`. Establish `hmu : ∀ g ∈ UpperTheory.V.W.muG l G, ψ g ^ M = 1`.
+
+Introduce `g hg`. Take `⟨n, hn⟩` from `exists_pow_l_pow_eq_one_of_mem_muG ψ hψc g hg`. Apply `Units.ext` to reduce the goal to its premises. Use `eq_one_of_pow hl (hres g) (pow_ne_zero n hlp.ne_zero) ?_` and prove the remaining obligations. Rewrite using `[← Units.val_pow_eq_pow_val, ← pow_mul, mul_comm, pow_mul, hn, one_pow, Units.val_one]`.
+
+Set `φN : (N : ℕ) → G →* (R ⧸ maximalIdeal R ^ N)ˣ` to `fun N => (powMonoidHom M).comp (ρN N)`. Establish `hφloc : ∀ N, IsLocallyConstant (φN N)` using `fun N => (hloc N).comp (fun u => u ^ M)`. Establish `hφ : ∀ N g, φN N g = 1 ↔ ((ψ g ^ M : Rˣ) : R) - 1 ∈ maximalIdeal R ^ N`. Introduce `N g`. Rewrite using `[← hq]`.
+
+Rewrite using `[map_pow]`. Conclude with `Iff.rfl`. Establish `hφp : ∀ N g, (φN N g) ^ (l ^ N) = 1`. Introduce `N g`. Rewrite using `[← map_pow, hφ]`.
+
+Use `set y := ((ψ g ^ M : Rˣ) : R) - 1 with hy`. Establish `hym : y ∈ maximalIdeal R` using `hres g`. Establish `: (((ψ g ^ M) ^ (l ^ N) : Rˣ) : R) = 1 + y ^ (l ^ N)`. Rewrite using `[Units.val_pow_eq_pow_val, show ((ψ g ^ M : Rˣ) : R) = 1 + y by rw [hy]; ring, add_pow_char_pow, one_pow]`. Rewrite using `[map_pow, ← pow_mul, mul_comm (l ^ N) M, pow_mul, this, add_sub_cancel_left]`.
+
+Conclude with `Ideal.pow_le_pow_right (Nat.lt_pow_self hlp.one_lt).le (Ideal.pow_mem_pow hym _)`. Establish `hK : ∀ N, A.a.ker ≤ (φN N).ker`. Introduce `N`. Use `haveI : Finite (φN N).range := (hφloc N).range_finite.to_subtype`. Establish `hP : IsPGroup l (φN N).range`.
+
+Introduce and unpack `⟨x, g, rfl⟩`. Conclude with `⟨N, Subtype.ext (hφp N g)⟩`. Use `A.univ (φN N).range hP (φN N).rangeRestrict (by rw [MonoidHom.ker_rangeRestrict]; exact (hφloc N).isOpen_fiber 1) (by` as an intermediate fact. Introduce `g hg`. Rewrite using `[MonoidHom.ker_rangeRestrict]`.
+
+Conclude with `(hφ N g).2 (by rw [hmu g hg, Units.val_one, sub_self]; exact zero_mem _))`. Rewrite `this` using `[MonoidHom.ker_rangeRestrict]`. Then use the resulting hypothesis. Establish `hclosed : ∀ N, IsClosed ((Subgroup.map A.a (φN N).ker : Subgroup _) : Set (Multiplicative ((Fin d → ℤ_[l]) × ℤ_[l])))`. Introduce `N`. Rewrite using `[Subgroup.coe_map]`.
+
+Conclude with `(((hφloc N).isClosed_fiber 1).isCompact.image A.cont).isClosed`. Establish `hmem : ∀ N (x : Fin d → ℤ_[l]), Multiplicative.ofAdd (x, (0 : ℤ_[l])) ∈ Subgroup.map A.a (φN N).ker`. Introduce `N`. Establish `hint : ∀ z : Fin d → ℤ, Multiplicative.ofAdd ((fun k => (z k : ℤ_[l])), (0 : ℤ_[l])) ∈ Subgroup.map A.a (φN N).ker`. Introduce `z`.
+
+Establish `he : ((fun k => (z k : ℤ_[l])), (0 : ℤ_[l])) = ∑ k, z k • ((Pi.single k 1 : Fin d → ℤ_[l]), (0 : ℤ_[l]))`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Rewrite using `[Prod.fst_sum, Finset.sum_apply]`. Simplify using `[Pi.single_apply]`.
+
+Rewrite using `[Prod.snd_sum]`. Simplify using the standard rewrite rules. Rewrite using `[he, ofAdd_sum]`. Use `Subgroup.prod_mem _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[ofAdd_zsmul]`.
+
+Use `Subgroup.zpow_mem _ ?_ _` and prove the remaining obligations. Use `⟨s k, ?_, hsa k⟩` and prove the remaining obligations. Conclude with `(hφ N (s k)).2 (by rw [hsk, one_pow, Units.val_one, sub_self]; exact zero_mem _)`. Establish `hT : IsClosed {x : Fin d → ℤ_[l] | Multiplicative.ofAdd (x, (0 : ℤ_[l])) ∈ Subgroup.map A.a (φN N).ker}` using `(hclosed N).preimage (continuous_ofAdd.comp (continuous_id.prodMk continuous_const))`. Establish `hD : DenseRange (Pi.map fun (_ : Fin d) (z : ℤ) => (z : ℤ_[l]))` using `DenseRange.piMap fun _ => PadicInt.denseRange_intCast`.
+
+Introduce `x`. Establish `hx : x ∈ closure (Set.range (Pi.map fun (_ : Fin d) (z : ℤ) => (z : ℤ_[l])))`. Rewrite using `[hD.closure_eq]`. Conclude with `Set.mem_univ x`. Conclude with `hT.closure_subset_iff.2 (by rintro _ ⟨z, rfl⟩; exact hint z) hx`.
+
+Establish `hgN : ∀ N, φN N g = 1`. Introduce `N`. Take `⟨x, hx⟩ : ∃ x, A.a g = Multiplicative.ofAdd x` from `⟨Multiplicative.toAdd (A.a g), rfl⟩`. Establish `hx2 : x.2 = 0` using `(A.inertia x).1 ⟨g, hg, hx⟩`. Take `⟨h, hh, hah⟩` from `hmem N x.1`.
+
+Establish `hk : h⁻¹ * g ∈ A.a.ker`. Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv, hah, hx, inv_mul_eq_one, ← hx2]`. Use `hK N hk` as an intermediate fact. Rewrite `this` using `[MonoidHom.mem_ker, map_mul, map_inv, MonoidHom.mem_ker.1 hh, inv_one, one_mul]`. Conclude with `this`.
+
+Establish `hzero : ((ψ g ^ M : Rˣ) : R) - 1 = 0`. Establish `: ((ψ g ^ M : Rˣ) : R) - 1 ∈ ⨅ N, maximalIdeal R ^ N` using `Ideal.mem_iInf.2 fun N => (hφ N g).1 (hgN N)`. Rewrite `this` using `[Ideal.iInf_pow_eq_bot_of_isLocalRing _ (maximalIdeal.isMaximal R).ne_top, Ideal.mem_bot]`. Then use the resulting hypothesis. Apply `Units.ext` to reduce the goal to its premises. Use `eq_one_of_pow hl (hψI g hg) hM0 ?_` and prove the remaining obligations.
+
+Rewrite using `[← Units.val_pow_eq_pow_val]`. Conclude with `sub_eq_zero.1 hzero`.
+-/
 theorem UpperTheory.exists_pinning_elements_of_locAb :
     ∀ (l : ℕ) [Fact l.Prime] (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G] (I : Subgroup G) (d : ℕ), UpperTheory.V.W.LocAb l G I d → ∃ s : Fin d → G, (∀ k, s k ∈ I) ∧ Pins l I (Set.range s) := by
   intro l _ G _ _ _ _ I d A

@@ -83,6 +83,9 @@ def LiesAbs : Prop := ∀ {B : Scheme.{0}} {R : Type} [Field R] (T : Th.{u} B R)
 abbrev piK {k L O : Type} [Field k] [Field L] [CommRing O] [Algebra O k] {H : HTower k} {θ : H.Γ → L} (C : Cover H θ O) :
     H.Z ⟶ pullback C.p (gen O k) := pullback.lift C.π H.q C.ov
 
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 theorem piK_snd {k L O : Type} [Field k] [Field L] [CommRing O] [Algebra O k] {H : HTower k} {θ : H.Γ → L} (C : Cover H θ O) :
     piK C ≫ pullback.snd C.p (gen O k) = H.q := pullback.lift_snd _ _ _
 

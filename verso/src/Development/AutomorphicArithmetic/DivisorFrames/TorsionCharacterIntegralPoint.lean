@@ -11,6 +11,11 @@ open MonObj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.RootFrame
 
+/- English proof (translation)
+Use `haveI : NeZero q := ⟨hq⟩`. Establish `hm : ∀ a, g a ∈ Subgroup.zpowers ζ` using `fun a => by`. Rewrite using `[hζ.zpowers_eq]`. Conclude with `(mem_rootsOfUnity _ _).2 (hgq a)`. Set `G : L →+ Additive (Subgroup.zpowers ζ)` to `AddMonoidHom.mk' (fun a => Additive.ofMul ⟨g a, hm a⟩) fun a b => congrArg Additive.ofMul (Subtype.ext (hg a b))`.
+
+Set `π : ℤ →+ Additive (Subgroup.zpowers ζ)` to `AddMonoidHom.mk' (fun k => Additive.ofMul ⟨ζ ^ k, k, rfl⟩) fun a b => congrArg Additive.ofMul (Subtype.ext (zpow_add ζ a b))`. Take `⟨f, hf⟩` from `Module.projective_lifting_property π.toIntLinearMap G.toIntLinearMap (by`. Introduce and unpack `⟨_, k, rfl⟩`. Conclude with `⟨k, rfl⟩)`. Conclude with `⟨f, fun b => (congrArg (fun z => (z.toMul : Kˣ)) (LinearMap.congr_fun hf b)).symm⟩`.
+-/
 private theorem exists_int_lift {L K : Type} [AddCommGroup L] [Module.Projective ℤ L] [Field K] {q : ℕ} (hq : q ≠ 0)
     {ζ : Kˣ} (hζ : IsPrimitiveRoot ζ q) (g : L → Kˣ) (hg : ∀ a b, g (a + b) = g a * g b) (hgq : ∀ a, g a ^ q = 1) :
     ∃ f : L →ₗ[ℤ] ℤ, ∀ b, g b = ζ ^ f b := by
@@ -28,6 +33,21 @@ private theorem exists_int_lift {L K : Type} [AddCommGroup L] [Module.Projective
     exact ⟨k, rfl⟩)
   exact ⟨f, fun b => (congrArg (fun z => (z.toMul : Kˣ)) (LinearMap.congr_fun hf b)).symm⟩
 
+/- English proof (translation)
+Take `⟨lb, ζ, ⟨hζ, hadd, -, hsur, -⟩, hch⟩` from `hW`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.WeilTorsChar.exists_mulEquiv_points _ _ _ _ Z.m.cart (Over.mk y)`. Set `Ψ : (Over.mk y ⟶ Z.oF.t.G) ≃* (Over.mk (y ≫ Z.j) ⟶ Z.t.G)` to `Φ`. Establish `hΨ : ∀ s, (Ψ s).left = s.left ≫ Z.m.φ` using `hΦ`. Establish `ht : ∀ b, Ψ (lb b) ∈ GlobalTheory.HtGen.TorsK Z.t (y ≫ Z.j) q` using `fun b => by`.
+
+Express the relevant statement in the definitionally equal form `Ψ (lb b) ^ q = 1`. Rewrite using `[← map_pow, (hsur _).2 ⟨b, rfl⟩, map_one]`. Use `haveI : Module.Projective ℤ Dw.La := by`. Take `⟨s, hs⟩` from `Module.projective_def'.1 Dw.proj`. Conclude with `Module.Projective.of_split (s.restrictScalars ℤ) ((Finsupp.linearCombination (𝓞 E) (id : Dw.La → Dw.La)).restrictScalars ℤ) (LinearMap.ext fun a => LinearMap.congr_fun hs a)`.
+
+Take `⟨f, hf⟩` from `exists_int_lift hq hζ (fun b => χ ⟨Ψ (lb b), ht b⟩) (fun a b => by`. Rewrite using `[← map_mul]`. Use `congr 1`. Conclude with `Subtype.ext ((congrArg Ψ (hadd a b)).trans (map_mul Ψ _ _))) (fun b => by`. Rewrite using `[← map_pow, show (⟨Ψ (lb b), ht b⟩ : GlobalTheory.HtGen.TorsK Z.t (y ≫ Z.j) q) ^ q = 1 from Subtype.ext (ht b), map_one])`.
+
+Take `⟨a, ha⟩` from `Dw.unimod.2 f`. Use `⟨a, fun σ k r w hσ hk hw hr => ?_⟩` and prove the remaining obligations. Establish `hk1 : Ψ.symm k.1 ^ q = 1`. Rewrite using `[← map_pow, show k.1 ^ q = 1 from k.2, map_one]`. Take `⟨b, hb⟩` from `(hsur _).1 hk1`.
+
+Establish `hb' : Ψ (lb b) = k.1` using `by rw [hb, MulEquiv.apply_symm_apply]`. Establish `hid : spMap (RingHom.id R) = 𝟙 _` using `GlobalTheory.TorsCharExt.sp_id R`. Establish `hx : spMap (RingHom.id R) ≫ x = spMap (algebraMap R R) ≫ x` using `rfl`. Establish `hw1 : w ^ q = 1`. Establish `: w = GlobalTheory.TorsCharExt.pull Z.t (spMap (RingHom.id R)) hx.symm σ` using `Over.OverMorphism.ext hw`.
+
+Rewrite using `[this, ← map_pow, hσ, map_one]`. Establish `h1` using `hch a b w hw1 (by rw [← hΨ, hb', hk, hw, hid, Category.id_comp])`. Apply `hio` to reduce the goal to its premises. Rewrite using `[h1, RingHom.id_apply, hr, ha, ← hf b]`. Use `congr 2`.
+
+Conclude with `Subtype.ext hb'`.
+-/
 private theorem exists_label {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
     (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) {R K : Type} [CommRing R] [Field K] {io : R →+* K}
@@ -68,6 +88,19 @@ private theorem exists_label {E : Type} [Field E] [NumberField E] [IsCMField E] 
   congr 2
   exact Subtype.ext hb'
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Z _ hX p hp n x y hn hxy ch hW g e h he hD cf`. Establish `hq : p ^ n ≠ 0` using `pow_ne_zero _ hp.out.ne_zero`. Establish `hd : p ^ 2 ∣ p ^ n` using `pow_dvd_pow p hn`. Use `haveI := GlobalTheory.LatDRFree.intO_isLocalRing ℂ_[p]`. Use `haveI := GlobalTheory.TorsCharExt.intO_valuationRing ℂ_[p]`.
+
+Use `haveI := GlobalTheory.TorsCharExt.intO_isFractionRing ℂ_[p]`. Use `haveI : IsIntegrallyClosed ↥(intO ℂ_[p]) := inferInstanceAs (IsIntegrallyClosed ↥(GlobalTheory.TorsCharExt.intV ℂ_[p]))`. Establish `hζ : ∃ ζ : ℂ_[p], IsPrimitiveRoot ζ (p ^ n)`. Take `⟨lb, ζ, ⟨hζ, -⟩, -⟩` from `hW`. Conclude with `⟨ζ, IsPrimitiveRoot.coe_units_iff.2 hζ⟩`.
+
+Take `⟨hfin, hind⟩` from `GlobalTheory.T.integral_point_extension_split E H Z.X Z.t ℂ_[p] (y ≫ Z.j) (p ^ n) hq hζ (GlobalTheory.HtGen.splitK_of_isAlgClosed Z.t _ hq) ↥(intO ℂ_[p]) x hxy`. Take `⟨-, hex, hag⟩` from `hind p (RingHom.id _) x inferInstance (by rw [GlobalTheory.TorsCharExt.sp_id, Category.id_comp])`. Use `choose lab hlab using exists_label Z (intO ℂ_[p]).subtype_injective hq hW`. Take `⟨N, ⟨eqv⟩⟩` from `Finite.exists_equiv_fin (GlobalTheory.HtGen.TorsK Z.t (y ≫ Z.j) (p ^ n) →* ℂ_[p]ˣ)`. Establish `heC` using `fun i => GlobalTheory.FactorDepth.isTanAtG_map Z.t (intO ℂ_[p]).subtype (he.1 i)`.
+
+Take `⟨w, -, hw⟩` from `Guard.exists_comb heC cf`. Establish `hmem : cf ∈ latCo Z.t p (spMap (intO ℂ_[p]).subtype ≫ x) (fun i => spMap (dualMap (intO ℂ_[p]).subtype) ≫ e i) ↔ w ∈ latHT Z.t p (spMap (intO ℂ_[p]).subtype ≫ x)` using `⟨fun ⟨w', h1, h2⟩ => Guard.comb_unique heC h2 hw ▸ h1, fun h1 => ⟨w, h1, hw⟩⟩`. Establish `key` using `fun a₀ : Dw.La => GlobalTheory.T.tangent_basis_torsion_chars E H Z.X Z.t hX p x g e he (N + 1) (fun j => GlobalTheory.HTLevel.res hd (ch (Fin.cons (α := fun _ => Dw.La) a₀ (fun k => lab (eqv.symm k)) j))) (fun j => h (Fin.cons (α := fun _ => Dw.La) a₀ (fun k => lab (eqv.symm k)) …`. Take `⟨c'', hc''⟩` from `GlobalTheory.T.torsionChar_extends_divisible_level E H Z.X Z.t ℂ_[p] x (p ^ 2) (p ^ n) hq hd c'`. Take `⟨χ, hχ⟩` from `hex c''`.
+
+Use `⟨(eqv χ).succ, fun B _ _ _ v hv => ?_⟩` and prove the remaining obligations. Establish `hv' : v ^ (p ^ n) = 1`. Take `⟨k, hk⟩` from `hd`. Rewrite using `[hk, pow_mul, hv, one_pow]`. Rewrite using `[← hc'' B v hv, hag χ c'' _ hχ (hlab χ) B v hv', Fin.cons_succ, Equiv.symm_apply_apply]`.
+
+Use the proof step `rfl)`. Use the proof step `(fun j => GlobalTheory.HTLevel.dlog_down hn _ _ (fun _ _ _ _ _ _ => rfl) he.1 (hD _)) cf w hw`. Rewrite using `[hmem]`. Conclude with `⟨⟨fun hL a => (key a).1.1 hL 0, fun hA => (key 0).1.2 fun j => hA _⟩, (key 0).2⟩`.
+-/
 theorem UpperTheory.torsion_character_integral_point :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c (algebraMap (𝓞 c.F) c.F)) [IsLocallyNoetherian Z.X], Z.X.IsSeparated → ∀ (p : ℕ) [Fact p.Prime] (n : ℕ) (x : Sp ↥(intO ℂ_[p]) ⟶ Z.X) (y : Sp ℂ_[p] ⟶ Xo.XF c), 2 ≤ n → spMap (intO ℂ_[p]).subtype ≫ x = y ≫ Z.j → ∀ ch : Dw.La → TorsChar Z.t x (p ^ n), WeilLab Z (intO ℂ_[p]).subtype x y (p ^ n) ch → ∀ (g : ℕ) (e : Fin g → (Sp (DualNumber ↥(intO ℂ_[p])) ⟶ Z.t.G.left)) (h : Dw.La → Fin g → ↥(intO ℂ_[p])), IsTanBasis Z.t x e → (∀ a, DlogIs Z.t p n (ch a) e (h a)) → ∀ cf : Fin g → ℂ_[p], (cf ∈ latCo Z.t p (spMap (intO ℂ_[p]).subtype ≫ x) (fun i => spMap (dualMap (intO ℂ_[p]).subtype) ≫ e i) ↔ ∀ a, ‖∑ i, (h a i : ℂ_[p]) * cf i‖ ≤ 1) ∧ (cf ∈ latCo Z.t p (spMap (intO ℂ_[p]).subtype ≫ x) (fun i => spMap (dualMap (intO ℂ_[p]).subtype) ≫ e i) → ∀ i, ‖(p : ℂ_[p]) * cf i‖ ≤ 1) := by
   intro E _ _ _ H Dw l Xo c Z _ hX p hp n x y hn hxy ch hW g e h he hD cf

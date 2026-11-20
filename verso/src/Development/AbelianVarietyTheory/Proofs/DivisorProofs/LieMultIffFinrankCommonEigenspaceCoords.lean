@@ -17,6 +17,31 @@ open GlobalTheory.UPel.HT
 
 namespace GlobalTheory.LieCoordMult
 
+/- English proof (translation)
+Introduce `W _ G _ _ O _ act n k _ β T A hinj htan hadd hsc hact τ N`. Use `set E : Submodule k (Fin n → k) := ⨅ a, LinearMap.ker (Matrix.mulVecLin (A a) - τ a • LinearMap.id) with hE`. Establish `memE : ∀ x, x ∈ E ↔ ∀ a, (A a).mulVec x = τ a • x`. Introduce `x`. Simplify using `[hE, Submodule.mem_iInf, sub_eq_zero]`.
+
+Establish `T0 : T 0 = 1`. Establish `h` using `hadd 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_eq_left.mp h.symm`. Establish `Tsum : ∀ (m : ℕ) (y : Fin m → (Fin n → k)), (List.ofFn (fun i => T (y i))).prod = T (∑ i, y i)`.
+
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro y`. Simplify using `[T0]`. Consider the case `succ m ih => intro y`.
+
+Rewrite using `[List.ofFn_succ, List.prod_cons, ih, Fin.sum_univ_succ, hadd]`. Establish `eig : ∀ w, IsLieEigen act (spMap β) τ w ↔ ∃ x ∈ E, w = T x`. Introduce `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+
+Take `⟨x, rfl⟩` from `(htan w).1 h1`. Use `⟨x, (memE x).2 fun a => hinj (Over.OverMorphism.ext ?_), rfl⟩` and prove the remaining obligations. Rewrite using `[← hact, h2 a, hsc]`. Both sides reduce to the same expression. Introduce and unpack `⟨x, hx, rfl⟩`.
+
+Use `⟨(htan _).2 ⟨x, rfl⟩, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[hact, (memE x).1 hx a, hsc]`. Both sides reduce to the same expression. Establish `comb : ∀ (x : Fin N → (Fin n → k)) (y : Fin n → k) (c : Fin N → k), (∃ u : Fin N → (epsPt (spMap β) ⟶ G), (∀ i, (u i).left = spMap (epsScale (c i)) ≫ (T (x i)).left) ∧ T y = (List.ofFn u).prod) ↔ y = ∑ i, c i • x i`. Introduce `x y c`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, hy⟩`. Establish `hu' : u = fun i => T (c i • x i)` using `funext fun i => Over.OverMorphism.ext ((hu i).trans (hsc _ _).symm)`. Rewrite `hy` using `[hu', Tsum]`. Conclude with `hinj hy`.
+
+Introduce `hy`. Conclude with `⟨fun i => T (c i • x i), fun i => hsc _ _, by rw [Tsum, hy]⟩`. Use `show (∃ v : Fin N → (epsPt (spMap β) ⟶ G), (∀ i, IsLieEigen act (spMap β) τ (v i)) ∧ ∀ w, IsLieEigen act (spMap β) τ w → ∃! c : Fin N → k, ∃ u : Fin N → (epsPt (spMap β) ⟶ G), (∀ i, (u i).left = spMap (epsScale (c i)) ≫ (v i).left) ∧ w = (List.ofFn u).prod) ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, H⟩ choose x hxE hx using fun i => (eig _).1 (hv i)`.
+
+Take `rfl : v = fun i => T (x i)` from `funext hx`. Set `b : Fin N → E` to `fun i => ⟨x i, hxE i⟩`. Establish `bij : Function.Bijective (Fintype.linearCombination k b)`. Use `(Function.bijective_iff_existsUnique _).2 fun y => ?_` and prove the remaining obligations. Use `(existsUnique_congr fun c => ?_).1 (H (T y) ((eig _).2 ⟨y, y.2, rfl⟩))` and prove the remaining obligations.
+
+Rewrite using `[comb x y c, Subtype.ext_iff, Fintype.linearCombination_apply]`. Simplify using `only [AddSubmonoidClass.coe_finset_sum, SetLike.val_smul, b]`. Conclude with `eq_comm`. Rewrite using `[← (LinearEquiv.ofBijective _ bij).finrank_eq, Module.finrank_fin_fun]`. Introduce `h`.
+
+Set `b` to `Module.finBasisOfFinrankEq k E h`. Use `⟨fun i => T (b i), fun i => (eig _).2 ⟨_, (b i).2, rfl⟩, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `(eig w).1 hw`. Use `(existsUnique_congr fun c => ?_).2 ((Function.bijective_iff_existsUnique _).1 b.equivFun.symm.bijective ⟨y, hy⟩)` and prove the remaining obligations. Rewrite using `[comb (fun i => (b i : Fin n → k)) y c, Module.Basis.equivFun_symm_apply, Subtype.ext_iff]`.
+
+Simplify using `only [AddSubmonoidClass.coe_finset_sum, SetLike.val_smul]`. Conclude with `eq_comm`.
+-/
 theorem lieMult_iff_finrank_eig : ∀ (W : Type) [CommRing W] (G : Over (Sp W)) [GrpObj G] [IsCommMonObj G] (O : Type) [CommRing O] (act : OAct O G) (n : ℕ) (k : Type) [Field k] (β : W →+* k) (T : (Fin n → k) → (epsPtR (spMap β) ⟶ G)) (A : O → Matrix (Fin n) (Fin n) k), Function.Injective T → (∀ v : epsPtR (spMap β) ⟶ G, spMap (TrivSqZeroExt.fstHom k k k).toRingHom ≫ v.left = (1 : Over.mk (spMap β) ⟶ G).left ↔ v ∈ Set.range T) → (∀ c c', T (c + c') = T c * T c') → (∀ (s : k) c, (T (s • c)).left = spMap (ReciprocityTheory.ChartRestriction.G.Geo.Tor.epsScaleR s) ≫ (T c).left) → (∀ a c, T c ≫ act.act a = T ((A a).mulVec c)) → ∀ (τ : O →+* k) (N : ℕ), LieMult act (spMap β) τ N ↔ Module.finrank k (⨅ a, LinearMap.ker (Matrix.mulVecLin (A a) - τ a • LinearMap.id) : Submodule k (Fin n → k)) = N := by
   intro W _ G _ _ O _ act n k _ β T A hinj htan hadd hsc hact τ N
   set E : Submodule k (Fin n → k) :=

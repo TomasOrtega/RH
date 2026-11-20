@@ -24,6 +24,33 @@ end GlobalTheory.LiftInfRef
 namespace GlobalTheory.LiftInfRef
 open GlobalTheory.LiftRef
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
+/- English proof (translation)
+Use `set π := autOf (M D.what₂.mu0 (k + 1) h1 h2) S hS with hπ`. Take `⟨b, hd, -, -⟩` from `GlobalTheory.algWt_contragredient D.host.E D.R.nV π.toAlgWt`. Establish `hw` using `A.wt (k + 1) h1 h2 π b hd`. Take `⟨lam, hlam⟩` from `(GlobalTheory.T.algWeight_highestWeight_exists_unique_antitone D.host.E D.R.nV b (GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings.embTau D τ)).1.exists`. Take `⟨lam', hlam'⟩` from `(GlobalTheory.T.algWeight_highestWeight_exists_unique_antitone D.host.E D.R.nV b (ComplexEmbedding.conjugate (GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings.embTau D τ))).1.exists`.
+
+Establish `hbar : GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings.embTauBar D τ = ComplexEmbedding.conjugate (GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings.embTau D τ)`. Use extensionality with `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings.embTauBar, ComplexEmbedding.conjugate_coe_eq]`. Establish `hpar : NG.infOf lam = NG.paramV D.R (D.hc τ) ⟨k, by omega⟩ (1 / 2)` using `hIn.wt D.what₂.mu0 ⟨k, by omega⟩ τ b lam hd hlam`. Establish `hinf1` using `A.infW (k + 1) h1 h2 b _ lam hlam`.
+
+Establish `hinf2` using `A.infW (k + 1) h1 h2 b _ lam' hlam'`. Establish `hconj` using `infOf_conj hlam hlam'`. Establish `he : (chr.e1 (D.naut.tw μ D.naut.etaTinv)).1 = cf.mu0 ⟨k, by omega⟩ * cf.eta⁻¹`. Rewrite using `[chr.tw, hμ, chr.etaTinv]`. Establish `hI : (chr.e1 (D.naut.tw μ D.naut.etaTinv)).1.HasInfQ (embPsi D.host) (fun g => -eExp D ⟨k, by omega⟩ g - 1 / 2)`.
+
+Rewrite using `[he]`. Establish `h1'` using `(cf.isMu0 ⟨k, by omega⟩).inf`. Establish `h2' : (cf.eta⁻¹).HasInfQ (embPsi D.host) (-(fun _ => 1 / 2))` using `GlobalTheory.BlockCharInf.hasInfQ_inv' ⟨fun _ => 1, fun _ => by norm_num, cf.isEta.inf⟩`. Use `GlobalTheory.BlockCharInf.hasInfQ_mul' h1' h2' using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`.
+
+Simplify using `only [Pi.add_apply, Pi.neg_apply]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨hg1, hg2⟩` from `chr.infG _ _ hI (D.eTau τ)`. Establish `hval : eExp D ⟨k, by omega⟩ (D.eTau τ) = (D.hc τ).e ⟨k, by omega⟩` using `by simp [eExp]`. Establish `hG1 : D.naut.infG (D.naut.tw μ D.naut.etaTinv) (GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings.embTau D τ) = {(-((D.hc τ).e ⟨k, by omega⟩ : ℂ) - 1 / 2)}`.
+
+Rewrite using `[show GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings.embTau D τ = embPsi D.host (D.eTau τ) from rfl, hg1, hval]`. Use `push_cast`. Put the polynomial expressions in normal form. Establish `hG2 : D.naut.infG (D.naut.tw μ D.naut.etaTinv) (ComplexEmbedding.conjugate (GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings.embTau D τ)) = {(((D.hc τ).e ⟨k, by omega⟩ : ℂ) + 1 / 2)}`. Rewrite using `[← hbar, show GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings.embTauBar D τ = (starRingEnd ℂ).comp (embPsi D.host (D.eTau τ)) from rfl, hg2, hval]`.
+
+Use `push_cast`. Put the polynomial expressions in normal form. Rewrite using `[hw, hinf1, hbar, hinf2, hconj, hpar]`. Prove the components needed by the constructor for the conclusion. Unfold `isoInf`.
+
+Simplify using `only [List.map_cons, List.map_nil, List.sum_cons, List.sum_nil, add_zero, hG1, Multiset.map_singleton, bindCast, List.map_map, Function.comp_def, sum_singletons]`. Unfold `NG.paramV GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings.hcSigma`. Rewrite using `[Multiset.map_add, Multiset.map_map, Multiset.map_map, ← Multiset.map_coe, Multiset.coe_range]`. Use `congrArg₂ (· + ·) (congrArg₂ (· + ·) ?_ ?_) ?_` and prove the remaining obligations. Use `Multiset.map_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Function.comp_apply]`. Use `Multiset.map_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Use `Multiset.map_congr rfl fun c _ => ?_ push_cast` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+
+Unfold `isoInf`. Simplify using `only [List.map_cons, List.map_nil, List.sum_cons, List.sum_nil, add_zero, hG2, Multiset.map_singleton, bindCast, List.map_map, Function.comp_def, sum_singletons]`. Unfold `NG.paramV GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings.hcSigma`. Rewrite using `[Multiset.map_add, Multiset.map_add, Multiset.map_add, Multiset.map_map, Multiset.map_map, Multiset.map_map, Multiset.map_map, Multiset.map_map, ← Multiset.map_coe, Multiset.coe_range]`. Use `congrArg₂ (· + ·) (congrArg₂ (· + ·) ?_ ?_) ?_` and prove the remaining obligations.
+
+Use `Multiset.map_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Expand and normalize the polynomial expressions, which then agree. Use `Multiset.map_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hf` using `range_rev D.R.t (fun c : ℕ => ((D.hc τ).e ⟨k, by omega⟩ : ℂ) + 1 / 2 - ((D.R.t : ℂ) - 1) / 2 + c)`. Use `(Multiset.map_congr rfl fun c _ => ?_).trans (hf.symm.trans (Multiset.map_congr rfl fun c hc => ?_))` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hc'` using `Multiset.mem_range.1 hc`. Rewrite using `[Nat.cast_sub (show c ≤ D.R.t - 1 by omega), Nat.cast_sub (show 1 ≤ D.R.t by omega)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem core_data_of_point (D : D7) (cf : CharFrame D) (A : _root_.GlobalTheory.HeightCounting.AUSideAlt D) (chr : CharSide D cf) (M : MtFam D)
     {tup : D.what₂.Tup → Fin D.R.m → HChar D.host.E} {Q : D.what₂.places.Pl → Finset (PlE D.host)}
     (hIn : MtInput D M tup Q) (k : ℕ) (h1 : 1 ≤ k + 1) (h2 : k + 1 ≤ D.R.m)

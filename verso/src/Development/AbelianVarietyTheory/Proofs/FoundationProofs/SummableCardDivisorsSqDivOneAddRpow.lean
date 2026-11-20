@@ -7,6 +7,13 @@ open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 
 namespace GlobalTheory.DivSq
 
+/- English proof (translation)
+Establish `hx0 : x ≠ 0` using `by rintro rfl; exact hn (by simpa using hx)`. Take `⟨e, he⟩` from `Nat.lcm_dvd hx hy`. Take `⟨b, hb⟩` from `Nat.gcd_dvd_left x y`. Take `⟨c, hc⟩` from `Nat.gcd_dvd_right x y`. Use `⟨Nat.gcd x y, b, c, e, ?_, hb.symm, hc.symm⟩` and prove the remaining obligations.
+
+Establish `hg : 0 < Nat.gcd x y` using `Nat.gcd_pos_of_pos_left _ (Nat.pos_of_ne_zero hx0)`. Establish `h1` using `Nat.gcd_mul_lcm x y`. Establish `h2 : Nat.gcd x y * b * c = Nat.lcm x y`. Apply `Nat.eq_of_mul_eq_mul_left hg` to reduce the goal to its premises. Rewrite using `[h1]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2, ← he]`.
+-/
 theorem four_factors {n x y : ℕ} (hx : x ∣ n) (hy : y ∣ n) (hn : n ≠ 0) :
     ∃ a b c e : ℕ, a * b * c * e = n ∧ a * b = x ∧ a * c = y := by
   have hx0 : x ≠ 0 := by rintro rfl; exact hn (by simpa using hx)
@@ -23,11 +30,31 @@ theorem four_factors {n x y : ℕ} (hx : x ∣ n) (hy : y ∣ n) (hn : n ≠ 0) 
       _ = x * y := by rw [← hb, ← hc]
   rw [h2, ← he]
 
+/- English proof (translation)
+Use `push_cast`. Rewrite using `[Real.mul_rpow (by positivity) (by positivity), mul_inv]`.
+-/
 theorem inv_rpow_natCast_mul (p : ℝ) (a b : ℕ) :
     ((((a * b : ℕ)) : ℝ) ^ p)⁻¹ = ((a : ℝ) ^ p)⁻¹ * ((b : ℝ) ^ p)⁻¹ := by
   push_cast
   rw [Real.mul_rpow (by positivity) (by positivity), mul_inv]
 
+/- English proof (translation)
+Use `set I := Finset.range N with hI`. Set `φ : ℕ × ℕ × ℕ × ℕ → (Σ _ : ℕ, ℕ × ℕ)` to `fun q => ⟨q.1 * q.2.1 * q.2.2.1 * q.2.2.2, q.1 * q.2.1, q.1 * q.2.2.1⟩`. Set `w : (Σ _ : ℕ, ℕ × ℕ) → ℝ` to `fun s => ((s.1 : ℝ) ^ p)⁻¹`. Establish `hw : ∀ s, 0 ≤ w s` using `fun s => by simp only [w]; positivity`. Establish `h1 : ∑ n ∈ I, ((n.divisors.card : ℝ)) ^ 2 / (n : ℝ) ^ p = ∑ s ∈ I.sigma (fun n => n.divisors ×ˢ n.divisors), w s`.
+
+Rewrite using `[Finset.sum_sigma]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Simplify using `only [w, Finset.sum_const, Finset.card_product, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h2 : I.sigma (fun n => n.divisors ×ˢ n.divisors) ⊆ (I ×ˢ I ×ˢ I ×ˢ I).image φ`. Introduce and unpack `⟨n, x, y⟩ hs`. Simplify using `only [Finset.mem_sigma, Finset.mem_product, Nat.mem_divisors, hI, Finset.mem_range] at hs`. Take `⟨hnN, ⟨hx, hn⟩, hy, -⟩` from `hs`. Take `⟨a, b, c, e, rfl, rfl, rfl⟩` from `four_factors hx hy hn`.
+
+Establish `key : ∀ d, d ∣ a * b * c * e → d ∈ I` using `fun d hd => by`. Rewrite using `[hI, Finset.mem_range]`. Conclude with `lt_of_le_of_lt (Nat.le_of_dvd (Nat.pos_of_ne_zero hn) hd) hnN`. Use `Finset.mem_image.2 ⟨(a, b, c, e), ?_, rfl⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_product]`.
+
+Conclude with `⟨key _ ⟨b * c * e, by ring⟩, key _ ⟨a * c * e, by ring⟩, key _ ⟨a * b * e, by ring⟩, key _ ⟨a * b * c, by ring⟩⟩`. Establish `h3 : ∑ s ∈ (I ×ˢ I ×ˢ I ×ˢ I).image φ, w s ≤ ∑ q ∈ I ×ˢ I ×ˢ I ×ˢ I, w (φ q)` using `Finset.sum_image_le_of_nonneg (fun s _ => hw s)`. Establish `h4 : ∑ q ∈ I ×ˢ I ×ˢ I ×ˢ I, w (φ q) = (∑ n ∈ I, ((n : ℝ) ^ p)⁻¹) ^ 4`. Establish `: (∑ n ∈ I, ((n : ℝ) ^ p)⁻¹) ^ 4 = (∑ n ∈ I, ((n : ℝ) ^ p)⁻¹) * ((∑ n ∈ I, ((n : ℝ) ^ p)⁻¹) * ((∑ n ∈ I, ((n : ℝ) ^ p)⁻¹) * (∑ n ∈ I, ((n : ℝ) ^ p)⁻¹)))`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[this]`. Rewrite using `[Finset.sum_product, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_product, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_product, Finset.sum_mul, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Simplify using `only [w, φ]`.
+
+Rewrite using `[inv_rpow_natCast_mul, inv_rpow_natCast_mul, inv_rpow_natCast_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, ← h4]`. Conclude with `(Finset.sum_le_sum_of_subset_of_nonneg h2 fun s _ _ => hw s).trans h3`.
+-/
 theorem sum_range_le_pow (p : ℝ) (N : ℕ) :
     ∑ n ∈ Finset.range N, ((n.divisors.card : ℝ)) ^ 2 / (n : ℝ) ^ p
       ≤ (∑ n ∈ Finset.range N, ((n : ℝ) ^ p)⁻¹) ^ 4 := by
@@ -77,6 +104,9 @@ theorem sum_range_le_pow (p : ℝ) (N : ℕ) :
   rw [h1, ← h4]
   exact (Finset.sum_le_sum_of_subset_of_nonneg h2 fun s _ _ => hw s).trans h3
 
+/- English proof (translation)
+Introduce `s hs`. Establish `hz : Summable fun n : ℕ => ((n : ℝ) ^ (1 + s))⁻¹` using `Real.summable_nat_rpow_inv.mpr (by linarith)`. Use `summable_of_sum_range_le (c := (∑' n : ℕ, ((n : ℝ) ^ (1 + s))⁻¹) ^ 4) (fun n => by positivity) fun N => ?_` and prove the remaining obligations. Use `(sum_range_le_pow (1 + s) N).trans ?_` and prove the remaining obligations. Conclude with `pow_le_pow_left₀ (Finset.sum_nonneg fun n _ => by positivity) (hz.sum_le_tsum _ fun n _ => by positivity) 4`.
+-/
 theorem summable_card_divisors_sq_div_rpow :
     ∀ s : ℝ, 0 < s → Summable fun n : ℕ => ((n.divisors.card : ℝ)) ^ 2 / (n : ℝ) ^ (1 + s) := by
   intro s hs

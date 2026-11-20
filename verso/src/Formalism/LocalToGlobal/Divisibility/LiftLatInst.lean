@@ -59,6 +59,9 @@ def TupF (TU : Finset (Tup X.F X.E X.K S)) : Type := {τ : Tup X.F X.E X.K S // 
 
 def mu0F (TU : Finset (Tup X.F X.E X.K S)) : TupF TU := ⟨mu0 X.F X.E X.K S, Or.inl rfl⟩
 
+/- English proof (translation)
+Establish `h : ({τ | τ = mu0 X.F X.E X.K S ∨ τ ∈ TU} : Set (Tup X.F X.E X.K S)).Finite` using `(TU.finite_toSet.insert (mu0 X.F X.E X.K S)).subset (fun τ hτ => by simpa using hτ)`. Conclude with `h.to_subtype`.
+-/
 theorem tupF_finite (TU : Finset (Tup X.F X.E X.K S)) : Finite (TupF TU) := by
   have h : ({τ | τ = mu0 X.F X.E X.K S ∨ τ ∈ TU} : Set (Tup X.F X.E X.K S)).Finite :=
     (TU.finite_toSet.insert (mu0 X.F X.E X.K S)).subset (fun τ hτ => by simpa using hτ)
@@ -95,6 +98,11 @@ def colSide (P : Col.LevFam X.E X.K R.r Pr.vGs) (Zs : DefSub (colFam W Ch sel hX
     DefSide (colFam W Ch sel hX v0 TU Xg S0 xiVal).base :=
   (colIn W Ch sel hX v0 TU Xg S0 xiVal).side P.grp P.chr Zs
 
+/- English proof (translation)
+Establish `h1 : ((mu0 X.F X.E X.K S : Tup X.F X.E X.K S) : Chr X.F X.E X.K) = 1`. Simplify using `[mu0]`. Rewrite using `[h1]`. Unfold `Col.QE`. Use `split_ifs with h`.
+
+Use extensionality with `x`. Simplify using `[Qprime, MonoidHom.ker_one]`. Both sides reduce to the same expression.
+-/
 theorem twistPrimes_trivialTuple_empty : Col.QE sel ((mu0 X.F X.E X.K S : Tup X.F X.E X.K S) : Chr X.F X.E X.K) = ∅ := by
   have h1 : ((mu0 X.F X.E X.K S : Tup X.F X.E X.K S) : Chr X.F X.E X.K) = 1 := by
     simp [mu0]

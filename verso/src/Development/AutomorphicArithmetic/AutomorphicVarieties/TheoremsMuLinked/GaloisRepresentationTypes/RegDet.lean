@@ -6,6 +6,29 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.C
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing Polynomial Matrix UpperTheory.V UpperTheory.V.HV UpperTheory.V.Alg GlobalTheory.GalOfCusp
 
+/- English proof (translation)
+Introduce `l _ F O _ _ _ _ n ρ P hn hΦ hε hρ hI h3`. Use `haveI : CompactSpace F.G₀ := isCompact_iff_compactSpace.1 (Subgroup.isClosed_of_isOpen _ F.η_open).isCompact`. Establish `halg : ∀ x : ℤ_[l], algebraMap ℤ_[l] (Qbar l) x = algebraMap ℚ_[l] (Qbar l) (x : ℚ_[l])` using `fun x => IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (PadicAlgCl l) x`. Establish `hχ : ∀ g : F.G₀, ((F.eps O (Qbar l) g : (Qbar l)ˣ) : Qbar l) = algebraMap ℚ_[l] (Qbar l) (((F.ε g : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l])` using `fun g => by`. Rewrite using `[← halg, IsScalarTower.algebraMap_apply ℤ_[l] O (Qbar l)]`.
+
+Both sides reduce to the same expression. Establish `hχc : Continuous fun g : F.G₀ => ((F.eps O (Qbar l) g : (Qbar l)ˣ) : Qbar l)`. Simplify using `only [hχ]`. Establish `h1 : Continuous fun g : F.G₀ => ((F.ε g : ℤ_[l]ˣ) : ℤ_[l])` using `Units.continuous_val.comp (F.ε_cont.comp continuous_subtype_val)`. Conclude with `(continuous_algebraMap ℚ_[l] (PadicAlgCl l)).comp (continuous_subtype_val.comp h1)`.
+
+Establish `hm : Continuous fun g => W.mat ρ g` using `Units.continuous_val.comp hρ`. Establish `hm' : Continuous fun g : F.G₀ => W.mat ρ g⁻¹` using `hm.comp continuous_inv`. Set `R : Representation (Qbar l) F.G₀ (Matrix (Fin n) (Fin n) (Qbar l))` to `Loc.twist (F.eps O (Qbar l)) (Loc.adGL ρ)`. Establish `hR : ∀ g X, R g X = ((F.eps O (Qbar l) g : (Qbar l)ˣ) : Qbar l) • (W.mat ρ g * X * W.mat ρ g⁻¹)` using `fun g X => by`. Establish `e : W.mat ρ g⁻¹ = Units.val (ρ g)⁻¹`.
+
+Rewrite using `[← map_inv ρ g]`. Both sides reduce to the same expression. Rewrite using `[e]`. Both sides reduce to the same expression. Use `haveI : Module.Finite (Qbar l) (Z1 R) := Det.finite_cocycles_matrixRepresentation_of_phiCond R hΦ fun X => by`.
+
+Simplify using `only [hR]`. Conclude with `hχc.smul ((hm.mul continuous_const).mul hm')`. Set `S : Type` to `{σ : F.G₀ // σ ∈ F.G' ∧ (W.mat ρ σ).charpoly.Separable}`. Set `f : S → ℕ → Z1 R →ₗ[Qbar l] Qbar l` to `fun σ k => { toFun := fun z => (z.1 σ.1 * W.mat ρ σ.1 ^ k).trace map_add' := fun a b => by`. Simplify using `only [Submodule.coe_add, Pi.add_apply, Matrix.add_mul, Matrix.trace_add]`.
+
+Use the proof step `map_smul' := fun c a => by`. Simplify using `only [Submodule.coe_smul, Pi.smul_apply, Matrix.smul_mul, Matrix.trace_smul, RingHom.id_apply] }`. Take `⟨T, hT⟩` from `Det.finDet f`. Use `⟨T.card, fun j => (T.equivFin.symm j).1.1, fun j => (T.equivFin.symm j).1.2, ?_⟩` and prove the remaining obligations. Introduce `z hzc hz _ htr`.
+
+Establish `hzZ : z ∈ Z1 R` using `(mem_Z1_iff_cocycle _ _).2 ⟨hzc, fun g h => by rw [hR]; exact hz g h⟩`. Establish `hall` using `hT ⟨z, hzZ⟩ fun s hs k => htr s.1 ⟨T.equivFin ⟨s, hs⟩, by simp only [Equiv.symm_apply_apply]⟩ k`. Use `Det.detG ρ (F.eps O (Qbar l)) F.G' z hn (Abelianization.commutator_subset_ker _) ?_ ?_ hI hz ?_` and prove the remaining obligations. Introduce `g hg`. Establish `h1 : F.ε g = 1` using `hg`.
+
+Rewrite using `[MonoidHom.mem_ker]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hχ, h1]`. Simplify using the standard rewrite rules. Take `⟨g, hg⟩` from `hε`.
+
+Introduce `h`. Apply `hg` to reduce the goal to its premises. Establish `h1` using `hχ g`. Rewrite `h1` using `[h, MonoidHom.one_apply, Units.val_one, ← map_one (algebraMap ℚ_[l] (Qbar l))]`. Establish `h2` using `(algebraMap ℚ_[l] (Qbar l)).injective h1`.
+
+Conclude with `Units.ext (Subtype.ext h2.symm)`. Introduce `g hg`. Assume the negation of the conclusion as `hne`. Establish `ho : IsOpen {x : F.G₀ | (z x * W.mat ρ x).trace ≠ 0}` using `isOpen_ne_fun (hzc.mul hm).matrix_trace continuous_const`. Take `⟨σ, ⟨h1, h2⟩, h4⟩` from `h3 _ ho ⟨g, hne, hg⟩`.
+
+Establish `h5 : (z σ * W.mat ρ σ ^ 1).trace = 0` using `hall ⟨σ, h2, h4⟩ 1`. Rewrite `h5` using `[pow_one]`. Conclude with `h1 h5`.
+-/
 theorem UpperTheory.V.Th.regDet :
     ∀ {l : ℕ} [Fact l.Prime] (F : W.GFrame l) (O : Type) [CommRing O] [Algebra ℤ_[l] O] [Algebra O (Qbar l)] [IsScalarTower ℤ_[l] O (Qbar l)] {n : ℕ} (ρ : F.G₀ →* GL (Fin n) (Qbar l)) (P : GL (Fin n) (Qbar l)), 1 ≤ n → PhiCond F.G₀ l → (∃ g : F.G₀, F.ε g ≠ 1) → Continuous ρ → Th.TypeI F ρ → Th.N3 F ρ → Th.RegDet F O ρ P := by
   intro l _ F O _ _ _ _ n ρ P hn hΦ hε hρ hI h3

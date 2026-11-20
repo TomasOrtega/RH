@@ -14,6 +14,19 @@ open NumberField IsDedekindDomain CategoryTheory GroundTheory.ProfCoh GroundTheo
 
 namespace PositivityTheory.Lit1.GFTransport
 
+/- English proof (translation)
+Establish `: IsGalois F Ω` using `IsAlgClosure.isGalois F Ω`. Set `E` to `maxUnramifiedOutside F Ω S`. Set `φ : G F Ω →* Gal(E/F)` to `AlgEquiv.restrictNormalHom E`. Establish `hφs : Function.Surjective φ` using `AlgEquiv.restrictNormalHom_surjective Ω`. Establish `hNS : NS Ω S = (maxUnramifiedOutside F Ω S).fixingSubgroup` using `le_antisymm (GlobalTheory.T.normal_subgroup_le_unramified_fixing F Ω S) (GlobalTheory.T.galois_unramified_outside_cohomology F Ω S)`.
+
+Establish `hker : φ.ker = NS Ω S`. Rewrite using `[hNS]`. Use extensionality with `σ`. Rewrite using `[MonoidHom.mem_ker, IntermediateField.mem_fixingSubgroup_iff]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h x hx`. Establish `h1` using `AlgEquiv.restrictNormal_commutes σ E (⟨x, hx⟩ : E)`. Establish `h2 : σ.restrictNormal E = 1` using `h`. Rewrite `h1` using `[h2]`. Conclude with `h1.symm`.
+
+Introduce `h`. Apply `AlgEquiv.ext` to reduce the goal to its premises. Introduce `x`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `(AlgEquiv.restrictNormal_commutes σ E x).trans (h x.1 x.2)`.
+
+Establish `hφc : Continuous φ` using `InfiniteGalois.restrictNormalHom_continuous E`. Set `q : GS Ω S ≃* Gal(E/F)` to `(QuotientGroup.quotientMulEquivOfEq hker.symm).trans (QuotientGroup.quotientKerEquivOfSurjective φ hφs)`. Establish `hq : Continuous q` using `continuous_coinduced_dom.2 hφc`. Establish `: CompactSpace (G F Ω)` using `inferInstance`. Establish `: CompactSpace (GS Ω S)` using `Quotient.compactSpace`.
+
+Conclude with `⟨{ q with continuous_toFun := hq continuous_invFun := Continuous.continuous_symm_of_equiv_compact_to_t2 (f := q.toEquiv) hq }⟩`.
+-/
 theorem gsEquiv (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (S : Set (HeightOneSpectrum (𝓞 F))) :
     Nonempty (GS Ω S ≃ₜ* galUnramifiedOutside F Ω S) := by
   have : IsGalois F Ω := IsAlgClosure.isGalois F Ω
@@ -47,6 +60,13 @@ theorem gsEquiv (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω
     continuous_toFun := hq
     continuous_invFun := Continuous.continuous_symm_of_equiv_compact_to_t2 (f := q.toEquiv) hq }⟩
 
+/- English proof (translation)
+Use `haveI : IsGalois F Ω := IsAlgClosure.isGalois F Ω`. Take `⟨K, ψ, e, he⟩` from `GlobalTheory.CompanionTheory.GSCd.Transport.exists_embedded F Ω`. Set `T : Finset (HeightOneSpectrum (𝓞 K.1))` to `S.map (GlobalTheory.CompanionTheory.GSCd.Transport.placeEquiv (RingOfIntegers.mapRingEquiv ψ)).toEmbedding`. Establish `hC : GlobalTheory.CompanionTheory.GSCd.Transport.Corr ψ (S : Set (HeightOneSpectrum (𝓞 F))) (T : Set (HeightOneSpectrum (𝓞 K.1)))`. Introduce `v`.
+
+Simplify using `[T]`. Take `⟨θ⟩` from `GlobalTheory.CompanionTheory.GSCd.Transport.nonempty_gal ψ e he hC`. Use `⟨K, (T : Set (HeightOneSpectrum (𝓞 K.1))), inferInstance, θ, ?_⟩` and prove the remaining obligations. Introduce `n hn w hw`. Establish `hv : (GlobalTheory.CompanionTheory.GSCd.Transport.placeEquiv (RingOfIntegers.mapRingEquiv ψ)).symm w ∈ S`.
+
+Apply `hn` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `RingOfIntegers.mapRingEquiv ψ (n : 𝓞 F) ∈ w.asIdeal`. Rewrite using `[map_natCast]`. Conclude with `hw`. Conclude with `Finset.mem_coe.2 (Finset.mem_map.2 ⟨_, hv, (GlobalTheory.CompanionTheory.GSCd.Transport.placeEquiv _).apply_symm_apply w⟩)`.
+-/
 theorem gsTransportK (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (S : Finset (HeightOneSpectrum (𝓞 F))) :
     ∃ (K : FiniteSubfield) (S' : Set (HeightOneSpectrum (𝓞 K.1))) (_ : Finite S')
       (_ : galUnramifiedOutside F Ω (S : Set (HeightOneSpectrum (𝓞 F))) ≃ₜ*
@@ -72,6 +92,9 @@ theorem gsTransportK (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra
     exact hw
   exact Finset.mem_coe.2 (Finset.mem_map.2 ⟨_, hv, (GlobalTheory.CompanionTheory.GSCd.Transport.placeEquiv _).apply_symm_apply w⟩)
 
+/- English proof (translation)
+Substitute `h` using the available equality. Establish `: u = 𝟙 A` using `Rep.hom_ext (Representation.IntertwiningMap.ext (LinearMap.ext fun a => hu a))`. Substitute `this` using the available equality. Conclude with `cohomologyMapAlong_id n`.
+-/
 theorem mapAlong_eq_id_of_eq_id {k G : Type} [CommRing k] [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G]
     (A : Rep.{0} k G) [IsDiscreteRep A] (χ : G →* G) (hχ : Continuous χ) (h : χ = MonoidHom.id G)
@@ -82,6 +105,11 @@ theorem mapAlong_eq_id_of_eq_id {k G : Type} [CommRing k] [Group G] [Topological
   subst this
   exact cohomologyMapAlong_id n
 
+/- English proof (translation)
+Use `IsDiscreteRep.res θ.symm.continuous (φ := (θ.symm : H ≃* G).toMonoidHom) A` as an intermediate fact. Set `φ : H →* G` to `(θ.symm : H ≃* G).toMonoidHom`. Set `ψ : G →* H` to `(θ : G ≃* H).toMonoidHom`. Establish `hφ : Continuous φ` using `θ.symm.continuous`. Establish `hψ : Continuous ψ` using `θ.continuous`.
+
+Set `g : Rep.res ψ (Rep.res φ A) ⟶ A` to `Rep.ofHom ⟨LinearMap.id, fun x => LinearMap.ext fun a => by show A.ρ (θ.symm (θ x)) a = A.ρ x a simp⟩`. Use `⟨cohomologyMapAlong φ hφ (𝟙 _) n, cohomologyMapAlong ψ hψ g n, ?_⟩` and prove the remaining obligations. Rewrite using `[← cohomologyMapAlong_comp]`. Apply the tactic sequence `exact mapAlong_eq_id_of_eq_id A (φ.comp ψ) (hφ.comp hψ) (MonoidHom.ext fun x => by show θ.symm (θ x) = x; simp) ((Rep.resFunctor ψ).map (𝟙 (Rep.res φ A)) ≫ g) (fun a => by first | rfl | simp [g]) n`.
+-/
 theorem mapAlong_transport_comp {k G H : Type} [CommRing k] [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [Group H] [TopologicalSpace H] [IsTopologicalGroup H] (θ : G ≃ₜ* H)
     (A : Rep.{0} k G) [IsDiscreteRep A] (n : ℕ) :
@@ -103,6 +131,9 @@ theorem mapAlong_transport_comp {k G H : Type} [CommRing k] [Group G] [Topologic
     (MonoidHom.ext fun x => by show θ.symm (θ x) = x; simp)
     ((Rep.resFunctor ψ).map (𝟙 (Rep.res φ A)) ≫ g) (fun a => by first | rfl | simp [g]) n
 
+/- English proof (translation)
+Use `IsDiscreteRep.res θ.symm.continuous (φ := (θ.symm : H ≃* G).toMonoidHom) A` as an intermediate fact. Take `⟨p, q, hpq⟩` from `mapAlong_transport_comp θ A n`. Use `Finite.of_surjective q.hom fun x => ⟨p.hom x, ?_⟩` and prove the remaining obligations. Rewrite using `[← ModuleCat.comp_apply, hpq]`. Both sides reduce to the same expression.
+-/
 theorem finite_cohomology_transport {k G H : Type} [CommRing k] [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [Group H] [TopologicalSpace H] [IsTopologicalGroup H] (θ : G ≃ₜ* H)
     (A : Rep.{0} k G) [IsDiscreteRep A] (n : ℕ)
@@ -115,6 +146,11 @@ theorem finite_cohomology_transport {k G H : Type} [CommRing k] [Group G] [Topol
   rw [← ModuleCat.comp_apply, hpq]
   rfl
 
+/- English proof (translation)
+Use `IsDiscreteRep.res θ.symm.continuous (φ := (θ.symm : H ≃* G).toMonoidHom) A` as an intermediate fact. Take `⟨p, q, hpq⟩` from `mapAlong_transport_comp θ A n`. Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Establish `hx : q.hom (p.hom x) = x` using `by rw [← ModuleCat.comp_apply, hpq]; rfl`. Establish `hy : q.hom (p.hom y) = y` using `by rw [← ModuleCat.comp_apply, hpq]; rfl`.
+
+Rewrite using `[← hx, ← hy, Subsingleton.elim (p.hom x) (p.hom y)]`.
+-/
 theorem subsingleton_cohomology_transport {k G H : Type} [CommRing k] [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [Group H] [TopologicalSpace H] [IsTopologicalGroup H] (θ : G ≃ₜ* H)
     (A : Rep.{0} k G) [IsDiscreteRep A] (n : ℕ)
@@ -128,6 +164,15 @@ theorem subsingleton_cohomology_transport {k G H : Type} [CommRing k] [Group G] 
   have hy : q.hom (p.hom y) = y := by rw [← ModuleCat.comp_apply, hpq]; rfl
   rw [← hx, ← hy, Subsingleton.elim (p.hom x) (p.hom y)]
 
+/- English proof (translation)
+Take `⟨e0⟩` from `gsEquiv F Ω (S : Set (HeightOneSpectrum (𝓞 F)))`. Set `e : galUnramifiedOutside F Ω (S : Set (HeightOneSpectrum (𝓞 F))) ≃ₜ* GS Ω (S : Set (HeightOneSpectrum (𝓞 F)))` to `e0.symm`. Establish `hc'` using `ReciprocityTheory.Neutral.Bridge.contAction_comp e hc`. Set `rho' : Representation (ZMod (l ^ r)) (galUnramifiedOutside F Ω (S : Set (HeightOneSpectrum (𝓞 F)))) M` to `rhoS.comp (e : galUnramifiedOutside F Ω (S : Set (HeightOneSpectrum (𝓞 F))) →* GS Ω (S : Set (HeightOneSpectrum (𝓞 F))))`. Take `⟨A, hA, eA, he⟩` from `PositivityTheory.LocalTateOrthogonality.Gcoh.gcRep _ (ZMod (l ^ r)) M rho' hc'`.
+
+Establish `hAf : Finite A.V` using `Finite.of_equiv _ eA.toEquiv`. Establish `hn : ∀ a : A.V, (l ^ r) • a = 0`. Introduce `a`. Take `⟨m, rfl⟩` from `eA.surjective a`. Rewrite using `[← map_nsmul, ← Nat.cast_smul_eq_nsmul (ZMod (l ^ r)), ZMod.natCast_self, zero_smul, map_zero]`.
+
+Take `⟨e1, -⟩` from `PositivityTheory.LocalTateOrthogonality.Gcoh.gc1 _ (ZMod (l ^ r)) M rho' A eA he`. Take `⟨e2, -⟩` from `PositivityTheory.LocalTateOrthogonality.Gcoh.gc2 _ (ZMod (l ^ r)) M rho' A eA he`. Establish `t1` using `ReciprocityTheory.Neutral.Bridge.equivH1OfIso e rhoS rho' (fun _ _ => rfl)`. Establish `t2` using `ReciprocityTheory.Neutral.Bridge.equivH2OfIso e rhoS rho' (fun _ _ => rfl)`. Use `⟨A, hA, hAf, hn, ⟨t1.toAddEquiv.trans e1⟩, ⟨t2.toAddEquiv.trans e2⟩, fun n => ?_⟩` and prove the remaining obligations.
+
+Take `⟨en⟩` from `PositivityTheory.LocalTateOrthogonality.Gcoh.gcn _ (ZMod (l ^ r)) M rho' A eA he n`. Conclude with `⟨(ReciprocityTheory.Neutral.Bridge.isoHn e rhoS rho' (fun _ _ => rfl) n).toAddEquiv.trans en⟩`.
+-/
 theorem cohDict {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     {l : ℕ} [Fact l.Prime] {r : ℕ} {M : Type} [AddCommGroup M] [Module (ZMod (l ^ r)) M] [Finite M]
     [TopologicalSpace M] [DiscreteTopology M] (S : Finset (HeightOneSpectrum (𝓞 F)))

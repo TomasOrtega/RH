@@ -24,6 +24,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.BotMove
 open GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle GlobalTheory.Grid Formalism.L2.DIV Formalism.L2.Indef Formalism.IndefR.Mult MeasureTheory
 
+/- English proof (translation)
+Introduce `D T A A' WW Y ψ θ α β νH S hY ΛA ΛA' ΛW _ hΛA' hΛW g _ g' hg' h hh _ mA' mW t₀ r r' _ _ _`. Establish `hW : IsWeilDatumO ψ A' WW _ _ (Y.ω' t₀)` using `hY.weil' t₀`. Establish `hvac : IsVacO ψ θ A' WW Y.rA'.s Y.rW.s Y.rA'.Λ Y.rW.Λ Y.vac'` using `hY.isVac'`. Establish `hθ : IsInfFam θ` using `hvac.2.inf`. Establish `key` using `GlobalTheory.VacMove.mem_latO_iff_actO hY.rigA'.1 hΛA' hY.rigW.1 hΛW mA' mW`.
+
+Establish `key'` using `GlobalTheory.VacMove.mem_latO_iff_actO hΛA' hY.rigA'.1 hΛW hY.rigW.1 (GlobalTheory.VacMove.moves_inv mA') (GlobalTheory.VacMove.moves_inv mW)`. Use `show IsVacO ψ θ A' WW Y.rA'.s Y.rW.s ΛA' ΛW (Y.ω' t₀ (g', h) Y.vac')`. Use `GlobalTheory.WeilVacMove.isVacO_om D ψ θ A' WW _ _ (Y.ω' t₀) hW hθ Y.rA'.s Y.rA'.s Y.rW.s Y.rW.s _ _ _ _ g' h (fun τ => by rw [GlobalTheory.FiniteFock.compAt_mt_of_finite θ τ hg', Matrix.mul_one, Matrix.one_mul]) (fun τ => by rw [GlobalTheory.FiniteFock.compAt_mt_of_finite θ τ hh …` and prove the remaining obligations. Establish `e` using `GlobalTheory.WeilVacMove.actO_inv_actO g'⁻¹ h⁻¹ u`. Rewrite `e` using `[inv_inv, inv_inv]`.
+
+Conclude with `e.symm`. Introduce and unpack `⟨u₀, hu₀, rfl⟩`. Conclude with `(key u₀).1 hu₀`.
+-/
 theorem _root_.GlobalTheory.T.movedVacuum_hom_eq_vacuum_movedLattices : ∀ {D : D7} {T : Type} {A A' WW : HSp D} (Y : Tri T A A' WW) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D)
     (α β : T → ((AE D)ˣ →* Circle)) (νH : T → HChar D.host.E) (S : T → Finset (Formalism.L2.DIV.Pl D.host.E)),
     Y.Is ψ θ α β νH S →

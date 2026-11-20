@@ -20,6 +20,15 @@ section Generic
 
 variable {H : Type} [Group H]
 
+/- English proof (translation)
+Establish `hC : ((U.relIndex K : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hi`. Rewrite using `[GlobalTheory.CompanionTheory.HintLevel.hint_eq_level H K U _ hUK (fun k hk x => ?_) hi]`. Rewrite using `[finsum_eq_single _ ((1 : H) : H ⧸ U)]`. Establish `hmem : (((1 : H) : H ⧸ U).out : H) ∈ U`. Use `QuotientGroup.out_eq' ((1 : H) : H ⧸ U)` as an intermediate fact.
+
+Simplify using `using (QuotientGroup.eq.1 this)`. Rewrite using `[Set.indicator_of_mem (by exact hmem), hl _ (inv_mem hmem)]`. Clear the denominators using the available nonvanishing facts. Introduce `q hq`. Establish `hnot : (q.out : H) ∉ U` using `fun h => hq (by`.
+
+Rewrite using `[← QuotientGroup.out_eq' q]`. Conclude with `QuotientGroup.eq.2 (by simpa using inv_mem h))`. Rewrite using `[Set.indicator_of_notMem (by exact hnot), zero_mul]`. Establish `h1 : (x * k ∈ (U : Set H)) ↔ x ∈ (U : Set H)` using `Subgroup.mul_mem_cancel_right U hk`. Establish `h2 : (x * k)⁻¹ * m = k⁻¹ * (x⁻¹ * m)` using `by group`.
+
+Rewrite using `[h2, hl _ (inv_mem hk)]`. Distinguish the cases in `hx : x ∈ (U : Set H)`. Rewrite using `[Set.indicator_of_mem (h1.2 hx), Set.indicator_of_mem hx]`. Rewrite using `[Set.indicator_of_notMem (fun h => hx (h1.1 h)), Set.indicator_of_notMem hx]`.
+-/
 theorem hint_ind_left (K U : Subgroup H) (hUK : U ≤ K) (hi : U.relIndex K ≠ 0) (f : H → ℂ)
     (hl : ∀ u ∈ U, ∀ g, f (u * g) = f g) (m : H) :
     hint K (fun z => (U : Set H).indicator (fun _ => ((U.relIndex K : ℕ) : ℂ)) z * f (z⁻¹ * m)) = f m := by
@@ -43,6 +52,15 @@ theorem hint_ind_left (K U : Subgroup H) (hUK : U ≤ K) (hi : U.relIndex K ≠ 
     · rw [Set.indicator_of_mem (h1.2 hx), Set.indicator_of_mem hx]
     · rw [Set.indicator_of_notMem (fun h => hx (h1.1 h)), Set.indicator_of_notMem hx]
 
+/- English proof (translation)
+Establish `hC : ((U.relIndex K : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hi`. Rewrite using `[GlobalTheory.CompanionTheory.HintLevel.hint_eq_level H K U _ hUK (fun k hk x => ?_) hi]`. Rewrite using `[finsum_eq_single _ ((m : H) : H ⧸ U)]`. Take `⟨u, hu⟩` from `QuotientGroup.mk_out_eq_mul U m`. Establish `hmem : ((((m : H) : H ⧸ U).out : H))⁻¹ * m ∈ U`.
+
+Rewrite using `[hu]`. Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_mem (by exact hmem), hu, hr _ u.2]`. Clear the denominators using the available nonvanishing facts. Introduce `q hq`.
+
+Establish `hnot : ((q.out : H))⁻¹ * m ∉ U` using `fun h => hq (by`. Rewrite using `[← QuotientGroup.out_eq' q]`. Conclude with `QuotientGroup.eq.2 h)`. Rewrite using `[Set.indicator_of_notMem (by exact hnot), mul_zero]`. Establish `h2 : (x * k)⁻¹ * m = k⁻¹ * (x⁻¹ * m)` using `by group`.
+
+Establish `h1 : (k⁻¹ * (x⁻¹ * m) ∈ (U : Set H)) ↔ x⁻¹ * m ∈ (U : Set H)` using `Subgroup.mul_mem_cancel_left U (inv_mem hk)`. Rewrite using `[hr _ hk, h2]`. Distinguish the cases in `hx : x⁻¹ * m ∈ (U : Set H)`. Rewrite using `[Set.indicator_of_mem (h1.2 hx), Set.indicator_of_mem hx]`. Rewrite using `[Set.indicator_of_notMem (fun h => hx (h1.1 h)), Set.indicator_of_notMem hx]`.
+-/
 theorem hint_ind_right (K U : Subgroup H) (hUK : U ≤ K) (hi : U.relIndex K ≠ 0) (f : H → ℂ)
     (hr : ∀ u ∈ U, ∀ g, f (g * u) = f g) (m : H) :
     hint K (fun z => f z * (U : Set H).indicator (fun _ => ((U.relIndex K : ℕ) : ℂ)) (z⁻¹ * m)) = f m := by
@@ -67,6 +85,9 @@ theorem hint_ind_right (K U : Subgroup H) (hUK : U ≤ K) (hi : U.relIndex K ≠
     · rw [Set.indicator_of_mem (h1.2 hx), Set.indicator_of_mem hx]
     · rw [Set.indicator_of_notMem (fun h => hx (h1.1 h)), Set.indicator_of_notMem hx]
 
+/- English proof (translation)
+Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 hK`. Establish `ho : IsOpen ((U.subgroupOf K : Subgroup K) : Set K)` using `hU.preimage continuous_subtype_val`. Use `haveI : Finite (K ⧸ U.subgroupOf K) := Subgroup.quotient_finite_of_isOpen _ ho`. Conclude with `Subgroup.index_ne_zero_of_finite`.
+-/
 theorem relIndex_ne_of_open [TopologicalSpace H] [IsTopologicalGroup H] {K U : Subgroup H}
     (hU : IsOpen (U : Set H)) (hK : IsCompact (K : Set H)) : U.relIndex K ≠ 0 := by
   haveI : CompactSpace K := isCompact_iff_compactSpace.1 hK
@@ -78,31 +99,49 @@ end Generic
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
 
+/- English proof (translation)
+Establish `h1` using `(GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w a).2`. Establish `h2` using `(GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w b).2`. Simplify `h1.prod h2` using `[Subgroup.coe_prod]`.
+-/
 theorem isCompact_maximal_pair_place (w : Pl E) : IsCompact ((K2 a b w : Subgroup _) : Set (GLw a w × GLw b w)) := by
   have h1 := (GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w a).2
   have h2 := (GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w b).2
   simpa [Subgroup.coe_prod] using h1.prod h2
 
+/- English proof (translation)
+Use function extensionality and compare the values at `m`. Conclude with `hint_ind_left _ U hUK (relIndex_ne_of_open hU (isCompact_maximal_pair_place w)) f hl m`.
+-/
 theorem mconv_idem_left {w : Pl E} {U : Subgroup (GLw a w × GLw b w)} (hU : IsOpen (U : Set (GLw a w × GLw b w)))
     (hUK : U ≤ K2 a b w) (f : LF a b w) (hl : ∀ u ∈ U, ∀ g, f (u * g) = f g) :
     PositivityTheory.Rg.BcN.F2.mconv (idem U) f = f := by
   funext m
   exact hint_ind_left _ U hUK (relIndex_ne_of_open hU (isCompact_maximal_pair_place w)) f hl m
 
+/- English proof (translation)
+Use function extensionality and compare the values at `m`. Conclude with `hint_ind_right _ U hUK (relIndex_ne_of_open hU (isCompact_maximal_pair_place w)) f hr m`.
+-/
 theorem mconv_idem_right {w : Pl E} {U : Subgroup (GLw a w × GLw b w)} (hU : IsOpen (U : Set (GLw a w × GLw b w)))
     (hUK : U ≤ K2 a b w) (f : LF a b w) (hr : ∀ u ∈ U, ∀ g, f (g * u) = f g) :
     PositivityTheory.Rg.BcN.F2.mconv f (idem U) = f := by
   funext m
   exact hint_ind_right _ U hUK (relIndex_ne_of_open hU (isCompact_maximal_pair_place w)) f hr m
 
+/- English proof (translation)
+Use function extensionality and compare the values at `m`. Simplify `GlobalTheory.CompanionTheory.FamClP.hint_zero (K2 a b w)` using `[PositivityTheory.Rg.BcN.F2.mconv]`.
+-/
 theorem mconv_zero_left {w : Pl E} (f : LF a b w) : PositivityTheory.Rg.BcN.F2.mconv (0 : LF a b w) f = 0 := by
   funext m
   simpa [PositivityTheory.Rg.BcN.F2.mconv] using GlobalTheory.CompanionTheory.FamClP.hint_zero (K2 a b w)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `m`. Simplify `GlobalTheory.CompanionTheory.FamClP.hint_zero (K2 a b w)` using `[PositivityTheory.Rg.BcN.F2.mconv]`.
+-/
 theorem mconv_zero_right {w : Pl E} (f : LF a b w) : PositivityTheory.Rg.BcN.F2.mconv f (0 : LF a b w) = 0 := by
   funext m
   simpa [PositivityTheory.Rg.BcN.F2.mconv] using GlobalTheory.CompanionTheory.FamClP.hint_zero (K2 a b w)
 
+/- English proof (translation)
+Establish `h1 : (u * g ∈ (U : Set (GLw a w × GLw b w))) ↔ g ∈ (U : Set (GLw a w × GLw b w))` using `Subgroup.mul_mem_cancel_left U hu`. Unfold `idem`. Distinguish the cases in `hx : g ∈ (U : Set (GLw a w × GLw b w))`. Rewrite using `[Set.indicator_of_mem (h1.2 hx), Set.indicator_of_mem hx]`. Rewrite using `[Set.indicator_of_notMem (fun h => hx (h1.1 h)), Set.indicator_of_notMem hx]`.
+-/
 theorem idem_left {w : Pl E} (U : Subgroup (GLw a w × GLw b w)) (u) (hu : u ∈ U) (g) : idem U (u * g) = idem U g := by
   have h1 : (u * g ∈ (U : Set (GLw a w × GLw b w))) ↔ g ∈ (U : Set (GLw a w × GLw b w)) :=
     Subgroup.mul_mem_cancel_left U hu
@@ -111,6 +150,9 @@ theorem idem_left {w : Pl E} (U : Subgroup (GLw a w × GLw b w)) (u) (hu : u ∈
   · rw [Set.indicator_of_mem (h1.2 hx), Set.indicator_of_mem hx]
   · rw [Set.indicator_of_notMem (fun h => hx (h1.1 h)), Set.indicator_of_notMem hx]
 
+/- English proof (translation)
+Establish `h1 : (g * u ∈ (U : Set (GLw a w × GLw b w))) ↔ g ∈ (U : Set (GLw a w × GLw b w))` using `Subgroup.mul_mem_cancel_right U hu`. Unfold `idem`. Distinguish the cases in `hx : g ∈ (U : Set (GLw a w × GLw b w))`. Rewrite using `[Set.indicator_of_mem (h1.2 hx), Set.indicator_of_mem hx]`. Rewrite using `[Set.indicator_of_notMem (fun h => hx (h1.1 h)), Set.indicator_of_notMem hx]`.
+-/
 theorem idem_right {w : Pl E} (U : Subgroup (GLw a w × GLw b w)) (u) (hu : u ∈ U) (g) : idem U (g * u) = idem U g := by
   have h1 : (g * u ∈ (U : Set (GLw a w × GLw b w))) ↔ g ∈ (U : Set (GLw a w × GLw b w)) :=
     Subgroup.mul_mem_cancel_right U hu
@@ -119,6 +161,11 @@ theorem idem_right {w : Pl E} (U : Subgroup (GLw a w × GLw b w)) (u) (hu : u �
   · rw [Set.indicator_of_mem (h1.2 hx), Set.indicator_of_mem hx]
   · rw [Set.indicator_of_notMem (fun h => hx (h1.1 h)), Set.indicator_of_notMem hx]
 
+/- English proof (translation)
+Unfold `thL`. Use `split_ifs with h`. Conclude with `continuous_id`. Use `GlobalTheory.ThetaPull.continuous_thetaGL _ ?_` and prove the remaining obligations. Unfold `cj`.
+
+Use `split_ifs with h'`. Conclude with `h'.choose_spec.1`. Conclude with `continuous_id`.
+-/
 theorem continuous_thL (n : ℕ) (w : Pl E) : Continuous (thL n w) := by
   unfold thL
   split_ifs with h
@@ -129,6 +176,11 @@ theorem continuous_thL (n : ℕ) (w : Pl E) : Continuous (thL n w) := by
     · exact h'.choose_spec.1
     · exact continuous_id
 
+/- English proof (translation)
+Use `⟨A ⊓ A.comap (thL n w), ⟨?_, inf_le_left.trans hAK, fun k hk => ⟨hk.2, ?_⟩⟩, inf_le_left⟩` and prove the remaining obligations. Rewrite using `[Subgroup.coe_inf]`. Conclude with `hA.inter (hA.preimage (continuous_thL n w))`. Use `show thL n w (thL n w k) ∈ A`. Rewrite using `[GlobalTheory.BCT.TwistInvol.thL_involutive E n w k]`.
+
+Conclude with `hk.1`.
+-/
 theorem exists_level_one (n : ℕ) (w : Pl E) {A : Subgroup (GLw n w)} (hA : IsOpen (A : Set (GLw n w)))
     (hAK : A ≤ GlobalTheory.LFun.KGL w n) :
     ∃ V : Subgroup (GLw n w), IsLevel (thL n w) (GlobalTheory.LFun.KGL w n) V ∧ V ≤ A := by
@@ -139,6 +191,11 @@ theorem exists_level_one (n : ℕ) (w : Pl E) {A : Subgroup (GLw n w)} (hA : IsO
     rw [GlobalTheory.BCT.TwistInvol.thL_involutive E n w k]
     exact hk.1
 
+/- English proof (translation)
+Take `⟨V₁, h₁, l₁⟩` from `exists_level_one a w (A := U.comap (MonoidHom.inl (GLw a w) (GLw b w))) (hU.preimage (f := fun x => (x, (1 : GLw b w))) (continuous_id.prodMk continuous_const)) (fun x hx => (hUK hx).1)`. Take `⟨V₂, h₂, l₂⟩` from `exists_level_one b w (A := U.comap (MonoidHom.inr (GLw a w) (GLw b w))) (hU.preimage (f := fun x => ((1 : GLw a w), x)) (continuous_const.prodMk continuous_id)) (fun x hx => (hUK hx).2)`. Use `⟨V₁, V₂, h₁, h₂, fun x hx => ?_⟩` and prove the remaining obligations. Establish `: x = (x.1, 1) * (1, x.2)` using `by simp`. Rewrite using `[this]`.
+
+Conclude with `mul_mem (l₁ hx.1) (l₂ hx.2)`.
+-/
 theorem exists_level {w : Pl E} {U : Subgroup (GLw a w × GLw b w)} (hU : IsOpen (U : Set (GLw a w × GLw b w)))
     (hUK : U ≤ K2 a b w) :
     ∃ (V₁ : Subgroup (GLw a w)) (V₂ : Subgroup (GLw b w)), IsLevel (thL a w) (GlobalTheory.LFun.KGL w a) V₁ ∧
@@ -152,6 +209,9 @@ theorem exists_level {w : Pl E} {U : Subgroup (GLw a w × GLw b w)} (hU : IsOpen
   rw [this]
   exact mul_mem (l₁ hx.1) (l₂ hx.2)
 
+/- English proof (translation)
+Establish `hc : IsCompact (U : Set (GLw a w × GLw b w))` using `(isCompact_maximal_pair_place w).of_isClosed_subset (Subgroup.isClosed_of_isOpen _ hU) hUK`. Use `⟨HasCompactSupport.intro' hc (Subgroup.isClosed_of_isOpen _ hU) fun y hy => ?_, fun k hk x => ⟨idem_left U k (hVU hk) x, idem_right U k (hVU hk) x⟩⟩` and prove the remaining obligations. Conclude with `Set.indicator_of_notMem hy _`.
+-/
 theorem isHecke_idem {w : Pl E} {U V : Subgroup (GLw a w × GLw b w)} (hU : IsOpen (U : Set (GLw a w × GLw b w)))
     (hUK : U ≤ K2 a b w) (hVU : V ≤ U) : IsHecke V (idem U) := by
   have hc : IsCompact (U : Set (GLw a w × GLw b w)) :=
@@ -167,6 +227,23 @@ variable {κ : Pl E → Type} [∀ w, Fintype (κ w)]
 def sel (U : ∀ w : Pl E, Subgroup (GLw a w × GLw b w)) (L : LM κ a b) (Q : Finset (Pl E)) : LM κ a b :=
   ⟨fun w x y => if w ∈ Q then L.m w x y else if x = y then idem (U w) else 0, L.s, L.t⟩
 
+/- English proof (translation)
+Use `⟨fun x y => ?_, hok.2⟩` and prove the remaining obligations. Take `⟨K₁, K₂, h₁, h₂, hT⟩` from `hok.1 x y`. Use `choose V₁ V₂ hV₁ hV₂ hV using fun w => exists_level (hU.1 w).1 (hU.1 w).2`. Establish `hev : ∀ᶠ w in cofinite, w ∉ P` using `P.finite_toSet.compl_mem_cofinite`. Establish `hent : ∀ w, ¬ (w ∈ P ∧ w ∉ Q) → (sel U L Q).ent P x y w = L.ent P x y w`.
+
+Introduce `w hw`. Unfold `LM.ent`. Use `split_ifs with hP`. Establish `: w ∈ Q` using `by_contra fun h => hw ⟨hP, h⟩`. Simplify using `[sel, this]`.
+
+Both sides reduce to the same expression. Use `⟨fun w => if w ∈ P ∧ w ∉ Q then V₁ w else K₁ w, fun w => if w ∈ P ∧ w ∉ Q then V₂ w else K₂ w, ⟨fun w => ?_, ?_⟩, ⟨fun w => ?_, ?_⟩, fun w => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only split_ifs`. Conclude with `hV₁ w`. Conclude with `h₁.1 w`.
+
+Use `filter_upwards [hev, h₁.2] with w hw hk`. Rewrite using `[if_neg fun h => hw h.1, hk]`. Simplify using `only split_ifs`. Conclude with `hV₂ w`. Conclude with `h₂.1 w`.
+
+Use `filter_upwards [hev, h₂.2] with w hw hk`. Rewrite using `[if_neg fun h => hw h.1, hk]`. Simplify using `only`. Distinguish the cases in `hw : w ∈ P ∧ w ∉ Q`. Rewrite using `[if_pos hw, if_pos hw]`.
+
+Establish `: (sel U L Q).ent P x y w = if x ⟨w, hw.1⟩ = y ⟨w, hw.1⟩ then idem (U w) else 0`. Unfold `LM.ent`. Rewrite using `[dif_pos hw.1]`. Simplify using `[sel, hw.2]`. Rewrite using `[this]`.
+
+Use `split_ifs`. Conclude with `isHecke_idem (hU.1 w).1 (hU.1 w).2 (hV w)`. Conclude with `⟨HasCompactSupport.zero, fun _ _ _ => ⟨rfl, rfl⟩⟩`. Rewrite using `[if_neg hw, if_neg hw, hent w hw]`. Conclude with `hT.1 w`.
+
+Use `filter_upwards [hev, hT.2] with w hw hk`. Rewrite using `[hent w fun h => hw h.1, hk]`.
+-/
 theorem sel_ok {U : ∀ w : Pl E, Subgroup (GLw a w × GLw b w)} {L : LM κ a b} {P : Finset (Pl E)} (hU : IsLev U)
     (hok : L.Ok P) (Q : Finset (Pl E)) : (sel U L Q).Ok P := by
   refine ⟨fun x y => ?_, hok.2⟩
@@ -216,6 +293,9 @@ section Alg
 
 variable {κ : Pl E → Type} [∀ w, Fintype (κ w)]
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_eq_single y]`. Simplify using the standard rewrite rules. Introduce `z _ hz`. Rewrite using `[if_neg hz, mconv_zero_right]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_mconv_right {k : Type} [Fintype k] {w : Pl E} (f : k → LF a b w) (g : LF a b w) (y : k) :
     ∑ z, PositivityTheory.Rg.BcN.F2.mconv (f z) (if z = y then g else 0) = PositivityTheory.Rg.BcN.F2.mconv (f y) g := by
   rw [Finset.sum_eq_single y]
@@ -224,6 +304,9 @@ theorem sum_mconv_right {k : Type} [Fintype k] {w : Pl E} (f : k → LF a b w) (
     rw [if_neg hz, mconv_zero_right]
   · simp
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_eq_single x]`. Simplify using the standard rewrite rules. Introduce `z _ hz`. Rewrite using `[if_neg (Ne.symm hz), mconv_zero_left]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_mconv_left {k : Type} [Fintype k] {w : Pl E} (f : k → LF a b w) (g : LF a b w) (x : k) :
     ∑ z, PositivityTheory.Rg.BcN.F2.mconv (if x = z then g else 0) (f z) = PositivityTheory.Rg.BcN.F2.mconv g (f x) := by
   rw [Finset.sum_eq_single x]
@@ -232,10 +315,24 @@ theorem sum_mconv_left {k : Type} [Fintype k] {w : Pl E} (f : k → LF a b w) (g
     rw [if_neg (Ne.symm hz), mconv_zero_left]
   · simp
 
+/- English proof (translation)
+The claim follows from `mconv_idem_left hU hUK _ (idem_left U)`.
+-/
 theorem mconv_idem_idem {w : Pl E} {U : Subgroup (GLw a w × GLw b w)} (hU : IsOpen (U : Set (GLw a w × GLw b w)))
     (hUK : U ≤ K2 a b w) : PositivityTheory.Rg.BcN.F2.mconv (idem U) (idem U) = idem U :=
   mconv_idem_left hU hUK _ (idem_left U)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Unfold `LM.ent`. Use `split_ifs with hw`. Use `show ∑ z, PositivityTheory.Rg.BcN.F2.mconv ((sel U L Q₁).m w _ z) ((sel U L Q₂).m w z _) = (sel U L (Q₁ ∪ Q₂)).m w _ _`. Simplify using `only [sel]`.
+
+Distinguish the cases in `h₁ : w ∈ Q₁`. Establish `h₂ : w ∉ Q₂` using `Finset.disjoint_left.1 hd h₁`. Simplify using `only [h₁, h₂, if_true, if_false, Finset.mem_union, true_or]`. Rewrite using `[sum_mconv_right]`. Conclude with `mconv_idem_right (hU.1 w).1 (hU.1 w).2 _ fun u hu g => (hinv w hw _ _ u hu g).2`.
+
+Distinguish the cases in `h₂ : w ∈ Q₂`. Simplify using `only [h₁, h₂, if_true, if_false, Finset.mem_union, or_true]`. Rewrite using `[sum_mconv_left]`. Conclude with `mconv_idem_left (hU.1 w).1 (hU.1 w).2 _ fun u hu g => (hinv w hw _ _ u hu g).1`. Simplify using `only [h₁, h₂, if_false, Finset.mem_union, or_self]`.
+
+Rewrite using `[sum_mconv_left (fun z => if z = _ then idem (U w) else 0)]`. Use `split_ifs with hxy`. Conclude with `mconv_idem_idem (hU.1 w).1 (hU.1 w).2`. Conclude with `mconv_zero_right _`. Use `show PositivityTheory.Rg.BcN.F2.mconv (L.s w) (L.s w) = L.s w`.
+
+Rewrite using `[hs w]`. Conclude with `mconv_idem_idem (hU.1 w).1 (hU.1 w).2`.
+-/
 theorem sel_mul_ent {U : ∀ w : Pl E, Subgroup (GLw a w × GLw b w)} {L : LM κ a b} {P : Finset (Pl E)} (hU : IsLev U)
     (hs : ∀ w, L.s w = idem (U w))
     (hinv : ∀ w ∈ P, ∀ x y, ∀ u ∈ U w, ∀ g, L.m w x y (u * g) = L.m w x y g ∧ L.m w x y (g * u) = L.m w x y g)
@@ -268,24 +365,39 @@ end Alg
 
 section Lev
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⊤, isOpen_univ, fun _ _ _ => rfl⟩`.
+-/
 theorem hasLev_zero : HasLev (0 : H E a b → ℂ) :=
   ⟨⊤, isOpen_univ, fun _ _ _ => rfl⟩
 
+/- English proof (translation)
+Take `⟨U, hU, hG⟩` from `h`. Take `⟨U', hU', hG'⟩` from `h'`. Use `⟨U ⊓ U', by rw [Subgroup.coe_inf]; exact hU.inter hU', fun u hu x => ?_⟩` and prove the remaining obligations. Simplify using `[hG u hu.1 x, hG' u hu.2 x]`.
+-/
 theorem hasLev_add {G G' : H E a b → ℂ} (h : HasLev G) (h' : HasLev G') : HasLev (G + G') := by
   obtain ⟨U, hU, hG⟩ := h
   obtain ⟨U', hU', hG'⟩ := h'
   refine ⟨U ⊓ U', by rw [Subgroup.coe_inf]; exact hU.inter hU', fun u hu x => ?_⟩
   simp [hG u hu.1 x, hG' u hu.2 x]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hasLev_zero, fun _ _ => ⟨zero_mem _, fun _ => zero_mem _⟩⟩`.
+-/
 theorem ofLev_zero (S : Set (Pl E)) (U₁ U₂ : ∀ w : Pl E, Subgroup (GLw a w × GLw b w)) :
     OfLev S U₁ U₂ (0 : H E a b → ℂ) :=
   ⟨hasLev_zero, fun _ _ => ⟨zero_mem _, fun _ => zero_mem _⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hasLev_add h.1 h'.1, fun w hw => ⟨add_mem (h.2 w hw).1 (h'.2 w hw).1, fun hs => add_mem ((h.2 w hw).2 hs) ((h'.2 w hw).2 hs)⟩⟩`.
+-/
 theorem ofLev_add {S : Set (Pl E)} {U₁ U₂ : ∀ w : Pl E, Subgroup (GLw a w × GLw b w)} {G G' : H E a b → ℂ}
     (h : OfLev S U₁ U₂ G) (h' : OfLev S U₁ U₂ G') : OfLev S U₁ U₂ (G + G') :=
   ⟨hasLev_add h.1 h'.1, fun w hw => ⟨add_mem (h.2 w hw).1 (h'.2 w hw).1,
     fun hs => add_mem ((h.2 w hw).2 hs) ((h'.2 w hw).2 hs)⟩⟩
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using ofLev_zero S U₁ U₂`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi]`. Conclude with `ofLev_add (h i (Finset.mem_insert_self _ _)) (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+-/
 theorem ofLev_sum {ι : Type} (s : Finset ι) {S : Set (Pl E)} {U₁ U₂ : ∀ w : Pl E, Subgroup (GLw a w × GLw b w)}
     {G : ι → H E a b → ℂ} (h : ∀ i ∈ s, OfLev S U₁ U₂ (G i)) : OfLev S U₁ U₂ (∑ i ∈ s, G i) := by
   induction s using Finset.induction_on with
@@ -294,6 +406,9 @@ theorem ofLev_sum {ι : Type} (s : Finset ι) {S : Set (Pl E)} {U₁ U₂ : ∀ 
     rw [Finset.sum_insert hi]
     exact ofLev_add (h i (Finset.mem_insert_self _ _)) (ih fun j hj => h j (Finset.mem_insert_of_mem hj))
 
+/- English proof (translation)
+Use `choose V hV hG using h`. Use `⟨⨅ i, V i, ?_, fun i u hu x => hG i u ((Subgroup.mem_iInf.1 hu) i) x⟩` and prove the remaining obligations. Rewrite using `[Subgroup.coe_iInf]`. Conclude with `isOpen_iInter_of_finite hV`.
+-/
 theorem common_level {ι : Type} [Finite ι] {G : ι → H E a b → ℂ} (h : ∀ i, HasLev (G i)) :
     ∃ U : Subgroup (Hf E a b), IsOpen (U : Set (Hf E a b)) ∧ ∀ i, ∀ u ∈ U, ∀ x, G i (x * finH u) = G i x := by
   choose V hV hG using h
@@ -303,6 +418,15 @@ theorem common_level {ι : Type} [Finite ι] {G : ι → H E a b → ℂ} (h : �
 
 end Lev
 
+/- English proof (translation)
+Establish `hit : ∀ (f : X → X), (∀ x, C x → C (f x)) → ∀ k x, C x → C (f^[k] x)`. Introduce `f hf k`. Proceed by induction on `k with`. Consider the case `zero => exact fun x hx => hx`. Consider the case `succ k ih => exact fun x hx => by rw [Function.iterate_succ_apply']; exact hf _ (ih x hx)`.
+
+Establish `hc : ∀ k y, C y → T'^[k] (O y) = O (T'^[k] y)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact fun _ _ => rfl`. Consider the case `succ k ih`.
+
+Introduce `y hy`. Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply', ih y hy, hcomm _ (hit T' hT' k y hy)]`. Proceed by induction on `m with`. Consider the case `zero => rfl`. Consider the case `succ m ih`.
+
+Establish `hy` using `hit O hO m x hx`. Rewrite using `[Function.iterate_succ_apply', ih, hfac _ (hit T' hT' m _ hy), Function.iterate_succ_apply' O, hc (m + 1) _ hy, Function.iterate_succ_apply']`.
+-/
 theorem iter_fac {X : Type} (C : X → Prop) (T T' O : X → X) (hO : ∀ x, C x → C (O x)) (hT' : ∀ x, C x → C (T' x))
     (hfac : ∀ x, C x → T x = O (T' x)) (hcomm : ∀ x, C x → T' (O x) = O (T' x)) (m : ℕ) (x : X) (hx : C x) :
     T^[m] x = T'^[m] (O^[m] x) := by
@@ -327,6 +451,15 @@ theorem iter_fac {X : Type} (C : X → Prop) (T T' O : X → X) (hO : ∀ x, C x
 
 section Act
 
+/- English proof (translation)
+Establish `A` using `fun (i j : Slot S) => hAct E a b S hS φ₁ φ₂ ι₁ ι₂ hφ₁ hφ₂ hι₁ hι₂ G G hG.1 hG.1 i j`. Establish `hL : HasLev (actP v (φ₁ v) G)` using `(A (Sum.inl ⟨v, hv⟩) (Sum.inl ⟨v, hv⟩)).1`. Use `⟨hL, fun u hu => ⟨?_, fun hsp => ?_⟩⟩` and prove the remaining obligations. Use `(hId E a b u (U₁ u) _ (hU₁.1 u).1 (hU₁.1 u).2 hL).1.1 ?_` and prove the remaining obligations. Distinguish the cases in `huv : u = v`.
+
+Substitute `huv` using the available equality. Establish `B' : actP u (PositivityTheory.Rg.BcN.F2.mconv (ι₁ u) (φ₁ u)) G = actP u (ι₁ u) (actP u (φ₁ u) G)` using `(hAct E a b S hS ι₁ ι₂ φ₁ φ₂ hι₁ hι₂ hφ₁ hφ₂ G G hG.1 hG.1 (Sum.inl ⟨u, hv⟩) (Sum.inl ⟨u, hv⟩)).2.2.2`. Rewrite `B'` using `[h₁ u, mconv_idem_left (hU₁.1 u).1 (hU₁.1 u).2 _ hbi]`. Conclude with `B'.symm`. Establish `hj : (Sum.inl ⟨v, hv⟩ : Slot S) ≠ Sum.inl ⟨u, hu⟩` using `fun h => huv (congrArg Subtype.val (Sum.inl.inj h)).symm`.
+
+Establish `C' : actP v (φ₁ v) (actP u (ι₁ u) G) = actP u (ι₁ u) (actP v (φ₁ v) G)` using `(A _ _).2.2.1 hj`. Establish `hGu : actP u (idem (U₁ u)) G = G` using `(hId E a b u (U₁ u) G (hU₁.1 u).1 (hU₁.1 u).2 hG.1).1.2 (hG.2 u hu).1`. Rewrite `C'` using `[h₁ u, hGu]`. Conclude with `C'.symm`. Use `(hId E a b u (U₂ u) _ (hU₂.1 u).1 (hU₂.1 u).2 hL).2.1 ?_` and prove the remaining obligations.
+
+Establish `hj : (Sum.inl ⟨v, hv⟩ : Slot S) ≠ Sum.inr ⟨u, hu, hsp⟩` using `by simp`. Establish `C' : actP v (φ₁ v) (actT u (ι₂ u) G) = actT u (ι₂ u) (actP v (φ₁ v) G)` using `(A _ _).2.2.1 hj`. Establish `hGu : actT u (idem (U₂ u)) G = G` using `(hId E a b u (U₂ u) G (hU₂.1 u).1 (hU₂.1 u).2 hG.1).2.2 ((hG.2 u hu).2 hsp)`. Rewrite `C'` using `[h₂ u, hGu]`. Conclude with `C'.symm`.
+-/
 theorem ofLev_actS (hAct : ActAlg) (hId : ActIdem) {S : Set (Pl E)} (hS : IsSection S)
     {U₁ U₂ : ∀ w : Pl E, Subgroup (GLw a w × GLw b w)} (hU₁ : IsLev U₁) (hU₂ : IsLev U₂)
     {ι₁ ι₂ φ₁ φ₂ : ∀ w : Pl E, LF a b w} (hι₁ : IsTestP ι₁) (hι₂ : IsTestP ι₂) (hφ₁ : IsTestP φ₁) (hφ₂ : IsTestP φ₂)
@@ -358,6 +491,15 @@ theorem ofLev_actS (hAct : ActAlg) (hId : ActIdem) {S : Set (Pl E)} (hS : IsSect
     rw [h₂ u, hGu] at C'
     exact C'.symm
 
+/- English proof (translation)
+Establish `hadd` using `fun (X Y : H E a b → ℂ) (hX : HasLev X) (hY : HasLev Y) => ((hAct E a b S hS φ₁ φ₂ φ₁ φ₂ hφ₁ hφ₂ hφ₁ hφ₂ X Y hX hY i i).2.1 1)`. Simplify using `only [one_smul] at hadd`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Establish `h0` using `hadd 0 0 hasLev_zero hasLev_zero`.
+
+Simplify using `using h0`. Consider the case `insert j s hj ih`. Establish `hs : HasLev (∑ j ∈ s, G j)`. Establish `: ∀ t : Finset ι, (∀ j ∈ t, HasLev (G j)) → HasLev (∑ j ∈ t, G j)`. Introduce `t`.
+
+Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => intro _`. Simplify using `using hasLev_zero`. Consider the case `insert k t hk ih'`. Introduce `h`.
+
+Rewrite using `[Finset.sum_insert hk]`. Conclude with `hasLev_add (h k (Finset.mem_insert_self _ _)) (ih' fun l hl => h l (Finset.mem_insert_of_mem hl))`. Conclude with `this s fun l hl => hG l (Finset.mem_insert_of_mem hl)`. Rewrite using `[Finset.sum_insert hj, Finset.sum_insert hj, hadd _ _ (hG j (Finset.mem_insert_self _ _)) hs, ih fun l hl => hG l (Finset.mem_insert_of_mem hl)]`.
+-/
 theorem actS_sum (hAct : ActAlg) {S : Set (Pl E)} (hS : IsSection S) {φ₁ φ₂ : ∀ w : Pl E, LF a b w}
     (hφ₁ : IsTestP φ₁) (hφ₂ : IsTestP φ₂) (i : Slot S) {ι : Type} (s : Finset ι) {G : ι → H E a b → ℂ}
     (hG : ∀ j ∈ s, HasLev (G j)) : actS φ₁ φ₂ i (∑ j ∈ s, G j) = ∑ j ∈ s, actS φ₁ φ₂ i (G j) := by
@@ -382,6 +524,9 @@ theorem actS_sum (hAct : ActAlg) {S : Set (Pl E)} (hS : IsSection S) {φ₁ φ�
     rw [Finset.sum_insert hj, Finset.sum_insert hj, hadd _ _ (hG j (Finset.mem_insert_self _ _)) hs,
       ih fun l hl => hG l (Finset.mem_insert_of_mem hl)]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify `GlobalTheory.CompanionTheory.FamClP.hint_zero (K2 a b w)` using `[actP]`.
+-/
 theorem localAction_zero_left (w : Pl E) (G : H E a b → ℂ) : actP w (0 : LF a b w) G = 0 := by
   funext z
   simpa [actP] using GlobalTheory.CompanionTheory.FamClP.hint_zero (K2 a b w)
@@ -393,15 +538,26 @@ section Main
 variable {κ : Pl E → Type} [∀ w, Fintype (κ w)] {S : Set (Pl E)} {P : Finset (Pl E)} {B : Block E}
   {e : B.κ ≃ ∀ w : P, κ w} {U₁ U₂ : ∀ w : Pl E, Subgroup (GLw B.a w × GLw B.b w)} {L : LM κ B.a B.b}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x y`. Simplify using `[sel]`.
+-/
 theorem sel_self (v : Pl E) : (sel U₁ L {v}).m v = L.m v := by
   funext x y
   simp [sel]
 
+/- English proof (translation)
+Unfold `LM.ent`. Rewrite using `[dif_pos v.2]`.
+-/
 theorem ent_at (Q : Finset (Pl E)) (v : P) (X Y : ∀ w : P, κ w) :
     (sel U₁ L Q).ent P X Y v.1 = (sel U₁ L Q).m v.1 (X v) (Y v) := by
   unfold LM.ent
   rw [dif_pos v.2]
 
+/- English proof (translation)
+Establish `h` using `(sel_ok hU₁ hok ∅).1 X X`. Establish `e' : (sel U₁ L ∅).ent P X X = L.s`. Use function extensionality and compare the values at `w`. Unfold `LM.ent`. Use `split_ifs`.
+
+Simplify using `[sel, hs w]`. Both sides reduce to the same expression. Rewrite `h` using `[e']`. Then use the resulting hypothesis.
+-/
 theorem test_alt (hU₁ : IsLev U₁) (hok : L.Ok P) (hs : ∀ w, L.s w = idem (U₁ w)) (X : ∀ w : P, κ w) : IsTestP L.s := by
   have h := (sel_ok hU₁ hok ∅).1 X X
   have e' : (sel U₁ L ∅).ent P X X = L.s := by
@@ -412,6 +568,9 @@ theorem test_alt (hU₁ : IsLev U₁) (hok : L.Ok P) (hs : ∀ w, L.s w = idem (
     · rfl
   rwa [e'] at h
 
+/- English proof (translation)
+Use `⟨(sel U₁ L {v.1}).ent P (Function.update X v r) (Function.update X v s), (sel_ok hU₁ hok _).1 _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[ent_at, sel_self, Function.update_self, Function.update_self]`.
+-/
 theorem exists_fam (hU₁ : IsLev U₁) (hok : L.Ok P) (X : ∀ w : P, κ w) (v : P) (r s : κ v.1) :
     ∃ φ : ∀ w : Pl E, LF B.a B.b w, IsTestP φ ∧ φ v.1 = L.m v.1 r s := by
   refine ⟨(sel U₁ L {v.1}).ent P (Function.update X v r) (Function.update X v s), (sel_ok hU₁ hok _).1 _ _, ?_⟩
@@ -423,6 +582,15 @@ variable (hAlg : FmAlg) (hAt : FmAtP) (hCM : Tail.ConvMul) (hAct : ActAlg) (hId 
   (hinv : ∀ w ∈ P, ∀ x y, ∀ u ∈ U₁ w, ∀ g, L.m w x y (u * g) = L.m w x y g ∧ L.m w x y (g * u) = L.m w x y g)
 
 include hAt hId hS hP hU₁ hU₂ hok hs ht in
+/- English proof (translation)
+Use `hAt E κ S P B e hS hP Unit (sel U₁ L Q) v G (sel_ok hU₁ hok Q) (fun i => (hG i).1) ⟨?_, ?_⟩ p x` and prove the remaining obligations. Introduce `w hw hne r s hrs`. Establish `hwv : w ≠ v.1` using `fun h => hne (hP hw) (by subst h; rfl)`. Establish `hwQ : w ∉ Q` using `fun h => hwv (hQ w h)`. Simplify using `[sel, hwQ, hrs]`.
+
+Introduce and unpack `(⟨u, hu⟩ | ⟨u, hu, hsp⟩) hi p' x' y' hxy`. Establish `huv : u ≠ v.1` using `fun h => hi (by subst h; rfl)`. Establish `huQ : u ∉ Q` using `fun h => huv (hQ u h)`. Establish `hent : (sel U₁ L Q).ent P (e x') (e y') u = idem (U₁ u)`. Unfold `LM.ent`.
+
+Use `split_ifs with huP`. Establish `hne : ∀ h : u ∈ S, (Sum.inl ⟨v.1, hP v.2⟩ : Slot S) ≠ Sum.inl ⟨u, h⟩` using `fun h hc => huv (congrArg Subtype.val (Sum.inl.inj hc)).symm`. Simplify using `[sel, huQ, hxy ⟨u, huP⟩ hne]`. Conclude with `hs u`. Use `show actP u ((sel U₁ L Q).ent P (e x') (e y') u) _ = _`.
+
+Rewrite using `[hent]`. Conclude with `(hId E B.a B.b u (U₁ u) _ (hU₁.1 u).1 (hU₁.1 u).2 (hG _).1).1.2 ((hG _).2 u hu).1`. Use `show actT u (L.t u) _ = _`. Rewrite using `[ht u]`. Conclude with `(hId E B.a B.b u (U₂ u) _ (hU₂.1 u).1 (hU₂.1 u).2 (hG _).1).2.2 (((hG _).2 u hu).2 hsp)`.
+-/
 theorem fm_one (v : P) (Q : Finset (Pl E)) (hQ : ∀ u ∈ Q, u = v.1) (G : Unit × B.κ → H E B.a B.b → ℂ)
     (hG : ∀ i, OfLev S U₁ U₂ (G i)) (p : Unit) (x : B.κ) :
     convF B.ν (fm S P B e (sel U₁ L Q)) G (p, x) =
@@ -450,6 +618,9 @@ theorem fm_one (v : P) (Q : Finset (Pl E)) (hQ : ∀ u ∈ Q, u = v.1) (G : Unit
       exact (hId E B.a B.b u (U₂ u) _ (hU₂.1 u).1 (hU₂.1 u).2 (hG _).1).2.2 (((hG _).2 u hu).2 hsp)
 
 include hAt hId hS hP hU₁ hU₂ hok hs ht in
+/- English proof (translation)
+Rewrite using `[fm_one hAt hId hS hP hU₁ hU₂ hok hs ht v {v.1} (fun u hu => Finset.mem_singleton.1 hu) G hG p, Equiv.apply_symm_apply, sel_self]`.
+-/
 theorem fm_self (v : P) (G : Unit × B.κ → H E B.a B.b → ℂ) (hG : ∀ i, OfLev S U₁ U₂ (G i)) (p : Unit)
     (X : ∀ w : P, κ w) :
     convF B.ν (fm S P B e (sel U₁ L {v.1})) G (p, e.symm X) =
@@ -458,6 +629,11 @@ theorem fm_self (v : P) (G : Unit × B.κ → H E B.a B.b → ℂ) (hG : ∀ i, 
     Equiv.apply_symm_apply, sel_self]
 
 include hAt hId hS hP hU₁ hU₂ hok hs ht in
+/- English proof (translation)
+Use function extensionality and compare the values at `⟨p, x⟩`. Rewrite using `[fm_one hAt hId hS hP hU₁ hU₂ hok hs ht v ∅ (by simp) G hG p, Finset.sum_eq_single (e x v)]`. Simplify using `only [sel, Finset.notMem_empty, if_false, if_true, Function.update_eq_self, Equiv.symm_apply_apply]`. Conclude with `(hId E B.a B.b v.1 (U₁ v.1) _ (hU₁.1 v.1).1 (hU₁.1 v.1).2 (hG _).1).1.2 ((hG _).2 v.1 (hP v.2)).1`. Introduce `y _ hy`.
+
+Simplify using `only [sel, Finset.notMem_empty, if_false]`. Rewrite using `[if_neg (Ne.symm hy), localAction_zero_left]`. Simplify using the standard rewrite rules.
+-/
 theorem sel_empty (v : P) (G : Unit × B.κ → H E B.a B.b → ℂ) (hG : ∀ i, OfLev S U₁ U₂ (G i)) :
     convF B.ν (fm S P B e (sel U₁ L ∅)) G = G := by
   funext ⟨p, x⟩
@@ -470,6 +646,13 @@ theorem sel_empty (v : P) (G : Unit × B.κ → H E B.a B.b → ℂ) (hG : ∀ i
   · simp
 
 include hAct hAt hId hS hP hU₁ hU₂ hok hs ht hinv in
+/- English proof (translation)
+Take `⟨p, x⟩` from `i`. Establish `hx` using `fm_self (e := e) hAt hId hS hP hU₁ hU₂ hok hs ht v G hG p (e x)`. Rewrite `hx` using `[Equiv.symm_apply_apply]`. Rewrite using `[hx]`. Use `ofLev_sum _ fun y _ => ?_` and prove the remaining obligations.
+
+Take `⟨φ, hφ, hφv⟩` from `exists_fam hU₁ hok (e x) v (e x v) y`. Rewrite using `[← hφv]`. Use `ofLev_actS hAct hId hS hU₁ hU₂ (test_alt hU₁ hok hs (e x)) hok.2 hφ hok.2 hs ht (hP v.2) ?_ (hG _)` and prove the remaining obligations. Introduce `u hu g`. Rewrite using `[hφv]`.
+
+Conclude with `(hinv v.1 v.2 _ _ u hu g).1`.
+-/
 theorem one_ofLev (v : P) (G : Unit × B.κ → H E B.a B.b → ℂ) (hG : ∀ i, OfLev S U₁ U₂ (G i)) (i : Unit × B.κ) :
     OfLev S U₁ U₂ (convF B.ν (fm S P B e (sel U₁ L {v.1})) G i) := by
   obtain ⟨p, x⟩ := i
@@ -485,6 +668,19 @@ theorem one_ofLev (v : P) (G : Unit × B.κ → H E B.a B.b → ℂ) (hG : ∀ i
   exact (hinv v.1 v.2 _ _ u hu g).1
 
 include hAct hAt hId hS hP hU₁ hU₂ hok hs ht hinv in
+/- English proof (translation)
+Establish `hO` using `fun (t : P) => one_ofLev (e := e) hAt hAct hId hS hP hU₁ hU₂ hok hs ht hinv t G hG`. Establish `hF` using `fun (t : P) (H' : Unit × B.κ → H E B.a B.b → ℂ) (hH : ∀ i, OfLev S U₁ U₂ (H' i)) (p : Unit) (X) => fm_self (e := e) hAt hId hS hP hU₁ hU₂ hok hs ht t H' hH p X`. Use function extensionality and compare the values at `⟨p, x⟩`. Establish `expand : ∀ (s t : P), s ≠ t → convF B.ν (fm S P B e (sel U₁ L {s.1})) (convF B.ν (fm S P B e (sel U₁ L {t.1})) G) (p, x) = ∑ y : κ s.1, ∑ z : κ t.1, actP s.1 (L.m s.1 (e x s) y) (actP t.1 (L.m t.1 (e x t) z) (G (p, e.symm (Function.update (Function.update (e x) s y) t z))))`. Introduce `s t hst`.
+
+Establish `h1` using `hF s _ (hO t) p (e x)`. Rewrite `h1` using `[Equiv.symm_apply_apply]`. Rewrite using `[h1]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[hF t G hG p, Function.update_of_ne (Ne.symm hst)]`.
+
+Take `⟨φ, hφ, hφv⟩` from `exists_fam hU₁ hok (e x) s (e x s) y`. Take `⟨ψ, hψ, hψv⟩` from `exists_fam hU₁ hok (e x) t (e x t) (e x t)`. Rewrite using `[← hφv]`. Use `actS_sum hAct hS hφ hok.2 (Sum.inl ⟨s.1, hP s.2⟩) _ fun z _ => ?_` and prove the remaining obligations. Take `⟨χ, hχ, hχv⟩` from `exists_fam hU₁ hok (e x) t (e x t) z`.
+
+Rewrite using `[← hχv]`. Establish `hz` using `(hG (p, e.symm (Function.update (Function.update (e x) s y) t z))).1`. Conclude with `(hAct E B.a B.b S hS χ L.t χ L.t hχ hok.2 hχ hok.2 _ _ hz hz (Sum.inl ⟨t.1, hP t.2⟩) (Sum.inl ⟨t.1, hP t.2⟩)).1`. Rewrite using `[expand u v huv, expand v u (Ne.symm huv), Finset.sum_comm]`. Use `Finset.sum_congr rfl fun z _ => Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations.
+
+Take `⟨φ, hφ, hφv⟩` from `exists_fam hU₁ hok (e x) u (e x u) y`. Take `⟨ψ, hψ, hψv⟩` from `exists_fam hU₁ hok (e x) v (e x v) z`. Rewrite using `[Function.update_comm huv, ← hφv, ← hψv]`. Establish `hne : (Sum.inl ⟨u.1, hP u.2⟩ : Slot S) ≠ Sum.inl ⟨v.1, hP v.2⟩`. Introduce `h`.
+
+Establish `h2` using `Sum.inl_injective h`. Conclude with `huv (Subtype.ext (Subtype.mk.inj h2))`. Establish `hz` using `(hG (p, e.symm (Function.update (Function.update (e x) v z) u y))).1`. Conclude with `(hAct E B.a B.b S hS φ L.t ψ L.t hφ hok.2 hψ hok.2 _ _ hz hz _ _).2.2.1 hne`.
+-/
 theorem one_comm (u v : P) (huv : u ≠ v) (G : Unit × B.κ → H E B.a B.b → ℂ) (hG : ∀ i, OfLev S U₁ U₂ (G i)) :
     convF B.ν (fm S P B e (sel U₁ L {u.1})) (convF B.ν (fm S P B e (sel U₁ L {v.1})) G) =
       convF B.ν (fm S P B e (sel U₁ L {v.1})) (convF B.ν (fm S P B e (sel U₁ L {u.1})) G) := by
@@ -523,6 +719,15 @@ theorem one_comm (u v : P) (huv : u ≠ v) (G : Unit × B.κ → H E B.a B.b →
   exact (hAct E B.a B.b S hS φ L.t ψ L.t hφ hok.2 hψ hok.2 _ _ hz hz _ _).2.2.1 hne
 
 include hAlg hCM hok hS hP hU₁ hU₂ hs ht hinv in
+/- English proof (translation)
+Establish `o₁` using `sel_ok hU₁ hok Q₁`. Establish `o₂` using `sel_ok hU₁ hok Q₂`. Take `⟨f₁, -, hm, -, -⟩` from `hAlg E κ S P B e hS hP (sel U₁ L Q₁) (sel U₁ L Q₂) o₁ o₂`. Take `⟨f₂, -⟩` from `hAlg E κ S P B e hS hP (sel U₁ L Q₂) (sel U₁ L Q₁) o₂ o₁`. Establish `ht' : ((sel U₁ L Q₁).mul (sel U₁ L Q₂)).t = (sel U₁ L (Q₁ ∪ Q₂)).t`.
+
+Use function extensionality and compare the values at `w`. Use `show PositivityTheory.Rg.BcN.F2.mconv (L.t w) (L.t w) = L.t w`. Rewrite using `[ht w]`. Conclude with `mconv_idem_idem (hU₂.1 w).1 (hU₂.1 w).2`. Establish `hf : fm S P B e ((sel U₁ L Q₁).mul (sel U₁ L Q₂)) = fm S P B e (sel U₁ L (Q₁ ∪ Q₂))`.
+
+Use function extensionality and compare the values at `x y h`. Unfold `fm`. Rewrite using `[sel_mul_ent hU₁ hs hinv hQ₁ hQ₂ hd, ht']`. Take `⟨U, hUo, hUl⟩` from `common_level fun i => (hG i).1`. Rewrite using `[← hf, ← hm]`.
+
+Conclude with `(hCM E B Unit _ _ U G f₁ f₂ hUo hUl).1`.
+-/
 theorem step {Q₁ Q₂ : Finset (Pl E)} (hQ₁ : Q₁ ⊆ P) (hQ₂ : Q₂ ⊆ P) (hd : Disjoint Q₁ Q₂)
     (G : Unit × B.κ → H E B.a B.b → ℂ) (hG : ∀ i, OfLev S U₁ U₂ (G i)) :
     convF B.ν (fm S P B e (sel U₁ L (Q₁ ∪ Q₂))) G =
@@ -545,6 +750,17 @@ theorem step {Q₁ Q₂ : Finset (Pl E)} (hQ₁ : Q₁ ⊆ P) (hQ₂ : Q₂ ⊆ 
   exact (hCM E B Unit _ _ U G f₁ f₂ hUo hUl).1
 
 include hAlg hAt hCM hAct hId hS hP hU₁ hU₂ hok hs ht hinv in
+/- English proof (translation)
+Establish `hO` using `fun (t : P) G hG => one_ofLev (e := e) hAt hAct hId hS hP hU₁ hU₂ hok hs ht hinv t G hG`. Establish `hE` using `fun G hG => sel_empty (e := e) hAt hId hS hP hU₁ hU₂ hok hs ht v₀ G hG`. Proceed by induction on `Q using Finset.induction_on with`. Consider the case `empty`. Use `⟨fun G hG => by rw [hE G hG]; exact hG, fun v _ G hG => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hE G hG, hE _ (hO v G hG)]`. Consider the case `insert u Q hu ih`. Establish `huP : u ∈ P` using `hQ (Finset.mem_insert_self _ _)`. Establish `hQP : Q ⊆ P` using `fun x hx => hQ (Finset.mem_insert_of_mem hx)`. Take `⟨c₁, c₂⟩` from `ih hQP`.
+
+Establish `hst : ∀ G : Unit × B.κ → H E B.a B.b → ℂ, (∀ i, OfLev S U₁ U₂ (G i)) → convF B.ν (fm S P B e (sel U₁ L (insert u Q))) G = convF B.ν (fm S P B e (sel U₁ L {u})) (convF B.ν (fm S P B e (sel U₁ L Q)) G)`. Introduce `G hG`. Rewrite using `[Finset.insert_eq]`. Conclude with `step hAlg hCM hS hP hU₁ hU₂ hok hs ht hinv (Finset.singleton_subset_iff.2 huP) hQP (Finset.disjoint_singleton_left.2 hu) G hG`. Use `⟨fun G hG => ?_, fun v hv G hG => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hst G hG]`. Conclude with `hO ⟨u, huP⟩ _ (c₁ G hG)`. Establish `hvu : v.1 ≠ u` using `fun h => hv (h ▸ Finset.mem_insert_self _ _)`. Establish `hvQ : v.1 ∉ Q` using `fun h => hv (Finset.mem_insert_of_mem h)`. Rewrite using `[hst _ (hO v G hG), hst G hG, c₂ v hvQ G hG]`.
+
+Conclude with `one_comm hAt hAct hId hS hP hU₁ hU₂ hok hs ht hinv ⟨u, huP⟩ v (fun h => hvu (congrArg Subtype.val h).symm) _ (c₁ G hG)`.
+-/
 theorem claim (v₀ : P) (Q : Finset (Pl E)) (hQ : Q ⊆ P) :
     (∀ G : Unit × B.κ → H E B.a B.b → ℂ, (∀ i, OfLev S U₁ U₂ (G i)) →
       ∀ i, OfLev S U₁ U₂ (convF B.ν (fm S P B e (sel U₁ L Q)) G i)) ∧
@@ -578,6 +794,29 @@ theorem claim (v₀ : P) (Q : Finset (Pl E)) (hQ : Q ⊆ P) :
         (fun h => hvu (congrArg Subtype.val h).symm) _ (c₁ G hG)
 
 include hAlg hAt hCM hAct hId hS hP hU₁ hU₂ hok hs ht hinv in
+/- English proof (translation)
+Use `set O := convF B.ν (fm S P B e (sel U₁ L {w₀.1})) with hOdef`. Use `set T' := convF B.ν (fm S P B e (sel U₁ L (P.erase w₀.1))) with hT'def`. Establish `hfL : fm S P B e L = fm S P B e (sel U₁ L ({w₀.1} ∪ P.erase w₀.1))`. Establish `hU : ({w₀.1} ∪ P.erase w₀.1 : Finset (Pl E)) = P`. Rewrite using `[← Finset.insert_eq, Finset.insert_erase w₀.2]`.
+
+Rewrite using `[hU]`. Use function extensionality and compare the values at `x y h`. Unfold `fm`. Establish `: L.ent P (e x) (e y) = (sel U₁ L P).ent P (e x) (e y)`. Use function extensionality and compare the values at `w`.
+
+Unfold `LM.ent`. Use `split_ifs with hw`. Simplify using `[sel, hw]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+
+Both sides reduce to the same expression. Establish `hC` using `claim (e := e) hAlg hAt hCM hAct hId hS hP hU₁ hU₂ hok hs ht hinv w₀ (P.erase w₀.1) (Finset.erase_subset _ _)`. Establish `hO` using `one_ofLev (e := e) hAt hAct hId hS hP hU₁ hU₂ hok hs ht hinv w₀`. Establish `hit` using `iter_fac (fun G : Unit × B.κ → H E B.a B.b → ℂ => ∀ i, OfLev S U₁ U₂ (G i)) (convF B.ν (fm S P B e L)) T' O (fun G hG => hO G hG) (fun G hG => hC.1 G hG) (fun G hG => by`. Rewrite using `[hfL]`.
+
+Conclude with `step hAlg hCM hS hP hU₁ hU₂ hok hs ht hinv (Finset.singleton_subset_iff.2 w₀.2) (Finset.erase_subset _ _) (Finset.disjoint_singleton_left.2 (Finset.notMem_erase _ _)) G hG)`. Use the proof step `(fun G hG => hC.2 w₀ (Finset.notMem_erase _ _) G hG) m G hG`. Establish `hOit : ∀ k, ∀ G' : Unit × B.κ → H E B.a B.b → ℂ, (∀ i, OfLev S U₁ U₂ (G' i)) → ∀ i, OfLev S U₁ U₂ (O^[k] G' i)`. Introduce `k`. Proceed by induction on `k with`.
+
+Consider the case `zero => exact fun _ h => h`. Consider the case `succ k ih => exact fun G' h => by rw [Function.iterate_succ_apply']; exact hO _ (ih G' h)`. Establish `hsl : ∀ k (x : ∀ w : P, κ w), (fun y => O^[k] G ((), e.symm (Function.update x w₀ y))) = (locM w₀.1 (L.m w₀.1))^[k] (fun y => G ((), e.symm (Function.update x w₀ y)))`. Introduce `k x`. Proceed by induction on `k with`.
+
+Consider the case `zero => rfl`. Consider the case `succ k ih`. Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply', ← ih]`. Use function extensionality and compare the values at `y`. Rewrite using `[hOdef, fm_self (e := e) hAt hId hS hP hU₁ hU₂ hok hs ht w₀ _ (hOit k G hG) (), Function.update_self]`.
+
+Simplify using `only [Function.update_idem]`. Both sides reduce to the same expression. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hz : O^[m] G = 0`.
+
+Use function extensionality and compare the values at `⟨p, z⟩`. Establish `h1` using `congrFun (hsl m (e z)) (e z w₀)`. Rewrite `h1` using `[hcon (e z)]`. Simplify using `using h1`. Establish `hT0 : ∀ k, T'^[k] (0 : Unit × B.κ → H E B.a B.b → ℂ) = 0`.
+
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih`. Rewrite using `[Function.iterate_succ_apply', ih]`.
+
+Use function extensionality and compare the values at `i z`. Simplify using `[hT'def, convF]`. Conclude with `h (by rw [hit, hz, hT0])`.
+-/
 theorem main_unit (G : Unit × B.κ → H E B.a B.b → ℂ) (hG : ∀ i, OfLev S U₁ U₂ (G i)) (m : ℕ)
     (h : (convF B.ν (fm S P B e L))^[m] G ≠ 0) (w₀ : P) :
     ∃ x : ∀ w : P, κ w,
@@ -642,6 +881,15 @@ theorem main_unit (G : Unit × B.κ → H E B.a B.b → ℂ) (hG : ∀ i, OfLev 
 
 end Main
 
+/- English proof (translation)
+Introduce `hAlg hAt hCM hAct hId E _ _ _ κ _ S P B e hS hP U₁ U₂ L A F m hU₁ hU₂ hok hs ht hinv hF hT w₀`. Establish `hne : ∃ i, (convF B.ν (fm S P B e L))^[m] F i ≠ 0`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hT (funext hc)`.
+
+Take `⟨⟨p, x⟩, hx⟩` from `hne`. Set `sl : (A × B.κ → H E B.a B.b → ℂ) → (Unit × B.κ → H E B.a B.b → ℂ)` to `fun F' i => F' (p, i.2)`. Establish `hsl : ∀ k (F' : A × B.κ → H E B.a B.b → ℂ), sl ((convF B.ν (fm S P B e L))^[k] F') = (convF B.ν (fm S P B e L))^[k] (sl F')`. Introduce `k F'`. Proceed by induction on `k with`.
+
+Consider the case `zero => rfl`. Consider the case `succ k ih`. Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply', ← ih]`. Both sides reduce to the same expression. Establish `hne' : (convF B.ν (fm S P B e L))^[m] (sl F) ≠ 0`.
+
+Rewrite using `[← hsl]`. Introduce `h0`. Conclude with `hx (congrFun h0 ((), x))`. Take `⟨y, hy⟩` from `main_unit hAlg hAt hCM hAct hId hS hP hU₁ hU₂ hok hs ht hinv (sl F) (fun i => hF _) m hne' w₀`. Conclude with `⟨p, y, hy⟩`.
+-/
 theorem fmPowOf : PositivityTheory.Rg.BcB.F.FA.FmPowOf := by
   intro hAlg hAt hCM hAct hId E _ _ _ κ _ S P B e hS hP U₁ U₂ L A F m hU₁ hU₂ hok hs ht hinv hF hT w₀
   have hne : ∃ i, (convF B.ν (fm S P B e L))^[m] F i ≠ 0 := by

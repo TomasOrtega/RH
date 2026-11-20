@@ -9,11 +9,21 @@ namespace GlobalTheory.EtC.ConeClass
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Use `congrArg CohomologyClass.mk (Cocycle.ext ?_)` and prove the remaining obligations. Simplify using `[zcomp, Cochain.ofHom_comp]`.
+-/
 theorem mk_ofHom_comp {K L M : Cx R} (f : K ⟶ L) (g : L ⟶ M) :
     CohomologyClass.mk (Cocycle.ofHom (f ≫ g)) = cpull f M 0 (CohomologyClass.mk (Cocycle.ofHom g)) := by
   refine congrArg CohomologyClass.mk (Cocycle.ext ?_)
   simp [zcomp, Cochain.ofHom_comp]
 
+/- English proof (translation)
+Introduce `a b h`. Rewrite `h` using `[← sub_eq_zero, ← CohomologyClass.mk_sub, CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff (m := -1) (hm := by norm_num)]`. Take `⟨β, hβ⟩` from `h`. Establish `hβ0 : β = 0`. Use `Cochain.ext _ _ fun p q hpq => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hp : p = 0`. Substitute `hp` using the available equality. Conclude with `(CochainComplex.isZero_of_isStrictlyGE I 0 q (by omega)).eq_of_tgt _ _`. Conclude with `(HomologicalComplex.isZero_single_obj_X _ _ _ _ hp).eq_of_src _ _`. Rewrite `hβ` using `[hβ0, δ_zero]`.
+
+Conclude with `sub_eq_zero.1 (Cocycle.ext hβ.symm)`.
+-/
 theorem mk_injective_sgl (X : Shv R) (I : Cx R) [I.IsStrictlyGE 0] :
     Function.Injective (CohomologyClass.mk : Cocycle (sgl X) I 0 → CohomologyClass (sgl X) I 0) := by
   intro a b h
@@ -28,6 +38,15 @@ theorem mk_injective_sgl (X : Shv R) (I : Cx R) [I.IsStrictlyGE 0] :
   rw [hβ0, δ_zero] at hβ
   exact sub_eq_zero.1 (Cocycle.ext hβ.symm)
 
+/- English proof (translation)
+Introduce `x y h`. Take `⟨x, rfl⟩` from `x.mk_surjective`. Take `⟨y, rfl⟩` from `y.mk_surjective`. Establish `h'` using `mk_injective_sgl X I h`. Establish `hg : Epi (((CochainComplex.singleFunctor (Shv R) 0).map g).f 0)`.
+
+Express the relevant statement in the definitionally equal form `Epi (((HomologicalComplex.single _ _ 0).map g).f 0)`. Rewrite using `[HomologicalComplex.single_map_f_self]`. Use `infer_instance`. Use `congr 1`. Use `Cocycle.ext (Cochain.ext _ _ fun p q hpq => ?_)` and prove the remaining obligations.
+
+Distinguish the cases in `hp : p = 0`. Substitute `hp` using the available equality. Take `rfl : q = 0` from `by omega`. Establish `e` using `congrArg (fun z : Cocycle (sgl X) I 0 => z.1.v 0 0 (add_zero 0)) h'`. Simplify using `only [zcomp, Cocycle.mk_coe, Cocycle.ofHom_coe, Cochain.comp_v _ _ (zero_add 0) 0 0 0 (add_zero 0) (add_zero 0), Cochain.ofHom_v] at e`.
+
+Conclude with `(cancel_epi _).1 e`. Conclude with `(HomologicalComplex.isZero_single_obj_X _ _ _ _ hp).eq_of_src _ _`.
+-/
 theorem cpull_single_injective {X Y : Shv R} (g : X ⟶ Y) [Epi g] (I : Cx R) [I.IsStrictlyGE 0] :
     Function.Injective (cpull ((CochainComplex.singleFunctor (Shv R) 0).map g) I 0) := by
   intro x y h
@@ -49,6 +68,9 @@ theorem cpull_single_injective {X Y : Shv R} (g : X ⟶ Y) [Epi g] (I : Cx R) [I
     exact (cancel_epi _).1 e
   · exact (HomologicalComplex.isZero_single_obj_X _ _ _ _ hp).eq_of_src _ _
 
+/- English proof (translation)
+Establish `e` using `congrArg (fun φ => φ (CohomologyClass.mk (Cocycle.ofHom (𝟙 L)))) ((GlobalTheory.T.hypercohomologyPullbackPushforward_functorial R).2.2.2.2 f g ⟨h⟩ L 0).1`. Simplify `e` using `only [← mk_ofHom_comp, Category.comp_id]`.
+-/
 theorem mk_ofHom_eq_of_homotopy {K L : Cx R} (f g : K ⟶ L) (h : Homotopy f g) :
     CohomologyClass.mk (Cocycle.ofHom f) = CohomologyClass.mk (Cocycle.ofHom g) := by
   have e := congrArg (fun φ => φ (CohomologyClass.mk (Cocycle.ofHom (𝟙 L)))) ((GlobalTheory.T.hypercohomologyPullbackPushforward_functorial R).2.2.2.2 f g ⟨h⟩ L 0).1
@@ -58,6 +80,19 @@ end GlobalTheory.EtC.ConeClass
 
 namespace GlobalTheory.EtC.ConeClass
 
+/- English proof (translation)
+Introduce `R _ S hS hc e hh`. Establish `hS' : (S.map (CochainComplex.singleFunctor (Shv R) 0)).ShortExact` using `hS.map_of_exact (HomologicalComplex.single _ _ _)`. Use `haveI : QuasiIso (mappingCone.descShortComplex (S.map (CochainComplex.singleFunctor (Shv R) 0))) := mappingCone.quasiIso_descShortComplex hS'`. Use `haveI : (res R S.X₃).IsKInjective := inferInstanceAs ((injectiveResolution S.X₃).cochainComplex.IsKInjective)`. Use `haveI : (res R S.X₃).IsStrictlyGE 0 := inferInstanceAs ((injectiveResolution S.X₃).cochainComplex.IsStrictlyGE 0)`.
+
+Use `haveI : Epi S.g := hS.epi_g`. Establish `hbij` using `GlobalTheory.T.hypercohomologyPullback_bijective_of_quasiIso R (mappingCone.descShortComplex (S.map (CochainComplex.singleFunctor (Shv R) 0))) (res R S.X₃) 0`. Take `⟨c, hc'⟩` from `hbij.2 (CohomologyClass.mk (Cocycle.ofHom (mappingCone.map _ (resMap R S.f) (resAug S.X₁) (resAug S.X₂) hc ≫ e.hom)))`. Use `(mk_ofHom_comp _ _).trans (Eq.trans ?_ hc')` and prove the remaining obligations. Use `congrArg _ ?_` and prove the remaining obligations.
+
+Establish `hinr : mappingCone.inr (S.map (CochainComplex.singleFunctor (Shv R) 0)).f ≫ mappingCone.map _ (resMap R S.f) (resAug S.X₁) (resAug S.X₂) hc = resAug S.X₂ ≫ mappingCone.inr (resMap R S.f)`. Simplify using `[mappingCone.map]`. Both sides reduce to the same expression. Establish `hres : resAug S.X₂ ≫ resMap R S.g = (CochainComplex.singleFunctor (Shv R) 0).map S.g ≫ resAug S.X₃` using `InjectiveResolution.Hom.ι'_comp_hom' ⟨InjectiveResolution.desc S.g (injectiveResolution _) (injectiveResolution _), InjectiveResolution.desc_commutes_zero _ _ _⟩`. Apply `cpull_single_injective S.g (res R S.X₃)` to reduce the goal to its premises.
+
+Establish `hA : cpull ((CochainComplex.singleFunctor (Shv R) 0).map S.g) (res R S.X₃) 0 (CohomologyClass.mk (Cocycle.ofHom (resAug S.X₃))) = CohomologyClass.mk (Cocycle.ofHom (resAug S.X₂ ≫ mappingCone.inr (resMap R S.f) ≫ e.hom))`. Combine the equalities or inequalities in the displayed calculation. Establish `hB1 : CohomologyClass.mk (Cocycle.ofHom (mappingCone.inr (S.map (CochainComplex.singleFunctor (Shv R) 0)).f ≫ mappingCone.map _ (resMap R S.f) (resAug S.X₁) (resAug S.X₂) hc ≫ e.hom)) = cpull (mappingCone.inr (S.map (CochainComplex.singleFunctor (Shv R) 0)).f) (res R S.X₃) 0 (cpu …`. Rewrite using `[hc', mk_ofHom_comp]`. Establish `hB2 : cpull (mappingCone.inr (S.map (CochainComplex.singleFunctor (Shv R) 0)).f) (res R S.X₃) 0 (cpull (mappingCone.descShortComplex (S.map (CochainComplex.singleFunctor (Shv R) 0))) (res R S.X₃) 0 c) = cpull ((CochainComplex.singleFunctor (Shv R) 0).map S.g) (res R S.X₃) 0 c`.
+
+Rewrite using `[← (GlobalTheory.T.hypercohomologyPullbackPushforward_functorial R).2.1, mappingCone.inr_descShortComplex]`. Both sides reduce to the same expression. Establish `hC : (CohomologyClass.mk (Cocycle.ofHom (resAug S.X₂ ≫ mappingCone.inr (resMap R S.f) ≫ e.hom)) : CohomologyClass (sgl S.X₂) (res R S.X₃) 0) = CohomologyClass.mk (Cocycle.ofHom (mappingCone.inr (S.map (CochainComplex.singleFunctor (Shv R) 0)).f ≫ mappingCone.map _ (resMap R S.f) …`. Rewrite using `[reassoc_of% hinr]`. Both sides reduce to the same expression.
+
+Conclude with `hA.trans (hC.trans (hB1.trans hB2))`.
+-/
 theorem cone_class_eq : ∀ (R : Type) [CommRing R] (S : ShortComplex (Shv R)), S.ShortExact →
     ∀ (hc : (CochainComplex.singleFunctor (Shv R) 0).map S.f ≫ resAug S.X₂ = resAug S.X₁ ≫ resMap R S.f)
     (e : HomotopyEquiv (mappingCone (resMap R S.f)) (res R S.X₃)),

@@ -15,6 +15,11 @@ section SlopeTestRemainingChoices
 
 variable {R₀ : Type} [CommRing R₀] (B : BX R₀) {R : LAlg R₀}
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `B.pairing_exists N 0 y (smul_zero N) hy`. Establish `h` using `B.isPairingValue_add_left N 0 0 y z z hz hz`. Rewrite `h` using `[add_zero]`. Establish `e : z * z = z` using `B.pairing_unique N 0 y _ _ h hz`. Establish `e1 : z = 1` using `by simpa using e`.
+
+Rewrite `hz` using `[e1]`. Then use the resulting hypothesis.
+-/
 private lemma gram_zero (N : ℕ) (y : B.G R) (hy : N • y = 0) : B.IsPairing N 0 y 1 := by
   obtain ⟨z, hz⟩ := B.pairing_exists N 0 y (smul_zero N) hy
   have h := B.isPairingValue_add_left N 0 0 y z z hz hz
@@ -23,6 +28,11 @@ private lemma gram_zero (N : ℕ) (y : B.G R) (hy : N • y = 0) : B.IsPairing N
   have e1 : z = 1 := by simpa using e
   rwa [e1] at hz
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero`. Rewrite using `[zero_smul, pow_zero]`. Conclude with `gram_zero B N y h.2.1`. Consider the case `succ m ih`.
+
+Rewrite using `[succ_nsmul, pow_succ]`. Conclude with `B.isPairingValue_add_left N _ _ y _ _ ih h`.
+-/
 private lemma gram_nsmul (N : ℕ) (x y : B.G R) (z : (R : Type)ˣ) (h : B.IsPairing N x y z)
     (m : ℕ) : B.IsPairing N (m • x) y (z ^ m) := by
   induction m with
@@ -33,6 +43,11 @@ private lemma gram_nsmul (N : ℕ) (x y : B.G R) (z : (R : Type)ˣ) (h : B.IsPai
     rw [succ_nsmul, pow_succ]
     exact B.isPairingValue_add_left N _ _ y _ _ ih h
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.sum_empty, Finset.prod_empty]`. Conclude with `gram_zero B N y hy`. Consider the case `insert a s ha ih`.
+
+Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha]`. Conclude with `B.isPairingValue_add_left N _ _ y _ _ (h a) ih`.
+-/
 private lemma gram_sum {κ : Type} (s : Finset κ) (N : ℕ) (x : κ → B.G R) (y : B.G R)
     (z : κ → (R : Type)ˣ) (hy : N • y = 0) (h : ∀ i, B.IsPairing N (x i) y (z i)) :
     B.IsPairing N (∑ i ∈ s, x i) y (∏ i ∈ s, z i) := by
@@ -47,6 +62,11 @@ private lemma gram_sum {κ : Type} (s : Finset κ) (N : ℕ) (x : κ → B.G R) 
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Establish `hi : ∀ i : ℕ, (p : ℤ) ^ i ∣ (fun i : ℕ => (k (i - 1) : ℤ)) (i + 1) - (fun i : ℕ => (k (i - 1) : ℤ)) i`. Introduce `i`. Consider the cases of `i with`. Consider the case `zero => simp`. Consider the case `succ n`.
+
+Establish `h` using `(Nat.modEq_iff_dvd.1 (hk n))`. Simplify using `using h`. Establish `key` using `PadicInt.toZModPow_ofIntSeq_of_pow_dvd_sub (fun i : ℕ => (k (i - 1) : ℤ)) p hi`. Use `⟨_, fun n => (key (n + 1)).trans ?_⟩` and prove the remaining obligations. Simplify using `only [Nat.add_sub_cancel, Int.cast_natCast]`.
+-/
 private lemma gram_limit {p : ℕ} [Fact p.Prime] (k : ℕ → ℕ)
     (hk : ∀ n, k n ≡ k (n + 1) [MOD p ^ (n + 1)]) :
     ∃ a : ℤ_[p], ∀ n, PadicInt.toZModPow (n + 1) a = (k n : ZMod (p ^ (n + 1))) := by
@@ -62,12 +82,18 @@ private lemma gram_limit {p : ℕ} [Fact p.Prime] (k : ℕ → ℕ)
   refine ⟨_, fun n => (key (n + 1)).trans ?_⟩
   simp only [Nat.add_sub_cancel, Int.cast_natCast]
 
+/- English proof (translation)
+Use `PadicInt.ext_of_toZModPow.1 fun n => ?_` and prove the remaining obligations. Rewrite using `[← PadicInt.cast_toZModPow n (n + 1) (Nat.le_succ n) a, h, PadicInt.cast_toZModPow n (n + 1) (Nat.le_succ n) b]`.
+-/
 private lemma gram_ext {p : ℕ} [Fact p.Prime] (a b : ℤ_[p])
     (h : ∀ n, PadicInt.toZModPow (n + 1) a = PadicInt.toZModPow (n + 1) b) : a = b := by
   refine PadicInt.ext_of_toZModPow.1 fun n => ?_
   rw [← PadicInt.cast_toZModPow n (n + 1) (Nat.le_succ n) a, h,
     PadicInt.cast_toZModPow n (n + 1) (Nat.le_succ n) b]
 
+/- English proof (translation)
+Establish `h1 : a - (k : ℤ_[p]) ∈ RingHom.ker (PadicInt.toZModPow (p` using `p) (0 + 1)) := by`. Rewrite using `[RingHom.mem_ker, map_sub, map_natCast, h, sub_self]`. Rewrite `h1` using `[PadicInt.ker_toZModPow, zero_add, pow_one, ← PadicInt.maximalIdeal_eq_span_p, ← PadicInt.ker_toZMod, RingHom.mem_ker, map_sub, map_natCast, sub_eq_zero]`. Conclude with `h1`.
+-/
 private lemma gram_toZMod {p : ℕ} [Fact p.Prime] (a : ℤ_[p]) (k : ℕ)
     (h : PadicInt.toZModPow (0 + 1) a = (k : ZMod (p ^ (0 + 1)))) :
     PadicInt.toZMod a = (k : ZMod p) := by
@@ -77,6 +103,31 @@ private lemma gram_toZMod {p : ℕ} [Fact p.Prime] (a : ℤ_[p]) (k : ℕ)
     ← PadicInt.ker_toZMod, RingHom.mem_ker, map_sub, map_natCast, sub_eq_zero] at h1
   exact h1
 
+/- English proof (translation)
+Introduce `R₀ _ p hp g B Tw _ _ _ hζ hζp τ htors hcomp hbasis hnd`. Establish `hex : ∀ i j n, ∃ k : ℕ, k < p ^ (n + 1) ∧ B.IsPairing (p ^ (n + 1)) (τ i n) (τ j n) (Tw.ζ n ^ k)`. Introduce `i j n`. Take `⟨z, hz⟩` from `B.pairing_exists _ _ _ (htors i n) (htors j n)`. Establish `: NeZero (p ^ (n + 1))` using `⟨pow_ne_zero _ hp.out.ne_zero⟩`.
+
+Take `⟨k, hk, e⟩` from `(hζ n).eq_pow_of_mem_rootsOfUnity ((mem_rootsOfUnity _ z).2 (B.pairing_pow _ _ _ _ hz))`. Conclude with `⟨k, hk, e ▸ hz⟩`. Use `choose k hklt hk using hex`. Establish `hcompat : ∀ i j n, k i j n ≡ k i j (n + 1) [MOD p ^ (n + 1)]`. Introduce `i j n`.
+
+Establish `h1` using `gram_nsmul B _ _ _ _ (hk i j (n + 1)) p`. Rewrite `h1` using `[← hcomp, pow_succ p (n + 1)]`. Establish `h2` using `B.pairing_mul _ p _ _ _ (htors i n) (by rw [← pow_succ]; exact htors j (n + 1)) h1`. Rewrite `h2` using `[← hcomp, ← pow_mul, mul_comm, pow_mul, hζp]`. Establish `h3` using `B.pairing_unique _ _ _ _ _ (hk i j n) h2`.
+
+Rewrite `h3` using `[pow_eq_pow_iff_modEq, ← (hζ n).eq_orderOf]`. Then use the resulting hypothesis. Use `choose E hE using fun i j => gram_limit (k i j) (hcompat i j)`. Establish `hanti : ∀ i j, E j i = -E i j`. Introduce `i j`. Use `gram_ext _ _ fun n => ?_` and prove the remaining obligations.
+
+Establish `h1` using `B.pairing_unique _ _ _ _ _ (hk j i n) (B.pairing_sw _ _ _ _ (hk i j n))`. Rewrite `h1` using `[eq_inv_iff_mul_eq_one, ← pow_add, (hζ n).pow_eq_one_iff_dvd, ← ZMod.natCast_eq_zero_iff, Nat.cast_add]`. Rewrite using `[map_neg, hE, hE]`. Conclude with `eq_neg_of_add_eq_zero_left h1`. Use `⟨Matrix.of E, ⟨?_, fun i => ?_⟩, ?_, fun i j n => ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `i j`. Conclude with `hanti i j`. Conclude with `self_eq_neg.1 (hanti i i)`. Assume the negation of the conclusion as `hu`. Establish `hd : (Matrix.of E).det ∈ RingHom.ker (PadicInt.toZMod (p` using `p)) := by`.
+
+Rewrite using `[PadicInt.ker_toZMod]`. Conclude with `hu`. Rewrite `hd` using `[RingHom.mem_ker, RingHom.map_det]`. Take `⟨s, hs0, hs⟩` from `Matrix.exists_vecMul_eq_zero_iff.2 hd`. Establish `ht0 : ∀ i, p • τ i 0 = 0` using `fun i => by simpa using htors i 0`.
+
+Establish `hpt : ∀ t : Ix g → ZMod p, p • ptOf B τ t = 0` using `fun t => by`. Simplify using `only [ptOf, Finset.smul_sum, smul_comm p]`. Conclude with `Finset.sum_eq_zero fun j _ => by rw [ht0, smul_zero]`. Establish `hrow : ∀ j, B.IsPairing p (ptOf B τ s) (τ j 0) 1`. Introduce `j`.
+
+Establish `h1` using `gram_sum B Finset.univ (p ^ (0 + 1)) (fun i => (s i).val • τ i 0) (τ j 0) (fun i => (Tw.ζ 0 ^ k i j 0) ^ (s i).val) (htors j 0) (fun i => gram_nsmul B _ _ _ _ (hk i j 0) _)`. Establish `h2 : ∏ i, (Tw.ζ 0 ^ k i j 0) ^ (s i).val = 1`. Simplify using `only [← pow_mul]`. Rewrite using `[Finset.prod_pow_eq_pow_sum, (hζ 0).pow_eq_one_iff_dvd, zero_add, pow_one, ← ZMod.natCast_eq_zero_iff, Nat.cast_sum]`. Use `Eq.trans (Finset.sum_congr rfl fun i _ => ?_) (congrFun hs j)` and prove the remaining obligations.
+
+Rewrite using `[Nat.cast_mul, ZMod.natCast_zmod_val, mul_comm, ← gram_toZMod _ _ (hE i j 0)]`. Both sides reduce to the same expression. Rewrite `h1` using `[h2, zero_add, pow_one]`. Conclude with `h1`. Establish `hx : ptOf B τ s = 0`.
+
+Use `hnd _ (hpt s) fun y hy => ?_` and prove the remaining obligations. Take `⟨t, rfl, -⟩` from `hbasis y hy`. Establish `h1` using `gram_sum B Finset.univ p (fun j => (t j).val • τ j 0) (ptOf B τ s) (fun j => (1⁻¹) ^ (t j).val) (hpt s) (fun j => gram_nsmul B _ _ _ _ (B.pairing_sw _ _ _ _ (hrow j)) _)`. Establish `h2` using `B.pairing_sw _ _ _ _ h1`. Simplify using `only [inv_one, one_pow, Finset.prod_const_one] at h2`.
+
+Conclude with `h2`. Establish `h0 : (0 : B.G Tw.O) = ptOf B τ (0 : Ix g → ZMod p)` using `by simp [ptOf]`. Conclude with `hs0 ((hbasis 0 (smul_zero p)).unique hx.symm h0)`. Rewrite using `[Matrix.of_apply, hE, ZMod.val_cast_of_lt (hklt i j n)]`. Conclude with `hk i j n`.
+-/
 theorem tateBasis_gram :
   (∀ {R₀ : Type} [CommRing R₀] {p : ℕ} [Fact p.Prime] {g : ℕ} (B : BX R₀) (Tw : ATowerL R₀ p) [IsDomain (Tw.O : Type)] [Algebra ℤ_[p] (Tw.O : Type)],
     (∀ n, RingHom.ker (Tw.q n).1 = Ideal.span {((p : ℕ) : (Tw.O : Type)) ^ (n + 1)}) →

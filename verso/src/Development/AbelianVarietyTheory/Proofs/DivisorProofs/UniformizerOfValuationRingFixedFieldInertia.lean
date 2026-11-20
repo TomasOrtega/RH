@@ -12,6 +12,15 @@ set_option autoImplicit false
 
 namespace GlobalTheory.InertiaFixedUniformizer
 
+/- English proof (translation)
+Establish `hπ0 : algebraMap R K π ≠ 0`. Rewrite using `[ne_eq, map_eq_zero_iff _ (IsFractionRing.injective R K)]`. Conclude with `hπ.ne_zero`. Establish `hle : V.valuation (algebraMap K Ω (algebraMap R K π)) ≤ 1`. Rewrite using `[V.valuation_le_one_iff]`.
+
+Establish `: algebraMap R K π ∈ (V.toSubring).comap (algebraMap K Ω)`. Rewrite using `[hV]`. Conclude with `⟨π, rfl⟩`. Conclude with `this`. Use `lt_of_le_of_ne hle fun h1 => hπ.not_isUnit ?_` and prove the remaining obligations.
+
+Establish `hinv : (algebraMap R K π)⁻¹ ∈ (V.toSubring).comap (algebraMap K Ω)`. Express the relevant statement in the definitionally equal form `algebraMap K Ω (algebraMap R K π)⁻¹ ∈ V`. Rewrite using `[← V.valuation_le_one_iff, map_inv₀, map_inv₀, h1, inv_one]`. Rewrite `hinv` using `[hV]`. Take `⟨u, hu⟩` from `hinv`.
+
+Use `IsUnit.of_mul_eq_one u (IsFractionRing.injective R K ?_)` and prove the remaining obligations. Rewrite using `[map_mul, hu, mul_inv_cancel₀ hπ0, map_one]`.
+-/
 theorem valuation_uniformizer_lt_one {R K Ω : Type} [CommRing R] [IsDomain R] [Field K] [Algebra R K]
     [IsFractionRing R K] [Field Ω] [Algebra K Ω] (V : ValuationSubring Ω) (hV : IsAbove R K V.toSubring)
     {π : R} (hπ : Irreducible π) : V.valuation (algebraMap K Ω (algebraMap R K π)) < 1 := by
@@ -32,6 +41,11 @@ theorem valuation_uniformizer_lt_one {R K Ω : Type} [CommRing R] [IsDomain R] [
   refine IsUnit.of_mul_eq_one u (IsFractionRing.injective R K ?_)
   rw [map_mul, hu, mul_inv_cancel₀ hπ0, map_one]
 
+/- English proof (translation)
+Introduce `R K Ω _ _ _ _ _ _ _ _ _ _ V hV π hπ`. Use `⟨valuation_uniformizer_lt_one V hV hπ, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hπ0 : algebraMap R K π ≠ 0`. Rewrite using `[ne_eq, map_eq_zero_iff _ (IsFractionRing.injective R K)]`. Conclude with `hπ.ne_zero`.
+
+Establish `hmem` using `GlobalTheory.FixInertUnram.div_uniformizer_mem R K Ω V hV π hπ (y : Ω) y.2 ((ValuationSubring.mem_nonunits_iff _).2 hy)`. Use `⟨y / algebraMap K _ (algebraMap R K π), ?_, ?_⟩` and prove the remaining obligations. Simplify using `using hmem`. Rewrite using `[mul_div_cancel₀]`. Conclude with `(map_ne_zero _).2 hπ0`.
+-/
 theorem uniformizer_fixedField_inertia : ∀ (R K Ω : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     [PerfectField (ResidueField R)] [Field K] [Algebra R K] [IsFractionRing R K] [Field Ω] [Algebra K Ω]
     [IsSepClosure K Ω] (V : ValuationSubring Ω), IsAbove R K V.toSubring → ∀ π : R, Irreducible π →

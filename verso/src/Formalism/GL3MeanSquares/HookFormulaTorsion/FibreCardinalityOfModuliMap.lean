@@ -7,6 +7,15 @@ namespace Formalism.HermitianLattices.ExplicitEstimates
 open Finset
 open scoped NumberField
 
+/- English proof (translation)
+Establish `hx' : (x : K) ≠ 0` using `by simpa using hx`. Establish `hN : (1:ℝ) ≤ ∏ φ : K →+* ℂ, ‖φ (x:K)‖`. Establish `h1 : (algebraMap ℚ ℂ) (Algebra.norm ℚ (x:K)) = ∏ σ : K →ₐ[ℚ] ℂ, σ (x:K)` using `Algebra.norm_eq_prod_embeddings ℚ ℂ (x:K)`. Establish `h2 : ∏ φ : K →+* ℂ, ‖φ (x:K)‖ = ‖(algebraMap ℚ ℂ) (Algebra.norm ℚ (x:K))‖`. Rewrite using `[h1, norm_prod]`.
+
+Conclude with `Fintype.prod_equiv (RingHom.equivRatAlgHom K ℂ) _ _ (fun φ => rfl)`. Rewrite using `[h2, ← Algebra.coe_norm_int x]`. Establish `h3 : Algebra.norm ℤ x ≠ 0` using `Algebra.norm_ne_zero_iff.mpr hx`. Simplify using the standard rewrite rules. Conclude with `Int.one_le_abs h3` after adjusting the coercions.
+
+Establish `hpos : ∀ φ : K →+* ℂ, 0 < ‖φ (x:K)‖` using `fun φ => norm_pos_iff.mpr ((map_ne_zero φ).mpr hx')`. Establish `hlog : 0 ≤ ∑ φ : K →+* ℂ, Real.log (‖φ (x:K)‖)`. Rewrite using `[← Real.log_prod (fun φ _ => (hpos φ).ne')]`. Conclude with `Real.log_nonneg hN`. Establish `: ∑ φ : K →+* ℂ, (1 + Real.log (‖φ (x:K)‖)) ≤ ∑ φ : K →+* ℂ, ‖φ (x:K)‖` using `Finset.sum_le_sum fun φ _ => by`.
+
+Combine the linear relations using `[Real.add_one_le_exp (Real.log (‖φ (x:K)‖)), Real.exp_log (hpos φ)]`. Rewrite `this` using `[Finset.sum_add_distrib]`. Simplify using `only [Finset.sum_const, Finset.card_univ, NumberField.Embeddings.card, nsmul_eq_mul, mul_one] at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem g4w1_min (K : Type) [Field K] [NumberField K] (x : 𝓞 K) (hx : x ≠ 0) :
     (Module.finrank ℚ K : ℝ) ≤ ∑ φ : K →+* ℂ, ‖φ (x : K)‖ := by
   have hx' : (x : K) ≠ 0 := by simpa using hx
@@ -31,6 +40,33 @@ private theorem g4w1_min (K : Type) [Field K] [NumberField K] (x : 𝓞 K) (hx :
   simp only [Finset.sum_const, Finset.card_univ, NumberField.Embeddings.card, nsmul_eq_mul, mul_one] at this
   linarith
 
+/- English proof (translation)
+Introduce `K _ _ ρ hρ`. Use `set d : ℕ := Module.finrank ℚ K with hd`. Establish `hd0 : (0 : ℝ) < d` using `by exact_mod_cast Module.finrank_pos`. Use `set S : Set (𝓞 K) := {x : 𝓞 K | (∑ φ : K →+* ℂ, ‖φ (x : K)‖) / (d : ℝ) ≤ ρ} with hS`. Set `ι : 𝓞 K →+ PiLp 1 (fun _ : K →+* ℂ => ℂ)` to `{ toFun := fun x => WithLp.toLp 1 (fun φ : K →+* ℂ => φ (x : K)) map_zero' := by ext φ; simp map_add' := by intro x y; ext φ; simp }`.
+
+Establish `hιn : ∀ x : 𝓞 K, ‖ι x‖ = ∑ φ : K →+* ℂ, ‖φ (x : K)‖`. Introduce `x`. Rewrite using `[PiLp.norm_eq_of_L1]`. Both sides reduce to the same expression. Set `b` to `NumberField.RingOfIntegers.basis K`.
+
+Set `E : Submodule ℝ (PiLp 1 (fun _ : K →+* ℂ => ℂ))` to `Submodule.span ℝ (Set.range fun i => ι (b i))`. Establish `hE : Module.finrank ℝ E ≤ d`. Establish `h` using `finrank_range_le_card (R := ℝ) (fun i => ι (b i))`. Rewrite `h` using `[← Module.finrank_eq_card_chooseBasisIndex, NumberField.RingOfIntegers.rank]`. Conclude with `h`.
+
+Establish `hmem : ∀ x : 𝓞 K, ι x ∈ E`. Introduce `x`. Rewrite using `[← b.sum_repr x, map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul]`.
+
+Conclude with `E.toAddSubgroup.zsmul_mem (Submodule.subset_span ⟨i, rfl⟩) _`. Set `j : 𝓞 K → E` to `fun x => ⟨ι x, hmem x⟩`. Establish `hsep : ∀ x y : 𝓞 K, x ≠ y → (d : ℝ) ≤ ‖j x - j y‖`. Introduce `x y hxy`. Establish `: ‖j x - j y‖ = ‖ι (x - y)‖`.
+
+Rewrite using `[map_sub]`. Both sides reduce to the same expression. Rewrite using `[this, hιn]`. Conclude with `g4w1_min K (x - y) (sub_ne_zero.mpr hxy)`. Establish `hj : Function.Injective j`.
+
+Introduce `x y hxy`. Assume the negation of the conclusion as `hne`. Use `hsep x y hne` as an intermediate fact. Rewrite `this` using `[hxy, sub_self, norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hbound : ∀ s : Finset (𝓞 K), (↑s : Set (𝓞 K)) ⊆ S → (s.card : ℝ) ≤ (2 * ρ + 1) ^ d`. Introduce `s hs`. Establish `h` using `Formalism.HermitianLattices.TraceIntegrality.separated_set_packing_bound E (s.image j) (d * ρ) d hd0 (by positivity) (by`. Introduce `c hc`. Take `⟨x, hx, rfl⟩` from `Finset.mem_image.mp hc`.
+
+Establish `hx' : (∑ φ : K →+* ℂ, ‖φ (x : K)‖) / (d : ℝ) ≤ ρ` using `hs hx`. Establish `: ‖j x‖ = ‖ι x‖` using `rfl`. Rewrite using `[this, hιn]`. Rewrite `hx'` using `[div_le_iff₀ hd0]`. Use the proof step `linarith)`.
+
+Use the proof step `(by`. Introduce `c hc c' hc' hne`. Take `⟨x, hx, rfl⟩` from `Finset.mem_image.mp hc`. Take `⟨y, hy, rfl⟩` from `Finset.mem_image.mp hc'`. Conclude with `hsep x y (fun h => hne (by rw [h])))`.
+
+Rewrite `h` using `[Finset.card_image_of_injective _ hj]`. Establish `e : 1 + 2 * ((d : ℝ) * ρ) / d = 2 * ρ + 1` using `by field_simp; ring`. Rewrite `h` using `[e]`. Conclude with `h.trans (pow_le_pow_right₀ (by linarith) hE)`. Establish `hfin : S.Finite`.
+
+Assume the negation of the conclusion as `hinf`. Take `⟨N, hN⟩` from `exists_nat_gt ((2 * ρ + 1) ^ d)`. Take `⟨s, hs, hcard⟩` from `Set.Infinite.exists_subset_card_eq hinf N`. Use `hbound s hs` as an intermediate fact. Rewrite `this` using `[hcard]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨hfin, ?_⟩` and prove the remaining obligations. Use `hbound hfin.toFinset (by simp)` as an intermediate fact. Rewrite `this` using `[← Set.ncard_eq_toFinset_card S hfin]`. Then use the resulting hypothesis.
+-/
 theorem mean_count_of_moduli_space : Ms_count_mean := by
   intro K _ _ ρ hρ
   set d : ℕ := Module.finrank ℚ K with hd

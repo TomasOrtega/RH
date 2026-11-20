@@ -3,6 +3,41 @@ import Formalism.SharpRestriction.GrowthBounds.UnramifiedQuadraticSetting
 
 open Finset UpperTheory.BernoulliSumsFrobeniusOrbits Formalism.G0
 
+/- English proof (translation)
+Introduce `δ r hδ hδ1`. Unfold `markedLow Formalism.MainNotions.G.goodU`. Use `set u := ⌈1 / δ⌉₊ with hu`. Establish `hu1 : 1 / δ ≤ (u : ℝ)` using `Nat.le_ceil _`. Establish `hu2 : (u : ℝ) < 1 / δ + 1` using `Nat.ceil_lt_add_one (by positivity)`.
+
+Establish `huδ1 : 1 ≤ (u : ℝ) * δ`. Establish `h` using `mul_le_mul_of_nonneg_right hu1 hδ.le`. Rewrite `h` using `[one_div, inv_mul_cancel₀ hδ.ne']`. Then use the resulting hypothesis. Establish `huδ2 : (u : ℝ) * δ ≤ 1 + δ`. Establish `h` using `mul_le_mul_of_nonneg_right hu2.le hδ.le`.
+
+Rewrite `h` using `[add_mul, one_div, inv_mul_cancel₀ hδ.ne', one_mul]`. Then use the resulting hypothesis. Establish `h1δ : 0 < 1 - δ` using `by linarith`. Establish `hlog : -(δ / (1 - δ)) ≤ Real.log (1 - δ)`. Establish `h` using `Real.one_sub_inv_le_log_of_pos h1δ`. Establish `e : 1 - (1 - δ)⁻¹ = -(δ / (1 - δ))`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[e]`. Conclude with `h`. Establish `hexp : (1 - δ) ^ u = Real.exp (u * Real.log (1 - δ))`.
+
+Rewrite using `[← Real.log_pow, Real.exp_log (pow_pos h1δ u)]`. Establish `hq : (u : ℝ) * δ / (1 - δ) ≤ 103 / 100`. Rewrite using `[div_le_iff₀ h1δ]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hA : 3 / 10 ≤ (1 - δ) ^ u`.
+
+Rewrite using `[hexp]`. Establish `step : -(103 / 100 : ℝ) ≤ u * Real.log (1 - δ)`. Establish `h` using `mul_le_mul_of_nonneg_left hlog (Nat.cast_nonneg u : (0 : ℝ) ≤ u)`. Establish `e2 : (u : ℝ) * (-(δ / (1 - δ))) = -((u : ℝ) * δ / (1 - δ))` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hE : Real.exp (103 / 100) ≤ 10 / 3`. Establish `e3 : Real.exp (103 / 100) = Real.exp 1 * Real.exp (3 / 100)`. Rewrite using `[← Real.exp_add]`. Evaluate the numerical expressions. Establish `h3` using `Real.abs_exp_sub_one_sub_id_le (x := (3 / 100 : ℝ)) (by norm_num)`.
+
+Establish `h4 : Real.exp (3 / 100) ≤ 1 + 3 / 100 + (3 / 100) ^ 2`. Use `(abs_le.mp h3).2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h5` using `Real.exp_one_lt_d9`. Establish `h6 : 0 ≤ Real.exp (3 / 100)` using `(Real.exp_pos _).le`.
+
+Establish `h7 : 0 ≤ Real.exp 1` using `(Real.exp_pos _).le`. Rewrite using `[e3]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hmono : Real.exp (-(103 / 100)) ≤ Real.exp (u * Real.log (1 - δ))` using `Real.exp_le_exp.mpr step`. Rewrite `hmono` using `[Real.exp_neg]`.
+
+Establish `hpos` using `Real.exp_pos (103 / 100 : ℝ)`. Establish `hinv : 3 / 10 ≤ (Real.exp (103 / 100))⁻¹`. Rewrite using `[le_inv_comm₀ (by norm_num) hpos]`. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hqge : (u : ℝ) - 1 ≤ 2 * ((u / 2 : ℕ) : ℝ)`. Establish `h : u ≤ 2 * (u / 2) + 1` using `by omega`. Establish `h' : (u : ℝ) ≤ 2 * ((u / 2 : ℕ) : ℝ) + 1` using `by exact_mod_cast h`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hqle : 2 * ((u / 2 : ℕ) : ℝ) ≤ u`. Establish `h : 2 * (u / 2) ≤ u` using `Nat.mul_div_le u 2`. Conclude with `h` after adjusting the coercions. Establish `hP : (1 - δ) ^ u ≤ (1 - δ) ^ (u - 1)` using `pow_le_pow_of_le_one h1δ.le (by linarith) (Nat.sub_le u 1)`. Establish `hP1 : (1 - δ) ^ (u - 1) ≤ 1` using `pow_le_one₀ h1δ.le (by linarith)`.
+
+Establish `hP0 : 0 ≤ (1 - δ) ^ (u - 1)` using `pow_nonneg h1δ.le _`. Establish `hq0 : (0 : ℝ) ≤ ((u / 2 : ℕ) : ℝ) * δ` using `mul_nonneg (Nat.cast_nonneg _) hδ.le`. Establish `hqδ : 99 / 200 ≤ ((u / 2 : ℕ) : ℝ) * δ` using `by nlinarith`. Establish `hqδ2 : ((u / 2 : ℕ) : ℝ) * δ ≤ 1` using `by nlinarith`. Establish `eB : ((u / 2 : ℕ) : ℝ) * (3 / 4 * δ) * (1 - δ) ^ (u - 1) = 3 / 4 * ((((u / 2 : ℕ) : ℝ) * δ) * (1 - δ) ^ (u - 1))` using `by ring`.
+
+Establish `hB : 1 / 10 ≤ ((u / 2 : ℕ) : ℝ) * (3 / 4 * δ) * (1 - δ) ^ (u - 1)`. Rewrite using `[eB]`. Establish `h` using `mul_le_mul hqδ (le_trans hA hP) (by norm_num) hq0`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hB1 : ((u / 2 : ℕ) : ℝ) * (3 / 4 * δ) * (1 - δ) ^ (u - 1) ≤ 1`.
+
+Rewrite using `[eB]`. Establish `h` using `mul_le_mul hqδ2 hP1 hP0 (by norm_num)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hB0 : 0 ≤ ((u / 2 : ℕ) : ℝ) * (3 / 4 * δ) * (1 - δ) ^ (u - 1)` using `by linarith`. Establish `hA0 : 0 ≤ (1 - δ) ^ u` using `pow_nonneg h1δ.le _`.
+
+Prove the components needed by the constructor for the conclusion. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← pow_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ ≤ ((1 - δ) ^ u) ^ (3 * r + 1) * (((u / 2 : ℕ) : ℝ) * (3 / 4 * δ) * (1 - δ) ^ (u - 1)) ^ (3 * r) := mul_le_mul (pow_le_pow_left₀ (by norm_num) (by linarith) _) (pow_le_pow_left₀ (by norm_num) hB _) (by positivity) (pow_nonneg hA0 _)`. Conclude with `mul_le_one₀ (pow_le_one₀ hA0 (pow_le_one₀ h1δ.le (by linarith))) (pow_nonneg hB0 _) (pow_le_one₀ hB0 hB1)`.
+-/
 theorem UpperTheory.BernoulliSumsFrobeniusOrbits.markedLow_bounds :
     ∀ (δ : ℝ) (r : ℕ), 0 < δ → δ ≤ 1 / 100 →
       (1 / 10 : ℝ) ^ (6 * r + 1) ≤ markedLow δ r (Formalism.MainNotions.G.goodU δ) ∧ markedLow δ r (Formalism.MainNotions.G.goodU δ) ≤ 1 := by

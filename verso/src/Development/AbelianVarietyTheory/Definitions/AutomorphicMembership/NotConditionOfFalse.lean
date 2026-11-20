@@ -12,6 +12,9 @@ namespace GlobalTheory.Mem.Top.Bl.Model
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Formalism.L2.Host GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top.GroupRetwisting NumberField IsDedekindDomain
 
+/- English proof (translation)
+Take `⟨X, hX⟩` from `InEx.exists_oriented X₀ Q`. Take `⟨sp, hT, hY, hA, hV, hz, rfl, -⟩` from `hO`. Conclude with `⟨{ X with piT := K.Lv.piT piT_K := K.Lv.piT_K piT_norm := K.Lv.piT_norm piT_cong := fun u => Ideal.mem_span_singleton.1 (K.Lv.piT_cong u) }, hX, fun u => div_mul_cancel₀ _ (K.Lv.piT_ne u)⟩`.
+-/
 theorem exists_preX {K : Ctx} {P : Pre} (hO : K.Over P) (X₀ : PreX P) (Q : PiBar P.host) :
     ∃ X : PreX P, InEx.Oriented X Q ∧ ∀ u, P.cOf u * (X.piT u : P.host.E) = (X.piT P.u₀ : P.host.E) := by
   obtain ⟨X, hX⟩ := InEx.exists_oriented X₀ Q
@@ -22,6 +25,11 @@ theorem exists_preX {K : Ctx} {P : Pre} (hO : K.Over P) (X₀ : PreX P) (Q : PiB
     piT_norm := K.Lv.piT_norm
     piT_cong := fun u => Ideal.mem_span_singleton.1 (K.Lv.piT_cong u) }, hX, fun u => div_mul_cancel₀ _ (K.Lv.piT_ne u)⟩
 
+/- English proof (translation)
+Use `EvG.imp (evG_of_ev (ev_preX_frame h2b)) fun K _ _ _ _ hfr => (InEx.lg_colIn K).imp ?_` and prove the remaining obligations. Introduce and unpack `B f T hO h ⟨⟨δ, hδ⟩, hp⟩ - -`. Take `⟨X₀⟩` from `(hfr _ hO).1`. Take `⟨X, hX, hc⟩` from `exists_preX hO X₀ f.P`. Take `⟨sel, hsel⟩` from `Formalism.L2.Col.exists_sel B.fields`.
+
+Take `⟨J, hJ⟩` from `exists_ambIn_ok B.host`. Take `⟨I, a1, a2, a3, a4, -⟩` from `h.1 X hX sel hsel J hJ`. Conclude with `⟨⟨X, I, a1, a2, a3, a4, ⟨hp, hc⟩, TrueColsTest.laws a1, TrueColsTest.law0 a1 _, δ, hδ, h.2.2, h.2.1⟩⟩`.
+-/
 theorem step_colW (h2b : StandardLattice.SiegelMassRatioCM) : Step KPx (fun _ _ _ _ => True) fun _ B f T => Nonempty (ColW B f T) := by
   refine EvG.imp (evG_of_ev (ev_preX_frame h2b)) fun K _ _ _ _ hfr => (InEx.lg_colIn K).imp ?_
   rintro B f T hO h ⟨⟨δ, hδ⟩, hp⟩ - -
@@ -32,9 +40,23 @@ theorem step_colW (h2b : StandardLattice.SiegelMassRatioCM) : Step KPx (fun _ _ 
   obtain ⟨I, a1, a2, a3, a4, -⟩ := h.1 X hX sel hsel J hJ
   exact ⟨⟨X, I, a1, a2, a3, a4, ⟨hp, hc⟩, TrueColsTest.laws a1, TrueColsTest.law0 a1 _, δ, hδ, h.2.2, h.2.1⟩⟩
 
+/- English proof (translation)
+Introduce `a b h` and use `PinsCoord.extTo_basis _ _ a b h`.
+-/
 theorem prePin_coordPre (P : PreCh) (L : LevCh P) : PrePin (GlobalTheory.StdFrameObj.coordPre P L) :=
   fun a b h => PinsCoord.extTo_basis _ _ a b h
 
+/- English proof (translation)
+Use `⟨InEx.ev_of_forall fun K B₀ f₀ S₁ S₂ hO s1 s2 => ?_, fun B B' f f' e hf hS => ?_⟩` and prove the remaining obligations. Take `⟨δ⟩` from `Fld.nonempty_fieldDat hR hA B₀.toPre`. Take `⟨B₁, e₁, k⟩` from `(GlobalTheory.T.rayField_le_and_exists_base hR hP _ f₀ δ).2`. Take `⟨B₂, e₂, k₂, l₂⟩` from `Inh.exists_fixed B₁ (S₁ B₁.KsC) (s1 _)`. Take `⟨B, e, l₃⟩` from `BaseEnl.exists_enl B₂ (S₂ B₁.KsC B₂.fixedCoefficientFieldInComplex) (s2 _ _)`.
+
+Establish `hk : B.KsC = B₁.KsC` using `e.KsC_eq.trans k₂`. Establish `e' : B.toPre = B₀.toPre` using `e.1.trans (e₂.trans e₁)`. Establish `hH : Has₂ B (S₁ B.KsC) (S₂ B.KsC B.fixedCoefficientFieldInComplex)`. Rewrite using `[hk, Has₂, e.fixedCoefficientField_eq]`. Conclude with `⟨l₂, l₃⟩`.
+
+Rewrite `k` using `[← hk]`. Use `clear e e₁ e₂ hO`. Generalize the expression as in `B₀.toPre = P₀ at *`. Substitute `e'` using the available equality. Conclude with `⟨B, f₀, rfl, HEq.rfl, ⟨δ, k⟩, hH⟩`.
+
+Establish `e'` using `e.1`. Unfold `Base.KsExact at hS ⊢`. Rewrite using `[e.KsC_eq]`. Use `clear e`. Generalize the expression as in `B.KsC = F at *`.
+
+Generalize the expression as in `B.toPre = P at *`. Substitute `e'` using the available equality. Take `rfl` from `eq_of_heq hf`. Conclude with `hS`.
+-/
 theorem ksCond (hR : GlobalTheory.NT.RayField) (hP : GlobalTheory.Published.PrincipalIdealSt) (hA : GlobalTheory.Published.CMCurveGoodOutsidePrimeSt) :
     V4.KsCond fun B f => ∃ δ : Fld.FieldDat B.toPre, B.KsExact δ f := by
   refine ⟨InEx.ev_of_forall fun K B₀ f₀ S₁ S₂ hO s1 s2 => ?_, fun B B' f f' e hf hS => ?_⟩
@@ -62,6 +84,9 @@ theorem ksCond (hR : GlobalTheory.NT.RayField) (hP : GlobalTheory.Published.Prin
     obtain rfl := eq_of_heq hf
     exact hS
 
+/- English proof (translation)
+The claim follows from `baseCond_of (PP := fun P _ => PrePin P) (ksCond hR hP hA) (EvG.imp (evG_of_ev (ev_preX_frame h2b)) fun K _ _ _ _ hfr => by have hO : K.Over (GlobalTheory.StdFrameObj.coordPre K.P K.Lv) := ⟨_, _, _, _, _, _, rfl, GlobalTheory.StdFrameObj.diagSpaces_coordPre K.P K.Lv⟩ obtain ⟨f⟩ := …`.
+-/
 theorem baseCond_KPx (h2b : StandardLattice.SiegelMassRatioCM) (hR : GlobalTheory.NT.RayField) (hP : GlobalTheory.Published.PrincipalIdealSt)
     (hA : GlobalTheory.Published.CMCurveGoodOutsidePrimeSt) : BaseCond KPx :=
   baseCond_of (PP := fun P _ => PrePin P) (ksCond hR hP hA)
@@ -71,10 +96,16 @@ theorem baseCond_KPx (h2b : StandardLattice.SiegelMassRatioCM) (hR : GlobalTheor
       obtain ⟨f⟩ := (hfr _ hO).2
       exact ⟨_, f, hO, prePin_coordPre _ _⟩)
 
+/- English proof (translation)
+Introduce `h` and use `not_exTrueG_false hH hLP h2b hK (exTrueG_iff_step.2 (h.trans (Step.of_all fun _ _ _ _ _ _ _ a => a.elim)))`.
+-/
 theorem not_step_false (hH : DC.HostExQ) (hLP : LevelPrime) (h2b : StandardLattice.SiegelMassRatioCM) {KP : BaseP} (hK : BaseCond KP) :
     ¬ Step KP (fun _ _ _ _ => True) fun _ _ _ _ => False := fun h =>
   not_exTrueG_false hH hLP h2b hK (exTrueG_iff_step.2 (h.trans (Step.of_all fun _ _ _ _ _ _ _ a => a.elim)))
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `not_step_false hH hLP h2b (baseCond_KPx h2b hR hP hA) ((step_colW h2b).trans (Step.of_all ?_))` and prove the remaining obligations. Conclude with `fun K B f T a b c d => h ⟨K, B, f, T, a, b, c, d⟩`.
+-/
 theorem exists_colW (hH : DC.HostExQ) (hLP : LevelPrime) (h2b : StandardLattice.SiegelMassRatioCM) (hR : GlobalTheory.NT.RayField)
     (hP : GlobalTheory.Published.PrincipalIdealSt) (hA : GlobalTheory.Published.CMCurveGoodOutsidePrimeSt) :
     ∃ (K : Ctx) (B : Base) (f : Fr B.toPre) (T : TwDat B), K.Over B.toPre ∧ KPx B f ∧ Forced K B T ∧ Nonempty (ColW B f T) := by
@@ -82,30 +113,51 @@ theorem exists_colW (hH : DC.HostExQ) (hLP : LevelPrime) (h2b : StandardLattice.
   refine not_step_false hH hLP h2b (baseCond_KPx h2b hR hP hA) ((step_colW h2b).trans (Step.of_all ?_))
   exact fun K B f T a b c d => h ⟨K, B, f, T, a, b, c, d⟩
 
+/- English proof (translation)
+Introduce `h` and use `not_step_false hH hLP h2b (baseCond_KPx h2b hR hP hA) (((step_colW h2b).and h).trans (Step.of_all fun _ _ _ _ _ _ _ H => H.1.elim fun w => H.2 w trivial))`.
+-/
 theorem not_stepW_false (hH : DC.HostExQ) (hLP : LevelPrime) (h2b : StandardLattice.SiegelMassRatioCM) (hR : GlobalTheory.NT.RayField)
     (hP : GlobalTheory.Published.PrincipalIdealSt) (hA : GlobalTheory.Published.CMCurveGoodOutsidePrimeSt) :
     ¬ StepW (fun _ _ _ _ _ => True) fun _ _ _ _ _ => False := fun h =>
   not_step_false hH hLP h2b (baseCond_KPx h2b hR hP hA)
     (((step_colW h2b).and h).trans (Step.of_all fun _ _ _ _ _ _ _ H => H.1.elim fun w => H.2 w trivial))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨w.δ, w.exact⟩, w.pins.iX⟩`.
+-/
 theorem ColW.kpx {B : Base} {f : Fr B.toPre} {T : TwDat B} (w : ColW B f T) : KPx B f := ⟨⟨w.δ, w.exact⟩, w.pins.iX⟩
 
+/- English proof (translation)
+Introduce `⟨_, _, _, h, _⟩` and use `h`.
+-/
 theorem not_corePropertyOf_false (K : Ctx) (X : Stages) (f : Fr X.B.toPre) (T : TwDat X.B) (c : V4.Core K X f T) :
     ¬ positionOf (fun _ _ _ _ _ _ _ => False) K X f T c := fun ⟨_, _, _, h, _⟩ => h
 
+/- English proof (translation)
+The claim follows from `let ⟨w, _, _, _, e⟩ := h; ⟨w, congrArg Sigma.fst e⟩`.
+-/
 theorem positionOf_cols {P : CP} {K : Ctx} {X : Stages} {f : Fr X.B.toPre} {T : TwDat X.B} {c : V4.Core K X f T}
     (h : positionOf P K X f T c) : ∃ w : ColW X.B f T, X.C = w.C :=
   let ⟨w, _, _, _, e⟩ := h; ⟨w, congrArg Sigma.fst e⟩
 
+/- English proof (translation)
+The claim follows from `let ⟨Z⟩ := TrueColsTest.later w.l (JetEx.hasLetters_of_over hO); ⟨⟨Z.W, Z.V, Z.S, Z.N, G⟩, rfl⟩`.
+-/
 theorem exists_later {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} (hO : K.Over B.toPre) (w : ColW B f T) (G : GJStage B w.C) :
     ∃ Z : w.Lt, Z.G = G :=
   let ⟨Z⟩ := TrueColsTest.later w.l (JetEx.hasLetters_of_over hO); ⟨⟨Z.W, Z.V, Z.S, Z.N, G⟩, rfl⟩
 
+/- English proof (translation)
+Take `⟨⟨W, V, S, N, G'⟩, rfl⟩` from `exists_later hO w G`. Conclude with `⟨_, rfl, (h W V S N).1, (h W V S N).2.2⟩`.
+-/
 theorem GIs.exists_colT {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} (hO : K.Over B.toPre) {w : ColW B f T}
     {G : GJStage B w.C} (h : GIs K w G) : ∃ Z : w.Lt, Z.G = G ∧ Formalism.L2.Theta.VolTieG (w.D Z) ∧ Nonempty (ColT w Z) := by
   obtain ⟨⟨W, V, S, N, G'⟩, rfl⟩ := exists_later hO w G
   exact ⟨_, rfl, (h W V S N).1, (h W V S N).2.2⟩
 
+/- English proof (translation)
+Introduce `h'` and use `by obtain ⟨⟨W, V, S, N, G'⟩, rfl⟩ := exists_later hO w G obtain ⟨⟨μ, hμ⟩, H⟩ := (h W V S N).1 X hX obtain ⟨⟨F, hF⟩, H1⟩ := H μ hμ have a := H1 F hF have b := (((h' W V S N).1 X hX).2 μ hμ).2 F hF have c : ENNReal.ofReal (G'.vol X) = ENNReal.ofReal (2 * G'.vol X) := a.symm.trans b …`.
+-/
 theorem GIs.not_double {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} (hO : K.Over B.toPre) {w : ColW B f T}
     {G : GJStage B w.C} (h : GIs K w G) (X : @HSpace B.host.E _ _ B.host.cmStar) (hX : letI := B.host.cmStar; X.SigOK) :
     ¬ GIs K w { G with vol := fun Y => 2 * G.vol Y, vol_pos := fun Y => mul_pos two_pos (G.vol_pos Y) } := fun h' => by

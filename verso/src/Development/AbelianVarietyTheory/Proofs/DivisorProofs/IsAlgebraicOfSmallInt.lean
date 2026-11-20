@@ -35,9 +35,17 @@ def AlgComb (φ : GA D (Wc D j) → ℂ) : Prop :=
 
 variable {YS v₀ j}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, Fin.elim0, Fin.elim0, fun k => Fin.elim0 k, by rw [Finset.univ_eq_empty, Finset.sum_empty]⟩`.
+-/
 theorem AlgComb.zero : AlgComb YS v₀ j 0 :=
   ⟨0, Fin.elim0, Fin.elim0, fun k => Fin.elim0 k, by rw [Finset.univ_eq_empty, Finset.sum_empty]⟩
 
+/- English proof (translation)
+Take `⟨n, z, g, hz, rfl⟩` from `h1`. Take `⟨m, z', g', hz', rfl⟩` from `h2`. Use `⟨n + m, Fin.append z z', Fin.append g g', fun k => ?_, ?_⟩` and prove the remaining obligations. Use `Fin.addCases (fun a => ?_) (fun a => ?_) k` and prove the remaining obligations. Rewrite using `[Fin.append_left]`.
+
+Conclude with `hz a`. Rewrite using `[Fin.append_right]`. Conclude with `hz' a`. Rewrite using `[Fin.sum_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right]`.
+-/
 theorem AlgComb.add {φ ψ : GA D (Wc D j) → ℂ} (h1 : AlgComb YS v₀ j φ) (h2 : AlgComb YS v₀ j ψ) :
     AlgComb YS v₀ j (φ + ψ) := by
   obtain ⟨n, z, g, hz, rfl⟩ := h1
@@ -49,6 +57,11 @@ theorem AlgComb.add {φ ψ : GA D (Wc D j) → ℂ} (h1 : AlgComb YS v₀ j φ) 
   · rw [Fin.sum_univ_add]
     simp only [Fin.append_left, Fin.append_right]
 
+/- English proof (translation)
+Take `⟨n, z, g, hz, rfl⟩` from `h`. Use `⟨n, fun k => a * z k, g, fun k => ?_, ?_⟩` and prove the remaining obligations. Establish `hmem : ∀ y : ℂ, y ∈ algebraicClosure ℚ ℂ ↔ IsAlgebraic ℚ y` using `fun y => mem_algebraicClosure_iff`. Conclude with `(hmem _).1 (mul_mem ((hmem _).2 ha) ((hmem _).2 (hz k)))`. Rewrite using `[Finset.smul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun k _ => smul_smul _ _ _`.
+-/
 theorem AlgComb.smul {φ : GA D (Wc D j) → ℂ} (h : AlgComb YS v₀ j φ) {a : ℂ} (ha : IsAlgebraic ℚ a) :
     AlgComb YS v₀ j (a • φ) := by
   obtain ⟨n, z, g, hz, rfl⟩ := h
@@ -58,10 +71,24 @@ theorem AlgComb.smul {φ : GA D (Wc D j) → ℂ} (h : AlgComb YS v₀ j φ) {a 
   · rw [Finset.smul_sum]
     exact Finset.sum_congr rfl fun k _ => smul_smul _ _ _
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `hy`. Conclude with `(Algebra.IsAlgebraic.isAlgebraic (algebraMap (𝓞 ↥D.LL0) ↥D.LL0 a)).algHom (embLL0 D).toRatAlgHom`.
+-/
 theorem isAlgebraic_of_smallInt {y : ℂ} (hy : y ∈ GlobalTheory.BigOn.Exp.smallInt D) : IsAlgebraic ℚ y := by
   obtain ⟨a, rfl⟩ := hy
   exact (Algebra.IsAlgebraic.isAlgebraic (algebraMap (𝓞 ↥D.LL0) ↥D.LL0 a)).algHom (embLL0 D).toRatAlgHom
 
+/- English proof (translation)
+Establish `key : ∀ φ ∈ coefLatFn (embLL0 D) (labLL0 D) (GlobalTheory.BigOn.Exp.smallInt D) (ρ.B i j b).w.lam ((ρ.B i j b).latAt (finPt _ h)), ∃ P' ∈ (ρ.B i j b).valSpace, harmFn (Wc D j).rank (ρ.B i j b).w (ρ.B i j b).F.BS P' = φ ∧ AlgComb YS v₀ j (Φ P')`. Introduce `φ hφ`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem _ h1`. Take `⟨F, -, rfl⟩` from `h1`.
+
+Take `⟨P', h2, h3⟩` from `honto F`. Conclude with `⟨P', h2, h3, hΦ P' h2 F h3⟩`. Consider the case `zero => exact ⟨0, zero_mem _, map_zero _, by rw [map_zero]; exact AlgComb.zero⟩`. Consider the case `add _ _ _ _ h1 h2`. Take `⟨P₁, a1, rfl, f₁⟩` from `h1`.
+
+Take `⟨P₂, a2, rfl, f₂⟩` from `h2`. Conclude with `⟨P₁ + P₂, add_mem a1 a2, map_add _ _ _, by rw [map_add]; exact f₁.add f₂⟩`. Consider the case `smul c _ _ h1`. Take `⟨P₁, a1, rfl, f₁⟩` from `h1`. Use `⟨(c : ℂ) • P₁, Submodule.smul_mem _ _ a1, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_smul]`. Both sides reduce to the same expression. Rewrite using `[map_smul]`. Conclude with `f₁.smul (isAlgebraic_of_smallInt c.2)`. Take `⟨P', h1, h2, h3⟩` from `key _ hP.2`.
+
+Rewrite using `[sub_eq_zero.1 (hinj (P - P') (sub_mem hP.1 h1) (by rw [map_sub, h2]; exact sub_self _))]` and apply the resulting hypothesis.
+-/
 theorem algComb_of_small {ρ : Setup D.ntw} {i : D.ntw.Tw} {b : Bool}
     (Φ : PolF D (Wc D j).rank (Vc D j).rank →ₗ[ℂ] (GA D (Wc D j) → ℂ))
     (hinj : ∀ P ∈ (ρ.B i j b).valSpace, harmFn (Wc D j).rank (ρ.B i j b).w (ρ.B i j b).F.BS P = 0 → P = 0)
@@ -107,9 +134,41 @@ variable {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T0 : Type} {A3 : FamIn3 D.w
   {S : NX.RatDat D.ntw} (YS : NX.NExpRealS Rl cG S) {κ : ∀ j : Fin D.R.m, WeightFamilies.Wt D ((j : ℕ) + 1)}
   {v₀ : ∀ (j : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (Rl.MW j σ).Vec}
 
+/- English proof (translation)
+The claim follows from `IntermediateField.isAlgebraic_iff.1 (Algebra.IsAlgebraic.isAlgebraic (⟨z, hz⟩ : L))`.
+-/
 theorem isAlgebraic_of_mem {L : IntermediateField ℚ ℂ} [FiniteDimensional ℚ L] {z : ℂ} (hz : z ∈ L) : IsAlgebraic ℚ z :=
   IntermediateField.isAlgebraic_iff.1 (Algebra.IsAlgebraic.isAlgebraic (⟨z, hz⟩ : L))
 
+/- English proof (translation)
+Introduce `hd hPl`. Establish `hti` using `tieIn_of_fw fw`. Establish `hrd` using `readsAs_one YS fw hev hV`. Take `⟨gR, cR, cL, -, u, hu, c, ph, -, -, rfl, hsc, hrat⟩` from `hν`. Establish `hT` using `hti.laws`.
+
+Establish `hB` using `hρ.base i j b`. Establish `hBo` using `baseOf_of_realPin hcore.lev hρ hpin i j b`. Take `⟨nδ, hnδ, hδ⟩` from `de_values hρ i j b`. Establish `hcard : Nat.card (ρ.B i j b).G.P.H ≠ 0` using `Nat.card_pos.ne'`. Use `haveI := GlobalTheory.CoverSmall.smallF_normal D hgal`.
+
+Set `K : Subfield ℂ` to `(algebraicClosure ℚ ℂ).toSubfield`. Establish `hK : ∀ {z : ℂ} {m : ℕ}, m ≠ 0 → z ^ m = 1 → z ∈ K` using `fun hm hz => mem_algebraicClosure_iff.2 (GlobalTheory.BigOn.Exp.isAlgebraic_of_pow_eq_one hm hz)`. Take `⟨L, _, _, hL0, -, hLr⟩` from `exists_normal_roots (GlobalTheory.CoverSmall.smallF D) (k := K) (fun z hz => mem_algebraicClosure_iff.2 (isAlgebraic_of_mem hz)) (mul_ne_zero hcard hnδ)`. Take `⟨C, hpd, hfr, hC⟩` from `exists_goodCover_pdAt YS hRF hT hti.alg hval hray hsp (D.ntw.l i) j (κ j).n L hL0`. Establish `hLL : (embLL0 D).fieldRange ≤ C.σ₂.fieldRange`.
+
+Rewrite using `[hfr]`. Conclude with `fun z hz => hL0 hz`. Establish `hdat` using `isLevDatum_vecBase YS hT hcore hgal hval hroots hsp hρ hpin i j b hLL (fun p => by`. Establish `hp1 : (((ρ.B i j b).G.P.chi p : ℂˣ) : ℂ) ^ (Nat.card (ρ.B i j b).G.P.H * nδ) = 1`. Rewrite using `[pow_mul, ← Units.val_pow_eq_pow_val, ← map_pow, pow_card_eq_one', map_one, Units.val_one, one_pow]`.
+
+Rewrite using `[hfr]`. Conclude with `hLr _ (hK (mul_ne_zero hcard hnδ) hp1) hp1)`. Use the proof step `(fun x => by`. Establish `hp1 : (((ρ.B i j b).de.chi x : Circle) : ℂ) ^ (Nat.card (ρ.B i j b).G.P.H * nδ) = 1`. Rewrite using `[pow_mul', (hδ x).1, one_pow]`.
+
+Rewrite using `[hfr]`. Conclude with `hLr _ (hK (mul_ne_zero hcard hnδ) hp1) hp1)`. Rewrite `hdat` using `[← hpd]`. Establish `htw : IsTwist C.d.pd C.σ₂ (Rl.C.delAt (D.ntw.l i)) (ρ.B i j b).de.chi`. Rewrite using `[hpd]`.
+
+Conclude with `isTwist_delAt Rl.C hval _ (hpin.delta i j b) hLL`. Establish `hω` using `hρ.weil_base i j b`. Establish `hω' : IsWeilDatumO Rl.ψ (Vc D j) (Wc D j) (Lift.chrTh (Lift.tup Rl.mu0 (ρ.B i j b).de.chi) Rl.eta ((j : ℕ) + 1)).1 (Lift.chrTh (Lift.tup Rl.mu0 (ρ.B i j b).de.chi) Rl.eta ((j : ℕ) + 1)).2 (ρ.om i j b 1)`. Establish `h1` using `hω`. Rewrite `h1` using `[Base.IsWeil, mul_one, Base.mu, hBo.ψ, hBo.mu0, hBo.eta]`.
+
+Conclude with `h1`. Establish `hm : ∀ τ, (ρ.B i j b).w.p τ + (ρ.B i j b).w.q τ ≤ (Wc D j).rank` using `fun τ => by`. Establish `h2` using `Formalism.BasicNotions.sig_sum _ hB.sigOK (tauE D τ)`. Rewrite `h2` using `[← hB.sig τ]`. Conclude with `h2.le`.
+
+Establish `hinj` using `GlobalTheory.T.harmonic_polynomial_eq_zero_of_function D _ _ (ρ.B i j b).w (ρ.B i j b).F.BS hB.wt hm`. Use `algComb_of_small ((ph * c) • (ρ.B i j b).theta (ρ.om i j b 1) h) hinj (fun G => ?_) (fun P hP G hPG => ?_) hPl` and prove the remaining obligations. Establish `h3 : coefFn (embLL0 D) (ρ.B i j b).w.lam (G : Pol ↥D.LL0 D.what₂.Tau (Vc D j).rank) ∈ (harm (Wc D j).rank (ρ.B i j b).w (ρ.B i j b).F.BS).map (harmFn (Wc D j).rank (ρ.B i j b).w (ρ.B i j b).F.BS)`. Rewrite using `[GlobalTheory.T.fockHarmonicValueSpace_map_eq_dualWeylModuleFunctions D _ _ _ _ hB.wt hm]`. Conclude with `Submodule.subset_span ⟨GlobalTheory.CoefModel.mapVV (embLL0 D) _ G, (Scale.coefFn_map _ _ _).symm⟩`.
+
+Conclude with `h3`. Choose the witnesses or unpack the hypotheses as in `⟨G', hG', hPG'⟩ : ∃ G' : VV D.what₂.LL (FWT.lamV D j), (∀ m, D.what₂.embLL (MvPolynomial.coeff m (G' : Pol D.what₂.LL D.what₂.Tau (Vc D j).rank)) ∈ (embLL0 D).fieldRange) ∧ harmFn (Wc D j).rank (ρ.B i j b).w (ρ.B i j b).F.BS P = coefFn D.what₂.embLL (FWT.lamV D j) (G' : Pol D.wha …`. Rewrite using `[hPG]`. Establish `hlam` using `hBo.lam`. Generalize the expression as in `(ρ.B i j b).w.lam = lam at G hlam`.
+
+Substitute `hlam` using the available equality. Use `⟨⟨_, GlobalTheory.Proof.TensorMapDescent.map_mem_VV D.LL0.val.toRingHom _ _ G.2⟩, fun m => ⟨MvPolynomial.coeff m G.1, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `congrArg D.what₂.embLL (MvPolynomial.coeff_map D.LL0.val.toRingHom G.1 m).symm`. Rewrite using `[← Scale.coefFn_map, ← Scale.coefFn_map D.what₂.embLL]`. Conclude with `congrArg _ (MvPolynomial.map_map _ _ _).symm`.
+
+Establish `hP'` using `hsc.ioP_eq hinj hP (ioP_mem_valSpace hcore hio (hti.hv₀ j _) hB hBo hu _) hPG'`. Establish `hR` using `((hrat C hC hLL h hd.fin _ hdat (cL j G') (Submodule.subset_span ⟨G', fun m => hLL (hG' m), rfl⟩)).2 _ _ htw).2 _ hω'`. Use `replace hR : IsRat T j hV C (κ j) ((ph * c) • (ρ.B i j b).theta (ρ.om i j b 1) h P) := (congrArg (IsRat T j hV C (κ j)) (hpin.phase_mul_thetaKO i b hP' ph (ρ.om i j b 1) h (ρ.B i j b).vecBase)).mp hR`. Take `⟨n, z, x, hz, e⟩` from `exists_sum_evW YS hti hnV hcore.lev hpb hrd hC hR fun k hk g => by`. Use `GlobalTheory.ExportType.theta_type hB (D.sp.V_sig _) hω (one_mem _) (lifts_one hBo hk) h P g` as an intermediate fact.
+
+Rewrite `this` using `[show (⟨1, one_mem _⟩ : (ρ.B i j b).G.P.H) = 1 from rfl, map_one, Units.val_one, one_mul]`. Conclude with `congrArg ((ph * c) * ·) this`. Use `⟨n, z, x, fun k => ?_, ?_⟩` and prove the remaining obligations. Establish `hzk : z k ∈ L`. Use `hz k` as an intermediate fact.
+
+Rewrite `this` using `[hfr]`. Conclude with `this`. Conclude with `isAlgebraic_of_mem hzk`. Rewrite using `[LinearMap.smul_apply, e, one_smul]`.
+-/
 theorem algComb_of_ratScalar (hRF : GlobalTheory.NT.RayField) {F : Face D A3.A} (fw : FWTie T Rl.toRealDat κ v₀) (hev : fw.Evaluates)
     (hcore : GlobalTheory.Hk3.Core Rl.toRealDat F) (hio : IoExt Rl.toRealDat) (hpb : T.pb = Rl.C.P.pb)
     (hnV : 8 * D.R.f * D.R.r + 4 ≤ D.R.nV) (hgal : IsGalois ℚ D.LL0) (hval : Formalism.L2.Host.ValLL0 D Rl.C)

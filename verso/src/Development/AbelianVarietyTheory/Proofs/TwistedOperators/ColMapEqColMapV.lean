@@ -32,6 +32,9 @@ def pairV (S : GridChoice W U) (t : T) {δ : Type} (τ : δ →₀ ℂ)
   τ.sum fun d a => a • (brPair (listedWt G (.grid D.R.m D.R.m)) G.sp.topDec.rank.symm (wt G (.top D.R.m))).compl₁₂
     (colMapV S t (c d) x) (rowMapV S (r d) y)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pairPts_eq_pairV (S : GridChoice W U) {t : T} (τ : PureDat G t →₀ ℂ) (x : ∀ j, FinPt G (.top j))
     (y : ∀ i, FinPt G (.grid i D.R.m)) :
     pairPts S τ x y = pairV S t τ (fun d j => S.Z.vec (d.1 j)) (fun d i => S.Z.vec (d.2 i)) x y := rfl

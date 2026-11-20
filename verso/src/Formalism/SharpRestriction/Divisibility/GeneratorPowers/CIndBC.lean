@@ -16,6 +16,9 @@ section Jet
 
 variable {S S' : Type} [CommRing S] [CommRing S'] (ψ : S →+* S')
 
+/- English proof (translation)
+Rewrite using `[← Ideal.map_le_iff_le_comap, Ideal.map_pow, orig, Ideal.map_span, ← Set.range_comp]`. Apply `le_of_eq` to reduce the goal to its premises. Use `congr 2`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+-/
 theorem orig_pow_le_comap (κ : Type) (m : ℕ) :
     orig S κ ^ (m + 1) ≤ (orig S' κ ^ (m + 1)).comap (MvPolynomial.map ψ) := by
   rw [← Ideal.map_le_iff_le_comap, Ideal.map_pow, orig, Ideal.map_span, ← Set.range_comp]
@@ -27,6 +30,9 @@ theorem orig_pow_le_comap (κ : Type) (m : ℕ) :
 def jetBC (κ : Type) (m : ℕ) : Jet S κ m →+* Jet S' κ m :=
   Ideal.quotientMap _ (MvPolynomial.map ψ) (orig_pow_le_comap ψ κ m)
 
+/- English proof (translation)
+Simplify using `[jetBC, MvPolynomial.algebraMap_eq]`. Both sides reduce to the same expression.
+-/
 theorem jetBC_algebraMap (κ : Type) (m : ℕ) (s : S) :
     jetBC ψ κ m (algebraMap S (Jet S κ m) s) = algebraMap S' (Jet S' κ m) (ψ s) := by
   simp [jetBC, MvPolynomial.algebraMap_eq]

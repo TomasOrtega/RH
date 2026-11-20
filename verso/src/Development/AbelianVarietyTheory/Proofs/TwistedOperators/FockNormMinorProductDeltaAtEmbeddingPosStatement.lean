@@ -8,5 +8,8 @@ open scoped TensorProduct InnerProductSpace
 open GlobalTheory.LiftRows
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FockDelta.fock_deltaAtEmb_pos | exact GlobalTheory.FockDelta.fock_deltaAtEmb_pos | (intros; apply GlobalTheory.FockDelta.fock_deltaAtEmb_pos <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.fockNorm_minorProductDeltaAtEmbedding_pos : ∀ (D : D7) (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), ∃ a : ℝ, 0 < a ∧ Formalism.E.fock (GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.deltaAtEmb D i σ) (GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.deltaAtEmb D i σ) = (a : ℂ) := by
   first | exact @GlobalTheory.FockDelta.fock_deltaAtEmb_pos | exact GlobalTheory.FockDelta.fock_deltaAtEmb_pos | (intros; apply GlobalTheory.FockDelta.fock_deltaAtEmb_pos <;> assumption)

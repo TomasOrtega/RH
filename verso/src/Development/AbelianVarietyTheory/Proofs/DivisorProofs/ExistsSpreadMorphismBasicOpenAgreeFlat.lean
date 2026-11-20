@@ -10,6 +10,25 @@ open GlobalTheory.Desc
 
 namespace GlobalTheory.Desc
 
+/- English proof (translation)
+Introduce `R _ _ x B Z B₀ pB pZ hfl hqc hqs hsep hlfp φ₀ u₀ hφfl hu₀ u hu hagree`. Use `haveI := hfl`. Use `haveI := hqc`. Use `haveI := hqs`. Use `haveI := hsep`.
+
+Use `haveI := hlfp`. Use `haveI := hφfl`. Take `⟨V, hxV, -, w, g₀, hw, hwg, hg₀⟩` from `GlobalTheory.StalkLimit.exists_spread (IsPullback.of_hasPullback pB ((Sp R).fromSpecStalk x)) pZ u hu`. Take `⟨_, ⟨g, rfl⟩, hxg, hgV⟩` from `(PrimeSpectrum.isTopologicalBasis_basic_opens (R := R)).exists_subset_of_mem_open (a := x) hxV V.isOpen`. Establish `key : pullback.fst φ₀ (pullback.fst pB V.ι) ≫ u₀ = pullback.snd φ₀ (pullback.fst pB V.ι) ≫ g₀`.
+
+Set `qN : pullback φ₀ (pullback.fst pB V.ι) ⟶ Sp R` to `pullback.fst _ _ ≫ φ₀ ≫ pB`. Use `haveI : Flat qN := inferInstance`. Use `haveI : IsDominant ((Sp R).fromSpecStalk x) := by`. Use `⟨Dense.mono (s₁ := {genericPoint (Sp R)}) ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[Set.singleton_subset_iff, Scheme.range_fromSpecStalk]`.
+
+Conclude with `genericPoint_specializes x`. Rewrite using `[dense_iff_closure_eq]`. Conclude with `(genericPoint_spec (Sp R)).trans (by simp)`. Use `haveI : IsSchemeTheoreticallyDominant ((Sp R).fromSpecStalk x) := .of_isDominant _`. Establish `hPB` using `IsPullback.of_hasPullback qN ((Sp R).fromSpecStalk x)`.
+
+Use `haveI : IsSchemeTheoreticallyDominant (pullback.fst qN ((Sp R).fromSpecStalk x)) := .of_isPullback hPB.flip`. Use `ext_of_schDom pZ ?_ (pullback.fst qN ((Sp R).fromSpecStalk x)) ?_` and prove the remaining obligations. Simplify using `only [Category.assoc, hu₀, hg₀]`. Rewrite using `[pullback.condition_assoc]`. Set `m : pullback qN ((Sp R).fromSpecStalk x) ⟶ pullback pB ((Sp R).fromSpecStalk x)` to `pullback.lift (pullback.fst _ _ ≫ pullback.fst _ _ ≫ φ₀) (pullback.snd _ _) (by rw [Category.assoc, Category.assoc]; exact pullback.condition)`.
+
+Establish `hm : m ≫ pullback.fst pB ((Sp R).fromSpecStalk x) = pullback.fst qN ((Sp R).fromSpecStalk x) ≫ pullback.fst φ₀ (pullback.fst pB V.ι) ≫ φ₀` using `pullback.lift_fst _ _ _`. Establish `h1` using `hagree _ (pullback.fst _ _ ≫ pullback.fst _ _) m ((Category.assoc _ _ _).trans hm.symm)`. Establish `h2 : m ≫ w = pullback.fst qN ((Sp R).fromSpecStalk x) ≫ pullback.snd φ₀ (pullback.fst pB V.ι)`. Rewrite using `[← cancel_mono (pullback.fst pB V.ι)]`. Rewrite using `[Category.assoc, hw, hm, Category.assoc, pullback.condition]`.
+
+Rewrite using `[← Category.assoc, h1, ← hwg, ← Category.assoc, h2, Category.assoc]`. Use `⟨g, hxg, fun Y a ha => ?_⟩` and prove the remaining obligations. Establish `hrange : Set.range (a ≫ pB) ⊆ Set.range V.ι`. Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨y, rfl⟩`.
+
+Conclude with `hgV (ha y)`. Set `k : Y ⟶ pullback pB V.ι` to `pullback.lift a (IsOpenImmersion.lift V.ι (a ≫ pB) hrange) (IsOpenImmersion.lift_fac _ _ _).symm`. Use `⟨k ≫ g₀, ?_, fun T t₀ t ht => ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hg₀, pullback.lift_fst_assoc]`. Use `pullback.lift t₀ (t ≫ k) (by rw [ht, Category.assoc, pullback.lift_fst]) ≫= key` as an intermediate fact.
+
+Rewrite `this` using `[pullback.lift_fst_assoc, pullback.lift_snd_assoc, Category.assoc]`. Conclude with `this`.
+-/
 theorem exists_spread_basicOpen_agree : ∀ (R : Type) [CommRing R] [IsDomain R] (x : Sp R) (B Z B₀ : Scheme.{0})
     (pB : B ⟶ Sp R) (pZ : Z ⟶ Sp R), Flat pB → QuasiCompact pB → QuasiSeparated pB → IsSeparated pZ →
     LocallyOfFinitePresentation pZ → ∀ (φ₀ : B₀ ⟶ B) (u₀ : B₀ ⟶ Z), Flat φ₀ → u₀ ≫ pZ = φ₀ ≫ pB →

@@ -9,10 +9,16 @@ namespace GlobalTheory.TwoLines
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Simplify using `[herm, Fin.sum_univ_two, Matrix.one_apply]`.
+-/
 theorem herm_one_two (x y : Fin 2 → E) :
     herm (1 : Matrix (Fin 2) (Fin 2) E) x y = x 0 * cc (y 0) + x 1 * cc (y 1) := by
   simp [herm, Fin.sum_univ_two, Matrix.one_apply]
 
+/- English proof (translation)
+Rewrite using `[herm_one_two, map_add, map_mul, map_mul, emb_cc, emb_cc, Complex.mul_conj, Complex.mul_conj, Complex.normSq_eq_norm_sq, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem emb_herm_one (φ : E →+* ℂ) (x : Fin 2 → E) :
     φ (herm (1 : Matrix (Fin 2) (Fin 2) E) x x) = ((‖φ (x 0)‖ ^ 2 + ‖φ (x 1)‖ ^ 2 : ℝ) : ℂ) := by
   rw [herm_one_two, map_add, map_mul, map_mul, emb_cc, emb_cc, Complex.mul_conj, Complex.mul_conj,
@@ -20,6 +26,13 @@ theorem emb_herm_one (φ : E →+* ℂ) (x : Fin 2 → E) :
   push_cast
   ring
 
+/- English proof (translation)
+Take `⟨φ⟩` from `(inferInstance : Nonempty (E →+* ℂ))`. Establish `h1` using `emb_herm_one φ x`. Rewrite `h1` using `[h, map_zero]`. Establish `h2 : ‖φ (x 0)‖ ^ 2 + ‖φ (x 1)‖ ^ 2 = 0` using `by exact_mod_cast h1.symm`. Establish `hsq0` using `sq_nonneg ‖φ (x 0)‖`.
+
+Establish `hsq1` using `sq_nonneg ‖φ (x 1)‖`. Establish `hx0 : x 0 = 0`. Establish `h3 : ‖φ (x 0)‖ ^ 2 = 0` using `by linarith`. Simplify using `using h3`. Establish `hx1 : x 1 = 0`.
+
+Establish `h3 : ‖φ (x 1)‖ ^ 2 = 0` using `by linarith`. Simplify using `using h3`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [hx0, hx1]`.
+-/
 theorem eq_zero_of_herm_one (x : Fin 2 → E) (h : herm (1 : Matrix (Fin 2) (Fin 2) E) x x = 0) :
     x = 0 := by
   obtain ⟨φ⟩ := (inferInstance : Nonempty (E →+* ℂ))
@@ -38,6 +51,11 @@ theorem eq_zero_of_herm_one (x : Fin 2 → E) (h : herm (1 : Matrix (Fin 2) (Fin
   fin_cases i <;> simp [hx0, hx1]
 
 omit [IsCMField E] in
+/- English proof (translation)
+Establish `hS` using `NumberField.Embeddings.finite_of_norm_le E ℂ 1`. Establish `hpi : (Set.univ.pi fun _ : Fin 2 => Set.univ.pi fun _ : Fin 2 => {x : E | IsIntegral ℤ x ∧ ∀ φ : E →+* ℂ, ‖φ x‖ ≤ 1}).Finite` using `Set.Finite.pi fun _ => Set.Finite.pi fun _ => hS`. Use `Set.Finite.subset (Set.Finite.preimage (f := fun (γ : GL (Fin 2) E) (a b : Fin 2) => (γ : Matrix (Fin 2) (Fin 2) E) a b) (fun γ _ δ _ hγδ => Units.ext (Matrix.ext fun a b => congrFun (congrFun hγδ a) b)) hpi) ?_` and prove the remaining obligations. Introduce `γ hγ`. Simplify using `only [Set.mem_preimage, Set.mem_univ_pi]`.
+
+Introduce `a b`. Conclude with `⟨(hγ a b).1, (hγ a b).2⟩`.
+-/
 theorem bounded_finite :
     {γ : GL (Fin 2) E | ∀ a b, IsIntegral ℤ ((γ : Matrix (Fin 2) (Fin 2) E) a b) ∧
       ∀ φ : E →+* ℂ, ‖φ ((γ : Matrix (Fin 2) (Fin 2) E) a b)‖ ≤ 1}.Finite := by
@@ -57,6 +75,9 @@ def intLat (E : Type) [Field E] : Submodule (𝓞 E) (Fin 2 → E) :=
   Submodule.pi Set.univ fun _ => (1 : Submodule (𝓞 E) E)
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Simplify using `only [intLat, Submodule.mem_pi, Set.mem_univ, true_implies, Submodule.mem_one]`. Use `forall_congr' fun a => ⟨?_, fun h => ⟨⟨x a, h⟩, rfl⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy⟩`. Rewrite using `[← hy]`. Conclude with `NumberField.RingOfIntegers.isIntegral_coe y`.
+-/
 theorem mem_intLat (x : Fin 2 → E) : x ∈ intLat E ↔ ∀ a, IsIntegral ℤ (x a) := by
   simp only [intLat, Submodule.mem_pi, Set.mem_univ, true_implies, Submodule.mem_one]
   refine forall_congr' fun a => ⟨?_, fun h => ⟨⟨x a, h⟩, rfl⟩⟩
@@ -65,6 +86,11 @@ theorem mem_intLat (x : Fin 2 → E) : x ∈ intLat E ↔ ∀ a, IsIntegral ℤ 
   exact NumberField.RingOfIntegers.isIntegral_coe y
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Rewrite using `[mem_intLat]`. Introduce `a`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using `[isIntegral_one]`.
+
+Simplify using `[hab, isIntegral_zero]`.
+-/
 theorem single_mem_intLat (b : Fin 2) : (Pi.single b 1 : Fin 2 → E) ∈ intLat E := by
   rw [mem_intLat]
   intro a
@@ -156,6 +182,15 @@ noncomputable def defData (E : Type) [Field E] [NumberField E] [IsCMField E] : D
     ext a b
     simp [transvMat, hξ, Matrix.one_apply]
 
+/- English proof (translation)
+Establish `hinv : Function.Involutive (ComplexEmbedding.conjugate : (E →+* ℂ) → (E →+* ℂ))` using `ComplexEmbedding.involutive_conjugate E`. Establish `hdisj : Disjoint X.Ψ (X.Ψ.image ComplexEmbedding.conjugate)`. Rewrite using `[Finset.disjoint_left]`. Introduce `τ hτ hτ'`. Take `⟨σ, hσ, rfl⟩` from `Finset.mem_image.mp hτ'`.
+
+Conclude with `((X.cmType σ).mp hσ) hτ`. Establish `hunion : X.Ψ ∪ X.Ψ.image ComplexEmbedding.conjugate = Finset.univ`. Use extensionality with `τ`. Simplify using `only [Finset.mem_union, Finset.mem_image, Finset.mem_univ, iff_true]`. Distinguish the cases in `hτ : τ ∈ X.Ψ`.
+
+Conclude with `Or.inl hτ`. Use `Or.inr ⟨ComplexEmbedding.conjugate τ, ?_, hinv τ⟩` and prove the remaining obligations. Rewrite using `[X.cmType, hinv τ]`. Conclude with `hτ`. Establish `hcard` using `congrArg Finset.card hunion`.
+
+Rewrite `hcard` using `[Finset.card_union_of_disjoint hdisj, Finset.card_image_of_injective _ hinv.injective, Finset.card_univ, NumberField.Embeddings.card]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem two_mul_card_cmType {r : ℕ} (X : Data E r) : 2 * X.Ψ.card = Module.finrank ℚ E := by
   classical
   have hinv : Function.Involutive (ComplexEmbedding.conjugate : (E →+* ℂ) → (E →+* ℂ)) :=
@@ -178,6 +213,13 @@ theorem two_mul_card_cmType {r : ℕ} (X : Data E r) : 2 * X.Ψ.card = Module.fi
     Finset.card_univ, NumberField.Embeddings.card] at hcard
   omega
 
+/- English proof (translation)
+Establish `hc` using `two_mul_card_cmType X`. Take `⟨a, b, hab, hΨ⟩` from `Finset.card_eq_two.mp (by omega : X.Ψ.card = 2)`. Establish `key : ∀ σ ∈ X.Ψ, σ = a ∨ σ = b`. Introduce `σ hσ`. Rewrite `hσ` using `[hΨ]`.
+
+Simplify using `using hσ`. Establish `ha : a ∈ X.Ψ` using `by rw [hΨ]; simp`. Establish `hb : b ∈ X.Ψ` using `by rw [hΨ]; simp`. Use `⟨⟨a, ha⟩, ⟨b, hb⟩, fun e => hab (congrArg Subtype.val e), fun τ => ?_⟩` and prove the remaining obligations. Break down `key τ.1 τ.2 with h1 | h1` into its components or cases.
+
+Conclude with `Or.inl (Subtype.ext h1)`. Conclude with `Or.inr (Subtype.ext h1)`.
+-/
 theorem exists_two {r : ℕ} (X : Data E r) (h : Module.finrank ℚ E = 4) :
     ∃ τ₁ τ₂ : X.Ψ, τ₁ ≠ τ₂ ∧ ∀ τ, τ = τ₁ ∨ τ = τ₂ := by
   classical

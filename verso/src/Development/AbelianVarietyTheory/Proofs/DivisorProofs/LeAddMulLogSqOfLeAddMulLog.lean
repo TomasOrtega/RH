@@ -4,6 +4,17 @@ open Filter Topology
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `α β r s hα hβ hr hrs hs`. Establish `hr0 : 0 < r` using `by linarith`. Use `set t := Real.sqrt r with ht`. Establish `ht0 : 0 ≤ t` using `Real.sqrt_nonneg r`. Establish `htt : t * t = r` using `Real.mul_self_sqrt hr0.le`.
+
+Establish `ht1 : 1 ≤ t`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Use the polynomial consequences of the given equalities and inequalities. Establish `htpos : 0 < t` using `by linarith`.
+
+Establish `hlog : Real.log r ≤ 2 * t - 2`. Establish `h1 : Real.log r = 2 * Real.log t`. Rewrite using `[← htt, Real.log_mul htpos.ne' htpos.ne']`. Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `Real.log_le_sub_one_of_pos htpos`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hle : t ≤ α + 2 * β + 1`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Use polynomial arithmetic with `[mul_lt_mul_of_pos_left h htpos, mul_nonneg hα (sub_nonneg.mpr ht1), mul_le_mul_of_nonneg_left hlog hβ]`.
+
+Establish `hrc : r ≤ (α + 2 * β + 1) ^ 2`. Rewrite using `[← htt]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hl : Real.log r ≤ Real.log ((α + 2 * β + 1) ^ 2)` using `Real.log_le_log hr0 hrc`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hl hβ]`.
+-/
 theorem le_add_mul_log_sq_of_le_add_mul_log :
     ∀ (α β r s : ℝ), 0 ≤ α → 0 ≤ β → 1 ≤ r → r ≤ s → s ≤ α + β * Real.log r →
       s ≤ α + β * Real.log ((α + 2 * β + 1) ^ 2) := by

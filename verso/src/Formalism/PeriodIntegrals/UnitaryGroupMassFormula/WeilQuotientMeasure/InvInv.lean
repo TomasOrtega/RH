@@ -8,6 +8,13 @@ open scoped ENNReal
 
 namespace PI.WeilQuotMeas.UnitaryGroupMassFormula
 
+/- English proof (translation)
+Introduce `K _ _ _ _ _ _ _ μ hμ hμr`. Prove the components needed by the constructor for the conclusion. Set `c : ℝ≥0∞` to `haarScalarFactor μ.inv μ`. Establish `hc : μ.inv = c • μ` using `isMulLeftInvariant_eq_smul μ.inv μ`. Establish `: map Inv.inv (map Inv.inv μ) = c ^ 2 • μ`.
+
+Rewrite using `[← inv_def μ, hc, Measure.map_smul, ← inv_def μ, hc, smul_smul, pow_two]`. Establish `μeq : μ = c ^ 2 • μ`. Rewrite `this` using `[map_map continuous_inv.measurable continuous_inv.measurable]`. Simplify using `only [inv_involutive, Function.Involutive.comp_self, Measure.map_id]`. Establish `P : TopologicalSpace.PositiveCompacts K` using `Classical.arbitrary _`.
+
+Establish `: c ^ 2 * μ P = 1 ^ 2 * μ P` using `by conv_rhs => rw [μeq]`. Simplify using the standard rewrite rules. Establish `: c ^ 2 = 1 ^ 2` using `(ENNReal.mul_left_inj (measure_pos_of_nonempty_interior _ P.interior_nonempty).ne' P.isCompact.measure_lt_top.ne).1 this`. Establish `: c = 1` using `(ENNReal.pow_right_strictMono two_ne_zero).injective this`. Rewrite using `[hc, this, one_smul]`.
+-/
 theorem stepInvInv : StepInvInv := by
   intro K _ _ _ _ _ _ _ μ hμ hμr
   constructor

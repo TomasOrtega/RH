@@ -5,6 +5,21 @@ open Complex Metric
 
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
+/- English proof (translation)
+Introduce `n S φ ρ C N hρ hφ hb`. Take `⟨ψ, hψ, hψe⟩` from `GlobalTheory.T.removable_log_growth_singularity n S φ ρ C N hρ hφ (fun z hz hS => (hb z hz hS).2.1)`. Take `⟨χ, hχ, hχe⟩` from `GlobalTheory.T.removable_log_growth_singularity n S (fun z => (φ z)⁻¹) ρ C N hρ (hφ.inv fun z hz => (hb z hz.1 hz.2).1) (fun z hz hS => (hb z hz hS).2.2)`. Use `⟨ψ, hψ, fun z hz => ?_, hψe⟩` and prove the remaining obligations. Establish `hF : ContinuousAt (fun w => ψ w * χ w) z` using `((hψ.mul hχ).differentiableAt (isOpen_ball.mem_nhds hz)).continuousAt`.
+
+Take `⟨w, hw_def⟩ : ∃ w : ℝ → (Fin n → ℂ), w = fun (ε : ℝ) i => if z i = 0 then (ε : ℂ) else z i` from `⟨_, rfl⟩`. Establish `hwc : Continuous w`. Rewrite using `[hw_def]`. Use `continuous_pi fun i => ?_` and prove the remaining obligations. Distinguish the cases in `h : z i = 0`.
+
+Simplify using `only [h, if_true]`. Conclude with `continuous_ofReal`. Simplify using `only [h, if_false]`. Conclude with `continuous_const`. Apply the tactic sequence `have hw0 : w 0 = z := funext fun i => by by_cases h : z i = 0 <;> simp [hw_def, h]`.
+
+Establish `hlim : Filter.Tendsto w (nhdsWithin 0 {0}ᶜ) (nhds z)`. Rewrite using `[← hw0]`. Conclude with `hwc.continuousAt.tendsto.mono_left nhdsWithin_le_nhds`. Establish `hev : ∀ᶠ ε in nhdsWithin (0 : ℝ) {0}ᶜ, ψ (w ε) * χ (w ε) = 1`. Establish `h1 : ∀ᶠ ε in nhdsWithin (0 : ℝ) {0}ᶜ, w ε ∈ ball (0 : Fin n → ℂ) ρ` using `hlim (isOpen_ball.mem_nhds hz)`.
+
+Use `filter_upwards [h1, self_mem_nhdsWithin] with ε hε hε0`. Establish `hS : ∀ i ∈ S, w ε i ≠ 0`. Introduce `i _`. Distinguish the cases in `h : z i = 0`. Simplify using `only [hw_def, h, if_true]`.
+
+Conclude with `Complex.ofReal_ne_zero.2 hε0`. Simplify using `only [hw_def, h, if_false]`. Conclude with `h`. Rewrite using `[hψe _ hε hS, hχe _ hε hS]`. Conclude with `mul_inv_cancel₀ (hb _ hε hS).1`.
+
+Establish `h2 : Filter.Tendsto (fun ε => ψ (w ε) * χ (w ε)) (nhdsWithin 0 {0}ᶜ) (nhds (ψ z * χ z))` using `hF.tendsto.comp hlim`. Establish `h3 : ψ z * χ z = 1` using `tendsto_nhds_unique h2 (tendsto_const_nhds.congr' (hev.mono fun _ h => h.symm))`. Conclude with `left_ne_zero_of_mul_eq_one h3`.
+-/
 theorem exists_unit_extension_of_log_growth :
     ∀ (n : ℕ) (S : Finset (Fin n)) (φ : (Fin n → ℂ) → ℂ) (ρ C : ℝ) (N : ℕ), 0 < ρ →
       DifferentiableOn ℂ φ {z ∈ ball (0 : Fin n → ℂ) ρ | ∀ i ∈ S, z i ≠ 0} →

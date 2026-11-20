@@ -24,10 +24,16 @@ namespace GlobalTheory.Core.Rk.SumBox
 
 variable {D : D7}
 
+/- English proof (translation)
+Simplify using `only [dotProduct, Matrix.mulVec, Finset.mul_sum, Pi.star_apply, mul_assoc]`.
+-/
 theorem pair_eq_dot (n : ℕ) (G : Matrix (Fin n) (Fin n) D.host.E) (x y : Fin n → D.host.E) :
     ∑ i, ∑ j, star (x i) * G i j * y j = star x ⬝ᵥ (G *ᵥ y) := by
   simp only [dotProduct, Matrix.mulVec, Finset.mul_sum, Pi.star_apply, mul_assoc]
 
+/- English proof (translation)
+Establish `hq : W.gram * o.qA = o.iAᴴ * B.gram`. Rewrite using `[OrthDec.qA, Matrix.mul_nonsing_inv_cancel_left _ _ (gram_isUnit_det W)]`. Rewrite using `[pair_eq_dot, pair_eq_dot, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hq]`.
+-/
 theorem pair_iA {B W H : HSp D} (o : OrthDec B W H) (x : Fin W.rank → D.host.E) (y : Fin B.rank → D.host.E) :
     ∑ i, ∑ j, star ((o.iA *ᵥ x) i) * B.gram i j * y j = ∑ i, ∑ j, star (x i) * W.gram i j * (o.qA *ᵥ y) j := by
   have hq : W.gram * o.qA = o.iAᴴ * B.gram := by
@@ -35,32 +41,61 @@ theorem pair_iA {B W H : HSp D} (o : OrthDec B W H) (x : Fin W.rank → D.host.E
   rw [pair_eq_dot, pair_eq_dot, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec,
     Matrix.mulVec_mulVec, hq]
 
+/- English proof (translation)
+The claim follows from `pair_iA o.symm x y`.
+-/
 theorem pair_iB {B W H : HSp D} (o : OrthDec B W H) (x : Fin H.rank → D.host.E) (y : Fin B.rank → D.host.E) :
     ∑ i, ∑ j, star ((o.iB *ᵥ x) i) * B.gram i j * y j = ∑ i, ∑ j, star (x i) * H.gram i j * (o.qB *ᵥ y) j :=
   pair_iA o.symm x y
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.add_mulVec, o.iA_qA_add, Matrix.one_mulVec]`.
+-/
 theorem split_vec {B W H : HSp D} (o : OrthDec B W H) (y : Fin B.rank → D.host.E) :
     o.iA *ᵥ (o.qA *ᵥ y) + o.iB *ᵥ (o.qB *ᵥ y) = y := by
   rw [Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.add_mulVec, o.iA_qA_add, Matrix.one_mulVec]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, o.qA_iA, o.qA_iB, Matrix.one_mulVec, Matrix.zero_mulVec, add_zero]`.
+-/
 theorem qA_split {B W H : HSp D} (o : OrthDec B W H) (x : Fin W.rank → D.host.E) (x' : Fin H.rank → D.host.E) :
     o.qA *ᵥ (o.iA *ᵥ x + o.iB *ᵥ x') = x := by
   rw [Matrix.mulVec_add, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, o.qA_iA, o.qA_iB, Matrix.one_mulVec,
     Matrix.zero_mulVec, add_zero]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, o.qB_iA, o.qB_iB, Matrix.one_mulVec, Matrix.zero_mulVec, zero_add]`.
+-/
 theorem qB_split {B W H : HSp D} (o : OrthDec B W H) (x : Fin W.rank → D.host.E) (x' : Fin H.rank → D.host.E) :
     o.qB *ᵥ (o.iA *ᵥ x + o.iB *ᵥ x') = x' := by
   rw [Matrix.mulVec_add, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, o.qB_iA, o.qB_iB, Matrix.one_mulVec,
     Matrix.zero_mulVec, zero_add]
 
+/- English proof (translation)
+The claim follows from `(mem_sumLatO o LW LH _).2 ⟨x, hx, 0, zero_mem _, by rw [Matrix.mulVec_zero, add_zero]⟩`.
+-/
 theorem iA_mem_sumLatO {B W H : HSp D} (o : OrthDec B W H) {LW : Lat W} (LH : Lat H) {x : Fin W.rank → D.host.E}
     (hx : x ∈ LW) : o.iA *ᵥ x ∈ sumLatO o LW LH :=
   (mem_sumLatO o LW LH _).2 ⟨x, hx, 0, zero_mem _, by rw [Matrix.mulVec_zero, add_zero]⟩
 
+/- English proof (translation)
+The claim follows from `(mem_sumLatO o LW LH _).2 ⟨0, zero_mem _, x, hx, by rw [Matrix.mulVec_zero, zero_add]⟩`.
+-/
 theorem iB_mem_sumLatO {B W H : HSp D} (o : OrthDec B W H) (LW : Lat W) {LH : Lat H} {x : Fin H.rank → D.host.E}
     (hx : x ∈ LH) : o.iB *ᵥ x ∈ sumLatO o LW LH :=
   (mem_sumLatO o LW LH _).2 ⟨0, zero_mem _, x, hx, by rw [Matrix.mulVec_zero, zero_add]⟩
 
+/- English proof (translation)
+Use `⟨(hW.fg.map _).sup (hH.fg.map _), eq_top_iff.2 fun y _ => ?_⟩` and prove the remaining obligations. Establish `hA : ∀ z ∈ Submodule.span D.host.E (LW : Set (Fin W.rank → D.host.E)), o.iA *ᵥ z ∈ Submodule.span D.host.E (sumLatO o LW LH : Set (Fin B.rank → D.host.E))`. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span (iA_mem_sumLatO o LH hx)`.
+
+Consider the case `zero => rw [Matrix.mulVec_zero]`. Conclude with `zero_mem _`. Consider the case `add x z _ _ hx hz => rw [Matrix.mulVec_add]`. Conclude with `add_mem hx hz`. Consider the case `smul a x _ hx => rw [Matrix.mulVec_smul]`.
+
+Conclude with `Submodule.smul_mem _ a hx`. Establish `hB : ∀ z ∈ Submodule.span D.host.E (LH : Set (Fin H.rank → D.host.E)), o.iB *ᵥ z ∈ Submodule.span D.host.E (sumLatO o LW LH : Set (Fin B.rank → D.host.E))`. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span (iB_mem_sumLatO o LW hx)`.
+
+Consider the case `zero => rw [Matrix.mulVec_zero]`. Conclude with `zero_mem _`. Consider the case `add x z _ _ hx hz => rw [Matrix.mulVec_add]`. Conclude with `add_mem hx hz`. Consider the case `smul a x _ hx => rw [Matrix.mulVec_smul]`.
+
+Conclude with `Submodule.smul_mem _ a hx`. Rewrite using `[← split_vec o y]`. Conclude with `add_mem (hA _ (hW.span_eq_top ▸ Submodule.mem_top)) (hB _ (hH.span_eq_top ▸ Submodule.mem_top))`.
+-/
 theorem isLattice_sumLatO {B W H : HSp D} (o : OrthDec B W H) (LW : Lat W) (LH : Lat H)
     (hW : Submodule.IsLattice D.host.E LW) (hH : Submodule.IsLattice D.host.E LH) :
     Submodule.IsLattice D.host.E (sumLatO o LW LH) := by
@@ -84,6 +119,17 @@ theorem isLattice_sumLatO {B W H : HSp D} (o : OrthDec B W H) (LW : Lat W) (LH :
   rw [← split_vec o y]
   exact add_mem (hA _ (hW.span_eq_top ▸ Submodule.mem_top)) (hB _ (hH.span_eq_top ▸ Submodule.mem_top))
 
+/- English proof (translation)
+Introduce `D B W H o LW LH hW hH`. Use `⟨isLattice_sumLatO o LW LH hW.1 hH.1, fun y => ⟨fun hy x hx => ?_, fun hy => ?_⟩⟩` and prove the remaining obligations. Take `⟨y₁, hy₁, y₂, hy₂, rfl⟩` from `(mem_sumLatO o LW LH y).1 hy`. Take `⟨x₁, hx₁, x₂, hx₂, rfl⟩` from `(mem_sumLatO o LW LH x).1 hx`. Take `⟨b₁, hb₁⟩` from `(hW.2 y₁).1 hy₁ x₁ hx₁`.
+
+Take `⟨b₂, hb₂⟩` from `(hH.2 y₂).1 hy₂ x₂ hx₂`. Use `⟨b₁ + b₂, ?_⟩` and prove the remaining obligations. Establish `e : ∑ i, ∑ j, star ((o.iA *ᵥ x₁ + o.iB *ᵥ x₂) i) * B.gram i j * (o.iA *ᵥ y₁ + o.iB *ᵥ y₂) j = ∑ i, ∑ j, star ((o.iA *ᵥ x₁) i) * B.gram i j * (o.iA *ᵥ y₁ + o.iB *ᵥ y₂) j + ∑ i, ∑ j, star ((o.iB *ᵥ x₂) i) * B.gram i j * (o.iA *ᵥ y₁ + o.iB *ᵥ y₂) j`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.add_apply, star_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, pair_iA, pair_iB, qA_split, qB_split, ← hb₁, ← hb₂]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hA : o.qA *ᵥ y ∈ LW` using `(hW.2 _).2 fun x hx => by`. Take `⟨b, hb⟩` from `hy _ (iA_mem_sumLatO o LH hx)`. Conclude with `⟨b, hb.trans (pair_iA o x y)⟩`.
+
+Establish `hB : o.qB *ᵥ y ∈ LH` using `(hH.2 _).2 fun x hx => by`. Take `⟨b, hb⟩` from `hy _ (iB_mem_sumLatO o LW hx)`. Conclude with `⟨b, hb.trans (pair_iB o x y)⟩`. Rewrite using `[← split_vec o y]`. Conclude with `(mem_sumLatO o LW LH _).2 ⟨_, hA, _, hB, rfl⟩`.
+-/
 theorem selfDual_sumLatO : ∀ (D : D7) (B W H : HSp D) (o : OrthDec B W H) (LW : Lat W) (LH : Lat H),
     IsSelfDualC W LW → IsSelfDualC H LH → IsSelfDualC B (sumLatO o LW LH) := by
   intro D B W H o LW LH hW hH

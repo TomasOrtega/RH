@@ -8,6 +8,9 @@ namespace LateralTheory.CohomologicalPurity.Cl
 def Zc {R : Type} [CommRing R] (K : Cx R) {X : Scheme.{0}} (U : X.Opens) (n : ℤ) : AddSubgroup (Sec (K.X n) X) :=
   ((K.X n).obj.map U.ι.op).hom.toAddMonoidHom.ker ⊓ ((K.d n (n + 1)).hom.app (op X)).hom.toAddMonoidHom.ker
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_Zc {R : Type} [CommRing R] {K : Cx R} {X : Scheme.{0}} {U : X.Opens} {n : ℤ} (a : Sec (K.X n) X) :
     a ∈ Zc K U n ↔ Sec.res U.ι a = 0 ∧ Sec.map (K.d n (n + 1)) a = 0 := Iff.rfl
 
@@ -119,19 +122,33 @@ def LeafCmp : Prop := ∀ (d : ℕ) (P : SP d) (F F₀ : Frame P), IsOpenImmersi
     Spec.map (CommRingCat.ofHom φ) ≫ F.w = Spec.map (CommRingCat.ofHom ψ) ≫ F₀.w ∧ F.I.map φ = F₀.I.map ψ ∧
     IsUnit M.det ∧ φ ∘ F.x = M.mulVec (ψ ∘ F₀.x)
 
+/- English proof (translation)
+Use extensionality with `y`. Express the relevant statement in the definitionally equal form `¬ ((I.map φ : Set B) ⊆ (y : PrimeSpectrum B).asIdeal) ↔ ¬ ((I : Set A) ⊆ ((y : PrimeSpectrum B).asIdeal.comap φ))`. Conclude with `not_congr Ideal.map_le_iff_le_comap`.
+-/
 theorem off_map {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (I : Ideal A) :
     off B (I.map φ) = Spec.map (CommRingCat.ofHom φ) ⁻¹ᵁ off A I := by
   ext y
   change ¬ ((I.map φ : Set B) ⊆ (y : PrimeSpectrum B).asIdeal) ↔ ¬ ((I : Set A) ⊆ ((y : PrimeSpectrum B).asIdeal.comap φ))
   exact not_congr Ideal.map_le_iff_le_comap
 
+/- English proof (translation)
+Simplify using `using (hq.map w.appTop.hom).map (Scheme.ΓSpecIso (CommRingCat.of B)).hom.hom`.
+-/
 theorem unit_B {X : Scheme.{0}} {q : ℕ} (hq : IsUnit (q : Γ(X, ⊤))) {B : Type} [CommRing B]
     (w : Spec (CommRingCat.of B) ⟶ X) : IsUnit (q : B) := by
   simpa using (hq.map w.appTop.hom).map (Scheme.ΓSpecIso (CommRingCat.of B)).hom.hom
 
+/- English proof (translation)
+The claim follows from `pushout.inl_desc _ _ _`.
+-/
 theorem inl_map {P' P : Arrow Spc} (φ : P' ⟶ P) : dbl.inl P' ≫ dbl.map φ = φ.right ≫ dbl.inl P :=
   pushout.inl_desc _ _ _
 
+/- English proof (translation)
+Apply `pushout.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `dbl.inl _ ≫ _ = dbl.inl _ ≫ _`. Rewrite using `[inl_map, ← Category.assoc, inl_map, Category.assoc, inl_map, ← Category.assoc]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `dbl.inr _ ≫ _ = dbl.inr _ ≫ _`.
+
+Rewrite using `[dbl.inr_map, ← Category.assoc, dbl.inr_map, Category.assoc, dbl.inr_map, ← Category.assoc]`. Both sides reduce to the same expression.
+-/
 theorem dbl_comp {P'' P' P : Arrow Spc} (φ : P'' ⟶ P') (ψ : P' ⟶ P) : dbl.map (φ ≫ ψ) = dbl.map φ ≫ dbl.map ψ := by
   apply pushout.hom_ext
   · change dbl.inl _ ≫ _ = dbl.inl _ ≫ _
@@ -141,6 +158,9 @@ theorem dbl_comp {P'' P' P : Arrow Spc} (φ : P'' ⟶ P') (ψ : P' ⟶ P) : dbl.
     rw [dbl.inr_map, ← Category.assoc, dbl.inr_map, Category.assoc, dbl.inr_map, ← Category.assoc]
     rfl
 
+/- English proof (translation)
+Apply `Arrow.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `sch.map _ ≫ sch.map _ = sch.map _`. Rewrite using `[← Functor.map_comp, Scheme.Hom.resLE_comp_resLE]`. Conclude with `(sch.map_comp f g).symm`.
+-/
 theorem opnMap_comp {X'' X' X : Scheme.{0}} (f : X'' ⟶ X') (g : X' ⟶ X) (U'' U' U) (h h' h'') :
     opnMap f U'' U' h ≫ opnMap g U' U h' = opnMap (f ≫ g) U'' U h'' := by
   apply Arrow.hom_ext
@@ -148,6 +168,9 @@ theorem opnMap_comp {X'' X' X : Scheme.{0}} (f : X'' ⟶ X') (g : X' ⟶ X) (U''
     rw [← Functor.map_comp, Scheme.Hom.resLE_comp_resLE]
   · exact (sch.map_comp f g).symm
 
+/- English proof (translation)
+Substitute `e` using the available equality. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← opnMap_comp f g U'' U' U h h' h'']`. Express the relevant statement in the definitionally equal form `pull _ (dbl.map _) _ n (pull _ (dbl.map _) _ n c.1) = pull _ (dbl.map _) _ n c.1`. Rewrite using `[dbl_comp, pull_comp]`.
+-/
 theorem pull_pull {q : ℕ} {X'' X' X : Scheme.{0}} (f : X'' ⟶ X') (g : X' ⟶ X) {k : X'' ⟶ X} (e : f ≫ g = k) (U'' U' U)
     (h h' h'') (n i : ℤ) (c : Hs q (opn U) n i) :
     Hs.pull q (opnMap f U'' U' h) n i (Hs.pull q (opnMap g U' U h') n i c) = Hs.pull q (opnMap k U'' U h'') n i c := by
@@ -167,10 +190,18 @@ abbrev Frame.pl {P : SP d} (F : Frame P) (q : ℕ) : Hs q (opn P.U) (2 * d) d �
 def Fund (q : ℕ) (P : SP d) (c : Hs q (opn P.U) (2 * d) d) : Prop := ∀ x : P.X, x ∉ P.U →
   ∃ F : Frame P, IsOpenImmersion F.w ∧ x ∈ Set.range F.w ∧ F.pl q c = F.th q
 
+/- English proof (translation)
+Rewrite using `[Ideal.map_span, Set.range_comp]`.
+-/
 theorem span_comp {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (x : Fin d → A) :
     Ideal.span (Set.range (φ ∘ x)) = (Ideal.span (Set.range x)).map φ := by
   rw [Ideal.map_span, Set.range_comp]
 
+/- English proof (translation)
+Take `⟨C, _, φ, ψ, M, ho, hyr, e, hI, hM, hx⟩` from `hC d P F F₀ h₀ y hy`. Take `⟨h1, h2, -, -⟩` from `hT q`. Establish `hB` using `unit_B hq F.w`. Establish `a1 : Ideal.span (Set.range (φ ∘ F.x)) = F.I.map φ` using `by rw [span_comp, F.hx]`. Establish `a2 : Ideal.span (Set.range (ψ ∘ F₀.x)) = F.I.map φ` using `by rw [span_comp, F₀.hx, hI]`.
+
+Use `⟨⟨_, _, ho, off C (F.I.map φ), off_map φ F.I⟩, Spec.map (CommRingCat.ofHom ψ), (hI ▸ off_map ψ F₀.I).le, e, hyr, ?_⟩` and prove the remaining obligations. Use `(h1 _ _ φ _ _ _ _ a1 _ hB).trans (Eq.trans ?_ (h1 _ _ ψ _ _ _ _ a2 _ (unit_B hq F₀.w)).symm)` and prove the remaining obligations. Use `h2 C _ (ψ ∘ F₀.x) M a2 (hx ▸ a1) (by simpa using hB.map φ) hM` as an intermediate fact. Rewrite using `[← this]`. Use `congr 1`.
+-/
 theorem agree [NeZero q] (hT : IsThom d (thom d)) (hC : LeafCmp) {P : SP d} (hq : IsUnit (q : Γ(P.X, ⊤))) (F F₀ : Frame P)
     (h₀ : IsOpenImmersion F₀.w) (y) (hy : F.w y ∈ Set.range F₀.w) :
     ∃ (t : Pc (off F.B F.I)) (u : t.Y ⟶ Spec (CommRingCat.of F₀.B)) (h : t.V ≤ u ⁻¹ᵁ off F₀.B F₀.I),
@@ -188,6 +219,11 @@ theorem agree [NeZero q] (hT : IsThom d (thom d)) (hC : LeafCmp) {P : SP d} (hq 
   rw [← this]
   congr 1
 
+/- English proof (translation)
+Use `sub_eq_zero.1 (hS _ fun y hy => ?_)` and prove the remaining obligations. Rewrite `hy` using `[hO]`. Take `⟨F₀, h₀, hy₀, e₀⟩` from `hc (F.w y) hy`. Take `⟨t, u, h, e, hyt, ht⟩` from `agree hT hC hq F F₀ h₀ y hy₀`. Use `⟨t, hyt, ?_⟩` and prove the remaining obligations.
+
+Establish `hle : t.V ≤ (u ≫ F₀.w) ⁻¹ᵁ P.U` using `fun a ha => by simpa using F₀.h (h ha)`. Rewrite using `[map_sub, ht, ← e₀, sub_eq_zero]`. Conclude with `(pull_pull _ _ e _ _ _ _ _ hle _ _ c).trans (pull_pull _ _ rfl _ _ _ _ _ hle _ _ c).symm`.
+-/
 theorem frame_eq [NeZero q] (hT : IsThom d (thom d)) (hC : LeafCmp) (hO : LeafOff) {P : SP d}
     (hq : IsUnit (q : Γ(P.X, ⊤))) {c} (hc : Fund q P c) (F : Frame P) (hS : Sep q (off F.B F.I) (2 * d) d) :
     F.pl q c = F.th q := by
@@ -202,6 +238,23 @@ theorem frame_eq [NeZero q] (hT : IsThom d (thom d)) (hC : LeafCmp) (hO : LeafOf
 
 def Frame.pc (hO : LeafOff) {P : SP d} (F : Frame P) (h : IsOpenImmersion F.w) : Pc P.U := ⟨_, F.w, h, off F.B F.I, hO d P F⟩
 
+/- English proof (translation)
+Introduce `H d`. Establish `hT : IsThom d (thom d)` using `@pick_spec _ ⟨fun _ _ _ _ _ _ => 0⟩ _ (hTh H d)`. Establish `ex : ∀ (q : ℕ) [NeZero q] (P : SP d), IsUnit (q : Γ(P.X, ⊤)) → ∃ c, Fund q P c`. Introduce `q _ P hq`. Use `choose F hF hx using fun x : {x : P.X // x ∉ P.U} => hG d P x.1 x.2`.
+
+Take `⟨c, hc⟩` from `(hD q P.U _ _ (hV H d q P hq d)).2 _ (fun a => (F a).pc hO (hF a)) (fun a => (F a).th q) (fun x h => ⟨⟨x, h⟩, hx _⟩) (fun a b y _ hy => agree hT hC hq (F a) (F b) (hF b) y hy)`. Conclude with `⟨c, fun x h => ⟨F ⟨x, h⟩, hF _, hx _, hc _⟩⟩`. Establish `et : ∀ (q : ℕ) [NeZero q] (P : SP d), IsUnit (q : Γ(P.X, ⊤)) → ∀ c, Fund q P c → ∀ F : Frame P, Etale F.w → F.pl q c = F.th q` using `fun q _ P hq c hc F hF => frame_eq hT hC hO hq hc F (hD q _ _ _ (hVF H d q P hq F hF d)).1`. Establish `un : ∀ (q : ℕ) [NeZero q] (P : SP d), IsUnit (q : Γ(P.X, ⊤)) → ∀ c c', Fund q P c → Fund q P c' → c = c'`. Introduce `q _ P hq c c' hc hc'`.
+
+Use `sub_eq_zero.1 ((hD q P.U _ _ (hV H d q P hq d)).1 _ fun x hx => ?_)` and prove the remaining obligations. Take `⟨F, hF, hxF, e⟩` from `hc x hx`. Use `⟨F.pc hO hF, hxF, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `e.trans (et q P hq c' hc' F inferInstance).symm`.
+
+Use `⟨fun q P => pick (Fund q P), fun q _ => ⟨?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `P hq B _ I x hx w z h hw hc`. Conclude with `et q P hq _ (pick_spec (ex q P hq)) ⟨B, I, x, hx, w, z, h, hc⟩ hw`. Introduce `P' P φ hq`. Establish `hq' : IsUnit (q : Γ(P'.X, ⊤))` using `by simpa using hq.map φ.f.appTop.hom`.
+
+Use `un q P' hq' _ _ (fun x hx => ?_) (pick_spec (ex q P' hq'))` and prove the remaining obligations. Take `⟨F, hF, hxF⟩` from `hG d P' x hx`. Establish `hle : off F.B F.I ≤ (F.w ≫ φ.f) ⁻¹ᵁ P.U` using `fun a ha => by simpa using φ.le (F.h ha)`. Use `⟨F, hF, hxF, (pull_pull _ _ rfl _ _ _ _ _ hle _ _ _).trans ?_⟩` and prove the remaining obligations. Conclude with `frame_eq hT hC hO hq (pick_spec (ex q P hq)) ⟨F.B, F.I, F.x, F.hx, F.w ≫ φ.f, F.z ≫ φ.g, hle, (F.cart.flip.paste_horiz φ.cart.flip).flip⟩ (hD q _ _ _ (hVF H d q P' hq' F inferInstance d)).1`.
+
+Introduce `r hr P hq`. Establish `: NeZero r` using `⟨fun h => NeZero.ne q (zero_dvd_iff.1 (h ▸ hr))⟩`. Establish `hr' : IsUnit (r : Γ(P.X, ⊤))` using `isUnit_of_dvd_unit (Nat.cast_dvd_cast hr) hq`. Set `c` to `pick (Fund q P)`. Establish `hc0 : pull _ (dbl.inr (opn P.U)) (tw q d) (2 * d) c.1 = 0` using `c.2`.
+
+Set `c' : Hs r (opn P.U) (2 * d) d` to `⟨red q r _ _ _ c.1, by`. Express the relevant statement in the definitionally equal form `pull _ (dbl.inr _) _ _ _ = 0`. Rewrite using `[pull_red, hc0, map_zero]⟩`. Use `congrArg Subtype.val (un r P hr' _ c' (pick_spec (ex r P hr')) fun x hx => ?_)` and prove the remaining obligations. Take `⟨F, hF, hxF, e⟩` from `pick_spec (ex q P hq) x hx`.
+
+Use `⟨F, hF, hxF, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[(hT q).2.2.2 r hr F.B F.I F.x F.hx (unit_B hq F.w), ← show _ = thom d q F.B F.I F.x F.hx from e]`. Conclude with `pull_red q r _ _ _ _`.
+-/
 theorem goal_of (hTh : LeafThom) (hD : LeafDesc) (hV : LeafVan) (hVF : LeafVanF) (hO : LeafOff) (hG : LeafGen)
     (hC : LeafCmp) : LeafCl := by
   intro H d

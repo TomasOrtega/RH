@@ -34,11 +34,19 @@ def TensorNormBound : Prop :=
       ∀ T : VV ℂ lam →ₗ[ℂ] VV ℂ lam', IsTensorMap lam lam' A T →
         ∀ F : VV ℂ lam, coefNorm lam' (T F) ≤ (∏ τ, c τ) * coefNorm lam F
 
+/- English proof (translation)
+Unfold `Formalism.REAL.fockF fockS mfact`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fockF_eq_fockS {σ : Type} (f : MvPolynomial σ ℂ) : Formalism.REAL.fockF f f = fockS f f := by
   unfold Formalism.REAL.fockF fockS mfact
   refine Finset.sum_congr rfl fun m _ => ?_
   ring
 
+/- English proof (translation)
+Use `⟨∑ m ∈ f.support, ‖f.coeff m‖ ^ 2 * (mfact m : ℝ), by positivity, ?_⟩` and prove the remaining obligations. Unfold `fockS`. Use `push_cast`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[← Complex.conj_mul']`.
+
+Both sides reduce to the same expression.
+-/
 theorem fockS_self_nonneg {σ : Type} (f : MvPolynomial σ ℂ) : ∃ r : ℝ, 0 ≤ r ∧ fockS f f = r := by
   refine ⟨∑ m ∈ f.support, ‖f.coeff m‖ ^ 2 * (mfact m : ℝ), by positivity, ?_⟩
   unfold fockS

@@ -36,6 +36,9 @@ def uM (d : Mat n) : ℝ := (∑ p, (ev d (sP p)).re ^ 2) / 2
 
 def th (g : G n) : G n := (star g)⁻¹
 
+/- English proof (translation)
+Simplify using `[th]`.
+-/
 theorem th_one : th (1 : G n) = 1 := by simp [th]
 
 def tw (x d : G n) : G n := x⁻¹ * d * th x

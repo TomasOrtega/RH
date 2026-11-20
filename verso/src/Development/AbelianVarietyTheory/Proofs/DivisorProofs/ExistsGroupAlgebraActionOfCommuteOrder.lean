@@ -13,6 +13,9 @@ noncomputable section
 
 namespace GlobalTheory.LKGeo.CommBC
 
+/- English proof (translation)
+Establish `: actOn rep R (a ⊗ₜ c) = Algebra.ofId R _ a * Module.End.baseChangeHom ℚ R V (rep c)` using `Algebra.TensorProduct.lift_tmul _ _ _ a c`. Rewrite using `[this, Module.End.mul_apply]`. Simplify using `only [Algebra.ofId_apply, Module.algebraMap_end_apply]`. Express the relevant statement in the definitionally equal form `a • (LinearMap.baseChange R (rep c)) (b ⊗ₜ v) = _`. Rewrite using `[LinearMap.baseChange_tmul, TensorProduct.smul_tmul', smul_eq_mul]`.
+-/
 theorem actOn_tmul_tmul {C V : Type} [Ring C] [Algebra ℚ C] [AddCommGroup V] [Module ℚ V]
     (rep : C →ₐ[ℚ] Module.End ℚ V) (R : Type) [CommRing R] [Algebra ℚ R] (a b : R) (c : C) (v : V) :
     actOn rep R (a ⊗ₜ c) (b ⊗ₜ v) = (a * b) ⊗ₜ rep c v := by
@@ -23,6 +26,25 @@ theorem actOn_tmul_tmul {C V : Type} [Ring C] [Algebra ℚ C] [AddCommGroup V] [
   change a • (LinearMap.baseChange R (rep c)) (b ⊗ₜ v) = _
   rw [LinearMap.baseChange_tmul, TensorProduct.smul_tmul', smul_eq_mul]
 
+/- English proof (translation)
+Set `r` to `Module.Free.chooseBasis ℚ R`. Set `e : R ⊗[ℚ] V ≃ₗ[ℚ] (Module.Free.ChooseBasisIndex ℚ R →₀ V)` to `(LinearEquiv.rTensor V r.repr).trans (TensorProduct.finsuppScalarLeft ℚ V _)`. Establish `he : ∀ (a : R) (v : V) k, e (a ⊗ₜ v) k = r.repr a k • v`. Introduce `a v k`. Simplify using `[e, TensorProduct.finsuppScalarLeft_apply_tmul_apply]`.
+
+Set `Ak : Module.Free.ChooseBasisIndex ℚ R → Module.End ℚ V` to `fun k => (Finsupp.lapply k) ∘ₗ e.toLinearMap ∘ₗ (A.restrictScalars ℚ) ∘ₗ (TensorProduct.mk ℚ R V 1)`. Establish `hAk : ∀ k v, Ak k v = e (A (1 ⊗ₜ v)) k` using `fun k v => rfl`. Establish `heS : ∀ (s : Module.End ℚ V) (x : R ⊗[ℚ] V) k, e (s.baseChange R x) k = s (e x k)`. Introduce `s x k`. Proceed by induction on `x using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul a v => simp [he]`. Consider the case `add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]`. Establish `hcomm : ∀ k b, Ak k * S b = S b * Ak k`. Introduce `k b`.
+
+Use extensionality with `v`. Simplify using `only [Module.End.mul_apply, hAk]`. Use `congrArg (fun f => f ((1 : R) ⊗ₜ v)) (hA b)` as an intermediate fact. Simplify using `only [Module.End.mul_apply, LinearMap.baseChange_tmul] at this`. Rewrite using `[this, heS]`.
+
+Use `choose x hx using fun k => hrange (Ak k) (hcomm k)`. Set `bV` to `Module.finBasis ℚ V`. Set `F` to `Finset.univ.biUnion fun i => (e (A ((1 : R) ⊗ₜ bV i))).support`. Establish `hzero : ∀ k ∉ F, Ak k = 0`. Introduce `k hk`.
+
+Use `bV.ext fun i => ?_` and prove the remaining obligations. Rewrite using `[hAk, LinearMap.zero_apply]`. Assume the negation of the conclusion as `h`. Conclude with `hk (Finset.mem_biUnion.mpr ⟨i, Finset.mem_univ _, Finsupp.mem_support_iff.mpr h⟩)`. Use `⟨∑ k ∈ F, r k ⊗ₜ x k, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : ∀ v, actOn rep R (∑ k ∈ F, r k ⊗ₜ x k) ((1 : R) ⊗ₜ v) = A ((1 : R) ⊗ₜ v)`. Introduce `v`. Apply `e.injective` to reduce the goal to its premises. Use extensionality with `j`. Rewrite using `[map_sum, LinearMap.sum_apply, map_sum, Finsupp.finset_sum_apply]`.
+
+Repeatedly rewrite using `[actOn_tmul_tmul, _root_.mul_one, hx, he, Module.Basis.repr_self, Finsupp.single_apply, ite_smul, one_smul, zero_smul]`. Rewrite using `[Finset.sum_ite_eq', ← hAk]`. Use `split_ifs with hj`. Both sides reduce to the same expression. Rewrite using `[hzero j hj, LinearMap.zero_apply]`.
+
+Apply `TensorProduct.AlgebraTensorModule.ext` to reduce the goal to its premises. Introduce `a v`. Establish `: a ⊗ₜ[ℚ] v = a • ((1 : R) ⊗ₜ v)` using `by rw [TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`. Rewrite using `[this, map_smul, map_smul, h1]`.
+-/
 theorem exists_actOn_eq {C V : Type} [Ring C] [Algebra ℚ C] [AddCommGroup V] [Module ℚ V] [Module.Finite ℚ V]
     (rep : C →ₐ[ℚ] Module.End ℚ V) {ι' : Type} (S : ι' → Module.End ℚ V)
     (hrange : ∀ B : Module.End ℚ V, (∀ b, B * S b = S b * B) → ∃ x, rep x = B)
@@ -76,6 +98,9 @@ theorem exists_actOn_eq {C V : Type} [Ring C] [Algebra ℚ C] [AddCommGroup V] [
   have : a ⊗ₜ[ℚ] v = a • ((1 : R) ⊗ₜ v) := by rw [TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]
   rw [this, map_smul, map_smul, h1]
 
+/- English proof (translation)
+Introduce `p _ D G L A hA`. Use `haveI := D.finLa`. Conclude with `exists_actOn_eq L.rep (actQ D) (fun B hB => (L.rep_range B).mpr hB) (AfP p) A hA`.
+-/
 theorem exists_actOn_eq_of_commute : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (G : HTGroup p) (L : Link D G)
     (A : Module.End (AfP p) (AfP p ⊗[ℚ] VQ D)),
     (∀ b : D.O, A * (actQ D b).baseChange (AfP p) = (actQ D b).baseChange (AfP p) * A) →

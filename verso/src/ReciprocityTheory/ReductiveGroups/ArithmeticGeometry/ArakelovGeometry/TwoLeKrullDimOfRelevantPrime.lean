@@ -11,6 +11,9 @@ section Dim
 
 variable {R : Type*} [CommRing R]
 
+/- English proof (translation)
+Take `⟨r, hrp, hrq⟩` from `SetLike.exists_of_lt h`. Establish `hr : Ideal.Quotient.mk q r ∈ nonZeroDivisors (R ⧸ q)` using `mem_nonZeroDivisors_of_ne_zero (by rwa [ne_eq, Ideal.Quotient.eq_zero_iff_mem])`. Conclude with `ringKrullDim_succ_le_of_surjective (Ideal.Quotient.factor h.le) (Ideal.Quotient.factor_surjective h.le) hr (by rw [Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem]; exact hrp)`.
+-/
 theorem krullDim_quotient_add_one_le {p q : Ideal R} [p.IsPrime] [q.IsPrime]
     (h : q < p) : ringKrullDim (R ⧸ p) + 1 ≤ ringKrullDim (R ⧸ q) := by
   obtain ⟨r, hrp, hrq⟩ := SetLike.exists_of_lt h
@@ -20,6 +23,11 @@ theorem krullDim_quotient_add_one_le {p q : Ideal R} [p.IsPrime] [q.IsPrime]
     (Ideal.Quotient.factor_surjective h.le) hr
     (by rw [Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem]; exact hrp)
 
+/- English proof (translation)
+Rewrite using `[ringKrullDim_quotient]`. Set `a : PrimeSpectrum.zeroLocus (R` to `R) p₀ := ⟨⟨p₀, inferInstance⟩, (PrimeSpectrum.mem_zeroLocus _ _).2 (le_refl _)⟩`. Set `b : PrimeSpectrum.zeroLocus (R` to `R) p₀ := ⟨⟨p₁, inferInstance⟩, (PrimeSpectrum.mem_zeroLocus _ _).2 h₀.le⟩`. Set `c : PrimeSpectrum.zeroLocus (R` to `R) p₀ := ⟨⟨p₂, inferInstance⟩, (PrimeSpectrum.mem_zeroLocus _ _).2 (h₀.le.trans h₁.le)⟩`. Establish `hab : a < b` using `h₀`.
+
+Establish `hbc : b < c` using `h₁`. Apply the tactic sequence `let s : LTSeries (PrimeSpectrum.zeroLocus (R := R) p₀) := ⟨2, ![a, b, c], fun i => by fin_cases i <;> simpa⟩`. Use `Order.LTSeries.length_le_krullDim s` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+-/
 theorem two_le_krullDim_of_chain (p₀ p₁ p₂ : Ideal R) [p₀.IsPrime]
     [p₁.IsPrime] [p₂.IsPrime] (h₀ : p₀ < p₁) (h₁ : p₁ < p₂) :
     ((2 : ℕ) : WithBot ℕ∞) ≤ ringKrullDim (R ⧸ p₀) := by
@@ -37,6 +45,13 @@ theorem two_le_krullDim_of_chain (p₀ p₁ p₂ : Ideal R) [p₀.IsPrime]
   have := Order.LTSeries.length_le_krullDim s
   exact_mod_cast this
 
+/- English proof (translation)
+Proceed by induction on `x using WithBot.recBotCoe with`. Consider the case `bot => exact absurd h2 (by simp)`. Consider the case `coe y`. Proceed by induction on `y using ENat.recTopCoe with`. Consider the case `top`.
+
+Use `WithBot.coe_le_coe.1 hD` as an intermediate fact. Conclude with `absurd (top_le_iff.1 this) (ENat.natCast_ne_top _)`. Consider the case `coe n`. Establish `h2' : 2 ≤ n` using `Nat.cast_le.1 (WithBot.coe_le_coe.1 h2)`. Establish `hD' : n ≤ D + 2` using `Nat.cast_le.1 (WithBot.coe_le_coe.1 hD)`.
+
+Use `⟨n - 2, by omega, ?_⟩` and prove the remaining obligations. Rewrite using `[show n - 2 + 2 = n by omega]`. Both sides reduce to the same expression.
+-/
 theorem exists_nat_of_two_le_dim_le {x : WithBot ℕ∞} {D : ℕ} (h2 : ((2 : ℕ) : WithBot ℕ∞) ≤ x)
     (hD : x ≤ ((D + 2 : ℕ) : WithBot ℕ∞)) : ∃ d ≤ D, x = ((d + 2 : ℕ) : WithBot ℕ∞) := by
   induction x using WithBot.recBotCoe with
@@ -53,6 +68,11 @@ theorem exists_nat_of_two_le_dim_le {x : WithBot ℕ∞} {D : ℕ} (h2 : ((2 : �
       rw [show n - 2 + 2 = n by omega]
       rfl
 
+/- English proof (translation)
+Substitute `hx` using the available equality. Use `h.trans hy` as an intermediate fact. Establish `h' : (((D + 2 + 1 : ℕ) : ℕ∞) : WithBot ℕ∞) ≤ (((D + 2 : ℕ) : ℕ∞) : WithBot ℕ∞)`. Conclude with `this` after adjusting the coercions. Establish `h'' : D + 2 + 1 ≤ D + 2` using `by exact_mod_cast h'`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem not_dim_strict_lt_bound {x y : WithBot ℕ∞} {D : ℕ} (hx : x = ((D + 2 : ℕ) : WithBot ℕ∞))
     (h : x + 1 ≤ y) (hy : y ≤ ((D + 2 : ℕ) : WithBot ℕ∞)) : False := by
   subst hx
@@ -70,10 +90,18 @@ variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintyp
 
 def i2kill (k : K) : MRing ι →ₐ[ℤ] MRing ι := aeval fun v => if v.1 = k then 0 else X v
 
+/- English proof (translation)
+Simplify using `[i2kill]`.
+-/
 theorem i2kill_X (k : K) (v : Σ k, ι k) :
     i2kill k (X v : MRing ι) = if v.1 = k then 0 else X v := by
   simp [i2kill]
 
+/- English proof (translation)
+Rewrite using `[i2kill, aeval_def, eval₂_eq]`. Use `Finset.sum_eq_zero fun m hm => ?_` and prove the remaining obligations. Establish `hsum` using `hs m hm k`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, m ⟨k, i⟩ ≠ 0 := by`. Assume the negation of the conclusion as `hne`.
+
+Simplify using `only [not_exists, not_not] at hne`. Conclude with `hk (by rw [← hsum]; exact Finset.sum_eq_zero fun i _ => hne i)`. Rewrite using `[Finset.prod_eq_zero (i := ⟨k, i⟩) (Finsupp.mem_support_iff.2 hi) (by simp [zero_pow hi]), mul_zero]`.
+-/
 theorem i2kill_homog_pos {s : MRing ι} {a : K → ℕ} (hs : IsMultiHomog s a) {k : K}
     (hk : a k ≠ 0) : i2kill k s = 0 := by
   rw [i2kill, aeval_def, eval₂_eq]
@@ -86,6 +114,13 @@ theorem i2kill_homog_pos {s : MRing ι} {a : K → ℕ} (hs : IsMultiHomog s a) 
   rw [Finset.prod_eq_zero (i := ⟨k, i⟩) (Finsupp.mem_support_iff.2 hi) (by simp [zero_pow hi]),
     mul_zero]
 
+/- English proof (translation)
+Use `conv_rhs => rw [← aeval_X_left_apply s]`. Rewrite using `[i2kill, aeval_def, aeval_def]`. Apply `eval₂_congr` to reduce the goal to its premises. Introduce `v m hv hm`. Distinguish the cases in `h : v.1 = k`.
+
+It suffices to derive a contradiction. Establish `hsum` using `hs m (mem_support_iff.2 hm) k`. Rewrite `hsum` using `[hk, Finset.sum_eq_zero_iff]`. Take `⟨k', i⟩` from `v`. Simplify using `only at h`.
+
+Substitute `h` using the available equality. Conclude with `(Finsupp.mem_support_iff.1 hv) (hsum i (Finset.mem_univ _))`. Simplify using `[h]`.
+-/
 theorem i2kill_homog_zero {s : MRing ι} {a : K → ℕ} (hs : IsMultiHomog s a) {k : K}
     (hk : a k = 0) : i2kill k s = s := by
   conv_rhs => rw [← aeval_X_left_apply s]
@@ -102,6 +137,11 @@ theorem i2kill_homog_zero {s : MRing ι} {a : K → ℕ} (hs : IsMultiHomog s a)
     exact (Finsupp.mem_support_iff.1 hv) (hsum i (Finset.mem_univ _))
   · simp [h]
 
+/- English proof (translation)
+Take `⟨S, hS, rfl⟩` from `hq`. Rewrite using `[Ideal.span_le]`. Introduce `s hsS`. Take `⟨a, ha⟩` from `hS s hsS`. Rewrite using `[SetLike.mem_coe, Ideal.mem_comap]`.
+
+Distinguish the cases in `h : a k = 0`. Rewrite using `[i2kill_homog_zero ha h]`. Conclude with `Ideal.subset_span hsS`. Rewrite using `[i2kill_homog_pos ha h]`. Conclude with `zero_mem _`.
+-/
 theorem le_comap_kill_of_homogeneous {q : Ideal (MRing ι)} (hq : IsMultiHomogIdeal q) (k : K) :
     q ≤ q.comap (i2kill k) := by
   obtain ⟨S, hS, rfl⟩ := hq
@@ -115,6 +155,11 @@ theorem le_comap_kill_of_homogeneous {q : Ideal (MRing ι)} (hq : IsMultiHomogId
 
 end Kill
 
+/- English proof (translation)
+Introduce `g hg`. Rewrite `hg` using `[Ideal.mem_comap]`. Establish `h1` using `le_comap_kill_of_homogeneous hh 1 hg`. Rewrite `h1` using `[Ideal.mem_comap]`. Rewrite using `[Ideal.mem_comap, AlgHom.comp_apply]`.
+
+Conclude with `h1`.
+-/
 theorem comap_kill_variables_le {ι : Fin 2 → Type} [∀ k, Fintype (ι k)] {q : Ideal (MRing ι)}
     (hh : IsMultiHomogIdeal q) :
     q.comap (i2kill (ι := ι) 0) ≤ q.comap ((i2kill (ι := ι) 1).comp (i2kill 0)) := by
@@ -125,6 +170,15 @@ theorem comap_kill_variables_le {ι : Fin 2 → Type} [∀ k, Fintype (ι k)] {q
   rw [Ideal.mem_comap, AlgHom.comp_apply]
   exact h1
 
+/- English proof (translation)
+Take `⟨hp, hh, hr⟩` from `hq`. Take `⟨i0, hi0⟩` from `hr 0`. Take `⟨i1, hi1⟩` from `hr 1`. Establish `: (q.comap (i2kill (ι` using `ι) 0)).IsPrime := Ideal.comap_isPrime _ _`. Establish `: (q.comap ((i2kill (ι` using `ι) 1).comp (i2kill 0))).IsPrime := Ideal.comap_isPrime _ _`.
+
+Establish `e00 : i2kill (ι` using `ι) 0 (X ⟨0, i0⟩) = 0 := by rw [i2kill_X, if_pos rfl]`. Establish `e01 : i2kill (ι` using `ι) 0 (X ⟨1, i1⟩) = X ⟨1, i1⟩ := by`. Rewrite using `[i2kill_X, if_neg (show (1 : Fin 2) ≠ 0 by decide)]`. Establish `e11 : i2kill (ι` using `ι) 1 (X ⟨1, i1⟩) = 0 := by rw [i2kill_X, if_pos rfl]`. Establish `m1 : (X ⟨1, i1⟩ : MRing ι) ∈ q.comap ((i2kill (ι` using `ι) 1).comp (i2kill 0)) := by`.
+
+Rewrite using `[Ideal.mem_comap, AlgHom.comp_apply, e01, e11]`. Conclude with `zero_mem _`. Establish `m1' : (X ⟨1, i1⟩ : MRing ι) ∉ q.comap (i2kill (ι` using `ι) 0) := by`. Rewrite using `[Ideal.mem_comap, e01]`. Conclude with `hi1`.
+
+Establish `m0 : (X ⟨0, i0⟩ : MRing ι) ∈ q.comap (i2kill (ι` using `ι) 0) := by`. Rewrite using `[Ideal.mem_comap, e00]`. Conclude with `zero_mem _`. Conclude with `two_le_krullDim_of_chain q _ _ (lt_of_le_of_ne (le_comap_kill_of_homogeneous hh 0) fun h => hi0 (h ▸ m0)) (lt_of_le_of_ne (comap_kill_variables_le hh) fun h => m1' (h ▸ m1))`.
+-/
 theorem two_le_krullDim_of_relevant_prime {ι : Fin 2 → Type} [∀ k, Fintype (ι k)] {q : Ideal (MRing ι)}
     (hq : IsMultiProjPrime q) : ((2 : ℕ) : WithBot ℕ∞) ≤ ringKrullDim (MRing ι ⧸ q) := by
   obtain ⟨hp, hh, hr⟩ := hq

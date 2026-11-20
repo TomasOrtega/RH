@@ -14,21 +14,33 @@ section Scalars
 
 variable [IsIntegral X]
 
+/- English proof (translation)
+Rewrite using `[restrictTop, sectionValue_res le_top y r, sectionValue_eq]`.
+-/
 lemma sectionValue_restrictTop (V : X.Opens) (y : V) (r : Γ(X, ⊤)) :
     sectionValue V y (restrictTop V r) = X.germToFunctionField ⊤ r := by
   rw [restrictTop, sectionValue_res le_top y r, sectionValue_eq]
 
+/- English proof (translation)
+Rewrite using `[sectionValue_restrictTop, algebraMap_functionField]`.
+-/
 lemma sectionValue_scalar (V : X.Opens) (y : V) (c : k) :
     sectionValue V y (restrictTop V (scalarRingHom X c)) = algebraMap k X.functionField c := by
   rw [sectionValue_restrictTop, algebraMap_functionField]
 
 variable [IsLocallyNoetherian X] [IsNormalScheme X]
 
+/- English proof (translation)
+Rewrite using `[IsScalarTower.algebraMap_apply k (X.presheaf.stalk Z.point) X.functionField]`. Conclude with `Z.valuation_algebraMap_le_one _`.
+-/
 lemma PrimeDivisor.valuation_algebraMap_scalar_le_one (Z : PrimeDivisor X) (c : k) :
     Z.valuation (algebraMap k X.functionField c) ≤ 1 := by
   rw [IsScalarTower.algebraMap_apply k (X.presheaf.stalk Z.point) X.functionField]
   exact Z.valuation_algebraMap_le_one _
 
+/- English proof (translation)
+Rewrite `hf`, the goal using `[mem_pointSubgroup_iff]`. Introduce `h`. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma mul_mem_pointSubgroup (D : WeilDivisor X) (x : X) (c : k) {f : X.functionField}
     (hf : f ∈ pointSubgroup D x) : algebraMap k X.functionField c * f ∈ pointSubgroup D x := by
   rw [mem_pointSubgroup_iff] at hf ⊢
@@ -44,6 +56,9 @@ section Endo
 
 variable [IsIntegral X]
 
+/- English proof (translation)
+Introduce `y`. Take `⟨W, hyW, h⟩` from `t.2 y`. Conclude with `⟨W, hyW, fun z hz => by simp only [h z hz]⟩`.
+-/
 lemma mul_mem_constSections (c : k) {V : X.Opens} (t : constSections V) :
     (fun y => algebraMap k X.functionField c * t.1 y) ∈ constSections V := by
   intro y
@@ -65,10 +80,16 @@ noncomputable def quotMul (c : k) (x : X) :
   QuotientAddGroup.map _ _ (AddMonoidHom.mulLeft (algebraMap k X.functionField c))
     (fun _ hf => mul_mem_pointSubgroup D x c hf)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma quotMul_mk (c : k) (x : X) (f : X.functionField) :
     quotMul D c x (QuotientAddGroup.mk f) = QuotientAddGroup.mk (algebraMap k X.functionField c * f) :=
   rfl
 
+/- English proof (translation)
+Introduce `y`. Take `⟨W, hyW, h⟩` from `a.2 y`. Use `⟨W, hyW, h.subset ?_⟩` and prove the remaining obligations. Introduce and unpack `z ⟨hzW, hz⟩`. Conclude with `⟨hzW, fun h0 => hz (by simp only [h0, map_zero])⟩`.
+-/
 lemma quotMul_mem_quotSections (c : k) {V : X.Opens} (a : quotSections D V) :
     (fun z : V => quotMul D c z.1 (a.1 z)) ∈ quotSections D V := by
   intro y
@@ -130,6 +151,9 @@ def globalL (D : WeilDivisor X) : Submodule k X.functionField where
       _ = _ := one_mul _
 
 omit [HasExt.{w'} (Sheaf (Opens.grothendieckTopology X.toTopCat) AddCommGrpCat.{u})] in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 lemma mem_globalL (D : WeilDivisor X) (f : X.functionField) :
     f ∈ globalL k D ↔ ∀ Z : PrimeDivisor X, Z.valuation f ≤ WithZero.exp (D Z) := Iff.rfl
 
@@ -152,6 +176,9 @@ noncomputable def divisorH0AddEquiv (D : WeilDivisor X) :
     Sheaf.H.{w'} (modulesAb (divisorSheaf D)) 0 ≃+ globalL k D :=
   (Sheaf.H.equiv₀ (modulesAb (divisorSheaf D)) isTerminalTop).trans (divisorSectionsTopEquiv k D)
 
+/- English proof (translation)
+The claim follows from `divisorSections_apply_eq D _ _ _`.
+-/
 lemma divisorH0AddEquiv_apply (D : WeilDivisor X) (x : Sheaf.H.{w'} (modulesAb (divisorSheaf D)) 0)
     (y : (⊤ : X.Opens)) :
     (divisorH0AddEquiv k D x : X.functionField) =

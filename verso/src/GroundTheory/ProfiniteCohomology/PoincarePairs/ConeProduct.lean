@@ -19,6 +19,9 @@ section Cocycles
 
 variable {K L : CochainComplex (ModuleCat.{u} k) ℕ} (f : K ⟶ L)
 
+/- English proof (translation)
+Rewrite `hp` using `[mappingCoconeNat_d]`. Establish `h2` using `congrArg Prod.snd hp`. Express the relevant statement in the definitionally equal form `((f.f (n + 1)).hom p.1 : L.X (n + 1)) + -(L.d n (n + 1)).hom (p.2 : L.X n) = 0 at h2`. Rewrite `h2` using `[← sub_eq_add_neg, sub_eq_zero]`. Conclude with `h2`.
+-/
 theorem f_fst_eq_d_snd_of_d_eq_zero {n : ℕ} (p : (mappingCoconeNat f).X (n + 1))
     (hp : ((mappingCoconeNat f).d (n + 1) (n + 1 + 1)).hom p = 0) :
     (f.f (n + 1)).hom p.1 = (L.d n (n + 1)).hom (p.2 : L.X n) := by
@@ -28,6 +31,9 @@ theorem f_fst_eq_d_snd_of_d_eq_zero {n : ℕ} (p : (mappingCoconeNat f).X (n + 1
   rw [← sub_eq_add_neg, sub_eq_zero] at h2
   exact h2
 
+/- English proof (translation)
+Rewrite `hp` using `[mappingCoconeNat_d]`. Establish `h2` using `congrArg Prod.snd hp`. Express the relevant statement in the definitionally equal form `((f.f 0).hom p.1 : L.X 0) + 0 = 0 at h2`. Rewrite `h2` using `[add_zero]`. Then use the resulting hypothesis.
+-/
 theorem f_fst_eq_zero_of_d_eq_zero (p : (mappingCoconeNat f).X 0)
     (hp : ((mappingCoconeNat f).d 0 1).hom p = 0) :
     (f.f 0).hom p.1 = 0 := by
@@ -52,6 +58,9 @@ variable {KA LA KC LC N LN KA' LA' KC' LC' N' LN' : CochainComplex (ModuleCat.{u
 
 include hN in
 
+/- English proof (translation)
+Establish `e` using `congrArg (fun φ => φ.hom z) (hN.comm 0)`. Simplify using `only [HomologicalComplex.comp_f, ModuleCat.hom_comp, LinearMap.comp_apply, ModuleCat.hom_add, LinearMap.add_apply] at e`. Rewrite `e` using `[Homotopy.dNext_cochainComplex, Homotopy.prevD_zero_cochainComplex]`. Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply, hz, map_zero, ModuleCat.hom_zero, LinearMap.zero_apply, zero_add] at e`. Conclude with `e`.
+-/
 theorem homotopy_apply_zero_of_d_eq_zero (z : N.X 0) (hz : (N.d 0 1).hom z = 0) :
     (βN.f 0).hom ((ρ.f 0).hom z) = (ρ'.f 0).hom ((αN.f 0).hom z) := by
   have e := congrArg (fun φ => φ.hom z) (hN.comm 0)
@@ -62,6 +71,9 @@ theorem homotopy_apply_zero_of_d_eq_zero (z : N.X 0) (hz : (N.d 0 1).hom z = 0) 
     LinearMap.zero_apply, zero_add] at e
   exact e
 
+/- English proof (translation)
+Establish `e` using `congrArg (fun φ => φ.hom z) (hN.comm (l + 1))`. Simplify using `only [HomologicalComplex.comp_f, ModuleCat.hom_comp, LinearMap.comp_apply, ModuleCat.hom_add, LinearMap.add_apply] at e`. Rewrite `e` using `[Homotopy.dNext_cochainComplex, Homotopy.prevD_succ_cochainComplex]`. Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply, hz, map_zero, zero_add] at e`. Conclude with `e`.
+-/
 theorem homotopy_apply_succ_of_d_eq_zero (l : ℕ) (z : N.X (l + 1))
     (hz : (N.d (l + 1) (l + 1 + 1)).hom z = 0) :
     (βN.f (l + 1)).hom ((ρ.f (l + 1)).hom z) =
@@ -73,6 +85,11 @@ theorem homotopy_apply_succ_of_d_eq_zero (l : ℕ) (z : N.X (l + 1))
   simp only [ModuleCat.hom_comp, LinearMap.comp_apply, hz, map_zero, zero_add] at e
   exact e
 
+/- English proof (translation)
+Rewrite using `[hβ, homotopy_apply_succ_of_d_eq_zero hN l z hz, hh h a z, map_smul, μL'.leibniz, hom_apply_hom_apply_eq_of_comp_eq (βA.comm j (j + 1)) b, ← hab]`. Simplify using `only [map_add, map_sub, LinearMap.sub_apply, smul_add, smul_smul, ← pow_add]`. Establish `e : (-1 : k) ^ (j + 1 + j) = -1`. Rewrite using `[show j + 1 + j = 2 * j + 1 by ring, pow_succ, pow_mul]`. Evaluate the numerical expressions.
+
+Rewrite using `[e, neg_one_smul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem snd_sub_eq_neg_d (hβ : ∀ {r s n : ℕ} (h : r + s = n) (y : LA.X r) (w : LN.X s),
       (βC.f n).hom (μL.μ h y w) = μL'.μ h ((βA.f r).hom y) ((βN.f s).hom w))
     (hh : ∀ {r s m : ℕ} (h : r + 1 + (s + 1) = m + 1) (x : KA.X (r + 1)) (z : N.X (s + 1)),
@@ -99,6 +116,9 @@ theorem snd_sub_eq_neg_d (hβ : ∀ {r s n : ℕ} (h : r + s = n) (y : LA.X r) (
   rw [e, neg_one_smul]
   abel
 
+/- English proof (translation)
+Establish `e : a - b = (P.toCycles m (m + 1)).hom c` using `iCycles_hom_injective P (m + 1) (by rw [map_sub, h, iCycles_toCycles_hom_apply])`. Rewrite using `[← sub_eq_zero, ← map_sub, e, homologyπ_toCycles_hom_apply]`.
+-/
 theorem _root_.GroundTheory.ProfCoh.homologyπ_eq_of_iCycles_sub_eq_d (P : CochainComplex (ModuleCat.{u} k) ℕ)
     {m : ℕ} (a b : P.cycles (m + 1)) (c : P.X m)
     (h : (P.iCycles (m + 1)).hom a - (P.iCycles (m + 1)).hom b = (P.d m (m + 1)).hom c) :
@@ -107,6 +127,27 @@ theorem _root_.GroundTheory.ProfCoh.homologyπ_eq_of_iCycles_sub_eq_d (P : Cocha
     iCycles_hom_injective P (m + 1) (by rw [map_sub, h, iCycles_toCycles_hom_apply])
   rw [← sub_eq_zero, ← map_sub, e, homologyπ_toCycles_hom_apply]
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `homologyπ_hom_surjective _ r x`. Take `⟨z, rfl⟩` from `homologyπ_hom_surjective _ s z`. Rewrite using `[LeibnizPairing.homology_homologyπ, homologyMap_homologyπ_apply, homologyMap_homologyπ_apply, homologyMap_homologyπ_apply, LeibnizPairing.homology_homologyπ]`. Establish `hx` using `iCycles_d_apply _ r (r + 1) x`. Establish `hz` using `iCycles_d_apply _ s (s + 1) z`.
+
+Establish `eL : ((mappingCoconeNat fC').iCycles n).hom (HomologicalComplex.cyclesMap (mapOfHomotopy hC) n ((LeibnizPairing.coconeLeft μL ρ μK hc).cycles h x z)) = (mapOfHomotopyF hC n).hom (LeibnizPairing.coconeLeftμ μL ρ μK h (((mappingCoconeNat fA).iCycles r).hom x) ((N.iCycles s).hom z))`. Rewrite using `[iCycles_cyclesMap_apply, LeibnizPairing.iCycles_cycles]`. Both sides reduce to the same expression. Establish `eR : ((mappingCoconeNat fC').iCycles n).hom ((LeibnizPairing.coconeLeft μL' ρ' μK' hc').cycles h (HomologicalComplex.cyclesMap (mapOfHomotopy hA) r x) (HomologicalComplex.cyclesMap αN s z)) = LeibnizPairing.coconeLeftμ μL' ρ' μK' h ((mapOfHomotopyF hA r).hom (((mappingCoconeNat f …`. Rewrite using `[LeibnizPairing.iCycles_cycles, iCycles_cyclesMap_apply, iCycles_cyclesMap_apply]`.
+
+Both sides reduce to the same expression. Generalize the expression as in `((mappingCoconeNat fA).iCycles r).hom x = p at hx eL eR`. Generalize the expression as in `(N.iCycles s).hom z = w at hz eL eR`. Use `revert p`. Introduce `(p : KA.X r × shiftNegOneX LA r) hx eL eR`.
+
+Take `⟨a, b⟩` from `p`. Break down `n with _ | m` into its components or cases. Take `⟨rfl, rfl⟩ : r = 0 ∧ s = 0` from `by omega`. Use `congr 1`. Apply `iCycles_hom_injective` to reduce the goal to its premises.
+
+Rewrite using `[eL, eR]`. Conclude with `Prod.ext (hα h a w) (Subsingleton.elim (α := PUnit) _ _)`. Break down `r with _ | j` into its components or cases. Take `rfl : s = m + 1` from `by omega`. Use `homologyπ_eq_of_iCycles_sub_eq_d _ _ _ 0 ?_` and prove the remaining obligations.
+
+Rewrite using `[map_zero, sub_eq_zero, eL, eR]`. Use `Prod.ext (hα h a w) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(βC.f m).hom 0 - (hC.hom (m + 1) m).hom (μK.μ h a w) = 0`. Rewrite using `[map_zero, zero_sub, neg_eq_zero, hh₀ h, f_fst_eq_zero_of_d_eq_zero fA (a, b) hx, map_zero, map_zero, LinearMap.zero_apply]`. Break down `s with _ | l` into its components or cases.
+
+Take `rfl : m = j` from `by omega`. Take `⟨b', rfl⟩ : ∃ b' : LA.X m, b' = b` from `⟨b, rfl⟩`. Use `homologyπ_eq_of_iCycles_sub_eq_d _ _ _ 0 ?_` and prove the remaining obligations. Rewrite using `[map_zero, sub_eq_zero, eL, eR]`. Use `Prod.ext (hα h a w) ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(βC.f m).hom (μL.μ (show m + 0 = m by omega) b' ((ρ.f 0).hom w)) - (hC.hom (m + 1) m).hom (μK.μ h a w) = μL'.μ (show m + 0 = m by omega) ((βA.f m).hom b' - (hA.hom (m + 1) m).hom a) ((ρ'.f 0).hom ((αN.f 0).hom w))`. Rewrite using `[hβ, homotopy_apply_zero_of_d_eq_zero hN w hz, hh₁ h, map_sub, LinearMap.sub_apply]`. Take `rfl : m = j + l + 1` from `by omega`. Take `⟨b', rfl⟩ : ∃ b' : LA.X j, b' = b` from `⟨b, rfl⟩`. Use `homologyπ_eq_of_iCycles_sub_eq_d _ _ _ ((0 : KC'.X (j + l + 1)), ((-1 : k) ^ (j + 1) • μL'.μ (show j + l = j + l from rfl) ((βA.f j).hom b') ((hN.hom (l + 1) l).hom w) : LC'.X (j + l))) ?_` and prove the remaining obligations.
+
+Rewrite using `[eL, eR, mappingCoconeNat_d]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(αC.f _).hom (μK.μ h a w) - μK'.μ h ((αA.f _).hom a) ((αN.f _).hom w) = (KC'.d _ _).hom 0`. Rewrite using `[map_zero, hα, sub_self]`. Express the relevant statement in the definitionally equal form `(βC.f (j + l + 1)).hom (μL.μ (show j + (l + 1) = j + l + 1 by omega) b' ((ρ.f (l + 1)).hom w)) - (hC.hom (j + l + 1 + 1) (j + l + 1)).hom (μK.μ h a w) - μL'.μ (show j + (l + 1) = j + l + 1 by omega) ((βA.f j).hom b' - (hA.hom (j + 1) j).hom a) ((ρ'.f (l + 1)).hom ((αN.f (l + 1)). …`.
+
+Rewrite using `[map_zero, zero_add]`. Conclude with `snd_sub_eq_neg_d hA hC hN μL μK μL' hβ hh j l h a b' w (f_fst_eq_d_snd_of_d_eq_zero fA (a, b') hx) hz`.
+-/
 theorem homologyMap_mapOfHomotopy_coconeLeft
     (hc : ∀ {r s n : ℕ} (h : r + s = n) (x : KA.X r) (z : N.X s),
       (fC.f n).hom (μK.μ h x z) = μL.μ h ((fA.f r).hom x) ((ρ.f s).hom z))

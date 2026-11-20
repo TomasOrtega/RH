@@ -12,9 +12,19 @@ open Formalism.BasicNotions NumberField Formalism.FrobeniusOrbits Formalism.TwoA
 
 def vU (p : ℕ) {C : Type} [NormedField C] (u : Cˣ) : ℝ := -Real.logb p ‖(u : C)‖
 
+/- English proof (translation)
+Conclude with `D.host.sqd_sq`.
+-/
 theorem sqrtMinusD_sq (D : Formalism.BasicNotions.D7) : D.host.sqrtMinusD ^ 2 = -(D.host.d : D.host.E) := by
   exact D.host.sqd_sq
 
+/- English proof (translation)
+Take `⟨-, -, -, hd, -⟩` from `D.host.hyp`. Take `⟨k, hk⟩ : ∃ k : ℕ, D.host.d = 16 * k + 7` from `⟨D.host.d / 16, by omega⟩`. Use `⟨Polynomial.X ^ 2 - Polynomial.X + Polynomial.C ((4 * k + 2 : ℕ) : ℤ), ?_, ?_⟩` and prove the remaining obligations. Use `monicity!`. Establish `h` using `sqrtMinusD_sq D`.
+
+Rewrite `h` using `[hk]`. Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_sub, Polynomial.eval₂_pow, Polynomial.eval₂_X, Polynomial.eval₂_C]`. Move the coercions through the operations in `at h`. Simplify using `only [eq_intCast, Int.cast_add, Int.cast_mul, Int.cast_natCast, Int.cast_ofNat, Nat.cast_add, Nat.cast_mul, Nat.cast_ofNat]`. Establish `: ((1 + D.host.sqrtMinusD) / 2 : D.host.E) ^ 2 = (1 + 2 * D.host.sqrtMinusD + D.host.sqrtMinusD ^ 2) / 4` using `by ring`.
+
+Rewrite using `[this, h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem half_one_add_sqrt_neg_isIntegral (D : Formalism.BasicNotions.D7) :
     IsIntegral ℤ ((1 + D.host.sqrtMinusD) / 2 : D.host.E) := by
   obtain ⟨-, -, -, hd, -⟩ := D.host.hyp
@@ -35,6 +45,9 @@ theorem half_one_add_sqrt_neg_isIntegral (D : Formalism.BasicNotions.D7) :
 
 def w0 (D : Formalism.BasicNotions.D7) : 𝓞 D.host.E := ⟨(1 + D.host.sqrtMinusD) / 2, half_one_add_sqrt_neg_isIntegral D⟩
 
+/- English proof (translation)
+Establish `h` using `D.host.gal_sqd D.host.conj`. Establish `h2 : D.host.gal D.host.conj = D.R.cc` using `D.host.gal.apply_symm_apply _`. Rewrite `h` using `[h2]`. Simplify `h` using `[Host.sqrtMinusD, Formalism.HC.Frame.cc, c0]`.
+-/
 theorem conj_sqrtMinusD (D : Formalism.BasicNotions.D7) :
     D.host.conj D.host.sqrtMinusD = -D.host.sqrtMinusD := by
   have h := D.host.gal_sqd D.host.conj
@@ -42,6 +55,9 @@ theorem conj_sqrtMinusD (D : Formalism.BasicNotions.D7) :
   rw [h2] at h
   simpa [Host.sqrtMinusD, Formalism.HC.Frame.cc, c0] using h
 
+/- English proof (translation)
+Establish `hw : algebraMap (𝓞 D.host.E) D.host.E (w0 D) = (1 + D.host.sqrtMinusD) / 2` using `rfl`. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 D.host.E) D.host.E (1 - w0 D) = D.host.conj (algebraMap (𝓞 D.host.E) D.host.E (w0 D))`. Rewrite using `[map_sub, map_one, hw, map_div₀, map_add, map_one, conj_sqrtMinusD, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem one_sub_halfSqrt_eq_conj (D : Formalism.BasicNotions.D7) :
     ((1 - w0 D : 𝓞 D.host.E) : D.host.E) = D.host.conj (w0 D : D.host.E) := by
   have hw : algebraMap (𝓞 D.host.E) D.host.E (w0 D) = (1 + D.host.sqrtMinusD) / 2 := rfl
@@ -374,6 +390,13 @@ def Stmt (Y : Prov D X) (ka : ℝ) : Prop :=
 def BoundsOfCoreAdmissibleData (Y : Prov D X) (ka : ℝ) : Prop :=
   admitted D X Y → ZeroGainValuation D X Y ∧ Conclusion2 D X Y ∧ ModuliIntegralCharts.KeyFormulaLineBundle D X ka ∧ Conclusion4 D X Y ∧ Conclusion5 D X
 
+/- English proof (translation)
+Unfold `ModuliIntegralCharts.Ospan at hv ⊢`. Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨b, hb, s, hs, rfl⟩` from `hx`. Use `AddSubgroup.subset_closure ⟨a * b, ?_, s, hs, by rw [mul_smul]⟩` and prove the remaining obligations.
+
+Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ ha (norm_nonneg _) hb`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`.
+
+Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `neg_mem hx`.
+-/
 theorem Ospan_smul {C V : Type} [NormedField C] [AddCommGroup V] [Module C V] (S : Set V) (a : C)
     (ha : ‖a‖ ≤ 1) {v : V} (hv : v ∈ ModuliIntegralCharts.Ospan (C := C) S) : a • v ∈ ModuliIntegralCharts.Ospan (C := C) S := by
   unfold ModuliIntegralCharts.Ospan at hv ⊢
@@ -386,6 +409,13 @@ theorem Ospan_smul {C V : Type} [NormedField C] [AddCommGroup V] [Module C V] (S
   | add x y _ _ hx hy => rw [smul_add]; exact add_mem hx hy
   | neg x _ hx => rw [smul_neg]; exact neg_mem hx
 
+/- English proof (translation)
+Introduce `w p hp n DF nW hn h3 y sg hsg t' ht' v hv`. Take `⟨t, ht, h⟩` from `(h w p hp n DF nW hn h3 y).2 sg hsg`. Establish `hpos : (0 : ℝ) < (p : ℝ) ^ (-((X.loc w p).cJ y n DF * (X.loc w p).phiCy y))` using `Real.rpow_pos_of_pos (by exact_mod_cast hp.pos) _`. Establish `ht0 : t ≠ 0`. Introduce `h0`.
+
+Rewrite `ht` using `[h0, norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: t' • v = (t' / t) • (t • v)`. Rewrite using `[smul_smul, div_mul_cancel₀ _ ht0]`. Rewrite using `[this]`.
+
+Use `Ospan_smul _ _ ?_ (h v hv)` and prove the remaining obligations. Rewrite using `[norm_div]`. Conclude with `div_le_one_of_le₀ (ht'.trans ht) (norm_nonneg _)`.
+-/
 theorem jetBoundDownstream_of_jetBound (h : Conclusion5 D X) : IntegralChartJetBound D X := by
   intro w p hp n DF nW hn h3 y sg hsg t' ht' v hv
   obtain ⟨t, ht, h⟩ := (h w p hp n DF nW hn h3 y).2 sg hsg
@@ -400,6 +430,9 @@ theorem jetBoundDownstream_of_jetBound (h : Conclusion5 D X) : IntegralChartJetB
   rw [norm_div]
   exact div_le_one_of_le₀ (ht'.trans ht) (norm_nonneg _)
 
+/- English proof (translation)
+Introduce `w p hp`. Use `⟨fun La => ?_, fun Z y a => (h1.2 w p hp Z y a).2.2, (h2 w p hp).1⟩` and prove the remaining obligations. Take `⟨P, hP, -, hs, hr, hM⟩` from `h1.1 w p hp La`. Conclude with `⟨(Y.loc w p hp).dg P, by rw [(Y.loc w p hp).dg_res, hP, (Y.loc w p hp).PPq_def], hs, hr, hM⟩`.
+-/
 theorem finiteModel_of_heckeEstimate (Y : Prov D X) (h1 : Conclusion1 D X Y) (h2 : Conclusion2 D X Y) : ModuliIntegralCharts.division_rows_rational_lattice D X := by
   intro w p hp
   refine ⟨fun La => ?_, fun Z y a => (h1.2 w p hp Z y a).2.2, (h2 w p hp).1⟩
@@ -416,10 +449,16 @@ def Comparison₂ (D : Formalism.BasicNotions.D7) (X : ModuliIntegralCharts.Prov
 
 def TieClass (ka : ℝ) : ObjClass := fun {D} {X} Y => Comparison₂ D X Y ka
 
+/- English proof (translation)
+Introduce `a` and use `⟨(h a).1.2, (h a).2.1, (h a).2.2.1.2, (h a).2.2.2.1, (h a).2.2.2.2.1⟩`.
+-/
 theorem essentialPacket_of_packet {D : Formalism.BasicNotions.D7} {X : ModuliIntegralCharts.Prov D} {Y : Prov D X} {ka : ℝ} (h : Stmt D X Y ka) :
     BoundsOfCoreAdmissibleData D X Y ka :=
   fun a => ⟨(h a).1.2, (h a).2.1, (h a).2.2.1.2, (h a).2.2.2.1, (h a).2.2.2.2.1⟩
 
+/- English proof (translation)
+Introduce `a` and use `⟨⟨t.1, (h a).1⟩, (h a).2.1, ⟨t.2.1, (h a).2.2.1⟩, (h a).2.2.2.1, (h a).2.2.2.2, t.2.2⟩`.
+-/
 theorem packet_of_essential_of_clauses {D : Formalism.BasicNotions.D7} {X : ModuliIntegralCharts.Prov D} {Y : Prov D X} {ka : ℝ} (h : BoundsOfCoreAdmissibleData D X Y ka)
     (t : Comparison₂ D X Y ka) : Stmt D X Y ka :=
   fun a => ⟨⟨t.1, (h a).1⟩, (h a).2.1, ⟨t.2.1, (h a).2.2.1⟩, (h a).2.2.2.1, (h a).2.2.2.2, t.2.2⟩
@@ -427,6 +466,9 @@ theorem packet_of_essential_of_clauses {D : Formalism.BasicNotions.D7} {X : Modu
 def UniformKeyFormulaOfAdmissible (ka : ℝ) : Prop :=
   ∀ (D : Formalism.BasicNotions.D7) (X : ModuliIntegralCharts.Prov D) (Y : Prov D X), BoundsOfCoreAdmissibleData D X Y ka
 
+/- English proof (translation)
+Introduce `D X Y t` and use `packet_of_essential_of_clauses (h D X Y) t`.
+-/
 theorem uniformPacket_clauseClass_of_essential {ka : ℝ} (h : UniformKeyFormulaOfAdmissible ka) : UniformExportStatement (TieClass ka) ka :=
   fun D X Y t => packet_of_essential_of_clauses (h D X Y) t
 
@@ -452,10 +494,16 @@ def FamilyPacketImplication (ka : ℝ) : Prop := AdmFx Fm XF YF → familyPoinca
 
 def InClass (𝒪 : ObjClass) : Prop := ∀ x hx (i : Fm.Ix x), 𝒪 (YF x hx i)
 
+/- English proof (translation)
+Introduce `a x hx i` and use `h _ _ _ (hO x hx i) (a x hx i)`.
+-/
 theorem familyPacket_of_uniformPacket {𝒪 : ObjClass} {ka : ℝ} (h : UniformExportStatement 𝒪 ka) (hO : InClass Fm XF YF 𝒪) :
     FamilyPacketImplication Fm XF YF ka :=
   fun a x hx i => h _ _ _ (hO x hx i) (a x hx i)
 
+/- English proof (translation)
+Introduce `x hx i` and use `jetBoundDownstream_of_jetBound _ _ (h x hx i).2.2.2.2.1`.
+-/
 theorem jetBoundDownstream_of_family {ka : ℝ} (h : familyPoincareExtensionAndPointBounds Fm XF YF ka) :
     ∀ x hx (i : Fm.Ix x), IntegralChartJetBound (Fm.D x i) (XF x hx i) :=
   fun x hx i => jetBoundDownstream_of_jetBound _ _ (h x hx i).2.2.2.2.1
@@ -467,17 +515,29 @@ def familyValuationAndKeyFormula (ka : ℝ) : Prop :=
 
 def FamilyKeyFormulaOfAdmissible (ka : ℝ) : Prop := AdmFx Fm XF YF → familyValuationAndKeyFormula Fm XF YF ka
 
+/- English proof (translation)
+Introduce `a x hx i` and use `h _ _ _ (a x hx i)`.
+-/
 theorem familyEssential_of_uniformEssential {ka : ℝ} (h : UniformKeyFormulaOfAdmissible ka) : FamilyKeyFormulaOfAdmissible Fm XF YF ka :=
   fun a x hx i => h _ _ _ (a x hx i)
 
+/- English proof (translation)
+Introduce `a x hx i` and use `⟨(h a x hx i).1.2, (h a x hx i).2.1, (h a x hx i).2.2.1.2, (h a x hx i).2.2.2.1, (h a x hx i).2.2.2.2.1⟩`.
+-/
 theorem familyEssential_of_familyPacket {ka : ℝ} (h : FamilyPacketImplication Fm XF YF ka) : FamilyKeyFormulaOfAdmissible Fm XF YF ka :=
   fun a x hx i => ⟨(h a x hx i).1.2, (h a x hx i).2.1, (h a x hx i).2.2.1.2, (h a x hx i).2.2.2.1, (h a x hx i).2.2.2.2.1⟩
 
+/- English proof (translation)
+Introduce `a x hx i` and use `⟨⟨(t x hx i).1, (h a x hx i).1⟩, (h a x hx i).2.1, ⟨(t x hx i).2.1, (h a x hx i).2.2.1⟩, (h a x hx i).2.2.2.1, (h a x hx i).2.2.2.2, (t x hx i).2.2⟩`.
+-/
 theorem familyPacket_of_familyEssential {ka : ℝ} (h : FamilyKeyFormulaOfAdmissible Fm XF YF ka) (t : InClass Fm XF YF (TieClass ka)) :
     FamilyPacketImplication Fm XF YF ka :=
   fun a x hx i => ⟨⟨(t x hx i).1, (h a x hx i).1⟩, (h a x hx i).2.1, ⟨(t x hx i).2.1, (h a x hx i).2.2.1⟩,
     (h a x hx i).2.2.2.1, (h a x hx i).2.2.2.2, (t x hx i).2.2⟩
 
+/- English proof (translation)
+Introduce `x hx i` and use `(h x hx i).2.2.2.2`.
+-/
 theorem jetBound_of_familyEssential {ka : ℝ} (h : familyValuationAndKeyFormula Fm XF YF ka) :
     ∀ x hx (i : Fm.Ix x), Conclusion5 (Fm.D x i) (XF x hx i) :=
   fun x hx i => (h x hx i).2.2.2.2
@@ -488,6 +548,9 @@ def ClosedAbsoluteShare (𝒞 : Formalism.MainNotions.FamClass) (𝒪 : ObjClass
   Formalism.MainNotions.Closed 𝒞 (fun Fm _ =>
     ∀ (XF : BaseObjectsAlongFamily Fm) (YF : ProvF Fm XF), InClass Fm XF YF 𝒪 → FamilyPacketImplication Fm XF YF ka)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ _ _ XF YF hO => familyPacket_of_uniformPacket Fm XF YF h hO⟩⟩`.
+-/
 theorem closed_absolute_share_of_uniform_export {𝒪 : ObjClass} {ka : ℝ} (h : UniformExportStatement 𝒪 ka) (𝒞 : Formalism.MainNotions.FamClass) :
     ClosedAbsoluteShare 𝒞 𝒪 ka :=
   ⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩,
@@ -498,6 +561,9 @@ def ShareAbsoluteConstant (𝒞 : Formalism.MainNotions.FamClass) (𝒪 : ObjCla
 def ClosedFamilyKeyFormula (𝒞 : Formalism.MainNotions.FamClass) (ka : ℝ) : Prop :=
   Formalism.MainNotions.Closed 𝒞 (fun Fm _ => ∀ (XF : BaseObjectsAlongFamily Fm) (YF : ProvF Fm XF), FamilyKeyFormulaOfAdmissible Fm XF YF ka)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ _ _ XF YF => familyEssential_of_uniformEssential Fm XF YF h⟩⟩`.
+-/
 theorem closedEssential_of_uniformEssential {ka : ℝ} (h : UniformKeyFormulaOfAdmissible ka) (𝒞 : Formalism.MainNotions.FamClass) : ClosedFamilyKeyFormula 𝒞 ka :=
   ⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩,
     fun Fm _ _ _ XF YF => familyEssential_of_uniformEssential Fm XF YF h⟩⟩
@@ -505,13 +571,22 @@ theorem closedEssential_of_uniformEssential {ka : ℝ} (h : UniformKeyFormulaOfA
 def PacketAlongFamilyInClass (𝒪 : ObjClass) (ka : ℝ) {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop :=
   ∀ (XF : BaseObjectsAlongFamily Fm) (YF : ProvF Fm XF), InClass Fm XF YF 𝒪 → FamilyPacketImplication Fm XF YF ka
 
+/- English proof (translation)
+Introduce `XF YF hO` and use `familyPacket_of_uniformPacket Fm XF YF h hO`.
+-/
 theorem packetAlongFamily_of_uniform {𝒪 : ObjClass} {ka : ℝ} (h : UniformExportStatement 𝒪 ka) {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) :
     PacketAlongFamilyInClass 𝒪 ka Fm :=
   fun XF YF hO => familyPacket_of_uniformPacket Fm XF YF h hO
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem closedPacket_iff_alongFamily (𝒞 : Formalism.MainNotions.FamClass) (𝒪 : ObjClass) (ka : ℝ) :
     ClosedAbsoluteShare 𝒞 𝒪 ka ↔ Formalism.MainNotions.Closed 𝒞 (fun Fm _ => PacketAlongFamilyInClass 𝒪 ka Fm) := Iff.rfl
 
+/- English proof (translation)
+Introduce `D X Y hY` and use `h D X Y (hs Y hY)`.
+-/
 theorem uniformPacket_anti_class {𝒪 𝒪' : ObjClass} {ka : ℝ}
     (hs : ∀ {D : Formalism.BasicNotions.D7} {X : ModuliIntegralCharts.Prov D} (Y : Prov D X), 𝒪' Y → 𝒪 Y) (h : UniformExportStatement 𝒪 ka) : UniformExportStatement 𝒪' ka :=
   fun D X Y hY => h D X Y (hs Y hY)

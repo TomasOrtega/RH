@@ -8,6 +8,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `h : IsPullback m.φ t'.G.hom t.G.hom j` using `m.cart.1`. Establish `hφ : m.φ = h.isoPullback.hom ≫ pullback.fst t.G.hom j` using `by simp`. Establish `hi : IsOpenImmersion m.φ` using `by rw [hφ]; infer_instance`. Use `⟨hi, ?_⟩` and prove the remaining obligations. Use `ext1`.
+
+Establish `h1 : Set.range m.φ = Set.range (pullback.fst t.G.hom j)`. Rewrite using `[hφ, Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp, Set.range_eq_univ.mpr h.isoPullback.hom.surjective, Set.image_univ]`. Simplify `Scheme.Pullback.range_fst t.G.hom j` using `[h1]`.
+-/
 theorem sabMap_isOpenImmersion_opensRange (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X X' : Scheme.{0}) (t : SAB H X) (t' : SAB H X') (j : X' ⟶ X) [IsOpenImmersion j] (m : SABMap t' t j) : ∃ _ : IsOpenImmersion m.φ, m.φ.opensRange = t.G.hom ⁻¹ᵁ j.opensRange := by
   have h : IsPullback m.φ t'.G.hom t.G.hom j := m.cart.1
   have hφ : m.φ = h.isoPullback.hom ≫ pullback.fst t.G.hom j := by simp

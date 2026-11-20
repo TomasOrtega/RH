@@ -12,6 +12,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.SmoothStalk
 
+/- English proof (translation)
+Take `⟨U, hU, hx, -⟩` from `exists_isAffineOpen_mem_and_subset (show z ∈ (⊤ : X.Opens) from trivial)`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (hU.fromSpec ≫ g)`. Establish `hft : φ.hom.FiniteType`. Establish `: LocallyOfFiniteType (Spec.map φ)` using `by rw [hφ]; infer_instance`. Conclude with `(HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)).1 this`.
+
+Establish `he : Spec.preimage (X.fromSpecStalk z ≫ g) = φ ≫ X.presheaf.germ U z hx`. Rewrite using `[← Spec.map_inj, Spec.map_preimage, Spec.map_comp, hφ, ← hU.fromSpecStalk_eq_fromSpecStalk hx, IsAffineOpen.fromSpecStalk, Category.assoc]`. Rewrite using `[he, CommRingCat.hom_comp]`. Use `RingHom.EssFiniteType.comp hft.essFiniteType ?_` and prove the remaining obligations. Set `_` to `X.presheaf.algebra_section_stalk ⟨z, hx⟩`.
+
+Use `hU.isLocalization_stalk ⟨z, hx⟩` as an intermediate fact. Conclude with `Algebra.EssFiniteType.of_isLocalization (X.presheaf.stalk z) (hU.primeIdealOf ⟨z, hx⟩).asIdeal.primeCompl`.
+-/
 theorem essFiniteType_preimage_fromSpecStalk (F : Type) [CommRing F] (X : Scheme.{0})
     (g : X ⟶ Spec (CommRingCat.of F)) [LocallyOfFiniteType g] (z : X) :
     (Spec.preimage (X.fromSpecStalk z ≫ g)).hom.EssFiniteType := by
@@ -29,6 +36,13 @@ theorem essFiniteType_preimage_fromSpecStalk (F : Type) [CommRing F] (X : Scheme
   have := hU.isLocalization_stalk ⟨z, hx⟩
   exact Algebra.EssFiniteType.of_isLocalization (X.presheaf.stalk z) (hU.primeIdealOf ⟨z, hx⟩).asIdeal.primeCompl
 
+/- English proof (translation)
+Introduce `F _ Cs g n hsm z`. Use `haveI := hsm`. Use `haveI : Smooth g := SmoothOfRelativeDimension.smooth n g`. Use `haveI : IsRegularRing (CommRingCat.of F) := inferInstanceAs (IsRegularRing F)`. Establish `hreg : ∀ x : Cs, IsRegularLocalRing (Cs.presheaf.stalk x)` using `fun x => GroundTheory.Arith.SchemeCoh.isRegularLocalRing_stalk_of_smooth g x`.
+
+Use `⟨hreg z, (Spec.preimage (Cs.fromSpecStalk z ≫ g)).hom, ?_, essFiniteType_preimage_fromSpecStalk F Cs g z, ?_⟩` and prove the remaining obligations. Conclude with `(Spec.map_preimage _).symm`. Establish `h` using `GlobalTheory.StalkDim.stalk_dim_add_trdeg F g (𝟙 Cs) n (by simp) (by simpa using hsm) (fun x => haveI := hreg x; ReciprocityTheory.AnForm.R.isDomain_of_isRegularLocalRing) z`. Establish `he : Spec.preimage (Cs.fromSpecResidueField z ≫ g) = Spec.preimage (Cs.fromSpecStalk z ≫ g) ≫ Cs.residue z`. Rewrite using `[← Spec.map_inj, Spec.map_preimage, Spec.map_comp, Spec.map_preimage, Scheme.fromSpecResidueField, Category.assoc]`.
+
+Rewrite `h` using `[he]`. Conclude with `h`.
+-/
 theorem stalk_regular_essFiniteType_dim : ∀ (F : Type) [Field F] (Cs : Scheme.{0}) (g : Cs ⟶ Sp F) (n : ℕ), SmoothOfRelativeDimension n g → ∀ z : Cs, IsRegularLocalRing (Cs.presheaf.stalk z) ∧ ∃ b : F →+* Cs.presheaf.stalk z, Cs.fromSpecStalk z ≫ g = spMap b ∧ b.EssFiniteType ∧ (letI := ((residue (Cs.presheaf.stalk z)).comp b).toAlgebra; ∃ a t : ℕ, ringKrullDim (Cs.presheaf.stalk z) = a ∧ Algebra.trdeg F (ResidueField (Cs.presheaf.stalk z)) = t ∧ a + t = n) := by
   intro F _ Cs g n hsm z
   haveI := hsm

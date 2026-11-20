@@ -66,6 +66,11 @@ def CntBranch : Prop :=
   ∀ (m : ℕ) [NeZero m] (lam : Fin (m + 1) → ℤ), Dominant lam → ∀ Sg : Finset (Fin m → ℤ),
     (∀ nu : Fin m → ℤ, nu ∈ Sg ↔ Dominant nu ∧ Interl lam nu) → dMu lam = ∑ nu ∈ Sg, dMu nu
 
+/- English proof (translation)
+Introduce `n _ M M' b hM`. Use `⟨fun e he => ?_, fun e he => ?_, fun e he => ?_⟩` and prove the remaining obligations. Take `⟨be, ps, hd⟩` from `h1 n b`. Conclude with `h n _ _ be _ ps hd M M' e he hM`. Take `⟨be, ps, hd⟩` from `h2 n b`.
+
+Conclude with `h n _ _ be _ ps hd M M' e he hM`. Take `⟨be, ps, hd⟩` from `h3 n b`. Conclude with `h n _ _ be _ ps hd M M' e he hM`.
+-/
 theorem closure_tensor_of_strip_data (h : StripDataTensorColumnFamilies) (h1 : SymStrip) (h2 : SymDStrip) (h3 : LamStrip) : ClosureTensorPowers := by
   intro n _ M M' b hM
   refine ⟨fun e he => ?_, fun e he => ?_, fun e he => ?_⟩

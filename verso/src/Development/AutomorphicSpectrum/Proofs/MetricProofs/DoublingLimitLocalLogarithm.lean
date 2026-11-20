@@ -4,6 +4,13 @@ open Set Filter Topology Metric
 
 namespace GlobalTheory.CompanionTheory.Ar.Flat.LocalLog
 
+/- English proof (translation)
+Rewrite using `[dist_eq_norm, iter_succ, pow_succ, mul_smul, ← smul_sub, norm_smul, norm_sub_rev]`. Establish `hx` using `iter_mem_ball b₀ h ρ hcontr hb hs k`. Establish `hxn` using `norm_iter_le b₀ h ρ hcontr hb hs k`. Establish `h2 : ‖(2 : ℂ) ^ k‖ = (2 : ℝ) ^ k` using `by simp`. Rewrite using `[h2]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `e : (18 / 25 : ℝ) ^ k = 2 ^ k * ((3 / 5) ^ k) ^ 2`. Rewrite using `[← pow_mul, mul_comm k 2, pow_mul, ← mul_pow]`. Evaluate the numerical expressions. Rewrite using `[e]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem koenigs_step {B V : Type} [NormedAddCommGroup B] [NormedAddCommGroup V]
     [NormedSpace ℂ V] (b₀ : B) (h : B × V → V) (ρ C : ℝ) (hC : 0 ≤ C)
     (hcontr : ∀ b ∈ ball b₀ ρ, ∀ s ∈ ball (0 : V) ρ, ‖h (b, s)‖ ≤ 3 / 5 * ‖s‖)
@@ -27,6 +34,23 @@ theorem koenigs_step {B V : Type} [NormedAddCommGroup B] [NormedAddCommGroup V]
         rw [e]
         ring
 
+/- English proof (translation)
+Introduce `B V _ _ _ _ _ b₀ h ρ C hρ hC hcontr hquad`. Use `set F : ℕ → B × V → V := fun k p => (2 : ℂ) ^ k • iter h k p with hF`. Establish `hstep : ∀ p ∈ ball b₀ ρ ×ˢ ball (0 : V) ρ, ∀ k : ℕ, dist (F k p) (F (k + 1) p) ≤ C * ‖p.2‖ ^ 2 * (18 / 25) ^ k`. Introduce and unpack `⟨b, s⟩ ⟨hb, hs⟩ k`. Conclude with `koenigs_step b₀ h ρ C hC hcontr hquad hb hs k`.
+
+Establish `hr : (18 / 25 : ℝ) < 1` using `by norm_num`. Establish `hcauchy : ∀ p ∈ ball b₀ ρ ×ˢ ball (0 : V) ρ, CauchySeq (fun k => F k p)` using `fun p hp => cauchySeq_of_le_geometric _ _ hr (hstep p hp)`. Set `L : B × V → V` to `fun p => limUnder atTop (fun k => F k p)`. Establish `hlim : ∀ p ∈ ball b₀ ρ ×ˢ ball (0 : V) ρ, Tendsto (fun k => F k p) atTop (𝓝 (L p))` using `fun p hp => (hcauchy p hp).tendsto_limUnder`. Establish `hdist : ∀ p ∈ ball b₀ ρ ×ˢ ball (0 : V) ρ, ∀ n : ℕ, dist (F n p) (L p) ≤ C * ‖p.2‖ ^ 2 * (18 / 25) ^ n / (7 / 25)`.
+
+Introduce `p hp n`. Establish `h1` using `dist_le_of_le_geometric_of_tendsto _ _ hr (hstep p hp) (hlim p hp) n`. Rewrite `h1` using `[show (1 - 18 / 25 : ℝ) = 7 / 25 by norm_num]`. Then use the resulting hypothesis. Use `⟨L, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Metric.tendstoUniformlyOn_iff]`.
+
+Introduce `ε hε`. Establish `hg : Tendsto (fun n : ℕ => C * ρ ^ 2 * (18 / 25 : ℝ) ^ n / (7 / 25)) atTop (𝓝 0)`. Establish `h1` using `((tendsto_pow_atTop_nhds_zero_of_lt_one (by norm_num : (0 : ℝ) ≤ 18 / 25) hr).const_mul (C * ρ ^ 2)).div_const (7 / 25 : ℝ)`. Simplify using `using h1`. Use `filter_upwards [hg.eventually (gt_mem_nhds hε)] with n hn`.
+
+Introduce and unpack `⟨b, s⟩ hp`. Rewrite using `[dist_comm]`. Use `lt_of_le_of_lt ((hdist _ hp n).trans ?_) hn` and prove the remaining obligations. Establish `hs : ‖s‖ < ρ` using `by simpa using hp.2`. Establish `hsle : ‖s‖ ≤ ρ` using `hs.le`.
+
+Establish `hsq : ‖s‖ ^ 2 ≤ ρ ^ 2` using `by gcongr`. Use `show C * ‖s‖ ^ 2 * (18 / 25) ^ n / (7 / 25) ≤ C * ρ ^ 2 * (18 / 25) ^ n / (7 / 25)`. Apply `div_le_div_of_nonneg_right _ (by norm_num)` to reduce the goal to its premises. Apply `mul_le_mul_of_nonneg_right _ (by positivity)` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_left hsq hC`.
+
+Introduce `b hb s hs`. Establish `h0` using `hdist (b, s) ⟨hb, hs⟩ 0`. Establish `e0 : F 0 (b, s) = s` using `by simp [hF]`. Rewrite `h0` using `[e0, dist_comm, dist_eq_norm]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[pow_zero, mul_one, div_le_iff₀ (by norm_num)]`. Use polynomial arithmetic with `[mul_nonneg hC (sq_nonneg ‖s‖)]`.
+-/
 theorem koenigs_limit : ∀ {B V : Type} [NormedAddCommGroup B] [NormedSpace ℂ B]
     [NormedAddCommGroup V] [NormedSpace ℂ V] [CompleteSpace V] (b₀ : B) (h : B × V → V)
     (ρ C : ℝ), 0 < ρ → 0 ≤ C →

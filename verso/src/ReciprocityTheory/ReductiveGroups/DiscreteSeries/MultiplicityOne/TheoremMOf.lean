@@ -13,6 +13,15 @@ namespace ReciprocityTheory.ChartRestriction.DS.Mult1
 
 open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.B2 TopH
 
+/- English proof (translation)
+Introduce `k r Wp _ _ _ D X hD hX ha`. Establish `hGN : GNIntSharp` using `hIn.1.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1`. Establish `ha0 : 0 ≤ X.a` using `le_trans (by unfold aM nR; positivity) ha`. Take `⟨d, hd⟩` from `h0 k r Wp D X hD hX`. Establish `hInt` using `beInt_integrable_of D X hD hX ha h0 h1 h1'`.
+
+Establish `hHV : ∀ u ∈ Vfl X, ∀ u' ∈ Vfl X, ∀ η ξ : Wp, ⟪ξ, beOp D X u u' η⟫_ℂ = ⟪beOp D X u' u ξ, η⟫_ℂ` using `fun u hu u' hu' η ξ => hH k r Wp D X hD hX u hu u' hu' η ξ`. Establish `hb0 : 0 ≤ X.a - AG k r - 1` using `le_trans (by unfold AB; positivity) (half_ratio_le_segment_base_of_std D.k_pos ha)`. Establish `hab : AB k r ≤ X.a - (X.a - AG k r - 1)`. Use `AG_ge (r := r) D.k_pos` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hbe : ∀ v ∈ Vfl X, ∃ C : ℝ, ∀ y ∈ GV k r, ‖beOp D X (X.σ y X.w) v‖ ≤ C * gN y ^ (X.a - AG k r - 1)`. Introduce `v hv`. Take `⟨Cp, hCp⟩` from `h1 k r Wp D X hD hX d hd X.a X.a X.w (w_mem X) v hv`. Rewrite `hCp` using `[min_self]`. Conclude with `be_bound D X hb0 hCp (hS k r Wp D hD _ (half_ratio_le_segment_base_of_std D.k_pos ha))`.
+
+Establish `hRep : ∀ u ∈ Vfl X, ∀ v ∈ Vfl X, beOp D X u v = (d : ℂ) • ∫ y : Mt k r, ⟪X.σ (Matrix.of y) X.w, u⟫_ℂ • beOp D X (X.σ (Matrix.of y) X.w) v ∂D.μG` using `fun u hu v hv => (h2 k r Wp D X hD hX ha d hd u hu v hv).1`. Establish `hM : MinorsOn D X` using `minorsOn_of_DD D X hGN ha0 hd.1 hb0 hab hbe hRep hHV (minors_DD hIn hXi h3 (stCut0 hIn) (stCut1p hIn) (stCut2 hIn) (stCut3 hIn) (stCut4 hIn) h8 h7' h4c h4a hD1 h0 h1 h1' hW hF h9g h9w h10 D X hD hX ha)`. Conclude with `multOne_of_minors D X hHV (fun u hu ξ => hP k r Wp D X hD hX ha u hu ξ) hInt (fun u hu u' hu' h hh m hm => (hD1 k r Wp D X hD hX u u' (hInt u hu u' hu') h hh m hm).1) hM`.
+-/
 theorem theoremM_of (hIn : UnitaryGroupStructuralFacts) (hXi : XiExists)
     (hH : StBeHerm) (hP : StBePos) (hW : StSchurW) (hS : StSInt)
     (h0 : StSchurG) (h1 : StPairs) (h1' : StBeConv) (hD1 : StBeEquiv) (h2 : StRepro) (h3 : StSmooth)

@@ -15,6 +15,13 @@ open GlobalTheory.BigTop GlobalTheory.BigOn GlobalTheory.OntoChain GlobalTheory.
 
 namespace GlobalTheory.OntoNum
 
+/- English proof (translation)
+Introduce `x₁`. Take `⟨ε1, hε1, hS⟩` from `GlobalTheory.T.indexBoundParameterRequirements_eventually_family`. Use `⟨ε1, hε1, fun eps he hle => ?_⟩` and prove the remaining obligations. Take `⟨K, hK⟩` from `hS eps he hle`. Use `⟨K.sup ⟨1000, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH hc hL => ?_⟩` and prove the remaining obligations.
+
+Take `⟨hL1, hL2⟩` from `(Fm.large_sup _ _ CH).1 hL`. Establish `hCP : (1000 : ℝ) ≤ Fm.CP` using `hL2.1 Fm.CP (by simp [FamP.cPre])`. Take `⟨xa, hxa⟩` from `hK Fm CH hc hL1`. Take `⟨xb, hxb⟩` from `GlobalTheory.FinalRows.rows_of_pageFix eps Fm hc.1 hCP`. Use `⟨max (max xa xb) x₁, fun x hx hx0 ι => ?_⟩` and prove the remaining obligations.
+
+Establish `hs` using `hxa x hx (le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hx0) ι`. Take `⟨hSz, hCnW, hg, hCP', hz, -, -, hsx, -⟩` from `hxb x hx (le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hx0) ι`. Establish `hx1 : x₁ ≤ (Fm.L x ι).sc.x` using `by rw [hsx]; exact le_trans (le_max_right _ _) hx0`. Conclude with `⟨⟨hSz, hCnW, hg, hCP', hz, hx1⟩, GlobalTheory.IndexAssembly.three_le_scale_of_pow_bound hs.2.1, hs.2.2.2.2.2.2.2.2.1, by linarith [hs.2.1], (Fm.parT x hx ι).nV_ge⟩`.
+-/
 theorem pageNum_along : ∀ x₁ : ℝ, Closed FamHyp fun Fm _ => ∃ x0 : ℝ, ∀ (x : ℝ) (hx : Fm.x1 < x), x0 ≤ x → ∀ ι : Fm.Ix x,
     PageNum (Fm.parT x hx ι) x₁ ∧ 3 ≤ (Fm.L x ι).sc.x ∧ ((Fm.D x ι).R.k : ℝ) * (Fm.L x ι).sc.b' ≤ (Fm.L x ι).sc.b ∧
       3 ≤ (Fm.L x ι).sc.x ^ ((Fm.L x ι).sc.ez / 5) ∧ 8 * (Fm.D x ι).R.f * (Fm.D x ι).R.r + 4 ≤ (Fm.D x ι).R.nV := by

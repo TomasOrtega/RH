@@ -18,6 +18,21 @@ def Stab2Cpt_k : Prop :=
     ∀ K, IsStab2 (σ := σ) (Y := Y) B K → IsCompact (K : Set (G2 σ Y))
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ} {Y : Spc F E n}
   {K : Subgroup (G2 σ Y)} {a : G2 σ Y → ℝ} {χ : Chr F E} {z s₀ : ℂ} {f : G2 σ Y → ℂ} {e : UA σ Y.J × UA σ Y.J →* G2 σ Y}
+/- English proof (translation)
+Establish `hJ` using `_root_.GlobalTheory.ThK.Dbl.aniso_of_k hB hY h0`. Take `⟨t₁, half⟩` from `hE.half`. Use `haveI := c.sc`. Use `haveI := c.lc`. Use `haveI := GlobalTheory.Doubling.isTopologicalRing_tens (F := F) (E := E) (R := AF F)`.
+
+Use `haveI : IsFiniteMeasure (μ.restrict D) := ⟨by simpa using c.fin _ _ hμ hD⟩`. Establish `bc : ∀ {φ : UA σ Y.J → ℂ}, IsRapid φ → An.BC φ` using `fun h => ⟨h.1, c.bdd h.1 h.2.1⟩`. Establish `cE : ∀ s ∈ U, Continuous (Ê s)` using `fun s hs => hE.cont.comp_continuous (f := fun x => (s, x)) (by fun_prop) fun _ => ⟨hs, trivial⟩`. Establish `iv : ∀ s ∈ U, ∀ γ ∈ ratU σ Y.J, ∀ δ ∈ ratU σ Y.J, ∀ g g', Ê s (e (γ * g, δ * g')) = Ê s (e (g, g'))` using `fun s hs γ hγ δ hδ g g' => An.ident hE.isOpen hE.conn (hE.hol _) (hE.hol _) (fun s hs => ⟨(half s hs).1, by`. Rewrite using `[← Prod.mk_mul_mk, map_mul]`.
+
+Conclude with `(hf.flat ha a0 s).eis_inv hχ hJ he (half s hs).2 hγ hδ _⟩) hs`. Establish `ck : ∀ s ∈ U, An.BC fun y : UA σ Y.J × UA σ Y.J => Ê s (e y) * detInv χ y.2` using `fun s hs => An.BC.mul ⟨(cE s hs).comp ce, c.bdd₂ c ((cE s hs).comp ce) (iv s hs)⟩ ⟨(continuous_detInv hχ).comp continuous_snd, 1, fun y => (norm_detInv _ _).le⟩`. Establish `hol : ∀ {φ : UA σ Y.J → ℂ}, IsRapid φ → DifferentiableOn ℂ (fun s => kpair χ e μ D (Ê s) φ) U` using `fun {φ} h => by`. Establish `b` using `((bc h).comp (continuous_snd (X := UA σ Y.J))).mul ((bc h).comp continuous_fst).star`. Use `An.diffOn_integral hE.isOpen (fun s hs => ((ck s hs).mul b).1.aestronglyMeasurable) (fun y => ((hE.hol _).mul_const _).mul_const _) fun S hS cS => ?_` and prove the remaining obligations.
+
+Take `⟨Ω, hΩ, cov⟩` from `c.cov`. Take `⟨C, hC⟩` from `(cS.prod ((hΩ.prod hΩ).image ce)).exists_bound_of_continuousOn (hE.cont.mono (Set.prod_mono hS (Set.subset_univ _)))`. Take `⟨C', hC'⟩` from `b.2`. Use `⟨C * C', fun s hs y => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, h1⟩` from `cov y.1`.
+
+Take `⟨δ, hδ, h2⟩` from `cov y.2`. Use `hC (s, e (γ * y.1, δ * y.2)) ⟨hs, _, ⟨h1, h2⟩, rfl⟩` as an intermediate fact. Rewrite `this` using `[iv s (hS hs) γ hγ δ hδ]`. Rewrite using `[norm_mul, norm_mul, norm_detInv, mul_one]`. Conclude with `mul_le_mul this (hC' y) (norm_nonneg _) ((norm_nonneg _).trans this)`.
+
+Use `⟨fun _ => hol, max t₁ (t₀ + s₀.re - z.re), fun s hs => ?_⟩` and prove the remaining obligations. Take `⟨u, sm⟩` from `half s ((le_max_left _ _).trans_lt hs)`. Establish `cs` using `continuous_flat (s₀ := s₀) cf ca a0 s`. Take `⟨C, hC⟩` from `(hf.flat (s₀ := s₀) ha a0 s).bound cs ha hK`. Establish `i1 : Integrable (fun g => flat a f s₀ s (e (1, g))) μ` using `((hi (s - s₀ + z).re (by have := (le_max_right _ _).trans_lt hs; simp; linarith)).const_mul C).mono' (cs.comp (ce.comp (Continuous.prodMk_right 1))).aestronglyMeasurable (.of_forall fun g => hC _)`.
+
+Establish `i2` using `i1.mul_bdd (continuous_detInv hχ).aestronglyMeasurable (.of_forall fun g => (norm_detInv χ g).le)`. Conclude with `⟨u, i2, fun φ h => An.far_right _ μ (ck s u) (bc h) i2 (_root_.GlobalTheory.ThK.Dbl.unfold0_k F E σ B n Y r _ hB hY h0 χ e hχ he _ _ _ cs (cE s u) sm (hf.flat ha a0 s) μ D hμ hD i1 _ h)⟩`.
+-/
 theorem kpair_cont_k {B : Base F E} {r s : ℕ} (hB : _root_.UpperTheory.TP.W.GoodK σ B) (hY : Y.IsHerm σ B r s ∨ Y.IsSkew σ B r s) (h0 : min r s = 0)
     (c : Cpt σ Y.J) (hχ : IsHecke F E χ) (he : ∀ h h', IsEmb h h' (e (h, h'))) (ce : Continuous e)
     (hK : IsCompact (K : Set (G2 σ Y))) (ha : IsHgt K a) (ca : Continuous a) (a0 : ∀ x, 0 < a x) (cf : Continuous f) (hf : Law χ z f)

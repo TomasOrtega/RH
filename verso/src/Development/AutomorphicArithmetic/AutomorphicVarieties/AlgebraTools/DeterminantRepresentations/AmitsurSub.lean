@@ -5,6 +5,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 
 open Polynomial UpperTheory.V.W
 
+/- English proof (translation)
+Introduce `n A G _ _ D m g β`. Establish `h` using `UpperTheory.V.CA.d_coef_mem D.toDet (MonoidHom.mrange (MonoidAlgebra.of A G)) (Subring.closure {a | ∃ i ≤ n, ∃ s : G, a = D.lam i (MonoidAlgebra.single s 1)}) (by`. Introduce and unpack `x ⟨s, rfl⟩ i - h2`. Rewrite using `[(UpperTheory.V.CA.d_toDet D _).2.1]`. Conclude with `Subring.subset_closure ⟨i, h2, s, rfl⟩)`.
+
+Use the proof step `(fun j => MonoidAlgebra.single (g j) 1) (fun j => ⟨g j, rfl⟩) β`. Establish `e : D.toDet.poly (fun j => MonoidAlgebra.single (g j) (1 : A)) = D.D (MvPolynomial (Fin m) A) (GDet.gen fun j => MonoidAlgebra.single (g j) 1)`. Express the relevant statement in the definitionally equal form `D.D _ (ofT A G _ (Det.gen _)) = _`. Use `congr 1`. Simplify using `only [Det.gen, GDet.gen, map_sum, ofT_tmul, MvPolynomial.algebraMap_eq]`.
+
+Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem UpperTheory.V.AlgebraTools.Det.amitsurSub :
     ∀ {n : ℕ} {A G : Type} [CommRing A] [Group G] (D : GDet n A G) (m : ℕ) (g : Fin m → G) (β : Fin m →₀ ℕ),
     MvPolynomial.coeff β (D.D (MvPolynomial (Fin m) A) (GDet.gen fun j => MonoidAlgebra.single (g j) 1)) ∈

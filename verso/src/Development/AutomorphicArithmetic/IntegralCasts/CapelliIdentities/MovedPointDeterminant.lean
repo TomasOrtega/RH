@@ -1,5 +1,10 @@
 import Mathlib
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push Not at h`. Apply `hσ` to reduce the goal to its premises. Use `ext1 j`. Distinguish the cases in `hj : j = i`.
+
+Substitute `hj` using the available equality. Assume the negation of the conclusion as `hne`. Conclude with `hne (σ.injective (h _ hne))`. Conclude with `h j hj`.
+-/
 private theorem UpperTheory.Reformulated.B.MovedPointDeterminant.exists_moved_ne {a : ℕ} {σ : Equiv.Perm (Fin a)} (hσ : σ ≠ 1)
     (i : Fin a) : ∃ j, j ≠ i ∧ σ j ≠ j := by
   by_contra h
@@ -12,6 +17,13 @@ private theorem UpperTheory.Reformulated.B.MovedPointDeterminant.exists_moved_ne
     exact hne (σ.injective (h _ hne))
   · exact h j hj
 
+/- English proof (translation)
+Introduce `a m Y h0 hd`. Establish `key : HasDerivAt (fun s : ℝ ↦ ∑ σ : Equiv.Perm (Fin a), ((Equiv.Perm.sign σ : ℤ) : ℂ) * ∏ i, m s (σ i) i) (∑ σ : Equiv.Perm (Fin a), ((Equiv.Perm.sign σ : ℤ) : ℂ) * ∑ i, (∏ j ∈ Finset.univ.erase i, m 0 (σ j) j) • Y (σ i) i) 0` using `HasDerivAt.fun_sum fun σ _ ↦ (HasDerivAt.fun_finsetProd (f := fun i s ↦ m s (σ i) i) (fun i _ ↦ hd (σ i) i)).const_mul _`. Establish `hval : (∑ σ : Equiv.Perm (Fin a), ((Equiv.Perm.sign σ : ℤ) : ℂ) * ∑ i, (∏ j ∈ Finset.univ.erase i, m 0 (σ j) j) • Y (σ i) i) = ∑ i, Y i i`. Rewrite using `[Finset.sum_eq_single (1 : Equiv.Perm (Fin a))]`. Simplify using `[h0]`.
+
+Introduce `σ _ hσ`. Use `mul_eq_zero_of_right _ (Finset.sum_eq_zero fun i _ ↦ ?_)` and prove the remaining obligations. Take `⟨j, hj, hm⟩` from `UpperTheory.Reformulated.B.MovedPointDeterminant.exists_moved_ne hσ i`. Rewrite using `[Finset.prod_eq_zero (i := j) (by simp [hj]) (by rw [h0, Matrix.one_apply_ne hm]), zero_smul]`. Simplify using the standard rewrite rules.
+
+Rewrite `key` using `[hval]`. Simplify `key` using `only [Matrix.det_apply']`.
+-/
 theorem UpperTheory.Reformulated.B.MovedPointDeterminant.cv_det :
     ∀ {a : ℕ} {m : ℝ → Matrix (Fin a) (Fin a) ℂ}
     {Y : Matrix (Fin a) (Fin a) ℂ},

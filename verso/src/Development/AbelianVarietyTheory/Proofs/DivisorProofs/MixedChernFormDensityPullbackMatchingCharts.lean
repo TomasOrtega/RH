@@ -17,6 +17,13 @@ noncomputable section
 
 namespace GlobalTheory.MixPull
 
+/- English proof (translation)
+Establish `hz'` using `(H z hz).1`. Establish `hj` using `mem_of_mem_linComb (m := fun _ => PtsOver.map π hπ _ z) (fun _ => rfl) (mem_pick (A.φ.pull π hπ).isLB z) PUnit.unit`. Rewrite using `[c.hess_eq A.cInf hz' hj (mem_pick _ _)]`. Use `show c'.hess (A.φ.pull π hπ) _ z = _`. Unfold `AlgChart.hess`.
+
+Rewrite using `[← (H z hz).2]`. Use `ReciprocityTheory.L2DbarEstimates.Y.cmpb_cHess_congr ?_` and prove the remaining obligations. Use `filter_upwards [c'.e.open_target.mem_nhds (c'.e.map_source hz)] with v hv`. Establish `hw` using `c'.e.map_target hv`. Take `⟨h₁, h₂⟩` from `H _ hw`.
+
+Rewrite `h₂` using `[c'.e.right_inv hv]`. Establish `e₁ : c.e.symm v = PtsOver.map π hπ (spMap σ) (c'.e.symm v)`. Conclude with `(congrArg c.e.symm h₂).trans (c.e.left_inv h₁)`. Rewrite using `[e₁]`. Conclude with `congrArg _ (A.φ.pull_φ π hπ _ _)`.
+-/
 theorem hess_pull {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X ⟶ Sp k} {q : Y ⟶ Sp k} {σ : k →+* ℂ} {D : ℕ}
     (π : Y ⟶ X) (hπ : π ≫ p = q) (A : MLine p σ) (c : AlgChart p σ D) (c' : AlgChart q σ D)
     (H : ∀ w ∈ c'.e.source, ptMap π hπ σ w ∈ c.e.source ∧ c'.e w = c.e (ptMap π hπ σ w))
@@ -39,6 +46,11 @@ theorem hess_pull {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X ⟶ Sp k} {q
   rw [e₁]
   exact congrArg _ (A.φ.pull_φ π hπ _ _)
 
+/- English proof (translation)
+Introduce `k _ X Y p q σ D π hπ L c c' H w hw`. Establish `e : ∀ τ : Equiv.Perm (Fin D), (Matrix.of fun j l => c'.hess ((fun i => (L i).pull π hπ) (τ l)).φ (pick ((fun i => (L i).pull π hπ) (τ l)).φ.isLB w) w j l) = Matrix.of fun j l => c.hess (L (τ l)).φ (pick (L (τ l)).φ.isLB (ptMap π hπ σ w)) (ptMap π hπ σ w) j l`. Introduce `τ`. Use extensionality with `j l`. Simplify using `only [Matrix.of_apply]`.
+
+Rewrite using `[hess_pull π hπ (L (τ l)) c c' H w hw]`. Simplify using `only [dens, e]`.
+-/
 theorem dens_pull : ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) (p : X ⟶ Sp k) (q : Y ⟶ Sp k) (σ : k →+* ℂ) (D : ℕ) (π : Y ⟶ X) (hπ : π ≫ p = q) (L : Fin D → MLine p σ) (c : AlgChart p σ D) (c' : AlgChart q σ D), (∀ w ∈ c'.e.source, ptMap π hπ σ w ∈ c.e.source ∧ c'.e w = c.e (ptMap π hπ σ w)) → ∀ w ∈ c'.e.source, dens (fun i => (L i).pull π hπ) c' w = dens L c (ptMap π hπ σ w) := by
   intro k _ X Y p q σ D π hπ L c c' H w hw
   have e : ∀ τ : Equiv.Perm (Fin D), (Matrix.of fun j l =>

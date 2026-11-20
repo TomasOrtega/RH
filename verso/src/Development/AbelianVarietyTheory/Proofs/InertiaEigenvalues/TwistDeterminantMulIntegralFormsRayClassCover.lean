@@ -23,6 +23,27 @@ namespace GlobalTheory.TwistInt
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D T hL j hj C hU hRay xi hxi wa n S φ hφ`. Establish `hP : T.Q.Pins` using `hL.pins`. Establish `hlev : C.d.l₂.M = T.Q.l.M * C.d.pd` using `hU.1.2.1`. Establish `hM3 : 3 ≤ C.d.l₂.M` using `C.d.l₂.three_le`. Establish `hpd : 0 < C.d.pd` using `Nat.pos_of_ne_zero fun h => by rw [h, mul_zero] at hlev; omega`.
+
+Establish `hsq : ∃ a : D.host.K, a ^ 2 = -(T.Q.H.d : D.host.K)`. Use `⟨⟨D.host.sqrtMinusD, Formalism.L2.Pj.LPb.sqrtMinusD_mem_K D⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[show T.Q.H.d = D.host.d from hP.1.1]`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hb : D.host.sqrtMinusD ^ 2 = -(D.host.d : D.host.E)` using `D.host.sqrtMinusD_sq`.
+
+Simplify using `using hb`. Take `⟨φK, hφK⟩` from `hRay`. Establish `hW` using `(GlobalTheory.T.weberValues_mem_of_containsRayField D.host.E T.Q.H D.host.K C.d.c₂.F φK C.d.c₂.F.val.toRingHom (Formalism.L2.Pj.LPb.finrank_K D) hsq C.d.l₂.M hM3 hφK).1`. Establish `hWc : GlobalTheory.FinalJoin.WeberIn T.Q.H C.d.c₂.F C.d.l₂.M` using `fun P hP' => by`. Establish `hsub : ∀ z ∈ C.d.c₂.F.val.toRingHom.toRatAlgHom.fieldRange, z ∈ C.d.c₂.F` using `fun z hz' => by`.
+
+Take `⟨y, rfl⟩` from `AlgHom.mem_fieldRange.1 hz'`. Conclude with `y.2`. Take `⟨a1, a2⟩` from `hW P hP'`. Conclude with `⟨hsub _ a1, fun s hs => hsub _ (a2 s hs)⟩`. Establish `hno : ∀ g : GA D (T.V j T.σ₀), GlobalTheory.FinalJoin.NormOne (Matrix.GeneralLinearGroup.det (finHom (T.V j T.σ₀) g))` using `fun g => by`.
+
+Take `⟨x, hx⟩` from `(GlobalTheory.Member.isDetRoot_laws D (T.V j T.σ₀)).1 g`. Rewrite using `[← GlobalTheory.NormOneTwist.finQuot_of_isDetRoot hx]`. Conclude with `GlobalTheory.NormOneTwist.normOne_finQuot x`. Take `⟨m, hm, hexp⟩` from `GlobalTheory.XiCounterexample.fin_of_rat_tame D C.d.pd hpd xi hxi.rat hxi.cond`. Use `choose w hw using fun g => hxi.val _ (hno g)`.
+
+Establish `hinj : ∀ g g', xi (Matrix.GeneralLinearGroup.det (finHom (T.V j T.σ₀) g)) = xi (Matrix.GeneralLinearGroup.det (finHom (T.V j T.σ₀) g')) → w g = w g'` using `fun g g' h => C.σ₂.injective (by rw [hw, hw, h])`. Establish `hleft : ∀ γ ∈ GQ (T.V j T.σ₀), xi (Matrix.GeneralLinearGroup.det (finHom (T.V j T.σ₀) γ)) = 1`. Introduce `γ hγ`. Take `⟨x, hx⟩` from `(GlobalTheory.Member.isDetRoot_laws D (T.V j T.σ₀)).2.2.1 γ hγ`. Rewrite using `[← GlobalTheory.NormOneTwist.finQuot_of_isDetRoot hx]`.
+
+Conclude with `hxi.rat _ _ (GlobalTheory.NormOneTwist.finQuot_incA x) (GlobalTheory.NormOneTwist.normOne_finQuot _)`. Establish `hright : ∀ u : GA D (T.V j T.σ₀), GlobalTheory.Member.FinCong (T.V j T.σ₀) C.d.l₂.M u → xi (Matrix.GeneralLinearGroup.det (finHom (T.V j T.σ₀) u)) = 1`. Introduce `u hu`. Take `⟨k1, -, k3, k4, -⟩` from `GlobalTheory.T.completedLattice_eq_adelicCompletion_and_gram D (T.V j T.σ₀)`. Take `⟨w', hw', e⟩` from `GlobalTheory.CharRead.det_cong_one D.host.F (GlobalTheory.Member.latC (T.V j T.σ₀)) k3 k4 C.d.l₂.M (by omega) (finHom (T.V j T.σ₀) u).1 (by rw [← k1]; exact hu)`.
+
+Use `hxi.cond _ (hno u) ⟨T.Q.l.M • w', AddSubgroup.nsmul_mem _ (GlobalTheory.IdeleParts.integralFiniteAdeles_eq_adelicCompletion_integers D ▸ hw') _, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul, mul_comm, ← hlev]`. Conclude with `e`. Establish `key` using `(GlobalTheory.CoverComp.forms_mul_comp D T hL j hj T.σ₀ rfl C hU C.d.l₂.M (by omega) dvd_rfl (Or.inl hWc) w (fun h h' hh => hinj _ _ (by rw [hh])) (fun γ hγ h => hinj _ _ (by rw [map_mul, map_mul, map_mul, hleft γ hγ, one_mul])) (fun u _ hu2 h => hinj _ _ (by rw [map_mul, map_mul …`. Simplify `key` using `only [hw]`.
+
+Introduce `la _ h`. Establish `hpow : w h ^ m = 1` using `C.σ₂.injective (by`. Rewrite using `[map_pow, hw, map_one, ← Units.val_pow_eq_pow_val, hexp _ (hno h), Units.val_one])`. Establish `hint : IsIntegral ℤ (w h)` using `IsIntegral.of_pow hm (by rw [hpow]; exact isIntegral_one)`. Use `IsDedekindDomain.HeightOneSpectrum.valuation_le_one (K := C.d.c₂.F) la (⟨w h, hint⟩ : 𝓞 C.d.c₂.F)` as an intermediate fact.
+
+Conclude with `this`.
+-/
 theorem mul_twist_mem_intForms : ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j, Formalism.L2.Pj.InR D j → ∀ C : Cover T j T.σ₀, C.IsUnif → (∃ φ : D.host.K →+* C.d.c₂.F, GlobalTheory.IndefiniteRowSideFullHecke.RayFieldTheta.ContainsRayField φ C.d.l₂.M) → ∀ xi : (GlobalTheory.FinalJoin.AfE D)ˣ →* ℂˣ, GlobalTheory.IndefiniteRowSideFullHecke.TwistSeries.IsTwist C.σ₂ C.d.pd xi → ∀ (wa : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) (S : Set (HeightOneSpectrum (𝓞 C.d.c₂.F))), ∀ φ ∈ C.intForms wa n S, (fun g => ((xi (Matrix.GeneralLinearGroup.det (finHom (T.V j T.σ₀) g)) : ℂˣ) : ℂ) * φ g) ∈ C.intForms wa n S := by
   intro D T hL j hj C hU hRay xi hxi wa n S φ hφ
   have hP : T.Q.Pins := hL.pins

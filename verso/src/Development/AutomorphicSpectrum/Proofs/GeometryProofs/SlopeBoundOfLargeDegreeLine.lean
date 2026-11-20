@@ -17,11 +17,29 @@ namespace GlobalTheory.CompanionTheory.Ar.Sl.TopSlope
 
 open GroundTheory.Heights₂.Heights.ComplexAt
 
+/- English proof (translation)
+Rewrite using `[smul_tmul', complex_smul_def, AlgEquiv.apply_symm_apply, _root_.mul_one]`.
+-/
 theorem tmul_eq_smul_one {K : Type} [Field K] (σ : K →+* ℂ) {M : Type} [AddCommGroup M] [Module (𝓞 K) M]
     (z : ComplexAt σ) (m : M) :
     (z ⊗ₜ[𝓞 K] m : Fibre σ M) = ((ofComplex σ).symm z : ℂ) • ((1 : ComplexAt σ) ⊗ₜ[𝓞 K] m) := by
   rw [smul_tmul', complex_smul_def, AlgEquiv.apply_symm_apply, _root_.mul_one]
 
+/- English proof (translation)
+Set `f : 𝓞 L' →+ B.carrier →+ B'.carrier` to `{ toFun := fun a => (DistribMulAction.toAddMonoidHom B'.carrier a).comp io.toAddMonoidHom map_zero' := by ext e; simp map_add' := by intro a b; ext e; simp [add_smul] }`. Establish `hf : ∀ (r : 𝓞 K) (a : 𝓞 L') (e : B.carrier), f (r • a) e = f a (r • e)`. Introduce `r a e`. Simplify using `only [f, AddMonoidHom.coe_mk, ZeroHom.coe_mk, AddMonoidHom.coe_comp, Function.comp_apply, DistribMulAction.toAddMonoidHom_apply, LinearMap.toAddMonoidHom_coe, LinearMap.map_smulₛₗ, Algebra.smul_def, mul_smul, smul_comm a]`. Set `Φ0 : 𝓞 L' ⊗[𝓞 K] B.carrier →+ B'.carrier` to `TensorProduct.liftAddHom f hf`.
+
+Establish `hΦ : ∀ (a : 𝓞 L') (e : B.carrier), Φ0 (a ⊗ₜ e) = a • io e` using `fun a e => by`. Simplify using `[Φ0, f, TensorProduct.liftAddHom_tmul]`. Use `⟨Φ0, fun σ' => ?_⟩` and prove the remaining obligations. Establish `hL : ∀ u v : B'.carrier, ((B'.metric.form σ').inner ((1 : ComplexAt σ') ⊗ₜ[𝓞 L'] u) ((1 : ComplexAt σ') ⊗ₜ[𝓞 L'] v) : ℂ) = inner ℂ (FibreSpace.equiv B'.metric σ' (1 ⊗ₜ u)) (FibreSpace.equiv B'.metric σ' (1 ⊗ₜ v))` using `fun _ _ => rfl`. Establish `hR : ∀ u v : 𝓞 L' ⊗[𝓞 K] B.carrier, (((B.baseChange L').metric.form σ').inner ((1 : ComplexAt σ') ⊗ₜ[𝓞 L'] u) ((1 : ComplexAt σ') ⊗ₜ[𝓞 L'] v) : ℂ) = inner ℂ (FibreSpace.equiv B.metric _ (baseChangeCoord σ' ((1 : ComplexAt σ') ⊗ₜ[𝓞 L'] u))) (FibreSpace.equiv B.metric _ (baseChange …` using `fun _ _ => rfl`.
+
+Establish `hB : ∀ u v : B.carrier, inner ℂ (FibreSpace.equiv B.metric (σ'.comp (algebraMap K L')) (1 ⊗ₜ u)) (FibreSpace.equiv B.metric _ (1 ⊗ₜ v)) = inner ℂ (FibreSpace.equiv B'.metric σ' (1 ⊗ₜ io u)) (FibreSpace.equiv B'.metric σ' (1 ⊗ₜ io v))` using `fun u v => (hio σ' u v).symm`. Establish `h1 : ∀ (a : 𝓞 L') (e : B.carrier), ((1 : ComplexAt σ') ⊗ₜ[𝓞 L'] Φ0 (a ⊗ₜ e)) = (σ' (a : L')) • ((1 : ComplexAt σ') ⊗ₜ[𝓞 L'] io e)`. Introduce `a e`. Rewrite using `[hΦ, ← smul_tmul, tmul_eq_smul_one]`. Use `congr 1`.
+
+Rewrite using `[smul_def, _root_.mul_one, AlgEquiv.symm_apply_apply]`. Establish `h2 : ∀ (a : 𝓞 L') (e : B.carrier), baseChangeCoord σ' ((1 : ComplexAt σ') ⊗ₜ[𝓞 L'] (a ⊗ₜ e)) = (σ' (a : L')) • ((1 : ComplexAt (σ'.comp (algebraMap K L'))) ⊗ₜ[𝓞 K] e)`. Introduce `a e`. Rewrite using `[baseChangeCoord_tmul, tmul_eq_smul_one]`. Use `congr 1`.
+
+Use `show σ' (a : L') * 1 = σ' (a : L')`. Rewrite using `[_root_.mul_one]`. Establish `key : ∀ x y : 𝓞 L' ⊗[𝓞 K] B.carrier, inner ℂ (FibreSpace.equiv B'.metric σ' (1 ⊗ₜ Φ0 x)) (FibreSpace.equiv B'.metric σ' (1 ⊗ₜ Φ0 y)) = inner ℂ (FibreSpace.equiv B.metric _ (baseChangeCoord σ' ((1 : ComplexAt σ') ⊗ₜ[𝓞 L'] x))) (FibreSpace.equiv B.metric _ (baseChangeCoord σ' ((1 : …`. Introduce `x y`. Proceed by induction on `x using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp only [map_zero, tmul_zero, inner_zero_left]`. Consider the case `add x x' hx hx' => simp only [map_add, tmul_add, inner_add_left, hx, hx']`. Consider the case `tmul a e`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, tmul_zero, inner_zero_right]`.
+
+Consider the case `add y y' hy hy' => simp only [map_add, tmul_add, inner_add_right, hy, hy']`. Consider the case `tmul b e'`. Rewrite using `[h1, h1, h2, h2, map_smul, map_smul, map_smul, map_smul, inner_smul_left, inner_smul_left, inner_smul_right, inner_smul_right, hB]`. Introduce `x y`. Conclude with `(hL _ _).trans ((key x y).trans (hR x y).symm)`.
+-/
 theorem exists_isometric_ext {K L' : Type} [Field K] [NumberField K] [Field L'] [NumberField L'] [Algebra K L']
     (B : HermitianBundle.{0} K) (B' : HermitianBundle.{0} L')
     (io : B.carrier →ₛₗ[algebraMap (𝓞 K) (𝓞 L')] B'.carrier)
@@ -91,6 +109,27 @@ end GlobalTheory.CompanionTheory.Ar.Sl.TopSlope
 
 namespace GlobalTheory.CompanionTheory.Ar.Sl.TopSlope
 
+/- English proof (translation)
+Take `⟨C, hC0, hC⟩` from `GlobalTheory.T.line_of_key_degree hKey`. Establish `hS : SlopeBoundSt`. Use `⟨C + 2, by linarith, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ H L _ _ t tK m princ B MB fib`. Set `D : PPData H L` to `⟨t, tK, m, princ, B, MB, fib⟩`.
+
+Use `set ℓ := Real.log (2 + (Module.finrank (𝓞 L) B.carrier : ℝ) + max (-B.normDegree ⊤) 0) with hℓ`. Establish `hpos : 0 ≤ max (-B.normDegree ⊤) 0` using `le_max_right _ _`. Establish `hℓ2 : Real.log 2 ≤ ℓ`. Apply `Real.log_le_log (by norm_num)` to reduce the goal to its premises. Establish `: (0 : ℝ) ≤ (Module.finrank (𝓞 L) B.carrier : ℝ)` using `Nat.cast_nonneg _`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hℓ0 : 2 / 3 ≤ ℓ`. Use `Real.log_two_gt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hg : Real.log (Module.finrank (𝓞 L) B.carrier : ℝ) ≤ ℓ`.
+
+Break down `Nat.eq_zero_or_pos (Module.finrank (𝓞 L) B.carrier) with h | h` into its components or cases. Rewrite using `[h, Nat.cast_zero, Real.log_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Apply `Real.log_le_log (by exact_mod_cast h)` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Simplify using `only [HermitianBundle.slopeMax]`. Use `iSup₂_le fun F hF => ?_` and prove the remaining obligations. Rewrite using `[EReal.coe_le_coe_iff]`. Take `⟨L', iF, iN, iA, x, -, hx⟩` from `GlobalTheory.CompanionTheory.Ar.Lines.short_vector_of_submodule hS7 L B F hF`. Take `⟨⟨D', e⟩⟩` from `(GlobalTheory.T.polarized_data_field_extension E H L D L').1`.
+
+Take `⟨hg', hh', io, -, -, hio⟩` from `(GlobalTheory.T.polarized_data_field_extension E H L D L').2 D' e`. Take `⟨Φ, hΦ⟩` from `exists_isometric_ext D.B D'.B io hio`. Establish `hlen : ∀ σ : L' →+* ℂ, D'.len σ (Φ x) = Real.sqrt ((((B.baseChange L').metric.form σ).inner ((1 : ComplexAt σ) ⊗ₜ[𝓞 L'] x) ((1 : ComplexAt σ) ⊗ₜ[𝓞 L'] x) : ℂ).re)`. Introduce `σ`. Simplify using `only [PPData.len]`.
+
+Rewrite using `[hΦ]`. Establish `hline : -mean L' (fun σ => Real.log (D'.len σ (Φ x))) ≤ C * ℓ`. Distinguish the cases in `h0 : Φ x = 0`. Establish `hz : ∀ σ : L' →+* ℂ, D'.len σ (Φ x) = 0`. Introduce `σ`.
+
+Simplify using `only [PPData.len, h0, tmul_zero]`. Establish `: ((D'.B.metric.form σ).inner (0 : Fibre σ D'.B.carrier) 0 : ℂ) = 0` using `inner_zero_left (𝕜 := ℂ) (x := (0 : FibreSpace D'.B.metric σ))`. Rewrite using `[this, Complex.zero_re, Real.sqrt_zero]`. Simplify using `only [hz, Real.log_zero, mean, Finset.sum_const_zero, zero_div, neg_zero]`. Conclude with `mul_nonneg hC0 (by linarith)`.
+
+Use `hC E H L' D' (Φ x) h0` as an intermediate fact. Rewrite `this` using `[hg', hh']`. Conclude with `this`. Simplify using `only [hlen] at hline`. Establish `hexp : (C + 2) * ℓ = C * ℓ + 2 * ℓ` using `by ring`.
+
+Rewrite using `[hexp]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `⟨hS, hS⟩`.
+-/
 theorem slopeBound (hS7 : LineOfLargeDegree.Statement) (hKey : KeyDegSt) : SlopeBoundSt ∧ Prov.LemmaS := by
   obtain ⟨C, hC0, hC⟩ := GlobalTheory.T.line_of_key_degree hKey
   have hS : SlopeBoundSt := by

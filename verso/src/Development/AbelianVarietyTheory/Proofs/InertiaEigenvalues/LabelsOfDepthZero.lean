@@ -14,6 +14,11 @@ attribute [local instance] GlobalTheory.TypeRec.factG
 
 namespace GlobalTheory.GoodAll
 
+/- English proof (translation)
+Introduce `hG hZ hL D T Rw rep L hRow hDep hLT hDZ hTP hVec σ`. Take `⟨I⟩` from `GlobalTheory.T.nonempty_typePlaceCompletionIdent D`. Take `⟨rc, hrc, hcls⟩` from `GlobalTheory.T.exists_class_map_correspondence hL D T I`. Take `⟨cp, hcomp, hcp⟩` from `GlobalTheory.T.exists_type_components hL D T I rc hrc Rw rep hRow hDep`. Establish `hP : LabParam D L rc` using `GlobalTheory.SerSys.Bridge.labParam_of D L rc hG (GlobalTheory.T.tame_support_compatible hZ hL D T I rc hrc) hDZ (hTP I rc hrc)`.
+
+Establish `hSC` using `GlobalTheory.T.seriesIdempotentStarCompatible_of_labelling_agree hG D L hLT`. Take `⟨V, _, _, ρ, W, x, hconj, hx0, hxW, hxe⟩` from `hVec I cp hcomp σ`. Conclude with `GlobalTheory.T.conjugate_type_vector D Rw L rc cp hLT hP hcls hSC hcp V ρ W σ hconj x hx0 hxW hxe`.
+-/
 theorem goodFTAll_of_local : Green → GlobalTheory.Published.ZelevinskyPolynomialRing → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (T : GlobalTheory.RowTie.WDTie D.nd D.naut) (Rw : GlobalTheory.HeightCounting.RowSide D) (rep : D.what₂.FT → NG.FinTyp D.host.E D.R.r) (L : ∀ k, LabelDatum (D.host.g k)), GlobalTheory.HeightCounting.RowTrue hL D rep (fun σ w => T.e w (Rw.locR σ w)) Rw.satR → GlobalTheory.HeightCounting.RowDepth D rep → LabTie D L → (∀ k, TameGen.DepthZeroCuspidal (D.host.g k)) → (∀ (I : Ident D) rc, IsRc hL T I rc → ∀ k v, TameGen.TameParam (L k) (fun a => D.naut.inePol a (D.ntypes.tg k v)) (fun π : Supp.GLRep _ => rc k v π.1 π.2)) → (∀ (I : Ident D) cp, IsComp I rep cp → ∀ σ, ∃ (V : Type) (_ : AddCommGroup V) (_ : Module ℂ V) (ρ : Representation ℂ (G0g D.nd) V) (W : Submodule ℂ V) (x : V), (∀ k v, GlobalTheory.GoodTypes.ConjIn ρ W (GlobalTheory.GoodTypes.facHom D k v) (cp σ k v).ρ) ∧ x ≠ 0 ∧ (∀ a, ρ.asAlgebraHom a x ∈ W) ∧ ρ.asAlgebraHom D.ntypes.e0 x = x) → GoodFTAll D := by
   intro hG hZ hL D T Rw rep L hRow hDep hLT hDZ hTP hVec σ
   obtain ⟨I⟩ := GlobalTheory.T.nonempty_typePlaceCompletionIdent D

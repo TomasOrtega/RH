@@ -8,6 +8,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.HeightCounting.Up.JointConditionThird
 
+/- English proof (translation)
+Introduce `hL _`. Use `StepW.of_all fun K B f T w _ _ _ P x l => ?_` and prove the remaining obligations. Use `⟨fun _ => ∅, fun L _ _ => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.DesignBC.jointCond_of_definite _ fun j h1 h2 => ?_` and prove the remaining obligations. Establish `h` using `(w.st x.o.Z).B.toPre.V_posDef j h1 h2`.
+
+Introduce `τ`. Conclude with `Or.inl (h τ)`.
+-/
 theorem jointCond_third : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, PrN → AllSt fun _ _ _ _ _ _ x => ∀ l : LC hL x, GlobalTheory.CoefDuty.EvO l.a.A l.mt.M l.c.ch l.c.tp.tup fun D' => SumRepresentations.hypO D' → GlobalDatumCompatibility D' := by
   intro hL _
   refine StepW.of_all fun K B f T w _ _ _ P x l => ?_

@@ -15,6 +15,11 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK.Dbl GlobalTheory.Cont PositivityTheory.Rg.Sw
 namespace PositivityTheory.SiegelWeilFormula.Ldexb
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
+/- English proof (translation)
+Take `⟨b, K, a, hb, hK, ha, -, -⟩` from `_root_.GlobalTheory.ThK.Dbl.stdEx_of_k _root_.GlobalTheory.ThK.Dbl.frameConj_k _root_.GlobalTheory.ThK.Dbl.hgtEx_k F E σ B n (UnitHermitianSpace.unitSpc F E n) n 0 hB (Or.inl (_root_.PositivityTheory.SiegelWeilFormula.Ldexb.UnitHermitianSpace.isHerm_unitSpc_k hB n))`. Use `⟨UnitHermitianSpace.unitSpc F E n, b, K, a, hb, ?_, hK, ha⟩` and prove the remaining obligations. Take `⟨ε, hε⟩` from `hb.1`. Establish `hc : ∀ z : E, σ (σ z) = z` using `(_root_.PositivityTheory.SiegelWeilFormula.Ldexb.UnitHermitianSpace.isHerm_unitSpc_k hB n).herm |> fun _ => by`. Introduce `z`.
+
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Conclude with `τ.injective (by rw [hB.cm.2.2.2, hB.cm.2.2.2, star_star])`. Establish `h1` using `eps_one hn hc (_root_.PositivityTheory.SiegelWeilFormula.Ldexb.UnitHermitianSpace.isHerm_unitSpc_k hB n).herm hε`. Rewrite using `[hε, eps_unit h1]`. Simplify using `[Ald.jeps]`.
+-/
 theorem exists_standard_hermitian_space {B : Base F E} (hB : _root_.UpperTheory.TP.W.GoodK σ B) {n : ℕ} (hn : 1 ≤ n) :
     ∃ (Y₀ : Spc F E n) (b₀ : GL (Fin n ⊕ Fin n) E) (K₀ : Subgroup (G2 σ Y₀)) (a₀ : G2 σ Y₀ → ℝ),
       IsFrame2 σ Y₀ b₀ ∧ b₀.1ᵀ * dbl Y₀.J * b₀.1.map σ = Ald.jeps n 1 ∧

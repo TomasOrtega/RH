@@ -31,18 +31,32 @@ def trSB (m n : ℕ) : SB (Matrix (Fin m) (Fin n) k) →ₗ[ℂ] SB (Matrix (Fin
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem trSB_apply (m n : ℕ) (Φ : SB (Matrix (Fin m) (Fin n) k)) (Y : Matrix (Fin n) (Fin m) k) :
     (trSB m n Φ : Matrix (Fin n) (Fin m) k → ℂ) Y = (Φ : Matrix (Fin m) (Fin n) k → ℂ) Yᵀ := rfl
 
+/- English proof (translation)
+Use extensionality with `Y`. Simplify using the standard rewrite rules.
+-/
 theorem trSB_trSB (m n : ℕ) (Φ : SB (Matrix (Fin m) (Fin n) k)) : trSB n m (trSB m n Φ) = Φ := by
   ext Y; simp
 
+/- English proof (translation)
+Rewrite using `[apow, Complex.ofReal_cpow (show (0 : ℝ) ≤ nabs k x from NNReal.coe_nonneg _)]`.
+-/
 theorem nabs_rpow_cast (x : kˣ) (r : ℝ) : ((nabs k x ^ r : ℝ) : ℂ) = apow x (r : ℂ) := by
   rw [apow, Complex.ofReal_cpow (show (0 : ℝ) ≤ nabs k x from NNReal.coe_nonneg _)]
 
 def chi (d : ℕ) (ν α : kˣ →* ℂˣ) : GL (Fin d) k →* ℂˣ :=
   (α / ν).comp (Matrix.GeneralLinearGroup.det.comp (SplitFlip.invT (k := k) (D := Fin d)))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `Y`. Establish `hx : Matrix.GeneralLinearGroup.det (SplitFlip.invT h') = (Matrix.GeneralLinearGroup.det h')⁻¹` using `gdet_invT h'`. Establish `harg : (g.valᵀ * Y * (SplitFlip.invT h').val)ᵀ = (h'⁻¹ : GL (Fin d) k).val * Yᵀ * g.val`. Rewrite using `[invT_val, transpose_mul, transpose_mul, transpose_transpose, transpose_transpose, Matrix.mul_assoc]`. Simplify using `only [chi, om, omB, Pi.smul_apply, smul_eq_mul, MonoidHom.comp_apply, gdet, hx, harg, nabs_rpow_cast, Fintype.card_fin, MonoidHom.div_apply, apow_inv, map_inv, Units.val_div_eq_div_val, Units.val_inv_eq_inv_val]`.
+
+Use `push_cast`. Rewrite using `[neg_div]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem om_tr (n d : ℕ) (ν α : kˣ →* ℂˣ) (g : GL (Fin n) k) (h' : GL (Fin d) k)
     (Φ : Matrix (Fin d) (Fin n) k → ℂ) :
     ((chi d ν α h' : ℂˣ) : ℂ) • (fun Y : Matrix (Fin n) (Fin d) k => om ν g h' Φ Yᵀ) =
@@ -57,14 +71,25 @@ theorem om_tr (n d : ℕ) (ν α : kˣ →* ℂˣ) (g : GL (Fin n) k) (h' : GL (
   rw [neg_div]
   field_simp
 
+/- English proof (translation)
+The claim follows from `Units.continuous_iff.2 ⟨Units.continuous_coe_inv.matrix_transpose, Units.continuous_val.matrix_transpose⟩`.
+-/
 theorem continuous_invT' (d : ℕ) : Continuous (SplitFlip.invT (k := k) (D := Fin d)) :=
   Units.continuous_iff.2 ⟨Units.continuous_coe_inv.matrix_transpose, Units.continuous_val.matrix_transpose⟩
 
+/- English proof (translation)
+Establish `h : IsSmoothChar (α / ν)` using `by rw [div_eq_mul_inv]; exact hα.mul hν.inv`. Conclude with `h.comp _ (Matrix.GeneralLinearGroup.continuous_det.comp (continuous_invT' d))`.
+-/
 theorem isSmoothChar_chi (d : ℕ) {ν α : kˣ →* ℂˣ} (hν : IsSmoothChar ν) (hα : IsSmoothChar α) :
     IsSmoothChar (chi d ν α) := by
   have h : IsSmoothChar (α / ν) := by rw [div_eq_mul_inv]; exact hα.mul hν.inv
   exact h.comp _ (Matrix.GeneralLinearGroup.continuous_det.comp (continuous_invT' d))
 
+/- English proof (translation)
+Use `⟨isSmooth_twist hπ.1 hχ, fun K ho hc => ?_⟩` and prove the remaining obligations. Establish `h1 : IsOpen ((K ⊓ χ.ker : Subgroup G) : Set G)` using `ho.inter hχ`. Establish `h2 : IsCompact ((K ⊓ χ.ker : Subgroup G) : Set G)` using `hc.inter_right (Subgroup.isClosed_of_isOpen _ hχ)`. Use `hπ.2 _ h1 h2` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := fixed π (K ⊓ χ.ker)) fun v hv => ?_` and prove the remaining obligations.
+
+Introduce `h`. Establish `h3` using `hv ⟨h.1, h.2.1⟩`. Establish `h4 : χ h.1 = 1` using `h.2.2`. Simplify using `only [fixed, eig, MonoidHom.one_apply, Units.val_one, one_smul] at h3 ⊢`. Simplify `h3` using `[twist_apply, h4]`.
+-/
 theorem isAdmissible_twist' {G V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [AddCommGroup V] [Module ℂ V] {π : Representation ℂ G V} {χ : G →* ℂˣ} (hπ : IsAdmissible π)
     (hχ : IsSmoothChar χ) : IsAdmissible (twist π χ) := by
@@ -80,6 +105,15 @@ theorem isAdmissible_twist' {G V : Type} [Group G] [TopologicalSpace G] [IsTopol
   simp only [fixed, eig, MonoidHom.one_apply, Units.val_one, one_smul] at h3 ⊢
   simpa [twist_apply, h4] using h3
 
+/- English proof (translation)
+Establish `hc` using `continuous_invT' (k := k) d`. Establish `hinv : ∀ g : GL (Fin d) k, SplitFlip.invT (SplitFlip.invT g) = g` using `invT_invT`. Establish `ho : IsOpenMap (SplitFlip.invT (k` using `k) (D := Fin d)) := fun U hU => by`. Establish `: (SplitFlip.invT (k` using `k) (D := Fin d)) '' U = SplitFlip.invT ⁻¹' U := by`. Use extensionality with `g; exact ⟨by rintro ⟨x, hx, rfl⟩; simpa [hinv] using hx, fun hg => ⟨_, hg, hinv g⟩⟩`.
+
+Rewrite using `[this]`. Conclude with `hU.preimage hc`. Use `⟨fun v => (hπ.1 v).preimage hc, fun K hKo hKc => ?_⟩` and prove the remaining obligations. Establish `e : fixed (π.comp (SplitFlip.invT (k` using `k) (D := Fin d)) : Representation ℂ (GL (Fin d) k) V) K = fixed π (K.map SplitFlip.invT) := by`. Use extensionality with `v`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `hv ⟨_, g, hg, rfl⟩`. Conclude with `hv ⟨g, hg⟩`. Introduce `hv g`. Conclude with `hv ⟨_, g.1, g.2, rfl⟩`.
+
+Rewrite using `[e]`. Conclude with `hπ.2 _ (ho _ hKo) (hKc.image hc)`.
+-/
 theorem isAdmissible_comp_invT {d : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     {π : Representation ℂ (GL (Fin d) k) V} (hπ : IsAdmissible π) :
     IsAdmissible (π.comp (SplitFlip.invT (k := k) (D := Fin d)) : Representation ℂ (GL (Fin d) k) V) := by
@@ -106,6 +140,13 @@ variable {n d : ℕ} {ν α : kˣ →* ℂˣ} {U W : Type} [AddCommGroup U] [Mod
 def flipRep (ν α : kˣ →* ℂˣ) (π : Representation ℂ (GL (Fin d) k) U) : Representation ℂ (GL (Fin d) k) U :=
   twist (π.comp (SplitFlip.invT (k := k) (D := Fin d))) (chi d ν α)
 
+/- English proof (translation)
+Use `⟨Q ∘ₗ trSB d n, fun h0 => hQ0 (LinearMap.ext fun Ψ => ?_), fun g h' Φ Φ' hΦ F => ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun h0 (trSB n d Ψ)` as an intermediate fact. Simplify `this` using `[trSB_trSB]`. Set `Ψ'' : SB (Matrix (Fin n) (Fin d) k)` to `((chi d ν α h' : ℂˣ) : ℂ) • trSB d n Φ'`. Establish `hΨ : (Ψ'' : Matrix (Fin n) (Fin d) k → ℂ) = omB ν α g (SplitFlip.invT h') (trSB d n Φ)`.
+
+Establish `e` using `om_tr n d ν α g h' Φ`. Rewrite `e` using `[← hΦ]`. Conclude with `e`. Establish `key` using `hQ g (SplitFlip.invT h') (trSB d n Φ) Ψ'' hΨ F`. Simplify using `only [Ψ'', map_smul, LinearMap.smul_apply] at key`.
+
+Simplify using `only [LinearMap.comp_apply, flipRep, twist_apply, MonoidHom.coe_comp, Function.comp_apply, map_smul]`. Conclude with `key`.
+-/
 theorem thetaPair_flip (π : Representation ℂ (GL (Fin d) k) U) (σ : Representation ℂ (GL (Fin n) k) W)
     (Q : SB (Matrix (Fin n) (Fin d) k) →ₗ[ℂ] U →ₗ[ℂ] W) (hQ0 : Q ≠ 0)
     (hQ : ∀ (g : GL (Fin n) k) (h : GL (Fin d) k) (Ψ Ψ' : SB (Matrix (Fin n) (Fin d) k)),
@@ -124,6 +165,21 @@ theorem thetaPair_flip (π : Representation ℂ (GL (Fin d) k) U) (σ : Represen
     simp only [LinearMap.comp_apply, flipRep, twist_apply, MonoidHom.coe_comp, Function.comp_apply, map_smul]
     exact key
 
+/- English proof (translation)
+Use `haveI : IsSimpleOrder (Subrepresentation σ) := hσ`. Set `S : Subrepresentation σ` to `⟨smoothPart σ, fun g v hv => smoothPart_stable σ g v hv⟩`. Choose the witnesses or unpack the hypotheses as in `⟨Ψ, u, hne⟩ : ∃ Ψ u, Q Ψ u ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+
+Conclude with `hQ0 (LinearMap.ext fun Ψ => LinearMap.ext fun u => h Ψ u)`. Establish `hmem : Q Ψ u ∈ smoothPart σ`. Establish `hop` using `(om_isSmoothRepresentation k (Fin n) (Fin d) ν hν).2.2.2.2 (trSB n d Ψ).1 (trSB n d Ψ).2`. Establish `hO : IsOpen {g : GL (Fin n) k | om ν g 1 (trSB n d Ψ).1 = (trSB n d Ψ).1}` using `hop.preimage (Continuous.prodMk continuous_id continuous_const)`. Establish `h1 : (1 : GL (Fin n) k) ∈ {g : GL (Fin n) k | om ν g 1 (trSB n d Ψ).1 = (trSB n d Ψ).1}` using `(om_isSmoothRepresentation k (Fin n) (Fin d) ν hν).1 _`.
+
+Use `mem_smoothPart_of_nhds (Filter.mem_of_superset (hO.mem_nhds h1) fun g hg => ?_)` and prove the remaining obligations. Establish `hB : (Ψ : Matrix (Fin n) (Fin d) k → ℂ) = omB ν α g 1 Ψ`. Use `om_tr n d ν α g 1 (trSB n d Ψ).1` as an intermediate fact. Simplify using `only [map_one, Units.val_one, one_smul] at this`. Establish `e2 : (fun Y => (trSB n d Ψ : Matrix (Fin d) (Fin n) k → ℂ) Yᵀ) = (Ψ : Matrix (Fin n) (Fin d) k → ℂ)`.
+
+Use function extensionality and compare the values at `Y`. Simplify using the standard rewrite rules. Rewrite `this` using `[e2]`. Rewrite using `[← this]`. Use function extensionality and compare the values at `Y`.
+
+Establish `hg' : om ν g 1 (trSB n d Ψ).1 = (trSB n d Ψ).1` using `hg`. Rewrite using `[hg']`. Simplify using the standard rewrite rules. Use `hQ g 1 Ψ Ψ hB u` as an intermediate fact. Simplify using `using this.symm`.
+
+Break down `eq_bot_or_eq_top S with h | h` into its components or cases. Conclude with `absurd (show Q Ψ u = 0 from (Submodule.mem_bot ℂ).1 (show Q Ψ u ∈ (⊥ : Subrepresentation σ).toSubmodule from h ▸ hmem)) hne`. Introduce `v`. Establish `: v ∈ (⊤ : Subrepresentation σ).toSubmodule` using `Submodule.mem_top`. Rewrite `this` using `[← h]`.
+
+Conclude with `this`.
+-/
 theorem isSmooth_of_pair (hν : IsSmoothChar ν) (π : Representation ℂ (GL (Fin d) k) U)
     (σ : Representation ℂ (GL (Fin n) k) W) (hσ : σ.IsIrreducible)
     (Q : SB (Matrix (Fin n) (Fin d) k) →ₗ[ℂ] U →ₗ[ℂ] W) (hQ0 : Q ≠ 0)
@@ -167,6 +223,13 @@ end GlobalTheory.HoweFlipPair
 
 open GlobalTheory.HoweFlipPair in
 
+/- English proof (translation)
+Introduce `hK k _ _ _ _ n d ν α hν hα U V V' _ _ _ _ _ _ π ρ ρ' hπi hπa hρi hρ'i P P' hP0 hP'0 hP hP'`. Establish `HD` using `GlobalTheory.T.howe_duality_of_minguez hK.minguezThetaGL`. Establish `hνs : IsSmoothChar ν` using `hν.1`. Establish `hαs : IsSmoothChar α` using `hα.1`. Establish `hχ` using `isSmoothChar_chi (k := k) d hνs hαs`.
+
+Establish `hsurj : Function.Surjective (SplitFlip.invT (k` using `k) (D := Fin d)) := fun g => ⟨SplitFlip.invT g, invT_invT g⟩`. Establish `hπ'a : IsAdmissible (flipRep ν α π)` using `isAdmissible_twist' (isAdmissible_comp_invT hπa) hχ`. Establish `hπ'i : (flipRep ν α π).IsIrreducible` using `GlobalTheory.HoweBridge.irr_twist (GlobalTheory.HoweBridge.irr_comp _ hsurj hπi) _`. Establish `hρs` using `isSmooth_of_pair hνs π ρ hρi P hP0 hP`. Establish `hρ's` using `isSmooth_of_pair hνs π ρ' hρ'i P' hP'0 hP'`.
+
+Establish `hq` using `GlobalTheory.T.theta_pair_contragredient_quotient k n d ν V U ρ (flipRep ν α π) hνs hπ'a (thetaPair_flip π ρ P hP0 hP)`. Establish `hq'` using `GlobalTheory.T.theta_pair_contragredient_quotient k n d ν V' U ρ' (flipRep ν α π) hνs hπ'a (thetaPair_flip π ρ' P' hP'0 hP')`. Establish `hc` using `GlobalTheory.T.smoothContragredient_irreducible_and_reflexive (GL (Fin d) k) (GlobalTheory.ThetaLiftGL.compactOpen_basis k d) U U _ _ hπ'a hπ'a`. Conclude with `(HD k n d ν hνs).2 V V' _ ρ ρ' (contra (flipRep ν α π)) hρs hρi hρ's hρ'i (isSmooth_contra _) (hc.1 hπ'i) hq hq'`.
+-/
 theorem GlobalTheory.HoweFlipPair.uniq : GlobalTheory.ThK.KP → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n d : ℕ) (ν α : kˣ →* ℂˣ), GlobalTheory.KSplit.IsSmU ν → GlobalTheory.KSplit.IsSmU α →
     ∀ (U V V' : Type) [AddCommGroup U] [Module ℂ U] [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V']
       (π : Representation ℂ (GL (Fin d) k) U) (ρ : Representation ℂ (GL (Fin n) k) V) (ρ' : Representation ℂ (GL (Fin n) k) V'),

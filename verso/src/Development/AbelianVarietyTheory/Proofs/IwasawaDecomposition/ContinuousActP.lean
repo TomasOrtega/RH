@@ -15,16 +15,27 @@ open scoped ComplexOrder InnerProductSpace
 
 variable {ι : Type} [Fintype ι] {n : ℕ}
 
+/- English proof (translation)
+Establish `h` using `Formalism.L2.Col.map_fockS (RingHom.id ℂ) f g (fun _ => rfl)`. Simplify using `only [RingHom.id_apply, MvPolynomial.map_id] at h`. Conclude with `h`.
+-/
 theorem fockL_eq {σ : Type} (f g : MvPolynomial σ ℂ) : fockL f g = Formalism.REAL.fockF g f := by
   have h := Formalism.L2.Col.map_fockS (RingHom.id ℂ) f g (fun _ => rfl)
   simp only [RingHom.id_apply, MvPolynomial.map_id] at h
   exact h
 
+/- English proof (translation)
+Rewrite using `[fockL_eq]`. Conclude with `Formalism.L2.Col.map_fockS φ f g fun _ => hφ _`.
+-/
 theorem map_fockL {K σ : Type} [Field K] [StarRing K] (φ : K →+* ℂ) (hφ : ∀ x, φ (star x) = star (φ x))
     (f g : MvPolynomial σ K) : φ (fockL f g) = fockL (map φ f) (map φ g) := by
   rw [fockL_eq]
   exact Formalism.L2.Col.map_fockS φ f g fun _ => hφ _
 
+/- English proof (translation)
+Establish `h1 : φ (gramTw lam G) = gramTw lam (fun τ => (G τ).map φ)`. Simplify using `only [gramTw, map_prod, map_zpow₀, RingHom.map_det]`. Both sides reduce to the same expression. Establish `h2 : φ (extNorm K lam) = extNorm ℂ lam`. Simplify using `only [extNorm, map_prod, ← fockL_apply, map_fockL φ hφ, map_extremal]`.
+
+Rewrite using `[pairP_apply, pairP_apply, map_mul, map_div₀, h1, h2, map_fockL φ hφ, Formalism.L2.Col.map_blockAct]`. Both sides reduce to the same expression.
+-/
 theorem map_pairP {K : Type} [Field K] [StarRing K] (φ : K →+* ℂ) (hφ : ∀ x, φ (star x) = star (φ x))
     (lam : ι → DomWeight n) (G : ι → Matrix (Fin n) (Fin n) K) (F F' : Pol K ι n) :
     φ (pairP lam G F F') = pairP lam (fun τ => (G τ).map φ) (map φ F) (map φ F') := by
@@ -36,6 +47,11 @@ theorem map_pairP {K : Type} [Field K] [StarRing K] (φ : K →+* ℂ) (hφ : �
   rw [pairP_apply, pairP_apply, map_mul, map_div₀, h1, h2, map_fockL φ hφ, Formalism.L2.Col.map_blockAct]
   rfl
 
+/- English proof (translation)
+Establish `h3 : φ (detTwK lam B) = detTwK lam (fun τ => Formalism.UG.bc φ (B τ))`. Rewrite using `[detTw_eq, detTw_eq, map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow₀, bc_coe, RingHom.map_det]`. Both sides reduce to the same expression.
+
+Simplify using `only [actP, LinearMap.smul_apply, AlgHom.toLinearMap_apply, smul_eq_C_mul, map_mul, map_C, h3, trAct, Formalism.L2.Col.map_blockAct]`. Both sides reduce to the same expression.
+-/
 theorem map_actP {K : Type} [Field K] (φ : K →+* ℂ) (lam : ι → DomWeight n)
     (B : ι → GL (Fin n) K) (F : Pol K ι n) :
     map φ (actP lam B F) = actP lam (fun τ => Formalism.UG.bc φ (B τ)) (map φ F) := by
@@ -53,6 +69,11 @@ def bcVV {K : Type} [Field K] (φ : K →+* ℂ) (lam : ι → DomWeight n) : VV
   map_add' x y := Subtype.ext (by simp)
   map_smul' a x := Subtype.ext (by simp [smul_eq_C_mul])
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff, ← (bVV ℂ lam).span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Take `⟨F, hF, e⟩` from `GlobalTheory.Proof.TensorMapDescent.bVVfun_desc φ lam i`. Establish `: bVV ℂ lam i = bcVV φ lam ⟨F, hF⟩` using `Subtype.ext ((bVV_coe ℂ lam i).trans e)`. Rewrite using `[this, ← (bVV K lam).sum_repr ⟨F, hF⟩, map_sum]`.
+
+Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+-/
 theorem bcVV_span {K : Type} [Field K] (φ : K →+* ℂ) (lam : ι → DomWeight n) :
     Submodule.span ℂ (Set.range fun i => bcVV φ lam (bVV K lam i)) = ⊤ := by
   rw [eq_top_iff, ← (bVV ℂ lam).span_eq, Submodule.span_le]
@@ -64,11 +85,25 @@ theorem bcVV_span {K : Type} [Field K] (φ : K →+* ℂ) (lam : ι → DomWeigh
   rw [map_smulₛₗ]
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)
 
+/- English proof (translation)
+The claim follows from `linearIndependent_of_top_le_span_of_card_eq_finrank (bcVV_span φ lam).ge (Module.finrank_eq_card_basis (bVV ℂ lam)).symm`.
+-/
 theorem bcVV_indep {K : Type} [Field K] (φ : K →+* ℂ) (lam : ι → DomWeight n) :
     LinearIndependent ℂ fun i => bcVV φ lam (bVV K lam i) :=
   linearIndependent_of_top_le_span_of_card_eq_finrank (bcVV_span φ lam).ge
     (Module.finrank_eq_card_basis (bVV ℂ lam)).symm
 
+/- English proof (translation)
+Set `G : ι → Matrix (Fin n) (Fin n) C(X, ℂ)` to `fun τ a b => ⟨fun x => (g x τ : Matrix (Fin n) (Fin n) ℂ) b a, (continuous_apply_apply b a).comp (hg τ)⟩`. Set `P` to `Formalism.GradedWeylDivisibility.blockAct C(X, ℂ) G (map (algebraMap ℂ C(X, ℂ)) F)`. Establish `key : ∀ x, trAct (g x) F = map (ContinuousMap.evalAlgHom ℂ ℂ x : C(X, ℂ) →+* ℂ) P`. Introduce `x`. Establish `: ((trAct (g x) : Pol ℂ ι n →ₐ[ℂ] Pol ℂ ι n) : Pol ℂ ι n →+* Pol ℂ ι n) = (map (ContinuousMap.evalAlgHom ℂ ℂ x : C(X, ℂ) →+* ℂ)).comp ((Formalism.GradedWeylDivisibility.blockAct C(X, ℂ) (n` using `n) G).toRingHom.comp (map (algebraMap ℂ C(X, ℂ)))) := by`.
+
+Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[trAct]`. Introduce `v`. Simplify using `[trAct, Formalism.GradedWeylDivisibility.blockAct, G]`.
+
+Conclude with `DFunLike.congr_fun this F`. Establish `h2 : ∀ x, l (trAct (g x) F) = ∑ m ∈ P.support, (P.coeff m) x * l (monomial m 1)`. Introduce `x`. Rewrite using `[key]`. Use `conv_lhs => rw [P.as_sum]`.
+
+Simplify using `only [map_sum, map_monomial]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_eq_mul, ← map_smul, smul_monomial, smul_eq_mul, mul_one]`. Both sides reduce to the same expression. Simplify using `only [actP, LinearMap.smul_apply, AlgHom.toLinearMap_apply, map_smul, smul_eq_mul, h2, detTw_eq]`.
+
+Use `Continuous.mul (continuous_finset_prod _ fun τ _ => (hg τ).matrix_det.zpow₀ _ fun x => Or.inl ?_) (continuous_finset_sum _ fun m _ => (P.coeff m).continuous.mul continuous_const)` and prove the remaining obligations. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 (g x τ).isUnit).ne_zero`.
+-/
 theorem continuous_actP {X : Type} [TopologicalSpace X] (lam : ι → DomWeight n) (g : X → ι → GL (Fin n) ℂ)
     (hg : ∀ τ, Continuous fun x => (g x τ : Matrix (Fin n) (Fin n) ℂ)) (l : Pol ℂ ι n →ₗ[ℂ] ℂ) (F : Pol ℂ ι n) :
     Continuous fun x => l (actP lam (g x) F) := by
@@ -102,6 +137,13 @@ theorem continuous_actP {X : Type} [TopologicalSpace X] (lam : ι → DomWeight 
 def gramOf (B : ι → GL (Fin n) ℂ) : ι → Matrix (Fin n) (Fin n) ℂ :=
   fun τ => (B τ : Matrix (Fin n) (Fin n) ℂ)ᴴ * (B τ : Matrix (Fin n) (Fin n) ℂ)
 
+/- English proof (translation)
+Establish `h` using `pairTransport ℂ ι n lam (fun _ => 1) B B x.1 x.1`. Simplify using `only [Matrix.mul_one] at h`. Establish `hne : actP lam B x.1 ≠ 0` using `fun h0 => hx (Subtype.ext (by`. Use `congrArg (fun φ : Module.End ℂ (Pol ℂ ι n) => φ x.1) ((rhoP lam).map_mul B⁻¹ B)` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel, map_one]`.
+
+Use `this.trans ?_` and prove the remaining obligations. Use `show actP lam B⁻¹ (actP lam B x.1) = 0`. Rewrite using `[h0, map_zero]))`. Take `⟨q, hq, e⟩` from `extNormPos ℂ ι n lam`. Rewrite using `[pairK_apply]`.
+
+Unfold `gramOf`. Rewrite using `[← h, pairP_apply, pb_gramTw_one, pb_blockAct_one_tr, fockL_eq, e]`. Use `mul_pos (one_div_pos.2 ?_) (ps_fockF_pos _ hne)` and prove the remaining obligations. Rewrite using `[eq_ratCast, ← Complex.ofReal_ratCast]`. Conclude with `Complex.zero_lt_real.2 (by exact_mod_cast hq)`.
+-/
 theorem pairK_pos (lam : ι → DomWeight n) (B : ι → GL (Fin n) ℂ) (x : VV ℂ lam) (hx : x ≠ 0) :
     0 < pairK lam (gramOf B) x x := by
   have h := pairTransport ℂ ι n lam (fun _ => 1) B B x.1 x.1
@@ -148,6 +190,9 @@ instance : InnerProductSpace ℂ (HV lam B) := InnerProductSpace.ofCore (core la
 
 instance : FiniteDimensional ℂ (HV lam B) := (bVV ℂ lam).finiteDimensional_of_finite
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem inner_HV (x y : HV lam B) : inner ℂ x y = pairK lam (gramOf B) x y := rfl
 
 instance : Nontrivial (HV lam B) :=
@@ -155,6 +200,9 @@ instance : Nontrivial (HV lam B) :=
     (fun τ => Formalism.GradedWeylDivisibility.hwNe ℂ n n le_rfl _) (congrArg Subtype.val (h : (⟨_, GlobalTheory.Proof.TensorMapDescent.ten_mem lam _
       fun τ => Formalism.GradedWeylDivisibility.hwMem ℂ n n le_rfl _ (natW_antitone _)⟩ : VV ℂ lam) = 0))⟩⟩
 
+/- English proof (translation)
+Establish `: (fun x => (rhoK lam (g x) v : HV lam B)) = fun x => ∑ i, pairP lam (gramOf B) (Subtype.val (stdOrthonormalBasis ℂ (HV lam B) i)) (actP lam (g x) (Subtype.val v)) • stdOrthonormalBasis ℂ (HV lam B) i`. Use function extensionality and compare the values at `x`. Conclude with `((stdOrthonormalBasis ℂ (HV lam B)).sum_repr' _).symm`. Rewrite using `[this]`. Conclude with `continuous_finset_sum _ fun i _ => (continuous_actP lam g hg _ _).smul continuous_const`.
+-/
 theorem continuous_HV {X : Type} [TopologicalSpace X] (g : X → ι → GL (Fin n) ℂ)
     (hg : ∀ τ, Continuous fun x => (g x τ : Matrix (Fin n) (Fin n) ℂ)) (v : HV lam B) :
     Continuous (X := X) (Y := HV lam B) fun x => rhoK lam (g x) v := by

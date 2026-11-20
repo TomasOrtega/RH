@@ -14,6 +14,17 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.ShFam.Pad GlobalTheory.TrueGeo
 open Formalism.MainNotions.DIV.Cons (intO)
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Introduce `E _ _ _ H X _ t hX F _ _ Y V ρ' ρ hρ q _ hC m u₀ f d hf k hk`. Take `⟨N, c, hc, hh⟩` from `hC`. Establish `hch : ∀ x : V.X, ∃ (U : V.X.Opens) (hU : IsAffineOpen U) (g : ℕ) (e : Fin g → (Sp (DualNumber Γ(V.X, U)) ⟶ t.G.left)) (h : Fin N → Fin g → Γ(V.X, U)), x ∈ U ∧ IsTanBasis t (hU.fromSpec ≫ ρ') e ∧ ∀ (β : Γ(V.X, U) →+* ↥(intO ℂ_[q])) (y : Sp ↥(intO ℂ_[q]) ⟶ V.X), spMap β ≫ hU.fromSp …`. Introduce `x`. Take `⟨⟨U, hU⟩, g, e, hx, he⟩` from `GlobalTheory.T.exists_affine_tangent_basis_locally E H X t V.X ρ' x`.
+
+Take `⟨h, hh'⟩` from `hh U hU g e he`. Conclude with `⟨U, hU, g, e, h, hx, he, hh'⟩`. Use `choose U hU g e h hx he hd using hch`. Use `choose s hs using fun x => GlobalTheory.T.flag_frame_cover_tangent_compat E H X t F Y V ρ' ρ hρ m u₀ f d hf (U x) (hU x) (g x) (e x) (he x) (Fin N) (h x) k hk`. Set `eqv` to `Fintype.equivFin (Fin k → Fin N)`.
+
+Use `⟨Fintype.card (Fin k → Fin N), U, fun x J => s x (eqv.symm J), hx, fun x J z hz => ?_, fun v ε y z yt hq hzy hyt x hxU => ?_⟩` and prove the remaining obligations. Take `⟨α, a, -, -, hv⟩` from `hs x z hz`. Conclude with `⟨_, (hv _).symm⟩`. Take `⟨hp, -, -⟩` from `ioOf_spec F v ε haveI := Fact.mk hp`. Establish `P` using `fun x' (hx' : ⊤ ≤ yt ⁻¹ᵁ U x') => GlobalTheory.T.flag_frame_prime_tangent_compat E H X t hX F Y V ρ' ρ hρ q m f d hf.tan (fun y K _ ψ => hf.indep y K ψ) k hk N c hc (U x) (U x') (hU x) (hU x') (g x) (g x') (e x) (e x') (h x) (h x') (he x) (he x') (hd x) (hd x') (s x) (s x') (hs x …`.
+
+Take `⟨hpos, hle, ⟨σ, heq⟩, -⟩` from `P x hxU`. Establish `hsum` using `Finset.sum_congr (s₁ := (Finset.univ : Finset (Fin k))) rfl fun l _ => GlobalTheory.LineNorm.Chart.stepLog_eq ρ f q (Fin.castLE hk l) v ε y hp _ rfl`. Establish `C` using `GlobalTheory.T.local_unit_absolute_value_criterion F v ε k _ hpos`. Simplify using `only`. Rewrite using `[hsum]`.
+
+Use `⟨fun J => (C _).1.2 (hle _), ⟨eqv σ, ?_⟩, fun x' hx' J => (C _).2.2.2 ((P x' hx').2.2.2 _)⟩` and prove the remaining obligations. Rewrite using `[Equiv.symm_apply_apply]`. Conclude with `(C _).2.1.2 heq`.
+-/
 theorem _root_.GlobalTheory.HtGen.genOver_flag : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) [IsLocallyNoetherian X] (t : SAB H X), X.IsSeparated → ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Cover Y) (ρ' : V.X ⟶ X) (ρ : Y.X ⟶ X), V.j ≫ ρ' = V.π ≫ ρ → ∀ (q : ℕ) [Fact q.Prime], CharFam t ρ' q 2 → ∀ (m : ℕ) (u₀ : Fin m → (Sp (DualNumber Y.Fn) ⟶ t.G.left)) (f : ∀ y : Y.X, Fin m → (Sp (DualNumber (Y.X.presheaf.stalk y)) ⟶ t.G.left)) (d : Y.X → Fin m → Y.Fnˣ), IsFlagFrame t ρ u₀ f d → ∀ (k : ℕ) (hk : k ≤ m), GenOver V (fun y => ((∏ l : Fin k, d y (Fin.castLE hk l) : Y.Fnˣ) : Y.Fn)) (fun v e y => -∑ l : Fin k, stepLog t ρ f q (Fin.castLE hk l) v e y) q := by
   intro E _ _ _ H X _ t hX F _ _ Y V ρ' ρ hρ q _ hC m u₀ f d hf k hk
   obtain ⟨N, c, hc, hh⟩ := hC

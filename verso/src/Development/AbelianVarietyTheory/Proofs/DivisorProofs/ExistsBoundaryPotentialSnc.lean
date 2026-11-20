@@ -16,6 +16,11 @@ namespace GlobalTheory.DivSec
 
 open scoped ContDiff
 
+/- English proof (translation)
+Introduce `hmem`. Take `⟨-, nn, r, emb, hR, -⟩` from `hsnc (genericPoint Y.X)`. Establish `h0 : ringKrullDim (Y.X.presheaf.stalk (genericPoint Y.X)) = 0` using `ringKrullDim_eq_zero_of_field (Y.X.functionField)`. Establish `hn0 : nn = 0`. Use `hR.2` as an intermediate fact.
+
+Rewrite `this` using `[h0]`. Conclude with `this` after adjusting the coercions. Substitute `hn0` using the available equality. Conclude with `(emb ⟨i, hmem⟩).elim0`.
+-/
 theorem generic_not_mem {F : Type} [Field F] {Y : Var F} {m : ℕ} {C : Fin m → Closeds Y.X}
     (hsnc : ∀ y : Y.X, LSncAt Y.X C y) (i : Fin m) : genericPoint Y.X ∉ C i := by
   intro hmem
@@ -29,6 +34,21 @@ theorem generic_not_mem {F : Type} [Field F] {Y : Var F} {m : ℕ} {C : Fin m �
   subst hn0
   exact (emb ⟨i, hmem⟩).elim0
 
+/- English proof (translation)
+Introduce `F _ _ Y σ m C n hn B hB hsnc`. Establish `hgen` using `generic_not_mem hsnc`. Use `⟨fun x => (hB.smoothOn_iff (Y.an σ) ((GlobalTheory.DivSec.divPot hn).isOpen_U x)).2 ?_, fun x x' y hy => ?_⟩` and prove the remaining obligations. Establish `h : ∀ i, (Y.an σ).SmoothOn ((GlobalTheory.DivSec.divPot hn).U x) (fun z => GlobalTheory.DivSec.eqF hn i x z / 2)` using `fun i j => (((GlobalTheory.DivSec.eq_spec hn i x).2.2.1.mono fun z hz => GlobalTheory.DivSec.mem_eqV hn hz i) j).div_const 2`. Introduce `j`.
+
+Establish `key : ∀ s : Finset (Fin m), ContDiffOn ℝ ∞ ((fun z => ∑ i ∈ s, GlobalTheory.DivSec.eqF hn i x z / 2) ∘ ((Y.an σ).chart j).e.symm) (((Y.an σ).chart j).e.target ∩ ((Y.an σ).chart j).e.symm ⁻¹' (GlobalTheory.DivSec.divPot hn).U x)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact (contDiffOn_const (c := (0 : ℝ))).congr fun v _ => by simp`. Consider the case `insert a s ha ih`.
+
+Simplify using `only [Finset.sum_insert ha]`. Conclude with `(h a j).add ih`. Use `(key Finset.univ).congr fun v _ => ?_` and prove the remaining obligations. Simplify using `[GlobalTheory.DivSec.divPot]`. Establish `hQ : ∀ i, ∃ W : Set (Pts Y σ), IsOpen W ∧ y ∈ W ∧ ∃ G : Pts Y σ → ℂ, (Y.an σ).HoloOn W G ∧ ∀ z ∈ W ∩ ptsIn Y.str σ (GlobalTheory.DivSec.eqV hn i x).1 ∩ ptsIn Y.str σ (GlobalTheory.DivSec.eqV hn i x').1, GlobalTheory.DivSec.eqF hn i x z - GlobalTheory.DivSec.eqF hn i x' z = (G z). …` using `fun i => GlobalTheory.T.smooth_ratio_of_local_generators F Y σ (C i) (n i) _ _ _ _ _ _ ⟨_, hgen i⟩ (GlobalTheory.DivSec.eq_spec hn i x).2.1 (GlobalTheory.DivSec.eq_spec hn i x').2.1 (GlobalTheory.DivSec.eq_spec hn i x).2.2.1 (GlobalTheory.DivSec.eq_spec hn i x').2.2.1 (GlobalTheo …`.
+
+Use `⟨⋂ i, W i, isOpen_iInter_of_finite hW, Set.mem_iInter.2 hyW, fun z => ∑ i, G i z / 2, (hB.holoOn_iff (Y.an σ) (isOpen_iInter_of_finite hW)).2 ?_, fun z hz => ?_⟩` and prove the remaining obligations. Introduce `j`. Establish `h : ∀ i, DifferentiableOn ℂ (fun v => G i (((Y.an σ).chart j).e.symm v) / 2) (((Y.an σ).chart j).e.target ∩ ((Y.an σ).chart j).e.symm ⁻¹' ⋂ i, W i)` using `fun i => by`. Establish `h1 : DifferentiableOn ℂ (G i ∘ ((Y.an σ).chart j).e.symm) (((Y.an σ).chart j).e.target ∩ ((Y.an σ).chart j).e.symm ⁻¹' ⋂ i, W i)` using `(hG i j).mono fun v hv => ⟨hv.1, Set.mem_iInter.1 hv.2 i⟩`. Conclude with `(h1.mul_const (2⁻¹ : ℂ)).congr fun v _ => by simp [div_eq_mul_inv]`.
+
+Establish `key : ∀ s : Finset (Fin m), DifferentiableOn ℂ (fun v => ∑ i ∈ s, G i (((Y.an σ).chart j).e.symm v) / 2) (((Y.an σ).chart j).e.target ∩ ((Y.an σ).chart j).e.symm ⁻¹' ⋂ i, W i)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using differentiableOn_const (c := (0 : ℂ))`. Consider the case `insert a s ha ih`.
+
+Simplify using `only [Finset.sum_insert ha]`. Conclude with `(h a).add ih`. Conclude with `(key Finset.univ).congr fun v _ => by simp`. Establish `hzi : ∀ i, GlobalTheory.DivSec.eqF hn i x z - GlobalTheory.DivSec.eqF hn i x' z = (G i z).re` using `fun i => he i z ⟨⟨Set.mem_iInter.1 hz.1.1 i, GlobalTheory.DivSec.mem_eqV hn hz.1.2 i⟩, GlobalTheory.DivSec.mem_eqV hn hz.2 i⟩`. Simplify using `only [GlobalTheory.DivSec.divPot, Complex.re_sum, ← Finset.sum_sub_distrib]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← sub_div, hzi i, Complex.div_ofNat_re]`.
+-/
 theorem isPotential_divPot : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (σ : F →+* ℂ) (m : ℕ) (C : Fin m → Closeds Y.X) (n : Fin m → Pts Y σ → ℝ) (hn : ∀ i, IsDivNorm (Y.an σ) (C i) (n i)) (B : FinHolAtlas Y.dim (Pts Y σ)), IsAlgAtlas B → (∀ y : Y.X, LSncAt Y.X C y) → IsPotential B (GlobalTheory.DivSec.divPot hn) := by
   intro F _ _ Y σ m C n hn B hB hsnc
   have hgen := generic_not_mem hsnc
@@ -77,6 +97,15 @@ theorem isPotential_divPot : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F
       refine Finset.sum_congr rfl fun i _ => ?_
       rw [← sub_div, hzi i, Complex.div_ofNat_re]
 
+/- English proof (translation)
+Introduce `F _ _ Y e M I a m C n hdim hsnc hn hZ hr`. Substitute `hdim` using the available equality. Establish `hA : GlobalTheory.DivSec.ChartsAlg (M.A a) (I.pt a)` using `I.alg a`. Establish `hlog : ∀ z, logNormSec ((GlobalTheory.DivSec.divPot hn).pullback (I.pt a) (I.pt a).continuous) (fun x w => GlobalTheory.DivSec.divSec hn (I.pt a x) (I.pt a w)) z = Real.log (∏ i, n i (I.pt a z))` using `fun z => by`. Simplify using `only [logNormSec, LocPot.pullback]`.
+
+Rewrite using `[GlobalTheory.DivSec.norm_divSec_mul hn ((GlobalTheory.DivSec.divPot hn).mem_U _)]`. Use `⟨(GlobalTheory.DivSec.divPot hn).pullback (I.pt a) (I.pt a).continuous, fun x w => GlobalTheory.DivSec.divSec hn (I.pt a x) (I.pt a w), ⟨GlobalTheory.DivSec.isPotential_pullback hA (isPotential_divPot F Y _ m C n hn _ (GlobalTheory.DivSec.isAlgAtlas_algAtlas hA) hsnc), GlobalTheo …` and prove the remaining obligations. Rewrite using `[hlog]`. Conclude with `Real.log_nonpos (Finset.prod_nonneg fun i _ => ((hn i).1 _).1) (Finset.prod_le_one (fun i _ => ((hn i).1 _).1) fun i _ => ((hn i).1 _).2)`. Use extensionality with `z`.
+
+Rewrite using `[hZ z]`. Conclude with `(GlobalTheory.DivSec.divSec_eq_zero_iff hn (I.pt a z)).symm`. Introduce `hu`. Take `⟨z, hz⟩` from `IsBd.compl_nonempty (M.A a) (M.Z a) (M.r a) (M.Om a) (M.bd a)`. Conclude with `hz (hu ▸ Set.mem_univ z)`.
+
+Rewrite using `[hr z hz, P.rW, hlog, Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem bdSec_of_divNorm : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (e : ℕ) (M : Man e) (I : ManIs M Y) (a : Fin (M.n + 1)) (m : ℕ) (C : Fin m → Closeds Y.X) (n : Fin m → Pts Y (I.ε a) → ℝ), Y.dim = e → (∀ y : Y.X, LSncAt Y.X C y) → (∀ i, IsDivNorm (Y.an (I.ε a)) (C i) (n i)) → (∀ z, z ∈ M.Z a ↔ ∃ i, under (I.pt a z) ∈ C i) → (∀ z, z ∉ M.Z a → M.r a z = Real.exp 1 - Real.log ((∏ i, n i (I.pt a z)) ^ 2)) → ∃ (L : LocPot (M.X a)) (t : M.X a → M.X a → ℂ), IsBdSec (M.A a) (M.Z a) (M.r a) L t ∧ IsSNC (M.A a) L t (fun _ : Fin m => 1) fun i => {z | under (I.pt a z) ∈ C i} := by
   intro F _ _ Y e M I a m C n hdim hsnc hn hZ hr
   subst hdim

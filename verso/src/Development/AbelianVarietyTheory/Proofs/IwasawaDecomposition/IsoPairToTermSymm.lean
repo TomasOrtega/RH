@@ -16,15 +16,24 @@ variable {D : D7} (Z : New D) {X : HidaSetting D} (Y : Full X) (u u' : D.what₂
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+The claim follows from `(by with_unfolding_all exact ((Eq.refl (eRT Z Y u u' s.toTerm)) :))`.
+-/
 theorem isoPair_toTerm (s : TT Y u u') : (eTT Z Y u u' s).toTerm = eRT Z Y u u' s.toTerm := (by with_unfolding_all exact ((Eq.refl (eRT Z Y u u' s.toTerm)) :))
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+The claim follows from `(by with_unfolding_all exact ((Eq.refl ((eTT Z Y u u').symm s).toTerm) :))`.
+-/
 theorem isoPair_toTerm_symm (s : TT (reY Z Y) (wd Z u) (wd Z u')) :
     ((eTT Z Y u u').symm s).toTerm = (eRT Z Y u u').symm s.toTerm := (by with_unfolding_all exact ((Eq.refl ((eTT Z Y u u').symm s).toTerm) :))
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+The claim follows from `(by with_unfolding_all exact ((Iff.rfl : rowOf Y.TR (Y.cs u) (Y.cs u') a = rowOf Y.TR (Y.cs u) (Y.cs u') b ↔ _) :))`.
+-/
 theorem isoPair_row (a b : TT Y u u') :
     rowOf (reY Z Y).TR ((reY Z Y).cs (wd Z u)) ((reY Z Y).cs (wd Z u')) (eTT Z Y u u' a) =
         rowOf (reY Z Y).TR ((reY Z Y).cs (wd Z u)) ((reY Z Y).cs (wd Z u')) (eTT Z Y u u' b) ↔
@@ -32,6 +41,9 @@ theorem isoPair_row (a b : TT Y u u') :
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Use `isoPair_row Z Y u u' ((eTT Z Y u u').symm a) ((eTT Z Y u u').symm b)` as an intermediate fact. Simplify `this.symm` using `only [Equiv.apply_symm_apply]`.
+-/
 theorem isoPair_row_symm (a b : TT (reY Z Y) (wd Z u) (wd Z u')) :
     rowOf Y.TR (Y.cs u) (Y.cs u') ((eTT Z Y u u').symm a) = rowOf Y.TR (Y.cs u) (Y.cs u') ((eTT Z Y u u').symm b) ↔
       rowOf (reY Z Y).TR ((reY Z Y).cs (wd Z u)) ((reY Z Y).cs (wd Z u')) a =
@@ -41,11 +53,17 @@ theorem isoPair_row_symm (a b : TT (reY Z Y) (wd Z u) (wd Z u')) :
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+The claim follows from `(by with_unfolding_all exact ( (Eq.refl (s0T a b)) :))`.
+-/
 theorem isoPair_s0T (a b : TT Y u u') : s0T (eTT Z Y u u' a) (eTT Z Y u u' b) = s0T a b := (by with_unfolding_all exact (
   (Eq.refl (s0T a b)) :))
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+The claim follows from `(by exact (Iff.rfl : liftScalar a b ↔ liftScalar a b))`.
+-/
 theorem isoPair_lift (a b : TT Y u u') : liftScalar (eTT Z Y u u' a) (eTT Z Y u u' b) ↔ liftScalar a b := (by exact (Iff.rfl : liftScalar a b ↔ liftScalar a b))
 
 def isoPairFib (t : RT Y u u') : fib Y t ≃ fib (reY Z Y) (eRT Z Y u u' t) where
@@ -67,6 +85,19 @@ def isoPairE : RP Y u u' ≃ RP (reY Z Y) (wd Z u) (wd Z u') where
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `D Z X Y h h' u u'`. Use `⟨isoPairE Z Y u u', fun q => ⟨rfl, rfl, ?_⟩⟩` and prove the remaining obligations. Use `set a := (eTT Z Y u u').symm (isoPairE Z Y u u' q).l1 with ha`. Use `set b := (eTT Z Y u u').symm (isoPairE Z Y u u' q).l2 with hb`. Establish `hA : (isoPairE Z Y u u' q).l1 = eTT Z Y u u' a` using `by simp [a]`.
+
+Establish `hB : (isoPairE Z Y u u' q).l2 = eTT Z Y u u' b` using `by simp [b]`. Establish `h1 : q.l1.toTerm = q.1.1` using `q.2.choose.2`. Establish `h2 : q.l2.toTerm = q.1.2` using `q.2.choose_spec.choose.2`. Establish `hr : rowOf Y.TR (Y.cs u) (Y.cs u') q.l1 = rowOf Y.TR (Y.cs u) (Y.cs u') q.l2` using `q.2.choose_spec.choose_spec`. Establish `e1 : (isoPairE Z Y u u' q).l1.toTerm = eRT Z Y u u' q.1.1` using `(isoPairE Z Y u u' q).2.choose.2`.
+
+Establish `e2 : (isoPairE Z Y u u' q).l2.toTerm = eRT Z Y u u' q.1.2` using `(isoPairE Z Y u u' q).2.choose_spec.choose.2`. Establish `er` using `(isoPairE Z Y u u' q).2.choose_spec.choose_spec`. Establish `ha1 : a.toTerm = q.1.1` using `by rw [isoPair_toTerm_symm]; erw [e1]; simp`. Establish `hb1 : b.toTerm = q.1.2` using `by rw [isoPair_toTerm_symm]; erw [e2]; simp`. Establish `hab : rowOf Y.TR (Y.cs u) (Y.cs u') a = rowOf Y.TR (Y.cs u) (Y.cs u') b` using `(isoPair_row_symm Z Y u u' _ _).2 er`.
+
+Take `⟨hs, hl⟩` from `h.pairIndep u u' q.l1 q.l2 a b (h1.trans ha1.symm) (h2.trans hb1.symm) hr hab`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hA, hB, isoPair_s0T]`. Conclude with `hs`. Rewrite using `[hA, hB, isoPair_lift]`.
+
+Conclude with `hl`. Use `letI := h.fibFT q.1.1`. Use `letI := h.fibFT q.1.2`. Use `letI := h'.fibFT (eRT Z Y u u' q.1.1)`. Use `letI := h'.fibFT (eRT Z Y u u' q.1.2)`.
+
+Unfold `pvR`. Use `Fintype.sum_equiv ((isoPairFib Z Y u u' q.1.1).prodCongr (isoPairFib Z Y u u' q.1.2)) _ _ fun r => ?_` and prove the remaining obligations. Conclude with `(by with_unfolding_all exact ((Eq.refl (if rowOf Y.TR (Y.cs u) (Y.cs u') r.1.1 = rowOf Y.TR (Y.cs u) (Y.cs u') r.2.1 then inner ℂ (vT Y u u' r.2.1) (vT Y u u' r.1.1) else (0 : ℂ))) :))`.
+-/
 theorem rp_iso_pair : ∀ (D : D7) (Z : New D) (X : HidaSetting D) (Y : Full X) (h : FinX Y) (h' : FinX (reY Z Y))
     (u u' : D.what₂.Word), ∃ e : RP Y u u' ≃ RP (reY Z Y) (wd Z u) (wd Z u'), ∀ q, eRT Z Y u u' q.1.1 = (e q).1.1 ∧
       eRT Z Y u u' q.1.2 = (e q).1.2 ∧ s0T q.l1 q.l2 = s0T (e q).l1 (e q).l2 ∧

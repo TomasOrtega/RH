@@ -29,6 +29,17 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
   {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} {S : Set ℕ} {mu : Tup X.F X.E X.K S}
   {cst : LocCst X (rowSG Pr sel mu)} {L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))} {G : ChGlob X R.m} {m2 : ℕ} {u : Pr.Word}
 
+/- English proof (translation)
+Take `⟨κ, a, hκ, ha, ea⟩` from `exists_pass hd (1 : FrmG Λ Θ) p`. Take `⟨κ', a', hκ', ha', ea'⟩` from `exists_pass hd g p'`. Rewrite `hκ` using `[one_smul]`. Rewrite `hκ'` using `[hg]`. Use `⟨κ, κ', a, a', hκ, hκ', ha, ha', Finset.prod_congr rfl fun P _ => ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : ((κ P)⁻¹).1 = 1`. Establish `h` using `hκ P`. Express the relevant statement in the definitionally equal form `_ = 1 * _ at h`. Rewrite `h` using `[one_mul]`. Conclude with `(left_eq_mul.1 h)`.
+
+Establish `h2 : LinearEquiv.det (κ' P).1 = LinearEquiv.det g.1.1`. Establish `h` using `congrArg LinearEquiv.det (hκ' P)`. Rewrite `h` using `[map_mul, map_mul, Subgroup.coe_inv, map_inv, mul_left_comm, left_eq_mul, mul_inv_eq_one]`. Conclude with `h.symm`. Establish `h3 : rhoS Ch sel mu i P ((LinearEquiv.det (κ⁻¹ P).1 : X.Eˣ) : X.E) = 1`.
+
+Rewrite using `[Pi.inv_apply, h1, map_one, Units.val_one]`. Establish `hr : redP P.1 (1 : X.E) = 1` using `reduction_coe P.1 1`. Establish `hu : IsUnit (redP P.1 (1 : X.E))` using `hr ▸ isUnit_one`. Unfold `rhoS LocE.unitV`. Rewrite using `[dif_pos hu, show hu.unit = 1 from Units.ext hr, map_one, Units.val_one]`.
+
+Rewrite using `[h3, one_mul, Pi.inv_apply, rhoT_inv, ← GlobalTheory.MatLaw.muAt_det (cst := cst), h2]`. Rewrite using `[ea', ea]`. Express the relevant statement in the definitionally equal form `_ * (Λ.chr 1 * Θ.chr 1)⁻¹ = _`. Rewrite using `[map_one, map_one, mul_one, inv_one, mul_one]`.
+-/
 theorem factor_of_fix (i : ℕ) {j j' : ℕ} {Λ : LevFam X.E X.K (R.N j) Pr.vGs} {Θ : LevQFam X.E X.K (R.N j) (QE sel (mu : Chr X.F X.E X.K))}
     {Λ' : LevFam X.E X.K (R.N j') Pr.vGs} {Θ' : LevQFam X.E X.K (R.N j') (QE sel (mu : Chr X.F X.E X.K))}
     (hd : Disjoint Pr.vGs (QE sel (mu : Chr X.F X.E X.K))) (p : ChPt (R := R) sel mu u j) (p' : ChPt (R := R) sel mu u j')
@@ -66,6 +77,21 @@ theorem factor_of_fix (i : ℕ) {j j' : ℕ} {Λ : LevFam X.E X.K (R.N j) Pr.vGs
     change _ * (Λ.chr 1 * Θ.chr 1)⁻¹ = _
     rw [map_one, map_one, mul_one, inv_one, mul_one]
 
+/- English proof (translation)
+Establish `hd` using `(tilOk_of_avoid (mu := mu) hPr hsel u hS).2.2`. Establish `hm` using `hL.hm`. Establish `e0 : phiT X.K p.1.1.deco.1 p'.1.1.deco.1 (g.1.1.toLinearMap ∘ₗ x ∘ₗ (1 : UF X.E (R.N i)).1.symm.toLinearMap) = phiT X.K p.1.1.deco.1 p'.1.1.deco.1 x` using `(congrArg₂ (fun (q : ChPt (R := R) sel mu u i) (q' : ChPt (R := R) sel mu u (i + 1)) => phiT X.K q.deco.1 q'.deco.1 (g.1.1.toLinearMap ∘ₗ x ∘ₗ (1 : UF X.E (R.N i)).1.symm.toLinearMap)) (one_smul (FrmG (levGAt sel mu L (topLev Ch sel mu cst (rPsymF (R := R) Ch)) i b) (levQAt sel m …`. Break down `lt_trichotomy (i + 2) R.m with h | h | h` into its components or cases. Take `⟨al, rfl⟩ : ∃ al, b = Idx.of al (by omega)` from `⟨_, (Idx.of_get b (by omega) _).symm⟩`.
+
+Take `⟨be, rfl⟩ : ∃ be, b' = Idx.of be (by omega)` from `⟨_, (Idx.of_get b' (by omega) _).symm⟩`. Take `⟨κ, κ', a, a', hκ, hκ', ha, ha', e1, e2⟩` from `factor_of_fix (Ch := Ch) (cst := cst) (Λ := L.levG i al) (Θ := L.levQ i al) i hd p.1.1 p'.1.1 g h1`. Apply the tactic sequence `rw [xiAt_entry Ch sel mu cst L h rfl rfl, ← e1, ← e2]`. Conclude with `GlobalTheory.MatLaw.xiEntry_law hX hPr hsel hL (by omega) hκ hκ' ha ha' x e0`. Take `rfl : m2 = i` from `by omega`.
+
+Take `⟨al, rfl⟩ : ∃ al, b = Idx.of al (by omega)` from `⟨_, (Idx.of_get b (by omega) _).symm⟩`. Take `⟨be, rfl⟩ : ∃ be, b' = Idx.of be (by omega)` from `⟨_, (Idx.of_get b' (by omega) _).symm⟩`. Take `⟨κ, κ', a, a', hκ, hκ', ha, ha', e1, e2⟩` from `factor_of_fix (Ch := Ch) (cst := cst) (Λ := L.levG m2 al) (Θ := L.levQ m2 al) m2 hd p.1.1 p'.1.1 g h1`. Establish `hY` using `PtAt.mem_ybSet p' h`. Establish `key` using `GlobalTheory.CoupledLaw.xiCpl1_law (b := be) hX hPr hL hY (h2.symm ▸ hY) hκ hκ' ha ha' x e0`.
+
+Rewrite `key` using `[h2]`. Rewrite using `[xiAt_penultimate_eq_xiCpl1 Ch sel mu cst L h rfl, ← e1, ← e2]`. Conclude with `key`. Take `rfl : i = m2 + 1` from `by omega`. Establish `hj : m2 + 1 + 1 = R.m` using `by omega`.
+
+Establish `hY` using `PtAt.mem_ybSet p hj`. Take `⟨al, rfl⟩ : ∃ al, b = Idx.of al (by omega)` from `⟨_, (Idx.of_get b (by omega) _).symm⟩`. Rewrite using `[xiAt_last Ch sel mu cst L hj]`. Establish `key : ∀ (j : ℕ) (h : j = R.m) {Λ : LevFam X.E X.K (R.N j) Pr.vGs} {Θ : LevQFam X.E X.K (R.N j) (QE sel (mu : Chr X.F X.E X.K))} (_ : Λ = (topLev Ch sel mu cst (rPsymF (R` using `R) Ch)).levG j) (_ : Θ = (topLev Ch sel mu cst (rPsymF (R := R) Ch)).levQ j) (q : ChPt (R := R) sel mu u j) (g : FrmG Λ Θ) (_ : g • q = q) (x : HomE X.E (R.N (m2 + 1)) (R.N j)) (_ : phiT X.K p.1.1.deco.1 q.deco.1 (g.1.1.toLinearMap ∘ₗ x ∘ₗ (1 : UF X.E (R.N (m2 + 1))).1.symm.toLin …`. Introduce and unpack `_ rfl Λ Θ hΛ hΘ q g h1 x e0`.
+
+Take `rfl` from `hΛ.trans (topLev_levG_m_eq Ch sel mu cst _)`. Take `rfl` from `hΘ.trans (topLev_levQ_m_eq Ch sel mu cst _)`. Take `⟨κ, κ', a, a', hκ, hκ', ha, ha', e1, e2⟩` from `factor_of_fix (Ch := Ch) (cst := cst) (Λ := L.levG (m2 + 1) al) (Θ := L.levQ (m2 + 1) al) (m2 + 1) hd p.1.1 q g h1`. Establish `hI : (fun v => (1 : UF X.E (R.N (m2 + 1))).1 v) '' p.1.2 = p.1.2` using `Set.image_id _`. Establish `key` using `xiTop_law default hX hPr hsel hL (Or.inr ⟨hs, rfl⟩) hY (hI.symm ▸ hY) hκ hκ' ha ha' x e0`.
+
+Rewrite `key` using `[hI]`. Rewrite using `[xiOver_rfl, ← e1, ← e2]`. Conclude with `key`. Conclude with `key _ hj (levGAt_of_le sel mu L _ hj.ge b') (levQAt_of_le sel mu L _ hj.ge b') _ g h1 x e0`.
+-/
 theorem xiAt_stab (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) (hS : Pr.T u ∈ S ∧ ∀ i, Pr.g i ∈ S)
     (hL : L.Ok Ch sel mu cst G m2) (hs : cst.sharp = true) {i : ℕ} (hi : i < R.m) (b : Idx sel mu L i) (b' : Idx sel mu L (i + 1))
     (p : PtAt R sel mu cst u i) (p' : PtAt R sel mu cst u (i + 1))
@@ -125,6 +151,13 @@ theorem xiAt_stab (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) (hS : Pr.T u �
       exact key
     exact key _ hj (levGAt_of_le sel mu L _ hj.ge b') (levQAt_of_le sel mu L _ hj.ge b') _ g h1 x e0
 
+/- English proof (translation)
+Establish `hm` using `hL.hm`. Break down `lt_trichotomy (i + 2) R.m with h | h | h` into its components or cases. Apply the tactic sequence `rw [xiAt_entry Ch sel mu cst L h (b.some_get (by omega)).symm (b'.some_get (by omega)).symm]`. Conclude with `GlobalTheory.MatLaw.xiEntry_invariant hPr hL (by omega) _ _ _ _ x z hz`. Take `rfl : m2 = i` from `by omega`.
+
+Rewrite using `[xiAt_penultimate_eq_xiCpl1 Ch sel mu cst L h (b.some_get (by omega)).symm]`. Conclude with `GlobalTheory.CoupledLaw.xiCpl1_invariant hPr hL _ _ _ _ x z hz`. Take `rfl : i = m2 + 1` from `by omega`. Establish `hj : m2 + 1 + 1 = R.m` using `by omega`. Rewrite using `[xiAt_last Ch sel mu cst L hj]`.
+
+Establish `key : ∀ (j : ℕ) (h : j = R.m) (q : ChPt (R` using `R) sel mu u j) (x z : HomE X.E (R.N (m2 + 1)) (R.N j)), z ∈ mulLat (cBof sel mu cst u) (homAt (Sall sel mu u) p.1.1.deco.1.N q.deco.1.N) → xiOver Ch sel mu cst m2 h p.1.1 p.1.2 q (x + z) = xiOver Ch sel mu cst m2 h p.1.1 p.1.2 q x := by`. Introduce and unpack `_ rfl q x z hz`. Conclude with `GlobalTheory.TopXiInv.xiTop_invariant Ch sel mu cst m2 u hPr hm hL.cst_ok hL.depthQ _ _ q (p.mem_ybSet hj) x z hz`. Conclude with `key _ hj _ x z hz`.
+-/
 theorem xiAt_invariant (hPr : Pr.Ok) (hL : L.Ok Ch sel mu cst G m2) {i : ℕ} (hi : i < R.m) (b : Idx sel mu L i)
     (b' : Idx sel mu L (i + 1)) (p : PtAt R sel mu cst u i) (p' : PtAt R sel mu cst u (i + 1)) (x z : HomE X.E (R.N i) (R.N (i + 1)))
     (hz : z ∈ mulLat (cBof sel mu cst u) (homAt (Sall sel mu u) p.1.1.deco.1.N p'.1.1.deco.1.N)) :
@@ -146,6 +179,9 @@ theorem xiAt_invariant (hPr : Pr.Ok) (hL : L.Ok Ch sel mu cst G m2) {i : ℕ} (h
       exact GlobalTheory.TopXiInv.xiTop_invariant Ch sel mu cst m2 u hPr hm hL.cst_ok hL.depthQ _ _ q (p.mem_ybSet hj) x z hz
     exact key _ hj _ x z hz
 
+/- English proof (translation)
+Use `xiAt_invariant hPr hL hi b b' p p' x z ?_` and prove the remaining obligations. Take `⟨v, hv, rfl⟩` from `hz`. Use `⟨((cAof sel mu cst : ℕ) : 𝓞 X.E) • v, Submodule.smul_mem _ _ hv, ?_⟩` and prove the remaining obligations. Simplify using `only [levC, LinearMap.smul_apply, LinearMap.id_apply, smul_smul, Nat.cast_mul, mul_comm]`.
+-/
 theorem xiAt_invariant_levC (hPr : Pr.Ok) (hL : L.Ok Ch sel mu cst G m2) {i : ℕ} (hi : i < R.m) (b : Idx sel mu L i)
     (b' : Idx sel mu L (i + 1)) (p : PtAt R sel mu cst u i) (p' : PtAt R sel mu cst u (i + 1)) (x z : HomE X.E (R.N i) (R.N (i + 1)))
     (hz : z ∈ mulLat (levC sel mu cst u) (homAt (Sall sel mu u) p.1.1.deco.1.N p'.1.1.deco.1.N)) :
@@ -164,6 +200,15 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE
 
 variable {B : GlobalTheory.Mem.Base} {X : PreX B.toPre}
 
+/- English proof (translation)
+Introduce `P hP`. Take `⟨p, hp, hpP, hk⟩` from `sall_nat (Pr := B.primes X) I.sel (I.tup a) l.pr h.sel_ok u hP`. Establish `hp2 : p ∉ (I.rec7 l Z).host.small ∧ p ≠ (I.rec7 l Z).host.q`. Break down `hk with e | ⟨j, e⟩ | hn` into its components or cases. Rewrite using `[e]`.
+
+Conclude with `⟨UpperTheory.Small.not_mem_of_mod _ ((I.rec7 l Z).T_mod_cond u), (I.rec7 l Z).T_ne_q u⟩`. Rewrite using `[e]`. Conclude with `⟨UpperTheory.Ram.g_notMem_small (I.rec7 l Z) j, GlobalTheory.ShortOwnCompare.level_ne_q (I.rec7 l Z) j⟩`. Conclude with `⟨fun e => hn (h.small_mem e), fun e => hn (e ▸ h.two_q_d_mem.2.1)⟩`. Establish `key : ∀ r : ℕ, r.Prime → r ≠ p → ((r : ℕ) : 𝓞 B.fields.E) ∉ P.asIdeal`.
+
+Introduce `r hr hrp hrP`. Establish `hc : IsCoprime ((p : ℕ) : 𝓞 B.fields.E) ((r : ℕ) : 𝓞 B.fields.E)`. Establish `h1` using `(Nat.coprime_primes hp hr).2 (Ne.symm hrp)`. Establish `h2` using `(Nat.isCoprime_iff_coprime.2 h1).map (Int.castRingHom (𝓞 B.fields.E))`. Simplify using `using h2`.
+
+Take `⟨s, t, hst⟩` from `hc`. Conclude with `P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hst ▸ add_mem (P.asIdeal.mul_mem_left s hpP) (P.asIdeal.mul_mem_left t hrP)))`. Conclude with `⟨UpperTheory.Ram.natCast_notMem_of_coprime P.isPrime.ne_top hpP ((Nat.Prime.coprime_iff_not_dvd hp).2 (UpperTheory.Small.not_dvd_QS _ hp hp2.1)).symm, key _ (I.rec7 l Z).host.hyp.1 hp2.2.symm⟩`.
+-/
 theorem sall_away (I : TC B X) (h : I.Ok) (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) :
     ∀ P ∈ Sall (Pr := B.primes X) I.sel (I.tup a) u,
       (((I.rec7 l Z).host.QS : ℕ) : 𝓞 B.fields.E) ∉ P.asIdeal ∧ (((I.rec7 l Z).host.q : ℕ) : 𝓞 B.fields.E) ∉ P.asIdeal := by
@@ -186,6 +231,19 @@ theorem sall_away (I : TC B X) (h : I.Ok) (l : I.Laws) (Z : TC.Later B (I.cols l
   exact ⟨UpperTheory.Ram.natCast_notMem_of_coprime P.isPrime.ne_top hpP
     ((Nat.Prime.coprime_iff_not_dvd hp).2 (UpperTheory.Small.not_dvd_QS _ hp hp2.1)).symm, key _ (I.rec7 l Z).host.hyp.1 hp2.2.symm⟩
 
+/- English proof (translation)
+Establish `hX` using `(base_fields_primes_ok B X).1`. Establish `hok` using `seamOf_ok B (I.cols l) Z.W Z.V Z.S Z.N Z.G`. Establish `hχ : TaylorLogMetric.IsChi (I.rec7 l Z) I.chi` using `GlobalTheory.Mem.ChiIdeal.isChi_chiId _ _ I.C.isChi`. Establish `hA` using `admissible_assembled_evenRanks B (I.cols l) Z.W Z.V Z.S Z.N Z.G (i + 1) (i + 1) p'.1.1.deco p'.1.1.deco`. Take `⟨hzs, hzi, hprod1⟩` from `GlobalTheory.DetFields.det_of_stab (I.rec7 l Z) B.fields (seamOf B (I.cols l) Z.W Z.V Z.S Z.N Z.G) I.chi hok hχ _ _ ((seamOf_lat B (I.cols l) Z.W Z.V Z.S Z.N Z.G _).symm ▸ hA.2.2.1) γ hγ`.
+
+Generalize the expression as in `((LinearEquiv.det γ.1 : B.fields.Eˣ) : B.fields.E) = z at hzs hzi hprod1 ⊢`. Establish `hz0 : z ≠ 0` using `left_ne_zero_of_mul_eq_one hzs`. Set `eZ : Fin B.R.m → B.fields.Tau → ℤ` to `fun j τ => (I.chain l u a).sDiv j τ + ((B.R.N j / 2 : ℕ) : ℤ)`. Establish `heZ : ∀ j τ, ((eZ j τ : ℤ) : ℚ) = (B.hc τ).e j`. Introduce `j τ`.
+
+Establish `h1` using `(I.chain l u a).sDiv_eq j j.2 τ`. Rewrite `h1` using `[show (B.hcW u τ).e = (B.hc τ).e from (I.rec7 l Z).hcW_e u τ]`. Take `⟨m, hm⟩` from `rank_even B.R j`. Establish `h2 : ((B.R.N j / 2 : ℕ) : ℚ) = (B.R.N j : ℚ) / 2`. Rewrite using `[hm]; push_cast; rw [show m + m = 2 * m by ring, Nat.mul_div_cancel_left _ two_pos]; push_cast; ring`.
+
+Simplify using `only [eZ]`. Rewrite using `[Int.cast_add, h1, Int.cast_natCast, h2, sExp, Nat.add_sub_cancel]`. Use `show (B.hc τ).e j - _ + _ = _`. Expand and normalize the polynomial expressions, which then agree. Establish `hTied : I.Ch.Tied B.embLL (fun j τ => ((eZ j τ : ℤ) : ℚ)) I.C.mu0 I.C.eta`.
+
+Establish `e : (fun j τ => ((eZ j τ : ℤ) : ℚ)) = (fun j τ => (B.hc τ).e j)` using `funext fun j => funext fun τ => heZ j τ`. Rewrite using `[e]`. Conclude with `h.ch_tied`. Establish `hP` using `GlobalTheory.NormOneUnit.prod_muAt I.Ch I.sel (I.tup a) (I.cst a) B.embLL eZ I.C.mu0 I.C.eta hX l.pr h.sel_ok h.g_mem (GlobalTheory.ColumnField.ramificationIdxIn_eq_one (I.rec7 l Z) B.fields _ hX hok) hTied ⟨i, hi⟩ z hzs hzi`. Use `hP.trans ?_` and prove the remaining obligations.
+
+Establish `hw0 : ∀ τ, B.fields.embC B.embLL τ z ≠ 0` using `fun τ => (map_ne_zero _).2 hz0`. Establish `h1 : ∏ τ, B.fields.embC B.embLL τ z = 1` using `(Finset.prod_congr rfl fun τ _ => hok.1 τ z).trans hprod1`. Simplify using `only [eZ]`. Establish `e1 : ∀ τ, B.fields.embC B.embLL τ z ^ (-((I.chain l u a).sDiv i τ + ((B.R.N i / 2 : ℕ) : ℤ))) = B.fields.embC B.embLL τ z ^ (-(I.chain l u a).sDiv i τ) * B.fields.embC B.embLL τ z ^ (-((B.R.N i / 2 : ℕ) : ℤ))` using `fun τ => by rw [neg_add, zpow_add₀ (hw0 τ)]`. Rewrite using `[Finset.prod_congr rfl fun τ _ => e1 τ, Finset.prod_mul_distrib, Finset.prod_zpow, h1, one_zpow, mul_one]`.
+-/
 theorem prod_muAt_det (I : TC B X) (h : I.Ok) (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) {i : ℕ} (hi : i < B.R.m)
     (p' : PtAt B.R I.sel (I.tup a) (I.cst a) u (i + 1)) (γ : UF B.fields.E (B.R.N (i + 1)))
     (hγ : gmap γ.1 p'.1.1.deco.1.N = p'.1.1.deco.1.N) :
@@ -226,6 +284,13 @@ theorem prod_muAt_det (I : TC B X) (h : I.Ok) (l : I.Laws) (Z : TC.Later B (I.co
     fun τ => by rw [neg_add, zpow_add₀ (hw0 τ)]
   rw [Finset.prod_congr rfl fun τ _ => e1 τ, Finset.prod_mul_distrib, Finset.prod_zpow, h1, one_zpow, mul_one]
 
+/- English proof (translation)
+Establish `hX` using `(base_fields_primes_ok B X).1`. Establish `hok` using `seamOf_ok B (I.cols l) Z.W Z.V Z.S Z.N Z.G`. Establish `hχ : TaylorLogMetric.IsChi (I.rec7 l Z) I.chi` using `GlobalTheory.Mem.ChiIdeal.isChi_chiId _ _ I.C.isChi`. Establish `hcc : TaylorLogMetric.IsCurveIdeal (I.rec7 l Z) ⊤` using `⟨top_ne_bot, by simp⟩`. Establish `hδ` using `((I.J.ok_iff B (I.cols l) Z.W Z.V Z.S Z.N Z.G).1 h.amb_ok).1`.
+
+Establish `hA : TaylorLogMetric.admitted (I.rec7 l Z) _ _ ((seamOf B (I.cols l) Z.W Z.V Z.S Z.N Z.G).lat p.1.1.deco.1.N) ((seamOf B (I.cols l) Z.W Z.V Z.S Z.N Z.G).lat p'.1.1.deco.1.N)`. Rewrite using `[seamOf_lat, seamOf_lat]`. Conclude with `admissible_assembled_evenRanks B (I.cols l) Z.W Z.V Z.S Z.N Z.G i (i + 1) p.1.1.deco p'.1.1.deco`. Establish `eA : I.A = ambOf (seamOf B (I.cols l) Z.W Z.V Z.S Z.N Z.G) (I.J.toRec B (I.cols l) Z.W Z.V Z.S Z.N Z.G) I.chi I.J.cD` using `AmbIn.amb_eq_ambOf B (I.cols l) Z.W Z.V Z.S Z.N Z.G I.J I.chi`. Unfold `TC.th thAt thOf`.
+
+Rewrite using `[eA]`. Use `⟨GlobalTheory.KerFinEntire.kerFin_entire _ _ _ _ _ _ _ _ hok hcc hδ hχ _ _ _ _ hA _ _ _, fun γ hγ k hk z => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.KerLaw.thC_left_stab _ _ _ _ _ _ _ _ hok hcc hδ hχ _ _ _ _ hA _ _ _ (modulus_pos (Pr := B.primes X) I.sel (I.tup a) (I.cst a) u (l.pr.T_prime _).pos) (GlobalTheory.BadNoConj.sall_noConj_ok (Pr := B.primes X) I.sel (I.tup a) hX l.pr h.sel_ok u (h.T_mem u) h.g_mem) (sa …` and prove the remaining obligations. Conclude with `congrArg B.embLL (xiAt_invariant_levC l.pr (h.idx_ok a) hi b b' p p' x w hw)`.
+-/
 theorem th_law (I : TC B X) (h : I.Ok) (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) {i : ℕ} (hi : i < B.R.m)
     (b : (I.stp u a i).β) (b' : (I.stp u a (i + 1)).β) (p : (I.stp u a i).D b) (p' : (I.stp u a (i + 1)).D b') :
     Differentiable ℂ (I.th u a i b b' p p') ∧ ∀ (γ : UF B.fields.E (B.R.N (i + 1))), gmap γ.1 p'.1.1.deco.1.N = p'.1.1.deco.1.N →
@@ -254,6 +319,23 @@ theorem th_law (I : TC B X) (h : I.Ok) (l : I.Laws) (Z : TC.Later B (I.cols l)) 
     (sall_away I h l Z u a) (fun x w hw => ?_) γ hγ k hk z
   exact congrArg B.embLL (xiAt_invariant_levC l.pr (h.idx_ok a) hi b b' p p' x w hw)
 
+/- English proof (translation)
+Establish `hX` using `(base_fields_primes_ok B X).1`. Take `⟨g, hg⟩` from `g`. Establish `hg' : (I.stp u a (i + 1)).act c'.1 g ((I.stp u a (i + 1)).rep c') = (I.stp u a (i + 1)).rep c'` using `hg`. Establish `h1 : g • ((I.stp u a (i + 1)).rep c').1.1 = ((I.stp u a (i + 1)).rep c').1.1` using `congrArg (fun q => q.1.1) hg'`. Establish `h2 : (fun v => g.1.1 v) '' ((I.stp u a (i + 1)).rep c').1.2 = ((I.stp u a (i + 1)).rep c').1.2` using `congrArg (fun q => q.1.2) hg'`.
+
+Establish `hγ : gmap g.1.1 ((I.stp u a (i + 1)).rep c').1.1.deco.1.N = ((I.stp u a (i + 1)).rep c').1.1.deco.1.N` using `congrArg (fun q => q.1.1.deco.1.N) hg'`. Establish `hXi` using `fun x => congrArg B.embLL (xiAt_stab (Pr := B.primes X) hX l.pr h.sel_ok ⟨h.T_mem u, h.g_mem⟩ (h.idx_ok a) (h.sharp a) hi c.1 c'.1 ((I.stp u a i).rep c) ((I.stp u a (i + 1)).rep c') g h1 h2 x)`. Simplify using `only [map_mul B.embLL] at hXi`. Rewrite `hXi` using `[prod_muAt_det I h l Z u a hi _ g.1 hγ]`. Take `⟨hd, hth⟩` from `th_law I h l Z u a hi c.1 c'.1 ((I.stp u a i).rep c) ((I.stp u a (i + 1)).rep c')`.
+
+Use `set γ : B.fields.Tau → Matrix (Fin (B.R.N (i + 1))) (Fin (B.R.N (i + 1))) ℂ := fun τ => (LinearMap.toMatrix' g.1.1.toLinearMap).map (B.fields.embC B.embLL τ) with hγdef`. Establish `hdet : ∀ τ, (γ τ).det = B.fields.embC B.embLL τ ((LinearEquiv.det g.1.1 : B.fields.Eˣ) : B.fields.E)` using `fun τ => by`. Rewrite using `[LinearEquiv.coe_det, ← LinearMap.det_toMatrix', RingHom.map_det]`. Both sides reduce to the same expression. Simplify using `only [← hdet] at hXi`.
+
+Establish `hne : ∀ τ, (γ τ).det ≠ 0` using `fun τ => by`. Rewrite using `[hdet]`. Conclude with `(map_ne_zero _).2 (Units.ne_zero _)`. Use `set M : ℂ := ∏ τ, (γ τ).det ^ (-(I.chain l u a).sDiv i τ) with hM`. Establish `hM0 : M ≠ 0` using `Finset.prod_ne_zero_iff.2 fun τ _ => zpow_ne_zero _ (hne τ)`.
+
+Use `set χ : ℂ := B.embLL (((I.stp u a (i + 1)).chr c'.1 g : B.fields.Kˣ) : B.fields.K) with hχ`. Establish `hk` using `hth g.1 hγ (χ / M) fun x => by`. Rewrite using `[div_mul_eq_mul_div, eq_div_iff hM0]`. Conclude with `hXi x`. Establish `hK : ∀ y : Fr B.fields.emb B.embLL (B.R.N (i + 1)), (I.chain l u a).Kmap i c c' f y = ((I.chIn u a).rho i c * (I.chIn u a).rho' i c') * ((∏ τ, (y.1 τ).det ^ (I.chain l u a).sDiv i τ)⁻¹ * GL3Theta.applyAt0 (I.rec7 l Z) (GL3Theta.polD (I.rec7 l Z) I.J.cD (GlobalTheory.GO.ChSrc.fnPo …` using `fun y => congrArg (fun t => _ * (_ * t)) ((GlobalTheory.GO.ChSrc.polFn_apply (X := B.fields) B.embLL _ y).trans (GlobalTheory.GO.eval_jetMap_jetC (I.rec7 l Z) _ _ _ _))`.
+
+Use function extensionality and compare the values at `y`. Take `⟨y', rfl⟩` from `(frEquiv B.fields.emb B.embLL ((I.stp u a (i + 1)).gam c'.1 g)).surjective y`. Establish `e1 : frMul B.fields.emb B.embLL ((I.stp u a (i + 1)).gam c'.1 g)⁻¹ (frEquiv B.fields.emb B.embLL ((I.stp u a (i + 1)).gam c'.1 g) y') = y'` using `(frEquiv B.fields.emb B.embLL ((I.stp u a (i + 1)).gam c'.1 g)).left_inv y'`. Establish `e2 : (frEquiv B.fields.emb B.embLL ((I.stp u a (i + 1)).gam c'.1 g) y').1 = fun τ => γ τ * y'.1 τ` using `rfl`. Use `(trFr_apply _ _ _ _ _ _).trans ?_` and prove the remaining obligations.
+
+Establish `e3 : (∏ τ, (γ τ * y'.1 τ).det ^ (I.chain l u a).sDiv i τ)⁻¹ = M * (∏ τ, (y'.1 τ).det ^ (I.chain l u a).sDiv i τ)⁻¹`. Simplify using `only [hM, Matrix.det_mul, mul_zpow, Finset.prod_mul_distrib, zpow_neg, Finset.prod_inv_distrib, mul_inv]`. Establish `e4` using `GlobalTheory.KerJ.applyAt0_polD_eigen (I.rec7 l Z) _ _ I.J.cD (GlobalTheory.GO.ChSrc.fnPol B.fields B.embLL _ ((I.chain l u a).sharp i f)) y'.1 γ _ (χ / M) hne hd hk`. Rewrite using `[e1, hK, hK, e2]`. Use `Eq.trans ?_ (congrArg₂ (fun s t => _ * (s * t)) e3 e4).symm` and prove the remaining obligations.
+
+Establish `alg : ∀ r d t : ℂ, χ * (r * (d * t)) = r * (M * d * (χ / M * t))` using `fun r d t => by field_simp`. Conclude with `alg _ _ _`.
+-/
 theorem Kmap_stab_tuple (I : TC B X) (h : I.Ok) (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) {i : ℕ}
     (hi : i < B.R.m) (c : (I.stp u a i).Cl) (c' : (I.stp u a (i + 1)).Cl) (g : (I.stp u a (i + 1)).Stab c')
     (f : Fr B.fields.emb B.embLL (B.R.N i) → ℂ) :
@@ -314,6 +396,9 @@ end GlobalTheory.KerStab
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Col Formalism.L2.DIV GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Col2.TC
 attribute [local instance] GlobalTheory.Mem.Col2.starE
 
+/- English proof (translation)
+Introduce `I h _ _ l Z u _ hi c c' g f _` and use `GlobalTheory.KerStab.Kmap_stab_tuple I h l Z u I.mu0 hi c c' g f`.
+-/
 theorem GlobalTheory.KerStab.Kmap_stab : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → I.IsTw → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (i : ℕ), i < B.R.m →
     ∀ (c : (I.stp u I.mu0 i).Cl) (c' : (I.stp u I.mu0 (i + 1)).Cl) (g : (I.stp u I.mu0 (i + 1)).Stab c')
       (f : Fr B.fields.emb B.embLL (B.R.N i) → ℂ),

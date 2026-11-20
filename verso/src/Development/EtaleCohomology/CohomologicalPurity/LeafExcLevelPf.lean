@@ -20,6 +20,11 @@ def LeafMLev : Prop := ∀ (P' P : Arrow Spc) (φ : P' ⟶ P) (n : SimplexCatego
   ∃ (a : disc.obj ((MM φ).obj n) ≅ MM ((lev n).map φ)) (b : disc.obj ((dbl P).obj n) ≅ dbl ((lev n).obj P)),
     disc.map ((gM φ).app n) ≫ b.hom = a.hom ≫ gM ((lev n).map φ)
 
+/- English proof (translation)
+Introduce `a3 q P' P φ hl`. Apply `h1 q P' P φ` to reduce the goal to its premises. Introduce `i`. Apply `a3` to reduce the goal to its premises. Introduce `n`.
+
+Take `⟨a, b, w⟩` from `h3 P' P φ n`. Establish `e : disc.map ((gM φ).app n) = a.hom ≫ gM ((lev n).map φ) ≫ b.inv`. Rewrite using `[← Category.assoc, ← w, Category.assoc, Iso.hom_inv_id, Category.comp_id]`. Rewrite using `[e]`. Conclude with `eqv_comp (eqv_iso _ _) (eqv_comp (h2 q _ _ _ (hl n) i) (eqv_iso _ _))`.
+-/
 theorem LeafExcLevel_of (h1 : LeafExcOfEqv) (h2 : LeafEqvOfExc) (h3 : LeafMLev) : LeafExcLevel := by
   intro a3 q P' P φ hl
   apply h1 q P' P φ

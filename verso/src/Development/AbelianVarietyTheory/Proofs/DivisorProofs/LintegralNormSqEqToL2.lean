@@ -31,9 +31,15 @@ def vecL : (O → Fin m → Fin n → ℂ) →L[ℝ] ((Fin m × Fin n) × O → 
       (ContinuousLinearMap.proj (φ := fun _ : O => Fin m → Fin n → ℂ) p.2))
 
 omit [Fintype O] [DecidableEq O] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem unv_vecL (x : O → Fin m → Fin n → ℂ) : unvecL (vecL x) = x := rfl
 
 omit [Fintype O] [DecidableEq O] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem vecL_unv (x : (Fin m × Fin n) × O → ℂ) : vecL (unvecL x) = x := rfl
 
 def cpt (v : (Fin m × Fin n) × O → ℂ) (τ : O) : Matrix (Fin m) (Fin n) ℂ := Matrix.of fun i j => v ((i, j), τ)
@@ -42,11 +48,17 @@ def blk (b : O → Matrix (Fin m) (Fin m) ℂ) (a : O → Matrix (Fin n) (Fin n)
     Matrix ((Fin m × Fin n) × O) ((Fin m × Fin n) × O) ℂ :=
   blockDiagonal fun τ => b τ ⊗ₖ (a τ)ᵀ
 
+/- English proof (translation)
+Simplify using `only [mulVec, dotProduct, Fintype.sum_prod_type, blockDiagonal_apply, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+-/
 theorem blockDiagonal_mulVec {κ : Type} [Fintype κ] (M : O → Matrix κ κ ℂ) (v : κ × O → ℂ) (i : κ) (τ : O) :
     (blockDiagonal M *ᵥ v) (i, τ) = (M τ *ᵥ fun j => v (j, τ)) i := by
   simp only [mulVec, dotProduct, Fintype.sum_prod_type, blockDiagonal_apply, ite_mul, zero_mul, Finset.sum_ite_eq,
     Finset.mem_univ, if_true]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [cpt, blk, of_apply, blockDiagonal_mulVec]`. Simplify using `only [mulVec, dotProduct, Fintype.sum_prod_type, kroneckerMap_apply, transpose_apply, mul_apply, of_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem cpt_blk (b : O → Matrix (Fin m) (Fin m) ℂ) (a : O → Matrix (Fin n) (Fin n) ℂ)
     (v : (Fin m × Fin n) × O → ℂ) (τ : O) : cpt (blk b a *ᵥ v) τ = b τ * cpt v τ * a τ := by
   ext i j
@@ -56,22 +68,34 @@ theorem cpt_blk (b : O → Matrix (Fin m) (Fin m) ℂ) (a : O → Matrix (Fin n)
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Simplify using `only [blk, ← blockDiagonal_mul, ← mul_kronecker_mul, transpose_mul]`.
+-/
 theorem blk_mul (b b' : O → Matrix (Fin m) (Fin m) ℂ) (a a' : O → Matrix (Fin n) (Fin n) ℂ) :
     blk b a * blk b' a' = blk (fun τ => b τ * b' τ) fun τ => a' τ * a τ := by
   simp only [blk, ← blockDiagonal_mul, ← mul_kronecker_mul, transpose_mul]
 
 omit [Fintype O] in
+/- English proof (translation)
+Simplify using `only [blk, transpose_one, one_kronecker_one]`. Conclude with `blockDiagonal_one`.
+-/
 theorem blk_one : blk (O := O) (m := m) (n := n) (fun _ => 1) (fun _ => 1) = 1 := by
   simp only [blk, transpose_one, one_kronecker_one]
   exact blockDiagonal_one
 
 omit [Fintype O] in
+/- English proof (translation)
+Simplify using `only [blk, blockDiagonal_conjTranspose, conjTranspose_kronecker]`. Both sides reduce to the same expression.
+-/
 theorem blk_conjTranspose (b : O → Matrix (Fin m) (Fin m) ℂ) (a : O → Matrix (Fin n) (Fin n) ℂ) :
     (blk b a)ᴴ = blk (fun τ => (b τ)ᴴ) fun τ => (a τ)ᴴ := by
   simp only [blk, blockDiagonal_conjTranspose, conjTranspose_kronecker]
   rfl
 
 omit [DecidableEq O] in
+/- English proof (translation)
+Simplify using `only [dotProduct, Fintype.sum_prod_type, trace, diag_apply, mul_apply, conjTranspose_apply, cpt, of_apply, Pi.star_apply]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [Finset.sum_comm (s := (Finset.univ : Finset (Fin m))) (t := (Finset.univ : Finset O))]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem star_dotProduct_eq (x y : (Fin m × Fin n) × O → ℂ) :
     star y ⬝ᵥ x = ∑ τ, ((cpt y τ)ᴴ * cpt x τ).trace := by
   simp only [dotProduct, Fintype.sum_prod_type, trace, diag_apply, mul_apply, conjTranspose_apply, cpt, of_apply,
@@ -80,6 +104,9 @@ theorem star_dotProduct_eq (x y : (Fin m × Fin n) × O → ℂ) :
   simp only [Finset.sum_comm (s := (Finset.univ : Finset (Fin m))) (t := (Finset.univ : Finset O))]
   rw [Finset.sum_comm]
 
+/- English proof (translation)
+Unfold `dP GlobalTheory.WeilParts.detPlus blk`. Rewrite using `[← det_blockDiagonal, ← blockDiagonal_one, ← blockDiagonal_add, ← blockDiagonal_sub, ← blockDiagonal_mul, ← blockDiagonal_smul, ← blockDiagonal_smul, ← blockDiagonal_add]`. Both sides reduce to the same expression.
+-/
 theorem detPlus_blockDiagonal (sT b : O → Matrix (Fin m) (Fin m) ℂ) (sS a : O → Matrix (Fin n) (Fin n) ℂ) :
     dP (blk sT sS) (blk b a) = ∏ τ, GlobalTheory.WeilParts.detPlus (sS τ) (sT τ) (a τ) (b τ) := by
   unfold dP GlobalTheory.WeilParts.detPlus blk
@@ -87,6 +114,13 @@ theorem detPlus_blockDiagonal (sT b : O → Matrix (Fin m) (Fin m) ℂ) (sS a : 
     ← blockDiagonal_smul, ← blockDiagonal_smul, ← blockDiagonal_add]
   rfl
 
+/- English proof (translation)
+Establish `hk : ∀ τ, (b τ ⊗ₖ (a τ)ᵀ).PosDef` using `fun τ => (hb τ).kronecker (ha τ).transpose`. Use `PosDef.of_dotProduct_mulVec_pos ?_ fun x hx => ?_` and prove the remaining obligations. Unfold `IsHermitian blk`. Rewrite using `[blockDiagonal_conjTranspose]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `τ`. Conclude with `(hk τ).1`. Establish `e : star x ⬝ᵥ blk b a *ᵥ x = ∑ τ, star (fun j => x (j, τ)) ⬝ᵥ (b τ ⊗ₖ (a τ)ᵀ) *ᵥ fun j => x (j, τ)`. Rewrite using `[dotProduct, Fintype.sum_prod_type, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[blk, blockDiagonal_mulVec]`. Both sides reduce to the same expression. Rewrite using `[e]`. Take `⟨⟨i, τ⟩, h⟩` from `Function.ne_iff.1 hx`. Conclude with `Finset.sum_pos' (fun τ _ => (hk τ).posSemidef.dotProduct_mulVec_nonneg _) ⟨τ, Finset.mem_univ _, (hk τ).dotProduct_mulVec_pos (Function.ne_iff.2 ⟨i, h⟩)⟩`.
+-/
 theorem blk_posDef {b : O → Matrix (Fin m) (Fin m) ℂ} {a : O → Matrix (Fin n) (Fin n) ℂ} (hb : ∀ τ, (b τ).PosDef)
     (ha : ∀ τ, (a τ).PosDef) : (blk b a).PosDef := by
   have hk : ∀ τ, (b τ ⊗ₖ (a τ)ᵀ).PosDef := fun τ => (hb τ).kronecker (ha τ).transpose
@@ -107,6 +141,9 @@ theorem blk_posDef {b : O → Matrix (Fin m) (Fin m) ℂ} {a : O → Matrix (Fin
       ⟨τ, Finset.mem_univ _, (hk τ).dotProduct_mulVec_pos (Function.ne_iff.2 ⟨i, h⟩)⟩
 
 omit [Fintype O] in
+/- English proof (translation)
+Use `Continuous.matrix_blockDiagonal (continuous_pi fun τ => continuous_matrix fun p q => ?_)` and prove the remaining obligations. Conclude with `((hb τ).matrix_elem p.1 q.1).mul ((ha τ).matrix_elem q.2 p.2)`.
+-/
 theorem continuous_blk {Y : Type} [TopologicalSpace Y] {b : Y → O → Matrix (Fin m) (Fin m) ℂ}
     {a : Y → O → Matrix (Fin n) (Fin n) ℂ} (hb : ∀ τ, Continuous fun y => b y τ) (ha : ∀ τ, Continuous fun y => a y τ) :
     Continuous fun y => blk (b y) (a y) := by
@@ -139,18 +176,33 @@ instance : CompleteSpace (QB r q) := by
 def ev (r : Γ → X) (q : Γ → X → ℂ) (x : X) : QB r q →L[ℂ] ℂ :=
   (BoundedContinuousFunction.evalCLM ℂ x).comp (QB r q).subtypeL
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ev_apply (x : X) (f : QB r q) : ev r q x f = f.1 x := rfl
 
+/- English proof (translation)
+The claim follows from `f.1.norm_coe_le_norm x`.
+-/
 theorem norm_ev_le (x : X) (f : QB r q) : ‖f.1 x‖ ≤ ‖f‖ := f.1.norm_coe_le_norm x
 
+/- English proof (translation)
+The claim follows from `(BoundedContinuousFunction.norm_le hC).2 h`.
+-/
 theorem norm_QB_le (f : QB r q) {C : ℝ} (hC : 0 ≤ C) (h : ∀ x, ‖f.1 x‖ ≤ C) : ‖f‖ ≤ C :=
   (BoundedContinuousFunction.norm_le hC).2 h
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (BoundedContinuousFunction.ext h)`.
+-/
 theorem QB_ext {f g : QB r q} (h : ∀ x, f.1 x = g.1 x) : f = g := Subtype.ext (BoundedContinuousFunction.ext h)
 
 def mkB (f : X → ℂ) (hc : Continuous f) (hb : ∃ C, ∀ x, ‖f x‖ ≤ C) (hq : ∀ γ w, f (r γ + w) = q γ w * f w) : QB r q :=
   ⟨BoundedContinuousFunction.ofNormedAddCommGroup f hc hb.choose hb.choose_spec, hq⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_mkB (f : X → ℂ) (hc : Continuous f) (hb : ∃ C, ∀ x, ‖f x‖ ≤ C)
     (hq : ∀ γ w, f (r γ + w) = q γ w * f w) : ((mkB f hc hb hq).1 : X → ℂ) = f := rfl
 
@@ -170,6 +222,9 @@ def trB (b : X → ℂ) (w : X) (hb : Continuous b) (hn : ∀ x, ‖b x‖ = 1)
       show ‖b x * f.1 (x + w)‖ ≤ _
       rw [norm_mul, hn, one_mul]; exact norm_ev_le _ f
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_trB (b : X → ℂ) (w : X) (hb hn hq) (f : QB r q) :
     ((trB b w hb hn hq f).1 : X → ℂ) = fun x => b x * f.1 (x + w) := rfl
 
@@ -178,6 +233,9 @@ def toL2 [MeasurableSpace X] [BorelSpace X] [SecondCountableTopology X] (r : Γ 
   (BoundedContinuousFunction.toLp 2 ν ℂ).comp (QB r q).subtypeL
 
 omit [ContinuousAdd X] in
+/- English proof (translation)
+Establish `h` using `eLpNorm_congr_ae (p := 2) (BoundedContinuousFunction.coeFn_toLp 2 ν ℂ f.1)`. Establish `e : ‖toL2 r q ν f‖ₑ = eLpNorm f.1 2 ν` using `by rw [← h]; exact Lp.enorm_def _`. Rewrite using `[e, eLpNorm_eq_lintegral_rpow_enorm_toReal two_ne_zero ENNReal.ofNat_ne_top, ENNReal.toReal_ofNat, ← ENNReal.rpow_two, ← ENNReal.rpow_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem lintegral_norm_sq_eq_toL2 [MeasurableSpace X] [BorelSpace X] [SecondCountableTopology X] (ν : Measure X)
     [IsFiniteMeasure ν] (f : QB r q) : ∫⁻ w, ‖f.1 w‖ₑ ^ 2 ∂ν = ‖toL2 r q ν f‖ₑ ^ 2 := by
   have h := eLpNorm_congr_ae (p := 2) (BoundedContinuousFunction.coeFn_toLp 2 ν ℂ f.1)
@@ -203,25 +261,42 @@ def rhoB (hψ : IsStdChar D ψ (-1)) (w : WO S T) : BB ψ S T →L[ℂ] BB ψ S 
   trB (fun x => ψ (symplOH S T x w)) w (hψ.1.1.comp (continuous_symplOH continuous_id continuous_const))
     (fun _ => hψ.1.2.1 _) fun f hf => heisO_quasi w f hf
 
+/- English proof (translation)
+The claim follows from `coe_trB _ _ _ _ _ f`.
+-/
 theorem coe_rhoB (hψ : IsStdChar D ψ (-1)) (w : WO S T) (f : BB ψ S T) :
     ((rhoB hψ w f).1 : WO S T → ℂ) = heisO ψ S T w f.1 := coe_trB _ _ _ _ _ f
 
+/- English proof (translation)
+Use `le_antisymm (norm_QB_le _ (norm_nonneg _) fun x => ?_) (norm_QB_le _ (norm_nonneg _) fun x => ?_)` and prove the remaining obligations. Rewrite using `[coe_rhoB, GlobalTheory.HeisOrtho.norm_heisO hψ.1]`. Conclude with `norm_ev_le _ f`. Use `norm_ev_le (x - w) (rhoB hψ w f)` as an intermediate fact. Rewrite `this` using `[coe_rhoB, GlobalTheory.HeisOrtho.norm_heisO hψ.1, sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 theorem norm_rhoB (hψ : IsStdChar D ψ (-1)) (w : WO S T) (f : BB ψ S T) : ‖rhoB hψ w f‖ = ‖f‖ := by
   refine le_antisymm (norm_QB_le _ (norm_nonneg _) fun x => ?_) (norm_QB_le _ (norm_nonneg _) fun x => ?_)
   · rw [coe_rhoB, GlobalTheory.HeisOrtho.norm_heisO hψ.1]; exact norm_ev_le _ f
   · have := norm_ev_le (x - w) (rhoB hψ w f)
     rwa [coe_rhoB, GlobalTheory.HeisOrtho.norm_heisO hψ.1, sub_add_cancel] at this
 
+/- English proof (translation)
+The claim follows from `QB_ext fun x => congrFun (heisO_heisO w w' f.1) x`.
+-/
 theorem rhoB_rhoB (hψ : IsStdChar D ψ (-1)) (w w' : WO S T) (f : BB ψ S T) :
     rhoB hψ w (rhoB hψ w' f) = ψ (symplOH S T w w') • rhoB hψ (w + w') f :=
   QB_ext fun x => congrFun (heisO_heisO w w' f.1) x
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨γ, rfl⟩ w`. Use `congrArg norm (f.2 γ w)` as an intermediate fact. Rewrite `this` using `[norm_mul, hψ.1.2.1, one_mul]`. Conclude with `this`.
+-/
 theorem BB_norm_periodic (hψ : IsStdChar D ψ (-1)) (f : BB ψ S T) : ∀ γ ∈ ratL T S, ∀ w, ‖f.1 (γ + w)‖ = ‖f.1 w‖ := by
   rintro _ ⟨γ, rfl⟩ w
   have := congrArg norm (f.2 γ w)
   rw [norm_mul, hψ.1.2.1, one_mul] at this
   exact this
 
+/- English proof (translation)
+Take `⟨i1, -, -, -, -, K, hK, hc⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 hK`. Set `F : C(WO S T × K, ℂ)` to `⟨fun p => heisO ψ S T p.1 f.1 p.2, (hψ.1.1.comp (continuous_symplOH (continuous_subtype_val.comp continuous_snd) continuous_fst)).mul (f.1.continuous.comp ((continuous_subtype_val.comp continuous_snd).add continuous_fst))⟩`. Use `continuous_iff_continuousAt.2 fun w₀ => ?_` and prove the remaining obligations. Establish `h1` using `tendsto_iff_norm_sub_tendsto_zero.1 (F.curry.continuous.tendsto w₀)`.
+
+Use `tendsto_iff_norm_sub_tendsto_zero.2 (squeeze_zero (fun _ => norm_nonneg _) (fun w => ?_) h1)` and prove the remaining obligations. Use `norm_QB_le _ (norm_nonneg _) fun x => ?_` and prove the remaining obligations. Take `⟨γ, hγ, h⟩` from `hc x`. Rewrite using `[← BB_norm_periodic hψ _ γ hγ]`. Conclude with `(F.curry w - F.curry w₀).norm_coe_le_norm ⟨γ + x, h⟩`.
+-/
 theorem continuous_rhoB (hψ : IsStdChar D ψ (-1)) (f : BB ψ S T) : Continuous fun w => rhoB hψ w f := by
   obtain ⟨i1, -, -, -, -, K, hK, hc⟩ := GlobalTheory.AdelicMatrixLattice.lattice D T S
   haveI : CompactSpace K := isCompact_iff_compactSpace.1 hK
@@ -245,6 +320,11 @@ open Classical in
 def HM (S T : HSp D) : Matrix (Ix S T) (Ix S T) ℂ :=
   blk (fun τ => ((2 * (tauE D τ D.host.xi0).im : ℝ) : ℂ) • gramAt D T τ) fun τ => (gramAt D S τ)⁻¹
 
+/- English proof (translation)
+Rewrite using `[star_dotProduct_eq, GlobalTheory.VacUnique.omO_apply, Complex.im_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `e : ((cpt y τ)ᴴ * cpt (HM S T *ᵥ x) τ).trace = ((2 * (tauE D τ D.host.xi0).im : ℝ) : ℂ) * GlobalTheory.VacUnique.hAt S T τ (cpt x τ) (cpt y τ)`. Unfold `HM GlobalTheory.VacUnique.hAt`. Rewrite using `[cpt_blk, ← Matrix.mul_assoc, trace_mul_comm, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_smul, trace_smul, smul_eq_mul]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e, Complex.im_ofReal_mul]`. Use `show _ = -(2 * (tauE D τ D.host.xi0 * GlobalTheory.VacUnique.hAt S T τ (cpt x τ) (cpt y τ)).re)`. Rewrite using `[Complex.mul_re, GlobalTheory.RealSymplForm.realPlace_imaginaryGenerator_re_eq_zero]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem im_HM (x y : Ix S T → ℂ) : (star y ⬝ᵥ HM S T *ᵥ x).im = -GlobalTheory.VacUnique.omO S T (unvecL x) (unvecL y) := by
   classical
   rw [star_dotProduct_eq, GlobalTheory.VacUnique.omO_apply, Complex.im_sum, ← Finset.sum_neg_distrib]
@@ -260,21 +340,40 @@ theorem im_HM (x y : Ix S T → ℂ) : (star y ⬝ᵥ HM S T *ᵥ x).im = -Globa
   rw [Complex.mul_re, GlobalTheory.RealSymplForm.realPlace_imaginaryGenerator_re_eq_zero]
   ring
 
+/- English proof (translation)
+Unfold `iotaV`. Rewrite using `[map_add, AddMonoidHom.map_add]`.
+-/
 theorem iotaV_add (x y : Ix S T → ℂ) : iotaV σ S T (x + y) = iotaV σ S T x + iotaV σ S T y := by
   unfold iotaV
   rw [map_add, AddMonoidHom.map_add]
 
+/- English proof (translation)
+The claim follows from `h.real_iota T S _`.
+-/
 theorem real_iotaV (h : Chart θ σ) (x : Ix S T → ℂ) : (iotaV σ S T x).map (finPart D) = 0 := h.real_iota T S _
 
+/- English proof (translation)
+The claim follows from `(h.continuous_iota T S).comp (unvecL (O := D.what₂.Tau) (m := T.rank) (n := S.rank)).continuous`.
+-/
 theorem continuous_iotaV (h : Chart θ σ) : Continuous (iotaV σ S T) :=
   (h.continuous_iota T S).comp (unvecL (O := D.what₂.Tau) (m := T.rank) (n := S.rank)).continuous
 
 def rhoV (hψ : IsStdChar D ψ (-1)) (σ : (D.what₂.Tau → ℂ) →+ Formalism.L2.Theta.AE D) (S T : HSp D) (v : Ix S T → ℂ) :
     BB ψ S T →L[ℂ] BB ψ S T := rhoB hψ (iotaV σ S T v)
 
+/- English proof (translation)
+The claim follows from `coe_rhoB _ _ _`.
+-/
 theorem coe_rhoV (hψ : IsStdChar D ψ (-1)) (v : Ix S T → ℂ) (f : BB ψ S T) :
     ((rhoV hψ σ S T v f).1 : WO S T → ℂ) = heisO ψ S T (iotaV σ S T v) f.1 := coe_rhoB _ _ _
 
+/- English proof (translation)
+Use `⟨fun f => QB_ext fun x => ?_, fun u v f => ?_, fun u f => norm_rhoB hψ _ f, fun f => ?_⟩` and prove the remaining obligations. Establish `: iotaV σ S T 0 = 0` using `by unfold iotaV; rw [map_zero, AddMonoidHom.map_zero]`. Rewrite using `[coe_rhoV, this, heisO_zero]`. Establish `e : ψ (symplOH S T (iotaV σ S T u) (iotaV σ S T v)) = Complex.exp (Real.pi * Complex.I * ((star v ⬝ᵥ HM S T *ᵥ u).im : ℂ))`. Rewrite using `[GlobalTheory.OrientedChar.char_symplOH D θ ψ h.inf hψ S T _ _ (Or.inl (real_iotaV h u)), im_HM u v]`.
+
+Unfold `iotaV`. Rewrite using `[h.pi_iota, h.pi_iota]`. Use `push_cast`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `show rhoB hψ (iotaV σ S T u) (rhoB hψ (iotaV σ S T v) f) = _ • rhoB hψ (iotaV σ S T (u + v)) f`. Rewrite using `[rhoB_rhoB, iotaV_add, e]`. Conclude with `(continuous_rhoB hψ f).comp (continuous_iotaV h)`.
+-/
 theorem isHeis_rhoB (h : Chart θ σ) (hψ : IsStdChar D ψ (-1)) :
     IsHeis (fun x y => (star y ⬝ᵥ HM S T *ᵥ x).im) (rhoV hψ σ S T) := by
   refine ⟨fun f => QB_ext fun x => ?_, fun u v f => ?_, fun u f => norm_rhoB hψ _ f, fun f => ?_⟩
@@ -292,6 +391,11 @@ theorem isHeis_rhoB (h : Chart θ σ) (hψ : IsStdChar D ψ (-1)) :
     rw [rhoB_rhoB, iotaV_add, e]
   · exact (continuous_rhoB hψ f).comp (continuous_iotaV h)
 
+/- English proof (translation)
+Unfold `HM`. Rewrite using `[blk_conjTranspose]`. Apply the tactic sequence `congr 1 <;> funext τ`. Rewrite using `[conjTranspose_smul, GlobalTheory.SmoothForms.RealPts.gramAt_herm]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[conjTranspose_nonsing_inv, GlobalTheory.SmoothForms.RealPts.gramAt_herm]`.
+-/
 theorem HM_herm : (HM S T)ᴴ = HM S T := by
   classical
   unfold HM
@@ -301,11 +405,19 @@ theorem HM_herm : (HM S T)ᴴ = HM S T := by
     simp
   · rw [conjTranspose_nonsing_inv, GlobalTheory.SmoothForms.RealPts.gramAt_herm]
 
+/- English proof (translation)
+Use `xi_zero_im_pos D τ` as an intermediate fact. Conclude with `Complex.zero_lt_real.2 (by linarith)`.
+-/
 theorem two_im_pos (τ : D.what₂.Tau) : (0 : ℂ) < ((2 * (tauE D τ D.host.xi0).im : ℝ) : ℂ) := by
   have := xi_zero_im_pos D τ
   exact Complex.zero_lt_real.2 (by linarith)
 
 open Classical in
+/- English proof (translation)
+Establish `: HM S T * blk (fun τ => ((2 * (tauE D τ D.host.xi0).im : ℝ) : ℂ)⁻¹ • (gramAt D T τ)⁻¹) (gramAt D S) = 1`. Unfold `HM`. Rewrite using `[blk_mul, ← blk_one]`. Apply the tactic sequence `congr 1 <;> funext τ`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, mul_inv_cancel₀ (two_im_pos τ).ne', one_smul, mul_nonsing_inv _ (GlobalTheory.SmoothForms.RealPts.gramAt_unit T τ)]`.
+
+Rewrite using `[mul_nonsing_inv _ (GlobalTheory.SmoothForms.RealPts.gramAt_unit S τ)]`. Conclude with `(isUnit_det_of_right_inverse this).ne_zero`.
+-/
 theorem HM_det : (HM S T).det ≠ 0 := by
   have : HM S T * blk (fun τ => ((2 * (tauE D τ D.host.xi0).im : ℝ) : ℂ)⁻¹ • (gramAt D T τ)⁻¹) (gramAt D S) = 1 := by
     unfold HM
@@ -328,14 +440,25 @@ def mM (θ : InfFam D) (S T : HSp D) : GA D S × GA D T →* Matrix (Ix S T) (Ix
     simp only [Prod.snd_mul, Prod.fst_mul, _root_.mul_inv_rev, GlobalTheory.WeilVacMove.mt_mul, GlobalTheory.WeilVacMove.compAt_mul]
 
 open Classical in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mM_apply (g : GA D S) (h : GA D T) : mM θ S T (g, h) =
     blk (fun τ => compAt θ τ (Formalism.L2.Theta.mt T h)) fun τ => compAt θ τ (Formalism.L2.Theta.mt S g⁻¹) := rfl
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ V g τ`.
+-/
 theorem compAt_unitary (hθ : IsInfFam θ) (V : HSp D) (g : GA D V) (τ : D.what₂.Tau) :
     (compAt θ τ (Formalism.L2.Theta.mt V g))ᴴ * gramAt D V τ * compAt θ τ (Formalism.L2.Theta.mt V g) = gramAt D V τ :=
   GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ V g τ
 
 open Classical in
+/- English proof (translation)
+Take `⟨g, h⟩` from `p`. Unfold `HM`. Rewrite using `[mM_apply, blk_conjTranspose, blk_mul, blk_mul]`. Apply the tactic sequence `congr 1 <;> funext τ`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, compAt_unitary hθ]`.
+
+Establish `h1` using `compAt_unitary hθ S g τ`. Establish `h2` using `GlobalTheory.WeilVacMove.compAt_mt_mul_inv θ τ S g`. Use `conv_rhs => rw [← h1, Matrix.mul_inv_rev, Matrix.mul_inv_rev, ← conjTranspose_nonsing_inv, inv_eq_right_inv h2]`.
+-/
 theorem mM_unitary (hθ : IsInfFam θ) (p : GA D S × GA D T) : (mM θ S T p)ᴴ * HM S T * mM θ S T p = HM S T := by
   obtain ⟨g, h⟩ := p
   unfold HM
@@ -346,6 +469,11 @@ theorem mM_unitary (hθ : IsInfFam θ) (p : GA D S × GA D T) : (mM θ S T p)ᴴ
     have h2 := GlobalTheory.WeilVacMove.compAt_mt_mul_inv θ τ S g
     conv_rhs => rw [← h1, Matrix.mul_inv_rev, Matrix.mul_inv_rev, ← conjTranspose_nonsing_inv, inv_eq_right_inv h2]
 
+/- English proof (translation)
+Establish `h : Continuous fun g : GA D V => matHom V g` using `continuous_subtype_val`. Use `⟨Units.continuous_val.comp h, ?_⟩` and prove the remaining obligations. Establish `e : (fun g : GA D V => Formalism.L2.Theta.mt V g⁻¹) = fun g => ((matHom V g)⁻¹).1`. Use function extensionality and compare the values at `g`. Unfold `Formalism.L2.Theta.mt`.
+
+Rewrite using `[map_inv]`. Rewrite using `[e]`. Conclude with `Units.continuous_coe_inv.comp h`.
+-/
 theorem continuous_mt (V : HSp D) : Continuous (Formalism.L2.Theta.mt V) ∧ Continuous fun g : GA D V => Formalism.L2.Theta.mt V g⁻¹ := by
   have h : Continuous fun g : GA D V => matHom V g := continuous_subtype_val
   refine ⟨Units.continuous_val.comp h, ?_⟩
@@ -356,10 +484,16 @@ theorem continuous_mt (V : HSp D) : Continuous (Formalism.L2.Theta.mt V) ∧ Con
   rw [e]
   exact Units.continuous_coe_inv.comp h
 
+/- English proof (translation)
+The claim follows from `continuous_id.matrix_map (continuous_comp hθ τ)`.
+-/
 theorem continuous_compAt (hθ : IsInfFam θ) (τ : D.what₂.Tau) (m n : ℕ) : Continuous fun x : Mx D m n => compAt θ τ x :=
   continuous_id.matrix_map (continuous_comp hθ τ)
 
 open Classical in
+/- English proof (translation)
+Establish `h1 : Continuous fun p : GA D S × GA D T => Formalism.L2.Theta.mt T p.2` using `(continuous_mt T).1.comp continuous_snd`. Establish `h2 : Continuous fun p : GA D S × GA D T => Formalism.L2.Theta.mt S p.1⁻¹` using `(continuous_mt S).2.comp continuous_fst`. Conclude with `continuous_blk (b := fun (p : GA D S × GA D T) τ => compAt θ τ (Formalism.L2.Theta.mt T p.2)) (a := fun (p : GA D S × GA D T) τ => compAt θ τ (Formalism.L2.Theta.mt S p.1⁻¹)) (fun τ => (continuous_compAt hθ τ _ _).comp h1) fun τ => (continuous_compAt hθ τ _ _).comp h2`.
+-/
 theorem continuous_mM (hθ : IsInfFam θ) : Continuous (mM θ S T) := by
   have h1 : Continuous fun p : GA D S × GA D T => Formalism.L2.Theta.mt T p.2 := (continuous_mt T).1.comp continuous_snd
   have h2 : Continuous fun p : GA D S × GA D T => Formalism.L2.Theta.mt S p.1⁻¹ := (continuous_mt S).2.comp continuous_fst
@@ -367,6 +501,9 @@ theorem continuous_mM (hθ : IsInfFam θ) : Continuous (mM θ S T) := by
     (a := fun (p : GA D S × GA D T) τ => compAt θ τ (Formalism.L2.Theta.mt S p.1⁻¹))
     (fun τ => (continuous_compAt hθ τ _ _).comp h1) fun τ => (continuous_compAt hθ τ _ _).comp h2
 
+/- English proof (translation)
+Establish `h1 : (Formalism.L2.Theta.mt V g).map (infPart D) = 1` using `congrArg Units.val (MonoidHom.mem_ker.1 hg)`. Establish `h2 : compAt θ τ (Formalism.L2.Theta.mt V g) = ((Formalism.L2.Theta.mt V g).map (infPart D)).map (θ τ)` using `rfl`. Rewrite using `[h2, h1, Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem compAt_fin {V : HSp D} {g : GA D V} (hg : g ∈ GfC V) (τ : D.what₂.Tau) :
     compAt θ τ (Formalism.L2.Theta.mt V g) = 1 := by
   have h1 : (Formalism.L2.Theta.mt V g).map (infPart D) = 1 := congrArg Units.val (MonoidHom.mem_ker.1 hg)
@@ -374,12 +511,20 @@ theorem compAt_fin {V : HSp D} {g : GA D V} (hg : g ∈ GfC V) (τ : D.what₂.T
   rw [h2, h1, Matrix.map_one _ (map_zero _) (map_one _)]
 
 open Classical in
+/- English proof (translation)
+Rewrite using `[mM_apply]`. Simplify using `only [compAt_fin hh, compAt_fin (inv_mem hg)]`. Conclude with `blk_one`.
+-/
 theorem mM_fin {g : GA D S} {h : GA D T} (hg : g ∈ GfC S) (hh : h ∈ GfC T) : mM θ S T (g, h) = 1 := by
   rw [mM_apply]
   simp only [compAt_fin hh, compAt_fin (inv_mem hg)]
   exact blk_one
 
 open Classical in
+/- English proof (translation)
+Use `hc.real_ext (V := T) (W := S) ?_ (real_iotaV hc _) ?_` and prove the remaining obligations. Use `show (actO S T g h (iotaV σ S T v)).map (finPart D) = 0`. Unfold `actO`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, real_iotaV hc, Matrix.mul_zero, Matrix.zero_mul]`. Use function extensionality and compare the values at `τ`.
+
+Establish `e : ∀ v, compAt θ τ (iotaV σ S T v) = cpt v τ` using `fun v => congrFun (hc.pi_iota T S (unvecL v)) τ`. Use `show compAt θ τ (actO S T g h (iotaV σ S T v)) = compAt θ τ (iotaV σ S T (mM θ S T (g, h) *ᵥ v))`. Rewrite using `[GlobalTheory.WeilVacMove.compAt_actO, e, e, mM_apply, cpt_blk]`.
+-/
 theorem actO_iotaV (hc : Chart θ σ) (g : GA D S) (h : GA D T) (v : Ix S T → ℂ) :
     actO S T g h (iotaV σ S T v) = iotaV σ S T (mM θ S T (g, h) *ᵥ v) := by
   refine hc.real_ext (V := T) (W := S) ?_ (real_iotaV hc _) ?_
@@ -391,6 +536,13 @@ theorem actO_iotaV (hc : Chart θ σ) (g : GA D S) (h : GA D T) (v : Ix S T → 
     show compAt θ τ (actO S T g h (iotaV σ S T v)) = compAt θ τ (iotaV σ S T (mM θ S T (g, h) *ᵥ v))
     rw [GlobalTheory.WeilVacMove.compAt_actO, e, e, mM_apply, cpt_blk]
 
+/- English proof (translation)
+Establish `h1 : (Formalism.L2.Theta.mt T h).map (finPart D) = 1` using `congrArg Units.val (MonoidHom.mem_ker.1 hh)`. Establish `h2 : (Formalism.L2.Theta.mt S g⁻¹).map (finPart D) = 1` using `congrArg Units.val (MonoidHom.mem_ker.1 (inv_mem hg))`. Establish `h3 : (actO S T g h u).map (finPart D) = u.map (finPart D)`. Unfold `actO`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, h1, h2, Matrix.one_mul, Matrix.mul_one]`.
+
+Establish `h4 : (actO S T g h u).map (infPart D) = u.map (infPart D)`. Unfold `actO`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hu, Matrix.mul_zero, Matrix.zero_mul]`. Use extensionality with `i j`. Rewrite using `[← sub_eq_zero]`.
+
+Use `hc.ext _ ?_ fun τ => ?_` and prove the remaining obligations. Establish `: finPart D (actO S T g h u i j) = finPart D (u i j)` using `congrFun (congrFun h3 i) j`. Rewrite using `[RingHom.map_sub, this, sub_self]`. Establish `: infPart D (actO S T g h u i j) = infPart D (u i j)` using `congrFun (congrFun h4 i) j`. Rewrite using `[RingHom.map_sub, this, sub_self, RingHom.map_zero]`.
+-/
 theorem actO_fin (hc : Chart θ σ) {g : GA D S} {h : GA D T} (hg : g ∈ GinfC S) (hh : h ∈ GinfC T) {u : WO S T}
     (hu : u.map (infPart D) = 0) : actO S T g h u = u := by
   have h1 : (Formalism.L2.Theta.mt T h).map (finPart D) = 1 := congrArg Units.val (MonoidHom.mem_ker.1 hh)
@@ -410,6 +562,13 @@ theorem actO_fin (hc : Chart θ σ) {g : GA D S} {h : GA D T} (hg : g ∈ GinfC 
     rw [RingHom.map_sub, this, sub_self, RingHom.map_zero]
 
 open Classical in
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[blk_mul]`. Simplify using `only [fun τ => (hS τ).1, fun τ => (hT τ).1]`. Conclude with `blk_one`. Unfold `HM`.
+
+Rewrite using `[blk_mul]`. Use `blk_posDef (fun τ => ?_) fun τ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_mul]`. Conclude with `(hT τ).2.2.smul (two_im_pos τ)`. Rewrite using `[← GlobalTheory.RealSymplForm.cartan_inv_mul (hS τ)]`.
+
+Conclude with `(hS τ).2.2.inv`.
+-/
 theorem HM_cartan {sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ}
     {sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ} (hS : ∀ τ, IsCartanInv (gramAt D S τ) (sS τ))
     (hT : ∀ τ, IsCartanInv (gramAt D T τ) (sT τ)) :

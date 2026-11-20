@@ -21,6 +21,9 @@ variable {D : D7}
 local notation "cO" => IsCMField.ringOfIntegersComplexConj D.host.E
 end GlobalTheory.TypePlacesCover
 open GlobalTheory.TypePlacesCover in
+/- English proof (translation)
+Introduce `_` and use `StepW.of_all fun _ _ _ _ _ _ _ _ _ x _ => gPlaces (Dof x)`.
+-/
 theorem GlobalTheory.TypePlacesCover.gPlaces_all_alt : ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, AllSt fun _ _ _ _ _ _ x => _root_.GlobalTheory.HeightCounting.Up.SameGaloisLevel hL x → GPlaces (Dof x) :=
   fun _ => StepW.of_all fun _ _ _ _ _ _ _ _ _ x _ => gPlaces (Dof x)
 end

@@ -8,6 +8,11 @@ namespace GlobalTheory.NormSheafDescent
 
 open MvPolynomial in
 
+/- English proof (translation)
+Rewrite using `[Ideal.eq_top_iff_one]`. Apply `Ideal.subset_span` to reduce the goal to its premises. Use `⟨1, fun _ => 1, fun _ => Submodule.mem_top, Finsupp.single 0 (Module.finrank K L), ?_⟩` and prove the remaining obligations. Establish `hform : GlobalTheory.NormSheaf.normForm K L (fun _ : Fin 1 => algebraMap B L 1) = X 0 ^ Module.finrank K L`. Unfold `GlobalTheory.NormSheaf.normForm`.
+
+Simplify using `[Fin.sum_univ_one, map_one, Matrix.det_smul]`. Rewrite using `[hform, coeff_X_pow]`. Simplify using the standard rewrite rules.
+-/
 theorem normIdeal_top (A K L B : Type) [CommRing A] [Field K] [Field L] [Algebra A K] [Algebra K L]
     [FiniteDimensional K L] [CommRing B] [Algebra B L] :
     GlobalTheory.NormSheaf.normIdeal A K L B (⊤ : Ideal B) = ⊤ := by
@@ -21,6 +26,11 @@ theorem normIdeal_top (A K L B : Type) [CommRing A] [Field K] [Field L] [Algebra
   rw [hform, coeff_X_pow]
   simp
 
+/- English proof (translation)
+Establish `hV : IsAffineOpen V.1` using `V.2`. Establish `hempty : X.zeroLocus (U` using `V.1) (I.ideal V : Set Γ(X, V.1)) ∩ V.1 = ∅ := by`. Use extensionality with `x`. Simplify using `only [Set.mem_inter_iff, Set.mem_empty_iff_false, iff_false, not_and]`. Introduce `hx hxV`.
+
+Conclude with `h x ((Scheme.IdealSheafData.mem_support_iff_of_mem hxV).2 hx) hxV`. Rewrite `hempty` using `[← hV.fromSpec_image_zeroLocus]`. Establish `h0 : PrimeSpectrum.zeroLocus (I.ideal V : Set Γ(X, V.1)) = ∅` using `Set.image_eq_empty.mp hempty`. Rewrite `h0` using `[PrimeSpectrum.zeroLocus_empty_iff_eq_top]`. Conclude with `h0`.
+-/
 theorem ideal_eq_top_of_forall_not_mem {X : Scheme.{0}} (I : X.IdealSheafData) (V : X.affineOpens)
     (h : ∀ x ∈ I.support, x ∉ V.1) : I.ideal V = ⊤ := by
   have hV : IsAffineOpen V.1 := V.2
@@ -34,6 +44,13 @@ theorem ideal_eq_top_of_forall_not_mem {X : Scheme.{0}} (I : X.IdealSheafData) (
   rw [PrimeSpectrum.zeroLocus_empty_iff_eq_top] at h0
   exact h0
 
+/- English proof (translation)
+Introduce `Y Z π _ _ hK hfd I U hU`. Unfold `famIdeal`. Use `split_ifs with h`. Establish `hV : I.ideal ⟨π ⁻¹ᵁ U.1, U.2.preimage π⟩ = ⊤` using `ideal_eq_top_of_forall_not_mem I _ (fun y hy hyV => hU y hy hyV)`. Simplify using `only [hV]`.
+
+Use `letI := fieldK π hK`. Use `letI := algKL π`. Use `letI := algAK π U.1 h`. Use `letI := algBL π U.1 h`. Conclude with `normIdeal_top _ _ _ _`.
+
+Both sides reduce to the same expression.
+-/
 theorem famIdeal_eq_top_of_disjoint : ∀ (Y Z : Scheme.{0}) (π : Y ⟶ Z) [IsFinite π] [IsIntegral Y]
     (hK : IsField (Z.presheaf.stalk (GlobalTheory.NormSheafDescent.genPt π)))
     (hfd : letI := GlobalTheory.NormSheafDescent.fieldK π hK; letI := GlobalTheory.NormSheafDescent.algKL π

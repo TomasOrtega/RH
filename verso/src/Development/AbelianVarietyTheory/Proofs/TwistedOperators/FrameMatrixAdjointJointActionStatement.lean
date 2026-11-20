@@ -11,5 +11,8 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.AdjAct.frMapAdj_actO | exact GlobalTheory.AdjAct.frMapAdj_actO | (intros; apply GlobalTheory.AdjAct.frMapAdj_actO <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.frameMatrixAdjoint_jointAction : ∀ {D : D7} (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)) (g : GA D T) (x : WO S T), frMapAdj S T βS βT (actO S T 1 g x) = HMul.hMul (frMapAdj S T βS βT x) ((βT⁻¹ * Formalism.IndefR.Lev.finE T g * βT)⁻¹ : GL (Fin T.rank) (EAf D)).1 := by
   first | exact @GlobalTheory.AdjAct.frMapAdj_actO | exact GlobalTheory.AdjAct.frMapAdj_actO | (intros; apply GlobalTheory.AdjAct.frMapAdj_actO <;> assumption)

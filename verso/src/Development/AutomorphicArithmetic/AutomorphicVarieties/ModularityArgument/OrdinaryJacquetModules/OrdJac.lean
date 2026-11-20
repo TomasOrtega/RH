@@ -10,6 +10,47 @@ open UpperTheory.V.Z UpperTheory.V.Z.Ord
 
 open private UpperTheory.V.Hi.OrdB.inv_inj UpperTheory.V.Hi.OrdB.exists_form UpperTheory.V.Hi.OrdB.num UpperTheory.V.Hi.OrdB.tc_single from Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.OrdinaryHeckeCharacters.ExistsNil
 
+/- English proof (translation)
+Introduce `H k _ _ _ _ n V _ _ π hπ hirr c φ hφ0 v hv hv0 a ha`. Take `⟨hker, hsm, hI, -, -, -, -, hidx, hz, hT⟩` from `glBridge k n V π`. Establish `hφ : ∀ t : (glIwa k n).T, (t : GL (Fin n) k) ∈ (glIwa k n).Tc c → φ t = 1` using `fun t ht => by`. Take `⟨y, hy, hy'⟩` from `hT t`. Establish `e : (t : GL (Fin n) k) ∈ φ.ker.map (glIwa k n).T.subtype`.
+
+Rewrite using `[hy]`. Use `list_prod_mem fun x hx => ?_` and prove the remaining obligations. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 hx`. Conclude with `⟨eT k n i (y i), hφ0 i _ (hy' c ht i), rfl⟩`. Take `⟨s, hs, e⟩` from `e`.
+
+Conclude with `(Subtype.ext e : s = t) ▸ hs`. Use `haveI : FiniteDimensional ℂ (fixd π ((glIwa k n).I1 c)) := by`. Establish `hfix : fixd π ((glIwa k n).I1 c) = fixed π ((glIwa k n).I1 c)`. Use extensionality with `w`. Conclude with `⟨fun h u => by simpa using h u u.2, fun h u hu => by simpa using h ⟨u, hu⟩⟩`.
+
+Rewrite using `[hfix]`. Conclude with `((H.loc.bz k).1 _ V π hπ hirr).2 _ (hI c).1 (hI c).2`. Set `p : V →ₗ[ℂ] Jacquet π (unipB k (Fin n))` to `Submodule.mkQ _`. Establish `hp : ∀ t w, jacB π t (p w) = (((deltaHalf k (fun _ : Fin n => Unit) (leviTorus k (Fin n) t))⁻¹ : ℂˣ) : ℂ) • p (π (diagT k (Fin n) t) w)` using `fun t w => UnramFixed.jacB_apply π t _`. Establish `hlist : ∀ s : List ℕ, (∀ j ∈ s, j < n) → (s.map (al k n)).prod ∈ (glIwa k n).P ∧ ∃ b : ℂ, b ≠ 0 ∧ (glIwa k n).uOp π (s.map (al k n)).prod v = b • v`.
+
+Introduce `s`. Proceed by induction on `s with`. Consider the case `nil`. Conclude with `fun _ => ⟨one_mem _, 1, one_ne_zero, by`. Simplify using `using (uOpMul _ (glIwa k n) ℂ V π 1 1 (one_mem _) (one_mem _) v hv.1).2.2.1⟩`.
+
+Consider the case `cons j s ih`. Introduce `hs`. Take `⟨hP, b, hb, h2⟩` from `ih fun i hi => hs i (List.mem_cons_of_mem _ hi)`. Rewrite using `[List.map_cons, List.prod_cons]`. Use `⟨mul_mem (al_mem k n j) hP, ?_⟩` and prove the remaining obligations.
+
+Break down `j with _ | j` into its components or cases. Establish `e : al k n 0 = 1`. Rewrite using `[al, upow, ← (diagT k (Fin n)).map_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e, one_mul]`. Conclude with `⟨b, hb, h2⟩`. Establish `hj` using `ha ⟨j, by have := hs _ List.mem_cons_self; omega⟩`. Use `⟨a (j + 1) * b, mul_ne_zero hj.1 hb, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← (uOpMul _ (glIwa k n) ℂ V π _ _ (al_mem k n _) hP v hv.1).2.1, h2, map_smul]`. Establish `e` using `hj.2`. Simplify using `only at e`. Rewrite using `[e, smul_smul, mul_comm]`. Take `⟨-, b, hb, hzb⟩` from `hlist (List.range n) fun j hj => List.mem_range.1 hj`.
+
+Rewrite `hzb` using `[← hz]`. Establish `hpow : ∀ j : ℕ, ((glIwa k n).uOp π (glIwa k n).z ^ j) v = b ^ j • v` using `fun j => by`. Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih => rw [pow_succ', Module.End.mul_apply, ih, map_smul, hzb, smul_smul, pow_succ]`.
+
+Establish `hvi : v ∈ invPart π c φ` using `(Submodule.mem_iInf _).2 fun j => ⟨(b ^ j)⁻¹ • v, Submodule.smul_mem _ _ hv, by`. Rewrite using `[map_smul, hpow, smul_smul, inv_mul_cancel₀ (pow_ne_zero j hb), one_smul]⟩`. Establish `hx0 : p v ≠ 0` using `fun h => hv0 (UpperTheory.V.Hi.OrdB.inv_inj _ π c φ hφ (hsm hπ) hvi (hker ▸ (Submodule.Quotient.mk_eq_zero _).1 h))`. Establish `hl : HasFiniteLength (jacB π)` using `(hasFiniteLength_comp_iff _ _ (leviTorus k (Fin n)).surjective).2 ((H.loc.bz k).2.1 _ _ _ (points (Fin n)) _ π hπ (hasFiniteLength_of_isIrreducible hirr))`. Use `haveI := GlobalTheory.TorusEigenform.secondCountableTopology_units k`.
+
+Take `⟨μ, hμs, hμ, l, hl0, hle⟩` from `UpperTheory.V.Hi.OrdB.exists_form (isSmooth_jacB hπ) hl hx0`. Choose the witnesses or unpack the hypotheses as in `⟨ψ, hψ, rfl⟩ : ∃ ψ : Fin n → kˣ →* ℂˣ, (∀ i, IsSmoothChar (ψ i)) ∧ torusChar ψ = μ := by`. Use `⟨fun i => μ.comp (MonoidHom.mulSingle (fun _ => kˣ) i), fun i => hμs.comp _ (continuous_mulSingle (A := fun _ => kˣ) i), MonoidHom.ext fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[torusChar_apply]`. Use `conv_rhs => rw [← Finset.univ_prod_mulSingle t, map_prod]`.
+
+Both sides reduce to the same expression. Establish `hsq : IsSubquotient π (prinSeries ψ)` using `GlobalTheory.SatakeExists.isSubquotient_of_eigenform hπ hirr _ l hl0 hle`. Establish `hψφ : ∀ i (u : Uo k), ψ i u = (φ (eT k n i u))⁻¹` using `fun i u => by`. Establish `hO : (Pi.mulSingle i (u : kˣ) : Fin n → kˣ) ∈ torusO k (Fin n)` using `fun j => by`. Distinguish the cases in `h : j = i`.
+
+Substitute `h` using the available equality. Rewrite using `[Pi.mulSingle_eq_same]`. Conclude with `u.2`. Simplify using `[Pi.mulSingle_eq_of_ne h]`. Establish `h1 : jacB π (Pi.mulSingle i (u : kˣ)) (p v) = (((φ (eT k n i u))⁻¹ : ℂˣ) : ℂ) • p v`.
+
+Rewrite using `[hp, UnramFixed.deltaHalf_torusO k hO, inv_one, Units.val_one, one_smul, ← map_smul]`. Conclude with `congrArg p (hv.2.2 (eT k n i u))`. Rewrite using `[← UpperTheory.V.Hi.OrdB.tc_single]`. Conclude with `Units.ext (hμ _ _ h1)`. Take `⟨ω, rfl⟩ : ∃ ω : Fin n → kˣ →* ℂˣ, (fun i => ω i * absPow k (((n : ℂ) - 1) / 2)) = ψ` from `⟨fun i => ψ i * (absPow k (((n : ℂ) - 1) / 2))⁻¹, funext fun i => inv_mul_cancel_right _ _⟩`.
+
+Establish `hω : ∀ i, IsSmoothChar (ω i)` using `fun i => by`. Use `(hψ i).mul (isSmoothChar_of_isUnram (isUnram_absPow k (-(((n : ℂ) - 1) / 2))))` as an intermediate fact. Rewrite `this` using `[absPow_neg, mul_inv_cancel_right]`. Then use the resulting hypothesis. Establish `hinv : IsInvOn φ ω` using `fun i u => by`. Use `hψφ i u` as an intermediate fact.
+
+Rewrite `this` using `[MonoidHom.mul_apply, isUnram_absPow k _ _ u.2, mul_one]`. Rewrite using `[this, inv_inv]`. Use `⟨ω, hω, hinv, hsq, fun j => ?_⟩` and prove the remaining obligations. Establish `hm : (j : ℕ) + 1 ≤ n` using `j.2`. Establish `h1` using `propCp _ (glIwa k n) ℂ V π _ (al_mem k n ((j : ℕ) + 1)) v hv.1`.
+
+Rewrite `h1` using `[hker, hidx _ hm]`. Establish `h2 : p _ = 0` using `(Submodule.Quotient.mk_eq_zero _).2 h1`. Rewrite `h2` using `[map_sub, map_smul, sub_eq_zero, (ha j).2, map_smul]`. Establish `hQ : ((Nat.card 𝓀[k] ^ (((j : ℕ) + 1) * (n - ((j : ℕ) + 1))) : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (pow_ne_zero _ Nat.card_pos.ne')`. Establish `h3` using `hμ (fun i => UpperTheory.V.Hi.unif k ^ (if (i : ℕ) < (j : ℕ) + 1 then 1 else 0 : ℤ)) ((((deltaHalf k (fun _ : Fin n => Unit) (leviTorus k (Fin n) (fun i => UpperTheory.V.Hi.unif k ^ (if (i : ℕ) < (j : ℕ) + 1 then 1 else 0 : ℤ))))⁻¹ : ℂˣ) : ℂ) * (((Nat.card 𝓀[k] ^ (((j : ℕ) + 1) * …`.
+
+Rewrite using `[hp, mul_smul]`. Use `congr 1`. Rewrite using `[mul_smul, h2, smul_smul, inv_mul_cancel₀ hQ, one_smul]`. Use the proof step `rfl)`. Establish `key : ∀ (Q x : ℂ) (d : ℂˣ), Q ≠ 0 → Q * ((d : ℂ) * (((d⁻¹ : ℂˣ) : ℂ) * (Q⁻¹ * x))) = x` using `fun Q x d h => by`.
+
+Rewrite using `[Units.val_inv_eq_inv_val]`. Use `d.ne_zero` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite using `[← UpperTheory.V.Hi.OrdB.num ω hm, h3]`. Conclude with `key _ _ _ hQ`.
+-/
 theorem UpperTheory.V.Z.Ord.ordJac :
     GlobalTheory.Mem.LiteralAutomorphy.LitN → OrdJac := by
   intro H k _ _ _ _ n V _ _ π hπ hirr c φ hφ0 v hv hv0 a ha

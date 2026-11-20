@@ -21,6 +21,9 @@ noncomputable section
 
 namespace GlobalTheory.FlagCovCore
 
+/- English proof (translation)
+Establish `h'` using `(cancel_mono _).1 h`. Use `Spec.map_injective h'` as an intermediate fact. Conclude with `congrArg CommRingCat.Hom.hom this`.
+-/
 theorem fieldMap_unique {K : Type} [Field K] {X : Scheme.{0}} [IsIntegral X] (φ φ' : X.functionField →+* K)
     (h : spMap φ ≫ X.fromSpecStalk (genericPoint X) = spMap φ' ≫ X.fromSpecStalk (genericPoint X)) : φ = φ' := by
   have h' := (cancel_mono _).1 h
@@ -29,6 +32,17 @@ theorem fieldMap_unique {K : Type} [Field K] {X : Scheme.{0}} [IsIntegral X] (φ
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `P2 PH RA SW D O hO B hB R hR c Bs _ q arq nBs E h H Bg jB πB u Gm hL Y₀ _ π₀ fl₀ hfb ar₀ n₀ _`. Take `⟨φ₀, h₁, h₂, h₃⟩` from `GlobalTheory.T.arithmetic_bundle_frame_assignment P2 PH RA SW D O hO B hB R hR c Bs q arq nBs E h H Bg jB πB u Gm hL Y₀ π₀ fl₀ hfb ar₀ n₀`. Take `⟨πG, hs, hb, hg⟩` from `GlobalTheory.T.arithmetic_bundle_height_limit P2 PH RA SW D O hO B hB R hR c Bs q arq nBs E h H Bg jB πB u Gm hL Y₀ π₀ fl₀ hfb ar₀ n₀ φ₀ h₁ h₂ h₃`. Establish `hq` using `GlobalTheory.T.arithmetic_bundle_rank_comparison P2 PH RA SW D O hO B hB R hR c Bs q arq nBs E h H Bg jB πB u Gm hL Y₀ π₀ fl₀ hfb ar₀ n₀ φ₀ h₁ h₂ h₃ πG hs hb hg`. Establish `hP : IsProper (π₀ ≫ q)`.
+
+Take `⟨N, i, hi, he⟩` from `ar₀.isProjOver`. Use `isProper_str (𝓞 D.what₂.LL) N` as an intermediate fact. Rewrite using `[← he]`. Use `infer_instance`. Establish `hsf : IsProper (GlobalTheory.FlagGenFib.sf q π₀)`.
+
+Unfold `GlobalTheory.FlagGenFib.sf`. Conclude with `MorphismProperty.of_isPullback (IsPullback.of_hasPullback _ _) hP`. Establish `hpr : IsProper πG`. Rewrite `hsf` using `[← hs]`. Conclude with `IsProper.of_comp πG (O.var c).str`.
+
+Establish `hfin : IsFinite πG` using `IsFinite.of_isProper_of_locallyQuasiFinite πG`. Establish `hd : πG (genericPoint _) = genericPoint (O.var c).X`. Establish `e : πG.base ((GlobalTheory.FlagGenFib.Gf q π₀).fromSpecStalk (genericPoint _) |>.base (IsLocalRing.closedPoint _)) = ((O.var c).X.fromSpecStalk (genericPoint (O.var c).X)).base ((spMap φ₀).base (IsLocalRing.closedPoint _))` using `congrArg (fun f => f.base (IsLocalRing.closedPoint _)) hg`. Rewrite `e` using `[Scheme.fromSpecStalk_closedPoint]`. Rewrite using `[e, show (spMap φ₀).base (IsLocalRing.closedPoint _) = IsLocalRing.closedPoint _ from Subsingleton.elim _ _]`.
+
+Conclude with `Scheme.fromSpecStalk_closedPoint`. Use `⟨πG, hs, hb, hfin, hd, fun φ hφ => ?_⟩` and prove the remaining obligations. Establish `: φ = φ₀` using `fieldMap_unique φ φ₀ (hφ.symm.trans hg)`. Substitute `this` using the available equality. Conclude with `h₃`.
+-/
 theorem exists_finite_map : ∀ (P2 : Hypotheses2) (PH : HypothesesH) (RA : RegularAlteration) (SW : ScholzeWeinsteinB)
     (D : D7) (O : Setup D) (hO : O.Core) (B : ℝ) (hB : 2 ≤ B) (R : ℝ) (hR : 2 ≤ R) (c : O.s.Comp)
     (Bs : Scheme.{0}) [IsIntegral Bs] (q : Bs ⟶ Sp (𝓞 D.what₂.LL)) (arq : IsArithVar q (dimGr D.what₂.Tau O.N O.j))

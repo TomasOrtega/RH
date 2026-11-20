@@ -17,6 +17,9 @@ open IsDedekindDomain
 open scoped nonZeroDivisors
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.EisMidHt.normFin_eq_prod_absNorm_of_valAt | exact GlobalTheory.EisMidHt.normFin_eq_prod_absNorm_of_valAt | (intros; apply GlobalTheory.EisMidHt.normFin_eq_prod_absNorm_of_valAt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.local_norm_of_valuation_profile : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ)
     (L : Submodule (𝓞 E) (Fin n → E)) (v : HeightOneSpectrum (𝓞 F)) (y : Fin n → Fv F v ⊗[F] E)
     (e : HeightOneSpectrum (𝓞 E) → ℤ),

@@ -15,6 +15,15 @@ noncomputable section
 
 namespace GlobalTheory.SplitCoords
 
+/- English proof (translation)
+Use `⟨Matrix.of fun i j => GlobalTheory.EmbChart.tensAt E v ((GlobalTheory.AdelicU.splitAlgEquiv h t).symm (A i j, A' i j)), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a ha`. Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, Matrix.of_apply, Matrix.zero_apply]`. Rewrite using `[Algebra.smul_def, mul_comm, GlobalTheory.EmbChart.tensAt_mul_right, Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`.
+
+Establish `: GlobalTheory.AdelicU.compFin F E v (a ⊗ₜ[F] (1 : E)) = 0`. Express the relevant statement in the definitionally equal form `evFin F v a ⊗ₜ[F] (1 : E) = 0`. Rewrite using `[ha, TensorProduct.zero_tmul]`. Rewrite using `[this, mul_zero, LinearMap.map_zero]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations.
+
+Simplify using `only [Matrix.map_apply, Matrix.of_apply]`. Express the relevant statement in the definitionally equal form `GlobalTheory.AdelicU.splitProj t (GlobalTheory.AdelicU.compFin F E v (GlobalTheory.EmbChart.tensAt E v _)) = _`. Rewrite using `[GlobalTheory.EmbChart.compFin_tensAt, GlobalTheory.AdelicU.splitProj_symm]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.map_apply, Matrix.of_apply]`.
+
+Express the relevant statement in the definitionally equal form `GlobalTheory.AdelicU.splitProj (t.comp σ) (GlobalTheory.AdelicU.compFin F E v (GlobalTheory.EmbChart.tensAt E v _)) = _`. Rewrite using `[GlobalTheory.EmbChart.compFin_tensAt, GlobalTheory.AdelicU.splitProj_comp_symm]`.
+-/
 theorem exists_at_two_comps {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {v : Pl F} (t : E →ₐ[F] Fv F v) {n d : ℕ}
     (A A' : Matrix (Fin n) (Fin d) (Fv F v)) :
@@ -41,6 +50,19 @@ theorem exists_at_two_comps {F E : Type} [Field F] [NumberField F] [Field E] [Nu
 end GlobalTheory.SplitCoords
 
 open GlobalTheory.SplitCoords in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ h n d X Y hX hY v t b c P Q`. Establish `hdX : IsUnit (X.J.map t).det`. Establish `e : (X.J.map t).det = t X.J.det` using `(RingHom.map_det (t : E →+* Fv F v) X.J).symm`. Rewrite using `[e]`. Conclude with `(isUnit_iff_ne_zero.2 ((map_ne_zero _).2 hX))`.
+
+Establish `hdY : IsUnit ((Y.J.map t)ᵀ).det`. Establish `e : (Y.J.map t).det = t Y.J.det` using `(RingHom.map_det (t : E →+* Fv F v) Y.J).symm`. Rewrite using `[Matrix.det_transpose, e]`. Conclude with `(isUnit_iff_ne_zero.2 ((map_ne_zero _).2 hY))`. Take `⟨u, hu, h1, h2⟩` from `exists_at_two_comps h t (b.1 * P * c.1ᵀ) (-((X.J.map t)⁻¹ * (b⁻¹).1ᵀ * Q * (c⁻¹).1 * ((Y.J.map t)ᵀ)⁻¹))`.
+
+Use `⟨u, hu, ?_, ?_⟩` and prove the remaining obligations. Unfold `GlobalTheory.FlipMatch.coX`. Rewrite using `[h1]`. Establish `hb : (b⁻¹).1 * b.1 = 1` using `by rw [← Matrix.GeneralLinearGroup.coe_mul, inv_mul_cancel]; rfl`. Establish `hc : c.1ᵀ * (c⁻¹).1ᵀ = 1`.
+
+Rewrite using `[← Matrix.transpose_mul, ← Matrix.GeneralLinearGroup.coe_mul, inv_mul_cancel]`. Conclude with `Matrix.transpose_one`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hb, Matrix.one_mul, Matrix.mul_assoc, hc, Matrix.mul_one]`. Unfold `GlobalTheory.FlipMatch.coY`. Rewrite using `[h2]`.
+
+Establish `hb : b.1ᵀ * (b⁻¹).1ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, ← Matrix.GeneralLinearGroup.coe_mul, inv_mul_cancel]`. Conclude with `Matrix.transpose_one`. Establish `hc : (c⁻¹).1 * c.1 = 1` using `by rw [← Matrix.GeneralLinearGroup.coe_mul, inv_mul_cancel]; rfl`. Establish `e1 : X.J.map t * (X.J.map t)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hdX`.
+
+Establish `e2 : ((Y.J.map t)ᵀ)⁻¹ * (Y.J.map t)ᵀ = 1` using `Matrix.nonsing_inv_mul _ hdY`. Simplify using `only [Matrix.mul_neg, Matrix.neg_mul, neg_neg, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (X.J.map t), e1, Matrix.one_mul, ← Matrix.mul_assoc b.1ᵀ, hb, Matrix.one_mul, ← Matrix.mul_assoc (((Y.J.map t)ᵀ)⁻¹), e2, Matrix.one_mul, hc, Matrix.mul_one]`.
+-/
 theorem GlobalTheory.SplitCoords.coords_onto : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E},
     IsCMExt F E σ → ∀ {n d : ℕ} (X : Spc F E n) (Y : Spc F E d), X.J.det ≠ 0 → Y.J.det ≠ 0 →
     ∀ {v : Pl F} (t : E →ₐ[F] Fv F v) (b : GL (Fin n) (Fv F v)) (c : GL (Fin d) (Fv F v)) (P Q : Matrix (Fin n) (Fin d) (Fv F v)),

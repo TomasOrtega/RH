@@ -17,6 +17,17 @@ noncomputable section
 
 namespace GlobalTheory.FlatCM.IdealZero
 
+/- English proof (translation)
+Introduce `E _ _ _ H hH K _ _ ρ σ₁ p X gP gQ hg`. Take `⟨Λ, hfg, hstd, hdual, hdesc⟩` from `GlobalTheory.T.exists_selfDual_lattice_cmHomomorphisms_definite E H hH K ρ σ₁ p X gP gQ hg`. Establish `hbinj : Function.Injective ((algebraMap (𝓞 E) E).comp (H.bar : 𝓞 E →+* 𝓞 E))` using `(RingOfIntegers.coe_injective (K := E)).comp (GlobalTheory.CM.ringOfIntegers_hom_injective _)`. Set `barE : E →+* E` to `IsFractionRing.lift hbinj`. Establish `hbarE : ∀ x : 𝓞 E, barE x = ((H.bar x : 𝓞 E) : E)` using `fun x => IsFractionRing.lift_algebraMap hbinj x`.
+
+Use `⟨_, GlobalTheory.T.index_ideal_mul_conj_eq_gram_det_selfDual E _ barE hbarE p gP Λ hfg hstd (hdual barE hbarE), ?_⟩` and prove the remaining obligations. Introduce `FP FB MP hMP τ hτ`. Establish `hτinj : Function.Injective ((algebraMap (𝓞 K) K).comp τ)` using `(RingOfIntegers.coe_injective (K := K)).comp (GlobalTheory.CM.ringOfIntegers_hom_injective _)`. Set `τE : E →+* K` to `IsFractionRing.lift hτinj`. Establish `hτE : ∀ x : 𝓞 E, τE x = ((τ x : 𝓞 K) : K)` using `fun x => IsFractionRing.lift_algebraMap hτinj x`.
+
+Set `FA : ∀ b, GenFib (X.A b).pol` to `fun b => match b with`. Consider the case `true => FP`. Consider the case `false => (GenFib.nonempty_of_baseChange GlobalTheory.polBaseChange_holds K (X.A false).pol).some`. Set `M : ∀ k : Fin p ⊕ Fin 0, (Fin (FA k.isLeft).P₀.g → K) →ₗ[K] (Fin FB.P₀.g → K)` to `fun k => match k with`. Consider the case `.inl a => MP a`.
+
+Consider the case `.inr a => a.elim0`. Take `⟨-, -, hinj, hind, -⟩` from `GlobalTheory.CM.Indep.letters_independent GlobalTheory.thetaUnifAV_all GlobalTheory.abelianSchemeLaws_all.1 E H K ρ σ₁ p 0 X FA FB M (fun k => match k with`. Consider the case `.inl a => hMP a`. Consider the case `.inr a => a.elim0)`. Establish `hfgA : (FP.eigLat (X.A true).t.act τ).FG` using `Submodule.FG.of_le (LieLattice.lieLat_fg_and_span_eq_top K _ FP).1 (Submodule.span_mono fun c ⟨u, hu, _⟩ => ⟨u, hu⟩)`.
+
+Establish `hrk : latRank K (FP.eigLat (X.A true).t.act τ) = 1`. Rewrite using `[(GlobalTheory.CM.EigDec.eigen_decomposition E H K ρ (X.A true) FP 1 0 X.split X.typeP X.ρ_sq).1 τ, if_pos hτ]`. Rewrite using `[subP, hdesc FP FB MP hMP τ hτ τE hτE]`. Conclude with `GlobalTheory.T.indexIdeal_rankOne_tensor_image_eq_map E K τ τE hτE p _ _ _ MP Λ hfgA hrk (fun a => hinj (.inl a)) (iSupIndep.comp hind (f := fun a : Fin p => ((Sum.inl a : Fin p ⊕ Fin 0), τ)) fun a b e => by simpa using e) hfg hstd`.
+-/
 theorem idealSt_zero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E),
     GlobalTheory.IndefiniteRowSideFullHecke.EigenvectorLieDegree.IsHostField H → ∀ (K : Type) [Field K] [NumberField K] (ρ : 𝓞 K) (σ₁ : K →+* ℂ) (p : ℕ)
     (X : GlobalTheory.CM.CMObj H K ρ σ₁ p 0) (gP : Matrix (Fin p) (Fin p) (𝓞 E)) (gQ : Matrix (Fin 0) (Fin 0) (𝓞 E)),

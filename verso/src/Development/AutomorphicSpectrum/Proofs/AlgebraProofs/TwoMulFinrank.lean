@@ -15,6 +15,11 @@ variable {C O : Type} [Field C] [CommRing O] [Algebra O C] {E : Type} [Field E] 
   [AddCommGroup Ω] [Module C Ω] [Module O Ω] [IsScalarTower O C Ω]
   (P : HTPoint C O c κ N V Ω)
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← P.om_lat.span_eq_top, Submodule.span_le]`. Introduce `y hy`. Take `⟨x, -, hx⟩` from `P.κ_mem y hy`. Use `show y ∈ LinearMap.range P.ht`. Rewrite using `[LinearMap.mem_range]`.
+
+Use `⟨(algebraMap O C κ)⁻¹ • x, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, hx, ← algebraMap_smul C κ y, smul_smul, inv_mul_cancel₀ P.κ_ne, one_smul]`.
+-/
 theorem ht_surjective : Function.Surjective P.ht := by
   rw [← LinearMap.range_eq_top, eq_top_iff, ← P.om_lat.span_eq_top, Submodule.span_le]
   intro y hy
@@ -24,12 +29,20 @@ theorem ht_surjective : Function.Surjective P.ht := by
   refine ⟨(algebraMap O C κ)⁻¹ • x, ?_⟩
   rw [map_smul, hx, ← algebraMap_smul C κ y, smul_smul, inv_mul_cancel₀ P.κ_ne, one_smul]
 
+/- English proof (translation)
+Take `⟨-, hsp, hT⟩` from `P.free`. Use `⟨?_, hsp⟩` and prove the remaining obligations. Rewrite using `[hT]`. Conclude with `Submodule.fg_span (Set.finite_range _)`.
+-/
 theorem T_lattice : P.T.IsLattice C := by
   obtain ⟨-, hsp, hT⟩ := P.free
   refine ⟨?_, hsp⟩
   rw [hT]
   exact Submodule.fg_span (Set.finite_range _)
 
+/- English proof (translation)
+Take `⟨-, -, hT⟩` from `P.free`. Establish `hmem : ∀ k, P.ρ (RingOfIntegers.basis E k) (P.t i) ∈ P.T` using `fun k => by`. Rewrite using `[hT]`. Conclude with `Submodule.subset_span ⟨(i, k), rfl⟩`. Rewrite using `[← (RingOfIntegers.basis E).sum_repr a]`.
+
+Simplify using `only [map_sum, map_zsmul, LinearMap.sum_apply, LinearMap.smul_apply]`. Conclude with `Submodule.sum_mem _ fun k _ => zsmul_mem (hmem k) _`.
+-/
 theorem rho_t_mem (a : 𝓞 E) (i : Fin N) : P.ρ a (P.t i) ∈ P.T := by
   obtain ⟨-, -, hT⟩ := P.free
   have hmem : ∀ k, P.ρ (RingOfIntegers.basis E k) (P.t i) ∈ P.T := fun k => by
@@ -39,6 +52,11 @@ theorem rho_t_mem (a : 𝓞 E) (i : Fin N) : P.ρ a (P.t i) ∈ P.T := by
   simp only [map_sum, map_zsmul, LinearMap.sum_apply, LinearMap.smul_apply]
   exact Submodule.sum_mem _ fun k _ => zsmul_mem (hmem k) _
 
+/- English proof (translation)
+Take `⟨-, -, hT⟩` from `P.free`. Establish `hle : P.T ≤ P.T.comap ((P.ρ a).restrictScalars O)` using `by nth_rewrite 1 [hT]`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨q, rfl⟩`. Use `show P.ρ a (P.ρ (RingOfIntegers.basis E q.2) (P.t q.1)) ∈ P.T`.
+
+Rewrite using `[show P.ρ a (P.ρ (RingOfIntegers.basis E q.2) (P.t q.1)) = (P.ρ a * P.ρ (RingOfIntegers.basis E q.2)) (P.t q.1) from rfl, ← map_mul]`. Conclude with `rho_t_mem P _ _`. Conclude with `fun x hx => hle hx`.
+-/
 theorem T_stable (a : 𝓞 E) : ∀ x ∈ P.T, P.ρ a x ∈ P.T := by
   obtain ⟨-, -, hT⟩ := P.free
   have hle : P.T ≤ P.T.comap ((P.ρ a).restrictScalars O) := by
@@ -51,10 +69,18 @@ theorem T_stable (a : 𝓞 E) : ∀ x ∈ P.T, P.ρ a x ∈ P.T := by
     exact rho_t_mem P _ _
   exact fun x hx => hle hx
 
+/- English proof (translation)
+Simplify using `only [eigProj, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, P.ht_lin]`.
+-/
 theorem ht_eigProj (σ : E →+* C) (x : V) :
     P.ht (eigProj P.ρ σ x) = eigProj P.ρΩ σ (P.ht x) := by
   simp only [eigProj, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, P.ht_lin]
 
+/- English proof (translation)
+Establish `hT` using `T_lattice P`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[HTPoint.om']`. Conclude with `hT.fg.map _`. Rewrite using `[HTPoint.om', Submodule.map_coe, LinearMap.coe_restrictScalars, ← Submodule.map_span, hT.span_eq_top, Submodule.map_top, LinearMap.range_eq_top]`.
+
+Conclude with `ht_surjective P`.
+-/
 theorem om'_lattice : P.om'.IsLattice C := by
   have hT := T_lattice P
   refine ⟨?_, ?_⟩
@@ -64,6 +90,9 @@ theorem om'_lattice : P.om'.IsLattice C := by
       hT.span_eq_top, Submodule.map_top, LinearMap.range_eq_top]
     exact ht_surjective P
 
+/- English proof (translation)
+Establish `hcomm : ((eigProj P.ρΩ σ).restrictScalars O) ∘ₗ (P.ht.restrictScalars O) = (P.ht.restrictScalars O) ∘ₗ ((eigProj P.ρ σ).restrictScalars O)` using `LinearMap.ext fun x => (ht_eigProj P σ x).symm`. Use `show (P.T.map (P.ht.restrictScalars O)).map ((eigProj P.ρΩ σ).restrictScalars O) = (P.T.map ((eigProj P.ρ σ).restrictScalars O)).map (P.ht.restrictScalars O)`. Rewrite using `[← Submodule.map_comp, ← Submodule.map_comp, hcomm]`.
+-/
 theorem omHT_eq (σ : E →+* C) :
     P.omHT σ = (eigQuot P.ρ σ P.T).map (P.ht.restrictScalars O) := by
   have hcomm : ((eigProj P.ρΩ σ).restrictScalars O) ∘ₗ (P.ht.restrictScalars O) =
@@ -73,11 +102,17 @@ theorem omHT_eq (σ : E →+* C) :
     (P.T.map ((eigProj P.ρ σ).restrictScalars O)).map (P.ht.restrictScalars O)
   rw [← Submodule.map_comp, ← Submodule.map_comp, hcomm]
 
+/- English proof (translation)
+Establish `h` using `P.alt (x + y)`. Simplify using `only [map_add, LinearMap.add_apply, P.alt, zero_add, add_zero] at h`. Conclude with `eq_neg_of_add_eq_zero_right h`.
+-/
 theorem e_skew (x y : V) : P.e x y = - P.e y x := by
   have h := P.alt (x + y)
   simp only [map_add, LinearMap.add_apply, P.alt, zero_add, add_zero] at h
   exact eq_neg_of_add_eq_zero_right h
 
+/- English proof (translation)
+Use `conv_rhs => rw [← P.perfect]`. Use extensionality with `y`. Simplify using `only [LatBasic.mem_dualLat, LinearMap.flip_apply]`. Use `forall₂_congr fun x _ => ?_` and prove the remaining obligations. Rewrite using `[e_skew P y x, neg_mem_iff]`.
+-/
 theorem dualLat_flip : dualLat P.e.flip P.T = P.T := by
   conv_rhs => rw [← P.perfect]
   ext y
@@ -85,11 +120,23 @@ theorem dualLat_flip : dualLat P.e.flip P.T = P.T := by
   refine forall₂_congr fun x _ => ?_
   rw [e_skew P y x, neg_mem_iff]
 include P in
+/- English proof (translation)
+Take `⟨s, hs⟩` from `(T_lattice P).fg`. Use `⟨⟨s, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← Submodule.span_span_of_tower O, hs, (T_lattice P).span_eq_top]`.
+-/
 theorem finite_V : Module.Finite C V := by
   obtain ⟨s, hs⟩ := (T_lattice P).fg
   refine ⟨⟨s, ?_⟩⟩
   rw [← Submodule.span_span_of_tower O, hs, (T_lattice P).span_eq_top]
 include P in
+/- English proof (translation)
+Use `haveI := finite_V P`. Establish `hrefl : LinearMap.BilinForm.IsRefl P.e` using `fun x y h => by rw [e_skew P y x, h, neg_zero]`. Establish `horth : LinearMap.BilinForm.orthogonal P.e (LinearMap.ker P.ht) = LinearMap.ker P.ht`. Use extensionality with `x`. Simplify using `only [LinearMap.BilinForm.mem_orthogonal_iff, LinearMap.BilinForm.isOrtho_def, LinearMap.mem_ker]`.
+
+Rewrite using `[P.lagr x]`. Use `forall₂_congr fun y _ => ?_` and prove the remaining obligations. Rewrite using `[e_skew P y x, neg_eq_zero]`. Establish `htop : LinearMap.BilinForm.orthogonal P.e ⊤ = ⊥`. Rewrite using `[eq_bot_iff]`.
+
+Introduce `x hx`. Rewrite `hx` using `[LinearMap.BilinForm.mem_orthogonal_iff]`. Conclude with `(Submodule.mem_bot C).mpr (P.nondeg x fun y => hx y Submodule.mem_top)`. Establish `h1` using `LinearMap.BilinForm.finrank_add_finrank_orthogonal hrefl (LinearMap.ker P.ht)`. Rewrite `h1` using `[horth, htop, inf_bot_eq, finrank_bot, add_zero]`.
+
+Establish `h2` using `LinearMap.finrank_range_add_finrank_ker P.ht`. Rewrite `h2` using `[LinearMap.range_eq_top.mpr (ht_surjective P), finrank_top]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem two_mul_finrank : 2 * finrank C Ω = finrank C V := by
   haveI := finite_V P
   have hrefl : LinearMap.BilinForm.IsRefl P.e := fun x y h => by rw [e_skew P y x, h, neg_zero]
@@ -113,6 +160,9 @@ theorem two_mul_finrank : 2 * finrank C Ω = finrank C V := by
 
 end PtBasic
 
+/- English proof (translation)
+Introduce `C _ v O _ _ _ _ _ E _ _ c _ κ N V _ _ _ _ Ω _ _ _ _ P`. Conclude with `⟨PtBasic.ht_surjective P, PtBasic.T_lattice P, PtBasic.T_stable P, PtBasic.ht_eigProj P, PtBasic.om'_lattice P, PtBasic.omHT_eq P, PtBasic.dualLat_flip P, PtBasic.two_mul_finrank P⟩`.
+-/
 theorem htPoint_basic : ∀ (C : Type) [Field C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] (hv : v.Integers O) [IsAlgClosed C] [CharZero C] (E : Type) [Field E] [NumberField E] (c : E ≃+* E) (hc : ∀ x, c (c x) = x) (κ : O) (N : ℕ) (V : Type) [AddCommGroup V] [Module C V] [Module O V] [IsScalarTower O C V] (Ω : Type) [AddCommGroup Ω] [Module C Ω] [Module O Ω] [IsScalarTower O C Ω] (P : HTPoint C O c κ N V Ω), Function.Surjective P.ht ∧ P.T.IsLattice C ∧ (∀ (a : 𝓞 E), ∀ x ∈ P.T, P.ρ a x ∈ P.T) ∧ (∀ (σ : E →+* C) x, P.ht (eigProj P.ρ σ x) = eigProj P.ρΩ σ (P.ht x)) ∧ P.om'.IsLattice C ∧ (∀ σ : E →+* C, P.omHT σ = (eigQuot P.ρ σ P.T).map (P.ht.restrictScalars O)) ∧ dualLat P.e.flip P.T = P.T ∧ 2 * Module.finrank C Ω = Module.finrank C V := by
   intro C _ v O _ _ _ _ _ E _ _ c _ κ N V _ _ _ _ Ω _ _ _ _ P
   exact ⟨PtBasic.ht_surjective P, PtBasic.T_lattice P, PtBasic.T_stable P, PtBasic.ht_eigProj P,

@@ -15,6 +15,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace CompanionTheory.PfDual
 
+/- English proof (translation)
+Introduce `S A Y _ hA hY N hN h0`. Take `⟨Z, i, hi, hZ⟩` from `exists_closed_locTriv_noeth S A Y hA hY N hN`. Use `⟨Z, i, hi, fun T y => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `have e : lift (fst A T) (snd A T ≫ y) = A ◁ y := by ext <;> simp`. Rewrite using `[← hZ T y, ev, e]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `ht p`. Conclude with `⟨⊤, trivial, CubeOpen.triv_pull_pull _ _ (CubeOpen.triv_comp _ rfl ht)⟩`. Introduce `hloc`. Establish `hpb : IsPullback (pullback.fst A.hom T.hom) (snd A T).left A.hom T.hom` using `IsPullback.of_hasPullback _ _`.
+
+Apply the tactic sequence `have e' : y ≫ lift (1 : Y ⟶ A) (𝟙 Y) = lift (1 : T ⟶ A) (𝟙 T) ≫ A ◁ y := by ext <;> simp`. Establish `hsec : Triv ((N.pull (A ◁ y).left).pull (lift (1 : T ⟶ A) (𝟙 T)).left)` using `CubeOpen.triv_pull_pull _ _ (CubeOpen.triv_comp y.left (congrArg (·.left) e') h0)`. Conclude with `GlobalTheory.exists_gen_of_local_of_section (A ⊗ T).left T.left (snd A T).left (lift (1 : T ⟶ A) (𝟙 T)).left (N.pull (A ◁ y).left) (pull_isLB hN _) (congrArg (·.left) (lift_snd (1 : T ⟶ A) (𝟙 T))) (GlobalTheory.BaseChangeFns.app_surjective GlobalTheory.globalFns_holds S A hA _ _ …`.
+-/
 theorem trivLocus_pf : CompanionTheory.ObstructionTrivialLocus.TrivLocus := by
   intro S A Y _ hA hY N hN h0
   obtain ⟨Z, i, hi, hZ⟩ := exists_closed_locTriv_noeth S A Y hA hY N hN

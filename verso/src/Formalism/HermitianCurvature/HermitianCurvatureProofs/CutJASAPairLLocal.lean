@@ -19,6 +19,11 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 def qOf (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (g : B.Mat k r) : (Fin r → ℂ) × ℂ :=
   (fun a => Formalism.QuantumDeterminants.cmin k r z z' g a, Formalism.QuantumDeterminants.zeta k r z z' g)
 
+/- English proof (translation)
+Use `ContinuousOn.prodMk ?_ ?_` and prove the remaining obligations. Use `continuousOn_pi.2 fun a => ?_` and prove the remaining obligations. Unfold `Formalism.QuantumDeterminants.cmin`. Conclude with `(Formalism.FourierDecayAlt.P.PositiveOrbitOpen.dmin_cont z z' _).continuousOn.div (Formalism.FourierDecayAlt.P.PositiveOrbitOpen.dmin_cont z z' _).continuousOn (fun g hg => hg.1 _ (Nat.le_of_lt a.isLt))`. Unfold `Formalism.QuantumDeterminants.zeta`.
+
+Conclude with `(Formalism.FourierDecayAlt.P.PositiveOrbitOpen.dmin_cont z z' _).continuousOn.div (Formalism.FourierDecayAlt.P.PositiveOrbitOpen.dmin_cont z z' _).continuousOn (fun g hg => hg.1 _ le_rfl)`.
+-/
 theorem qOf_contOn (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) :
     ContinuousOn (qOf k r z z') (Q.OmPlus k r z z') := by
   refine ContinuousOn.prodMk ?_ ?_
@@ -30,17 +35,38 @@ theorem qOf_contOn (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) :
     exact (Formalism.FourierDecayAlt.P.PositiveOrbitOpen.dmin_cont z z' _).continuousOn.div (Formalism.FourierDecayAlt.P.PositiveOrbitOpen.dmin_cont z z' _).continuousOn
       (fun g hg => hg.1 _ le_rfl)
 
+/- English proof (translation)
+Unfold `qOf Formalism.QuantumDeterminants.cmin Formalism.QuantumDeterminants.zeta`. Simplify using `only [Formalism.FourierDecayAlt.P.BigCellZetaMinors.dmin_sgs D hp]`.
+-/
 theorem qOf_sgs {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (D : B.RealPlaceData k r Wp Wq) {p : B.SS k r} (hp : D.inSS p)
     (g : B.Mat k r) : qOf k r D.z D.z' (B.sgs p g) = qOf k r D.z D.z' g := by
   unfold qOf Formalism.QuantumDeterminants.cmin Formalism.QuantumDeterminants.zeta
   simp only [Formalism.FourierDecayAlt.P.BigCellZetaMinors.dmin_sgs D hp]
 
+/- English proof (translation)
+The claim follows from `Prod.ext (funext fun a => Formalism.FourierDecayAlt.P.BigCellZetaMinors.cmin_gq D hq a) (Formalism.FourierDecayAlt.P.BigCellZetaMinors.zeta_gq D hq)`.
+-/
 theorem qOf_gq {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (D : B.RealPlaceData k r Wp Wq) {q : (Fin r → ℂ) × ℂ}
     (hq : q ∈ JF.QDom k r D.z D.z') : qOf k r D.z D.z' (B.gq D q) = q :=
   Prod.ext (funext fun a => Formalism.FourierDecayAlt.P.BigCellZetaMinors.cmin_gq D hq a) (Formalism.FourierDecayAlt.P.BigCellZetaMinors.zeta_gq D hq)
 
+/- English proof (translation)
+Use `⟨0, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v Θ _hΘ K hK V hV hVQ hK0 y hy`. Establish `hPl : Q.IsPlace (D.parOf S v) (T v).base.z (T v).base.z' (T v).base.π (T v).base.π'` using `(hB.1.2.2.2.1.2 v).2.2.2.1`. Establish `hTT : (D.parOf S v).TT = Tz S.G.k S.G.r (T v).base.z * Tz S.G.k S.G.r (T v).base.z'`. Rewrite using `[hPl.2.2.2.1, hPl.2.2.2.2.1]`.
+
+Both sides reduce to the same expression. Set `O : Set (B.Mat S.G.k S.G.r)` to `Q.OmPlus S.G.k S.G.r (T v).base.z (T v).base.z' ∩ qOf S.G.k S.G.r (T v).base.z (T v).base.z' ⁻¹' V`. Establish `hOo : IsOpen O` using `(qOf_contOn _ _ _ _).isOpen_inter_preimage (Formalism.FourierDecayAlt.P.PositiveOrbitOpen.omPlus_open _ _) hV`. Establish `hD : ∀ x ∈ JF.Om S.G.k S.G.r (T v).base.z (T v).base.z', x ∈ Q.Glev S.G.k S.G.r 0 ∩ {g | 0 < Gf S.G.k S.G.r (T v).base.z (T v).base.z' g ∧ ∀ a : Fin S.G.r, Dmin S.G.k S.G.r (T v).base.z (T v).base.z' g ⟨(a : ℕ) + 1, by omega⟩ ≠ 0}` using `fun x hx => ⟨Formalism.FourierDecayAlt.P.OrbitalIntegralIdentities.glev0 hx.1, Formalism.FourierDecayAlt.P.CutMP.jdc_of_om _ _ hx⟩`. Establish `hNl : ∀ n ∈ Formalism.QuantumDeterminants.Nset S.G.k S.G.r, n ∈ Q.Nlev S.G.k S.G.r 0` using `fun n hn => ⟨hn, Formalism.FourierDecayAlt.P.OrbitalIntegralIdentities.glev0 hn.1⟩`.
+
+Establish `hKz : ∀ x ∈ B.GV S.G.k S.G.r, x ∈ O → K x = 0`. Introduce `x hxG hxO`. Establish `hxOm : x ∈ JF.Om S.G.k S.G.r (T v).base.z (T v).base.z'` using `⟨hxG, hxO.1⟩`. Take `⟨p, hp, q, hq, rfl⟩` from `Formalism.FourierDecayAlt.P.psiOnto_true _ _ _ _ (T v).base _ hxOm`. Establish `hqV : q ∈ V`.
+
+Establish `h1 : qOf S.G.k S.G.r (T v).base.z (T v).base.z' (B.sgs p (B.gq (T v).base q)) ∈ V` using `hxO.2`. Rewrite `h1` using `[qOf_sgs (T v).base hp, qOf_gq (T v).base hq]`. Then use the resulting hypothesis. Establish `hgq` using `Formalism.FourierDecayAlt.P.BigCellHermitian.gqDom (T v).base hq`. Use `LT.agree_sgs (T v).base K (fun _ => 0) (fun y hy n hn => hK.2.1 y (hD y hy) n (hNl n hn)) (fun y hy n hn => hK.2.2.1 y (hD y hy) n (hNl n hn)) (fun y hy h hh h' hh' => hK.2.2.2 y (hD y hy) h hh h' hh') (fun _ _ _ _ => (smul_zero _).symm) (fun _ _ _ _ => (smul_zero _).symm) (fun _ …` as an intermediate fact. Conclude with `this`.
+
+Establish `hyQ : y ∈ JF.QDom S.G.k S.G.r (T v).base.z (T v).base.z'` using `⟨(hVQ hy).1, by rw [← hTT]; exact (hVQ hy).2⟩`. Establish `hg0` using `Formalism.FourierDecayAlt.P.BigCellHermitian.gqDom (T v).base hyQ`. Establish `hg0O : B.gq (T v).base y ∈ O`. Use `⟨hg0.2, ?_⟩` and prove the remaining obligations. Use `show qOf S.G.k S.G.r (T v).base.z (T v).base.z' (B.gq (T v).base y) ∈ V`.
+
+Rewrite using `[qOf_gq (T v).base hyQ]`. Conclude with `hy`. Unfold `B.opApply`. Use `List.sum_eq_zero fun x hx => ?_` and prove the remaining obligations. Take `⟨Tm, _, rfl⟩` from `List.mem_map.1 hx`.
+
+Rewrite using `[Formalism.FourierDecayAlt.P.BetaSesquilinearity.Rw_vanish hOo Tm.word_lie hKz _ hg0.1 hg0O, map_zero]`.
+-/
 theorem self_adjoint_locality_holds : SALocal := by
   refine ⟨0, ?_⟩
   intro E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v Θ _hΘ K hK V hV hVQ hK0 y hy

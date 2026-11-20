@@ -19,6 +19,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 
 namespace GlobalTheory.FunObj.SqNum
 
+/- English proof (translation)
+Introduce `D T L sc G μ₀ hL t i j w hw`. Establish `e : alpha G t i j / beta G i j = G.nu t i ((j : ℕ) + 1)`. Simplify using `only [alpha, beta, GridData.nu]`. Conclude with `mul_div_mul_right_eq_div _ _ _`. Rewrite using `[e, GlobalTheory.LFun.unrAt_iff_of_chrEq (chrEq_nu (G := G) (t := t) (i := i) (j := j) hL) w]`.
+
+Introduce `hu`. Establish `hi1 : 1 ≤ D.R.m - (i : ℕ)` using `by have := i.2; omega`. Establish `hi2 : D.R.m - (i : ℕ) ≤ D.R.m` using `Nat.sub_le _ _`. Use `(G.ch.lev1 _ hi1 hi2 w hw).2 fun x hx h1 => ?_` and prove the remaining obligations. Establish `a1` using `(L.C.isMu0 j).tame w x hx h1`.
+
+Establish `a2` using `hL.xi_tame t w x hx h1`. Establish `a3` using `hu x hx`. Simplify using `only [nuH, div_eq_mul_inv, Formalism.L2.Host.HChar.loc_mul, Formalism.L2.Host.HChar.loc_inv, a1, a2, one_mul] at a3`. Conclude with `inv_eq_one.1 a3`.
+-/
 theorem not_unrAt_alpha_div_beta_over_S₁ : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (_hL : L.Is μ₀) (t : T)
     (i j : Fin D.R.m) (w : HeightOneSpectrum (𝓞 D.host.E)), w.under (𝓞 D.host.F) ∈ S1 D →
       ¬ GlobalTheory.LFun.UnrAt (F := D.host.F) (E := D.host.E) (alpha G t i j / beta G i j) w := by

@@ -22,6 +22,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 
 namespace GlobalTheory.GoodPlace
 
+/- English proof (translation)
+Use `haveI := v.isMaximal`. Establish `hs` using `Ideal.sum_ramification_inertia (𝓞 E) F E (p := v.asIdeal) v.ne_bot`. Rewrite `hs` using `[h2]`. Rewrite using `[← hs, ← IsDedekindDomain.coe_primesOverFinset v.ne_bot, Set.ncard_coe_finset, Finset.card_eq_sum_ones]`. Use `Finset.sum_congr rfl fun q hq => ?_` and prove the remaining obligations.
+
+Rewrite `hq` using `[IsDedekindDomain.mem_primesOverFinset_iff v.ne_bot]`. Use `haveI := hq.1`. Use `haveI := hq.2`. Establish `hpq : (p : 𝓞 E) ∈ q`. Simplify using `using (Ideal.mem_of_liesOver q v.asIdeal (p : 𝓞 F)).1 hpv`.
+
+Establish `hle : Ideal.map (algebraMap (𝓞 F) (𝓞 E)) v.asIdeal ≤ q` using `Ideal.map_le_iff_le_comap.2 (Ideal.LiesOver.over (P := q) (p := v.asIdeal)).le`. Establish `he : v.asIdeal.ramificationIdx' q = 1`. Assume the negation of the conclusion as `hne1`. Establish `h3` using `(Ideal.ramificationIdx'_ne_one_iff hle).1 hne1`. Establish `h4` using `h3 (Ideal.mem_map_of_mem (algebraMap (𝓞 F) (𝓞 E)) hpv)`.
+
+Rewrite `h4` using `[map_natCast]`. Conclude with `(GlobalTheory.LocSplit.split_prime hp h q hpq).1 h4`. Establish `hcF` using `(GlobalTheory.ColClassCompare.unram_card_of_split (F := F) (E := E) hp h v.asIdeal hpv).2`. Establish `hcE` using `(GlobalTheory.ColClassCompare.unram_card_of_split (F := E) (E := E) hp h q hpq).2`. Establish `hf : v.asIdeal.inertiaDeg' q = 1`.
+
+Establish `hcomap : Ideal.comap (algebraMap (𝓞 F) (𝓞 E)) q = v.asIdeal` using `(Ideal.LiesOver.over (P := q) (p := v.asIdeal)).symm`. Rewrite using `[Ideal.inertiaDeg', dif_pos hcomap]`. Use `letI : Field (𝓞 F ⧸ v.asIdeal) := Ideal.Quotient.field _`. Establish `hfin : Module.Finite (𝓞 F ⧸ v.asIdeal) (𝓞 E ⧸ q)` using `inferInstance`. Use `Module.natCard_eq_pow_finrank (K := 𝓞 F ⧸ v.asIdeal) (V := 𝓞 E ⧸ q)` as an intermediate fact.
+
+Rewrite `this` using `[hcF, hcE]`. Conclude with `(Nat.pow_right_injective hp.two_le (by simpa using this.symm))`. Rewrite using `[he, hf]`.
+-/
 theorem ncard_primesOver_eq_two {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (h2 : Module.finrank F E = 2) {p : ℕ} (hp : p.Prime)
     (h : (Ideal.primesOver (Ideal.span {(p : ℤ)}) (𝓞 E)).ncard = Module.finrank ℚ E)
@@ -61,6 +74,19 @@ end GlobalTheory.GoodPlace
 
 namespace GlobalTheory.GoodPlace
 
+/- English proof (translation)
+Introduce `D T L sc G μ₀ _ t P₀`. Use `set S : Finset (HeightOneSpectrum (𝓞 D.host.F)) := P₀ ∪ (locPl G t).image (fun w => w.under (𝓞 D.host.F)) with hS`. Establish `hn : D.host.QS ≠ 0` using `D.host.QS_pos.ne'`. Establish `hq : D.host.q ≠ 0` using `D.host.hyp.1.ne_zero`. Establish `hd : D.host.d ≠ 0` using `D.host.hyp.2.1.ne_zero`.
+
+Establish `hm : D.host.QS * D.host.q * D.host.d ≠ 0` using `by positivity`. Take `⟨p, hp, hlt, hc⟩` from `Nat.exists_prime_gt_modEq_one (∑ u ∈ S, Ideal.absNorm u.asIdeal) hm`. Take `⟨h1, -, -⟩` from `GlobalTheory.HostSplit.split_completely_of_modEq_one D.R D.host p hp hc`. Establish `h : (Ideal.primesOver (Ideal.span {(p : ℤ)}) (𝓞 D.host.E)).ncard = Module.finrank ℚ D.host.E`. Rewrite using `[← GlobalTheory.HostSplit.ncard_placesOver _ hp]`.
+
+Conclude with `h1`. Take `⟨v, hv⟩` from `GlobalTheory.SplitChoice.exists_place_over D.host.F hp`. Establish `hnot : ∀ u ∈ S, u ≠ v`. Introduce `u hu e`. Use `GlobalTheory.SplitChoice.natCast_notMem_of_absNorm_lt u hp ?_ (e ▸ hv)` and prove the remaining obligations.
+
+Use `Finset.single_le_sum (f := fun u : HeightOneSpectrum (𝓞 D.host.F) => Ideal.absNorm u.asIdeal) (fun _ _ => Nat.zero_le _) hu` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `⟨v, fun hv0 => hnot v (Finset.mem_union_left _ hv0) rfl, ?_, fun w hw e => hnot _ (Finset.mem_union_right _ (Finset.mem_image_of_mem _ hw)) e, ?_⟩` and prove the remaining obligations. Establish `hmax : (Ideal.span {(p : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.1 hp).irreducible`. Establish `hle : Ideal.span {(p : ℤ)} ≤ v.asIdeal.under ℤ`.
+
+Rewrite using `[Ideal.span_singleton_le_iff_mem, Ideal.under_def, Ideal.mem_comap]`. Simplify using `using hv`. Establish `hunder : v.asIdeal.under ℤ = Ideal.span {(p : ℤ)}` using `(hmax.eq_of_le (Ideal.IsPrime.under ℤ v.asIdeal).ne_top hle).symm`. Unfold `SplitsFully`. Rewrite using `[hunder]`.
+
+Conclude with `h`. Rewrite using `[GlobalTheory.AdelicU.nonempty_split_iff (GlobalTheory.AdelicU.isCMExt_host D)]`. Conclude with `ncard_primesOver_eq_two (GlobalTheory.AdelicU.isCMExt_host D).2.2.1 hp h v hv`.
+-/
 theorem exists_good_place : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (_hL : L.Is μ₀) (t : T)
     (P₀ : Finset (HeightOneSpectrum (𝓞 D.host.F))), ∃ v₁ : HeightOneSpectrum (𝓞 D.host.F), v₁ ∉ P₀ ∧
       SplitsFully D.host.E v₁ ∧ (∀ w ∈ locPl G t, w.under (𝓞 D.host.F) ≠ v₁) ∧

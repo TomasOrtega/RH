@@ -147,6 +147,9 @@ def hypPlaneSesq : (Fin 2 → E) →ₛₗ[conjHom F E] (Fin 2 → E) →ₗ[E] 
     (by intros; simp only [Pi.add_apply]; ring)
     (by intros; simp only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply]; ring)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hypPlaneSesq_apply (x y : Fin 2 → E) :
     hypPlaneSesq F E x y = conj F E (x 0) * y 1 + conj F E (x 1) * y 0 := rfl
 

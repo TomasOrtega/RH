@@ -11,6 +11,11 @@ def FlagIntMuDegree.Statement : Prop :=
     b.degree ≠ (rhoBlock Ψ N j).degree →
       flagInt Ψ N (muPoly Ψ N j ^ dimN Ψ N j * monomial b 1) = 0
 
+/- English proof (translation)
+Establish `hrho : rhoBlock Unit 2 1 = 0`. Use extensionality with `⟨u, i⟩`. Apply the tactic sequence `fin_cases i <;> simp [rhoBlock]`. Use `⟨by norm_num, ?_⟩` and prove the remaining obligations. Rewrite using `[hrho]`.
+
+Simplify using the standard rewrite rules.
+-/
 example : (1 : ℕ) ≤ 2 ∧
     (Finsupp.single ((), (0 : Fin 2)) 1 : Unit × Fin 2 →₀ ℕ).degree ≠ (rhoBlock Unit 2 1).degree := by
   have hrho : rhoBlock Unit 2 1 = 0 := by

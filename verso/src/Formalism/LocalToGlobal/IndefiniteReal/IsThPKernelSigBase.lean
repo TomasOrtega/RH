@@ -19,11 +19,17 @@ def labLL (τ : D.what₂.Tau) : D.host.E →+* D.what₂.LL :=
 
 def labE (σ : D.what₂.LL →+* ℂ) (τ : D.what₂.Tau) : D.host.E →+* ℂ := σ.comp (labLL D τ)
 
+/- English proof (translation)
+Use extensionality with `x`. Establish `h` using `RingHom.congr_fun D.embE_φ₀ ((D.host.sigmaOf (D.eTau τ).1 : D.host.E →+* D.host.E) x)`. Simplify `h` using `[labE, labLL, tauE, Host.emb]`.
+-/
 theorem labE_base (τ : D.what₂.Tau) : labE D.what₂.embLL τ = tauE D τ := by
   ext x
   have h := RingHom.congr_fun D.embE_φ₀ ((D.host.sigmaOf (D.eTau τ).1 : D.host.E →+* D.host.E) x)
   simpa [labE, labLL, tauE, Host.emb] using h
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem labE_conj (σ : D.what₂.LL →+* ℂ) (τ : D.what₂.Tau) :
     labE ((starRingEnd ℂ).comp σ) τ = (starRingEnd ℂ).comp (labE σ τ) := rfl
 
@@ -44,16 +50,25 @@ variable (D) in
 
 def baseLab : ArchLab D := ⟨Equiv.refl _, true⟩
 
+/- English proof (translation)
+Introduce `τ`. Rewrite using `[labE_base]`. Both sides reduce to the same expression.
+-/
 theorem isLabOf_base : IsLabOf D.what₂.embLL (baseLab D) := by
   intro τ
   rw [labE_base]
   rfl
 
+/- English proof (translation)
+Break down `A with ⟨p, s⟩` into its components or cases. Apply the tactic sequence `cases s <;> ext x <;> simp [ArchLab.emb, ArchLab.flip]`.
+-/
 theorem ArchLab.emb_flip (A : ArchLab D) (τ : D.what₂.Tau) :
     A.flip.emb τ = (starRingEnd ℂ).comp (A.emb τ) := by
   rcases A with ⟨p, s⟩
   cases s <;> ext x <;> simp [ArchLab.emb, ArchLab.flip]
 
+/- English proof (translation)
+Introduce `τ`. Rewrite using `[labE_conj, h τ, ArchLab.emb_flip]`.
+-/
 theorem isLabOf_conj {σ : D.what₂.LL →+* ℂ} {A : ArchLab D} (h : IsLabOf σ A) :
     IsLabOf ((starRingEnd ℂ).comp σ) A.flip := by
   intro τ
@@ -73,26 +88,47 @@ open Classical in
 def labOf (σ : D.what₂.LL →+* ℂ) : ArchLab D :=
   if h : ∃ A : ArchLab D, IsLabOf σ A then h.choose else baseLab D
 
+/- English proof (translation)
+Unfold `labOf`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+-/
 theorem labOf_spec {σ : D.what₂.LL →+* ℂ} (h : ∃ A : ArchLab D, IsLabOf σ A) : IsLabOf σ (labOf σ) := by
   unfold labOf
   rw [dif_pos h]
   exact h.choose_spec
 
+/- English proof (translation)
+The claim follows from `hU _ _ _ (labOf_spec ⟨_, isLabOf_base⟩) isLabOf_base`.
+-/
 theorem labOf_base (hU : LabUnique D) : labOf (D := D) D.what₂.embLL = baseLab D :=
   hU _ _ _ (labOf_spec ⟨_, isLabOf_base⟩) isLabOf_base
 
 def rl (A : ArchLab D) {X : Type*} (S : D.what₂.Tau → X) : D.what₂.Tau → X := fun ρ => S (A.perm.symm ρ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rl_base {X : Type*} (S : D.what₂.Tau → X) : rl (baseLab D) S = S := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rl_flip (A : ArchLab D) {X : Type*} (S : D.what₂.Tau → X) : rl A.flip S = rl A S := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rl_pos (A : ArchLab D) {X : Type*} (S : D.what₂.Tau → X) : rl A.pos S = rl A S := rfl
 
 def cv (σ : D.what₂.LL →+* ℂ) {X : Type*} (f : X → D.what₂.LL) : X → ℂ := fun x => σ (f x)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cv_base {X : Type*} (f : X → D.what₂.LL) : cv D.what₂.embLL f = fun x => D.what₂.embLL (f x) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cv_conj (σ : D.what₂.LL →+* ℂ) {X : Type*} (f : X → D.what₂.LL) :
     cv ((starRingEnd ℂ).comp σ) f = fun x => starRingEnd ℂ (cv σ f x) := rfl
 
@@ -115,6 +151,9 @@ def IsConjChar (σ : D.what₂.LL →+* ℂ) (χL : (AE D)ˣ →* D.what₂.LLˣ
   IsHeckeChar D χσ ∧ ∀ x : (AE D)ˣ, infPart D (x : AE D) = 1 →
     ((χσ x : Circle) : ℂ) * D.what₂.embLL (χL x : D.what₂.LL) = ((χ x : Circle) : ℂ) * σ (χL x : D.what₂.LL)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h, fun _ _ => rfl⟩`.
+-/
 theorem isConjChar_base {χL : (AE D)ˣ →* D.what₂.LLˣ} {χ : (AE D)ˣ →* Circle} (h : IsHeckeChar D χ) :
     IsConjChar D.what₂.embLL χL χ χ :=
   ⟨h, fun _ _ => rfl⟩
@@ -142,6 +181,9 @@ def IsChainKernelSig (ψ : AddChar (AF D.host.F) ℂ) (σ : D.what₂.LL →+* �
     (∀ k, IsConjChar σ (μL k) (μ k) (μσ k)) ∧ IsConjChar σ ηL η ησ ∧
       Lift.IsChainKernel ψ μσ ησ m Y th
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨μ, η, fun k => isConjChar_base (hμ k), isConjChar_base hη, h⟩`.
+-/
 theorem isThPKernelSig_base (ψ : AddChar (AF D.host.F) ℂ)
     (μL : ℕ → (AE D)ˣ →* D.what₂.LLˣ) (ηL : (AE D)ˣ →* D.what₂.LLˣ) (μ : ℕ → (AE D)ˣ →* Circle)
     (η : (AE D)ˣ →* Circle) (hμ : ∀ k, IsHeckeChar D (μ k)) (hη : IsHeckeChar D η) (j : ℕ) (Vj Wj : HSp D)
@@ -153,6 +195,9 @@ def deltaSig (A : ArchLab D) {m n : ℕ} (p q : D.what₂.Tau → ℕ) (ap am : 
     MvPolynomial (Datum.FVar D m n) ℂ :=
   Datum.delta p q (rl A ap) (rl A am)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem deltaSig_base {m n : ℕ} (p q : D.what₂.Tau → ℕ) (ap am : D.what₂.Tau → ℕ → ℕ) :
     deltaSig (m := m) (n := n) (baseLab D) p q ap am = Datum.delta p q ap am := rfl
 

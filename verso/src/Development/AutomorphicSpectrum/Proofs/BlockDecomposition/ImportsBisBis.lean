@@ -5,6 +5,13 @@ open Ad3 Ad3.S
 
 namespace GlobalTheory.CompanionTheory.InvGammaStrip
 
+/- English proof (translation)
+Introduce `a b`. Take `⟨C, hC0, hC⟩` from `exists_norm_inv_Gamma_le a b`. Use `⟨max (C * Real.exp Real.pi) Real.pi, fun z ha hb => ?_⟩` and prove the remaining obligations. Establish `h1` using `hC z ha hb`. Use `set y := z.im`.
+
+Establish `hy : |y| ≤ 1 + y ^ 2`. Apply the tactic sequence `rcases abs_cases y with ⟨h, _⟩ | ⟨h, _⟩ <;> rw [h] <;> nlinarith [sq_nonneg (y - 1/2), sq_nonneg (y + 1/2)]`. Establish `hpi` using `Real.pi_pos`. Establish `hM1 : C * Real.exp Real.pi ≤ max (C * Real.exp Real.pi) Real.pi` using `le_max_left _ _`. Establish `hM2 : Real.pi ≤ max (C * Real.exp Real.pi) Real.pi` using `le_max_right _ _`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem g0 : G0 := by
   intro a b
   obtain ⟨C, hC0, hC⟩ := exists_norm_inv_Gamma_le a b

@@ -11,6 +11,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.Reg
 
+/- English proof (translation)
+Establish `hdet : IsUnit b.det`. Rewrite using `[Matrix.det_of_isUpperTriangular hb]`. Conclude with `isUnit_iff_ne_zero.mpr (Finset.prod_ne_zero_iff.mpr fun i _ => hd i)`. Set `_ : Invertible b` to `Matrix.invertibleOfIsUnitDet b hdet`. Establish `htri : (b⁻¹).BlockTriangular id` using `Matrix.blockTriangular_inv_of_blockTriangular hb`.
+
+Use `⟨Matrix.mul_nonsing_inv b hdet, htri, fun i => ?_⟩` and prove the remaining obligations. Establish `hii : (b⁻¹ * b) i i = b⁻¹ i i * b i i`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_single i (fun k _ hki => ?_) (fun h => absurd (Finset.mem_univ i) h)` and prove the remaining obligations. Break down `lt_or_gt_of_ne hki with h | h` into its components or cases.
+
+Rewrite using `[htri h, zero_mul]`. Rewrite using `[hb h, mul_zero]`. Rewrite `hii` using `[Matrix.nonsing_inv_mul b hdet, Matrix.one_apply_eq]`. Conclude with `left_ne_zero_of_mul_eq_one hii.symm`.
+-/
 theorem triangular_inv_of_diag_ne {L : Type} [Field L] {n : ℕ} (b : Matrix (Fin n) (Fin n) L)
     (hb : b.BlockTriangular id) (hd : ∀ i, b i i ≠ 0) :
     b * b⁻¹ = 1 ∧ (b⁻¹).BlockTriangular id ∧ ∀ i, b⁻¹ i i ≠ 0 := by
@@ -31,16 +38,35 @@ theorem triangular_inv_of_diag_ne {L : Type} [Field L] {n : ℕ} (b : Matrix (Fi
   rw [Matrix.nonsing_inv_mul b hdet, Matrix.one_apply_eq] at hii
   exact left_ne_zero_of_mul_eq_one hii.symm
 
+/- English proof (translation)
+Simplify using `only [scal, map_mul, Out.liftFun]`.
+-/
 theorem scal_mul_tie {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} {S : Type} [CommRing S] (x : Sp S ⟶ Xo.X) (a a' : S) (i : (PPx x).ι) :
     scal x (a * a') i = scal x a i * scal x a' i := by
   simp only [scal, map_mul, Out.liftFun]
 
+/- English proof (translation)
+Simplify using `only [scal, map_one, Out.liftFun]`.
+-/
 theorem scal_one_tie {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} {S : Type} [CommRing S] (x : Sp S ⟶ Xo.X) (i : (PPx x).ι) :
     scal x 1 i = 1 := by
   simp only [scal, map_one, Out.liftFun]
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Y M L _ _ f y z Λ u b hxz hb hΛ hM`. Take `⟨zx, zo, zu, zt, ze, zb, zs, zg⟩` from `z`. Substitute `hxz` using the available equality. Take `⟨Λ', hΛ'u, -⟩` from `hM`. Establish `hB : ∀ τ, b τ * (b τ)⁻¹ = 1 ∧ ((b τ)⁻¹).BlockTriangular id ∧ ∀ i, (b τ)⁻¹ i i ≠ 0` using `fun τ => triangular_inv_of_diag_ne (b τ) (hb τ).1 (hb τ).2`.
+
+Take `⟨a, ha, -⟩` from `y.gen zs`. Take `⟨a', ha', -⟩` from `zg y.s`. Take `⟨w, -, huniq⟩` from `zg zs`. Establish `h1 : ∀ i, zs.f i = scal y.x (a * a') i * zs.f i` using `fun i => by`. Rewrite using `[scal_mul_tie, _root_.mul_assoc, ← ha' i, ← ha i]`.
+
+Establish `h2 : ∀ i, zs.f i = scal y.x 1 i * zs.f i` using `fun i => by`. Rewrite using `[scal_one_tie, _root_.one_mul]`. Establish `haa : a * a' = 1` using `(huniq _ h1).trans (huniq _ h2).symm`. Use `⟨fun k => Option.elim k (Units.mkOfMulEqOne a a' haa) (fun p => Units.mk0 ((b p.1)⁻¹ p.2 p.2) ((hB p.1).2.2 p.2)), ?_⟩` and prove the remaining obligations. Unfold `FrBor`.
+
+Use `⟨rfl, fun τ i => ⟨fun j => (b τ)⁻¹ j i, rfl, fun j hij => (hB τ).2.1 hij, ?_⟩, 𝟙 _, Category.id_comp _, Category.id_comp _, fun i h => ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.T.isCombAt_iff_coordinate_combination E H Dw l Xo c O β Y M L f y.x Λ (Dw.mult τ) (fun j k => (u τ * b τ) k j) (y.u τ) (fun j => (b τ)⁻¹ j i) (zu τ i) (fun j => hΛ τ j)).mpr ?_` and prove the remaining obligations. Establish `hv` using `(GlobalTheory.T.modelChartLift_coords_generator_indep E H Dw l Xo c O β Y M L f y.x Λ' Λ).1 _ _ (hΛ'u τ i)`. Use `hv using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`.
+
+Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun j _ => _root_.mul_comm _ _`. Use `_ = u τ k i := by rw [Matrix.mul_assoc, (hB τ).1, Matrix.mul_one]`.
+
+Establish `e : homOfLE h = 𝟙 _` using `Subsingleton.elim _ _`. Simplify using `only [Scheme.Hom.appLE, Scheme.Hom.id_app, e, Option.elim_none, Units.val_mkOfMulEqOne]`. Use `erw [op_id, CategoryTheory.Functor.map_id, Category.comp_id, CommRingCat.hom_id, RingHom.id_apply]`. Conclude with `(ha i).symm`.
+-/
 theorem frBor_of_tie : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (M : MChart Y), ∀ (L : Type) [Field L] [Algebra c.F L] (f : Γ(Y.X, M.U) →+* L) (y z : FrPt Xo c L) (Λ : M.Lift f y.x) (u : ∀ τ : E →+* ℂ, Matrix (Fin M.n) (Fin (Dw.mult τ)) L) (b : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) L), z.x = y.x → (∀ τ, (b τ).BlockTriangular id ∧ ∀ i, b τ i i ≠ 0) → Λ.LieTie (fun τ => u τ * b τ) y.u → M.Comparison₂ f u z → ∃ t : Ix Dw → Lˣ, FrBor t y z := by
   intro E _ _ _ H Dw l Xo c O _ β Y M L _ _ f y z Λ u b hxz hb hΛ hM
   obtain ⟨zx, zo, zu, zt, ze, zb, zs, zg⟩ := z

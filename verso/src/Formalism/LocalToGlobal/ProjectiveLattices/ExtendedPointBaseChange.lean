@@ -66,23 +66,44 @@ section xplus
 
 variable (X : PJ D B P j) (E : PtExt X) (hM : IntAtExt X E)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem xplus_Pt (la : HeightOneSpectrum (𝓞 B.KO)) : (xplus X E hM).Pt la = (X.Pt la ⊕ E.Pt' la) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem xplus_vAt_inl (la : HeightOneSpectrum (𝓞 B.KO)) (y : X.Pt la) (F : X.Forms) :
     (xplus X E hM).vAt la (.inl y) F = X.vAt la y F := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem xplus_vAt_inr (la : HeightOneSpectrum (𝓞 B.KO)) (y : E.Pt' la) (F : X.Forms) :
     (xplus X E hM).vAt la (.inr y) F = E.vAt' la y F := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem extended_points_left (la : HeightOneSpectrum (𝓞 B.KO)) (y : X.Pt la) :
     (xplus X E hM).pt66 la (.inl y) = X.pt66 la y := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem extended_points_right (la : HeightOneSpectrum (𝓞 B.KO)) (y : E.Pt' la) :
     (xplus X E hM).pt66 la (.inr y) = E.extendedPointBaseChange la y := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem xplus_depth_inl (s : 𝓞 B.KO) (w : WeightFamilies.Wt D j) (la : HeightOneSpectrum (𝓞 B.KO)) (y : X.Pt la) :
     (xplus X E hM).depth s w la (.inl y) = X.depth s w la y := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem xplus_phiC_inl (la : HeightOneSpectrum (𝓞 B.KO)) (y : X.Pt la) :
     (xplus X E hM).phiC la (.inl y) = X.phiC la y := rfl
 
@@ -145,11 +166,17 @@ variable (N : ∀ j ka, (B.KO →+* ℂ) → B.Cusp j ka → ℝ)
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem concl_xplusN (X : PJ D B P j) (E : PtExt X) (hM : IntAtExt X E) (S : Scal B) (ka wL wF : WeightFamilies.Wt D j)
     (T : ℕ) (nus : HeightOneSpectrum (𝓞 B.KO) → ℝ) (β : ℝ) :
     Concl (xplusN N h0 h1 h2 h3 h4 X E hM) (scalarsWithNorm N h0 h1 h2 h3 h4 S) ka wL wF T nus β ↔
       Concl X S ka wL wF T nus β := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem concl_xplus (X : PJ D B P j) (E : PtExt X) (hM : IntAtExt X E) (S : Scal B) (ka wL wF : WeightFamilies.Wt D j)
     (T : ℕ) (nus : HeightOneSpectrum (𝓞 B.KO) → ℝ) (β : ℝ) :
     Concl (xplus X E hM) S ka wL wF T nus β ↔ Concl X S ka wL wF T nus β := Iff.rfl
@@ -173,18 +200,27 @@ variable (h0 : ∀ j ka, cov j ka → ∀ σ F, 0 ≤ Nn j ka σ F)
     (h4 : ∀ j ka, cov j ka → ∀ σ F, Nn j ka σ F ≤ B.supN j ka σ F)
 
 include h0 in
+/- English proof (translation)
+Introduce `j ka σ F` and use `by unfold l2nOn; split_ifs with h · exact h0 j ka h σ F · exact B.supN_nonneg j ka σ F`.
+-/
 theorem l2nOn_nonneg : ∀ j ka σ F, 0 ≤ l2nOn cov Nn j ka σ F := fun j ka σ F => by
   unfold l2nOn; split_ifs with h
   · exact h0 j ka h σ F
   · exact B.supN_nonneg j ka σ F
 
 include h1 in
+/- English proof (translation)
+Introduce `j ka σ F` and use `by unfold l2nOn; split_ifs with h · exact h1 j ka h σ F · exact B.supN_eq_zero j ka σ F`.
+-/
 theorem l2nOn_eq_zero : ∀ j ka σ F, l2nOn cov Nn j ka σ F = 0 ↔ F = 0 := fun j ka σ F => by
   unfold l2nOn; split_ifs with h
   · exact h1 j ka h σ F
   · exact B.supN_eq_zero j ka σ F
 
 include h2 in
+/- English proof (translation)
+Introduce `j ka σ a F` and use `by unfold l2nOn; split_ifs with h · exact h2 j ka h σ a F · exact B.supN_smul j ka σ a F`.
+-/
 theorem l2nOn_smul : ∀ j ka σ (a : B.KO) F, l2nOn cov Nn j ka σ (a • F) = ‖σ a‖ * l2nOn cov Nn j ka σ F :=
   fun j ka σ a F => by
   unfold l2nOn; split_ifs with h
@@ -192,6 +228,9 @@ theorem l2nOn_smul : ∀ j ka σ (a : B.KO) F, l2nOn cov Nn j ka σ (a • F) = 
   · exact B.supN_smul j ka σ a F
 
 include h3 in
+/- English proof (translation)
+Introduce `j ka σ F G` and use `by unfold l2nOn; split_ifs with h · exact h3 j ka h σ F G · exact B.supN_add j ka σ F G`.
+-/
 theorem l2nOn_add : ∀ j ka σ F G, l2nOn cov Nn j ka σ (F + G) ≤ l2nOn cov Nn j ka σ F + l2nOn cov Nn j ka σ G :=
   fun j ka σ F G => by
   unfold l2nOn; split_ifs with h
@@ -199,6 +238,9 @@ theorem l2nOn_add : ∀ j ka σ F G, l2nOn cov Nn j ka σ (F + G) ≤ l2nOn cov 
   · exact B.supN_add j ka σ F G
 
 include h4 in
+/- English proof (translation)
+Introduce `j ka σ F` and use `by unfold l2nOn; split_ifs with h · exact h4 j ka h σ F · exact le_rfl`.
+-/
 theorem l2nOn_le : ∀ j ka σ F, l2nOn cov Nn j ka σ F ≤ B.supN j ka σ F := fun j ka σ F => by
   unfold l2nOn; split_ifs with h
   · exact h4 j ka h σ F

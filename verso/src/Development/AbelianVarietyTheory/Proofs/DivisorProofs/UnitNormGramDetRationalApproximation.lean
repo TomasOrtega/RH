@@ -17,27 +17,45 @@ section Alg
 
 variable (K : Type) [Field K] [Algebra F K]
 
+/- English proof (translation)
+Simplify using `[sigR, inclR]`.
+-/
 theorem sigR_inclR' (σ : E →ₐ[F] E) (e : E) : sigR K σ (inclR (F := F) K e) = inclR K (σ e) := by
   simp [sigR, inclR]
 
+/- English proof (translation)
+Simplify using `[sigR, Algebra.TensorProduct.algebraMap_apply]`.
+-/
 theorem sigR_algebraMap' (σ : E →ₐ[F] E) (k : K) :
     sigR K σ (algebraMap K (K ⊗[F] E) k) = algebraMap K (K ⊗[F] E) k := by
   simp [sigR, Algebra.TensorProduct.algebraMap_apply]
 
+/- English proof (translation)
+Simplify using `[hR, hE, Formalism.UG.hform, JR, map_sum, map_mul, sigR_inclR']`.
+-/
 theorem hR_incl (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (x y : Fin M → E) :
     hR K σ J (fun i => inclR K (x i)) (fun i => inclR K (y i)) = inclR K (hE σ J x y) := by
   simp [hR, hE, Formalism.UG.hform, JR, map_sum, map_mul, sigR_inclR']
 
+/- English proof (translation)
+Simplify using `only [gram2R, gram2E, hR_incl, map_sub, map_mul]`.
+-/
 theorem hermitianGramDetTwoVectorsTensor_incl (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (x y : Fin M → E) :
     gram2R K σ J (fun i => inclR K (x i)) (fun i => inclR K (y i)) = inclR K (gram2E σ J x y) := by
   simp only [gram2R, gram2E, hR_incl, map_sub, map_mul]
 
+/- English proof (translation)
+Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul k e => simp [sigR, hσ]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+-/
 theorem sigR_sigR {σ : E →ₐ[F] E} (hσ : ∀ e, σ (σ e) = e) (u : K ⊗[F] E) : sigR K σ (sigR K σ u) = u := by
   induction u using TensorProduct.induction_on with
   | zero => simp
   | tmul k e => simp [sigR, hσ]
   | add a b ha hb => simp only [map_add, ha, hb]
 
+/- English proof (translation)
+Simplify using `only [hR, Formalism.UG.hform, map_sum, map_mul, sigR_sigR K hσ, JR, Matrix.map_apply, sigR_inclR', hJ]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sigR_hR {σ : E →ₐ[F] E} (hσ : ∀ e, σ (σ e) = e) {M : ℕ} {J : Matrix (Fin M) (Fin M) E}
     (hJ : ∀ i j, σ (J j i) = J i j) (a b : Fin M → K ⊗[F] E) :
     sigR K σ (hR K σ J a b) = hR K σ J b a := by
@@ -46,12 +64,24 @@ theorem sigR_hR {σ : E →ₐ[F] E} (hσ : ∀ e, σ (σ e) = e) {M : ℕ} {J :
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Simplify using `only [gram2R, map_sub, map_mul, sigR_hR K hσ hJ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sigR_gram2R {σ : E →ₐ[F] E} (hσ : ∀ e, σ (σ e) = e) {M : ℕ} {J : Matrix (Fin M) (Fin M) E}
     (hJ : ∀ i j, σ (J j i) = J i j) (a b : Fin M → K ⊗[F] E) :
     sigR K σ (gram2R K σ J a b) = gram2R K σ J a b := by
   simp only [gram2R, map_sub, map_mul, sigR_hR K hσ hJ]
   ring
 
+/- English proof (translation)
+Take `⟨φ, hφ⟩` from `LinearMap.exists_leftInverse_of_injective (Algebra.linearMap F E) (LinearMap.ker_eq_bot.2 (algebraMap F E).injective)`. Set `φ' : E →ₗ[F] F` to `φ ∘ₗ (LinearMap.id + σ.toLinearMap)`. Establish `hφ' : ∀ e, algebraMap F E (φ' e) = e + σ e`. Introduce `e`. Take `⟨f, hf⟩` from `GlobalTheory.HermLineZeros.exists_of_fixed h (e + σ e) (by rw [map_add, GlobalTheory.HermLineZeros.conj_invol h, add_comm])`.
+
+Establish `h1 : φ' e = φ (e + σ e)` using `rfl`. Rewrite using `[h1, ← hf]`. Use `LinearMap.congr_fun hφ f` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, Algebra.linearMap_apply, LinearMap.id_apply] at this`. Rewrite using `[this]`.
+
+Use `⟨(TensorProduct.AlgebraTensorModule.rid F K K).toLinearMap ∘ₗ φ'.baseChange K, fun u => ?_⟩` and prove the remaining obligations. Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul k e`. Establish `h2 : sigR K σ (k ⊗ₜ[F] e) = k ⊗ₜ[F] σ e` using `rfl`.
+
+Rewrite using `[h2, ← TensorProduct.tmul_add, ← hφ', Algebra.algebraMap_eq_smul_one, ← TensorProduct.smul_tmul]`. Simplify using `[Algebra.TensorProduct.algebraMap_apply]`. Consider the case `add a b ha hb => rw [map_add, map_add, map_add, ← ha, ← hb]`. Normalize the expressions using the abelian group laws.
+-/
 theorem exists_lam [NumberField F] [NumberField E] {σ : E →ₐ[F] E} (h : IsCMExt F E σ) :
     ∃ lam : K ⊗[F] E →ₗ[K] K, ∀ u, u + sigR K σ u = algebraMap K (K ⊗[F] E) (lam u) := by
   obtain ⟨φ, hφ⟩ := LinearMap.exists_leftInverse_of_injective (Algebra.linearMap F E)
@@ -75,6 +105,9 @@ theorem exists_lam [NumberField F] [NumberField E] {σ : E →ₐ[F] E} (h : IsC
     simp [Algebra.TensorProduct.algebraMap_apply]
   | add a b ha hb => rw [map_add, map_add, map_add, ← ha, ← hb]; abel
 
+/- English proof (translation)
+Establish `: (2 : K₀) = algebraMap F₀ K₀ 2` using `(map_ofNat (algebraMap F₀ K₀) 2).symm`. Rewrite using `[this]`. Conclude with `(map_ne_zero _).2 two_ne_zero`.
+-/
 theorem two_ne_zero' (F₀ K₀ : Type) [Field F₀] [CharZero F₀] [Field K₀] [Algebra F₀ K₀] : (2 : K₀) ≠ 0 := by
   have : (2 : K₀) = algebraMap F₀ K₀ 2 := (map_ofNat (algebraMap F₀ K₀) 2).symm
   rw [this]
@@ -94,9 +127,15 @@ def sigRK (σ : E →ₐ[F] E) : K ⊗[F] E →ₗ[K] K ⊗[F] E where
 
 variable [IsModuleTopology K (K ⊗[F] E)] [IsTopologicalRing (K ⊗[F] E)]
 
+/- English proof (translation)
+The claim follows from `IsModuleTopology.continuous_of_linearMap (sigRK K σ)`.
+-/
 theorem continuous_sigR (σ : E →ₐ[F] E) : Continuous (sigR K σ) :=
   IsModuleTopology.continuous_of_linearMap (sigRK K σ)
 
+/- English proof (translation)
+Unfold `hR Formalism.UG.hform`. Use `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations. Conclude with `(((continuous_sigR K σ).comp ((continuous_apply i).comp hf)).mul continuous_const).mul ((continuous_apply j).comp hg)`.
+-/
 theorem continuous_hR {X : Type} [TopologicalSpace X] (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
     {f g : X → Fin M → K ⊗[F] E} (hf : Continuous f) (hg : Continuous g) :
     Continuous fun t => hR K σ J (f t) (g t) := by
@@ -105,6 +144,9 @@ theorem continuous_hR {X : Type} [TopologicalSpace X] (σ : E →ₐ[F] E) {M : 
   exact (((continuous_sigR K σ).comp ((continuous_apply i).comp hf)).mul continuous_const).mul
     ((continuous_apply j).comp hg)
 
+/- English proof (translation)
+Unfold `gram2R`. Conclude with `((continuous_hR K σ J hf hf).mul (continuous_hR K σ J hg hg)).sub ((continuous_hR K σ J hf hg).mul (continuous_hR K σ J hg hf))`.
+-/
 theorem continuous_gram2R {X : Type} [TopologicalSpace X] (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
     {f g : X → Fin M → K ⊗[F] E} (hf : Continuous f) (hg : Continuous g) :
     Continuous fun t => gram2R K σ J (f t) (g t) := by
@@ -112,6 +154,19 @@ theorem continuous_gram2R {X : Type} [TopologicalSpace X] (σ : E →ₐ[F] E) {
   exact ((continuous_hR K σ J hf hf).mul (continuous_hR K σ J hg hg)).sub
     ((continuous_hR K σ J hf hg).mul (continuous_hR K σ J hg hf))
 
+/- English proof (translation)
+Take `⟨lam, hlam⟩` from `exists_lam K h`. Establish `h2` using `two_ne_zero' F K`. Use `set ι := algebraMap K (K ⊗[F] E) with hι`. Establish `hcancel : ∀ b c : K ⊗[F] E, b + b = c + c → b = c`. Introduce `b c hbc`.
+
+Establish `e1 : ι 2 * b = ι 2 * c` using `by rw [map_ofNat, two_mul, two_mul, hbc]`. Establish `hu : IsUnit (ι 2)` using `(IsUnit.mk0 _ h2).map ι`. Conclude with `hu.mul_left_cancel e1`. Use `set k₀ := lam a₀ with hk₀def`. Establish `hk₀ : ι k₀ = a₀ + a₀` using `by rw [hk₀def, ← hlam, hfix]`.
+
+Establish `hk0 : k₀ ≠ 0`. Introduce `hk`. Establish `: a₀ = 0` using `hcancel _ _ (by rw [← hk₀, hk, map_zero, add_zero])`. Conclude with `ha.isUnit.ne_zero this`. Take `⟨U, hU, hUsq⟩` from `GlobalTheory.sqOpen_of_two_ne_zero K h2 {μ | μ ≠ 0} (isOpen_ne.mem_nhds one_ne_zero)`.
+
+Establish `hc : Continuous fun b => lam b / k₀` using `(IsModuleTopology.continuous_of_linearMap lam).div_const k₀`. Establish `hmem : (fun b => lam b / k₀) ⁻¹' U ∈ 𝓝 a₀` using `hc.continuousAt.preimage_mem_nhds (by simpa [← hk₀def, div_self hk0] using hU)`. Use `filter_upwards [hmem] with b hb hbfix`. Take `⟨μ, hμ0, hμ⟩` from `hUsq _ hb`. Take `⟨s, hs, hss⟩` from `ha`.
+
+Use `⟨ι μ * s, ((IsUnit.mk0 _ hμ0).map ι).mul hs, ?_⟩` and prove the remaining obligations. Apply `hcancel` to reduce the goal to its premises. Rewrite using `[map_mul, sigR_algebraMap']`. Establish `e2 : ι (lam b) = b + b` using `by rw [← hlam, hbfix]`. Establish `e3 : lam b = μ ^ 2 * k₀` using `by rw [hμ]; field_simp`.
+
+Rewrite using `[← e2, e3, map_mul, hk₀, ← hss, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isUnitNorm_nhds {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {a₀ : K ⊗[F] E} (ha : IsUnitNorm K σ a₀)
     (hfix : sigR K σ a₀ = a₀) : ∀ᶠ b in 𝓝 a₀, sigR K σ b = b → IsUnitNorm K σ b := by
   obtain ⟨lam, hlam⟩ := exists_lam K h
@@ -143,6 +198,9 @@ theorem isUnitNorm_nhds {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {a₀ : K ⊗[
   rw [← e2, e3, map_mul, hk₀, ← hss, map_pow]
   ring
 
+/- English proof (translation)
+Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `t ht`. Use `filter_upwards [hf.continuousAt.eventually (isUnitNorm_nhds K h ht (hfix t))] with s hs using hs (hfix s)`.
+-/
 theorem isOpen_unitNorm {X : Type} [TopologicalSpace X] {σ : E →ₐ[F] E} (h : IsCMExt F E σ)
     {f : X → K ⊗[F] E} (hf : Continuous f) (hfix : ∀ t, sigR K σ (f t) = f t) :
     IsOpen {t | IsUnitNorm K σ (f t)} := by
@@ -150,6 +208,17 @@ theorem isOpen_unitNorm {X : Type} [TopologicalSpace X] {σ : E →ₐ[F] E} (h 
   intro t ht
   filter_upwards [hf.continuousAt.eventually (isUnitNorm_nhds K h ht (hfix t))] with s hs using hs (hfix s)
 
+/- English proof (translation)
+Set `S : AddSubgroup (K ⊗[F] E)` to `(inclR (F := F) (E := E) K).range.toAddSubgroup`. Establish `hS : (S.topologicalClosure : Set (K ⊗[F] E)) = closure (Set.range (inclR (F` using `F) (E := E) K)) := by`. Rewrite using `[AddSubgroup.topologicalClosure_coe]`. Both sides reduce to the same expression. Introduce `u`.
+
+Rewrite using `[← hS]`. Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => exact zero_mem _`. Consider the case `add a b ha hb => exact add_mem ha hb`. Consider the case `tmul k e`.
+
+Use `hd.induction_on (p := fun k => k ⊗ₜ[F] e ∈ S.topologicalClosure) k ?_ ?_` and prove the remaining obligations. Establish `hc : Continuous fun k : K => k ⊗ₜ[F] e`. Establish `: (fun k : K => k ⊗ₜ[F] e) = fun k => k • ((1 : K) ⊗ₜ[F] e)`. Use function extensionality and compare the values at `k`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+
+Rewrite using `[this]`. Conclude with `(continuous_id : Continuous fun k : K => k).smul (continuous_const : Continuous fun _ : K => (1 : K) ⊗ₜ[F] e)`. Conclude with `S.isClosed_topologicalClosure.preimage hc`. Introduce `c`. Apply `S.le_topologicalClosure` to reduce the goal to its premises.
+
+Use `⟨c • e, ?_⟩` and prove the remaining obligations. Simplify using `[inclR, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`.
+-/
 theorem dense_inclR (hd : DenseRange (algebraMap F K)) : Dense (Set.range (inclR (F := F) (E := E) K)) := by
   let S : AddSubgroup (K ⊗[F] E) := (inclR (F := F) (E := E) K).range.toAddSubgroup
   have hS : (S.topologicalClosure : Set (K ⊗[F] E)) = closure (Set.range (inclR (F := F) (E := E) K)) := by
@@ -173,6 +242,13 @@ theorem dense_inclR (hd : DenseRange (algebraMap F K)) : Dense (Set.range (inclR
       refine ⟨c • e, ?_⟩
       simp [inclR, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]
 
+/- English proof (translation)
+Establish `e1 : (Set.range fun z : Fin M → E => fun i => inclR (F` using `F) K (z i)) = Set.univ.pi (fun _ => Set.range (inclR (F := F) (E := E) K)) := by`. Use extensionality with `v`. Simplify using `only [Set.mem_range, Set.mem_pi, Set.mem_univ, true_implies]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩ i`.
+
+Conclude with `⟨z i, rfl⟩`. Introduce `hv choose z hz using hv`. Conclude with `⟨z, funext hz⟩`. Rewrite using `[e1]`. Introduce `v`.
+
+Rewrite using `[closure_pi_set]`. Introduce `i _`. Rewrite using `[(dense_inclR K hd).closure_eq]`. Discharge the goal by the elementary cases of `trivial`.
+-/
 theorem dense_ratVec (hd : DenseRange (algebraMap F K)) (M : ℕ) :
     Dense (Set.range fun z : Fin M → E => fun i => inclR (F := F) K (z i)) := by
   have e1 : (Set.range fun z : Fin M → E => fun i => inclR (F := F) K (z i)) =
@@ -198,12 +274,18 @@ section Expand
 
 variable {A : Type} [CommRing A] {M : ℕ}
 
+/- English proof (translation)
+Simplify using `only [Formalism.UG.hform, Finset.mul_sum, ← Finset.sum_add_distrib, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hform_add_smul_right (s : A →+* A) (J : Matrix (Fin M) (Fin M) A) (a b d : Fin M → A) (c : A) :
     Formalism.UG.hform s J a (b + c • d) = Formalism.UG.hform s J a b + c * Formalism.UG.hform s J a d := by
   simp only [Formalism.UG.hform, Finset.mul_sum, ← Finset.sum_add_distrib, Pi.add_apply, Pi.smul_apply, smul_eq_mul]
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Simplify using `only [Formalism.UG.hform, Finset.mul_sum, ← Finset.sum_add_distrib, Pi.add_apply, Pi.smul_apply, smul_eq_mul, map_add, map_mul]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hform_add_smul_left (s : A →+* A) (J : Matrix (Fin M) (Fin M) A) (a b d : Fin M → A) (c : A) :
     Formalism.UG.hform s J (b + c • d) a = Formalism.UG.hform s J b a + s c * Formalism.UG.hform s J d a := by
   simp only [Formalism.UG.hform, Finset.mul_sum, ← Finset.sum_add_distrib, Pi.add_apply, Pi.smul_apply, smul_eq_mul,
@@ -213,6 +295,41 @@ theorem hform_add_smul_left (s : A →+* A) (J : Matrix (Fin M) (Fin M) A) (a b 
 
 end Expand
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ h K _ _ _ hd M J hJ x y hxx w h1 h2`. Use `haveI : Module.Finite F E := Module.finite_of_finrank_pos (by rw [h.2.2.1]; norm_num)`. Use `haveI : IsModuleTopology K (K ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (K ⊗[F] E) := IsModuleTopology.isTopologicalRing K _`. Establish `hσ` using `GlobalTheory.HermLineZeros.conj_invol h`.
+
+Use `set xb : Fin M → K ⊗[F] E := fun i => inclR K (x i) with hxb`. Use `set yb : Fin M → K ⊗[F] E := fun i => inclR K (y i) with hyb`. Use `set ι := algebraMap K (K ⊗[F] E) with hι`. Use `set U1 := {v : Fin M → K ⊗[F] E | IsUnitNorm K σ (-(gram2R K σ J xb v))} with hU1def`. Use `set U2 := {v : Fin M → K ⊗[F] E | IsUnitNorm K σ (-(gram2R K σ J v yb))} with hU2def`.
+
+Establish `hU1 : IsOpen U1` using `isOpen_unitNorm K h ((continuous_gram2R K σ J continuous_const continuous_id).neg) (fun v => by rw [map_neg, sigR_gram2R K hσ hJ.1])`. Establish `hU2 : IsOpen U2` using `isOpen_unitNorm K h ((continuous_gram2R K σ J continuous_id continuous_const).neg) (fun v => by rw [map_neg, sigR_gram2R K hσ hJ.1])`. Take `⟨φ, hφ⟩` from `LinearMap.exists_leftInverse_of_injective (Algebra.linearMap F E) (LinearMap.ker_eq_bot.2 (algebraMap F E).injective)`. Establish `hφ1 : φ 1 = 1` using `by simpa using LinearMap.congr_fun hφ 1`. Set `ψ : E →ₗ[F] F` to `φ ∘ₗ LinearMap.mulLeft F (hE σ J x x)⁻¹`.
+
+Establish `hψ : ψ (hE σ J x x) = 1`. Express the relevant statement in the definitionally equal form `φ ((hE σ J x x)⁻¹ * hE σ J x x) = 1`. Rewrite using `[inv_mul_cancel₀ hxx, hφ1]`. Set `lam : K ⊗[F] E →ₗ[K] K` to `(TensorProduct.AlgebraTensorModule.rid F K K).toLinearMap ∘ₗ ψ.baseChange K`. Establish `hlamι : ∀ e, lam (inclR K e) = algebraMap F K (ψ e)`.
+
+Introduce `e`. Simplify using `[lam, inclR, Algebra.algebraMap_eq_smul_one]`. Establish `hlamA : lam (hR K σ J xb xb) = 1`. Rewrite using `[hxb, hR_incl, hlamι, hψ, map_one]`. Establish `hlamsmul : ∀ (k : K) (u : K ⊗[F] E), lam (ι k * u) = k * lam u`.
+
+Introduce `k u`. Rewrite using `[← Algebra.smul_def, map_smul, smul_eq_mul]`. Set `wε : K → Fin M → K ⊗[F] E` to `fun ε => w + ι ε • xb`. Establish `hsig : ∀ ε, sigR K σ (ι ε) = ι ε` using `sigR_algebraMap' K σ`. Establish `hg1 : ∀ ε, gram2R K σ J xb (wε ε) = gram2R K σ J xb w`.
+
+Introduce `ε`. Simplify using `only [wε, gram2R, hR, hform_add_smul_right, hform_add_smul_left, GlobalTheory.HermLineZeros.hform_expand]`. Rewrite using `[hsig]`. Expand and normalize the polynomial expressions, which then agree. Establish `hpoly : ∀ ε, lam (hR K σ J (wε ε) (wε ε)) = ε ^ 2 + lam (hR K σ J w xb + hR K σ J xb w) * ε + lam (hR K σ J w w)`.
+
+Introduce `ε`. Establish `e1 : hR K σ J (wε ε) (wε ε) = hR K σ J w w + ι ε * (hR K σ J w xb + hR K σ J xb w) + ι ε * (ι ε * hR K σ J xb xb)`. Simplify using `only [wε, hR, GlobalTheory.HermLineZeros.hform_expand]`. Rewrite using `[hsig]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e1, map_add, map_add, hlamsmul, hlamsmul, hlamsmul, hlamA]`. Expand and normalize the polynomial expressions, which then agree. Use `set P : Polynomial K := Polynomial.X ^ 2 + Polynomial.C (lam (hR K σ J w xb + hR K σ J xb w)) * Polynomial.X + Polynomial.C (lam (hR K σ J w w)) with hP`. Establish `hP0 : P ≠ 0`. Introduce `h0`.
+
+Use `congrArg (fun p => Polynomial.coeff p 2) h0` as an intermediate fact. Simplify using `[hP, Polynomial.coeff_X, Polynomial.coeff_C] at this`. Establish `hZ : {ε : K | P.IsRoot ε}.Countable` using `(Polynomial.finite_setOf_isRoot hP0).countable`. Establish `hD : Dense {ε : K | P.IsRoot ε}ᶜ` using `hZ.dense_compl K`. Establish `hcι : Continuous ι` using `((continuous_id : Continuous fun k : K => k).smul (continuous_const : Continuous fun _ : K => (1 : K ⊗[F] E))).congr (fun k => (Algebra.algebraMap_eq_smul_one k).symm)`.
+
+Establish `hcw : Continuous wε` using `continuous_const.add (hcι.smul continuous_const)`. Establish `hV : IsOpen (wε ⁻¹' U2)` using `hU2.preimage hcw`. Establish `h0 : (0 : K) ∈ wε ⁻¹' U2`. Express the relevant statement in the definitionally equal form `IsUnitNorm K σ (-(gram2R K σ J (w + ι 0 • xb) yb))`. Rewrite using `[map_zero, zero_smul, add_zero]`.
+
+Conclude with `h2`. Take `⟨ε, hεD, hεV⟩` from `hD.exists_mem_open hV ⟨0, h0⟩`. Use `set U3 := {v : Fin M → K ⊗[F] E | lam (hR K σ J v v) ≠ 0} with hU3def`. Establish `hU3 : IsOpen U3` using `isOpen_ne.preimage ((IsModuleTopology.continuous_of_linearMap lam).comp (continuous_hR K σ J continuous_id continuous_id))`. Establish `hO : IsOpen (U1 ∩ U2 ∩ U3)` using `(hU1.inter hU2).inter hU3`.
+
+Establish `hmem : wε ε ∈ U1 ∩ U2 ∩ U3`. Use `⟨⟨?_, hεV⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsUnitNorm K σ (-(gram2R K σ J xb (wε ε)))`. Rewrite using `[hg1]`. Conclude with `h1`.
+
+Express the relevant statement in the definitionally equal form `lam (hR K σ J (wε ε) (wε ε)) ≠ 0`. Rewrite using `[hpoly]`. Introduce `h0`. Apply `hεD` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `P.IsRoot ε`.
+
+Simplify using `only [hP, Polynomial.IsRoot, Polynomial.eval_add, Polynomial.eval_mul, Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_C]`. Rewrite using `[← h0]`. Take `⟨_, ⟨z, rfl⟩, hz⟩` from `(dense_ratVec K hd M).exists_mem_open hO ⟨_, hmem⟩`. Use `⟨z, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`.
+
+Apply `hz.2` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `lam (hR K σ J (fun i => inclR K (z i)) (fun i => inclR K (z i))) = 0`. Rewrite using `[hR_incl, h0, map_zero, map_zero]`. Rewrite using `[← hermitianGramDetTwoVectorsTensor_incl]`. Conclude with `hz.1.1`.
+
+Rewrite using `[← hermitianGramDetTwoVectorsTensor_incl]`. Conclude with `hz.1.2`.
+-/
 theorem approx : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → ∀ (K : Type) [NontriviallyNormedField K] [CompleteSpace K] [Algebra F K],
     DenseRange (algebraMap F K) → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J →

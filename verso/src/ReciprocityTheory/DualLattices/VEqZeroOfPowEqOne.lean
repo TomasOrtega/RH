@@ -16,6 +16,15 @@ def MvIsInt (v : AddValuation C (WithTop ℝ)) {σ : Type*} (f : MvPowerSeries �
 def PsIsInt (v : AddValuation C (WithTop ℝ)) (f : PowerSeries C) : Prop :=
   ∀ n, IsIntV v (PowerSeries.coeff n f)
 
+/- English proof (translation)
+Establish `h1 : N • v z = 0` using `by rw [← AddValuation.map_pow, hz, AddValuation.map_one]`. Generalize the expression as in `v z = x at h1 ⊢`. Proceed by induction on `x using WithTop.recTopCoe with`. Consider the case `top`. It suffices to derive a contradiction.
+
+Take `⟨k, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hN`. Rewrite `h1` using `[succ_nsmul, WithTop.add_top]`. Conclude with `WithTop.top_ne_zero h1`. Consider the case `coe r`. Rewrite `h1` using `[← WithTop.coe_nsmul]`.
+
+Establish `h2 : N • r = 0` using `WithTop.coe_eq_zero.mp h1`. Rewrite `h2` using `[nsmul_eq_mul]`. Break down `mul_eq_zero.mp h2 with h | h` into its components or cases. Conclude with `absurd (Nat.cast_eq_zero.mp h) hN`. Rewrite using `[h]`.
+
+Both sides reduce to the same expression.
+-/
 theorem v_eq_zero_of_pow_eq_one {v : AddValuation C (WithTop ℝ)} {z : C} {N : ℕ} (hN : N ≠ 0)
     (hz : z ^ N = 1) : v z = 0 := by
   have h1 : N • v z = 0 := by rw [← AddValuation.map_pow, hz, AddValuation.map_one]

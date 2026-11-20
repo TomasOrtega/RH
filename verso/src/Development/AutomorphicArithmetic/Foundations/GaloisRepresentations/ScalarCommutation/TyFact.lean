@@ -24,24 +24,42 @@ namespace UpperTheory.Gal.Spc
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {A : Arith E} {n p : ℕ} [Fact p.Prime] {S : Setup A n p}
 variable {x : E} {U : Submodule ℂ (UA E n → ℂ)} {w₀ : Plc E} {Up : Plc E → Prop}
 
+/- English proof (translation)
+The claim follows from `(Continuous.units_map _ (continuous_id.matrix_map (RestrictedProduct.continuous_eval w))).comp (continuous_fst.comp continuous_subtype_val)`.
+-/
 private theorem cont_comp (w : Plc E) : Continuous (comp w : GUf E n → GL (Fin n) (w.adicCompletion E)) :=
   (Continuous.units_map _ (continuous_id.matrix_map (RestrictedProduct.continuous_eval w))).comp
     (continuous_fst.comp continuous_subtype_val)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (Prod.ext (Units.ext ((F.th_mat g).trans (UpperTheory.Gal.CertificateRingHomMap.invT_val _).symm)) (F.th_sim g))`.
+-/
 private theorem th_eq (F : Frame S) (g : GUf E n) : F.th g = UpperTheory.Gal.CertificateRingHomMap.th g :=
   Subtype.ext (Prod.ext (Units.ext ((F.th_mat g).trans (UpperTheory.Gal.CertificateRingHomMap.invT_val _).symm)) (F.th_sim g))
 
+/- English proof (translation)
+Rewrite using `[hf'.2, hf.1, UpperTheory.Gal.CertificateRingHomMap.comp_loc_of_apart u.2.1 h]`.
+-/
 private theorem pr_loc_one {F : Frame S} {w u : Spl E p} {L : Loc S.G.GAf (GLw n w.1)} {L' : Loc S.G.GAf (GLw n u.1)}
     (hf : IsFac F w L) (hf' : IsFac F u L') (h : GlobalTheory.Cong.Apart w.1 u.1) (y : GLw n u.1) : L.pr (L'.loc y) = 1 := by
   rw [hf'.2, hf.1, UpperTheory.Gal.CertificateRingHomMap.comp_loc_of_apart u.2.1 h]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨pr_loc_one hf hf' h, pr_loc_one hf' hf (Ne.symm h)⟩`.
+-/
 private theorem fac_apart {F : Frame S} {w u : Spl E p} {L : Loc S.G.GAf (GLw n w.1)} {L' : Loc S.G.GAf (GLw n u.1)}
     (hf : IsFac F w L) (hf' : IsFac F u L') (h : GlobalTheory.Cong.Apart w.1 u.1) : L.Apart L' :=
   ⟨pr_loc_one hf hf' h, pr_loc_one hf' hf (Ne.symm h)⟩
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Qk68.exists_prime_mem w`.
+-/
 private theorem exists_prime_mem (w : Plc E) : ∃ q : ℕ, q.Prime ∧ (q : 𝓞 E) ∈ w.asIdeal :=
   _root_.UpperTheory.Reformulated.B.Qk68.exists_prime_mem w
 
+/- English proof (translation)
+Establish `h` using `(HeightOneSpectrum.valuation_lt_one_iff_mem (K := E) w (q : 𝓞 E)).2 hq`. Establish `e : ((q : ℕ) : w.adicCompletion E) = algebraMap E (w.adicCompletion E) (algebraMap (𝓞 E) E (q : 𝓞 E))`. Rewrite using `[map_natCast, map_natCast]`. Rewrite using `[e]`. Conclude with `(HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w _).trans_lt h`.
+-/
 private theorem val_lt_one {w : Plc E} {q : ℕ} (hq : (q : 𝓞 E) ∈ w.asIdeal) : Valued.v (q : w.adicCompletion E) < 1 := by
   have h := (HeightOneSpectrum.valuation_lt_one_iff_mem (K := E) w (q : 𝓞 E)).2 hq
   have e : ((q : ℕ) : w.adicCompletion E) = algebraMap E (w.adicCompletion E) (algebraMap (𝓞 E) E (q : 𝓞 E)) := by
@@ -49,12 +67,22 @@ private theorem val_lt_one {w : Plc E} {q : ℕ} (hq : (q : 𝓞 E) ∈ w.asIdea
   rw [e]
   exact (HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w _).trans_lt h
 
+/- English proof (translation)
+Take `⟨d, rfl⟩` from `h`. Rewrite using `[Nat.cast_mul, mul_comm (a : w.adicCompletion E), mul_assoc]`. Conclude with `mul_mem (natCast_mem _ d) hy`.
+-/
 private theorem mul_mem_of_dvd {w : Plc E} {a b : ℕ} (h : a ∣ b) {y : w.adicCompletion E}
     (hy : (a : w.adicCompletion E) * y ∈ w.adicCompletionIntegers E) : (b : w.adicCompletion E) * y ∈ w.adicCompletionIntegers E := by
   obtain ⟨d, rfl⟩ := h
   rw [Nat.cast_mul, mul_comm (a : w.adicCompletion E), mul_assoc]
   exact mul_mem (natCast_mem _ d) hy
 
+/- English proof (translation)
+Establish `ho : IsOpen (w.adicCompletionIntegers E : Set (w.adicCompletion E))` using `Valued.isOpen_valuationSubring _`. Take `⟨m, hm⟩` from `hC.elim_directed_cover (fun m : ℕ => {t | ((q ^ m : ℕ) : w.adicCompletion E) * f t ∈ w.adicCompletionIntegers E}) (fun m => ho.preimage (continuous_const.mul hf)) (fun t _ => by`. Rewrite using `[Set.mem_iUnion]`. Distinguish the cases in `h0 : Valued.v (f t) = 0`. Use `⟨0, ?_⟩ show Valued.v (_ * f t) ≤ 1` and prove the remaining obligations.
+
+Rewrite using `[map_mul, h0, mul_zero]`. Conclude with `zero_le_one`. Take `⟨m, hm⟩` from `exists_pow_lt₀ (val_lt_one hq) (Units.mk0 _ h0)⁻¹`. Use `⟨m, ?_⟩` and prove the remaining obligations. Use `show Valued.v (_ * f t) ≤ 1`.
+
+Rewrite using `[map_mul, Nat.cast_pow, map_pow]`. Rewrite `hm` using `[Units.val_inv_eq_inv_val, Units.val_mk0]`. Combine the equalities or inequalities in the displayed calculation. Use the proof step `(Monotone.directed_le fun a b hab t ht => mul_mem_of_dvd (pow_dvd_pow q hab) ht)`. Conclude with `⟨m, fun t ht => hm ht⟩`.
+-/
 private theorem exists_pow {T : Type} [TopologicalSpace T] {w : Plc E} {q : ℕ} (hq : (q : 𝓞 E) ∈ w.asIdeal) {C : Set T}
     (hC : IsCompact C) {f : T → w.adicCompletion E} (hf : Continuous f) :
     ∃ m : ℕ, ∀ t ∈ C, ((q ^ m : ℕ) : w.adicCompletion E) * f t ∈ w.adicCompletionIntegers E := by
@@ -78,6 +106,13 @@ private theorem exists_pow {T : Type} [TopologicalSpace T] {w : Plc E} {q : ℕ}
     (Monotone.directed_le fun a b hab t ht => mul_mem_of_dvd (pow_dvd_pow q hab) ht)
   exact ⟨m, fun t ht => hm ht⟩
 
+/- English proof (translation)
+Distinguish the cases in `hp : (p : 𝓞 E) ∈ w.asIdeal`. Conclude with `⟨1, one_pos, Nat.coprime_one_left p, fun h => absurd hp h⟩`. Take `⟨q, hq, hqw⟩` from `exists_prime_mem w`. Establish `hne : q ≠ p` using `fun e => hp (e ▸ hqw)`. Establish `hc : Continuous fun t : GUf E n => F.cmp w (UpperTheory.Gal.CertificateRingHomMap.th t)`.
+
+Simplify using `only [Frame.cmp, UpperTheory.Gal.CertificateRingHomMap.comp_th]`. Conclude with `Units.continuous_val.comp ((continuous_const.mul ((GlobalTheory.SplitPts.continuous_invT _).comp (cont_comp w))).mul continuous_const)`. Use `choose m hm using fun i k : Fin n => exists_pow hqw hC (hc.matrix_elem i k)`. Use `⟨q ^ ∑ i, ∑ k, m i k, pow_pos hq.pos _, ((Nat.coprime_primes hq Fact.out).2 hne).pow_left _, fun _ t ht i k => ?_⟩` and prove the remaining obligations. Use `mul_mem_of_dvd (pow_dvd_pow q ?_) (hm i k t ht)` and prove the remaining obligations.
+
+Conclude with `(Finset.single_le_sum (f := fun k => m i k) (fun _ _ => Nat.zero_le _) (Finset.mem_univ k)).trans (Finset.single_le_sum (f := fun i => ∑ k, m i k) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i))`.
+-/
 private theorem bound_at (F : Frame S) {C : Set (GUf E n)} (hC : IsCompact C) (w : Plc E) :
     ∃ c : ℕ, 0 < c ∧ c.Coprime p ∧ ((p : 𝓞 E) ∉ w.asIdeal → ∀ t ∈ C, ∀ i k,
       (c : w.adicCompletion E) * F.cmp w (UpperTheory.Gal.CertificateRingHomMap.th t) i k ∈ w.adicCompletionIntegers E) := by
@@ -95,6 +130,13 @@ private theorem bound_at (F : Frame S) {C : Set (GUf E n)} (hC : IsCompact C) (w
   exact (Finset.single_le_sum (f := fun k => m i k) (fun _ _ => Nat.zero_le _) (Finset.mem_univ k)).trans
     (Finset.single_le_sum (f := fun i => ∑ k, m i k) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i))
 
+/- English proof (translation)
+Use `choose c h0 h1 h2 using fun w => bound_at F V.cpt w`. Establish `hfin : {w | ¬ F.a w ∈ GlobalTheory.LFun.KGL w n}.Finite` using `Filter.eventually_cofinite.1 F.a_cof`. Set `B : Finset (Plc E)` to `hfin.toFinset ∪ V.S ∪ V.S.image cj`. Use `⟨∏ w ∈ B, c w, Finset.prod_pos fun w _ => h0 w, Nat.Coprime.prod_left fun w _ => h1 w, fun g hg w hw i k => ?_⟩` and prove the remaining obligations. Rewrite `hg` using `[th_eq]`.
+
+Distinguish the cases in `hB : w ∈ B`. Use `h2 w hw _ hg i k` as an intermediate fact. Rewrite `this` using `[UpperTheory.Gal.CertificateRingHomMap.th_th]`. Conclude with `mul_mem_of_dvd (Finset.dvd_prod_of_mem _ hB) this`. Simplify using `only [B, Finset.mem_union, Set.Finite.mem_toFinset, Set.mem_setOf_eq, not_or, not_not, Finset.mem_image] at hB`.
+
+Take `⟨⟨ha, hS⟩, hc⟩` from `hB`. Establish `hg'` using `(UpperTheory.Gal.CertificateRingHomMap.mem_lev.1 (UpperTheory.Gal.CertificateRingHomMap.th_mem_lev.1 hg)).2.2 w hS fun h => hc ⟨_, h, GlobalTheory.SplitPts.conjSrc_conjSrc_cm w⟩`. Establish `hm` using `((GlobalTheory.BCT.GlobLev.mem_KGL_iff_val w _).1 (mul_mem (mul_mem ha hg') (inv_mem ha))).1 i k`. Conclude with `mul_mem (natCast_mem _ _) hm`.
+-/
 private theorem bound (F : Frame S) (V : Vec x U w₀ Up) :
     ∃ c : ℕ, 0 < c ∧ c.Coprime p ∧ ∀ g : GUf E n, F.th g ∈ lev V.S V.Kw → ∀ w : Plc E, (p : 𝓞 E) ∉ w.asIdeal → ∀ i k,
       (c : w.adicCompletion E) * F.cmp w g i k ∈ w.adicCompletionIntegers E := by
@@ -114,6 +156,9 @@ private theorem bound (F : Frame S) (V : Vec x U w₀ Up) :
     have hm := ((GlobalTheory.BCT.GlobLev.mem_KGL_iff_val w _).1 (mul_mem (mul_mem ha hg') (inv_mem ha))).1 i k
     exact mul_mem (natCast_mem _ _) hm
 
+/- English proof (translation)
+Use `(h.K_iff _).2 ⟨⟨UpperTheory.Gal.CertificateRingHomMap.loc w.2.1 y, ((h.fac w).2 y).symm, ?_⟩, hI⟩` and prove the remaining obligations. Rewrite using `[th_eq, UpperTheory.Gal.CertificateRingHomMap.th_mem_lev]`. Conclude with `(UpperTheory.Gal.CertificateRingHomMap.pLocMem_of UpperTheory.Gal.CertificateRingHomMap.pIntConj_of UpperTheory.Gal.CertificateRingHomMap.pLocComm_of E n V.S _ w.1 w.2.1 h2 y).2 h1 hy`.
+-/
 private theorem loc_mem {F : Frame S} {V : Vec x U w₀ Up} {W : Finset (Spl E p)} {N : ℕ}
     {L : ∀ w : Spl E p, Loc S.G.GAf (GLw n w.1)} {hw : IsSplitAt w₀ ∧ (p : 𝓞 E) ∉ w₀.asIdeal} {Ty : TyLev S.G.GAf (GLw n w₀)}
     (h : TyOK F V W N L hw Ty) (w : Spl E p) (h1 : w.1 ∉ V.S) (h2 : cj w.1 ∉ V.S) {y : GLw n w.1} (hy : y ∈ GlobalTheory.LFun.KGL w.1 n)
@@ -122,6 +167,9 @@ private theorem loc_mem {F : Frame S} {V : Vec x U w₀ Up} {W : Finset (Spl E p
   rw [th_eq, UpperTheory.Gal.CertificateRingHomMap.th_mem_lev]
   exact (UpperTheory.Gal.CertificateRingHomMap.pLocMem_of UpperTheory.Gal.CertificateRingHomMap.pIntConj_of UpperTheory.Gal.CertificateRingHomMap.pLocComm_of E n V.S _ w.1 w.2.1 h2 y).2 h1 hy
 
+/- English proof (translation)
+Introduce `y hy`. Use `GlobalTheory.SmGL.iwahori_le_KO _ _ hy` as an intermediate fact. Rewrite `this` using `[GlobalTheory.SmGL.SphCompletion.KO_completion]`. Then use the resulting hypothesis.
+-/
 private theorem iw_le (w : Plc E) : Iw n w ≤ GlobalTheory.LFun.KGL w n := by
   intro y hy
   have := GlobalTheory.SmGL.iwahori_le_KO _ _ hy
@@ -130,6 +178,21 @@ private theorem iw_le (w : Plc E) : Iw n w ≤ GlobalTheory.LFun.KGL w n := by
 end UpperTheory.Gal.Spc
 
 open UpperTheory.Gal.Spc in
+/- English proof (translation)
+Introduce `E _ _ _ A n p _ S F x U w₀ Up V _ _ _ _ _ r W aux N _ _ L hw Ty h`. Use `⟨fun w hwW => ?_, fun w h1 h2 h3 => ⟨⟨fun y hy => ?_, fun g hg => ?_⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Use `haveI : Fact r.Prime := ⟨aux.prime⟩`. Establish `hoff : ∀ u ∈ V.S, GlobalTheory.Cong.Apart w.1 u` using `fun u hu => apart_of_not_mem (p := r) (aux.off u hu) (aux.half.above w hwW)`. Take `⟨-, hap, -⟩` from `UpperTheory.Gal.CertificateRingHomMap.pLocComm_of E n w.1 w.2.1`.
+
+Establish `h1 : w.1 ∉ V.S` using `fun e => hoff _ e rfl`. Establish `h2 : cj w.1 ∉ V.S` using `fun e => ((hap _).1 (Ne.symm (hoff _ e))).2 rfl`. Use `⟨⟨fun y hy => loc_mem h w h1 h2 (iw_le _ hy) fun u hu => ?_, fun g hg => ((h.K_iff g).1 hg).2 w hwW⟩, ?_, fun w' hw' hne => fac_apart (h.fac w) (h.fac w') (aux.half.apart w hwW w' hw' hne)⟩` and prove the remaining obligations. Distinguish the cases in `e : u = w`. Substitute `e` using the available equality.
+
+Rewrite using `[Loc.pr_loc]`. Conclude with `hy`. Rewrite using `[pr_loc_one (h.fac u) (h.fac w) (aux.half.apart u hu w hwW e)]`. Conclude with `one_mem _`. Rewrite using `[h.L_eq]`.
+
+Conclude with `fac_apart (h.fac ⟨w₀, hw⟩) (h.fac w) (Ne.symm (hoff _ V.shape.mem))`. Use `loc_mem h w h1 h2 hy fun u hu => ?_` and prove the remaining obligations. Rewrite using `[pr_loc_one (h.fac u) (h.fac w) (Ne.symm (h3 u hu))]`. Conclude with `one_mem _`. Take `⟨⟨k, rfl, hk⟩, -⟩` from `(h.K_iff g).1 hg`.
+
+Rewrite `hk` using `[th_eq, UpperTheory.Gal.CertificateRingHomMap.th_mem_lev]`. Rewrite using `[(h.fac w).1]`. Conclude with `(UpperTheory.Gal.CertificateRingHomMap.mem_lev.1 hk).2.2 w.1 h1 h2`. Take `⟨-, hap, -, -, hcc, -⟩` from `UpperTheory.Gal.CertificateRingHomMap.pLocComm_of E n w₀ hw.1`. Rewrite using `[h.L_eq]`.
+
+Use `fac_apart (h.fac ⟨w₀, hw⟩) (h.fac w) (Ne.symm ((hap w.1).2 ⟨fun e => h1 ?_, fun e => h2 ?_⟩))` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `V.shape.mem`. Rewrite using `[e, hcc]`. Conclude with `V.shape.mem`.
+
+Take `⟨c, h0, h1, h2⟩` from `bound F V`. Use `⟨c, h0, h1, fun k hk => ?_⟩` and prove the remaining obligations. Take `⟨⟨g, rfl, hg⟩, -⟩` from `(h.K_iff k).1 hk`. Conclude with `(nsmul_integ_iff F g c).2 (h2 g hg)`.
+-/
 theorem UpperTheory.Gal.Spc.tyFact :
     UpperTheory.Gal.Spc.TyFact := by
   intro E _ _ _ A n p _ S F x U w₀ Up V _ _ _ _ _ r W aux N _ _ L hw Ty h

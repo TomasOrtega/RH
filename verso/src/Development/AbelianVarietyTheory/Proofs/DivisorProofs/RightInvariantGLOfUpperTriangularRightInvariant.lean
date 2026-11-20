@@ -4,6 +4,17 @@ open Matrix Polynomial
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `set N := q.natDegree`. Establish `key : X ^ N * p = C c * reflect N q`. Apply `eq_of_infinite_eval_eq` to reduce the goal to its premises. Apply `Set.Infinite.mono (s := ({0}ᶜ : Set k))` to reduce the goal to its premises. Introduce `x hx`.
+
+Establish `hx0 : x ≠ 0` using `hx`. Use `letI : Invertible x⁻¹ := invertibleOfNonzero (inv_ne_zero hx0)`. Establish `hr` using `eval₂_reflect_mul_pow (RingHom.id k) x⁻¹ N q le_rfl`. Rewrite `hr` using `[invOf_eq_inv, inv_inv]`. Simplify using `only [Set.mem_setOf_eq, eval_mul, eval_pow, eval_X, eval_C, h x hx0]`.
+
+Rewrite using `[← eval₂_id, ← eval₂_id, ← hr, inv_pow]`. Clear the denominators using the available nonvanishing facts. Conclude with `(Set.finite_singleton (0 : k)).infinite_compl`. Distinguish the cases in `hp : p = 0`. Introduce `x`.
+
+Simplify using `[hp]`. Establish `hdeg : (X ^ N * p).natDegree = N + p.natDegree`. Rewrite using `[natDegree_mul (pow_ne_zero _ X_ne_zero) hp, natDegree_X_pow]`. Establish `hle : (C c * reflect N q).natDegree ≤ N` using `(natDegree_C_mul_le _ _).trans (natDegree_reflect_le.trans (by simp [N]))`. Rewrite `hdeg` using `[key]`.
+
+Establish `h0 : p.natDegree = 0` using `by omega`. Introduce `x`. Rewrite using `[eq_C_of_natDegree_eq_zero h0]`. Simplify using the standard rewrite rules.
+-/
 theorem poly_eval_eq_eval_zero_of_eq_inv {k : Type} [Field k] [Infinite k] (p q : k[X]) (c : k)
     (h : ∀ x : k, x ≠ 0 → p.eval x = c * q.eval x⁻¹) : ∀ x : k, p.eval x = p.eval 0 := by
   set N := q.natDegree
@@ -40,6 +51,11 @@ def swapLine (i j : Fin m) (t : k) : Matrix (Fin m) (Fin m) k :=
 def upperFactor (i j : Fin m) (x : k) : Matrix (Fin m) (Fin m) k :=
   diagonal (Function.update (Function.update (1 : Fin m → k) j x⁻¹) i (-x)) * transvection j i x
 
+/- English proof (translation)
+Introduce `a b hba`. Simplify using `only [id] at hba`. Simplify using `only [transvection, Matrix.add_apply, one_apply_ne (ne_of_gt hba), single_apply, zero_add]`. Use `split_ifs with h`. Take `⟨rfl, rfl⟩` from `h`.
+
+Conclude with `absurd hba (not_lt.mpr hji.le)`. Both sides reduce to the same expression.
+-/
 theorem transvection_isUpper {i j : Fin m} (hji : j < i) (x : k) :
     (transvection j i x).BlockTriangular id := by
   intro a b hba
@@ -50,10 +66,16 @@ theorem transvection_isUpper {i j : Fin m} (hji : j < i) (x : k) :
     exact absurd hba (not_lt.mpr hji.le)
   · rfl
 
+/- English proof (translation)
+The claim follows from `(blockTriangular_diagonal _).mul (transvection_isUpper hji x)`.
+-/
 theorem upperFactor_isUpper {i j : Fin m} (hji : j < i) (x : k) :
     (upperFactor i j x).BlockTriangular id :=
   (blockTriangular_diagonal _).mul (transvection_isUpper hji x)
 
+/- English proof (translation)
+Establish `hij : i ≠ j` using `ne_of_gt hji`. Rewrite using `[upperFactor, det_mul, det_transvection_of_ne j i (ne_of_lt hji), det_diagonal, Finset.prod_update_of_mem (Finset.mem_univ i), Finset.prod_update_of_mem (by simp [hij.symm] : j ∈ Finset.univ \ {i})]`. Simplify using `[hx]`.
+-/
 theorem upperFactor_det {i j : Fin m} (hji : j < i) {x : k} (hx : x ≠ 0) :
     (upperFactor i j x).det = -1 := by
   have hij : i ≠ j := ne_of_gt hji
@@ -62,6 +84,17 @@ theorem upperFactor_det {i j : Fin m} (hji : j < i) {x : k} (hx : x ≠ 0) :
     Finset.prod_update_of_mem (by simp [hij.symm] : j ∈ Finset.univ \ {i})]
   simp [hx]
 
+/- English proof (translation)
+Establish `hij : i ≠ j` using `ne_of_gt hji`. Use extensionality with `a b`. Rewrite using `[transvection, Matrix.add_mul, Matrix.one_mul, Matrix.add_apply]`. Distinguish the cases in `ha : a = i`. Substitute `ha` using the available equality.
+
+Rewrite using `[single_mul_apply_same]`. Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality. Simplify using `[upperFactor, swapLine, transvection, diagonal_mul, single_apply, one_apply, Function.update_apply, hij, hij.symm, hx]`. Distinguish the cases in `hbj : b = j`.
+
+Substitute `hbj` using the available equality. Simplify using `[upperFactor, swapLine, transvection, diagonal_mul, single_apply, one_apply, Function.update_apply, hij, hij.symm, hx]`. Simplify using `[upperFactor, swapLine, transvection, diagonal_mul, single_apply, one_apply, Function.update_apply, hij, hij.symm, hx, hb, hbj, Ne.symm hb, Ne.symm hbj]`. Rewrite using `[single_mul_apply_of_ne _ _ _ _ _ ha, add_zero]`. Distinguish the cases in `haj : a = j`.
+
+Substitute `haj` using the available equality. Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality. Simplify using `[upperFactor, swapLine, transvection, diagonal_mul, single_apply, one_apply, Function.update_apply, hij, hij.symm, hx]`. Distinguish the cases in `hbi : b = i`.
+
+Substitute `hbi` using the available equality. Simplify using `[upperFactor, swapLine, transvection, diagonal_mul, single_apply, one_apply, Function.update_apply, hij, hij.symm, hx]`. Simplify using `[upperFactor, swapLine, transvection, diagonal_mul, single_apply, one_apply, Function.update_apply, hij, hij.symm, hx, hb, hbi, Ne.symm hb, Ne.symm hbi]`. Simplify using `[upperFactor, swapLine, transvection, diagonal_mul, single_apply, one_apply, Function.update_apply, hij, hij.symm, hx, ha, haj, Ne.symm ha, Ne.symm haj]`.
+-/
 theorem transvection_mul_upperFactor {i j : Fin m} (hji : j < i) {x : k} (hx : x ≠ 0) :
     transvection i j x * upperFactor i j x = swapLine i j x⁻¹ := by
   have hij : i ≠ j := ne_of_gt hji
@@ -101,6 +134,17 @@ end Lower
 section Main
 variable {k : Type} [Field k] [Infinite k] {m : ℕ}
 
+/- English proof (translation)
+Establish `hij : i ≠ j` using `ne_of_gt hji`. Establish `hl : ∀ y : k, (transvection i j y).det = 1` using `fun y => det_transvection_of_ne i j hij y`. Establish `hAl : ∀ y : k, (A * transvection i j y).det = A.det` using `fun y => by`. Rewrite using `[det_mul, hl, mul_one]`. Take `⟨p, hp⟩` from `hΦ A (A * single i j 1)`.
+
+Take `⟨q, hq⟩` from `hΦ (A * (1 - single j j 1 - single i i 1 + single j i 1 + single i j 1)) (A * single j j 1)`. Establish `e1 : ∀ y : k, ψ (A * transvection i j y) = r A.det * p.eval y`. Introduce `y`. Rewrite using `[hψ _ (by rw [hAl]; exact hA), hAl, ← hp]`. Use `congr 2`.
+
+Rewrite using `[transvection, Matrix.mul_add, Matrix.mul_one, ← Matrix.mul_smul, smul_single, smul_eq_mul, mul_one]`. Establish `e2 : ∀ y : k, y ≠ 0 → r A.det * p.eval y = r (-A.det) * q.eval y⁻¹`. Introduce `y hy`. Establish `hdT : (upperFactor i j y).det ≠ 0` using `by rw [upperFactor_det hji hy]; norm_num`. Rewrite using `[← e1, ← hT _ _ (by rw [hAl]; exact hA) hdT (upperFactor_isUpper hji y), Matrix.mul_assoc, transvection_mul_upperFactor hji hy]`.
+
+Establish `hdM : (A * swapLine i j y⁻¹).det = -A.det`. Rewrite using `[← transvection_mul_upperFactor hji hy, ← Matrix.mul_assoc, det_mul, hAl, upperFactor_det hji hy, mul_neg_one]`. Rewrite using `[hψ _ (by rw [hdM]; exact neg_ne_zero.mpr hA), hdM, ← hq, swapLine, Matrix.mul_add, Matrix.mul_smul]`. Distinguish the cases in `hr : r A.det = 0`. Rewrite using `[e1, hr, zero_mul, hψ A hA, hr, zero_mul]`.
+
+Establish `hconst` using `poly_eval_eq_eval_zero_of_eq_inv p q (r (-A.det) / r A.det) (fun y hy => by`. Rewrite using `[div_mul_eq_mul_div, eq_div_iff hr, mul_comm, e2 y hy])`. Rewrite using `[e1, hconst x, hψ A hA, ← hp, zero_smul, add_zero]`.
+-/
 theorem rightInv_lower_transvection (ψ Φ : Matrix (Fin m) (Fin m) k → k) (r : k → k)
     (hΦ : ∀ A₀ D : Matrix (Fin m) (Fin m) k, ∃ p : Polynomial k, ∀ x : k, Φ (A₀ + x • D) = p.eval x)
     (hψ : ∀ A : Matrix (Fin m) (Fin m) k, A.det ≠ 0 → ψ A = r A.det * Φ A)
@@ -137,6 +181,13 @@ theorem rightInv_lower_transvection (ψ Φ : Matrix (Fin m) (Fin m) k → k) (r 
     rw [div_mul_eq_mul_div, eq_div_iff hr, mul_comm, e2 y hy])
   rw [e1, hconst x, hψ A hA, ← hp, zero_smul, add_zero]
 
+/- English proof (translation)
+Introduce `k _ _ m ψ Φ r hΦ hψ hT A B hA hB`. Use `diagonal_transvection_induction_of_det_ne_zero (fun B => ∀ A : Matrix (Fin m) (Fin m) k, A.det ≠ 0 → ψ (A * B) = ψ A) B hB ?_ ?_ ?_ A hA` and prove the remaining obligations. Introduce `D hD A hA`. Conclude with `hT A _ hA hD (blockTriangular_diagonal D)`. Introduce `t A hA`.
+
+Break down `lt_or_gt_of_ne t.hij with h | h` into its components or cases. Establish `hdet : (t.toMatrix).det ≠ 0`. Rewrite using `[TransvectionStruct.toMatrix, det_transvection_of_ne _ _ t.hij]`. Conclude with `one_ne_zero`. Conclude with `hT A _ hA hdet (transvection_isUpper h t.c)`.
+
+Conclude with `rightInv_lower_transvection ψ Φ r hΦ hψ hT A hA h t.c`. Introduce `B₁ B₂ h₁ h₂ P₁ P₂ A hA`. Rewrite using `[← Matrix.mul_assoc, P₂ _ (by rw [det_mul]; exact mul_ne_zero hA h₁), P₁ _ hA]`.
+-/
 theorem rightInv_of_upperTriangular_rightInv :
     ∀ {k : Type} [Field k] [Infinite k] {m : ℕ} (ψ Φ : Matrix (Fin m) (Fin m) k → k) (r : k → k),
       (∀ A₀ D : Matrix (Fin m) (Fin m) k, ∃ p : Polynomial k, ∀ x : k, Φ (A₀ + x • D) = p.eval x) →

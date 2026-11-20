@@ -21,6 +21,9 @@ open scoped ComplexOrder
 
 local notation "HF" => ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm
 
+/- English proof (translation)
+Establish `h : fromRows (Fᵀ)ᴴ A * (fromRows F C)ᵀ = fromBlocks ((Fᵀ)ᴴ * Fᵀ) ((Fᵀ)ᴴ * Cᵀ) 0 1`. Rewrite using `[transpose_fromRows, fromRows_mul_fromCols, hAF, hAC]`. Rewrite using `[← det_transpose (fromRows F C), ← det_mul, h, det_fromBlocks_zero₂₁]`. Simplify using the standard rewrite rules.
+-/
 theorem det_rows_mul_det_rows {p q : ℕ} (A C : Matrix (Fin p) (Fin q ⊕ Fin p) ℂ)
     (F : Matrix (Fin q) (Fin q ⊕ Fin p) ℂ) (hAF : A * Fᵀ = 0) (hAC : A * Cᵀ = 1) :
     (fromRows (Fᵀ)ᴴ A).det * (fromRows F C).det = ((Fᵀ)ᴴ * Fᵀ).det := by
@@ -29,6 +32,43 @@ theorem det_rows_mul_det_rows {p q : ℕ} (A C : Matrix (Fin p) (Fin q ⊕ Fin p
   rw [← det_transpose (fromRows F C), ← det_mul, h, det_fromBlocks_zero₂₁]
   simp
 
+/- English proof (translation)
+Use `choose a ha using fun n => (Submodule.mem_span_range_iff_exists_fun ℂ).mp (hU n)`. Set `A : Matrix (Fin p) (Fin p ⊕ Fin q) ℂ` to `Matrix.of fun i n => a n i`. Establish `hA : ∀ n, ∑ i, A i n • V i = U n` using `ha`. Use `clear_value A`. Use `set H₁ : Matrix (Fin p) (Fin p) ℂ := Matrix.of fun i j => HF Hm (V i) (V j) with hH₁`.
+
+Use `set H₂ : Matrix (Fin q) (Fin q) ℂ := Matrix.of fun i j => HF Hm (W i) (W j) with hH₂`. Establish `pd₁ : H₁.PosDef` using `gram_posDef Hm hH hpos V hV`. Establish `pd₂ : H₂.PosDef` using `gram_posDef Hm hH hpos W hW`. Establish `hrel : Aᵀ * H₁ * A.map star - (Bᵀ * H₂ * B.map star)ᵀ = (2 * Complex.I) • S`. Use extensionality with `m n`.
+
+Rewrite using `[Matrix.sub_apply, Matrix.transpose_apply, gram_expand, gram_expand, hA, hA, ← hB, ← hB, ← star_hermForm hH (U' m) (U' n), hR m n]`. Simplify using the standard rewrite rules. Set `e : Fin q ⊕ Fin p ≃ Fin p ⊕ Fin q` to `Equiv.sumComm _ _`. Establish `hrel' : (A.submatrix id e)ᵀ * H₁ * (A.submatrix id e).map star - ((B.submatrix id e)ᵀ * H₂ * (B.submatrix id e).map star)ᵀ = (2 * Complex.I) • S.submatrix e e`. Use extensionality with `m n`.
+
+Use `congrFun (congrFun hrel (e m)) (e n)` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply]`. Establish `hdet : (S.submatrix e e).det ≠ 0` using `by rwa [Matrix.det_submatrix_equiv_self]`. Take `⟨t₁, -, -, t₄⟩` from `GlobalTheory.T.riemann_form_period_determinant p q (A.submatrix id e) (B.submatrix id e) (S.submatrix e e) H₁ H₂ pd₁ pd₂ hdet hrel'`. Establish `hFS : Fm * S = B`.
+
+Use extensionality with `j n`. Rewrite using `[Matrix.mul_apply, hFm]`. Establish `hN : ((S.submatrix e e)ᵀ)⁻¹ * (B.submatrix id e)ᵀ = (Fm.submatrix id e)ᵀ`. Establish `h1 : B.submatrix id e = Fm.submatrix id e * S.submatrix e e`. Rewrite using `[Matrix.submatrix_mul_equiv, hFS]`.
+
+Establish `hu : IsUnit ((S.submatrix e e)ᵀ).det`. Rewrite using `[Matrix.det_transpose]`. Conclude with `isUnit_iff_ne_zero.mpr hdet`. Rewrite using `[h1, Matrix.transpose_mul, Matrix.nonsing_inv_mul_cancel_left _ _ hu]`. Rewrite `t₁`, `t₄` using `[hN]`.
+
+Establish `hCA : C * Aᵀ = 1`. Use extensionality with `i k`. Establish `hexp : ∑ m, C i m • U m = ∑ k, (C * Aᵀ) i k • V k`. Repeatedly rewrite using `[← hA, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.sum_smul]`. Both sides reduce to the same expression. Use `coef_unique hV (fun k => (C * Aᵀ) i k) (fun k => (1 : Matrix _ _ ℂ) i k) (by rw [← hexp, hC i]; simp [Matrix.one_apply])` as an intermediate fact. Conclude with `congrFun this k`.
+
+Establish `hAC : A.submatrix id e * (C.submatrix id e)ᵀ = 1`. Establish `h1 : C.submatrix id e * (A.submatrix id e)ᵀ = 1`. Rewrite using `[Matrix.transpose_submatrix, Matrix.submatrix_mul_equiv, hCA]`. Simplify using the standard rewrite rules. Use `congrArg Matrix.transpose h1` as an intermediate fact.
+
+Simplify `this` using `[Matrix.transpose_mul]`. Establish `hG : (fromRows (Fm.submatrix id e) (C.submatrix id e)).det = (fromRows C Fm).det`. Establish `: fromRows (Fm.submatrix id e) (C.submatrix id e) = (fromRows C Fm).submatrix e e`. Apply the tactic sequence `ext (i | i) n <;> simp [e]`. Rewrite using `[this, Matrix.det_submatrix_equiv_self]`.
+
+Establish `hmul` using `det_rows_mul_det_rows _ _ _ t₁ hAC`. Rewrite `hmul` using `[hG]`. Use `set d := (fromRows C Fm).det with hd`. Use `set X := (((Fm.submatrix id e)ᵀ)ᴴ * (Fm.submatrix id e)ᵀ).det with hX`. Use `set M := (fromRows ((Fm.submatrix id e)ᵀ)ᴴ (A.submatrix id e)).det with hM`.
+
+Establish `hSd : ‖(S.submatrix e e).det‖ = ‖S.det‖` using `by rw [Matrix.det_submatrix_equiv_self]`. Rewrite `t₄` using `[hSd]`. Establish `p₁ : 0 < H₁.det` using `pd₁.det_pos`. Establish `p₂ : 0 < H₂.det` using `pd₂.det_pos`. Establish `r₁ : 0 < H₁.det.re` using `(Complex.pos_iff.mp p₁).1`.
+
+Establish `r₂ : 0 < H₂.det.re` using `(Complex.pos_iff.mp p₂).1`. Establish `n₁ : ‖H₁.det‖ = H₁.det.re`. Rewrite using `[← Complex.abs_re_eq_norm.mpr (Complex.pos_iff.mp p₁).2.symm, abs_of_pos r₁]`. Establish `n₂ : ‖H₂.det‖ = H₂.det.re`. Rewrite using `[← Complex.abs_re_eq_norm.mpr (Complex.pos_iff.mp p₂).2.symm, abs_of_pos r₂]`.
+
+Establish `hSp : 0 < ‖S.det‖` using `norm_pos_iff.mpr hS`. Establish `hc : 0 < (2 : ℝ) ^ p * (2 : ℝ)⁻¹ ^ q * ‖S.det‖ * H₂.det.re` using `by positivity`. Establish `hXne : X ≠ 0`. Introduce `h0`. Rewrite `t₄` using `[h0, div_zero, norm_zero]`.
+
+Establish `h00 : (2 : ℝ) ^ p * (2 : ℝ)⁻¹ ^ q * ‖S.det‖ * H₂.det.re = 0` using `by rw [← t₄]; simp`. Conclude with `hc.ne' h00`. Establish `hdne : d ≠ 0` using `fun h0 => hXne (by rw [← hmul, h0, mul_zero])`. Establish `hq : M / X = d⁻¹`. Establish `hMne : M ≠ 0` using `fun h0 => hXne (by rw [← hmul, h0, zero_mul])`.
+
+Rewrite using `[← hmul]`. Clear the denominators using the available nonvanishing facts. Establish `hΓ' : Γ = (Real.pi : ℂ) • H₁` using `by ext a b; simp [hΓ, hH₁]`. Establish `hΔ' : Δ = (Real.pi : ℂ) • H₂` using `by ext a b; simp [hΔ, hH₂]`. Establish `hpi : ‖(Real.pi : ℂ)‖ = Real.pi` using `by simp [abs_of_pos Real.pi_pos]`.
+
+Rewrite using `[hΓ', hΔ', Matrix.det_smul, Matrix.det_smul, norm_mul, norm_mul, norm_pow, norm_pow, hpi, n₁, n₂]`. Simplify using `only [Fintype.card_fin]`. Rewrite `t₄` using `[hq, norm_inv]`. Establish `hdn : 0 < ‖d‖` using `norm_pos_iff.mpr hdne`. Establish `t₅ : H₁.det.re = ‖d‖ ^ 2 * (2 ^ p * (2 : ℝ)⁻¹ ^ q * ‖S.det‖ * H₂.det.re)`.
+
+Rewrite using `[← t₄]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[t₅, mul_pow, inv_pow, inv_pow, mul_pow]`. Use `Real.pi_pos` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+-/
 theorem norm_core {p q g : ℕ} (V : Fin p → Fin g → ℂ) (W : Fin q → Fin g → ℂ)
     (U U' : Fin p ⊕ Fin q → Fin g → ℂ) (S : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)
     (Hm : Matrix (Fin g) (Fin g) ℂ) (hH : Hm.IsHermitian)
@@ -138,6 +178,31 @@ theorem norm_core {p q g : ℕ} (V : Fin p → Fin g → ℂ) (W : Fin q → Fin
   have := Real.pi_pos
   field_simp
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c τ τ' σ g ty FU hty hrt hτ i e he`. Set `S : Matrix (Fin D.p ⊕ Fin D.q) (Fin D.p ⊕ Fin D.q) ℂ` to `Matrix.of fun m n => τ' (sesq (FU.Di i) (e m) (e n))`. Establish `hSne : ∀ P : (FU.Di i).La →+ (Fin g → ℂ), IsPeriod (FU.Di i) ty P → S.det ≠ 0`. Introduce `P hP`. Take `⟨Hm, hHh, -, hHi⟩` from `id hP.2.2.2.2`.
+
+Take `⟨-, -, hd⟩` from `GlobalTheory.CompanionTheory.Ar.Flat.riemann_tau_component E H (FU.Di i) g ty P Hm hP hHh hHi`. Establish `hcard : Fintype.card (Fin D.p ⊕ Fin D.q) = (FU.Di i).p + (FU.Di i).q`. Rewrite using `[(FU.sig i).1, (FU.sig i).2]`. Simplify using the standard rewrite rules. Use `hd 0 _ e hcard he` as an intermediate fact.
+
+Establish `h2 : S = (Matrix.of fun m n => sesq (FU.Di i) (e m) (e n)).map τ'` using `rfl`. Rewrite using `[h2, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(map_ne_zero τ').2 this`. Distinguish the cases in `hS0 : S.det = 0`. Use `⟨1, one_pos, ?_⟩` and prove the remaining obligations.
+
+Introduce `ρ Φ _ P y v w Γ Δ hP`. Conclude with `absurd hS0 (hSne P hP)`. Use `⟨(2 * Real.pi) ^ D.p * (2 * Real.pi)⁻¹ ^ D.q * ‖S.det‖, ?_, ?_⟩` and prove the remaining obligations. Use `norm_pos_iff.mpr hS0` as an intermediate fact. Use `Real.pi_pos` as an intermediate fact.
+
+Check the signs of the components of the expression. Introduce `ρ Φ hΦ P y v w Γ Δ hP hy hfr hΓ hΔ`. Take `⟨⟨V₀, W₀, Fm, B, d⟩, ⟨k1, k2, k3, k4, -, ⟨C, k6⟩, k7⟩, -⟩` from `GlobalTheory.T.uniformised_eigen_frame_one E H D l Xo c τ τ' σ g ty FU hty hrt hτ i e P y v w he hP hy hfr`. Simplify using `only at k1 k2 k3 k4 k6 k7`. Establish `hflat : Φ y v w * (Matrix.fromRows C Fm).det = ρ` using `hΦ P y v w V₀ W₀ C Fm B hP hy hfr k1 k2 k6 k3 k4`.
+
+Take `⟨-, -, hv, hw⟩` from `id hfr`. Establish `hc : ∀ a : 𝓞 E, (σ.comp (tauIn c (ComplexEmbedding.conjugate τ))) a = ComplexEmbedding.conjugate τ' (a : E)`. Introduce `a`. Establish `h1 : tauIn c (ComplexEmbedding.conjugate τ) a = tauIn c τ (H.bar a)`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `show ComplexEmbedding.conjugate τ (a : E) = τ ((H.bar a : 𝓞 E) : E)`. Rewrite using `[H.bar_eq, IsCMField.complexEmbedding_complexConj]`. Both sides reduce to the same expression. Use `show σ (tauIn c (ComplexEmbedding.conjugate τ) a) = _`. Rewrite using `[h1, hτ, H.bar_eq, IsCMField.complexEmbedding_complexConj]`.
+
+Both sides reduce to the same expression. Take `⟨V, hVd, hVl, hVs⟩` from `GlobalTheory.T.period_eigen_frame E H D l Xo _ g ty FU i P (under y) (σ.comp (tauIn c τ)) τ' D.p v hP hy hτ hv`. Take `⟨W, hWd, hWl, -⟩` from `GlobalTheory.T.period_eigen_frame E H D l Xo _ g ty FU i P (under y) _ (ComplexEmbedding.conjugate τ') D.q w hP hy hc hw`. Establish `eV : V₀ = V` using `funext fun a => (hVd a _).1 (k1 a)`. Establish `eW : W₀ = W` using `funext fun a => (hWd a _).1 (k2 a)`.
+
+Substitute `eV eW` using the available equality. Take `⟨Hm, hHh, hHp, hHi⟩` from `id hP.2.2.2.2`. Take `⟨-, hs, -⟩` from `GlobalTheory.CompanionTheory.Ar.Flat.riemann_tau_component E H (FU.Di i) g ty P Hm hP hHh hHi`. Establish `hΓ'` using `(GlobalTheory.CompanionTheory.Ar.Flat.hodgeGram_iff_period E H D l Xo _ g ty FU i P Hm hP hHh hHi (under y) hy D.p v V₀ Γ k1).1 hΓ`. Establish `hΔ'` using `(GlobalTheory.CompanionTheory.Ar.Flat.hodgeGram_iff_period E H D l Xo _ g ty FU i P Hm hP hHh hHi (under y) hy D.q w W₀ Δ k2).1 hΔ`.
+
+Establish `hlin : IsLinearMap ℂ (tyPart ty τ')`. Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `intro a b; funext k; simp only [tyPart, Pi.add_apply]; split_ifs <;> simp`. Apply the tactic sequence `intro a b; funext k; simp only [tyPart, Pi.smul_apply]; split_ifs <;> simp`. Establish `hC : ∀ a, ∑ m, C a m • tyPart ty τ' (P (e m)) = V₀ a`.
+
+Introduce `a`. Rewrite using `[← k6 a]`. Use `map_sum (hlin.mk' _) (fun m => C a m • P (e m)) Finset.univ` as an intermediate fact. Simplify `this.symm` using `[hlin.map_smul]`. Establish `key` using `norm_core V₀ W₀ (fun n => tyPart ty τ' (P (e n))) (fun n => tyPart ty (ComplexEmbedding.conjugate τ') (P (e n))) S Hm hHh hHp hS0 hVl hWl (fun n => hVs _) C Fm B k3 k4 hC (fun m n => hs τ' _ _) Γ Δ hΓ' hΔ'`.
+
+Rewrite using `[key, ← hflat, norm_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hodgeNorm_flat : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (τ τ' : E →+* ℂ) (σ : c.F →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (FU : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) ty), IsTypeFn H D.p D.q ty → τ' (H.rt : E) = H.rt0 → (∀ a : 𝓞 E, σ (tauIn c τ a) = τ' (a : E)) → ∀ (i : Fin FU.n) (e : Fin D.p ⊕ Fin D.q → (FU.Di i).La), LinearIndependent (𝓞 E) e → ∃ t : ℝ, 0 < t ∧ ∀ (ρ : ℂ) (Φ : CFn Xo c), IsFlatAn Set.univ τ τ' σ Φ FU i e ρ → ∀ (P : (FU.Di i).La →+ (Fin g → ℂ)) (y : Sp ℂ ⟶ Xo.XF c) (v : Vecs y D.p) (w : Vecs y D.q) (Γ : Matrix (Fin D.p) (Fin D.p) ℂ) (Δ : Matrix (Fin D.q) (Fin D.q) ℂ), IsPeriod (FU.Di i) ty P → under y = FU.u i P → IsFramed Set.univ τ σ y v w → IsHodgeGram Xo.univ.t.G Xo.univ.t.PP.L (under y) v Γ → IsHodgeGram Xo.univ.t.G Xo.univ.t.PP.L (under y) w Δ → ‖Φ y v w‖ ^ 2 * ‖Γ.det‖ = ‖ρ‖ ^ 2 * t * ‖Δ.det‖ := by
   intro E _ _ _ H D l Xo c τ τ' σ g ty FU hty hrt hτ i e he
   let S : Matrix (Fin D.p ⊕ Fin D.q) (Fin D.p ⊕ Fin D.q) ℂ :=

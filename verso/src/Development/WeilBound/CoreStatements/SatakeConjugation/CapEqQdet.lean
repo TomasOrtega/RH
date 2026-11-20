@@ -1,6 +1,9 @@
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExpoConjOfIsCsd
 
 set_option synthInstance.maxHeartbeats 200000 in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem PositivityTheory.NCmp.cap_eq_qdet {E : Type} [Field E] [NumberField E] [NumberField.IsTotallyComplex E] (a : ℕ)
     (τ : E →+* ℂ) (u : ℂ) :
     (GlobalTheory.CuspRep.cap (a := a) τ u : Module.End ℂ (GlobalTheory.CuspRep.Sm E a)) =

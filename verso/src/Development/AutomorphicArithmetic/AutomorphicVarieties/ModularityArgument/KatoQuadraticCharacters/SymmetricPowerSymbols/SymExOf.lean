@@ -182,6 +182,19 @@ def PTop : Prop :=
           wGen X M' l n (X.sl (toGQ !![(k : ℤ), 0; 0, 1]) (siegel X c x')) (X.sl (toGQ !![(k : ℤ), 0; 0, 1]) (siegel X d y')) s *
             (X.gal s a / a) * (h : X.K) ^ l ^ n
 
+/- English proof (translation)
+Introduce `Ω _ _ _ ε X l c d hl hc hd hc6 hd6`. Establish `hpos : ∀ n : ℕ, 0 < l ^ n` using `fun n => pow_pos hl.pos n`. Set `t : (n : ℕ) → X.K → X.K → Pt X (l ^ n)` to `fun n => Classical.choose (h1 Ω ε X (l ^ n) (hpos n))`. Establish `ht : ∀ n, IsSec X (l ^ n) (t n)` using `fun n => Classical.choose_spec (h1 Ω ε X (l ^ n) (hpos n))`. Use `haveI : ∀ M : ℕ, Nonempty (Gal(Ω/ℚ) → Fam X M) := fun M => ⟨fun _ _ _ => 1⟩`.
+
+Set `w : ℕ → (M : ℕ) → Gal(Ω/ℚ) → Fam X M` to `fun n M => Classical.epsilon (fun w' => IsSymb X (l ^ n) c d M (t n) w')`. Establish `hw : ∀ n M, Lv c d M → IsSymb X (l ^ n) c d M (t n) (w n M)` using `fun n M hM => Classical.epsilon_spec (h2 Ω ε X (l ^ n) c d M (hpos n) hc hd hc6 hd6 hM (t n) (ht n))`. Establish `hLv : ∀ k M : ℕ, Lv c d (k * M) → Lv c d M`. Introduce and unpack `k M ⟨h0, hcM, hdM⟩`. Conclude with `⟨Nat.pos_of_mul_pos_left h0, Nat.Coprime.coprime_mul_left_right hcM, Nat.Coprime.coprime_mul_left_right hdM⟩`.
+
+Use `⟨w, ⟨?_, ?_, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `n M hM`. Conclude with `h3 Ω ε X (l ^ n) c d M (hpos n) hc hd hc6 hd6 hM (t n) (w n M) (ht n) (hw n M hM)`. Introduce `n M hM`. Establish `key : ∀ m' : ℕ, m' = l * l ^ n → ∀ (t' : X.K → X.K → Pt X m') (w' : Gal(Ω/ℚ) → Fam X M), IsSec X m' t' → IsSymb X m' c d M t' w' → Coh X (l ^ n) M w' (w n M)`.
+
+Introduce and unpack `m' rfl t' w' ht' hw'`. Conclude with `h4 Ω ε X l (l ^ n) c d M hl.pos (hpos n) hc hd hc6 hd6 hM t' (t n) w' (w n M) ht' (ht n) hw' (hw n M hM)`. Conclude with `key (l ^ (n + 1)) (pow_succ' l n) (t (n + 1)) (w (n + 1) M) (ht (n + 1)) (hw (n + 1) M hM)`. Introduce `n k M hkM`. Conclude with `h5 Ω ε X (l ^ n) c d k M (hpos n) hc hd hc6 hd6 hkM (t n) (w n (k * M)) (w n M) (ht n) (hw n (k * M) hkM) (hw n M (hLv k M hkM))`.
+
+Introduce `n k M _ _ hkM`. Conclude with `h6 Ω ε X (l ^ n) c d k M (hpos n) hc hd hc6 hd6 hkM (t n) (w n (k * M)) (w n M) (ht n) (hw n (k * M) hkM) (hw n M (hLv k M hkM))`. Introduce `n k M _ _ hkM`. Conclude with `h7 Ω ε X (l ^ n) c d k M (hpos n) hc hd hc6 hd6 hkM (t n) (w n (k * M)) (w n M) (ht n) (hw n (k * M) hkM) (hw n M (hLv k M hkM))`. Introduce `n k M M' hM hk hM' hkM hlM x y hxy x' y' hx' hy'`.
+
+Conclude with `h8 Ω ε X l n c d k M M' hl hc hd hc6 hd6 hM hk hM' hkM hlM (t n) (w n M) (ht n) (hw n M hM) x y hxy x' y' hx' hy'`.
+-/
 theorem symEx_of (h1 : SecEx) (h2 : PSymb) (h3 : PCoc) (h4 : PRed) (h5 : PLev) (h6 : PDist) (h7 : PIsog) (h8 : PTop) : SymEx := by
   intro Ω _ _ _ ε X l c d hl hc hd hc6 hd6
   have hpos : ∀ n : ℕ, 0 < l ^ n := fun n => pow_pos hl.pos n

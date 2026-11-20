@@ -17,6 +17,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.RowsAll
 
+/- English proof (translation)
+Introduce `hP hHC hCusp hL D I hJ`. Establish `a : GlobalTheory.NRows.RowsA D` using `GlobalTheory.T.rows_a_of_jump_count hP hL D I.P hJ`. Take `⟨J⟩` from `GlobalTheory.T.nonempty_join_of_agreement hHC hCusp hL D I.P I.X I.agree`. Take `⟨lamLoc, rank⟩` from `GlobalTheory.T.thetaLiftSpaces_rank_const_and_localisation_scalars D I.isot I.lam`. Take `⟨b, trip⟩` from `GlobalTheory.T.rows_b_and_local_lifts hP hL D I.P J a I.adm1 lamLoc`.
+
+Establish `Conclusion1 : Formalism.MainNotions.SumRepresentations.Conclusion1 D` using `I.Conclusion1 (GlobalTheory.T.parts_give_dimension D) a b`. Establish `c : GlobalTheory.NRows.RowsC D` using `GlobalTheory.T.rows_c_of_local_lifts hL D I.P J a b I.adm1 I.isot Conclusion1 trip`. Use `⟨a, b, c, fun i => ?_, rank⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.type_nonzero_recursion_of_eigen hL D I.P I.X I.agree I.typeNZ i (GlobalTheory.T.eigen_string_of_agreement hP.fin hL D I.P I.X I.agree Conclusion1.1 a.temp a.tieLab i) (GlobalTheory.T.eigen_good_of_admissibility hL D I.P I.X Conclusion1.1 a.tieLab I.mtPar I.adm1 a.t …`.
+-/
 theorem main : GlobalTheory.NRows.Hypotheses₂ → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7), GlobalTheory.NRows.Inputs hL D → JumpsCard D.nd D.naut → GlobalTheory.NRows.Rows D := by
   intro hP hHC hCusp hL D I hJ
   have a : GlobalTheory.NRows.RowsA D := GlobalTheory.T.rows_a_of_jump_count hP hL D I.P hJ

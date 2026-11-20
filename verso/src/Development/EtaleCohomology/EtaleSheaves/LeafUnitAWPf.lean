@@ -6,6 +6,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace LateralTheory.E.LeafUnitAWPf
 open LateralTheory.E.CupProductRingLaws LateralTheory.E.LeafRingUnitPf
 
+/- English proof (translation)
+Establish `hz : IsZero ((res R F).X s)`. Unfold `res`. Conclude with `CochainComplex.isZero_of_isStrictlyGE _ 0 _ (by omega)`. Establish `h2 : IsZero (((res R F).X s).obj.obj (op U))` using `Functor.map_isZero ((sheafToPresheaf _ _) ⋙ (evaluation _ _).obj (op U)) hz`. Conclude with `ModuleCat.isZero_iff_subsingleton.mp h2`.
+-/
 theorem sec_sub {R : Type} [CommRing R] (F : Shv R) (s : ℤ) (hs : s < 0) (U : Scheme.{0}) :
     Subsingleton (Sec ((res R F).X s) U) := by
   have hz : IsZero ((res R F).X s) := by
@@ -15,12 +18,24 @@ theorem sec_sub {R : Type} [CommRing R] (F : Shv R) (s : ℤ) (hs : s < 0) (U : 
     Functor.map_isZero ((sheafToPresheaf _ _) ⋙ (evaluation _ _).obj (op U)) hz
   exact ModuleCat.isZero_iff_subsingleton.mp h2
 
+/- English proof (translation)
+Establish `: SimplexCategory.subinterval (n` using `N) 0 N h = 𝟙 _ := by`. Use extensionality with `i : 3`. Simplify using `[SimplexCategory.subinterval]`. Simplify using `[Sx.sub, this]`.
+-/
 theorem sub_zero_self {E : Spc} {N : ℕ} {U : Scheme.{0}} (x : Sx E N U) (h : 0 + N ≤ N) : x.sub 0 N h = x := by
   have : SimplexCategory.subinterval (n := N) 0 N h = 𝟙 _ := by
     ext i : 3
     simp [SimplexCategory.subinterval]
   simp [Sx.sub, this]
 
+/- English proof (translation)
+Substitute `hij hnk` using the available equality. Use `⟨β, ?_, rfl⟩` and prove the remaining obligations. Introduce `N w h U x`. Establish `hmz : ∀ (s t w : ℤ) (h : s + t = w) (a : Sec ((res _ (tw q 0)).X s) U) (b : Sec ((res _ (tw q i)).X t) U), s < 0 → μ.mul U s t w h a b = 0`. Introduce `s t w h a b hs`.
+
+Use `sec_sub (tw q 0) s hs U` as an intermediate fact. Rewrite using `[Subsingleton.elim a 0]`. Simplify using the standard rewrite rules. Rewrite using `[Fin.sum_univ_succ, Finset.sum_eq_zero, add_zero]`. Substitute `h show _ = (n * ((0 : ℕ) : ℤ)).negOnePow • μ.mul U (-((0 : ℕ) : ℤ) + 0) (-((N - 0 : ℕ) : ℤ) + n) (-(N : ℤ) + n) (by omega) (ev α.1 0 _ rfl U (x.sub 0 0 (by omega))) (ev β.1 (N - 0) _ rfl U (x.sub 0 (N - 0) (by omega)))` using the available equality.
+
+Establish `h1 : (n * ((0 : ℕ) : ℤ)).negOnePow = 1` using `by simp`. Rewrite using `[h1, one_smul]`. Use `show _ = μ.mul U 0 (-(N : ℤ) + n) (-(N : ℤ) + n) (by omega) (ev α.1 0 0 (by simp) U (x.sub 0 0 (by omega))) (ev β.1 N _ rfl U (x.sub 0 N (by omega)))`. Rewrite using `[sub_zero_self]`. Conclude with `(eq_of_heq (hU U _ _ (by omega) _ (ev β.1 N _ rfl U x) (hα U (x.sub 0 0 (by omega))))).symm`.
+
+Introduce `p _`. Rewrite using `[hmz, smul_zero]`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+-/
 theorem main_gen (q : ℕ) [NeZero q] (E : Spc) (i j : ℤ) (hij : i = j)
     (μ : Pair (res _ (tw q 0)) (res _ (tw q i)) (res _ (tw q j)))
     (hU : ∀ (U : Scheme.{0}) (t w : ℤ) (h : 0 + t = w) (a : Sec ((res _ (tw q 0)).X 0) U) (b : Sec ((res _ (tw q i)).X t) U),
@@ -53,6 +68,9 @@ theorem main_gen (q : ℕ) [NeZero q] (E : Spc) (i j : ℤ) (hij : i = j)
     simp
     omega
 
+/- English proof (translation)
+Introduce `q _ E i μ hU α hα n β`. Conclude with `main_gen q E i (0 + i) (by ring) μ hU α hα n (0 + n) (by ring) β`.
+-/
 theorem LeafUnitAW_of : LeafUnitAW := by
   intro q _ E i μ hU α hα n β
   exact main_gen q E i (0 + i) (by ring) μ hU α hα n (0 + n) (by ring) β

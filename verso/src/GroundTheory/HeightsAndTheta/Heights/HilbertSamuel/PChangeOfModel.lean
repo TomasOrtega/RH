@@ -22,6 +22,11 @@ def blockDeg (k₂ : K) : K → ℕ := fun k => if k = k₂ then 1 else 0
 
 omit [Fintype K] [∀ k, Fintype (ι₂ k)] in
 
+/- English proof (translation)
+Introduce `m hm k`. Take `⟨t, -, ht⟩` from `Finset.mem_biUnion.mp (MvPolynomial.support_sum hm)`. Rewrite `ht` using `[C_mul_X_eq_monomial]`. Establish `hmt` using `Finset.mem_singleton.mp (MvPolynomial.support_monomial_subset ht)`. Substitute `hmt` using the available equality.
+
+Take `⟨k₀, j⟩` from `q`. Distinguish the cases in `hk : k = k₀`. Substitute `hk` using the available equality. Simplify using `[blockDeg, Finsupp.single_apply]`. Simplify using `[blockDeg, hk]`.
+-/
 theorem isMultiHomog_linForm (A : ∀ k, ι₂ k → ι k → ℤ) (q : Σ k, ι₂ k) :
     IsMultiHomog (linForm A q) (blockDeg q.1) := by
   classical
@@ -38,6 +43,13 @@ theorem isMultiHomog_linForm (A : ∀ k, ι₂ k → ι k → ℤ) (q : Σ k, ι
 
 omit [∀ k, Fintype (ι₂ k)] in
 
+/- English proof (translation)
+Introduce `k₂`. Assume the negation of the conclusion as `hall`. Use `push Not at hall`. Take `⟨-, ⟨hprime, -, hrel⟩, -, -⟩` from `hP`. Use `choose i hi using hrel`.
+
+Take `⟨N, hN⟩` from `hBP k₂ i`. Establish `hle : Ideal.span (Set.range fun j : ι₂ k₂ => linForm A ⟨k₂, j⟩) ≤ P` using `Ideal.span_le.mpr (Set.range_subset_iff.mpr hall)`. Rewrite `hN` using `[sup_eq_left.mpr hle]`. Use `hprime` as an intermediate fact. Take `⟨k, -, hk⟩` from `Ideal.IsPrime.prod_mem_iff.mp (hprime.mem_of_pow_mem N hN)`.
+
+Conclude with `hi k hk`.
+-/
 theorem exists_linForm_not_mem {P : Ideal (MRing ι)} {d : ℕ} {A : ∀ k, ι₂ k → ι k → ℤ} (hP : IsArithVar P d)
     (hBP : IsBasePtFree P (linForm A)) : ∀ k₂, ∃ j, linForm A ⟨k₂, j⟩ ∉ P := by
   intro k₂
@@ -57,6 +69,11 @@ end ChangeOfModel
 
 open ChangeOfModel IndefiniteRowSideFullHecke.Inter in
 
+/- English proof (translation)
+Introduce `I hI K _ ι ι₂ _ _ P d A G J L L₁ hP hBP hImg hJ hL hL₁ ha hh`. Take `⟨hΓ, himg, hdeg⟩` from `hGr K ι K ι₂ P d (linForm A) blockDeg hP (isMultiHomog_linForm A) (exists_linForm_not_mem hP hBP)`. Take `⟨G'⟩` from `hGF K ι (K ⊕ K) (Sum.elim ι ι₂) Sum.inl inlV _ d isBlockMap_inl hΓ`. Take `⟨J', hJ', -⟩` from `hEU G'.Φ _ (fibreIdx (Sum.elim ι ι₂) (Sum.inl : K → K ⊕ K))`. Establish `e1` using `hAI3 I hI K ι (K ⊕ K) (Sum.elim ι ι₂) Sum.inl inlV _ d G' J' L₁ (fun j => pullHerm isBlockMap_inl (L₁ j)) isBlockMap_inl hΓ (by rw [himg]; exact hP) hJ' hL₁ (fun j => isPullHerm_pullHerm _ _)`.
+
+Establish `e2` using `hAI3 I hI K ι₂ (K ⊕ K) (Sum.elim ι ι₂) Sum.inr inrV _ d G J L (fun j => pullHerm isBlockMap_inr (L j)) isBlockMap_inr hΓ hImg hJ hL (fun j => isPullHerm_pullHerm _ _)`. Establish `e3` using `hIso (K ⊕ K) (Sum.elim ι ι₂) (I (K ⊕ K) (Sum.elim ι ι₂)) (hI _ _) _ d (fun j => pullHerm isBlockMap_inl (L₁ j)) (fun j => pullHerm isBlockMap_inr (L j)) hΓ (fun j => Inter.IsPullHerm.isSmoothHerm isBlockMap_inl (isPullHerm_pullHerm _ _) (hL₁ j)) (fun j => Inter.IsPullHerm.isSmoot …`. Rewrite `e1` using `[hdeg G' J' hJ', himg]`. Rewrite using `[← e2, ← e3, e1]`. Simplify using the standard rewrite rules.
+-/
 theorem ChangeOfModel.proof (hAI3 : Inter.PushforwardArithIntersection.Statement) (hGr : GraphStatement)
     (hGF : GenFibreExistsStatement)
     (hEU : ∀ (F : Type) [Field F] (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)],

@@ -5,6 +5,9 @@ open MeasureTheory Topology
 
 namespace Formalism.IndefR.Eqv.G5
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact Bl.SecondBlockLemmaC.goal1 .. | (apply Bl.SecondBlockLemmaC.goal1 <;> assumption) | (intros; apply Bl.SecondBlockLemmaC.goal1 <;> assumption)`.
+-/
 theorem fdom_exists_all {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [SecondCountableTopology G] [MeasurableSpace G] [OpensMeasurableSpace G]
     (Γ : Subgroup G) [DiscreteTopology Γ] :

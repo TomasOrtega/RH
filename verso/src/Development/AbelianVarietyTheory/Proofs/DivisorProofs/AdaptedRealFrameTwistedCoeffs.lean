@@ -36,23 +36,46 @@ variable {m n : Type} [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n]
 
 def hf (M : Matrix n n ℂ) (u v : n → ℂ) : ℂ := u ⬝ᵥ (M *ᵥ star v)
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, star_sum]`.
+-/
 theorem star_mulVec' (A : Matrix m n ℂ) (u : n → ℂ) : star (A *ᵥ u) = A.map star *ᵥ star u := by
   ext i; simp [Matrix.mulVec, dotProduct, star_sum]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_transpose, dotProduct_comm, Matrix.dotProduct_mulVec, dotProduct_comm]`.
+-/
 theorem dot_mulVec_left (A : Matrix m n ℂ) (u : n → ℂ) (w : m → ℂ) : (A *ᵥ u) ⬝ᵥ w = u ⬝ᵥ (Aᵀ *ᵥ w) := by
   rw [Matrix.mulVec_transpose, dotProduct_comm, Matrix.dotProduct_mulVec, dotProduct_comm]
 
+/- English proof (translation)
+Simplify using `only [hf]`. Rewrite using `[dot_mulVec_left, star_mulVec', Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc]`.
+-/
 theorem hf_mulVec (M : Matrix m m ℂ) (A : Matrix m n ℂ) (u v : n → ℂ) :
     hf M (A *ᵥ u) (A *ᵥ v) = hf (Aᵀ * M * A.map star) u v := by
   simp only [hf]
   rw [dot_mulVec_left, star_mulVec', Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc]
 
+/- English proof (translation)
+The claim follows from `add_dotProduct _ _ _`.
+-/
 theorem hf_add_left (M : Matrix n n ℂ) (u u' v : n → ℂ) : hf M (u + u') v = hf M u v + hf M u' v := add_dotProduct _ _ _
 
+/- English proof (translation)
+The claim follows from `sub_dotProduct _ _ _`.
+-/
 theorem hf_sub_left (M : Matrix n n ℂ) (u u' v : n → ℂ) : hf M (u - u') v = hf M u v - hf M u' v := sub_dotProduct _ _ _
 
+/- English proof (translation)
+The claim follows from `smul_dotProduct _ _ _`.
+-/
 theorem hf_smul_left (M : Matrix n n ℂ) (c : ℂ) (u v : n → ℂ) : hf M (c • u) v = c * hf M u v := smul_dotProduct _ _ _
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.SpectralLemmaThird.main`. Consider the case `exact _root_.GlobalTheory.SpectralLemmaThird.main`. Consider the case `(apply _root_.GlobalTheory.SpectralLemmaThird.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.SpectralLemmaThird.main <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.SpectralLemmaThird.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SpectralLemmaThird.main ..)`.
+-/
 theorem hf_add_right (M : Matrix n n ℂ) (u v v' : n → ℂ) : hf M u (v + v') = hf M u v + hf M u v' := by
   first
   | exact @_root_.GlobalTheory.SpectralLemmaThird.main
@@ -62,6 +85,11 @@ theorem hf_add_right (M : Matrix n n ℂ) (u v v' : n → ℂ) : hf M u (v + v')
   | (intros; apply @_root_.GlobalTheory.SpectralLemmaThird.main <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.SpectralLemmaThird.main ..)
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.SpectralLemmaFourth.main`. Consider the case `exact _root_.GlobalTheory.SpectralLemmaFourth.main`. Consider the case `(apply _root_.GlobalTheory.SpectralLemmaFourth.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.SpectralLemmaFourth.main <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.SpectralLemmaFourth.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SpectralLemmaFourth.main ..)`.
+-/
 theorem hf_sub_right (M : Matrix n n ℂ) (u v v' : n → ℂ) : hf M u (v - v') = hf M u v - hf M u v' := by
   first
   | exact @_root_.GlobalTheory.SpectralLemmaFourth.main
@@ -71,13 +99,22 @@ theorem hf_sub_right (M : Matrix n n ℂ) (u v v' : n → ℂ) : hf M u (v - v')
   | (intros; apply @_root_.GlobalTheory.SpectralLemmaFourth.main <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.SpectralLemmaFourth.main ..)
 
+/- English proof (translation)
+Simplify using `only [hf, star_smul, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+-/
 theorem hf_smul_right (M : Matrix n n ℂ) (c : ℂ) (u v : n → ℂ) : hf M u (c • v) = star c * hf M u v := by
   simp only [hf, star_smul, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 
+/- English proof (translation)
+Simplify using `only [hf]`. Rewrite using `[← Matrix.star_dotProduct_star, star_mulVec', star_star, ← hM, dot_mulVec_left, Matrix.transpose_transpose]`.
+-/
 theorem hf_conj {M : Matrix n n ℂ} (hM : Mᵀ = M.map star) (u v : n → ℂ) : hf M v u = star (hf M u v) := by
   simp only [hf]
   rw [← Matrix.star_dotProduct_star, star_mulVec', star_star, ← hM, dot_mulVec_left, Matrix.transpose_transpose]
 
+/- English proof (translation)
+Simplify using `only [hf, Matrix.mul_apply, dotProduct, Matrix.mulVec, Matrix.transpose_apply, Matrix.map_apply, Pi.star_apply, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [mul_assoc]`.
+-/
 theorem gram_apply (M : Matrix m m ℂ) (A : Matrix m n ℂ) (i j : n) :
     (Aᵀ * M * A.map star) i j = hf M (fun r => A r i) (fun r => A r j) := by
   simp only [hf, Matrix.mul_apply, dotProduct, Matrix.mulVec, Matrix.transpose_apply, Matrix.map_apply, Pi.star_apply,
@@ -100,6 +137,13 @@ def pcol (ι : Matrix (Fin d) (Fin d₁) ℂ) (C : Matrix (Fin d₁) (Ix R S) �
 def sg2 : Ix R S ⊕ (Unit ⊕ Unit) → ℂ :=
   Sum.elim (Sum.elim (fun _ => 1) (fun _ => -1)) (Sum.elim (fun _ => 1) (fun _ => -1))
 
+/- English proof (translation)
+Break down `i with i | i` into its components or cases. Distinguish the cases in `h : i = A`. Substitute `h` using the available equality. Simplify using `[sg2]`. Take `⟨j, rfl⟩` from `Fin.exists_succAbove_eq h`.
+
+Simplify using `[sg2]`. Distinguish the cases in `h : i = Fin.last S`. Substitute `h` using the available equality. Simplify using `[sg2]`. Take `⟨j, rfl⟩` from `Fin.exists_castSucc_eq.2 h`.
+
+Simplify using `[sg2]`.
+-/
 theorem sg2_splitIx_eq (A : Fin (R + 1)) (i : Ix (R + 1) (S + 1)) :
     sg2 (splitIx (S := S) A i) = Sum.elim (fun _ => (1 : ℂ)) (fun _ => -1) i := by
   rcases i with i | i
@@ -112,12 +156,26 @@ theorem sg2_splitIx_eq (A : Fin (R + 1)) (i : Ix (R + 1) (S + 1)) :
     · obtain ⟨j, rfl⟩ := Fin.exists_castSucc_eq.2 h
       simp [sg2]
 
+/- English proof (translation)
+Simplify using `only [extFrame, Matrix.submatrix_apply, id]`. Apply the tactic sequence `rcases splitIx A i with k | u | u <;> simp [pcol, newCols, Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+-/
 theorem extFrame_apply (A : Fin (R + 1)) (ι : Matrix (Fin d) (Fin d₁) ℂ) (C : Matrix (Fin d₁) (Ix R S) ℂ)
     (ε φ : Fin d → ℂ) (r : Fin d) (i : Ix (R + 1) (S + 1)) :
     extFrame A (ι * C) ε φ r i = pcol ι C ε φ (splitIx A i) r := by
   simp only [extFrame, Matrix.submatrix_apply, id]
   rcases splitIx A i with k | u | u <;> simp [pcol, newCols, Matrix.mul_apply, Matrix.mulVec, dotProduct]
 
+/- English proof (translation)
+Use `set Fr := extFrame A (ι * C) ε φ with hFr`. Establish `hc : ∀ i, (fun r => Fr r i) = pcol ι C ε φ (splitIx A i)` using `fun i => funext fun r => extFrame_apply A ι C ε φ r i`. Establish `hG' : Frᵀ * M * Fr.map star = Jm (R + 1) (S + 1)`. Use extensionality with `i j`. Rewrite using `[gram_apply, hc, hc, hG, Jm_diag, Matrix.diagonal_apply]`.
+
+Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[sg2_splitIx_eq]`. Simplify using `[h]`. Use `⟨⟨hG', ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : (Jm (R + 1) (S + 1) * Frᵀ * M) * Fr.map star = 1`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc Frᵀ, hG', Jm_mul_Jm]`. Establish `e : Ix (R + 1) (S + 1) ≃ Fin d` using `Fintype.equivOfCardEq (by simp [hcard])`. Establish `h2` using `(Matrix.mul_eq_one_comm_of_equiv e).1 h1`.
+
+Use `⟨(Jm (R + 1) (S + 1) * Frᵀ * M).map star, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.map_mul]`. Use `congr 1`. Use extensionality with `i j`.
+
+Simplify using the standard rewrite rules. Use `_ = 1 := by rw [h2, Matrix.map_one _ (map_zero _) (map_one _)]`. Use extensionality with `r i`. Rewrite using `[show (θ * Fr) r i = (θ *ᵥ fun r => Fr r i) r from rfl, hc, hT, Jm_diag, Matrix.mul_diagonal, hFr, extFrame_apply, Pi.smul_apply, smul_eq_mul, sg2_splitIx_eq, mul_comm]`.
+-/
 theorem frame_of_cols (A : Fin (R + 1)) (M θ : Matrix (Fin d) (Fin d) ℂ) (ι : Matrix (Fin d) (Fin d₁) ℂ)
     (C : Matrix (Fin d₁) (Ix R S) ℂ) (ε φ : Fin d → ℂ)
     (hG : ∀ z z', hf M (pcol ι C ε φ z) (pcol ι C ε φ z') = if z = z' then sg2 z else 0)
@@ -147,6 +205,45 @@ theorem frame_of_cols (A : Fin (R + 1)) (M θ : Matrix (Fin d) (Fin d) ℂ) (ι 
     rw [show (θ * Fr) r i = (θ *ᵥ fun r => Fr r i) r from rfl, hc, hT, Jm_diag, Matrix.mul_diagonal, hFr,
       extFrame_apply, Pi.smul_apply, smul_eq_mul, sg2_splitIx_eq, mul_comm]
 
+/- English proof (translation)
+Take `⟨hθθ, hiso, hpos⟩` from `hθ`. Establish `hθθv : ∀ u, θ *ᵥ (θ *ᵥ u) = u` using `fun u => by rw [Matrix.mulVec_mulVec, hθθ, Matrix.one_mulVec]`. Establish `hI : ∀ u w, hf M (θ *ᵥ u) (θ *ᵥ w) = hf M u w` using `fun u w => by rw [hf_mulVec, hiso]`. Establish `hsw : ∀ u w, hf M u (θ *ᵥ w) = hf M (θ *ᵥ u) w` using `fun u w => by rw [← hI (θ *ᵥ u) w, hθθv]`. Take `⟨v, hv⟩ : ∃ v, v = θ *ᵥ x` from `⟨_, rfl⟩`.
+
+Establish `hxv : hf M x v = hf M v x` using `by rw [hv, hsw]`. Establish `hvv : hf M v v = 0` using `by rw [hv, hI, hxx]`. Establish `hreal : star (hf M v x) = hf M v x` using `by rw [← hf_conj hM v x, hxv]`. Establish `him : (hf M v x).im = 0` using `Complex.conj_eq_iff_im.1 hreal`. Take `⟨r, har⟩ : ∃ r : ℝ, hf M v x = r` from `⟨(hf M v x).re, Complex.ext (by simp) (by simp [him])⟩`.
+
+Establish `hr : 0 < r`. Establish `h0 : 0 < (hf M v x).re` using `by rw [hv]; exact hpos x hx`. Rewrite `h0` using `[har, Complex.ofReal_re]`. Then use the resulting hypothesis. Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : ∃ s : ℂ, s * star s * (2 * r) = 1 := by`. Use `⟨((Real.sqrt (2 * r))⁻¹ : ℝ), ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `Real.mul_self_sqrt (show (0 : ℝ) ≤ 2 * r by linarith)`. Establish `h2 : Real.sqrt (2 * r) ≠ 0` using `(Real.sqrt_pos.2 (by linarith)).ne'`. Establish `h3 : (Real.sqrt (2 * r))⁻¹ * (Real.sqrt (2 * r))⁻¹ * (2 * r) = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `h4 : star (((Real.sqrt (2 * r))⁻¹ : ℝ) : ℂ) = (((Real.sqrt (2 * r))⁻¹ : ℝ) : ℂ)` using `Complex.conj_ofReal _`.
+
+Rewrite using `[h4]`. Conclude with `h3` after adjusting the coercions. Take `⟨ε, hε⟩ : ∃ ε : Fin d → ℂ, ε = s • (x + v)` from `⟨_, rfl⟩`. Take `⟨φ, hφ⟩ : ∃ φ : Fin d → ℂ, φ = s • (x - v)` from `⟨_, rfl⟩`. Establish `hee : hf M ε ε = 1`.
+
+Simplify using `only [hε, hf_smul_left, hf_smul_right, hf_add_left, hf_add_right]`. Rewrite using `[hxx, hvv, hxv, har]`. Take the linear combination `hs`. Establish `hff : hf M φ φ = -1`. Simplify using `only [hφ, hf_smul_left, hf_smul_right, hf_sub_left, hf_sub_right]`.
+
+Rewrite using `[hxx, hvv, hxv, har]`. Take the linear combination `(-1 : ℂ) * hs`. Establish `hef : hf M ε φ = 0`. Simplify using `only [hε, hφ, hf_smul_left, hf_smul_right, hf_add_left, hf_sub_right]`. Rewrite using `[hxx, hvv, hxv, har]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hfe : hf M φ ε = 0`. Simplify using `only [hε, hφ, hf_smul_left, hf_smul_right, hf_sub_left, hf_add_right]`. Rewrite using `[hxx, hvv, hxv, har]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hιx : ∀ p, hf M (ι *ᵥ p) x = 0` using `fun p => by`. Simplify using `only [hf]`. Rewrite using `[dot_mulVec_left, horth, dotProduct_zero]`. Establish `hιv : ∀ p, hf M (ι *ᵥ p) v = 0` using `fun p => by`. Rewrite using `[hv, hsw, Matrix.mulVec_mulVec, hθι, ← Matrix.mulVec_mulVec, hιx]`.
+
+Establish `hιε : ∀ p, hf M (ι *ᵥ p) ε = 0` using `fun p => by`. Rewrite using `[hε, hf_smul_right, hf_add_right, hιx, hιv]`. Expand and normalize the polynomial expressions, which then agree. Establish `hιφ : ∀ p, hf M (ι *ᵥ p) φ = 0` using `fun p => by`. Rewrite using `[hφ, hf_smul_right, hf_sub_right, hιx, hιv]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hει : ∀ p, hf M ε (ι *ᵥ p) = 0` using `fun p => by rw [hf_conj hM, hιε, star_zero]`. Establish `hφι : ∀ p, hf M φ (ι *ᵥ p) = 0` using `fun p => by rw [hf_conj hM, hιφ, star_zero]`. Establish `hιι : ∀ p q, hf M (ι *ᵥ p) (ι *ᵥ q) = hf M₁ p q` using `fun p q => by rw [hf_mulVec, hgram]`. Establish `hθε : θ *ᵥ ε = ε`.
+
+Rewrite using `[hε, hv, Matrix.mulVec_smul, Matrix.mulVec_add, hθθv, add_comm]`. Establish `hθφ : θ *ᵥ φ = -φ`. Rewrite using `[hφ, hv, Matrix.mulVec_smul, Matrix.mulVec_sub, hθθv, ← smul_neg, neg_sub]`. Establish `hθι' : ∀ p, θ *ᵥ (ι *ᵥ p) = ι *ᵥ (θ₁ *ᵥ p)` using `fun p => by`. Rewrite using `[Matrix.mulVec_mulVec, hθι, ← Matrix.mulVec_mulVec]`.
+
+Establish `hcolθ : ∀ k, θ₁ *ᵥ (fun a => C a k) = Sum.elim (fun _ => (1 : ℂ)) (fun _ => -1) k • fun a => C a k` using `fun k => by`. Use function extensionality and compare the values at `a`. Establish `e` using `congrFun (congrFun hθC a) k`. Rewrite `e` using `[Jm_diag, Matrix.mul_diagonal]`. Rewrite using `[Pi.smul_apply, smul_eq_mul, mul_comm, ← e]`.
+
+Both sides reduce to the same expression. Take `⟨C', hC'⟩` from `hC.2`. Establish `hC'' : C' * C = 1` using `frame_inv hC.1 hC'`. Establish `hcd : Fintype.card (Fin d₁) = Fintype.card (Ix R S)`. Establish `h1` using `Matrix.rank_mul_le_left C C'`.
+
+Rewrite `h1` using `[hC', Matrix.rank_one]`. Establish `h2` using `Matrix.rank_mul_le_left C' C`. Rewrite `h2` using `[hC'', Matrix.rank_one]`. Conclude with `le_antisymm (h1.trans (Matrix.rank_le_card_width C)) (h2.trans (Matrix.rank_le_card_width C'))`. Establish `hcard : Fintype.card (Ix (R + 1) (S + 1)) = d`.
+
+Simplify using `only [Fintype.card_sum, Fintype.card_fin] at hcd ⊢`. Use linear arithmetic over natural numbers and integers. Use `⟨ε, φ, frame_of_cols A M θ ι C ε φ ?_ ?_ hcard, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rintro (k | ⟨⟩ | ⟨⟩) (l | ⟨⟩ | ⟨⟩) <;> simp only [pcol, sg2, Sum.elim_inl, Sum.elim_inr]`. Rewrite using `[hιι, ← gram_apply, hC.1, Jm_diag, Matrix.diagonal_apply]`.
+
+Distinguish the cases in `h : k = l`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`. Apply the tactic sequence `all_goals simp [hιε, hιφ, hει, hφι, hee, hff, hef, hfe]`.
+
+Apply the tactic sequence `rintro (k | ⟨⟩ | ⟨⟩) <;> simp only [pcol, sg2, Sum.elim_inl, Sum.elim_inr]`. Rewrite using `[hθι', hcolθ k, Matrix.mulVec_smul]`. Rewrite using `[hθε, one_smul]`. Rewrite using `[hθφ, neg_one_smul]`. Introduce `K t hKθ hKx`.
+
+Establish `hKv : K *ᵥ v = t • v`. Rewrite using `[hv, Matrix.mulVec_mulVec, hKθ.eq, ← Matrix.mulVec_mulVec, hKx, Matrix.mulVec_smul]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[hε, Matrix.mulVec_smul, Matrix.mulVec_add, hKx, hKv, ← smul_add, smul_comm]`. Rewrite using `[hφ, Matrix.mulVec_smul, Matrix.mulVec_sub, hKx, hKv, ← smul_sub, smul_comm]`.
+-/
 theorem exists_frame_core (A : Fin (R + 1)) (M θ : Matrix (Fin d) (Fin d) ℂ) (M₁ θ₁ : Matrix (Fin d₁) (Fin d₁) ℂ)
     (ι : Matrix (Fin d) (Fin d₁) ℂ) (x : Fin d → ℂ) (C : Matrix (Fin d₁) (Ix R S) ℂ)
     (hM : Mᵀ = M.map star) (hθ : IsCartan M θ) (hgram : ιᵀ * M * ι.map star = M₁)
@@ -246,6 +343,35 @@ end Core
 
 section Main
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B d d₁ r s i₀ i₁ R S W W₁ H' hCM hW hA A w C hC`. Take `⟨hθι, -⟩` from `hA.cartan w`. Establish `hτ : ∀ e : E, (B.emb w).1 (σ e) = star ((B.emb w).1 e)` using `fun e => hCM.2.2.2 _ e`. Establish `htr : ∀ {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (u v : Fin n → E), hf (Complex.I • J.map (B.emb w).1) (fun i => (B.emb w).1 (u i)) (fun i => (B.emb w).1 (v i)) = Complex.I * (B.emb w).1 (form σ J u v)`. Introduce `n J u v`.
+
+Establish `h1 : (fun i => (B.emb w).1 ((J *ᵥ fun j => σ (v j)) i)) = J.map (B.emb w).1 *ᵥ star (fun i => (B.emb w).1 (v i))`. Use function extensionality and compare the values at `i`. Rewrite using `[RingHom.map_mulVec]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+
+Simplify using `[hτ]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hf]`. Rewrite using `[Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul]`. Use `_ = _ := by rw [← h1, form, RingHom.map_dotProduct]; rfl`.
+
+Establish `hM : (herm W.J (B.emb w))ᵀ = (herm W.J (B.emb w)).map star`. Use extensionality with `i j`. Simplify using `only [herm, Matrix.transpose_apply, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, star_mul']`. Rewrite using `[← hτ, hW.skew j i, map_neg, show star Complex.I = -Complex.I from Complex.conj_I]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hgram : (H'.ι.map (B.emb w).1)ᵀ * herm W.J (B.emb w) * (H'.ι.map (B.emb w).1).map star = herm W₁.J (B.emb w)`. Establish `g` using `congrArg (fun X => X.map (B.emb w).1) hA.gram`. Simplify using `only [Matrix.map_mul, Matrix.transpose_map] at g`. Establish `e : (H'.ι.map σ).map (B.emb w).1 = (H'.ι.map (B.emb w).1).map star` using `by ext; simp [hτ]`. Rewrite `g` using `[e]`.
+
+Simplify using `only [herm]`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, g]`. Establish `hxx : hf (herm W.J (B.emb w)) (fun i => (B.emb w).1 (H'.x i)) (fun i => (B.emb w).1 (H'.x i)) = 0`. Use `htr W.J H'.x H'.x` as an intermediate fact. Rewrite `this` using `[hA.xx, map_zero, mul_zero]`.
+
+Conclude with `this`. Establish `hx : (fun i => (B.emb w).1 (H'.x i)) ≠ 0`. Introduce `h0`. Use `htr W.J H'.x H'.y` as an intermediate fact. Rewrite `this` using `[hA.xy, map_one, mul_one]`.
+
+Express the relevant statement in the definitionally equal form `hf (herm W.J (B.emb w)) (fun i => (B.emb w).1 (H'.x i)) (fun i => (B.emb w).1 (H'.y i)) = Complex.I at this`. Rewrite `this` using `[h0]`. Simplify using `only [hf, zero_dotProduct] at this`. Conclude with `Complex.I_ne_zero this.symm`. Establish `horth : (H'.ι.map (B.emb w).1)ᵀ *ᵥ (herm W.J (B.emb w) *ᵥ star (fun i => (B.emb w).1 (H'.x i))) = 0`.
+
+Use function extensionality and compare the values at `j`. Establish `h1` using `htr W.J (H'.ι *ᵥ Pi.single j 1) H'.x`. Rewrite `h1` using `[(hA.orth (Pi.single j 1)).1, map_zero, mul_zero]`. Establish `h2 : (fun i => (B.emb w).1 ((H'.ι *ᵥ Pi.single j 1) i)) = H'.ι.map (B.emb w).1 *ᵥ Pi.single j 1`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[RingHom.map_mulVec]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `[Pi.single_apply, apply_ite]`. Rewrite `h1` using `[h2]`.
+
+Express the relevant statement in the definitionally equal form `hf (herm W.J (B.emb w)) _ _ = 0 at h1`. Simplify using `only [hf] at h1`. Rewrite `h1` using `[dot_mulVec_left]`. Simplify using `using h1`. Take `⟨ε, φ, hF, hK⟩` from `exists_frame_core A (herm W.J (B.emb w)) (W.θ w) (herm W₁.J (B.emb w)) (W₁.θ w) (H'.ι.map (B.emb w).1) (fun i => (B.emb w).1 (H'.x i)) C hM (hW.cartan w) hgram horth hθι hxx hx hC.1 hC.2 hA.rank`.
+
+Use `⟨ε, φ, hF, fun t h₁ k hk hL => hK _ _ (hk.2 w) ?_⟩` and prove the remaining obligations. Establish `hπ : ∀ e : E, piInf (B.emb w) (inclR (F` using `F) (AF F) e) = (B.emb w).1 e := fun e => by`. Use `congrFun (congrFun (GlobalTheory.ThK.RealK.incM_map (F := F) (Matrix.of fun (_ _ : Unit) => e) (B.emb w)) ()) ()` as an intermediate fact. Simplify `this` using `[incM]`. Use function extensionality and compare the values at `i`.
+
+Establish `e : piInf (B.emb w) ((mat k *ᵥ incV F H'.x) i) = piInf (B.emb w) ((t.1 • incV F H'.x) i)` using `by rw [hL.1]`. Rewrite `e` using `[RingHom.map_mulVec, Pi.smul_apply, smul_eq_mul, map_mul]`. Establish `hv : (piInf (B.emb w) ∘ incV F H'.x) = fun i => (B.emb w).1 (H'.x i)` using `funext fun j => hπ (H'.x j)`. Rewrite `e` using `[hv, show piInf (B.emb w) (incV F H'.x i) = (B.emb w).1 (H'.x i) from hπ _]`. Rewrite using `[Pi.smul_apply, smul_eq_mul]`.
+
+Conclude with `e`.
+-/
 theorem exists_extFrame_adapted : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (d d₁ r s i₀ i₁ R S : ℕ) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁), IsCMExt F E σ →
     W.IsSkew σ B r s → H'.IsAdapted σ B W W₁ i₀ i₁ → ∀ (A : Fin (R + 1)) (w : InfinitePlace F)

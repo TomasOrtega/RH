@@ -8,12 +8,23 @@ open scoped nonZeroDivisors
 
 namespace GlobalTheory.Mem.An.Model
 
+/- English proof (translation)
+Apply the tactic sequence `refine ⟨1, 1, ?_, ?_, ?_⟩ <;> norm_num`.
+-/
 theorem normOne_seven_one_two : NormOne 7 1 2 := by
   refine ⟨1, 1, ?_, ?_, ?_⟩ <;> norm_num
 
+/- English proof (translation)
+Apply the tactic sequence `refine ⟨2, 4, ?_, ?_, ?_⟩ <;> norm_num`.
+-/
 theorem normOne_seven_two : NormOne 7 2 29 := by
   refine ⟨2, 4, ?_, ?_, ?_⟩ <;> norm_num
 
+/- English proof (translation)
+Take `⟨A, B, hN, ⟨b, rfl⟩, ⟨c, hc⟩⟩` from `h`. Take `rfl : A = 2 + M * b + 2 * M * c` from `by linear_combination hc`. Take `⟨e, he⟩ : ∃ e : ℤ, (d : ℤ) = 4 * e - 1` from `⟨((d : ℤ) + 1) / 4, by omega⟩`. Use `⟨b + 2 * c + M * (c * (b + c) + e * b ^ 2), ?_⟩` and prove the remaining obligations. Establish `h4 : 4 * ((p : ℤ) - 1) = 4 * ((M : ℤ) * (b + 2 * c + M * (c * (b + c) + e * b ^ 2)))`.
+
+Take the linear combination `(-1 : ℤ) * hN + ((M : ℤ) ^ 2 * b ^ 2) * he`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem normOne_dvd {d M p : ℕ} (hd : d % 4 = 3) (h : NormOne d M p) : (M : ℤ) ∣ (p : ℤ) - 1 := by
   obtain ⟨A, B, hN, ⟨b, rfl⟩, ⟨c, hc⟩⟩ := h
   obtain rfl : A = 2 + M * b + 2 * M * c := by linear_combination hc
@@ -23,6 +34,11 @@ theorem normOne_dvd {d M p : ℕ} (hd : d % 4 = 3) (h : NormOne d M p) : (M : �
     linear_combination (-1 : ℤ) * hN + ((M : ℤ) ^ 2 * b ^ 2) * he
   linarith
 
+/- English proof (translation)
+Introduce and unpack `⟨A, B, h1, ⟨b, rfl⟩, -⟩`. Move the coercions through the operations in `at h1`. Establish `h2 : A ≤ 2` using `by nlinarith [sq_nonneg b]`. Establish `h3 : -2 ≤ A` using `by nlinarith [sq_nonneg b]`. Establish `h4 : b ≤ 0` using `by nlinarith [sq_nonneg A]`.
+
+Establish `h5 : 0 ≤ b` using `by nlinarith [sq_nonneg A]`. Apply the tactic sequence `interval_cases A <;> interval_cases b <;> norm_num at h1`.
+-/
 theorem not_normOne : ¬ NormOne 7 2 2 := by
   rintro ⟨A, B, h1, ⟨b, rfl⟩, -⟩
   push_cast at h1
@@ -32,11 +48,29 @@ theorem not_normOne : ¬ NormOne 7 2 2 := by
   have h5 : 0 ≤ b := by nlinarith [sq_nonneg A]
   interval_cases A <;> interval_cases b <;> norm_num at h1
 
+/- English proof (translation)
+The claim follows from `Subgroup.subset_closure ⟨a, Submodule.mem_top, h⟩`.
+-/
 theorem span_mem_principalRayGroup_top {K : Type} [Field K] [NumberField K] (a : 𝓞 K) (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ)
     (h : (I : FractionalIdeal (𝓞 K)⁰ K) = ((Ideal.span {a} : Ideal (𝓞 K)) : FractionalIdeal (𝓞 K)⁰ K)) :
     I ∈ rayP (⊤ : Ideal (𝓞 K)) :=
   Subgroup.subset_closure ⟨a, Submodule.mem_top, h⟩
 
+/- English proof (translation)
+Proceed by induction on `J using UniqueFactorizationMonoid.induction_on_prime with`. Consider the case `h₁ => intro h`. Conclude with `absurd rfl h`. Consider the case `h₂ u hu`. Introduce `_ _ I hI`.
+
+Rewrite `hu` using `[Ideal.isUnit_iff]`. Substitute `hu` using the available equality. Establish `hI1 : I = 1` using `Units.ext (by rw [hI, FractionalIdeal.coeIdeal_top, Units.val_one])`. Rewrite using `[hI1]`. Conclude with `one_mem _`.
+
+Consider the case `h₃ a P ha hP ih`. Introduce `_ hcop I hI`. Establish `hP0 : P ≠ 0` using `hP.ne_zero`. Establish `hPq : ¬ P ∣ 𝔮`. Introduce `hd`.
+
+Apply `hP.not_isUnit` to reduce the goal to its premises. Rewrite using `[Ideal.isUnit_iff, eq_top_iff, ← hcop]`. Conclude with `sup_le Ideal.mul_le_left (Ideal.le_of_dvd hd)`. Establish `hacop : a ⊔ 𝔮 = ⊤`. Rewrite using `[eq_top_iff, ← hcop]`.
+
+Conclude with `sup_le_sup_right Ideal.mul_le_right _`. Establish `hPf : (P : FractionalIdeal (𝓞 K)⁰ K) ≠ 0`. Rewrite using `[Ne, FractionalIdeal.coeIdeal_eq_zero]`. Conclude with `hP0`. Establish `haf : (a : FractionalIdeal (𝓞 K)⁰ K) ≠ 0`.
+
+Rewrite using `[Ne, FractionalIdeal.coeIdeal_eq_zero]`. Conclude with `ha`. Establish `hI' : I = Units.mk0 _ hPf * Units.mk0 _ haf` using `Units.ext (by`. Rewrite using `[hI, Units.val_mul, Units.val_mk0, Units.val_mk0, FractionalIdeal.coeIdeal_mul])`. Establish `hu : Units.mk0 _ hPf ∈ rayI 𝔮` using `Subgroup.subset_closure ⟨⟨P, Ideal.isPrime_of_prime hP, hP0⟩, hPq, rfl⟩`.
+
+Rewrite using `[hI']`. Conclude with `Subgroup.mul_mem _ hu (ih ha hacop _ rfl)`.
+-/
 theorem mem_rayI_of_coprime {K : Type} [Field K] [NumberField K] (𝔮 : Ideal (𝓞 K)) (J : Ideal (𝓞 K)) :
     J ≠ 0 → J ⊔ 𝔮 = ⊤ → ∀ I : (FractionalIdeal (𝓞 K)⁰ K)ˣ,
       (I : FractionalIdeal (𝓞 K)⁰ K) = (J : FractionalIdeal (𝓞 K)⁰ K) → I ∈ rayI 𝔮 := by
@@ -71,6 +105,11 @@ theorem mem_rayI_of_coprime {K : Type} [Field K] [NumberField K] (𝔮 : Ideal (
     rw [hI']
     exact Subgroup.mul_mem _ hu (ih ha hacop _ rfl)
 
+/- English proof (translation)
+Use `(Subgroup.closure_le _).mpr ?_` and prove the remaining obligations. Introduce and unpack `I ⟨a, ha, hI⟩`. Use `mem_rayI_of_coprime 𝔮 _ ?_ ?_ I hI` and prove the remaining obligations. Introduce `h0`. Apply `I.ne_zero` to reduce the goal to its premises.
+
+Rewrite using `[hI, h0]`. Conclude with `FractionalIdeal.coeIdeal_bot`. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `hmem : a - (a - 1) ∈ Ideal.span {a} ⊔ 𝔮` using `Ideal.sub_mem _ (Ideal.mem_sup_left (Ideal.mem_span_singleton_self a)) (Ideal.mem_sup_right ha)`. Simplify using `using hmem`.
+-/
 theorem principalRayGroup_le_coprimeIdealGroup {K : Type} [Field K] [NumberField K] (𝔮 : Ideal (𝓞 K)) : rayP 𝔮 ≤ rayI 𝔮 := by
   refine (Subgroup.closure_le _).mpr ?_
   rintro I ⟨a, ha, hI⟩
@@ -84,6 +123,11 @@ theorem principalRayGroup_le_coprimeIdealGroup {K : Type} [Field K] [NumberField
       Ideal.sub_mem _ (Ideal.mem_sup_left (Ideal.mem_span_singleton_self a)) (Ideal.mem_sup_right ha)
     simpa using hmem
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hinf`. Take `⟨x, -, hx⟩` from `Set.Infinite.exists_accPt_of_subset_isCompact hinf ((isCompact_Icc (a := (0 : ℝ)) (b := 1)).reProdIm (isCompact_Icc (a := t - T) (b := t + T))) (by`. Introduce and unpack `ρ ⟨h1, h2, h3, -⟩`. Rewrite `h3` using `[abs_le]`. Conclude with `⟨⟨h1.le, h2.le⟩, ⟨by linarith, by linarith⟩⟩)`.
+
+Establish `han : AnalyticOnNhd ℂ f Set.univ` using `fun z _ => hf.analyticAt z`. Establish `hzero` using `han.eqOn_zero_of_preconnected_of_frequently_eq_zero isPreconnected_univ (Set.mem_univ x) (frequently_nhdsWithin_iff.mpr ((accPt_iff_frequently.mp hx).mono fun y hy => ⟨hy.2.2.2.2, hy.1⟩))`. Take `⟨z, hz⟩` from `hne`. Conclude with `hz (hzero (Set.mem_univ z))`.
+-/
 private theorem finite_zeros_in_strip_box_of_differentiable {f : ℂ → ℂ} (hf : Differentiable ℂ f) (hne : ∃ z, f z ≠ 0) (t T : ℝ) :
     {ρ : ℂ | 0 < ρ.re ∧ ρ.re < 1 ∧ |ρ.im - t| ≤ T ∧ f ρ = 0}.Finite := by
   by_contra hinf
@@ -98,11 +142,19 @@ private theorem finite_zeros_in_strip_box_of_differentiable {f : ℂ → ℂ} (h
   obtain ⟨z, hz⟩ := hne
   exact hz (hzero (Set.mem_univ z))
 
+/- English proof (translation)
+The claim follows from `finite_zeros_in_strip_box_of_differentiable (DirichletCharacter.differentiable_LFunction hχ) ⟨2, DirichletCharacter.LFunction_ne_zero_of_one_le_re (χ := χ) (s := 2) (Or.inl hχ) (by norm_num)⟩ t T`.
+-/
 theorem zerosIn_finite {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (hχ : χ ≠ 1) (t T : ℝ) :
     (zerosIn χ t T).Finite :=
   finite_zeros_in_strip_box_of_differentiable (DirichletCharacter.differentiable_LFunction hχ)
     ⟨2, DirichletCharacter.LFunction_ne_zero_of_one_le_re (χ := χ) (s := 2) (Or.inl hχ) (by norm_num)⟩ t T
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hinf`. Take `⟨x, -, hx⟩` from `Set.Infinite.exists_accPt_of_subset_isCompact hinf ((isCompact_Icc (a := (0 : ℝ)) (b := 1)).reProdIm (isCompact_Icc (a := t - T) (b := t + T))) (by`. Introduce and unpack `ρ ⟨h1, h2, h3, -⟩`. Rewrite `h3` using `[abs_le]`. Conclude with `⟨⟨h1.le, h2.le⟩, ⟨by linarith, by linarith⟩⟩)`.
+
+Establish `han : AnalyticOnNhd ℂ f Set.univ` using `fun z _ => hf.analyticAt z`. Establish `hzero` using `han.eqOn_zero_of_preconnected_of_frequently_eq_zero isPreconnected_univ (Set.mem_univ x) (frequently_nhdsWithin_iff.mpr ((accPt_iff_frequently.mp hx).mono fun y hy => ⟨hy.2.2.2.2, hy.1⟩))`. Take `⟨z, hz⟩` from `hne`. Conclude with `hz (hzero (Set.mem_univ z))`.
+-/
 private theorem finite_zeros_in_strip_box_of_differentiable' {f : ℂ → ℂ} (hf : Differentiable ℂ f) (hne : ∃ z, f z ≠ 0) (t T : ℝ) :
     {ρ : ℂ | 0 < ρ.re ∧ ρ.re < 1 ∧ |ρ.im - t| ≤ T ∧ f ρ = 0}.Finite := by
   by_contra hinf
@@ -117,6 +169,11 @@ private theorem finite_zeros_in_strip_box_of_differentiable' {f : ℂ → ℂ} (
   obtain ⟨z, hz⟩ := hne
   exact hz (hzero (Set.mem_univ z))
 
+/- English proof (translation)
+Use `(finite_zeros_in_strip_box_of_differentiable' (DirichletCharacter.differentiable_LFunctionTrivChar₁ q) ⟨1, DirichletCharacter.LFunctionTrivChar₁_apply_one_ne_zero q⟩ t T).subset ?_` and prove the remaining obligations. Introduce and unpack `ρ ⟨h1, h2, h3, h4⟩`. Use `⟨h1, h2, h3, ?_⟩` and prove the remaining obligations. Establish `hρ : ρ ≠ 1` using `by rintro rfl; simp at h2`. Simplify using `only [DirichletCharacter.LFunctionTrivChar₁, Function.update_of_ne hρ]`.
+
+Rewrite using `[show DirichletCharacter.LFunctionTrivChar q ρ = 0 from h4, mul_zero]`.
+-/
 theorem zerosIn_finite_one {q : ℕ} [NeZero q] (t T : ℝ) :
     (zerosIn (1 : DirichletCharacter ℂ q) t T).Finite := by
   refine (finite_zeros_in_strip_box_of_differentiable' (DirichletCharacter.differentiable_LFunctionTrivChar₁ q)
@@ -127,6 +184,13 @@ theorem zerosIn_finite_one {q : ℕ} [NeZero q] (t T : ℝ) :
   simp only [DirichletCharacter.LFunctionTrivChar₁, Function.update_of_ne hρ]
   rw [show DirichletCharacter.LFunctionTrivChar q ρ = 0 from h4, mul_zero]
 
+/- English proof (translation)
+Establish `hd` using `DirichletCharacter.differentiable_LFunction hχ`. Establish `htop : analyticOrderAt (DirichletCharacter.LFunction χ) ρ ≠ ⊤`. Introduce `ht`. Rewrite `ht` using `[analyticOrderAt_eq_top]`. Establish `han : AnalyticOnNhd ℂ (DirichletCharacter.LFunction χ) Set.univ` using `fun z _ => hd.analyticAt z`.
+
+Establish `hz` using `han.eqOn_zero_of_preconnected_of_eventuallyEq_zero isPreconnected_univ (Set.mem_univ ρ) ht`. Conclude with `DirichletCharacter.LFunction_ne_zero_of_one_le_re (χ := χ) (s := 2) (Or.inl hχ) (by norm_num) (hz (Set.mem_univ 2))`. Establish `h0 : analyticOrderAt (DirichletCharacter.LFunction χ) ρ ≠ 0` using `(hd.analyticAt ρ).analyticOrderAt_ne_zero.mpr h`. Use `show 0 < analyticOrderNatAt (DirichletCharacter.LFunction χ) ρ`. Rewrite using `[Nat.pos_iff_ne_zero]`.
+
+Introduce `h'`. Apply `h0` to reduce the goal to its premises. Rewrite using `[← Nat.cast_analyticOrderNatAt htop, h', Nat.cast_zero]`.
+-/
 theorem zmult_pos {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (hχ : χ ≠ 1) (ρ : ℂ)
     (h : DirichletCharacter.LFunction χ ρ = 0) : 0 < zmult χ ρ := by
   have hd := DirichletCharacter.differentiable_LFunction hχ

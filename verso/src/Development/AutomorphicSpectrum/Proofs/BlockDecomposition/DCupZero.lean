@@ -19,6 +19,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.RelKill
 
+/- English proof (translation)
+Rewrite using `[CrystallineSemistableComparison.P.leibniz, hr, hz]`. Simplify using the standard rewrite rules.
+-/
 theorem d_cup_zero {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {F₁ F₂ F₃ : C ⥤ ModuleCat.{0} R} (P : CH.Pairing F₁ F₂ F₃)
     {p n m : ℕ} {r : CH.Cn F₁ p} {z : CH.Cn F₂ n} (hr : CH.d F₁ p r = 0) (hz : CH.d F₂ n z = 0) (h : p + n = m) :
     CH.d F₃ m (P.cupC h r z) = 0 := by
@@ -30,6 +33,27 @@ variable {K : Type} [Field K] [CharZero K] {W Y : Scheme.{0}} {q : Y ⟶ Spec (C
 open GlobalTheory.CompanionTheory.RelInjAbs GlobalTheory.CompanionTheory.RelInjZ
 
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Take `⟨hc, -, htop, -, -, -⟩` from `hSL K W Y Y q i (𝟙 Y)`. Take `⟨ε, β, hβ, hβu⟩` from `hC1 K Y q D (Fin m) U σ hσ r hr hc1`. Set `Uc : Fin m → ObjectProperty (Thick (smFun Y q))` to `fun α => inU q (U α)`. Set `Vs : Finset (Fin m) → Y.Opens` to `fun S => S.inf U`. Establish `hVle : ∀ {α : Fin m} {S : Finset (Fin m)}, α ∈ S → Vs S ≤ U α` using `fun h => Finset.inf_le h`.
+
+Establish `hVT : ∀ {S T : Finset (Fin m)}, S ⊆ T → Vs T ≤ Vs S` using `fun h => Finset.inf_mono h`. Establish `hVaff : ∀ S : Finset (Fin m), S.Nonempty → IsAffineOpen (Vs S)` using `fun S hS => affine_finset_inf q U S hS fun o _ => by simpa using haff o o`. Establish `hP : ∀ S : Finset (Fin m), S.Nonempty → capU Uc S = inU q (Vs S)` using `fun S hS => capU_nonempty _ _ S hS fun T => inU_finset_inf hSL i U S T`. Establish `hk : ∀ {S T : Finset (Fin m)}, S ⊆ T → inU q (Vs T) ≤ inU q (Vs S)` using `fun h T' hT => (inU_finset_inf hSL i U _ T').2 fun o ho => (inU_finset_inf hSL i U _ T').1 hT o (h ho)`. Establish `hd₁ : ∀ S : Finset (Fin m), S.Nonempty → ∃ d, Nonempty (Coord q (Vs S) d)` using `fun S ⟨α, hα⟩ => (hcov α (Vs S) (hVle hα) (hVaff S ⟨α, hα⟩)).1`.
+
+Establish `hd₂ : ∀ S : Finset (Fin m), S.Nonempty → ∃ d, Nonempty (Coord (i ≫ q) (i ⁻¹ᵁ Vs S) d)` using `fun S ⟨α, hα⟩ => (hcov α (Vs S) (hVle hα) (hVaff S ⟨α, hα⟩)).2.1`. Use `choose dd hdd using hd₁`. Use `choose dd' hdd' using hd₂`. Establish `hE : ∀ (S : Finset (Fin m)) (hS : S.Nonempty) (b : ℕ), ∃ e : Om K (Sec q (Vs S)) b →ₗ[K] HV q (Vs S) b b, IsOm q (Vs S) b e ∧ Function.Bijective e` using `fun S hS b => (hAO K Y q (Vs S) (dd S hS) (hdd S hS) b).2`. Use `choose E hEom hEb using hE`.
+
+Establish `hOm` using `fun (S T : Finset (Fin m)) (h : S ⊆ T) => hOR K Y q (Vs S) (Vs T) (hVT h) (hk h)`. Use `choose φ hφ1 hφ2 hφ3 using hOm`. Set `P` to `(grOk (smFun Y q) (Nat.add_comm 1 a)).pair`. Establish `hUc : ∀ α, Cosieve (Uc α)` using `fun α => hc _`. Establish `h1 : (covSy (G q a) Uc hQ).One a` using `fun S hS j hj => one_P hAR hQ (hP S hS) (hdd S hS) (hdd' S hS) a j hj`.
+
+Establish `h2 : (covSy (G q (a + 1)) Uc hQ).One (a + 1)` using `fun S hS j hj => one_P hAR hQ (hP S hS) (hdd S hS) (hdd' S hS) (a + 1) j hj`. Set `e₂ : ∀ S : Finset (Fin m), S.Nonempty → (Om K (Sec q (Vs S)) a →ₗ[K] HU (G q a) (capU Uc S) a)` to `fun S hS => (castH (G q a) (hP S hS) a).toLinearMap ∘ₗ E S hS a`. Set `e₃ : ∀ S : Finset (Fin m), S.Nonempty → (Om K (Sec q (Vs S)) (a + 1) →ₗ[K] HU (G q (a + 1)) (capU Uc S) (a + 1))` to `fun S hS => (castH (G q (a + 1)) (hP S hS) (a + 1)).toLinearMap ∘ₗ E S hS (a + 1)`. Set `fS : ∀ (α : Fin m) (S : Finset (Fin m)), α ∈ S → Sec q (Vs S)` to `fun α S hα => (Vs S).topIso.hom.hom (bf (Y.homOfLE (hVle hα) ≫ σ α))`. Establish `pf : ∀ (α α' : Fin m) (S : Finset (Fin m)) (hα : α ∈ S) (hα' : α' ∈ S), (Y.homOfLE (hVle hα) ≫ σ α) ≫ D.f = (Y.homOfLE (hVle hα') ≫ σ α') ≫ D.f` using `fun α α' S hα hα' => by`.
+
+Simplify using `[hσ]`. Set `uS : ∀ (α α' : Fin m) (S : Finset (Fin m)), α ∈ S → α' ∈ S → (Sec q (Vs S))ˣ` to `fun α α' S hα hα' => Units.map (M := Γ((Vs S : Scheme.{0}), ⊤)) (N := Sec q (Vs S)) ((Vs S).topIso.hom.hom : _ →+* Γ(Y, Vs S)).toMonoidHom (D.u (Y.homOfLE (hVle hα) ≫ σ α) (Y.homOfLE (hVle hα') ≫ σ α') (pf α α' S hα hα'))`. Establish `hφf : ∀ (α : Fin m) {S T : Finset (Fin m)} (h : S ⊆ T) (hα : α ∈ S), φ S T h (fS α S hα) = fS α T (h hα)`. Introduce `α S T h hα`. Rewrite using `[hφ1]`.
+
+Use `(rs_topIso (hVT h) _).trans ?_` and prove the remaining obligations. Rewrite using `[← bf_nat, ← Category.assoc, Scheme.homOfLE_homOfLE]`. Set `kk : ∀ {S T : Finset (Fin m)}, S ⊆ T → capU Uc T ≤ capU Uc S` to `fun h _ hT => ⟨hT.1, fun α hα => hT.2 α (h hα)⟩`. Establish `huf : ∀ α α' S hα hα', fS α S hα = uS α α' S hα hα' * fS α' S hα'` using `fun α α' S hα hα' => (congrArg (Vs S).topIso.hom.hom (bf_u _ _ (pf α α' S hα hα'))).trans (map_mul _ _ _)`. Establish `hcup : ∀ α α' S hα hα' (y : CH.Cn ((capU Uc S).ι ⋙ G q a) a) (hy : CH.d _ a y = 0) (ω : Om K (Sec q (Vs S)) a) (w : Om K (Sec q (Vs S)) a →ₗ[Sec q (Vs S)] Om K (Sec q (Vs S)) (a + 1)), (∀ g₀ (g : Fin a → Sec q (Vs S)), w (form K g₀ g) = form K g₀ (Fin.cons (uS α α' S hα hα' : Sec …`.
+
+Introduce `α α' S hα hα' y hy ω w hw hcls hz`. Use `cup_P hFL hFU hFC (hP S ⟨α, hα⟩) (capU_le Uc S hα) (capU_le Uc S hα') (β α) (β α') (E S ⟨α, hα⟩ a) (E S ⟨α, hα⟩ (a + 1)) (hEom S _ a) (hEom S _ (a + 1)) ((ε : ℤ) • (↑(uS α α' S hα hα')⁻¹ : Sec q (Vs S))) (uS α α' S hα hα' : Sec q (Vs S)) (fun k₁ k₂ => hβu α α' (Vs S) (hVle hα) (h …` as an intermediate fact. Express the relevant statement in the definitionally equal form `(Vs S).topIso.inv.hom ((Vs S).topIso.hom.hom _) = _`. Rewrite using `[← CommRingCat.comp_apply, Iso.hom_inv_id]`. Use the proof step `rfl)) w hw y hy ω hcls hz`.
+
+Rewrite `this` using `[smul_assoc]`. Conclude with `this`. Set `x : ((covSy (G q a) Uc hQ).K ∅).X n` to `⟨(CH.Mor.restrict (G q a) (capU Uc ∅).ι).pullC n z, fun s hs => hzr _ hs⟩`. Establish `hx : ((covSy (G q a) Uc hQ).K ∅).d n x = 0` using `Subtype.ext (by`. Express the relevant statement in the definitionally equal form `CH.d _ n ((CH.Mor.restrict (G q a) (capU Uc ∅).ι).pullC n z) = 0`.
+
+Rewrite using `[CH.Mor.d_pullC, hz, map_zero])`. Establish `hB` using `cov_kill hCK hCD hDW hDL hFL P Uc hUc hQ a h1 h2 r hr β hβ (fun S => Sec q (Vs S)) e₂ e₃ (fun S hS => (castH (G q a) (hP S hS) a).bijective.comp (hEb S hS a)) (fun S hS => inj_P hAR hQ (hP S hS) (hdd S hS) (hdd' S hS) (a + 1) (E S hS (a + 1)) (hEom S hS (a + 1))) (fun S => kerI q …`. Establish `hZ` using `bij_res_of_eq (capU_empty Uc) hQ (fun _ _ => htop _) (fun _ _ => htop _) (n + 2) (hZR K W Y q i hQ (Fin m) ⊤ U hU (fun _ _ => htop _) (a + 1) (n + 2))`. Establish `hd : CH.d (G q (a + 1)) (n + 2) (P.cupC (Nat.add_comm 2 n) r z) = 0` using `d_cup_zero P hr hz _`. Conclude with `relNull_top hTop (G q (a + 1)) hQ (inU q ⊤) (capU Uc ∅) htop _ hZ (P.cupC (Nat.add_comm 2 n) r z) hd (cup_mem_relS P hQ _ r z hzr) _ rfl hB`.
+-/
 theorem kill_over [IsSeparated q] [IsClosedImmersion i] (hTop : TopRes) (hFU : FormUniq) (hOR : OmRes) (hSL : SiteLaws) (hCD : CovDesc) (hZR : ZarRel)
     (hAO : AffOm) (hAR : AffRel) (hFL : FormLaws) (hDW : DWedge) (hDL : DLog) (hFC : FormCup) (hC1 : FirstChernCoboundary) (hCK : ConeKill)
     (D : E.LineData Y) (hQ : Cosieve (On q i))

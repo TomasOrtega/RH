@@ -16,48 +16,81 @@ variable {C : Type} [Field C] {v : AddValuation C (WithTop ℝ)}
 def lin {m n : ℕ} (N : Matrix (Fin m) (Fin n) C) : Fin m → MvPowerSeries (Fin n) C :=
   fun a => ∑ b, N a b • X b
 
+/- English proof (translation)
+Simplify using `[lin]`.
+-/
 theorem lin_const {m n : ℕ} (N : Matrix (Fin m) (Fin n) C) (a : Fin m) : constantCoeff (lin N a) = 0 := by
   simp [lin]
 
+/- English proof (translation)
+The claim follows from `hasSubst_of_constantCoeff_zero (lin_const N)`.
+-/
 theorem lin_hs {m n : ℕ} (N : Matrix (Fin m) (Fin n) C) : HasSubst (lin N) :=
   hasSubst_of_constantCoeff_zero (lin_const N)
 
+/- English proof (translation)
+The claim follows from `(ptIntSer v σ).sum_mem fun i _ => ptIntSer_smul (hc i) (hf i)`.
+-/
 theorem int_comb {σ ι : Type} [Fintype ι] {c : ι → C} (hc : ∀ i, IsIntV v (c i))
     {f : ι → MvPowerSeries σ C} (hf : ∀ i, MvIsInt v (f i)) : MvIsInt v (∑ i, c i • f i) :=
   (ptIntSer v σ).sum_mem fun i _ => ptIntSer_smul (hc i) (hf i)
 
+/- English proof (translation)
+The claim follows from `int_comb (h a) fun b => ptIntSer_X b`.
+-/
 theorem lin_int {m n : ℕ} {N : Matrix (Fin m) (Fin n) C} (h : ∀ a b, IsIntV v (N a b)) (a : Fin m) :
     MvIsInt v (lin N a) := int_comb (h a) fun b => ptIntSer_X b
 
+/- English proof (translation)
+Simplify using `[lin, map_sum, pt_coeff_single_X]`.
+-/
 theorem lin_coeff {m n : ℕ} (N : Matrix (Fin m) (Fin n) C) (a : Fin m) (i : Fin n) :
     coeff (Finsupp.single i 1) (lin N a) = N a i := by
   simp [lin, map_sum, pt_coeff_single_X]
 
+/- English proof (translation)
+Simplify using `[hf]`.
+-/
 theorem const_comb {σ ι : Type} [Fintype ι] (c : ι → C) {f : ι → MvPowerSeries σ C}
     (hf : ∀ i, constantCoeff (f i) = 0) : constantCoeff (∑ i, c i • f i) = 0 := by
   simp [hf]
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_apply, Finset.smul_sum, Finset.sum_smul, smul_smul]`. Conclude with `Finset.sum_comm`.
+-/
 theorem comb_comb {σ : Type} {l m n : ℕ} (A : Matrix (Fin l) (Fin m) C) (B : Matrix (Fin m) (Fin n) C)
     (f : Fin n → MvPowerSeries σ C) (b : Fin l) :
     ∑ a, A b a • ∑ e, B a e • f e = ∑ e, (A * B) b e • f e := by
   simp only [Matrix.mul_apply, Finset.smul_sum, Finset.sum_smul, smul_smul]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Simplify using `[Matrix.one_apply, ite_smul]`.
+-/
 theorem comb_one {σ : Type} {n : ℕ} (f : Fin n → MvPowerSeries σ C) (b : Fin n) :
     ∑ e, (1 : Matrix (Fin n) (Fin n) C) b e • f e = f b := by
   simp [Matrix.one_apply, ite_smul]
 
+/- English proof (translation)
+Rewrite using `[lin, subst_sum_smul hs]`. Simplify using `only [subst_X hs]`.
+-/
 theorem subst_lin {σ : Type} {m n : ℕ} {s : Fin n → MvPowerSeries σ C} (hs : HasSubst s)
     (N : Matrix (Fin m) (Fin n) C) (a : Fin m) : subst s (lin N a) = ∑ b, N a b • s b := by
   rw [lin, subst_sum_smul hs]
   simp only [subst_X hs]
 
+/- English proof (translation)
+Simplify using `[map_sum, pt_coeff_single_subst (lin_hs L) (lin_const L) (G.lg_const _), G.lg_lin, lin_coeff, Matrix.mul_apply]`.
+-/
 theorem coeff_comb_lg {d m n : ℕ} (G : LogFGL v d) (N : Matrix (Fin m) (Fin d) C)
     (L : Matrix (Fin d) (Fin n) C) (a : Fin m) (i : Fin n) :
     coeff (Finsupp.single i 1) (∑ e, N a e • (subst (lin L) (G.lg e) : MvPowerSeries (Fin n) C)) = (N * L) a i := by
   simp [map_sum, pt_coeff_single_subst (lin_hs L) (lin_const L) (G.lg_const _), G.lg_lin, lin_coeff,
     Matrix.mul_apply]
 
+/- English proof (translation)
+Apply the tactic sequence `have hs : HasSubst (Sum.elim x y) := hasSubst_of_constantCoeff_zero (by rintro (b | b) <;> simp [hx, hy])`. Establish `hl : HasSubst (fun b : Fin d => (X (Sum.inl b) : MvPowerSeries (Fin d ⊕ Fin d) C))` using `hasSubst_of_constantCoeff_zero (fun _ => by simp)`. Establish `hr : HasSubst (fun b : Fin d => (X (Sum.inr b) : MvPowerSeries (Fin d ⊕ Fin d) C))` using `hasSubst_of_constantCoeff_zero (fun _ => by simp)`. Rewrite using `[← subst_comp_subst_apply (hasSubst_of_constantCoeff_zero G.F_const) hs, G.lg_F, subst_add hs, subst_comp_subst_apply hl hs, subst_comp_subst_apply hr hs]`. Simplify using `only [subst_X hs, Sum.elim_inl, Sum.elim_inr]`.
+-/
 theorem lg_add {σ : Type} [Finite σ] {d : ℕ} (G : LogFGL v d) {x y : Fin d → MvPowerSeries σ C}
     (hx : ∀ a, constantCoeff (x a) = 0) (hy : ∀ a, constantCoeff (y a) = 0) (a : Fin d) :
     subst (fun b => (subst (Sum.elim x y) (G.F b) : MvPowerSeries σ C)) (G.lg a) =
@@ -71,12 +104,18 @@ theorem lg_add {σ : Type} [Finite σ] {d : ℕ} (G : LogFGL v d) {x y : Fin d �
     subst_comp_subst_apply hl hs, subst_comp_subst_apply hr hs]
   simp only [subst_X hs, Sum.elim_inl, Sum.elim_inr]
 
+/- English proof (translation)
+The claim follows from `have h : ∀ s, constantCoeff (Sum.elim x y s) = 0 := by rintro (b | b) <;> simp [hx, hy] constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero h) h (G.F_const b)`.
+-/
 theorem add_const {σ : Type} {d : ℕ} (G : LogFGL v d) {x y : Fin d → MvPowerSeries σ C}
     (hx : ∀ a, constantCoeff (x a) = 0) (hy : ∀ a, constantCoeff (y a) = 0) (b : Fin d) :
     constantCoeff (subst (Sum.elim x y) (G.F b) : MvPowerSeries σ C) = 0 :=
   have h : ∀ s, constantCoeff (Sum.elim x y s) = 0 := by rintro (b | b) <;> simp [hx, hy]
   constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero h) h (G.F_const b)
 
+/- English proof (translation)
+The claim follows from `have h : ∀ s, constantCoeff (Sum.elim x y s) = 0 := by rintro (b | b) <;> simp [hx, hy] ptIntSer_subst (hasSubst_of_constantCoeff_zero h) (by rintro (b | b); exacts [ix b, iy b]) (G.F_int b)`.
+-/
 theorem add_int {σ : Type} {d : ℕ} (G : LogFGL v d) {x y : Fin d → MvPowerSeries σ C}
     (hx : ∀ a, constantCoeff (x a) = 0) (hy : ∀ a, constantCoeff (y a) = 0)
     (ix : ∀ a, MvIsInt v (x a)) (iy : ∀ a, MvIsInt v (y a)) (b : Fin d) :
@@ -84,12 +123,36 @@ theorem add_int {σ : Type} {d : ℕ} (G : LogFGL v d) {x y : Fin d → MvPowerS
   have h : ∀ s, constantCoeff (Sum.elim x y s) = 0 := by rintro (b | b) <;> simp [hx, hy]
   ptIntSer_subst (hasSubst_of_constantCoeff_zero h) (by rintro (b | b); exacts [ix b, iy b]) (G.F_int b)
 
+/- English proof (translation)
+Rewrite using `[← subst_comp_subst_apply (hasSubst_of_constantCoeff_zero h0) hs, h, subst_sum_smul hs]`.
+-/
 theorem lg_hom {σ : Type} {d m : ℕ} {f : MvPowerSeries (Fin d) C} {φ : Fin d → MvPowerSeries (Fin m) C}
     (h0 : ∀ a, constantCoeff (φ a) = 0) {c : Fin m → C} {g : Fin m → MvPowerSeries (Fin m) C}
     (h : subst φ f = ∑ a, c a • g a) {s : Fin m → MvPowerSeries σ C} (hs : HasSubst s) :
     subst (fun b => (subst s (φ b) : MvPowerSeries σ C)) f = ∑ a, c a • (subst s (g a) : MvPowerSeries σ C) := by
   rw [← subst_comp_subst_apply (hasSubst_of_constantCoeff_zero h0) hs, h, subst_sum_smul hs]
 
+/- English proof (translation)
+Establish `hMi : ∀ a b, IsIntV v ((I * P) a b)` using `fun a b => by`. Rewrite using `[Matrix.mul_apply]`. Conclude with `(ptIntSub v).sum_mem fun c _ => (ptIntSub v).mul_mem (hI a c) (hP c b)`. Establish `hNi : ∀ a b, IsIntV v ((1 - I * P : Matrix (Fin d) (Fin d) C) a b)` using `fun a b => by`. Rewrite using `[Matrix.sub_apply, Matrix.one_apply]`.
+
+Use `(ptIntSub v).sub_mem ?_ (hMi a b)` and prove the remaining obligations. Use `split_ifs`. Use `exacts [(ptIntSub v).one_mem, (ptIntSub v).zero_mem]`. Establish `hPM : P * (I * P) = P` using `by rw [← Matrix.mul_assoc, hPI, Matrix.one_mul]`. Establish `hPN : P * (1 - I * P : Matrix (Fin d) (Fin d) C) = 0` using `by rw [Matrix.mul_sub, hPM, Matrix.mul_one, sub_self]`.
+
+Establish `hMM : I * P * (I * P) = I * P` using `by rw [Matrix.mul_assoc, hPM]`. Establish `hsq : I * P * (I * P) + (1 - I * P : Matrix (Fin d) (Fin d) C) * (1 - I * P : Matrix (Fin d) (Fin d) C) = 1`. Rewrite using `[mul_sub, sub_mul, sub_mul, hMM]`. Simplify using the standard rewrite rules. Generalize the expression as in `hM : I * P = M at *`.
+
+Generalize the expression as in `(1 - M : Matrix (Fin d) (Fin d) C) = N at *`. Use `set x : Fin d → MvPowerSeries (Fin d) C := fun a => subst (lin M) (φ a) with hx`. Use `set y : Fin d → MvPowerSeries (Fin d) C := fun a => subst (lin N) (ψ a) with hy`. Establish `x0 : ∀ a, constantCoeff (x a) = 0` using `fun a => constantCoeff_subst_eq_zero (lin_hs M) (lin_const M) (hφ.1 a)`. Establish `y0 : ∀ a, constantCoeff (y a) = 0` using `fun a => constantCoeff_subst_eq_zero (lin_hs N) (lin_const N) (hψ.1 a)`.
+
+Establish `xi : ∀ a, MvIsInt v (x a)` using `fun a => ptIntSer_subst (lin_hs M) (lin_int hMi) (hφ.2.1 a)`. Establish `yi : ∀ a, MvIsInt v (y a)` using `fun a => ptIntSer_subst (lin_hs N) (lin_int hNi) (hψ.2.1 a)`. Use `set Θ : Fin d → MvPowerSeries (Fin d) C := fun b => subst (Sum.elim x y) (G.F b) with hΘ`. Establish `Θ0 : ∀ a, constantCoeff (Θ a) = 0` using `add_const G x0 y0`. Establish `Θs : HasSubst Θ` using `hasSubst_of_constantCoeff_zero Θ0`.
+
+Establish `hlg : ∀ a, subst Θ (G.lg a) = ∑ e, M a e • (subst (lin M) (G.lg e) : MvPowerSeries (Fin d) C) + ∑ e, N a e • (subst (lin N) (G.lg e) : MvPowerSeries (Fin d) C)` using `fun a => by`. Rewrite using `[hΘ, lg_add G x0 y0, hx, hy, lg_hom hφ.1 (hφ.2.2 a) (lin_hs M), lg_hom hψ.1 (hψ.2.2 a) (lin_hs N)]`. Establish `Θ1 : ∀ a b, coeff (Finsupp.single b 1) (Θ a) = if a = b then 1 else 0` using `fun a b => by`. Establish `h` using `congrArg (coeff (Finsupp.single b 1)) (hlg a)`. Rewrite `h` using `[map_add, coeff_comb_lg, coeff_comb_lg, ← Matrix.add_apply, hsq, Matrix.one_apply, pt_coeff_single_subst Θs Θ0 (G.lg_const a)]`.
+
+Simplify `h` using `[G.lg_lin]`. Take `⟨Ψ, Ψi, Ψ0, hΨ, -⟩` from `GlobalTheory.IntInv.exists_int_inv C v d Θ (add_int G x0 y0 xi yi) Θ0 Θ1`. Establish `Ψs : HasSubst Ψ` using `hasSubst_of_constantCoeff_zero Ψ0`. Use `⟨fun b => ∑ a, P b a • Ψ a, fun b => const_comb _ Ψ0, fun b => int_comb (hP b) Ψi, fun b => ?_⟩` and prove the remaining obligations. Establish `key : subst (lin P) (∑ a, P b a • (subst (lin I) (G.lg a) : MvPowerSeries (Fin d') C)) =`.
+
+Substitute `Θ (∑ a, P b a • G.lg a) := by` using the available equality. Establish `hl : (fun a => (subst (lin P) (lin I a) : MvPowerSeries (Fin d) C)) = lin M`. Use function extensionality and compare the values at `a`. Rewrite using `[subst_lin (lin_hs P), ← hM]`. Conclude with `comb_comb I P _ a`.
+
+Rewrite using `[subst_sum_smul (lin_hs P), subst_sum_smul Θs]`. Simplify using `only [hlg, smul_add, Finset.sum_add_distrib, comb_comb, hPM, hPN, subst_comp_subst_apply (lin_hs I) (lin_hs P), hl]`. Simplify using the standard rewrite rules. Establish `h` using `congrArg (subst Ψ) key`. Rewrite `h` using `[subst_comp_subst_apply (lin_hs P) Ψs, subst_comp_subst_apply Θs Ψs]`.
+
+Simplify using `only [subst_lin Ψs, hΨ] at h`. Rewrite using `[h, show (fun a => (X a : MvPowerSeries (Fin d) C)) = X from rfl, subst_self]`. Both sides reduce to the same expression.
+-/
 theorem exists_retraction [CharZero C] {d d' : ℕ} (G : LogFGL v d) {I : Matrix (Fin d) (Fin d') C}
     {P : Matrix (Fin d') (Fin d) C} (hI : ∀ a b, IsIntV v (I a b)) (hP : ∀ a b, IsIntV v (P a b))
     (hPI : P * I = 1) {φ ψ : Fin d → MvPowerSeries (Fin d) C} (hφ : IsIntHom G G φ (I * P))
@@ -149,6 +212,19 @@ theorem exists_retraction [CharZero C] {d d' : ℕ} (G : LogFGL v d) {I : Matrix
   rw [h, show (fun a => (X a : MvPowerSeries (Fin d) C)) = X from rfl, subst_self]
   rfl
 
+/- English proof (translation)
+Take `⟨φ, hφ⟩` from `hφ`. Take `⟨ψ, hψ⟩` from `hψ`. Take `⟨q, q0, qi, hq⟩` from `exists_retraction G hI hP hPI hφ hψ`. Use `set lg' : Fin d' → MvPowerSeries (Fin d') C := fun b => ∑ a, P b a • subst (lin I) (G.lg a) with hlg'`. Use `set j : Fin d → MvPowerSeries (Fin d') C := fun a => subst (lin I) (φ a) with hjdef`.
+
+Establish `j0 : ∀ a, constantCoeff (j a) = 0` using `fun a => constantCoeff_subst_eq_zero (lin_hs I) (lin_const I) (hφ.1 a)`. Establish `ji : ∀ a, MvIsInt v (j a)` using `fun a => ptIntSer_subst (lin_hs I) (lin_int hI) (hφ.2.1 a)`. Establish `hj : ∀ a, subst j (G.lg a) = ∑ e, I a e • lg' e` using `fun a => by`. Rewrite using `[hjdef, lg_hom hφ.1 (hφ.2.2 a) (lin_hs I), hlg']`. Conclude with `(comb_comb I P _ a).symm`.
+
+Establish `hl0 : ∀ b : Fin d', constantCoeff (X (Sum.inl b) : MvPowerSeries (Fin d' ⊕ Fin d') C) = 0` using `fun _ => by simp`. Establish `hr0 : ∀ b : Fin d', constantCoeff (X (Sum.inr b) : MvPowerSeries (Fin d' ⊕ Fin d') C) = 0` using `fun _ => by simp`. Establish `hl` using `hasSubst_of_constantCoeff_zero hl0`. Establish `hr` using `hasSubst_of_constantCoeff_zero hr0`. Use `set x : Fin d → MvPowerSeries (Fin d' ⊕ Fin d') C := fun a => subst (fun b => X (Sum.inl b)) (j a) with hx`.
+
+Use `set y : Fin d → MvPowerSeries (Fin d' ⊕ Fin d') C := fun a => subst (fun b => X (Sum.inr b)) (j a) with hy`. Establish `x0 : ∀ a, constantCoeff (x a) = 0` using `fun a => constantCoeff_subst_eq_zero hl hl0 (j0 a)`. Establish `y0 : ∀ a, constantCoeff (y a) = 0` using `fun a => constantCoeff_subst_eq_zero hr hr0 (j0 a)`. Establish `xi : ∀ a, MvIsInt v (x a)` using `fun a => ptIntSer_subst hl (fun _ => ptIntSer_X _) (ji a)`. Establish `yi : ∀ a, MvIsInt v (y a)` using `fun a => ptIntSer_subst hr (fun _ => ptIntSer_X _) (ji a)`.
+
+Establish `s0` using `add_const G x0 y0`. Establish `ss` using `hasSubst_of_constantCoeff_zero s0`. Use `⟨{ lg := lg' lg_const := fun b => const_comb _ fun a => constantCoeff_subst_eq_zero (lin_hs I) (lin_const I) (G.lg_const a) lg_lin := fun a b => by rw [hlg', coeff_comb_lg, hPI, Matrix.one_apply] F := fun b => subst (fun a => (subst (Sum.elim x y) (G.F a) : MvPowerSeries (Fin d' …` and prove the remaining obligations. Rewrite using `[lg_hom q0 (hq b) ss]`. Simplify using `only [lg_add G x0 y0, smul_add, Finset.sum_add_distrib]`.
+
+Simplify using `only [hx, hy, lg_hom j0 (hj _) hl, lg_hom j0 (hj _) hr, comb_comb, hPI, comb_one]`.
+-/
 theorem exists_image (C : Type) [Field C] [CharZero C] (v : AddValuation C (WithTop ℝ)) (d d' : ℕ) (G : LogFGL v d)
     (I : Matrix (Fin d) (Fin d') C) (P : Matrix (Fin d') (Fin d) C) (hI : ∀ a b, IsIntV v (I a b))
     (hP : ∀ a b, IsIntV v (P a b)) (hPI : P * I = 1) (hφ : ∃ φ, IsIntHom G G φ (I * P))

@@ -22,6 +22,9 @@ set_option maxHeartbeats 1000000
 
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
+/- English proof (translation)
+Use `conv_rhs => rw [← b.sum_repr x, ← b'.sum_repr y]`. Simplify using `only [map_sum, LinearMap.sum_apply, map_smul, LinearMap.smul_apply, smul_eq_mul, map_mul, Module.Basis.coord_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun s _ => Finset.sum_congr rfl fun s' _ => by ring`.
+-/
 theorem sum_coord {K B V : Type _} [Field K] [CommRing B] [AddCommGroup V] [Module K V] {V' : Type _} [AddCommGroup V'] [Module K V']
     {V'' : Type _} [AddCommGroup V''] [Module K V''] (o : K →+* B) {m m' : ℕ} (b : Module.Basis (Fin m) K V) (b' : Module.Basis (Fin m') K V')
     (μ : V →ₗ[K] V' →ₗ[K] V'') (φ : Module.Dual K V'') (x : V) (y : V') :
@@ -32,6 +35,9 @@ theorem sum_coord {K B V : Type _} [Field K] [CommRing B] [AddCommGroup V] [Modu
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun s _ => Finset.sum_congr rfl fun s' _ => by ring
 
+/- English proof (translation)
+The claim follows from `| 0, z, hz, φ => L.one a hM z hz φ | k + 1, z, ⟨y, hy, hz⟩, φ => by have := (m_fin M hM (2 * k)).1 have := (m_fin M hM 2).1 have h := L.cup a hM y x z hz (Module.finBasis _ _) (Module.finBasis _ _) φ refine h.trans ?_ simp only [kap_pow L a hM x c hx k y hy, hx, ← cupR_eq] exact …`.
+-/
 theorem kap_pow (L : KapL (l := l) (K := K) Amp) {M : Model l K} (a : (dat Amp).Ch M) (hM : M.Sm) (x : ((dat Amp).H a).N 2)
     (c : HdR M.q 2) (hx : ∀ φ, L.κ a 2 x φ = (per l K).o (φ c)) :
     ∀ (k : ℕ) (z : ((dat Amp).H a).N (2 * k)), IsPow (N := ((dat Amp).H a).N) ((dat Amp).H a).one ((dat Amp).H a).cup x k z →
@@ -45,6 +51,9 @@ theorem kap_pow (L : KapL (l := l) (K := K) Amp) {M : Model l K} (a : (dat Amp).
     simp only [kap_pow L a hM x c hx k y hy, hx, ← cupR_eq]
     exact (sum_coord _ _ _ (cupR M (2 * k) 2) φ _ _).trans (congrArg (fun t => (per l K).o (φ t)) (cupR_eq M _ _ _ _))
 
+/- English proof (translation)
+The claim follows from `| 0 => ⟨(⟨fun n => CH.oneH _, fun n => (B.compatH l).one _ _ false n.le_succ⟩ : (M.HS false 0).lim), fun _ => rfl⟩ | k + 1 => by obtain ⟨y, hy⟩ := pow_ex a x k refine ⟨(⟨fun n => (CH.mulP (B.OcA (B.schFn M.p) (okToOC l K) false n)).cup rfl ((show (M.HS false (2 * k)).lim from y). …`.
+-/
 theorem pow_ex {M : Model l K} (a : (dat Amp).Ch M) (x : ((dat Amp).H a).N 2) :
     ∀ k : ℕ, ∃ z : ((dat Amp).H a).N (2 * k), IsPow (N := ((dat Amp).H a).N) ((dat Amp).H a).one ((dat Amp).H a).cup x k z
   | 0 => ⟨(⟨fun n => CH.oneH _, fun n => (B.compatH l).one _ _ false n.le_succ⟩ : (M.HS false 0).lim), fun _ => rfl⟩
@@ -55,6 +64,15 @@ theorem pow_ex {M : Model l K} (a : (dat Amp).Ch M) (x : ((dat Amp).H a).N 2) :
     refine ((B.compatH l).cup _ _ false n.le_succ rfl _ _).trans ?_
     exact congrArg₂ _ ((show (M.HS false (2 * k)).lim from y).2 n) ((show (M.HS false 2).lim from x).2 n)
 
+/- English proof (translation)
+Take `⟨L, hL⟩` from `crystalline_deRham_firstChern_exists (l := l) (K := K)`. Use `⟨⟨L.κ, cupR, m_fin, m_top, fun M _ => cupR_fil M, L.lin, L.lin', L.act, L.nat, L.fil, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `M a hM i j x y z h m m' b b' φ`. Simplify using `only [cupR_eq]`. Conclude with `L.cup a hM x y z h b b' φ`.
+
+Introduce `M a hM d hd`. Use `hd.1` as an intermediate fact. Use `hd.2` as an intermediate fact. Establish `hK : IsTautologicalLine M.q (lineK a.1)` using `isTwistingSheaf_pullback (OK l K).subtype M.p a.1 a.2`. Take `⟨N, i, -, -, hi⟩` from `a.2`.
+
+Take `⟨x, hx⟩` from `firstChern_acris_family_exists M a.1 (sSup_𝒱D a.1 N i hi)`. Take `⟨c, hc⟩` from `isFirstChernDeRham_exists M.q d _ hK`. Take `⟨z, hz⟩` from `pow_ex a x d`. Take `⟨φ, hφ⟩` from `Module.Projective.exists_dual_eq_one K (powK_ne_zero M.q d _ hK c hc)`. Use `⟨x, z, φ, hx, hz, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[kap_pow L a hM x c (hL a hM x c hx hc) d z hz φ, hφ, map_one]`. Conclude with `⟨one_mem _, 1, one_mem _, mul_one 1⟩`.
+-/
 theorem pmap [FiniteDimensional ℚ_[l] K] : Nonempty (PMap Model.Sm (dat (l := l) (K := K) Amp)) := by
   obtain ⟨L, hL⟩ := crystalline_deRham_firstChern_exists (l := l) (K := K)
   refine ⟨⟨L.κ, cupR, m_fin, m_top, fun M _ => cupR_fil M, L.lin, L.lin', L.act, L.nat, L.fil, ?_, ?_⟩⟩
@@ -74,6 +92,9 @@ theorem pmap [FiniteDimensional ℚ_[l] K] : Nonempty (PMap Model.Sm (dat (l := 
     rw [kap_pow L a hM x c (hL a hM x c hx hc) d z hz φ, hφ, map_one]
     exact ⟨one_mem _, 1, one_mem _, mul_one 1⟩
 
+/- English proof (translation)
+Introduce `l _ K _` and use `⟨Amp, fun _ _ h => isO1_etale h, fun M hM => isO1_exists M.p hM.1.1, pmap, fun r => fmap r Amp⟩`.
+-/
 theorem pSeam : BocksteinBaseChangeP := fun l _ K _ =>
   ⟨Amp, fun _ _ h => isO1_etale h, fun M hM => isO1_exists M.p hM.1.1, pmap, fun r => fmap r Amp⟩
 

@@ -12,6 +12,11 @@ open GlobalTheory.KZ GlobalTheory.K4
 
 namespace UpperTheory.V.Z.Kato.Sym
 
+/- English proof (translation)
+Establish `hr : admitted X (RingEquiv.refl _) 1` using `(admB Ω ε X).2.2.1`. Establish `h1 : cyc m (1 : Ω ≃ₐ[ℚ] Ω) = 1` using `((lgB Ω ε X m hm).2.2.2.2.2.2 1 1).2.1`. Establish `A` using `mvComp Ω ε X m hm (RingEquiv.refl _) τ 1 s hr hτ u v P Q Q' hP hQ hQ' a g ha hg`. Establish `B` using `mvComp Ω ε X m hm τ (RingEquiv.refl _) s 1 hτ hr u v P P' Q' hP hP' hQ' f a' hf ha'`. Rewrite `A` using `[mul_one]`.
+
+Rewrite `B` using `[one_mul, h1]`. Conclude with `((mvEx Ω ε X m hm τ s hτ u v P hP).2.2.2 Q' hQ' _ _ A).1 B`.
+-/
 private theorem square {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) (m : ℕ)
     (hm : 0 < m) (τ : X.K ≃+* X.K) (s : Ω ≃ₐ[ℚ] Ω) (hτ : admitted X τ s) (u v : X.K) (P Q P' Q' : Pt X m)
     (hP : IsPt X m u v P) (hQ : IsPt X m u v Q) (hP' : IsPt X m (τ u) (τ v) P') (hQ' : IsPt X m (τ u) (τ v) Q')
@@ -26,6 +31,25 @@ private theorem square {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ
   rw [one_mul, h1] at B
   exact ((mvEx Ω ε X m hm τ s hτ u v P hP).2.2.2 Q' hQ' _ _ A).1 B
 
+/- English proof (translation)
+Introduce `Ω _ _ _ ε X m M hm hM U V R Q F F' hRQ hF`. Take `⟨hgr, hok, -⟩` from `rowB Ω M hM`. Take `⟨-, hadm, hrefl, -⟩` from `admB Ω ε X`. Establish `c1` using `((lgB Ω ε X m hm).2.2.2.2.2.2 1 1).2.1`. Establish `key : ∀ x y : Row M, Ok x y → ∃ b ∈ X.Un m, Mv X m (RingEquiv.refl _) 1 (R x y) (Q x y) b`.
+
+Introduce `x y hxy`. Conclude with `(mvEx Ω ε X m hm _ 1 hrefl _ _ _ (hRQ x y hxy).1).1 _ (hRQ x y hxy).2`. Establish `triv : m = 1 → ∀ f g : X.Kˣ, Cgr m f g`. Introduce and unpack `rfl f g`. Unfold `Cgr`.
+
+Conclude with `⟨g⁻¹ * f, by simp⟩`. Set `a : Row M → Row M → X.Kˣ` to `fun x y => if h : Ok x y then Classical.choose (key x y h) else 1`. Establish `ha : ∀ x y (h : Ok x y), a x y ∈ X.Un m ∧ Mv X m (RingEquiv.refl _) 1 (R x y) (Q x y) (a x y)`. Introduce `x y h`. Simplify using `only [a, dif_pos h]`.
+
+Conclude with `Classical.choose_spec (key x y h)`. Establish `hgal : ∀ s : Gal(Ω/ℚ), galU X s = unU X (X.gal s)` using `fun s => rfl`. Use `⟨a, ?_, ?_⟩` and prove the remaining obligations. Unfold `CobBy`. Introduce `s x y hxy`.
+
+Establish `hxy0 : Ok (gr M s⁻¹ x) (gr M s⁻¹ y)` using `(hok x y hxy).2.2.1 s⁻¹`. Take `⟨eU, eV, mR, mQ⟩` from `hF s x y hxy`. Establish `hsq` using `square X m hm (X.gal s) s (hadm s) _ _ _ _ (R x y) (Q x y) (hRQ _ _ hxy0).1 (hRQ _ _ hxy0).2 (by rw [eU, eV]; exact (hRQ x y hxy).1) (by rw [eU, eV]; exact (hRQ x y hxy).2) _ _ _ _ (ha _ _ hxy0).2 (ha x y hxy).2 mR mQ`. Break down `eq_or_ne m 1 with h1 | h1` into its components or cases. Substitute `h1` using the available equality.
+
+Conclude with `⟨(F' s x y * tw X 1 M s a x y / a x y)⁻¹ * F s x y, by rw [pow_one, mul_inv_cancel_left]⟩`. Use `haveI : Fact (1 < m) := ⟨by omega⟩`. Rewrite `hsq` using `[ZMod.val_one, pow_one]`. Unfold `Cgr at hsq`. Take `⟨h, eh⟩` from `hsq`.
+
+Use `⟨h, ?_⟩` and prove the remaining obligations. Unfold `tw`. Rewrite using `[hgal, eq_mul_inv_of_mul_eq eh, div_eq_mul_inv]`. The two sides agree by associativity and commutativity. Introduce `x y hxy`.
+
+Use `⟨(ha x y hxy).1, ?_⟩` and prove the remaining obligations. Introduce `τ x' y' hτ hxy' eU eV mR mQ`. Break down `eq_or_ne m 1 with h1 | h1` into its components or cases. Conclude with `triv h1 _ _`. Use `haveI : Fact (1 < m) := ⟨by omega⟩`.
+
+Establish `hsq` using `square X m hm τ 1 hτ (U x) (V y) (R x y) (Q x y) (R x' y') (Q x' y') (hRQ x y hxy).1 (hRQ x y hxy).2 (by rw [eU, eV]; exact (hRQ x' y' hxy').1) (by rw [eU, eV]; exact (hRQ x' y' hxy').2) _ _ 1 1 (ha x y hxy).2 (ha x' y' hxy').2 mR mQ`. Simplify using `only [c1, ZMod.val_one, pow_one, one_mul, mul_one] at hsq`. Unfold `Cgr at hsq ⊢`. Take `⟨h, eh⟩` from `hsq`. Conclude with `⟨h⁻¹, by rw [eh, inv_pow, mul_inv_cancel_right]⟩`.
+-/
 theorem cmp : Cmp := by
   intro Ω _ _ _ ε X m M hm hM U V R Q F F' hRQ hF
   obtain ⟨hgr, hok, -⟩ := rowB Ω M hM

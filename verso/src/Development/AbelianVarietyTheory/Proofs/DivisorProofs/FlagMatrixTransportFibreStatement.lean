@@ -8,5 +8,8 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjVar
 open GlobalTheory.FlagCls
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FlagCls.stepIso_of_flagMat | exact GlobalTheory.FlagCls.stepIso_of_flagMat | (intros; apply GlobalTheory.FlagCls.stepIso_of_flagMat <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.flag_matrix_transport_fibre : ∀ (B Y : Scheme.{0}) (M : B.Modules) (r : ℕ) (hM : IsVB M r) (π : Y ⟶ B) (fl : Vert.Flag ((Scheme.Modules.pullback π).obj M) r) (V : B.Opens) (f : Fin r → Γ(M, V)) (hf : IsFrame f) (K : Type) [Field K] (x : Sp K ⟶ B), ⊤ ≤ x ⁻¹ᵁ V → ∀ (fl' : Vert.Flag ((Scheme.Modules.pullback x).obj M) r) (A : Matrix (Fin r) (Fin r) K), FlagMat hM x fl' hf (𝟙 (Sp K)) A → ∀ (y : Sp K ⟶ Y) (w : y ≫ π = x), FlagMat hM π fl hf y A → StepIso π fl fl' y w := by
   first | exact @GlobalTheory.FlagCls.stepIso_of_flagMat | exact GlobalTheory.FlagCls.stepIso_of_flagMat | (intros; apply GlobalTheory.FlagCls.stepIso_of_flagMat <;> assumption)

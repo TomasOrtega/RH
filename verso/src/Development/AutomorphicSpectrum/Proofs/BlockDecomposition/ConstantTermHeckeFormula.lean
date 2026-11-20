@@ -13,6 +13,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.CtS
 
+/- English proof (translation)
+Establish `key : ∀ S : Subgroup H, S = ⊤ → ((S.index : ℂ))⁻¹ * ∑ᶠ _ : H ⧸ S, c = c`. Introduce and unpack `S rfl`. Use `haveI : Subsingleton (H ⧸ (⊤ : Subgroup H)) := QuotientGroup.subsingleton_quotient_top`. Use `haveI : Unique (H ⧸ (⊤ : Subgroup H)) := Unique.mk' _`. Rewrite using `[finsum_unique, Subgroup.index_top]`.
+
+Simplify using the standard rewrite rules. Conclude with `key _ (by ext k; simp [rStab])`.
+-/
 theorem avg_const {H : Type} [Group H] (c : ℂ) : avg (fun _ : H => c) = c := by
   have key : ∀ S : Subgroup H, S = ⊤ → ((S.index : ℂ))⁻¹ * ∑ᶠ _ : H ⧸ S, c = c := by
     rintro S rfl
@@ -22,6 +27,13 @@ theorem avg_const {H : Type} [Group H] (c : ℂ) : avg (fun _ : H => c) = c := b
     simp
   exact key _ (by ext k; simp [rStab])
 
+/- English proof (translation)
+Introduce `E _ _ _ n a b h w ν ϖ hw hϖ k m`. Establish `hT : UL n w = ⊤` using `if_pos hw`. Establish `hv : ∀ y : GLw n w, ((toSub (UL n w) y : UL n w) : GLw n w) = y` using `fun y => by`. Establish `hy : y ∈ UL n w` using `hT ▸ Subgroup.mem_top y`. Simplify using `[toSub, hy]`.
+
+Establish `hc : ∀ (x : GLw n w) (g : GlobalTheory.LFun.KGL w n), Tj ℂ n (Ov E w) ϖ k ((g : GLw n w)⁻¹ * x * g) = Tj ℂ n (Ov E w) ϖ k x` using `fun x g => (Tj_mem_hecke (n := n) hϖ k).1 g⁻¹ g x`. Unfold `ctT ctMu ct`. Use `congr 2`. Use `congr 1`. Use function extensionality and compare the values at `X`.
+
+Simplify using `only [hv, hc]`. Conclude with `avg_const _`.
+-/
 theorem ctT_split_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n a b : ℕ) (h : a + b = n) (w : Pl E) (ν : (w.adicCompletion E)ˣ →* ℂˣ) (ϖ : w.adicCompletion E), IsSplitAt w → IsUnifV E w ϖ → ∀ (k : ℕ) (m : GLw a w × GLw b w), ctT h w ν ϖ k m = (ν ((-1) ^ (a * b) * GeneralLinearGroup.det m.1 ^ b * GeneralLinearGroup.det m.2 ^ a) : ℂ) * (absHalf w (m.1.val.det ^ b / m.2.val.det ^ a) * hint (intMat a b w) fun X => Tj ℂ n (Ov E w) ϖ k (blk h w m (Multiplicative.toAdd X))) := by
   intro E _ _ _ n a b h w ν ϖ hw hϖ k m
   have hT : UL n w = ⊤ := if_pos hw

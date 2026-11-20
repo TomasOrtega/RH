@@ -6,6 +6,23 @@ open Matrix GlobalTheory.KZ
 
 namespace GlobalTheory.KZ
 
+/- English proof (translation)
+Establish `hq' : (0 : ℤ) < q` using `by exact_mod_cast hq`. Use `set f : ℤ → X.Fn l := fun r => X.act l !![1, r; 0, (q : ℤ)] c with hf`. Establish `step : ∀ x : ℤ, X.act l !![1, x; 0, (q : ℤ)] c = f (x % q)`. Introduce `x`. Establish `hm : !![1, x; 0, (q : ℤ)] = !![(1 : ℤ), x / q; 0, 1] * !![1, x % q; 0, (q : ℤ)]`.
+
+Use `Int.emod_add_mul_ediv x q` as an intermediate fact. Apply the tactic sequence `ext i k; fin_cases i <;> fin_cases k <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> linarith`. Rewrite using `[hm, ← Tower.act_act Ω ε X l _ _ (by simp [Matrix.det_fin_two]) (by simp [Matrix.det_fin_two]; exact hq), hc]`. Set `g : ℕ → ℕ` to `fun j => (((j : ℤ) * e) % q).toNat`. Establish `hg : ∀ j, ((g j : ℕ) : ℤ) = ((j : ℤ) * e) % q` using `fun j => Int.toNat_of_nonneg (Int.emod_nonneg _ hq'.ne')`.
+
+Establish `hgr : ∀ j, g j < q` using `fun j => by`. Establish `h1` using `Int.emod_lt_of_pos ((j : ℤ) * e) hq'`. Establish `h2` using `hg j`. Use linear arithmetic over natural numbers and integers. Establish `hinj : Set.InjOn g (Finset.range q)`.
+
+Introduce `i hi j hj hij`. Simplify using `only [Finset.coe_range, Set.mem_Iio] at hi hj`. Establish `h : ((i : ℤ) * e) % q = ((j : ℤ) * e) % q` using `by rw [← hg, ← hg, hij]`. Establish `hd : (q : ℤ) ∣ ((j : ℤ) - i) * e`. Rewrite using `[sub_mul]`.
+
+Conclude with `(Int.ModEq.dvd h)`. Establish `hd' : (q : ℤ) ∣ (j : ℤ) - i` using `he.symm.dvd_of_dvd_mul_right hd`. Apply the tactic sequence `have h0 := Int.eq_zero_of_abs_lt_dvd hd' (by rw [abs_lt]; constructor <;> omega)`. Use linear arithmetic over natural numbers and integers. Establish `himg : (Finset.range q).image g = Finset.range q`.
+
+Apply `Finset.eq_of_subset_of_card_le` to reduce the goal to its premises. Introduce `r hr`. Simplify using `only [Finset.mem_image] at hr`. Take `⟨j, _, rfl⟩` from `hr`. Conclude with `Finset.mem_range.2 (hgr j)`.
+
+Rewrite using `[Finset.card_image_of_injOn hinj]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[step, hg]`. Use `_ = ∑ r ∈ (Finset.range q).image g, f (r : ℤ) := (Finset.sum_image (f := fun r : ℕ => f (r : ℤ)) hinj).symm`.
+
+Use `_ = ∑ j ∈ Finset.range q, X.act l !![1, (j : ℤ); 0, (q : ℤ)] c := by rw [himg]`.
+-/
 theorem Tower.sum_act_upper_mul_unit {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) (l : ℕ)
     [Fact l.Prime] (c : X.Fn l) (hc : ∀ t : ℤ, X.act l !![1, t; 0, 1] c = c) (q : ℕ) (e : ℤ) (hq : 0 < q)
     (he : IsCoprime e (q : ℤ)) :

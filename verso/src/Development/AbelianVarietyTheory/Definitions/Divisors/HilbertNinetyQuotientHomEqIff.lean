@@ -14,6 +14,9 @@ def SB (X : Type) [TopologicalSpace X] : Submodule ℂ (X → ℂ) where
   add_mem' := fun hf hg => ⟨hf.1.add hg.1, hf.2.add hg.2⟩
   smul_mem' := fun c f hf => ⟨hf.1.comp (fun z => c • z), hf.2.comp_left (g := fun z => c • z) (smul_zero c)⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem SB_eq (X : Type) [TopologicalSpace X] : SB X = GlobalTheory.SplitWeil.SB X := rfl
 
 structure TestClass (R : Type) [CommRing R] where
@@ -53,19 +56,31 @@ def IsUnitaryOn [TopologicalSpace R] (C : TestClass R) (om : G →* Module.End �
 def IsContOn [TopologicalSpace G] (C : TestClass R) (om : G →* Module.End ℂ ((κ → R) → ℂ)) : Prop :=
   ∀ l ∈ C.adm κ, ∀ φ ∈ C.sp κ, Continuous fun g => l (om g φ)
 
+/- English proof (translation)
+Introduce `μ hμ g φ hφ` and use `h μ hμ (f g) φ hφ`.
+-/
 theorem IsUnitaryOn.comp [TopologicalSpace R] {C : TestClass R} {om : G →* Module.End ℂ ((κ → R) → ℂ)}
     (h : IsUnitaryOn C om) {H : Type} [Group H] (f : H →* G) : IsUnitaryOn C (om.comp f) :=
   fun μ hμ g φ hφ => h μ hμ (f g) φ hφ
 
+/- English proof (translation)
+Introduce `l hl φ hφ` and use `(h l hl φ hφ).comp hf`.
+-/
 theorem IsContOn.comp [TopologicalSpace G] {C : TestClass R} {om : G →* Module.End ℂ ((κ → R) → ℂ)}
     (h : IsContOn C om) {H : Type} [Group H] [TopologicalSpace H] {f : H →* G} (hf : Continuous f) :
     IsContOn C (om.comp f) :=
   fun l hl φ hφ => (h l hl φ hφ).comp hf
 
+/- English proof (translation)
+Introduce `l _ φ hφ` and use `((h φ hφ).comp l).continuous`.
+-/
 theorem IsContOn.of_isLocallyConstant [TopologicalSpace G] {C : TestClass R} {om : G →* Module.End ℂ ((κ → R) → ℂ)}
     (h : ∀ φ ∈ C.sp κ, IsLocallyConstant fun g => om g φ) : IsContOn C om :=
   fun l _ φ hφ => ((h φ hφ).comp l).continuous
 
+/- English proof (translation)
+Simplify using `only [Pi.smul_apply, smul_eq_mul, enorm_mul, mul_pow] at h`. Rewrite `h` using `[lintegral_const_mul' _ _ (by simp [enorm_eq_nnnorm])]`. Establish `h2 : ‖a‖ₑ ^ 2 = 1` using `(ENNReal.mul_left_inj h0 h1).mp (h.trans (one_mul _).symm)`. Rewrite `h2` using `[enorm_eq_nnnorm, ← ENNReal.coe_pow, ENNReal.coe_eq_one, pow_eq_one_iff_of_nonneg zero_le' two_ne_zero]`. Conclude with `congrArg NNReal.toReal h2`.
+-/
 theorem norm_eq_one_of_lintegral_eq {X : Type} [MeasurableSpace X] {μ : Measure X} {f : X → ℂ} {a : ℂ}
     (h : ∫⁻ x, ‖(a • f) x‖ₑ ^ 2 ∂μ = ∫⁻ x, ‖f x‖ₑ ^ 2 ∂μ) (h0 : ∫⁻ x, ‖f x‖ₑ ^ 2 ∂μ ≠ 0)
     (h1 : ∫⁻ x, ‖f x‖ₑ ^ 2 ∂μ ≠ ⊤) : ‖a‖ = 1 := by
@@ -75,6 +90,9 @@ theorem norm_eq_one_of_lintegral_eq {X : Type} [MeasurableSpace X] {μ : Measure
   rw [enorm_eq_nnnorm, ← ENNReal.coe_pow, ENNReal.coe_eq_one, pow_eq_one_iff_of_nonneg zero_le' two_ne_zero] at h2
   exact congrArg NNReal.toReal h2
 
+/- English proof (translation)
+Establish `e` using `h μ hμ g φ hφ`. Use `@norm_eq_one_of_lintegral_eq _ (borel _) μ (om g φ) a ?_ (e ▸ h0) (e ▸ h1)` and prove the remaining obligations. Rewrite using `[← ha, e, h' μ hμ g φ hφ]`.
+-/
 theorem IsUnitaryOn.norm_eq_one [TopologicalSpace R] {C : TestClass R} {om om' : G →* Module.End ℂ ((κ → R) → ℂ)}
     (h : IsUnitaryOn C om) (h' : IsUnitaryOn C om') {μ : @Measure (κ → R) (borel _)}
     (hμ : @Measure.IsAddHaarMeasure _ _ _ (borel _) μ) {φ : (κ → R) → ℂ} (hφ : φ ∈ C.sp κ)
@@ -190,15 +208,29 @@ def tilde (χ : Eˣ →* Circle) (hχ : ∀ z : Eˣ, c z = z → χ z = 1) : (h9
 
 variable {c}
 
+/- English proof (translation)
+The claim follows from `Units.ext_iff`.
+-/
 theorem mem_normOne {u : Eˣ} : u ∈ normOne c ↔ (u : E) * c u = 1 := Units.ext_iff
 
+/- English proof (translation)
+The claim follows from `div_eq_iff_eq_mul.trans (Units.ext_iff.trans eq_comm)`.
+-/
 theorem hilbertNinetyQuotientHom_eq_iff {z u : Eˣ} : h90 c z = u ↔ (u : E) * c z = z :=
   div_eq_iff_eq_mul.trans (Units.ext_iff.trans eq_comm)
 
+/- English proof (translation)
+The claim follows from `MonoidHom.liftOfRightInverse_comp_apply _ _ _ _ z`.
+-/
 theorem tilde_norm_quotient (χ : Eˣ →* Circle) (hχ : ∀ z : Eˣ, c z = z → χ z = 1) (z : Eˣ) :
     tilde c χ hχ ⟨h90 c z, z, rfl⟩ = χ z :=
   MonoidHom.liftOfRightInverse_comp_apply _ _ _ _ z
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Take `rfl` from `hilbertNinetyQuotientHom_eq_iff.mpr hz`. Conclude with `⟨⟨z, rfl⟩, (tilde_norm_quotient χ hχ z).symm⟩`. Introduce and unpack `⟨⟨z, rfl⟩, rfl⟩`.
+
+Conclude with `⟨z, hilbertNinetyQuotientHom_eq_iff.mp rfl, tilde_norm_quotient χ hχ z⟩`.
+-/
 theorem isTilde_iff (χ : Eˣ →* Circle) (hχ : ∀ z : Eˣ, c z = z → χ z = 1) (u : Eˣ) (t : Circle) :
     IsTilde c χ u t ↔ ∃ hu : u ∈ (h90 c).range, t = tilde c χ hχ ⟨u, hu⟩ := by
   constructor
@@ -208,6 +240,9 @@ theorem isTilde_iff (χ : Eˣ →* Circle) (hχ : ∀ z : Eˣ, c z = z → χ z 
   · rintro ⟨⟨z, rfl⟩, rfl⟩
     exact ⟨z, hilbertNinetyQuotientHom_eq_iff.mp rfl, tilde_norm_quotient χ hχ z⟩
 
+/- English proof (translation)
+Take `⟨_, rfl⟩` from `(isTilde_iff χ hχ u t).mp h`. Take `⟨_, rfl⟩` from `(isTilde_iff χ hχ u t').mp h'`. Both sides reduce to the same expression.
+-/
 theorem IsTilde.unique {χ : Eˣ →* Circle} (hχ : ∀ z : Eˣ, c z = z → χ z = 1) {u : Eˣ} {t t' : Circle}
     (h : IsTilde c χ u t) (h' : IsTilde c χ u t') : t = t' := by
   obtain ⟨_, rfl⟩ := (isTilde_iff χ hχ u t).mp h
@@ -219,21 +254,35 @@ namespace IsQuad
 variable {ξ : E} (h : IsQuad c ξ)
 include h
 
+/- English proof (translation)
+Take `⟨b, h0, h1⟩` from `h.basis`. Use `⟨b.repr z 0, b.repr z 1, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← b.sum_repr z, Fin.sum_univ_two, h0, h1, Algebra.smul_def, Algebra.smul_def, mul_one]`.
+-/
 theorem exists_eq (z : E) : ∃ a b : R, z = algebraMap R E a + algebraMap R E b * ξ := by
   obtain ⟨b, h0, h1⟩ := h.basis
   refine ⟨b.repr z 0, b.repr z 1, ?_⟩
   conv_lhs => rw [← b.sum_repr z, Fin.sum_univ_two, h0, h1, Algebra.smul_def, Algebra.smul_def, mul_one]
 
+/- English proof (translation)
+Take `⟨b, h0, -⟩` from `h.basis`. Introduce `x y hxy`. Establish `: x • b 0 = y • b 0` using `by rw [h0, Algebra.smul_def, Algebra.smul_def, hxy]`. Simplify using `using congrArg (fun v => b.repr v 0) this`.
+-/
 theorem algebraMap_injective : Function.Injective (algebraMap R E) := by
   obtain ⟨b, h0, -⟩ := h.basis
   intro x y hxy
   have : x • b 0 = y • b 0 := by rw [h0, Algebra.smul_def, Algebra.smul_def, hxy]
   simpa using congrArg (fun v => b.repr v 0) this
 
+/- English proof (translation)
+Take `⟨a, b, rfl⟩` from `h.exists_eq z`. Simplify using `[h.anti]`.
+-/
 theorem invol (z : E) : c (c z) = z := by
   obtain ⟨a, b, rfl⟩ := h.exists_eq z
   simp [h.anti]
 
+/- English proof (translation)
+Introduce and unpack `u ⟨z, hz⟩`. Establish `h1` using `hilbertNinetyQuotientHom_eq_iff.mp hz`. Establish `h2` using `congrArg c h1`. Rewrite `h2` using `[map_mul, h.invol]`. Use `mem_normOne.mpr (z.isUnit.mul_right_cancel ?_)` and prove the remaining obligations.
+
+Rewrite using `[mul_assoc, h2, h1, one_mul]`.
+-/
 theorem range_h90_le_normOne : (h90 c).range ≤ normOne c := by
   rintro u ⟨z, hz⟩
   have h1 := hilbertNinetyQuotientHom_eq_iff.mp hz
@@ -244,6 +293,11 @@ theorem range_h90_le_normOne : (h90 c).range ≤ normOne c := by
 
 variable [Invertible (2 : R)]
 
+/- English proof (translation)
+Take `⟨a, b, rfl⟩` from `h.exists_eq z`. Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `h2 : algebraMap R E (⅟(2 : R)) * 2 = 1`. Rewrite using `[← map_ofNat (algebraMap R E) 2, ← map_mul, invOf_mul_self, map_one]`. Rewrite `hz` using `[map_add, map_mul, c.commutes, c.commutes, h.anti]`.
+
+Take the linear combination `(-algebraMap R E (⅟(2 : R))) * hz - algebraMap R E b * ξ * h2`.
+-/
 theorem exists_of_fixed {z : E} (hz : c z = z) : ∃ a : R, z = algebraMap R E a := by
   obtain ⟨a, b, rfl⟩ := h.exists_eq z
   refine ⟨a, ?_⟩
@@ -252,6 +306,11 @@ theorem exists_of_fixed {z : E} (hz : c z = z) : ∃ a : R, z = algebraMap R E a
   rw [map_add, map_mul, c.commutes, c.commutes, h.anti] at hz
   linear_combination (-algebraMap R E (⅟(2 : R))) * hz - algebraMap R E b * ξ * h2
 
+/- English proof (translation)
+Establish `hz' : c (z⁻¹ : Eˣ) = (z⁻¹ : Eˣ)`. Use `z.isUnit.mul_left_cancel ?_` and prove the remaining obligations. Use `conv_lhs => rw [← hz, ← map_mul]`. Rewrite using `[Units.mul_inv, map_one]`. Take `⟨a, ha⟩` from `h.exists_of_fixed hz`.
+
+Take `⟨a', ha'⟩` from `h.exists_of_fixed hz'`. Establish `: a * a' = 1` using `h.algebraMap_injective (by rw [map_mul, ← ha, ← ha', Units.mul_inv, map_one])`. Conclude with `⟨Units.mkOfMulEqOne a a' this, Units.ext ha⟩`.
+-/
 theorem exists_unit_of_fixed {z : Eˣ} (hz : c z = z) : ∃ a : Rˣ, z = Units.map (algebraMap R E : R →* E) a := by
   have hz' : c (z⁻¹ : Eˣ) = (z⁻¹ : Eˣ) := by
     refine z.isUnit.mul_left_cancel ?_
@@ -262,11 +321,21 @@ theorem exists_unit_of_fixed {z : Eˣ} (hz : c z = z) : ∃ a : Rˣ, z = Units.m
   have : a * a' = 1 := h.algebraMap_injective (by rw [map_mul, ← ha, ← ha', Units.mul_inv, map_one])
   exact ⟨Units.mkOfMulEqOne a a' this, Units.ext ha⟩
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `h.exists_unit_of_fixed hz`. Conclude with `hχ a`.
+-/
 theorem triv_fixed {χ : Eˣ →* Circle} (hχ : ∀ a : Rˣ, χ (Units.map (algebraMap R E : R →* E) a) = 1) (z : Eˣ)
     (hz : c z = z) : χ z = 1 := by
   obtain ⟨a, rfl⟩ := h.exists_unit_of_fixed hz
   exact hχ a
 
+/- English proof (translation)
+Take `⟨x, y, rfl⟩` from `h.exists_eq z`. Take `⟨d, hd⟩` from `h.exists_of_fixed (z := ξ * ξ) (by rw [map_mul, h.anti, neg_mul_neg])`. Take `⟨b, h0, h1⟩` from `h.basis`. Establish `e0 : (algebraMap R E x + algebraMap R E y * ξ) * b 0 = x • b 0 + y • b 1`. Rewrite using `[h0, h1, Algebra.smul_def, Algebra.smul_def]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e1 : (algebraMap R E x + algebraMap R E y * ξ) * b 1 = (y * d) • b 0 + x • b 1`. Rewrite using `[h0, h1, Algebra.smul_def, Algebra.smul_def, map_mul, ← hd]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Algebra.norm_eq_matrix_det b, det_fin_two]`.
+
+Simplify using `only [Algebra.leftMulMatrix_eq_repr_mul, e0, e1]`. Simplify using `[h.anti, ← hd]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem algebraMap_norm (z : E) : algebraMap R E (Algebra.norm R z) = z * c z := by
   obtain ⟨x, y, rfl⟩ := h.exists_eq z
   obtain ⟨d, hd⟩ := h.exists_of_fixed (z := ξ * ξ) (by rw [map_mul, h.anti, neg_mul_neg])
@@ -282,6 +351,17 @@ theorem algebraMap_norm (z : E) : algebraMap R E (Algebra.norm R z) = z * c z :=
 
 end IsQuad
 
+/- English proof (translation)
+Use `le_antisymm h.range_h90_le_normOne fun u hu => ?_` and prove the remaining obligations. Establish `hu` using `mem_normOne.mp hu`. Take `⟨a, b, hab⟩` from `h.exists_eq u`. Establish `hc : c u = algebraMap R E a - algebraMap R E b * ξ` using `by rw [hab]; simp [h.anti, sub_eq_add_neg]`. Distinguish the cases in `ha : 1 + a = 0`.
+
+Establish `ha' : 1 + algebraMap R E a = 0` using `by simpa using congrArg (algebraMap R E) ha`. Establish `hb : algebraMap R E (b * b) * (ξ * ξ) = 0`. Rewrite `hu` using `[hc, hab]`. Rewrite using `[map_mul]`. Take the linear combination `-hu + (algebraMap R E a - 1) * ha'`.
+
+Establish `hb0 : b = 0` using `mul_self_eq_zero.mp (h.algebraMap_injective (by`. Rewrite using `[(h.unit.mul h.unit).mul_left_eq_zero.mp hb, map_zero]))`. Use `⟨h.unit.unit, hilbertNinetyQuotientHom_eq_iff.mpr ?_⟩` and prove the remaining obligations. Rewrite using `[IsUnit.unit_spec, h.anti, hab, hb0, map_zero]`. Take the linear combination `(-ξ) * ha'`.
+
+Establish `hz : IsUnit ((1 + (u : E)) * (1 + c u))`. Establish `: (1 + (u : E)) * (1 + c u) = algebraMap R E (2 * (1 + a))`. Rewrite using `[map_mul, map_add, map_one, map_ofNat]`. Take the linear combination `hu + hab + hc`. Rewrite using `[this]`.
+
+Conclude with `(Ne.isUnit (mul_ne_zero (Invertible.ne_zero 2) ha)).map _`. Use `⟨(isUnit_of_mul_isUnit_left hz).unit, hilbertNinetyQuotientHom_eq_iff.mpr ?_⟩` and prove the remaining obligations. Rewrite using `[IsUnit.unit_spec, map_add, map_one]`. Take the linear combination `hu`.
+-/
 theorem IsQuad.h90_range_eq_normOne_of_isQuad {R : Type} [Field R] [Invertible (2 : R)] {E : Type} [CommRing E] [Algebra R E] {c : E →ₐ[R] E}
     {ξ : E} (h : IsQuad c ξ) : (h90 c).range = normOne c := by
   refine le_antisymm h.range_h90_le_normOne fun u hu => ?_
@@ -309,6 +389,9 @@ theorem IsQuad.h90_range_eq_normOne_of_isQuad {R : Type} [Field R] [Invertible (
     rw [IsUnit.unit_spec, map_add, map_one]
     linear_combination hu
 
+/- English proof (translation)
+Establish `h` using `congrArg Matrix.det (show ((g : GL ι E) : Matrix ι ι E)ᵀ * J * ((g : GL ι E) : Matrix ι ι E).map c = J from g.2)`. Rewrite `h` using `[det_mul, det_mul, det_transpose, show (((g : GL ι E) : Matrix ι ι E).map c).det = c ((g : GL ι E) : Matrix ι ι E).det from (c.toRingHom.map_det _).symm]`. Use `mem_normOne.mpr (hJ.2.mul_left_cancel ?_)` and prove the remaining obligations. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply]`. Take the linear combination `h`.
+-/
 theorem det_mem_normOne {ι : Type} [Fintype ι] [DecidableEq ι] {J : Matrix ι ι E} (hJ : IsHerm c J) (g : UG c J) :
     Matrix.GeneralLinearGroup.det (g : GL ι E) ∈ normOne c := by
   have h := congrArg Matrix.det (show ((g : GL ι E) : Matrix ι ι E)ᵀ * J * ((g : GL ι E) : Matrix ι ι E).map c = J from g.2)
@@ -344,6 +427,13 @@ def IsLagr (J : Matrix β β E) {ν : Type} [Fintype ν] [DecidableEq ν] (Cy : 
 
 variable [Invertible (2 : R)]
 
+/- English proof (translation)
+Establish `h2 : algebraMap R E (⅟(2 : R)) + algebraMap R E (⅟(2 : R)) = 1`. Rewrite using `[← map_add, invOf_two_add_invOf_two, map_one]`. Establish `h1 : (1 : Matrix β β E).map c = 1` using `Matrix.map_one _ (map_zero c) (map_one c)`. Establish `h1' : (-1 : Matrix β β E).map c = -1` using `by rw [Matrix.map_neg _ (map_neg c), h1]`. Establish `h3 : ∀ s : Matrix β β E, (fromRows 1 s : Matrix (β ⊕ β) β E).map c = fromRows 1 (s.map c)` using `fun s => by`.
+
+Rewrite using `[fromRows_map, h1]`. Use `⟨?_, fromRows 1 (-1), algebraMap R E (⅟(2 : R)) • fromBlocks 1 1 1 (-1), ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[diagCols, dbl, h3, h1, transpose_fromRows, fromCols_mul_fromBlocks, fromCols_mul_fromRows]`. Simplify using `[dbl, h3, h1', transpose_fromRows, fromCols_mul_fromBlocks, fromCols_mul_fromRows]`. Rewrite using `[diagCols, fromCols_fromRows_eq_fromBlocks, Matrix.mul_smul, fromBlocks_multiply, fromBlocks_smul, ← fromBlocks_one]`.
+
+Simplify using `[← add_smul, h2]`. Rewrite using `[diagCols, fromCols_fromRows_eq_fromBlocks, Matrix.smul_mul, fromBlocks_multiply, fromBlocks_smul, ← fromBlocks_one]`. Simplify using `[← add_smul, h2]`.
+-/
 theorem isLagr_diagCols (JB : Matrix β β E) : IsLagr c (dbl JB) (diagCols β : Matrix (β ⊕ β) β E) := by
   have h2 : algebraMap R E (⅟(2 : R)) + algebraMap R E (⅟(2 : R)) = 1 := by
     rw [← map_add, invOf_two_add_invOf_two, map_one]
@@ -399,6 +489,9 @@ def ResEtaPow (K : Subgroup Rˣ) (χ : Eˣ →* Circle) (n : ℕ) : Prop :=
 
 variable {c} in
 
+/- English proof (translation)
+Establish `h1` using `hχ (Units.map (Algebra.norm R : E →* R) z)`. Rewrite `h1` using `[if_pos (Subgroup.mem_sup_right (MonoidHom.mem_range.mpr ⟨z, rfl⟩)), Circle.coe_eq_one, show Units.map (algebraMap R E : R →* E) (Units.map (Algebra.norm R : E →* R) z) = z * Units.map (c : E →* E) z from Units.ext (h.algebraMap_norm z), map_mul]`. Conclude with `eq_inv_of_mul_eq_one_right h1`.
+-/
 theorem ResEtaPow.map_conj {ξ : E} (h : IsQuad c ξ) {K : Subgroup Rˣ} {χ : Eˣ →* Circle} {n : ℕ} (hχ : ResEtaPow K χ n)
     (z : Eˣ) : χ (Units.map (c : E →* E) z) = (χ z)⁻¹ := by
   have h1 := hχ (Units.map (Algebra.norm R : E →* R) z)
@@ -409,6 +502,9 @@ theorem ResEtaPow.map_conj {ξ : E} (h : IsQuad c ξ) {K : Subgroup Rˣ} {χ : E
 
 omit [Invertible (2 : R)] in
 
+/- English proof (translation)
+Rewrite using `[← Circle.coe_eq_one, hχ a, hn.neg_one_pow, ite_self]`.
+-/
 theorem ResEtaPow.triv_of_even {K : Subgroup Rˣ} {χ : Eˣ →* Circle} {n : ℕ} (hχ : ResEtaPow K χ n) (hn : Even n)
     (a : Rˣ) : χ (Units.map (algebraMap R E : R →* E) a) = 1 := by
   rw [← Circle.coe_eq_one, hχ a, hn.neg_one_pow, ite_self]
@@ -443,6 +539,9 @@ def IsUWeilPair [IsModuleTopology R E] (C : TestClass R) (ψ : AddChar R ℂ) (�
 variable {c} [IsModuleTopology R E] {C : TestClass R} {ψ : AddChar R ℂ} {ξ : E} {JA : Matrix α α E} {JB : Matrix β β E}
   {κ : Type} [Fintype κ] {d : Darboux (symp c ξ JA JB) κ}
 
+/- English proof (translation)
+Take `⟨h1, dd, omd, h2, ⟨-, h3, h4⟩, h5⟩` from `h`. Conclude with `⟨h1.toIsSplitting, dd, omd, h2, h3.toIsSplitting, h4, h5⟩`.
+-/
 theorem IsUWeilB.isWeilB {χ : Eˣ →* Circle} {om : UG c JB →* Module.End ℂ ((κ → R) → ℂ)}
     (h : IsUWeilB c C ψ ξ JA JB d χ om) : IsWeilB c C ψ ξ JA JB d χ om := by
   obtain ⟨h1, dd, omd, h2, ⟨-, h3, h4⟩, h5⟩ := h
@@ -450,10 +549,20 @@ theorem IsUWeilB.isWeilB {χ : Eˣ →* Circle} {om : UG c JB →* Module.End �
 
 variable {χA χB : Eˣ →* Circle} {om : UG c JA × UG c JB →* Module.End ℂ ((κ → R) → ℂ)}
 
+/- English proof (translation)
+Take `⟨h1, ⟨d', h2, h3⟩, -⟩` from `h`. Conclude with `⟨h1.isWeilB, d', h2, h3.isWeilB⟩`.
+-/
 theorem IsUWeilPair.isWeilPair (h : IsUWeilPair c C ψ ξ JA JB d χA χB om) : IsWeilPair c C ψ ξ JA JB d χA χB om := by
   obtain ⟨h1, ⟨d', h2, h3⟩, -⟩ := h
   exact ⟨h1.isWeilB, d', h2, h3.isWeilB⟩
 
+/- English proof (translation)
+Take `⟨⟨hB, -⟩, ⟨d', h2, hA, -⟩, hc⟩` from `h`. Establish `e : ∀ (p : UG c JA × UG c JB) φ, om p φ = om.comp (MonoidHom.inl _ _) p.1 (om.comp (MonoidHom.inr _ _) p.2 φ)` using `fun p φ => by`. Rewrite using `[← Module.End.mul_apply, MonoidHom.comp_apply, MonoidHom.comp_apply, ← map_mul]`. Simplify using the standard rewrite rules. Establish `r : ∀ w, d.rho ψ w = d'.rho ψ wᵀ` using `fun w => by rw [Darboux.rho, Darboux.rho, h2]`.
+
+Use `⟨⟨fun p φ hφ => ?_, fun p w φ hφ => ?_, fun p l hl => ?_⟩, fun μ hμ p φ hφ => ?_, hc⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `hA.pres _ _ (hB.pres _ _ hφ)`. Rewrite using `[e, e, hB.impl _ _ _ hφ, r, hA.impl _ _ _ (hB.pres _ _ hφ), r]`. Simplify using `only [actB, actAB, transpose_mul, transpose_transpose, Matrix.mul_assoc]`.
+
+Rewrite using `[show l ∘ₗ om p = (l ∘ₗ om.comp (MonoidHom.inl _ _) p.1) ∘ₗ om.comp (MonoidHom.inr _ _) p.2 from LinearMap.ext fun φ => congrArg l (e p φ)]`. Conclude with `hB.adm _ _ (hA.adm _ _ hl)`. Rewrite using `[e, hA.unit μ hμ _ _ (hB.pres _ _ hφ), hB.unit μ hμ _ _ hφ]`.
+-/
 theorem IsUWeilPair.isUSplitting (h : IsUWeilPair c C ψ ξ JA JB d χA χB om) : IsUSplitting C ψ d (actAB c) om := by
   obtain ⟨⟨hB, -⟩, ⟨d', h2, hA, -⟩, hc⟩ := h
   have e : ∀ (p : UG c JA × UG c JB) φ, om p φ =
@@ -474,14 +583,23 @@ end Top
 
 end Pair
 
+/- English proof (translation)
+Simplify using `[schr, dotProduct]`.
+-/
 example {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) (x x₁ y : Unit → R) (φ : (Unit → R) → ℂ) :
     schr ψ (x₁, 0) φ x = φ (x + x₁) ∧ schr ψ (0, y) φ x = ψ (x () * y ()) * φ x := by
   simp [schr, dotProduct]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, by simp [Complex.ext_iff], rfl⟩`.
+-/
 example (χ : ℂˣ →* Circle) : IsTilde (Complex.conjAe : ℂ →ₐ[ℝ] ℂ) χ (Units.mk0 Complex.I Complex.I_ne_zero)
     (χ (Units.mk0 (1 + Complex.I) (by simp [Complex.ext_iff]))) :=
   ⟨_, by simp [Complex.ext_iff], rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isModuleTopologyOfFiniteDimensional, inferInstance⟩`.
+-/
 example (R : Type) [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] :
     IsModuleTopology ℝ ℂ ∧ IsModuleTopology R (R × R) :=
   ⟨isModuleTopologyOfFiniteDimensional, inferInstance⟩

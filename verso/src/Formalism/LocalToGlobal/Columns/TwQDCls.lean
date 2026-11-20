@@ -20,11 +20,25 @@ variable (ST SG Q) in
 def FrExists : Prop :=
   ∀ (d : DecoSet E n ST SG) (P : Q), ∃ f : Sp E n ≃ₗ[E] Sp E n, ∀ y, f y ∈ d.1.at P.1 ↔ y ∈ stdAt E n P.1
 
+/- English proof (translation)
+Simplify using `[toGLm, ratHom, Formalism.UG.glEquiv]`.
+-/
 theorem qdf_toGLm_ratHom (γ : URat hc n) : toGLm E n (ratHom hc n γ).1 = (γ : GL (Fin n) E) := by
   simp [toGLm, ratHom, Formalism.UG.glEquiv]
 
 variable (H : Subgroup (GLG E n SG))
 
+/- English proof (translation)
+Establish `hd : decoOf ST SG (x' : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = ((a.1, a.2.1) : UF E n × H) • decoOf ST SG (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))`. Rewrite using `[hx'.1, hx.1]`. Both sides reduce to the same expression. Take `⟨γ, k, h1, -, e⟩` from `rlc_rel_of_orbit hc n ST SG H (a.1, a.2.1) hd`. Establish `hkQ : ∀ P : Q, q.at P (k : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) ∈ q.U P`.
+
+Introduce `P`. Establish `hke : (k : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = (x' : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))⁻¹ * bc (iA F E) (γ : GL (Fin n) E) * (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))`. Rewrite using `[e]`. Use `group`. Establish `hA` using `hx'.2 P`.
+
+Establish `hB` using `hx.2 P`. Establish `hθ : (a.2.2.1 P) ∈ (Θ P).H` using `(Subgroup.mem_pi _).1 a.2.2.2 P (Set.mem_univ _)`. Establish `hC` using `(q.U_rat P (a.2.2.1 P)).2 hθ`. Establish `hfr : (a • p).fr P = a.1.1 * p.fr P * ((a.2.2.1 P)⁻¹).1` using `rfl`. Establish `hγ : toGLm E n a.1.1 = (γ : GL (Fin n) E)` using `by rw [← h1]; exact qdf_toGLm_ratHom γ`.
+
+Establish `key : q.at P (k : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = ((bc (q.phi P) (qGL n ((a • p).fr P)))⁻¹ * q.at P x')⁻¹ * bc (q.phi P) (qGL n (a.2.2.1 P).1) * ((bc (q.phi P) (qGL n (p.fr P)))⁻¹ * q.at P x)`. Rewrite using `[hke, qdf_at_mul, qdf_at_mul, qdf_at_inv, qdf_at_rat, hfr]`. Simplify using `only [qGL, map_mul, map_inv, Subgroup.coe_inv]`. Rewrite using `[hγ]`. Use `group`.
+
+Rewrite using `[key]`. Conclude with `mul_mem (mul_mem (inv_mem hA) hC) hB`. Conclude with `⟨γ, ⟨k.1, k.2, Subgroup.mem_iInf.2 hkQ⟩, h1, e⟩`.
+-/
 theorem qdf_rel_of_orbit (q : QLoc hc n Q Θ) {x x' : UAd hc n} {p : DecoF E n ST SG Q} (a : UF E n × H × Θ.grp)
     (hx : FrOver q x.1 p) (hx' : FrOver q x'.1 (a • p)) :
     ∃ (γ : URat hc n) (κ : levUQ hc n ST SG Q H q), ratHom hc n γ = a.1 ∧
@@ -56,6 +70,13 @@ theorem qdf_rel_of_orbit (q : QLoc hc n Q Θ) {x x' : UAd hc n} {p : DecoF E n S
     exact mul_mem (mul_mem (inv_mem hA) hC) hB
   exact ⟨γ, ⟨k.1, k.2, Subgroup.mem_iInf.2 hkQ⟩, h1, e⟩
 
+/- English proof (translation)
+Take `⟨f, hf⟩ : ∃ f : ∀ P : Q, Sp E n ≃ₗ[E] Sp E n, ∀ (P : Q) y, f P y ∈ (decoOf ST SG x.1).1.at P.1 ↔ y ∈ stdAt E n P.1` from `⟨fun P => (hE (decoOf ST SG x.1) P).choose, fun P => (hE (decoOf ST SG x.1) P).choose_spec⟩`. Set `p0 : DecoF E n ST SG Q` to `⟨(decoOf ST SG x.1, f), fun P y => hf P y⟩`. Establish `hk` using `fun P : Q => hF x p0 rfl P`. Use `choose g hg using fun P : Q => q.U_dense P _ (hk P).1 (hk P).2`. Use `⟨⟨(decoOf ST SG x.1, fun P => f P * (g P).1), fun P y => ?_⟩, rfl, fun P => ?_⟩` and prove the remaining obligations.
+
+Use `show f P ((g P).1 y) ∈ _ ↔ _`. Rewrite using `[hf P]`. Conclude with `(g P).2 y`. Use `show (Formalism.UG.bc (q.phi P) (qGL n (f P * (g P).1)))⁻¹ * q.at P x.1 ∈ q.U P`. Rewrite using `[show qGL n (f P * (g P).1) = qGL n (f P) * qGL n (g P).1 from map_mul _ _ _, map_mul, _root_.mul_inv_rev, mul_assoc]`.
+
+Conclude with `hg P`.
+-/
 theorem qdf_over_exists (q : QLoc hc n Q Θ) (hF : FrLat ST SG q) (hE : FrExists (n := n) ST SG Q) (x : UAd hc n) :
     ∃ p : DecoF E n ST SG Q, FrOver q x.1 p := by
   classical

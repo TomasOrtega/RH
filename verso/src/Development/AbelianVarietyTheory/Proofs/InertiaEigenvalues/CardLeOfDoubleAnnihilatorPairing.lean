@@ -2,6 +2,25 @@ import Mathlib
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Set `L : X →ₗ[O] (F → E)` to `LinearMap.pi fun y => if (∀ s ∈ S, β (y : Y) s = 0) then β y else 0`. Establish `hL : ∀ x (y : F), L x y = if (∀ s ∈ S, β (y : Y) s = 0) then β y x else 0`. Introduce `x y`. Simplify using `only [L, LinearMap.pi_apply]`. Apply the tactic sequence `split_ifs <;> rfl`.
+
+Establish `hS : S ≤ LinearMap.ker L`. Introduce `x hx`. Rewrite using `[LinearMap.mem_ker]`. Use function extensionality and compare the values at `y`. Rewrite using `[hL]`.
+
+Use `split_ifs with h`. Conclude with `h x hx`. Both sides reduce to the same expression. Establish `hker : LinearMap.ker L ≤ S`. Introduce `x hx`.
+
+Rewrite `hx` using `[LinearMap.mem_ker]`. Apply `h1` to reduce the goal to its premises. Introduce `y hy`. Use `congrFun hx ⟨y, (h2 y hy).1⟩` as an intermediate fact. Rewrite `this` using `[hL, if_pos hy]`.
+
+Conclude with `this`. Establish `hmem : ∀ x (y : F), L x y ∈ Es`. Introduce `x y`. Apply `h3` to reduce the goal to its premises. Rewrite using `[hL]`.
+
+Use `split_ifs with h`. Rewrite using `[← LinearMap.smul_apply, ← map_smul, (h2 y h).2, map_zero, LinearMap.zero_apply]`. Conclude with `smul_zero a`. Set `g : X ⧸ S → (F → Es)` to `fun q y => ⟨S.liftQ L hS q y, by`. Proceed by induction on `q using Submodule.Quotient.induction_on with`.
+
+Consider the case `H x => simpa using hmem x y⟩`. Establish `hinj : Function.Injective g`. Introduce `q r hqr`. Establish `h' : S.liftQ L hS q = S.liftQ L hS r`. Use function extensionality and compare the values at `y`.
+
+Use `congrFun hqr y` as an intermediate fact. Simplify `congrArg Subtype.val this` using `[g]`. Conclude with `(LinearMap.ker_eq_bot.mp (Submodule.ker_liftQ_eq_bot S L hS hker)) h'`. Establish `hq : Nat.card (X ⧸ S) ≤ Es.card ^ F.card`. Use `Nat.card_le_card_of_injective g hinj` as an intermediate fact.
+
+Rewrite `this` using `[Nat.card_fun, Nat.card_eq_finsetCard, Nat.card_eq_finsetCard]`. Then use the resulting hypothesis. Rewrite using `[Submodule.card_eq_card_quotient_mul_card S, mul_comm]`. Conclude with `Nat.mul_le_mul_right _ hq`.
+-/
 theorem card_le_of_double_annihilator (O : Type) [CommRing O] (X Y E : Type) [AddCommGroup X]
     [Module O X] [AddCommGroup Y] [Module O Y] [AddCommGroup E] [Module O E] [Finite X]
     (β : Y →ₗ[O] X →ₗ[O] E) (S : Submodule O X) (F : Finset Y) (Es : Finset E) (a : O)

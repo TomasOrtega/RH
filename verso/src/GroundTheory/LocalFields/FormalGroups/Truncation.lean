@@ -9,6 +9,9 @@ section Subst
 
 variable {σ τ R S : Type*} [CommRing R] [CommRing S] [Algebra R S]
 
+/- English proof (translation)
+Rewrite using `[← subst_sub ha]`. Use `le_trans ?_ (le_order_subst ha (f - g))` and prove the remaining obligations. Establish `h1 : 1 ≤ ⨅ i, (a i).order` using `le_iInf fun i => one_le_order_iff_constCoeff_eq_zero.2 (ha0 i)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem le_order_subst_sub_subst {a : σ → MvPowerSeries τ S} (ha : HasSubst a)
     (ha0 : ∀ i, constantCoeff (a i) = 0) {f g : MvPowerSeries σ R} {n : ℕ∞}
     (h : n ≤ order (f - g)) : n ≤ order (subst a f - subst a g) := by
@@ -22,10 +25,18 @@ theorem le_order_subst_sub_subst {a : σ → MvPowerSeries τ S} (ha : HasSubst 
 private def Close (n k : ℕ∞) (u v : MvPowerSeries τ S) : Prop :=
   k ≤ order u ∧ k ≤ order v ∧ n + k ≤ order (u - v) + 1
 
+/- English proof (translation)
+Use `⟨by simp, by simp, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 private lemma close_one (n : ℕ∞) : Close n 0 (1 : MvPowerSeries τ S) 1 := by
   refine ⟨by simp, by simp, ?_⟩
   simp
 
+/- English proof (translation)
+Take `⟨hu, hv, huv⟩` from `h`. Take `⟨hu', hv', huv'⟩` from `h'`. Use `⟨(add_le_add hu hu').trans (le_order_mul), (add_le_add hv hv').trans (le_order_mul), ?_⟩` and prove the remaining obligations. Establish `e : u * u' - v * v' = (u - v) * u' + v * (u' - v')` using `by ring`. Rewrite using `[e]`.
+
+Use `le_trans ?_ (add_le_add min_order_le_add le_rfl)` and prove the remaining obligations. Rewrite using `[← min_add_add_right]`. Use `le_min ?_ ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma close_mul {n k l : ℕ∞} {u v u' v' : MvPowerSeries τ S} (h : Close n k u v)
     (h' : Close n l u' v') : Close n (k + l) (u * u') (v * v') := by
   obtain ⟨hu, hv, huv⟩ := h
@@ -45,6 +56,11 @@ private lemma close_mul {n k l : ℕ∞} {u v u' v' : MvPowerSeries τ S} (h : C
       _ = (order v + order (u' - v')) + 1 := by rw [add_assoc]
       _ ≤ order (v * (u' - v')) + 1 := add_le_add le_order_mul le_rfl
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simpa using close_one (τ := τ) (S := S) n`. Consider the case `succ m ih`. Use `close_mul ih h` as an intermediate fact. Rewrite using `[pow_succ, pow_succ]`.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma close_pow {n k : ℕ∞} {u v : MvPowerSeries τ S} (h : Close n k u v) (m : ℕ) :
     Close n (m * k) (u ^ m) (v ^ m) := by
   induction m with
@@ -56,6 +72,9 @@ private lemma close_pow {n k : ℕ∞} {u v : MvPowerSeries τ S} (h : Close n k
     push_cast
     ring
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using close_one (τ := τ) (S := S) n`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.prod_insert hi, Finset.prod_insert hi]`. Conclude with `close_mul (h i (Finset.mem_insert_self i s)) (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+-/
 private lemma close_prod {ι : Type*} (s : Finset ι) {n : ℕ∞} {k : ι → ℕ∞}
     {u v : ι → MvPowerSeries τ S} (h : ∀ i ∈ s, Close n (k i) (u i) (v i)) :
     Close n (∑ i ∈ s, k i) (∏ i ∈ s, u i) (∏ i ∈ s, v i) := by
@@ -67,6 +86,9 @@ private lemma close_prod {ι : Type*} (s : Finset ι) {n : ℕ∞} {k : ι → �
     exact close_mul (h i (Finset.mem_insert_self i s))
       (ih fun j hj => h j (Finset.mem_insert_of_mem hj))
 
+/- English proof (translation)
+Use `close_prod d.support (k := fun i => (d i : ℕ∞) * 1) (u := fun i => a i ^ d i) (v := fun i => b i ^ d i) (fun i _ => close_pow (h i) (d i))` as an intermediate fact. Simplify `this` using `[Finsupp.prod, Finsupp.degree_apply]`.
+-/
 private lemma close_monomial {n : ℕ∞} {a b : σ → MvPowerSeries τ S}
     (h : ∀ i, Close n 1 (a i) (b i)) (d : σ →₀ ℕ) :
     Close n (d.degree : ℕ∞) (d.prod fun s e => a s ^ e) (d.prod fun s e => b s ^ e) := by
@@ -74,6 +96,15 @@ private lemma close_monomial {n : ℕ∞} {a b : σ → MvPowerSeries τ S}
     (v := fun i => b i ^ d i) (fun i _ => close_pow (h i) (d i))
   simpa [Finsupp.prod, Finsupp.degree_apply] using this
 
+/- English proof (translation)
+Establish `hclose : ∀ i, Close n 1 (a i) (b i)` using `fun i => ⟨one_le_order_iff_constCoeff_eq_zero.2 (ha0 i), one_le_order_iff_constCoeff_eq_zero.2 (hb0 i), add_le_add (hab i) le_rfl⟩`. Establish `hcoeff : ∀ e : τ →₀ ℕ, (e.degree : ℕ∞) + 1 < n + m → coeff e (subst a f - subst b f) = 0`. Introduce `e he`. Rewrite using `[map_sub, coeff_subst ha, coeff_subst hb, ← finsum_sub_distrib (coeff_subst_finite ha f e) (coeff_subst_finite hb f e)]`. Use `finsum_eq_zero_of_forall_eq_zero fun d => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hd : coeff d f = 0`. Simplify using `[hd]`. Rewrite using `[← smul_sub, ← map_sub]`. Take `⟨-, -, hdc⟩` from `close_monomial hclose d`. Establish `hmd : m ≤ (d.degree : ℕ∞)` using `hf.trans (order_le hd)`.
+
+Establish `: (e.degree : ℕ∞) + 1 < order ((d.prod fun s e => a s ^ e) - (d.prod fun s e => b s ^ e)) + 1` using `he.trans_le ((add_le_add le_rfl hmd).trans hdc)`. Rewrite using `[coeff_of_lt_order ((ENat.add_lt_add_iff_right ENat.one_ne_top).1 this), smul_zero]`. Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Establish `hfin : (order (subst a f - subst b f)).toNat = order (subst a f - subst b f)`.
+
+Use `ENat.natCast_toNat fun htop => ?_` and prove the remaining obligations. Rewrite `hlt` using `[htop]`. Simplify using `at hlt`. Take `⟨e, he, hdeg⟩` from `exists_coeff_ne_zero_and_order hfin`. Conclude with `he (hcoeff e (by rw [hdeg]; exact hlt))`.
+-/
 theorem add_le_order_subst_sub_subst {a b : σ → MvPowerSeries τ S} (ha : HasSubst a)
     (hb : HasSubst b) (ha0 : ∀ i, constantCoeff (a i) = 0)
     (hb0 : ∀ i, constantCoeff (b i) = 0) {n : ℕ∞} (hab : ∀ i, n ≤ order (a i - b i))
@@ -113,6 +144,9 @@ section FixedPoint
 
 variable {σ R : Type*} [CommRing R]
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Ydb5.existsUnique_fixedPoint Φ hΦ`.
+-/
 theorem existsUnique_fixedPoint (Φ : MvPowerSeries σ R → MvPowerSeries σ R)
     (hΦ : ∀ f g : MvPowerSeries σ R, ∀ n : ℕ, (n : ℕ∞) ≤ order (f - g) →
       ((n + 1 : ℕ) : ℕ∞) ≤ order (Φ f - Φ g)) :

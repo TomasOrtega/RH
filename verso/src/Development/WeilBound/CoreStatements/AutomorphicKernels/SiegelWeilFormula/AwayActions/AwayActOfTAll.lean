@@ -5,9 +5,15 @@ import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula
 
 namespace PositivityTheory.SiegelWeilFormula.KAway
 
+/- English proof (translation)
+The claim follows from `awayAct_of hT PositivityTheory.SiegelWeilFormula.kfour.auxEx adDecomp`.
+-/
 theorem awayAct_of_tAll (hT : PositivityTheory.SiegelWeilFormula.TAll) : PositivityTheory.SiegelWeilFormula.AwayAct :=
   awayAct_of hT PositivityTheory.SiegelWeilFormula.kfour.auxEx adDecomp
 
+/- English proof (translation)
+The claim follows from `finAct_of hT PositivityTheory.SiegelWeilFormula.kfour.auxEx adDecomp`.
+-/
 theorem finAct_of_tAll (hT : PositivityTheory.SiegelWeilFormula.TAll) : PositivityTheory.SiegelWeilFormula.FinAct :=
   finAct_of hT PositivityTheory.SiegelWeilFormula.kfour.auxEx adDecomp
 

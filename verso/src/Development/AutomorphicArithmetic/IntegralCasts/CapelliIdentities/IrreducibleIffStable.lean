@@ -1,5 +1,18 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `H K _ _ n r hspan W hW`. Establish `hall : ∀ (A : Matrix (Fin n) (Fin n) K), ∀ v ∈ W, A.mulVec v ∈ W`. Introduce `A v hv`. Establish `hA : A ∈ Submodule.span K (Set.range (⇑r : H → Matrix (Fin n) (Fin n) K))`. Rewrite using `[hspan]`.
+
+Conclude with `Submodule.mem_top`. Proceed by induction on `hA using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨g, rfl⟩` from `hx`. Conclude with `hW g v hv`.
+
+Consider the case `zero => rw [Matrix.zero_mulVec]`. Conclude with `W.zero_mem`. Consider the case `add x y _ _ hx hy => rw [Matrix.add_mulVec]`. Conclude with `W.add_mem hx hy`. Consider the case `smul c x _ hx => rw [Matrix.smul_mulVec]`.
+
+Conclude with `W.smul_mem c hx`. Distinguish the cases in `hb : W = ⊥`. Conclude with `Or.inl hb`. Use `right`. Take `⟨v, hv, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hb`.
+
+Take `⟨i, hi⟩` from `Function.ne_iff.mp hv0`. Establish `hi' : v i ≠ 0` using `hi`. Rewrite using `[eq_top_iff]`. Introduce `w _`. Establish `h` using `hall (Matrix.of fun a b => if b = i then w a / v i else 0) v hv`.
+
+Establish `e : (Matrix.of fun a b => if b = i then w a / v i else 0 : Matrix (Fin n) (Fin n) K).mulVec v = w`. Use function extensionality and compare the values at `a`. Simplify using `[Matrix.mulVec, dotProduct, hi']`. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem UpperTheory.Reformulated.B.StableSubmoduleBotOrTopOfSpanEqTop.irrIff_stable :
     ∀ {H K : Type} [inst : Group H] [inst_1 : Field K] {n : ℕ}
     (r : H →* Matrix (Fin n) (Fin n) K),

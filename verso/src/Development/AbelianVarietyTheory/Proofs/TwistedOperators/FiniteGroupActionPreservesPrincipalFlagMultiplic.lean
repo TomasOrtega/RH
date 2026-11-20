@@ -16,6 +16,19 @@ namespace GlobalTheory.FlagAction
 
 variable {D : D7} {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {L : LevDat D.host.E ℂ V.rank}
 
+/- English proof (translation)
+Take `⟨hκf, hκp, hκr⟩` from `hκ`. Rewrite `hk` using `[levG, mem_levA, Formalism.L2.DIV.mem_lev]`. Take `⟨hkf, hkp, hkr⟩` from `hk`. Establish `hxp : finE V k ∈ Formalism.L2.DIV.parLev D.sp.cm V.gram β L` using `hkp`. Establish `hx1 : Formalism.L2.DIV.rTup β L (finE V k) = 1` using `Subgroup.mem_bot.mp hkr`.
+
+Establish `hfin : finE V (κ⁻¹ * (k * κ)) = (finE V κ)⁻¹ * (finE V k * finE V κ)`. Rewrite using `[map_mul, map_mul, map_inv]`. Establish `hcp : (finE V κ)⁻¹ * (finE V k * finE V κ) ∈ Formalism.L2.DIV.parLev D.sp.cm V.gram β L` using `Subgroup.mul_mem _ (Subgroup.inv_mem _ hκp) (Subgroup.mul_mem _ hxp hκp)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[levG, mem_levA, Formalism.L2.DIV.mem_lev, hfin]`.
+
+Use `⟨Subgroup.mul_mem _ (Subgroup.inv_mem _ hκf) (Subgroup.mul_mem _ hkf hκf), hcp, ?_⟩` and prove the remaining obligations. Establish `hr : Formalism.L2.DIV.rTup β L ((finE V κ)⁻¹ * (finE V k * finE V κ)) = 1`. Rewrite using `[Formalism.L2.DIV.rTup_mul (Subgroup.inv_mem _ hκp) (Subgroup.mul_mem _ hxp hκp), Formalism.L2.DIV.rTup_inv hκp, Formalism.L2.DIV.rTup_mul hxp hκp, hx1, one_mul, inv_mul_cancel]`. Conclude with `Subgroup.mem_bot.mpr hr`. Use `show ((Formalism.L2.DIV.levFn β (flag1L L) (finE V (κ⁻¹ * (k * κ))) : ℂˣ) : ℂ) = ((Formalism.L2.DIV.levFn β (flag1L L) (finE V k) : ℂˣ) : ℂ)`.
+
+Rewrite using `[levFn_flag1, levFn_flag1, hfin]`. Establish `hA : finE V κ ∈ Formalism.L2.DIV.lev D.sp.cm V.gram β (flagL L)` using `Formalism.L2.DIV.mem_lev.mpr ⟨hκp, Subgroup.mem_top _⟩`. Establish `hX : finE V k ∈ Formalism.L2.DIV.lev D.sp.cm V.gram β (flagL L)` using `Formalism.L2.DIV.mem_lev.mpr ⟨hxp, Subgroup.mem_top _⟩`. Set `A : Formalism.L2.DIV.lev D.sp.cm V.gram β (flagL L)` to `⟨finE V κ, hA⟩`. Set `X : Formalism.L2.DIV.lev D.sp.cm V.gram β (flagL L)` to `⟨finE V k, hX⟩`.
+
+Establish `hc : Formalism.L2.DIV.levChar D.sp.cm V.gram β (flagL L) (A⁻¹ * (X * A)) = Formalism.L2.DIV.levChar D.sp.cm V.gram β (flagL L) X`. Rewrite using `[map_mul, map_mul, map_inv]`. Conclude with `inv_mul_cancel_comm_assoc _ _`. Establish `e1` using `Formalism.L2.DIV.levChar_apply (A⁻¹ * (X * A))`. Establish `e2` using `Formalism.L2.DIV.levChar_apply X`.
+
+Conclude with `congrArg (fun u : ℂˣ => (u : ℂ)) (e1.symm.trans (hc.trans e2))`.
+-/
 theorem conj_mem_flag1 {g0 : G0 L.Pg L.r} {κ k : GA D V} (hκ : IsLevelLift V β L g0 κ)
     (hk : k ∈ levG V β (flag1L L)) :
     κ⁻¹ * (k * κ) ∈ levG V β (flag1L L) ∧
@@ -55,6 +68,21 @@ theorem conj_mem_flag1 {g0 : G0 L.Pg L.r} {κ k : GA D V} (hκ : IsLevelLift V �
     have e2 := Formalism.L2.DIV.levChar_apply X
     exact congrArg (fun u : ℂˣ => (u : ℂ)) (e1.symm.trans (hc.trans e2))
 
+/- English proof (translation)
+Introduce `D V S θ M _ β L g0 T hT U hU`. Rewrite `hT`, the goal using `[GlobalTheory.MultMem.mem_mult_iff]`. Distinguish the cases in `hk : ∃ κ, IsLevelLift V β L g0 κ`. Establish `hκ : IsLevelLift V β L g0 hk.choose` using `hk.choose_spec`. Establish `hEq : U = (levChi V β (flagL L) hk.choose)⁻¹ • heckeOn M {hk.choose} T`.
+
+Use extensionality with `v h`. Rewrite using `[hU v, MultilinearMap.smul_apply, Pi.smul_apply, smul_eq_mul]`. Unfold `actG0`. Rewrite using `[dif_pos hk]`. Use `congr 1`.
+
+Use `show T v (h * hk.choose) = ∑ γ ∈ ({hk.choose} : Finset (GA D V)), T v (h * γ)`. Rewrite using `[Finset.sum_singleton]`. Rewrite using `[hEq]`. Use `GlobalTheory.MultMem.isMultMap_smul _ (GlobalTheory.SphericalOps.isMultMap_heckeOn hT ?_ ?_)` and prove the remaining obligations. Introduce `k hk'`.
+
+Rewrite using `[Finset.mem_singleton.mp hk']`. Conclude with `hκ.1`. Introduce `v k hkJ g show ∑ γ ∈ ({hk.choose} : Finset (GA D V)), T v (g * k * γ) = levChi V β (flag1L L) k * ∑ γ ∈ ({hk.choose} : Finset (GA D V)), T v (g * γ)`. Rewrite using `[Finset.sum_singleton, Finset.sum_singleton]`. Take `⟨hmem, hchi⟩` from `conj_mem_flag1 hκ hkJ`.
+
+Establish `hl` using `hT.lev v _ hmem (g * hk.choose)`. Rewrite `hl` using `[hchi]`. Rewrite using `[← hl]`. Use `congr 1`. Simplify using `[mul_assoc]`.
+
+Establish `hEq : U = 0`. Use extensionality with `v h`. Rewrite using `[hU v]`. Unfold `actG0`. Rewrite using `[dif_neg hk]`.
+
+Both sides reduce to the same expression. Rewrite using `[hEq]`. Conclude with `GlobalTheory.MultMem.isMultMap_zero`.
+-/
 theorem finiteGroupAction_preserves_principalFlagMultiplicity : ∀ {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (θ : InfFam D) (M : DSModel V S), IsInfFam θ → ∀ (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank) (g0 : G0 L.Pg L.r), ∀ T ∈ Mult θ M (levG V β (flag1L L) : Set (GA D V)) (levChi V β (flag1L L)), ∀ U : MMap M, (∀ v, U v = actG0 V β L g0 (T v)) → U ∈ Mult θ M (levG V β (flag1L L) : Set (GA D V)) (levChi V β (flag1L L)) := by
   intro D V S θ M _ β L g0 T hT U hU
   rw [GlobalTheory.MultMem.mem_mult_iff] at hT ⊢

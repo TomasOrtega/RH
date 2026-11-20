@@ -12,11 +12,21 @@ section Gen
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Take `⟨u, hu, huv⟩` from `h`. Conclude with `⟨u * t, q.primeCompl.mul_mem hu ht, by rw [mul_smul]; exact huv⟩`.
+-/
 theorem mem_localization_of_smul_mem₂ {W : Type} [AddCommGroup W] [Module (𝓞 E) W] (q : Ideal (𝓞 E)) [q.IsPrime] (L : Submodule (𝓞 E) W)
     {t : 𝓞 E} (ht : t ∈ q.primeCompl) {v : W} (h : t • v ∈ Formalism.HermitianLatticesTheory.localization₂ q L) : v ∈ Formalism.HermitianLatticesTheory.localization₂ q L := by
   obtain ⟨u, hu, huv⟩ := h
   exact ⟨u * t, q.primeCompl.mul_mem hu ht, by rw [mul_smul]; exact huv⟩
 
+/- English proof (translation)
+Establish `hf : ∀ (r : 𝓞 E) (v : Fin n → E), f (r • v) = r • f v` using `fun r v => (f.toLinearMap.restrictScalars (𝓞 E)).map_smul r v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, hr, z, hz, hzy⟩`. Use `⟨r, hr, ?_⟩` and prove the remaining obligations. Establish `e1 : r • f.symm y = z`.
+
+Apply `f.injective` to reduce the goal to its premises. Rewrite using `[hf, f.apply_symm_apply]`. Conclude with `hzy.symm`. Rewrite using `[e1]`. Conclude with `hz`.
+
+Introduce and unpack `⟨r, hr, hy⟩`. Use `⟨r, hr, r • f.symm y, hy, ?_⟩` and prove the remaining obligations. Use `show f (r • f.symm y) = r • y`. Rewrite using `[hf, f.apply_symm_apply]`.
+-/
 theorem mem_localization_map_iff {n : ℕ} (f : (Fin n → E) ≃ₗ[E] (Fin n → E)) (q : Ideal (𝓞 E)) [q.IsPrime]
     (L : Submodule (𝓞 E) (Fin n → E)) (y : Fin n → E) :
     y ∈ Formalism.HermitianLatticesTheory.localization₂ q (L.map (f.toLinearMap.restrictScalars (𝓞 E))) ↔ f.symm y ∈ Formalism.HermitianLatticesTheory.localization₂ q L := by
@@ -45,6 +55,21 @@ section PerO
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {a b : ℕ}
 
+/- English proof (translation)
+Introduce `y hy`. Take `⟨t, ht, htw⟩` from `hw`. Establish `key : ∀ z ∈ perO AA M M', z y ∈ Formalism.HermitianLatticesTheory.localization₂ q M'`. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`.
+
+Consider the case `mem z hz`. Take `⟨r, hr, x, hx, rfl⟩` from `hz`. Take `⟨t1, ht1, hy1⟩` from `hy`. Establish `hxy : t1 • x y ∈ M'`. Establish `e0 : x (t1 • y) = t1 • x y` using `(x.restrictScalars (𝓞 E)).map_smul t1 y`.
+
+Rewrite using `[← e0]`. Conclude with `hx _ hy1`. Take `⟨t2, ht2, hr2⟩` from `hAA hr`. Take `⟨o, ho⟩` from `Submodule.mem_one.1 hr2`. Use `⟨t2 * t1, q.primeCompl.mul_mem ht2 ht1, ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : (t2 * t1) • ((r • x) y) = o • (t1 • x y)`. Use function extensionality and compare the values at `l`. Rewrite `ho` using `[Algebra.smul_def]`. Simplify using `only [LinearMap.smul_apply, Pi.smul_apply, Algebra.smul_def, smul_eq_mul, map_mul, ho, Pi.mul_apply, Pi.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e1]`. Conclude with `M'.smul_mem o hxy`. Consider the case `zero => exact zero_mem _`. Consider the case `add z z' _ _ h1 h2`. Rewrite using `[LinearMap.add_apply]`.
+
+Conclude with `add_mem h1 h2`. Consider the case `smul c z _ h`. Rewrite using `[LinearMap.smul_apply]`. Conclude with `Submodule.smul_mem _ c h`. Establish `h1` using `key _ htw`.
+
+Rewrite `h1` using `[LinearMap.smul_apply]`. Conclude with `mem_localization_of_smul_mem₂ q M' ht h1`.
+-/
 theorem perO_apply_mem (AA : Submodule (𝓞 E) E) (q : Ideal (𝓞 E)) [q.IsPrime]
     (hAA : AA ≤ Formalism.HermitianLatticesTheory.localization₂ q (1 : Submodule (𝓞 E) E)) (M : Submodule (𝓞 E) (Sp E a)) (M' : Submodule (𝓞 E) (Sp E b))
     (w : HomE E a b) (hw : w ∈ Formalism.HermitianLatticesTheory.localization₂ q (perO AA M M')) :
@@ -93,12 +118,22 @@ section Seam
 
 variable {D : D7} {X : Fields} (s : Seam D X)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, Algebra.smul_def, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem tr_smul {n : ℕ} (c : 𝓞 X.E) (x : Sp X.E n) :
     (fun i => s.iE ((c • x) i)) = RingOfIntegers.mapRingEquiv s.iE c • (fun i => s.iE (x i)) := by
   funext i
   simp only [Pi.smul_apply, Algebra.smul_def, map_mul]
   rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => exact hy`. Consider the case `zero => exact ⟨0, N.zero_mem, by funext i; simp⟩`.
+
+Consider the case `add y z _ _ hy hz`. Take `⟨a, ha, rfl⟩` from `hy`. Take `⟨b, hb, rfl⟩` from `hz`. Conclude with `⟨a + b, N.add_mem ha hb, by funext i; simp⟩`. Consider the case `smul r y _ hy`.
+
+Take `⟨a, ha, rfl⟩` from `hy`. Use `⟨(RingOfIntegers.mapRingEquiv s.iE).symm r • a, N.smul_mem _ ha, ?_⟩` and prove the remaining obligations. Rewrite using `[tr_smul, RingEquiv.apply_symm_apply]`. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `Submodule.subset_span ⟨x, hx, rfl⟩`.
+-/
 theorem mem_seamLat_iff {n : ℕ} (N : Submodule (𝓞 X.E) (Sp X.E n)) (y : Fin n → D.host.E) :
     y ∈ s.lat N ↔ ∃ x ∈ N, (fun i => s.iE (x i)) = y := by
   constructor
@@ -117,11 +152,21 @@ theorem mem_seamLat_iff {n : ℕ} (N : Submodule (𝓞 X.E) (Sp X.E n)) (y : Fin
   · rintro ⟨x, hx, rfl⟩
     exact Submodule.subset_span ⟨x, hx, rfl⟩
 
+/- English proof (translation)
+Introduce `x y h`. Use function extensionality and compare the values at `i`. Conclude with `s.iE.injective (congrFun h i)`.
+-/
 theorem tr_injective {n : ℕ} : Function.Injective (fun (x : Sp X.E n) (i : Fin n) => s.iE (x i)) := by
   intro x y h
   funext i
   exact s.iE.injective (congrFun h i)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, hcx⟩`. Use `⟨RingOfIntegers.mapRingEquiv s.iE c, fun h => hc ((mem_seamP s P c).1 h), ?_⟩` and prove the remaining obligations. Rewrite using `[← tr_smul]`. Conclude with `(mem_seamLat_iff s N _).2 ⟨_, hcx, rfl⟩`.
+
+Introduce and unpack `⟨d, hd, hdx⟩`. Take `⟨c, rfl⟩` from `(RingOfIntegers.mapRingEquiv s.iE).surjective d`. Use `⟨c, fun h => hd ((mem_seamP s P c).2 h), ?_⟩` and prove the remaining obligations. Rewrite `hdx` using `[← tr_smul]`. Take `⟨x', hx', e⟩` from `(mem_seamLat_iff s N _).1 hdx`.
+
+Rewrite `hx'` using `[tr_injective s e]`. Conclude with `hx'`.
+-/
 theorem mem_localization_seamLat_iff (P : HeightOneSpectrum (𝓞 X.E)) {n : ℕ} (N : Submodule (𝓞 X.E) (Sp X.E n)) (x : Sp X.E n) :
     x ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal N ↔ (fun i => s.iE (x i)) ∈ Formalism.HermitianLatticesTheory.localization₂ (seamP s P).asIdeal (s.lat N) := by
   constructor
@@ -137,6 +182,13 @@ theorem mem_localization_seamLat_iff (P : HeightOneSpectrum (𝓞 X.E)) {n : ℕ
     rw [tr_injective s e] at hx'
     exact hx'
 
+/- English proof (translation)
+Unfold `Formalism.L2.PairingIndexBounds.F.aaOf`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨c, hc, t, ht, rfl⟩`. Establish `h1 : s.iE.symm ((((c : 𝓞 D.host.K) : D.host.K) : D.host.E) * t) ∈ Formalism.HermitianLatticesTheory.localization₂ Q.asIdeal (1 : Submodule (𝓞 X.E) X.E)`. Rewrite using `[← h]`.
+
+Conclude with `⟨1, Q.asIdeal.primeCompl.one_mem, by rw [one_smul]; exact Submodule.subset_span ⟨c, hc, t, ht, rfl⟩⟩`. Take `⟨u, hu, hu1⟩` from `h1`. Take `⟨o, ho⟩` from `Submodule.mem_one.1 hu1`. Use `⟨RingOfIntegers.mapRingEquiv s.iE u, fun hh => hu ((mem_seamP s Q u).1 hh), ?_⟩` and prove the remaining obligations. Use `Submodule.mem_one.2 ⟨RingOfIntegers.mapRingEquiv s.iE o, ?_⟩` and prove the remaining obligations.
+
+Rewrite `ho`, the goal using `[Algebra.smul_def]`. Establish `e1` using `congrArg s.iE ho`. Rewrite `e1` using `[map_mul, RingEquiv.apply_symm_apply]`. Conclude with `e1`.
+-/
 theorem aaOf_le_locP_seamP (cc : Ideal (𝓞 D.host.K)) (Q : HeightOneSpectrum (𝓞 X.E))
     (h : Formalism.HermitianLatticesTheory.localization₂ Q.asIdeal (Submodule.span (𝓞 X.E) {r | ∃ c ∈ cc, ∃ t ∈ D.host.AA0,
       r = s.iE.symm ((((c : 𝓞 D.host.K) : D.host.K) : D.host.E) * t)}) = Formalism.HermitianLatticesTheory.localization₂ Q.asIdeal (1 : Submodule (𝓞 X.E) X.E)) :
@@ -166,6 +218,9 @@ section Hom
 
 variable {D : D7} {X : Fields} (s : Seam D X) {a b : ℕ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Rewrite using `[seamHom_apply]`. Both sides reduce to the same expression.
+-/
 theorem seam_inFr_apply (f : (Fin a → D.host.E) ≃ₗ[D.host.E] (Fin a → D.host.E))
     (f' : (Fin b → D.host.E) ≃ₗ[D.host.E] (Fin b → D.host.E)) (w : HomE D.host.E a b) (u : Sp X.E a) :
     (fun l => s.iE (seamHom s (inFr f f' w) u l)) = f'.symm (w (f (fun k => s.iE (u k)))) := by
@@ -173,6 +228,13 @@ theorem seam_inFr_apply (f : (Fin a → D.host.E) ≃ₗ[D.host.E] (Fin a → D.
   rw [seamHom_apply]
   rfl
 
+/- English proof (translation)
+Establish `hi : ∀ u : Sp X.E a, f (fun k => s.iE (u k)) ∈ Formalism.HermitianLatticesTheory.localization₂ (seamP s Q).asIdeal ((s.lat N).map (f.toLinearMap.restrictScalars (𝓞 D.host.E))) ↔ u ∈ Formalism.HermitianLatticesTheory.localization₂ Q.asIdeal N`. Introduce `u`. Rewrite using `[mem_localization_map_iff, f.symm_apply_apply, ← mem_localization_seamLat_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h u hu`.
+
+Rewrite using `[mem_localization_seamLat_iff s Q N', seam_inFr_apply]`. Conclude with `(mem_localization_map_iff f' _ _ _).1 (h _ ((hi u).2 hu))`. Introduce `h y hy`. Establish `hyu : y = f (fun k => s.iE ((fun k => s.iE.symm ((f.symm y) k)) k))`. Simplify using the standard rewrite rules.
+
+Rewrite `hy`, the goal using `[hyu]`. Establish `h1` using `(mem_localization_seamLat_iff s Q N' _).1 (h _ ((hi _).1 hy))`. Rewrite `h1` using `[seam_inFr_apply]`. Conclude with `(mem_localization_map_iff f' _ _ _).2 h1`.
+-/
 theorem homAtP_iff (Q : HeightOneSpectrum (𝓞 X.E)) (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b))
     (f : (Fin a → D.host.E) ≃ₗ[D.host.E] (Fin a → D.host.E)) (f' : (Fin b → D.host.E) ≃ₗ[D.host.E] (Fin b → D.host.E))
     (w : HomE D.host.E a b) :
@@ -196,6 +258,11 @@ theorem homAtP_iff (Q : HeightOneSpectrum (𝓞 X.E)) (N : Submodule (𝓞 X.E) 
     rw [seam_inFr_apply] at h1
     exact (mem_localization_map_iff f' _ _ _).2 h1
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h Q hQ`. Conclude with `(homAtP_iff s Q N N' f f' w).1 (h (seamP s Q) (Finset.mem_map_of_mem _ hQ))`. Introduce `h P hP`. Take `⟨Q, hQ, rfl⟩` from `Finset.mem_map.1 hP`.
+
+Conclude with `(homAtP_iff s Q N N' f f' w).2 (h Q hQ)`.
+-/
 theorem mem_homAt_iff (S : Finset (HeightOneSpectrum (𝓞 X.E))) (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b))
     (f : (Fin a → D.host.E) ≃ₗ[D.host.E] (Fin a → D.host.E)) (f' : (Fin b → D.host.E) ≃ₗ[D.host.E] (Fin b → D.host.E))
     (w : HomE D.host.E a b) :
@@ -209,6 +276,11 @@ theorem mem_homAt_iff (S : Finset (HeightOneSpectrum (𝓞 X.E))) (N : Submodule
     obtain ⟨Q, hQ, rfl⟩ := Finset.mem_map.1 hP
     exact (homAtP_iff s Q N N' f f' w).2 (h Q hQ)
 
+/- English proof (translation)
+Use `LinearMap.ext fun u => funext fun l => s.iE.injective ?_` and prove the remaining obligations. Establish `e1` using `congrFun (seam_inFr_apply s f f' (w - w') u) l`. Establish `e2` using `congrFun (seam_inFr_apply s f f' w u) l`. Establish `e3` using `congrFun (seam_inFr_apply s f f' w' u) l`. Rewrite using `[e1]`.
+
+Simplify using `only [LinearMap.sub_apply, map_sub, Pi.sub_apply]`. Rewrite using `[e2, e3]`.
+-/
 theorem seamHom_inFr_sub (f : (Fin a → D.host.E) ≃ₗ[D.host.E] (Fin a → D.host.E))
     (f' : (Fin b → D.host.E) ≃ₗ[D.host.E] (Fin b → D.host.E)) (w w' : HomE D.host.E a b) :
     seamHom s (inFr f f' (w - w')) = seamHom s (inFr f f' w) - seamHom s (inFr f f' w') := by
@@ -220,6 +292,11 @@ theorem seamHom_inFr_sub (f : (Fin a → D.host.E) ≃ₗ[D.host.E] (Fin a → D
   simp only [LinearMap.sub_apply, map_sub, Pi.sub_apply]
   rw [e2, e3]
 
+/- English proof (translation)
+Use `LinearMap.ext fun u => funext fun l => s.iE.injective ?_` and prove the remaining obligations. Establish `e1` using `congrFun (seam_inFr_apply s f f' ((c : 𝓞 D.host.E) • w) u) l`. Establish `e2` using `congrFun (seam_inFr_apply s f f' w u) l`. Rewrite using `[e1]`. Simplify using `only [LinearMap.smul_apply, Nat.cast_smul_eq_nsmul, map_nsmul, Pi.smul_apply]`.
+
+Rewrite using `[e2]`.
+-/
 theorem seamHom_inFr_natCast_smul (f : (Fin a → D.host.E) ≃ₗ[D.host.E] (Fin a → D.host.E))
     (f' : (Fin b → D.host.E) ≃ₗ[D.host.E] (Fin b → D.host.E)) (c : ℕ) (w : HomE D.host.E a b) :
     seamHom s (inFr f f' ((c : 𝓞 D.host.E) • w)) = (c : 𝓞 X.E) • seamHom s (inFr f f' w) := by
@@ -236,6 +313,17 @@ end GlobalTheory.DatTransport
 
 namespace GlobalTheory.DatTransport
 
+/- English proof (translation)
+Introduce `D X s cc S a b N N' f f' cA cB hA hB Ξ hAA hsupp hinv`. Establish `hH` using `mem_homAt_iff s S N N' f f'`. Prove the components needed by the constructor for the conclusion. Introduce `x x' hx`. Establish `hAA' : ∀ P ∈ S.map (HeightOneSpectrum.equivOfRingEquiv (RingOfIntegers.mapRingEquiv s.iE)).toEmbedding, Formalism.L2.PairingIndexBounds.F.aaOf D cc ≤ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (1 : Submodule (𝓞 D.host.E) D.host.E)`.
+
+Introduce `P hP`. Take `⟨Q, hQ, rfl⟩` from `Finset.mem_map.1 hP`. Conclude with `aaOf_le_locP_seamP s cc Q (hAA Q hQ)`. Use `set d := (((cA * cB : ℕ) : D.host.E))⁻¹ • (x - x') with hd`. Establish `hdH : d ∈ homAt (S.map (HeightOneSpectrum.equivOfRingEquiv (RingOfIntegers.mapRingEquiv s.iE)).toEmbedding) ((s.lat N).map (f.toLinearMap.restrictScalars (𝓞 D.host.E))) ((s.lat N').map (f'.toLinearMap.restrictScalars (𝓞 D.host.E)))` using `fun P hP y hy => perO_apply_mem _ P.asIdeal (hAA' P hP) _ _ d (hx P hP) y hy`.
+
+Establish `hne : ((cA * cB : ℕ) : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 (Nat.mul_ne_zero hA.ne' hB.ne')`. Establish `hxx : x - x' = ((cA * cB : ℕ) : 𝓞 D.host.E) • d`. Rewrite using `[hd, Nat.cast_smul_eq_nsmul, ← Nat.cast_smul_eq_nsmul D.host.E, smul_smul, mul_inv_cancel₀ hne, one_smul]`. Establish `hu : (cA : 𝓞 X.E) • seamHom s (inFr f f' d) ∈ homAt S N N'` using `Submodule.smul_mem _ _ ((hH d).1 hdH)`. Establish `hm : seamHom s (inFr f f' x) - seamHom s (inFr f f' x') ∈ mulLat cB (homAt S N N')`.
+
+Rewrite using `[← seamHom_inFr_sub, hxx, seamHom_inFr_natCast_smul, Nat.cast_mul, mul_comm, mul_smul]`. Conclude with `⟨_, hu, rfl⟩`. Use `show s.σ₀ (Ξ (seamHom s (inFr f f' x))) = s.σ₀ (Ξ (seamHom s (inFr f f' x')))`. Rewrite using `[← hinv (seamHom s (inFr f f' x')) _ hm, add_sub_cancel]`. Introduce `z hz`.
+
+Establish `h1 : Ξ (seamHom s (inFr f f' z)) ≠ 0` using `fun h => hz (by rw [h, map_zero])`. Establish `h2 : (cA : 𝓞 X.E) • seamHom s (inFr f f' z) ∈ homAt S N N'` using `hsupp _ h1`. Establish `h3` using `(hH ((cA : 𝓞 D.host.E) • z)).2 (by rw [seamHom_inFr_natCast_smul]; exact h2)`. Rewrite using `[Formalism.L2.Col.divLat, Submodule.mem_comap, LinearMap.smul_apply, LinearMap.id_apply, Nat.cast_mul, mul_comm, mul_smul]`. Conclude with `Submodule.smul_mem _ _ h3`.
+-/
 theorem datLoc_seam_inFr : ∀ {D : D7} {X : Fields} (s : Seam D X) (cc : Ideal (𝓞 D.host.K)) (S : Finset (HeightOneSpectrum (𝓞 X.E))) {a b : ℕ} (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b)) (f : (Fin a → D.host.E) ≃ₗ[D.host.E] (Fin a → D.host.E)) (f' : (Fin b → D.host.E) ≃ₗ[D.host.E] (Fin b → D.host.E)) (cA cB : ℕ), 0 < cA → 0 < cB → ∀ (Ξ : HomE X.E a b → X.K), (∀ P ∈ S, Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Submodule.span (𝓞 X.E) {r | ∃ c ∈ cc, ∃ t ∈ D.host.AA0, r = s.iE.symm ((((c : 𝓞 D.host.K) : D.host.K) : D.host.E) * t)}) = Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (1 : Submodule (𝓞 X.E) X.E)) → (∀ x, Ξ x ≠ 0 → x ∈ divLat cA (homAt S N N')) → (∀ x, ∀ y ∈ mulLat cB (homAt S N N'), Ξ (x + y) = Ξ x) → DatLoc D cc (S.map (HeightOneSpectrum.equivOfRingEquiv (RingOfIntegers.mapRingEquiv s.iE)).toEmbedding) (cA * cB) ((s.lat N).map (f.toLinearMap.restrictScalars (𝓞 D.host.E))) ((s.lat N').map (f'.toLinearMap.restrictScalars (𝓞 D.host.E))) (fun z => s.σ₀ (Ξ (seamHom s (inFr f f' z)))) ∧ ∀ z, s.σ₀ (Ξ (seamHom s (inFr f f' z))) ≠ 0 → z ∈ divLat (cA * cB) (homAt (S.map (HeightOneSpectrum.equivOfRingEquiv (RingOfIntegers.mapRingEquiv s.iE)).toEmbedding) ((s.lat N).map (f.toLinearMap.restrictScalars (𝓞 D.host.E))) ((s.lat N').map (f'.toLinearMap.restrictScalars (𝓞 D.host.E)))) := by
   intro D X s cc S a b N N' f f' cA cB hA hB Ξ hAA hsupp hinv
   have hH := mem_homAt_iff s S N N' f f'

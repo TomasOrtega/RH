@@ -14,6 +14,17 @@ namespace PositivityTheory.RSHS.LocalComponentTwist
 
 open PositivityTheory.RSHS.LeviInductionForms
 
+/- English proof (translation)
+Establish `key : ∀ t : Finset ι, ∀ x : ∀ i, M i, (∀ i ∈ t, x i ∈ Submodule.span ℂ (s i)) → (∀ i ∉ t, x i ∈ s i) → P x ∈ W`. Introduce `t`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => intro x _ h2; exact h x fun i => h2 i (by simp)`. Consider the case `insert a t ha ih`.
+
+Introduce `x h1 h2`. Establish `hle : Submodule.span ℂ (s a) ≤ W.comap (P.toLinearMap x a)`. Use `Submodule.span_le.2 fun y hy => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `P (Function.update x a y) ∈ W`. Use `ih _ (fun i hi => ?_) fun i hi => ?_` and prove the remaining obligations.
+
+Establish `hne : i ≠ a` using `fun e => ha (e ▸ hi)`. Rewrite using `[Function.update_of_ne hne]`. Conclude with `h1 i (Finset.mem_insert_of_mem hi)`. Distinguish the cases in `e : i = a`. Substitute `e` using the available equality.
+
+Rewrite using `[Function.update_self]`. Conclude with `hy`. Rewrite using `[Function.update_of_ne e]`. Conclude with `h2 i fun hm => (Finset.mem_insert.1 hm).elim e hi`. Establish `h3 : P (Function.update x a (x a)) ∈ W` using `hle (h1 a (Finset.mem_insert_self a t))`.
+
+Rewrite `h3` using `[Function.update_eq_self]`. Then use the resulting hypothesis. Conclude with `key Finset.univ x (fun i _ => hx i) fun i hi => absurd (Finset.mem_univ i) hi`.
+-/
 theorem multilinear_mem_of_span {ι : Type} [Fintype ι] {M : ι → Type} [∀ i, AddCommGroup (M i)] [∀ i, Module ℂ (M i)]
     {Y : Type} [AddCommGroup Y] [Module ℂ Y] (P : MultilinearMap ℂ M Y) (s : ∀ i, Set (M i)) (W : Submodule ℂ Y)
     (h : ∀ x : ∀ i, M i, (∀ i, x i ∈ s i) → P x ∈ W) (x : ∀ i, M i) (hx : ∀ i, x i ∈ Submodule.span ℂ (s i)) :
@@ -46,9 +57,25 @@ def prodMap {ι : Type} [Fintype ι] {G : ι → Type} (S : ∀ i, Submodule ℂ
   MultilinearMap.pi fun m => (MultilinearMap.mkPiAlgebra ℂ ι ℂ).compLinearMap
     fun i => (LinearMap.proj (m i) : (G i → ℂ) →ₗ[ℂ] ℂ) ∘ₗ (S i).subtype
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem prodMap_apply {ι : Type} [Fintype ι] {G : ι → Type} (S : ∀ i, Submodule ℂ (G i → ℂ)) (φ : ∀ i, S i) :
     prodMap S φ = fun m => ∏ i, (φ i).1 (m i) := rfl
 
+/- English proof (translation)
+Use `hT.le.trans (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨φ, rfl⟩`. Use `multilinear_mem_of_span (prodMap S) (fun i => {y | ∃ a v, f i a v = y}) _ (fun x hx => ?_) (fun i => (φ i).1) fun i => ?_` and prove the remaining obligations. Use `choose a v hx using hx`. Set `Φ : (PiTensorProduct ℂ X) →ₗ[ℂ] ((∀ i, G i) → ℂ)` to `PiTensorProduct.lift ((prodMap S).compLinearMap fun i => f i (a i))`.
+
+Establish `hΦ : ∀ u : ∀ i, X i, Φ (PiTensorProduct.tprod ℂ u) = fun m => ∏ i, (f i (a i) (u i)).1 (m i)` using `fun u => by`. Simplify using `only [Φ, PiTensorProduct.lift.tprod]`. Both sides reduce to the same expression. Use `Submodule.mem_iSup_of_mem ⟨Φ, fun t => ?_, fun g t => ?_⟩ ⟨PiTensorProduct.tprod ℂ v, ?_⟩` and prove the remaining obligations. Proceed by induction on `t using PiTensorProduct.induction_on with`.
+
+Consider the case `smul_tprod r u`. Rewrite using `[map_smul, hΦ, hT]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨fun i => ⟨f i (a i) (u i), hf i _ _⟩, rfl⟩)`. Consider the case `add x y h1 h2 => rw [map_add]`. Conclude with `add_mem h1 h2`.
+
+Proceed by induction on `t using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r u`. Rewrite using `[map_smul, map_smul, map_smul, piTensor_tprod, hΦ, hΦ]`. Use function extensionality and compare the values at `m`. Simplify using `only [Pi.smul_apply, he]`.
+
+Consider the case `add x y h1 h2 => rw [map_add, map_add, map_add, h1, h2]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `Φ _ = _`. Rewrite using `[hΦ, prodMap_apply]`. Simplify using `only [hx]`.
+
+Use `(hV i).trans (iSup_le fun a => ?_) (φ i).2` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩`. Conclude with `Submodule.subset_span ⟨a, v, rfl⟩`.
+-/
 theorem span_le_iSup {ι : Type} [Fintype ι] {G Γ X A : ι → Type} [∀ i, Group (G i)] [∀ i, Group (Γ i)]
     [∀ i, AddCommGroup (X i)] [∀ i, Module ℂ (X i)] (S : ∀ i, Submodule ℂ (G i → ℂ)) (V : ∀ i, Submodule ℂ (S i))
     (j : ∀ i, Γ i → G i) (ρ : ∀ i, Representation ℂ (Γ i) (X i)) (f : ∀ i, A i → X i →ₗ[ℂ] S i)
@@ -88,6 +115,9 @@ theorem span_le_iSup {ι : Type} [Fintype ι] {G Γ X A : ι → Type} [∀ i, G
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {N : ℕ}
 
+/- English proof (translation)
+The claim follows from `span_le_iSup (A := fun i => LocSph.Maps (π i) w (τ i)) (fun i => Sm E (n i)) (fun i => (π i).V) (fun i g => finGL E (n i) (locGL E (n i) w g)) (fun i => (τ i).ρ) (fun _ a => a.1) (fun _ a => a.2.1) (fun _ a g v y => by rw [a.2.2]; rfl) (fun i => (LocSph.iSup_range_eq (π i) w (τ i …`.
+-/
 theorem tensorForms_le_iSup {c : ℕ} {n : Fin c → ℕ} (π : ∀ i, CuspSub E (n i)) {w : HeightOneSpectrum (𝓞 E)}
     (τ : ∀ i, SmIrr (GL (Fin (n i)) (w.adicCompletion E))) (hτ : ∀ i, (π i).IsLocComp w (τ i)) :
     tensorForms π ≤ ⨆ Φ : LeviMaps (tensorForms π) w (piTensor fun i => (τ i).ρ), LinearMap.range Φ.1 :=

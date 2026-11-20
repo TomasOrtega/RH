@@ -11,6 +11,19 @@ open scoped Classical
 
 namespace UpperTheory.ConvolutionTheory.R2.D.SliceScalingEquiv
 
+/- English proof (translation)
+Set `e : Fin 2 ⊕ Fin 2 ≃ Fin 4` to `finSumFinEquiv`. Set `M : Matrix (Fin 4) (Fin 2 ⊕ Fin 2) F` to `(1 : Matrix (Fin 4) (Fin 4) F).submatrix id e`. Set `N : Matrix (Fin 2 ⊕ Fin 2) (Fin 4) F` to `(1 : Matrix (Fin 4) (Fin 4) F).submatrix e id`. Establish `hNM : N * M = 1`. Use extensionality with `i j`.
+
+Simplify using `[M, N, Matrix.mul_apply, Matrix.one_apply]`. Establish `hMN : M * N = 1`. Use extensionality with `i j`. Establish `h` using `Equiv.sum_comp e (fun k => (1 : Matrix (Fin 4) (Fin 4) F) i k * (1 : Matrix (Fin 4) (Fin 4) F) k j)`. Rewrite using `[Matrix.mul_apply]`.
+
+Use `h.trans ?_` and prove the remaining obligations. Simplify using `[Matrix.one_apply]`. Establish `hv : ∀ x : Fin 2 ⊕ Fin 2 → A F, M.map (algebraMap F (A F)) *ᵥ x = fun i => x (e.symm i)`. Introduce `x`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, M, Matrix.submatrix_apply, id]`. Rewrite using `[← Equiv.sum_comp e.symm]`. Simplify using `[Matrix.one_apply, apply_ite]`. Establish `h1` using `GroundTheory.Heights₂.Theta.comp_mulVec_mem_schwartzBruhatPi M N hNM hMN hf`. Establish `h2` using `GroundTheory.Heights₂.Theta.schwartzBruhatPi_sumElim_mem h1 ![a, b]`.
+
+Establish `h3 : (fun z : Fin 2 → A F => f ![a, b, z 0, z 1]) = fun x : Fin 2 → A F => f (M.map (algebraMap F (A F)) *ᵥ Sum.elim ![a, b] x)`. Use function extensionality and compare the values at `z`. Rewrite using `[hv]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Apply the tactic sequence `fin_cases i <;> simp [e, finSumFinEquiv] <;> rfl`. Rewrite using `[h3]`. Conclude with `h2`.
+-/
 private theorem slice_mem {F : Type} [Field F] [NumberField F] {f : V4 F → ℂ}
     (hf : f ∈ schwartzBruhatPi F (Fin 4)) (a b : A F) :
     (fun z : Fin 2 → A F => f ![a, b, z 0, z 1]) ∈ schwartzBruhatPi F (Fin 2) := by
@@ -69,6 +82,19 @@ private def scaleEquiv {F : Type} [Field F] [NumberField F] (δ : F) (hδ : δ �
 end UpperTheory.ConvolutionTheory.R2.D.SliceScalingEquiv
 
 open UpperTheory.ConvolutionTheory.R2.D.SliceScalingEquiv in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W r₀ r₁ φ`. Establish `hδ : D.δ ≠ 0`. Introduce `h0`. Establish `hθ : D.θ = 0`. Establish `h` using `D.sq`.
+
+Rewrite `h` using `[h0, map_zero]`. Conclude with `pow_eq_zero_iff (two_ne_zero) |>.1 h`. Establish `hb : D.b 1 = 0` using `by rw [D.b1, hθ]`. Conclude with `D.b.ne_zero 1 hb`. Establish `hS : (W.Om (wW F) φ).1 = ft4 D.δ φ.1` using `funext (W.Om_w φ)`.
+
+Use `set G : (Fin 2 → A F) → ℂ := fun z => hat φ.1 ![-rt r₁, rt r₀, z 0, z 1] with hGdef`. Establish `hG : G ∈ schwartzBruhatPi F (Fin 2)` using `slice_mem (UpperTheory.ConvolutionTheory.R2.D.hatMem F φ).1 (-rt r₁) (rt r₀)`. Establish `hR : ThRow (rt (-r₁)) (rt r₀) φ.1 = ∑' ξ : Fin 2 → F, G fun i => algebraMap F (A F) (ξ i)`. Simplify using `only [ThRow, hGdef, map_neg]`. Rewrite using `[hR, tsum_algebraMap_eq_tsum_adelicFourierPi hG, ← (scaleEquiv D.δ hδ).tsum_eq (fun ξ : Fin 2 → F => adelicFourierPi F G fun i => algebraMap F (A F) (ξ i))]`.
+
+Unfold `ThRow`. Use `tsum_congr fun ξ => ?_` and prove the remaining obligations. Rewrite using `[hS, UpperTheory.ConvolutionTheory.R2.D.hatW F D.δ φ _ hδ]`. Simplify using `only [adelicFourierPi, Fin.sum_univ_two]`. Use `integral_congr_ae (Eventually.of_forall fun z => ?_)` and prove the remaining obligations.
+
+Simplify using `only [hGdef, ψ, scaleEquiv, Equiv.coe_fn_mk]`. Establish `key : 2 * (z 0 * rt (ξ 0) - rt D.δ * (z 1 * rt (ξ 1))) = z 0 * algebraMap F (A F) (2 * ξ 0) + z 1 * algebraMap F (A F) (-2 * D.δ * ξ 1)`. Simplify using `only [rt, map_mul, map_neg, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Use `show hat φ.1 ![-rt r₁, rt r₀, z 0, z 1] * ((adelicChar F (2 * (z 0 * rt (ξ 0) - rt D.δ * (z 1 * rt (ξ 1)))) : Circle) : ℂ) = hat φ.1 ![-rt r₁, rt r₀, z 0, z 1] * ((adelicChar F (z 0 * algebraMap F (A F) (2 * ξ 0) + z 1 * algebraMap F (A F) (-2 * D.δ * ξ 1)) : Circle) : ℂ)`.
+
+Rewrite using `[key]`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.D.rowW :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D), ∀ (r₀ r₁ : F) φ, ThRow (rt r₀) (rt r₁) (W.Om (wW F) φ).1 = ThRow (rt (-r₁)) (rt r₀) φ.1 := by
   intro F E _ _ _ _ _ _ _ D W r₀ r₁ φ

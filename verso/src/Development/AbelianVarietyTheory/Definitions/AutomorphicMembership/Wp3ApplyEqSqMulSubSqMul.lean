@@ -50,11 +50,17 @@ section Three
 
 variable {A : FamIn3 a.D.what₂.LL G Pl0 I0 (List ℕ) T a.D.R.m} (R : RealDat3 a.D A Ks) (F : Face3 a.D A)
 
+/- English proof (translation)
+The claim follows from `(by with_unfolding_all exact ((congrArg (fun (m : type_of% (@partFull a.D)) (c : Pl a.D.host.E → List ℤ → ℂ) => (m R.θ (R.MY 0) (levS _ (R.βY 0) (R.dat0 R.triv)) (levChi _ (R.βY 0) (R.dat0 R.triv)) R.SF fun P d => c P (dualLab d)).comap R.HE.e) (partFull_eq b a)) :))`.
+-/
 theorem eec_eq : R.EEc = (by with_unfolding_all exact ((letI := alg b iK; (real3 b R).EEc) :)) :=
   (by with_unfolding_all exact ((congrArg (fun (m : type_of% (@partFull a.D)) (c : Pl a.D.host.E → List ℤ → ℂ) =>
     (m R.θ (R.MY 0) (levS _ (R.βY 0) (R.dat0 R.triv)) (levChi _ (R.βY 0) (R.dat0 R.triv)) R.SF fun P d => c P (dualLab d)).comap
       R.HE.e) (partFull_eq b a)) :))
 
+/- English proof (translation)
+The claim follows from `(by with_unfolding_all exact ((congrArg₂ (fun (W : type_of% R.toRealDat.Wat) (m : type_of% (@partFull a.D)) (i : Fin a.D.R.m) (c : Pl a.D.host.E → List ℤ → ℂ) => (W i (sg0 a.D A.A) R.triv ⊓ m R.θ (R.MW i (sg0 a.D A.A)) (levS _ (R.βW i) (R.datWp i R.triv)) (levChi _ (R.βW i) (R.da …`.
+-/
 theorem wc_eq : R.Wc' = (by with_unfolding_all exact ((letI := alg b iK; (real3 b R).Wc') :)) :=
   (by with_unfolding_all exact ((congrArg₂ (fun (W : type_of% R.toRealDat.Wat) (m : type_of% (@partFull a.D)) (i : Fin a.D.R.m)
       (c : Pl a.D.host.E → List ℤ → ℂ) =>
@@ -62,30 +68,53 @@ theorem wc_eq : R.Wc' = (by with_unfolding_all exact ((letI := alg b iK; (real3 
       m R.θ (R.MW i (sg0 a.D A.A)) (levS _ (R.βW i) (R.datWp i R.triv)) (levChi _ (R.βW i) (R.datWp i R.triv)) R.SF c).comap
       (R.HW i _).e) (wat_eq b R.toRealDat) (partFull_eq b a)) :))
 
+/- English proof (translation)
+The claim follows from `(by with_unfolding_all exact ((congrArg (carriesW R) (eec_eq b R)) :))`.
+-/
 theorem carries_eq : R.Carries = (by with_unfolding_all exact ((letI := alg b iK; (real3 b R).Carries) :)) :=
   (by with_unfolding_all exact ((congrArg (carriesW R) (eec_eq b R)) :))
 
+/- English proof (translation)
+The claim follows from `(by with_unfolding_all exact ((congrArg₂ (fun (Q : type_of% R.Carries) (E : type_of% R.EEc) (p : A.fam3.base3.Ix) => ⨆ (c : Pl a.D.host.E → List ℤ → ℂ) (_ : Q p c), E c) (carries_eq b R) (eec_eq b R)) :))`.
+-/
 theorem realAdelicInertTransport_typeRows_eq : R.EEp3 = (by with_unfolding_all exact ((letI := alg b iK; (real3 b R).EEp3) :)) :=
   (by with_unfolding_all exact ((congrArg₂ (fun (Q : type_of% R.Carries) (E : type_of% R.EEc) (p : A.fam3.base3.Ix) =>
     ⨆ (c : Pl a.D.host.E → List ℤ → ℂ) (_ : Q p c), E c) (carries_eq b R) (eec_eq b R)) :))
 
+/- English proof (translation)
+The claim follows from `(by with_unfolding_all exact ((congrArg₂ (fun (Q : type_of% R.Carries) (E : type_of% R.Wc') (i : Fin a.D.R.m) (p : A.fam3.base3.Ix) => ⨆ (c : Pl a.D.host.E → List ℤ → ℂ) (_ : Q p c), E i c) (carries_eq b R) (wc_eq b R)) :))`.
+-/
 theorem wp3_apply_eq_sq_mul_sub_sq_mul : R.Wp3 = (by with_unfolding_all exact ((letI := alg b iK; (real3 b R).Wp3) :)) :=
   (by with_unfolding_all exact ((congrArg₂ (fun (Q : type_of% R.Carries) (E : type_of% R.Wc') (i : Fin a.D.R.m) (p : A.fam3.base3.Ix) =>
     ⨆ (c : Pl a.D.host.E → List ℤ → ℂ) (_ : Q p c), E i c) (carries_eq b R) (wc_eq b R)) :))
 
+/- English proof (translation)
+The claim follows from `(by with_unfolding_all exact ((Prod.ext (realAdelicInertTransport_typeRows_eq b R) (Prod.ext (eeat_eq b R.toRealDat) (wp3_apply_eq_sq_mul_sub_sq_mul b R)) : ((R.EEp3, R.toRealDat.EEat, R.Wp3) : Parts R) = (_, _, _)) :))`.
+-/
 theorem parts_eq (_F : Face3 a.D A) : ((R.EEp3, R.toRealDat.EEat, R.Wp3) : Parts R) =
     ((by with_unfolding_all exact ((letI := alg b iK; (real3 b R).EEp3) :)), (by with_unfolding_all exact ((letI := alg b iK; (real b R.toRealDat).EEat) :)), (by with_unfolding_all exact ((letI := alg b iK; (real3 b R).Wp3) :))) :=
   (by with_unfolding_all exact ((Prod.ext (realAdelicInertTransport_typeRows_eq b R) (Prod.ext (eeat_eq b R.toRealDat) (wp3_apply_eq_sq_mul_sub_sq_mul b R)) :
     ((R.EEp3, R.toRealDat.EEat, R.Wp3) : Parts R) = (_, _, _)) :))
 
+/- English proof (translation)
+The claim follows from `(by with_unfolding_all exact ((congrArg (cxW R F) (parts_eq b R F)) :))`.
+-/
 theorem toCx3_eq : R.toCx3 F = (@RealDat3.toCx3 (@Late.D B C b) G ‹Group G› ‹Fintype G› Pl0 I0 T (@famInThreeCoefficientChange B C a b G ‹Group G› ‹Fintype G› Pl0 I0 T A) Ks ‹Field Ks› ‹@NumberField Ks ‹Field Ks›› (@alg B C a b Ks ‹Field Ks› iK) (@real3 B C a b G ‹Group G› ‹Fintype G› Pl0 I0 T Ks ‹Field Ks› ‹@NumberField Ks ‹Field Ks›› iK A R) (@face3 B C a b G ‹Group G› ‹Fintype G› Pl0 I0 T A F)) :=
   (by with_unfolding_all exact ((congrArg (cxW R F) (parts_eq b R F)) :))
 
+/- English proof (translation)
+The claim follows from `(by with_unfolding_all exact ((congrArg₂ (fun Q E => trSemW R F (Q, E)) (carries_eq b R) (wc_eq b R)) :))`.
+-/
 theorem trISem_eq : R.TrISem F = (@RealDat3.TrISem (@Late.D B C b) G ‹Group G› ‹Fintype G› Pl0 I0 T (@famInThreeCoefficientChange B C a b G ‹Group G› ‹Fintype G› Pl0 I0 T A) Ks ‹Field Ks› ‹@NumberField Ks ‹Field Ks›› (@alg B C a b Ks ‹Field Ks› iK) (@real3 B C a b G ‹Group G› ‹Fintype G› Pl0 I0 T Ks ‹Field Ks› ‹@NumberField Ks ‹Field Ks›› iK A R) (@face3 B C a b G ‹Group G› ‹Fintype G› Pl0 I0 T A F)) :=
   (by with_unfolding_all exact ((congrArg₂ (fun Q E => trSemW R F (Q, E)) (carries_eq b R) (wc_eq b R)) :))
 
 variable {R F}
 
+/- English proof (translation)
+Use `letI := alg b iK`. Prove the components needed by the constructor for the conclusion. Use `case tie => tr_clause a b h.tie`. Use `case onto => exact (by with_unfolding_all exact (h.onto :))`. Use `case hR => exact (by with_unfolding_all exact (h.hR :))`.
+
+Use `case hL => exact (by with_unfolding_all exact (h.hL :))`. Use `case SF => exact (by with_unfolding_all exact (h.SF :))`.
+-/
 theorem isInert_tr (h : R.IsInert) : letI := alg b iK; (real3 b R).IsInert := by
   letI := alg b iK
   constructor
@@ -95,6 +124,11 @@ theorem isInert_tr (h : R.IsInert) : letI := alg b iK; (real3 b R).IsInert := by
   case hL => exact (by with_unfolding_all exact (h.hL :))
   case SF => exact (by with_unfolding_all exact (h.SF :))
 
+/- English proof (translation)
+Use `letI := alg b iK`. Prove the components needed by the constructor for the conclusion. Use `case mu_off => exact (by with_unfolding_all exact (h.mu_off :))`. Use `case mu_used => exact (by with_unfolding_all exact (h.mu_used :))`. Use `case mu_ne => exact (by with_unfolding_all exact (h.mu_ne :))`.
+
+Use `case mu_conj => exact (by with_unfolding_all exact (h.mu_conj :))`. Use `case mu_on => exact (by with_unfolding_all exact (h.mu_on :))`.
+-/
 theorem isTup_tr (h : R.IsTup) : letI := alg b iK; (real3 b R).IsTup := by
   letI := alg b iK
   constructor
@@ -104,6 +138,11 @@ theorem isTup_tr (h : R.IsTup) : letI := alg b iK; (real3 b R).IsTup := by
   case mu_conj => exact (by with_unfolding_all exact (h.mu_conj :))
   case mu_on => exact (by with_unfolding_all exact (h.mu_on :))
 
+/- English proof (translation)
+Use `letI := alg b iK`. Prove the components needed by the constructor for the conclusion. Use `case lam0 => tr_via (fun W : type_of% R.Wp3 => ∀ i t p (l : ℝ), W i p ≠ ⊥ → (∀ x ∈ W i p, R.thG i t (LinearMap.adjoint (R.thG i t) x) = (l : ℂ) • x) → R.lam3 i t p A.A.v0 = l) (wp3_apply_eq_sq_mul_sub_sq_mul b R) h.lam0`. Use `case kap => tr_via (fun E : type_of% R.EEp3 => ∀ κ : ℝ, Lift.IsKap a.D.R.m (fun t => R.Th t ∘ₗ LinearMap.adjoint (R.Th t)) E R.lamN κ → (∃ t p, E p ≠ ⊥ ∧ ∏ j ∈ Finset.Icc 1 a.D.R.m, R.lamN t j p ≠ 0) → R.kap = κ) (realAdelicInertTransport_typeRows_eq b R) h.kap`. Use `case off => tr_via (fun X : Cx.CxData A.fam3.amb3 => ∀ i p v (l : ℝ), v ≠ A.A.v0 → partAtW F X i p v → (∀ x, X.tC F.cr false i A.A.μ0 (Cx.cpt A.A.v0.embedding x) ∈ X.Wp i p → ∀ y, inner ℂ (X.wC false i v (Cx.cpt v.embedding ((X.liftMat F.cr false i A.A.μ0).mulVec x))) (X.wC false …`.
+
+Use `case abs0 => tr_via (fun u : Parts R => ∀ i t p, u.2.2 i p = ⊥ → R.lam3 i t p A.A.v0 = Real.exp ((F.Zsc (cxW R F u).zs).l6m i)) (parts_eq b R F) h.abs0`. Use `case abs => tr_via (fun X : Cx.CxData A.fam3.amb3 => ∀ i p v, v ≠ A.A.v0 → ¬ partAtW F X i p v → R.lam3 i A.A.μ0 p v = Real.exp ((F.Zsc X.zs).l6m i)) (toCx3_eq b R F) h.abs`. Use `case tup => exact (by with_unfolding_all exact (h.tup :))`.
+-/
 theorem isScal_tr (h : R.IsScal F) : letI := alg b iK; (real3 b R).IsScal (face3 b F) := by
   letI := alg b iK
   constructor
@@ -124,6 +163,17 @@ theorem isScal_tr (h : R.IsScal F) : letI := alg b iK; (real3 b R).IsScal (face3
       R.lam3 i A.A.μ0 p v = Real.exp ((F.Zsc X.zs).l6m i)) (toCx3_eq b R F) h.abs
   case tup => exact (by with_unfolding_all exact (h.tup :))
 
+/- English proof (translation)
+Use `letI := alg b iK`. Prove the components needed by the constructor for the conclusion. Use `case heckeR => exact (by with_unfolding_all exact (h.heckeR :))`. Use `case heckeL => exact (by with_unfolding_all exact (h.heckeL :))`. Use `case hecke => tr_via (fun X : Cx.CxData A.fam3.amb3 => (∃ hE, Cx.HeckeIntertwiningDefinite A X hE) ∧ ∃ hW, Cx.HeckeIntertwiningLifts A X hW) (toCx3_eq b R F) h.hecke`.
+
+Use `case gUnit => exact (by with_unfolding_all exact (h.gUnit :))`. Use `case gEquiv => tr_via (fun u : Parts R => Cx.GEquiv3 A (cxW R F u) ((by with_unfolding_all exact ((R.gEx F) :))) ∧ Cx.LiftGroupEquivariance A (cxW R F u) ((by with_unfolding_all exact ((R.gWx F) :)))) (parts_eq b R F) h.gEquiv`. Use `case block => tr_via (fun X : Cx.CxData A.fam3.amb3 => X.zs.InBlock) (toCx3_eq b R F) h.block`. Use `case rowTest => tr_via (fun X : Cx.CxData A.fam3.amb3 => Rat.RowTest X) (toCx3_eq b R F) h.rowTest`. Use `case liftTest => tr_via (fun X : Cx.CxData A.fam3.amb3 => Rat.LiftTest X) (toCx3_eq b R F) h.liftTest`.
+
+Use `case liftTestB => tr_via (fun X : Cx.CxData A.fam3.amb3 => Rat.LiftTestB X false) (toCx3_eq b R F) h.liftTestB`. Use `case liftOnto => tr_via (fun X : Cx.CxData A.fam3.amb3 => ∀ hW, Cx.HeckeIntertwiningLifts A X hW → U2.OntoC A X F.P0 F.ψ0 F.P1 F.ψ1 hW) (toCx3_eq b R F) h.liftOnto`. Use `case pos => tr_via (fun X : Cx.CxData A.fam3.amb3 => ∀ c, (Cx.lv (F.fc X.zs) c).Pos) (toCx3_eq b R F) h.pos`. Use `case posScal => exact (by with_unfolding_all exact (h.posScal :))`. Use `case levE => tr_via (fun u : Parts R => Cx.LevType3 A (cxW R F u) (P1 := F.P1) (ψ1 := F.ψ1) (Dc := F.Dc) (Sp := F.Sp) (Zsc := F.Zsc) ((by with_unfolding_all exact ((R.gEx F) :))) false F.P0 F.ψ0 ∧ Cx.LevType3 A (cxW R F u) (P1 := F.P1) (ψ1 := F.ψ1) (Dc := F.Dc) (Sp := F.Sp) (Zsc …`.
+
+Use `case h2P => tr_via (fun X : Cx.CxData A.fam3.amb3 => Cx.PrincipalLevelBijectivity A X (P1 := F.P1) (ψ1 := F.ψ1) (Dc := F.Dc) (Sp := F.Sp) (Zsc := F.Zsc)) (toCx3_eq b R F) h.h2P`. Use `case thmB => tr_via (fun E : type_of% R.EEp3 => Lift.IsKap a.D.R.m (fun t => R.Th t ∘ₗ LinearMap.adjoint (R.Th t)) E R.lamN R.kap) (realAdelicInertTransport_typeRows_eq b R) h.thmB`. Use `case sumE => tr_via (fun X : Cx.CxData A.fam3.amb3 => ∀ c, X.PartsE c) (toCx3_eq b R F) h.sumE`. Use `case unif => exact (by with_unfolding_all exact (h.unif :))`. Use `case mLat => tr_via (fun X : Cx.CxData A.fam3.amb3 => X.MLat false) (toCx3_eq b R F) h.mLat`.
+
+Use `case levW => tr_via (fun u : Parts R => Cx.LevelTypeOfLifts A (cxW R F u) (P1 := F.P1) (ψ1 := F.ψ1) (Dc := F.Dc) (Sp := F.Sp) (Zsc := F.Zsc) ((by with_unfolding_all exact ((R.gWx F) :))) false F.P0 F.ψ0) (parts_eq b R F) h.levW`. Use `case thmA => tr_via (fun W : type_of% R.Wp3 => ∀ i t, Lift.IsLamP (R.thG i t) (LinearMap.adjoint (R.thG i t)) (W i) fun p => R.lam3 i t p A.A.v0) (wp3_apply_eq_sq_mul_sub_sq_mul b R) h.thmA`. Use `case sumW => tr_via (fun X : Cx.CxData A.fam3.amb3 => X.PartsW false) (toCx3_eq b R F) h.sumW`. Use `case scalConj => tr_via (fun X : Cx.CxData A.fam3.amb3 => X.GalD F.cr false) (toCx3_eq b R F) h.scalConj`. Use `case dimParts => tr_via (fun X : Cx.CxData A.fam3.amb3 => X.DimParts false) (toCx3_eq b R F) h.dimParts`.
+-/
 theorem primRows3_tr (h : PrimRows3 R F) : letI := alg b iK; PrimRows3 (real3 b R) (face3 b F) := by
   letI := alg b iK
   constructor
@@ -158,6 +208,11 @@ theorem primRows3_tr (h : PrimRows3 R F) : letI := alg b iK; PrimRows3 (real3 b 
   case scalConj => tr_via (fun X : Cx.CxData A.fam3.amb3 => X.GalD F.cr false) (toCx3_eq b R F) h.scalConj
   case dimParts => tr_via (fun X : Cx.CxData A.fam3.amb3 => X.DimParts false) (toCx3_eq b R F) h.dimParts
 
+/- English proof (translation)
+Use `letI := alg b iK`. Prove the components needed by the constructor for the conclusion. Use `case ex => exact (by with_unfolding_all exact ((exAt_tr b h.ex) :))`. Use `case conj => exact (by with_unfolding_all exact (h.conj :))`. Use `case levelW => exact (by with_unfolding_all exact ((lLevelW_tr b h.levelW) :))`.
+
+Use `case integral => exact (by with_unfolding_all exact (h.integral :))`.
+-/
 theorem realAdelicInertTransport_furtherRows (h : UnusedChoiceStatements R F) : letI := alg b iK; UnusedChoiceStatements (real3 b R) (face3 b F) := by
   letI := alg b iK
   constructor

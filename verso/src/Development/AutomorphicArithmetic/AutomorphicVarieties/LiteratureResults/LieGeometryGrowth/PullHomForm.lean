@@ -7,12 +7,18 @@ open UpperTheory.V.Lit.Geo UpperTheory.V.Lit.Dr
 open Set ContinuousAlternatingMap
 open scoped ContDiff
 
+/- English proof (translation)
+The claim follows from `(alternatizeUncurryFinCLM ℝ V F).contDiff.comp_contDiffOn (hw.fderiv_of_isOpen hY (by simp))`.
+-/
 private theorem extDeriv_smooth {V F : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [NormedAddCommGroup F]
     [NormedSpace ℝ F] {Y : Set V} (hY : IsOpen Y) {q : ℕ} {w : V → V [⋀^Fin q]→L[ℝ] F}
     (hw : ContDiffOn ℝ ∞ w Y) : ContDiffOn ℝ ∞ (extDeriv w) Y :=
   (alternatizeUncurryFinCLM ℝ V F).contDiff.comp_contDiffOn
     (hw.fderiv_of_isOpen hY (by simp))
 
+/- English proof (translation)
+Establish `h : flow W 0 = id`. Use function extensionality and compare the values at `x`. Simplify using `[flow]`. Use extensionality with `v`. Simplify using `[pb_apply, h]`.
+-/
 private theorem pb_flow_zero {V F : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [NormedAddCommGroup F]
     [NormedSpace ℝ F] (W : V → V) {q : ℕ} (w : V → V [⋀^Fin q]→L[ℝ] F) (p : V) :
     pb (flow W 0) w p = w p := by
@@ -22,6 +28,17 @@ private theorem pb_flow_zero {V F : Type} [NormedAddCommGroup V] [NormedSpace �
   ext v
   simp [pb_apply, h]
 
+/- English proof (translation)
+Introduce `V F _ _ _ _ _ _ Y hY W hW p hp`. Establish `hWp : ContDiffAt ℝ ∞ W p` using `hW.1.contDiffAt (hY.mem_nhds hp)`. Use `⟨fun w hw => ?_, fun q w hw => ?_⟩` and prove the remaining obligations. Establish `hI` using `((hS V F Y hY W hW 0 _ (extDeriv_smooth hY hw)).2.2.1 p hp).intervalIntegrable_of_Icc (μ := MeasureTheory.volume) zero_le_one`. Establish `hder : ∀ t ∈ uIcc (0 : ℝ) 1, HasDerivAt (fun r => pb (flow W r) w p) (hk W t (extDeriv w) p) t`.
+
+Introduce `t ht`. Rewrite `ht` using `[uIcc_of_le zero_le_one]`. Conclude with `(hP V F W p t hWp).1 w (hw.contDiffAt (hY.mem_nhds (hW.2 p hp t ht)))`. Establish `h3` using `intervalIntegral.integral_eq_sub_of_hasDerivAt hder hI`. Rewrite `h3` using `[pb_flow_zero]`.
+
+Conclude with `h3.symm`. Establish `hI` using `((hS V F Y hY W hW (q + 1) _ (extDeriv_smooth hY hw)).2.2.1 p hp).intervalIntegrable_of_Icc (μ := MeasureTheory.volume) zero_le_one`. Take `⟨hU, hΦ, -, -⟩` from `hS V F Y hY W hW q w hw`. Take `⟨hc, hD⟩` from `paramDeriv V _ p _ _ hU (fun t ht => ⟨hp, hW.2 p hp t ht⟩) hΦ`. Simplify using `only at hc hD`.
+
+Establish `hJ` using `hc.intervalIntegrable_of_Icc (μ := MeasureTheory.volume) zero_le_one`. Establish `hJ' : IntervalIntegrable (fun t => alternatizeUncurryFinCLM ℝ V F (fderiv ℝ (fun x => hk W t w x) p)) MeasureTheory.volume 0 1` using `((alternatizeUncurryFinCLM ℝ V F).continuous.comp_continuousOn hc).intervalIntegrable_of_Icc (μ := MeasureTheory.volume) zero_le_one`. Establish `hder : ∀ t ∈ uIcc (0 : ℝ) 1, HasDerivAt (fun r => pb (flow W r) w p) (alternatizeUncurryFinCLM ℝ V F (fderiv ℝ (fun x => hk W t w x) p) + hk W t (extDeriv w) p) t`. Introduce `t ht`. Rewrite `ht` using `[uIcc_of_le zero_le_one]`.
+
+Conclude with `(hP V F W p t hWp).2 q w (hw.contDiffAt (hY.mem_nhds (hW.2 p hp t ht)))`. Establish `h3` using `intervalIntegral.integral_eq_sub_of_hasDerivAt hder (hJ'.add hI)`. Rewrite `h3` using `[pb_flow_zero, intervalIntegral.integral_add hJ' hI, (alternatizeUncurryFinCLM ℝ V F).intervalIntegral_comp_comm hJ, ← hD.fderiv]`. Conclude with `h3.symm`.
+-/
 private theorem homForm_of (hP : HomPt) (hS : HkSmooth) : HomForm := by
   intro V F _ _ _ _ _ _ Y hY W hW p hp
   have hWp : ContDiffAt ℝ ∞ W p := hW.1.contDiffAt (hY.mem_nhds hp)
@@ -55,6 +72,9 @@ private theorem homForm_of (hP : HomPt) (hS : HkSmooth) : HomForm := by
       (alternatizeUncurryFinCLM ℝ V F).intervalIntegral_comp_comm hJ, ← hD.fderiv] at h3
     exact h3.symm
 
+/- English proof (translation)
+The claim follows from `homForm_of homPt hkSmooth`.
+-/
 theorem UpperTheory.V.Lit.Geo.homForm :
     HomForm :=
   homForm_of homPt hkSmooth

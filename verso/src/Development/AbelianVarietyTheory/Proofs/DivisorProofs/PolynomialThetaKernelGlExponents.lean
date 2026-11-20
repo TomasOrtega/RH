@@ -7,6 +7,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.ThetaSideK
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ B a a' G X om om' hK hT c hc hσc Φ hΦ B₀`. Take `⟨b, hb, χ, hba, hun, hnorm, rest⟩` from `GlobalTheory.T.pol_data_so_exists_block_splitting F E σ hσ B a a' G X om om' hK hT c hc hσc Φ hΦ B₀`. Conclude with `⟨b, hb, χ, hba, fun j => isSmoothChar_of_isUnram (hun j), hnorm, rest⟩`.
+-/
 theorem theta_finite_sum_intertw : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), GlobalTheory.ThK.KP → IsTriple B G X om om' →

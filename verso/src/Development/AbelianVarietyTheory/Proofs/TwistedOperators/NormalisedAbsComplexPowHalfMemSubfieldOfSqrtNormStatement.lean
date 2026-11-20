@@ -16,5 +16,8 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 open ValuativeRel Formalism.L2.Host
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HalfPowField.apow_half_mem_of_sqrt | exact GlobalTheory.HalfPowField.apow_half_mem_of_sqrt | (intros; apply GlobalTheory.HalfPowField.apow_half_mem_of_sqrt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.normalisedAbsComplexPow_half_mem_subfield_of_sqrt_norm : ∀ {D : D7} (F : Subfield ℂ) (w : Pl D.host.E), ((Real.sqrt (Ideal.absNorm w.asIdeal) : ℝ) : ℂ) ∈ F → ∀ u : (Kw w)ˣ, apow u (1 / 2) ∈ F := by
   first | exact @GlobalTheory.HalfPowField.apow_half_mem_of_sqrt | exact GlobalTheory.HalfPowField.apow_half_mem_of_sqrt | (intros; apply GlobalTheory.HalfPowField.apow_half_mem_of_sqrt <;> assumption)

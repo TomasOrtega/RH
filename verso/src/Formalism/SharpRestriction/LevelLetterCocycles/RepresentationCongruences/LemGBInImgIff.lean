@@ -17,11 +17,19 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 
 variable (W : LocWach PD LL O v n)
 
+/- English proof (translation)
+Use extensionality with `k`. Establish `hk` using `congrArg (PowerSeries.coeff (k + 1)) h`. Simplify `hk` using `[PowerSeries.coeff_succ_X_mul]`.
+-/
 theorem lemGB_X_cancel (a b : PowerSeries O) (h : PowerSeries.X * a = PowerSeries.X * b) : a = b := by
   ext k
   have hk := congrArg (PowerSeries.coeff (k + 1)) h
   simpa [PowerSeries.coeff_succ_X_mul] using hk
 
+/- English proof (translation)
+Take `⟨r, hr⟩` from `exists_add_pow_prime_eq PD.hp (1 : PowerSeries O) PowerSeries.X`. Use `⟨r, lemGB_X_cancel _ _ ?_⟩` and prove the remaining obligations. Establish `hXp : (PowerSeries.X : PowerSeries O) ^ PD.p = PowerSeries.X * PowerSeries.X ^ (PD.p - 1)`. Rewrite using `[← pow_succ', Nat.sub_add_cancel PD.hp.one_lt.le]`. Rewrite using `[W.q₀_def, hr, hXp]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lemGB_q₀ :
     ∃ w : PowerSeries O, W.q₀ = PowerSeries.X ^ (PD.p - 1) + ((PD.p : ℕ) : PowerSeries O) * w := by
   obtain ⟨r, hr⟩ := exists_add_pow_prime_eq PD.hp (1 : PowerSeries O) PowerSeries.X
@@ -31,6 +39,11 @@ theorem lemGB_q₀ :
   rw [W.q₀_def, hr, hXp]
   ring
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `lemGB_q₀ W`. Use `⟨fun _ => w, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Use `first`. Consider the case `(simp only [LocWach.q, letπ, Pi.add_apply, Pi.mul_apply, Pi.pow_apply, Pi.natCast_apply]; exact hw)`.
+
+Consider the case `exact hw`.
+-/
 theorem lemGB_q : ∃ w : LetA O n, W.q = letπ ^ (PD.p - 1) + ((PD.p : ℕ) : LetA O n) * w := by
   obtain ⟨w, hw⟩ := lemGB_q₀ W
   refine ⟨fun _ => w, ?_⟩
@@ -39,6 +52,13 @@ theorem lemGB_q : ∃ w : LetA O n, W.q = letπ ^ (PD.p - 1) + ((PD.p : ℕ) : L
     | (simp only [LocWach.q, letπ, Pi.add_apply, Pi.mul_apply, Pi.pow_apply, Pi.natCast_apply]; exact hw)
     | exact hw
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `lemGB_q W`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : IsUnit (algebraMap (LetA O n) W.EE (letπ ^ (PD.p - 1))) := by`. Rewrite using `[map_pow]`. Conclude with `W.EE_π.pow _`. Use `haveI := W.EE_complete`.
+
+Establish `hJ : ((PD.p : ℕ) : W.EE) ∈ (⊥ : Ideal W.EE).jacobson` using `by first`. Consider the case `exact IsAdicComplete.le_jacobson_bot _ (Ideal.mem_span_singleton_self _)`. Consider the case `exact (IsAdicComplete.le_jacobson_bot (I := Ideal.span {((PD.p : ℕ) : W.EE)})) (Ideal.mem_span_singleton_self _)`. Establish `h1` using `Ideal.mem_jacobson_bot.mp hJ ((↑u⁻¹ : W.EE) * algebraMap (LetA O n) W.EE w)`. Rewrite using `[hw, map_add, map_mul, map_natCast, ← hu]`.
+
+Establish `he : (u : W.EE) + ((PD.p : ℕ) : W.EE) * algebraMap (LetA O n) W.EE w = u * (((PD.p : ℕ) : W.EE) * ((↑u⁻¹ : W.EE) * algebraMap (LetA O n) W.EE w) + 1)`. Take the linear combination `(-(((PD.p : ℕ) : W.EE) * algebraMap (LetA O n) W.EE w)) * u.mul_inv`. Rewrite using `[he]`. Conclude with `u.isUnit.mul h1`.
+-/
 theorem lemGB_q_unit : IsUnit (algebraMap (LetA O n) W.EE W.q) := by
   obtain ⟨w, hw⟩ := lemGB_q W
   obtain ⟨u, hu⟩ : IsUnit (algebraMap (LetA O n) W.EE (letπ ^ (PD.p - 1))) := by
@@ -57,6 +77,29 @@ theorem lemGB_q_unit : IsUnit (algebraMap (LetA O n) W.EE W.q) := by
   rw [he]
   exact u.isUnit.mul h1
 
+/- English proof (translation)
+Take `⟨hK, hs, hp2⟩` from `hcase`. Establish `hfin : Module.finrank K₀ K = 1` using `(LinearEquiv.ofBijective (Algebra.linearMap K₀ K) (by exact hK)).finrank_eq.symm.trans (Module.finrank_self K₀)`. Take `⟨hcard, -, h3⟩` from `hP9 T hT hs hp2`. Take `⟨hring, -⟩` from `h3 hfin`. Take `⟨-, -, ⟨w, hw⟩, -, ⟨w', hw'⟩, -⟩` from `hring`.
+
+Establish `hπu : IsUnit (algebraMap (LetA O n) W.EE W.π₀)`. Rewrite using `[hw, map_mul, map_pow]`. Conclude with `(w.isUnit.map _).mul (W.EE_π.pow _)`. Establish `hEat : Formalism.MainNotions.DeltaInvariantLattices.Eat (fun _ => Polynomial.X + Polynomial.C ((PD.p : ℕ) : O)) W.π₀ = qA W`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[Formalism.MainNotions.DeltaInvariantLattices.Eat, qA, lA]`. Establish `hqu : IsUnit (algebraMap (LetA O n) W.EE (qA W))`. Establish `h` using `lemGB_q_unit W`. Rewrite `h` using `[hw', map_mul]`. Establish `h2` using `isUnit_of_mul_isUnit_right h`.
+
+Use `h2 using 2` and compare the differences between its conclusion and the goal. Conclude with `hEat.symm`. Use `⟨hπu, hqu, ?_⟩` and prove the remaining obligations. Establish `hc : W.DelF.card = PD.p - 1` using `by rw [hcard, hfin, Nat.div_one]`. Rewrite using `[hc]`.
+
+Establish `hvp : v (PD.p : LL) = 1` using `W.v_l`. Establish `hv1 : v (-1 : LL) = 0` using `by rw [AddValuation.map_neg, AddValuation.map_one]`. Apply the tactic sequence `have h01 : (0 : WithTop ℚ) < 1 := by first | exact zero_lt_one | exact WithTop.coe_lt_coe.mpr zero_lt_one | norm_num`. Establish `hge : 0 ≤ v ((PD.p : LL) - 1)`. Rewrite using `[sub_eq_add_neg]`.
+
+Conclude with `le_trans (le_min (by rw [hvp]; exact h01.le) (le_of_eq hv1.symm)) (AddValuation.map_add v _ _)`. Establish `hle : v ((PD.p : LL) - 1) ≤ 0`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `hm` using `AddValuation.map_add v ((PD.p : LL) - 1) (-(PD.p : LL))`.
+
+Rewrite `hm` using `[show ((PD.p : LL) - 1) + (-(PD.p : LL)) = -1 by ring, hv1, AddValuation.map_neg, hvp]`. Conclude with `absurd hm (not_le.mpr (lt_min hlt h01))`. Establish `hv : v ((PD.p : LL) - 1) = 0` using `le_antisymm hle hge`. Establish `hxne : (PD.p : LL) - 1 ≠ 0`. Introduce `h`.
+
+Rewrite `hv` using `[h, AddValuation.map_zero]`. Conclude with `WithTop.top_ne_zero hv`. Establish `hvinv : 0 ≤ v ((PD.p : LL) - 1)⁻¹`. Establish `h` using `AddValuation.map_mul v ((PD.p : LL) - 1) ((PD.p : LL) - 1)⁻¹`. Rewrite `h` using `[mul_inv_cancel₀ hxne, AddValuation.map_one, hv, zero_add]`.
+
+Conclude with `h.le`. Take `⟨y, hy⟩` from `hOv _ hvinv`. Establish `hxmap : algebraMap O LL ((PD.p - 1 : ℕ) : O) = (PD.p : LL) - 1`. Rewrite using `[map_natCast, Nat.cast_sub PD.hp.one_lt.le, Nat.cast_one]`. Establish `hcy : ((PD.p - 1 : ℕ) : O) * y = 1`.
+
+Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_mul, map_one, hy, hxmap, mul_inv_cancel₀ hxne]`. Use `first`. Consider the case `exact IsUnit.of_mul_eq_one _ hcy`. Consider the case `exact IsUnit.of_mul_eq_one _ _ hcy`.
+
+Consider the case `exact isUnit_of_mul_eq_one _ _ hcy`. Consider the case `exact ⟨⟨_, y, hcy, by rw [mul_comm]; exact hcy⟩, rfl⟩`.
+-/
 theorem lemG_units (hcase : Formalism.MainNotions.LiftingTheory.CaseA W) (hP9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W) {T : LocLat G Qp LL O}
     (hT : IsCrys PD T.ρ) (hO : ∀ x : O, 0 ≤ v (algebraMap O LL x))
     (hOv : ∀ x : LL, 0 ≤ v x → ∃ y : O, algebraMap O LL y = x) (hinj : Function.Injective (algebraMap O LL)) :
@@ -121,21 +164,36 @@ theorem lemG_units (hcase : Formalism.MainNotions.LiftingTheory.CaseA W) (hP9 : 
 def InImg {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) (i : ZMod n) (z : W.DD T₂) : Prop :=
   ∃ x₁, Formalism.MainNotions.LiftingTheory.InNΔi W T₁ i x₁ ∧ W.map F x₁ = z
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem lemGB_memNΔ {T : LocLat G Qp LL O} {x : W.DD T} :
     x ∈ W.NΔ T ↔ x ∈ W.N T ∧ ∀ δ ∈ W.DelF, W.γD T δ x = x := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem lemGB_inNΔi_iff {T : LocLat G Qp LL O} {i : ZMod n} {x : W.DD T} :
     Formalism.MainNotions.LiftingTheory.InNΔi W T i x ↔ x ∈ W.NΔ T ∧ x ∈ W.Nl T i := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem lemGB_inImg_iff {T₁ T₂ : LocLat G Qp LL O} {F : LatHom T₁.L T₂.L} {i : ZMod n} {z : W.DD T₂} :
     InImg W F i z ↔ ∃ x₁, Formalism.MainNotions.LiftingTheory.InNΔi W T₁ i x₁ ∧ W.map F x₁ = z := Iff.rfl
 
+/- English proof (translation)
+Take `⟨hx1, hx2⟩` from `(lemGB_inNΔi_iff W).mp hx`. Take `⟨hy1, hy2⟩` from `(lemGB_inNΔi_iff W).mp hy`. Conclude with `(lemGB_inNΔi_iff W).mpr ⟨(W.NΔ T).add_mem hx1 hy1, (W.Nl T i).add_mem hx2 hy2⟩`.
+-/
 theorem inNΔi_add (T : LocLat G Qp LL O) (i : ZMod n) {x y : W.DD T} (hx : Formalism.MainNotions.LiftingTheory.InNΔi W T i x)
     (hy : Formalism.MainNotions.LiftingTheory.InNΔi W T i y) : Formalism.MainNotions.LiftingTheory.InNΔi W T i (x + y) := by
   obtain ⟨hx1, hx2⟩ := (lemGB_inNΔi_iff W).mp hx
   obtain ⟨hy1, hy2⟩ := (lemGB_inNΔi_iff W).mp hy
   exact (lemGB_inNΔi_iff W).mpr ⟨(W.NΔ T).add_mem hx1 hy1, (W.Nl T i).add_mem hx2 hy2⟩
 
+/- English proof (translation)
+Take `⟨hx1, hx2⟩` from `(lemGB_inNΔi_iff W).mp hx`. Establish `h1` using `(lemGB_memNΔ W).mp hx1`. Use `(lemGB_inNΔi_iff W).mpr ⟨(lemGB_memNΔ W).mpr ⟨(W.N T).smul_mem a h1.1, fun δ hδ => ?_⟩, (W.Nl T i).smul_mem a hx2⟩` and prove the remaining obligations. Rewrite using `[← algebraMap_smul W.EE a x, W.γD_smul, W.γE_ext, show letγ (W.γ₀ δ) a = a from ha δ hδ, h1.2 δ hδ]`.
+-/
 theorem inNΔi_smulA (T : LocLat G Qp LL O) (i : ZMod n) {a : LetA O n} (ha : a ∈ W.AΔ) {x : W.DD T}
     (hx : Formalism.MainNotions.LiftingTheory.InNΔi W T i x) : Formalism.MainNotions.LiftingTheory.InNΔi W T i (a • x) := by
   obtain ⟨hx1, hx2⟩ := (lemGB_inNΔi_iff W).mp hx
@@ -144,21 +202,35 @@ theorem inNΔi_smulA (T : LocLat G Qp LL O) (i : ZMod n) {a : LetA O n} (ha : a 
     (W.Nl T i).smul_mem a hx2⟩
   rw [← algebraMap_smul W.EE a x, W.γD_smul, W.γE_ext, show letγ (W.γ₀ δ) a = a from ha δ hδ, h1.2 δ hδ]
 
+/- English proof (translation)
+Take `⟨hx1, hx2⟩` from `(lemGB_inNΔi_iff W).mp hx`. Conclude with `(lemGB_inNΔi_iff W).mpr ⟨(W.NΔ T).smul_mem c hx1, Submodule.smul_of_tower_mem _ c hx2⟩`.
+-/
 theorem inNΔi_smulO (T : LocLat G Qp LL O) (i : ZMod n) (c : O) {x : W.DD T}
     (hx : Formalism.MainNotions.LiftingTheory.InNΔi W T i x) : Formalism.MainNotions.LiftingTheory.InNΔi W T i (c • x) := by
   obtain ⟨hx1, hx2⟩ := (lemGB_inNΔi_iff W).mp hx
   exact (lemGB_inNΔi_iff W).mpr ⟨(W.NΔ T).smul_mem c hx1, Submodule.smul_of_tower_mem _ c hx2⟩
 
+/- English proof (translation)
+Conclude with `(lemGB_inImg_iff W).mpr ⟨0, (lemGB_inNΔi_iff W).mpr ⟨(W.NΔ T₁).zero_mem, (W.Nl T₁ i).zero_mem⟩, map_zero _⟩`.
+-/
 theorem inImg_zero {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) (i : ZMod n) : InImg W F i 0 := by
   exact (lemGB_inImg_iff W).mpr ⟨0, (lemGB_inNΔi_iff W).mpr ⟨(W.NΔ T₁).zero_mem, (W.Nl T₁ i).zero_mem⟩,
     map_zero _⟩
 
+/- English proof (translation)
+Take `⟨x, hx, rfl⟩` from `(lemGB_inImg_iff W).mp hz`. Take `⟨x', hx', rfl⟩` from `(lemGB_inImg_iff W).mp hz'`. Conclude with `(lemGB_inImg_iff W).mpr ⟨x + x', inNΔi_add W T₁ i hx hx', map_add _ _ _⟩`.
+-/
 theorem inImg_add {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) (i : ZMod n) {z z' : W.DD T₂}
     (hz : InImg W F i z) (hz' : InImg W F i z') : InImg W F i (z + z') := by
   obtain ⟨x, hx, rfl⟩ := (lemGB_inImg_iff W).mp hz
   obtain ⟨x', hx', rfl⟩ := (lemGB_inImg_iff W).mp hz'
   exact (lemGB_inImg_iff W).mpr ⟨x + x', inNΔi_add W T₁ i hx hx', map_add _ _ _⟩
 
+/- English proof (translation)
+Take `⟨x, hx, rfl⟩` from `(lemGB_inImg_iff W).mp hz`. Use `(lemGB_inImg_iff W).mpr ⟨a • x, inNΔi_smulA W T₁ i ha hx, ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `exact LinearMap.map_smul_of_tower _ _ _`. Consider the case `exact map_smul _ _ _`.
+
+Consider the case `rw [← algebraMap_smul W.EE a x, map_smul, algebraMap_smul]`.
+-/
 theorem inImg_smulA {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) (i : ZMod n) {a : LetA O n}
     (ha : a ∈ W.AΔ) {z : W.DD T₂} (hz : InImg W F i z) : InImg W F i (a • z) := by
   obtain ⟨x, hx, rfl⟩ := (lemGB_inImg_iff W).mp hz
@@ -168,6 +240,11 @@ theorem inImg_smulA {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) (i
     | exact map_smul _ _ _
     | rw [← algebraMap_smul W.EE a x, map_smul, algebraMap_smul]
 
+/- English proof (translation)
+Take `⟨x, hx, rfl⟩` from `(lemGB_inImg_iff W).mp hz`. Use `(lemGB_inImg_iff W).mpr ⟨c • x, inNΔi_smulO W T₁ i c hx, ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `exact LinearMap.map_smul_of_tower _ _ _`. Consider the case `exact map_smul _ _ _`.
+
+Consider the case `rw [← algebraMap_smul (LetA O n) c x, ← algebraMap_smul W.EE (algebraMap O (LetA O n) c) x, map_smul, algebraMap_smul, algebraMap_smul]`.
+-/
 theorem inImg_smulO {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) (i : ZMod n) (c : O)
     {z : W.DD T₂} (hz : InImg W F i z) : InImg W F i (c • z) := by
   obtain ⟨x, hx, rfl⟩ := (lemGB_inImg_iff W).mp hz
@@ -184,16 +261,31 @@ def imgSub {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) (i : ZMod n
   add_mem' := fun hz hz' => inImg_add W F i hz hz'
   smul_mem' := fun c _ hz => inImg_smulO W F i c hz
 
+/- English proof (translation)
+Take `⟨k, hk, hk1⟩` from `(W.DelF_def δ).mp h`. Take `⟨m, hm, hm1⟩` from `(W.DelF_def δ').mp h'`. Use `(W.DelF_def _).mpr ⟨k * m, Nat.mul_pos hk hm, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_pow, pow_mul, hk1, one_pow, one_mul, mul_comm k m, pow_mul, hm1, one_pow]`.
+-/
 private theorem mul_mem_delF {δ δ' : W.Gam} (h : δ ∈ W.DelF) (h' : δ' ∈ W.DelF) : δ * δ' ∈ W.DelF := by
   obtain ⟨k, hk, hk1⟩ := (W.DelF_def δ).mp h
   obtain ⟨m, hm, hm1⟩ := (W.DelF_def δ').mp h'
   refine (W.DelF_def _).mpr ⟨k * m, Nat.mul_pos hk hm, ?_⟩
   rw [mul_pow, pow_mul, hk1, one_pow, one_mul, mul_comm k m, pow_mul, hm1, one_pow]
 
+/- English proof (translation)
+Take `⟨k, hk, hk1⟩` from `(W.DelF_def δ).mp h`. Conclude with `(W.DelF_def _).mpr ⟨k, hk, by rw [inv_pow, hk1, inv_one]⟩`.
+-/
 private theorem inv_mem_delF {δ : W.Gam} (h : δ ∈ W.DelF) : δ⁻¹ ∈ W.DelF := by
   obtain ⟨k, hk, hk1⟩ := (W.DelF_def δ).mp h
   exact (W.DelF_def _).mpr ⟨k, hk, by rw [inv_pow, hk1, inv_one]⟩
 
+/- English proof (translation)
+Establish `h1 : ∀ δ' ∈ W.DelF, W.γ₀ δ' W.π₀₁ = W.π₀₁`. Introduce `δ' hδ'`. Simplify using `only [LocWach.π₀₁]`. Rewrite using `[map_add, map_sub, map_one, map_natCast, map_sum]`. Use `congr 1`.
+
+Use `Finset.sum_equiv (Equiv.mulLeft δ') (fun δ => ⟨fun h => mul_mem_delF W hδ' h, fun h => ?_⟩) (fun δ _ => ?_)` and prove the remaining obligations. Establish `h2` using `mul_mem_delF W (inv_mem_delF W hδ') h`. Rewrite `h2` using `[Equiv.coe_mulLeft, inv_mul_cancel_left]`. Then use the resulting hypothesis. Use `show W.γ₀ δ' (W.γ₀ δ (1 + PowerSeries.X)) = W.γ₀ (δ' * δ) (1 + PowerSeries.X)`. Rewrite using `[map_mul, AlgHom.mul_apply]`.
+
+Establish `hπ : W.π₀ ∈ W.AΔ` using `by show ∀ δ ∈ W.DelF, W.γA δ W.π₀ = W.π₀`. Introduce `δ hδ`. Use function extensionality and compare the values at `j`. Use `first`. Consider the case `exact h1 δ hδ`.
+
+Consider the case `(show W.γ₀ δ W.π₀₁ = W.π₀₁; exact h1 δ hδ)`. Consider the case `(simp [LocWach.γA, letγ, LocWach.π₀]; exact h1 δ hδ)`. Use `⟨hπ, ?_⟩` and prove the remaining obligations. Use `show W.π₀ + ((PD.p : ℕ) : LetA O n) ∈ W.AΔ`. Conclude with `W.AΔ.add_mem hπ (Subalgebra.natCast_mem _ _)`.
+-/
 theorem qA_mem_AΔ (hcase : Formalism.MainNotions.LiftingTheory.CaseA W) (hP9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W) {T : LocLat G Qp LL O}
     (hT : IsCrys PD T.ρ) : W.π₀ ∈ W.AΔ ∧ qA W ∈ W.AΔ := by
   have h1 : ∀ δ' ∈ W.DelF, W.γ₀ δ' W.π₀₁ = W.π₀₁ := by
@@ -219,6 +311,9 @@ theorem qA_mem_AΔ (hcase : Formalism.MainNotions.LiftingTheory.CaseA W) (hP9 : 
   show W.π₀ + ((PD.p : ℕ) : LetA O n) ∈ W.AΔ
   exact W.AΔ.add_mem hπ (Subalgebra.natCast_mem _ _)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Apply the tactic sequence `subst h first | simp [letγ, letE] | (show g₀ _ = _; simp [letE])`. Apply the tactic sequence `first | simp [letγ, letE, h] | (show g₀ _ = _; simp [letE, h])`.
+-/
 theorem lemGB_letγ_letE (g₀ : PowerSeries O →ₐ[O] PowerSeries O) (i : ZMod n) :
     letγ g₀ (letE i : LetA O n) = letE i := by
   funext j
@@ -227,10 +322,18 @@ theorem lemGB_letγ_letE (g₀ : PowerSeries O →ₐ[O] PowerSeries O) (i : ZMo
     first | simp [letγ, letE] | (show g₀ _ = _; simp [letE])
   · first | simp [letγ, letE, h] | (show g₀ _ = _; simp [letE, h])
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul W.EE (letE i : LetA O n) w, W.γD_smul, W.γE_ext, lemGB_letγ_letE, algebraMap_smul]`.
+-/
 theorem lemGB_γD_letE (T : LocLat G Qp LL O) (δ : W.Gam) (i : ZMod n) (w : W.DD T) :
     W.γD T δ ((letE i : LetA O n) • w) = (letE i : LetA O n) • W.γD T δ w := by
   rw [← algebraMap_smul W.EE (letE i : LetA O n) w, W.γD_smul, W.γE_ext, lemGB_letγ_letE, algebraMap_smul]
 
+/- English proof (translation)
+Simplify using `only [LocWach.Nl, Submodule.mem_map, LinearMap.smul_apply, LinearMap.id_apply] at hx ⊢`. Take `⟨y, hy, rfl⟩` from `hx`. Use `⟨W.γD T δ y, ?_, (lemGB_γD_letE W T δ i y).symm⟩` and prove the remaining obligations. Use `first`. Consider the case `exact W.N_Γ T δ y hy`.
+
+Consider the case `exact W.N_Γ T δ hy`. Consider the case `exact W.N_Γ T hy δ`. Consider the case `exact W.N_Γ`.
+-/
 theorem lemGB_Nl_γ (T : LocLat G Qp LL O) (i : ZMod n) (δ : W.Gam) {x : W.DD T} (hx : x ∈ W.Nl T i) :
     W.γD T δ x ∈ W.Nl T i := by
   simp only [LocWach.Nl, Submodule.mem_map, LinearMap.smul_apply, LinearMap.id_apply] at hx ⊢
@@ -242,22 +345,36 @@ theorem lemGB_Nl_γ (T : LocLat G Qp LL O) (i : ZMod n) (δ : W.Gam) {x : W.DD T
     | exact W.N_Γ T hy δ
     | exact W.N_Γ
 
+/- English proof (translation)
+Simplify using `only [LocWach.Nl, Submodule.mem_map, LinearMap.smul_apply, LinearMap.id_apply] at hx`. Take `⟨y, hy, rfl⟩` from `hx`. Conclude with `(W.N T).smul_mem _ hy`.
+-/
 theorem lemGB_Nl_le_N (T : LocLat G Qp LL O) (i : ZMod n) {x : W.DD T} (hx : x ∈ W.Nl T i) :
     x ∈ W.N T := by
   simp only [LocWach.Nl, Submodule.mem_map, LinearMap.smul_apply, LinearMap.id_apply] at hx
   obtain ⟨y, hy, rfl⟩ := hx
   exact (W.N T).smul_mem _ hy
 
+/- English proof (translation)
+Take `⟨k, hk, hk1⟩` from `(W.DelF_def δ).mp h`. Take `⟨m, hm, hm1⟩` from `(W.DelF_def δ').mp h'`. Use `(W.DelF_def _).mpr ⟨k * m, Nat.mul_pos hk hm, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_pow, pow_mul, hk1, one_pow, one_mul, mul_comm k m, pow_mul, hm1, one_pow]`.
+-/
 theorem lemGB_DelF_mul {δ δ' : W.Gam} (h : δ ∈ W.DelF) (h' : δ' ∈ W.DelF) : δ * δ' ∈ W.DelF := by
   obtain ⟨k, hk, hk1⟩ := (W.DelF_def δ).mp h
   obtain ⟨m, hm, hm1⟩ := (W.DelF_def δ').mp h'
   refine (W.DelF_def _).mpr ⟨k * m, Nat.mul_pos hk hm, ?_⟩
   rw [mul_pow, pow_mul, hk1, one_pow, one_mul, mul_comm k m, pow_mul, hm1, one_pow]
 
+/- English proof (translation)
+Take `⟨k, hk, hk1⟩` from `(W.DelF_def δ).mp h`. Conclude with `(W.DelF_def _).mpr ⟨k, hk, by rw [inv_pow, hk1, inv_one]⟩`.
+-/
 theorem lemGB_DelF_inv {δ : W.Gam} (h : δ ∈ W.DelF) : δ⁻¹ ∈ W.DelF := by
   obtain ⟨k, hk, hk1⟩ := (W.DelF_def δ).mp h
   exact (W.DelF_def _).mpr ⟨k, hk, by rw [inv_pow, hk1, inv_one]⟩
 
+/- English proof (translation)
+Rewrite using `[map_sum]`. Establish `hm : ∀ δ, W.γD T δ' (W.γD T δ x) = W.γD T (δ' * δ) x`. Introduce `δ`. Conclude with `(W.γD_mul T δ' δ x).symm`. Repeatedly rewrite using `[hm]`.
+
+Use `Finset.sum_equiv (Equiv.mulLeft δ') (fun δ => ⟨fun h => lemGB_DelF_mul W h' h, fun h => ?_⟩) (fun δ _ => rfl)` and prove the remaining obligations. Establish `h2` using `lemGB_DelF_mul W (lemGB_DelF_inv W h') h`. Rewrite `h2` using `[Equiv.coe_mulLeft, inv_mul_cancel_left]`. Then use the resulting hypothesis.
+-/
 theorem lemGB_sum_inv (T : LocLat G Qp LL O) (x : W.DD T) (δ' : W.Gam) (h' : δ' ∈ W.DelF) :
     W.γD T δ' (∑ δ ∈ W.DelF, W.γD T δ x) = ∑ δ ∈ W.DelF, W.γD T δ x := by
   rw [map_sum]
@@ -270,6 +387,15 @@ theorem lemGB_sum_inv (T : LocLat G Qp LL O) (x : W.DD T) (δ' : W.Gam) (h' : δ
   have h2 := lemGB_DelF_mul W (lemGB_DelF_inv W h') h
   rwa [Equiv.coe_mulLeft, inv_mul_cancel_left] at h2
 
+/- English proof (translation)
+Simplify using `only [Formalism.MainNotions.LiftingTheory.Nimg, Submodule.mem_map, LinearMap.restrictScalars_apply] at hz`. Take `⟨y, hy, rfl⟩` from `hz`. Take `⟨u, hu⟩` from `hΔ`. Establish `hSl : (∑ δ ∈ W.DelF, W.γD T₁ δ y) ∈ W.Nl T₁ i` using `Submodule.sum_mem _ (fun δ _ => lemGB_Nl_γ W T₁ i δ hy)`. Use `(lemGB_inImg_iff W).mpr ⟨(↑u⁻¹ : O) • ∑ δ ∈ W.DelF, W.γD T₁ δ y, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `inNΔi_smulO W T₁ i _ ((lemGB_inNΔi_iff W).mpr ⟨(lemGB_memNΔ W).mpr ⟨lemGB_Nl_le_N W T₁ i hSl, fun δ' hδ' => lemGB_sum_inv W T₁ y δ' hδ'⟩, hSl⟩)`. Establish `hfix : ∀ δ ∈ W.DelF, W.map F (W.γD T₁ δ y) = W.map F y`. Introduce `δ hδ`. Use `first`. Consider the case `(rw [W.map_γ]; exact hzΔ δ hδ)`.
+
+Consider the case `exact W.map_γ`. Establish `hmapS : W.map F (∑ δ ∈ W.DelF, W.γD T₁ δ y) = ((W.DelF.card : ℕ) : O) • W.map F y`. Rewrite using `[map_sum, Finset.sum_congr rfl hfix, Finset.sum_const]`. Conclude with `(Nat.cast_smul_eq_nsmul O _ _).symm`. Establish `hc : W.map F ((↑u⁻¹ : O) • ∑ δ ∈ W.DelF, W.γD T₁ δ y) = (↑u⁻¹ : O) • W.map F (∑ δ ∈ W.DelF, W.γD T₁ δ y)` using `by first`.
+
+Consider the case `exact LinearMap.map_smul_of_tower _ _ _`. Consider the case `exact map_smul _ _ _`. Rewrite using `[hc, hmapS, smul_smul, ← hu, Units.inv_mul, one_smul]`.
+-/
 theorem inImg_of_Nimg (hΔ : IsUnit ((W.DelF.card : ℕ) : O)) {T₁ T₂ : LocLat G Qp LL O}
     (F : LatHom T₁.L T₂.L) (i : ZMod n) {z : W.DD T₂} (hz : z ∈ Formalism.MainNotions.LiftingTheory.Nimg W F i)
     (hzΔ : ∀ δ ∈ W.DelF, W.γD T₂ δ z = z) : InImg W F i z := by
@@ -296,6 +422,17 @@ theorem inImg_of_Nimg (hΔ : IsUnit ((W.DelF.card : ℕ) : O)) {T₁ T₂ : LocL
         | exact map_smul _ _ _
     rw [hc, hmapS, smul_smul, ← hu, Units.inv_mul, one_smul]
 
+/- English proof (translation)
+Establish `hπ : W.π₀ ∈ W.AΔ` using `(qA_mem_AΔ W hcase hP9 hc₁).1`. Establish `hpA : ((PD.p : ℕ) : LetA O n) ∈ W.AΔ` using `Subalgebra.natCast_mem _ _`. Establish `hΔ` using `(lemG_units W hcase hP9 hc₁ hO hOv hinj).2.2`. Take `⟨hyN, hyl⟩` from `(lemGB_inNΔi_iff W).mp hy`. Establish `hyΔ` using `((lemGB_memNΔ W).mp hyN).2`.
+
+Establish `hinvA : ∀ a ∈ W.AΔ, ∀ δ ∈ W.DelF, W.γD T₂ δ (a • y) = a • y`. Introduce `a ha δ hδ`. Rewrite using `[← algebraMap_smul W.EE a y, W.γD_smul, W.γE_ext, show letγ (W.γ₀ δ) a = a from ha δ hδ, hyΔ δ hδ]`. Establish `key : ∀ c ∈ W.AΔ, Formalism.MainNotions.LiftingTheory.KillsΔ W F i c → InImg W F i (c • y)` using `fun c hc hk => inImg_of_Nimg W hΔ F i (hk y hyl hyΔ) (hinvA c hc)`. Establish `hmem : ((⟨W.π₀, hπ⟩ : ↥W.AΔ) + ⟨_, hpA⟩) ^ (Ai + ri) ∈ Ideal.span {(⟨W.π₀, hπ⟩ : ↥W.AΔ) ^ Ai, (⟨_, hpA⟩ : ↥W.AΔ) ^ ri}`.
+
+Apply `Ideal.add_pow_mem_of_pow_mem_of_le` to reduce the goal to its premises. Apply the tactic sequence `all_goals first`. Consider the case `exact Ideal.subset_span (Set.mem_insert _ _)`. Consider the case `exact Ideal.subset_span (Set.mem_insert_of_mem _ (Set.mem_singleton _))`. Consider the case `skip`.
+
+Apply the tactic sequence `all_goals omega`. Take `⟨a, b, hab⟩` from `Ideal.mem_span_pair.mp hmem`. Establish `hq : qA W ^ (Ai + ri) = (a : LetA O n) * W.π₀ ^ Ai + (b : LetA O n) * Formalism.MainNotions.LiftingTheory.lp W ri`. Establish `h` using `congrArg Subtype.val hab`. Use `first`.
+
+Consider the case `simpa [qA, lA, Formalism.MainNotions.LiftingTheory.lp] using h.symm`. Consider the case `(push_cast at h; rw [← h]; rfl)`. Rewrite using `[hq, add_smul, mul_smul, mul_smul]`. Conclude with `inImg_add W F i (inImg_smulA W F i a.2 (key _ (pow_mem hπ _) hA)) (inImg_smulA W F i b.2 (key _ (pow_mem hpA _) hr))`.
+-/
 theorem q_pow_inImg (hcase : Formalism.MainNotions.LiftingTheory.CaseA W) (hP9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W) {T₁ T₂ : LocLat G Qp LL O}
     (hc₁ : IsCrys PD T₁.ρ) (hO : ∀ x : O, 0 ≤ v (algebraMap O LL x))
     (hOv : ∀ x : LL, 0 ≤ v x → ∃ y : O, algebraMap O LL y = x) (hinj : Function.Injective (algebraMap O LL)) (F : LatHom T₁.L T₂.L) (i : ZMod n) (Ai ri : ℕ)

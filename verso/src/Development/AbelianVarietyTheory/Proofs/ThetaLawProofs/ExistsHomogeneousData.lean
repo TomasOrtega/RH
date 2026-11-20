@@ -10,6 +10,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.KeyHomogInhab
 
+/- English proof (translation)
+Introduce `K _ x a M ha hM`. Use `x.P.isAb.comm` as an intermediate fact. Take `⟨e₁, -, -, -, e₅⟩` from `LieComb.lieComb_algebra K x.P.A x.P.g x.v x.basis.1`. Use `choose v' hv' using fun i => (e₁ (M i)).exists`. Use `⟨KeyNormalExists.constMul x.P.A.hom a x.th, fun s => ?_, v', (e₅ M v' x.basis hv').2 hM.isUnit, fun _ => rfl, hv'⟩` and prove the remaining obligations.
+
+Take `⟨z, hz, hz'⟩` from `x.th_ne s`. Conclude with `⟨z, hz, KeyNormalExists.mem_nonzeroLocus_constMul _ ha.isUnit _ hz'⟩`.
+-/
 theorem exists_homogeneous_data : ∀ (K : Type) [Field K] (x : KeyIn K), ∀ (a : K) (M : Matrix (Fin x.P.g) (Fin x.P.g) K), a ≠ 0 → M.det ≠ 0 → ∃ (th' : x.P.L.Sec) (_ : ∀ s : Sp K, ∃ y : x.P.A.left, x.P.A.hom y = s ∧ y ∈ Out.nonzeroLocus th') (v' : Fin x.P.g → (epsR K ⟶ x.P.A)), IsLieBasis v' ∧ (∀ i, LB.Sec.f th' i = constFn x.P.A.hom _ a * LB.Sec.f x.th i) ∧ ∀ i, IsLieComb (M i) x.v (v' i) := by
   intro K _ x a M ha hM
   have := x.P.isAb.comm

@@ -16,6 +16,9 @@ open ReciprocityTheory.AnForm.M GlobalTheory.ChernPoly
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `h` and use `⟨h.finite_emb, fun σ => ⟨h.compactSpace σ, CxPts.t2Space_cxPts_of_isProjOver σ h.isProjOver, CxPts.secondCountableTopology_of_isProjOver σ h.isProjOver⟩⟩`.
+-/
 theorem IsArithVar.finite_emb_and_topology : ∀ {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {D : ℕ}, IsArithVar p D →
     Finite (k →+* ℂ) ∧ ∀ σ : k →+* ℂ, CompactSpace (CxPts p σ) ∧ T2Space (CxPts p σ) ∧
       SecondCountableTopology (CxPts p σ) := fun h =>

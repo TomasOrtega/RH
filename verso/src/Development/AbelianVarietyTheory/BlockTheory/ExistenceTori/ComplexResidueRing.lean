@@ -80,6 +80,13 @@ def IsComb (h : c.F ≤ c'.F) {m : ℕ} (b : Fin m → c'.F) (f : Fin m → Rul 
     f' p y = ∑ i, algebraMap c'.F p.R (b i) * unRes (evR Xo c (f i) (ptDown h y))
 
 set_option synthInstance.maxHeartbeats 200000 in
+/- English proof (translation)
+Establish `key : ∀ (p : TRing c'.F) (y : FrPt Xo c' p.R), (∑ i, b i • ruleUp h (f i)) p y = ∑ i, algebraMap c'.F p.R (b i) * unRes (evR Xo c (f i) (ptDown h y))`. Introduce `p y`. Rewrite using `[Finset.sum_apply, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, Pi.smul_apply, Algebra.smul_def]`.
+
+Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce `hf`. Use function extensionality and compare the values at `p y`. Rewrite using `[key, hf p y]`.
+
+Introduce `hf p y`. Rewrite using `[hf, key]`.
+-/
 theorem isComb_iff (h : c.F ≤ c'.F) {m : ℕ} (b : Fin m → c'.F) (f : Fin m → Rul Xo c) (f' : Rul Xo c') :
     IsComb h b f f' ↔ f' = ∑ i, b i • ruleUp h (f i) := by
   have key : ∀ (p : TRing c'.F) (y : FrPt Xo c' p.R), (∑ i, b i • ruleUp h (f i)) p y =
@@ -120,6 +127,9 @@ def ActionExtends (h : c.F ≤ c'.F) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r)
     IsComb h b (fun i => (f i : Rul Xo c)) (f' : Rul Xo c') →
       IsComb h b (fun i => (ρ g (f i) : Rul Xo c)) (ρ' g f' : Rul Xo c')
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ hf` and use `hf`.
+-/
 example (h : c.F ≤ c'.F) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ)
     {G : Type} [Group G] : ActionExtends Xo h U a n (G := G) 1 1 :=
   fun _ _ _ _ _ hf => hf

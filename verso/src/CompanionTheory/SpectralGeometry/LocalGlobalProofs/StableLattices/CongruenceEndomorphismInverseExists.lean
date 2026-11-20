@@ -9,11 +9,31 @@ namespace GlobalTheory.CompanionTheory.Iwahori.CongUnit
 variable {L V : Type} [NontriviallyNormedField L] [IsUltrametricDist L] [AddCommGroup V]
   [Module L V]
 
+/- English proof (translation)
+Establish `hne : ‖(1 : L)‖ ≠ ‖t‖` using `by rw [norm_one]; exact ht.ne'`. Rewrite using `[IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm hne, norm_one]`. Conclude with `max_eq_left ht.le`.
+-/
 theorem norm_one_add_of_lt {t : L} (ht : ‖t‖ < 1) : ‖1 + t‖ = 1 := by
   have hne : ‖(1 : L)‖ ≠ ‖t‖ := by rw [norm_one]; exact ht.ne'
   rw [IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm hne, norm_one]
   exact max_eq_left ht.le
 
+/- English proof (translation)
+Establish `hne : ∃ j, b.repr x j ≠ 0`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hx` to reduce the goal to its premises. Establish `: b.repr x = 0`.
+
+Use extensionality with `j`. Simplify using `using hcon j`. Simplify using `using this`. Take `⟨j₀, hj₀⟩` from `hne`. Take `⟨i, -, hi⟩` from `Finset.exists_max_image Finset.univ (fun j => ‖b.repr x j‖) ⟨j₀, Finset.mem_univ _⟩`.
+
+Establish `hmax : ∀ j, ‖b.repr x j‖ ≤ ‖b.repr x i‖` using `fun j => hi j (Finset.mem_univ _)`. Establish `hc : b.repr x i ≠ 0`. Introduce `h0`. Use `hmax j₀` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`.
+
+Conclude with `hj₀ (norm_le_zero_iff.mp this)`. Use `⟨i, hmax, hc, ?_⟩` and prove the remaining obligations. Use `set c := b.repr x i with hcdef`. Establish `hy : c⁻¹ • x ∈ Λ`. Rewrite using `[hb]`.
+
+Introduce `j`. Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul, norm_mul, norm_inv]`. Conclude with `inv_mul_le_one_of_le₀ (hmax j) (norm_nonneg _)`. Take `⟨z, hz, hgz⟩` from `hg _ hy`. Establish `hzi : ‖b.repr z i‖ ≤ 1` using `(hb z).1 hz i`.
+
+Establish `hval : g x = c • π • z`. Establish `h1 : g (c⁻¹ • x) = c⁻¹ • g x` using `map_smul g _ _`. Rewrite `hgz` using `[h1]`. Rewrite using `[← hgz, smul_smul, mul_inv_cancel₀ hc, one_smul]`. Establish `hGx : b.repr ((1 + g) x) i = c * (1 + π * b.repr z i)`.
+
+Establish `: (1 + g) x = x + c • π • z`. Rewrite using `[LinearMap.add_apply, Module.End.one_apply, hval]`. Rewrite using `[this, map_add, map_smul, map_smul, Finsupp.add_apply, Finsupp.smul_apply, Finsupp.smul_apply, smul_eq_mul, smul_eq_mul, ← hcdef]`. Expand and normalize the polynomial expressions, which then agree. Establish `ht : ‖π * b.repr z i‖ < 1`.
+
+Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hGx, norm_mul, norm_one_add_of_lt ht, mul_one]`.
+-/
 theorem exists_coord {m : ℕ} (b : Module.Basis (Fin m) L V) {Λ : AddSubgroup V}
     (hb : ∀ x, x ∈ Λ ↔ ∀ i, ‖b.repr x i‖ ≤ 1) {π : L} (hπ : ‖π‖ < 1)
     {g : Module.End L V} (hg : g ∈ congJ Λ π) {x : V} (hx : x ≠ 0) :
@@ -61,6 +81,9 @@ theorem exists_coord {m : ℕ} (b : Module.Basis (Fin m) L V) {Λ : AddSubgroup 
       _ < 1 := by simpa using hπ
   rw [hGx, norm_mul, norm_one_add_of_lt ht, mul_one]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hx`. Take `⟨i, -, hc, hn⟩` from `exists_coord b hb hπ hg hx`. Rewrite `hn` using `[h0, map_zero, Finsupp.zero_apply, norm_zero]`. Conclude with `hc (norm_eq_zero.mp hn.symm)`.
+-/
 theorem eq_zero_of_apply {m : ℕ} (b : Module.Basis (Fin m) L V) {Λ : AddSubgroup V}
     (hb : ∀ x, x ∈ Λ ↔ ∀ i, ‖b.repr x i‖ ≤ 1) {π : L} (hπ : ‖π‖ < 1)
     {g : Module.End L V} (hg : g ∈ congJ Λ π) {x : V} (h0 : (1 + g) x = 0) : x = 0 := by
@@ -69,6 +92,11 @@ theorem eq_zero_of_apply {m : ℕ} (b : Module.Basis (Fin m) L V) {Λ : AddSubgr
   rw [h0, map_zero, Finsupp.zero_apply, norm_zero] at hn
   exact hc (norm_eq_zero.mp hn.symm)
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Rewrite using `[hx]`. Conclude with `Λ.zero_mem`. Take `⟨i, hmax, -, hn⟩` from `exists_coord b hb hπ hg hx`. Rewrite using `[hb]`.
+
+Introduce `j`. Conclude with `(hmax j).trans (hn ▸ (hb _).1 hG i)`.
+-/
 theorem mem_of_apply_mem {m : ℕ} (b : Module.Basis (Fin m) L V) {Λ : AddSubgroup V}
     (hb : ∀ x, x ∈ Λ ↔ ∀ i, ‖b.repr x i‖ ≤ 1) {π : L} (hπ : ‖π‖ < 1)
     {g : Module.End L V} (hg : g ∈ congJ Λ π) {x : V} (hG : (1 + g) x ∈ Λ) : x ∈ Λ := by
@@ -79,6 +107,21 @@ theorem mem_of_apply_mem {m : ℕ} (b : Module.Basis (Fin m) L V) {Λ : AddSubgr
   intro j
   exact (hmax j).trans (hn ▸ (hb _).1 hG i)
 
+/- English proof (translation)
+Introduce `L V _ _ _ _ _ Λ hΛ π hπ g hg`. Take `⟨m, b, hb⟩` from `hΛ`. Establish `hker : LinearMap.ker (1 + g) = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `x hx`.
+
+Conclude with `eq_zero_of_apply b hb hπ hg hx`. Take `⟨u, hu⟩` from `(LinearMap.isUnit_iff_ker_eq_bot (1 + g)).2 hker`. Establish `hGH : (1 + g) * (↑u⁻¹ : Module.End L V) = 1` using `by rw [← hu]; exact u.mul_inv`. Establish `hHG : (↑u⁻¹ : Module.End L V) * (1 + g) = 1` using `by rw [← hu]; exact u.inv_mul`. Use `set H : Module.End L V := ↑u⁻¹ with hH`.
+
+Establish `hGHx : ∀ x, (1 + g) (H x) = x` using `fun x => by`. Use `congrArg (fun f : Module.End L V => f x) hGH` as an intermediate fact. Simplify `this` using `only [Module.End.mul_apply, Module.End.one_apply]`. Establish `hHGx : ∀ x, H ((1 + g) x) = x` using `fun x => by`. Use `congrArg (fun f : Module.End L V => f x) hHG` as an intermediate fact.
+
+Simplify `this` using `only [Module.End.mul_apply, Module.End.one_apply]`. Establish `hHmem : ∀ x ∈ Λ, H x ∈ Λ` using `fun x hx => mem_of_apply_mem b hb hπ hg (by rw [hGHx]; exact hx)`. Use `⟨H - 1, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨y, hy, hgy⟩` from `hg x hx`.
+
+Use `⟨-H y, Λ.neg_mem (hHmem y hy), ?_⟩` and prove the remaining obligations. Establish `h1 : H x + H (g x) = x`. Use `hHGx x` as an intermediate fact. Rewrite `this` using `[LinearMap.add_apply, Module.End.one_apply, map_add]`. Then use the resulting hypothesis. Establish `h2 : (H - 1) x = H x - x`.
+
+Rewrite using `[LinearMap.sub_apply, Module.End.one_apply]`. Rewrite using `[h2, smul_neg, ← map_smul, ← hgy]`. Rewrite using `[eq_neg_iff_add_eq_zero, sub_add_eq_add_sub, h1, sub_self]`. Rewrite using `[add_sub_cancel]`. Conclude with `hGH`.
+
+Rewrite using `[add_sub_cancel]`. Conclude with `hHG`.
+-/
 theorem main : ∀ {L V : Type} [NontriviallyNormedField L] [IsUltrametricDist L] [AddCommGroup V]
     [Module L V] [FiniteDimensional L V] (Λ : AddSubgroup V), IsLat L Λ → ∀ π : L, ‖π‖ < 1 →
     ∀ g ∈ GlobalTheory.CompanionTheory.Iwahori.congJ Λ π, ∃ g' ∈ GlobalTheory.CompanionTheory.Iwahori.congJ Λ π,

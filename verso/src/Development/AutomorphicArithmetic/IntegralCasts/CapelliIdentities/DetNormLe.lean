@@ -4,6 +4,13 @@ noncomputable def UpperTheory.Reformulated.B.Qi39.EB.{u_1, u_2} :
     {m : Type u_1} → {n : Type u_2} → Matrix m n ℂ → ℝ → Prop :=
     fun {m : Type u_1} {n : Type u_2} (A : Matrix m n ℂ) (c : ℝ) ↦ ∀ (i : m) (j : n), ‖A i j‖ ≤ c
 
+/- English proof (translation)
+Introduce `n _ _ A m h`. Establish `hterm : ∀ σ : Equiv.Perm n, ‖Equiv.Perm.sign σ • ∏ i, A (σ i) i‖ ≤ m ^ Fintype.card n`. Introduce `σ`. Establish `hs : ‖Equiv.Perm.sign σ • ∏ i, A (σ i) i‖ = ‖∏ i, A (σ i) i‖`. Break down `Int.units_eq_one_or (Equiv.Perm.sign σ) with h1 | h1` into its components or cases.
+
+Rewrite using `[h1, one_smul]`. Rewrite using `[h1, Units.neg_smul, one_smul, norm_neg]`. Rewrite using `[hs, norm_prod]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.det_apply]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_perm, nsmul_eq_mul]`.
+-/
 theorem UpperTheory.Reformulated.B.Qi39.det_norm_le.{u_1} :
     ∀ {n : Type u_1} [inst : Fintype n] [inst_1 : DecidableEq n] (A : Matrix n n ℂ) {m : ℝ},
       UpperTheory.Reformulated.B.Qi39.EB A m → ‖A.det‖ ≤ (↑(Fintype.card n).factorial : ℝ) * m ^ Fintype.card n := by

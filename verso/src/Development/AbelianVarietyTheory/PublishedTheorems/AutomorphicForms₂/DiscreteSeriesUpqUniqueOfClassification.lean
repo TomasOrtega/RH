@@ -15,10 +15,16 @@ def DiscreteSeriesUpqUnique : Prop :=
       Formalism.MainNotions.S.IsDS ε lam σ → Formalism.MainNotions.S.IsDS ε lam σ' →
       ∃ U : H ≃ₗᵢ[ℂ] H', ∀ g ∈ Formalism.MainNotions.S.UJset ε, ∀ v, U (σ g v) = σ' g (U v)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h n ε lam H _ _ σ H' _ _ σ' hl hσ hσ' => h n ε lam hl H H' σ σ' hσ hσ', fun h n ε lam hl H H' _ _ _ _ σ σ' hσ hσ' => h n ε lam H σ H' σ' hl hσ hσ'⟩`.
+-/
 theorem discreteSeriesUpqUnique_iff : DiscreteSeriesUpqUnique ↔ GlobalTheory.Dec.DSUnique :=
   ⟨fun h n ε lam H _ _ σ H' _ _ σ' hl hσ hσ' => h n ε lam hl H H' σ σ' hσ hσ',
     fun h n ε lam hl H H' _ _ _ _ σ σ' hσ hσ' => h n ε lam H σ H' σ' hl hσ hσ'⟩
 
+/- English proof (translation)
+The claim follows from `discreteSeriesUpqUnique_iff.2 (GlobalTheory.LowestKTypeDetermines.dsUnique_of_dsClass h)`.
+-/
 theorem discreteSeriesUpqUnique_of_classification (h : GlobalTheory.DSId.DSClass) : DiscreteSeriesUpqUnique :=
   discreteSeriesUpqUnique_iff.2 (GlobalTheory.LowestKTypeDetermines.dsUnique_of_dsClass h)
 

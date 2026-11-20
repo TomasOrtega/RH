@@ -6,12 +6,18 @@ open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ Reciprocity
 namespace GlobalTheory
 
 variable {X : Type} [AddCommGroup X] {Bf : X →+ X →+ ℤ} {Q : X → ℤ} in
+/- English proof (translation)
+Establish `h` using `hQ 0`. Simplify using `only [map_zero, AddMonoidHom.zero_apply] at h`. Use linear arithmetic over natural numbers and integers.
+-/
 private lemma quad_zero' (hQ : ∀ x, 2 * Q x = Bf x x) : Q 0 = 0 := by
   have h := hQ 0
   simp only [map_zero, AddMonoidHom.zero_apply] at h
   omega
 
 variable {X : Type} [AddCommGroup X] {Bf : X →+ X →+ ℤ} {Q : X → ℤ} in
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Rewrite using `[quad_zero' hQ]`. Combine the linear relations using `[hpos x hx]`.
+-/
 private lemma quad_nonneg_of_pos (hQ : ∀ x, 2 * Q x = Bf x x) (hpos : ∀ x, x ≠ 0 → 1 ≤ Q x)
     (x : X) : 0 ≤ Q x := by
   by_cases hx : x = 0
@@ -20,6 +26,9 @@ private lemma quad_nonneg_of_pos (hQ : ∀ x, 2 * Q x = Bf x x) (hpos : ∀ x, x
   · linarith [hpos x hx]
 
 variable {X : Type} [AddCommGroup X] {Bf : X →+ X →+ ℤ} {Q : X → ℤ} in
+/- English proof (translation)
+Establish `h` using `hQ (x + y)`. Simplify using `only [map_add, AddMonoidHom.add_apply] at h`. Combine the linear relations using `[hQ x, hQ y, hsym y x]`.
+-/
 private lemma quad_add_eq_add_add_bilin (hsym : ∀ x y, Bf x y = Bf y x) (hQ : ∀ x, 2 * Q x = Bf x x)
     (x y : X) : Q (x + y) = Q x + Q y + Bf x y := by
   have h := hQ (x + y)
@@ -27,6 +36,9 @@ private lemma quad_add_eq_add_add_bilin (hsym : ∀ x y, Bf x y = Bf y x) (hQ : 
   linarith [hQ x, hQ y, hsym y x]
 
 variable {X : Type} [AddCommGroup X] {Bf : X →+ X →+ ℤ} {Q : X → ℤ} in
+/- English proof (translation)
+Establish `h` using `hQ (k • x)`. Simplify using `only [map_zsmul, AddMonoidHom.zsmul_apply, smul_eq_mul, zsmul_eq_mul] at h`. Establish `h2 : 2 * Q (k • x) = 2 * (k ^ 2 * Q x)` using `by rw [h, ← hQ x]; ring`. Conclude with `mul_left_cancel₀ two_ne_zero h2`.
+-/
 private lemma quad_zsmul' (hQ : ∀ x, 2 * Q x = Bf x x) (k : ℤ) (x : X) :
     Q (k • x) = k ^ 2 * Q x := by
   have h := hQ (k • x)
@@ -35,6 +47,11 @@ private lemma quad_zsmul' (hQ : ∀ x, 2 * Q x = Bf x x) (k : ℤ) (x : X) :
   exact mul_left_cancel₀ two_ne_zero h2
 
 variable {X : Type} [AddCommGroup X] {Bf : X →+ X →+ ℤ} {Q : X → ℤ} in
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Rewrite using `[quad_zero' hQ]`. Simplify using the standard rewrite rules. Establish `hx1` using `hpos x hx`.
+
+Establish `hw` using `quad_nonneg_of_pos hQ hpos (Bf x y • x + (-(2 * Q x)) • y)`. Rewrite `hw` using `[quad_add_eq_add_add_bilin hsym hQ, quad_zsmul' hQ, quad_zsmul' hQ]`. Simplify using `only [map_zsmul, AddMonoidHom.zsmul_apply, smul_eq_mul, zsmul_eq_mul] at hw`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 private lemma bilin_sq_le_four_mul_quad (hsym : ∀ x y, Bf x y = Bf y x) (hQ : ∀ x, 2 * Q x = Bf x x)
     (hpos : ∀ x, x ≠ 0 → 1 ≤ Q x) (x y : X) : Bf x y ^ 2 ≤ 4 * Q x * Q y := by
   by_cases hx : x = 0
@@ -48,6 +65,13 @@ private lemma bilin_sq_le_four_mul_quad (hsym : ∀ x y, Bf x y = Bf y x) (hQ : 
     nlinarith
 
 variable {X : Type} [AddCommGroup X] {Bf : X →+ X →+ ℤ} {Q : X → ℤ} in
+/- English proof (translation)
+Establish `hcs : (Bf x y : ℝ) ^ 2 ≤ 4 * (Q x : ℝ) * Q y`. Conclude with `bilin_sq_le_four_mul_quad hsym hQ hpos x y` after adjusting the coercions. Establish `hx0 : (0 : ℝ) ≤ Q x` using `by exact_mod_cast quad_nonneg_of_pos hQ hpos x`. Establish `hy0 : (0 : ℝ) ≤ Q y` using `by exact_mod_cast quad_nonneg_of_pos hQ hpos y`. Establish `hprod : (Q x : ℝ) * Q y ≤ (a ^ 2 * C) * (b ^ 2 * C)` using `mul_le_mul hx hy hy0 (by positivity)`.
+
+Establish `hB : (Bf x y : ℝ) ≤ 2 * a * b * C`. Establish `h2 : (Bf x y : ℝ) ^ 2 ≤ (2 * a * b * C) ^ 2` using `by nlinarith`. Conclude with `(abs_le_of_sq_le_sq' h2 (by positivity)).2`. Establish `hadd : (Q (x + y) : ℝ) = Q x + Q y + Bf x y`. Conclude with `quad_add_eq_add_add_bilin hsym hQ x y` after adjusting the coercions.
+
+Rewrite using `[hadd]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 private lemma quad_add_le_add_sq_mul (hsym : ∀ x y, Bf x y = Bf y x) (hQ : ∀ x, 2 * Q x = Bf x x)
     (hpos : ∀ x, x ≠ 0 → 1 ≤ Q x) {x y : X} {a b C : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b)
     (hC : 0 ≤ C) (hx : (Q x : ℝ) ≤ a ^ 2 * C) (hy : (Q y : ℝ) ≤ b ^ 2 * C) :
@@ -67,6 +91,9 @@ private lemma quad_add_le_add_sq_mul (hsym : ∀ x y, Bf x y = Bf y x) (hQ : ∀
   nlinarith
 
 variable {X : Type} [AddCommGroup X] {Bf : X →+ X →+ ℤ} {Q : X → ℤ} in
+/- English proof (translation)
+Establish `h` using `quad_zsmul' hQ (m : ℤ) x`. Rewrite `h` using `[natCast_zsmul]`. Then use the resulting hypothesis.
+-/
 private lemma quad_nsmul' (hQ : ∀ x, 2 * Q x = Bf x x) (m : ℕ) (x : X) :
     Q (m • x) = (m : ℤ) ^ 2 * Q x := by
   have h := quad_zsmul' hQ (m : ℤ) x
@@ -74,6 +101,25 @@ private lemma quad_nsmul' (hQ : ∀ x, 2 * Q x = Bf x x) (m : ℕ) (x : X) :
 
 variable {X : Type} [AddCommGroup X] {Bf : X →+ X →+ ℤ} {Q : X → ℤ} in
 
+/- English proof (translation)
+Introduce `X _ Bf Q hsym hQ hpos n D q b Cc M₀ hCc hM₀ hb hBb hq e he`. Establish `hsumR : (∑ j, (e j : ℝ)) ≤ D` using `by exact_mod_cast he`. Establish `hsum0 : (0 : ℝ) ≤ ∑ j, (e j : ℝ)` using `Finset.sum_nonneg fun _ _ => Nat.cast_nonneg _`. Prove the components needed by the constructor for the conclusion. Establish `key : ∀ s : Finset (Fin n), (Q (∑ j ∈ s, e j • b j) : ℝ) ≤ (∑ j ∈ s, (e j : ℝ)) ^ 2 * Cc`.
+
+Introduce `s`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using `[quad_zero' hQ]`. Introduce `j s hj ih`. Rewrite using `[Finset.sum_insert hj, Finset.sum_insert hj]`.
+
+Use `quad_add_le_add_sq_mul hsym hQ hpos (Nat.cast_nonneg _) (Finset.sum_nonneg fun _ _ => Nat.cast_nonneg _) hCc ?_ ih` and prove the remaining obligations. Rewrite using `[quad_nsmul' hQ]`. Use `push_cast`. Conclude with `mul_le_mul_of_nonneg_left (hb j) (by positivity)`. Combine the equalities or inequalities in the displayed calculation.
+
+Introduce `z hz`. Establish `hz1 : (1 : ℝ) ≤ Q z` using `by exact_mod_cast hpos z hz`. Establish `hBv : Bf (∑ j, e j • b j) z = ∑ j, (e j : ℤ) * Bf (b j) z`. Simplify using `[map_sum, map_nsmul, nsmul_eq_mul]`. Establish `hBvR : (Bf (∑ j, e j • b j) z : ℝ) = ∑ j, (e j : ℝ) * Bf (b j) z`.
+
+Rewrite using `[hBv]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hMz : (0 : ℝ) ≤ M₀ * Q z` using `mul_nonneg hM₀ (by linarith)`. Establish `habs : |(Bf (∑ j, e j • b j) z : ℝ)| ≤ (∑ j, (e j : ℝ)) * (M₀ * Q z)`.
+
+Rewrite using `[hBvR, Finset.sum_mul]`. Use `(Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[abs_mul, Nat.abs_cast]`. Conclude with `mul_le_mul_of_nonneg_left (hBb j z) (Nat.cast_nonneg _)`. Establish `h2 : (∑ j, (e j : ℝ)) * (M₀ * Q z) ≤ D * (M₀ * Q z)` using `mul_le_mul_of_nonneg_right hsumR hMz`.
+
+Establish `hlow` using `neg_abs_le (Bf (∑ j, e j • b j) z : ℝ)`. Establish `hbound : -((D : ℝ) * M₀ * Q z) ≤ (Bf (∑ j, e j • b j) z : ℝ)` using `by nlinarith`. Establish `hq0 : (0 : ℝ) < q` using `lt_of_le_of_lt (mul_nonneg (Nat.cast_nonneg _) hM₀) hq`. Establish `hadd : (Q (∑ j, e j • b j + q • z) : ℝ) = Q (∑ j, e j • b j) + (q : ℝ) ^ 2 * Q z + q * Bf (∑ j, e j • b j) z`. Rewrite using `[quad_add_eq_add_add_bilin hsym hQ, quad_nsmul' hQ, map_nsmul, nsmul_eq_mul]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hfin : (Q (∑ j, e j • b j) : ℝ) < Q (∑ j, e j • b j + q • z)`. Rewrite using `[hadd]`. Use polynomial arithmetic with `[mul_pos hq0 (mul_pos (show (0 : ℝ) < q - D * M₀ by linarith) (show (0 : ℝ) < Q z by linarith)), mul_nonneg hq0.le (show (0 : ℝ) ≤ Bf (∑ j, e j • b j) z + D * M₀ * Q z by linarith)]`.
+
+Conclude with `hfin` after adjusting the coercions.
+-/
 theorem _root_.GlobalTheory.small_combination_strict_min_mod :
     ∀ (X : Type) [AddCommGroup X] (Bf : X →+ X →+ ℤ) (Q : X → ℤ), (∀ x y, Bf x y = Bf y x) →
     (∀ x, 2 * Q x = Bf x x) → (∀ x, x ≠ 0 → 1 ≤ Q x) →

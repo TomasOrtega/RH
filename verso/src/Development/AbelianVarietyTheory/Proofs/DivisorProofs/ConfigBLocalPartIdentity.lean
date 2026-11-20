@@ -19,6 +19,13 @@ namespace GlobalTheory.ThK.LemF.LeviConeB
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+It suffices to establish `h : ∀ s : Finset (Fin N), locOp v T (∑ i ∈ s, c i • f i) = ∑ i ∈ s, c i • locOp v T (f i) from h _`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Establish `h` using `locOp_lin (v := v) hT hex 0 0 (zero_mem _) (zero_mem _)`.
+
+Simplify using `using h`. Consider the case `insert j s hj ih`. Rewrite using `[Finset.sum_insert hj, Finset.sum_insert hj]`. Establish `hs : ∑ i ∈ s, c i • f i ∈ SB (κ → Fv F v)` using `sum_mem fun i _ => (SB _).smul_mem _ (hf i)`. Establish `h` using `locOp_lin hT hex (c j) 1 (hf j) hs`.
+
+Rewrite `h` using `[one_smul, one_smul]`. Rewrite using `[h, ih]`.
+-/
 theorem locOp_sum {κ : Type} [Fintype κ] {v : Pl F} {T : ((κ → AF F) → ℂ) → ((κ → AF F) → ℂ)} (hT : IsLinearMap ℂ T)
     (hex : ∀ φ ∈ SB (κ → Fv F v), ∃ φ₁, φ₁ ∈ SB (κ → Fv F v) ∧ Acts (evFin F v) T φ φ₁) {N : ℕ} (c : Fin N → ℂ)
     (f : Fin N → (κ → Fv F v) → ℂ) (hf : ∀ i, f i ∈ SB (κ → Fv F v)) :
@@ -37,6 +44,11 @@ theorem locOp_sum {κ : Type} [Fintype κ] {v : Pl F} {T : ((κ → AF F) → �
     rw [one_smul, one_smul] at h
     rw [h, ih]
 
+/- English proof (translation)
+Establish `e : ∀ k, ∫ l, ∑ i, cf i k l * w i ∂μ = ∑ i, (∫ l, cf i k l ∂μ) * w i` using `fun k => by`. Rewrite using `[integral_finset_sum _ (fun i _ => (hc1 i k).mul_const _)]`. Conclude with `Finset.sum_congr rfl fun i _ => integral_mul_const _ _`. Repeatedly rewrite using `[e]`. Rewrite using `[integral_finset_sum _ (fun i _ => (hc2 i).mul_const _)]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => integral_mul_const _ _`.
+-/
 theorem dint_sum {A C : Type} [MeasurableSpace A] [MeasurableSpace C] (μK : Measure A) (μ : Measure C) {N : ℕ}
     (cf : Fin N → A → C → ℂ) (w : Fin N → ℂ) (hc1 : ∀ i k, Integrable (cf i k) μ)
     (hc2 : ∀ i, Integrable (fun k => ∫ l, cf i k l ∂μ) μK) :
@@ -48,6 +60,9 @@ theorem dint_sum {A C : Type} [MeasurableSpace A] [MeasurableSpace C] (μK : Mea
   rw [integral_finset_sum _ (fun i _ => (hc2 i).mul_const _)]
   exact Finset.sum_congr rfl fun i _ => integral_mul_const _ _
 
+/- English proof (translation)
+Establish `h : absE F E t ≠ 0` using `fun h => by`. Establish `e` using `map_mul (absE F E) t t⁻¹`. Rewrite `e` using `[mul_inv_cancel, map_one, h, zero_mul]`. Conclude with `one_ne_zero e`. Conclude with `pos_iff_ne_zero.2 h` after adjusting the coercions.
+-/
 theorem absE_pos (t : (AE F E)ˣ) : (0 : ℝ) < absE F E t := by
   have h : absE F E t ≠ 0 := fun h => by
     have e := map_mul (absE F E) t t⁻¹
@@ -55,6 +70,15 @@ theorem absE_pos (t : (AE F E)ˣ) : (0 : ℝ) < absE F E t := by
     exact one_ne_zero e
   exact_mod_cast pos_iff_ne_zero.2 h
 
+/- English proof (translation)
+Establish `h2 : 2 * ((a - (b + 2)) / 2 + 1) + b = a` using `by obtain ⟨r, hr⟩ := hev; omega`. Establish `hz : (((a - (b + 2)) / 2 + 1 : ℕ) : ℝ) = (a : ℝ) / 2 - (b : ℝ) / 2`. Establish `: ((2 * ((a - (b + 2)) / 2 + 1) + b : ℕ) : ℝ) = (a : ℝ)` using `by rw [h2]`. Move the coercions through the operations in `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hpos` using `absE_pos t`. Establish `hr : ((absE F E t : ℝ) ^ ((b : ℝ) / 2)) * (absE F E t : ℝ) ^ ((a - (b + 2)) / 2 + 1) = (absE F E t : ℝ) ^ ((a : ℝ) / 2)`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_add hpos, hz]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hν : (X.ν t : ℂ) = (X.α t : ℂ) / (X.β t : ℂ)` using `by show ((X.α / X.β) t : ℂ) = _`. Rewrite using `[MonoidHom.div_apply, Circle.coe_div]`. Establish `hα : (X.α t : ℂ) ≠ 0` using `Circle.coe_ne_zero _`. Establish `hβ : (X.β t : ℂ) ≠ 0` using `Circle.coe_ne_zero _`. Simplify using `only [fac, hν]`.
+
+Rewrite using `[← hr, Complex.ofReal_mul, Complex.ofReal_pow]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem const_eq (X : Chars F E) (a b : ℕ) (hlt : b + 2 < a) (hev : Even (a + (b + 2))) (t : (AE F E)ˣ) :
     fac X.α ((b : ℝ) / 2) t * (X.ν t : ℂ)⁻¹ * ((absE F E t : ℝ) : ℂ) ^ ((a - (b + 2)) / 2 + 1) =
       fac X.β ((a : ℝ) / 2) t := by
@@ -78,6 +102,9 @@ theorem const_eq (X : Chars F E) (a b : ℕ) (hlt : b + 2 < a) (hev : Even (a + 
   rw [← hr, Complex.ofReal_mul, Complex.ofReal_pow]
   field_simp
 
+/- English proof (translation)
+Take `⟨ξ, hξ⟩` from `GlobalTheory.NuConjInv.exists_isQuad hT.base.cm`. Establish `hα` using `ResEtaPow.map_conj hξ hT.chars.resα t`. Establish `hβ` using `ResEtaPow.map_conj hξ hT.chars.resβ t`. Simplify using `only [Chars.ν, MonoidHom.div_apply, hα, hβ, inv_div_inv, inv_div]`.
+-/
 theorem nu_conj_inv {σ : E →ₐ[F] E} (B : Base F E) {a a' : ℕ} (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W)
     (om' : Rep σ G.V' G.W) (hT : IsTriple B G X om om') (t : (AE F E)ˣ) :
     X.ν (Units.map (cA σ : AE F E →* AE F E) t) = (X.ν t)⁻¹ := by
@@ -90,6 +117,35 @@ end GlobalTheory.ThK.LemF.LeviConeB
 
 open GlobalTheory.ThK.LemF.LeviConeB in
 
+/- English proof (translation)
+Introduce `hPr F E _ _ _ _ _ σ B a b G G₁ H H' cfg e' hev ei' ev' hloc K hK X om om' om₁ om₁' T T₁ v μK μ hμK hμ t h₁ m hL hm hh₁ φ hφ`. Take `⟨_, _, _, _, _⟩` from `idelesAt_facts E (evFin F v)`. Establish `hA : ActsEx` using `GlobalTheory.T.theta_action_exists hPr`. Establish `P₁'` using `GlobalTheory.ThK.Inhab.pairV' T₁`. Establish `hlt : b + 2 < a` using `T.geo.lt`.
+
+Establish `hev2 : Even (a + (b + 2))` using `T.geo.even`. Use `set z := (a - (b + 2)) / 2 + 1 with hzdef`. Use `set c : (AE F E)ˣ := Units.map (cA σ : AE F E →* AE F E) t⁻¹ with hcdef`. Establish `htv : t ∈ idelesAt E (evFin F v)` using `GlobalTheory.LeviScalarAt.scalar_mem_idelesAt_of_isLevi B H' a (a + b + 1) cfg.hH' v t h₁ m hL hm`. Establish `hcv : c ∈ idelesAt E (evFin F v)`.
+
+Introduce `u hu`. Establish `h0` using `(inv_mem htv : t⁻¹ ∈ idelesAt E (evFin F v)) u hu`. Express the relevant statement in the definitionally equal form `u • ((cA σ ((t⁻¹ : (AE F E)ˣ) : AE F E)) - 1) = 0`. Rewrite using `[← map_one (cA σ), ← map_sub, ← map_smul, h0, map_zero]`. Set `c' : idelesAt E (evFin F v)` to `⟨c, hcv⟩`.
+
+Take `⟨N, f, cf, hf, hc1, hc2, hsp⟩` from `GlobalTheory.T.config_b_local_part_stabilizer hPr F E σ B a b G G₁ H H' cfg e' hev ei' ev' hloc K hK X om om' om₁ om₁' T T₁ v μK μ hμK hμ z (by omega) φ hφ`. Establish `hT₁ : IsLinearMap ℂ (om₁' (1, h₁))` using `(om₁' (1, h₁)).isLinear`. Establish `hex₁ : ∀ ψ ∈ SB (Fin b × Fin (a + b) → Fv F v), ∃ ψ₁, ψ₁ ∈ SB (Fin b × Fin (a + b) → Fv F v) ∧ Acts (evFin F v) (om₁' (1, h₁)) ψ ψ₁` using `fun ψ hψ => ((hA F E σ B _ _ G₁.V' G₁.W G₁.M' _ _ om₁' _ _ _ _ P₁' v).1 1 (UAtSub σ G₁.V' (evFin F v)).one_mem h₁ hh₁ ψ hψ).exists`. Establish `hD0 : ∀ l : (AE F E)ˣ, (X.ν l : ℂ) * ((absE F E l : ℝ) : ℂ) ^ z ≠ 0` using `fun l => mul_ne_zero (Circle.coe_ne_zero _) (pow_ne_zero _ (Complex.ofReal_ne_zero.2 (absE_pos l).ne'))`. Establish `hνc : (X.ν c : ℂ) = X.ν t`.
+
+Rewrite using `[hcdef, nu_conj_inv B G X om om' T t⁻¹, map_inv, inv_inv]`. Establish `habc : ((absE F E c : ℝ) : ℂ) = ((absE F E t : ℝ) : ℂ)⁻¹`. Rewrite using `[hcdef, GlobalTheory.absE_cA_units σ t⁻¹, map_inv, NNReal.coe_inv, Complex.ofReal_inv]`. Establish `hC : ∀ l : (AE F E)ˣ, fac X.α ((b : ℝ) / 2) t * ((X.ν (l * c) : ℂ) * ((absE F E (l * c) : ℝ) : ℂ) ^ z)⁻¹ * ((X.ν l : ℂ) * ((absE F E l : ℝ) : ℂ) ^ z) = fac X.β ((a : ℝ) / 2) t`. Introduce `l`.
+
+Rewrite using `[← const_eq X a b hlt hev2 t, map_mul, map_mul, Circle.coe_mul, NNReal.coe_mul, Complex.ofReal_mul, hνc, habc]`. Establish `h1 : (X.ν l : ℂ) ≠ 0` using `Circle.coe_ne_zero _`. Establish `h2 : (X.ν t : ℂ) ≠ 0` using `Circle.coe_ne_zero _`. Establish `h3 : ((absE F E l : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (absE_pos l).ne'`. Establish `h4 : ((absE F E t : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (absE_pos t).ne'`.
+
+Rewrite using `[mul_pow, inv_pow, ← hzdef]`. Establish `h5` using `pow_ne_zero z h3`. Establish `h6` using `pow_ne_zero z h4`. Generalize the expression as in `((absE F E l : ℝ) : ℂ) ^ z = p at h5 ⊢`. Generalize the expression as in `((absE F E t : ℝ) : ℂ) ^ z = q at h6 ⊢`.
+
+Clear the denominators using the available nonvanishing facts. Establish `key : ∀ (k : KAt K (evFin F v)) (l : idelesAt E (evFin F v)) y, coneFinInt B G.M' om' v (ev' v) (shiftB σ H H') X.ν z (locOp v (om' (1, m)) φ) k.1 l.1 y = fac X.β ((a : ℝ) / 2) t * ∑ i, cf i k (l * c') * locOp v (om₁' (1, h₁)) (f i) y`. Introduce `k l y`. Establish `e1` using `GlobalTheory.T.seesaw_local_part_triple_identity hPr F E σ B a b G G₁ H H' cfg e' hev ei' ev' hloc X om om' om₁ om₁' T T₁ v t h₁ m hL hm hh₁ k.1 (mem_KAt.1 k.2).2 l.1 φ hφ`. Establish `e2 : ev' v (locOp v (G.M'.co.rho B.ψ (partFin v (shiftB σ H H' (l.1 * c)))) (locOp v (om' (k.1, 1)) φ)) = ∑ i, (((X.ν (l.1 * c) : ℂ) * ((absE F E (l.1 * c) : ℝ) : ℂ) ^ z)⁻¹ * cf i k (l * c')) • f i`.
+
+Use function extensionality and compare the values at `y'`. Establish `hs` using `hsp k (l * c') y'`. Establish `hcc : (c' : (AE F E)ˣ) = c` using `rfl`. Simplify using `only [coneFinInt, Subgroup.coe_mul, hcc] at hs`. Rewrite using `[Finset.sum_apply]`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_assoc]`. Rewrite using `[← Finset.mul_sum, ← hs]`. Rewrite using `[mul_assoc _ (X.ν (l.1 * c) : ℂ), mul_left_comm, inv_mul_cancel₀ (hD0 (l.1 * c)), mul_one]`. Simplify using `only [coneFinInt]`. Rewrite using `[e1, e2, locOp_sum hT₁ hex₁ _ f hf, Pi.smul_apply, Finset.sum_apply, smul_eq_mul]`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_assoc]`. Rewrite using `[← Finset.mul_sum, ← hC l.1]`. Expand and normalize the polynomial expressions, which then agree. Establish `hφcone : coneFin B G.M' om' v (ev' v) K μK μ (shiftB σ H H') X.ν z φ = ∑ i, (∫ k, ∫ l, cf i k l ∂μ ∂μK) • f i`. Use function extensionality and compare the values at `y`.
+
+Simplify using `only [coneFin]`. Repeatedly rewrite using `[hsp]`. Rewrite using `[dint_sum μK μ cf (fun i => f i y) hc1 hc2, Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Use function extensionality and compare the values at `y`.
+
+Rewrite using `[hφcone, locOp_sum hT₁ hex₁ _ f hf, Pi.smul_apply, Finset.sum_apply, smul_eq_mul]`. Simplify using `only [coneFin]`. Repeatedly rewrite using `[key]`. Establish `sub : ∀ k : KAt K (evFin F v), ∫ l, fac X.β ((a : ℝ) / 2) t * ∑ i, cf i k (l * c') * locOp v (om₁' (1, h₁)) (f i) y ∂μ = fac X.β ((a : ℝ) / 2) t * ∫ l, ∑ i, cf i k l * locOp v (om₁' (1, h₁)) (f i) y ∂μ` using `fun k => by`. Rewrite using `[integral_const_mul]`.
+
+Use `congr 1`. Conclude with `integral_mul_right_eq_self (fun l => ∑ i, cf i k l * locOp v (om₁' (1, h₁)) (f i) y) c'`. Repeatedly rewrite using `[sub]`. Rewrite using `[integral_const_mul, dint_sum μK μ cf (fun i => locOp v (om₁' (1, h₁)) (f i) y) hc1 hc2]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+-/
 theorem GlobalTheory.ThK.LemF.coneFin_leviB : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ)
     (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →

@@ -43,6 +43,11 @@ def HkLaw (D : D7) (S : NX.RatDat D.ntw)
 
 def LowIn (D : D7) : Prop := ∀ i, ∀ p ∈ lowAll D, placesOver D.host.E p ⊆ ↑(D.ntw.S0 i)
 
+/- English proof (translation)
+Establish `key : ∀ (a : Fin D.R.m), a = j → ∀ (u : (Fin (X.R.nW a) → D.what₂.LL) → Fin (X.R.nW a) → D.what₂.LL) (f : (Fin (X.R.nW a) → D.what₂.LL) → Fin (X.R.nW j) → D.what₂.LL), (∀ x, HEq (f x) x) → (∀ α Rr, HkDat X.R Sb a k P α Rr → ∀ x, evidence X a (u x) = hkNorm X.R a k P • Mult.heckeO …`. Introduce `a haj`. Substitute `haj` using the available equality. Introduce `u f hf hu x`. Rewrite using `[eq_of_heq (hf _), eq_of_heq (hf _)]`.
+
+Conclude with `hu α Rr hd x`. Conclude with `key _ (NX.idxOf_succ D j) _ f hf (fun α Rr hd => H _ k P α Rr (Nat.le_add_left _ _) j.2 hd) x`.
+-/
 theorem HkAd.at {X : RealSide D} {Sb hL} (H : HkAd X Sb hL) (j : Fin D.R.m)
     (f : (Fin (X.R.nW (NX.idxOf D ((j : ℕ) + 1))) → D.what₂.LL) → Fin (X.R.nW j) → D.what₂.LL) (hf : ∀ x, HEq (f x) x)
     {k P α Rr} (hd : HkDat X.R Sb j k P α Rr) (x) :
@@ -58,13 +63,28 @@ theorem HkAd.at {X : RealSide D} {Sb hL} (H : HkAd X Sb hL) (j : Fin D.R.m)
     exact hu α Rr hd x
   exact key _ (NX.idxOf_succ D j) _ f hf (fun α Rr hd => H _ k P α Rr (Nat.le_add_left _ _) j.2 hd) x
 
+/- English proof (translation)
+Use `(X.char.models.HW j _).1.comp ((injective_iff_map_eq_zero _).2 fun x hx => by_contra fun h0 => ?_)` and prove the remaining obligations. Conclude with `((X.unif j (sg0 D X.A3.A)).1 1 (fun _ => x) (linearIndependent_unique_iff.2 h0)).ne_zero 0 hx`.
+-/
 theorem reading_injective (X : RealSide D) (j : Fin D.R.m) : Function.Injective (evidence X j) := by
   refine (X.char.models.HW j _).1.comp ((injective_iff_map_eq_zero _).2 fun x hx => by_contra fun h0 => ?_)
   exact ((X.unif j (sg0 D X.A3.A)).1 1 (fun _ => x) (linearIndependent_unique_iff.2 h0)).ne_zero 0 hx
 
+/- English proof (translation)
+Substitute `hab` using the available equality. Both sides reduce to the same expression.
+-/
 theorem fiOfEq_heq (X : RealSide D) {a b : Fin D.R.m} (hab : a = b) (x) : HEq ((fiOfEq X hab).e x) x := by
   subst hab; rfl
 
+/- English proof (translation)
+Establish `hlow : ∀ p ∈ lowAll D, ((p : ℕ) : 𝓞 D.host.E) ∉ v.asIdeal` using `fun p hp hm => hv (hl i p hp hm)`. Apply the tactic sequence `have hgP : ∀ kk : Fin 2, ((D.host.g kk : ℕ) : 𝓞 D.host.E) ∉ v.asIdeal := fun kk => hlow _ (by fin_cases kk <;> simp [lowAll])`. Establish `hso : Bridge.SplitOff v (X.R.Sb : Set (Formalism.L2.DIV.Pl D.host.E))`. Establish `hAll : X.R.Sb = X.R.Pg` using `X.char.allPl`. Establish `hPg` using `X.char.lev.Pg`.
+
+Use `⟨(GlobalTheory.HeckeTieCompare.isSplitPl_iff v).1 hsp, fun h => ?_, fun Q hQ h => ?_⟩` and prove the remaining obligations. Rewrite `h` using `[Finset.mem_coe, hAll]`. Take `⟨kk, hkk⟩` from `(hPg v).1 h`. Conclude with `hgP kk (GlobalTheory.StepLaw.typePrime_mem_of_div hkk)`. Rewrite `hQ` using `[Finset.mem_coe, hAll]`.
+
+Take `⟨kk, hkk⟩` from `(hPg Q).1 hQ`. Establish `hm` using `GlobalTheory.StepLaw.typePrime_mem_of_div hkk`. Rewrite `hm` using `[h, Formalism.L2.Col.conjIdeal_asIdeal, Formalism.L2.Col.mem_conjP, map_natCast]`. Conclude with `hgP kk hm`. Establish `h1 : v ∉ Sb` using `fun hh => hv (hSb.subset (hl i) hh)`.
+
+Establish `h2` using `hlow 2 (by simp [lowAll, Formalism.L2.lowPr])`. Use `⟨h1, h2, fun j k hk => ?_⟩` and prove the remaining obligations. Take `⟨α, Rc, ha, hR⟩` from `GlobalTheory.HeckeSupSt.exists_heckeElt X.char.lev X.char.fam j hso hk`. Conclude with `⟨α, Rc, hsp, h1, h2, hk, ha, hR⟩`.
+-/
 theorem exists_hkDat (X : RealSide D) (hl : LowIn D) {Sb} (hSb : OverSet D Sb (lowAll D)) {i : D.ntw.Tw} {v : PlE D.host}
     (hv : v ∉ D.ntw.S0 i) (hsp : IsSplitPl D.host v) : v ∉ Sb ∧ ((2 : ℕ) : 𝓞 D.host.E) ∉ v.asIdeal ∧
       ∀ (j : Fin D.R.m) (k : ℕ), k ≤ D.R.r → ∃ α Rr, HkDat X.R Sb j k v α Rr := by
@@ -89,6 +109,9 @@ theorem exists_hkDat (X : RealSide D) (hl : LowIn D) {Sb} (hSb : OverSet D Sb (l
   obtain ⟨α, Rc, ha, hR⟩ := GlobalTheory.HeckeSupSt.exists_heckeElt X.char.lev X.char.fam j hso hk
   exact ⟨α, Rc, hsp, h1, h2, hk, ha, hR⟩
 
+/- English proof (translation)
+Substitute `h` using the available equality. Consider the cases of `hi`. Consider the cases of `hu`. Both sides reduce to the same expression.
+-/
 theorem units_cast {A B : Type} [iA : CommRing A] [iB : CommRing B] (h : A = B) (hi : HEq iA iB) {u : Aˣ} {v : Bˣ} (hu : HEq v u) :
     ringCast h hi (u : A) = v := by
   subst h; cases hi; cases hu; rfl
@@ -102,6 +125,13 @@ variable (h : CopyTw D D' ι e) {X : RealSide D} {X' : RealSide D'} (m : RealMov
 
 include hfi hl hl' hSb hSb' H H' in
 
+/- English proof (translation)
+Take `⟨q1, q2, q3⟩` from `(place_geo h.gal.R h.gal.host).2 P P' hP`. Take `⟨α', R', hd'⟩` from `(exists_hkDat X' hl' hSb' p1 p2).2.2 (h.cm j) k p3`. Take `⟨r1, r2, -⟩` from `exists_hkDat X hl hSb p0 (q1.2 p2)`. Take `⟨α, R, ha0, hR0, hF⟩` from `(hecke_geo h.gal.R h.gal.host h.sp j (h.cm j) rfl).2.2 _ _ (m.βW j (h.cm j) rfl) _ _ m.Pg P P' hP k α' R' hd'.elt hd'.reps`. Establish `e0` using `H.at j (YS.fi j).e (hfi j) ⟨q1.2 p2, r1, r2, by rw [h.gal.R]; exact p3, ha0, hR0⟩ y.1`.
+
+Establish `e0'` using `H'.at (h.cm j) (fiOfEq X' (NX.idxOf_succ D' (h.cm j))).e (fiOfEq_heq X' _) hd' ((ks h m YS j).φ y).1`. Establish `hnV : D.R.nV = D'.R.nV` using `by rw [h.gal.R]`. Establish `e1 : hkNorm X.R j k P = hkNorm X'.R (h.cm j) k P'`. Unfold `hkNorm`. Rewrite using `[q3 _ _ (m.Cmu0 j (h.cm j) rfl), q2, hnV]`.
+
+Establish `e2` using `hecke_sameMap h m j hF (read_move h m YS j ⟨_, hy⟩) (read_move h m YS j y) (e0.trans (congrArg (· • _) e1))`. Conclude with `(fiOfEq X' (NX.idxOf_succ D' (h.cm j))).e.injective (reading_injective X' _ (e2.trans e0'.symm))`.
+-/
 theorem hk_intertwine {i : D.ntw.Tw} {i' : D'.ntw.Tw} (j : Fin D.R.m) (k : ℕ) {P : PlE D.host} {P' : PlE D'.host} (hP : HEq P P')
     (p0 : P ∉ D.ntw.S0 i) (p1 : P' ∉ D'.ntw.S0 i') (p2 : IsSplitPl D'.host P') (p3 : k ≤ D'.R.r)
     (y : ((NX.ratDatR X.R X.cG kKs hk).A ((j : ℕ) + 1)).WK) (hy) :
@@ -122,6 +152,13 @@ theorem hk_intertwine {i : D.ntw.Tw} {i' : D'.ntw.Tw} (j : Fin D.R.m) (k : ℕ) 
 
 include hfi hl hl' hSb hSb' H H' in
 
+/- English proof (translation)
+Introduce `i' j b h1 h2 k P' x p1 p2 p3`. Take `⟨n, rfl⟩` from `Nat.exists_eq_add_of_le' h1`. Establish `hi` using `back_heq h i'`. Establish `hP : HEq (cast (place_geo h.gal.R h.gal.host).1.symm P') P'` using `cast_heq _ _`. Generalize the expression as in `cast (place_geo h.gal.R h.gal.host).1.symm P' = P at hP ⊢`.
+
+Take `⟨x, rfl⟩` from `(h.fmCast hi _ b).surjective x`. Take `⟨r1, -, r3⟩` from `record_heq h.gal h.set h.frm h.Bsup h.delta hi`. Establish `e1 : D'.nexp.hkF i' (n + 1) b k P' (h.fmCast hi _ b x) = h.fmCast hi _ b (D.nexp.hkF _ (n + 1) b k P x)` using `eq_of_heq (((r1 _ b _ _ (h.fmCast_heq hi _ b x).symm).2.2 k _ _ hP).symm.trans (h.fmCast_heq hi _ b _).symm)`. Establish `p0 : P ∉ D.ntw.S0 (back h i')` using `fun hh => p1 ((r3 P P' hP).1.1 hh)`. Express the relevant statement in the definitionally equal form `eFm h m YS i' (n + 1) b h1 h2 _ = _ • hkF D' (dat h m YS) i' (n + 1) b (hL' (n + 1)) (hs' (n + 1) h1 h2) k P' (eFm h m YS i' (n + 1) b h1 h2 _)`.
+
+Rewrite using `[e1, eFm_cast h m YS hi ⟨n, lt_m h h2⟩ b h1 h2, eFm_cast h m YS hi ⟨n, lt_m h h2⟩ b h1 h2, L _ _ b _ _ k P x p0 (((place_geo h.gal.R h.gal.host).2 P P' hP).1.2 p2) (by rw [h.gal.R]; exact p3), fmOf_smul]`. Use `congrArg₂ (· • ·) ?_ (fmOf_restrict (S' := dat h m YS) (h.scal hi b) (ks h m YS ⟨n, lt_m h h2⟩) _ _ _ (hs' (n + 1) h1 h2 k P') (fun y => hk_intertwine h m YS hfi hl hl' hSb hSb' H H' ⟨n, lt_m h h2⟩ k hP p0 p1 p2 p3 y _) _)` and prove the remaining obligations. Rewrite using `[map_pow, IsFractionRing.ringEquivOfRingEquiv_algebraMap]`. Conclude with `congrArg (fun z => algebraMap _ _ z ^ k) (units_cast _ _ (hc _ _ b _ _ hi hP))`.
+-/
 theorem hkLaw_move (hsup) {hs c} (hs') {c'} (hc : SameUnits c c') (L : HkLaw D _ YS.eF hL hs c) :
     HkLaw D' (dat h m YS) (tie h m YS hsup).eF hL' hs' c' := by
   intro i' j b h1 h2 k P' x p1 p2 p3

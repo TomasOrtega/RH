@@ -23,6 +23,15 @@ open GlobalTheory.TraitArc GlobalTheory.TauTwist GlobalTheory.ArcBuild GlobalThe
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {T : CDVR}
 
+/- English proof (translation)
+Establish `h0 : algebraMap (FractionRing T.V) F (algebraMap T.V _ ϖ) ≠ 0` using `(map_ne_zero _).2 ((map_ne_zero_iff _ (IsFractionRing.injective T.V (FractionRing T.V))).2 hϖ.ne_zero)`. Establish `hq : beF D hϖ y y / 2 = qv D hϖ y` using `by rw [beF_self]; omega`. Set `u : Fˣ` to `Units.mk0 _ h0 ^ (beF D hϖ y y / 2)`. Establish `hu : ((u : Fˣ) : F) = (algebraMap (FractionRing T.V) F (algebraMap T.V _ ϖ)) ^ (beF D hϖ y y / 2)`. Simplify using `only [u, Units.val_zpow_eq_zpow_val, Units.val_mk0]`.
+
+Rewrite using `[← hu]`. Use `ArcOfPoint.genRel_id_of_val D.toPre.P.isLB (DVR.pullGen_isGen _ _ _ _ (D.toPre.psi_gen y) _) fun z J hJ => ?_` and prove the remaining obligations. Establish `ht : Units.map (algebraMap (FractionRing T.V) F).toMonoidHom (TraitArc.tF D hϖ y (H.w0 • y)) = u⁻¹`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [u, TraitArc.tF, beF_w0 D oD, hq, Units.coe_map, map_zpow, Units.val_inv_eq_inv_val, Units.val_zpow_eq_zpow_val, Units.val_mk0, zpow_neg]`.
+
+Use `show (algebraMap (FractionRing T.V) F) ((((piK hϖ : (FractionRing T.V)ˣ) : FractionRing T.V) ^ qv D hϖ y)⁻¹) = _`. Rewrite using `[map_inv₀, map_zpow₀]`. Both sides reduce to the same expression. Use `letI := H.starRing`. Rewrite using `[val_pull hJ, val_pull hJ, Category.id_comp]`.
+
+Use `erw [val_psi_twist H.w0 (TraitArc.tF D hϖ) y (jFK (R := T.V) F) hJ]`. Rewrite using `[show jFK (R := T.V) F = 𝟙 _ ≫ spMap (algebraMap (FractionRing T.V) F) from (Category.id_comp _).symm, unitAt_spMap, ht, map_inv, ← _root_.mul_assoc, mul_inv_cancel, _root_.one_mul]`.
+-/
 theorem genRel_psi_twist (D : DegData T.V (maximalIdeal T.V)) [Module (𝓞 E) D.toPre.X]
     (oD : letI := H.starRing; D.toPre.OAct (𝓞 E)) {ϖ : T.V} (hϖ : Irreducible ϖ) (F : Type) [Field F]
     [Algebra (FractionRing T.V) F] (y : D.toPre.X) :
@@ -50,6 +59,19 @@ theorem genRel_psi_twist (D : DegData T.V (maximalIdeal T.V)) [Module (𝓞 E) D
   rw [show jFK (R := T.V) F = 𝟙 _ ≫ spMap (algebraMap (FractionRing T.V) F) from (Category.id_comp _).symm,
     unitAt_spMap, ht, map_inv, ← _root_.mul_assoc, mul_inv_cancel, _root_.one_mul]
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dm l c O _ β T b D _ oD ϖ hϖ hX hw hdiv pA pM hLie hTate Xo Y y hY`. Take `⟨t, m, P, φ, he, w, e, h1, h2, h3, -, h5, h6⟩` from `hY`. Use `⟨t, m, P, ?_⟩` and prove the remaining obligations. Establish `hid : spMap (RingHom.id T.V) = 𝟙 _` using `Spec.map_id _`. Establish `he0 : eSec D.toPre.P.A ≫ 𝟙 _ = spMap (RingHom.id T.V) ≫ eSec D.toPre.P.A`.
+
+Rewrite using `[hid, Category.comp_id]`. Conclude with `(Category.id_comp _).symm`. Establish `p : IsGrpPullback D.toPre.P.A D.toPre.P.A (spMap (RingHom.id T.V)) (𝟙 _)`. Establish `: IsMonHom (Iso.refl D.toPre.P.A).hom` using `inferInstanceAs (IsMonHom (𝟙 D.toPre.P.A))`. Conclude with `(isGrpPullback_of_iso (Iso.refl D.toPre.P.A)).congr hid.symm rfl`.
+
+Take `⟨Wo, hWo, ⟨ψW⟩⟩` from `GlobalTheory.PsiSpread.exists_psiOn D.toPre D.tau_bimult`. Set `F` to `AlgebraicClosure (FractionRing T.V)`. Establish `k6` using `(h6 F (algebraMap (FractionRing T.V) F (algebraMap T.V _ ϖ)) (fun _ => rfl) rfl).1`. Establish `r` using `(maps_iff (idW D.toPre.P.L) _ (fun _ => eSec D.toPre.P.A) _ D.toPre.rig D.toPre.rig _ _ (rigPull_le (𝟙 _) _ he0 D.toPre.P.L) (fun _ => rfl)).1 (maps_rig_id D.toPre he0)`. Establish `r'` using `(maps_iff w _ (fun _ => eSec D.toPre.P.A) _ P.D.toPre.rig D.toPre.rig _ _ (rigPull_le φ _ he D.toPre.P.L) (fun _ => rfl)).1 h3`.
+
+Set `xe : P.D.toPre.X ≃+ D.toPre.X` to `e.symm.toAddEquiv`. Establish `hxe : ∀ y, xe (e y) = y` using `fun y => e.symm_apply_apply y`. Take `⟨hD, -⟩` from `GlobalTheory.ArcData.exists_isPullDeg_id D.toPre P.D.toPre (A₀ := D.toPre.P.A) (M₀ := D.toPre.P.L) D.toPre.P.isLB D.toPre.rig p h1 (idW D.toPre.P.L) w ((isGen_iff _).1 ((isGen_iff _).2 (isoPullId_pgen (idIso_isGen D.toPre.P.isLB) rfl))) ((isGen_iff _).1 h2) r r' xe (fun x => by`. Take `⟨y, rfl⟩` from `e.surjective x`. Use `(h5 y).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[hid, Category.id_comp, Category.comp_id, hxe]`. Use the proof step `rfl)`. Use `Wo hWo ψW (jFK (R := T.V) F) (fun x => by`. Take `⟨y, rfl⟩` from `e.surjective x`. Rewrite using `[hxe]`.
+
+Conclude with `⟨_, _, _, genRel_psi_twist D oD hϖ F y, k6 y⟩)`. Conclude with `⟨hD⟩`.
+-/
 theorem exists_isPullDeg_arc : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dm : Datum H) (l : Level H) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (T : Formalism.L2.Pj.CDVR) (b : O →+* T.V) (D : DegData T.V (maximalIdeal T.V)) [Module (𝓞 E) D.toPre.X] (oD : letI := H.starRing; D.toPre.OAct (𝓞 E)) (ϖ : T.V) (hϖ : Irreducible ϖ) (hX : Nontrivial D.toPre.X) (hw : letI := H.starRing; TraceFormTwistIso D.toPre oD H.w0) (hdiv : ∀ a a', (2 * l.M' : ℤ) ∣ GlobalTheory.TraitArc.beF D hϖ a a') (pA : Dm.La → QkPt D.toPre (FractionRing T.V) l.A) (pM : Dm.La → QkPt D.toPre (FractionRing T.V) l.M) (hLie : GlobalTheory.TraitArc.LieCl D oD Dm β b) (hTate : GlobalTheory.TraitArc.TateCl D oD hϖ Dm β b hdiv pA pM) (Xo : Moduli Dm l) (Y : Model Xo c β) (y : Sp T.V ⟶ Y.X), Y.HasArcData (GlobalTheory.TraitArc.arc D oD hϖ β b hX hw hdiv pA pM hLie hTate) (maximalIdeal T.V) (RingHom.id T.V) ϖ y → ∃ (t : SAB H (Sp T.V)) (_ : SABMap t Y.t y) (P : PELUnif (maximalIdeal T.V) t), Nonempty (IsPullDeg (RingHom.id T.V) D.toPre P.D.toPre) := by
   intro E _ _ _ H Dm l c O _ β T b D _ oD ϖ hϖ hX hw hdiv pA pM hLie hTate Xo Y y hY
   obtain ⟨t, m, P, φ, he, w, e, h1, h2, h3, -, h5, h6⟩ := hY

@@ -13,6 +13,25 @@ open GlobalTheory.BlockSum (blockRep)
 open PositivityTheory.AutomorphicGaloisHodgeTate.Div (DivWCoreLac SenWLac HTLac IsSSMat)
 open UpperTheory.Gal.Int.Div
 
+/- English proof (translation)
+Introduce `Γ k _ _ a d r r' ρ ⟨u, hu⟩`. Use `set U : Matrix (Fin a) (Fin a) k := (u : Matrix (Fin a) (Fin a) k) with hUdef`. Use `set V : Matrix (Fin a) (Fin a) k := ((u⁻¹ : GL (Fin a) k) : Matrix (Fin a) (Fin a) k) with hVdef`. Establish `hVU : V * U = 1`. Simplify using `only [hUdef, hVdef]`.
+
+Conclude with `Units.inv_mul u`. Establish `hUV : U * V = 1`. Simplify using `only [hUdef, hVdef]`. Conclude with `Units.mul_inv u`. Establish `hr' : ∀ x, (r' x : Matrix (Fin a) (Fin a) k) = U * (r x : Matrix (Fin a) (Fin a) k) * V`.
+
+Introduce `x`. Rewrite using `[hu x]`. Both sides reduce to the same expression. Establish `hVdet : IsUnit V.det` using `(Matrix.isUnit_iff_isUnit_det V).1 ⟨u⁻¹, rfl⟩`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨A, hA, h⟩`. Use `⟨A * V, ?_, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.rank_mul_eq_left_of_isUnit_det V A hVdet, hA]`. Rewrite using `[hr' g, ← Matrix.mul_assoc, h g]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← hVU]`. Simplify using `only [Matrix.mul_assoc]`. Introduce and unpack `⟨m, B, hB, h⟩`. Establish `hk : ∀ X Y : Matrix (Fin a) (Fin a) k, Matrix.kronecker (X * Y) (1 : Matrix (Fin m) (Fin m) k) = Matrix.kronecker X (1 : Matrix (Fin m) (Fin m) k) * Matrix.kronecker Y (1 : Matrix (Fin m) (Fin m) k)`. Introduce `X Y`.
+
+Use `Matrix.mul_kronecker_mul X Y (1 : Matrix (Fin m) (Fin m) k) (1 : Matrix (Fin m) (Fin m) k)` as an intermediate fact. Simplify using `using this`. Establish `h1 : Matrix.kronecker (1 : Matrix (Fin a) (Fin a) k) (1 : Matrix (Fin m) (Fin m) k) = 1` using `Matrix.one_kronecker_one`. Use `set P := Matrix.kronecker U (1 : Matrix (Fin m) (Fin m) k) with hP`. Use `set Q := Matrix.kronecker V (1 : Matrix (Fin m) (Fin m) k) with hQ`.
+
+Establish `hQP : Q * P = 1` using `by rw [hQ, hP, ← hk, hVU, h1]`. Establish `hPQ : P * Q = 1` using `by rw [hQ, hP, ← hk, hUV, h1]`. Establish `hPdet : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).1 ⟨⟨P, Q, hPQ, hQP⟩, rfl⟩`. Use `⟨m, P * B, ?_, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.rank_mul_eq_right_of_isUnit_det P B hPdet, hB]`.
+
+Establish `hc : Matrix.kronecker (U * (r g : Matrix (Fin a) (Fin a) k) * V) (1 : Matrix (Fin m) (Fin m) k) = P * Matrix.kronecker (r g : Matrix (Fin a) (Fin a) k) (1 : Matrix (Fin m) (Fin m) k) * Q`. Rewrite using `[hk, hk]`. Rewrite using `[hr' g, hc]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = P * (Matrix.kronecker (r g : Matrix (Fin a) (Fin a) k) (1 : Matrix (Fin m) (Fin m) k) * B) := by`. Rewrite using `[hQP, Matrix.one_mul, Matrix.mul_assoc]`. Use `_ = P * B * (ρ g : Matrix (Fin d) (Fin d) k) := by`. Rewrite using `[h g, Matrix.mul_assoc]`.
+-/
 theorem UpperTheory.Gal.Int.Div.isoMove_of :
     IsoMove := by
   intro Γ k _ _ a d r r' ρ ⟨u, hu⟩
